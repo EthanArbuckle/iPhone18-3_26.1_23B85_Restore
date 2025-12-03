@@ -1,24 +1,24 @@
 @interface PSDSchedulerCoreAnalyticsLogger
 + (id)defaultLogger;
-- (PSDSchedulerCoreAnalyticsLogger)initWithSessionState:(id)a3 URL:(id)a4;
-- (id)binNameForDuration:(double)a3 bins:(int *)a4 count:(int)a5;
-- (int64_t)_linkTypeForAmountOfTimeKey:(id)a3;
-- (void)_appendLinkAvailabilityForKey:(id)a3 fromDictionary:(id)a4 syncDuration:(double)a5 intoDictionary:(id)a6 outputKey:(id)a7;
-- (void)_appendLinkInformationForActivity:(id)a3 inEventInfo:(id)a4 forEventDuration:(double)a5;
-- (void)_appendPairedWatchInforamtionToEvent:(id)a3 withDevice:(id)a4;
+- (PSDSchedulerCoreAnalyticsLogger)initWithSessionState:(id)state URL:(id)l;
+- (id)binNameForDuration:(double)duration bins:(int *)bins count:(int)count;
+- (int64_t)_linkTypeForAmountOfTimeKey:(id)key;
+- (void)_appendLinkAvailabilityForKey:(id)key fromDictionary:(id)dictionary syncDuration:(double)duration intoDictionary:(id)intoDictionary outputKey:(id)outputKey;
+- (void)_appendLinkInformationForActivity:(id)activity inEventInfo:(id)info forEventDuration:(double)duration;
+- (void)_appendPairedWatchInforamtionToEvent:(id)event withDevice:(id)device;
 - (void)_resetLinkMonitor;
-- (void)_setupLinkMonitorWithPairingIdentifier:(id)a3;
+- (void)_setupLinkMonitorWithPairingIdentifier:(id)identifier;
 - (void)_updateCurrentLinkStats;
-- (void)activityDidCompleteSending:(id)a3;
+- (void)activityDidCompleteSending:(id)sending;
 - (void)clearSessionState;
-- (void)didFinishActivity:(id)a3 inSession:(id)a4;
-- (void)didFinishSession:(id)a3;
-- (void)didStartActivity:(id)a3;
-- (void)linkChangedToLinkType:(int64_t)a3;
+- (void)didFinishActivity:(id)activity inSession:(id)session;
+- (void)didFinishSession:(id)session;
+- (void)didStartActivity:(id)activity;
+- (void)linkChangedToLinkType:(int64_t)type;
 - (void)saveSessionState;
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
-- (void)sendEvent:(id)a3;
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation PSDSchedulerCoreAnalyticsLogger
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000E348;
   block[3] = &unk_10002C778;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100038080 != -1)
   {
     dispatch_once(&qword_100038080, block);
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (PSDSchedulerCoreAnalyticsLogger)initWithSessionState:(id)a3 URL:(id)a4
+- (PSDSchedulerCoreAnalyticsLogger)initWithSessionState:(id)state URL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = PSDSchedulerCoreAnalyticsLogger;
   v9 = [(PSDSchedulerCoreAnalyticsLogger *)&v16 init];
@@ -54,8 +54,8 @@
     analyticsQueue = v9->_analyticsQueue;
     v9->_analyticsQueue = v11;
 
-    objc_storeStrong(&v9->_sessionState, a3);
-    objc_storeStrong(&v9->_sessionStateURL, a4);
+    objc_storeStrong(&v9->_sessionState, state);
+    objc_storeStrong(&v9->_sessionStateURL, l);
     v13 = objc_alloc_init(NSMutableSet);
     activeSyncTopics = v9->_activeSyncTopics;
     v9->_activeSyncTopics = v13;
@@ -64,57 +64,57 @@
   return v9;
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   analyticsQueue = self->_analyticsQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000E6F0;
   v8[3] = &unk_10002C8B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(analyticsQueue, v8);
 }
 
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000E8EC;
   v15[3] = &unk_10002C9A0;
   v15[4] = self;
-  [v5 enumerateNewlyRunningActivitiesWithBlock:v15];
+  [updateCopy enumerateNewlyRunningActivitiesWithBlock:v15];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000E8F4;
   v14[3] = &unk_10002C9A0;
   v14[4] = self;
-  [v5 enumerateChangedActivitiesWithBlock:v14];
+  [updateCopy enumerateChangedActivitiesWithBlock:v14];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10000E960;
   v11 = &unk_10002C978;
-  v12 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = updateCopy;
   v13 = v6;
   [v6 enumerateNewlyCompletedActivitiesWithBlock:&v8];
   if ([v6 didUpdateCompleteSyncSession])
   {
-    v7 = [v6 updatedSession];
-    [(PSDSchedulerCoreAnalyticsLogger *)self didFinishSession:v7];
+    updatedSession = [v6 updatedSession];
+    [(PSDSchedulerCoreAnalyticsLogger *)self didFinishSession:updatedSession];
   }
 }
 
-- (void)_setupLinkMonitorWithPairingIdentifier:(id)a3
+- (void)_setupLinkMonitorWithPairingIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v5 = +[PSYRegistrySingleton registry];
-    v6 = [v5 deviceForPairingID:v4];
+    v6 = [v5 deviceForPairingID:identifierCopy];
 
     if (v6)
     {
@@ -164,12 +164,12 @@
   self->_linkUpgradeMonitor = 0;
 }
 
-- (void)linkChangedToLinkType:(int64_t)a3
+- (void)linkChangedToLinkType:(int64_t)type
 {
-  if (self->_currentLinkType != a3)
+  if (self->_currentLinkType != type)
   {
     [(PSDSchedulerCoreAnalyticsLogger *)self _updateCurrentLinkStats];
-    self->_currentLinkType = a3;
+    self->_currentLinkType = type;
   }
 }
 
@@ -182,7 +182,7 @@
   currentLinkStartTime = self->_currentLinkStartTime;
   self->_currentLinkStartTime = v6;
 
-  v8 = [(PSDSchedulerCoreAnalyticsLogger *)self sessionState];
+  sessionState = [(PSDSchedulerCoreAnalyticsLogger *)self sessionState];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -203,7 +203,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [v8 updateLinkDurationForActivity:*(*(&v14 + 1) + 8 * v13) withLinkType:currentLinkType linkStartTime:v5 endTime:{v3, v14}];
+        [sessionState updateLinkDurationForActivity:*(*(&v14 + 1) + 8 * v13) withLinkType:currentLinkType linkStartTime:v5 endTime:{v3, v14}];
         v13 = v13 + 1;
       }
 
@@ -215,71 +215,71 @@
   }
 }
 
-- (void)didStartActivity:(id)a3
+- (void)didStartActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   analyticsQueue = self->_analyticsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000EDD8;
   v7[3] = &unk_10002C8B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_async(analyticsQueue, v7);
 }
 
-- (void)activityDidCompleteSending:(id)a3
+- (void)activityDidCompleteSending:(id)sending
 {
-  v4 = a3;
+  sendingCopy = sending;
   analyticsQueue = self->_analyticsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000EF24;
   v7[3] = &unk_10002C8B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sendingCopy;
+  selfCopy = self;
+  v6 = sendingCopy;
   dispatch_async(analyticsQueue, v7);
 }
 
-- (void)didFinishActivity:(id)a3 inSession:(id)a4
+- (void)didFinishActivity:(id)activity inSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  sessionCopy = session;
   analyticsQueue = self->_analyticsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F060;
   block[3] = &unk_10002CC30;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = activityCopy;
+  selfCopy = self;
+  v14 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = activityCopy;
   dispatch_async(analyticsQueue, block);
 }
 
-- (void)didFinishSession:(id)a3
+- (void)didFinishSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   analyticsQueue = self->_analyticsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000F1A8;
   v7[3] = &unk_10002C8B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(analyticsQueue, v7);
 }
 
 - (void)saveSessionState
 {
-  v3 = [(PSDSchedulerCoreAnalyticsLogger *)self sessionState];
-  v4 = [(PSDSchedulerCoreAnalyticsLogger *)self sessionStateURL];
-  v5 = [v4 path];
-  v6 = [NSKeyedArchiver secureArchiveRootObject:v3 toFile:v5];
+  sessionState = [(PSDSchedulerCoreAnalyticsLogger *)self sessionState];
+  sessionStateURL = [(PSDSchedulerCoreAnalyticsLogger *)self sessionStateURL];
+  path = [sessionStateURL path];
+  v6 = [NSKeyedArchiver secureArchiveRootObject:sessionState toFile:path];
 
   if ((v6 & 1) == 0)
   {
@@ -300,9 +300,9 @@
 - (void)clearSessionState
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(PSDSchedulerCoreAnalyticsLogger *)self sessionStateURL];
+  sessionStateURL = [(PSDSchedulerCoreAnalyticsLogger *)self sessionStateURL];
   v11 = 0;
-  v5 = [v3 removeItemAtURL:v4 error:&v11];
+  v5 = [v3 removeItemAtURL:sessionStateURL error:&v11];
   v6 = v11;
 
   if ((v5 & 1) == 0)
@@ -324,18 +324,18 @@
   [(PSDSchedulerCoreAnalyticsLogger *)self setSessionState:v10];
 }
 
-- (void)_appendLinkInformationForActivity:(id)a3 inEventInfo:(id)a4 forEventDuration:(double)a5
+- (void)_appendLinkInformationForActivity:(id)activity inEventInfo:(id)info forEventDuration:(double)duration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PSDSchedulerCoreAnalyticsLogger *)self sessionState];
-  v26 = v8;
-  v11 = [v10 linkDurationsForActivity:v8];
-  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnBT" fromDictionary:v11 syncDuration:v9 intoDictionary:@"percentOfTimeLinkOnBT" outputKey:a5];
-  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnAWDL" fromDictionary:v11 syncDuration:v9 intoDictionary:@"percentOfTimeLinkOnAWDL" outputKey:a5];
-  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnInfraWiFi" fromDictionary:v11 syncDuration:v9 intoDictionary:@"percentOfTimeLinkOnInfraWiFi" outputKey:a5];
-  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnOther" fromDictionary:v11 syncDuration:v9 intoDictionary:@"percentOfTimeLinkOnOther" outputKey:a5];
-  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkInactive" fromDictionary:v11 syncDuration:v9 intoDictionary:@"percentOfTimeLinkInactive" outputKey:a5];
+  activityCopy = activity;
+  infoCopy = info;
+  sessionState = [(PSDSchedulerCoreAnalyticsLogger *)self sessionState];
+  v26 = activityCopy;
+  v11 = [sessionState linkDurationsForActivity:activityCopy];
+  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnBT" fromDictionary:v11 syncDuration:infoCopy intoDictionary:@"percentOfTimeLinkOnBT" outputKey:duration];
+  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnAWDL" fromDictionary:v11 syncDuration:infoCopy intoDictionary:@"percentOfTimeLinkOnAWDL" outputKey:duration];
+  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnInfraWiFi" fromDictionary:v11 syncDuration:infoCopy intoDictionary:@"percentOfTimeLinkOnInfraWiFi" outputKey:duration];
+  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkOnOther" fromDictionary:v11 syncDuration:infoCopy intoDictionary:@"percentOfTimeLinkOnOther" outputKey:duration];
+  [(PSDSchedulerCoreAnalyticsLogger *)self _appendLinkAvailabilityForKey:@"amountOfTimeLinkInactive" fromDictionary:v11 syncDuration:infoCopy intoDictionary:@"percentOfTimeLinkInactive" outputKey:duration];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -383,28 +383,28 @@
   }
 
   v25 = [NSNumber numberWithInteger:v15];
-  [v9 setObject:v25 forKeyedSubscript:@"linkType"];
+  [infoCopy setObject:v25 forKeyedSubscript:@"linkType"];
 }
 
-- (int64_t)_linkTypeForAmountOfTimeKey:(id)a3
+- (int64_t)_linkTypeForAmountOfTimeKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"amountOfTimeLinkOnBT"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"amountOfTimeLinkOnBT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"amountOfTimeLinkOnAWDL"])
+  else if ([keyCopy isEqualToString:@"amountOfTimeLinkOnAWDL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"amountOfTimeLinkOnOther"])
+  else if ([keyCopy isEqualToString:@"amountOfTimeLinkOnOther"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"amountOfTimeLinkOnInfraWiFi"])
+  else if ([keyCopy isEqualToString:@"amountOfTimeLinkOnInfraWiFi"])
   {
     v4 = 3;
   }
@@ -417,34 +417,34 @@
   return v4;
 }
 
-- (void)_appendLinkAvailabilityForKey:(id)a3 fromDictionary:(id)a4 syncDuration:(double)a5 intoDictionary:(id)a6 outputKey:(id)a7
+- (void)_appendLinkAvailabilityForKey:(id)key fromDictionary:(id)dictionary syncDuration:(double)duration intoDictionary:(id)intoDictionary outputKey:(id)outputKey
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a7;
-  v13 = [v10 objectForKeyedSubscript:v17];
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  intoDictionaryCopy = intoDictionary;
+  outputKeyCopy = outputKey;
+  v13 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
 
   if (v13)
   {
-    v14 = [v10 objectForKeyedSubscript:v17];
+    v14 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
     [v14 doubleValue];
     v15 = [PSDAnalyticsUtils binPercentageRangeForInputDuration:"binPercentageRangeForInputDuration:withTotalDuration:" withTotalDuration:?];
 
-    [v11 setObject:v15 forKeyedSubscript:v12];
-    v16 = [v10 objectForKeyedSubscript:v17];
-    [v11 setObject:v16 forKeyedSubscript:v17];
+    [intoDictionaryCopy setObject:v15 forKeyedSubscript:outputKeyCopy];
+    v16 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
+    [intoDictionaryCopy setObject:v16 forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)_appendPairedWatchInforamtionToEvent:(id)a3 withDevice:(id)a4
+- (void)_appendPairedWatchInforamtionToEvent:(id)event withDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  eventCopy = event;
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (deviceCopy)
   {
-    v8 = [v6 systemBuildVersion];
+    systemBuildVersion = [deviceCopy systemBuildVersion];
     v9 = [v7 valueForProperty:PDRDevicePropertyKeyHWModelString];
     if ([v7 supportsCapability:1863581443])
     {
@@ -457,18 +457,18 @@
     }
 
     v11 = [NSNumber numberWithInt:v10];
-    [v5 setObject:v11 forKeyedSubscript:@"syncVersion"];
+    [eventCopy setObject:v11 forKeyedSubscript:@"syncVersion"];
 
-    [v5 setObject:v8 forKeyedSubscript:@"pairedDeviceBuildVersion"];
-    if ([v8 length]>= 2)
+    [eventCopy setObject:systemBuildVersion forKeyedSubscript:@"pairedDeviceBuildVersion"];
+    if ([systemBuildVersion length]>= 2)
     {
-      v12 = [v8 substringToIndex:2];
-      [v5 setObject:v12 forKeyedSubscript:@"pairedDeviceBuildPrefix"];
+      v12 = [systemBuildVersion substringToIndex:2];
+      [eventCopy setObject:v12 forKeyedSubscript:@"pairedDeviceBuildPrefix"];
     }
 
-    [v5 setObject:v9 forKeyedSubscript:@"pairedDeviceModel"];
+    [eventCopy setObject:v9 forKeyedSubscript:@"pairedDeviceModel"];
     v13 = [v7 valueForProperty:PDRDevicePropertyKeyIsInternalInstall];
-    [v5 setObject:v13 forKeyedSubscript:@"pairedDeviceHasInternalInstall"];
+    [eventCopy setObject:v13 forKeyedSubscript:@"pairedDeviceHasInternalInstall"];
   }
 
   else
@@ -481,24 +481,24 @@
       goto LABEL_9;
     }
 
-    v8 = psd_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    systemBuildVersion = psd_log();
+    if (os_log_type_enabled(systemBuildVersion, OS_LOG_TYPE_DEFAULT))
     {
       *v16 = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "skipping adding paired device information as device is nil", v16, 2u);
+      _os_log_impl(&_mh_execute_header, systemBuildVersion, OS_LOG_TYPE_DEFAULT, "skipping adding paired device information as device is nil", v16, 2u);
     }
   }
 
 LABEL_9:
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = psd_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
-  if (v3)
+  if (eventCopy)
   {
     if (v5)
     {
@@ -506,7 +506,7 @@ LABEL_9:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138412290;
-        v9 = v3;
+        v9 = eventCopy;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PSDSchedulerCoreAnalyticsLogger Sending Event: %@", &v8, 0xCu);
       }
     }
@@ -526,12 +526,12 @@ LABEL_9:
   }
 }
 
-- (id)binNameForDuration:(double)a3 bins:(int *)a4 count:(int)a5
+- (id)binNameForDuration:(double)duration bins:(int *)bins count:(int)count
 {
-  if (a5 < 1)
+  if (count < 1)
   {
 LABEL_5:
-    [NSString stringWithFormat:@">%d", a3, a4[a5 - 1], v9];
+    [NSString stringWithFormat:@">%d", duration, bins[count - 1], v9];
   }
 
   else
@@ -539,13 +539,13 @@ LABEL_5:
     v5 = 0;
     while (1)
     {
-      v6 = a4[v5];
-      if (v6 > a3)
+      v6 = bins[v5];
+      if (v6 > duration)
       {
         break;
       }
 
-      if (a5 == ++v5)
+      if (count == ++v5)
       {
         goto LABEL_5;
       }
@@ -553,12 +553,12 @@ LABEL_5:
 
     if (v5 * 4)
     {
-      [NSString stringWithFormat:@"%d-%d", a3, a4[v5 - 1], v6];
+      [NSString stringWithFormat:@"%d-%d", duration, bins[v5 - 1], v6];
     }
 
     else
     {
-      [NSString stringWithFormat:@"<%d", a3, *a4, v9];
+      [NSString stringWithFormat:@"<%d", duration, *bins, v9];
     }
   }
   v7 = ;

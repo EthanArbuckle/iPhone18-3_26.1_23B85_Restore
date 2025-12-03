@@ -1,15 +1,15 @@
 @interface SHEntitlements
-- (BOOL)BOOLValueOfEntitlement:(id)a3 fromConnection:(id)a4;
-- (BOOL)BOOLValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4;
-- (BOOL)entitlementArray:(id)a3 containsEntitlementValue:(id)a4 fromConnection:(id)a5;
-- (BOOL)entitlementArray:(id)a3 containsEntitlementValue:(id)a4 fromSecTask:(__SecTask *)a5;
-- (BOOL)hasRequiredEntitlements:(id)a3;
-- (BOOL)tccBoolValueOfEntitlement:(id)a3 fromConnection:(id)a4;
+- (BOOL)BOOLValueOfEntitlement:(id)entitlement fromConnection:(id)connection;
+- (BOOL)BOOLValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task;
+- (BOOL)entitlementArray:(id)array containsEntitlementValue:(id)value fromConnection:(id)connection;
+- (BOOL)entitlementArray:(id)array containsEntitlementValue:(id)value fromSecTask:(__SecTask *)task;
+- (BOOL)hasRequiredEntitlements:(id)entitlements;
+- (BOOL)tccBoolValueOfEntitlement:(id)entitlement fromConnection:(id)connection;
 - (SHEntitlements)init;
-- (SHEntitlements)initWithConnection:(id)a3;
-- (void)configureEntitlementsForConnection:(id)a3;
-- (void)configureEntitlementsForTask:(__SecTask *)a3;
-- (void)copyValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4;
+- (SHEntitlements)initWithConnection:(id)connection;
+- (void)configureEntitlementsForConnection:(id)connection;
+- (void)configureEntitlementsForTask:(__SecTask *)task;
+- (void)copyValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task;
 @end
 
 @implementation SHEntitlements
@@ -29,40 +29,40 @@
   return v2;
 }
 
-- (SHEntitlements)initWithConnection:(id)a3
+- (SHEntitlements)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = SHEntitlements;
   v5 = [(SHEntitlements *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SHEntitlements *)v5 configureEntitlementsForConnection:v4];
+    [(SHEntitlements *)v5 configureEntitlementsForConnection:connectionCopy];
   }
 
   return v6;
 }
 
-- (void)configureEntitlementsForTask:(__SecTask *)a3
+- (void)configureEntitlementsForTask:(__SecTask *)task
 {
-  self->_isEntitledForStorefront = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMediaLibrary" fromSecTask:a3];
-  self->_isEntitledForMicrophone = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMicrophone" fromSecTask:a3];
-  self->_isEntitledForInternalClient = [(SHEntitlements *)self BOOLValueOfEntitlement:@"com.apple.private.ShazamKit" fromSecTask:a3];
+  self->_isEntitledForStorefront = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMediaLibrary" fromSecTask:task];
+  self->_isEntitledForMicrophone = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMicrophone" fromSecTask:task];
+  self->_isEntitledForInternalClient = [(SHEntitlements *)self BOOLValueOfEntitlement:@"com.apple.private.ShazamKit" fromSecTask:task];
 }
 
-- (void)configureEntitlementsForConnection:(id)a3
+- (void)configureEntitlementsForConnection:(id)connection
 {
-  v5 = a3;
-  self->_isEntitledForStorefront = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMediaLibrary" fromConnection:v5];
-  v4 = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMicrophone" fromConnection:v5]|| [(SHEntitlements *)self tccBoolValueOfEntitlement:@"kTCCServiceMicrophone" fromConnection:v5];
+  connectionCopy = connection;
+  self->_isEntitledForStorefront = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMediaLibrary" fromConnection:connectionCopy];
+  v4 = [(SHEntitlements *)self entitlementArray:@"com.apple.private.tcc.allow" containsEntitlementValue:@"kTCCServiceMicrophone" fromConnection:connectionCopy]|| [(SHEntitlements *)self tccBoolValueOfEntitlement:@"kTCCServiceMicrophone" fromConnection:connectionCopy];
   self->_isEntitledForMicrophone = v4;
-  self->_isEntitledForInternalClient = [(SHEntitlements *)self BOOLValueOfEntitlement:@"com.apple.private.ShazamKit" fromConnection:v5];
+  self->_isEntitledForInternalClient = [(SHEntitlements *)self BOOLValueOfEntitlement:@"com.apple.private.ShazamKit" fromConnection:connectionCopy];
 }
 
-- (BOOL)hasRequiredEntitlements:(id)a3
+- (BOOL)hasRequiredEntitlements:(id)entitlements
 {
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v5 = [MEMORY[0x277CBEB58] set];
   if ([(SHEntitlements *)self isEntitledForStorefront])
   {
@@ -79,36 +79,36 @@
     [v5 addObject:@"com.apple.private.ShazamKit"];
   }
 
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:entitlementsCopy];
   v7 = [v6 isSubsetOfSet:v5];
 
   return v7;
 }
 
-- (BOOL)BOOLValueOfEntitlement:(id)a3 fromConnection:(id)a4
+- (BOOL)BOOLValueOfEntitlement:(id)entitlement fromConnection:(id)connection
 {
-  v4 = [a4 valueForEntitlement:a3];
+  v4 = [connection valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)entitlementArray:(id)a3 containsEntitlementValue:(id)a4 fromConnection:(id)a5
+- (BOOL)entitlementArray:(id)array containsEntitlementValue:(id)value fromConnection:(id)connection
 {
-  v7 = a4;
-  v8 = [a5 valueForEntitlement:a3];
+  valueCopy = value;
+  v8 = [connection valueForEntitlement:array];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 containsObject:v7];
+    v9 = [v8 containsObject:valueCopy];
   }
 
   else
@@ -119,12 +119,12 @@
   return v9;
 }
 
-- (BOOL)tccBoolValueOfEntitlement:(id)a3 fromConnection:(id)a4
+- (BOOL)tccBoolValueOfEntitlement:(id)entitlement fromConnection:(id)connection
 {
-  v5 = a3;
-  if (a4)
+  entitlementCopy = entitlement;
+  if (connection)
   {
-    [a4 auditToken];
+    [connection auditToken];
   }
 
   v6 = tcc_authorization_check_audit_token() == 2;
@@ -132,11 +132,11 @@
   return v6;
 }
 
-- (void)copyValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4
+- (void)copyValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task
 {
   v11 = *MEMORY[0x277D85DE8];
   error = 0;
-  v4 = SecTaskCopyValueForEntitlement(a4, a3, &error);
+  v4 = SecTaskCopyValueForEntitlement(task, entitlement, &error);
   if (error)
   {
     v5 = shcore_log_object();
@@ -154,9 +154,9 @@
   return v4;
 }
 
-- (BOOL)BOOLValueOfEntitlement:(id)a3 fromSecTask:(__SecTask *)a4
+- (BOOL)BOOLValueOfEntitlement:(id)entitlement fromSecTask:(__SecTask *)task
 {
-  v4 = [(SHEntitlements *)self copyValueOfEntitlement:a3 fromSecTask:a4];
+  v4 = [(SHEntitlements *)self copyValueOfEntitlement:entitlement fromSecTask:task];
   if (!v4)
   {
     return 0;
@@ -169,17 +169,17 @@
   return v7;
 }
 
-- (BOOL)entitlementArray:(id)a3 containsEntitlementValue:(id)a4 fromSecTask:(__SecTask *)a5
+- (BOOL)entitlementArray:(id)array containsEntitlementValue:(id)value fromSecTask:(__SecTask *)task
 {
-  v8 = a4;
-  v9 = [(SHEntitlements *)self copyValueOfEntitlement:a3 fromSecTask:a5];
+  valueCopy = value;
+  v9 = [(SHEntitlements *)self copyValueOfEntitlement:array fromSecTask:task];
   if (v9)
   {
     v10 = v9;
     v11 = CFGetTypeID(v9);
     if (v11 == CFArrayGetTypeID())
     {
-      v12 = [v10 containsObject:v8];
+      v12 = [v10 containsObject:valueCopy];
     }
 
     else

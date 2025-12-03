@@ -1,5 +1,5 @@
 @interface SXLinkHoverStylingManager
-- (SXLinkHoverStylingManager)initWithTangierController:(id)a3;
+- (SXLinkHoverStylingManager)initWithTangierController:(id)controller;
 - (id)allHoverViews;
 - (id)createHoverView;
 - (void)applyHoverStyling;
@@ -7,16 +7,16 @@
 
 @implementation SXLinkHoverStylingManager
 
-- (SXLinkHoverStylingManager)initWithTangierController:(id)a3
+- (SXLinkHoverStylingManager)initWithTangierController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SXLinkHoverStylingManager;
   v6 = [(SXLinkHoverStylingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tangierController, a3);
+    objc_storeStrong(&v6->_tangierController, controller);
   }
 
   return v7;
@@ -29,8 +29,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SXLinkHoverStylingManager *)self hoverViews];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  hoverViews = [(SXLinkHoverStylingManager *)self hoverViews];
+  v4 = [hoverViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -42,7 +42,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(hoverViews);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -55,14 +55,14 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [hoverViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(SXLinkHoverStylingManager *)self allHoverViews];
-  [(SXLinkHoverStylingManager *)self setHoverViews:v9];
+  allHoverViews = [(SXLinkHoverStylingManager *)self allHoverViews];
+  [(SXLinkHoverStylingManager *)self setHoverViews:allHoverViews];
 }
 
 - (id)allHoverViews
@@ -73,12 +73,12 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v2 = [(SXLinkHoverStylingManager *)self tangierController];
-  v3 = [v2 icc];
-  v4 = [v3 canvas];
-  v5 = [v4 topLevelReps];
+  tangierController = [(SXLinkHoverStylingManager *)self tangierController];
+  v3 = [tangierController icc];
+  canvas = [v3 canvas];
+  topLevelReps = [canvas topLevelReps];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v6 = [topLevelReps countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -89,7 +89,7 @@
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topLevelReps);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -98,8 +98,8 @@
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 storage];
-          v14 = [v12 range];
+          storage = [v11 storage];
+          range = [v12 range];
           v16 = v15;
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
@@ -107,13 +107,13 @@
           v20[3] = &unk_1E84FFB08;
           v21 = v12;
           v22 = v10;
-          v23 = self;
+          selfCopy = self;
           v24 = v19;
-          [v13 enumerateSmartFieldsWithAttributeKind:6 inRange:v14 usingBlock:{v16, v20}];
+          [storage enumerateSmartFieldsWithAttributeKind:6 inRange:range usingBlock:{v16, v20}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v7 = [topLevelReps countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v7);
@@ -188,8 +188,8 @@ void __42__SXLinkHoverStylingManager_allHoverViews__block_invoke(uint64_t a1, vo
 - (id)createHoverView
 {
   v2 = objc_alloc_init(SXHoverStyleView);
-  v3 = [MEMORY[0x1E69DCAB0] automaticStyle];
-  [(SXHoverStyleView *)v2 setHoverStyle:v3];
+  automaticStyle = [MEMORY[0x1E69DCAB0] automaticStyle];
+  [(SXHoverStyleView *)v2 setHoverStyle:automaticStyle];
 
   return v2;
 }

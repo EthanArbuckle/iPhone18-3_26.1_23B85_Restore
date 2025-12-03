@@ -1,14 +1,14 @@
 @interface IMBrandRBMBrandDataSourceObjcShim
 - (IMBrandRBMBrandDataSourceObjcShim)init;
-- (IMBrandRBMBrandDataSourceObjcShim)initWithCacheClient:(id)a3;
+- (IMBrandRBMBrandDataSourceObjcShim)initWithCacheClient:(id)client;
 @end
 
 @implementation IMBrandRBMBrandDataSourceObjcShim
 
-- (IMBrandRBMBrandDataSourceObjcShim)initWithCacheClient:(id)a3
+- (IMBrandRBMBrandDataSourceObjcShim)initWithCacheClient:(id)client
 {
   swift_unknownObjectRetain();
-  v4 = sub_1A8605E4C(a3);
+  v4 = sub_1A8605E4C(client);
   swift_unknownObjectRelease();
   return v4;
 }

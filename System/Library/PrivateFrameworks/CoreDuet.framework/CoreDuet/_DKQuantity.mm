@@ -1,17 +1,17 @@
 @interface _DKQuantity
-+ (id)fromPBCodable:(id)a3;
-+ (id)objectFromManagedObject:(id)a3 readMetadata:(BOOL)a4 excludedMetadataKeys:(id)a5 cache:(id)a6;
-+ (id)quantityWithDouble:(double)a3 type:(id)a4;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fromPBCodable:(id)codable;
++ (id)objectFromManagedObject:(id)object readMetadata:(BOOL)metadata excludedMetadataKeys:(id)keys cache:(id)cache;
++ (id)quantityWithDouble:(double)double type:(id)type;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_DKQuantity)initWithCoder:(id)a3;
-- (_DKQuantity)initWithDouble:(double)a3 type:(id)a4;
+- (_DKQuantity)initWithCoder:(id)coder;
+- (_DKQuantity)initWithDouble:(double)double type:(id)type;
 - (id)stringValue;
 - (id)toPBCodable;
-- (int64_t)compareValue:(id)a3;
+- (int64_t)compareValue:(id)value;
 - (int64_t)typeCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKQuantity
@@ -21,13 +21,13 @@
   v3 = objc_alloc_init(_DKPRValue);
   v4 = objc_alloc_init(_DKPRValueType);
   [(_DKPRValue *)v3 setType:v4];
-  v5 = [(_DKPRValue *)v3 type];
-  [(_DKPRValueType *)v5 setType:?];
+  type = [(_DKPRValue *)v3 type];
+  [(_DKPRValueType *)type setType:?];
 
-  v6 = [(_DKQuantity *)self quantityType];
-  v7 = [v6 typeCode];
-  v8 = [(_DKPRValue *)v3 type];
-  [(_DKPRValueType *)v8 setTypeCode:v7];
+  quantityType = [(_DKQuantity *)self quantityType];
+  typeCode = [quantityType typeCode];
+  type2 = [(_DKPRValue *)v3 type];
+  [(_DKPRValueType *)type2 setTypeCode:typeCode];
 
   [(_DKQuantity *)self doubleValue];
   [(_DKPRValue *)v3 setDoubleValue:v9];
@@ -35,18 +35,18 @@
   return v3;
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(_DKPRValue *)v4 doubleValue];
-    v6 = [(_DKPRValue *)v4 type];
+    v4 = codableCopy;
+    doubleValue = [(_DKPRValue *)v4 doubleValue];
+    type = [(_DKPRValue *)v4 type];
 
-    v7 = [(_DKObjectType *)_DKQuantityType objectTypeWithTypeCode:[(_DKPRValueType *)v6 typeCode]];
-    v8 = [_DKQuantity quantityWithDouble:v7 type:v5];
+    v7 = [(_DKObjectType *)_DKQuantityType objectTypeWithTypeCode:[(_DKPRValueType *)type typeCode]];
+    v8 = [_DKQuantity quantityWithDouble:v7 type:doubleValue];
   }
 
   else
@@ -57,41 +57,41 @@
   return v8;
 }
 
-+ (id)quantityWithDouble:(double)a3 type:(id)a4
++ (id)quantityWithDouble:(double)double type:(id)type
 {
-  v5 = a4;
-  v6 = [[_DKQuantity alloc] initWithDouble:v5 type:a3];
+  typeCopy = type;
+  v6 = [[_DKQuantity alloc] initWithDouble:typeCopy type:double];
 
   return v6;
 }
 
-- (_DKQuantity)initWithDouble:(double)a3 type:(id)a4
+- (_DKQuantity)initWithDouble:(double)double type:(id)type
 {
-  v7 = a4;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = _DKQuantity;
   v8 = [(_DKObject *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_doubleValue = a3;
-    objc_storeStrong(&v8->_quantityType, a4);
+    v8->_doubleValue = double;
+    objc_storeStrong(&v8->_quantityType, type);
   }
 
   return v9;
 }
 
-- (_DKQuantity)initWithCoder:(id)a3
+- (_DKQuantity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _DKQuantity;
-  v5 = [(_DKObject *)&v11 initWithCoder:v4];
+  v5 = [(_DKObject *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"doubleValue"];
+    [coderCopy decodeDoubleForKey:@"doubleValue"];
     v5->_doubleValue = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quantityType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quantityType"];
     quantityType = v5->_quantityType;
     v5->_quantityType = v7;
 
@@ -101,14 +101,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _DKQuantity;
-  v4 = a3;
-  [(_DKObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"doubleValue" forKey:{self->_doubleValue, v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_quantityType forKey:@"quantityType"];
+  coderCopy = coder;
+  [(_DKObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"doubleValue" forKey:{self->_doubleValue, v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_quantityType forKey:@"quantityType"];
 }
 
 - (NSString)description
@@ -126,16 +126,16 @@
   return v9;
 }
 
-- (int64_t)compareValue:(id)a3
+- (int64_t)compareValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 quantityType];
-    v7 = [(_DKQuantity *)self quantityType];
-    v8 = [v6 isEqual:v7];
+    v5 = valueCopy;
+    quantityType = [v5 quantityType];
+    quantityType2 = [(_DKQuantity *)self quantityType];
+    v8 = [quantityType isEqual:quantityType2];
 
     if (v8)
     {
@@ -181,21 +181,21 @@
 - (id)stringValue
 {
   v2 = [MEMORY[0x1E696AD98] numberWithDouble:self->_doubleValue];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v16.receiver = self, v16.super_class = _DKQuantity, [(_DKObject *)&v16 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v16.receiver = self, v16.super_class = _DKQuantity, [(_DKObject *)&v16 isEqual:v5]))
   {
     v6 = v5;
     [(_DKQuantity *)self doubleValue];
@@ -203,18 +203,18 @@
     [(_DKQuantity *)v6 doubleValue];
     if (v8 == v9)
     {
-      v10 = [(_DKQuantity *)self quantityType];
-      v11 = [(_DKQuantity *)v6 quantityType];
-      if (v10 == v11)
+      quantityType = [(_DKQuantity *)self quantityType];
+      quantityType2 = [(_DKQuantity *)v6 quantityType];
+      if (quantityType == quantityType2)
       {
         v14 = 1;
       }
 
       else
       {
-        v12 = [(_DKQuantity *)self quantityType];
-        v13 = [(_DKQuantity *)v6 quantityType];
-        v14 = [v12 isEqual:v13];
+        quantityType3 = [(_DKQuantity *)self quantityType];
+        quantityType4 = [(_DKQuantity *)v6 quantityType];
+        v14 = [quantityType3 isEqual:quantityType4];
       }
     }
 
@@ -234,24 +234,24 @@
 
 - (int64_t)typeCode
 {
-  v2 = [(_DKQuantity *)self quantityType];
-  v3 = [v2 typeCode];
+  quantityType = [(_DKQuantity *)self quantityType];
+  typeCode = [quantityType typeCode];
 
-  return v3;
+  return typeCode;
 }
 
-+ (id)objectFromManagedObject:(id)a3 readMetadata:(BOOL)a4 excludedMetadataKeys:(id)a5 cache:(id)a6
++ (id)objectFromManagedObject:(id)object readMetadata:(BOOL)metadata excludedMetadataKeys:(id)keys cache:(id)cache
 {
-  v7 = a3;
-  v8 = a6;
+  objectCopy = object;
+  cacheCopy = cache;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = objectCopy;
     v10 = +[_DKObjectType objectTypeWithTypeCode:](_DKQuantityType, "objectTypeWithTypeCode:", [v9 quantityType]);
     [v9 doubleValue];
     v11 = [_DKQuantity quantityWithDouble:v10 type:?];
-    if ([v11 copyBaseObjectInfoFromManagedObject:v9 cache:v8])
+    if ([v11 copyBaseObjectInfoFromManagedObject:v9 cache:cacheCopy])
     {
       v12 = v11;
     }
@@ -270,17 +270,17 @@
   return v12;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DKQuantity, [(_DKObject *)&v9 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DKQuantity, [(_DKObject *)&v9 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
+    v5 = objectCopy;
     [(_DKQuantity *)self doubleValue];
     [v5 setDoubleValue:?];
-    v6 = [(_DKQuantity *)self quantityType];
-    [v5 setQuantityType:{objc_msgSend(v6, "typeCode")}];
+    quantityType = [(_DKQuantity *)self quantityType];
+    [v5 setQuantityType:{objc_msgSend(quantityType, "typeCode")}];
 
     v7 = 1;
   }

@@ -6,7 +6,7 @@
 
 - (void)sb_configuredIntentAction
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Only valid when this is an Intent action %@ is not.", a1];;
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Only valid when this is an Intent action %@ is not.", self];;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v5 = NSStringFromSelector(a2);
@@ -17,7 +17,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"SBLocalSystemActionUtilities.m";
     v16 = 1024;

@@ -1,16 +1,16 @@
 @interface _UIOLAConfigurationHistory
-- (double)customSpacingAfterItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCustomSpacing:(double)a3 afterItem:(id)a4;
+- (double)customSpacingAfterItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCustomSpacing:(double)spacing afterItem:(id)item;
 @end
 
 @implementation _UIOLAConfigurationHistory
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _UIOLAConfigurationHistory;
-  v4 = [(_UILAConfigurationHistory *)&v8 copyWithZone:a3];
+  v4 = [(_UILAConfigurationHistory *)&v8 copyWithZone:zone];
   [v4 setSpacing:self->_spacing];
   [v4 setDistribution:self->_distribution];
   [v4 setBaselineRelativeArrangement:self->_baselineRelativeArrangement];
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (void)setCustomSpacing:(double)a3 afterItem:(id)a4
+- (void)setCustomSpacing:(double)spacing afterItem:(id)item
 {
-  v10 = a4;
+  itemCopy = item;
   customSpacings = self->_customSpacings;
   if (!customSpacings)
   {
@@ -39,13 +39,13 @@
     customSpacings = self->_customSpacings;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(NSMapTable *)customSpacings setObject:v9 forKey:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:spacing];
+  [(NSMapTable *)customSpacings setObject:v9 forKey:itemCopy];
 }
 
-- (double)customSpacingAfterItem:(id)a3
+- (double)customSpacingAfterItem:(id)item
 {
-  v3 = [(NSMapTable *)self->_customSpacings objectForKey:a3];
+  v3 = [(NSMapTable *)self->_customSpacings objectForKey:item];
   v4 = v3;
   if (v3)
   {

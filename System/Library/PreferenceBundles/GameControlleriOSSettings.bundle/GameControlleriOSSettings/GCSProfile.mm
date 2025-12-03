@@ -1,28 +1,28 @@
 @interface GCSProfile
-- (GCSProfile)initWithName:(id)a3 sfSymbolsName:(id)a4 customizable:(BOOL)a5 uuid:(id)a6;
-- (id)directionPadMappingForPhysicalPress:(id)a3;
-- (id)elementMappingForPhysicalPress:(id)a3;
-- (id)logicalButtonForPhysicalPressOf:(id)a3 onPhysicalInputProfile:(id)a4;
-- (id)logicalDirectionPadForPhysicalPressOf:(id)a3 onPhysicalInputProfile:(id)a4;
-- (id)logicalElementForPhysicalPressOf:(id)a3 onPhysicalInputProfile:(id)a4;
+- (GCSProfile)initWithName:(id)name sfSymbolsName:(id)symbolsName customizable:(BOOL)customizable uuid:(id)uuid;
+- (id)directionPadMappingForPhysicalPress:(id)press;
+- (id)elementMappingForPhysicalPress:(id)press;
+- (id)logicalButtonForPhysicalPressOf:(id)of onPhysicalInputProfile:(id)profile;
+- (id)logicalDirectionPadForPhysicalPressOf:(id)of onPhysicalInputProfile:(id)profile;
+- (id)logicalElementForPhysicalPressOf:(id)of onPhysicalInputProfile:(id)profile;
 @end
 
 @implementation GCSProfile
 
-- (id)logicalElementForPhysicalPressOf:(id)a3 onPhysicalInputProfile:(id)a4
+- (id)logicalElementForPhysicalPressOf:(id)of onPhysicalInputProfile:(id)profile
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GCSProfile *)self elementMappings];
-  v9 = [v7 primaryAlias];
+  profileCopy = profile;
+  ofCopy = of;
+  elementMappings = [(GCSProfile *)self elementMappings];
+  primaryAlias = [ofCopy primaryAlias];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [elementMappings objectForKeyedSubscript:primaryAlias];
 
   if (v10)
   {
-    v11 = [v6 elements];
-    v12 = [v10 mappingKey];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    elements = [profileCopy elements];
+    mappingKey = [v10 mappingKey];
+    v13 = [elements objectForKeyedSubscript:mappingKey];
   }
 
   else
@@ -33,9 +33,9 @@
   return v13;
 }
 
-- (id)logicalButtonForPhysicalPressOf:(id)a3 onPhysicalInputProfile:(id)a4
+- (id)logicalButtonForPhysicalPressOf:(id)of onPhysicalInputProfile:(id)profile
 {
-  v4 = [(GCSProfile *)self logicalElementForPhysicalPressOf:a3 onPhysicalInputProfile:a4];
+  v4 = [(GCSProfile *)self logicalElementForPhysicalPressOf:of onPhysicalInputProfile:profile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -50,9 +50,9 @@
   return v5;
 }
 
-- (id)logicalDirectionPadForPhysicalPressOf:(id)a3 onPhysicalInputProfile:(id)a4
+- (id)logicalDirectionPadForPhysicalPressOf:(id)of onPhysicalInputProfile:(id)profile
 {
-  v4 = [(GCSProfile *)self logicalElementForPhysicalPressOf:a3 onPhysicalInputProfile:a4];
+  v4 = [(GCSProfile *)self logicalElementForPhysicalPressOf:of onPhysicalInputProfile:profile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -67,24 +67,24 @@
   return v5;
 }
 
-- (id)elementMappingForPhysicalPress:(id)a3
+- (id)elementMappingForPhysicalPress:(id)press
 {
-  v4 = a3;
-  v5 = [(GCSProfile *)self elementMappings];
-  v6 = [v4 primaryAlias];
+  pressCopy = press;
+  elementMappings = [(GCSProfile *)self elementMappings];
+  primaryAlias = [pressCopy primaryAlias];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [elementMappings objectForKeyedSubscript:primaryAlias];
 
   return v7;
 }
 
-- (id)directionPadMappingForPhysicalPress:(id)a3
+- (id)directionPadMappingForPhysicalPress:(id)press
 {
-  v4 = a3;
-  v5 = [(GCSProfile *)self elementMappings];
-  v6 = [v4 primaryAlias];
+  pressCopy = press;
+  elementMappings = [(GCSProfile *)self elementMappings];
+  primaryAlias = [pressCopy primaryAlias];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [elementMappings objectForKeyedSubscript:primaryAlias];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -100,9 +100,9 @@
   return v8;
 }
 
-- (GCSProfile)initWithName:(id)a3 sfSymbolsName:(id)a4 customizable:(BOOL)a5 uuid:(id)a6
+- (GCSProfile)initWithName:(id)name sfSymbolsName:(id)symbolsName customizable:(BOOL)customizable uuid:(id)uuid
 {
-  v7 = a5;
+  customizableCopy = customizable;
   v8 = sub_DC40(&qword_117558);
   __chkstk_darwin(v8 - 8);
   v10 = &v20 - v9;
@@ -110,7 +110,7 @@
   v13 = v12;
   v14 = sub_D7C18();
   v16 = v15;
-  if (a6)
+  if (uuid)
   {
     sub_D6978();
     v17 = sub_D6998();
@@ -123,7 +123,7 @@
     (*(*(v18 - 8) + 56))(v10, 1, 1, v18);
   }
 
-  return sub_D2554(v11, v13, v14, v16, v7, v10);
+  return sub_D2554(v11, v13, v14, v16, customizableCopy, v10);
 }
 
 @end

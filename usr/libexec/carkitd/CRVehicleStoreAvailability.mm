@@ -14,7 +14,7 @@
     return 1;
   }
 
-  [a1 _updateUnlockedSinceBoot];
+  [self _updateUnlockedSinceBoot];
   return byte_100107F00;
 }
 
@@ -68,7 +68,7 @@ LABEL_10:
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, sub_10000B148, @"com.apple.mobile.keybagd.first_unlock", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_10000B148, @"com.apple.mobile.keybagd.first_unlock", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, "Notification", "com.apple.mobile.keybagd.first_unlock");
   xpc_set_event();
@@ -76,8 +76,8 @@ LABEL_10:
 
 + (void)handleAvailabilityEvent
 {
-  [a1 _updateUnlockedSinceBoot];
-  if ([a1 isVehicleStoreAvailable])
+  [self _updateUnlockedSinceBoot];
+  if ([self isVehicleStoreAvailable])
   {
     v3 = CarGeneralLogging();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -87,7 +87,7 @@ LABEL_10:
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, a1, @"com.apple.mobile.keybagd.first_unlock", 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.mobile.keybagd.first_unlock", 0);
     xpc_set_event();
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 postNotificationName:CRVehicleStoreAvailabilityDidChangeNotification object:0];

@@ -1,30 +1,30 @@
 @interface BearerContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPdpType:(id)a3;
-- (int)StringAsPrimaryDnsType:(id)a3;
-- (int)StringAsSecondaryDnsType:(id)a3;
+- (int)StringAsPdpType:(id)type;
+- (int)StringAsPrimaryDnsType:(id)type;
+- (int)StringAsSecondaryDnsType:(id)type;
 - (int)pdpType;
 - (int)primaryDnsType;
 - (int)secondaryDnsType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsAddrIratMobile:(BOOL)a3;
-- (void)setHasNsapi:(BOOL)a3;
-- (void)setHasPdpType:(BOOL)a3;
-- (void)setHasPrimaryDnsType:(BOOL)a3;
-- (void)setHasSecondaryDnsType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsAddrIratMobile:(BOOL)mobile;
+- (void)setHasNsapi:(BOOL)nsapi;
+- (void)setHasPdpType:(BOOL)type;
+- (void)setHasPrimaryDnsType:(BOOL)type;
+- (void)setHasSecondaryDnsType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BearerContext
 
-- (void)setHasNsapi:(BOOL)a3
+- (void)setHasNsapi:(BOOL)nsapi
 {
-  if (a3)
+  if (nsapi)
   {
     v3 = 2;
   }
@@ -50,9 +50,9 @@
   }
 }
 
-- (void)setHasPdpType:(BOOL)a3
+- (void)setHasPdpType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -65,45 +65,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPdpType:(id)a3
+- (int)StringAsPdpType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PDP_TYPE_IPv4"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv6"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv6"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4v6"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4v6"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4_PDN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv6_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv6_PDN"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4v6_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4v6_PDN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_PPP"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_PPP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_NONE"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_NONE"])
   {
     v4 = 7;
   }
@@ -129,9 +129,9 @@
   }
 }
 
-- (void)setHasPrimaryDnsType:(BOOL)a3
+- (void)setHasPrimaryDnsType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -144,45 +144,45 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsPrimaryDnsType:(id)a3
+- (int)StringAsPrimaryDnsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PDP_TYPE_IPv4"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv6"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv6"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4v6"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4v6"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4_PDN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv6_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv6_PDN"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4v6_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4v6_PDN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_PPP"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_PPP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_NONE"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_NONE"])
   {
     v4 = 7;
   }
@@ -208,9 +208,9 @@
   }
 }
 
-- (void)setHasSecondaryDnsType:(BOOL)a3
+- (void)setHasSecondaryDnsType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -223,45 +223,45 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsSecondaryDnsType:(id)a3
+- (int)StringAsSecondaryDnsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PDP_TYPE_IPv4"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv6"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv6"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4v6"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4v6"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4_PDN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv6_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv6_PDN"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_IPv4v6_PDN"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_IPv4v6_PDN"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_PPP"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_PPP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PDP_TYPE_NONE"])
+  else if ([typeCopy isEqualToString:@"PDP_TYPE_NONE"])
   {
     v4 = 7;
   }
@@ -274,9 +274,9 @@
   return v4;
 }
 
-- (void)setHasIsAddrIratMobile:(BOOL)a3
+- (void)setHasIsAddrIratMobile:(BOOL)mobile
 {
-  if (a3)
+  if (mobile)
   {
     v3 = 32;
   }
@@ -294,8 +294,8 @@
   v7.receiver = self;
   v7.super_class = BearerContext;
   v3 = [(BearerContext *)&v7 description];
-  v4 = [(BearerContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BearerContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -399,9 +399,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -461,76 +461,76 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_cid;
-    *(v4 + 72) |= 1u;
+    toCopy[4] = self->_cid;
+    *(toCopy + 72) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[5] = self->_nsapi;
-    *(v4 + 72) |= 2u;
+    toCopy[5] = self->_nsapi;
+    *(toCopy + 72) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_apn)
   {
-    [v4 setApn:?];
-    v4 = v6;
+    [toCopy setApn:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[8] = self->_pdpType;
-    *(v4 + 72) |= 4u;
+    toCopy[8] = self->_pdpType;
+    *(toCopy + 72) |= 4u;
   }
 
   if (self->_pdpAddr)
   {
     [v6 setPdpAddr:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    v4[12] = self->_primaryDnsType;
-    *(v4 + 72) |= 8u;
+    toCopy[12] = self->_primaryDnsType;
+    *(toCopy + 72) |= 8u;
   }
 
   if (self->_primaryDnsAddr)
   {
     [v6 setPrimaryDnsAddr:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[16] = self->_secondaryDnsType;
-    *(v4 + 72) |= 0x10u;
+    toCopy[16] = self->_secondaryDnsType;
+    *(toCopy + 72) |= 0x10u;
   }
 
   if (self->_secondaryDnsAddr)
   {
     [v6 setSecondaryDnsAddr:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 68) = self->_isAddrIratMobile;
-    *(v4 + 72) |= 0x20u;
+    *(toCopy + 68) = self->_isAddrIratMobile;
+    *(toCopy + 72) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -546,7 +546,7 @@
     *(v5 + 72) |= 2u;
   }
 
-  v8 = [(NSString *)self->_apn copyWithZone:a3];
+  v8 = [(NSString *)self->_apn copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
@@ -556,7 +556,7 @@
     *(v6 + 72) |= 4u;
   }
 
-  v10 = [(NSData *)self->_pdpAddr copyWithZone:a3];
+  v10 = [(NSData *)self->_pdpAddr copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
@@ -566,7 +566,7 @@
     *(v6 + 72) |= 8u;
   }
 
-  v12 = [(NSData *)self->_primaryDnsAddr copyWithZone:a3];
+  v12 = [(NSData *)self->_primaryDnsAddr copyWithZone:zone];
   v13 = v6[5];
   v6[5] = v12;
 
@@ -576,7 +576,7 @@
     *(v6 + 72) |= 0x10u;
   }
 
-  v14 = [(NSData *)self->_secondaryDnsAddr copyWithZone:a3];
+  v14 = [(NSData *)self->_secondaryDnsAddr copyWithZone:zone];
   v15 = v6[7];
   v6[7] = v14;
 
@@ -589,44 +589,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   has = self->_has;
-  v6 = *(v4 + 72);
+  v6 = *(equalCopy + 72);
   if (has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_cid != *(v4 + 4))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_cid != *(equalCopy + 4))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_nsapi != *(v4 + 5))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_nsapi != *(equalCopy + 5))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   apn = self->_apn;
-  if (apn | *(v4 + 1))
+  if (apn | *(equalCopy + 1))
   {
     if (![(NSString *)apn isEqual:?])
     {
@@ -636,22 +636,22 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_pdpType != *(v4 + 8))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_pdpType != *(equalCopy + 8))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_41;
   }
 
   pdpAddr = self->_pdpAddr;
-  if (pdpAddr | *(v4 + 3))
+  if (pdpAddr | *(equalCopy + 3))
   {
     if (![(NSData *)pdpAddr isEqual:?])
     {
@@ -661,22 +661,22 @@
     has = self->_has;
   }
 
-  v10 = *(v4 + 72);
+  v10 = *(equalCopy + 72);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_primaryDnsType != *(v4 + 12))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_primaryDnsType != *(equalCopy + 12))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_41;
   }
 
   primaryDnsAddr = self->_primaryDnsAddr;
-  if (primaryDnsAddr | *(v4 + 5))
+  if (primaryDnsAddr | *(equalCopy + 5))
   {
     if (![(NSData *)primaryDnsAddr isEqual:?])
     {
@@ -686,22 +686,22 @@
     has = self->_has;
   }
 
-  v12 = *(v4 + 72);
+  v12 = *(equalCopy + 72);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_secondaryDnsType != *(v4 + 16))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_secondaryDnsType != *(equalCopy + 16))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_41;
   }
 
   secondaryDnsAddr = self->_secondaryDnsAddr;
-  if (secondaryDnsAddr | *(v4 + 7))
+  if (secondaryDnsAddr | *(equalCopy + 7))
   {
     if (![(NSData *)secondaryDnsAddr isEqual:?])
     {
@@ -711,20 +711,20 @@
     has = self->_has;
   }
 
-  v14 = (*(v4 + 72) & 0x20) == 0;
+  v14 = (*(equalCopy + 72) & 0x20) == 0;
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 72) & 0x20) != 0)
+    if ((*(equalCopy + 72) & 0x20) != 0)
     {
       if (self->_isAddrIratMobile)
       {
-        if ((*(v4 + 68) & 1) == 0)
+        if ((*(equalCopy + 68) & 1) == 0)
         {
           goto LABEL_41;
         }
       }
 
-      else if (*(v4 + 68))
+      else if (*(equalCopy + 68))
       {
         goto LABEL_41;
       }
@@ -813,69 +813,69 @@ LABEL_6:
   return v3 ^ v13 ^ v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 72);
+  fromCopy = from;
+  v5 = *(fromCopy + 72);
   if (v5)
   {
-    self->_cid = *(v4 + 4);
+    self->_cid = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_nsapi = *(v4 + 5);
+    self->_nsapi = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(BearerContext *)self setApn:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 72) & 4) != 0)
+  if ((*(fromCopy + 72) & 4) != 0)
   {
-    self->_pdpType = *(v4 + 8);
+    self->_pdpType = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BearerContext *)self setPdpAddr:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 72) & 8) != 0)
+  if ((*(fromCopy + 72) & 8) != 0)
   {
-    self->_primaryDnsType = *(v4 + 12);
+    self->_primaryDnsType = *(fromCopy + 12);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BearerContext *)self setPrimaryDnsAddr:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 72) & 0x10) != 0)
+  if ((*(fromCopy + 72) & 0x10) != 0)
   {
-    self->_secondaryDnsType = *(v4 + 16);
+    self->_secondaryDnsType = *(fromCopy + 16);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BearerContext *)self setSecondaryDnsAddr:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 72) & 0x20) != 0)
+  if ((*(fromCopy + 72) & 0x20) != 0)
   {
-    self->_isAddrIratMobile = *(v4 + 68);
+    self->_isAddrIratMobile = *(fromCopy + 68);
     *&self->_has |= 0x20u;
   }
 }

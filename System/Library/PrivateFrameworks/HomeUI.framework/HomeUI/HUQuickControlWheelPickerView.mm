@@ -1,93 +1,93 @@
 @interface HUQuickControlWheelPickerView
 - (CGSize)intrinsicContentSize;
 - (HUQuickControlViewInteractionDelegate)interactionDelegate;
-- (HUQuickControlWheelPickerView)initWithProfile:(id)a3;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
+- (HUQuickControlWheelPickerView)initWithProfile:(id)profile;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
 - (id)value;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)_actuateSelectionTapticFeedback;
 - (void)_prepareForTapticFeedback;
-- (void)_updateSelectedRowBorderView:(id)a3;
+- (void)_updateSelectedRowBorderView:(id)view;
 - (void)_updateUI;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setItems:(id)a3;
-- (void)setProfile:(id)a3;
-- (void)setSelectedRow:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setItems:(id)items;
+- (void)setProfile:(id)profile;
+- (void)setSelectedRow:(id)row;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setValue:(id)value;
 - (void)tintColorDidChange;
 @end
 
 @implementation HUQuickControlWheelPickerView
 
-- (HUQuickControlWheelPickerView)initWithProfile:(id)a3
+- (HUQuickControlWheelPickerView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v35.receiver = self;
   v35.super_class = HUQuickControlWheelPickerView;
   v6 = [(HUQuickControlWheelPickerView *)&v35 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v7->_reachabilityState = 0;
     v8 = objc_alloc_init(MEMORY[0x277D75840]);
     [(HUQuickControlWheelPickerView *)v7 setPickerView:v8];
 
-    v9 = [(HUQuickControlWheelPickerView *)v7 pickerView];
-    [v9 setDelegate:v7];
+    pickerView = [(HUQuickControlWheelPickerView *)v7 pickerView];
+    [pickerView setDelegate:v7];
 
-    v10 = [(HUQuickControlWheelPickerView *)v7 pickerView];
-    [v10 setDataSource:v7];
+    pickerView2 = [(HUQuickControlWheelPickerView *)v7 pickerView];
+    [pickerView2 setDataSource:v7];
 
-    v11 = [(HUQuickControlWheelPickerView *)v7 pickerView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    pickerView3 = [(HUQuickControlWheelPickerView *)v7 pickerView];
+    [pickerView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(HUQuickControlWheelPickerView *)v7 pickerView];
-    [(HUQuickControlWheelPickerView *)v7 addSubview:v12];
+    pickerView4 = [(HUQuickControlWheelPickerView *)v7 pickerView];
+    [(HUQuickControlWheelPickerView *)v7 addSubview:pickerView4];
 
     v13 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUQuickControlWheelPickerView *)v7 setTopGradientView:v13];
 
-    v14 = [(HUQuickControlWheelPickerView *)v7 topGradientView];
-    [v14 setUserInteractionEnabled:0];
+    topGradientView = [(HUQuickControlWheelPickerView *)v7 topGradientView];
+    [topGradientView setUserInteractionEnabled:0];
 
-    v15 = [(HUQuickControlWheelPickerView *)v7 topGradientView];
-    [(HUQuickControlWheelPickerView *)v7 addSubview:v15];
+    topGradientView2 = [(HUQuickControlWheelPickerView *)v7 topGradientView];
+    [(HUQuickControlWheelPickerView *)v7 addSubview:topGradientView2];
 
     v16 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUQuickControlWheelPickerView *)v7 setBottomGradientView:v16];
 
-    v17 = [(HUQuickControlWheelPickerView *)v7 bottomGradientView];
-    [v17 setUserInteractionEnabled:0];
+    bottomGradientView = [(HUQuickControlWheelPickerView *)v7 bottomGradientView];
+    [bottomGradientView setUserInteractionEnabled:0];
 
-    v18 = [(HUQuickControlWheelPickerView *)v7 bottomGradientView];
-    [(HUQuickControlWheelPickerView *)v7 addSubview:v18];
+    bottomGradientView2 = [(HUQuickControlWheelPickerView *)v7 bottomGradientView];
+    [(HUQuickControlWheelPickerView *)v7 addSubview:bottomGradientView2];
 
-    v19 = [(HUQuickControlWheelPickerView *)v7 bottomGradientView];
-    [v19 setHidden:1];
+    bottomGradientView3 = [(HUQuickControlWheelPickerView *)v7 bottomGradientView];
+    [bottomGradientView3 setHidden:1];
 
     v20 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUQuickControlWheelPickerView *)v7 setSelectedRowSurroundingView:v20];
 
-    v21 = [(HUQuickControlWheelPickerView *)v7 selectedRowSurroundingView];
-    [v21 setUserInteractionEnabled:0];
+    selectedRowSurroundingView = [(HUQuickControlWheelPickerView *)v7 selectedRowSurroundingView];
+    [selectedRowSurroundingView setUserInteractionEnabled:0];
 
-    v22 = [(HUQuickControlWheelPickerView *)v7 selectedRowSurroundingView];
-    [(HUQuickControlWheelPickerView *)v7 addSubview:v22];
+    selectedRowSurroundingView2 = [(HUQuickControlWheelPickerView *)v7 selectedRowSurroundingView];
+    [(HUQuickControlWheelPickerView *)v7 addSubview:selectedRowSurroundingView2];
 
-    v23 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v29 = MEMORY[0x277D85DD0];
     v30 = 3221225472;
     v31 = __49__HUQuickControlWheelPickerView_initWithProfile___block_invoke;
     v32 = &unk_277DB9438;
-    v33 = v23;
+    v33 = array;
     v24 = v7;
     v34 = v24;
-    v25 = v23;
+    v25 = array;
     v26 = _Block_copy(&v29);
     v27 = [(HUQuickControlWheelPickerView *)v24 pickerView:v29];
     v26[2](v26, v27);
@@ -127,12 +127,12 @@ void __49__HUQuickControlWheelPickerView_initWithProfile___block_invoke(uint64_t
   [v16 addObject:v18];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_items] & 1) == 0)
+  itemsCopy = items;
+  if (([itemsCopy isEqualToArray:self->_items] & 1) == 0)
   {
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
     [(HUQuickControlWheelPickerView *)self setNeedsLayout];
     [(HUQuickControlWheelPickerView *)self setMaxTextWidth:0.0];
     [(UIPickerView *)self->_pickerView reloadAllComponents];
@@ -141,29 +141,29 @@ void __49__HUQuickControlWheelPickerView_initWithProfile___block_invoke(uint64_t
   [(HUQuickControlWheelPickerView *)self _updateUI];
 }
 
-- (void)setSelectedRow:(id)a3
+- (void)setSelectedRow:(id)row
 {
-  v14 = a3;
-  if (self->_selectedRow != v14)
+  rowCopy = row;
+  if (self->_selectedRow != rowCopy)
   {
-    objc_storeStrong(&self->_selectedRow, a3);
-    v5 = [(HUQuickControlWheelPickerView *)self items];
-    if (v5)
+    objc_storeStrong(&self->_selectedRow, row);
+    items = [(HUQuickControlWheelPickerView *)self items];
+    if (items)
     {
-      v6 = v5;
-      v7 = [(HUQuickControlWheelPickerView *)self items];
-      v8 = [v7 count];
-      v9 = [(NSNumber *)v14 integerValue];
+      v6 = items;
+      items2 = [(HUQuickControlWheelPickerView *)self items];
+      v8 = [items2 count];
+      integerValue = [(NSNumber *)rowCopy integerValue];
 
-      if (v8 > v9)
+      if (v8 > integerValue)
       {
         [(HUQuickControlWheelPickerView *)self setUserInteractionActive:1];
-        v10 = [(HUQuickControlWheelPickerView *)self items];
-        v11 = [v10 objectAtIndex:{-[NSNumber integerValue](v14, "integerValue")}];
+        items3 = [(HUQuickControlWheelPickerView *)self items];
+        v11 = [items3 objectAtIndex:{-[NSNumber integerValue](rowCopy, "integerValue")}];
 
-        v12 = [(HUQuickControlWheelPickerView *)self interactionDelegate];
-        v13 = [v11 value];
-        [v12 controlView:self valueDidChange:v13];
+        interactionDelegate = [(HUQuickControlWheelPickerView *)self interactionDelegate];
+        value = [v11 value];
+        [interactionDelegate controlView:self valueDidChange:value];
 
         [(HUQuickControlWheelPickerView *)self setUserInteractionActive:0];
         [(HUQuickControlWheelPickerView *)self setNeedsLayout];
@@ -175,16 +175,16 @@ void __49__HUQuickControlWheelPickerView_initWithProfile___block_invoke(uint64_t
 - (void)_updateUI
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlWheelPickerView *)self items];
-  v4 = [v3 count];
+  items = [(HUQuickControlWheelPickerView *)self items];
+  v4 = [items count];
 
   if (v4 >= 1)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(HUQuickControlWheelPickerView *)self items];
-      v7 = [v6 objectAtIndex:v5];
+      items2 = [(HUQuickControlWheelPickerView *)self items];
+      v7 = [items2 objectAtIndex:v5];
 
       if ([v7 isSelected])
       {
@@ -192,8 +192,8 @@ void __49__HUQuickControlWheelPickerView_initWithProfile___block_invoke(uint64_t
       }
 
       ++v5;
-      v8 = [(HUQuickControlWheelPickerView *)self items];
-      v9 = [v8 count];
+      items3 = [(HUQuickControlWheelPickerView *)self items];
+      v9 = [items3 count];
 
       if (v5 >= v9)
       {
@@ -204,69 +204,69 @@ void __49__HUQuickControlWheelPickerView_initWithProfile___block_invoke(uint64_t
     v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v5];
     [(HUQuickControlWheelPickerView *)self setSelectedRow:v10];
 
-    v11 = [(HUQuickControlWheelPickerView *)self pickerView];
-    v12 = [v11 numberOfRowsInComponent:0];
+    pickerView = [(HUQuickControlWheelPickerView *)self pickerView];
+    v12 = [pickerView numberOfRowsInComponent:0];
 
-    v13 = [(HUQuickControlWheelPickerView *)self selectedRow];
-    if (v13 && (v14 = v13, -[HUQuickControlWheelPickerView selectedRow](self, "selectedRow"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 integerValue], v15, v14, v16 < v12))
+    selectedRow = [(HUQuickControlWheelPickerView *)self selectedRow];
+    if (selectedRow && (v14 = selectedRow, -[HUQuickControlWheelPickerView selectedRow](self, "selectedRow"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 integerValue], v15, v14, v16 < v12))
     {
-      v17 = [(HUQuickControlWheelPickerView *)self pickerView];
-      v18 = [(HUQuickControlWheelPickerView *)self selectedRow];
-      -[NSObject selectRow:inComponent:animated:](v17, "selectRow:inComponent:animated:", [v18 integerValue], 0, 0);
+      pickerView2 = [(HUQuickControlWheelPickerView *)self pickerView];
+      selectedRow2 = [(HUQuickControlWheelPickerView *)self selectedRow];
+      -[NSObject selectRow:inComponent:animated:](pickerView2, "selectRow:inComponent:animated:", [selectedRow2 integerValue], 0, 0);
     }
 
     else
     {
-      v17 = HFLogForCategory();
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      pickerView2 = HFLogForCategory();
+      if (!os_log_type_enabled(pickerView2, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v18 = [(HUQuickControlWheelPickerView *)self selectedRow];
+      selectedRow2 = [(HUQuickControlWheelPickerView *)self selectedRow];
       v21 = 134217984;
-      v22 = [v18 integerValue];
-      _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "Unable to select row %ld as it exceeds number of rows in component", &v21, 0xCu);
+      integerValue = [selectedRow2 integerValue];
+      _os_log_impl(&dword_20CEB6000, pickerView2, OS_LOG_TYPE_DEFAULT, "Unable to select row %ld as it exceeds number of rows in component", &v21, 0xCu);
     }
 
     goto LABEL_12;
   }
 
 LABEL_13:
-  v19 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v20 = [MEMORY[0x277D75348] clearColor];
-  [v19 _setMagnifierLineColor:v20];
+  pickerView3 = [(HUQuickControlWheelPickerView *)self pickerView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [pickerView3 _setMagnifierLineColor:clearColor];
 }
 
-- (void)_updateSelectedRowBorderView:(id)a3
+- (void)_updateSelectedRowBorderView:(id)view
 {
-  v11 = a3;
-  v4 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  viewCopy = view;
+  selectedRowSurroundingView = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
 
-  if (v4)
+  if (selectedRowSurroundingView)
   {
-    v5 = [v11 colorWithAlphaComponent:0.1];
-    v6 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-    [v6 setBackgroundColor:v5];
+    v5 = [viewCopy colorWithAlphaComponent:0.1];
+    selectedRowSurroundingView2 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+    [selectedRowSurroundingView2 setBackgroundColor:v5];
 
-    v7 = v11;
-    v8 = [v11 CGColor];
-    v9 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-    v10 = [v9 layer];
-    [v10 setBorderColor:v8];
+    v7 = viewCopy;
+    cGColor = [viewCopy CGColor];
+    selectedRowSurroundingView3 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+    layer = [selectedRowSurroundingView3 layer];
+    [layer setBorderColor:cGColor];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = HUQuickControlWheelPickerView;
   [(HUQuickControlWheelPickerView *)&v6 setUserInteractionEnabled:?];
   v5 = 0.5;
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 1.0;
   }
@@ -276,15 +276,15 @@ LABEL_13:
 
 - (void)tintColorDidChange
 {
-  v4 = [(HUQuickControlWheelPickerView *)self profile];
-  v3 = [v4 tintColor];
-  [(HUQuickControlWheelPickerView *)self _updateSelectedRowBorderView:v3];
+  profile = [(HUQuickControlWheelPickerView *)self profile];
+  tintColor = [profile tintColor];
+  [(HUQuickControlWheelPickerView *)self _updateSelectedRowBorderView:tintColor];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HUQuickControlWheelPickerView *)self profile];
-  v4 = -[HUQuickControlWheelPickerView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [v3 controlSize]);
+  profile = [(HUQuickControlWheelPickerView *)self profile];
+  v4 = -[HUQuickControlWheelPickerView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [profile controlSize]);
   [v4 intrinsicSize];
   v6 = v5;
   v8 = v7;
@@ -302,82 +302,82 @@ LABEL_13:
   v107.receiver = self;
   v107.super_class = HUQuickControlWheelPickerView;
   [(HUQuickControlWheelPickerView *)&v107 layoutSubviews];
-  v3 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v4 = [v3 numberOfRowsInComponent:0];
+  pickerView = [(HUQuickControlWheelPickerView *)self pickerView];
+  v4 = [pickerView numberOfRowsInComponent:0];
 
-  v5 = [(HUQuickControlWheelPickerView *)self selectedRow];
-  if (!v5 || (v6 = v5, -[HUQuickControlWheelPickerView selectedRow](self, "selectedRow"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 integerValue], v7, v6, v8 >= v4))
+  selectedRow = [(HUQuickControlWheelPickerView *)self selectedRow];
+  if (!selectedRow || (v6 = selectedRow, -[HUQuickControlWheelPickerView selectedRow](self, "selectedRow"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 integerValue], v7, v6, v8 >= v4))
   {
-    v41 = HFLogForCategory();
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+    systemWhiteColor = HFLogForCategory();
+    if (os_log_type_enabled(systemWhiteColor, OS_LOG_TYPE_DEFAULT))
     {
-      v78 = [(HUQuickControlWheelPickerView *)self selectedRow];
-      v79 = [v78 integerValue];
-      v80 = [(HUQuickControlWheelPickerView *)self items];
-      v81 = [v80 count];
+      selectedRow2 = [(HUQuickControlWheelPickerView *)self selectedRow];
+      integerValue = [selectedRow2 integerValue];
+      items = [(HUQuickControlWheelPickerView *)self items];
+      v81 = [items count];
       *buf = 134218496;
-      v109 = v79;
+      v109 = integerValue;
       v110 = 2048;
       v111 = v4;
       v112 = 2048;
       v113 = v81;
-      _os_log_impl(&dword_20CEB6000, v41, OS_LOG_TYPE_DEFAULT, "Selected row is %ld but number of rows in component is %ld. Number of wheel picker items is %ld.", buf, 0x20u);
+      _os_log_impl(&dword_20CEB6000, systemWhiteColor, OS_LOG_TYPE_DEFAULT, "Selected row is %ld but number of rows in component is %ld. Number of wheel picker items is %ld.", buf, 0x20u);
     }
 
     goto LABEL_14;
   }
 
-  v9 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v10 = [(HUQuickControlWheelPickerView *)self selectedRow];
-  [v9 _contentSizeForRow:objc_msgSend(v10 inComponent:{"integerValue"), 0}];
+  pickerView2 = [(HUQuickControlWheelPickerView *)self pickerView];
+  selectedRow3 = [(HUQuickControlWheelPickerView *)self selectedRow];
+  [pickerView2 _contentSizeForRow:objc_msgSend(selectedRow3 inComponent:{"integerValue"), 0}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-  [v15 frame];
+  selectedRowSurroundingView = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  [selectedRowSurroundingView frame];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-  [v20 setFrame:{v17, v19, v12, v14}];
+  selectedRowSurroundingView2 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  [selectedRowSurroundingView2 setFrame:{v17, v19, v12, v14}];
 
-  v21 = [(HUQuickControlWheelPickerView *)self pickerView];
-  [v21 center];
+  pickerView3 = [(HUQuickControlWheelPickerView *)self pickerView];
+  [pickerView3 center];
   v23 = v22;
   v25 = v24;
-  v26 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-  [v26 setCenter:{v23, v25}];
+  selectedRowSurroundingView3 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  [selectedRowSurroundingView3 setCenter:{v23, v25}];
 
-  v27 = [(HUQuickControlWheelPickerView *)self profile];
-  [v27 selectedRowBorderWidth];
+  profile = [(HUQuickControlWheelPickerView *)self profile];
+  [profile selectedRowBorderWidth];
   v29 = v28;
-  v30 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-  v31 = [v30 layer];
-  [v31 setBorderWidth:v29];
+  selectedRowSurroundingView4 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  layer = [selectedRowSurroundingView4 layer];
+  [layer setBorderWidth:v29];
 
-  v32 = [(HUQuickControlWheelPickerView *)self profile];
-  [v32 selectedRowCornerRadius];
+  profile2 = [(HUQuickControlWheelPickerView *)self profile];
+  [profile2 selectedRowCornerRadius];
   v34 = v33;
-  v35 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-  v36 = [v35 layer];
-  [v36 setCornerRadius:v34];
+  selectedRowSurroundingView5 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  layer2 = [selectedRowSurroundingView5 layer];
+  [layer2 setCornerRadius:v34];
 
-  v37 = [(HUQuickControlWheelPickerView *)self profile];
-  v38 = [v37 style];
+  profile3 = [(HUQuickControlWheelPickerView *)self profile];
+  style = [profile3 style];
 
-  if (v38 != 1)
+  if (style != 1)
   {
     goto LABEL_15;
   }
 
   [(HUQuickControlWheelPickerView *)self bounds];
   v40 = v39;
-  v41 = [MEMORY[0x277D75348] systemWhiteColor];
-  v42 = [MEMORY[0x277D75348] systemWhiteColor];
-  v43 = [v42 colorWithAlphaComponent:0.0];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  v43 = [systemWhiteColor2 colorWithAlphaComponent:0.0];
 
-  v44 = [(HUQuickControlWheelPickerView *)self profile];
-  if ([v44 sizeToFitTextWidth])
+  profile4 = [(HUQuickControlWheelPickerView *)self profile];
+  if ([profile4 sizeToFitTextWidth])
   {
     [(HUQuickControlWheelPickerView *)self maxTextWidth];
     if (v45 > 0.0)
@@ -387,26 +387,26 @@ LABEL_13:
     }
   }
 
-  v47 = [(HUQuickControlWheelPickerView *)self pickerView];
-  [v47 frame];
+  pickerView4 = [(HUQuickControlWheelPickerView *)self pickerView];
+  [pickerView4 frame];
   v49 = (v48 - v12) * 0.5;
 
-  v50 = [(HUQuickControlWheelPickerView *)self topGradientView];
-  [v50 setFrame:{v49, 0.0, v12, v40 / 2.5}];
+  topGradientView = [(HUQuickControlWheelPickerView *)self topGradientView];
+  [topGradientView setFrame:{v49, 0.0, v12, v40 / 2.5}];
 
-  v51 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v52 = [(HUQuickControlWheelPickerView *)self topGradientView];
-  [v52 setBackgroundColor:v51];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  topGradientView2 = [(HUQuickControlWheelPickerView *)self topGradientView];
+  [topGradientView2 setBackgroundColor:systemBackgroundColor];
 
-  v53 = [MEMORY[0x277CD9EB0] layer];
-  v54 = [(HUQuickControlWheelPickerView *)self topGradientView];
-  [v54 bounds];
-  [v53 setFrame:?];
+  layer3 = [MEMORY[0x277CD9EB0] layer];
+  topGradientView3 = [(HUQuickControlWheelPickerView *)self topGradientView];
+  [topGradientView3 bounds];
+  [layer3 setFrame:?];
 
-  v117[0] = [v41 CGColor];
+  v117[0] = [systemWhiteColor CGColor];
   v117[1] = [v43 CGColor];
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v117 count:2];
-  [v53 setColors:v55];
+  [layer3 setColors:v55];
 
   v56 = objc_alloc(MEMORY[0x277CCABB0]);
   LODWORD(v57) = 1058642330;
@@ -417,27 +417,27 @@ LABEL_13:
   v61 = [v59 initWithFloat:v60];
   v116[1] = v61;
   v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:2];
-  [v53 setLocations:v62];
+  [layer3 setLocations:v62];
 
-  v63 = [(HUQuickControlWheelPickerView *)self topGradientView];
-  v64 = [v63 layer];
-  [v64 setMask:v53];
+  topGradientView4 = [(HUQuickControlWheelPickerView *)self topGradientView];
+  layer4 = [topGradientView4 layer];
+  [layer4 setMask:layer3];
 
-  v65 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
-  [v65 setFrame:{v49, v40 - v40 / 10.0 + 20.0, v12, v40 / 10.0}];
+  bottomGradientView = [(HUQuickControlWheelPickerView *)self bottomGradientView];
+  [bottomGradientView setFrame:{v49, v40 - v40 / 10.0 + 20.0, v12, v40 / 10.0}];
 
-  v66 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
-  [v66 setBackgroundColor:v41];
+  bottomGradientView2 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
+  [bottomGradientView2 setBackgroundColor:systemWhiteColor];
 
-  v67 = [MEMORY[0x277CD9EB0] layer];
-  v68 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
-  [v68 bounds];
-  [v67 setFrame:?];
+  layer5 = [MEMORY[0x277CD9EB0] layer];
+  bottomGradientView3 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
+  [bottomGradientView3 bounds];
+  [layer5 setFrame:?];
 
   v115[0] = [v43 CGColor];
-  v115[1] = [v41 CGColor];
+  v115[1] = [systemWhiteColor CGColor];
   v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:2];
-  [v67 setColors:v69];
+  [layer5 setColors:v69];
 
   v70 = [objc_alloc(MEMORY[0x277CCABB0]) initWithFloat:0.0];
   v114[0] = v70;
@@ -446,82 +446,82 @@ LABEL_13:
   v73 = [v71 initWithFloat:v72];
   v114[1] = v73;
   v74 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:2];
-  [v67 setLocations:v74];
+  [layer5 setLocations:v74];
 
-  v75 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
-  v76 = [v75 layer];
-  [v76 setMask:v67];
+  bottomGradientView4 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
+  layer6 = [bottomGradientView4 layer];
+  [layer6 setMask:layer5];
 
-  v77 = [MEMORY[0x277D14670] sharedInstance];
-  if ([v77 hostProcess] == 3)
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  if ([mEMORY[0x277D14670] hostProcess] == 3)
   {
 
 LABEL_12:
-    v84 = [(HUQuickControlWheelPickerView *)self topGradientView];
-    [v84 setHidden:1];
+    topGradientView5 = [(HUQuickControlWheelPickerView *)self topGradientView];
+    [topGradientView5 setHidden:1];
 
-    v85 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
-    [v85 setHidden:1];
+    bottomGradientView5 = [(HUQuickControlWheelPickerView *)self bottomGradientView];
+    [bottomGradientView5 setHidden:1];
 
     goto LABEL_13;
   }
 
-  v82 = [MEMORY[0x277D14670] sharedInstance];
-  v83 = [v82 hostProcess];
+  mEMORY[0x277D14670]2 = [MEMORY[0x277D14670] sharedInstance];
+  hostProcess = [mEMORY[0x277D14670]2 hostProcess];
 
-  if (v83 == 100)
+  if (hostProcess == 100)
   {
     goto LABEL_12;
   }
 
 LABEL_13:
-  v86 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
-  v87 = [v86 layer];
-  [v87 setCornerRadius:v14 * 0.5];
+  selectedRowSurroundingView6 = [(HUQuickControlWheelPickerView *)self selectedRowSurroundingView];
+  layer7 = [selectedRowSurroundingView6 layer];
+  [layer7 setCornerRadius:v14 * 0.5];
 
 LABEL_14:
 LABEL_15:
-  v88 = [(HUQuickControlWheelPickerView *)self profile];
-  [v88 borderWidth];
+  profile5 = [(HUQuickControlWheelPickerView *)self profile];
+  [profile5 borderWidth];
   v90 = v89;
-  v91 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v92 = [v91 layer];
-  [v92 setBorderWidth:v90];
+  pickerView5 = [(HUQuickControlWheelPickerView *)self pickerView];
+  layer8 = [pickerView5 layer];
+  [layer8 setBorderWidth:v90];
 
-  v93 = [MEMORY[0x277D14CE8] shouldUseControlCenterMaterials];
-  v94 = [(HUQuickControlWheelPickerView *)self profile];
-  v95 = [v94 borderColor];
-  v96 = v95;
-  v97 = v95;
-  if (v93)
+  shouldUseControlCenterMaterials = [MEMORY[0x277D14CE8] shouldUseControlCenterMaterials];
+  profile6 = [(HUQuickControlWheelPickerView *)self profile];
+  borderColor = [profile6 borderColor];
+  v96 = borderColor;
+  v97 = borderColor;
+  if (shouldUseControlCenterMaterials)
   {
-    v97 = [v95 colorWithAlphaComponent:0.7];
+    v97 = [borderColor colorWithAlphaComponent:0.7];
   }
 
-  v98 = [v97 CGColor];
-  v99 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v100 = [v99 layer];
-  [v100 setBorderColor:v98];
+  cGColor = [v97 CGColor];
+  pickerView6 = [(HUQuickControlWheelPickerView *)self pickerView];
+  layer9 = [pickerView6 layer];
+  [layer9 setBorderColor:cGColor];
 
-  if (v93)
+  if (shouldUseControlCenterMaterials)
   {
   }
 
-  v101 = [(HUQuickControlWheelPickerView *)self profile];
-  [v101 cornerRadius];
+  profile7 = [(HUQuickControlWheelPickerView *)self profile];
+  [profile7 cornerRadius];
   v103 = v102;
-  v104 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v105 = [v104 layer];
-  [v105 setCornerRadius:v103];
+  pickerView7 = [(HUQuickControlWheelPickerView *)self pickerView];
+  layer10 = [pickerView7 layer];
+  [layer10 setCornerRadius:v103];
 
   [(HUQuickControlWheelPickerView *)self _updateUIForReachabilityState:[(HUQuickControlWheelPickerView *)self reachabilityState]];
-  v106 = [(HUQuickControlWheelPickerView *)self profile];
-  -[HUQuickControlWheelPickerView setUserInteractionEnabled:](self, "setUserInteractionEnabled:", [v106 showOffState] ^ 1);
+  profile8 = [(HUQuickControlWheelPickerView *)self profile];
+  -[HUQuickControlWheelPickerView setUserInteractionEnabled:](self, "setUserInteractionEnabled:", [profile8 showOffState] ^ 1);
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:row];
   [(HUQuickControlWheelPickerView *)self setSelectedRow:v6];
 
   [(HUQuickControlWheelPickerView *)self _prepareForTapticFeedback];
@@ -529,38 +529,38 @@ LABEL_15:
   [(HUQuickControlWheelPickerView *)self _actuateSelectionTapticFeedback];
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(HUQuickControlWheelPickerView *)self items:a3];
+  v4 = [(HUQuickControlWheelPickerView *)self items:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v8 = a6;
+  reusingViewCopy = reusingView;
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v10 = [(HUQuickControlWheelPickerView *)self items];
-  v11 = [v10 objectAtIndex:a4];
+  items = [(HUQuickControlWheelPickerView *)self items];
+  v11 = [items objectAtIndex:row];
 
-  v12 = [v11 text];
-  v13 = [(HUQuickControlWheelPickerView *)self profile];
-  v14 = [v13 uppercaseRowTitles];
+  text = [v11 text];
+  profile = [(HUQuickControlWheelPickerView *)self profile];
+  uppercaseRowTitles = [profile uppercaseRowTitles];
 
-  if (v14)
+  if (uppercaseRowTitles)
   {
-    v15 = [v12 copy];
-    v16 = [v15 localizedUppercaseString];
+    v15 = [text copy];
+    localizedUppercaseString = [v15 localizedUppercaseString];
 
     v17 = [MEMORY[0x277D74300] boldSystemFontOfSize:14.0];
 
-    v12 = v16;
+    text = localizedUppercaseString;
     v9 = v17;
   }
 
   objc_opt_class();
-  v18 = v8;
+  v18 = reusingViewCopy;
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -581,10 +581,10 @@ LABEL_15:
     [v21 setFont:v9];
   }
 
-  [v21 setText:v12];
+  [v21 setText:text];
   v22 = objc_opt_new();
   [v22 setValue:v9 forKey:*MEMORY[0x277D740A8]];
-  [v12 sizeWithAttributes:v22];
+  [text sizeWithAttributes:v22];
   v24 = v23;
   [(HUQuickControlWheelPickerView *)self maxTextWidth];
   if (v25 < v24)
@@ -595,35 +595,35 @@ LABEL_15:
   return v21;
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUQuickControlViewProfile *)self->_profile controlSize];
-  v6 = [(HUQuickControlViewProfile *)v4 controlSize];
+  profileCopy = profile;
+  controlSize = [(HUQuickControlViewProfile *)self->_profile controlSize];
+  controlSize2 = [(HUQuickControlViewProfile *)profileCopy controlSize];
   profile = self->_profile;
-  self->_profile = v4;
+  self->_profile = profileCopy;
 
   [(HUQuickControlWheelPickerView *)self setNeedsLayout];
-  if (v5 != v6)
+  if (controlSize != controlSize2)
   {
 
     [(HUQuickControlWheelPickerView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
-  v4 = HUQuickControlSliderMetricsForControlSize(a3);
-  v5 = [v4 sizeDescriptor];
-  [v5 intrinsicSize];
+  v4 = HUQuickControlSliderMetricsForControlSize(size);
+  sizeDescriptor = [v4 sizeDescriptor];
+  [sizeDescriptor intrinsicSize];
   v7 = v6;
   v9 = v8;
 
   v10 = v7 * 2.5;
-  v11 = [(HUQuickControlWheelPickerView *)self profile];
-  LODWORD(v5) = [v11 sizeToFitTextWidth];
+  profile = [(HUQuickControlWheelPickerView *)self profile];
+  LODWORD(sizeDescriptor) = [profile sizeToFitTextWidth];
 
-  if (v5)
+  if (sizeDescriptor)
   {
     [(HUQuickControlWheelPickerView *)self maxTextWidth];
     if (v12 == 0.0)
@@ -643,10 +643,10 @@ LABEL_15:
       v10 = v15;
     }
 
-    v16 = [(HUQuickControlWheelPickerView *)self profile];
-    v17 = [v16 style];
+    profile2 = [(HUQuickControlWheelPickerView *)self profile];
+    style = [profile2 style];
 
-    if (v17 == 1)
+    if (style == 1)
     {
       v9 = v9 * 0.5;
     }
@@ -657,20 +657,20 @@ LABEL_15:
 
 - (id)value
 {
-  v3 = [(HUQuickControlWheelPickerView *)self pickerView];
-  v4 = [v3 selectedRowInComponent:0];
+  pickerView = [(HUQuickControlWheelPickerView *)self pickerView];
+  v4 = [pickerView selectedRowInComponent:0];
 
-  v5 = [(HUQuickControlWheelPickerView *)self items];
-  v6 = [v5 objectAtIndex:v4];
+  items = [(HUQuickControlWheelPickerView *)self items];
+  v6 = [items objectAtIndex:v4];
 
   return v6;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v7 = v4;
+  v7 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v7;
@@ -689,11 +689,11 @@ LABEL_15:
   }
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    [(HUQuickControlWheelPickerView *)self setUserInteractionEnabled:(4u >> (a3 & 7)) & 1];
+    [(HUQuickControlWheelPickerView *)self setUserInteractionEnabled:(4u >> (state & 7)) & 1];
   }
 }
 
@@ -702,17 +702,17 @@ LABEL_15:
   v3 = objc_alloc_init(MEMORY[0x277D75A10]);
   [(HUQuickControlWheelPickerView *)self setSelectionFeedbackGenerator:v3];
 
-  v4 = [(HUQuickControlWheelPickerView *)self selectionFeedbackGenerator];
-  [v4 prepare];
+  selectionFeedbackGenerator = [(HUQuickControlWheelPickerView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator prepare];
 }
 
 - (void)_actuateSelectionTapticFeedback
 {
-  v3 = [(HUQuickControlWheelPickerView *)self selectionFeedbackGenerator];
-  [v3 selectionChanged];
+  selectionFeedbackGenerator = [(HUQuickControlWheelPickerView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator selectionChanged];
 
-  v4 = [(HUQuickControlWheelPickerView *)self selectionFeedbackGenerator];
-  [v4 prepare];
+  selectionFeedbackGenerator2 = [(HUQuickControlWheelPickerView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator2 prepare];
 }
 
 - (HUQuickControlViewInteractionDelegate)interactionDelegate

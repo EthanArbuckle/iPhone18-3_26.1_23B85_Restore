@@ -1,18 +1,18 @@
 @interface BuddySafetySettingsPresentationManager
-- (BOOL)shouldPresentSafetySettingsUsingOnlyLocalChecksWithHasCompletedInitialRun:(BOOL)a3;
-- (id)contextWithHasCompletedInitialRun:(BOOL)a3;
+- (BOOL)shouldPresentSafetySettingsUsingOnlyLocalChecksWithHasCompletedInitialRun:(BOOL)run;
+- (id)contextWithHasCompletedInitialRun:(BOOL)run;
 @end
 
 @implementation BuddySafetySettingsPresentationManager
 
-- (BOOL)shouldPresentSafetySettingsUsingOnlyLocalChecksWithHasCompletedInitialRun:(BOOL)a3
+- (BOOL)shouldPresentSafetySettingsUsingOnlyLocalChecksWithHasCompletedInitialRun:(BOOL)run
 {
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
-  v36 = a3;
+  runCopy = run;
   if ([(BuddySafetySettingsPresentationManager *)self runtimeDependencyExists])
   {
-    v32 = [(BuddySafetySettingsPresentationManager *)v38 contextWithHasCompletedInitialRun:v36];
+    v32 = [(BuddySafetySettingsPresentationManager *)selfCopy contextWithHasCompletedInitialRun:runCopy];
     v31 = objc_alloc_init(sub_10020F6A8());
     if (objc_opt_respondsToSelector())
     {
@@ -91,13 +91,13 @@
   return v39 & 1;
 }
 
-- (id)contextWithHasCompletedInitialRun:(BOOL)a3
+- (id)contextWithHasCompletedInitialRun:(BOOL)run
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a3;
-  v3 = v7;
+  runCopy = run;
+  runCopy2 = run;
+  v3 = runCopy2;
   location = [objc_alloc(sub_10020F9D4()) initWithFlowType:v3];
   v4 = location;
   objc_storeStrong(&location, 0);

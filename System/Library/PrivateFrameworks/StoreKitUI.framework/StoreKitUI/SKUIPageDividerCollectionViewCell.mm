@@ -1,28 +1,28 @@
 @interface SKUIPageDividerCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUIPageDividerCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUIPageDividerCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setColoringWithStyle:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setDividerType:(int64_t)a3;
-- (void)setInsetColor:(id)a3;
-- (void)setLeftEdgeInset:(double)a3;
-- (void)setRightEdgeInset:(double)a3;
-- (void)setVerticalAlignment:(int64_t)a3;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setColoringWithStyle:(id)style;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setDividerType:(int64_t)type;
+- (void)setInsetColor:(id)color;
+- (void)setLeftEdgeInset:(double)inset;
+- (void)setRightEdgeInset:(double)inset;
+- (void)setVerticalAlignment:(int64_t)alignment;
 @end
 
 @implementation SKUIPageDividerCollectionViewCell
 
-- (SKUIPageDividerCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIPageDividerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SKUIPageDividerCollectionViewCell;
-  v3 = [(SKUIPageDividerCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SKUIPageDividerCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -33,14 +33,14 @@
     v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v6 setBackgroundColor:v7];
 
-    v8 = [(SKUIPageDividerCollectionViewCell *)v3 contentView];
-    [v8 addSubview:v3->_topDividerLine];
+    contentView = [(SKUIPageDividerCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_topDividerLine];
   }
 
   return v3;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -57,10 +57,10 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,8 +73,8 @@
     }
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v17 = v16;
   v19 = v18;
 
@@ -85,7 +85,7 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -97,24 +97,24 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && (v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT)))
   {
     [(SKUIPageDividerCollectionViewCell *)v9 sizeThatFitsWidth:v10 viewElement:v11 context:v12, v13, v14, v15, v16];
-    if (v7)
+    if (elementCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v7)
+  else if (elementCopy)
   {
 LABEL_5:
-    v17 = [v7 style];
-    v18 = SKUIViewElementPaddingForStyle(v17, 0);
+    style = [elementCopy style];
+    v18 = SKUIViewElementPaddingForStyle(style, 0);
     v20 = v19;
 
     goto LABEL_8;
@@ -123,12 +123,12 @@ LABEL_5:
   v18 = *MEMORY[0x277D768C8];
   v20 = *(MEMORY[0x277D768C8] + 16);
 LABEL_8:
-  [v8 displayScale];
+  [contextCopy displayScale];
   v22 = 1.0 / v21;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v7;
+    v23 = elementCopy;
     if ([v23 dividerType] == 2)
     {
       [SKUIPageTitledDividerCollectionViewCell viewElementInsetDividerHeight:v23];
@@ -136,29 +136,29 @@ LABEL_8:
     }
   }
 
-  v25 = a3;
+  widthCopy = width;
   v26 = v20 + v18 + v22;
   result.height = v26;
-  result.width = v25;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -171,15 +171,15 @@ LABEL_8:
     }
   }
 
-  v13 = [v4 primaryTextColor];
+  primaryTextColor = [schemeCopy primaryTextColor];
   topDividerLine = self->_topDividerLine;
-  if (v13)
+  if (primaryTextColor)
   {
-    [(UIView *)self->_topDividerLine setBackgroundColor:v13];
+    [(UIView *)self->_topDividerLine setBackgroundColor:primaryTextColor];
     bottomDividerLine = self->_bottomDividerLine;
     if (bottomDividerLine)
     {
-      [(UIView *)bottomDividerLine setBackgroundColor:v13];
+      [(UIView *)bottomDividerLine setBackgroundColor:primaryTextColor];
     }
   }
 
@@ -197,9 +197,9 @@ LABEL_8:
   }
 }
 
-- (void)setColoringWithStyle:(id)a3
+- (void)setColoringWithStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -212,17 +212,17 @@ LABEL_8:
     }
   }
 
-  v13 = [v4 ikBorderColor];
-  v14 = [v13 color];
+  ikBorderColor = [styleCopy ikBorderColor];
+  color = [ikBorderColor color];
 
   topDividerLine = self->_topDividerLine;
-  if (v14)
+  if (color)
   {
-    [(UIView *)self->_topDividerLine setBackgroundColor:v14];
+    [(UIView *)self->_topDividerLine setBackgroundColor:color];
     bottomDividerLine = self->_bottomDividerLine;
     if (bottomDividerLine)
     {
-      [(UIView *)bottomDividerLine setBackgroundColor:v14];
+      [(UIView *)bottomDividerLine setBackgroundColor:color];
     }
   }
 
@@ -240,7 +240,7 @@ LABEL_8:
   }
 }
 
-- (void)setDividerType:(int64_t)a3
+- (void)setDividerType:(int64_t)type
 {
   if (os_variant_has_internal_content())
   {
@@ -254,12 +254,12 @@ LABEL_8:
     }
   }
 
-  if (self->_dividerType != a3)
+  if (self->_dividerType != type)
   {
-    self->_dividerType = a3;
-    v13 = [(SKUIPageDividerCollectionViewCell *)self dividerType];
+    self->_dividerType = type;
+    dividerType = [(SKUIPageDividerCollectionViewCell *)self dividerType];
     bottomDividerLine = self->_bottomDividerLine;
-    if (v13 == 2)
+    if (dividerType == 2)
     {
       if (!bottomDividerLine)
       {
@@ -272,8 +272,8 @@ LABEL_8:
         [(UIView *)v17 setBackgroundColor:v18];
       }
 
-      v19 = [(SKUIPageDividerCollectionViewCell *)self contentView];
-      [v19 addSubview:self->_bottomDividerLine];
+      contentView = [(SKUIPageDividerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_bottomDividerLine];
 
       if (!self->_insetView)
       {
@@ -294,8 +294,8 @@ LABEL_8:
         }
       }
 
-      v25 = [(SKUIPageDividerCollectionViewCell *)self contentView];
-      [v25 addSubview:self->_insetView];
+      contentView2 = [(SKUIPageDividerCollectionViewCell *)self contentView];
+      [contentView2 addSubview:self->_insetView];
     }
 
     else
@@ -314,9 +314,9 @@ LABEL_8:
   }
 }
 
-- (void)setInsetColor:(id)a3
+- (void)setInsetColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -329,9 +329,9 @@ LABEL_8:
     }
   }
 
-  if (self->_insetColor != v4)
+  if (self->_insetColor != colorCopy)
   {
-    v13 = [(UIColor *)v4 copy];
+    v13 = [(UIColor *)colorCopy copy];
     insetColor = self->_insetColor;
     self->_insetColor = v13;
 
@@ -352,7 +352,7 @@ LABEL_8:
   }
 }
 
-- (void)setLeftEdgeInset:(double)a3
+- (void)setLeftEdgeInset:(double)inset
 {
   if (os_variant_has_internal_content())
   {
@@ -366,14 +366,14 @@ LABEL_8:
     }
   }
 
-  if (self->_leftEdgeInset != a3)
+  if (self->_leftEdgeInset != inset)
   {
-    self->_leftEdgeInset = a3;
+    self->_leftEdgeInset = inset;
     [(SKUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setRightEdgeInset:(double)a3
+- (void)setRightEdgeInset:(double)inset
 {
   if (os_variant_has_internal_content())
   {
@@ -387,14 +387,14 @@ LABEL_8:
     }
   }
 
-  if (self->_rightEdgeInset != a3)
+  if (self->_rightEdgeInset != inset)
   {
-    self->_rightEdgeInset = a3;
+    self->_rightEdgeInset = inset;
     [(SKUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
   if (os_variant_has_internal_content())
   {
@@ -408,16 +408,16 @@ LABEL_8:
     }
   }
 
-  if (self->_verticalAlignment != a3)
+  if (self->_verticalAlignment != alignment)
   {
-    self->_verticalAlignment = a3;
+    self->_verticalAlignment = alignment;
     [(SKUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -430,12 +430,12 @@ LABEL_8:
     }
   }
 
-  v13 = [v4 backgroundColor];
-  [(SKUIPageDividerCollectionViewCell *)self setBackgroundColor:v13];
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIPageDividerCollectionViewCell *)self setBackgroundColor:backgroundColor];
 
   v14.receiver = self;
   v14.super_class = SKUIPageDividerCollectionViewCell;
-  [(SKUIPageDividerCollectionViewCell *)&v14 applyLayoutAttributes:v4];
+  [(SKUIPageDividerCollectionViewCell *)&v14 applyLayoutAttributes:attributesCopy];
 }
 
 - (void)layoutSubviews
@@ -455,24 +455,24 @@ LABEL_8:
   v37.receiver = self;
   v37.super_class = SKUIPageDividerCollectionViewCell;
   [(SKUIPageDividerCollectionViewCell *)&v37 layoutSubviews];
-  v11 = [(SKUIPageDividerCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUIPageDividerCollectionViewCell *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(SKUIPageDividerCollectionViewCell *)self dividerType];
-  v17 = [(SKUIPageDividerCollectionViewCell *)self traitCollection];
-  [v17 displayScale];
+  dividerType = [(SKUIPageDividerCollectionViewCell *)self dividerType];
+  traitCollection = [(SKUIPageDividerCollectionViewCell *)self traitCollection];
+  [traitCollection displayScale];
   v19 = v18;
   if (v18 <= 0.00000011920929)
   {
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v19 = v21;
   }
 
   v22 = 1.0 / v19;
-  if (v16 != 2)
+  if (dividerType != 2)
   {
     verticalAlignment = self->_verticalAlignment;
     if (verticalAlignment)

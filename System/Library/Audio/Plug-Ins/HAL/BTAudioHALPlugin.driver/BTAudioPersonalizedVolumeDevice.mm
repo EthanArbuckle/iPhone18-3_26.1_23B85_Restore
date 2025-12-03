@@ -1,11 +1,11 @@
 @interface BTAudioPersonalizedVolumeDevice
 - (BTAudioPersonalizedVolumeDevice)init;
-- (BTAudioPersonalizedVolumeDevice)initWithBluetoothInfo:(unsigned int)a3 deviceAddr:(id)a4;
-- (id)_getCurrentManualVolumeUpdatesDictionary:(id)a3 forCoreAnalyticSubmission:(BOOL)a4;
-- (id)getVolumeForCurrentAudioCategory:(id)a3;
-- (unsigned)_getCurrentAudioCategoryFromString:(id)a3;
-- (unsigned)_getManualVolumeUpdateReasonFromString:(id)a3;
-- (void)NotifyManualVolumeChanged:(id)a3 shouldUpdateBuds:(BOOL)a4;
+- (BTAudioPersonalizedVolumeDevice)initWithBluetoothInfo:(unsigned int)info deviceAddr:(id)addr;
+- (id)_getCurrentManualVolumeUpdatesDictionary:(id)dictionary forCoreAnalyticSubmission:(BOOL)submission;
+- (id)getVolumeForCurrentAudioCategory:(id)category;
+- (unsigned)_getCurrentAudioCategoryFromString:(id)string;
+- (unsigned)_getManualVolumeUpdateReasonFromString:(id)string;
+- (void)NotifyManualVolumeChanged:(id)changed shouldUpdateBuds:(BOOL)buds;
 - (void)dealloc;
 - (void)invalidate;
 - (void)startManualVolumeUpdateTimer;
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (BTAudioPersonalizedVolumeDevice)initWithBluetoothInfo:(unsigned int)a3 deviceAddr:(id)a4
+- (BTAudioPersonalizedVolumeDevice)initWithBluetoothInfo:(unsigned int)info deviceAddr:(id)addr
 {
   v10.receiver = self;
   v10.super_class = BTAudioPersonalizedVolumeDevice;
   v6 = [(BTAudioPersonalizedVolumeDevice *)&v10 init];
-  v6->_deviceID = a3;
-  v6->_bdAddr = [[NSString alloc] initWithString:a4];
+  v6->_deviceID = info;
+  v6->_bdAddr = [[NSString alloc] initWithString:addr];
   v6->_sendManualVolumeUpdate = 1;
   v6->_manualUpdateDispatchBlock = 0;
   v7 = [[NSMutableDictionary alloc] initWithCapacity:3];
@@ -41,7 +41,7 @@
   if (os_log_type_enabled(qword_C22B8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = a4;
+    addrCopy = addr;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Initializing Personalized Volume Device %@ ", buf, 0xCu);
   }
 
@@ -86,10 +86,10 @@
   }
 }
 
-- (id)getVolumeForCurrentAudioCategory:(id)a3
+- (id)getVolumeForCurrentAudioCategory:(id)category
 {
   v5 = [NSNumber numberWithInt:0];
-  if (!a3)
+  if (!category)
   {
     v8 = v5;
     v9 = qword_C22B8;
@@ -102,7 +102,7 @@
     return v8;
   }
 
-  if ([a3 isEqualToString:kMXSessionAudioCategory_PhoneCall])
+  if ([category isEqualToString:kMXSessionAudioCategory_PhoneCall])
   {
     if ([(NSMutableDictionary *)self->_volumeAudioCategoryMap objectForKeyedSubscript:@"PhoneCall"])
     {
@@ -116,9 +116,9 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (![a3 isEqualToString:kMXSessionAudioCategory_AudioVideo])
+  if (![category isEqualToString:kMXSessionAudioCategory_AudioVideo])
   {
-    if ([a3 isEqualToString:kMXSessionAudioCategory_VoiceCommand])
+    if ([category isEqualToString:kMXSessionAudioCategory_VoiceCommand])
     {
       if ([(NSMutableDictionary *)self->_volumeAudioCategoryMap objectForKeyedSubscript:@"VoiceCommand"])
       {
@@ -133,7 +133,7 @@ LABEL_13:
     v11 = qword_C22B8;
     if (os_log_type_enabled(qword_C22B8, OS_LOG_TYPE_ERROR))
     {
-      sub_77274(a3, v11);
+      sub_77274(category, v11);
     }
 
     return [NSNumber numberWithInt:0];
@@ -151,34 +151,34 @@ LABEL_16:
   return [NSNumber numberWithInt:0];
 }
 
-- (unsigned)_getManualVolumeUpdateReasonFromString:(id)a3
+- (unsigned)_getManualVolumeUpdateReasonFromString:(id)string
 {
-  if ([a3 isEqualToString:@"Top-Down"])
+  if ([string isEqualToString:@"Top-Down"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Bottom-Up"])
+  if ([string isEqualToString:@"Bottom-Up"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"PersonalizedVolume"])
+  if ([string isEqualToString:@"PersonalizedVolume"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"PVRampEndInEarStatusChanged"])
+  if ([string isEqualToString:@"PVRampEndInEarStatusChanged"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"PVRampEndRampAchieved"])
+  if ([string isEqualToString:@"PVRampEndRampAchieved"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"PVRampEndAudioCategoryConfigChanged"])
+  if ([string isEqualToString:@"PVRampEndAudioCategoryConfigChanged"])
   {
     return 5;
   }
@@ -186,19 +186,19 @@ LABEL_16:
   return 0;
 }
 
-- (unsigned)_getCurrentAudioCategoryFromString:(id)a3
+- (unsigned)_getCurrentAudioCategoryFromString:(id)string
 {
-  if ([a3 isEqualToString:kMXSessionAudioCategory_AudioVideo])
+  if ([string isEqualToString:kMXSessionAudioCategory_AudioVideo])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:kMXSessionAudioCategory_PhoneCall])
+  if ([string isEqualToString:kMXSessionAudioCategory_PhoneCall])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:kMXSessionAudioCategory_VoiceCommand])
+  if ([string isEqualToString:kMXSessionAudioCategory_VoiceCommand])
   {
     return 2;
   }
@@ -206,45 +206,45 @@ LABEL_16:
   return 0;
 }
 
-- (id)_getCurrentManualVolumeUpdatesDictionary:(id)a3 forCoreAnalyticSubmission:(BOOL)a4
+- (id)_getCurrentManualVolumeUpdatesDictionary:(id)dictionary forCoreAnalyticSubmission:(BOOL)submission
 {
-  v7 = [a3 objectForKeyedSubscript:@"CurrentAudioCategory"];
-  if (a4)
+  v7 = [dictionary objectForKeyedSubscript:@"CurrentAudioCategory"];
+  if (submission)
   {
-    v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", -[BTAudioPersonalizedVolumeDevice _getCurrentAudioCategoryFromString:](self, "_getCurrentAudioCategoryFromString:", [a3 objectForKeyedSubscript:@"CurrentAudioCategory"]));
-    [a3 objectForKeyedSubscript:@"ReasonForManualUpdate"];
-    v9 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", -[BTAudioPersonalizedVolumeDevice _getManualVolumeUpdateReasonFromString:](self, "_getManualVolumeUpdateReasonFromString:", [a3 objectForKeyedSubscript:@"ReasonForManualUpdate"]));
+    v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", -[BTAudioPersonalizedVolumeDevice _getCurrentAudioCategoryFromString:](self, "_getCurrentAudioCategoryFromString:", [dictionary objectForKeyedSubscript:@"CurrentAudioCategory"]));
+    [dictionary objectForKeyedSubscript:@"ReasonForManualUpdate"];
+    v9 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", -[BTAudioPersonalizedVolumeDevice _getManualVolumeUpdateReasonFromString:](self, "_getManualVolumeUpdateReasonFromString:", [dictionary objectForKeyedSubscript:@"ReasonForManualUpdate"]));
   }
 
   else
   {
     v8 = v7;
-    v9 = [a3 objectForKeyedSubscript:@"ReasonForManualUpdate"];
+    v9 = [dictionary objectForKeyedSubscript:@"ReasonForManualUpdate"];
   }
 
   v10 = v9;
   v12[0] = @"CurrentAudioCategory";
   v12[1] = @"CurrentVolume";
   v13[0] = v8;
-  v13[1] = -[BTAudioPersonalizedVolumeDevice getVolumeForCurrentAudioCategory:](self, "getVolumeForCurrentAudioCategory:", [a3 objectForKeyedSubscript:@"CurrentAudioCategory"]);
+  v13[1] = -[BTAudioPersonalizedVolumeDevice getVolumeForCurrentAudioCategory:](self, "getVolumeForCurrentAudioCategory:", [dictionary objectForKeyedSubscript:@"CurrentAudioCategory"]);
   v12[2] = @"IsPersonalizedVolumeUpdate";
-  v13[2] = [a3 objectForKeyedSubscript:?];
+  v13[2] = [dictionary objectForKeyedSubscript:?];
   v12[3] = @"ManualVolumeUpdate";
-  v13[3] = [a3 objectForKeyedSubscript:?];
+  v13[3] = [dictionary objectForKeyedSubscript:?];
   v12[4] = @"RampInProgress";
-  v13[4] = [a3 objectForKeyedSubscript:?];
+  v13[4] = [dictionary objectForKeyedSubscript:?];
   v12[5] = @"PersonalizedVolumeEnabled";
-  v13[5] = [a3 objectForKeyedSubscript:?];
+  v13[5] = [dictionary objectForKeyedSubscript:?];
   v12[6] = @"BundleID";
   v12[7] = @"ReasonForManualUpdate";
-  v13[6] = [a3 objectForKeyedSubscript:?];
+  v13[6] = [dictionary objectForKeyedSubscript:?];
   v13[7] = v10;
   return [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:8];
 }
 
-- (void)NotifyManualVolumeChanged:(id)a3 shouldUpdateBuds:(BOOL)a4
+- (void)NotifyManualVolumeChanged:(id)changed shouldUpdateBuds:(BOOL)buds
 {
-  v4 = a4;
+  budsCopy = buds;
   v7 = qword_C22B8;
   if (os_log_type_enabled(qword_C22B8, OS_LOG_TYPE_DEFAULT))
   {
@@ -252,17 +252,17 @@ LABEL_16:
     *buf = 67109634;
     *v21 = sendManualVolumeUpdate;
     *&v21[4] = 2112;
-    *&v21[6] = a3;
+    *&v21[6] = changed;
     v22 = 1024;
-    LODWORD(v23) = v4;
+    LODWORD(v23) = budsCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "BTAudioPersonalizedVolumeDevice::NotifyManualVolumeChanged _sendManualVolumeUpdate %d manualVolumeUpdate %@ shouldUpdateBuds %d", buf, 0x18u);
   }
 
   if (self->_sendManualVolumeUpdate)
   {
     [(BTAudioPersonalizedVolumeDevice *)self startManualVolumeUpdateTimer];
-    v9 = [(BTAudioPersonalizedVolumeDevice *)self _getCurrentManualVolumeUpdatesDictionary:a3 forCoreAnalyticSubmission:1];
-    v10 = [(BTAudioPersonalizedVolumeDevice *)self _getCurrentManualVolumeUpdatesDictionary:a3 forCoreAnalyticSubmission:0];
+    v9 = [(BTAudioPersonalizedVolumeDevice *)self _getCurrentManualVolumeUpdatesDictionary:changed forCoreAnalyticSubmission:1];
+    v10 = [(BTAudioPersonalizedVolumeDevice *)self _getCurrentManualVolumeUpdatesDictionary:changed forCoreAnalyticSubmission:0];
     v19[6] = _NSConcreteStackBlock;
     v19[7] = 3221225472;
     v19[8] = sub_10578;
@@ -281,7 +281,7 @@ LABEL_16:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "BT Stats for metric '%@' sent to CoreAnalytics with result %u manualVolumeUpdate: %@", buf, 0x1Cu);
     }
 
-    if (v4)
+    if (budsCopy)
     {
       deviceID = self->_deviceID;
       v19[0] = _NSConcreteStackBlock;
@@ -321,7 +321,7 @@ LABEL_16:
     [+[NSDistributedNotificationCenter defaultCenter](NSDistributedNotificationCenter postNotification:"postNotification:", [NSNotification notificationWithName:@"com.apple.audioaccessoryd.usageSummary.volumeChange" object:0 userInfo:v15]];
   }
 
-  -[BTAudioPersonalizedVolumeDevice updateVolumeActiveAudioCategoryMap:audioCategory:](self, "updateVolumeActiveAudioCategoryMap:audioCategory:", [objc_msgSend(a3 objectForKeyedSubscript:{@"ManualVolumeUpdate", "intValue"}], objc_msgSend(a3, "objectForKeyedSubscript:", @"CurrentAudioCategory"));
+  -[BTAudioPersonalizedVolumeDevice updateVolumeActiveAudioCategoryMap:audioCategory:](self, "updateVolumeActiveAudioCategoryMap:audioCategory:", [objc_msgSend(changed objectForKeyedSubscript:{@"ManualVolumeUpdate", "intValue"}], objc_msgSend(changed, "objectForKeyedSubscript:", @"CurrentAudioCategory"));
 }
 
 - (void)startManualVolumeUpdateTimer

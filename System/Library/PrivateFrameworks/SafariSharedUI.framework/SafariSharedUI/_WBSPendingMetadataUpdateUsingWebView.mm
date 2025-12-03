@@ -1,22 +1,22 @@
 @interface _WBSPendingMetadataUpdateUsingWebView
 - (WKWebView)webView;
-- (_WBSPendingMetadataUpdateUsingWebView)initWithWebView:(id)a3 url:(id)a4;
+- (_WBSPendingMetadataUpdateUsingWebView)initWithWebView:(id)view url:(id)url;
 @end
 
 @implementation _WBSPendingMetadataUpdateUsingWebView
 
-- (_WBSPendingMetadataUpdateUsingWebView)initWithWebView:(id)a3 url:(id)a4
+- (_WBSPendingMetadataUpdateUsingWebView)initWithWebView:(id)view url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  urlCopy = url;
   v12.receiver = self;
   v12.super_class = _WBSPendingMetadataUpdateUsingWebView;
   v8 = [(_WBSPendingMetadataUpdateUsingWebView *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_webView, v6);
-    objc_storeStrong(&v9->_url, a4);
+    objc_storeWeak(&v8->_webView, viewCopy);
+    objc_storeStrong(&v9->_url, url);
     v10 = v9;
   }
 

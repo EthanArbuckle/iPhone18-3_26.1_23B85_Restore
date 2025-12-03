@@ -1,6 +1,6 @@
 @interface HDNanoHealthNotification
 + (id)category;
-- (HDNanoHealthNotification)initWithNotificationManager:(id)a3;
+- (HDNanoHealthNotification)initWithNotificationManager:(id)manager;
 - (id)body;
 - (id)title;
 - (void)triggerNotification;
@@ -8,16 +8,16 @@
 
 @implementation HDNanoHealthNotification
 
-- (HDNanoHealthNotification)initWithNotificationManager:(id)a3
+- (HDNanoHealthNotification)initWithNotificationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HDNanoHealthNotification;
   v6 = [(HDNanoHealthNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationManager, a3);
+    objc_storeStrong(&v6->_notificationManager, manager);
   }
 
   return v7;
@@ -49,20 +49,20 @@
 
 - (void)triggerNotification
 {
-  v3 = [(HDNanoHealthNotification *)self title];
-  v4 = [(HDNanoHealthNotification *)self body];
-  v5 = v4;
+  title = [(HDNanoHealthNotification *)self title];
+  body = [(HDNanoHealthNotification *)self body];
+  v5 = body;
   if (self)
   {
     v6 = MEMORY[0x277CE1F60];
-    v7 = v4;
-    v8 = v3;
+    v7 = body;
+    v8 = title;
     v9 = objc_alloc_init(v6);
     [v9 setTitle:v8];
 
     [v9 setBody:v7];
-    v10 = [objc_opt_class() category];
-    [v9 setCategoryIdentifier:v10];
+    category = [objc_opt_class() category];
+    [v9 setCategoryIdentifier:category];
 
     v11 = [MEMORY[0x277CE1FE0] soundWithAlertType:25];
     [v9 setSound:v11];
@@ -75,10 +75,10 @@
     v9 = 0;
   }
 
-  v12 = [objc_opt_class() category];
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [v12 stringByAppendingString:v14];
+  category2 = [objc_opt_class() category];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [category2 stringByAppendingString:uUIDString];
 
   v16 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v15 content:v9 trigger:0];
   [v16 setDestinations:{-[HDNanoHealthNotification destinations](self, "destinations")}];

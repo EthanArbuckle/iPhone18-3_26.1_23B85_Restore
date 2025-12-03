@@ -1,14 +1,14 @@
 @interface SearchUIMapCardSectionView
-+ (id)_postalAddressFromPlacemark:(id)a3;
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
++ (id)_postalAddressFromPlacemark:(id)placemark;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
 - (double)requestedMapHeight;
-- (id)_clLocationFromSFLatLng:(id)a3;
+- (id)_clLocationFromSFLatLng:(id)lng;
 - (id)setupContentView;
 - (void)_updateSnapshot;
-- (void)_updateSnapshotWithSize:(CGSize)a3;
+- (void)_updateSnapshotWithSize:(CGSize)size;
 - (void)dealloc;
-- (void)sendMapFeedbackWithTriggerEvent:(unint64_t)a3 placemarkData:(id)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)sendMapFeedbackWithTriggerEvent:(unint64_t)event placemarkData:(id)data;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIMapCardSectionView
@@ -22,18 +22,18 @@
   v4 = objc_opt_new();
   [(SearchUIMapCardSectionView *)self setSnapshotView:v4];
 
-  v5 = [(SearchUIMapCardSectionView *)self snapshotView];
-  [v5 setPlaceholderVisibility:1];
+  snapshotView = [(SearchUIMapCardSectionView *)self snapshotView];
+  [snapshotView setPlaceholderVisibility:1];
 
-  v6 = [(SearchUIMapCardSectionView *)self snapshotView];
-  [v3 addArrangedSubview:v6];
+  snapshotView2 = [(SearchUIMapCardSectionView *)self snapshotView];
+  [v3 addArrangedSubview:snapshotView2];
 
   v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__mapButtonPressed];
   [(SearchUIMapCardSectionView *)self setTapRecognizer:v7];
 
-  v8 = [(SearchUIMapCardSectionView *)self snapshotView];
-  v9 = [(SearchUIMapCardSectionView *)self tapRecognizer];
-  [v8 addGestureRecognizer:v9];
+  snapshotView3 = [(SearchUIMapCardSectionView *)self snapshotView];
+  tapRecognizer = [(SearchUIMapCardSectionView *)self tapRecognizer];
+  [snapshotView3 addGestureRecognizer:tapRecognizer];
 
   v10 = objc_opt_new();
   [v10 setSpacing:10.0];
@@ -43,51 +43,51 @@
   [(SearchUIMapCardSectionView *)self setLabelsStackView:v10];
   [v3 addArrangedSubview:v10];
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x1E69D9138] footnoteFont];
-  [v11 setFont:v12];
+  footnoteFont = [MEMORY[0x1E69D9138] footnoteFont];
+  [v11 setFont:footnoteFont];
 
   [SearchUIAutoLayout requireIntrinsicSizeForView:v11];
   [(SearchUIMapCardSectionView *)self setFootnoteDescriptorLabel:v11];
   [v10 addArrangedSubview:v11];
   v13 = objc_opt_new();
-  v14 = [MEMORY[0x1E69D9138] subheadFont];
-  [v13 setFont:v14];
+  subheadFont = [MEMORY[0x1E69D9138] subheadFont];
+  [v13 setFont:subheadFont];
 
   [(SearchUIMapCardSectionView *)self setFootnoteLabel:v13];
   [v10 addArrangedSubview:v13];
   [(SearchUIMapCardSectionView *)self setClipsToBounds:1];
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 addObserver:self selector:sel__updateSnapshot name:*MEMORY[0x1E69DEA38] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateSnapshot name:*MEMORY[0x1E69DEA38] object:0];
 
   return v3;
 }
 
 - (void)_updateSnapshot
 {
-  v5 = [(SearchUIMapCardSectionView *)self snapshotView];
-  [v5 frame];
+  snapshotView = [(SearchUIMapCardSectionView *)self snapshotView];
+  [snapshotView frame];
   [(SearchUIMapCardSectionView *)self _updateSnapshotWithSize:v3, v4];
 }
 
-- (void)_updateSnapshotWithSize:(CGSize)a3
+- (void)_updateSnapshotWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v95 = *MEMORY[0x1E69E9840];
-  v5 = [(SearchUIMapCardSectionView *)self mapSnapshotter];
-  [v5 cancel];
+  mapSnapshotter = [(SearchUIMapCardSectionView *)self mapSnapshotter];
+  [mapSnapshotter cancel];
 
   v6 = objc_opt_new();
-  v7 = [(SearchUIMapCardSectionView *)self snapshotView];
-  [v7 setTlkImage:v6];
+  snapshotView = [(SearchUIMapCardSectionView *)self snapshotView];
+  [snapshotView setTlkImage:v6];
 
-  v74 = [(SearchUICardSectionView *)self section];
-  if (v74)
+  section = [(SearchUICardSectionView *)self section];
+  if (section)
   {
     [(SearchUIMapCardSectionView *)self requestedMapHeight];
     if (height == v8)
     {
-      v73 = [v74 boundingMapRegion];
+      boundingMapRegion = [section boundingMapRegion];
       v72 = objc_opt_new();
       [v72 setSize:{width, height}];
       v76 = objc_opt_new();
@@ -96,7 +96,7 @@
       v90 = 0u;
       v91 = 0u;
       v92 = 0u;
-      obj = [v74 pins];
+      obj = [section pins];
       v9 = [obj countByEnumeratingWithState:&v89 objects:v94 count:16];
       if (v9)
       {
@@ -112,24 +112,24 @@
 
             v12 = *(*(&v89 + 1) + 8 * i);
             v13 = objc_alloc_init(MEMORY[0x1E696F348]);
-            v14 = [v12 label];
-            [v13 setTitle:v14];
+            label = [v12 label];
+            [v13 setTitle:label];
 
-            v15 = [v12 location];
-            v16 = [(SearchUIMapCardSectionView *)self _clLocationFromSFLatLng:v15];
+            location = [v12 location];
+            v16 = [(SearchUIMapCardSectionView *)self _clLocationFromSFLatLng:location];
             [v16 coordinate];
             [v13 setCoordinate:?];
 
             [v76 addObject:v13];
             v17 = [objc_alloc(MEMORY[0x1E696F2C8]) initWithAnnotation:v13 reuseIdentifier:0];
-            v18 = [v12 pinText];
-            [v17 setGlyphText:v18];
+            pinText = [v12 pinText];
+            [v17 setGlyphText:pinText];
 
-            v19 = [MEMORY[0x1E69DC888] systemRedColor];
-            [v17 setMarkerTintColor:v19];
+            systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+            [v17 setMarkerTintColor:systemRedColor];
 
-            v20 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-            [v17 setGlyphTintColor:v20];
+            systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+            [v17 setGlyphTintColor:systemBackgroundColor];
 
             [v77 addObject:v17];
           }
@@ -140,19 +140,19 @@
         while (v9);
       }
 
-      v21 = [v77 reverseObjectEnumerator];
-      v22 = [v21 allObjects];
-      [v72 setAnnotationViews:v22];
+      reverseObjectEnumerator = [v77 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      [v72 setAnnotationViews:allObjects];
 
-      if (v73 && ([v73 altitudeInMeters], v23 == 0.0))
+      if (boundingMapRegion && ([boundingMapRegion altitudeInMeters], v23 == 0.0))
       {
-        [v73 northLat];
+        [boundingMapRegion northLat];
         v41 = v40;
-        [v73 southLat];
+        [boundingMapRegion southLat];
         v43 = v42;
-        [v73 eastLng];
+        [boundingMapRegion eastLng];
         v45 = v44;
-        [v73 westLng];
+        [boundingMapRegion westLng];
         v47 = v45 - v46;
         if (v45 - v46 >= 0.0)
         {
@@ -164,9 +164,9 @@
           v48 = 360.0;
         }
 
-        [v73 northLat];
+        [boundingMapRegion northLat];
         v50 = v49;
-        [v73 eastLng];
+        [boundingMapRegion eastLng];
         v51 = v41 - v43;
         v53 = v52 + (v47 + v48) * -0.5;
         v54 = 0.0;
@@ -181,12 +181,12 @@
 
       else
       {
-        v24 = [v74 location];
+        location2 = [section location];
 
-        if (v24)
+        if (location2)
         {
-          v25 = [v74 location];
-          v26 = [(SearchUIMapCardSectionView *)self _clLocationFromSFLatLng:v25];
+          location3 = [section location];
+          v26 = [(SearchUIMapCardSectionView *)self _clLocationFromSFLatLng:location3];
           [v26 coordinate];
           v28 = v27;
           v30 = v29;
@@ -256,10 +256,10 @@
             x = INFINITY;
           }
 
-          v56 = [v74 pins];
-          v57 = [v56 firstObject];
-          v58 = [v57 pinText];
-          v59 = v58 == 0;
+          pins = [section pins];
+          firstObject = [pins firstObject];
+          pinText2 = [firstObject pinText];
+          v59 = pinText2 == 0;
 
           v60 = v36 - x;
           v61 = v35 - y;
@@ -278,13 +278,13 @@
         }
       }
 
-      [v73 altitudeInMeters];
+      [boundingMapRegion altitudeInMeters];
       if (v67 != 0.0)
       {
-        [v73 altitudeInMeters];
+        [boundingMapRegion altitudeInMeters];
         v69 = v68;
-        v70 = [v72 camera];
-        [v70 setAltitude:v69];
+        camera = [v72 camera];
+        [camera setAltitude:v69];
       }
 
       v71 = [objc_alloc(MEMORY[0x1E696F2B8]) initWithOptions:v72];
@@ -297,7 +297,7 @@
       v79[3] = &unk_1E85B33C0;
       objc_copyWeak(&v81, &location);
       objc_copyWeak(&v82, &from);
-      v80 = v74;
+      v80 = section;
       [v71 startWithCompletionHandler:v79];
 
       objc_destroyWeak(&v82);
@@ -336,30 +336,30 @@ void __54__SearchUIMapCardSectionView__updateSnapshotWithSize___block_invoke(uin
   }
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v25.receiver = self;
   v25.super_class = SearchUIMapCardSectionView;
-  [(SearchUICardSectionView *)&v25 updateWithRowModel:a3];
-  v4 = [(SearchUICardSectionView *)self section];
-  v5 = [(SearchUICardSectionView *)self section];
-  v6 = [v5 interactive];
+  [(SearchUICardSectionView *)&v25 updateWithRowModel:model];
+  section = [(SearchUICardSectionView *)self section];
+  section2 = [(SearchUICardSectionView *)self section];
+  interactive = [section2 interactive];
 
-  v7 = [(SearchUIMapCardSectionView *)self tapRecognizer];
-  [v7 setEnabled:v6 ^ 1];
+  tapRecognizer = [(SearchUIMapCardSectionView *)self tapRecognizer];
+  [tapRecognizer setEnabled:interactive ^ 1];
 
-  v8 = [(SearchUIMapCardSectionView *)self snapshotView];
+  snapshotView = [(SearchUIMapCardSectionView *)self snapshotView];
   v9 = *MEMORY[0x1E698B6F8];
   [(SearchUIMapCardSectionView *)self requestedMapHeight];
   LODWORD(v10) = 1148846080;
-  [v8 setLayoutSize:v9 withContentPriority:{v11, v10}];
+  [snapshotView setLayoutSize:v9 withContentPriority:{v11, v10}];
 
   [(SearchUIMapCardSectionView *)self _updateSnapshot];
-  v12 = [v4 footnoteLabel];
-  if (v12)
+  footnoteLabel = [section footnoteLabel];
+  if (footnoteLabel)
   {
-    v6 = [v4 footnoteLabel];
-    v13 = [v6 isEqualToString:&stru_1F55BC4E8];
+    interactive = [section footnoteLabel];
+    v13 = [interactive isEqualToString:&stru_1F55BC4E8];
   }
 
   else
@@ -367,22 +367,22 @@ void __54__SearchUIMapCardSectionView__updateSnapshotWithSize___block_invoke(uin
     v13 = 1;
   }
 
-  v14 = [(SearchUIMapCardSectionView *)self footnoteDescriptorLabel];
-  [v14 setHidden:v13];
+  footnoteDescriptorLabel = [(SearchUIMapCardSectionView *)self footnoteDescriptorLabel];
+  [footnoteDescriptorLabel setHidden:v13];
 
-  if (v12)
+  if (footnoteLabel)
   {
   }
 
-  v15 = [v4 footnoteLabel];
-  v16 = [(SearchUIMapCardSectionView *)self footnoteDescriptorLabel];
-  [v16 setText:v15];
+  footnoteLabel2 = [section footnoteLabel];
+  footnoteDescriptorLabel2 = [(SearchUIMapCardSectionView *)self footnoteDescriptorLabel];
+  [footnoteDescriptorLabel2 setText:footnoteLabel2];
 
-  v17 = [v4 footnote];
-  if (v17)
+  footnote = [section footnote];
+  if (footnote)
   {
-    v16 = [v4 footnote];
-    v18 = [v16 isEqualToString:&stru_1F55BC4E8];
+    footnoteDescriptorLabel2 = [section footnote];
+    v18 = [footnoteDescriptorLabel2 isEqualToString:&stru_1F55BC4E8];
   }
 
   else
@@ -390,41 +390,41 @@ void __54__SearchUIMapCardSectionView__updateSnapshotWithSize___block_invoke(uin
     v18 = 1;
   }
 
-  v19 = [(SearchUIMapCardSectionView *)self footnoteLabel];
-  [v19 setHidden:v18];
+  footnoteLabel3 = [(SearchUIMapCardSectionView *)self footnoteLabel];
+  [footnoteLabel3 setHidden:v18];
 
-  if (v17)
+  if (footnote)
   {
   }
 
-  v20 = [v4 footnote];
-  v21 = [(SearchUIMapCardSectionView *)self footnoteLabel];
-  [v21 setText:v20];
+  footnote2 = [section footnote];
+  footnoteLabel4 = [(SearchUIMapCardSectionView *)self footnoteLabel];
+  [footnoteLabel4 setText:footnote2];
 
-  v22 = [v4 footnoteLabel];
-  if (v22)
+  footnoteLabel5 = [section footnoteLabel];
+  if (footnoteLabel5)
   {
     v23 = 0;
   }
 
   else
   {
-    v21 = [v4 footnote];
-    v23 = v21 == 0;
+    footnoteLabel4 = [section footnote];
+    v23 = footnoteLabel4 == 0;
   }
 
-  v24 = [(SearchUIMapCardSectionView *)self labelsStackView];
-  [v24 setHidden:v23];
+  labelsStackView = [(SearchUIMapCardSectionView *)self labelsStackView];
+  [labelsStackView setHidden:v23];
 
-  if (!v22)
+  if (!footnoteLabel5)
   {
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(SearchUIMapCardSectionView *)self mapSnapshotter];
-  [v3 cancel];
+  mapSnapshotter = [(SearchUIMapCardSectionView *)self mapSnapshotter];
+  [mapSnapshotter cancel];
 
   v4.receiver = self;
   v4.super_class = SearchUIMapCardSectionView;
@@ -433,25 +433,25 @@ void __54__SearchUIMapCardSectionView__updateSnapshotWithSize___block_invoke(uin
 
 - (double)requestedMapHeight
 {
-  v2 = [(SearchUICardSectionView *)self section];
-  v3 = dbl_1DA272AA0[[v2 sizeFormat] == 1];
+  section = [(SearchUICardSectionView *)self section];
+  v3 = dbl_1DA272AA0[[section sizeFormat] == 1];
 
   return v3;
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = [(SearchUIMapCardSectionView *)self snapshotView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  subviewCopy = subview;
+  snapshotView = [(SearchUIMapCardSectionView *)self snapshotView];
 
-  if (v11 == v10)
+  if (snapshotView == subviewCopy)
   {
-    v12 = [(SearchUIMapCardSectionView *)self snapshotView];
-    [v12 frame];
+    snapshotView2 = [(SearchUIMapCardSectionView *)self snapshotView];
+    [snapshotView2 frame];
     v14 = v13;
     v16 = v15;
 
@@ -476,32 +476,32 @@ void __54__SearchUIMapCardSectionView__updateSnapshotWithSize___block_invoke(uin
   return result;
 }
 
-- (void)sendMapFeedbackWithTriggerEvent:(unint64_t)a3 placemarkData:(id)a4
+- (void)sendMapFeedbackWithTriggerEvent:(unint64_t)event placemarkData:(id)data
 {
-  v12 = a4;
-  v6 = [(SearchUICardSectionView *)self feedbackDelegate];
+  dataCopy = data;
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E69CA1F8]);
-    v9 = [(SearchUICardSectionView *)self section];
-    v10 = [v8 initWithCardSection:v9 destination:0 triggerEvent:a3 actionCardType:1];
+    section = [(SearchUICardSectionView *)self section];
+    v10 = [v8 initWithCardSection:section destination:0 triggerEvent:event actionCardType:1];
 
-    [v10 setModifiedPlacemarkData:v12];
-    v11 = [(SearchUICardSectionView *)self feedbackDelegate];
-    [v11 didEngageCardSection:v10];
+    [v10 setModifiedPlacemarkData:dataCopy];
+    feedbackDelegate2 = [(SearchUICardSectionView *)self feedbackDelegate];
+    [feedbackDelegate2 didEngageCardSection:v10];
   }
 }
 
-- (id)_clLocationFromSFLatLng:(id)a3
+- (id)_clLocationFromSFLatLng:(id)lng
 {
   v3 = MEMORY[0x1E6985C40];
-  v4 = a3;
+  lngCopy = lng;
   v5 = [v3 alloc];
-  [v4 lat];
+  [lngCopy lat];
   v7 = v6;
-  [v4 lng];
+  [lngCopy lng];
   v9 = v8;
 
   v10 = [v5 initWithLatitude:v7 longitude:v9];
@@ -509,26 +509,26 @@ void __54__SearchUIMapCardSectionView__updateSnapshotWithSize___block_invoke(uin
   return v10;
 }
 
-+ (id)_postalAddressFromPlacemark:(id)a3
++ (id)_postalAddressFromPlacemark:(id)placemark
 {
   v3 = MEMORY[0x1E695CF30];
-  v4 = a3;
+  placemarkCopy = placemark;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 thoroughfare];
-  [v5 setStreet:v6];
+  thoroughfare = [placemarkCopy thoroughfare];
+  [v5 setStreet:thoroughfare];
 
-  v7 = [v4 locality];
-  [v5 setCity:v7];
+  locality = [placemarkCopy locality];
+  [v5 setCity:locality];
 
-  v8 = [v4 administrativeArea];
-  [v5 setState:v8];
+  administrativeArea = [placemarkCopy administrativeArea];
+  [v5 setState:administrativeArea];
 
-  v9 = [v4 country];
-  [v5 setCountry:v9];
+  country = [placemarkCopy country];
+  [v5 setCountry:country];
 
-  v10 = [v4 postalCode];
+  postalCode = [placemarkCopy postalCode];
 
-  [v5 setPostalCode:v10];
+  [v5 setPostalCode:postalCode];
   v11 = [v5 copy];
 
   return v11;

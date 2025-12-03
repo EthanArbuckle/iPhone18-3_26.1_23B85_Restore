@@ -1,12 +1,12 @@
 @interface CCDataResourceWriteAccess
 + (id)defaultInstance;
-- (BOOL)_removeContainerOverriddenResource:(id)a3;
-- (BOOL)performMaintenanceActivity:(id)a3 accessAssertion:(id)a4;
-- (BOOL)purgeTombstonedResources:(id)a3;
-- (CCDataResourceWriteAccess)initWithAssertionOverride:(id)a3;
-- (id)_resolveContainer:(id)a3;
-- (id)requestAccessToResource:(id)a3 withMode:(unint64_t)a4 useCase:(id)a5 error:(id *)a6;
-- (id)setWriterForSet:(id)a3 accessAssertion:(id)a4;
+- (BOOL)_removeContainerOverriddenResource:(id)resource;
+- (BOOL)performMaintenanceActivity:(id)activity accessAssertion:(id)assertion;
+- (BOOL)purgeTombstonedResources:(id)resources;
+- (CCDataResourceWriteAccess)initWithAssertionOverride:(id)override;
+- (id)_resolveContainer:(id)container;
+- (id)requestAccessToResource:(id)resource withMode:(unint64_t)mode useCase:(id)case error:(id *)error;
+- (id)setWriterForSet:(id)set accessAssertion:(id)assertion;
 @end
 
 @implementation CCDataResourceWriteAccess
@@ -18,26 +18,26 @@
   return v2;
 }
 
-- (CCDataResourceWriteAccess)initWithAssertionOverride:(id)a3
+- (CCDataResourceWriteAccess)initWithAssertionOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   v9.receiver = self;
   v9.super_class = CCDataResourceWriteAccess;
   v6 = [(CCDataResourceWriteAccess *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assertionOverride, a3);
+    objc_storeStrong(&v6->_assertionOverride, override);
   }
 
   return v7;
 }
 
-- (id)requestAccessToResource:(id)a3 withMode:(unint64_t)a4 useCase:(id)a5 error:(id *)a6
+- (id)requestAccessToResource:(id)resource withMode:(unint64_t)mode useCase:(id)case error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  resourceCopy = resource;
+  caseCopy = case;
   if (self->_assertionOverride)
   {
     v12 = __biome_log_for_category();
@@ -54,8 +54,8 @@
 
   else
   {
-    v15 = [objc_alloc(MEMORY[0x1E698E968]) initWithUseCase:v11];
-    v14 = [v15 requestAccessToResource:v10 mode:a4 error:a6];
+    v15 = [objc_alloc(MEMORY[0x1E698E968]) initWithUseCase:caseCopy];
+    v14 = [v15 requestAccessToResource:resourceCopy mode:mode error:error];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -63,7 +63,7 @@
   return v14;
 }
 
-- (id)_resolveContainer:(id)a3
+- (id)_resolveContainer:(id)container
 {
   p_assertionOverride = &self->_assertionOverride;
   if (self->_assertionOverride)
@@ -74,32 +74,32 @@
       [(CCDataResourceWriteAccess *)p_assertionOverride _resolveContainer:v4];
     }
 
-    a3 = *p_assertionOverride;
+    container = *p_assertionOverride;
   }
 
-  v5 = [a3 container];
+  container = [container container];
 
-  return v5;
+  return container;
 }
 
-- (id)setWriterForSet:(id)a3 accessAssertion:(id)a4
+- (id)setWriterForSet:(id)set accessAssertion:(id)assertion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CCDataResourceWriteAccess *)self _resolveContainer:v6];
-  v9 = [CCDataResource dataResourceForSet:v7 inContainer:v8];
+  assertionCopy = assertion;
+  setCopy = set;
+  v8 = [(CCDataResourceWriteAccess *)self _resolveContainer:assertionCopy];
+  v9 = [CCDataResource dataResourceForSet:setCopy inContainer:v8];
 
-  v10 = [[CCDataResourceWriter alloc] initWithDataResource:v9 accessAssertion:v6];
+  v10 = [[CCDataResourceWriter alloc] initWithDataResource:v9 accessAssertion:assertionCopy];
 
   return v10;
 }
 
-- (BOOL)performMaintenanceActivity:(id)a3 accessAssertion:(id)a4
+- (BOOL)performMaintenanceActivity:(id)activity accessAssertion:(id)assertion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCDataResourceWriteAccess *)self _resolveContainer:v7];
+  activityCopy = activity;
+  assertionCopy = assertion;
+  v8 = [(CCDataResourceWriteAccess *)self _resolveContainer:assertionCopy];
   v9 = __biome_log_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -130,9 +130,9 @@
   v23[2] = __72__CCDataResourceWriteAccess_performMaintenanceActivity_accessAssertion___block_invoke;
   v23[3] = &unk_1E7C8BCC0;
   v26 = &v30;
-  v10 = v7;
+  v10 = assertionCopy;
   v24 = v10;
-  v11 = v6;
+  v11 = activityCopy;
   v25 = v11;
   v27 = &v36;
   p_buf = &buf;
@@ -268,15 +268,15 @@ LABEL_20:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)purgeTombstonedResources:(id)a3
+- (BOOL)purgeTombstonedResources:(id)resources
 {
   v45 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v44 count:16];
+  resourcesCopy = resources;
+  v5 = [resourcesCopy countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v5)
   {
     v7 = v5;
@@ -285,19 +285,19 @@ LABEL_20:
     v9 = &dword_1B6DB2000;
     *&v6 = 138412802;
     v30 = v6;
-    v32 = v4;
+    v32 = resourcesCopy;
     while (2)
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v35 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 resourceStatus];
-        if (v12 == 4)
+        resourceStatus = [v11 resourceStatus];
+        if (resourceStatus == 4)
         {
           if (self->_assertionOverride)
           {
@@ -322,9 +322,9 @@ LABEL_20:
           {
             v19 = v9;
             v20 = [objc_alloc(MEMORY[0x1E698E968]) initWithUseCase:v31];
-            v21 = [v11 specifier];
+            specifier = [v11 specifier];
             v33 = 0;
-            v22 = [v20 removeResource:v21 error:&v33];
+            v22 = [v20 removeResource:specifier error:&v33];
             v23 = v33;
 
             if (v22)
@@ -341,7 +341,7 @@ LABEL_20:
             {
               v26 = __biome_log_for_category();
               v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
-              v4 = v32;
+              resourcesCopy = v32;
               if (v27)
               {
                 [(CCDataResourceWriteAccess *)v11 purgeTombstonedResources:v23, v26];
@@ -353,7 +353,7 @@ LABEL_28:
             }
 
             v9 = v19;
-            v4 = v32;
+            resourcesCopy = v32;
           }
 
           v16 = __biome_log_for_category();
@@ -367,7 +367,7 @@ LABEL_28:
 
         else
         {
-          v15 = v12;
+          v15 = resourceStatus;
           v16 = __biome_log_for_category();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
@@ -384,7 +384,7 @@ LABEL_28:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v34 objects:v44 count:16];
+      v7 = [resourcesCopy countByEnumeratingWithState:&v34 objects:v44 count:16];
       if (v7)
       {
         continue;
@@ -401,13 +401,13 @@ LABEL_29:
   return v25;
 }
 
-- (BOOL)_removeContainerOverriddenResource:(id)a3
+- (BOOL)_removeContainerOverriddenResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v4 = __biome_log_for_category();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CCDataResourceWriteAccess *)v3 _removeContainerOverriddenResource:v4];
+    [(CCDataResourceWriteAccess *)resourceCopy _removeContainerOverriddenResource:v4];
   }
 
   return 0;

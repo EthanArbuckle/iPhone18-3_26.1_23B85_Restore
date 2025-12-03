@@ -1,16 +1,16 @@
 @interface MUISearchSuggestionsGenerator
 + (OS_os_log)log;
-- (MUISearchSuggestionsGenerator)initWithSuggesters:(id)a3 delegate:(id)a4;
-- (id)startGeneratingSuggestionsUsingPhraseManager:(id)a3;
+- (MUISearchSuggestionsGenerator)initWithSuggesters:(id)suggesters delegate:(id)delegate;
+- (id)startGeneratingSuggestionsUsingPhraseManager:(id)manager;
 - (uint64_t)_cancel;
-- (uint64_t)_hasActiveOperationsWithRequestID:(uint64_t)a1;
-- (void)_appendOperation:(uint64_t)a1;
-- (void)_didProduceResult:(uint64_t)a1;
-- (void)_operationDidComplete:(uint64_t)a1;
-- (void)_stopGeneratingSuggestionsWithIdentifier:(uint64_t)a1;
+- (uint64_t)_hasActiveOperationsWithRequestID:(uint64_t)d;
+- (void)_appendOperation:(uint64_t)operation;
+- (void)_didProduceResult:(uint64_t)result;
+- (void)_operationDidComplete:(uint64_t)complete;
+- (void)_stopGeneratingSuggestionsWithIdentifier:(uint64_t)identifier;
 - (void)cancel;
-- (void)startPendingOperationWithID:(uint64_t)a1;
-- (void)stopGeneratingSuggestionsWithIdentifier:(id)a3;
+- (void)startPendingOperationWithID:(uint64_t)d;
+- (void)stopGeneratingSuggestionsWithIdentifier:(id)identifier;
 @end
 
 @implementation MUISearchSuggestionsGenerator
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __36__MUISearchSuggestionsGenerator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_20 != -1)
   {
     dispatch_once(&log_onceToken_20, block);
@@ -41,18 +41,18 @@ void __36__MUISearchSuggestionsGenerator_log__block_invoke(uint64_t a1)
   log_log_20 = v2;
 }
 
-- (MUISearchSuggestionsGenerator)initWithSuggesters:(id)a3 delegate:(id)a4
+- (MUISearchSuggestionsGenerator)initWithSuggesters:(id)suggesters delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  suggestersCopy = suggesters;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = MUISearchSuggestionsGenerator;
   v8 = [(MUISearchSuggestionsGenerator *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [v6 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [suggestersCopy copy];
     v11 = v10;
     if (v10)
     {
@@ -66,13 +66,13 @@ void __36__MUISearchSuggestionsGenerator_log__block_invoke(uint64_t a1)
 
     objc_storeStrong(&v9->_suggesters, v12);
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     cancelledOperations = v9->_cancelledOperations;
-    v9->_cancelledOperations = v13;
+    v9->_cancelledOperations = array;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     activeOperations = v9->_activeOperations;
-    v9->_activeOperations = v15;
+    v9->_activeOperations = array2;
 
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_attr_make_with_qos_class(v17, QOS_CLASS_USER_INITIATED, 0);
@@ -116,12 +116,12 @@ void __50__MUISearchSuggestionsGenerator__appendOperation___block_invoke(uint64_
   [(MUISearchSuggestionsGenerator *)WeakRetained startPendingOperationWithID:?];
 }
 
-- (void)stopGeneratingSuggestionsWithIdentifier:(id)a3
+- (void)stopGeneratingSuggestionsWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [(MUISearchSuggestionsGenerator *)self stopGeneratingSuggestionsWithIdentifier:v4];
+    [(MUISearchSuggestionsGenerator *)self stopGeneratingSuggestionsWithIdentifier:identifierCopy];
   }
 }
 
@@ -131,27 +131,27 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
   [(MUISearchSuggestionsGenerator *)WeakRetained _stopGeneratingSuggestionsWithIdentifier:?];
 }
 
-- (id)startGeneratingSuggestionsUsingPhraseManager:(id)a3
+- (id)startGeneratingSuggestionsUsingPhraseManager:(id)manager
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(MUISearchRequestID);
-  v6 = v4;
+  v6 = managerCopy;
   v7 = v5;
   v8 = signpostLog();
   v9 = os_signpost_enabled(v8);
 
   if (v9)
   {
-    v10 = [v6 phraseKind];
+    phraseKind = [v6 phraseKind];
     v11 = signpostLog();
     [v6 signpostID];
     OUTLINED_FUNCTION_5_0();
-    if (v10)
+    if (phraseKind)
     {
       if (!(!v13 & v12) && os_signpost_enabled(v11))
       {
-        v14 = [v6 phrase];
+        phrase = [v6 phrase];
         OUTLINED_FUNCTION_4_1();
         OUTLINED_FUNCTION_7(&dword_214A5E000, v15, v16, v17, "com.apple.mail.search.suggestion.zkw.queue", "id=%{signpost.description:attribute}u text=%{sensitive}@", v18, v19, v33, block, v35, v36, v37, v38, v39, v40, location[0]);
       }
@@ -159,7 +159,7 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
 
     else if (!(!v13 & v12) && os_signpost_enabled(v11))
     {
-      v20 = [v6 phrase];
+      phrase2 = [v6 phrase];
       OUTLINED_FUNCTION_4_1();
       OUTLINED_FUNCTION_7(&dword_214A5E000, v21, v22, v23, "com.apple.mail.search.suggestion.ayt.queue", "id=%{signpost.description:attribute}u text=%{sensitive}@", v24, v25, v33, block, v35, v36, v37, v38, v39, v40, location[0]);
     }
@@ -197,15 +197,15 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
   return v31;
 }
 
-- (void)_appendOperation:(uint64_t)a1
+- (void)_appendOperation:(uint64_t)operation
 {
   v74 = *MEMORY[0x277D85DE8];
   v63 = a2;
-  if (a1)
+  if (operation)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
-    v4 = (a1 + 24);
-    if (*(a1 + 24))
+    dispatch_assert_queue_V2(*(operation + 48));
+    v4 = (operation + 24);
+    if (*(operation + 24))
     {
       v5 = +[MUISearchSuggestionsGenerator log];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -237,7 +237,7 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
         }
 
         v12 = v11;
-        v13 = [v12 phrase];
+        phrase = [v12 phrase];
         v14 = *v4;
         if (*v4)
         {
@@ -251,7 +251,7 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
 
         v16 = v15;
         v17 = v14;
-        v18 = [v16 updatedSuggestion];
+        updatedSuggestion = [v16 updatedSuggestion];
         OUTLINED_FUNCTION_1_6();
         _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "Cancelling search #%u, text:'%@', suggestion: '%@'", &buf, 0x1Cu);
       }
@@ -259,7 +259,7 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
       signpostEndEnqueueInterval(*v4, 1);
     }
 
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((operation + 24), a2);
     v19 = v63;
     if (v63)
     {
@@ -267,7 +267,7 @@ void __73__MUISearchSuggestionsGenerator_stopGeneratingSuggestionsWithIdentifier
     }
 
     v20 = v19;
-    v21 = [*(a1 + 40) count];
+    v21 = [*(operation + 40) count];
     v22 = v21;
     if (_MergedGlobals == -1)
     {
@@ -309,7 +309,7 @@ LABEL_16:
             }
 
             v46 = v45;
-            v47 = [v46 phrase];
+            phrase2 = [v46 phrase];
             v48 = *v4;
             if (*v4)
             {
@@ -323,7 +323,7 @@ LABEL_16:
 
             v50 = v49;
             v51 = v48;
-            v52 = [v50 updatedSuggestion];
+            updatedSuggestion2 = [v50 updatedSuggestion];
             OUTLINED_FUNCTION_1_6();
             _os_log_impl(&dword_214A5E000, v25, OS_LOG_TYPE_INFO, "Enqueueing search #%u (text:'%@', suggestion: '%@').", &buf, 0x1Cu);
           }
@@ -359,7 +359,7 @@ LABEL_16:
           }
 
           v33 = v32;
-          v34 = [v33 phrase];
+          phrase3 = [v33 phrase];
           v35 = *v4;
           if (*v4)
           {
@@ -373,21 +373,21 @@ LABEL_16:
 
           v37 = v36;
           v38 = v35;
-          v39 = [v37 updatedSuggestion];
+          updatedSuggestion3 = [v37 updatedSuggestion];
           LODWORD(buf) = 67109890;
           HIDWORD(buf) = v62;
           v68 = 1024;
           v69 = v23;
           v70 = 2112;
-          v71 = v34;
+          v71 = phrase3;
           v72 = 2112;
-          v73 = v39;
+          v73 = updatedSuggestion3;
           _os_log_impl(&dword_214A5E000, v25, OS_LOG_TYPE_INFO, "Throttling search #%u for %u ms (text:'%@', suggestion: '%@').", &buf, 0x22u);
         }
 
         v53 = dispatch_time(0xFFFFFFFFFFFFFFFELL, 1000000 * v23);
-        objc_initWeak(&buf, a1);
-        v54 = *(a1 + 48);
+        objc_initWeak(&buf, operation);
+        v54 = *(operation + 48);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __50__MUISearchSuggestionsGenerator__appendOperation___block_invoke;
@@ -412,19 +412,19 @@ LABEL_16:
       }
     }
 
-    [(MUISearchSuggestionsGenerator *)a1 startPendingOperationWithID:v20];
+    [(MUISearchSuggestionsGenerator *)operation startPendingOperationWithID:v20];
 LABEL_37:
   }
 }
 
-- (void)startPendingOperationWithID:(uint64_t)a1
+- (void)startPendingOperationWithID:(uint64_t)d
 {
   v52 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
-    v4 = *(a1 + 24);
+    dispatch_assert_queue_V2(*(d + 48));
+    v4 = *(d + 24);
     if (v4)
     {
       v5 = v4[3];
@@ -440,11 +440,11 @@ LABEL_37:
 
     if (v7)
     {
-      v8 = *(a1 + 24);
-      v9 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v8 = *(d + 24);
+      v9 = *(d + 24);
+      *(d + 24) = 0;
 
-      [*(a1 + 40) addObject:v8];
+      [*(d + 40) addObject:v8];
       v10 = +[MUISearchSuggestionsGenerator log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -474,8 +474,8 @@ LABEL_37:
 
         v13 = MEMORY[0x277D07198];
         v14 = isa;
-        v15 = [(objc_class *)v14 phrase];
-        v35 = [v13 partiallyRedactedStringForString:v15];
+        phrase = [(objc_class *)v14 phrase];
+        v35 = [v13 partiallyRedactedStringForString:phrase];
         if (v8)
         {
           v16 = v8[4].isa;
@@ -490,7 +490,7 @@ LABEL_37:
         [(objc_class *)v17 updatedSuggestion];
         v36 = v14;
         v33 = v17;
-        v34 = v15;
+        v34 = phrase;
         v31 = log = v10;
         if (v8)
         {
@@ -511,10 +511,10 @@ LABEL_37:
         v22 = [(objc_class *)v21 ef_map:&__block_literal_global_169];
         v23 = [v22 componentsJoinedByString:{@", "}];
 
-        v24 = *(a1 + 40);
+        v24 = *(d + 40);
         v25 = v23;
         v26 = [v24 count];
-        v27 = [*(a1 + 32) count];
+        v27 = [*(d + 32) count];
         *buf = 67110658;
         v39 = v32;
         v40 = 2112;
@@ -559,16 +559,16 @@ LABEL_37:
   }
 }
 
-- (void)_stopGeneratingSuggestionsWithIdentifier:(uint64_t)a1
+- (void)_stopGeneratingSuggestionsWithIdentifier:(uint64_t)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
+    dispatch_assert_queue_V2(*(identifier + 48));
     if (v3)
     {
-      v4 = *(a1 + 40);
+      v4 = *(identifier + 40);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __74__MUISearchSuggestionsGenerator__stopGeneratingSuggestionsWithIdentifier___block_invoke;
@@ -581,8 +581,8 @@ LABEL_37:
       if (v7)
       {
         [(_MUISearchSuggestionsOperation *)v7 cancel];
-        [*(a1 + 40) removeObjectIdenticalTo:v7];
-        [*(a1 + 32) addObject:v7];
+        [*(identifier + 40) removeObjectIdenticalTo:v7];
+        [*(identifier + 32) addObject:v7];
         v8 = +[MUISearchSuggestionsGenerator log];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
@@ -599,18 +599,18 @@ LABEL_37:
 
           v11 = *(v7 + 32);
           v19 = v10;
-          v12 = [v11 phrase];
+          phrase = [v11 phrase];
           v13 = *(v7 + 32);
-          v14 = [v13 updatedSuggestion];
-          v15 = *(a1 + 40);
+          updatedSuggestion = [v13 updatedSuggestion];
+          v15 = *(identifier + 40);
           v16 = [v15 count];
-          v17 = [*(a1 + 32) count];
+          v17 = [*(identifier + 32) count];
           *buf = 67110146;
           v23 = v18;
           v24 = 2112;
-          v25 = v12;
+          v25 = phrase;
           v26 = 2112;
-          v27 = v14;
+          v27 = updatedSuggestion;
           v28 = 1024;
           v29 = v16;
           v30 = 1024;
@@ -670,7 +670,7 @@ LABEL_4:
   OUTLINED_FUNCTION_6_0();
   v5 = __39__MUISearchSuggestionsGenerator_cancel__block_invoke;
   v6 = &unk_278188BB0;
-  v7 = self;
+  selfCopy = self;
   dispatch_async(v3, block);
   if (self)
   {
@@ -739,11 +739,11 @@ LABEL_4:
             }
 
             v15 = v14;
-            v16 = [v15 phrase];
+            phrase = [v15 phrase];
             *buf = 67109378;
             v26 = v13;
             v27 = 2112;
-            v28 = v16;
+            v28 = phrase;
             _os_log_impl(&dword_214A5E000, v10, OS_LOG_TYPE_DEFAULT, "Cancelling search #%u, text:'%@'.", buf, 0x12u);
 
             v7 = off_278187000;
@@ -771,15 +771,15 @@ LABEL_4:
   return result;
 }
 
-- (void)_didProduceResult:(uint64_t)a1
+- (void)_didProduceResult:(uint64_t)result
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (result)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
-    v4 = [v3 requestID];
-    v5 = [(MUISearchSuggestionsGenerator *)a1 _hasActiveOperationsWithRequestID:v4];
+    dispatch_assert_queue_V2(*(result + 48));
+    requestID = [v3 requestID];
+    v5 = [(MUISearchSuggestionsGenerator *)result _hasActiveOperationsWithRequestID:requestID];
 
     if (v5)
     {
@@ -788,9 +788,9 @@ LABEL_4:
       v10[2] = __51__MUISearchSuggestionsGenerator__didProduceResult___block_invoke;
       v10[3] = &unk_278188F78;
       v11 = v3;
-      v12 = a1;
+      resultCopy = result;
       dispatch_async(MEMORY[0x277D85CD0], v10);
-      a1 = v11;
+      result = v11;
     }
 
     else
@@ -798,11 +798,11 @@ LABEL_4:
       v6 = +[MUISearchSuggestionsGenerator log];
       if (OUTLINED_FUNCTION_10(v6))
       {
-        v7 = [v3 requestID];
-        v8 = v7;
-        if (v7)
+        requestID2 = [v3 requestID];
+        v8 = requestID2;
+        if (requestID2)
         {
-          v9 = *(v7 + 8);
+          v9 = *(requestID2 + 8);
         }
 
         else
@@ -812,27 +812,27 @@ LABEL_4:
 
         *buf = 67109120;
         v14 = v9;
-        _os_log_impl(&dword_214A5E000, a1, OS_LOG_TYPE_DEFAULT, "Search #%u did produce result, but it’s no longer active.", buf, 8u);
+        _os_log_impl(&dword_214A5E000, result, OS_LOG_TYPE_DEFAULT, "Search #%u did produce result, but it’s no longer active.", buf, 8u);
       }
     }
   }
 }
 
-- (uint64_t)_hasActiveOperationsWithRequestID:(uint64_t)a1
+- (uint64_t)_hasActiveOperationsWithRequestID:(uint64_t)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = *(a1 + 40);
+    v4 = *(d + 40);
     OUTLINED_FUNCTION_0_3();
     OUTLINED_FUNCTION_6_0();
     v7 = __67__MUISearchSuggestionsGenerator__hasActiveOperationsWithRequestID___block_invoke;
     v8 = &unk_27818B160;
     v9 = v3;
-    a1 = [v4 indexOfObjectPassingTest:v6] != 0x7FFFFFFFFFFFFFFFLL;
+    d = [v4 indexOfObjectPassingTest:v6] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return a1;
+  return d;
 }
 
 void __51__MUISearchSuggestionsGenerator__didProduceResult___block_invoke(uint64_t a1)
@@ -892,13 +892,13 @@ BOOL __67__MUISearchSuggestionsGenerator__hasActiveOperationsWithRequestID___blo
   return v2 == *(a1 + 32);
 }
 
-- (void)_operationDidComplete:(uint64_t)a1
+- (void)_operationDidComplete:(uint64_t)complete
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (complete)
   {
-    dispatch_assert_queue_V2(*(a1 + 48));
+    dispatch_assert_queue_V2(*(complete + 48));
     if (v3 && (v4 = atomic_load(v3 + 8), (v4 & 1) != 0))
     {
       v5 = +[MUISearchSuggestionsGenerator log];
@@ -923,14 +923,14 @@ BOOL __67__MUISearchSuggestionsGenerator__hasActiveOperationsWithRequestID___blo
       v8 = __55__MUISearchSuggestionsGenerator__operationDidComplete___block_invoke;
       v9 = &unk_27818B188;
       v10 = v3;
-      v11 = a1;
+      completeCopy = complete;
       v12 = 0;
       dispatch_async(MEMORY[0x277D85CD0], block);
       v5 = v10;
     }
 
-    [*(a1 + 32) removeObjectIdenticalTo:v3];
-    [*(a1 + 40) removeObjectIdenticalTo:v3];
+    [*(complete + 32) removeObjectIdenticalTo:v3];
+    [*(complete + 40) removeObjectIdenticalTo:v3];
   }
 }
 

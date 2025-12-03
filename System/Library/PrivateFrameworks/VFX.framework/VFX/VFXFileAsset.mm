@@ -1,42 +1,42 @@
 @interface VFXFileAsset
-- (VFXFileAsset)initWithCoder:(id)a3;
-- (VFXFileAsset)initWithFileNamed:(id)a3 entityObject:(id)a4;
+- (VFXFileAsset)initWithCoder:(id)coder;
+- (VFXFileAsset)initWithFileNamed:(id)named entityObject:(id)object;
 - (id)absolutePath;
-- (id)copyWithFilename:(id)a3;
-- (void)copyTo:(id)a3 withContext:(id)a4;
+- (id)copyWithFilename:(id)filename;
+- (void)copyTo:(id)to withContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAbsolutePath:(id)a3;
-- (void)setFileName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAbsolutePath:(id)path;
+- (void)setFileName:(id)name;
 @end
 
 @implementation VFXFileAsset
 
-- (VFXFileAsset)initWithFileNamed:(id)a3 entityObject:(id)a4
+- (VFXFileAsset)initWithFileNamed:(id)named entityObject:(id)object
 {
   v10.receiver = self;
   v10.super_class = VFXFileAsset;
-  v5 = [(VFXCoreAsset *)&v10 initWithEntityObject:a4];
+  v5 = [(VFXCoreAsset *)&v10 initWithEntityObject:object];
   if (v5)
   {
-    v6 = a3;
-    v5->_filename = v6;
-    objc_msgSend_setName_(v5, v7, v6, v8);
+    namedCopy = named;
+    v5->_filename = namedCopy;
+    objc_msgSend_setName_(v5, v7, namedCopy, v8);
   }
 
   return v5;
 }
 
-- (void)setFileName:(id)a3
+- (void)setFileName:(id)name
 {
   filename = self->_filename;
-  if (filename != a3)
+  if (filename != name)
   {
 
-    v7 = a3;
-    self->_filename = v7;
+    nameCopy = name;
+    self->_filename = nameCopy;
 
-    objc_msgSend_setName_(self, v6, v7, v8);
+    objc_msgSend_setName_(self, v6, nameCopy, v8);
   }
 }
 
@@ -48,12 +48,12 @@
   return MEMORY[0x1EEE66B58](v8, sel_absolutePath, v9, v10);
 }
 
-- (void)setAbsolutePath:(id)a3
+- (void)setAbsolutePath:(id)path
 {
-  v5 = objc_msgSend_entityObject(self, a2, a3, v3);
+  v5 = objc_msgSend_entityObject(self, a2, path, v3);
   v9 = objc_msgSend_properties(v5, v6, v7, v8);
 
-  MEMORY[0x1EEE66B58](v9, sel_setAbsolutePath_, a3, v10);
+  MEMORY[0x1EEE66B58](v9, sel_setAbsolutePath_, path, v10);
 }
 
 - (void)dealloc
@@ -63,29 +63,29 @@
   [(VFXCoreAsset *)&v3 dealloc];
 }
 
-- (void)copyTo:(id)a3 withContext:(id)a4
+- (void)copyTo:(id)to withContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = VFXFileAsset;
-  [(VFXCoreAsset *)&v9 copyTo:a3 withContext:a4];
+  [(VFXCoreAsset *)&v9 copyTo:to withContext:context];
 
-  *(a3 + 6) = objc_msgSend_filename(self, v6, v7, v8);
+  *(to + 6) = objc_msgSend_filename(self, v6, v7, v8);
 }
 
-- (id)copyWithFilename:(id)a3
+- (id)copyWithFilename:(id)filename
 {
-  v5 = objc_msgSend_copy(self, a2, a3, v3);
+  v5 = objc_msgSend_copy(self, a2, filename, v3);
   v6 = v5;
   if (v5)
   {
 
-    v6[6] = a3;
+    v6[6] = filename;
   }
 
   return v6;
 }
 
-- (VFXFileAsset)initWithCoder:(id)a3
+- (VFXFileAsset)initWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = VFXFileAsset;
@@ -93,7 +93,7 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"filename");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"filename");
     if (v7)
     {
       v8 = v7;
@@ -102,7 +102,7 @@
     else
     {
       v9 = objc_opt_class();
-      v11 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"path");
+      v11 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"path");
       if (v11)
       {
         PathComponent = v11;
@@ -126,17 +126,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   filename = self->_filename;
   if (filename)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, filename, @"filename");
+    objc_msgSend_encodeObject_forKey_(coder, a2, filename, @"filename");
   }
 
   v6.receiver = self;
   v6.super_class = VFXFileAsset;
-  [(VFXCoreAsset *)&v6 encodeWithCoder:a3];
+  [(VFXCoreAsset *)&v6 encodeWithCoder:coder];
 }
 
 @end

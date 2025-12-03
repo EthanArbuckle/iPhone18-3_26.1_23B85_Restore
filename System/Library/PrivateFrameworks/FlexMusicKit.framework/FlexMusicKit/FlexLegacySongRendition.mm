@@ -1,28 +1,28 @@
 @interface FlexLegacySongRendition
-+ (int64_t)_durationOfOutroForPlaylist:(id)a3 onlyUsedDuration:(BOOL)a4;
-- (FlexLegacySongRendition)initWithSong:(id)a3 segments:(id)a4 withOptions:(id)a5;
++ (int64_t)_durationOfOutroForPlaylist:(id)playlist onlyUsedDuration:(BOOL)duration;
+- (FlexLegacySongRendition)initWithSong:(id)song segments:(id)segments withOptions:(id)options;
 - (id)_buildOutroFadeoutMixParams;
-- (void)_buildTracksFromSegments:(id)a3;
+- (void)_buildTracksFromSegments:(id)segments;
 @end
 
 @implementation FlexLegacySongRendition
 
-- (FlexLegacySongRendition)initWithSong:(id)a3 segments:(id)a4 withOptions:(id)a5
+- (FlexLegacySongRendition)initWithSong:(id)song segments:(id)segments withOptions:(id)options
 {
   v87 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  segmentsCopy = segments;
   v85.receiver = self;
   v85.super_class = FlexLegacySongRendition;
-  v10 = [(FMSongRendition *)&v85 initWithSong:a3 andOptions:a5];
+  v10 = [(FMSongRendition *)&v85 initWithSong:song andOptions:options];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_segments, a4);
+    objc_storeStrong(&v10->_segments, segments);
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v12 = v9;
+    v12 = segmentsCopy;
     v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v81, v86, 16);
     if (v14)
     {
@@ -92,11 +92,11 @@
   return v11;
 }
 
-+ (int64_t)_durationOfOutroForPlaylist:(id)a3 onlyUsedDuration:(BOOL)a4
++ (int64_t)_durationOfOutroForPlaylist:(id)playlist onlyUsedDuration:(BOOL)duration
 {
-  v4 = a4;
-  v5 = a3;
-  v10 = objc_msgSend_lastObject(v5, v6, v7, v8, v9);
+  durationCopy = duration;
+  playlistCopy = playlist;
+  v10 = objc_msgSend_lastObject(playlistCopy, v6, v7, v8, v9);
   v15 = v10;
   if (!v10)
   {
@@ -107,10 +107,10 @@
 
   if (!v16)
   {
-    if (objc_msgSend_count(v5, v17, v18, v19, v20) >= 2)
+    if (objc_msgSend_count(playlistCopy, v17, v18, v19, v20) >= 2)
     {
-      v69 = objc_msgSend_count(v5, v65, v66, v67, v68);
-      v44 = objc_msgSend_objectAtIndex_(v5, v70, v69 - 2, v71, v72);
+      v69 = objc_msgSend_count(playlistCopy, v65, v66, v67, v68);
+      v44 = objc_msgSend_objectAtIndex_(playlistCopy, v70, v69 - 2, v71, v72);
       v77 = objc_msgSend_segment(v44, v73, v74, v75, v76);
       if (!v77 || (v82 = v77, objc_msgSend_segment(v44, v78, v79, v80, v81), v83 = objc_claimAutoreleasedReturnValue(), v88 = objc_msgSend_type(v83, v84, v85, v86, v87), v83, v82, v88 != 4))
       {
@@ -118,18 +118,18 @@
         goto LABEL_22;
       }
 
-      if (v4)
+      if (durationCopy)
       {
         v31 = objc_msgSend_duration(v44, v89, v90, v91, v92);
-        if (objc_msgSend_count(v5, v93, v94, v95, v96) < 3)
+        if (objc_msgSend_count(playlistCopy, v93, v94, v95, v96) < 3)
         {
 LABEL_22:
 
           goto LABEL_23;
         }
 
-        v101 = objc_msgSend_count(v5, v97, v98, v99, v100);
-        v105 = objc_msgSend_objectAtIndex_(v5, v102, v101 - 3, v103, v104);
+        v101 = objc_msgSend_count(playlistCopy, v97, v98, v99, v100);
+        v105 = objc_msgSend_objectAtIndex_(playlistCopy, v102, v101 - 3, v103, v104);
         v110 = objc_msgSend_segment(v105, v106, v107, v108, v109);
         if (v110)
         {
@@ -166,7 +166,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v4)
+  if (!durationCopy)
   {
     v44 = objc_msgSend_segment(v15, v27, v28, v29, v30);
     v31 = objc_msgSend_sampleCount(v44, v126, v127, v128, v129);
@@ -174,10 +174,10 @@ LABEL_17:
   }
 
   v31 = objc_msgSend_duration(v15, v27, v28, v29, v30);
-  if (objc_msgSend_count(v5, v32, v33, v34, v35) >= 2)
+  if (objc_msgSend_count(playlistCopy, v32, v33, v34, v35) >= 2)
   {
-    v40 = objc_msgSend_count(v5, v36, v37, v38, v39);
-    v44 = objc_msgSend_objectAtIndex_(v5, v41, v40 - 2, v42, v43);
+    v40 = objc_msgSend_count(playlistCopy, v36, v37, v38, v39);
+    v44 = objc_msgSend_objectAtIndex_(playlistCopy, v41, v40 - 2, v42, v43);
     v49 = objc_msgSend_segment(v44, v45, v46, v47, v48);
     if (v49)
     {
@@ -199,12 +199,12 @@ LABEL_23:
   return v31;
 }
 
-- (void)_buildTracksFromSegments:(id)a3
+- (void)_buildTracksFromSegments:(id)segments
 {
-  v4 = a3;
+  segmentsCopy = segments;
   v311 = objc_opt_new();
-  v319 = v4;
-  v9 = objc_msgSend_count(v4, v5, v6, v7, v8);
+  v319 = segmentsCopy;
+  v9 = objc_msgSend_count(segmentsCopy, v5, v6, v7, v8);
   v308 = objc_opt_new();
   v310 = objc_opt_new();
   v309 = objc_opt_new();
@@ -215,7 +215,7 @@ LABEL_23:
     v14 = 0;
     v15 = 0;
     v321 = 1;
-    v312 = self;
+    selfCopy = self;
     do
     {
       v16 = objc_msgSend_objectAtIndexedSubscript_(v319, v10, v15, v12, v13);
@@ -295,7 +295,7 @@ LABEL_23:
             v104 = objc_msgSend_fadeOut(v83, v99, v100, v101, v102);
             v109 = objc_msgSend_fadeIn(v83, v105, v106, v107, v108);
             v110 = v104;
-            self = v312;
+            self = selfCopy;
             objc_msgSend_crossfadeLengthInSamplesForFromSeg_toSeg_fadeOutTimeInMsec_fadeInTimeInMsec_validFadeOutSamples_validFadeInSamples_(FlexSegment, v111, v316, v61, v110, v109, 0, &v324);
             objc_msgSend_setFadeInLength_(v17, v112, v324, v113, v114);
           }
@@ -452,14 +452,14 @@ LABEL_30:
       objc_msgSend_appendVolumeKeyframe_(v98, v181, v180, v182, v183);
 
       v184 = v323 + v320 + v14;
-      if (v184 <= objc_msgSend_duration(v312, v185, v186, v187, v188))
+      if (v184 <= objc_msgSend_duration(selfCopy, v185, v186, v187, v188))
       {
         v193 = v323 + v320 + v14;
       }
 
       else
       {
-        v193 = objc_msgSend_duration(v312, v189, v190, v191, v192);
+        v193 = objc_msgSend_duration(selfCopy, v189, v190, v191, v192);
       }
 
       v80 = v174;
@@ -480,7 +480,7 @@ LABEL_41:
       v14 += v124;
 
       ++v15;
-      self = v312;
+      self = selfCopy;
     }
 
     while (v307 != v15);

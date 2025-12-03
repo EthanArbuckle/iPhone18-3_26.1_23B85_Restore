@@ -1,5 +1,5 @@
 @interface RadioStationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (unint64_t)accessibilityTraits;
@@ -7,13 +7,13 @@
 
 @implementation RadioStationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"supertitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"stationDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"supertitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"stationDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RadioStationCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

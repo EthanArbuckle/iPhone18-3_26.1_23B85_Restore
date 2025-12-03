@@ -1,15 +1,15 @@
 @interface SBIdleTimerCoordinatorHelper
-- (BOOL)hasProvider:(id)a3;
+- (BOOL)hasProvider:(id)provider;
 - (SBIdleTimerCoordinating)targetCoordinator;
-- (SBIdleTimerCoordinatorHelper)initWithSourceProvider:(id)a3;
+- (SBIdleTimerCoordinatorHelper)initWithSourceProvider:(id)provider;
 - (SBIdleTimerProviding)sourceProvider;
-- (id)_updateProvider:(id)a3 behavior:(id)a4 reason:(id)a5;
-- (id)_updateProviderInfo:(id)a3 behavior:(id)a4 reason:(id)a5;
-- (id)idleTimerProxyForProvider:(id)a3;
-- (id)proposeIdleTimerBehavior:(id)a3 fromProvider:(id)a4 reason:(id)a5;
-- (id)proposeProvider:(id)a3 byCoordinator:(id)a4 reason:(id)a5;
-- (void)bindProvider:(id)a3 toSourceTimer:(id)a4 behavior:(id)a5 forReason:(id)a6;
-- (void)removeProvider:(id)a3;
+- (id)_updateProvider:(id)provider behavior:(id)behavior reason:(id)reason;
+- (id)_updateProviderInfo:(id)info behavior:(id)behavior reason:(id)reason;
+- (id)idleTimerProxyForProvider:(id)provider;
+- (id)proposeIdleTimerBehavior:(id)behavior fromProvider:(id)provider reason:(id)reason;
+- (id)proposeProvider:(id)provider byCoordinator:(id)coordinator reason:(id)reason;
+- (void)bindProvider:(id)provider toSourceTimer:(id)timer behavior:(id)behavior forReason:(id)reason;
+- (void)removeProvider:(id)provider;
 @end
 
 @implementation SBIdleTimerCoordinatorHelper
@@ -28,68 +28,68 @@
   return WeakRetained;
 }
 
-- (SBIdleTimerCoordinatorHelper)initWithSourceProvider:(id)a3
+- (SBIdleTimerCoordinatorHelper)initWithSourceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = SBIdleTimerCoordinatorHelper;
   v5 = [(SBIdleTimerCoordinatorHelper *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sourceProvider, v4);
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v5->_sourceProvider, providerCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     idleTimerCache = v6->_idleTimerCache;
-    v6->_idleTimerCache = v7;
+    v6->_idleTimerCache = weakToStrongObjectsMapTable;
   }
 
   return v6;
 }
 
-- (BOOL)hasProvider:(id)a3
+- (BOOL)hasProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerCoordinatorHelper *)self idleTimerCache];
-  v6 = [v5 objectForKey:v4];
+  providerCopy = provider;
+  idleTimerCache = [(SBIdleTimerCoordinatorHelper *)self idleTimerCache];
+  v6 = [idleTimerCache objectForKey:providerCopy];
 
   return v6 != 0;
 }
 
-- (id)proposeIdleTimerBehavior:(id)a3 fromProvider:(id)a4 reason:(id)a5
+- (id)proposeIdleTimerBehavior:(id)behavior fromProvider:(id)provider reason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  behaviorCopy = behavior;
+  providerCopy = provider;
+  reasonCopy = reason;
   v11 = SBLogIdleTimer();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v18 = 138543874;
     v19 = objc_opt_class();
     v20 = 2114;
-    v21 = v10;
+    v21 = reasonCopy;
     v22 = 2114;
-    v23 = v8;
+    v23 = behaviorCopy;
     v17 = v19;
     _os_log_debug_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEBUG, "PROPOSE BEHAVIOR: %{public}@ reason:%{public}@ %{public}@", &v18, 0x20u);
   }
 
-  v12 = [(SBIdleTimerCoordinatorHelper *)self _updateProvider:v9 behavior:v8 reason:v10];
-  v13 = [(SBIdleTimerCoordinatorHelper *)self targetCoordinator];
-  v14 = [(SBIdleTimerCoordinatorHelper *)self sourceProvider];
-  v15 = [v13 idleTimerProvider:v14 didProposeBehavior:v8 forReason:v10];
+  v12 = [(SBIdleTimerCoordinatorHelper *)self _updateProvider:providerCopy behavior:behaviorCopy reason:reasonCopy];
+  targetCoordinator = [(SBIdleTimerCoordinatorHelper *)self targetCoordinator];
+  sourceProvider = [(SBIdleTimerCoordinatorHelper *)self sourceProvider];
+  v15 = [targetCoordinator idleTimerProvider:sourceProvider didProposeBehavior:behaviorCopy forReason:reasonCopy];
 
   [v12 setSourceTimer:v15];
 
   return v12;
 }
 
-- (id)proposeProvider:(id)a3 byCoordinator:(id)a4 reason:(id)a5
+- (id)proposeProvider:(id)provider byCoordinator:(id)coordinator reason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  coordinatorCopy = coordinator;
+  reasonCopy = reason;
   v11 = SBLogIdleTimer();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -100,96 +100,96 @@
     v24 = 2114;
     v25 = objc_opt_class();
     v26 = 2114;
-    v27 = v10;
+    v27 = reasonCopy;
     v21 = v25;
     _os_log_debug_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEBUG, "PROPOSE provider:%{public}@ coordinator:%{public}@ reason:%{public}@ ", &v22, 0x20u);
   }
 
-  v12 = [v8 coordinatorRequestedIdleTimerBehavior:v9];
-  v13 = [(SBIdleTimerCoordinatorHelper *)self _updateProviderInfo:v8 behavior:v12 reason:v10];
-  v14 = [(SBIdleTimerCoordinatorHelper *)self targetCoordinator];
-  v15 = [(SBIdleTimerCoordinatorHelper *)self sourceProvider];
-  v16 = [v14 idleTimerProvider:v15 didProposeBehavior:v12 forReason:v10];
+  v12 = [providerCopy coordinatorRequestedIdleTimerBehavior:coordinatorCopy];
+  v13 = [(SBIdleTimerCoordinatorHelper *)self _updateProviderInfo:providerCopy behavior:v12 reason:reasonCopy];
+  targetCoordinator = [(SBIdleTimerCoordinatorHelper *)self targetCoordinator];
+  sourceProvider = [(SBIdleTimerCoordinatorHelper *)self sourceProvider];
+  v16 = [targetCoordinator idleTimerProvider:sourceProvider didProposeBehavior:v12 forReason:reasonCopy];
 
-  v17 = [v13 idleTimerProxy];
-  [v17 setSourceTimer:v16];
+  idleTimerProxy = [v13 idleTimerProxy];
+  [idleTimerProxy setSourceTimer:v16];
 
-  return v17;
+  return idleTimerProxy;
 }
 
-- (void)bindProvider:(id)a3 toSourceTimer:(id)a4 behavior:(id)a5 forReason:(id)a6
+- (void)bindProvider:(id)provider toSourceTimer:(id)timer behavior:(id)behavior forReason:(id)reason
 {
-  v10 = a4;
-  v11 = [(SBIdleTimerCoordinatorHelper *)self _updateProvider:a3 behavior:a5 reason:a6];
-  [v11 setSourceTimer:v10];
+  timerCopy = timer;
+  v11 = [(SBIdleTimerCoordinatorHelper *)self _updateProvider:provider behavior:behavior reason:reason];
+  [v11 setSourceTimer:timerCopy];
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = SBLogIdleTimer();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBIdleTimerCoordinatorHelper *)v4 removeProvider:v5];
+    [(SBIdleTimerCoordinatorHelper *)providerCopy removeProvider:v5];
   }
 
-  [(NSMapTable *)self->_idleTimerCache removeObjectForKey:v4];
+  [(NSMapTable *)self->_idleTimerCache removeObjectForKey:providerCopy];
 }
 
-- (id)idleTimerProxyForProvider:(id)a3
+- (id)idleTimerProxyForProvider:(id)provider
 {
-  v3 = [(NSMapTable *)self->_idleTimerCache objectForKey:a3];
-  v4 = [v3 idleTimerProxy];
+  v3 = [(NSMapTable *)self->_idleTimerCache objectForKey:provider];
+  idleTimerProxy = [v3 idleTimerProxy];
 
-  return v4;
+  return idleTimerProxy;
 }
 
-- (id)_updateProvider:(id)a3 behavior:(id)a4 reason:(id)a5
+- (id)_updateProvider:(id)provider behavior:(id)behavior reason:(id)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  behaviorCopy = behavior;
+  reasonCopy = reason;
   v11 = SBLogIdleTimer();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138543874;
     v17 = objc_opt_class();
     v18 = 2114;
-    v19 = v10;
+    v19 = reasonCopy;
     v20 = 2114;
-    v21 = v9;
+    v21 = behaviorCopy;
     v15 = v17;
     _os_log_debug_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEBUG, "UPDATE BEHAVIOR: %{public}@ reason:%{public}@ %{public}@", &v16, 0x20u);
   }
 
-  v12 = [(SBIdleTimerCoordinatorHelper *)self _updateProviderInfo:v8 behavior:v9 reason:v10];
-  v13 = [v12 idleTimerProxy];
+  v12 = [(SBIdleTimerCoordinatorHelper *)self _updateProviderInfo:providerCopy behavior:behaviorCopy reason:reasonCopy];
+  idleTimerProxy = [v12 idleTimerProxy];
 
-  return v13;
+  return idleTimerProxy;
 }
 
-- (id)_updateProviderInfo:(id)a3 behavior:(id)a4 reason:(id)a5
+- (id)_updateProviderInfo:(id)info behavior:(id)behavior reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  behaviorCopy = behavior;
   idleTimerCache = self->_idleTimerCache;
-  v11 = a5;
-  v12 = [(NSMapTable *)idleTimerCache objectForKey:v8];
+  reasonCopy = reason;
+  v12 = [(NSMapTable *)idleTimerCache objectForKey:infoCopy];
   if (v12)
   {
     v13 = v12;
-    [(SBIdleTimerInfo *)v12 setBehavior:v9];
-    [(SBIdleTimerInfo *)v13 setReason:v11];
+    [(SBIdleTimerInfo *)v12 setBehavior:behaviorCopy];
+    [(SBIdleTimerInfo *)v13 setReason:reasonCopy];
   }
 
   else
   {
     v14 = [[SBIdleTimerProxy alloc] initWithIdleTimerSource:0];
-    v13 = [[SBIdleTimerInfo alloc] initWithProvider:v8 behavior:v9 reason:v11 idleTimerProxy:v14];
+    v13 = [[SBIdleTimerInfo alloc] initWithProvider:infoCopy behavior:behaviorCopy reason:reasonCopy idleTimerProxy:v14];
 
-    [(NSMapTable *)self->_idleTimerCache setObject:v13 forKey:v8];
-    v11 = v14;
+    [(NSMapTable *)self->_idleTimerCache setObject:v13 forKey:infoCopy];
+    reasonCopy = v14;
   }
 
   return v13;

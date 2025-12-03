@@ -1,15 +1,15 @@
 @interface _TUIRunLoopAssertion
-- (_TUIRunLoopAssertion)initWithCompletion:(id)a3;
+- (_TUIRunLoopAssertion)initWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)onInvalidate:(id)a3;
+- (void)onInvalidate:(id)invalidate;
 @end
 
 @implementation _TUIRunLoopAssertion
 
-- (_TUIRunLoopAssertion)initWithCompletion:(id)a3
+- (_TUIRunLoopAssertion)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10.receiver = self;
   v10.super_class = _TUIRunLoopAssertion;
   v5 = [(_TUIRunLoopAssertion *)&v10 init];
@@ -17,7 +17,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [completionCopy copy];
     completion = v6->_completion;
     v6->_completion = v7;
   }
@@ -33,13 +33,13 @@
   [(_TUIRunLoopAssertion *)&v3 dealloc];
 }
 
-- (void)onInvalidate:(id)a3
+- (void)onInvalidate:(id)invalidate
 {
-  v6 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock(&self->_lock);
   if (self->_completion)
   {
-    v4 = [v6 copy];
+    v4 = [invalidateCopy copy];
     onInvalidate = self->_onInvalidate;
     self->_onInvalidate = v4;
 
@@ -49,9 +49,9 @@
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (invalidateCopy)
     {
-      v6[2]();
+      invalidateCopy[2]();
     }
   }
 }

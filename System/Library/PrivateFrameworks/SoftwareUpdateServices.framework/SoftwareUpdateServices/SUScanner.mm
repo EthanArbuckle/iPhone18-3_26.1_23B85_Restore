@@ -1,64 +1,64 @@
 @interface SUScanner
-+ (int)typeForCoreDescriptor:(id)a3;
-- (BOOL)_coreDescriptorFailedPatching:(id)a3;
++ (int)typeForCoreDescriptor:(id)descriptor;
+- (BOOL)_coreDescriptorFailedPatching:(id)patching;
 - (BOOL)isBuddyRunning;
 - (BOOL)isScanning;
-- (BOOL)lastScannedMatchScanOptions:(id)a3;
-- (BOOL)scanResultIsUpToDateWithAlternate:(id)a3;
-- (BOOL)scanResultsChangedSinceLastScan:(id)a3 preferredUpdateNewlyDiscovered:(BOOL *)a4 alternateUpdateNewlyDiscovered:(BOOL *)a5 preferredUpdateChanged:(BOOL *)a6 alternateUpdateChanged:(BOOL *)a7 preferredWasAlternate:(BOOL *)a8 alternateWasPreferred:(BOOL *)a9;
-- (BOOL)shouldPresentUpdate:(id)a3 options:(id)a4;
+- (BOOL)lastScannedMatchScanOptions:(id)options;
+- (BOOL)scanResultIsUpToDateWithAlternate:(id)alternate;
+- (BOOL)scanResultsChangedSinceLastScan:(id)scan preferredUpdateNewlyDiscovered:(BOOL *)discovered alternateUpdateNewlyDiscovered:(BOOL *)newlyDiscovered preferredUpdateChanged:(BOOL *)changed alternateUpdateChanged:(BOOL *)updateChanged preferredWasAlternate:(BOOL *)alternate alternateWasPreferred:(BOOL *)preferred;
+- (BOOL)shouldPresentUpdate:(id)update options:(id)options;
 - (SUCoreDescriptor)alternateLastScannedCoreDescriptor;
 - (SUCoreDescriptor)preferredLastScannedCoreDescriptor;
 - (SUManagerCore)core;
 - (SUScanOptions)lastScannedDescriptorScanOptions;
-- (SUScanner)initWithCore:(id)a3;
-- (id)_handleDescriptor:(id)a3 forRequestedBuild:(id)a4;
-- (id)defaultValuesForCoreDescriptor:(id)a3;
+- (SUScanner)initWithCore:(id)core;
+- (id)_handleDescriptor:(id)descriptor forRequestedBuild:(id)build;
+- (id)defaultValuesForCoreDescriptor:(id)descriptor;
 - (id)descriptorToAutoDownload;
-- (id)descriptorToAutoDownload:(id)a3;
-- (id)discoveryDateforBuildVersion:(id)a3;
-- (id)fullyUnrampedDateForBuildVersion:(id)a3;
-- (id)recommendedDescriptor:(id)a3;
-- (id)scanResultsForSUCoreScanResults:(id)a3;
-- (id)stringForScanPriority:(int64_t)a3;
+- (id)descriptorToAutoDownload:(id)download;
+- (id)discoveryDateforBuildVersion:(id)version;
+- (id)fullyUnrampedDateForBuildVersion:(id)version;
+- (id)recommendedDescriptor:(id)descriptor;
+- (id)scanResultsForSUCoreScanResults:(id)results;
+- (id)stringForScanPriority:(int64_t)priority;
 - (void)_doScanForUpdates;
-- (void)_handleScanError:(id)a3;
-- (void)_handleScannedPreferredDescriptor:(id)a3 alternateDescriptor:(id)a4 scanOptions:(id)a5 error:(id)a6;
+- (void)_handleScanError:(id)error;
+- (void)_handleScannedPreferredDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor scanOptions:(id)options error:(id)error;
 - (void)_queue_refreshLastScannedCoreDescriptors;
 - (void)cancelTimerForRecommendedUpdateNotification;
-- (void)handleActiveScanTaskDocumentationFor:(id)a3 withOptions:(id)a4 withSelectedDescriptorCompletion:(id)a5;
-- (void)handleActiveScanTaskScanCompletionWithPreferredPrimaryDescriptor:(id)a3 preferredSecondaryDescriptor:(id)a4 alternatePrimaryDescriptor:(id)a5 alternateSecondaryDescriptor:(id)a6 scanOptions:(id)a7 error:(id)a8;
+- (void)handleActiveScanTaskDocumentationFor:(id)for withOptions:(id)options withSelectedDescriptorCompletion:(id)completion;
+- (void)handleActiveScanTaskScanCompletionWithPreferredPrimaryDescriptor:(id)descriptor preferredSecondaryDescriptor:(id)secondaryDescriptor alternatePrimaryDescriptor:(id)primaryDescriptor alternateSecondaryDescriptor:(id)alternateSecondaryDescriptor scanOptions:(id)options error:(id)error;
 - (void)isBuddyRunning;
-- (void)notifyClientForRecommendedUpdate:(id)a3 shouldPresent:(BOOL)a4;
-- (void)notifyScanDidComplete:(id)a3 options:(id)a4 error:(id)a5;
-- (void)notifyScanRequestDidFinish:(id)a3 results:(id)a4 error:(id)a5;
-- (void)notifyScanRequestDidStart:(id)a3;
-- (void)removeFullyUnrampedDateForBuildVersion:(id)a3;
-- (void)scanCompleted:(id)a3 alternateDescriptor:(id)a4 scanOptions:(id)a5 error:(id)a6;
-- (void)scanForUpdates:(id)a3 complete:(id)a4;
-- (void)scheduleRecommendedUpdateFromResults:(id)a3;
-- (void)scheduleRecommendedUpdateNotification:(id)a3;
-- (void)setAlternateLastScannedCoreDescriptor:(id)a3;
-- (void)setDiscoveryDate:(id)a3 forBuildVersion:(id)a4;
-- (void)setFullyUnrampedDate:(id)a3 forBuildVersion:(id)a4;
-- (void)setLastScannedDescriptorScanOptions:(id)a3;
-- (void)setPreferredLastScannedCoreDescriptor:(id)a3;
-- (void)setupTimerForRecommendedUpdateNotification:(id)a3;
+- (void)notifyClientForRecommendedUpdate:(id)update shouldPresent:(BOOL)present;
+- (void)notifyScanDidComplete:(id)complete options:(id)options error:(id)error;
+- (void)notifyScanRequestDidFinish:(id)finish results:(id)results error:(id)error;
+- (void)notifyScanRequestDidStart:(id)start;
+- (void)removeFullyUnrampedDateForBuildVersion:(id)version;
+- (void)scanCompleted:(id)completed alternateDescriptor:(id)descriptor scanOptions:(id)options error:(id)error;
+- (void)scanForUpdates:(id)updates complete:(id)complete;
+- (void)scheduleRecommendedUpdateFromResults:(id)results;
+- (void)scheduleRecommendedUpdateNotification:(id)notification;
+- (void)setAlternateLastScannedCoreDescriptor:(id)descriptor;
+- (void)setDiscoveryDate:(id)date forBuildVersion:(id)version;
+- (void)setFullyUnrampedDate:(id)date forBuildVersion:(id)version;
+- (void)setLastScannedDescriptorScanOptions:(id)options;
+- (void)setPreferredLastScannedCoreDescriptor:(id)descriptor;
+- (void)setupTimerForRecommendedUpdateNotification:(id)notification;
 - (void)unscheduleRecommendedUpdateNotification;
 @end
 
 @implementation SUScanner
 
-- (SUScanner)initWithCore:(id)a3
+- (SUScanner)initWithCore:(id)core
 {
-  v4 = a3;
+  coreCopy = core;
   v26.receiver = self;
   v26.super_class = SUScanner;
   v5 = [(SUScanner *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_core, v4);
+    objc_storeWeak(&v5->_core, coreCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     scanRequests = v6->_scanRequests;
     v6->_scanRequests = v7;
@@ -71,22 +71,22 @@
     v6->_recommendedUpdateTimer = 0;
 
     v11 = [SUUpdateDiscoveryDateManager alloc];
-    v12 = [v4 state];
-    v13 = [v12 updateDiscoveryDates];
-    v14 = [(SUUpdateDiscoveryDateManager *)v11 initWithDiscoveryDateDictionary:v13];
+    state = [coreCopy state];
+    updateDiscoveryDates = [state updateDiscoveryDates];
+    v14 = [(SUUpdateDiscoveryDateManager *)v11 initWithDiscoveryDateDictionary:updateDiscoveryDates];
     discoveryDateManager = v6->_discoveryDateManager;
     v6->_discoveryDateManager = v14;
 
     v16 = [SUUpdateDiscoveryDateManager alloc];
-    v17 = [v4 state];
-    v18 = [v17 updateFullyUnrampedDates];
-    v19 = [(SUUpdateDiscoveryDateManager *)v16 initWithDiscoveryDateDictionary:v18];
+    state2 = [coreCopy state];
+    updateFullyUnrampedDates = [state2 updateFullyUnrampedDates];
+    v19 = [(SUUpdateDiscoveryDateManager *)v16 initWithDiscoveryDateDictionary:updateFullyUnrampedDates];
     fullyUnrampedDateManager = v6->_fullyUnrampedDateManager;
     v6->_fullyUnrampedDateManager = v19;
 
-    v21 = [v4 state];
-    v22 = [v21 lastScannedDescriptorScanOptions];
-    v23 = [v22 copy];
+    state3 = [coreCopy state];
+    lastScannedDescriptorScanOptions = [state3 lastScannedDescriptorScanOptions];
+    v23 = [lastScannedDescriptorScanOptions copy];
     lastScannedDescriptorScanOptions = v6->_lastScannedDescriptorScanOptions;
     v6->_lastScannedDescriptorScanOptions = v23;
 
@@ -98,26 +98,26 @@
 
 - (BOOL)isScanning
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_scanning;
 }
 
 - (void)_queue_refreshLastScannedCoreDescriptors
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 state];
-  v7 = [v6 preferredLastScannedCoreDescriptor];
+  core2 = [(SUScanner *)self core];
+  state = [core2 state];
+  preferredLastScannedCoreDescriptor = [state preferredLastScannedCoreDescriptor];
 
-  v8 = [(SUScanner *)self core];
-  v9 = [v8 state];
-  v10 = [v9 alternateLastScannedCoreDescriptor];
+  core3 = [(SUScanner *)self core];
+  state2 = [core3 state];
+  alternateLastScannedCoreDescriptor = [state2 alternateLastScannedCoreDescriptor];
 
   v57 = 0;
   v58 = &v57;
@@ -131,12 +131,12 @@
   v54 = __Block_byref_object_copy__12;
   v55 = __Block_byref_object_dispose__12;
   v56 = 0;
-  if (v7)
+  if (preferredLastScannedCoreDescriptor)
   {
     v11 = dispatch_semaphore_create(0);
-    v12 = [(SUScanner *)self defaultValuesForCoreDescriptor:v7];
+    v12 = [(SUScanner *)self defaultValuesForCoreDescriptor:preferredLastScannedCoreDescriptor];
     v13 = MEMORY[0x277D641A0];
-    v14 = [MEMORY[0x277D289C8] requireSameAssetTypeAndAssetId];
+    requireSameAssetTypeAndAssetId = [MEMORY[0x277D289C8] requireSameAssetTypeAndAssetId];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __53__SUScanner__queue_refreshLastScannedCoreDescriptors__block_invoke;
@@ -144,21 +144,21 @@
     v50 = &v57;
     v15 = v11;
     v49 = v15;
-    [v13 reloadDescriptor:v7 allowingDifferences:v14 forceReload:0 skipMSU:1 defaultValues:v12 completion:v48];
+    [v13 reloadDescriptor:preferredLastScannedCoreDescriptor allowingDifferences:requireSameAssetTypeAndAssetId forceReload:0 skipMSU:1 defaultValues:v12 completion:v48];
 
     v16 = dispatch_time(0, 2000000000);
     if (dispatch_semaphore_wait(v15, v16))
     {
-      SULogInfo(@"TIME OUT waiting for reloadDescriptor for preferred update %@", v17, v18, v19, v20, v21, v22, v23, v7);
+      SULogInfo(@"TIME OUT waiting for reloadDescriptor for preferred update %@", v17, v18, v19, v20, v21, v22, v23, preferredLastScannedCoreDescriptor);
     }
   }
 
-  if (v10)
+  if (alternateLastScannedCoreDescriptor)
   {
     v24 = dispatch_semaphore_create(0);
-    v25 = [(SUScanner *)self defaultValuesForCoreDescriptor:v10];
+    v25 = [(SUScanner *)self defaultValuesForCoreDescriptor:alternateLastScannedCoreDescriptor];
     v26 = MEMORY[0x277D641A0];
-    v27 = [MEMORY[0x277D289C8] requireSameAssetTypeAndAssetId];
+    requireSameAssetTypeAndAssetId2 = [MEMORY[0x277D289C8] requireSameAssetTypeAndAssetId];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __53__SUScanner__queue_refreshLastScannedCoreDescriptors__block_invoke_2;
@@ -166,12 +166,12 @@
     v47 = &v51;
     v28 = v24;
     v46 = v28;
-    [v26 reloadDescriptor:v10 allowingDifferences:v27 forceReload:0 defaultValues:v25 completion:v45];
+    [v26 reloadDescriptor:alternateLastScannedCoreDescriptor allowingDifferences:requireSameAssetTypeAndAssetId2 forceReload:0 defaultValues:v25 completion:v45];
 
     v29 = dispatch_time(0, 2000000000);
     if (dispatch_semaphore_wait(v28, v29))
     {
-      SULogInfo(@"TIME OUT waiting for reloadDescriptor for alternate update %@", v30, v31, v32, v33, v34, v35, v36, v7);
+      SULogInfo(@"TIME OUT waiting for reloadDescriptor for alternate update %@", v30, v31, v32, v33, v34, v35, v36, preferredLastScannedCoreDescriptor);
     }
   }
 
@@ -198,70 +198,70 @@ void __53__SUScanner__queue_refreshLastScannedCoreDescriptors__block_invoke_2(ui
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)defaultValuesForCoreDescriptor:(id)a3
+- (id)defaultValuesForCoreDescriptor:(id)descriptor
 {
   v30[19] = *MEMORY[0x277D85DE8];
   v29[0] = *MEMORY[0x277D28908];
   v3 = MEMORY[0x277CCABB0];
-  v4 = a3;
-  v28 = [v3 numberWithUnsignedLongLong:{objc_msgSend(v4, "downloadSize")}];
+  descriptorCopy = descriptor;
+  v28 = [v3 numberWithUnsignedLongLong:{objc_msgSend(descriptorCopy, "downloadSize")}];
   v30[0] = v28;
   v29[1] = *MEMORY[0x277D28920];
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "unarchivedSize")}];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptorCopy, "unarchivedSize")}];
   v30[1] = v27;
   v29[2] = *MEMORY[0x277D64260];
-  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "minimumSystemPartitionSize")}];
+  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptorCopy, "minimumSystemPartitionSize")}];
   v30[2] = v26;
   v29[3] = *MEMORY[0x277D28910];
-  v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "streamingZipCapable")}];
+  v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "streamingZipCapable")}];
   v30[3] = v25;
   v29[4] = *MEMORY[0x277D64278];
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "downloadAllowableOverCellular")}];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "downloadAllowableOverCellular")}];
   v30[4] = v24;
   v29[5] = *MEMORY[0x277D64270];
-  v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "downloadable")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "downloadable")}];
   v30[5] = v23;
   v29[6] = *MEMORY[0x277D64300];
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "disableSiriVoiceDeletion")}];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "disableSiriVoiceDeletion")}];
   v30[6] = v22;
   v29[7] = *MEMORY[0x277D642F8];
-  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "disableCDLevel4")}];
+  v21 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "disableCDLevel4")}];
   v30[7] = v21;
   v29[8] = *MEMORY[0x277D642F0];
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "disableAppDemotion")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "disableAppDemotion")}];
   v30[8] = v20;
   v29[9] = *MEMORY[0x277D64308];
-  v19 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "disableInstallTonight") ^ 1}];
+  v19 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(descriptorCopy, "disableInstallTonight") ^ 1}];
   v30[9] = v19;
   v29[10] = *MEMORY[0x277D642E8];
-  v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "rampEnabled")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "rampEnabled")}];
   v30[10] = v18;
   v29[11] = *MEMORY[0x277D64298];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "autoUpdateEnabled")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "autoUpdateEnabled")}];
   v30[11] = v5;
   v29[12] = *MEMORY[0x277D64290];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "autoInstallDelay")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptorCopy, "autoInstallDelay")}];
   v30[12] = v6;
   v29[13] = *MEMORY[0x277D642E0];
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "notifyAfter")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "notifyAfter")}];
   v30[13] = v7;
   v29[14] = *MEMORY[0x277D642B0];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "hideInstallAlert")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(descriptorCopy, "hideInstallAlert")}];
   v30[14] = v8;
   v29[15] = *MEMORY[0x277D64268];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "allowAutoDownloadOnBattery")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "allowAutoDownloadOnBattery")}];
   v30[15] = v9;
   v29[16] = *MEMORY[0x277D64280];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "autoDownloadOnBatteryDelay")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptorCopy, "autoDownloadOnBatteryDelay")}];
   v30[16] = v10;
   v29[17] = *MEMORY[0x277D64288];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "autoDownloadOnBatteryMinBattery")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(descriptorCopy, "autoDownloadOnBatteryMinBattery")}];
   v30[17] = v11;
   v29[18] = *MEMORY[0x277D642A0];
   v12 = MEMORY[0x277CCABB0];
-  v13 = [v4 disableSplatCombo];
+  disableSplatCombo = [descriptorCopy disableSplatCombo];
 
-  v14 = [v12 numberWithBool:v13];
+  v14 = [v12 numberWithBool:disableSplatCombo];
   v30[18] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:19];
 
@@ -272,67 +272,67 @@ void __53__SUScanner__queue_refreshLastScannedCoreDescriptors__block_invoke_2(ui
 
 - (SUCoreDescriptor)preferredLastScannedCoreDescriptor
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   preferredLastScannedCoreDescriptor = self->_preferredLastScannedCoreDescriptor;
 
   return preferredLastScannedCoreDescriptor;
 }
 
-- (void)setPreferredLastScannedCoreDescriptor:(id)a3
+- (void)setPreferredLastScannedCoreDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  descriptorCopy = descriptor;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   preferredLastScannedCoreDescriptor = self->_preferredLastScannedCoreDescriptor;
-  self->_preferredLastScannedCoreDescriptor = v4;
-  v8 = v4;
+  self->_preferredLastScannedCoreDescriptor = descriptorCopy;
+  v8 = descriptorCopy;
 
-  v10 = [(SUScanner *)self core];
-  v9 = [v10 state];
-  [v9 setPreferredLastScannedCoreDescriptor:self->_preferredLastScannedCoreDescriptor];
+  core2 = [(SUScanner *)self core];
+  state = [core2 state];
+  [state setPreferredLastScannedCoreDescriptor:self->_preferredLastScannedCoreDescriptor];
 }
 
 - (SUCoreDescriptor)alternateLastScannedCoreDescriptor
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   alternateLastScannedCoreDescriptor = self->_alternateLastScannedCoreDescriptor;
 
   return alternateLastScannedCoreDescriptor;
 }
 
-- (void)setAlternateLastScannedCoreDescriptor:(id)a3
+- (void)setAlternateLastScannedCoreDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  descriptorCopy = descriptor;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   alternateLastScannedCoreDescriptor = self->_alternateLastScannedCoreDescriptor;
-  self->_alternateLastScannedCoreDescriptor = v4;
-  v8 = v4;
+  self->_alternateLastScannedCoreDescriptor = descriptorCopy;
+  v8 = descriptorCopy;
 
-  v10 = [(SUScanner *)self core];
-  v9 = [v10 state];
-  [v9 setAlternateLastScannedCoreDescriptor:self->_alternateLastScannedCoreDescriptor];
+  core2 = [(SUScanner *)self core];
+  state = [core2 state];
+  [state setAlternateLastScannedCoreDescriptor:self->_alternateLastScannedCoreDescriptor];
 }
 
-- (void)setDiscoveryDate:(id)a3 forBuildVersion:(id)a4
+- (void)setDiscoveryDate:(id)date forBuildVersion:(id)version
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(SUScanner *)self core];
-  v8 = [v7 workQueue];
-  dispatch_assert_queue_V2(v8);
+  dateCopy = date;
+  versionCopy = version;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!v6)
+  if (!versionCopy)
   {
     v21 = @"Unable to set discovery date for nil descriptor build version";
 LABEL_8:
@@ -340,38 +340,38 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = v23;
-  if (!v23)
+  v10 = dateCopy;
+  if (!dateCopy)
   {
     v21 = @"Unable to set discovery date for descriptor with nil date";
     goto LABEL_8;
   }
 
-  [(SUUpdateDiscoveryDateManager *)self->_discoveryDateManager setDiscoveryDate:v23 forBuildVersion:v6];
-  v16 = [(SUUpdateDiscoveryDateManager *)self->_discoveryDateManager dictionaryRepresentation];
-  if (v16)
+  [(SUUpdateDiscoveryDateManager *)self->_discoveryDateManager setDiscoveryDate:dateCopy forBuildVersion:versionCopy];
+  dictionaryRepresentation = [(SUUpdateDiscoveryDateManager *)self->_discoveryDateManager dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    v17 = [(SUScanner *)self core];
-    v18 = [v17 state];
-    [v18 setUpdateDiscoveryDates:v16];
+    core2 = [(SUScanner *)self core];
+    state = [core2 state];
+    [state setUpdateDiscoveryDates:dictionaryRepresentation];
 
-    v19 = [(SUScanner *)self core];
-    v20 = [v19 state];
-    [v20 save];
+    core3 = [(SUScanner *)self core];
+    state2 = [core3 state];
+    [state2 save];
   }
 
 LABEL_9:
 }
 
-- (void)setFullyUnrampedDate:(id)a3 forBuildVersion:(id)a4
+- (void)setFullyUnrampedDate:(id)date forBuildVersion:(id)version
 {
-  v37 = a3;
-  v6 = a4;
-  v7 = [(SUScanner *)self core];
-  v8 = [v7 workQueue];
-  dispatch_assert_queue_V2(v8);
+  dateCopy = date;
+  versionCopy = version;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!v6)
+  if (!versionCopy)
   {
     v23 = @"Unable to set fully un-ramped date for nil descriptor build version";
 LABEL_7:
@@ -379,47 +379,47 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v37)
+  if (!dateCopy)
   {
     v23 = @"Unable to set fully un-ramped date for descriptor with nil date";
     goto LABEL_7;
   }
 
-  if ([(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager containsBuildVersion:v6])
+  if ([(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager containsBuildVersion:versionCopy])
   {
-    SULogInfo(@"Unable to set fully un-ramped date because it's already been set for %@", v16, v17, v18, v19, v20, v21, v22, v6);
+    SULogInfo(@"Unable to set fully un-ramped date because it's already been set for %@", v16, v17, v18, v19, v20, v21, v22, versionCopy);
   }
 
   else
   {
-    [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager setDiscoveryDate:v37 forBuildVersion:v6];
-    v31 = [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager dictionaryRepresentation];
-    if (v31)
+    [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager setDiscoveryDate:dateCopy forBuildVersion:versionCopy];
+    dictionaryRepresentation = [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      v32 = [(SUScanner *)self core];
-      v33 = [v32 state];
-      [v33 setUpdateFullyUnrampedDates:v31];
+      core2 = [(SUScanner *)self core];
+      state = [core2 state];
+      [state setUpdateFullyUnrampedDates:dictionaryRepresentation];
 
-      v34 = [(SUScanner *)self core];
-      v35 = [v34 state];
-      [v35 save];
+      core3 = [(SUScanner *)self core];
+      state2 = [core3 state];
+      [state2 save];
     }
 
-    SULogInfo(@"Succeeded to set fully un-ramped date %@ for %@", v24, v25, v26, v27, v28, v29, v30, v37);
+    SULogInfo(@"Succeeded to set fully un-ramped date %@ for %@", v24, v25, v26, v27, v28, v29, v30, dateCopy);
   }
 
 LABEL_8:
 }
 
-- (void)removeFullyUnrampedDateForBuildVersion:(id)a3
+- (void)removeFullyUnrampedDateForBuildVersion:(id)version
 {
-  v27 = a3;
-  v4 = [(SUScanner *)self core];
-  v5 = [v4 workQueue];
-  dispatch_assert_queue_V2(v5);
+  versionCopy = version;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = v27;
-  if (!v27)
+  v12 = versionCopy;
+  if (!versionCopy)
   {
     v25 = @"Unable to remove fully un-ramped date for nil descriptor build version";
 LABEL_8:
@@ -427,80 +427,80 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager containsBuildVersion:v27])
+  if (![(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager containsBuildVersion:versionCopy])
   {
-    v26 = v27;
+    v26 = versionCopy;
     v25 = @"Unable to remove fully un-ramped date for %@ because we don't have it";
     goto LABEL_8;
   }
 
-  [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager removeDiscoveryDateForBuildVersion:v27];
-  v20 = [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager dictionaryRepresentation];
-  if (v20)
+  [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager removeDiscoveryDateForBuildVersion:versionCopy];
+  dictionaryRepresentation = [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    v21 = [(SUScanner *)self core];
-    v22 = [v21 state];
-    [v22 setUpdateFullyUnrampedDates:v20];
+    core2 = [(SUScanner *)self core];
+    state = [core2 state];
+    [state setUpdateFullyUnrampedDates:dictionaryRepresentation];
 
-    v23 = [(SUScanner *)self core];
-    v24 = [v23 state];
-    [v24 save];
+    core3 = [(SUScanner *)self core];
+    state2 = [core3 state];
+    [state2 save];
   }
 
-  SULogInfo(@"Succeeded to remove fully un-ramped date for %@", v13, v14, v15, v16, v17, v18, v19, v27);
+  SULogInfo(@"Succeeded to remove fully un-ramped date for %@", v13, v14, v15, v16, v17, v18, v19, versionCopy);
 
 LABEL_9:
 }
 
-- (id)discoveryDateforBuildVersion:(id)a3
+- (id)discoveryDateforBuildVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  versionCopy = version;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUUpdateDiscoveryDateManager *)self->_discoveryDateManager discoveryDateforBuildVersion:v4];
+  v7 = [(SUUpdateDiscoveryDateManager *)self->_discoveryDateManager discoveryDateforBuildVersion:versionCopy];
 
   return v7;
 }
 
-- (id)fullyUnrampedDateForBuildVersion:(id)a3
+- (id)fullyUnrampedDateForBuildVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  versionCopy = version;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager discoveryDateforBuildVersion:v4];
+  v7 = [(SUUpdateDiscoveryDateManager *)self->_fullyUnrampedDateManager discoveryDateforBuildVersion:versionCopy];
 
   return v7;
 }
 
 - (SUScanOptions)lastScannedDescriptorScanOptions
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   lastScannedDescriptorScanOptions = self->_lastScannedDescriptorScanOptions;
 
   return lastScannedDescriptorScanOptions;
 }
 
-- (void)setLastScannedDescriptorScanOptions:(id)a3
+- (void)setLastScannedDescriptorScanOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  optionsCopy = options;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   lastScannedDescriptorScanOptions = self->_lastScannedDescriptorScanOptions;
-  self->_lastScannedDescriptorScanOptions = v4;
-  v8 = v4;
+  self->_lastScannedDescriptorScanOptions = optionsCopy;
+  v8 = optionsCopy;
 
-  v10 = [(SUScanner *)self core];
-  v9 = [v10 state];
-  [v9 setLastScannedDescriptorScanOptions:v8];
+  core2 = [(SUScanner *)self core];
+  state = [core2 state];
+  [state setLastScannedDescriptorScanOptions:v8];
 }
 
 void __67__SUScanner_autoScanAndDownloadIfAvailable_downloadNow_withResult___block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -707,28 +707,28 @@ void __67__SUScanner_autoScanAndDownloadIfAvailable_downloadNow_withResult___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)notifyScanRequestDidStart:(id)a3
+- (void)notifyScanRequestDidStart:(id)start
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  startCopy = start;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(SUScanner *)self core];
-  v8 = [v7 delegate];
+  core2 = [(SUScanner *)self core];
+  delegate = [core2 delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SUScanner *)self core];
-    v11 = [v10 externWorkQueue];
+    core3 = [(SUScanner *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __39__SUScanner_notifyScanRequestDidStart___block_invoke;
     v12[3] = &unk_279CAA7C0;
     v12[4] = self;
-    v13 = v4;
-    dispatch_async(v11, v12);
+    v13 = startCopy;
+    dispatch_async(externWorkQueue, v12);
   }
 }
 
@@ -740,15 +740,15 @@ void __39__SUScanner_notifyScanRequestDidStart___block_invoke(uint64_t a1)
   [v2 scanRequestDidStartForOptions:v3];
 }
 
-- (id)scanResultsForSUCoreScanResults:(id)a3
+- (id)scanResultsForSUCoreScanResults:(id)results
 {
-  v3 = a3;
-  v4 = [v3 preferredDescriptor];
-  v5 = [SUManagerEngine SUDescriptorFromCoreDescriptor:v4];
+  resultsCopy = results;
+  preferredDescriptor = [resultsCopy preferredDescriptor];
+  v5 = [SUManagerEngine SUDescriptorFromCoreDescriptor:preferredDescriptor];
 
-  v6 = [v3 alternateDescriptor];
+  alternateDescriptor = [resultsCopy alternateDescriptor];
 
-  v7 = [SUManagerEngine SUDescriptorFromCoreDescriptor:v6];
+  v7 = [SUManagerEngine SUDescriptorFromCoreDescriptor:alternateDescriptor];
 
   if (v5)
   {
@@ -763,69 +763,69 @@ void __39__SUScanner_notifyScanRequestDidStart___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)notifyScanRequestDidFinish:(id)a3 results:(id)a4 error:(id)a5
+- (void)notifyScanRequestDidFinish:(id)finish results:(id)results error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(SUScanner *)self core];
-  v12 = [v11 workQueue];
-  dispatch_assert_queue_V2(v12);
+  finishCopy = finish;
+  errorCopy = error;
+  resultsCopy = results;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v13 = [(SUScanner *)self scanResultsForSUCoreScanResults:v10];
+  v13 = [(SUScanner *)self scanResultsForSUCoreScanResults:resultsCopy];
 
   notify_post([*MEMORY[0x277D64258] UTF8String]);
-  v14 = [v8 callback];
-  if (v14)
+  callback = [finishCopy callback];
+  if (callback)
   {
-    v15 = [(SUScanner *)self core];
-    v16 = [v15 externWorkQueue];
+    core2 = [(SUScanner *)self core];
+    externWorkQueue = [core2 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__SUScanner_notifyScanRequestDidFinish_results_error___block_invoke;
     block[3] = &unk_279CAB048;
-    v38 = v14;
+    v38 = callback;
     v36 = v13;
-    v37 = v9;
-    dispatch_async(v16, block);
+    v37 = errorCopy;
+    dispatch_async(externWorkQueue, block);
   }
 
-  v17 = [(SUScanner *)self core];
-  v18 = [v17 delegate];
+  core3 = [(SUScanner *)self core];
+  delegate = [core3 delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(SUScanner *)self core];
-    v21 = [v20 externWorkQueue];
+    core4 = [(SUScanner *)self core];
+    externWorkQueue2 = [core4 externWorkQueue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __54__SUScanner_notifyScanRequestDidFinish_results_error___block_invoke_2;
     v31[3] = &unk_279CAB5B0;
     v31[4] = self;
-    v32 = v8;
+    v32 = finishCopy;
     v33 = v13;
-    v34 = v9;
-    dispatch_async(v21, v31);
+    v34 = errorCopy;
+    dispatch_async(externWorkQueue2, v31);
   }
 
-  v22 = [(SUScanner *)self core];
-  v23 = [v22 delegate];
+  core5 = [(SUScanner *)self core];
+  delegate2 = [core5 delegate];
   v24 = objc_opt_respondsToSelector();
 
   if (v24)
   {
-    v25 = [(SUScanner *)self core];
-    v26 = [v25 externWorkQueue];
+    core6 = [(SUScanner *)self core];
+    externWorkQueue3 = [core6 externWorkQueue];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __54__SUScanner_notifyScanRequestDidFinish_results_error___block_invoke_3;
     v27[3] = &unk_279CAB5B0;
     v27[4] = self;
-    v28 = v8;
+    v28 = finishCopy;
     v29 = v13;
-    v30 = v9;
-    dispatch_async(v26, v27);
+    v30 = errorCopy;
+    dispatch_async(externWorkQueue3, v27);
   }
 }
 
@@ -846,52 +846,52 @@ void __54__SUScanner_notifyScanRequestDidFinish_results_error___block_invoke_3(u
   [v2 scanRequestDidFinishForOptions:v3 results:*(a1 + 48) error:*(a1 + 56)];
 }
 
-- (void)notifyScanDidComplete:(id)a3 options:(id)a4 error:(id)a5
+- (void)notifyScanDidComplete:(id)complete options:(id)options error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SUScanner *)self core];
-  v12 = [v11 workQueue];
-  dispatch_assert_queue_V2(v12);
+  optionsCopy = options;
+  errorCopy = error;
+  completeCopy = complete;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v13 = [(SUScanner *)self scanResultsForSUCoreScanResults:v10];
+  v13 = [(SUScanner *)self scanResultsForSUCoreScanResults:completeCopy];
 
-  v14 = [(SUScanner *)self core];
-  v15 = [v14 delegate];
+  core2 = [(SUScanner *)self core];
+  delegate = [core2 delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(SUScanner *)self core];
-    v18 = [v17 externWorkQueue];
+    core3 = [(SUScanner *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__SUScanner_notifyScanDidComplete_options_error___block_invoke;
     block[3] = &unk_279CAA798;
     block[4] = self;
     v29 = v13;
-    v30 = v9;
-    dispatch_async(v18, block);
+    v30 = errorCopy;
+    dispatch_async(externWorkQueue, block);
   }
 
-  v19 = [(SUScanner *)self core];
-  v20 = [v19 delegate];
+  core4 = [(SUScanner *)self core];
+  delegate2 = [core4 delegate];
   v21 = objc_opt_respondsToSelector();
 
   if (v21)
   {
-    v22 = [(SUScanner *)self core];
-    v23 = [v22 externWorkQueue];
+    core5 = [(SUScanner *)self core];
+    externWorkQueue2 = [core5 externWorkQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __49__SUScanner_notifyScanDidComplete_options_error___block_invoke_2;
     v24[3] = &unk_279CAB5B0;
     v24[4] = self;
-    v25 = v8;
+    v25 = optionsCopy;
     v26 = v13;
-    v27 = v9;
-    dispatch_async(v23, v24);
+    v27 = errorCopy;
+    dispatch_async(externWorkQueue2, v24);
   }
 }
 
@@ -910,20 +910,20 @@ void __49__SUScanner_notifyScanDidComplete_options_error___block_invoke_2(uint64
   [v2 scanDidCompleteForOptions:*(a1 + 40) results:*(a1 + 48) error:*(a1 + 56)];
 }
 
-- (void)_handleScanError:(id)a3
+- (void)_handleScanError:(id)error
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [v4 code];
-  if (v7 == 40)
+  code = [errorCopy code];
+  if (code == 40)
   {
-    v8 = [MEMORY[0x277CD9208] sharedSystemPathMonitor];
-    v9 = [v8 isVPNActive];
+    mEMORY[0x277CD9208] = [MEMORY[0x277CD9208] sharedSystemPathMonitor];
+    isVPNActive = [mEMORY[0x277CD9208] isVPNActive];
 
-    if (v9)
+    if (isVPNActive)
     {
       v17 = @"Asset query timed out but VPN is connected.";
     }
@@ -937,30 +937,30 @@ void __49__SUScanner_notifyScanDidComplete_options_error___block_invoke_2(uint64
   }
 }
 
-- (BOOL)shouldPresentUpdate:(id)a3 options:(id)a4
+- (BOOL)shouldPresentUpdate:(id)update options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v14 = [SUManagerEngine SUDescriptorFromCoreDescriptor:v5];
+  updateCopy = update;
+  optionsCopy = options;
+  v14 = [SUManagerEngine SUDescriptorFromCoreDescriptor:updateCopy];
   if (!v14)
   {
     v17 = @"No update provided to shouldPresentUpdate:options:";
     goto LABEL_12;
   }
 
-  if (([v6 isSplatOnlyScan] & 1) == 0 && (objc_msgSend(v6, "findsAnyUpdate") & 1) == 0 && (objc_msgSend(v6, "containsType:", objc_msgSend(v14, "updateType")) & 1) == 0)
+  if (([optionsCopy isSplatOnlyScan] & 1) == 0 && (objc_msgSend(optionsCopy, "findsAnyUpdate") & 1) == 0 && (objc_msgSend(optionsCopy, "containsType:", objc_msgSend(v14, "updateType")) & 1) == 0)
   {
-    v20 = [v6 types];
-    v21 = SUStringFromUpdateTypes(v20);
+    types = [optionsCopy types];
+    v21 = SUStringFromUpdateTypes(types);
     SULogInfo(@"Scanned for [%@] updates, but didn't find any.", v22, v23, v24, v25, v26, v27, v28, v21);
 
     goto LABEL_13;
   }
 
-  if ([v6 isSplatOnlyScan])
+  if ([optionsCopy isSplatOnlyScan])
   {
-    v15 = [v5 softwareUpdateAssetType];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D64318]];
+    softwareUpdateAssetType = [updateCopy softwareUpdateAssetType];
+    v16 = [softwareUpdateAssetType isEqualToString:*MEMORY[0x277D64318]];
 
     if ((v16 & 1) == 0)
     {
@@ -969,7 +969,7 @@ void __49__SUScanner_notifyScanDidComplete_options_error___block_invoke_2(uint64
     }
   }
 
-  if ([v5 isRevokedSplat])
+  if ([updateCopy isRevokedSplat])
   {
     v17 = @"Scan discovered revoked Splat. Not presenting update";
 LABEL_12:
@@ -986,31 +986,31 @@ LABEL_14:
   return v18;
 }
 
-- (void)notifyClientForRecommendedUpdate:(id)a3 shouldPresent:(BOOL)a4
+- (void)notifyClientForRecommendedUpdate:(id)update shouldPresent:(BOOL)present
 {
-  v6 = a3;
-  v7 = [(SUScanner *)self core];
-  v8 = [v7 workQueue];
-  dispatch_assert_queue_V2(v8);
+  updateCopy = update;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [SUManagerEngine SUDescriptorFromCoreDescriptor:v6];
+  v9 = [SUManagerEngine SUDescriptorFromCoreDescriptor:updateCopy];
 
-  v10 = [(SUScanner *)self core];
-  v11 = [v10 delegate];
+  core2 = [(SUScanner *)self core];
+  delegate = [core2 delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(SUScanner *)self core];
-    v14 = [v13 externWorkQueue];
+    core3 = [(SUScanner *)self core];
+    externWorkQueue = [core3 externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__SUScanner_notifyClientForRecommendedUpdate_shouldPresent___block_invoke;
     block[3] = &unk_279CAAE40;
     block[4] = self;
     v16 = v9;
-    v17 = a4;
-    dispatch_async(v14, block);
+    presentCopy = present;
+    dispatch_async(externWorkQueue, block);
   }
 }
 
@@ -1021,21 +1021,21 @@ void __60__SUScanner_notifyClientForRecommendedUpdate_shouldPresent___block_invo
   [v2 presentingRecommendedUpdate:*(a1 + 40) shouldPresent:*(a1 + 48)];
 }
 
-- (id)recommendedDescriptor:(id)a3
+- (id)recommendedDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [v3 preferredDescriptor];
-  v5 = [v4 documentation];
-  if ([v5 recommendedUpdateApplicable])
+  descriptorCopy = descriptor;
+  preferredDescriptor = [descriptorCopy preferredDescriptor];
+  documentation = [preferredDescriptor documentation];
+  if ([documentation recommendedUpdateApplicable])
   {
-    v6 = [v3 alternateDescriptor];
-    v7 = [v6 documentation];
-    v8 = [v7 recommendedUpdateApplicable];
+    alternateDescriptor = [descriptorCopy alternateDescriptor];
+    documentation2 = [alternateDescriptor documentation];
+    recommendedUpdateApplicable = [documentation2 recommendedUpdateApplicable];
 
-    if (v8)
+    if (recommendedUpdateApplicable)
     {
-      v9 = [v3 latestUpdate];
-      SULogInfo(@"Both updates are recommended, returning latest update:%@", v10, v11, v12, v13, v14, v15, v16, v9);
+      latestUpdate = [descriptorCopy latestUpdate];
+      SULogInfo(@"Both updates are recommended, returning latest update:%@", v10, v11, v12, v13, v14, v15, v16, latestUpdate);
       goto LABEL_11;
     }
   }
@@ -1044,40 +1044,40 @@ void __60__SUScanner_notifyClientForRecommendedUpdate_shouldPresent___block_invo
   {
   }
 
-  v17 = [v3 preferredDescriptor];
-  v18 = [v17 documentation];
-  v19 = [v18 recommendedUpdateApplicable];
+  preferredDescriptor2 = [descriptorCopy preferredDescriptor];
+  documentation3 = [preferredDescriptor2 documentation];
+  recommendedUpdateApplicable2 = [documentation3 recommendedUpdateApplicable];
 
-  if (v19)
+  if (recommendedUpdateApplicable2)
   {
     SULogInfo(@"Preferred update is recommended", v20, v21, v22, v23, v24, v25, v26, v39);
-    v27 = [v3 preferredDescriptor];
+    preferredDescriptor3 = [descriptorCopy preferredDescriptor];
 LABEL_9:
-    v9 = v27;
+    latestUpdate = preferredDescriptor3;
     goto LABEL_11;
   }
 
-  v28 = [v3 alternateDescriptor];
-  v29 = [v28 documentation];
-  v30 = [v29 recommendedUpdateApplicable];
+  alternateDescriptor2 = [descriptorCopy alternateDescriptor];
+  documentation4 = [alternateDescriptor2 documentation];
+  recommendedUpdateApplicable3 = [documentation4 recommendedUpdateApplicable];
 
-  if (v30)
+  if (recommendedUpdateApplicable3)
   {
     SULogInfo(@"Alternate update is recommended", v31, v32, v33, v34, v35, v36, v37, v39);
-    v27 = [v3 alternateDescriptor];
+    preferredDescriptor3 = [descriptorCopy alternateDescriptor];
     goto LABEL_9;
   }
 
   SULogInfo(@"No recommended update", v31, v32, v33, v34, v35, v36, v37, v39);
-  v9 = 0;
+  latestUpdate = 0;
 LABEL_11:
 
-  return v9;
+  return latestUpdate;
 }
 
-- (void)setupTimerForRecommendedUpdateNotification:(id)a3
+- (void)setupTimerForRecommendedUpdateNotification:(id)notification
 {
-  v11 = a3;
+  notificationCopy = notification;
   if (self->_recommendedUpdateTimer)
   {
     SULogInfo(@"Recommended update timer already exist", v4, v5, v6, v7, v8, v9, v10, v48);
@@ -1085,25 +1085,25 @@ LABEL_11:
 
   else
   {
-    v12 = [(SUScanner *)self core];
-    v13 = [v12 state];
-    v14 = [v13 lastRecommendedUpdateInterval];
-    [v14 doubleValue];
+    core = [(SUScanner *)self core];
+    state = [core state];
+    lastRecommendedUpdateInterval = [state lastRecommendedUpdateInterval];
+    [lastRecommendedUpdateInterval doubleValue];
     v16 = v15;
 
     v17 = +[SUPreferences sharedInstance];
-    v18 = [v17 recommendedUpdateInterval];
+    recommendedUpdateInterval = [v17 recommendedUpdateInterval];
 
-    if (v18)
+    if (recommendedUpdateInterval)
     {
       v19 = +[SUPreferences sharedInstance];
-      v20 = [v19 recommendedUpdateInterval];
-      [v20 doubleValue];
+      recommendedUpdateInterval2 = [v19 recommendedUpdateInterval];
+      [recommendedUpdateInterval2 doubleValue];
       v22 = v21;
 
       v23 = +[SUPreferences sharedInstance];
-      v24 = [v23 recommendedUpdateInterval];
-      SULogInfo(@"Found preference override for recommended update interval: %@", v25, v26, v27, v28, v29, v30, v31, v24);
+      recommendedUpdateInterval3 = [v23 recommendedUpdateInterval];
+      SULogInfo(@"Found preference override for recommended update interval: %@", v25, v26, v27, v28, v29, v30, v31, recommendedUpdateInterval3);
     }
 
     else
@@ -1111,10 +1111,10 @@ LABEL_11:
       v22 = v16 * 60.0 * 60.0 * 24.0;
     }
 
-    v32 = [(SUScanner *)self core];
-    v33 = [v32 state];
-    v34 = [v33 lastRecommendedUpdateDiscoveryDate];
-    v35 = [v34 dateByAddingTimeInterval:v22];
+    core2 = [(SUScanner *)self core];
+    state2 = [core2 state];
+    lastRecommendedUpdateDiscoveryDate = [state2 lastRecommendedUpdateDiscoveryDate];
+    v35 = [lastRecommendedUpdateDiscoveryDate dateByAddingTimeInterval:v22];
 
     SULogInfo(@"Setting recommended update timer for %@", v36, v37, v38, v39, v40, v41, v42, v35);
     v43 = MEMORY[0x277CBEBB8];
@@ -1125,7 +1125,7 @@ LABEL_11:
     v50[2] = __56__SUScanner_setupTimerForRecommendedUpdateNotification___block_invoke;
     v50[3] = &unk_279CAC1E8;
     v50[4] = self;
-    v51 = v11;
+    v51 = notificationCopy;
     v46 = [v43 timerWithTimeInterval:0 repeats:v50 block:v45];
     recommendedUpdateTimer = self->_recommendedUpdateTimer;
     self->_recommendedUpdateTimer = v46;
@@ -1202,82 +1202,82 @@ void __56__SUScanner_setupTimerForRecommendedUpdateNotification___block_invoke_3
   self->_recommendedUpdateTimer = 0;
 }
 
-- (void)scheduleRecommendedUpdateNotification:(id)a3
+- (void)scheduleRecommendedUpdateNotification:(id)notification
 {
-  v16 = a3;
-  v4 = [v16 productVersion];
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 state];
-  [v6 setLastRecommendedUpdateVersion:v4];
+  notificationCopy = notification;
+  productVersion = [notificationCopy productVersion];
+  core = [(SUScanner *)self core];
+  state = [core state];
+  [state setLastRecommendedUpdateVersion:productVersion];
 
-  v7 = [v16 documentation];
-  v8 = [v7 recommendedUpdateNotificationFrequencyDays];
-  v9 = [(SUScanner *)self core];
-  v10 = [v9 state];
-  [v10 setLastRecommendedUpdateInterval:v8];
+  documentation = [notificationCopy documentation];
+  recommendedUpdateNotificationFrequencyDays = [documentation recommendedUpdateNotificationFrequencyDays];
+  core2 = [(SUScanner *)self core];
+  state2 = [core2 state];
+  [state2 setLastRecommendedUpdateInterval:recommendedUpdateNotificationFrequencyDays];
 
   v11 = [MEMORY[0x277CBEAA8] now];
-  v12 = [(SUScanner *)self core];
-  v13 = [v12 state];
-  [v13 setLastRecommendedUpdateDiscoveryDate:v11];
+  core3 = [(SUScanner *)self core];
+  state3 = [core3 state];
+  [state3 setLastRecommendedUpdateDiscoveryDate:v11];
 
-  v14 = [(SUScanner *)self core];
-  v15 = [v14 state];
-  [v15 save];
+  core4 = [(SUScanner *)self core];
+  state4 = [core4 state];
+  [state4 save];
 
   [(SUScanner *)self cancelTimerForRecommendedUpdateNotification];
-  [(SUScanner *)self setupTimerForRecommendedUpdateNotification:v16];
+  [(SUScanner *)self setupTimerForRecommendedUpdateNotification:notificationCopy];
 }
 
 - (void)unscheduleRecommendedUpdateNotification
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 state];
-  [v4 setLastRecommendedUpdateVersion:0];
+  core = [(SUScanner *)self core];
+  state = [core state];
+  [state setLastRecommendedUpdateVersion:0];
 
-  v5 = [(SUScanner *)self core];
-  v6 = [v5 state];
-  [v6 setLastRecommendedUpdateInterval:0];
+  core2 = [(SUScanner *)self core];
+  state2 = [core2 state];
+  [state2 setLastRecommendedUpdateInterval:0];
 
-  v7 = [(SUScanner *)self core];
-  v8 = [v7 state];
-  [v8 setLastRecommendedUpdateDiscoveryDate:0];
+  core3 = [(SUScanner *)self core];
+  state3 = [core3 state];
+  [state3 setLastRecommendedUpdateDiscoveryDate:0];
 
-  v9 = [(SUScanner *)self core];
-  v10 = [v9 state];
-  [v10 save];
+  core4 = [(SUScanner *)self core];
+  state4 = [core4 state];
+  [state4 save];
 
   [(SUScanner *)self cancelTimerForRecommendedUpdateNotification];
 
   [(SUScanner *)self notifyClientForRecommendedUpdate:0 shouldPresent:0];
 }
 
-- (void)scheduleRecommendedUpdateFromResults:(id)a3
+- (void)scheduleRecommendedUpdateFromResults:(id)results
 {
-  v47 = [(SUScanner *)self recommendedDescriptor:a3];
-  v4 = [(SUScanner *)self core];
-  v5 = [v4 state];
-  v6 = [v5 lastRecommendedUpdateVersion];
+  v47 = [(SUScanner *)self recommendedDescriptor:results];
+  core = [(SUScanner *)self core];
+  state = [core state];
+  lastRecommendedUpdateVersion = [state lastRecommendedUpdateVersion];
 
-  v7 = [(SUScanner *)self core];
-  v8 = [v7 state];
-  v9 = [v8 lastRecommendedUpdateInterval];
+  core2 = [(SUScanner *)self core];
+  state2 = [core2 state];
+  lastRecommendedUpdateInterval = [state2 lastRecommendedUpdateInterval];
 
   if (v47)
   {
-    v17 = [v47 productVersion];
-    v25 = v17;
-    if (v6)
+    productVersion = [v47 productVersion];
+    v25 = productVersion;
+    if (lastRecommendedUpdateVersion)
     {
-      if ([v6 isEqual:v17])
+      if ([lastRecommendedUpdateVersion isEqual:productVersion])
       {
-        v26 = [v47 documentation];
-        v27 = [v26 recommendedUpdateNotificationFrequencyDays];
-        v28 = [v9 isEqual:v27];
+        documentation = [v47 documentation];
+        recommendedUpdateNotificationFrequencyDays = [documentation recommendedUpdateNotificationFrequencyDays];
+        v28 = [lastRecommendedUpdateInterval isEqual:recommendedUpdateNotificationFrequencyDays];
 
         if (v28)
         {
-          SULogInfo(@"Found same recommended update:%@", v29, v30, v31, v32, v33, v34, v35, v9);
+          SULogInfo(@"Found same recommended update:%@", v29, v30, v31, v32, v33, v34, v35, lastRecommendedUpdateInterval);
           [(SUScanner *)self setupTimerForRecommendedUpdateNotification:v47];
           goto LABEL_13;
         }
@@ -1287,25 +1287,25 @@ void __56__SUScanner_setupTimerForRecommendedUpdateNotification___block_invoke_3
       {
       }
 
-      v36 = [v47 productVersion];
-      v37 = [v47 documentation];
-      v46 = [v37 recommendedUpdateNotificationFrequencyDays];
-      SULogInfo(@"Found a different recommended update. Old is %@ - %@, new is %@ - %@", v38, v39, v40, v41, v42, v43, v44, v6);
+      productVersion2 = [v47 productVersion];
+      documentation2 = [v47 documentation];
+      recommendedUpdateNotificationFrequencyDays2 = [documentation2 recommendedUpdateNotificationFrequencyDays];
+      SULogInfo(@"Found a different recommended update. Old is %@ - %@, new is %@ - %@", v38, v39, v40, v41, v42, v43, v44, lastRecommendedUpdateVersion);
 
       [(SUScanner *)self unscheduleRecommendedUpdateNotification];
     }
 
     else
     {
-      SULogInfo(@"Found new recommended update:%@", v18, v19, v20, v21, v22, v23, v24, v17);
+      SULogInfo(@"Found new recommended update:%@", v18, v19, v20, v21, v22, v23, v24, productVersion);
     }
 
     [(SUScanner *)self scheduleRecommendedUpdateNotification:v47];
   }
 
-  else if (v6)
+  else if (lastRecommendedUpdateVersion)
   {
-    SULogInfo(@"Last recommended update was:%@, but no recommended update found", v10, v11, v12, v13, v14, v15, v16, v6);
+    SULogInfo(@"Last recommended update was:%@, but no recommended update found", v10, v11, v12, v13, v14, v15, v16, lastRecommendedUpdateVersion);
     [(SUScanner *)self unscheduleRecommendedUpdateNotification];
   }
 
@@ -1317,51 +1317,51 @@ void __56__SUScanner_setupTimerForRecommendedUpdateNotification___block_invoke_3
 LABEL_13:
 }
 
-+ (int)typeForCoreDescriptor:(id)a3
++ (int)typeForCoreDescriptor:(id)descriptor
 {
-  v3 = a3;
-  if ([v3 splatOnly])
+  descriptorCopy = descriptor;
+  if ([descriptorCopy splatOnly])
   {
     v4 = 4;
   }
 
   else
   {
-    v5 = [v3 updateType];
-    if (v5 >= 6)
+    updateType = [descriptorCopy updateType];
+    if (updateType >= 6)
     {
-      [v3 updateType];
+      [descriptorCopy updateType];
       SULogInfo(@"%s: unknown update type:%ld", v6, v7, v8, v9, v10, v11, v12, "+[SUScanner typeForCoreDescriptor:]");
       v4 = 0;
     }
 
     else
     {
-      v4 = dword_26ABF8EC0[v5];
+      v4 = dword_26ABF8EC0[updateType];
     }
   }
 
   return v4;
 }
 
-- (BOOL)lastScannedMatchScanOptions:(id)a3
+- (BOOL)lastScannedMatchScanOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SUScanner *)self preferredLastScannedCoreDescriptor];
-  v6 = [SUScanner typeForCoreDescriptor:v5];
+  optionsCopy = options;
+  preferredLastScannedCoreDescriptor = [(SUScanner *)self preferredLastScannedCoreDescriptor];
+  v6 = [SUScanner typeForCoreDescriptor:preferredLastScannedCoreDescriptor];
 
-  v7 = [(SUScanner *)self alternateLastScannedCoreDescriptor];
-  v8 = [SUScanner typeForCoreDescriptor:v7];
+  alternateLastScannedCoreDescriptor = [(SUScanner *)self alternateLastScannedCoreDescriptor];
+  v8 = [SUScanner typeForCoreDescriptor:alternateLastScannedCoreDescriptor];
 
-  v9 = [(SUScanner *)self preferredLastScannedCoreDescriptor];
-  v25 = [(SUScanner *)self alternateLastScannedCoreDescriptor];
+  preferredLastScannedCoreDescriptor2 = [(SUScanner *)self preferredLastScannedCoreDescriptor];
+  alternateLastScannedCoreDescriptor2 = [(SUScanner *)self alternateLastScannedCoreDescriptor];
   SULogInfo(@"%s: current scan options:%@ lastPreferred:%@ lastAlternate:%@", v10, v11, v12, v13, v14, v15, v16, "[SUScanner lastScannedMatchScanOptions:]");
 
-  v17 = [(SUScanner *)self preferredLastScannedCoreDescriptor];
-  if (v17)
+  preferredLastScannedCoreDescriptor3 = [(SUScanner *)self preferredLastScannedCoreDescriptor];
+  if (preferredLastScannedCoreDescriptor3)
   {
-    v18 = v17;
-    v19 = [v4 containsType:v6];
+    v18 = preferredLastScannedCoreDescriptor3;
+    v19 = [optionsCopy containsType:v6];
 
     if (!v19)
     {
@@ -1369,8 +1369,8 @@ LABEL_13:
     }
   }
 
-  v20 = [(SUScanner *)self alternateLastScannedCoreDescriptor];
-  if (v20 && (v21 = v20, v22 = [v4 containsType:v8], v21, !v22))
+  alternateLastScannedCoreDescriptor3 = [(SUScanner *)self alternateLastScannedCoreDescriptor];
+  if (alternateLastScannedCoreDescriptor3 && (v21 = alternateLastScannedCoreDescriptor3, v22 = [optionsCopy containsType:v8], v21, !v22))
   {
 LABEL_6:
     v23 = 0;
@@ -1384,23 +1384,23 @@ LABEL_6:
   return v23;
 }
 
-- (void)scanCompleted:(id)a3 alternateDescriptor:(id)a4 scanOptions:(id)a5 error:(id)a6
+- (void)scanCompleted:(id)completed alternateDescriptor:(id)descriptor scanOptions:(id)options error:(id)error
 {
   v287 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SUScanner *)self core];
-  v15 = [v14 workQueue];
-  dispatch_assert_queue_V2(v15);
+  completedCopy = completed;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
+  errorCopy = error;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v10 updateType] <= 2 && objc_msgSend(v11, "updateType") < 3)
+  if ([completedCopy updateType] <= 2 && objc_msgSend(descriptorCopy, "updateType") < 3)
   {
-    v23 = [(SUScanner *)self core];
-    v24 = [v23 state];
-    v25 = [MEMORY[0x277CBEAA8] date];
-    [v24 setLastScanDate:v25];
+    core2 = [(SUScanner *)self core];
+    state = [core2 state];
+    date = [MEMORY[0x277CBEAA8] date];
+    [state setLastScanDate:date];
   }
 
   else
@@ -1408,20 +1408,20 @@ LABEL_6:
     SULogInfo(@"Found emergency updates, not setting last scan date", v16, v17, v18, v19, v20, v21, v22, v258);
   }
 
-  v26 = [(SUScanner *)self activeScanTask];
-  v27 = [v26 didScanForType:4];
+  activeScanTask = [(SUScanner *)self activeScanTask];
+  v27 = [activeScanTask didScanForType:4];
 
-  v28 = [(SUScanner *)self activeScanTask];
-  v272 = v10;
-  if ([v28 didScanForType:0])
+  activeScanTask2 = [(SUScanner *)self activeScanTask];
+  v272 = completedCopy;
+  if ([activeScanTask2 didScanForType:0])
   {
     v29 = 1;
   }
 
   else
   {
-    v30 = [(SUScanner *)self activeScanTask];
-    if ([v30 didScanForType:2])
+    activeScanTask3 = [(SUScanner *)self activeScanTask];
+    if ([activeScanTask3 didScanForType:2])
     {
       v29 = 1;
     }
@@ -1429,92 +1429,92 @@ LABEL_6:
     else
     {
       [(SUScanner *)self activeScanTask];
-      v31 = v13;
-      v33 = v32 = v12;
+      v31 = errorCopy;
+      v33 = v32 = optionsCopy;
       v29 = [v33 didScanForType:1];
 
-      v12 = v32;
-      v13 = v31;
+      optionsCopy = v32;
+      errorCopy = v31;
     }
 
-    v10 = v272;
+    completedCopy = v272;
   }
 
   [(SUScanner *)self setScanning:0];
   [(SUScanner *)self setActiveScanTask:0];
-  if ([v10 isRevokedSplat])
+  if ([completedCopy isRevokedSplat])
   {
     SULogInfo(@"Found revoked splat update", v34, v35, v36, v37, v38, v39, v40, v258);
     v41 = [SUUtility errorWithCode:3];
 
-    v42 = [(SUScanner *)self core];
-    [v42 revokedUpdateFound:v10];
+    core3 = [(SUScanner *)self core];
+    [core3 revokedUpdateFound:completedCopy];
 
-    v13 = v41;
+    errorCopy = v41;
   }
 
-  v269 = v13;
-  if (!v13)
+  v269 = errorCopy;
+  if (!errorCopy)
   {
-    if ([(SUScanner *)self shouldPresentUpdate:v10 options:v12])
+    if ([(SUScanner *)self shouldPresentUpdate:completedCopy options:optionsCopy])
     {
-      if (![(SUScanner *)self shouldPresentUpdate:v11 options:v12])
+      if (![(SUScanner *)self shouldPresentUpdate:descriptorCopy options:optionsCopy])
       {
 LABEL_41:
 
         v75 = 0;
-        if (!v10)
+        if (!completedCopy)
         {
           v111 = 0;
           v121 = 1;
-          v11 = 0;
+          descriptorCopy = 0;
           v112 = 0;
           goto LABEL_132;
         }
 
-        v272 = v10;
-        v11 = 0;
+        v272 = completedCopy;
+        descriptorCopy = 0;
 LABEL_43:
-        v76 = [(SUScanner *)self core];
-        v77 = [v76 download];
+        core4 = [(SUScanner *)self core];
+        download = [core4 download];
 
-        v78 = [v77 progress];
-        v79 = [v78 isDone];
+        progress = [download progress];
+        isDone = [progress isDone];
 
-        v80 = [v77 progress];
-        v81 = [v80 phase];
+        progress2 = [download progress];
+        phase = [progress2 phase];
 
-        v271 = v79;
-        if (!v77)
+        v271 = isDone;
+        if (!download)
         {
           goto LABEL_60;
         }
 
         v89 = @"NO";
-        if (v79)
+        if (isDone)
         {
           v89 = @"YES";
         }
 
-        v261 = v81;
+        v261 = phase;
         SULogInfo(@"DownloadDone: %@ ProgressPhase: %@", v82, v83, v84, v85, v86, v87, v88, v89);
-        if (v79 && [(__CFString *)v81 isEqualToString:@"SUDownloadPhasePreparingForInstallation"])
+        if (isDone && [(__CFString *)phase isEqualToString:@"SUDownloadPhasePreparingForInstallation"])
         {
           SULogInfo(@"Scan found an update and a previously prepared update is present", v82, v83, v84, v85, v86, v87, v88, v258);
           if (+[SUUtility currentReleaseTypeIsInternal])
           {
-            v263 = v81;
+            v263 = phase;
             v90 = +[SUPreferences sharedInstance];
-            v91 = [v90 disablePurgeOnNewerUpdateFound];
+            disablePurgeOnNewerUpdateFound = [v90 disablePurgeOnNewerUpdateFound];
 
-            if (v91)
+            if (disablePurgeOnNewerUpdateFound)
             {
-              v92 = [(SUScanner *)self preferredLastScannedCoreDescriptor];
-              v93 = [(SUScanner *)self alternateLastScannedCoreDescriptor];
-              v75 = [[SUCoreScanResults alloc] initWithPreferredDescriptor:v92 alternateDescriptor:v93];
+              preferredLastScannedCoreDescriptor = [(SUScanner *)self preferredLastScannedCoreDescriptor];
+              alternateLastScannedCoreDescriptor = [(SUScanner *)self alternateLastScannedCoreDescriptor];
+              v75 = [[SUCoreScanResults alloc] initWithPreferredDescriptor:preferredLastScannedCoreDescriptor alternateDescriptor:alternateLastScannedCoreDescriptor];
               SULogInfo(@"Ignoring update located by scan due to existing prepared update (disablePurgeOnNewerUpdateFound is set)", v94, v95, v96, v97, v98, v99, v100, v259);
               v108 = @"Present";
-              if (v92)
+              if (preferredLastScannedCoreDescriptor)
               {
                 v109 = @"Present";
               }
@@ -1524,7 +1524,7 @@ LABEL_43:
                 v109 = @"nil";
               }
 
-              if (v93)
+              if (alternateLastScannedCoreDescriptor)
               {
                 v110 = @"Present";
               }
@@ -1549,16 +1549,16 @@ LABEL_43:
                 v111 = 1;
                 v112 = v272;
 LABEL_127:
-                v231 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                if (v231)
+                preferredDescriptor = [(SUCoreScanResults *)v75 preferredDescriptor];
+                if (preferredDescriptor)
                 {
                   v121 = 0;
                 }
 
                 else
                 {
-                  v232 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                  v121 = v232 == 0;
+                  alternateDescriptor = [(SUCoreScanResults *)v75 alternateDescriptor];
+                  v121 = alternateDescriptor == 0;
                 }
 
                 goto LABEL_132;
@@ -1572,11 +1572,11 @@ LABEL_127:
               v113 = 0;
             }
 
-            v81 = v263;
+            phase = v263;
 LABEL_62:
             v112 = v272;
-            v75 = [[SUCoreScanResults alloc] initWithPreferredDescriptor:v272 alternateDescriptor:v11];
-            if (!v77 || (v113 & 1) != 0 || ([v77 matchesScanResults:v75] & 1) != 0)
+            v75 = [[SUCoreScanResults alloc] initWithPreferredDescriptor:v272 alternateDescriptor:descriptorCopy];
+            if (!download || (v113 & 1) != 0 || ([download matchesScanResults:v75] & 1) != 0)
             {
               v279 = 0;
               v278 = 0;
@@ -1597,12 +1597,12 @@ LABEL_124:
 
                 v121 = 1;
 LABEL_132:
-                if (v29 & 1 | !v121 || [(SUScanner *)self lastScannedMatchScanOptions:v12])
+                if (v29 & 1 | !v121 || [(SUScanner *)self lastScannedMatchScanOptions:optionsCopy])
                 {
                   if ((v111 & 1) == 0)
                   {
                     [(SUScanner *)self setPreferredLastScannedCoreDescriptor:v112];
-                    [(SUScanner *)self setAlternateLastScannedCoreDescriptor:v11];
+                    [(SUScanner *)self setAlternateLastScannedCoreDescriptor:descriptorCopy];
                     SULogInfo(@"%s: Setting last scan descriptors, preferred:%@, alternate:%@", v240, v241, v242, v243, v244, v245, v246, "[SUScanner scanCompleted:alternateDescriptor:scanOptions:error:]");
                   }
                 }
@@ -1612,7 +1612,7 @@ LABEL_132:
                   SULogInfo(@"%s: scan for emergency or splat only update ended with no results and previous scan is not of the same type, ignore current scan result and keep the previous one", v233, v234, v235, v236, v237, v238, v239, "[SUScanner scanCompleted:alternateDescriptor:scanOptions:error:]");
                 }
 
-                v270 = v11;
+                v270 = descriptorCopy;
                 v272 = v112;
                 if (v121)
                 {
@@ -1631,11 +1631,11 @@ LABEL_132:
 
             else
             {
-              v131 = v81;
+              v131 = phase;
               SULogInfo(@"Update found was newer than curently download(ed|ing) update.  Attempting to cancel download.", v114, v115, v116, v117, v118, v119, v120, v259);
-              v132 = [(SUScanner *)self core];
+              core5 = [(SUScanner *)self core];
               v280 = 0;
-              v133 = [v132 killDownload:0 userRequested:0 keepDocAssets:1 forUpdates:v75 error:&v280];
+              v133 = [core5 killDownload:0 userRequested:0 keepDocAssets:1 forUpdates:v75 error:&v280];
               v134 = v280;
 
               if (v133)
@@ -1646,18 +1646,18 @@ LABEL_132:
               else
               {
                 SULogInfo(@"Unable to cancel download: %@", v135, v136, v137, v138, v139, v140, v141, v134);
-                v142 = [(SUScanner *)self core];
-                [v142 cleanupPreviousDownloadState];
+                core6 = [(SUScanner *)self core];
+                [core6 cleanupPreviousDownloadState];
               }
 
-              v143 = [(SUScanner *)self core];
-              [v143 updateInstallPolicyType:0];
+              core7 = [(SUScanner *)self core];
+              [core7 updateInstallPolicyType:0];
 
               v279 = 0;
               v278 = 0;
               v277 = 0;
               v112 = v272;
-              v81 = v131;
+              phase = v131;
             }
 
             if (![(SUScanner *)self scanResultsChangedSinceLastScan:v75 preferredUpdateNewlyDiscovered:&v279 + 1 alternateUpdateNewlyDiscovered:&v279 preferredUpdateChanged:&v278 + 1 alternateUpdateChanged:&v278 preferredWasAlternate:&v277 + 1 alternateWasPreferred:&v277, v261, v262])
@@ -1668,12 +1668,12 @@ LABEL_123:
             }
 
             [(SUScanner *)self setPreferredLastScannedCoreDescriptor:v112];
-            [(SUScanner *)self setAlternateLastScannedCoreDescriptor:v11];
+            [(SUScanner *)self setAlternateLastScannedCoreDescriptor:descriptorCopy];
             SULogInfo(@"%s: Setting last scan descriptors, preferred:%@, alternate:%@", v144, v145, v146, v147, v148, v149, v150, "[SUScanner scanCompleted:alternateDescriptor:scanOptions:error:]");
             if (HIBYTE(v278) == 1)
             {
-              v151 = [(SUCoreScanResults *)v75 preferredDescriptor];
-              v152 = (v151 != 0) & (HIBYTE(v277) ^ 1);
+              preferredDescriptor2 = [(SUCoreScanResults *)v75 preferredDescriptor];
+              v152 = (preferredDescriptor2 != 0) & (HIBYTE(v277) ^ 1);
 
               if ((v278 & 1) == 0)
               {
@@ -1681,49 +1681,49 @@ LABEL_123:
                 {
                   v153 = 0;
 LABEL_91:
-                  v162 = +[SUPreferences sharedInstance];
+                  core10 = +[SUPreferences sharedInstance];
                   v266 = v153;
-                  if ([v162 isAutoDownloadDisabled] && v153)
+                  if ([core10 isAutoDownloadDisabled] && v153)
                   {
                     v163 = [(SUScanner *)self scanResultIsUpToDateWithAlternate:v75];
 
                     if (v163)
                     {
 LABEL_96:
-                      v268 = [MEMORY[0x277CBEAA8] date];
-                      v165 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                      date2 = [MEMORY[0x277CBEAA8] date];
+                      preferredDescriptor3 = [(SUCoreScanResults *)v75 preferredDescriptor];
                       v166 = HIBYTE(v279);
 
-                      if (v165 && (v166 & 1) != 0)
+                      if (preferredDescriptor3 && (v166 & 1) != 0)
                       {
-                        v167 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                        [v167 productBuildVersion];
-                        v169 = v168 = v81;
-                        [(SUScanner *)self setDiscoveryDate:v268 forBuildVersion:v169];
+                        preferredDescriptor4 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                        [preferredDescriptor4 productBuildVersion];
+                        v169 = v168 = phase;
+                        [(SUScanner *)self setDiscoveryDate:date2 forBuildVersion:v169];
 
-                        v81 = v168;
+                        phase = v168;
                       }
 
-                      v170 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                      alternateDescriptor2 = [(SUCoreScanResults *)v75 alternateDescriptor];
                       v171 = v279;
 
                       v112 = v272;
-                      if (v170 && (v171 & 1) != 0)
+                      if (alternateDescriptor2 && (v171 & 1) != 0)
                       {
-                        v172 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                        [v172 productBuildVersion];
-                        v174 = v173 = v81;
-                        [(SUScanner *)self setDiscoveryDate:v268 forBuildVersion:v174];
+                        alternateDescriptor3 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                        [alternateDescriptor3 productBuildVersion];
+                        v174 = v173 = phase;
+                        [(SUScanner *)self setDiscoveryDate:date2 forBuildVersion:v174];
 
-                        v81 = v173;
+                        phase = v173;
                       }
 
-                      v175 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                      if (!v175 || (v176 = HIBYTE(v279), v177 = HIBYTE(v278), v175, (v176 & 1) == 0) && (v177 & 1) == 0)
+                      preferredDescriptor5 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                      if (!preferredDescriptor5 || (v176 = HIBYTE(v279), v177 = HIBYTE(v278), preferredDescriptor5, (v176 & 1) == 0) && (v177 & 1) == 0)
                       {
 LABEL_111:
-                        v202 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                        if (!v202)
+                        alternateDescriptor4 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                        if (!alternateDescriptor4)
                         {
                           goto LABEL_120;
                         }
@@ -1736,52 +1736,52 @@ LABEL_111:
                           goto LABEL_120;
                         }
 
-                        v265 = v81;
-                        v205 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                        v206 = v12;
-                        if ([v205 granularlyRamped])
+                        v265 = phase;
+                        alternateDescriptor5 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                        v206 = optionsCopy;
+                        if ([alternateDescriptor5 granularlyRamped])
                         {
                         }
 
                         else
                         {
-                          v207 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                          v208 = [v207 rampEnabled];
+                          alternateDescriptor6 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                          rampEnabled = [alternateDescriptor6 rampEnabled];
 
-                          if ((v208 & 1) == 0)
+                          if ((rampEnabled & 1) == 0)
                           {
-                            v220 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                            v221 = [v220 productBuildVersion];
-                            SULogInfo(@"[scanCompleted] %@ is fully unramped!", v222, v223, v224, v225, v226, v227, v228, v221);
+                            alternateDescriptor7 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                            productBuildVersion = [alternateDescriptor7 productBuildVersion];
+                            SULogInfo(@"[scanCompleted] %@ is fully unramped!", v222, v223, v224, v225, v226, v227, v228, productBuildVersion);
 
-                            v218 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                            v219 = [v218 productBuildVersion];
-                            [(SUScanner *)self setFullyUnrampedDate:v268 forBuildVersion:v219];
+                            alternateDescriptor8 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                            productBuildVersion2 = [alternateDescriptor8 productBuildVersion];
+                            [(SUScanner *)self setFullyUnrampedDate:date2 forBuildVersion:productBuildVersion2];
                             goto LABEL_119;
                           }
                         }
 
-                        v209 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                        v210 = [v209 productBuildVersion];
-                        SULogInfo(@"[scanCompleted] %@ is not fully unramped.", v211, v212, v213, v214, v215, v216, v217, v210);
+                        alternateDescriptor9 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                        productBuildVersion3 = [alternateDescriptor9 productBuildVersion];
+                        SULogInfo(@"[scanCompleted] %@ is not fully unramped.", v211, v212, v213, v214, v215, v216, v217, productBuildVersion3);
 
-                        v218 = [(SUCoreScanResults *)v75 alternateDescriptor];
-                        v219 = [v218 productBuildVersion];
-                        [(SUScanner *)self removeFullyUnrampedDateForBuildVersion:v219];
+                        alternateDescriptor8 = [(SUCoreScanResults *)v75 alternateDescriptor];
+                        productBuildVersion2 = [alternateDescriptor8 productBuildVersion];
+                        [(SUScanner *)self removeFullyUnrampedDateForBuildVersion:productBuildVersion2];
 LABEL_119:
 
-                        v12 = v206;
+                        optionsCopy = v206;
                         v112 = v272;
-                        v81 = v265;
+                        phase = v265;
 LABEL_120:
-                        [(SUScanner *)self setLastScannedDescriptorScanOptions:v12];
+                        [(SUScanner *)self setLastScannedDescriptorScanOptions:optionsCopy];
                         if (v266)
                         {
-                          v229 = [(SUScanner *)self core];
-                          [v229 reportOTAAvailableEvent:v75];
+                          core8 = [(SUScanner *)self core];
+                          [core8 reportOTAAvailableEvent:v75];
 
-                          v230 = [(SUScanner *)self core];
-                          [v230 reportCoreAnalyticsOTAAvailableEvent:v75];
+                          core9 = [(SUScanner *)self core];
+                          [core9 reportCoreAnalyticsOTAAvailableEvent:v75];
 
                           notify_post([@"com.apple.SoftwareUpdateServices.newUpdateFound" UTF8String]);
                         }
@@ -1789,49 +1789,49 @@ LABEL_120:
                         goto LABEL_123;
                       }
 
-                      v264 = v81;
-                      v178 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                      v179 = v12;
-                      if ([v178 granularlyRamped])
+                      v264 = phase;
+                      preferredDescriptor6 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                      v179 = optionsCopy;
+                      if ([preferredDescriptor6 granularlyRamped])
                       {
                       }
 
                       else
                       {
-                        v180 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                        v181 = [v180 rampEnabled];
+                        preferredDescriptor7 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                        rampEnabled2 = [preferredDescriptor7 rampEnabled];
 
-                        if ((v181 & 1) == 0)
+                        if ((rampEnabled2 & 1) == 0)
                         {
-                          v193 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                          v194 = [v193 productBuildVersion];
-                          SULogInfo(@"[scanCompleted] %@ is fully unramped.", v195, v196, v197, v198, v199, v200, v201, v194);
+                          preferredDescriptor8 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                          productBuildVersion4 = [preferredDescriptor8 productBuildVersion];
+                          SULogInfo(@"[scanCompleted] %@ is fully unramped.", v195, v196, v197, v198, v199, v200, v201, productBuildVersion4);
 
-                          v191 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                          v192 = [v191 productBuildVersion];
-                          [(SUScanner *)self setFullyUnrampedDate:v268 forBuildVersion:v192];
+                          preferredDescriptor9 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                          productBuildVersion5 = [preferredDescriptor9 productBuildVersion];
+                          [(SUScanner *)self setFullyUnrampedDate:date2 forBuildVersion:productBuildVersion5];
                           goto LABEL_110;
                         }
                       }
 
-                      v182 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                      v183 = [v182 productBuildVersion];
-                      SULogInfo(@"[scanCompleted] %@ is not fully unramped.", v184, v185, v186, v187, v188, v189, v190, v183);
+                      preferredDescriptor10 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                      productBuildVersion6 = [preferredDescriptor10 productBuildVersion];
+                      SULogInfo(@"[scanCompleted] %@ is not fully unramped.", v184, v185, v186, v187, v188, v189, v190, productBuildVersion6);
 
-                      v191 = [(SUCoreScanResults *)v75 preferredDescriptor];
-                      v192 = [v191 productBuildVersion];
-                      [(SUScanner *)self removeFullyUnrampedDateForBuildVersion:v192];
+                      preferredDescriptor9 = [(SUCoreScanResults *)v75 preferredDescriptor];
+                      productBuildVersion5 = [preferredDescriptor9 productBuildVersion];
+                      [(SUScanner *)self removeFullyUnrampedDateForBuildVersion:productBuildVersion5];
 LABEL_110:
 
-                      v12 = v179;
+                      optionsCopy = v179;
                       v112 = v272;
-                      v81 = v264;
+                      phase = v264;
                       goto LABEL_111;
                     }
 
-                    v162 = [(SUScanner *)self core];
+                    core10 = [(SUScanner *)self core];
                     v164 = [SUManagerEngine SUDescriptorFromCoreDescriptor:v272];
-                    [v162 badgeSettingsForManualSoftwareUpdate:v164];
+                    [core10 badgeSettingsForManualSoftwareUpdate:v164];
                   }
 
                   goto LABEL_96;
@@ -1851,8 +1851,8 @@ LABEL_110:
               }
             }
 
-            v154 = [(SUCoreScanResults *)v75 alternateDescriptor];
-            v153 = (v154 != 0) & (v277 ^ 1);
+            alternateDescriptor10 = [(SUCoreScanResults *)v75 alternateDescriptor];
+            v153 = (alternateDescriptor10 != 0) & (v277 ^ 1);
 
             if ((v152 & 1) == 0)
             {
@@ -1862,32 +1862,32 @@ LABEL_110:
             if (v153)
             {
 LABEL_85:
-              v155 = [(SUScanner *)self core];
-              if (([v155 isDownloading] & 1) == 0)
+              core11 = [(SUScanner *)self core];
+              if (([core11 isDownloading] & 1) == 0)
               {
-                v156 = v81;
-                v157 = [(SUScanner *)self core];
-                v158 = [v157 isUpdateDownloaded];
+                v156 = phase;
+                core12 = [(SUScanner *)self core];
+                isUpdateDownloaded = [core12 isUpdateDownloaded];
 
-                if (v158)
+                if (isUpdateDownloaded)
                 {
                   v153 = 1;
-                  v81 = v156;
+                  phase = v156;
                   goto LABEL_91;
                 }
 
-                v159 = [(SUScanner *)self core];
-                [v159 endAutoDownloadTasksAndResetState];
+                core13 = [(SUScanner *)self core];
+                [core13 endAutoDownloadTasksAndResetState];
 
-                v160 = [(SUScanner *)self core];
-                [v160 clearUnlockCallbacks];
+                core14 = [(SUScanner *)self core];
+                [core14 clearUnlockCallbacks];
 
-                v161 = [(SUScanner *)self core];
-                [v161 updateInstallPolicyType:0];
+                core15 = [(SUScanner *)self core];
+                [core15 updateInstallPolicyType:0];
 
-                v155 = [(SUScanner *)self core];
-                [v155 clearKeybagStash];
-                v81 = v156;
+                core11 = [(SUScanner *)self core];
+                [core11 clearKeybagStash];
+                phase = v156;
               }
 
 LABEL_90:
@@ -1897,8 +1897,8 @@ LABEL_90:
             }
 
 LABEL_84:
-            v155 = [(SUCoreScanResults *)v75 alternateDescriptor];
-            if (v155)
+            core11 = [(SUCoreScanResults *)v75 alternateDescriptor];
+            if (core11)
             {
               goto LABEL_90;
             }
@@ -1917,7 +1917,7 @@ LABEL_60:
         goto LABEL_62;
       }
 
-      if (v10)
+      if (completedCopy)
       {
         goto LABEL_43;
       }
@@ -1926,19 +1926,19 @@ LABEL_60:
     else
     {
 
-      if (![(SUScanner *)self shouldPresentUpdate:v11 options:v12])
+      if (![(SUScanner *)self shouldPresentUpdate:descriptorCopy options:optionsCopy])
       {
-        v10 = 0;
+        completedCopy = 0;
         goto LABEL_41;
       }
     }
 
-    v10 = v11;
+    completedCopy = descriptorCopy;
     goto LABEL_41;
   }
 
-  v43 = [SUUtility translateError:v13];
-  if ([v12 isSplatOnlyScan] && objc_msgSend(v43, "isCatalogNotFound"))
+  v43 = [SUUtility translateError:errorCopy];
+  if ([optionsCopy isSplatOnlyScan] && objc_msgSend(v43, "isCatalogNotFound"))
   {
     SULogInfo(@"Scanning for splat update, catalog not found: %@", v44, v45, v46, v47, v48, v49, v50, v43);
     v51 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:3 userInfo:0];
@@ -1946,17 +1946,17 @@ LABEL_60:
     v43 = v51;
   }
 
-  v270 = v11;
+  v270 = descriptorCopy;
   if ([v43 code] == 3)
   {
-    if ([v12 isEmergencyOnlyScan])
+    if ([optionsCopy isEmergencyOnlyScan])
     {
       v66 = @"No emergency update found";
     }
 
     else
     {
-      if (![v12 ignoreNoUpdateFoundResult])
+      if (![optionsCopy ignoreNoUpdateFoundResult])
       {
         SULogInfo(@"Device is up to date", v59, v60, v61, v62, v63, v64, v65, v258);
         [(SUScanner *)self setPreferredLastScannedCoreDescriptor:0];
@@ -1967,11 +1967,11 @@ LABEL_60:
           [(SUScanner *)self scheduleRecommendedUpdateFromResults:0];
         }
 
-        v129 = [(SUScanner *)self core];
-        [v129 deviceIsUpToDateForSU:v29 forSplat:v27];
+        core16 = [(SUScanner *)self core];
+        [core16 deviceIsUpToDateForSU:v29 forSplat:v27];
 
-        v130 = [(SUScanner *)self core];
-        [v130 dismissInsufficientDiskSpaceFollowupForUpdate:0 orForce:1];
+        core17 = [(SUScanner *)self core];
+        [core17 dismissInsufficientDiskSpaceFollowupForUpdate:0 orForce:1];
 
         goto LABEL_71;
       }
@@ -1985,7 +1985,7 @@ LABEL_71:
     goto LABEL_140;
   }
 
-  v267 = v12;
+  v267 = optionsCopy;
   SULogInfo(@"Error scanning for update: %@", v52, v53, v54, v55, v56, v57, v58, v43);
   v283 = 0u;
   v284 = 0u;
@@ -2006,9 +2006,9 @@ LABEL_71:
           objc_enumerationMutation(v67);
         }
 
-        v72 = [*(*(&v281 + 1) + 8 * i) options];
-        v73 = [v72 identifier];
-        v74 = [v73 isEqualToString:@"com.apple.softwareupdate.autoscan"];
+        options = [*(*(&v281 + 1) + 8 * i) options];
+        identifier = [options identifier];
+        v74 = [identifier isEqualToString:@"com.apple.softwareupdate.autoscan"];
 
         if ((v74 & 1) == 0)
         {
@@ -2031,7 +2031,7 @@ LABEL_71:
 LABEL_34:
 
   v75 = 0;
-  v12 = v267;
+  optionsCopy = v267;
 LABEL_140:
   v275 = 0u;
   v276 = 0u;
@@ -2064,38 +2064,38 @@ LABEL_140:
     while (v249);
   }
 
-  [(SUScanner *)self notifyScanDidComplete:v75 options:v12 error:v43];
-  v253 = [(SUScanner *)self core];
-  v254 = v253;
+  [(SUScanner *)self notifyScanDidComplete:v75 options:optionsCopy error:v43];
+  core18 = [(SUScanner *)self core];
+  v254 = core18;
   if (v43)
   {
-    [v253 donateSUErrorToBiome:v43];
+    [core18 donateSUErrorToBiome:v43];
   }
 
   else
   {
-    [v253 donateSuccessToBiomeFor:@"Scan"];
+    [core18 donateSuccessToBiomeFor:@"Scan"];
   }
 
-  v255 = [(SUScanner *)self core];
-  v256 = [v255 state];
-  [v256 save];
+  core19 = [(SUScanner *)self core];
+  state2 = [core19 state];
+  [state2 save];
 
   [(NSMutableArray *)self->_scanRequests removeAllObjects];
   v257 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)scanResultsChangedSinceLastScan:(id)a3 preferredUpdateNewlyDiscovered:(BOOL *)a4 alternateUpdateNewlyDiscovered:(BOOL *)a5 preferredUpdateChanged:(BOOL *)a6 alternateUpdateChanged:(BOOL *)a7 preferredWasAlternate:(BOOL *)a8 alternateWasPreferred:(BOOL *)a9
+- (BOOL)scanResultsChangedSinceLastScan:(id)scan preferredUpdateNewlyDiscovered:(BOOL *)discovered alternateUpdateNewlyDiscovered:(BOOL *)newlyDiscovered preferredUpdateChanged:(BOOL *)changed alternateUpdateChanged:(BOOL *)updateChanged preferredWasAlternate:(BOOL *)alternate alternateWasPreferred:(BOOL *)preferred
 {
-  v11 = a3;
-  v12 = [v11 preferredDescriptor];
+  scanCopy = scan;
+  preferredDescriptor = [scanCopy preferredDescriptor];
 
-  if (v12)
+  if (preferredDescriptor)
   {
     discoveryDateManager = self->_discoveryDateManager;
-    v21 = [v11 preferredDescriptor];
-    v22 = [v21 productBuildVersion];
-    v23 = [(SUUpdateDiscoveryDateManager *)discoveryDateManager containsBuildVersion:v22];
+    preferredDescriptor2 = [scanCopy preferredDescriptor];
+    productBuildVersion = [preferredDescriptor2 productBuildVersion];
+    v23 = [(SUUpdateDiscoveryDateManager *)discoveryDateManager containsBuildVersion:productBuildVersion];
 
     if (!v23)
     {
@@ -2103,8 +2103,8 @@ LABEL_140:
     }
 
     v31 = !v23;
-    v32 = [v11 preferredDescriptor];
-    v33 = [v32 isEqualToDescriptor:self->_preferredLastScannedCoreDescriptor];
+    preferredDescriptor3 = [scanCopy preferredDescriptor];
+    v33 = [preferredDescriptor3 isEqualToDescriptor:self->_preferredLastScannedCoreDescriptor];
 
     if (v33)
     {
@@ -2113,8 +2113,8 @@ LABEL_140:
       goto LABEL_14;
     }
 
-    v37 = [v11 preferredDescriptor];
-    v35 = [v37 isEqualToDescriptor:self->_alternateLastScannedCoreDescriptor];
+    preferredDescriptor4 = [scanCopy preferredDescriptor];
+    v35 = [preferredDescriptor4 isEqualToDescriptor:self->_alternateLastScannedCoreDescriptor];
 
     if (v35)
     {
@@ -2144,14 +2144,14 @@ LABEL_12:
   v34 = 0;
   LOBYTE(v35) = 0;
 LABEL_14:
-  v38 = [v11 alternateDescriptor];
+  alternateDescriptor = [scanCopy alternateDescriptor];
 
-  if (v38)
+  if (alternateDescriptor)
   {
     v46 = self->_discoveryDateManager;
-    v47 = [v11 alternateDescriptor];
-    v48 = [v47 productBuildVersion];
-    v49 = [(SUUpdateDiscoveryDateManager *)v46 containsBuildVersion:v48];
+    alternateDescriptor2 = [scanCopy alternateDescriptor];
+    productBuildVersion2 = [alternateDescriptor2 productBuildVersion];
+    v49 = [(SUUpdateDiscoveryDateManager *)v46 containsBuildVersion:productBuildVersion2];
 
     if (!v49)
     {
@@ -2159,8 +2159,8 @@ LABEL_14:
     }
 
     v57 = !v49;
-    v58 = [v11 alternateDescriptor];
-    v59 = [v58 isEqualToDescriptor:self->_alternateLastScannedCoreDescriptor];
+    alternateDescriptor3 = [scanCopy alternateDescriptor];
+    v59 = [alternateDescriptor3 isEqualToDescriptor:self->_alternateLastScannedCoreDescriptor];
 
     if (v59)
     {
@@ -2169,8 +2169,8 @@ LABEL_14:
       goto LABEL_27;
     }
 
-    v63 = [v11 alternateDescriptor];
-    v61 = [v63 isEqualToDescriptor:self->_preferredLastScannedCoreDescriptor];
+    alternateDescriptor4 = [scanCopy alternateDescriptor];
+    v61 = [alternateDescriptor4 isEqualToDescriptor:self->_preferredLastScannedCoreDescriptor];
 
     if (v61)
     {
@@ -2200,34 +2200,34 @@ LABEL_25:
   v60 = 0;
   LOBYTE(v61) = 0;
 LABEL_27:
-  if (a8)
+  if (alternate)
   {
-    *a8 = v35;
+    *alternate = v35;
   }
 
-  if (a9)
+  if (preferred)
   {
-    *a9 = v61;
+    *preferred = v61;
   }
 
-  if (a4)
+  if (discovered)
   {
-    *a4 = v31;
+    *discovered = v31;
   }
 
-  if (a5)
+  if (newlyDiscovered)
   {
-    *a5 = v57;
+    *newlyDiscovered = v57;
   }
 
-  if (a6)
+  if (changed)
   {
-    *a6 = v34;
+    *changed = v34;
   }
 
-  if (a7)
+  if (updateChanged)
   {
-    *a7 = v60;
+    *updateChanged = v60;
   }
 
   SULogInfo(@"scanResultsChangedSinceLastScan: pc=%d, ac=%d, pwa=%d, awp=%d, pnd=%d, and=%d", v39, v40, v41, v42, v43, v44, v45, v34);
@@ -2235,25 +2235,25 @@ LABEL_27:
   return (v61 | v35 | v34 | v60 | (v31 || v57)) & 1;
 }
 
-- (BOOL)scanResultIsUpToDateWithAlternate:(id)a3
+- (BOOL)scanResultIsUpToDateWithAlternate:(id)alternate
 {
-  v3 = a3;
-  v4 = [v3 preferredDescriptor];
-  if (v4)
+  alternateCopy = alternate;
+  preferredDescriptor = [alternateCopy preferredDescriptor];
+  if (preferredDescriptor)
   {
-    v5 = [v3 alternateDescriptor];
-    if (v5)
+    alternateDescriptor = [alternateCopy alternateDescriptor];
+    if (alternateDescriptor)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [v3 preferredDescriptor];
-      if ([v7 promoteAlternateUpdate])
+      preferredDescriptor2 = [alternateCopy preferredDescriptor];
+      if ([preferredDescriptor2 promoteAlternateUpdate])
       {
-        v8 = [v3 preferredDescriptor];
-        v6 = [v8 descriptorAudienceType] == 1;
+        preferredDescriptor3 = [alternateCopy preferredDescriptor];
+        v6 = [preferredDescriptor3 descriptorAudienceType] == 1;
       }
 
       else
@@ -2273,41 +2273,41 @@ LABEL_27:
 
 - (void)_doScanForUpdates
 {
-  v3 = [(SUScanner *)self activeScanTask];
+  activeScanTask = [(SUScanner *)self activeScanTask];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __30__SUScanner__doScanForUpdates__block_invoke;
   v4[3] = &unk_279CAC210;
   v4[4] = self;
-  [v3 scanForSUAssetWithCompletion:v4];
+  [activeScanTask scanForSUAssetWithCompletion:v4];
 }
 
-- (void)scanForUpdates:(id)a3 complete:(id)a4
+- (void)scanForUpdates:(id)updates complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUScanner *)self core];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  updatesCopy = updates;
+  completeCopy = complete;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __37__SUScanner_scanForUpdates_complete___block_invoke;
   v71[3] = &unk_279CAC238;
   v71[4] = self;
-  v10 = v7;
+  v10 = completeCopy;
   v72 = v10;
   v11 = MEMORY[0x26D668B30](v71);
-  if (!v6)
+  if (!updatesCopy)
   {
     v14 = 22;
     goto LABEL_12;
   }
 
-  v12 = [(SUScanner *)self core];
-  v13 = [v12 isInstalling];
+  core2 = [(SUScanner *)self core];
+  isInstalling = [core2 isInstalling];
 
-  if (v13)
+  if (isInstalling)
   {
     v14 = 14;
 LABEL_12:
@@ -2316,9 +2316,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([v6 clientIsBuddy] & 1) != 0 || -[SUScanner isBuddyRunning](self, "isBuddyRunning"))
+  if (([updatesCopy clientIsBuddy] & 1) != 0 || -[SUScanner isBuddyRunning](self, "isBuddyRunning"))
   {
-    if ([v6 isSplatOnlyScan])
+    if ([updatesCopy isSplatOnlyScan])
     {
       SULogInfo(@"%s: don't scan for splats for buddy", v15, v16, v17, v18, v19, v20, v21, "[SUScanner scanForUpdates:complete:]");
       v14 = 3;
@@ -2326,8 +2326,8 @@ LABEL_12:
     }
 
     SULogInfo(@"%s: client is buddy or buddy is running; disable splombo and psus for this scan", v15, v16, v17, v18, v19, v20, v21, "[SUScanner scanForUpdates:complete:]");
-    [v6 setDisableSplatCombo:1];
-    [v6 setDisablePreSoftwareUpdateStaging:1];
+    [updatesCopy setDisableSplatCombo:1];
+    [updatesCopy setDisablePreSoftwareUpdateStaging:1];
   }
 
   if (+[SUUtility isReturnToServiceModeActive])
@@ -2337,23 +2337,23 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([v6 clientIsInboxUpdaterd])
+  if ([updatesCopy clientIsInboxUpdaterd])
   {
     SULogInfo(@"%s: client is inboxupdaterd; disable splombo and psus for this scan", v30, v31, v32, v33, v34, v35, v36, "[SUScanner scanForUpdates:complete:]");
-    [v6 setDisableSplatCombo:1];
-    [v6 setDisablePreSoftwareUpdateStaging:1];
+    [updatesCopy setDisableSplatCombo:1];
+    [updatesCopy setDisablePreSoftwareUpdateStaging:1];
   }
 
   v37 = +[SUPreferences sharedInstance];
-  v38 = [v37 disableSplombo];
+  disableSplombo = [v37 disableSplombo];
 
-  if (v38)
+  if (disableSplombo)
   {
     SULogInfo(@"%s: Splombo is disabled", v39, v40, v41, v42, v43, v44, v45, "[SUScanner scanForUpdates:complete:]");
-    [v6 setDisableSplatCombo:1];
+    [updatesCopy setDisableSplatCombo:1];
   }
 
-  if ([v6 clientIsBuddy])
+  if ([updatesCopy clientIsBuddy])
   {
     SULogInfo(@"%s: skipping network check because this is buddy", v46, v47, v48, v49, v50, v51, v52, "[SUScanner scanForUpdates:complete:]");
   }
@@ -2361,9 +2361,9 @@ LABEL_12:
   else
   {
     v53 = +[SUNetworkMonitor sharedInstance];
-    v54 = [v53 currentNetworkType];
+    currentNetworkType = [v53 currentNetworkType];
 
-    if (!v54)
+    if (!currentNetworkType)
     {
       SULogInfo(@"network unavailable canceling scan", v55, v56, v57, v58, v59, v60, v61, v64);
       v14 = 26;
@@ -2378,22 +2378,22 @@ LABEL_12:
   v69[4] = self;
   v70 = v10;
   v62 = MEMORY[0x26D668B30](v69);
-  if ([v6 clientIsDDM])
+  if ([updatesCopy clientIsDDM])
   {
-    (v62)[2](v62, v6);
+    (v62)[2](v62, updatesCopy);
   }
 
   else
   {
-    v63 = [(SUScanner *)self core];
+    core3 = [(SUScanner *)self core];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __37__SUScanner_scanForUpdates_complete___block_invoke_4;
     v65[3] = &unk_279CAC288;
-    v66 = v6;
+    v66 = updatesCopy;
     v67 = v11;
     v68 = v62;
-    [v63 amendManagedScanOptions:v66 withResponse:v65];
+    [core3 amendManagedScanOptions:v66 withResponse:v65];
   }
 
   v29 = v70;
@@ -2493,17 +2493,17 @@ void __37__SUScanner_scanForUpdates_complete___block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)handleActiveScanTaskDocumentationFor:(id)a3 withOptions:(id)a4 withSelectedDescriptorCompletion:(id)a5
+- (void)handleActiveScanTaskDocumentationFor:(id)for withOptions:(id)options withSelectedDescriptorCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  optionsCopy = options;
+  completionCopy = completion;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy__12;
   v41 = __Block_byref_object_dispose__12;
-  v42 = [v8 objectForKeyedSubscript:@"Primary"];
+  v42 = [forCopy objectForKeyedSubscript:@"Primary"];
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x3032000000;
@@ -2513,11 +2513,11 @@ void __37__SUScanner_scanForUpdates_complete___block_invoke_4(uint64_t a1)
   if ([(SUScanner *)self _coreDescriptorFailedPatching:v38[5]])
   {
     v11 = +[SUPreferences sharedInstance];
-    v12 = [v11 disableFullReplacementFallback];
+    disableFullReplacementFallback = [v11 disableFullReplacementFallback];
 
-    if ((v12 & 1) == 0)
+    if ((disableFullReplacementFallback & 1) == 0)
     {
-      v13 = [v8 objectForKeyedSubscript:@"Secondary"];
+      v13 = [forCopy objectForKeyedSubscript:@"Secondary"];
       v14 = v38[5];
       v38[5] = v13;
     }
@@ -2528,28 +2528,28 @@ void __37__SUScanner_scanForUpdates_complete___block_invoke_4(uint64_t a1)
   {
     v28 = 0;
 LABEL_17:
-    v10[2](v10, v28, 0);
+    completionCopy[2](completionCopy, v28, 0);
     goto LABEL_18;
   }
 
-  v16 = [v15 documentation];
+  documentation = [v15 documentation];
 
-  if (v16)
+  if (documentation)
   {
 LABEL_16:
     v28 = v38[5];
     goto LABEL_17;
   }
 
-  if ([v9 clientIsBuddy])
+  if ([optionsCopy clientIsBuddy])
   {
     v17 = +[SUNetworkMonitor sharedInstance];
     if ([v17 isBootstrap])
     {
       v18 = +[SUNetworkMonitor sharedInstance];
-      v19 = [v18 isPathSatisfied];
+      isPathSatisfied = [v18 isPathSatisfied];
 
-      if (!v19)
+      if (!isPathSatisfied)
       {
         v27 = @"Skip loading documentation for buddy on bootstrap network";
 LABEL_15:
@@ -2563,13 +2563,13 @@ LABEL_15:
     }
   }
 
-  if (([v9 collectDocumentation] & 1) == 0)
+  if (([optionsCopy collectDocumentation] & 1) == 0)
   {
     v27 = @"Skip loading documentation (directed by options)";
     goto LABEL_15;
   }
 
-  v29 = [(SUScanner *)self activeScanTask];
+  activeScanTask = [(SUScanner *)self activeScanTask];
   v30 = v38[5];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -2578,8 +2578,8 @@ LABEL_15:
   v33 = v35;
   v34 = &v37;
   v31[4] = self;
-  v32 = v10;
-  [v29 scanForDocumentationAssetWithDescriptor:v30 completion:v31];
+  v32 = completionCopy;
+  [activeScanTask scanForDocumentationAssetWithDescriptor:v30 completion:v31];
 
 LABEL_18:
   _Block_object_dispose(v35, 8);
@@ -2627,34 +2627,34 @@ LABEL_6:
   dispatch_async(v13, block);
 }
 
-- (void)handleActiveScanTaskScanCompletionWithPreferredPrimaryDescriptor:(id)a3 preferredSecondaryDescriptor:(id)a4 alternatePrimaryDescriptor:(id)a5 alternateSecondaryDescriptor:(id)a6 scanOptions:(id)a7 error:(id)a8
+- (void)handleActiveScanTaskScanCompletionWithPreferredPrimaryDescriptor:(id)descriptor preferredSecondaryDescriptor:(id)secondaryDescriptor alternatePrimaryDescriptor:(id)primaryDescriptor alternateSecondaryDescriptor:(id)alternateSecondaryDescriptor scanOptions:(id)options error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(SUScanner *)self core];
-  v21 = [v20 workQueue];
+  descriptorCopy = descriptor;
+  secondaryDescriptorCopy = secondaryDescriptor;
+  primaryDescriptorCopy = primaryDescriptor;
+  alternateSecondaryDescriptorCopy = alternateSecondaryDescriptor;
+  optionsCopy = options;
+  errorCopy = error;
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __181__SUScanner_handleActiveScanTaskScanCompletionWithPreferredPrimaryDescriptor_preferredSecondaryDescriptor_alternatePrimaryDescriptor_alternateSecondaryDescriptor_scanOptions_error___block_invoke;
   block[3] = &unk_279CAC350;
-  v29 = v19;
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = self;
-  v35 = v18;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
-  v27 = v19;
-  dispatch_async(v21, block);
+  v29 = errorCopy;
+  v30 = descriptorCopy;
+  v31 = secondaryDescriptorCopy;
+  v32 = primaryDescriptorCopy;
+  v33 = alternateSecondaryDescriptorCopy;
+  selfCopy = self;
+  v35 = optionsCopy;
+  v22 = optionsCopy;
+  v23 = alternateSecondaryDescriptorCopy;
+  v24 = primaryDescriptorCopy;
+  v25 = secondaryDescriptorCopy;
+  v26 = descriptorCopy;
+  v27 = errorCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __181__SUScanner_handleActiveScanTaskScanCompletionWithPreferredPrimaryDescriptor_preferredSecondaryDescriptor_alternatePrimaryDescriptor_alternateSecondaryDescriptor_scanOptions_error___block_invoke(void *a1)
@@ -2788,71 +2788,71 @@ void __181__SUScanner_handleActiveScanTaskScanCompletionWithPreferredPrimaryDesc
   [*(a1 + 32) _handleScannedPreferredDescriptor:*(*(*(a1 + 48) + 8) + 40) alternateDescriptor:v15 scanOptions:*(a1 + 40) error:v19];
 }
 
-- (id)_handleDescriptor:(id)a3 forRequestedBuild:(id)a4
+- (id)_handleDescriptor:(id)descriptor forRequestedBuild:(id)build
 {
-  v5 = a3;
-  v6 = a4;
-  v14 = v6;
-  if (v5 && v6)
+  descriptorCopy = descriptor;
+  buildCopy = build;
+  v14 = buildCopy;
+  if (descriptorCopy && buildCopy)
   {
-    v15 = [v5 associatedSplatDescriptor];
+    associatedSplatDescriptor = [descriptorCopy associatedSplatDescriptor];
 
-    if (v15)
+    if (associatedSplatDescriptor)
     {
       v16 = +[SUPreferences sharedInstance];
-      v17 = [v16 overrideSplatComboBuildVersion];
+      overrideSplatComboBuildVersion = [v16 overrideSplatComboBuildVersion];
 
-      if (v17)
+      if (overrideSplatComboBuildVersion)
       {
         SULogDebug(@"%s: Override the build version of the splat combo to %@", v18, v19, v20, v21, v22, v23, v24, "[SUScanner _handleDescriptor:forRequestedBuild:]");
       }
 
       else
       {
-        v34 = [v5 associatedSplatDescriptor];
-        v17 = [v34 productBuildVersion];
+        associatedSplatDescriptor2 = [descriptorCopy associatedSplatDescriptor];
+        overrideSplatComboBuildVersion = [associatedSplatDescriptor2 productBuildVersion];
       }
 
       v35 = MEMORY[0x277CCACA8];
-      v36 = [v5 productBuildVersion];
-      v37 = [v35 stringWithFormat:@"(%@ + %@)", v36, v17];
+      productBuildVersion = [descriptorCopy productBuildVersion];
+      v37 = [v35 stringWithFormat:@"(%@ + %@)", productBuildVersion, overrideSplatComboBuildVersion];
 
-      if ([v17 isEqualToString:v14])
+      if ([overrideSplatComboBuildVersion isEqualToString:v14])
       {
         SULogInfo(@"%s: Found a splombo update %@ and it matches the requested build version %@; keep it", v38, v39, v40, v41, v42, v43, v44, "[SUScanner _handleDescriptor:forRequestedBuild:]");
       }
 
       else
       {
-        v45 = [v5 productBuildVersion];
-        v46 = [v45 isEqualToString:v14];
+        productBuildVersion2 = [descriptorCopy productBuildVersion];
+        v46 = [productBuildVersion2 isEqualToString:v14];
 
         if (v46)
         {
           SULogInfo(@"%s: Found a splombo update %@ and only the normal update matches the requested build version %@; remove the associated splat", v47, v48, v49, v50, v51, v52, v53, "[SUScanner _handleDescriptor:forRequestedBuild:]");
-          [v5 setAssociatedSplatDescriptor:0];
+          [descriptorCopy setAssociatedSplatDescriptor:0];
         }
 
         else
         {
           SULogInfo(@"%s: Found a splombo update %@ but it doesn't match the requested build version %@; ignore it", v47, v48, v49, v50, v51, v52, v53, "[SUScanner _handleDescriptor:forRequestedBuild:]");
 
-          v5 = 0;
+          descriptorCopy = 0;
         }
       }
     }
 
     else
     {
-      v25 = [v5 productBuildVersion];
-      v26 = [v25 isEqualToString:v14];
+      productBuildVersion3 = [descriptorCopy productBuildVersion];
+      v26 = [productBuildVersion3 isEqualToString:v14];
 
       if ((v26 & 1) == 0)
       {
-        v55 = [v5 productBuildVersion];
+        productBuildVersion4 = [descriptorCopy productBuildVersion];
         SULogInfo(@"%s: Found an update %@ but it doesn't match the requested build version %@; ignore it", v27, v28, v29, v30, v31, v32, v33, "[SUScanner _handleDescriptor:forRequestedBuild:]");
 
-        v5 = 0;
+        descriptorCopy = 0;
       }
     }
   }
@@ -2862,70 +2862,70 @@ void __181__SUScanner_handleActiveScanTaskScanCompletionWithPreferredPrimaryDesc
     SULogDebug(@"%s: invalid parameters", v7, v8, v9, v10, v11, v12, v13, "[SUScanner _handleDescriptor:forRequestedBuild:]");
   }
 
-  return v5;
+  return descriptorCopy;
 }
 
-- (void)_handleScannedPreferredDescriptor:(id)a3 alternateDescriptor:(id)a4 scanOptions:(id)a5 error:(id)a6
+- (void)_handleScannedPreferredDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor scanOptions:(id)options error:(id)error
 {
-  v55 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v55 humanReadableUpdateName];
-  v54 = [v10 humanReadableUpdateName];
-  SULogDebug(@"Scan found preferred descriptor {%@} and alternate descriptor {%@}\nwith error %@\nfor scan options %@", v14, v15, v16, v17, v18, v19, v20, v13);
+  descriptorCopy = descriptor;
+  alternateDescriptorCopy = alternateDescriptor;
+  optionsCopy = options;
+  errorCopy = error;
+  humanReadableUpdateName = [descriptorCopy humanReadableUpdateName];
+  humanReadableUpdateName2 = [alternateDescriptorCopy humanReadableUpdateName];
+  SULogDebug(@"Scan found preferred descriptor {%@} and alternate descriptor {%@}\nwith error %@\nfor scan options %@", v14, v15, v16, v17, v18, v19, v20, humanReadableUpdateName);
 
-  if (![v11 scanForSplatIfNecessary])
+  if (![optionsCopy scanForSplatIfNecessary])
   {
     goto LABEL_19;
   }
 
-  v28 = [(SUScanner *)self activeScanTask];
-  v29 = [v28 didScanForType:4];
+  activeScanTask = [(SUScanner *)self activeScanTask];
+  v29 = [activeScanTask didScanForType:4];
 
   if ([(SUScanner *)self isBuddyRunning])
   {
-    v30 = 1;
+    clientIsBuddy = 1;
   }
 
   else
   {
-    v30 = [v11 clientIsBuddy];
+    clientIsBuddy = [optionsCopy clientIsBuddy];
   }
 
-  v31 = [v11 scanType];
-  v32 = [v12 isUpToDate];
-  if (v31 != 2)
+  scanType = [optionsCopy scanType];
+  isUpToDate = [errorCopy isUpToDate];
+  if (scanType != 2)
   {
-    if (!v32 || ![v11 MDMShowRapidSecurityResponse] || (objc_msgSend(v11, "isPMVRequested") & 1) != 0 || ((objc_msgSend(v11, "isEmergencyOnlyScan") | v29 | v30) & 1) != 0)
+    if (!isUpToDate || ![optionsCopy MDMShowRapidSecurityResponse] || (objc_msgSend(optionsCopy, "isPMVRequested") & 1) != 0 || ((objc_msgSend(optionsCopy, "isEmergencyOnlyScan") | v29 | clientIsBuddy) & 1) != 0)
     {
       goto LABEL_19;
     }
 
-    [v11 clearTypes];
-    [v11 addType:4];
+    [optionsCopy clearTypes];
+    [optionsCopy addType:4];
 LABEL_16:
     SULogInfo(@"%s - will rescan for updates with options %@", v40, v41, v42, v43, v44, v45, v46, "[SUScanner _handleScannedPreferredDescriptor:alternateDescriptor:scanOptions:error:]");
     [(SUScanner *)self _doScanForUpdates];
     goto LABEL_20;
   }
 
-  if ((v32 & 1) != 0 || ([v12 noMatchingUpdateFound] & 1) != 0 || objc_msgSend(v11, "isSplatOnlyScan") && objc_msgSend(v12, "isCatalogNotFound"))
+  if ((isUpToDate & 1) != 0 || ([errorCopy noMatchingUpdateFound] & 1) != 0 || objc_msgSend(optionsCopy, "isSplatOnlyScan") && objc_msgSend(errorCopy, "isCatalogNotFound"))
   {
-    if ((v29 | v30))
+    if ((v29 | clientIsBuddy))
     {
-      [v11 setRequestedBuild:0];
-      [v11 setRequestedPMV:0];
-      [v11 clearTypes];
-      [v11 setScanType:0];
+      [optionsCopy setRequestedBuild:0];
+      [optionsCopy setRequestedPMV:0];
+      [optionsCopy clearTypes];
+      [optionsCopy setScanType:0];
       SULogInfo(@"%s - [DDM] Fall back to a scan for regular updates", v33, v34, v35, v36, v37, v38, v39, "[SUScanner _handleScannedPreferredDescriptor:alternateDescriptor:scanOptions:error:]");
     }
 
     else
     {
-      [v11 setRequestedPMV:0];
-      [v11 clearTypes];
-      [v11 addType:4];
+      [optionsCopy setRequestedPMV:0];
+      [optionsCopy clearTypes];
+      [optionsCopy addType:4];
       SULogInfo(@"%s - [DDM] Fall back to a scan for Splat updates", v47, v48, v49, v50, v51, v52, v53, "[SUScanner _handleScannedPreferredDescriptor:alternateDescriptor:scanOptions:error:]");
     }
 
@@ -2934,38 +2934,38 @@ LABEL_16:
 
 LABEL_19:
   SULogInfo(@"%s - will not rescan for updates", v21, v22, v23, v24, v25, v26, v27, "[SUScanner _handleScannedPreferredDescriptor:alternateDescriptor:scanOptions:error:]");
-  [(SUScanner *)self scanCompleted:v55 alternateDescriptor:v10 scanOptions:v11 error:v12];
+  [(SUScanner *)self scanCompleted:descriptorCopy alternateDescriptor:alternateDescriptorCopy scanOptions:optionsCopy error:errorCopy];
 LABEL_20:
 }
 
-- (id)stringForScanPriority:(int64_t)a3
+- (id)stringForScanPriority:(int64_t)priority
 {
-  if (a3 > 5)
+  if (priority > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279CAC3B0[a3];
+    return off_279CAC3B0[priority];
   }
 }
 
-- (BOOL)_coreDescriptorFailedPatching:(id)a3
+- (BOOL)_coreDescriptorFailedPatching:(id)patching
 {
-  v4 = a3;
-  v5 = [v4 productBuildVersion];
-  v6 = [v4 prerequisiteBuild];
+  patchingCopy = patching;
+  productBuildVersion = [patchingCopy productBuildVersion];
+  prerequisiteBuild = [patchingCopy prerequisiteBuild];
 
-  if (v6)
+  if (prerequisiteBuild)
   {
-    v14 = [(SUScanner *)self core];
-    v15 = [v14 state];
-    v16 = [v15 failedPatchBuildVersions];
+    core = [(SUScanner *)self core];
+    state = [core state];
+    failedPatchBuildVersions = [state failedPatchBuildVersions];
 
-    if (v16 && [v16 count])
+    if (failedPatchBuildVersions && [failedPatchBuildVersions count])
     {
-      v24 = [v16 containsObject:v5];
+      v24 = [failedPatchBuildVersions containsObject:productBuildVersion];
       SULogInfo(@"%s: buildVer = %@, failedPatchBuildVersions = %@, should fall back: %d", v25, v26, v27, v28, v29, v30, v31, "[SUScanner _coreDescriptorFailedPatching:]");
     }
 
@@ -2985,9 +2985,9 @@ LABEL_20:
   return v24;
 }
 
-- (id)descriptorToAutoDownload:(id)a3
+- (id)descriptorToAutoDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   if ([(SUScanner *)self isBuddyRunning])
   {
     SULogInfo(@"%s - Null due to Buddy running", v5, v6, v7, v8, v9, v10, v11, "[SUScanner descriptorToAutoDownload:]");
@@ -2995,45 +2995,45 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  v13 = [v4 preferredDescriptor];
-  v14 = [v4 alternateDescriptor];
-  v15 = [(SUScanner *)self core];
-  v16 = [v15 isDescriptorAutoDownloadable:v13];
+  preferredDescriptor = [downloadCopy preferredDescriptor];
+  alternateDescriptor = [downloadCopy alternateDescriptor];
+  core = [(SUScanner *)self core];
+  v16 = [core isDescriptorAutoDownloadable:preferredDescriptor];
 
   if (!v16)
   {
     goto LABEL_10;
   }
 
-  if (v14 || [v13 audienceType] != 1 || !objc_msgSend(v13, "promoteAlternateUpdate"))
+  if (alternateDescriptor || [preferredDescriptor audienceType] != 1 || !objc_msgSend(preferredDescriptor, "promoteAlternateUpdate"))
   {
-    v24 = [(SUScanner *)self core];
-    v25 = [v24 isDescriptorAutoUpdatable:v13];
+    core2 = [(SUScanner *)self core];
+    v25 = [core2 isDescriptorAutoUpdatable:preferredDescriptor];
 
     if (v25)
     {
       SULogInfo(@"%s - Preferred update is auto updatable", v26, v27, v28, v29, v30, v31, v32, "[SUScanner descriptorToAutoDownload:]");
 LABEL_18:
-      v44 = v13;
+      v44 = preferredDescriptor;
 LABEL_21:
       v12 = v44;
       goto LABEL_22;
     }
 
 LABEL_10:
-    v33 = [(SUScanner *)self core];
-    v34 = [v33 isDescriptorAutoDownloadable:v14];
+    core3 = [(SUScanner *)self core];
+    v34 = [core3 isDescriptorAutoDownloadable:alternateDescriptor];
 
     if (v34)
     {
-      v42 = [(SUScanner *)self core];
-      v43 = [v42 isDescriptorAutoUpdatable:v14];
+      core4 = [(SUScanner *)self core];
+      v43 = [core4 isDescriptorAutoUpdatable:alternateDescriptor];
 
       if (v43)
       {
         SULogInfo(@"%s - Alternate update is auto updatable", v35, v36, v37, v38, v39, v40, v41, "[SUScanner descriptorToAutoDownload:]");
 LABEL_20:
-        v44 = v14;
+        v44 = alternateDescriptor;
         goto LABEL_21;
       }
 
@@ -3066,9 +3066,9 @@ LABEL_23:
 
 - (id)descriptorToAutoDownload
 {
-  v3 = [(SUScanner *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  core = [(SUScanner *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = [SUManagerEngine SUDescriptorFromCoreDescriptor:self->_preferredLastScannedCoreDescriptor];
   v6 = [SUManagerEngine SUDescriptorFromCoreDescriptor:self->_alternateLastScannedCoreDescriptor];
@@ -3081,9 +3081,9 @@ LABEL_23:
 - (BOOL)isBuddyRunning
 {
   v2 = +[SUPreferences sharedInstance];
-  v3 = [v2 buddyInitiatedScan];
+  buddyInitiatedScan = [v2 buddyInitiatedScan];
 
-  if (v3)
+  if (buddyInitiatedScan)
   {
     SULogInfo(@"%s: Overriding result to YES by SUBuddyInitiatedScan", v4, v5, v6, v7, v8, v9, v10, "[SUScanner isBuddyRunning]");
     LOBYTE(v11) = 1;
@@ -3130,14 +3130,14 @@ LABEL_23:
 
     else
     {
-      v27 = [v18 currentState];
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v27, "taskState")}];
+      currentState = [v18 currentState];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(currentState, "taskState")}];
       v11 = [&unk_287B6F868 containsObject:v28];
 
       if (v11)
       {
         v36 = [v18 pid];
-        [v27 taskState];
+        [currentState taskState];
         SULogInfo(@"Buddy is running: pid = %d, state = %d", v37, v38, v39, v40, v41, v42, v43, v36);
       }
 
@@ -3160,9 +3160,9 @@ LABEL_23:
 
 - (void)isBuddyRunning
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getBYSetupAssistantBundleIdentifier(void)"];
-  [v0 handleFailureInFunction:v1 file:@"SUScanner.m" lineNumber:47 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SUScanner.m" lineNumber:47 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

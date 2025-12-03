@@ -26,13 +26,13 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(VSAccountAuthentication *)self username];
-  v6 = [v4 stringWithFormat:@"%@ = %@", @"username", v5];
+  username = [(VSAccountAuthentication *)self username];
+  v6 = [v4 stringWithFormat:@"%@ = %@", @"username", username];
   [v3 addObject:v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(VSAccountAuthentication *)self authenticationToken];
-  v9 = [v7 stringWithFormat:@"%@ = %@", @"authenticationToken", v8];
+  authenticationToken = [(VSAccountAuthentication *)self authenticationToken];
+  v9 = [v7 stringWithFormat:@"%@ = %@", @"authenticationToken", authenticationToken];
   [v3 addObject:v9];
 
   v10 = MEMORY[0x277CCACA8];

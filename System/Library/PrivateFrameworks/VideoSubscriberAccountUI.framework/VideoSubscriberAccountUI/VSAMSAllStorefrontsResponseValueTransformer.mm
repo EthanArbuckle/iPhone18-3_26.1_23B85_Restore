@@ -1,18 +1,18 @@
 @interface VSAMSAllStorefrontsResponseValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSAMSAllStorefrontsResponseValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v3;
+    v28 = valueCopy;
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Handling response %@", buf, 0xCu);
   }
 
@@ -20,12 +20,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 ratingsStoreFronts];
+    ratingsStoreFronts = [valueCopy ratingsStoreFronts];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v7 = [ratingsStoreFronts countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -36,21 +36,21 @@
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(ratingsStoreFronts);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
           v12 = objc_alloc_init(VSStorefront);
-          v13 = [v11 storeFrontID];
-          [(VSStorefront *)v12 setIdentitifer:v13];
+          storeFrontID = [v11 storeFrontID];
+          [(VSStorefront *)v12 setIdentitifer:storeFrontID];
 
-          v14 = [v11 name];
-          [(VSStorefront *)v12 setDisplayName:v14];
+          name = [v11 name];
+          [(VSStorefront *)v12 setDisplayName:name];
 
           [v5 addObject:v12];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v8 = [ratingsStoreFronts countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v8);
@@ -59,10 +59,10 @@
 
   else
   {
-    v6 = VSErrorLogObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    ratingsStoreFronts = VSErrorLogObject();
+    if (os_log_type_enabled(ratingsStoreFronts, OS_LOG_TYPE_ERROR))
     {
-      [(VSAMSAllStorefrontsResponseValueTransformer *)v3 transformedValue:v6];
+      [(VSAMSAllStorefrontsResponseValueTransformer *)valueCopy transformedValue:ratingsStoreFronts];
     }
   }
 

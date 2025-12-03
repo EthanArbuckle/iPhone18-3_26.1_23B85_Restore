@@ -1,46 +1,46 @@
 @interface FTRegConnectionHandler
 - (BOOL)_isServiceSupported;
-- (BOOL)connectToDaemon:(BOOL)a3;
+- (BOOL)connectToDaemon:(BOOL)daemon;
 - (BOOL)isConnectedToDaemon;
-- (FTRegConnectionHandler)initWithServiceType:(int64_t)a3 name:(id)a4 capabilities:(unsigned int)a5;
+- (FTRegConnectionHandler)initWithServiceType:(int64_t)type name:(id)name capabilities:(unsigned int)capabilities;
 - (NSString)_serviceName;
 - (void)_disconnectFromDaemon;
-- (void)_handleDaemonConnected:(id)a3;
-- (void)_handleDaemonDisconnected:(id)a3;
+- (void)_handleDaemonConnected:(id)connected;
+- (void)_handleDaemonDisconnected:(id)disconnected;
 - (void)_startListeningForNotifications;
 - (void)_stopListeningForNotifications;
 - (void)dealloc;
-- (void)setCaps:(unsigned int)a3;
+- (void)setCaps:(unsigned int)caps;
 @end
 
 @implementation FTRegConnectionHandler
 
-- (FTRegConnectionHandler)initWithServiceType:(int64_t)a3 name:(id)a4 capabilities:(unsigned int)a5
+- (FTRegConnectionHandler)initWithServiceType:(int64_t)type name:(id)name capabilities:(unsigned int)capabilities
 {
-  v8 = a4;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = FTRegConnectionHandler;
   v9 = [(FTRegConnectionHandler *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    v9->_serviceType = a3;
-    v11 = [v8 copy];
+    v9->_serviceType = type;
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    v10->_caps = a5;
-    v13 = FTCServiceNameForServiceType();
-    if (!v13)
+    v10->_caps = capabilities;
+    type = FTCServiceNameForServiceType();
+    if (!type)
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", a3];
+      type = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", type];
     }
 
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.ft.reg.connection.%@.%@", v13, v10->_name];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.ft.reg.connection.%@.%@", type, v10->_name];
     listenerID = v10->_listenerID;
     v10->_listenerID = v14;
 
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"ConnectionHandler(%@|%@)", v13, v10->_name];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"ConnectionHandler(%@|%@)", type, v10->_name];
     logName = v10->_logName;
     v10->_logName = v16;
 
@@ -71,9 +71,9 @@
 {
   if ((*&self->_handlerFlags & 1) == 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
-    [v3 addObserver:self selector:sel__handleDaemonDisconnected_ name:*MEMORY[0x277D18CE8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
+    [defaultCenter addObserver:self selector:sel__handleDaemonDisconnected_ name:*MEMORY[0x277D18CE8] object:0];
     *&self->_handlerFlags |= 1u;
   }
 }
@@ -82,51 +82,51 @@
 {
   if (*&self->_handlerFlags)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CE8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE8] object:0];
     *&self->_handlerFlags &= ~1u;
   }
 }
 
-- (void)setCaps:(unsigned int)a3
+- (void)setCaps:(unsigned int)caps
 {
-  if (self->_caps != a3)
+  if (self->_caps != caps)
   {
-    self->_caps = a3;
+    self->_caps = caps;
     [(FTRegConnectionHandler *)self connectToDaemon];
   }
 }
 
 - (BOOL)_isServiceSupported
 {
-  v3 = [MEMORY[0x277D07DB0] sharedInstance];
-  v4 = [(FTRegConnectionHandler *)self serviceType];
-  if (v4)
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  serviceType = [(FTRegConnectionHandler *)self serviceType];
+  if (serviceType)
   {
-    if (v4 == 2)
+    if (serviceType == 2)
     {
-      v5 = [v3 callingAvailable];
+      callingAvailable = [mEMORY[0x277D07DB0] callingAvailable];
     }
 
     else
     {
-      if (v4 != 1)
+      if (serviceType != 1)
       {
         v6 = 0;
         goto LABEL_9;
       }
 
-      v5 = [v3 iMessageAvailable];
+      callingAvailable = [mEMORY[0x277D07DB0] iMessageAvailable];
     }
   }
 
   else
   {
-    v5 = [v3 faceTimeAvailable];
+    callingAvailable = [mEMORY[0x277D07DB0] faceTimeAvailable];
   }
 
-  v6 = v5;
+  v6 = callingAvailable;
 LABEL_9:
 
   return v6;
@@ -134,12 +134,12 @@ LABEL_9:
 
 - (BOOL)isConnectedToDaemon
 {
-  v3 = [MEMORY[0x277D18D68] sharedInstance];
-  if ([v3 isConnected])
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  if ([mEMORY[0x277D18D68] isConnected])
   {
-    v4 = [MEMORY[0x277D18D68] sharedInstance];
-    v5 = [(FTRegConnectionHandler *)self _listenerID];
-    v6 = [v4 hasListenerForID:v5];
+    mEMORY[0x277D18D68]2 = [MEMORY[0x277D18D68] sharedInstance];
+    _listenerID = [(FTRegConnectionHandler *)self _listenerID];
+    v6 = [mEMORY[0x277D18D68]2 hasListenerForID:_listenerID];
   }
 
   else
@@ -150,16 +150,16 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)connectToDaemon:(BOOL)a3
+- (BOOL)connectToDaemon:(BOOL)daemon
 {
-  v3 = a3;
+  daemonCopy = daemon;
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(FTRegConnectionHandler *)self _isServiceSupported];
+  _isServiceSupported = [(FTRegConnectionHandler *)self _isServiceSupported];
   v6 = csui_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v3)
+    if (daemonCopy)
     {
       v7 = @"YES";
     }
@@ -169,47 +169,47 @@ LABEL_9:
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "Connecting to daemon if necessary - blocking:%@", &v18, 0xCu);
   }
 
-  if (!v5)
+  if (!_isServiceSupported)
   {
-    v15 = csui_log();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x277D18D68]3 = csui_log();
+    if (os_log_type_enabled(mEMORY[0x277D18D68]3, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v18) = 0;
-      _os_log_impl(&dword_243BE5000, v15, OS_LOG_TYPE_DEFAULT, "  => Not supported on this device, not connecting", &v18, 2u);
+      _os_log_impl(&dword_243BE5000, mEMORY[0x277D18D68]3, OS_LOG_TYPE_DEFAULT, "  => Not supported on this device, not connecting", &v18, 2u);
     }
 
     goto LABEL_14;
   }
 
-  v8 = [MEMORY[0x277D18D68] sharedInstance];
-  v9 = [(FTRegConnectionHandler *)self _listenerID];
-  v10 = [v8 hasListenerForID:v9];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  _listenerID = [(FTRegConnectionHandler *)self _listenerID];
+  v10 = [mEMORY[0x277D18D68] hasListenerForID:_listenerID];
 
   if ((v10 & 1) == 0)
   {
     v11 = csui_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(FTRegConnectionHandler *)self _listenerID];
+      _listenerID2 = [(FTRegConnectionHandler *)self _listenerID];
       v18 = 138412290;
-      v19 = v12;
+      v19 = _listenerID2;
       _os_log_impl(&dword_243BE5000, v11, OS_LOG_TYPE_DEFAULT, "  => Adding listener for the first time: %@", &v18, 0xCu);
     }
   }
 
-  v13 = [MEMORY[0x277D18D68] sharedInstance];
-  v14 = [(FTRegConnectionHandler *)self _listenerID];
-  [v13 addListenerID:v14 capabilities:{-[FTRegConnectionHandler caps](self, "caps")}];
+  mEMORY[0x277D18D68]2 = [MEMORY[0x277D18D68] sharedInstance];
+  _listenerID3 = [(FTRegConnectionHandler *)self _listenerID];
+  [mEMORY[0x277D18D68]2 addListenerID:_listenerID3 capabilities:{-[FTRegConnectionHandler caps](self, "caps")}];
 
-  if (v3)
+  if (daemonCopy)
   {
-    v15 = [MEMORY[0x277D18D68] sharedInstance];
-    [v15 blockUntilConnected];
+    mEMORY[0x277D18D68]3 = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68]3 blockUntilConnected];
 LABEL_14:
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v5;
+  return _isServiceSupported;
 }
 
 - (void)_disconnectFromDaemon
@@ -218,20 +218,20 @@ LABEL_14:
   v3 = csui_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FTRegConnectionHandler *)self _listenerID];
+    _listenerID = [(FTRegConnectionHandler *)self _listenerID];
     v8 = 138412290;
-    v9 = v4;
+    v9 = _listenerID;
     _os_log_impl(&dword_243BE5000, v3, OS_LOG_TYPE_DEFAULT, "Removing listener: %@", &v8, 0xCu);
   }
 
-  v5 = [MEMORY[0x277D18D68] sharedInstance];
-  v6 = [(FTRegConnectionHandler *)self _listenerID];
-  [v5 removeListenerID:v6];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  _listenerID2 = [(FTRegConnectionHandler *)self _listenerID];
+  [mEMORY[0x277D18D68] removeListenerID:_listenerID2];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDaemonConnected:(id)a3
+- (void)_handleDaemonConnected:(id)connected
 {
   v3 = csui_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -241,7 +241,7 @@ LABEL_14:
   }
 }
 
-- (void)_handleDaemonDisconnected:(id)a3
+- (void)_handleDaemonDisconnected:(id)disconnected
 {
   v3 = csui_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

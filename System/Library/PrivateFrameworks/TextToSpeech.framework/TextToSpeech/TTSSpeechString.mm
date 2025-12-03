@@ -1,57 +1,57 @@
 @interface TTSSpeechString
-- (BOOL)_rangeIsValid:(_NSRange)a3;
-- (BOOL)encapsulateSubstringAtRange:(_NSRange)a3 withPrefix:(id)a4 andSuffix:(id)a5;
-- (BOOL)insertAtLocation:(unint64_t)a3 string:(id)a4;
-- (BOOL)transformRange:(_NSRange)a3 to:(id)a4;
+- (BOOL)_rangeIsValid:(_NSRange)valid;
+- (BOOL)encapsulateSubstringAtRange:(_NSRange)range withPrefix:(id)prefix andSuffix:(id)suffix;
+- (BOOL)insertAtLocation:(unint64_t)location string:(id)string;
+- (BOOL)transformRange:(_NSRange)range to:(id)to;
 - (NSString)defrostedTransformedString;
 - (NSString)transformedString;
-- (TTSSpeechString)initWithOriginalString:(id)a3;
-- (TTSSpeechString)initWithParentSpeechString:(id)a3;
-- (TTSSpeechString)initWithSSMLString:(id)a3;
-- (_NSRange)_translateRangeInTransformedString:(_NSRange)a3 withParent:(id)a4;
-- (_NSRange)translateRangeInTransformedString:(_NSRange)a3;
+- (TTSSpeechString)initWithOriginalString:(id)string;
+- (TTSSpeechString)initWithParentSpeechString:(id)string;
+- (TTSSpeechString)initWithSSMLString:(id)string;
+- (_NSRange)_translateRangeInTransformedString:(_NSRange)string withParent:(id)parent;
+- (_NSRange)translateRangeInTransformedString:(_NSRange)string;
 - (id)_transformedStringNonMutating;
 - (id)xmlEscaped;
 - (id)xmlUnescaped;
-- (void)_insertTransformation:(id)a3 forEncapsulatedTerminator:(BOOL)a4;
-- (void)replaceOccurencesOfString:(id)a3 withString:(id)a4;
+- (void)_insertTransformation:(id)transformation forEncapsulatedTerminator:(BOOL)terminator;
+- (void)replaceOccurencesOfString:(id)string withString:(id)withString;
 @end
 
 @implementation TTSSpeechString
 
-- (TTSSpeechString)initWithParentSpeechString:(id)a3
+- (TTSSpeechString)initWithParentSpeechString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v29.receiver = self;
   v29.super_class = TTSSpeechString;
   v10 = [(TTSSpeechString *)&v29 init];
   if (v10)
   {
-    v11 = objc_msgSend_transformedString(v5, v6, v7, v8, v9);
+    v11 = objc_msgSend_transformedString(stringCopy, v6, v7, v8, v9);
     v16 = objc_msgSend_copy(v11, v12, v13, v14, v15);
     originalString = v10->_originalString;
     v10->_originalString = v16;
 
-    objc_storeStrong(&v10->_parentString, a3);
+    objc_storeStrong(&v10->_parentString, string);
     v22 = objc_msgSend_array(MEMORY[0x1E695DF70], v18, v19, v20, v21);
     transformations = v10->_transformations;
     v10->_transformations = v22;
 
-    v10->_type = objc_msgSend_type(v5, v24, v25, v26, v27);
+    v10->_type = objc_msgSend_type(stringCopy, v24, v25, v26, v27);
   }
 
   return v10;
 }
 
-- (TTSSpeechString)initWithOriginalString:(id)a3
+- (TTSSpeechString)initWithOriginalString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v19.receiver = self;
   v19.super_class = TTSSpeechString;
   v9 = [(TTSSpeechString *)&v19 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(stringCopy, v5, v6, v7, v8);
     originalString = v9->_originalString;
     v9->_originalString = v10;
 
@@ -65,19 +65,19 @@
   return v9;
 }
 
-- (TTSSpeechString)initWithSSMLString:(id)a3
+- (TTSSpeechString)initWithSSMLString:(id)string
 {
-  result = objc_msgSend_initWithOriginalString_(self, a2, a3, v3, v4);
+  result = objc_msgSend_initWithOriginalString_(self, a2, string, v3, v4);
   result->_type = 1;
   return result;
 }
 
-- (void)replaceOccurencesOfString:(id)a3 withString:(id)a4
+- (void)replaceOccurencesOfString:(id)string withString:(id)withString
 {
-  v6 = a4;
-  v7 = a3;
+  withStringCopy = withString;
+  stringCopy = string;
   v12 = objc_msgSend_sharedInstance(TTSRegexCache, v8, v9, v10, v11);
-  v16 = objc_msgSend_regexForString_(v12, v13, v7, v14, v15);
+  v16 = objc_msgSend_regexForString_(v12, v13, stringCopy, v14, v15);
 
   v21 = objc_msgSend_originalString(self, v17, v18, v19, v20);
   v26 = objc_msgSend_originalString(self, v22, v23, v24, v25);
@@ -87,17 +87,17 @@
   v34[2] = sub_1A9369AA0;
   v34[3] = &unk_1E7880530;
   v34[4] = self;
-  v35 = v6;
-  v32 = v6;
+  v35 = withStringCopy;
+  v32 = withStringCopy;
   objc_msgSend_enumerateMatchesInString_options_range_usingBlock_(v16, v33, v21, 2, 0, v31, v34);
 }
 
-- (BOOL)transformRange:(_NSRange)a3 to:(id)a4
+- (BOOL)transformRange:(_NSRange)range to:(id)to
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  toCopy = to;
   if (objc_msgSend__rangeIsValid_(self, v8, location, length, v9))
   {
     v34 = 0u;
@@ -142,7 +142,7 @@
     }
 
     v25 = [TTSStringTransformation alloc];
-    v14 = objc_msgSend_initWithRange_andReplacement_(v25, v26, location, length, v7);
+    v14 = objc_msgSend_initWithRange_andReplacement_(v25, v26, location, length, toCopy);
     objc_msgSend__insertTransformation_forEncapsulatedTerminator_(self, v27, v14, 0, v28);
     v29 = 1;
 LABEL_13:
@@ -157,40 +157,40 @@ LABEL_13:
   return v29;
 }
 
-- (BOOL)insertAtLocation:(unint64_t)a3 string:(id)a4
+- (BOOL)insertAtLocation:(unint64_t)location string:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   v11 = objc_msgSend_originalString(self, v7, v8, v9, v10);
   v16 = objc_msgSend_length(v11, v12, v13, v14, v15);
 
-  if (v16 >= a3)
+  if (v16 >= location)
   {
     v17 = [TTSStringTransformation alloc];
-    v19 = objc_msgSend_initWithRange_andReplacement_(v17, v18, a3, 0, v6);
+    v19 = objc_msgSend_initWithRange_andReplacement_(v17, v18, location, 0, stringCopy);
     objc_msgSend__insertTransformation_forEncapsulatedTerminator_(self, v20, v19, 0, v21);
   }
 
-  return v16 >= a3;
+  return v16 >= location;
 }
 
-- (BOOL)encapsulateSubstringAtRange:(_NSRange)a3 withPrefix:(id)a4 andSuffix:(id)a5
+- (BOOL)encapsulateSubstringAtRange:(_NSRange)range withPrefix:(id)prefix andSuffix:(id)suffix
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  prefixCopy = prefix;
+  suffixCopy = suffix;
   IsValid = objc_msgSend__rangeIsValid_(self, v11, location, length, v12);
   if (IsValid)
   {
-    if (objc_msgSend_length(v9, v13, v14, v15, v16))
+    if (objc_msgSend_length(prefixCopy, v13, v14, v15, v16))
     {
-      objc_msgSend_insertAtLocation_string_(self, v18, location, v9, v21);
+      objc_msgSend_insertAtLocation_string_(self, v18, location, prefixCopy, v21);
     }
 
-    if (objc_msgSend_length(v10, v18, v19, v20, v21))
+    if (objc_msgSend_length(suffixCopy, v18, v19, v20, v21))
     {
       v22 = [TTSStringTransformation alloc];
-      v24 = objc_msgSend_initWithRange_andReplacement_(v22, v23, location + length, 0, v10);
+      v24 = objc_msgSend_initWithRange_andReplacement_(v22, v23, location + length, 0, suffixCopy);
       objc_msgSend__insertTransformation_forEncapsulatedTerminator_(self, v25, v24, 1, v26);
     }
   }
@@ -198,11 +198,11 @@ LABEL_13:
   return IsValid;
 }
 
-- (_NSRange)translateRangeInTransformedString:(_NSRange)a3
+- (_NSRange)translateRangeInTransformedString:(_NSRange)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = objc_msgSend_parentString(self, a2, a3.location, a3.length, v3);
+  length = string.length;
+  location = string.location;
+  v7 = objc_msgSend_parentString(self, a2, string.location, string.length, v3);
   v9 = objc_msgSend__translateRangeInTransformedString_withParent_(self, v8, location, length, v7);
   v11 = v10;
 
@@ -213,12 +213,12 @@ LABEL_13:
   return result;
 }
 
-- (_NSRange)_translateRangeInTransformedString:(_NSRange)a3 withParent:(id)a4
+- (_NSRange)_translateRangeInTransformedString:(_NSRange)string withParent:(id)parent
 {
-  length = a3.length;
-  location = a3.location;
+  length = string.length;
+  location = string.location;
   v110 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  parentCopy = parent;
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
@@ -232,7 +232,7 @@ LABEL_13:
     v24 = v19;
     v25 = 0;
     v26 = *v106;
-    v104 = v7;
+    v104 = parentCopy;
     while (2)
     {
       for (i = 0; i != v24; ++i)
@@ -252,7 +252,7 @@ LABEL_13:
         {
           v42 = objc_msgSend_range(v28, v33.length, v30, v31, v32);
           length = v40;
-          v7 = v104;
+          parentCopy = v104;
           if (v104)
           {
             v43 = objc_msgSend_translateRangeInTransformedString_(v104, v40, v42, v40, v41);
@@ -277,7 +277,7 @@ LABEL_26:
 
         if (!v39)
         {
-          v7 = v104;
+          parentCopy = v104;
           goto LABEL_19;
         }
 
@@ -309,7 +309,7 @@ LABEL_26:
             v83 = v49.location;
           }
 
-          v7 = v104;
+          parentCopy = v104;
           v84 = objc_msgSend_parentString(self, v78, v79, v80, v81);
           v86 = objc_msgSend__translateRangeInTransformedString_withParent_(self, v85, v83, v82, v84);
           v88 = v87;
@@ -335,7 +335,7 @@ LABEL_25:
       }
 
       v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v20, &v105, v109, 16);
-      v7 = v104;
+      parentCopy = v104;
       if (v24)
       {
         continue;
@@ -353,9 +353,9 @@ LABEL_25:
 LABEL_19:
 
   v42 = location - v25;
-  if (v7)
+  if (parentCopy)
   {
-    v42 = objc_msgSend_translateRangeInTransformedString_(v7, v45, location - v25, length, v46);
+    v42 = objc_msgSend_translateRangeInTransformedString_(parentCopy, v45, location - v25, length, v46);
     length = v47;
   }
 
@@ -452,7 +452,7 @@ LABEL_27:
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v115 = self;
+    selfCopy = self;
     obj = objc_msgSend_transformations(self, v14, v15, v16, v17);
     v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v18, &v120, v125, 16);
     if (v19)
@@ -477,7 +477,7 @@ LABEL_27:
           v36 = objc_msgSend_replacement(v29, v31, v33, v34, v35);
           v13 = objc_msgSend_stringByReplacingCharactersInRange_withString_(v28, v37, v30, v32, v36);
 
-          v42 = objc_msgSend_originalString(v115, v38, v39, v40, v41);
+          v42 = objc_msgSend_originalString(selfCopy, v38, v39, v40, v41);
           v47 = objc_msgSend_length(v42, v43, v44, v45, v46);
           v52 = objc_msgSend_range(v29, v48, v49, v50, v51);
           objc_msgSend_range(v29, v53, v54, v55, v56);
@@ -500,7 +500,7 @@ LABEL_27:
     v119 = 0u;
     v116 = 0u;
     v117 = 0u;
-    v70 = objc_msgSend_transformations(v115, v66, v67, v68, v69);
+    v70 = objc_msgSend_transformations(selfCopy, v66, v67, v68, v69);
     v72 = objc_msgSend_countByEnumeratingWithState_objects_count_(v70, v71, &v116, v124, 16);
     if (v72)
     {
@@ -532,11 +532,11 @@ LABEL_27:
       while (v77);
     }
 
-    v110 = v115->_transformedString;
-    v115->_transformedString = v13;
+    v110 = selfCopy->_transformedString;
+    selfCopy->_transformedString = v13;
     v111 = v13;
 
-    v6 = v115->_transformedString;
+    v6 = selfCopy->_transformedString;
   }
 
   v112 = *MEMORY[0x1E69E9840];
@@ -544,16 +544,16 @@ LABEL_27:
   return v6;
 }
 
-- (BOOL)_rangeIsValid:(_NSRange)a3
+- (BOOL)_rangeIsValid:(_NSRange)valid
 {
   if (self->_transformedString)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  v7 = objc_msgSend_originalString(self, a2, a3.location, a3.length, v3);
+  length = valid.length;
+  location = valid.location;
+  v7 = objc_msgSend_originalString(self, a2, valid.location, valid.length, v3);
   v14.length = objc_msgSend_length(v7, v8, v9, v10, v11);
   v13.location = location;
   v13.length = length;
@@ -563,11 +563,11 @@ LABEL_27:
   return v4;
 }
 
-- (void)_insertTransformation:(id)a3 forEncapsulatedTerminator:(BOOL)a4
+- (void)_insertTransformation:(id)transformation forEncapsulatedTerminator:(BOOL)terminator
 {
-  v5 = a4;
-  v11 = a3;
-  if (!v5)
+  terminatorCopy = terminator;
+  transformationCopy = transformation;
+  if (!terminatorCopy)
   {
     goto LABEL_3;
   }
@@ -578,7 +578,7 @@ LABEL_27:
   v41[2] = sub_1A936A7D4;
   v41[3] = &unk_1E7880DB0;
   v4 = &v42;
-  v13 = v11;
+  v13 = transformationCopy;
   v42 = v13;
   v17 = objc_msgSend_indexOfObjectPassingTest_(v12, v14, v41, v15, v16);
 
@@ -592,7 +592,7 @@ LABEL_27:
   {
 LABEL_3:
     v18 = objc_msgSend_transformations(self, v7, v8, v9, v10);
-    objc_msgSend_addObject_(v18, v19, v11, v20, v21);
+    objc_msgSend_addObject_(v18, v19, transformationCopy, v20, v21);
   }
 
   v28 = objc_msgSend_transformations(self, v24, v25, v26, v27);
@@ -600,7 +600,7 @@ LABEL_3:
   v37 = objc_msgSend_mutableCopy(v32, v33, v34, v35, v36);
   objc_msgSend_setTransformations_(self, v38, v37, v39, v40);
 
-  if (v5)
+  if (terminatorCopy)
   {
   }
 }

@@ -1,14 +1,14 @@
 @interface _UIDebugReportFormatter
 + (id)defaultFormatter;
 - (_UIDebugReportFormatter)init;
-- (id)stringFromReportComponents:(id)a3;
+- (id)stringFromReportComponents:(id)components;
 @end
 
 @implementation _UIDebugReportFormatter
 
 + (id)defaultFormatter
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -28,44 +28,44 @@
   return v3;
 }
 
-- (id)stringFromReportComponents:(id)a3
+- (id)stringFromReportComponents:(id)components
 {
-  v5 = a3;
-  if (!v5)
+  componentsCopy = components;
+  if (!componentsCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIDebugReport.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"components"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugReport.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"components"}];
   }
 
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [v5 header];
-  if (([v7 isEqualToString:&stru_285EB2008] & 1) == 0)
+  string = [MEMORY[0x277CCAB68] string];
+  header = [componentsCopy header];
+  if (([header isEqualToString:&stru_285EB2008] & 1) == 0)
   {
-    [v6 appendFormat:@"%@\n", v7];
+    [string appendFormat:@"%@\n", header];
   }
 
-  v8 = [v5 body];
-  if (([v8 isEqualToString:&stru_285EB2008] & 1) == 0)
+  body = [componentsCopy body];
+  if (([body isEqualToString:&stru_285EB2008] & 1) == 0)
   {
     extraBodyIndentLevel = self->_extraBodyIndentLevel;
     if (extraBodyIndentLevel)
     {
-      v10 = [v8 mutableCopy];
+      v10 = [body mutableCopy];
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%*s", extraBodyIndentLevel, "\t"];
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", v11];
-      [v10 replaceOccurrencesOfString:@"\n" withString:v12 options:0 range:{0, objc_msgSend(v8, "length")}];
+      [v10 replaceOccurrencesOfString:@"\n" withString:v12 options:0 range:{0, objc_msgSend(body, "length")}];
 
       [v10 insertString:v11 atIndex:0];
-      v8 = v10;
+      body = v10;
     }
 
-    [v6 appendString:v8];
+    [string appendString:body];
   }
 
-  v13 = [v5 footer];
-  if (([v13 isEqualToString:&stru_285EB2008] & 1) == 0)
+  footer = [componentsCopy footer];
+  if (([footer isEqualToString:&stru_285EB2008] & 1) == 0)
   {
-    [v6 appendFormat:@"\n%@", v13];
+    [string appendFormat:@"\n%@", footer];
   }
 
   indentLevel = self->_indentLevel;
@@ -73,12 +73,12 @@
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%*s", indentLevel, -[NSString UTF8String](self->_indentString, "UTF8String")];
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", v15];
-    [v6 replaceOccurrencesOfString:@"\n" withString:v16 options:0 range:{0, objc_msgSend(v6, "length")}];
+    [string replaceOccurrencesOfString:@"\n" withString:v16 options:0 range:{0, objc_msgSend(string, "length")}];
 
-    [v6 insertString:v15 atIndex:0];
+    [string insertString:v15 atIndex:0];
   }
 
-  return v6;
+  return string;
 }
 
 @end

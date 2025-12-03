@@ -1,15 +1,15 @@
 @interface WFWidgetConfigurationContainerView
 - (CGRect)configurationCardViewFrame;
-- (WFWidgetConfigurationContainerView)initWithCardView:(id)a3 preferredSize:(CGSize)a4;
+- (WFWidgetConfigurationContainerView)initWithCardView:(id)view preferredSize:(CGSize)size;
 - (WFWidgetConfigurationContainerViewDelegate)delegate;
 - (void)configureConstraints;
-- (void)keyboardWillChangeFrame:(id)a3;
+- (void)keyboardWillChangeFrame:(id)frame;
 - (void)requestDismissal;
-- (void)setConfigurationCardViewFrame:(CGRect)a3;
+- (void)setConfigurationCardViewFrame:(CGRect)frame;
 - (void)setupConfiguredCardFrameConstraints;
 - (void)setupConfiguredSheetFrameConstraints;
-- (void)setupDefaultConstraintsWithPreferredSize:(CGSize)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setupDefaultConstraintsWithPreferredSize:(CGSize)size;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFWidgetConfigurationContainerView
@@ -21,16 +21,16 @@
   return WeakRetained;
 }
 
-- (void)keyboardWillChangeFrame:(id)a3
+- (void)keyboardWillChangeFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69DDF38]];
-  v7 = [v6 unsignedIntegerValue];
+  frameCopy = frame;
+  userInfo = [frameCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69DDF38]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [frameCopy userInfo];
 
-  v9 = [v8 objectForKey:*MEMORY[0x1E69DDF40]];
+  v9 = [userInfo2 objectForKey:*MEMORY[0x1E69DDF40]];
   [v9 doubleValue];
   v11 = v10;
 
@@ -39,22 +39,22 @@
   v12[2] = __62__WFWidgetConfigurationContainerView_keyboardWillChangeFrame___block_invoke;
   v12[3] = &unk_1E83086B0;
   v12[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v7 << 16 delay:v12 options:0 animations:v11 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:unsignedIntegerValue << 16 delay:v12 options:0 animations:v11 completion:0.0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = WFWidgetConfigurationContainerView;
-  v4 = a3;
-  [(WFWidgetConfigurationContainerView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(WFWidgetConfigurationContainerView *)self traitCollection:v10.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(WFWidgetConfigurationContainerView *)&v10 traitCollectionDidChange:changeCopy];
+  delegate2 = [(WFWidgetConfigurationContainerView *)self traitCollection:v10.receiver];
+  userInterfaceStyle = [delegate2 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(WFWidgetConfigurationContainerView *)self delegate];
+    delegate = [(WFWidgetConfigurationContainerView *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -62,17 +62,17 @@
       return;
     }
 
-    v5 = [(WFWidgetConfigurationContainerView *)self delegate];
-    [v5 widgetConfigurationContainerViewUserInterfaceStyleDidChange:self];
+    delegate2 = [(WFWidgetConfigurationContainerView *)self delegate];
+    [delegate2 widgetConfigurationContainerViewUserInterfaceStyleDidChange:self];
   }
 }
 
 - (void)requestDismissal
 {
-  v5 = [(WFWidgetConfigurationContainerView *)self cardView];
-  v3 = [v5 delegate];
-  v4 = [(WFWidgetConfigurationContainerView *)self cardView];
-  [v3 widgetConfigurationCardViewDidRequestToClose:v4];
+  cardView = [(WFWidgetConfigurationContainerView *)self cardView];
+  delegate = [cardView delegate];
+  cardView2 = [(WFWidgetConfigurationContainerView *)self cardView];
+  [delegate widgetConfigurationCardViewDidRequestToClose:cardView2];
 }
 
 - (void)configureConstraints
@@ -80,15 +80,15 @@
   if ([(WFWidgetConfigurationContainerView *)self widgetConfigurationStyle]== 2)
   {
     v3 = MEMORY[0x1E696ACD8];
-    v4 = [(WFWidgetConfigurationContainerView *)self configuredCardLayoutConstraints];
-    [v3 deactivateConstraints:v4];
+    configuredCardLayoutConstraints = [(WFWidgetConfigurationContainerView *)self configuredCardLayoutConstraints];
+    [v3 deactivateConstraints:configuredCardLayoutConstraints];
 
     v5 = MEMORY[0x1E696ACD8];
-    v6 = [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
-    [v5 deactivateConstraints:v6];
+    defaultCardLayoutConstraints = [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
+    [v5 deactivateConstraints:defaultCardLayoutConstraints];
 
     v7 = MEMORY[0x1E696ACD8];
-    v8 = [(WFWidgetConfigurationContainerView *)self configuredSheetLayoutConstraints];
+    configuredSheetLayoutConstraints = [(WFWidgetConfigurationContainerView *)self configuredSheetLayoutConstraints];
   }
 
   else
@@ -97,12 +97,12 @@
     v10 = MEMORY[0x1E696ACD8];
     if (IsNull)
     {
-      v11 = [(WFWidgetConfigurationContainerView *)self configuredCardLayoutConstraints];
-      [v10 deactivateConstraints:v11];
+      configuredCardLayoutConstraints2 = [(WFWidgetConfigurationContainerView *)self configuredCardLayoutConstraints];
+      [v10 deactivateConstraints:configuredCardLayoutConstraints2];
 
       v12 = MEMORY[0x1E696ACD8];
-      v13 = [(WFWidgetConfigurationContainerView *)self configuredSheetLayoutConstraints];
-      [v12 deactivateConstraints:v13];
+      configuredSheetLayoutConstraints2 = [(WFWidgetConfigurationContainerView *)self configuredSheetLayoutConstraints];
+      [v12 deactivateConstraints:configuredSheetLayoutConstraints2];
 
       v7 = MEMORY[0x1E696ACD8];
       [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
@@ -110,37 +110,37 @@
 
     else
     {
-      v14 = [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
-      [v10 deactivateConstraints:v14];
+      defaultCardLayoutConstraints2 = [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
+      [v10 deactivateConstraints:defaultCardLayoutConstraints2];
 
       v15 = MEMORY[0x1E696ACD8];
-      v16 = [(WFWidgetConfigurationContainerView *)self configuredSheetLayoutConstraints];
-      [v15 deactivateConstraints:v16];
+      configuredSheetLayoutConstraints3 = [(WFWidgetConfigurationContainerView *)self configuredSheetLayoutConstraints];
+      [v15 deactivateConstraints:configuredSheetLayoutConstraints3];
 
       v7 = MEMORY[0x1E696ACD8];
       [(WFWidgetConfigurationContainerView *)self configuredCardLayoutConstraints];
     }
-    v8 = ;
+    configuredSheetLayoutConstraints = ;
   }
 
-  v17 = v8;
+  v17 = configuredSheetLayoutConstraints;
   [v7 activateConstraints:?];
 }
 
-- (void)setConfigurationCardViewFrame:(CGRect)a3
+- (void)setConfigurationCardViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_configurationCardViewFrame = a3;
-  if (!CGRectIsNull(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_configurationCardViewFrame = frame;
+  if (!CGRectIsNull(frame))
   {
-    v8 = [(WFWidgetConfigurationContainerView *)self configuratedCardOriginXConstraint];
-    [v8 setConstant:x];
+    configuratedCardOriginXConstraint = [(WFWidgetConfigurationContainerView *)self configuratedCardOriginXConstraint];
+    [configuratedCardOriginXConstraint setConstant:x];
 
-    v9 = [(WFWidgetConfigurationContainerView *)self configuratedCardOriginYConstraint];
-    [v9 setConstant:y];
+    configuratedCardOriginYConstraint = [(WFWidgetConfigurationContainerView *)self configuratedCardOriginYConstraint];
+    [configuratedCardOriginYConstraint setConstant:y];
 
     v20.origin.x = x;
     v20.origin.y = y;
@@ -148,26 +148,26 @@
     v20.size.height = height;
     if (CGRectIsEmpty(v20))
     {
-      v10 = [(WFWidgetConfigurationContainerView *)self preferredCardWidthLayoutConstraint];
-      [v10 constant];
+      preferredCardWidthLayoutConstraint = [(WFWidgetConfigurationContainerView *)self preferredCardWidthLayoutConstraint];
+      [preferredCardWidthLayoutConstraint constant];
       v12 = v11;
-      v13 = [(WFWidgetConfigurationContainerView *)self configuratedCardWidthConstraint];
-      [v13 setConstant:v12];
+      configuratedCardWidthConstraint = [(WFWidgetConfigurationContainerView *)self configuratedCardWidthConstraint];
+      [configuratedCardWidthConstraint setConstant:v12];
 
-      v14 = [(WFWidgetConfigurationContainerView *)self preferredCardHeightLayoutConstraint];
-      [v14 constant];
+      preferredCardHeightLayoutConstraint = [(WFWidgetConfigurationContainerView *)self preferredCardHeightLayoutConstraint];
+      [preferredCardHeightLayoutConstraint constant];
       v16 = v15;
-      v17 = [(WFWidgetConfigurationContainerView *)self configuratedCardHeightConstraint];
-      [v17 setConstant:v16];
+      configuratedCardHeightConstraint = [(WFWidgetConfigurationContainerView *)self configuratedCardHeightConstraint];
+      [configuratedCardHeightConstraint setConstant:v16];
     }
 
     else
     {
-      v18 = [(WFWidgetConfigurationContainerView *)self configuratedCardWidthConstraint];
-      [v18 setConstant:width];
+      configuratedCardWidthConstraint2 = [(WFWidgetConfigurationContainerView *)self configuratedCardWidthConstraint];
+      [configuratedCardWidthConstraint2 setConstant:width];
 
-      v14 = [(WFWidgetConfigurationContainerView *)self configuratedCardHeightConstraint];
-      [v14 setConstant:height];
+      preferredCardHeightLayoutConstraint = [(WFWidgetConfigurationContainerView *)self configuratedCardHeightConstraint];
+      [preferredCardHeightLayoutConstraint setConstant:height];
     }
   }
 
@@ -176,8 +176,8 @@
 
 - (CGRect)configurationCardViewFrame
 {
-  v2 = [(WFWidgetConfigurationContainerView *)self cardView];
-  [v2 frame];
+  cardView = [(WFWidgetConfigurationContainerView *)self cardView];
+  [cardView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -197,27 +197,27 @@
 - (void)setupConfiguredSheetFrameConstraints
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v3 = [(WFWidgetConfigurationCardView *)self->_cardView leftAnchor];
-  v4 = [(WFWidgetConfigurationContainerView *)self leftAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  leftAnchor = [(WFWidgetConfigurationCardView *)self->_cardView leftAnchor];
+  leftAnchor2 = [(WFWidgetConfigurationContainerView *)self leftAnchor];
+  v5 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   configuredSheetOriginXConstraint = self->_configuredSheetOriginXConstraint;
   self->_configuredSheetOriginXConstraint = v5;
 
-  v7 = [(WFWidgetConfigurationCardView *)self->_cardView topAnchor];
-  v8 = [(WFWidgetConfigurationContainerView *)self topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [(WFWidgetConfigurationCardView *)self->_cardView topAnchor];
+  topAnchor2 = [(WFWidgetConfigurationContainerView *)self topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   configuredSheetOriginYConstraint = self->_configuredSheetOriginYConstraint;
   self->_configuredSheetOriginYConstraint = v9;
 
-  v11 = [(WFWidgetConfigurationCardView *)self->_cardView widthAnchor];
-  v12 = [(WFWidgetConfigurationContainerView *)self widthAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  widthAnchor = [(WFWidgetConfigurationCardView *)self->_cardView widthAnchor];
+  widthAnchor2 = [(WFWidgetConfigurationContainerView *)self widthAnchor];
+  v13 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   configuredSheetWidthConstraint = self->_configuredSheetWidthConstraint;
   self->_configuredSheetWidthConstraint = v13;
 
-  v15 = [(WFWidgetConfigurationCardView *)self->_cardView heightAnchor];
-  v16 = [(WFWidgetConfigurationContainerView *)self heightAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  heightAnchor = [(WFWidgetConfigurationCardView *)self->_cardView heightAnchor];
+  heightAnchor2 = [(WFWidgetConfigurationContainerView *)self heightAnchor];
+  v17 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   configuredSheetHeightConstraint = self->_configuredSheetHeightConstraint;
   self->_configuredSheetHeightConstraint = v17;
 
@@ -235,32 +235,32 @@
 - (void)setupConfiguredCardFrameConstraints
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v3 = [(WFWidgetConfigurationCardView *)self->_cardView leftAnchor];
-  v4 = [(WFWidgetConfigurationContainerView *)self leftAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:0.0];
+  leftAnchor = [(WFWidgetConfigurationCardView *)self->_cardView leftAnchor];
+  leftAnchor2 = [(WFWidgetConfigurationContainerView *)self leftAnchor];
+  v5 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
   configuratedCardOriginXConstraint = self->_configuratedCardOriginXConstraint;
   self->_configuratedCardOriginXConstraint = v5;
 
-  v7 = [(WFWidgetConfigurationCardView *)self->_cardView topAnchor];
-  v8 = [(WFWidgetConfigurationContainerView *)self topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+  topAnchor = [(WFWidgetConfigurationCardView *)self->_cardView topAnchor];
+  topAnchor2 = [(WFWidgetConfigurationContainerView *)self topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   configuratedCardOriginYConstraint = self->_configuratedCardOriginYConstraint;
   self->_configuratedCardOriginYConstraint = v9;
 
-  v11 = [(WFWidgetConfigurationCardView *)self->_cardView widthAnchor];
-  v12 = [v11 constraintEqualToConstant:0.0];
+  widthAnchor = [(WFWidgetConfigurationCardView *)self->_cardView widthAnchor];
+  v12 = [widthAnchor constraintEqualToConstant:0.0];
   configuratedCardWidthConstraint = self->_configuratedCardWidthConstraint;
   self->_configuratedCardWidthConstraint = v12;
 
-  v14 = [(WFWidgetConfigurationCardView *)self->_cardView heightAnchor];
-  v15 = [v14 constraintEqualToConstant:0.0];
+  heightAnchor = [(WFWidgetConfigurationCardView *)self->_cardView heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:0.0];
   configuratedCardHeightConstraint = self->_configuratedCardHeightConstraint;
   self->_configuratedCardHeightConstraint = v15;
 
-  v17 = [(WFWidgetConfigurationCardView *)self->_cardView bottomAnchor];
-  v18 = [(WFWidgetConfigurationContainerView *)self keyboardLayoutGuide];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintLessThanOrEqualToAnchor:v19 constant:-24.0];
+  bottomAnchor = [(WFWidgetConfigurationCardView *)self->_cardView bottomAnchor];
+  keyboardLayoutGuide = [(WFWidgetConfigurationContainerView *)self keyboardLayoutGuide];
+  topAnchor3 = [keyboardLayoutGuide topAnchor];
+  v20 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor3 constant:-24.0];
 
   LODWORD(v21) = 1148813312;
   [v20 setPriority:v21];
@@ -285,50 +285,50 @@
   self->_configuredCardLayoutConstraints = v29;
 }
 
-- (void)setupDefaultConstraintsWithPreferredSize:(CGSize)a3
+- (void)setupDefaultConstraintsWithPreferredSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v42[8] = *MEMORY[0x1E69E9840];
-  v6 = [(WFWidgetConfigurationCardView *)self->_cardView widthAnchor];
-  v7 = [v6 constraintEqualToConstant:width];
+  widthAnchor = [(WFWidgetConfigurationCardView *)self->_cardView widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:width];
   preferredCardWidthLayoutConstraint = self->_preferredCardWidthLayoutConstraint;
   self->_preferredCardWidthLayoutConstraint = v7;
 
-  v9 = [(WFWidgetConfigurationCardView *)self->_cardView heightAnchor];
-  v10 = [v9 constraintEqualToConstant:height];
+  heightAnchor = [(WFWidgetConfigurationCardView *)self->_cardView heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:height];
   preferredCardHeightLayoutConstraint = self->_preferredCardHeightLayoutConstraint;
   self->_preferredCardHeightLayoutConstraint = v10;
 
-  v40 = [(WFWidgetConfigurationCardView *)self->_cardView centerXAnchor];
-  v41 = [(WFWidgetConfigurationContainerView *)self readableContentGuide];
-  v39 = [v41 centerXAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  centerXAnchor = [(WFWidgetConfigurationCardView *)self->_cardView centerXAnchor];
+  readableContentGuide = [(WFWidgetConfigurationContainerView *)self readableContentGuide];
+  centerXAnchor2 = [readableContentGuide centerXAnchor];
+  v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v42[0] = v38;
-  v36 = [(WFWidgetConfigurationCardView *)self->_cardView centerYAnchor];
-  v37 = [(WFWidgetConfigurationContainerView *)self readableContentGuide];
-  v35 = [v37 centerYAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  centerYAnchor = [(WFWidgetConfigurationCardView *)self->_cardView centerYAnchor];
+  readableContentGuide2 = [(WFWidgetConfigurationContainerView *)self readableContentGuide];
+  centerYAnchor2 = [readableContentGuide2 centerYAnchor];
+  v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v42[1] = v34;
-  v32 = [(WFWidgetConfigurationCardView *)self->_cardView leadingAnchor];
-  v33 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintGreaterThanOrEqualToAnchor:v31];
+  leadingAnchor = [(WFWidgetConfigurationCardView *)self->_cardView leadingAnchor];
+  layoutMarginsGuide = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v30 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v42[2] = v30;
-  v28 = [(WFWidgetConfigurationCardView *)self->_cardView trailingAnchor];
-  v29 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
-  v27 = [v29 trailingAnchor];
-  v12 = [v28 constraintLessThanOrEqualToAnchor:v27];
+  trailingAnchor = [(WFWidgetConfigurationCardView *)self->_cardView trailingAnchor];
+  layoutMarginsGuide2 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v12 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v42[3] = v12;
-  v13 = [(WFWidgetConfigurationCardView *)self->_cardView topAnchor];
-  v14 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintGreaterThanOrEqualToAnchor:v15];
+  topAnchor = [(WFWidgetConfigurationCardView *)self->_cardView topAnchor];
+  layoutMarginsGuide3 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v16 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v42[4] = v16;
-  v17 = [(WFWidgetConfigurationCardView *)self->_cardView bottomAnchor];
-  v18 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintLessThanOrEqualToAnchor:v19];
+  bottomAnchor = [(WFWidgetConfigurationCardView *)self->_cardView bottomAnchor];
+  layoutMarginsGuide4 = [(WFWidgetConfigurationContainerView *)self layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v20 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v21 = self->_preferredCardWidthLayoutConstraint;
   v42[5] = v20;
   v42[6] = v21;
@@ -337,8 +337,8 @@
   defaultCardLayoutConstraints = self->_defaultCardLayoutConstraints;
   self->_defaultCardLayoutConstraints = v22;
 
-  v24 = [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
-  [v24 enumerateObjectsUsingBlock:&__block_literal_global];
+  defaultCardLayoutConstraints = [(WFWidgetConfigurationContainerView *)self defaultCardLayoutConstraints];
+  [defaultCardLayoutConstraints enumerateObjectsUsingBlock:&__block_literal_global];
 
   LODWORD(v25) = 1148010496;
   [(NSLayoutConstraint *)self->_preferredCardWidthLayoutConstraint setPriority:v25];
@@ -346,15 +346,15 @@
   [(NSLayoutConstraint *)self->_preferredCardHeightLayoutConstraint setPriority:v26];
 }
 
-- (WFWidgetConfigurationContainerView)initWithCardView:(id)a3 preferredSize:(CGSize)a4
+- (WFWidgetConfigurationContainerView)initWithCardView:(id)view preferredSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  if (!v9)
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFWidgetConfigurationContainerView.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"cardView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWidgetConfigurationContainerView.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"cardView"}];
   }
 
   v18.receiver = self;
@@ -363,19 +363,19 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_cardView, a3);
+    objc_storeStrong(&v10->_cardView, view);
     [(WFWidgetConfigurationCardView *)v11->_cardView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(WFWidgetConfigurationContainerView *)v11 addSubview:v9];
+    [(WFWidgetConfigurationContainerView *)v11 addSubview:viewCopy];
     [(WFWidgetConfigurationContainerView *)v11 setupDefaultConstraintsWithPreferredSize:width, height];
     [(WFWidgetConfigurationContainerView *)v11 setupConfiguredCardFrameConstraints];
     [(WFWidgetConfigurationContainerView *)v11 setupConfiguredSheetFrameConstraints];
     v12 = MEMORY[0x1E696ACD8];
-    v13 = [(WFWidgetConfigurationContainerView *)v11 defaultCardLayoutConstraints];
-    [v12 activateConstraints:v13];
+    defaultCardLayoutConstraints = [(WFWidgetConfigurationContainerView *)v11 defaultCardLayoutConstraints];
+    [v12 activateConstraints:defaultCardLayoutConstraints];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v11 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE078] object:0];
-    [v14 addObserver:v11 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter addObserver:v11 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
     v15 = v11;
   }
 

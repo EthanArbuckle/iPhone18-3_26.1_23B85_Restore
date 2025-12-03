@@ -1,6 +1,6 @@
 @interface CKDPCSManagerMissingIdentitiesContext
 - (CKDContainer)container;
-- (CKDPCSManagerMissingIdentitiesContext)initWithContainer:(id)a3;
+- (CKDPCSManagerMissingIdentitiesContext)initWithContainer:(id)container;
 - (NSMutableSet)missingIdentityPublicKeys;
 - (NSMutableSet)servicesWithMissingIdentities;
 - (id)copyOfMissingIdentityPublicKeys;
@@ -11,54 +11,54 @@
 
 - (id)copyOfServicesWithMissingIdentities
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  servicesWithMissingIdentities = v2->_servicesWithMissingIdentities;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  servicesWithMissingIdentities = selfCopy->_servicesWithMissingIdentities;
   if (!servicesWithMissingIdentities)
   {
     v6 = objc_opt_new();
-    v7 = v2->_servicesWithMissingIdentities;
-    v2->_servicesWithMissingIdentities = v6;
+    v7 = selfCopy->_servicesWithMissingIdentities;
+    selfCopy->_servicesWithMissingIdentities = v6;
 
-    servicesWithMissingIdentities = v2->_servicesWithMissingIdentities;
+    servicesWithMissingIdentities = selfCopy->_servicesWithMissingIdentities;
   }
 
   v8 = objc_msgSend_copy(servicesWithMissingIdentities, v3, v4);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (id)copyOfMissingIdentityPublicKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  missingIdentityPublicKeys = v2->_missingIdentityPublicKeys;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  missingIdentityPublicKeys = selfCopy->_missingIdentityPublicKeys;
   if (!missingIdentityPublicKeys)
   {
     v6 = objc_opt_new();
-    v7 = v2->_missingIdentityPublicKeys;
-    v2->_missingIdentityPublicKeys = v6;
+    v7 = selfCopy->_missingIdentityPublicKeys;
+    selfCopy->_missingIdentityPublicKeys = v6;
 
-    missingIdentityPublicKeys = v2->_missingIdentityPublicKeys;
+    missingIdentityPublicKeys = selfCopy->_missingIdentityPublicKeys;
   }
 
   v8 = objc_msgSend_copy(missingIdentityPublicKeys, v3, v4);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (CKDPCSManagerMissingIdentitiesContext)initWithContainer:(id)a3
+- (CKDPCSManagerMissingIdentitiesContext)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v8.receiver = self;
   v8.super_class = CKDPCSManagerMissingIdentitiesContext;
   v5 = [(CKDPCSManagerMissingIdentitiesContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
   }
 
   return v6;
@@ -66,40 +66,40 @@
 
 - (NSMutableSet)servicesWithMissingIdentities
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  servicesWithMissingIdentities = v2->_servicesWithMissingIdentities;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  servicesWithMissingIdentities = selfCopy->_servicesWithMissingIdentities;
   if (!servicesWithMissingIdentities)
   {
     v4 = objc_opt_new();
-    v5 = v2->_servicesWithMissingIdentities;
-    v2->_servicesWithMissingIdentities = v4;
+    v5 = selfCopy->_servicesWithMissingIdentities;
+    selfCopy->_servicesWithMissingIdentities = v4;
 
-    servicesWithMissingIdentities = v2->_servicesWithMissingIdentities;
+    servicesWithMissingIdentities = selfCopy->_servicesWithMissingIdentities;
   }
 
   v6 = servicesWithMissingIdentities;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSMutableSet)missingIdentityPublicKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  missingIdentityPublicKeys = v2->_missingIdentityPublicKeys;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  missingIdentityPublicKeys = selfCopy->_missingIdentityPublicKeys;
   if (!missingIdentityPublicKeys)
   {
     v4 = objc_opt_new();
-    v5 = v2->_missingIdentityPublicKeys;
-    v2->_missingIdentityPublicKeys = v4;
+    v5 = selfCopy->_missingIdentityPublicKeys;
+    selfCopy->_missingIdentityPublicKeys = v4;
 
-    missingIdentityPublicKeys = v2->_missingIdentityPublicKeys;
+    missingIdentityPublicKeys = selfCopy->_missingIdentityPublicKeys;
   }
 
   v6 = missingIdentityPublicKeys;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

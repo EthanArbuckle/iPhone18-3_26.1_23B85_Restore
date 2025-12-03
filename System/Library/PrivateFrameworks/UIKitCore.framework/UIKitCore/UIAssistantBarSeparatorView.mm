@@ -1,27 +1,27 @@
 @interface UIAssistantBarSeparatorView
 - (BOOL)_usesLightStyle;
-- (UIAssistantBarSeparatorView)initWithFrame:(CGRect)a3;
+- (UIAssistantBarSeparatorView)initWithFrame:(CGRect)frame;
 - (void)_updateVisualStyle;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIAssistantBarSeparatorView
 
-- (UIAssistantBarSeparatorView)initWithFrame:(CGRect)a3
+- (UIAssistantBarSeparatorView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UIAssistantBarSeparatorView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
     v5 = [(UIView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(UIAssistantBarSeparatorView *)v3 setInnerSeparatorView:v5];
 
-    v6 = [(UIAssistantBarSeparatorView *)v3 innerSeparatorView];
-    [(UIView *)v3 addSubview:v6];
+    innerSeparatorView = [(UIAssistantBarSeparatorView *)v3 innerSeparatorView];
+    [(UIView *)v3 addSubview:innerSeparatorView];
   }
 
   return v3;
@@ -29,10 +29,10 @@
 
 - (BOOL)_usesLightStyle
 {
-  v2 = [(UIView *)self _inheritedRenderConfig];
-  v3 = [v2 lightKeyboard];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  lightKeyboard = [_inheritedRenderConfig lightKeyboard];
 
-  return v3;
+  return lightKeyboard;
 }
 
 - (void)_updateVisualStyle
@@ -47,8 +47,8 @@
     v6 = v4;
   }
 
-  v5 = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
-  [v5 setBackgroundColor:v6];
+  innerSeparatorView = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
+  [innerSeparatorView setBackgroundColor:v6];
 }
 
 - (void)didMoveToWindow
@@ -59,11 +59,11 @@
   [(UIAssistantBarSeparatorView *)self _updateVisualStyle];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v3.receiver = self;
   v3.super_class = UIAssistantBarSeparatorView;
-  [(UIView *)&v3 traitCollectionDidChange:a3];
+  [(UIView *)&v3 traitCollectionDidChange:change];
 }
 
 - (void)layoutSubviews
@@ -75,17 +75,17 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
-  [v9 setFrame:{0.0, 0.0, v6, 32.0}];
+  innerSeparatorView = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
+  [innerSeparatorView setFrame:{0.0, 0.0, v6, 32.0}];
 
-  v10 = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
-  [v10 frame];
+  innerSeparatorView2 = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
+  [innerSeparatorView2 frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v17 = round(v4 + (v8 - v15) * 0.5);
-  v18 = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
-  [v18 setFrame:{v12, v17, v14, v16}];
+  innerSeparatorView3 = [(UIAssistantBarSeparatorView *)self innerSeparatorView];
+  [innerSeparatorView3 setFrame:{v12, v17, v14, v16}];
 }
 
 @end

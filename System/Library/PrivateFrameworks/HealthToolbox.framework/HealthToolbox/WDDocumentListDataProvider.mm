@@ -1,10 +1,10 @@
 @interface WDDocumentListDataProvider
 - (double)customCellHeight;
-- (id)createQueryForSampleType:(id)a3 predicate:(id)a4 limit:(int64_t)a5 sortDescriptors:(id)a6 resultsHandler:(id)a7;
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5;
+- (id)createQueryForSampleType:(id)type predicate:(id)predicate limit:(int64_t)limit sortDescriptors:(id)descriptors resultsHandler:(id)handler;
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view;
 - (id)sampleTypes;
-- (id)titleForSection:(unint64_t)a3;
-- (void)refineSamplesWithCompletion:(id)a3;
+- (id)titleForSection:(unint64_t)section;
+- (void)refineSamplesWithCompletion:(id)completion;
 @end
 
 @implementation WDDocumentListDataProvider
@@ -21,10 +21,10 @@
   return v3;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v3 = [(WDSampleListDataProvider *)self samples];
-  if ([v3 count] < 1)
+  samples = [(WDSampleListDataProvider *)self samples];
+  if ([samples count] < 1)
   {
     v5 = &stru_28641D9B8;
   }
@@ -51,26 +51,26 @@
   return result;
 }
 
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view
 {
-  v6 = a3;
-  v7 = [a5 dequeueReusableCellWithIdentifier:@"DocumentTableViewCell"];
+  objectCopy = object;
+  v7 = [view dequeueReusableCellWithIdentifier:@"DocumentTableViewCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D127B8]) initWithStyle:0 reuseIdentifier:@"DocumentTableViewCell"];
   }
 
-  [v7 setCellValuesForDocumentSample:v6];
+  [v7 setCellValuesForDocumentSample:objectCopy];
 
   return v7;
 }
 
-- (id)createQueryForSampleType:(id)a3 predicate:(id)a4 limit:(int64_t)a5 sortDescriptors:(id)a6 resultsHandler:(id)a7
+- (id)createQueryForSampleType:(id)type predicate:(id)predicate limit:(int64_t)limit sortDescriptors:(id)descriptors resultsHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  typeCopy = type;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x3032000000;
@@ -82,12 +82,12 @@
   v23 = __102__WDDocumentListDataProvider_createQueryForSampleType_predicate_limit_sortDescriptors_resultsHandler___block_invoke;
   v24 = &unk_2796E7A10;
   v26 = v27;
-  v15 = v14;
+  v15 = handlerCopy;
   v25 = v15;
   v16 = MEMORY[0x253092270](&v21);
   v17 = objc_alloc(MEMORY[0x277CCD360]);
   v18 = [MEMORY[0x277CCD720] documentTypeForIdentifier:{*MEMORY[0x277CCBCB8], v21, v22, v23, v24}];
-  v19 = [v17 initWithDocumentType:v18 predicate:v12 limit:a5 sortDescriptors:v13 includeDocumentData:0 resultsHandler:v16];
+  v19 = [v17 initWithDocumentType:v18 predicate:predicateCopy limit:limit sortDescriptors:descriptorsCopy includeDocumentData:0 resultsHandler:v16];
 
   _Block_object_dispose(v27, 8);
 
@@ -118,17 +118,17 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)refineSamplesWithCompletion:(id)a3
+- (void)refineSamplesWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(WDSampleListDataProvider *)self samples];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  samples = [(WDSampleListDataProvider *)self samples];
+  v7 = [samples countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -139,20 +139,20 @@ LABEL_7:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(samples);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 document];
+        document = [v11 document];
 
-        if (!v12)
+        if (!document)
         {
-          v13 = [v11 UUID];
-          [v5 addObject:v13];
+          uUID = [v11 UUID];
+          [v5 addObject:uUID];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [samples countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v8);
@@ -166,7 +166,7 @@ LABEL_7:
     v24[2] = __58__WDDocumentListDataProvider_refineSamplesWithCompletion___block_invoke;
     v24[3] = &unk_2796E7A38;
     v25 = v14;
-    v27 = v4;
+    v27 = completionCopy;
     v15 = v5;
     v26 = v15;
     v16 = v14;
@@ -174,14 +174,14 @@ LABEL_7:
     v18 = [MEMORY[0x277CCD838] predicateForObjectsWithUUIDs:v15];
     v19 = [MEMORY[0x277CCD368] documentTypeForIdentifier:*MEMORY[0x277CCBCB8]];
     v20 = [objc_alloc(MEMORY[0x277CCD360]) initWithDocumentType:v19 predicate:v18 limit:0 sortDescriptors:0 includeDocumentData:0 resultsHandler:v17];
-    v21 = [(WDSampleListDataProvider *)self profile];
-    v22 = [v21 healthStore];
-    [v22 executeQuery:v20];
+    profile = [(WDSampleListDataProvider *)self profile];
+    healthStore = [profile healthStore];
+    [healthStore executeQuery:v20];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v23 = *MEMORY[0x277D85DE8];

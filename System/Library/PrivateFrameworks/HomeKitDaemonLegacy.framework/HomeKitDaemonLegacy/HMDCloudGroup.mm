@@ -1,38 +1,38 @@
 @interface HMDCloudGroup
 + (id)logCategory;
 + (id)shortDescription;
-+ (void)createGroupWithRootRecordName:(id)a3 owner:(id)a4 subscriptionName:(id)a5 cloudZone:(id)a6 completion:(id)a7;
++ (void)createGroupWithRootRecordName:(id)name owner:(id)owner subscriptionName:(id)subscriptionName cloudZone:(id)zone completion:(id)completion;
 - (BOOL)doRecordsExistInCache;
-- (BOOL)isRootRecord:(id)a3;
-- (BOOL)isRootRecordName:(id)a3;
+- (BOOL)isRootRecord:(id)record;
+- (BOOL)isRootRecordName:(id)name;
 - (CKRecordID)privateZoneRootRecordID;
 - (HMDCloudCache)cache;
 - (HMDCloudGroup)init;
-- (HMDCloudGroup)initWithBackingStoreCacheGroup:(id)a3 cloudZone:(id)a4;
+- (HMDCloudGroup)initWithBackingStoreCacheGroup:(id)group cloudZone:(id)zone;
 - (HMDCloudRecord)rootRecord;
 - (HMDCloudZone)cloudZone;
 - (NSString)description;
 - (NSString)rootRecordName;
 - (NSUUID)parentIdentifier;
 - (NSUUID)rootRecordObjectID;
-- (id)__cloudRecordWithObjectID:(id)a3;
-- (id)cloudRecordWithName:(id)a3;
-- (id)cloudRecordWithObjectID:(id)a3;
+- (id)__cloudRecordWithObjectID:(id)d;
+- (id)cloudRecordWithName:(id)name;
+- (id)cloudRecordWithObjectID:(id)d;
 - (id)logIdentifier;
 - (id)rootRecordModelObject;
 - (id)shortDescription;
-- (void)allDescendentsCloudRecordsForParentID:(id)a3 completionHandler:(id)a4;
-- (void)cloudRecordWithName:(id)a3 completionHandler:(id)a4;
-- (void)cloudRecordWithNames:(id)a3 completionHandler:(id)a4;
-- (void)cloudRecordWithObjectID:(id)a3 completionHandler:(id)a4;
-- (void)cloudRecordWithObjectIDs:(id)a3 completionHandler:(id)a4;
-- (void)cloudRecordsForParentID:(id)a3 completionHandler:(id)a4;
-- (void)deleteCloudRecord:(id)a3;
-- (void)deleteCloudRecordNames:(id)a3;
-- (void)fetchCloudRecordMap:(id)a3;
-- (void)rootRecordCompletionHandler:(id)a3;
-- (void)updateCloudRecord:(id)a3;
-- (void)updateCloudRecord:(id)a3 completionHandler:(id)a4;
+- (void)allDescendentsCloudRecordsForParentID:(id)d completionHandler:(id)handler;
+- (void)cloudRecordWithName:(id)name completionHandler:(id)handler;
+- (void)cloudRecordWithNames:(id)names completionHandler:(id)handler;
+- (void)cloudRecordWithObjectID:(id)d completionHandler:(id)handler;
+- (void)cloudRecordWithObjectIDs:(id)ds completionHandler:(id)handler;
+- (void)cloudRecordsForParentID:(id)d completionHandler:(id)handler;
+- (void)deleteCloudRecord:(id)record;
+- (void)deleteCloudRecordNames:(id)names;
+- (void)fetchCloudRecordMap:(id)map;
+- (void)rootRecordCompletionHandler:(id)handler;
+- (void)updateCloudRecord:(id)record;
+- (void)updateCloudRecord:(id)record completionHandler:(id)handler;
 @end
 
 @implementation HMDCloudGroup
@@ -51,13 +51,13 @@
   return WeakRetained;
 }
 
-- (void)deleteCloudRecord:(id)a3
+- (void)deleteCloudRecord:(id)record
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (record)
   {
-    v4 = [a3 recordName];
-    v7[0] = v4;
+    recordName = [record recordName];
+    v7[0] = recordName;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
     [(HMDCloudGroup *)self deleteCloudRecordNames:v5];
   }
@@ -65,16 +65,16 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteCloudRecordNames:(id)a3
+- (void)deleteCloudRecordNames:(id)names
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  namesCopy = names;
+  v5 = namesCopy;
+  if (namesCopy && [namesCopy count])
   {
     objc_initWeak(&location, self);
     v6 = [HMDBackingStoreCacheDeleteRecordOperation alloc];
-    v7 = [(HMDCloudGroup *)self backingStoreGroup];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __40__HMDCloudGroup_deleteCloudRecordNames___block_invoke;
@@ -82,28 +82,28 @@
     objc_copyWeak(&v24, &location);
     v8 = v5;
     v23 = v8;
-    v9 = [(HMDBackingStoreCacheDeleteRecordOperation *)v6 initWithGroup:v7 recordNames:v8 resultBlock:v22];
+    v9 = [(HMDBackingStoreCacheDeleteRecordOperation *)v6 initWithGroup:backingStoreGroup recordNames:v8 resultBlock:v22];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMDCloudGroup *)v11 backingStoreGroup];
+      backingStoreGroup2 = [(HMDCloudGroup *)selfCopy backingStoreGroup];
       *buf = 138543874;
       v27 = v13;
       v28 = 2112;
       v29 = v8;
       v30 = 2112;
-      v31 = v14;
+      v31 = backingStoreGroup2;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Deleting cloud record names %@ in group %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [(HMDCloudGroup *)v11 cache];
-    v16 = [v15 backingStore];
-    [v16 submit:v9];
+    cache = [(HMDCloudGroup *)selfCopy cache];
+    backingStore = [cache backingStore];
+    [backingStore submit:v9];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -112,7 +112,7 @@
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -197,59 +197,59 @@ void __40__HMDCloudGroup_deleteCloudRecordNames___block_invoke(uint64_t a1, void
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCloudRecord:(id)a3 completionHandler:(id)a4
+- (void)updateCloudRecord:(id)record completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  recordCopy = record;
+  handlerCopy = handler;
+  if (recordCopy)
   {
     objc_initWeak(&location, self);
     v8 = [HMDBackingStoreCacheUpdateRecordOperation alloc];
-    v9 = [(HMDCloudGroup *)self backingStoreGroup];
-    v10 = [v6 record];
-    v11 = [v6 cachedData];
-    v12 = [v6 objectEncoding];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+    record = [recordCopy record];
+    cachedData = [recordCopy cachedData];
+    objectEncoding = [recordCopy objectEncoding];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __53__HMDCloudGroup_updateCloudRecord_completionHandler___block_invoke;
     v28 = &unk_2797346E0;
     objc_copyWeak(&v31, &location);
-    v13 = v6;
+    v13 = recordCopy;
     v29 = v13;
-    v30 = v7;
-    v14 = [(HMDBackingStoreCacheUpdateRecordOperation *)v8 initWithGroup:v9 record:v10 data:v11 encoding:v12 resultBlock:&v25];
+    v30 = handlerCopy;
+    v14 = [(HMDBackingStoreCacheUpdateRecordOperation *)v8 initWithGroup:backingStoreGroup record:record data:cachedData encoding:objectEncoding resultBlock:&v25];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v13 objectID];
-      v20 = [v19 UUIDString];
-      v21 = [v13 recordName];
+      objectID = [v13 objectID];
+      uUIDString = [objectID UUIDString];
+      recordName = [v13 recordName];
       *buf = 138543874;
       v34 = v18;
       v35 = 2112;
-      v36 = v20;
+      v36 = uUIDString;
       v37 = 2112;
-      v38 = v21;
+      v38 = recordName;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Caching cloud record %@/%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v22 = [(HMDCloudGroup *)v16 cache];
-    v23 = [v22 backingStore];
-    [v23 submit:v14];
+    cache = [(HMDCloudGroup *)selfCopy cache];
+    backingStore = [cache backingStore];
+    [backingStore submit:v14];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -325,52 +325,52 @@ void __53__HMDCloudGroup_updateCloudRecord_completionHandler___block_invoke(uint
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCloudRecord:(id)a3
+- (void)updateCloudRecord:(id)record
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
     objc_initWeak(&location, self);
     v6 = [HMDBackingStoreCacheUpdateRecordOperation alloc];
-    v7 = [(HMDCloudGroup *)self backingStoreGroup];
-    v8 = [v4 record];
-    v9 = [v4 cachedData];
-    v10 = [v4 objectEncoding];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+    record = [recordCopy record];
+    cachedData = [recordCopy cachedData];
+    objectEncoding = [recordCopy objectEncoding];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __35__HMDCloudGroup_updateCloudRecord___block_invoke;
     v26 = &unk_279731988;
     objc_copyWeak(&v29, &location);
-    v11 = v4;
+    v11 = recordCopy;
     v27 = v11;
     v12 = v5;
     v28 = v12;
-    v13 = [(HMDBackingStoreCacheUpdateRecordOperation *)v6 initWithGroup:v7 record:v8 data:v9 encoding:v10 resultBlock:&v23];
+    v13 = [(HMDBackingStoreCacheUpdateRecordOperation *)v6 initWithGroup:backingStoreGroup record:record data:cachedData encoding:objectEncoding resultBlock:&v23];
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v11 recordName];
-      v19 = [(HMDCloudGroup *)v15 backingStoreGroup];
+      recordName = [v11 recordName];
+      backingStoreGroup2 = [(HMDCloudGroup *)selfCopy backingStoreGroup];
       *buf = 138543874;
       v32 = v17;
       v33 = 2112;
-      v34 = v18;
+      v34 = recordName;
       v35 = 2112;
-      v36 = v19;
+      v36 = backingStoreGroup2;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Caching cloud record %@ in group %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v14);
-    v20 = [(HMDCloudGroup *)v15 cache];
-    v21 = [v20 backingStore];
-    [v21 submit:v13];
+    cache = [(HMDCloudGroup *)selfCopy cache];
+    backingStore = [cache backingStore];
+    [backingStore submit:v13];
 
     dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     objc_destroyWeak(&v29);
@@ -456,19 +456,19 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)__cloudRecordWithObjectID:(id)a3
+- (id)__cloudRecordWithObjectID:(id)d
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(HMDCloudGroup *)self cache];
-    v6 = [v5 backingStore];
-    v7 = [(HMDCloudGroup *)self backingStoreGroup];
-    v27[0] = v4;
+    cache = [(HMDCloudGroup *)self cache];
+    backingStore = [cache backingStore];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+    v27[0] = dCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     v20 = 0;
-    v9 = [v6 __fetchWithGroup:v7 uuids:v8 error:&v20];
+    v9 = [backingStore __fetchWithGroup:backingStoreGroup uuids:v8 error:&v20];
     v10 = v20;
 
     if (v10 || ![v9 count])
@@ -478,11 +478,11 @@ LABEL_11:
 
     else
     {
-      v12 = [v9 firstObject];
-      if (v12)
+      firstObject = [v9 firstObject];
+      if (firstObject)
       {
-        v13 = [(HMDCloudGroup *)self cloudZone];
-        v11 = [v13 createCloudRecordWithFetchResult:v12];
+        cloudZone = [(HMDCloudGroup *)self cloudZone];
+        v11 = [cloudZone createCloudRecordWithFetchResult:firstObject];
       }
 
       else
@@ -492,7 +492,7 @@ LABEL_11:
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -500,7 +500,7 @@ LABEL_11:
       *buf = 138543874;
       v22 = v17;
       v23 = 2112;
-      v24 = v4;
+      v24 = dCopy;
       v25 = 2112;
       v26 = v10;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Completed fetch cloud record for ID %@ with error %@", buf, 0x20u);
@@ -519,38 +519,38 @@ LABEL_11:
   return v11;
 }
 
-- (id)cloudRecordWithObjectID:(id)a3
+- (id)cloudRecordWithObjectID:(id)d
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__59239;
   v34 = __Block_byref_object_dispose__59240;
   v35 = 0;
-  if (v4)
+  if (dCopy)
   {
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
     v6 = [HMDBackingStoreCacheFetchRecords alloc];
-    v7 = [(HMDCloudGroup *)self backingStoreGroup];
-    v40[0] = v4;
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+    v40[0] = dCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __41__HMDCloudGroup_cloudRecordWithObjectID___block_invoke;
     v25 = &unk_279727F18;
     v29 = &v30;
-    v26 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = dCopy;
     v27 = v9;
     v10 = v5;
     v28 = v10;
-    v11 = [(HMDBackingStoreCacheFetchRecords *)v6 initWithGroup:v7 uuids:v8 fetchResult:&v22];
+    v11 = [(HMDBackingStoreCacheFetchRecords *)v6 initWithGroup:backingStoreGroup uuids:v8 fetchResult:&v22];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -563,9 +563,9 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(HMDCloudGroup *)v13 cache:v22];
-    v17 = [v16 backingStore];
-    [v17 submit:v11];
+    v16 = [(HMDCloudGroup *)selfCopy2 cache:v22];
+    backingStore = [v16 backingStore];
+    [backingStore submit:v11];
 
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v18 = v31[5];
@@ -628,38 +628,38 @@ void __41__HMDCloudGroup_cloudRecordWithObjectID___block_invoke(uint64_t a1, voi
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cloudRecordWithName:(id)a3
+- (id)cloudRecordWithName:(id)name
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__59239;
   v34 = __Block_byref_object_dispose__59240;
   v35 = 0;
-  if (v4)
+  if (nameCopy)
   {
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
     v6 = [HMDBackingStoreCacheFetchRecords alloc];
-    v7 = [(HMDCloudGroup *)self backingStoreGroup];
-    v40[0] = v4;
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+    v40[0] = nameCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __37__HMDCloudGroup_cloudRecordWithName___block_invoke;
     v25 = &unk_279727F18;
     v29 = &v30;
-    v26 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = nameCopy;
     v27 = v9;
     v10 = v5;
     v28 = v10;
-    v11 = [(HMDBackingStoreCacheFetchRecords *)v6 initWithGroup:v7 records:v8 fetchResult:&v22];
+    v11 = [(HMDBackingStoreCacheFetchRecords *)v6 initWithGroup:backingStoreGroup records:v8 fetchResult:&v22];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -672,9 +672,9 @@ void __41__HMDCloudGroup_cloudRecordWithObjectID___block_invoke(uint64_t a1, voi
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(HMDCloudGroup *)v13 cache:v22];
-    v17 = [v16 backingStore];
-    [v17 submit:v11];
+    v16 = [(HMDCloudGroup *)selfCopy2 cache:v22];
+    backingStore = [v16 backingStore];
+    [backingStore submit:v11];
 
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v18 = v31[5];
@@ -754,7 +754,7 @@ void __37__HMDCloudGroup_cloudRecordWithName___block_invoke(uint64_t a1, void *a
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
     v5 = [HMDBackingStoreCacheFetchGroupInformation alloc];
-    v6 = [(HMDCloudGroup *)self backingStoreGroup];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __38__HMDCloudGroup_doRecordsExistInCache__block_invoke;
@@ -762,11 +762,11 @@ void __37__HMDCloudGroup_cloudRecordWithName___block_invoke(uint64_t a1, void *a
     v20 = &v21;
     v7 = v4;
     v18 = v7;
-    v19 = self;
-    v8 = [(HMDBackingStoreCacheFetchGroupInformation *)v5 initWithGroup:v6 fetchResult:v17];
+    selfCopy = self;
+    v8 = [(HMDBackingStoreCacheFetchGroupInformation *)v5 initWithGroup:backingStoreGroup fetchResult:v17];
 
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -777,9 +777,9 @@ void __37__HMDCloudGroup_cloudRecordWithName___block_invoke(uint64_t a1, void *a
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDCloudGroup *)v10 cache];
-    v14 = [v13 backingStore];
-    [v14 submit:v8];
+    cache = [(HMDCloudGroup *)selfCopy2 cache];
+    backingStore = [cache backingStore];
+    [backingStore submit:v8];
 
     dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
     v2 = *(v22 + 24);
@@ -822,38 +822,38 @@ void __38__HMDCloudGroup_doRecordsExistInCache__block_invoke(uint64_t a1, uint64
 
 - (HMDCloudRecord)rootRecord
 {
-  v3 = [(HMDCloudGroup *)self rootRecordName];
-  v4 = [(HMDCloudGroup *)self cloudRecordWithName:v3];
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  v4 = [(HMDCloudGroup *)self cloudRecordWithName:rootRecordName];
 
   if (!v4)
   {
     v5 = [HMDCloudRecord alloc];
-    v6 = [(HMDCloudGroup *)self rootRecordObjectID];
-    v7 = [(HMDCloudGroup *)self rootRecordName];
-    v8 = [(HMDCloudGroup *)self cloudZone];
-    v4 = [(HMDCloudRecord *)v5 initWithObjectID:v6 recordName:v7 cloudZone:v8];
+    rootRecordObjectID = [(HMDCloudGroup *)self rootRecordObjectID];
+    rootRecordName2 = [(HMDCloudGroup *)self rootRecordName];
+    cloudZone = [(HMDCloudGroup *)self cloudZone];
+    v4 = [(HMDCloudRecord *)v5 initWithObjectID:rootRecordObjectID recordName:rootRecordName2 cloudZone:cloudZone];
   }
 
   return v4;
 }
 
-- (void)rootRecordCompletionHandler:(id)a3
+- (void)rootRecordCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDCloudGroup *)self rootRecordName];
-  [(HMDCloudGroup *)self cloudRecordWithName:v5 completionHandler:v4];
+  handlerCopy = handler;
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  [(HMDCloudGroup *)self cloudRecordWithName:rootRecordName completionHandler:handlerCopy];
 }
 
-- (void)allDescendentsCloudRecordsForParentID:(id)a3 completionHandler:(id)a4
+- (void)allDescendentsCloudRecordsForParentID:(id)d completionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (d)
   {
-    v11 = a3;
+    dCopy = d;
     v7 = MEMORY[0x277CBEA60];
-    v8 = a3;
-    v9 = [v7 arrayWithObjects:&v11 count:1];
+    dCopy2 = d;
+    v9 = [v7 arrayWithObjects:&dCopy count:1];
   }
 
   else
@@ -861,21 +861,21 @@ void __38__HMDCloudGroup_doRecordsExistInCache__block_invoke(uint64_t a1, uint64
     v9 = MEMORY[0x277CBEBF8];
   }
 
-  [(HMDCloudGroup *)self _cloudRecordsForParentIDs:v9 recursive:1 completionHandler:v6, v11, v12];
+  [(HMDCloudGroup *)self _cloudRecordsForParentIDs:v9 recursive:1 completionHandler:handlerCopy, dCopy, v12];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudRecordsForParentID:(id)a3 completionHandler:(id)a4
+- (void)cloudRecordsForParentID:(id)d completionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (d)
   {
-    v11 = a3;
+    dCopy = d;
     v7 = MEMORY[0x277CBEA60];
-    v8 = a3;
-    v9 = [v7 arrayWithObjects:&v11 count:1];
+    dCopy2 = d;
+    v9 = [v7 arrayWithObjects:&dCopy count:1];
   }
 
   else
@@ -883,7 +883,7 @@ void __38__HMDCloudGroup_doRecordsExistInCache__block_invoke(uint64_t a1, uint64
     v9 = MEMORY[0x277CBEBF8];
   }
 
-  [(HMDCloudGroup *)self _cloudRecordsForParentIDs:v9 recursive:0 completionHandler:v6, v11, v12];
+  [(HMDCloudGroup *)self _cloudRecordsForParentIDs:v9 recursive:0 completionHandler:handlerCopy, dCopy, v12];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -962,28 +962,28 @@ void __71__HMDCloudGroup__cloudRecordsForParentIDs_recursive_completionHandler__
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudRecordWithObjectID:(id)a3 completionHandler:(id)a4
+- (void)cloudRecordWithObjectID:(id)d completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (dCopy)
   {
-    v14[0] = v6;
+    v14[0] = dCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__HMDCloudGroup_cloudRecordWithObjectID_completionHandler___block_invoke;
     v11[3] = &unk_279727EC8;
-    v12 = v6;
+    v12 = dCopy;
     v13 = v8;
     [(HMDCloudGroup *)self cloudRecordWithObjectIDs:v9 completionHandler:v11];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1010,27 +1010,27 @@ void __59__HMDCloudGroup_cloudRecordWithObjectID_completionHandler___block_invok
   }
 }
 
-- (void)cloudRecordWithObjectIDs:(id)a3 completionHandler:(id)a4
+- (void)cloudRecordWithObjectIDs:(id)ds completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if ([dsCopy count])
   {
     objc_initWeak(&location, self);
     v8 = [HMDBackingStoreCacheFetchRecords alloc];
-    v9 = [(HMDCloudGroup *)self backingStoreGroup];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __60__HMDCloudGroup_cloudRecordWithObjectIDs_completionHandler___block_invoke;
     v21 = &unk_27972B4E0;
     objc_copyWeak(&v24, &location);
-    v23 = v7;
-    v22 = v6;
-    v10 = [(HMDBackingStoreCacheFetchRecords *)v8 initWithGroup:v9 uuids:v22 fetchResult:&v18];
+    v23 = handlerCopy;
+    v22 = dsCopy;
+    v10 = [(HMDBackingStoreCacheFetchRecords *)v8 initWithGroup:backingStoreGroup uuids:v22 fetchResult:&v18];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -1041,17 +1041,17 @@ void __59__HMDCloudGroup_cloudRecordWithObjectID_completionHandler___block_invok
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HMDCloudGroup *)v12 cache:v18];
-    v16 = [v15 backingStore];
-    [v16 submit:v10];
+    v15 = [(HMDCloudGroup *)selfCopy cache:v18];
+    backingStore = [v15 backingStore];
+    [backingStore submit:v10];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x277CBEC10], MEMORY[0x277CBEBF8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC10], MEMORY[0x277CBEBF8], 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1150,28 +1150,28 @@ void __60__HMDCloudGroup_cloudRecordWithObjectIDs_completionHandler___block_invo
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudRecordWithName:(id)a3 completionHandler:(id)a4
+- (void)cloudRecordWithName:(id)name completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  nameCopy = name;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (nameCopy)
   {
-    v14[0] = v6;
+    v14[0] = nameCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __55__HMDCloudGroup_cloudRecordWithName_completionHandler___block_invoke;
     v11[3] = &unk_279727EC8;
-    v12 = v6;
+    v12 = nameCopy;
     v13 = v8;
     [(HMDCloudGroup *)self cloudRecordWithNames:v9 completionHandler:v11];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1198,27 +1198,27 @@ void __55__HMDCloudGroup_cloudRecordWithName_completionHandler___block_invoke(ui
   }
 }
 
-- (void)cloudRecordWithNames:(id)a3 completionHandler:(id)a4
+- (void)cloudRecordWithNames:(id)names completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  namesCopy = names;
+  handlerCopy = handler;
+  if ([namesCopy count])
   {
     objc_initWeak(&location, self);
     v8 = [HMDBackingStoreCacheFetchRecords alloc];
-    v9 = [(HMDCloudGroup *)self backingStoreGroup];
+    backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke;
     v21 = &unk_27972B4E0;
     objc_copyWeak(&v24, &location);
-    v23 = v7;
-    v22 = v6;
-    v10 = [(HMDBackingStoreCacheFetchRecords *)v8 initWithGroup:v9 records:v22 fetchResult:&v18];
+    v23 = handlerCopy;
+    v22 = namesCopy;
+    v10 = [(HMDBackingStoreCacheFetchRecords *)v8 initWithGroup:backingStoreGroup records:v22 fetchResult:&v18];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -1229,17 +1229,17 @@ void __55__HMDCloudGroup_cloudRecordWithName_completionHandler___block_invoke(ui
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HMDCloudGroup *)v12 cache:v18];
-    v16 = [v15 backingStore];
-    [v16 submit:v10];
+    v15 = [(HMDCloudGroup *)selfCopy cache:v18];
+    backingStore = [v15 backingStore];
+    [backingStore submit:v10];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x277CBEC10], MEMORY[0x277CBEBF8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC10], MEMORY[0x277CBEBF8], 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1331,32 +1331,32 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCloudRecordMap:(id)a3
+- (void)fetchCloudRecordMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = [HMDBackingStoreCacheFetchRecordMappings alloc];
-  v6 = [(HMDCloudGroup *)self backingStoreGroup];
-  v9 = [(HMDBackingStoreCacheFetchRecordMappings *)v5 initWithGroup:v6 fetchResult:v4];
+  backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+  v9 = [(HMDBackingStoreCacheFetchRecordMappings *)v5 initWithGroup:backingStoreGroup fetchResult:mapCopy];
 
-  v7 = [(HMDCloudGroup *)self cache];
-  v8 = [v7 backingStore];
-  [v8 submit:v9];
+  cache = [(HMDCloudGroup *)self cache];
+  backingStore = [cache backingStore];
+  [backingStore submit:v9];
 }
 
-- (BOOL)isRootRecord:(id)a3
+- (BOOL)isRootRecord:(id)record
 {
-  v4 = [a3 recordID];
-  v5 = [v4 recordName];
-  LOBYTE(self) = [(HMDCloudGroup *)self isRootRecordName:v5];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  LOBYTE(self) = [(HMDCloudGroup *)self isRootRecordName:recordName];
 
   return self;
 }
 
-- (BOOL)isRootRecordName:(id)a3
+- (BOOL)isRootRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDCloudGroup *)self rootRecordName];
-  v6 = [v5 isEqualToString:v4];
+  nameCopy = name;
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  v6 = [rootRecordName isEqualToString:nameCopy];
 
   return v6;
 }
@@ -1364,11 +1364,11 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
 - (CKRecordID)privateZoneRootRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v4 = [(HMDCloudGroup *)self rootRecordName];
-  v5 = [(HMDCloudGroup *)self cloudZone];
-  v6 = [v5 zone];
-  v7 = [v6 zoneID];
-  v8 = [v3 initWithRecordName:v4 zoneID:v7];
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  cloudZone = [(HMDCloudGroup *)self cloudZone];
+  v6 = [cloudZone zone];
+  zoneID = [v6 zoneID];
+  v8 = [v3 initWithRecordName:rootRecordName zoneID:zoneID];
 
   return v8;
 }
@@ -1376,9 +1376,9 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
 - (id)rootRecordModelObject
 {
   v3 = [HMDCloudGroupRootRecordModelObject alloc];
-  v4 = [(HMDCloudGroup *)self rootRecordObjectID];
-  v5 = [(HMDCloudGroup *)self parentIdentifier];
-  v6 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:1 uuid:v4 parentUUID:v5];
+  rootRecordObjectID = [(HMDCloudGroup *)self rootRecordObjectID];
+  parentIdentifier = [(HMDCloudGroup *)self parentIdentifier];
+  v6 = [(HMDBackingStoreModelObject *)v3 initWithObjectChangeType:1 uuid:rootRecordObjectID parentUUID:parentIdentifier];
 
   return v6;
 }
@@ -1387,13 +1387,13 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(HMDCloudGroup *)self rootRecordName];
-  v5 = [v3 initWithUUIDString:v4];
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  uUID = [v3 initWithUUIDString:rootRecordName];
 
-  if (!v5)
+  if (!uUID)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -1404,18 +1404,18 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
     }
 
     objc_autoreleasePoolPop(v6);
-    v5 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v10 = [(HMDCloudGroup *)self cloudZone];
-  v11 = [v10 zone];
-  v12 = [v11 zoneID];
-  v13 = [v12 zoneName];
+  cloudZone = [(HMDCloudGroup *)self cloudZone];
+  v11 = [cloudZone zone];
+  zoneID = [v11 zoneID];
+  zoneName = [zoneID zoneName];
 
   v14 = MEMORY[0x277CCAD78];
-  v19 = v13;
+  v19 = zoneName;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-  v16 = [v14 hm_deriveUUIDFromBaseUUID:v5 identifierSalt:0 withSalts:v15];
+  v16 = [v14 hm_deriveUUIDFromBaseUUID:uUID identifierSalt:0 withSalts:v15];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -1425,35 +1425,35 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
 - (NSUUID)parentIdentifier
 {
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(HMDCloudGroup *)self cloudZone];
-  v5 = [v4 zone];
-  v6 = [v5 zoneID];
-  v7 = [v6 zoneName];
-  v8 = [v3 initWithUUIDString:v7];
+  cloudZone = [(HMDCloudGroup *)self cloudZone];
+  v5 = [cloudZone zone];
+  zoneID = [v5 zoneID];
+  zoneName = [zoneID zoneName];
+  uUID = [v3 initWithUUIDString:zoneName];
 
-  if (!v8)
+  if (!uUID)
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  return v8;
+  return uUID;
 }
 
 - (NSString)rootRecordName
 {
-  v2 = [(HMDCloudGroup *)self backingStoreGroup];
-  v3 = [v2 rootRecordName];
+  backingStoreGroup = [(HMDCloudGroup *)self backingStoreGroup];
+  rootRecordName = [backingStoreGroup rootRecordName];
 
-  return v3;
+  return rootRecordName;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCloudGroup *)self rootRecordName];
-  v3 = v2;
-  if (v2)
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  v3 = rootRecordName;
+  if (rootRecordName)
   {
-    v4 = v2;
+    v4 = rootRecordName;
   }
 
   else
@@ -1469,8 +1469,8 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCloudGroup *)self shortDescription];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  shortDescription = [(HMDCloudGroup *)self shortDescription];
+  v4 = [v2 stringWithFormat:@"<%@>", shortDescription];
 
   return v4;
 }
@@ -1478,27 +1478,27 @@ void __56__HMDCloudGroup_cloudRecordWithNames_completionHandler___block_invoke(u
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDCloudGroup *)self rootRecordName];
-  v6 = [v3 stringWithFormat:@"%@ Root Record = %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  rootRecordName = [(HMDCloudGroup *)self rootRecordName];
+  v6 = [v3 stringWithFormat:@"%@ Root Record = %@", shortDescription, rootRecordName];
 
   return v6;
 }
 
-- (HMDCloudGroup)initWithBackingStoreCacheGroup:(id)a3 cloudZone:(id)a4
+- (HMDCloudGroup)initWithBackingStoreCacheGroup:(id)group cloudZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  zoneCopy = zone;
   v13.receiver = self;
   v13.super_class = HMDCloudGroup;
   v9 = [(HMDCloudGroup *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backingStoreGroup, a3);
-    objc_storeWeak(&v10->_cloudZone, v8);
-    v11 = [v8 cache];
-    objc_storeWeak(&v10->_cache, v11);
+    objc_storeStrong(&v9->_backingStoreGroup, group);
+    objc_storeWeak(&v10->_cloudZone, zoneCopy);
+    cache = [zoneCopy cache];
+    objc_storeWeak(&v10->_cache, cache);
   }
 
   return v10;
@@ -1546,31 +1546,31 @@ uint64_t __28__HMDCloudGroup_logCategory__block_invoke()
   return NSStringFromClass(v2);
 }
 
-+ (void)createGroupWithRootRecordName:(id)a3 owner:(id)a4 subscriptionName:(id)a5 cloudZone:(id)a6 completion:(id)a7
++ (void)createGroupWithRootRecordName:(id)name owner:(id)owner subscriptionName:(id)subscriptionName cloudZone:(id)zone completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
+  nameCopy = name;
+  zoneCopy = zone;
+  completionCopy = completion;
+  subscriptionNameCopy = subscriptionName;
+  ownerCopy = owner;
   v17 = [HMDBackingStoreCacheCreateGroupOperation alloc];
-  v18 = [v13 backingStoreZone];
+  backingStoreZone = [zoneCopy backingStoreZone];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __91__HMDCloudGroup_createGroupWithRootRecordName_owner_subscriptionName_cloudZone_completion___block_invoke;
   v28 = &unk_279727EA0;
-  v29 = v12;
-  v30 = v13;
-  v31 = v14;
-  v32 = a1;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = [(HMDBackingStoreCacheCreateGroupOperation *)v17 initWithZone:v18 owner:v16 rootRecord:v21 subscriptionName:v15 subscription:0 creationBlock:&v25];
+  v29 = nameCopy;
+  v30 = zoneCopy;
+  v31 = completionCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v20 = zoneCopy;
+  v21 = nameCopy;
+  v22 = [(HMDBackingStoreCacheCreateGroupOperation *)v17 initWithZone:backingStoreZone owner:ownerCopy rootRecord:v21 subscriptionName:subscriptionNameCopy subscription:0 creationBlock:&v25];
 
-  v23 = [v20 cache];
-  v24 = [v23 backingStore];
-  [v24 submit:v22];
+  cache = [v20 cache];
+  backingStore = [cache backingStore];
+  [backingStore submit:v22];
 }
 
 void __91__HMDCloudGroup_createGroupWithRootRecordName_owner_subscriptionName_cloudZone_completion___block_invoke(uint64_t a1, void *a2, void *a3)

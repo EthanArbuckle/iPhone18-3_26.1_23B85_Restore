@@ -1,37 +1,37 @@
 @interface TITypingDESRecordWriter
 - (BOOL)shouldRecordToDES;
 - (TITypingDESRecordWriter)init;
-- (void)clearStoredRecordsWithCompletionHandler:(id)a3;
-- (void)fetchRecords:(id)a3;
-- (void)storeAlignedSession:(id)a3 completion:(id)a4;
+- (void)clearStoredRecordsWithCompletionHandler:(id)handler;
+- (void)fetchRecords:(id)records;
+- (void)storeAlignedSession:(id)session completion:(id)completion;
 @end
 
 @implementation TITypingDESRecordWriter
 
-- (void)clearStoredRecordsWithCompletionHandler:(id)a3
+- (void)clearStoredRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TITypingDESRecordWriter *)self typingDataStore];
+  handlerCopy = handler;
+  typingDataStore = [(TITypingDESRecordWriter *)self typingDataStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__TITypingDESRecordWriter_clearStoredRecordsWithCompletionHandler___block_invoke;
   v7[3] = &unk_27872F758;
-  v8 = v4;
-  v6 = v4;
-  [v5 deleteAllSavedRecordsWithCompletion:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [typingDataStore deleteAllSavedRecordsWithCompletion:v7];
 }
 
-- (void)fetchRecords:(id)a3
+- (void)fetchRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(TITypingDESRecordWriter *)self typingDataStore];
+  recordsCopy = records;
+  typingDataStore = [(TITypingDESRecordWriter *)self typingDataStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__TITypingDESRecordWriter_fetchRecords___block_invoke;
   v7[3] = &unk_27872F730;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchSavedRecordInfoWithCompletion:v7];
+  v8 = recordsCopy;
+  v6 = recordsCopy;
+  [typingDataStore fetchSavedRecordInfoWithCompletion:v7];
 }
 
 uint64_t __40__TITypingDESRecordWriter_fetchRecords___block_invoke(uint64_t a1)
@@ -45,27 +45,27 @@ uint64_t __40__TITypingDESRecordWriter_fetchRecords___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)storeAlignedSession:(id)a3 completion:(id)a4
+- (void)storeAlignedSession:(id)session completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 restrictedAlignedSessionWithWordLimit:20];
+  completionCopy = completion;
+  v7 = [session restrictedAlignedSessionWithWordLimit:20];
   v13 = 0;
   v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v13];
   v9 = v13;
   if (v9)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
-    v10 = [v7 containsCPEntries];
+    containsCPEntries = [v7 containsCPEntries];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __58__TITypingDESRecordWriter_storeAlignedSession_completion___block_invoke;
     v11[3] = &unk_27872F708;
-    v12 = v6;
-    [(TITypingDESRecordWriter *)self storeTypingSession:v8 containsCP:v10 completion:v11];
+    v12 = completionCopy;
+    [(TITypingDESRecordWriter *)self storeTypingSession:v8 containsCP:containsCPEntries completion:v11];
   }
 }
 
@@ -81,10 +81,10 @@ uint64_t __40__TITypingDESRecordWriter_fetchRecords___block_invoke(uint64_t a1)
     return 1;
   }
 
-  v4 = [(TITypingDESRecordWriter *)self typingDataStore];
-  v5 = [v4 shouldMakeRecord];
+  typingDataStore = [(TITypingDESRecordWriter *)self typingDataStore];
+  shouldMakeRecord = [typingDataStore shouldMakeRecord];
 
-  return v5;
+  return shouldMakeRecord;
 }
 
 void __68__TITypingDESRecordWriter_storeTypingSession_containsCP_completion___block_invoke(uint64_t a1, void *a2, void *a3)

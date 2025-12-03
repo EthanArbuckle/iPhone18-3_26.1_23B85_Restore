@@ -1,11 +1,11 @@
 @interface BRFileProviderHelper
-+ (id)_br_getDomainIdentifierForAccountDescriptor:(id)a3;
-+ (id)br_getDomainIdentifierForACAccountID:(id)a3;
++ (id)_br_getDomainIdentifierForAccountDescriptor:(id)descriptor;
++ (id)br_getDomainIdentifierForACAccountID:(id)d;
 + (id)br_getDomainIdentifierForCurrentPersona;
-+ (id)br_getDomainIdentifierForDataSeparated:(BOOL)a3;
++ (id)br_getDomainIdentifierForDataSeparated:(BOOL)separated;
 + (id)br_getProviderDomainIDForCurrentPersona;
 + (id)br_getProviderIDForCurrentPersona;
-+ (id)br_getProviderIDForDataSeparated:(BOOL)a3;
++ (id)br_getProviderIDForDataSeparated:(BOOL)separated;
 @end
 
 @implementation BRFileProviderHelper
@@ -14,7 +14,7 @@
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
   v4 = [BRAccountDescriptor accountDescriptorForPersonaID:v3 mustBeLoggedIn:0];
-  v5 = [a1 _br_getDomainIdentifierForAccountDescriptor:v4];
+  v5 = [self _br_getDomainIdentifierForAccountDescriptor:v4];
 
   return v5;
 }
@@ -23,12 +23,12 @@
 {
   IsDataSeparated = BRCurrentPersonaIsDataSeparated();
 
-  return [a1 br_getProviderIDForDataSeparated:IsDataSeparated];
+  return [self br_getProviderIDForDataSeparated:IsDataSeparated];
 }
 
-+ (id)br_getProviderIDForDataSeparated:(BOOL)a3
++ (id)br_getProviderIDForDataSeparated:(BOOL)separated
 {
-  if (a3)
+  if (separated)
   {
     return @"com.apple.CloudDocs.iCloudDriveFileProviderManaged";
   }
@@ -41,15 +41,15 @@
 
 + (id)br_getProviderDomainIDForCurrentPersona
 {
-  v3 = [a1 br_getDomainIdentifierForCurrentPersona];
-  v4 = [a1 br_getProviderDomainIDForDomainIdentifier:v3 dataSeparated:BRCurrentPersonaIsDataSeparated()];
+  br_getDomainIdentifierForCurrentPersona = [self br_getDomainIdentifierForCurrentPersona];
+  v4 = [self br_getProviderDomainIDForDomainIdentifier:br_getDomainIdentifierForCurrentPersona dataSeparated:BRCurrentPersonaIsDataSeparated()];
 
   return v4;
 }
 
-+ (id)br_getDomainIdentifierForDataSeparated:(BOOL)a3
++ (id)br_getDomainIdentifierForDataSeparated:(BOOL)separated
 {
-  v3 = a3;
+  separatedCopy = separated;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
@@ -71,7 +71,7 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if ([v10 isDataSeparated] == v3)
+        if ([v10 isDataSeparated] == separatedCopy)
         {
           v12 = brc_bread_crumbs("+[BRFileProviderHelper br_getDomainIdentifierForDataSeparated:]", 62);
           v13 = brc_default_log(1, 0);
@@ -80,7 +80,7 @@
             [(BRFileProviderHelper *)v10 br_getDomainIdentifierForDataSeparated:v12, v13];
           }
 
-          v11 = [a1 _br_getDomainIdentifierForAccountDescriptor:v10];
+          v11 = [self _br_getDomainIdentifierForAccountDescriptor:v10];
           goto LABEL_13;
         }
       }
@@ -103,20 +103,20 @@ LABEL_13:
   return v11;
 }
 
-+ (id)br_getDomainIdentifierForACAccountID:(id)a3
++ (id)br_getDomainIdentifierForACAccountID:(id)d
 {
-  v4 = [BRAccountDescriptor accountDescriptorForAccountID:a3 mustBeLoggedIn:0];
-  v5 = [a1 _br_getDomainIdentifierForAccountDescriptor:v4];
+  v4 = [BRAccountDescriptor accountDescriptorForAccountID:d mustBeLoggedIn:0];
+  v5 = [self _br_getDomainIdentifierForAccountDescriptor:v4];
 
   return v5;
 }
 
-+ (id)_br_getDomainIdentifierForAccountDescriptor:(id)a3
++ (id)_br_getDomainIdentifierForAccountDescriptor:(id)descriptor
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (descriptor)
   {
-    v3 = [a3 domainIdentifier];
+    domainIdentifier = [descriptor domainIdentifier];
   }
 
   else
@@ -130,12 +130,12 @@ LABEL_13:
       _os_log_impl(&dword_1AE2A9000, v5, OS_LOG_TYPE_DEFAULT, "[NOTICE] Couldn't resolve an account descriptor, returning nil domain identifier%@", &v8, 0xCu);
     }
 
-    v3 = 0;
+    domainIdentifier = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return domainIdentifier;
 }
 
 + (void)br_getDomainIdentifierForDataSeparated:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

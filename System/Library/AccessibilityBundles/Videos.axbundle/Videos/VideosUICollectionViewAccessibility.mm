@@ -14,8 +14,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(VideosUICollectionViewAccessibility *)self accessibilityIdentifier];
-  v12 = [v11 isEqualToString:@"AXRelatedStoreItems"];
+  accessibilityIdentifier = [(VideosUICollectionViewAccessibility *)self accessibilityIdentifier];
+  v12 = [accessibilityIdentifier isEqualToString:@"AXRelatedStoreItems"];
 
   if (v12)
   {
@@ -66,13 +66,13 @@ void __65__VideosUICollectionViewAccessibility__accessibilityContentInset__block
 {
   v16.receiver = self;
   v16.super_class = VideosUICollectionViewAccessibility;
-  v3 = [(VideosUICollectionViewAccessibility *)&v16 _accessibilityOtherCollectionViewItems];
-  v4 = [(VideosUICollectionViewAccessibility *)self accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"AXRelatedStoreItems"];
+  _accessibilityOtherCollectionViewItems = [(VideosUICollectionViewAccessibility *)&v16 _accessibilityOtherCollectionViewItems];
+  accessibilityIdentifier = [(VideosUICollectionViewAccessibility *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"AXRelatedStoreItems"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v15 = 0;
     objc_opt_class();
     v7 = [(VideosUICollectionViewAccessibility *)self safeValueForKey:@"subviews"];
@@ -82,15 +82,15 @@ void __65__VideosUICollectionViewAccessibility__accessibilityContentInset__block
     v12[1] = 3221225472;
     v12[2] = __77__VideosUICollectionViewAccessibility__accessibilityOtherCollectionViewItems__block_invoke;
     v12[3] = &unk_29F31B690;
-    v13 = v3;
-    v14 = v6;
-    v9 = v6;
-    v10 = v3;
+    v13 = _accessibilityOtherCollectionViewItems;
+    v14 = array;
+    v9 = array;
+    v10 = _accessibilityOtherCollectionViewItems;
     [v8 enumerateObjectsUsingBlock:v12];
-    v3 = [v9 arrayByAddingObjectsFromArray:v10];
+    _accessibilityOtherCollectionViewItems = [v9 arrayByAddingObjectsFromArray:v10];
   }
 
-  return v3;
+  return _accessibilityOtherCollectionViewItems;
 }
 
 void __77__VideosUICollectionViewAccessibility__accessibilityOtherCollectionViewItems__block_invoke(uint64_t a1, void *a2)

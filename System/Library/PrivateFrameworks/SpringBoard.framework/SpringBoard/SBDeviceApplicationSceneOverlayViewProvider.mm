@@ -1,36 +1,36 @@
 @interface SBDeviceApplicationSceneOverlayViewProvider
 - (BOOL)_mightNeedCounterRotationForBasicContentWrapper;
 - (SBDeviceApplicationSceneOverlayViewController)overlayViewController;
-- (SBDeviceApplicationSceneOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4;
+- (SBDeviceApplicationSceneOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate;
 - (SBDeviceApplicationSceneOverlayViewProviderDelegate)delegate;
 - (id)initialTraitsParticipantForOverlayContainer;
-- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)a3;
+- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)orientation;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_activateIfPossible;
 - (void)_deactivateIfPossible;
 - (void)_noteSupportedInterfaceOrientationsChanged;
-- (void)containerDidUpdateTraitsParticipant:(id)a3;
+- (void)containerDidUpdateTraitsParticipant:(id)participant;
 - (void)dealloc;
-- (void)hideContentWithAnimation:(BOOL)a3 completionHandler:(id)a4;
-- (void)showContentWithAnimation:(BOOL)a3 completionHandler:(id)a4;
+- (void)hideContentWithAnimation:(BOOL)animation completionHandler:(id)handler;
+- (void)showContentWithAnimation:(BOOL)animation completionHandler:(id)handler;
 @end
 
 @implementation SBDeviceApplicationSceneOverlayViewProvider
 
-- (SBDeviceApplicationSceneOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4
+- (SBDeviceApplicationSceneOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SBDeviceApplicationSceneOverlayViewProvider;
   v9 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sceneHandle, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_sceneHandle, handle);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     [(SBDeviceApplicationSceneOverlayViewProvider *)v10 _activateIfPossible];
   }
 
@@ -58,17 +58,17 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
-  v3 = [v2 preferredStatusBarStyle];
+  _realOverlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
+  preferredStatusBarStyle = [_realOverlayViewController preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
-- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)a3
+- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)orientation
 {
-  if ([(SBDeviceApplicationSceneOverlayViewProvider *)self shouldFollowSceneOrientation]|| ((1 << a3) & ~[(SBDeviceApplicationSceneOverlayViewProvider *)self supportedInterfaceOrientations]) == 0)
+  if ([(SBDeviceApplicationSceneOverlayViewProvider *)self shouldFollowSceneOrientation]|| ((1 << orientation) & ~[(SBDeviceApplicationSceneOverlayViewProvider *)self supportedInterfaceOrientations]) == 0)
   {
-    return a3;
+    return orientation;
   }
 
   orientationWrapperViewController = self->_orientationWrapperViewController;
@@ -80,83 +80,83 @@
 
   else
   {
-    v7 = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self->_basicWrapperViewController view];
-    v8 = [v7 window];
-    v9 = [v8 _windowInterfaceOrientation];
+    view = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self->_basicWrapperViewController view];
+    window = [view window];
+    _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-    return v9;
+    return _windowInterfaceOrientation;
   }
 }
 
-- (void)containerDidUpdateTraitsParticipant:(id)a3
+- (void)containerDidUpdateTraitsParticipant:(id)participant
 {
   orientationWrapperViewController = self->_orientationWrapperViewController;
-  v5 = a3;
-  [(SBIsolatedSceneOrientationFollowingWrapperViewController *)orientationWrapperViewController containerDidUpdateTraitsParticipant:v5];
-  [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self->_basicWrapperViewController containerDidUpdateTraitsParticipant:v5];
+  participantCopy = participant;
+  [(SBIsolatedSceneOrientationFollowingWrapperViewController *)orientationWrapperViewController containerDidUpdateTraitsParticipant:participantCopy];
+  [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self->_basicWrapperViewController containerDidUpdateTraitsParticipant:participantCopy];
 }
 
-- (void)showContentWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)showContentWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)hideContentWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)hideContentWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
-  v3 = [v2 preferredInterfaceOrientationForPresentation];
+  _realOverlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
+  preferredInterfaceOrientationForPresentation = [_realOverlayViewController preferredInterfaceOrientationForPresentation];
 
-  return v3;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  _realOverlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
+  supportedInterfaceOrientations = [_realOverlayViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (id)initialTraitsParticipantForOverlayContainer
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  v4 = [v3 initialTraitsParticipantForOverlayViewProvider:self];
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  v4 = [delegate initialTraitsParticipantForOverlayViewProvider:self];
 
   return v4;
 }
 
 - (void)_activateIfPossible
 {
-  v13 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  if (-[SBDeviceApplicationSceneOverlayViewProvider contentWantsSimplifiedOrientationBehavior](self, "contentWantsSimplifiedOrientationBehavior") || ([v13 overlayViewProviderIsHostedInNonrotatingWindow:self] & 1) == 0 && -[SBDeviceApplicationSceneOverlayViewProvider shouldFollowSceneOrientation](self, "shouldFollowSceneOrientation"))
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  if (-[SBDeviceApplicationSceneOverlayViewProvider contentWantsSimplifiedOrientationBehavior](self, "contentWantsSimplifiedOrientationBehavior") || ([delegate overlayViewProviderIsHostedInNonrotatingWindow:self] & 1) == 0 && -[SBDeviceApplicationSceneOverlayViewProvider shouldFollowSceneOrientation](self, "shouldFollowSceneOrientation"))
   {
     if ([(SBDeviceApplicationSceneOverlayViewProvider *)self _mightNeedCounterRotationForBasicContentWrapper])
     {
-      v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self _contentSupportedInterfaceOrientationsRequireContainerCounterRotation];
+      _contentSupportedInterfaceOrientationsRequireContainerCounterRotation = [(SBDeviceApplicationSceneOverlayViewProvider *)self _contentSupportedInterfaceOrientationsRequireContainerCounterRotation];
       self->_needsCounterRotationReevaluationForFirstSupportedOrientationsUpdate = 1;
     }
 
     else
     {
-      v3 = 0;
+      _contentSupportedInterfaceOrientationsRequireContainerCounterRotation = 0;
     }
 
     v10 = [SBDeviceApplicationSceneOverlayBasicWrapperViewController alloc];
-    v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
-    v11 = [v13 overlayViewProviderRendersWhileLocked:self];
-    v6 = [v13 initialTraitsParticipantForOverlayViewProvider:self];
-    v12 = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)v10 initWithContentViewController:v5 rendersWhileLocked:v11 needsCounterRotation:v3 containerTraitsParticipant:v6];
+    _realOverlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
+    v11 = [delegate overlayViewProviderRendersWhileLocked:self];
+    sceneHandle = [delegate initialTraitsParticipantForOverlayViewProvider:self];
+    v12 = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)v10 initWithContentViewController:_realOverlayViewController rendersWhileLocked:v11 needsCounterRotation:_contentSupportedInterfaceOrientationsRequireContainerCounterRotation containerTraitsParticipant:sceneHandle];
     basicWrapperViewController = self->_basicWrapperViewController;
     self->_basicWrapperViewController = v12;
   }
@@ -164,36 +164,36 @@
   else
   {
     v4 = [SBIsolatedSceneOrientationFollowingWrapperViewController alloc];
-    v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
-    v6 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    basicWrapperViewController = [v13 windowSceneForOverlayViewProvider:self];
-    v8 = -[SBIsolatedSceneOrientationFollowingWrapperViewController initWithContentViewController:sceneHandle:windowScene:orientationDelegate:rendersWhileLocked:](v4, "initWithContentViewController:sceneHandle:windowScene:orientationDelegate:rendersWhileLocked:", v5, v6, basicWrapperViewController, self, [v13 overlayViewProviderRendersWhileLocked:self]);
+    _realOverlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self _realOverlayViewController];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    basicWrapperViewController = [delegate windowSceneForOverlayViewProvider:self];
+    v8 = -[SBIsolatedSceneOrientationFollowingWrapperViewController initWithContentViewController:sceneHandle:windowScene:orientationDelegate:rendersWhileLocked:](v4, "initWithContentViewController:sceneHandle:windowScene:orientationDelegate:rendersWhileLocked:", _realOverlayViewController, sceneHandle, basicWrapperViewController, self, [delegate overlayViewProviderRendersWhileLocked:self]);
     orientationWrapperViewController = self->_orientationWrapperViewController;
     self->_orientationWrapperViewController = v8;
   }
 
-  [v13 activateOverlayForViewProvider:self];
+  [delegate activateOverlayForViewProvider:self];
 }
 
 - (void)_deactivateIfPossible
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  v8 = v3;
-  if (v3)
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v3 deactivateOverlayForViewProvider:self];
+    [delegate deactivateOverlayForViewProvider:self];
   }
 
   else
   {
-    v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)self overlayViewController];
-    [v4 beginAppearanceTransition:0 animated:0];
-    [v4 willMoveToParentViewController:0];
-    v5 = [v4 viewIfLoaded];
-    [v5 removeFromSuperview];
+    overlayViewController = [(SBDeviceApplicationSceneOverlayViewProvider *)self overlayViewController];
+    [overlayViewController beginAppearanceTransition:0 animated:0];
+    [overlayViewController willMoveToParentViewController:0];
+    viewIfLoaded = [overlayViewController viewIfLoaded];
+    [viewIfLoaded removeFromSuperview];
 
-    [v4 removeFromParentViewController];
-    [v4 endAppearanceTransition];
+    [overlayViewController removeFromParentViewController];
+    [overlayViewController endAppearanceTransition];
   }
 
   orientationWrapperViewController = self->_orientationWrapperViewController;
@@ -205,9 +205,9 @@
 
 - (BOOL)_mightNeedCounterRotationForBasicContentWrapper
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v4 = [v3 application];
-  if (([v4 classicAppPhoneAppRunningOnPad] & 1) != 0 || !-[SBDeviceApplicationSceneOverlayViewProvider contentWantsSimplifiedOrientationBehavior](self, "contentWantsSimplifiedOrientationBehavior"))
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
+  if (([application classicAppPhoneAppRunningOnPad] & 1) != 0 || !-[SBDeviceApplicationSceneOverlayViewProvider contentWantsSimplifiedOrientationBehavior](self, "contentWantsSimplifiedOrientationBehavior"))
   {
     LOBYTE(v5) = 0;
   }
@@ -225,8 +225,8 @@
   if (self->_needsCounterRotationReevaluationForFirstSupportedOrientationsUpdate && self->_basicWrapperViewController && [(SBDeviceApplicationSceneOverlayViewProvider *)self _mightNeedCounterRotationForBasicContentWrapper])
   {
     self->_needsCounterRotationReevaluationForFirstSupportedOrientationsUpdate = 0;
-    v3 = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self->_basicWrapperViewController overlayView];
-    [v3 setContentNeedsCounterRotation:{-[SBDeviceApplicationSceneOverlayViewProvider _contentSupportedInterfaceOrientationsRequireContainerCounterRotation](self, "_contentSupportedInterfaceOrientationsRequireContainerCounterRotation")}];
+    overlayView = [(SBDeviceApplicationSceneOverlayBasicWrapperViewController *)self->_basicWrapperViewController overlayView];
+    [overlayView setContentNeedsCounterRotation:{-[SBDeviceApplicationSceneOverlayViewProvider _contentSupportedInterfaceOrientationsRequireContainerCounterRotation](self, "_contentSupportedInterfaceOrientationsRequireContainerCounterRotation")}];
   }
 }
 

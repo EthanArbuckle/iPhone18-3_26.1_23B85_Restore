@@ -1,21 +1,21 @@
 @interface ASTSuite
-- (ASTSuite)initWithCoder:(id)a3;
-- (ASTSuite)initWithId:(id)a3 suiteNameLocalizedString:(id)a4 suiteDescriptionLocalizedString:(id)a5 estimatedCompletionTimeLocalizedString:(id)a6 primaryAssetLocator:(id)a7 secondaryAssetLocator:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (ASTSuite)initWithCoder:(id)coder;
+- (ASTSuite)initWithId:(id)id suiteNameLocalizedString:(id)string suiteDescriptionLocalizedString:(id)localizedString estimatedCompletionTimeLocalizedString:(id)timeLocalizedString primaryAssetLocator:(id)locator secondaryAssetLocator:(id)assetLocator;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASTSuite
 
-- (ASTSuite)initWithId:(id)a3 suiteNameLocalizedString:(id)a4 suiteDescriptionLocalizedString:(id)a5 estimatedCompletionTimeLocalizedString:(id)a6 primaryAssetLocator:(id)a7 secondaryAssetLocator:(id)a8
+- (ASTSuite)initWithId:(id)id suiteNameLocalizedString:(id)string suiteDescriptionLocalizedString:(id)localizedString estimatedCompletionTimeLocalizedString:(id)timeLocalizedString primaryAssetLocator:(id)locator secondaryAssetLocator:(id)assetLocator
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  idCopy = id;
+  stringCopy = string;
+  localizedStringCopy = localizedString;
+  timeLocalizedStringCopy = timeLocalizedString;
+  locatorCopy = locator;
+  assetLocatorCopy = assetLocator;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -25,36 +25,36 @@
     v21 = v20;
     if (v20)
     {
-      [(ASTSuite *)v20 setSuiteID:v14];
-      [(ASTSuite *)v21 setSuiteNameLocalizedString:v15];
-      [(ASTSuite *)v21 setSuiteDescriptionLocalizedString:v16];
-      [(ASTSuite *)v21 setEstimatedCompletionTimeLocalizedString:v17];
-      [(ASTSuite *)v21 setPrimaryAssetLocator:v18];
-      [(ASTSuite *)v21 setSecondaryAssetLocator:v19];
+      [(ASTSuite *)v20 setSuiteID:idCopy];
+      [(ASTSuite *)v21 setSuiteNameLocalizedString:stringCopy];
+      [(ASTSuite *)v21 setSuiteDescriptionLocalizedString:localizedStringCopy];
+      [(ASTSuite *)v21 setEstimatedCompletionTimeLocalizedString:timeLocalizedStringCopy];
+      [(ASTSuite *)v21 setPrimaryAssetLocator:locatorCopy];
+      [(ASTSuite *)v21 setSecondaryAssetLocator:assetLocatorCopy];
     }
 
     self = v21;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_7;
@@ -63,9 +63,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(ASTSuite *)self suiteID];
-    v7 = [(ASTSuite *)v5 suiteID];
-    v8 = [v6 isEqual:v7];
+    suiteID = [(ASTSuite *)self suiteID];
+    suiteID2 = [(ASTSuite *)v5 suiteID];
+    v8 = [suiteID isEqual:suiteID2];
   }
 
   else
@@ -81,39 +81,39 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(ASTSuite *)self suiteID];
-  v3 = [v2 hash];
+  suiteID = [(ASTSuite *)self suiteID];
+  v3 = [suiteID hash];
 
   return v3;
 }
 
-- (ASTSuite)initWithCoder:(id)a3
+- (ASTSuite)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASTSuite *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteID"];
     suiteID = v5->_suiteID;
     v5->_suiteID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteNameLocalizedString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteNameLocalizedString"];
     suiteNameLocalizedString = v5->_suiteNameLocalizedString;
     v5->_suiteNameLocalizedString = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteDescriptionLocalizedString"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteDescriptionLocalizedString"];
     suiteDescriptionLocalizedString = v5->_suiteDescriptionLocalizedString;
     v5->_suiteDescriptionLocalizedString = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"estimatedCompletionTimeLocalizedString"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"estimatedCompletionTimeLocalizedString"];
     estimatedCompletionTimeLocalizedString = v5->_estimatedCompletionTimeLocalizedString;
     v5->_estimatedCompletionTimeLocalizedString = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAssetLocator"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAssetLocator"];
     primaryAssetLocator = v5->_primaryAssetLocator;
     v5->_primaryAssetLocator = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryAssetLocator"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryAssetLocator"];
     secondaryAssetLocator = v5->_secondaryAssetLocator;
     v5->_secondaryAssetLocator = v16;
   }
@@ -121,26 +121,26 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASTSuite *)self suiteID];
-  [v4 encodeObject:v5 forKey:@"suiteID"];
+  coderCopy = coder;
+  suiteID = [(ASTSuite *)self suiteID];
+  [coderCopy encodeObject:suiteID forKey:@"suiteID"];
 
-  v6 = [(ASTSuite *)self suiteNameLocalizedString];
-  [v4 encodeObject:v6 forKey:@"suiteNameLocalizedString"];
+  suiteNameLocalizedString = [(ASTSuite *)self suiteNameLocalizedString];
+  [coderCopy encodeObject:suiteNameLocalizedString forKey:@"suiteNameLocalizedString"];
 
-  v7 = [(ASTSuite *)self suiteDescriptionLocalizedString];
-  [v4 encodeObject:v7 forKey:@"suiteDescriptionLocalizedString"];
+  suiteDescriptionLocalizedString = [(ASTSuite *)self suiteDescriptionLocalizedString];
+  [coderCopy encodeObject:suiteDescriptionLocalizedString forKey:@"suiteDescriptionLocalizedString"];
 
-  v8 = [(ASTSuite *)self estimatedCompletionTimeLocalizedString];
-  [v4 encodeObject:v8 forKey:@"estimatedCompletionTimeLocalizedString"];
+  estimatedCompletionTimeLocalizedString = [(ASTSuite *)self estimatedCompletionTimeLocalizedString];
+  [coderCopy encodeObject:estimatedCompletionTimeLocalizedString forKey:@"estimatedCompletionTimeLocalizedString"];
 
-  v9 = [(ASTSuite *)self primaryAssetLocator];
-  [v4 encodeObject:v9 forKey:@"primaryAssetLocator"];
+  primaryAssetLocator = [(ASTSuite *)self primaryAssetLocator];
+  [coderCopy encodeObject:primaryAssetLocator forKey:@"primaryAssetLocator"];
 
-  v10 = [(ASTSuite *)self secondaryAssetLocator];
-  [v4 encodeObject:v10 forKey:@"secondaryAssetLocator"];
+  secondaryAssetLocator = [(ASTSuite *)self secondaryAssetLocator];
+  [coderCopy encodeObject:secondaryAssetLocator forKey:@"secondaryAssetLocator"];
 }
 
 @end

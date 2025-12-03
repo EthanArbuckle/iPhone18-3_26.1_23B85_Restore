@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneIndexMultiDocValues_MultiSortedDocValues
-- (id)lookupOrdWithInt:(int)a3;
-- (int)getOrdWithInt:(int)a3;
+- (id)lookupOrdWithInt:(int)int;
+- (int)getOrdWithInt:(int)int;
 - (int)getValueCount;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiDocValues_MultiSortedDocValues
 
-- (int)getOrdWithInt:(int)a3
+- (int)getOrdWithInt:(int)int
 {
-  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(a3, self->docStarts_);
+  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(int, self->docStarts_);
   values = self->values_;
   if (!values)
   {
@@ -41,7 +41,7 @@
     IOSArray_throwOutOfBoundsWithMsg(v11, v7);
   }
 
-  v12 = [(IOSClass *)v9 getOrdWithInt:(a3 - *(&docStarts->super.size_ + v7 + 1))];
+  v12 = [(IOSClass *)v9 getOrdWithInt:(int - *(&docStarts->super.size_ + v7 + 1))];
   if (v12 != -1)
   {
     v13 = v12;
@@ -62,7 +62,7 @@ LABEL_13:
   return -1;
 }
 
-- (id)lookupOrdWithInt:(int)a3
+- (id)lookupOrdWithInt:(int)int
 {
   mapping = self->mapping_;
   if (!mapping)
@@ -70,9 +70,9 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v5 = a3;
-  v6 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)mapping getFirstSegmentNumberWithLong:a3];
-  v7 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)self->mapping_ getFirstSegmentOrdWithLong:v5];
+  intCopy = int;
+  v6 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)mapping getFirstSegmentNumberWithLong:int];
+  v7 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)self->mapping_ getFirstSegmentOrdWithLong:intCopy];
   values = self->values_;
   if (!values)
   {

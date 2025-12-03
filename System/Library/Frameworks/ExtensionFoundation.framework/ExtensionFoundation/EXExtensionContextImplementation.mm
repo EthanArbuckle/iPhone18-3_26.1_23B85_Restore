@@ -1,34 +1,34 @@
 @interface EXExtensionContextImplementation
 + (id)_defaultExtensionContextVendorProtocol;
-+ (id)_derivedExtensionAuxiliaryHostProtocolWithContextClass:(Class)a3;
-+ (id)_extensionContextForIdentifier:(id)a3;
++ (id)_derivedExtensionAuxiliaryHostProtocolWithContextClass:(Class)class;
++ (id)_extensionContextForIdentifier:(id)identifier;
 + (id)_extensionContextHostProtocolAllowedClassesForItems;
-+ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)a3;
-+ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)a3;
++ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)classes;
++ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)classes;
 - (BOOL)_isHost;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (EXExtensionContextImplementation)initWithCoder:(id)a3;
-- (EXExtensionContextImplementation)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5 extensionContext:(id)a6;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (EXExtensionContextImplementation)initWithCoder:(id)coder;
+- (EXExtensionContextImplementation)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d extensionContext:(id)context;
 - (NSExtensionContext)extensionContext;
 - (NSString)description;
 - (NSUUID)_pkUUID;
 - (id)_principalObject;
 - (id)_processAssertion;
-- (void)_initializeAuxillaryConnectionWithListenerEndpoint:(id)a3;
-- (void)_loadItemForPayload:(id)a3 completionHandler:(id)a4;
-- (void)_loadPreviewImageForPayload:(id)a3 completionHandler:(id)a4;
-- (void)_openURL:(id)a3 completion:(id)a4;
+- (void)_initializeAuxillaryConnectionWithListenerEndpoint:(id)endpoint;
+- (void)_loadItemForPayload:(id)payload completionHandler:(id)handler;
+- (void)_loadPreviewImageForPayload:(id)payload completionHandler:(id)handler;
+- (void)_openURL:(id)l completion:(id)completion;
 - (void)_pkUUID;
 - (void)_processAssertion;
-- (void)_setProcessAssertion:(id)a3;
-- (void)_willPerformHostCallback:(id)a3;
-- (void)cancelRequestWithError:(id)a3;
-- (void)completeRequestReturningItems:(id)a3 completionHandler:(id)a4;
+- (void)_setProcessAssertion:(id)assertion;
+- (void)_willPerformHostCallback:(id)callback;
+- (void)cancelRequestWithError:(id)error;
+- (void)completeRequestReturningItems:(id)items completionHandler:(id)handler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)set_pkUUID:(id)a3;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)set_pkUUID:(id)d;
 @end
 
 @implementation EXExtensionContextImplementation
@@ -110,16 +110,16 @@
 {
   v2 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF2A2220];
   v3 = +[_EXDefaults sharedInstance];
-  v4 = [v3 extensionItemTypes];
-  [v2 setClasses:v4 forSelector:sel__beginRequestWithExtensionItems_listenerEndpoint_withContextUUID_completion_ argumentIndex:0 ofReply:0];
+  extensionItemTypes = [v3 extensionItemTypes];
+  [v2 setClasses:extensionItemTypes forSelector:sel__beginRequestWithExtensionItems_listenerEndpoint_withContextUUID_completion_ argumentIndex:0 ofReply:0];
 
   return v2;
 }
 
 - (BOOL)_isHost
 {
-  v2 = [(EXExtensionContextImplementation *)self _extensionHostProxy];
-  v3 = v2 == 0;
+  _extensionHostProxy = [(EXExtensionContextImplementation *)self _extensionHostProxy];
+  v3 = _extensionHostProxy == 0;
 
   return v3;
 }
@@ -131,14 +131,14 @@
   return WeakRetained;
 }
 
-- (void)set_pkUUID:(id)a3
+- (void)set_pkUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   extensionRequest = self->_extensionRequest;
   if (extensionRequest)
   {
-    v7 = v4;
-    [(EXExtensionRequest *)extensionRequest setPkUUID:v4];
+    v7 = dCopy;
+    [(EXExtensionRequest *)extensionRequest setPkUUID:dCopy];
   }
 
   else
@@ -153,14 +153,14 @@
   }
 }
 
-- (void)_setProcessAssertion:(id)a3
+- (void)_setProcessAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   extensionRequest = self->_extensionRequest;
   if (extensionRequest)
   {
-    v7 = v4;
-    [(EXExtensionRequest *)extensionRequest setAssertion:v4];
+    v7 = assertionCopy;
+    [(EXExtensionRequest *)extensionRequest setAssertion:assertionCopy];
   }
 
   else
@@ -178,49 +178,49 @@
 + (id)_extensionContextHostProtocolAllowedClassesForItems
 {
   v2 = +[_EXDefaults sharedInstance];
-  v3 = [v2 extensionItemTypes];
+  extensionItemTypes = [v2 extensionItemTypes];
 
-  return v3;
+  return extensionItemTypes;
 }
 
-+ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)a3
++ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)classes
 {
   v3 = MEMORY[0x1E696B0D0];
-  v4 = a3;
+  classesCopy = classes;
   v5 = [v3 interfaceWithProtocol:&unk_1EF2ABF38];
   v6 = +[_EXDefaults sharedInstance];
-  v7 = [v6 extensionItemTypes];
+  extensionItemTypes = [v6 extensionItemTypes];
 
-  [v5 setClasses:v7 forSelector:sel__completeRequestReturningItems_forExtensionContextWithUUID_completion_ argumentIndex:0 ofReply:0];
-  v8 = v4;
-  if (!v4)
+  [v5 setClasses:extensionItemTypes forSelector:sel__completeRequestReturningItems_forExtensionContextWithUUID_completion_ argumentIndex:0 ofReply:0];
+  v8 = classesCopy;
+  if (!classesCopy)
   {
     v8 = objc_opt_new();
   }
 
   v9 = [v8 setByAddingObject:objc_opt_class()];
 
-  if (!v4)
+  if (!classesCopy)
   {
   }
 
   [v5 setClasses:v9 forSelector:sel__cancelRequestWithError_forExtensionContextWithUUID_completion_ argumentIndex:0 ofReply:0];
   v10 = +[_EXDefaults sharedInstance];
-  v11 = [v10 useItemProviderXPCConnection];
+  useItemProviderXPCConnection = [v10 useItemProviderXPCConnection];
 
-  if ((v11 & 1) == 0)
+  if ((useItemProviderXPCConnection & 1) == 0)
   {
     v12 = +[_EXDefaults sharedInstance];
-    v13 = [v12 itemProviderTypes];
+    itemProviderTypes = [v12 itemProviderTypes];
 
     v14 = +[_EXDefaults sharedInstance];
-    v15 = [v14 plistAndValueTypes];
-    v16 = [v15 setByAddingObject:objc_opt_class()];
+    plistAndValueTypes = [v14 plistAndValueTypes];
+    v16 = [plistAndValueTypes setByAddingObject:objc_opt_class()];
 
-    [v5 setClasses:v13 forSelector:sel__loadItemForPayload_contextIdentifier_completionHandler_ argumentIndex:0 ofReply:0];
+    [v5 setClasses:itemProviderTypes forSelector:sel__loadItemForPayload_contextIdentifier_completionHandler_ argumentIndex:0 ofReply:0];
     [v5 setClasses:v16 forSelector:sel__loadItemForPayload_contextIdentifier_completionHandler_ argumentIndex:0 ofReply:1];
     [v5 setClasses:v9 forSelector:sel__loadItemForPayload_contextIdentifier_completionHandler_ argumentIndex:1 ofReply:1];
-    [v5 setClasses:v13 forSelector:sel__loadPreviewImageForPayload_contextIdentifier_completionHandler_ argumentIndex:0 ofReply:0];
+    [v5 setClasses:itemProviderTypes forSelector:sel__loadPreviewImageForPayload_contextIdentifier_completionHandler_ argumentIndex:0 ofReply:0];
     [v5 setClasses:v16 forSelector:sel__loadPreviewImageForPayload_contextIdentifier_completionHandler_ argumentIndex:0 ofReply:1];
     [v5 setClasses:v9 forSelector:sel__loadPreviewImageForPayload_contextIdentifier_completionHandler_ argumentIndex:1 ofReply:1];
   }
@@ -228,14 +228,14 @@
   return v5;
 }
 
-+ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)a3
++ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)classes
 {
-  v4 = a3;
-  if ([v4 count])
+  classesCopy = classes;
+  if ([classesCopy count])
   {
-    v5 = [a1 _defaultExtensionContextVendorProtocol];
-    v6 = [v4 setByAddingObject:objc_opt_class()];
-    [v5 setClasses:v6 forSelector:sel__beginRequestWithExtensionItems_listenerEndpoint_withContextUUID_completion_ argumentIndex:1 ofReply:1];
+    _defaultExtensionContextVendorProtocol = [self _defaultExtensionContextVendorProtocol];
+    v6 = [classesCopy setByAddingObject:objc_opt_class()];
+    [_defaultExtensionContextVendorProtocol setClasses:v6 forSelector:sel__beginRequestWithExtensionItems_listenerEndpoint_withContextUUID_completion_ argumentIndex:1 ofReply:1];
   }
 
   else
@@ -244,16 +244,16 @@
     block[1] = 3221225472;
     block[2] = __91__EXExtensionContextImplementation__extensionContextVendorProtocolWithAllowedErrorClasses___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_extensionContextVendorProtocolWithAllowedErrorClasses__onceToken != -1)
     {
       dispatch_once(&_extensionContextVendorProtocolWithAllowedErrorClasses__onceToken, block);
     }
 
-    v5 = _extensionContextVendorProtocolWithAllowedErrorClasses____xpcInterface;
+    _defaultExtensionContextVendorProtocol = _extensionContextVendorProtocolWithAllowedErrorClasses____xpcInterface;
   }
 
-  return v5;
+  return _defaultExtensionContextVendorProtocol;
 }
 
 uint64_t __91__EXExtensionContextImplementation__extensionContextVendorProtocolWithAllowedErrorClasses___block_invoke(uint64_t a1)
@@ -263,16 +263,16 @@ uint64_t __91__EXExtensionContextImplementation__extensionContextVendorProtocolW
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_extensionContextForIdentifier:(id)a3
++ (id)_extensionContextForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[(_NSExtensionContextVendor *)EXConcreteExtensionContextVendor];
-  v5 = [v4 _extensionContextForUUID:v3];
+  v5 = [v4 _extensionContextForUUID:identifierCopy];
 
   return v5;
 }
 
-+ (id)_derivedExtensionAuxiliaryHostProtocolWithContextClass:(Class)a3
++ (id)_derivedExtensionAuxiliaryHostProtocolWithContextClass:(Class)class
 {
   if (_derivedExtensionAuxiliaryHostProtocolWithContextClass__onceToken != -1)
   {
@@ -290,7 +290,7 @@ uint64_t __91__EXExtensionContextImplementation__extensionContextVendorProtocolW
   v6[2] = __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtocolWithContextClass___block_invoke_77;
   v6[3] = &unk_1E6E4DFC8;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = class;
   dispatch_sync(_derivedExtensionAuxiliaryHostProtocolWithContextClass__protocol_creation_queue, v6);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -347,25 +347,25 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
   }
 }
 
-- (EXExtensionContextImplementation)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5 extensionContext:(id)a6
+- (EXExtensionContextImplementation)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d extensionContext:(id)context
 {
   v79 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
+  contextCopy = context;
   v65.receiver = self;
   v65.super_class = EXExtensionContextImplementation;
   v14 = [(EXExtensionContextImplementation *)&v65 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_extensionContext, v13);
-    v46 = v12;
-    v47 = v11;
-    if (v12)
+    objc_storeWeak(&v14->_extensionContext, contextCopy);
+    v46 = dCopy;
+    v47 = endpointCopy;
+    if (dCopy)
     {
-      v16 = [v12 copy];
+      v16 = [dCopy copy];
     }
 
     else
@@ -373,17 +373,17 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
       v16 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     }
 
-    v45 = v13;
+    v45 = contextCopy;
     UUID = v15->__UUID;
     v15->__UUID = v16;
 
-    v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v48 = v10;
-    v19 = v10;
+    v48 = itemsCopy;
+    v19 = itemsCopy;
     v20 = [v19 countByEnumeratingWithState:&v61 objects:v78 count:16];
     if (v20)
     {
@@ -438,8 +438,8 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v28 = [v27 attachments];
-          v29 = [v28 countByEnumeratingWithState:&v53 objects:v76 count:16];
+          attachments = [v27 attachments];
+          v29 = [attachments countByEnumeratingWithState:&v53 objects:v76 count:16];
           if (v29)
           {
             v30 = v29;
@@ -450,21 +450,21 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
               {
                 if (*v54 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(attachments);
                 }
 
                 v33 = *(*(&v53 + 1) + 8 * j);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v34 = [v33 _loadOperator];
+                  _loadOperator = [v33 _loadOperator];
 
-                  if (!v34)
+                  if (!_loadOperator)
                   {
                     v35 = +[_EXDefaults sharedInstance];
-                    v36 = [v35 useItemProviderXPCConnection];
+                    useItemProviderXPCConnection = [v35 useItemProviderXPCConnection];
 
-                    if (v36)
+                    if (useItemProviderXPCConnection)
                     {
                       v37 = [[_EXLoadOperator alloc] initWithItemProvider:v33];
                     }
@@ -480,7 +480,7 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
                 }
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v53 objects:v76 count:16];
+              v30 = [attachments countByEnumeratingWithState:&v53 objects:v76 count:16];
             }
 
             while (v30);
@@ -497,10 +497,10 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
     }
 
     v39 = _EXLegacyLog();
-    v12 = v46;
-    v11 = v47;
+    dCopy = v46;
+    endpointCopy = v47;
     v15 = v25;
-    v13 = v45;
+    contextCopy = v45;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
       v42 = objc_opt_class();
@@ -518,22 +518,22 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
     }
 
     [(EXExtensionContextImplementation *)v25 _initializeAuxillaryConnectionWithListenerEndpoint:v47];
-    v10 = v48;
+    itemsCopy = v48;
   }
 
   v40 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (EXExtensionContextImplementation)initWithCoder:(id)a3
+- (EXExtensionContextImplementation)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   UUID = self->__UUID;
   self->__UUID = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputItems"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputItems"];
 
   inputItems = self->_inputItems;
   self->_inputItems = v7;
@@ -544,7 +544,7 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
     v13 = self->__UUID;
     v12 = self->_inputItems;
     v14 = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v12;
     v18 = 2114;
@@ -556,11 +556,11 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->__UUID;
-  v6 = a3;
-  [v6 encodeObject:UUID forKey:@"uuid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"uuid"];
   if (self->_inputItems)
   {
     inputItems = self->_inputItems;
@@ -571,31 +571,31 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
     inputItems = MEMORY[0x1E695E0F0];
   }
 
-  [v6 encodeObject:inputItems forKey:@"inputItems"];
+  [coderCopy encodeObject:inputItems forKey:@"inputItems"];
 }
 
-- (void)_initializeAuxillaryConnectionWithListenerEndpoint:(id)a3
+- (void)_initializeAuxillaryConnectionWithListenerEndpoint:(id)endpoint
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EXExtensionContextImplementation *)self extensionContext];
-  v6 = [objc_opt_class() _extensionAuxiliaryVendorProtocol];
-  v7 = [objc_opt_class() _extensionAuxiliaryHostProtocol];
+  endpointCopy = endpoint;
+  extensionContext = [(EXExtensionContextImplementation *)self extensionContext];
+  _extensionAuxiliaryVendorProtocol = [objc_opt_class() _extensionAuxiliaryVendorProtocol];
+  _extensionAuxiliaryHostProtocol = [objc_opt_class() _extensionAuxiliaryHostProtocol];
   v8 = _EXLegacyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v34 = 138413058;
-    v35 = v4;
+    v35 = endpointCopy;
     v36 = 2112;
-    v37 = v5;
+    v37 = extensionContext;
     v38 = 2112;
-    v39 = v6;
+    v39 = _extensionAuxiliaryVendorProtocol;
     v40 = 2112;
-    v41 = v7;
+    v41 = _extensionAuxiliaryHostProtocol;
     _os_log_debug_impl(&dword_1847D1000, v8, OS_LOG_TYPE_DEBUG, "_initializeAuxillaryConnectionWithListenerEndpoint: %@ - extensionContext: %@ auxVendorProtocol: %@ auxHostProtocol:%@", &v34, 0x2Au);
   }
 
-  if (v4)
+  if (endpointCopy)
   {
     p_auxiliaryConnection = &self->__auxiliaryConnection;
     if (self->__auxiliaryConnection)
@@ -609,11 +609,11 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+      v11 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
       v12 = *p_auxiliaryConnection;
       *p_auxiliaryConnection = v11;
 
-      if (!v6 || !v7)
+      if (!_extensionAuxiliaryVendorProtocol || !_extensionAuxiliaryHostProtocol)
       {
         v13 = _EXDefaultLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -622,10 +622,10 @@ void __91__EXExtensionContextImplementation__derivedExtensionAuxiliaryHostProtoc
         }
       }
 
-      [*p_auxiliaryConnection setExportedInterface:v6];
-      [*p_auxiliaryConnection setExportedObject:v5];
-      v14 = [v5 _derivedExtensionAuxiliaryHostProtocol];
-      [*p_auxiliaryConnection setRemoteObjectInterface:v14];
+      [*p_auxiliaryConnection setExportedInterface:_extensionAuxiliaryVendorProtocol];
+      [*p_auxiliaryConnection setExportedObject:extensionContext];
+      _derivedExtensionAuxiliaryHostProtocol = [extensionContext _derivedExtensionAuxiliaryHostProtocol];
+      [*p_auxiliaryConnection setRemoteObjectInterface:_derivedExtensionAuxiliaryHostProtocol];
 
       [*p_auxiliaryConnection resume];
       v10 = _EXLegacyLog();
@@ -640,7 +640,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v7 && v6)
+  if (_extensionAuxiliaryHostProtocol && _extensionAuxiliaryVendorProtocol)
   {
     if (self->__auxiliaryListener)
     {
@@ -653,22 +653,22 @@ LABEL_25:
 
     else
     {
-      v21 = [(EXExtensionContextImplementation *)self extensionContext];
-      v22 = [v7 protocol];
-      v23 = [v21 conformsToProtocol:v22];
+      extensionContext2 = [(EXExtensionContextImplementation *)self extensionContext];
+      protocol = [_extensionAuxiliaryHostProtocol protocol];
+      v23 = [extensionContext2 conformsToProtocol:protocol];
 
       if ((v23 & 1) == 0)
       {
         v24 = _EXDefaultLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
-          [(EXExtensionContextImplementation *)v5 _initializeAuxillaryConnectionWithListenerEndpoint:v7, v24];
+          [(EXExtensionContextImplementation *)extensionContext _initializeAuxillaryConnectionWithListenerEndpoint:_extensionAuxiliaryHostProtocol, v24];
         }
       }
 
-      v25 = [MEMORY[0x1E696B0D8] anonymousListener];
+      anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
       auxiliaryListener = self->__auxiliaryListener;
-      self->__auxiliaryListener = v25;
+      self->__auxiliaryListener = anonymousListener;
 
       [(NSXPCListener *)self->__auxiliaryListener setDelegate:self];
       [(NSXPCListener *)self->__auxiliaryListener resume];
@@ -687,11 +687,11 @@ LABEL_26:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeRequestReturningItems:(id)a3 completionHandler:(id)a4
+- (void)completeRequestReturningItems:(id)items completionHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v35 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v7 = _EXLegacyLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -713,7 +713,7 @@ LABEL_26:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v37 = v6;
+  v37 = itemsCopy;
   v39 = [v37 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v39)
   {
@@ -734,8 +734,8 @@ LABEL_26:
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v13 = [v12 attachments];
-        v14 = [v13 countByEnumeratingWithState:&v48 objects:v59 count:16];
+        attachments = [v12 attachments];
+        v14 = [attachments countByEnumeratingWithState:&v48 objects:v59 count:16];
         if (v14)
         {
           v15 = v14;
@@ -746,7 +746,7 @@ LABEL_26:
             {
               if (*v49 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(attachments);
               }
 
               v18 = *(*(&v48 + 1) + 8 * i);
@@ -754,9 +754,9 @@ LABEL_26:
               if (objc_opt_isKindOfClass())
               {
                 v19 = +[_EXDefaults sharedInstance];
-                v20 = [v19 useItemProviderXPCConnection];
+                useItemProviderXPCConnection = [v19 useItemProviderXPCConnection];
 
-                if (v20)
+                if (useItemProviderXPCConnection)
                 {
                   v21 = _EXCopyingLoadOperator;
                 }
@@ -773,7 +773,7 @@ LABEL_26:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v48 objects:v59 count:16];
+            v15 = [attachments countByEnumeratingWithState:&v48 objects:v59 count:16];
           }
 
           while (v15);
@@ -797,22 +797,22 @@ LABEL_26:
     _os_log_impl(&dword_1847D1000, v24, OS_LOG_TYPE_DEFAULT, "call _completeRequestReturningItems:forExtensionContextWithUUID:", buf, 2u);
   }
 
-  v25 = [(EXExtensionContextImplementation *)self _extensionHostProxy];
+  _extensionHostProxy = [(EXExtensionContextImplementation *)self _extensionHostProxy];
   v26 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__EXExtensionContextImplementation_completeRequestReturningItems_completionHandler___block_invoke;
   block[3] = &unk_1E6E4DFF0;
   v42 = v34;
-  v43 = v25;
+  v43 = _extensionHostProxy;
   v44 = v37;
-  v45 = self;
+  selfCopy = self;
   v46 = v33;
-  v47 = v35;
-  v27 = v35;
+  v47 = handlerCopy;
+  v27 = handlerCopy;
   v28 = v33;
   v29 = v37;
-  v30 = v25;
+  v30 = _extensionHostProxy;
   v31 = v34;
   dispatch_async(v26, block);
 
@@ -896,10 +896,10 @@ void __84__EXExtensionContextImplementation_completeRequestReturningItems_comple
   dispatch_async(v8, v12);
 }
 
-- (void)cancelRequestWithError:(id)a3
+- (void)cancelRequestWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = _EXLegacyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -914,7 +914,7 @@ void __84__EXExtensionContextImplementation_completeRequestReturningItems_comple
   buf.opaque[0] = 0;
   buf.opaque[1] = 0;
   os_activity_scope_enter(v7, &buf);
-  v9 = [(EXExtensionContextImplementation *)self _extensionHostProxy];
+  _extensionHostProxy = [(EXExtensionContextImplementation *)self _extensionHostProxy];
   v10 = self->__UUID;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -922,8 +922,8 @@ void __84__EXExtensionContextImplementation_completeRequestReturningItems_comple
   v13[3] = &unk_1E6E4DB10;
   v11 = v8;
   v14 = v11;
-  v15 = self;
-  [v9 _cancelRequestWithError:v4 forExtensionContextWithUUID:v10 completion:v13];
+  selfCopy = self;
+  [_extensionHostProxy _cancelRequestWithError:errorCopy forExtensionContextWithUUID:v10 completion:v13];
 
   os_activity_scope_leave(&buf);
   v12 = *MEMORY[0x1E69E9840];
@@ -954,25 +954,25 @@ void __59__EXExtensionContextImplementation_cancelRequestWithError___block_invok
   os_activity_scope_leave(&v3);
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1847D1000, "opening URL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9 = _os_activity_create(&dword_1847D1000, "opening URL completion", v8, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v10 = [(EXExtensionContextImplementation *)self _extensionHostProxy];
+  _extensionHostProxy = [(EXExtensionContextImplementation *)self _extensionHostProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__EXExtensionContextImplementation_openURL_completionHandler___block_invoke;
   v13[3] = &unk_1E6E4E040;
-  v11 = v7;
+  v11 = handlerCopy;
   v15 = v11;
   v12 = v9;
   v14 = v12;
-  [v10 _openURL:v6 completion:v13];
+  [_extensionHostProxy _openURL:lCopy completion:v13];
 
   os_activity_scope_leave(&state);
 }
@@ -1011,14 +1011,14 @@ void __62__EXExtensionContextImplementation_openURL_completionHandler___block_in
   os_activity_scope_leave(&v3);
 }
 
-- (void)_loadItemForPayload:(id)a3 completionHandler:(id)a4
+- (void)_loadItemForPayload:(id)payload completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v8 = +[_EXDefaults sharedInstance];
-  v9 = [v8 useItemProviderXPCConnection];
+  useItemProviderXPCConnection = [v8 useItemProviderXPCConnection];
 
-  if (v9)
+  if (useItemProviderXPCConnection)
   {
     v15 = _EXDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -1031,19 +1031,19 @@ void __62__EXExtensionContextImplementation_openURL_completionHandler___block_in
 
   else
   {
-    v10 = [(EXExtensionContextImplementation *)self _extensionHostProxy];
+    _extensionHostProxy = [(EXExtensionContextImplementation *)self _extensionHostProxy];
     v11 = dispatch_get_global_queue(25, 0);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __74__EXExtensionContextImplementation__loadItemForPayload_completionHandler___block_invoke;
     v23[3] = &unk_1E6E4DC78;
-    v24 = v10;
-    v25 = v6;
-    v26 = self;
-    v27 = v7;
-    v12 = v7;
-    v13 = v6;
-    v14 = v10;
+    v24 = _extensionHostProxy;
+    v25 = payloadCopy;
+    selfCopy = self;
+    v27 = handlerCopy;
+    v12 = handlerCopy;
+    v13 = payloadCopy;
+    v14 = _extensionHostProxy;
     dispatch_async(v11, v23);
   }
 }
@@ -1073,14 +1073,14 @@ void __74__EXExtensionContextImplementation__loadItemForPayload_completionHandle
   _NSExtensionContextCompleteItemLoading(v8, v7, v6, *(a1 + 40));
 }
 
-- (void)_loadPreviewImageForPayload:(id)a3 completionHandler:(id)a4
+- (void)_loadPreviewImageForPayload:(id)payload completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v8 = +[_EXDefaults sharedInstance];
-  v9 = [v8 useItemProviderXPCConnection];
+  useItemProviderXPCConnection = [v8 useItemProviderXPCConnection];
 
-  if (v9)
+  if (useItemProviderXPCConnection)
   {
     v13 = _EXDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -1093,16 +1093,16 @@ void __74__EXExtensionContextImplementation__loadItemForPayload_completionHandle
 
   else
   {
-    v10 = [(EXExtensionContextImplementation *)self _extensionHostProxy];
+    _extensionHostProxy = [(EXExtensionContextImplementation *)self _extensionHostProxy];
     UUID = self->__UUID;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __82__EXExtensionContextImplementation__loadPreviewImageForPayload_completionHandler___block_invoke;
     v21[3] = &unk_1E6E4E068;
     v21[4] = self;
-    v22 = v7;
-    v12 = v7;
-    [v10 _loadPreviewImageForPayload:v6 contextIdentifier:UUID completionHandler:v21];
+    v22 = handlerCopy;
+    v12 = handlerCopy;
+    [_extensionHostProxy _loadPreviewImageForPayload:payloadCopy contextIdentifier:UUID completionHandler:v21];
   }
 }
 
@@ -1115,11 +1115,11 @@ void __82__EXExtensionContextImplementation__loadPreviewImageForPayload_completi
   _NSExtensionContextCompleteItemLoading(v8, v7, v6, *(a1 + 40));
 }
 
-- (void)_openURL:(id)a3 completion:(id)a4
+- (void)_openURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EXExtensionContextImplementation *)self extensionContext];
+  lCopy = l;
+  completionCopy = completion;
+  extensionContext = [(EXExtensionContextImplementation *)self extensionContext];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -1129,14 +1129,14 @@ void __82__EXExtensionContextImplementation__loadPreviewImageForPayload_completi
     block[2] = __56__EXExtensionContextImplementation__openURL_completion___block_invoke;
     block[3] = &unk_1E6E4DC50;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = lCopy;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1180,9 +1180,9 @@ void __56__EXExtensionContextImplementation__openURL_completion___block_invoke(u
   return v8;
 }
 
-- (void)_willPerformHostCallback:(id)a3
+- (void)_willPerformHostCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (self->__auxiliaryConnection && ![(EXExtensionContextImplementation *)self _isHost])
   {
     v5 = [(NSXPCConnection *)self->__auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_124];
@@ -1192,19 +1192,19 @@ void __56__EXExtensionContextImplementation__openURL_completion___block_invoke(u
       v6[1] = 3221225472;
       v6[2] = __61__EXExtensionContextImplementation__willPerformHostCallback___block_invoke_126;
       v6[3] = &unk_1E6E4E0B0;
-      v7 = v4;
+      v7 = callbackCopy;
       [v5 ___nsx_pingHost:v6];
     }
 
     else
     {
-      v4[2](v4);
+      callbackCopy[2](callbackCopy);
     }
   }
 
   else
   {
-    v4[2](v4);
+    callbackCopy[2](callbackCopy);
   }
 }
 
@@ -1218,18 +1218,18 @@ void __61__EXExtensionContextImplementation__willPerformHostCallback___block_inv
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EXExtensionContextImplementation *)self extensionContext];
-  v9 = [v8 _derivedExtensionAuxiliaryHostProtocol];
-  v10 = [objc_opt_class() _extensionAuxiliaryVendorProtocol];
-  [v7 setRemoteObjectInterface:v10];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  extensionContext = [(EXExtensionContextImplementation *)self extensionContext];
+  _derivedExtensionAuxiliaryHostProtocol = [extensionContext _derivedExtensionAuxiliaryHostProtocol];
+  _extensionAuxiliaryVendorProtocol = [objc_opt_class() _extensionAuxiliaryVendorProtocol];
+  [connectionCopy setRemoteObjectInterface:_extensionAuxiliaryVendorProtocol];
 
-  [v7 setExportedInterface:v9];
-  [v7 setExportedObject:v8];
+  [connectionCopy setExportedInterface:_derivedExtensionAuxiliaryHostProtocol];
+  [connectionCopy setExportedObject:extensionContext];
   if (self->__auxiliaryConnection)
   {
     v11 = _EXDefaultLog();
@@ -1239,27 +1239,27 @@ void __61__EXExtensionContextImplementation__willPerformHostCallback___block_inv
     }
   }
 
-  objc_storeStrong(&self->__auxiliaryConnection, a4);
-  [v7 resume];
+  objc_storeStrong(&self->__auxiliaryConnection, connection);
+  [connectionCopy resume];
   v12 = _EXLegacyLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v18 = 138412802;
-    v19 = v7;
+    v19 = connectionCopy;
     v20 = 2114;
-    v21 = v6;
+    v21 = listenerCopy;
     v22 = 2114;
-    v23 = v9;
+    v23 = _derivedExtensionAuxiliaryHostProtocol;
     _os_log_debug_impl(&dword_1847D1000, v12, OS_LOG_TYPE_DEBUG, "New connection: %@ for listener: %{public}@ interface: %{public}@", &v18, 0x20u);
   }
 
-  v13 = [(EXExtensionContextImplementation *)self extensionContext];
+  extensionContext2 = [(EXExtensionContextImplementation *)self extensionContext];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(EXExtensionContextImplementation *)self extensionContext];
-    [v15 didConnectToVendor:v7];
+    extensionContext3 = [(EXExtensionContextImplementation *)self extensionContext];
+    [extensionContext3 didConnectToVendor:connectionCopy];
   }
 
   v16 = *MEMORY[0x1E69E9840];

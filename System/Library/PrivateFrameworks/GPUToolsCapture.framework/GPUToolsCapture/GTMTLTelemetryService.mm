@@ -1,40 +1,40 @@
 @interface GTMTLTelemetryService
-- (GTMTLTelemetryService)initWithGuestApp:(GTMTLGuestAppClient *)a3;
-- (id)query:(id)a3;
-- (id)update:(id)a3;
-- (unint64_t)registerObserver:(id)a3;
-- (void)deregisterObserver:(unint64_t)a3;
-- (void)deregisterObserversForConnection:(id)a3 path:(id)a4;
-- (void)notifyStatistics:(id)a3;
+- (GTMTLTelemetryService)initWithGuestApp:(GTMTLGuestAppClient *)app;
+- (id)query:(id)query;
+- (id)update:(id)update;
+- (unint64_t)registerObserver:(id)observer;
+- (void)deregisterObserver:(unint64_t)observer;
+- (void)deregisterObserversForConnection:(id)connection path:(id)path;
+- (void)notifyStatistics:(id)statistics;
 @end
 
 @implementation GTMTLTelemetryService
 
-- (void)notifyStatistics:(id)a3
+- (void)notifyStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   pthread_mutex_lock(&self->_lock);
   observers = self->_observers;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __42__GTMTLTelemetryService_notifyStatistics___block_invoke;
   v7[3] = &unk_2F1D48;
-  v8 = v4;
-  v6 = v4;
+  v8 = statisticsCopy;
+  v6 = statisticsCopy;
   [(GTObservableService *)observers notifyAll:v7];
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)update:(id)a3
+- (id)update:(id)update
 {
-  v3 = a3;
-  v29 = [v3 requestID];
+  updateCopy = update;
+  requestID = [updateCopy requestID];
   v4 = [NSMutableArray alloc];
-  v5 = [v3 requests];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  requests = [updateCopy requests];
+  v6 = [v4 initWithCapacity:{objc_msgSend(requests, "count")}];
 
-  v7 = [v3 requests];
-  v8 = [v7 count];
+  requests2 = [updateCopy requests];
+  v8 = [requests2 count];
 
   if (v8)
   {
@@ -42,16 +42,16 @@
     v31 = GTTelemetryErrorDomain;
     do
     {
-      v10 = [v3 requests];
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      requests3 = [updateCopy requests];
+      v11 = [requests3 objectAtIndexedSubscript:v9];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v12 = v11;
-        v13 = [v12 requestID];
-        v14 = [v12 configuration];
-        [v14 reportFrequencyInSeconds];
+        requestID2 = [v12 requestID];
+        configuration = [v12 configuration];
+        [configuration reportFrequencyInSeconds];
         GT_TELEMETRY_ENV = v15;
 
         if (*&GT_TELEMETRY_ENV != INFINITY)
@@ -60,7 +60,7 @@
         }
 
         v16 = objc_alloc_init(GTTelemetryResponse);
-        [v16 setRequestID:v13];
+        [v16 setRequestID:requestID2];
         v33 = 0;
         v17 = [NSKeyedArchiver archivedDataWithRootObject:&__kCFBooleanTrue requiringSecureCoding:1 error:&v33];
         v18 = v33;
@@ -84,8 +84,8 @@
       }
 
       ++v9;
-      v21 = [v3 requests];
-      v22 = [v21 count];
+      requests4 = [updateCopy requests];
+      v22 = [requests4 count];
     }
 
     while (v22 > v9);
@@ -99,23 +99,23 @@
   [v23 setData:v25];
 
   [v23 setError:v26];
-  [v23 setRequestID:v29];
-  v27 = [v3 completionHandler];
-  (v27)[2](v27, v23);
+  [v23 setRequestID:requestID];
+  completionHandler = [updateCopy completionHandler];
+  (completionHandler)[2](completionHandler, v23);
 
   return 0;
 }
 
-- (id)query:(id)a3
+- (id)query:(id)query
 {
-  v3 = a3;
-  v31 = [v3 requestID];
+  queryCopy = query;
+  requestID = [queryCopy requestID];
   v4 = [NSMutableArray alloc];
-  v5 = [v3 requests];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  requests = [queryCopy requests];
+  v6 = [v4 initWithCapacity:{objc_msgSend(requests, "count")}];
 
-  v7 = [v3 requests];
-  v8 = [v7 count];
+  requests2 = [queryCopy requests];
+  v8 = [requests2 count];
 
   if (v8)
   {
@@ -123,16 +123,16 @@
     v32 = GTTelemetryErrorDomain;
     do
     {
-      v10 = [v3 requests];
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      requests3 = [queryCopy requests];
+      v11 = [requests3 objectAtIndexedSubscript:v9];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v11 requestID];
-        v14 = GTMTLGuestAppClient_getTelemetry(v12, v13);
+        requestID2 = [v11 requestID];
+        v14 = GTMTLGuestAppClient_getTelemetry(requestID2, v13);
         v15 = objc_alloc_init(GTTelemetryResponse);
-        [v15 setRequestID:v12];
+        [v15 setRequestID:requestID2];
         v35 = 0;
         v16 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v35];
         v17 = v35;
@@ -155,12 +155,12 @@
           goto LABEL_9;
         }
 
-        v18 = [v11 requestID];
+        requestID3 = [v11 requestID];
         v14 = objc_opt_new();
         LODWORD(v19) = GT_TELEMETRY_ENV;
         [v14 setReportFrequencyInSeconds:v19];
         v15 = objc_alloc_init(GTTelemetryResponse);
-        [v15 setRequestID:v18];
+        [v15 setRequestID:requestID3];
         v34 = 0;
         v16 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v34];
         v17 = v34;
@@ -174,8 +174,8 @@
 
 LABEL_9:
       ++v9;
-      v23 = [v3 requests];
-      v24 = [v23 count];
+      requests4 = [queryCopy requests];
+      v24 = [requests4 count];
     }
 
     while (v24 > v9);
@@ -189,21 +189,21 @@ LABEL_9:
   [v25 setData:v27];
 
   [v25 setError:v28];
-  [v25 setRequestID:v31];
-  v29 = [v3 completionHandler];
-  (v29)[2](v29, v25);
+  [v25 setRequestID:requestID];
+  completionHandler = [queryCopy completionHandler];
+  (completionHandler)[2](completionHandler, v25);
 
   return 0;
 }
 
-- (void)deregisterObserversForConnection:(id)a3 path:(id)a4
+- (void)deregisterObserversForConnection:(id)connection path:(id)path
 {
-  v7 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  pathCopy = path;
   pthread_mutex_lock(&self->_lock);
   if ([(GTObservableService *)self->_observers count])
   {
-    [(GTObservableService *)self->_observers deregisterObserversForConnection:v7 path:v6];
+    [(GTObservableService *)self->_observers deregisterObserversForConnection:connectionCopy path:pathCopy];
     if (![(GTObservableService *)self->_observers count])
     {
       dispatch_suspend(self->_timer);
@@ -213,10 +213,10 @@ LABEL_9:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)deregisterObserver:(unint64_t)a3
+- (void)deregisterObserver:(unint64_t)observer
 {
   pthread_mutex_lock(&self->_lock);
-  [(GTObservableService *)self->_observers deregisterObserver:a3];
+  [(GTObservableService *)self->_observers deregisterObserver:observer];
   if (![(GTObservableService *)self->_observers count])
   {
     dispatch_suspend(self->_timer);
@@ -225,11 +225,11 @@ LABEL_9:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(GTObservableService *)self->_observers registerObserver:v4];
+  v5 = [(GTObservableService *)self->_observers registerObserver:observerCopy];
 
   if ([(GTObservableService *)self->_observers count]== &dword_0 + 1)
   {
@@ -240,7 +240,7 @@ LABEL_9:
   return v5;
 }
 
-- (GTMTLTelemetryService)initWithGuestApp:(GTMTLGuestAppClient *)a3
+- (GTMTLTelemetryService)initWithGuestApp:(GTMTLGuestAppClient *)app
 {
   v15.receiver = self;
   v15.super_class = GTMTLTelemetryService;

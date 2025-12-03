@@ -1,81 +1,81 @@
 @interface SFStartPageViewController
 - (BOOL)_isPrivateBrowsingEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isShowingRootView;
 - (BOOL)isTrackingDropSession;
 - (BOOL)showsWallpaper;
-- (BOOL)startPageCollectionViewController:(id)a3 isSectionExpanded:(id)a4;
-- (BOOL)startPageCollectionViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)a3;
-- (BOOL)startPageCollectionViewControllerShouldInstallCustomBackdrops:(id)a3;
+- (BOOL)startPageCollectionViewController:(id)controller isSectionExpanded:(id)expanded;
+- (BOOL)startPageCollectionViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)in;
+- (BOOL)startPageCollectionViewControllerShouldInstallCustomBackdrops:(id)backdrops;
 - (SFStartPageCustomizationDataSource)customizationDataSource;
 - (SFStartPageDataSource)dataSource;
 - (SFStartPageDelegate)delegate;
 - (SFStartPageScrollObserver)scrollObserver;
 - (SFStartPageViewController)init;
-- (SFStartPageViewController)initWithVisualStyleProvider:(id)a3 forProfile:(id)a4;
+- (SFStartPageViewController)initWithVisualStyleProvider:(id)provider forProfile:(id)profile;
 - (double)navigationBarHeight;
 - (double)navigationBarPrimaryContentHeight;
 - (double)scrollDistance;
-- (double)startPageCollectionViewControllerTopPadding:(id)a3;
+- (double)startPageCollectionViewControllerTopPadding:(id)padding;
 - (id)_defaultProfile;
 - (id)_effectiveProfileForBackgroundImage;
 - (id)_wallpaperImageIdentifier;
 - (id)effectiveControlTintColor;
-- (id)previewViewControllerForItemIdentifier:(id)a3;
-- (id)scrollViewForStartPageCollectionViewsOnly:(BOOL)a3;
-- (id)sectionsForStartPageCollectionViewController:(id)a3;
+- (id)previewViewControllerForItemIdentifier:(id)identifier;
+- (id)scrollViewForStartPageCollectionViewsOnly:(BOOL)only;
+- (id)sectionsForStartPageCollectionViewController:(id)controller;
 - (id)topStartPageCollectionViewController;
-- (int64_t)customizationControlPolicyForStartPageCollectionViewController:(id)a3;
+- (int64_t)customizationControlPolicyForStartPageCollectionViewController:(id)controller;
 - (int64_t)preferredStatusBarStyle;
 - (void)_backgroundImageDidToggle;
 - (void)_createSearchControllerIfNeeded;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)_reloadCustomizationViewController;
-- (void)_setLeadingBarItems:(BOOL)a3 trailingBarItems:(BOOL)a4 onNavigationItem:(id)a5 forSection:(id)a6;
-- (void)_updateOverrideTraitCollectionWithUserInterfaceStyle:(int64_t)a3;
+- (void)_setLeadingBarItems:(BOOL)items trailingBarItems:(BOOL)barItems onNavigationItem:(id)item forSection:(id)section;
+- (void)_updateOverrideTraitCollectionWithUserInterfaceStyle:(int64_t)style;
 - (void)_updateSearchBarAppearance;
-- (void)_updateWallpaperIfNeededWithCompletionHandler:(id)a3;
-- (void)_wallpaperDidChange:(id)a3;
+- (void)_updateWallpaperIfNeededWithCompletionHandler:(id)handler;
+- (void)_wallpaperDidChange:(id)change;
 - (void)_wallpaperDidChangeRemotely;
-- (void)beginCustomizationForStartPageCollectionViewController:(id)a3;
-- (void)beginExtensionsOnboardingForStartPageCollectionViewController:(id)a3;
+- (void)beginCustomizationForStartPageCollectionViewController:(id)controller;
+- (void)beginExtensionsOnboardingForStartPageCollectionViewController:(id)controller;
 - (void)cancelGestures;
-- (void)coalesceDataReloadWithBlock:(id)a3 animatingDifferences:(BOOL)a4;
-- (void)configureModelWithIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)configurePaletteForNavigationItem:(id)a3;
+- (void)coalesceDataReloadWithBlock:(id)block animatingDifferences:(BOOL)differences;
+- (void)configureModelWithIdentifier:(id)identifier usingBlock:(id)block;
+- (void)configurePaletteForNavigationItem:(id)item;
 - (void)dealloc;
 - (void)ignorePreviousLayoutSize;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)presentViewController:(id)a3 fromItemWithIdentifier:(id)a4;
-- (void)reloadDataAnimatingDifferences:(BOOL)a3;
-- (void)reloadNavigationItemAnimated:(BOOL)a3;
-- (void)reloadSection:(id)a3 animated:(BOOL)a4;
-- (void)resetToRootViewWithCustomizationPolicy:(int64_t)a3;
-- (void)setAlternateContentViewController:(id)a3;
-- (void)setBackgroundDisplayMode:(int64_t)a3;
-- (void)setCustomizationPolicy:(int64_t)a3;
-- (void)setDataSource:(id)a3;
-- (void)setNavigationBarPaletteHeight:(double)a3 alignmentInsets:(UIEdgeInsets)a4;
-- (void)setNavigationBarPosition:(int64_t)a3;
-- (void)setPreferredControlTintColor:(id)a3;
-- (void)setTopScrollEdgeEffectColor:(id)a3;
-- (void)setTopScrollEdgeEffectStyle:(id)a3;
-- (void)showDetailForItemWithIdentifier:(id)a3;
-- (void)startPageCollectionViewController:(id)a3 didSelectItemWithIdentifier:(id)a4 atGridLocation:(id)a5;
-- (void)startPageCollectionViewController:(id)a3 shouldExpandSectionWithIdentifier:(id)a4;
-- (void)startPageCollectionViewController:(id)a3 toggleSectionExpanded:(id)a4;
-- (void)startPageCollectionViewControllerDidChangeBackgroundStyle:(id)a3;
-- (void)startPageCollectionViewControllerDidCompleteDismissGesture:(id)a3;
-- (void)startPageCollectionViewControllerDidScroll:(id)a3;
-- (void)startPageCollectionViewControllerDidUpdateContent:(id)a3;
-- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)a3;
-- (void)unfocusGestureDidUpdate:(id)a3;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)presentViewController:(id)controller fromItemWithIdentifier:(id)identifier;
+- (void)reloadDataAnimatingDifferences:(BOOL)differences;
+- (void)reloadNavigationItemAnimated:(BOOL)animated;
+- (void)reloadSection:(id)section animated:(BOOL)animated;
+- (void)resetToRootViewWithCustomizationPolicy:(int64_t)policy;
+- (void)setAlternateContentViewController:(id)controller;
+- (void)setBackgroundDisplayMode:(int64_t)mode;
+- (void)setCustomizationPolicy:(int64_t)policy;
+- (void)setDataSource:(id)source;
+- (void)setNavigationBarPaletteHeight:(double)height alignmentInsets:(UIEdgeInsets)insets;
+- (void)setNavigationBarPosition:(int64_t)position;
+- (void)setPreferredControlTintColor:(id)color;
+- (void)setTopScrollEdgeEffectColor:(id)color;
+- (void)setTopScrollEdgeEffectStyle:(id)style;
+- (void)showDetailForItemWithIdentifier:(id)identifier;
+- (void)startPageCollectionViewController:(id)controller didSelectItemWithIdentifier:(id)identifier atGridLocation:(id)location;
+- (void)startPageCollectionViewController:(id)controller shouldExpandSectionWithIdentifier:(id)identifier;
+- (void)startPageCollectionViewController:(id)controller toggleSectionExpanded:(id)expanded;
+- (void)startPageCollectionViewControllerDidChangeBackgroundStyle:(id)style;
+- (void)startPageCollectionViewControllerDidCompleteDismissGesture:(id)gesture;
+- (void)startPageCollectionViewControllerDidScroll:(id)scroll;
+- (void)startPageCollectionViewControllerDidUpdateContent:(id)content;
+- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)bar;
+- (void)unfocusGestureDidUpdate:(id)update;
 - (void)updateNavigationBarTintColor;
 - (void)updateNavigationBarTitleInsets;
 - (void)updateOverrideTraitCollection;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
@@ -91,14 +91,14 @@
   v16.super_class = SFStartPageViewController;
   [(SFStartPageViewController *)&v16 viewDidLoad];
   [(SFStartPageViewController *)self addChildViewController:self->_navigationController];
-  v3 = [(UINavigationController *)self->_navigationController view];
-  [v3 setAutoresizingMask:18];
-  v4 = [(SFStartPageViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(UINavigationController *)self->_navigationController view];
+  [view setAutoresizingMask:18];
+  view2 = [(SFStartPageViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v5 = [(SFStartPageViewController *)self view];
-  [v5 addSubview:v3];
+  view3 = [(SFStartPageViewController *)self view];
+  [view3 addSubview:view];
 
   [(UINavigationController *)self->_navigationController didMoveToParentViewController:self];
   v18[0] = self->_rootCollectionViewController;
@@ -107,8 +107,8 @@
 
   [(SFStartPageViewController *)self navigationController:self->_navigationController willShowViewController:self->_rootCollectionViewController animated:0];
   [(SFStartPageViewController *)self _wallpaperDidChange:0];
-  v7 = [(UINavigationController *)self->_navigationController navigationBar];
-  [v7 setPrefersLargeTitles:1];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
   if (objc_opt_respondsToSelector())
   {
@@ -120,19 +120,19 @@
   self->_unfocusGesture = v8;
 
   [(UIPanGestureRecognizer *)self->_unfocusGesture setDelegate:self];
-  v10 = [(SFStartPageViewController *)self view];
-  [v10 addGestureRecognizer:self->_unfocusGesture];
+  view4 = [(SFStartPageViewController *)self view];
+  [view4 addGestureRecognizer:self->_unfocusGesture];
 
   if ([(SFStartPageViewController *)self startPageCollectionViewControllerShouldInstallCustomBackdrops:self->_rootCollectionViewController])
   {
-    v11 = [MEMORY[0x1E69DD298] safari_statusBarGradientBlurEffectView];
+    safari_statusBarGradientBlurEffectView = [MEMORY[0x1E69DD298] safari_statusBarGradientBlurEffectView];
     statusBarBackdrop = self->_statusBarBackdrop;
-    self->_statusBarBackdrop = v11;
+    self->_statusBarBackdrop = safari_statusBarGradientBlurEffectView;
 
     [(UIVisualEffectView *)self->_statusBarBackdrop setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIVisualEffectView *)self->_statusBarBackdrop setAlpha:0.0];
-    v13 = [(SFStartPageViewController *)self view];
-    [v13 addSubview:self->_statusBarBackdrop];
+    view5 = [(SFStartPageViewController *)self view];
+    [view5 addSubview:self->_statusBarBackdrop];
   }
 
   v17 = objc_opt_class();
@@ -142,19 +142,19 @@
 
 - (BOOL)showsWallpaper
 {
-  v3 = [(SFStartPageViewController *)self topStartPageCollectionViewController];
-  v4 = [v3 wantsWallpaperHiddenForCurrentBackgroundStyle];
-  result = (v4 & 1) == 0 && (wallpaperManager = self->_wallpaperManager, [(SFStartPageViewController *)self _wallpaperImageIdentifier], v6 = ;
+  topStartPageCollectionViewController = [(SFStartPageViewController *)self topStartPageCollectionViewController];
+  wantsWallpaperHiddenForCurrentBackgroundStyle = [topStartPageCollectionViewController wantsWallpaperHiddenForCurrentBackgroundStyle];
+  result = (wantsWallpaperHiddenForCurrentBackgroundStyle & 1) == 0 && (wallpaperManager = self->_wallpaperManager, [(SFStartPageViewController *)self _wallpaperImageIdentifier], v6 = ;
   return result;
 }
 
 - (id)topStartPageCollectionViewController
 {
-  v2 = [(UINavigationController *)self->_navigationController topViewController];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = topViewController;
   }
 
   else
@@ -185,18 +185,18 @@
 {
   if ([(SFStartPageViewController *)self _isPrivateBrowsingEnabled])
   {
-    v3 = [(SFStartPageViewController *)self _defaultProfile];
-    if (v3)
+    _defaultProfile = [(SFStartPageViewController *)self _defaultProfile];
+    if (_defaultProfile)
     {
-      v4 = [(SFStartPageViewController *)self _defaultProfile];
+      _defaultProfile2 = [(SFStartPageViewController *)self _defaultProfile];
     }
 
     else
     {
-      v4 = self->_profile;
+      _defaultProfile2 = self->_profile;
     }
 
-    v5 = v4;
+    v5 = _defaultProfile2;
   }
 
   else
@@ -226,27 +226,27 @@
 - (void)updateNavigationBarTintColor
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UINavigationController *)self->_navigationController traitCollection];
+  traitCollection = [(UINavigationController *)self->_navigationController traitCollection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __57__SFStartPageViewController_updateNavigationBarTintColor__block_invoke;
   v18[3] = &unk_1E721D5B8;
   v18[4] = self;
-  v4 = [(UINavigationController *)self->_navigationController navigationBar];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
   v5 = __57__SFStartPageViewController_updateNavigationBarTintColor__block_invoke(v18);
-  [v4 setTintColor:v5];
+  [navigationBar setTintColor:v5];
 
-  v6 = [(UINavigationController *)self->_navigationController topViewController];
-  v7 = [v6 navigationItem];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
+  navigationItem = [topViewController navigationItem];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__SFStartPageViewController_updateNavigationBarTintColor__block_invoke_2;
   v14[3] = &unk_1E721D5E0;
-  v8 = v7;
+  v8 = navigationItem;
   v15 = v8;
-  v16 = self;
-  v9 = v3;
+  selfCopy = self;
+  v9 = traitCollection;
   v17 = v9;
   v10 = __57__SFStartPageViewController_updateNavigationBarTintColor__block_invoke_2(v14);
   v11 = v10;
@@ -254,15 +254,15 @@
   {
     v19 = *MEMORY[0x1E69DB650];
     v20[0] = v10;
-    v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v13 = [v8 standardAppearance];
-    [v13 setTitleTextAttributes:v12];
+    standardAppearance2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+    standardAppearance = [v8 standardAppearance];
+    [standardAppearance setTitleTextAttributes:standardAppearance2];
   }
 
   else
   {
-    v12 = [v8 standardAppearance];
-    [v12 setTitleTextAttributes:MEMORY[0x1E695E0F8]];
+    standardAppearance2 = [v8 standardAppearance];
+    [standardAppearance2 setTitleTextAttributes:MEMORY[0x1E695E0F8]];
   }
 }
 
@@ -307,18 +307,18 @@ id __57__SFStartPageViewController_updateNavigationBarTintColor__block_invoke(ui
 
   else
   {
-    v5 = [(UIImageView *)self->_wallpaperView image];
-    if (v5)
+    image = [(UIImageView *)self->_wallpaperView image];
+    if (image)
     {
-      v6 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
-      v6 = self->_preferredControlTintColor;
+      labelColor = self->_preferredControlTintColor;
     }
 
-    v3 = v6;
+    v3 = labelColor;
   }
 
   return v3;
@@ -358,11 +358,11 @@ LABEL_8:
 
 - (BOOL)isShowingRootView
 {
-  v3 = [(UINavigationController *)self->_navigationController topViewController];
-  if (v3)
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
+  if (topViewController)
   {
-    v4 = [(UINavigationController *)self->_navigationController topViewController];
-    v5 = v4 == self->_rootCollectionViewController;
+    topViewController2 = [(UINavigationController *)self->_navigationController topViewController];
+    v5 = topViewController2 == self->_rootCollectionViewController;
   }
 
   else
@@ -379,8 +379,8 @@ LABEL_8:
   v26.receiver = self;
   v26.super_class = SFStartPageViewController;
   [(SFStartPageViewController *)&v26 viewWillLayoutSubviews];
-  v3 = [(SFStartPageViewController *)self view];
-  [v3 layoutMargins];
+  view = [(SFStartPageViewController *)self view];
+  [view layoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -390,8 +390,8 @@ LABEL_8:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(UINavigationController *)self->_navigationController viewControllers];
-  v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+  v13 = [viewControllers countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v13)
   {
     v14 = *v23;
@@ -402,17 +402,17 @@ LABEL_8:
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(viewControllers);
         }
 
-        v16 = [*(*(&v22 + 1) + 8 * v15) viewIfLoaded];
-        [v16 setLayoutMargins:{v5, v7, v9, v11}];
+        viewIfLoaded = [*(*(&v22 + 1) + 8 * v15) viewIfLoaded];
+        [viewIfLoaded setLayoutMargins:{v5, v7, v9, v11}];
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v13 = [viewControllers countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v13);
@@ -420,12 +420,12 @@ LABEL_8:
 
   if (self->_statusBarBackdrop)
   {
-    v17 = [(UINavigationController *)self->_navigationController view];
-    [v17 safeAreaInsets];
+    view2 = [(UINavigationController *)self->_navigationController view];
+    [view2 safeAreaInsets];
     v19 = v18;
 
-    v20 = [(SFStartPageViewController *)self view];
-    [v20 bounds];
+    view3 = [(SFStartPageViewController *)self view];
+    [view3 bounds];
     Width = CGRectGetWidth(v29);
 
     [(UIVisualEffectView *)self->_statusBarBackdrop setFrame:0.0, 0.0, Width, v19];
@@ -443,22 +443,22 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(UINavigationController *)self->_navigationController traitCollection];
-  v5 = [(UINavigationController *)self->_navigationController topViewController];
+  traitCollection = [(UINavigationController *)self->_navigationController traitCollection];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   rootCollectionViewController = self->_rootCollectionViewController;
   v7 = 8.0;
-  if (v5 != rootCollectionViewController)
+  if (topViewController != rootCollectionViewController)
   {
     goto LABEL_7;
   }
 
-  v8 = [(SFStartPageCollectionViewController *)rootCollectionViewController navigationItem];
-  v9 = [v8 sf_isEmpty];
+  navigationItem = [(SFStartPageCollectionViewController *)rootCollectionViewController navigationItem];
+  sf_isEmpty = [navigationItem sf_isEmpty];
 
-  if (v9)
+  if (sf_isEmpty)
   {
-    v5 = [(UINavigationController *)self->_navigationController navigationBar];
-    [(SFStartPageCollectionViewController *)v5 bounds];
+    topViewController = [(UINavigationController *)self->_navigationController navigationBar];
+    [(SFStartPageCollectionViewController *)topViewController bounds];
     v7 = CGRectGetHeight(v13) + 8.0;
 LABEL_7:
   }
@@ -466,15 +466,15 @@ LABEL_7:
   [(SFStartPageViewController *)self scrollDistance];
   if (v10 <= v7)
   {
-    v11 = [v4 sf_alternateUserInterfaceStyle];
+    sf_alternateUserInterfaceStyle = [traitCollection sf_alternateUserInterfaceStyle];
   }
 
   else
   {
-    v11 = [v4 userInterfaceStyle];
+    sf_alternateUserInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
-  v3 = SFContrastingStatusBarStyleForInterfaceStyle(v11);
+  v3 = SFContrastingStatusBarStyleForInterfaceStyle(sf_alternateUserInterfaceStyle);
 
   return v3;
 }
@@ -489,17 +489,17 @@ LABEL_7:
 
 - (void)updateNavigationBarTitleInsets
 {
-  v17 = [(SFStartPageViewController *)self view];
-  [v17 safeAreaInsets];
+  view = [(SFStartPageViewController *)self view];
+  [view safeAreaInsets];
   v4 = v3;
   v6 = v5;
-  [v17 directionalLayoutMargins];
+  [view directionalLayoutMargins];
   v8 = v7;
   v10 = v9;
-  v11 = [v17 _sf_usesLeftToRightLayout];
-  v12 = [(SFStartPageCollectionViewController *)self->_rootCollectionViewController navigationItem];
-  v13 = v12;
-  if (v11)
+  _sf_usesLeftToRightLayout = [view _sf_usesLeftToRightLayout];
+  navigationItem = [(SFStartPageCollectionViewController *)self->_rootCollectionViewController navigationItem];
+  v13 = navigationItem;
+  if (_sf_usesLeftToRightLayout)
   {
     v14 = v6;
   }
@@ -510,7 +510,7 @@ LABEL_7:
   }
 
   v15 = v10 + v14;
-  if (v11)
+  if (_sf_usesLeftToRightLayout)
   {
     v16 = v4;
   }
@@ -520,7 +520,7 @@ LABEL_7:
     v16 = v6;
   }
 
-  [v12 setLargeTitleInsets:{0.0, v8 + v16, 0.0, v15}];
+  [navigationItem setLargeTitleInsets:{0.0, v8 + v16, 0.0, v15}];
 }
 
 - (void)viewLayoutMarginsDidChange
@@ -541,8 +541,8 @@ LABEL_7:
   else
   {
     wallpaperManager = self->_wallpaperManager;
-    v4 = [(SFStartPageViewController *)self _wallpaperImageIdentifier];
-    v5 = [(WBSStartPageBackgroundManager *)wallpaperManager appearanceForImageWithIdentifier:v4 forProfile:self->_profile];
+    _wallpaperImageIdentifier = [(SFStartPageViewController *)self _wallpaperImageIdentifier];
+    v5 = [(WBSStartPageBackgroundManager *)wallpaperManager appearanceForImageWithIdentifier:_wallpaperImageIdentifier forProfile:self->_profile];
   }
 
   [(SFStartPageViewController *)self _updateOverrideTraitCollectionWithUserInterfaceStyle:v5];
@@ -595,32 +595,32 @@ LABEL_7:
 {
   if (self->_searchController)
   {
-    v3 = [(SFStartPageViewController *)self showsWallpaper];
-    v4 = [(UISearchController *)self->_searchController searchBar];
-    v8 = [v4 searchTextField];
+    showsWallpaper = [(SFStartPageViewController *)self showsWallpaper];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    searchTextField = [searchBar searchTextField];
 
-    v5 = [(UIVisualEffectView *)self->_searchFieldBackgroundView superview];
+    superview = [(UIVisualEffectView *)self->_searchFieldBackgroundView superview];
 
-    if (v5)
+    if (superview)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v3;
+      v6 = showsWallpaper;
     }
 
     if (v6)
     {
-      [v8 insertSubview:self->_searchFieldBackgroundView atIndex:0];
+      [searchTextField insertSubview:self->_searchFieldBackgroundView atIndex:0];
     }
 
     else
     {
-      if (v5)
+      if (superview)
       {
-        v7 = v3;
+        v7 = showsWallpaper;
       }
 
       else
@@ -638,10 +638,10 @@ LABEL_7:
 
 - (BOOL)isTrackingDropSession
 {
-  v2 = [(SFStartPageViewController *)self topStartPageCollectionViewController];
-  v3 = [v2 isTrackingDropSession];
+  topStartPageCollectionViewController = [(SFStartPageViewController *)self topStartPageCollectionViewController];
+  isTrackingDropSession = [topStartPageCollectionViewController isTrackingDropSession];
 
-  return v3;
+  return isTrackingDropSession;
 }
 
 - (SFStartPageViewController)init
@@ -652,17 +652,17 @@ LABEL_7:
   return v4;
 }
 
-- (SFStartPageViewController)initWithVisualStyleProvider:(id)a3 forProfile:(id)a4
+- (SFStartPageViewController)initWithVisualStyleProvider:(id)provider forProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  profileCopy = profile;
   v35.receiver = self;
   v35.super_class = SFStartPageViewController;
   v9 = [(SFStartPageViewController *)&v35 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_visualStyleProvider, a3);
+    objc_storeStrong(&v9->_visualStyleProvider, provider);
     v10->_customizationPolicy = 0;
     v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
     navigationController = v10->_navigationController;
@@ -670,37 +670,37 @@ LABEL_7:
 
     [(UINavigationController *)v10->_navigationController _setClipUnderlapWhileTransitioning:1];
     [(UINavigationController *)v10->_navigationController setDelegate:v10];
-    v13 = [[SFStartPageCollectionViewController alloc] initWithVisualStyleProvider:v7];
+    v13 = [[SFStartPageCollectionViewController alloc] initWithVisualStyleProvider:providerCopy];
     rootCollectionViewController = v10->_rootCollectionViewController;
     v10->_rootCollectionViewController = v13;
 
     [(SFStartPageCollectionViewController *)v10->_rootCollectionViewController setDataSource:v10];
     [(SFStartPageCollectionViewController *)v10->_rootCollectionViewController setDelegate:v10];
-    v15 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     dataSourceObservers = v10->_dataSourceObservers;
-    v10->_dataSourceObservers = v15;
+    v10->_dataSourceObservers = weakObjectsHashTable;
 
     [(NSHashTable *)v10->_dataSourceObservers addObject:v10->_rootCollectionViewController];
-    v17 = [MEMORY[0x1E69C9850] defaultManager];
+    defaultManager = [MEMORY[0x1E69C9850] defaultManager];
     wallpaperManager = v10->_wallpaperManager;
-    v10->_wallpaperManager = v17;
+    v10->_wallpaperManager = defaultManager;
 
-    objc_storeStrong(&v10->_profile, a4);
-    v19 = [MEMORY[0x1E69DCED8] automaticStyle];
+    objc_storeStrong(&v10->_profile, profile);
+    automaticStyle = [MEMORY[0x1E69DCED8] automaticStyle];
     topScrollEdgeEffectStyle = v10->_topScrollEdgeEffectStyle;
-    v10->_topScrollEdgeEffectStyle = v19;
+    v10->_topScrollEdgeEffectStyle = automaticStyle;
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v10 selector:sel__wallpaperDidChange_ name:*MEMORY[0x1E69C99F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__wallpaperDidChange_ name:*MEMORY[0x1E69C99F0] object:0];
     v22 = *MEMORY[0x1E69C99E0];
-    [v21 addObserver:v10 selector:sel__wallpaperDidChange_ name:*MEMORY[0x1E69C99E0] object:0];
-    [v21 addObserver:v10 selector:sel__wallpaperDidChangeRemotely name:*MEMORY[0x1E69C99F8] object:0];
-    [v21 addObserver:v10 selector:sel__wallpaperWasDeletedRemotely name:*MEMORY[0x1E69C99E8] object:0];
-    [v21 addObserver:v10 selector:sel__backgroundImageDidToggle name:*MEMORY[0x1E69C9958] object:0];
+    [defaultCenter addObserver:v10 selector:sel__wallpaperDidChange_ name:*MEMORY[0x1E69C99E0] object:0];
+    [defaultCenter addObserver:v10 selector:sel__wallpaperDidChangeRemotely name:*MEMORY[0x1E69C99F8] object:0];
+    [defaultCenter addObserver:v10 selector:sel__wallpaperWasDeletedRemotely name:*MEMORY[0x1E69C99E8] object:0];
+    [defaultCenter addObserver:v10 selector:sel__backgroundImageDidToggle name:*MEMORY[0x1E69C9958] object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v10, _settingsBundleUpdatedWallpaper, v22, 0, 1028);
     objc_initWeak(&location, v10);
-    v24 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v25 = *MEMORY[0x1E69C9650];
     v26 = MEMORY[0x1E69E96A0];
     v27 = MEMORY[0x1E69E96A0];
@@ -709,7 +709,7 @@ LABEL_7:
     v32[2] = __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___block_invoke;
     v32[3] = &unk_1E721D168;
     objc_copyWeak(&v33, &location);
-    v28 = [v24 safari_observeValueForKey:v25 onQueue:v26 notifyForInitialValue:0 handler:v32];
+    v28 = [standardUserDefaults safari_observeValueForKey:v25 onQueue:v26 notifyForInitialValue:0 handler:v32];
     wallpaperDefaultsObservation = v10->_wallpaperDefaultsObservation;
     v10->_wallpaperDefaultsObservation = v28;
 
@@ -736,19 +736,19 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SFStartPageViewController;
   [(SFStartPageViewController *)&v4 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SFStartPageViewController;
-  [(SFStartPageViewController *)&v5 viewDidAppear:a3];
+  [(SFStartPageViewController *)&v5 viewDidAppear:appear];
   [(SFStartPageViewController *)self _updateWallpaperIfNeededWithCompletionHandler:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -757,11 +757,11 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
   }
 }
 
-- (void)setCustomizationPolicy:(int64_t)a3
+- (void)setCustomizationPolicy:(int64_t)policy
 {
-  if (self->_customizationPolicy != a3)
+  if (self->_customizationPolicy != policy)
   {
-    self->_customizationPolicy = a3;
+    self->_customizationPolicy = policy;
     [(SFStartPageViewController *)self reloadDataAnimatingDifferences:0];
   }
 }
@@ -777,27 +777,27 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
   return v6;
 }
 
-- (id)scrollViewForStartPageCollectionViewsOnly:(BOOL)a3
+- (id)scrollViewForStartPageCollectionViewsOnly:(BOOL)only
 {
-  v4 = [(UINavigationController *)self->_navigationController topViewController];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 scrollView];
+    scrollView = [topViewController scrollView];
   }
 
-  else if (a3)
+  else if (only)
   {
-    v5 = 0;
+    scrollView = 0;
   }
 
   else
   {
-    v6 = [v4 viewIfLoaded];
+    viewIfLoaded = [topViewController viewIfLoaded];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = viewIfLoaded;
     }
 
     else
@@ -805,21 +805,21 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
       v7 = 0;
     }
 
-    v5 = v7;
+    scrollView = v7;
   }
 
-  return v5;
+  return scrollView;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != sourceCopy)
   {
-    objc_storeWeak(&self->_dataSource, v4);
+    objc_storeWeak(&self->_dataSource, sourceCopy);
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -851,26 +851,26 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
   }
 }
 
-- (void)configureModelWithIdentifier:(id)a3 usingBlock:(id)a4
+- (void)configureModelWithIdentifier:(id)identifier usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   if (self->_alternateContentViewController)
   {
-    v8 = self->_originalNavigationStack;
+    viewControllers = self->_originalNavigationStack;
   }
 
   else
   {
-    v8 = [(UINavigationController *)self->_navigationController viewControllers];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v8;
+  v9 = viewControllers;
   v10 = [(NSArray *)v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -890,7 +890,7 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          [v14 configureModelWithIdentifier:v6 usingBlock:{v7, v15}];
+          [v14 configureModelWithIdentifier:identifierCopy usingBlock:{blockCopy, v15}];
         }
 
         ++v12;
@@ -906,13 +906,13 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
 
 - (void)ignorePreviousLayoutSize
 {
-  v2 = [(SFStartPageViewController *)self topStartPageCollectionViewController];
-  [v2 ignorePreviousLayoutSize];
+  topStartPageCollectionViewController = [(SFStartPageViewController *)self topStartPageCollectionViewController];
+  [topStartPageCollectionViewController ignorePreviousLayoutSize];
 }
 
-- (void)reloadNavigationItemAnimated:(BOOL)a3
+- (void)reloadNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -932,7 +932,7 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * i) reloadNavigationItemAnimated:{v3, v11}];
+        [*(*(&v11 + 1) + 8 * i) reloadNavigationItemAnimated:{animatedCopy, v11}];
       }
 
       v6 = [(NSHashTable *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -944,12 +944,12 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
   alternateContentViewController = self->_alternateContentViewController;
   if (alternateContentViewController)
   {
-    v10 = [(UIViewController *)alternateContentViewController navigationItem];
-    [(SFStartPageViewController *)self _setLeadingBarItems:1 trailingBarItems:1 onNavigationItem:v10 forSection:0];
+    navigationItem = [(UIViewController *)alternateContentViewController navigationItem];
+    [(SFStartPageViewController *)self _setLeadingBarItems:1 trailingBarItems:1 onNavigationItem:navigationItem forSection:0];
   }
 }
 
-- (void)reloadDataAnimatingDifferences:(BOOL)a3
+- (void)reloadDataAnimatingDifferences:(BOOL)differences
 {
   v13 = *MEMORY[0x1E69E9840];
   if (self->_coalescingDataReload)
@@ -959,7 +959,7 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
 
   else
   {
-    v3 = a3;
+    differencesCopy = differences;
     self->_needsDataReloadAfterBatchUpdate = 0;
     v8 = 0u;
     v9 = 0u;
@@ -980,7 +980,7 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v8 + 1) + 8 * v7++) reloadDataAnimatingDifferences:{v3, v8}];
+          [*(*(&v8 + 1) + 8 * v7++) reloadDataAnimatingDifferences:{differencesCopy, v8}];
         }
 
         while (v5 != v7);
@@ -992,25 +992,25 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
   }
 }
 
-- (void)coalesceDataReloadWithBlock:(id)a3 animatingDifferences:(BOOL)a4
+- (void)coalesceDataReloadWithBlock:(id)block animatingDifferences:(BOOL)differences
 {
-  v4 = a4;
-  v6 = a3;
+  differencesCopy = differences;
+  blockCopy = block;
   self->_coalescingDataReload = 1;
-  v7 = v6;
-  v6[2]();
+  v7 = blockCopy;
+  blockCopy[2]();
   self->_coalescingDataReload = 0;
   if (self->_needsDataReloadAfterBatchUpdate)
   {
-    [(SFStartPageViewController *)self reloadDataAnimatingDifferences:v4];
+    [(SFStartPageViewController *)self reloadDataAnimatingDifferences:differencesCopy];
   }
 }
 
-- (void)reloadSection:(id)a3 animated:(BOOL)a4
+- (void)reloadSection:(id)section animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sectionCopy = section;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1033,12 +1033,12 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 reloadSection:v6 animated:v4];
+          [v11 reloadSection:sectionCopy animated:animatedCopy];
         }
 
         else
         {
-          [v11 reloadDataAnimatingDifferences:{v4, v12}];
+          [v11 reloadDataAnimatingDifferences:{animatedCopy, v12}];
         }
 
         ++v10;
@@ -1054,18 +1054,18 @@ void __68__SFStartPageViewController_initWithVisualStyleProvider_forProfile___bl
 
 - (void)cancelGestures
 {
-  v2 = [(SFStartPageViewController *)self topStartPageCollectionViewController];
-  [v2 cancelGestures];
+  topStartPageCollectionViewController = [(SFStartPageViewController *)self topStartPageCollectionViewController];
+  [topStartPageCollectionViewController cancelGestures];
 }
 
-- (void)resetToRootViewWithCustomizationPolicy:(int64_t)a3
+- (void)resetToRootViewWithCustomizationPolicy:(int64_t)policy
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___block_invoke;
   v3[3] = &unk_1E721D540;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = policy;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
 
@@ -1080,24 +1080,24 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
   [v3 scrollToTop];
 }
 
-- (void)showDetailForItemWithIdentifier:(id)a3
+- (void)showDetailForItemWithIdentifier:(id)identifier
 {
-  v4 = [(SFStartPageViewController *)self previewViewControllerForItemIdentifier:a3];
+  v4 = [(SFStartPageViewController *)self previewViewControllerForItemIdentifier:identifier];
   [UINavigationController pushViewController:"pushViewController:animated:" animated:?];
 }
 
-- (void)presentViewController:(id)a3 fromItemWithIdentifier:(id)a4
+- (void)presentViewController:(id)controller fromItemWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(UINavigationController *)self->_navigationController topViewController];
-  [v7 presentViewController:v8 fromItemWithIdentifier:v6];
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
+  [topViewController presentViewController:controllerCopy fromItemWithIdentifier:identifierCopy];
 }
 
 - (double)navigationBarHeight
 {
-  v2 = [(UINavigationController *)self->_navigationController navigationBar];
-  [v2 bounds];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  [navigationBar bounds];
   Height = CGRectGetHeight(v5);
 
   return Height;
@@ -1110,24 +1110,24 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
   return v4 - v3;
 }
 
-- (void)setNavigationBarPaletteHeight:(double)a3 alignmentInsets:(UIEdgeInsets)a4
+- (void)setNavigationBarPaletteHeight:(double)height alignmentInsets:(UIEdgeInsets)insets
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 == 0.0)
+  if (height == 0.0)
   {
-    a4 = **&MEMORY[0x1E69DDCE0];
+    insets = **&MEMORY[0x1E69DDCE0];
   }
 
-  if (self->_navigationBarPaletteHeight != a3 || (self->_navigationBarPaletteInsets.left == a4.left ? (v5 = self->_navigationBarPaletteInsets.top == a4.top) : (v5 = 0), v5 ? (v6 = self->_navigationBarPaletteInsets.right == a4.right) : (v6 = 0), v6 ? (v7 = self->_navigationBarPaletteInsets.bottom == a4.bottom) : (v7 = 0), !v7))
+  if (self->_navigationBarPaletteHeight != height || (self->_navigationBarPaletteInsets.left == insets.left ? (v5 = self->_navigationBarPaletteInsets.top == insets.top) : (v5 = 0), v5 ? (v6 = self->_navigationBarPaletteInsets.right == insets.right) : (v6 = 0), v6 ? (v7 = self->_navigationBarPaletteInsets.bottom == insets.bottom) : (v7 = 0), !v7))
   {
-    self->_navigationBarPaletteInsets = a4;
-    self->_navigationBarPaletteHeight = a3;
+    self->_navigationBarPaletteInsets = insets;
+    self->_navigationBarPaletteHeight = height;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(UINavigationController *)self->_navigationController viewControllers];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    v9 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = *v14;
@@ -1137,14 +1137,14 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(viewControllers);
           }
 
-          v12 = [*(*(&v13 + 1) + 8 * i) navigationItem];
-          [(SFStartPageViewController *)self configurePaletteForNavigationItem:v12];
+          navigationItem = [*(*(&v13 + 1) + 8 * i) navigationItem];
+          [(SFStartPageViewController *)self configurePaletteForNavigationItem:navigationItem];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -1152,17 +1152,17 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
   }
 }
 
-- (void)configurePaletteForNavigationItem:(id)a3
+- (void)configurePaletteForNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   navigationBarPaletteHeight = self->_navigationBarPaletteHeight;
   top = self->_navigationBarPaletteInsets.top;
   bottom = self->_navigationBarPaletteInsets.bottom;
-  v16 = v4;
-  v8 = [v4 _bottomPalette];
-  v9 = v8;
+  v16 = itemCopy;
+  _bottomPalette = [itemCopy _bottomPalette];
+  v9 = _bottomPalette;
   v10 = navigationBarPaletteHeight + top + bottom;
-  if (v10 != 0.0 && v8 == 0)
+  if (v10 != 0.0 && _bottomPalette == 0)
   {
     v13 = objc_alloc(MEMORY[0x1E69DD250]);
     v14 = [v13 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -1178,25 +1178,25 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
 
   else
   {
-    v12 = [v8 contentView];
-    [v12 setFrame:{0.0, 0.0, 0.0, v10}];
+    contentView = [_bottomPalette contentView];
+    [contentView setFrame:{0.0, 0.0, 0.0, v10}];
 
     [v16 _setBottomPaletteNeedsUpdate];
   }
 }
 
-- (void)setNavigationBarPosition:(int64_t)a3
+- (void)setNavigationBarPosition:(int64_t)position
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([(SFStartPageViewController *)self navigationBarPosition]!= a3)
+  if ([(SFStartPageViewController *)self navigationBarPosition]!= position)
   {
-    [(UINavigationController *)self->_navigationController _setPreferredNavigationBarPosition:a3];
+    [(UINavigationController *)self->_navigationController _setPreferredNavigationBarPosition:position];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(UINavigationController *)self->_navigationController viewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -1207,7 +1207,7 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(viewControllers);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -1221,7 +1221,7 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1229,20 +1229,20 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
   }
 }
 
-- (void)setTopScrollEdgeEffectColor:(id)a3
+- (void)setTopScrollEdgeEffectColor:(id)color
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  colorCopy = color;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_topScrollEdgeEffectColor, a3);
-    [(UIScrollView *)self->_foregroundScrollView _setPocketColor:v5 forEdge:1];
+    objc_storeStrong(&self->_topScrollEdgeEffectColor, color);
+    [(UIScrollView *)self->_foregroundScrollView _setPocketColor:colorCopy forEdge:1];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(UINavigationController *)self->_navigationController viewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    v7 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = *v13;
@@ -1253,22 +1253,22 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(viewControllers);
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 scrollView];
-            [v11 _setPocketColor:v5 forEdge:1];
+            scrollView = [v10 scrollView];
+            [scrollView _setPocketColor:colorCopy forEdge:1];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -1276,22 +1276,22 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
   }
 }
 
-- (void)setTopScrollEdgeEffectStyle:(id)a3
+- (void)setTopScrollEdgeEffectStyle:(id)style
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_topScrollEdgeEffectStyle != v5)
+  styleCopy = style;
+  if (self->_topScrollEdgeEffectStyle != styleCopy)
   {
-    objc_storeStrong(&self->_topScrollEdgeEffectStyle, a3);
-    v6 = [(UIScrollView *)self->_foregroundScrollView topEdgeEffect];
-    [v6 setStyle:v5];
+    objc_storeStrong(&self->_topScrollEdgeEffectStyle, style);
+    topEdgeEffect = [(UIScrollView *)self->_foregroundScrollView topEdgeEffect];
+    [topEdgeEffect setStyle:styleCopy];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(UINavigationController *)self->_navigationController viewControllers];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+    v8 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = *v15;
@@ -1302,23 +1302,23 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(viewControllers);
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 scrollView];
-            v13 = [v12 topEdgeEffect];
-            [v13 setStyle:v5];
+            scrollView = [v11 scrollView];
+            topEdgeEffect2 = [scrollView topEdgeEffect];
+            [topEdgeEffect2 setStyle:styleCopy];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -1326,19 +1326,19 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
   }
 }
 
-- (void)setAlternateContentViewController:(id)a3
+- (void)setAlternateContentViewController:(id)controller
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_alternateContentViewController != v5)
+  controllerCopy = controller;
+  if (self->_alternateContentViewController != controllerCopy)
   {
     [(SFStartPageViewController *)self loadViewIfNeeded];
-    v6 = [(UIViewController *)self->_alternateContentViewController navigationItem];
-    objc_storeStrong(&self->_alternateContentViewController, a3);
+    navigationItem = [(UIViewController *)self->_alternateContentViewController navigationItem];
+    objc_storeStrong(&self->_alternateContentViewController, controller);
     originalNavigationStack = self->_originalNavigationStack;
-    if (!v5 || originalNavigationStack)
+    if (!controllerCopy || originalNavigationStack)
     {
-      if (!v5)
+      if (!controllerCopy)
       {
         v13 = originalNavigationStack;
         v14 = self->_originalNavigationStack;
@@ -1354,15 +1354,15 @@ void __68__SFStartPageViewController_resetToRootViewWithCustomizationPolicy___bl
 
     else
     {
-      v8 = [(UINavigationController *)self->_navigationController viewControllers];
+      viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
       v9 = self->_originalNavigationStack;
-      self->_originalNavigationStack = v8;
+      self->_originalNavigationStack = viewControllers;
     }
 
-    v10 = [(UIViewController *)v5 navigationItem];
-    [(SFStartPageViewController *)self configurePaletteForNavigationItem:v10];
+    navigationItem2 = [(UIViewController *)controllerCopy navigationItem];
+    [(SFStartPageViewController *)self configurePaletteForNavigationItem:navigationItem2];
 
-    v15[0] = v5;
+    v15[0] = controllerCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     [(UINavigationController *)self->_navigationController setViewControllers:v11];
 
@@ -1373,36 +1373,36 @@ LABEL_7:
     [(SFStartPageViewController *)self updateOverrideTraitCollection];
     [(SFStartPageViewController *)self reloadNavigationItemAnimated:0];
     [(SFStartPageViewController *)self setNeedsStatusBarAppearanceUpdate];
-    [v6 setLeftBarButtonItems:0];
-    [v6 setRightBarButtonItems:0];
-    [v6 _setBottomPalette:0];
+    [navigationItem setLeftBarButtonItems:0];
+    [navigationItem setRightBarButtonItems:0];
+    [navigationItem _setBottomPalette:0];
   }
 }
 
-- (void)setBackgroundDisplayMode:(int64_t)a3
+- (void)setBackgroundDisplayMode:(int64_t)mode
 {
-  if (self->_backgroundDisplayMode != a3)
+  if (self->_backgroundDisplayMode != mode)
   {
-    self->_backgroundDisplayMode = a3;
+    self->_backgroundDisplayMode = mode;
     [(SFStartPageViewController *)self _updateWallpaperIfNeededWithCompletionHandler:0];
   }
 }
 
-- (void)setPreferredControlTintColor:(id)a3
+- (void)setPreferredControlTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_preferredControlTintColor, a3);
+    objc_storeStrong(&self->_preferredControlTintColor, color);
     [(SFStartPageViewController *)self _updateWallpaperIfNeededWithCompletionHandler:0];
   }
 }
 
-- (void)_wallpaperDidChange:(id)a3
+- (void)_wallpaperDidChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 object], v6 = objc_claimAutoreleasedReturnValue(), wallpaperManager = self->_wallpaperManager, v6, v6 == wallpaperManager))
+  changeCopy = change;
+  v5 = changeCopy;
+  if (!changeCopy || ([changeCopy object], v6 = objc_claimAutoreleasedReturnValue(), wallpaperManager = self->_wallpaperManager, v6, v6 == wallpaperManager))
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1416,24 +1416,24 @@ LABEL_7:
 - (void)_wallpaperDidChangeRemotely
 {
   wallpaperManager = self->_wallpaperManager;
-  v3 = [(SFStartPageViewController *)self _wallpaperImageIdentifier];
+  _wallpaperImageIdentifier = [(SFStartPageViewController *)self _wallpaperImageIdentifier];
   [(WBSStartPageBackgroundManager *)wallpaperManager loadImageFromDiskForIdentifier:?];
 }
 
-- (void)_updateWallpaperIfNeededWithCompletionHandler:(id)a3
+- (void)_updateWallpaperIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   wallpaperManager = self->_wallpaperManager;
-  v6 = [(SFStartPageViewController *)self _wallpaperImageIdentifier];
-  v7 = [(WBProfile *)self->_profile identifier];
+  _wallpaperImageIdentifier = [(SFStartPageViewController *)self _wallpaperImageIdentifier];
+  identifier = [(WBProfile *)self->_profile identifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__SFStartPageViewController__updateWallpaperIfNeededWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E721D590;
   v9[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
-  [(WBSStartPageBackgroundManager *)wallpaperManager getHasGeneratedBackgroundImage:v6 forProfileWithIdentifier:v7 completionHandler:v9];
+  [(WBSStartPageBackgroundManager *)wallpaperManager getHasGeneratedBackgroundImage:_wallpaperImageIdentifier forProfileWithIdentifier:identifier completionHandler:v9];
 }
 
 uint64_t __75__SFStartPageViewController__updateWallpaperIfNeededWithCompletionHandler___block_invoke(uint64_t a1, int a2)
@@ -1533,103 +1533,103 @@ LABEL_12:
 - (void)_backgroundImageDidToggle
 {
   [(SFStartPageViewController *)self _updateWallpaperIfNeededWithCompletionHandler:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:*MEMORY[0x1E69C99F0] object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C99F0] object:self];
 
   [(SFStartPageViewController *)self _reloadCustomizationViewController];
 }
 
-- (void)_updateOverrideTraitCollectionWithUserInterfaceStyle:(int64_t)a3
+- (void)_updateOverrideTraitCollectionWithUserInterfaceStyle:(int64_t)style
 {
-  v10 = [(UINavigationController *)self->_navigationController traitOverrides];
+  traitOverrides = [(UINavigationController *)self->_navigationController traitOverrides];
   if (self->_alternateContentViewController)
   {
-    [v10 removeTrait:objc_opt_class()];
-    [MEMORY[0x1E69DD1B8] safari_removeAllCustomTraits:v10];
+    [traitOverrides removeTrait:objc_opt_class()];
+    [MEMORY[0x1E69DD1B8] safari_removeAllCustomTraits:traitOverrides];
   }
 
   else
   {
-    if (a3)
+    if (style)
     {
-      [v10 setNSIntegerValue:a3 forTrait:objc_opt_class()];
+      [traitOverrides setNSIntegerValue:style forTrait:objc_opt_class()];
     }
 
     else
     {
-      [v10 removeTrait:objc_opt_class()];
+      [traitOverrides removeTrait:objc_opt_class()];
     }
 
     if (self->_backgroundDisplayMode == 1)
     {
-      [v10 setNSIntegerValue:1 forTrait:objc_opt_class()];
+      [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
       v5 = [MEMORY[0x1E69DC730] effectWithStyle:8];
-      [v10 setObject:v5 forTrait:objc_opt_class()];
+      [traitOverrides setObject:v5 forTrait:objc_opt_class()];
     }
 
     else
     {
-      v6 = [(UIImageView *)self->_wallpaperView image];
+      image = [(UIImageView *)self->_wallpaperView image];
 
-      if (v6)
+      if (image)
       {
-        [v10 setNSIntegerValue:1 forTrait:objc_opt_class()];
+        [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
       }
 
       else
       {
-        [v10 removeTrait:objc_opt_class()];
+        [traitOverrides removeTrait:objc_opt_class()];
       }
 
-      [v10 removeTrait:objc_opt_class()];
+      [traitOverrides removeTrait:objc_opt_class()];
     }
 
-    v7 = [(SFStartPageViewController *)self effectiveControlTintColor];
-    if (v7)
+    effectiveControlTintColor = [(SFStartPageViewController *)self effectiveControlTintColor];
+    if (effectiveControlTintColor)
     {
-      [v10 setObject:v7 forTrait:objc_opt_class()];
-    }
-
-    else
-    {
-      [v10 removeTrait:objc_opt_class()];
-    }
-
-    v8 = [(SFStartPageViewController *)self traitCollection];
-    v9 = [v8 userInterfaceStyle];
-
-    if (v9 == 2)
-    {
-      [v10 setNSIntegerValue:1 forTrait:objc_opt_class()];
+      [traitOverrides setObject:effectiveControlTintColor forTrait:objc_opt_class()];
     }
 
     else
     {
-      [v10 removeTrait:objc_opt_class()];
+      [traitOverrides removeTrait:objc_opt_class()];
+    }
+
+    traitCollection = [(SFStartPageViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+
+    if (userInterfaceStyle == 2)
+    {
+      [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
+    }
+
+    else
+    {
+      [traitOverrides removeTrait:objc_opt_class()];
     }
   }
 }
 
-- (void)unfocusGestureDidUpdate:(id)a3
+- (void)unfocusGestureDidUpdate:(id)update
 {
-  v8 = a3;
-  if ([v8 state] == 2)
+  updateCopy = update;
+  if ([updateCopy state] == 2)
   {
-    v4 = [(SFStartPageViewController *)self view];
-    [v8 translationInView:v4];
+    view = [(SFStartPageViewController *)self view];
+    [updateCopy translationInView:view];
     v6 = v5;
 
     if (v6 < -5.0)
     {
-      [v8 setEnabled:0];
-      [v8 setEnabled:1];
+      [updateCopy setEnabled:0];
+      [updateCopy setEnabled:1];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained startPageControllerDidCompleteUnfocusGesture:self];
     }
   }
 }
 
-- (id)sectionsForStartPageCollectionViewController:(id)a3
+- (id)sectionsForStartPageCollectionViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v5 = [WeakRetained sectionsForStartPageViewController:self];
@@ -1637,23 +1637,23 @@ LABEL_12:
   return v5;
 }
 
-- (void)startPageCollectionViewController:(id)a3 toggleSectionExpanded:(id)a4
+- (void)startPageCollectionViewController:(id)controller toggleSectionExpanded:(id)expanded
 {
-  v6 = a4;
+  expandedCopy = expanded;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained startPageViewController:self toggleSectionExpanded:v6];
+    [WeakRetained startPageViewController:self toggleSectionExpanded:expandedCopy];
   }
 }
 
-- (BOOL)startPageCollectionViewController:(id)a3 isSectionExpanded:(id)a4
+- (BOOL)startPageCollectionViewController:(id)controller isSectionExpanded:(id)expanded
 {
-  v5 = a4;
+  expandedCopy = expanded;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained startPageViewController:self isSectionExpanded:v5];
+    v7 = [WeakRetained startPageViewController:self isSectionExpanded:expandedCopy];
   }
 
   else
@@ -1664,9 +1664,9 @@ LABEL_12:
   return v7;
 }
 
-- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)a3
+- (void)startPageCollectionViewControllerWillUpdateNavigationBar:(id)bar
 {
-  v9 = [a3 navigationItem];
+  navigationItem = [bar navigationItem];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained startPageViewControllerShouldShowSearchField:self])
   {
@@ -1679,8 +1679,8 @@ LABEL_12:
     searchController = 0;
   }
 
-  [v9 setSearchController:searchController];
-  [(SFStartPageViewController *)self _setLeadingBarItems:1 trailingBarItems:1 onNavigationItem:v9 forSection:0];
+  [navigationItem setSearchController:searchController];
+  [(SFStartPageViewController *)self _setLeadingBarItems:1 trailingBarItems:1 onNavigationItem:navigationItem forSection:0];
   v6 = objc_loadWeakRetained(&self->_delegate);
   if (self->_alternateContentViewController || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1694,49 +1694,49 @@ LABEL_12:
 
   if ([v7 length])
   {
-    [v9 setTitle:v7];
+    [navigationItem setTitle:v7];
     v8 = 1;
   }
 
   else
   {
-    [v9 setTitle:0];
+    [navigationItem setTitle:0];
     v8 = 2;
   }
 
-  [v9 setLargeTitleDisplayMode:v8];
+  [navigationItem setLargeTitleDisplayMode:v8];
 }
 
-- (void)_setLeadingBarItems:(BOOL)a3 trailingBarItems:(BOOL)a4 onNavigationItem:(id)a5 forSection:(id)a6
+- (void)_setLeadingBarItems:(BOOL)items trailingBarItems:(BOOL)barItems onNavigationItem:(id)item forSection:(id)section
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = a5;
+  barItemsCopy = barItems;
+  itemsCopy = items;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (itemsCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v10 = [WeakRetained startPageViewController:self leadingBarItemsForSection:0];
-    [v12 setLeftBarButtonItems:v10];
+    [itemCopy setLeftBarButtonItems:v10];
   }
 
   else
   {
-    [v12 setLeftBarButtonItems:0];
+    [itemCopy setLeftBarButtonItems:0];
   }
 
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (barItemsCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11 = [WeakRetained startPageViewController:self trailingBarItemsForSection:0];
-    [v12 setRightBarButtonItems:v11];
+    [itemCopy setRightBarButtonItems:v11];
   }
 
   else
   {
-    [v12 setRightBarButtonItems:0];
+    [itemCopy setRightBarButtonItems:0];
   }
 }
 
-- (int64_t)customizationControlPolicyForStartPageCollectionViewController:(id)a3
+- (int64_t)customizationControlPolicyForStartPageCollectionViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_customizationDataSource);
   if (WeakRetained)
@@ -1765,11 +1765,11 @@ LABEL_12:
     [(UISearchController *)self->_searchController setHidesNavigationBarDuringPresentation:0];
     [(UISearchController *)self->_searchController setDelegate:self];
     [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
-    v5 = [(UISearchController *)self->_searchController searchBar];
-    v6 = [v5 searchTextField];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    searchTextField = [searchBar searchTextField];
 
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    v8 = [v7 colorWithAlphaComponent:0.4];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v8 = [labelColor colorWithAlphaComponent:0.4];
 
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
     v10 = _WBSLocalizedString();
@@ -1777,16 +1777,16 @@ LABEL_12:
     v15[0] = v8;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v12 = [v9 initWithString:v10 attributes:v11];
-    [v6 setAttributedPlaceholder:v12];
+    [searchTextField setAttributedPlaceholder:v12];
 
-    v13 = [v6 rightView];
-    [v13 setTintColor:v8];
+    rightView = [searchTextField rightView];
+    [rightView setTintColor:v8];
 
     [(SFStartPageViewController *)self _updateSearchBarAppearance];
   }
 }
 
-- (double)startPageCollectionViewControllerTopPadding:(id)a3
+- (double)startPageCollectionViewControllerTopPadding:(id)padding
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = -1.0;
@@ -1799,38 +1799,38 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)startPageCollectionViewControllerShouldInstallCustomBackdrops:(id)a3
+- (BOOL)startPageCollectionViewControllerShouldInstallCustomBackdrops:(id)backdrops
 {
-  v4 = a3;
-  v5 = (_SFDeviceIsPad() & 1) == 0 && self->_rootCollectionViewController == v4;
+  backdropsCopy = backdrops;
+  v5 = (_SFDeviceIsPad() & 1) == 0 && self->_rootCollectionViewController == backdropsCopy;
 
   return v5;
 }
 
-- (void)startPageCollectionViewControllerDidChangeBackgroundStyle:(id)a3
+- (void)startPageCollectionViewControllerDidChangeBackgroundStyle:(id)style
 {
-  v5 = a3;
-  v4 = [(UINavigationController *)self->_navigationController topViewController];
+  styleCopy = style;
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
 
-  if (v4 == v5)
+  if (topViewController == styleCopy)
   {
     [(SFStartPageViewController *)self _updateWallpaperIfNeededWithCompletionHandler:0];
   }
 }
 
-- (void)startPageCollectionViewController:(id)a3 didSelectItemWithIdentifier:(id)a4 atGridLocation:(id)a5
+- (void)startPageCollectionViewController:(id)controller didSelectItemWithIdentifier:(id)identifier atGridLocation:(id)location
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v9 = a4;
+  var1 = location.var1;
+  var0 = location.var0;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained startPageViewController:self didSelectItemWithIdentifier:v9 atGridLocation:{var0, var1}];
+    [WeakRetained startPageViewController:self didSelectItemWithIdentifier:identifierCopy atGridLocation:{var0, var1}];
   }
 }
 
-- (void)beginCustomizationForStartPageCollectionViewController:(id)a3
+- (void)beginCustomizationForStartPageCollectionViewController:(id)controller
 {
   v4 = [SFStartPageCustomizationViewController alloc];
   WeakRetained = objc_loadWeakRetained(&self->_customizationDataSource);
@@ -1846,13 +1846,13 @@ LABEL_12:
     [v7 startPageViewController:self willPresentCustomizationViewController:v9];
   }
 
-  v8 = [(SFStartPageViewController *)self presentedViewController];
-  [v8 dismissViewControllerAnimated:0 completion:0];
+  presentedViewController = [(SFStartPageViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:0 completion:0];
 
   [(SFStartPageViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)startPageCollectionViewControllerDidScroll:(id)a3
+- (void)startPageCollectionViewControllerDidScroll:(id)scroll
 {
   [(SFStartPageViewController *)self updateNavigationBarTintColor];
   [(SFStartPageViewController *)self setNeedsStatusBarAppearanceUpdate];
@@ -1866,7 +1866,7 @@ LABEL_12:
   [v4 startPageViewControllerDidScroll:self];
 }
 
-- (void)startPageCollectionViewControllerDidCompleteDismissGesture:(id)a3
+- (void)startPageCollectionViewControllerDidCompleteDismissGesture:(id)gesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1875,7 +1875,7 @@ LABEL_12:
   }
 }
 
-- (BOOL)startPageCollectionViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)a3
+- (BOOL)startPageCollectionViewControllerShouldDeferLoadingContentUntilKeyboardAnimatesIn:(id)in
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1891,7 +1891,7 @@ LABEL_12:
   return v5;
 }
 
-- (void)startPageCollectionViewControllerDidUpdateContent:(id)a3
+- (void)startPageCollectionViewControllerDidUpdateContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1900,15 +1900,15 @@ LABEL_12:
   }
 }
 
-- (void)startPageCollectionViewController:(id)a3 shouldExpandSectionWithIdentifier:(id)a4
+- (void)startPageCollectionViewController:(id)controller shouldExpandSectionWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  [(SFStartPageViewController *)self showDetailForItemWithIdentifier:v5];
+  identifierCopy = identifier;
+  [(SFStartPageViewController *)self showDetailForItemWithIdentifier:identifierCopy];
   expandedSectionIdentifier = self->_expandedSectionIdentifier;
-  self->_expandedSectionIdentifier = v5;
+  self->_expandedSectionIdentifier = identifierCopy;
 }
 
-- (void)beginExtensionsOnboardingForStartPageCollectionViewController:(id)a3
+- (void)beginExtensionsOnboardingForStartPageCollectionViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1917,11 +1917,11 @@ LABEL_12:
   }
 }
 
-- (id)previewViewControllerForItemIdentifier:(id)a3
+- (id)previewViewControllerForItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  if ([MEMORY[0x1E69C8880] is2024CloudTabsEnabled] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69C9668]))
+  if ([MEMORY[0x1E69C8880] is2024CloudTabsEnabled] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E69C9668]))
   {
     v5 = [SFStartPageMultiSectionDataSource alloc];
     v6 = _WBSLocalizedString();
@@ -1932,7 +1932,7 @@ LABEL_12:
     v20[3] = &unk_1E721D608;
     v8 = &v21;
     objc_copyWeak(&v21, &location);
-    v20[4] = v4;
+    v20[4] = identifierCopy;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __68__SFStartPageViewController_previewViewControllerForItemIdentifier___block_invoke_2;
@@ -1957,7 +1957,7 @@ LABEL_12:
     v16[3] = &unk_1E721D658;
     v8 = &v17;
     objc_copyWeak(&v17, &location);
-    v16[4] = v4;
+    v16[4] = identifierCopy;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __68__SFStartPageViewController_previewViewControllerForItemIdentifier___block_invoke_114;
@@ -2047,27 +2047,27 @@ void __68__SFStartPageViewController_previewViewControllerForItemIdentifier___bl
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v22 = a4;
-  v7 = [v22 view];
-  [v7 setInsetsLayoutMarginsFromSafeArea:0];
-  v8 = [(SFStartPageViewController *)self view];
-  [v8 layoutMargins];
-  [v7 setLayoutMargins:?];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  view = [viewControllerCopy view];
+  [view setInsetsLayoutMarginsFromSafeArea:0];
+  view2 = [(SFStartPageViewController *)self view];
+  [view2 layoutMargins];
+  [view setLayoutMargins:?];
 
-  v9 = [v22 navigationItem];
-  [(SFStartPageViewController *)self configurePaletteForNavigationItem:v9];
+  navigationItem = [viewControllerCopy navigationItem];
+  [(SFStartPageViewController *)self configurePaletteForNavigationItem:navigationItem];
 
   foregroundScrollView = self->_foregroundScrollView;
   if (foregroundScrollView)
   {
     [(UIScrollView *)foregroundScrollView _removeScrollViewScrollObserver:self];
     [(UIScrollView *)self->_foregroundScrollView _setPocketColor:0 forEdge:1];
-    v11 = [MEMORY[0x1E69DCED8] automaticStyle];
-    v12 = [(UIScrollView *)self->_foregroundScrollView topEdgeEffect];
-    [v12 setStyle:v11];
+    automaticStyle = [MEMORY[0x1E69DCED8] automaticStyle];
+    topEdgeEffect = [(UIScrollView *)self->_foregroundScrollView topEdgeEffect];
+    [topEdgeEffect setStyle:automaticStyle];
 
     v13 = self->_foregroundScrollView;
     self->_foregroundScrollView = 0;
@@ -2076,11 +2076,11 @@ void __68__SFStartPageViewController_previewViewControllerForItemIdentifier___bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v22 scrollView];
-    [v14 _setPocketColor:self->_topScrollEdgeEffectColor forEdge:1];
+    scrollView = [viewControllerCopy scrollView];
+    [scrollView _setPocketColor:self->_topScrollEdgeEffectColor forEdge:1];
     topScrollEdgeEffectStyle = self->_topScrollEdgeEffectStyle;
-    v16 = [v14 topEdgeEffect];
-    [v16 setStyle:topScrollEdgeEffectStyle];
+    topEdgeEffect2 = [scrollView topEdgeEffect];
+    [topEdgeEffect2 setStyle:topScrollEdgeEffectStyle];
   }
 
   else
@@ -2092,14 +2092,14 @@ void __68__SFStartPageViewController_previewViewControllerForItemIdentifier___bl
     [(UIScrollView *)self->_foregroundScrollView _addScrollViewScrollObserver:self];
     [(UIScrollView *)self->_foregroundScrollView _setPocketColor:self->_topScrollEdgeEffectColor forEdge:1];
     v19 = self->_topScrollEdgeEffectStyle;
-    v14 = [(UIScrollView *)self->_foregroundScrollView topEdgeEffect];
-    [v14 setStyle:v19];
+    scrollView = [(UIScrollView *)self->_foregroundScrollView topEdgeEffect];
+    [scrollView setStyle:v19];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained startPageViewControllerDidScroll:self animated:v5];
+    [WeakRetained startPageViewControllerDidScroll:self animated:animatedCopy];
   }
 
   [(SFStartPageViewController *)self updateNavigationBarTintColor];
@@ -2115,7 +2115,7 @@ void __68__SFStartPageViewController_previewViewControllerForItemIdentifier___bl
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
@@ -2124,9 +2124,9 @@ void __68__SFStartPageViewController_previewViewControllerForItemIdentifier___bl
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_unfocusGesture == a3)
+  if (self->_unfocusGesture == begin)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v3 = objc_opt_respondsToSelector();
@@ -2140,21 +2140,21 @@ void __68__SFStartPageViewController_previewViewControllerForItemIdentifier___bl
   return v3 & 1;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_scrollObserver);
   [WeakRetained startPageViewControllerDidScroll:self];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v7 searchBar];
-    v6 = [v5 text];
-    [WeakRetained startPageViewController:self didUpdateSearchPattern:v6];
+    searchBar = [controllerCopy searchBar];
+    text = [searchBar text];
+    [WeakRetained startPageViewController:self didUpdateSearchPattern:text];
   }
 }
 

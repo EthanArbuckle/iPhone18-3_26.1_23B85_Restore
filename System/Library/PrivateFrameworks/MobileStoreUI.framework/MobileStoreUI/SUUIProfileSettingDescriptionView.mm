@@ -1,13 +1,13 @@
 @interface SUUIProfileSettingDescriptionView
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SUUIProfileSettingDescriptionView
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -16,10 +16,10 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   v6 = *MEMORY[0x277D76918];
-  v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:{*MEMORY[0x277D76918], a5}];
+  v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:{*MEMORY[0x277D76918], context}];
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:v6];
   [v7 _scaledValueForValue:36.0];
@@ -29,18 +29,18 @@
   [v9 _scaledValueForValue:20.0];
   v15 = v13 + v14;
 
-  v16 = a3;
+  widthCopy = width;
   v17 = v15;
   result.height = v17;
-  result.width = v16;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v27 = a3;
-  v6 = [v27 viewElement];
-  v7 = [v6 firstChildForElementType:29];
+  descriptionCopy = description;
+  viewElement = [descriptionCopy viewElement];
+  v7 = [viewElement firstChildForElementType:29];
   self->_hasDisclosureChevron = v7 != 0;
 
   if (!self->_handleLabel)
@@ -50,15 +50,15 @@
     self->_handleLabel = v8;
 
     v10 = self->_handleLabel;
-    v11 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v10 setColor:v11];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v10 setColor:grayColor];
 
     [(SUUIProfileSettingDescriptionView *)self addSubview:self->_handleLabel];
   }
 
-  v12 = [v27 handle];
-  v13 = v12;
-  if (v12 && [v12 length])
+  handle = [descriptionCopy handle];
+  v13 = handle;
+  if (handle && [handle length])
   {
     [(UILabel *)self->_handleLabel setHidden:0];
     v14 = self->_handleLabel;
@@ -72,7 +72,7 @@
   }
 
   nameLabel = self->_nameLabel;
-  v17 = v27;
+  v17 = descriptionCopy;
   if (!nameLabel)
   {
     v18 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -80,16 +80,16 @@
     self->_nameLabel = v18;
 
     v20 = self->_nameLabel;
-    v21 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v20 setColor:v21];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v20 setColor:blackColor];
 
     [(SUUIProfileSettingDescriptionView *)self addSubview:self->_nameLabel];
-    v17 = v27;
+    v17 = descriptionCopy;
     nameLabel = self->_nameLabel;
   }
 
-  v22 = [v17 name];
-  [(UILabel *)nameLabel setText:v22];
+  name = [v17 name];
+  [(UILabel *)nameLabel setText:name];
 
   imageView = self->_imageView;
   if (!imageView)
@@ -102,8 +102,8 @@
     imageView = self->_imageView;
   }
 
-  v26 = [v27 photo];
-  [(SUUIImageView *)imageView setImage:v26];
+  photo = [descriptionCopy photo];
+  [(SUUIImageView *)imageView setImage:photo];
 }
 
 - (void)layoutSubviews

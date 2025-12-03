@@ -1,9 +1,9 @@
 @interface MPCPlayerResponse
-- (MPCPlayerResponse)initWithRequest:(id)a3 middleware:(id)a4;
-- (id)_commandRequestForMediaRemoteCommand:(unsigned int)a3;
+- (MPCPlayerResponse)initWithRequest:(id)request middleware:(id)middleware;
+- (id)_commandRequestForMediaRemoteCommand:(unsigned int)command;
 - (id)_stateDumpObject;
-- (id)createSharedSessionWithIdentity:(id)a3 intentHandler:(id)a4;
-- (id)createSharedSessionWithIntentHandler:(id)a3;
+- (id)createSharedSessionWithIdentity:(id)identity intentHandler:(id)handler;
+- (id)createSharedSessionWithIntentHandler:(id)handler;
 - (id)description;
 - (id)pause;
 - (id)play;
@@ -24,20 +24,20 @@
   return v5;
 }
 
-- (id)_commandRequestForMediaRemoteCommand:(unsigned int)a3
+- (id)_commandRequestForMediaRemoteCommand:(unsigned int)command
 {
-  v3 = *&a3;
-  v5 = [(MPResponse *)self builder];
-  v6 = [(MPResponse *)self chain];
-  v7 = [v5 playerCommandEnabled:0 command:v3 chain:v6];
+  v3 = *&command;
+  builder = [(MPResponse *)self builder];
+  chain = [(MPResponse *)self chain];
+  v7 = [builder playerCommandEnabled:0 command:v3 chain:chain];
 
   if (v7)
   {
     v8 = [MPCPlayerCommandRequest alloc];
-    v9 = [(MPCPlayerResponse *)self controller];
-    v10 = [(MPResponse *)self request];
-    v11 = [v10 label];
-    v12 = [(MPCPlayerCommandRequest *)v8 initWithMediaRemoteCommand:v3 options:0 controller:v9 label:v11];
+    controller = [(MPCPlayerResponse *)self controller];
+    request = [(MPResponse *)self request];
+    label = [request label];
+    v12 = [(MPCPlayerCommandRequest *)v8 initWithMediaRemoteCommand:v3 options:0 controller:controller label:label];
   }
 
   else
@@ -52,8 +52,8 @@
 {
   v8.receiver = self;
   v8.super_class = MPCPlayerResponse;
-  v3 = [(MPResponse *)&v8 _stateDumpObject];
-  v4 = [v3 mutableCopy];
+  _stateDumpObject = [(MPResponse *)&v8 _stateDumpObject];
+  v4 = [_stateDumpObject mutableCopy];
 
   v5 = self->_state - 1;
   if (v5 > 5)
@@ -73,22 +73,22 @@
   return v4;
 }
 
-- (id)createSharedSessionWithIdentity:(id)a3 intentHandler:(id)a4
+- (id)createSharedSessionWithIdentity:(id)identity intentHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v8 = [(MPCPlayerResponse *)self _commandRequestForMediaRemoteCommand:25020];
-  v9 = [v6 mpc_jsonValue];
-  [v8 setCommandOptionValue:v9 forKey:@"com.apple.music.live-link-identity-json"];
+  mpc_jsonValue = [identityCopy mpc_jsonValue];
+  [v8 setCommandOptionValue:mpc_jsonValue forKey:@"com.apple.music.live-link-identity-json"];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__MPCPlayerResponse_createSharedSessionWithIdentity_intentHandler___block_invoke;
   v13[3] = &unk_1E8238ED8;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identityCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identityCopy;
   [v8 setStatusTransformer:v13];
 
   return v8;
@@ -162,12 +162,12 @@ uint64_t __67__MPCPlayerResponse_createSharedSessionWithIdentity_intentHandler__
   return v4;
 }
 
-- (id)createSharedSessionWithIntentHandler:(id)a3
+- (id)createSharedSessionWithIntentHandler:(id)handler
 {
   v4 = MEMORY[0x1E69E4450];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [[v4 alloc] initWithBlock:&__block_literal_global_30321];
-  v7 = [(MPCPlayerResponse *)self createSharedSessionWithIdentity:v6 intentHandler:v5];
+  v7 = [(MPCPlayerResponse *)self createSharedSessionWithIdentity:v6 intentHandler:handlerCopy];
 
   return v7;
 }
@@ -190,10 +190,10 @@ uint64_t __67__MPCPlayerResponse_createSharedSessionWithIdentity_intentHandler__
 - (id)play
 {
   v3 = [(MPCPlayerResponse *)self _commandRequestForMediaRemoteCommand:0];
-  v4 = [(MPResponse *)self request];
-  v5 = [v4 disablePlaybackStateValidation];
+  request = [(MPResponse *)self request];
+  disablePlaybackStateValidation = [request disablePlaybackStateValidation];
 
-  if (v5)
+  if (disablePlaybackStateValidation)
   {
     goto LABEL_5;
   }
@@ -224,10 +224,10 @@ LABEL_7:
 - (id)pause
 {
   v3 = [(MPCPlayerResponse *)self _commandRequestForMediaRemoteCommand:1];
-  v4 = [(MPResponse *)self request];
-  v5 = [v4 disablePlaybackStateValidation];
+  request = [(MPResponse *)self request];
+  disablePlaybackStateValidation = [request disablePlaybackStateValidation];
 
-  if (v5)
+  if (disablePlaybackStateValidation)
   {
     goto LABEL_4;
   }
@@ -255,29 +255,29 @@ LABEL_7:
 
 - (id)prepare
 {
-  v4 = [(MPCPlayerResponse *)self state];
-  v5 = v4;
-  if (v4 <= 6 && ((1 << v4) & 0x53) != 0)
+  state = [(MPCPlayerResponse *)self state];
+  v5 = state;
+  if (state <= 6 && ((1 << state) & 0x53) != 0)
   {
-    v6 = 1;
+    disablePlaybackStateValidation = 1;
   }
 
   else
   {
-    v2 = [(MPResponse *)self request];
-    v6 = [v2 disablePlaybackStateValidation];
+    request = [(MPResponse *)self request];
+    disablePlaybackStateValidation = [request disablePlaybackStateValidation];
   }
 
   if (v5 <= 6 && ((1 << v5) & 0x53) != 0)
   {
-    if (v6)
+    if (disablePlaybackStateValidation)
     {
 LABEL_7:
       v7 = [MPCPlayerCommandRequest alloc];
-      v8 = [(MPCPlayerResponse *)self controller];
-      v9 = [(MPResponse *)self request];
-      v10 = [v9 label];
-      v11 = [(MPCPlayerCommandRequest *)v7 initWithMediaRemoteCommand:132 options:0 controller:v8 label:v10];
+      controller = [(MPCPlayerResponse *)self controller];
+      request2 = [(MPResponse *)self request];
+      label = [request2 label];
+      v11 = [(MPCPlayerCommandRequest *)v7 initWithMediaRemoteCommand:132 options:0 controller:controller label:label];
 
       goto LABEL_11;
     }
@@ -286,7 +286,7 @@ LABEL_7:
   else
   {
 
-    if (v6)
+    if (disablePlaybackStateValidation)
     {
       goto LABEL_7;
     }
@@ -298,44 +298,44 @@ LABEL_11:
   return v11;
 }
 
-- (MPCPlayerResponse)initWithRequest:(id)a3 middleware:(id)a4
+- (MPCPlayerResponse)initWithRequest:(id)request middleware:(id)middleware
 {
   v26.receiver = self;
   v26.super_class = MPCPlayerResponse;
-  v4 = [(MPResponse *)&v26 initWithRequest:a3 middleware:a4];
+  v4 = [(MPResponse *)&v26 initWithRequest:request middleware:middleware];
   if (v4)
   {
     v5 = [[MPCPlayerResponseTracklist alloc] initWithResponse:v4];
     tracklist = v4->_tracklist;
     v4->_tracklist = v5;
 
-    v7 = [(MPResponse *)v4 builder];
-    v8 = [(MPResponse *)v4 chain];
-    v4->_state = [v7 playerState:0 chain:v8];
+    builder = [(MPResponse *)v4 builder];
+    chain = [(MPResponse *)v4 chain];
+    v4->_state = [builder playerState:0 chain:chain];
 
-    v9 = [(MPResponse *)v4 builder];
-    v10 = [(MPResponse *)v4 chain];
-    v4->_sharedListeningSession = [v9 playerIsSharedListeningSession:0 chain:v10];
+    builder2 = [(MPResponse *)v4 builder];
+    chain2 = [(MPResponse *)v4 chain];
+    v4->_sharedListeningSession = [builder2 playerIsSharedListeningSession:0 chain:chain2];
 
-    v11 = [(MPResponse *)v4 builder];
-    v12 = [(MPResponse *)v4 chain];
-    v13 = [v11 videoOutput:0 chain:v12];
+    builder3 = [(MPResponse *)v4 builder];
+    chain3 = [(MPResponse *)v4 chain];
+    v13 = [builder3 videoOutput:0 chain:chain3];
     videoOutput = v4->_videoOutput;
     v4->_videoOutput = v13;
 
-    v15 = [(MPResponse *)v4 builder];
-    v16 = [(MPResponse *)v4 chain];
-    v17 = [v15 controller:0 chain:v16];
+    builder4 = [(MPResponse *)v4 builder];
+    chain4 = [(MPResponse *)v4 chain];
+    v17 = [builder4 controller:0 chain:chain4];
     controller = v4->_controller;
     v4->_controller = v17;
 
-    v19 = [(MPCMediaRemoteController *)v4->_controller resolvedPlayerPath];
+    resolvedPlayerPath = [(MPCMediaRemoteController *)v4->_controller resolvedPlayerPath];
     playerPath = v4->_playerPath;
-    v4->_playerPath = v19;
+    v4->_playerPath = resolvedPlayerPath;
 
-    v21 = [(MPResponse *)v4 builder];
-    v22 = [(MPResponse *)v4 chain];
-    v23 = [v21 requestingUserSubscriptionStatus:0 chain:v22];
+    builder5 = [(MPResponse *)v4 builder];
+    chain5 = [(MPResponse *)v4 chain];
+    v23 = [builder5 requestingUserSubscriptionStatus:0 chain:chain5];
     requestingUserSubscriptionStatus = v4->_requestingUserSubscriptionStatus;
     v4->_requestingUserSubscriptionStatus = v23;
   }

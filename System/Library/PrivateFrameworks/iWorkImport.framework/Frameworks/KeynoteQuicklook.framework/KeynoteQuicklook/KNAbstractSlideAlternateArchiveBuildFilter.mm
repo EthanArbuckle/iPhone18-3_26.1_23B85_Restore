@@ -1,12 +1,12 @@
 @interface KNAbstractSlideAlternateArchiveBuildFilter
-- (KNAbstractSlideAlternateArchiveBuildFilter)initWithExcludedBuildMinVersion:(unint64_t)a3 capacity:(unint64_t)a4;
-- (id)filteredBuildChunksForBuildChunks:(id)a3;
-- (id)filteredBuildsForBuilds:(id)a3;
+- (KNAbstractSlideAlternateArchiveBuildFilter)initWithExcludedBuildMinVersion:(unint64_t)version capacity:(unint64_t)capacity;
+- (id)filteredBuildChunksForBuildChunks:(id)chunks;
+- (id)filteredBuildsForBuilds:(id)builds;
 @end
 
 @implementation KNAbstractSlideAlternateArchiveBuildFilter
 
-- (KNAbstractSlideAlternateArchiveBuildFilter)initWithExcludedBuildMinVersion:(unint64_t)a3 capacity:(unint64_t)a4
+- (KNAbstractSlideAlternateArchiveBuildFilter)initWithExcludedBuildMinVersion:(unint64_t)version capacity:(unint64_t)capacity
 {
   v13.receiver = self;
   v13.super_class = KNAbstractSlideAlternateArchiveBuildFilter;
@@ -14,9 +14,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_excludedBuildMinVersion = a3;
+    v6->_excludedBuildMinVersion = version;
     v8 = objc_alloc(MEMORY[0x277CCAA50]);
-    v10 = objc_msgSend_initWithOptions_capacity_(v8, v9, 512, a4);
+    v10 = objc_msgSend_initWithOptions_capacity_(v8, v9, 512, capacity);
     excludedBuilds = v7->_excludedBuilds;
     v7->_excludedBuilds = v10;
   }
@@ -24,18 +24,18 @@
   return v7;
 }
 
-- (id)filteredBuildsForBuilds:(id)a3
+- (id)filteredBuildsForBuilds:(id)builds
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buildsCopy = builds;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = objc_msgSend_count(v4, v6, v7);
+  v8 = objc_msgSend_count(buildsCopy, v6, v7);
   v10 = objc_msgSend_initWithCapacity_(v5, v9, v8);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v4;
+  v11 = buildsCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v20, v24, 16);
   if (v13)
   {
@@ -66,18 +66,18 @@
   return v10;
 }
 
-- (id)filteredBuildChunksForBuildChunks:(id)a3
+- (id)filteredBuildChunksForBuildChunks:(id)chunks
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chunksCopy = chunks;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = objc_msgSend_count(v4, v6, v7);
+  v8 = objc_msgSend_count(chunksCopy, v6, v7);
   v10 = objc_msgSend_initWithCapacity_(v5, v9, v8);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v4;
+  v11 = chunksCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v24, v28, 16);
   if (v13)
   {

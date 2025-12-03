@@ -1,7 +1,7 @@
 @interface FCArticleAudioTrack
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCArticleAudioTrack)init;
-- (FCArticleAudioTrack)initWithType:(int64_t)a3 asset:(id)a4 duration:(double)a5 embeddedUpsellStartTime:(double)a6 embeddedUpsellEndTime:(double)a7;
+- (FCArticleAudioTrack)initWithType:(int64_t)type asset:(id)asset duration:(double)duration embeddedUpsellStartTime:(double)time embeddedUpsellEndTime:(double)endTime;
 - (FCContentArchive)contentArchive;
 - (FCContentManifest)contentManifest;
 - (unint64_t)hash;
@@ -35,34 +35,34 @@
   objc_exception_throw(v6);
 }
 
-- (FCArticleAudioTrack)initWithType:(int64_t)a3 asset:(id)a4 duration:(double)a5 embeddedUpsellStartTime:(double)a6 embeddedUpsellEndTime:(double)a7
+- (FCArticleAudioTrack)initWithType:(int64_t)type asset:(id)asset duration:(double)duration embeddedUpsellStartTime:(double)time embeddedUpsellEndTime:(double)endTime
 {
-  v13 = a4;
+  assetCopy = asset;
   v17.receiver = self;
   v17.super_class = FCArticleAudioTrack;
   v14 = [(FCArticleAudioTrack *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_asset, a4);
-    v15->_duration = a5;
-    v15->_embeddedUpsellStartTime = a6;
-    v15->_embeddedUpsellEndTime = a7;
+    v14->_type = type;
+    objc_storeStrong(&v14->_asset, asset);
+    v15->_duration = duration;
+    v15->_embeddedUpsellStartTime = time;
+    v15->_embeddedUpsellEndTime = endTime;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -80,9 +80,9 @@
 
   if (v6)
   {
-    v7 = [(FCArticleAudioTrack *)self asset];
-    v8 = [v6 asset];
-    v9 = [v7 isEqual:v8];
+    asset = [(FCArticleAudioTrack *)self asset];
+    asset2 = [v6 asset];
+    v9 = [asset isEqual:asset2];
   }
 
   else
@@ -95,26 +95,26 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FCArticleAudioTrack *)self asset];
-  v3 = [v2 hash];
+  asset = [(FCArticleAudioTrack *)self asset];
+  v3 = [asset hash];
 
   return v3;
 }
 
 - (FCContentArchive)contentArchive
 {
-  v2 = [(FCArticleAudioTrack *)self asset];
-  v3 = [v2 contentArchive];
+  asset = [(FCArticleAudioTrack *)self asset];
+  contentArchive = [asset contentArchive];
 
-  return v3;
+  return contentArchive;
 }
 
 - (FCContentManifest)contentManifest
 {
-  v2 = [(FCArticleAudioTrack *)self asset];
-  v3 = [v2 contentManifest];
+  asset = [(FCArticleAudioTrack *)self asset];
+  contentManifest = [asset contentManifest];
 
-  return v3;
+  return contentManifest;
 }
 
 @end

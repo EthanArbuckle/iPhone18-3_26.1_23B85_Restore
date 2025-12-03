@@ -1,7 +1,7 @@
 @interface CKThrowAnimationManager
 + (id)glassThrowSendAnimationManager;
 + (id)nonGlassThrowSendAnimationManager;
-+ (void)__removeAllAnimationsWithAttributesCollection:(id)a3;
++ (void)__removeAllAnimationsWithAttributesCollection:(id)collection;
 - (BOOL)_transcriptWillShiftDueToThrowAnimation;
 - (CGPoint)_sendMessageAndCalculateDesiredTranscriptOffset;
 - (CGRect)audioMessageSourceRect;
@@ -9,37 +9,37 @@
 - (CKSendAnimationBalloonProvider)sendAnimationBalloonProvider;
 - (CKSendAnimationManagerDelegate)sendAnimationManagerDelegate;
 - (CKThrowAnimationManager)init;
-- (CKThrowAnimationManager)initWithSendAnimationType:(unint64_t)a3;
+- (CKThrowAnimationManager)initWithSendAnimationType:(unint64_t)type;
 - (CKThrowAnimationManagerDelegate)throwManagerDelegate;
 - (UIView)behindGlassContainerView;
 - (UIView)sendAnimationWindow;
 - (double)_changeInEntryViewHeight;
-- (double)scrollViewOffsetForBottomAligningChatItemAtIndex:(int64_t)a3;
+- (double)scrollViewOffsetForBottomAligningChatItemAtIndex:(int64_t)index;
 - (id)__makeAndShowBehindGlassContainerView;
 - (id)_collectionViewController;
 - (id)_entryView;
 - (id)_makeAndShowSendAnimationContainerView;
-- (id)lastVisibleCellOfType:(Class)a3 inCollectionView:(id)a4;
-- (int64_t)_indexOfLastChatItemThatWillNotStickToTheBottom:(id)a3;
-- (unint64_t)_indexOfLastVisibleChatItemForChatItems:(id)a3;
-- (void)__setupThrowFramesUsingSendAnimationContainerView:(id)a3;
-- (void)_commonAnimationDidFinishSideEffectsWithContext:(id)a3;
+- (id)lastVisibleCellOfType:(Class)type inCollectionView:(id)view;
+- (int64_t)_indexOfLastChatItemThatWillNotStickToTheBottom:(id)bottom;
+- (unint64_t)_indexOfLastVisibleChatItemForChatItems:(id)items;
+- (void)__setupThrowFramesUsingSendAnimationContainerView:(id)view;
+- (void)_commonAnimationDidFinishSideEffectsWithContext:(id)context;
 - (void)_hideAddedChatItems;
-- (void)_prepareToAnimateMessages:(id)a3;
+- (void)_prepareToAnimateMessages:(id)messages;
 - (void)_removeAllAnimations;
 - (void)_removeFakeTypingIndicatorIfNecessary;
 - (void)_setupThrowBalloonViews;
 - (void)_setupThrowFrames;
 - (void)_snapshotLiveBubbleIfNecessary;
-- (void)animateMessages:(id)a3;
-- (void)animateQuickReplyMessages:(id)a3;
-- (void)animationDidFinishWithContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
+- (void)animateMessages:(id)messages;
+- (void)animateQuickReplyMessages:(id)messages;
+- (void)animationDidFinishWithContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
 @end
 
 @implementation CKThrowAnimationManager
 
-- (CKThrowAnimationManager)initWithSendAnimationType:(unint64_t)a3
+- (CKThrowAnimationManager)initWithSendAnimationType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = CKThrowAnimationManager;
@@ -47,7 +47,7 @@
   v5 = v4;
   if (v4)
   {
-    [(CKThrowAnimationManager *)v4 setSendAnimationType:a3];
+    [(CKThrowAnimationManager *)v4 setSendAnimationType:type];
     v6 = objc_alloc_init(CKChatControllerDummyAnimator);
     [(CKChatControllerDummyAnimator *)v6 setAnimationDelegate:v5];
     [(CKThrowAnimationManager *)v5 setAnimator:v6];
@@ -58,14 +58,14 @@
 
 + (id)nonGlassThrowSendAnimationManager
 {
-  v2 = [[a1 alloc] initWithSendAnimationType:0];
+  v2 = [[self alloc] initWithSendAnimationType:0];
 
   return v2;
 }
 
 + (id)glassThrowSendAnimationManager
 {
-  v2 = [[a1 alloc] initWithSendAnimationType:1];
+  v2 = [[self alloc] initWithSendAnimationType:1];
 
   return v2;
 }
@@ -77,43 +77,43 @@
   return 0;
 }
 
-- (void)_commonAnimationDidFinishSideEffectsWithContext:(id)a3
+- (void)_commonAnimationDidFinishSideEffectsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(CKThrowAnimationManager *)self _removeAllAnimations];
-  v5 = [(CKThrowAnimationManager *)self fakeTypingIndicatorCell];
-  [v5 removeFromSuperview];
+  fakeTypingIndicatorCell = [(CKThrowAnimationManager *)self fakeTypingIndicatorCell];
+  [fakeTypingIndicatorCell removeFromSuperview];
 
   [(CKThrowAnimationManager *)self setFakeTypingIndicatorCell:0];
-  v6 = [(CKThrowAnimationManager *)self sendAnimationManagerDelegate];
-  [v6 sendAnimationManagerDidStopAnimation:self context:v4];
+  sendAnimationManagerDelegate = [(CKThrowAnimationManager *)self sendAnimationManagerDelegate];
+  [sendAnimationManagerDelegate sendAnimationManagerDidStopAnimation:self context:contextCopy];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-LiveBubbleSendAnimation", @"ShelfIdentifier"];
   [CKSnapshotUtilities _cacheSnapshotView:0 forGUID:v7];
 }
 
-- (void)animationDidFinishWithContext:(id)a3
+- (void)animationDidFinishWithContext:(id)context
 {
-  v11 = a3;
-  v4 = [(CKThrowAnimationManager *)self _collectionViewController];
-  [v4 setHiddenItems:0];
+  contextCopy = context;
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  [_collectionViewController setHiddenItems:0];
 
-  v5 = [(CKThrowAnimationManager *)self fakeUnavailabilityIndicatorCell];
-  [v5 removeFromSuperview];
+  fakeUnavailabilityIndicatorCell = [(CKThrowAnimationManager *)self fakeUnavailabilityIndicatorCell];
+  [fakeUnavailabilityIndicatorCell removeFromSuperview];
 
   [(CKThrowAnimationManager *)self setFakeUnavailabilityIndicatorCell:0];
-  v6 = [(CKThrowAnimationManager *)self fakeNotifyAnywayButtonCell];
-  [v6 removeFromSuperview];
+  fakeNotifyAnywayButtonCell = [(CKThrowAnimationManager *)self fakeNotifyAnywayButtonCell];
+  [fakeNotifyAnywayButtonCell removeFromSuperview];
 
   [(CKThrowAnimationManager *)self setFakeNotifyAnywayButtonCell:0];
-  v7 = [(CKThrowAnimationManager *)self fakeKeyTransparencyCell];
-  [v7 removeFromSuperview];
+  fakeKeyTransparencyCell = [(CKThrowAnimationManager *)self fakeKeyTransparencyCell];
+  [fakeKeyTransparencyCell removeFromSuperview];
 
   [(CKThrowAnimationManager *)self setFakeKeyTransparencyCell:0];
-  v8 = [v11 sendAnimationType];
-  if (v8)
+  sendAnimationType = [contextCopy sendAnimationType];
+  if (sendAnimationType)
   {
-    if (v8 != 1)
+    if (sendAnimationType != 1)
     {
       goto LABEL_6;
     }
@@ -123,123 +123,123 @@
 
   else
   {
-    v9 = [(CKThrowAnimationManager *)self sendAnimationWindow];
-    [v9 removeFromSuperview];
+    sendAnimationWindow = [(CKThrowAnimationManager *)self sendAnimationWindow];
+    [sendAnimationWindow removeFromSuperview];
 
     sendAnimationWindow = self->_sendAnimationWindow;
     self->_sendAnimationWindow = 0;
   }
 
-  [(CKThrowAnimationManager *)self _commonAnimationDidFinishSideEffectsWithContext:v11];
+  [(CKThrowAnimationManager *)self _commonAnimationDidFinishSideEffectsWithContext:contextCopy];
 LABEL_6:
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CKThrowAnimationManager *)self sendAnimationManagerDelegate];
-  [v5 sendAnimationManagerWillStartAnimation:self context:v4];
+  contextCopy = context;
+  sendAnimationManagerDelegate = [(CKThrowAnimationManager *)self sendAnimationManagerDelegate];
+  [sendAnimationManagerDelegate sendAnimationManagerWillStartAnimation:self context:contextCopy];
 }
 
-- (void)_prepareToAnimateMessages:(id)a3
+- (void)_prepareToAnimateMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v16 = objc_alloc_init(CKSendAnimationContext);
   [(CKSendAnimationContext *)v16 setSendAnimationType:[(CKThrowAnimationManager *)self sendAnimationType]];
-  v5 = [(CKThrowAnimationManager *)self quickReplySnapshot];
-  [(CKSendAnimationContext *)v16 setQuickReplySnapshotView:v5];
+  quickReplySnapshot = [(CKThrowAnimationManager *)self quickReplySnapshot];
+  [(CKSendAnimationContext *)v16 setQuickReplySnapshotView:quickReplySnapshot];
 
-  [(CKSendAnimationContext *)v16 setMessages:v4];
+  [(CKSendAnimationContext *)v16 setMessages:messagesCopy];
   [(CKThrowAnimationManager *)self audioMessageSourceRect];
   [(CKSendAnimationContext *)v16 setAudioMessageSourceRect:?];
   [(CKThrowAnimationManager *)self sourceRect];
   [(CKSendAnimationContext *)v16 setThrowAnimationSourceRect:?];
-  v6 = [(CKThrowAnimationManager *)self audioRecordingPillViewSnapshot];
-  [(CKSendAnimationContext *)v16 setAudioRecordingPillViewSnapshot:v6];
+  audioRecordingPillViewSnapshot = [(CKThrowAnimationManager *)self audioRecordingPillViewSnapshot];
+  [(CKSendAnimationContext *)v16 setAudioRecordingPillViewSnapshot:audioRecordingPillViewSnapshot];
 
-  v7 = [(CKThrowAnimationManager *)self _entryView];
-  [v7 frame];
+  _entryView = [(CKThrowAnimationManager *)self _entryView];
+  [_entryView frame];
   [(CKSendAnimationContext *)v16 setEntryViewSize:v8, v9];
 
-  v10 = [(CKThrowAnimationManager *)self sendAnimationType];
-  if (v10 == 1)
+  sendAnimationType = [(CKThrowAnimationManager *)self sendAnimationType];
+  if (sendAnimationType == 1)
   {
-    v11 = [(CKThrowAnimationManager *)self behindGlassContainerView];
-    [(CKSendAnimationContext *)v16 setBehindGlassContainerView:v11];
+    behindGlassContainerView = [(CKThrowAnimationManager *)self behindGlassContainerView];
+    [(CKSendAnimationContext *)v16 setBehindGlassContainerView:behindGlassContainerView];
   }
 
   else
   {
-    if (v10)
+    if (sendAnimationType)
     {
       goto LABEL_6;
     }
 
-    v11 = [(CKThrowAnimationManager *)self sendAnimationWindow];
-    [(CKSendAnimationContext *)v16 setContainerView:v11];
+    behindGlassContainerView = [(CKThrowAnimationManager *)self sendAnimationWindow];
+    [(CKSendAnimationContext *)v16 setContainerView:behindGlassContainerView];
   }
 
 LABEL_6:
   [(CKThrowAnimationManager *)self sourceRect];
   [(CKSendAnimationContext *)v16 setQuickReplySourceRect:?];
   [(CKThrowAnimationManager *)self setCurrentContext:v16];
-  v12 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  [v12 throwAnimationManagerPrepareForThrowAnimation:self context:v16];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  [throwManagerDelegate throwAnimationManagerPrepareForThrowAnimation:self context:v16];
   [(CKThrowAnimationManager *)self _snapshotLiveBubbleIfNecessary];
   [(CKThrowAnimationManager *)self _sendMessageAndCalculateDesiredTranscriptOffset];
   [(CKThrowAnimationManager *)self _removeFakeTypingIndicatorIfNecessary];
   [(CKThrowAnimationManager *)self _setupThrowBalloonViews];
   [(CKThrowAnimationManager *)self _setupThrowFrames];
-  v13 = [(CKThrowAnimationManager *)self _entryView];
-  [v13 invalidateCompositionForReason:1];
+  _entryView2 = [(CKThrowAnimationManager *)self _entryView];
+  [_entryView2 invalidateCompositionForReason:1];
 
-  v14 = [(CKThrowAnimationManager *)self _entryView];
-  [v14 clearAudioRecordingUI];
+  _entryView3 = [(CKThrowAnimationManager *)self _entryView];
+  [_entryView3 clearAudioRecordingUI];
 
   if (![(CKThrowAnimationManager *)self sendAnimationType])
   {
-    v15 = [(CKThrowAnimationManager *)self sendAnimationWindow];
-    [v15 setHidden:0];
+    sendAnimationWindow = [(CKThrowAnimationManager *)self sendAnimationWindow];
+    [sendAnimationWindow setHidden:0];
   }
 
   [(CKThrowAnimationManager *)self _hideAddedChatItems];
 }
 
-- (void)animateMessages:(id)a3
+- (void)animateMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v8 = [v5 collectionView];
+  messagesCopy = messages;
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  collectionView = [_collectionViewController collectionView];
 
-  [v8 setTranscriptScrollIntent:3];
-  [(CKThrowAnimationManager *)self _prepareToAnimateMessages:v4];
+  [collectionView setTranscriptScrollIntent:3];
+  [(CKThrowAnimationManager *)self _prepareToAnimateMessages:messagesCopy];
 
-  v6 = [(CKThrowAnimationManager *)self animator];
-  v7 = [(CKThrowAnimationManager *)self currentContext];
-  [v6 beginAnimationWithSendAnimationContext:v7];
+  animator = [(CKThrowAnimationManager *)self animator];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  [animator beginAnimationWithSendAnimationContext:currentContext];
 }
 
-- (void)animateQuickReplyMessages:(id)a3
+- (void)animateQuickReplyMessages:(id)messages
 {
-  [(CKThrowAnimationManager *)self _prepareToAnimateMessages:a3];
-  v5 = [(CKThrowAnimationManager *)self animator];
-  v4 = [(CKThrowAnimationManager *)self currentContext];
-  [v5 beginQuickReplyAnimationWithSendAnimationContext:v4];
+  [(CKThrowAnimationManager *)self _prepareToAnimateMessages:messages];
+  animator = [(CKThrowAnimationManager *)self animator];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  [animator beginQuickReplyAnimationWithSendAnimationContext:currentContext];
 }
 
 - (id)__makeAndShowBehindGlassContainerView
 {
-  v3 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v4 = [v3 throwAnimationManagerEntryView:self];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  v4 = [throwManagerDelegate throwAnimationManagerEntryView:self];
 
   v5 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:v4];
   [v5 setHidesSourceView:1];
   [v5 setMatchesTransform:1];
   [v5 setMatchesPosition:1];
-  v6 = [v4 window];
-  v7 = [v6 windowScene];
-  v8 = [v7 screen];
-  [v8 bounds];
+  window = [v4 window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -250,8 +250,8 @@ LABEL_6:
   [(CKSendAnimationContainerView *)v17 addSubview:v5];
   [v4 frame];
   [v5 setFrame:?];
-  v18 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v19 = [v18 throwAnimationContainerSuperview:self];
+  throwManagerDelegate2 = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  v19 = [throwManagerDelegate2 throwAnimationContainerSuperview:self];
 
   [v19 addSubview:v17];
 
@@ -263,9 +263,9 @@ LABEL_6:
   behindGlassContainerView = self->_behindGlassContainerView;
   if (!behindGlassContainerView)
   {
-    v4 = [(CKThrowAnimationManager *)self __makeAndShowBehindGlassContainerView];
+    __makeAndShowBehindGlassContainerView = [(CKThrowAnimationManager *)self __makeAndShowBehindGlassContainerView];
     v5 = self->_behindGlassContainerView;
-    self->_behindGlassContainerView = v4;
+    self->_behindGlassContainerView = __makeAndShowBehindGlassContainerView;
 
     behindGlassContainerView = self->_behindGlassContainerView;
   }
@@ -276,19 +276,19 @@ LABEL_6:
 - (id)_makeAndShowSendAnimationContainerView
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 canUseWindowedSendAnimation];
+  canUseWindowedSendAnimation = [v3 canUseWindowedSendAnimation];
 
-  v5 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v6 = [v5 throwAnimationManagerEntryView:self];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  v6 = [throwManagerDelegate throwAnimationManagerEntryView:self];
 
-  if (v4)
+  if (canUseWindowedSendAnimation)
   {
     v7 = [CKSendAnimationWindow alloc];
-    v8 = [v6 window];
-    v9 = [v8 windowScene];
-    v10 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-    [v10 throwAnimationWindowFrame:self];
-    v11 = [(CKSendAnimationWindow *)v7 initWithWindowScene:v9 frame:?];
+    window = [v6 window];
+    windowScene = [window windowScene];
+    throwManagerDelegate2 = [(CKThrowAnimationManager *)self throwManagerDelegate];
+    [throwManagerDelegate2 throwAnimationWindowFrame:self];
+    v11 = [(CKSendAnimationWindow *)v7 initWithWindowScene:windowScene frame:?];
 
     [(CKSendAnimationContainerView *)v11 setUserInteractionEnabled:0];
     WeakRetained = objc_loadWeakRetained(&self->_sendAnimationBalloonProvider);
@@ -305,10 +305,10 @@ LABEL_6:
 
   else
   {
-    v15 = [v6 window];
-    v16 = [v15 windowScene];
-    v17 = [v16 screen];
-    [v17 bounds];
+    window2 = [v6 window];
+    windowScene2 = [window2 windowScene];
+    screen = [windowScene2 screen];
+    [screen bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -316,8 +316,8 @@ LABEL_6:
 
     v11 = [[CKSendAnimationContainerView alloc] initWithFrame:v19, v21, v23, v25];
     [(CKSendAnimationContainerView *)v11 setUserInteractionEnabled:0];
-    v26 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-    v27 = [v26 throwAnimationContainerSuperview:self];
+    throwManagerDelegate3 = [(CKThrowAnimationManager *)self throwManagerDelegate];
+    v27 = [throwManagerDelegate3 throwAnimationContainerSuperview:self];
 
     [v27 addSubview:v11];
   }
@@ -330,9 +330,9 @@ LABEL_6:
   sendAnimationWindow = self->_sendAnimationWindow;
   if (!sendAnimationWindow)
   {
-    v4 = [(CKThrowAnimationManager *)self _makeAndShowSendAnimationContainerView];
+    _makeAndShowSendAnimationContainerView = [(CKThrowAnimationManager *)self _makeAndShowSendAnimationContainerView];
     v5 = self->_sendAnimationWindow;
-    self->_sendAnimationWindow = v4;
+    self->_sendAnimationWindow = _makeAndShowSendAnimationContainerView;
 
     sendAnimationWindow = self->_sendAnimationWindow;
   }
@@ -342,16 +342,16 @@ LABEL_6:
 
 - (id)_collectionViewController
 {
-  v3 = [(CKThrowAnimationManager *)self sendAnimationManagerDelegate];
-  v4 = [v3 collectionViewControllerForImpactEffectManager:self];
+  sendAnimationManagerDelegate = [(CKThrowAnimationManager *)self sendAnimationManagerDelegate];
+  v4 = [sendAnimationManagerDelegate collectionViewControllerForImpactEffectManager:self];
 
   return v4;
 }
 
 - (id)_entryView
 {
-  v3 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v4 = [v3 throwAnimationManagerEntryView:self];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  v4 = [throwManagerDelegate throwAnimationManagerEntryView:self];
 
   return v4;
 }
@@ -359,10 +359,10 @@ LABEL_6:
 - (void)_snapshotLiveBubbleIfNecessary
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-LiveBubbleSendAnimation", @"ShelfIdentifier"];
-  v4 = [(CKThrowAnimationManager *)self _entryView];
-  v5 = [v4 contentView];
-  v6 = [v5 pluginView];
-  v7 = [v6 snapshotViewAfterScreenUpdates:0];
+  _entryView = [(CKThrowAnimationManager *)self _entryView];
+  contentView = [_entryView contentView];
+  pluginView = [contentView pluginView];
+  v7 = [pluginView snapshotViewAfterScreenUpdates:0];
 
   [CKSnapshotUtilities _cacheSnapshotView:v7 forGUID:v3];
   v8 = IMLogHandleForCategory();
@@ -375,9 +375,9 @@ LABEL_6:
 
 - (CGPoint)_sendMessageAndCalculateDesiredTranscriptOffset
 {
-  v3 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v4 = [v3 collectionView];
-  v5 = [v3 chatItems];
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  collectionView = [_collectionViewController collectionView];
+  chatItems = [_collectionViewController chatItems];
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -394,7 +394,7 @@ LABEL_6:
   v28[3] = &unk_1E72F26A8;
   v28[4] = &v33;
   v28[5] = &v29;
-  [v5 enumerateObjectsWithOptions:2 usingBlock:v28];
+  [chatItems enumerateObjectsWithOptions:2 usingBlock:v28];
 
   v6 = v30[3];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -405,21 +405,21 @@ LABEL_6:
   else
   {
     v8 = [MEMORY[0x1E696AC88] indexPathForItem:v6 inSection:0];
-    v9 = [v4 layoutAttributesForItemAtIndexPath:v8];
+    v9 = [collectionView layoutAttributesForItemAtIndexPath:v8];
     [v9 frame];
     v7 = v10;
   }
 
-  [v4 contentOffset];
+  [collectionView contentOffset];
   v12 = v11;
   v14 = v13;
-  v15 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v16 = [(CKThrowAnimationManager *)self currentContext];
-  v17 = [v16 messages];
-  [v15 throwAnimationManager:self canNowSendMessages:v17];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  messages = [currentContext messages];
+  [throwManagerDelegate throwAnimationManager:self canNowSendMessages:messages];
 
-  v18 = [v3 chatItems];
-  v19 = [v18 indexOfObject:v34[5]];
+  chatItems2 = [_collectionViewController chatItems];
+  v19 = [chatItems2 indexOfObject:v34[5]];
   v30[3] = v19;
   v20 = v34[5];
   v34[5] = 0;
@@ -429,7 +429,7 @@ LABEL_6:
   if (v21 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v23 = [MEMORY[0x1E696AC88] indexPathForItem:v21 inSection:0];
-    v24 = [v4 layoutAttributesForItemAtIndexPath:v23];
+    v24 = [collectionView layoutAttributesForItemAtIndexPath:v23];
     [v24 frame];
     v22 = v25;
   }
@@ -456,12 +456,12 @@ void __74__CKThrowAnimationManager__sendMessageAndCalculateDesiredTranscriptOffs
   }
 }
 
-- (unint64_t)_indexOfLastVisibleChatItemForChatItems:(id)a3
+- (unint64_t)_indexOfLastVisibleChatItemForChatItems:(id)items
 {
-  v3 = a3;
-  if ([v3 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v4 = [v3 count] - 1;
+    v4 = [itemsCopy count] - 1;
   }
 
   else
@@ -472,82 +472,82 @@ void __74__CKThrowAnimationManager__sendMessageAndCalculateDesiredTranscriptOffs
   return v4;
 }
 
-- (void)__setupThrowFramesUsingSendAnimationContainerView:(id)a3
+- (void)__setupThrowFramesUsingSendAnimationContainerView:(id)view
 {
-  v63 = a3;
-  v4 = [(CKThrowAnimationManager *)self currentContext];
-  v65 = [v4 shouldUseQuickReplySourceRect];
+  viewCopy = view;
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  shouldUseQuickReplySourceRect = [currentContext shouldUseQuickReplySourceRect];
 
-  v5 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v6 = [v5 collectionView];
-  v68 = [(CKThrowAnimationManager *)self _entryView];
-  v7 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v64 = v6;
-  [v6 marginInsets];
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  collectionView = [_collectionViewController collectionView];
+  _entryView = [(CKThrowAnimationManager *)self _entryView];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  v64 = collectionView;
+  [collectionView marginInsets];
   v61 = v9;
   v62 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CKThrowAnimationManager *)self currentContext];
-  v15 = [v5 chatItems];
-  v16 = v14;
-  v17 = [v14 messages];
-  v66 = [v15 __ck_indexesOfPartsOfMessages:v17];
-  v18 = [v66 lastIndex];
-  v19 = [v15 count];
-  v20 = [v5 latestScheduledMessageIndexPath];
-  v60 = v17;
-  v21 = [v17 firstObject];
-  v22 = [v21 scheduleType];
+  currentContext2 = [(CKThrowAnimationManager *)self currentContext];
+  chatItems = [_collectionViewController chatItems];
+  v16 = currentContext2;
+  messages = [currentContext2 messages];
+  v66 = [chatItems __ck_indexesOfPartsOfMessages:messages];
+  lastIndex = [v66 lastIndex];
+  v19 = [chatItems count];
+  latestScheduledMessageIndexPath = [_collectionViewController latestScheduledMessageIndexPath];
+  v60 = messages;
+  firstObject = [messages firstObject];
+  scheduleType = [firstObject scheduleType];
 
-  if (v22 == 2 || !v20)
+  if (scheduleType == 2 || !latestScheduledMessageIndexPath)
   {
-    if (v18 >= v19 - 1)
+    if (lastIndex >= v19 - 1)
     {
-      v18 = v19 - 1;
+      lastIndex = v19 - 1;
     }
 
-    v23 = [v15 count] - 1;
+    v23 = [chatItems count] - 1;
   }
 
   else
   {
-    v23 = [v20 indexAtPosition:{objc_msgSend(v20, "length") - 1}];
-    v18 = v23;
+    v23 = [latestScheduledMessageIndexPath indexAtPosition:{objc_msgSend(latestScheduledMessageIndexPath, "length") - 1}];
+    lastIndex = v23;
   }
 
   [(CKThrowAnimationManager *)self scrollViewOffsetForBottomAligningChatItemAtIndex:v23];
   v25 = v24;
-  [(CKThrowAnimationManager *)self scrollViewOffsetForBottomAligningChatItemAtIndex:v18];
+  [(CKThrowAnimationManager *)self scrollViewOffsetForBottomAligningChatItemAtIndex:lastIndex];
   v27 = v26;
-  v59 = [v15 lastObject];
+  lastObject = [chatItems lastObject];
   [CKTranscriptCompositionalLayout bottomTranscriptSpaceWithLastChatItem:?];
   v29 = v28;
   v30 = +[CKUIBehavior sharedBehaviors];
   v31 = v16;
   if ([v30 isEntryViewInputAccessory])
   {
-    [v7 throwAnimationKeyboardFrame:self];
+    [throwManagerDelegate throwAnimationKeyboardFrame:self];
   }
 
   else
   {
-    [v68 frame];
+    [_entryView frame];
   }
 
   v36 = v66;
-  v67 = v20;
+  v67 = latestScheduledMessageIndexPath;
   MinY = CGRectGetMinY(*&v32);
 
-  [v7 throwAnimationManagerTopHeaderHeight:self];
+  [throwManagerDelegate throwAnimationManagerTopHeaderHeight:self];
   v39 = v38;
-  [v7 throwAnimationFinalFrameOffset:self];
+  [throwManagerDelegate throwAnimationFinalFrameOffset:self];
   v41 = v40;
   v89 = 0;
   v90 = &v89;
   v91 = 0x2020000000;
   v92 = 0;
-  v42 = [(CKThrowAnimationManager *)self _transcriptWillShiftDueToThrowAnimation]& (v65 ^ 1);
+  v42 = [(CKThrowAnimationManager *)self _transcriptWillShiftDueToThrowAnimation]& (shouldUseQuickReplySourceRect ^ 1);
   v43 = MinY - (v27 + v39);
   if (v42 == 1)
   {
@@ -567,7 +567,7 @@ void __74__CKThrowAnimationManager__sendMessageAndCalculateDesiredTranscriptOffs
   v69[3] = &unk_1E72F7980;
   v53 = v64;
   v70 = v53;
-  v54 = v5;
+  v54 = _collectionViewController;
   v78 = v62;
   v79 = v61;
   v80 = v11;
@@ -577,20 +577,20 @@ void __74__CKThrowAnimationManager__sendMessageAndCalculateDesiredTranscriptOffs
   v84 = v49;
   v85 = v51;
   v71 = v54;
-  v72 = self;
+  selfCopy = self;
   v87 = v42;
-  v55 = v7;
+  v55 = throwManagerDelegate;
   v73 = v55;
-  v56 = v68;
+  v56 = _entryView;
   v74 = v56;
-  v88 = v65;
+  v88 = shouldUseQuickReplySourceRect;
   v57 = v52;
   v75 = v57;
   v77 = &v89;
   v86 = v41;
-  v58 = v63;
+  v58 = viewCopy;
   v76 = v58;
-  [v15 enumerateObjectsAtIndexes:v36 options:2 usingBlock:v69];
+  [chatItems enumerateObjectsAtIndexes:v36 options:2 usingBlock:v69];
   [v31 setFramesOfAddedChatItems:v57];
 
   _Block_object_dispose(&v89, 8);
@@ -740,37 +740,37 @@ void __77__CKThrowAnimationManager___setupThrowFramesUsingSendAnimationContainer
 
 - (void)_setupThrowFrames
 {
-  v6 = [(CKThrowAnimationManager *)self currentContext];
-  v3 = [v6 sendAnimationType];
-  if (v3 == 1)
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  sendAnimationType = [currentContext sendAnimationType];
+  if (sendAnimationType == 1)
   {
-    v4 = [v6 behindGlassContainerView];
+    behindGlassContainerView = [currentContext behindGlassContainerView];
   }
 
   else
   {
-    if (v3)
+    if (sendAnimationType)
     {
       goto LABEL_6;
     }
 
-    v4 = [v6 containerView];
+    behindGlassContainerView = [currentContext containerView];
   }
 
-  v5 = v4;
-  [(CKThrowAnimationManager *)self __setupThrowFramesUsingSendAnimationContainerView:v4];
+  v5 = behindGlassContainerView;
+  [(CKThrowAnimationManager *)self __setupThrowFramesUsingSendAnimationContainerView:behindGlassContainerView];
 
 LABEL_6:
 }
 
-+ (void)__removeAllAnimationsWithAttributesCollection:(id)a3
++ (void)__removeAllAnimationsWithAttributesCollection:(id)collection
 {
   v44 = *MEMORY[0x1E69E9840];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = a3;
+  obj = collection;
   v3 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v3)
   {
@@ -794,35 +794,35 @@ LABEL_6:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v10 = [v9 throwBalloonView];
-          v11 = [v10 layer];
+          throwBalloonView = [v9 throwBalloonView];
+          layer = [throwBalloonView layer];
           objc_opt_class();
           v32 = v8;
-          v30 = v11;
+          v30 = layer;
           if (objc_opt_isKindOfClass())
           {
-            [v11 removeAllAnimationsIncludingMaskAnimations];
+            [layer removeAllAnimationsIncludingMaskAnimations];
           }
 
           else
           {
-            [v11 removeAllAnimations];
+            [layer removeAllAnimations];
           }
 
-          [v10 removeFromSuperview];
-          [v10 setIsBeingUsedInThrowAnimation:0];
-          v31 = v10;
-          CKBalloonViewReuse(v10);
-          v12 = [v9 supplementaryViews];
-          v13 = [v12 dictionaryRepresentation];
+          [throwBalloonView removeFromSuperview];
+          [throwBalloonView setIsBeingUsedInThrowAnimation:0];
+          v31 = throwBalloonView;
+          CKBalloonViewReuse(throwBalloonView);
+          supplementaryViews = [v9 supplementaryViews];
+          dictionaryRepresentation = [supplementaryViews dictionaryRepresentation];
 
-          v14 = [v13 allKeys];
+          allKeys = [dictionaryRepresentation allKeys];
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v33 = v14;
-          v15 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v33 = allKeys;
+          v15 = [allKeys countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v15)
           {
             v16 = v15;
@@ -837,9 +837,9 @@ LABEL_6:
                   objc_enumerationMutation(v33);
                 }
 
-                v19 = [v13 objectForKey:*(*(&v34 + 1) + 8 * v18)];
-                v20 = [v19 layer];
-                [v20 removeAllAnimations];
+                v19 = [dictionaryRepresentation objectForKey:*(*(&v34 + 1) + 8 * v18)];
+                layer2 = [v19 layer];
+                [layer2 removeAllAnimations];
 
                 [v19 removeFromSuperview];
                 objc_opt_class();
@@ -847,13 +847,13 @@ LABEL_6:
                 {
                   v21 = v7;
                   v22 = v6;
-                  v23 = [v19 textView];
-                  v24 = [v23 text];
-                  v25 = [v24 _isNaturallyRTL];
+                  textView = [v19 textView];
+                  text = [textView text];
+                  _isNaturallyRTL = [text _isNaturallyRTL];
 
-                  if (v25)
+                  if (_isNaturallyRTL)
                   {
-                    [v23 setHidden:0];
+                    [textView setHidden:0];
                   }
 
                   v6 = v22;
@@ -897,16 +897,16 @@ LABEL_6:
 - (void)_removeAllAnimations
 {
   v43 = *MEMORY[0x1E69E9840];
-  v2 = [(CKThrowAnimationManager *)self currentContext];
-  v26 = [v2 throwBalloonViewAttributesCollection];
-  [objc_opt_class() __removeAllAnimationsWithAttributesCollection:v26];
-  v27 = v2;
-  v3 = [v2 throwBalloonViews];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  throwBalloonViewAttributesCollection = [currentContext throwBalloonViewAttributesCollection];
+  [objc_opt_class() __removeAllAnimationsWithAttributesCollection:throwBalloonViewAttributesCollection];
+  v27 = currentContext;
+  throwBalloonViews = [currentContext throwBalloonViews];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  v4 = [throwBalloonViews countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -917,33 +917,33 @@ LABEL_6:
       {
         if (*v37 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(throwBalloonViews);
         }
 
         v8 = *(*(&v36 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 textView];
-          v10 = [v9 text];
-          v11 = [v10 _isNaturallyRTL];
+          textView = [v8 textView];
+          text = [textView text];
+          _isNaturallyRTL = [text _isNaturallyRTL];
 
-          if (v11)
+          if (_isNaturallyRTL)
           {
-            [v9 setHidden:0];
+            [textView setHidden:0];
           }
         }
 
-        v12 = [v8 layer];
+        layer = [v8 layer];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v12 removeAllAnimationsIncludingMaskAnimations];
+          [layer removeAllAnimationsIncludingMaskAnimations];
         }
 
         else
         {
-          [v12 removeAllAnimations];
+          [layer removeAllAnimations];
         }
 
         [v8 removeFromSuperview];
@@ -951,7 +951,7 @@ LABEL_6:
         CKBalloonViewReuse(v8);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v5 = [throwBalloonViews countByEnumeratingWithState:&v36 objects:v42 count:16];
     }
 
     while (v5);
@@ -961,8 +961,8 @@ LABEL_6:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = [v27 animatableViews];
-  v14 = [v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
+  animatableViews = [v27 animatableViews];
+  v14 = [animatableViews countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v14)
   {
     v15 = v14;
@@ -973,14 +973,14 @@ LABEL_6:
       {
         if (*v33 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(animatableViews);
         }
 
-        v18 = [*(*(&v32 + 1) + 8 * j) layer];
-        [v18 removeAllAnimations];
+        layer2 = [*(*(&v32 + 1) + 8 * j) layer];
+        [layer2 removeAllAnimations];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
+      v15 = [animatableViews countByEnumeratingWithState:&v32 objects:v41 count:16];
     }
 
     while (v15);
@@ -990,8 +990,8 @@ LABEL_6:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = [v27 animatableTextViews];
-  v20 = [v19 countByEnumeratingWithState:&v28 objects:v40 count:16];
+  animatableTextViews = [v27 animatableTextViews];
+  v20 = [animatableTextViews countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1002,29 +1002,29 @@ LABEL_6:
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(animatableTextViews);
         }
 
         v24 = *(*(&v28 + 1) + 8 * k);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v25 = [v24 layer];
-          [v25 removeAllAnimations];
+          layer3 = [v24 layer];
+          [layer3 removeAllAnimations];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v21 = [animatableTextViews countByEnumeratingWithState:&v28 objects:v40 count:16];
     }
 
     while (v21);
   }
 }
 
-- (id)lastVisibleCellOfType:(Class)a3 inCollectionView:(id)a4
+- (id)lastVisibleCellOfType:(Class)type inCollectionView:(id)view
 {
-  v4 = a4;
-  v5 = [v4 numberOfItemsInSection:0];
+  viewCopy = view;
+  v5 = [viewCopy numberOfItemsInSection:0];
   if (v5 < 1)
   {
 LABEL_5:
@@ -1037,7 +1037,7 @@ LABEL_5:
     while (1)
     {
       v7 = [MEMORY[0x1E696AC88] indexPathForItem:v6 - 2 inSection:0];
-      v8 = [v4 cellForItemAtIndexPath:v7];
+      v8 = [viewCopy cellForItemAtIndexPath:v7];
       if (objc_opt_isKindOfClass())
       {
         break;
@@ -1055,31 +1055,31 @@ LABEL_5:
 
 - (void)_removeFakeTypingIndicatorIfNecessary
 {
-  v6 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v3 = [v6 chatItems];
-  v4 = [v3 lastObject];
-  if (!v4)
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  chatItems = [_collectionViewController chatItems];
+  lastObject = [chatItems lastObject];
+  if (!lastObject)
   {
-    v5 = [(CKThrowAnimationManager *)self fakeTypingIndicatorCell];
-    [v5 removeFromSuperview];
+    fakeTypingIndicatorCell = [(CKThrowAnimationManager *)self fakeTypingIndicatorCell];
+    [fakeTypingIndicatorCell removeFromSuperview];
     [(CKThrowAnimationManager *)self setFakeTypingIndicatorCell:0];
   }
 }
 
 - (void)_hideAddedChatItems
 {
-  v3 = [(CKThrowAnimationManager *)self currentContext];
-  v4 = [v3 throwBalloonViewAttributesCollection];
-  v5 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v6 = [v5 chatItems];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  throwBalloonViewAttributesCollection = [currentContext throwBalloonViewAttributesCollection];
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  chatItems = [_collectionViewController chatItems];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__74;
   v15 = __Block_byref_object_dispose__74;
-  v7 = [(CKThrowAnimationManager *)self currentContext];
-  v8 = [v7 messages];
-  v9 = [v6 __ck_indexesOfPartsOfMessages:v8];
+  currentContext2 = [(CKThrowAnimationManager *)self currentContext];
+  messages = [currentContext2 messages];
+  v9 = [chatItems __ck_indexesOfPartsOfMessages:messages];
   v16 = [v9 mutableCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1087,8 +1087,8 @@ LABEL_5:
   v10[2] = __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke;
   v10[3] = &unk_1E72F79A8;
   v10[4] = &v11;
-  [v4 enumerateObjectsUsingBlock:v10];
-  [v5 setHiddenItems:v12[5]];
+  [throwBalloonViewAttributesCollection enumerateObjectsUsingBlock:v10];
+  [_collectionViewController setHiddenItems:v12[5]];
   _Block_object_dispose(&v11, 8);
 }
 
@@ -1115,55 +1115,55 @@ void __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke(uint64_t a1
 
 - (BOOL)_transcriptWillShiftDueToThrowAnimation
 {
-  v3 = [(CKThrowAnimationManager *)self currentContext];
-  v4 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v5 = [v4 chatItems];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  chatItems = [_collectionViewController chatItems];
 
-  v6 = [v3 messages];
-  v7 = [v5 __ck_indexesOfPartsOfMessages:v6];
-  v8 = [v7 lastIndex];
-  v9 = [v5 count];
-  if (v8 >= v9 - 1)
+  messages = [currentContext messages];
+  v7 = [chatItems __ck_indexesOfPartsOfMessages:messages];
+  lastIndex = [v7 lastIndex];
+  v9 = [chatItems count];
+  if (lastIndex >= v9 - 1)
   {
     v10 = v9 - 1;
   }
 
   else
   {
-    v10 = v8;
+    v10 = lastIndex;
   }
 
-  v11 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v12 = [v11 latestScheduledMessageIndexPath];
+  _collectionViewController2 = [(CKThrowAnimationManager *)self _collectionViewController];
+  latestScheduledMessageIndexPath = [_collectionViewController2 latestScheduledMessageIndexPath];
 
-  v13 = [v6 firstObject];
-  v14 = [v13 scheduleType];
+  firstObject = [messages firstObject];
+  scheduleType = [firstObject scheduleType];
 
-  if (v14 != 2 && v12)
+  if (scheduleType != 2 && latestScheduledMessageIndexPath)
   {
-    v10 = [v12 indexAtPosition:0] - 1;
+    v10 = [latestScheduledMessageIndexPath indexAtPosition:0] - 1;
   }
 
   [(CKThrowAnimationManager *)self scrollViewOffsetForBottomAligningChatItemAtIndex:v10];
   v16 = v15;
-  v17 = [(CKThrowAnimationManager *)self throwManagerDelegate];
-  v18 = [(CKThrowAnimationManager *)self _entryView];
+  throwManagerDelegate = [(CKThrowAnimationManager *)self throwManagerDelegate];
+  _entryView = [(CKThrowAnimationManager *)self _entryView];
   v19 = +[CKUIBehavior sharedBehaviors];
   if ([v19 isEntryViewInputAccessory])
   {
-    [v17 throwAnimationManagerAccessoryViewHeight:self];
+    [throwManagerDelegate throwAnimationManagerAccessoryViewHeight:self];
     v21 = v20;
   }
 
   else
   {
-    [v18 bounds];
+    [_entryView bounds];
     v21 = v22;
   }
 
-  [v18 placeholderHeight];
+  [_entryView placeholderHeight];
   v24 = v21 - v23;
-  [v17 throwAnimationManagerTopHeaderHeight:self];
+  [throwManagerDelegate throwAnimationManagerTopHeaderHeight:self];
   v26 = v16 - v24 > -v25;
 
   return v26;
@@ -1171,10 +1171,10 @@ void __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke(uint64_t a1
 
 - (double)_changeInEntryViewHeight
 {
-  v2 = [(CKThrowAnimationManager *)self _entryView];
-  [v2 bounds];
+  _entryView = [(CKThrowAnimationManager *)self _entryView];
+  [_entryView bounds];
   Height = CGRectGetHeight(v7);
-  [v2 placeholderHeight];
+  [_entryView placeholderHeight];
   v5 = Height - v4;
 
   return v5;
@@ -1183,20 +1183,20 @@ void __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke(uint64_t a1
 - (void)_setupThrowBalloonViews
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CKThrowAnimationManager *)self currentContext];
-  v4 = [v3 sendAnimationType];
-  v5 = [(CKThrowAnimationManager *)self sendAnimationBalloonProvider];
-  [v5 setupThrowBalloonsInSendAnimationContext:v3];
+  currentContext = [(CKThrowAnimationManager *)self currentContext];
+  sendAnimationType = [currentContext sendAnimationType];
+  sendAnimationBalloonProvider = [(CKThrowAnimationManager *)self sendAnimationBalloonProvider];
+  [sendAnimationBalloonProvider setupThrowBalloonsInSendAnimationContext:currentContext];
 
-  if (!v4)
+  if (!sendAnimationType)
   {
-    v15 = v3;
-    v6 = [v3 throwBalloonViewAttributesCollection];
+    v15 = currentContext;
+    throwBalloonViewAttributesCollection = [currentContext throwBalloonViewAttributesCollection];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [throwBalloonViewAttributesCollection countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1208,20 +1208,20 @@ void __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke(uint64_t a1
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(throwBalloonViewAttributesCollection);
           }
 
           v11 = *(*(&v16 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v12 = [v11 throwBalloonView];
+            throwBalloonView = [v11 throwBalloonView];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v13 = [v11 supplementaryViews];
-              v14 = [v13 textViewContainerView];
+              supplementaryViews = [v11 supplementaryViews];
+              textViewContainerView = [supplementaryViews textViewContainerView];
 
-              [v14 setHidden:1];
+              [textViewContainerView setHidden:1];
             }
           }
 
@@ -1229,53 +1229,53 @@ void __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke(uint64_t a1
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [throwBalloonViewAttributesCollection countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
     }
 
-    v3 = v15;
+    currentContext = v15;
   }
 }
 
-- (double)scrollViewOffsetForBottomAligningChatItemAtIndex:(int64_t)a3
+- (double)scrollViewOffsetForBottomAligningChatItemAtIndex:(int64_t)index
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(CKThrowAnimationManager *)self _collectionViewController];
-  v6 = [v5 collectionView];
+  _collectionViewController = [(CKThrowAnimationManager *)self _collectionViewController];
+  collectionView = [_collectionViewController collectionView];
 
-  v7 = [(CKThrowAnimationManager *)self _collectionViewController];
-  [v7 _computedContentInsets];
+  _collectionViewController2 = [(CKThrowAnimationManager *)self _collectionViewController];
+  [_collectionViewController2 _computedContentInsets];
   v9 = v8;
   v11 = v10;
 
   v12 = -v9;
-  v13 = [v6 numberOfItemsInSection:0];
+  v13 = [collectionView numberOfItemsInSection:0];
   v14 = v13 - 1;
   if (v13 >= 1)
   {
     v15 = v13;
-    if (v13 <= a3)
+    if (v13 <= index)
     {
       v16 = IMLogHandleForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v22 = 134218240;
-        v23 = a3;
+        indexCopy = index;
         v24 = 2048;
         v25 = v15;
         _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Asked for best visible offset for row at invalid index %ld. Number of rows: %ld.", &v22, 0x16u);
       }
 
-      a3 = v14;
+      index = v14;
     }
 
-    v17 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
-    v18 = [v6 layoutAttributesForItemAtIndexPath:v17];
+    v17 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+    v18 = [collectionView layoutAttributesForItemAtIndexPath:v17];
     [v18 frame];
     MaxY = CGRectGetMaxY(v27);
-    [v6 bounds];
+    [collectionView bounds];
     if (MaxY - (v20 - v11) >= v12)
     {
       v12 = MaxY - (v20 - v11);
@@ -1285,19 +1285,19 @@ void __46__CKThrowAnimationManager__hideAddedChatItems__block_invoke(uint64_t a1
   return v12;
 }
 
-- (int64_t)_indexOfLastChatItemThatWillNotStickToTheBottom:(id)a3
+- (int64_t)_indexOfLastChatItemThatWillNotStickToTheBottom:(id)bottom
 {
-  v3 = a3;
+  bottomCopy = bottom;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
-  v10 = [v3 count] - 1;
+  v10 = [bottomCopy count] - 1;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__CKThrowAnimationManager__indexOfLastChatItemThatWillNotStickToTheBottom___block_invoke;
   v6[3] = &unk_1E72EEC48;
   v6[4] = &v7;
-  [v3 enumerateObjectsWithOptions:2 usingBlock:v6];
+  [bottomCopy enumerateObjectsWithOptions:2 usingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 

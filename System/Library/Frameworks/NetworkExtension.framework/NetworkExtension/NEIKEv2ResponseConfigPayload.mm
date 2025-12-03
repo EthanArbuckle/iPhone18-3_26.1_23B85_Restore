@@ -1,14 +1,14 @@
 @interface NEIKEv2ResponseConfigPayload
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2ResponseConfigPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] <= 3)
+  dataCopy = data;
+  if ([dataCopy length] <= 3)
   {
     v43 = ne_log_obj();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -18,13 +18,13 @@
       _os_log_error_impl(&dword_1BA83C000, v43, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadData.length >= sizeof(ikev2_payload_config_hdr_t))", buf, 0xCu);
     }
 
-    v39 = 0;
+    hasRequiredFields = 0;
   }
 
   else
   {
     v53 = 0;
-    [v4 getBytes:&v53 length:4];
+    [dataCopy getBytes:&v53 length:4];
     v5 = objc_alloc_init(NEIKEv2ConfigurationMessage);
     v7 = v5;
     selfa = self;
@@ -32,9 +32,9 @@
     {
       objc_setProperty_atomic(self, v6, v5, 32);
 
-      v8 = self;
+      selfCopy = self;
       v9 = v53;
-      Property = objc_getProperty(v8, v10, 32, 1);
+      Property = objc_getProperty(selfCopy, v10, 32, 1);
       if (Property)
       {
         Property[1] = v9;
@@ -55,9 +55,9 @@
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    v16 = [v4 bytes];
-    v46 = v4;
-    v17 = [v4 length];
+    bytes = [dataCopy bytes];
+    v46 = dataCopy;
+    v17 = [dataCopy length];
     v20 = v17 - 4;
     if ((v17 - 4) < 4)
     {
@@ -74,12 +74,12 @@ LABEL_49:
         }
       }
 
-      v39 = [(NEIKEv2ConfigPayload *)self hasRequiredFields];
+      hasRequiredFields = [(NEIKEv2ConfigPayload *)self hasRequiredFields];
     }
 
     else
     {
-      v21 = (v16 + 4);
+      v21 = (bytes + 4);
       *&v19 = 134218240;
       v45 = v19;
       v47 = v12;
@@ -166,8 +166,8 @@ LABEL_25:
         {
           v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v21 + 2 length:v23 encoding:4];
           v35 = [NEIKEv2StringAttribute alloc];
-          v36 = [v26 attributeName];
-          v37 = [(NEIKEv2StringAttribute *)v35 initCustomWithAttributeType:v22 attributeName:v36 stringValue:v34];
+          attributeName = [v26 attributeName];
+          v37 = [(NEIKEv2StringAttribute *)v35 initCustomWithAttributeType:v22 attributeName:attributeName stringValue:v34];
         }
 
         else
@@ -208,8 +208,8 @@ LABEL_25:
               }
             }
 
-            v38 = [v26 attributeName];
-            v37 = -[NEIKEv2ConfigPayload createConfigAttributeFromData:attributeName:attributeType:customType:](self, v34, v38, v22, [v26 attributeType]);
+            attributeName2 = [v26 attributeName];
+            v37 = -[NEIKEv2ConfigPayload createConfigAttributeFromData:attributeName:attributeType:customType:](self, v34, attributeName2, v22, [v26 attributeType]);
           }
 
           else
@@ -244,14 +244,14 @@ LABEL_25:
         _os_log_error_impl(&dword_1BA83C000, v42, OS_LOG_TYPE_ERROR, "Not enough bytes remaining (%u) to process response configuration attribute of type %zu length %u", buf, 0x18u);
       }
 
-      v39 = 0;
+      hasRequiredFields = 0;
     }
 
-    v4 = v46;
+    dataCopy = v46;
   }
 
   v40 = *MEMORY[0x1E69E9840];
-  return v39;
+  return hasRequiredFields;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface CKDateLabel
 - (id)_dateString;
 - (id)text;
-- (void)setDate:(id)a3;
-- (void)setTextForOverride:(id)a3;
+- (void)setDate:(id)date;
+- (void)setTextForOverride:(id)override;
 @end
 
 @implementation CKDateLabel
@@ -12,17 +12,17 @@
   textForOverride = self->_textForOverride;
   if (textForOverride)
   {
-    v3 = textForOverride;
+    text = textForOverride;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CKDateLabel;
-    v3 = [(UIDateLabel *)&v5 text];
+    text = [(UIDateLabel *)&v5 text];
   }
 
-  return v3;
+  return text;
 }
 
 - (id)_dateString
@@ -30,32 +30,32 @@
   textForOverride = self->_textForOverride;
   if (textForOverride)
   {
-    v3 = textForOverride;
+    _dateString = textForOverride;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CKDateLabel;
-    v3 = [(UIDateLabel *)&v5 _dateString];
+    _dateString = [(UIDateLabel *)&v5 _dateString];
   }
 
-  return v3;
+  return _dateString;
 }
 
-- (void)setTextForOverride:(id)a3
+- (void)setTextForOverride:(id)override
 {
-  v4 = a3;
-  if (v4)
+  overrideCopy = override;
+  if (overrideCopy)
   {
     [(CKDateLabel *)self setDate:0];
   }
 
   textForOverride = self->_textForOverride;
-  self->_textForOverride = v4;
+  self->_textForOverride = overrideCopy;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   if (self->_textForOverride)
   {
@@ -64,7 +64,7 @@
 
   else
   {
-    [(UIDateLabel *)&v3 setDate:a3, self, CKDateLabel, v4.receiver, v4.super_class];
+    [(UIDateLabel *)&v3 setDate:date, self, CKDateLabel, v4.receiver, v4.super_class];
   }
 }
 

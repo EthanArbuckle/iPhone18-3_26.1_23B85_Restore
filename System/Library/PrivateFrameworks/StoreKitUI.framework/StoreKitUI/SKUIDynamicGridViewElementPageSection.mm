@@ -1,55 +1,55 @@
 @interface SKUIDynamicGridViewElementPageSection
 - (BOOL)_updateShowsSectionHeaders;
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5;
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIDynamicGridViewElementPageSection)initWithPageComponent:(id)a3;
-- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)a3;
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIDynamicGridViewElementPageSection)initWithPageComponent:(id)component;
+- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)path;
 - (UIEdgeInsets)sectionContentInset;
 - (id)_dynamicGridViewElement;
-- (id)_entityValueProviderForGlobalIndex:(int64_t)a3 sectionIndex:(int64_t *)a4;
-- (id)_itemTemplateViewElementForEntityValueProvider:(id)a3;
-- (id)_sectionTemplateViewElementForEntityValueProvider:(id)a3;
-- (id)_templateViewElementsForType:(id)a3 mode:(id)a4;
-- (id)_viewElementAtGlobalIndex:(int64_t)a3;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (id)gridViewElementPageSectionConfiguration:(id)a3 viewElementForIndexPath:(id)a4;
+- (id)_entityValueProviderForGlobalIndex:(int64_t)index sectionIndex:(int64_t *)sectionIndex;
+- (id)_itemTemplateViewElementForEntityValueProvider:(id)provider;
+- (id)_sectionTemplateViewElementForEntityValueProvider:(id)provider;
+- (id)_templateViewElementsForType:(id)type mode:(id)mode;
+- (id)_viewElementAtGlobalIndex:(int64_t)index;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (id)gridViewElementPageSectionConfiguration:(id)configuration viewElementForIndexPath:(id)path;
 - (id)indexPathsForPinningItems;
 - (id)relevantEntityProviders;
-- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)a3 relativeSectionIndex:(int64_t)a4;
-- (int64_t)_entityGlobalIndexForGlobalIndex:(int64_t)a3 returningSection:(int64_t *)a4;
-- (int64_t)_globalIndexForEntityGlobalIndex:(int64_t)a3;
-- (int64_t)applyUpdateType:(int64_t)a3;
+- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)d relativeSectionIndex:(int64_t)index;
+- (int64_t)_entityGlobalIndexForGlobalIndex:(int64_t)index returningSection:(int64_t *)section;
+- (int64_t)_globalIndexForEntityGlobalIndex:(int64_t)index;
+- (int64_t)applyUpdateType:(int64_t)type;
 - (int64_t)numberOfCells;
-- (int64_t)pinningStyleForItemAtIndexPath:(id)a3;
-- (void)_enumerateVisibleCellsUsingBlock:(id)a3;
+- (int64_t)pinningStyleForItemAtIndexPath:(id)path;
+- (void)_enumerateVisibleCellsUsingBlock:(id)block;
 - (void)_reloadEntityProperties;
 - (void)_reloadViewElementProperties;
-- (void)_reloadVisibleCellsAnimated:(BOOL)a3;
+- (void)_reloadVisibleCellsAnimated:(BOOL)animated;
 - (void)_resetLayoutProperties;
-- (void)_setContext:(id)a3;
+- (void)_setContext:(id)context;
 - (void)_updateStyleProperties;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidConfirmButtonElement:(id)a3 withClickInfo:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)deselectItemsAnimated:(BOOL)a3;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)gridViewElementPageSectionConfiguration:(id)a3 configurePosition:(int64_t *)a4 forItemAtIndexPath:(id)a5;
+- (void)deselectItemsAnimated:(BOOL)animated;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)gridViewElementPageSectionConfiguration:(id)configuration configurePosition:(int64_t *)position forItemAtIndexPath:(id)path;
 - (void)invalidateCachedLayoutInformation;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)reloadVisibleCellsWithReason:(int64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)reloadVisibleCellsWithReason:(int64_t)reason;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIDynamicGridViewElementPageSection
 
-- (SKUIDynamicGridViewElementPageSection)initWithPageComponent:(id)a3
+- (SKUIDynamicGridViewElementPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDynamicGridViewElementPageSection initWithPageComponent:];
@@ -57,7 +57,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUIDynamicGridViewElementPageSection;
-  v5 = [(SKUIStorePageSection *)&v11 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v11 initWithPageComponent:componentCopy];
   if (v5)
   {
     v6 = objc_alloc_init(SKUIMutableIntegerValue);
@@ -90,19 +90,19 @@
   [(SKUIStorePageSection *)&v4 dealloc];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = SKUIDynamicGridViewElementPageSection;
-  result = [(SKUIStorePageSection *)&v9 applyUpdateType:a3];
+  result = [(SKUIStorePageSection *)&v9 applyUpdateType:type];
   if (result != 2)
   {
     v5 = result;
-    v6 = [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode];
-    v7 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities];
+    showsEditMode = [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode];
+    totalNumberOfEntities = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities];
     [(SKUIDynamicGridViewElementPageSection *)self _reloadViewElementProperties];
     [(SKUIDynamicGridViewElementPageSection *)self _invalidateCellSizeCache];
-    if (v6 == [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode]|| v7 != [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities])
+    if (showsEditMode == [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode]|| totalNumberOfEntities != [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities])
     {
       v8.receiver = self;
       v8.super_class = SKUIDynamicGridViewElementPageSection;
@@ -119,32 +119,32 @@
   return result;
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [v4 item]);
+  pathCopy = path;
+  v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [pathCopy item]);
   if (!v5 || ([(SKUIGridViewElementPageSectionConfiguration *)self->_configuration backgroundColorForViewElement:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8.receiver = self;
     v8.super_class = SKUIDynamicGridViewElementPageSection;
-    v6 = [(SKUIStorePageSection *)&v8 backgroundColorForIndexPath:v4];
+    v6 = [(SKUIStorePageSection *)&v8 backgroundColorForIndexPath:pathCopy];
   }
 
   return v6;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [v4 item]);
+  pathCopy = path;
+  v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [pathCopy item]);
   if (v5)
   {
     [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration requestCellLayoutForViewElement:v5];
-    v6 = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
-    v7 = [v6 layoutCache];
-    [v7 commitLayoutRequests];
+    labelLayoutCache = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
+    layoutCache = [labelLayoutCache layoutCache];
+    [layoutCache commitLayoutRequests];
 
-    v8 = [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration cellForViewElement:v5 indexPath:v4];
+    v8 = [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration cellForViewElement:v5 indexPath:pathCopy];
   }
 
   else
@@ -155,21 +155,21 @@
   return v8;
 }
 
-- (id)_templateViewElementsForType:(id)a3 mode:(id)a4
+- (id)_templateViewElementsForType:(id)type mode:(id)mode
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (mode)
   {
-    v7 = [a3 stringByAppendingString:a4];
+    typeCopy = [type stringByAppendingString:mode];
   }
 
   else
   {
-    v7 = a3;
+    typeCopy = type;
   }
 
-  v8 = v7;
-  v9 = [(NSMutableDictionary *)self->_templateViewElementsCache objectForKey:v7];
+  v8 = typeCopy;
+  v9 = [(NSMutableDictionary *)self->_templateViewElementsCache objectForKey:typeCopy];
   if (!v9)
   {
     v10 = [-[SKUIDynamicGridViewElementPageSection _dynamicGridViewElement](self "_dynamicGridViewElement")];
@@ -193,11 +193,11 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v26 + 1) + 8 * i) contentViewElement];
-          v18 = [v17 children];
-          v19 = [v18 firstObject];
+          contentViewElement = [*(*(&v26 + 1) + 8 * i) contentViewElement];
+          children = [contentViewElement children];
+          firstObject = [children firstObject];
 
-          [v11 addObject:v19];
+          [v11 addObject:firstObject];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -228,10 +228,10 @@
   return v9;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   v71 = *MEMORY[0x277D85DE8];
-  v57 = [a3 item];
+  item = [path item];
   v4 = MEMORY[0x277CBF3A8];
   usesSizingEntityValueProvider = self->_usesSizingEntityValueProvider;
   self->_usesSizingEntityValueProvider = 1;
@@ -251,7 +251,7 @@
   if ([(SKUIGridViewElementPageSectionConfiguration *)self->_configuration numberOfColumns]== 1)
   {
     v69 = 0x7FFFFFFFFFFFFFFFLL;
-    [(SKUIDynamicGridViewElementPageSection *)self _entityGlobalIndexForGlobalIndex:v57 returningSection:&v69];
+    [(SKUIDynamicGridViewElementPageSection *)self _entityGlobalIndexForGlobalIndex:item returningSection:&v69];
     v11 = &SKUITemplateDefinitionViewElementTypeSection;
     if (v69 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -321,11 +321,11 @@
             v63 = independentlySizedViewElement;
             objc_storeStrong(&self->_independentlySizedViewElement, v23);
             [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration requestCellLayoutForViewElement:v23];
-            v32 = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
-            v33 = [v32 layoutCache];
-            [v33 commitLayoutRequests];
+            labelLayoutCache = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
+            layoutCache = [labelLayoutCache layoutCache];
+            [layoutCache commitLayoutRequests];
 
-            [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration cellSizeForViewElement:v23 indexPath:a3];
+            [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration cellSizeForViewElement:v23 indexPath:path];
             v27 = v34;
             v29 = v35;
             objc_storeStrong(&self->_independentlySizedViewElement, independentlySizedViewElement);
@@ -384,7 +384,7 @@ LABEL_25:
   }
 
 LABEL_30:
-  v40 = [(SKUIDynamicGridViewElementPageSection *)self _viewElementAtGlobalIndex:v57];
+  v40 = [(SKUIDynamicGridViewElementPageSection *)self _viewElementAtGlobalIndex:item];
   if (v40)
   {
     [(_SKUIDynamicGridSizeCacheKey *)self->_reusableSizeCacheKey setViewElement:v40];
@@ -401,11 +401,11 @@ LABEL_30:
     {
       v45 = usesSizingEntityValueProvider;
       [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration requestCellLayoutForViewElement:v40];
-      v46 = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
-      v47 = [v46 layoutCache];
-      [v47 commitLayoutRequests];
+      labelLayoutCache2 = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
+      layoutCache2 = [labelLayoutCache2 layoutCache];
+      [layoutCache2 commitLayoutRequests];
 
-      [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration cellSizeForViewElement:v40 indexPath:a3];
+      [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration cellSizeForViewElement:v40 indexPath:path];
       v9 = v48;
       v10 = v49;
       sizeCacheKeyToCachedCellSize = self->_sizeCacheKeyToCachedCellSize;
@@ -436,23 +436,23 @@ LABEL_38:
   return result;
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [v4 item]);
-  v6 = [v5 entityValueProvider];
-  if (v6)
+  pathCopy = path;
+  v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [pathCopy item]);
+  entityValueProvider = [v5 entityValueProvider];
+  if (entityValueProvider)
   {
     v7 = objc_alloc(MEMORY[0x277D1B0A8]);
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v8 clientContext];
-    v10 = [v9 _scriptAppContext];
-    v11 = [v7 initWithAppContext:v10];
+    context = [(SKUIStorePageSection *)self context];
+    clientContext = [context clientContext];
+    _scriptAppContext = [clientContext _scriptAppContext];
+    v11 = [v7 initWithAppContext:_scriptAppContext];
 
     if (v11)
     {
-      [v11 setEntityValueProvider:v6];
+      [v11 setEntityValueProvider:entityValueProvider];
       v15 = @"entityValueProvider";
       v16[0] = v11;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
@@ -467,7 +467,7 @@ LABEL_38:
 
   v13.receiver = self;
   v13.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v13 collectionViewDidSelectItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v13 collectionViewDidSelectItemAtIndexPath:pathCopy];
 }
 
 void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath___block_invoke(uint64_t a1)
@@ -496,63 +496,63 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
   }
 }
 
-- (void)collectionViewDidConfirmButtonElement:(id)a3 withClickInfo:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionViewDidConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SKUIStorePageSection *)self context];
-  v12 = [v11 clientContext];
-  v13 = [v12 _scriptAppContext];
+  elementCopy = element;
+  infoCopy = info;
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  clientContext = [context clientContext];
+  _scriptAppContext = [clientContext _scriptAppContext];
 
-  if (v13)
+  if (_scriptAppContext)
   {
-    v14 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [v10 item]);
-    v15 = [v14 entityValueProvider];
-    if (v15)
+    v14 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [pathCopy item]);
+    entityValueProvider = [v14 entityValueProvider];
+    if (entityValueProvider)
     {
-      v16 = [objc_alloc(MEMORY[0x277D1B0A8]) initWithAppContext:v13];
+      v16 = [objc_alloc(MEMORY[0x277D1B0A8]) initWithAppContext:_scriptAppContext];
       v17 = v16;
       if (v16)
       {
-        [v16 setEntityValueProvider:v15];
-        v18 = [v9 mutableCopy];
+        [v16 setEntityValueProvider:entityValueProvider];
+        v18 = [infoCopy mutableCopy];
         [v18 setObject:v17 forKeyedSubscript:@"entityValueProvider"];
         v19 = [v18 copy];
-        [v8 dispatchEventOfType:2 canBubble:1 isCancelable:0 extraInfo:v19 completionBlock:0];
+        [elementCopy dispatchEventOfType:2 canBubble:1 isCancelable:0 extraInfo:v19 completionBlock:0];
       }
     }
   }
 
   v20.receiver = self;
   v20.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v20 collectionViewDidConfirmButtonElement:v8 withClickInfo:v9 forItemAtIndexPath:v10];
+  [(SKUIStorePageSection *)&v20 collectionViewDidConfirmButtonElement:elementCopy withClickInfo:infoCopy forItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
   configuration = self->_configuration;
-  v5 = a3;
-  [(SKUIGridViewElementPageSectionConfiguration *)configuration collectionViewWillApplyLayoutAttributes:v5];
+  attributesCopy = attributes;
+  [(SKUIGridViewElementPageSectionConfiguration *)configuration collectionViewWillApplyLayoutAttributes:attributesCopy];
   v6.receiver = self;
   v6.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v6 collectionViewWillApplyLayoutAttributes:v5];
+  [(SKUIStorePageSection *)&v6 collectionViewWillApplyLayoutAttributes:attributesCopy];
 }
 
-- (void)deselectItemsAnimated:(BOOL)a3
+- (void)deselectItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 indexPathsForSelectedItems];
-  v8 = [(SKUIStorePageSection *)self sectionIndex];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = indexPathsForSelectedItems;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -568,9 +568,9 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if ([v14 section] == v8)
+        if ([v14 section] == sectionIndex)
         {
-          [v6 deselectItemAtIndexPath:v14 animated:v3];
+          [collectionView deselectItemAtIndexPath:v14 animated:animatedCopy];
         }
       }
 
@@ -582,23 +582,23 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
 
   v15.receiver = self;
   v15.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v15 deselectItemsAnimated:v3];
+  [(SKUIStorePageSection *)&v15 deselectItemsAnimated:animatedCopy];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
-  v6 = a4;
-  if (self->_entityProvider == a3)
+  contextCopy = context;
+  if (self->_entityProvider == provider)
   {
-    v10 = v6;
-    if (([v6 invalidateEverything] & 1) != 0 || objc_msgSend(v10, "invalidateDataSourceCounts"))
+    v10 = contextCopy;
+    if (([contextCopy invalidateEverything] & 1) != 0 || objc_msgSend(v10, "invalidateDataSourceCounts"))
     {
       [(SKUIDynamicGridViewElementPageSection *)self _reloadEntityProperties];
       [(SKUIDynamicGridViewElementPageSection *)self _updateStyleProperties];
-      v7 = [(SKUIStorePageSection *)self context];
-      v8 = [v7 collectionView];
+      context = [(SKUIStorePageSection *)self context];
+      collectionView = [context collectionView];
       v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-      [v8 reloadSections:v9];
+      [collectionView reloadSections:v9];
     }
 
     else
@@ -608,16 +608,16 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
       [(SKUIDynamicGridViewElementPageSection *)self _reloadVisibleCellsAnimated:0];
     }
 
-    v6 = v10;
+    contextCopy = v10;
   }
 }
 
 - (id)indexPathsForPinningItems
 {
-  v3 = [(SKUIStorePageSection *)self sectionIndex];
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
   if (self->_numberOfSections)
   {
-    v4 = v3;
+    v4 = sectionIndex;
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
     if (self->_numberOfSections)
     {
@@ -652,16 +652,16 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
 
 - (int64_t)numberOfCells
 {
-  v3 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities];
+  totalNumberOfEntities = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities];
   if (self->_showsSectionHeaders)
   {
-    v3 += [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper numberOfSections];
+    totalNumberOfEntities += [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper numberOfSections];
   }
 
-  return v3;
+  return totalNumberOfEntities;
 }
 
-- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)a3
+- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)path
 {
   v3 = *MEMORY[0x277D768C8];
   v4 = *(MEMORY[0x277D768C8] + 8);
@@ -674,9 +674,9 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
   return result;
 }
 
-- (int64_t)pinningStyleForItemAtIndexPath:(id)a3
+- (int64_t)pinningStyleForItemAtIndexPath:(id)path
 {
-  v4 = -[SKUIDynamicGridViewElementPageSection _entityValueProviderForGlobalIndex:sectionIndex:](self, "_entityValueProviderForGlobalIndex:sectionIndex:", [a3 item], 0);
+  v4 = -[SKUIDynamicGridViewElementPageSection _entityValueProviderForGlobalIndex:sectionIndex:](self, "_entityValueProviderForGlobalIndex:sectionIndex:", [path item], 0);
   v5 = [(SKUIDynamicGridViewElementPageSection *)self _sectionTemplateViewElementForEntityValueProvider:v4];
   v6 = v5;
   if (!v5)
@@ -684,60 +684,60 @@ void __80__SKUIDynamicGridViewElementPageSection_collectionViewDidSelectItemAtIn
     goto LABEL_11;
   }
 
-  v7 = [v5 pinStyle];
-  if (v7 > 2)
+  pinStyle = [v5 pinStyle];
+  if (pinStyle > 2)
   {
-    switch(v7)
+    switch(pinStyle)
     {
       case 3:
-        v8 = 2;
+        defaultItemPinningStyle = 2;
         goto LABEL_12;
       case 4:
-        v8 = 3;
+        defaultItemPinningStyle = 3;
         goto LABEL_12;
       case 5:
-        v8 = 4;
+        defaultItemPinningStyle = 4;
         goto LABEL_12;
     }
 
 LABEL_11:
-    v8 = [(SKUIStorePageSection *)self defaultItemPinningStyle];
+    defaultItemPinningStyle = [(SKUIStorePageSection *)self defaultItemPinningStyle];
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!pinStyle)
   {
     goto LABEL_11;
   }
 
-  if (v7 == 1)
+  if (pinStyle == 1)
   {
-    v8 = 0;
+    defaultItemPinningStyle = 0;
     goto LABEL_12;
   }
 
-  if (v7 != 2)
+  if (pinStyle != 2)
   {
     goto LABEL_11;
   }
 
-  v8 = 1;
+  defaultItemPinningStyle = 1;
 LABEL_12:
 
-  return v8;
+  return defaultItemPinningStyle;
 }
 
 - (id)relevantEntityProviders
 {
   v7.receiver = self;
   v7.super_class = SKUIDynamicGridViewElementPageSection;
-  v3 = [(SKUIStorePageSection *)&v7 relevantEntityProviders];
-  v4 = v3;
+  relevantEntityProviders = [(SKUIStorePageSection *)&v7 relevantEntityProviders];
+  v4 = relevantEntityProviders;
   if (self->_entityProvider)
   {
-    if (v3)
+    if (relevantEntityProviders)
     {
-      v5 = [v3 setByAddingObject:?];
+      v5 = [relevantEntityProviders setByAddingObject:?];
 
       v4 = v5;
     }
@@ -751,21 +751,21 @@ LABEL_12:
   return v4;
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
-  v7 = a3;
-  v6 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [v7 item]);
+  pathCopy = path;
+  v6 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [pathCopy item]);
   if (v6)
   {
-    [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration reloadCellWithIndexPath:v7 forViewElement:v6 reason:a4];
+    [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration reloadCellWithIndexPath:pathCopy forViewElement:v6 reason:reason];
   }
 }
 
-- (void)reloadVisibleCellsWithReason:(int64_t)a3
+- (void)reloadVisibleCellsWithReason:(int64_t)reason
 {
   v6.receiver = self;
   v6.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v6 reloadVisibleCellsWithReason:a3];
+  [(SKUIStorePageSection *)&v6 reloadVisibleCellsWithReason:reason];
   cellLayoutContext = self->_cellLayoutContext;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKUIGridViewElementPageSectionConfiguration showsEditMode](self->_configuration, "showsEditMode")}];
   [(SKUIViewElementLayoutContext *)cellLayoutContext setAggregateValue:v5 forKey:0x28280D5A8];
@@ -781,8 +781,8 @@ LABEL_12:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
-  [(SKUIGridViewElementPageSectionConfiguration *)configuration sectionContentInsetAdjustedFromValue:v12 forGridViewElement:v5, v7, v9, v11];
+  _dynamicGridViewElement = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
+  [(SKUIGridViewElementPageSectionConfiguration *)configuration sectionContentInsetAdjustedFromValue:_dynamicGridViewElement forGridViewElement:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -799,37 +799,37 @@ LABEL_12:
   return result;
 }
 
-- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)a3 relativeSectionIndex:(int64_t)a4
+- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)d relativeSectionIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
-  v9 = [v8 indexBarEntryID];
-  v10 = [v6 isEqualToString:v9];
+  dCopy = d;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  indexBarEntryID = [viewElement indexBarEntryID];
+  v10 = [dCopy isEqualToString:indexBarEntryID];
 
   if (v10)
   {
     if (self->_showsSectionHeaders)
     {
-      if (self->_numberOfSections > a4)
+      if (self->_numberOfSections > index)
       {
-        v11 = self->_sectionHeaderGlobalIndices[a4];
+        v11 = self->_sectionHeaderGlobalIndices[index];
         v12 = MEMORY[0x277CCAA70];
-        v13 = [(SKUIStorePageSection *)self sectionIndex];
+        sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
         v14 = v12;
         v15 = v11;
 LABEL_7:
-        v19 = [v14 indexPathForItem:v15 inSection:v13];
+        v19 = [v14 indexPathForItem:v15 inSection:sectionIndex];
         goto LABEL_9;
       }
     }
 
-    else if ([(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper numberOfSections]> a4)
+    else if ([(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper numberOfSections]> index)
     {
-      v16 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper rangeForSectionAtIndex:a4];
+      v16 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper rangeForSectionAtIndex:index];
       v17 = MEMORY[0x277CCAA70];
       v18 = [(SKUIDynamicGridViewElementPageSection *)self _globalIndexForEntityGlobalIndex:v16];
-      v13 = [(SKUIStorePageSection *)self sectionIndex];
+      sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
       v14 = v17;
       v15 = v18;
       goto LABEL_7;
@@ -842,19 +842,19 @@ LABEL_9:
   return v19;
 }
 
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v10 collectionView];
-  v12 = [v11 cellForItemAtIndexPath:v8];
+  animatedCopy = animated;
+  pathCopy = path;
+  stateCopy = state;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v12 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v13 = [v12 updateWithItemState:v9 context:self->_cellLayoutContext animated:v5];
+  v13 = [v12 updateWithItemState:stateCopy context:self->_cellLayoutContext animated:animatedCopy];
   if (v13)
   {
-    v14 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [v8 item]);
+    v14 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [pathCopy item]);
     if (v14)
     {
       [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration requestCellLayoutForViewElement:v14];
@@ -864,14 +864,14 @@ LABEL_9:
   return v13;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:v5];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:collectionView];
   v6 = [SKUIViewElementTextLayoutCache alloc];
-  v7 = [v4 textLayoutCache];
-  v8 = [(SKUIViewElementTextLayoutCache *)v6 initWithLayoutCache:v7];
+  textLayoutCache = [contextCopy textLayoutCache];
+  v8 = [(SKUIViewElementTextLayoutCache *)v6 initWithLayoutCache:textLayoutCache];
   labelLayoutCache = self->_labelLayoutCache;
   self->_labelLayoutCache = v8;
 
@@ -881,79 +881,79 @@ LABEL_9:
     [(SKUIViewElementLayoutContext *)cellLayoutContext setArtworkRequestDelegate:0];
   }
 
-  v11 = [[SKUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4];
+  v11 = [[SKUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy];
   v12 = self->_cellLayoutContext;
   self->_cellLayoutContext = v11;
 
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setArtworkRequestDelegate:self];
   v13 = self->_cellLayoutContext;
-  v14 = [v4 parentViewController];
-  v15 = [v14 clientContext];
-  [(SKUIViewElementLayoutContext *)v13 setClientContext:v15];
+  parentViewController = [contextCopy parentViewController];
+  clientContext = [parentViewController clientContext];
+  [(SKUIViewElementLayoutContext *)v13 setClientContext:clientContext];
 
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setLabelLayoutCache:self->_labelLayoutCache];
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:MEMORY[0x277CBEC38] forKey:0x28280A728];
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:&unk_2828D2C48 forKey:0x282804A28];
   v16 = self->_cellLayoutContext;
-  v17 = [v4 parentViewController];
-  [(SKUIViewElementLayoutContext *)v16 setParentViewController:v17];
+  parentViewController2 = [contextCopy parentViewController];
+  [(SKUIViewElementLayoutContext *)v16 setParentViewController:parentViewController2];
 
   v18 = self->_cellLayoutContext;
-  v19 = [v4 resourceLoader];
-  [(SKUIViewElementLayoutContext *)v18 setResourceLoader:v19];
+  resourceLoader = [contextCopy resourceLoader];
+  [(SKUIViewElementLayoutContext *)v18 setResourceLoader:resourceLoader];
 
   v20 = self->_cellLayoutContext;
-  v21 = [v5 tintColor];
-  [(SKUIViewElementLayoutContext *)v20 setTintColor:v21];
+  tintColor = [collectionView tintColor];
+  [(SKUIViewElementLayoutContext *)v20 setTintColor:tintColor];
 
-  v22 = [(SKUIStorePageSection *)self pageComponent];
-  v23 = [v22 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  -[SKUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [v23 elementType]);
+  -[SKUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [viewElement elementType]);
   [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration setCellLayoutContext:self->_cellLayoutContext];
   [(SKUIDynamicGridViewElementPageSection *)self _resetLayoutProperties];
   [(SKUIDynamicGridViewElementPageSection *)self _invalidateCellSizeCache];
   v24.receiver = self;
   v24.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v24 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v24 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   cellLayoutContext = self->_cellLayoutContext;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SKUIViewElementLayoutContext *)cellLayoutContext setActivePageWidth:width];
   [(SKUIDynamicGridViewElementPageSection *)self _resetLayoutProperties];
   [(SKUIDynamicGridViewElementPageSection *)self _invalidateCellSizeCache];
   v9.receiver = self;
   v9.super_class = SKUIDynamicGridViewElementPageSection;
-  [(SKUIStorePageSection *)&v9 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SKUIStorePageSection *)&v9 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)_setContext:(id)a3
+- (void)_setContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SKUIDynamicGridViewElementPageSection;
-  v4 = a3;
-  [(SKUIStorePageSection *)&v5 _setContext:v4];
-  [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration setPageSectionContext:v4, v5.receiver, v5.super_class];
+  contextCopy = context;
+  [(SKUIStorePageSection *)&v5 _setContext:contextCopy];
+  [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration setPageSectionContext:contextCopy, v5.receiver, v5.super_class];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  imageCopy = image;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__SKUIDynamicGridViewElementPageSection_artworkRequest_didLoadImage___block_invoke;
   v10[3] = &unk_2781FCCE8;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = imageCopy;
+  v12 = requestCopy;
+  v8 = requestCopy;
+  v9 = imageCopy;
   [(SKUIDynamicGridViewElementPageSection *)self _enumerateVisibleCellsUsingBlock:v10];
 }
 
@@ -969,16 +969,16 @@ void __69__SKUIDynamicGridViewElementPageSection_artworkRequest_didLoadImage___b
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
-    [(SKUIDynamicGridViewElementPageSection *)self _reloadVisibleCellsAnimated:a4];
+    self->_editing = editing;
+    [(SKUIDynamicGridViewElementPageSection *)self _reloadVisibleCellsAnimated:animated];
   }
 }
 
-- (id)gridViewElementPageSectionConfiguration:(id)a3 viewElementForIndexPath:(id)a4
+- (id)gridViewElementPageSectionConfiguration:(id)configuration viewElementForIndexPath:(id)path
 {
   independentlySizedViewElement = self->_independentlySizedViewElement;
   if (independentlySizedViewElement)
@@ -988,20 +988,20 @@ void __69__SKUIDynamicGridViewElementPageSection_artworkRequest_didLoadImage___b
 
   else
   {
-    v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [a4 item]);
+    v5 = -[SKUIDynamicGridViewElementPageSection _viewElementAtGlobalIndex:](self, "_viewElementAtGlobalIndex:", [path item]);
   }
 
   return v5;
 }
 
-- (void)gridViewElementPageSectionConfiguration:(id)a3 configurePosition:(int64_t *)a4 forItemAtIndexPath:(id)a5
+- (void)gridViewElementPageSectionConfiguration:(id)configuration configurePosition:(int64_t *)position forItemAtIndexPath:(id)path
 {
   if (self->_showsSectionHeaders)
   {
     v16[5] = v5;
     v16[6] = v6;
     v16[0] = 0x7FFFFFFFFFFFFFFFLL;
-    v9 = -[SKUIDynamicGridViewElementPageSection _entityGlobalIndexForGlobalIndex:returningSection:](self, "_entityGlobalIndexForGlobalIndex:returningSection:", [a5 item], v16);
+    v9 = -[SKUIDynamicGridViewElementPageSection _entityGlobalIndexForGlobalIndex:returningSection:](self, "_entityGlobalIndexForGlobalIndex:returningSection:", [path item], v16);
     if (v16[0] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = 0;
@@ -1027,36 +1027,36 @@ void __69__SKUIDynamicGridViewElementPageSection_artworkRequest_didLoadImage___b
         v12 = 8;
       }
 
-      v13 = *a4 & 0xFFFFFFFFFFFFFFC7 | v12;
+      v13 = *position & 0xFFFFFFFFFFFFFFC7 | v12;
     }
 
     else
     {
-      v13 = *a4 & 0xFFFFFFFFFFFFFFC7 | 0x10;
+      v13 = *position & 0xFFFFFFFFFFFFFFC7 | 0x10;
     }
 
-    *a4 = v13;
+    *position = v13;
   }
 }
 
 - (id)_dynamicGridViewElement
 {
-  v2 = [(SKUIStorePageSection *)self pageComponent];
-  v3 = [v2 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  return v3;
+  return viewElement;
 }
 
-- (int64_t)_entityGlobalIndexForGlobalIndex:(int64_t)a3 returningSection:(int64_t *)a4
+- (int64_t)_entityGlobalIndexForGlobalIndex:(int64_t)index returningSection:(int64_t *)section
 {
   if (self->_showsSectionHeaders && (numberOfSections = self->_numberOfSections) != 0)
   {
     v5 = 0;
-    v6 = a3 - numberOfSections;
+    v6 = index - numberOfSections;
     while (1)
     {
       v7 = self->_sectionHeaderGlobalIndices[v5];
-      if (v7 >= a3)
+      if (v7 >= index)
       {
         break;
       }
@@ -1064,24 +1064,24 @@ void __69__SKUIDynamicGridViewElementPageSection_artworkRequest_didLoadImage___b
       if (numberOfSections == ++v5)
       {
         v8 = 0x7FFFFFFFFFFFFFFFLL;
-        a3 = v6;
-        if (a4)
+        index = v6;
+        if (section)
         {
           goto LABEL_9;
         }
 
-        return a3;
+        return index;
       }
     }
 
     v8 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v7 == a3)
+    if (v7 == index)
     {
       v8 = v5;
     }
 
-    a3 -= v5;
-    if (a4)
+    index -= v5;
+    if (section)
     {
       goto LABEL_9;
     }
@@ -1090,28 +1090,28 @@ void __69__SKUIDynamicGridViewElementPageSection_artworkRequest_didLoadImage___b
   else
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a4)
+    if (section)
     {
 LABEL_9:
-      *a4 = v8;
+      *section = v8;
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (id)_entityValueProviderForGlobalIndex:(int64_t)a3 sectionIndex:(int64_t *)a4
+- (id)_entityValueProviderForGlobalIndex:(int64_t)index sectionIndex:(int64_t *)sectionIndex
 {
-  v7 = [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue integerValue];
-  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:a3];
+  integerValue = [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue integerValue];
+  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:index];
   v8 = [(CPLRUDictionary *)self->_globalIndexToEntityValueProviderValueCache objectForKey:self->_reusableGlobalIndexIntegerValue];
-  v17 = 0;
+  sectionIndex = 0;
   if (v8)
   {
     v9 = v8;
-    v17 = [(_SKUIDynamicGridEntityValueProviderValue *)v8 sectionIndex];
-    v10 = [(_SKUIDynamicGridEntityValueProviderValue *)v9 entityValueProvider];
-    if (!a4)
+    sectionIndex = [(_SKUIDynamicGridEntityValueProviderValue *)v8 sectionIndex];
+    entityValueProvider = [(_SKUIDynamicGridEntityValueProviderValue *)v9 entityValueProvider];
+    if (!sectionIndex)
     {
       goto LABEL_4;
     }
@@ -1119,34 +1119,34 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  v12 = [(SKUIDynamicGridViewElementPageSection *)self _entityGlobalIndexForGlobalIndex:a3 returningSection:&v17];
-  if (v17 == 0x7FFFFFFFFFFFFFFFLL)
+  v12 = [(SKUIDynamicGridViewElementPageSection *)self _entityGlobalIndexForGlobalIndex:index returningSection:&sectionIndex];
+  if (sectionIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper entityIndexPathForGlobalIndex:v12];
     if (v13)
     {
-      v10 = [(SKUIEntityProviding *)self->_entityProvider entityValueProviderAtIndexPath:v13];
+      entityValueProvider = [(SKUIEntityProviding *)self->_entityProvider entityValueProviderAtIndexPath:v13];
     }
 
     else
     {
-      v10 = 0;
+      entityValueProvider = 0;
     }
   }
 
   else if (*&self->_entityProviderFlags)
   {
-    v10 = [(SKUIEntityProviding *)self->_entityProvider sectionEntityValueProviderAtIndex:?];
+    entityValueProvider = [(SKUIEntityProviding *)self->_entityProvider sectionEntityValueProviderAtIndex:?];
   }
 
   else
   {
-    v10 = 0;
+    entityValueProvider = 0;
   }
 
   v9 = objc_alloc_init(_SKUIDynamicGridEntityValueProviderValue);
-  [(_SKUIDynamicGridEntityValueProviderValue *)v9 setSectionIndex:v17];
-  [(_SKUIDynamicGridEntityValueProviderValue *)v9 setEntityValueProvider:v10];
+  [(_SKUIDynamicGridEntityValueProviderValue *)v9 setSectionIndex:sectionIndex];
+  [(_SKUIDynamicGridEntityValueProviderValue *)v9 setEntityValueProvider:entityValueProvider];
   globalIndexToEntityValueProviderValueCache = self->_globalIndexToEntityValueProviderValueCache;
   if (!globalIndexToEntityValueProviderValueCache)
   {
@@ -1158,36 +1158,36 @@ LABEL_9:
   }
 
   [(CPLRUDictionary *)globalIndexToEntityValueProviderValueCache setObject:v9 forKey:self->_reusableGlobalIndexIntegerValue];
-  if (a4)
+  if (sectionIndex)
   {
 LABEL_3:
-    *a4 = v17;
+    *sectionIndex = sectionIndex;
   }
 
 LABEL_4:
-  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:v7];
+  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:integerValue];
 
-  return v10;
+  return entityValueProvider;
 }
 
-- (void)_enumerateVisibleCellsUsingBlock:(id)a3
+- (void)_enumerateVisibleCellsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  blockCopy = block;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 visibleCells];
-  v8 = [(SKUIStorePageSection *)self sectionIndex];
+  visibleCells = [collectionView visibleCells];
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBlock___block_invoke;
   v11[3] = &unk_2781FCD10;
-  v13 = v4;
-  v14 = v8;
-  v12 = v6;
-  v9 = v4;
-  v10 = v6;
-  [v7 enumerateObjectsUsingBlock:v11];
+  v13 = blockCopy;
+  v14 = sectionIndex;
+  v12 = collectionView;
+  v9 = blockCopy;
+  v10 = collectionView;
+  [visibleCells enumerateObjectsUsingBlock:v11];
 }
 
 void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -1201,25 +1201,25 @@ void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBloc
   }
 }
 
-- (int64_t)_globalIndexForEntityGlobalIndex:(int64_t)a3
+- (int64_t)_globalIndexForEntityGlobalIndex:(int64_t)index
 {
   if (!self->_showsSectionHeaders)
   {
-    return a3;
+    return index;
   }
 
   numberOfSections = self->_numberOfSections;
   if (!numberOfSections)
   {
-    return a3;
+    return index;
   }
 
   sectionHeaderGlobalIndices = self->_sectionHeaderGlobalIndices;
-  result = a3;
+  result = index;
   do
   {
     v6 = *sectionHeaderGlobalIndices++;
-    if (v6 <= a3)
+    if (v6 <= index)
     {
       ++result;
     }
@@ -1231,11 +1231,11 @@ void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBloc
   return result;
 }
 
-- (id)_itemTemplateViewElementForEntityValueProvider:(id)a3
+- (id)_itemTemplateViewElementForEntityValueProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
-  v6 = v5;
+  providerCopy = provider;
+  _dynamicGridViewElement = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
+  v6 = _dynamicGridViewElement;
   if (self->_editing)
   {
     v7 = 0x282802768;
@@ -1246,14 +1246,14 @@ void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBloc
     v7 = 0;
   }
 
-  v8 = [v5 templateDefinitionViewElementsForType:0x282802788 mode:v7];
-  v9 = [v6 bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:v8 entityValueProvider:v4];
+  v8 = [_dynamicGridViewElement templateDefinitionViewElementsForType:0x282802788 mode:v7];
+  v9 = [v6 bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:v8 entityValueProvider:providerCopy];
 
-  v10 = [v9 contentViewElement];
-  v11 = [v10 children];
-  v12 = [v11 firstObject];
+  contentViewElement = [v9 contentViewElement];
+  children = [contentViewElement children];
+  firstObject = [children firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 - (void)_reloadEntityProperties
@@ -1271,9 +1271,9 @@ void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBloc
 
   if (self->_showsSectionHeaders)
   {
-    v4 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper numberOfSections];
-    self->_sectionHeaderGlobalIndices = malloc_type_calloc(v4, 8uLL, 0x100004000313F17uLL);
-    if (v4 >= 1)
+    numberOfSections = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper numberOfSections];
+    self->_sectionHeaderGlobalIndices = malloc_type_calloc(numberOfSections, 8uLL, 0x100004000313F17uLL);
+    if (numberOfSections >= 1)
     {
       v5 = 0;
       v6 = 0;
@@ -1285,27 +1285,27 @@ void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBloc
         ++v5;
       }
 
-      while (v4 != v5);
+      while (numberOfSections != v5);
     }
 
-    self->_numberOfSections = v4;
+    self->_numberOfSections = numberOfSections;
   }
 }
 
 - (void)_reloadViewElementProperties
 {
   [(NSMutableDictionary *)self->_templateViewElementsCache removeAllObjects];
-  v11 = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
-  v3 = [v11 explicitEntityProvider];
+  _dynamicGridViewElement = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
+  explicitEntityProvider = [_dynamicGridViewElement explicitEntityProvider];
   entityProvider = self->_entityProvider;
-  if (entityProvider == v3 || ([(SKUIEntityProviding *)entityProvider isEqual:v3]& 1) != 0)
+  if (entityProvider == explicitEntityProvider || ([(SKUIEntityProviding *)entityProvider isEqual:explicitEntityProvider]& 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_entityProvider, v3);
+    objc_storeStrong(&self->_entityProvider, explicitEntityProvider);
     *&self->_entityProviderFlags = *&self->_entityProviderFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     dynamicPageSectionIndexMapper = self->_dynamicPageSectionIndexMapper;
     if (!dynamicPageSectionIndexMapper)
@@ -1321,15 +1321,15 @@ void __74__SKUIDynamicGridViewElementPageSection__enumerateVisibleCellsUsingBloc
     v5 = 1;
   }
 
-  v9 = [v11 minimumEntityCountForSections];
-  if (self->_minimumEntityCountForSections != v9)
+  minimumEntityCountForSections = [_dynamicGridViewElement minimumEntityCountForSections];
+  if (self->_minimumEntityCountForSections != minimumEntityCountForSections)
   {
-    self->_minimumEntityCountForSections = v9;
-    -[SKUIGridViewElementPageSectionConfiguration setRendersWithPerspective:](self->_configuration, "setRendersWithPerspective:", [v11 rendersWithPerspective]);
+    self->_minimumEntityCountForSections = minimumEntityCountForSections;
+    -[SKUIGridViewElementPageSectionConfiguration setRendersWithPerspective:](self->_configuration, "setRendersWithPerspective:", [_dynamicGridViewElement rendersWithPerspective]);
     goto LABEL_11;
   }
 
-  -[SKUIGridViewElementPageSectionConfiguration setRendersWithPerspective:](self->_configuration, "setRendersWithPerspective:", [v11 rendersWithPerspective]);
+  -[SKUIGridViewElementPageSectionConfiguration setRendersWithPerspective:](self->_configuration, "setRendersWithPerspective:", [_dynamicGridViewElement rendersWithPerspective]);
   if (v5)
   {
 LABEL_11:
@@ -1337,22 +1337,22 @@ LABEL_11:
   }
 
   [(SKUIDynamicGridViewElementPageSection *)self _updateStyleProperties];
-  v10 = [v11 collectionFeature];
-  [v10 setCollectionTarget:self];
+  collectionFeature = [_dynamicGridViewElement collectionFeature];
+  [collectionFeature setCollectionTarget:self];
 }
 
-- (void)_reloadVisibleCellsAnimated:(BOOL)a3
+- (void)_reloadVisibleCellsAnimated:(BOOL)animated
 {
-  v4 = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
-  v5 = [v4 layoutCache];
+  labelLayoutCache = [(SKUIViewElementLayoutContext *)self->_cellLayoutContext labelLayoutCache];
+  layoutCache = [labelLayoutCache layoutCache];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___block_invoke;
   v7[3] = &unk_2781FD2C8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = layoutCache;
+  v6 = layoutCache;
   [(SKUIDynamicGridViewElementPageSection *)self _enumerateVisibleCellsUsingBlock:v7];
 }
 
@@ -1376,16 +1376,16 @@ void __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___b
 - (void)_resetLayoutProperties
 {
   configuration = self->_configuration;
-  v4 = [(SKUIStorePageSection *)self pageComponent];
-  v3 = [v4 viewElement];
-  [(SKUIGridViewElementPageSectionConfiguration *)configuration updateLayoutPropertiesForGridViewElement:v3];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [(SKUIGridViewElementPageSectionConfiguration *)configuration updateLayoutPropertiesForGridViewElement:viewElement];
 }
 
-- (id)_sectionTemplateViewElementForEntityValueProvider:(id)a3
+- (id)_sectionTemplateViewElementForEntityValueProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
-  v6 = v5;
+  providerCopy = provider;
+  _dynamicGridViewElement = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
+  v6 = _dynamicGridViewElement;
   if (self->_editing)
   {
     v7 = 0x282802768;
@@ -1396,20 +1396,20 @@ void __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___b
     v7 = 0;
   }
 
-  v8 = [v5 templateDefinitionViewElementsForType:0x2828027A8 mode:v7];
-  v9 = [v6 bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:v8 entityValueProvider:v4];
+  v8 = [_dynamicGridViewElement templateDefinitionViewElementsForType:0x2828027A8 mode:v7];
+  v9 = [v6 bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:v8 entityValueProvider:providerCopy];
 
-  v10 = [v9 contentViewElement];
-  v11 = [v10 children];
-  v12 = [v11 firstObject];
+  contentViewElement = [v9 contentViewElement];
+  children = [contentViewElement children];
+  firstObject = [children firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 - (BOOL)_updateShowsSectionHeaders
 {
-  v3 = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
-  if ([v3 hasSectionHeaders])
+  _dynamicGridViewElement = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
+  if ([_dynamicGridViewElement hasSectionHeaders])
   {
     v4 = [(SKUIDynamicPageSectionIndexMapper *)self->_dynamicPageSectionIndexMapper totalNumberOfEntities]>= self->_minimumEntityCountForSections;
   }
@@ -1431,8 +1431,8 @@ void __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___b
 - (void)_updateStyleProperties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
-  v4 = v3;
+  _dynamicGridViewElement = [(SKUIDynamicGridViewElementPageSection *)self _dynamicGridViewElement];
+  v4 = _dynamicGridViewElement;
   if (self->_editing)
   {
     v5 = 0x282802768;
@@ -1443,7 +1443,7 @@ void __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___b
     v5 = 0;
   }
 
-  v6 = [v3 templateDefinitionViewElementsForType:0x282802788 mode:v5];
+  v6 = [_dynamicGridViewElement templateDefinitionViewElementsForType:0x282802788 mode:v5];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1463,16 +1463,16 @@ void __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___b
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) contentViewElement];
-        v13 = [v12 children];
-        if ([v13 count])
+        contentViewElement = [*(*(&v14 + 1) + 8 * i) contentViewElement];
+        children = [contentViewElement children];
+        if ([children count])
         {
           if (!v9)
           {
             v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
           }
 
-          [v9 addObjectsFromArray:v13];
+          [v9 addObjectsFromArray:children];
         }
       }
 
@@ -1490,13 +1490,13 @@ void __69__SKUIDynamicGridViewElementPageSection__reloadVisibleCellsAnimated___b
   [(SKUIGridViewElementPageSectionConfiguration *)self->_configuration updateStylePropertiesForGridViewElement:v4 gridItemViewElements:v9 numberOfGridItems:[(SKUIDynamicGridViewElementPageSection *)self numberOfCells]];
 }
 
-- (id)_viewElementAtGlobalIndex:(int64_t)a3
+- (id)_viewElementAtGlobalIndex:(int64_t)index
 {
-  v5 = [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue integerValue];
-  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:a3];
+  integerValue = [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue integerValue];
+  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:index];
   v6 = [(CPLRUDictionary *)self->_globalIndexToTemplateViewElementCache objectForKey:self->_reusableGlobalIndexIntegerValue];
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v7 = [(SKUIDynamicGridViewElementPageSection *)self _entityValueProviderForGlobalIndex:a3 sectionIndex:&v15];
+  v7 = [(SKUIDynamicGridViewElementPageSection *)self _entityValueProviderForGlobalIndex:index sectionIndex:&v15];
   if (v6)
   {
     if (!self->_usesSizingEntityValueProvider)
@@ -1542,13 +1542,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v12 = [v6 entityValueProperties];
-  v13 = [v7 valuesForEntityProperties:v12];
+  entityValueProperties = [v6 entityValueProperties];
+  v13 = [v7 valuesForEntityProperties:entityValueProperties];
 
 LABEL_13:
   [v6 setEntityValueProvider:v7];
 LABEL_14:
-  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:v5];
+  [(SKUIMutableIntegerValue *)self->_reusableGlobalIndexIntegerValue setIntegerValue:integerValue];
 
   return v6;
 }

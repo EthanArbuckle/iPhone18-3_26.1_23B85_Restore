@@ -1,6 +1,6 @@
 @interface MTRZoneManagementClusterZoneTriggerControlStruct
 - (MTRZoneManagementClusterZoneTriggerControlStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterZoneTriggerControlStruct);
-  v5 = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self zoneID];
-  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setZoneID:v5];
+  zoneID = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self zoneID];
+  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setZoneID:zoneID];
 
-  v6 = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self initialDuration];
-  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setInitialDuration:v6];
+  initialDuration = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self initialDuration];
+  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setInitialDuration:initialDuration];
 
-  v7 = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self augmentationDuration];
-  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setAugmentationDuration:v7];
+  augmentationDuration = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self augmentationDuration];
+  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setAugmentationDuration:augmentationDuration];
 
-  v8 = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self maxDuration];
-  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setMaxDuration:v8];
+  maxDuration = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self maxDuration];
+  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setMaxDuration:maxDuration];
 
-  v9 = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self blindDuration];
-  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setBlindDuration:v9];
+  blindDuration = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self blindDuration];
+  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setBlindDuration:blindDuration];
 
-  v10 = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self sensitivity];
-  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setSensitivity:v10];
+  sensitivity = [(MTRZoneManagementClusterZoneTriggerControlStruct *)self sensitivity];
+  [(MTRZoneManagementClusterZoneTriggerControlStruct *)v4 setSensitivity:sensitivity];
 
   return v4;
 }

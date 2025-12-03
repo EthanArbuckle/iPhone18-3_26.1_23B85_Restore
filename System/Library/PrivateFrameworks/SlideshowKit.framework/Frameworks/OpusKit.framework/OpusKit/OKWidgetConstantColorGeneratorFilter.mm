@@ -1,10 +1,10 @@
 @interface OKWidgetConstantColorGeneratorFilter
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setSettingInputColor:(id)a3;
+- (void)setSettingInputColor:(id)color;
 @end
 
 @implementation OKWidgetConstantColorGeneratorFilter
@@ -26,7 +26,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetConstantColorGeneratorFilter;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"inputColor";
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (void)setSettingInputColor:(id)a3
+- (void)setSettingInputColor:(id)color
 {
   inputColor = self->_inputColor;
   if (inputColor)
@@ -46,7 +46,7 @@
     self->_inputColor = 0;
   }
 
-  self->_inputColor = [MEMORY[0x277CBF730] colorWithCGColor:{objc_msgSend(a3, "CGColor")}];
+  self->_inputColor = [MEMORY[0x277CBF730] colorWithCGColor:{objc_msgSend(color, "CGColor")}];
 }
 
 - (id)inputKeys
@@ -66,12 +66,12 @@
   return [v2 valueForKey:v3];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetConstantColorGeneratorFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetConstantColorGeneratorFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

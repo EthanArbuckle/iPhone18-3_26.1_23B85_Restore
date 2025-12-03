@@ -1,11 +1,11 @@
 @interface UberParallaxBackgroundView
-- (_TtC23ShelfKitCollectionViews26UberParallaxBackgroundView)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews26UberParallaxBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation UberParallaxBackgroundView
 
-- (_TtC23ShelfKitCollectionViews26UberParallaxBackgroundView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews26UberParallaxBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews26UberParallaxBackgroundView_parallaxFactor) = 0x3FD3333333333333;
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews26UberParallaxBackgroundView_fixedWidth;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1551A0();
 }
 

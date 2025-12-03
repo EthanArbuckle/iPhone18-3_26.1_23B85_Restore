@@ -1,82 +1,82 @@
 @interface DSKBLE
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didUpdateControllerBTClockDictForPeripheral:(id)a4 results:(id)a5;
-- (void)centralManager:(id)a3 didUpdateRSSIStatisticsDetectionForPeripheral:(id)a4 results:(id)a5 error:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didUpdateControllerBTClockDictForPeripheral:(id)peripheral results:(id)results;
+- (void)centralManager:(id)manager didUpdateRSSIStatisticsDetectionForPeripheral:(id)peripheral results:(id)results error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation DSKBLE
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000F93E0(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1000F93E0(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_1001155CC(v12, v10, v13);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  selfCopy = self;
+  sub_1001155CC(peripheralCopy, v10, iCopy);
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100117630(v7);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_100117630(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didUpdateControllerBTClockDictForPeripheral:(id)a4 results:(id)a5
+- (void)centralManager:(id)manager didUpdateControllerBTClockDictForPeripheral:(id)peripheral results:(id)results
 {
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_100118E98(v10, v8);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_100118E98(peripheralCopy, v8);
 }
 
-- (void)centralManager:(id)a3 didUpdateRSSIStatisticsDetectionForPeripheral:(id)a4 results:(id)a5 error:(id)a6
+- (void)centralManager:(id)manager didUpdateRSSIStatisticsDetectionForPeripheral:(id)peripheral results:(id)results error:(id)error
 {
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  v14 = a6;
-  sub_100119C28(v12, v10, a6);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100119C28(peripheralCopy, v10, error);
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1000FB0B4(v6, a4);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  servicesCopy = services;
+  sub_1000FB0B4(peripheralCopy, services);
 }
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_100101668(v8, a4, a5);
+  peripheralCopy = peripheral;
+  channelCopy = channel;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100101668(peripheralCopy, channel, error);
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = self;
-  sub_100102044(v6, a4);
+  streamCopy = stream;
+  selfCopy = self;
+  sub_100102044(streamCopy, event);
 }
 
 @end

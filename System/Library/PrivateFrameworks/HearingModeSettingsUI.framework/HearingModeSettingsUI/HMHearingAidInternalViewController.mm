@@ -1,13 +1,13 @@
 @interface HMHearingAidInternalViewController
 - (id)hearingAidEnrolled;
 - (id)specifiers;
-- (void)faultCheckCancelled:(id)a3;
-- (void)faultCheckCompleted:(id)a3;
-- (void)faultCheckCompleted:(id)a3 status:(unint64_t)a4;
-- (void)fitNoiseCheckCancelled:(id)a3;
-- (void)fitNoiseCheckCompleted:(id)a3 status:(unint64_t)a4;
-- (void)hearingAidEnrollmentCancelled:(id)a3;
-- (void)hearingAidEnrollmentCompleted:(id)a3 status:(unint64_t)a4;
+- (void)faultCheckCancelled:(id)cancelled;
+- (void)faultCheckCompleted:(id)completed;
+- (void)faultCheckCompleted:(id)completed status:(unint64_t)status;
+- (void)fitNoiseCheckCancelled:(id)cancelled;
+- (void)fitNoiseCheckCompleted:(id)completed status:(unint64_t)status;
+- (void)hearingAidEnrollmentCancelled:(id)cancelled;
+- (void)hearingAidEnrollmentCompleted:(id)completed status:(unint64_t)status;
 - (void)presentFitTestAnimationViewTester;
 - (void)pushEnrollmentViewControllerWithDevice;
 - (void)pushEnrollmentViewControllerWithDeviceAndAudiogramSample;
@@ -17,7 +17,7 @@
 - (void)pushFitNoiseCheckViewController;
 - (void)pushMediaAssistEnrollmentViewControllerWithDeviceAndAudiogramSample;
 - (void)resetOcclusionData;
-- (void)setHearingAidEnrolled:(id)a3;
+- (void)setHearingAidEnrolled:(id)enrolled;
 - (void)viewDidLoad;
 @end
 
@@ -33,13 +33,13 @@
 - (id)specifiers
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"bt-address"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"bt-address"];
   address = self->_address;
   self->_address = v4;
 
-  v6 = [MEMORY[0x277CF3248] sharedInstance];
-  v7 = [v6 deviceFromAddressString:self->_address];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+  v7 = [mEMORY[0x277CF3248] deviceFromAddressString:self->_address];
   device = self->_device;
   self->_device = v7;
 
@@ -98,17 +98,17 @@
 - (id)hearingAidEnrolled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BluetoothDevice *)self->_device hearingAidEnrolled];
+  hearingAidEnrolled = [(BluetoothDevice *)self->_device hearingAidEnrolled];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:hearingAidEnrolled];
 }
 
-- (void)setHearingAidEnrolled:(id)a3
+- (void)setHearingAidEnrolled:(id)enrolled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enrolled BOOLValue];
   device = self->_device;
 
-  [(BluetoothDevice *)device setHearingAidEnrolled:v4];
+  [(BluetoothDevice *)device setHearingAidEnrolled:bOOLValue];
 }
 
 - (void)pushEnrollmentViewControllerWithDevice
@@ -117,8 +117,8 @@
   [v5 setHearingAidEnrollmentDelegate:self];
   v3 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v5];
   NSLog(&cfstr_HearingAidEnro_2.isa, v3);
-  v4 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v4 presentViewController:v3 animated:1 completion:0];
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController presentViewController:v3 animated:1 completion:0];
 }
 
 - (void)pushEnrollmentViewControllerWithDeviceAndAudiogramSample
@@ -354,8 +354,8 @@ void __69__HMHearingAidInternalViewController_pushFitNoiseCheckViewController__b
   v5 = objc_alloc_init(HMTestFitNoiseCheckTopViewController);
   v3 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v5];
   [v3 setModalPresentationStyle:2];
-  v4 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v4 presentViewController:v3 animated:1 completion:0];
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController presentViewController:v3 animated:1 completion:0];
 }
 
 - (void)pushFaultCheckViewController
@@ -363,8 +363,8 @@ void __69__HMHearingAidInternalViewController_pushFitNoiseCheckViewController__b
   v4 = [objc_alloc(MEMORY[0x277D12BF8]) initWithDeviceAddress:self->_address];
   [v4 setFaultCheckDelegate:self];
   NSLog(&cfstr_FaultCheckForF.isa, v4);
-  v3 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v3 pushViewController:v4 animated:1];
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 - (void)pushFaultCheckViewControllerForFailedResult
@@ -372,8 +372,8 @@ void __69__HMHearingAidInternalViewController_pushFitNoiseCheckViewController__b
   v4 = [objc_alloc(MEMORY[0x277D12BF8]) initWithDeviceAddress:self->_address withResult:0];
   [v4 setFaultCheckDelegate:self];
   NSLog(&cfstr_FaultCheckForF.isa, v4);
-  v3 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v3 pushViewController:v4 animated:1];
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 - (void)pushFaultCheckViewControllerForUnknownResult
@@ -381,57 +381,57 @@ void __69__HMHearingAidInternalViewController_pushFitNoiseCheckViewController__b
   v4 = [objc_alloc(MEMORY[0x277D12BF8]) initWithDeviceAddress:self->_address withResult:1];
   [v4 setFaultCheckDelegate:self];
   NSLog(&cfstr_FaultCheckForU.isa, v4);
-  v3 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v3 pushViewController:v4 animated:1];
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
-- (void)hearingAidEnrollmentCompleted:(id)a3 status:(unint64_t)a4
+- (void)hearingAidEnrollmentCompleted:(id)completed status:(unint64_t)status
 {
-  NSLog(&cfstr_HearingAidEnro_3.isa, a2, a4, a3);
-  v5 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_HearingAidEnro_3.isa, a2, status, completed);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)hearingAidEnrollmentCancelled:(id)a3
+- (void)hearingAidEnrollmentCancelled:(id)cancelled
 {
-  NSLog(&cfstr_HearingAidEnro_4.isa, a2, a3);
-  v4 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_HearingAidEnro_4.isa, a2, cancelled);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)fitNoiseCheckCompleted:(id)a3 status:(unint64_t)a4
+- (void)fitNoiseCheckCompleted:(id)completed status:(unint64_t)status
 {
-  NSLog(&cfstr_FitNoiseCheckC.isa, a2, a4, a3);
-  v5 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_FitNoiseCheckC.isa, a2, status, completed);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)fitNoiseCheckCancelled:(id)a3
+- (void)fitNoiseCheckCancelled:(id)cancelled
 {
-  NSLog(&cfstr_FitNoiseCheckC_0.isa, a2, a3);
-  v4 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_FitNoiseCheckC_0.isa, a2, cancelled);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)faultCheckCompleted:(id)a3 status:(unint64_t)a4
+- (void)faultCheckCompleted:(id)completed status:(unint64_t)status
 {
-  NSLog(&cfstr_FaultCheckComp.isa, a2, a4, a3);
-  v5 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_FaultCheckComp.isa, a2, status, completed);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)faultCheckCompleted:(id)a3
+- (void)faultCheckCompleted:(id)completed
 {
-  NSLog(&cfstr_FaultCheckComp_0.isa, a2, a3);
-  v4 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_FaultCheckComp_0.isa, a2, completed);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)faultCheckCancelled:(id)a3
+- (void)faultCheckCancelled:(id)cancelled
 {
-  NSLog(&cfstr_FaultCheckCanc.isa, a2, a3);
-  v4 = [(HMHearingAidInternalViewController *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  NSLog(&cfstr_FaultCheckCanc.isa, a2, cancelled);
+  navigationController = [(HMHearingAidInternalViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)resetOcclusionData
@@ -439,8 +439,8 @@ void __69__HMHearingAidInternalViewController_pushFitNoiseCheckViewController__b
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v8 setObject:@"reset-occlusion-counts" forKeyedSubscript:@"msg-identifier"];
   [v8 setObject:self->_address forKeyedSubscript:@"bt-address"];
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 postNotificationName:@"com.apple.HearingModeService" object:0 userInfo:v8 options:2];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.HearingModeService" object:0 userInfo:v8 options:2];
 
   v4 = MEMORY[0x277D75110];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Reset occlusion history!"];

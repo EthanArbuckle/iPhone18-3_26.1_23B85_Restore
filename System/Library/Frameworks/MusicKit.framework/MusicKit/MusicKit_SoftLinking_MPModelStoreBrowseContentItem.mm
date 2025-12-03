@@ -1,14 +1,14 @@
 @interface MusicKit_SoftLinking_MPModelStoreBrowseContentItem
-+ (int64_t)_genericObjectTypeForItemType:(unint64_t)a3;
++ (int64_t)_genericObjectTypeForItemType:(unint64_t)type;
 - (MusicKit_SoftLinking_MPModelObject)innerObject;
-- (MusicKit_SoftLinking_MPModelStoreBrowseContentItem)initWithInnerObject:(id)a3;
+- (MusicKit_SoftLinking_MPModelStoreBrowseContentItem)initWithInnerObject:(id)object;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelStoreBrowseContentItem
 
-- (MusicKit_SoftLinking_MPModelStoreBrowseContentItem)initWithInnerObject:(id)a3
+- (MusicKit_SoftLinking_MPModelStoreBrowseContentItem)initWithInnerObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v20.receiver = self;
   v20.super_class = MusicKit_SoftLinking_MPModelStoreBrowseContentItem;
   v5 = [(MusicKit_SoftLinking_MPModelStoreBrowseContentItem *)&v20 init];
@@ -33,14 +33,14 @@
     v7 = v6;
     _Block_object_dispose(&v22, 8);
     v8 = [v6 alloc];
-    v9 = [v4 underlyingObject];
-    v10 = [v9 identifiers];
+    underlyingObject = [objectCopy underlyingObject];
+    identifiers = [underlyingObject identifiers];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __74__MusicKit_SoftLinking_MPModelStoreBrowseContentItem_initWithInnerObject___block_invoke;
     v18 = &unk_27822A128;
-    v19 = v4;
-    v11 = [v8 initWithIdentifiers:v10 block:&v15];
+    v19 = objectCopy;
+    v11 = [v8 initWithIdentifiers:identifiers block:&v15];
 
     if (![v11 itemType])
     {
@@ -62,22 +62,22 @@ LABEL_8:
 - (MusicKit_SoftLinking_MPModelObject)innerObject
 {
   v3 = [MusicKit_SoftLinking_MPModelObject alloc];
-  v4 = [(MPModelStoreBrowseContentItem *)self->_underlyingItem innerObject];
-  v5 = [(MusicKit_SoftLinking_MPModelObject *)v3 initWithUnderlyingModelObject:v4];
+  innerObject = [(MPModelStoreBrowseContentItem *)self->_underlyingItem innerObject];
+  v5 = [(MusicKit_SoftLinking_MPModelObject *)v3 initWithUnderlyingModelObject:innerObject];
 
   return v5;
 }
 
-+ (int64_t)_genericObjectTypeForItemType:(unint64_t)a3
++ (int64_t)_genericObjectTypeForItemType:(unint64_t)type
 {
-  if (a3 - 1 > 0xE)
+  if (type - 1 > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return qword_2177565D0[a3 - 1];
+    return qword_2177565D0[type - 1];
   }
 }
 

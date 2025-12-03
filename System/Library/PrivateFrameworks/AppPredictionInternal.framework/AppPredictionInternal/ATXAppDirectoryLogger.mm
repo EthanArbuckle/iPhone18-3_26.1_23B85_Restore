@@ -1,11 +1,11 @@
 @interface ATXAppDirectoryLogger
 - (id)_retrieveAllUnprocessedEventsFromBiome;
 - (id)_retrieveLastLogProcessedDate;
-- (id)_retrieveSessionsFromUnprocessedEvents:(id)a3 lastSessionEndDate:(id *)a4;
-- (id)_summarizeSession:(id)a3;
-- (void)_storeLastLogProcessedDate:(id)a3;
-- (void)_uploadToCoreAnalytics:(id)a3;
-- (void)uploadSummariesToCoreAnalyticsWithActivity:(id)a3;
+- (id)_retrieveSessionsFromUnprocessedEvents:(id)events lastSessionEndDate:(id *)date;
+- (id)_summarizeSession:(id)session;
+- (void)_storeLastLogProcessedDate:(id)date;
+- (void)_uploadToCoreAnalytics:(id)analytics;
+- (void)uploadSummariesToCoreAnalyticsWithActivity:(id)activity;
 @end
 
 @implementation ATXAppDirectoryLogger
@@ -29,29 +29,29 @@
   return v4;
 }
 
-- (void)_storeLastLogProcessedDate:(id)a3
+- (void)_storeLastLogProcessedDate:(id)date
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
+  dateCopy = date;
   v5 = [v3 alloc];
   v6 = [v5 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  [v6 setObject:v4 forKey:@"AppDirectoryLastLogProcessedDate"];
+  [v6 setObject:dateCopy forKey:@"AppDirectoryLastLogProcessedDate"];
 }
 
 - (id)_retrieveAllUnprocessedEventsFromBiome
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(ATXAppDirectoryLogger *)self _retrieveLastLogProcessedDate];
+  _retrieveLastLogProcessedDate = [(ATXAppDirectoryLogger *)self _retrieveLastLogProcessedDate];
   v3 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v2;
+    v16 = _retrieveLastLogProcessedDate;
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryLogger: Processing events since %@", buf, 0xCu);
   }
 
   v4 = objc_opt_new();
-  [v2 timeIntervalSinceReferenceDate];
+  [_retrieveLastLogProcessedDate timeIntervalSinceReferenceDate];
   v5 = [v4 genericEventPublisherFromStartTime:35 consumerSubType:?];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -127,9 +127,9 @@ uint64_t __63__ATXAppDirectoryLogger__retrieveAllUnprocessedEventsFromBiome__blo
   return v7;
 }
 
-- (id)_retrieveSessionsFromUnprocessedEvents:(id)a3 lastSessionEndDate:(id *)a4
+- (id)_retrieveSessionsFromUnprocessedEvents:(id)events lastSessionEndDate:(id *)date
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = objc_opt_new();
   v26[0] = 0;
   v26[1] = v26;
@@ -153,13 +153,13 @@ uint64_t __63__ATXAppDirectoryLogger__retrieveAllUnprocessedEventsFromBiome__blo
   v16 = v26;
   v7 = v6;
   v13 = v7;
-  v8 = v5;
+  v8 = eventsCopy;
   v14 = v8;
   v17 = &v20;
   [v8 enumerateObjectsUsingBlock:v12];
-  if (a4)
+  if (date)
   {
-    *a4 = v21[5];
+    *date = v21[5];
   }
 
   v9 = v14;
@@ -226,27 +226,27 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)_summarizeSession:(id)a3
+- (id)_summarizeSession:(id)session
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 date];
+  sessionCopy = session;
+  v4 = [sessionCopy objectAtIndexedSubscript:0];
+  date = [v4 date];
 
   v58 = objc_opt_new();
-  v6 = v5;
+  date3 = date;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v3;
+  obj = sessionCopy;
   v7 = [obj countByEnumeratingWithState:&v59 objects:v63 count:16];
-  v44 = v6;
+  v44 = date3;
   if (v7)
   {
     v8 = v7;
     v9 = 0;
-    v10 = 0;
+    eventType = 0;
     v11 = *v60;
     v12 = *MEMORY[0x277CEBA40];
     v57 = *MEMORY[0x277CEBA48];
@@ -267,7 +267,7 @@ LABEL_13:
     do
     {
       v16 = 0;
-      v17 = v6;
+      v17 = date3;
       do
       {
         if (*v60 != v11)
@@ -276,20 +276,20 @@ LABEL_13:
         }
 
         v18 = *(*(&v59 + 1) + 8 * v16);
-        v19 = [v18 date];
-        [v19 timeIntervalSinceDate:v17];
+        date2 = [v18 date];
+        [date2 timeIntervalSinceDate:v17];
         v21 = v20;
 
-        if (v10 <= 1)
+        if (eventType <= 1)
         {
-          if (!v10)
+          if (!eventType)
           {
 LABEL_14:
             v15 = v15 + v21;
             goto LABEL_16;
           }
 
-          if (v10 == 1)
+          if (eventType == 1)
           {
             v14 = v14 + v21;
           }
@@ -297,7 +297,7 @@ LABEL_14:
 
         else
         {
-          switch(v10)
+          switch(eventType)
           {
             case 9:
               goto LABEL_14;
@@ -312,17 +312,17 @@ LABEL_14:
 LABEL_16:
         if ([v18 eventType] == 1)
         {
-          v22 = [v18 categoryID];
+          categoryID = [v18 categoryID];
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v9];
           [v12 stringByAppendingString:v23];
           v24 = v8;
           v26 = v25 = v11;
-          [v58 setObject:v22 forKeyedSubscript:v26];
+          [v58 setObject:categoryID forKeyedSubscript:v26];
 
-          v27 = [v18 categoryIndex];
+          categoryIndex = [v18 categoryIndex];
           v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v9];
           v29 = [v57 stringByAppendingString:v28];
-          [v58 setObject:v27 forKeyedSubscript:v29];
+          [v58 setObject:categoryIndex forKeyedSubscript:v29];
 
           v11 = v25;
           v8 = v24;
@@ -334,23 +334,23 @@ LABEL_16:
         [v18 eventType];
         if (ATXIsSessionEndedByEvent())
         {
-          v30 = [v18 bundleId];
-          [v58 setObject:v30 forKeyedSubscript:v55];
+          bundleId = [v18 bundleId];
+          [v58 setObject:bundleId forKeyedSubscript:v55];
 
-          v31 = [v18 bundleIndex];
-          [v58 setObject:v31 forKeyedSubscript:v54];
+          bundleIndex = [v18 bundleIndex];
+          [v58 setObject:bundleIndex forKeyedSubscript:v54];
 
-          v32 = [v18 searchQueryLength];
-          [v58 setObject:v32 forKeyedSubscript:v53];
+          searchQueryLength = [v18 searchQueryLength];
+          [v58 setObject:searchQueryLength forKeyedSubscript:v53];
 
-          v33 = [v18 searchTab];
-          [v58 setObject:v33 forKeyedSubscript:v52];
+          searchTab = [v18 searchTab];
+          [v58 setObject:searchTab forKeyedSubscript:v52];
 
-          v34 = [v18 categoryID];
-          [v58 setObject:v34 forKeyedSubscript:v12];
+          categoryID2 = [v18 categoryID];
+          [v58 setObject:categoryID2 forKeyedSubscript:v12];
 
-          v35 = [v18 categoryIndex];
-          [v58 setObject:v35 forKeyedSubscript:v57];
+          categoryIndex2 = [v18 categoryIndex];
+          [v58 setObject:categoryIndex2 forKeyedSubscript:v57];
 
           v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v18, "eventType")}];
           [v58 setObject:v36 forKeyedSubscript:v51];
@@ -371,11 +371,11 @@ LABEL_16:
           [v58 setObject:v41 forKeyedSubscript:v46];
         }
 
-        v6 = [v18 date];
+        date3 = [v18 date];
 
-        v10 = [v18 eventType];
+        eventType = [v18 eventType];
         ++v16;
-        v17 = v6;
+        v17 = date3;
       }
 
       while (v8 != v16);
@@ -390,10 +390,10 @@ LABEL_16:
   return v58;
 }
 
-- (void)_uploadToCoreAnalytics:(id)a3
+- (void)_uploadToCoreAnalytics:(id)analytics
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  analyticsCopy = analytics;
   v4 = AnalyticsSendEventLazy();
   v5 = __atxlog_handle_app_library();
   v6 = v5;
@@ -402,7 +402,7 @@ LABEL_16:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v3;
+      v9 = analyticsCopy;
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryLogger: Attached log successfully uploaded to CoreAnalytics - %@", buf, 0xCu);
     }
   }
@@ -415,12 +415,12 @@ LABEL_16:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadSummariesToCoreAnalyticsWithActivity:(id)a3
+- (void)uploadSummariesToCoreAnalyticsWithActivity:(id)activity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAppDirectoryLogger *)self _retrieveAllUnprocessedEventsFromBiome];
-  if ([v4 didDefer])
+  activityCopy = activity;
+  _retrieveAllUnprocessedEventsFromBiome = [(ATXAppDirectoryLogger *)self _retrieveAllUnprocessedEventsFromBiome];
+  if ([activityCopy didDefer])
   {
     v6 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -433,15 +433,15 @@ LABEL_16:
   else
   {
     v28 = 0;
-    v7 = [(ATXAppDirectoryLogger *)self _retrieveSessionsFromUnprocessedEvents:v5 lastSessionEndDate:&v28];
+    v7 = [(ATXAppDirectoryLogger *)self _retrieveSessionsFromUnprocessedEvents:_retrieveAllUnprocessedEventsFromBiome lastSessionEndDate:&v28];
     v6 = v28;
     v8 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(ATXAppDirectoryLogger *)v7 uploadSummariesToCoreAnalyticsWithActivity:v5];
+      [(ATXAppDirectoryLogger *)v7 uploadSummariesToCoreAnalyticsWithActivity:_retrieveAllUnprocessedEventsFromBiome];
     }
 
-    if ([v4 didDefer])
+    if ([activityCopy didDefer])
     {
       v9 = __atxlog_handle_app_library();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -453,7 +453,7 @@ LABEL_16:
 
     else
     {
-      if ([v5 count] && v6)
+      if ([_retrieveAllUnprocessedEventsFromBiome count] && v6)
       {
         [(ATXAppDirectoryLogger *)self _storeLastLogProcessedDate:v6];
       }
@@ -469,8 +469,8 @@ LABEL_16:
         v11 = v10;
         v20 = v7;
         v21 = v6;
-        v22 = v5;
-        v23 = v4;
+        v22 = _retrieveAllUnprocessedEventsFromBiome;
+        v23 = activityCopy;
         v12 = *v25;
         v13 = *MEMORY[0x277CEB9F0];
         v14 = 1;
@@ -504,8 +504,8 @@ LABEL_16:
         }
 
         while (v11);
-        v5 = v22;
-        v4 = v23;
+        _retrieveAllUnprocessedEventsFromBiome = v22;
+        activityCopy = v23;
         v7 = v20;
         v6 = v21;
       }

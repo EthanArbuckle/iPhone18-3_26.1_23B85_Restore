@@ -2,60 +2,60 @@
 + (BOOL)isReportingAvailable;
 + (OS_dispatch_queue)reportingQueue;
 - (PXVideoPlaybackReporterAVPlayerItemEndpoint)init;
-- (PXVideoPlaybackReporterAVPlayerItemEndpoint)initWithPlayerItem:(id)a3;
+- (PXVideoPlaybackReporterAVPlayerItemEndpoint)initWithPlayerItem:(id)item;
 - (id)description;
-- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)a3;
+- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)payload;
 @end
 
 @implementation PXVideoPlaybackReporterAVPlayerItemEndpoint
 
-- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)a3
+- (void)sendPayload:(_PXVideoPlaybackReporterPayload *)payload
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = [objc_opt_class() isReportingAvailable];
+  isReportingAvailable = [objc_opt_class() isReportingAvailable];
   v7 = PLVideoPlaybackGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isReportingAvailable)
   {
     if (v8)
     {
-      v9 = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self loggingIdentifier];
-      v10 = *&a3->var2;
-      *buf = *&a3->var0;
+      loggingIdentifier = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self loggingIdentifier];
+      v10 = *&payload->var2;
+      *buf = *&payload->var0;
       *&buf[16] = v10;
       v11 = PXVideoPlaybackReporterPayloadDescription(buf);
       *buf = 138412546;
-      *&buf[4] = v9;
+      *&buf[4] = loggingIdentifier;
       *&buf[12] = 2112;
       *&buf[14] = v11;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "[VideoPlaybackReporting] %@: Sending video playback payload:\n\t%@", buf, 0x16u);
     }
 
-    v12 = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self playerItem];
-    v13 = [objc_opt_class() reportingQueue];
+    playerItem = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self playerItem];
+    reportingQueue = [objc_opt_class() reportingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__PXVideoPlaybackReporterAVPlayerItemEndpoint_sendPayload___block_invoke;
     block[3] = &unk_1E774A810;
-    v14 = *&a3->var2;
-    v20 = *&a3->var0;
+    v14 = *&payload->var2;
+    v20 = *&payload->var0;
     v21 = v14;
     v22 = a2;
     block[4] = self;
-    v19 = v12;
-    v7 = v12;
-    dispatch_async(v13, block);
+    v19 = playerItem;
+    v7 = playerItem;
+    dispatch_async(reportingQueue, block);
   }
 
   else if (v8)
   {
-    v15 = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self loggingIdentifier];
-    v16 = *&a3->var2;
-    *buf = *&a3->var0;
+    loggingIdentifier2 = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self loggingIdentifier];
+    v16 = *&payload->var2;
+    *buf = *&payload->var0;
     *&buf[16] = v16;
     v17 = PXVideoPlaybackReporterPayloadDescription(buf);
     *buf = 138412546;
-    *&buf[4] = v15;
+    *&buf[4] = loggingIdentifier2;
     *&buf[12] = 2112;
     *&buf[14] = v17;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "[VideoPlaybackReporting] %@: Unable to send video playback payload because reporting is not available:\n\t%@", buf, 0x16u);
@@ -130,30 +130,30 @@ LABEL_14:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self playerItem];
-  v7 = [v3 initWithFormat:@"<%@ %p; Item: %@>", v5, self, v6];
+  playerItem = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)self playerItem];
+  v7 = [v3 initWithFormat:@"<%@ %p; Item: %@>", v5, self, playerItem];
 
   return v7;
 }
 
 - (PXVideoPlaybackReporterAVPlayerItemEndpoint)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXVideoPlaybackReporter+AVFoundation.m" lineNumber:117 description:{@"%s is not available as initializer", "-[PXVideoPlaybackReporterAVPlayerItemEndpoint init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoPlaybackReporter+AVFoundation.m" lineNumber:117 description:{@"%s is not available as initializer", "-[PXVideoPlaybackReporterAVPlayerItemEndpoint init]"}];
 
   abort();
 }
 
-- (PXVideoPlaybackReporterAVPlayerItemEndpoint)initWithPlayerItem:(id)a3
+- (PXVideoPlaybackReporterAVPlayerItemEndpoint)initWithPlayerItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PXVideoPlaybackReporterAVPlayerItemEndpoint;
   v6 = [(PXVideoPlaybackReporterAVPlayerItemEndpoint *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playerItem, a3);
+    objc_storeStrong(&v6->_playerItem, item);
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface MFNetworkController
 + (MFNetworkController)sharedInstance;
-+ (id)addNetworkObserverBlock:(id)a3 queue:(id)a4;
-+ (id)networkAssertionWithIdentifier:(id)a3;
++ (id)addNetworkObserverBlock:(id)block queue:(id)queue;
++ (id)networkAssertionWithIdentifier:(id)identifier;
 + (id)observers;
 + (id)signpostLog;
 + (void)performExecuteOnObservers;
-+ (void)removeNetworkObserver:(id)a3;
-- (BOOL)_simulationOverrideForType:(unint64_t)a3 actualValue:(BOOL)a4;
++ (void)removeNetworkObserver:(id)observer;
+- (BOOL)_simulationOverrideForType:(unint64_t)type actualValue:(BOOL)value;
 - (BOOL)inAirplaneMode;
 - (BOOL)is3GConnection;
 - (BOOL)is4GConnection;
@@ -17,28 +17,28 @@
 - (EFObservable)networkObservable;
 - (EFObservable)wifiObservable;
 - (MFNetworkController)init;
-- (id)_networkAssertionWithIdentifier:(id)a3;
-- (id)copyCarrierBundleValue:(id)a3;
+- (id)_networkAssertionWithIdentifier:(id)identifier;
+- (id)copyCarrierBundleValue:(id)value;
 - (int64_t)dataStatus;
 - (int64_t)transportType;
 - (unint64_t)signpostID;
 - (void)_carrierBundleDidChange;
-- (void)_checkKeys:(id)a3 forStore:(__SCDynamicStore *)a4;
-- (void)_handleWiFiNotification:(unsigned int)a3;
+- (void)_checkKeys:(id)keys forStore:(__SCDynamicStore *)store;
+- (void)_handleWiFiNotification:(unsigned int)notification;
 - (void)_initializeDataStatus;
 - (void)_registerStateCaptureHandler;
 - (void)_resetDataStatusInitialized;
-- (void)_setDataStatus_nts:(id)a3;
-- (void)_setFlags:(unsigned int)a3 forReachability:(__SCNetworkReachability *)a4;
+- (void)_setDataStatus_nts:(id)status_nts;
+- (void)_setFlags:(unsigned int)flags forReachability:(__SCNetworkReachability *)reachability;
 - (void)_setupSymptoms;
 - (void)_updateActiveCalls;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)callRevokeTokenForUPI;
-- (void)connectionActivationError:(id)a3 connection:(int)a4 error:(int)a5;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)connectionActivationError:(id)error connection:(int)connection error:(int)a5;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)preferredDataSimChanged:(id)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)preferredDataSimChanged:(id)changed;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation MFNetworkController
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = __37__MFNetworkController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -229,8 +229,8 @@ LABEL_21:
   v3->_radiosPreferences = v32;
 
   [(RadiosPreferences *)v3->_radiosPreferences setDelegate:v3];
-  v34 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v34 addObserver:v3 selector:sel__resetDataStatusInitialized name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v3 selector:sel__resetDataStatusInitialized name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
   v35 = v8;
   v36 = v35;
@@ -249,7 +249,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __34__MFNetworkController_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_0 != -1)
   {
     dispatch_once(&signpostLog_onceToken_0, block);
@@ -270,8 +270,8 @@ void __34__MFNetworkController_signpostLog__block_invoke(uint64_t a1)
 
 + (void)performExecuteOnObservers
 {
-  v2 = [a1 observers];
-  [v2 performWhileLocked:&__block_literal_global_23_1];
+  observers = [self observers];
+  [observers performWhileLocked:&__block_literal_global_23_1];
 }
 
 - (void)_setupSymptoms
@@ -415,9 +415,9 @@ uint64_t __44__MFNetworkController__initializeDataStatus__block_invoke(uint64_t 
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CXCallObserver *)self->_callObserver calls];
+  calls = [(CXCallObserver *)self->_callObserver calls];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  v5 = [calls countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -428,14 +428,14 @@ uint64_t __44__MFNetworkController__initializeDataStatus__block_invoke(uint64_t 
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(calls);
         }
 
         v4 += [*(*(&v10 + 1) + 8 * v7++) hasEnded] ^ 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v5 = [calls countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v5);
@@ -481,8 +481,8 @@ uint64_t __44__MFNetworkController__initializeDataStatus__block_invoke(uint64_t 
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -548,35 +548,35 @@ LABEL_10:
   [(MFNetworkController *)&v9 dealloc];
 }
 
-- (BOOL)_simulationOverrideForType:(unint64_t)a3 actualValue:(BOOL)a4
+- (BOOL)_simulationOverrideForType:(unint64_t)type actualValue:(BOOL)value
 {
   v6 = CFPreferencesCopyValue(@"MFNetworkSimulationBitfieldKey", *MEMORY[0x1E695E890], *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
-  v7 = [v6 unsignedIntegerValue];
-  if (v7)
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    a4 = (v7 & a3) != 0;
+    value = (unsignedIntegerValue & type) != 0;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)_setDataStatus_nts:(id)a3
+- (void)_setDataStatus_nts:(id)status_nts
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  status_ntsCopy = status_nts;
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = status_ntsCopy;
     _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "#Network setting data status: %@", &v8, 0xCu);
   }
 
-  if (v4)
+  if (status_ntsCopy)
   {
-    self->_dataIndicator = [v4 indicator];
-    self->_isRoamingAllowed = [v4 roamAllowed];
-    v6 = [v4 attached] && objc_msgSend(v4, "indicator") && self->_isRoamingAllowed;
+    self->_dataIndicator = [status_ntsCopy indicator];
+    self->_isRoamingAllowed = [status_ntsCopy roamAllowed];
+    v6 = [status_ntsCopy attached] && objc_msgSend(status_ntsCopy, "indicator") && self->_isRoamingAllowed;
     self->_cellularDataAvailable = v6;
   }
 
@@ -607,10 +607,10 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
 - (BOOL)isNetworkUp
 {
   [(MFLock *)self->_lock lock];
-  v3 = [(MFNetworkController *)self _isNetworkUp_nts];
+  _isNetworkUp_nts = [(MFNetworkController *)self _isNetworkUp_nts];
   [(MFLock *)self->_lock unlock];
 
-  return [(MFNetworkController *)self _simulationOverrideForType:2 actualValue:v3];
+  return [(MFNetworkController *)self _simulationOverrideForType:2 actualValue:_isNetworkUp_nts];
 }
 
 - (BOOL)isOnWWAN
@@ -677,15 +677,15 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setFlags:(unsigned int)a3 forReachability:(__SCNetworkReachability *)a4
+- (void)_setFlags:(unsigned int)flags forReachability:(__SCNetworkReachability *)reachability
 {
   [(MFLock *)self->_lock lock];
-  if (self->_reachability == a4)
+  if (self->_reachability == reachability)
   {
-    v7 = [(MFNetworkController *)self _isNetworkUp_nts];
-    v8 = self->_flags ^ a3;
-    self->_flags = a3;
-    if ((v8 & 0x40000) != 0 || v7 != [(MFNetworkController *)self _isNetworkUp_nts])
+    _isNetworkUp_nts = [(MFNetworkController *)self _isNetworkUp_nts];
+    v8 = self->_flags ^ flags;
+    self->_flags = flags;
+    if ((v8 & 0x40000) != 0 || _isNetworkUp_nts != [(MFNetworkController *)self _isNetworkUp_nts])
     {
       +[MFNetworkController performExecuteOnObservers];
     }
@@ -696,18 +696,18 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
   [(MFLock *)lock unlock];
 }
 
-- (void)_checkKeys:(id)a3 forStore:(__SCDynamicStore *)a4
+- (void)_checkKeys:(id)keys forStore:(__SCDynamicStore *)store
 {
-  v10 = a3;
+  keysCopy = keys;
   [(MFLock *)self->_lock lock];
-  if (self->_store == a4)
+  if (self->_store == store)
   {
-    v6 = [(MFNetworkController *)self _isNetworkUp_nts];
+    _isNetworkUp_nts = [(MFNetworkController *)self _isNetworkUp_nts];
     self->_hasDNS = 0;
-    if ([v10 count])
+    if ([keysCopy count])
     {
-      v7 = [v10 objectAtIndexedSubscript:0];
-      v8 = SCDynamicStoreCopyValue(a4, v7);
+      v7 = [keysCopy objectAtIndexedSubscript:0];
+      v8 = SCDynamicStoreCopyValue(store, v7);
 
       if (v8)
       {
@@ -720,7 +720,7 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
       }
     }
 
-    if (v6 != [(MFNetworkController *)self _isNetworkUp_nts])
+    if (_isNetworkUp_nts != [(MFNetworkController *)self _isNetworkUp_nts])
     {
       +[MFNetworkController performExecuteOnObservers];
     }
@@ -729,9 +729,9 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
   [(MFLock *)self->_lock unlock];
 }
 
-- (void)_handleWiFiNotification:(unsigned int)a3
+- (void)_handleWiFiNotification:(unsigned int)notification
 {
-  if (a3)
+  if (notification)
   {
     [(MFLock *)self->_lock lock];
     self->_isWiFiEnabled = _IsWiFiEnabled(self->_wiFiPreferences);
@@ -741,9 +741,9 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_networkAssertionWithIdentifier:(id)a3
+- (id)_networkAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x1E695E480];
   v6 = _CTServerConnectionCreateWithIdentifier();
   if (v6)
@@ -768,18 +768,18 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (id)networkAssertionWithIdentifier:(id)a3
++ (id)networkAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  v6 = [v5 _networkAssertionWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInstance = [self sharedInstance];
+  v6 = [sharedInstance _networkAssertionWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)copyCarrierBundleValue:(id)a3
+- (id)copyCarrierBundleValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   ctc = self->_ctc;
   v17 = 0;
   v6 = [(CoreTelephonyClient *)ctc getSubscriptionInfoWithError:&v17];
@@ -798,15 +798,15 @@ uint64_t __33__MFNetworkController_dataStatus__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [v6 subscriptions];
-    v9 = [v11 ef_firstObjectPassingTest:&__block_literal_global_59_0];
+    subscriptions = [v6 subscriptions];
+    v9 = [subscriptions ef_firstObjectPassingTest:&__block_literal_global_59_0];
 
     if (v9)
     {
       v12 = [objc_alloc(MEMORY[0x1E6964F68]) initWithBundleType:1];
       v13 = self->_ctc;
       v16 = 0;
-      v10 = [(CoreTelephonyClient *)v13 copyCarrierBundleValue:v9 key:v4 bundleType:v12 error:&v16];
+      v10 = [(CoreTelephonyClient *)v13 copyCarrierBundleValue:v9 key:valueCopy bundleType:v12 error:&v16];
       v8 = v16;
       if (v8)
       {
@@ -836,34 +836,34 @@ uint64_t __46__MFNetworkController_copyCarrierBundleValue___block_invoke(uint64_
   return v3;
 }
 
-+ (id)addNetworkObserverBlock:(id)a3 queue:(id)a4
++ (id)addNetworkObserverBlock:(id)block queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_MFNetworkObserver alloc] initWithBlock:v6 queue:v7];
-  v9 = [a1 observers];
+  blockCopy = block;
+  queueCopy = queue;
+  v8 = [[_MFNetworkObserver alloc] initWithBlock:blockCopy queue:queueCopy];
+  observers = [self observers];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__MFNetworkController_addNetworkObserverBlock_queue___block_invoke;
   v12[3] = &unk_1E7AA7358;
   v10 = v8;
   v13 = v10;
-  [v9 performWhileLocked:v12];
+  [observers performWhileLocked:v12];
 
   return v10;
 }
 
-+ (void)removeNetworkObserver:(id)a3
++ (void)removeNetworkObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [a1 observers];
+  observerCopy = observer;
+  observers = [self observers];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__MFNetworkController_removeNetworkObserver___block_invoke;
   v7[3] = &unk_1E7AA7358;
-  v6 = v4;
+  v6 = observerCopy;
   v8 = v6;
-  [v5 performWhileLocked:v7];
+  [observers performWhileLocked:v7];
 }
 
 - (EFObservable)networkObservable
@@ -921,16 +921,16 @@ void __40__MFNetworkController_networkObservable__block_invoke_2(uint64_t a1)
 - (EFObservable)wifiObservable
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFNetworkController *)self networkObservable];
+  networkObservable = [(MFNetworkController *)self networkObservable];
   v10[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v5 = [v3 startWith:v4];
+  v5 = [networkObservable startWith:v4];
   v6 = [v5 map:&__block_literal_global_67_0];
-  v7 = [v6 distinctUntilChanged];
+  distinctUntilChanged = [v6 distinctUntilChanged];
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return distinctUntilChanged;
 }
 
 id __37__MFNetworkController_wifiObservable__block_invoke(uint64_t a1, void *a2)
@@ -958,16 +958,16 @@ void __46__MFNetworkController__carrierBundleDidChange__block_invoke(uint64_t a1
   [v2 postNotificationName:@"MFCarrierBundleChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)connectionActivationError:(id)a3 connection:(int)a4 error:(int)a5
+- (void)connectionActivationError:(id)error connection:(int)connection error:(int)a5
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dataStatusQueue);
-  v9 = [v8 userDataPreferred];
-  v10 = [v9 BOOLValue];
+  userDataPreferred = [errorCopy userDataPreferred];
+  bOOLValue = [userDataPreferred BOOLValue];
 
-  v11 = v10 ^ 1;
-  if (a4)
+  v11 = bOOLValue ^ 1;
+  if (connection)
   {
     v11 = 1;
   }
@@ -978,7 +978,7 @@ void __46__MFNetworkController__carrierBundleDidChange__block_invoke(uint64_t a1
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412802;
-      v15 = v8;
+      v15 = errorCopy;
       v16 = 1024;
       v17 = 0;
       v18 = 1024;
@@ -990,49 +990,49 @@ void __46__MFNetworkController__carrierBundleDidChange__block_invoke(uint64_t a1
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dataStatusQueue);
   [(MFNetworkController *)self _carrierBundleDidChange];
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = [v4 slotID];
+    slotID = [changedCopy slotID];
     _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "#Network preferred data sim was changed to slot %lu", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
-  v9 = a3;
-  v6 = a4;
+  statusCopy = status;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dataStatusQueue);
-  v7 = [v9 userDataPreferred];
-  v8 = [v7 BOOLValue];
+  userDataPreferred = [statusCopy userDataPreferred];
+  bOOLValue = [userDataPreferred BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    [(MFNetworkController *)self _setDataStatus_nts:v6];
+    [(MFNetworkController *)self _setDataStatus_nts:infoCopy];
   }
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x1E6965470]])
+  changeCopy = change;
+  statusCopy = status;
+  if ([statusCopy isEqualToString:*MEMORY[0x1E6965470]])
   {
     v8 = MFLogGeneral();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = [v6 slotID];
+      slotID = [changeCopy slotID];
       _os_log_impl(&dword_1B0389000, v8, OS_LOG_TYPE_DEFAULT, "#Network SIM is now ready (slot %lu)", &v10, 0xCu);
     }
 
@@ -1042,7 +1042,7 @@ void __46__MFNetworkController__carrierBundleDidChange__block_invoke(uint64_t a1
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   dispatch_assert_queue_V2(self->_dataStatusQueue);
 

@@ -1,50 +1,50 @@
 @interface REEpubPlugin
-- (REEpubPlugin)initWithStoreController:(id)a3 engagementManager:(id)a4;
-- (id)helperForURL:(id)a3 withOptions:(id)a4;
-- (id)newViewControllerForAEBookInfo:(id)a3 storeID:(id)a4;
-- (void)prewarmSharedResourcesWithCompletion:(id)a3;
+- (REEpubPlugin)initWithStoreController:(id)controller engagementManager:(id)manager;
+- (id)helperForURL:(id)l withOptions:(id)options;
+- (id)newViewControllerForAEBookInfo:(id)info storeID:(id)d;
+- (void)prewarmSharedResourcesWithCompletion:(id)completion;
 @end
 
 @implementation REEpubPlugin
 
-- (REEpubPlugin)initWithStoreController:(id)a3 engagementManager:(id)a4
+- (REEpubPlugin)initWithStoreController:(id)controller engagementManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = REEpubPlugin;
   v8 = [(REEpubPlugin *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(REEpubPlugin *)v8 setStoreController:v6];
-    [(REEpubPlugin *)v9 setEngagementManager:v7];
+    [(REEpubPlugin *)v8 setStoreController:controllerCopy];
+    [(REEpubPlugin *)v9 setEngagementManager:managerCopy];
   }
 
   return v9;
 }
 
-- (id)newViewControllerForAEBookInfo:(id)a3 storeID:(id)a4
+- (id)newViewControllerForAEBookInfo:(id)info storeID:(id)d
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 BOOLForKey:@"REI.EnableFixedLayout"];
 
-  if (v5 && (![v5 isFixedLayout] || v7 && objc_msgSend(v5, "isFixedLayout")) && (objc_msgSend(v5, "dcTermsContributor"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hasPrefix:", @"iBooks Author"), v8, (v9 & 1) == 0))
+  if (infoCopy && (![infoCopy isFixedLayout] || v7 && objc_msgSend(infoCopy, "isFixedLayout")) && (objc_msgSend(infoCopy, "dcTermsContributor"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "hasPrefix:", @"iBooks Author"), v8, (v9 & 1) == 0))
   {
     v12 = +[BKAppDelegate sceneManager];
-    v13 = [v12 currentSceneController];
+    currentSceneController = [v12 currentSceneController];
 
-    v14 = [v13 _mainViewControllerForModalPresenting];
-    if (v14)
+    _mainViewControllerForModalPresenting = [currentSceneController _mainViewControllerForModalPresenting];
+    if (_mainViewControllerForModalPresenting)
     {
-      v15 = [[REBookReaderHostLayoutController alloc] initWithViewController:v14];
+      v15 = [[REBookReaderHostLayoutController alloc] initWithViewController:_mainViewControllerForModalPresenting];
       v16 = [REBookReaderModuleHost alloc];
       v17 = +[AEAnnotationProvider sharedInstance];
-      v18 = [(REEpubPlugin *)self storeController];
-      v19 = [v5 styleManager];
-      v20 = [(REEpubPlugin *)self engagementManager];
-      v10 = [(REBookReaderModuleHost *)v16 initWithHostEnvironmentProvider:v15 book:v5 annotationProvider:v17 storeController:v18 styleManager:v19 engagementManager:v20];
+      storeController = [(REEpubPlugin *)self storeController];
+      styleManager = [infoCopy styleManager];
+      engagementManager = [(REEpubPlugin *)self engagementManager];
+      v10 = [(REBookReaderModuleHost *)v16 initWithHostEnvironmentProvider:v15 book:infoCopy annotationProvider:v17 storeController:storeController styleManager:styleManager engagementManager:engagementManager];
     }
 
     else
@@ -61,31 +61,31 @@
   return v10;
 }
 
-- (void)prewarmSharedResourcesWithCompletion:(id)a3
+- (void)prewarmSharedResourcesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NSLocale preferredLanguages];
   v9 = [v4 objectAtIndexedSubscript:0];
 
   if (v9 && ([NSLocale localeWithLocaleIdentifier:?], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 languageCode];
+    languageCode = [v5 languageCode];
   }
 
   else
   {
-    v7 = @"en";
+    languageCode = @"en";
   }
 
   v8 = +[BKFontCache sharedInstance];
-  [v8 prewarmFontsForLanguage:v7 completion:v3];
+  [v8 prewarmFontsForLanguage:languageCode completion:completionCopy];
 }
 
-- (id)helperForURL:(id)a3 withOptions:(id)a4
+- (id)helperForURL:(id)l withOptions:(id)options
 {
-  v5 = a3;
-  v6 = [[AEEPubBookHelper alloc] initWithDelegate:self forURL:v5];
+  lCopy = l;
+  v6 = [[AEEPubBookHelper alloc] initWithDelegate:self forURL:lCopy];
 
   return v6;
 }

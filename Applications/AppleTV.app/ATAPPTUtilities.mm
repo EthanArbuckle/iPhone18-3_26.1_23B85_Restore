@@ -1,29 +1,29 @@
 @interface ATAPPTUtilities
-+ (BOOL)_selectButtonWithTitle:(id)a3 inView:(id)a4;
-+ (BOOL)performScrollViewTest:(id)a3 testOptions:(id)a4 scrollAxis:(unint64_t)a5 tabBarController:(id)a6 scrollViewBlock:(id)a7;
-+ (BOOL)selectButtonWithTitle:(id)a3 inShelf:(id)a4 inTabBarController:(id)a5;
-+ (BOOL)selectButtonWithTitle:(id)a3 inTabBarController:(id)a4;
-+ (BOOL)selectFirstShelfWithButtonTitle:(id)a3 inTabBarController:(id)a4;
-+ (BOOL)selectTabWithTitle:(id)a3 inTabBarController:(id)a4;
-+ (id)_cellWithTitle:(id)a3 inViewController:(id)a4 returningCollectionView:(id *)a5;
-+ (id)_findCollectionViewInView:(id)a3;
-+ (id)_findLabelInView:(id)a3;
-+ (id)_findLabelWithTitle:(id)a3 inView:(id)a4;
-+ (id)_findScrollViewInViewController:(id)a3;
-+ (id)_findShelfViewControllerInViewController:(id)a3 withShelfRow:(unint64_t)a4;
-+ (id)_findShelfViewControllerInViewController:(id)a3 withTitle:(id)a4;
-+ (id)_findTVButtonWithTitle:(id)a3 inView:(id)a4;
-+ (id)_findUIButtonWithTitle:(id)a3 inView:(id)a4;
-+ (id)_findVUIRoundButtonWithTitle:(id)a3 inView:(id)a4;
-+ (id)_findViewOfType:(Class)a3 inView:(id)a4 withFilter:(id)a5;
-+ (id)_topViewControllerInTabBarController:(id)a3;
-+ (id)findScrollViewByIndexInStackCollectionView:(id)a3 index:(unint64_t)a4;
-+ (id)findScrollViewInView:(id)a3 desiredScrollViewClass:(Class)a4;
++ (BOOL)_selectButtonWithTitle:(id)title inView:(id)view;
++ (BOOL)performScrollViewTest:(id)test testOptions:(id)options scrollAxis:(unint64_t)axis tabBarController:(id)controller scrollViewBlock:(id)block;
++ (BOOL)selectButtonWithTitle:(id)title inShelf:(id)shelf inTabBarController:(id)controller;
++ (BOOL)selectButtonWithTitle:(id)title inTabBarController:(id)controller;
++ (BOOL)selectFirstShelfWithButtonTitle:(id)title inTabBarController:(id)controller;
++ (BOOL)selectTabWithTitle:(id)title inTabBarController:(id)controller;
++ (id)_cellWithTitle:(id)title inViewController:(id)controller returningCollectionView:(id *)view;
++ (id)_findCollectionViewInView:(id)view;
++ (id)_findLabelInView:(id)view;
++ (id)_findLabelWithTitle:(id)title inView:(id)view;
++ (id)_findScrollViewInViewController:(id)controller;
++ (id)_findShelfViewControllerInViewController:(id)controller withShelfRow:(unint64_t)row;
++ (id)_findShelfViewControllerInViewController:(id)controller withTitle:(id)title;
++ (id)_findTVButtonWithTitle:(id)title inView:(id)view;
++ (id)_findUIButtonWithTitle:(id)title inView:(id)view;
++ (id)_findVUIRoundButtonWithTitle:(id)title inView:(id)view;
++ (id)_findViewOfType:(Class)type inView:(id)view withFilter:(id)filter;
++ (id)_topViewControllerInTabBarController:(id)controller;
++ (id)findScrollViewByIndexInStackCollectionView:(id)view index:(unint64_t)index;
++ (id)findScrollViewInView:(id)view desiredScrollViewClass:(Class)class;
 + (id)prepareForPPT;
 + (id)testLog;
 + (id)testOperationQueue;
 + (id)topMostController;
-+ (void)waitForNotificiation:(id)a3;
++ (void)waitForNotificiation:(id)notificiation;
 @end
 
 @implementation ATAPPTUtilities
@@ -52,17 +52,17 @@
   return v3;
 }
 
-+ (BOOL)performScrollViewTest:(id)a3 testOptions:(id)a4 scrollAxis:(unint64_t)a5 tabBarController:(id)a6 scrollViewBlock:(id)a7
++ (BOOL)performScrollViewTest:(id)test testOptions:(id)options scrollAxis:(unint64_t)axis tabBarController:(id)controller scrollViewBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  testCopy = test;
+  optionsCopy = options;
+  controllerCopy = controller;
+  blockCopy = block;
   v16 = +[ATAPPTUtilities testLog];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v12;
+    *(&buf + 4) = testCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Running scrollview test '%@'", &buf, 0xCu);
   }
 
@@ -77,8 +77,8 @@
   block[2] = sub_100006F54;
   block[3] = &unk_10001D148;
   p_buf = &buf;
-  v59 = a1;
-  v17 = v14;
+  selfCopy = self;
+  v17 = controllerCopy;
   v57 = v17;
   dispatch_sync(&_dispatch_main_q, block);
   usleep(0xF4240u);
@@ -92,17 +92,17 @@
   v45[1] = 3221225472;
   v45[2] = sub_100006FE4;
   v45[3] = &unk_10001D170;
-  v18 = v15;
+  v18 = blockCopy;
   v46 = v18;
   v47 = &v50;
   v48 = &buf;
-  v49 = a1;
+  selfCopy2 = self;
   dispatch_sync(&_dispatch_main_q, v45);
 
   if (v51[5])
   {
-    v19 = [v12 lowercaseString];
-    v20 = [v19 containsString:@"landscape"];
+    lowercaseString = [testCopy lowercaseString];
+    v20 = [lowercaseString containsString:@"landscape"];
 
     if (v20)
     {
@@ -118,8 +118,8 @@
       v41 = &v50;
       v43 = 30;
       v44 = (Height * 5.0);
-      v42 = a5;
-      v39 = v12;
+      axisCopy = axis;
+      v39 = testCopy;
       v40 = v21;
       v24 = v21;
       dispatch_sync(&_dispatch_main_q, v38);
@@ -139,8 +139,8 @@ LABEL_8:
       v34[2] = sub_100007138;
       v34[3] = &unk_10001D148;
       v36 = &v50;
-      v37 = a5;
-      v35 = v12;
+      axisCopy2 = axis;
+      v35 = testCopy;
       dispatch_sync(&_dispatch_main_q, v34);
 
       v24 = v35;
@@ -151,7 +151,7 @@ LABEL_8:
   v24 = +[ATAPPTUtilities testLog];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    sub_1000127C8(v12, v24, v27, v28, v29, v30, v31, v32);
+    sub_1000127C8(testCopy, v24, v27, v28, v29, v30, v31, v32);
   }
 
   v26 = 0;
@@ -184,26 +184,26 @@ LABEL_12:
   return v2;
 }
 
-+ (BOOL)selectButtonWithTitle:(id)a3 inTabBarController:(id)a4
++ (BOOL)selectButtonWithTitle:(id)title inTabBarController:(id)controller
 {
-  v6 = a3;
-  v7 = [a1 _topViewControllerInTabBarController:a4];
-  v8 = [v7 view];
-  if ([a1 _selectButtonWithTitle:v6 inView:v8])
+  titleCopy = title;
+  v7 = [self _topViewControllerInTabBarController:controller];
+  view = [v7 view];
+  if ([self _selectButtonWithTitle:titleCopy inView:view])
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v7 navigationController];
-    v11 = [v10 navigationBar];
+    navigationController = [v7 navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    if (v11)
+    if (navigationBar)
     {
-      v12 = [v7 navigationController];
-      v13 = [v12 navigationBar];
-      v9 = [a1 _selectButtonWithTitle:v6 inView:v13];
+      navigationController2 = [v7 navigationController];
+      navigationBar2 = [navigationController2 navigationBar];
+      v9 = [self _selectButtonWithTitle:titleCopy inView:navigationBar2];
     }
 
     else
@@ -215,17 +215,17 @@ LABEL_12:
   return v9;
 }
 
-+ (BOOL)selectButtonWithTitle:(id)a3 inShelf:(id)a4 inTabBarController:(id)a5
++ (BOOL)selectButtonWithTitle:(id)title inShelf:(id)shelf inTabBarController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _topViewControllerInTabBarController:a5];
-  v11 = [a1 _findShelfViewControllerInViewController:v10 withTitle:v9];
+  titleCopy = title;
+  shelfCopy = shelf;
+  v10 = [self _topViewControllerInTabBarController:controller];
+  v11 = [self _findShelfViewControllerInViewController:v10 withTitle:shelfCopy];
 
   if (v11)
   {
-    v12 = [v11 view];
-    v13 = [a1 _selectButtonWithTitle:v8 inView:v12];
+    view = [v11 view];
+    v13 = [self _selectButtonWithTitle:titleCopy inView:view];
   }
 
   else
@@ -236,12 +236,12 @@ LABEL_12:
   return v13;
 }
 
-+ (BOOL)selectFirstShelfWithButtonTitle:(id)a3 inTabBarController:(id)a4
++ (BOOL)selectFirstShelfWithButtonTitle:(id)title inTabBarController:(id)controller
 {
-  v6 = a3;
-  v7 = [a1 _topViewControllerInTabBarController:a4];
-  v8 = [v7 childViewControllers];
-  v9 = [v8 count];
+  titleCopy = title;
+  v7 = [self _topViewControllerInTabBarController:controller];
+  childViewControllers = [v7 childViewControllers];
+  v9 = [childViewControllers count];
 
   v10 = 0;
   if (v9)
@@ -250,12 +250,12 @@ LABEL_12:
     while (1)
     {
       v12 = v10;
-      v10 = [a1 _findShelfViewControllerInViewController:v7 withShelfRow:v11];
+      v10 = [self _findShelfViewControllerInViewController:v7 withShelfRow:v11];
 
       if (v10)
       {
-        v13 = [v10 view];
-        v14 = [a1 _selectButtonWithTitle:v6 inView:v13];
+        view = [v10 view];
+        v14 = [self _selectButtonWithTitle:titleCopy inView:view];
 
         if (v14)
         {
@@ -264,8 +264,8 @@ LABEL_12:
       }
 
       ++v11;
-      v15 = [v7 childViewControllers];
-      v16 = [v15 count];
+      childViewControllers2 = [v7 childViewControllers];
+      v16 = [childViewControllers2 count];
 
       if (v11 >= v16)
       {
@@ -273,8 +273,8 @@ LABEL_12:
       }
     }
 
-    v25 = [v10 view];
-    v24 = [a1 _selectButtonWithTitle:v6 inView:v25];
+    view2 = [v10 view];
+    v24 = [self _selectButtonWithTitle:titleCopy inView:view2];
   }
 
   else
@@ -283,7 +283,7 @@ LABEL_6:
     v17 = +[ATAPPTUtilities testLog];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_100012834(v6, v17, v18, v19, v20, v21, v22, v23);
+      sub_100012834(titleCopy, v17, v18, v19, v20, v21, v22, v23);
     }
 
     v24 = 0;
@@ -292,9 +292,9 @@ LABEL_6:
   return v24;
 }
 
-+ (BOOL)selectTabWithTitle:(id)a3 inTabBarController:(id)a4
++ (BOOL)selectTabWithTitle:(id)title inTabBarController:(id)controller
 {
-  v6 = a3;
+  titleCopy = title;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -307,59 +307,59 @@ LABEL_6:
   v11 = 3221225472;
   v12 = sub_1000077E8;
   v13 = &unk_10001D250;
-  v7 = a4;
-  v14 = v7;
-  v8 = v6;
+  controllerCopy = controller;
+  v14 = controllerCopy;
+  v8 = titleCopy;
   v15 = v8;
   v16 = v18;
   v17 = v20;
   dispatch_sync(&_dispatch_main_q, &v10);
-  LOBYTE(a1) = [a1 _blockExecutionInTabBarController:v7 documentRef:v8 totalChildren:{1, v10, v11, v12, v13}];
+  LOBYTE(self) = [self _blockExecutionInTabBarController:controllerCopy documentRef:v8 totalChildren:{1, v10, v11, v12, v13}];
 
   _Block_object_dispose(v18, 8);
   _Block_object_dispose(v20, 8);
 
-  return a1;
+  return self;
 }
 
-+ (void)waitForNotificiation:(id)a3
++ (void)waitForNotificiation:(id)notificiation
 {
-  v4 = a3;
+  notificiationCopy = notificiation;
   v5 = dispatch_semaphore_create(0);
   v6 = +[NSNotificationCenter defaultCenter];
-  v7 = [a1 testOperationQueue];
+  testOperationQueue = [self testOperationQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100007B58;
   v11[3] = &unk_10001D278;
   v12 = v5;
   v8 = v5;
-  v9 = [v6 addObserverForName:v4 object:0 queue:v7 usingBlock:v11];
+  v9 = [v6 addObserverForName:notificiationCopy object:0 queue:testOperationQueue usingBlock:v11];
 
   v10 = dispatch_time(0, 180000000000);
   dispatch_semaphore_wait(v8, v10);
 }
 
-+ (id)findScrollViewInView:(id)a3 desiredScrollViewClass:(Class)a4
++ (id)findScrollViewInView:(id)view desiredScrollViewClass:(Class)class
 {
-  v5 = a3;
-  v6 = [objc_opt_class() findScrollViewInView:v5 desiredScrollViewClass:a4 numScrollViewsToSkip:0];
+  viewCopy = view;
+  v6 = [objc_opt_class() findScrollViewInView:viewCopy desiredScrollViewClass:class numScrollViewsToSkip:0];
 
   return v6;
 }
 
-+ (id)findScrollViewByIndexInStackCollectionView:(id)a3 index:(unint64_t)a4
++ (id)findScrollViewByIndexInStackCollectionView:(id)view index:(unint64_t)index
 {
-  v5 = [a3 view];
-  v6 = [ATAPPTUtilities findScrollViewInView:v5 desiredScrollViewClass:NSClassFromString(@"VideosUI.StackCollectionView")];
+  view = [view view];
+  v6 = [ATAPPTUtilities findScrollViewInView:view desiredScrollViewClass:NSClassFromString(@"VideosUI.StackCollectionView")];
 
   v7 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v6 subviews];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  subviews = [v6 subviews];
+  v9 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -370,7 +370,7 @@ LABEL_6:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
@@ -381,7 +381,7 @@ LABEL_6:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -389,9 +389,9 @@ LABEL_6:
 
   v14 = [v7 sortedArrayUsingComparator:&stru_10001D2B8];
   v15 = v14;
-  if (v14 && [v14 count] > a4)
+  if (v14 && [v14 count] > index)
   {
-    v16 = [v15 objectAtIndexedSubscript:a4];
+    v16 = [v15 objectAtIndexedSubscript:index];
   }
 
   else
@@ -402,14 +402,14 @@ LABEL_6:
   return v16;
 }
 
-+ (id)_cellWithTitle:(id)a3 inViewController:(id)a4 returningCollectionView:(id *)a5
++ (id)_cellWithTitle:(id)title inViewController:(id)controller returningCollectionView:(id *)view
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 collectionView];
-    if (!v10)
+    collectionView = [controllerCopy collectionView];
+    if (!collectionView)
     {
       goto LABEL_16;
     }
@@ -417,10 +417,10 @@ LABEL_6:
 
   else
   {
-    v11 = [v9 view];
-    v10 = [a1 _findCollectionViewInView:v11];
+    view = [controllerCopy view];
+    collectionView = [self _findCollectionViewInView:view];
 
-    if (!v10)
+    if (!collectionView)
     {
 LABEL_16:
       v18 = 0;
@@ -428,26 +428,26 @@ LABEL_16:
     }
   }
 
-  v12 = [v10 visibleCells];
-  v27 = [v10 numberOfSections];
-  if (!v27)
+  visibleCells = [collectionView visibleCells];
+  numberOfSections = [collectionView numberOfSections];
+  if (!numberOfSections)
   {
     goto LABEL_16;
   }
 
-  v25 = a5;
-  v26 = v9;
+  viewCopy = view;
+  v26 = controllerCopy;
   v13 = 0;
   while (1)
   {
-    v14 = [v10 numberOfItemsInSection:v13];
+    v14 = [collectionView numberOfItemsInSection:v13];
     if (v14)
     {
       break;
     }
 
 LABEL_14:
-    if (++v13 == v27)
+    if (++v13 == numberOfSections)
     {
       v18 = 0;
       goto LABEL_20;
@@ -459,7 +459,7 @@ LABEL_14:
   while (1)
   {
     v17 = [NSIndexPath indexPathForItem:v16 inSection:v13];
-    v18 = [v10 cellForItemAtIndexPath:v17];
+    v18 = [collectionView cellForItemAtIndexPath:v17];
 
     if (v18)
     {
@@ -474,38 +474,38 @@ LABEL_13:
     }
   }
 
-  v19 = [a1 _findLabelInView:v18];
-  if ([v8 length])
+  v19 = [self _findLabelInView:v18];
+  if ([titleCopy length])
   {
     [v19 text];
-    v21 = v20 = a1;
-    v22 = [v21 isEqualToString:v8];
+    v21 = v20 = self;
+    v22 = [v21 isEqualToString:titleCopy];
 
     if (!v22)
     {
-      a1 = v20;
+      self = v20;
 
       goto LABEL_13;
     }
   }
 
-  if (v25)
+  if (viewCopy)
   {
-    v23 = v10;
-    *v25 = v10;
+    v23 = collectionView;
+    *viewCopy = collectionView;
   }
 
 LABEL_20:
-  v9 = v26;
+  controllerCopy = v26;
 LABEL_21:
 
   return v18;
 }
 
-+ (id)_findCollectionViewInView:(id)a3
++ (id)_findCollectionViewInView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 _findViewOfType:objc_opt_class() inView:v4 withFilter:0];
+  viewCopy = view;
+  v5 = [self _findViewOfType:objc_opt_class() inView:viewCopy withFilter:0];
 
   objc_opt_class();
   v6 = 0;
@@ -517,10 +517,10 @@ LABEL_21:
   return v6;
 }
 
-+ (id)_findLabelInView:(id)a3
++ (id)_findLabelInView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 _findViewOfType:objc_opt_class() inView:v4 withFilter:0];
+  viewCopy = view;
+  v5 = [self _findViewOfType:objc_opt_class() inView:viewCopy withFilter:0];
 
   objc_opt_class();
   v6 = 0;
@@ -532,18 +532,18 @@ LABEL_21:
   return v6;
 }
 
-+ (id)_findLabelWithTitle:(id)a3 inView:(id)a4
++ (id)_findLabelWithTitle:(id)title inView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  viewCopy = view;
   v8 = objc_opt_class();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100008838;
   v13[3] = &unk_10001D308;
-  v9 = v6;
+  v9 = titleCopy;
   v14 = v9;
-  v10 = [a1 _findViewOfType:v8 inView:v7 withFilter:v13];
+  v10 = [self _findViewOfType:v8 inView:viewCopy withFilter:v13];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -559,15 +559,15 @@ LABEL_21:
   return v11;
 }
 
-+ (id)_findViewOfType:(Class)a3 inView:(id)a4 withFilter:(id)a5
++ (id)_findViewOfType:(Class)type inView:(id)view withFilter:(id)filter
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  viewCopy = view;
+  filterCopy = filter;
+  if (viewCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v10 = v8;
+      v10 = viewCopy;
       goto LABEL_19;
     }
 
@@ -575,8 +575,8 @@ LABEL_21:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [v8 subviews];
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    subviews = [viewCopy subviews];
+    v12 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -587,14 +587,14 @@ LABEL_21:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subviews);
           }
 
-          v10 = [a1 _findViewOfType:a3 inView:*(*(&v18 + 1) + 8 * i) withFilter:v9];
+          v10 = [self _findViewOfType:type inView:*(*(&v18 + 1) + 8 * i) withFilter:filterCopy];
           v16 = 1;
-          if (v9 && v10)
+          if (filterCopy && v10)
           {
-            v16 = v9[2](v9, v10);
+            v16 = filterCopy[2](filterCopy, v10);
           }
 
           if (v10 && (v16 & 1) != 0)
@@ -604,7 +604,7 @@ LABEL_21:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v13 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v13)
         {
           continue;
@@ -621,32 +621,32 @@ LABEL_19:
   return v10;
 }
 
-+ (id)_findScrollViewInViewController:(id)a3
++ (id)_findScrollViewInViewController:(id)controller
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 performSelector:"collectionView" withObject:0], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v4, "performSelector:withObject:", "tableView", 0), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  controllerCopy = controller;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([controllerCopy performSelector:"collectionView" withObject:0], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(controllerCopy, "performSelector:withObject:", "tableView", 0), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
   }
 
   else
   {
-    v7 = [v4 view];
-    v6 = [a1 findScrollViewInView:v7 desiredScrollViewClass:0];
+    view = [controllerCopy view];
+    v6 = [self findScrollViewInView:view desiredScrollViewClass:0];
   }
 
   return v6;
 }
 
-+ (id)_findShelfViewControllerInViewController:(id)a3 withTitle:(id)a4
++ (id)_findShelfViewControllerInViewController:(id)controller withTitle:(id)title
 {
-  v6 = a4;
+  titleCopy = title;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [a3 childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childViewControllers = [controller childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -657,12 +657,12 @@ LABEL_19:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 view];
-        v14 = [a1 _findLabelWithTitle:v6 inView:v13];
+        view = [v12 view];
+        v14 = [self _findLabelWithTitle:titleCopy inView:view];
 
         if (v14)
         {
@@ -672,7 +672,7 @@ LABEL_19:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -688,20 +688,20 @@ LABEL_11:
   return v15;
 }
 
-+ (id)_findShelfViewControllerInViewController:(id)a3 withShelfRow:(unint64_t)a4
++ (id)_findShelfViewControllerInViewController:(id)controller withShelfRow:(unint64_t)row
 {
-  v5 = [a3 childViewControllers];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  childViewControllers = [controller childViewControllers];
+  v6 = [childViewControllers objectAtIndexedSubscript:row];
 
   return v6;
 }
 
-+ (BOOL)_selectButtonWithTitle:(id)a3 inView:(id)a4
++ (BOOL)_selectButtonWithTitle:(id)title inView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _findTVButtonWithTitle:v6 inView:v7];
-  if (v8 || ([a1 _findUIButtonWithTitle:v6 inView:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(a1, "_findVUIRoundButtonWithTitle:inView:", v6, v7), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  titleCopy = title;
+  viewCopy = view;
+  v8 = [self _findTVButtonWithTitle:titleCopy inView:viewCopy];
+  if (v8 || ([self _findUIButtonWithTitle:titleCopy inView:viewCopy], (v8 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(self, "_findVUIRoundButtonWithTitle:inView:", titleCopy, viewCopy), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -722,24 +722,24 @@ LABEL_11:
   return v10;
 }
 
-+ (id)_findVUIRoundButtonWithTitle:(id)a3 inView:(id)a4
++ (id)_findVUIRoundButtonWithTitle:(id)title inView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  viewCopy = view;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100008FFC;
   v20[3] = &unk_10001D330;
   v22 = NSClassFromString(@"VUIRoundButton");
-  v8 = v6;
+  v8 = titleCopy;
   v21 = v8;
-  v9 = [a1 _findViewOfType:v22 inView:v7 withFilter:v20];
+  v9 = [self _findViewOfType:v22 inView:viewCopy withFilter:v20];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v9 subviews];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v23 count:16];
+  subviews = [v9 subviews];
+  v11 = [subviews countByEnumeratingWithState:&v16 objects:v23 count:16];
   if (v11)
   {
     v12 = *v17;
@@ -749,7 +749,7 @@ LABEL_11:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
@@ -761,7 +761,7 @@ LABEL_11:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v16 objects:v23 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v16 objects:v23 count:16];
       if (v11)
       {
         continue;
@@ -776,80 +776,80 @@ LABEL_11:
   return v11;
 }
 
-+ (id)_findTVButtonWithTitle:(id)a3 inView:(id)a4
++ (id)_findTVButtonWithTitle:(id)title inView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  viewCopy = view;
   v8 = NSClassFromString(@"TVButton");
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100009230;
   v12[3] = &unk_10001D308;
-  v13 = v6;
-  v9 = v6;
-  v10 = [a1 _findViewOfType:v8 inView:v7 withFilter:v12];
+  v13 = titleCopy;
+  v9 = titleCopy;
+  v10 = [self _findViewOfType:v8 inView:viewCopy withFilter:v12];
 
   return v10;
 }
 
-+ (id)_findUIButtonWithTitle:(id)a3 inView:(id)a4
++ (id)_findUIButtonWithTitle:(id)title inView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  viewCopy = view;
   v8 = objc_opt_class();
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000093F0;
   v12[3] = &unk_10001D308;
-  v13 = v6;
-  v9 = v6;
-  v10 = [a1 _findViewOfType:v8 inView:v7 withFilter:v12];
+  v13 = titleCopy;
+  v9 = titleCopy;
+  v10 = [self _findViewOfType:v8 inView:viewCopy withFilter:v12];
 
   return v10;
 }
 
-+ (id)_topViewControllerInTabBarController:(id)a3
++ (id)_topViewControllerInTabBarController:(id)controller
 {
-  v3 = [a3 selectedViewController];
-  v4 = [v3 topViewController];
+  selectedViewController = [controller selectedViewController];
+  topViewController = [selectedViewController topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 templateViewController];
+    templateViewController = [topViewController templateViewController];
 
-    v4 = v5;
+    topViewController = templateViewController;
   }
 
-  return v4;
+  return topViewController;
 }
 
 + (id)topMostController
 {
   v2 = +[UIWindow keyWindow];
-  v3 = [v2 rootViewController];
+  rootViewController = [v2 rootViewController];
 
-  v4 = [v3 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     do
     {
-      v5 = [v3 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v6 = [v5 presentedViewController];
+      v5PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v3 = v5;
+      rootViewController = presentedViewController2;
     }
 
-    while (v6);
+    while (v5PresentedViewController);
   }
 
   else
   {
-    v5 = v3;
+    presentedViewController2 = rootViewController;
   }
 
-  return v5;
+  return presentedViewController2;
 }
 
 @end

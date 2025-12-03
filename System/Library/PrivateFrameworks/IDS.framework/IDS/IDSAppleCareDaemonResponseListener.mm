@@ -1,36 +1,36 @@
 @interface IDSAppleCareDaemonResponseListener
-- (IDSAppleCareDaemonResponseListener)initWithDisconnectedBlockAndNoTimeout:(id)a3;
-- (IDSAppleCareDaemonResponseListener)initWithRequestTimer:(id)a3;
-- (void)applecareResponseForRequestID:(id)a3 withError:(id)a4;
+- (IDSAppleCareDaemonResponseListener)initWithDisconnectedBlockAndNoTimeout:(id)timeout;
+- (IDSAppleCareDaemonResponseListener)initWithRequestTimer:(id)timer;
+- (void)applecareResponseForRequestID:(id)d withError:(id)error;
 - (void)daemonDisconnected;
 @end
 
 @implementation IDSAppleCareDaemonResponseListener
 
-- (IDSAppleCareDaemonResponseListener)initWithRequestTimer:(id)a3
+- (IDSAppleCareDaemonResponseListener)initWithRequestTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   v9.receiver = self;
   v9.super_class = IDSAppleCareDaemonResponseListener;
   v6 = [(IDSAppleCareDaemonResponseListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestTimer, a3);
+    objc_storeStrong(&v6->_requestTimer, timer);
   }
 
   return v7;
 }
 
-- (IDSAppleCareDaemonResponseListener)initWithDisconnectedBlockAndNoTimeout:(id)a3
+- (IDSAppleCareDaemonResponseListener)initWithDisconnectedBlockAndNoTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v9.receiver = self;
   v9.super_class = IDSAppleCareDaemonResponseListener;
   v5 = [(IDSAppleCareDaemonResponseListener *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [timeoutCopy copy];
     disconnectedBlock = v5->_disconnectedBlock;
     v5->_disconnectedBlock = v6;
   }
@@ -38,16 +38,16 @@
   return v5;
 }
 
-- (void)applecareResponseForRequestID:(id)a3 withError:(id)a4
+- (void)applecareResponseForRequestID:(id)d withError:(id)error
 {
-  v6 = a4;
-  v7 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:a3];
-  v8 = [v7 block];
-  v9 = [v7 queue];
-  v10 = v9;
-  if (v8)
+  errorCopy = error;
+  v7 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:d];
+  block = [v7 block];
+  queue = [v7 queue];
+  v10 = queue;
+  if (block)
   {
-    v11 = v9 == 0;
+    v11 = queue == 0;
   }
 
   else
@@ -61,8 +61,8 @@
     v12[1] = 3221225472;
     v12[2] = sub_195A4C100;
     v12[3] = &unk_1E743EAA8;
-    v13 = v6;
-    v14 = v8;
+    v13 = errorCopy;
+    v14 = block;
     dispatch_async(v10, v12);
   }
 }

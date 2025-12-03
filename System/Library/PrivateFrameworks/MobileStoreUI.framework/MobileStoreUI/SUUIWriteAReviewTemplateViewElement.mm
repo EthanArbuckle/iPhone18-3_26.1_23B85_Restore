@@ -1,23 +1,23 @@
 @interface SUUIWriteAReviewTemplateViewElement
 - (NSString)reviewMetadataURLString;
-- (SUUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIWriteAReviewTemplateViewElement
 
-- (SUUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIWriteAReviewTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIWriteAReviewTemplateViewElement;
-  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"data-content-id"];
+    v10 = [elementCopy getAttribute:@"data-content-id"];
     v9->_itemIdentifier = [v10 longLongValue];
 
-    v11 = [v8 getAttribute:@"src"];
+    v11 = [elementCopy getAttribute:@"src"];
     reviewMetadataURLString = v9->_reviewMetadataURLString;
     v9->_reviewMetadataURLString = v11;
   }
@@ -55,8 +55,8 @@
     if (v22[5])
     {
       v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:self->_reviewMetadataURLString];
-      v10 = [v9 queryItems];
-      v11 = [v10 mutableCopy];
+      queryItems = [v9 queryItems];
+      v11 = [queryItems mutableCopy];
 
       if (!v11)
       {
@@ -70,9 +70,9 @@
 
       [v9 setQueryItems:v11];
       v15 = [v9 URL];
-      v16 = [v15 absoluteString];
+      absoluteString = [v15 absoluteString];
 
-      v3 = v16;
+      v3 = absoluteString;
     }
 
     _Block_object_dispose(&v21, 8);
@@ -92,19 +92,19 @@ void __62__SUUIWriteAReviewTemplateViewElement_reviewMetadataURLString__block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIWriteAReviewTemplateViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_itemIdentifier = [(SUUIWriteAReviewTemplateViewElement *)v4 itemIdentifier];
-    v7 = [(SUUIWriteAReviewTemplateViewElement *)v4 reviewMetadataURLString];
+    self->_itemIdentifier = [(SUUIWriteAReviewTemplateViewElement *)elementCopy itemIdentifier];
+    reviewMetadataURLString = [(SUUIWriteAReviewTemplateViewElement *)elementCopy reviewMetadataURLString];
     reviewMetadataURLString = self->_reviewMetadataURLString;
-    self->_reviewMetadataURLString = v7;
+    self->_reviewMetadataURLString = reviewMetadataURLString;
   }
 
   return v6;

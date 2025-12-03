@@ -36,8 +36,8 @@
     v5 = [v3 appendName:@"contactLimit" object:v4];
   }
 
-  v7 = [(CNVCardReadingOptions *)self propertiesToFetch];
-  v8 = [v3 appendName:@"propertiesToFetch" object:v7];
+  propertiesToFetch = [(CNVCardReadingOptions *)self propertiesToFetch];
+  v8 = [v3 appendName:@"propertiesToFetch" object:propertiesToFetch];
 
   if ([(CNVCardReadingOptions *)self maximumValueLength]== -1)
   {
@@ -51,9 +51,9 @@
   }
 
   v12 = [v3 appendName:@"useConcurrentParsing" BOOLValue:{-[CNVCardReadingOptions useConcurrentParsing](self, "useConcurrentParsing")}];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface GAXUnmanagedASAMViewController
-- (GAXUnmanagedASAMViewController)initWithApplicationDisplayName:(id)a3 resultHandler:(id)a4;
+- (GAXUnmanagedASAMViewController)initWithApplicationDisplayName:(id)name resultHandler:(id)handler;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GAXUnmanagedASAMViewController
 
-- (GAXUnmanagedASAMViewController)initWithApplicationDisplayName:(id)a3 resultHandler:(id)a4
+- (GAXUnmanagedASAMViewController)initWithApplicationDisplayName:(id)name resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = GAXUnmanagedASAMViewController;
   v8 = [(GAXUnmanagedASAMViewController *)&v10 init];
   if (v8)
   {
-    if (!v7)
+    if (!handlerCopy)
     {
       _AXAssert();
     }
 
-    [(GAXUnmanagedASAMViewController *)v8 setResultHandler:v7];
-    [(GAXUnmanagedASAMViewController *)v8 setAppDisplayName:v6];
+    [(GAXUnmanagedASAMViewController *)v8 setResultHandler:handlerCopy];
+    [(GAXUnmanagedASAMViewController *)v8 setAppDisplayName:nameCopy];
   }
 
   return v8;
@@ -34,9 +34,9 @@
   [(GAXUnmanagedASAMViewController *)self setView:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ((AXDeviceIsUnlocked() & 1) == 0)
   {
     v5 = GAXLogCommon();
@@ -48,18 +48,18 @@
 
   v6.receiver = self;
   v6.super_class = GAXUnmanagedASAMViewController;
-  [(GAXUnmanagedASAMViewController *)&v6 viewWillAppear:v3];
+  [(GAXUnmanagedASAMViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = GAXUnmanagedASAMViewController;
-  [(GAXUnmanagedASAMViewController *)&v19 viewDidAppear:a3];
+  [(GAXUnmanagedASAMViewController *)&v19 viewDidAppear:appear];
   v4 = AXDeviceGetLocalizedShortModelName();
   v5 = GAXLocString(@"APP_SELF_LOCK_CONFIRM_MESSAGE");
-  v6 = [(GAXUnmanagedASAMViewController *)self appDisplayName];
-  v7 = [NSString stringWithFormat:v5, v6, v4];
+  appDisplayName = [(GAXUnmanagedASAMViewController *)self appDisplayName];
+  v7 = [NSString stringWithFormat:v5, appDisplayName, v4];
 
   v8 = GAXLocString(@"APP_SELF_LOCK_CONFIRM_TITLE");
   v9 = [UIAlertController alertControllerWithTitle:v8 message:v7 preferredStyle:1];

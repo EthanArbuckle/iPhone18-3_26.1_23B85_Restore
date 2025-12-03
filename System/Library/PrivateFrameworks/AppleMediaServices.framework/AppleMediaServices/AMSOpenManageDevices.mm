@@ -2,20 +2,20 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSOpenManageDevices)initWithBag:(id)a3;
+- (AMSOpenManageDevices)initWithBag:(id)bag;
 - (id)open;
 @end
 
 @implementation AMSOpenManageDevices
 
-- (AMSOpenManageDevices)initWithBag:(id)a3
+- (AMSOpenManageDevices)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v6 = [(AMSTask *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
   }
 
   return v7;
@@ -29,9 +29,9 @@
   v5[3] = &unk_1E73B3588;
   v5[4] = self;
   v2 = [(AMSTask *)self performTaskWithPromiseBlock:v5];
-  v3 = [v2 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v2 binaryPromiseAdapter];
 
-  return v3;
+  return binaryPromiseAdapter;
 }
 
 id __28__AMSOpenManageDevices_open__block_invoke(uint64_t a1)
@@ -268,9 +268,9 @@ void __44__AMSOpenManageDevices_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

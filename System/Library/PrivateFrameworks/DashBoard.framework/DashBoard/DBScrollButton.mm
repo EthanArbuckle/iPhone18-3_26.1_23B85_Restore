@@ -1,32 +1,32 @@
 @interface DBScrollButton
-+ (id)buttonWithDirection:(unint64_t)a3;
++ (id)buttonWithDirection:(unint64_t)direction;
 - (void)_updateImage;
-- (void)setEnabled:(BOOL)a3;
-- (void)setScrollImage:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setScrollImage:(id)image;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBScrollButton
 
 - (void)_updateImage
 {
-  v3 = [(DBScrollButton *)self scrollImage];
-  v4 = [MEMORY[0x277D75348] _labelColor];
-  v5 = [v3 _flatImageWithColor:v4];
+  scrollImage = [(DBScrollButton *)self scrollImage];
+  _labelColor = [MEMORY[0x277D75348] _labelColor];
+  v5 = [scrollImage _flatImageWithColor:_labelColor];
   [(DBScrollButton *)self setImage:v5 forState:0];
 
-  v8 = [(DBScrollButton *)self scrollImage];
-  v6 = [MEMORY[0x277D75348] _carSystemTertiaryColor];
-  v7 = [v8 _flatImageWithColor:v6];
+  scrollImage2 = [(DBScrollButton *)self scrollImage];
+  _carSystemTertiaryColor = [MEMORY[0x277D75348] _carSystemTertiaryColor];
+  v7 = [scrollImage2 _flatImageWithColor:_carSystemTertiaryColor];
   [(DBScrollButton *)self setImage:v7 forState:2];
 }
 
-+ (id)buttonWithDirection:(unint64_t)a3
++ (id)buttonWithDirection:(unint64_t)direction
 {
   v4 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceIdiom:3];
   v5 = [DBScrollButton buttonWithType:0];
   v6 = @"chevron.forward";
-  if (!a3)
+  if (!direction)
   {
     v6 = @"chevron.backward";
   }
@@ -43,19 +43,19 @@
   return v5;
 }
 
-- (void)setScrollImage:(id)a3
+- (void)setScrollImage:(id)image
 {
-  objc_storeStrong(&self->_scrollImage, a3);
+  objc_storeStrong(&self->_scrollImage, image);
 
   [(DBScrollButton *)self _updateImage];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v6.receiver = self;
   v6.super_class = DBScrollButton;
   [(DBScrollButton *)&v6 setEnabled:?];
-  if (a3)
+  if (enabled)
   {
     [MEMORY[0x277D75348] _labelColor];
   }
@@ -68,11 +68,11 @@
   [(DBScrollButton *)self setTintColor:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = DBScrollButton;
-  [(DBScrollButton *)&v4 traitCollectionDidChange:a3];
+  [(DBScrollButton *)&v4 traitCollectionDidChange:change];
   [(DBScrollButton *)self _updateImage];
 }
 

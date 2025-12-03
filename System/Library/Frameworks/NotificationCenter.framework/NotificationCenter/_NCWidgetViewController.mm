@@ -1,37 +1,37 @@
 @interface _NCWidgetViewController
-+ (void)_reduceTransparencyDidChange:(id)a3;
++ (void)_reduceTransparencyDidChange:(id)change;
 + (void)initialize;
-- (BOOL)_setVisibleFrame:(CGRect)a3;
+- (BOOL)_setVisibleFrame:(CGRect)frame;
 - (UIEdgeInsets)_clientMarginInsets;
 - (UIEdgeInsets)_initialLayoutMargins;
-- (_NCWidgetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)_clientPreferredContentHeightPermittingAutolayout:(BOOL)a3 didUseFittingSize:(BOOL *)a4;
+- (_NCWidgetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)_clientPreferredContentHeightPermittingAutolayout:(BOOL)autolayout didUseFittingSize:(BOOL *)size;
 - (int64_t)_clientLargestSupportedDisplayMode;
-- (void)__performUpdateWithReplyHandler:(id)a3;
-- (void)__requestEncodedLayerTreeToURL:(id)a3 withCodingImageFormat:(id)a4 withReplyHandler:(id)a5;
-- (void)__setMaximumSize:(CGSize)a3 forDisplayMode:(int64_t)a4;
-- (void)__updateLayoutMargins:(id)a3;
-- (void)__updateVisibleFrame:(CGRect)a3 withReplyHandler:(id)a4;
+- (void)__performUpdateWithReplyHandler:(id)handler;
+- (void)__requestEncodedLayerTreeToURL:(id)l withCodingImageFormat:(id)format withReplyHandler:(id)handler;
+- (void)__setMaximumSize:(CGSize)size forDisplayMode:(int64_t)mode;
+- (void)__updateLayoutMargins:(id)margins;
+- (void)__updateVisibleFrame:(CGRect)frame withReplyHandler:(id)handler;
 - (void)_clientLargestSupportedDisplayModeDidChange;
-- (void)_encodeLayerTreeToURL:(id)a3 withCodingImageFormat:(id)a4 withReplyHandler:(id)a5;
-- (void)_enqueueProxyRequest:(id)a3;
+- (void)_encodeLayerTreeToURL:(id)l withCodingImageFormat:(id)format withReplyHandler:(id)handler;
+- (void)_enqueueProxyRequest:(id)request;
 - (void)_notifyContentProvidingViewControllerOfActiveDisplayModeChange;
-- (void)_performUpdateWithCompletionHandler:(id)a3;
-- (void)_processInputItems:(id)a3 initialActiveDisplayMode:(int64_t *)a4;
+- (void)_performUpdateWithCompletionHandler:(id)handler;
+- (void)_processInputItems:(id)items initialActiveDisplayMode:(int64_t *)mode;
 - (void)_requestMarginInsets;
-- (void)_requestPreferredViewHeight:(double)a3;
-- (void)_setActiveDisplayMode:(int64_t)a3 unconditionallyNotifyingContentProvidingViewController:(BOOL)a4;
-- (void)_setContentProvidingViewController:(id)a3;
-- (void)_setMaximumWidth:(double)a3 forDisplayMode:(int64_t)a4;
-- (void)_setVisibilityState:(int64_t)a3 force:(BOOL)a4;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)_requestPreferredViewHeight:(double)height;
+- (void)_setActiveDisplayMode:(int64_t)mode unconditionallyNotifyingContentProvidingViewController:(BOOL)controller;
+- (void)_setContentProvidingViewController:(id)controller;
+- (void)_setMaximumWidth:(double)width forDisplayMode:(int64_t)mode;
+- (void)_setVisibilityState:(int64_t)state force:(BOOL)force;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)dealloc;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size;
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _NCWidgetViewController
@@ -39,19 +39,19 @@
 + (void)initialize
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_opt_class();
     NCSwizzleClassMethod(v3, sel_labelColor, sel_nc_labelColor);
-    v4 = [MEMORY[0x277D75830] sharedInstance];
-    [v4 setKeyboardFencingEnabled:0];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
+    [mEMORY[0x277D75830] setKeyboardFencingEnabled:0];
 
     v5 = MEMORY[0x277D75B40];
     v25[0] = objc_opt_class();
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
     v7 = [v5 appearanceWhenContainedInInstancesOfClasses:v6];
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v7 setBackgroundColor:clearColor];
 
     v9 = MEMORY[0x277D75B40];
     v24 = objc_opt_class();
@@ -63,26 +63,26 @@
     v23 = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
     v14 = [v12 appearanceWhenContainedInInstancesOfClasses:v13];
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [v14 setBackgroundColor:v15];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v14 setBackgroundColor:clearColor2];
 
     v16 = MEMORY[0x277D756B8];
     v22 = objc_opt_class();
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     v18 = [v16 appearanceWhenContainedInInstancesOfClasses:v17];
-    v19 = [MEMORY[0x277D75348] labelColor];
-    [v18 setTextColor:v19];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v18 setTextColor:labelColor];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:a1 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
 
-    [a1 _reduceTransparencyDidChange:0];
+    [self _reduceTransparencyDidChange:0];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_reduceTransparencyDidChange:(id)a3
++ (void)_reduceTransparencyDidChange:(id)change
 {
   v60[1] = *MEMORY[0x277D85DE8];
   if (!UIAccessibilityIsReduceTransparencyEnabled())
@@ -93,8 +93,8 @@
       v57 = objc_opt_class();
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
       v15 = [v13 appearanceWhenContainedInInstancesOfClasses:v14];
-      v16 = [MEMORY[0x277D75348] whiteColor];
-      [v15 setSeparatorColor:v16];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v15 setSeparatorColor:whiteColor];
 
       v17 = MEMORY[0x277D75B40];
       v56 = objc_opt_class();
@@ -107,9 +107,9 @@
       v22 = [MEMORY[0x277D75D00] widgetEffectForVibrancyStyle:112];
       v11 = [v21 initWithEffect:v22];
 
-      v23 = [v11 contentView];
-      v24 = [MEMORY[0x277D75348] whiteColor];
-      [v23 setBackgroundColor:v24];
+      contentView = [v11 contentView];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [contentView setBackgroundColor:whiteColor2];
 
       v25 = MEMORY[0x277D75B48];
       v55 = objc_opt_class();
@@ -134,8 +134,8 @@
         v50 = objc_opt_class();
         v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
         v12 = [v48 appearanceWhenContainedInInstancesOfClasses:v11];
-        v44 = [MEMORY[0x277D75D00] notificationCenterVibrancyEffect];
-        [v12 setSeparatorEffect:v44];
+        notificationCenterVibrancyEffect = [MEMORY[0x277D75D00] notificationCenterVibrancyEffect];
+        [v12 setSeparatorEffect:notificationCenterVibrancyEffect];
         goto LABEL_9;
       }
 
@@ -144,23 +144,23 @@
       v32 = [v29 appearanceWhenContainedInInstancesOfClasses:v31];
       v33 = [MEMORY[0x277D26740] _visualStylingProviderForStyleSetNamed:@"platterClientStyle" inBundle:0];
       v34 = [v33 _visualStylingForStyle:2];
-      v35 = [v34 color];
-      [v32 setSeparatorColor:v35];
+      color = [v34 color];
+      [v32 setSeparatorColor:color];
 
       v36 = MEMORY[0x277D75B40];
       v53 = objc_opt_class();
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
       v38 = [v36 appearanceWhenContainedInInstancesOfClasses:v37];
-      v39 = [MEMORY[0x277D75D00] widgetTertiaryVibrancyEffect];
-      [v38 setSeparatorEffect:v39];
+      widgetTertiaryVibrancyEffect = [MEMORY[0x277D75D00] widgetTertiaryVibrancyEffect];
+      [v38 setSeparatorEffect:widgetTertiaryVibrancyEffect];
 
       v40 = objc_alloc(MEMORY[0x277D75D68]);
-      v41 = [MEMORY[0x277D75D00] widgetQuaternaryVibrancyEffect];
-      v11 = [v40 initWithEffect:v41];
+      widgetQuaternaryVibrancyEffect = [MEMORY[0x277D75D00] widgetQuaternaryVibrancyEffect];
+      v11 = [v40 initWithEffect:widgetQuaternaryVibrancyEffect];
 
-      v42 = [v11 contentView];
-      v43 = [v42 tintColor];
-      [v11 setBackgroundColor:v43];
+      contentView2 = [v11 contentView];
+      tintColor = [contentView2 tintColor];
+      [v11 setBackgroundColor:tintColor];
 
       v25 = MEMORY[0x277D75B48];
       v52 = objc_opt_class();
@@ -169,8 +169,8 @@
     }
 
     v12 = [v26 arrayWithObjects:v27 count:1];
-    v44 = [v25 appearanceWhenContainedInInstancesOfClasses:v12];
-    [v44 _forSpringBoardSetDefaultSelectedBackgroundView:v11];
+    notificationCenterVibrancyEffect = [v25 appearanceWhenContainedInInstancesOfClasses:v12];
+    [notificationCenterVibrancyEffect _forSpringBoardSetDefaultSelectedBackgroundView:v11];
 LABEL_9:
 
     goto LABEL_10;
@@ -180,8 +180,8 @@ LABEL_9:
   v60[0] = objc_opt_class();
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:1];
   v5 = [v3 appearanceWhenContainedInInstancesOfClasses:v4];
-  v6 = [MEMORY[0x277D75348] tableSeparatorLightColor];
-  [v5 setSeparatorColor:v6];
+  tableSeparatorLightColor = [MEMORY[0x277D75348] tableSeparatorLightColor];
+  [v5 setSeparatorColor:tableSeparatorLightColor];
 
   v7 = MEMORY[0x277D75B40];
   v59 = objc_opt_class();
@@ -199,11 +199,11 @@ LABEL_10:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (_NCWidgetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_NCWidgetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = _NCWidgetViewController;
-  v4 = [(_NCWidgetViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(_NCWidgetViewController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     NCRegisterWidgetsLogging();
@@ -227,9 +227,9 @@ LABEL_10:
     *(v4 + 1096) = v7;
     *(v4 + 1112) = v8;
     [MEMORY[0x277D757F8] _setPanGestureRecognizersEnabled:0];
-    v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v10 = *(v4 + 125);
-    *(v4 + 125) = v9;
+    *(v4 + 125) = strongToStrongObjectsMapTable;
 
     [v4 setViewRespectsSystemMinimumLayoutMargins:0];
   }
@@ -250,10 +250,10 @@ LABEL_10:
   [(_NCWidgetViewController *)&v4 dealloc];
 }
 
-- (void)_enqueueProxyRequest:(id)a3
+- (void)_enqueueProxyRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     objc_initWeak(&location, self);
     remoteViewControllerProxyQueue = self->_remoteViewControllerProxyQueue;
@@ -261,7 +261,7 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = __48___NCWidgetViewController__enqueueProxyRequest___block_invoke;
     block[3] = &unk_278750A48;
-    v7 = v4;
+    v7 = requestCopy;
     objc_copyWeak(&v8, &location);
     dispatch_async(remoteViewControllerProxyQueue, block);
     objc_destroyWeak(&v8);
@@ -270,14 +270,14 @@ LABEL_10:
   }
 }
 
-- (void)_setContentProvidingViewController:(id)a3
+- (void)_setContentProvidingViewController:(id)controller
 {
-  v5 = a3;
-  v6 = v5;
+  controllerCopy = controller;
+  v6 = controllerCopy;
   if (!self->_contentProvidingViewController)
   {
     v7 = 1;
-    if (!v5)
+    if (!controllerCopy)
     {
       goto LABEL_21;
     }
@@ -296,7 +296,7 @@ LABEL_10:
 LABEL_7:
     if (v7)
     {
-      objc_storeStrong(&self->_contentProvidingViewController, a3);
+      objc_storeStrong(&self->_contentProvidingViewController, controller);
       [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController setViewRespectsSystemMinimumLayoutMargins:0];
       [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController willMoveToParentViewController:self];
       [(_NCWidgetViewController *)self addChildViewController:self->_contentProvidingViewController];
@@ -368,9 +368,9 @@ LABEL_21:
   }
 }
 
-- (void)_processInputItems:(id)a3 initialActiveDisplayMode:(int64_t *)a4
+- (void)_processInputItems:(id)items initialActiveDisplayMode:(int64_t *)mode
 {
-  v6 = a3;
+  itemsCopy = items;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -426,8 +426,8 @@ LABEL_21:
   v7[12] = v12;
   v7[13] = v10;
   v7[14] = v8;
-  v7[15] = a4;
-  [v6 enumerateObjectsUsingBlock:v7];
+  v7[15] = mode;
+  [itemsCopy enumerateObjectsUsingBlock:v7];
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(v10, 8);
   _Block_object_dispose(v12, 8);
@@ -440,20 +440,20 @@ LABEL_21:
   _Block_object_dispose(v26, 8);
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v22.receiver = self;
     v22.super_class = _NCWidgetViewController;
-    [(_NCWidgetViewController *)&v22 beginRequestWithExtensionContext:v4];
-    [v4 _setHostViewController:self];
-    v5 = [(_NCWidgetViewController *)self childViewControllers];
-    v6 = [v5 lastObject];
-    [(_NCWidgetViewController *)self _setContentProvidingViewController:v6];
+    [(_NCWidgetViewController *)&v22 beginRequestWithExtensionContext:contextCopy];
+    [contextCopy _setHostViewController:self];
+    childViewControllers = [(_NCWidgetViewController *)self childViewControllers];
+    lastObject = [childViewControllers lastObject];
+    [(_NCWidgetViewController *)self _setContentProvidingViewController:lastObject];
 
     if (!self->_contentProvidingViewController)
     {
@@ -466,30 +466,30 @@ LABEL_21:
     }
 
     v21 = 0;
-    v8 = [v4 inputItems];
-    [(_NCWidgetViewController *)self _processInputItems:v8 initialActiveDisplayMode:&v21];
+    inputItems = [contextCopy inputItems];
+    [(_NCWidgetViewController *)self _processInputItems:inputItems initialActiveDisplayMode:&v21];
 
     v9 = NCLogWidgets;
     if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(_NCWidgetViewController *)self _widgetIdentifier];
-      v12 = [(_NCWidgetViewController *)self _containerIdentifier];
+      _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+      _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
       *buf = 138543874;
-      v24 = v11;
+      v24 = _widgetIdentifier;
       v25 = 2050;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
-      v28 = v12;
+      v28 = _containerIdentifier;
       _os_log_impl(&dword_22D116000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Beginning request", buf, 0x20u);
     }
 
-    [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController beginRequestWithExtensionContext:v4];
+    [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController beginRequestWithExtensionContext:contextCopy];
     [(_NCWidgetViewController *)self _setVisibilityState:self->_visibilityState force:1];
     [(_NCWidgetViewController *)self loadViewIfNeeded];
-    v13 = [(_NCWidgetViewController *)self _clientLargestSupportedDisplayMode];
+    _clientLargestSupportedDisplayMode = [(_NCWidgetViewController *)self _clientLargestSupportedDisplayMode];
     v14 = v21;
-    if (v13 == -1)
+    if (_clientLargestSupportedDisplayMode == -1)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -499,9 +499,9 @@ LABEL_21:
       [(_NCWidgetViewController *)self _enqueueProxyRequest:v20];
     }
 
-    else if (v21 >= v13)
+    else if (v21 >= _clientLargestSupportedDisplayMode)
     {
-      v14 = v13;
+      v14 = _clientLargestSupportedDisplayMode;
     }
 
     [(_NCWidgetViewController *)self _setActiveDisplayMode:v14 unconditionallyNotifyingContentProvidingViewController:1];
@@ -531,20 +531,20 @@ LABEL_21:
   if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(_NCWidgetViewController *)self _widgetIdentifier];
-    v6 = [(_NCWidgetViewController *)self _containerIdentifier];
+    _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+    _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
     v11 = 138543874;
-    v12 = v5;
+    v12 = _widgetIdentifier;
     v13 = 2050;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v6;
+    v16 = _containerIdentifier;
     _os_log_impl(&dword_22D116000, v4, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Loading view", &v11, 0x20u);
   }
 
   v7 = [_NCWidgetViewControllerView alloc];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = [(_NCWidgetViewControllerView *)v7 initWithFrame:?];
 
   [(_NCWidgetViewControllerView *)v9 setAutoresizingMask:18];
@@ -559,18 +559,18 @@ LABEL_21:
   v25.receiver = self;
   v25.super_class = _NCWidgetViewController;
   [(_NCWidgetViewController *)&v25 viewDidLoad];
-  v3 = [(_NCWidgetViewController *)self view];
-  [v3 setAutoresizesSubviews:1];
-  [v3 setInsetsLayoutMarginsFromSafeArea:0];
-  v4 = [v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  view = [(_NCWidgetViewController *)self view];
+  [view setAutoresizesSubviews:1];
+  [view setInsetsLayoutMarginsFromSafeArea:0];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 
   v5 = [objc_alloc(MEMORY[0x277D759E0]) initWithTarget:self action:sel_delayed_];
   touchDelayGestureRecognizer = self->_touchDelayGestureRecognizer;
   self->_touchDelayGestureRecognizer = v5;
 
   [(UIScrollViewDelayedTouchesBeganGestureRecognizer *)self->_touchDelayGestureRecognizer setDelaysTouchesBegan:1];
-  [v3 addGestureRecognizer:self->_touchDelayGestureRecognizer];
+  [view addGestureRecognizer:self->_touchDelayGestureRecognizer];
   [(_NCWidgetViewController *)self _requestMarginInsets];
   SanitizedClientFrameFromHostSize(self->_initialBounds.size.width, self->_initialBounds.size.height, self->_clientMarginInsets.top, self->_clientMarginInsets.left, self->_clientMarginInsets.bottom, self->_clientMarginInsets.right);
   v8 = v7;
@@ -589,33 +589,33 @@ LABEL_21:
   v17 = *(MEMORY[0x277D768C8] + 24);
   [(UIView *)self->_contentView setLayoutMargins:*MEMORY[0x277D768C8], v15, v16, v17];
   [(UIView *)self->_contentView setPreservesSuperviewLayoutMargins:1];
-  [v3 addSubview:self->_contentView];
-  v18 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:1];
+  [view addSubview:self->_contentView];
+  view2 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v19 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-  [v19 setLayoutMargins:{v14, v15, v16, v17}];
+  view3 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+  [view3 setLayoutMargins:{v14, v15, v16, v17}];
 
-  v20 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-  [v20 setPreservesSuperviewLayoutMargins:1];
+  view4 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+  [view4 setPreservesSuperviewLayoutMargins:1];
 
-  v21 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+  view5 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
   [(UIView *)self->_contentView bounds];
-  [v21 setFrame:?];
+  [view5 setFrame:?];
 
-  v22 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-  [v22 setAutoresizingMask:18];
+  view6 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+  [view6 setAutoresizingMask:18];
 
   v23 = self->_contentView;
-  v24 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-  [(UIView *)v23 addSubview:v24];
+  view7 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+  [(UIView *)v23 addSubview:view7];
 
-  [v3 setLayoutMargins:{self->_initialLayoutMargins.top, self->_initialLayoutMargins.left, self->_initialLayoutMargins.bottom, self->_initialLayoutMargins.right}];
+  [view setLayoutMargins:{self->_initialLayoutMargins.top, self->_initialLayoutMargins.left, self->_initialLayoutMargins.bottom, self->_initialLayoutMargins.right}];
 }
 
-- (void)_requestPreferredViewHeight:(double)a3
+- (void)_requestPreferredViewHeight:(double)height
 {
-  [(_NCWidgetViewController *)self _effectiveHeightForRequestedHeight:a3];
+  [(_NCWidgetViewController *)self _effectiveHeightForRequestedHeight:height];
   v5 = v4;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -635,19 +635,19 @@ LABEL_21:
       {
         v10 = objc_alloc_init(MEMORY[0x277D763A0]);
         contentProvidingViewController = self->_contentProvidingViewController;
-        v12 = [v10 _transitionCoordinator];
-        [(NCWidgetProvidingPrivate *)contentProvidingViewController viewWillTransitionToSize:v12 withTransitionCoordinator:width, height];
+        _transitionCoordinator = [v10 _transitionCoordinator];
+        [(NCWidgetProvidingPrivate *)contentProvidingViewController viewWillTransitionToSize:_transitionCoordinator withTransitionCoordinator:width, height];
 
         if (self->_clientUsesAutolayout)
         {
           objc_initWeak(&location, self);
-          v13 = [v10 _transitionCoordinator];
+          _transitionCoordinator2 = [v10 _transitionCoordinator];
           v14[0] = MEMORY[0x277D85DD0];
           v14[1] = 3221225472;
           v14[2] = __55___NCWidgetViewController__requestPreferredViewHeight___block_invoke_2;
           v14[3] = &unk_278750B08;
           objc_copyWeak(&v15, &location);
-          [v13 animateAlongsideTransition:v14 completion:0];
+          [_transitionCoordinator2 animateAlongsideTransition:v14 completion:0];
 
           objc_destroyWeak(&v15);
           objc_destroyWeak(&location);
@@ -660,26 +660,26 @@ LABEL_21:
   }
 }
 
-- (double)_clientPreferredContentHeightPermittingAutolayout:(BOOL)a3 didUseFittingSize:(BOOL *)a4
+- (double)_clientPreferredContentHeightPermittingAutolayout:(BOOL)autolayout didUseFittingSize:(BOOL *)size
 {
-  v5 = a3;
+  autolayoutCopy = autolayout;
   [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController preferredContentSize];
   v8 = v7;
-  if (v5 && fabs(v7) < 2.22044605e-16)
+  if (autolayoutCopy && fabs(v7) < 2.22044605e-16)
   {
-    v9 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-    v10 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
-    [v10 bounds];
+    view = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+    view2 = [(NCWidgetProvidingPrivate *)self->_contentProvidingViewController view];
+    [view2 bounds];
     v12 = v11;
     v14 = v13;
     LODWORD(v11) = 1148846080;
     LODWORD(v13) = 1112014848;
-    [v9 systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:v14 verticalFittingPriority:{v11, v13}];
+    [view systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:v14 verticalFittingPriority:{v11, v13}];
     v8 = v15;
 
-    if (a4)
+    if (size)
     {
-      *a4 = 1;
+      *size = 1;
     }
   }
 
@@ -690,9 +690,9 @@ LABEL_21:
   return result;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  if (self->_contentProvidingViewController == a3)
+  if (self->_contentProvidingViewController == container)
   {
     [(_NCWidgetViewController *)self _clientPreferredContentHeight];
 
@@ -700,10 +700,10 @@ LABEL_21:
   }
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container
 {
   contentProvidingViewController = self->_contentProvidingViewController;
-  if (contentProvidingViewController == a3)
+  if (contentProvidingViewController == container)
   {
     [(NCWidgetProvidingPrivate *)contentProvidingViewController preferredContentSize];
     if (fabs(v5) < 2.22044605e-16)
@@ -715,27 +715,27 @@ LABEL_21:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v8 = NCLogWidgets;
   if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(_NCWidgetViewController *)self _widgetIdentifier];
-    v11 = [(_NCWidgetViewController *)self _containerIdentifier];
+    _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+    _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
     v29.width = width;
     v29.height = height;
     v12 = NSStringFromCGSize(v29);
     *buf = 138544130;
-    v21 = v10;
+    v21 = _widgetIdentifier;
     v22 = 2050;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v11;
+    v25 = _containerIdentifier;
     v26 = 2114;
     v27 = v12;
     _os_log_impl(&dword_22D116000, v9, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Transitioning to size: %{public}@", buf, 0x2Au);
@@ -749,7 +749,7 @@ LABEL_21:
   [(_NCWidgetViewController *)self _setMaximumWidth:1 forDisplayMode:v15];
   v19.receiver = self;
   v19.super_class = _NCWidgetViewController;
-  [(_NCWidgetViewController *)&v19 viewWillTransitionToSize:v7 withTransitionCoordinator:v13, v14];
+  [(_NCWidgetViewController *)&v19 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:v13, v14];
   if (self->_clientUsesAutolayout)
   {
     objc_initWeak(buf, self);
@@ -758,7 +758,7 @@ LABEL_21:
     v17[2] = __78___NCWidgetViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v17[3] = &unk_278750B08;
     objc_copyWeak(&v18, buf);
-    [v7 animateAlongsideTransition:v17 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v17 completion:0];
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
   }
@@ -766,64 +766,64 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performUpdateWithCompletionHandler:(id)a3
+- (void)_performUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (*&self->_contentProvidingViewControllerFlags)
   {
-    v6 = [(_NCWidgetViewController *)self _contentProvidingViewController];
+    _contentProvidingViewController = [(_NCWidgetViewController *)self _contentProvidingViewController];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __63___NCWidgetViewController__performUpdateWithCompletionHandler___block_invoke;
     v7[3] = &unk_278750B30;
     v8 = v5;
-    [v6 widgetPerformUpdateWithCompletionHandler:v7];
+    [_contentProvidingViewController widgetPerformUpdateWithCompletionHandler:v7];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 
 - (void)_clientLargestSupportedDisplayModeDidChange
 {
-  v3 = [(_NCWidgetViewController *)self _clientLargestSupportedDisplayMode];
+  _clientLargestSupportedDisplayMode = [(_NCWidgetViewController *)self _clientLargestSupportedDisplayMode];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __70___NCWidgetViewController__clientLargestSupportedDisplayModeDidChange__block_invoke;
   v4[3] = &__block_descriptor_40_e33_v16__0___NCWidgetViewController_8l;
-  v4[4] = v3 & ~(v3 >> 63);
+  v4[4] = _clientLargestSupportedDisplayMode & ~(_clientLargestSupportedDisplayMode >> 63);
   [(_NCWidgetViewController *)self _enqueueProxyRequest:v4];
 }
 
-- (void)sizeObservingView:(id)a3 didChangeSize:(CGSize)a4
+- (void)sizeObservingView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  viewCopy = view;
   v8 = NCLogWidgets;
   if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEBUG))
   {
     v14 = v8;
-    v15 = [(_NCWidgetViewController *)self _widgetIdentifier];
-    v16 = [(_NCWidgetViewController *)self _containerIdentifier];
+    _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+    _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
     v35.width = width;
     v35.height = height;
     v17 = NSStringFromCGSize(v35);
-    [v7 bounds];
+    [viewCopy bounds];
     v36.width = v18;
     v36.height = v19;
     v20 = NSStringFromCGSize(v36);
     contentView = self->_contentView;
     v22 = 138544642;
-    v23 = v15;
+    v23 = _widgetIdentifier;
     v24 = 2050;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v16;
+    v27 = _containerIdentifier;
     v28 = 2114;
     v29 = v17;
     v30 = 2114;
@@ -842,7 +842,7 @@ LABEL_21:
     }
 
     v10 = self->_contentView;
-    [v7 bounds];
+    [viewCopy bounds];
     SanitizedClientFrameFromHostSize(v11, v12, self->_clientMarginInsets.top, self->_clientMarginInsets.left, self->_clientMarginInsets.bottom, self->_clientMarginInsets.right);
     [(UIView *)v10 setFrame:?];
     [(UIView *)self->_contentView setAutoresizingMask:18];
@@ -851,48 +851,48 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_encodeLayerTreeToURL:(id)a3 withCodingImageFormat:(id)a4 withReplyHandler:(id)a5
+- (void)_encodeLayerTreeToURL:(id)l withCodingImageFormat:(id)format withReplyHandler:(id)handler
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  lCopy = l;
+  formatCopy = format;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v11 = dispatch_get_global_queue(17, 0);
-    v12 = [(_NCWidgetViewController *)self view];
+    view = [(_NCWidgetViewController *)self view];
     v13 = 0;
     if (self->_snapshotTimestampsEnabled)
     {
       v13 = objc_alloc_init(MEMORY[0x277D756B8]);
       v14 = MEMORY[0x277CCACA8];
       v15 = MEMORY[0x277CCA968];
-      v16 = [MEMORY[0x277CBEAA8] date];
-      v17 = [v15 localizedStringFromDate:v16 dateStyle:1 timeStyle:2];
+      date = [MEMORY[0x277CBEAA8] date];
+      v17 = [v15 localizedStringFromDate:date dateStyle:1 timeStyle:2];
       v18 = [v14 stringWithFormat:@"snapshot - %@", v17];
       [v13 setText:v18];
 
-      v19 = [MEMORY[0x277D75348] redColor];
-      [v13 setTextColor:v19];
+      redColor = [MEMORY[0x277D75348] redColor];
+      [v13 setTextColor:redColor];
 
       v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
       [v13 setFont:v20];
 
       [v13 sizeToFit];
-      [v12 addSubview:v13];
+      [view addSubview:v13];
       [v13 bounds];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      [v12 bounds];
+      [view bounds];
       Width = CGRectGetWidth(v47);
       v48.origin.x = v22;
       v48.origin.y = v24;
       v48.size.width = v26;
       v48.size.height = v28;
       v30 = Width - CGRectGetWidth(v48);
-      [v12 bounds];
+      [view bounds];
       Height = CGRectGetHeight(v49);
       v50.origin.x = v22;
       v50.origin.y = v24;
@@ -901,33 +901,33 @@ LABEL_21:
       [v13 setFrame:{v30, Height - CGRectGetHeight(v50), v26, v28}];
     }
 
-    v32 = [v12 layer];
-    v33 = v32;
-    if (v8 && v11 && v32)
+    layer = [view layer];
+    v33 = layer;
+    if (lCopy && v11 && layer)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __88___NCWidgetViewController__encodeLayerTreeToURL_withCodingImageFormat_withReplyHandler___block_invoke;
       block[3] = &unk_278750BA8;
-      v40 = v32;
-      v41 = v8;
-      v42 = v9;
+      v40 = layer;
+      v41 = lCopy;
+      v42 = formatCopy;
       v43 = v13;
-      v44 = v10;
+      v44 = handlerCopy;
       dispatch_async(v11, block);
 
-      v34 = v40;
+      lCopy = v40;
     }
 
     else
     {
       v35 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277CCA450];
-      v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"There is no layer to encode (%@), we failed to obtain a queue (%@), or no URL was provided (%@)", v32, v11, v8];
-      v46[0] = v34;
+      lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"There is no layer to encode (%@), we failed to obtain a queue (%@), or no URL was provided (%@)", layer, v11, lCopy];
+      v46[0] = lCopy;
       v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
       v37 = [v35 errorWithDomain:@"NCWidgetErrorDomain" code:3 userInfo:v36];
-      (*(v10 + 2))(v10, v37);
+      (*(handlerCopy + 2))(handlerCopy, v37);
     }
   }
 
@@ -941,10 +941,10 @@ LABEL_21:
     return 1;
   }
 
-  v3 = [(_NCWidgetViewController *)self _widgetExtensionContext];
-  v4 = [v3 _largestAvailableDisplayMode];
+  _widgetExtensionContext = [(_NCWidgetViewController *)self _widgetExtensionContext];
+  _largestAvailableDisplayMode = [_widgetExtensionContext _largestAvailableDisplayMode];
 
-  return v4;
+  return _largestAvailableDisplayMode;
 }
 
 - (void)_notifyContentProvidingViewControllerOfActiveDisplayModeChange
@@ -952,59 +952,59 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
   if ((*&self->_contentProvidingViewControllerFlags & 4) != 0)
   {
-    v3 = [(_NCWidgetViewController *)self _widgetExtensionContext];
-    v4 = [v3 _activeDisplayMode];
+    _widgetExtensionContext = [(_NCWidgetViewController *)self _widgetExtensionContext];
+    _activeDisplayMode = [_widgetExtensionContext _activeDisplayMode];
     v5 = NCLogWidgets;
     if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(_NCWidgetViewController *)self _widgetIdentifier];
-      v8 = [(_NCWidgetViewController *)self _containerIdentifier];
-      v9 = NCStringFromWidgetDisplayMode(v4);
+      _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+      _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
+      v9 = NCStringFromWidgetDisplayMode(_activeDisplayMode);
       v12 = 138544130;
-      v13 = v7;
+      v13 = _widgetIdentifier;
       v14 = 2050;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v8;
+      v17 = _containerIdentifier;
       v18 = 2114;
       v19 = v9;
       _os_log_impl(&dword_22D116000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Notifying content providing view controller of active display mode change: %{public}@", &v12, 0x2Au);
     }
 
-    v10 = [(_NCWidgetViewController *)self _contentProvidingViewController];
-    [v3 _maximumSizeForDisplayMode:v4];
-    [v10 widgetActiveDisplayModeDidChange:v4 withMaximumSize:?];
+    _contentProvidingViewController = [(_NCWidgetViewController *)self _contentProvidingViewController];
+    [_widgetExtensionContext _maximumSizeForDisplayMode:_activeDisplayMode];
+    [_contentProvidingViewController widgetActiveDisplayModeDidChange:_activeDisplayMode withMaximumSize:?];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setActiveDisplayMode:(int64_t)a3 unconditionallyNotifyingContentProvidingViewController:(BOOL)a4
+- (void)_setActiveDisplayMode:(int64_t)mode unconditionallyNotifyingContentProvidingViewController:(BOOL)controller
 {
   v23 = *MEMORY[0x277D85DE8];
   v7 = NCLogWidgets;
   if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(_NCWidgetViewController *)self _widgetIdentifier];
-    v10 = [(_NCWidgetViewController *)self _containerIdentifier];
-    v11 = NCStringFromWidgetDisplayMode(a3);
+    _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+    _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
+    v11 = NCStringFromWidgetDisplayMode(mode);
     v15 = 138544130;
-    v16 = v9;
+    v16 = _widgetIdentifier;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v10;
+    v20 = _containerIdentifier;
     v21 = 2114;
     v22 = v11;
     _os_log_impl(&dword_22D116000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Setting active display mode: %{public}@", &v15, 0x2Au);
   }
 
-  v12 = [(_NCWidgetViewController *)self _widgetExtensionContext];
-  v13 = [v12 _activeDisplayMode];
-  [v12 _setActiveDisplayMode:a3];
-  if (a4 || v13 != [v12 _activeDisplayMode])
+  _widgetExtensionContext = [(_NCWidgetViewController *)self _widgetExtensionContext];
+  _activeDisplayMode = [_widgetExtensionContext _activeDisplayMode];
+  [_widgetExtensionContext _setActiveDisplayMode:mode];
+  if (controller || _activeDisplayMode != [_widgetExtensionContext _activeDisplayMode])
   {
     [(_NCWidgetViewController *)self _notifyContentProvidingViewControllerOfActiveDisplayModeChange];
   }
@@ -1012,37 +1012,37 @@ LABEL_21:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setMaximumWidth:(double)a3 forDisplayMode:(int64_t)a4
+- (void)_setMaximumWidth:(double)width forDisplayMode:(int64_t)mode
 {
-  v7 = [(_NCWidgetViewController *)self _widgetExtensionContext];
-  [v7 _maximumSizeForDisplayMode:a4];
+  _widgetExtensionContext = [(_NCWidgetViewController *)self _widgetExtensionContext];
+  [_widgetExtensionContext _maximumSizeForDisplayMode:mode];
   v9 = v8;
 
-  v10 = [(_NCWidgetViewController *)self _widgetExtensionContext];
-  [v10 _setMaximumSize:a4 forDisplayMode:{a3, v9}];
+  _widgetExtensionContext2 = [(_NCWidgetViewController *)self _widgetExtensionContext];
+  [_widgetExtensionContext2 _setMaximumSize:mode forDisplayMode:{width, v9}];
 }
 
-- (void)_setVisibilityState:(int64_t)a3 force:(BOOL)a4
+- (void)_setVisibilityState:(int64_t)state force:(BOOL)force
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a4 || self->_visibilityState != a3)
+  if (force || self->_visibilityState != state)
   {
-    self->_visibilityState = a3;
+    self->_visibilityState = state;
     if ((*&self->_contentProvidingViewControllerFlags & 8) != 0)
     {
       v5 = NCLogWidgets;
       if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
       {
         v6 = v5;
-        v7 = [(_NCWidgetViewController *)self _widgetIdentifier];
-        v8 = [(_NCWidgetViewController *)self _containerIdentifier];
+        _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+        _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
         v9 = NCStringFromWidgetVisibilityState(self->_visibilityState);
         v11 = 138544130;
-        v12 = v7;
+        v12 = _widgetIdentifier;
         v13 = 2050;
-        v14 = self;
+        selfCopy = self;
         v15 = 2114;
-        v16 = v8;
+        v16 = _containerIdentifier;
         v17 = 2114;
         v18 = v9;
         _os_log_impl(&dword_22D116000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Updating visibility state: %{public}@", &v11, 0x2Au);
@@ -1055,33 +1055,33 @@ LABEL_21:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setVisibleFrame:(CGRect)a3
+- (BOOL)_setVisibleFrame:(CGRect)frame
 {
   v25 = *MEMORY[0x277D85DE8];
   contentProvidingViewControllerFlags = self->_contentProvidingViewControllerFlags;
   if ((*&contentProvidingViewControllerFlags & 0x10) != 0)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     v9 = NCLogWidgets;
     if (os_log_type_enabled(NCLogWidgets, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(_NCWidgetViewController *)self _widgetIdentifier];
-      v12 = [(_NCWidgetViewController *)self _containerIdentifier];
+      _widgetIdentifier = [(_NCWidgetViewController *)self _widgetIdentifier];
+      _containerIdentifier = [(_NCWidgetViewController *)self _containerIdentifier];
       v26.origin.x = x;
       v26.origin.y = y;
       v26.size.width = width;
       v26.size.height = height;
       v13 = NSStringFromCGRect(v26);
       v17 = 138544130;
-      v18 = v11;
+      v18 = _widgetIdentifier;
       v19 = 2050;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
-      v22 = v12;
+      v22 = _containerIdentifier;
       v23 = 2114;
       v24 = v13;
       _os_log_impl(&dword_22D116000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@: %{public}p; container: %{public}@> Updating visibility frame: %{public}@", &v17, 0x2Au);
@@ -1094,54 +1094,54 @@ LABEL_21:
   return (*&contentProvidingViewControllerFlags >> 4) & 1;
 }
 
-- (void)__setMaximumSize:(CGSize)a3 forDisplayMode:(int64_t)a4
+- (void)__setMaximumSize:(CGSize)size forDisplayMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(_NCWidgetViewController *)self _widgetExtensionContext];
-  [v7 _setMaximumSize:a4 forDisplayMode:{width, height}];
+  height = size.height;
+  width = size.width;
+  _widgetExtensionContext = [(_NCWidgetViewController *)self _widgetExtensionContext];
+  [_widgetExtensionContext _setMaximumSize:mode forDisplayMode:{width, height}];
 }
 
-- (void)__requestEncodedLayerTreeToURL:(id)a3 withCodingImageFormat:(id)a4 withReplyHandler:(id)a5
+- (void)__requestEncodedLayerTreeToURL:(id)l withCodingImageFormat:(id)format withReplyHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    [(_NCWidgetViewController *)self _encodeLayerTreeToURL:a3 withCodingImageFormat:a4 withReplyHandler:?];
+    [(_NCWidgetViewController *)self _encodeLayerTreeToURL:l withCodingImageFormat:format withReplyHandler:?];
   }
 }
 
-- (void)__performUpdateWithReplyHandler:(id)a3
+- (void)__performUpdateWithReplyHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     [(_NCWidgetViewController *)self _performUpdateWithCompletionHandler:?];
   }
 }
 
-- (void)__updateVisibleFrame:(CGRect)a3 withReplyHandler:(id)a4
+- (void)__updateVisibleFrame:(CGRect)frame withReplyHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v9 = [(_NCWidgetViewController *)self _setVisibleFrame:x, y, width, height];
-  v10 = v11;
-  if (v11)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
+  height = [(_NCWidgetViewController *)self _setVisibleFrame:x, y, width, height];
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, v9);
-    v10 = v11;
+    (*(handlerCopy + 2))(handlerCopy, height);
+    v10 = handlerCopy;
   }
 }
 
-- (void)__updateLayoutMargins:(id)a3
+- (void)__updateLayoutMargins:(id)margins
 {
-  string = a3;
+  string = margins;
   if ([(NSString *)string length])
   {
-    v4 = [(_NCWidgetViewController *)self viewIfLoaded];
+    viewIfLoaded = [(_NCWidgetViewController *)self viewIfLoaded];
     v7 = UIEdgeInsetsFromString(string);
-    [v4 setLayoutMargins:{v7.top, v7.left, v7.bottom, v7.right}];
+    [viewIfLoaded setLayoutMargins:{v7.top, v7.left, v7.bottom, v7.right}];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface _MKKVOProxy
-- (_MKKVOProxy)initWithDelegate:(id)a3;
+- (_MKKVOProxy)initWithDelegate:(id)delegate;
 - (_MKKVOProxyDelegate)delegate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _MKKVOProxy
@@ -13,25 +13,25 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(_MKKVOProxy *)self delegate];
-  [v13 _mkObserveValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  delegate = [(_MKKVOProxy *)self delegate];
+  [delegate _mkObserveValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 }
 
-- (_MKKVOProxy)initWithDelegate:(id)a3
+- (_MKKVOProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _MKKVOProxy;
   v5 = [(_MKKVOProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

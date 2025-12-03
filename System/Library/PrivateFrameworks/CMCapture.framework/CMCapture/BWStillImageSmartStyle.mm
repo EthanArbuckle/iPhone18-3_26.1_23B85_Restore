@@ -1,23 +1,23 @@
 @interface BWStillImageSmartStyle
-- (BWStillImageSmartStyle)initWithSmartStyle:(id)a3;
+- (BWStillImageSmartStyle)initWithSmartStyle:(id)style;
 - (void)dealloc;
 @end
 
 @implementation BWStillImageSmartStyle
 
-- (BWStillImageSmartStyle)initWithSmartStyle:(id)a3
+- (BWStillImageSmartStyle)initWithSmartStyle:(id)style
 {
   v9.receiver = self;
   v9.super_class = BWStillImageSmartStyle;
   v4 = [(BWStillImageSmartStyle *)&v9 init];
   if (v4)
   {
-    v4->_cast = [objc_msgSend(a3 "cast")];
-    [a3 intensity];
+    v4->_cast = [objc_msgSend(style "cast")];
+    [style intensity];
     v4->_intensity = v5;
-    [a3 toneBias];
+    [style toneBias];
     v4->_toneBias = v6;
-    [a3 colorBias];
+    [style colorBias];
     v4->_colorBias = v7;
   }
 

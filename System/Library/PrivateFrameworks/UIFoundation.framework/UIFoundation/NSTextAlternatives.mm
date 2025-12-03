@@ -1,11 +1,11 @@
 @interface NSTextAlternatives
-- (NSTextAlternatives)initWithCoder:(id)a3;
+- (NSTextAlternatives)initWithCoder:(id)coder;
 - (NSTextAlternatives)initWithPrimaryString:(NSString *)primaryString alternativeStrings:(NSArray *)alternativeStrings;
-- (NSTextAlternatives)initWithPrimaryString:(id)a3 alternativeStrings:(id)a4 identifier:(id)a5 isLowConfidence:(BOOL)a6;
-- (NSTextAlternatives)initWithPrimaryString:(id)a3 alternativeStrings:(id)a4 isLowConfidence:(BOOL)a5;
+- (NSTextAlternatives)initWithPrimaryString:(id)string alternativeStrings:(id)strings identifier:(id)identifier isLowConfidence:(BOOL)confidence;
+- (NSTextAlternatives)initWithPrimaryString:(id)string alternativeStrings:(id)strings isLowConfidence:(BOOL)confidence;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)noteSelectedAlternativeString:(NSString *)alternativeString;
 @end
 
@@ -51,23 +51,23 @@ LABEL_7:
   return v7;
 }
 
-- (NSTextAlternatives)initWithPrimaryString:(id)a3 alternativeStrings:(id)a4 isLowConfidence:(BOOL)a5
+- (NSTextAlternatives)initWithPrimaryString:(id)string alternativeStrings:(id)strings isLowConfidence:(BOOL)confidence
 {
-  result = [(NSTextAlternatives *)self initWithPrimaryString:a3 alternativeStrings:a4];
+  result = [(NSTextAlternatives *)self initWithPrimaryString:string alternativeStrings:strings];
   if (result)
   {
-    result->_isLowConfidence = a5;
+    result->_isLowConfidence = confidence;
   }
 
   return result;
 }
 
-- (NSTextAlternatives)initWithPrimaryString:(id)a3 alternativeStrings:(id)a4 identifier:(id)a5 isLowConfidence:(BOOL)a6
+- (NSTextAlternatives)initWithPrimaryString:(id)string alternativeStrings:(id)strings identifier:(id)identifier isLowConfidence:(BOOL)confidence
 {
-  v7 = [(NSTextAlternatives *)self initWithPrimaryString:a3 alternativeStrings:a4 isLowConfidence:a6];
+  v7 = [(NSTextAlternatives *)self initWithPrimaryString:string alternativeStrings:strings isLowConfidence:confidence];
   if (v7)
   {
-    v7->_internal = [a5 copy];
+    v7->_internal = [identifier copy];
   }
 
   return v7;
@@ -87,35 +87,35 @@ LABEL_7:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ primary <%@> alternatives %@", -[NSTextAlternatives description](&v3, sel_description), -[NSTextAlternatives primaryString](self, "primaryString"), -[NSTextAlternatives alternativeStrings](self, "alternativeStrings")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSTextAlternatives *)self primaryString];
-  v6 = [(NSTextAlternatives *)self identifier];
-  v7 = [(NSTextAlternatives *)self alternativeStrings];
-  if ([a3 allowsKeyedCoding])
+  primaryString = [(NSTextAlternatives *)self primaryString];
+  identifier = [(NSTextAlternatives *)self identifier];
+  alternativeStrings = [(NSTextAlternatives *)self alternativeStrings];
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:v5 forKey:@"NSPrimary"];
-    [a3 encodeObject:v7 forKey:@"NSAlternatives"];
-    [a3 encodeObject:v6 forKey:@"NSIdentifier"];
+    [coder encodeObject:primaryString forKey:@"NSPrimary"];
+    [coder encodeObject:alternativeStrings forKey:@"NSAlternatives"];
+    [coder encodeObject:identifier forKey:@"NSIdentifier"];
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isLowConfidence];
 
-    [a3 encodeObject:v8 forKey:@"NSLowConfidence"];
+    [coder encodeObject:v8 forKey:@"NSLowConfidence"];
   }
 
   else
   {
-    [a3 encodeObject:v5];
-    [a3 encodeObject:v7];
+    [coder encodeObject:primaryString];
+    [coder encodeObject:alternativeStrings];
 
-    [a3 encodeObject:v6];
+    [coder encodeObject:identifier];
   }
 }
 
-- (NSTextAlternatives)initWithCoder:(id)a3
+- (NSTextAlternatives)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
-    v11 = [a3 versionForClassName:@"NSTextAlternatives"];
+    v11 = [coder versionForClassName:@"NSTextAlternatives"];
     if (v11 != 1)
     {
       v13 = v11;
@@ -125,36 +125,36 @@ LABEL_7:
       return 0;
     }
 
-    v5 = [a3 decodeObject];
-    v8 = [a3 decodeObject];
-    v9 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
+    decodeObject2 = [coder decodeObject];
+    decodeObject3 = [coder decodeObject];
     goto LABEL_6;
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPrimary"];
+  decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPrimary"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
-  v8 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"NSAlternatives"}];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSIdentifier"];
-  if (![a3 containsValueForKey:@"NSLowConfidence"])
+  decodeObject2 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"NSAlternatives"}];
+  decodeObject3 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSIdentifier"];
+  if (![coder containsValueForKey:@"NSLowConfidence"])
   {
 LABEL_6:
     v10 = 1;
     goto LABEL_7;
   }
 
-  v10 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSLowConfidence", "BOOLValue"}];
+  v10 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSLowConfidence", "BOOLValue"}];
 LABEL_7:
 
-  return [(NSTextAlternatives *)self initWithPrimaryString:v5 alternativeStrings:v8 identifier:v9 isLowConfidence:v10];
+  return [(NSTextAlternatives *)self initWithPrimaryString:decodeObject alternativeStrings:decodeObject2 identifier:decodeObject3 isLowConfidence:v10];
 }
 
 - (void)noteSelectedAlternativeString:(NSString *)alternativeString
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{alternativeString, @"NSAlternativeString", 0}];
 
-  [v5 postNotificationName:@"NSTextAlternativesSelectedAlternativeStringNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"NSTextAlternativesSelectedAlternativeStringNotification" object:self userInfo:v6];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface RSConsiderateVolumeSettingsController
 + (NSString)prefsDidChangeNotification;
 + (NSString)prefsDidChangeWatchNotification;
-+ (int64_t)getAudioCategoryFromAVAudioCategory:(id)a3;
++ (int64_t)getAudioCategoryFromAVAudioCategory:(id)category;
 - (BOOL)hasActiveCategory;
-- (BOOL)isEnabledForCategory:(int64_t)a3;
+- (BOOL)isEnabledForCategory:(int64_t)category;
 - (RSConsiderateVolumeSettingsController)init;
-- (RSConsiderateVolumeSettingsController)initWithAlwaysSynchronize:(BOOL)a3;
-- (int64_t)getUserProfileForCategory:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3 forCategory:(int64_t)a4;
-- (void)setUserProfile:(int64_t)a3 forCategory:(int64_t)a4;
+- (RSConsiderateVolumeSettingsController)initWithAlwaysSynchronize:(BOOL)synchronize;
+- (int64_t)getUserProfileForCategory:(int64_t)category;
+- (void)setEnabled:(BOOL)enabled forCategory:(int64_t)category;
+- (void)setUserProfile:(int64_t)profile forCategory:(int64_t)category;
 - (void)synchronize;
 @end
 
@@ -22,59 +22,59 @@
   return [(RSConsiderateVolumeSettingsController *)&v4 init];
 }
 
-- (RSConsiderateVolumeSettingsController)initWithAlwaysSynchronize:(BOOL)a3
+- (RSConsiderateVolumeSettingsController)initWithAlwaysSynchronize:(BOOL)synchronize
 {
   v5 = objc_allocWithZone(type metadata accessor for ConsiderateVolumeSettingsController());
-  *(&self->super.isa + OBJC_IVAR___RSConsiderateVolumeSettingsController_settingsController) = ConsiderateVolumeSettingsController.init(alwaysSynchronize:)(a3);
+  *(&self->super.isa + OBJC_IVAR___RSConsiderateVolumeSettingsController_settingsController) = ConsiderateVolumeSettingsController.init(alwaysSynchronize:)(synchronize);
   v7.receiver = self;
   v7.super_class = RSConsiderateVolumeSettingsController;
   return [(RSConsiderateVolumeSettingsController *)&v7 init];
 }
 
-- (BOOL)isEnabledForCategory:(int64_t)a3
+- (BOOL)isEnabledForCategory:(int64_t)category
 {
-  v4 = self;
-  LOBYTE(a3) = RSConsiderateVolumeSettingsController.isEnabled(for:)(a3);
+  selfCopy = self;
+  LOBYTE(category) = RSConsiderateVolumeSettingsController.isEnabled(for:)(category);
 
-  return a3 & 1;
+  return category & 1;
 }
 
-- (void)setEnabled:(BOOL)a3 forCategory:(int64_t)a4
+- (void)setEnabled:(BOOL)enabled forCategory:(int64_t)category
 {
   v5 = *(&self->super.isa + OBJC_IVAR___RSConsiderateVolumeSettingsController_settingsController);
-  if (a4 >= 5)
+  if (category >= 5)
   {
-    v6 = 0;
+    categoryCopy = 0;
   }
 
   else
   {
-    v6 = a4;
+    categoryCopy = category;
   }
 
-  v7 = self;
-  ConsiderateVolumeSettingsController.setEnabled(_:for:)(a3, v6);
+  selfCopy = self;
+  ConsiderateVolumeSettingsController.setEnabled(_:for:)(enabled, categoryCopy);
 }
 
-- (int64_t)getUserProfileForCategory:(int64_t)a3
+- (int64_t)getUserProfileForCategory:(int64_t)category
 {
-  v4 = self;
-  v5 = RSConsiderateVolumeSettingsController.getUserProfile(for:)(a3);
+  selfCopy = self;
+  v5 = RSConsiderateVolumeSettingsController.getUserProfile(for:)(category);
 
   return v5;
 }
 
-- (void)setUserProfile:(int64_t)a3 forCategory:(int64_t)a4
+- (void)setUserProfile:(int64_t)profile forCategory:(int64_t)category
 {
-  v6 = self;
-  RSConsiderateVolumeSettingsController.setUserProfile(_:for:)(a3, a4);
+  selfCopy = self;
+  RSConsiderateVolumeSettingsController.setUserProfile(_:for:)(profile, category);
 }
 
 - (void)synchronize
 {
   v2 = *(&self->super.isa + OBJC_IVAR___RSConsiderateVolumeSettingsController_settingsController);
   v3 = *(v2 + OBJC_IVAR____TtC26RelevanceServicesCompanion35ConsiderateVolumeSettingsController_accessor);
-  v6 = self;
+  selfCopy = self;
 
   v4 = v2 + OBJC_IVAR____TtC26RelevanceServicesCompanion35ConsiderateVolumeSettingsController_cache;
   os_unfair_lock_lock((v2 + OBJC_IVAR____TtC26RelevanceServicesCompanion35ConsiderateVolumeSettingsController_cache));
@@ -84,7 +84,7 @@
   os_unfair_lock_unlock(v4);
 }
 
-+ (int64_t)getAudioCategoryFromAVAudioCategory:(id)a3
++ (int64_t)getAudioCategoryFromAVAudioCategory:(id)category
 {
   v3 = sub_261AD94C0();
   v5 = _s26RelevanceServicesCompanion35ConsiderateVolumeSettingsControllerC16getAudioCategory011fromAVAudioJ0AA0deiJ0OSS_tFZ_0(v3, v4);
@@ -103,7 +103,7 @@
 - (BOOL)hasActiveCategory
 {
   v2 = *(&self->super.isa + OBJC_IVAR___RSConsiderateVolumeSettingsController_settingsController);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = ConsiderateVolumeSettingsController.hasActiveCategory.getter();
 
   return v2 & 1;

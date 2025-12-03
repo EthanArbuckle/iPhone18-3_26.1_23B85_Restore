@@ -1,9 +1,9 @@
 @interface HMDHomeObjectChangeHandler
 - (HMDHome)home;
-- (HMDHomeObjectChangeHandler)initWithHome:(id)a3;
-- (void)handleObjectAdd:(id)a3 message:(id)a4;
-- (void)handleObjectRemove:(id)a3 message:(id)a4;
-- (void)handleObjectUpdate:(id)a3 newValues:(id)a4 message:(id)a5;
+- (HMDHomeObjectChangeHandler)initWithHome:(id)home;
+- (void)handleObjectAdd:(id)add message:(id)message;
+- (void)handleObjectRemove:(id)remove message:(id)message;
+- (void)handleObjectUpdate:(id)update newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDHomeObjectChangeHandler
@@ -15,14 +15,14 @@
   return WeakRetained;
 }
 
-- (void)handleObjectUpdate:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)handleObjectUpdate:(id)update newValues:(id)values message:(id)message
 {
   v116 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDHomeObjectChangeHandler *)self home];
-  v12 = v9;
+  updateCopy = update;
+  valuesCopy = values;
+  messageCopy = message;
+  home = [(HMDHomeObjectChangeHandler *)self home];
+  v12 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -38,11 +38,11 @@
 
   if (v14)
   {
-    v15 = [v14 uuid];
-    v16 = [v11 roomWithUUID:v15];
+    uuid = [v14 uuid];
+    v16 = [home roomWithUUID:uuid];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -57,12 +57,12 @@
     objc_autoreleasePoolPop(v17);
     if (v16)
     {
-      [v16 transactionObjectUpdated:v8 newValues:v12 message:v10];
+      [v16 transactionObjectUpdated:updateCopy newValues:v12 message:messageCopy];
     }
 
     else
     {
-      [(HMDHomeObjectChangeHandler *)v18 handleObjectAdd:v14 message:v10];
+      [(HMDHomeObjectChangeHandler *)selfCopy handleObjectAdd:v14 message:messageCopy];
     }
 
     v21 = v12;
@@ -85,29 +85,29 @@
 
   if (v23)
   {
-    v24 = [v23 uuid];
-    v25 = [v11 zoneWithUUID:v24];
+    uuid2 = [v23 uuid];
+    v25 = [home zoneWithUUID:uuid2];
 
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v103 = v12;
       v29 = v21;
-      v30 = v11;
-      v31 = v10;
-      v33 = v32 = v8;
+      v30 = home;
+      v31 = messageCopy;
+      v33 = v32 = updateCopy;
       *buf = 138543618;
       v111 = v33;
       v112 = 2112;
       v113 = v25;
       _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@Received zone transaction, applying it to zone: %@", buf, 0x16u);
 
-      v8 = v32;
-      v10 = v31;
-      v11 = v30;
+      updateCopy = v32;
+      messageCopy = v31;
+      home = v30;
       v21 = v29;
       v12 = v103;
     }
@@ -115,19 +115,19 @@
     objc_autoreleasePoolPop(v26);
     if (!v25)
     {
-      [(HMDHomeObjectChangeHandler *)v27 handleObjectAdd:v23 message:v10];
+      [(HMDHomeObjectChangeHandler *)selfCopy2 handleObjectAdd:v23 message:messageCopy];
       goto LABEL_36;
     }
 
     v34 = v25;
 LABEL_27:
-    [v34 transactionObjectUpdated:v8 newValues:v21 message:v10];
+    [v34 transactionObjectUpdated:updateCopy newValues:v21 message:messageCopy];
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v104 = v8;
+  v104 = updateCopy;
   v21 = v21;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -144,8 +144,8 @@ LABEL_36:
 
   if (v36)
   {
-    v37 = [v36 uuid];
-    v25 = [v11 serviceGroupWithUUID:v37];
+    uuid3 = [v36 uuid];
+    v25 = [home serviceGroupWithUUID:uuid3];
 
     v38 = objc_autoreleasePoolPush();
     self = self;
@@ -185,8 +185,8 @@ LABEL_36:
 
   if (v36)
   {
-    v42 = [v36 uuid];
-    v43 = [v11 actionSetWithUUID:v42];
+    uuid4 = [v36 uuid];
+    v43 = [home actionSetWithUUID:uuid4];
     goto LABEL_34;
   }
 
@@ -206,8 +206,8 @@ LABEL_36:
 
   if (v46 || ((v21 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v47 = 0) : (v47 = v21), v46 = v47, v21, v46))
   {
-    v48 = [v46 uuid];
-    v49 = [v11 triggerWithUUID:v48];
+    uuid5 = [v46 uuid];
+    v49 = [home triggerWithUUID:uuid5];
 
     v50 = v49;
     objc_opt_class();
@@ -228,23 +228,23 @@ LABEL_36:
     {
       if (isKindOfClass)
       {
-        v8 = v104;
-        [v50 transactionObjectUpdated:v104 newValues:v21 message:v10];
+        updateCopy = v104;
+        [v50 transactionObjectUpdated:v104 newValues:v21 message:messageCopy];
 LABEL_55:
 
         goto LABEL_37;
       }
 
       v54 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      [v10 respondWithError:v54];
+      [messageCopy respondWithError:v54];
     }
 
     else
     {
-      [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v46 message:v10];
+      [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v46 message:messageCopy];
     }
 
-    v8 = v104;
+    updateCopy = v104;
     goto LABEL_55;
   }
 
@@ -264,8 +264,8 @@ LABEL_55:
 
   if (v36)
   {
-    v42 = [v36 uuid];
-    v43 = [v11 accessoryWithUUID:v42];
+    uuid4 = [v36 uuid];
+    v43 = [home accessoryWithUUID:uuid4];
 LABEL_34:
     v25 = v43;
 
@@ -273,13 +273,13 @@ LABEL_34:
     {
 LABEL_26:
       v34 = v25;
-      v8 = v104;
+      updateCopy = v104;
       goto LABEL_27;
     }
 
 LABEL_35:
-    [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v36 message:v10];
-    v8 = v104;
+    [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v36 message:messageCopy];
+    updateCopy = v104;
     goto LABEL_36;
   }
 
@@ -300,13 +300,13 @@ LABEL_35:
   if (v57)
   {
     v58 = v57;
-    v59 = [v58 parentUUID];
-    v60 = [v11 accessoryWithUUID:v59];
+    parentUUID = [v58 parentUUID];
+    v60 = [home accessoryWithUUID:parentUUID];
 
     if (v60)
     {
-      v8 = v104;
-      [v60 transactionObjectUpdated:v104 newValues:v21 message:v10];
+      updateCopy = v104;
+      [v60 transactionObjectUpdated:v104 newValues:v21 message:messageCopy];
     }
 
     else
@@ -317,21 +317,21 @@ LABEL_35:
       {
         HMFGetLogIdentifier();
         v72 = v102 = v70;
-        v73 = [v58 parentUUID];
-        v74 = [v58 instanceID];
+        parentUUID2 = [v58 parentUUID];
+        instanceID = [v58 instanceID];
         *buf = 138543874;
         v111 = v72;
         v112 = 2112;
-        v113 = v73;
+        v113 = parentUUID2;
         v114 = 2112;
-        v115 = v74;
+        v115 = instanceID;
         _os_log_impl(&dword_2531F8000, v71, OS_LOG_TYPE_ERROR, "%{public}@Failed to find accessory %@ to add/update service %@", buf, 0x20u);
 
         v70 = v102;
       }
 
       objc_autoreleasePoolPop(v70);
-      v8 = v104;
+      updateCopy = v104;
     }
   }
 
@@ -354,15 +354,15 @@ LABEL_35:
     if (v21)
     {
       v96 = v61;
-      v63 = [v11 users];
-      v64 = [v21 pairingIdentity];
-      v100 = [v64 objectForKeyedSubscript:@"HAP.identifier"];
+      users = [home users];
+      pairingIdentity = [v21 pairingIdentity];
+      v100 = [pairingIdentity objectForKeyedSubscript:@"HAP.identifier"];
 
       v107 = 0u;
       v108 = 0u;
       v105 = 0u;
       v106 = 0u;
-      obj = v63;
+      obj = users;
       v99 = [obj countByEnumeratingWithState:&v105 objects:v109 count:16];
       if (v99)
       {
@@ -377,15 +377,15 @@ LABEL_73:
           }
 
           v66 = *(*(&v105 + 1) + 8 * v65);
-          v67 = [v66 uuid];
-          v68 = [v21 uuid];
-          if ([v67 isEqual:v68])
+          uuid6 = [v66 uuid];
+          uuid7 = [v21 uuid];
+          if ([uuid6 isEqual:uuid7])
           {
             break;
           }
 
-          v69 = [v66 pairingUsername];
-          v101 = [v69 isEqualToString:v100];
+          pairingUsername = [v66 pairingUsername];
+          v101 = [pairingUsername isEqualToString:v100];
 
           if (v101)
           {
@@ -407,22 +407,22 @@ LABEL_73:
 LABEL_92:
         v79 = v66;
 
-        v8 = v104;
+        updateCopy = v104;
         if (!v79)
         {
           goto LABEL_94;
         }
 
-        [v79 transactionObjectUpdated:v104 newValues:v96 message:v10];
+        [v79 transactionObjectUpdated:v104 newValues:v96 message:messageCopy];
       }
 
       else
       {
 LABEL_80:
 
-        v8 = v104;
+        updateCopy = v104;
 LABEL_94:
-        [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v21 message:v10];
+        [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v21 message:messageCopy];
       }
     }
 
@@ -444,19 +444,19 @@ LABEL_94:
 
       if (v76)
       {
-        v77 = [v76 uuid];
-        v78 = [v11 outgoingInvitationWithUUID:v77];
+        uuid8 = [v76 uuid];
+        v78 = [home outgoingInvitationWithUUID:uuid8];
 
         if (v78)
         {
-          v8 = v104;
-          [v78 transactionObjectUpdated:v104 newValues:v21 message:v10];
+          updateCopy = v104;
+          [v78 transactionObjectUpdated:v104 newValues:v21 message:messageCopy];
         }
 
         else
         {
-          [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v76 message:v10];
-          v8 = v104;
+          [(HMDHomeObjectChangeHandler *)self handleObjectAdd:v76 message:messageCopy];
+          updateCopy = v104;
         }
       }
 
@@ -495,18 +495,18 @@ LABEL_94:
 
           if (v84)
           {
-            v85 = [v84 uuid];
-            v86 = [v11 mediaSystemWithUUID:v85];
+            uuid9 = [v84 uuid];
+            v86 = [home mediaSystemWithUUID:uuid9];
 
             if (v86)
             {
-              [v86 transactionObjectUpdated:v104 newValues:v82 message:v10];
+              [v86 transactionObjectUpdated:v104 newValues:v82 message:messageCopy];
             }
 
             else
             {
-              v90 = [v11 mediaSystemController];
-              [v90 _handleAddMediaSystemModel:v84 message:v10];
+              mediaSystemController = [home mediaSystemController];
+              [mediaSystemController _handleAddMediaSystemModel:v84 message:messageCopy];
             }
           }
 
@@ -528,15 +528,15 @@ LABEL_94:
 
             if (v88)
             {
-              v89 = [v11 networkProtectionGroupRegistry];
-              [v89 handleAddOrUpdateAccessoryNetworkProtectionGroupModel:v88 message:v10];
+              networkProtectionGroupRegistry = [home networkProtectionGroupRegistry];
+              [networkProtectionGroupRegistry handleAddOrUpdateAccessoryNetworkProtectionGroupModel:v88 message:messageCopy];
 
-              v8 = v104;
+              updateCopy = v104;
               goto LABEL_37;
             }
 
             v91 = objc_autoreleasePoolPush();
-            v92 = self;
+            selfCopy3 = self;
             v93 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
             {
@@ -553,14 +553,14 @@ LABEL_94:
 
             objc_autoreleasePoolPop(v91);
             v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-            [v10 respondWithError:v21];
+            [messageCopy respondWithError:v21];
           }
 
-          v8 = v104;
+          updateCopy = v104;
           goto LABEL_37;
         }
 
-        [v11 _handleUpdateAppDataModel:v81 message:v10];
+        [home _handleUpdateAppDataModel:v81 message:messageCopy];
       }
     }
   }
@@ -570,13 +570,13 @@ LABEL_37:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleObjectRemove:(id)a3 message:(id)a4
+- (void)handleObjectRemove:(id)remove message:(id)message
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeObjectChangeHandler *)self home];
-  v9 = v6;
+  removeCopy = remove;
+  messageCopy = message;
+  home = [(HMDHomeObjectChangeHandler *)self home];
+  v9 = removeCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -592,7 +592,7 @@ LABEL_37:
 
   if (v11)
   {
-    [v8 _handleRemoveRoomModel:v11 message:v7];
+    [home _handleRemoveRoomModel:v11 message:messageCopy];
     v12 = v9;
     goto LABEL_62;
   }
@@ -613,7 +613,7 @@ LABEL_37:
 
   if (v14)
   {
-    [v8 _handleRemoveZoneModel:v14 message:v7];
+    [home _handleRemoveZoneModel:v14 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -633,7 +633,7 @@ LABEL_37:
 
   if (v16)
   {
-    [v8 _handleRemoveServiceGroupModel:v16 message:v7];
+    [home _handleRemoveServiceGroupModel:v16 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -653,7 +653,7 @@ LABEL_37:
 
   if (v18)
   {
-    [v8 _handleRemoveActionSetModel:v18 message:v7];
+    [home _handleRemoveActionSetModel:v18 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -673,7 +673,7 @@ LABEL_37:
 
   if (v20)
   {
-    [v8 _handleRemoveAccessoryModel:v20 message:v7];
+    [home _handleRemoveAccessoryModel:v20 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -693,10 +693,10 @@ LABEL_37:
 
   if (v22)
   {
-    v23 = [v22 parentUUID];
-    v24 = [v8 accessoryWithUUID:v23];
+    parentUUID = [v22 parentUUID];
+    v24 = [home accessoryWithUUID:parentUUID];
 
-    [v24 transactionObjectRemoved:v22 message:v7];
+    [v24 transactionObjectRemoved:v22 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -716,7 +716,7 @@ LABEL_37:
 
   if (v26)
   {
-    [v8 _handleRemoveUserModel:v26 message:v7];
+    [home _handleRemoveUserModel:v26 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -736,7 +736,7 @@ LABEL_37:
 
   if (v28)
   {
-    [v8 _handleRemoveTriggerModel:v28 message:v7];
+    [home _handleRemoveTriggerModel:v28 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -756,7 +756,7 @@ LABEL_37:
 
   if (v30)
   {
-    [v8 _handleRemoveOutgoingHomeInvitationModel:v30 message:v7];
+    [home _handleRemoveOutgoingHomeInvitationModel:v30 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -776,7 +776,7 @@ LABEL_37:
 
   if (v32)
   {
-    [v8 _handleRemoveAppDataModel:v32 message:v7];
+    [home _handleRemoveAppDataModel:v32 message:messageCopy];
     goto LABEL_62;
   }
 
@@ -796,8 +796,8 @@ LABEL_37:
 
   if (v34)
   {
-    v35 = [v8 mediaSystemController];
-    [v35 _handleRemoveMediaSystemModel:v34 message:v7];
+    mediaSystemController = [home mediaSystemController];
+    [mediaSystemController _handleRemoveMediaSystemModel:v34 message:messageCopy];
 LABEL_61:
 
     goto LABEL_62;
@@ -819,13 +819,13 @@ LABEL_61:
 
   if (v37)
   {
-    v35 = [v8 networkProtectionGroupRegistry];
-    [v35 handleRemoveAccessoryNetworkProtectionGroupModel:v37 message:v7];
+    mediaSystemController = [home networkProtectionGroupRegistry];
+    [mediaSystemController handleRemoveAccessoryNetworkProtectionGroupModel:v37 message:messageCopy];
     goto LABEL_61;
   }
 
   v39 = objc_autoreleasePoolPush();
-  v40 = self;
+  selfCopy = self;
   v41 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
   {
@@ -839,18 +839,18 @@ LABEL_61:
 
   objc_autoreleasePoolPop(v39);
   v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  [v7 respondWithError:v12];
+  [messageCopy respondWithError:v12];
 LABEL_62:
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleObjectAdd:(id)a3 message:(id)a4
+- (void)handleObjectAdd:(id)add message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeObjectChangeHandler *)self home];
-  v43 = v6;
+  addCopy = add;
+  messageCopy = message;
+  home = [(HMDHomeObjectChangeHandler *)self home];
+  v43 = addCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -866,7 +866,7 @@ LABEL_62:
 
   if (v10)
   {
-    [v8 _handleAddRoomModel:v10 message:v7];
+    [home _handleAddRoomModel:v10 message:messageCopy];
   }
 
   else
@@ -887,7 +887,7 @@ LABEL_62:
 
     if (v13)
     {
-      [v8 _handleAddZoneModel:v13 message:v7];
+      [home _handleAddZoneModel:v13 message:messageCopy];
     }
 
     else
@@ -908,7 +908,7 @@ LABEL_62:
 
       if (v16)
       {
-        [v8 _handleAddServiceGroupModel:v16 message:v7];
+        [home _handleAddServiceGroupModel:v16 message:messageCopy];
       }
 
       else
@@ -929,7 +929,7 @@ LABEL_62:
 
         if (v19)
         {
-          [v8 _handleAddActionSetModel:v19 message:v7];
+          [home _handleAddActionSetModel:v19 message:messageCopy];
         }
 
         else
@@ -950,7 +950,7 @@ LABEL_62:
 
           if (v22)
           {
-            [v8 _handleAddTimerTriggerModel:v22 message:v7];
+            [home _handleAddTimerTriggerModel:v22 message:messageCopy];
           }
 
           else
@@ -971,7 +971,7 @@ LABEL_62:
 
             if (v25)
             {
-              [v8 _handleAddEventTriggerModel:v25 message:v7];
+              [home _handleAddEventTriggerModel:v25 message:messageCopy];
             }
 
             else
@@ -992,7 +992,7 @@ LABEL_62:
 
               if (v28)
               {
-                [v8 _handleAddAccessoryModel:v28 message:v7];
+                [home _handleAddAccessoryModel:v28 message:messageCopy];
               }
 
               else
@@ -1013,7 +1013,7 @@ LABEL_62:
 
                 if (v31)
                 {
-                  [v8 _handleAddUserModel:v31 message:v7];
+                  [home _handleAddUserModel:v31 message:messageCopy];
                 }
 
                 else
@@ -1034,7 +1034,7 @@ LABEL_62:
 
                   if (v34)
                   {
-                    [v8 _handleAddOutgoingHomeInvitationModel:v34 message:v7];
+                    [home _handleAddOutgoingHomeInvitationModel:v34 message:messageCopy];
                   }
 
                   else
@@ -1055,8 +1055,8 @@ LABEL_62:
 
                     if (v37)
                     {
-                      v38 = [v8 mediaSystemController];
-                      [v38 _handleAddMediaSystemModel:v37 message:v7];
+                      mediaSystemController = [home mediaSystemController];
+                      [mediaSystemController _handleAddMediaSystemModel:v37 message:messageCopy];
                     }
 
                     else
@@ -1080,8 +1080,8 @@ LABEL_62:
                         goto LABEL_57;
                       }
 
-                      v42 = [v8 networkProtectionGroupRegistry];
-                      [v42 handleAddOrUpdateAccessoryNetworkProtectionGroupModel:v41 message:v7];
+                      networkProtectionGroupRegistry = [home networkProtectionGroupRegistry];
+                      [networkProtectionGroupRegistry handleAddOrUpdateAccessoryNetworkProtectionGroupModel:v41 message:messageCopy];
                     }
                   }
                 }
@@ -1096,19 +1096,19 @@ LABEL_62:
 LABEL_57:
 }
 
-- (HMDHomeObjectChangeHandler)initWithHome:(id)a3
+- (HMDHomeObjectChangeHandler)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v10.receiver = self;
   v10.super_class = HMDHomeObjectChangeHandler;
   v5 = [(HMDHomeObjectChangeHandler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_home, v4);
-    v7 = [v4 workQueue];
+    objc_storeWeak(&v5->_home, homeCopy);
+    workQueue = [homeCopy workQueue];
     workQueue = v6->_workQueue;
-    v6->_workQueue = v7;
+    v6->_workQueue = workQueue;
   }
 
   return v6;

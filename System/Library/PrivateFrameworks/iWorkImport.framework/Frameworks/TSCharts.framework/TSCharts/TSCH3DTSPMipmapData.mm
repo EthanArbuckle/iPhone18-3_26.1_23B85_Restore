@@ -1,30 +1,30 @@
 @interface TSCH3DTSPMipmapData
-+ (TSCH3DTSPMipmapData)dataWithTSPData:(id)a3;
-- (TSCH3DTSPMipmapData)initWithTSPData:(id)a3;
++ (TSCH3DTSPMipmapData)dataWithTSPData:(id)data;
+- (TSCH3DTSPMipmapData)initWithTSPData:(id)data;
 - (id)databuffer;
 @end
 
 @implementation TSCH3DTSPMipmapData
 
-+ (TSCH3DTSPMipmapData)dataWithTSPData:(id)a3
++ (TSCH3DTSPMipmapData)dataWithTSPData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithTSPData_(v5, v6, v7, v8, v9, v4);
+  dataCopy = data;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithTSPData_(v5, v6, v7, v8, v9, dataCopy);
 
   return v10;
 }
 
-- (TSCH3DTSPMipmapData)initWithTSPData:(id)a3
+- (TSCH3DTSPMipmapData)initWithTSPData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = TSCH3DTSPMipmapData;
   v6 = [(TSCH3DTSPMipmapData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;

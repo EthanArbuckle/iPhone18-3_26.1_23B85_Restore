@@ -1,13 +1,13 @@
 @interface SFRSSIQueue
-- (double)velocityFromA:(unint64_t)a3 toB:(unint64_t)a4;
-- (void)addSample:(double)a3 atTicks:(unint64_t)a4;
+- (double)velocityFromA:(unint64_t)a toB:(unint64_t)b;
+- (void)addSample:(double)sample atTicks:(unint64_t)ticks;
 @end
 
 @implementation SFRSSIQueue
 
-- (void)addSample:(double)a3 atTicks:(unint64_t)a4
+- (void)addSample:(double)sample atTicks:(unint64_t)ticks
 {
-  if (a3 < 0.0)
+  if (sample < 0.0)
   {
     if (!self->_rssiValues)
     {
@@ -24,11 +24,11 @@
     }
 
     v11 = self->_rssiValues;
-    v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithDouble:sample];
     [(NSMutableArray *)v11 insertObject:v12 atIndex:0];
 
     v13 = self->_tickValues;
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:ticks];
     [(NSMutableArray *)v13 insertObject:v14 atIndex:0];
 
     if ([(NSMutableArray *)self->_rssiValues count]>= 5)
@@ -45,27 +45,27 @@
   }
 }
 
-- (double)velocityFromA:(unint64_t)a3 toB:(unint64_t)a4
+- (double)velocityFromA:(unint64_t)a toB:(unint64_t)b
 {
   v7 = 0.0;
-  if ([(NSMutableArray *)self->_rssiValues count]> a4)
+  if ([(NSMutableArray *)self->_rssiValues count]> b)
   {
     v8 = [(NSMutableArray *)self->_tickValues count];
-    if (a3 < a4 && v8 > a4)
+    if (a < b && v8 > b)
     {
-      v9 = [(NSMutableArray *)self->_tickValues objectAtIndexedSubscript:a3];
+      v9 = [(NSMutableArray *)self->_tickValues objectAtIndexedSubscript:a];
       [v9 unsignedLongLongValue];
 
-      v10 = [(NSMutableArray *)self->_tickValues objectAtIndexedSubscript:a4];
+      v10 = [(NSMutableArray *)self->_tickValues objectAtIndexedSubscript:b];
       [v10 unsignedLongLongValue];
 
       UpTicksToSecondsF();
       v12 = v11;
-      v13 = [(NSMutableArray *)self->_rssiValues objectAtIndexedSubscript:a3];
+      v13 = [(NSMutableArray *)self->_rssiValues objectAtIndexedSubscript:a];
       [v13 doubleValue];
       v15 = v14;
 
-      v16 = [(NSMutableArray *)self->_rssiValues objectAtIndexedSubscript:a4];
+      v16 = [(NSMutableArray *)self->_rssiValues objectAtIndexedSubscript:b];
       [v16 doubleValue];
       v18 = v17;
 

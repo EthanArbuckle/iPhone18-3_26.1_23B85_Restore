@@ -1,17 +1,17 @@
 @interface VCAudioStreamConfig
-+ (int)bundlingSchemeForAudioStreamMode:(int64_t)a3 payloadType:(int)a4;
-- (BOOL)setupCNCodecWithClientDictionary:(id)a3;
-- (BOOL)setupCodecWithClientDictionary:(id)a3;
-- (BOOL)setupDTMFCodecWithClientDictionary:(id)a3;
++ (int)bundlingSchemeForAudioStreamMode:(int64_t)mode payloadType:(int)type;
+- (BOOL)setupCNCodecWithClientDictionary:(id)dictionary;
+- (BOOL)setupCodecWithClientDictionary:(id)dictionary;
+- (BOOL)setupDTMFCodecWithClientDictionary:(id)dictionary;
 - (NSArray)supportedNumRedundantPayload;
 - (NSDictionary)allCodecConfigurations;
 - (VCAudioStreamConfig)init;
-- (VCAudioStreamConfig)initWithClientDictionary:(id)a3 xpcDictionary:(id)a4;
-- (void)addCodecConfiguration:(id)a3;
-- (void)addSupportedNumRedundantPayload:(unsigned int)a3;
+- (VCAudioStreamConfig)initWithClientDictionary:(id)dictionary xpcDictionary:(id)xpcDictionary;
+- (void)addCodecConfiguration:(id)configuration;
+- (void)addSupportedNumRedundantPayload:(unsigned int)payload;
 - (void)dealloc;
-- (void)setExternalIOFormat:(const tagVCAudioFrameFormat *)a3;
-- (void)setupRedWithRxPayload:(unsigned int)a3 txPayload:(unsigned int)a4;
+- (void)setExternalIOFormat:(const tagVCAudioFrameFormat *)format;
+- (void)setupRedWithRxPayload:(unsigned int)payload txPayload:(unsigned int)txPayload;
 @end
 
 @implementation VCAudioStreamConfig
@@ -19,10 +19,10 @@
 - (NSDictionary)allCodecConfigurations
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{-[VCAudioStreamConfig codecConfigurations](self, "codecConfigurations")}];
-  v4 = [(VCMediaStreamConfig *)self multiwayConfig];
-  if (v4)
+  multiwayConfig = [(VCMediaStreamConfig *)self multiwayConfig];
+  if (multiwayConfig)
   {
-    [v3 addEntriesFromDictionary:{-[VCMediaStreamMultiwayConfig v2CodecConfigurations](v4, "v2CodecConfigurations")}];
+    [v3 addEntriesFromDictionary:{-[VCMediaStreamMultiwayConfig v2CodecConfigurations](multiwayConfig, "v2CodecConfigurations")}];
   }
 
   return v3;
@@ -43,17 +43,17 @@
   return v2;
 }
 
-- (VCAudioStreamConfig)initWithClientDictionary:(id)a3 xpcDictionary:(id)a4
+- (VCAudioStreamConfig)initWithClientDictionary:(id)dictionary xpcDictionary:(id)xpcDictionary
 {
   v32 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
     v7 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-    asprintf(&__str, "%s[%p] %s", v7, self, [objc_msgSend(a3 "description")]);
+    asprintf(&__str, "%s[%p] %s", v7, self, [objc_msgSend(dictionary "description")]);
     if (__str)
     {
-      v18 = a4;
+      xpcDictionaryCopy = xpcDictionary;
       __lasts = 0;
       v8 = strtok_r(__str, "\n", &__lasts);
       v9 = MEMORY[0x1E6986650];
@@ -84,18 +84,18 @@
 
       while (v8);
       free(__str);
-      a4 = v18;
+      xpcDictionary = xpcDictionaryCopy;
     }
   }
 
   v19.receiver = self;
   v19.super_class = VCAudioStreamConfig;
-  v12 = [(VCMediaStreamConfig *)&v19 initWithClientDictionary:a3 xpcDictionary:a4];
+  v12 = [(VCMediaStreamConfig *)&v19 initWithClientDictionary:dictionary xpcDictionary:xpcDictionary];
   if (v12)
   {
-    if ((v12->_codecConfigurations = objc_alloc_init(MEMORY[0x1E695DF90]), v12->_audioStreamMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAudioStreamMode", "integerValue"}], v12->_supportedNumRedundantPayload = objc_alloc_init(MEMORY[0x1E695DFA0]), v12->_enableMaxBitrateOnNoChangeCMR = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamEnableMaxBitrateOnNoChangeCMR"), "BOOLValue"), v12->_dtmfTonePlaybackEnabled = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamdtmfTonePlaybackEnabled"), "BOOLValue"), v12->_dtmfEventCallbacksEnabled = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamDTMFEventCallbacksEnabled"), "BOOLValue"), v12->_dtmfSampleRate = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamDTMFTsRate"), "integerValue"), v12->_subscriptionSlot = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamTelephonyServiceSubscriptionSlot"), "integerValue"), v12->_anbrEnabled = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamAnbrEnabled"), "BOOLValue"), !-[VCAudioStreamConfig setupCodecWithClientDictionary:](v12, "setupCodecWithClientDictionary:", a3))
-      || ![(VCAudioStreamConfig *)v12 setupCNCodecWithClientDictionary:a3]
-      || ((v13 = -[VCAudioStreamConfig setupDTMFCodecWithClientDictionary:](v12, "setupDTMFCodecWithClientDictionary:", a3), v12->_bundlingScheme = +[VCAudioStreamConfig bundlingSchemeForAudioStreamMode:payloadType:](VCAudioStreamConfig, "bundlingSchemeForAudioStreamMode:payloadType:", v12->_audioStreamMode, +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", -[VCMediaStreamConfig primaryTxCodecType](v12, "primaryTxCodecType"))), ![objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamChannelCount", "integerValue"}]) ? (v14 = 1) : (v14 = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamChannelCount"), "integerValue")), (v12->_channelCount = v14, v12->_preferredMediaBitRate = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamPreferredMediaBitRate"), "integerValue"), v12->_remoteDeviceInfo = objc_alloc_init(VCMediaStreamConfigRemoteDeviceInfo), -[VCMediaStreamConfigRemoteDeviceInfo setDeviceName:](v12->_remoteDeviceInfo, "setDeviceName:", objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamRemoteDeviceInfoDeviceName")), -[VCMediaStreamConfigRemoteDeviceInfo setDeviceUID:](v12->_remoteDeviceInfo, "setDeviceUID:", objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamRemoteDeviceInfoDeviceUID")), -[VCMediaStreamConfigRemoteDeviceInfo setModelUID:](v12->_remoteDeviceInfo, "setModelUID:", objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamRemoteDeviceInfoModelUID")), v15 = objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamSystemAudioCaptureIncludedAuditTokens"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v16 = 0) : (v16 = +[AVCAuditToken processIdentifiersFromAuditTokens:](AVCAuditToken, "processIdentifiersFromAuditTokens:", +[AVCAuditToken deserializeAuditTokens:](AVCAuditToken, "deserializeAuditTokens:", v15))), v12->_processIdentifiersForAudioTap = v16, v12->_muteBehaviorForAudioTap = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamSystemAudioCaptureMuteBehavior"), "integerValue"), !v13))
+    if ((v12->_codecConfigurations = objc_alloc_init(MEMORY[0x1E695DF90]), v12->_audioStreamMode = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAudioStreamMode", "integerValue"}], v12->_supportedNumRedundantPayload = objc_alloc_init(MEMORY[0x1E695DFA0]), v12->_enableMaxBitrateOnNoChangeCMR = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamEnableMaxBitrateOnNoChangeCMR"), "BOOLValue"), v12->_dtmfTonePlaybackEnabled = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamdtmfTonePlaybackEnabled"), "BOOLValue"), v12->_dtmfEventCallbacksEnabled = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamDTMFEventCallbacksEnabled"), "BOOLValue"), v12->_dtmfSampleRate = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamDTMFTsRate"), "integerValue"), v12->_subscriptionSlot = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamTelephonyServiceSubscriptionSlot"), "integerValue"), v12->_anbrEnabled = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamAnbrEnabled"), "BOOLValue"), !-[VCAudioStreamConfig setupCodecWithClientDictionary:](v12, "setupCodecWithClientDictionary:", dictionary))
+      || ![(VCAudioStreamConfig *)v12 setupCNCodecWithClientDictionary:dictionary]
+      || ((v13 = -[VCAudioStreamConfig setupDTMFCodecWithClientDictionary:](v12, "setupDTMFCodecWithClientDictionary:", dictionary), v12->_bundlingScheme = +[VCAudioStreamConfig bundlingSchemeForAudioStreamMode:payloadType:](VCAudioStreamConfig, "bundlingSchemeForAudioStreamMode:payloadType:", v12->_audioStreamMode, +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", -[VCMediaStreamConfig primaryTxCodecType](v12, "primaryTxCodecType"))), ![objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamChannelCount", "integerValue"}]) ? (v14 = 1) : (v14 = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamChannelCount"), "integerValue")), (v12->_channelCount = v14, v12->_preferredMediaBitRate = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamPreferredMediaBitRate"), "integerValue"), v12->_remoteDeviceInfo = objc_alloc_init(VCMediaStreamConfigRemoteDeviceInfo), -[VCMediaStreamConfigRemoteDeviceInfo setDeviceName:](v12->_remoteDeviceInfo, "setDeviceName:", objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamRemoteDeviceInfoDeviceName")), -[VCMediaStreamConfigRemoteDeviceInfo setDeviceUID:](v12->_remoteDeviceInfo, "setDeviceUID:", objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamRemoteDeviceInfoDeviceUID")), -[VCMediaStreamConfigRemoteDeviceInfo setModelUID:](v12->_remoteDeviceInfo, "setModelUID:", objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamRemoteDeviceInfoModelUID")), v15 = objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamSystemAudioCaptureIncludedAuditTokens"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v16 = 0) : (v16 = +[AVCAuditToken processIdentifiersFromAuditTokens:](AVCAuditToken, "processIdentifiersFromAuditTokens:", +[AVCAuditToken deserializeAuditTokens:](AVCAuditToken, "deserializeAuditTokens:", v15))), v12->_processIdentifiersForAudioTap = v16, v12->_muteBehaviorForAudioTap = objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamSystemAudioCaptureMuteBehavior"), "integerValue"), !v13))
     {
 
       return 0;
@@ -114,18 +114,18 @@
   [(VCMediaStreamConfig *)&v3 dealloc];
 }
 
-+ (int)bundlingSchemeForAudioStreamMode:(int64_t)a3 payloadType:(int)a4
++ (int)bundlingSchemeForAudioStreamMode:(int64_t)mode payloadType:(int)type
 {
-  if (a3 > 5)
+  if (mode > 5)
   {
-    if (a3 <= 0xC && ((1 << a3) & 0x1A40) == 0)
+    if (mode <= 0xC && ((1 << mode) & 0x1A40) == 0)
     {
-      if (((1 << a3) & 0x480) != 0)
+      if (((1 << mode) & 0x480) != 0)
       {
         return 3;
       }
 
-      if (a3 == 8)
+      if (mode == 8)
       {
         goto LABEL_12;
       }
@@ -134,23 +134,23 @@
     return 0;
   }
 
-  if (a3 < 4)
+  if (mode < 4)
   {
     return 0;
   }
 
-  if (a3 != 4)
+  if (mode != 4)
   {
-    if (a3 == 5)
+    if (mode == 5)
     {
-      return [VCPayloadUtils canBundleExternallyForPayload:*&a4 forBundlingScheme:1 operatingMode:[VCAudioStream operatingModeForAudioStreamMode:?]];
+      return [VCPayloadUtils canBundleExternallyForPayload:*&type forBundlingScheme:1 operatingMode:[VCAudioStream operatingModeForAudioStreamMode:?]];
     }
 
     return 0;
   }
 
 LABEL_12:
-  if ([VCPayloadUtils canBundleExternallyForPayload:*&a4 forBundlingScheme:2 operatingMode:[VCAudioStream operatingModeForAudioStreamMode:?]])
+  if ([VCPayloadUtils canBundleExternallyForPayload:*&type forBundlingScheme:2 operatingMode:[VCAudioStream operatingModeForAudioStreamMode:?]])
   {
     return 2;
   }
@@ -161,38 +161,38 @@ LABEL_12:
   }
 }
 
-- (BOOL)setupCodecWithClientDictionary:(id)a3
+- (BOOL)setupCodecWithClientDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecType", "integerValue"}];
+  v5 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecType", "integerValue"}];
   v6 = [VCPayloadUtils payloadForCodecType:v5];
   v7 = [[VCAudioStreamCodecConfig alloc] initWithCodecType:v5];
   if (v7)
   {
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRxPayloadType", "integerValue"}];
+    v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRxPayloadType", "integerValue"}];
     [(VCAudioStreamCodecConfig *)v7 setNetworkPayload:v8];
-    -[VCAudioStreamCodecConfig setEvsChannelAwareOffset:](v7, "setEvsChannelAwareOffset:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEVSChannelAwareOffset", "integerValue"}]);
-    -[VCAudioStreamCodecConfig setEvsHeaderFullOnly:](v7, "setEvsHeaderFullOnly:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEVSHeaderFullOnly", "BOOLValue"}]);
-    -[VCAudioStreamCodecConfig setEvsCMRMode:](v7, "setEvsCMRMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEVSCMRMode", "integerValue"}]);
-    -[VCAudioStreamCodecConfig setOctetAligned:](v7, "setOctetAligned:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAMRIsOctetAligned", "BOOLValue"}]);
-    -[VCAudioStreamCodecConfig setDtxEnabled:](v7, "setDtxEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAMRDTXEnabled", "BOOLValue"}]);
-    -[VCAudioStreamCodecConfig setPTime:](v7, "setPTime:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPtime", "integerValue"}]);
-    -[VCAudioStreamCodecConfig setPreferredModeWithClientMode:](v7, "setPreferredModeWithClientMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecRateModePreferred", "integerValue"}]);
-    -[VCAudioStreamCodecConfig setupModesWithClientModeMask:](v7, "setupModesWithClientModeMask:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecRateModeMask", "integerValue"}]);
-    -[VCAudioStreamCodecConfig setupCodecBandwidthsWithClientBandwidthMask:](v7, "setupCodecBandwidthsWithClientBandwidthMask:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCodecBandwidthMask", "integerValue"}]);
+    -[VCAudioStreamCodecConfig setEvsChannelAwareOffset:](v7, "setEvsChannelAwareOffset:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEVSChannelAwareOffset", "integerValue"}]);
+    -[VCAudioStreamCodecConfig setEvsHeaderFullOnly:](v7, "setEvsHeaderFullOnly:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEVSHeaderFullOnly", "BOOLValue"}]);
+    -[VCAudioStreamCodecConfig setEvsCMRMode:](v7, "setEvsCMRMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEVSCMRMode", "integerValue"}]);
+    -[VCAudioStreamCodecConfig setOctetAligned:](v7, "setOctetAligned:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAMRIsOctetAligned", "BOOLValue"}]);
+    -[VCAudioStreamCodecConfig setDtxEnabled:](v7, "setDtxEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAMRDTXEnabled", "BOOLValue"}]);
+    -[VCAudioStreamCodecConfig setPTime:](v7, "setPTime:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPtime", "integerValue"}]);
+    -[VCAudioStreamCodecConfig setPreferredModeWithClientMode:](v7, "setPreferredModeWithClientMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecRateModePreferred", "integerValue"}]);
+    -[VCAudioStreamCodecConfig setupModesWithClientModeMask:](v7, "setupModesWithClientModeMask:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecRateModeMask", "integerValue"}]);
+    -[VCAudioStreamCodecConfig setupCodecBandwidthsWithClientBandwidthMask:](v7, "setupCodecBandwidthsWithClientBandwidthMask:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCodecBandwidthMask", "integerValue"}]);
     [(VCAudioStreamConfig *)self addCodecConfiguration:v7];
     [(VCMediaStreamConfig *)self addRxPayloadType:v6 networkPayload:v8];
-    -[VCMediaStreamConfig addTxPayloadType:networkPayload:](self, "addTxPayloadType:networkPayload:", v6, [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTxPayloadType", "integerValue"}]);
+    -[VCMediaStreamConfig addTxPayloadType:networkPayload:](self, "addTxPayloadType:networkPayload:", v6, [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTxPayloadType", "integerValue"}]);
 
-    v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamNumRedundantPayloads", "integerValue"}];
+    v9 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamNumRedundantPayloads", "integerValue"}];
     self->_numRedundantPayloads = v9;
     if (v9)
     {
       self->_redEnabled = 1;
-      -[VCMediaStreamConfig addTxPayloadType:networkPayload:](self, "addTxPayloadType:networkPayload:", 20, [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTxRedPayloadType", "integerValue"}]);
+      -[VCMediaStreamConfig addTxPayloadType:networkPayload:](self, "addTxPayloadType:networkPayload:", 20, [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTxRedPayloadType", "integerValue"}]);
     }
 
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRxRedPayloadType", "integerValue"}])
+    if ([objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRxRedPayloadType", "integerValue"}])
     {
       [(VCMediaStreamConfig *)self addRxPayloadType:20 networkPayload:?];
     }
@@ -261,9 +261,9 @@ LABEL_19:
           *&v32[8] = 1024;
           v33 = v6;
           v34 = 1024;
-          v35 = [(VCAudioStreamCodecConfig *)v7 networkPayload];
+          networkPayload = [(VCAudioStreamCodecConfig *)v7 networkPayload];
           v36 = 2048;
-          v37 = [(VCAudioStreamCodecConfig *)v7 pTime];
+          pTime = [(VCAudioStreamCodecConfig *)v7 pTime];
           v14 = " [%s] %s:%d %@(%p) codecType=%ld payload=%u networkPayload=%u pTimeMS=%lu";
           v15 = v18;
           v16 = 80;
@@ -323,19 +323,19 @@ LABEL_19:
   return v7 != 0;
 }
 
-- (void)setupRedWithRxPayload:(unsigned int)a3 txPayload:(unsigned int)a4
+- (void)setupRedWithRxPayload:(unsigned int)payload txPayload:(unsigned int)txPayload
 {
-  v4 = *&a4;
+  v4 = *&txPayload;
   self->_redEnabled = 1;
-  [(VCMediaStreamConfig *)self addRxPayloadType:20 networkPayload:*&a3];
+  [(VCMediaStreamConfig *)self addRxPayloadType:20 networkPayload:*&payload];
 
   [(VCMediaStreamConfig *)self addTxPayloadType:20 networkPayload:v4];
 }
 
-- (BOOL)setupCNCodecWithClientDictionary:(id)a3
+- (BOOL)setupCNCodecWithClientDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCNEnabled", "BOOLValue"}])
+  if (![objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCNEnabled", "BOOLValue"}])
   {
     goto LABEL_4;
   }
@@ -345,7 +345,7 @@ LABEL_19:
   {
     v6 = v5;
     [(VCAudioStreamConfig *)self addCodecConfiguration:v5];
-    v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCNPayloadType", "unsignedIntValue"}];
+    v7 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCNPayloadType", "unsignedIntValue"}];
     [(VCMediaStreamConfig *)self addRxPayloadType:13 networkPayload:v7];
     [(VCMediaStreamConfig *)self addTxPayloadType:13 networkPayload:v7];
 
@@ -400,7 +400,7 @@ LABEL_4:
       v19 = 2112;
       v20 = v9;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 1024;
       v24 = 9;
       _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate config for type: %d", &v13, 0x36u);
@@ -411,7 +411,7 @@ LABEL_4:
   return v8;
 }
 
-- (BOOL)setupDTMFCodecWithClientDictionary:(id)a3
+- (BOOL)setupDTMFCodecWithClientDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = [[VCAudioStreamCodecConfig alloc] initWithCodecType:10];
@@ -420,7 +420,7 @@ LABEL_4:
   {
     [(VCAudioStreamCodecConfig *)v5 setDtmf:1];
     [(VCAudioStreamConfig *)self addCodecConfiguration:v6];
-    v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDTMFPayloadType", "unsignedIntValue"}];
+    v7 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDTMFPayloadType", "unsignedIntValue"}];
     [(VCAudioStreamCodecConfig *)v6 setNetworkPayload:v7];
     [(VCMediaStreamConfig *)self addRxPayloadType:117 networkPayload:v7];
     [(VCMediaStreamConfig *)self addTxPayloadType:117 networkPayload:v7];
@@ -465,7 +465,7 @@ LABEL_4:
         v18 = 2112;
         v19 = v9;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 1024;
         v23 = 10;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate config for type: %d", &v12, 0x36u);
@@ -476,46 +476,46 @@ LABEL_4:
   return v6 != 0;
 }
 
-- (void)setExternalIOFormat:(const tagVCAudioFrameFormat *)a3
+- (void)setExternalIOFormat:(const tagVCAudioFrameFormat *)format
 {
-  if (a3)
+  if (format)
   {
-    v4 = *&a3->format.mBytesPerPacket;
-    v3 = *&a3->format.mBitsPerChannel;
-    *&self->_externalIOFormat.format.mSampleRate = *&a3->format.mSampleRate;
+    v4 = *&format->format.mBytesPerPacket;
+    v3 = *&format->format.mBitsPerChannel;
+    *&self->_externalIOFormat.format.mSampleRate = *&format->format.mSampleRate;
     *&self->_externalIOFormat.format.mBytesPerPacket = v4;
     *&self->_externalIOFormat.format.mBitsPerChannel = v3;
     self->_useExternalIO = 1;
   }
 }
 
-- (void)addCodecConfiguration:(id)a3
+- (void)addCodecConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_codecConfigurations, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "codecType")}]);
-    v5 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [a3 codecType]);
-    -[VCMediaStreamConfig addRxPayloadType:networkPayload:](self, "addRxPayloadType:networkPayload:", v5, [a3 networkPayload]);
-    v6 = [a3 networkPayload];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_codecConfigurations, "setObject:forKeyedSubscript:", configuration, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(configuration, "codecType")}]);
+    v5 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [configuration codecType]);
+    -[VCMediaStreamConfig addRxPayloadType:networkPayload:](self, "addRxPayloadType:networkPayload:", v5, [configuration networkPayload]);
+    networkPayload = [configuration networkPayload];
 
-    [(VCMediaStreamConfig *)self addTxPayloadType:v5 networkPayload:v6];
+    [(VCMediaStreamConfig *)self addTxPayloadType:v5 networkPayload:networkPayload];
   }
 }
 
-- (void)addSupportedNumRedundantPayload:(unsigned int)a3
+- (void)addSupportedNumRedundantPayload:(unsigned int)payload
 {
   supportedNumRedundantPayload = self->_supportedNumRedundantPayload;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
   [(NSMutableOrderedSet *)supportedNumRedundantPayload addObject:v4];
 }
 
 - (NSArray)supportedNumRedundantPayload
 {
-  v2 = [(NSMutableOrderedSet *)self->_supportedNumRedundantPayload array];
-  if ([(NSArray *)v2 count])
+  array = [(NSMutableOrderedSet *)self->_supportedNumRedundantPayload array];
+  if ([(NSArray *)array count])
   {
-    return v2;
+    return array;
   }
 
   else

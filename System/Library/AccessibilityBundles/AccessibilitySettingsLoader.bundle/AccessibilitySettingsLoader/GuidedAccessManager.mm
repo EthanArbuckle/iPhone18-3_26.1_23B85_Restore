@@ -34,16 +34,16 @@ uint64_t __43__GuidedAccessManager_initializeMonitoring__block_invoke()
   v2 = [(GuidedAccessManager *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
     v4 = *MEMORY[0x29EDC8438];
-    v5 = [MEMORY[0x29EDBA088] mainQueue];
+    mainQueue = [MEMORY[0x29EDBA088] mainQueue];
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = __27__GuidedAccessManager_init__block_invoke;
     v12[3] = &unk_29F29A778;
     v6 = v2;
     v13 = v6;
-    v7 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:v12];
+    v7 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:v12];
     notificationToken = v6->_notificationToken;
     v6->_notificationToken = v7;
 
@@ -124,8 +124,8 @@ LABEL_8:
 
   v3 = v2;
   _Block_object_dispose(&v6, 8);
-  v4 = [v2 replayer];
-  [v4 replayWithName:@"Ping BackBoard for unmanaged ASAM" attempts:10 interval:1 async:MEMORY[0x29EDCA578] queue:&__block_literal_global_294_0 replayBlock:&__block_literal_global_297 completion:0.5];
+  replayer = [v2 replayer];
+  [replayer replayWithName:@"Ping BackBoard for unmanaged ASAM" attempts:10 interval:1 async:MEMORY[0x29EDCA578] queue:&__block_literal_global_294_0 replayBlock:&__block_literal_global_297 completion:0.5];
 }
 
 uint64_t __58__GuidedAccessManager_loadRequiredBundlesForUnmanagedASAM__block_invoke()

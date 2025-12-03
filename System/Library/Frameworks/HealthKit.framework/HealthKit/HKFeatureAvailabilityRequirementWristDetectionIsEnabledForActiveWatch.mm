@@ -1,10 +1,10 @@
 @interface HKFeatureAvailabilityRequirementWristDetectionIsEnabledForActiveWatch
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)requiredEntitlements;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementWristDetectionIsEnabledForActiveWatch
@@ -21,27 +21,27 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a3 wristDetectionSettingDataSource];
-  v6 = [v5 wristDetectionSettingManager];
-  v7 = [v4 numberWithBool:{objc_msgSend(v6, "isWristDetectEnabled")}];
+  wristDetectionSettingDataSource = [source wristDetectionSettingDataSource];
+  wristDetectionSettingManager = [wristDetectionSettingDataSource wristDetectionSettingManager];
+  v7 = [v4 numberWithBool:{objc_msgSend(wristDetectionSettingManager, "isWristDetectEnabled")}];
 
   return v7;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = [a4 wristDetectionSettingDataSource];
-  v8 = [MEMORY[0x1E695DFB0] null];
+  observerCopy = observer;
+  wristDetectionSettingDataSource = [source wristDetectionSettingDataSource];
+  null = [MEMORY[0x1E695DFB0] null];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __104__HKFeatureAvailabilityRequirementWristDetectionIsEnabledForActiveWatch_registerObserver_forDataSource___block_invoke;
   v9[3] = &unk_1E737C118;
   v9[4] = self;
-  [v7 registerObserver:v6 forKey:v8 newValueHandler:v9];
+  [wristDetectionSettingDataSource registerObserver:observerCopy forKey:null newValueHandler:v9];
 }
 
 void __104__HKFeatureAvailabilityRequirementWristDetectionIsEnabledForActiveWatch_registerObserver_forDataSource___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -51,17 +51,17 @@ void __104__HKFeatureAvailabilityRequirementWristDetectionIsEnabledForActiveWatc
   [v5 featureAvailabilityRequirement:v4 didUpdateSatisfaction:{objc_msgSend(a3, "BOOLValue")}];
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v5 = a3;
-  v7 = [a4 wristDetectionSettingDataSource];
-  v6 = [MEMORY[0x1E695DFB0] null];
-  [v7 unregisterObserver:v5 forKey:v6];
+  observerCopy = observer;
+  wristDetectionSettingDataSource = [source wristDetectionSettingDataSource];
+  null = [MEMORY[0x1E695DFB0] null];
+  [wristDetectionSettingDataSource unregisterObserver:observerCopy forKey:null];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

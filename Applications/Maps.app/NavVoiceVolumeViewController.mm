@@ -1,18 +1,18 @@
 @interface NavVoiceVolumeViewController
 - (NavVoiceVolumeControlContaineeViewControllerDelegate)voiceVolumeControlDelegate;
-- (NavVoiceVolumeViewController)initWithDelegate:(id)a3;
-- (double)heightForLayout:(unint64_t)a3;
+- (NavVoiceVolumeViewController)initWithDelegate:(id)delegate;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_effectiveTraitCollection;
 - (void)_updateFonts;
-- (void)audioControlView:(id)a3 didSelectAudioVolume:(int64_t)a4;
+- (void)audioControlView:(id)view didSelectAudioVolume:(int64_t)volume;
 - (void)dealloc;
 - (void)dismissAfterDelay;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)headerViewTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)headerViewTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NavVoiceVolumeViewController
@@ -26,24 +26,24 @@
 
 - (id)_effectiveTraitCollection
 {
-  v3 = [(NavVoiceVolumeViewController *)self traitCollection];
-  v4 = [(NavVoiceVolumeViewController *)self _maximumContentSizeCategory];
-  v5 = [v3 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v4];
+  traitCollection = [(NavVoiceVolumeViewController *)self traitCollection];
+  _maximumContentSizeCategory = [(NavVoiceVolumeViewController *)self _maximumContentSizeCategory];
+  v5 = [traitCollection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:_maximumContentSizeCategory];
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = NavVoiceVolumeViewController;
-  v4 = a3;
-  [(MapsThemeViewController *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(MapsThemeViewController *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(NavVoiceVolumeViewController *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(NavVoiceVolumeViewController *)self _updateFonts];
@@ -52,19 +52,19 @@
 
 - (void)_updateFonts
 {
-  v4 = [(NavVoiceVolumeViewController *)self _effectiveTraitCollection];
-  v3 = [UIFont system28BoldCompatibleWithTraitCollection:v4];
+  _effectiveTraitCollection = [(NavVoiceVolumeViewController *)self _effectiveTraitCollection];
+  v3 = [UIFont system28BoldCompatibleWithTraitCollection:_effectiveTraitCollection];
   [(UILabel *)self->_titleLabel setFont:v3];
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  v8 = v6;
-  if (v5 == 1)
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  v8 = cardPresentationController2;
+  if (containeeLayout == 1)
   {
     v7 = 2;
   }
@@ -74,18 +74,18 @@
     v7 = 1;
   }
 
-  [v6 wantsLayout:v7];
+  [cardPresentationController2 wantsLayout:v7];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = [(NavVoiceVolumeViewController *)self voiceVolumeControlDelegate:a3];
+  v5 = [(NavVoiceVolumeViewController *)self voiceVolumeControlDelegate:tapped];
   [v5 dismissVoiceVolumeControlViewController:self];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 2)
+  if (layout == 2)
   {
     [(ContaineeViewController *)self headerHeight];
     v8 = v9 + 150.0;
@@ -93,15 +93,15 @@
   }
 
   v4 = -1.0;
-  if (a3 == 1)
+  if (layout == 1)
   {
     [(ContaineeViewController *)self headerHeight];
     v6 = v5;
     [(UILayoutGuide *)self->_labelGrowLayoutGuide layoutFrame];
     v8 = v6 - v7;
 LABEL_5:
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v4 = v8 + v11;
   }
 
@@ -125,40 +125,40 @@ LABEL_5:
   objc_destroyWeak(&location);
 }
 
-- (void)audioControlView:(id)a3 didSelectAudioVolume:(int64_t)a4
+- (void)audioControlView:(id)view didSelectAudioVolume:(int64_t)volume
 {
   v6 = sub_100035E6C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8[0] = 67109120;
-    v8[1] = a4;
+    v8[1] = volume;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "User setting volume %d", v8, 8u);
   }
 
   GEOConfigSetSyncInteger();
-  v7 = [(NavVoiceVolumeViewController *)self voiceVolumeControlDelegate];
-  [v7 voiceVolumeViewController:self selectedVoiceVolumeOption:a4];
+  voiceVolumeControlDelegate = [(NavVoiceVolumeViewController *)self voiceVolumeControlDelegate];
+  [voiceVolumeControlDelegate voiceVolumeViewController:self selectedVoiceVolumeOption:volume];
 
   [(NavVoiceVolumeViewController *)self dismissAfterDelay];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NavVoiceVolumeViewController;
-  [(NavVoiceVolumeViewController *)&v5 viewDidAppear:a3];
+  [(NavVoiceVolumeViewController *)&v5 viewDidAppear:appear];
   [(NavVoiceVolumeViewController *)self dismissAfterDelay];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NavVoiceVolumeViewController;
-  [(ContaineeViewController *)&v5 viewWillAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setHideGrabber:1];
+  [(ContaineeViewController *)&v5 viewWillAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setHideGrabber:1];
 }
 
 - (void)viewDidLoad
@@ -166,8 +166,8 @@ LABEL_5:
   v105.receiver = self;
   v105.super_class = NavVoiceVolumeViewController;
   [(ContaineeViewController *)&v105 viewDidLoad];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setEdgeAttachedRegularHeightDimmingBehavior:2];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setEdgeAttachedRegularHeightDimmingBehavior:2];
 
   v4 = objc_opt_new();
   trayHeader = self->_trayHeader;
@@ -177,8 +177,8 @@ LABEL_5:
   [(ContainerHeaderView *)self->_trayHeader setDelegate:self];
   [(ContainerHeaderView *)self->_trayHeader setHairLineAlpha:0.0];
   [(ContainerHeaderView *)self->_trayHeader setHeaderSize:2];
-  v6 = [(NavVoiceVolumeViewController *)self view];
-  [v6 addSubview:self->_trayHeader];
+  view = [(NavVoiceVolumeViewController *)self view];
+  [view addSubview:self->_trayHeader];
 
   v7 = objc_opt_new();
   [(UILabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -212,8 +212,8 @@ LABEL_5:
 
   [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView setAccessibilityIdentifier:@"NavVoiceVolumeContent"];
-  v20 = [(NavVoiceVolumeViewController *)self view];
-  [v20 addSubview:self->_contentView];
+  view2 = [(NavVoiceVolumeViewController *)self view];
+  [view2 addSubview:self->_contentView];
 
   v21 = [[VoiceVolumeControlView alloc] initWithDelegate:self];
   [(VoiceVolumeControlView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -221,110 +221,110 @@ LABEL_5:
   self->_controlView = v21;
   v23 = v21;
 
-  v24 = [(NavVoiceVolumeViewController *)self contentView];
-  [v24 addSubview:v23];
+  contentView = [(NavVoiceVolumeViewController *)self contentView];
+  [contentView addSubview:v23];
 
-  v103 = [(ContainerHeaderView *)self->_trayHeader topAnchor];
-  v104 = [(NavVoiceVolumeViewController *)self view];
-  v102 = [v104 topAnchor];
-  v101 = [v103 constraintEqualToAnchor:v102];
+  topAnchor = [(ContainerHeaderView *)self->_trayHeader topAnchor];
+  view3 = [(NavVoiceVolumeViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v101 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v106[0] = v101;
-  v99 = [(ContainerHeaderView *)self->_trayHeader leadingAnchor];
-  v100 = [(NavVoiceVolumeViewController *)self view];
-  v98 = [v100 leadingAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98];
+  leadingAnchor = [(ContainerHeaderView *)self->_trayHeader leadingAnchor];
+  view4 = [(NavVoiceVolumeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v97 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v106[1] = v97;
-  v95 = [(ContainerHeaderView *)self->_trayHeader trailingAnchor];
-  v96 = [(NavVoiceVolumeViewController *)self view];
-  v94 = [v96 trailingAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  trailingAnchor = [(ContainerHeaderView *)self->_trayHeader trailingAnchor];
+  view5 = [(NavVoiceVolumeViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v93 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v106[2] = v93;
-  v91 = [(UIView *)self->_contentView leadingAnchor];
-  v92 = [(NavVoiceVolumeViewController *)self view];
-  v90 = [v92 leadingAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90];
+  leadingAnchor3 = [(UIView *)self->_contentView leadingAnchor];
+  view6 = [(NavVoiceVolumeViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v89 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v106[3] = v89;
-  v87 = [(UIView *)self->_contentView trailingAnchor];
-  v88 = [(NavVoiceVolumeViewController *)self view];
-  v86 = [v88 trailingAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  trailingAnchor3 = [(UIView *)self->_contentView trailingAnchor];
+  view7 = [(NavVoiceVolumeViewController *)self view];
+  trailingAnchor4 = [view7 trailingAnchor];
+  v85 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v106[4] = v85;
-  v84 = [(UIView *)self->_contentView topAnchor];
-  v83 = [(ContainerHeaderView *)self->_trayHeader bottomAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  topAnchor3 = [(UIView *)self->_contentView topAnchor];
+  bottomAnchor = [(ContainerHeaderView *)self->_trayHeader bottomAnchor];
+  v82 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v106[5] = v82;
-  v80 = [(UIView *)self->_contentView bottomAnchor];
-  v81 = [(NavVoiceVolumeViewController *)self view];
-  v79 = [v81 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_contentView bottomAnchor];
+  view8 = [(NavVoiceVolumeViewController *)self view];
+  bottomAnchor3 = [view8 bottomAnchor];
   LODWORD(v25) = 1144750080;
-  v78 = [v80 constraintEqualToAnchor:v79 constant:-32.0 priority:v25];
+  v78 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-32.0 priority:v25];
   v106[6] = v78;
-  v76 = [(VoiceVolumeControlView *)self->_controlView bottomAnchor];
-  v77 = [(NavVoiceVolumeViewController *)self view];
-  v75 = [v77 bottomAnchor];
+  bottomAnchor4 = [(VoiceVolumeControlView *)self->_controlView bottomAnchor];
+  view9 = [(NavVoiceVolumeViewController *)self view];
+  bottomAnchor5 = [view9 bottomAnchor];
   LODWORD(v26) = 1148846080;
-  v74 = [v76 constraintLessThanOrEqualToAnchor:v75 constant:0.0 priority:v26];
+  v74 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:0.0 priority:v26];
   v106[7] = v74;
-  v73 = [v12 heightAnchor];
-  v71 = [v73 constraintEqualToConstant:82.0];
+  heightAnchor = [v12 heightAnchor];
+  v71 = [heightAnchor constraintEqualToConstant:82.0];
   v106[8] = v71;
-  v70 = [v12 leadingAnchor];
-  v69 = [(ContainerHeaderView *)self->_trayHeader leadingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  leadingAnchor5 = [v12 leadingAnchor];
+  leadingAnchor6 = [(ContainerHeaderView *)self->_trayHeader leadingAnchor];
+  v68 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v106[9] = v68;
-  v67 = [v12 topAnchor];
-  v66 = [(ContainerHeaderView *)self->_trayHeader topAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  topAnchor4 = [v12 topAnchor];
+  topAnchor5 = [(ContainerHeaderView *)self->_trayHeader topAnchor];
+  v65 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v106[10] = v65;
-  v64 = [(UILabel *)v17 leadingAnchor];
-  v63 = [v12 leadingAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:16.0];
+  leadingAnchor7 = [(UILabel *)v17 leadingAnchor];
+  leadingAnchor8 = [v12 leadingAnchor];
+  v62 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
   v106[11] = v62;
-  v61 = [(UILabel *)v17 topAnchor];
+  topAnchor6 = [(UILabel *)v17 topAnchor];
   v72 = v12;
-  v60 = [v12 topAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60 constant:16.0];
+  topAnchor7 = [v12 topAnchor];
+  v59 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:16.0];
   v106[12] = v59;
-  v58 = [(UILabel *)v17 bottomAnchor];
+  bottomAnchor6 = [(UILabel *)v17 bottomAnchor];
   v27 = v15;
-  v57 = [(UILayoutGuide *)v15 topAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  topAnchor8 = [(UILayoutGuide *)v15 topAnchor];
+  v56 = [bottomAnchor6 constraintEqualToAnchor:topAnchor8];
   v106[13] = v56;
-  v55 = [(UILayoutGuide *)v15 leadingAnchor];
+  leadingAnchor9 = [(UILayoutGuide *)v15 leadingAnchor];
   v42 = v17;
-  v54 = [(UILabel *)v17 leadingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  leadingAnchor10 = [(UILabel *)v17 leadingAnchor];
+  v53 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v106[14] = v53;
-  v52 = [(UILayoutGuide *)v15 widthAnchor];
-  v51 = [(UILabel *)v17 widthAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  widthAnchor = [(UILayoutGuide *)v15 widthAnchor];
+  widthAnchor2 = [(UILabel *)v17 widthAnchor];
+  v50 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v106[15] = v50;
-  v49 = [(UILayoutGuide *)v15 bottomAnchor];
-  v48 = [v12 bottomAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  bottomAnchor7 = [(UILayoutGuide *)v15 bottomAnchor];
+  bottomAnchor8 = [v12 bottomAnchor];
+  v47 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v106[16] = v47;
-  v46 = [(UILayoutGuide *)v15 heightAnchor];
+  heightAnchor2 = [(UILayoutGuide *)v15 heightAnchor];
   LODWORD(v28) = 1144750080;
-  v45 = [v46 constraintEqualToConstant:16.0 priority:v28];
+  v45 = [heightAnchor2 constraintEqualToConstant:16.0 priority:v28];
   v106[17] = v45;
-  v44 = [(UILayoutGuide *)v15 heightAnchor];
-  v43 = [v44 constraintGreaterThanOrEqualToConstant:0.0];
+  heightAnchor3 = [(UILayoutGuide *)v15 heightAnchor];
+  v43 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:0.0];
   v106[18] = v43;
-  v41 = [(VoiceVolumeControlView *)v23 topAnchor];
-  v40 = [(UIView *)self->_contentView topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  topAnchor9 = [(VoiceVolumeControlView *)v23 topAnchor];
+  topAnchor10 = [(UIView *)self->_contentView topAnchor];
+  v39 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
   v106[19] = v39;
-  v38 = [(VoiceVolumeControlView *)v23 bottomAnchor];
-  v37 = [(UIView *)self->_contentView bottomAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  bottomAnchor9 = [(VoiceVolumeControlView *)v23 bottomAnchor];
+  bottomAnchor10 = [(UIView *)self->_contentView bottomAnchor];
+  v36 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v106[20] = v36;
-  v29 = [(VoiceVolumeControlView *)v23 centerXAnchor];
-  v30 = [(UIView *)self->_contentView centerXAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  centerXAnchor = [(VoiceVolumeControlView *)v23 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v106[21] = v31;
-  v32 = [(VoiceVolumeControlView *)v23 leftAnchor];
-  v33 = [(UIView *)self->_contentView leftAnchor];
-  v34 = [v32 constraintGreaterThanOrEqualToAnchor:v33 constant:16.0];
+  leftAnchor = [(VoiceVolumeControlView *)v23 leftAnchor];
+  leftAnchor2 = [(UIView *)self->_contentView leftAnchor];
+  v34 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:16.0];
   v106[22] = v34;
   v35 = [NSArray arrayWithObjects:v106 count:23];
   [NSLayoutConstraint activateConstraints:v35];
@@ -343,26 +343,26 @@ LABEL_5:
   [(NavVoiceVolumeViewController *)&v4 dealloc];
 }
 
-- (NavVoiceVolumeViewController)initWithDelegate:(id)a3
+- (NavVoiceVolumeViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = NavVoiceVolumeViewController;
   v5 = [(NavVoiceVolumeViewController *)&v14 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v7 setBlurInCardView:0];
+    cardPresentationController = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController setBlurInCardView:0];
 
     v8 = [UIColor colorNamed:@"NavigationMaterialColor"];
-    v9 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v9 setCardColor:v8];
+    cardPresentationController2 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController2 setCardColor:v8];
 
-    v10 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v10 setMaximumLayoutForEdgeInsetUpdate:0];
+    cardPresentationController3 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController3 setMaximumLayoutForEdgeInsetUpdate:0];
 
-    objc_storeWeak(&v6->_voiceVolumeControlDelegate, v4);
+    objc_storeWeak(&v6->_voiceVolumeControlDelegate, delegateCopy);
   }
 
   v11 = _GEOConfigAddBlockListenerForKey();

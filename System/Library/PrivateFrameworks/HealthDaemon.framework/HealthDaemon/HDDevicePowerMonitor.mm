@@ -1,8 +1,8 @@
 @interface HDDevicePowerMonitor
 - (BOOL)primarySourceIsCharging;
 - (HDDevicePowerMonitor)init;
-- (void)_queue_updatePrimaryPowerSourceState:(uint64_t)a1;
-- (void)addDevicePowerObserver:(id)a3 queue:(id)a4;
+- (void)_queue_updatePrimaryPowerSourceState:(uint64_t)state;
+- (void)addDevicePowerObserver:(id)observer queue:(id)queue;
 - (void)dealloc;
 @end
 
@@ -194,33 +194,33 @@ void __28__HDDevicePowerMonitor_init__block_invoke_4(uint64_t a1, void *a2)
   [(HDDevicePowerMonitor *)&v3 dealloc];
 }
 
-- (void)addDevicePowerObserver:(id)a3 queue:(id)a4
+- (void)addDevicePowerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
-  if (a4)
+  if (queue)
   {
-    [(HKObserverSet *)observers registerObserver:a3 queue:?];
+    [(HKObserverSet *)observers registerObserver:observer queue:?];
   }
 
   else
   {
-    [(HKObserverSet *)observers registerObserver:a3];
+    [(HKObserverSet *)observers registerObserver:observer];
   }
 }
 
-- (void)_queue_updatePrimaryPowerSourceState:(uint64_t)a1
+- (void)_queue_updatePrimaryPowerSourceState:(uint64_t)state
 {
-  dispatch_assert_queue_V2(*(a1 + 8));
+  dispatch_assert_queue_V2(*(state + 8));
   v4 = (a2 < 4) & (0xCu >> (a2 & 0xF));
-  if (*(a1 + 32) != v4)
+  if (*(state + 32) != v4)
   {
-    *(a1 + 32) = v4;
-    v5 = *(a1 + 16);
+    *(state + 32) = v4;
+    v5 = *(state + 16);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__HDDevicePowerMonitor__queue_updatePrimaryPowerSourceState___block_invoke;
     v6[3] = &unk_278629F08;
-    v6[4] = a1;
+    v6[4] = state;
     v7 = (a2 < 4) & (0xCu >> (a2 & 0xF));
     [v5 notifyObservers:v6];
   }

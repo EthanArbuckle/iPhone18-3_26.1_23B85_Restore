@@ -1,21 +1,21 @@
 @interface RoutePlanningVehicleCheckmarkRow
-+ (void)registerCellsInCollectionView:(id)a3;
-- (RoutePlanningVehicleCheckmarkRow)initWithVehicle:(id)a3;
-- (id)cellForTableView:(id)a3;
-- (void)_configureCell:(id)a3;
++ (void)registerCellsInCollectionView:(id)view;
+- (RoutePlanningVehicleCheckmarkRow)initWithVehicle:(id)vehicle;
+- (id)cellForTableView:(id)view;
+- (void)_configureCell:(id)cell;
 @end
 
 @implementation RoutePlanningVehicleCheckmarkRow
 
-- (id)cellForTableView:(id)a3
+- (id)cellForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [objc_opt_class() reuseIdentifier];
-  v6 = [v4 dequeueReusableCellWithIdentifier:v5];
+  viewCopy = view;
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v6 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier];
 
   if (!v6)
   {
-    v6 = [[RoutePlanningVehicleSelectionTableViewCell alloc] initWithStyle:[(MapsDebugTableRow *)self cellStyle] reuseIdentifier:v5];
+    v6 = [[RoutePlanningVehicleSelectionTableViewCell alloc] initWithStyle:[(MapsDebugTableRow *)self cellStyle] reuseIdentifier:reuseIdentifier];
   }
 
   [(RoutePlanningVehicleCheckmarkRow *)self configureCell:v6];
@@ -23,11 +23,11 @@
   return v6;
 }
 
-- (void)_configureCell:(id)a3
+- (void)_configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = &protocolRef_RouteAnnotationsProviding;
-  if (([v4 conformsToProtocol:&OBJC_PROTOCOL___RoutePlanningVehicleSelectionCell] & 1) == 0)
+  if (([cellCopy conformsToProtocol:&OBJC_PROTOCOL___RoutePlanningVehicleSelectionCell] & 1) == 0)
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -58,9 +58,9 @@
     }
   }
 
-  if ([v4 conformsToProtocol:v5[129]])
+  if ([cellCopy conformsToProtocol:v5[129]])
   {
-    [v4 setupWithVehicle:self->_vehicle];
+    [cellCopy setupWithVehicle:self->_vehicle];
   }
 
   else
@@ -77,27 +77,27 @@
   }
 }
 
-- (RoutePlanningVehicleCheckmarkRow)initWithVehicle:(id)a3
+- (RoutePlanningVehicleCheckmarkRow)initWithVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   v9.receiver = self;
   v9.super_class = RoutePlanningVehicleCheckmarkRow;
   v6 = [(MapsDebugCheckmarkRow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vehicle, a3);
+    objc_storeStrong(&v6->_vehicle, vehicle);
   }
 
   return v7;
 }
 
-+ (void)registerCellsInCollectionView:(id)a3
++ (void)registerCellsInCollectionView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_class();
-  v5 = [objc_opt_class() reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  [viewCopy registerClass:v4 forCellWithReuseIdentifier:reuseIdentifier];
 }
 
 @end

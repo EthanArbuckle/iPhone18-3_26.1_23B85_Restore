@@ -1,10 +1,10 @@
 @interface AXMDisplay
-- (CGPoint)convertPointToDisplay:(CGPoint)a3;
-- (CGRect)convertRectToDisplay:(CGRect)a3;
+- (CGPoint)convertPointToDisplay:(CGPoint)display;
+- (CGRect)convertRectToDisplay:(CGRect)display;
 - (CGRect)referenceBounds;
 - (CGSize)size;
-- (id)_initWithBackingType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithBackingType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (id)_initWithBackingType:(int64_t)a3
+- (id)_initWithBackingType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = AXMDisplay;
@@ -31,7 +31,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_backingType = a3;
+    v4->_backingType = type;
     name = v4->_name;
     v4->_name = @"Default";
 
@@ -62,7 +62,7 @@
   }
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(AXMDisplay *)self name];
+  name = [(AXMDisplay *)self name];
   v7 = MEMORY[0x1E696AD98];
   [(AXMDisplay *)self scale];
   v8 = [v7 numberWithDouble:?];
@@ -91,12 +91,12 @@
   [(AXMDisplay *)self referenceBounds];
   v22 = v21;
   [(AXMDisplay *)self referenceBounds];
-  v24 = [v5 stringWithFormat:@"AXMDisplay<%p>: Backing:%@ Name:%@ scale:%@ size:[%.2f %.2f] orientation:%@ (%s) refBounds:[%.2f %.2f %.2f %.2f] deepColor:%d", self, v4, v6, v8, v10, v12, v14, v16, v18, v20, v22, v23, -[AXMDisplay supportsDeepColor](self, "supportsDeepColor")];
+  v24 = [v5 stringWithFormat:@"AXMDisplay<%p>: Backing:%@ Name:%@ scale:%@ size:[%.2f %.2f] orientation:%@ (%s) refBounds:[%.2f %.2f %.2f %.2f] deepColor:%d", self, v4, name, v8, v10, v12, v14, v16, v18, v20, v22, v23, -[AXMDisplay supportsDeepColor](self, "supportsDeepColor")];
 
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AXMDisplay alloc] _initWithBackingType:self->_backingType];
   objc_storeStrong(v4 + 2, self->_name);
@@ -111,27 +111,27 @@
   return v4;
 }
 
-- (CGPoint)convertPointToDisplay:(CGPoint)a3
+- (CGPoint)convertPointToDisplay:(CGPoint)display
 {
   scale = self->_scale;
   if (scale == 1.0)
   {
-    x = a3.x;
+    x = display.x;
   }
 
   else
   {
-    x = a3.x * scale;
+    x = display.x * scale;
   }
 
   if (scale == 1.0)
   {
-    y = a3.y;
+    y = display.y;
   }
 
   else
   {
-    y = a3.y * scale;
+    y = display.y * scale;
   }
 
   [(AXMDisplay *)self referenceBounds];
@@ -161,12 +161,12 @@
   return result;
 }
 
-- (CGRect)convertRectToDisplay:(CGRect)a3
+- (CGRect)convertRectToDisplay:(CGRect)display
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = display.size.height;
+  width = display.size.width;
+  y = display.origin.y;
+  x = display.origin.x;
   [(AXMDisplay *)self referenceBounds];
   if (AXMFloatApproxEqual(self->_orientation, 1.57079633))
   {

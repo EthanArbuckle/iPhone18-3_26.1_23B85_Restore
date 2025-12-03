@@ -11,7 +11,7 @@
 
 + (MPSNNBinaryArithmeticNode)nodeWithSources:(NSArray *)sourceNodes
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v11 = objc_msgSend_initWithSources_(v4, v5, sourceNodes, v6, v7, v8, v9, v10);
 
   return v11;
@@ -19,7 +19,7 @@
 
 + (MPSNNBinaryArithmeticNode)nodeWithLeftSource:(MPSNNImageNode *)left rightSource:(MPSNNImageNode *)right
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12 = objc_msgSend_initWithLeftSource_rightSource_(v6, v7, left, right, v8, v9, v10, v11);
 
   return v12;

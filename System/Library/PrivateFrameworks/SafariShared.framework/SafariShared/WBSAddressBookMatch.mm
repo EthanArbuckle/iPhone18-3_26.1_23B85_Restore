@@ -1,25 +1,25 @@
 @interface WBSAddressBookMatch
-+ (id)addressBookMatchWithContactDictionaryRepresentation:(id)a3 forContact:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)addressBookMatchWithContactDictionaryRepresentation:(id)representation forContact:(id)contact;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)dateValue;
 - (NSString)description;
 - (NSString)stringValue;
-- (WBSAddressBookMatch)initWithCoder:(id)a3;
-- (WBSAddressBookMatch)initWithValue:(id)a3 property:(id)a4 key:(id)a5 identifier:(id)a6 label:(id)a7;
-- (WBSAddressBookMatch)initWithValue:(id)a3 property:(id)a4 key:(id)a5 identifier:(id)a6 label:(id)a7 uniqueID:(id)a8;
-- (id)dictionaryRepresentationExcludingValue:(BOOL)a3;
+- (WBSAddressBookMatch)initWithCoder:(id)coder;
+- (WBSAddressBookMatch)initWithValue:(id)value property:(id)property key:(id)key identifier:(id)identifier label:(id)label;
+- (WBSAddressBookMatch)initWithValue:(id)value property:(id)property key:(id)key identifier:(id)identifier label:(id)label uniqueID:(id)d;
+- (id)dictionaryRepresentationExcludingValue:(BOOL)value;
 - (unint64_t)hash;
-- (void)_setValue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setValue:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSAddressBookMatch
 
-- (void)_setValue:(id)a3
+- (void)_setValue:(id)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    v5 = [a3 copy];
+    v5 = [value copy];
     value = self->_value;
     self->_value = v5;
   }
@@ -57,35 +57,35 @@
   return value;
 }
 
-- (WBSAddressBookMatch)initWithValue:(id)a3 property:(id)a4 key:(id)a5 identifier:(id)a6 label:(id)a7
+- (WBSAddressBookMatch)initWithValue:(id)value property:(id)property key:(id)key identifier:(id)identifier label:(id)label
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  valueCopy = value;
+  propertyCopy = property;
+  keyCopy = key;
+  identifierCopy = identifier;
+  labelCopy = label;
   v30.receiver = self;
   v30.super_class = WBSAddressBookMatch;
   v17 = [(WBSAddressBookMatch *)&v30 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [valueCopy copy];
     value = v17->_value;
     v17->_value = v18;
 
-    v20 = [v13 copy];
+    v20 = [propertyCopy copy];
     property = v17->_property;
     v17->_property = v20;
 
-    v22 = [v14 copy];
+    v22 = [keyCopy copy];
     key = v17->_key;
     v17->_key = v22;
 
-    v24 = [v15 copy];
+    v24 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v24;
 
-    v26 = [v16 copy];
+    v26 = [labelCopy copy];
     label = v17->_label;
     v17->_label = v26;
 
@@ -95,13 +95,13 @@
   return v17;
 }
 
-- (WBSAddressBookMatch)initWithValue:(id)a3 property:(id)a4 key:(id)a5 identifier:(id)a6 label:(id)a7 uniqueID:(id)a8
+- (WBSAddressBookMatch)initWithValue:(id)value property:(id)property key:(id)key identifier:(id)identifier label:(id)label uniqueID:(id)d
 {
-  v14 = a8;
-  v15 = [(WBSAddressBookMatch *)self initWithValue:a3 property:a4 key:a5 identifier:a6 label:a7];
+  dCopy = d;
+  v15 = [(WBSAddressBookMatch *)self initWithValue:value property:property key:key identifier:identifier label:label];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [dCopy copy];
     uniqueID = v15->_uniqueID;
     v15->_uniqueID = v16;
 
@@ -118,10 +118,10 @@
   return v4 ^ [(NSString *)self->_identifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -131,26 +131,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBSAddressBookMatch *)self stringValue];
-      v19 = [(WBSAddressBookMatch *)self dateValue];
-      v7 = [(WBSAddressBookMatch *)v5 stringValue];
-      v8 = [(WBSAddressBookMatch *)v5 dateValue];
-      v9 = [(WBSAddressBookMatch *)v5 property];
+      v5 = equalCopy;
+      stringValue = [(WBSAddressBookMatch *)self stringValue];
+      dateValue = [(WBSAddressBookMatch *)self dateValue];
+      stringValue2 = [(WBSAddressBookMatch *)v5 stringValue];
+      dateValue2 = [(WBSAddressBookMatch *)v5 dateValue];
+      property = [(WBSAddressBookMatch *)v5 property];
       v10 = [(WBSAddressBookMatch *)v5 key];
-      v11 = [(WBSAddressBookMatch *)v5 identifier];
-      v12 = [(WBSAddressBookMatch *)v5 label];
-      if ((v6 == v7 || [v6 isEqualToString:v7]) && (v19 == v8 || objc_msgSend(v19, "isEqualToDate:", v8)) && ((property = self->_property, property == v9) || -[NSString isEqualToString:](property, "isEqualToString:", v9)) && ((key = self->_key, key == v10) || -[NSString isEqualToString:](key, "isEqualToString:", v10)) && ((identifier = self->_identifier, identifier == v11) || -[NSString isEqualToString:](identifier, "isEqualToString:", v11)))
+      identifier = [(WBSAddressBookMatch *)v5 identifier];
+      label = [(WBSAddressBookMatch *)v5 label];
+      if ((stringValue == stringValue2 || [stringValue isEqualToString:stringValue2]) && (dateValue == dateValue2 || objc_msgSend(dateValue, "isEqualToDate:", dateValue2)) && ((property = self->_property, property == property) || -[NSString isEqualToString:](property, "isEqualToString:", property)) && ((key = self->_key, key == v10) || -[NSString isEqualToString:](key, "isEqualToString:", v10)) && ((identifier = self->_identifier, identifier == identifier) || -[NSString isEqualToString:](identifier, "isEqualToString:", identifier)))
       {
         label = self->_label;
-        if (label == v12)
+        if (label == label)
         {
           v17 = 1;
         }
 
         else
         {
-          v17 = [(NSString *)label isEqualToString:v12];
+          v17 = [(NSString *)label isEqualToString:label];
         }
       }
 
@@ -171,11 +171,11 @@
 
 - (NSString)description
 {
-  v3 = [(WBSAddressBookMatch *)self dateValue];
-  v4 = v3;
-  if (v3)
+  dateValue = [(WBSAddressBookMatch *)self dateValue];
+  v4 = dateValue;
+  if (dateValue)
   {
-    [v3 description];
+    [dateValue description];
   }
 
   else
@@ -218,13 +218,13 @@
   return v9;
 }
 
-- (id)dictionaryRepresentationExcludingValue:(BOOL)a3
+- (id)dictionaryRepresentationExcludingValue:(BOOL)value
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
-  if (!a3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
+  if (!value)
   {
-    [v5 setObject:self->_value forKeyedSubscript:@"Value"];
+    [dictionary setObject:self->_value forKeyedSubscript:@"Value"];
   }
 
   [v6 setObject:self->_property forKeyedSubscript:@"Property"];
@@ -236,31 +236,31 @@
   return v6;
 }
 
-+ (id)addressBookMatchWithContactDictionaryRepresentation:(id)a3 forContact:(id)a4
++ (id)addressBookMatchWithContactDictionaryRepresentation:(id)representation forContact:(id)contact
 {
-  v6 = a4;
-  if (v6)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v7 = a3;
-    v8 = [v7 safari_stringForKey:@"Property"];
-    v9 = [v7 safari_stringForKey:@"Key"];
-    v10 = [v7 safari_stringForKey:@"Identifier"];
-    v11 = [v7 safari_stringForKey:@"Label"];
-    v12 = [v7 safari_stringForKey:@"UniqueID"];
+    representationCopy = representation;
+    v8 = [representationCopy safari_stringForKey:@"Property"];
+    v9 = [representationCopy safari_stringForKey:@"Key"];
+    v10 = [representationCopy safari_stringForKey:@"Identifier"];
+    v11 = [representationCopy safari_stringForKey:@"Label"];
+    v12 = [representationCopy safari_stringForKey:@"UniqueID"];
 
     if ([MEMORY[0x1E695CD58] safari_wbsPropertySupportsMultipleValues:v8])
     {
-      [v6 safari_valueStringForIdentifier:v10 wbsProperty:v8 wbsComponent:v9];
+      [contactCopy safari_valueStringForIdentifier:v10 wbsProperty:v8 wbsComponent:v9];
     }
 
     else
     {
-      [v6 safari_valueStringForWBSProperty:v8 wbsComponent:v9 atIndex:0];
+      [contactCopy safari_valueStringForWBSProperty:v8 wbsComponent:v9 atIndex:0];
     }
     v14 = ;
     if (v14)
     {
-      v13 = [[a1 alloc] initWithValue:v14 property:v8 key:v9 identifier:v10 label:v11 uniqueID:v12];
+      v13 = [[self alloc] initWithValue:v14 property:v8 key:v9 identifier:v10 label:v11 uniqueID:v12];
     }
 
     else
@@ -277,10 +277,10 @@
   return v13;
 }
 
-- (WBSAddressBookMatch)initWithCoder:(id)a3
+- (WBSAddressBookMatch)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WBSAddressBookMatch;
   v5 = [(WBSAddressBookMatch *)&v16 init];
@@ -291,29 +291,29 @@
     v17[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Value"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Value"];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Property"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Key"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UniqueID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Property"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Key"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UniqueID"];
     v5 = [(WBSAddressBookMatch *)v5 initWithValue:v9 property:v10 key:v11 identifier:v12 label:v13 uniqueID:v14];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v5 = a3;
-  [v5 encodeObject:value forKey:@"Value"];
-  [v5 encodeObject:self->_property forKey:@"Property"];
-  [v5 encodeObject:self->_key forKey:@"Key"];
-  [v5 encodeObject:self->_identifier forKey:@"Identifier"];
-  [v5 encodeObject:self->_label forKey:@"Label"];
-  [v5 encodeObject:self->_uniqueID forKey:@"UniqueID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:value forKey:@"Value"];
+  [coderCopy encodeObject:self->_property forKey:@"Property"];
+  [coderCopy encodeObject:self->_key forKey:@"Key"];
+  [coderCopy encodeObject:self->_identifier forKey:@"Identifier"];
+  [coderCopy encodeObject:self->_label forKey:@"Label"];
+  [coderCopy encodeObject:self->_uniqueID forKey:@"UniqueID"];
 }
 
 @end

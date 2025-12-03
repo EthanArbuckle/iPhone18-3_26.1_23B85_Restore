@@ -1,46 +1,46 @@
 @interface OBPrivacyFlowGroup
-+ (id)groupFlowsByCombinedHeader:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5;
-- (OBPrivacyFlowGroup)initWithIdentifier:(id)a3 privacyFlows:(id)a4;
++ (id)groupFlowsByCombinedHeader:(id)header language:(id)language preferredDeviceType:(unint64_t)type;
+- (OBPrivacyFlowGroup)initWithIdentifier:(id)identifier privacyFlows:(id)flows;
 @end
 
 @implementation OBPrivacyFlowGroup
 
-- (OBPrivacyFlowGroup)initWithIdentifier:(id)a3 privacyFlows:(id)a4
+- (OBPrivacyFlowGroup)initWithIdentifier:(id)identifier privacyFlows:(id)flows
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  flowsCopy = flows;
   v12.receiver = self;
   v12.super_class = OBPrivacyFlowGroup;
   v9 = [(OBPrivacyFlowGroup *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_privacyFlows, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_privacyFlows, flows);
   }
 
   return v10;
 }
 
-+ (id)groupFlowsByCombinedHeader:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5
++ (id)groupFlowsByCombinedHeader:(id)header language:(id)language preferredDeviceType:(unint64_t)type
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v32 = a4;
+  headerCopy = header;
+  languageCopy = language;
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = v6;
+  v7 = headerCopy;
   v34 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (!v34)
   {
 
 LABEL_25:
     [v33 removeAllObjects];
-    v25 = [[OBPrivacyFlowGroup alloc] initWithIdentifier:0 privacyFlows:v7];
-    [v33 addObject:v25];
+    firstObject = [[OBPrivacyFlowGroup alloc] initWithIdentifier:0 privacyFlows:v7];
+    [v33 addObject:firstObject];
     goto LABEL_26;
   }
 
@@ -57,8 +57,8 @@ LABEL_25:
       }
 
       v10 = *(*(&v41 + 1) + 8 * i);
-      v11 = [v10 enablesGroupingInCombinedList];
-      v12 = [v10 localizedCombinedHeaderForLanguage:v32 preferredDeviceType:a5];
+      enablesGroupingInCombinedList = [v10 enablesGroupingInCombinedList];
+      v12 = [v10 localizedCombinedHeaderForLanguage:languageCopy preferredDeviceType:type];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -70,7 +70,7 @@ LABEL_25:
         v15 = v14;
         v16 = *v38;
         v36 = v10;
-        v35 = v11;
+        v35 = enablesGroupingInCombinedList;
 LABEL_8:
         v17 = 0;
         while (1)
@@ -81,14 +81,14 @@ LABEL_8:
           }
 
           v18 = *(*(&v37 + 1) + 8 * v17);
-          v19 = [v18 identifier];
-          if ([v19 isEqualToString:v12])
+          identifier = [v18 identifier];
+          if ([identifier isEqualToString:v12])
           {
             break;
           }
 
-          v20 = [v18 identifier];
-          v21 = v20 | v12;
+          identifier2 = [v18 identifier];
+          v21 = identifier2 | v12;
 
           if (!v21)
           {
@@ -99,7 +99,7 @@ LABEL_8:
           {
             v15 = [v13 countByEnumeratingWithState:&v37 objects:v45 count:16];
             v10 = v36;
-            v11 = v35;
+            enablesGroupingInCombinedList = v35;
             if (v15)
             {
               goto LABEL_8;
@@ -113,7 +113,7 @@ LABEL_17:
         v22 = v18;
 
         v10 = v36;
-        v11 = v35;
+        enablesGroupingInCombinedList = v35;
         if (v22)
         {
           goto LABEL_19;
@@ -129,9 +129,9 @@ LABEL_15:
       [(OBPrivacyFlowGroup *)v22 setIdentifier:v12];
       [v13 addObject:v22];
 LABEL_19:
-      v8 |= v11;
-      v23 = [(OBPrivacyFlowGroup *)v22 privacyFlows];
-      v24 = [v23 arrayByAddingObject:v10];
+      v8 |= enablesGroupingInCombinedList;
+      privacyFlows = [(OBPrivacyFlowGroup *)v22 privacyFlows];
+      v24 = [privacyFlows arrayByAddingObject:v10];
       [(OBPrivacyFlowGroup *)v22 setPrivacyFlows:v24];
     }
 
@@ -151,8 +151,8 @@ LABEL_19:
     goto LABEL_27;
   }
 
-  v25 = [v13 firstObject];
-  [(OBPrivacyFlowGroup *)v25 setIdentifier:0];
+  firstObject = [v13 firstObject];
+  [(OBPrivacyFlowGroup *)firstObject setIdentifier:0];
 LABEL_26:
 
 LABEL_27:

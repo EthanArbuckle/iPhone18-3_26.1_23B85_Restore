@@ -1,58 +1,58 @@
 @interface SOSFlow
-+ (id)validEventsforState:(int64_t)a3;
-+ (unint64_t)sosFlowTypeForTriggerMechanism:(int64_t)a3;
++ (id)validEventsforState:(int64_t)state;
++ (unint64_t)sosFlowTypeForTriggerMechanism:(int64_t)mechanism;
 - (BOOL)shouldShowMedicalID;
-- (SOSFlow)initWithTriggerMechanism:(int64_t)a3 healthStore:(id)a4;
-- (double)checkInTimeoutForSOSFlowType:(unint64_t)a3;
+- (SOSFlow)initWithTriggerMechanism:(int64_t)mechanism healthStore:(id)store;
+- (double)checkInTimeoutForSOSFlowType:(unint64_t)type;
 - (int64_t)restingState;
 - (void)_invalidateTimer;
 - (void)_prefetchMedicalID;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)callFinished;
 - (void)clearFlowStateHeartbeatTimer;
 - (void)contactsCountdownDismissed;
 - (void)countdownRequestedDial;
 - (void)eventTriggered;
 - (void)handleEmergencyCallInititated;
-- (void)handleSOSFlowEvent:(unint64_t)a3 withMetaData:(id)a4;
+- (void)handleSOSFlowEvent:(unint64_t)event withMetaData:(id)data;
 - (void)motionDidCancel;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)startAnomalyFlow;
 - (void)startFlowStateHeartbeatTimer;
 - (void)startTimerToAutoDial;
-- (void)timerFired:(id)a3;
-- (void)updateState:(int64_t)a3;
-- (void)userRespondedToConfirmationWith:(unint64_t)a3;
-- (void)userRespondedToRestingStateWith:(int64_t)a3;
-- (void)willHandleEvent:(unint64_t)a3 withMetaData:(id)a4;
+- (void)timerFired:(id)fired;
+- (void)updateState:(int64_t)state;
+- (void)userRespondedToConfirmationWith:(unint64_t)with;
+- (void)userRespondedToRestingStateWith:(int64_t)with;
+- (void)willHandleEvent:(unint64_t)event withMetaData:(id)data;
 @end
 
 @implementation SOSFlow
 
-- (SOSFlow)initWithTriggerMechanism:(int64_t)a3 healthStore:(id)a4
+- (SOSFlow)initWithTriggerMechanism:(int64_t)mechanism healthStore:(id)store
 {
-  v7 = a4;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = SOSFlow;
   v8 = [(SOSFlow *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    v8->_sosFlowTrigger = a3;
-    v8->_sosFlowType = [SOSFlow sosFlowTypeForTriggerMechanism:a3];
+    v8->_sosFlowTrigger = mechanism;
+    v8->_sosFlowType = [SOSFlow sosFlowTypeForTriggerMechanism:mechanism];
     v9->_currentState = 14;
     v10 = objc_alloc(MEMORY[0x277CBEBD0]);
     v11 = [v10 initWithSuiteName:*MEMORY[0x277CCE408]];
     healthUserDefaults = v9->_healthUserDefaults;
     v9->_healthUserDefaults = v11;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v13;
+    v9->_observers = weakObjectsHashTable;
 
-    v9->_isUserResponsive = [SOSFlow isTriggerMechanismUserInitiated:a3];
+    v9->_isUserResponsive = [SOSFlow isTriggerMechanismUserInitiated:mechanism];
     v9->_shouldIgnoreMotionCancel = 0;
-    objc_storeStrong(&v9->_healthStore, a4);
+    objc_storeStrong(&v9->_healthStore, store);
     medicalIDData = v9->_medicalIDData;
     v9->_medicalIDData = 0;
 
@@ -66,48 +66,48 @@
   return v9;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SOSFlow *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SOSFlow *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SOSFlow *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SOSFlow *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)handleSOSFlowEvent:(unint64_t)a3 withMetaData:(id)a4
+- (void)handleSOSFlowEvent:(unint64_t)event withMetaData:(id)data
 {
-  v6 = a4;
-  [(SOSFlow *)self willHandleEvent:a3 withMetaData:v6];
+  dataCopy = data;
+  [(SOSFlow *)self willHandleEvent:event withMetaData:dataCopy];
   v7 = [SOSFlow validEventsforState:[(SOSFlow *)self currentState]];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:event];
   if ([v7 containsObject:v8])
   {
 
     goto LABEL_4;
   }
 
-  v9 = [SOSFlow isInterruptingEvent:a3];
+  v9 = [SOSFlow isInterruptingEvent:event];
 
   if (v9)
   {
 LABEL_4:
-    switch(a3)
+    switch(event)
     {
       case 0uLL:
         [(SOSFlow *)self eventTriggered];
         break;
       case 2uLL:
         [(SOSFlow *)self _invalidateTimer];
-        v13 = [v6 objectForKeyedSubscript:&unk_2875D2950];
-        v14 = [v13 integerValue];
+        v13 = [dataCopy objectForKeyedSubscript:&unk_2875D2950];
+        integerValue = [v13 integerValue];
 
-        [(SOSFlow *)self userRespondedToConfirmationWith:v14];
+        [(SOSFlow *)self userRespondedToConfirmationWith:integerValue];
         break;
       case 3uLL:
         [(SOSFlow *)self userDismissedCallCountdown];
@@ -123,10 +123,10 @@ LABEL_4:
         [(SOSFlow *)self contactsCountdownDismissed];
         break;
       case 8uLL:
-        v11 = [v6 objectForKeyedSubscript:&unk_2875D2968];
-        v12 = [v11 integerValue];
+        v11 = [dataCopy objectForKeyedSubscript:&unk_2875D2968];
+        integerValue2 = [v11 integerValue];
 
-        [(SOSFlow *)self userRespondedToRestingStateWith:v12];
+        [(SOSFlow *)self userRespondedToRestingStateWith:integerValue2];
         break;
       case 9uLL:
         [(SOSFlow *)self timerRequestsCountdownToAutoCall];
@@ -156,48 +156,48 @@ LABEL_4:
   v10 = sos_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [(SOSFlow *)a3 handleSOSFlowEvent:v10 withMetaData:?];
+    [(SOSFlow *)event handleSOSFlowEvent:v10 withMetaData:?];
   }
 
 LABEL_9:
 }
 
-+ (unint64_t)sosFlowTypeForTriggerMechanism:(int64_t)a3
++ (unint64_t)sosFlowTypeForTriggerMechanism:(int64_t)mechanism
 {
-  if (a3 == 7)
+  if (mechanism == 7)
   {
     return 2;
   }
 
   else
   {
-    return a3 != 5;
+    return mechanism != 5;
   }
 }
 
 - (void)eventTriggered
 {
-  v3 = [(SOSFlow *)self sosFlowTrigger];
-  if (v3 > 8)
+  sosFlowTrigger = [(SOSFlow *)self sosFlowTrigger];
+  if (sosFlowTrigger > 8)
   {
     return;
   }
 
-  if (((1 << v3) & 0x158) != 0)
+  if (((1 << sosFlowTrigger) & 0x158) != 0)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 3;
     goto LABEL_6;
   }
 
-  v4 = 1 << v3;
-  v5 = self;
+  v4 = 1 << sosFlowTrigger;
+  selfCopy2 = self;
   if ((v4 & 7) != 0)
   {
     v6 = 2;
 LABEL_6:
 
-    [(SOSFlow *)v5 updateState:v6];
+    [(SOSFlow *)selfCopy2 updateState:v6];
     return;
   }
 
@@ -211,9 +211,9 @@ LABEL_6:
   [(SOSFlow *)self updateState:1];
 }
 
-- (void)userRespondedToConfirmationWith:(unint64_t)a3
+- (void)userRespondedToConfirmationWith:(unint64_t)with
 {
-  if (a3 == 2)
+  if (with == 2)
   {
     v3 = 3;
   }
@@ -230,26 +230,26 @@ LABEL_6:
 {
   if ([(SOSFlow *)self didSeeUnresponsiveResting])
   {
-    v3 = 10;
+    restingState = 10;
   }
 
   else
   {
     v4 = objc_alloc_init(SOSContactsManager);
-    v5 = [(SOSContactsManager *)v4 hasValidContactsToMessage];
+    hasValidContactsToMessage = [(SOSContactsManager *)v4 hasValidContactsToMessage];
 
-    if (v5)
+    if (hasValidContactsToMessage)
     {
-      v3 = 5;
+      restingState = 5;
     }
 
     else
     {
-      v3 = [(SOSFlow *)self restingState];
+      restingState = [(SOSFlow *)self restingState];
     }
   }
 
-  [(SOSFlow *)self updateState:v3];
+  [(SOSFlow *)self updateState:restingState];
 }
 
 - (void)countdownRequestedDial
@@ -274,9 +274,9 @@ LABEL_6:
 
 - (void)contactsCountdownDismissed
 {
-  v3 = [(SOSFlow *)self restingState];
+  restingState = [(SOSFlow *)self restingState];
 
-  [(SOSFlow *)self updateState:v3];
+  [(SOSFlow *)self updateState:restingState];
 }
 
 - (void)motionDidCancel
@@ -304,10 +304,10 @@ LABEL_6:
   }
 }
 
-- (void)userRespondedToRestingStateWith:(int64_t)a3
+- (void)userRespondedToRestingStateWith:(int64_t)with
 {
   v11 = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(with)
   {
     case 2:
       v5 = 10;
@@ -331,8 +331,8 @@ LABEL_7:
   }
 
 LABEL_11:
-  v7 = [(SOSFlow *)self coreAnalyticsReporter];
-  [v7 reportSOSRestingResponse:-[SOSFlow sosFlowTrigger](self restingResponse:"sosFlowTrigger") hasMedicalID:{a3, -[SOSFlow shouldShowMedicalID](self, "shouldShowMedicalID")}];
+  coreAnalyticsReporter = [(SOSFlow *)self coreAnalyticsReporter];
+  [coreAnalyticsReporter reportSOSRestingResponse:-[SOSFlow sosFlowTrigger](self restingResponse:"sosFlowTrigger") hasMedicalID:{with, -[SOSFlow shouldShowMedicalID](self, "shouldShowMedicalID")}];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -356,8 +356,8 @@ LABEL_11:
 
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x277CCD5E8]);
-  v5 = [(SOSFlow *)self healthStore];
-  v6 = [v4 initWithHealthStore:v5];
+  healthStore = [(SOSFlow *)self healthStore];
+  v6 = [v4 initWithHealthStore:healthStore];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -388,11 +388,11 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
     return 0;
   }
 
-  v2 = [(SOSFlow *)self healthUserDefaults];
-  v3 = [v2 objectForKey:*MEMORY[0x277CCE3E8]];
-  v4 = [v3 BOOLValue];
+  healthUserDefaults = [(SOSFlow *)self healthUserDefaults];
+  v3 = [healthUserDefaults objectForKey:*MEMORY[0x277CCE3E8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)restingState
@@ -410,34 +410,34 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
   return 10;
 }
 
-- (void)updateState:(int64_t)a3
+- (void)updateState:(int64_t)state
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = SOSStringForSOSFlowState(a3);
+    v6 = SOSStringForSOSFlowState(state);
     *buf = 138412290;
     v23 = v6;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSFlow: Updating state to %@", buf, 0xCu);
   }
 
-  [(SOSFlow *)self setCurrentState:a3];
+  [(SOSFlow *)self setCurrentState:state];
   if ([(SOSFlow *)self currentState]== 9)
   {
     [(SOSFlow *)self setDidSeeUnresponsiveResting:1];
   }
 
   v7 = +[SOSStatusReporter sharedInstance];
-  [v7 updateSOSFlowState:a3];
+  [v7 updateSOSFlowState:state];
 
   [(SOSFlow *)self startFlowStateHeartbeatTimer];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(SOSFlow *)self observers];
-  v9 = [v8 copy];
+  observers = [(SOSFlow *)self observers];
+  v9 = [observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
@@ -464,24 +464,24 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
     while (v11);
   }
 
-  if ((a3 - 3) <= 1)
+  if ((state - 3) <= 1)
   {
-    v14 = [(SOSFlow *)self isUserResponsive];
-    v15 = a3 == 3 || v14;
+    isUserResponsive = [(SOSFlow *)self isUserResponsive];
+    v15 = state == 3 || isUserResponsive;
     [(SOSFlow *)self setIsUserResponsive:v15];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willHandleEvent:(unint64_t)a3 withMetaData:(id)a4
+- (void)willHandleEvent:(unint64_t)event withMetaData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dataCopy = data;
   v7 = sos_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = sosFlowEventDescription(a3);
+    v8 = sosFlowEventDescription(event);
     *buf = 138412290;
     v22 = v8;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "SOSFlow: Will handle event %@", buf, 0xCu);
@@ -491,8 +491,8 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(SOSFlow *)self observers];
-  v10 = [v9 copy];
+  observers = [(SOSFlow *)self observers];
+  v10 = [observers copy];
 
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
@@ -509,7 +509,7 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) sosFlow:self willHandleEvent:a3 withMetaData:v6];
+        [*(*(&v16 + 1) + 8 * v14++) sosFlow:self willHandleEvent:event withMetaData:dataCopy];
       }
 
       while (v12 != v14);
@@ -522,10 +522,10 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (double)checkInTimeoutForSOSFlowType:(unint64_t)a3
+- (double)checkInTimeoutForSOSFlowType:(unint64_t)type
 {
   result = 32.0;
-  if (a3 == 2)
+  if (type == 2)
   {
     return 10.0;
   }
@@ -554,13 +554,13 @@ void __29__SOSFlow__prefetchMedicalID__block_invoke(uint64_t a1, void *a2)
 
   [(PCPersistentTimer *)self->_timer setMinimumEarlyFireProportion:1.0];
   v8 = self->_timer;
-  v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(PCPersistentTimer *)v8 scheduleInRunLoop:v9];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(PCPersistentTimer *)v8 scheduleInRunLoop:mainRunLoop];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -688,9 +688,9 @@ void __39__SOSFlow_startFlowStateHeartbeatTimer__block_invoke(uint64_t a1)
 
 - (void)clearFlowStateHeartbeatTimer
 {
-  v3 = [(SOSFlow *)self flowStateHeartbeatTimer];
+  flowStateHeartbeatTimer = [(SOSFlow *)self flowStateHeartbeatTimer];
 
-  if (v3)
+  if (flowStateHeartbeatTimer)
   {
     v4 = sos_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -699,23 +699,23 @@ void __39__SOSFlow_startFlowStateHeartbeatTimer__block_invoke(uint64_t a1)
       _os_log_impl(&dword_264323000, v4, OS_LOG_TYPE_DEFAULT, "SOSFlow,clearing sos flow state heartbeat timer", v6, 2u);
     }
 
-    v5 = [(SOSFlow *)self flowStateHeartbeatTimer];
-    [v5 invalidate];
+    flowStateHeartbeatTimer2 = [(SOSFlow *)self flowStateHeartbeatTimer];
+    [flowStateHeartbeatTimer2 invalidate];
 
     [(SOSFlow *)self setFlowStateHeartbeatTimer:0];
   }
 }
 
-+ (id)validEventsforState:(int64_t)a3
++ (id)validEventsforState:(int64_t)state
 {
-  if ((a3 - 1) > 0xD)
+  if ((state - 1) > 0xD)
   {
     return &unk_2875D2BA8;
   }
 
   else
   {
-    return qword_279B53828[a3 - 1];
+    return qword_279B53828[state - 1];
   }
 }
 

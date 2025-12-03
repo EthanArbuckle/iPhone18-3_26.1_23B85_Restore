@@ -1,11 +1,11 @@
 @interface SessionRoutePickerViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (_TtC9SeymourUI32SessionRoutePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (_TtC9SeymourUI32SessionRoutePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)onTapBackground;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -13,18 +13,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B961AA8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SessionRoutePickerViewController();
   v4 = v11.receiver;
-  [(SessionRoutePickerViewController *)&v11 viewDidAppear:v3];
-  if (v3)
+  [(SessionRoutePickerViewController *)&v11 viewDidAppear:appearCopy];
+  if (appearCopy)
   {
     v5 = 0.18;
   }
@@ -66,40 +66,40 @@
 
 - (void)onTapBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B962BA4();
 }
 
-- (_TtC9SeymourUI32SessionRoutePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI32SessionRoutePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20C133244();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_20B963AB0();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v6 = sub_20C133244();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v10 = a3;
-  [v10 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   Width = CGRectGetWidth(v16);
 
   (*(v7 + 8))(v9, v6);
@@ -110,12 +110,12 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_20B963C78(v8, a5);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_20B963C78(viewCopy, section);
   v12 = v11;
   v14 = v13;
 

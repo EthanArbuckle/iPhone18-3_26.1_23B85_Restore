@@ -1,24 +1,24 @@
 @interface PFCoalescer
-+ (PFCoalescer)coalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5;
-+ (PFCoalescer)coalescerWithLabel:(id)a3 target:(id)a4 buffer:(id)a5 queue:(id)a6 bufferDrainer:(id)a7 action:(id)a8;
-+ (PFCoalescer)coalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6;
-+ (id)arrayCoalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5;
-+ (id)arrayCoalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6;
-+ (id)dictionaryCoalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5;
-+ (id)dictionaryCoalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6;
-+ (id)mutableContainerCoalescerWithLabel:(id)a3 container:(id)a4 queue:(id)a5 action:(id)a6;
-+ (id)mutableContainerCoalescerWithLabel:(id)a3 target:(id)a4 container:(id)a5 queue:(id)a6 action:(id)a7;
-+ (id)setCoalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5;
-+ (id)setCoalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6;
++ (PFCoalescer)coalescerWithLabel:(id)label queue:(id)queue action:(id)action;
++ (PFCoalescer)coalescerWithLabel:(id)label target:(id)target buffer:(id)buffer queue:(id)queue bufferDrainer:(id)drainer action:(id)action;
++ (PFCoalescer)coalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action;
++ (id)arrayCoalescerWithLabel:(id)label queue:(id)queue action:(id)action;
++ (id)arrayCoalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action;
++ (id)dictionaryCoalescerWithLabel:(id)label queue:(id)queue action:(id)action;
++ (id)dictionaryCoalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action;
++ (id)mutableContainerCoalescerWithLabel:(id)label container:(id)container queue:(id)queue action:(id)action;
++ (id)mutableContainerCoalescerWithLabel:(id)label target:(id)target container:(id)container queue:(id)queue action:(id)action;
++ (id)setCoalescerWithLabel:(id)label queue:(id)queue action:(id)action;
++ (id)setCoalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action;
 - (PFCoalescer)init;
-- (PFCoalescer)initWithLabel:(id)a3 target:(id)a4 buffer:(id)a5 queue:(id)a6 bufferDrainer:(id)a7 action:(id)a8;
+- (PFCoalescer)initWithLabel:(id)label target:(id)target buffer:(id)buffer queue:(id)queue bufferDrainer:(id)drainer action:(id)action;
 - (id)stateCaptureDictionary;
 - (id)target;
 - (void)_resetWhileLocked;
-- (void)performEventActionWithTarget:(id)a3;
+- (void)performEventActionWithTarget:(id)target;
 - (void)reset;
 - (void)resetAndShutDown;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation PFCoalescer
@@ -42,18 +42,18 @@ id __45__PFCoalescer_mutableCollectionBufferDrainer__block_invoke(uint64_t a1, v
 - (id)stateCaptureDictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_label forKeyedSubscript:@"label"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_label forKeyedSubscript:@"label"];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_state];
-  v21 = v3;
-  [v3 setObject:v4 forKeyedSubscript:@"state"];
+  v21 = dictionary;
+  [dictionary setObject:v4 forKeyedSubscript:@"state"];
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = self;
+  selfCopy = self;
   obj = [(PFCoalescerContext *)self->_context pendingActivityTokensSnapshot];
   v6 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
@@ -71,21 +71,21 @@ id __45__PFCoalescer_mutableCollectionBufferDrainer__block_invoke(uint64_t a1, v
 
         v10 = *(*(&v23 + 1) + 8 * i);
         v27[0] = @"reason";
-        v11 = [v10 reason];
-        v28[0] = v11;
+        reason = [v10 reason];
+        v28[0] = reason;
         v27[1] = @"ageTimeInterval";
         v12 = MEMORY[0x1E696AD98];
-        v13 = [MEMORY[0x1E695DF00] date];
-        v14 = [v10 creationDate];
-        [v13 timeIntervalSinceDate:v14];
+        date = [MEMORY[0x1E695DF00] date];
+        creationDate = [v10 creationDate];
+        [date timeIntervalSinceDate:creationDate];
         v15 = [v12 numberWithDouble:?];
         v28[1] = v15;
         v27[2] = @"callStackReturnAddresses";
-        v16 = [v10 callStackReturnAddresses];
-        v28[2] = v16;
+        callStackReturnAddresses = [v10 callStackReturnAddresses];
+        v28[2] = callStackReturnAddresses;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
 
-        [v5 addObject:v17];
+        [array addObject:v17];
       }
 
       v7 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
@@ -94,9 +94,9 @@ id __45__PFCoalescer_mutableCollectionBufferDrainer__block_invoke(uint64_t a1, v
     while (v7);
   }
 
-  [v21 setObject:v5 forKeyedSubscript:@"pendingActivityTokens"];
-  [v21 setObject:v20->_lastTransactionStartDate forKeyedSubscript:@"lastTransactionStartDate"];
-  [v21 setObject:v20->_lastTransactionEndDate forKeyedSubscript:@"lastTransactionEndDate"];
+  [v21 setObject:array forKeyedSubscript:@"pendingActivityTokens"];
+  [v21 setObject:selfCopy->_lastTransactionStartDate forKeyedSubscript:@"lastTransactionStartDate"];
+  [v21 setObject:selfCopy->_lastTransactionEndDate forKeyedSubscript:@"lastTransactionEndDate"];
 
   v18 = *MEMORY[0x1E69E9840];
 
@@ -167,9 +167,9 @@ void *__20__PFCoalescer_reset__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -181,7 +181,7 @@ void *__20__PFCoalescer_reset__block_invoke(uint64_t a1)
   block[3] = &unk_1E8563A18;
   block[4] = self;
   v13 = &v14;
-  v6 = v4;
+  v6 = updateCopy;
   v12 = v6;
   dispatch_sync(isolationQueue, block);
   if ((v15[3] & 1) == 0)
@@ -270,9 +270,9 @@ void __22__PFCoalescer_update___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)performEventActionWithTarget:(id)a3
+- (void)performEventActionWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -301,7 +301,7 @@ void __22__PFCoalescer_update___block_invoke_2(uint64_t a1)
     v10[2] = __44__PFCoalescer_performEventActionWithTarget___block_invoke_2;
     v10[3] = &unk_1E85639C8;
     v10[4] = self;
-    v11 = v4;
+    v11 = targetCopy;
     v12 = v14;
     dispatch_sync(targetQueue, v10);
     dispatch_suspend(self->_source);
@@ -387,18 +387,18 @@ void __44__PFCoalescer_performEventActionWithTarget___block_invoke_3(uint64_t a1
   dispatch_resume(v8);
 }
 
-- (PFCoalescer)initWithLabel:(id)a3 target:(id)a4 buffer:(id)a5 queue:(id)a6 bufferDrainer:(id)a7 action:(id)a8
+- (PFCoalescer)initWithLabel:(id)label target:(id)target buffer:(id)buffer queue:(id)queue bufferDrainer:(id)drainer action:(id)action
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  if (v15)
+  labelCopy = label;
+  targetCopy = target;
+  bufferCopy = buffer;
+  queueCopy = queue;
+  drainerCopy = drainer;
+  actionCopy = action;
+  v21 = actionCopy;
+  if (labelCopy)
   {
-    if (v20)
+    if (actionCopy)
     {
       goto LABEL_3;
     }
@@ -406,8 +406,8 @@ void __44__PFCoalescer_performEventActionWithTarget___block_invoke_3(uint64_t a1
 
   else
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"label"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"label"}];
 
     if (v21)
     {
@@ -415,8 +415,8 @@ void __44__PFCoalescer_performEventActionWithTarget___block_invoke_3(uint64_t a1
     }
   }
 
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
 LABEL_3:
   v49.receiver = self;
@@ -425,30 +425,30 @@ LABEL_3:
   v23 = v22;
   if (v22)
   {
-    [(PFCoalescer *)v22 setTarget:v16];
-    [(PFCoalescer *)v23 setUsesTarget:v16 != 0];
-    v45 = v17;
-    [(PFCoalescer *)v23 setBuffer:v17];
-    [(PFCoalescer *)v23 setSnapshotAndDrainHandler:v19];
+    [(PFCoalescer *)v22 setTarget:targetCopy];
+    [(PFCoalescer *)v23 setUsesTarget:targetCopy != 0];
+    v45 = bufferCopy;
+    [(PFCoalescer *)v23 setBuffer:bufferCopy];
+    [(PFCoalescer *)v23 setSnapshotAndDrainHandler:drainerCopy];
     [(PFCoalescer *)v23 setAction:v21];
-    [(PFCoalescer *)v23 setLabel:v15];
-    v24 = [@"coalescer-" stringByAppendingString:v15];
-    v25 = [v24 UTF8String];
+    [(PFCoalescer *)v23 setLabel:labelCopy];
+    v24 = [@"coalescer-" stringByAppendingString:labelCopy];
+    uTF8String = [v24 UTF8String];
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v27 = dispatch_queue_attr_make_with_qos_class(v26, QOS_CLASS_BACKGROUND, 0);
-    v28 = dispatch_queue_create(v25, v27);
+    v28 = dispatch_queue_create(uTF8String, v27);
     [(PFCoalescer *)v23 setSourceQueue:v28];
 
-    v29 = [@"coalescer-buffer-" stringByAppendingString:v15];
-    v30 = [v29 UTF8String];
+    v29 = [@"coalescer-buffer-" stringByAppendingString:labelCopy];
+    uTF8String2 = [v29 UTF8String];
     v31 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v32 = dispatch_queue_attr_make_with_qos_class(v31, QOS_CLASS_BACKGROUND, 0);
-    v33 = dispatch_queue_create(v30, v32);
+    v33 = dispatch_queue_create(uTF8String2, v32);
     [(PFCoalescer *)v23 setIsolationQueue:v33];
 
-    if (v18)
+    if (queueCopy)
     {
-      [(PFCoalescer *)v23 setTargetQueue:v18];
+      [(PFCoalescer *)v23 setTargetQueue:queueCopy];
     }
 
     else
@@ -457,24 +457,24 @@ LABEL_3:
       [(PFCoalescer *)v23 setTargetQueue:v34];
     }
 
-    v35 = [(PFCoalescer *)v23 sourceQueue];
-    v36 = dispatch_source_create(MEMORY[0x1E69E96B0], 0, 0, v35);
+    sourceQueue = [(PFCoalescer *)v23 sourceQueue];
+    v36 = dispatch_source_create(MEMORY[0x1E69E96B0], 0, 0, sourceQueue);
     [(PFCoalescer *)v23 setSource:v36];
 
     v37 = [[PFCoalescerContext alloc] initWithCoalescer:v23];
     [(PFCoalescer *)v23 setContext:v37];
 
     objc_initWeak(&location, v23);
-    v38 = [(PFCoalescer *)v23 source];
+    source = [(PFCoalescer *)v23 source];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __70__PFCoalescer_initWithLabel_target_buffer_queue_bufferDrainer_action___block_invoke;
     handler[3] = &unk_1E8563978;
     objc_copyWeak(&v47, &location);
-    dispatch_source_set_event_handler(v38, handler);
+    dispatch_source_set_event_handler(source, handler);
 
-    v39 = [(PFCoalescer *)v23 source];
-    dispatch_resume(v39);
+    source2 = [(PFCoalescer *)v23 source];
+    dispatch_resume(source2);
 
     v40 = [[PFStateCaptureHandler alloc] initWithProvider:v23];
     stateCaptureHandler = v23->_stateCaptureHandler;
@@ -482,7 +482,7 @@ LABEL_3:
 
     objc_destroyWeak(&v47);
     objc_destroyWeak(&location);
-    v17 = v45;
+    bufferCopy = v45;
   }
 
   return v23;
@@ -529,127 +529,127 @@ void __70__PFCoalescer_initWithLabel_target_buffer_queue_bufferDrainer_action___
   return v3;
 }
 
-+ (id)arrayCoalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6
++ (id)arrayCoalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action
 {
   v10 = MEMORY[0x1E695DF70];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 array];
-  v16 = [a1 mutableContainerCoalescerWithLabel:v14 target:v13 container:v15 queue:v12 action:v11];
+  actionCopy = action;
+  queueCopy = queue;
+  targetCopy = target;
+  labelCopy = label;
+  array = [v10 array];
+  v16 = [self mutableContainerCoalescerWithLabel:labelCopy target:targetCopy container:array queue:queueCopy action:actionCopy];
 
   return v16;
 }
 
-+ (id)arrayCoalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5
++ (id)arrayCoalescerWithLabel:(id)label queue:(id)queue action:(id)action
 {
   v8 = MEMORY[0x1E695DF70];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 array];
-  v13 = [a1 mutableContainerCoalescerWithLabel:v11 container:v12 queue:v10 action:v9];
+  actionCopy = action;
+  queueCopy = queue;
+  labelCopy = label;
+  array = [v8 array];
+  v13 = [self mutableContainerCoalescerWithLabel:labelCopy container:array queue:queueCopy action:actionCopy];
 
   return v13;
 }
 
-+ (id)dictionaryCoalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6
++ (id)dictionaryCoalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action
 {
   v10 = MEMORY[0x1E695DF90];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 dictionary];
-  v16 = [a1 mutableContainerCoalescerWithLabel:v14 target:v13 container:v15 queue:v12 action:v11];
+  actionCopy = action;
+  queueCopy = queue;
+  targetCopy = target;
+  labelCopy = label;
+  dictionary = [v10 dictionary];
+  v16 = [self mutableContainerCoalescerWithLabel:labelCopy target:targetCopy container:dictionary queue:queueCopy action:actionCopy];
 
   return v16;
 }
 
-+ (id)dictionaryCoalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5
++ (id)dictionaryCoalescerWithLabel:(id)label queue:(id)queue action:(id)action
 {
   v8 = MEMORY[0x1E695DF90];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 dictionary];
-  v13 = [a1 mutableContainerCoalescerWithLabel:v11 container:v12 queue:v10 action:v9];
+  actionCopy = action;
+  queueCopy = queue;
+  labelCopy = label;
+  dictionary = [v8 dictionary];
+  v13 = [self mutableContainerCoalescerWithLabel:labelCopy container:dictionary queue:queueCopy action:actionCopy];
 
   return v13;
 }
 
-+ (id)setCoalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6
++ (id)setCoalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action
 {
   v10 = MEMORY[0x1E695DFA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  actionCopy = action;
+  queueCopy = queue;
+  targetCopy = target;
+  labelCopy = label;
   v15 = [v10 set];
-  v16 = [a1 mutableContainerCoalescerWithLabel:v14 target:v13 container:v15 queue:v12 action:v11];
+  v16 = [self mutableContainerCoalescerWithLabel:labelCopy target:targetCopy container:v15 queue:queueCopy action:actionCopy];
 
   return v16;
 }
 
-+ (id)setCoalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5
++ (id)setCoalescerWithLabel:(id)label queue:(id)queue action:(id)action
 {
   v8 = MEMORY[0x1E695DFA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  actionCopy = action;
+  queueCopy = queue;
+  labelCopy = label;
   v12 = [v8 set];
-  v13 = [a1 mutableContainerCoalescerWithLabel:v11 container:v12 queue:v10 action:v9];
+  v13 = [self mutableContainerCoalescerWithLabel:labelCopy container:v12 queue:queueCopy action:actionCopy];
 
   return v13;
 }
 
-+ (id)mutableContainerCoalescerWithLabel:(id)a3 container:(id)a4 queue:(id)a5 action:(id)a6
++ (id)mutableContainerCoalescerWithLabel:(id)label container:(id)container queue:(id)queue action:(id)action
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  containerCopy = container;
+  actionCopy = action;
+  queueCopy = queue;
+  labelCopy = label;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PFCoalescer.m" lineNumber:350 description:{@"Unsupported container, does not respond to removeAllObjects"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:350 description:{@"Unsupported container, does not respond to removeAllObjects"}];
   }
 
-  if (([v11 conformsToProtocol:&unk_1F5448560] & 1) == 0)
+  if (([containerCopy conformsToProtocol:&unk_1F5448560] & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PFCoalescer.m" lineNumber:351 description:{@"Unsupported container, does not conform to NSCopying"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:351 description:{@"Unsupported container, does not conform to NSCopying"}];
   }
 
-  v15 = [objc_opt_class() mutableCollectionBufferDrainer];
+  mutableCollectionBufferDrainer = [objc_opt_class() mutableCollectionBufferDrainer];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __73__PFCoalescer_mutableContainerCoalescerWithLabel_container_queue_action___block_invoke;
   v21[3] = &unk_1E85639F0;
-  v22 = v12;
-  v16 = v12;
-  v17 = [a1 coalescerWithLabel:v14 target:0 buffer:v11 queue:v13 bufferDrainer:v15 action:v21];
+  v22 = actionCopy;
+  v16 = actionCopy;
+  v17 = [self coalescerWithLabel:labelCopy target:0 buffer:containerCopy queue:queueCopy bufferDrainer:mutableCollectionBufferDrainer action:v21];
 
   return v17;
 }
 
-+ (id)mutableContainerCoalescerWithLabel:(id)a3 target:(id)a4 container:(id)a5 queue:(id)a6 action:(id)a7
++ (id)mutableContainerCoalescerWithLabel:(id)label target:(id)target container:(id)container queue:(id)queue action:(id)action
 {
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
+  containerCopy = container;
+  actionCopy = action;
+  queueCopy = queue;
+  targetCopy = target;
+  labelCopy = label;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PFCoalescer.m" lineNumber:336 description:{@"Unsupported container, does not respond to removeAllObjects"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:336 description:{@"Unsupported container, does not respond to removeAllObjects"}];
   }
 
-  if ([v13 conformsToProtocol:&unk_1F5448560])
+  if ([containerCopy conformsToProtocol:&unk_1F5448560])
   {
-    if (v16)
+    if (targetCopy)
     {
       goto LABEL_5;
     }
@@ -657,77 +657,77 @@ void __70__PFCoalescer_initWithLabel_target_buffer_queue_bufferDrainer_action___
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PFCoalescer.m" lineNumber:337 description:{@"Unsupported container, does not conform to NSCopying"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:337 description:{@"Unsupported container, does not conform to NSCopying"}];
 
-    if (v16)
+    if (targetCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:a1 file:@"PFCoalescer.m" lineNumber:338 description:{@"Invalid parameter not satisfying: %@", @"target"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:338 description:{@"Invalid parameter not satisfying: %@", @"target"}];
 
 LABEL_5:
-  v18 = [objc_opt_class() mutableCollectionBufferDrainer];
+  mutableCollectionBufferDrainer = [objc_opt_class() mutableCollectionBufferDrainer];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __80__PFCoalescer_mutableContainerCoalescerWithLabel_target_container_queue_action___block_invoke;
   v25[3] = &unk_1E85639F0;
-  v26 = v14;
-  v19 = v14;
-  v20 = [a1 coalescerWithLabel:v17 target:v16 buffer:v13 queue:v15 bufferDrainer:v18 action:v25];
+  v26 = actionCopy;
+  v19 = actionCopy;
+  v20 = [self coalescerWithLabel:labelCopy target:targetCopy buffer:containerCopy queue:queueCopy bufferDrainer:mutableCollectionBufferDrainer action:v25];
 
   return v20;
 }
 
-+ (PFCoalescer)coalescerWithLabel:(id)a3 queue:(id)a4 action:(id)a5
++ (PFCoalescer)coalescerWithLabel:(id)label queue:(id)queue action:(id)action
 {
-  v8 = a5;
+  actionCopy = action;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__PFCoalescer_coalescerWithLabel_queue_action___block_invoke;
   v12[3] = &unk_1E85639F0;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a1 coalescerWithLabel:a3 target:0 buffer:0 queue:a4 bufferDrainer:0 action:v12];
+  v13 = actionCopy;
+  v9 = actionCopy;
+  v10 = [self coalescerWithLabel:label target:0 buffer:0 queue:queue bufferDrainer:0 action:v12];
 
   return v10;
 }
 
-+ (PFCoalescer)coalescerWithLabel:(id)a3 target:(id)a4 queue:(id)a5 action:(id)a6
++ (PFCoalescer)coalescerWithLabel:(id)label target:(id)target queue:(id)queue action:(id)action
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12)
+  labelCopy = label;
+  targetCopy = target;
+  queueCopy = queue;
+  actionCopy = action;
+  if (!targetCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PFCoalescer.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"target"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PFCoalescer.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"target"}];
   }
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __54__PFCoalescer_coalescerWithLabel_target_queue_action___block_invoke;
   v19[3] = &unk_1E85639F0;
-  v20 = v14;
-  v15 = v14;
-  v16 = [a1 coalescerWithLabel:v11 target:v12 buffer:0 queue:v13 bufferDrainer:0 action:v19];
+  v20 = actionCopy;
+  v15 = actionCopy;
+  v16 = [self coalescerWithLabel:labelCopy target:targetCopy buffer:0 queue:queueCopy bufferDrainer:0 action:v19];
 
   return v16;
 }
 
-+ (PFCoalescer)coalescerWithLabel:(id)a3 target:(id)a4 buffer:(id)a5 queue:(id)a6 bufferDrainer:(id)a7 action:(id)a8
++ (PFCoalescer)coalescerWithLabel:(id)label target:(id)target buffer:(id)buffer queue:(id)queue bufferDrainer:(id)drainer action:(id)action
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [objc_alloc(objc_opt_class()) initWithLabel:v18 target:v17 buffer:v16 queue:v15 bufferDrainer:v14 action:v13];
+  actionCopy = action;
+  drainerCopy = drainer;
+  queueCopy = queue;
+  bufferCopy = buffer;
+  targetCopy = target;
+  labelCopy = label;
+  v19 = [objc_alloc(objc_opt_class()) initWithLabel:labelCopy target:targetCopy buffer:bufferCopy queue:queueCopy bufferDrainer:drainerCopy action:actionCopy];
 
   return v19;
 }

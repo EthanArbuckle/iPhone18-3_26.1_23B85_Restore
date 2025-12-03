@@ -1,46 +1,46 @@
 @interface DARootViewController
-- (DARootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DARootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)remoteViewControllerDidDisappear;
-- (void)displayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6;
-- (void)displayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)aBlock;
-- (void)enableVolumeHUD:(BOOL)a3;
-- (void)remoteViewControllerDidSetHostBundleIdentifier:(id)a3;
-- (void)remoteViewControllerDidSetSessionToken:(id)a3;
-- (void)remoteViewControllerDidSetStartingFlow:(id)a3;
-- (void)setScreenToBrightness:(float)a3 animate:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)displayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion;
+- (void)displayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)aBlock;
+- (void)enableVolumeHUD:(BOOL)d;
+- (void)remoteViewControllerDidSetHostBundleIdentifier:(id)identifier;
+- (void)remoteViewControllerDidSetSessionToken:(id)token;
+- (void)remoteViewControllerDidSetStartingFlow:(id)flow;
+- (void)setScreenToBrightness:(float)brightness animate:(BOOL)animate;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation DARootViewController
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(DARootViewController *)&v5 viewIsAppearing:v3];
+  [(DARootViewController *)&v5 viewIsAppearing:appearingCopy];
   if (sub_1000660CC())
   {
     sub_100060EBC();
   }
 }
 
-- (void)enableVolumeHUD:(BOOL)a3
+- (void)enableVolumeHUD:(BOOL)d
 {
-  v4 = self;
-  sub_10006195C(a3);
+  selfCopy = self;
+  sub_10006195C(d);
 }
 
-- (void)setScreenToBrightness:(float)a3 animate:(BOOL)a4
+- (void)setScreenToBrightness:(float)brightness animate:(BOOL)animate
 {
-  v6 = self;
-  sub_100061B10(a4, a3);
+  selfCopy = self;
+  sub_100061B10(animate, brightness);
 }
 
-- (void)displayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6
+- (void)displayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(completion);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -48,22 +48,22 @@
   v14 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = swift_allocObject();
   *(v15 + 16) = v7;
-  v16 = self;
+  selfCopy = self;
   sub_100066F04(v8, v10, v11, v13, v14, sub_100068D7C, v15);
 }
 
-- (void)displayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)aBlock
+- (void)displayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)aBlock
 {
   v24 = _Block_copy(aBlock);
   v13 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v23 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  if (a7)
+  if (subtitle)
   {
     v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a7 = v18;
-    if (!a8)
+    subtitle = v18;
+    if (!locator)
     {
       goto LABEL_4;
     }
@@ -72,7 +72,7 @@
   }
 
   v17 = 0;
-  if (a8)
+  if (locator)
   {
 LABEL_3:
     static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -84,13 +84,13 @@ LABEL_4:
   v20 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = swift_allocObject();
   *(v21 + 16) = v24;
-  v22 = self;
-  sub_100067194(v13, a4, v14, v23, v16, v17, a7, v19, v20, sub_100068A24, v21);
+  selfCopy = self;
+  sub_100067194(v13, style, v14, v23, v16, v17, subtitle, v19, v20, sub_100068A24, v21);
 }
 
-- (DARootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DARootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -102,26 +102,26 @@ LABEL_4:
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000633E8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000633E8(v5, v7, bundle);
 }
 
-- (void)remoteViewControllerDidSetSessionToken:(id)a3
+- (void)remoteViewControllerDidSetSessionToken:(id)token
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100068570(v4, v6);
 }
 
-- (void)remoteViewControllerDidSetStartingFlow:(id)a3
+- (void)remoteViewControllerDidSetStartingFlow:(id)flow
 {
-  v4 = a3;
-  v5 = self;
-  sub_100068758(v4);
+  flowCopy = flow;
+  selfCopy = self;
+  sub_100068758(flowCopy);
 }
 
-- (void)remoteViewControllerDidSetHostBundleIdentifier:(id)a3
+- (void)remoteViewControllerDidSetHostBundleIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR___DARootViewController_hostAppBundleIdentifier);

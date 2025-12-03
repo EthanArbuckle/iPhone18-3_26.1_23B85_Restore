@@ -1,7 +1,7 @@
 @interface WFHomeKitAccessResource
 - (unint64_t)status;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFHomeKitAccessResource
@@ -20,7 +20,7 @@
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v4 = +[WFHomeManager sharedManager];
   [v4 removeEventObserver:self];
@@ -36,17 +36,17 @@
   self->_completionHandler = 0;
 }
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__WFHomeKitAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
   v8[3] = &unk_1E8378420;
   v8[4] = self;
-  v9 = v5;
+  v9 = handlerCopy;
   v6 = softLinkTCCAccessRequest;
-  v7 = v5;
+  v7 = handlerCopy;
   v6(@"kTCCServiceWillow", 0, v8);
 }
 

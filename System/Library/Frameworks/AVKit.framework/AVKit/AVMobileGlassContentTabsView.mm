@@ -1,25 +1,25 @@
 @interface AVMobileGlassContentTabsView
 - (AVMobileGlassContentTabsTransitionState)transitionState;
-- (AVMobileGlassContentTabsView)initWithStyleSheet:(id)a3;
+- (AVMobileGlassContentTabsView)initWithStyleSheet:(id)sheet;
 - (AVMobileGlassContentTabsViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (UIScrollViewDelegate)contentViewDelegate;
 - (id)_updateContentTabsUserInteractionEnabledStateIfNeeded;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_setUpContentTabSelectionViewIfNeeded;
 - (void)_setUpContentTabsContentViewIfNeeded;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
-- (void)contentTabSelectionView:(id)a3 didChangeSelectedTabTo:(id)a4 withReason:(unint64_t)a5;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
+- (void)contentTabSelectionView:(id)view didChangeSelectedTabTo:(id)to withReason:(unint64_t)reason;
 - (void)didMoveToSuperview;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setBackgroundBlurActive:(BOOL)a3;
-- (void)setContentTabs:(id)a3;
-- (void)setContentViewAlpha:(double)a3;
-- (void)setContentViewDelegate:(id)a3;
-- (void)setTransitionState:(AVMobileGlassContentTabsTransitionState *)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBackgroundBlurActive:(BOOL)active;
+- (void)setContentTabs:(id)tabs;
+- (void)setContentViewAlpha:(double)alpha;
+- (void)setContentViewDelegate:(id)delegate;
+- (void)setTransitionState:(AVMobileGlassContentTabsTransitionState *)state;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 - (void)updateBackgroundMaterial;
 @end
 
@@ -49,16 +49,16 @@
   return WeakRetained;
 }
 
-- (void)contentTabSelectionView:(id)a3 didChangeSelectedTabTo:(id)a4 withReason:(unint64_t)a5
+- (void)contentTabSelectionView:(id)view didChangeSelectedTabTo:(id)to withReason:(unint64_t)reason
 {
-  v13 = a4;
+  toCopy = to;
   if (self)
   {
-    v7 = [(AVMobileGlassContentTabsContentView *)self->_contentView scrollView];
-    v8 = v7;
-    if (!self->_scrollPocket && self->_contentTabSelectionView && v7 != 0)
+    scrollView = [(AVMobileGlassContentTabsContentView *)self->_contentView scrollView];
+    v8 = scrollView;
+    if (!self->_scrollPocket && self->_contentTabSelectionView && scrollView != 0)
     {
-      v10 = [objc_alloc(MEMORY[0x1E69DD6C0]) initWithScrollView:v7 edge:1];
+      v10 = [objc_alloc(MEMORY[0x1E69DD6C0]) initWithScrollView:scrollView edge:1];
       scrollPocket = self->_scrollPocket;
       self->_scrollPocket = v10;
 
@@ -66,40 +66,40 @@
     }
   }
 
-  v12 = [(AVMobileGlassContentTabsView *)self delegate];
+  delegate = [(AVMobileGlassContentTabsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 contentTabsView:self didChangeContentTab:v13 withReason:a5];
+    [delegate contentTabsView:self didChangeContentTab:toCopy withReason:reason];
   }
 }
 
 - (void)updateBackgroundMaterial
 {
-  v3 = [(AVGlassBackedView *)self backgroundMaterialStyle];
-  v4 = [(AVGlassBackedView *)self backgroundMaterialized];
-  [(AVGlassBackedView *)self->_contentTabSelectionView setBackgroundMaterialStyle:v3];
+  backgroundMaterialStyle = [(AVGlassBackedView *)self backgroundMaterialStyle];
+  backgroundMaterialized = [(AVGlassBackedView *)self backgroundMaterialized];
+  [(AVGlassBackedView *)self->_contentTabSelectionView setBackgroundMaterialStyle:backgroundMaterialStyle];
   contentTabSelectionView = self->_contentTabSelectionView;
 
-  [(AVGlassBackedView *)contentTabSelectionView setBackgroundMaterialized:v4];
+  [(AVGlassBackedView *)contentTabSelectionView setBackgroundMaterialized:backgroundMaterialized];
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  if (self->_contentTabSelectionView == a3)
+  if (self->_contentTabSelectionView == invalidated)
   {
-    v5 = [(AVMobileGlassContentTabsView *)self superview];
-    [v5 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileGlassContentTabsView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
     [(AVMobileGlassContentTabsView *)self setNeedsLayout];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = AVMobileGlassContentTabsView;
   [(AVMobileGlassContentTabsView *)&v5 setAlpha:?];
-  [(AVMobileGlassContentTabSelectionView *)self->_contentTabSelectionView setAlpha:a3];
+  [(AVMobileGlassContentTabSelectionView *)self->_contentTabSelectionView setAlpha:alpha];
 }
 
 - (void)didMoveToSuperview
@@ -109,8 +109,8 @@
   [(AVMobileGlassContentTabsView *)&v8 didMoveToSuperview];
   if (self)
   {
-    v3 = [(AVMobileGlassContentTabsView *)self window];
-    if (v3)
+    window = [(AVMobileGlassContentTabsView *)self window];
+    if (window)
     {
       backgroundBlurEffectView = self->_backgroundBlurEffectView;
 
@@ -136,50 +136,50 @@
 
 - (void)_setUpContentTabsContentViewIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!a1[65])
+    if (!self[65])
     {
-      v2 = [a1 window];
+      window = [self window];
 
-      if (v2)
+      if (window)
       {
         v3 = objc_alloc_init(AVMobileGlassContentTabsContentView);
-        v4 = a1[65];
-        a1[65] = v3;
+        v4 = self[65];
+        self[65] = v3;
 
-        v5 = [a1[65] scrollView];
-        WeakRetained = objc_loadWeakRetained(a1 + 69);
-        [v5 setDelegate:WeakRetained];
+        scrollView = [self[65] scrollView];
+        WeakRetained = objc_loadWeakRetained(self + 69);
+        [scrollView setDelegate:WeakRetained];
 
-        [a1 addSubview:a1[65]];
+        [self addSubview:self[65]];
       }
     }
 
-    v8 = [a1[65] scrollView];
-    v7 = objc_loadWeakRetained(a1 + 69);
-    [v8 setDelegate:v7];
+    scrollView2 = [self[65] scrollView];
+    v7 = objc_loadWeakRetained(self + 69);
+    [scrollView2 setDelegate:v7];
   }
 }
 
 - (void)_setUpContentTabSelectionViewIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 512))
+    if (!*(self + 512))
     {
-      v2 = [a1 window];
+      window = [self window];
 
-      if (v2)
+      if (window)
       {
-        v3 = [[AVMobileGlassContentTabSelectionView alloc] initWithStyleSheet:*(a1 + 504)];
-        v4 = *(a1 + 512);
-        *(a1 + 512) = v3;
+        v3 = [[AVMobileGlassContentTabSelectionView alloc] initWithStyleSheet:*(self + 504)];
+        v4 = *(self + 512);
+        *(self + 512) = v3;
 
-        [*(a1 + 512) setDelegate:a1];
-        v5 = *(a1 + 512);
+        [*(self + 512) setDelegate:self];
+        v5 = *(self + 512);
 
-        [a1 addSubview:v5];
+        [self addSubview:v5];
       }
     }
   }
@@ -190,11 +190,11 @@
   if (result)
   {
     v1 = result;
-    v2 = [result isUserInteractionEnabled];
-    [v1[65] setUserInteractionEnabled:v2];
+    isUserInteractionEnabled = [result isUserInteractionEnabled];
+    [v1[65] setUserInteractionEnabled:isUserInteractionEnabled];
     v3 = v1[64];
 
-    return [v3 setUserInteractionEnabled:v2];
+    return [v3 setUserInteractionEnabled:isUserInteractionEnabled];
   }
 
   return result;
@@ -213,17 +213,17 @@
   v8 = v7;
   if (v6 >= v7 && ([(AVMobileGlassContentTabSelectionView *)self->_contentTabSelectionView setFrame:0.0, 0.0, v4, v7], v6 > v8))
   {
-    v10 = [(AVMobileGlassContentTabsView *)self isCompact];
-    v11 = [(AVMobileGlassContentTabsView *)self isCompact];
+    isCompact = [(AVMobileGlassContentTabsView *)self isCompact];
+    isCompact2 = [(AVMobileGlassContentTabsView *)self isCompact];
     v12 = 16.0;
-    if (!v11)
+    if (!isCompact2)
     {
       v12 = 0.0;
     }
 
     v13 = v8 + v12;
     v14 = v8 + v12 + 8.0;
-    if (v10)
+    if (isCompact)
     {
       v15 = 0.0;
     }
@@ -234,7 +234,7 @@
     }
 
     v16 = v6 - v14;
-    if (v10)
+    if (isCompact)
     {
       v17 = v6;
     }
@@ -245,16 +245,16 @@
     }
 
     [(AVMobileGlassContentTabsContentView *)self->_contentView setFrame:0.0, v15, v4, v17];
-    v18 = [(AVMobileGlassContentTabsView *)self delegate];
+    delegate = [(AVMobileGlassContentTabsView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v19 = 0.0;
-      if (v10)
+      if (isCompact)
       {
         v19 = v13;
       }
 
-      [v18 contentTabsView:self didUpdateTopContentInset:v19];
+      [delegate contentTabsView:self didUpdateTopContentInset:v19];
     }
 
     v9 = 0;
@@ -291,11 +291,11 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = AVMobileGlassContentTabsView;
-  v5 = [(AVView *)&v12 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(AVView *)&v12 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self->_contentTabSelectionView)
   {
@@ -307,10 +307,10 @@
     v7 = [(AVMobileGlassContentTabSelectionView *)v5 isDescendantOfView:?];
   }
 
-  v8 = [(AVMobileGlassContentTabsContentView *)self->_contentView scrollView];
-  if (([v8 isTracking] & 1) == 0 && (objc_msgSend(v8, "isDragging") & 1) == 0)
+  scrollView = [(AVMobileGlassContentTabsContentView *)self->_contentView scrollView];
+  if (([scrollView isTracking] & 1) == 0 && (objc_msgSend(scrollView, "isDragging") & 1) == 0)
   {
-    v7 &= [v8 isDecelerating];
+    v7 &= [scrollView isDecelerating];
   }
 
   if (v7)
@@ -328,19 +328,19 @@
   return v9;
 }
 
-- (void)setContentViewAlpha:(double)a3
+- (void)setContentViewAlpha:(double)alpha
 {
-  if (self->_contentViewAlpha != a3)
+  if (self->_contentViewAlpha != alpha)
   {
-    self->_contentViewAlpha = a3;
+    self->_contentViewAlpha = alpha;
     [(AVMobileGlassContentTabsContentView *)self->_contentView setAlpha:?];
   }
 }
 
-- (void)setTransitionState:(AVMobileGlassContentTabsTransitionState *)a3
+- (void)setTransitionState:(AVMobileGlassContentTabsTransitionState *)state
 {
   p_transitionState = &self->_transitionState;
-  __copy_assignment_8_8_s0_s8_t16w16(&self->_transitionState, a3);
+  __copy_assignment_8_8_s0_s8_t16w16(&self->_transitionState, state);
   if (self)
   {
     v6 = p_transitionState->activeContentTab;
@@ -373,35 +373,35 @@
     }
   }
 
-  upcomingContentTab = a3->upcomingContentTab;
+  upcomingContentTab = state->upcomingContentTab;
 }
 
-- (void)setBackgroundBlurActive:(BOOL)a3
+- (void)setBackgroundBlurActive:(BOOL)active
 {
-  if (self->_backgroundBlurActive != a3)
+  if (self->_backgroundBlurActive != active)
   {
-    self->_backgroundBlurActive = a3;
-    [(AVView *)self->_backgroundBlurEffectView setHidden:!a3];
+    self->_backgroundBlurActive = active;
+    [(AVView *)self->_backgroundBlurEffectView setHidden:!active];
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = AVMobileGlassContentTabsView;
-  if ([(AVMobileGlassContentTabsView *)&v6 isUserInteractionEnabled]!= a3)
+  if ([(AVMobileGlassContentTabsView *)&v6 isUserInteractionEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = AVMobileGlassContentTabsView;
-    [(AVMobileGlassContentTabsView *)&v5 setUserInteractionEnabled:v3];
+    [(AVMobileGlassContentTabsView *)&v5 setUserInteractionEnabled:enabledCopy];
     [(AVMobileGlassContentTabsView *)&self->super.super.super.super.super.isa _updateContentTabsUserInteractionEnabledStateIfNeeded];
   }
 }
 
-- (void)setContentViewDelegate:(id)a3
+- (void)setContentViewDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_contentViewDelegate);
 
   v6 = obj;
@@ -413,9 +413,9 @@
     contentView = self->_contentView;
     if (contentView)
     {
-      v7 = [(AVMobileGlassContentTabsContentView *)contentView scrollView];
+      scrollView = [(AVMobileGlassContentTabsContentView *)contentView scrollView];
       v8 = objc_loadWeakRetained(&self->_contentViewDelegate);
-      [v7 setDelegate:v8];
+      [scrollView setDelegate:v8];
 
       v6 = obj;
     }
@@ -424,32 +424,32 @@
   MEMORY[0x1EEE66BB8](contentView, v6);
 }
 
-- (void)setContentTabs:(id)a3
+- (void)setContentTabs:(id)tabs
 {
-  v5 = a3;
-  if (self->_contentTabs != v5)
+  tabsCopy = tabs;
+  if (self->_contentTabs != tabsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentTabs, a3);
+    v6 = tabsCopy;
+    objc_storeStrong(&self->_contentTabs, tabs);
     [(AVMobileGlassContentTabsView *)self _setUpContentTabSelectionViewIfNeeded];
     [(AVMobileGlassContentTabsView *)&self->super.super.super.super.super.isa _setUpContentTabsContentViewIfNeeded];
     [(AVMobileGlassContentTabSelectionView *)self->_contentTabSelectionView setContentTabs:v6];
-    v5 = [(AVMobileGlassContentTabsContentView *)self->_contentView setContentTabs:v6];
+    tabsCopy = [(AVMobileGlassContentTabsContentView *)self->_contentView setContentTabs:v6];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](tabsCopy);
 }
 
-- (AVMobileGlassContentTabsView)initWithStyleSheet:(id)a3
+- (AVMobileGlassContentTabsView)initWithStyleSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   v11.receiver = self;
   v11.super_class = AVMobileGlassContentTabsView;
   v6 = [(AVGlassBackedView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleSheet, a3);
+    objc_storeStrong(&v6->_styleSheet, sheet);
     v8 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     contentTabs = v7->_contentTabs;
     v7->_contentTabs = v8;

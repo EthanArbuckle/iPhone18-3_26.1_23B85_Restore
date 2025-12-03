@@ -1,32 +1,32 @@
 @interface MIOParameterDescription
-- (BOOL)isEqual:(id)a3;
-- (MIOParameterDescription)initWithKey:(id)a3 BOOLParameter:(const void *)a4;
-- (MIOParameterDescription)initWithKey:(id)a3 defaultValue:(id)a4 numericConstraint:(id)a5;
-- (MIOParameterDescription)initWithKey:(id)a3 doubleParameter:(const void *)a4;
-- (MIOParameterDescription)initWithKey:(id)a3 int64Parameter:(const void *)a4;
-- (MIOParameterDescription)initWithKey:(id)a3 stringParameter:(const void *)a4;
+- (BOOL)isEqual:(id)equal;
+- (MIOParameterDescription)initWithKey:(id)key BOOLParameter:(const void *)parameter;
+- (MIOParameterDescription)initWithKey:(id)key defaultValue:(id)value numericConstraint:(id)constraint;
+- (MIOParameterDescription)initWithKey:(id)key doubleParameter:(const void *)parameter;
+- (MIOParameterDescription)initWithKey:(id)key int64Parameter:(const void *)parameter;
+- (MIOParameterDescription)initWithKey:(id)key stringParameter:(const void *)parameter;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation MIOParameterDescription
 
-- (MIOParameterDescription)initWithKey:(id)a3 defaultValue:(id)a4 numericConstraint:(id)a5
+- (MIOParameterDescription)initWithKey:(id)key defaultValue:(id)value numericConstraint:(id)constraint
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  constraintCopy = constraint;
   v17.receiver = self;
   v17.super_class = MIOParameterDescription;
   v11 = [(MIOParameterDescription *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [keyCopy copy];
     key = v11->_key;
     v11->_key = v12;
 
-    objc_storeStrong(&v11->_defaultValue, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_defaultValue, value);
+    v14 = [constraintCopy copy];
     numericConstraint = v11->_numericConstraint;
     v11->_numericConstraint = v14;
   }
@@ -34,16 +34,16 @@
   return v11;
 }
 
-- (MIOParameterDescription)initWithKey:(id)a3 doubleParameter:(const void *)a4
+- (MIOParameterDescription)initWithKey:(id)key doubleParameter:(const void *)parameter
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*(a4 + 2)];
-  if (*(a4 + 9) == 10)
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*(parameter + 2)];
+  if (*(parameter + 9) == 10)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithDouble:*(*(a4 + 3) + 16)];
-    if (*(a4 + 9) == 10)
+    v8 = [MEMORY[0x1E696AD98] numberWithDouble:*(*(parameter + 3) + 16)];
+    if (*(parameter + 9) == 10)
     {
-      v9 = *(a4 + 3);
+      v9 = *(parameter + 3);
     }
 
     else
@@ -60,21 +60,21 @@
     v11 = 0;
   }
 
-  v12 = [(MIOParameterDescription *)self initWithKey:v6 defaultValue:v7 numericConstraint:v11];
+  v12 = [(MIOParameterDescription *)self initWithKey:keyCopy defaultValue:v7 numericConstraint:v11];
 
   return v12;
 }
 
-- (MIOParameterDescription)initWithKey:(id)a3 int64Parameter:(const void *)a4
+- (MIOParameterDescription)initWithKey:(id)key int64Parameter:(const void *)parameter
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:*(a4 + 2)];
-  v8 = *(a4 + 9);
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:*(parameter + 2)];
+  v8 = *(parameter + 9);
   if (v8 == 11)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v13 = *(a4 + 3);
-    if (*(a4 + 9) != 11)
+    v13 = *(parameter + 3);
+    if (*(parameter + 9) != 11)
     {
       v13 = &CoreML::Specification::_Int64Set_default_instance_;
     }
@@ -107,10 +107,10 @@
       goto LABEL_15;
     }
 
-    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:*(*(a4 + 3) + 16)];
-    if (*(a4 + 9) == 10)
+    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:*(*(parameter + 3) + 16)];
+    if (*(parameter + 9) == 10)
     {
-      v10 = *(a4 + 3);
+      v10 = *(parameter + 3);
     }
 
     else
@@ -123,31 +123,31 @@
   }
 
 LABEL_15:
-  v18 = [(MIOParameterDescription *)self initWithKey:v6 defaultValue:v7 numericConstraint:v12];
+  v18 = [(MIOParameterDescription *)self initWithKey:keyCopy defaultValue:v7 numericConstraint:v12];
 
   return v18;
 }
 
-- (MIOParameterDescription)initWithKey:(id)a3 BOOLParameter:(const void *)a4
+- (MIOParameterDescription)initWithKey:(id)key BOOLParameter:(const void *)parameter
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:*(a4 + 16)];
-  v8 = [(MIOParameterDescription *)self initWithKey:v6 defaultValue:v7 numericConstraint:0];
+  keyCopy = key;
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:*(parameter + 16)];
+  v8 = [(MIOParameterDescription *)self initWithKey:keyCopy defaultValue:v7 numericConstraint:0];
 
   return v8;
 }
 
-- (MIOParameterDescription)initWithKey:(id)a3 stringParameter:(const void *)a4
+- (MIOParameterDescription)initWithKey:(id)key stringParameter:(const void *)parameter
 {
-  v6 = a3;
-  v7 = *(a4 + 2) & 0xFFFFFFFFFFFFFFFELL;
+  keyCopy = key;
+  v7 = *(parameter + 2) & 0xFFFFFFFFFFFFFFFELL;
   if (*(v7 + 23) < 0)
   {
     v7 = *v7;
   }
 
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v7];
-  v9 = [(MIOParameterDescription *)self initWithKey:v6 defaultValue:v8 numericConstraint:0];
+  v9 = [(MIOParameterDescription *)self initWithKey:keyCopy defaultValue:v8 numericConstraint:0];
 
   return v9;
 }
@@ -156,17 +156,17 @@ LABEL_15:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(MIOParameterDescription *)self key];
-  v5 = [(MIOParameterDescription *)self defaultValue];
-  v6 = [(MIOParameterDescription *)self numericConstraint];
-  v7 = [v3 stringWithFormat:@"MIOParameterDescription { key: %@, defaultValue: %@, numericConstraint: %@ }", v4, v5, v6];
+  defaultValue = [(MIOParameterDescription *)self defaultValue];
+  numericConstraint = [(MIOParameterDescription *)self numericConstraint];
+  v7 = [v3 stringWithFormat:@"MIOParameterDescription { key: %@, defaultValue: %@, numericConstraint: %@ }", v4, defaultValue, numericConstraint];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -176,29 +176,29 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(MIOParameterDescription *)self key];
       v7 = [(MIOParameterDescription *)v5 key];
       v8 = [v6 isEqual:v7];
 
       if (v8)
       {
-        v9 = [(MIOParameterDescription *)self defaultValue];
-        v10 = [(MIOParameterDescription *)v5 defaultValue];
-        v11 = [v9 isEqual:v10];
+        defaultValue = [(MIOParameterDescription *)self defaultValue];
+        defaultValue2 = [(MIOParameterDescription *)v5 defaultValue];
+        v11 = [defaultValue isEqual:defaultValue2];
 
         if (v11)
         {
-          v12 = [(MIOParameterDescription *)self numericConstraint];
-          if (v12)
+          numericConstraint = [(MIOParameterDescription *)self numericConstraint];
+          if (numericConstraint)
           {
           }
 
           else
           {
-            v14 = [(MIOParameterDescription *)v5 numericConstraint];
+            numericConstraint2 = [(MIOParameterDescription *)v5 numericConstraint];
 
-            if (!v14)
+            if (!numericConstraint2)
             {
 LABEL_11:
               v13 = 1;
@@ -208,9 +208,9 @@ LABEL_13:
             }
           }
 
-          v15 = [(MIOParameterDescription *)self numericConstraint];
-          v16 = [(MIOParameterDescription *)v5 numericConstraint];
-          v17 = [v15 isEqual:v16];
+          numericConstraint3 = [(MIOParameterDescription *)self numericConstraint];
+          numericConstraint4 = [(MIOParameterDescription *)v5 numericConstraint];
+          v17 = [numericConstraint3 isEqual:numericConstraint4];
 
           if (v17)
           {
@@ -233,13 +233,13 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(MIOParameterDescription *)self defaultValue];
-  v4 = [v3 conformsToProtocol:&unk_1F4166538];
+  defaultValue = [(MIOParameterDescription *)self defaultValue];
+  v4 = [defaultValue conformsToProtocol:&unk_1F4166538];
 
   if (v4)
   {
-    v5 = [(MIOParameterDescription *)self defaultValue];
-    v6 = [v5 hash];
+    defaultValue2 = [(MIOParameterDescription *)self defaultValue];
+    v6 = [defaultValue2 hash];
   }
 
   else
@@ -249,8 +249,8 @@ LABEL_14:
 
   v7 = [(MIOParameterDescription *)self key];
   v8 = [v7 hash];
-  v9 = [(MIOParameterDescription *)self numericConstraint];
-  v10 = [v9 hash];
+  numericConstraint = [(MIOParameterDescription *)self numericConstraint];
+  v10 = [numericConstraint hash];
 
   return v8 ^ v6 ^ v10;
 }

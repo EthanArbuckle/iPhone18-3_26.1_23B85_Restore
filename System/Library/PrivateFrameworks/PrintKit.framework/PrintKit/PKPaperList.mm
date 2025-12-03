@@ -1,58 +1,58 @@
 @interface PKPaperList
-+ (PKPaperList)paperListWithAttrs:(const GET_PRINTER_ATTRIBUTES_Response *)a3 translations:(id)a4;
-+ (PKPaperList)paperListWithPapers:(id)a3;
-+ (PKPaperList)paperListWithTXTRecord:(id)a3;
-+ (id)mediaDictFromAttrs:(id)a3 translations:(id)a4;
-- (BOOL)hasMatchingLoadedRoll:(id)a3;
-- (BOOL)isPaperReady:(id)a3;
++ (PKPaperList)paperListWithAttrs:(const GET_PRINTER_ATTRIBUTES_Response *)attrs translations:(id)translations;
++ (PKPaperList)paperListWithPapers:(id)papers;
++ (PKPaperList)paperListWithTXTRecord:(id)record;
++ (id)mediaDictFromAttrs:(id)attrs translations:(id)translations;
+- (BOOL)hasMatchingLoadedRoll:(id)roll;
+- (BOOL)isPaperReady:(id)ready;
 - (NSArray)rolls;
-- (PKPaperList)initWithCoder:(id)a3;
-- (PKPaperList)initWithPapers:(id)a3;
-- (PKPaperList)initWithParams:(const GET_PRINTER_ATTRIBUTES_Response *)a3 translations:(id)a4;
-- (PKPaperList)initWithTXTRecord:(id)a3;
-- (id)adjustMargins:(id)a3 forDuplex:(id)a4;
-- (id)availableRollPapersPreferBorderless:(BOOL)a3;
-- (id)conjureMediaFromTXT:(id)a3;
+- (PKPaperList)initWithCoder:(id)coder;
+- (PKPaperList)initWithPapers:(id)papers;
+- (PKPaperList)initWithParams:(const GET_PRINTER_ATTRIBUTES_Response *)params translations:(id)translations;
+- (PKPaperList)initWithTXTRecord:(id)record;
+- (id)adjustMargins:(id)margins forDuplex:(id)duplex;
+- (id)availableRollPapersPreferBorderless:(BOOL)borderless;
+- (id)conjureMediaFromTXT:(id)t;
 - (id)debugDescription;
-- (id)filterPapers:(id)a3 usingBlock:(id)a4;
-- (id)filterUsingBlock:(id)a3;
-- (id)matchPaper:(id)a3;
-- (id)matchPaper:(id)a3 inList:(id)a4;
-- (id)matchedPaper:(id)a3 preferBorderless:(BOOL)a4 withDuplexMode:(id)a5 didMatch:(BOOL *)a6;
-- (id)paperListForDuplexMode:(id)a3;
-- (id)papersForDocumentWithSize:(CGSize)a3 scaleUpOnRoll:(BOOL)a4 andDuplex:(BOOL)a5;
-- (id)papersForPhotoWithSize:(CGSize)a3;
-- (id)rollReadyPaperListForDocumentWithContentSize:(CGSize)a3 scaleUp:(BOOL)a4;
-- (id)rollReadyPaperListForPhotoWithContentSize:(CGSize)a3;
-- (id)rollReadyPaperListWithContentSize:(CGSize)a3 forPhoto:(BOOL)a4;
-- (id)tersePaperFrom:(id)a3 withMediaInfo:(id)a4;
-- (id)tersePaperFrom:(id)a3 withRequest:(id)a4;
-- (unint64_t)jobTypesSupported:(id)a3;
-- (void)addPaperSet:(id *)a3 withCount:(int)a4 toArrays:(id *)a5;
-- (void)categorizePapers:(id)a3;
-- (void)visitProperties:(Visitor *)a3;
+- (id)filterPapers:(id)papers usingBlock:(id)block;
+- (id)filterUsingBlock:(id)block;
+- (id)matchPaper:(id)paper;
+- (id)matchPaper:(id)paper inList:(id)list;
+- (id)matchedPaper:(id)paper preferBorderless:(BOOL)borderless withDuplexMode:(id)mode didMatch:(BOOL *)match;
+- (id)paperListForDuplexMode:(id)mode;
+- (id)papersForDocumentWithSize:(CGSize)size scaleUpOnRoll:(BOOL)roll andDuplex:(BOOL)duplex;
+- (id)papersForPhotoWithSize:(CGSize)size;
+- (id)rollReadyPaperListForDocumentWithContentSize:(CGSize)size scaleUp:(BOOL)up;
+- (id)rollReadyPaperListForPhotoWithContentSize:(CGSize)size;
+- (id)rollReadyPaperListWithContentSize:(CGSize)size forPhoto:(BOOL)photo;
+- (id)tersePaperFrom:(id)from withMediaInfo:(id)info;
+- (id)tersePaperFrom:(id)from withRequest:(id)request;
+- (unint64_t)jobTypesSupported:(id)supported;
+- (void)addPaperSet:(id *)set withCount:(int)count toArrays:(id *)arrays;
+- (void)categorizePapers:(id)papers;
+- (void)visitProperties:(Visitor *)properties;
 @end
 
 @implementation PKPaperList
 
-+ (PKPaperList)paperListWithAttrs:(const GET_PRINTER_ATTRIBUTES_Response *)a3 translations:(id)a4
++ (PKPaperList)paperListWithAttrs:(const GET_PRINTER_ATTRIBUTES_Response *)attrs translations:(id)translations
 {
-  v5 = a4;
-  v6 = [[PKPaperList alloc] initWithParams:a3 translations:v5];
+  translationsCopy = translations;
+  v6 = [[PKPaperList alloc] initWithParams:attrs translations:translationsCopy];
 
   return v6;
 }
 
-- (PKPaperList)initWithParams:(const GET_PRINTER_ATTRIBUTES_Response *)a3 translations:(id)a4
+- (PKPaperList)initWithParams:(const GET_PRINTER_ATTRIBUTES_Response *)params translations:(id)translations
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  translationsCopy = translations;
   v35.receiver = self;
   v35.super_class = PKPaperList;
   v28 = [(PKPaperList *)&v35 init];
   if (v28)
   {
-    v26 = Printd_Parameters::_get_MediaColReady(&a3->var0);
+    v26 = Printd_Parameters::_get_MediaColReady(&params->var0);
     if (v26 && [v26 count])
     {
       [(PKPaperList *)v28 setHasMediaReady:1];
@@ -60,7 +60,7 @@
 
     else
     {
-      v7 = Printd_Parameters::_get_MediaColDatabase(&a3->var0);
+      v7 = Printd_Parameters::_get_MediaColDatabase(&params->var0);
 
       v26 = v7;
       [(PKPaperList *)v28 setHasMediaReady:0];
@@ -89,16 +89,16 @@
               objc_enumerationMutation(v8);
             }
 
-            v12 = [*(*(&v31 + 1) + 8 * v11) collection];
-            v13 = [PKPaperList mediaDictFromAttrs:v12 translations:v6];
+            collection = [*(*(&v31 + 1) + 8 * v11) collection];
+            v13 = [PKPaperList mediaDictFromAttrs:collection translations:translationsCopy];
 
             v14 = [PKPaper paperWithAttributes:v13];
             v15 = v14;
             if (v14)
             {
-              v16 = [v14 isRoll];
+              isRoll = [v14 isRoll];
               v17 = v29;
-              if (v16)
+              if (isRoll)
               {
                 v17 = v30;
               }
@@ -117,9 +117,9 @@
         while (v9);
       }
 
-      v19 = [(PKPaperList *)v28 hasMediaReady];
+      hasMediaReady = [(PKPaperList *)v28 hasMediaReady];
       v20 = &selRef_sizeMediaTypeAndImageableCompare_;
-      if (!v19)
+      if (!hasMediaReady)
       {
         v20 = &selRef_sizeAndImageableCompare_;
       }
@@ -130,8 +130,8 @@
       v22 = [(PKPaperList *)v30 copy];
       [(PKPaperList *)v28 setRolls:v22];
 
-      v23 = [(PKPaperList *)v28 papers];
-      [(PKPaperList *)v28 categorizePapers:v23];
+      papers = [(PKPaperList *)v28 papers];
+      [(PKPaperList *)v28 categorizePapers:papers];
 
       v24 = v29;
     }
@@ -151,27 +151,27 @@
   return v28;
 }
 
-+ (PKPaperList)paperListWithPapers:(id)a3
++ (PKPaperList)paperListWithPapers:(id)papers
 {
-  v3 = a3;
-  v4 = [[PKPaperList alloc] initWithPapers:v3];
+  papersCopy = papers;
+  v4 = [[PKPaperList alloc] initWithPapers:papersCopy];
 
   return v4;
 }
 
-- (PKPaperList)initWithPapers:(id)a3
+- (PKPaperList)initWithPapers:(id)papers
 {
-  v4 = a3;
+  papersCopy = papers;
   v9.receiver = self;
   v9.super_class = PKPaperList;
   v5 = [(PKPaperList *)&v9 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingSelector:sel_sizeAndImageableCompare_];
+    v6 = [papersCopy sortedArrayUsingSelector:sel_sizeAndImageableCompare_];
     [(PKPaperList *)v5 setPapers:v6];
 
-    v7 = [(PKPaperList *)v5 papers];
-    [(PKPaperList *)v5 categorizePapers:v7];
+    papers = [(PKPaperList *)v5 papers];
+    [(PKPaperList *)v5 categorizePapers:papers];
 
     [(PKPaperList *)v5 setHasMediaReady:0];
     [(PKPaperList *)v5 setRolls:MEMORY[0x277CBEBF8]];
@@ -180,29 +180,29 @@
   return v5;
 }
 
-+ (PKPaperList)paperListWithTXTRecord:(id)a3
++ (PKPaperList)paperListWithTXTRecord:(id)record
 {
-  v3 = a3;
-  v4 = [[PKPaperList alloc] initWithTXTRecord:v3];
+  recordCopy = record;
+  v4 = [[PKPaperList alloc] initWithTXTRecord:recordCopy];
 
   return v4;
 }
 
-- (PKPaperList)initWithTXTRecord:(id)a3
+- (PKPaperList)initWithTXTRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = PKPaperList;
   v5 = [(PKPaperList *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PKPaperList *)v5 conjureMediaFromTXT:v4];
+    v7 = [(PKPaperList *)v5 conjureMediaFromTXT:recordCopy];
     v8 = [v7 sortedArrayUsingSelector:sel_sizeAndImageableCompare_];
     [(PKPaperList *)v6 setPapers:v8];
 
-    v9 = [(PKPaperList *)v6 papers];
-    [(PKPaperList *)v6 categorizePapers:v9];
+    papers = [(PKPaperList *)v6 papers];
+    [(PKPaperList *)v6 categorizePapers:papers];
 
     [(PKPaperList *)v6 setHasMediaReady:0];
     [(PKPaperList *)v6 setRolls:MEMORY[0x277CBEBF8]];
@@ -216,9 +216,9 @@
   v3 = self->_rolls;
   if (!v3)
   {
-    v4 = [(PKPaperList *)self papers];
+    papers = [(PKPaperList *)self papers];
     v5 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_9];
-    v3 = [v4 filteredArrayUsingPredicate:v5];
+    v3 = [papers filteredArrayUsingPredicate:v5];
 
     [(PKPaperList *)self setRolls:v3];
   }
@@ -226,10 +226,10 @@
   return v3;
 }
 
-+ (id)mediaDictFromAttrs:(id)a3 translations:(id)a4
++ (id)mediaDictFromAttrs:(id)attrs translations:(id)translations
 {
-  v5 = a3;
-  v6 = a4;
+  attrsCopy = attrs;
+  translationsCopy = translations;
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
   v8 = objc_autoreleasePoolPush();
   v15 = MEMORY[0x277D85DD0];
@@ -237,11 +237,11 @@
   v17 = __47__PKPaperList_mediaDictFromAttrs_translations___block_invoke;
   v18 = &unk_279A92618;
   v19 = &unk_2871AC6B0;
-  v9 = v6;
+  v9 = translationsCopy;
   v20 = v9;
   v10 = v7;
   v21 = v10;
-  [v5 enumerateAttributes:&v15];
+  [attrsCopy enumerateAttributes:&v15];
 
   objc_autoreleasePoolPop(v8);
   if (v9)
@@ -337,17 +337,17 @@ LABEL_14:
 LABEL_18:
 }
 
-- (id)adjustMargins:(id)a3 forDuplex:(id)a4
+- (id)adjustMargins:(id)margins forDuplex:(id)duplex
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  marginsCopy = margins;
+  duplexCopy = duplex;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(marginsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v5;
+  v8 = marginsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -361,7 +361,7 @@ LABEL_18:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) paperWithMarginsAdjustedForDuplexMode:{v6, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * i) paperWithMarginsAdjustedForDuplexMode:{duplexCopy, v15}];
         [v7 addObject:v12];
       }
 
@@ -376,20 +376,20 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)isPaperReady:(id)a3
+- (BOOL)isPaperReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   if ([(PKPaperList *)self hasMediaReady])
   {
-    if ([(PKPaperList *)self hasMatchingLoadedRoll:v4])
+    if ([(PKPaperList *)self hasMatchingLoadedRoll:readyCopy])
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [(PKPaperList *)self simplexPapers];
-      v7 = [(PKPaperList *)self matchPaper:v4 inList:v6];
+      simplexPapers = [(PKPaperList *)self simplexPapers];
+      v7 = [(PKPaperList *)self matchPaper:readyCopy inList:simplexPapers];
       v5 = v7 != 0;
     }
   }
@@ -402,31 +402,31 @@ LABEL_18:
   return v5;
 }
 
-- (id)paperListForDuplexMode:(id)a3
+- (id)paperListForDuplexMode:(id)mode
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isEqualToString:@"one-sided"])
+  modeCopy = mode;
+  v5 = modeCopy;
+  if (modeCopy && ![modeCopy isEqualToString:@"one-sided"])
   {
-    v7 = [(PKPaperList *)self duplexPapers];
-    v6 = [(PKPaperList *)self adjustMargins:v7 forDuplex:v5];
+    duplexPapers = [(PKPaperList *)self duplexPapers];
+    simplexPapers = [(PKPaperList *)self adjustMargins:duplexPapers forDuplex:v5];
   }
 
   else
   {
-    v6 = [(PKPaperList *)self simplexPapers];
+    simplexPapers = [(PKPaperList *)self simplexPapers];
   }
 
-  return v6;
+  return simplexPapers;
 }
 
-- (id)papersForPhotoWithSize:(CGSize)a3
+- (id)papersForPhotoWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PKPaperList *)self photoPapers];
-  v7 = [(PKPaperList *)self rolls];
-  v8 = [v7 count];
+  height = size.height;
+  width = size.width;
+  photoPapers = [(PKPaperList *)self photoPapers];
+  rolls = [(PKPaperList *)self rolls];
+  v8 = [rolls count];
 
   if (v8)
   {
@@ -442,22 +442,22 @@ LABEL_18:
     v10 = ;
     if ([v10 count])
     {
-      v11 = [(PKPaperList *)self photoPapers];
-      v12 = [v11 arrayByAddingObjectsFromArray:v10];
+      photoPapers2 = [(PKPaperList *)self photoPapers];
+      v12 = [photoPapers2 arrayByAddingObjectsFromArray:v10];
 
-      v6 = v12;
+      photoPapers = v12;
     }
   }
 
-  return v6;
+  return photoPapers;
 }
 
-- (id)papersForDocumentWithSize:(CGSize)a3 scaleUpOnRoll:(BOOL)a4 andDuplex:(BOOL)a5
+- (id)papersForDocumentWithSize:(CGSize)size scaleUpOnRoll:(BOOL)roll andDuplex:(BOOL)duplex
 {
-  v5 = a4;
-  height = a3.height;
-  width = a3.width;
-  if (a5)
+  rollCopy = roll;
+  height = size.height;
+  width = size.width;
+  if (duplex)
   {
     [(PKPaperList *)self duplexPapers];
   }
@@ -474,7 +474,7 @@ LABEL_18:
 
   else
   {
-    [(PKPaperList *)self rollReadyPaperListForDocumentWithContentSize:v5 scaleUp:width, height];
+    [(PKPaperList *)self rollReadyPaperListForDocumentWithContentSize:rollCopy scaleUp:width, height];
   }
   v11 = ;
   v12 = [v9 arrayByAddingObjectsFromArray:v11];
@@ -482,14 +482,14 @@ LABEL_18:
   return v12;
 }
 
-- (id)matchedPaper:(id)a3 preferBorderless:(BOOL)a4 withDuplexMode:(id)a5 didMatch:(BOOL *)a6
+- (id)matchedPaper:(id)paper preferBorderless:(BOOL)borderless withDuplexMode:(id)mode didMatch:(BOOL *)match
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [a5 isEqualToString:@"one-sided"];
-  if ([(PKPaperList *)self hasMatchingLoadedRoll:v10])
+  borderlessCopy = borderless;
+  paperCopy = paper;
+  v11 = [mode isEqualToString:@"one-sided"];
+  if ([(PKPaperList *)self hasMatchingLoadedRoll:paperCopy])
   {
-    v12 = v10;
+    v12 = paperCopy;
     if (v12)
     {
       goto LABEL_7;
@@ -501,10 +501,10 @@ LABEL_18:
     v12 = 0;
   }
 
-  if (v8)
+  if (borderlessCopy)
   {
-    v13 = [(PKPaperList *)self photoPapers];
-    v12 = [(PKPaperList *)self matchPaper:v10 inList:v13];
+    photoPapers = [(PKPaperList *)self photoPapers];
+    v12 = [(PKPaperList *)self matchPaper:paperCopy inList:photoPapers];
   }
 
   if (!v12)
@@ -519,7 +519,7 @@ LABEL_18:
       [(PKPaperList *)self duplexPapers];
     }
     v14 = ;
-    v12 = [(PKPaperList *)self matchPaper:v10 inList:v14];
+    v12 = [(PKPaperList *)self matchPaper:paperCopy inList:v14];
 
     if (!v12)
     {
@@ -528,7 +528,7 @@ LABEL_18:
   }
 
 LABEL_7:
-  if (v8)
+  if (borderlessCopy)
   {
     v15 = v12;
     [v12 isBorderless];
@@ -541,14 +541,14 @@ LABEL_14:
     if (!v12)
     {
       v16 = +[PKPaper genericLetterPaper];
-      v17 = [(PKPaperList *)self simplexPapers];
-      v15 = [(PKPaperList *)self matchPaper:v16 inList:v17];
+      simplexPapers = [(PKPaperList *)self simplexPapers];
+      v15 = [(PKPaperList *)self matchPaper:v16 inList:simplexPapers];
 
       if (!v15)
       {
         v18 = +[PKPaper genericA4Paper];
-        v19 = [(PKPaperList *)self simplexPapers];
-        v15 = [(PKPaperList *)self matchPaper:v18 inList:v19];
+        simplexPapers2 = [(PKPaperList *)self simplexPapers];
+        v15 = [(PKPaperList *)self matchPaper:v18 inList:simplexPapers2];
 
         if (!v15)
         {
@@ -558,39 +558,39 @@ LABEL_14:
     }
   }
 
-  if (a6)
+  if (match)
   {
-    *a6 = v12 != 0;
+    *match = v12 != 0;
   }
 
-  v20 = [(PKPaperList *)self tersePaperFrom:v15 withRequest:v10];
+  v20 = [(PKPaperList *)self tersePaperFrom:v15 withRequest:paperCopy];
 
   return v20;
 }
 
-- (void)addPaperSet:(id *)a3 withCount:(int)a4 toArrays:(id *)a5
+- (void)addPaperSet:(id *)set withCount:(int)count toArrays:(id *)arrays
 {
-  if ((a4 - 1) <= 2)
+  if ((count - 1) <= 2)
   {
     v16 = v7;
     v17 = v6;
     v18 = v5;
-    v13 = (&[PKPaperList addPaperSet:withCount:toArrays:]::paperMap + 12 * (a4 - 1));
-    if (a4 == 2 && ![a3[1] isBorderless])
+    v13 = (&[PKPaperList addPaperSet:withCount:toArrays:]::paperMap + 12 * (count - 1));
+    if (count == 2 && ![set[1] isBorderless])
     {
       v13 = &[PKPaperList addPaperSet:withCount:toArrays:]::paperMapAlt;
     }
 
-    [*a5 addObject:{a3[*v13], v8, v16, v17, v18, v9}];
-    [a5[1] addObject:a3[v13[1]]];
-    v14 = a5[2];
-    v15 = a3[v13[2]];
+    [*arrays addObject:{set[*v13], v8, v16, v17, v18, v9}];
+    [arrays[1] addObject:set[v13[1]]];
+    v14 = arrays[2];
+    v15 = set[v13[2]];
 
     [v14 addObject:v15];
   }
 }
 
-- (void)categorizePapers:(id)a3
+- (void)categorizePapers:(id)papers
 {
   v50[1] = *MEMORY[0x277D85DE8];
   v48 = 0;
@@ -602,16 +602,16 @@ LABEL_14:
 
   v47 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
 
-  v4 = [(PKPaperList *)self hasMediaReady];
-  v5 = v4;
+  hasMediaReady = [(PKPaperList *)self hasMediaReady];
+  v5 = hasMediaReady;
   v6 = &unk_2871ADC70;
-  if (v4)
+  if (hasMediaReady)
   {
     v6 = &unk_2871ADC58;
   }
 
   v39 = v6;
-  if (v4)
+  if (hasMediaReady)
   {
     v7 = &__block_literal_global_90;
   }
@@ -748,18 +748,18 @@ LABEL_24:
   }
 }
 
-- (id)tersePaperFrom:(id)a3 withRequest:(id)a4
+- (id)tersePaperFrom:(id)from withRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  fromCopy = from;
+  requestCopy = request;
+  if (fromCopy)
   {
     v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
-    v8 = [v5 mediaInfo];
-    v20 = [v6 mediaInfo];
+    mediaInfo = [fromCopy mediaInfo];
+    mediaInfo2 = [requestCopy mediaInfo];
     v19 = [MEMORY[0x277CBEB18] arrayWithArray:&unk_2871ADC88];
-    v9 = [v20 objectForKeyedSubscript:@"media-type"];
+    v9 = [mediaInfo2 objectForKeyedSubscript:@"media-type"];
 
     if (v9)
     {
@@ -785,7 +785,7 @@ LABEL_24:
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v8 objectForKeyedSubscript:v14];
+          v15 = [mediaInfo objectForKeyedSubscript:v14];
           if (v15)
           {
             [v7 setObject:v15 forKeyedSubscript:v14];
@@ -799,9 +799,9 @@ LABEL_24:
     }
 
     v16 = [PKPaper paperWithAttributes:v7];
-    if ([v5 isRoll])
+    if ([fromCopy isRoll])
     {
-      v17 = [v16 cutToPWGLength:{objc_msgSend(v6, "height")}];
+      v17 = [v16 cutToPWGLength:{objc_msgSend(requestCopy, "height")}];
 
       v16 = v17;
     }
@@ -815,18 +815,18 @@ LABEL_24:
   return v16;
 }
 
-- (id)tersePaperFrom:(id)a3 withMediaInfo:(id)a4
+- (id)tersePaperFrom:(id)from withMediaInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  infoCopy = info;
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
-  v8 = [v5 mediaInfo];
+  mediaInfo = [fromCopy mediaInfo];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = infoCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -841,7 +841,7 @@ LABEL_24:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v8 objectForKeyedSubscript:{v13, v18}];
+        v14 = [mediaInfo objectForKeyedSubscript:{v13, v18}];
         if (v14)
         {
           [v7 setObject:v14 forKeyedSubscript:v13];
@@ -856,7 +856,7 @@ LABEL_24:
 
   if ([v9 containsObject:@"media-type"])
   {
-    v15 = [v8 objectForKeyedSubscript:@"_vendor_media-type"];
+    v15 = [mediaInfo objectForKeyedSubscript:@"_vendor_media-type"];
     [v7 setObject:v15 forKeyedSubscript:@"_vendor_media-type"];
   }
 
@@ -865,30 +865,30 @@ LABEL_24:
   return v16;
 }
 
-- (id)rollReadyPaperListWithContentSize:(CGSize)a3 forPhoto:(BOOL)a4
+- (id)rollReadyPaperListWithContentSize:(CGSize)size forPhoto:(BOOL)photo
 {
-  if (a4)
+  if (photo)
   {
-    [(PKPaperList *)self rollReadyPaperListForPhotoWithContentSize:a3.width, a3.height];
+    [(PKPaperList *)self rollReadyPaperListForPhotoWithContentSize:size.width, size.height];
   }
 
   else
   {
-    [(PKPaperList *)self rollReadyPaperListForDocumentWithContentSize:a3.width scaleUp:a3.height];
+    [(PKPaperList *)self rollReadyPaperListForDocumentWithContentSize:size.width scaleUp:size.height];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)rollReadyPaperListForDocumentWithContentSize:(CGSize)a3 scaleUp:(BOOL)a4
+- (id)rollReadyPaperListForDocumentWithContentSize:(CGSize)size scaleUp:(BOOL)up
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v26 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (up)
   {
-    v7 = [(PKPaperList *)self rollReadyPaperListForPhotoWithContentSize:a3.width, a3.height];
+    v7 = [(PKPaperList *)self rollReadyPaperListForPhotoWithContentSize:size.width, size.height];
     goto LABEL_23;
   }
 
@@ -971,10 +971,10 @@ LABEL_23:
   return v7;
 }
 
-- (id)rollReadyPaperListForPhotoWithContentSize:(CGSize)a3
+- (id)rollReadyPaperListForPhotoWithContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v25 = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   [(PKPaperList *)self availableRollPapersPreferBorderless:1];
@@ -997,14 +997,14 @@ LABEL_23:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 width];
-        v14 = [v12 leftMargin];
-        v15 = (v13 - (v14 + [v12 rightMargin]));
+        width = [v12 width];
+        leftMargin = [v12 leftMargin];
+        v15 = (width - (leftMargin + [v12 rightMargin]));
         v16 = [v12 cutToPWGLength:{objc_msgSend(v12, "topMargin") + objc_msgSend(v12, "bottomMargin") + vcvtmd_s64_f64(v15 / v10)}];
         [v6 addObject:v16];
         v17 = [v12 cutToPWGLength:{objc_msgSend(v12, "topMargin") + objc_msgSend(v12, "bottomMargin") + vcvtmd_s64_f64(v10 * v15)}];
-        v18 = [v17 height];
-        if (v18 != [v16 height])
+        height = [v17 height];
+        if (height != [v16 height])
         {
           [v6 addObject:v17];
         }
@@ -1019,13 +1019,13 @@ LABEL_23:
   return v6;
 }
 
-- (id)availableRollPapersPreferBorderless:(BOOL)a3
+- (id)availableRollPapersPreferBorderless:(BOOL)borderless
 {
-  v3 = a3;
+  borderlessCopy = borderless;
   v24 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
-  v6 = [(PKPaperList *)self rolls];
-  v7 = [v6 copy];
+  rolls = [(PKPaperList *)self rolls];
+  v7 = [rolls copy];
 
   if (![v7 count])
   {
@@ -1060,10 +1060,10 @@ LABEL_23:
       v14 = *(*(&v19 + 1) + 8 * i);
       if (v11)
       {
-        v15 = [*(*(&v19 + 1) + 8 * i) width];
-        if (v15 == [v11 width] && (v16 = objc_msgSend(v14, "height"), v16 == objc_msgSend(v11, "height")))
+        width = [*(*(&v19 + 1) + 8 * i) width];
+        if (width == [v11 width] && (v16 = objc_msgSend(v14, "height"), v16 == objc_msgSend(v11, "height")))
         {
-          if ([v14 isBorderless] != v3)
+          if ([v14 isBorderless] != borderlessCopy)
           {
             continue;
           }
@@ -1148,15 +1148,15 @@ LABEL_9:
   return v8;
 }
 
-- (id)matchPaper:(id)a3
+- (id)matchPaper:(id)paper
 {
-  v4 = a3;
+  paperCopy = paper;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __26__PKPaperList_matchPaper___block_invoke;
   v8[3] = &unk_279A92680;
-  v9 = v4;
-  v5 = v4;
+  v9 = paperCopy;
+  v5 = paperCopy;
   v6 = [(PKPaperList *)self filterUsingBlock:v8];
 
   return v6;
@@ -1190,16 +1190,16 @@ uint64_t __26__PKPaperList_matchPaper___block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)matchPaper:(id)a3 inList:(id)a4
+- (id)matchPaper:(id)paper inList:(id)list
 {
-  v6 = a3;
+  paperCopy = paper;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__PKPaperList_matchPaper_inList___block_invoke;
   v11[3] = &unk_279A92680;
-  v7 = v6;
+  v7 = paperCopy;
   v12 = v7;
-  v8 = [(PKPaperList *)self filterPapers:a4 usingBlock:v11];
+  v8 = [(PKPaperList *)self filterPapers:list usingBlock:v11];
   if ([v8 count])
   {
     v9 = [v8 objectAtIndexedSubscript:0];
@@ -1241,18 +1241,18 @@ uint64_t __33__PKPaperList_matchPaper_inList___block_invoke(uint64_t a1, void *a
   return v7;
 }
 
-- (BOOL)hasMatchingLoadedRoll:(id)a3
+- (BOOL)hasMatchingLoadedRoll:(id)roll
 {
-  v4 = a3;
-  if ([v4 isRoll])
+  rollCopy = roll;
+  if ([rollCopy isRoll])
   {
-    v5 = [(PKPaperList *)self rolls];
+    rolls = [(PKPaperList *)self rolls];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __37__PKPaperList_hasMatchingLoadedRoll___block_invoke;
     v9[3] = &unk_279A926A8;
-    v10 = v4;
-    v6 = [v5 indexOfObjectPassingTest:v9];
+    v10 = rollCopy;
+    v6 = [rolls indexOfObjectPassingTest:v9];
 
     v7 = v6 != 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -1274,36 +1274,36 @@ BOOL __37__PKPaperList_hasMatchingLoadedRoll___block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (id)filterUsingBlock:(id)a3
+- (id)filterUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PKPaperList *)self papers];
-  v6 = [(PKPaperList *)self filterPapers:v5 usingBlock:v4];
+  blockCopy = block;
+  papers = [(PKPaperList *)self papers];
+  v6 = [(PKPaperList *)self filterPapers:papers usingBlock:blockCopy];
 
   return v6;
 }
 
-- (id)filterPapers:(id)a3 usingBlock:(id)a4
+- (id)filterPapers:(id)papers usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  papersCopy = papers;
+  blockCopy = block;
   v7 = MEMORY[0x277CCAC30];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__PKPaperList_filterPapers_usingBlock___block_invoke;
   v12[3] = &unk_279A926D0;
-  v8 = v6;
+  v8 = blockCopy;
   v13 = v8;
   v9 = [v7 predicateWithBlock:v12];
-  v10 = [v5 filteredArrayUsingPredicate:v9];
+  v10 = [papersCopy filteredArrayUsingPredicate:v9];
 
   return v10;
 }
 
-- (unint64_t)jobTypesSupported:(id)a3
+- (unint64_t)jobTypesSupported:(id)supported
 {
   v16 = *MEMORY[0x277D85DE8];
-  v10 = [a3 objectForKeyedSubscript:@"kind"];
+  v10 = [supported objectForKeyedSubscript:@"kind"];
   [v10 componentsSeparatedByString:{@", "}];
   v13 = 0u;
   v14 = 0u;
@@ -1379,10 +1379,10 @@ BOOL __37__PKPaperList_hasMatchingLoadedRoll___block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-- (id)conjureMediaFromTXT:(id)a3
+- (id)conjureMediaFromTXT:(id)t
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  tCopy = t;
   v4 = _PKLogCategory(PKLogCategoryFramework);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1406,8 +1406,8 @@ BOOL __37__PKPaperList_hasMatchingLoadedRoll___block_invoke(uint64_t a1, void *a
   v5 = [PKPaper genericWithName:@"jpn_chou3_120x235mm"];
   v6 = [PKPaper genericWithName:@"jpn_chou4_90x205mm"];
   v18 = +[PKPaper genericLegalPaper];
-  v7 = [v19 objectForKeyedSubscript:@"product"];
-  v8 = [(PKPaperList *)self jobTypesSupported:v19];
+  v7 = [tCopy objectForKeyedSubscript:@"product"];
+  v8 = [(PKPaperList *)self jobTypesSupported:tCopy];
   v9 = v8;
   if (!v8)
   {
@@ -1499,7 +1499,7 @@ LABEL_24:
     [v17 addObjectsFromArray:v12];
   }
 
-  v13 = [v19 objectForKeyedSubscript:@"papermax"];
+  v13 = [tCopy objectForKeyedSubscript:@"papermax"];
   v14 = [v13 caseInsensitiveCompare:@"legal-A4"] == 0;
 
   if (!v14)
@@ -1512,33 +1512,33 @@ LABEL_25:
   return v17;
 }
 
-- (PKPaperList)initWithCoder:(id)a3
+- (PKPaperList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPaperList;
   v5 = [(PKPaperList *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    DecodeVisitor::visitProperties(v5, v4);
+    DecodeVisitor::visitProperties(v5, coderCopy);
   }
 
   return v6;
 }
 
-- (void)visitProperties:(Visitor *)a3
+- (void)visitProperties:(Visitor *)properties
 {
-  (*(a3->var0 + 2))(a3, a2);
-  (*(a3->var0 + 3))(a3, @"hasMediaReady", &self->_hasMediaReady);
-  (*(a3->var0 + 23))(a3, @"papers", &self->_papers);
-  (*(a3->var0 + 23))(a3, @"simplexPapers", &self->_simplexPapers);
-  (*(a3->var0 + 23))(a3, @"duplexPapers", &self->_duplexPapers);
-  (*(a3->var0 + 23))(a3, @"photoPapers", &self->_photoPapers);
-  (*(a3->var0 + 23))(a3, @"rolls", &self->_rolls);
-  v5 = *(a3->var0 + 24);
+  (*(properties->var0 + 2))(properties, a2);
+  (*(properties->var0 + 3))(properties, @"hasMediaReady", &self->_hasMediaReady);
+  (*(properties->var0 + 23))(properties, @"papers", &self->_papers);
+  (*(properties->var0 + 23))(properties, @"simplexPapers", &self->_simplexPapers);
+  (*(properties->var0 + 23))(properties, @"duplexPapers", &self->_duplexPapers);
+  (*(properties->var0 + 23))(properties, @"photoPapers", &self->_photoPapers);
+  (*(properties->var0 + 23))(properties, @"rolls", &self->_rolls);
+  v5 = *(properties->var0 + 24);
 
-  v5(a3);
+  v5(properties);
 }
 
 - (id)debugDescription

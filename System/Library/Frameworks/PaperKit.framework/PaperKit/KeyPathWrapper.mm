@@ -1,16 +1,16 @@
 @interface KeyPathWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC8PaperKitP33_F808299E7C487FAE28308AED5F0A446914KeyPathWrapper)init;
 - (int64_t)hash;
 @end
 
 @implementation KeyPathWrapper
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = KeyPathWrapper.isEqual(_:)(v8);
@@ -33,7 +33,7 @@
   Hasher.init()();
   type metadata accessor for CRKeyPath();
   lazy protocol witness table accessor for type CRKeyPath and conformance CRKeyPath(&lazy protocol witness table cache variable for type CRKeyPath and conformance CRKeyPath);
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of Hashable.hash(into:)();
   v4 = Hasher.finalize()();
 

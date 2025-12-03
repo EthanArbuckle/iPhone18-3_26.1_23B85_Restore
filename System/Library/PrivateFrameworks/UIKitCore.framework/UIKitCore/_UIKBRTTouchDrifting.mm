@@ -1,29 +1,29 @@
 @interface _UIKBRTTouchDrifting
 + (BOOL)isEnabled;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)touchError;
-- (CGPoint)_offsetForPoint:(CGPoint)a3 fromPoint:(CGPoint)a4;
-- (CGPoint)_pinOffset:(CGPoint)a3;
-- (CGPoint)_pointFromPoint:(CGPoint)a3 plusOffset:(CGPoint)a4;
+- (CGPoint)_offsetForPoint:(CGPoint)point fromPoint:(CGPoint)fromPoint;
+- (CGPoint)_pinOffset:(CGPoint)offset;
+- (CGPoint)_pointFromPoint:(CGPoint)point plusOffset:(CGPoint)offset;
 - (CGPoint)leftHandDriftOffset;
 - (CGPoint)rightHandDriftOffset;
 - (UIView)feedbackParentView;
 - (_UIKBRTTouchDrifting)init;
-- (_UIKBRTTouchDrifting)initWithParentView:(id)a3;
-- (id)_touchDictWithFingerIds:(id)a3;
+- (_UIKBRTTouchDrifting)initWithParentView:(id)view;
+- (id)_touchDictWithFingerIds:(id)ids;
 - (void)_resetFeedback;
-- (void)_updateDriftForFingers:(id)a3 leftHand:(BOOL)a4 newestTouch:(id)a5;
+- (void)_updateDriftForFingers:(id)fingers leftHand:(BOOL)hand newestTouch:(id)touch;
 - (void)_updateDriftView;
-- (void)_updateDriftViewTimer:(id)a3;
-- (void)_updateDriftWithTouchInfo:(id)a3;
+- (void)_updateDriftViewTimer:(id)timer;
+- (void)_updateDriftWithTouchInfo:(id)info;
 - (void)_updateHistory;
-- (void)addTouchLocation:(CGPoint)a3 withRadius:(double)a4 withTouchTime:(double)a5 withIdentifier:(id)a6;
+- (void)addTouchLocation:(CGPoint)location withRadius:(double)radius withTouchTime:(double)time withIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)ignoreTouchWithIdentifier:(id)a3 withTouchTime:(double)a4;
-- (void)moveTouchWithIdentifier:(id)a3 toLocation:(CGPoint)a4 withRadius:(double)a5 atTouchTime:(double)a6;
-- (void)removeTouchWithIdentifier:(id)a3 touchCancelled:(BOOL)a4;
+- (void)ignoreTouchWithIdentifier:(id)identifier withTouchTime:(double)time;
+- (void)moveTouchWithIdentifier:(id)identifier toLocation:(CGPoint)location withRadius:(double)radius atTouchTime:(double)time;
+- (void)removeTouchWithIdentifier:(id)identifier touchCancelled:(BOOL)cancelled;
 - (void)reset;
-- (void)updateTouchWithIdentifier:(id)a3 withTouchTime:(double)a4 resultingError:(CGPoint)a5 rowOffsetFromHomeRow:(int64_t)a6;
-- (void)updateWithFCenter:(CGPoint)a3 jCenter:(CGPoint)a4 keySize:(CGSize)a5 rowOffsets:(id)a6 homeRowOffsetIndex:(int)a7;
+- (void)updateTouchWithIdentifier:(id)identifier withTouchTime:(double)time resultingError:(CGPoint)error rowOffsetFromHomeRow:(int64_t)row;
+- (void)updateWithFCenter:(CGPoint)center jCenter:(CGPoint)jCenter keySize:(CGSize)size rowOffsets:(id)offsets homeRowOffsetIndex:(int)index;
 @end
 
 @implementation _UIKBRTTouchDrifting
@@ -153,14 +153,14 @@
   return v2;
 }
 
-- (_UIKBRTTouchDrifting)initWithParentView:(id)a3
+- (_UIKBRTTouchDrifting)initWithParentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(_UIKBRTTouchDrifting *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_feedbackParentView, v4);
+    objc_storeWeak(&v5->_feedbackParentView, viewCopy);
   }
 
   return v6;
@@ -258,19 +258,19 @@
   [(NSMutableDictionary *)self->_touches removeAllObjects];
 }
 
-- (void)updateWithFCenter:(CGPoint)a3 jCenter:(CGPoint)a4 keySize:(CGSize)a5 rowOffsets:(id)a6 homeRowOffsetIndex:(int)a7
+- (void)updateWithFCenter:(CGPoint)center jCenter:(CGPoint)jCenter keySize:(CGSize)size rowOffsets:(id)offsets homeRowOffsetIndex:(int)index
 {
-  v7 = *&a7;
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
-  v15 = a6;
+  v7 = *&index;
+  height = size.height;
+  width = size.width;
+  y = jCenter.y;
+  x = jCenter.x;
+  v12 = center.y;
+  v13 = center.x;
+  offsetsCopy = offsets;
   v28.receiver = self;
   v28.super_class = _UIKBRTTouchDrifting;
-  [(_UIKBRTKeyboardTouchObserver *)&v28 updateWithFCenter:v15 jCenter:v7 keySize:v13 rowOffsets:v12 homeRowOffsetIndex:x, y, width, height];
+  [(_UIKBRTKeyboardTouchObserver *)&v28 updateWithFCenter:offsetsCopy jCenter:v7 keySize:v13 rowOffsets:v12 homeRowOffsetIndex:x, y, width, height];
   [(_UIKBRTTouchDrifting *)self _resetFeedback];
   indexSearchOrder = self->_indexSearchOrder;
   self->_indexSearchOrder = 0;
@@ -282,7 +282,7 @@
 
   else
   {
-    v17 = [v15 count];
+    v17 = [offsetsCopy count];
     self->_supportsDrifting = v17 - 1 > v7;
     if (v17 - 1 > v7)
     {
@@ -303,7 +303,7 @@
 
       while (v19);
       v21 = (v7 + 2);
-      v22 = [v15 count];
+      v22 = [offsetsCopy count];
       v23 = v7 + 3;
       if (v22 < v7 + 3)
       {
@@ -363,26 +363,26 @@
   return result;
 }
 
-- (void)addTouchLocation:(CGPoint)a3 withRadius:(double)a4 withTouchTime:(double)a5 withIdentifier:(id)a6
+- (void)addTouchLocation:(CGPoint)location withRadius:(double)radius withTouchTime:(double)time withIdentifier:(id)identifier
 {
-  y = a3.y;
-  x = a3.x;
-  v20 = a6;
+  y = location.y;
+  x = location.x;
+  identifierCopy = identifier;
   v11 = [(NSMutableDictionary *)self->_touches objectForKey:?];
 
   if (v11)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIKBRTTouchDrifting.m" lineNumber:263 description:@"Touch already in dictionary!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTTouchDrifting.m" lineNumber:263 description:@"Touch already in dictionary!"];
   }
 
   [(_UIKBRTTouchDrifting *)self _updateHistory];
   v12 = objc_alloc_init(_UIKBRTTouchHistoryInfo);
-  [(_UIKBRTTouchHistoryInfo *)v12 setTouchIdentifier:v20];
-  [(_UIKBRTTouchHistoryInfo *)v12 setTouchTime:a5];
+  [(_UIKBRTTouchHistoryInfo *)v12 setTouchIdentifier:identifierCopy];
+  [(_UIKBRTTouchHistoryInfo *)v12 setTouchTime:time];
   [(_UIKBRTTouchHistoryInfo *)v12 setActualLocation:x, y];
   [(_UIKBRTTouchHistoryInfo *)v12 setIgnoreTouch:1];
-  v13 = [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self fingerIDFortouchIdentifier:v20];
+  v13 = [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self fingerIDFortouchIdentifier:identifierCopy];
   if (v13 <= 0xC)
   {
     if (((1 << v13) & 0xFA) != 0)
@@ -407,7 +407,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(NSMutableDictionary *)self->_touches setObject:v12 forKey:v20];
+  [(NSMutableDictionary *)self->_touches setObject:v12 forKey:identifierCopy];
   if ([(_UIKBRTTouchHistoryInfo *)v12 ignoreForDrift])
   {
     v16 = &OBJC_IVAR____UIKBRTTouchDrifting__otherHistory;
@@ -415,9 +415,9 @@ LABEL_9:
 
   else
   {
-    v17 = [(_UIKBRTTouchHistoryInfo *)v12 isLeftHand];
+    isLeftHand = [(_UIKBRTTouchHistoryInfo *)v12 isLeftHand];
     v18 = 2;
-    if (v17)
+    if (isLeftHand)
     {
       v18 = 1;
     }
@@ -429,19 +429,19 @@ LABEL_9:
   [(_UIKBRTTouchDrifting *)self _updateDriftWithTouchInfo:v12];
 }
 
-- (void)updateTouchWithIdentifier:(id)a3 withTouchTime:(double)a4 resultingError:(CGPoint)a5 rowOffsetFromHomeRow:(int64_t)a6
+- (void)updateTouchWithIdentifier:(id)identifier withTouchTime:(double)time resultingError:(CGPoint)error rowOffsetFromHomeRow:(int64_t)row
 {
-  y = a5.y;
-  x = a5.x;
-  v17 = a3;
+  y = error.y;
+  x = error.x;
+  identifierCopy = identifier;
   v11 = [(NSMutableDictionary *)self->_touches objectForKey:?];
   if (v11)
   {
     [(_UIKBRTTouchDrifting *)self _updateHistory];
     [v11 setErrorVector:{x, y}];
-    [v11 setTouchTime:a4];
-    [v11 setIgnoreTouch:(a6 - 2) < 0xFFFFFFFFFFFFFFFDLL];
-    v12 = [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self fingerIDFortouchIdentifier:v17];
+    [v11 setTouchTime:time];
+    [v11 setIgnoreTouch:(row - 2) < 0xFFFFFFFFFFFFFFFDLL];
+    v12 = [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self fingerIDFortouchIdentifier:identifierCopy];
     if (v12 <= 0xC)
     {
       if (((1 << v12) & 0xFA) != 0)
@@ -525,17 +525,17 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)ignoreTouchWithIdentifier:(id)a3 withTouchTime:(double)a4
+- (void)ignoreTouchWithIdentifier:(id)identifier withTouchTime:(double)time
 {
-  v16 = a3;
+  identifierCopy = identifier;
   v6 = [(NSMutableDictionary *)self->_touches objectForKey:?];
   if (v6)
   {
     [(_UIKBRTTouchDrifting *)self _updateHistory];
-    v7 = [v6 ignoreTouch];
+    ignoreTouch = [v6 ignoreTouch];
     [v6 setIgnoreTouch:1];
-    [v6 setTouchTime:a4];
-    if ((v7 & 1) == 0)
+    [v6 setTouchTime:time];
+    if ((ignoreTouch & 1) == 0)
     {
       if (([v6 ignoreForDrift] & 1) != 0 || (objc_msgSend(v6, "ignoreTouch")) && (p_jHistory = &self->_otherHistory, !-[_UIKBRTTouchHistory containsInfo:](self->_otherHistory, "containsInfo:", v6)))
       {
@@ -605,7 +605,7 @@ LABEL_18:
       v14 = *(&self->super.super.isa + *v12);
       v15 = *(&self->super.super.isa + *v11);
       [(_UIKBRTTouchHistory *)*p_fHistory removeInfo:v6];
-      [*(&self->super.super.isa + *v9) removeObject:v16];
+      [*(&self->super.super.isa + *v9) removeObject:identifierCopy];
       [(_UIKBRTTouchHistory *)*p_jHistory addInfo:v6];
       if (v13 && ![(_UIKBRTTouchHistory *)v13 hasHistory])
       {
@@ -629,18 +629,18 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)moveTouchWithIdentifier:(id)a3 toLocation:(CGPoint)a4 withRadius:(double)a5 atTouchTime:(double)a6
+- (void)moveTouchWithIdentifier:(id)identifier toLocation:(CGPoint)location withRadius:(double)radius atTouchTime:(double)time
 {
-  y = a4.y;
-  x = a4.x;
-  v17 = a3;
+  y = location.y;
+  x = location.x;
+  identifierCopy = identifier;
   v10 = [(NSMutableDictionary *)self->_touches objectForKey:?];
   if (v10)
   {
     [v10 setTouchTime:CFAbsoluteTimeGetCurrent() + *&sSystemUptimeFromAbsoluteTimeDiff];
     [v10 setActualLocation:{x, y}];
-    [v10 setTouchTime:a6];
-    v11 = [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self fingerIDFortouchIdentifier:v17];
+    [v10 setTouchTime:time];
+    v11 = [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self fingerIDFortouchIdentifier:identifierCopy];
     if (v11 <= 0xC)
     {
       if (((1 << v11) & 0xFA) != 0)
@@ -710,7 +710,7 @@ LABEL_22:
 
 LABEL_20:
         [(_UIKBRTTouchHistory *)*p_fHistory removeInfo:v10];
-        [*(&self->super.super.isa + *v15) removeObject:v17];
+        [*(&self->super.super.isa + *v15) removeObject:identifierCopy];
         goto LABEL_21;
       }
     }
@@ -728,10 +728,10 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)removeTouchWithIdentifier:(id)a3 touchCancelled:(BOOL)a4
+- (void)removeTouchWithIdentifier:(id)identifier touchCancelled:(BOOL)cancelled
 {
-  v4 = a4;
-  v24 = a3;
+  cancelledCopy = cancelled;
+  identifierCopy = identifier;
   v6 = [(NSMutableDictionary *)self->_touches objectForKey:?];
   v7 = v6;
   if (v6)
@@ -740,7 +740,7 @@ LABEL_23:
     p_fHistory = &self->_fHistory;
     v9 = [(_UIKBRTTouchHistory *)self->_fHistory containsInfo:v7];
     v10 = [(_UIKBRTTouchHistory *)self->_jHistory containsInfo:v7];
-    if (v4)
+    if (cancelledCopy)
     {
       if (v9)
       {
@@ -773,7 +773,7 @@ LABEL_23:
       v21 = *(&self->super.super.isa + *v11);
       [(_UIKBRTTouchHistory *)*p_fHistory removeInfo:v7];
       v22 = *v13;
-      [*(&self->super.super.isa + v22) removeObject:v24];
+      [*(&self->super.super.isa + v22) removeObject:identifierCopy];
       *(&self->super.super.isa + *v12) = [*(&self->super.super.isa + v22) count] != 0;
       if (v19 && ![(_UIKBRTTouchHistory *)v19 hasHistory])
       {
@@ -781,7 +781,7 @@ LABEL_23:
         [v21 reset];
 LABEL_17:
 
-        v15 = v24;
+        v15 = identifierCopy;
         goto LABEL_18;
       }
 
@@ -793,12 +793,12 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v15 = v24;
+    v15 = identifierCopy;
     if (v9)
     {
-      [(NSMutableSet *)self->_leftDriftLockTouchIDs removeObject:v24];
+      [(NSMutableSet *)self->_leftDriftLockTouchIDs removeObject:identifierCopy];
       v16 = [(NSMutableSet *)self->_leftDriftLockTouchIDs count];
-      v15 = v24;
+      v15 = identifierCopy;
       v17 = v16 != 0;
       v18 = 97;
     }
@@ -814,9 +814,9 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      [(NSMutableSet *)self->_rightDriftLockTouchIDs removeObject:v24];
+      [(NSMutableSet *)self->_rightDriftLockTouchIDs removeObject:identifierCopy];
       v23 = [(NSMutableSet *)self->_rightDriftLockTouchIDs count];
-      v15 = v24;
+      v15 = identifierCopy;
       v17 = v23 != 0;
       v18 = 98;
     }
@@ -836,16 +836,16 @@ LABEL_19:
   [(_UIKBRTTouchHistory *)jHistory decayHistory];
 }
 
-- (id)_touchDictWithFingerIds:(id)a3
+- (id)_touchDictWithFingerIds:(id)ids
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idsCopy = ids;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = idsCopy;
   v21 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v21)
   {
@@ -920,16 +920,16 @@ LABEL_19:
   return v5;
 }
 
-- (void)_updateDriftWithTouchInfo:(id)a3
+- (void)_updateDriftWithTouchInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_supportsDrifting)
   {
     v5 = [(_UIKBRTTouchDrifting *)self _touchDictWithFingerIds:&unk_1EFE2CD90];
     v6 = [(_UIKBRTTouchDrifting *)self _touchDictWithFingerIds:&unk_1EFE2CDA8];
-    v7 = [(_UIKBRTDecayingObject *)self->_enableLatchObj isActive];
+    isActive = [(_UIKBRTDecayingObject *)self->_enableLatchObj isActive];
     [(_UIKBRTDecayingObject *)self->_enableLatchObj startOrUpdateDecay];
-    if (v4)
+    if (infoCopy)
     {
       if ([(_UIKBRTDecayingObject *)self->_enableLatchObj isActive])
       {
@@ -993,7 +993,7 @@ LABEL_19:
       v19[1] = 3221225472;
       v19[2] = __50___UIKBRTTouchDrifting__updateDriftWithTouchInfo___block_invoke_51;
       v19[3] = &unk_1E71184C8;
-      v12 = v4;
+      v12 = infoCopy;
       v20 = v12;
       v21 = &v28;
       [v5 enumerateKeysAndObjectsUsingBlock:v19];
@@ -1015,7 +1015,7 @@ LABEL_19:
     {
       [(_UIKBRTTouchHistory *)self->_fHistory reset];
       [(_UIKBRTTouchHistory *)self->_jHistory reset];
-      if (v7)
+      if (isActive)
       {
         [(_UIKBRTDecayingOffset *)self->_leftHandDriftOffsetObj reset];
         [(_UIKBRTDecayingOffset *)self->_leftHandFixedOffsetObj reset];
@@ -1029,19 +1029,19 @@ LABEL_19:
   [(_UIKBRTTouchDrifting *)self _updateDriftView];
 }
 
-- (void)_updateDriftForFingers:(id)a3 leftHand:(BOOL)a4 newestTouch:(id)a5
+- (void)_updateDriftForFingers:(id)fingers leftHand:(BOOL)hand newestTouch:(id)touch
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  handCopy = hand;
+  fingersCopy = fingers;
+  touchCopy = touch;
   v10 = 2;
-  if (v6)
+  if (handCopy)
   {
     v10 = 1;
   }
 
   v11 = *(&self->super.super.isa + OBJC_IVAR____UIKBRTTouchDrifting__touches[v10]);
-  if (v6)
+  if (handCopy)
   {
     v12 = 5;
   }
@@ -1051,7 +1051,7 @@ LABEL_19:
     v12 = 8;
   }
 
-  if (v6)
+  if (handCopy)
   {
     v13 = 1;
   }
@@ -1061,7 +1061,7 @@ LABEL_19:
     v13 = 2;
   }
 
-  if (v6)
+  if (handCopy)
   {
     v14 = 6;
   }
@@ -1071,7 +1071,7 @@ LABEL_19:
     v14 = 9;
   }
 
-  if (v6)
+  if (handCopy)
   {
     v15 = 6;
   }
@@ -1084,7 +1084,7 @@ LABEL_19:
   v54 = v11;
   v55 = *(&self->super.super.isa + OBJC_IVAR____UIKBRTTouchDrifting__touches[v12]);
   v56 = *(&self->super.super.isa + OBJC_IVAR____UIKBRTTouchDrifting__touches[v15]);
-  if (v6)
+  if (handCopy)
   {
     [(_UIKBRTKeyboardTouchObserver *)self fCenter];
     v16 = &OBJC_IVAR____UIKBRTTouchDrifting__leftDriftLockTouchIDs;
@@ -1121,14 +1121,14 @@ LABEL_19:
   v63[3] = &unk_1E7118518;
   v63[4] = &v64;
   v63[5] = &v68;
-  [v8 enumerateKeysAndObjectsUsingBlock:v63];
+  [fingersCopy enumerateKeysAndObjectsUsingBlock:v63];
   if (v69[3] >= 3)
   {
-    v52 = v9;
-    v22 = v8;
+    v52 = touchCopy;
+    v22 = fingersCopy;
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-    v24 = [v8 objectForKey:v23];
-    v25 = [v24 firstObject];
+    v24 = [fingersCopy objectForKey:v23];
+    firstObject = [v24 firstObject];
 
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
@@ -1139,9 +1139,9 @@ LABEL_19:
     v59 = v57;
     v60 = &v64;
     [v22 enumerateKeysAndObjectsUsingBlock:v58];
-    if (v25)
+    if (firstObject)
     {
-      v26 = v25;
+      v26 = firstObject;
 
       v20 = v26;
     }
@@ -1149,19 +1149,19 @@ LABEL_19:
     else if (!v20)
     {
       v20 = objc_alloc_init(_UIKBRTTouchHistoryInfo);
-      [(_UIKBRTTouchHistoryInfo *)v20 setIsLeftHand:v6];
+      [(_UIKBRTTouchHistoryInfo *)v20 setIsLeftHand:handCopy];
     }
 
-    v27 = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
+    touchIdentifier = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
 
-    if (!v27)
+    if (!touchIdentifier)
     {
       [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDrifting:self touchCenterForFingerID:v14];
       [(_UIKBRTTouchHistoryInfo *)v20 setActualLocation:?];
     }
 
-    v8 = v22;
-    v9 = v52;
+    fingersCopy = v22;
+    touchCopy = v52;
   }
 
   v28 = v65[3];
@@ -1171,7 +1171,7 @@ LABEL_19:
     if (v28)
     {
       v30 = 24;
-      if (v6)
+      if (handCopy)
       {
         v30 = 23;
       }
@@ -1179,11 +1179,11 @@ LABEL_19:
       objc_storeStrong((&self->super.super.isa + OBJC_IVAR____UIKBRTTouchDrifting__touches[v30]), v20);
       if (v65[3])
       {
-        v31 = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
-        if (v31)
+        touchIdentifier2 = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
+        if (touchIdentifier2)
         {
-          v6 = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
-          if ([v57 containsObject:v6])
+          handCopy = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
+          if ([v57 containsObject:handCopy])
           {
 
             v32 = v54;
@@ -1201,7 +1201,7 @@ LABEL_54:
           }
         }
 
-        v48 = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
+        touchIdentifier3 = [(_UIKBRTTouchHistoryInfo *)v20 touchIdentifier];
         if (v53)
         {
           v49 = 0;
@@ -1209,12 +1209,12 @@ LABEL_54:
 
         else
         {
-          v49 = v48 == 0;
+          v49 = touchIdentifier3 == 0;
         }
 
         v50 = v49;
 
-        if (v31)
+        if (touchIdentifier2)
         {
 
           v32 = v54;
@@ -1278,12 +1278,12 @@ LABEL_54:
   v33 = v55;
   if ([v56 isActive])
   {
-    v46 = 1;
+    isActive = 1;
   }
 
   else
   {
-    v46 = [v55 isActive];
+    isActive = [v55 isActive];
   }
 
   [v56 startOrUpdateDecay];
@@ -1291,7 +1291,7 @@ LABEL_54:
   v32 = v54;
   if ([v56 isActive])
   {
-    if (v46)
+    if (isActive)
     {
       goto LABEL_57;
     }
@@ -1299,7 +1299,7 @@ LABEL_54:
     goto LABEL_44;
   }
 
-  if (v46 != [v55 isActive])
+  if (isActive != [v55 isActive])
   {
 LABEL_44:
     [(_UIKBRTTouchDriftingDelegate *)self->_delegate _uikbrtTouchDriftingStateChanged:self];
@@ -1310,42 +1310,42 @@ LABEL_57:
   _Block_object_dispose(&v68, 8);
 }
 
-- (CGPoint)_offsetForPoint:(CGPoint)a3 fromPoint:(CGPoint)a4
+- (CGPoint)_offsetForPoint:(CGPoint)point fromPoint:(CGPoint)fromPoint
 {
-  v4 = a3.x - a4.x;
-  v5 = a3.y - a4.y;
+  v4 = point.x - fromPoint.x;
+  v5 = point.y - fromPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)_pointFromPoint:(CGPoint)a3 plusOffset:(CGPoint)a4
+- (CGPoint)_pointFromPoint:(CGPoint)point plusOffset:(CGPoint)offset
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
+  v4 = point.x + offset.x;
+  v5 = point.y + offset.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)_pinOffset:(CGPoint)a3
+- (CGPoint)_pinOffset:(CGPoint)offset
 {
   p_touchError = &self->_touchError;
   left = self->_touchError.left;
-  if (a3.x < left || (right = self->_touchError.right, right < a3.x))
+  if (offset.x < left || (right = self->_touchError.right, right < offset.x))
   {
-    if (a3.y < p_touchError->up || self->_touchError.down < a3.y)
+    if (offset.y < p_touchError->up || self->_touchError.down < offset.y)
     {
       v6 = 24;
-      if (a3.x < 0.0)
+      if (offset.x < 0.0)
       {
         v6 = 16;
       }
 
-      v7 = *(&p_touchError->up + v6) / a3.x;
-      if (v7 >= *(&p_touchError->up + (a3.y >= 0.0)) / a3.y)
+      v7 = *(&p_touchError->up + v6) / offset.x;
+      if (v7 >= *(&p_touchError->up + (offset.y >= 0.0)) / offset.y)
       {
-        v7 = *(&p_touchError->up + (a3.y >= 0.0)) / a3.y;
+        v7 = *(&p_touchError->up + (offset.y >= 0.0)) / offset.y;
       }
 
       if (v7 > 1.0)
@@ -1356,7 +1356,7 @@ LABEL_57:
       goto LABEL_21;
     }
 
-    if (a3.x < left)
+    if (offset.x < left)
     {
       goto LABEL_15;
     }
@@ -1364,27 +1364,27 @@ LABEL_57:
     right = self->_touchError.right;
   }
 
-  if (right < a3.x)
+  if (right < offset.x)
   {
 LABEL_15:
     v8 = 24;
-    if (a3.x < 0.0)
+    if (offset.x < 0.0)
     {
       v8 = 16;
     }
 
-    v7 = *(&p_touchError->up + v8) / a3.x;
+    v7 = *(&p_touchError->up + v8) / offset.x;
     goto LABEL_21;
   }
 
-  if (a3.y < p_touchError->up || (v7 = 1.0, self->_touchError.down < a3.y))
+  if (offset.y < p_touchError->up || (v7 = 1.0, self->_touchError.down < offset.y))
   {
-    v7 = *(&p_touchError->up + (a3.y >= 0.0)) / a3.y;
+    v7 = *(&p_touchError->up + (offset.y >= 0.0)) / offset.y;
   }
 
 LABEL_21:
-  v9 = a3.x * v7;
-  v10 = a3.y * v7;
+  v9 = offset.x * v7;
+  v10 = offset.y * v7;
   result.y = v10;
   result.x = v9;
   return result;
@@ -1406,8 +1406,8 @@ LABEL_82:
     [(_UIKBRTKeyboardTouchObserver *)self keySize];
     v5 = v4;
     v7 = v6;
-    v8 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
-    v9 = [v8 objectAtIndex:{-[_UIKBRTKeyboardTouchObserver homeRowOffsetIndex](self, "homeRowOffsetIndex") - 1}];
+    rowOffsets = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
+    v9 = [rowOffsets objectAtIndex:{-[_UIKBRTKeyboardTouchObserver homeRowOffsetIndex](self, "homeRowOffsetIndex") - 1}];
     [v9 doubleValue];
     v11 = v10;
 
@@ -1426,17 +1426,17 @@ LABEL_82:
       v16 = [UIColor colorWithWhite:0.75 alpha:0.25];
       for (i = -1; i != 2; ++i)
       {
-        v18 = [(_UIKBRTKeyboardTouchObserver *)self homeRowOffsetIndex];
-        v19 = (v18 + i);
-        if (v18 + i >= 0)
+        homeRowOffsetIndex = [(_UIKBRTKeyboardTouchObserver *)self homeRowOffsetIndex];
+        v19 = (homeRowOffsetIndex + i);
+        if (homeRowOffsetIndex + i >= 0)
         {
-          v20 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
-          v21 = [v20 count];
+          rowOffsets2 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
+          v21 = [rowOffsets2 count];
 
           if (v21 > v19)
           {
-            v22 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
-            v23 = [v22 objectAtIndex:v19];
+            rowOffsets3 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
+            v23 = [rowOffsets3 objectAtIndex:v19];
             [v23 doubleValue];
             v25 = v24;
 
@@ -1465,8 +1465,8 @@ LABEL_82:
       v133 = 0u;
       v134 = 0u;
       v135 = 0u;
-      v30 = [(UIView *)self->_leftDriftFeedbackView subviews];
-      v31 = [v30 countByEnumeratingWithState:&v132 objects:v140 count:16];
+      subviews = [(UIView *)self->_leftDriftFeedbackView subviews];
+      v31 = [subviews countByEnumeratingWithState:&v132 objects:v140 count:16];
       if (v31)
       {
         v32 = v31;
@@ -1477,7 +1477,7 @@ LABEL_82:
           {
             if (*v133 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(subviews);
             }
 
             v35 = *(*(&v132 + 1) + 8 * j);
@@ -1490,7 +1490,7 @@ LABEL_82:
             }
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v132 objects:v140 count:16];
+          v32 = [subviews countByEnumeratingWithState:&v132 objects:v140 count:16];
         }
 
         while (v32);
@@ -1504,8 +1504,8 @@ LABEL_82:
       v129 = 0u;
       v130 = 0u;
       v131 = 0u;
-      v30 = [(UIView *)self->_leftDriftFeedbackView subviews];
-      v38 = [v30 countByEnumeratingWithState:&v128 objects:v139 count:16];
+      subviews = [(UIView *)self->_leftDriftFeedbackView subviews];
+      v38 = [subviews countByEnumeratingWithState:&v128 objects:v139 count:16];
       if (v38)
       {
         v39 = v38;
@@ -1516,7 +1516,7 @@ LABEL_82:
           {
             if (*v129 != v40)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(subviews);
             }
 
             v42 = *(*(&v128 + 1) + 8 * k);
@@ -1529,7 +1529,7 @@ LABEL_82:
             }
           }
 
-          v39 = [v30 countByEnumeratingWithState:&v128 objects:v139 count:16];
+          v39 = [subviews countByEnumeratingWithState:&v128 objects:v139 count:16];
         }
 
         while (v39);
@@ -1547,8 +1547,8 @@ LABEL_82:
     [(_UIKBRTKeyboardTouchObserver *)self fCenter];
     v56 = v7 * 1.5;
     v57 = v48 + v50 + v55 - v7 * 1.5;
-    v58 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
-    v59 = [v58 objectAtIndex:{-[_UIKBRTKeyboardTouchObserver homeRowOffsetIndex](self, "homeRowOffsetIndex") + 1}];
+    rowOffsets4 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
+    v59 = [rowOffsets4 objectAtIndex:{-[_UIKBRTKeyboardTouchObserver homeRowOffsetIndex](self, "homeRowOffsetIndex") + 1}];
     [v59 doubleValue];
     v61 = v5 * 5.0 + v60;
     v62 = v7 * 3.0;
@@ -1575,17 +1575,17 @@ LABEL_82:
       v67 = [UIColor colorWithWhite:0.75 alpha:0.25];
       for (m = -1; m != 2; ++m)
       {
-        v69 = [(_UIKBRTKeyboardTouchObserver *)self homeRowOffsetIndex];
-        v70 = (v69 + m);
-        if (v69 + m >= 0)
+        homeRowOffsetIndex2 = [(_UIKBRTKeyboardTouchObserver *)self homeRowOffsetIndex];
+        v70 = (homeRowOffsetIndex2 + m);
+        if (homeRowOffsetIndex2 + m >= 0)
         {
-          v71 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
-          v72 = [v71 count];
+          rowOffsets5 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
+          v72 = [rowOffsets5 count];
 
           if (v72 > v70)
           {
-            v73 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
-            v74 = [v73 objectAtIndex:v70];
+            rowOffsets6 = [(_UIKBRTKeyboardTouchObserver *)self rowOffsets];
+            v74 = [rowOffsets6 objectAtIndex:v70];
             [v74 doubleValue];
             v76 = v75;
 
@@ -1620,8 +1620,8 @@ LABEL_82:
       v125 = 0u;
       v126 = 0u;
       v127 = 0u;
-      v81 = [(UIView *)self->_rightDriftFeedbackView subviews];
-      v82 = [v81 countByEnumeratingWithState:&v124 objects:v138 count:16];
+      subviews2 = [(UIView *)self->_rightDriftFeedbackView subviews];
+      v82 = [subviews2 countByEnumeratingWithState:&v124 objects:v138 count:16];
       if (v82)
       {
         v83 = v82;
@@ -1633,7 +1633,7 @@ LABEL_82:
           {
             if (*v125 != v84)
             {
-              objc_enumerationMutation(v81);
+              objc_enumerationMutation(subviews2);
             }
 
             v86 = *(*(&v124 + 1) + 8 * n);
@@ -1646,7 +1646,7 @@ LABEL_82:
             }
           }
 
-          v83 = [v81 countByEnumeratingWithState:&v124 objects:v138 count:16];
+          v83 = [subviews2 countByEnumeratingWithState:&v124 objects:v138 count:16];
         }
 
         while (v83);
@@ -1662,8 +1662,8 @@ LABEL_69:
       v121 = 0u;
       v122 = 0u;
       v123 = 0u;
-      v81 = [(UIView *)self->_rightDriftFeedbackView subviews];
-      v89 = [v81 countByEnumeratingWithState:&v120 objects:v137 count:16];
+      subviews2 = [(UIView *)self->_rightDriftFeedbackView subviews];
+      v89 = [subviews2 countByEnumeratingWithState:&v120 objects:v137 count:16];
       if (v89)
       {
         v90 = v89;
@@ -1675,7 +1675,7 @@ LABEL_69:
           {
             if (*v121 != v91)
             {
-              objc_enumerationMutation(v81);
+              objc_enumerationMutation(subviews2);
             }
 
             v93 = *(*(&v120 + 1) + 8 * ii);
@@ -1688,7 +1688,7 @@ LABEL_69:
             }
           }
 
-          v90 = [v81 countByEnumeratingWithState:&v120 objects:v137 count:16];
+          v90 = [subviews2 countByEnumeratingWithState:&v120 objects:v137 count:16];
         }
 
         while (v90);
@@ -1747,8 +1747,8 @@ LABEL_69:
       feedbackTimer = self->_feedbackTimer;
       self->_feedbackTimer = v115;
 
-      v117 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v117 addTimer:self->_feedbackTimer forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:self->_feedbackTimer forMode:*MEMORY[0x1E695DA28]];
     }
 
     goto LABEL_82;
@@ -1757,16 +1757,16 @@ LABEL_69:
   [(_UIKBRTTouchDrifting *)self _resetFeedback];
 }
 
-- (void)_updateDriftViewTimer:(id)a3
+- (void)_updateDriftViewTimer:(id)timer
 {
-  if (self->_feedbackTimer != a3)
+  if (self->_feedbackTimer != timer)
   {
     return;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   v5 = *&sSystemUptimeFromAbsoluteTimeDiff;
-  v6 = [(_UIKBRTDecayingObject *)self->_leftHandFixedOffsetObj isActive]|| [(_UIKBRTDecayingObject *)self->_leftHandDriftOffsetObj isActive]|| [(_UIKBRTDecayingObject *)self->_rightHandFixedOffsetObj isActive]|| [(_UIKBRTDecayingObject *)self->_rightHandDriftOffsetObj isActive];
+  isActive = [(_UIKBRTDecayingObject *)self->_leftHandFixedOffsetObj isActive]|| [(_UIKBRTDecayingObject *)self->_leftHandDriftOffsetObj isActive]|| [(_UIKBRTDecayingObject *)self->_rightHandFixedOffsetObj isActive]|| [(_UIKBRTDecayingObject *)self->_rightHandDriftOffsetObj isActive];
   v7 = Current + v5;
   [(_UIKBRTTouchDrifting *)self _updateHistory];
   v8 = [(_UIKBRTTouchDrifting *)self _touchDictWithFingerIds:&unk_1EFE2CDC0];
@@ -1803,15 +1803,15 @@ LABEL_69:
 
   if (![(_UIKBRTDecayingObject *)self->_leftHandFixedOffsetObj isActive]&& ![(_UIKBRTDecayingObject *)self->_leftHandDriftOffsetObj isActive]&& ![(_UIKBRTDecayingObject *)self->_rightHandFixedOffsetObj isActive])
   {
-    v14 = [(_UIKBRTDecayingObject *)self->_rightHandDriftOffsetObj isActive];
-    if (v6)
+    isActive2 = [(_UIKBRTDecayingObject *)self->_rightHandDriftOffsetObj isActive];
+    if (isActive)
     {
       goto LABEL_17;
     }
 
 LABEL_24:
     [(_UIKBRTTouchDrifting *)self _updateDriftView];
-    if (v14)
+    if (isActive2)
     {
       return;
     }
@@ -1819,15 +1819,15 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v14 = 1;
-  if (!v6)
+  isActive2 = 1;
+  if (!isActive)
   {
     goto LABEL_24;
   }
 
 LABEL_17:
   enableLatchObj = self->_enableLatchObj;
-  if (v14)
+  if (isActive2)
   {
     [(_UIKBRTDecayingObject *)enableLatchObj resetActiveDecayTo:v7];
 

@@ -28,11 +28,11 @@
 + (TSCHChartType)stackedColumnChart;
 + (TSCHChartType)stackedColumnChart3D;
 + (TSCHChartType)twoYAxisChart;
-+ (double)sageDepthFactorForExportingChartInfo:(id)a3;
++ (double)sageDepthFactorForExportingChartInfo:(id)info;
 + (id)allChartTypes;
-+ (id)chartTypeForUserInterfaceTag:(int64_t)a3;
++ (id)chartTypeForUserInterfaceTag:(int64_t)tag;
 + (id)chartTypePlaceholderForDefault3DScaleProperty;
-+ (id)constantDepthInfoChartScaleForInfoChartScale:(id)a3 chartType:(id)a4 barShape:(int)a5;
++ (id)constantDepthInfoChartScaleForInfoChartScale:(id)scale chartType:(id)type barShape:(int)shape;
 + (id)multipleChartsSelected;
 + (id)multipleChartsSelected2D;
 + (id)multipleChartsSelected3D;
@@ -59,7 +59,7 @@
 - (BOOL)supportsCategoryLabelsInChartRangeEditor;
 - (BOOL)supportsConnectingLines;
 - (BOOL)supportsEditing;
-- (BOOL)supportsEditingForAxisID:(id)a3;
+- (BOOL)supportsEditingForAxisID:(id)d;
 - (BOOL)supportsElementChunking;
 - (BOOL)supportsElementSeriesNames;
 - (BOOL)supportsEllipticalGridlines;
@@ -82,9 +82,9 @@
 - (BOOL)supportsValueLabelSpacing;
 - (BOOL)supportsValueLabels;
 - (CGSize)minimumChartBodySize;
-- (CGSize)mungeBodySize:(CGSize)a3;
+- (CGSize)mungeBodySize:(CGSize)size;
 - (Class)presetImagerClass;
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4;
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale;
 - (NSArray)categoryAxisIDs;
 - (NSArray)supportedAxisScales;
 - (NSArray)valueAxisIDs;
@@ -95,20 +95,20 @@
 - (NSString)name;
 - (TSCH3DChartRotationLimit)rotation3DLimit;
 - (TSCHChartType)init;
-- (TSCHChartType)initWithFeatureClass:(Class)a3;
+- (TSCHChartType)initWithFeatureClass:(Class)class;
 - (TSCHChartType)otherDimensionChartType;
 - (TSUIntToIntDictionary)genericToSpecificPropertyMap;
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3;
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size;
 - (double)maxDepthRatio;
 - (double)maxInnerRadiusPercentage;
 - (double)minInnerRadiusPercentage;
 - (float)defaultLabelExplosionPercentage;
-- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)a3 readerVersion:(unint64_t *)a4 featureID:(id *)a5;
-- (id)animationDeliveryStylesForFilter:(id)a3;
+- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)version readerVersion:(unint64_t *)readerVersion featureID:(id *)d;
+- (id)animationDeliveryStylesForFilter:(id)filter;
 - (id)cellsAddedWarning;
 - (id)cellsCreatedWarning;
 - (id)defaultDataFileName;
-- (id)filteredStyleOwnersFromStyleOwners:(id)a3;
+- (id)filteredStyleOwnersFromStyleOwners:(id)owners;
 - (id)g_genericToSpecificPropertyMapArea;
 - (id)g_genericToSpecificPropertyMapBar;
 - (id)g_genericToSpecificPropertyMapBubble;
@@ -123,30 +123,30 @@
 - (id)g_genericToSpecificPropertyMapStackedBar;
 - (id)g_genericToSpecificPropertyMapStackedColumn;
 - (id)g_genericToSpecificPropertyMapTwoAxis;
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9;
-- (id)localizedWedgeDragLabelWithPercent:(unint64_t)a3;
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache;
+- (id)localizedWedgeDragLabelWithPercent:(unint64_t)percent;
 - (id)p_debugDescription;
 - (id)seriesPlotColumnsWarning;
 - (id)seriesPlotRowsWarning;
-- (id)seriesTypeForSeriesElementType:(int)a3 defaultSeriesIndex:(unint64_t)a4;
+- (id)seriesTypeForSeriesElementType:(int)type defaultSeriesIndex:(unint64_t)index;
 - (id)seriesWarning;
-- (id)titlePositionerWithInfo:(id)a3 scene:(id)a4;
-- (id)userInterfaceNameForPlaceTitleAtCenter:(BOOL)a3;
+- (id)titlePositionerWithInfo:(id)info scene:(id)scene;
+- (id)userInterfaceNameForPlaceTitleAtCenter:(BOOL)center;
 - (int)representativeGridValueAxisType;
-- (int)seriesElementTypeForSeriesType:(id)a3;
+- (int)seriesElementTypeForSeriesType:(id)type;
 - (int)stackingSignRule;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (unint64_t)gridOffsetToSeriesForScatterFormat:(int)a3;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (unint64_t)gridOffsetToSeriesForScatterFormat:(int)format;
 - (unint64_t)maxCellsToCheckForGridValueType;
-- (unint64_t)styleIndexForAxisID:(id)a3;
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4;
+- (unint64_t)styleIndexForAxisID:(id)d;
+- (void)updateTitlesForExportingModel:(id)model info:(id)info;
 @end
 
 @implementation TSCHChartType
 
-- (id)titlePositionerWithInfo:(id)a3 scene:(id)a4
+- (id)titlePositionerWithInfo:(id)info scene:(id)scene
 {
-  v7 = objc_msgSend_positionerWithInfo_scene_(TSCH3DVerticalChartTitlePositioner, a2, v4, v5, v6, a3, a4);
+  v7 = objc_msgSend_positionerWithInfo_scene_(TSCH3DVerticalChartTitlePositioner, a2, v4, v5, v6, info, scene);
 
   return v7;
 }
@@ -184,9 +184,9 @@
   return 0;
 }
 
-- (TSCHChartType)initWithFeatureClass:(Class)a3
+- (TSCHChartType)initWithFeatureClass:(Class)class
 {
-  if (!a3)
+  if (!class)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHChartType initWithFeatureClass:]");
@@ -201,7 +201,7 @@
   v23 = [(TSCHChartType *)&v32 init];
   if (v23)
   {
-    v24 = [a3 alloc];
+    v24 = [class alloc];
     v29 = objc_msgSend_initWithChartType_(v24, v25, v26, v27, v28, v23);
     feature = v23->_feature;
     v23->_feature = v29;
@@ -807,29 +807,29 @@ LABEL_30:
   return v3;
 }
 
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v16 = a5.height;
-  v17 = a5.width;
-  v18 = *&a4;
-  v20 = a3;
-  v21 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v16 = size.height;
+  v17 = size.width;
+  v18 = *&target;
+  presetCopy = preset;
+  rootCopy = root;
   v26 = objc_msgSend_presetImagerClass(self, v22, v23, v24, v25);
   v31 = objc_msgSend_presetImagerForChartType_(v26, v27, v28, v29, v30, self);
-  v33 = objc_msgSend_imageWithPreset_target_imageSize_imageScale_swatchFrame_documentRoot_shouldCache_(v31, v32, v17, v16, a6, v20, v18, v21, a9, x, y, width, height);
+  v33 = objc_msgSend_imageWithPreset_target_imageSize_imageScale_swatchFrame_documentRoot_shouldCache_(v31, v32, v17, v16, scale, presetCopy, v18, rootCopy, cache, x, y, width, height);
 
   return v33;
 }
 
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_msgSend_presetImagerClass(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  v7 = objc_msgSend_presetImagerClass(self, a2, size.width, size.height, v3);
   v12 = objc_msgSend_presetImagerForChartType_(v7, v8, v9, v10, v11, self);
   objc_msgSend_swatchImageEdgeInsetsForSize_(v12, v13, width, height, v14);
   v16 = v15;
@@ -871,7 +871,7 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = sub_276248180;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A47168 != -1)
   {
     dispatch_once(&qword_280A47168, block);
@@ -882,9 +882,9 @@ LABEL_30:
   return v2;
 }
 
-- (id)animationDeliveryStylesForFilter:(id)a3
+- (id)animationDeliveryStylesForFilter:(id)filter
 {
-  v6 = objc_msgSend_indexSet(MEMORY[0x277CCAA78], a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_indexSet(MEMORY[0x277CCAA78], a2, v3, v4, v5, filter);
 
   return v6;
 }
@@ -954,29 +954,29 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)supportsEditingForAxisID:(id)a3
+- (BOOL)supportsEditingForAxisID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_feature(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_supportsEditingForAxisID_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_supportsEditingForAxisID_(v9, v10, v11, v12, v13, dCopy);
 
   return v14;
 }
 
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale
 {
-  v6 = a3;
+  dCopy = d;
   v11 = objc_msgSend_feature(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_valueAxisClassForID_scale_(v11, v12, v13, v14, v15, v6, a4);
+  v16 = objc_msgSend_valueAxisClassForID_scale_(v11, v12, v13, v14, v15, dCopy, scale);
 
   return v16;
 }
 
-- (unint64_t)styleIndexForAxisID:(id)a3
+- (unint64_t)styleIndexForAxisID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_feature(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_styleIndexForAxisID_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_styleIndexForAxisID_(v9, v10, v11, v12, v13, dCopy);
 
   return v14;
 }
@@ -1005,22 +1005,22 @@ LABEL_30:
   return v10;
 }
 
-- (id)seriesTypeForSeriesElementType:(int)a3 defaultSeriesIndex:(unint64_t)a4
+- (id)seriesTypeForSeriesElementType:(int)type defaultSeriesIndex:(unint64_t)index
 {
-  v9 = objc_msgSend_defaultSeriesType_(self, a2, v4, v5, v6, a4);
-  if (a3 == 2)
+  v9 = objc_msgSend_defaultSeriesType_(self, a2, v4, v5, v6, index);
+  if (type == 2)
   {
     v13 = objc_msgSend_mixedColumnSeries(TSCHChartSeriesType, v8, v10, v11, v12);
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v13 = objc_msgSend_mixedAreaSeries(TSCHChartSeriesType, v8, v10, v11, v12);
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_8;
     }
@@ -1036,13 +1036,13 @@ LABEL_8:
   return v9;
 }
 
-- (int)seriesElementTypeForSeriesType:(id)a3
+- (int)seriesElementTypeForSeriesType:(id)type
 {
-  v3 = a3;
-  v8 = v3;
-  if (v3)
+  typeCopy = type;
+  v8 = typeCopy;
+  if (typeCopy)
   {
-    v9 = objc_msgSend_seriesElementType(v3, v4, v5, v6, v7);
+    v9 = objc_msgSend_seriesElementType(typeCopy, v4, v5, v6, v7);
   }
 
   else
@@ -1318,9 +1318,9 @@ LABEL_8:
   return v10;
 }
 
-- (unint64_t)gridOffsetToSeriesForScatterFormat:(int)a3
+- (unint64_t)gridOffsetToSeriesForScatterFormat:(int)format
 {
-  v6 = *&a3;
+  v6 = *&format;
   v7 = objc_msgSend_feature(self, a2, v3, v4, v5);
   v12 = objc_msgSend_gridOffsetToSeriesForScatterFormat_(v7, v8, v9, v10, v11, v6);
 
@@ -1351,12 +1351,12 @@ LABEL_8:
   return v10;
 }
 
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4
+- (void)updateTitlesForExportingModel:(id)model info:(id)info
 {
-  v16 = a3;
-  v6 = a4;
+  modelCopy = model;
+  infoCopy = info;
   v11 = objc_msgSend_feature(self, v7, v8, v9, v10);
-  objc_msgSend_updateTitlesForExportingModel_info_(v11, v12, v13, v14, v15, v16, v6);
+  objc_msgSend_updateTitlesForExportingModel_info_(v11, v12, v13, v14, v15, modelCopy, infoCopy);
 }
 
 - (BOOL)supportsShowLabelsInFrontOption
@@ -1367,11 +1367,11 @@ LABEL_8:
   return v10;
 }
 
-- (id)filteredStyleOwnersFromStyleOwners:(id)a3
+- (id)filteredStyleOwnersFromStyleOwners:(id)owners
 {
-  v4 = a3;
+  ownersCopy = owners;
   v9 = objc_msgSend_feature(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_filteredStyleOwnersFromStyleOwners_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_filteredStyleOwnersFromStyleOwners_(v9, v10, v11, v12, v13, ownersCopy);
   v19 = v14;
   if (v14)
   {
@@ -1404,12 +1404,12 @@ LABEL_8:
   return v10;
 }
 
-- (id)localizedWedgeDragLabelWithPercent:(unint64_t)a3
+- (id)localizedWedgeDragLabelWithPercent:(unint64_t)percent
 {
   v7 = sub_276360774(v3, v4, v5);
   v12 = objc_msgSend_localizedStringForKey_value_table_(v7, v8, v9, v10, v11, @"Wedge Position: %lu%%", &stru_288528678, @"TSCharts");
 
-  v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, v14, v15, v16, v12, a3);
+  v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, v14, v15, v16, v12, percent);
 
   return v17;
 }
@@ -1481,20 +1481,20 @@ LABEL_8:
   return v11;
 }
 
-- (id)userInterfaceNameForPlaceTitleAtCenter:(BOOL)a3
+- (id)userInterfaceNameForPlaceTitleAtCenter:(BOOL)center
 {
-  v6 = a3;
+  centerCopy = center;
   v7 = objc_msgSend_feature(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_userInterfaceNameForPlaceTitleAtCenter_(v7, v8, v9, v10, v11, v6);
+  v12 = objc_msgSend_userInterfaceNameForPlaceTitleAtCenter_(v7, v8, v9, v10, v11, centerCopy);
 
   return v12;
 }
 
-- (CGSize)mungeBodySize:(CGSize)a3
+- (CGSize)mungeBodySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  hasFixedFrameRatio = objc_msgSend_hasFixedFrameRatio(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  hasFixedFrameRatio = objc_msgSend_hasFixedFrameRatio(self, a2, size.width, size.height, v3);
   if (width >= height)
   {
     v7 = height;
@@ -1541,12 +1541,12 @@ LABEL_8:
   return v5;
 }
 
-+ (id)constantDepthInfoChartScaleForInfoChartScale:(id)a3 chartType:(id)a4 barShape:(int)a5
++ (id)constantDepthInfoChartScaleForInfoChartScale:(id)scale chartType:(id)type barShape:(int)shape
 {
-  v5 = *&a5;
-  v8 = a3;
-  v10 = a4;
-  if (!v10)
+  v5 = *&shape;
+  scaleCopy = scale;
+  typeCopy = type;
+  if (!typeCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "+[TSCHChartType constantDepthInfoChartScaleForInfoChartScale:chartType:barShape:]");
@@ -1556,9 +1556,9 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  if (v8)
+  if (scaleCopy)
   {
-    objc_msgSend_value3(v8, v9, v11, v12, v13);
+    objc_msgSend_value3(scaleCopy, v9, v11, v12, v13);
   }
 
   else
@@ -1573,9 +1573,9 @@ LABEL_8:
     v109 = 0.0;
   }
 
-  objc_msgSend_adjustedScaleForInfoChartScale_chartType_barShape_(TSCH3DChartType, v29, v30, v31, v32, &v109, v10, v5);
-  v52 = objc_msgSend_chartTypePlaceholderForDefault3DScaleProperty(a1, v48, v49, v50, v51);
-  if (v52 == v10)
+  objc_msgSend_adjustedScaleForInfoChartScale_chartType_barShape_(TSCH3DChartType, v29, v30, v31, v32, &v109, typeCopy, v5);
+  v52 = objc_msgSend_chartTypePlaceholderForDefault3DScaleProperty(self, v48, v49, v50, v51);
+  if (v52 == typeCopy)
   {
     for (i = 0; i != 3; ++i)
     {
@@ -1665,25 +1665,25 @@ LABEL_28:
   return v102;
 }
 
-+ (double)sageDepthFactorForExportingChartInfo:(id)a3
++ (double)sageDepthFactorForExportingChartInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v26[0] = 0;
   v26[1] = 0;
   v27 = 0;
   v4 = sub_27635FB94(v26);
-  v8 = objc_msgSend_model(v3, v5, v4, v6, v7);
+  v8 = objc_msgSend_model(infoCopy, v5, v4, v6, v7);
   v13 = objc_msgSend_numberOfSeries(v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_chartType(v3, v14, v15, v16, v17);
+  v18 = objc_msgSend_chartType(infoCopy, v14, v15, v16, v17);
   objc_msgSend_depthFactorForAdjustingNumberOfSeries_chartType_fromOldLimitingSeries_toNewLimitingSeries_(TSCH3DAbstractLimitingSeriesUpgrader, v19, v20, v21, v22, v13, v18, v27, 8);
   v24 = v23;
 
   return v24;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (!v7)
@@ -2199,11 +2199,11 @@ LABEL_28:
   return v6;
 }
 
-- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)a3 readerVersion:(unint64_t *)a4 featureID:(id *)a5
+- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)version readerVersion:(unint64_t *)readerVersion featureID:(id *)d
 {
-  if (a3)
+  if (version)
   {
-    if (a4)
+    if (readerVersion)
     {
       goto LABEL_3;
     }
@@ -2217,10 +2217,10 @@ LABEL_28:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 1122, 0, "invalid nil value for '%{public}s'", "outWriterVersion");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
-    if (a4)
+    if (readerVersion)
     {
 LABEL_3:
-      if (a5)
+      if (d)
       {
         goto LABEL_4;
       }
@@ -2235,10 +2235,10 @@ LABEL_3:
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v34, v35, v36, v37, v28, v33, 1123, 0, "invalid nil value for '%{public}s'", "outReaderVersion");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
-  if (a5)
+  if (d)
   {
 LABEL_4:
-    if (!a3)
+    if (!version)
     {
       goto LABEL_6;
     }
@@ -2253,34 +2253,34 @@ LABEL_13:
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v42, v49, v50, v51, v52, v43, v48, 1124, 0, "invalid nil value for '%{public}s'", "outFeatureID");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56);
-  if (a3)
+  if (version)
   {
 LABEL_5:
-    *a3 = 0;
+    *version = 0;
   }
 
 LABEL_6:
-  if (a4)
+  if (readerVersion)
   {
-    *a4 = 0;
+    *readerVersion = 0;
   }
 
-  if (a5)
+  if (d)
   {
-    *a5 = 0;
+    *d = 0;
   }
 
   return 0;
 }
 
-+ (id)chartTypeForUserInterfaceTag:(int64_t)a3
++ (id)chartTypeForUserInterfaceTag:(int64_t)tag
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = objc_msgSend_allChartTypes(a1, a2, 0.0, v3, v4, 0);
+  v6 = objc_msgSend_allChartTypes(self, a2, 0.0, v3, v4, 0);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, v8, v9, v10, &v21, v25, 16);
   if (v12)
   {
@@ -2295,7 +2295,7 @@ LABEL_6:
         }
 
         v18 = *(*(&v21 + 1) + 8 * i);
-        if (objc_msgSend_userInterfaceTag(v18, v11, v13, v14, v15) == a3)
+        if (objc_msgSend_userInterfaceTag(v18, v11, v13, v14, v15) == tag)
         {
           v19 = v18;
           goto LABEL_11;

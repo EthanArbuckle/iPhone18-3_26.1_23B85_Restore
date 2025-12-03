@@ -1,22 +1,22 @@
 @interface CalDAVContainerChecksumSyncTaskGroup
 - (BOOL)_hadOutOfDateCollectionToken;
-- (BOOL)shouldDownloadResource:(id)a3 localETag:(id)a4 serverETag:(id)a5;
-- (CalDAVContainerChecksumSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousSyncToken:(id)a5 actions:(id)a6 accountInfoProvider:(id)a7 taskManager:(id)a8 appSpecificCalendarItemClass:(Class)a9;
+- (BOOL)shouldDownloadResource:(id)resource localETag:(id)tag serverETag:(id)eTag;
+- (CalDAVContainerChecksumSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousSyncToken:(id)token actions:(id)actions accountInfoProvider:(id)provider taskManager:(id)manager appSpecificCalendarItemClass:(Class)class;
 - (id)copyAdditionalResourcePropertiesToFetch;
-- (void)_handleResponseToChecksumPropfind:(id)a3;
+- (void)_handleResponseToChecksumPropfind:(id)propfind;
 - (void)_serverChecksumSupportPropfind;
-- (void)deleteResourceURLs:(id)a3;
-- (void)receivedPropertiesToValues:(id)a3 forURL:(id)a4;
+- (void)deleteResourceURLs:(id)ls;
+- (void)receivedPropertiesToValues:(id)values forURL:(id)l;
 - (void)startTaskGroup;
 @end
 
 @implementation CalDAVContainerChecksumSyncTaskGroup
 
-- (CalDAVContainerChecksumSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousSyncToken:(id)a5 actions:(id)a6 accountInfoProvider:(id)a7 taskManager:(id)a8 appSpecificCalendarItemClass:(Class)a9
+- (CalDAVContainerChecksumSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousSyncToken:(id)token actions:(id)actions accountInfoProvider:(id)provider taskManager:(id)manager appSpecificCalendarItemClass:(Class)class
 {
   v15.receiver = self;
   v15.super_class = CalDAVContainerChecksumSyncTaskGroup;
-  v9 = [(CalDAVContainerSyncTaskGroup *)&v15 initWithFolderURL:a3 previousCTag:a4 previousSyncToken:a5 actions:a6 accountInfoProvider:a7 taskManager:a8 appSpecificCalendarItemClass:a9];
+  v9 = [(CalDAVContainerSyncTaskGroup *)&v15 initWithFolderURL:l previousCTag:tag previousSyncToken:token actions:actions accountInfoProvider:provider taskManager:manager appSpecificCalendarItemClass:class];
   v10 = *MEMORY[0x277CFDD08];
   objc_storeStrong(&v9->_unusedCTag, *(&v9->super.super.super.super.isa + v10));
   v11 = *(&v9->super.super.super.super.isa + v10);
@@ -33,25 +33,25 @@
   return v9;
 }
 
-- (void)_handleResponseToChecksumPropfind:(id)a3
+- (void)_handleResponseToChecksumPropfind:(id)propfind
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propfindCopy = propfind;
   v5 = *MEMORY[0x277CFDD58];
-  if ([*(&self->super.super.super.super.isa + v5) containsObject:v4])
+  if ([*(&self->super.super.super.super.isa + v5) containsObject:propfindCopy])
   {
-    [*(&self->super.super.super.super.isa + v5) removeObject:v4];
+    [*(&self->super.super.super.super.isa + v5) removeObject:propfindCopy];
   }
 
-  v6 = [v4 error];
-  v7 = [v6 domain];
-  if ([v7 isEqualToString:*MEMORY[0x277CFDB80]])
+  error = [propfindCopy error];
+  domain = [error domain];
+  if ([domain isEqualToString:*MEMORY[0x277CFDB80]])
   {
-    v8 = [v6 code];
+    code = [error code];
 
-    if (v8 == 503)
+    if (code == 503)
     {
-      [(CoreDAVContainerSyncTaskGroup *)self bailWithError:v6];
+      [(CoreDAVContainerSyncTaskGroup *)self bailWithError:error];
       goto LABEL_18;
     }
   }
@@ -60,7 +60,7 @@
   {
   }
 
-  v9 = [v4 successfulValueForNameSpace:*MEMORY[0x277CFDE90] elementName:@"checksum-versions"];
+  v9 = [propfindCopy successfulValueForNameSpace:*MEMORY[0x277CFDE90] elementName:@"checksum-versions"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -138,8 +138,8 @@ LABEL_18:
   v3 = [MEMORY[0x277CBEB58] set];
   [v3 CDVAddItemParserMappingWithNameSpace:*MEMORY[0x277CFDE90] name:@"checksum-versions" parseClass:objc_opt_class()];
   v4 = objc_alloc(MEMORY[0x277CFDC68]);
-  v5 = [(CalDAVContainerChecksumSyncTaskGroup *)self _calculatedCalendarHome];
-  v6 = [v4 initWithPropertiesToFind:v3 atURL:v5 withDepth:2];
+  _calculatedCalendarHome = [(CalDAVContainerChecksumSyncTaskGroup *)self _calculatedCalendarHome];
+  v6 = [v4 initWithPropertiesToFind:v3 atURL:_calculatedCalendarHome withDepth:2];
 
   [*(&self->super.super.super.super.isa + *MEMORY[0x277CFDD18]) addObject:v6];
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.isa + *MEMORY[0x277CFDD48]));
@@ -189,8 +189,8 @@ void __70__CalDAVContainerChecksumSyncTaskGroup__serverChecksumSupportPropfind__
 {
   v7.receiver = self;
   v7.super_class = CalDAVContainerChecksumSyncTaskGroup;
-  v3 = [(CalDAVContainerSyncTaskGroup *)&v7 copyAdditionalResourcePropertiesToFetch];
-  v4 = v3;
+  copyAdditionalResourcePropertiesToFetch = [(CalDAVContainerSyncTaskGroup *)&v7 copyAdditionalResourcePropertiesToFetch];
+  v4 = copyAdditionalResourcePropertiesToFetch;
   if (self->_bestServerChecksumVersion)
   {
     v5 = objc_opt_new();
@@ -200,28 +200,28 @@ void __70__CalDAVContainerChecksumSyncTaskGroup__serverChecksumSupportPropfind__
 
   else
   {
-    v5 = v3;
+    v5 = copyAdditionalResourcePropertiesToFetch;
   }
 
   return v5;
 }
 
-- (void)receivedPropertiesToValues:(id)a3 forURL:(id)a4
+- (void)receivedPropertiesToValues:(id)values forURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = CalDAVContainerChecksumSyncTaskGroup;
-  [(CoreDAVContainerSyncTaskGroup *)&v16 receivedPropertiesToValues:v6 forURL:v7];
+  [(CoreDAVContainerSyncTaskGroup *)&v16 receivedPropertiesToValues:valuesCopy forURL:lCopy];
   bestServerChecksumVersion = self->_bestServerChecksumVersion;
   if (bestServerChecksumVersion)
   {
-    v9 = [(CoreDAVItemParserMapping *)bestServerChecksumVersion nameSpace];
-    v10 = [(CoreDAVItemParserMapping *)self->_bestServerChecksumVersion name];
-    v11 = [v6 CDVObjectForKeyWithNameSpace:v9 andName:v10];
+    nameSpace = [(CoreDAVItemParserMapping *)bestServerChecksumVersion nameSpace];
+    name = [(CoreDAVItemParserMapping *)self->_bestServerChecksumVersion name];
+    v11 = [valuesCopy CDVObjectForKeyWithNameSpace:nameSpace andName:name];
 
-    v12 = [v11 payloadAsString];
-    if (v12)
+    payloadAsString = [v11 payloadAsString];
+    if (payloadAsString)
     {
       serverURLsToChecksums = self->_serverURLsToChecksums;
       if (!serverURLsToChecksums)
@@ -233,27 +233,27 @@ void __70__CalDAVContainerChecksumSyncTaskGroup__serverChecksumSupportPropfind__
         serverURLsToChecksums = self->_serverURLsToChecksums;
       }
 
-      [(NSMutableDictionary *)serverURLsToChecksums setObject:v12 forKey:v7];
+      [(NSMutableDictionary *)serverURLsToChecksums setObject:payloadAsString forKey:lCopy];
     }
   }
 }
 
-- (BOOL)shouldDownloadResource:(id)a3 localETag:(id)a4 serverETag:(id)a5
+- (BOOL)shouldDownloadResource:(id)resource localETag:(id)tag serverETag:(id)eTag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resourceCopy = resource;
+  tagCopy = tag;
+  eTagCopy = eTag;
   v21.receiver = self;
   v21.super_class = CalDAVContainerChecksumSyncTaskGroup;
-  if ([(CoreDAVContainerSyncTaskGroup *)&v21 shouldDownloadResource:v8 localETag:v9 serverETag:v10])
+  if ([(CoreDAVContainerSyncTaskGroup *)&v21 shouldDownloadResource:resourceCopy localETag:tagCopy serverETag:eTagCopy])
   {
     v11 = 1;
     if (![(CalDAVContainerChecksumSyncTaskGroup *)self _hadOutOfDateCollectionToken])
     {
       self->_mismatchDetected = 1;
-      v12 = [(CoreDAVTaskGroup *)self delegate];
-      LODWORD(v20) = 2 * (v9 != 0);
-      [v12 reportMismatchedETag:v10 forURL:v8 inFolderWithURL:*(&self->super.super.super.super.isa + *MEMORY[0x277CFDCF0]) cTag:self->_unusedCTag syncToken:self->_unusedSyncToken eTag:v9 mismatchType:v20];
+      delegate = [(CoreDAVTaskGroup *)self delegate];
+      LODWORD(v20) = 2 * (tagCopy != 0);
+      [delegate reportMismatchedETag:eTagCopy forURL:resourceCopy inFolderWithURL:*(&self->super.super.super.super.isa + *MEMORY[0x277CFDCF0]) cTag:self->_unusedCTag syncToken:self->_unusedSyncToken eTag:tagCopy mismatchType:v20];
 LABEL_16:
     }
   }
@@ -264,17 +264,17 @@ LABEL_16:
     {
       if (!self->_localURLsToChecksums)
       {
-        v13 = [(CoreDAVTaskGroup *)self delegate];
-        v14 = [v13 copyLocalChecksumsForFolderWithURL:*(&self->super.super.super.super.isa + *MEMORY[0x277CFDCF0]) checksumVersion:self->_bestServerChecksumVersion];
+        delegate2 = [(CoreDAVTaskGroup *)self delegate];
+        v14 = [delegate2 copyLocalChecksumsForFolderWithURL:*(&self->super.super.super.super.isa + *MEMORY[0x277CFDCF0]) checksumVersion:self->_bestServerChecksumVersion];
         localURLsToChecksums = self->_localURLsToChecksums;
         self->_localURLsToChecksums = v14;
       }
 
-      v12 = [(NSMutableDictionary *)self->_serverURLsToChecksums objectForKey:v8];
-      v16 = [(NSDictionary *)self->_localURLsToChecksums objectForKey:v8];
+      delegate = [(NSMutableDictionary *)self->_serverURLsToChecksums objectForKey:resourceCopy];
+      v16 = [(NSDictionary *)self->_localURLsToChecksums objectForKey:resourceCopy];
       if (v16)
       {
-        v17 = v12 == 0;
+        v17 = delegate == 0;
       }
 
       else
@@ -282,15 +282,15 @@ LABEL_16:
         v17 = 1;
       }
 
-      if (v17 || ([v12 isEqualToString:v16] & 1) != 0)
+      if (v17 || ([delegate isEqualToString:v16] & 1) != 0)
       {
         v11 = 0;
       }
 
       else
       {
-        v18 = [(CoreDAVTaskGroup *)self delegate];
-        [v18 reportMismatchedChecksum:v12 forURL:v8 inFolderWithURL:*(&self->super.super.super.super.isa + *MEMORY[0x277CFDCF0]) checksumVersion:self->_bestServerChecksumVersion eTag:v10];
+        delegate3 = [(CoreDAVTaskGroup *)self delegate];
+        [delegate3 reportMismatchedChecksum:delegate forURL:resourceCopy inFolderWithURL:*(&self->super.super.super.super.isa + *MEMORY[0x277CFDCF0]) checksumVersion:self->_bestServerChecksumVersion eTag:eTagCopy];
 
         v11 = 1;
       }
@@ -304,17 +304,17 @@ LABEL_16:
   return v11;
 }
 
-- (void)deleteResourceURLs:(id)a3
+- (void)deleteResourceURLs:(id)ls
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lsCopy = ls;
   if (![(CalDAVContainerChecksumSyncTaskGroup *)self _hadOutOfDateCollectionToken])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    obj = v4;
+    obj = lsCopy;
     v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -332,9 +332,9 @@ LABEL_16:
 
           v10 = *(*(&v16 + 1) + 8 * i);
           self->_mismatchDetected = 1;
-          v11 = [(CoreDAVTaskGroup *)self delegate];
+          delegate = [(CoreDAVTaskGroup *)self delegate];
           LODWORD(v13) = 1;
-          [v11 reportMismatchedETag:0 forURL:v10 inFolderWithURL:*(&self->super.super.super.super.isa + *v8) cTag:self->_unusedCTag syncToken:self->_unusedSyncToken eTag:0 mismatchType:v13];
+          [delegate reportMismatchedETag:0 forURL:v10 inFolderWithURL:*(&self->super.super.super.super.isa + *v8) cTag:self->_unusedCTag syncToken:self->_unusedSyncToken eTag:0 mismatchType:v13];
         }
 
         v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -346,7 +346,7 @@ LABEL_16:
 
   v15.receiver = self;
   v15.super_class = CalDAVContainerChecksumSyncTaskGroup;
-  [(CoreDAVContainerSyncTaskGroup *)&v15 deleteResourceURLs:v4];
+  [(CoreDAVContainerSyncTaskGroup *)&v15 deleteResourceURLs:lsCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }

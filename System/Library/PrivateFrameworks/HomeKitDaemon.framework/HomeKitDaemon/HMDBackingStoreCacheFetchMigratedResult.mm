@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheFetchMigratedResult
-- (HMDBackingStoreCacheFetchMigratedResult)initWithGroup:(id)a3 update:(BOOL)a4 migration:(BOOL)a5 fetchResult:(id)a6;
+- (HMDBackingStoreCacheFetchMigratedResult)initWithGroup:(id)group update:(BOOL)update migration:(BOOL)migration fetchResult:(id)result;
 - (id)mainReturningError;
 @end
 
@@ -9,9 +9,9 @@
 {
   v54 = *MEMORY[0x277D85DE8];
   v3 = +[HMDBackingStoreSingleton sharedInstance];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(HMDBackingStoreCacheFetchMigratedResult *)self group];
-  v6 = [v5 groupID];
+  array = [MEMORY[0x277CBEB18] array];
+  group = [(HMDBackingStoreCacheFetchMigratedResult *)self group];
+  groupID = [group groupID];
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v8 = v7;
@@ -35,20 +35,20 @@
     objc_copyWeak(v38, &location);
     v36 = &v40;
     v9 = v3;
-    v38[1] = v6;
+    v38[1] = groupID;
     v35 = v9;
     v37 = &v46;
     v10 = _Block_copy(aBlock);
-    v11 = [(HMDBackingStoreOperation *)self store];
-    v12 = [v11 local];
-    [v12 _fetchRecordTypeSchemaWithGroupID:v6 callback:v10];
+    store = [(HMDBackingStoreOperation *)self store];
+    local = [store local];
+    [local _fetchRecordTypeSchemaWithGroupID:groupID callback:v10];
 
     objc_destroyWeak(v38);
   }
 
   if (![(HMDBackingStoreCacheFetchMigratedResult *)self migration]|| *(v47 + 24) == 1)
   {
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
 
     v14 = v41[5];
     v41[5] = 0;
@@ -59,14 +59,14 @@
     v29[3] = &unk_2786716A8;
     objc_copyWeak(v33, &location);
     v32 = &v40;
-    v33[1] = v6;
+    v33[1] = groupID;
     v30 = v3;
-    v4 = v13;
-    v31 = v4;
+    array = array2;
+    v31 = array;
     v15 = _Block_copy(v29);
-    v16 = [(HMDBackingStoreOperation *)self store];
-    v17 = [v16 local];
-    [v17 _fetchRecordsWithGroupID:v6 callback:v15];
+    store2 = [(HMDBackingStoreOperation *)self store];
+    local2 = [store2 local];
+    [local2 _fetchRecordsWithGroupID:groupID callback:v15];
 
     objc_destroyWeak(v33);
   }
@@ -74,7 +74,7 @@
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v19 = v18;
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
@@ -90,15 +90,15 @@
   if (v41[5])
   {
 
-    v4 = 0;
+    array = 0;
   }
 
-  v24 = [(HMDBackingStoreCacheFetchMigratedResult *)v21 fetchResult];
+  fetchResult = [(HMDBackingStoreCacheFetchMigratedResult *)selfCopy fetchResult];
 
-  if (v24)
+  if (fetchResult)
   {
-    v25 = [(HMDBackingStoreCacheFetchMigratedResult *)v21 fetchResult];
-    (v25)[2](v25, v4, v41[5]);
+    fetchResult2 = [(HMDBackingStoreCacheFetchMigratedResult *)selfCopy fetchResult];
+    (fetchResult2)[2](fetchResult2, array, v41[5]);
   }
 
   v26 = v41[5];
@@ -314,20 +314,20 @@ LABEL_22:
   return v25;
 }
 
-- (HMDBackingStoreCacheFetchMigratedResult)initWithGroup:(id)a3 update:(BOOL)a4 migration:(BOOL)a5 fetchResult:(id)a6
+- (HMDBackingStoreCacheFetchMigratedResult)initWithGroup:(id)group update:(BOOL)update migration:(BOOL)migration fetchResult:(id)result
 {
-  v11 = a3;
-  v12 = a6;
+  groupCopy = group;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = HMDBackingStoreCacheFetchMigratedResult;
   v13 = [(HMDBackingStoreOperation *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_group, a3);
-    v14->_update = a4;
-    v14->_migration = a5;
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_group, group);
+    v14->_update = update;
+    v14->_migration = migration;
+    v15 = _Block_copy(resultCopy);
     fetchResult = v14->_fetchResult;
     v14->_fetchResult = v15;
 

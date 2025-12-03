@@ -1,15 +1,15 @@
 @interface OSAStateMonitor
-+ (BOOL)processCALogEvent:(id)a3 eventPayload:(id)a4 into:(id *)a5;
-+ (id)CALogStateToString:(int64_t)a3;
-+ (id)dateForEvent:(id)a3;
-+ (id)evaluateCALogStates:(id)a3;
++ (BOOL)processCALogEvent:(id)event eventPayload:(id)payload into:(id *)into;
++ (id)CALogStateToString:(int64_t)string;
++ (id)dateForEvent:(id)event;
++ (id)evaluateCALogStates:(id)states;
 + (void)checkAndReportCALogStates;
 + (void)checkCALogWrittenStatus;
 + (void)checkSubmissionStatus;
 + (void)evaluateState;
-+ (void)postFailureWithReason:(id)a3;
-+ (void)recordEvent:(id)a3;
-+ (void)recordEvent:(id)a3 with:(id)a4;
++ (void)postFailureWithReason:(id)reason;
++ (void)recordEvent:(id)event;
++ (void)recordEvent:(id)event with:(id)with;
 @end
 
 @implementation OSAStateMonitor
@@ -40,37 +40,37 @@ uint64_t __32__OSAStateMonitor_evaluateState__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)recordEvent:(id)a3
++ (void)recordEvent:(id)event
 {
-  v5 = a3;
-  if (([v5 isEqualToString:@"log-submission"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"ca-log-written"))
+  eventCopy = event;
+  if (([eventCopy isEqualToString:@"log-submission"] & 1) != 0 || objc_msgSend(eventCopy, "isEqualToString:", @"ca-log-written"))
   {
     v3 = [MEMORY[0x1E695DF00] now];
-    v4 = [OSAStateMonitor keyForEvent:v5];
+    v4 = [OSAStateMonitor keyForEvent:eventCopy];
     [OSADefaults setObject:v3 forKey:v4];
   }
 
   else
   {
-    [OSAStateMonitor recordEvent:v5 with:0];
+    [OSAStateMonitor recordEvent:eventCopy with:0];
   }
 }
 
-+ (void)recordEvent:(id)a3 with:(id)a4
++ (void)recordEvent:(id)event with:(id)with
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   v15 = @"eventName";
-  v16 = v5;
+  v16 = eventCopy;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
+  withCopy = with;
   v8 = [v6 dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   v9 = [v8 mutableCopy];
 
-  [v9 addEntriesFromDictionary:v7];
+  [v9 addEntriesFromDictionary:withCopy];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [MEMORY[0x1E695DF00] date];
-  [v11 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v13 = [v10 stringWithFormat:@"state-monitor.ca.event.%f", v12, v15, v16, v17];
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -112,25 +112,25 @@ uint64_t __32__OSAStateMonitor_evaluateState__block_invoke()
   }
 }
 
-+ (void)postFailureWithReason:(id)a3
++ (void)postFailureWithReason:(id)reason
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  reasonCopy = reason;
   v4 = OSAStateMonitorLogDomain;
   if (os_log_type_enabled(OSAStateMonitorLogDomain, OS_LOG_TYPE_ERROR))
   {
-    [(OSAStateMonitor *)v3 postFailureWithReason:v4];
+    [(OSAStateMonitor *)reasonCopy postFailureWithReason:v4];
   }
 
   v11 = MEMORY[0x1E69E9820];
-  v12 = v3;
-  v5 = v3;
+  v12 = reasonCopy;
+  v5 = reasonCopy;
   AnalyticsSendEventLazy();
   v13[0] = @"crk";
   v6 = [OSASystemConfiguration sharedInstance:v11];
-  v7 = [v6 crashReporterKey];
+  crashReporterKey = [v6 crashReporterKey];
   v13[1] = @"reason";
-  v14[0] = v7;
+  v14[0] = crashReporterKey;
   v8 = @"<unknown>";
   if (v5)
   {
@@ -165,55 +165,55 @@ id __41__OSAStateMonitor_postFailureWithReason___block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1AE4F7000, a2, OS_LOG_TYPE_DEBUG, "Will discard keys: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)processCALogEvent:(id)a3 eventPayload:(id)a4 into:(id *)a5
++ (BOOL)processCALogEvent:(id)event eventPayload:(id)payload into:(id *)into
 {
   v102 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   if (os_log_type_enabled(OSAStateMonitorLogDomain, OS_LOG_TYPE_DEBUG))
   {
     +[OSAStateMonitor processCALogEvent:eventPayload:into:];
   }
 
   v9 = [MEMORY[0x1E695DF00] now];
-  [v9 timeIntervalSinceDate:v7];
+  [v9 timeIntervalSinceDate:eventCopy];
   v11 = v10;
 
   if (v11 >= 300.0)
   {
-    v12 = [v8 objectForKeyedSubscript:@"eventName"];
-    if (!*a5)
+    v12 = [payloadCopy objectForKeyedSubscript:@"eventName"];
+    if (!*into)
     {
-      *a5 = objc_opt_new();
+      *into = objc_opt_new();
     }
 
     if ([v12 isEqualToString:@"ca-2hr-heartbeat"])
     {
-      v13 = [v8 objectForKeyedSubscript:@"startTimestamp"];
-      v14 = [*a5 objectForKeyedSubscript:v13];
-      if (!v14)
+      allKeys = [payloadCopy objectForKeyedSubscript:@"startTimestamp"];
+      allKeys2 = [*into objectForKeyedSubscript:allKeys];
+      if (!allKeys2)
       {
         v15 = [MEMORY[0x1E695E0F8] mutableCopy];
-        [*a5 setObject:v15 forKeyedSubscript:v13];
+        [*into setObject:v15 forKeyedSubscript:allKeys];
 
-        v14 = [*a5 objectForKeyedSubscript:v13];
+        allKeys2 = [*into objectForKeyedSubscript:allKeys];
       }
 
-      v16 = [v14 objectForKeyedSubscript:@"twoHrHeartbeat"];
-      v17 = [v16 unsignedIntValue];
+      v16 = [allKeys2 objectForKeyedSubscript:@"twoHrHeartbeat"];
+      unsignedIntValue = [v16 unsignedIntValue];
 
-      v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17 + 1];
-      [v14 setObject:v18 forKeyedSubscript:@"twoHrHeartbeat"];
+      v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntValue + 1];
+      [allKeys2 setObject:v18 forKeyedSubscript:@"twoHrHeartbeat"];
 
       v19 = &unk_1F241EA40;
 LABEL_16:
-      [v14 setObject:v19 forKeyedSubscript:@"lastSuccessfulLogState"];
-      [*a5 setObject:v14 forKeyedSubscript:v13];
+      [allKeys2 setObject:v19 forKeyedSubscript:@"lastSuccessfulLogState"];
+      [*into setObject:allKeys2 forKeyedSubscript:allKeys];
 LABEL_17:
 
       goto LABEL_18;
@@ -221,38 +221,38 @@ LABEL_17:
 
     if ([v12 isEqualToString:@"ca-log-written-new"])
     {
-      v13 = [v8 objectForKeyedSubscript:@"startTimestamp"];
-      v14 = [*a5 objectForKeyedSubscript:v13];
-      if (!v14)
+      allKeys = [payloadCopy objectForKeyedSubscript:@"startTimestamp"];
+      allKeys2 = [*into objectForKeyedSubscript:allKeys];
+      if (!allKeys2)
       {
         v21 = [MEMORY[0x1E695E0F8] mutableCopy];
-        [*a5 setObject:v21 forKeyedSubscript:v13];
+        [*into setObject:v21 forKeyedSubscript:allKeys];
 
-        v14 = [*a5 objectForKeyedSubscript:v13];
+        allKeys2 = [*into objectForKeyedSubscript:allKeys];
       }
 
-      v22 = [v8 objectForKeyedSubscript:@"totalHeartbeats"];
-      [v14 setObject:v22 forKeyedSubscript:@"totalHeartbeats"];
+      v22 = [payloadCopy objectForKeyedSubscript:@"totalHeartbeats"];
+      [allKeys2 setObject:v22 forKeyedSubscript:@"totalHeartbeats"];
 
-      v23 = [v8 objectForKeyedSubscript:@"endTimestamp"];
-      [v14 setObject:v23 forKeyedSubscript:@"endTimestamp"];
+      v23 = [payloadCopy objectForKeyedSubscript:@"endTimestamp"];
+      [allKeys2 setObject:v23 forKeyedSubscript:@"endTimestamp"];
 
-      v24 = [v8 objectForKeyedSubscript:@"logPath"];
-      [v14 setObject:v24 forKeyedSubscript:@"logPath"];
+      v24 = [payloadCopy objectForKeyedSubscript:@"logPath"];
+      [allKeys2 setObject:v24 forKeyedSubscript:@"logPath"];
 
       v19 = &unk_1F241EA58;
       goto LABEL_16;
     }
 
-    v70 = v8;
+    v70 = payloadCopy;
     if ([v12 isEqualToString:@"submission-started"])
     {
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v13 = [*a5 allKeys];
-      v27 = [v13 countByEnumeratingWithState:&v91 objects:v101 count:16];
+      allKeys = [*into allKeys];
+      v27 = [allKeys countByEnumeratingWithState:&v91 objects:v101 count:16];
       if (!v27)
       {
         goto LABEL_18;
@@ -267,15 +267,15 @@ LABEL_17:
         {
           if (*v92 != v29)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
-          v31 = [*a5 objectForKeyedSubscript:*(*(&v91 + 1) + 8 * i)];
-          [v31 setObject:v7 forKeyedSubscript:@"lastSubmissionStartTimestamp"];
+          v31 = [*into objectForKeyedSubscript:*(*(&v91 + 1) + 8 * i)];
+          [v31 setObject:eventCopy forKeyedSubscript:@"lastSubmissionStartTimestamp"];
           [v31 setObject:&unk_1F241EA70 forKeyedSubscript:@"lastSuccessfulLogState"];
         }
 
-        v28 = [v13 countByEnumeratingWithState:&v91 objects:v101 count:16];
+        v28 = [allKeys countByEnumeratingWithState:&v91 objects:v101 count:16];
       }
 
       while (v28);
@@ -284,20 +284,20 @@ LABEL_17:
 
     if ([v12 isEqualToString:@"submission-found-logs"])
     {
-      v13 = [v8 objectForKeyedSubscript:@"foundLogs"];
+      allKeys = [payloadCopy objectForKeyedSubscript:@"foundLogs"];
       v87 = 0u;
       v88 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v14 = [*a5 allKeys];
-      v32 = [v14 countByEnumeratingWithState:&v87 objects:v100 count:16];
+      allKeys2 = [*into allKeys];
+      v32 = [allKeys2 countByEnumeratingWithState:&v87 objects:v100 count:16];
       if (!v32)
       {
         goto LABEL_17;
       }
 
       v33 = v32;
-      v65 = v7;
+      v65 = eventCopy;
       v68 = v12;
       v34 = *v88;
       do
@@ -306,19 +306,19 @@ LABEL_17:
         {
           if (*v88 != v34)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys2);
           }
 
-          v36 = [*a5 objectForKeyedSubscript:{*(*(&v87 + 1) + 8 * j), v65}];
+          v36 = [*into objectForKeyedSubscript:{*(*(&v87 + 1) + 8 * j), v65}];
           v37 = [v36 objectForKeyedSubscript:@"logPath"];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 containsObject:v37])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [allKeys containsObject:v37])
           {
             [v36 setObject:&unk_1F241EA88 forKeyedSubscript:@"lastSuccessfulLogState"];
           }
         }
 
-        v33 = [v14 countByEnumeratingWithState:&v87 objects:v100 count:16];
+        v33 = [allKeys2 countByEnumeratingWithState:&v87 objects:v100 count:16];
       }
 
       while (v33);
@@ -326,20 +326,20 @@ LABEL_17:
 
     else if ([v12 isEqualToString:@"submission-logs-added-to-archive"])
     {
-      v13 = [v8 objectForKeyedSubscript:@"foundLogs"];
+      allKeys = [payloadCopy objectForKeyedSubscript:@"foundLogs"];
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
       v86 = 0u;
-      v14 = [*a5 allKeys];
-      v38 = [v14 countByEnumeratingWithState:&v83 objects:v99 count:16];
+      allKeys2 = [*into allKeys];
+      v38 = [allKeys2 countByEnumeratingWithState:&v83 objects:v99 count:16];
       if (!v38)
       {
         goto LABEL_17;
       }
 
       v39 = v38;
-      v65 = v7;
+      v65 = eventCopy;
       v68 = v12;
       v40 = *v84;
       do
@@ -348,19 +348,19 @@ LABEL_17:
         {
           if (*v84 != v40)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys2);
           }
 
-          v42 = [*a5 objectForKeyedSubscript:{*(*(&v83 + 1) + 8 * k), v65}];
+          v42 = [*into objectForKeyedSubscript:{*(*(&v83 + 1) + 8 * k), v65}];
           v43 = [v42 objectForKeyedSubscript:@"logPath"];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 containsObject:v43])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [allKeys containsObject:v43])
           {
             [v42 setObject:&unk_1F241EAA0 forKeyedSubscript:@"lastSuccessfulLogState"];
           }
         }
 
-        v39 = [v14 countByEnumeratingWithState:&v83 objects:v99 count:16];
+        v39 = [allKeys2 countByEnumeratingWithState:&v83 objects:v99 count:16];
       }
 
       while (v39);
@@ -372,13 +372,13 @@ LABEL_17:
       {
         if ([v12 isEqualToString:@"ca-log-retired"])
         {
-          v66 = v7;
+          v66 = eventCopy;
           v77 = 0u;
           v78 = 0u;
           v75 = 0u;
           v76 = 0u;
-          v13 = [*a5 allKeys];
-          v50 = [v13 countByEnumeratingWithState:&v75 objects:v97 count:16];
+          allKeys = [*into allKeys];
+          v50 = [allKeys countByEnumeratingWithState:&v75 objects:v97 count:16];
           if (!v50)
           {
             goto LABEL_18;
@@ -393,12 +393,12 @@ LABEL_17:
             {
               if (*v76 != v69)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allKeys);
               }
 
-              v53 = [*a5 objectForKeyedSubscript:*(*(&v75 + 1) + 8 * m)];
+              v53 = [*into objectForKeyedSubscript:*(*(&v75 + 1) + 8 * m)];
               v54 = [v53 objectForKeyedSubscript:@"logPath"];
-              v55 = [v8 objectForKeyedSubscript:@"logPath"];
+              v55 = [payloadCopy objectForKeyedSubscript:@"logPath"];
               v56 = [v54 isEqualToString:v55];
 
               if (v56)
@@ -408,14 +408,14 @@ LABEL_17:
                 [v53 setObject:v57 forKeyedSubscript:@"retiredReason"];
               }
 
-              v8 = v70;
+              payloadCopy = v70;
             }
 
-            v51 = [v13 countByEnumeratingWithState:&v75 objects:v97 count:16];
+            v51 = [allKeys countByEnumeratingWithState:&v75 objects:v97 count:16];
           }
 
           while (v51);
-          v7 = v66;
+          eventCopy = v66;
           goto LABEL_30;
         }
 
@@ -428,8 +428,8 @@ LABEL_17:
         v74 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v13 = [*a5 allKeys];
-        v58 = [v13 countByEnumeratingWithState:&v71 objects:v96 count:16];
+        allKeys = [*into allKeys];
+        v58 = [allKeys countByEnumeratingWithState:&v71 objects:v96 count:16];
         if (!v58)
         {
 LABEL_18:
@@ -447,10 +447,10 @@ LABEL_19:
           {
             if (*v72 != v60)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys);
             }
 
-            v62 = [*a5 objectForKeyedSubscript:*(*(&v71 + 1) + 8 * n)];
+            v62 = [*into objectForKeyedSubscript:*(*(&v71 + 1) + 8 * n)];
             [v62 setObject:v12 forKeyedSubscript:@"lastSubmissionError"];
             v63 = [v70 objectForKeyedSubscript:@"errorDesc"];
 
@@ -461,31 +461,31 @@ LABEL_19:
             }
           }
 
-          v59 = [v13 countByEnumeratingWithState:&v71 objects:v96 count:16];
+          v59 = [allKeys countByEnumeratingWithState:&v71 objects:v96 count:16];
         }
 
         while (v59);
 LABEL_29:
-        v8 = v70;
+        payloadCopy = v70;
 LABEL_30:
         v12 = v67;
         goto LABEL_18;
       }
 
-      v13 = [v8 objectForKeyedSubscript:@"foundLogs"];
+      allKeys = [payloadCopy objectForKeyedSubscript:@"foundLogs"];
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v14 = [*a5 allKeys];
-      v44 = [v14 countByEnumeratingWithState:&v79 objects:v98 count:16];
+      allKeys2 = [*into allKeys];
+      v44 = [allKeys2 countByEnumeratingWithState:&v79 objects:v98 count:16];
       if (!v44)
       {
         goto LABEL_17;
       }
 
       v45 = v44;
-      v65 = v7;
+      v65 = eventCopy;
       v68 = v12;
       v46 = *v80;
       do
@@ -494,27 +494,27 @@ LABEL_30:
         {
           if (*v80 != v46)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys2);
           }
 
-          v48 = [*a5 objectForKeyedSubscript:{*(*(&v79 + 1) + 8 * ii), v65}];
+          v48 = [*into objectForKeyedSubscript:{*(*(&v79 + 1) + 8 * ii), v65}];
           v49 = [v48 objectForKeyedSubscript:@"logPath"];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 containsObject:v49])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [allKeys containsObject:v49])
           {
             [v48 setObject:&unk_1F241EAB8 forKeyedSubscript:@"lastSuccessfulLogState"];
           }
         }
 
-        v45 = [v14 countByEnumeratingWithState:&v79 objects:v98 count:16];
+        v45 = [allKeys2 countByEnumeratingWithState:&v79 objects:v98 count:16];
       }
 
       while (v45);
     }
 
-    v7 = v65;
+    eventCopy = v65;
     v12 = v68;
-    v8 = v70;
+    payloadCopy = v70;
     goto LABEL_17;
   }
 
@@ -531,17 +531,17 @@ LABEL_20:
   return v11 >= 300.0;
 }
 
-+ (id)evaluateCALogStates:(id)a3
++ (id)evaluateCALogStates:(id)states
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  statesCopy = states;
   v69 = [MEMORY[0x1E695E0F0] mutableCopy];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v71 = v3;
-  obj = [v3 allKeys];
+  v71 = statesCopy;
+  obj = [statesCopy allKeys];
   v72 = [obj countByEnumeratingWithState:&v77 objects:v85 count:16];
   if (v72)
   {
@@ -560,12 +560,12 @@ LABEL_20:
         v5 = *(*(&v77 + 1) + 8 * v4);
         v6 = [v71 objectForKeyedSubscript:v5];
         v7 = [v6 objectForKeyedSubscript:@"totalHeartbeats"];
-        v8 = [v7 unsignedIntValue];
+        unsignedIntValue = [v7 unsignedIntValue];
         v9 = [v6 objectForKeyedSubscript:@"twoHrHeartbeat"];
-        v10 = [v9 unsignedIntValue];
+        unsignedIntValue2 = [v9 unsignedIntValue];
 
         v74 = v5;
-        if (v8 != v10)
+        if (unsignedIntValue != unsignedIntValue2)
         {
           v11 = OSAStateMonitorLogDomain;
           if (os_log_type_enabled(OSAStateMonitorLogDomain, OS_LOG_TYPE_DEFAULT))
@@ -577,8 +577,8 @@ LABEL_20:
           v12 = [v6 objectForKeyedSubscript:@"endTimestamp"];
           v83[0] = @"crk";
           v13 = +[OSASystemConfiguration sharedInstance];
-          v14 = [v13 crashReporterKey];
-          v84[0] = v14;
+          crashReporterKey = [v13 crashReporterKey];
+          v84[0] = crashReporterKey;
           v84[1] = v5;
           v83[1] = @"CA_startTimestamp";
           v83[2] = @"CA_endTimestamp";
@@ -635,8 +635,8 @@ LABEL_20:
         if (v25)
         {
           v29 = [v6 objectForKeyedSubscript:@"logPath"];
-          v30 = [MEMORY[0x1E696AC08] defaultManager];
-          v31 = [v30 fileExistsAtPath:v29];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          v31 = [defaultManager fileExistsAtPath:v29];
 
           v32 = @"ErrorFileNotFound";
           if ((v31 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isReadableFileAtPath:", v29), v33, v32 = @"ErrorFileNotReadable", v34))
@@ -654,8 +654,8 @@ LABEL_20:
         if (v38)
         {
           v39 = [v6 objectForKeyedSubscript:@"logPath"];
-          v40 = [MEMORY[0x1E696AC08] defaultManager];
-          v41 = [v40 fileExistsAtPath:v39];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          v41 = [defaultManager2 fileExistsAtPath:v39];
 
           v42 = @"ErrorFileNotFound";
           if ((v41 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "isReadableFileAtPath:", v39), v43, v42 = @"ErrorFileNotReadable", v44))
@@ -683,8 +683,8 @@ LABEL_20:
 
         v81[0] = @"crk";
         v50 = +[OSASystemConfiguration sharedInstance];
-        v51 = [v50 crashReporterKey];
-        v82[0] = v51;
+        crashReporterKey2 = [v50 crashReporterKey];
+        v82[0] = crashReporterKey2;
         v82[1] = v5;
         v81[1] = @"CA_startTimestamp";
         v81[2] = @"CA_endTimestamp";
@@ -752,24 +752,24 @@ LABEL_20:
   return v69;
 }
 
-+ (id)CALogStateToString:(int64_t)a3
++ (id)CALogStateToString:(int64_t)string
 {
-  if ((a3 - 2) > 4)
+  if ((string - 2) > 4)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7A27BA8[a3 - 2];
+    return off_1E7A27BA8[string - 2];
   }
 }
 
-+ (id)dateForEvent:(id)a3
++ (id)dateForEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [OSAStateMonitor keyForEvent:v3];
+  eventCopy = event;
+  v4 = [OSAStateMonitor keyForEvent:eventCopy];
   v5 = [OSADefaults objectForKey:v4];
 
   if (!v5)
@@ -777,12 +777,12 @@ LABEL_20:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v3;
+      v10 = eventCopy;
       _os_log_impl(&dword_1AE4F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Initializing event date for %{public}@", &v9, 0xCu);
     }
 
     v5 = [MEMORY[0x1E695DF00] now];
-    v6 = [OSAStateMonitor keyForEvent:v3];
+    v6 = [OSAStateMonitor keyForEvent:eventCopy];
     [OSADefaults setObject:v5 forKey:v6];
   }
 

@@ -1,30 +1,30 @@
 @interface MBSQLiteDB
-- (BOOL)_invalidate:(id *)a3;
-- (BOOL)_openWithFlags:(int)a3 usePQLBatching:(BOOL)a4 error:(id *)a5;
-- (BOOL)_removeDatabaseAtPath:(id)a3 error:(id *)a4;
-- (BOOL)close:(id *)a3;
-- (BOOL)executeStatements:(id)a3 error:(id *)a4;
-- (BOOL)executeWithError:(id *)a3 sql:(id)a4;
-- (BOOL)groupInTransaction:(id *)a3 transaction:(id)a4;
-- (BOOL)performWithConnection:(id *)a3 accessor:(id)a4;
-- (MBSQLiteDB)initWithPath:(id)a3 readOnly:(BOOL)a4 shouldDeleteOnFailureToOpen:(BOOL)a5 usePQLBatching:(BOOL)a6 schemaCurrentVersion:(int)a7 schemaMinDatabaseVersionForUpgrade:(int)a8 error:(id *)a9 schemaUpgrades:(id)a10;
+- (BOOL)_invalidate:(id *)_invalidate;
+- (BOOL)_openWithFlags:(int)flags usePQLBatching:(BOOL)batching error:(id *)error;
+- (BOOL)_removeDatabaseAtPath:(id)path error:(id *)error;
+- (BOOL)close:(id *)close;
+- (BOOL)executeStatements:(id)statements error:(id *)error;
+- (BOOL)executeWithError:(id *)error sql:(id)sql;
+- (BOOL)groupInTransaction:(id *)transaction transaction:(id)a4;
+- (BOOL)performWithConnection:(id *)connection accessor:(id)accessor;
+- (MBSQLiteDB)initWithPath:(id)path readOnly:(BOOL)only shouldDeleteOnFailureToOpen:(BOOL)open usePQLBatching:(BOOL)batching schemaCurrentVersion:(int)version schemaMinDatabaseVersionForUpgrade:(int)upgrade error:(id *)error schemaUpgrades:(id)self0;
 - (id)_invalidatedError;
-- (id)fetchObjectOfClass:(Class)a3 error:(id *)a4 sql:(id)a5;
-- (id)fetchSQL:(id)a3;
-- (id)openReadOnlyInstance:(Class)a3 error:(id *)a4;
-- (unint64_t)fetchCountWithError:(id *)a3 sql:(id)a4;
-- (void)_perform:(id)a3;
-- (void)_removeCorruptDatabaseWithError:(id)a3;
-- (void)_removeCorruptDatabaseWithError:(id)a3 completion:(id)a4;
+- (id)fetchObjectOfClass:(Class)class error:(id *)error sql:(id)sql;
+- (id)fetchSQL:(id)l;
+- (id)openReadOnlyInstance:(Class)instance error:(id *)error;
+- (unint64_t)fetchCountWithError:(id *)error sql:(id)sql;
+- (void)_perform:(id)_perform;
+- (void)_removeCorruptDatabaseWithError:(id)error;
+- (void)_removeCorruptDatabaseWithError:(id)error completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation MBSQLiteDB
 
-- (MBSQLiteDB)initWithPath:(id)a3 readOnly:(BOOL)a4 shouldDeleteOnFailureToOpen:(BOOL)a5 usePQLBatching:(BOOL)a6 schemaCurrentVersion:(int)a7 schemaMinDatabaseVersionForUpgrade:(int)a8 error:(id *)a9 schemaUpgrades:(id)a10
+- (MBSQLiteDB)initWithPath:(id)path readOnly:(BOOL)only shouldDeleteOnFailureToOpen:(BOOL)open usePQLBatching:(BOOL)batching schemaCurrentVersion:(int)version schemaMinDatabaseVersionForUpgrade:(int)upgrade error:(id *)error schemaUpgrades:(id)self0
 {
-  v16 = a3;
-  v17 = a10;
+  pathCopy = path;
+  upgradesCopy = upgrades;
   v48.receiver = self;
   v48.super_class = MBSQLiteDB;
   v18 = [(MBSQLiteDB *)&v48 init];
@@ -38,14 +38,14 @@ LABEL_9:
   }
 
   v19 = v18;
-  v20 = [v16 copy];
+  v20 = [pathCopy copy];
   path = v19->_path;
   v19->_path = v20;
 
-  v19->_shouldDeleteOnFailureToOpen = a5;
-  v19->_schemaCurrentVersion = a7;
-  v19->_schemaMinDatabaseVersionForUpgrade = a8;
-  objc_storeStrong(&v19->_schemaUpgrades, a10);
+  v19->_shouldDeleteOnFailureToOpen = open;
+  v19->_schemaCurrentVersion = version;
+  v19->_schemaMinDatabaseVersionForUpgrade = upgrade;
+  objc_storeStrong(&v19->_schemaUpgrades, upgrades);
   v22 = objc_opt_class();
   Name = class_getName(v22);
   v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -68,19 +68,19 @@ LABEL_9:
   v32[1] = 3221225472;
   v32[2] = sub_10004F0C0;
   v32[3] = &unk_1000FDDF0;
-  v36 = a4;
+  onlyCopy = only;
   v34 = &v44;
   v28 = v19;
-  v37 = a6;
+  batchingCopy = batching;
   v33 = v28;
   v35 = &v38;
   dispatch_sync(v27, v32);
   v29 = *(v45 + 24);
   if ((v29 & 1) == 0)
   {
-    if (a9)
+    if (error)
     {
-      *a9 = v39[5];
+      *error = v39[5];
     }
 
     v28 = 0;
@@ -99,14 +99,14 @@ LABEL_10:
   return v30;
 }
 
-- (id)openReadOnlyInstance:(Class)a3 error:(id *)a4
+- (id)openReadOnlyInstance:(Class)instance error:(id *)error
 {
-  v4 = [[a3 alloc] initWithPath:self->_path readOnly:1 shouldDeleteOnFailureToOpen:self->_shouldDeleteOnFailureToOpen usePQLBatching:0 schemaCurrentVersion:self->_schemaCurrentVersion schemaMinDatabaseVersionForUpgrade:self->_schemaMinDatabaseVersionForUpgrade error:a4 schemaUpgrades:0];
+  v4 = [[instance alloc] initWithPath:self->_path readOnly:1 shouldDeleteOnFailureToOpen:self->_shouldDeleteOnFailureToOpen usePQLBatching:0 schemaCurrentVersion:self->_schemaCurrentVersion schemaMinDatabaseVersionForUpgrade:self->_schemaMinDatabaseVersionForUpgrade error:error schemaUpgrades:0];
 
   return v4;
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
   dispatch_assert_queue_not_V2(self->_sharedQueue);
   v13 = 0;
@@ -129,9 +129,9 @@ LABEL_10:
   block[6] = &v13;
   dispatch_sync(sharedQueue, block);
   v6 = *(v10 + 24);
-  if (a3 && (v10[3] & 1) == 0)
+  if (close && (v10[3] & 1) == 0)
   {
-    *a3 = v14[5];
+    *close = v14[5];
     v6 = *(v10 + 24);
   }
 
@@ -141,7 +141,7 @@ LABEL_10:
   return v6 & 1;
 }
 
-- (BOOL)_invalidate:(id *)a3
+- (BOOL)_invalidate:(id *)_invalidate
 {
   dispatch_assert_queue_V2(self->_sharedQueue);
   pdb = self->_pdb;
@@ -170,12 +170,12 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v34 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Invalidating cache connection %p", buf, 0xCu);
       _MBLog();
     }
 
-    v8 = [v28[5] serialQueue];
+    serialQueue = [v28[5] serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004F754;
@@ -183,7 +183,7 @@ LABEL_10:
     block[4] = &v27;
     block[5] = &v17;
     block[6] = &v21;
-    dispatch_sync(v8, block);
+    dispatch_sync(serialQueue, block);
 
     if ((v18[3] & 1) == 0)
     {
@@ -193,7 +193,7 @@ LABEL_10:
         v10 = v28[5];
         v11 = v22[5];
         *buf = 134218242;
-        v34 = v10;
+        selfCopy = v10;
         v35 = 2112;
         v36 = v11;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to close the PQL connection %p: %@", buf, 0x16u);
@@ -202,9 +202,9 @@ LABEL_10:
         _MBLog();
       }
 
-      if (a3)
+      if (_invalidate)
       {
-        *a3 = v22[5];
+        *_invalidate = v22[5];
       }
     }
 
@@ -243,14 +243,14 @@ LABEL_10:
       _MBLog();
     }
 
-    v8 = [(PQLConnection *)v4 serialQueue];
+    serialQueue = [(PQLConnection *)v4 serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004F9F0;
     block[3] = &unk_1000FDBC8;
     v13 = v4;
     v9 = v4;
-    dispatch_async(v8, block);
+    dispatch_async(serialQueue, block);
   }
 
   v11.receiver = self;
@@ -258,40 +258,40 @@ LABEL_10:
   [(MBSQLiteDB *)&v11 dealloc];
 }
 
-- (void)_removeCorruptDatabaseWithError:(id)a3 completion:(id)a4
+- (void)_removeCorruptDatabaseWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   sharedQueue = self->_sharedQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004FAC0;
   block[3] = &unk_1000FDE68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = errorCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = errorCopy;
   dispatch_async(sharedQueue, block);
 }
 
-- (void)_removeCorruptDatabaseWithError:(id)a3
+- (void)_removeCorruptDatabaseWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     sub_10009DFDC();
   }
 
-  v5 = v4;
+  v5 = errorCopy;
   dispatch_assert_queue_V2(self->_sharedQueue);
-  v6 = [(MBSQLiteDB *)self path];
-  if (!v6)
+  path = [(MBSQLiteDB *)self path];
+  if (!path)
   {
     sub_10009DFB0();
   }
 
-  v7 = v6;
+  v7 = path;
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -332,16 +332,16 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v9 = [(NSString *)self->_path stringByDeletingLastPathComponent];
-  if (!v9)
+  stringByDeletingLastPathComponent = [(NSString *)self->_path stringByDeletingLastPathComponent];
+  if (!stringByDeletingLastPathComponent)
   {
     sub_10009DF84();
   }
 
-  v10 = v9;
-  v11 = [(NSString *)self->_path lastPathComponent];
-  v12 = [v11 stringByDeletingPathExtension];
-  v13 = [NSString stringWithFormat:@"%@_corrupted.db", v12];
+  v10 = stringByDeletingLastPathComponent;
+  lastPathComponent = [(NSString *)self->_path lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v13 = [NSString stringWithFormat:@"%@_corrupted.db", stringByDeletingPathExtension];
   v14 = [v10 stringByAppendingPathComponent:v13];
 
   if (!v14)
@@ -387,8 +387,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v21 = [v5 domain];
-  v22 = [v21 isEqualToString:PQLSqliteErrorDomain];
+  domain = [v5 domain];
+  v22 = [domain isEqualToString:PQLSqliteErrorDomain];
 
   if (!v22)
   {
@@ -409,13 +409,13 @@ LABEL_23:
     v20 = MBGetDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
-      v23 = [v5 code];
-      v24 = [v5 extendedSqliteCode];
+      code = [v5 code];
+      extendedSqliteCode = [v5 extendedSqliteCode];
       v25 = [v5 description];
       *buf = 134218498;
-      v33 = v23;
+      v33 = code;
       v34 = 2048;
-      v35 = v24;
+      v35 = extendedSqliteCode;
       v36 = 2112;
       v37 = v25;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "Removed database, code:%ld, extendedCode:%ld, description:%@", buf, 0x20u);
@@ -432,15 +432,15 @@ LABEL_23:
 LABEL_25:
 }
 
-- (BOOL)_openWithFlags:(int)a3 usePQLBatching:(BOOL)a4 error:(id *)a5
+- (BOOL)_openWithFlags:(int)flags usePQLBatching:(BOOL)batching error:(id *)error
 {
-  v40 = a4;
+  batchingCopy = batching;
   dispatch_assert_queue_V2(self->_sharedQueue);
   v7 = self->_path;
   v8 = 0;
   v9 = 0;
-  v39 = a3;
-  v10 = a3 & 1;
+  flagsCopy = flags;
+  v10 = flags & 1;
   v11 = 1;
   v38 = PQLSqliteErrorDomain;
   while (1)
@@ -454,7 +454,7 @@ LABEL_25:
 
     else
     {
-      v14 = [(NSString *)v7 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [(NSString *)v7 stringByDeletingLastPathComponent];
       v15 = +[NSFileManager defaultManager];
       v46[0] = NSFileOwnerAccountName;
       v46[1] = NSFileGroupOwnerAccountName;
@@ -462,7 +462,7 @@ LABEL_25:
       v47[1] = @"mobile";
       v16 = [NSDictionary dictionaryWithObjects:v47 forKeys:v46 count:2];
       v43 = 0;
-      v17 = [v15 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:v16 error:&v43];
+      v17 = [v15 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v16 error:&v43];
       v13 = v43;
 
       if ((v17 & 1) == 0)
@@ -486,7 +486,7 @@ LABEL_25:
     }
 
     v42 = v13;
-    v18 = [(MBSQLiteDB *)self _makePQLConnectionWithFlags:v39 usePQLBatching:v40 error:&v42, v33, v35, v36];
+    v18 = [(MBSQLiteDB *)self _makePQLConnectionWithFlags:flagsCopy usePQLBatching:batchingCopy error:&v42, v33, v35, v36];
     v8 = v42;
 
     if (v18 || v10)
@@ -494,8 +494,8 @@ LABEL_25:
       break;
     }
 
-    v20 = [v8 domain];
-    if ([v20 isEqualToString:v38])
+    domain = [v8 domain];
+    if ([domain isEqualToString:v38])
     {
       v21 = [v8 code]== 13;
 
@@ -587,11 +587,11 @@ LABEL_37:
     }
 
 LABEL_38:
-    if (a5)
+    if (error)
     {
       v31 = v8;
       v18 = 0;
-      *a5 = v8;
+      *error = v8;
     }
 
     else
@@ -631,20 +631,20 @@ LABEL_41:
   return v18 != 0;
 }
 
-- (BOOL)_removeDatabaseAtPath:(id)a3 error:(id *)a4
+- (BOOL)_removeDatabaseAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     sub_10009E1C0();
   }
 
-  if (!a4)
+  if (!error)
   {
     sub_10009E194();
   }
 
-  v7 = v6;
+  v7 = pathCopy;
   dispatch_assert_queue_V2(self->_sharedQueue);
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -680,7 +680,7 @@ LABEL_41:
 
         v16 = v12;
         v17 = 0;
-        *a4 = v12;
+        *error = v12;
         goto LABEL_31;
       }
     }
@@ -700,7 +700,7 @@ LABEL_41:
   if (v19)
   {
     v20 = v19;
-    v32 = a4;
+    errorCopy = error;
     v21 = *v35;
     while (2)
     {
@@ -735,7 +735,7 @@ LABEL_41:
               }
 
               v29 = v12;
-              *v32 = v12;
+              *errorCopy = v12;
 
               v17 = 0;
               goto LABEL_30;
@@ -766,7 +766,7 @@ LABEL_31:
   return v17;
 }
 
-- (BOOL)performWithConnection:(id *)a3 accessor:(id)a4
+- (BOOL)performWithConnection:(id *)connection accessor:(id)accessor
 {
   v19 = 0;
   v20 = &v19;
@@ -782,15 +782,15 @@ LABEL_31:
   v8[1] = 3221225472;
   v8[2] = sub_100051800;
   v8[3] = &unk_1000FDED8;
-  v9 = self;
+  selfCopy = self;
   v11 = &v13;
   v12 = &v19;
-  v5 = a4;
-  v10 = v5;
-  [(MBSQLiteDB *)v9 _perform:v8];
-  if (a3 && (v20[3] & 1) == 0)
+  accessorCopy = accessor;
+  v10 = accessorCopy;
+  [(MBSQLiteDB *)selfCopy _perform:v8];
+  if (connection && (v20[3] & 1) == 0)
   {
-    *a3 = v14[5];
+    *connection = v14[5];
   }
 
   v6 = v14[5] == 0;
@@ -801,15 +801,15 @@ LABEL_31:
   return v6;
 }
 
-- (void)_perform:(id)a3
+- (void)_perform:(id)_perform
 {
-  block = a3;
+  block = _perform;
   specific = dispatch_get_specific(self);
-  v5 = [(PQLConnection *)self->_pdb serialQueue];
-  v6 = v5;
+  serialQueue = [(PQLConnection *)self->_pdb serialQueue];
+  v6 = serialQueue;
   if (specific == self)
   {
-    dispatch_assert_queue_V2(v5);
+    dispatch_assert_queue_V2(serialQueue);
 
     v7 = objc_autoreleasePoolPush();
     block[2]();
@@ -817,17 +817,17 @@ LABEL_31:
 
   else
   {
-    dispatch_assert_queue_not_V2(v5);
+    dispatch_assert_queue_not_V2(serialQueue);
 
     v7 = objc_autoreleasePoolPush();
-    v8 = [(PQLConnection *)self->_pdb serialQueue];
-    dispatch_sync(v8, block);
+    serialQueue2 = [(PQLConnection *)self->_pdb serialQueue];
+    dispatch_sync(serialQueue2, block);
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (BOOL)groupInTransaction:(id *)a3 transaction:(id)a4
+- (BOOL)groupInTransaction:(id *)transaction transaction:(id)a4
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -835,9 +835,9 @@ LABEL_31:
   v8[3] = &unk_1000FDF00;
   v9 = a4;
   v6 = v9;
-  LOBYTE(a3) = [(MBSQLiteDB *)self performWithConnection:a3 accessor:v8];
+  LOBYTE(transaction) = [(MBSQLiteDB *)self performWithConnection:transaction accessor:v8];
 
-  return a3;
+  return transaction;
 }
 
 - (id)_invalidatedError
@@ -847,22 +847,22 @@ LABEL_31:
   return [MBError errorWithCode:16 path:path format:@"%s database is closed", class_getName(v3)];
 }
 
-- (BOOL)executeWithError:(id *)a3 sql:(id)a4
+- (BOOL)executeWithError:(id *)error sql:(id)sql
 {
   v11 = &v12;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100051B44;
   v8[3] = &unk_1000FDF28;
-  v9 = a4;
+  sqlCopy = sql;
   v10 = &v11;
-  v6 = v9;
-  LOBYTE(a3) = [(MBSQLiteDB *)self performWithConnection:a3 accessor:v8];
+  v6 = sqlCopy;
+  LOBYTE(error) = [(MBSQLiteDB *)self performWithConnection:error accessor:v8];
 
-  return a3;
+  return error;
 }
 
-- (id)fetchObjectOfClass:(Class)a3 error:(id *)a4 sql:(id)a5
+- (id)fetchObjectOfClass:(Class)class error:(id *)error sql:(id)sql
 {
   v17 = 0;
   v18 = &v17;
@@ -876,11 +876,11 @@ LABEL_31:
   v11[2] = sub_100051D00;
   v11[3] = &unk_1000FDF50;
   v13 = &v17;
-  v14 = a3;
-  v7 = a5;
-  v12 = v7;
+  classCopy = class;
+  sqlCopy = sql;
+  v12 = sqlCopy;
   v15 = &v16;
-  if ([(MBSQLiteDB *)self performWithConnection:a4 accessor:v11])
+  if ([(MBSQLiteDB *)self performWithConnection:error accessor:v11])
   {
     v8 = v18[5];
   }
@@ -897,7 +897,7 @@ LABEL_31:
   return v9;
 }
 
-- (unint64_t)fetchCountWithError:(id *)a3 sql:(id)a4
+- (unint64_t)fetchCountWithError:(id *)error sql:(id)sql
 {
   v18 = 0;
   v19 = &v18;
@@ -911,37 +911,37 @@ LABEL_31:
   v12 = sub_100051EF8;
   v13 = &unk_1000FDF78;
   v15 = &v18;
-  v6 = a4;
-  v14 = v6;
+  sqlCopy = sql;
+  v14 = sqlCopy;
   v16 = &v17;
-  if ([(MBSQLiteDB *)self performWithConnection:a3 accessor:&v10]&& (v7 = v19[5]) != 0)
+  if ([(MBSQLiteDB *)self performWithConnection:error accessor:&v10]&& (v7 = v19[5]) != 0)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   _Block_object_dispose(&v18, 8);
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)executeStatements:(id)a3 error:(id *)a4
+- (BOOL)executeStatements:(id)statements error:(id *)error
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100052048;
   v8[3] = &unk_1000FDFA0;
-  v9 = a3;
-  v6 = v9;
-  LOBYTE(a4) = [(MBSQLiteDB *)self performWithConnection:a4 accessor:v8];
+  statementsCopy = statements;
+  v6 = statementsCopy;
+  LOBYTE(error) = [(MBSQLiteDB *)self performWithConnection:error accessor:v8];
 
-  return a4;
+  return error;
 }
 
-- (id)fetchSQL:(id)a3
+- (id)fetchSQL:(id)l
 {
   v17 = 0;
   v18 = &v17;
@@ -956,8 +956,8 @@ LABEL_31:
   v11[2] = sub_1000521D4;
   v11[3] = &unk_1000FDF78;
   v13 = &v17;
-  v4 = a3;
-  v12 = v4;
+  lCopy = l;
+  v12 = lCopy;
   v14 = &v16;
   v5 = [(MBSQLiteDB *)self performWithConnection:&v15 accessor:v11];
   v6 = v15;

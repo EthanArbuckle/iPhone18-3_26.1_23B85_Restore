@@ -1,20 +1,20 @@
 @interface BPSStingFeatureCollectionView
 - (BPSStingFeatureCollectionDelegate)selectionChangeDelegate;
-- (BPSStingFeatureCollectionView)initWithFrame:(CGRect)a3;
-- (CGSize)_findLargestCell:(id)a3 withCell:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (BPSStingFeatureCollectionView)initWithFrame:(CGRect)frame;
+- (CGSize)_findLargestCell:(id)cell withCell:(id)withCell;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 @end
 
 @implementation BPSStingFeatureCollectionView
 
-- (BPSStingFeatureCollectionView)initWithFrame:(CGRect)a3
+- (BPSStingFeatureCollectionView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_opt_new();
   [v8 setScrollDirection:1];
   [v8 setMinimumLineSpacing:0.0];
@@ -22,11 +22,11 @@
   [v8 setEstimatedItemSize:{127.0, 106.0}];
   v17.receiver = self;
   v17.super_class = BPSStingFeatureCollectionView;
-  v9 = [(BPSStingFeatureCollectionView *)&v17 initWithFrame:v8 collectionViewLayout:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(BPSStingFeatureCollectionView *)&v17 initWithFrame:v8 collectionViewLayout:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    [(BPSStingFeatureCollectionView *)v9 setDelegate:v9];
+    [(BPSStingFeatureCollectionView *)height setDelegate:height];
     [(BPSStingFeatureCollectionView *)v10 setDataSource:v10];
     [(BPSStingFeatureCollectionView *)v10 setShowsHorizontalScrollIndicator:0];
     v11 = +[UIColor blackColor];
@@ -39,16 +39,16 @@
     [(BPSStingFeatureCollectionView *)v10 registerClass:v12 forCellWithReuseIdentifier:v13];
 
     v14 = objc_opt_new();
-    v15 = [v14 defaultSetupActionItems];
-    [(BPSStingFeatureCollectionView *)v10 setProActivities:v15];
+    defaultSetupActionItems = [v14 defaultSetupActionItems];
+    [(BPSStingFeatureCollectionView *)v10 setProActivities:defaultSetupActionItems];
   }
 
   return v10;
 }
 
-- (CGSize)_findLargestCell:(id)a3 withCell:(id)a4
+- (CGSize)_findLargestCell:(id)cell withCell:(id)withCell
 {
-  v5 = a4;
+  withCellCopy = withCell;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -71,16 +71,16 @@
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 actionType];
-        v14 = [v13 integerValue];
+        actionType = [v12 actionType];
+        integerValue = [actionType integerValue];
 
-        v15 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:v14];
+        v15 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:integerValue];
         v16 = [UIImage _systemImageNamed:v15];
-        v17 = [v12 title];
-        v18 = [BPSStingSetupModel subtitleForActionType:v14];
-        [v5 setImage:v16 title:v17 subtitle:v18];
+        title = [v12 title];
+        v18 = [BPSStingSetupModel subtitleForActionType:integerValue];
+        [withCellCopy setImage:v16 title:title subtitle:v18];
 
-        [v5 getPreferredCellSize];
+        [withCellCopy getPreferredCellSize];
         if (v20 > v10)
         {
           v10 = v20;
@@ -140,41 +140,41 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v12 = a4;
-  objc_storeStrong(&self->_selectedIndexPath, a4);
-  v6 = [(BPSStingFeatureCollectionView *)self selectionChangeDelegate];
-  if (v6)
+  pathCopy = path;
+  objc_storeStrong(&self->_selectedIndexPath, path);
+  selectionChangeDelegate = [(BPSStingFeatureCollectionView *)self selectionChangeDelegate];
+  if (selectionChangeDelegate)
   {
-    v7 = v6;
-    v8 = [(BPSStingFeatureCollectionView *)self selectionChangeDelegate];
+    v7 = selectionChangeDelegate;
+    selectionChangeDelegate2 = [(BPSStingFeatureCollectionView *)self selectionChangeDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(BPSStingFeatureCollectionView *)self selectionChangeDelegate];
-      v11 = -[NSArray objectAtIndexedSubscript:](self->_proActivities, "objectAtIndexedSubscript:", [v12 row]);
-      [v10 selectionChanged:v11];
+      selectionChangeDelegate3 = [(BPSStingFeatureCollectionView *)self selectionChangeDelegate];
+      v11 = -[NSArray objectAtIndexedSubscript:](self->_proActivities, "objectAtIndexedSubscript:", [pathCopy row]);
+      [selectionChangeDelegate3 selectionChanged:v11];
     }
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[BPSStingFeatureCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_proActivities, "objectAtIndexedSubscript:", [v6 row]);
-  v11 = [v10 actionType];
-  v12 = [v11 integerValue];
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_proActivities, "objectAtIndexedSubscript:", [pathCopy row]);
+  actionType = [v10 actionType];
+  integerValue = [actionType integerValue];
 
-  v13 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:v12];
+  v13 = [CSLPRFStingSettingsModel sfSymbolAssetNameForActionType:integerValue];
   if (!self->_calculatedCellHeights)
   {
-    [(BPSStingFeatureCollectionView *)self _findLargestCell:v6 withCell:v9];
+    [(BPSStingFeatureCollectionView *)self _findLargestCell:pathCopy withCell:v9];
     v15 = v14;
     [(BPSStingFeatureCollectionView *)self setPreferredCellWidth:?];
     [(BPSStingFeatureCollectionView *)self setPreferredCellHeight:v15];
@@ -186,28 +186,28 @@
   [(BPSStingFeatureCollectionView *)self preferredCellHeight];
   [v9 setPreferredCellHeight:?];
   v16 = [UIImage _systemImageNamed:v13];
-  v17 = -[NSArray objectAtIndexedSubscript:](self->_proActivities, "objectAtIndexedSubscript:", [v6 row]);
-  v18 = [v17 title];
-  v19 = [BPSStingSetupModel subtitleForActionType:v12];
-  [v9 setImage:v16 title:v18 subtitle:v19];
+  v17 = -[NSArray objectAtIndexedSubscript:](self->_proActivities, "objectAtIndexedSubscript:", [pathCopy row]);
+  title = [v17 title];
+  v19 = [BPSStingSetupModel subtitleForActionType:integerValue];
+  [v9 setImage:v16 title:title subtitle:v19];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a4;
-  v7 = a5;
-  if (![v7 row] && !self->_selectedIndexPath)
+  cellCopy = cell;
+  pathCopy = path;
+  if (![pathCopy row] && !self->_selectedIndexPath)
   {
-    [v8 setSelected:1];
-    [(BPSStingFeatureCollectionView *)self selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
-    [(BPSStingFeatureCollectionView *)self collectionView:self didSelectItemAtIndexPath:v7];
+    [cellCopy setSelected:1];
+    [(BPSStingFeatureCollectionView *)self selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
+    [(BPSStingFeatureCollectionView *)self collectionView:self didSelectItemAtIndexPath:pathCopy];
   }
 
-  if (([v8 isSelected] & 1) == 0 && -[NSIndexPath isEqual:](self->_selectedIndexPath, "isEqual:", v7))
+  if (([cellCopy isSelected] & 1) == 0 && -[NSIndexPath isEqual:](self->_selectedIndexPath, "isEqual:", pathCopy))
   {
-    [v8 setSelected:1];
+    [cellCopy setSelected:1];
   }
 }
 

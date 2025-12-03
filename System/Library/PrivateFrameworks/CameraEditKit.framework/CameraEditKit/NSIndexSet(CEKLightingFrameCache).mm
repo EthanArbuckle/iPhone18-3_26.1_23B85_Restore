@@ -6,12 +6,12 @@
 
 - (uint64_t)cek_indexNearestToIndex:()CEKLightingFrameCache
 {
-  v5 = [a1 indexLessThanOrEqualToIndex:?];
+  v5 = [self indexLessThanOrEqualToIndex:?];
   v6 = a3 - v5;
   if (a3 != v5)
   {
     v7 = v5;
-    v8 = [a1 indexGreaterThanIndex:a3];
+    v8 = [self indexGreaterThanIndex:a3];
     if (v8 - a3 >= v6)
     {
       v9 = v7;

@@ -1,28 +1,28 @@
 @interface RKCoreAnalytics
-+ (id)assignCoreAnalyticsCategory:(id)a3 forAction:(id)a4 withLanguageID:(id)a5;
-+ (void)sendCoreAnalyticsEvent:(id)a3 forAction:(id)a4 withLanguageID:(id)a5;
++ (id)assignCoreAnalyticsCategory:(id)category forAction:(id)action withLanguageID:(id)d;
++ (void)sendCoreAnalyticsEvent:(id)event forAction:(id)action withLanguageID:(id)d;
 @end
 
 @implementation RKCoreAnalytics
 
-+ (id)assignCoreAnalyticsCategory:(id)a3 forAction:(id)a4 withLanguageID:(id)a5
++ (id)assignCoreAnalyticsCategory:(id)category forAction:(id)action withLanguageID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  categoryCopy = category;
+  actionCopy = action;
+  dCopy = d;
+  if (!dCopy)
   {
     v10 = 0;
     goto LABEL_31;
   }
 
-  if (!v7 || ([v7 isEqualToString:&stru_2874A9C90] & 1) != 0)
+  if (!categoryCopy || ([categoryCopy isEqualToString:&stru_2874A9C90] & 1) != 0)
   {
     v10 = @"allCategories";
     goto LABEL_31;
   }
 
-  v11 = RKLinguisticCategoryFromPreferenceKey(v7);
+  v11 = RKLinguisticCategoryFromPreferenceKey(categoryCopy);
   if (v11 <= 17)
   {
     if (v11 > 10)
@@ -60,7 +60,7 @@
     }
 
 LABEL_29:
-    v13 = v7;
+    v13 = categoryCopy;
     goto LABEL_30;
   }
 
@@ -106,16 +106,16 @@ LABEL_31:
   return v10;
 }
 
-+ (void)sendCoreAnalyticsEvent:(id)a3 forAction:(id)a4 withLanguageID:(id)a5
++ (void)sendCoreAnalyticsEvent:(id)event forAction:(id)action withLanguageID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 assignCoreAnalyticsCategory:a3 forAction:v8 withLanguageID:v9];
+  actionCopy = action;
+  dCopy = d;
+  v10 = [self assignCoreAnalyticsCategory:event forAction:actionCopy withLanguageID:dCopy];
   v11 = v10;
-  if (v8 && v9 && v10)
+  if (actionCopy && dCopy && v10)
   {
-    v12 = v8;
-    v13 = v9;
+    v12 = actionCopy;
+    v13 = dCopy;
     v14 = v11;
     AnalyticsSendEventLazy();
   }

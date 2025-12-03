@@ -1,8 +1,8 @@
 @interface UIFocusMovementAction
 - (BOOL)shouldPerformHapticFeedback;
 - (CGRect)focusedFrame;
-- (UIFocusMovementAction)initWithFocusMovementInfo:(id)a3;
-- (UIFocusMovementAction)initWithFocusMovementInfo:(id)a3 inputDeviceInfo:(id)a4 shouldPerformHapticFeedback:(BOOL)a5 focusedFrameInSceneCoordinateSpace:(CGRect)a6;
+- (UIFocusMovementAction)initWithFocusMovementInfo:(id)info;
+- (UIFocusMovementAction)initWithFocusMovementInfo:(id)info inputDeviceInfo:(id)deviceInfo shouldPerformHapticFeedback:(BOOL)feedback focusedFrameInSceneCoordinateSpace:(CGRect)space;
 - (_UIFocusInputDeviceInfo)inputDeviceInfo;
 - (_UIFocusMovementInfo)focusMovementInfo;
 @end
@@ -11,36 +11,36 @@
 
 - (_UIFocusMovementInfo)focusMovementInfo
 {
-  v2 = [(UIFocusMovementAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UIFocusMovementAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (UIFocusMovementAction)initWithFocusMovementInfo:(id)a3
+- (UIFocusMovementAction)initWithFocusMovementInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [_UIFocusInputDeviceInfo infoWithSenderID:0];
-  v6 = [(UIFocusMovementAction *)self initWithFocusMovementInfo:v4 inputDeviceInfo:v5 shouldPerformHapticFeedback:0];
+  v6 = [(UIFocusMovementAction *)self initWithFocusMovementInfo:infoCopy inputDeviceInfo:v5 shouldPerformHapticFeedback:0];
 
   return v6;
 }
 
-- (UIFocusMovementAction)initWithFocusMovementInfo:(id)a3 inputDeviceInfo:(id)a4 shouldPerformHapticFeedback:(BOOL)a5 focusedFrameInSceneCoordinateSpace:(CGRect)a6
+- (UIFocusMovementAction)initWithFocusMovementInfo:(id)info inputDeviceInfo:(id)deviceInfo shouldPerformHapticFeedback:(BOOL)feedback focusedFrameInSceneCoordinateSpace:(CGRect)space
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  feedbackCopy = feedback;
   v13 = MEMORY[0x1E698E700];
-  v14 = a4;
-  v15 = a3;
+  deviceInfoCopy = deviceInfo;
+  infoCopy = info;
   v16 = objc_alloc_init(v13);
-  [v16 setObject:v15 forSetting:1];
+  [v16 setObject:infoCopy forSetting:1];
 
-  [v16 setObject:v14 forSetting:2];
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v10];
+  [v16 setObject:deviceInfoCopy forSetting:2];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:feedbackCopy];
   [v16 setObject:v17 forSetting:3];
 
   v18 = [MEMORY[0x1E696B098] bs_valueWithCGRect:{x, y, width, height}];
@@ -55,25 +55,25 @@
 
 - (_UIFocusInputDeviceInfo)inputDeviceInfo
 {
-  v2 = [(UIFocusMovementAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(UIFocusMovementAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
 - (BOOL)shouldPerformHapticFeedback
 {
-  v2 = [(UIFocusMovementAction *)self info];
-  v3 = [v2 objectForSetting:3];
-  v4 = [v3 BOOLValue];
+  info = [(UIFocusMovementAction *)self info];
+  v3 = [info objectForSetting:3];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (CGRect)focusedFrame
 {
-  v2 = [(UIFocusMovementAction *)self info];
-  v3 = [v2 objectForSetting:4];
+  info = [(UIFocusMovementAction *)self info];
+  v3 = [info objectForSetting:4];
   [v3 bs_CGRectValue];
   v5 = v4;
   v7 = v6;

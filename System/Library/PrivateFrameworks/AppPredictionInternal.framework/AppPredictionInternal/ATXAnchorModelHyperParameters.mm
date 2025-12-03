@@ -6,18 +6,18 @@
 - (double)maxDurationForAnchorModelPredictionInSecondsForPhase3;
 - (double)maxSecondsSinceCandidateOccurrenceToConsiderCandidateForPrediction;
 - (double)maxTrainingAgeInSecondsToConsiderForRetraining;
-- (double)maxValueForParameterKey:(id)a3;
+- (double)maxValueForParameterKey:(id)key;
 - (double)mediumBlendingConfidenceScoreThreshold;
 - (double)minClassConditionalProbabilityForCandidateForPhase1;
-- (double)minClassConditionalProbabilityForHighConfidencePredictionForAnchor:(id)a3;
-- (double)minClassConditionalProbabilityForMediumConfidencePredictionForAnchor:(id)a3;
+- (double)minClassConditionalProbabilityForHighConfidencePredictionForAnchor:(id)anchor;
+- (double)minClassConditionalProbabilityForMediumConfidencePredictionForAnchor:(id)anchor;
 - (double)minDurationForAnchorModelPredictionInSecondsForPhase3;
 - (double)minPosteriorProbabilityForCandidateForPhase1;
-- (double)minPosteriorProbabilityForHighConfidencePredictionForAnchor:(id)a3;
-- (double)minPosteriorProbabilityForMediumConfidencePredictionForAnchor:(id)a3;
+- (double)minPosteriorProbabilityForHighConfidencePredictionForAnchor:(id)anchor;
+- (double)minPosteriorProbabilityForMediumConfidencePredictionForAnchor:(id)anchor;
 - (double)minPosteriorProbabilityToIgnoreClassConditionalProbabilityForCandidateForPhase1;
-- (double)minValueForParameterKey:(id)a3;
-- (double)modelWeightForParameterKey:(id)a3;
+- (double)minValueForParameterKey:(id)key;
+- (double)modelWeightForParameterKey:(id)key;
 - (double)percentileForEndOffsetFromAnchorForPhase3;
 - (double)percentileForStartOffsetFromAnchorForPhase3;
 - (double)ratioForLeafNodeDecision;
@@ -26,8 +26,8 @@
 - (id)enabledAnchors;
 - (id)knownAnchorClasses;
 - (int64_t)candidateClassifierTypeForPhase2;
-- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForHighConfidencePredictionForAnchor:(id)a3;
-- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForMediumConfidencePredictionForAnchor:(id)a3;
+- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForHighConfidencePredictionForAnchor:(id)anchor;
+- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForMediumConfidencePredictionForAnchor:(id)anchor;
 - (int64_t)minUniqueAnchorOccurrencesForAnchorForPhase1;
 @end
 
@@ -68,9 +68,9 @@ void __47__ATXAnchorModelHyperParameters_sharedInstance__block_invoke()
     v6 = [v3 rawDictionaryForResource:v5 ofType:@"plplist"];
 
     v7 = [objc_alloc(MEMORY[0x277CEB3C8]) initWithAssetContents:v6];
-    v8 = [v7 abGroupContents];
+    abGroupContents = [v7 abGroupContents];
     parameters = v2->_parameters;
-    v2->_parameters = v8;
+    v2->_parameters = abGroupContents;
   }
 
   return v2;
@@ -88,9 +88,9 @@ void __47__ATXAnchorModelHyperParameters_sharedInstance__block_invoke()
 - (int64_t)minUniqueAnchorOccurrencesForAnchorForPhase1
 {
   v2 = [(NSDictionary *)self->_parameters objectForKey:@"MinUniqueAnchorOccurrencesForAnchorForPhase1"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (double)minClassConditionalProbabilityForCandidateForPhase1
@@ -123,9 +123,9 @@ void __47__ATXAnchorModelHyperParameters_sharedInstance__block_invoke()
 - (int64_t)candidateClassifierTypeForPhase2
 {
   v2 = [(NSDictionary *)self->_parameters objectForKey:@"CandidateClassifierTypeForPhase2"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (double)idleTimeEndAnchorMinimumSecondsForBeingIdle
@@ -235,14 +235,14 @@ void __47__ATXAnchorModelHyperParameters_sharedInstance__block_invoke()
 
 - (id)enabledAnchors
 {
-  v3 = [(ATXAnchorModelHyperParameters *)self knownAnchorClasses];
+  knownAnchorClasses = [(ATXAnchorModelHyperParameters *)self knownAnchorClasses];
   v4 = [(NSDictionary *)self->_parameters objectForKey:@"EnabledAnchors"];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__ATXAnchorModelHyperParameters_enabledAnchors__block_invoke;
   v8[3] = &unk_27859B908;
-  v9 = v3;
-  v5 = v3;
+  v9 = knownAnchorClasses;
+  v5 = knownAnchorClasses;
   v6 = [v4 _pas_filteredArrayWithTest:v8];
 
   return v6;
@@ -266,14 +266,14 @@ uint64_t __47__ATXAnchorModelHyperParameters_enabledAnchors__block_invoke(uint64
 
 - (id)anchorsDisabledForHomescreen
 {
-  v3 = [(ATXAnchorModelHyperParameters *)self knownAnchorClasses];
+  knownAnchorClasses = [(ATXAnchorModelHyperParameters *)self knownAnchorClasses];
   v4 = [(NSDictionary *)self->_parameters objectForKey:@"AnchorsDisabledForHomescreen"];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block_invoke;
   v9[3] = &unk_27859B908;
-  v10 = v3;
-  v5 = v3;
+  v10 = knownAnchorClasses;
+  v5 = knownAnchorClasses;
   v6 = [v4 _pas_filteredArrayWithTest:v9];
 
   v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v6];
@@ -297,10 +297,10 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v4;
 }
 
-- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForHighConfidencePredictionForAnchor:(id)a3
+- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForHighConfidencePredictionForAnchor:(id)anchor
 {
   parameters = self->_parameters;
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"AnchorPredictionScoringParameters"];
   v6 = objc_opt_class();
 
@@ -310,23 +310,23 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   if (v8)
   {
     v9 = [v8 objectForKeyedSubscript:@"High_NumUniqueAnchorOccurrencesWithUniqueCandidateOccurrence"];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
     v9 = [v5 objectForKeyedSubscript:@"Default"];
     v11 = [v9 objectForKeyedSubscript:@"High_NumUniqueAnchorOccurrencesWithUniqueCandidateOccurrence"];
-    v10 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
-  return v10;
+  return integerValue;
 }
 
-- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForMediumConfidencePredictionForAnchor:(id)a3
+- (int64_t)minNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrencesForMediumConfidencePredictionForAnchor:(id)anchor
 {
   parameters = self->_parameters;
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"AnchorPredictionScoringParameters"];
   v6 = objc_opt_class();
 
@@ -336,23 +336,23 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   if (v8)
   {
     v9 = [v8 objectForKeyedSubscript:@"Med_NumUniqueAnchorOccurrencesWithUniqueCandidateOccurrence"];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
     v9 = [v5 objectForKeyedSubscript:@"Default"];
     v11 = [v9 objectForKeyedSubscript:@"Med_NumUniqueAnchorOccurrencesWithUniqueCandidateOccurrence"];
-    v10 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
-  return v10;
+  return integerValue;
 }
 
-- (double)minPosteriorProbabilityForHighConfidencePredictionForAnchor:(id)a3
+- (double)minPosteriorProbabilityForHighConfidencePredictionForAnchor:(id)anchor
 {
   parameters = self->_parameters;
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"AnchorPredictionScoringParameters"];
   v6 = objc_opt_class();
 
@@ -377,10 +377,10 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v11;
 }
 
-- (double)minPosteriorProbabilityForMediumConfidencePredictionForAnchor:(id)a3
+- (double)minPosteriorProbabilityForMediumConfidencePredictionForAnchor:(id)anchor
 {
   parameters = self->_parameters;
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"AnchorPredictionScoringParameters"];
   v6 = objc_opt_class();
 
@@ -405,10 +405,10 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v11;
 }
 
-- (double)minClassConditionalProbabilityForHighConfidencePredictionForAnchor:(id)a3
+- (double)minClassConditionalProbabilityForHighConfidencePredictionForAnchor:(id)anchor
 {
   parameters = self->_parameters;
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"AnchorPredictionScoringParameters"];
   v6 = objc_opt_class();
 
@@ -433,10 +433,10 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v11;
 }
 
-- (double)minClassConditionalProbabilityForMediumConfidencePredictionForAnchor:(id)a3
+- (double)minClassConditionalProbabilityForMediumConfidencePredictionForAnchor:(id)anchor
 {
   parameters = self->_parameters;
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"AnchorPredictionScoringParameters"];
   v6 = objc_opt_class();
 
@@ -461,13 +461,13 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v11;
 }
 
-- (double)minValueForParameterKey:(id)a3
+- (double)minValueForParameterKey:(id)key
 {
   parameters = self->_parameters;
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"ScoringModelParameters"];
   v6 = [v5 objectForKeyedSubscript:@"ScalingParameters"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"min"];
   [v8 doubleValue];
@@ -476,13 +476,13 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v10;
 }
 
-- (double)maxValueForParameterKey:(id)a3
+- (double)maxValueForParameterKey:(id)key
 {
   parameters = self->_parameters;
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"ScoringModelParameters"];
   v6 = [v5 objectForKeyedSubscript:@"ScalingParameters"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"max"];
   [v8 doubleValue];
@@ -491,13 +491,13 @@ uint64_t __61__ATXAnchorModelHyperParameters_anchorsDisabledForHomescreen__block
   return v10;
 }
 
-- (double)modelWeightForParameterKey:(id)a3
+- (double)modelWeightForParameterKey:(id)key
 {
   parameters = self->_parameters;
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSDictionary *)parameters objectForKeyedSubscript:@"ScoringModelParameters"];
   v6 = [v5 objectForKeyedSubscript:@"ModelWeights"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   [v7 doubleValue];
   v9 = v8;

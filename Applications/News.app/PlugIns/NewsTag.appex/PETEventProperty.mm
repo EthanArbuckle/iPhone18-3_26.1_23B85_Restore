@@ -1,5 +1,5 @@
 @interface PETEventProperty
-+ (id)ft_BOOLeanPropertyWithName:(id)a3;
++ (id)ft_BOOLeanPropertyWithName:(id)name;
 + (id)ft_appearanceTypeProperty;
 + (id)ft_widgetDisplayModeProperty;
 @end
@@ -36,10 +36,10 @@
   return v3;
 }
 
-+ (id)ft_BOOLeanPropertyWithName:(id)a3
++ (id)ft_BOOLeanPropertyWithName:(id)name
 {
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  nameCopy = name;
+  if (!nameCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10009F794();
   }
@@ -47,7 +47,7 @@
   v7[0] = @"yes";
   v7[1] = @"no";
   v4 = [NSArray arrayWithObjects:v7 count:2];
-  v5 = [PETEventProperty propertyWithName:v3 possibleValues:v4];
+  v5 = [PETEventProperty propertyWithName:nameCopy possibleValues:v4];
 
   return v5;
 }

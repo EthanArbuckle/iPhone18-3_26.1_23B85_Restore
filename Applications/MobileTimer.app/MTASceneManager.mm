@@ -1,16 +1,16 @@
 @interface MTASceneManager
 - (MTASceneDelegate)delegate;
 - (MTASceneManager)init;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation MTASceneManager
@@ -23,8 +23,8 @@
   if (v2)
   {
     v3 = +[UIApplication sharedApplication];
-    v4 = [v3 delegate];
-    [(MTASceneManager *)v2 setDelegate:v4];
+    delegate = [v3 delegate];
+    [(MTASceneManager *)v2 setDelegate:delegate];
   }
 
   return v2;
@@ -37,219 +37,219 @@
   return WeakRetained;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  sceneCopy = scene;
+  optionsCopy = options;
+  sessionCopy = session;
   v11 = MTLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138543362;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ willConnectToSession", &v26, 0xCu);
   }
 
-  v12 = [v10 role];
+  role = [sessionCopy role];
 
-  v13 = [v12 isEqualToString:UIWindowSceneSessionRoleApplication];
+  v13 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
   if (v13)
   {
-    v14 = v8;
-    v15 = [(MTASceneManager *)self delegate];
-    [v15 windowSceneWillConnect:v14];
+    v14 = sceneCopy;
+    delegate = [(MTASceneManager *)self delegate];
+    [delegate windowSceneWillConnect:v14];
 
-    v16 = [v9 URLContexts];
-    v17 = [v16 count];
+    uRLContexts = [optionsCopy URLContexts];
+    v17 = [uRLContexts count];
 
     if (v17)
     {
-      v18 = [v9 URLContexts];
-      [(MTASceneManager *)self scene:v14 openURLContexts:v18];
+      uRLContexts2 = [optionsCopy URLContexts];
+      [(MTASceneManager *)self scene:v14 openURLContexts:uRLContexts2];
     }
 
-    v19 = [v9 shortcutItem];
+    shortcutItem = [optionsCopy shortcutItem];
 
-    if (v19)
+    if (shortcutItem)
     {
-      v20 = [v9 shortcutItem];
-      [(MTASceneManager *)self windowScene:v14 performActionForShortcutItem:v20 completionHandler:&stru_1000AE6E0];
+      shortcutItem2 = [optionsCopy shortcutItem];
+      [(MTASceneManager *)self windowScene:v14 performActionForShortcutItem:shortcutItem2 completionHandler:&stru_1000AE6E0];
     }
 
-    v21 = [v9 userActivities];
-    v22 = [v21 count];
+    userActivities = [optionsCopy userActivities];
+    v22 = [userActivities count];
 
     if (v22)
     {
-      v23 = [v9 userActivities];
-      v24 = [v23 anyObject];
+      userActivities2 = [optionsCopy userActivities];
+      anyObject = [userActivities2 anyObject];
 
-      v25 = [v24 activityType];
-      [(MTASceneManager *)self scene:v14 willContinueUserActivityWithType:v25];
+      activityType = [anyObject activityType];
+      [(MTASceneManager *)self scene:v14 willContinueUserActivityWithType:activityType];
 
-      [(MTASceneManager *)self scene:v14 continueUserActivity:v24];
+      [(MTASceneManager *)self scene:v14 continueUserActivity:anyObject];
     }
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ sceneDidBecomeActive", &v7, 0xCu);
   }
 
-  v6 = [(MTASceneManager *)self delegate];
-  [v6 sceneDidBecomeActive:v4];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate sceneDidBecomeActive:activeCopy];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ sceneWillEnterForeground", &v10, 0xCu);
   }
 
-  v6 = [v4 session];
-  v7 = [v6 role];
-  v8 = [v7 isEqualToString:UIWindowSceneSessionRoleApplication];
+  session = [foregroundCopy session];
+  role = [session role];
+  v8 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
   if (v8)
   {
-    v9 = [(MTASceneManager *)self delegate];
-    [v9 sceneWillEnterForeground:v4];
+    delegate = [(MTASceneManager *)self delegate];
+    [delegate sceneWillEnterForeground:foregroundCopy];
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ sceneDidEnterBackground", &v7, 0xCu);
   }
 
-  v6 = [(MTASceneManager *)self delegate];
-  [v6 sceneDidEnterBackground:v4];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate sceneDidEnterBackground:backgroundCopy];
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  itemCopy = item;
+  sceneCopy = scene;
   v11 = MTLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ performActionForShortcutItem", &v13, 0xCu);
   }
 
-  v12 = [(MTASceneManager *)self delegate];
-  [v12 windowScene:v10 performActionForShortcutItem:v9 completionHandler:v8];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate windowScene:sceneCopy performActionForShortcutItem:itemCopy completionHandler:handlerCopy];
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  sceneCopy = scene;
   v8 = MTLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ willContinueUserActivityWithType", &v10, 0xCu);
   }
 
-  v9 = [(MTASceneManager *)self delegate];
-  [v9 scene:v7 willContinueUserActivityWithType:v6];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate scene:sceneCopy willContinueUserActivityWithType:typeCopy];
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
+  activityCopy = activity;
+  sceneCopy = scene;
   v8 = MTLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ continueUserActivity", &v10, 0xCu);
   }
 
-  v9 = [(MTASceneManager *)self delegate];
-  [v9 scene:v7 continueUserActivity:v6];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate scene:sceneCopy continueUserActivity:activityCopy];
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  typeCopy = type;
+  sceneCopy = scene;
   v11 = MTLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ didFailToContinueUserActivityWithType", &v13, 0xCu);
   }
 
-  v12 = [(MTASceneManager *)self delegate];
-  [v12 scene:v10 didFailToContinueUserActivityWithType:v9 error:v8];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate scene:sceneCopy didFailToContinueUserActivityWithType:typeCopy error:errorCopy];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextsCopy = contexts;
   v8 = MTLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v7;
+    v18 = contextsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ openURLContexts: %{public}@", &v15, 0x16u);
   }
 
-  v9 = [v7 allObjects];
-  v10 = [v9 firstObject];
+  allObjects = [contextsCopy allObjects];
+  firstObject = [allObjects firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    v11 = [(MTASceneManager *)self delegate];
-    v12 = [v10 URL];
-    v13 = [v10 options];
-    v14 = [v13 sourceApplication];
-    [v11 scene:v6 openURL:v12 sourceApplication:v14];
+    delegate = [(MTASceneManager *)self delegate];
+    v12 = [firstObject URL];
+    options = [firstObject options];
+    sourceApplication = [options sourceApplication];
+    [delegate scene:sceneCopy openURL:v12 sourceApplication:sourceApplication];
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ sceneWillResignActive", &v7, 0xCu);
   }
 
-  v6 = [(MTASceneManager *)self delegate];
-  [v6 sceneWillResignActive:v4];
+  delegate = [(MTASceneManager *)self delegate];
+  [delegate sceneWillResignActive:activeCopy];
 }
 
 @end

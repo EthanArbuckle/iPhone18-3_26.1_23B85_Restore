@@ -1,10 +1,10 @@
 @interface ULEventLog
 + (id)shared;
 - (ULEventLog)init;
-- (void)connectToDatabase:(ULDatabaseStoreInterface *)a3;
+- (void)connectToDatabase:(ULDatabaseStoreInterface *)database;
 - (void)disconnectFromDatabase;
-- (void)log:(id)a3;
-- (void)printLogEventsSince:(double)a3;
+- (void)log:(id)log;
+- (void)printLogEventsSince:(double)since;
 @end
 
 @implementation ULEventLog
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __20__ULEventLog_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[ULEventLog shared]::ul_once_token_0 != -1)
   {
     dispatch_once(&+[ULEventLog shared]::ul_once_token_0, block);
@@ -48,16 +48,16 @@ void __20__ULEventLog_shared__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)connectToDatabase:(ULDatabaseStoreInterface *)a3
+- (void)connectToDatabase:(ULDatabaseStoreInterface *)database
 {
-  v5 = [(ULEventLog *)self queue];
+  queue = [(ULEventLog *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__ULEventLog_connectToDatabase___block_invoke;
   v6[3] = &unk_2798D4138;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = database;
+  dispatch_sync(queue, v6);
 }
 
 uint64_t __32__ULEventLog_connectToDatabase___block_invoke(uint64_t a1)
@@ -76,29 +76,29 @@ uint64_t __32__ULEventLog_connectToDatabase___block_invoke(uint64_t a1)
 
 - (void)disconnectFromDatabase
 {
-  v3 = [(ULEventLog *)self queue];
+  queue = [(ULEventLog *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__ULEventLog_disconnectFromDatabase__block_invoke;
   block[3] = &unk_2798D4160;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v5 = cl::chrono::CFAbsoluteTimeClock::now();
-  v6 = [(ULEventLog *)self queue];
+  queue = [(ULEventLog *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __18__ULEventLog_log___block_invoke;
   block[3] = &unk_2798D4188;
   block[4] = self;
-  v9 = v4;
+  v9 = logCopy;
   v10 = v5;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = logCopy;
+  dispatch_sync(queue, block);
 }
 
 void __18__ULEventLog_log___block_invoke(uint64_t a1)
@@ -164,22 +164,22 @@ void __18__ULEventLog_log___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printLogEventsSince:(double)a3
+- (void)printLogEventsSince:(double)since
 {
   v5 = cl::chrono::CFAbsoluteTimeClock::now();
   v6 = objc_opt_new();
   [v6 setDateFormat:@"yyyy-MM-dd HH:mm:ssZZZZZ"];
-  v7 = [(ULEventLog *)self queue];
+  queue = [(ULEventLog *)self queue];
   v9[1] = 3221225472;
   v9[0] = MEMORY[0x277D85DD0];
   v9[2] = __34__ULEventLog_printLogEventsSince___block_invoke;
   v9[3] = &unk_2798D41B0;
-  v11 = v5 + a3 * -60.0 * 60.0;
+  v11 = v5 + since * -60.0 * 60.0;
   v12 = v5;
   v9[4] = self;
   v10 = v6;
   v8 = v6;
-  dispatch_sync(v7, v9);
+  dispatch_sync(queue, v9);
 }
 
 void __34__ULEventLog_printLogEventsSince___block_invoke(uint64_t a1)

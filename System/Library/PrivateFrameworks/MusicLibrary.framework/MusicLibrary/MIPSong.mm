@@ -1,29 +1,29 @@
 @interface MIPSong
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAudioFormat:(BOOL)a3;
-- (void)setHasDiscNumber:(BOOL)a3;
-- (void)setHasExcludeFromShuffle:(BOOL)a3;
-- (void)setHasHasVideo:(BOOL)a3;
-- (void)setHasLyricsChecksum:(BOOL)a3;
-- (void)setHasTrackNumber:(BOOL)a3;
-- (void)setHasUserRating:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAudioFormat:(BOOL)format;
+- (void)setHasDiscNumber:(BOOL)number;
+- (void)setHasExcludeFromShuffle:(BOOL)shuffle;
+- (void)setHasHasVideo:(BOOL)video;
+- (void)setHasLyricsChecksum:(BOOL)checksum;
+- (void)setHasTrackNumber:(BOOL)number;
+- (void)setHasUserRating:(BOOL)rating;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPSong
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   album = self->_album;
-  v6 = *(v4 + 2);
-  v16 = v4;
+  v6 = *(fromCopy + 2);
+  v16 = fromCopy;
   if (album)
   {
     if (!v6)
@@ -44,10 +44,10 @@
     [(MIPSong *)self setAlbum:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_7:
   artist = self->_artist;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (artist)
   {
     if (!v8)
@@ -68,10 +68,10 @@ LABEL_7:
     [(MIPSong *)self setArtist:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_13:
   composer = self->_composer;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (composer)
   {
     if (!v10)
@@ -92,10 +92,10 @@ LABEL_13:
     [(MIPSong *)self setComposer:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_19:
   genre = self->_genre;
-  v12 = *(v4 + 7);
+  v12 = *(fromCopy + 7);
   if (genre)
   {
     if (!v12)
@@ -116,14 +116,14 @@ LABEL_19:
     [(MIPSong *)self setGenre:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_25:
-  v13 = *(v4 + 108);
+  v13 = *(fromCopy + 108);
   if ((v13 & 4) != 0)
   {
-    self->_discNumber = *(v4 + 12);
+    self->_discNumber = *(fromCopy + 12);
     *&self->_has |= 4u;
-    v13 = *(v4 + 108);
+    v13 = *(fromCopy + 108);
     if ((v13 & 0x10) == 0)
     {
 LABEL_27:
@@ -136,14 +136,14 @@ LABEL_27:
     }
   }
 
-  else if ((*(v4 + 108) & 0x10) == 0)
+  else if ((*(fromCopy + 108) & 0x10) == 0)
   {
     goto LABEL_27;
   }
 
-  self->_trackNumber = *(v4 + 24);
+  self->_trackNumber = *(fromCopy + 24);
   *&self->_has |= 0x10u;
-  v13 = *(v4 + 108);
+  v13 = *(fromCopy + 108);
   if ((v13 & 0x20) == 0)
   {
 LABEL_28:
@@ -156,9 +156,9 @@ LABEL_28:
   }
 
 LABEL_39:
-  self->_userRating = *(v4 + 25);
+  self->_userRating = *(fromCopy + 25);
   *&self->_has |= 0x20u;
-  v13 = *(v4 + 108);
+  v13 = *(fromCopy + 108);
   if ((v13 & 0x40) == 0)
   {
 LABEL_29:
@@ -171,9 +171,9 @@ LABEL_29:
   }
 
 LABEL_40:
-  self->_excludeFromShuffle = *(v4 + 104);
+  self->_excludeFromShuffle = *(fromCopy + 104);
   *&self->_has |= 0x40u;
-  v13 = *(v4 + 108);
+  v13 = *(fromCopy + 108);
   if ((v13 & 1) == 0)
   {
 LABEL_30:
@@ -183,9 +183,9 @@ LABEL_30:
     }
 
 LABEL_42:
-    self->_audioFormat = *(v4 + 8);
+    self->_audioFormat = *(fromCopy + 8);
     *&self->_has |= 2u;
-    if ((*(v4 + 108) & 0x80) == 0)
+    if ((*(fromCopy + 108) & 0x80) == 0)
     {
       goto LABEL_32;
     }
@@ -194,9 +194,9 @@ LABEL_42:
   }
 
 LABEL_41:
-  self->_geniusId = *(v4 + 1);
+  self->_geniusId = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v13 = *(v4 + 108);
+  v13 = *(fromCopy + 108);
   if ((v13 & 2) != 0)
   {
     goto LABEL_42;
@@ -209,17 +209,17 @@ LABEL_31:
   }
 
 LABEL_43:
-  self->_hasVideo = *(v4 + 105);
+  self->_hasVideo = *(fromCopy + 105);
   *&self->_has |= 0x80u;
 LABEL_32:
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(MIPSong *)self setLyrics:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   playbackInfo = self->_playbackInfo;
-  v15 = *(v4 + 11);
+  v15 = *(fromCopy + 11);
   if (playbackInfo)
   {
     if (!v15)
@@ -240,15 +240,15 @@ LABEL_32:
     [(MIPSong *)self setPlaybackInfo:?];
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_47:
-  if ((*(v4 + 108) & 8) != 0)
+  if ((*(fromCopy + 108) & 8) != 0)
   {
-    self->_lyricsChecksum = *(v4 + 20);
+    self->_lyricsChecksum = *(fromCopy + 20);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(MIPSong *)self setHlsPlaylistURL:?];
   }
@@ -369,16 +369,16 @@ LABEL_16:
   return v16 ^ v17 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSString *)self->_hlsPlaylistURL hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
   album = self->_album;
-  if (album | *(v4 + 2))
+  if (album | *(equalCopy + 2))
   {
     if (![(MIPAlbum *)album isEqual:?])
     {
@@ -387,7 +387,7 @@ LABEL_16:
   }
 
   artist = self->_artist;
-  if (artist | *(v4 + 3))
+  if (artist | *(equalCopy + 3))
   {
     if (![(MIPArtist *)artist isEqual:?])
     {
@@ -396,7 +396,7 @@ LABEL_16:
   }
 
   composer = self->_composer;
-  if (composer | *(v4 + 5))
+  if (composer | *(equalCopy + 5))
   {
     if (![(MIPArtist *)composer isEqual:?])
     {
@@ -405,7 +405,7 @@ LABEL_16:
   }
 
   genre = self->_genre;
-  if (genre | *(v4 + 7))
+  if (genre | *(equalCopy + 7))
   {
     if (![(MIPGenre *)genre isEqual:?])
     {
@@ -415,98 +415,98 @@ LABEL_16:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_discNumber != *(v4 + 12))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_discNumber != *(equalCopy + 12))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 108) & 0x10) == 0 || self->_trackNumber != *(v4 + 24))
+    if ((*(equalCopy + 108) & 0x10) == 0 || self->_trackNumber != *(equalCopy + 24))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 108) & 0x10) != 0)
+  else if ((*(equalCopy + 108) & 0x10) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 108) & 0x20) == 0 || self->_userRating != *(v4 + 25))
+    if ((*(equalCopy + 108) & 0x20) == 0 || self->_userRating != *(equalCopy + 25))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 108) & 0x20) != 0)
+  else if ((*(equalCopy + 108) & 0x20) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 108) & 0x40) == 0)
+    if ((*(equalCopy + 108) & 0x40) == 0)
     {
       goto LABEL_61;
     }
 
     if (self->_excludeFromShuffle)
     {
-      if ((*(v4 + 104) & 1) == 0)
+      if ((*(equalCopy + 104) & 1) == 0)
       {
         goto LABEL_61;
       }
     }
 
-    else if (*(v4 + 104))
+    else if (*(equalCopy + 104))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 108) & 0x40) != 0)
+  else if ((*(equalCopy + 108) & 0x40) != 0)
   {
     goto LABEL_61;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_geniusId != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_geniusId != *(equalCopy + 1))
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_audioFormat != *(v4 + 8))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_audioFormat != *(equalCopy + 8))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 0x80) == 0)
   {
-    if ((*(v4 + 108) & 0x80) == 0)
+    if ((*(equalCopy + 108) & 0x80) == 0)
     {
       goto LABEL_45;
     }
@@ -516,33 +516,33 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  if ((*(v4 + 108) & 0x80) == 0)
+  if ((*(equalCopy + 108) & 0x80) == 0)
   {
     goto LABEL_61;
   }
 
   if (self->_hasVideo)
   {
-    if ((*(v4 + 105) & 1) == 0)
+    if ((*(equalCopy + 105) & 1) == 0)
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 105))
+  else if (*(equalCopy + 105))
   {
     goto LABEL_61;
   }
 
 LABEL_45:
   lyrics = self->_lyrics;
-  if (lyrics | *(v4 + 9) && ![(NSString *)lyrics isEqual:?])
+  if (lyrics | *(equalCopy + 9) && ![(NSString *)lyrics isEqual:?])
   {
     goto LABEL_61;
   }
 
   playbackInfo = self->_playbackInfo;
-  if (playbackInfo | *(v4 + 11))
+  if (playbackInfo | *(equalCopy + 11))
   {
     if (![(MIPPlaybackInfo *)playbackInfo isEqual:?])
     {
@@ -552,19 +552,19 @@ LABEL_45:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 108) & 8) == 0 || self->_lyricsChecksum != *(v4 + 20))
+    if ((*(equalCopy + 108) & 8) == 0 || self->_lyricsChecksum != *(equalCopy + 20))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 108) & 8) != 0)
+  else if ((*(equalCopy + 108) & 8) != 0)
   {
     goto LABEL_61;
   }
 
   hlsPlaylistURL = self->_hlsPlaylistURL;
-  if (hlsPlaylistURL | *(v4 + 8))
+  if (hlsPlaylistURL | *(equalCopy + 8))
   {
     v12 = [(NSString *)hlsPlaylistURL isEqual:?];
   }
@@ -579,22 +579,22 @@ LABEL_62:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MIPAlbum *)self->_album copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MIPAlbum *)self->_album copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(MIPArtist *)self->_artist copyWithZone:a3];
+  v8 = [(MIPArtist *)self->_artist copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(MIPArtist *)self->_composer copyWithZone:a3];
+  v10 = [(MIPArtist *)self->_composer copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(MIPGenre *)self->_genre copyWithZone:a3];
+  v12 = [(MIPGenre *)self->_genre copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -692,11 +692,11 @@ LABEL_17:
   *(v5 + 105) = self->_hasVideo;
   *(v5 + 108) |= 0x80u;
 LABEL_8:
-  v15 = [(NSString *)self->_lyrics copyWithZone:a3];
+  v15 = [(NSString *)self->_lyrics copyWithZone:zone];
   v16 = *(v5 + 72);
   *(v5 + 72) = v15;
 
-  v17 = [(MIPPlaybackInfo *)self->_playbackInfo copyWithZone:a3];
+  v17 = [(MIPPlaybackInfo *)self->_playbackInfo copyWithZone:zone];
   v18 = *(v5 + 88);
   *(v5 + 88) = v17;
 
@@ -706,46 +706,46 @@ LABEL_8:
     *(v5 + 108) |= 8u;
   }
 
-  v19 = [(NSString *)self->_hlsPlaylistURL copyWithZone:a3];
+  v19 = [(NSString *)self->_hlsPlaylistURL copyWithZone:zone];
   v20 = *(v5 + 64);
   *(v5 + 64) = v19;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_album)
   {
-    [v4 setAlbum:?];
-    v4 = v6;
+    [toCopy setAlbum:?];
+    toCopy = v6;
   }
 
   if (self->_artist)
   {
     [v6 setArtist:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_composer)
   {
     [v6 setComposer:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_genre)
   {
     [v6 setGenre:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 12) = self->_discNumber;
-    *(v4 + 108) |= 4u;
+    *(toCopy + 12) = self->_discNumber;
+    *(toCopy + 108) |= 4u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -764,8 +764,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 24) = self->_trackNumber;
-  *(v4 + 108) |= 0x10u;
+  *(toCopy + 24) = self->_trackNumber;
+  *(toCopy + 108) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -779,8 +779,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  *(v4 + 25) = self->_userRating;
-  *(v4 + 108) |= 0x20u;
+  *(toCopy + 25) = self->_userRating;
+  *(toCopy + 108) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -794,8 +794,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  *(v4 + 104) = self->_excludeFromShuffle;
-  *(v4 + 108) |= 0x40u;
+  *(toCopy + 104) = self->_excludeFromShuffle;
+  *(toCopy + 108) |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -806,8 +806,8 @@ LABEL_14:
     }
 
 LABEL_32:
-    *(v4 + 8) = self->_audioFormat;
-    *(v4 + 108) |= 2u;
+    *(toCopy + 8) = self->_audioFormat;
+    *(toCopy + 108) |= 2u;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_16;
@@ -817,8 +817,8 @@ LABEL_32:
   }
 
 LABEL_31:
-  *(v4 + 1) = self->_geniusId;
-  *(v4 + 108) |= 1u;
+  *(toCopy + 1) = self->_geniusId;
+  *(toCopy + 108) |= 1u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -832,67 +832,67 @@ LABEL_15:
   }
 
 LABEL_33:
-  *(v4 + 105) = self->_hasVideo;
-  *(v4 + 108) |= 0x80u;
+  *(toCopy + 105) = self->_hasVideo;
+  *(toCopy + 108) |= 0x80u;
 LABEL_16:
   if (self->_lyrics)
   {
     [v6 setLyrics:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackInfo)
   {
     [v6 setPlaybackInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 20) = self->_lyricsChecksum;
-    *(v4 + 108) |= 8u;
+    *(toCopy + 20) = self->_lyricsChecksum;
+    *(toCopy + 108) |= 8u;
   }
 
   if (self->_hlsPlaylistURL)
   {
     [v6 setHlsPlaylistURL:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_album)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_artist)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_composer)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_genre)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -912,7 +912,7 @@ LABEL_11:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -927,7 +927,7 @@ LABEL_12:
 
 LABEL_29:
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -942,7 +942,7 @@ LABEL_13:
 
 LABEL_30:
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -954,7 +954,7 @@ LABEL_14:
 
 LABEL_32:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_16;
@@ -965,7 +965,7 @@ LABEL_32:
 
 LABEL_31:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -980,69 +980,69 @@ LABEL_15:
 
 LABEL_33:
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
 LABEL_16:
   if (self->_lyrics)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hlsPlaylistURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   album = self->_album;
   if (album)
   {
-    v5 = [(MIPAlbum *)album dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"album"];
+    dictionaryRepresentation = [(MIPAlbum *)album dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"album"];
   }
 
   artist = self->_artist;
   if (artist)
   {
-    v7 = [(MIPArtist *)artist dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"artist"];
+    dictionaryRepresentation2 = [(MIPArtist *)artist dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"artist"];
   }
 
   composer = self->_composer;
   if (composer)
   {
-    v9 = [(MIPArtist *)composer dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"composer"];
+    dictionaryRepresentation3 = [(MIPArtist *)composer dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"composer"];
   }
 
   genre = self->_genre;
   if (genre)
   {
-    v11 = [(MIPGenre *)genre dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"genre"];
+    dictionaryRepresentation4 = [(MIPGenre *)genre dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"genre"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_discNumber];
-    [v3 setObject:v19 forKey:@"discNumber"];
+    [dictionary setObject:v19 forKey:@"discNumber"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -1063,7 +1063,7 @@ LABEL_11:
   }
 
   v20 = [MEMORY[0x277CCABB0] numberWithInt:self->_trackNumber];
-  [v3 setObject:v20 forKey:@"trackNumber"];
+  [dictionary setObject:v20 forKey:@"trackNumber"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -1079,7 +1079,7 @@ LABEL_12:
 
 LABEL_29:
   v21 = [MEMORY[0x277CCABB0] numberWithInt:self->_userRating];
-  [v3 setObject:v21 forKey:@"userRating"];
+  [dictionary setObject:v21 forKey:@"userRating"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -1095,7 +1095,7 @@ LABEL_13:
 
 LABEL_30:
   v22 = [MEMORY[0x277CCABB0] numberWithBool:self->_excludeFromShuffle];
-  [v3 setObject:v22 forKey:@"excludeFromShuffle"];
+  [dictionary setObject:v22 forKey:@"excludeFromShuffle"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -1108,7 +1108,7 @@ LABEL_14:
 
 LABEL_32:
     v24 = [MEMORY[0x277CCABB0] numberWithInt:self->_audioFormat];
-    [v3 setObject:v24 forKey:@"audioFormat"];
+    [dictionary setObject:v24 forKey:@"audioFormat"];
 
     if ((*&self->_has & 0x80) == 0)
     {
@@ -1120,7 +1120,7 @@ LABEL_32:
 
 LABEL_31:
   v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_geniusId];
-  [v3 setObject:v23 forKey:@"geniusId"];
+  [dictionary setObject:v23 forKey:@"geniusId"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -1136,35 +1136,35 @@ LABEL_15:
 
 LABEL_33:
   v25 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasVideo];
-  [v3 setObject:v25 forKey:@"hasVideo"];
+  [dictionary setObject:v25 forKey:@"hasVideo"];
 
 LABEL_16:
   lyrics = self->_lyrics;
   if (lyrics)
   {
-    [v3 setObject:lyrics forKey:@"lyrics"];
+    [dictionary setObject:lyrics forKey:@"lyrics"];
   }
 
   playbackInfo = self->_playbackInfo;
   if (playbackInfo)
   {
-    v15 = [(MIPPlaybackInfo *)playbackInfo dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"playbackInfo"];
+    dictionaryRepresentation5 = [(MIPPlaybackInfo *)playbackInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"playbackInfo"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithInt:self->_lyricsChecksum];
-    [v3 setObject:v16 forKey:@"lyricsChecksum"];
+    [dictionary setObject:v16 forKey:@"lyricsChecksum"];
   }
 
   hlsPlaylistURL = self->_hlsPlaylistURL;
   if (hlsPlaylistURL)
   {
-    [v3 setObject:hlsPlaylistURL forKey:@"hlsPlaylistURL"];
+    [dictionary setObject:hlsPlaylistURL forKey:@"hlsPlaylistURL"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1173,15 +1173,15 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = MIPSong;
   v4 = [(MIPSong *)&v8 description];
-  v5 = [(MIPSong *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPSong *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasLyricsChecksum:(BOOL)a3
+- (void)setHasLyricsChecksum:(BOOL)checksum
 {
-  if (a3)
+  if (checksum)
   {
     v3 = 8;
   }
@@ -1194,9 +1194,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasVideo:(BOOL)a3
+- (void)setHasHasVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 0x80;
   }
@@ -1209,9 +1209,9 @@ LABEL_16:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasAudioFormat:(BOOL)a3
+- (void)setHasAudioFormat:(BOOL)format
 {
-  if (a3)
+  if (format)
   {
     v3 = 2;
   }
@@ -1224,9 +1224,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasExcludeFromShuffle:(BOOL)a3
+- (void)setHasExcludeFromShuffle:(BOOL)shuffle
 {
-  if (a3)
+  if (shuffle)
   {
     v3 = 64;
   }
@@ -1239,9 +1239,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasUserRating:(BOOL)a3
+- (void)setHasUserRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 32;
   }
@@ -1254,9 +1254,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTrackNumber:(BOOL)a3
+- (void)setHasTrackNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 16;
   }
@@ -1269,9 +1269,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDiscNumber:(BOOL)a3
+- (void)setHasDiscNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }

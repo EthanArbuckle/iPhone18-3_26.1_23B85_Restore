@@ -1,19 +1,19 @@
 @interface AVCaptureSynchronizedMetadataCollections
-- (AVCaptureSynchronizedMetadataCollections)initWithMetadataCollections:(id)a3 expectedMetadataObjectTypes:(id)a4;
+- (AVCaptureSynchronizedMetadataCollections)initWithMetadataCollections:(id)collections expectedMetadataObjectTypes:(id)types;
 - (BOOL)readyToEmit;
 - (NSArray)metadataCollections;
 - (NSArray)metadataObjects;
 - (NSMutableSet)metadataObjectTypes;
 - (OS_dispatch_source)emitTimer;
-- (void)addCollections:(id)a3;
+- (void)addCollections:(id)collections;
 - (void)dealloc;
-- (void)setEmitTimer:(id)a3;
-- (void)skipMetadataObjectTypes:(id)a3;
+- (void)setEmitTimer:(id)timer;
+- (void)skipMetadataObjectTypes:(id)types;
 @end
 
 @implementation AVCaptureSynchronizedMetadataCollections
 
-- (AVCaptureSynchronizedMetadataCollections)initWithMetadataCollections:(id)a3 expectedMetadataObjectTypes:(id)a4
+- (AVCaptureSynchronizedMetadataCollections)initWithMetadataCollections:(id)collections expectedMetadataObjectTypes:(id)types
 {
   v10.receiver = self;
   v10.super_class = AVCaptureSynchronizedMetadataCollections;
@@ -24,8 +24,8 @@
     v8 = MEMORY[0x1E6960C70];
     *(v6 + 8) = *MEMORY[0x1E6960C70];
     *(v6 + 3) = *(v8 + 16);
-    *(v6 + 5) = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:a4];
-    [(AVCaptureSynchronizedMetadataCollections *)v7 addCollections:a3];
+    *(v6 + 5) = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:types];
+    [(AVCaptureSynchronizedMetadataCollections *)v7 addCollections:collections];
   }
 
   return v7;
@@ -44,7 +44,7 @@
   [(AVCaptureSynchronizedMetadataCollections *)&v4 dealloc];
 }
 
-- (void)setEmitTimer:(id)a3
+- (void)setEmitTimer:(id)timer
 {
   emitTimer = self->_emitTimer;
   if (emitTimer)
@@ -52,12 +52,12 @@
     dispatch_source_cancel(emitTimer);
   }
 
-  v6 = a3;
-  self->_emitTimer = v6;
-  if (v6)
+  timerCopy = timer;
+  self->_emitTimer = timerCopy;
+  if (timerCopy)
   {
 
-    dispatch_activate(v6);
+    dispatch_activate(timerCopy);
   }
 }
 
@@ -68,13 +68,13 @@
   return v2;
 }
 
-- (void)addCollections:(id)a3
+- (void)addCollections:(id)collections
 {
-  if ([a3 count])
+  if ([collections count])
   {
     if ((self->_time.flags & 1) == 0)
     {
-      v5 = [a3 objectAtIndexedSubscript:0];
+      v5 = [collections objectAtIndexedSubscript:0];
       if (v5)
       {
         [v5 time];
@@ -97,7 +97,7 @@
       self->_collections = collections;
     }
 
-    [(NSMutableArray *)collections addObjectsFromArray:a3];
+    [(NSMutableArray *)collections addObjectsFromArray:collections];
     if (!self->_handledMetadataObjectTypes)
     {
       self->_handledMetadataObjectTypes = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -107,7 +107,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    v7 = [collections countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v7)
     {
       v8 = v7;
@@ -119,14 +119,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(collections);
           }
 
           -[NSMutableSet unionSet:](self->_handledMetadataObjectTypes, "unionSet:", [*(*(&v12 + 1) + 8 * v10++) handledMetadataObjectTypes]);
         }
 
         while (v8 != v10);
-        v8 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v8 = [collections countByEnumeratingWithState:&v12 objects:v11 count:16];
       }
 
       while (v8);
@@ -134,13 +134,13 @@
   }
 }
 
-- (void)skipMetadataObjectTypes:(id)a3
+- (void)skipMetadataObjectTypes:(id)types
 {
-  if ([a3 count])
+  if ([types count])
   {
     expectedMetadataObjectTypes = self->_expectedMetadataObjectTypes;
 
-    [(NSMutableSet *)expectedMetadataObjectTypes minusSet:a3];
+    [(NSMutableSet *)expectedMetadataObjectTypes minusSet:types];
   }
 }
 

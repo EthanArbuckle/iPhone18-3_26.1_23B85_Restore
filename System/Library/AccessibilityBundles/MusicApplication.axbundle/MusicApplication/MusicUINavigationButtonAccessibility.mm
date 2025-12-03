@@ -11,17 +11,17 @@
 
   if (v4)
   {
-    v5 = accessibilityMusicLocalizedString(@"track.list.button");
+    accessibilityLabel = accessibilityMusicLocalizedString(@"track.list.button");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MusicUINavigationButtonAccessibility;
-    v5 = [(MusicUINavigationButtonAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(MusicUINavigationButtonAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

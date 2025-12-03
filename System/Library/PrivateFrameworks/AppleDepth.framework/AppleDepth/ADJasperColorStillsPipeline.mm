@@ -1,36 +1,36 @@
 @interface ADJasperColorStillsPipeline
 - (ADJasperColorStillsPipeline)init;
-- (ADJasperColorStillsPipeline)initWithParameters:(id)a3;
-- (int64_t)postProcessDepth:(__CVBuffer *)a3 depthOutput:(__CVBuffer *)a4 depthUnits:(unint64_t)a5;
-- (int64_t)postProcessWithDepth:(__CVBuffer *)a3 depthOutput:(__CVBuffer *)a4;
-- (int64_t)processJasperToColorCorrectionIntermediateResultWithBackendEspressoFeaturesOutput:(const float *)a3 frontendEspressoFeaturesInput:(float *)a4 featuresDimensions:(id)a5;
-- (int64_t)projectJasperPoints:(id)a3 cropTo:(CGRect)a4 rotateBy:(int64_t)a5 projectedPointsBuffer:(__CVBuffer *)a6;
-- (int64_t)projectJasperPointsForJasperToColorTransformCorrection:(id)a3 cropTo:(CGRect)a4 rotateBy:(int64_t)a5 projectedPointsBuffer:(__CVBuffer *)a6;
-- (uint64_t)postProcessJasperToColorCorrectionWithAngles:(__n128)a3 errors:(__n128)a4 originalTransform:(__n128)a5 correctedTransform:(float)a6 colorCameraCalibration:(uint64_t)a7 colorImageScale:(double *)a8 transformCorrectionResults:(double *)a9;
-- (uint64_t)postProcessJasperToColorTransformCorrection:(float32x4_t)a3 originalTransform:(float32x4_t)a4 correctedTransform:(__n128)a5;
+- (ADJasperColorStillsPipeline)initWithParameters:(id)parameters;
+- (int64_t)postProcessDepth:(__CVBuffer *)depth depthOutput:(__CVBuffer *)output depthUnits:(unint64_t)units;
+- (int64_t)postProcessWithDepth:(__CVBuffer *)depth depthOutput:(__CVBuffer *)output;
+- (int64_t)processJasperToColorCorrectionIntermediateResultWithBackendEspressoFeaturesOutput:(const float *)output frontendEspressoFeaturesInput:(float *)input featuresDimensions:(id)dimensions;
+- (int64_t)projectJasperPoints:(id)points cropTo:(CGRect)to rotateBy:(int64_t)by projectedPointsBuffer:(__CVBuffer *)buffer;
+- (int64_t)projectJasperPointsForJasperToColorTransformCorrection:(id)correction cropTo:(CGRect)to rotateBy:(int64_t)by projectedPointsBuffer:(__CVBuffer *)buffer;
+- (uint64_t)postProcessJasperToColorCorrectionWithAngles:(__n128)angles errors:(__n128)errors originalTransform:(__n128)transform correctedTransform:(float)correctedTransform colorCameraCalibration:(uint64_t)calibration colorImageScale:(double *)scale transformCorrectionResults:(double *)results;
+- (uint64_t)postProcessJasperToColorTransformCorrection:(float32x4_t)correction originalTransform:(float32x4_t)transform correctedTransform:(__n128)correctedTransform;
 @end
 
 @implementation ADJasperColorStillsPipeline
 
-- (uint64_t)postProcessJasperToColorCorrectionWithAngles:(__n128)a3 errors:(__n128)a4 originalTransform:(__n128)a5 correctedTransform:(float)a6 colorCameraCalibration:(uint64_t)a7 colorImageScale:(double *)a8 transformCorrectionResults:(double *)a9
+- (uint64_t)postProcessJasperToColorCorrectionWithAngles:(__n128)angles errors:(__n128)errors originalTransform:(__n128)transform correctedTransform:(float)correctedTransform colorCameraCalibration:(uint64_t)calibration colorImageScale:(double *)scale transformCorrectionResults:(double *)results
 {
   v18 = a11;
   kdebug_trace();
   v19 = -22953;
-  if (a8 && a9)
+  if (scale && results)
   {
     [v18 intrinsicMatrix];
-    a1[20] = 500.0 / (a6 * v20);
+    self[20] = 500.0 / (correctedTransform * v20);
     v21 = objc_opt_new();
-    [v21 setRotation:*a8];
-    [v21 setStd:*a9];
+    [v21 setRotation:*scale];
+    [v21 setStd:*results];
     if (a12)
     {
       v22 = v21;
       *a12 = v21;
     }
 
-    v19 = [a1 postProcessJasperToColorTransformCorrection:v21 originalTransform:a10 correctedTransform:{a2.n128_f64[0], a3.n128_f64[0], a4.n128_f64[0], a5.n128_f64[0], *&a2, *&a3, *&a4, *&a5}];
+    v19 = [self postProcessJasperToColorTransformCorrection:v21 originalTransform:a10 correctedTransform:{a2.n128_f64[0], angles.n128_f64[0], errors.n128_f64[0], transform.n128_f64[0], *&a2, *&angles, *&errors, *&transform}];
   }
 
   kdebug_trace();
@@ -38,55 +38,55 @@
   return v19;
 }
 
-- (int64_t)processJasperToColorCorrectionIntermediateResultWithBackendEspressoFeaturesOutput:(const float *)a3 frontendEspressoFeaturesInput:(float *)a4 featuresDimensions:(id)a5
+- (int64_t)processJasperToColorCorrectionIntermediateResultWithBackendEspressoFeaturesOutput:(const float *)output frontendEspressoFeaturesInput:(float *)input featuresDimensions:(id)dimensions
 {
-  v7 = a5;
-  if ([v7 count])
+  dimensionsCopy = dimensions;
+  if ([dimensionsCopy count])
   {
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 unsignedIntValue];
+    v8 = [dimensionsCopy objectAtIndexedSubscript:0];
+    unsignedIntValue = [v8 unsignedIntValue];
   }
 
   else
   {
-    v9 = 1;
+    unsignedIntValue = 1;
   }
 
-  if ([v7 count] < 2)
+  if ([dimensionsCopy count] < 2)
   {
-    v11 = 1;
+    unsignedIntValue2 = 1;
   }
 
   else
   {
-    v10 = [v7 objectAtIndexedSubscript:1];
-    v11 = [v10 unsignedIntValue];
+    v10 = [dimensionsCopy objectAtIndexedSubscript:1];
+    unsignedIntValue2 = [v10 unsignedIntValue];
   }
 
-  if ([v7 count] < 3)
+  if ([dimensionsCopy count] < 3)
   {
     goto LABEL_10;
   }
 
-  v12 = [v7 objectAtIndexedSubscript:2];
-  v13 = [v12 unsignedIntValue];
+  v12 = [dimensionsCopy objectAtIndexedSubscript:2];
+  unsignedIntValue3 = [v12 unsignedIntValue];
 
-  if (v13)
+  if (unsignedIntValue3)
   {
-    if (v13 == 1)
+    if (unsignedIntValue3 == 1)
     {
 LABEL_10:
-      memcpy(a4, a3, 4 * v11 * v9);
+      memcpy(input, output, 4 * unsignedIntValue2 * unsignedIntValue);
       goto LABEL_11;
     }
 
-    if (v11 && v9)
+    if (unsignedIntValue2 && unsignedIntValue)
     {
-      v15 = v11 * v9;
-      if (v9 > 0xF)
+      v15 = unsignedIntValue2 * unsignedIntValue;
+      if (unsignedIntValue > 0xF)
       {
         v24 = 0;
-        for (i = 0; i != v13; ++i)
+        for (i = 0; i != unsignedIntValue3; ++i)
         {
           v26 = 0;
           v27 = 0;
@@ -94,25 +94,25 @@ LABEL_10:
           v29 = i;
           do
           {
-            v30 = v9;
-            v31 = i + v13 * v26;
+            v30 = unsignedIntValue;
+            v31 = i + unsignedIntValue3 * v26;
             v32 = v28;
             do
             {
-              a4[v31] = a3[v32];
-              v31 += v13;
+              input[v31] = output[v32];
+              v31 += unsignedIntValue3;
               ++v32;
               --v30;
             }
 
             while (v30);
             ++v27;
-            v29 += v9;
-            v28 += v9;
-            v26 += v9;
+            v29 += unsignedIntValue;
+            v28 += unsignedIntValue;
+            v26 += unsignedIntValue;
           }
 
-          while (v27 != v11);
+          while (v27 != unsignedIntValue2);
           v24 += v15;
         }
       }
@@ -120,7 +120,7 @@ LABEL_10:
       else
       {
         v16 = 0;
-        for (j = 0; j != v13; ++j)
+        for (j = 0; j != unsignedIntValue3; ++j)
         {
           v18 = 0;
           v19 = v16;
@@ -129,22 +129,22 @@ LABEL_10:
           {
             v21 = v19;
             v22 = v20;
-            v23 = v9;
+            v23 = unsignedIntValue;
             do
             {
-              a4[v22] = a3[v21];
-              v22 += v13;
+              input[v22] = output[v21];
+              v22 += unsignedIntValue3;
               ++v21;
               --v23;
             }
 
             while (v23);
             ++v18;
-            v20 += v9 * v13;
-            v19 += v9;
+            v20 += unsignedIntValue * unsignedIntValue3;
+            v19 += unsignedIntValue;
           }
 
-          while (v18 != v11);
+          while (v18 != unsignedIntValue2);
           v16 += v15;
         }
       }
@@ -156,35 +156,35 @@ LABEL_11:
   return 0;
 }
 
-- (uint64_t)postProcessJasperToColorTransformCorrection:(float32x4_t)a3 originalTransform:(float32x4_t)a4 correctedTransform:(__n128)a5
+- (uint64_t)postProcessJasperToColorTransformCorrection:(float32x4_t)correction originalTransform:(float32x4_t)transform correctedTransform:(__n128)correctedTransform
 {
   v10 = a7;
   v11 = v10;
   if (v10)
   {
     [v10 std];
-    v13 = vmulq_f32(v12, a1[4]);
-    if (((v13.f32[2] + vaddv_f32(*v13.f32)) / 3.0) <= a1[5].f32[1])
+    v13 = vmulq_f32(v12, self[4]);
+    if (((v13.f32[2] + vaddv_f32(*v13.f32)) / 3.0) <= self[5].f32[1])
     {
       [v11 rotation];
-      [ADUtils calcRotationMatrix:*vmulq_n_f32(v18, a1[5].f32[0]).i64];
+      [ADUtils calcRotationMatrix:*vmulq_n_f32(v18, self[5].f32[0]).i64];
       v16 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v19, a2.f32[0]), v20, *a2.f32, 1), v21, a2, 2);
-      v15 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v19, a3.f32[0]), v20, *a3.f32, 1), v21, a3, 2);
-      v14 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v19, a4.f32[0]), v20, *a4.f32, 1), v21, a4, 2);
+      correctionCopy = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v19, correction.f32[0]), v20, *correction.f32, 1), v21, correction, 2);
+      transformCopy = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v19, transform.f32[0]), v20, *transform.f32, 1), v21, transform, 2);
     }
 
     else
     {
-      v15 = a3;
-      v14 = a4;
+      correctionCopy = correction;
+      transformCopy = transform;
       v16 = a2;
     }
 
     v17 = 0;
     *a8 = v16;
-    *(a8 + 16) = v15;
-    *(a8 + 32) = v14;
-    *(a8 + 48) = a5;
+    *(a8 + 16) = correctionCopy;
+    *(a8 + 32) = transformCopy;
+    *(a8 + 48) = correctedTransform;
   }
 
   else
@@ -195,55 +195,55 @@ LABEL_11:
   return v17;
 }
 
-- (int64_t)postProcessDepth:(__CVBuffer *)a3 depthOutput:(__CVBuffer *)a4 depthUnits:(unint64_t)a5
+- (int64_t)postProcessDepth:(__CVBuffer *)depth depthOutput:(__CVBuffer *)output depthUnits:(unint64_t)units
 {
   kdebug_trace();
-  v7 = [ADUtils postProcessDepth:a3 depthOutput:a4];
+  v7 = [ADUtils postProcessDepth:depth depthOutput:output];
   kdebug_trace();
   return v7;
 }
 
-- (int64_t)postProcessWithDepth:(__CVBuffer *)a3 depthOutput:(__CVBuffer *)a4
+- (int64_t)postProcessWithDepth:(__CVBuffer *)depth depthOutput:(__CVBuffer *)output
 {
   kdebug_trace();
-  v6 = [ADUtils postProcessDepth:a3 depthOutput:a4];
+  v6 = [ADUtils postProcessDepth:depth depthOutput:output];
   kdebug_trace();
   return v6;
 }
 
-- (int64_t)projectJasperPointsForJasperToColorTransformCorrection:(id)a3 cropTo:(CGRect)a4 rotateBy:(int64_t)a5 projectedPointsBuffer:(__CVBuffer *)a6
+- (int64_t)projectJasperPointsForJasperToColorTransformCorrection:(id)correction cropTo:(CGRect)to rotateBy:(int64_t)by projectedPointsBuffer:(__CVBuffer *)buffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  correctionCopy = correction;
   kdebug_trace();
-  v14 = [(ADJasperColorStillsPipelineParameters *)self->_pipelineParameters pointCloudFilterForTransformCorrection];
-  v15 = [v13 projectJasperPointsFilteredBy:v14 croppedBy:a5 rotatedBy:a6 andScaledInto:{x, y, width, height}];
+  pointCloudFilterForTransformCorrection = [(ADJasperColorStillsPipelineParameters *)self->_pipelineParameters pointCloudFilterForTransformCorrection];
+  v15 = [correctionCopy projectJasperPointsFilteredBy:pointCloudFilterForTransformCorrection croppedBy:by rotatedBy:buffer andScaledInto:{x, y, width, height}];
 
   kdebug_trace();
   return v15;
 }
 
-- (int64_t)projectJasperPoints:(id)a3 cropTo:(CGRect)a4 rotateBy:(int64_t)a5 projectedPointsBuffer:(__CVBuffer *)a6
+- (int64_t)projectJasperPoints:(id)points cropTo:(CGRect)to rotateBy:(int64_t)by projectedPointsBuffer:(__CVBuffer *)buffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  pointsCopy = points;
   kdebug_trace();
-  v14 = [(ADJasperColorStillsPipelineParameters *)self->_pipelineParameters pointCloudFilter];
-  v15 = [v13 projectJasperPointsFilteredBy:v14 croppedBy:a5 rotatedBy:a6 andScaledInto:{x, y, width, height}];
+  pointCloudFilter = [(ADJasperColorStillsPipelineParameters *)self->_pipelineParameters pointCloudFilter];
+  v15 = [pointsCopy projectJasperPointsFilteredBy:pointCloudFilter croppedBy:by rotatedBy:buffer andScaledInto:{x, y, width, height}];
 
   kdebug_trace();
   return v15;
 }
 
-- (ADJasperColorStillsPipeline)initWithParameters:(id)a3
+- (ADJasperColorStillsPipeline)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v30 = 335684784;
   v31 = 0u;
   v32 = 0u;
@@ -253,16 +253,16 @@ LABEL_11:
   v5 = [(ADJasperColorStillsPipeline *)&v29 init];
   if (v5)
   {
-    if (!v4)
+    if (!parametersCopy)
     {
-      v4 = objc_opt_new();
+      parametersCopy = objc_opt_new();
     }
 
-    objc_storeStrong(&v5->_pipelineParameters, v4);
+    objc_storeStrong(&v5->_pipelineParameters, parametersCopy);
     v5->_STDThreshold = 6.0;
     *v5->_STDWeights = xmmword_240406F60;
-    v6 = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
-    v7 = [ADDeviceConfiguration getLidarType:v6];
+    deviceName = [(ADPipelineParameters *)v5->_pipelineParameters deviceName];
+    v7 = [ADDeviceConfiguration getLidarType:deviceName];
 
     if (v7 == 2)
     {
@@ -309,9 +309,9 @@ LABEL_11:
     correctionFrontendInferenceDesc = v5->_correctionFrontendInferenceDesc;
     v5->_correctionFrontendInferenceDesc = v21;
 
-    v23 = [(ADEspressoStillImageInferenceDescriptor *)v5->_inferenceDesc depthOutput];
-    v24 = [v23 imageDescriptor];
-    v25 = [v24 cloneWithDifferentFormat:1717856627];
+    depthOutput = [(ADEspressoStillImageInferenceDescriptor *)v5->_inferenceDesc depthOutput];
+    imageDescriptor = [depthOutput imageDescriptor];
+    v25 = [imageDescriptor cloneWithDifferentFormat:1717856627];
     processedDepthDesc = v5->_processedDepthDesc;
     v5->_processedDepthDesc = v25;
   }

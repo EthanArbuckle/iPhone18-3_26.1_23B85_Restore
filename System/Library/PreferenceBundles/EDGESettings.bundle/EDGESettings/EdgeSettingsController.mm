@@ -1,59 +1,59 @@
 @interface EdgeSettingsController
-+ (id)makeUIApnBasedOn:(id)a3;
-- (BOOL)_isAPNDictionaryBlank:(id)a3;
-- (BOOL)_shouldShowUIForServiceType:(int)a3;
-- (BOOL)isTypeOfService:(id)a3 ofServiceType:(int)a4;
++ (id)makeUIApnBasedOn:(id)on;
+- (BOOL)_isAPNDictionaryBlank:(id)blank;
+- (BOOL)_shouldShowUIForServiceType:(int)type;
+- (BOOL)isTypeOfService:(id)service ofServiceType:(int)type;
 - (BOOL)shouldResetAttachAPN;
 - (EdgeSettingsController)init;
-- (id)_getAPNDictinaryForService:(int)a3;
-- (id)_getMMSObjectForKey:(id)a3;
+- (id)_getAPNDictinaryForService:(int)service;
+- (id)_getMMSObjectForKey:(id)key;
 - (id)attachAPNSettings;
-- (id)edgeDNS:(id)a3;
-- (id)getAPNDataForSpecifier:(id)a3;
-- (id)getAttachAPNDataForSpecifier:(id)a3;
-- (id)getDefaultSettings:(id)a3;
-- (id)getMMSNumericValueForSpecifier:(id)a3;
-- (id)getMMSValueForSpecifier:(id)a3;
+- (id)edgeDNS:(id)s;
+- (id)getAPNDataForSpecifier:(id)specifier;
+- (id)getAttachAPNDataForSpecifier:(id)specifier;
+- (id)getDefaultSettings:(id)settings;
+- (id)getMMSNumericValueForSpecifier:(id)specifier;
+- (id)getMMSValueForSpecifier:(id)specifier;
 - (id)specifiers;
 - (unint64_t)getGSMASettingsUIControl;
-- (void)_setMMSOverrideValue:(id)a3 forKey:(id)a4;
-- (void)_updateKey:(id)a3 toValue:(id)a4 forServiceType:(int)a5;
+- (void)_setMMSOverrideValue:(id)value forKey:(id)key;
+- (void)_updateKey:(id)key toValue:(id)value forServiceType:(int)type;
 - (void)applicationDidResume;
 - (void)applicationWillSuspend;
 - (void)attachAPNSettings;
 - (void)commitAPNsSettings;
 - (void)commitAttachAPNSettings;
 - (void)dealloc;
-- (void)didChangeDeviceManagementSettings:(id)a3;
+- (void)didChangeDeviceManagementSettings:(id)settings;
 - (void)getGSMASettingsUIControl;
 - (void)initAPNCacheDictionaries;
 - (void)loadCurrentAPNs;
 - (void)resetAPNsDictionaries;
 - (void)resetAllConfiguredSettings;
 - (void)resetAttachAPNSettings;
-- (void)resetCarrierSettings:(id)a3;
-- (void)setAPNData:(id)a3 forSpecifier:(id)a4;
-- (void)setAttachAPNData:(id)a3 forSpecifier:(id)a4;
-- (void)setDefaultSettings:(id)a3 specifier:(id)a4;
-- (void)setMMSNumericValue:(id)a3 forSpecifier:(id)a4;
-- (void)setMMSValue:(id)a3 forSpecifier:(id)a4;
-- (void)showCarrierSettingsEraseAlert:(BOOL)a3;
+- (void)resetCarrierSettings:(id)settings;
+- (void)setAPNData:(id)data forSpecifier:(id)specifier;
+- (void)setAttachAPNData:(id)data forSpecifier:(id)specifier;
+- (void)setDefaultSettings:(id)settings specifier:(id)specifier;
+- (void)setMMSNumericValue:(id)value forSpecifier:(id)specifier;
+- (void)setMMSValue:(id)value forSpecifier:(id)specifier;
+- (void)showCarrierSettingsEraseAlert:(BOOL)alert;
 - (void)specifiers;
-- (void)uploadSettingsOnCT:(id)a3;
+- (void)uploadSettingsOnCT:(id)t;
 @end
 
 @implementation EdgeSettingsController
 
-- (id)getAPNDataForSpecifier:(id)a3
+- (id)getAPNDataForSpecifier:(id)specifier
 {
-  v5 = [objc_msgSend(a3 propertyForKey:{@"ServiceTypeUI", "intValue"}] - 1;
+  v5 = [objc_msgSend(specifier propertyForKey:{@"ServiceTypeUI", "intValue"}] - 1;
   if (v5 > 4)
   {
     return &stru_284EE8C10;
   }
 
   v6 = dword_23C141D18[v5];
-  v7 = [a3 propertyForKey:@"apnItemKey"];
+  v7 = [specifier propertyForKey:@"apnItemKey"];
   if (!v7)
   {
     return &stru_284EE8C10;
@@ -65,37 +65,37 @@
   return [v9 objectForKey:v8];
 }
 
-- (void)setAPNData:(id)a3 forSpecifier:(id)a4
+- (void)setAPNData:(id)data forSpecifier:(id)specifier
 {
-  v7 = [objc_msgSend(a4 propertyForKey:{@"ServiceTypeUI", "intValue"}] - 1;
+  v7 = [objc_msgSend(specifier propertyForKey:{@"ServiceTypeUI", "intValue"}] - 1;
   if (v7 >= 5)
   {
 
-    [a4 propertyForKey:@"apnItemKey"];
+    [specifier propertyForKey:@"apnItemKey"];
   }
 
   else
   {
     v8 = dword_23C141D18[v7];
-    v9 = [a4 propertyForKey:@"apnItemKey"];
+    v9 = [specifier propertyForKey:@"apnItemKey"];
     if (v9)
     {
 
-      [(EdgeSettingsController *)self _updateKey:v9 toValue:a3 forServiceType:v8];
+      [(EdgeSettingsController *)self _updateKey:v9 toValue:data forServiceType:v8];
     }
   }
 }
 
 - (void)resetAllConfiguredSettings
 {
-  v3 = [(EdgeSettingsController *)self coreTelephonyClient];
-  v4 = [(EdgeSettingsController *)self context];
+  coreTelephonyClient = [(EdgeSettingsController *)self coreTelephonyClient];
+  context = [(EdgeSettingsController *)self context];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke;
   v5[3] = &unk_278BB2DB0;
   v5[4] = self;
-  [(CoreTelephonyClient *)v3 resetUIConfiguredApns:v4 completion:v5];
+  [(CoreTelephonyClient *)coreTelephonyClient resetUIConfiguredApns:context completion:v5];
 }
 
 void __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke(uint64_t a1, uint64_t a2)
@@ -169,7 +169,7 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
   return [*(a1 + 32) reloadSpecifiers];
 }
 
-- (void)resetCarrierSettings:(id)a3
+- (void)resetCarrierSettings:(id)settings
 {
   if ([(CoreTelephonyClient *)[(EdgeSettingsController *)self coreTelephonyClient] loadGSMASettings:[(EdgeSettingsController *)self context] state:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -179,7 +179,7 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
   [(EdgeSettingsController *)self resetAllConfiguredSettings];
 }
 
-- (id)_getMMSObjectForKey:(id)a3
+- (id)_getMMSObjectForKey:(id)key
 {
   if ([(CTXPCServiceSubscriptionContext *)[(EdgeSettingsController *)self context] slotID]== 1)
   {
@@ -192,27 +192,27 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
   }
 
   v6 = CFPreferencesCopyValue(v5, @"com.apple.mms_override", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
-  if (!v6 || (result = [v6 objectForKey:a3]) == 0)
+  if (!v6 || (result = [v6 objectForKey:key]) == 0)
   {
     result = [(CoreTelephonyClient *)[(EdgeSettingsController *)self coreTelephonyClient] context:[(EdgeSettingsController *)self context] getCarrierBundleValue:&unk_284EE9BD8 error:0];
     if (result)
     {
 
-      return [result objectForKey:a3];
+      return [result objectForKey:key];
     }
   }
 
   return result;
 }
 
-- (void)_setMMSOverrideValue:(id)a3 forKey:(id)a4
+- (void)_setMMSOverrideValue:(id)value forKey:(id)key
 {
-  if (!a3 || (v6 = a3, [a3 isEqual:&stru_284EE8C10]))
+  if (!value || (v6 = value, [value isEqual:&stru_284EE8C10]))
   {
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(CTXPCServiceSubscriptionContext *)[(EdgeSettingsController *)self context] slotID]== 1)
   {
     v8 = @"MMS";
@@ -228,17 +228,17 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
   v11 = CFPreferencesCopyValue(v8, @"com.apple.mms_override", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (v11)
   {
-    [v7 addEntriesFromDictionary:v11];
+    [dictionary addEntriesFromDictionary:v11];
   }
 
   if (v6)
   {
-    [v7 setObject:v6 forKey:a4];
+    [dictionary setObject:v6 forKey:key];
   }
 
   else
   {
-    [v7 removeObjectForKey:a4];
+    [dictionary removeObjectForKey:key];
   }
 
   if ([(CTXPCServiceSubscriptionContext *)[(EdgeSettingsController *)self context] slotID]== 1)
@@ -251,16 +251,16 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
     v12 = @"MMS2";
   }
 
-  CFPreferencesSetValue(v12, v7, @"com.apple.mms_override", v9, v10);
+  CFPreferencesSetValue(v12, dictionary, @"com.apple.mms_override", v9, v10);
   CFPreferencesSynchronize(@"com.apple.mms_override", v9, v10);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.MMSEnabled.changed", 0, 0, 0);
 }
 
-- (id)getMMSValueForSpecifier:(id)a3
+- (id)getMMSValueForSpecifier:(id)specifier
 {
-  result = [a3 propertyForKey:@"key"];
+  result = [specifier propertyForKey:@"key"];
   if (result)
   {
 
@@ -270,23 +270,23 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
   return result;
 }
 
-- (void)setMMSValue:(id)a3 forSpecifier:(id)a4
+- (void)setMMSValue:(id)value forSpecifier:(id)specifier
 {
-  v7 = [a4 propertyForKey:@"key"];
+  v7 = [specifier propertyForKey:@"key"];
   if (v7)
   {
-    [(EdgeSettingsController *)self _setMMSOverrideValue:a3 forKey:v7];
-    if (!a3 || ![a3 length])
+    [(EdgeSettingsController *)self _setMMSOverrideValue:value forKey:v7];
+    if (!value || ![value length])
     {
 
-      [(EdgeSettingsController *)self reloadSpecifier:a4];
+      [(EdgeSettingsController *)self reloadSpecifier:specifier];
     }
   }
 }
 
-- (id)getMMSNumericValueForSpecifier:(id)a3
+- (id)getMMSNumericValueForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"key"];
+  v4 = [specifier propertyForKey:@"key"];
   if (!v4)
   {
     return 0;
@@ -302,27 +302,27 @@ uint64_t __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_4
   return [v5 stringValue];
 }
 
-- (void)setMMSNumericValue:(id)a3 forSpecifier:(id)a4
+- (void)setMMSNumericValue:(id)value forSpecifier:(id)specifier
 {
-  v7 = [a4 propertyForKey:@"key"];
+  v7 = [specifier propertyForKey:@"key"];
   if (!v7)
   {
     return;
   }
 
   v8 = v7;
-  if (!a3)
+  if (!value)
   {
     [(EdgeSettingsController *)self _setMMSOverrideValue:0 forKey:v7];
 LABEL_9:
 
-    [(EdgeSettingsController *)self reloadSpecifier:a4];
+    [(EdgeSettingsController *)self reloadSpecifier:specifier];
     return;
   }
 
-  if ([a3 length])
+  if ([value length])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "intValue")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(value, "intValue")}];
   }
 
   else
@@ -331,16 +331,16 @@ LABEL_9:
   }
 
   [(EdgeSettingsController *)self _setMMSOverrideValue:v9 forKey:v8];
-  if (![a3 length])
+  if (![value length])
   {
     goto LABEL_9;
   }
 }
 
-- (id)edgeDNS:(id)a3
+- (id)edgeDNS:(id)s
 {
-  v4 = [(PSSystemConfiguration *)self->_systemConfig dataServiceID];
-  v5 = [(PSSystemConfiguration *)self->_systemConfig protocolConfigurationValueForKey:*MEMORY[0x277CE1710] protocolType:*MEMORY[0x277CE16E0] serviceID:v4];
+  dataServiceID = [(PSSystemConfiguration *)self->_systemConfig dataServiceID];
+  v5 = [(PSSystemConfiguration *)self->_systemConfig protocolConfigurationValueForKey:*MEMORY[0x277CE1710] protocolType:*MEMORY[0x277CE16E0] serviceID:dataServiceID];
   v6 = [v5 count];
   if (!v6)
   {
@@ -360,9 +360,9 @@ LABEL_9:
   }
 }
 
-- (id)getAttachAPNDataForSpecifier:(id)a3
+- (id)getAttachAPNDataForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"apnItemKey"];
+  v4 = [specifier propertyForKey:@"apnItemKey"];
   v5 = &stru_284EE8C10;
   if (v4)
   {
@@ -376,43 +376,43 @@ LABEL_9:
   return v5;
 }
 
-- (void)setAttachAPNData:(id)a3 forSpecifier:(id)a4
+- (void)setAttachAPNData:(id)data forSpecifier:(id)specifier
 {
-  v7 = [a4 propertyForKey:@"apnItemKey"];
-  if (a3)
+  v7 = [specifier propertyForKey:@"apnItemKey"];
+  if (data)
   {
     v8 = v7;
     if (v7)
     {
-      if ((objc_opt_respondsToSelector() & 1) != 0 && (![a3 isEqualToString:&stru_284EE8C10] || -[NSMutableDictionary objectForKey:](self->_newAttachAPNDict, "objectForKey:", v8)))
+      if ((objc_opt_respondsToSelector() & 1) != 0 && (![data isEqualToString:&stru_284EE8C10] || -[NSMutableDictionary objectForKey:](self->_newAttachAPNDict, "objectForKey:", v8)))
       {
-        [(NSMutableDictionary *)self->_newAttachAPNDict setObject:a3 forKey:v8];
+        [(NSMutableDictionary *)self->_newAttachAPNDict setObject:data forKey:v8];
       }
     }
   }
 
-  [(EdgeSettingsController *)self reloadSpecifier:a4];
+  [(EdgeSettingsController *)self reloadSpecifier:specifier];
 }
 
-- (BOOL)_shouldShowUIForServiceType:(int)a3
+- (BOOL)_shouldShowUIForServiceType:(int)type
 {
   v5 = [(CoreTelephonyClient *)[(EdgeSettingsController *)self coreTelephonyClient] context:[(EdgeSettingsController *)self context] getCarrierBundleValue:&unk_284EE9BF0 error:0];
   if (v5 || (v5 = [(CoreTelephonyClient *)[(EdgeSettingsController *)self coreTelephonyClient] context:[(EdgeSettingsController *)self context] getCarrierBundleValue:&unk_284EE9C08 error:0]) != 0)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    LODWORD(v6) = 5;
+    LODWORD(intValue) = 5;
   }
 
-  if (a3 == 1 && (v6 & 1) != 0)
+  if (type == 1 && (intValue & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  if (a3 == 2 && (v6 & 2) != 0)
+  if (type == 2 && (intValue & 2) != 0)
   {
     v7 = MGGetBoolAnswer();
     if (v7)
@@ -421,7 +421,7 @@ LABEL_9:
     }
   }
 
-  else if (a3 == 4 && (v6 & 4) != 0)
+  else if (type == 4 && (intValue & 4) != 0)
   {
 
     LOBYTE(v7) = MGGetBoolAnswer();
@@ -429,14 +429,14 @@ LABEL_9:
 
   else
   {
-    if (a3 == 0x20000 && (v6 & 0x20000) != 0)
+    if (type == 0x20000 && (intValue & 0x20000) != 0)
     {
 LABEL_6:
       LOBYTE(v7) = 1;
       return v7;
     }
 
-    if (a3 == 48)
+    if (type == 48)
     {
       v9 = 0;
       LOBYTE(v7) = [(CoreTelephonyClient *)[(EdgeSettingsController *)self coreTelephonyClient] isTetheringEditingSupported:[(EdgeSettingsController *)self context] error:&v9];
@@ -455,10 +455,10 @@ LABEL_6:
 {
   if (!self->_group1Specifiers)
   {
-    v3 = [(EdgeSettingsController *)self specifier];
-    -[EdgeSettingsController setContext:](self, "setContext:", [v3 propertyForKey:*MEMORY[0x277D40128]]);
-    v4 = [(EdgeSettingsController *)self specifier];
-    -[EdgeSettingsController setCoreTelephonyClient:](self, "setCoreTelephonyClient:", [v4 propertyForKey:kEdgeSettingsClientConnection]);
+    specifier = [(EdgeSettingsController *)self specifier];
+    -[EdgeSettingsController setContext:](self, "setContext:", [specifier propertyForKey:*MEMORY[0x277D40128]]);
+    specifier2 = [(EdgeSettingsController *)self specifier];
+    -[EdgeSettingsController setCoreTelephonyClient:](self, "setCoreTelephonyClient:", [specifier2 propertyForKey:kEdgeSettingsClientConnection]);
     [(CoreTelephonyClient *)self->_coreTelephonyClient setDelegate:self];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -516,8 +516,8 @@ LABEL_6:
   v13 = *MEMORY[0x277D3FC48];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [(EdgeSettingsController *)self getGSMASettingsUIControl];
-  if (v15)
+  getGSMASettingsUIControl = [(EdgeSettingsController *)self getGSMASettingsUIControl];
+  if (getGSMASettingsUIControl)
   {
     [v14 addObjectsFromArray:AutoGsmaSettingsSpecifiers(self)];
   }
@@ -557,7 +557,7 @@ LABEL_6:
     v16 = 1;
   }
 
-  if (v15 != 1 && v16)
+  if (getGSMASettingsUIControl != 1 && v16)
   {
     [v14 addObjectsFromArray:self->_resetSpecifiers];
   }
@@ -598,9 +598,9 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)isTypeOfService:(id)a3 ofServiceType:(int)a4
+- (BOOL)isTypeOfService:(id)service ofServiceType:(int)type
 {
-  v5 = [a3 valueForKey:@"type-mask"];
+  v5 = [service valueForKey:@"type-mask"];
   result = 0;
   if (v5)
   {
@@ -610,7 +610,7 @@ LABEL_6:
     {
       valuePtr = 0;
       CFNumberGetValue(v6, kCFNumberIntType, &valuePtr);
-      if ((valuePtr & a4) != 0)
+      if ((valuePtr & type) != 0)
       {
         return 1;
       }
@@ -628,36 +628,36 @@ LABEL_6:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)makeUIApnBasedOn:(id)a3
++ (id)makeUIApnBasedOn:(id)on
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (a3)
+  if (on)
   {
-    [v4 setObject:objc_msgSend(a3 forKey:{"objectForKey:", @"apn", @"apn"}];
-    [v4 setObject:objc_msgSend(a3 forKey:{"objectForKey:", @"username", @"username"}];
-    [v4 setObject:objc_msgSend(a3 forKey:{"objectForKey:", @"password", @"password"}];
-    [v4 setObject:objc_msgSend(a3 forKey:{"objectForKey:", @"type-mask", @"type-mask"}];
+    [v4 setObject:objc_msgSend(on forKey:{"objectForKey:", @"apn", @"apn"}];
+    [v4 setObject:objc_msgSend(on forKey:{"objectForKey:", @"username", @"username"}];
+    [v4 setObject:objc_msgSend(on forKey:{"objectForKey:", @"password", @"password"}];
+    [v4 setObject:objc_msgSend(on forKey:{"objectForKey:", @"type-mask", @"type-mask"}];
   }
 
   return v4;
 }
 
-- (void)_updateKey:(id)a3 toValue:(id)a4 forServiceType:(int)a5
+- (void)_updateKey:(id)key toValue:(id)value forServiceType:(int)type
 {
   if (!self->_cacheInitialized)
   {
     [(EdgeSettingsController *)self initAPNCacheDictionaries];
   }
 
-  if (a5 <= 3)
+  if (type <= 3)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
       p_internetSettingsDictionary = &self->_internetSettingsDictionary;
       internetSettingsDictionary = self->_internetSettingsDictionary;
       if (!internetSettingsDictionary)
       {
-        v11 = self;
+        selfCopy5 = self;
         p_vvmSettingsDictionary = &self->_internetSettingsDictionary;
         v13 = 1;
         goto LABEL_19;
@@ -666,7 +666,7 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    if (a5 != 2)
+    if (type != 2)
     {
       return;
     }
@@ -678,16 +678,16 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    v11 = self;
+    selfCopy5 = self;
     p_vvmSettingsDictionary = &self->_vvmSettingsDictionary;
     v13 = 2;
 LABEL_19:
-    [(EdgeSettingsController *)v11 initDictionaryForUIApn:p_vvmSettingsDictionary forServiceType:v13];
+    [(EdgeSettingsController *)selfCopy5 initDictionaryForUIApn:p_vvmSettingsDictionary forServiceType:v13];
     internetSettingsDictionary = *p_internetSettingsDictionary;
     goto LABEL_20;
   }
 
-  if (a5 == 4)
+  if (type == 4)
   {
     p_internetSettingsDictionary = &self->_mmsSettingsDictionary;
     internetSettingsDictionary = self->_mmsSettingsDictionary;
@@ -696,15 +696,15 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v11 = self;
+    selfCopy5 = self;
     p_vvmSettingsDictionary = &self->_mmsSettingsDictionary;
     v13 = 4;
     goto LABEL_19;
   }
 
-  if (a5 != 48)
+  if (type != 48)
   {
-    if (a5 != 0x20000)
+    if (type != 0x20000)
     {
       return;
     }
@@ -716,7 +716,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v11 = self;
+    selfCopy5 = self;
     p_vvmSettingsDictionary = &self->_imsSettingsDictionary;
     v13 = 0x20000;
     goto LABEL_19;
@@ -726,7 +726,7 @@ LABEL_19:
   internetSettingsDictionary = self->_tetheringSettingsDictionary;
   if (!internetSettingsDictionary)
   {
-    v11 = self;
+    selfCopy5 = self;
     p_vvmSettingsDictionary = &self->_tetheringSettingsDictionary;
     v13 = 48;
     goto LABEL_19;
@@ -734,21 +734,21 @@ LABEL_19:
 
 LABEL_20:
 
-  [(NSMutableDictionary *)internetSettingsDictionary setObject:a4 forKey:a3];
+  [(NSMutableDictionary *)internetSettingsDictionary setObject:value forKey:key];
 }
 
-- (id)_getAPNDictinaryForService:(int)a3
+- (id)_getAPNDictinaryForService:(int)service
 {
-  if (a3 <= 3)
+  if (service <= 3)
   {
-    if (a3 == 1)
+    if (service == 1)
     {
       v3 = &OBJC_IVAR___EdgeSettingsController__internetSettingsDictionary;
     }
 
     else
     {
-      if (a3 != 2)
+      if (service != 2)
       {
         return [(EdgeSettingsController *)self _APNDictionaryForServiceFromSC:?];
       }
@@ -759,7 +759,7 @@ LABEL_20:
 
   else
   {
-    switch(a3)
+    switch(service)
     {
       case 4:
         v3 = &OBJC_IVAR___EdgeSettingsController__mmsSettingsDictionary;
@@ -784,13 +784,13 @@ LABEL_20:
   return [(EdgeSettingsController *)self _APNDictionaryForServiceFromSC:?];
 }
 
-- (BOOL)_isAPNDictionaryBlank:(id)a3
+- (BOOL)_isAPNDictionaryBlank:(id)blank
 {
-  if ((![a3 objectForKey:@"apn"] || (v4 = objc_msgSend(objc_msgSend(a3, "objectForKey:", @"apn"), "isEqual:", &stru_284EE8C10)) != 0) && (!objc_msgSend(a3, "objectForKey:", @"username") || (v4 = objc_msgSend(objc_msgSend(a3, "objectForKey:", @"username"), "isEqual:", &stru_284EE8C10)) != 0))
+  if ((![blank objectForKey:@"apn"] || (v4 = objc_msgSend(objc_msgSend(blank, "objectForKey:", @"apn"), "isEqual:", &stru_284EE8C10)) != 0) && (!objc_msgSend(blank, "objectForKey:", @"username") || (v4 = objc_msgSend(objc_msgSend(blank, "objectForKey:", @"username"), "isEqual:", &stru_284EE8C10)) != 0))
   {
-    if ([a3 objectForKey:@"password"])
+    if ([blank objectForKey:@"password"])
     {
-      LOBYTE(v4) = [objc_msgSend(a3 objectForKey:{@"password", "isEqual:", &stru_284EE8C10}];
+      LOBYTE(v4) = [objc_msgSend(blank objectForKey:{@"password", "isEqual:", &stru_284EE8C10}];
     }
 
     else
@@ -802,12 +802,12 @@ LABEL_20:
   return v4 & 1;
 }
 
-- (void)uploadSettingsOnCT:(id)a3
+- (void)uploadSettingsOnCT:(id)t
 {
-  v5 = [(EdgeSettingsController *)self coreTelephonyClient];
-  v6 = [(EdgeSettingsController *)self context];
+  coreTelephonyClient = [(EdgeSettingsController *)self coreTelephonyClient];
+  context = [(EdgeSettingsController *)self context];
 
-  [(CoreTelephonyClient *)v5 setUIConfiguredApns:v6 apns:a3 completion:&__block_literal_global];
+  [(CoreTelephonyClient *)coreTelephonyClient setUIConfiguredApns:context apns:t completion:&__block_literal_global];
 }
 
 void __45__EdgeSettingsController_uploadSettingsOnCT___block_invoke(uint64_t a1, uint64_t a2)
@@ -949,11 +949,11 @@ void __45__EdgeSettingsController_uploadSettingsOnCT___block_invoke(uint64_t a1,
   {
   }
 
-  v5 = [(EdgeSettingsController *)self attachAPNSettings];
-  if (v5)
+  attachAPNSettings = [(EdgeSettingsController *)self attachAPNSettings];
+  if (attachAPNSettings)
   {
-    v6 = v5;
-    self->_lastAttachAPNDict = [v5 mutableCopy];
+    v6 = attachAPNSettings;
+    self->_lastAttachAPNDict = [attachAPNSettings mutableCopy];
     v7 = [v6 mutableCopy];
   }
 
@@ -1013,7 +1013,7 @@ void __45__EdgeSettingsController_uploadSettingsOnCT___block_invoke(uint64_t a1,
   [(EdgeSettingsController *)&v3 applicationDidResume];
 }
 
-- (void)showCarrierSettingsEraseAlert:(BOOL)a3
+- (void)showCarrierSettingsEraseAlert:(BOOL)alert
 {
   v5 = MEMORY[0x277D75110];
   v6 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ERASE_CARRIER_SETTINGS_TITLE", &stru_284EE8C10, @"EDGE Settings"}];
@@ -1025,7 +1025,7 @@ void __45__EdgeSettingsController_uploadSettingsOnCT___block_invoke(uint64_t a1,
   v13[2] = __56__EdgeSettingsController_showCarrierSettingsEraseAlert___block_invoke;
   v13[3] = &unk_278BB2DF8;
   v13[4] = self;
-  v14 = a3;
+  alertCopy = alert;
   [v7 addAction:{objc_msgSend(v8, "actionWithTitle:style:handler:", v9, 0, v13)}];
   v10 = MEMORY[0x277D750F8];
   v11 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"CANCEL", &stru_284EE8C10, @"EDGE Settings"}];
@@ -1054,12 +1054,12 @@ uint64_t __56__EdgeSettingsController_showCarrierSettingsEraseAlert___block_invo
   return result;
 }
 
-- (id)getDefaultSettings:(id)a3
+- (id)getDefaultSettings:(id)settings
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [(EdgeSettingsController *)self getGSMASettingsUIControl];
-  v5 = v4;
-  if (v4 == 1)
+  getGSMASettingsUIControl = [(EdgeSettingsController *)self getGSMASettingsUIControl];
+  v5 = getGSMASettingsUIControl;
+  if (getGSMASettingsUIControl == 1)
   {
     v27 = 0u;
     v28 = 0u;
@@ -1109,7 +1109,7 @@ uint64_t __56__EdgeSettingsController_showCarrierSettingsEraseAlert___block_invo
     }
   }
 
-  else if (v4 == 2)
+  else if (getGSMASettingsUIControl == 2)
   {
     v31 = 0u;
     v32 = 0u;
@@ -1147,9 +1147,9 @@ uint64_t __56__EdgeSettingsController_showCarrierSettingsEraseAlert___block_invo
   return result;
 }
 
-- (void)setDefaultSettings:(id)a3 specifier:(id)a4
+- (void)setDefaultSettings:(id)settings specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([settings BOOLValue])
   {
     [(EdgeSettingsController *)self resetAllConfiguredSettings];
     if ([(CoreTelephonyClient *)[(EdgeSettingsController *)self coreTelephonyClient] loadGSMASettings:[(EdgeSettingsController *)self context] state:1])
@@ -1168,10 +1168,10 @@ uint64_t __56__EdgeSettingsController_showCarrierSettingsEraseAlert___block_invo
   }
 }
 
-- (void)didChangeDeviceManagementSettings:(id)a3
+- (void)didChangeDeviceManagementSettings:(id)settings
 {
-  v4 = [a3 slotID];
-  if (v4 == [(CTXPCServiceSubscriptionContext *)[(EdgeSettingsController *)self context] slotID])
+  slotID = [settings slotID];
+  if (slotID == [(CTXPCServiceSubscriptionContext *)[(EdgeSettingsController *)self context] slotID])
   {
 
     [(EdgeSettingsController *)self reloadSpecifiers];
@@ -1232,7 +1232,7 @@ void __52__EdgeSettingsController_resetAllConfiguredSettings__block_invoke_43_co
 - (void)specifiers
 {
   v8 = *MEMORY[0x277D85DE8];
-  [a1 context];
+  [self context];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0(&dword_23C13C000, MEMORY[0x277D86220], v1, "EdgeSettingsController context: %@", v2, v3, v4, v5, v7);
   v6 = *MEMORY[0x277D85DE8];

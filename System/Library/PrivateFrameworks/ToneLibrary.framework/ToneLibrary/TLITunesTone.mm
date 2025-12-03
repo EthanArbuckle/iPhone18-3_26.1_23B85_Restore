@@ -1,26 +1,26 @@
 @interface TLITunesTone
-+ (id)_identifierForPropertyListRepresentation:(id)a3;
-- (BOOL)isDuplicateOfTone:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TLITunesTone)initWithPropertyListRepresentation:(id)a3 filePath:(id)a4;
-- (TLITunesTone)initWithToneStoreDownload:(id)a3;
++ (id)_identifierForPropertyListRepresentation:(id)representation;
+- (BOOL)isDuplicateOfTone:(id)tone;
+- (BOOL)isEqual:(id)equal;
+- (TLITunesTone)initWithPropertyListRepresentation:(id)representation filePath:(id)path;
+- (TLITunesTone)initWithToneStoreDownload:(id)download;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TLITunesTone
 
-- (TLITunesTone)initWithPropertyListRepresentation:(id)a3 filePath:(id)a4
+- (TLITunesTone)initWithPropertyListRepresentation:(id)representation filePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  pathCopy = path;
   v83.receiver = self;
   v83.super_class = TLITunesTone;
   v8 = [(TLITunesTone *)&v83 init];
   if (v8)
   {
-    v9 = [objc_opt_class() _identifierForPropertyListRepresentation:v6];
-    v10 = [v6 objectForKey:@"Name"];
+    v9 = [objc_opt_class() _identifierForPropertyListRepresentation:representationCopy];
+    v10 = [representationCopy objectForKey:@"Name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
       v14 = TLLogToneManagement();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(TLITunesTone *)v8 initWithPropertyListRepresentation:v6 filePath:v14];
+        [(TLITunesTone *)v8 initWithPropertyListRepresentation:representationCopy filePath:v14];
       }
 
       fadeOutDurationNumber = v8;
@@ -66,11 +66,11 @@
       name = v8->_name;
       v8->_name = v18;
 
-      v20 = [v7 copy];
+      v20 = [pathCopy copy];
       filePath = v8->_filePath;
       v8->_filePath = v20;
 
-      v22 = [v6 objectForKey:@"Album"];
+      v22 = [representationCopy objectForKey:@"Album"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
@@ -89,7 +89,7 @@
       albumTitle = v8->_albumTitle;
       v8->_albumTitle = v26;
 
-      v28 = [v6 objectForKey:@"Artist"];
+      v28 = [representationCopy objectForKey:@"Artist"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -107,7 +107,7 @@
       artistName = v8->_artistName;
       v8->_artistName = v31;
 
-      v33 = [v6 objectForKey:@"Genre"];
+      v33 = [representationCopy objectForKey:@"Genre"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -125,20 +125,20 @@
       genreName = v8->_genreName;
       v8->_genreName = v36;
 
-      v38 = [v6 objectForKey:@"Purchased"];
+      v38 = [representationCopy objectForKey:@"Purchased"];
       if (objc_opt_respondsToSelector())
       {
-        v39 = [v38 BOOLValue];
+        bOOLValue = [v38 BOOLValue];
       }
 
       else
       {
-        v39 = 0;
+        bOOLValue = 0;
       }
 
-      v8->_purchased = v39;
+      v8->_purchased = bOOLValue;
 
-      v40 = [v6 objectForKey:@"PID"];
+      v40 = [representationCopy objectForKey:@"PID"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -156,7 +156,7 @@
       syncIdentifier = v8->_syncIdentifier;
       v8->_syncIdentifier = v43;
 
-      v45 = [v6 objectForKey:@"Store Item ID"];
+      v45 = [representationCopy objectForKey:@"Store Item ID"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -171,7 +171,7 @@
       if (v46)
       {
         v47 = v46;
-        v48 = [v47 unsignedLongLongValue];
+        unsignedLongLongValue = [v47 unsignedLongLongValue];
       }
 
       else
@@ -192,17 +192,17 @@
 
         v52 = v51;
 
-        v48 = [v52 UTF8String];
-        if (v48)
+        unsignedLongLongValue = [v52 UTF8String];
+        if (unsignedLongLongValue)
         {
-          v48 = strtoull(v48, 0, 10);
+          unsignedLongLongValue = strtoull(unsignedLongLongValue, 0, 10);
         }
 
         v9 = v82;
       }
 
-      v8->_storeItemIdentifier = v48;
-      v53 = [v6 objectForKey:@"Store Front ID"];
+      v8->_storeItemIdentifier = unsignedLongLongValue;
+      v53 = [representationCopy objectForKey:@"Store Front ID"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -220,7 +220,7 @@
       storeFrontIdentifier = v8->_storeFrontIdentifier;
       v8->_storeFrontIdentifier = v56;
 
-      v58 = [v6 objectForKey:@"Artwork File"];
+      v58 = [representationCopy objectForKey:@"Artwork File"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -238,43 +238,43 @@
       artworkFile = v8->_artworkFile;
       v8->_artworkFile = v61;
 
-      v63 = [v6 objectForKey:@"Total Time"];
+      v63 = [representationCopy objectForKey:@"Total Time"];
       v64 = objc_opt_respondsToSelector();
-      v65 = 0.0;
+      unsignedIntegerValue = 0.0;
       if (v64)
       {
-        v65 = [v63 unsignedIntegerValue];
+        unsignedIntegerValue = [v63 unsignedIntegerValue];
       }
 
-      v8->_duration = v65 / 1000.0;
+      v8->_duration = unsignedIntegerValue / 1000.0;
 
-      v66 = [v6 objectForKey:@"Protected Content"];
+      v66 = [representationCopy objectForKey:@"Protected Content"];
       if (objc_opt_respondsToSelector())
       {
-        v67 = [v66 BOOLValue];
+        bOOLValue2 = [v66 BOOLValue];
       }
 
       else
       {
-        v67 = 0;
+        bOOLValue2 = 0;
       }
 
-      v8->_protectedContent = v67;
+      v8->_protectedContent = bOOLValue2;
 
-      v68 = [v6 objectForKey:@"Private"];
+      v68 = [representationCopy objectForKey:@"Private"];
       if (objc_opt_respondsToSelector())
       {
-        v69 = [v68 BOOLValue];
+        bOOLValue3 = [v68 BOOLValue];
       }
 
       else
       {
-        v69 = 0;
+        bOOLValue3 = 0;
       }
 
-      v8->_privateTone = v69;
+      v8->_privateTone = bOOLValue3;
 
-      v70 = [v6 objectForKey:@"Media Kind"];
+      v70 = [representationCopy objectForKey:@"Media Kind"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -290,7 +290,7 @@
 
       v73 = [v72 isEqualToString:@"tone"];
       v8->_ringtone = v73 ^ 1;
-      v74 = [v6 objectForKey:@"Fade In"];
+      v74 = [representationCopy objectForKey:@"Fade In"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -307,7 +307,7 @@
       fadeInDurationNumber = v8->_fadeInDurationNumber;
       v8->_fadeInDurationNumber = v76;
 
-      v78 = [v6 objectForKey:@"Fade Out"];
+      v78 = [representationCopy objectForKey:@"Fade Out"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -329,48 +329,48 @@
   return v8;
 }
 
-- (TLITunesTone)initWithToneStoreDownload:(id)a3
+- (TLITunesTone)initWithToneStoreDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v23.receiver = self;
   v23.super_class = TLITunesTone;
   v5 = [(TLITunesTone *)&v23 init];
   if (v5)
   {
-    v6 = [v4 toneIdentifier];
-    if (!v6)
+    toneIdentifier = [downloadCopy toneIdentifier];
+    if (!toneIdentifier)
     {
-      v6 = [v4 identifier];
+      toneIdentifier = [downloadCopy identifier];
     }
 
-    v7 = [v6 copy];
+    v7 = [toneIdentifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 name];
-    v10 = [v9 copy];
+    name = [downloadCopy name];
+    v10 = [name copy];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 albumTitle];
-    v13 = [v12 copy];
+    albumTitle = [downloadCopy albumTitle];
+    v13 = [albumTitle copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v13;
 
-    v15 = [v4 artistName];
-    v16 = [v15 copy];
+    artistName = [downloadCopy artistName];
+    v16 = [artistName copy];
     artistName = v5->_artistName;
     v5->_artistName = v16;
 
-    v18 = [v4 genreName];
-    v19 = [v18 copy];
+    genreName = [downloadCopy genreName];
+    v19 = [genreName copy];
     genreName = v5->_genreName;
     v5->_genreName = v19;
 
-    v5->_storeItemIdentifier = [v4 storeItemIdentifier];
-    [v4 duration];
+    v5->_storeItemIdentifier = [downloadCopy storeItemIdentifier];
+    [downloadCopy duration];
     v5->_duration = v21;
-    v5->_ringtone = [v4 isRingtone];
+    v5->_ringtone = [downloadCopy isRingtone];
     v5->_purchased = 1;
   }
 
@@ -453,10 +453,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -466,7 +466,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = identifier;
@@ -842,14 +842,14 @@ LABEL_90:
   return v11 ^ v13 ^ [(NSNumber *)self->_fadeOutDurationNumber hash];
 }
 
-- (BOOL)isDuplicateOfTone:(id)a3
+- (BOOL)isDuplicateOfTone:(id)tone
 {
-  v4 = a3;
-  v5 = v4;
+  toneCopy = tone;
+  v5 = toneCopy;
   storeItemIdentifier = self->_storeItemIdentifier;
-  if (!storeItemIdentifier || storeItemIdentifier != *(v4 + 9))
+  if (!storeItemIdentifier || storeItemIdentifier != *(toneCopy + 9))
   {
-    v8 = *(v4 + 3);
+    v8 = *(toneCopy + 3);
     v9 = self->_name;
     v10 = v8;
     v11 = v10;
@@ -984,9 +984,9 @@ LABEL_33:
   return v7;
 }
 
-+ (id)_identifierForPropertyListRepresentation:(id)a3
++ (id)_identifierForPropertyListRepresentation:(id)representation
 {
-  v3 = [a3 objectForKey:@"GUID"];
+  v3 = [representation objectForKey:@"GUID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

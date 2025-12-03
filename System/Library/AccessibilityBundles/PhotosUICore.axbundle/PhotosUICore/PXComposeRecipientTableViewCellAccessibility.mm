@@ -1,5 +1,5 @@
 @interface PXComposeRecipientTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (unint64_t)accessibilityTraits;
 - (void)selectCheckbox;
@@ -8,33 +8,33 @@
 
 @implementation PXComposeRecipientTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXComposeRecipientTableViewCell" hasInstanceVariable:@"_cellModel" withType:"PXComposeRecipientTableCellModel"];
-  [v3 validateClass:@"PXComposeRecipientTableCellModel" hasInstanceMethod:@"showsCheckbox" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXComposeRecipientTableCellModel" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXComposeRecipientTableViewCell" hasInstanceMethod:@"_updateAccessoryImageView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXComposeRecipientTableViewCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXComposeRecipientTableViewCell" hasInstanceVariable:@"_cellModel" withType:"PXComposeRecipientTableCellModel"];
+  [validationsCopy validateClass:@"PXComposeRecipientTableCellModel" hasInstanceMethod:@"showsCheckbox" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXComposeRecipientTableCellModel" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXComposeRecipientTableViewCell" hasInstanceMethod:@"_updateAccessoryImageView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXComposeRecipientTableViewCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = PXComposeRecipientTableViewCellAccessibility;
-  v3 = [(PXComposeRecipientTableViewCellAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(PXComposeRecipientTableViewCellAccessibility *)&v6 accessibilityTraits];
   v4 = [(PXComposeRecipientTableViewCellAccessibility *)self safeValueForKey:@"_cellModel"];
   if ([v4 safeBoolForKey:@"showsCheckbox"] && objc_msgSend(v4, "safeBoolForKey:", @"checked"))
   {
-    v3 |= *MEMORY[0x29EDC7FC0];
+    accessibilityTraits |= *MEMORY[0x29EDC7FC0];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(PXComposeRecipientTableViewCellAccessibility *)self safeValueForKey:@"_cellModel"];
   if ([v4 safeBoolForKey:@"showsCheckbox"])
   {
@@ -63,11 +63,11 @@
     v9 = accessibilityPhotosUICoreLocalizedString(v7);
     v10 = [v6 initWithName:v9 target:self selector:*v8];
 
-    [v3 addObject:v10];
+    [array addObject:v10];
     [(PXComposeRecipientTableViewCellAccessibility *)self _updateAccessoryImageView];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)selectCheckbox

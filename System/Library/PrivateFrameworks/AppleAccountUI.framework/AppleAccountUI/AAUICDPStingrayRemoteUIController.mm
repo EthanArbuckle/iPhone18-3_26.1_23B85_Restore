@@ -1,27 +1,27 @@
 @interface AAUICDPStingrayRemoteUIController
-- (AAUICDPStingrayRemoteUIController)initWithRemoteUIController:(id)a3 appleAccount:(id)a4 hooks:(id)a5;
-- (void)attachAllHandlersWithTelemetryFlowID:(id)a3;
-- (void)attachAuthHandler:(id)a3;
-- (void)attachBiometricRatchetHandler:(id)a3;
-- (void)attachDTOBiometryHandler:(id)a3;
-- (void)attachPasscodeHandler:(id)a3;
-- (void)attachRecoveryKeyHandler:(id)a3;
-- (void)attachRepairHandler:(id)a3;
+- (AAUICDPStingrayRemoteUIController)initWithRemoteUIController:(id)controller appleAccount:(id)account hooks:(id)hooks;
+- (void)attachAllHandlersWithTelemetryFlowID:(id)d;
+- (void)attachAuthHandler:(id)handler;
+- (void)attachBiometricRatchetHandler:(id)handler;
+- (void)attachDTOBiometryHandler:(id)handler;
+- (void)attachPasscodeHandler:(id)handler;
+- (void)attachRecoveryKeyHandler:(id)handler;
+- (void)attachRepairHandler:(id)handler;
 @end
 
 @implementation AAUICDPStingrayRemoteUIController
 
-- (AAUICDPStingrayRemoteUIController)initWithRemoteUIController:(id)a3 appleAccount:(id)a4 hooks:(id)a5
+- (AAUICDPStingrayRemoteUIController)initWithRemoteUIController:(id)controller appleAccount:(id)account hooks:(id)hooks
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  accountCopy = account;
+  hooksCopy = hooks;
   v11 = [(AAUICDPStingrayRemoteUIController *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a4);
-    v13 = [objc_alloc(MEMORY[0x1E69C7030]) initWithRemoteUIController:v8 hooks:v10];
+    objc_storeStrong(&v11->_account, account);
+    v13 = [objc_alloc(MEMORY[0x1E69C7030]) initWithRemoteUIController:controllerCopy hooks:hooksCopy];
     serverHookHandler = v12->_serverHookHandler;
     v12->_serverHookHandler = v13;
 
@@ -29,9 +29,9 @@
     accountManagerHelper = v12->_accountManagerHelper;
     v12->_accountManagerHelper = v15;
 
-    v17 = [(AAUIAccountManagerHelper *)v12->_accountManagerHelper accountManager];
+    accountManager = [(AAUIAccountManagerHelper *)v12->_accountManagerHelper accountManager];
     accountManager = v12->_accountManager;
-    v12->_accountManager = v17;
+    v12->_accountManager = accountManager;
 
     +[RemoteUICustomComponentFactory registerRemoteUISwiftViews];
   }
@@ -39,17 +39,17 @@
   return v12;
 }
 
-- (void)attachAllHandlersWithTelemetryFlowID:(id)a3
+- (void)attachAllHandlersWithTelemetryFlowID:(id)d
 {
   v42[14] = *MEMORY[0x1E69E9840];
-  v33 = a3;
+  dCopy = d;
   v28 = objc_opt_new();
   v42[0] = v28;
   v4 = [AAUIAuthKitAuthenticatonHook alloc];
-  v36 = self;
-  v35 = [(ACAccount *)self->_account username];
-  v34 = [(ACAccount *)self->_account aa_altDSID];
-  v29 = [(AAUIAuthKitAuthenticatonHook *)v4 initWithUsername:v35 altDSID:v34];
+  selfCopy = self;
+  username = [(ACAccount *)self->_account username];
+  aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+  v29 = [(AAUIAuthKitAuthenticatonHook *)v4 initWithUsername:username altDSID:aa_altDSID];
   v42[1] = v29;
   v30 = objc_opt_new();
   v42[2] = v30;
@@ -65,9 +65,9 @@
   v42[7] = v7;
   v8 = objc_opt_new();
   v42[8] = v8;
-  v9 = [[AAUICustodianStartSessionHook alloc] initWithTelemetryFlowID:v33];
+  v9 = [[AAUICustodianStartSessionHook alloc] initWithTelemetryFlowID:dCopy];
   v42[9] = v9;
-  v10 = [[AAUICustodianStartApprovalHook alloc] initWithTelemetryFlowID:v33];
+  v10 = [[AAUICustodianStartApprovalHook alloc] initWithTelemetryFlowID:dCopy];
   v42[10] = v10;
   v38 = 0;
   v39 = &v38;
@@ -91,7 +91,7 @@
   v42[11] = v13;
   v14 = objc_opt_new();
   v42[12] = v14;
-  v15 = [objc_alloc(MEMORY[0x1E698DEC0]) initWithAccount:v36->_account];
+  v15 = [objc_alloc(MEMORY[0x1E698DEC0]) initWithAccount:selfCopy->_account];
   v42[13] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:14];
 
@@ -102,8 +102,8 @@
   {
     v19 = [v16 mutableCopy];
     v20 = objc_alloc(MEMORY[0x1E698DE78]);
-    v21 = [(ACAccount *)v36->_account aa_altDSID];
-    v22 = [v20 initWithAltDSID:v21];
+    aa_altDSID2 = [(ACAccount *)selfCopy->_account aa_altDSID];
+    v22 = [v20 initWithAltDSID:aa_altDSID2];
     [v19 addObject:v22];
 
     v23 = [v19 copy];
@@ -112,17 +112,17 @@
 
   v24 = [v16 mutableCopy];
   v25 = objc_opt_new();
-  v26 = [v25 hooksFor:2 accountManager:v36->_accountManager];
+  v26 = [v25 hooksFor:2 accountManager:selfCopy->_accountManager];
   [v24 addObjectsFromArray:v26];
   v27 = [v24 copy];
 
-  [(RUIServerHookHandler *)v36->_serverHookHandler setServerHooks:v27];
+  [(RUIServerHookHandler *)selfCopy->_serverHookHandler setServerHooks:v27];
 }
 
-- (void)attachRecoveryKeyHandler:(id)a3
+- (void)attachRecoveryKeyHandler:(id)handler
 {
-  v4 = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
-  v6 = [v4 mutableCopy];
+  serverHooks = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
+  v6 = [serverHooks mutableCopy];
 
   v5 = objc_opt_new();
   [v6 addObject:v5];
@@ -130,10 +130,10 @@
   [(RUIServerHookHandler *)self->_serverHookHandler setServerHooks:v6];
 }
 
-- (void)attachPasscodeHandler:(id)a3
+- (void)attachPasscodeHandler:(id)handler
 {
-  v4 = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
-  v6 = [v4 mutableCopy];
+  serverHooks = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
+  v6 = [serverHooks mutableCopy];
 
   v5 = objc_opt_new();
   [v6 addObject:v5];
@@ -141,10 +141,10 @@
   [(RUIServerHookHandler *)self->_serverHookHandler setServerHooks:v6];
 }
 
-- (void)attachRepairHandler:(id)a3
+- (void)attachRepairHandler:(id)handler
 {
-  v4 = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
-  v6 = [v4 mutableCopy];
+  serverHooks = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
+  v6 = [serverHooks mutableCopy];
 
   v5 = objc_opt_new();
   [v6 addObject:v5];
@@ -152,10 +152,10 @@
   [(RUIServerHookHandler *)self->_serverHookHandler setServerHooks:v6];
 }
 
-- (void)attachBiometricRatchetHandler:(id)a3
+- (void)attachBiometricRatchetHandler:(id)handler
 {
-  v4 = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
-  v6 = [v4 mutableCopy];
+  serverHooks = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
+  v6 = [serverHooks mutableCopy];
 
   v5 = objc_opt_new();
   [v6 addObject:v5];
@@ -163,10 +163,10 @@
   [(RUIServerHookHandler *)self->_serverHookHandler setServerHooks:v6];
 }
 
-- (void)attachDTOBiometryHandler:(id)a3
+- (void)attachDTOBiometryHandler:(id)handler
 {
-  v4 = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
-  v6 = [v4 mutableCopy];
+  serverHooks = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
+  v6 = [serverHooks mutableCopy];
 
   v5 = objc_opt_new();
   [v6 addObject:v5];
@@ -174,10 +174,10 @@
   [(RUIServerHookHandler *)self->_serverHookHandler setServerHooks:v6];
 }
 
-- (void)attachAuthHandler:(id)a3
+- (void)attachAuthHandler:(id)handler
 {
-  v4 = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
-  v6 = [v4 mutableCopy];
+  serverHooks = [(RUIServerHookHandler *)self->_serverHookHandler serverHooks];
+  v6 = [serverHooks mutableCopy];
 
   v5 = objc_opt_new();
   [v6 addObject:v5];

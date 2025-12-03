@@ -1,11 +1,11 @@
 @interface TSTCellToggleControlSpec
-+ (id)cellSpecFromTSKFormat:(id)a3;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)cellSpecFromTSKFormat:(id)format;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)toggleControlSpec;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateFormatAndValue:(id)a3;
-- (TSTCellToggleControlSpec)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateFormatAndValue:(id)value;
+- (TSTCellToggleControlSpec)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTCellToggleControlSpec
@@ -17,29 +17,29 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)validateFormatAndValue:(id)a3
+- (BOOL)validateFormatAndValue:(id)value
 {
-  v3 = a3;
-  v8 = objc_msgSend_getCurrentFormat(v3, v4, v5, v6, v7);
+  valueCopy = value;
+  v8 = objc_msgSend_getCurrentFormat(valueCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_formatType(v8, v9, v10, v11, v12);
 
-  v18 = v13 == 263 && objc_msgSend_valueType(v3, v14, v15, v16, v17) == 6;
+  v18 = v13 == 263 && objc_msgSend_valueType(valueCopy, v14, v15, v16, v17) == 6;
   return v18;
 }
 
-+ (id)cellSpecFromTSKFormat:(id)a3
++ (id)cellSpecFromTSKFormat:(id)format
 {
-  v3 = a3;
-  if (objc_msgSend_formatType(v3, v4, v5, v6, v7) != 263)
+  formatCopy = format;
+  if (objc_msgSend_formatType(formatCopy, v4, v5, v6, v7) != 263)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "+[TSTCellToggleControlSpec cellSpecFromTSKFormat:]", v9, v10);
@@ -54,23 +54,23 @@
   return v22;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSTCellToggleControlSpec alloc];
-  v9 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5, v8);
+  v9 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy, v8);
 
   return v9;
 }
 
-- (TSTCellToggleControlSpec)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTCellToggleControlSpec)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v22.receiver = self;
   v22.super_class = TSTCellToggleControlSpec;
-  v8 = [(TSTCellSpec *)&v22 init:a3];
+  v8 = [(TSTCellSpec *)&v22 init:archive];
   if (v8)
   {
-    v9 = *(a3 + 16) == 8;
+    v9 = *(archive + 16) == 8;
   }
 
   else
@@ -91,11 +91,11 @@
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = objc_msgSend_interactionType(self, a2, a3, a4, v4);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 16) = v6;
+  v6 = objc_msgSend_interactionType(self, a2, archive, archiver, v4);
+  *(archive + 4) |= 0x20u;
+  *(archive + 16) = v6;
 }
 
 @end

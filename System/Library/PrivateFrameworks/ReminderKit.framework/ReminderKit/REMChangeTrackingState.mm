@@ -1,30 +1,30 @@
 @interface REMChangeTrackingState
-- (BOOL)isEqual:(id)a3;
-- (REMChangeTrackingState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMChangeTrackingState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMChangeTrackingState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMChangeTrackingState *)self lastConsumedChangeToken];
-  [v4 encodeObject:v5 forKey:@"lastConsumedChangeToken"];
+  coderCopy = coder;
+  lastConsumedChangeToken = [(REMChangeTrackingState *)self lastConsumedChangeToken];
+  [coderCopy encodeObject:lastConsumedChangeToken forKey:@"lastConsumedChangeToken"];
 
-  v6 = [(REMChangeTrackingState *)self lastConsumedDate];
-  [v4 encodeObject:v6 forKey:@"lastConsumedDate"];
+  lastConsumedDate = [(REMChangeTrackingState *)self lastConsumedDate];
+  [coderCopy encodeObject:lastConsumedDate forKey:@"lastConsumedDate"];
 }
 
-- (REMChangeTrackingState)initWithCoder:(id)a3
+- (REMChangeTrackingState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = REMChangeTrackingState;
   v5 = [(REMChangeTrackingState *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastConsumedChangeToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastConsumedChangeToken"];
     if (!v6)
     {
       v11 = 0;
@@ -35,7 +35,7 @@
     v5->_lastConsumedChangeToken = v6;
     v8 = v6;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastConsumedDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastConsumedDate"];
     lastConsumedDate = v5->_lastConsumedDate;
     v5->_lastConsumedDate = v9;
   }
@@ -46,28 +46,28 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMChangeTrackingState *)self lastConsumedChangeToken];
-      v8 = [(REMChangeTrackingState *)v6 lastConsumedChangeToken];
-      v9 = v8;
-      if (v7 == v8)
+      lastConsumedChangeToken = [(REMChangeTrackingState *)self lastConsumedChangeToken];
+      lastConsumedChangeToken2 = [(REMChangeTrackingState *)v6 lastConsumedChangeToken];
+      v9 = lastConsumedChangeToken2;
+      if (lastConsumedChangeToken == lastConsumedChangeToken2)
       {
       }
 
       else
       {
-        v10 = [(REMChangeTrackingState *)self lastConsumedChangeToken];
-        v11 = [(REMChangeTrackingState *)v6 lastConsumedChangeToken];
-        v12 = [v10 isEqual:v11];
+        lastConsumedChangeToken3 = [(REMChangeTrackingState *)self lastConsumedChangeToken];
+        lastConsumedChangeToken4 = [(REMChangeTrackingState *)v6 lastConsumedChangeToken];
+        v12 = [lastConsumedChangeToken3 isEqual:lastConsumedChangeToken4];
 
         if (!v12)
         {
@@ -75,18 +75,18 @@ LABEL_6:
         }
       }
 
-      v14 = [(REMChangeTrackingState *)self lastConsumedDate];
-      v15 = [(REMChangeTrackingState *)v6 lastConsumedDate];
-      if (v14 == v15)
+      lastConsumedDate = [(REMChangeTrackingState *)self lastConsumedDate];
+      lastConsumedDate2 = [(REMChangeTrackingState *)v6 lastConsumedDate];
+      if (lastConsumedDate == lastConsumedDate2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(REMChangeTrackingState *)self lastConsumedDate];
-        v17 = [(REMChangeTrackingState *)v6 lastConsumedDate];
-        v13 = [v16 isEqual:v17];
+        lastConsumedDate3 = [(REMChangeTrackingState *)self lastConsumedDate];
+        lastConsumedDate4 = [(REMChangeTrackingState *)v6 lastConsumedDate];
+        v13 = [lastConsumedDate3 isEqual:lastConsumedDate4];
       }
 
       goto LABEL_12;

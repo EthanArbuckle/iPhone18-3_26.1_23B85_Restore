@@ -1,32 +1,32 @@
 @interface OTCreateCustodianRecoveryKeyOperation
-- (OTCreateCustodianRecoveryKeyOperation)initWithUUID:(id)a3 dependencies:(id)a4;
+- (OTCreateCustodianRecoveryKeyOperation)initWithUUID:(id)d dependencies:(id)dependencies;
 - (void)groupStart;
-- (void)proceedWithKeys:(id)a3 salt:(id)a4;
+- (void)proceedWithKeys:(id)keys salt:(id)salt;
 @end
 
 @implementation OTCreateCustodianRecoveryKeyOperation
 
-- (void)proceedWithKeys:(id)a3 salt:(id)a4
+- (void)proceedWithKeys:(id)keys salt:(id)salt
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  saltCopy = salt;
   objc_initWeak(&location, self);
   v19 = 0;
   v8 = SecPasswordGenerate();
   if (v8)
   {
-    v9 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
-    v10 = [v9 cuttlefishXPCWrapper];
-    v11 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
-    v12 = [v11 activeAccount];
-    v13 = [(OTCreateCustodianRecoveryKeyOperation *)self uuid];
+    deps = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
+    cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+    deps2 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
+    activeAccount = [deps2 activeAccount];
+    uuid = [(OTCreateCustodianRecoveryKeyOperation *)self uuid];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100109EE8;
     v16[3] = &unk_100337180;
     objc_copyWeak(&v18, &location);
     v17 = v8;
-    [v10 createCustodianRecoveryKeyWithSpecificUser:v12 recoveryKey:v17 salt:v7 ckksKeys:v6 uuid:v13 kind:1 reply:v16];
+    [cuttlefishXPCWrapper createCustodianRecoveryKeyWithSpecificUser:activeAccount recoveryKey:v17 salt:saltCopy ckksKeys:keysCopy uuid:uuid kind:1 reply:v16];
 
     objc_destroyWeak(&v18);
   }
@@ -42,8 +42,8 @@
     }
 
     [(CKKSResultOperation *)self setError:v19];
-    v15 = [(OTCreateCustodianRecoveryKeyOperation *)self finishOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v15];
+    finishOp = [(OTCreateCustodianRecoveryKeyOperation *)self finishOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp];
   }
 
   objc_destroyWeak(&location);
@@ -54,20 +54,20 @@
   v3 = objc_alloc_init(NSOperation);
   [(OTCreateCustodianRecoveryKeyOperation *)self setFinishOp:v3];
 
-  v4 = [(OTCreateCustodianRecoveryKeyOperation *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v4];
+  finishOp = [(OTCreateCustodianRecoveryKeyOperation *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
-  v5 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
-  v6 = [v5 activeAccount];
-  v7 = [v6 altDSID];
+  deps = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
+  activeAccount = [deps activeAccount];
+  altDSID = [activeAccount altDSID];
 
-  if (v7)
+  if (altDSID)
   {
-    v8 = v7;
+    v8 = altDSID;
     objc_initWeak(location, self);
     v9 = [OTFetchCKKSKeysOperation alloc];
-    v10 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
-    v11 = [(OTFetchCKKSKeysOperation *)v9 initWithDependencies:v10 refetchNeeded:0];
+    deps2 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
+    v11 = [(OTFetchCKKSKeysOperation *)v9 initWithDependencies:deps2 refetchNeeded:0];
 
     [(CKKSGroupOperation *)self runBeforeGroupFinished:v11];
     v19[0] = _NSConcreteStackBlock;
@@ -77,8 +77,8 @@
     objc_copyWeak(&v22, location);
     v12 = v11;
     v20 = v12;
-    v13 = v8;
-    v21 = v13;
+    finishOp2 = v8;
+    v21 = finishOp2;
     v14 = [CKKSResultOperation named:@"setting-recovery-tlks" withBlock:v19];
     [v14 addDependency:v12];
     [(CKKSGroupOperation *)self runBeforeGroupFinished:v14];
@@ -92,42 +92,42 @@
     v15 = sub_100006274("authkit");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
-      v17 = [v16 activeAccount];
+      deps3 = [(OTCreateCustodianRecoveryKeyOperation *)self deps];
+      activeAccount2 = [deps3 activeAccount];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v17;
+      *(location + 4) = activeAccount2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No configured altDSID: %@", location, 0xCu);
     }
 
     v18 = [NSError errorWithDomain:@"com.apple.security.octagon" code:59 description:@"No altDSID configured"];
     [(CKKSResultOperation *)self setError:v18];
 
-    v13 = [(OTCreateCustodianRecoveryKeyOperation *)self finishOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v13];
+    finishOp2 = [(OTCreateCustodianRecoveryKeyOperation *)self finishOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp2];
   }
 }
 
-- (OTCreateCustodianRecoveryKeyOperation)initWithUUID:(id)a3 dependencies:(id)a4
+- (OTCreateCustodianRecoveryKeyOperation)initWithUUID:(id)d dependencies:(id)dependencies
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dependenciesCopy = dependencies;
   v11.receiver = self;
   v11.super_class = OTCreateCustodianRecoveryKeyOperation;
   v8 = [(CKKSGroupOperation *)&v11 init];
   if (v8)
   {
-    v9 = v6;
-    if (!v6)
+    v9 = dCopy;
+    if (!dCopy)
     {
       v9 = objc_alloc_init(NSUUID);
     }
 
     objc_storeStrong(&v8->_uuid, v9);
-    if (!v6)
+    if (!dCopy)
     {
     }
 
-    objc_storeStrong(&v8->_deps, a4);
+    objc_storeStrong(&v8->_deps, dependencies);
   }
 
   return v8;

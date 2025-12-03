@@ -1,9 +1,9 @@
 @interface HMBLocalZoneInput
 + (id)logCategory;
-- (BOOL)stageRemovalForModelWithID:(id)a3 error:(id *)a4;
-- (HMBLocalZoneInput)initWithLocalZone:(id)a3 inputBlock:(id)a4;
+- (BOOL)stageRemovalForModelWithID:(id)d error:(id *)error;
+- (HMBLocalZoneInput)initWithLocalZone:(id)zone inputBlock:(id)block;
 - (id)attributeDescriptions;
-- (id)commitWithOptions:(id)a3 error:(id *)a4;
+- (id)commitWithOptions:(id)options error:(id *)error;
 - (id)logIdentifier;
 - (void)abort;
 - (void)dealloc;
@@ -15,15 +15,15 @@
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBLocalZoneInput *)self localZone];
-  v5 = [v4 zoneID];
-  v6 = [v5 name];
-  v7 = [v3 initWithName:@"Zone Name" value:v6];
+  localZone = [(HMBLocalZoneInput *)self localZone];
+  zoneID = [localZone zoneID];
+  name = [zoneID name];
+  v7 = [v3 initWithName:@"Zone Name" value:name];
   v16[0] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(HMBLocalZoneInput *)self inputBlock];
-  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "blockRow")}];
+  inputBlock = [(HMBLocalZoneInput *)self inputBlock];
+  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(inputBlock, "blockRow")}];
   v12 = [v8 initWithName:@"Block Row" value:v11];
   v16[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
@@ -36,11 +36,11 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMBLocalZoneInput *)self localZone];
-  v5 = [v4 zoneID];
-  v6 = [v5 name];
-  v7 = [(HMBLocalZoneInput *)self inputBlock];
-  v8 = [v3 stringWithFormat:@"%@/%lu", v6, objc_msgSend(v7, "blockRow")];
+  localZone = [(HMBLocalZoneInput *)self localZone];
+  zoneID = [localZone zoneID];
+  name = [zoneID name];
+  inputBlock = [(HMBLocalZoneInput *)self inputBlock];
+  v8 = [v3 stringWithFormat:@"%@/%lu", name, objc_msgSend(inputBlock, "blockRow")];
 
   return v8;
 }
@@ -49,7 +49,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -60,22 +60,22 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMBLocalZoneInput *)v4 inputBlock];
-  v8 = [v7 abort];
+  inputBlock = [(HMBLocalZoneInput *)selfCopy inputBlock];
+  abort = [inputBlock abort];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)commitWithOptions:(id)a3 error:(id *)a4
+- (id)commitWithOptions:(id)options error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMBLocalZoneInput *)self stagedChangesCount];
+  optionsCopy = options;
+  stagedChangesCount = [(HMBLocalZoneInput *)self stagedChangesCount];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v7)
+  if (stagedChangesCount)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -83,28 +83,28 @@
       *buf = 138543874;
       v37 = v12;
       v38 = 2048;
-      v39 = [(HMBLocalZoneInput *)v9 stagedChangesCount];
+      stagedChangesCount2 = [(HMBLocalZoneInput *)selfCopy stagedChangesCount];
       v40 = 2112;
-      v41 = v6;
+      v41 = optionsCopy;
       _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_INFO, "%{public}@Committing local zone input containing %lu staged changes with options: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
     v35 = 0;
-    v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v35];
+    v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:optionsCopy requiringSecureCoding:1 error:&v35];
     v14 = v35;
     if (v13)
     {
-      v15 = [(HMBLocalZoneInput *)v9 inputBlock];
-      v16 = [v15 blockRow];
+      inputBlock = [(HMBLocalZoneInput *)selfCopy inputBlock];
+      blockRow = [inputBlock blockRow];
 
-      v17 = [(HMBLocalZoneInput *)v9 inputBlock];
-      v18 = [v17 commit:v13];
+      inputBlock2 = [(HMBLocalZoneInput *)selfCopy inputBlock];
+      v18 = [inputBlock2 commit:v13];
 
       if (v18)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = v9;
+        v20 = selfCopy;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -112,16 +112,16 @@
           *buf = 138543618;
           v37 = v22;
           v38 = 2112;
-          v39 = v18;
+          stagedChangesCount2 = v18;
           _os_log_impl(&dword_22AD27000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to commit local zone input: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v19);
-        if (a4)
+        if (error)
         {
           v23 = v18;
           v24 = 0;
-          *a4 = v18;
+          *error = v18;
         }
 
         else
@@ -134,8 +134,8 @@
 
       else
       {
-        v32 = [(HMBLocalZoneInput *)v9 localZone];
-        v24 = [v32 triggerProcessForBlockRow:v16];
+        localZone = [(HMBLocalZoneInput *)selfCopy localZone];
+        v24 = [localZone triggerProcessForBlockRow:blockRow];
 
         v14 = 0;
       }
@@ -144,7 +144,7 @@
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v9;
+      v28 = selfCopy;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -152,18 +152,18 @@
         *buf = 138543874;
         v37 = v30;
         v38 = 2112;
-        v39 = v6;
+        stagedChangesCount2 = optionsCopy;
         v40 = 2112;
         v41 = v14;
         _os_log_impl(&dword_22AD27000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to archive options %@: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v27);
-      if (a4)
+      if (error)
       {
         v31 = v14;
         v24 = 0;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -185,7 +185,7 @@
 
     objc_autoreleasePoolPop(v8);
     v26 = MEMORY[0x277D2C900];
-    v14 = [[HMBProcessingResult alloc] initWithOptions:v6 mirrorOutputResult:0];
+    v14 = [[HMBProcessingResult alloc] initWithOptions:optionsCopy mirrorOutputResult:0];
     v24 = [v26 futureWithResult:v14];
   }
 
@@ -194,12 +194,12 @@
   return v24;
 }
 
-- (BOOL)stageRemovalForModelWithID:(id)a3 error:(id *)a4
+- (BOOL)stageRemovalForModelWithID:(id)d error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -207,29 +207,29 @@
     v19 = 138543618;
     v20 = v10;
     v21 = 2112;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&dword_22AD27000, v9, OS_LOG_TYPE_INFO, "%{public}@Staging removal for model with ID: %@", &v19, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMBLocalZoneInput *)v8 inputBlock];
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 data];
-  v14 = [v6 data];
-  v15 = [v11 updateExternalID:v13 externalData:0 modelEncoding:0 modelData:v14];
+  inputBlock = [(HMBLocalZoneInput *)selfCopy inputBlock];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  data = [uUID data];
+  data2 = [dCopy data];
+  v15 = [inputBlock updateExternalID:data externalData:0 modelEncoding:0 modelData:data2];
 
   if (v15)
   {
-    if (a4)
+    if (error)
     {
       v16 = v15;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
   else
   {
-    [(HMBLocalZoneInput *)v8 setStagedChangesCount:[(HMBLocalZoneInput *)v8 stagedChangesCount]+ 1];
+    [(HMBLocalZoneInput *)selfCopy setStagedChangesCount:[(HMBLocalZoneInput *)selfCopy stagedChangesCount]+ 1];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -239,13 +239,13 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMBLocalZoneInput *)self inputBlock];
-  v4 = [v3 blockRow];
+  inputBlock = [(HMBLocalZoneInput *)self inputBlock];
+  blockRow = [inputBlock blockRow];
 
-  if (v4)
+  if (blockRow)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -256,8 +256,8 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMBLocalZoneInput *)v6 inputBlock];
-    v10 = [v9 abort];
+    inputBlock2 = [(HMBLocalZoneInput *)selfCopy inputBlock];
+    abort = [inputBlock2 abort];
   }
 
   v12.receiver = self;
@@ -266,18 +266,18 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBLocalZoneInput)initWithLocalZone:(id)a3 inputBlock:(id)a4
+- (HMBLocalZoneInput)initWithLocalZone:(id)zone inputBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  zoneCopy = zone;
+  blockCopy = block;
+  if (!zoneCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = blockCopy;
+  if (!blockCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -290,8 +290,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_localZone, a3);
-    objc_storeStrong(&v11->_inputBlock, a4);
+    objc_storeStrong(&v10->_localZone, zone);
+    objc_storeStrong(&v11->_inputBlock, block);
   }
 
   return v11;

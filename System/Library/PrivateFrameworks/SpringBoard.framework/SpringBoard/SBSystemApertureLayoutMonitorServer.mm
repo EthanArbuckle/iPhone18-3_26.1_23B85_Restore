@@ -1,9 +1,9 @@
 @interface SBSystemApertureLayoutMonitorServer
 - (SBSystemApertureLayoutMonitorServer)init;
 - (void)_notifyConnectedListenersOfUpdatedFrames;
-- (void)_systemApertureLayoutDidChange:(id)a3;
+- (void)_systemApertureLayoutDidChange:(id)change;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation SBSystemApertureLayoutMonitorServer
@@ -75,9 +75,9 @@ void __79__SBSystemApertureLayoutMonitorServer__notifyConnectedListenersOfUpdate
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     v2->_isValid = 1;
     *&v2->_clientServiceCollectionLock._os_unfair_lock_opaque = 0;
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connections = v2->_connections;
-    v2->_connections = v3;
+    v2->_connections = array;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = BSDispatchQueueCreateWithQualityOfService();
@@ -96,8 +96,8 @@ void __79__SBSystemApertureLayoutMonitorServer__notifyConnectedListenersOfUpdate
     v9[4] = v10;
 
     [v9[4] activate];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v9 selector:sel__systemApertureLayoutDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__systemApertureLayoutDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
   }
 
   return v2;
@@ -113,13 +113,13 @@ void __43__SBSystemApertureLayoutMonitorServer_init__block_invoke(uint64_t a1, v
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)_systemApertureLayoutDidChange:(id)a3
+- (void)_systemApertureLayoutDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  v8 = [v5 objectForKey:@"SBSystemApertureFrames"];
+  v8 = [userInfo objectForKey:@"SBSystemApertureFrames"];
 
   if (v8)
   {
@@ -137,33 +137,33 @@ void __43__SBSystemApertureLayoutMonitorServer_init__block_invoke(uint64_t a1, v
 {
   self->_isValid = 0;
   [(BSServiceConnectionListener *)self->_connectionListener invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBSystemApertureLayoutMonitorServer received connection %@", buf, 0xCu);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v8 pid];
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [remoteProcess pid];
   if (v9 == getpid())
   {
   }
 
   else
   {
-    v10 = [v6 remoteProcess];
-    v11 = [v10 auditToken];
-    v12 = [v11 hasEntitlement:@"com.apple.springboard.system-component-layout-monitoring"];
+    remoteProcess2 = [connectionCopy remoteProcess];
+    auditToken = [remoteProcess2 auditToken];
+    v12 = [auditToken hasEntitlement:@"com.apple.springboard.system-component-layout-monitoring"];
 
     if (v12)
     {
@@ -172,11 +172,11 @@ void __43__SBSystemApertureLayoutMonitorServer_init__block_invoke(uint64_t a1, v
       v14[2] = __81__SBSystemApertureLayoutMonitorServer_listener_didReceiveConnection_withContext___block_invoke;
       v14[3] = &unk_2783AB730;
       v14[4] = self;
-      [v6 configureConnection:v14];
+      [connectionCopy configureConnection:v14];
       os_unfair_lock_lock(&self->_clientServiceCollectionLock);
-      [(NSMutableArray *)self->_connections addObject:v6];
+      [(NSMutableArray *)self->_connections addObject:connectionCopy];
       os_unfair_lock_unlock(&self->_clientServiceCollectionLock);
-      [v6 activate];
+      [connectionCopy activate];
       goto LABEL_10;
     }
   }
@@ -185,11 +185,11 @@ void __43__SBSystemApertureLayoutMonitorServer_init__block_invoke(uint64_t a1, v
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "SBSystemApertureLayoutMonitorServer invalidating connection because client process is missing required entitlement %@ .", buf, 0xCu);
   }
 
-  [v6 invalidate];
+  [connectionCopy invalidate];
 LABEL_10:
 }
 

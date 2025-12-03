@@ -1,28 +1,28 @@
 @interface RCPlaybackSettings
 - (BOOL)hasCustomizedPlaybackSettings;
-- (RCPlaybackSettings)initWithUUID:(id)a3 enhanced:(BOOL)a4 silenceRemoved:(BOOL)a5 playbackSpeed:(float)a6 layerMix:(float)a7 hasMultipleTracks:(BOOL)a8 isSpatialRecording:(BOOL)a9 speechIsolatorEnabled:(BOOL)a10 speechIsolatorValue:(float)a11;
+- (RCPlaybackSettings)initWithUUID:(id)d enhanced:(BOOL)enhanced silenceRemoved:(BOOL)removed playbackSpeed:(float)speed layerMix:(float)mix hasMultipleTracks:(BOOL)tracks isSpatialRecording:(BOOL)recording speechIsolatorEnabled:(BOOL)self0 speechIsolatorValue:(float)self1;
 @end
 
 @implementation RCPlaybackSettings
 
-- (RCPlaybackSettings)initWithUUID:(id)a3 enhanced:(BOOL)a4 silenceRemoved:(BOOL)a5 playbackSpeed:(float)a6 layerMix:(float)a7 hasMultipleTracks:(BOOL)a8 isSpatialRecording:(BOOL)a9 speechIsolatorEnabled:(BOOL)a10 speechIsolatorValue:(float)a11
+- (RCPlaybackSettings)initWithUUID:(id)d enhanced:(BOOL)enhanced silenceRemoved:(BOOL)removed playbackSpeed:(float)speed layerMix:(float)mix hasMultipleTracks:(BOOL)tracks isSpatialRecording:(BOOL)recording speechIsolatorEnabled:(BOOL)self0 speechIsolatorValue:(float)self1
 {
-  v21 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = RCPlaybackSettings;
   v22 = [(RCPlaybackSettings *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_uuid, a3);
-    v23->_enhanced = a4;
-    v23->_silenceRemoved = a5;
-    v23->_playbackSpeed = a6;
-    v23->_layerMix = a7;
-    v23->_hasMultipleTracks = a8;
-    v23->_isSpatialRecording = a9;
-    v23->_speechIsolatorEnabled = a10;
-    v23->_speechIsolatorValue = a11;
+    objc_storeStrong(&v22->_uuid, d);
+    v23->_enhanced = enhanced;
+    v23->_silenceRemoved = removed;
+    v23->_playbackSpeed = speed;
+    v23->_layerMix = mix;
+    v23->_hasMultipleTracks = tracks;
+    v23->_isSpatialRecording = recording;
+    v23->_speechIsolatorEnabled = enabled;
+    v23->_speechIsolatorValue = value;
   }
 
   return v23;

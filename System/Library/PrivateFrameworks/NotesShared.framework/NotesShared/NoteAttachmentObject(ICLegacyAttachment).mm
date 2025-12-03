@@ -13,24 +13,24 @@
 
 - (id)identifier
 {
-  v1 = [a1 contentID];
-  v2 = [v1 ic_md5];
+  contentID = [self contentID];
+  ic_md5 = [contentID ic_md5];
 
-  return v2;
+  return ic_md5;
 }
 
 - (id)title
 {
-  v1 = [a1 fileURL];
-  v2 = [v1 lastPathComponent];
+  fileURL = [self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
 
-  return v2;
+  return lastPathComponent;
 }
 
 - (id)fileURL
 {
   v5 = 0;
-  v1 = [a1 attachmentDataFileURLWithError:&v5];
+  v1 = [self attachmentDataFileURLWithError:&v5];
   v2 = v5;
   if (v2)
   {
@@ -46,24 +46,24 @@
 
 - (id)typeUTI
 {
-  v2 = [a1 fileURL];
-  v3 = [a1 mimeType];
-  v4 = [ICLegacyAttachmentUtilities typeUTIFromFileURL:v2 mimeType:v3];
+  fileURL = [self fileURL];
+  mimeType = [self mimeType];
+  v4 = [ICLegacyAttachmentUtilities typeUTIFromFileURL:fileURL mimeType:mimeType];
 
   return v4;
 }
 
 - (id)cidURL
 {
-  v2 = [a1 contentID];
-  v3 = [v2 length];
+  contentID = [self contentID];
+  v3 = [contentID length];
 
   if (v3)
   {
     v4 = MEMORY[0x277CBEBC0];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [a1 contentID];
-    v7 = [v5 stringWithFormat:@"cid:%@", v6];
+    contentID2 = [self contentID];
+    v7 = [v5 stringWithFormat:@"cid:%@", contentID2];
     v8 = [v4 URLWithString:v7];
   }
 
@@ -77,39 +77,39 @@
 
 - (uint64_t)isDeletedOrInTrash
 {
-  if ([a1 isDeleted])
+  if ([self isDeleted])
   {
     return 1;
   }
 
-  v3 = [a1 note];
-  v4 = [v3 isDeletedOrInTrash];
+  note = [self note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  return v4;
+  return isDeletedOrInTrash;
 }
 
 - (uint64_t)isHiddenFromIndexing
 {
-  v2 = [a1 note];
-  if (v2)
+  note = [self note];
+  if (note)
   {
-    v3 = [a1 note];
-    v4 = [v3 isHiddenFromIndexing];
+    note2 = [self note];
+    isHiddenFromIndexing = [note2 isHiddenFromIndexing];
   }
 
   else
   {
-    v4 = 1;
+    isHiddenFromIndexing = 1;
   }
 
-  return v4;
+  return isHiddenFromIndexing;
 }
 
 - (void)fileURL
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "Error getting legacy attachment file URL: %@", &v2, 0xCu);
 }
 

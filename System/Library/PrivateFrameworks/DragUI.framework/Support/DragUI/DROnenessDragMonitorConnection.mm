@@ -1,22 +1,22 @@
 @interface DROnenessDragMonitorConnection
-- (BOOL)_shouldNotifyForSession:(id)a3;
+- (BOOL)_shouldNotifyForSession:(id)session;
 @end
 
 @implementation DROnenessDragMonitorConnection
 
-- (BOOL)_shouldNotifyForSession:(id)a3
+- (BOOL)_shouldNotifyForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v7.receiver = self;
   v7.super_class = DROnenessDragMonitorConnection;
-  if (![(DRDragMonitorConnection *)&v7 _shouldNotifyForSession:v4])
+  if (![(DRDragMonitorConnection *)&v7 _shouldNotifyForSession:sessionCopy])
   {
 LABEL_7:
     v5 = 0;
     goto LABEL_8;
   }
 
-  if (([v4 originatedFromContinuityDisplay] & 1) == 0)
+  if (([sessionCopy originatedFromContinuityDisplay] & 1) == 0)
   {
     if (qword_1000634B8 != -1)
     {

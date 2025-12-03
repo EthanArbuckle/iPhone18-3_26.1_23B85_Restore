@@ -1,30 +1,30 @@
 @interface KCellularGmmContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsProcFailureCause:(id)a3;
-- (int)StringAsRegProc:(id)a3;
-- (int)StringAsRegStatus:(id)a3;
-- (int)StringAsRejectCause:(id)a3;
-- (int)StringAsUpdateStatus:(id)a3;
+- (int)StringAsProcFailureCause:(id)cause;
+- (int)StringAsRegProc:(id)proc;
+- (int)StringAsRegStatus:(id)status;
+- (int)StringAsRejectCause:(id)cause;
+- (int)StringAsUpdateStatus:(id)status;
 - (int)procFailureCause;
 - (int)regProc;
 - (int)regStatus;
 - (int)rejectCause;
 - (int)updateStatus;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPTmsi:(BOOL)a3;
-- (void)setHasProcFailureCause:(BOOL)a3;
-- (void)setHasRegProc:(BOOL)a3;
-- (void)setHasRegStatus:(BOOL)a3;
-- (void)setHasRejectCause:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasT3312DurS:(BOOL)a3;
-- (void)setHasUpdateStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPTmsi:(BOOL)tmsi;
+- (void)setHasProcFailureCause:(BOOL)cause;
+- (void)setHasRegProc:(BOOL)proc;
+- (void)setHasRegStatus:(BOOL)status;
+- (void)setHasRejectCause:(BOOL)cause;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasT3312DurS:(BOOL)s;
+- (void)setHasUpdateStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularGmmContext
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setHasRegStatus:(BOOL)a3
+- (void)setHasRegStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -57,75 +57,75 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsRegStatus:(id)a3
+- (int)StringAsRegStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KREG_STATUS_NORMAL_SERVICE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"KREG_STATUS_NORMAL_SERVICE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTRATION_FAILURE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTRATION_FAILURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_LIMITED_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_LIMITED_SERVICE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_NO_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_NO_SERVICE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_AT_NOT_REGISTERED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_AT_NOT_REGISTERED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTRATION_SERVICE_DISABLED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTRATION_SERVICE_DISABLED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_SERVICE_DETACHED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_SERVICE_DETACHED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_SERVICE_ACTIVATED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_SERVICE_ACTIVATED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_EMERGENCY_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_EMERGENCY_SERVICE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_EMERGENCY_LIMITED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_EMERGENCY_LIMITED"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTERED_SMS_ONLY"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTERED_SMS_ONLY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTRATION_IN_PROGRESS"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTRATION_IN_PROGRESS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_POWER_OFF_NO_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_POWER_OFF_NO_SERVICE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_SUSPENDED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_SUSPENDED"])
   {
     v4 = 100;
   }
@@ -151,9 +151,9 @@
   }
 }
 
-- (void)setHasUpdateStatus:(BOOL)a3
+- (void)setHasUpdateStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 256;
   }
@@ -166,20 +166,20 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsUpdateStatus:(id)a3
+- (int)StringAsUpdateStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GPRS_STATUS_UPDATED"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"GPRS_STATUS_UPDATED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GPRS_STATUS_NOT_UPDATED"])
+  else if ([statusCopy isEqualToString:@"GPRS_STATUS_NOT_UPDATED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GPRS_STATUS_ROAMING_NOT_ALLOWED"])
+  else if ([statusCopy isEqualToString:@"GPRS_STATUS_ROAMING_NOT_ALLOWED"])
   {
     v4 = 2;
   }
@@ -192,9 +192,9 @@
   return v4;
 }
 
-- (void)setHasPTmsi:(BOOL)a3
+- (void)setHasPTmsi:(BOOL)tmsi
 {
-  if (a3)
+  if (tmsi)
   {
     v3 = 2;
   }
@@ -207,9 +207,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasT3312DurS:(BOOL)a3
+- (void)setHasT3312DurS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 128;
   }
@@ -235,9 +235,9 @@
   }
 }
 
-- (void)setHasProcFailureCause:(BOOL)a3
+- (void)setHasProcFailureCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 4;
   }
@@ -250,85 +250,85 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsProcFailureCause:(id)a3
+- (int)StringAsProcFailureCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_NONE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_LOWER_LAYER_FAILURE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_LOWER_LAYER_FAILURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_ACCESS_BARRED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_ACCESS_BARRED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_LIMITED_SERVICE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_LIMITED_SERVICE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_PAGE_NOT_EXPECTED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_PAGE_NOT_EXPECTED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_T3210_EXPIRY"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_T3210_EXPIRY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_T3240_EXPIRY"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_T3240_EXPIRY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_DETACH_INITIATED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_DETACH_INITIATED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_PS_SUSPENDED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_PS_SUSPENDED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_SERV_REQ_THROTTLING"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_SERV_REQ_THROTTLING"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_T3317_EXPIRY"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_T3317_EXPIRY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_REJECTED_BY_NW"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_REJECTED_BY_NW"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_NW_AUTH_REJ"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_NW_AUTH_REJ"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_INVALID_IE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_INVALID_IE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_TIMEOUT"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_TIMEOUT"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_OTHER"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_PROC_FAILURE_CAUSE_OTHER"])
   {
     v4 = 15;
   }
@@ -354,9 +354,9 @@
   }
 }
 
-- (void)setHasRejectCause:(BOOL)a3
+- (void)setHasRejectCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 32;
   }
@@ -369,185 +369,185 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsRejectCause:(id)a3
+- (int)StringAsRejectCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_NONE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_IMSI_UNKNOWN"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_IMSI_UNKNOWN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_ILLEGAL_MS"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_ILLEGAL_MS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_IMSI_UNKNOWN_IN_VLR"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_IMSI_UNKNOWN_IN_VLR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_IMEI_NOT_ACCEPTED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_IMEI_NOT_ACCEPTED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_ILLEGAL_ME"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_ILLEGAL_ME"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_GPRS_SERVICES_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_GPRS_SERVICES_NOT_ALLOWED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_GPRS_AND_NON_GPRS_SERVICES_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_GPRS_AND_NON_GPRS_SERVICES_NOT_ALLOWED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_MS_IDENTITY_NOT_DERIVED_BY_NW"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_MS_IDENTITY_NOT_DERIVED_BY_NW"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_IMPLICITLY_DET"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_IMPLICITLY_DET"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_PLMN_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_PLMN_NOT_ALLOWED"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_LA_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_LA_NOT_ALLOWED"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_ROM_NOT_ALLOWED_IN_LA"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_ROM_NOT_ALLOWED_IN_LA"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_GPRS_NOT_ALLOWED_IN_PLMN"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_GPRS_NOT_ALLOWED_IN_PLMN"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_NO_SUITABLE_CELL_IN_LA"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_NO_SUITABLE_CELL_IN_LA"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_MSC_OUT_OF_REACH"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_MSC_OUT_OF_REACH"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_NW_FAILURE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_NW_FAILURE"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_MAC_FAILURE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_MAC_FAILURE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_SYNCH_FAILURE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_SYNCH_FAILURE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_CONGESTION"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_CONGESTION"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_GSM_AUTH_UNACCEPTABLE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_GSM_AUTH_UNACCEPTABLE"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_CSG_NOT_AUTHORIZED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_CSG_NOT_AUTHORIZED"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_SERVICE_OPTION_NOT_SUPPORTED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_SERVICE_OPTION_NOT_SUPPORTED"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_REQ_SERVICE_OPTION_NOT_SUBSCRIBED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_REQ_SERVICE_OPTION_NOT_SUBSCRIBED"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_SERVICE_OPTION_TEMPORARILY_OUT_OF_ORDER"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_SERVICE_OPTION_TEMPORARILY_OUT_OF_ORDER"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_CALL_NOT_IDENTIFIED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_CALL_NOT_IDENTIFIED"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_NO_PDP_CONTEXT_ACTIVATED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_NO_PDP_CONTEXT_ACTIVATED"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_RETRY_UPON_ENTRY_TO_NEW_CELL"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_RETRY_UPON_ENTRY_TO_NEW_CELL"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_SEMANTICALLY_INCORRECT_MSG"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_SEMANTICALLY_INCORRECT_MSG"])
   {
     v4 = 95;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_INVALID_MANDATORY_INFO"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_INVALID_MANDATORY_INFO"])
   {
     v4 = 96;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_MSG_TYPE_NOT_IMPL"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_MSG_TYPE_NOT_IMPL"])
   {
     v4 = 97;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_MSG_TYPE_NOT_COMPATIBLE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_MSG_TYPE_NOT_COMPATIBLE"])
   {
     v4 = 98;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_INFO_ELEMENT_NOT_IMPL"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_INFO_ELEMENT_NOT_IMPL"])
   {
     v4 = 99;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_IE_ERROR"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_IE_ERROR"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_MSG_NOT_COMPATIBLE"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_MSG_NOT_COMPATIBLE"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REJ_CAUSE_PROTOCOL_ERROR_UNSPECIFIED"])
+  else if ([causeCopy isEqualToString:@"KNAS_MM_REJ_CAUSE_PROTOCOL_ERROR_UNSPECIFIED"])
   {
     v4 = 111;
   }
@@ -573,9 +573,9 @@
   }
 }
 
-- (void)setHasRegProc:(BOOL)a3
+- (void)setHasRegProc:(BOOL)proc
 {
-  if (a3)
+  if (proc)
   {
     v3 = 8;
   }
@@ -588,60 +588,60 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsRegProc:(id)a3
+- (int)StringAsRegProc:(id)proc
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_LOCATION_AREA_UPDATE"])
+  procCopy = proc;
+  if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_LOCATION_AREA_UPDATE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_ATTACH"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_ATTACH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_ROUTING_AREA_UPDATE"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_ROUTING_AREA_UPDATE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_COMBINED_RAU"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_COMBINED_RAU"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_COMBINED_ATTACH"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_COMBINED_ATTACH"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_NW_DETACH"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_NW_DETACH"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_SERVICE_REQ"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_SERVICE_REQ"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_NW_ABORT"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_NW_ABORT"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_TRACKING_AREA_UPDATE"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_TRACKING_AREA_UPDATE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_COMBINED_TAU"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_COMBINED_TAU"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KNAS_MM_REG_PROC_PROC_NONE"])
+  else if ([procCopy isEqualToString:@"KNAS_MM_REG_PROC_PROC_NONE"])
   {
     v4 = 10;
   }
@@ -654,9 +654,9 @@
   return v4;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -674,8 +674,8 @@
   v7.receiver = self;
   v7.super_class = KCellularGmmContext;
   v3 = [(KCellularGmmContext *)&v7 description];
-  v4 = [(KCellularGmmContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularGmmContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -786,8 +786,8 @@ LABEL_27:
   rai = self->_rai;
   if (rai)
   {
-    v11 = [(RoutingAreaId *)rai dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"rai"];
+    dictionaryRepresentation = [(RoutingAreaId *)rai dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"rai"];
   }
 
   v12 = self->_has;
@@ -1051,9 +1051,9 @@ LABEL_36:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1172,14 +1172,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -1198,28 +1198,28 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 9) = self->_regStatus;
-  *(v4 + 28) |= 0x10u;
+  *(toCopy + 9) = self->_regStatus;
+  *(toCopy + 28) |= 0x10u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_4:
-    *(v4 + 13) = self->_updateStatus;
-    *(v4 + 28) |= 0x100u;
+    *(toCopy + 13) = self->_updateStatus;
+    *(toCopy + 28) |= 0x100u;
   }
 
 LABEL_5:
   if (self->_rai)
   {
-    v7 = v4;
-    [v4 setRai:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setRai:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    *(v4 + 4) = self->_pTmsi;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 4) = self->_pTmsi;
+    *(toCopy + 28) |= 2u;
     v6 = self->_has;
     if ((v6 & 0x80) == 0)
     {
@@ -1238,8 +1238,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 12) = self->_t3312DurS;
-  *(v4 + 28) |= 0x80u;
+  *(toCopy + 12) = self->_t3312DurS;
+  *(toCopy + 28) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -1253,8 +1253,8 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(v4 + 5) = self->_procFailureCause;
-  *(v4 + 28) |= 4u;
+  *(toCopy + 5) = self->_procFailureCause;
+  *(toCopy + 28) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -1268,8 +1268,8 @@ LABEL_11:
   }
 
 LABEL_23:
-  *(v4 + 10) = self->_rejectCause;
-  *(v4 + 28) |= 0x20u;
+  *(toCopy + 10) = self->_rejectCause;
+  *(toCopy + 28) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -1283,21 +1283,21 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(v4 + 8) = self->_regProc;
-  *(v4 + 28) |= 8u;
+  *(toCopy + 8) = self->_regProc;
+  *(toCopy + 28) |= 8u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_13:
-    *(v4 + 11) = self->_subsId;
-    *(v4 + 28) |= 0x40u;
+    *(toCopy + 11) = self->_subsId;
+    *(toCopy + 28) |= 0x40u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1332,7 +1332,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(RoutingAreaId *)self->_rai copyWithZone:a3];
+  v8 = [(RoutingAreaId *)self->_rai copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -1416,19 +1416,19 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_50;
     }
@@ -1441,7 +1441,7 @@ LABEL_11:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_regStatus != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_regStatus != *(equalCopy + 9))
     {
       goto LABEL_50;
     }
@@ -1454,19 +1454,19 @@ LABEL_11:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 28) & 0x100) == 0 || self->_updateStatus != *(v4 + 13))
+    if ((*(equalCopy + 28) & 0x100) == 0 || self->_updateStatus != *(equalCopy + 13))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 28) & 0x100) != 0)
+  else if ((*(equalCopy + 28) & 0x100) != 0)
   {
     goto LABEL_50;
   }
 
   rai = self->_rai;
-  if (rai | *(v4 + 3))
+  if (rai | *(equalCopy + 3))
   {
     if (![(RoutingAreaId *)rai isEqual:?])
     {
@@ -1478,10 +1478,10 @@ LABEL_50:
     has = self->_has;
   }
 
-  v8 = *(v4 + 28);
+  v8 = *(equalCopy + 28);
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_pTmsi != *(v4 + 4))
+    if ((v8 & 2) == 0 || self->_pTmsi != *(equalCopy + 4))
     {
       goto LABEL_50;
     }
@@ -1494,7 +1494,7 @@ LABEL_50:
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_t3312DurS != *(v4 + 12))
+    if ((v8 & 0x80) == 0 || self->_t3312DurS != *(equalCopy + 12))
     {
       goto LABEL_50;
     }
@@ -1507,7 +1507,7 @@ LABEL_50:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_procFailureCause != *(v4 + 5))
+    if ((v8 & 4) == 0 || self->_procFailureCause != *(equalCopy + 5))
     {
       goto LABEL_50;
     }
@@ -1520,7 +1520,7 @@ LABEL_50:
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_rejectCause != *(v4 + 10))
+    if ((v8 & 0x20) == 0 || self->_rejectCause != *(equalCopy + 10))
     {
       goto LABEL_50;
     }
@@ -1533,7 +1533,7 @@ LABEL_50:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_regProc != *(v4 + 8))
+    if ((v8 & 8) == 0 || self->_regProc != *(equalCopy + 8))
     {
       goto LABEL_50;
     }
@@ -1546,7 +1546,7 @@ LABEL_50:
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_subsId != *(v4 + 11))
+    if ((v8 & 0x40) == 0 || self->_subsId != *(equalCopy + 11))
     {
       goto LABEL_50;
     }
@@ -1685,16 +1685,16 @@ LABEL_14:
   return v5 ^ v4 ^ v6 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -1712,12 +1712,12 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_regStatus = *(v4 + 9);
+  self->_regStatus = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 28) & 0x100) != 0)
+  if ((*(fromCopy + 28) & 0x100) != 0)
   {
 LABEL_4:
-    self->_updateStatus = *(v4 + 13);
+    self->_updateStatus = *(fromCopy + 13);
     *&self->_has |= 0x100u;
   }
 

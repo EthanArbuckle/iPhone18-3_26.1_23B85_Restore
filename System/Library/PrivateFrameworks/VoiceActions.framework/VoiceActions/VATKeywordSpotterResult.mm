@@ -1,5 +1,5 @@
 @interface VATKeywordSpotterResult
-- (VATKeywordSpotterResult)initWithKeyword:(id)a3 cost:(float)a4 threshold:(float)a5 start:(int)a6 end:(int)a7 duration:(int)a8;
+- (VATKeywordSpotterResult)initWithKeyword:(id)keyword cost:(float)cost threshold:(float)threshold start:(int)start end:(int)end duration:(int)duration;
 - (id)toJSON;
 @end
 
@@ -46,15 +46,15 @@
       audioFileURL = self->_audioFileURL;
       if (audioFileURL)
       {
-        v15 = [(NSURL *)self->_audioFileURL path];
+        path = [(NSURL *)self->_audioFileURL path];
       }
 
       else
       {
-        v15 = &stru_2881908A8;
+        path = &stru_2881908A8;
       }
 
-      v33[3] = v15;
+      v33[3] = path;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:4];
       if (audioFileURL)
       {
@@ -113,21 +113,21 @@
   return v23;
 }
 
-- (VATKeywordSpotterResult)initWithKeyword:(id)a3 cost:(float)a4 threshold:(float)a5 start:(int)a6 end:(int)a7 duration:(int)a8
+- (VATKeywordSpotterResult)initWithKeyword:(id)keyword cost:(float)cost threshold:(float)threshold start:(int)start end:(int)end duration:(int)duration
 {
-  v15 = a3;
+  keywordCopy = keyword;
   v19.receiver = self;
   v19.super_class = VATKeywordSpotterResult;
   v16 = [(VATKeywordSpotterResult *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_keywordText, a3);
-    v17->_threshold = a5;
-    v17->_cost = a4;
-    v17->_start = a6;
-    v17->_end = a7;
-    v17->_duration = a8;
+    objc_storeStrong(&v16->_keywordText, keyword);
+    v17->_threshold = threshold;
+    v17->_cost = cost;
+    v17->_start = start;
+    v17->_end = end;
+    v17->_duration = duration;
   }
 
   return v17;

@@ -1,57 +1,57 @@
 @interface NLPMLSequenceModel
-- (NLPMLSequenceModel)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (NLPMLSequenceModel)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation NLPMLSequenceModel
 
-- (NLPMLSequenceModel)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5
+- (NLPMLSequenceModel)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 outputDescriptionsByName];
-  v12 = [v11 allKeys];
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
+  outputDescriptionsByName = [descriptionCopy outputDescriptionsByName];
+  allKeys = [outputDescriptionsByName allKeys];
 
-  v13 = [v9 inputDescriptionsByName];
-  if ([v13 count] != 1)
+  inputDescriptionsByName = [descriptionCopy inputDescriptionsByName];
+  if ([inputDescriptionsByName count] != 1)
   {
     goto LABEL_11;
   }
 
-  v14 = [v9 inputDescriptionsByName];
-  v15 = [v14 allValues];
-  v16 = [v15 objectAtIndexedSubscript:0];
-  if ([v16 type] != 3 || objc_msgSend(v12, "count") != 3 || !objc_msgSend(v12, "containsObject:", @"labels") || !objc_msgSend(v12, "containsObject:", @"locations"))
+  inputDescriptionsByName2 = [descriptionCopy inputDescriptionsByName];
+  allValues = [inputDescriptionsByName2 allValues];
+  v16 = [allValues objectAtIndexedSubscript:0];
+  if ([v16 type] != 3 || objc_msgSend(allKeys, "count") != 3 || !objc_msgSend(allKeys, "containsObject:", @"labels") || !objc_msgSend(allKeys, "containsObject:", @"locations"))
   {
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v24 = [v12 containsObject:@"lengths"];
+  v24 = [allKeys containsObject:@"lengths"];
 
   if (v24)
   {
-    v17 = [v10 objectForKey:@"modelData"];
+    v17 = [dictionaryCopy objectForKey:@"modelData"];
     v25.receiver = self;
     v25.super_class = NLPMLSequenceModel;
-    v18 = [(NLModel *)&v25 initWithData:v17 error:a5];
+    v18 = [(NLModel *)&v25 initWithData:v17 error:error];
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong(&v18->_modelDescription, a3);
+      objc_storeStrong(&v18->_modelDescription, description);
     }
 
     self = v19;
-    v20 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_12:
-  if (!a5)
+  if (!error)
   {
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -60,38 +60,38 @@ LABEL_12:
   v27[0] = @"Failed to load model file";
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   [v21 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:2 userInfo:v17];
-  *a5 = v20 = 0;
+  *error = selfCopy = 0;
 LABEL_14:
 
 LABEL_16:
   v22 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
   modelDescription = self->_modelDescription;
-  v8 = a3;
-  v9 = [(MLModelDescription *)modelDescription inputDescriptionsByName];
-  v10 = [v9 allKeys];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  featuresCopy = features;
+  inputDescriptionsByName = [(MLModelDescription *)modelDescription inputDescriptionsByName];
+  allKeys = [inputDescriptionsByName allKeys];
+  v11 = [allKeys objectAtIndexedSubscript:0];
 
-  v12 = [v8 featureValueForName:v11];
+  v12 = [featuresCopy featureValueForName:v11];
 
-  v13 = [v12 stringValue];
+  stringValue = [v12 stringValue];
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [MEMORY[0x1E695DF70] array];
-  if (v13)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  if (stringValue)
   {
-    v34 = a5;
-    generateTokenSequence(v13, 0, v14, v15, v16);
-    v17 = [(NLModel *)self predictedLabelsForTokens:v14];
+    errorCopy = error;
+    generateTokenSequence(stringValue, 0, array, array2, array3);
+    v17 = [(NLModel *)self predictedLabelsForTokens:array];
     v18 = [v17 count];
-    v19 = [v15 count];
-    v20 = [v16 count];
+    v19 = [array2 count];
+    v20 = [array3 count];
     v21 = 0;
     if (v17 && v18)
     {
@@ -99,19 +99,19 @@ LABEL_16:
     }
 
     v22 = 0;
-    if (v15 && v19)
+    if (array2 && v19)
     {
-      v22 = [MEMORY[0x1E695FF10] sequenceWithInt64Array:v15];
+      v22 = [MEMORY[0x1E695FF10] sequenceWithInt64Array:array2];
     }
 
-    v33 = v15;
+    v33 = array2;
     v23 = 0;
-    v36 = v13;
+    v36 = stringValue;
     v37 = v11;
-    v35 = v14;
-    if (v16 && v20)
+    v35 = array;
+    if (array3 && v20)
     {
-      v23 = [MEMORY[0x1E695FF10] sequenceWithInt64Array:v16];
+      v23 = [MEMORY[0x1E695FF10] sequenceWithInt64Array:array3];
     }
 
     v24 = objc_alloc(MEMORY[0x1E695FE48]);
@@ -125,23 +125,23 @@ LABEL_16:
     v27 = [MEMORY[0x1E695FE60] featureValueWithSequence:v23];
     v39[2] = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:3];
-    v29 = [v24 initWithDictionary:v28 error:v34];
+    v29 = [v24 initWithDictionary:v28 error:errorCopy];
 
-    v13 = v36;
+    stringValue = v36;
     v11 = v37;
-    v14 = v35;
-    v15 = v33;
+    array = v35;
+    array2 = v33;
     goto LABEL_14;
   }
 
-  if (a5)
+  if (error)
   {
     v30 = MEMORY[0x1E696ABC0];
     v40 = *MEMORY[0x1E696A578];
     v41[0] = @"Prediction failed due to missing input";
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     [v30 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v21];
-    *a5 = v29 = 0;
+    *error = v29 = 0;
 LABEL_14:
 
     goto LABEL_15;

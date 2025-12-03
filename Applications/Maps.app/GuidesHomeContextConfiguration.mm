@@ -1,18 +1,18 @@
 @interface GuidesHomeContextConfiguration
 - (_TtC4Maps30GuidesHomeContextConfiguration)init;
-- (_TtC4Maps30GuidesHomeContextConfiguration)initWithLocation:(id)a3 skipToCitySelector:(BOOL)a4;
+- (_TtC4Maps30GuidesHomeContextConfiguration)initWithLocation:(id)location skipToCitySelector:(BOOL)selector;
 @end
 
 @implementation GuidesHomeContextConfiguration
 
-- (_TtC4Maps30GuidesHomeContextConfiguration)initWithLocation:(id)a3 skipToCitySelector:(BOOL)a4
+- (_TtC4Maps30GuidesHomeContextConfiguration)initWithLocation:(id)location skipToCitySelector:(BOOL)selector
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps30GuidesHomeContextConfiguration_location) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps30GuidesHomeContextConfiguration_skipToCitySelector) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps30GuidesHomeContextConfiguration_location) = location;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps30GuidesHomeContextConfiguration_skipToCitySelector) = selector;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = a3;
+  locationCopy = location;
   return [(GuidesHomeContextConfiguration *)&v10 init];
 }
 

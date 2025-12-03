@@ -1,15 +1,15 @@
 @interface CRSUIClimateQuickControlRequestAction
-- (CRSUIClimateQuickControlRequestAction)initWithClimateZone:(id)a3;
+- (CRSUIClimateQuickControlRequestAction)initWithClimateZone:(id)zone;
 @end
 
 @implementation CRSUIClimateQuickControlRequestAction
 
-- (CRSUIClimateQuickControlRequestAction)initWithClimateZone:(id)a3
+- (CRSUIClimateQuickControlRequestAction)initWithClimateZone:(id)zone
 {
   v4 = MEMORY[0x277CF0C80];
-  v5 = a3;
+  zoneCopy = zone;
   v6 = objc_alloc_init(v4);
-  [v6 setObject:v5 forSetting:1];
+  [v6 setObject:zoneCopy forSetting:1];
 
   v9.receiver = self;
   v9.super_class = CRSUIClimateQuickControlRequestAction;

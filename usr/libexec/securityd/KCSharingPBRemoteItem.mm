@@ -1,21 +1,21 @@
 @interface KCSharingPBRemoteItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCSharingPBRemoteItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   privateKey = self->_privateKey;
-  v6 = v4[3];
-  v9 = v4;
+  v6 = fromCopy[3];
+  v9 = fromCopy;
   if (privateKey)
   {
     if (!v6)
@@ -36,10 +36,10 @@
     [(KCSharingPBRemoteItem *)self setPrivateKey:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   internetPassword = self->_internetPassword;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (internetPassword)
   {
     if (v8)
@@ -56,13 +56,13 @@ LABEL_7:
   _objc_release_x1();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((privateKey = self->_privateKey, !(privateKey | v4[3])) || -[KCSharingPBPrivateKeyCredential isEqual:](privateKey, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((privateKey = self->_privateKey, !(privateKey | equalCopy[3])) || -[KCSharingPBPrivateKeyCredential isEqual:](privateKey, "isEqual:")))
   {
     internetPassword = self->_internetPassword;
-    if (internetPassword | v4[2])
+    if (internetPassword | equalCopy[2])
     {
       v7 = [(KCSharingPBInternetPasswordCredential *)internetPassword isEqual:?];
     }
@@ -81,14 +81,14 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(KCSharingPBPrivateKeyCredential *)self->_privateKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(KCSharingPBPrivateKeyCredential *)self->_privateKey copyWithZone:zone];
   v7 = *(v5 + 3);
   *(v5 + 3) = v6;
 
-  v8 = [(KCSharingPBInternetPasswordCredential *)self->_internetPassword copyWithZone:a3];
+  v8 = [(KCSharingPBInternetPasswordCredential *)self->_internetPassword copyWithZone:zone];
   v9 = *(v5 + 2);
   *(v5 + 2) = v8;
 
@@ -96,35 +96,35 @@ LABEL_7:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_privateKey)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_internetPassword)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -133,18 +133,18 @@ LABEL_7:
       while (1)
       {
         LOBYTE(v20) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v20 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v20 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v20 & 0x7F) << v6;
@@ -161,15 +161,15 @@ LABEL_7:
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v8 = 0;
       }
 
 LABEL_14:
-      if (([a3 hasError] & 1) != 0 || (v8 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v8 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v13 = v8 >> 3;
@@ -184,7 +184,7 @@ LABEL_14:
         objc_storeStrong(&self->_privateKey, v14);
         v20 = 0xAAAAAAAAAAAAAAAALL;
         v21 = 0xAAAAAAAAAAAAAAAALL;
-        if (!PBReaderPlaceMark() || !sub_100034F1C(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_100034F1C(v14, from))
         {
           goto LABEL_29;
         }
@@ -210,10 +210,10 @@ LABEL_23:
       }
 
 LABEL_27:
-      v18 = [a3 position];
-      if (v18 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -221,7 +221,7 @@ LABEL_27:
     objc_storeStrong(&self->_internetPassword, v14);
     v20 = 0xAAAAAAAAAAAAAAAALL;
     v21 = 0xAAAAAAAAAAAAAAAALL;
-    if (!PBReaderPlaceMark() || !sub_10005D630(v14, a3))
+    if (!PBReaderPlaceMark() || !sub_10005D630(v14, from))
     {
 LABEL_29:
 
@@ -231,7 +231,7 @@ LABEL_29:
     goto LABEL_23;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -240,22 +240,22 @@ LABEL_29:
   privateKey = self->_privateKey;
   if (privateKey)
   {
-    v5 = [(KCSharingPBPrivateKeyCredential *)privateKey dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"privateKey"];
+    dictionaryRepresentation = [(KCSharingPBPrivateKeyCredential *)privateKey dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"privateKey"];
   }
 
   internetPassword = self->_internetPassword;
   if (internetPassword)
   {
-    v7 = [(KCSharingPBInternetPasswordCredential *)internetPassword dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"internetPassword"];
+    dictionaryRepresentation2 = [(KCSharingPBInternetPasswordCredential *)internetPassword dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"internetPassword"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v9 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"Unknown Fields"];
+    dictionaryRepresentation3 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"Unknown Fields"];
   }
 
   return v3;
@@ -266,8 +266,8 @@ LABEL_29:
   v7.receiver = self;
   v7.super_class = KCSharingPBRemoteItem;
   v3 = [(KCSharingPBRemoteItem *)&v7 description];
-  v4 = [(KCSharingPBRemoteItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCSharingPBRemoteItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

@@ -1,23 +1,23 @@
 @interface PHCarPlayMainMenuContainerViewController
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
-- (PHCarPlayMainMenuContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
+- (PHCarPlayMainMenuContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)navigationItem;
 - (id)preferredFocusEnvironments;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_initializeRootViewControllerDictionaries;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PHCarPlayMainMenuContainerViewController
 
-- (PHCarPlayMainMenuContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHCarPlayMainMenuContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PHCarPlayMainMenuContainerViewController;
-  v4 = [(PHCarPlayMainMenuContainerViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PHCarPlayMainMenuContainerViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -37,67 +37,67 @@
   [v3 setBackgroundColor:v4];
 
   [v3 setOpaque:0];
-  v5 = [(PHCarPlayMainMenuContainerViewController *)self view];
-  [v5 addSubview:v3];
+  view = [(PHCarPlayMainMenuContainerViewController *)self view];
+  [view addSubview:v3];
 
-  v54 = self;
+  selfCopy = self;
   v52 = v3;
   [(PHCarPlayMainMenuContainerViewController *)self setCentralAreaContainerView:v3];
   v6 = objc_alloc_init(UITabBarController);
   if (_UISolariumEnabled())
   {
     v7 = +[UIColor clearColor];
-    v8 = [v6 view];
-    [v8 setBackgroundColor:v7];
+    view2 = [v6 view];
+    [view2 setBackgroundColor:v7];
   }
 
-  v9 = [v6 view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [v6 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(PHCarPlayMainMenuContainerViewController *)self centralAreaContainerView];
-  [v10 bounds];
+  centralAreaContainerView = [(PHCarPlayMainMenuContainerViewController *)self centralAreaContainerView];
+  [centralAreaContainerView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v6 view];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  view4 = [v6 view];
+  [view4 setFrame:{v12, v14, v16, v18}];
 
   [(PHCarPlayMainMenuContainerViewController *)self addChildViewController:v6];
   [(PHCarPlayMainMenuContainerViewController *)self setRootViewController:v6];
   [(PHCarPlayMainMenuContainerViewController *)self setSelectedViewController:v6];
-  v20 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
-  [v20 didMoveToParentViewController:self];
+  selectedViewController = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
+  [selectedViewController didMoveToParentViewController:self];
 
-  v21 = [(PHCarPlayMainMenuContainerViewController *)self centralAreaContainerView];
-  v22 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
-  v23 = [v22 view];
-  [v21 addSubview:v23];
+  centralAreaContainerView2 = [(PHCarPlayMainMenuContainerViewController *)self centralAreaContainerView];
+  selectedViewController2 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
+  view5 = [selectedViewController2 view];
+  [centralAreaContainerView2 addSubview:view5];
 
   v63[0] = @"rootView";
   v51 = v6;
-  v24 = [v6 view];
+  view6 = [v6 view];
   v63[1] = @"centerContainer";
-  v64[0] = v24;
-  v25 = [(PHCarPlayMainMenuContainerViewController *)v54 centralAreaContainerView];
-  v64[1] = v25;
+  v64[0] = view6;
+  centralAreaContainerView3 = [(PHCarPlayMainMenuContainerViewController *)selfCopy centralAreaContainerView];
+  v64[1] = centralAreaContainerView3;
   v26 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:2];
 
-  v27 = [(PHCarPlayMainMenuContainerViewController *)v54 view];
+  view7 = [(PHCarPlayMainMenuContainerViewController *)selfCopy view];
   v28 = [NSLayoutConstraint constraintsWithVisualFormat:@"|[rootView]|" options:0 metrics:0 views:v26];
-  [v27 addConstraints:v28];
+  [view7 addConstraints:v28];
 
-  v29 = [(PHCarPlayMainMenuContainerViewController *)v54 view];
+  view8 = [(PHCarPlayMainMenuContainerViewController *)selfCopy view];
   v50 = v26;
   v30 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rootView]|" options:0 metrics:0 views:v26];
-  [v29 addConstraints:v30];
+  [view8 addConstraints:v30];
 
   v57 = +[NSMutableArray array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = [(PHCarPlayMainMenuContainerViewController *)v54 rootViewControllerDictionaries];
+  obj = [(PHCarPlayMainMenuContainerViewController *)selfCopy rootViewControllerDictionaries];
   v31 = [obj countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v31)
   {
@@ -117,8 +117,8 @@
         v36 = objc_alloc_init(NSClassFromString(v35));
 
         v37 = [v34 objectForKeyedSubscript:@"kPHCarPlayMenuItemTitle"];
-        v38 = [v36 navigationItem];
-        [v38 setTitle:v37];
+        navigationItem = [v36 navigationItem];
+        [navigationItem setTitle:v37];
 
         v39 = [UITabBarItem alloc];
         v40 = [v34 objectForKeyedSubscript:@"kPHCarPlayMenuIconImageName"];
@@ -131,8 +131,8 @@
         v44 = [v34 objectForKeyedSubscript:@"kPHCarPlayMenuItemControllerName"];
         [v42 setAccessibilityIdentifier:v44];
 
-        v45 = [v42 accessibilityIdentifier];
-        LODWORD(v41) = [v45 isEqualToString:@"PHCarPlayDialerViewController"];
+        accessibilityIdentifier = [v42 accessibilityIdentifier];
+        LODWORD(v41) = [accessibilityIdentifier isEqualToString:@"PHCarPlayDialerViewController"];
 
         if (v41)
         {
@@ -144,8 +144,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v48 = [v36 badgeString];
-          [v42 setBadgeValue:v48];
+          badgeString = [v36 badgeString];
+          [v42 setBadgeValue:badgeString];
         }
 
         [v36 setTabBarItem:v42];
@@ -161,12 +161,12 @@
 
   v49 = v51;
   [v49 setViewControllers:v57 animated:0];
-  [v49 setDelegate:v54];
+  [v49 setDelegate:selfCopy];
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v4 = a4;
+  viewControllerCopy = viewController;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -176,9 +176,9 @@
   }
 
   v6 = +[PHCarPlayVoicemailManager sharedVoicemailManager];
-  v7 = [v6 isVisualVoicemailAvailable];
+  isVisualVoicemailAvailable = [v6 isVisualVoicemailAvailable];
 
-  if (v7)
+  if (isVisualVoicemailAvailable)
   {
     return 1;
   }
@@ -193,97 +193,97 @@
   return [UIApp dialVoicemail] ^ 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries:a3];
+  v4 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PHCarPlayMainMenuContainerViewController"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PHCarPlayMainMenuContainerViewController"];
   if (!v7)
   {
     v7 = [[PHCarPlayHardwareMenuTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"PHCarPlayMainMenuContainerViewController"];
   }
 
-  v8 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
-  v9 = [v6 row];
+  rootViewControllerDictionaries = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [rootViewControllerDictionaries objectAtIndex:v9];
 
   v11 = [v10 objectForKeyedSubscript:@"kPHCarPlayMenuItemTitle"];
-  v12 = [(PHCarPlayHardwareMenuTableViewCell *)v7 mainLabel];
-  [v12 setText:v11];
+  mainLabel = [(PHCarPlayHardwareMenuTableViewCell *)v7 mainLabel];
+  [mainLabel setText:v11];
 
   v13 = [v10 objectForKeyedSubscript:@"kPHCarPlayMenuIconImageName"];
   v14 = [UIImage phCarPlayImageNamed:v13];
-  v15 = [(PHCarPlayHardwareMenuTableViewCell *)v7 iconImageView];
-  [v15 setImage:v14];
+  iconImageView = [(PHCarPlayHardwareMenuTableViewCell *)v7 iconImageView];
+  [iconImageView setImage:v14];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v13, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  rootViewControllerDictionaries = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
+  v8 = [rootViewControllerDictionaries objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v9 = [v8 valueForKey:@"kPHCarPlayMenuItemControllerInstance"];
-  if (!v9)
+  topViewController = [v8 valueForKey:@"kPHCarPlayMenuItemControllerInstance"];
+  if (!topViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [0 topViewController];
+      topViewController = [0 topViewController];
     }
 
     else
     {
       v10 = [v8 objectForKeyedSubscript:@"kPHCarPlayMenuItemTitle"];
-      v11 = [0 navigationItem];
-      [v11 setTitle:v10];
+      navigationItem = [0 navigationItem];
+      [navigationItem setTitle:v10];
 
-      v9 = 0;
+      topViewController = 0;
     }
   }
 
-  [v6 deselectRowAtIndexPath:v13 animated:0];
-  [v6 highlightRowAtIndexPath:v13 animated:0 scrollPosition:0];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  [viewCopy highlightRowAtIndexPath:pathCopy animated:0 scrollPosition:0];
 
-  v12 = [(PHCarPlayMainMenuContainerViewController *)self navigationController];
-  [v12 pushViewController:v9 animated:1];
+  navigationController = [(PHCarPlayMainMenuContainerViewController *)self navigationController];
+  [navigationController pushViewController:topViewController animated:1];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
-  v7 = [v6 count];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  rootViewControllerDictionaries = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
+  v7 = [rootViewControllerDictionaries count];
 
   if (v7)
   {
     v8 = 0;
     while (1)
     {
-      v9 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      rootViewControllerDictionaries2 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
+      v10 = [rootViewControllerDictionaries2 objectAtIndexedSubscript:v8];
       v11 = [v10 objectForKeyedSubscript:@"kPHCarPlayMenuItemDeepLinkScheme"];
 
-      if ([v5 isEqualToString:v11])
+      if ([scheme isEqualToString:v11])
       {
         break;
       }
 
       ++v8;
-      v12 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
-      v13 = [v12 count];
+      rootViewControllerDictionaries3 = [(PHCarPlayMainMenuContainerViewController *)self rootViewControllerDictionaries];
+      v13 = [rootViewControllerDictionaries3 count];
 
       if (v13 <= v8)
       {
@@ -299,40 +299,40 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Switching to CarPlay tab: %i.", buf, 8u);
     }
 
-    v15 = [(PHCarPlayMainMenuContainerViewController *)self rootViewController];
-    [v15 setSelectedIndex:v8];
+    rootViewController = [(PHCarPlayMainMenuContainerViewController *)self rootViewController];
+    [rootViewController setSelectedIndex:v8];
   }
 
 LABEL_9:
-  if ([v5 isEqualToString:@"mobilephone-contacts"])
+  if ([scheme isEqualToString:@"mobilephone-contacts"])
   {
-    v16 = [(PHCarPlayMainMenuContainerViewController *)self rootViewController];
-    v17 = [v16 selectedViewController];
+    rootViewController2 = [(PHCarPlayMainMenuContainerViewController *)self rootViewController];
+    selectedViewController = [rootViewController2 selectedViewController];
 
-    v18 = [v4 host];
-    v19 = [v18 lowercaseString];
+    host = [lCopy host];
+    lowercaseString = [host lowercaseString];
 
-    if (!v19 || ![v19 isEqualToString:@"show"])
+    if (!lowercaseString || ![lowercaseString isEqualToString:@"show"])
     {
       goto LABEL_29;
     }
 
-    v49 = v17;
-    v20 = [NSURLComponents componentsWithURL:v4 resolvingAgainstBaseURL:0];
-    v21 = [v20 queryItems];
+    v49 = selectedViewController;
+    v20 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+    queryItems = [v20 queryItems];
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v22 = v21;
+    v22 = queryItems;
     v23 = [v22 countByEnumeratingWithState:&v50 objects:v57 count:16];
     v24 = v22;
     if (v23)
     {
       v25 = v23;
-      v47 = v4;
-      v48 = v19;
+      v47 = lCopy;
+      v48 = lowercaseString;
       v24 = 0;
       v26 = *v51;
       do
@@ -345,14 +345,14 @@ LABEL_9:
           }
 
           v28 = *(*(&v50 + 1) + 8 * i);
-          v29 = [v28 name];
-          v30 = [v29 isEqualToString:@"id"];
+          name = [v28 name];
+          v30 = [name isEqualToString:@"id"];
 
           if (v30)
           {
-            v31 = [v28 value];
+            value = [v28 value];
 
-            v24 = v31;
+            v24 = value;
           }
         }
 
@@ -361,20 +361,20 @@ LABEL_9:
 
       while (v25);
 
-      v4 = v47;
-      v19 = v48;
+      lCopy = v47;
+      lowercaseString = v48;
       if (!v24)
       {
         goto LABEL_28;
       }
 
       v32 = +[(PHApplicationServices *)MPApplicationServices];
-      v33 = [v32 contactStore];
+      contactStore = [v32 contactStore];
 
       v34 = +[CNContactViewController descriptorForRequiredKeys];
       v56 = v34;
       v35 = [NSArray arrayWithObjects:&v56 count:1];
-      v36 = [v33 contactForIdentifier:v24 keysToFetch:v35];
+      v36 = [contactStore contactForIdentifier:v24 keysToFetch:v35];
 
       if (v36)
       {
@@ -385,29 +385,29 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Loading Contact Into Tab", buf, 2u);
         }
 
-        v38 = [v49 delegate];
-        [v38 contactListViewController:v49 didSelectContact:v36];
+        delegate = [v49 delegate];
+        [delegate contactListViewController:v49 didSelectContact:v36];
 
-        v19 = v48;
+        lowercaseString = v48;
       }
     }
 
 LABEL_28:
-    v17 = v49;
+    selectedViewController = v49;
 LABEL_29:
   }
 
-  if ([v5 isEqualToString:@"vmshow"])
+  if ([scheme isEqualToString:@"vmshow"])
   {
-    v39 = [v4 voicemailMessageUUID];
-    if (([UIApp hasEnhancedVoicemail] & 1) != 0 || v39)
+    voicemailMessageUUID = [lCopy voicemailMessageUUID];
+    if (([UIApp hasEnhancedVoicemail] & 1) != 0 || voicemailMessageUUID)
     {
-      if (v39 || [UIApp hasEnhancedVoicemail])
+      if (voicemailMessageUUID || [UIApp hasEnhancedVoicemail])
       {
-        v40 = [v4 voicemailMessageUUID];
-        if (v40)
+        voicemailMessageUUID2 = [lCopy voicemailMessageUUID];
+        if (voicemailMessageUUID2)
         {
-          v41 = [[MPMessageID alloc] initWithUuid:v40];
+          v41 = [[MPMessageID alloc] initWithUuid:voicemailMessageUUID2];
           if (v41)
           {
             goto LABEL_42;
@@ -417,13 +417,13 @@ LABEL_29:
         v42 = PHDefaultLog();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
         {
-          [(PHVoicemailNavigationController *)v4 handleURL:v42];
+          [(PHVoicemailNavigationController *)lCopy handleURL:v42];
         }
 
-        v43 = [v4 voicemailRecordID];
-        if (v43 >= 1)
+        voicemailRecordID = [lCopy voicemailRecordID];
+        if (voicemailRecordID >= 1)
         {
-          v41 = [[MPMessageID alloc] initWithValue:v43];
+          v41 = [[MPMessageID alloc] initWithValue:voicemailRecordID];
           if (v41)
           {
 LABEL_42:
@@ -490,7 +490,7 @@ LABEL_42:
   v40[2] = v8;
   v32[0] = @"kPHCarPlayMenuItemTitle";
   v9 = _UISolariumEnabled();
-  v29 = self;
+  selfCopy = self;
   if ((v9 & 1) == 0)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
@@ -517,14 +517,14 @@ LABEL_42:
   if (PHShouldHideVoicemailUI())
   {
     v14 = v12;
-    v15 = v29;
+    v15 = selfCopy;
   }
 
   else
   {
     v30[0] = @"kPHCarPlayMenuItemTitle";
     v16 = _UISolariumEnabled();
-    v15 = v29;
+    v15 = selfCopy;
     if (v16)
     {
       v17 = &stru_10028F310;
@@ -558,39 +558,39 @@ LABEL_42:
 
 - (id)navigationItem
 {
-  v3 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
-  v4 = [v3 selectedViewController];
-  v5 = [v4 navigationItem];
+  selectedViewController = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
+  v3SelectedViewController = [selectedViewController selectedViewController];
+  navigationItem = [v3SelectedViewController navigationItem];
 
-  if (!v5)
+  if (!navigationItem)
   {
     v7.receiver = self;
     v7.super_class = PHCarPlayMainMenuContainerViewController;
-    v5 = [(PHCarPlayMainMenuContainerViewController *)&v7 navigationItem];
+    navigationItem = [(PHCarPlayMainMenuContainerViewController *)&v7 navigationItem];
   }
 
-  return v5;
+  return navigationItem;
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
+  selectedViewController = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
 
-  if (v3)
+  if (selectedViewController)
   {
-    v4 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
-    v8 = v4;
-    v5 = [NSArray arrayWithObjects:&v8 count:1];
+    selectedViewController2 = [(PHCarPlayMainMenuContainerViewController *)self selectedViewController];
+    v8 = selectedViewController2;
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PHCarPlayMainMenuContainerViewController;
-    v5 = [(PHCarPlayMainMenuContainerViewController *)&v7 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(PHCarPlayMainMenuContainerViewController *)&v7 preferredFocusEnvironments];
   }
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
 @end

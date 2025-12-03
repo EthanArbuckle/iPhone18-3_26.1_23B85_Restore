@@ -1,27 +1,27 @@
 @interface RemoteAlertManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC9feedbackdP33_109D9EA95C5E46A2F39C291451DCB14618RemoteAlertManager)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
 - (void)remoteAlertHandleDidActivate:;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)remoteViewControllerDidLaunchWhileLockedWithCompletion:(id)a3;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)remoteViewControllerDidLaunchWhileLockedWithCompletion:(id)completion;
 @end
 
 @implementation RemoteAlertManager
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003D9B0(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_10003D9B0(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_10003DD94(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10003DD94(handleCopy, error);
 }
 
 - (_TtC9feedbackdP33_109D9EA95C5E46A2F39C291451DCB14618RemoteAlertManager)init
@@ -35,22 +35,22 @@
   return [(RemoteAlertManager *)&v6 init];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10003F660(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10003F660(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)remoteViewControllerDidLaunchWhileLockedWithCompletion:(id)a3
+- (void)remoteViewControllerDidLaunchWhileLockedWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_10003F800(v5, v4);
+  selfCopy = self;
+  sub_10003F800(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

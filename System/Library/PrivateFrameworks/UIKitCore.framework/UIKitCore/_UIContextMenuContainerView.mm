@@ -1,20 +1,20 @@
 @interface _UIContextMenuContainerView
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
 - (UIView)contentWrapperView;
-- (_UIContextMenuContainerView)initWithFrame:(CGRect)a3 allowsBackgroundInteractionAcrossProccesses:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_attemptDismiss:(BOOL)a3;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (_UIContextMenuContainerView)initWithFrame:(CGRect)frame allowsBackgroundInteractionAcrossProccesses:(BOOL)proccesses;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_attemptDismiss:(BOOL)dismiss;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_initSwift;
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4;
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3;
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler;
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPassesBackgroundViewTouchesThrough:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setPassesBackgroundViewTouchesThrough:(BOOL)through;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIContextMenuContainerView
@@ -26,9 +26,9 @@
   [(UIView *)&v4 didMoveToWindow];
   if (self->_passthroughInteraction)
   {
-    v3 = [(UIView *)self window];
+    window = [(UIView *)self window];
 
-    if (v3)
+    if (window)
     {
       [(UIView *)self addInteraction:self->_passthroughInteraction];
     }
@@ -37,7 +37,7 @@
 
 - (void)_initSwift
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18A4A7258();
   v5[4] = sub_188E269B0;
   v5[5] = 0;
@@ -47,23 +47,23 @@
   v5[3] = &block_descriptor_66;
   v4 = _Block_copy(v5);
 
-  [(UIView *)v2 _addTraitCollectionTransformWithIdentifier:v3 transform:v4];
+  [(UIView *)selfCopy _addTraitCollectionTransformWithIdentifier:v3 transform:v4];
 
   _Block_release(v4);
 }
 
-- (_UIContextMenuContainerView)initWithFrame:(CGRect)a3 allowsBackgroundInteractionAcrossProccesses:(BOOL)a4
+- (_UIContextMenuContainerView)initWithFrame:(CGRect)frame allowsBackgroundInteractionAcrossProccesses:(BOOL)proccesses
 {
   v14.receiver = self;
   v14.super_class = _UIContextMenuContainerView;
-  v5 = [(UIView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    if (!a4)
+    if (!proccesses)
     {
-      v7 = [(UIView *)v5 traitCollection];
-      v8 = _UIContextMenuGetPlatformMetrics([v7 userInterfaceIdiom]);
+      traitCollection = [(UIView *)v5 traitCollection];
+      v8 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
       if ([v8 supportsPassthroughInteraction])
       {
@@ -77,9 +77,9 @@
         -[_UIPassthroughScrollInteraction setHitTestsAsOpaque:](v6->_passthroughInteraction, "setHitTestsAsOpaque:", [v8 containerViewsHitTestAsOpaque]);
       }
 
-      v11 = [v8 containerViewsHitTestAsOpaque];
-      v12 = [(UIView *)v6 layer];
-      [v12 setHitTestsAsOpaque:v11];
+      containerViewsHitTestAsOpaque = [v8 containerViewsHitTestAsOpaque];
+      layer = [(UIView *)v6 layer];
+      [layer setHitTestsAsOpaque:containerViewsHitTestAsOpaque];
     }
 
     [(UIView *)v6 _setOverrideUserInterfaceRenderingMode:1];
@@ -91,20 +91,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIWindowSceneWillUpdateEffectiveGeometryNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIWindowSceneWillUpdateEffectiveGeometryNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIContextMenuContainerView;
   [(UIView *)&v4 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -113,10 +113,10 @@
   v26.receiver = self;
   v26.super_class = _UIContextMenuContainerView;
   [(UIView *)&v26 setBounds:x, y, width, height];
-  v16 = [(_UIContextMenuContainerView *)self sizeChangeHandler];
-  if (v16)
+  sizeChangeHandler = [(_UIContextMenuContainerView *)self sizeChangeHandler];
+  if (sizeChangeHandler)
   {
-    v17 = v16;
+    v17 = sizeChangeHandler;
     [(UIView *)self bounds];
     v28.origin.x = v18;
     v28.origin.y = v19;
@@ -130,19 +130,19 @@
 
     if (!v22)
     {
-      v23 = [(_UIContextMenuContainerView *)self sizeChangeHandler];
+      sizeChangeHandler2 = [(_UIContextMenuContainerView *)self sizeChangeHandler];
       [(UIView *)self bounds];
-      v23[2](v23, v24, v25);
+      sizeChangeHandler2[2](sizeChangeHandler2, v24, v25);
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -151,10 +151,10 @@
   v26.receiver = self;
   v26.super_class = _UIContextMenuContainerView;
   [(UIView *)&v26 setFrame:x, y, width, height];
-  v16 = [(_UIContextMenuContainerView *)self sizeChangeHandler];
-  if (v16)
+  sizeChangeHandler = [(_UIContextMenuContainerView *)self sizeChangeHandler];
+  if (sizeChangeHandler)
   {
-    v17 = v16;
+    v17 = sizeChangeHandler;
     [(UIView *)self frame];
     v28.origin.x = v18;
     v28.origin.y = v19;
@@ -168,72 +168,72 @@
 
     if (!v22)
     {
-      v23 = [(_UIContextMenuContainerView *)self sizeChangeHandler];
+      sizeChangeHandler2 = [(_UIContextMenuContainerView *)self sizeChangeHandler];
       [(UIView *)self frame];
-      v23[2](v23, v24, v25);
+      sizeChangeHandler2[2](sizeChangeHandler2, v24, v25);
     }
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = _UIContextMenuContainerView;
   [(UIView *)&v5 setUserInteractionEnabled:?];
-  [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction _setOverrideAllowsHitTestingOnTouchFallbackView:v3];
+  [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction _setOverrideAllowsHitTestingOnTouchFallbackView:enabledCopy];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = _UIContextMenuContainerView;
-  [(UIView *)&v4 willMoveToWindow:a3];
+  [(UIView *)&v4 willMoveToWindow:window];
   if (self->_passthroughInteraction)
   {
     [(UIView *)self removeInteraction:?];
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   v14.receiver = self;
   v14.super_class = _UIContextMenuContainerView;
-  [(UIView *)&v14 _didMoveFromWindow:v6 toWindow:v7];
-  [v6 _unregisterScrollToTopView:self];
-  [v7 _registerScrollToTopView:self];
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  [(UIView *)&v14 _didMoveFromWindow:windowCopy toWindow:toWindowCopy];
+  [windowCopy _unregisterScrollToTopView:self];
+  [toWindowCopy _registerScrollToTopView:self];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v10 = [v6 windowScene];
-    if (v10)
+    windowScene = [windowCopy windowScene];
+    if (windowScene)
     {
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 removeObserver:self name:@"UIWindowSceneWillUpdateEffectiveGeometryNotification" object:v10];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"UIWindowSceneWillUpdateEffectiveGeometryNotification" object:windowScene];
     }
 
-    v12 = [v7 windowScene];
-    if (v12)
+    windowScene2 = [toWindowCopy windowScene];
+    if (windowScene2)
     {
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 addObserver:self selector:sel__sceneGeometryWillUpdate_ name:@"UIWindowSceneWillUpdateEffectiveGeometryNotification" object:v12];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__sceneGeometryWillUpdate_ name:@"UIWindowSceneWillUpdateEffectiveGeometryNotification" object:windowScene2];
     }
   }
 }
 
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(_UIContextMenuContainerView *)self dismissalHandler];
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  eventCopy = event;
+  dismissalHandler = [(_UIContextMenuContainerView *)self dismissalHandler];
 
-  if (!v11 || v10 && (([v10 _modifierFlags] & 0x40000) != 0 || (objc_msgSend(v10, "_buttonMask") & 2) != 0))
+  if (!dismissalHandler || eventCopy && (([eventCopy _modifierFlags] & 0x40000) != 0 || (objc_msgSend(eventCopy, "_buttonMask") & 2) != 0))
   {
     lastHitTestWasPassedThroughToInteraction = 0;
   }
@@ -241,14 +241,14 @@
   else
   {
     self->_lastHitTestWasPassedThroughToInteraction = 0;
-    v12 = [v9 view];
-    v13 = [(UIView *)self window];
-    [v12 convertPoint:v13 toView:{x, y}];
+    view = [interactionCopy view];
+    window = [(UIView *)self window];
+    [view convertPoint:window toView:{x, y}];
     v15 = v14;
     v17 = v16;
 
-    v18 = [(UIView *)self window];
-    v19 = [v18 hitTest:v10 withEvent:{v15, v17}];
+    window2 = [(UIView *)self window];
+    v19 = [window2 hitTest:eventCopy withEvent:{v15, v17}];
 
     lastHitTestWasPassedThroughToInteraction = self->_lastHitTestWasPassedThroughToInteraction;
   }
@@ -256,20 +256,20 @@
   return lastHitTestWasPassedThroughToInteraction;
 }
 
-- (void)setPassesBackgroundViewTouchesThrough:(BOOL)a3
+- (void)setPassesBackgroundViewTouchesThrough:(BOOL)through
 {
-  if (self->_passesBackgroundViewTouchesThrough != a3)
+  if (self->_passesBackgroundViewTouchesThrough != through)
   {
-    [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction setEatsTouches:!a3];
-    self->_passesBackgroundViewTouchesThrough = a3;
+    [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction setEatsTouches:!through];
+    self->_passesBackgroundViewTouchesThrough = through;
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (self->_inPassthroughViewHitTest)
   {
 LABEL_2:
@@ -280,19 +280,19 @@ LABEL_2:
   self->_lastHitTestWasPassedThroughToInteraction = 0;
   v15.receiver = self;
   v15.super_class = _UIContextMenuContainerView;
-  v8 = [(UIView *)&v15 hitTest:v7 withEvent:x, y];
-  v9 = [(_UIContextMenuContainerView *)self dismissalHandler];
+  v8 = [(UIView *)&v15 hitTest:eventCopy withEvent:x, y];
+  dismissalHandler = [(_UIContextMenuContainerView *)self dismissalHandler];
 
-  if (v9)
+  if (dismissalHandler)
   {
     if (v8 == self || ([(_UIContextMenuContainerView *)self contentWrapperView], v10 = objc_claimAutoreleasedReturnValue(), v10, v8 == v10))
     {
-      v11 = [_UIPassthroughScrollInteraction _shouldEventBePassedThrough:v7];
-      v12 = [v7 type];
-      v13 = v12;
-      if (!v11 && v12 != 11)
+      v11 = [_UIPassthroughScrollInteraction _shouldEventBePassedThrough:eventCopy];
+      type = [eventCopy type];
+      v13 = type;
+      if (!v11 && type != 11)
       {
-        if (!-[_UIContextMenuContainerView allowsDragEventsToPassthrough](self, "allowsDragEventsToPassthrough") || [v7 type] != 9)
+        if (!-[_UIContextMenuContainerView allowsDragEventsToPassthrough](self, "allowsDragEventsToPassthrough") || [eventCopy type] != 9)
         {
           goto LABEL_18;
         }
@@ -327,7 +327,7 @@ LABEL_18:
     }
 
 LABEL_22:
-    if (v7 && (([v7 _modifierFlags] & 0x40000) != 0 || (objc_msgSend(v7, "_buttonMask") & 2) != 0))
+    if (eventCopy && (([eventCopy _modifierFlags] & 0x40000) != 0 || (objc_msgSend(eventCopy, "_buttonMask") & 2) != 0))
     {
       [(_UIPassthroughScrollInteraction *)self->_passthroughInteraction __forciblyEndWithReason:5];
     }
@@ -340,50 +340,50 @@ LABEL_19:
   return v8;
 }
 
-- (void)_attemptDismiss:(BOOL)a3
+- (void)_attemptDismiss:(BOOL)dismiss
 {
   if (!self->_didDismiss)
   {
-    v3 = a3;
-    v5 = [(_UIContextMenuContainerView *)self dismissalHandler];
+    dismissCopy = dismiss;
+    dismissalHandler = [(_UIContextMenuContainerView *)self dismissalHandler];
 
-    if (v5)
+    if (dismissalHandler)
     {
       self->_didDismiss = 1;
-      v6 = [(_UIContextMenuContainerView *)self dismissalHandler];
-      v7 = v6;
-      if (v3)
+      dismissalHandler2 = [(_UIContextMenuContainerView *)self dismissalHandler];
+      v7 = dismissalHandler2;
+      if (dismissCopy)
       {
-        dispatch_async(MEMORY[0x1E69E96A0], v6);
+        dispatch_async(MEMORY[0x1E69E96A0], dismissalHandler2);
       }
 
       else
       {
-        v6[2](v6);
+        dismissalHandler2[2](dismissalHandler2);
       }
     }
   }
 }
 
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal
 {
   v7.receiver = self;
   v7.super_class = _UIContextMenuContainerView;
   [(UIView *)&v7 _traitCollectionDidChangeOnSubtreeInternal:?];
-  v5 = [(_UIContextMenuContainerView *)self subtreeTraitPropagationHandler];
+  subtreeTraitPropagationHandler = [(_UIContextMenuContainerView *)self subtreeTraitPropagationHandler];
 
-  if (v5)
+  if (subtreeTraitPropagationHandler)
   {
-    v6 = [(_UIContextMenuContainerView *)self subtreeTraitPropagationHandler];
-    (v6)[2](v6, a3);
+    subtreeTraitPropagationHandler2 = [(_UIContextMenuContainerView *)self subtreeTraitPropagationHandler];
+    (subtreeTraitPropagationHandler2)[2](subtreeTraitPropagationHandler2, internal);
   }
 }
 
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 1, a3, *&a3.y);
+    (*(handler + 2))(handler, 1, location, *&location.y);
   }
 }
 

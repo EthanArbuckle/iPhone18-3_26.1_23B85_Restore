@@ -1,18 +1,18 @@
 @interface DTNetQualSettingsFooter
-- (DTNetQualSettingsFooter)initWithSpecifier:(id)a3;
+- (DTNetQualSettingsFooter)initWithSpecifier:(id)specifier;
 - (void)_networkQualityOpenURL;
-- (void)_openNetworkQualityDetails:(id)a3;
+- (void)_openNetworkQualityDetails:(id)details;
 - (void)donePressed;
 @end
 
 @implementation DTNetQualSettingsFooter
 
-- (DTNetQualSettingsFooter)initWithSpecifier:(id)a3
+- (DTNetQualSettingsFooter)initWithSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = DTNetQualSettingsFooter;
-  v6 = [(DTNetQualSettingsFooter *)&v13 initWithSpecifier:v5];
+  v6 = [(DTNetQualSettingsFooter *)&v13 initWithSpecifier:specifierCopy];
   if (v6)
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -22,7 +22,7 @@
     v10 = [v9 localizedStringForKey:@"FOOTER_LEARN" value:&stru_3E0D8 table:@"DTNetQualSettings"];
 
     v11 = [NSString stringWithFormat:@"%@ %@", v8, v10];
-    objc_storeStrong(&v6->specifier, a3);
+    objc_storeStrong(&v6->specifier, specifier);
     -[DTNetQualSettingsFooter setLinkRange:](v6, "setLinkRange:", [v11 length] - objc_msgSend(v10, "length"), objc_msgSend(v10, "length"));
     [(DTNetQualSettingsFooter *)v6 setText:v11];
     [(DTNetQualSettingsFooter *)v6 setTarget:v6];
@@ -39,7 +39,7 @@
   [v3 openURL:v2 options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)_openNetworkQualityDetails:(id)a3
+- (void)_openNetworkQualityDetails:(id)details
 {
   v4 = [OBTextWelcomeController alloc];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -73,18 +73,18 @@
   [v27 addSectionWithHeader:0 content:v22 accessoryButton:v20];
 
   v23 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"donePressed"];
-  v24 = [v27 navigationItem];
-  [v24 setRightBarButtonItem:v23];
+  navigationItem = [v27 navigationItem];
+  [navigationItem setRightBarButtonItem:v23];
 
   v25 = [[UINavigationController alloc] initWithRootViewController:v27];
-  v26 = [(PSSpecifier *)self->specifier target];
-  [v26 presentViewController:v25 animated:1 completion:0];
+  target = [(PSSpecifier *)self->specifier target];
+  [target presentViewController:v25 animated:1 completion:0];
 }
 
 - (void)donePressed
 {
-  v2 = [(PSSpecifier *)self->specifier target];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  target = [(PSSpecifier *)self->specifier target];
+  [target dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface PLCloudIdentifierReservationSupport
-- (BOOL)cancelReservedCloudIdentifiers:(id)a3 clientBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)a3 clientBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)takeReservedCloudIdentifierWithEntityName:(id)a3 uuid:(id)a4 clientBundleIdentifier:(id)a5 error:(id *)a6;
+- (BOOL)cancelReservedCloudIdentifiers:(id)identifiers clientBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)name clientBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)takeReservedCloudIdentifierWithEntityName:(id)name uuid:(id)uuid clientBundleIdentifier:(id)identifier error:(id *)error;
 - (PLCloudIdentifierReservationSupport)init;
-- (id)_lock_reservedIdentifiersForEntityName:(id)a3 clientBundleIdentifier:(id)a4;
-- (id)reserveCloudIdentifierUUIDsWithEntityName:(id)a3 count:(unint64_t)a4 clientBundleIdentifier:(id)a5 error:(id *)a6;
-- (id)reservedCloudIdentifierUUIDsWithEntityName:(id)a3 clientBundleIdentifier:(id)a4 error:(id *)a5;
+- (id)_lock_reservedIdentifiersForEntityName:(id)name clientBundleIdentifier:(id)identifier;
+- (id)reserveCloudIdentifierUUIDsWithEntityName:(id)name count:(unint64_t)count clientBundleIdentifier:(id)identifier error:(id *)error;
+- (id)reservedCloudIdentifierUUIDsWithEntityName:(id)name clientBundleIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation PLCloudIdentifierReservationSupport
 
-- (BOOL)cancelReservedCloudIdentifiers:(id)a3 clientBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)cancelReservedCloudIdentifiers:(id)identifiers clientBundleIdentifier:(id)identifier error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A278];
@@ -30,7 +30,7 @@
 
     *(v20 + 24) = 0;
     v10 = v14;
-    if (!a5)
+    if (!error)
     {
 LABEL_7:
 
@@ -40,19 +40,19 @@ LABEL_7:
 
 LABEL_6:
     v15 = v10;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_7;
   }
 
-  v17 = v8;
-  v18 = v7;
+  v17 = identifierCopy;
+  v18 = identifiersCopy;
   PLRunWithUnfairLock();
 
   v10 = 0;
   v11 = *(v20 + 24);
   if ((v11 & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -78,21 +78,21 @@ void __99__PLCloudIdentifierReservationSupport_cancelReservedCloudIdentifiers_cl
   *(*(*(a1 + 56) + 8) + 24) = 1;
 }
 
-- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)a3 clientBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)cancelReservedCloudIdentifiersWithEntityName:(id)name clientBundleIdentifier:(id)identifier error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  if (!v7 || !v8)
+  if (!nameCopy || !identifierCopy)
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = *MEMORY[0x1E69BFF48];
-    if (v8)
+    if (identifierCopy)
     {
       v26 = *MEMORY[0x1E696A278];
       v27[0] = @"Unsupported object type";
@@ -110,21 +110,21 @@ void __99__PLCloudIdentifierReservationSupport_cancelReservedCloudIdentifiers_cl
 
     *(v21 + 24) = 0;
     v10 = v15;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
     v16 = v10;
-    *a5 = v10;
+    *error = v10;
 LABEL_11:
 
     v11 = *(v21 + 24);
     goto LABEL_12;
   }
 
-  v18 = v7;
+  v18 = nameCopy;
   v19 = v9;
   PLRunWithUnfairLock();
 
@@ -132,7 +132,7 @@ LABEL_11:
   v11 = *(v21 + 24);
   if ((v11 & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -153,13 +153,13 @@ void __113__PLCloudIdentifierReservationSupport_cancelReservedCloudIdentifiersWi
   *(*(*(a1 + 56) + 8) + 24) = 1;
 }
 
-- (BOOL)takeReservedCloudIdentifierWithEntityName:(id)a3 uuid:(id)a4 clientBundleIdentifier:(id)a5 error:(id *)a6
+- (BOOL)takeReservedCloudIdentifierWithEntityName:(id)name uuid:(id)uuid clientBundleIdentifier:(id)identifier error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  nameCopy = name;
+  uuidCopy = uuid;
+  identifierCopy = identifier;
+  v12 = identifierCopy;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -170,11 +170,11 @@ void __113__PLCloudIdentifierReservationSupport_cancelReservedCloudIdentifiersWi
   v28 = __Block_byref_object_copy__17542;
   v29 = __Block_byref_object_dispose__17543;
   v30 = 0;
-  if (v9 && v11)
+  if (nameCopy && identifierCopy)
   {
-    v22 = v9;
+    v22 = nameCopy;
     v23 = v12;
-    v24 = v10;
+    v24 = uuidCopy;
     PLRunWithUnfairLock();
   }
 
@@ -182,7 +182,7 @@ void __113__PLCloudIdentifierReservationSupport_cancelReservedCloudIdentifiersWi
   {
     v13 = MEMORY[0x1E696ABC0];
     v14 = *MEMORY[0x1E69BFF48];
-    if (v11)
+    if (identifierCopy)
     {
       v37 = *MEMORY[0x1E696A278];
       v38[0] = @"Unsupported object type";
@@ -203,10 +203,10 @@ void __113__PLCloudIdentifierReservationSupport_cancelReservedCloudIdentifiersWi
 
   v18 = *(v32 + 24);
   v19 = v26[5];
-  if (a6 && (v18 & 1) == 0)
+  if (error && (v18 & 1) == 0)
   {
     v19 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
   v20 = *(v32 + 24);
@@ -245,21 +245,21 @@ void __115__PLCloudIdentifierReservationSupport_takeReservedCloudIdentifierWithE
   *(*(*(a1 + 64) + 8) + 24) = v10;
 }
 
-- (id)reservedCloudIdentifierUUIDsWithEntityName:(id)a3 clientBundleIdentifier:(id)a4 error:(id *)a5
+- (id)reservedCloudIdentifierUUIDsWithEntityName:(id)name clientBundleIdentifier:(id)identifier error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__17542;
   v26 = __Block_byref_object_dispose__17543;
   v27 = 0;
-  if (v7 && v8)
+  if (nameCopy && identifierCopy)
   {
-    v20 = v7;
+    v20 = nameCopy;
     v21 = v9;
     PLRunWithUnfairLock();
 
@@ -270,7 +270,7 @@ void __115__PLCloudIdentifierReservationSupport_takeReservedCloudIdentifierWithE
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E69BFF48];
-    if (v8)
+    if (identifierCopy)
     {
       v30 = *MEMORY[0x1E696A278];
       v31[0] = @"Unsupported object type";
@@ -290,10 +290,10 @@ void __115__PLCloudIdentifierReservationSupport_takeReservedCloudIdentifierWithE
   v14 = v23[5];
   v15 = v10;
   v16 = v15;
-  if (!v14 && a5)
+  if (!v14 && error)
   {
     v17 = v15;
-    *a5 = v16;
+    *error = v16;
   }
 
   v18 = v23[5];
@@ -311,12 +311,12 @@ void __111__PLCloudIdentifierReservationSupport_reservedCloudIdentifierUUIDsWith
   *(v3 + 40) = v2;
 }
 
-- (id)reserveCloudIdentifierUUIDsWithEntityName:(id)a3 count:(unint64_t)a4 clientBundleIdentifier:(id)a5 error:(id *)a6
+- (id)reserveCloudIdentifierUUIDsWithEntityName:(id)name count:(unint64_t)count clientBundleIdentifier:(id)identifier error:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -329,9 +329,9 @@ void __111__PLCloudIdentifierReservationSupport_reservedCloudIdentifierUUIDsWith
   v30 = __Block_byref_object_copy__17542;
   v31 = __Block_byref_object_dispose__17543;
   v32 = 0;
-  if (v9 && v10)
+  if (nameCopy && identifierCopy)
   {
-    v25 = v9;
+    v25 = nameCopy;
     v26 = v11;
     PLRunWithUnfairLock();
   }
@@ -340,7 +340,7 @@ void __111__PLCloudIdentifierReservationSupport_reservedCloudIdentifierUUIDsWith
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = *MEMORY[0x1E69BFF48];
-    if (v10)
+    if (identifierCopy)
     {
       v41 = *MEMORY[0x1E696A278];
       v42[0] = @"Unsupported object type";
@@ -359,7 +359,7 @@ void __111__PLCloudIdentifierReservationSupport_reservedCloudIdentifierUUIDsWith
     v28[5] = v15;
   }
 
-  if ([v34[5] count] != a4)
+  if ([v34[5] count] != count)
   {
     v17 = v34[5];
     v34[5] = 0;
@@ -391,10 +391,10 @@ void __111__PLCloudIdentifierReservationSupport_reservedCloudIdentifierUUIDsWith
     }
   }
 
-  if (a6)
+  if (error)
   {
     v19 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
 LABEL_17:
@@ -442,23 +442,23 @@ void __116__PLCloudIdentifierReservationSupport_reserveCloudIdentifierUUIDsWithE
   }
 }
 
-- (id)_lock_reservedIdentifiersForEntityName:(id)a3 clientBundleIdentifier:(id)a4
+- (id)_lock_reservedIdentifiersForEntityName:(id)name clientBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_lock_reservedEntityIdentifiersByBundle objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_lock_reservedEntityIdentifiersByBundle objectForKeyedSubscript:identifierCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_lock_reservedEntityIdentifiersByBundle setObject:v8 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_lock_reservedEntityIdentifiersByBundle setObject:v8 forKeyedSubscript:identifierCopy];
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:nameCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:v9 forKeyedSubscript:nameCopy];
   }
 
   return v9;

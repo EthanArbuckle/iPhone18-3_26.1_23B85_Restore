@@ -6,25 +6,25 @@
 - (id)deviceAppleIDUsernameForCurrentDevice;
 - (id)getCurrentDeviceEnrolledBetaProgramSynchronously;
 - (id)getCurrentDeviceSynchronously;
-- (id)loadMDMConfigurationWithError:(id *)a3;
+- (id)loadMDMConfigurationWithError:(id *)error;
 - (id)seedingAppleIDUsernameForCurrentDevice;
-- (id)synchronousDaemonRemoteObjectProxyWithError:(id *)a3;
-- (void)betaEnrollmentProxyObjectWithCompletion:(id)a3;
-- (void)canFileFeedbackOnDevice:(id)a3 completion:(id)a4;
-- (void)configureWithOfferProgramTokens:(id)a3 requireProgramToken:(id)a4 enrollmentPolicy:(int64_t)a5 error:(id *)a6;
-- (void)deleteSeedingAppleAccountWithCompletion:(id)a3;
-- (void)enrollDevice:(id)a3 inProgram:(id)a4 completion:(id)a5;
-- (void)enrollInProgramWithToken:(id)a3 completion:(id)a4;
-- (void)enrolledBetaProgramForDevice:(id)a3 completion:(id)a4;
-- (void)getCurrentDevice:(id)a3;
-- (void)getDevicesForPlatforms:(unint64_t)a3 completion:(id)a4;
+- (id)synchronousDaemonRemoteObjectProxyWithError:(id *)error;
+- (void)betaEnrollmentProxyObjectWithCompletion:(id)completion;
+- (void)canFileFeedbackOnDevice:(id)device completion:(id)completion;
+- (void)configureWithOfferProgramTokens:(id)tokens requireProgramToken:(id)token enrollmentPolicy:(int64_t)policy error:(id *)error;
+- (void)deleteSeedingAppleAccountWithCompletion:(id)completion;
+- (void)enrollDevice:(id)device inProgram:(id)program completion:(id)completion;
+- (void)enrollInProgramWithToken:(id)token completion:(id)completion;
+- (void)enrolledBetaProgramForDevice:(id)device completion:(id)completion;
+- (void)getCurrentDevice:(id)device;
+- (void)getDevicesForPlatforms:(unint64_t)platforms completion:(id)completion;
 - (void)initializeDaemonConnection;
-- (void)invalidateCacheWithCompletion:(id)a3;
-- (void)isDeviceEnrolledInBetaProgram:(id)a3 completion:(id)a4;
-- (void)queryProgramsForSystemAccountsWithPlatforms:(unint64_t)a3 disableBuildPrefixMatching:(BOOL)a4 completion:(id)a5;
-- (void)seedingAppleIDUsernameForCurrentDevice:(id)a3;
-- (void)setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)a3 completion:(id)a4;
-- (void)unenrollDevice:(id)a3 completion:(id)a4;
+- (void)invalidateCacheWithCompletion:(id)completion;
+- (void)isDeviceEnrolledInBetaProgram:(id)program completion:(id)completion;
+- (void)queryProgramsForSystemAccountsWithPlatforms:(unint64_t)platforms disableBuildPrefixMatching:(BOOL)matching completion:(id)completion;
+- (void)seedingAppleIDUsernameForCurrentDevice:(id)device;
+- (void)setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)device completion:(id)completion;
+- (void)unenrollDevice:(id)device completion:(id)completion;
 @end
 
 @implementation SDBetaEnrollmentServiceProxy
@@ -64,41 +64,41 @@ uint64_t __46__SDBetaEnrollmentServiceProxy_sharedInstance__block_invoke()
 
 - (void)initializeDaemonConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_daemonConnection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_daemonConnection)
   {
     v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.seeding.client" options:4096];
-    daemonConnection = v2->_daemonConnection;
-    v2->_daemonConnection = v3;
+    daemonConnection = selfCopy->_daemonConnection;
+    selfCopy->_daemonConnection = v3;
 
     v5 = _allowListedXPCServerInterface();
-    [(NSXPCConnection *)v2->_daemonConnection setRemoteObjectInterface:v5];
+    [(NSXPCConnection *)selfCopy->_daemonConnection setRemoteObjectInterface:v5];
 
     v6 = _allowListedXPCClientInterface();
-    [(NSXPCConnection *)v2->_daemonConnection setExportedInterface:v6];
+    [(NSXPCConnection *)selfCopy->_daemonConnection setExportedInterface:v6];
 
-    [(NSXPCConnection *)v2->_daemonConnection setExportedObject:v2];
-    objc_initWeak(&location, v2);
+    [(NSXPCConnection *)selfCopy->_daemonConnection setExportedObject:selfCopy];
+    objc_initWeak(&location, selfCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke;
     v9[3] = &unk_2787CBAF8;
     objc_copyWeak(&v10, &location);
-    [(NSXPCConnection *)v2->_daemonConnection setInvalidationHandler:v9];
+    [(NSXPCConnection *)selfCopy->_daemonConnection setInvalidationHandler:v9];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke_2;
     v7[3] = &unk_2787CBAF8;
     objc_copyWeak(&v8, &location);
-    [(NSXPCConnection *)v2->_daemonConnection setInterruptionHandler:v7];
-    [(NSXPCConnection *)v2->_daemonConnection resume];
+    [(NSXPCConnection *)selfCopy->_daemonConnection setInterruptionHandler:v7];
+    [(NSXPCConnection *)selfCopy->_daemonConnection resume];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke(uint64_t a1)
@@ -125,9 +125,9 @@ void __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke
   [WeakRetained setDaemonConnection:0];
 }
 
-- (void)betaEnrollmentProxyObjectWithCompletion:(id)a3
+- (void)betaEnrollmentProxyObjectWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_daemonConnection)
   {
     [(SDBetaEnrollmentServiceProxy *)self initializeDaemonConnection];
@@ -137,15 +137,15 @@ void __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(SDBetaEnrollmentServiceProxy *)self daemonConnection];
+  daemonConnection = [(SDBetaEnrollmentServiceProxy *)self daemonConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__SDBetaEnrollmentServiceProxy_betaEnrollmentProxyObjectWithCompletion___block_invoke;
   v15[3] = &unk_2787CBB20;
   v17 = &v18;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v15];
+  v7 = [daemonConnection remoteObjectProxyWithErrorHandler:v15];
 
   if ([v7 conformsToProtocol:&unk_284251B30])
   {
@@ -173,14 +173,14 @@ void __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke
     }
 
     v11 = *(v19 + 24);
-    v12 = Log_1();
-    v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
+    _SDErrorForDaemonClientErrorType = Log_1();
+    v13 = os_log_type_enabled(_SDErrorForDaemonClientErrorType, OS_LOG_TYPE_INFO);
     if (v11)
     {
       if (v13)
       {
         *v14 = 0;
-        _os_log_impl(&dword_22E41E000, v12, OS_LOG_TYPE_INFO, "Already sent conformsToProtocol error via completion handler", v14, 2u);
+        _os_log_impl(&dword_22E41E000, _SDErrorForDaemonClientErrorType, OS_LOG_TYPE_INFO, "Already sent conformsToProtocol error via completion handler", v14, 2u);
       }
     }
 
@@ -189,11 +189,11 @@ void __58__SDBetaEnrollmentServiceProxy_initializeDaemonConnection__block_invoke
       if (v13)
       {
         *v14 = 0;
-        _os_log_impl(&dword_22E41E000, v12, OS_LOG_TYPE_INFO, "Sending conformsToProtocol error via completion handler", v14, 2u);
+        _os_log_impl(&dword_22E41E000, _SDErrorForDaemonClientErrorType, OS_LOG_TYPE_INFO, "Sending conformsToProtocol error via completion handler", v14, 2u);
       }
 
-      v12 = [(SDBetaEnrollmentServiceProxy *)self _SDErrorForDaemonClientErrorType];
-      (*(v6 + 2))(v6, 0, v12);
+      _SDErrorForDaemonClientErrorType = [(SDBetaEnrollmentServiceProxy *)self _SDErrorForDaemonClientErrorType];
+      (*(v6 + 2))(v6, 0, _SDErrorForDaemonClientErrorType);
     }
 
     v8 = v19;
@@ -240,7 +240,7 @@ void __72__SDBetaEnrollmentServiceProxy_betaEnrollmentProxyObjectWithCompletion_
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)synchronousDaemonRemoteObjectProxyWithError:(id *)a3
+- (id)synchronousDaemonRemoteObjectProxyWithError:(id *)error
 {
   if (!self->_daemonConnection)
   {
@@ -253,21 +253,21 @@ void __72__SDBetaEnrollmentServiceProxy_betaEnrollmentProxyObjectWithCompletion_
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(SDBetaEnrollmentServiceProxy *)self daemonConnection];
+  daemonConnection = [(SDBetaEnrollmentServiceProxy *)self daemonConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__SDBetaEnrollmentServiceProxy_synchronousDaemonRemoteObjectProxyWithError___block_invoke;
   v12[3] = &unk_2787CBB48;
   v12[4] = &v13;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v6 = [daemonConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v7 = v14;
-  if (a3)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
       v7 = v14;
     }
   }
@@ -290,7 +290,7 @@ void __72__SDBetaEnrollmentServiceProxy_betaEnrollmentProxyObjectWithCompletion_
       [SDBetaEnrollmentServiceProxy synchronousDaemonRemoteObjectProxyWithError:];
     }
 
-    if (!a3)
+    if (!error)
     {
 LABEL_7:
       v9 = 0;
@@ -298,7 +298,7 @@ LABEL_7:
     }
 
     [(SDBetaEnrollmentServiceProxy *)self _SDErrorForDaemonClientErrorType];
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
 LABEL_14:
@@ -323,16 +323,16 @@ void __76__SDBetaEnrollmentServiceProxy_synchronousDaemonRemoteObjectProxyWithEr
   *(v6 + 40) = v5;
 }
 
-- (void)getCurrentDevice:(id)a3
+- (void)getCurrentDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__SDBetaEnrollmentServiceProxy_getCurrentDevice___block_invoke;
   v6[3] = &unk_2787CBB70;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v6];
 }
 
@@ -357,7 +357,7 @@ void __49__SDBetaEnrollmentServiceProxy_getCurrentDevice___block_invoke(uint64_t
 
 - (id)getCurrentDeviceSynchronously
 {
-  v2 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
+  synchronousDaemonRemoteObjectProxy = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -369,28 +369,28 @@ void __49__SDBetaEnrollmentServiceProxy_getCurrentDevice___block_invoke(uint64_t
   v5[2] = __61__SDBetaEnrollmentServiceProxy_getCurrentDeviceSynchronously__block_invoke;
   v5[3] = &unk_2787CBB98;
   v5[4] = &v6;
-  [v2 getCurrentDevice:v5];
+  [synchronousDaemonRemoteObjectProxy getCurrentDevice:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-- (void)enrollDevice:(id)a3 inProgram:(id)a4 completion:(id)a5
+- (void)enrollDevice:(id)device inProgram:(id)program completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  programCopy = program;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__SDBetaEnrollmentServiceProxy_enrollDevice_inProgram_completion___block_invoke;
   v14[3] = &unk_2787CBBC0;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = deviceCopy;
+  v16 = programCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = programCopy;
+  v13 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v14];
 }
 
@@ -407,16 +407,16 @@ uint64_t __66__SDBetaEnrollmentServiceProxy_enrollDevice_inProgram_completion___
   }
 }
 
-- (void)getDevicesForPlatforms:(unint64_t)a3 completion:(id)a4
+- (void)getDevicesForPlatforms:(unint64_t)platforms completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SDBetaEnrollmentServiceProxy_getDevicesForPlatforms_completion___block_invoke;
   v8[3] = &unk_2787CBBE8;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = completionCopy;
+  platformsCopy = platforms;
+  v7 = completionCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v8];
 }
 
@@ -433,17 +433,17 @@ uint64_t __66__SDBetaEnrollmentServiceProxy_getDevicesForPlatforms_completion___
   }
 }
 
-- (void)queryProgramsForSystemAccountsWithPlatforms:(unint64_t)a3 disableBuildPrefixMatching:(BOOL)a4 completion:(id)a5
+- (void)queryProgramsForSystemAccountsWithPlatforms:(unint64_t)platforms disableBuildPrefixMatching:(BOOL)matching completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __114__SDBetaEnrollmentServiceProxy_queryProgramsForSystemAccountsWithPlatforms_disableBuildPrefixMatching_completion___block_invoke;
   v10[3] = &unk_2787CBC10;
-  v13 = a4;
-  v11 = v8;
-  v12 = a3;
-  v9 = v8;
+  matchingCopy = matching;
+  v11 = completionCopy;
+  platformsCopy = platforms;
+  v9 = completionCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -470,32 +470,32 @@ void __114__SDBetaEnrollmentServiceProxy_queryProgramsForSystemAccountsWithPlatf
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
-  v4 = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
+  synchronousDaemonRemoteObjectProxy = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
+  getCurrentDeviceSynchronously = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__SDBetaEnrollmentServiceProxy_canCurrentDeviceEnrollInBetaProgram__block_invoke;
   v6[3] = &unk_2787CBC38;
   v6[4] = &v7;
-  [v3 canDeviceEnrollInBetaUpdates:v4 completion:v6];
+  [synchronousDaemonRemoteObjectProxy canDeviceEnrollInBetaUpdates:getCurrentDeviceSynchronously completion:v6];
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(synchronousDaemonRemoteObjectProxy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return synchronousDaemonRemoteObjectProxy;
 }
 
-- (void)isDeviceEnrolledInBetaProgram:(id)a3 completion:(id)a4
+- (void)isDeviceEnrolledInBetaProgram:(id)program completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  programCopy = program;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SDBetaEnrollmentServiceProxy_isDeviceEnrolledInBetaProgram_completion___block_invoke;
   v10[3] = &unk_2787CBC60;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = programCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = programCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -512,18 +512,18 @@ uint64_t __73__SDBetaEnrollmentServiceProxy_isDeviceEnrolledInBetaProgram_comple
   }
 }
 
-- (void)enrolledBetaProgramForDevice:(id)a3 completion:(id)a4
+- (void)enrolledBetaProgramForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__SDBetaEnrollmentServiceProxy_enrolledBetaProgramForDevice_completion___block_invoke;
   v10[3] = &unk_2787CBC60;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = deviceCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -548,14 +548,14 @@ uint64_t __72__SDBetaEnrollmentServiceProxy_enrolledBetaProgramForDevice_complet
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v3 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
-  v4 = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
+  synchronousDaemonRemoteObjectProxy = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
+  getCurrentDeviceSynchronously = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__SDBetaEnrollmentServiceProxy_getCurrentDeviceEnrolledBetaProgramSynchronously__block_invoke;
   v7[3] = &unk_2787CBC88;
   v7[4] = &v8;
-  [v3 enrolledBetaProgramForDevice:v4 completion:v7];
+  [synchronousDaemonRemoteObjectProxy enrolledBetaProgramForDevice:getCurrentDeviceSynchronously completion:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -563,18 +563,18 @@ uint64_t __72__SDBetaEnrollmentServiceProxy_enrolledBetaProgramForDevice_complet
   return v5;
 }
 
-- (void)unenrollDevice:(id)a3 completion:(id)a4
+- (void)unenrollDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__SDBetaEnrollmentServiceProxy_unenrollDevice_completion___block_invoke;
   v10[3] = &unk_2787CBC60;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = deviceCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -591,18 +591,18 @@ uint64_t __58__SDBetaEnrollmentServiceProxy_unenrollDevice_completion___block_in
   }
 }
 
-- (void)canFileFeedbackOnDevice:(id)a3 completion:(id)a4
+- (void)canFileFeedbackOnDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__SDBetaEnrollmentServiceProxy_canFileFeedbackOnDevice_completion___block_invoke;
   v10[3] = &unk_2787CBC60;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = deviceCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -627,14 +627,14 @@ uint64_t __67__SDBetaEnrollmentServiceProxy_canFileFeedbackOnDevice_completion__
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v3 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
-  v4 = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
+  synchronousDaemonRemoteObjectProxy = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
+  getCurrentDeviceSynchronously = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__SDBetaEnrollmentServiceProxy_seedingAppleIDUsernameForCurrentDevice__block_invoke;
   v7[3] = &unk_2787CBCB0;
   v7[4] = &v8;
-  [v3 getCurrentSeedingAppleIDForDevice:v4 completion:v7];
+  [synchronousDaemonRemoteObjectProxy getCurrentSeedingAppleIDForDevice:getCurrentDeviceSynchronously completion:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -642,15 +642,15 @@ uint64_t __67__SDBetaEnrollmentServiceProxy_canFileFeedbackOnDevice_completion__
   return v5;
 }
 
-- (void)seedingAppleIDUsernameForCurrentDevice:(id)a3
+- (void)seedingAppleIDUsernameForCurrentDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__SDBetaEnrollmentServiceProxy_seedingAppleIDUsernameForCurrentDevice___block_invoke;
   v6[3] = &unk_2787CBD28;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v6];
 }
 
@@ -694,14 +694,14 @@ void __71__SDBetaEnrollmentServiceProxy_seedingAppleIDUsernameForCurrentDevice__
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v3 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
-  v4 = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
+  synchronousDaemonRemoteObjectProxy = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
+  getCurrentDeviceSynchronously = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__SDBetaEnrollmentServiceProxy_deviceAppleIDUsernameForCurrentDevice__block_invoke;
   v7[3] = &unk_2787CBD50;
   v7[4] = &v8;
-  [v3 getCurrentPrimaryAppleIDForDevice:v4 completion:v7];
+  [synchronousDaemonRemoteObjectProxy getCurrentPrimaryAppleIDForDevice:getCurrentDeviceSynchronously completion:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -709,18 +709,18 @@ void __71__SDBetaEnrollmentServiceProxy_seedingAppleIDUsernameForCurrentDevice__
   return v5;
 }
 
-- (void)setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)a3 completion:(id)a4
+- (void)setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __102__SDBetaEnrollmentServiceProxy_setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice_completion___block_invoke;
   v10[3] = &unk_2787CBC60;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = deviceCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = deviceCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -758,15 +758,15 @@ void __102__SDBetaEnrollmentServiceProxy_setAppleAccountIdentifierWithAlternateD
   [v3 setAppleAccountIdentifierFromAlternateDSID:v4 forDevice:a2 completion:v5];
 }
 
-- (void)deleteSeedingAppleAccountWithCompletion:(id)a3
+- (void)deleteSeedingAppleAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__SDBetaEnrollmentServiceProxy_deleteSeedingAppleAccountWithCompletion___block_invoke;
   v6[3] = &unk_2787CBD28;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v6];
 }
 
@@ -808,29 +808,29 @@ void __72__SDBetaEnrollmentServiceProxy_deleteSeedingAppleAccountWithCompletion_
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
-  v4 = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
+  synchronousDaemonRemoteObjectProxy = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxy];
+  getCurrentDeviceSynchronously = [(SDBetaEnrollmentServiceProxy *)self getCurrentDeviceSynchronously];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__SDBetaEnrollmentServiceProxy_isCurrentDeviceUsingSeedingAppleID__block_invoke;
   v6[3] = &unk_2787CBC38;
   v6[4] = &v7;
-  [v3 isDeviceUsingSeedingAppleID:v4 completion:v6];
+  [synchronousDaemonRemoteObjectProxy isDeviceUsingSeedingAppleID:getCurrentDeviceSynchronously completion:v6];
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(synchronousDaemonRemoteObjectProxy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return synchronousDaemonRemoteObjectProxy;
 }
 
-- (void)invalidateCacheWithCompletion:(id)a3
+- (void)invalidateCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__SDBetaEnrollmentServiceProxy_invalidateCacheWithCompletion___block_invoke;
   v6[3] = &unk_2787CBD28;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v6];
 }
 
@@ -848,18 +848,18 @@ uint64_t __62__SDBetaEnrollmentServiceProxy_invalidateCacheWithCompletion___bloc
   }
 }
 
-- (void)enrollInProgramWithToken:(id)a3 completion:(id)a4
+- (void)enrollInProgramWithToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__SDBetaEnrollmentServiceProxy_enrollInProgramWithToken_completion___block_invoke;
   v10[3] = &unk_2787CBB70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = tokenCopy;
+  v12 = completionCopy;
+  v8 = tokenCopy;
+  v9 = completionCopy;
   [(SDBetaEnrollmentServiceProxy *)self betaEnrollmentProxyObjectWithCompletion:v10];
 }
 
@@ -902,13 +902,13 @@ void __68__SDBetaEnrollmentServiceProxy_enrollInProgramWithToken_completion___bl
   }
 }
 
-- (void)configureWithOfferProgramTokens:(id)a3 requireProgramToken:(id)a4 enrollmentPolicy:(int64_t)a5 error:(id *)a6
+- (void)configureWithOfferProgramTokens:(id)tokens requireProgramToken:(id)token enrollmentPolicy:(int64_t)policy error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxyWithError:a6];
+  tokensCopy = tokens;
+  tokenCopy = token;
+  v12 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxyWithError:error];
   v13 = v12;
-  if (*a6)
+  if (*error)
   {
     v14 = 1;
   }
@@ -932,23 +932,23 @@ void __68__SDBetaEnrollmentServiceProxy_enrollInProgramWithToken_completion___bl
     v17[2] = __107__SDBetaEnrollmentServiceProxy_configureWithOfferProgramTokens_requireProgramToken_enrollmentPolicy_error___block_invoke;
     v17[3] = &unk_2787CBB48;
     v17[4] = &v18;
-    [v13 configureWithOfferProgramTokens:v10 requireProgramToken:v11 enrollmentPolicy:a5 language:v15 completion:v17];
+    [v13 configureWithOfferProgramTokens:tokensCopy requireProgramToken:tokenCopy enrollmentPolicy:policy language:v15 completion:v17];
 
     v16 = v19[5];
     if (v16)
     {
-      *a6 = [v16 copy];
+      *error = [v16 copy];
     }
 
     _Block_object_dispose(&v18, 8);
   }
 }
 
-- (id)loadMDMConfigurationWithError:(id *)a3
+- (id)loadMDMConfigurationWithError:(id *)error
 {
   v4 = [(SDBetaEnrollmentServiceProxy *)self synchronousDaemonRemoteObjectProxyWithError:?];
   v5 = v4;
-  if (*a3)
+  if (*error)
   {
     v6 = 1;
   }
@@ -988,7 +988,7 @@ void __68__SDBetaEnrollmentServiceProxy_enrollInProgramWithToken_completion___bl
     if (v8)
     {
       v7 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else

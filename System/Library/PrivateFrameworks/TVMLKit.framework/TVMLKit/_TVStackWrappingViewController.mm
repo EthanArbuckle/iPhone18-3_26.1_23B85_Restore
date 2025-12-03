@@ -1,13 +1,13 @@
 @interface _TVStackWrappingViewController
-- (void)setShowcaseConfig:(TVShowcaseConfig *)a3;
+- (void)setShowcaseConfig:(TVShowcaseConfig *)config;
 @end
 
 @implementation _TVStackWrappingViewController
 
-- (void)setShowcaseConfig:(TVShowcaseConfig *)a3
+- (void)setShowcaseConfig:(TVShowcaseConfig *)config
 {
-  inset = a3->inset;
-  *&self->_showcaseConfig.flavor = *&a3->flavor;
+  inset = config->inset;
+  *&self->_showcaseConfig.flavor = *&config->flavor;
   self->_showcaseConfig.inset = inset;
 }
 

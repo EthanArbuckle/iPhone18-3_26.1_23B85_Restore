@@ -2,16 +2,16 @@
 + (void)presentDialogForAddingKeyboard;
 - (BOOL)hasFullAccess;
 - (BOOL)needsInputModeSwitchKey;
-- (CGSize)_systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)_systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIInputView)inputView;
-- (UIInputViewController)initWithCoder:(id)a3;
-- (UIInputViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UIInputViewController)initWithCoder:(id)coder;
+- (UIInputViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_proxyInterface;
 - (id)_textDocumentInterface;
 - (void)_didResetDocumentState;
-- (void)_setAutosizeToCurrentKeyboard:(BOOL)a3;
-- (void)_setExtensionContextUUID:(id)a3;
-- (void)_setTextDocumentProxy:(id)a3;
+- (void)_setAutosizeToCurrentKeyboard:(BOOL)keyboard;
+- (void)_setExtensionContextUUID:(id)d;
+- (void)_setTextDocumentProxy:(id)proxy;
 - (void)_setupInputController;
 - (void)_updateConformanceCache;
 - (void)_willResetDocumentState;
@@ -25,8 +25,8 @@
 - (void)requestSupplementaryLexiconWithCompletion:(void *)completionHandler;
 - (void)setHasDictationKey:(BOOL)hasDictationKey;
 - (void)setPrimaryLanguage:(NSString *)primaryLanguage;
-- (void)setView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -34,10 +34,10 @@
 
 - (id)_proxyInterface
 {
-  v2 = [(UIInputViewController *)self textDocumentProxy];
-  if ([v2 conformsToProtocol:&unk_1F0009C18])
+  textDocumentProxy = [(UIInputViewController *)self textDocumentProxy];
+  if ([textDocumentProxy conformsToProtocol:&unk_1F0009C18])
   {
-    v3 = v2;
+    v3 = textDocumentProxy;
   }
 
   else
@@ -63,7 +63,7 @@
 
 - (void)_updateConformanceCache
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   self->_viewConformsToRemotePlaceholder = objc_opt_respondsToSelector() & 1;
 }
 
@@ -76,10 +76,10 @@
 
 - (id)_textDocumentInterface
 {
-  v2 = [(UIInputViewController *)self textDocumentProxy];
-  if ([v2 isMemberOfClass:objc_opt_class()])
+  textDocumentProxy = [(UIInputViewController *)self textDocumentProxy];
+  if ([textDocumentProxy isMemberOfClass:objc_opt_class()])
   {
-    v3 = v2;
+    v3 = textDocumentProxy;
   }
 
   else
@@ -94,11 +94,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UIInputViewController *)self _proxyInterface];
-  [v3 setForwardingInterface:0];
+  _proxyInterface = [(UIInputViewController *)self _proxyInterface];
+  [_proxyInterface setForwardingInterface:0];
 
-  v4 = [(UIInputViewController *)self _textDocumentInterface];
-  [v4 setDelegate:0];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  [_textDocumentInterface setDelegate:0];
 
   textDocumentProxy = self->_textDocumentProxy;
   self->_textDocumentProxy = 0;
@@ -108,11 +108,11 @@
   [(UIViewController *)&v6 dealloc];
 }
 
-- (UIInputViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIInputViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = UIInputViewController;
-  v4 = [(UIViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -122,11 +122,11 @@
   return v5;
 }
 
-- (UIInputViewController)initWithCoder:(id)a3
+- (UIInputViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIInputViewController;
-  v3 = [(UIViewController *)&v6 initWithCoder:a3];
+  v3 = [(UIViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -136,34 +136,34 @@
   return v4;
 }
 
-- (void)_setTextDocumentProxy:(id)a3
+- (void)_setTextDocumentProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(UIInputViewController *)self _proxyInterface];
-  [v5 setForwardingInterface:0];
+  proxyCopy = proxy;
+  _proxyInterface = [(UIInputViewController *)self _proxyInterface];
+  [_proxyInterface setForwardingInterface:0];
 
   textDocumentProxy = self->_textDocumentProxy;
-  self->_textDocumentProxy = v4;
+  self->_textDocumentProxy = proxyCopy;
 }
 
-- (void)_setAutosizeToCurrentKeyboard:(BOOL)a3
+- (void)_setAutosizeToCurrentKeyboard:(BOOL)keyboard
 {
   autosizeToCurrentKeyboard = self->_autosizeToCurrentKeyboard;
-  self->_autosizeToCurrentKeyboard = a3;
-  if (autosizeToCurrentKeyboard != a3)
+  self->_autosizeToCurrentKeyboard = keyboard;
+  if (autosizeToCurrentKeyboard != keyboard)
   {
     v8 = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
     [v8 setSelfSizingChanged:1];
-    v6 = [(UIViewController *)self view];
-    v7 = [v6 superview];
-    [v7 _didChangeKeyplaneWithContext:v8];
+    view = [(UIViewController *)self view];
+    superview = [view superview];
+    [superview _didChangeKeyplaneWithContext:v8];
   }
 }
 
 - (void)loadView
 {
-  v3 = [(UIViewController *)self nibName];
-  if (v3 && (v4 = v3, [(UIViewController *)self nibBundle], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  nibName = [(UIViewController *)self nibName];
+  if (nibName && (v4 = nibName, [(UIViewController *)self nibBundle], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v8.receiver = self;
     v8.super_class = UIInputViewController;
@@ -179,13 +179,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = UIInputViewController;
-  [(UIViewController *)&v5 viewDidAppear:a3];
-  v4 = [(UIViewController *)self view];
-  [v4 setNeedsLayout];
+  [(UIViewController *)&v5 viewDidAppear:appear];
+  view = [(UIViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)didReceiveMemoryWarning
@@ -195,27 +195,27 @@
   [(UIViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)_setExtensionContextUUID:(id)a3
+- (void)_setExtensionContextUUID:(id)d
 {
   v7.receiver = self;
   v7.super_class = UIInputViewController;
-  [(UIViewController *)&v7 _setExtensionContextUUID:a3];
+  [(UIViewController *)&v7 _setExtensionContextUUID:d];
   v6.receiver = self;
   v6.super_class = UIInputViewController;
-  v4 = [(UIViewController *)&v6 extensionContext];
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  extensionContext = [(UIViewController *)&v6 extensionContext];
+  if (extensionContext && [extensionContext isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(UIInputViewController *)self _proxyInterface];
-    [v4 setForwardingInterface:v5];
+    _proxyInterface = [(UIInputViewController *)self _proxyInterface];
+    [extensionContext setForwardingInterface:_proxyInterface];
   }
 }
 
-- (CGSize)_systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)_systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   v8.receiver = self;
   v8.super_class = UIInputViewController;
   LODWORD(v5) = 1148846080;
-  [(UIViewController *)&v8 _systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:0.0 verticalFittingPriority:v5];
+  [(UIViewController *)&v8 _systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:0.0 verticalFittingPriority:v5];
   result.height = v7;
   result.width = v6;
   return result;
@@ -223,39 +223,39 @@
 
 - (UIInputView)inputView
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIViewController *)self view];
+    view2 = [(UIViewController *)self view];
   }
 
   else
   {
-    v4 = 0;
+    view2 = 0;
   }
 
-  return v4;
+  return view2;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v5.receiver = self;
   v5.super_class = UIInputViewController;
-  [(UIViewController *)&v5 setView:a3];
+  [(UIViewController *)&v5 setView:view];
   [(UIInputViewController *)self _updateConformanceCache];
   if ([objc_opt_class() _requiresProxyInterface])
   {
-    v4 = [(UIInputViewController *)self inputView];
-    [v4 _setDisableSplitSupport:1];
+    inputView = [(UIInputViewController *)self inputView];
+    [inputView _setDisableSplitSupport:1];
   }
 }
 
 - (void)setPrimaryLanguage:(NSString *)primaryLanguage
 {
   v4 = primaryLanguage;
-  v5 = [(UIInputViewController *)self _textDocumentInterface];
-  [v5 _setPrimaryLanguage:v4];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  [_textDocumentInterface _setPrimaryLanguage:v4];
 }
 
 - (BOOL)hasFullAccess
@@ -305,16 +305,16 @@
       return v6(v4, 0) == 0;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"TCCAccessPreflightResult __TCCAccessPreflight(CFStringRef, CFDictionaryRef)"}];
-    [v9 handleFailureInFunction:v10 file:@"UIInputViewController.m" lineNumber:59 description:{@"%s", dlerror(), v11, v12, v13, v14}];
+    [currentHandler handleFailureInFunction:v10 file:@"UIInputViewController.m" lineNumber:59 description:{@"%s", dlerror(), v11, v12, v13, v14}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkTCCServiceKeyboardNetwork(void)"];
-    [v9 handleFailureInFunction:v10 file:@"UIInputViewController.m" lineNumber:60 description:{@"%s", dlerror(), v11, v12, v13, v14}];
+    [currentHandler handleFailureInFunction:v10 file:@"UIInputViewController.m" lineNumber:60 description:{@"%s", dlerror(), v11, v12, v13, v14}];
   }
 
   __break(1u);
@@ -324,10 +324,10 @@
 - (BOOL)needsInputModeSwitchKey
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(UIInputViewController *)self _textDocumentInterface];
-  v4 = [v3 forwardingInterface];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  forwardingInterface = [_textDocumentInterface forwardingInterface];
 
-  if (!v4)
+  if (!forwardingInterface)
   {
     v5 = *(__UILogGetCategoryCachedImpl("External", &needsInputModeSwitchKey___s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -341,47 +341,47 @@
     }
   }
 
-  v9 = [(UIInputViewController *)self _textDocumentInterface];
-  v10 = [v9 needsInputModeSwitchKey];
+  _textDocumentInterface2 = [(UIInputViewController *)self _textDocumentInterface];
+  needsInputModeSwitchKey = [_textDocumentInterface2 needsInputModeSwitchKey];
 
-  return v10;
+  return needsInputModeSwitchKey;
 }
 
 - (void)dismissKeyboard
 {
-  v3 = [(UIInputViewController *)self _textDocumentInterface];
-  v4 = [v3 responseDelegate];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  responseDelegate = [_textDocumentInterface responseDelegate];
 
-  if (v4)
+  if (responseDelegate)
   {
-    v5 = [(UIInputViewController *)self _textDocumentInterface];
-    [v5 _setShouldDismiss];
+    _textDocumentInterface2 = [(UIInputViewController *)self _textDocumentInterface];
+    [_textDocumentInterface2 _setShouldDismiss];
   }
 
   else
   {
-    v5 = +[UIKeyboardImpl activeInstance];
-    [v5 dismissKeyboard];
+    _textDocumentInterface2 = +[UIKeyboardImpl activeInstance];
+    [_textDocumentInterface2 dismissKeyboard];
   }
 }
 
 - (void)proceedShouldReturnIfPossibleForASP
 {
-  v2 = [(UIInputViewController *)self _textDocumentInterface];
-  [v2 _setProceedShouldReturnIfPossibleForASP];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  [_textDocumentInterface _setProceedShouldReturnIfPossibleForASP];
 }
 
 - (void)advanceToNextInputMode
 {
-  v2 = [(UIInputViewController *)self _textDocumentInterface];
-  [v2 _setShouldAdvanceInputMode];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  [_textDocumentInterface _setShouldAdvanceInputMode];
 }
 
 - (void)setHasDictationKey:(BOOL)hasDictationKey
 {
   v3 = hasDictationKey;
-  v5 = [(UIInputViewController *)self _textDocumentInterface];
-  [v5 _setHasDictation:v3];
+  _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+  [_textDocumentInterface _setHasDictation:v3];
 
   self->_hasDictationKey = v3;
 }
@@ -390,33 +390,33 @@
 {
   v6 = view;
   v7 = [(UIEvent *)event touchesForView:v6];
-  v8 = [v7 anyObject];
+  anyObject = [v7 anyObject];
 
   [(UIView *)v6 bounds];
   MidX = CGRectGetMidX(v53);
   [(UIView *)v6 bounds];
   MinY = CGRectGetMinY(v54);
-  v11 = [(UIViewController *)self view];
-  [(UIView *)v6 convertPoint:v11 toView:MidX, MinY];
+  view = [(UIViewController *)self view];
+  [(UIView *)v6 convertPoint:view toView:MidX, MinY];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(UIViewController *)self view];
-  [v8 locationInView:v16];
+  view2 = [(UIViewController *)self view];
+  [anyObject locationInView:view2];
   v18 = v17;
   v20 = v19;
 
-  v21 = [v8 phase];
-  if (v21 <= 2)
+  phase = [anyObject phase];
+  if (phase <= 2)
   {
-    if (v21)
+    if (phase)
     {
-      if (v21 == 1)
+      if (phase == 1)
       {
         if (self->_inputModeListIsShown || (v22 = v15 - v20, v15 - v20 > 10.0))
         {
-          v23 = [(UIInputViewController *)self _textDocumentInterface];
-          [v23 _setInputModeList:1 touchBegan:self->_touchBegan fromLocation:v13 updatePoint:{v15, v18, v20}];
+          _textDocumentInterface = [(UIInputViewController *)self _textDocumentInterface];
+          [_textDocumentInterface _setInputModeList:1 touchBegan:self->_touchBegan fromLocation:v13 updatePoint:{v15, v18, v20}];
 
           self->_inputModeListIsShown = 1;
         }
@@ -428,7 +428,7 @@
           v27 = v26;
           v29 = v28;
           v31 = v30;
-          [v8 locationInView:v6];
+          [anyObject locationInView:v6];
           v51.x = v32;
           v51.y = v33;
           v55.origin.x = v25;
@@ -447,7 +447,7 @@
     {
       self->_inputModeListIsShown = 0;
       self->_commitInputModeOnTouchEnd = 0;
-      [v8 timestamp];
+      [anyObject timestamp];
       self->_touchBegan = v38;
       v39 = dispatch_time(0, 200000000);
       block[0] = MEMORY[0x1E69E9820];
@@ -465,19 +465,19 @@
     goto LABEL_18;
   }
 
-  if (v21 != 3)
+  if (phase != 3)
   {
-    if (v21 != 4)
+    if (phase != 4)
     {
       goto LABEL_18;
     }
 
-    v34 = [(UIInputViewController *)self _textDocumentInterface];
-    v35 = v34;
+    _textDocumentInterface2 = [(UIInputViewController *)self _textDocumentInterface];
+    v35 = _textDocumentInterface2;
     touchBegan = self->_touchBegan;
     v37 = 4;
 LABEL_17:
-    [v34 _setInputModeList:v37 touchBegan:touchBegan fromLocation:v13 updatePoint:{v15, v18, v20}];
+    [_textDocumentInterface2 _setInputModeList:v37 touchBegan:touchBegan fromLocation:v13 updatePoint:{v15, v18, v20}];
 
     goto LABEL_18;
   }
@@ -489,7 +489,7 @@ LABEL_17:
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    [v8 locationInView:v6];
+    [anyObject locationInView:v6];
     v52.x = v48;
     v52.y = v49;
     v56.origin.x = v41;
@@ -511,8 +511,8 @@ LABEL_17:
 
   if (self->_commitInputModeOnTouchEnd)
   {
-    v34 = [(UIInputViewController *)self _textDocumentInterface];
-    v35 = v34;
+    _textDocumentInterface2 = [(UIInputViewController *)self _textDocumentInterface];
+    v35 = _textDocumentInterface2;
     touchBegan = self->_touchBegan;
     v37 = 3;
     goto LABEL_17;
@@ -537,15 +537,15 @@ void __63__UIInputViewController_handleInputModeListFromView_withEvent___block_i
 {
   v3 = completionHandler;
   v4 = MEMORY[0x1E69D9670];
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundlePath];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundlePath = [mainBundle bundlePath];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__UIInputViewController_requestSupplementaryLexiconWithCompletion___block_invoke;
   v8[3] = &unk_1E710E4E0;
   v9 = v3;
   v7 = v3;
-  [v4 requestLexiconFromBundlePath:v6 completionHandler:v8];
+  [v4 requestLexiconFromBundlePath:bundlePath completionHandler:v8];
 }
 
 void __67__UIInputViewController_requestSupplementaryLexiconWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -599,25 +599,25 @@ void __67__UIInputViewController_requestSupplementaryLexiconWithCompletion___blo
   v11 = v4;
   if (!v4)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    v6 = v5;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v6 = currentHandler;
     v7 = @"No keyWindow";
     v8 = a2;
-    v9 = a1;
+    selfCopy2 = self;
     v10 = 415;
     goto LABEL_5;
   }
 
   if ([v4 _isHostedInAnotherProcess])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    v6 = v5;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v6 = currentHandler;
     v7 = @"The dialog could not be launch from keyboard extension";
     v8 = a2;
-    v9 = a1;
+    selfCopy2 = self;
     v10 = 417;
 LABEL_5:
-    [v5 handleFailureInMethod:v8 object:v9 file:@"UIInputViewController.m" lineNumber:v10 description:v7];
+    [currentHandler handleFailureInMethod:v8 object:selfCopy2 file:@"UIInputViewController.m" lineNumber:v10 description:v7];
 
     goto LABEL_7;
   }

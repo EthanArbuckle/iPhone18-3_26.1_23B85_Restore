@@ -6,7 +6,7 @@
 
 - (NPKRemotePassAction)remotePassAction
 {
-  v1 = [[NPKRemotePassAction alloc] initWithUnderlyingMessage:a1];
+  v1 = [[NPKRemotePassAction alloc] initWithUnderlyingMessage:self];
 
   return v1;
 }

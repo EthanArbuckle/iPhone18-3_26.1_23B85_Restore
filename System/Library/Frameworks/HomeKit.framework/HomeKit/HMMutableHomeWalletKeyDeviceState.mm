@@ -1,18 +1,18 @@
 @interface HMMutableHomeWalletKeyDeviceState
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableHomeWalletKeyDeviceState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HMHomeWalletKeyDeviceState);
   [(HMHomeWalletKeyDeviceState *)v4 setCanAddWalletKeyErrorCode:[(HMHomeWalletKeyDeviceState *)self canAddWalletKeyErrorCode]];
-  v5 = [(HMHomeWalletKeyDeviceState *)self walletKey];
-  [(HMHomeWalletKeyDeviceState *)v4 setWalletKey:v5];
+  walletKey = [(HMHomeWalletKeyDeviceState *)self walletKey];
+  [(HMHomeWalletKeyDeviceState *)v4 setWalletKey:walletKey];
 
-  v6 = [(HMHomeWalletKeyDeviceState *)self expressEnablementConflictingPassDescription];
-  [(HMHomeWalletKeyDeviceState *)v4 setExpressEnablementConflictingPassDescription:v6];
+  expressEnablementConflictingPassDescription = [(HMHomeWalletKeyDeviceState *)self expressEnablementConflictingPassDescription];
+  [(HMHomeWalletKeyDeviceState *)v4 setExpressEnablementConflictingPassDescription:expressEnablementConflictingPassDescription];
 
   [(HMHomeWalletKeyDeviceState *)v4 setCanAddWalletKey:[(HMHomeWalletKeyDeviceState *)self canAddWalletKey]];
   return v4;

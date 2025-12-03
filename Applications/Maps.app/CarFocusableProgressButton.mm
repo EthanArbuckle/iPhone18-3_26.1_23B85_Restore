@@ -1,11 +1,11 @@
 @interface CarFocusableProgressButton
 - (void)_commonInit;
-- (void)_makeCloseButtonImagesWithColor:(id)a3 isFocus:(BOOL)a4;
+- (void)_makeCloseButtonImagesWithColor:(id)color isFocus:(BOOL)focus;
 - (void)_updateColors;
-- (void)focusDidChange:(BOOL)a3;
-- (void)setProgressFillColor:(id)a3;
-- (void)setProgressFillFocusedColor:(id)a3;
-- (void)setProgressionHidden:(BOOL)a3;
+- (void)focusDidChange:(BOOL)change;
+- (void)setProgressFillColor:(id)color;
+- (void)setProgressFillFocusedColor:(id)color;
+- (void)setProgressionHidden:(BOOL)hidden;
 - (void)startProgressAnimation;
 @end
 
@@ -13,21 +13,21 @@
 
 - (void)_updateColors
 {
-  v3 = [(CarFocusableProgressButton *)self isFocused];
-  v4 = [(CarFocusableProgressButton *)self progressionHidden];
+  isFocused = [(CarFocusableProgressButton *)self isFocused];
+  progressionHidden = [(CarFocusableProgressButton *)self progressionHidden];
   v5 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageUnFocusedProgress;
-  if (v4)
+  if (progressionHidden)
   {
     v5 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageUnFocusedNoProgress;
   }
 
   v6 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageFocusedProgress;
-  if (v4)
+  if (progressionHidden)
   {
     v6 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageFocusedNoProgress;
   }
 
-  if (v3)
+  if (isFocused)
   {
     v5 = v6;
     v7 = 8;
@@ -38,7 +38,7 @@
     v7 = 0;
   }
 
-  if (v3)
+  if (isFocused)
   {
     v8 = &OBJC_IVAR___CarFocusableProgressButton__progressFillFocusedColor;
   }
@@ -54,18 +54,18 @@
   [(MapsCircularProgressView *)self->_progressView setBackgroundLayerColor:v9];
 }
 
-- (void)_makeCloseButtonImagesWithColor:(id)a3 isFocus:(BOOL)a4
+- (void)_makeCloseButtonImagesWithColor:(id)color isFocus:(BOOL)focus
 {
-  v4 = a4;
-  v6 = a3;
-  v18 = v6;
+  focusCopy = focus;
+  colorCopy = color;
+  v18 = colorCopy;
   v7 = [NSArray arrayWithObjects:&v18 count:1];
   v8 = [UIImage _mapsCar_systemImageNamed:@"xmark" textStyle:UIFontTextStyleCallout weight:6 paletteColors:v7];
 
   v9 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:12.0];
   v10 = [v8 imageByApplyingSymbolConfiguration:v9];
   v11 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageUnFocusedNoProgress;
-  if (v4)
+  if (focusCopy)
   {
     v11 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageFocusedNoProgress;
     v12 = &OBJC_IVAR___CarFocusableProgressButton__closeButtonImageFocusedProgress;
@@ -86,28 +86,28 @@
   *(&self->super.super.super.super.super.super.super.isa + v16) = v10;
 }
 
-- (void)focusDidChange:(BOOL)a3
+- (void)focusDidChange:(BOOL)change
 {
   v4.receiver = self;
   v4.super_class = CarFocusableProgressButton;
-  [(CarFocusableButton *)&v4 focusDidChange:a3];
+  [(CarFocusableButton *)&v4 focusDidChange:change];
   [(CarFocusableProgressButton *)self _updateColors];
 }
 
-- (void)setProgressFillFocusedColor:(id)a3
+- (void)setProgressFillFocusedColor:(id)color
 {
-  objc_storeStrong(&self->_progressFillFocusedColor, a3);
-  v5 = a3;
-  [(CarFocusableProgressButton *)self _makeCloseButtonImagesWithColor:v5 isFocus:1];
+  objc_storeStrong(&self->_progressFillFocusedColor, color);
+  colorCopy = color;
+  [(CarFocusableProgressButton *)self _makeCloseButtonImagesWithColor:colorCopy isFocus:1];
 
   [(CarFocusableProgressButton *)self _updateColors];
 }
 
-- (void)setProgressFillColor:(id)a3
+- (void)setProgressFillColor:(id)color
 {
-  objc_storeStrong(&self->_progressFillColor, a3);
-  v5 = a3;
-  [(CarFocusableProgressButton *)self _makeCloseButtonImagesWithColor:v5 isFocus:0];
+  objc_storeStrong(&self->_progressFillColor, color);
+  colorCopy = color;
+  [(CarFocusableProgressButton *)self _makeCloseButtonImagesWithColor:colorCopy isFocus:0];
 
   [(CarFocusableProgressButton *)self _updateColors];
 }
@@ -127,9 +127,9 @@
   [UIView animateWithDuration:v3 animations:v2 completion:0.25];
 }
 
-- (void)setProgressionHidden:(BOOL)a3
+- (void)setProgressionHidden:(BOOL)hidden
 {
-  [(MapsCircularProgressView *)self->_progressView setHidden:a3];
+  [(MapsCircularProgressView *)self->_progressView setHidden:hidden];
   v4 = [UIFont systemFontOfSize:15.0];
   v5 = +[UIColor labelColor];
   v21 = v5;
@@ -171,21 +171,21 @@
   [(MapsCircularProgressView *)self->_progressView setUserInteractionEnabled:0];
   [(MapsCircularProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CarFocusableProgressButton *)self addSubview:self->_progressView];
-  v19 = [(MapsCircularProgressView *)self->_progressView leadingAnchor];
-  v18 = [(CarFocusableProgressButton *)self leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor = [(MapsCircularProgressView *)self->_progressView leadingAnchor];
+  leadingAnchor2 = [(CarFocusableProgressButton *)self leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v17;
-  v16 = [(MapsCircularProgressView *)self->_progressView trailingAnchor];
-  v15 = [(CarFocusableProgressButton *)self trailingAnchor];
-  v5 = [v16 constraintEqualToAnchor:v15];
+  trailingAnchor = [(MapsCircularProgressView *)self->_progressView trailingAnchor];
+  trailingAnchor2 = [(CarFocusableProgressButton *)self trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v5;
-  v6 = [(MapsCircularProgressView *)self->_progressView topAnchor];
-  v7 = [(CarFocusableProgressButton *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor = [(MapsCircularProgressView *)self->_progressView topAnchor];
+  topAnchor2 = [(CarFocusableProgressButton *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v8;
-  v9 = [(MapsCircularProgressView *)self->_progressView bottomAnchor];
-  v10 = [(CarFocusableProgressButton *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(MapsCircularProgressView *)self->_progressView bottomAnchor];
+  bottomAnchor2 = [(CarFocusableProgressButton *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v11;
   v12 = [NSArray arrayWithObjects:v21 count:4];
   [NSLayoutConstraint activateConstraints:v12];

@@ -1,13 +1,13 @@
 @interface PXMemoryViewModel
 - (PXMemoryViewModel)init;
 - (UIEdgeInsets)layoutMargins;
-- (void)performChanges:(id)a3;
-- (void)setIsHighlighted:(BOOL)a3;
-- (void)setKeyAsset:(id)a3;
-- (void)setLocalizedDateText:(id)a3;
-- (void)setLocalizedTitle:(id)a3;
-- (void)setSpecSet:(int64_t)a3;
-- (void)setVariant:(int64_t)a3;
+- (void)performChanges:(id)changes;
+- (void)setIsHighlighted:(BOOL)highlighted;
+- (void)setKeyAsset:(id)asset;
+- (void)setLocalizedDateText:(id)text;
+- (void)setLocalizedTitle:(id)title;
+- (void)setSpecSet:(int64_t)set;
+- (void)setVariant:(int64_t)variant;
 @end
 
 @implementation PXMemoryViewModel
@@ -25,112 +25,112 @@
   return result;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXMemoryViewModel;
-  [(PXMemoryViewModel *)&v3 performChanges:a3];
+  [(PXMemoryViewModel *)&v3 performChanges:changes];
 }
 
-- (void)setVariant:(int64_t)a3
+- (void)setVariant:(int64_t)variant
 {
-  if (self->_variant != a3)
+  if (self->_variant != variant)
   {
     [(PXMemoryViewModel *)self signalChange:16];
-    self->_variant = a3;
+    self->_variant = variant;
   }
 }
 
-- (void)setSpecSet:(int64_t)a3
+- (void)setSpecSet:(int64_t)set
 {
-  if (self->_specSet != a3)
+  if (self->_specSet != set)
   {
     [(PXMemoryViewModel *)self signalChange:16];
-    self->_specSet = a3;
+    self->_specSet = set;
   }
 }
 
-- (void)setIsHighlighted:(BOOL)a3
+- (void)setIsHighlighted:(BOOL)highlighted
 {
-  if (self->_isHighlighted != a3)
+  if (self->_isHighlighted != highlighted)
   {
     [(PXMemoryViewModel *)self signalChange:8];
-    self->_isHighlighted = a3;
+    self->_isHighlighted = highlighted;
   }
 }
 
-- (void)setKeyAsset:(id)a3
+- (void)setKeyAsset:(id)asset
 {
-  v9 = a3;
+  assetCopy = asset;
   v4 = self->_keyAsset;
   keyAsset = v4;
-  if (v4 != v9)
+  if (v4 != assetCopy)
   {
-    v6 = [(PXDisplayAsset *)v4 isEqual:v9];
+    v6 = [(PXDisplayAsset *)v4 isEqual:assetCopy];
 
-    v7 = v9;
+    v7 = assetCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
     [(PXMemoryViewModel *)self signalChange:4];
-    v8 = v9;
+    v8 = assetCopy;
     keyAsset = self->_keyAsset;
     self->_keyAsset = v8;
   }
 
-  v7 = v9;
+  v7 = assetCopy;
 LABEL_5:
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
-  v9 = a3;
+  titleCopy = title;
   v4 = self->_localizedTitle;
   localizedTitle = v4;
-  if (v4 != v9)
+  if (v4 != titleCopy)
   {
-    v6 = [(NSString *)v4 isEqualToString:v9];
+    v6 = [(NSString *)v4 isEqualToString:titleCopy];
 
-    v7 = v9;
+    v7 = titleCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
     [(PXMemoryViewModel *)self signalChange:2];
-    v8 = v9;
+    v8 = titleCopy;
     localizedTitle = self->_localizedTitle;
     self->_localizedTitle = v8;
   }
 
-  v7 = v9;
+  v7 = titleCopy;
 LABEL_5:
 }
 
-- (void)setLocalizedDateText:(id)a3
+- (void)setLocalizedDateText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   v4 = self->_localizedDateText;
   localizedDateText = v4;
-  if (v4 != v9)
+  if (v4 != textCopy)
   {
-    v6 = [(NSString *)v4 isEqualToString:v9];
+    v6 = [(NSString *)v4 isEqualToString:textCopy];
 
-    v7 = v9;
+    v7 = textCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
     [(PXMemoryViewModel *)self signalChange:1];
-    v8 = v9;
+    v8 = textCopy;
     localizedDateText = self->_localizedDateText;
     self->_localizedDateText = v8;
   }
 
-  v7 = v9;
+  v7 = textCopy;
 LABEL_5:
 }
 

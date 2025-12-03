@@ -1,24 +1,24 @@
 @interface PLMigrationHistory
-+ (BOOL)currentMigrationHistoryIndex:(int64_t *)a3 withManagedObjectContext:(id)a4 error:(id *)a5;
-+ (BOOL)recordCurrentMigrationStateInManagedObjectContext:(id)a3 withPathManager:(id)a4 migrationType:(int64_t)a5 forceRebuildReason:(id)a6 sourceModelVersion:(id)a7 updateLegacyMigrationState:(BOOL)a8 journalRebuildRequred:(BOOL)a9 origin:(signed __int16)a10 libraryCreateOptions:(unint64_t)a11 hardwareModel:(id)a12 deviceUniqueID:(id)a13 cplEnabled:(BOOL)a14 initialSyncDate:(id)a15;
-+ (id)currentMigrationHistoryWithManagedObjectContext:(id)a3;
-+ (id)insertIntoManagedObjectContext:(id)a3 index:(int64_t)a4 sourceModelVersion:(id)a5 migrationType:(int64_t)a6 migrationDate:(id)a7 forceRebuildReason:(id)a8 hardwareModel:(id)a9 deviceUniqueID:(id)a10 cplEnabled:(BOOL)a11 initialSyncDate:(id)a12;
-+ (id)insertLightweightWithManagedObjectContext:(id)a3 index:(int64_t)a4 sourceModelVersion:(unint64_t)a5 migrationDate:(id)a6 hardwareModel:(id)a7 deviceUniqueID:(id)a8 cplEnabled:(BOOL)a9 initialSyncDate:(id)a10;
-+ (id)migrateLegacyMigrationHistoryWithMetadata:(id)a3 index:(int64_t)a4 outGlobalKeyValues:(id)a5 managedObjectContext:(id)a6;
-+ (id)migrationHistoryWithManagedObjectContext:(id)a3;
-+ (int64_t)_rebuildMigrationHistoryWithJournal:(id)a3 managedObjectContext:(id)a4;
-- (id)payloadForChangedKeys:(id)a3;
++ (BOOL)currentMigrationHistoryIndex:(int64_t *)index withManagedObjectContext:(id)context error:(id *)error;
++ (BOOL)recordCurrentMigrationStateInManagedObjectContext:(id)context withPathManager:(id)manager migrationType:(int64_t)type forceRebuildReason:(id)reason sourceModelVersion:(id)version updateLegacyMigrationState:(BOOL)state journalRebuildRequred:(BOOL)requred origin:(signed __int16)self0 libraryCreateOptions:(unint64_t)self1 hardwareModel:(id)self2 deviceUniqueID:(id)self3 cplEnabled:(BOOL)self4 initialSyncDate:(id)self5;
++ (id)currentMigrationHistoryWithManagedObjectContext:(id)context;
++ (id)insertIntoManagedObjectContext:(id)context index:(int64_t)index sourceModelVersion:(id)version migrationType:(int64_t)type migrationDate:(id)date forceRebuildReason:(id)reason hardwareModel:(id)model deviceUniqueID:(id)self0 cplEnabled:(BOOL)self1 initialSyncDate:(id)self2;
++ (id)insertLightweightWithManagedObjectContext:(id)context index:(int64_t)index sourceModelVersion:(unint64_t)version migrationDate:(id)date hardwareModel:(id)model deviceUniqueID:(id)d cplEnabled:(BOOL)enabled initialSyncDate:(id)self0;
++ (id)migrateLegacyMigrationHistoryWithMetadata:(id)metadata index:(int64_t)index outGlobalKeyValues:(id)values managedObjectContext:(id)context;
++ (id)migrationHistoryWithManagedObjectContext:(id)context;
++ (int64_t)_rebuildMigrationHistoryWithJournal:(id)journal managedObjectContext:(id)context;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 @end
 
 @implementation PLMigrationHistory
 
-+ (int64_t)_rebuildMigrationHistoryWithJournal:(id)a3 managedObjectContext:(id)a4
++ (int64_t)_rebuildMigrationHistoryWithJournal:(id)journal managedObjectContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  journalCopy = journal;
+  contextCopy = context;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -27,11 +27,11 @@
   v19[1] = 3221225472;
   v19[2] = __79__PLMigrationHistory__rebuildMigrationHistoryWithJournal_managedObjectContext___block_invoke;
   v19[3] = &unk_1E75661C0;
-  v7 = v6;
+  v7 = contextCopy;
   v20 = v7;
   v21 = &v22;
   v18 = 0;
-  v8 = [v5 enumeratePayloadsUsingBlock:v19 error:&v18];
+  v8 = [journalCopy enumeratePayloadsUsingBlock:v19 error:&v18];
   v9 = v18;
   v10 = v9;
   if (v8)
@@ -67,7 +67,7 @@
   }
 
   v17 = v10;
-  v13 = [v5 createSnapshotUsingNextPayloadBlock:&__block_literal_global_7603 createOnlyIfNecessary:0 error:&v17];
+  v13 = [journalCopy createSnapshotUsingNextPayloadBlock:&__block_literal_global_7603 createOnlyIfNecessary:0 error:&v17];
   v11 = v17;
 
   if ((v13 & 1) == 0)
@@ -102,57 +102,57 @@ void __79__PLMigrationHistory__rebuildMigrationHistoryWithJournal_managedObjectC
   }
 }
 
-+ (BOOL)recordCurrentMigrationStateInManagedObjectContext:(id)a3 withPathManager:(id)a4 migrationType:(int64_t)a5 forceRebuildReason:(id)a6 sourceModelVersion:(id)a7 updateLegacyMigrationState:(BOOL)a8 journalRebuildRequred:(BOOL)a9 origin:(signed __int16)a10 libraryCreateOptions:(unint64_t)a11 hardwareModel:(id)a12 deviceUniqueID:(id)a13 cplEnabled:(BOOL)a14 initialSyncDate:(id)a15
++ (BOOL)recordCurrentMigrationStateInManagedObjectContext:(id)context withPathManager:(id)manager migrationType:(int64_t)type forceRebuildReason:(id)reason sourceModelVersion:(id)version updateLegacyMigrationState:(BOOL)state journalRebuildRequred:(BOOL)requred origin:(signed __int16)self0 libraryCreateOptions:(unint64_t)self1 hardwareModel:(id)self2 deviceUniqueID:(id)self3 cplEnabled:(BOOL)self4 initialSyncDate:(id)self5
 {
-  v15 = a8;
+  stateCopy = state;
   v60 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v22 = a6;
-  v23 = a7;
-  v24 = a12;
-  v35 = a13;
-  v25 = a15;
+  contextCopy = context;
+  managerCopy = manager;
+  reasonCopy = reason;
+  versionCopy = version;
+  modelCopy = model;
+  dCopy = d;
+  dateCopy = date;
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 1;
-  v26 = [v20 persistentStoreCoordinator];
-  v27 = [v26 persistentStores];
-  v37 = [v27 firstObject];
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v28 = [v37 metadata];
-  v29 = v28;
-  if (v28)
+  metadata = [firstObject metadata];
+  v29 = metadata;
+  if (metadata)
   {
-    v36 = [v28 mutableCopy];
+    v36 = [metadata mutableCopy];
     v30 = [MEMORY[0x1E696AD98] numberWithInt:{+[PLModelMigrator currentModelVersion](PLModelMigrator, "currentModelVersion")}];
     [v36 setObject:v30 forKeyedSubscript:@"PLModelVersion"];
 
-    if (v15)
+    if (stateCopy)
     {
       [v36 setObject:&unk_1F0FBAE10 forKeyedSubscript:*MEMORY[0x1E69BFEE0]];
     }
 
-    [v37 setMetadata:v36];
+    [firstObject setMetadata:v36];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __273__PLMigrationHistory_recordCurrentMigrationStateInManagedObjectContext_withPathManager_migrationType_forceRebuildReason_sourceModelVersion_updateLegacyMigrationState_journalRebuildRequred_origin_libraryCreateOptions_hardwareModel_deviceUniqueID_cplEnabled_initialSyncDate___block_invoke;
     v38[3] = &unk_1E7566198;
-    v39 = v21;
-    v48 = a5;
-    v49 = a1;
-    v40 = v20;
+    v39 = managerCopy;
+    typeCopy = type;
+    selfCopy = self;
+    v40 = contextCopy;
     v47 = &v54;
-    v41 = v22;
-    v42 = v24;
-    v43 = v35;
-    v52 = a14;
-    v44 = v25;
-    v51 = a10;
-    v53 = a9;
-    v45 = v23;
-    v50 = a11;
+    v41 = reasonCopy;
+    v42 = modelCopy;
+    v43 = dCopy;
+    enabledCopy = enabled;
+    v44 = dateCopy;
+    originCopy = origin;
+    requredCopy = requred;
+    v45 = versionCopy;
+    optionsCopy = options;
     v46 = v29;
     [v40 performBlockAndWait:v38];
 
@@ -352,85 +352,85 @@ LABEL_26:
 LABEL_37:
 }
 
-+ (id)migrateLegacyMigrationHistoryWithMetadata:(id)a3 index:(int64_t)a4 outGlobalKeyValues:(id)a5 managedObjectContext:(id)a6
++ (id)migrateLegacyMigrationHistoryWithMetadata:(id)metadata index:(int64_t)index outGlobalKeyValues:(id)values managedObjectContext:(id)context
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 0)
+  metadataCopy = metadata;
+  valuesCopy = values;
+  contextCopy = context;
+  if (index < 0)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"PLMigrationHistory.m" lineNumber:212 description:@"index must be greater than 0"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMigrationHistory.m" lineNumber:212 description:@"index must be greater than 0"];
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v15 = [v11 objectForKeyedSubscript:@"ImportedFileSystemAssets"];
+  v15 = [metadataCopy objectForKeyedSubscript:@"ImportedFileSystemAssets"];
 
   if (v15)
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:{_BOOLForKey(v11, @"ImportedFileSystemAssets"}];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:{_BOOLForKey(metadataCopy, @"ImportedFileSystemAssets"}];
     [v14 setObject:v16 forKeyedSubscript:@"ImportedFileSystemAssets"];
 
-    [v11 removeObjectForKey:@"ImportedFileSystemAssets"];
+    [metadataCopy removeObjectForKey:@"ImportedFileSystemAssets"];
   }
 
-  v17 = [v11 objectForKeyedSubscript:@"ImportedFileSystemAssetsDate"];
+  v17 = [metadataCopy objectForKeyedSubscript:@"ImportedFileSystemAssetsDate"];
 
   if (v17)
   {
     v18 = PLCompleteDateFormatter();
-    v19 = _dateForKey(v11, @"ImportedFileSystemAssetsDate", v18);
+    v19 = _dateForKey(metadataCopy, @"ImportedFileSystemAssetsDate", v18);
     [v14 setObject:v19 forKeyedSubscript:@"ImportedFileSystemAssetsDate"];
 
-    [v11 removeObjectForKey:@"ImportedFileSystemAssetsDate"];
+    [metadataCopy removeObjectForKey:@"ImportedFileSystemAssetsDate"];
   }
 
-  v20 = [v11 objectForKeyedSubscript:@"PLRebuildRequired"];
+  v20 = [metadataCopy objectForKeyedSubscript:@"PLRebuildRequired"];
 
   if (v20)
   {
-    if (_BOOLForKey(v11, @"PLRebuildRequired"))
+    if (_BOOLForKey(metadataCopy, @"PLRebuildRequired"))
     {
       v21 = [MEMORY[0x1E696AD98] numberWithBool:1];
       [v14 setObject:v21 forKeyedSubscript:@"JournalRebuildRequired"];
     }
 
-    [v11 removeObjectForKey:@"PLRebuildRequired"];
+    [metadataCopy removeObjectForKey:@"PLRebuildRequired"];
   }
 
   v22 = PLCompleteDateFormatter();
-  v23 = _dateForKey(v11, @"PLMigrationDate", v22);
+  v23 = _dateForKey(metadataCopy, @"PLMigrationDate", v22);
 
-  v24 = _stringForKey(v11, @"PLLibraryUpgradeType");
-  v25 = [v24 lowercaseString];
+  v24 = _stringForKey(metadataCopy, @"PLLibraryUpgradeType");
+  lowercaseString = [v24 lowercaseString];
 
-  if ([v25 hasPrefix:@"created"])
+  if ([lowercaseString hasPrefix:@"created"])
   {
     v26 = 3;
   }
 
-  else if ([v25 hasPrefix:@"lightweight"])
+  else if ([lowercaseString hasPrefix:@"lightweight"])
   {
     v26 = 2;
   }
 
   else
   {
-    v26 = [v25 hasPrefix:@"rebuil"];
+    v26 = [lowercaseString hasPrefix:@"rebuil"];
   }
 
-  v48 = v12;
-  if ([v25 containsString:@" icloud restore"])
+  v48 = valuesCopy;
+  if ([lowercaseString containsString:@" icloud restore"])
   {
     v27 = 2;
   }
 
   else
   {
-    v27 = [v25 containsString:@" itunes restore"];
+    v27 = [lowercaseString containsString:@" itunes restore"];
   }
 
-  if ([v25 hasSuffix:@"(forced)"])
+  if ([lowercaseString hasSuffix:@"(forced)"])
   {
     v28 = &unk_1F0FBADF8;
   }
@@ -440,24 +440,24 @@ LABEL_37:
     v28 = 0;
   }
 
-  v47 = v13;
-  v29 = [(PLManagedObject *)PLMigrationHistory insertInManagedObjectContext:v13];
-  [v29 setIndex:a4];
-  v30 = _numberForKey(v11, @"PLModelVersion");
+  v47 = contextCopy;
+  v29 = [(PLManagedObject *)PLMigrationHistory insertInManagedObjectContext:contextCopy];
+  [v29 setIndex:index];
+  v30 = _numberForKey(metadataCopy, @"PLModelVersion");
   [v29 setModelVersion:{objc_msgSend(v30, "integerValue")}];
-  v31 = _numberForKey(v11, @"PLMigrationSourceModelVersion");
+  v31 = _numberForKey(metadataCopy, @"PLMigrationSourceModelVersion");
   [v29 setSourceModelVersion:v31];
 
   [v29 setMigrationType:v26];
   [v29 setMigrationDate:v23];
-  v32 = _stringForKey(v11, @"PLOSVersion");
+  v32 = _stringForKey(metadataCopy, @"PLOSVersion");
   if (v32)
   {
     v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:{objc_msgSend(v32, "UTF8String")}];
     [v29 setOsVersion:v33];
   }
 
-  v34 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
+  v34 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
   [v29 setStoreUUID:v34];
 
   [v29 setForceRebuildReason:v28];
@@ -474,15 +474,15 @@ LABEL_37:
   }
 
   v36 = v48;
-  [v11 removeObjectForKey:@"PLMigrationDate"];
-  [v11 removeObjectForKey:@"PLLibraryUpgradeType"];
-  [v11 removeObjectForKey:@"PLMigrationSourceModelVersion"];
-  [v11 removeObjectForKey:@"PLOSVersion"];
-  v37 = [v11 objectForKeyedSubscript:@"PLGreenValues"];
+  [metadataCopy removeObjectForKey:@"PLMigrationDate"];
+  [metadataCopy removeObjectForKey:@"PLLibraryUpgradeType"];
+  [metadataCopy removeObjectForKey:@"PLMigrationSourceModelVersion"];
+  [metadataCopy removeObjectForKey:@"PLOSVersion"];
+  v37 = [metadataCopy objectForKeyedSubscript:@"PLGreenValues"];
   if (v37)
   {
     [v14 setObject:v37 forKeyedSubscript:@"GreenValues"];
-    [v11 removeObjectForKey:@"PLGreenValues"];
+    [metadataCopy removeObjectForKey:@"PLGreenValues"];
   }
 
   if (v48)
@@ -494,9 +494,9 @@ LABEL_37:
     if ([v39 integerValue] == 1)
     {
       v40 = [v14 objectForKeyedSubscript:@"JournalRebuildRequired"];
-      v41 = [v40 BOOLValue];
+      bOOLValue = [v40 BOOLValue];
 
-      if (v41)
+      if (bOOLValue)
       {
         goto LABEL_34;
       }
@@ -506,13 +506,13 @@ LABEL_37:
     }
 
 LABEL_34:
-    v42 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69BFEE0]];
-    v43 = [v42 integerValue];
+    v42 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E69BFEE0]];
+    integerValue = [v42 integerValue];
 
     v36 = v48;
     v23 = v38;
     v30 = v46;
-    if (v43 == 1)
+    if (integerValue == 1)
     {
       [v29 setOrigin:5];
     }
@@ -521,11 +521,11 @@ LABEL_34:
   return v29;
 }
 
-+ (BOOL)currentMigrationHistoryIndex:(int64_t *)a3 withManagedObjectContext:(id)a4 error:(id *)a5
++ (BOOL)currentMigrationHistoryIndex:(int64_t *)index withManagedObjectContext:(id)context error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696ABC8];
-  v8 = a4;
+  contextCopy = context;
   v9 = [v7 expressionForKeyPath:@"index"];
   v10 = MEMORY[0x1E696ABC8];
   v24[0] = v9;
@@ -545,36 +545,36 @@ LABEL_34:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
   [v16 setPropertiesToFetch:v17];
 
-  v18 = [v8 executeFetchRequest:v16 error:a5];
+  v18 = [contextCopy executeFetchRequest:v16 error:error];
 
   if (v18)
   {
-    v19 = [v18 firstObject];
-    v20 = [v19 valueForKey:@"maxIndex"];
+    firstObject = [v18 firstObject];
+    v20 = [firstObject valueForKey:@"maxIndex"];
 
     if (v20)
     {
-      v21 = [v20 longLongValue];
+      longLongValue = [v20 longLongValue];
     }
 
     else
     {
-      v21 = -1;
+      longLongValue = -1;
     }
 
-    *a3 = v21;
+    *index = longLongValue;
   }
 
   return v18 != 0;
 }
 
-+ (id)currentMigrationHistoryWithManagedObjectContext:(id)a3
++ (id)currentMigrationHistoryWithManagedObjectContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v18 = 0;
   v19 = 0;
-  v4 = [PLMigrationHistory currentMigrationHistoryIndex:&v19 withManagedObjectContext:v3 error:&v18];
+  v4 = [PLMigrationHistory currentMigrationHistoryIndex:&v19 withManagedObjectContext:contextCopy error:&v18];
   v5 = v18;
   if (!v4 || v19 < 0)
   {
@@ -586,7 +586,7 @@ LABEL_34:
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Error querying current migration history index: %@", buf, 0xCu);
     }
 
-    v14 = 0;
+    firstObject = 0;
     v13 = v5;
   }
 
@@ -602,12 +602,12 @@ LABEL_34:
     [v8 setPredicate:v11];
 
     v17 = v5;
-    v12 = [v3 executeFetchRequest:v8 error:&v17];
+    v12 = [contextCopy executeFetchRequest:v8 error:&v17];
     v13 = v17;
 
     if (v12)
     {
-      v14 = [v12 firstObject];
+      firstObject = [v12 firstObject];
     }
 
     else
@@ -620,18 +620,18 @@ LABEL_34:
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Error fetching current migration history: %@", buf, 0xCu);
       }
 
-      v14 = 0;
+      firstObject = 0;
     }
   }
 
-  return v14;
+  return firstObject;
 }
 
-+ (id)migrationHistoryWithManagedObjectContext:(id)a3
++ (id)migrationHistoryWithManagedObjectContext:(id)context
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695D5E0];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[PLMigrationHistory entityName];
   v6 = [v3 fetchRequestWithEntityName:v5];
 
@@ -641,7 +641,7 @@ LABEL_34:
   [v6 setSortDescriptors:v8];
 
   v13 = 0;
-  v9 = [v4 executeFetchRequest:v6 error:&v13];
+  v9 = [contextCopy executeFetchRequest:v6 error:&v13];
 
   v10 = v13;
   if (!v9)
@@ -658,47 +658,47 @@ LABEL_34:
   return v9;
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3 index:(int64_t)a4 sourceModelVersion:(id)a5 migrationType:(int64_t)a6 migrationDate:(id)a7 forceRebuildReason:(id)a8 hardwareModel:(id)a9 deviceUniqueID:(id)a10 cplEnabled:(BOOL)a11 initialSyncDate:(id)a12
++ (id)insertIntoManagedObjectContext:(id)context index:(int64_t)index sourceModelVersion:(id)version migrationType:(int64_t)type migrationDate:(id)date forceRebuildReason:(id)reason hardwareModel:(id)model deviceUniqueID:(id)self0 cplEnabled:(BOOL)self1 initialSyncDate:(id)self2
 {
-  v39 = a6;
-  v17 = a3;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v40 = a9;
-  v21 = a10;
-  v22 = a12;
-  if (a4 < 0)
+  typeCopy = type;
+  contextCopy = context;
+  versionCopy = version;
+  dateCopy = date;
+  reasonCopy = reason;
+  modelCopy = model;
+  dCopy = d;
+  syncDateCopy = syncDate;
+  if (index < 0)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:a1 file:@"PLMigrationHistory.m" lineNumber:136 description:@"index must be greater than or equal to 0"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMigrationHistory.m" lineNumber:136 description:@"index must be greater than or equal to 0"];
   }
 
-  v23 = [(PLManagedObject *)PLMigrationHistory insertInManagedObjectContext:v17, a2];
-  [v23 setIndex:a4];
+  v23 = [(PLManagedObject *)PLMigrationHistory insertInManagedObjectContext:contextCopy, a2];
+  [v23 setIndex:index];
   [v23 setModelVersion:{+[PLModelMigrator currentModelVersion](PLModelMigrator, "currentModelVersion")}];
-  v24 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
-  [v23 setOsVersion:v24];
+  currentBuildVersionString = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
+  [v23 setOsVersion:currentBuildVersionString];
 
-  v25 = v18;
-  [v23 setSourceModelVersion:v18];
-  [v23 setMigrationType:v39];
-  v26 = v19;
-  [v23 setMigrationDate:v19];
-  [v23 setForceRebuildReason:v20];
-  v27 = [v17 persistentStoreCoordinator];
-  v28 = [v27 persistentStores];
-  v29 = [v28 firstObject];
+  v25 = versionCopy;
+  [v23 setSourceModelVersion:versionCopy];
+  [v23 setMigrationType:typeCopy];
+  v26 = dateCopy;
+  [v23 setMigrationDate:dateCopy];
+  [v23 setForceRebuildReason:reasonCopy];
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v30 = [v29 metadata];
-  v31 = [v30 objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
+  metadata = [firstObject metadata];
+  v31 = [metadata objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
   [v23 setStoreUUID:v31];
 
   v32 = PLPhotoLibraryServicesBinaryImageUUID();
-  v33 = [v32 UUIDString];
-  [v23 setFrameworkUUID:v33];
+  uUIDString = [v32 UUIDString];
+  [v23 setFrameworkUUID:uUIDString];
 
-  v34 = [PLGlobalKeyValue dictionaryWithManagedObjectContext:v17 forMigrationHistory:1];
+  v34 = [PLGlobalKeyValue dictionaryWithManagedObjectContext:contextCopy forMigrationHistory:1];
   if ([v34 count])
   {
     v35 = v34;
@@ -710,41 +710,41 @@ LABEL_34:
   }
 
   [v23 setGlobalKeyValues:v35];
-  [v23 setHardwareModel:v40];
-  [v23 setDeviceUniqueID:v21];
-  [v23 setInitialSyncDate:v22];
-  [v23 setCplEnabled:a11];
+  [v23 setHardwareModel:modelCopy];
+  [v23 setDeviceUniqueID:dCopy];
+  [v23 setInitialSyncDate:syncDateCopy];
+  [v23 setCplEnabled:enabled];
 
   return v23;
 }
 
-+ (id)insertLightweightWithManagedObjectContext:(id)a3 index:(int64_t)a4 sourceModelVersion:(unint64_t)a5 migrationDate:(id)a6 hardwareModel:(id)a7 deviceUniqueID:(id)a8 cplEnabled:(BOOL)a9 initialSyncDate:(id)a10
++ (id)insertLightweightWithManagedObjectContext:(id)context index:(int64_t)index sourceModelVersion:(unint64_t)version migrationDate:(id)date hardwareModel:(id)model deviceUniqueID:(id)d cplEnabled:(BOOL)enabled initialSyncDate:(id)self0
 {
   v17 = MEMORY[0x1E696AD98];
-  v18 = a10;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a3;
-  v23 = [v17 numberWithUnsignedInteger:a5];
-  LOBYTE(v26) = a9;
-  v24 = [a1 insertIntoManagedObjectContext:v22 index:a4 sourceModelVersion:v23 migrationType:2 migrationDate:v21 forceRebuildReason:0 hardwareModel:v20 deviceUniqueID:v19 cplEnabled:v26 initialSyncDate:v18];
+  syncDateCopy = syncDate;
+  dCopy = d;
+  modelCopy = model;
+  dateCopy = date;
+  contextCopy = context;
+  v23 = [v17 numberWithUnsignedInteger:version];
+  LOBYTE(v26) = enabled;
+  v24 = [self insertIntoManagedObjectContext:contextCopy index:index sourceModelVersion:v23 migrationType:2 migrationDate:dateCopy forceRebuildReason:0 hardwareModel:modelCopy deviceUniqueID:dCopy cplEnabled:v26 initialSyncDate:syncDateCopy];
 
   return v24;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)[PLMigrationHistoryJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+  keysCopy = keys;
+  v5 = [(PLManagedObjectJournalEntryPayload *)[PLMigrationHistoryJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
 
   return v5;
 }
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 objectForKeyedSubscript:@"index"];
+  v4 = [tombstone objectForKeyedSubscript:@"index"];
   v5 = [v3 stringWithFormat:@"%@", v4];
   v6 = [PLJournalEntryPayloadIDFactory payloadIDWithString:v5];
 

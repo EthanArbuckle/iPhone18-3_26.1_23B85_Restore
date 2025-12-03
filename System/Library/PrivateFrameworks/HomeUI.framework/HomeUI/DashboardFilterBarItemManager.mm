@@ -1,39 +1,39 @@
 @interface DashboardFilterBarItemManager
-- (_TtC6HomeUI29DashboardFilterBarItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (_TtC6HomeUI29DashboardFilterBarItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (void)dealloc;
-- (void)executionEnvironmentDidBecomeActive:(id)a3;
-- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)a3;
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5;
+- (void)executionEnvironmentDidBecomeActive:(id)active;
+- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)enabled;
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home;
 @end
 
 @implementation DashboardFilterBarItemManager
 
-- (_TtC6HomeUI29DashboardFilterBarItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (_TtC6HomeUI29DashboardFilterBarItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  return sub_20CF5AF3C(a3, a4);
+  itemCopy = item;
+  return sub_20CF5AF3C(delegate, item);
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedInstance];
-  [v5 removeObserver_];
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for DashboardFilterBarItemManager();
   [(HFItemManager *)&v6 dealloc];
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  sub_20CF5B544(v4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_20CF5B544(homeCopy);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81AF70);
   v6 = sub_20D567A58();
@@ -41,12 +41,12 @@
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   sub_20CECF940(0, &qword_281120AC0);
   sub_20CEF7F74(&qword_281120AB0, &qword_281120AC0);
   sub_20D567D08();
-  v4 = self;
+  selfCopy = self;
   sub_20CF5B6AC();
 
   sub_20CECF940(0, &unk_28111FFD0);
@@ -55,27 +55,27 @@
   return v5;
 }
 
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_20CF5BFA0(v8, v9, a5);
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_20CF5BFA0(dispatcherCopy, managerCopy, home);
 }
 
-- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)a3
+- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   sub_20CF5E098();
 }
 
-- (void)executionEnvironmentDidBecomeActive:(id)a3
+- (void)executionEnvironmentDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_20CF5C350(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_20CF5C350(activeCopy);
 }
 
 @end

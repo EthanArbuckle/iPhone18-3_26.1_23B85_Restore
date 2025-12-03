@@ -1,40 +1,40 @@
 @interface RUIHTMLFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (RUIHTMLFooterView)initWithAttributes:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (RUIHTMLFooterView)initWithAttributes:(id)attributes;
 - (RUITableFooterDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setText:(id)a3 attributes:(id)a4;
-- (void)webContainerView:(id)a3 didClickLinkWithURL:(id)a4;
+- (void)setText:(id)text attributes:(id)attributes;
+- (void)webContainerView:(id)view didClickLinkWithURL:(id)l;
 @end
 
 @implementation RUIHTMLFooterView
 
-- (RUIHTMLFooterView)initWithAttributes:(id)a3
+- (RUIHTMLFooterView)initWithAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = RUIHTMLFooterView;
-  return [(RUIHTMLFooterView *)&v4 initWithFrame:a3, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  return [(RUIHTMLFooterView *)&v4 initWithFrame:attributes, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 }
 
-- (void)setText:(id)a3 attributes:(id)a4
+- (void)setText:(id)text attributes:(id)attributes
 {
-  v18 = a3;
-  v6 = a4;
-  if (v18)
+  textCopy = text;
+  attributesCopy = attributes;
+  if (textCopy)
   {
     webContainerView = self->_webContainerView;
     if (webContainerView)
     {
-      v8 = [v18 dataUsingEncoding:4];
+      v8 = [textCopy dataUsingEncoding:4];
       [(RUIWebContainerView *)webContainerView updateContent:v8];
     }
 
     else
     {
       v9 = [RUIWebContainerView alloc];
-      v10 = [v18 dataUsingEncoding:4];
-      v11 = [(RUIHTMLFooterView *)self baseURL];
-      v12 = [(RUIWebContainerView *)v9 initWithContent:v10 baseURL:v11];
+      v10 = [textCopy dataUsingEncoding:4];
+      baseURL = [(RUIHTMLFooterView *)self baseURL];
+      v12 = [(RUIWebContainerView *)v9 initWithContent:v10 baseURL:baseURL];
       v13 = self->_webContainerView;
       self->_webContainerView = v12;
 
@@ -50,10 +50,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(RUIHTMLFooterView *)self footerHeightForWidth:self inView:a3.width, a3.height];
+  width = fits.width;
+  [(RUIHTMLFooterView *)self footerHeightForWidth:self inView:fits.width, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -74,11 +74,11 @@
   [(RUIWebContainerView *)self->_webContainerView setFrame:v4, 8.0, v6, v7];
 }
 
-- (void)webContainerView:(id)a3 didClickLinkWithURL:(id)a4
+- (void)webContainerView:(id)view didClickLinkWithURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained footerView:self activatedLinkWithURL:v5];
+  [WeakRetained footerView:self activatedLinkWithURL:lCopy];
 }
 
 - (RUITableFooterDelegate)delegate

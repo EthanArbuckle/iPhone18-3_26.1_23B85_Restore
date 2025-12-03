@@ -1,41 +1,41 @@
 @interface CFXCaptureViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axFaceTimeLocalViewExpanded;
 - (BOOL)_axIsFaceTime;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axRemoveEffectFromView:(id)a3;
-- (void)effectEditorView:(id)a3 didRemoveEffect:(id)a4;
-- (void)fullScreenTextEditViewController:(id)a3 didFinishEditingByRemovingEffect:(id)a4;
+- (void)_axRemoveEffectFromView:(id)view;
+- (void)effectEditorView:(id)view didRemoveEffect:(id)effect;
+- (void)fullScreenTextEditViewController:(id)controller didFinishEditingByRemovingEffect:(id)effect;
 - (void)viewDidLoad;
 @end
 
 @implementation CFXCaptureViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"CFX_addEffect:allowImmediateTextEditing:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"displayEffectEditorForEffect:forMode:" withFullSignature:{"v", "@", "Q", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"removeEffectEditorAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"effectEditorView:didRemoveEffect:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"fullScreenTextEditViewController:didFinishEditingByRemovingEffect:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"effectEditor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"presentFullScreenTextEditorForEffect:insertingEffect:" withFullSignature:{"B", "@", "B", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"liveCaptureContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"composition" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXEffectComposition" hasInstanceMethod:@"jtEffects" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXEffect" hasInstanceMethod:@"jtEffect" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"JFXEffect" hasInstanceMethod:@"type" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"JFXOverlayEffect" hasInstanceMethod:@"trackingProps" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"JFXEffect" hasInstanceMethod:@"accessibilityName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"JFXEffect" hasInstanceMethod:@"effectParameters" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"JFXTextEffect" hasInstanceMethod:@"strings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_scaleEffect:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_rotateEffect:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_removeEffect" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"JFXOverlayEffect" hasInstanceMethod:@"imageFrameAtTime:forcePosterFrame:includeDropShadow:relativeTo:basisOrigin:" withFullSignature:{"{?=qiIq}", "B", "B", "{CGRect={CGPoint=dd}{CGSize=dd}}", "i", 0}];
-  [v3 validateClass:@"JFXEffectEditingUtilities" hasClassMethod:@"canEditTextForEffect:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"JFXTrackedEffectProperties" hasInstanceMethod:@"trackingType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"CFX_addEffect:allowImmediateTextEditing:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"displayEffectEditorForEffect:forMode:" withFullSignature:{"v", "@", "Q", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"removeEffectEditorAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"effectEditorView:didRemoveEffect:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"fullScreenTextEditViewController:didFinishEditingByRemovingEffect:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"effectEditor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"presentFullScreenTextEditorForEffect:insertingEffect:" withFullSignature:{"B", "@", "B", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"liveCaptureContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXCaptureViewController" hasInstanceMethod:@"composition" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXEffectComposition" hasInstanceMethod:@"jtEffects" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXEffect" hasInstanceMethod:@"jtEffect" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"JFXEffect" hasInstanceMethod:@"type" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"JFXOverlayEffect" hasInstanceMethod:@"trackingProps" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"JFXEffect" hasInstanceMethod:@"accessibilityName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"JFXEffect" hasInstanceMethod:@"effectParameters" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"JFXTextEffect" hasInstanceMethod:@"strings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_scaleEffect:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_rotateEffect:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_removeEffect" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"JFXOverlayEffect" hasInstanceMethod:@"imageFrameAtTime:forcePosterFrame:includeDropShadow:relativeTo:basisOrigin:" withFullSignature:{"{?=qiIq}", "B", "B", "{CGRect={CGPoint=dd}{CGSize=dd}}", "i", 0}];
+  [validationsCopy validateClass:@"JFXEffectEditingUtilities" hasClassMethod:@"canEditTextForEffect:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"JFXTrackedEffectProperties" hasInstanceMethod:@"trackingType" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -293,41 +293,41 @@ LABEL_40:
   [(CFXCaptureViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axRemoveEffectFromView:(id)a3
+- (void)_axRemoveEffectFromView:(id)view
 {
-  v11 = [a3 safeValueForKey:@"jtEffect"];
+  v11 = [view safeValueForKey:@"jtEffect"];
   v4 = [MEMORY[0x29EDBA168] valueWithNonretainedObject:?];
-  v5 = [(CFXCaptureViewControllerAccessibility *)self _axEffectToElement];
-  v6 = [v5 objectForKey:v4];
+  _axEffectToElement = [(CFXCaptureViewControllerAccessibility *)self _axEffectToElement];
+  v6 = [_axEffectToElement objectForKey:v4];
 
   if (v6)
   {
-    v7 = [(CFXCaptureViewControllerAccessibility *)self _axEffectToElement];
-    [v7 removeObjectForKey:v4];
+    _axEffectToElement2 = [(CFXCaptureViewControllerAccessibility *)self _axEffectToElement];
+    [_axEffectToElement2 removeObjectForKey:v4];
 
     v8 = [(CFXCaptureViewControllerAccessibility *)self safeValueForKey:@"view"];
-    v9 = [(CFXCaptureViewControllerAccessibility *)self _axEffectToElement];
-    v10 = [v9 allValues];
-    [v8 _accessibilitySetAdditionalElements:v10];
+    _axEffectToElement3 = [(CFXCaptureViewControllerAccessibility *)self _axEffectToElement];
+    allValues = [_axEffectToElement3 allValues];
+    [v8 _accessibilitySetAdditionalElements:allValues];
   }
 }
 
-- (void)effectEditorView:(id)a3 didRemoveEffect:(id)a4
+- (void)effectEditorView:(id)view didRemoveEffect:(id)effect
 {
   v7.receiver = self;
   v7.super_class = CFXCaptureViewControllerAccessibility;
-  v6 = a4;
-  [(CFXCaptureViewControllerAccessibility *)&v7 effectEditorView:a3 didRemoveEffect:v6];
-  [(CFXCaptureViewControllerAccessibility *)self _axRemoveEffectFromView:v6, v7.receiver, v7.super_class];
+  effectCopy = effect;
+  [(CFXCaptureViewControllerAccessibility *)&v7 effectEditorView:view didRemoveEffect:effectCopy];
+  [(CFXCaptureViewControllerAccessibility *)self _axRemoveEffectFromView:effectCopy, v7.receiver, v7.super_class];
 }
 
-- (void)fullScreenTextEditViewController:(id)a3 didFinishEditingByRemovingEffect:(id)a4
+- (void)fullScreenTextEditViewController:(id)controller didFinishEditingByRemovingEffect:(id)effect
 {
   v7.receiver = self;
   v7.super_class = CFXCaptureViewControllerAccessibility;
-  v6 = a4;
-  [(CFXCaptureViewControllerAccessibility *)&v7 fullScreenTextEditViewController:a3 didFinishEditingByRemovingEffect:v6];
-  [(CFXCaptureViewControllerAccessibility *)self _axRemoveEffectFromView:v6, v7.receiver, v7.super_class];
+  effectCopy = effect;
+  [(CFXCaptureViewControllerAccessibility *)&v7 fullScreenTextEditViewController:controller didFinishEditingByRemovingEffect:effectCopy];
+  [(CFXCaptureViewControllerAccessibility *)self _axRemoveEffectFromView:effectCopy, v7.receiver, v7.super_class];
 }
 
 - (BOOL)_axIsFaceTime
@@ -352,8 +352,8 @@ uint64_t __54__CFXCaptureViewControllerAccessibility__axIsFaceTime__block_invoke
   v2 = [(CFXCaptureViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   v3 = 1;
   v4 = [v2 _accessibilityFindAncestor:&__block_literal_global_446 startWithSelf:1];
-  v5 = [v4 _accessibilityViewController];
-  v6 = [v5 safeValueForKey:@"accessibilityConstraintController"];
+  _accessibilityViewController = [v4 _accessibilityViewController];
+  v6 = [_accessibilityViewController safeValueForKey:@"accessibilityConstraintController"];
 
   if (v6)
   {

@@ -1,5 +1,5 @@
 @interface RatchetCoolOffFactory
-+ (id)makeViewControllerWith:(id)a3 delegate:(id)a4;
++ (id)makeViewControllerWith:(id)with delegate:(id)delegate;
 - (_TtC10CoreAuthUI21RatchetCoolOffFactory)init;
 @end
 
@@ -12,7 +12,7 @@
   return result;
 }
 
-+ (id)makeViewControllerWith:(id)a3 delegate:(id)a4
++ (id)makeViewControllerWith:(id)with delegate:(id)delegate
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for RatchetCoolOffContentViewModel(0);

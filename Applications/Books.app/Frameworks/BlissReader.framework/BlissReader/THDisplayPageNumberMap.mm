@@ -1,12 +1,12 @@
 @interface THDisplayPageNumberMap
 - (THDisplayPageNumberMap)init;
-- (id)absolutePageIndexesForAltsOfAbsolutePageIndex:(unint64_t)a3;
-- (id)absolutePageIndexesForDisplayPageNumber:(id)a3;
-- (id)displayPageNumberForAbsolutePageIndex:(unint64_t)a3;
-- (id)preferredAbsolutePageIndexesForDisplayPageNumber:(id)a3;
-- (unint64_t)absolutePageIndexForDisplayPageNumber:(id)a3;
-- (void)buildDisplayPageMapsWithDocumentRoot:(id)a3;
-- (void)clearDisplayPageMapsWithDocumentRoot:(id)a3;
+- (id)absolutePageIndexesForAltsOfAbsolutePageIndex:(unint64_t)index;
+- (id)absolutePageIndexesForDisplayPageNumber:(id)number;
+- (id)displayPageNumberForAbsolutePageIndex:(unint64_t)index;
+- (id)preferredAbsolutePageIndexesForDisplayPageNumber:(id)number;
+- (unint64_t)absolutePageIndexForDisplayPageNumber:(id)number;
+- (void)buildDisplayPageMapsWithDocumentRoot:(id)root;
+- (void)clearDisplayPageMapsWithDocumentRoot:(id)root;
 - (void)dealloc;
 @end
 
@@ -28,7 +28,7 @@
   [(THDisplayPageNumberMap *)&v3 dealloc];
 }
 
-- (void)clearDisplayPageMapsWithDocumentRoot:(id)a3
+- (void)clearDisplayPageMapsWithDocumentRoot:(id)root
 {
   if ([(THDisplayPageNumberMap *)self assignedPageNumbers])
   {
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)buildDisplayPageMapsWithDocumentRoot:(id)a3
+- (void)buildDisplayPageMapsWithDocumentRoot:(id)root
 {
   if (![(THDisplayPageNumberMap *)self assignedPageNumbers])
   {
-    v5 = [objc_msgSend(a3 "rootNode")];
+    v5 = [objc_msgSend(root "rootNode")];
     if (v5 >> 6 <= 0xC34)
     {
       v6 = v5;
@@ -60,7 +60,7 @@
       v12 = sub_11F5C4;
       v13 = [NSMutableArray arrayWithCapacity:v6];
       objc_opt_class();
-      [a3 rootNode];
+      [root rootNode];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_11F5D0;
@@ -77,17 +77,17 @@
   }
 }
 
-- (id)absolutePageIndexesForDisplayPageNumber:(id)a3
+- (id)absolutePageIndexesForDisplayPageNumber:(id)number
 {
-  v4 = [(THDisplayPageNumberMap *)self absolutePageIndexArrayForDisplayPageNumberMap];
-  v5 = [a3 lowercaseString];
+  absolutePageIndexArrayForDisplayPageNumberMap = [(THDisplayPageNumberMap *)self absolutePageIndexArrayForDisplayPageNumberMap];
+  lowercaseString = [number lowercaseString];
 
-  return [(NSDictionary *)v4 objectForKey:v5];
+  return [(NSDictionary *)absolutePageIndexArrayForDisplayPageNumberMap objectForKey:lowercaseString];
 }
 
-- (id)absolutePageIndexesForAltsOfAbsolutePageIndex:(unint64_t)a3
+- (id)absolutePageIndexesForAltsOfAbsolutePageIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   if (![(THDisplayPageNumberMap *)self assignedPageNumbers])
   {
     return 0;
@@ -97,7 +97,7 @@
   v6 = 0;
   do
   {
-    v7 = [NSString stringForValue:(v3 + 1) withListNumberFormat:v6 includeFormatting:0];
+    v7 = [NSString stringForValue:(indexCopy + 1) withListNumberFormat:v6 includeFormatting:0];
     if (v7)
     {
       v8 = [(THDisplayPageNumberMap *)self absolutePageIndexesForDisplayPageNumber:v7];
@@ -119,14 +119,14 @@
   return [v5 allObjects];
 }
 
-- (id)preferredAbsolutePageIndexesForDisplayPageNumber:(id)a3
+- (id)preferredAbsolutePageIndexesForDisplayPageNumber:(id)number
 {
   if (![(THDisplayPageNumberMap *)self assignedPageNumbers])
   {
     return 0;
   }
 
-  v5 = [(THDisplayPageNumberMap *)self absolutePageIndexesForDisplayPageNumber:a3];
+  v5 = [(THDisplayPageNumberMap *)self absolutePageIndexesForDisplayPageNumber:number];
   if (v5)
   {
     v6 = v5;
@@ -136,18 +136,18 @@
     }
   }
 
-  v7 = [a3 intValue];
-  if (v7 < 1)
+  intValue = [number intValue];
+  if (intValue < 1)
   {
     return 0;
   }
 
-  return [(THDisplayPageNumberMap *)self absolutePageIndexesForAltsOfAbsolutePageIndex:v7 - 1];
+  return [(THDisplayPageNumberMap *)self absolutePageIndexesForAltsOfAbsolutePageIndex:intValue - 1];
 }
 
-- (unint64_t)absolutePageIndexForDisplayPageNumber:(id)a3
+- (unint64_t)absolutePageIndexForDisplayPageNumber:(id)number
 {
-  if (-[THDisplayPageNumberMap assignedPageNumbers](self, "assignedPageNumbers") && (v5 = -[THDisplayPageNumberMap preferredAbsolutePageIndexesForDisplayPageNumber:](self, "preferredAbsolutePageIndexesForDisplayPageNumber:", a3)) != 0 && (v6 = v5, [v5 count]))
+  if (-[THDisplayPageNumberMap assignedPageNumbers](self, "assignedPageNumbers") && (v5 = -[THDisplayPageNumberMap preferredAbsolutePageIndexesForDisplayPageNumber:](self, "preferredAbsolutePageIndexesForDisplayPageNumber:", number)) != 0 && (v6 = v5, [v5 count]))
   {
     return [objc_msgSend(v6 objectAtIndex:{0), "unsignedIntValue"}];
   }
@@ -158,17 +158,17 @@
   }
 }
 
-- (id)displayPageNumberForAbsolutePageIndex:(unint64_t)a3
+- (id)displayPageNumberForAbsolutePageIndex:(unint64_t)index
 {
-  v5 = [(THDisplayPageNumberMap *)self assignedPageNumbers];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || !v5 || [(NSArray *)[(THDisplayPageNumberMap *)self displayPageNumberArray] count]<= a3)
+  assignedPageNumbers = [(THDisplayPageNumberMap *)self assignedPageNumbers];
+  if (index == 0x7FFFFFFFFFFFFFFFLL || !assignedPageNumbers || [(NSArray *)[(THDisplayPageNumberMap *)self displayPageNumberArray] count]<= index)
   {
     return 0;
   }
 
-  v6 = [(THDisplayPageNumberMap *)self displayPageNumberArray];
+  displayPageNumberArray = [(THDisplayPageNumberMap *)self displayPageNumberArray];
 
-  return [(NSArray *)v6 objectAtIndex:a3];
+  return [(NSArray *)displayPageNumberArray objectAtIndex:index];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface BPSRemoveMigrationWatchView
-- (BPSRemoveMigrationWatchView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BPSRemoveMigrationWatchView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setAdvertisingName:(id)a3;
+- (void)setAdvertisingName:(id)name;
 @end
 
 @implementation BPSRemoveMigrationWatchView
 
-- (BPSRemoveMigrationWatchView)initWithFrame:(CGRect)a3
+- (BPSRemoveMigrationWatchView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BPSRemoveMigrationWatchView;
-  v3 = [(BPSRemoveMigrationWatchView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BPSRemoveMigrationWatchView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D37A68]);
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (void)setAdvertisingName:(id)a3
+- (void)setAdvertisingName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   advertisingName = self->_advertisingName;
   self->_advertisingName = v4;
 
@@ -36,16 +36,16 @@
 
   v7 = PBAdvertisingInfoFromPayload();
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D37A90]];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
   v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277D37AA0]];
-  v11 = [v10 integerValue];
+  integerValue2 = [v10 integerValue];
 
-  v12 = [MEMORY[0x277D37A78] sharedDeviceController];
-  [v12 setMaterial:v9];
+  mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+  [mEMORY[0x277D37A78] setMaterial:integerValue];
 
-  v13 = [MEMORY[0x277D37A78] sharedDeviceController];
-  [v13 setInternalSize:v11];
+  mEMORY[0x277D37A78]2 = [MEMORY[0x277D37A78] sharedDeviceController];
+  [mEMORY[0x277D37A78]2 setInternalSize:integerValue2];
 
   v14 = [[BPSWatchView alloc] initWithStyle:6];
   v15 = self->_watch;
@@ -96,9 +96,9 @@ void __50__BPSRemoveMigrationWatchView_setAdvertisingName___block_invoke(uint64_
   [(BPSWatchView *)watch setFrame:v16, v19, v12, v14];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(BPSWatchView *)self->_watch sizeThatFits:a3.width, a3.height];
+  [(BPSWatchView *)self->_watch sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

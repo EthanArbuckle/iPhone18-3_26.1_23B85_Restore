@@ -1,6 +1,6 @@
 @interface AVTStickerGeneratorOptions
 + (id)defaultOptions;
-+ (id)optionsWithCorrectClipping:(BOOL)a3;
++ (id)optionsWithCorrectClipping:(BOOL)clipping;
 - (AVTStickerGeneratorOptions)init;
 @end
 
@@ -24,18 +24,18 @@
 
 + (id)defaultOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)optionsWithCorrectClipping:(BOOL)a3
++ (id)optionsWithCorrectClipping:(BOOL)clipping
 {
-  v3 = a3;
-  v4 = [a1 defaultOptions];
-  [v4 setContentMode:v3];
+  clippingCopy = clipping;
+  defaultOptions = [self defaultOptions];
+  [defaultOptions setContentMode:clippingCopy];
 
-  return v4;
+  return defaultOptions;
 }
 
 @end

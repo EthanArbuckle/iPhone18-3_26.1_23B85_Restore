@@ -8,19 +8,19 @@
 
 - (void)undo
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000D17C4();
 }
 
 - (void)beginUndoGrouping
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000D1A30();
 }
 
 - (void)endUndoGrouping
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000D1BCC();
 }
 

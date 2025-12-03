@@ -1,13 +1,13 @@
 @interface SUDefaultWiFiOnlyDownloadPolicy
-+ (unint64_t)wifiOnlyPeriodInDaysForUpdate:(id)a3;
-- (SUDefaultWiFiOnlyDownloadPolicy)initWithDescriptor:(id)a3;
++ (unint64_t)wifiOnlyPeriodInDaysForUpdate:(id)update;
+- (SUDefaultWiFiOnlyDownloadPolicy)initWithDescriptor:(id)descriptor;
 @end
 
 @implementation SUDefaultWiFiOnlyDownloadPolicy
 
-+ (unint64_t)wifiOnlyPeriodInDaysForUpdate:(id)a3
++ (unint64_t)wifiOnlyPeriodInDaysForUpdate:(id)update
 {
-  if ([a3 updateType] == 3)
+  if ([update updateType] == 3)
   {
     return 0;
   }
@@ -18,11 +18,11 @@
   }
 }
 
-- (SUDefaultWiFiOnlyDownloadPolicy)initWithDescriptor:(id)a3
+- (SUDefaultWiFiOnlyDownloadPolicy)initWithDescriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = SUDefaultWiFiOnlyDownloadPolicy;
-  v3 = [(SUDefaultDownloadPolicy *)&v6 initWithDescriptor:a3];
+  v3 = [(SUDefaultDownloadPolicy *)&v6 initWithDescriptor:descriptor];
   v4 = v3;
   if (v3)
   {

@@ -1,29 +1,29 @@
 @interface IDSDServiceController
-+ (BOOL)shouldLoadService:(id)a3;
++ (BOOL)shouldLoadService:(id)service;
 + (IDSDServiceController)sharedInstance;
-- (BOOL)_anyDeviceUsingSubService:(id)a3 superService:(id)a4;
+- (BOOL)_anyDeviceUsingSubService:(id)service superService:(id)superService;
 - (IDSDServiceController)init;
 - (NSArray)allFamilyServices;
 - (NSArray)allPinningEnforcedServices;
 - (NSArray)allTinkerServices;
 - (NSDictionary)serviceNameToControlCategoryMap;
 - (id)_combinedServicesForAllDevices;
-- (id)_currentSubServicesForDevice:(id)a3 superService:(id)a4;
-- (id)adHocServicesForIdentifier:(id)a3;
-- (id)allServicesWithAdHocServiceType:(unsigned int)a3;
-- (id)linkedServicesForService:(id)a3;
-- (id)primaryServiceForAdhocServiceType:(unsigned int)a3;
-- (id)serviceWithIdentifier:(id)a3;
-- (id)serviceWithName:(id)a3;
-- (id)serviceWithPushTopic:(id)a3;
-- (void)_loadService:(id)a3;
+- (id)_currentSubServicesForDevice:(id)device superService:(id)service;
+- (id)adHocServicesForIdentifier:(id)identifier;
+- (id)allServicesWithAdHocServiceType:(unsigned int)type;
+- (id)linkedServicesForService:(id)service;
+- (id)primaryServiceForAdhocServiceType:(unsigned int)type;
+- (id)serviceWithIdentifier:(id)identifier;
+- (id)serviceWithName:(id)name;
+- (id)serviceWithPushTopic:(id)topic;
+- (void)_loadService:(id)service;
 - (void)_loadServices;
-- (void)_loadSubServiceWithName:(id)a3 usingService:(id)a4 completionBlock:(id)a5;
+- (void)_loadSubServiceWithName:(id)name usingService:(id)service completionBlock:(id)block;
 - (void)_loadSubServices;
 - (void)_saveSubServices;
-- (void)_unloadServiceWithName:(id)a3;
-- (void)_updateSubServicesForDevice:(id)a3 superService:(id)a4 newSubservices:(id)a5;
-- (void)updateSubServices:(id)a3 forService:(id)a4 deviceUniqueID:(id)a5;
+- (void)_unloadServiceWithName:(id)name;
+- (void)_updateSubServicesForDevice:(id)device superService:(id)service newSubservices:(id)subservices;
+- (void)updateSubServices:(id)services forService:(id)service deviceUniqueID:(id)d;
 @end
 
 @implementation IDSDServiceController
@@ -74,18 +74,18 @@
   return v2;
 }
 
-+ (BOOL)shouldLoadService:(id)a3
++ (BOOL)shouldLoadService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[FTDeviceSupport sharedInstance];
   if ([v4 lowRAMDevice])
   {
-    v5 = [v3 disableOnLowRAMDevice];
+    disableOnLowRAMDevice = [serviceCopy disableOnLowRAMDevice];
 
-    if ((v5 & 1) == 0)
+    if ((disableOnLowRAMDevice & 1) == 0)
     {
 LABEL_8:
-      if ([v3 prototypingOnly])
+      if ([serviceCopy prototypingOnly])
       {
         v9 = +[IMLockdownManager sharedInstance];
         if (![v9 isInternalInstall])
@@ -96,24 +96,24 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v10 = _os_feature_enabled_impl();
+        supportsKeySharing = _os_feature_enabled_impl();
       }
 
       else
       {
-        v11 = [v3 identifier];
-        v12 = [v11 isEqualToString:@"com.apple.private.alloy.keysharing"];
+        identifier = [serviceCopy identifier];
+        v12 = [identifier isEqualToString:@"com.apple.private.alloy.keysharing"];
 
         if (v12)
         {
           v9 = +[FTDeviceSupport sharedInstance];
-          v10 = [v9 supportsKeySharing];
+          supportsKeySharing = [v9 supportsKeySharing];
         }
 
         else
         {
-          v13 = [v3 identifier];
-          v14 = [v13 isEqualToString:@"com.apple.private.alloy.harmony.pushprovisioning"];
+          identifier2 = [serviceCopy identifier];
+          v14 = [identifier2 isEqualToString:@"com.apple.private.alloy.harmony.pushprovisioning"];
 
           if (!v14)
           {
@@ -122,11 +122,11 @@ LABEL_17:
           }
 
           v9 = +[FTDeviceSupport sharedInstance];
-          v10 = [v9 supportsHarmony];
+          supportsKeySharing = [v9 supportsHarmony];
         }
       }
 
-      v8 = v10;
+      v8 = supportsKeySharing;
       goto LABEL_17;
     }
   }
@@ -140,9 +140,9 @@ LABEL_17:
       goto LABEL_8;
     }
 
-    v7 = [v3 disableOnLowRAMDevice];
+    disableOnLowRAMDevice2 = [serviceCopy disableOnLowRAMDevice];
 
-    if ((v7 & 1) == 0)
+    if ((disableOnLowRAMDevice2 & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -168,10 +168,10 @@ LABEL_18:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [(IDSDServiceController *)self serviceLoader];
-  v5 = [v4 loadServiceDictionaries];
+  serviceLoader = [(IDSDServiceController *)self serviceLoader];
+  loadServiceDictionaries = [serviceLoader loadServiceDictionaries];
 
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v39 count:16];
+  v6 = [loadServiceDictionaries countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -183,7 +183,7 @@ LABEL_18:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(loadServiceDictionaries);
         }
 
         v10 = *(*(&v32 + 1) + 8 * v9);
@@ -191,8 +191,8 @@ LABEL_18:
         if ([v10 count])
         {
           v12 = [[IDSServiceProperties alloc] initWithServiceDictionary:v10];
-          v13 = [v12 identifier];
-          v14 = [v13 length];
+          identifier = [v12 identifier];
+          v14 = [identifier length];
 
           if (v14)
           {
@@ -239,7 +239,7 @@ LABEL_19:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v39 count:16];
+      v7 = [loadServiceDictionaries countByEnumeratingWithState:&v32 objects:v39 count:16];
     }
 
     while (v7);
@@ -285,9 +285,9 @@ LABEL_19:
   }
 }
 
-- (void)_loadService:(id)a3
+- (void)_loadService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -295,58 +295,58 @@ LABEL_19:
   }
 
   services = self->_services;
-  v7 = [v4 identifier];
-  [(NSMapTable *)services setObject:v4 forKey:v7];
+  identifier = [serviceCopy identifier];
+  [(NSMapTable *)services setObject:serviceCopy forKey:identifier];
 
-  v8 = [v4 identifier];
-  v9 = [v4 serviceName];
-  v10 = [v8 isEqualToString:v9];
+  identifier2 = [serviceCopy identifier];
+  serviceName = [serviceCopy serviceName];
+  v10 = [identifier2 isEqualToString:serviceName];
 
   if ((v10 & 1) == 0)
   {
     servicesToNameMap = self->_servicesToNameMap;
-    v12 = [v4 serviceName];
-    [(NSMapTable *)servicesToNameMap setObject:v4 forKey:v12];
+    serviceName2 = [serviceCopy serviceName];
+    [(NSMapTable *)servicesToNameMap setObject:serviceCopy forKey:serviceName2];
   }
 
-  v13 = [v4 identifier];
-  v14 = [v4 pushTopic];
-  v15 = [v13 isEqualToString:v14];
+  identifier3 = [serviceCopy identifier];
+  pushTopic = [serviceCopy pushTopic];
+  v15 = [identifier3 isEqualToString:pushTopic];
 
   if ((v15 & 1) == 0)
   {
     servicesToTopicMap = self->_servicesToTopicMap;
-    v17 = [v4 pushTopic];
-    [(NSMapTable *)servicesToTopicMap setObject:v4 forKey:v17];
+    pushTopic2 = [serviceCopy pushTopic];
+    [(NSMapTable *)servicesToTopicMap setObject:serviceCopy forKey:pushTopic2];
   }
 
-  if ([v4 controlCategory])
+  if ([serviceCopy controlCategory])
   {
     serviceNameToControlCategoryMap = self->_serviceNameToControlCategoryMap;
-    v19 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 controlCategory]);
+    v19 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [serviceCopy controlCategory]);
     v20 = [(NSMutableDictionary *)serviceNameToControlCategoryMap objectForKey:v19];
 
     if (!v20)
     {
       v20 = objc_alloc_init(NSMutableArray);
       v21 = self->_serviceNameToControlCategoryMap;
-      v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 controlCategory]);
+      v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [serviceCopy controlCategory]);
       [(NSMutableDictionary *)v21 setObject:v20 forKey:v22];
     }
 
-    v23 = [v4 identifier];
-    [v20 addObject:v23];
+    identifier4 = [serviceCopy identifier];
+    [v20 addObject:identifier4];
   }
 }
 
-- (void)_unloadServiceWithName:(id)a3
+- (void)_unloadServiceWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    [(NSMapTable *)self->_services removeObjectForKey:v4];
-    [(NSMapTable *)self->_servicesToNameMap removeObjectForKey:v4];
-    [(NSMapTable *)self->_servicesToTopicMap removeObjectForKey:v4];
+    [(NSMapTable *)self->_services removeObjectForKey:nameCopy];
+    [(NSMapTable *)self->_servicesToNameMap removeObjectForKey:nameCopy];
+    [(NSMapTable *)self->_servicesToTopicMap removeObjectForKey:nameCopy];
   }
 
   else
@@ -359,37 +359,37 @@ LABEL_19:
   }
 }
 
-- (void)_loadSubServiceWithName:(id)a3 usingService:(id)a4 completionBlock:(id)a5
+- (void)_loadSubServiceWithName:(id)name usingService:(id)service completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IDSDServiceController *)self serviceWithPushTopic:v9];
+  nameCopy = name;
+  serviceCopy = service;
+  blockCopy = block;
+  v11 = [(IDSDServiceController *)self serviceWithPushTopic:serviceCopy];
   if (v11)
   {
-    v12 = [(IDSDServiceController *)self serviceWithPushTopic:v8];
+    v12 = [(IDSDServiceController *)self serviceWithPushTopic:nameCopy];
 
     if (!v12)
     {
       v13 = [v11 copy];
-      [v13 setServiceName:v8];
-      [v13 setDisplayName:v8];
-      [v13 setIdentifier:v8];
-      [v13 setPushTopic:v8];
-      [v13 setSuperService:v9];
+      [v13 setServiceName:nameCopy];
+      [v13 setDisplayName:nameCopy];
+      [v13 setIdentifier:nameCopy];
+      [v13 setPushTopic:nameCopy];
+      [v13 setSuperService:serviceCopy];
       [(IDSDServiceController *)self _loadService:v13];
       v14 = +[IMRGLog registration];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v8;
+        v17 = nameCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "   %@", &v16, 0xCu);
       }
     }
 
-    if (v10)
+    if (blockCopy)
     {
-      v10[2](v10, v12 == 0);
+      blockCopy[2](blockCopy, v12 == 0);
     }
   }
 
@@ -403,31 +403,31 @@ LABEL_19:
   }
 }
 
-- (void)updateSubServices:(id)a3 forService:(id)a4 deviceUniqueID:(id)a5
+- (void)updateSubServices:(id)services forService:(id)service deviceUniqueID:(id)d
 {
-  v49 = a3;
-  v8 = a4;
-  v51 = a5;
-  v50 = [(IDSDServiceController *)self serviceWithPushTopic:v8];
+  servicesCopy = services;
+  serviceCopy = service;
+  dCopy = d;
+  v50 = [(IDSDServiceController *)self serviceWithPushTopic:serviceCopy];
   if (v50)
   {
     v9 = +[IDSPairingManager sharedInstance];
-    v48 = [v9 allTraditionallyPairedUniqueIDs];
+    allTraditionallyPairedUniqueIDs = [v9 allTraditionallyPairedUniqueIDs];
 
-    if (([v48 containsObject:v51]& 1) != 0)
+    if (([allTraditionallyPairedUniqueIDs containsObject:dCopy]& 1) != 0)
     {
-      v47 = [(IDSDServiceController *)self _currentSubServicesForDevice:v51 superService:v8];
+      v47 = [(IDSDServiceController *)self _currentSubServicesForDevice:dCopy superService:serviceCopy];
       v10 = +[IMRGLog sub_services];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v51;
+        *&buf[4] = dCopy;
         *&buf[12] = 2112;
         *&buf[14] = v47;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Current sub-services for device %@: %@", buf, 0x16u);
       }
 
-      if (v47 && [v47 isEqualToArray:v49])
+      if (v47 && [v47 isEqualToArray:servicesCopy])
       {
         v11 = +[IMRGLog sub_services];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -439,7 +439,7 @@ LABEL_19:
 
       else
       {
-        [(IDSDServiceController *)self _updateSubServicesForDevice:v51 superService:v8 newSubservices:v49];
+        [(IDSDServiceController *)self _updateSubServicesForDevice:dCopy superService:serviceCopy newSubservices:servicesCopy];
         v16 = +[IMRGLog sub_services];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -451,17 +451,17 @@ LABEL_19:
 
         [(IDSDServiceController *)self _saveSubServices];
         v18 = [[NSMutableSet alloc] initWithArray:v47];
-        v19 = [NSSet setWithArray:v49];
+        v19 = [NSSet setWithArray:servicesCopy];
         [v18 minusSet:v19];
 
-        v20 = [v18 allObjects];
-        v21 = [v20 _copyForEnumerating];
+        allObjects = [v18 allObjects];
+        _copyForEnumerating = [allObjects _copyForEnumerating];
 
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v22 = v21;
+        v22 = _copyForEnumerating;
         v23 = [v22 countByEnumeratingWithState:&v66 objects:v77 count:16];
         if (v23)
         {
@@ -476,7 +476,7 @@ LABEL_19:
               }
 
               v26 = *(*(&v66 + 1) + 8 * i);
-              if ([(IDSDServiceController *)self _anyDeviceUsingSubService:v26 superService:v8])
+              if ([(IDSDServiceController *)self _anyDeviceUsingSubService:v26 superService:serviceCopy])
               {
                 v27 = +[IMRGLog sub_services];
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -562,7 +562,7 @@ LABEL_19:
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v37 = v49;
+        v37 = servicesCopy;
         v38 = [v37 countByEnumeratingWithState:&v58 objects:v71 count:16];
         if (v38)
         {
@@ -582,7 +582,7 @@ LABEL_19:
               v57[2] = sub_1006B10DC;
               v57[3] = &unk_100BE4348;
               v57[4] = buf;
-              [(IDSDServiceController *)self _loadSubServiceWithName:v41 usingService:v8 completionBlock:v57];
+              [(IDSDServiceController *)self _loadSubServiceWithName:v41 usingService:serviceCopy completionBlock:v57];
             }
 
             v38 = [v37 countByEnumeratingWithState:&v58 objects:v71 count:16];
@@ -645,7 +645,7 @@ LABEL_19:
       }
     }
 
-    v13 = v48;
+    v13 = allTraditionallyPairedUniqueIDs;
   }
 
   else
@@ -665,37 +665,37 @@ LABEL_19:
   if ([(NSMutableDictionary *)self->_deviceIDToSubServicesMap count])
   {
     v3 = [NSMutableDictionary alloc];
-    v4 = [v3 initWithObjectsAndKeys:{self->_deviceIDToSubServicesMap, off_100CB2360, &off_100C3D3D8, off_100CB2368, 0}];
+    userDefaults2 = [v3 initWithObjectsAndKeys:{self->_deviceIDToSubServicesMap, off_100CB2360, &off_100C3D3D8, off_100CB2368, 0}];
     v5 = +[IMRGLog sub_services];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = userDefaults2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Top level map %@", buf, 0xCu);
     }
 
-    v6 = [(IDSDServiceController *)self userDefaults];
-    v7 = v6;
+    userDefaults = [(IDSDServiceController *)self userDefaults];
+    v7 = userDefaults;
     v8 = off_100CB2370;
-    v9 = v4;
+    v9 = userDefaults2;
     v10 = 0;
   }
 
   else
   {
-    v4 = [(IDSDServiceController *)self userDefaults];
+    userDefaults2 = [(IDSDServiceController *)self userDefaults];
     v14 = off_100CB2360;
     v7 = [NSArray arrayWithObjects:&v14 count:1];
     v8 = off_100CB2370;
-    v6 = v4;
+    userDefaults = userDefaults2;
     v9 = 0;
     v10 = v7;
   }
 
-  [v6 setMultiple:v9 remove:v10 appID:v8];
+  [userDefaults setMultiple:v9 remove:v10 appID:v8];
 
-  v11 = [(IDSDServiceController *)self userDefaults];
-  [v11 synchronizeAppID:off_100CB2370];
+  userDefaults3 = [(IDSDServiceController *)self userDefaults];
+  [userDefaults3 synchronizeAppID:off_100CB2370];
 }
 
 - (void)_loadSubServices
@@ -706,11 +706,11 @@ LABEL_19:
     sub_100931330();
   }
 
-  v4 = [(IDSDServiceController *)self userDefaults];
+  userDefaults = [(IDSDServiceController *)self userDefaults];
   v89[0] = off_100CB2368;
   v89[1] = off_100CB2360;
   v5 = [NSArray arrayWithObjects:v89 count:2];
-  v6 = [v4 copyMultipleForCurrentKeys:v5 appID:off_100CB2370];
+  v6 = [userDefaults copyMultipleForCurrentKeys:v5 appID:off_100CB2370];
 
   v7 = +[IMRGLog sub_services];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -721,13 +721,13 @@ LABEL_19:
   }
 
   v8 = +[IDSPairingManager sharedInstance];
-  v9 = [v8 pairedDeviceUniqueID];
+  pairedDeviceUniqueID = [v8 pairedDeviceUniqueID];
 
   v10 = [(NSMutableDictionary *)v6 objectForKey:off_100CB2368];
-  v11 = [v10 unsignedIntValue];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  v62 = v9;
-  if (v11)
+  v62 = pairedDeviceUniqueID;
+  if (unsignedIntValue)
   {
     v12 = [NSMutableDictionary alloc];
     v13 = [(NSMutableDictionary *)v6 objectForKey:off_100CB2360];
@@ -738,11 +738,11 @@ LABEL_19:
 
   else
   {
-    if ([v9 length])
+    if ([pairedDeviceUniqueID length])
     {
       v16 = [NSMutableDictionary alloc];
       v17 = [(NSMutableDictionary *)v6 objectForKey:off_100CB2360];
-      v18 = [v16 initWithObjectsAndKeys:{v17, v9, 0}];
+      v18 = [v16 initWithObjectsAndKeys:{v17, pairedDeviceUniqueID, 0}];
       v19 = self->_deviceIDToSubServicesMap;
       self->_deviceIDToSubServicesMap = v18;
     }
@@ -767,14 +767,14 @@ LABEL_19:
 
   v63 = objc_alloc_init(NSMutableSet);
   v22 = +[IDSPairingManager sharedInstance];
-  v66 = [v22 allTraditionallyPairedUniqueIDs];
+  allTraditionallyPairedUniqueIDs = [v22 allTraditionallyPairedUniqueIDs];
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v23 = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap allKeys];
-  v24 = [v23 countByEnumeratingWithState:&v79 objects:v86 count:16];
+  allKeys = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap allKeys];
+  v24 = [allKeys countByEnumeratingWithState:&v79 objects:v86 count:16];
   if (v24)
   {
     v25 = v24;
@@ -785,17 +785,17 @@ LABEL_19:
       {
         if (*v80 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allKeys);
         }
 
         v28 = *(*(&v79 + 1) + 8 * i);
-        if (([v66 containsObject:v28] & 1) == 0)
+        if (([allTraditionallyPairedUniqueIDs containsObject:v28] & 1) == 0)
         {
           [(NSMutableDictionary *)v63 addObject:v28];
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v79 objects:v86 count:16];
+      v25 = [allKeys countByEnumeratingWithState:&v79 objects:v86 count:16];
     }
 
     while (v25);
@@ -816,8 +816,8 @@ LABEL_19:
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v31 = [(NSMutableDictionary *)v63 allObjects];
-    v32 = [v31 countByEnumeratingWithState:&v75 objects:v85 count:16];
+    allObjects = [(NSMutableDictionary *)v63 allObjects];
+    v32 = [allObjects countByEnumeratingWithState:&v75 objects:v85 count:16];
     if (v32)
     {
       v33 = v32;
@@ -828,13 +828,13 @@ LABEL_19:
         {
           if (*v76 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(allObjects);
           }
 
           [(NSMutableDictionary *)self->_deviceIDToSubServicesMap removeObjectForKey:*(*(&v75 + 1) + 8 * j)];
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v75 objects:v85 count:16];
+        v33 = [allObjects countByEnumeratingWithState:&v75 objects:v85 count:16];
       }
 
       while (v33);
@@ -875,12 +875,12 @@ LABEL_19:
     [(IDSDServiceController *)self _saveSubServices];
   }
 
-  v46 = [(IDSDServiceController *)self _combinedServicesForAllDevices];
+  _combinedServicesForAllDevices = [(IDSDServiceController *)self _combinedServicesForAllDevices];
   v47 = +[IMRGLog sub_services];
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v88 = v46;
+    v88 = _combinedServicesForAllDevices;
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Combined services %@", buf, 0xCu);
   }
 
@@ -888,7 +888,7 @@ LABEL_19:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = [(NSMutableDictionary *)v46 allKeys];
+  obj = [(NSMutableDictionary *)_combinedServicesForAllDevices allKeys];
   v48 = [obj countByEnumeratingWithState:&v71 objects:v84 count:16];
   if (v48)
   {
@@ -916,8 +916,8 @@ LABEL_19:
           v70 = 0u;
           v67 = 0u;
           v68 = 0u;
-          v54 = v46;
-          v55 = [(NSMutableDictionary *)v46 objectForKey:v53];
+          v54 = _combinedServicesForAllDevices;
+          v55 = [(NSMutableDictionary *)_combinedServicesForAllDevices objectForKey:v53];
           v56 = [v55 countByEnumeratingWithState:&v67 objects:v83 count:16];
           if (v56)
           {
@@ -941,7 +941,7 @@ LABEL_19:
             while (v57);
           }
 
-          v46 = v54;
+          _combinedServicesForAllDevices = v54;
         }
 
         v51 = v51 + 1;
@@ -972,7 +972,7 @@ LABEL_19:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap allKeys];
   v20 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v20)
@@ -989,13 +989,13 @@ LABEL_19:
         }
 
         v21 = v4;
-        v5 = [(NSMutableDictionary *)v19->_deviceIDToSubServicesMap _dictionaryForKey:*(*(&v27 + 1) + 8 * v4)];
+        v5 = [(NSMutableDictionary *)selfCopy->_deviceIDToSubServicesMap _dictionaryForKey:*(*(&v27 + 1) + 8 * v4)];
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v22 = [v5 allKeys];
-        v6 = [v22 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        allKeys = [v5 allKeys];
+        v6 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v6)
         {
           v7 = v6;
@@ -1006,7 +1006,7 @@ LABEL_19:
             {
               if (*v24 != v8)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(allKeys);
               }
 
               v10 = *(*(&v23 + 1) + 8 * i);
@@ -1024,11 +1024,11 @@ LABEL_19:
                 [v14 addObjectsFromArray:v12];
               }
 
-              v15 = [v14 allObjects];
-              [v3 setObject:v15 forKey:v10];
+              allObjects = [v14 allObjects];
+              [v3 setObject:allObjects forKey:v10];
             }
 
-            v7 = [v22 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v7 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v7);
@@ -1047,22 +1047,22 @@ LABEL_19:
   return v3;
 }
 
-- (BOOL)_anyDeviceUsingSubService:(id)a3 superService:(id)a4
+- (BOOL)_anyDeviceUsingSubService:(id)service superService:(id)superService
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  superServiceCopy = superService;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap allKeys];
-  v24 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  allKeys = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap allKeys];
+  v24 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v24)
   {
     v9 = *v31;
     v22 = *v31;
-    v23 = self;
-    v25 = v8;
+    selfCopy = self;
+    v25 = allKeys;
     do
     {
       v10 = 0;
@@ -1070,16 +1070,16 @@ LABEL_19:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
-        v11 = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap _dictionaryForKey:*(*(&v30 + 1) + 8 * v10), v22, v23];
+        selfCopy = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap _dictionaryForKey:*(*(&v30 + 1) + 8 * v10), v22, selfCopy];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v12 = [v11 allKeys];
-        v13 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        allKeys2 = [selfCopy allKeys];
+        v13 = [allKeys2 countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1090,26 +1090,26 @@ LABEL_19:
             {
               if (*v27 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allKeys2);
               }
 
               v17 = *(*(&v26 + 1) + 8 * i);
-              if ([v17 isEqualToIgnoringCase:v7])
+              if ([v17 isEqualToIgnoringCase:superServiceCopy])
               {
-                v18 = [v11 _arrayForKey:v17];
-                v19 = [v18 containsObject:v6];
+                v18 = [selfCopy _arrayForKey:v17];
+                v19 = [v18 containsObject:serviceCopy];
 
                 if (v19)
                 {
 
                   v20 = 1;
-                  v8 = v25;
+                  allKeys = v25;
                   goto LABEL_20;
                 }
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v14 = [allKeys2 countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v14)
             {
               continue;
@@ -1120,8 +1120,8 @@ LABEL_19:
         }
 
         v10 = v10 + 1;
-        self = v23;
-        v8 = v25;
+        self = selfCopy;
+        allKeys = v25;
         v9 = v22;
       }
 
@@ -1143,28 +1143,28 @@ LABEL_20:
   return v20;
 }
 
-- (void)_updateSubServicesForDevice:(id)a3 superService:(id)a4 newSubservices:(id)a5
+- (void)_updateSubServicesForDevice:(id)device superService:(id)service newSubservices:(id)subservices
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  deviceCopy = device;
+  serviceCopy = service;
+  subservicesCopy = subservices;
+  if ([serviceCopy length])
   {
     v11 = [NSMutableDictionary alloc];
-    v12 = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap objectForKey:v8];
+    v12 = [(NSMutableDictionary *)self->_deviceIDToSubServicesMap objectForKey:deviceCopy];
     v13 = [v11 initWithDictionary:v12];
 
-    if ([v10 count])
+    if ([subservicesCopy count])
     {
-      [v13 setObject:v10 forKey:v9];
+      [v13 setObject:subservicesCopy forKey:serviceCopy];
     }
 
     else
     {
-      [v13 removeObjectForKey:v9];
+      [v13 removeObjectForKey:serviceCopy];
     }
 
-    [(NSMutableDictionary *)self->_deviceIDToSubServicesMap setObject:v13 forKey:v8];
+    [(NSMutableDictionary *)self->_deviceIDToSubServicesMap setObject:v13 forKey:deviceCopy];
   }
 
   else
@@ -1177,17 +1177,17 @@ LABEL_20:
   }
 }
 
-- (id)_currentSubServicesForDevice:(id)a3 superService:(id)a4
+- (id)_currentSubServicesForDevice:(id)device superService:(id)service
 {
   deviceIDToSubServicesMap = self->_deviceIDToSubServicesMap;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)deviceIDToSubServicesMap _dictionaryForKey:a3];
-  v8 = [v7 _arrayForKey:v6];
+  serviceCopy = service;
+  v7 = [(NSMutableDictionary *)deviceIDToSubServicesMap _dictionaryForKey:device];
+  v8 = [v7 _arrayForKey:serviceCopy];
 
   return v8;
 }
 
-- (id)allServicesWithAdHocServiceType:(unsigned int)a3
+- (id)allServicesWithAdHocServiceType:(unsigned int)type
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(NSMutableSet);
@@ -1211,7 +1211,7 @@ LABEL_20:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 adHocServiceType] == a3)
+        if ([v12 adHocServiceType] == type)
         {
           [v6 addObject:v12];
         }
@@ -1259,9 +1259,9 @@ LABEL_20:
   return v2;
 }
 
-- (id)serviceWithIdentifier:(id)a3
+- (id)serviceWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSMapTable *)self->_services objectForKey:?];
   }
@@ -1274,12 +1274,12 @@ LABEL_20:
   return v4;
 }
 
-- (id)serviceWithName:(id)a3
+- (id)serviceWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [(NSMapTable *)self->_services objectForKey:v4];
+    v5 = [(NSMapTable *)self->_services objectForKey:nameCopy];
     v6 = v5;
     if (v5)
     {
@@ -1288,7 +1288,7 @@ LABEL_20:
 
     else
     {
-      v7 = [(NSMapTable *)self->_servicesToNameMap objectForKey:v4];
+      v7 = [(NSMapTable *)self->_servicesToNameMap objectForKey:nameCopy];
     }
 
     v8 = v7;
@@ -1302,12 +1302,12 @@ LABEL_20:
   return v8;
 }
 
-- (id)serviceWithPushTopic:(id)a3
+- (id)serviceWithPushTopic:(id)topic
 {
-  v4 = a3;
-  if (v4)
+  topicCopy = topic;
+  if (topicCopy)
   {
-    v5 = [(NSMapTable *)self->_services objectForKey:v4];
+    v5 = [(NSMapTable *)self->_services objectForKey:topicCopy];
     v6 = v5;
     if (v5)
     {
@@ -1316,7 +1316,7 @@ LABEL_20:
 
     else
     {
-      v7 = [(NSMapTable *)self->_servicesToTopicMap objectForKey:v4];
+      v7 = [(NSMapTable *)self->_servicesToTopicMap objectForKey:topicCopy];
     }
 
     v8 = v7;
@@ -1330,17 +1330,17 @@ LABEL_20:
   return v8;
 }
 
-- (id)linkedServicesForService:(id)a3
+- (id)linkedServicesForService:(id)service
 {
-  v3 = [a3 linkedServiceNames];
-  if ([v3 count])
+  linkedServiceNames = [service linkedServiceNames];
+  if ([linkedServiceNames count])
   {
     v4 = objc_alloc_init(NSMutableArray);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = linkedServiceNames;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -1390,14 +1390,14 @@ LABEL_20:
   return v13;
 }
 
-- (id)primaryServiceForAdhocServiceType:(unsigned int)a3
+- (id)primaryServiceForAdhocServiceType:(unsigned int)type
 {
   v4 = 0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 != 1 && a3 != 2)
+    if (type != 1 && type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_15;
       }
@@ -1409,9 +1409,9 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 != 5)
+    if (type != 5)
     {
       v5 = @"com.apple.private.ac";
       goto LABEL_14;
@@ -1422,14 +1422,14 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     v5 = @"com.apple.ess";
   }
 
   else
   {
-    if (a3 != 8)
+    if (type != 8)
     {
       goto LABEL_15;
     }
@@ -1444,46 +1444,46 @@ LABEL_15:
   return v4;
 }
 
-- (id)adHocServicesForIdentifier:(id)a3
+- (id)adHocServicesForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_autoreleasePoolPush();
-  if ([v3 isEqualToIgnoringCase:IDSRegistrationServiceTypeMultiplex1])
+  if ([identifierCopy isEqualToIgnoringCase:IDSRegistrationServiceTypeMultiplex1])
   {
     v5 = +[IDSDServiceController sharedInstance];
     v6 = [v5 allServicesWithAdHocServiceType:1];
-    v7 = [v6 allObjects];
+    allObjects = [v6 allObjects];
 
     v8 = +[IDSDServiceController sharedInstance];
     v9 = [v8 allServicesWithAdHocServiceType:2];
-    v10 = [v9 allObjects];
+    allObjects2 = [v9 allObjects];
 
     v11 = +[IDSDServiceController sharedInstance];
     v12 = [v11 allServicesWithAdHocServiceType:5];
-    v13 = [v12 allObjects];
+    allObjects3 = [v12 allObjects];
 
     v14 = objc_alloc_init(NSMutableArray);
     v15 = v14;
-    if (v7)
+    if (allObjects)
     {
-      [v14 addObjectsFromArray:v7];
+      [v14 addObjectsFromArray:allObjects];
     }
 
-    if (v10)
+    if (allObjects2)
     {
-      [v15 addObjectsFromArray:v10];
+      [v15 addObjectsFromArray:allObjects2];
     }
 
-    if (v13)
+    if (allObjects3)
     {
-      [v15 addObjectsFromArray:v13];
+      [v15 addObjectsFromArray:allObjects3];
     }
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v3 isEqualToIgnoringCase:@"com.apple.madrid"])
+  if ([identifierCopy isEqualToIgnoringCase:@"com.apple.madrid"])
   {
     v16 = +[IDSDServiceController sharedInstance];
     v17 = v16;
@@ -1491,7 +1491,7 @@ LABEL_19:
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToIgnoringCase:@"com.apple.private.ac"])
+  if ([identifierCopy isEqualToIgnoringCase:@"com.apple.private.ac"])
   {
     v16 = +[IDSDServiceController sharedInstance];
     v17 = v16;
@@ -1499,7 +1499,7 @@ LABEL_19:
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToIgnoringCase:@"com.apple.ess"])
+  if ([identifierCopy isEqualToIgnoringCase:@"com.apple.ess"])
   {
     v16 = +[IDSDServiceController sharedInstance];
     v17 = v16;
@@ -1507,20 +1507,20 @@ LABEL_19:
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToIgnoringCase:@"com.apple.private.alloy.itunes"])
+  if ([identifierCopy isEqualToIgnoringCase:@"com.apple.private.alloy.itunes"])
   {
     v16 = +[IDSDServiceController sharedInstance];
     v17 = v16;
     v18 = 8;
 LABEL_17:
     v19 = [v16 allServicesWithAdHocServiceType:v18];
-    v7 = [v19 allObjects];
+    allObjects = [v19 allObjects];
 
     v20 = objc_alloc_init(NSMutableArray);
     v15 = v20;
-    if (v7)
+    if (allObjects)
     {
-      [v20 addObjectsFromArray:v7];
+      [v20 addObjectsFromArray:allObjects];
     }
 
     goto LABEL_19;

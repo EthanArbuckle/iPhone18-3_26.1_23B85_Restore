@@ -1,18 +1,18 @@
 @interface _PFResultUniString
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToString:(id)string;
 - (unint64_t)hash;
-- (void)getCString:(char *)a3;
-- (void)getCharacters:(unsigned __int16 *)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCString:(char *)string;
+- (void)getCharacters:(unsigned __int16 *)characters;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation _PFResultUniString
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
     _MergedGlobals_68 = (class_getInstanceSize(v2) + 7) & 0xFFFFFFFFFFFFFFF8;
@@ -21,16 +21,16 @@
   }
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3
+- (void)getCharacters:(unsigned __int16 *)characters
 {
   length = self->_length;
-  v5 = [(_PFResultUniString *)self UTF8String];
+  uTF8String = [(_PFResultUniString *)self UTF8String];
   if (length)
   {
     do
     {
-      v6 = *v5++;
-      *a3++ = v6;
+      v6 = *uTF8String++;
+      *characters++ = v6;
       --length;
     }
 
@@ -38,19 +38,19 @@
   }
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a4.location + a4.length;
-  v8 = [(_PFResultUniString *)self UTF8String];
+  length = range.length;
+  location = range.location;
+  v7 = range.location + range.length;
+  uTF8String = [(_PFResultUniString *)self UTF8String];
   if (location < v7)
   {
-    v9 = &v8[location];
+    v9 = &uTF8String[location];
     do
     {
       v10 = *v9++;
-      *a3++ = v10;
+      *characters++ = v10;
       --length;
     }
 
@@ -58,52 +58,52 @@
   }
 }
 
-- (void)getCString:(char *)a3
+- (void)getCString:(char *)string
 {
-  v5 = [(_PFResultUniString *)self UTF8String];
+  uTF8String = [(_PFResultUniString *)self UTF8String];
   v6 = self->_length + 1;
 
-  memcpy(a3, v5, v6);
+  memcpy(string, uTF8String, v6);
 }
 
 - (unint64_t)hash
 {
-  v3 = [(_PFResultUniString *)self UTF8String];
+  uTF8String = [(_PFResultUniString *)self UTF8String];
   length = self->_length;
 
-  return MEMORY[0x1EEDB7AA0](v3, length);
+  return MEMORY[0x1EEDB7AA0](uTF8String, length);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(isNSString) = 1;
   }
 
   else
   {
-    v5 = [a3 isNSString];
-    if (v5)
+    isNSString = [equal isNSString];
+    if (isNSString)
     {
 
-      LOBYTE(v5) = _compareUnknownStrings(self, a3);
+      LOBYTE(isNSString) = _compareUnknownStrings(self, equal);
     }
   }
 
-  return v5;
+  return isNSString;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  if (self == a3)
+  if (self == string)
   {
     return 1;
   }
 
-  if (a3)
+  if (string)
   {
-    return _compareUnknownStrings(self, a3);
+    return _compareUnknownStrings(self, string);
   }
 
   return 0;

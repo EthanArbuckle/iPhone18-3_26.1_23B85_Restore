@@ -1,17 +1,17 @@
 @interface PKPeerPaymentAcceptTermsRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier;
 @end
 
 @implementation PKPeerPaymentAcceptTermsRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (!lCopy)
   {
     v16 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!informationCopy)
   {
     v16 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     v16 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -67,12 +67,12 @@ LABEL_14:
 
   if (self->_termsIdentifier)
   {
-    v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:&unk_1F23B46A0 queryParameters:0 appleAccountInformation:v9];
+    v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B46A0 queryParameters:0 appleAccountInformation:informationCopy];
     [v12 setHTTPMethod:@"POST"];
     [v12 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    [v13 setObject:self->_termsIdentifier forKey:@"termsIdentifier"];
-    v14 = [objc_opt_class() _HTTPBodyWithDictionary:v13];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:self->_termsIdentifier forKey:@"termsIdentifier"];
+    v14 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
     [v12 setHTTPBody:v14];
 
     v15 = [v12 copy];

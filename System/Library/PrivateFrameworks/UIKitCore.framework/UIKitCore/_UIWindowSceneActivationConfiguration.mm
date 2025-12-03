@@ -1,6 +1,6 @@
 @interface _UIWindowSceneActivationConfiguration
 - (_UIWindowSceneActivationRequestOptions)options;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation _UIWindowSceneActivationConfiguration
@@ -9,16 +9,16 @@
 {
   v4.receiver = self;
   v4.super_class = _UIWindowSceneActivationConfiguration;
-  v2 = [(UIWindowSceneActivationConfiguration *)&v4 options];
+  options = [(UIWindowSceneActivationConfiguration *)&v4 options];
 
-  return v2;
+  return options;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v3.receiver = self;
   v3.super_class = _UIWindowSceneActivationConfiguration;
-  [(UIWindowSceneActivationConfiguration *)&v3 setOptions:a3];
+  [(UIWindowSceneActivationConfiguration *)&v3 setOptions:options];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface BatteryUsageRadarComposeViewController
 + (BOOL)hasRadarCompose;
-- (BatteryUsageRadarComposeViewController)initWithParentView:(id)a3 andDictionary:(id)a4;
-- (id)urlEncodedString:(id)a3;
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4;
+- (BatteryUsageRadarComposeViewController)initWithParentView:(id)view andDictionary:(id)dictionary;
+- (id)urlEncodedString:(id)string;
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index;
 - (void)showRadarComposeAlert;
 @end
 
@@ -32,18 +32,18 @@
   return isTapToRadarEnabled();
 }
 
-- (BatteryUsageRadarComposeViewController)initWithParentView:(id)a3 andDictionary:(id)a4
+- (BatteryUsageRadarComposeViewController)initWithParentView:(id)view andDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = BatteryUsageRadarComposeViewController;
   v8 = [(BatteryUsageRadarComposeViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(BatteryUsageRadarComposeViewController *)v8 setParentViewController:v6];
-    [(BatteryUsageRadarComposeViewController *)v9 setCurrentDictionary:v7];
+    [(BatteryUsageRadarComposeViewController *)v8 setParentViewController:viewCopy];
+    [(BatteryUsageRadarComposeViewController *)v9 setCurrentDictionary:dictionaryCopy];
   }
 
   return v9;
@@ -55,15 +55,15 @@
   [v2 show];
 }
 
-- (id)urlEncodedString:(id)a3
+- (id)urlEncodedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = stringCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -98,12 +98,12 @@
   return v15;
 }
 
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index
 {
-  if (a4)
+  if (index)
   {
     v5 = @"Purple Battery UI";
-    if (a4 == 1)
+    if (index == 1)
     {
       v5 = @"Purple Battery Life";
     }
@@ -115,7 +115,7 @@
     v12[2] = @"ComponentID";
     v12[3] = @"Reproducibility";
     v6 = @"485067";
-    if (a4 == 1)
+    if (index == 1)
     {
       v6 = @"241066";
     }

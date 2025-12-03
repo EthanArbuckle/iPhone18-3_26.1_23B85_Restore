@@ -1,7 +1,7 @@
 @interface MRDBrowsableContentAPICoordinator
 - (MRDBrowsableContentAPICoordinator)init;
-- (id)applicationsSupportingAPIs:(unsigned int)a3;
-- (unsigned)supportedAPIsForApplication:(id)a3;
+- (id)applicationsSupportingAPIs:(unsigned int)is;
+- (unsigned)supportedAPIsForApplication:(id)application;
 @end
 
 @implementation MRDBrowsableContentAPICoordinator
@@ -37,24 +37,24 @@
   return v2;
 }
 
-- (unsigned)supportedAPIsForApplication:(id)a3
+- (unsigned)supportedAPIsForApplication:(id)application
 {
-  v3 = [(NSMutableDictionary *)self->_persistenceDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_persistenceDictionary objectForKey:application];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
-- (id)applicationsSupportingAPIs:(unsigned int)a3
+- (id)applicationsSupportingAPIs:(unsigned int)is
 {
   v5 = objc_alloc_init(NSMutableArray);
   persistenceDictionary = self->_persistenceDictionary;
@@ -62,7 +62,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_1000656CC;
   v9[3] = &unk_1004B7EE0;
-  v11 = a3;
+  isCopy = is;
   v7 = v5;
   v10 = v7;
   [(NSMutableDictionary *)persistenceDictionary enumerateKeysAndObjectsUsingBlock:v9];

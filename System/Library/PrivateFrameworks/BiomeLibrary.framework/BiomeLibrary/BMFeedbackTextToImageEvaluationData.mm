@@ -1,15 +1,15 @@
 @interface BMFeedbackTextToImageEvaluationData
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFeedbackTextToImageEvaluationData)initWithCommonMetadata:(id)a3 originalContent:(id)a4 generatedContent:(id)a5;
-- (BMFeedbackTextToImageEvaluationData)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMFeedbackTextToImageEvaluationData)initWithCommonMetadata:(id)metadata originalContent:(id)content generatedContent:(id)generatedContent;
+- (BMFeedbackTextToImageEvaluationData)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFeedbackTextToImageEvaluationData
@@ -30,25 +30,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
-    v7 = [v5 commonMetadata];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    commonMetadata = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
+    commonMetadata2 = [v5 commonMetadata];
+    v8 = commonMetadata2;
+    if (commonMetadata == commonMetadata2)
     {
     }
 
     else
     {
-      v9 = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
-      v10 = [v5 commonMetadata];
-      v11 = [v9 isEqual:v10];
+      commonMetadata3 = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
+      commonMetadata4 = [v5 commonMetadata];
+      v11 = [commonMetadata3 isEqual:commonMetadata4];
 
       if (!v11)
       {
@@ -56,18 +56,18 @@
       }
     }
 
-    v13 = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
-    v14 = [v5 originalContent];
-    v15 = v14;
-    if (v13 == v14)
+    originalContent = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
+    originalContent2 = [v5 originalContent];
+    v15 = originalContent2;
+    if (originalContent == originalContent2)
     {
     }
 
     else
     {
-      v16 = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
-      v17 = [v5 originalContent];
-      v18 = [v16 isEqual:v17];
+      originalContent3 = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
+      originalContent4 = [v5 originalContent];
+      v18 = [originalContent3 isEqual:originalContent4];
 
       if (!v18)
       {
@@ -79,18 +79,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
-    v20 = [v5 generatedContent];
-    if (v19 == v20)
+    generatedContent = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
+    generatedContent2 = [v5 generatedContent];
+    if (generatedContent == generatedContent2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
-      v22 = [v5 generatedContent];
-      v12 = [v21 isEqual:v22];
+      generatedContent3 = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
+      generatedContent4 = [v5 generatedContent];
+      v12 = [generatedContent3 isEqual:generatedContent4];
     }
 
     goto LABEL_15;
@@ -105,50 +105,50 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
-  v4 = [v3 jsonDictionary];
+  commonMetadata = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
+  jsonDictionary = [commonMetadata jsonDictionary];
 
-  v5 = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
-  v6 = [v5 jsonDictionary];
+  originalContent = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
+  jsonDictionary2 = [originalContent jsonDictionary];
 
-  v7 = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
-  v8 = [v7 jsonDictionary];
+  generatedContent = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
+  jsonDictionary3 = [generatedContent jsonDictionary];
 
   v15[0] = @"commonMetadata";
-  v9 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v9;
+  v16[0] = null;
   v15[1] = @"originalContent";
-  v10 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v10;
+  v16[1] = null2;
   v15[2] = @"generatedContent";
-  v11 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v11;
+  v16[2] = null3;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (v8)
+  if (jsonDictionary3)
   {
-    if (v6)
+    if (jsonDictionary2)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_10;
     }
@@ -156,13 +156,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!jsonDictionary2)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_10;
   }
@@ -175,11 +175,11 @@ LABEL_10:
   return v12;
 }
 
-- (BMFeedbackTextToImageEvaluationData)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFeedbackTextToImageEvaluationData)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"commonMetadata"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"commonMetadata"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -195,19 +195,19 @@ LABEL_10:
     v14 = v29;
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v14 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
 LABEL_30:
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_36;
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"originalContent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"originalContent"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
@@ -223,23 +223,23 @@ LABEL_4:
       v15 = v28;
       if (v15)
       {
-        if (a4)
+        if (error)
         {
           v15 = v15;
-          *a4 = v15;
+          *error = v15;
         }
 
         goto LABEL_38;
       }
 
 LABEL_7:
-      v11 = [v6 objectForKeyedSubscript:@"generatedContent"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"generatedContent"];
       if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v12 = 0;
 LABEL_10:
         self = [(BMFeedbackTextToImageEvaluationData *)self initWithCommonMetadata:v8 originalContent:v10 generatedContent:v12];
-        v13 = self;
+        selfCopy = self;
 LABEL_34:
 
         goto LABEL_35;
@@ -258,18 +258,18 @@ LABEL_34:
           goto LABEL_10;
         }
 
-        if (a4)
+        if (error)
         {
           v17 = v17;
-          *a4 = v17;
+          *error = v17;
         }
 
 LABEL_33:
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_34;
       }
 
-      if (a4)
+      if (error)
       {
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v24 = *MEMORY[0x1E698F240];
@@ -277,16 +277,16 @@ LABEL_33:
         v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"generatedContent"];
         v31 = v12;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-        *a4 = [v26 initWithDomain:v24 code:2 userInfo:v16];
+        *error = [v26 initWithDomain:v24 code:2 userInfo:v16];
         goto LABEL_33;
       }
 
 LABEL_38:
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_35;
     }
 
-    if (a4)
+    if (error)
     {
       v25 = objc_alloc(MEMORY[0x1E696ABC0]);
       v20 = *MEMORY[0x1E698F240];
@@ -295,8 +295,8 @@ LABEL_38:
       v33 = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v21 = [v25 initWithDomain:v20 code:2 userInfo:v11];
-      v13 = 0;
-      *a4 = v21;
+      selfCopy = 0;
+      *error = v21;
 LABEL_35:
 
       goto LABEL_36;
@@ -305,9 +305,9 @@ LABEL_35:
     goto LABEL_30;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_37;
   }
 
@@ -317,52 +317,52 @@ LABEL_35:
   v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"commonMetadata"];
   v35[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-  v13 = 0;
-  *a4 = [v18 initWithDomain:v19 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v18 initWithDomain:v19 code:2 userInfo:v9];
 LABEL_36:
 
 LABEL_37:
   v22 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMFeedbackTextToImageEvaluationData *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_commonMetadata)
   {
     PBDataWriterPlaceMark();
-    [(BMEvaluationCommonMetadata *)self->_commonMetadata writeTo:v4];
+    [(BMEvaluationCommonMetadata *)self->_commonMetadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_originalContent)
   {
     PBDataWriterPlaceMark();
-    [(BMTextContent *)self->_originalContent writeTo:v4];
+    [(BMTextContent *)self->_originalContent writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_generatedContent)
   {
     PBDataWriterPlaceMark();
-    [(BMImageContent *)self->_generatedContent writeTo:v4];
+    [(BMImageContent *)self->_generatedContent writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMFeedbackTextToImageEvaluationData;
   v5 = [(BMEventBase *)&v22 init];
@@ -371,12 +371,12 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -387,18 +387,18 @@ LABEL_37:
       while (1)
       {
         LOBYTE(v23) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -415,9 +415,9 @@ LABEL_37:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -432,7 +432,7 @@ LABEL_16:
           goto LABEL_34;
         }
 
-        v16 = [[BMImageContent alloc] initByReadFrom:v4];
+        v16 = [[BMImageContent alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_34;
@@ -450,7 +450,7 @@ LABEL_16:
           goto LABEL_34;
         }
 
-        v16 = [[BMTextContent alloc] initByReadFrom:v4];
+        v16 = [[BMTextContent alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_34;
@@ -478,7 +478,7 @@ LABEL_16:
           goto LABEL_34;
         }
 
-        v16 = [[BMEvaluationCommonMetadata alloc] initByReadFrom:v4];
+        v16 = [[BMEvaluationCommonMetadata alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_34;
@@ -492,13 +492,13 @@ LABEL_16:
 
       PBReaderRecallMark();
 LABEL_32:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_34:
     v20 = 0;
@@ -516,28 +516,28 @@ LABEL_35:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
-  v5 = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
-  v6 = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
-  v7 = [v3 initWithFormat:@"BMFeedbackTextToImageEvaluationData with commonMetadata: %@, originalContent: %@, generatedContent: %@", v4, v5, v6];
+  commonMetadata = [(BMFeedbackTextToImageEvaluationData *)self commonMetadata];
+  originalContent = [(BMFeedbackTextToImageEvaluationData *)self originalContent];
+  generatedContent = [(BMFeedbackTextToImageEvaluationData *)self generatedContent];
+  v7 = [v3 initWithFormat:@"BMFeedbackTextToImageEvaluationData with commonMetadata: %@, originalContent: %@, generatedContent: %@", commonMetadata, originalContent, generatedContent];
 
   return v7;
 }
 
-- (BMFeedbackTextToImageEvaluationData)initWithCommonMetadata:(id)a3 originalContent:(id)a4 generatedContent:(id)a5
+- (BMFeedbackTextToImageEvaluationData)initWithCommonMetadata:(id)metadata originalContent:(id)content generatedContent:(id)generatedContent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  contentCopy = content;
+  generatedContentCopy = generatedContent;
   v14.receiver = self;
   v14.super_class = BMFeedbackTextToImageEvaluationData;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_commonMetadata, a3);
-    objc_storeStrong(&v12->_originalContent, a4);
-    objc_storeStrong(&v12->_generatedContent, a5);
+    objc_storeStrong(&v12->_commonMetadata, metadata);
+    objc_storeStrong(&v12->_originalContent, content);
+    objc_storeStrong(&v12->_generatedContent, generatedContent);
   }
 
   return v12;
@@ -588,9 +588,9 @@ id __46__BMFeedbackTextToImageEvaluationData_columns__block_invoke(uint64_t a1, 
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -598,8 +598,8 @@ id __46__BMFeedbackTextToImageEvaluationData_columns__block_invoke(uint64_t a1, 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMFeedbackTextToImageEvaluationData alloc] initByReadFrom:v7];
     v4 = v8;

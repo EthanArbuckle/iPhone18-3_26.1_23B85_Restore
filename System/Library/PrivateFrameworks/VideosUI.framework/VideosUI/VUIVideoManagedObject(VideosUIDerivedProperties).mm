@@ -8,7 +8,7 @@
 {
   v3 = *MEMORY[0x1E69E9840];
   v1 = 138412290;
-  v2 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1E323F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to deserialize fpsAdditionalServerParams: %@", &v1, 0xCu);
 }
 

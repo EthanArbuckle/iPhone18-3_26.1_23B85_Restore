@@ -1,10 +1,10 @@
 @interface HDHRSSignedClinicalDataProcessingContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDHRSSignedClinicalDataProcessingContext)init;
-- (HDHRSSignedClinicalDataProcessingContext)initWithCoder:(id)a3;
-- (HDHRSSignedClinicalDataProcessingContext)initWithRawData:(id)a3 sourceType:(int64_t)a4 sourceURL:(id)a5 issuerIdentifier:(id)a6 signingKeyID:(id)a7 JWKSData:(id)a8 JWKSOutcome:(unint64_t)a9 metadata:(id)a10;
+- (HDHRSSignedClinicalDataProcessingContext)initWithCoder:(id)coder;
+- (HDHRSSignedClinicalDataProcessingContext)initWithRawData:(id)data sourceType:(int64_t)type sourceURL:(id)l issuerIdentifier:(id)identifier signingKeyID:(id)d JWKSData:(id)sData JWKSOutcome:(unint64_t)outcome metadata:(id)self0;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDHRSSignedClinicalDataProcessingContext
@@ -19,42 +19,42 @@
   return 0;
 }
 
-- (HDHRSSignedClinicalDataProcessingContext)initWithRawData:(id)a3 sourceType:(int64_t)a4 sourceURL:(id)a5 issuerIdentifier:(id)a6 signingKeyID:(id)a7 JWKSData:(id)a8 JWKSOutcome:(unint64_t)a9 metadata:(id)a10
+- (HDHRSSignedClinicalDataProcessingContext)initWithRawData:(id)data sourceType:(int64_t)type sourceURL:(id)l issuerIdentifier:(id)identifier signingKeyID:(id)d JWKSData:(id)sData JWKSOutcome:(unint64_t)outcome metadata:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  dataCopy = data;
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  sDataCopy = sData;
+  metadataCopy = metadata;
   v36.receiver = self;
   v36.super_class = HDHRSSignedClinicalDataProcessingContext;
   v22 = [(HDHRSSignedClinicalDataProcessingContext *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [dataCopy copy];
     rawData = v22->_rawData;
     v22->_rawData = v23;
 
-    v22->_sourceType = a4;
-    v25 = [v17 copy];
+    v22->_sourceType = type;
+    v25 = [lCopy copy];
     sourceURL = v22->_sourceURL;
     v22->_sourceURL = v25;
 
-    v27 = [v18 copy];
+    v27 = [identifierCopy copy];
     issuerIdentifier = v22->_issuerIdentifier;
     v22->_issuerIdentifier = v27;
 
-    v29 = [v19 copy];
+    v29 = [dCopy copy];
     signingKeyID = v22->_signingKeyID;
     v22->_signingKeyID = v29;
 
-    v31 = [v20 copy];
+    v31 = [sDataCopy copy];
     JWKSData = v22->_JWKSData;
     v22->_JWKSData = v31;
 
-    v22->_JWKSOutcome = a9;
-    v33 = [v21 copy];
+    v22->_JWKSOutcome = outcome;
+    v33 = [metadataCopy copy];
     metadata = v22->_metadata;
     v22->_metadata = v33;
   }
@@ -74,13 +74,13 @@
   return v9 ^ [(NSDictionary *)metadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 != self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy != self)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -91,8 +91,8 @@ LABEL_74:
     }
 
     rawData = self->_rawData;
-    v9 = [(HDHRSSignedClinicalDataProcessingContext *)v7 rawData];
-    if (rawData == v9)
+    rawData = [(HDHRSSignedClinicalDataProcessingContext *)v7 rawData];
+    if (rawData == rawData)
     {
       sourceType = self->_sourceType;
       if (sourceType == [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceType])
@@ -103,13 +103,13 @@ LABEL_74:
 
     else
     {
-      v10 = [(HDHRSSignedClinicalDataProcessingContext *)v7 rawData];
-      if (v10)
+      rawData2 = [(HDHRSSignedClinicalDataProcessingContext *)v7 rawData];
+      if (rawData2)
       {
-        v11 = v10;
+        v11 = rawData2;
         v12 = self->_rawData;
-        v3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 rawData];
-        if (([(NSData *)v12 isEqual:v3]& 1) == 0 || (v13 = self->_sourceType, v13 != [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceType]))
+        rawData3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 rawData];
+        if (([(NSData *)v12 isEqual:rawData3]& 1) == 0 || (v13 = self->_sourceType, v13 != [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceType]))
         {
           v14 = 0;
 LABEL_72:
@@ -120,81 +120,81 @@ LABEL_72:
         v68 = v11;
 LABEL_11:
         sourceURL = self->_sourceURL;
-        v17 = [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceURL];
-        if (sourceURL == v17)
+        sourceURL = [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceURL];
+        if (sourceURL == sourceURL)
         {
-          v69 = v3;
+          v69 = rawData3;
         }
 
         else
         {
-          v18 = [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceURL];
-          if (!v18)
+          sourceURL2 = [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceURL];
+          if (!sourceURL2)
           {
 
             v14 = 0;
-            v31 = rawData == v9;
+            v31 = rawData == rawData;
             goto LABEL_71;
           }
 
-          v67 = v18;
+          v67 = sourceURL2;
           v19 = sourceURL;
-          v69 = v3;
+          v69 = rawData3;
           v20 = self->_sourceURL;
-          v21 = [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceURL];
-          if (([(NSURL *)v20 isEqual:v21]& 1) == 0)
+          sourceURL3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 sourceURL];
+          if (([(NSURL *)v20 isEqual:sourceURL3]& 1) == 0)
           {
 
             goto LABEL_37;
           }
 
-          v65 = v21;
+          v65 = sourceURL3;
           sourceURL = v19;
         }
 
         issuerIdentifier = self->_issuerIdentifier;
-        v23 = [(HDHRSSignedClinicalDataProcessingContext *)v7 issuerIdentifier];
-        if (issuerIdentifier == v23)
+        issuerIdentifier = [(HDHRSSignedClinicalDataProcessingContext *)v7 issuerIdentifier];
+        if (issuerIdentifier == issuerIdentifier)
         {
           goto LABEL_23;
         }
 
-        v24 = [(HDHRSSignedClinicalDataProcessingContext *)v7 issuerIdentifier];
-        if (v24)
+        issuerIdentifier2 = [(HDHRSSignedClinicalDataProcessingContext *)v7 issuerIdentifier];
+        if (issuerIdentifier2)
         {
           v25 = issuerIdentifier;
-          v62 = v24;
+          v62 = issuerIdentifier2;
           v26 = sourceURL;
           v27 = self->_issuerIdentifier;
-          v28 = [(HDHRSSignedClinicalDataProcessingContext *)v7 issuerIdentifier];
+          issuerIdentifier3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 issuerIdentifier];
           v29 = v27;
-          v30 = v28;
-          if ([(NSString *)v29 isEqualToString:v28])
+          v30 = issuerIdentifier3;
+          if ([(NSString *)v29 isEqualToString:issuerIdentifier3])
           {
             v59 = v30;
             sourceURL = v26;
             issuerIdentifier = v25;
 LABEL_23:
             signingKeyID = self->_signingKeyID;
-            v66 = [(HDHRSSignedClinicalDataProcessingContext *)v7 signingKeyID];
+            signingKeyID = [(HDHRSSignedClinicalDataProcessingContext *)v7 signingKeyID];
             v61 = signingKeyID;
-            if (signingKeyID != v66)
+            if (signingKeyID != signingKeyID)
             {
-              v33 = [(HDHRSSignedClinicalDataProcessingContext *)v7 signingKeyID];
-              if (!v33)
+              signingKeyID2 = [(HDHRSSignedClinicalDataProcessingContext *)v7 signingKeyID];
+              if (!signingKeyID2)
               {
                 v14 = 0;
                 goto LABEL_65;
               }
 
-              v58 = v33;
+              v58 = signingKeyID2;
               v63 = issuerIdentifier;
-              v34 = v23;
+              v34 = issuerIdentifier;
               v35 = self->_signingKeyID;
-              v36 = [(HDHRSSignedClinicalDataProcessingContext *)v7 signingKeyID];
+              signingKeyID3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 signingKeyID];
               v37 = v35;
-              v38 = v36;
-              if (![(NSString *)v37 isEqualToString:v36])
+              v38 = signingKeyID3;
+              if (![(NSString *)v37 isEqualToString:signingKeyID3])
               {
 
                 if (v63 != v34)
@@ -202,13 +202,13 @@ LABEL_23:
                 }
 
                 v11 = v68;
-                if (sourceURL != v17)
+                if (sourceURL != sourceURL)
                 {
                 }
 
                 v14 = 0;
-                v3 = v69;
-                if (rawData == v9)
+                rawData3 = v69;
+                if (rawData == rawData)
                 {
                   goto LABEL_73;
                 }
@@ -217,17 +217,17 @@ LABEL_23:
               }
 
               v55 = v38;
-              v23 = v34;
+              issuerIdentifier = v34;
               issuerIdentifier = v63;
             }
 
             JWKSData = self->_JWKSData;
-            v60 = [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSData];
+            jWKSData = [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSData];
             v56 = JWKSData;
-            if (JWKSData == v60)
+            if (JWKSData == jWKSData)
             {
               v64 = issuerIdentifier;
-              v57 = v23;
+              v57 = issuerIdentifier;
               JWKSOutcome = self->_JWKSOutcome;
               if (JWKSOutcome != [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSOutcome])
               {
@@ -238,25 +238,25 @@ LABEL_23:
 
             else
             {
-              v40 = [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSData];
-              if (!v40)
+              jWKSData2 = [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSData];
+              if (!jWKSData2)
               {
                 v14 = 0;
                 goto LABEL_63;
               }
 
-              v54 = v40;
+              v54 = jWKSData2;
               v64 = issuerIdentifier;
-              v57 = v23;
+              v57 = issuerIdentifier;
               v41 = self->_JWKSData;
-              v42 = [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSData];
-              if (([(NSData *)v41 isEqual:v42]& 1) == 0)
+              jWKSData3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSData];
+              if (([(NSData *)v41 isEqual:jWKSData3]& 1) == 0)
               {
 
                 v14 = 0;
 LABEL_54:
-                v23 = v57;
-                if (v61 == v66)
+                issuerIdentifier = v57;
+                if (v61 == signingKeyID)
                 {
 
                   if (v64 == v57)
@@ -271,18 +271,18 @@ LABEL_54:
                 goto LABEL_65;
               }
 
-              v53 = v42;
+              v53 = jWKSData3;
               v43 = self->_JWKSOutcome;
               if (v43 != [(HDHRSSignedClinicalDataProcessingContext *)v7 JWKSOutcome])
               {
                 v14 = 0;
 LABEL_62:
 
-                v23 = v57;
+                issuerIdentifier = v57;
                 issuerIdentifier = v64;
 LABEL_63:
 
-                if (v61 == v66)
+                if (v61 == signingKeyID)
                 {
                   goto LABEL_65;
                 }
@@ -292,9 +292,9 @@ LABEL_63:
             }
 
             metadata = self->_metadata;
-            v46 = [(HDHRSSignedClinicalDataProcessingContext *)v7 metadata];
-            v47 = v46;
-            if (metadata == v46)
+            metadata = [(HDHRSSignedClinicalDataProcessingContext *)v7 metadata];
+            v47 = metadata;
+            if (metadata == metadata)
             {
 
               v14 = 1;
@@ -302,15 +302,15 @@ LABEL_63:
 
             else
             {
-              v48 = [(HDHRSSignedClinicalDataProcessingContext *)v7 metadata];
-              if (v48)
+              metadata2 = [(HDHRSSignedClinicalDataProcessingContext *)v7 metadata];
+              if (metadata2)
               {
                 v49 = self->_metadata;
-                v50 = v48;
-                v51 = [(HDHRSSignedClinicalDataProcessingContext *)v7 metadata];
-                v14 = [(NSDictionary *)v49 isEqual:v51];
+                v50 = metadata2;
+                metadata3 = [(HDHRSSignedClinicalDataProcessingContext *)v7 metadata];
+                v14 = [(NSDictionary *)v49 isEqual:metadata3];
 
-                if (v56 != v60)
+                if (v56 != jWKSData)
                 {
                 }
 
@@ -320,28 +320,28 @@ LABEL_63:
               v14 = 0;
             }
 
-            v42 = v53;
-            if (v56 != v60)
+            jWKSData3 = v53;
+            if (v56 != jWKSData)
             {
               goto LABEL_62;
             }
 
 LABEL_76:
 
-            v23 = v57;
+            issuerIdentifier = v57;
             issuerIdentifier = v64;
-            if (v61 != v66)
+            if (v61 != signingKeyID)
             {
 LABEL_64:
             }
 
 LABEL_65:
 
-            if (issuerIdentifier == v23)
+            if (issuerIdentifier == issuerIdentifier)
             {
 LABEL_67:
 
-              if (sourceURL != v17)
+              if (sourceURL != sourceURL)
               {
               }
 
@@ -353,14 +353,14 @@ LABEL_66:
             goto LABEL_67;
           }
 
-          if (v26 == v17)
+          if (v26 == sourceURL)
           {
 LABEL_38:
 
             v14 = 0;
 LABEL_70:
-            v31 = rawData == v9;
-            v3 = v69;
+            v31 = rawData == rawData;
+            rawData3 = v69;
 LABEL_71:
             v11 = v68;
             if (!v31)
@@ -377,7 +377,7 @@ LABEL_73:
         else
         {
 
-          if (sourceURL == v17)
+          if (sourceURL == sourceURL)
           {
             goto LABEL_38;
           }
@@ -398,46 +398,46 @@ LABEL_75:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rawData = self->_rawData;
-  v5 = a3;
-  [v5 encodeObject:rawData forKey:@"RawData"];
-  [v5 encodeInteger:self->_sourceType forKey:@"SourceType"];
-  [v5 encodeObject:self->_sourceURL forKey:@"SourceURL"];
-  [v5 encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
-  [v5 encodeObject:self->_signingKeyID forKey:@"SigningKeyID"];
-  [v5 encodeObject:self->_JWKSData forKey:@"JWKSData"];
-  [v5 encodeInteger:self->_JWKSOutcome forKey:@"JWKSOutcome"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rawData forKey:@"RawData"];
+  [coderCopy encodeInteger:self->_sourceType forKey:@"SourceType"];
+  [coderCopy encodeObject:self->_sourceURL forKey:@"SourceURL"];
+  [coderCopy encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
+  [coderCopy encodeObject:self->_signingKeyID forKey:@"SigningKeyID"];
+  [coderCopy encodeObject:self->_JWKSData forKey:@"JWKSData"];
+  [coderCopy encodeInteger:self->_JWKSOutcome forKey:@"JWKSOutcome"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
 }
 
-- (HDHRSSignedClinicalDataProcessingContext)initWithCoder:(id)a3
+- (HDHRSSignedClinicalDataProcessingContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RawData"];
-  if (v5 && [v4 containsValueForKey:@"SourceType"] && (objc_msgSend(v4, "containsValueForKey:", @"JWKSOutcome") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RawData"];
+  if (v5 && [coderCopy containsValueForKey:@"SourceType"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"JWKSOutcome") & 1) != 0)
   {
-    v15 = [v4 decodeIntegerForKey:@"SourceType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SigningKeyID"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JWKSData"];
-    v10 = [v4 decodeIntegerForKey:@"JWKSOutcome"];
-    v11 = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"Metadata"];
+    v15 = [coderCopy decodeIntegerForKey:@"SourceType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SigningKeyID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JWKSData"];
+    v10 = [coderCopy decodeIntegerForKey:@"JWKSOutcome"];
+    hk_secureCodingClasses = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
+    v12 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"Metadata"];
     self = [(HDHRSSignedClinicalDataProcessingContext *)self initWithRawData:v5 sourceType:v15 sourceURL:v6 issuerIdentifier:v7 signingKeyID:v8 JWKSData:v9 JWKSOutcome:v10 metadata:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v13 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

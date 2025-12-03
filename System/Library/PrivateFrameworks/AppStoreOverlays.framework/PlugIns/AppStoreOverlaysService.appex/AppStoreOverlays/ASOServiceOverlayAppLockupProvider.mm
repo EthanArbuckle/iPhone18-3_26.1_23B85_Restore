@@ -1,8 +1,8 @@
 @interface ASOServiceOverlayAppLockupProvider
 + (OS_os_log)log;
-+ (id)configureLockupView:(id)a3 forAppWithConfiguration:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6;
-- (id)loadOverlayForConfiguration:(id)a3 delegate:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6;
-- (id)lockupDefinitionForConfiguration:(id)a3 serviceContext:(id)a4;
++ (id)configureLockupView:(id)view forAppWithConfiguration:(id)configuration serviceContext:(id)context metricsReporter:(id)reporter;
+- (id)loadOverlayForConfiguration:(id)configuration delegate:(id)delegate serviceContext:(id)context metricsReporter:(id)reporter;
+- (id)lockupDefinitionForConfiguration:(id)configuration serviceContext:(id)context;
 @end
 
 @implementation ASOServiceOverlayAppLockupProvider
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (id)loadOverlayForConfiguration:(id)a3 delegate:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6
+- (id)loadOverlayForConfiguration:(id)configuration delegate:(id)delegate serviceContext:(id)context metricsReporter:(id)reporter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  contextCopy = context;
+  reporterCopy = reporter;
   v14 = +[ASOServiceOverlayAppLockupProvider log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -34,21 +34,21 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v10;
-    v16 = [v15 appIdentifier];
+    v15 = configurationCopy;
+    appIdentifier = [v15 appIdentifier];
 
-    if (v16)
+    if (appIdentifier)
     {
-      v17 = [v12 hostAdamID];
-      if ([v12 isAppClip] && v17 && (objc_msgSend(v15, "appIdentifier"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqualToString:", v18), v18, v19))
+      hostAdamID = [contextCopy hostAdamID];
+      if ([contextCopy isAppClip] && hostAdamID && (objc_msgSend(v15, "appIdentifier"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(hostAdamID, "isEqualToString:", v18), v18, v19))
       {
         v20 = objc_opt_new();
-        v21 = [v20 loadOverlayForConfiguration:v15 delegate:v11 serviceContext:v12 metricsReporter:v13];
+        v21 = [v20 loadOverlayForConfiguration:v15 delegate:delegateCopy serviceContext:contextCopy metricsReporter:reporterCopy];
       }
 
       else
       {
-        v22 = [(ASOServiceOverlayAppLockupProvider *)self lockupDefinitionForConfiguration:v15 serviceContext:v12];
+        v22 = [(ASOServiceOverlayAppLockupProvider *)self lockupDefinitionForConfiguration:v15 serviceContext:contextCopy];
         v23 = objc_alloc_init(AMSMutablePromise);
         v24 = +[ASOServiceOverlayAppLockupProvider log];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -62,12 +62,12 @@
         block[3] = &unk_100024DF8;
         v30 = v15;
         v31 = v22;
-        v32 = v13;
+        v32 = reporterCopy;
         v25 = v23;
         v33 = v25;
-        v34 = self;
+        selfCopy = self;
         v35 = v30;
-        v36 = v12;
+        v36 = contextCopy;
         v20 = v22;
         dispatch_async(&_dispatch_main_q, block);
         v26 = v36;
@@ -83,8 +83,8 @@
         sub_100017AA4();
       }
 
-      v17 = [NSError errorWithDomain:@"ASOErrorDomain" code:2 userInfo:0];
-      v21 = [AMSPromise promiseWithError:v17];
+      hostAdamID = [NSError errorWithDomain:@"ASOErrorDomain" code:2 userInfo:0];
+      v21 = [AMSPromise promiseWithError:hostAdamID];
     }
   }
 
@@ -97,43 +97,43 @@
   return v21;
 }
 
-- (id)lockupDefinitionForConfiguration:(id)a3 serviceContext:(id)a4
+- (id)lockupDefinitionForConfiguration:(id)configuration serviceContext:(id)context
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [ASCAdamID alloc];
-  v6 = [v4 appIdentifier];
-  v7 = [v5 initWithStringValue:v6];
+  appIdentifier = [configurationCopy appIdentifier];
+  v7 = [v5 initWithStringValue:appIdentifier];
 
   v8 = [ASCLockupRequest alloc];
   v9 = ASCLockupKindApp;
   v10 = ASCLockupContextOverlay;
-  v11 = [v4 latestReleaseID];
-  v12 = [v4 productVariantID];
+  latestReleaseID = [configurationCopy latestReleaseID];
+  productVariantID = [configurationCopy productVariantID];
 
-  v13 = [v8 _initWithID:v7 kind:v9 context:v10 minExternalVersionID:0 latestReleaseID:v11 productVariantID:v12];
+  v13 = [v8 _initWithID:v7 kind:v9 context:v10 minExternalVersionID:0 latestReleaseID:latestReleaseID productVariantID:productVariantID];
   v14 = [[ASOServiceLockupDefinition alloc] initWithRequest:v13];
 
   return v14;
 }
 
-+ (id)configureLockupView:(id)a3 forAppWithConfiguration:(id)a4 serviceContext:(id)a5 metricsReporter:(id)a6
++ (id)configureLockupView:(id)view forAppWithConfiguration:(id)configuration serviceContext:(id)context metricsReporter:(id)reporter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [v8 loadLockupPromise];
-  v12 = [v11 promiseAdapter];
+  viewCopy = view;
+  configurationCopy = configuration;
+  reporterCopy = reporter;
+  loadLockupPromise = [viewCopy loadLockupPromise];
+  promiseAdapter = [loadLockupPromise promiseAdapter];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100004814;
   v18[3] = &unk_100024E48;
-  v19 = v9;
-  v20 = v10;
-  v21 = v8;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
-  v16 = [v12 thenWithBlock:v18];
+  v19 = configurationCopy;
+  v20 = reporterCopy;
+  v21 = viewCopy;
+  v13 = viewCopy;
+  v14 = reporterCopy;
+  v15 = configurationCopy;
+  v16 = [promiseAdapter thenWithBlock:v18];
 
   return v16;
 }

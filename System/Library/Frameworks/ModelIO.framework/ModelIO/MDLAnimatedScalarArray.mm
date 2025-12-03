@@ -4,13 +4,13 @@
 - (NSUInteger)getFloatArray:(float *)array maxCount:(NSUInteger)maxCount atTime:(NSTimeInterval)time;
 - (NSUInteger)getFloatArray:(float *)valuesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initWithElementCount:(NSUInteger)arrayElementCount;
 - (unint64_t)precision;
 - (void)resetWithDoubleArray:(const double *)valuesArray count:(NSUInteger)valuesCount atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)timesCount;
 - (void)resetWithFloatArray:(const float *)valuesArray count:(NSUInteger)valuesCount atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)timesCount;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time;
 - (void)setDoubleArray:(const double *)array count:(NSUInteger)count atTime:(NSTimeInterval)time;
 - (void)setFloatArray:(const float *)array count:(NSUInteger)count atTime:(NSTimeInterval)time;
 @end
@@ -32,11 +32,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = MDLAnimatedScalarArray;
-  result = [(MDLAnimatedValue *)&v5 copyWithZone:a3];
+  result = [(MDLAnimatedValue *)&v5 copyWithZone:zone];
   *(result + 5) = self->_elementCount;
   return result;
 }
@@ -116,7 +116,7 @@ LABEL_8:
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale
 {
   v11[2] = *MEMORY[0x277D85DE8];
   pxrInternal__aapl__pxrReserved__::UsdAttribute::GetTimeSamples();
@@ -151,7 +151,7 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -159,7 +159,7 @@ LABEL_8:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::Get();
   if ((sub_239F2320C(v11) & 1) != 0 || (sub_239EC8434(v11) & 1) != 0 || sub_239F23244(v11))
   {
-    v9 = a5 * a4;
+    v9 = time * scale;
     sub_239E5F7D4(v10, v11);
     sub_239F237C8(&self->super._timeSampledData, &v9);
     sub_239E5B240(v10);

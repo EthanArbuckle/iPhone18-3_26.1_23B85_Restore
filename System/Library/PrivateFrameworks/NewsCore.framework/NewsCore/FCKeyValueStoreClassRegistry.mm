@@ -1,8 +1,8 @@
 @interface FCKeyValueStoreClassRegistry
-- (Class)classForValueType:(int)a3;
+- (Class)classForValueType:(int)type;
 - (FCKeyValueStoreClassRegistry)init;
 - (id).cxx_construct;
-- (void)registerClass:(Class)a3;
+- (void)registerClass:(Class)class;
 @end
 
 @implementation FCKeyValueStoreClassRegistry
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (void)registerClass:(Class)a3
+- (void)registerClass:(Class)class
 {
   p_registry = &self->_registry;
-  v6 = [(objc_class *)a3 keyValuePairType];
-  v7 = a3;
+  keyValuePairType = [(objc_class *)class keyValuePairType];
+  classCopy = class;
   size = self->_registry.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
   {
@@ -45,16 +45,16 @@
   v9.i16[0] = vaddlv_u8(v9);
   if (v9.u32[0] > 1uLL)
   {
-    v10 = v6;
-    if (size <= v6)
+    v10 = keyValuePairType;
+    if (size <= keyValuePairType)
     {
-      v10 = v6 % size;
+      v10 = keyValuePairType % size;
     }
   }
 
   else
   {
-    v10 = (size - 1) & v6;
+    v10 = (size - 1) & keyValuePairType;
   }
 
   v11 = p_registry->__table_.__bucket_list_.__ptr_[v10];
@@ -67,7 +67,7 @@ LABEL_18:
   while (1)
   {
     v13 = v12[1];
-    if (v13 == v6)
+    if (v13 == keyValuePairType)
     {
       break;
     }
@@ -98,13 +98,13 @@ LABEL_17:
     }
   }
 
-  if (*(v12 + 4) != v6)
+  if (*(v12 + 4) != keyValuePairType)
   {
     goto LABEL_17;
   }
 }
 
-- (Class)classForValueType:(int)a3
+- (Class)classForValueType:(int)type
 {
   size = self->_registry.__table_.__bucket_list_.__deleter_.__size_;
   if (size)
@@ -113,27 +113,27 @@ LABEL_17:
     v4.i16[0] = vaddlv_u8(v4);
     if (v4.u32[0] > 1uLL)
     {
-      v5 = a3;
-      if (size <= a3)
+      typeCopy = type;
+      if (size <= type)
       {
-        v5 = a3 % size;
+        typeCopy = type % size;
       }
     }
 
     else
     {
-      v5 = (size - 1) & a3;
+      typeCopy = (size - 1) & type;
     }
 
-    v6 = self->_registry.__table_.__bucket_list_.__ptr_[v5];
+    v6 = self->_registry.__table_.__bucket_list_.__ptr_[typeCopy];
     if (v6)
     {
       for (i = *v6; i; i = *i)
       {
         v8 = i[1];
-        if (v8 == a3)
+        if (v8 == type)
         {
-          if (*(i + 4) == a3)
+          if (*(i + 4) == type)
           {
             return i[3];
           }
@@ -154,7 +154,7 @@ LABEL_17:
             v8 &= size - 1;
           }
 
-          if (v8 != v5)
+          if (v8 != typeCopy)
           {
             return 0;
           }

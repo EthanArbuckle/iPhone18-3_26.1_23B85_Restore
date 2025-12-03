@@ -1,14 +1,14 @@
 @interface ATSessionProxyConnection
-- (ATSessionProxyConnection)initWithSession:(id)a3 connection:(id)a4;
-- (void)session:(id)a3 didFinishSessionTask:(id)a4;
-- (void)session:(id)a3 didUpdateSessionTask:(id)a4;
-- (void)session:(id)a3 willBeginSessionTask:(id)a4;
+- (ATSessionProxyConnection)initWithSession:(id)session connection:(id)connection;
+- (void)session:(id)session didFinishSessionTask:(id)task;
+- (void)session:(id)session didUpdateSessionTask:(id)task;
+- (void)session:(id)session willBeginSessionTask:(id)task;
 - (void)start;
 @end
 
 @implementation ATSessionProxyConnection
 
-- (void)session:(id)a3 didFinishSessionTask:(id)a4
+- (void)session:(id)session didFinishSessionTask:(id)task
 {
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
@@ -16,11 +16,11 @@
   v8[2] = __57__ATSessionProxyConnection_session_didFinishSessionTask___block_invoke;
   v8[3] = &unk_2784E9430;
   v8[4] = self;
-  v5 = a4;
+  taskCopy = task;
   v6 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
-  v7 = [v5 baseClassRepresentation];
+  baseClassRepresentation = [taskCopy baseClassRepresentation];
 
-  [v6 updateSessionTask:v7];
+  [v6 updateSessionTask:baseClassRepresentation];
 }
 
 void __57__ATSessionProxyConnection_session_didFinishSessionTask___block_invoke(uint64_t a1, void *a2)
@@ -41,7 +41,7 @@ void __57__ATSessionProxyConnection_session_didFinishSessionTask___block_invoke(
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 didUpdateSessionTask:(id)a4
+- (void)session:(id)session didUpdateSessionTask:(id)task
 {
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
@@ -49,11 +49,11 @@ void __57__ATSessionProxyConnection_session_didFinishSessionTask___block_invoke(
   v8[2] = __57__ATSessionProxyConnection_session_didUpdateSessionTask___block_invoke;
   v8[3] = &unk_2784E9430;
   v8[4] = self;
-  v5 = a4;
+  taskCopy = task;
   v6 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
-  v7 = [v5 baseClassRepresentation];
+  baseClassRepresentation = [taskCopy baseClassRepresentation];
 
-  [v6 updateSessionTask:v7];
+  [v6 updateSessionTask:baseClassRepresentation];
 }
 
 void __57__ATSessionProxyConnection_session_didUpdateSessionTask___block_invoke(uint64_t a1, void *a2)
@@ -74,7 +74,7 @@ void __57__ATSessionProxyConnection_session_didUpdateSessionTask___block_invoke(
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 willBeginSessionTask:(id)a4
+- (void)session:(id)session willBeginSessionTask:(id)task
 {
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
@@ -82,11 +82,11 @@ void __57__ATSessionProxyConnection_session_didUpdateSessionTask___block_invoke(
   v8[2] = __57__ATSessionProxyConnection_session_willBeginSessionTask___block_invoke;
   v8[3] = &unk_2784E9430;
   v8[4] = self;
-  v5 = a4;
+  taskCopy = task;
   v6 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
-  v7 = [v5 baseClassRepresentation];
+  baseClassRepresentation = [taskCopy baseClassRepresentation];
 
-  [v6 beginSessionTask:v7];
+  [v6 beginSessionTask:baseClassRepresentation];
 }
 
 void __57__ATSessionProxyConnection_session_willBeginSessionTask___block_invoke(uint64_t a1, void *a2)
@@ -123,8 +123,8 @@ void __57__ATSessionProxyConnection_session_willBeginSessionTask___block_invoke(
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(ATSession *)self->_session sessionTasks];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sessionTasks = [(ATSession *)self->_session sessionTasks];
+  v6 = [sessionTasks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -136,14 +136,14 @@ void __57__ATSessionProxyConnection_session_willBeginSessionTask___block_invoke(
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sessionTasks);
         }
 
         [(ATSessionProxyConnection *)self session:self->_session didUpdateSessionTask:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [sessionTasks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -152,18 +152,18 @@ void __57__ATSessionProxyConnection_session_willBeginSessionTask___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (ATSessionProxyConnection)initWithSession:(id)a3 connection:(id)a4
+- (ATSessionProxyConnection)initWithSession:(id)session connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = ATSessionProxyConnection;
   v9 = [(ATSessionProxyConnection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(&v10->_connection, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(&v10->_connection, connection);
   }
 
   return v10;

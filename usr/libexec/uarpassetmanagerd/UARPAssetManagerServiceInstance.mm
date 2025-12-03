@@ -1,111 +1,111 @@
 @interface UARPAssetManagerServiceInstance
-- (BOOL)isSubscriptionSupported:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)isSubscriptionSupported:(id)supported;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)queryIsBusy;
 - (NSString)description;
 - (UARPAssetManagerServiceDelegate)delegate;
-- (UARPAssetManagerServiceInstance)initWithServiceName:(id)a3 delegate:(id)a4;
+- (UARPAssetManagerServiceInstance)initWithServiceName:(id)name delegate:(id)delegate;
 - (id)assetManagerService;
-- (id)checkCacheForPersonality:(id)a3;
-- (id)checkCacheForSubscription:(id)a3;
+- (id)checkCacheForPersonality:(id)personality;
+- (id)checkCacheForSubscription:(id)subscription;
 - (id)copyCache;
 - (id)copySubscriptions;
 - (id)encodedClasses;
-- (void)assetAvailabilityUpdateForSubscription:(id)a3 cacheRecord:(id)a4 asyncUpdate:(BOOL)a5;
-- (void)checkAssetAvailabilityForDomain:(id)a3;
+- (void)assetAvailabilityUpdateForSubscription:(id)subscription cacheRecord:(id)record asyncUpdate:(BOOL)update;
+- (void)checkAssetAvailabilityForDomain:(id)domain;
 - (void)checkForUpdate;
-- (void)clearAssetCacheForDomain:(id)a3;
+- (void)clearAssetCacheForDomain:(id)domain;
 - (void)dealloc;
 - (void)initializeAssetManagerServiceConnection;
-- (void)primeCache:(id)a3;
-- (void)registerForSubscription:(id)a3;
-- (void)settingsChangedForSerialNumber:(id)a3;
-- (void)subscribeForPersonality:(id)a3;
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4;
-- (void)updateSettingsForPersonality:(id)a3;
+- (void)primeCache:(id)cache;
+- (void)registerForSubscription:(id)subscription;
+- (void)settingsChangedForSerialNumber:(id)number;
+- (void)subscribeForPersonality:(id)personality;
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable;
+- (void)updateSettingsForPersonality:(id)personality;
 @end
 
 @implementation UARPAssetManagerServiceInstance
 
-- (UARPAssetManagerServiceInstance)initWithServiceName:(id)a3 delegate:(id)a4
+- (UARPAssetManagerServiceInstance)initWithServiceName:(id)name delegate:(id)delegate
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v4 = v21;
-  v21 = 0;
+  objc_storeStrong(&v19, delegate);
+  v4 = selfCopy;
+  selfCopy = 0;
   v18.receiver = v4;
   v18.super_class = UARPAssetManagerServiceInstance;
-  v21 = [(UARPAssetManagerServiceInstance *)&v18 init];
-  objc_storeStrong(&v21, v21);
-  if (v21)
+  selfCopy = [(UARPAssetManagerServiceInstance *)&v18 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = os_log_create("com.apple.uarpassetmanager.uarp", "uarpAssetManager");
-    log = v21->_log;
-    v21->_log = v5;
+    log = selfCopy->_log;
+    selfCopy->_log = v5;
 
     v7 = [location[0] copy];
-    serviceName = v21->_serviceName;
-    v21->_serviceName = v7;
+    serviceName = selfCopy->_serviceName;
+    selfCopy->_serviceName = v7;
 
-    v9 = dispatch_queue_create([(NSString *)v21->_serviceName UTF8String], 0);
-    queue = v21->_queue;
-    v21->_queue = v9;
+    v9 = dispatch_queue_create([(NSString *)selfCopy->_serviceName UTF8String], 0);
+    queue = selfCopy->_queue;
+    selfCopy->_queue = v9;
 
-    objc_storeWeak(&v21->_delegate, v19);
+    objc_storeWeak(&selfCopy->_delegate, v19);
     v11 = +[NSXPCListener anonymousListener];
-    xpcListener = v21->_xpcListener;
-    v21->_xpcListener = v11;
+    xpcListener = selfCopy->_xpcListener;
+    selfCopy->_xpcListener = v11;
 
-    [(NSXPCListener *)v21->_xpcListener setDelegate:v21];
-    [(NSXPCListener *)v21->_xpcListener resume];
+    [(NSXPCListener *)selfCopy->_xpcListener setDelegate:selfCopy];
+    [(NSXPCListener *)selfCopy->_xpcListener resume];
     v13 = objc_opt_new();
-    subscriptionToCacheRecords = v21->_subscriptionToCacheRecords;
-    v21->_subscriptionToCacheRecords = v13;
+    subscriptionToCacheRecords = selfCopy->_subscriptionToCacheRecords;
+    selfCopy->_subscriptionToCacheRecords = v13;
   }
 
-  v16 = v21;
+  v16 = selfCopy;
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v16;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(UARPAssetManagerServiceInstance *)self releaseXPCConnection];
-  [(NSXPCListener *)v4->_xpcListener invalidate];
-  v2.receiver = v4;
+  [(NSXPCListener *)selfCopy->_xpcListener invalidate];
+  v2.receiver = selfCopy;
   v2.super_class = UARPAssetManagerServiceInstance;
   [(UARPAssetManagerServiceInstance *)&v2 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, connection);
   v15 = 0;
   v16 = &v15;
   v17 = 0x20000000;
   v18 = 32;
   v19 = 0;
-  queue = v22->_queue;
+  queue = selfCopy->_queue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = __70__UARPAssetManagerServiceInstance_listener_shouldAcceptNewConnection___block_invoke;
   v12 = &unk_100035D80;
   v13 = v20;
-  v14[0] = v22;
+  v14[0] = selfCopy;
   v14[1] = &v15;
   dispatch_sync(queue, &v8);
   v7 = *(v16 + 24);
@@ -194,40 +194,40 @@ void __70__UARPAssetManagerServiceInstance_listener_shouldAcceptNewConnection___
 
 - (void)initializeAssetManagerServiceConnection
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   if (!self->_xpcConnection)
   {
-    v2 = [[NSXPCConnection alloc] initWithServiceName:v10->_serviceName];
-    xpcConnection = v10->_xpcConnection;
-    v10->_xpcConnection = v2;
+    v2 = [[NSXPCConnection alloc] initWithServiceName:selfCopy->_serviceName];
+    xpcConnection = selfCopy->_xpcConnection;
+    selfCopy->_xpcConnection = v2;
 
     v9[0] = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPAssetManagerServiceProtocol];
-    [(NSXPCConnection *)v10->_xpcConnection setRemoteObjectInterface:v9[0]];
-    v5 = [(NSXPCConnection *)v10->_xpcConnection remoteObjectInterface];
-    v4 = [(UARPAssetManagerServiceInstance *)v10 encodedClasses];
-    [NSXPCInterface setClasses:v5 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setRemoteObjectInterface:v9[0]];
+    remoteObjectInterface = [(NSXPCConnection *)selfCopy->_xpcConnection remoteObjectInterface];
+    encodedClasses = [(UARPAssetManagerServiceInstance *)selfCopy encodedClasses];
+    [NSXPCInterface setClasses:remoteObjectInterface forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
 
-    v7 = [(NSXPCConnection *)v10->_xpcConnection remoteObjectInterface];
-    v6 = [(UARPAssetManagerServiceInstance *)v10 encodedClasses];
-    [NSXPCInterface setClasses:v7 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+    remoteObjectInterface2 = [(NSXPCConnection *)selfCopy->_xpcConnection remoteObjectInterface];
+    encodedClasses2 = [(UARPAssetManagerServiceInstance *)selfCopy encodedClasses];
+    [NSXPCInterface setClasses:remoteObjectInterface2 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
 
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPAsyncAssetManagerDelegate];
-    [(NSXPCConnection *)v10->_xpcConnection setExportedInterface:?];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setExportedInterface:?];
 
-    [(NSXPCConnection *)v10->_xpcConnection setExportedObject:v10];
-    [(NSXPCConnection *)v10->_xpcConnection resume];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setExportedObject:selfCopy];
+    [(NSXPCConnection *)selfCopy->_xpcConnection resume];
     objc_storeStrong(v9, 0);
   }
 }
 
-- (id)checkCacheForSubscription:(id)a3
+- (id)checkCacheForSubscription:(id)subscription
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = [(UARPAssetManagerServiceInstance *)v25 isSubscriptionSupported:location[0]];
+  objc_storeStrong(location, subscription);
+  v23 = [(UARPAssetManagerServiceInstance *)selfCopy isSubscriptionSupported:location[0]];
   if (v23)
   {
     v13 = 0;
@@ -237,13 +237,13 @@ void __70__UARPAssetManagerServiceInstance_listener_shouldAcceptNewConnection___
     v17 = __Block_byref_object_copy__1;
     v18 = __Block_byref_object_dispose__1;
     v19 = 0;
-    queue = v25->_queue;
+    queue = selfCopy->_queue;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = __61__UARPAssetManagerServiceInstance_checkCacheForSubscription___block_invoke;
     v10 = &unk_100035D80;
-    v11 = v25;
+    v11 = selfCopy;
     v12[0] = location[0];
     v12[1] = &v13;
     dispatch_sync(queue, &v6);
@@ -257,11 +257,11 @@ void __70__UARPAssetManagerServiceInstance_listener_shouldAcceptNewConnection___
 
   else
   {
-    v22 = v25->_log;
+    v22 = selfCopy->_log;
     v21 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v27, v25, location[0]);
+      __os_log_helper_16_2_2_8_64_8_64(v27, selfCopy, location[0]);
       _os_log_debug_impl(&_mh_execute_header, v22, v21, "%@ Current service does not support subscription: %@", v27, 0x16u);
     }
 
@@ -582,22 +582,22 @@ void __52__UARPAssetManagerServiceInstance_copySubscriptions__block_invoke_2(voi
   objc_storeStrong(location, 0);
 }
 
-- (void)registerForSubscription:(id)a3
+- (void)registerForSubscription:(id)subscription
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [(UARPAssetManagerServiceInstance *)v16 isSubscriptionSupported:location[0]];
+  objc_storeStrong(location, subscription);
+  v14 = [(UARPAssetManagerServiceInstance *)selfCopy isSubscriptionSupported:location[0]];
   if (v14)
   {
-    queue = v16->_queue;
+    queue = selfCopy->_queue;
     v4 = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = __59__UARPAssetManagerServiceInstance_registerForSubscription___block_invoke;
     v8 = &unk_1000361C8;
-    v9 = v16;
+    v9 = selfCopy;
     v10 = location[0];
     dispatch_async(queue, &v4);
     objc_storeStrong(&v10, 0);
@@ -607,11 +607,11 @@ void __52__UARPAssetManagerServiceInstance_copySubscriptions__block_invoke_2(voi
 
   else
   {
-    v13 = v16->_log;
+    v13 = selfCopy->_log;
     v12 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v17, v16, location[0]);
+      __os_log_helper_16_2_2_8_64_8_64(v17, selfCopy, location[0]);
       _os_log_debug_impl(&_mh_execute_header, v13, v12, "%@ Current service does not support subscription: %@", v17, 0x16u);
     }
 
@@ -711,7 +711,7 @@ void __49__UARPAssetManagerServiceInstance_checkForUpdate__block_invoke_365(id *
 
 - (BOOL)queryIsBusy
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -784,31 +784,31 @@ void __46__UARPAssetManagerServiceInstance_queryIsBusy__block_invoke_366(id *a1,
   return v5;
 }
 
-- (void)assetAvailabilityUpdateForSubscription:(id)a3 cacheRecord:(id)a4 asyncUpdate:(BOOL)a5
+- (void)assetAvailabilityUpdateForSubscription:(id)subscription cacheRecord:(id)record asyncUpdate:(BOOL)update
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, subscription);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v18 = a5;
-  v17 = v21->_log;
+  objc_storeStrong(&v19, record);
+  updateCopy = update;
+  v17 = selfCopy->_log;
   v16 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_3_8_64_8_66_8_66(v22, v21, v19, location[0]);
+    __os_log_helper_16_2_3_8_64_8_66_8_66(v22, selfCopy, v19, location[0]);
     _os_log_impl(&_mh_execute_header, v17, v16, "%@ Found asset=%{public}@ for subscription: %{public}@", v22, 0x20u);
   }
 
   objc_storeStrong(&v17, 0);
-  queue = v21->_queue;
+  queue = selfCopy->_queue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = __98__UARPAssetManagerServiceInstance_assetAvailabilityUpdateForSubscription_cacheRecord_asyncUpdate___block_invoke;
   v12 = &unk_100035D30;
-  v13 = v21;
+  v13 = selfCopy;
   v14 = location[0];
   v15 = v19;
   dispatch_sync(queue, &v8);
@@ -842,13 +842,13 @@ void __46__UARPAssetManagerServiceInstance_queryIsBusy__block_invoke_366(id *a1,
   return 0;
 }
 
-- (BOOL)isSubscriptionSupported:(id)a3
+- (BOOL)isSubscriptionSupported:(id)supported
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = v12->_log;
+  objc_storeStrong(location, supported);
+  v10 = selfCopy->_log;
   v9 = 16;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -868,13 +868,13 @@ void __46__UARPAssetManagerServiceInstance_queryIsBusy__block_invoke_366(id *a1,
   return 0;
 }
 
-- (void)subscribeForPersonality:(id)a3
+- (void)subscribeForPersonality:(id)personality
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = v11->_log;
+  objc_storeStrong(location, personality);
+  v9 = selfCopy->_log;
   v8 = 16;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -893,13 +893,13 @@ void __46__UARPAssetManagerServiceInstance_queryIsBusy__block_invoke_366(id *a1,
   objc_storeStrong(location, 0);
 }
 
-- (id)checkCacheForPersonality:(id)a3
+- (id)checkCacheForPersonality:(id)personality
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = v12->_log;
+  objc_storeStrong(location, personality);
+  v10 = selfCopy->_log;
   v9 = 16;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -919,25 +919,25 @@ void __46__UARPAssetManagerServiceInstance_queryIsBusy__block_invoke_366(id *a1,
   return 0;
 }
 
-- (void)checkAssetAvailabilityForDomain:(id)a3
+- (void)checkAssetAvailabilityForDomain:(id)domain
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [(UARPAssetManagerServiceInstance *)v13 copyCache];
-  v3 = v11;
+  objc_storeStrong(location, domain);
+  copyCache = [(UARPAssetManagerServiceInstance *)selfCopy copyCache];
+  v3 = copyCache;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = __67__UARPAssetManagerServiceInstance_checkAssetAvailabilityForDomain___block_invoke;
   v8 = &unk_100034450;
   v9 = location[0];
-  v10 = v13;
+  v10 = selfCopy;
   [v3 enumerateKeysAndObjectsUsingBlock:?];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&copyCache, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -975,19 +975,19 @@ void __67__UARPAssetManagerServiceInstance_checkAssetAvailabilityForDomain___blo
   objc_storeStrong(location, 0);
 }
 
-- (void)clearAssetCacheForDomain:(id)a3
+- (void)clearAssetCacheForDomain:(id)domain
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_queue;
+  objc_storeStrong(location, domain);
+  queue = selfCopy->_queue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = __60__UARPAssetManagerServiceInstance_clearAssetCacheForDomain___block_invoke;
   v8 = &unk_1000361C8;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1102,19 +1102,19 @@ void __60__UARPAssetManagerServiceInstance_clearAssetCacheForDomain___block_invo
   objc_storeStrong(location, 0);
 }
 
-- (void)primeCache:(id)a3
+- (void)primeCache:(id)cache
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_queue;
+  objc_storeStrong(location, cache);
+  queue = selfCopy->_queue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = __46__UARPAssetManagerServiceInstance_primeCache___block_invoke;
   v8 = &unk_1000361C8;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1299,14 +1299,14 @@ void __46__UARPAssetManagerServiceInstance_primeCache___block_invoke_380(id *a1,
   objc_storeStrong(location, 0);
 }
 
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
-  v11 = v14->_log;
+  objc_storeStrong(location, personality);
+  reachableCopy = reachable;
+  v11 = selfCopy->_log;
   v10 = 16;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -1325,13 +1325,13 @@ void __46__UARPAssetManagerServiceInstance_primeCache___block_invoke_380(id *a1,
   objc_storeStrong(location, 0);
 }
 
-- (void)updateSettingsForPersonality:(id)a3
+- (void)updateSettingsForPersonality:(id)personality
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = v11->_log;
+  objc_storeStrong(location, personality);
+  v9 = selfCopy->_log;
   v8 = 16;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -1350,13 +1350,13 @@ void __46__UARPAssetManagerServiceInstance_primeCache___block_invoke_380(id *a1,
   objc_storeStrong(location, 0);
 }
 
-- (void)settingsChangedForSerialNumber:(id)a3
+- (void)settingsChangedForSerialNumber:(id)number
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = v11->_log;
+  objc_storeStrong(location, number);
+  v9 = selfCopy->_log;
   v8 = 16;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {

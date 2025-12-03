@@ -8,37 +8,37 @@
 {
   v9 = objc_alloc_init(MUHairlineView);
   [(MUHairlineView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [a1 addSubview:v9];
+  [self addSubview:v9];
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-  v11 = [(MUHairlineView *)v9 leadingAnchor];
-  v12 = [a1 leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:a2];
+  leadingAnchor = [(MUHairlineView *)v9 leadingAnchor];
+  leadingAnchor2 = [self leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:a2];
   [(MUHairlineView *)v9 setLeadingMarginConstraint:v13];
 
-  v14 = [(MUHairlineView *)v9 leadingMarginConstraint];
-  [v10 addObject:v14];
+  leadingMarginConstraint = [(MUHairlineView *)v9 leadingMarginConstraint];
+  [v10 addObject:leadingMarginConstraint];
 
-  v15 = [a1 trailingAnchor];
-  v16 = [(MUHairlineView *)v9 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:a3];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [(MUHairlineView *)v9 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:a3];
   [(MUHairlineView *)v9 setTrailingMarginConstraint:v17];
 
-  v18 = [(MUHairlineView *)v9 trailingMarginConstraint];
-  [v10 addObject:v18];
+  trailingMarginConstraint = [(MUHairlineView *)v9 trailingMarginConstraint];
+  [v10 addObject:trailingMarginConstraint];
 
   if (a5)
   {
-    v19 = [(MUHairlineView *)v9 bottomAnchor];
-    [a1 bottomAnchor];
+    bottomAnchor = [(MUHairlineView *)v9 bottomAnchor];
+    [self bottomAnchor];
   }
 
   else
   {
-    v19 = [(MUHairlineView *)v9 topAnchor];
-    [a1 topAnchor];
+    bottomAnchor = [(MUHairlineView *)v9 topAnchor];
+    [self topAnchor];
   }
   v20 = ;
-  v21 = [v19 constraintEqualToAnchor:v20];
+  v21 = [bottomAnchor constraintEqualToAnchor:v20];
   [v10 addObject:v21];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v10];

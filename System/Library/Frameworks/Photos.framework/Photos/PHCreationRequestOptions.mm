@@ -1,10 +1,10 @@
 @interface PHCreationRequestOptions
-- (PHCreationRequestOptions)initWithCoder:(id)a3;
-- (PHCreationRequestOptions)initWithXPCDict:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHCreationRequestOptions)initWithCoder:(id)coder;
+- (PHCreationRequestOptions)initWithXPCDict:(id)dict;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeToXPCDict:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHCreationRequestOptions
@@ -14,12 +14,12 @@
   v9.receiver = self;
   v9.super_class = PHCreationRequestOptions;
   v3 = [(PHCreationRequestOptions *)&v9 description];
-  v4 = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
-  v5 = v4;
-  if (v4)
+  reservedCloudIdentifier = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
+  v5 = reservedCloudIdentifier;
+  if (reservedCloudIdentifier)
   {
-    v6 = [v4 stringValue];
-    v7 = [v3 stringByAppendingFormat:@" rci=%@", v6];
+    stringValue = [reservedCloudIdentifier stringValue];
+    v7 = [v3 stringByAppendingFormat:@" rci=%@", stringValue];
 
     v3 = v7;
   }
@@ -27,15 +27,15 @@
   return v3;
 }
 
-- (PHCreationRequestOptions)initWithXPCDict:(id)a3
+- (PHCreationRequestOptions)initWithXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v11.receiver = self;
   v11.super_class = PHCreationRequestOptions;
   v5 = [(PHCreationRequestOptions *)&v11 init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_value(v4, "changeRequestOptions");
+    v6 = xpc_dictionary_get_value(dictCopy, "changeRequestOptions");
     if (v6)
     {
       v7 = PLStringFromXPCDictionary();
@@ -51,43 +51,43 @@
   return v5;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v7 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_value(v4, "changeRequestOptions", v7);
+  xpc_dictionary_set_value(dictCopy, "changeRequestOptions", v7);
 
-  v5 = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
-  v6 = [v5 archivalStringValue];
+  reservedCloudIdentifier = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
+  archivalStringValue = [reservedCloudIdentifier archivalStringValue];
 
   PLXPCDictionarySetString();
 }
 
-- (PHCreationRequestOptions)initWithCoder:(id)a3
+- (PHCreationRequestOptions)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PHCreationRequestOptions;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(PHCreationRequestOptions *)&v7 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"reservedCloudIdentifier", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"reservedCloudIdentifier", v7.receiver, v7.super_class}];
 
   [(PHCreationRequestOptions *)v4 setReservedCloudIdentifier:v5];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
-  [v4 encodeObject:v5 forKey:@"reservedCloudIdentifier"];
+  coderCopy = coder;
+  reservedCloudIdentifier = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
+  [coderCopy encodeObject:reservedCloudIdentifier forKey:@"reservedCloudIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
-  [v4 setReservedCloudIdentifier:v5];
+  reservedCloudIdentifier = [(PHCreationRequestOptions *)self reservedCloudIdentifier];
+  [v4 setReservedCloudIdentifier:reservedCloudIdentifier];
 
   return v4;
 }

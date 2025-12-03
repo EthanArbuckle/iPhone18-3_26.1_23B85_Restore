@@ -1,25 +1,25 @@
 @interface ICQUIiCloudPlusSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (ICQUIiCloudPlusSpecifierProvider)initWithAccountManager:(id)a3;
+- (ICQUIiCloudPlusSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
-- (id)_buildiCloudPlusFeatureSpecifiersFrom:(id)a3;
-- (id)_buildiCloudPlusGroupTitleSpecifierFrom:(id)a3;
+- (id)_buildiCloudPlusFeatureSpecifiersFrom:(id)from;
+- (id)_buildiCloudPlusGroupTitleSpecifierFrom:(id)from;
 - (id)_buildiCloudPlusSpecifiers;
 - (id)account;
 @end
 
 @implementation ICQUIiCloudPlusSpecifierProvider
 
-- (ICQUIiCloudPlusSpecifierProvider)initWithAccountManager:(id)a3
+- (ICQUIiCloudPlusSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ICQUIiCloudPlusSpecifierProvider;
   v6 = [(ICQUIiCloudPlusSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -27,8 +27,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -38,9 +38,9 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICQUIiCloudPlusSpecifierProvider *)self _buildiCloudPlusSpecifiers];
+    _buildiCloudPlusSpecifiers = [(ICQUIiCloudPlusSpecifierProvider *)self _buildiCloudPlusSpecifiers];
     v5 = self->_specifiers;
-    self->_specifiers = v4;
+    self->_specifiers = _buildiCloudPlusSpecifiers;
 
     specifiers = self->_specifiers;
   }
@@ -51,15 +51,15 @@
 - (id)_buildiCloudPlusSpecifiers
 {
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICQUIiCloudPlusSpecifierProvider *)self account];
-  v5 = [v3 initWithAccount:v4];
+  account = [(ICQUIiCloudPlusSpecifierProvider *)self account];
+  v5 = [v3 initWithAccount:account];
 
-  v6 = [v5 cachedStorageSummary];
+  cachedStorageSummary = [v5 cachedStorageSummary];
   storageSummary = self->_storageSummary;
-  self->_storageSummary = v6;
+  self->_storageSummary = cachedStorageSummary;
 
-  v8 = [(ICQCloudStorageSummary *)self->_storageSummary subscriptionInfo];
-  if ([v8 isiCloudPlusSubscriber])
+  subscriptionInfo = [(ICQCloudStorageSummary *)self->_storageSummary subscriptionInfo];
+  if ([subscriptionInfo isiCloudPlusSubscriber])
   {
     v9 = _ICQGetLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -73,15 +73,15 @@
   else
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = [v8 specifiersInfo];
+    specifiersInfo = [subscriptionInfo specifiersInfo];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __62__ICQUIiCloudPlusSpecifierProvider__buildiCloudPlusSpecifiers__block_invoke;
     v17 = &unk_27A65AA78;
-    v18 = self;
+    selfCopy = self;
     v19 = v11;
     v9 = v11;
-    [v12 enumerateObjectsUsingBlock:&v14];
+    [specifiersInfo enumerateObjectsUsingBlock:&v14];
 
     v10 = [v9 copy:v14];
   }
@@ -135,37 +135,37 @@ void __62__ICQUIiCloudPlusSpecifierProvider__buildiCloudPlusSpecifiers__block_in
   [a1[6] addObject:v8];
 }
 
-- (id)_buildiCloudPlusGroupTitleSpecifierFrom:(id)a3
+- (id)_buildiCloudPlusGroupTitleSpecifierFrom:(id)from
 {
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
+  fromCopy = from;
   v6 = [v4 preferenceSpecifierNamed:@"ICLOUD_PLUS_FEATURE_HEADER_CELL" target:self set:0 get:0 detail:0 cell:4 edit:0];
   [v6 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   [v6 setProperty:&unk_288479B70 forKey:*MEMORY[0x277D3FD78]];
-  v7 = [v5 title];
+  title = [fromCopy title];
 
-  [v6 setProperty:v7 forKey:*MEMORY[0x277D40170]];
+  [v6 setProperty:title forKey:*MEMORY[0x277D40170]];
 
   return v6;
 }
 
-- (id)_buildiCloudPlusFeatureSpecifiersFrom:(id)a3
+- (id)_buildiCloudPlusFeatureSpecifiersFrom:(id)from
 {
   v4 = MEMORY[0x277D3FAD8];
-  v5 = a3;
-  v6 = [v5 label];
-  v7 = [v4 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+  fromCopy = from;
+  label = [fromCopy label];
+  v7 = [v4 preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
   [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  v8 = [v5 label];
-  [v7 setProperty:v8 forKey:*MEMORY[0x277D40170]];
+  label2 = [fromCopy label];
+  [v7 setProperty:label2 forKey:*MEMORY[0x277D40170]];
 
   [v7 setProperty:&unk_288479B70 forKey:*MEMORY[0x277D3FD78]];
-  [v7 setTarget:v5];
+  [v7 setTarget:fromCopy];
   [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
-  v9 = [v5 iconURL];
+  iconURL = [fromCopy iconURL];
 
-  v10 = [_ICQUIHelperFunctions scaledImageURL:v9];
+  v10 = [_ICQUIHelperFunctions scaledImageURL:iconURL];
   [v7 setProperty:v10 forKey:*MEMORY[0x277D40030]];
 
   return v7;

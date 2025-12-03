@@ -1,16 +1,16 @@
 @interface InitialSyncCompletionMonitor
-- (BOOL)hasCachedInitialSyncCompletionStateForDevice:(id)a3 state:(BOOL *)a4;
+- (BOOL)hasCachedInitialSyncCompletionStateForDevice:(id)device state:(BOOL *)state;
 - (InitialSyncCompletionMonitor)init;
 - (void)dealloc;
-- (void)forgetPairingID:(id)a3;
-- (void)handleNanoRegistryNotificationDeviceDidUnpair:(id)a3;
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4;
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3;
-- (void)notifyObserversInitialSyncDidCompleteForPairingID:(id)a3;
-- (void)registerObserver:(id)a3 device:(id)a4;
-- (void)requestInitialSyncStateForPairingID:(id)a3;
+- (void)forgetPairingID:(id)d;
+- (void)handleNanoRegistryNotificationDeviceDidUnpair:(id)unpair;
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests;
+- (void)notifyObserversInitialSyncDidCompleteForPairingID:(id)d;
+- (void)registerObserver:(id)observer device:(id)device;
+- (void)requestInitialSyncStateForPairingID:(id)d;
 - (void)retryPendingRequests;
-- (void)unregisterObserver:(id)a3 device:(id)a4;
+- (void)unregisterObserver:(id)observer device:(id)device;
 @end
 
 @implementation InitialSyncCompletionMonitor
@@ -93,7 +93,7 @@
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "InitialSyncCompletionMonitor --- Deallocating (%p)", buf, 0xCu);
   }
 
@@ -105,17 +105,17 @@
   [(InitialSyncCompletionMonitor *)&v5 dealloc];
 }
 
-- (void)registerObserver:(id)a3 device:(id)a4
+- (void)registerObserver:(id)observer device:(id)device
 {
-  v8 = a3;
-  v6 = [a4 valueForProperty:NRDevicePropertyPairingID];
+  observerCopy = observer;
+  v6 = [device valueForProperty:NRDevicePropertyPairingID];
   if (v6)
   {
-    v7 = [(NSMapTable *)self->_observers objectForKey:v8];
+    v7 = [(NSMapTable *)self->_observers objectForKey:observerCopy];
     if (!v7)
     {
       v7 = [[NSMutableSet alloc] initWithCapacity:1];
-      [(NSMapTable *)self->_observers setObject:v7 forKey:v8];
+      [(NSMapTable *)self->_observers setObject:v7 forKey:observerCopy];
     }
 
     [v7 addObject:v6];
@@ -123,34 +123,34 @@
   }
 }
 
-- (void)unregisterObserver:(id)a3 device:(id)a4
+- (void)unregisterObserver:(id)observer device:(id)device
 {
-  v9 = a3;
-  v6 = [a4 valueForProperty:NRDevicePropertyPairingID];
+  observerCopy = observer;
+  v6 = [device valueForProperty:NRDevicePropertyPairingID];
   if (v6)
   {
-    v7 = [(NSMapTable *)self->_observers objectForKey:v9];
+    v7 = [(NSMapTable *)self->_observers objectForKey:observerCopy];
     v8 = v7;
     if (v7)
     {
       [v7 removeObject:v6];
       if (![v8 count])
       {
-        [(NSMapTable *)self->_observers removeObjectForKey:v9];
+        [(NSMapTable *)self->_observers removeObjectForKey:observerCopy];
       }
     }
   }
 }
 
-- (BOOL)hasCachedInitialSyncCompletionStateForDevice:(id)a3 state:(BOOL *)a4
+- (BOOL)hasCachedInitialSyncCompletionStateForDevice:(id)device state:(BOOL *)state
 {
-  v6 = [a3 valueForProperty:NRDevicePropertyPairingID];
+  v6 = [device valueForProperty:NRDevicePropertyPairingID];
   if (v6 && ([(NSMutableDictionary *)self->_cachedInitialSyncStateByPairingID objectForKey:v6], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    if (a4)
+    if (state)
     {
-      *a4 = [v7 BOOLValue];
+      *state = [v7 BOOLValue];
     }
 
     v9 = 1;
@@ -164,17 +164,17 @@
   return v9;
 }
 
-- (void)requestInitialSyncStateForPairingID:(id)a3
+- (void)requestInitialSyncStateForPairingID:(id)d
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_pendingRequests containsObject:v4]& 1) == 0)
+  dCopy = d;
+  if (([(NSMutableSet *)self->_pendingRequests containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_pendingRequests addObject:v4];
+    [(NSMutableSet *)self->_pendingRequests addObject:dCopy];
     v5 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "InitialSyncCompletionMonitor --- Requesting initial sync state for pairingID: (%@)", buf, 0xCu);
     }
 
@@ -185,7 +185,7 @@
     v7[2] = sub_1000056D4;
     v7[3] = &unk_1000185D8;
     objc_copyWeak(&v9, buf);
-    v8 = v4;
+    v8 = dCopy;
     [(PSYInitialSyncStateObserver *)initialSyncCompletionObserver requestInitialNonMigrationSyncStateForPairingIdentifier:v8 completion:v7];
 
     objc_destroyWeak(&v9);
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)notifyObserversInitialSyncDidCompleteForPairingID:(id)a3
+- (void)notifyObserversInitialSyncDidCompleteForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -263,11 +263,11 @@
 
         v10 = *(*(&v27 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_observers objectForKey:v10];
-        if ([v11 containsObject:v4])
+        if ([v11 containsObject:dCopy])
         {
-          [v11 removeObject:v4];
+          [v11 removeObject:dCopy];
           v12 = +[NRPairedDeviceRegistry sharedInstance];
-          v13 = [v12 deviceForPairingID:v4];
+          v13 = [v12 deviceForPairingID:dCopy];
 
           if (v13)
           {
@@ -320,11 +320,11 @@
   self->_observers = v14;
 }
 
-- (void)forgetPairingID:(id)a3
+- (void)forgetPairingID:(id)d
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_pendingRequests removeObject:v4];
-  [(NSMutableDictionary *)self->_cachedInitialSyncStateByPairingID removeObjectForKey:v4];
+  dCopy = d;
+  [(NSMutableSet *)self->_pendingRequests removeObject:dCopy];
+  [(NSMutableDictionary *)self->_cachedInitialSyncStateByPairingID removeObjectForKey:dCopy];
   v5 = +[NSMapTable weakToStrongObjectsMapTable];
   v14 = 0u;
   v15 = 0u;
@@ -347,9 +347,9 @@
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [(NSMapTable *)self->_observers objectForKey:v11, v14];
-        if ([v12 containsObject:v4])
+        if ([v12 containsObject:dCopy])
         {
-          [v12 removeObject:v4];
+          [v12 removeObject:dCopy];
           if ([v12 count])
           {
             [(NSMapTable *)v5 setObject:v12 forKey:v11];
@@ -367,68 +367,68 @@
   self->_observers = v5;
 }
 
-- (void)handleNanoRegistryNotificationDeviceDidUnpair:(id)a3
+- (void)handleNanoRegistryNotificationDeviceDidUnpair:(id)unpair
 {
-  v4 = a3;
+  unpairCopy = unpair;
   v5 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [unpairCopy name];
     *buf = 138412290;
-    v16 = v7;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "InitialSyncCompletionMonitor --- Received notification: %@", buf, 0xCu);
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
+  userInfo = [unpairCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryDevice];
   v10 = [v9 valueForProperty:NRDevicePropertyPairingID];
   if (v10)
   {
     v11 = +[MagicSwitchEnabler sharedInstance];
-    v12 = [v11 workQueue];
+    workQueue = [v11 workQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100006014;
     v13[3] = &unk_100018600;
     v13[4] = self;
     v14 = v10;
-    dispatch_async(v12, v13);
+    dispatch_async(workQueue, v13);
   }
 }
 
-- (void)initialSyncStateObserver:(id)a3 initialSyncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer initialSyncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v8 = +[MagicSwitchEnabler sharedInstance];
-  v9 = [v8 workQueue];
+  workQueue = [v8 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000613C;
   block[3] = &unk_100018628;
   objc_copyWeak(&v13, &location);
-  v12 = v7;
-  v10 = v7;
-  dispatch_async(v9, block);
+  v12 = identifierCopy;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)a3
+- (void)initialSyncStateObserverClientCanRetryFailedRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   objc_initWeak(&location, self);
   v5 = +[MagicSwitchEnabler sharedInstance];
-  v6 = [v5 workQueue];
+  workQueue = [v5 workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006320;
   v7[3] = &unk_1000184D0;
   objc_copyWeak(&v8, &location);
-  dispatch_async(v6, v7);
+  dispatch_async(workQueue, v7);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

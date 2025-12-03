@@ -1,10 +1,10 @@
 @interface SSDocumentCondition
-- (BOOL)evaluateWithContext:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
 @end
 
 @implementation SSDocumentCondition
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
   if (evaluateWithContext__sOnce != -1)
   {

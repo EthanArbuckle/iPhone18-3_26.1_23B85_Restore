@@ -1,22 +1,22 @@
 @interface MADImageEmbeddingResult
-- (MADImageEmbeddingResult)initWithCoder:(id)a3;
-- (MADImageEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5;
-- (MADImageEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5 shape:(id)a6;
+- (MADImageEmbeddingResult)initWithCoder:(id)coder;
+- (MADImageEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type;
+- (MADImageEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type shape:(id)shape;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADImageEmbeddingResult
 
-- (MADImageEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5
+- (MADImageEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type
 {
-  v8 = a4;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = MADImageEmbeddingResult;
   v9 = [(MADResult *)&v13 init];
   if (v9)
   {
-    v10 = [[MADEmbeddingResult alloc] initWithVersion:a3 data:v8 type:a5];
+    v10 = [[MADEmbeddingResult alloc] initWithVersion:version data:dataCopy type:type];
     embedding = v9->_embedding;
     v9->_embedding = v10;
   }
@@ -24,16 +24,16 @@
   return v9;
 }
 
-- (MADImageEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5 shape:(id)a6
+- (MADImageEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type shape:(id)shape
 {
-  v10 = a4;
-  v11 = a6;
+  dataCopy = data;
+  shapeCopy = shape;
   v16.receiver = self;
   v16.super_class = MADImageEmbeddingResult;
   v12 = [(MADResult *)&v16 init];
   if (v12)
   {
-    v13 = [[MADEmbeddingResult alloc] initWithVersion:a3 data:v10 type:a5 shape:v11];
+    v13 = [[MADEmbeddingResult alloc] initWithVersion:version data:dataCopy type:type shape:shapeCopy];
     embedding = v12->_embedding;
     v12->_embedding = v13;
   }
@@ -41,15 +41,15 @@
   return v12;
 }
 
-- (MADImageEmbeddingResult)initWithCoder:(id)a3
+- (MADImageEmbeddingResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MADImageEmbeddingResult;
-  v5 = [(MADResult *)&v9 initWithCoder:v4];
+  v5 = [(MADResult *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"embedding"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"embedding"];
     embedding = v5->_embedding;
     v5->_embedding = v6;
   }
@@ -57,25 +57,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADImageEmbeddingResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_embedding forKey:@"embedding"];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_embedding forKey:@"embedding"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"embedding: %@>", self->_embedding];
+  [string appendFormat:@"embedding: %@>", self->_embedding];
 
-  return v3;
+  return string;
 }
 
 @end

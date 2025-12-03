@@ -1,20 +1,20 @@
 @interface PBUIGradientView
-- (void)setGradient:(id)a3;
+- (void)setGradient:(id)gradient;
 @end
 
 @implementation PBUIGradientView
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
-  v5 = a3;
-  if (self->_gradient != v5)
+  gradientCopy = gradient;
+  if (self->_gradient != gradientCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_gradient, a3);
-    v6 = [(PBUIGradientView *)self layer];
-    [(PBUIWallpaperGradient *)v7 configureLayer:v6];
+    v7 = gradientCopy;
+    objc_storeStrong(&self->_gradient, gradient);
+    layer = [(PBUIGradientView *)self layer];
+    [(PBUIWallpaperGradient *)v7 configureLayer:layer];
 
-    v5 = v7;
+    gradientCopy = v7;
   }
 }
 

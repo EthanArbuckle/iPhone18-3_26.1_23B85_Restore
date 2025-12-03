@@ -1,135 +1,135 @@
 @interface GKMatchmaker
-+ (BOOL)canPlayMultiplayerGameWithPlayers:(id)a3;
++ (BOOL)canPlayMultiplayerGameWithPlayers:(id)players;
 + (GKMatchmaker)sharedMatchmaker;
-+ (id)descriptionForNearbyDictionary:(id)a3;
++ (id)descriptionForNearbyDictionary:(id)dictionary;
 + (id)syncQueue;
 + (void)sharedMatchmaker;
 - (BOOL)allInviteesDidRespond;
 - (BOOL)hasInviteListener;
 - (BOOL)isEligibleForGroupSession;
 - (BOOL)isEntitledToUseGroupActivities;
-- (BOOL)removeInvitee:(id)a3;
+- (BOOL)removeInvitee:(id)invitee;
 - (BOOL)shouldRespondToNearbyQuery;
-- (BOOL)shouldRunGroupActivityWithDescription:(id)a3;
+- (BOOL)shouldRunGroupActivityWithDescription:(id)description;
 - (GKMatchmaker)init;
-- (id)_nearbyDeviceWithDeviceID:(id)a3;
+- (id)_nearbyDeviceWithDeviceID:(id)d;
 - (id)allInvitedInvitees;
 - (id)allInvitedInviteesAndInMatchRequestRecipients;
 - (id)compatibilityHashQueue;
-- (id)declineReasonString:(int64_t)a3;
-- (id)formAGKMatchRequestForNearbyInviteWithOriginalRequest:(id)a3 nearbyPlayerIDs:(id)a4;
-- (id)hashForBundleID:(id)a3 version:(id)a4 platform:(int64_t)a5;
+- (id)declineReasonString:(int64_t)string;
+- (id)formAGKMatchRequestForNearbyInviteWithOriginalRequest:(id)request nearbyPlayerIDs:(id)ds;
+- (id)hashForBundleID:(id)d version:(id)version platform:(int64_t)platform;
 - (id)hashForCurrentGameUsingBundleVersion;
 - (id)hashForCurrentGameUsingShortBundleVersionAndPlatform;
-- (id)nearbyDeviceWithDeviceID:(id)a3;
-- (id)nearbyDevicesForPlayer:(id)a3 withState:(int64_t)a4;
-- (id)nearbyInviteFromPlayer:(id)a3;
+- (id)nearbyDeviceWithDeviceID:(id)d;
+- (id)nearbyDevicesForPlayer:(id)player withState:(int64_t)state;
+- (id)nearbyInviteFromPlayer:(id)player;
 - (id)newMatch;
 - (id)profileDictionaryForLocalPlayer;
 - (id)sharingControllerItemProvider;
 - (id)unreleasedHash;
-- (int)numberOfNearbyDevicesForPlayer:(id)a3 withState:(int64_t)a4;
+- (int)numberOfNearbyDevicesForPlayer:(id)player withState:(int64_t)state;
 - (int64_t)inviteeCount;
-- (int64_t)responseForDeclineReason:(int64_t)a3;
+- (int64_t)responseForDeclineReason:(int64_t)reason;
 - (int64_t)totalPlayerCount;
-- (void)acceptNearbyInvite:(id)a3 connectionData:(id)a4;
-- (void)activateGroupActivityWithHandler:(id)a3;
-- (void)addInvitees:(id)a3;
-- (void)addPlayersForHostedMatchRequest:(id)a3 existingPlayerCount:(int64_t)a4 devicePushToken:(id)a5 completionHandler:(id)a6;
-- (void)addPlayersToMatch:(id)a3 matchRequest:(id)a4 devicePushToken:(id)a5 completionHandler:(id)a6;
+- (void)acceptNearbyInvite:(id)invite connectionData:(id)data;
+- (void)activateGroupActivityWithHandler:(id)handler;
+- (void)addInvitees:(id)invitees;
+- (void)addPlayersForHostedMatchRequest:(id)request existingPlayerCount:(int64_t)count devicePushToken:(id)token completionHandler:(id)handler;
+- (void)addPlayersToMatch:(id)match matchRequest:(id)request devicePushToken:(id)token completionHandler:(id)handler;
 - (void)allInviteesDidRespond;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applicationWillEnterForegroundNotification:(id)a3;
-- (void)applicationWillTerminateNotification:(id)a3;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applicationWillEnterForegroundNotification:(id)notification;
+- (void)applicationWillTerminateNotification:(id)notification;
 - (void)cancel;
 - (void)cancelInviteToPlayer:(NSString *)playerID;
-- (void)cancelNearbyInvitesToPlayers:(id)a3;
+- (void)cancelNearbyInvitesToPlayers:(id)players;
 - (void)cancelPendingInviteToPlayer:(GKPlayer *)player;
 - (void)cancelPendingInvites;
 - (void)cancelSentNearbyInvites;
 - (void)changeGroupActivityStateToGameStarted;
 - (void)dealloc;
-- (void)declineNearbyInviteFromDevice:(id)a3 reason:(int64_t)a4;
+- (void)declineNearbyInviteFromDevice:(id)device reason:(int64_t)reason;
 - (void)declineReceivedNearbyInvites;
-- (void)determineIfShouldRespondToNearbyPlayer:(id)a3 handler:(id)a4;
+- (void)determineIfShouldRespondToNearbyPlayer:(id)player handler:(id)handler;
 - (void)doneMatchmaking;
 - (void)endGroupActivity;
-- (void)establishNearbyFriendRelationships:(id)a3 fromDevice:(id)a4;
+- (void)establishNearbyFriendRelationships:(id)relationships fromDevice:(id)device;
 - (void)findMatchForRequest:(GKMatchRequest *)request withCompletionHandler:(void *)completionHandler;
-- (void)findMatchForRequest:(id)a3 devicePushToken:(id)a4 withCompletionHandler:(id)a5;
-- (void)findMatchedPlayers:(id)a3 withCompletionHandler:(id)a4;
+- (void)findMatchForRequest:(id)request devicePushToken:(id)token withCompletionHandler:(id)handler;
+- (void)findMatchedPlayers:(id)players withCompletionHandler:(id)handler;
 - (void)findPlayersForHostedMatchRequest:(GKMatchRequest *)request withCompletionHandler:(void *)completionHandler;
 - (void)findPlayersForHostedRequest:(GKMatchRequest *)request withCompletionHandler:(void *)completionHandler;
-- (void)findPlayersForHostedRequest:(id)a3 match:(id)a4 withCompletionHandler:(id)a5;
-- (void)findRematchForMatch:(id)a3 completionHandler:(id)a4;
+- (void)findPlayersForHostedRequest:(id)request match:(id)match withCompletionHandler:(id)handler;
+- (void)findRematchForMatch:(id)match completionHandler:(id)handler;
 - (void)finishMatchmakingForMatch:(GKMatch *)match;
 - (void)finishedAuthenticating;
-- (void)foundNearbyDeviceID:(id)a3 discoveryInfo:(id)a4;
-- (void)generateHashedCompatibilitySetWithHandler:(id)a3;
-- (void)getHashedCompatibilitySetsWithHandler:(id)a3;
-- (void)handleNearbyInvite:(id)a3 fromDevice:(id)a4;
-- (void)handleNearbyInviteResponse:(id)a3 fromDevice:(id)a4;
-- (void)handleNearbyProfileQuery:(id)a3 fromDevice:(id)a4;
-- (void)handleNearbyProfileResponse:(id)a3 fromDevice:(id)a4 withCompletionHandler:(id)a5;
-- (void)inviteAnyNearbyPlayersViaGCSWithRequest:(id)a3 onlineConnectionData:(id)a4 handler:(id)a5;
-- (void)inviteAnyNearbyPlayersViaLegacyViceroyBonjourConnectionWithRequest:(id)a3 handler:(id)a4;
-- (void)invitePlayersWithRequest:(id)a3 serverHosted:(BOOL)a4 onlineConnectionData:(id)a5 devicePushTokenMap:(id)a6 isNearbyInvite:(BOOL)a7 completionHandler:(id)a8;
-- (void)inviteeAccepted:(id)a3 userInfo:(id)a4 allResponded:(BOOL)a5;
-- (void)inviteeAcceptedNotification:(id)a3;
-- (void)inviteeDeclinedNotification:(id)a3;
-- (void)inviteeDeclinedWithUserInfo:(id)a3;
-- (void)inviteeUpdateNotification:(id)a3;
+- (void)foundNearbyDeviceID:(id)d discoveryInfo:(id)info;
+- (void)generateHashedCompatibilitySetWithHandler:(id)handler;
+- (void)getHashedCompatibilitySetsWithHandler:(id)handler;
+- (void)handleNearbyInvite:(id)invite fromDevice:(id)device;
+- (void)handleNearbyInviteResponse:(id)response fromDevice:(id)device;
+- (void)handleNearbyProfileQuery:(id)query fromDevice:(id)device;
+- (void)handleNearbyProfileResponse:(id)response fromDevice:(id)device withCompletionHandler:(id)handler;
+- (void)inviteAnyNearbyPlayersViaGCSWithRequest:(id)request onlineConnectionData:(id)data handler:(id)handler;
+- (void)inviteAnyNearbyPlayersViaLegacyViceroyBonjourConnectionWithRequest:(id)request handler:(id)handler;
+- (void)invitePlayersWithRequest:(id)request serverHosted:(BOOL)hosted onlineConnectionData:(id)data devicePushTokenMap:(id)map isNearbyInvite:(BOOL)invite completionHandler:(id)handler;
+- (void)inviteeAccepted:(id)accepted userInfo:(id)info allResponded:(BOOL)responded;
+- (void)inviteeAcceptedNotification:(id)notification;
+- (void)inviteeDeclinedNotification:(id)notification;
+- (void)inviteeDeclinedWithUserInfo:(id)info;
+- (void)inviteeUpdateNotification:(id)notification;
 - (void)leaveGroupActivity;
-- (void)loadConnectivitySettingsWithCompletionHandler:(id)a3;
-- (void)loadPhotoDataDictionaryWithHandler:(id)a3;
-- (void)loadURLForMatch:(id)a3 matchRequest:(id)a4 completionHandler:(id)a5;
-- (void)localPlayerAcceptedGameInviteNotification:(id)a3;
-- (void)localPlayerAcceptedNearbyInvite:(id)a3;
-- (void)localPlayerRespondedToNearbyInvite:(id)a3;
+- (void)loadConnectivitySettingsWithCompletionHandler:(id)handler;
+- (void)loadPhotoDataDictionaryWithHandler:(id)handler;
+- (void)loadURLForMatch:(id)match matchRequest:(id)request completionHandler:(id)handler;
+- (void)localPlayerAcceptedGameInviteNotification:(id)notification;
+- (void)localPlayerAcceptedNearbyInvite:(id)invite;
+- (void)localPlayerRespondedToNearbyInvite:(id)invite;
 - (void)lookForGroupActivities;
 - (void)lookForInvite;
-- (void)lostNearbyDeviceID:(id)a3;
+- (void)lostNearbyDeviceID:(id)d;
 - (void)matchForInvite:(GKInvite *)invite completionHandler:(void *)completionHandler;
-- (void)matchForNearbyInvite:(id)a3 handler:(id)a4;
-- (void)matchForRemoteInvite:(id)a3 completionHandler:(id)a4;
-- (void)matchRequestRecipientsSet:(id)a3;
-- (void)nearbyDataReceived:(id)a3;
-- (void)nearbyInviteWasCancelled:(id)a3 fromDevice:(id)a4;
-- (void)nearbyPlayerFound:(id)a3;
-- (void)nearbyPlayerLost:(id)a3;
-- (void)performSync:(id)a3;
-- (void)playerDisconnected:(id)a3;
-- (void)presentNearbyInvite:(id)a3 fromDevice:(id)a4;
-- (void)promptForRadarWithDescriptionAddition:(id)a3;
+- (void)matchForNearbyInvite:(id)invite handler:(id)handler;
+- (void)matchForRemoteInvite:(id)invite completionHandler:(id)handler;
+- (void)matchRequestRecipientsSet:(id)set;
+- (void)nearbyDataReceived:(id)received;
+- (void)nearbyInviteWasCancelled:(id)cancelled fromDevice:(id)device;
+- (void)nearbyPlayerFound:(id)found;
+- (void)nearbyPlayerLost:(id)lost;
+- (void)performSync:(id)sync;
+- (void)playerDisconnected:(id)disconnected;
+- (void)presentNearbyInvite:(id)invite fromDevice:(id)device;
+- (void)promptForRadarWithDescriptionAddition:(id)addition;
 - (void)queryActivityWithCompletionHandler:(void *)completionHandler;
 - (void)queryPlayerGroupActivity:(NSUInteger)playerGroup withCompletionHandler:(void *)completionHandler;
-- (void)queryQueueActivity:(id)a3 withCompletionHandler:(id)a4;
-- (void)receivedData:(id)a3 fromNearbyDeviceID:(id)a4;
-- (void)reduceRecipientsForMatchRequest:(id)a3 toPlayersWithPlayerIDs:(id)a4;
+- (void)queryQueueActivity:(id)activity withCompletionHandler:(id)handler;
+- (void)receivedData:(id)data fromNearbyDeviceID:(id)d;
+- (void)reduceRecipientsForMatchRequest:(id)request toPlayersWithPlayerIDs:(id)ds;
 - (void)registeredListenersChanged;
-- (void)removeNearbyInviteFromPlayer:(id)a3;
-- (void)reportPlayerConnectedWithPlayerID:(id)a3 forMatch:(id)a4;
-- (void)reportResponse:(int64_t)a3 forInvitees:(id)a4 withCompletionHandler:(id)a5;
+- (void)removeNearbyInviteFromPlayer:(id)player;
+- (void)reportPlayerConnectedWithPlayerID:(id)d forMatch:(id)match;
+- (void)reportResponse:(int64_t)response forInvitees:(id)invitees withCompletionHandler:(id)handler;
 - (void)resetGroupActivity;
-- (void)respondToHostedInvite:(id)a3 completionHandler:(id)a4;
-- (void)saveNearbyInvite:(id)a3 fromPlayer:(id)a4;
-- (void)sendGroupActivityInviteTo:(id)a3 participantID:(id)a4 pushToken:(id)a5;
-- (void)sendMatchmakingRequest:(id)a3 forMatch:(id)a4 rematchID:(id)a5 serverHosted:(BOOL)a6 playerCount:(int64_t)a7 completionHandler:(id)a8;
-- (void)sendProfileResponseToDevice:(id)a3;
+- (void)respondToHostedInvite:(id)invite completionHandler:(id)handler;
+- (void)saveNearbyInvite:(id)invite fromPlayer:(id)player;
+- (void)sendGroupActivityInviteTo:(id)to participantID:(id)d pushToken:(id)token;
+- (void)sendMatchmakingRequest:(id)request forMatch:(id)match rematchID:(id)d serverHosted:(BOOL)hosted playerCount:(int64_t)count completionHandler:(id)handler;
+- (void)sendProfileResponseToDevice:(id)device;
 - (void)setInviteHandler:(void *)inviteHandler;
-- (void)setNearbyDevice:(id)a3 reachable:(BOOL)a4;
-- (void)setNearbyPlayerAccepted:(id)a3 connectionData:(id)a4;
-- (void)setNearbyPlayerAccepted:(id)a3 deviceID:(id)a4 connectionData:(id)a5;
-- (void)setNearbyPlayerDeclined:(id)a3 deviceID:(id)a4 reason:(int64_t)a5;
-- (void)setNearbyPlayerDeclined:(id)a3 reason:(int64_t)a4;
-- (void)setNearbyPlayerFailed:(id)a3;
-- (void)setNearbyPlayerFailed:(id)a3 deviceID:(id)a4;
-- (void)setShareInvitees:(id)a3 propagateToDaemon:(BOOL)a4;
+- (void)setNearbyDevice:(id)device reachable:(BOOL)reachable;
+- (void)setNearbyPlayerAccepted:(id)accepted connectionData:(id)data;
+- (void)setNearbyPlayerAccepted:(id)accepted deviceID:(id)d connectionData:(id)data;
+- (void)setNearbyPlayerDeclined:(id)declined deviceID:(id)d reason:(int64_t)reason;
+- (void)setNearbyPlayerDeclined:(id)declined reason:(int64_t)reason;
+- (void)setNearbyPlayerFailed:(id)failed;
+- (void)setNearbyPlayerFailed:(id)failed deviceID:(id)d;
+- (void)setShareInvitees:(id)invitees propagateToDaemon:(BOOL)daemon;
 - (void)setupNearbyDiscovery;
-- (void)shareInviteeAcceptedWithUserInfo:(id)a3;
-- (void)sharePlayPlayerFound:(id)a3;
+- (void)shareInviteeAcceptedWithUserInfo:(id)info;
+- (void)sharePlayPlayerFound:(id)found;
 - (void)sharingControllerItemProvider;
-- (void)showSharePlayMatchDeclinedToJoinAlertWithReason:(int64_t)a3;
+- (void)showSharePlayMatchDeclinedToJoinAlertWithReason:(int64_t)reason;
 - (void)startBrowsingForNearbyPlayersWithHandler:(void *)reachableHandler;
 - (void)startBrowsingForNearbyPlayersWithReachableHandler:(void *)reachableHandler;
 - (void)startGroupActivityWithPlayerHandler:(void *)handler;
@@ -160,32 +160,32 @@
     }
 
     [(GKMatchmaker *)v3 loadConnectivitySettingsWithCompletionHandler:0];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = +[GKLocalPlayer localPlayer];
-    [v6 addObserver:v3 selector:sel_inviteeAcceptedNotification_ name:@"GKInviteeAcceptedGameInvite" object:v7];
+    [defaultCenter addObserver:v3 selector:sel_inviteeAcceptedNotification_ name:@"GKInviteeAcceptedGameInvite" object:v7];
 
     v8 = +[GKLocalPlayer localPlayer];
-    [v6 addObserver:v3 selector:sel_inviteeDeclinedNotification_ name:@"GKInviteeDeclinedGameInvite" object:v8];
+    [defaultCenter addObserver:v3 selector:sel_inviteeDeclinedNotification_ name:@"GKInviteeDeclinedGameInvite" object:v8];
 
     v9 = +[GKLocalPlayer localPlayer];
-    [v6 addObserver:v3 selector:sel_inviteeUpdateNotification_ name:@"GKUpdateGameInviteNotification" object:v9];
+    [defaultCenter addObserver:v3 selector:sel_inviteeUpdateNotification_ name:@"GKUpdateGameInviteNotification" object:v9];
 
     v10 = +[GKLocalPlayer localPlayer];
-    [v6 addObserver:v3 selector:sel_localPlayerAcceptedGameInviteNotification_ name:@"GKAcceptedGameInvite" object:v10];
+    [defaultCenter addObserver:v3 selector:sel_localPlayerAcceptedGameInviteNotification_ name:@"GKAcceptedGameInvite" object:v10];
 
     v11 = +[GKApplicationNotificationNames didEnterBackground];
-    [v6 addObserver:v3 selector:sel_applicationDidEnterBackgroundNotification_ name:v11 object:0];
+    [defaultCenter addObserver:v3 selector:sel_applicationDidEnterBackgroundNotification_ name:v11 object:0];
 
     v12 = +[GKApplicationNotificationNames willTerminate];
-    [v6 addObserver:v3 selector:sel_applicationWillTerminateNotification_ name:v12 object:0];
+    [defaultCenter addObserver:v3 selector:sel_applicationWillTerminateNotification_ name:v12 object:0];
 
     v13 = +[GKApplicationNotificationNames willEnterForeground];
-    [v6 addObserver:v3 selector:sel_applicationWillEnterForegroundNotification_ name:v13 object:0];
+    [defaultCenter addObserver:v3 selector:sel_applicationWillEnterForegroundNotification_ name:v13 object:0];
 
-    [v6 addObserver:v3 selector:sel_nearbyPlayerFound_ name:@"GKNearbyPlayerFoundNotification" object:0];
-    [v6 addObserver:v3 selector:sel_nearbyPlayerLost_ name:@"GKNearbyPlayerLostNotification" object:0];
-    [v6 addObserver:v3 selector:sel_nearbyDataReceived_ name:@"GKNearbyDataReceivedNotification" object:0];
-    [v6 addObserver:v3 selector:sel_matchRequestRecipientsSet_ name:@"GKSetMatchRequestRecipientsNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_nearbyPlayerFound_ name:@"GKNearbyPlayerFoundNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_nearbyPlayerLost_ name:@"GKNearbyPlayerLostNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_nearbyDataReceived_ name:@"GKNearbyDataReceivedNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_matchRequestRecipientsSet_ name:@"GKSetMatchRequestRecipientsNotification" object:0];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("GKMatchmaker.lookForInviteQueue", v14);
     lookForInviteQueue = v3->_lookForInviteQueue;
@@ -216,13 +216,13 @@
     siblingInvitees = v3->_siblingInvitees;
     v3->_siblingInvitees = v28;
 
-    v30 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sharePlayInviteeTokensFromProgrammaticInvite = v3->_sharePlayInviteeTokensFromProgrammaticInvite;
-    v3->_sharePlayInviteeTokensFromProgrammaticInvite = v30;
+    v3->_sharePlayInviteeTokensFromProgrammaticInvite = dictionary;
 
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     pendingInvitationUpdates = v3->_pendingInvitationUpdates;
-    v3->_pendingInvitationUpdates = v32;
+    v3->_pendingInvitationUpdates = dictionary2;
 
     v34 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v35 = dispatch_queue_create("com.apple.GameKit.matchmaker.invitationQueue", v34);
@@ -233,9 +233,9 @@
   return v3;
 }
 
-- (void)loadConnectivitySettingsWithCompletionHandler:(id)a3
+- (void)loadConnectivitySettingsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -249,15 +249,15 @@
   }
 
   v6 = +[GKDaemonProxy proxyForLocalPlayer];
-  v7 = [v6 utilityService];
+  utilityService = [v6 utilityService];
   v8 = +[GKViceroyNATConfiguration settingsKeys];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_invoke;
   v10[3] = &unk_2785DEC70;
-  v11 = v3;
-  v9 = v3;
-  [v7 getStoreBagValuesForKeys:v8 handler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [utilityService getStoreBagValuesForKeys:v8 handler:v10];
 }
 
 void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -291,8 +291,8 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKMatchmaker;
@@ -302,10 +302,10 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
 - (void)finishedAuthenticating
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_13() local];
-  v4 = [v3 internal];
-  v5 = [v4 debugDescription];
+  selfCopy = self;
+  local = [OUTLINED_FUNCTION_13() local];
+  internal = [local internal];
+  v5 = [internal debugDescription];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_5(&dword_227904000, v6, v7, "Player %@ is not authenticated, cancel matchmaking", v8, v9, v10, v11, v13);
 
@@ -322,16 +322,16 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
 - (BOOL)hasInviteListener
 {
   v3 = +[GKLocalPlayer localPlayer];
-  v4 = [v3 eventEmitter];
-  v5 = ([v4 listenerRegisteredForSelector:sel_player_didAcceptInvite_] & 1) != 0 || self->_inviteHandler != 0;
+  eventEmitter = [v3 eventEmitter];
+  v5 = ([eventEmitter listenerRegisteredForSelector:sel_player_didAcceptInvite_] & 1) != 0 || self->_inviteHandler != 0;
 
   return v5;
 }
 
-- (BOOL)removeInvitee:(id)a3
+- (BOOL)removeInvitee:(id)invitee
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inviteeCopy = invitee;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -341,22 +341,22 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v4 internal];
-    v9 = [v8 debugDescription];
+    internal = [inviteeCopy internal];
+    v9 = [internal debugDescription];
     v20 = 138412290;
     v21 = v9;
     _os_log_impl(&dword_227904000, v7, OS_LOG_TYPE_INFO, "Matchmaking removes invitee: %@", &v20, 0xCu);
   }
 
-  v10 = [v4 internal];
-  v11 = [v10 playerID];
+  internal2 = [inviteeCopy internal];
+  playerID = [internal2 playerID];
 
-  if (v11 && (-[GKMatchmaker inviteesByUserID](self, "inviteesByUserID"), v12 = objc_claimAutoreleasedReturnValue(), [v12 objectForKeyedSubscript:v11], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  if (playerID && (-[GKMatchmaker inviteesByUserID](self, "inviteesByUserID"), v12 = objc_claimAutoreleasedReturnValue(), [v12 objectForKeyedSubscript:playerID], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [(GKMatchmaker *)self inviteesByUserID];
-    v15 = [v14 mutableCopy];
+    inviteesByUserID = [(GKMatchmaker *)self inviteesByUserID];
+    v15 = [inviteesByUserID mutableCopy];
 
-    [v15 setObject:0 forKeyedSubscript:v11];
+    [v15 setObject:0 forKeyedSubscript:playerID];
     v16 = [v15 copy];
     [(GKMatchmaker *)self setInviteesByUserID:v16];
 
@@ -375,14 +375,14 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
 - (id)allInvitedInvitees
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(GKMatchmaker *)self invitedNearbyPlayers];
-  [v3 unionSet:v4];
+  invitedNearbyPlayers = [(GKMatchmaker *)self invitedNearbyPlayers];
+  [v3 unionSet:invitedNearbyPlayers];
 
-  v5 = [(GKMatchmaker *)self invitedInvitees];
-  [v3 unionSet:v5];
+  invitedInvitees = [(GKMatchmaker *)self invitedInvitees];
+  [v3 unionSet:invitedInvitees];
 
-  v6 = [(GKMatchmaker *)self invitedShareInvitees];
-  [v3 unionSet:v6];
+  invitedShareInvitees = [(GKMatchmaker *)self invitedShareInvitees];
+  [v3 unionSet:invitedShareInvitees];
 
   return v3;
 }
@@ -391,20 +391,20 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(GKMatchmaker *)self allInvitedInvitees];
-  [v3 unionSet:v4];
+  allInvitedInvitees = [(GKMatchmaker *)self allInvitedInvitees];
+  [v3 unionSet:allInvitedInvitees];
 
-  v5 = [(GKMatchmaker *)self currentMatchRequest];
-  v6 = [v5 recipients];
-  v7 = [v6 count];
+  currentMatchRequest = [(GKMatchmaker *)self currentMatchRequest];
+  recipients = [currentMatchRequest recipients];
+  v7 = [recipients count];
 
   if (v7)
   {
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(GKMatchmaker *)self currentMatchRequest];
-    v10 = [v9 recipients];
-    v11 = [v10 _gkPlayersIDsFromPlayers];
-    v12 = [v8 setWithArray:v11];
+    currentMatchRequest2 = [(GKMatchmaker *)self currentMatchRequest];
+    recipients2 = [currentMatchRequest2 recipients];
+    _gkPlayersIDsFromPlayers = [recipients2 _gkPlayersIDsFromPlayers];
+    v12 = [v8 setWithArray:_gkPlayersIDsFromPlayers];
     [v3 unionSet:v12];
   }
 
@@ -428,22 +428,22 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
 
 - (int64_t)inviteeCount
 {
-  v2 = [(GKMatchmaker *)self allInvitedInviteesAndInMatchRequestRecipients];
-  v3 = [v2 count];
+  allInvitedInviteesAndInMatchRequestRecipients = [(GKMatchmaker *)self allInvitedInviteesAndInMatchRequestRecipients];
+  v3 = [allInvitedInviteesAndInMatchRequestRecipients count];
 
   return v3;
 }
 
 - (int64_t)totalPlayerCount
 {
-  v3 = [(GKMatchmaker *)self match];
-  if (v3)
+  match = [(GKMatchmaker *)self match];
+  if (match)
   {
-    v4 = [(GKMatchmaker *)self match];
-    v5 = [v4 players];
-    v6 = [v5 count];
-    v7 = [(GKMatchmaker *)self match];
-    v8 = v6 + [v7 expectedPlayerCount] + 1;
+    match2 = [(GKMatchmaker *)self match];
+    players = [match2 players];
+    v6 = [players count];
+    match3 = [(GKMatchmaker *)self match];
+    v8 = v6 + [match3 expectedPlayerCount] + 1;
   }
 
   else
@@ -454,11 +454,11 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
   return v8;
 }
 
-- (void)reportPlayerConnectedWithPlayerID:(id)a3 forMatch:(id)a4
+- (void)reportPlayerConnectedWithPlayerID:(id)d forMatch:(id)match
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  matchCopy = match;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -470,33 +470,33 @@ void __62__GKMatchmaker_loadConnectivitySettingsWithCompletionHandler___block_in
     v10 = MEMORY[0x277CCABB0];
     v11 = v9;
     v12 = [v10 numberWithUnsignedInteger:{-[GKMatchmaker inviteApproach](self, "inviteApproach")}];
-    v13 = [(GKMatchmaker *)self invitedInvitees];
-    v14 = [(GKMatchmaker *)self invitedShareInvitees];
-    v15 = [(GKMatchmaker *)self invitedNearbyPlayers];
-    v16 = [(GKMatchmaker *)self autoMatchedPlayers];
-    v17 = [(GKMatchmaker *)self siblingInvitees];
+    invitedInvitees = [(GKMatchmaker *)self invitedInvitees];
+    invitedShareInvitees = [(GKMatchmaker *)self invitedShareInvitees];
+    invitedNearbyPlayers = [(GKMatchmaker *)self invitedNearbyPlayers];
+    autoMatchedPlayers = [(GKMatchmaker *)self autoMatchedPlayers];
+    siblingInvitees = [(GKMatchmaker *)self siblingInvitees];
     v44 = 138413826;
-    v45 = v6;
+    v45 = dCopy;
     v46 = 2112;
     v47 = v12;
     v48 = 2112;
-    v49 = v13;
+    v49 = invitedInvitees;
     v50 = 2112;
-    v51 = v14;
+    v51 = invitedShareInvitees;
     v52 = 2112;
-    v53 = v15;
+    v53 = invitedNearbyPlayers;
     v54 = 2112;
-    v55 = v16;
+    v55 = autoMatchedPlayers;
     v56 = 2112;
-    v57 = v17;
+    v57 = siblingInvitees;
     _os_log_impl(&dword_227904000, v11, OS_LOG_TYPE_INFO, "reportPlayerConnectedWithPlayerID: %@, inviteApproach:%@, push: %@, msg: %@, nearby: %@, automatch: %@, indirect: %@", &v44, 0x48u);
   }
 
   v18 = +[GKReporter reporter];
   [v18 reportEvent:@"com.apple.GameKit.multiplayer.realtime.connectionResult" type:@"realtime.allMatchSuccess"];
 
-  v19 = [(GKMatchmaker *)self invitedShareInvitees];
-  if ([v19 containsObject:v6])
+  invitedShareInvitees2 = [(GKMatchmaker *)self invitedShareInvitees];
+  if ([invitedShareInvitees2 containsObject:dCopy])
   {
 
 LABEL_7:
@@ -510,8 +510,8 @@ LABEL_7:
 
   if ([(GKMatchmaker *)self inviteApproach]== 2)
   {
-    v23 = [(GKMatchmaker *)self inviterPlayerID];
-    v24 = [v6 isEqualToString:v23];
+    inviterPlayerID = [(GKMatchmaker *)self inviterPlayerID];
+    v24 = [dCopy isEqualToString:inviterPlayerID];
 
     if (v24)
     {
@@ -523,8 +523,8 @@ LABEL_7:
   {
   }
 
-  v25 = [(GKMatchmaker *)self invitedInvitees];
-  if ([v25 containsObject:v6])
+  invitedInvitees2 = [(GKMatchmaker *)self invitedInvitees];
+  if ([invitedInvitees2 containsObject:dCopy])
   {
 
 LABEL_14:
@@ -538,8 +538,8 @@ LABEL_14:
 
   if ([(GKMatchmaker *)self inviteApproach]== 1)
   {
-    v27 = [(GKMatchmaker *)self inviterPlayerID];
-    v28 = [v6 isEqualToString:v27];
+    inviterPlayerID2 = [(GKMatchmaker *)self inviterPlayerID];
+    v28 = [dCopy isEqualToString:inviterPlayerID2];
 
     if (v28)
     {
@@ -551,8 +551,8 @@ LABEL_14:
   {
   }
 
-  v29 = [(GKMatchmaker *)self invitedNearbyPlayers];
-  if ([v29 containsObject:v6])
+  invitedNearbyPlayers2 = [(GKMatchmaker *)self invitedNearbyPlayers];
+  if ([invitedNearbyPlayers2 containsObject:dCopy])
   {
 
 LABEL_21:
@@ -566,8 +566,8 @@ LABEL_21:
 
   if ([(GKMatchmaker *)self inviteApproach]== 3)
   {
-    v31 = [(GKMatchmaker *)self inviterPlayerID];
-    v32 = [v6 isEqualToString:v31];
+    inviterPlayerID3 = [(GKMatchmaker *)self inviterPlayerID];
+    v32 = [dCopy isEqualToString:inviterPlayerID3];
 
     if (v32)
     {
@@ -579,8 +579,8 @@ LABEL_21:
   {
   }
 
-  v33 = [(GKMatchmaker *)self siblingInvitees];
-  v34 = [v33 containsObject:v6];
+  siblingInvitees2 = [(GKMatchmaker *)self siblingInvitees];
+  v34 = [siblingInvitees2 containsObject:dCopy];
 
   if (v34)
   {
@@ -593,8 +593,8 @@ LABEL_21:
 
   else
   {
-    v36 = [(GKMatchmaker *)self autoMatchedPlayers];
-    v37 = [v36 containsObject:v6];
+    autoMatchedPlayers2 = [(GKMatchmaker *)self autoMatchedPlayers];
+    v37 = [autoMatchedPlayers2 containsObject:dCopy];
 
     if (v37)
     {
@@ -616,7 +616,7 @@ LABEL_21:
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         v44 = 138412290;
-        v45 = v6;
+        v45 = dCopy;
         _os_log_impl(&dword_227904000, v40, OS_LOG_TYPE_INFO, "playerID: %@, not found from any source of GKMatchmaker. It could be invitees of the automatched players.", &v44, 0xCu);
       }
 
@@ -627,10 +627,10 @@ LABEL_21:
 
 LABEL_35:
   v41 = +[GKDaemonProxy proxyForLocalPlayer];
-  v42 = [v41 utilityService];
-  [v42 completeMatchRecording:@"success" matchType:v22];
+  utilityService = [v41 utilityService];
+  [utilityService completeMatchRecording:@"success" matchType:v22];
 
-  [v7 updateJoinedPlayer:v6 joinType:v21];
+  [matchCopy updateJoinedPlayer:dCopy joinType:v21];
   v43 = *MEMORY[0x277D85DE8];
 }
 
@@ -665,10 +665,10 @@ LABEL_35:
     if ([(GKMatchmaker *)self hasInviteListener])
     {
       v5 = +[GKLocalPlayer localPlayer];
-      v6 = [v5 isAuthenticated];
+      isAuthenticated = [v5 isAuthenticated];
       v7 = lookForInvite_lookingForInvite;
 
-      if (v6)
+      if (isAuthenticated)
       {
         if ((v7 & 1) == 0)
         {
@@ -1160,12 +1160,12 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunGroupActivityWithDescription:(id)a3
+- (BOOL)shouldRunGroupActivityWithDescription:(id)description
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] _gkMainBundleIsGameCenterSystemProcess];
-  if (v4)
+  descriptionCopy = description;
+  _gkMainBundleIsGameCenterSystemProcess = [MEMORY[0x277CCA8D8] _gkMainBundleIsGameCenterSystemProcess];
+  if (_gkMainBundleIsGameCenterSystemProcess)
   {
     if (!os_log_GKGeneral)
     {
@@ -1176,7 +1176,7 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v3;
+      v15 = descriptionCopy;
       _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "Will not do: %@, for Game Center internal processes.", &v14, 0xCu);
     }
   }
@@ -1193,17 +1193,17 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
     {
       v9 = MEMORY[0x277CCACC8];
       v10 = v8;
-      v11 = [v9 callStackSymbols];
+      callStackSymbols = [v9 callStackSymbols];
       v14 = 138412546;
-      v15 = v3;
+      v15 = descriptionCopy;
       v16 = 2112;
-      v17 = v11;
+      v17 = callStackSymbols;
       _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_INFO, "%@, callStacK: %@", &v14, 0x16u);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v4 ^ 1;
+  return _gkMainBundleIsGameCenterSystemProcess ^ 1;
 }
 
 - (BOOL)isEligibleForGroupSession
@@ -1211,10 +1211,10 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
   v3 = [(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"isEligibleForGroupSession"];
   if (v3)
   {
-    v4 = [(GKMatchmaker *)self groupActivityManager];
-    v5 = [v4 isEligibleForGroupSession];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    isEligibleForGroupSession = [groupActivityManager isEligibleForGroupSession];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isEligibleForGroupSession;
   }
 
   return v3;
@@ -1235,24 +1235,24 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
   }
 }
 
-- (void)activateGroupActivityWithHandler:(id)a3
+- (void)activateGroupActivityWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"activateGroupActivity"])
   {
-    v5 = [(GKMatchmaker *)self groupActivityManager];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
     v6 = +[GKGame currentGame];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__GKMatchmaker_activateGroupActivityWithHandler___block_invoke;
     v7[3] = &unk_2785DE008;
-    v8 = v4;
-    [v5 activateWithGame:v6 completionHandler:v7];
+    v8 = handlerCopy;
+    [groupActivityManager activateWithGame:v6 completionHandler:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1260,8 +1260,8 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
 {
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"changeGroupActivityStateToGameStarted"])
   {
-    v3 = [(GKMatchmaker *)self groupActivityManager];
-    [v3 startGame];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager startGame];
   }
 }
 
@@ -1269,8 +1269,8 @@ void __29__GKMatchmaker_lookForInvite__block_invoke_92(uint64_t a1)
 {
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"endGroupActivity"])
   {
-    v3 = [(GKMatchmaker *)self groupActivityManager];
-    [v3 endWithCompletionHandler:&__block_literal_global_27];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager endWithCompletionHandler:&__block_literal_global_27];
   }
 }
 
@@ -1289,13 +1289,13 @@ void __32__GKMatchmaker_endGroupActivity__block_invoke()
   }
 }
 
-- (void)playerDisconnected:(id)a3
+- (void)playerDisconnected:(id)disconnected
 {
-  v5 = a3;
+  disconnectedCopy = disconnected;
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"playerDisconnected"])
   {
-    v4 = [(GKMatchmaker *)self groupActivityManager];
-    [v4 playerDisconnectWithPlayer:v5 completionHandler:&__block_literal_global_130_0];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager playerDisconnectWithPlayer:disconnectedCopy completionHandler:&__block_literal_global_130_0];
   }
 }
 
@@ -1316,10 +1316,10 @@ void __35__GKMatchmaker_playerDisconnected___block_invoke()
 
 - (id)sharingControllerItemProvider
 {
-  v2 = [(GKMatchmaker *)self groupActivityManager];
+  groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
   v3 = +[GKGame currentGame];
   v8 = 0;
-  v4 = [v2 sharingControllerItemProviderWithGame:v3 error:&v8];
+  v4 = [groupActivityManager sharingControllerItemProviderWithGame:v3 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -1342,8 +1342,8 @@ void __35__GKMatchmaker_playerDisconnected___block_invoke()
 {
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"leaveGroupActivity"])
   {
-    v3 = [(GKMatchmaker *)self groupActivityManager];
-    [v3 leaveWithCompletionHandler:&__block_literal_global_135];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager leaveWithCompletionHandler:&__block_literal_global_135];
   }
 }
 
@@ -1366,8 +1366,8 @@ void __34__GKMatchmaker_leaveGroupActivity__block_invoke()
 {
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"resetGroupActivity"])
   {
-    v3 = [(GKMatchmaker *)self groupActivityManager];
-    [v3 resetWithCompletionHandler:&__block_literal_global_140];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager resetWithCompletionHandler:&__block_literal_global_140];
   }
 }
 
@@ -1386,23 +1386,23 @@ void __34__GKMatchmaker_resetGroupActivity__block_invoke()
   }
 }
 
-- (void)sendGroupActivityInviteTo:(id)a3 participantID:(id)a4 pushToken:(id)a5
+- (void)sendGroupActivityInviteTo:(id)to participantID:(id)d pushToken:(id)token
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  toCopy = to;
+  dCopy = d;
+  tokenCopy = token;
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"groupActivityInvitePlayer"])
   {
     v14[0] = @"player";
     v14[1] = @"pushToken";
-    v15[0] = v8;
-    v15[1] = v10;
+    v15[0] = toCopy;
+    v15[1] = tokenCopy;
     v14[2] = @"participantIdentifier";
-    v15[2] = v9;
+    v15[2] = dCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 postNotificationName:@"GKGroupActivityPlayerToInviteNotification" object:0 userInfo:v11];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"GKGroupActivityPlayerToInviteNotification" object:0 userInfo:v11];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1412,20 +1412,20 @@ void __34__GKMatchmaker_resetGroupActivity__block_invoke()
 {
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"lookForGroupActivities"])
   {
-    v3 = [(GKMatchmaker *)self groupActivityManager];
-    [v3 startLookingForSessions];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager startLookingForSessions];
   }
 }
 
-- (void)showSharePlayMatchDeclinedToJoinAlertWithReason:(int64_t)a3
+- (void)showSharePlayMatchDeclinedToJoinAlertWithReason:(int64_t)reason
 {
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"showSharePlayMatchDeclinedToJoinAlertWithReason"])
   {
     v4 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHAREPLAY_DECLINE_UNKNOWN];
     v5 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHAREPLAY_DECLINE_UNKNOWN_MESSAGE];
-    if (a3 <= 2)
+    if (reason <= 2)
     {
-      if (a3 == 1)
+      if (reason == 1)
       {
         v6 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHAREPLAY_DECLINE_GAME_IS_FULL];
 
@@ -1448,7 +1448,7 @@ void __34__GKMatchmaker_resetGroupActivity__block_invoke()
         goto LABEL_24;
       }
 
-      if (a3 == 2)
+      if (reason == 2)
       {
         v6 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHAREPLAY_DECLINE_GAME_HAS_STARTED];
 
@@ -1519,7 +1519,7 @@ LABEL_15:
       goto LABEL_25;
     }
 
-    if (a3 == 3)
+    if (reason == 3)
     {
       if (!os_log_GKGeneral)
       {
@@ -1539,7 +1539,7 @@ LABEL_15:
 
     else
     {
-      if (a3 != 4)
+      if (reason != 4)
       {
         goto LABEL_15;
       }
@@ -1579,11 +1579,11 @@ LABEL_37:
   }
 }
 
-- (void)respondToHostedInvite:(id)a3 completionHandler:(id)a4
+- (void)respondToHostedInvite:(id)invite completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  inviteCopy = invite;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -1593,7 +1593,7 @@ LABEL_37:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v5;
+    v28 = inviteCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "Matchmaking respond to hosted invite: %@", buf, 0xCu);
   }
 
@@ -1602,28 +1602,28 @@ LABEL_37:
 
   v11 = [GKTransportContext alloc];
   v12 = +[GKGame currentGame];
-  v13 = [v12 internal];
-  v14 = [v13 supportedTransports];
-  v15 = [(GKTransportContext *)v11 initWithSupportedTransports:v14];
+  internal = [v12 internal];
+  supportedTransports = [internal supportedTransports];
+  v15 = [(GKTransportContext *)v11 initWithSupportedTransports:supportedTransports];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __56__GKMatchmaker_respondToHostedInvite_completionHandler___block_invoke;
   v23[3] = &unk_2785DD910;
-  v16 = v5;
+  v16 = inviteCopy;
   v24 = v16;
   v17 = v15;
   v25 = v17;
   v18 = v10;
   v26 = v18;
   [v18 perform:v23];
-  if (v6)
+  if (handlerCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __56__GKMatchmaker_respondToHostedInvite_completionHandler___block_invoke_163;
     v20[3] = &unk_2785DDC10;
-    v22 = v6;
+    v22 = handlerCopy;
     v21 = v18;
     [v21 notifyOnMainQueueWithBlock:v20];
   }
@@ -1701,16 +1701,16 @@ void __56__GKMatchmaker_respondToHostedInvite_completionHandler___block_invoke_1
   return [(GKMatch *)v3 initWithMatchmaker:self];
 }
 
-- (void)matchForNearbyInvite:(id)a3 handler:(id)a4
+- (void)matchForNearbyInvite:(id)invite handler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inviteCopy = invite;
+  handlerCopy = handler;
   [(GKMatchmaker *)self setInviteApproach:3];
-  v8 = [v6 sender];
-  v9 = [v8 internal];
-  v10 = [v9 playerID];
-  [(GKMatchmaker *)self setInviterPlayerID:v10];
+  sender = [inviteCopy sender];
+  internal = [sender internal];
+  playerID = [internal playerID];
+  [(GKMatchmaker *)self setInviterPlayerID:playerID];
 
   if (!os_log_GKGeneral)
   {
@@ -1721,25 +1721,25 @@ void __56__GKMatchmaker_respondToHostedInvite_completionHandler___block_invoke_1
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = inviteCopy;
     _os_log_impl(&dword_227904000, v12, OS_LOG_TYPE_INFO, "Match for nearby invite: %@", buf, 0xCu);
   }
 
-  v13 = [(GKMatchmaker *)self newMatch];
+  newMatch = [(GKMatchmaker *)self newMatch];
   v14 = +[GKDaemonProxy proxyForLocalPlayer];
-  v15 = [v14 multiplayerService];
+  multiplayerService = [v14 multiplayerService];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __45__GKMatchmaker_matchForNearbyInvite_handler___block_invoke;
   v20[3] = &unk_2785DF480;
-  v21 = v13;
-  v22 = self;
-  v23 = v6;
-  v24 = v7;
-  v16 = v7;
-  v17 = v6;
-  v18 = v13;
-  [v15 fetchTransportOverrideWithHandler:v20];
+  v21 = newMatch;
+  selfCopy = self;
+  v23 = inviteCopy;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = inviteCopy;
+  v18 = newMatch;
+  [multiplayerService fetchTransportOverrideWithHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1783,15 +1783,15 @@ uint64_t __45__GKMatchmaker_matchForNearbyInvite_handler___block_invoke_2(uint64
   return result;
 }
 
-- (void)matchForRemoteInvite:(id)a3 completionHandler:(id)a4
+- (void)matchForRemoteInvite:(id)invite completionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sender];
-  v9 = [v8 internal];
-  v10 = [v9 playerID];
-  [(GKMatchmaker *)self setInviterPlayerID:v10];
+  inviteCopy = invite;
+  handlerCopy = handler;
+  sender = [inviteCopy sender];
+  internal = [sender internal];
+  playerID = [internal playerID];
+  [(GKMatchmaker *)self setInviterPlayerID:playerID];
 
   if (!os_log_GKGeneral)
   {
@@ -1801,9 +1801,9 @@ uint64_t __45__GKMatchmaker_matchForNearbyInvite_handler___block_invoke_2(uint64
   v12 = os_log_GKMatch;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v6 internal];
-    v14 = [v13 isNearbyInvite];
-    if (v14)
+    internal2 = [inviteCopy internal];
+    isNearbyInvite = [internal2 isNearbyInvite];
+    if (isNearbyInvite)
     {
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@" nearby"];
     }
@@ -1816,9 +1816,9 @@ uint64_t __45__GKMatchmaker_matchForNearbyInvite_handler___block_invoke_2(uint64
     *buf = 138412546;
     v44 = v15;
     v45 = 2112;
-    v46 = v6;
+    v46 = inviteCopy;
     _os_log_impl(&dword_227904000, v12, OS_LOG_TYPE_INFO, "Match for remote%@ invite: %@", buf, 0x16u);
-    if (v14)
+    if (isNearbyInvite)
     {
     }
   }
@@ -1826,11 +1826,11 @@ uint64_t __45__GKMatchmaker_matchForNearbyInvite_handler___block_invoke_2(uint64
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchmaker.m", 689, "-[GKMatchmaker matchForRemoteInvite:completionHandler:]"];
   v17 = [GKDispatchGroup dispatchGroupWithName:v16];
 
-  v18 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v19 = MEMORY[0x277CCACA8];
-  v20 = [v18 UUIDString];
-  v21 = [v19 stringWithFormat:@"com.apple.GameKit.matchmaker.remote.%@", v20];
-  v22 = [v21 UTF8String];
+  uUIDString = [uUID UUIDString];
+  v21 = [v19 stringWithFormat:@"com.apple.GameKit.matchmaker.remote.%@", uUIDString];
+  uTF8String = [v21 UTF8String];
 
   if (!os_log_GKGeneral)
   {
@@ -1841,31 +1841,31 @@ uint64_t __45__GKMatchmaker_matchForNearbyInvite_handler___block_invoke_2(uint64
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
-    v44 = v22;
+    v44 = uTF8String;
     _os_log_impl(&dword_227904000, v24, OS_LOG_TYPE_INFO, "Created an invitee inner queue with label: %s", buf, 0xCu);
   }
 
-  v25 = dispatch_queue_create(v22, 0);
+  v25 = dispatch_queue_create(uTF8String, 0);
   v26 = dispatch_semaphore_create(0);
-  v27 = [(GKMatchmaker *)self invitationQueue];
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__GKMatchmaker_matchForRemoteInvite_completionHandler___block_invoke;
   block[3] = &unk_2785DF548;
-  v36 = v18;
+  v36 = uUID;
   v37 = v17;
   v38 = v25;
-  v39 = self;
+  selfCopy = self;
   v40 = v26;
-  v41 = v6;
-  v42 = v7;
-  v28 = v7;
-  v29 = v6;
+  v41 = inviteCopy;
+  v42 = handlerCopy;
+  v28 = handlerCopy;
+  v29 = inviteCopy;
   v30 = v26;
   v31 = v25;
   v32 = v17;
-  v33 = v18;
-  dispatch_async(v27, block);
+  v33 = uUID;
+  dispatch_async(invitationQueue, block);
 
   v34 = *MEMORY[0x277D85DE8];
 }
@@ -2725,11 +2725,11 @@ void __49__GKMatchmaker_matchForInvite_completionHandler___block_invoke_5(uint64
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)reportResponse:(int64_t)a3 forInvitees:(id)a4 withCompletionHandler:(id)a5
+- (void)reportResponse:(int64_t)response forInvitees:(id)invitees withCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  inviteesCopy = invitees;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v10 = GKOSLoggers();
@@ -2740,11 +2740,11 @@ void __49__GKMatchmaker_matchForInvite_completionHandler___block_invoke_5(uint64
   {
     v12 = MEMORY[0x277CCABB0];
     v13 = v11;
-    v14 = [v12 numberWithLong:a3];
+    v14 = [v12 numberWithLong:response];
     *buf = 138412546;
     v31 = v14;
     v32 = 2112;
-    v33 = v8;
+    v33 = inviteesCopy;
     _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "Matchmaking reports response: %@  for invitees:%@", buf, 0x16u);
   }
 
@@ -2754,10 +2754,10 @@ void __49__GKMatchmaker_matchForInvite_completionHandler___block_invoke_5(uint64
     block[1] = 3221225472;
     block[2] = __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___block_invoke;
     block[3] = &unk_2785DF598;
-    v26 = v8;
-    v27 = self;
-    v29 = a3;
-    v28 = v9;
+    v26 = inviteesCopy;
+    selfCopy = self;
+    responseCopy = response;
+    v28 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -2773,18 +2773,18 @@ void __49__GKMatchmaker_matchForInvite_completionHandler___block_invoke_5(uint64
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_ERROR))
       {
         [GKMatchmaker reportResponse:forInvitees:withCompletionHandler:];
-        if (!v9)
+        if (!handlerCopy)
         {
           goto LABEL_14;
         }
       }
 
-      else if (!v9)
+      else if (!handlerCopy)
       {
         goto LABEL_14;
       }
 
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
       goto LABEL_14;
     }
 
@@ -2795,15 +2795,15 @@ void __49__GKMatchmaker_matchForInvite_completionHandler___block_invoke_5(uint64
     v21[1] = 3221225472;
     v21[2] = __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___block_invoke_2;
     v21[3] = &unk_2785DE6E0;
-    v22 = v8;
-    v23 = self;
-    v24 = a3;
+    v22 = inviteesCopy;
+    selfCopy2 = self;
+    responseCopy2 = response;
     [v16 perform:v21];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___block_invoke_4;
     v19[3] = &unk_2785DD710;
-    v20 = v9;
+    v20 = handlerCopy;
     [v16 notifyOnMainQueueWithBlock:v19];
   }
 
@@ -2937,15 +2937,15 @@ uint64_t __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___b
   return result;
 }
 
-- (void)invitePlayersWithRequest:(id)a3 serverHosted:(BOOL)a4 onlineConnectionData:(id)a5 devicePushTokenMap:(id)a6 isNearbyInvite:(BOOL)a7 completionHandler:(id)a8
+- (void)invitePlayersWithRequest:(id)request serverHosted:(BOOL)hosted onlineConnectionData:(id)data devicePushTokenMap:(id)map isNearbyInvite:(BOOL)invite completionHandler:(id)handler
 {
-  v48 = a4;
-  v49 = a7;
+  hostedCopy = hosted;
+  inviteCopy = invite;
   v63 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a8;
+  requestCopy = request;
+  dataCopy = data;
+  mapCopy = map;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v16 = GKOSLoggers();
@@ -2956,10 +2956,10 @@ uint64_t __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___b
   {
     v18 = MEMORY[0x277CCABB0];
     v19 = v17;
-    v20 = [v18 numberWithBool:v48];
-    v21 = [MEMORY[0x277CCABB0] numberWithBool:v49];
+    v20 = [v18 numberWithBool:hostedCopy];
+    v21 = [MEMORY[0x277CCABB0] numberWithBool:inviteCopy];
     *buf = 138412802;
-    v58 = v12;
+    v58 = requestCopy;
     v59 = 2112;
     v60 = v20;
     v61 = 2112;
@@ -2967,13 +2967,13 @@ uint64_t __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___b
     _os_log_impl(&dword_227904000, v19, OS_LOG_TYPE_INFO, "Invite players with request: %@, hosted: %@, nearby: %@", buf, 0x20u);
   }
 
-  v22 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
-  v23 = [v22 count];
+  sharePlayInviteeTokensFromProgrammaticInvite = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
+  v23 = [sharePlayInviteeTokensFromProgrammaticInvite count];
 
   if (!v23)
   {
-    v33 = [v12 internal];
-    [v33 setArchivedSharePlayInviteeTokensFromProgrammaticInvite:0];
+    internal = [requestCopy internal];
+    [internal setArchivedSharePlayInviteeTokensFromProgrammaticInvite:0];
     goto LABEL_19;
   }
 
@@ -2987,23 +2987,23 @@ uint64_t __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___b
   {
     v26 = MEMORY[0x277CCABB0];
     v27 = v25;
-    v28 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
-    v29 = [v26 numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
+    sharePlayInviteeTokensFromProgrammaticInvite2 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
+    v29 = [v26 numberWithUnsignedInteger:{objc_msgSend(sharePlayInviteeTokensFromProgrammaticInvite2, "count")}];
     *buf = 138412290;
     v58 = v29;
     _os_log_impl(&dword_227904000, v27, OS_LOG_TYPE_INFO, "There seems to be some invitees coming from SharePlay. Adding (%@) device push token(s).", buf, 0xCu);
   }
 
   v30 = MEMORY[0x277CCAAB0];
-  v31 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
+  sharePlayInviteeTokensFromProgrammaticInvite3 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
   v56 = 0;
-  v32 = [v30 archivedDataWithRootObject:v31 requiringSecureCoding:1 error:&v56];
-  v33 = v56;
+  v32 = [v30 archivedDataWithRootObject:sharePlayInviteeTokensFromProgrammaticInvite3 requiringSecureCoding:1 error:&v56];
+  internal = v56;
 
   if (v32)
   {
-    v34 = [v12 internal];
-    [v34 setArchivedSharePlayInviteeTokensFromProgrammaticInvite:v32];
+    internal2 = [requestCopy internal];
+    [internal2 setArchivedSharePlayInviteeTokensFromProgrammaticInvite:v32];
   }
 
   else
@@ -3019,46 +3019,46 @@ uint64_t __65__GKMatchmaker_reportResponse_forInvitees_withCompletionHandler___b
       goto LABEL_18;
     }
 
-    v34 = v36;
-    v37 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
+    internal2 = v36;
+    sharePlayInviteeTokensFromProgrammaticInvite4 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
     *buf = 138412546;
-    v58 = v37;
+    v58 = sharePlayInviteeTokensFromProgrammaticInvite4;
     v59 = 2112;
-    v60 = v33;
-    _os_log_impl(&dword_227904000, v34, OS_LOG_TYPE_INFO, "failed to archive shareplay invitees from programmatic invite. players: %@ error: %@", buf, 0x16u);
+    v60 = internal;
+    _os_log_impl(&dword_227904000, internal2, OS_LOG_TYPE_INFO, "failed to archive shareplay invitees from programmatic invite. players: %@ error: %@", buf, 0x16u);
   }
 
 LABEL_18:
 LABEL_19:
 
-  v38 = [(GKMatchmaker *)self match];
+  match = [(GKMatchmaker *)self match];
 
-  if (!v38)
+  if (!match)
   {
-    v39 = [(GKMatchmaker *)self newMatch];
-    [(GKMatchmaker *)self setMatch:v39];
+    newMatch = [(GKMatchmaker *)self newMatch];
+    [(GKMatchmaker *)self setMatch:newMatch];
   }
 
-  v40 = [(GKMatchmaker *)self match];
-  v41 = [v40 transportContext];
-  [v41 updateForInviteInitiationWithOnlineConnectionData:v13];
+  match2 = [(GKMatchmaker *)self match];
+  transportContext = [match2 transportContext];
+  [transportContext updateForInviteInitiationWithOnlineConnectionData:dataCopy];
 
   v42 = +[GKDaemonProxy proxyForLocalPlayer];
-  v43 = [v42 multiplayerService];
+  multiplayerService = [v42 multiplayerService];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __127__GKMatchmaker_invitePlayersWithRequest_serverHosted_onlineConnectionData_devicePushTokenMap_isNearbyInvite_completionHandler___block_invoke;
   v50[3] = &unk_2785DF688;
   v50[4] = self;
-  v51 = v12;
-  v54 = v49;
-  v55 = v48;
-  v52 = v14;
-  v53 = v15;
-  v44 = v15;
-  v45 = v14;
-  v46 = v12;
-  [v43 fetchTransportOverrideWithHandler:v50];
+  v51 = requestCopy;
+  v54 = inviteCopy;
+  v55 = hostedCopy;
+  v52 = mapCopy;
+  v53 = handlerCopy;
+  v44 = handlerCopy;
+  v45 = mapCopy;
+  v46 = requestCopy;
+  [multiplayerService fetchTransportOverrideWithHandler:v50];
 
   v47 = *MEMORY[0x277D85DE8];
 }
@@ -3740,22 +3740,22 @@ void __91__GKMatchmaker_invitePlayersWithRequest_serverHosted_devicePushTokenMap
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addInvitees:(id)a3
+- (void)addInvitees:(id)invitees
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKMatchmaker *)self inviteesByUserID];
+  inviteesCopy = invitees;
+  inviteesByUserID = [(GKMatchmaker *)self inviteesByUserID];
 
-  if (v5)
+  if (inviteesByUserID)
   {
-    v6 = [(GKMatchmaker *)self inviteesByUserID];
-    v7 = [v6 mutableCopy];
+    inviteesByUserID2 = [(GKMatchmaker *)self inviteesByUserID];
+    v7 = [inviteesByUserID2 mutableCopy];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v4;
+    v8 = inviteesCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -3771,12 +3771,12 @@ void __91__GKMatchmaker_invitePlayersWithRequest_serverHosted_devicePushTokenMap
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 internal];
-          v15 = [v14 playerID];
+          internal = [v13 internal];
+          playerID = [internal playerID];
 
-          if (v15)
+          if (playerID)
           {
-            [v7 setObject:v13 forKeyedSubscript:v15];
+            [v7 setObject:v13 forKeyedSubscript:playerID];
           }
         }
 
@@ -3791,7 +3791,7 @@ void __91__GKMatchmaker_invitePlayersWithRequest_serverHosted_devicePushTokenMap
 
   else
   {
-    v16 = [v4 _gkMapDictionaryWithKeyPath:@"internal.playerID"];
+    v16 = [inviteesCopy _gkMapDictionaryWithKeyPath:@"internal.playerID"];
     v7 = v16;
   }
 
@@ -3801,14 +3801,14 @@ void __91__GKMatchmaker_invitePlayersWithRequest_serverHosted_devicePushTokenMap
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMatchmakingRequest:(id)a3 forMatch:(id)a4 rematchID:(id)a5 serverHosted:(BOOL)a6 playerCount:(int64_t)a7 completionHandler:(id)a8
+- (void)sendMatchmakingRequest:(id)request forMatch:(id)match rematchID:(id)d serverHosted:(BOOL)hosted playerCount:(int64_t)count completionHandler:(id)handler
 {
-  v10 = a6;
+  hostedCopy = hosted;
   v51 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v38 = a5;
-  v15 = a8;
+  requestCopy = request;
+  matchCopy = match;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v16 = GKOSLoggers();
@@ -3819,26 +3819,26 @@ void __91__GKMatchmaker_invitePlayersWithRequest_serverHosted_devicePushTokenMap
   {
     v18 = MEMORY[0x277CCABB0];
     v19 = v17;
-    v20 = [v18 numberWithInteger:a7];
+    v20 = [v18 numberWithInteger:count];
     *buf = 138412802;
-    v46 = v13;
+    v46 = requestCopy;
     v47 = 2112;
-    v48 = v14;
+    v48 = matchCopy;
     v49 = 2112;
     v50 = v20;
     _os_log_impl(&dword_227904000, v19, OS_LOG_TYPE_INFO, "Matchmaking _request: %@, match %@, playerCount: %@", buf, 0x20u);
   }
 
   v21 = +[GKDaemonProxy proxyForLocalPlayer];
-  v22 = [v21 utilityService];
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "minPlayers")}];
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "maxPlayers")}];
-  [v22 recordMatchStart:@"host" minPlayers:v23 maxPlayers:v24];
+  utilityService = [v21 utilityService];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "minPlayers")}];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "maxPlayers")}];
+  [utilityService recordMatchStart:@"host" minPlayers:v23 maxPlayers:v24];
 
   v25 = +[GKDaemonProxy proxyForLocalPlayer];
-  v26 = [v25 utilityService];
-  v27 = v26;
-  if (v10)
+  utilityService2 = [v25 utilityService];
+  v27 = utilityService2;
+  if (hostedCopy)
   {
     v28 = @"thirdParty";
   }
@@ -3848,25 +3848,25 @@ void __91__GKMatchmaker_invitePlayersWithRequest_serverHosted_devicePushTokenMap
     v28 = @"firstParty";
   }
 
-  [v26 recordMatchServer:v28];
+  [utilityService2 recordMatchServer:v28];
 
   v29 = +[GKDaemonProxy proxyForLocalPlayer];
-  v30 = [v29 multiplayerService];
-  v31 = [v13 internal];
-  v32 = [v14 transportContext];
+  multiplayerService = [v29 multiplayerService];
+  internal = [requestCopy internal];
+  transportContext = [matchCopy transportContext];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __101__GKMatchmaker_sendMatchmakingRequest_forMatch_rematchID_serverHosted_playerCount_completionHandler___block_invoke;
   v39[3] = &unk_2785DF908;
-  v44 = v10;
-  v40 = v14;
-  v41 = v13;
-  v42 = self;
-  v43 = v15;
-  v33 = v15;
-  v34 = v13;
-  v35 = v14;
-  [v30 getPlayersForMatchRequest:v31 playerCount:a7 rematchID:v38 transportContext:v32 handler:v39];
+  v44 = hostedCopy;
+  v40 = matchCopy;
+  v41 = requestCopy;
+  selfCopy = self;
+  v43 = handlerCopy;
+  v33 = handlerCopy;
+  v34 = requestCopy;
+  v35 = matchCopy;
+  [multiplayerService getPlayersForMatchRequest:internal playerCount:count rematchID:dCopy transportContext:transportContext handler:v39];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -5530,27 +5530,27 @@ void __133__GKMatchmaker_handleMatchRequest_forCurrentMatch_hostedCurrentPlayerC
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadURLForMatch:(id)a3 matchRequest:(id)a4 completionHandler:(id)a5
+- (void)loadURLForMatch:(id)match matchRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  matchCopy = match;
+  requestCopy = request;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__GKMatchmaker_loadURLForMatch_matchRequest_completionHandler___block_invoke;
   aBlock[3] = &unk_2785DF930;
-  v11 = v10;
+  v11 = handlerCopy;
   v32 = v11;
   v12 = _Block_copy(aBlock);
   v13 = +[GKLocalPlayer localPlayer];
-  v14 = [v13 isAuthenticated];
+  isAuthenticated = [v13 isAuthenticated];
 
-  if (v14)
+  if (isAuthenticated)
   {
     v15 = +[GKPreferences shared];
-    v16 = [v15 multiplayerAllowedPlayerType];
+    multiplayerAllowedPlayerType = [v15 multiplayerAllowedPlayerType];
 
-    if (v16)
+    if (multiplayerAllowedPlayerType)
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchmaker.m", 1766, "-[GKMatchmaker loadURLForMatch:matchRequest:completionHandler:]"];
       v18 = [GKDispatchGroup dispatchGroupWithName:v17];
@@ -5562,16 +5562,16 @@ void __133__GKMatchmaker_handleMatchRequest_forCurrentMatch_hostedCurrentPlayerC
       v27[4] = self;
       v19 = v18;
       v28 = v19;
-      v20 = v8;
+      v20 = matchCopy;
       v29 = v20;
-      v30 = v9;
+      v30 = requestCopy;
       [v19 perform:v27];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __63__GKMatchmaker_loadURLForMatch_matchRequest_completionHandler___block_invoke_305;
       v22[3] = &unk_2785DD960;
       v23 = v19;
-      v24 = self;
+      selfCopy = self;
       v25 = v20;
       v26 = v11;
       v21 = v19;
@@ -5798,11 +5798,11 @@ void __63__GKMatchmaker_loadURLForMatch_matchRequest_completionHandler___block_i
   }
 }
 
-- (void)setShareInvitees:(id)a3 propagateToDaemon:(BOOL)a4
+- (void)setShareInvitees:(id)invitees propagateToDaemon:(BOOL)daemon
 {
-  v4 = a4;
+  daemonCopy = daemon;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  inviteesCopy = invitees;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -5812,28 +5812,28 @@ void __63__GKMatchmaker_loadURLForMatch_matchRequest_completionHandler___block_i
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = inviteesCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "Matchmaker set shareInvitees: %@", &v16, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+  v9 = [MEMORY[0x277CBEB18] arrayWithArray:inviteesCopy];
   [(GKMatchmaker *)self setShareInvitees:v9];
 
-  if (v4)
+  if (daemonCopy)
   {
     v10 = +[GKDaemonProxy proxyForLocalPlayer];
-    v11 = [v10 multiplayerService];
-    [v11 setShareInvitees:v6];
+    multiplayerService = [v10 multiplayerService];
+    [multiplayerService setShareInvitees:inviteesCopy];
   }
 
-  v12 = [(GKMatchmaker *)self invitedShareInvitees];
-  v13 = [MEMORY[0x277CBEB98] setWithArray:v6];
-  [v12 unionSet:v13];
+  invitedShareInvitees = [(GKMatchmaker *)self invitedShareInvitees];
+  v13 = [MEMORY[0x277CBEB98] setWithArray:inviteesCopy];
+  [invitedShareInvitees unionSet:v13];
 
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"updateAfterSettingShareInvitees"])
   {
-    v14 = [(GKMatchmaker *)self groupActivityManager];
-    [v14 update];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager update];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -5863,12 +5863,12 @@ void __58__GKMatchmaker_findMatchForRequest_withCompletionHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)findMatchForRequest:(id)a3 devicePushToken:(id)a4 withCompletionHandler:(id)a5
+- (void)findMatchForRequest:(id)request devicePushToken:(id)token withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v11 = GKOSLoggers();
@@ -5878,7 +5878,7 @@ void __58__GKMatchmaker_findMatchForRequest_withCompletionHandler___block_invoke
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = requestCopy;
     _os_log_impl(&dword_227904000, v12, OS_LOG_TYPE_INFO, "Find match for request: %@", buf, 0xCu);
   }
 
@@ -5888,9 +5888,9 @@ void __58__GKMatchmaker_findMatchForRequest_withCompletionHandler___block_invoke
   v16[1] = 3221225472;
   v16[2] = __74__GKMatchmaker_findMatchForRequest_devicePushToken_withCompletionHandler___block_invoke;
   v16[3] = &unk_2785DF9A8;
-  v17 = v10;
-  v13 = v10;
-  [(GKMatchmaker *)self handleMatchRequest:v8 forCurrentMatch:0 hostedCurrentPlayerCount:0 serverHosted:0 rematchID:0 devicePushToken:v9 completionHandler:v16];
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  [(GKMatchmaker *)self handleMatchRequest:requestCopy forCurrentMatch:0 hostedCurrentPlayerCount:0 serverHosted:0 rematchID:0 devicePushToken:tokenCopy completionHandler:v16];
   v14 = +[GKReporter reporter];
   [v14 reportEvent:@"com.apple.GameKit.match" type:@"find"];
 
@@ -5940,12 +5940,12 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findPlayersForHostedRequest:(id)a3 match:(id)a4 withCompletionHandler:(id)a5
+- (void)findPlayersForHostedRequest:(id)request match:(id)match withCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  matchCopy = match;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v11 = GKOSLoggers();
@@ -5955,25 +5955,25 @@ LABEL_10:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = v8;
+    v20 = requestCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = matchCopy;
     _os_log_impl(&dword_227904000, v12, OS_LOG_TYPE_INFO, "Find players for hosted request: %@, match: %@", buf, 0x16u);
   }
 
   v13 = +[GKReporter reporter];
-  [v13 reportEvent:@"com.apple.GameKit.match" reportable:v8];
+  [v13 reportEvent:@"com.apple.GameKit.match" reportable:requestCopy];
 
-  [(GKMatchmaker *)self setMatch:v9];
+  [(GKMatchmaker *)self setMatch:matchCopy];
   [(GKMatchmaker *)self setInviteesByUserID:0];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__GKMatchmaker_findPlayersForHostedRequest_match_withCompletionHandler___block_invoke;
   v17[3] = &unk_2785DFB10;
   v17[4] = self;
-  v18 = v10;
-  v14 = v10;
-  [(GKMatchmaker *)self handleMatchRequest:v8 forCurrentMatch:v9 hostedCurrentPlayerCount:0 serverHosted:1 rematchID:0 devicePushToken:0 completionHandler:v17];
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  [(GKMatchmaker *)self handleMatchRequest:requestCopy forCurrentMatch:matchCopy hostedCurrentPlayerCount:0 serverHosted:1 rematchID:0 devicePushToken:0 completionHandler:v17];
   v15 = +[GKReporter reporter];
   [v15 reportEvent:@"com.apple.GameKit.match" type:@"findHosted"];
 
@@ -6079,25 +6079,25 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findMatchedPlayers:(id)a3 withCompletionHandler:(id)a4
+- (void)findMatchedPlayers:(id)players withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  playersCopy = players;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(GKMatchmaker *)self newMatch];
+    newMatch = [(GKMatchmaker *)self newMatch];
     v9 = +[GKDaemonProxy proxyForLocalPlayer];
-    v10 = [v9 multiplayerService];
+    multiplayerService = [v9 multiplayerService];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __57__GKMatchmaker_findMatchedPlayers_withCompletionHandler___block_invoke;
     v13[3] = &unk_2785DF480;
-    v14 = v8;
-    v15 = self;
-    v16 = v6;
-    v17 = v7;
-    v11 = v8;
-    [v10 fetchTransportOverrideWithHandler:v13];
+    v14 = newMatch;
+    selfCopy = self;
+    v16 = playersCopy;
+    v17 = handlerCopy;
+    v11 = newMatch;
+    [multiplayerService fetchTransportOverrideWithHandler:v13];
   }
 
   else
@@ -6223,13 +6223,13 @@ id __71__GKMatchmaker_findPlayersForHostedMatchRequest_withCompletionHandler___b
   return v3;
 }
 
-- (void)addPlayersToMatch:(id)a3 matchRequest:(id)a4 devicePushToken:(id)a5 completionHandler:(id)a6
+- (void)addPlayersToMatch:(id)match matchRequest:(id)request devicePushToken:(id)token completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  matchCopy = match;
+  requestCopy = request;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v14 = GKOSLoggers();
@@ -6239,9 +6239,9 @@ id __71__GKMatchmaker_findPlayersForHostedMatchRequest_withCompletionHandler___b
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v22 = v10;
+    v22 = matchCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = requestCopy;
     _os_log_impl(&dword_227904000, v15, OS_LOG_TYPE_INFO, "Add players to match: %@, with request: %@", buf, 0x16u);
   }
 
@@ -6249,9 +6249,9 @@ id __71__GKMatchmaker_findPlayersForHostedMatchRequest_withCompletionHandler___b
   v19[1] = 3221225472;
   v19[2] = __81__GKMatchmaker_addPlayersToMatch_matchRequest_devicePushToken_completionHandler___block_invoke;
   v19[3] = &unk_2785DF9A8;
-  v20 = v13;
-  v16 = v13;
-  [(GKMatchmaker *)self handleMatchRequest:v11 forCurrentMatch:v10 hostedCurrentPlayerCount:0 serverHosted:0 rematchID:0 devicePushToken:v12 completionHandler:v19];
+  v20 = handlerCopy;
+  v16 = handlerCopy;
+  [(GKMatchmaker *)self handleMatchRequest:requestCopy forCurrentMatch:matchCopy hostedCurrentPlayerCount:0 serverHosted:0 rematchID:0 devicePushToken:tokenCopy completionHandler:v19];
   v17 = +[GKReporter reporter];
   [v17 reportEvent:@"com.apple.GameKit.match" type:@"add"];
 
@@ -6269,12 +6269,12 @@ uint64_t __81__GKMatchmaker_addPlayersToMatch_matchRequest_devicePushToken_compl
   return result;
 }
 
-- (void)addPlayersForHostedMatchRequest:(id)a3 existingPlayerCount:(int64_t)a4 devicePushToken:(id)a5 completionHandler:(id)a6
+- (void)addPlayersForHostedMatchRequest:(id)request existingPlayerCount:(int64_t)count devicePushToken:(id)token completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  requestCopy = request;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v13 = GKOSLoggers();
@@ -6284,7 +6284,7 @@ uint64_t __81__GKMatchmaker_addPlayersToMatch_matchRequest_devicePushToken_compl
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v10;
+    v21 = requestCopy;
     _os_log_impl(&dword_227904000, v14, OS_LOG_TYPE_INFO, "Add players for hosted match request: %@", buf, 0xCu);
   }
 
@@ -6292,20 +6292,20 @@ uint64_t __81__GKMatchmaker_addPlayersToMatch_matchRequest_devicePushToken_compl
   v18[1] = 3221225472;
   v18[2] = __102__GKMatchmaker_addPlayersForHostedMatchRequest_existingPlayerCount_devicePushToken_completionHandler___block_invoke;
   v18[3] = &unk_2785DF9A8;
-  v19 = v12;
-  v15 = v12;
-  [(GKMatchmaker *)self handleMatchRequest:v10 forCurrentMatch:0 hostedCurrentPlayerCount:a4 serverHosted:1 rematchID:0 devicePushToken:v11 completionHandler:v18];
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  [(GKMatchmaker *)self handleMatchRequest:requestCopy forCurrentMatch:0 hostedCurrentPlayerCount:count serverHosted:1 rematchID:0 devicePushToken:tokenCopy completionHandler:v18];
   v16 = +[GKReporter reporter];
   [v16 reportEvent:@"com.apple.GameKit.match" type:@"addHosted"];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findRematchForMatch:(id)a3 completionHandler:(id)a4
+- (void)findRematchForMatch:(id)match completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  matchCopy = match;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -6315,38 +6315,38 @@ uint64_t __81__GKMatchmaker_addPlayersToMatch_matchRequest_devicePushToken_compl
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = matchCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "Find rematch for match: %@", buf, 0xCu);
   }
 
-  v10 = [v6 rematchID];
-  if (v10)
+  rematchID = [matchCopy rematchID];
+  if (rematchID)
   {
-    v11 = v10;
-    v12 = [v6 rematchCount];
+    v11 = rematchID;
+    rematchCount = [matchCopy rematchCount];
 
-    if (v12)
+    if (rematchCount)
     {
       v13 = objc_alloc_init(GKMatchRequest);
-      -[GKMatchRequest setMinPlayers:](v13, "setMinPlayers:", [v6 rematchCount] + 1);
-      -[GKMatchRequest setMaxPlayers:](v13, "setMaxPlayers:", [v6 rematchCount] + 1);
-      v14 = [v6 rematchID];
+      -[GKMatchRequest setMinPlayers:](v13, "setMinPlayers:", [matchCopy rematchCount] + 1);
+      -[GKMatchRequest setMaxPlayers:](v13, "setMaxPlayers:", [matchCopy rematchCount] + 1);
+      rematchID2 = [matchCopy rematchID];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __54__GKMatchmaker_findRematchForMatch_completionHandler___block_invoke;
       v16[3] = &unk_2785DF9A8;
-      v17 = v7;
-      [(GKMatchmaker *)self handleMatchRequest:v13 forCurrentMatch:0 hostedCurrentPlayerCount:0 serverHosted:0 rematchID:v14 devicePushToken:0 completionHandler:v16];
+      v17 = handlerCopy;
+      [(GKMatchmaker *)self handleMatchRequest:v13 forCurrentMatch:0 hostedCurrentPlayerCount:0 serverHosted:0 rematchID:rematchID2 devicePushToken:0 completionHandler:v16];
 
 LABEL_10:
       goto LABEL_11;
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] userErrorForCode:13 underlyingError:0];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
     goto LABEL_10;
   }
 
@@ -6369,8 +6369,8 @@ uint64_t __54__GKMatchmaker_findRematchForMatch_completionHandler___block_invoke
 - (BOOL)allInviteesDidRespond
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(GKMatchmaker *)self inviteesByUserID];
-  if ([v3 count])
+  inviteesByUserID = [(GKMatchmaker *)self inviteesByUserID];
+  if ([inviteesByUserID count])
   {
 
 LABEL_4:
@@ -6383,9 +6383,9 @@ LABEL_4:
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [(GKMatchmaker *)self inviteesByUserID];
+      inviteesByUserID2 = [(GKMatchmaker *)self inviteesByUserID];
       v19 = 138412290;
-      v20 = v9;
+      v20 = inviteesByUserID2;
       _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "Waiting for response from invitees: %@", &v19, 0xCu);
     }
 
@@ -6399,9 +6399,9 @@ LABEL_4:
     if (v12)
     {
       v13 = v11;
-      v14 = [(GKMatchmaker *)self shareInvitees];
+      shareInvitees = [(GKMatchmaker *)self shareInvitees];
       v19 = 138412290;
-      v20 = v14;
+      v20 = shareInvitees;
       _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "Waiting for response from messages invitees: %@", &v19, 0xCu);
 
       LOBYTE(v12) = 0;
@@ -6410,8 +6410,8 @@ LABEL_4:
     goto LABEL_17;
   }
 
-  v4 = [(GKMatchmaker *)self shareInvitees];
-  v5 = [v4 count];
+  shareInvitees2 = [(GKMatchmaker *)self shareInvitees];
+  v5 = [shareInvitees2 count];
 
   if (v5)
   {
@@ -6438,8 +6438,8 @@ LABEL_17:
 - (void)doneMatchmaking
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_13() callStackSymbols];
+  selfCopy = self;
+  callStackSymbols = [OUTLINED_FUNCTION_13() callStackSymbols];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_6(&dword_227904000, v4, v5, "Done matchmaking Stack: %@", v6, v7, v8, v9, v11);
 
@@ -6449,8 +6449,8 @@ LABEL_17:
 - (void)cancelPendingInvites
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_13() callStackSymbols];
+  selfCopy = self;
+  callStackSymbols = [OUTLINED_FUNCTION_13() callStackSymbols];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_6(&dword_227904000, v4, v5, "Cancel pending invites. Call Stack: %@", v6, v7, v8, v9, v11);
 
@@ -6511,8 +6511,8 @@ uint64_t __36__GKMatchmaker_cancelPendingInvites__block_invoke_3(uint64_t a1)
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(GKPlayer *)v4 internal];
-    v9 = [v8 debugDescription];
+    internal = [(GKPlayer *)v4 internal];
+    v9 = [internal debugDescription];
     *buf = 138412290;
     v30 = v9;
     _os_log_impl(&dword_227904000, v7, OS_LOG_TYPE_INFO, "cancel pending invite to player: %@", buf, 0xCu);
@@ -6520,68 +6520,68 @@ uint64_t __36__GKMatchmaker_cancelPendingInvites__block_invoke_3(uint64_t a1)
 
   if ([(GKMatchmaker *)self removeInvitee:v4])
   {
-    v10 = [(GKMatchmaker *)self invitedInvitees];
-    v11 = [(GKPlayer *)v4 internal];
-    v12 = [v11 playerID];
-    [v10 removeObject:v12];
+    invitedInvitees = [(GKMatchmaker *)self invitedInvitees];
+    internal2 = [(GKPlayer *)v4 internal];
+    playerID = [internal2 playerID];
+    [invitedInvitees removeObject:playerID];
 
     v28 = v4;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
     [(GKMatchmaker *)self cancelNearbyInvitesToPlayers:v13];
 
-    LODWORD(v12) = [(GKMatchmaker *)self allInviteesDidRespond];
-    v14 = +[GKDaemonProxy proxyForLocalPlayer];
-    v15 = [v14 multiplayerService];
-    v16 = v15;
-    if (v12)
+    LODWORD(playerID) = [(GKMatchmaker *)self allInviteesDidRespond];
+    internal4 = +[GKDaemonProxy proxyForLocalPlayer];
+    multiplayerService = [internal4 multiplayerService];
+    v16 = multiplayerService;
+    if (playerID)
     {
-      [v15 cancelGameInviteWithHandler:&__block_literal_global_318_0];
+      [multiplayerService cancelGameInviteWithHandler:&__block_literal_global_318_0];
 
       [(GKMatchmaker *)self doneMatchmaking];
       goto LABEL_14;
     }
 
-    v18 = [(GKPlayer *)v4 internal];
-    v27 = v18;
+    internal3 = [(GKPlayer *)v4 internal];
+    v27 = internal3;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     [v16 removePlayersFromGameInviteV2:v19 handler:&__block_literal_global_320];
   }
 
   else
   {
-    v14 = [(GKPlayer *)v4 internal];
-    v17 = [v14 alias];
-    if (v17)
+    internal4 = [(GKPlayer *)v4 internal];
+    alias = [internal4 alias];
+    if (alias)
     {
     }
 
     else
     {
-      v20 = [(GKPlayer *)v4 messagesID];
+      messagesID = [(GKPlayer *)v4 messagesID];
 
-      if (!v20)
+      if (!messagesID)
       {
         goto LABEL_14;
       }
 
-      v21 = [(GKMatchmaker *)self shareInvitees];
-      v22 = [(GKPlayer *)v4 messagesID];
-      [v21 removeObject:v22];
+      shareInvitees = [(GKMatchmaker *)self shareInvitees];
+      messagesID2 = [(GKPlayer *)v4 messagesID];
+      [shareInvitees removeObject:messagesID2];
 
-      v23 = [(GKMatchmaker *)self invitedShareInvitees];
-      v24 = [(GKPlayer *)v4 messagesID];
-      [v23 removeObject:v24];
+      invitedShareInvitees = [(GKMatchmaker *)self invitedShareInvitees];
+      messagesID3 = [(GKPlayer *)v4 messagesID];
+      [invitedShareInvitees removeObject:messagesID3];
 
-      v14 = [(GKMatchmaker *)self shareInvitees];
-      [(GKMatchmaker *)self setShareInvitees:v14 propagateToDaemon:1];
+      internal4 = [(GKMatchmaker *)self shareInvitees];
+      [(GKMatchmaker *)self setShareInvitees:internal4 propagateToDaemon:1];
     }
   }
 
 LABEL_14:
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"updateAfterCancelPendingInvite"])
   {
-    v25 = [(GKMatchmaker *)self groupActivityManager];
-    [v25 update];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager update];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -6605,8 +6605,8 @@ LABEL_14:
 
   else
   {
-    v6 = [(GKMatchmaker *)self inviteesByUserID];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    inviteesByUserID = [(GKMatchmaker *)self inviteesByUserID];
+    v7 = [inviteesByUserID objectForKeyedSubscript:v4];
 
     if (v7)
     {
@@ -6632,8 +6632,8 @@ LABEL_14:
 - (void)cancel
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_13() callStackSymbols];
+  selfCopy = self;
+  callStackSymbols = [OUTLINED_FUNCTION_13() callStackSymbols];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_6(&dword_227904000, v4, v5, "GKMatchmaker cancel. Stack: \n%@", v6, v7, v8, v9, v11);
 
@@ -6657,8 +6657,8 @@ LABEL_14:
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "Finish matchmaking for match: %@", &v15, 0xCu);
   }
 
-  v7 = [(GKMatch *)v4 makeInviteMessageDoneData];
-  [(GKMatch *)v4 sendInviteData:v7];
+  makeInviteMessageDoneData = [(GKMatch *)v4 makeInviteMessageDoneData];
+  [(GKMatch *)v4 sendInviteData:makeInviteMessageDoneData];
 
   [(GKMatchmaker *)self changeGroupActivityStateToGameStarted];
   if (!os_log_GKGeneral)
@@ -6680,8 +6680,8 @@ LABEL_14:
   [v11 reportEvent:@"com.apple.GameKit.multiplayer.realtime.connectionResult" type:@"realtime.matchFromAPI"];
 
   v12 = +[GKDaemonProxy proxyForLocalPlayer];
-  v13 = [v12 utilityService];
-  [v13 recordGameStart];
+  utilityService = [v12 utilityService];
+  [utilityService recordGameStart];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -6692,13 +6692,13 @@ LABEL_14:
   if (v5)
   {
     v6 = +[GKDaemonProxy proxyForLocalPlayer];
-    v7 = [v6 multiplayerService];
+    multiplayerService = [v6 multiplayerService];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__GKMatchmaker_queryPlayerGroupActivity_withCompletionHandler___block_invoke;
     v10[3] = &unk_2785DFB80;
     v11 = v5;
-    [v7 getFlowRateForPlayerGroup:playerGroup handler:v10];
+    [multiplayerService getFlowRateForPlayerGroup:playerGroup handler:v10];
 
     v8 = +[GKReporter reporter];
     [v8 reportEvent:@"com.apple.GameKit.match" type:@"queryGroup"];
@@ -6724,13 +6724,13 @@ LABEL_14:
   if (v3)
   {
     v4 = +[GKDaemonProxy proxyForLocalPlayer];
-    v5 = [v4 multiplayerService];
+    multiplayerService = [v4 multiplayerService];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__GKMatchmaker_queryActivityWithCompletionHandler___block_invoke;
     v8[3] = &unk_2785DFB80;
     v9 = v3;
-    [v5 getOverallFlowRateWithHandler:v8];
+    [multiplayerService getOverallFlowRateWithHandler:v8];
 
     v6 = +[GKReporter reporter];
     [v6 reportEvent:@"com.apple.GameKit.match" type:@"query"];
@@ -6750,20 +6750,20 @@ LABEL_14:
   }
 }
 
-- (void)queryQueueActivity:(id)a3 withCompletionHandler:(id)a4
+- (void)queryQueueActivity:(id)activity withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  activityCopy = activity;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = +[GKDaemonProxy proxyForLocalPlayer];
-    v8 = [v7 multiplayerService];
+    multiplayerService = [v7 multiplayerService];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __57__GKMatchmaker_queryQueueActivity_withCompletionHandler___block_invoke;
     v11[3] = &unk_2785DFB80;
-    v12 = v6;
-    [v8 getFlowRateForQueue:v5 handler:v11];
+    v12 = handlerCopy;
+    [multiplayerService getFlowRateForQueue:activityCopy handler:v11];
 
     v9 = +[GKReporter reporter];
     [v9 reportEvent:@"com.apple.GameKit.match" type:@"queryQueue"];
@@ -6916,12 +6916,12 @@ void __52__GKMatchmaker_startGroupActivityWithPlayerHandler___block_invoke(uint6
   }
 
   [(GKMatchmaker *)self setSharePlayPlayerHandler:0];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"GKGroupActivityPlayerToInviteNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"GKGroupActivityPlayerToInviteNotification" object:0];
   if ([(GKMatchmaker *)self shouldRunGroupActivityWithDescription:@"endGroupActivity"])
   {
-    v6 = [(GKMatchmaker *)self groupActivityManager];
-    [v6 endWithCompletionHandler:&__block_literal_global_334_0];
+    groupActivityManager = [(GKMatchmaker *)self groupActivityManager];
+    [groupActivityManager endWithCompletionHandler:&__block_literal_global_334_0];
   }
 }
 
@@ -6940,10 +6940,10 @@ void __33__GKMatchmaker_stopGroupActivity__block_invoke()
   }
 }
 
-- (void)sharePlayPlayerFound:(id)a3
+- (void)sharePlayPlayerFound:(id)found
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foundCopy = found;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -6953,19 +6953,19 @@ void __33__GKMatchmaker_stopGroupActivity__block_invoke()
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v23 = 138412290;
-    v24 = v4;
+    v24 = foundCopy;
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "sharePlayPlayerFound: %@", &v23, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"player"];
-  v9 = [v7 objectForKeyedSubscript:@"pushToken"];
-  v10 = [(GKMatchmaker *)self sharePlayPlayerHandler];
+  userInfo = [foundCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"player"];
+  v9 = [userInfo objectForKeyedSubscript:@"pushToken"];
+  sharePlayPlayerHandler = [(GKMatchmaker *)self sharePlayPlayerHandler];
 
-  if (v10)
+  if (sharePlayPlayerHandler)
   {
-    v11 = [(GKMatchmaker *)self sharePlayPlayerHandler];
-    (v11)[2](v11, v8);
+    sharePlayPlayerHandler2 = [(GKMatchmaker *)self sharePlayPlayerHandler];
+    (sharePlayPlayerHandler2)[2](sharePlayPlayerHandler2, v8);
 
     if (!os_log_GKGeneral)
     {
@@ -6982,10 +6982,10 @@ void __33__GKMatchmaker_stopGroupActivity__block_invoke()
       _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "sharePlayInviteeTokensFromProgrammaticInvite gets a new player: %@, with token: %@", &v23, 0x16u);
     }
 
-    v14 = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
-    v15 = [v8 internal];
-    v16 = [v15 playerID];
-    [v14 setObject:v9 forKeyedSubscript:v16];
+    sharePlayInviteeTokensFromProgrammaticInvite = [(GKMatchmaker *)self sharePlayInviteeTokensFromProgrammaticInvite];
+    internal = [v8 internal];
+    playerID = [internal playerID];
+    [sharePlayInviteeTokensFromProgrammaticInvite setObject:v9 forKeyedSubscript:playerID];
   }
 
   else
@@ -6999,8 +6999,8 @@ void __33__GKMatchmaker_stopGroupActivity__block_invoke()
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v19 = v18;
-      v20 = [v8 internal];
-      v21 = [v20 debugDescription];
+      internal2 = [v8 internal];
+      v21 = [internal2 debugDescription];
       v23 = 138412290;
       v24 = v21;
       _os_log_impl(&dword_227904000, v19, OS_LOG_TYPE_INFO, "no sharePlayPlayerHandler is set to call it back for developers. player: %@", &v23, 0xCu);
@@ -7010,31 +7010,31 @@ void __33__GKMatchmaker_stopGroupActivity__block_invoke()
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)responseForDeclineReason:(int64_t)a3
+- (int64_t)responseForDeclineReason:(int64_t)reason
 {
-  if ((a3 - 2) > 3)
+  if ((reason - 2) > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_227A9FF00[a3 - 2];
+    return qword_227A9FF00[reason - 2];
   }
 }
 
-- (void)localPlayerAcceptedGameInviteNotification:(id)a3
+- (void)localPlayerAcceptedGameInviteNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(GKMatchmaker *)self invitationQueue];
+  notificationCopy = notification;
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__GKMatchmaker_localPlayerAcceptedGameInviteNotification___block_invoke;
   v7[3] = &unk_2785DEBA8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(invitationQueue, v7);
 }
 
 void __58__GKMatchmaker_localPlayerAcceptedGameInviteNotification___block_invoke(uint64_t a1)
@@ -7051,21 +7051,21 @@ void __58__GKMatchmaker_localPlayerAcceptedGameInviteNotification___block_invoke
   }
 }
 
-- (void)inviteeAcceptedNotification:(id)a3
+- (void)inviteeAcceptedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"peer-id"];
-  v6 = [(GKMatchmaker *)self invitationQueue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"peer-id"];
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__GKMatchmaker_inviteeAcceptedNotification___block_invoke;
   block[3] = &unk_2785DDB40;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = userInfo;
+  v7 = userInfo;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(invitationQueue, block);
 }
 
 void __44__GKMatchmaker_inviteeAcceptedNotification___block_invoke(uint64_t a1)
@@ -7114,11 +7114,11 @@ void __44__GKMatchmaker_inviteeAcceptedNotification___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shareInviteeAcceptedWithUserInfo:(id)a3
+- (void)shareInviteeAcceptedWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"iCloudID"];
-  v6 = [v4 objectForKeyedSubscript:@"peer-id"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"iCloudID"];
+  v6 = [infoCopy objectForKeyedSubscript:@"peer-id"];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchmaker.m", 2383, "-[GKMatchmaker shareInviteeAcceptedWithUserInfo:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
@@ -7133,19 +7133,19 @@ void __44__GKMatchmaker_inviteeAcceptedNotification___block_invoke(uint64_t a1)
   v24 = v10;
   v11 = v6;
   [v10 perform:v21];
-  v12 = [(GKMatchmaker *)self invitationQueue];
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__GKMatchmaker_shareInviteeAcceptedWithUserInfo___block_invoke_341;
   v16[3] = &unk_2785DF3E0;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v19 = v9;
-  v20 = v4;
-  v13 = v4;
+  v20 = infoCopy;
+  v13 = infoCopy;
   v14 = v9;
   v15 = v10;
-  [v15 notifyOnQueue:v12 block:v16];
+  [v15 notifyOnQueue:invitationQueue block:v16];
 }
 
 void __49__GKMatchmaker_shareInviteeAcceptedWithUserInfo___block_invoke(uint64_t a1, void *a2)
@@ -7228,52 +7228,52 @@ void __49__GKMatchmaker_shareInviteeAcceptedWithUserInfo___block_invoke_341(uint
   }
 }
 
-- (void)inviteeAccepted:(id)a3 userInfo:(id)a4 allResponded:(BOOL)a5
+- (void)inviteeAccepted:(id)accepted userInfo:(id)info allResponded:(BOOL)responded
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  acceptedCopy = accepted;
+  infoCopy = info;
   v10 = dispatch_get_current_queue();
-  v11 = [(GKMatchmaker *)self invitationQueue];
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
 
-  if (v10 != v11)
+  if (v10 != invitationQueue)
   {
-    v29 = v8;
+    v29 = acceptedCopy;
     v12 = MEMORY[0x277CCACA8];
     label = dispatch_queue_get_label(v10);
-    v14 = [(GKMatchmaker *)self invitationQueue];
-    v15 = dispatch_queue_get_label(v14);
+    invitationQueue2 = [(GKMatchmaker *)self invitationQueue];
+    v15 = dispatch_queue_get_label(invitationQueue2);
     [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = v28 = a5;
+    v16 = v28 = responded;
     v17 = [v12 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[GKMatchmaker inviteeAccepted:userInfo:allResponded:]", label, v15, v16];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKMatchmaker.m"];
-    v19 = [v18 lastPathComponent];
-    v20 = [v12 stringWithFormat:@"%@ (_actualCurrentQueue == self.invitationQueue)\n[%s (%s:%d)]", v17, "-[GKMatchmaker inviteeAccepted:userInfo:allResponded:]", objc_msgSend(v19, "UTF8String"), 2421];
+    lastPathComponent = [v18 lastPathComponent];
+    2421 = [v12 stringWithFormat:@"%@ (_actualCurrentQueue == self.invitationQueue)\n[%s (%s:%d)]", v17, "-[GKMatchmaker inviteeAccepted:userInfo:allResponded:]", objc_msgSend(lastPathComponent, "UTF8String"), 2421];
 
-    a5 = v28;
-    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v20}];
+    responded = v28;
+    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 2421}];
 
-    v8 = v29;
+    acceptedCopy = v29;
   }
 
-  v21 = [v9 objectForKeyedSubscript:@"peer-id"];
-  v22 = [v9 objectForKeyedSubscript:@"iCloudID"];
+  v21 = [infoCopy objectForKeyedSubscript:@"peer-id"];
+  v22 = [infoCopy objectForKeyedSubscript:@"iCloudID"];
   v23 = v22;
-  if (v8)
+  if (acceptedCopy)
   {
     v24 = v22 != 0;
-    v36[0] = v8;
+    v36[0] = acceptedCopy;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __54__GKMatchmaker_inviteeAccepted_userInfo_allResponded___block_invoke;
     v30[3] = &unk_2785DFBF8;
     v30[4] = self;
-    v31 = v9;
+    v31 = infoCopy;
     v32 = v21;
     v34 = v24;
-    v33 = v8;
-    v35 = a5;
+    v33 = acceptedCopy;
+    respondedCopy = responded;
     [(GKMatchmaker *)self reportResponse:0 forInvitees:v25 withCompletionHandler:v30];
   }
 
@@ -7480,45 +7480,45 @@ uint64_t __54__GKMatchmaker_inviteeAccepted_userInfo_allResponded___block_invoke
   return result;
 }
 
-- (void)inviteeDeclinedNotification:(id)a3
+- (void)inviteeDeclinedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [(GKMatchmaker *)self invitationQueue];
+  userInfo = [notification userInfo];
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__GKMatchmaker_inviteeDeclinedNotification___block_invoke;
   v7[3] = &unk_2785DEBA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = userInfo;
+  v6 = userInfo;
+  dispatch_async(invitationQueue, v7);
 }
 
-- (void)inviteeDeclinedWithUserInfo:(id)a3
+- (void)inviteeDeclinedWithUserInfo:(id)info
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = dispatch_get_current_queue();
-  v6 = [(GKMatchmaker *)self invitationQueue];
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
 
-  if (v5 != v6)
+  if (v5 != invitationQueue)
   {
     v7 = MEMORY[0x277CCACA8];
     label = dispatch_queue_get_label(v5);
-    v9 = [(GKMatchmaker *)self invitationQueue];
-    v10 = dispatch_queue_get_label(v9);
-    v11 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v12 = [v7 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[GKMatchmaker inviteeDeclinedWithUserInfo:]", label, v10, v11];
+    invitationQueue2 = [(GKMatchmaker *)self invitationQueue];
+    v10 = dispatch_queue_get_label(invitationQueue2);
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v12 = [v7 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[GKMatchmaker inviteeDeclinedWithUserInfo:]", label, v10, callStackSymbols];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKMatchmaker.m"];
-    v14 = [v13 lastPathComponent];
-    v15 = [v7 stringWithFormat:@"%@ (_actualCurrentQueue == self.invitationQueue)\n[%s (%s:%d)]", v12, "-[GKMatchmaker inviteeDeclinedWithUserInfo:]", objc_msgSend(v14, "UTF8String"), 2505];
+    lastPathComponent = [v13 lastPathComponent];
+    2505 = [v7 stringWithFormat:@"%@ (_actualCurrentQueue == self.invitationQueue)\n[%s (%s:%d)]", v12, "-[GKMatchmaker inviteeDeclinedWithUserInfo:]", objc_msgSend(lastPathComponent, "UTF8String"), 2505];
 
-    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v15}];
+    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 2505}];
   }
 
-  v16 = [v4 objectForKey:@"peer-id"];
-  v17 = [(GKMatchmaker *)self inviteesByUserID];
-  v18 = [v17 objectForKey:v16];
+  v16 = [infoCopy objectForKey:@"peer-id"];
+  inviteesByUserID = [(GKMatchmaker *)self inviteesByUserID];
+  v18 = [inviteesByUserID objectForKey:v16];
 
   if (!os_log_GKGeneral)
   {
@@ -7529,18 +7529,18 @@ uint64_t __54__GKMatchmaker_inviteeAccepted_userInfo_allResponded___block_invoke
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v44 = v4;
+    v44 = infoCopy;
     _os_log_impl(&dword_227904000, v20, OS_LOG_TYPE_INFO, "Invitee declined invite - userInfo: %@", buf, 0xCu);
   }
 
-  v21 = [v4 objectForKey:@"y"];
+  v21 = [infoCopy objectForKey:@"y"];
 
   if (v21)
   {
-    v22 = [v4 objectForKey:@"y"];
-    v23 = [v22 integerValue];
+    v22 = [infoCopy objectForKey:@"y"];
+    integerValue = [v22 integerValue];
 
-    if (v23 == 5)
+    if (integerValue == 5)
     {
       v24 = NSSelectorFromString(&cfstr_Showconfirmati.isa);
       v25 = +[GKLocalPlayer local];
@@ -7583,15 +7583,15 @@ uint64_t __54__GKMatchmaker_inviteeAccepted_userInfo_allResponded___block_invoke
 
     if ([(GKMatchmaker *)self removeInvitee:v18])
     {
-      v35 = [(GKMatchmaker *)self allInviteesDidRespond];
-      v36 = [(GKMatchmaker *)self responseForDeclineReason:v23];
+      allInviteesDidRespond = [(GKMatchmaker *)self allInviteesDidRespond];
+      v36 = [(GKMatchmaker *)self responseForDeclineReason:integerValue];
       v41 = v18;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __44__GKMatchmaker_inviteeDeclinedWithUserInfo___block_invoke_377;
       v39[3] = &unk_2785DFBD0;
-      v40 = v35;
+      v40 = allInviteesDidRespond;
       v39[4] = self;
       [(GKMatchmaker *)self reportResponse:v36 forInvitees:v37 withCompletionHandler:v39];
     }
@@ -7622,18 +7622,18 @@ uint64_t __44__GKMatchmaker_inviteeDeclinedWithUserInfo___block_invoke_377(uint6
   return result;
 }
 
-- (void)inviteeUpdateNotification:(id)a3
+- (void)inviteeUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(GKMatchmaker *)self invitationQueue];
+  notificationCopy = notification;
+  invitationQueue = [(GKMatchmaker *)self invitationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__GKMatchmaker_inviteeUpdateNotification___block_invoke;
   v7[3] = &unk_2785DEBA8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(invitationQueue, v7);
 }
 
 void __42__GKMatchmaker_inviteeUpdateNotification___block_invoke(uint64_t a1)
@@ -7777,12 +7777,12 @@ void __42__GKMatchmaker_inviteeUpdateNotification___block_invoke_383(uint64_t a1
   }
 }
 
-- (void)setNearbyPlayerAccepted:(id)a3 connectionData:(id)a4
+- (void)setNearbyPlayerAccepted:(id)accepted connectionData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(GKMatchmaker *)self removeInvitee:v6])
+  acceptedCopy = accepted;
+  dataCopy = data;
+  if ([(GKMatchmaker *)self removeInvitee:acceptedCopy])
   {
     if (!os_log_GKGeneral)
     {
@@ -7793,22 +7793,22 @@ void __42__GKMatchmaker_inviteeUpdateNotification___block_invoke_383(uint64_t a1
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [v6 internal];
-      v12 = [v11 debugDescription];
+      internal = [acceptedCopy internal];
+      v12 = [internal debugDescription];
       *buf = 138412290;
       v20 = v12;
       _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_INFO, "Nearby player accepted: %@", buf, 0xCu);
     }
 
-    v18 = v6;
+    v18 = acceptedCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __55__GKMatchmaker_setNearbyPlayerAccepted_connectionData___block_invoke;
     v15[3] = &unk_2785DDB40;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
+    v16 = acceptedCopy;
+    v17 = dataCopy;
     [(GKMatchmaker *)self reportResponse:0 forInvitees:v13 withCompletionHandler:v15];
   }
 
@@ -7833,11 +7833,11 @@ void __55__GKMatchmaker_setNearbyPlayerAccepted_connectionData___block_invoke(ui
   }
 }
 
-- (void)setNearbyPlayerDeclined:(id)a3 reason:(int64_t)a4
+- (void)setNearbyPlayerDeclined:(id)declined reason:(int64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(GKMatchmaker *)self removeInvitee:v6])
+  declinedCopy = declined;
+  if ([(GKMatchmaker *)self removeInvitee:declinedCopy])
   {
     if (!os_log_GKGeneral)
     {
@@ -7848,15 +7848,15 @@ void __55__GKMatchmaker_setNearbyPlayerAccepted_connectionData___block_invoke(ui
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [v6 internal];
-      v11 = [v10 debugDescription];
+      internal = [declinedCopy internal];
+      v11 = [internal debugDescription];
       *buf = 138412290;
       v18 = v11;
       _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "Nearby player declined: %@", buf, 0xCu);
     }
 
-    v12 = [(GKMatchmaker *)self responseForDeclineReason:a4];
-    v16 = v6;
+    v12 = [(GKMatchmaker *)self responseForDeclineReason:reason];
+    v16 = declinedCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -7882,11 +7882,11 @@ uint64_t __47__GKMatchmaker_setNearbyPlayerDeclined_reason___block_invoke(uint64
   return result;
 }
 
-- (void)setNearbyPlayerFailed:(id)a3
+- (void)setNearbyPlayerFailed:(id)failed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(GKMatchmaker *)self removeInvitee:v4])
+  failedCopy = failed;
+  if ([(GKMatchmaker *)self removeInvitee:failedCopy])
   {
     if (!os_log_GKGeneral)
     {
@@ -7897,14 +7897,14 @@ uint64_t __47__GKMatchmaker_setNearbyPlayerDeclined_reason___block_invoke(uint64
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
-      v8 = [v4 internal];
-      v9 = [v8 debugDescription];
+      internal = [failedCopy internal];
+      v9 = [internal debugDescription];
       *buf = 138412290;
       v15 = v9;
       _os_log_impl(&dword_227904000, v7, OS_LOG_TYPE_INFO, "Failed to set nearby player: %@", buf, 0xCu);
     }
 
-    v13 = v4;
+    v13 = failedCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -7930,14 +7930,14 @@ uint64_t __38__GKMatchmaker_setNearbyPlayerFailed___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)promptForRadarWithDescriptionAddition:(id)a3
+- (void)promptForRadarWithDescriptionAddition:(id)addition
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  additionCopy = addition;
   v5 = +[GKPreferences shared];
-  v6 = [v5 isInternalBuild];
+  isInternalBuild = [v5 isInternalBuild];
 
-  if (v6)
+  if (isInternalBuild)
   {
     if ([(GKMatchmaker *)self canPromptTapToRadar])
     {
@@ -7950,18 +7950,18 @@ uint64_t __38__GKMatchmaker_setNearbyPlayerFailed___block_invoke(uint64_t a1)
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = additionCopy;
         _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "Starting prompting TTR with description: %@", buf, 0xCu);
       }
 
       v9 = +[GKDaemonProxy proxyForLocalPlayer];
-      v10 = [v9 multiplayerService];
+      multiplayerService = [v9 multiplayerService];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __54__GKMatchmaker_promptForRadarWithDescriptionAddition___block_invoke;
       v14[3] = &unk_2785DD760;
       v14[4] = self;
-      [v10 fileMultiplayerTTRWithCallBackIdentifier:&stru_283AFD1E0 descriptionAddition:v4 handler:v14];
+      [multiplayerService fileMultiplayerTTRWithCallBackIdentifier:&stru_283AFD1E0 descriptionAddition:additionCopy handler:v14];
     }
 
     else
@@ -7983,11 +7983,11 @@ uint64_t __38__GKMatchmaker_setNearbyPlayerFailed___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nearbyPlayerFound:(id)a3
+- (void)nearbyPlayerFound:(id)found
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"deviceID"];
-  v6 = [v4 objectForKeyedSubscript:@"discoveryInfo"];
+  userInfo = [found userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"deviceID"];
+  v6 = [userInfo objectForKeyedSubscript:@"discoveryInfo"];
   if (v6 && v5)
   {
     [(GKMatchmaker *)self foundNearbyDeviceID:v5 discoveryInfo:v6];
@@ -8007,10 +8007,10 @@ uint64_t __38__GKMatchmaker_setNearbyPlayerFailed___block_invoke(uint64_t a1)
   }
 }
 
-- (void)nearbyPlayerLost:(id)a3
+- (void)nearbyPlayerLost:(id)lost
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"deviceID"];
+  userInfo = [lost userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"deviceID"];
   if (v5)
   {
     [(GKMatchmaker *)self lostNearbyDeviceID:v5];
@@ -8030,11 +8030,11 @@ uint64_t __38__GKMatchmaker_setNearbyPlayerFailed___block_invoke(uint64_t a1)
   }
 }
 
-- (void)nearbyDataReceived:(id)a3
+- (void)nearbyDataReceived:(id)received
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"deviceID"];
-  v6 = [v4 objectForKey:@"data"];
+  userInfo = [received userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"deviceID"];
+  v6 = [userInfo objectForKey:@"data"];
   if (v6 && v5)
   {
     [(GKMatchmaker *)self receivedData:v6 fromNearbyDeviceID:v5];
@@ -8054,10 +8054,10 @@ uint64_t __38__GKMatchmaker_setNearbyPlayerFailed___block_invoke(uint64_t a1)
   }
 }
 
-- (void)matchRequestRecipientsSet:(id)a3
+- (void)matchRequestRecipientsSet:(id)set
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKeyedSubscript:@"request"];
+  userInfo = [set userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"request"];
   if (v4)
   {
     [(GKMatchmaker *)self setCurrentMatchRequest:v4];
@@ -8113,21 +8113,21 @@ void __32__GKMatchmaker_sharedMatchmaker__block_invoke()
   sharedMatchmaker_sSharedMatchmaker = v2;
 }
 
-+ (BOOL)canPlayMultiplayerGameWithPlayers:(id)a3
++ (BOOL)canPlayMultiplayerGameWithPlayers:(id)players
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  playersCopy = players;
   v4 = +[GKPreferences shared];
-  v5 = [v4 multiplayerAllowedPlayerType];
+  multiplayerAllowedPlayerType = [v4 multiplayerAllowedPlayerType];
 
-  if (v5)
+  if (multiplayerAllowedPlayerType)
   {
     v6 = +[GKPreferences shared];
-    v7 = [v6 multiplayerAllowedPlayerType];
+    multiplayerAllowedPlayerType2 = [v6 multiplayerAllowedPlayerType];
 
-    if (v7 == 2 || (+[GKPreferences shared](GKPreferences, "shared"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 multiplayerAllowedPlayerType], v8, v9 != 1))
+    if (multiplayerAllowedPlayerType2 == 2 || (+[GKPreferences shared](GKPreferences, "shared"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 multiplayerAllowedPlayerType], v8, v9 != 1))
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(multiplayerAllowedPlayerType) = 1;
     }
 
     else
@@ -8136,7 +8136,7 @@ void __32__GKMatchmaker_sharedMatchmaker__block_invoke()
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = v3;
+      v10 = playersCopy;
       v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v11)
       {
@@ -8154,12 +8154,12 @@ void __32__GKMatchmaker_sharedMatchmaker__block_invoke()
             v15 = *(*(&v20 + 1) + 8 * i);
             if (([v15 isLocalPlayer] & 1) == 0)
             {
-              v16 = [v15 friendBiDirectional];
-              v17 = [v16 isEqualToNumber:&unk_283B33268];
+              friendBiDirectional = [v15 friendBiDirectional];
+              v17 = [friendBiDirectional isEqualToNumber:&unk_283B33268];
 
               if (!v17)
               {
-                LOBYTE(v5) = 0;
+                LOBYTE(multiplayerAllowedPlayerType) = 0;
                 goto LABEL_16;
               }
             }
@@ -8175,13 +8175,13 @@ void __32__GKMatchmaker_sharedMatchmaker__block_invoke()
         }
       }
 
-      LOBYTE(v5) = 1;
+      LOBYTE(multiplayerAllowedPlayerType) = 1;
 LABEL_16:
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v5;
+  return multiplayerAllowedPlayerType;
 }
 
 + (id)syncQueue
@@ -8204,29 +8204,29 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
   syncQueue_sSyncQueue_0 = v0;
 }
 
-- (void)performSync:(id)a3
+- (void)performSync:(id)sync
 {
-  block = a3;
-  v3 = [objc_opt_class() syncQueue];
+  block = sync;
+  syncQueue = [objc_opt_class() syncQueue];
   v4 = dispatch_get_current_queue();
 
-  if (v4 == v3)
+  if (v4 == syncQueue)
   {
     v5 = MEMORY[0x277CCACA8];
-    label = dispatch_queue_get_label(v3);
-    v7 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v8 = [v5 stringWithFormat:@"%s invoked on the same queue(%s, would deadlock at %@"), "-[GKMatchmaker(Nearby) performSync:]", label, v7];
+    label = dispatch_queue_get_label(syncQueue);
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v8 = [v5 stringWithFormat:@"%s invoked on the same queue(%s, would deadlock at %@"), "-[GKMatchmaker(Nearby) performSync:]", label, callStackSymbols];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/GKMatchmaker+Nearby.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = [v5 stringWithFormat:@"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", v8, "-[GKMatchmaker(Nearby) performSync:]", objc_msgSend(v10, "UTF8String"), 164];
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = [v5 stringWithFormat:@"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", v8, "-[GKMatchmaker(Nearby) performSync:]", objc_msgSend(lastPathComponent, "UTF8String"), 164];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
   }
 
-  dispatch_sync(v3, block);
+  dispatch_sync(syncQueue, block);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   [(GKMatchmaker *)self stopNearbyAdvertising];
   if ([(GKMatchmaker *)self nearbyBrowsing])
@@ -8240,7 +8240,7 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
   [(GKMatchmaker *)self declineReceivedNearbyInvites];
 }
 
-- (void)applicationWillTerminateNotification:(id)a3
+- (void)applicationWillTerminateNotification:(id)notification
 {
   [(GKMatchmaker *)self stopNearbyAdvertising];
   [(GKMatchmaker *)self stopNearbyBrowsing];
@@ -8250,18 +8250,18 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
   [(GKMatchmaker *)self leaveGroupActivity];
 }
 
-- (void)applicationWillEnterForegroundNotification:(id)a3
+- (void)applicationWillEnterForegroundNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
   if ([(GKMatchmaker *)self wasNearbyBrowsing])
   {
     [(GKMatchmaker *)self setWasNearbyBrowsing:0];
-    v4 = [(GKMatchmaker *)self nearbyPlayerHandler];
+    nearbyPlayerHandler = [(GKMatchmaker *)self nearbyPlayerHandler];
 
-    if (v4)
+    if (nearbyPlayerHandler)
     {
-      v5 = [(GKMatchmaker *)self nearbyPlayers];
-      v6 = [v5 copy];
+      nearbyPlayers = [(GKMatchmaker *)self nearbyPlayers];
+      v6 = [nearbyPlayers copy];
 
       v16 = 0u;
       v17 = 0u;
@@ -8335,23 +8335,23 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
     }
 
     v7 = +[GKDaemonProxy proxyForLocalPlayer];
-    v8 = [v7 multiplayerService];
-    [v8 setupNearbyDiscovery];
+    multiplayerService = [v7 multiplayerService];
+    [multiplayerService setupNearbyDiscovery];
 
     [(GKMatchmaker *)self setNearbyDiscoverySetup:1];
   }
 }
 
-+ (id)descriptionForNearbyDictionary:(id)a3
++ (id)descriptionForNearbyDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"profile"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"profile"];
   v5 = [v4 objectForKey:@"photoData"];
   if (v5)
   {
-    v24 = v3;
-    v21 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v3];
+    v24 = dictionaryCopy;
+    v21 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionaryCopy];
     v23 = v4;
     v20 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
     v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
@@ -8403,13 +8403,13 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
     v17 = [v21 description];
 
     v4 = v23;
-    v3 = v24;
+    dictionaryCopy = v24;
     v5 = v22;
   }
 
   else
   {
-    v17 = [v3 description];
+    v17 = [dictionaryCopy description];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -8417,11 +8417,11 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
   return v17;
 }
 
-- (void)receivedData:(id)a3 fromNearbyDeviceID:(id)a4
+- (void)receivedData:(id)data fromNearbyDeviceID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  dCopy = d;
+  v7 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -8435,27 +8435,27 @@ void __33__GKMatchmaker_Nearby__syncQueue__block_invoke()
     v20 = 138412546;
     *v21 = v11;
     *&v21[8] = 2112;
-    *&v21[10] = v6;
+    *&v21[10] = dCopy;
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_INFO, "received dict %@ from nearby deviceID %@", &v20, 0x16u);
   }
 
   if (v7)
   {
-    v12 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:v6];
+    v12 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:dCopy];
     v13 = [v7 objectForKeyedSubscript:@"usePeerDiscovery"];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       [v12 setUsePeerDiscovery:1];
     }
 
     v15 = [v7 objectForKey:@"message"];
-    v16 = [v15 unsignedIntegerValue];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-    if (v16 <= 2)
+    if (unsignedIntegerValue <= 2)
     {
-      switch(v16)
+      switch(unsignedIntegerValue)
       {
         case 0:
           if ([(GKMatchmaker *)self nearbyAdvertising])
@@ -8490,7 +8490,7 @@ LABEL_21:
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_ERROR))
       {
         v20 = 67109634;
-        *v21 = v16;
+        *v21 = unsignedIntegerValue;
         *&v21[4] = 2112;
         *&v21[6] = v7;
         *&v21[14] = 2112;
@@ -8501,7 +8501,7 @@ LABEL_21:
       goto LABEL_29;
     }
 
-    switch(v16)
+    switch(unsignedIntegerValue)
     {
       case 3:
         [(GKMatchmaker *)self handleNearbyInviteResponse:v7 fromDevice:v12];
@@ -8526,57 +8526,57 @@ LABEL_29:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)determineIfShouldRespondToNearbyPlayer:(id)a3 handler:(id)a4
+- (void)determineIfShouldRespondToNearbyPlayer:(id)player handler:(id)handler
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  playerCopy = player;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = dispatch_group_create();
-    v9 = [v6 objectForKey:@"playerID"];
+    v9 = [playerCopy objectForKey:@"playerID"];
     v10 = +[GKPreferences shared];
-    v11 = [v10 multiplayerAllowedPlayerType];
+    multiplayerAllowedPlayerType = [v10 multiplayerAllowedPlayerType];
 
     v12 = +[GKPreferences shared];
-    v13 = [v12 shouldDisallowInvitesFromStrangers];
-    if (v11 == 1)
+    shouldDisallowInvitesFromStrangers = [v12 shouldDisallowInvitesFromStrangers];
+    if (multiplayerAllowedPlayerType == 1)
     {
       v14 = 1;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldDisallowInvitesFromStrangers;
     }
 
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
-    if (v11)
+    if (multiplayerAllowedPlayerType)
     {
-      v15 = [(GKMatchmaker *)self nearbyAdvertising];
-      if (v15)
+      nearbyAdvertising = [(GKMatchmaker *)self nearbyAdvertising];
+      if (nearbyAdvertising)
       {
-        LOBYTE(v15) = [(GKMatchmaker *)self shouldRespondToNearbyQuery];
+        LOBYTE(nearbyAdvertising) = [(GKMatchmaker *)self shouldRespondToNearbyQuery];
       }
     }
 
     else
     {
-      LOBYTE(v15) = 0;
+      LOBYTE(nearbyAdvertising) = 0;
     }
 
-    v40 = v15;
+    v40 = nearbyAdvertising;
     if (v38[3] & v14)
     {
       v16 = +[GKLocalPlayer localPlayer];
       v17 = v16;
       if (v9)
       {
-        v18 = [v16 internal];
-        v19 = [v18 playerID];
-        v20 = [v9 isEqualToString:v19];
+        internal = [v16 internal];
+        playerID = [internal playerID];
+        v20 = [v9 isEqualToString:playerID];
 
         if ((v20 & 1) == 0)
         {
@@ -8604,7 +8604,7 @@ LABEL_29:
       v17 = os_log_GKMatch;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v29 = [MEMORY[0x277CCABB0] numberWithBool:v11 == 0];
+        v29 = [MEMORY[0x277CCABB0] numberWithBool:multiplayerAllowedPlayerType == 0];
         v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[GKMatchmaker nearbyAdvertising](self, "nearbyAdvertising")}];
         v24 = [MEMORY[0x277CCABB0] numberWithBool:{-[GKMatchmaker shouldRespondToNearbyQuery](self, "shouldRespondToNearbyQuery")}];
         v25 = [MEMORY[0x277CCABB0] numberWithBool:v14];
@@ -8629,7 +8629,7 @@ LABEL_29:
     block[3] = &unk_2785DE7E0;
     v31 = v9;
     v33 = &v37;
-    v32 = v7;
+    v32 = handlerCopy;
     v27 = v9;
     dispatch_group_notify(v8, v26, block);
 
@@ -8699,12 +8699,12 @@ uint64_t __71__GKMatchmaker_Nearby__determineIfShouldRespondToNearbyPlayer_handl
   v17[3] = *MEMORY[0x277D85DE8];
   v2 = +[GKLocalPlayer localPlayer];
   v16[0] = @"playerID";
-  v3 = [v2 internal];
-  v4 = [v3 playerID];
-  v5 = v4;
-  if (v4)
+  internal = [v2 internal];
+  playerID = [internal playerID];
+  v5 = playerID;
+  if (playerID)
   {
-    v6 = v4;
+    v6 = playerID;
   }
 
   else
@@ -8714,11 +8714,11 @@ uint64_t __71__GKMatchmaker_Nearby__determineIfShouldRespondToNearbyPlayer_handl
 
   v17[0] = v6;
   v16[1] = @"alias";
-  v7 = [v2 alias];
-  v8 = v7;
-  if (v7)
+  alias = [v2 alias];
+  v8 = alias;
+  if (alias)
   {
-    v9 = v7;
+    v9 = alias;
   }
 
   else
@@ -8728,17 +8728,17 @@ uint64_t __71__GKMatchmaker_Nearby__determineIfShouldRespondToNearbyPlayer_handl
 
   v17[1] = v9;
   v16[2] = @"photos";
-  v10 = [v2 internal];
-  v11 = [v10 photos];
-  v12 = v11;
-  if (!v11)
+  internal2 = [v2 internal];
+  photos = [internal2 photos];
+  dictionary = photos;
+  if (!photos)
   {
-    v12 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v17[2] = v12;
+  v17[2] = dictionary;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
-  if (!v11)
+  if (!photos)
   {
   }
 
@@ -8747,25 +8747,25 @@ uint64_t __71__GKMatchmaker_Nearby__determineIfShouldRespondToNearbyPlayer_handl
   return v13;
 }
 
-- (void)loadPhotoDataDictionaryWithHandler:(id)a3
+- (void)loadPhotoDataDictionaryWithHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  handlerCopy = handler;
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    v22 = v3;
+    v22 = handlerCopy;
     v5 = dispatch_group_create();
     v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v21 = +[GKLocalPlayer localPlayer];
-    v6 = [v21 internal];
-    v7 = [v6 photos];
+    internal = [v21 internal];
+    photos = [internal photos];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = v7;
+    v8 = photos;
     v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v9)
     {
@@ -8786,7 +8786,7 @@ uint64_t __71__GKMatchmaker_Nearby__determineIfShouldRespondToNearbyPlayer_handl
           v13 = [v8 objectForKey:v12];
           v14 = MEMORY[0x277CBEA90];
           v15 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-          v16 = [MEMORY[0x277CCAD30] _gkForClientProcess];
+          _gkForClientProcess = [MEMORY[0x277CCAD30] _gkForClientProcess];
           v17 = dispatch_get_global_queue(0, 0);
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
@@ -8796,7 +8796,7 @@ uint64_t __71__GKMatchmaker_Nearby__determineIfShouldRespondToNearbyPlayer_handl
           v30 = v13;
           v31 = v5;
           v18 = v13;
-          [v14 _gkLoadRemoteImageDataForURL:v15 session:v16 subdirectory:0 filename:0 queue:v17 handler:v28];
+          [v14 _gkLoadRemoteImageDataForURL:v15 session:_gkForClientProcess subdirectory:0 filename:0 queue:v17 handler:v28];
 
           ++v11;
         }
@@ -8881,9 +8881,9 @@ void __46__GKMatchmaker_Nearby__compatibilityHashQueue__block_invoke()
   compatibilityHashQueue_sHashQueue = v0;
 }
 
-- (void)getHashedCompatibilitySetsWithHandler:(id)a3
+- (void)getHashedCompatibilitySetsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -8896,15 +8896,15 @@ void __46__GKMatchmaker_Nearby__compatibilityHashQueue__block_invoke()
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "GKMatchmaker+Nearby: getHashedCompatibilitySetsWithHandler", buf, 2u);
   }
 
-  v7 = [(GKMatchmaker *)self compatibilityHashQueue];
+  compatibilityHashQueue = [(GKMatchmaker *)self compatibilityHashQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__GKMatchmaker_Nearby__getHashedCompatibilitySetsWithHandler___block_invoke;
   v9[3] = &unk_2785DE540;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_sync(v7, v9);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_sync(compatibilityHashQueue, v9);
 }
 
 void __62__GKMatchmaker_Nearby__getHashedCompatibilitySetsWithHandler___block_invoke(uint64_t a1)
@@ -8970,9 +8970,9 @@ void __62__GKMatchmaker_Nearby__getHashedCompatibilitySetsWithHandler___block_in
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)generateHashedCompatibilitySetWithHandler:(id)a3
+- (void)generateHashedCompatibilitySetWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -8987,18 +8987,18 @@ void __62__GKMatchmaker_Nearby__getHashedCompatibilitySetsWithHandler___block_in
 
   v7 = +[GKGame currentGame];
   v8 = +[GKDaemonProxy proxyForLocalPlayer];
-  v9 = [v8 multiplayerService];
-  v10 = [v7 gameDescriptorDictionary];
+  multiplayerService = [v8 multiplayerService];
+  gameDescriptorDictionary = [v7 gameDescriptorDictionary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__GKMatchmaker_Nearby__generateHashedCompatibilitySetWithHandler___block_invoke;
   v13[3] = &unk_2785DE568;
   v13[4] = self;
   v14 = v7;
-  v15 = v4;
-  v11 = v4;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v7;
-  [v9 getCompatibilityMatrix:v10 handler:v13];
+  [multiplayerService getCompatibilityMatrix:gameDescriptorDictionary handler:v13];
 }
 
 void __66__GKMatchmaker_Nearby__generateHashedCompatibilitySetWithHandler___block_invoke(uint64_t a1, void *a2)
@@ -9236,24 +9236,24 @@ void __66__GKMatchmaker_Nearby__generateHashedCompatibilitySetWithHandler___bloc
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nearbyDeviceWithDeviceID:(id)a3
+- (id)_nearbyDeviceWithDeviceID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKMatchmaker *)self nearbyPlayers];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  nearbyPlayers = [(GKMatchmaker *)self nearbyPlayers];
+  v6 = [nearbyPlayers objectForKey:dCopy];
   if (!v6)
   {
-    v6 = [GKNearbyDevice nearbyDeviceWithID:v4];
-    v7 = [v6 deviceID];
-    [v5 setObject:v6 forKey:v7];
+    v6 = [GKNearbyDevice nearbyDeviceWithID:dCopy];
+    deviceID = [v6 deviceID];
+    [nearbyPlayers setObject:v6 forKey:deviceID];
   }
 
   return v6;
 }
 
-- (id)nearbyDeviceWithDeviceID:(id)a3
+- (id)nearbyDeviceWithDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -9266,7 +9266,7 @@ void __66__GKMatchmaker_Nearby__generateHashedCompatibilitySetWithHandler___bloc
   v8[3] = &unk_2785E0DC0;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   [(GKMatchmaker *)self performSync:v8];
   v6 = v12[5];
@@ -9286,11 +9286,11 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)hashForBundleID:(id)a3 version:(id)a4 platform:(int64_t)a5
+- (id)hashForBundleID:(id)d version:(id)version platform:(int64_t)platform
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  versionCopy = version;
   if (!os_log_GKGeneral)
   {
     v9 = GKOSLoggers();
@@ -9303,7 +9303,7 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_INFO, "GKMatchmaker+Nearby: hashForBundleID", buf, 2u);
   }
 
-  if (!v8)
+  if (!versionCopy)
   {
     v11 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -9315,31 +9315,31 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v7;
+      v28 = dCopy;
       _os_log_impl(&dword_227904000, v11, OS_LOG_TYPE_INFO, "version is nil while retrieving the hash for bundleID: %@", buf, 0xCu);
     }
 
-    v8 = &stru_283AFD1E0;
+    versionCopy = &stru_283AFD1E0;
   }
 
-  v13 = [v7 stringByAppendingString:@"."];
-  v14 = [v13 stringByAppendingString:v8];
+  v13 = [dCopy stringByAppendingString:@"."];
+  v14 = [v13 stringByAppendingString:versionCopy];
 
-  if (a5)
+  if (platform)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:platform];
     v17 = [v15 stringWithFormat:@".%@", v16];
     v18 = [v14 stringByAppendingString:v17];
 
     v14 = v18;
   }
 
-  v19 = [v14 UTF8String];
-  v20 = *v19;
-  if (*v19)
+  uTF8String = [v14 UTF8String];
+  v20 = *uTF8String;
+  if (*uTF8String)
   {
-    v21 = v19 + 1;
+    v21 = uTF8String + 1;
     LODWORD(v22) = 5381;
     do
     {
@@ -9366,9 +9366,9 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
 - (id)hashForCurrentGameUsingBundleVersion
 {
   v3 = +[GKGame currentGame];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v3 bundleVersion];
-  v6 = [(GKMatchmaker *)self hashForBundleID:v4 version:v5 platform:0];
+  bundleIdentifier = [v3 bundleIdentifier];
+  bundleVersion = [v3 bundleVersion];
+  v6 = [(GKMatchmaker *)self hashForBundleID:bundleIdentifier version:bundleVersion platform:0];
 
   return v6;
 }
@@ -9376,22 +9376,22 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
 - (id)hashForCurrentGameUsingShortBundleVersionAndPlatform
 {
   v3 = +[GKGame currentGame];
-  v4 = [v3 shortBundleVersion];
-  v5 = v4;
-  if (v4)
+  shortBundleVersion = [v3 shortBundleVersion];
+  v5 = shortBundleVersion;
+  if (shortBundleVersion)
   {
-    v6 = v4;
+    bundleVersion = shortBundleVersion;
   }
 
   else
   {
-    v6 = [v3 bundleVersion];
+    bundleVersion = [v3 bundleVersion];
   }
 
-  v7 = v6;
+  v7 = bundleVersion;
 
-  v8 = [v3 bundleIdentifier];
-  v9 = -[GKMatchmaker hashForBundleID:version:platform:](self, "hashForBundleID:version:platform:", v8, v7, [v3 platform]);
+  bundleIdentifier = [v3 bundleIdentifier];
+  v9 = -[GKMatchmaker hashForBundleID:version:platform:](self, "hashForBundleID:version:platform:", bundleIdentifier, v7, [v3 platform]);
 
   return v9;
 }
@@ -9418,9 +9418,9 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
     if ([v6 shouldAllowNearbyMultiplayer])
     {
       v7 = +[GKPreferences shared];
-      v8 = [v7 multiplayerAllowedPlayerType];
+      multiplayerAllowedPlayerType = [v7 multiplayerAllowedPlayerType];
 
-      if (v8)
+      if (multiplayerAllowedPlayerType)
       {
         [(GKMatchmaker *)self getHashedCompatibilitySetsWithHandler:0];
         [(GKMatchmaker *)self setupNearbyDiscovery];
@@ -9434,15 +9434,15 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
         v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[GKMatchmaker currentEnvironment](self, "currentEnvironment")];
         v22[0] = v9;
         v21[1] = @"h";
-        v10 = [(GKMatchmaker *)self hashForCurrentGameUsingBundleVersion];
-        v22[1] = v10;
+        hashForCurrentGameUsingBundleVersion = [(GKMatchmaker *)self hashForCurrentGameUsingBundleVersion];
+        v22[1] = hashForCurrentGameUsingBundleVersion;
         v21[2] = @"hp";
-        v11 = [(GKMatchmaker *)self hashForCurrentGameUsingShortBundleVersionAndPlatform];
-        v22[2] = v11;
+        hashForCurrentGameUsingShortBundleVersionAndPlatform = [(GKMatchmaker *)self hashForCurrentGameUsingShortBundleVersionAndPlatform];
+        v22[2] = hashForCurrentGameUsingShortBundleVersionAndPlatform;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
         v13 = +[GKDaemonProxy proxyForLocalPlayer];
-        v14 = [v13 multiplayerService];
+        multiplayerService = [v13 multiplayerService];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __46__GKMatchmaker_Nearby__startNearbyAdvertising__block_invoke_2;
@@ -9450,7 +9450,7 @@ uint64_t __49__GKMatchmaker_Nearby__nearbyDeviceWithDeviceID___block_invoke(uint
         v17[4] = self;
         v18 = v12;
         v15 = v12;
-        [v14 startNearbyAdvertisingWithDiscoveryInfo:v15 handler:v17];
+        [multiplayerService startNearbyAdvertisingWithDiscoveryInfo:v15 handler:v17];
       }
     }
 
@@ -9544,13 +9544,13 @@ void __46__GKMatchmaker_Nearby__startNearbyAdvertising__block_invoke_3(uint64_t 
   if ([(GKMatchmaker *)self nearbyAdvertising])
   {
     v3 = +[GKDaemonProxy proxyForLocalPlayer];
-    v4 = [v3 multiplayerService];
+    multiplayerService = [v3 multiplayerService];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __45__GKMatchmaker_Nearby__stopNearbyAdvertising__block_invoke;
     v5[3] = &unk_2785DD760;
     v5[4] = self;
-    [v4 stopNearbyAdvertisingWithHandler:v5];
+    [multiplayerService stopNearbyAdvertisingWithHandler:v5];
   }
 }
 
@@ -9627,9 +9627,9 @@ void __45__GKMatchmaker_Nearby__stopNearbyAdvertising__block_invoke(uint64_t a1)
     if (![(GKMatchmaker *)self nearbyBrowsing])
     {
       v6 = +[GKPreferences shared];
-      v7 = [v6 multiplayerAllowedPlayerType];
+      multiplayerAllowedPlayerType = [v6 multiplayerAllowedPlayerType];
 
-      if (v7)
+      if (multiplayerAllowedPlayerType)
       {
         [(GKMatchmaker *)self getHashedCompatibilitySetsWithHandler:0];
         [(GKMatchmaker *)self setupNearbyDiscovery];
@@ -9640,15 +9640,15 @@ void __45__GKMatchmaker_Nearby__stopNearbyAdvertising__block_invoke(uint64_t a1)
         v13[4] = self;
         [(GKMatchmaker *)self performSync:v13];
         v8 = [GKDaemonProxy proxyForPlayer:v5];
-        v9 = [v8 multiplayerService];
-        v10 = [v5 internal];
-        v11 = [v10 playerID];
+        multiplayerService = [v8 multiplayerService];
+        internal = [v5 internal];
+        playerID = [internal playerID];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __43__GKMatchmaker_Nearby__startNearbyBrowsing__block_invoke_146;
         v12[3] = &unk_2785DD760;
         v12[4] = self;
-        [v9 startNearbyBrowsingWithPlayerID:v11 handler:v12];
+        [multiplayerService startNearbyBrowsingWithPlayerID:playerID handler:v12];
       }
     }
   }
@@ -9712,13 +9712,13 @@ void __43__GKMatchmaker_Nearby__startNearbyBrowsing__block_invoke_146(uint64_t a
   if ([(GKMatchmaker *)self nearbyBrowsing])
   {
     v5 = +[GKDaemonProxy proxyForLocalPlayer];
-    v6 = [v5 multiplayerService];
+    multiplayerService = [v5 multiplayerService];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __42__GKMatchmaker_Nearby__stopNearbyBrowsing__block_invoke;
     v7[3] = &unk_2785DD760;
     v7[4] = self;
-    [v6 stopNearbyBrowsingWithHandler:v7];
+    [multiplayerService stopNearbyBrowsingWithHandler:v7];
   }
 }
 
@@ -9738,11 +9738,11 @@ void __42__GKMatchmaker_Nearby__stopNearbyBrowsing__block_invoke(uint64_t a1)
   }
 }
 
-- (void)foundNearbyDeviceID:(id)a3 discoveryInfo:(id)a4
+- (void)foundNearbyDeviceID:(id)d discoveryInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  infoCopy = info;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -9752,24 +9752,24 @@ void __42__GKMatchmaker_Nearby__stopNearbyBrowsing__block_invoke(uint64_t a1)
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = infoCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "found nearby deviceID: %@ discoveryInfo: %@", buf, 0x16u);
   }
 
-  v10 = [v7 objectForKey:@"e"];
-  v11 = [v10 integerValue];
+  v10 = [infoCopy objectForKey:@"e"];
+  integerValue = [v10 integerValue];
 
-  if (v11 == [(GKMatchmaker *)self currentEnvironment])
+  if (integerValue == [(GKMatchmaker *)self currentEnvironment])
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __58__GKMatchmaker_Nearby__foundNearbyDeviceID_discoveryInfo___block_invoke;
     v15[3] = &unk_2785E0ED8;
     v15[4] = self;
-    v16 = v7;
-    v17 = v6;
+    v16 = infoCopy;
+    v17 = dCopy;
     [(GKMatchmaker *)self getHashedCompatibilitySetsWithHandler:v15];
   }
 
@@ -9784,7 +9784,7 @@ void __42__GKMatchmaker_Nearby__stopNearbyBrowsing__block_invoke(uint64_t a1)
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = dCopy;
       _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "ignoring device %@, environment mismatch", buf, 0xCu);
     }
   }
@@ -9931,10 +9931,10 @@ LABEL_27:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lostNearbyDeviceID:(id)a3
+- (void)lostNearbyDeviceID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -9944,23 +9944,23 @@ LABEL_27:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "lost nearby deviceID: %@", &v9, 0xCu);
   }
 
-  v7 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:v4];
+  v7 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:dCopy];
   [(GKMatchmaker *)self setNearbyDevice:v7 reachable:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNearbyProfileResponse:(id)a3 fromDevice:(id)a4 withCompletionHandler:(id)a5
+- (void)handleNearbyProfileResponse:(id)response fromDevice:(id)device withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 state] && objc_msgSend(v9, "state") != 1)
+  responseCopy = response;
+  deviceCopy = device;
+  handlerCopy = handler;
+  if ([deviceCopy state] && objc_msgSend(deviceCopy, "state") != 1)
   {
     if (!os_log_GKGeneral)
     {
@@ -9971,10 +9971,10 @@ LABEL_27:
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v21 = v20;
-      v22 = [v9 deviceID];
-      v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "state")}];
+      deviceID = [deviceCopy deviceID];
+      v23 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(deviceCopy, "state")}];
       *buf = 138412546;
-      v30 = v22;
+      v30 = deviceID;
       v31 = 2112;
       v32 = v23;
       _os_log_impl(&dword_227904000, v21, OS_LOG_TYPE_INFO, "not handling profile response from deviceID: %@, because the state of this device is: %@", buf, 0x16u);
@@ -9992,26 +9992,26 @@ LABEL_27:
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
     {
       v13 = v12;
-      v14 = [v9 deviceID];
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "state")}];
+      deviceID2 = [deviceCopy deviceID];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(deviceCopy, "state")}];
       *buf = 138412546;
-      v30 = v14;
+      v30 = deviceID2;
       v31 = 2112;
       v32 = v15;
       _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "received profile response from deviceID: %@, device state: %@", buf, 0x16u);
     }
 
     v16 = +[GKDaemonProxy proxyForLocalPlayer];
-    v17 = [v16 multiplayerService];
+    multiplayerService = [v16 multiplayerService];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __85__GKMatchmaker_Nearby__handleNearbyProfileResponse_fromDevice_withCompletionHandler___block_invoke;
     v24[3] = &unk_2785E0F00;
-    v25 = v8;
-    v26 = v9;
-    v27 = self;
-    v28 = v10;
-    [v17 updateCacheWithNearbyProfileDictionary:v25 handler:v24];
+    v25 = responseCopy;
+    v26 = deviceCopy;
+    selfCopy = self;
+    v28 = handlerCopy;
+    [multiplayerService updateCacheWithNearbyProfileDictionary:v25 handler:v24];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -10092,9 +10092,9 @@ uint64_t __85__GKMatchmaker_Nearby__handleNearbyProfileResponse_fromDevice_withC
   return result;
 }
 
-- (int)numberOfNearbyDevicesForPlayer:(id)a3 withState:(int64_t)a4
+- (int)numberOfNearbyDevicesForPlayer:(id)player withState:(int64_t)state
 {
-  v6 = a3;
+  playerCopy = player;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -10104,8 +10104,8 @@ uint64_t __85__GKMatchmaker_Nearby__handleNearbyProfileResponse_fromDevice_withC
   v9[2] = __65__GKMatchmaker_Nearby__numberOfNearbyDevicesForPlayer_withState___block_invoke;
   v9[3] = &unk_2785E0F28;
   v9[4] = self;
-  v12 = a4;
-  v7 = v6;
+  stateCopy = state;
+  v7 = playerCopy;
   v10 = v7;
   v11 = &v13;
   [(GKMatchmaker *)self performSync:v9];
@@ -10164,24 +10164,24 @@ void __65__GKMatchmaker_Nearby__numberOfNearbyDevicesForPlayer_withState___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNearbyDevice:(id)a3 reachable:(BOOL)a4
+- (void)setNearbyDevice:(id)device reachable:(BOOL)reachable
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  reachableCopy = reachable;
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (!deviceCopy)
   {
     goto LABEL_16;
   }
 
-  if (!v4)
+  if (!reachableCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__GKMatchmaker_Nearby__setNearbyDevice_reachable___block_invoke;
     v19[3] = &unk_2785DEBA8;
     v19[4] = self;
-    v12 = v6;
+    v12 = deviceCopy;
     v20 = v12;
     [(GKMatchmaker *)self performSync:v19];
     if ([v12 state] != 1)
@@ -10198,8 +10198,8 @@ LABEL_15:
 
     else
     {
-      v14 = [v12 player];
-      v15 = [(GKMatchmaker *)self numberOfNearbyDevicesForPlayer:v14 withState:1];
+      player = [v12 player];
+      v15 = [(GKMatchmaker *)self numberOfNearbyDevicesForPlayer:player withState:1];
 
       if (v15)
       {
@@ -10215,13 +10215,13 @@ LABEL_14:
     block[4] = self;
     v13 = &v17;
     v17 = v7;
-    v18 = v4;
+    v18 = reachableCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     goto LABEL_15;
   }
 
-  v8 = [v6 player];
-  v9 = [(GKMatchmaker *)self numberOfNearbyDevicesForPlayer:v8 withState:1];
+  player2 = [deviceCopy player];
+  v9 = [(GKMatchmaker *)self numberOfNearbyDevicesForPlayer:player2 withState:1];
 
   if (!os_log_GKGeneral)
   {
@@ -10312,9 +10312,9 @@ void __50__GKMatchmaker_Nearby__setNearbyDevice_reachable___block_invoke_3(uint6
   }
 }
 
-- (id)nearbyDevicesForPlayer:(id)a3 withState:(int64_t)a4
+- (id)nearbyDevicesForPlayer:(id)player withState:(int64_t)state
 {
-  v6 = a3;
+  playerCopy = player;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -10338,8 +10338,8 @@ void __50__GKMatchmaker_Nearby__setNearbyDevice_reachable___block_invoke_3(uint6
   v12[2] = __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke;
   v12[3] = &unk_2785E0F28;
   v12[4] = self;
-  v15 = a4;
-  v9 = v6;
+  stateCopy = state;
+  v9 = playerCopy;
   v13 = v9;
   v14 = buf;
   [(GKMatchmaker *)self performSync:v12];
@@ -10406,28 +10406,28 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)formAGKMatchRequestForNearbyInviteWithOriginalRequest:(id)a3 nearbyPlayerIDs:(id)a4
+- (id)formAGKMatchRequestForNearbyInviteWithOriginalRequest:(id)request nearbyPlayerIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(GKMatchmaker *)self reduceRecipientsForMatchRequest:v7 toPlayersWithPlayerIDs:v6];
+  dsCopy = ds;
+  v7 = [request copy];
+  [(GKMatchmaker *)self reduceRecipientsForMatchRequest:v7 toPlayersWithPlayerIDs:dsCopy];
 
   return v7;
 }
 
-- (void)reduceRecipientsForMatchRequest:(id)a3 toPlayersWithPlayerIDs:(id)a4
+- (void)reduceRecipientsForMatchRequest:(id)request toPlayersWithPlayerIDs:(id)ds
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  requestCopy = request;
+  dsCopy = ds;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = v5;
-  v8 = [v5 recipients];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v20 = requestCopy;
+  recipients = [requestCopy recipients];
+  v9 = [recipients countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -10438,13 +10438,13 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(recipients);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 internal];
-        v15 = [v14 playerID];
-        v16 = [v6 containsObject:v15];
+        internal = [v13 internal];
+        playerID = [internal playerID];
+        v16 = [dsCopy containsObject:playerID];
 
         if (v16)
         {
@@ -10452,7 +10452,7 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [recipients countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -10461,17 +10461,17 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
   v17 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
   [v20 setRecipients:v17];
 
-  v18 = [v20 internal];
-  [v18 setRecipientPlayerIDs:v6];
+  internal2 = [v20 internal];
+  [internal2 setRecipientPlayerIDs:dsCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inviteAnyNearbyPlayersViaLegacyViceroyBonjourConnectionWithRequest:(id)a3 handler:(id)a4
+- (void)inviteAnyNearbyPlayersViaLegacyViceroyBonjourConnectionWithRequest:(id)request handler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -10484,37 +10484,37 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "GKMatchmaker+Nearby: inviteAnyNearbyPlayersViaLegacyViceroyBonjourConnectionWithRequest", buf, 2u);
   }
 
-  v10 = [v6 internal];
-  v11 = [v10 matchType];
+  internal = [requestCopy internal];
+  matchType = [internal matchType];
 
-  if (v11 == 1)
+  if (matchType == 1)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v40 = v7;
-    v12 = [(GKMatchmaker *)self match];
-    v13 = [v12 transportContext];
-    [v13 updateForLegacyNearbyInvite];
+    v40 = handlerCopy;
+    match = [(GKMatchmaker *)self match];
+    transportContext = [match transportContext];
+    [transportContext updateForLegacyNearbyInvite];
 
     v42 = [MEMORY[0x277CBEB58] set];
-    v44 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v41 = v6;
-    v14 = [v6 internal];
-    v15 = [v14 recipientPlayerIDs];
+    v41 = requestCopy;
+    internal2 = [requestCopy internal];
+    recipientPlayerIDs = [internal2 recipientPlayerIDs];
 
-    obj = v15;
-    v16 = [v15 countByEnumeratingWithState:&v53 objects:v59 count:16];
+    obj = recipientPlayerIDs;
+    v16 = [recipientPlayerIDs countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v16)
     {
       v17 = v16;
-      v18 = 0;
+      nearbyConnectionData = 0;
       v45 = *v54;
       do
       {
@@ -10530,34 +10530,34 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
           v22 = [(GKMatchmaker *)self nearbyDevicesForPlayer:v21 withState:1];
           if ([v22 count])
           {
-            if (!v18)
+            if (!nearbyConnectionData)
             {
-              v23 = [(GKMatchmaker *)self match];
-              v18 = [v23 nearbyConnectionData];
+              match2 = [(GKMatchmaker *)self match];
+              nearbyConnectionData = [match2 nearbyConnectionData];
             }
 
-            [v44 addObjectsFromArray:v22];
+            [array addObjectsFromArray:v22];
             v24 = +[GKReporter reporter];
             [v24 reportEvent:@"com.apple.GameKit.invite" type:@"initiate.nearby"];
 
             v25 = +[GKReporter reporter];
             [v25 reportEvent:@"com.apple.GameKit.MultiplayerPlayerSelection" type:@"NearbySelected"];
 
-            v26 = [(GKMatchmaker *)self invitedNearbyPlayers];
+            invitedNearbyPlayers = [(GKMatchmaker *)self invitedNearbyPlayers];
             v27 = MEMORY[0x277CBEB98];
             [v21 internal];
-            v29 = v28 = v18;
-            v30 = [v29 playerID];
-            v31 = [v27 setWithObject:v30];
-            [v26 unionSet:v31];
+            v29 = v28 = nearbyConnectionData;
+            playerID = [v29 playerID];
+            v31 = [v27 setWithObject:playerID];
+            [invitedNearbyPlayers unionSet:v31];
 
-            v32 = [(GKMatchmaker *)self match];
-            v33 = [v21 internal];
-            v58 = v33;
+            match3 = [(GKMatchmaker *)self match];
+            internal3 = [v21 internal];
+            v58 = internal3;
             v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
-            [v32 reportInviteSentWithApproach:3 isHosted:0 recipients:v34];
+            [match3 reportInviteSentWithApproach:3 isHosted:0 recipients:v34];
 
-            v18 = v28;
+            nearbyConnectionData = v28;
           }
 
           else
@@ -10574,37 +10574,37 @@ void __57__GKMatchmaker_Nearby__nearbyDevicesForPlayer_withState___block_invoke(
 
     else
     {
-      v18 = 0;
+      nearbyConnectionData = 0;
     }
 
-    if ([v44 count])
+    if ([array count])
     {
-      v35 = [MEMORY[0x277CBEB18] array];
-      [(GKMatchmaker *)self setAcceptedInviteesTokens:v35];
+      array2 = [MEMORY[0x277CBEB18] array];
+      [(GKMatchmaker *)self setAcceptedInviteesTokens:array2];
 
       v36 = +[GKDaemonProxy proxyForLocalPlayer];
-      v37 = [v36 friendService];
+      friendService = [v36 friendService];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourConnectionWithRequest_handler___block_invoke;
       v46[3] = &unk_2785E0FF0;
-      v47 = v18;
-      v6 = v41;
+      v47 = nearbyConnectionData;
+      requestCopy = v41;
       v48 = v41;
-      v49 = self;
-      v50 = v44;
+      selfCopy = self;
+      v50 = array;
       v38 = v42;
       v51 = v42;
-      v7 = v40;
+      handlerCopy = v40;
       v52 = v40;
-      [v37 getNearbyTokenForLocalPlayerWithHandler:v46];
+      [friendService getNearbyTokenForLocalPlayerWithHandler:v46];
     }
 
     else
     {
-      v7 = v40;
+      handlerCopy = v40;
       v40[2](v40);
-      v6 = v41;
+      requestCopy = v41;
       v38 = v42;
     }
   }
@@ -10826,19 +10826,19 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
   [v2 addObject:v3];
 }
 
-- (void)inviteAnyNearbyPlayersViaGCSWithRequest:(id)a3 onlineConnectionData:(id)a4 handler:(id)a5
+- (void)inviteAnyNearbyPlayersViaGCSWithRequest:(id)request onlineConnectionData:(id)data handler:(id)handler
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  dataCopy = data;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v10 = GKOSLoggers();
   }
 
-  v36 = v9;
-  v37 = v8;
+  v36 = handlerCopy;
+  v37 = dataCopy;
   v11 = os_log_GKTrace;
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
@@ -10848,22 +10848,22 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
 
   v12 = [MEMORY[0x277CBEB58] set];
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v38 = v7;
-  v15 = [v7 internal];
-  v16 = [v15 recipientPlayerIDs];
+  v38 = requestCopy;
+  internal = [requestCopy internal];
+  recipientPlayerIDs = [internal recipientPlayerIDs];
 
-  obj = v16;
-  v45 = [v16 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  obj = recipientPlayerIDs;
+  v45 = [recipientPlayerIDs countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v45)
   {
     v42 = v12;
     v43 = *v56;
-    v40 = v14;
+    v40 = dictionary;
     v41 = v13;
     do
     {
@@ -10881,7 +10881,7 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
         {
           v46 = v19;
           [v13 addObject:v18];
-          v21 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
@@ -10902,12 +10902,12 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
                 }
 
                 v27 = *(*(&v51 + 1) + 8 * j);
-                v28 = [v27 devicePushToken];
+                devicePushToken = [v27 devicePushToken];
 
-                if (v28)
+                if (devicePushToken)
                 {
-                  v29 = [v27 devicePushToken];
-                  [v21 addObject:v29];
+                  devicePushToken2 = [v27 devicePushToken];
+                  [array addObject:devicePushToken2];
                 }
               }
 
@@ -10917,8 +10917,8 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
             while (v24);
           }
 
-          v14 = v40;
-          [v40 setObject:v21 forKeyedSubscript:v18];
+          dictionary = v40;
+          [v40 setObject:array forKeyedSubscript:v18];
 
           v13 = v41;
           v12 = v42;
@@ -10939,9 +10939,9 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
 
   if ([v13 count])
   {
-    v30 = [v13 allObjects];
+    allObjects = [v13 allObjects];
     v31 = v38;
-    v32 = [(GKMatchmaker *)self formAGKMatchRequestForNearbyInviteWithOriginalRequest:v38 nearbyPlayerIDs:v30];
+    v32 = [(GKMatchmaker *)self formAGKMatchRequestForNearbyInviteWithOriginalRequest:v38 nearbyPlayerIDs:allObjects];
 
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
@@ -10953,7 +10953,7 @@ void __99__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaLegacyViceroyBonjourCon
     v33 = v36;
     v50 = v36;
     v34 = v37;
-    [(GKMatchmaker *)self invitePlayersWithRequest:v32 serverHosted:0 onlineConnectionData:v37 devicePushTokenMap:v14 isNearbyInvite:1 completionHandler:v47];
+    [(GKMatchmaker *)self invitePlayersWithRequest:v32 serverHosted:0 onlineConnectionData:v37 devicePushTokenMap:dictionary isNearbyInvite:1 completionHandler:v47];
   }
 
   else
@@ -10996,10 +10996,10 @@ void __93__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaGCSWithRequest_onlineCo
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)cancelNearbyInvitesToPlayers:(id)a3
+- (void)cancelNearbyInvitesToPlayers:(id)players
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playersCopy = players;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -11021,7 +11021,7 @@ void __93__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaGCSWithRequest_onlineCo
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = playersCopy;
   v9 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v9)
   {
@@ -11068,10 +11068,10 @@ void __93__GKMatchmaker_Nearby__inviteAnyNearbyPlayersViaGCSWithRequest_onlineCo
             while (v16);
           }
 
-          v19 = [(GKMatchmaker *)self invitedNearbyPlayers];
-          v20 = [v12 internal];
-          v21 = [v20 playerID];
-          [v19 removeObject:v21];
+          invitedNearbyPlayers = [(GKMatchmaker *)self invitedNearbyPlayers];
+          internal = [v12 internal];
+          playerID = [internal playerID];
+          [invitedNearbyPlayers removeObject:playerID];
 
           v22 = +[GKReporter reporter];
           [v22 reportEvent:@"com.apple.GameKit.invite" type:@"cancel.nearby"];
@@ -11147,11 +11147,11 @@ void __47__GKMatchmaker_Nearby__cancelSentNearbyInvites__block_invoke(uint64_t a
   [v5 reportEvent:@"com.apple.GameKit.invite" type:@"cancel.nearby"];
 }
 
-- (void)handleNearbyInviteResponse:(id)a3 fromDevice:(id)a4
+- (void)handleNearbyInviteResponse:(id)response fromDevice:(id)device
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  deviceCopy = device;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -11161,20 +11161,20 @@ void __47__GKMatchmaker_Nearby__cancelSentNearbyInvites__block_invoke(uint64_t a
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = responseCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "Handle nearby invite response dict: %@", buf, 0xCu);
   }
 
-  v10 = [v6 objectForKey:@"accepted"];
-  v11 = [v10 BOOLValue];
+  v10 = [responseCopy objectForKey:@"accepted"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchmaker+Nearby.m", 1101, "-[GKMatchmaker(Nearby) handleNearbyInviteResponse:fromDevice:]"];
-    v13 = [GKDispatchGroup dispatchGroupWithName:v12];
+    player = [GKDispatchGroup dispatchGroupWithName:v12];
 
-    v14 = [(GKMatchmaker *)self acceptedInviteesTokens];
-    v15 = [v14 count];
+    acceptedInviteesTokens = [(GKMatchmaker *)self acceptedInviteesTokens];
+    v15 = [acceptedInviteesTokens count];
 
     if (v15)
     {
@@ -11182,40 +11182,40 @@ void __47__GKMatchmaker_Nearby__cancelSentNearbyInvites__block_invoke(uint64_t a
       v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:5];
       v32[0] = v16;
       v31[1] = @"playerNearbyTokens";
-      v17 = [(GKMatchmaker *)self acceptedInviteesTokens];
-      v32[1] = v17;
+      acceptedInviteesTokens2 = [(GKMatchmaker *)self acceptedInviteesTokens];
+      v32[1] = acceptedInviteesTokens2;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __62__GKMatchmaker_Nearby__handleNearbyInviteResponse_fromDevice___block_invoke;
       v28[3] = &unk_2785DD898;
-      v29 = v7;
+      v29 = deviceCopy;
       v30 = v18;
       v19 = v18;
-      [v13 perform:v28];
+      [player perform:v28];
     }
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __62__GKMatchmaker_Nearby__handleNearbyInviteResponse_fromDevice___block_invoke_3;
     v24[3] = &unk_2785DDB40;
-    v25 = v6;
-    v26 = self;
-    v27 = v7;
-    [v13 notifyOnMainQueueWithBlock:v24];
+    v25 = responseCopy;
+    selfCopy = self;
+    v27 = deviceCopy;
+    [player notifyOnMainQueueWithBlock:v24];
 
-    v20 = v25;
+    deviceID = v25;
   }
 
   else
   {
-    v21 = [v6 objectForKey:@"declineReason"];
-    v22 = [v21 integerValue];
+    v21 = [responseCopy objectForKey:@"declineReason"];
+    integerValue = [v21 integerValue];
 
-    v13 = [v7 player];
-    v20 = [v7 deviceID];
-    [(GKMatchmaker *)self setNearbyPlayerDeclined:v13 deviceID:v20 reason:v22];
+    player = [deviceCopy player];
+    deviceID = [deviceCopy deviceID];
+    [(GKMatchmaker *)self setNearbyPlayerDeclined:player deviceID:deviceID reason:integerValue];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -11358,28 +11358,28 @@ void __62__GKMatchmaker_Nearby__handleNearbyInviteResponse_fromDevice___block_in
   [v2 setNearbyPlayerAccepted:v3 deviceID:v4 connectionData:v5];
 }
 
-- (void)establishNearbyFriendRelationships:(id)a3 fromDevice:(id)a4
+- (void)establishNearbyFriendRelationships:(id)relationships fromDevice:(id)device
 {
-  v6 = [a3 objectForKeyedSubscript:{@"playerNearbyTokens", a4}];
+  v6 = [relationships objectForKeyedSubscript:{@"playerNearbyTokens", device}];
   if ([v6 count])
   {
     v4 = +[GKDaemonProxy proxyForLocalPlayer];
-    v5 = [v4 friendService];
-    [v5 establishNearbyRelationshipsUsingPlayerTokens:v6 handler:&__block_literal_global_212];
+    friendService = [v4 friendService];
+    [friendService establishNearbyRelationshipsUsingPlayerTokens:v6 handler:&__block_literal_global_212];
   }
 }
 
-- (void)setNearbyPlayerAccepted:(id)a3 deviceID:(id)a4 connectionData:(id)a5
+- (void)setNearbyPlayerAccepted:(id)accepted deviceID:(id)d connectionData:(id)data
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:a4];
+  acceptedCopy = accepted;
+  dataCopy = data;
+  v10 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:d];
   if ([v10 state] == 2)
   {
     [v10 setState:3];
-    [(GKMatchmaker *)self setNearbyPlayerAccepted:v8 connectionData:v9];
-    v13[0] = v8;
+    [(GKMatchmaker *)self setNearbyPlayerAccepted:acceptedCopy connectionData:dataCopy];
+    v13[0] = acceptedCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     [(GKMatchmaker *)self cancelNearbyInvitesToPlayers:v11];
   }
@@ -11387,24 +11387,24 @@ void __62__GKMatchmaker_Nearby__handleNearbyInviteResponse_fromDevice___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNearbyPlayerDeclined:(id)a3 deviceID:(id)a4 reason:(int64_t)a5
+- (void)setNearbyPlayerDeclined:(id)declined deviceID:(id)d reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:v9];
+  declinedCopy = declined;
+  dCopy = d;
+  v10 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:dCopy];
   if ([v10 state] == 2)
   {
     [v10 setState:4];
     v11 = +[GKDaemonProxy proxyForLocalPlayer];
-    v12 = [v11 multiplayerService];
+    multiplayerService = [v11 multiplayerService];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __64__GKMatchmaker_Nearby__setNearbyPlayerDeclined_deviceID_reason___block_invoke;
     v13[3] = &unk_2785E1040;
     v13[4] = self;
-    v14 = v8;
-    v15 = a5;
-    [v12 forgetParticipant:0 deviceID:v9 handler:v13];
+    v14 = declinedCopy;
+    reasonCopy = reason;
+    [multiplayerService forgetParticipant:0 deviceID:dCopy handler:v13];
   }
 }
 
@@ -11423,33 +11423,33 @@ uint64_t __64__GKMatchmaker_Nearby__setNearbyPlayerDeclined_deviceID_reason___bl
   return result;
 }
 
-- (void)setNearbyPlayerFailed:(id)a3 deviceID:(id)a4
+- (void)setNearbyPlayerFailed:(id)failed deviceID:(id)d
 {
-  v7 = a3;
-  v6 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:a4];
+  failedCopy = failed;
+  v6 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:d];
   if ([v6 state] == 2)
   {
     [v6 setState:0];
-    if (![(GKMatchmaker *)self numberOfNearbyDevicesForPlayer:v7 withState:2])
+    if (![(GKMatchmaker *)self numberOfNearbyDevicesForPlayer:failedCopy withState:2])
     {
-      [(GKMatchmaker *)self setNearbyPlayerFailed:v7];
+      [(GKMatchmaker *)self setNearbyPlayerFailed:failedCopy];
     }
   }
 }
 
-- (void)handleNearbyProfileQuery:(id)a3 fromDevice:(id)a4
+- (void)handleNearbyProfileQuery:(id)query fromDevice:(id)device
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"bundleID"];
-  v9 = [v6 objectForKeyedSubscript:@"shortBundleVersion"];
-  v10 = [v6 objectForKeyedSubscript:@"bundleVersion"];
-  v11 = [v6 objectForKeyedSubscript:@"isDevelopmentVersion"];
+  queryCopy = query;
+  deviceCopy = device;
+  v8 = [queryCopy objectForKeyedSubscript:@"bundleID"];
+  v9 = [queryCopy objectForKeyedSubscript:@"shortBundleVersion"];
+  v10 = [queryCopy objectForKeyedSubscript:@"bundleVersion"];
+  v11 = [queryCopy objectForKeyedSubscript:@"isDevelopmentVersion"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
     if (!v8)
     {
       goto LABEL_7;
@@ -11458,7 +11458,7 @@ uint64_t __64__GKMatchmaker_Nearby__setNearbyPlayerDeclined_deviceID_reason___bl
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
     if (!v8)
     {
       goto LABEL_7;
@@ -11472,12 +11472,12 @@ uint64_t __64__GKMatchmaker_Nearby__setNearbyPlayerDeclined_deviceID_reason___bl
     v17[2] = __60__GKMatchmaker_Nearby__handleNearbyProfileQuery_fromDevice___block_invoke;
     v17[3] = &unk_2785E1090;
     v17[4] = self;
-    v18 = v6;
+    v18 = queryCopy;
     v19 = v10;
     v20 = v9;
-    v23 = v13;
+    v23 = bOOLValue;
     v21 = v8;
-    v22 = v7;
+    v22 = deviceCopy;
     [(GKMatchmaker *)self getHashedCompatibilitySetsWithHandler:v17];
 
     goto LABEL_11;
@@ -11493,7 +11493,7 @@ LABEL_7:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = queryCopy;
     _os_log_impl(&dword_227904000, v15, OS_LOG_TYPE_INFO, "nearby profile query missing bundle info:%@", buf, 0xCu);
   }
 
@@ -11613,10 +11613,10 @@ LABEL_8:
   [v15 sendProfileResponseToDevice:v16];
 }
 
-- (void)sendProfileResponseToDevice:(id)a3
+- (void)sendProfileResponseToDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -11626,9 +11626,9 @@ LABEL_8:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v4 deviceID];
+    deviceID = [deviceCopy deviceID];
     *buf = 138412290;
-    v15 = v8;
+    v15 = deviceID;
     _os_log_impl(&dword_227904000, v7, OS_LOG_TYPE_INFO, "sending profile response to device:%@", buf, 0xCu);
   }
 
@@ -11636,9 +11636,9 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __52__GKMatchmaker_Nearby__sendProfileResponseToDevice___block_invoke;
   v11[3] = &unk_2785E10E0;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = deviceCopy;
+  selfCopy = self;
+  v9 = deviceCopy;
   [(GKMatchmaker *)self loadPhotoDataDictionaryWithHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -11736,19 +11736,19 @@ void __52__GKMatchmaker_Nearby__sendProfileResponseToDevice___block_invoke_214(u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNearbyInvite:(id)a3 fromDevice:(id)a4
+- (void)handleNearbyInvite:(id)invite fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  inviteCopy = invite;
+  deviceCopy = device;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__GKMatchmaker_Nearby__handleNearbyInvite_fromDevice___block_invoke;
   v10[3] = &unk_2785DDB18;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = deviceCopy;
+  selfCopy = self;
+  v13 = inviteCopy;
+  v8 = inviteCopy;
+  v9 = deviceCopy;
   [(GKMatchmaker *)self determineIfShouldRespondToNearbyPlayer:v8 handler:v10];
 }
 
@@ -11782,11 +11782,11 @@ void __54__GKMatchmaker_Nearby__handleNearbyInvite_fromDevice___block_invoke(uin
   }
 }
 
-- (void)presentNearbyInvite:(id)a3 fromDevice:(id)a4
+- (void)presentNearbyInvite:(id)invite fromDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inviteCopy = invite;
+  deviceCopy = device;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -11796,58 +11796,58 @@ void __54__GKMatchmaker_Nearby__handleNearbyInvite_fromDevice___block_invoke(uin
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v23 = 138412290;
-    v24 = v6;
+    v24 = inviteCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "gonna present nearby invite:%@", &v23, 0xCu);
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v6];
+  v10 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:inviteCopy];
   v11 = +[GKGame currentGame];
-  v12 = [v11 adamID];
-  [v10 setObject:v12 forKey:@"adamID"];
+  adamID = [v11 adamID];
+  [v10 setObject:adamID forKey:@"adamID"];
 
-  v13 = [v11 bundleIdentifier];
-  [v10 setObject:v13 forKey:@"bundleID"];
+  bundleIdentifier = [v11 bundleIdentifier];
+  [v10 setObject:bundleIdentifier forKey:@"bundleID"];
 
-  v14 = [v11 bundleVersion];
-  [v10 setObject:v14 forKey:@"bundleVersion"];
+  bundleVersion = [v11 bundleVersion];
+  [v10 setObject:bundleVersion forKey:@"bundleVersion"];
 
-  v15 = [v7 deviceID];
-  [v10 setObject:v15 forKey:@"deviceID"];
+  deviceID = [deviceCopy deviceID];
+  [v10 setObject:deviceID forKey:@"deviceID"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "platform")}];
   [v10 setObject:v16 forKey:@"platform"];
 
-  v17 = [v11 shortBundleVersion];
+  shortBundleVersion = [v11 shortBundleVersion];
 
-  if (v17)
+  if (shortBundleVersion)
   {
-    v18 = [v11 shortBundleVersion];
-    [v10 setObject:v18 forKey:@"shortBundleVersion"];
+    shortBundleVersion2 = [v11 shortBundleVersion];
+    [v10 setObject:shortBundleVersion2 forKey:@"shortBundleVersion"];
   }
 
-  v19 = [v7 player];
-  [(GKMatchmaker *)self saveNearbyInvite:v10 fromPlayer:v19];
+  player = [deviceCopy player];
+  [(GKMatchmaker *)self saveNearbyInvite:v10 fromPlayer:player];
 
   v20 = +[GKDaemonProxy proxyForLocalPlayer];
-  v21 = [v20 multiplayerService];
-  [v21 presentNearbyInvite:v10];
+  multiplayerService = [v20 multiplayerService];
+  [multiplayerService presentNearbyInvite:v10];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveNearbyInvite:(id)a3 fromPlayer:(id)a4
+- (void)saveNearbyInvite:(id)invite fromPlayer:(id)player
 {
-  v6 = a3;
-  v7 = a4;
+  inviteCopy = invite;
+  playerCopy = player;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__GKMatchmaker_Nearby__saveNearbyInvite_fromPlayer___block_invoke;
   v10[3] = &unk_2785DDB40;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = inviteCopy;
+  v12 = playerCopy;
+  v8 = playerCopy;
+  v9 = inviteCopy;
   [(GKMatchmaker *)self performSync:v10];
 }
 
@@ -11859,16 +11859,16 @@ void __52__GKMatchmaker_Nearby__saveNearbyInvite_fromPlayer___block_invoke(uint6
   [v4 setObject:v2 forKey:v3];
 }
 
-- (void)removeNearbyInviteFromPlayer:(id)a3
+- (void)removeNearbyInviteFromPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__GKMatchmaker_Nearby__removeNearbyInviteFromPlayer___block_invoke;
   v6[3] = &unk_2785DEBA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = playerCopy;
+  v5 = playerCopy;
   [(GKMatchmaker *)self performSync:v6];
 }
 
@@ -11879,9 +11879,9 @@ void __53__GKMatchmaker_Nearby__removeNearbyInviteFromPlayer___block_invoke(uint
   [v3 removeObjectForKey:v2];
 }
 
-- (id)nearbyInviteFromPlayer:(id)a3
+- (id)nearbyInviteFromPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -11894,7 +11894,7 @@ void __53__GKMatchmaker_Nearby__removeNearbyInviteFromPlayer___block_invoke(uint
   v8[3] = &unk_2785E0DC0;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = playerCopy;
   v9 = v5;
   [(GKMatchmaker *)self performSync:v8];
   v6 = v12[5];
@@ -11958,10 +11958,10 @@ void __52__GKMatchmaker_Nearby__declineReceivedNearbyInvites__block_invoke_2(uin
   [*(a1 + 32) declineNearbyInviteFromDevice:v4 reason:3];
 }
 
-- (void)localPlayerRespondedToNearbyInvite:(id)a3
+- (void)localPlayerRespondedToNearbyInvite:(id)invite
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inviteCopy = invite;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -11983,64 +11983,64 @@ void __52__GKMatchmaker_Nearby__declineReceivedNearbyInvites__block_invoke_2(uin
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36 = v4;
+    v36 = inviteCopy;
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "local player responded to nearby invite: %@", buf, 0xCu);
   }
 
-  v9 = [v4 objectForKey:@"deviceID"];
+  v9 = [inviteCopy objectForKey:@"deviceID"];
   if (v9)
   {
     v10 = [(GKMatchmaker *)self nearbyDeviceWithDeviceID:v9];
-    v11 = [v10 player];
+    player = [v10 player];
 
-    if (!v11)
+    if (!player)
     {
       v12 = MEMORY[0x277CCACA8];
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/GKMatchmaker+Nearby.m"];
-      v15 = [v14 lastPathComponent];
-      v16 = [v12 stringWithFormat:@"%@ (device.player)\n[%s (%s:%d)]", v13, "-[GKMatchmaker(Nearby) localPlayerRespondedToNearbyInvite:]", objc_msgSend(v15, "UTF8String"), 1368];
+      lastPathComponent = [v14 lastPathComponent];
+      1368 = [v12 stringWithFormat:@"%@ (device.player)\n[%s (%s:%d)]", v13, "-[GKMatchmaker(Nearby) localPlayerRespondedToNearbyInvite:]", objc_msgSend(lastPathComponent, "UTF8String"), 1368];
 
-      [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v16}];
+      [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1368}];
     }
 
-    v17 = [v10 player];
-    [(GKMatchmaker *)self removeNearbyInviteFromPlayer:v17];
+    player2 = [v10 player];
+    [(GKMatchmaker *)self removeNearbyInviteFromPlayer:player2];
 
-    v18 = [v4 objectForKey:@"participantID"];
-    v19 = [v4 objectForKey:@"accepted"];
-    v20 = [v19 BOOLValue];
+    v18 = [inviteCopy objectForKey:@"participantID"];
+    v19 = [inviteCopy objectForKey:@"accepted"];
+    bOOLValue = [v19 BOOLValue];
 
-    if (v20 && [(GKMatchmaker *)self nearbyAdvertising])
+    if (bOOLValue && [(GKMatchmaker *)self nearbyAdvertising])
     {
-      v21 = [v10 player];
-      v22 = [v21 internal];
-      v23 = [v4 objectForKey:@"bundleID"];
-      v24 = [v4 objectForKey:@"connectionData"];
-      v25 = [GKInviteInternal inviteFromNearbyPlayer:v22 participantID:v18 deviceID:v9 bundleID:v23 connectionData:v24];
+      player3 = [v10 player];
+      internal = [player3 internal];
+      v23 = [inviteCopy objectForKey:@"bundleID"];
+      v24 = [inviteCopy objectForKey:@"connectionData"];
+      v25 = [GKInviteInternal inviteFromNearbyPlayer:internal participantID:v18 deviceID:v9 bundleID:v23 connectionData:v24];
 
-      v26 = [v4 objectForKey:@"playerGroup"];
+      v26 = [inviteCopy objectForKey:@"playerGroup"];
       [v25 setPlayerGroup:{objc_msgSend(v26, "integerValue")}];
 
-      v27 = [v4 objectForKey:@"playerAttributes"];
+      v27 = [inviteCopy objectForKey:@"playerAttributes"];
       [v25 setPlayerAttributes:{objc_msgSend(v27, "unsignedIntegerValue")}];
 
       v28 = [[GKInvite alloc] initWithInternalRepresentation:v25];
       [(GKMatchmaker *)self localPlayerAcceptedNearbyInvite:v28];
-      v29 = [v4 objectForKeyedSubscript:@"playerNearbyToken"];
+      v29 = [inviteCopy objectForKeyedSubscript:@"playerNearbyToken"];
       if ([v29 length])
       {
         v30 = +[GKDaemonProxy proxyForLocalPlayer];
-        v31 = [v30 friendService];
+        friendService = [v30 friendService];
         v34 = v29;
         v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-        [v31 establishNearbyRelationshipsUsingPlayerTokens:v32 handler:&__block_literal_global_238];
+        [friendService establishNearbyRelationshipsUsingPlayerTokens:v32 handler:&__block_literal_global_238];
       }
     }
 
     else
     {
-      v25 = [v4 objectForKey:@"declineReason"];
+      v25 = [inviteCopy objectForKey:@"declineReason"];
       -[GKMatchmaker declineNearbyInviteFromDevice:reason:](self, "declineNearbyInviteFromDevice:reason:", v10, [v25 integerValue]);
     }
   }
@@ -12048,9 +12048,9 @@ void __52__GKMatchmaker_Nearby__declineReceivedNearbyInvites__block_invoke_2(uin
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localPlayerAcceptedNearbyInvite:(id)a3
+- (void)localPlayerAcceptedNearbyInvite:(id)invite
 {
-  v4 = a3;
+  inviteCopy = invite;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -12066,14 +12066,14 @@ void __52__GKMatchmaker_Nearby__declineReceivedNearbyInvites__block_invoke_2(uin
   if ([(GKMatchmaker *)self hasInviteListener])
   {
     v7 = +[GKLocalPlayer localPlayer];
-    [v7 setAcceptedInvite:v4];
+    [v7 setAcceptedInvite:inviteCopy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__GKMatchmaker_Nearby__localPlayerAcceptedNearbyInvite___block_invoke;
     block[3] = &unk_2785DDB40;
     v10 = v7;
-    v11 = v4;
-    v12 = self;
+    v11 = inviteCopy;
+    selfCopy = self;
     v8 = v7;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -12113,10 +12113,10 @@ void __56__GKMatchmaker_Nearby__localPlayerAcceptedNearbyInvite___block_invoke(u
   }
 }
 
-- (void)acceptNearbyInvite:(id)a3 connectionData:(id)a4
+- (void)acceptNearbyInvite:(id)invite connectionData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  inviteCopy = invite;
+  dataCopy = data;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -12130,17 +12130,17 @@ void __56__GKMatchmaker_Nearby__localPlayerAcceptedNearbyInvite___block_invoke(u
   }
 
   v10 = +[GKDaemonProxy proxyForLocalPlayer];
-  v11 = [v10 friendService];
+  friendService = [v10 friendService];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__GKMatchmaker_Nearby__acceptNearbyInvite_connectionData___block_invoke;
   v14[3] = &unk_2785E1130;
-  v15 = v7;
-  v16 = self;
-  v17 = v6;
-  v12 = v6;
-  v13 = v7;
-  [v11 getNearbyTokenForLocalPlayerWithHandler:v14];
+  v15 = dataCopy;
+  selfCopy = self;
+  v17 = inviteCopy;
+  v12 = inviteCopy;
+  v13 = dataCopy;
+  [friendService getNearbyTokenForLocalPlayerWithHandler:v14];
 }
 
 void __58__GKMatchmaker_Nearby__acceptNearbyInvite_connectionData___block_invoke(uint64_t a1, void *a2)
@@ -12202,10 +12202,10 @@ void __58__GKMatchmaker_Nearby__acceptNearbyInvite_connectionData___block_invoke
   }
 }
 
-- (void)declineNearbyInviteFromDevice:(id)a3 reason:(int64_t)a4
+- (void)declineNearbyInviteFromDevice:(id)device reason:(int64_t)reason
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v17[0] = @"message";
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:3];
   v18[0] = v7;
@@ -12213,7 +12213,7 @@ void __58__GKMatchmaker_Nearby__acceptNearbyInvite_connectionData___block_invoke
   v8 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v18[1] = v8;
   v17[2] = @"declineReason";
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:reason];
   v18[2] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
@@ -12221,10 +12221,10 @@ void __58__GKMatchmaker_Nearby__acceptNearbyInvite_connectionData___block_invoke
   v13[1] = 3221225472;
   v13[2] = __61__GKMatchmaker_Nearby__declineNearbyInviteFromDevice_reason___block_invoke;
   v13[3] = &unk_2785E1158;
-  v14 = v6;
-  v15 = self;
-  v16 = a4;
-  v11 = v6;
+  v14 = deviceCopy;
+  selfCopy = self;
+  reasonCopy = reason;
+  v11 = deviceCopy;
   [v11 sendDictionary:v10 withCompletionHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -12257,58 +12257,58 @@ void __61__GKMatchmaker_Nearby__declineNearbyInviteFromDevice_reason___block_inv
   }
 }
 
-- (id)declineReasonString:(int64_t)a3
+- (id)declineReasonString:(int64_t)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     v3 = GKDeclinedUnknown;
   }
 
   else
   {
-    v3 = off_2785E1178[a3];
+    v3 = off_2785E1178[string];
   }
 
   return *v3;
 }
 
-- (void)nearbyInviteWasCancelled:(id)a3 fromDevice:(id)a4
+- (void)nearbyInviteWasCancelled:(id)cancelled fromDevice:(id)device
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v6 player];
-  if (v7)
+  cancelledCopy = cancelled;
+  deviceCopy = device;
+  player = [deviceCopy player];
+  if (player)
   {
-    [(GKMatchmaker *)self removeNearbyInviteFromPlayer:v7];
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v20];
+    [(GKMatchmaker *)self removeNearbyInviteFromPlayer:player];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:cancelledCopy];
     v9 = +[GKGame currentGame];
-    v10 = [v7 internal];
-    v11 = [v10 playerID];
-    [v8 setObject:v11 forKey:@"playerID"];
+    internal = [player internal];
+    playerID = [internal playerID];
+    [v8 setObject:playerID forKey:@"playerID"];
 
-    v12 = [v6 deviceID];
-    [v8 setObject:v12 forKey:@"deviceID"];
+    deviceID = [deviceCopy deviceID];
+    [v8 setObject:deviceID forKey:@"deviceID"];
 
-    v13 = [v9 bundleIdentifier];
-    [v8 setObject:v13 forKey:@"bundleID"];
+    bundleIdentifier = [v9 bundleIdentifier];
+    [v8 setObject:bundleIdentifier forKey:@"bundleID"];
 
-    v14 = [v9 bundleVersion];
-    [v8 setObject:v14 forKey:@"bundleVersion"];
+    bundleVersion = [v9 bundleVersion];
+    [v8 setObject:bundleVersion forKey:@"bundleVersion"];
 
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "platform")}];
     [v8 setObject:v15 forKey:@"platform"];
 
-    v16 = [v9 shortBundleVersion];
+    shortBundleVersion = [v9 shortBundleVersion];
 
-    if (v16)
+    if (shortBundleVersion)
     {
-      v17 = [v9 shortBundleVersion];
-      [v8 setObject:v17 forKey:@"shortBundleVersion"];
+      shortBundleVersion2 = [v9 shortBundleVersion];
+      [v8 setObject:shortBundleVersion2 forKey:@"shortBundleVersion"];
     }
 
     v18 = +[GKDaemonProxy proxyForLocalPlayer];
-    v19 = [v18 multiplayerService];
-    [v19 nearbyInviteWasCancelled:v8];
+    multiplayerService = [v18 multiplayerService];
+    [multiplayerService nearbyInviteWasCancelled:v8];
   }
 }
 
@@ -12733,8 +12733,8 @@ void __63__GKMatchmaker_loadURLForMatch_matchRequest_completionHandler___block_i
 - (void)allInviteesDidRespond
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_13() callStackSymbols];
+  selfCopy = self;
+  callStackSymbols = [OUTLINED_FUNCTION_13() callStackSymbols];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_6(&dword_227904000, v4, v5, "Received responses from all invitees. Stack: %@", v6, v7, v8, v9, v11);
 
@@ -12888,8 +12888,8 @@ void __42__GKMatchmaker_inviteeUpdateNotification___block_invoke_383_cold_1()
 + (void)sharedMatchmaker
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_13() callStackSymbols];
+  selfCopy = self;
+  callStackSymbols = [OUTLINED_FUNCTION_13() callStackSymbols];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_6(&dword_227904000, v4, v5, "Should not initialize GKMatchmaker for the current process. %@", v6, v7, v8, v9, v11);
 

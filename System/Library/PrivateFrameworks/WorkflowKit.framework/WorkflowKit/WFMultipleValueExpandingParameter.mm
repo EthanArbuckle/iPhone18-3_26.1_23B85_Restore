@@ -1,19 +1,19 @@
 @interface WFMultipleValueExpandingParameter
-- (WFMultipleValueExpandingParameter)initWithDefinition:(id)a3;
+- (WFMultipleValueExpandingParameter)initWithDefinition:(id)definition;
 @end
 
 @implementation WFMultipleValueExpandingParameter
 
-- (WFMultipleValueExpandingParameter)initWithDefinition:(id)a3
+- (WFMultipleValueExpandingParameter)initWithDefinition:(id)definition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFMultipleValueExpandingParameter;
-  v5 = [(WFExpandingParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFExpandingParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"MultipleValueParameterKey"];
+    v6 = [definitionCopy objectForKey:@"MultipleValueParameterKey"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

@@ -1,14 +1,14 @@
 @interface NEAgentServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation NEAgentServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.private.neagent-client"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.private.neagent-client"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v8 BOOLValue] & 1) == 0)
   {
@@ -32,7 +32,7 @@
     Property = 0;
   }
 
-  if (Property != v6)
+  if (Property != listenerCopy)
   {
 LABEL_15:
     v23 = 0;
@@ -41,7 +41,7 @@ LABEL_15:
 
   kdebug_trace();
   v11 = [NEAgentSession alloc];
-  v12 = v7;
+  v12 = connectionCopy;
   if (v11)
   {
     v31.receiver = v11;
@@ -71,7 +71,7 @@ LABEL_15:
       transaction = v11->_transaction;
       v11->_transaction = v18;
 
-      objc_storeStrong(&v11->_connection, a4);
+      objc_storeStrong(&v11->_connection, connection);
       [v12 resume];
       v20 = +[NSXPCListener anonymousListener];
       [(NSXPCListener *)v20 setDelegate:v11];

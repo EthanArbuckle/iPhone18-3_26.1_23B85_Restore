@@ -4,38 +4,38 @@
 - (CGRect)derivedCameraContentFrame;
 - (HMCameraSource)cameraSource;
 - (HMCameraView)cameraView;
-- (HUCameraView)initWithBadgeView:(id)a3;
+- (HUCameraView)initWithBadgeView:(id)view;
 - (UIOffset)badgeOffset;
 - (UIView)cameraOverlaySnapshot;
 - (double)_continuousCornerRadius;
 - (id)backgroundColor;
 - (id)cameraContentSnapshot;
-- (int64_t)contentModeForAspectRatio:(double)a3;
-- (void)_scheduleNextSnapshotAgeUpdateForCaptureDate:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_updateBadgeViewReschedulingTimerIfNecessary:(BOOL)a3;
-- (void)_updateErrorAndActivityIndicatorVisibilityAnimated:(BOOL)a3;
+- (int64_t)contentModeForAspectRatio:(double)ratio;
+- (void)_scheduleNextSnapshotAgeUpdateForCaptureDate:(id)date;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_updateBadgeViewReschedulingTimerIfNecessary:(BOOL)necessary;
+- (void)_updateErrorAndActivityIndicatorVisibilityAnimated:(BOOL)animated;
 - (void)_updateMaskedCameraCorners;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBadgeBottomAnchor:(id)a3;
-- (void)setBadgeHidden:(BOOL)a3;
-- (void)setBadgeOffset:(UIOffset)a3;
-- (void)setCameraContentMode:(int64_t)a3;
-- (void)setCameraSource:(id)a3 animated:(BOOL)a4;
-- (void)setCameraSource:(id)a3 withDemoSnapshotURL:(id)a4 animated:(BOOL)a5;
-- (void)setContentMode:(int64_t)a3;
-- (void)setErrorContent:(id)a3 animated:(BOOL)a4;
-- (void)setShowActivityIndicator:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setBadgeBottomAnchor:(id)anchor;
+- (void)setBadgeHidden:(BOOL)hidden;
+- (void)setBadgeOffset:(UIOffset)offset;
+- (void)setCameraContentMode:(int64_t)mode;
+- (void)setCameraSource:(id)source animated:(BOOL)animated;
+- (void)setCameraSource:(id)source withDemoSnapshotURL:(id)l animated:(BOOL)animated;
+- (void)setContentMode:(int64_t)mode;
+- (void)setErrorContent:(id)content animated:(BOOL)animated;
+- (void)setShowActivityIndicator:(BOOL)indicator animated:(BOOL)animated;
 - (void)updateConstraints;
 @end
 
 @implementation HUCameraView
 
-- (HUCameraView)initWithBadgeView:(id)a3
+- (HUCameraView)initWithBadgeView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = HUCameraView;
   v6 = [(HUCameraView *)&v20 init];
@@ -55,16 +55,16 @@
     v11 = *(v6 + 59);
     *(v6 + 59) = v10;
 
-    v12 = [*(v6 + 59) layer];
-    [v12 setMasksToBounds:1];
+    layer = [*(v6 + 59) layer];
+    [layer setMasksToBounds:1];
 
     [*(v6 + 59) setTranslatesAutoresizingMaskIntoConstraints:0];
     [*(v6 + 59) setUserInteractionEnabled:0];
     [v6 addSubview:*(v6 + 59)];
-    v13 = [MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo];
-    if (v5 && (v13 & 1) == 0)
+    shouldSuppressAllErrorsForDemo = [MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo];
+    if (viewCopy && (shouldSuppressAllErrorsForDemo & 1) == 0)
     {
-      objc_storeStrong(v6 + 58, a3);
+      objc_storeStrong(v6 + 58, view);
       [*(v6 + 58) setTranslatesAutoresizingMaskIntoConstraints:0];
       [v6 addSubview:*(v6 + 58)];
       __asm { FMOV            V0.2D, #16.0 }
@@ -82,8 +82,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HUCameraView *)self snapshotAgeUpdateTimer];
-  [v3 invalidate];
+  snapshotAgeUpdateTimer = [(HUCameraView *)self snapshotAgeUpdateTimer];
+  [snapshotAgeUpdateTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = HUCameraView;
@@ -92,67 +92,67 @@
 
 - (double)_continuousCornerRadius
 {
-  v2 = [(HUCameraView *)self cameraContainerView];
-  [v2 _continuousCornerRadius];
+  cameraContainerView = [(HUCameraView *)self cameraContainerView];
+  [cameraContainerView _continuousCornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v5 = [(HUCameraView *)self demoSnapshotImageView];
-    [v5 _setContinuousCornerRadius:a3];
+    demoSnapshotImageView = [(HUCameraView *)self demoSnapshotImageView];
+    [demoSnapshotImageView _setContinuousCornerRadius:radius];
   }
 
-  v6 = [(HUCameraView *)self cameraContainerView];
-  [v6 _setContinuousCornerRadius:a3];
+  cameraContainerView = [(HUCameraView *)self cameraContainerView];
+  [cameraContainerView _setContinuousCornerRadius:radius];
 
-  v7 = [(HUCameraView *)self backgroundView];
-  [v7 _setContinuousCornerRadius:a3];
+  backgroundView = [(HUCameraView *)self backgroundView];
+  [backgroundView _setContinuousCornerRadius:radius];
 
-  v8 = [(HUCameraView *)self cameraOverlayView];
-  [v8 _setContinuousCornerRadius:a3];
+  cameraOverlayView = [(HUCameraView *)self cameraOverlayView];
+  [cameraOverlayView _setContinuousCornerRadius:radius];
 
   [(HUCameraView *)self _updateMaskedCameraCorners];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if ([(HUCameraView *)self contentMode]!= a3)
+  if ([(HUCameraView *)self contentMode]!= mode)
   {
     v8.receiver = self;
     v8.super_class = HUCameraView;
-    [(HUCameraView *)&v8 setContentMode:a3];
-    v5 = [(HUCameraView *)self contentMode];
-    v6 = [(HUCameraView *)self cameraContainerView];
-    v7 = [v6 contentView];
-    [v7 setContentMode:v5];
+    [(HUCameraView *)&v8 setContentMode:mode];
+    contentMode = [(HUCameraView *)self contentMode];
+    cameraContainerView = [(HUCameraView *)self cameraContainerView];
+    contentView = [cameraContainerView contentView];
+    [contentView setContentMode:contentMode];
   }
 }
 
 - (id)backgroundColor
 {
-  v2 = [(HUCameraView *)self backgroundView];
-  v3 = [v2 backgroundColor];
+  backgroundView = [(HUCameraView *)self backgroundView];
+  backgroundColor = [backgroundView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(HUCameraView *)self backgroundView];
-  if (!v4 || v5)
+  colorCopy = color;
+  backgroundView = [(HUCameraView *)self backgroundView];
+  if (!colorCopy || backgroundView)
   {
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
-    v7 = [v4 isEqual:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v7 = [colorCopy isEqual:clearColor];
 
     if ((v7 & 1) == 0)
     {
@@ -165,8 +165,8 @@
     }
   }
 
-  v8 = [(HUCameraView *)self backgroundView];
-  [v8 setBackgroundColor:v4];
+  backgroundView2 = [(HUCameraView *)self backgroundView];
+  [backgroundView2 setBackgroundColor:colorCopy];
 }
 
 uint64_t __35__HUCameraView_setBackgroundColor___block_invoke(uint64_t a1)
@@ -201,119 +201,119 @@ uint64_t __35__HUCameraView_setBackgroundColor___block_invoke(uint64_t a1)
 
 - (HMCameraView)cameraView
 {
-  v2 = [(HUCameraView *)self cameraContainerView];
-  v3 = [v2 contentView];
+  cameraContainerView = [(HUCameraView *)self cameraContainerView];
+  contentView = [cameraContainerView contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (void)updateConstraints
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraView *)self staticConstraints];
+  staticConstraints = [(HUCameraView *)self staticConstraints];
 
-  if (!v3)
+  if (!staticConstraints)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(HUCameraView *)self cameraContainerView];
-    v6 = [v5 centerXAnchor];
-    v7 = [(HUCameraView *)self centerXAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    cameraContainerView = [(HUCameraView *)self cameraContainerView];
+    centerXAnchor = [cameraContainerView centerXAnchor];
+    centerXAnchor2 = [(HUCameraView *)self centerXAnchor];
+    v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v4 addObject:v8];
 
-    v9 = [(HUCameraView *)self cameraContainerView];
-    v10 = [v9 centerYAnchor];
-    v11 = [(HUCameraView *)self centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    cameraContainerView2 = [(HUCameraView *)self cameraContainerView];
+    centerYAnchor = [cameraContainerView2 centerYAnchor];
+    centerYAnchor2 = [(HUCameraView *)self centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v4 addObject:v12];
 
-    v13 = [(HUCameraView *)self cameraContainerView];
-    v14 = [v13 widthAnchor];
-    v15 = [(HUCameraView *)self widthAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    cameraContainerView3 = [(HUCameraView *)self cameraContainerView];
+    widthAnchor = [cameraContainerView3 widthAnchor];
+    widthAnchor2 = [(HUCameraView *)self widthAnchor];
+    v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v4 addObject:v16];
 
-    v17 = [(HUCameraView *)self cameraContainerView];
-    v18 = [v17 heightAnchor];
-    v19 = [(HUCameraView *)self heightAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    cameraContainerView4 = [(HUCameraView *)self cameraContainerView];
+    heightAnchor = [cameraContainerView4 heightAnchor];
+    heightAnchor2 = [(HUCameraView *)self heightAnchor];
+    v20 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [v4 addObject:v20];
 
-    v21 = [(HUCameraView *)self cameraOverlayView];
-    v22 = [v21 widthAnchor];
-    v23 = [(HUCameraView *)self widthAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    cameraOverlayView = [(HUCameraView *)self cameraOverlayView];
+    widthAnchor3 = [cameraOverlayView widthAnchor];
+    widthAnchor4 = [(HUCameraView *)self widthAnchor];
+    v24 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     [v4 addObject:v24];
 
-    v25 = [(HUCameraView *)self cameraOverlayView];
-    v26 = [v25 heightAnchor];
-    v27 = [(HUCameraView *)self heightAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    cameraOverlayView2 = [(HUCameraView *)self cameraOverlayView];
+    heightAnchor3 = [cameraOverlayView2 heightAnchor];
+    heightAnchor4 = [(HUCameraView *)self heightAnchor];
+    v28 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     [v4 addObject:v28];
 
-    v29 = [(HUCameraView *)self cameraOverlayView];
-    v30 = [v29 centerXAnchor];
-    v31 = [(HUCameraView *)self centerXAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    cameraOverlayView3 = [(HUCameraView *)self cameraOverlayView];
+    centerXAnchor3 = [cameraOverlayView3 centerXAnchor];
+    centerXAnchor4 = [(HUCameraView *)self centerXAnchor];
+    v32 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v4 addObject:v32];
 
-    v33 = [(HUCameraView *)self cameraOverlayView];
-    v34 = [v33 centerYAnchor];
-    v35 = [(HUCameraView *)self centerYAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    cameraOverlayView4 = [(HUCameraView *)self cameraOverlayView];
+    centerYAnchor3 = [cameraOverlayView4 centerYAnchor];
+    centerYAnchor4 = [(HUCameraView *)self centerYAnchor];
+    v36 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v4 addObject:v36];
 
     [(HUCameraView *)self setStaticConstraints:v4];
     v37 = MEMORY[0x277CCAAD0];
-    v38 = [(HUCameraView *)self staticConstraints];
-    [v37 activateConstraints:v38];
+    staticConstraints2 = [(HUCameraView *)self staticConstraints];
+    [v37 activateConstraints:staticConstraints2];
   }
 
-  v39 = [(HUCameraView *)self badgeView];
-  if (v39)
+  badgeView = [(HUCameraView *)self badgeView];
+  if (badgeView)
   {
-    v40 = v39;
-    v41 = [(HUCameraView *)self badgeBottomConstraint];
-    if (v41)
+    v40 = badgeView;
+    badgeBottomConstraint = [(HUCameraView *)self badgeBottomConstraint];
+    if (badgeBottomConstraint)
     {
     }
 
     else
     {
-      v42 = [(HUCameraView *)self badgeTrailingConstraint];
+      badgeTrailingConstraint = [(HUCameraView *)self badgeTrailingConstraint];
 
-      if (!v42)
+      if (!badgeTrailingConstraint)
       {
-        v43 = [(HUCameraView *)self badgeView];
-        v44 = [v43 bottomAnchor];
-        v45 = [(HUCameraView *)self badgeBottomAnchor];
-        v46 = v45;
-        if (!v45)
+        badgeView2 = [(HUCameraView *)self badgeView];
+        bottomAnchor = [badgeView2 bottomAnchor];
+        badgeBottomAnchor = [(HUCameraView *)self badgeBottomAnchor];
+        bottomAnchor2 = badgeBottomAnchor;
+        if (!badgeBottomAnchor)
         {
-          v46 = [(HUCameraView *)self bottomAnchor];
+          bottomAnchor2 = [(HUCameraView *)self bottomAnchor];
         }
 
         [(HUCameraView *)self badgeOffset];
-        v48 = [v44 constraintEqualToAnchor:v46 constant:-v47];
+        v48 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v47];
         [(HUCameraView *)self setBadgeBottomConstraint:v48];
 
-        if (!v45)
+        if (!badgeBottomAnchor)
         {
         }
 
-        v49 = [(HUCameraView *)self badgeView];
-        v50 = [v49 trailingAnchor];
-        v51 = [(HUCameraView *)self safeAreaLayoutGuide];
-        v52 = [v51 trailingAnchor];
+        badgeView3 = [(HUCameraView *)self badgeView];
+        trailingAnchor = [badgeView3 trailingAnchor];
+        safeAreaLayoutGuide = [(HUCameraView *)self safeAreaLayoutGuide];
+        trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
         [(HUCameraView *)self badgeOffset];
-        v54 = [v50 constraintEqualToAnchor:v52 constant:-v53];
+        v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v53];
         [(HUCameraView *)self setBadgeTrailingConstraint:v54];
 
         v55 = MEMORY[0x277CCAAD0];
-        v56 = [(HUCameraView *)self badgeBottomConstraint];
-        v60[0] = v56;
-        v57 = [(HUCameraView *)self badgeTrailingConstraint];
-        v60[1] = v57;
+        badgeBottomConstraint2 = [(HUCameraView *)self badgeBottomConstraint];
+        v60[0] = badgeBottomConstraint2;
+        badgeTrailingConstraint2 = [(HUCameraView *)self badgeTrailingConstraint];
+        v60[1] = badgeTrailingConstraint2;
         v58 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
         [v55 activateConstraints:v58];
       }
@@ -335,73 +335,73 @@ uint64_t __35__HUCameraView_setBackgroundColor___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUCameraView *)self cameraContainerView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  cameraContainerView = [(HUCameraView *)self cameraContainerView];
+  [cameraContainerView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(HUCameraView *)self cameraContainerView];
-  [v12 bounds];
+  cameraContainerView2 = [(HUCameraView *)self cameraContainerView];
+  [cameraContainerView2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(HUCameraView *)self cameraView];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  cameraView = [(HUCameraView *)self cameraView];
+  [cameraView setFrame:{v14, v16, v18, v20}];
 
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v22 = [(HUCameraView *)self cameraContainerView];
-    [v22 bounds];
+    cameraContainerView3 = [(HUCameraView *)self cameraContainerView];
+    [cameraContainerView3 bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(HUCameraView *)self demoSnapshotImageView];
-    [v31 setFrame:{v24, v26, v28, v30}];
+    demoSnapshotImageView = [(HUCameraView *)self demoSnapshotImageView];
+    [demoSnapshotImageView setFrame:{v24, v26, v28, v30}];
   }
 
   [(HUCameraView *)self cameraContentFrame];
   if (v33 == *MEMORY[0x277CBF3A8] && v32 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v35 = [(HUCameraView *)self cameraContainerView];
-    [v35 layoutIfNeeded];
+    cameraContainerView4 = [(HUCameraView *)self cameraContainerView];
+    [cameraContainerView4 layoutIfNeeded];
   }
 
   [(HUCameraView *)self _updateMaskedCameraCorners];
 }
 
-- (void)setCameraContentMode:(int64_t)a3
+- (void)setCameraContentMode:(int64_t)mode
 {
-  v5 = [(HUCameraView *)self cameraView];
-  v6 = [v5 contentMode];
+  cameraView = [(HUCameraView *)self cameraView];
+  contentMode = [cameraView contentMode];
 
-  if (v6 != a3)
+  if (contentMode != mode)
   {
-    v7 = [(HUCameraView *)self cameraView];
-    [v7 setContentMode:a3];
+    cameraView2 = [(HUCameraView *)self cameraView];
+    [cameraView2 setContentMode:mode];
 
     [(HUCameraView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setCameraSource:(id)a3 withDemoSnapshotURL:(id)a4 animated:(BOOL)a5
+- (void)setCameraSource:(id)source withDemoSnapshotURL:(id)l animated:(BOOL)animated
 {
-  v5 = a5;
-  v18 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  sourceCopy = source;
+  lCopy = l;
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v9 = [(HUCameraView *)self demoSnapshotImageView];
+    demoSnapshotImageView = [(HUCameraView *)self demoSnapshotImageView];
 
-    if (!v9)
+    if (!demoSnapshotImageView)
     {
       v10 = objc_alloc(MEMORY[0x277D755B8]);
-      v11 = [v8 path];
-      v12 = [v10 initWithContentsOfFile:v11];
+      path = [lCopy path];
+      v12 = [v10 initWithContentsOfFile:path];
 
       v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
       [(HUCameraView *)self setDemoSnapshotImageView:v13];
-      v14 = [MEMORY[0x277D75348] systemBlackColor];
-      [v13 setBackgroundColor:v14];
+      systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+      [v13 setBackgroundColor:systemBlackColor];
 
       [v13 setClipsToBounds:1];
       [v13 setContentMode:2];
@@ -411,17 +411,17 @@ uint64_t __35__HUCameraView_setBackgroundColor___block_invoke(uint64_t a1)
       [(HUCameraView *)self addSubview:v13];
       [(HUCameraView *)self _continuousCornerRadius];
       v16 = v15;
-      v17 = [(HUCameraView *)self demoSnapshotImageView];
-      [v17 _setContinuousCornerRadius:v16];
+      demoSnapshotImageView2 = [(HUCameraView *)self demoSnapshotImageView];
+      [demoSnapshotImageView2 _setContinuousCornerRadius:v16];
     }
   }
 
-  [(HUCameraView *)self setCameraSource:v18 animated:v5];
+  [(HUCameraView *)self setCameraSource:sourceCopy animated:animatedCopy];
 }
 
-- (int64_t)contentModeForAspectRatio:(double)a3
+- (int64_t)contentModeForAspectRatio:(double)ratio
 {
-  if (((a3 < 1.0) & [(HUCameraView *)self shouldRespectAspectRatio]) != 0)
+  if (((ratio < 1.0) & [(HUCameraView *)self shouldRespectAspectRatio]) != 0)
   {
     return 1;
   }
@@ -432,35 +432,35 @@ uint64_t __35__HUCameraView_setBackgroundColor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCameraSource:(id)a3 animated:(BOOL)a4
+- (void)setCameraSource:(id)source animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUCameraView *)self cameraView];
-  v8 = [v7 cameraSource];
+  animatedCopy = animated;
+  sourceCopy = source;
+  cameraView = [(HUCameraView *)self cameraView];
+  cameraSource = [cameraView cameraSource];
 
-  if (v8 != v6)
+  if (cameraSource != sourceCopy)
   {
-    v9 = [(HUCameraView *)self cameraView];
-    [v9 setCameraSource:v6];
+    cameraView2 = [(HUCameraView *)self cameraView];
+    [cameraView2 setCameraSource:sourceCopy];
 
-    [v6 aspectRatio];
+    [sourceCopy aspectRatio];
     [(HUCameraView *)self setCameraContentMode:[(HUCameraView *)self contentModeForAspectRatio:?]];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __41__HUCameraView_setCameraSource_animated___block_invoke;
     v17 = &unk_277DB7558;
-    v18 = self;
-    v19 = v6;
+    selfCopy = self;
+    v19 = sourceCopy;
     v10 = _Block_copy(&v14);
     v11 = v10;
-    if (v4)
+    if (animatedCopy)
     {
-      v12 = [MEMORY[0x277CDA000] animation];
-      [v12 setType:*MEMORY[0x277CDA928]];
-      [v12 setDuration:0.5];
-      v13 = [(HUCameraView *)self cameraView];
-      [v13 addAnimation:v12 forKey:@"cameraSourceTransition"];
+      animation = [MEMORY[0x277CDA000] animation];
+      [animation setType:*MEMORY[0x277CDA928]];
+      [animation setDuration:0.5];
+      cameraView3 = [(HUCameraView *)self cameraView];
+      [cameraView3 addAnimation:animation forKey:@"cameraSourceTransition"];
 
       [MEMORY[0x277D75D18] animateWithDuration:v11 animations:0.5];
     }
@@ -471,7 +471,7 @@ uint64_t __35__HUCameraView_setBackgroundColor___block_invoke(uint64_t a1)
     }
 
     [(HUCameraView *)self _updateBadgeView:v14];
-    [(HUCameraView *)self _updateErrorAndActivityIndicatorVisibilityAnimated:v4];
+    [(HUCameraView *)self _updateErrorAndActivityIndicatorVisibilityAnimated:animatedCopy];
     [(HUCameraView *)self setNeedsUpdateConstraints];
     [(HUCameraView *)self setNeedsLayout];
     [(HUCameraView *)self _updateMaskedCameraCorners];
@@ -498,30 +498,30 @@ void __41__HUCameraView_setCameraSource_animated___block_invoke(uint64_t a1)
 
 - (HMCameraSource)cameraSource
 {
-  v2 = [(HUCameraView *)self cameraView];
-  v3 = [v2 cameraSource];
+  cameraView = [(HUCameraView *)self cameraView];
+  cameraSource = [cameraView cameraSource];
 
-  return v3;
+  return cameraSource;
 }
 
-- (void)setErrorContent:(id)a3 animated:(BOOL)a4
+- (void)setErrorContent:(id)content animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v37[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (([MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo] & 1) == 0 && self->_errorContent != v7)
+  contentCopy = content;
+  if (([MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo] & 1) == 0 && self->_errorContent != contentCopy)
   {
-    objc_storeStrong(&self->_errorContent, a3);
-    if (v7)
+    objc_storeStrong(&self->_errorContent, content);
+    if (contentCopy)
     {
-      v8 = [(HUCameraView *)self errorView];
+      errorView = [(HUCameraView *)self errorView];
 
-      if (!v8)
+      if (!errorView)
       {
-        v9 = [(HUCameraView *)self overrideErrorView];
-        if (v9)
+        overrideErrorView = [(HUCameraView *)self overrideErrorView];
+        if (overrideErrorView)
         {
-          [(HUCameraView *)self setErrorView:v9];
+          [(HUCameraView *)self setErrorView:overrideErrorView];
         }
 
         else
@@ -530,67 +530,67 @@ void __41__HUCameraView_setCameraSource_animated___block_invoke(uint64_t a1)
           [(HUCameraView *)self setErrorView:v10];
         }
 
-        v11 = [(HUCameraView *)self errorView];
-        [v11 setAlpha:0.0];
+        errorView2 = [(HUCameraView *)self errorView];
+        [errorView2 setAlpha:0.0];
 
-        v12 = [(HUCameraView *)self errorView];
-        [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+        errorView3 = [(HUCameraView *)self errorView];
+        [errorView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v13 = [(HUCameraView *)self cameraOverlayView];
-        v14 = [(HUCameraView *)self errorView];
-        [v13 addSubview:v14];
+        cameraOverlayView = [(HUCameraView *)self cameraOverlayView];
+        errorView4 = [(HUCameraView *)self errorView];
+        [cameraOverlayView addSubview:errorView4];
 
         v29 = MEMORY[0x277CCAAD0];
-        v36 = [(HUCameraView *)self errorView];
-        v35 = [v36 centerXAnchor];
-        v34 = [(HUCameraView *)self centerXAnchor];
-        v33 = [v35 constraintEqualToAnchor:v34];
+        errorView5 = [(HUCameraView *)self errorView];
+        centerXAnchor = [errorView5 centerXAnchor];
+        centerXAnchor2 = [(HUCameraView *)self centerXAnchor];
+        v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v37[0] = v33;
-        v32 = [(HUCameraView *)self errorView];
-        v31 = [v32 centerYAnchor];
-        v30 = [(HUCameraView *)self centerYAnchor];
-        v28 = [v31 constraintEqualToAnchor:v30];
+        errorView6 = [(HUCameraView *)self errorView];
+        centerYAnchor = [errorView6 centerYAnchor];
+        centerYAnchor2 = [(HUCameraView *)self centerYAnchor];
+        v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v37[1] = v28;
-        v27 = [(HUCameraView *)self errorView];
-        v26 = [v27 widthAnchor];
-        v15 = [(HUCameraView *)self widthAnchor];
-        v16 = [v26 constraintEqualToAnchor:v15];
+        errorView7 = [(HUCameraView *)self errorView];
+        widthAnchor = [errorView7 widthAnchor];
+        widthAnchor2 = [(HUCameraView *)self widthAnchor];
+        v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v37[2] = v16;
-        v17 = [(HUCameraView *)self errorView];
-        v18 = [v17 heightAnchor];
-        v19 = [(HUCameraView *)self heightAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        errorView8 = [(HUCameraView *)self errorView];
+        heightAnchor = [errorView8 heightAnchor];
+        heightAnchor2 = [(HUCameraView *)self heightAnchor];
+        v20 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v37[3] = v20;
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
         [v29 activateConstraints:v21];
       }
     }
 
-    v22 = [(HUCameraErrorContent *)v7 titleText];
-    v23 = [(HUCameraView *)self errorView];
-    [v23 setTitleText:v22];
+    titleText = [(HUCameraErrorContent *)contentCopy titleText];
+    errorView9 = [(HUCameraView *)self errorView];
+    [errorView9 setTitleText:titleText];
 
-    v24 = [(HUCameraErrorContent *)v7 descriptionText];
-    v25 = [(HUCameraView *)self errorView];
-    [v25 setDescriptionText:v24];
+    descriptionText = [(HUCameraErrorContent *)contentCopy descriptionText];
+    errorView10 = [(HUCameraView *)self errorView];
+    [errorView10 setDescriptionText:descriptionText];
 
-    [(HUCameraView *)self _updateErrorAndActivityIndicatorVisibilityAnimated:v4];
+    [(HUCameraView *)self _updateErrorAndActivityIndicatorVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setShowActivityIndicator:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowActivityIndicator:(BOOL)indicator animated:(BOOL)animated
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  if (self->_showActivityIndicator != a3)
+  if (self->_showActivityIndicator != indicator)
   {
-    v4 = a4;
-    v5 = a3;
+    animatedCopy = animated;
+    indicatorCopy = indicator;
     if (([MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo] & 1) == 0)
     {
-      self->_showActivityIndicator = v5;
-      v7 = [(HUCameraView *)self activityIndicatorView];
-      v8 = v7;
-      if (v5)
+      self->_showActivityIndicator = indicatorCopy;
+      activityIndicatorView = [(HUCameraView *)self activityIndicatorView];
+      v8 = activityIndicatorView;
+      if (indicatorCopy)
       {
 
         if (!v8)
@@ -598,116 +598,116 @@ void __41__HUCameraView_setCameraSource_animated___block_invoke(uint64_t a1)
           v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
           [(HUCameraView *)self setActivityIndicatorView:v9];
 
-          v10 = [(HUCameraView *)self activityIndicatorView];
-          [v10 setAlpha:0.0];
+          activityIndicatorView2 = [(HUCameraView *)self activityIndicatorView];
+          [activityIndicatorView2 setAlpha:0.0];
 
-          v11 = [(HUCameraView *)self activityIndicatorView];
-          [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+          activityIndicatorView3 = [(HUCameraView *)self activityIndicatorView];
+          [activityIndicatorView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v12 = [(HUCameraView *)self cameraOverlayView];
-          v13 = [(HUCameraView *)self activityIndicatorView];
-          [v12 addSubview:v13];
+          cameraOverlayView = [(HUCameraView *)self cameraOverlayView];
+          activityIndicatorView4 = [(HUCameraView *)self activityIndicatorView];
+          [cameraOverlayView addSubview:activityIndicatorView4];
 
           v23 = MEMORY[0x277CCAAD0];
-          v24 = [(HUCameraView *)self activityIndicatorView];
-          v14 = [v24 centerXAnchor];
-          v15 = [(HUCameraView *)self centerXAnchor];
-          v16 = [v14 constraintEqualToAnchor:v15];
+          activityIndicatorView5 = [(HUCameraView *)self activityIndicatorView];
+          centerXAnchor = [activityIndicatorView5 centerXAnchor];
+          centerXAnchor2 = [(HUCameraView *)self centerXAnchor];
+          v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
           v25[0] = v16;
-          v17 = [(HUCameraView *)self activityIndicatorView];
-          v18 = [v17 centerYAnchor];
-          v19 = [(HUCameraView *)self centerYAnchor];
-          v20 = [v18 constraintEqualToAnchor:v19];
+          activityIndicatorView6 = [(HUCameraView *)self activityIndicatorView];
+          centerYAnchor = [activityIndicatorView6 centerYAnchor];
+          centerYAnchor2 = [(HUCameraView *)self centerYAnchor];
+          v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           v25[1] = v20;
           v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
           [v23 activateConstraints:v21];
         }
 
-        v22 = [(HUCameraView *)self activityIndicatorView];
-        [v22 startAnimating];
+        activityIndicatorView7 = [(HUCameraView *)self activityIndicatorView];
+        [activityIndicatorView7 startAnimating];
       }
 
       else
       {
-        [v7 stopAnimating];
+        [activityIndicatorView stopAnimating];
       }
 
-      [(HUCameraView *)self _updateErrorAndActivityIndicatorVisibilityAnimated:v4];
+      [(HUCameraView *)self _updateErrorAndActivityIndicatorVisibilityAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setBadgeHidden:(BOOL)a3
+- (void)setBadgeHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(HUCameraView *)self badgeView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  badgeView = [(HUCameraView *)self badgeView];
+  [badgeView setHidden:hiddenCopy];
 }
 
 - (BOOL)isBadgeHidden
 {
-  v3 = [(HUCameraView *)self badgeView];
-  if (v3)
+  badgeView = [(HUCameraView *)self badgeView];
+  if (badgeView)
   {
-    v4 = [(HUCameraView *)self badgeView];
-    v5 = [v4 isHidden];
+    badgeView2 = [(HUCameraView *)self badgeView];
+    isHidden = [badgeView2 isHidden];
   }
 
   else
   {
-    v5 = 1;
+    isHidden = 1;
   }
 
-  return v5;
+  return isHidden;
 }
 
-- (void)setBadgeOffset:(UIOffset)a3
+- (void)setBadgeOffset:(UIOffset)offset
 {
   p_badgeOffset = &self->_badgeOffset;
-  if (a3.horizontal != self->_badgeOffset.horizontal || a3.vertical != self->_badgeOffset.vertical)
+  if (offset.horizontal != self->_badgeOffset.horizontal || offset.vertical != self->_badgeOffset.vertical)
   {
-    p_badgeOffset->horizontal = a3.horizontal;
-    self->_badgeOffset.vertical = a3.vertical;
-    v6 = -a3.vertical;
-    v7 = [(HUCameraView *)self badgeBottomConstraint];
-    [v7 setConstant:v6];
+    p_badgeOffset->horizontal = offset.horizontal;
+    self->_badgeOffset.vertical = offset.vertical;
+    v6 = -offset.vertical;
+    badgeBottomConstraint = [(HUCameraView *)self badgeBottomConstraint];
+    [badgeBottomConstraint setConstant:v6];
 
     v8 = -p_badgeOffset->horizontal;
-    v9 = [(HUCameraView *)self badgeTrailingConstraint];
-    [v9 setConstant:v8];
+    badgeTrailingConstraint = [(HUCameraView *)self badgeTrailingConstraint];
+    [badgeTrailingConstraint setConstant:v8];
   }
 }
 
-- (void)setBadgeBottomAnchor:(id)a3
+- (void)setBadgeBottomAnchor:(id)anchor
 {
-  v5 = a3;
-  if (self->_badgeBottomAnchor != v5)
+  anchorCopy = anchor;
+  if (self->_badgeBottomAnchor != anchorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_badgeBottomAnchor, a3);
-    v6 = [(HUCameraView *)self badgeBottomConstraint];
-    [v6 setActive:0];
+    v8 = anchorCopy;
+    objc_storeStrong(&self->_badgeBottomAnchor, anchor);
+    badgeBottomConstraint = [(HUCameraView *)self badgeBottomConstraint];
+    [badgeBottomConstraint setActive:0];
 
-    v7 = [(HUCameraView *)self badgeTrailingConstraint];
-    [v7 setActive:0];
+    badgeTrailingConstraint = [(HUCameraView *)self badgeTrailingConstraint];
+    [badgeTrailingConstraint setActive:0];
 
     [(HUCameraView *)self setBadgeBottomConstraint:0];
     [(HUCameraView *)self setBadgeTrailingConstraint:0];
     [(HUCameraView *)self setNeedsUpdateConstraints];
-    v5 = v8;
+    anchorCopy = v8;
   }
 }
 
 - (CGRect)cameraContentFrame
 {
-  v3 = [(HUCameraView *)self cameraView];
-  [v3 bounds];
+  cameraView = [(HUCameraView *)self cameraView];
+  [cameraView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HUCameraView *)self cameraView];
-  [(HUCameraView *)self convertRect:v12 fromView:v5, v7, v9, v11];
+  cameraView2 = [(HUCameraView *)self cameraView];
+  [(HUCameraView *)self convertRect:cameraView2 fromView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -726,12 +726,12 @@ void __41__HUCameraView_setCameraSource_animated___block_invoke(uint64_t a1)
 
 - (CGRect)derivedCameraContentFrame
 {
-  v3 = [(HUCameraView *)self cameraView];
-  v4 = [v3 cameraSource];
+  cameraView = [(HUCameraView *)self cameraView];
+  cameraSource = [cameraView cameraSource];
 
-  if (v4)
+  if (cameraSource)
   {
-    [v4 aspectRatio];
+    [cameraSource aspectRatio];
     v6 = v5;
     [(HUCameraView *)self bounds];
     v8 = v7 / v6;
@@ -763,16 +763,16 @@ void __41__HUCameraView_setCameraSource_animated___block_invoke(uint64_t a1)
 
 - (id)cameraContentSnapshot
 {
-  v3 = [(HUCameraView *)self cameraView];
-  v4 = [v3 snapshotViewAfterScreenUpdates:0];
+  cameraView = [(HUCameraView *)self cameraView];
+  v4 = [cameraView snapshotViewAfterScreenUpdates:0];
 
   [v4 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(HUCameraView *)self cameraView];
-  [(HUCameraView *)self convertRect:v13 fromView:v6, v8, v10, v12];
+  cameraView2 = [(HUCameraView *)self cameraView];
+  [(HUCameraView *)self convertRect:cameraView2 fromView:v6, v8, v10, v12];
   [v4 setFrame:?];
 
   return v4;
@@ -780,82 +780,82 @@ void __41__HUCameraView_setCameraSource_animated___block_invoke(uint64_t a1)
 
 - (UIView)cameraOverlaySnapshot
 {
-  v3 = [(HUCameraView *)self errorContent];
+  errorContent = [(HUCameraView *)self errorContent];
 
-  if (v3)
+  if (errorContent)
   {
-    v4 = [(HUCameraView *)self cameraOverlayView];
-    v3 = [v4 snapshotViewAfterScreenUpdates:0];
+    cameraOverlayView = [(HUCameraView *)self cameraOverlayView];
+    errorContent = [cameraOverlayView snapshotViewAfterScreenUpdates:0];
 
-    [v3 bounds];
+    [errorContent bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(HUCameraView *)self cameraOverlayView];
-    [(HUCameraView *)self convertRect:v13 fromView:v6, v8, v10, v12];
-    [v3 setFrame:?];
+    cameraOverlayView2 = [(HUCameraView *)self cameraOverlayView];
+    [(HUCameraView *)self convertRect:cameraOverlayView2 fromView:v6, v8, v10, v12];
+    [errorContent setFrame:?];
   }
 
-  return v3;
+  return errorContent;
 }
 
 - (void)_updateMaskedCameraCorners
 {
-  v3 = [(HUCameraView *)self maskedCameraCorners];
-  v4 = [(HUCameraView *)self cameraContainerView];
-  [v4 setMaskedCorners:v3];
+  maskedCameraCorners = [(HUCameraView *)self maskedCameraCorners];
+  cameraContainerView = [(HUCameraView *)self cameraContainerView];
+  [cameraContainerView setMaskedCorners:maskedCameraCorners];
 
-  LOBYTE(v3) = [(HUCameraView *)self maskedCameraCorners];
-  v5 = [(HUCameraView *)self backgroundView];
-  v6 = [v5 layer];
-  [v6 setMaskedCorners:v3 & 0xF];
+  LOBYTE(maskedCameraCorners) = [(HUCameraView *)self maskedCameraCorners];
+  backgroundView = [(HUCameraView *)self backgroundView];
+  layer = [backgroundView layer];
+  [layer setMaskedCorners:maskedCameraCorners & 0xF];
 
-  LOBYTE(v3) = [(HUCameraView *)self maskedCameraCorners];
-  v7 = [(HUCameraView *)self cameraOverlayView];
-  v8 = [v7 layer];
-  [v8 setMaskedCorners:v3 & 0xF];
+  LOBYTE(maskedCameraCorners) = [(HUCameraView *)self maskedCameraCorners];
+  cameraOverlayView = [(HUCameraView *)self cameraOverlayView];
+  layer2 = [cameraOverlayView layer];
+  [layer2 setMaskedCorners:maskedCameraCorners & 0xF];
 
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
-    v9 = [(HUCameraView *)self maskedCameraCorners];
-    v11 = [(HUCameraView *)self demoSnapshotImageView];
-    v10 = [v11 layer];
-    [v10 setMaskedCorners:v9 & 0xF];
+    maskedCameraCorners2 = [(HUCameraView *)self maskedCameraCorners];
+    demoSnapshotImageView = [(HUCameraView *)self demoSnapshotImageView];
+    layer3 = [demoSnapshotImageView layer];
+    [layer3 setMaskedCorners:maskedCameraCorners2 & 0xF];
   }
 }
 
-- (void)_updateErrorAndActivityIndicatorVisibilityAnimated:(BOOL)a3
+- (void)_updateErrorAndActivityIndicatorVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([MEMORY[0x277D14CE8] shouldSuppressAllErrorsForDemo])
   {
     return;
   }
 
-  v5 = [(HUCameraView *)self errorContent];
-  if (!v5 && ![(HUCameraView *)self showActivityIndicator])
+  errorContent = [(HUCameraView *)self errorContent];
+  if (!errorContent && ![(HUCameraView *)self showActivityIndicator])
   {
     goto LABEL_6;
   }
 
-  v6 = [(HUCameraView *)self cameraSource];
-  if (!v6)
+  cameraSource = [(HUCameraView *)self cameraSource];
+  if (!cameraSource)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v7 = [(HUCameraView *)self hideCameraContentWhenDisplayingErrors];
+  hideCameraContentWhenDisplayingErrors = [(HUCameraView *)self hideCameraContentWhenDisplayingErrors];
 
-  if (!v7)
+  if (!hideCameraContentWhenDisplayingErrors)
   {
-    v8 = [(HUCameraView *)self cameraDimmingView];
+    cameraDimmingView = [(HUCameraView *)self cameraDimmingView];
 
-    if (v8)
+    if (cameraDimmingView)
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(cameraSource) = 1;
       goto LABEL_11;
     }
 
@@ -865,43 +865,43 @@ LABEL_10:
     [(HUCameraView *)self setCameraDimmingView:v11];
 
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-    v13 = [(HUCameraView *)self cameraDimmingView];
-    [v13 setBackgroundColor:v12];
+    cameraDimmingView2 = [(HUCameraView *)self cameraDimmingView];
+    [cameraDimmingView2 setBackgroundColor:v12];
 
     [(HUCameraView *)self bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(HUCameraView *)self cameraDimmingView];
-    [v22 setFrame:{v15, v17, v19, v21}];
+    cameraDimmingView3 = [(HUCameraView *)self cameraDimmingView];
+    [cameraDimmingView3 setFrame:{v15, v17, v19, v21}];
 
-    v23 = [(HUCameraView *)self cameraDimmingView];
-    [v23 setAutoresizingMask:18];
+    cameraDimmingView4 = [(HUCameraView *)self cameraDimmingView];
+    [cameraDimmingView4 setAutoresizingMask:18];
 
-    v24 = [(HUCameraView *)self cameraDimmingView];
-    [v24 setAlpha:0.0];
+    cameraDimmingView5 = [(HUCameraView *)self cameraDimmingView];
+    [cameraDimmingView5 setAlpha:0.0];
 
-    v5 = [(HUCameraView *)self cameraOverlayView];
-    v6 = [(HUCameraView *)self cameraDimmingView];
-    [v5 insertSubview:v6 atIndex:0];
+    errorContent = [(HUCameraView *)self cameraOverlayView];
+    cameraSource = [(HUCameraView *)self cameraDimmingView];
+    [errorContent insertSubview:cameraSource atIndex:0];
 
-    LOBYTE(v6) = 1;
+    LOBYTE(cameraSource) = 1;
     goto LABEL_10;
   }
 
 LABEL_6:
-  LOBYTE(v6) = 0;
+  LOBYTE(cameraSource) = 0;
 LABEL_11:
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __67__HUCameraView__updateErrorAndActivityIndicatorVisibilityAnimated___block_invoke;
   v27[3] = &unk_277DB7EE0;
   v27[4] = self;
-  v28 = v6;
+  v28 = cameraSource;
   v25 = _Block_copy(v27);
   v26 = v25;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v25 animations:0.3];
   }
@@ -948,63 +948,63 @@ void __67__HUCameraView__updateErrorAndActivityIndicatorVisibilityAnimated___blo
   [v12 setAlpha:v11];
 }
 
-- (void)_updateBadgeViewReschedulingTimerIfNecessary:(BOOL)a3
+- (void)_updateBadgeViewReschedulingTimerIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v5 = [(HUCameraView *)self badgeView];
+  necessaryCopy = necessary;
+  badgeView = [(HUCameraView *)self badgeView];
 
-  if (!v5)
+  if (!badgeView)
   {
 LABEL_9:
-    v15 = [(HUCameraView *)self snapshotAgeUpdateTimer];
-    [v15 invalidate];
+    snapshotAgeUpdateTimer = [(HUCameraView *)self snapshotAgeUpdateTimer];
+    [snapshotAgeUpdateTimer invalidate];
 
     [(HUCameraView *)self setSnapshotAgeUpdateTimer:0];
     return;
   }
 
-  v6 = [(HUCameraView *)self cameraView];
-  v7 = [v6 cameraSource];
-  if (!v7)
+  cameraView = [(HUCameraView *)self cameraView];
+  cameraSource = [cameraView cameraSource];
+  if (!cameraSource)
   {
 
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [(HUCameraView *)self isBadgeHidden];
+  v8 = cameraSource;
+  isBadgeHidden = [(HUCameraView *)self isBadgeHidden];
 
-  if (v9)
+  if (isBadgeHidden)
   {
 LABEL_7:
-    v13 = [(HUCameraView *)self badgeView];
-    [v13 setHidden:1];
+    badgeView2 = [(HUCameraView *)self badgeView];
+    [badgeView2 setHidden:1];
     goto LABEL_8;
   }
 
-  v10 = [(HUCameraView *)self cameraView];
-  v11 = [v10 cameraSource];
+  cameraView2 = [(HUCameraView *)self cameraView];
+  cameraSource2 = [cameraView2 cameraSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = _HULocalizedStringWithDefaultValue(@"HUCameraLive", @"HUCameraLive", 1);
-    v14 = [(HUCameraView *)self badgeView];
-    [v14 setLabelText:v13];
+    badgeView2 = _HULocalizedStringWithDefaultValue(@"HUCameraLive", @"HUCameraLive", 1);
+    badgeView3 = [(HUCameraView *)self badgeView];
+    [badgeView3 setLabelText:badgeView2];
 
 LABEL_8:
     goto LABEL_9;
   }
 
   v16 = objc_opt_class();
-  v17 = [(HUCameraView *)self cameraView];
-  v18 = [v17 cameraSource];
-  if (v18)
+  cameraView3 = [(HUCameraView *)self cameraView];
+  cameraSource3 = [cameraView3 cameraSource];
+  if (cameraSource3)
   {
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = cameraSource3;
     }
 
     else
@@ -1012,38 +1012,38 @@ LABEL_8:
       v19 = 0;
     }
 
-    v26 = v18;
+    v26 = cameraSource3;
     if (v19)
     {
       goto LABEL_19;
     }
 
-    v20 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v20 handleFailureInFunction:v21 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v16, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v21 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v16, objc_opt_class()}];
   }
 
   v26 = 0;
 LABEL_19:
 
-  v22 = [v26 hf_localizedAge];
-  v23 = [(HUCameraView *)self badgeView];
-  [v23 setLabelText:v22];
+  hf_localizedAge = [v26 hf_localizedAge];
+  badgeView4 = [(HUCameraView *)self badgeView];
+  [badgeView4 setLabelText:hf_localizedAge];
 
-  v24 = [(HUCameraView *)self snapshotAgeUpdateTimer];
+  snapshotAgeUpdateTimer2 = [(HUCameraView *)self snapshotAgeUpdateTimer];
 
-  if (!v24 || v3)
+  if (!snapshotAgeUpdateTimer2 || necessaryCopy)
   {
-    v25 = [v26 captureDate];
-    [(HUCameraView *)self _scheduleNextSnapshotAgeUpdateForCaptureDate:v25];
+    captureDate = [v26 captureDate];
+    [(HUCameraView *)self _scheduleNextSnapshotAgeUpdateForCaptureDate:captureDate];
   }
 }
 
-- (void)_scheduleNextSnapshotAgeUpdateForCaptureDate:(id)a3
+- (void)_scheduleNextSnapshotAgeUpdateForCaptureDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HUCameraView *)self snapshotAgeUpdateTimer];
-  [v5 invalidate];
+  dateCopy = date;
+  snapshotAgeUpdateTimer = [(HUCameraView *)self snapshotAgeUpdateTimer];
+  [snapshotAgeUpdateTimer invalidate];
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D2C8D8];
@@ -1052,7 +1052,7 @@ LABEL_19:
   v10 = __61__HUCameraView__scheduleNextSnapshotAgeUpdateForCaptureDate___block_invoke;
   v11 = &unk_277DC0F48;
   objc_copyWeak(&v12, &location);
-  v7 = [v6 scheduledTimerWithReferenceDate:v4 minimumUnit:128 block:&v8];
+  v7 = [v6 scheduledTimerWithReferenceDate:dateCopy minimumUnit:128 block:&v8];
   [(HUCameraView *)self setSnapshotAgeUpdateTimer:v7, v8, v9, v10, v11];
 
   objc_destroyWeak(&v12);

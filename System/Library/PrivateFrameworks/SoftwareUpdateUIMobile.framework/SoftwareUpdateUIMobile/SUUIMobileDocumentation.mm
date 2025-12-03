@@ -1,39 +1,39 @@
 @interface SUUIMobileDocumentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)licenseAgreement;
 - (NSData)releaseNotes;
 - (NSData)releaseNotesSummary;
 - (NSData)updateIcon;
 - (SUUIMobileDocumentation)init;
-- (SUUIMobileDocumentation)initWithCoder:(id)a3;
-- (SUUIMobileDocumentation)initWithDocumentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIMobileDocumentation)initWithCoder:(id)coder;
+- (SUUIMobileDocumentation)initWithDocumentation:(id)documentation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUUIMobileDocumentation
 
-- (SUUIMobileDocumentation)initWithDocumentation:(id)a3
+- (SUUIMobileDocumentation)initWithDocumentation:(id)documentation
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, documentation);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = SUUIMobileDocumentation;
-  v8 = [(SUUIMobileDocumentation *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(SUUIMobileDocumentation *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_underlyingDocumentation, location[0]);
+    objc_storeStrong(&selfCopy->_underlyingDocumentation, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -41,9 +41,9 @@
 {
   image[2] = self;
   image[1] = a2;
-  v4 = [(SUUIMobileDocumentation *)self underlyingDocumentation];
-  image[0] = [(SUDocumentation *)v4 iconImage];
-  MEMORY[0x277D82BD8](v4);
+  underlyingDocumentation = [(SUUIMobileDocumentation *)self underlyingDocumentation];
+  image[0] = [(SUDocumentation *)underlyingDocumentation iconImage];
+  MEMORY[0x277D82BD8](underlyingDocumentation);
   if (image[0])
   {
     v6 = UIImagePNGRepresentation(image[0]);
@@ -62,42 +62,42 @@
 
 - (NSData)releaseNotesSummary
 {
-  v3 = [(SUUIMobileDocumentation *)self underlyingDocumentation];
-  v4 = [(SUDocumentation *)v3 releaseNotesSummary];
-  MEMORY[0x277D82BD8](v3);
+  underlyingDocumentation = [(SUUIMobileDocumentation *)self underlyingDocumentation];
+  releaseNotesSummary = [(SUDocumentation *)underlyingDocumentation releaseNotesSummary];
+  MEMORY[0x277D82BD8](underlyingDocumentation);
 
-  return v4;
+  return releaseNotesSummary;
 }
 
 - (NSData)releaseNotes
 {
-  v3 = [(SUUIMobileDocumentation *)self underlyingDocumentation];
-  v4 = [(SUDocumentation *)v3 releaseNotes];
-  MEMORY[0x277D82BD8](v3);
+  underlyingDocumentation = [(SUUIMobileDocumentation *)self underlyingDocumentation];
+  releaseNotes = [(SUDocumentation *)underlyingDocumentation releaseNotes];
+  MEMORY[0x277D82BD8](underlyingDocumentation);
 
-  return v4;
+  return releaseNotes;
 }
 
 - (NSData)licenseAgreement
 {
-  v3 = [(SUUIMobileDocumentation *)self underlyingDocumentation];
-  v4 = [(SUDocumentation *)v3 licenseAgreement];
-  MEMORY[0x277D82BD8](v3);
+  underlyingDocumentation = [(SUUIMobileDocumentation *)self underlyingDocumentation];
+  licenseAgreement = [(SUDocumentation *)underlyingDocumentation licenseAgreement];
+  MEMORY[0x277D82BD8](underlyingDocumentation);
 
-  return v4;
+  return licenseAgreement;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v5 = [(SUUIMobileDocumentation *)self underlyingDocumentation];
-  v6 = [(SUDocumentation *)v5 copyWithZone:v7];
-  MEMORY[0x277D82BD8](v5);
+  zoneCopy = zone;
+  underlyingDocumentation = [(SUUIMobileDocumentation *)self underlyingDocumentation];
+  v6 = [(SUDocumentation *)underlyingDocumentation copyWithZone:zoneCopy];
+  MEMORY[0x277D82BD8](underlyingDocumentation);
   if (!v6)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Could not create a copy of %@: The underlying documentation is corrupted.", v9}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Could not create a copy of %@: The underlying documentation is corrupted.", selfCopy}];
   }
 
   v4 = [[SUUIMobileDocumentation alloc] initWithDocumentation:v6];
@@ -105,16 +105,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = location[0];
-  v4 = [(SUUIMobileDocumentation *)v6 underlyingDocumentation];
+  underlyingDocumentation = [(SUUIMobileDocumentation *)selfCopy underlyingDocumentation];
   [v3 encodeObject:? forKey:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](underlyingDocumentation);
   objc_storeStrong(location, 0);
 }
 
@@ -132,19 +132,19 @@
   objc_exception_throw(v8);
 }
 
-- (SUUIMobileDocumentation)initWithCoder:(id)a3
+- (SUUIMobileDocumentation)initWithCoder:(id)coder
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v5 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"documentation"];
   if (v5)
   {
-    v3 = v7;
-    v7 = 0;
-    v7 = [v3 initWithDocumentation:v5];
-    v8 = MEMORY[0x277D82BE0](v7);
+    v3 = selfCopy;
+    selfCopy = 0;
+    selfCopy = [v3 initWithDocumentation:v5];
+    v8 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   else
@@ -154,17 +154,17 @@
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v9 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v10 = 1;
     v7 = 1;
@@ -176,11 +176,11 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x277D82BE0](location[0]);
-      v5 = [(SUUIMobileDocumentation *)v9 underlyingDocumentation];
-      v4 = [v6 underlyingDocumentation];
-      v10 = [(SUDocumentation *)v5 isEqual:?]& 1;
-      MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v5);
+      underlyingDocumentation = [(SUUIMobileDocumentation *)selfCopy underlyingDocumentation];
+      underlyingDocumentation2 = [v6 underlyingDocumentation];
+      v10 = [(SUDocumentation *)underlyingDocumentation isEqual:?]& 1;
+      MEMORY[0x277D82BD8](underlyingDocumentation2);
+      MEMORY[0x277D82BD8](underlyingDocumentation);
       v7 = 1;
       objc_storeStrong(&v6, 0);
     }
@@ -198,9 +198,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SUUIMobileDocumentation *)self underlyingDocumentation];
-  v4 = [(SUDocumentation *)v3 hash];
-  MEMORY[0x277D82BD8](v3);
+  underlyingDocumentation = [(SUUIMobileDocumentation *)self underlyingDocumentation];
+  v4 = [(SUDocumentation *)underlyingDocumentation hash];
+  MEMORY[0x277D82BD8](underlyingDocumentation);
   return v4;
 }
 

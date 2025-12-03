@@ -1,14 +1,14 @@
 @interface PGMePersonMemoryGenerator
-- (PGMePersonMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (PGMePersonMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGMePersonMemoryGenerator
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:a3];
+  blockCopy = block;
+  v6 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
   v7 = MEMORY[0x277D22BF8];
   v8 = +[PGGraphFeatureNodeCollection momentOfFeature];
   v9 = [v7 adjacencyWithSources:v6 relation:v8 targetsClass:objc_opt_class()];
@@ -17,8 +17,8 @@
   v11[1] = 3221225472;
   v11[2] = __83__PGMePersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
   v11[3] = &unk_27887F438;
-  v12 = v5;
-  v10 = v5;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [v9 enumerateTargetsBySourceWithBlock:v11];
 }
 
@@ -30,11 +30,11 @@ void __83__PGMePersonMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_
   (*(v6 + 16))(v6, v7, v8, a4);
 }
 
-- (PGMePersonMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGMePersonMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = PGMePersonMemoryGenerator;
-  v3 = [(PGPersonMemoryGenerator *)&v7 initWithMemoryGenerationContext:a3];
+  v3 = [(PGPersonMemoryGenerator *)&v7 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {

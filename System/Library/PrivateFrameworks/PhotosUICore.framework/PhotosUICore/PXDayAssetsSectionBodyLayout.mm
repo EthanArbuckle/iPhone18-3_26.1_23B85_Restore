@@ -1,31 +1,31 @@
 @interface PXDayAssetsSectionBodyLayout
-+ (CGSize)estimatedSizeWithReferenceSize:(CGSize)a3 spec:(id)a4 style:(int64_t)a5 numberOfAssets:(int64_t)a6;
++ (CGSize)estimatedSizeWithReferenceSize:(CGSize)size spec:(id)spec style:(int64_t)style numberOfAssets:(int64_t)assets;
 - (CGRect)sectionRect;
 - (CGSize)_minSizeOfDominantSprites;
 - (CGSize)minPlayableSpriteSize;
 - (CGSize)minimumItemSize;
 - (CGSize)preferredReferenceSize;
 - (PXDayAssetsSectionBodyLayout)init;
-- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)a3;
+- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)rect;
 - (double)buildingRowContentHeight;
 - (double)buildingRowSpacing;
-- (id)_inputItemAtIndex:(unsigned int)a3;
+- (id)_inputItemAtIndex:(unsigned int)index;
 - (id)exploreGenerator;
-- (id)itemsBetweenItem:(int64_t)a3 andItem:(int64_t)a4;
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4;
+- (id)itemsBetweenItem:(int64_t)item andItem:(int64_t)andItem;
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout;
 - (id)newGenerator;
-- (int64_t)_initialItemInDirection:(unint64_t)a3;
-- (int64_t)_itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4;
-- (int64_t)itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4;
+- (int64_t)_initialItemInDirection:(unint64_t)direction;
+- (int64_t)_itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction;
+- (int64_t)itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction;
 - (void)contentSizeDidChange;
-- (void)enumerateHeroSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateRowsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3;
+- (void)enumerateHeroSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateRowsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block;
 - (void)referenceSizeDidChange;
 - (void)safeAreaInsetsDidChange;
-- (void)setNumberOfPrecedingAssets:(int64_t)a3;
-- (void)setSpec:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setNumberOfPrecedingAssets:(int64_t)assets;
+- (void)setSpec:(id)spec;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation PXDayAssetsSectionBodyLayout
@@ -39,18 +39,18 @@
   return result;
 }
 
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = objc_alloc_init(MEMORY[0x1E696AC90]);
-  v10 = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
-  v11 = v10;
-  if (v10)
+  exploreGenerator = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
+  v11 = exploreGenerator;
+  if (exploreGenerator)
   {
-    v12 = [v10 presentedItemsInRect:{x, y, width, height}];
+    v12 = [exploreGenerator presentedItemsInRect:{x, y, width, height}];
 
     v9 = v12;
   }
@@ -58,14 +58,14 @@
   return v9;
 }
 
-- (id)itemsBetweenItem:(int64_t)a3 andItem:(int64_t)a4
+- (id)itemsBetweenItem:(int64_t)item andItem:(int64_t)andItem
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AC90]);
-  v8 = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
-  v9 = v8;
-  if (v8)
+  exploreGenerator = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
+  v9 = exploreGenerator;
+  if (exploreGenerator)
   {
-    v10 = [v8 presentedItemsBetweenItem:a3 andItem:a4];
+    v10 = [exploreGenerator presentedItemsBetweenItem:item andItem:andItem];
 
     v7 = v10;
   }
@@ -73,28 +73,28 @@
   return v7;
 }
 
-- (int64_t)_itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4
+- (int64_t)_itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction
 {
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0x7FFFFFFFFFFFFFFFLL;
-  v7 = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
-  v8 = v7;
-  if (!v7 || ([v7 presentedRectForItemAtIndex:a3], v10 = v9, v12 = v11, v14 = v13, v16 = v15, v36 = 0u, v37 = 0u, objc_msgSend(v8, "presentedItemLocationForItemAtIndex:", a3), v42.origin.x = v10, v42.origin.y = v12, v42.size.width = v14, v42.size.height = v16, CGRectEqualToRect(v42, *MEMORY[0x1E695F050])))
+  exploreGenerator = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
+  v8 = exploreGenerator;
+  if (!exploreGenerator || ([exploreGenerator presentedRectForItemAtIndex:item], v10 = v9, v12 = v11, v14 = v13, v16 = v15, v36 = 0u, v37 = 0u, objc_msgSend(v8, "presentedItemLocationForItemAtIndex:", item), v42.origin.x = v10, v42.origin.y = v12, v42.size.width = v14, v42.size.height = v16, CGRectEqualToRect(v42, *MEMORY[0x1E695F050])))
   {
 LABEL_22:
     v18 = v39;
     goto LABEL_23;
   }
 
-  if (a4 - 5 > 1)
+  if (direction - 5 > 1)
   {
     v19 = [v8 presentedNumberOfColumnsAtRow:v36];
     v20 = 0.0;
-    if (a4 > 2)
+    if (direction > 2)
     {
-      if (a4 == 3)
+      if (direction == 3)
       {
         v21 = -1.0;
         if (!*(&v36 + 1))
@@ -106,7 +106,7 @@ LABEL_22:
       else
       {
         v21 = 0.0;
-        if (a4 == 4)
+        if (direction == 4)
         {
           v21 = 1.0;
           if (*(&v37 + 1) + *(&v36 + 1) >= v19)
@@ -117,7 +117,7 @@ LABEL_22:
       }
     }
 
-    else if (a4 == 1)
+    else if (direction == 1)
     {
       v21 = 0.0;
       v20 = -1.0;
@@ -130,12 +130,12 @@ LABEL_22:
     else
     {
       v21 = 0.0;
-      if (a4 == 2)
+      if (direction == 2)
       {
-        v22 = [v8 presentedNumberOfRows];
+        presentedNumberOfRows = [v8 presentedNumberOfRows];
         v21 = 0.0;
         v20 = 1.0;
-        if (v36 >= v22)
+        if (v36 >= presentedNumberOfRows)
         {
           v20 = 0.0;
         }
@@ -151,7 +151,7 @@ LABEL_22:
     v26[1] = 3221225472;
     v26[2] = __63__PXDayAssetsSectionBodyLayout__itemClosestToItem_inDirection___block_invoke;
     v26[3] = &unk_1E77439F0;
-    v30 = a3;
+    itemCopy = item;
     v31 = v10;
     v32 = v12;
     v33 = v14;
@@ -165,7 +165,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v17 = [v8 itemIndexForItem:a3 inDirection:a4];
+  v17 = [v8 itemIndexForItem:item inDirection:direction];
   v18 = v39;
   v39[3] = v17;
 LABEL_23:
@@ -186,46 +186,46 @@ uint64_t __63__PXDayAssetsSectionBodyLayout__itemClosestToItem_inDirection___blo
   return result;
 }
 
-- (int64_t)_initialItemInDirection:(unint64_t)a3
+- (int64_t)_initialItemInDirection:(unint64_t)direction
 {
-  v5 = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
+  exploreGenerator = [(PXDayAssetsSectionBodyLayout *)self exploreGenerator];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 && a3 <= 6)
+  if (exploreGenerator && direction <= 6)
   {
-    if (((1 << a3) & 0x34) != 0)
+    if (((1 << direction) & 0x34) != 0)
     {
       v7 = 0;
       goto LABEL_7;
     }
 
-    if (((1 << a3) & 0x4A) != 0)
+    if (((1 << direction) & 0x4A) != 0)
     {
       v7 = [(PXGItemsLayout *)self numberOfItems]- 1;
 LABEL_7:
-      v6 = [v5 itemIndexForPresentedItemIndex:v7];
+      v6 = [exploreGenerator itemIndexForPresentedItemIndex:v7];
     }
   }
 
   return v6;
 }
 
-- (int64_t)itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4
+- (int64_t)itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (item == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return [(PXDayAssetsSectionBodyLayout *)self _initialItemInDirection:a4];
+    return [(PXDayAssetsSectionBodyLayout *)self _initialItemInDirection:direction];
   }
 
   else
   {
-    return [(PXDayAssetsSectionBodyLayout *)self _itemClosestToItem:a3 inDirection:a4];
+    return [(PXDayAssetsSectionBodyLayout *)self _itemClosestToItem:item inDirection:direction];
   }
 }
 
-- (void)enumerateRowsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateRowsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
   [(PXDayAssetsSectionBodyLayout *)self displayScale];
@@ -236,12 +236,12 @@ LABEL_7:
   aBlock[3] = &__block_descriptor_40_e30_v24__0d8__NSMutableIndexSet_16l;
   *&aBlock[4] = v9;
   v11 = _Block_copy(aBlock);
-  v12 = [(PXGGeneratedLayout *)self generator];
-  v13 = [v12 itemCount];
-  v14 = malloc_type_calloc(v13, 0x98uLL, 0x100004050011849uLL);
-  v28 = v12;
-  [v12 getGeometries:v14 inRange:0 withKind:{v13, 0}];
-  if (v13 >= 1)
+  generator = [(PXGGeneratedLayout *)self generator];
+  itemCount = [generator itemCount];
+  v14 = malloc_type_calloc(itemCount, 0x98uLL, 0x100004050011849uLL);
+  v28 = generator;
+  [generator getGeometries:v14 inRange:0 withKind:{itemCount, 0}];
+  if (itemCount >= 1)
   {
     v15 = v14 + 4;
     do
@@ -251,19 +251,19 @@ LABEL_7:
       v15 += 19;
       v11[2](v11, v7, v16 - v17 * 0.5);
       v11[2](v11, v8, v16 + v17 * 0.5);
-      --v13;
+      --itemCount;
     }
 
-    while (v13);
+    while (itemCount);
   }
 
   free(v14);
-  v18 = (v4 >> 1) & 1;
+  v18 = (optionsCopy >> 1) & 1;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __68__PXDayAssetsSectionBodyLayout_enumerateRowsWithOptions_usingBlock___block_invoke_2;
   v32[3] = &__block_descriptor_33_e20_q16__0__NSIndexSet_8l;
-  v33 = (v4 & 2) != 0;
+  v33 = (optionsCopy & 2) != 0;
   v19 = _Block_copy(v32);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -281,7 +281,7 @@ LABEL_7:
     do
     {
       v29 = 0;
-      v6[2](v6, &v29, v25, v10 * v21, v24, -(v10 * v21 - v22 * v10));
+      blockCopy[2](blockCopy, &v29, v25, v10 * v21, v24, -(v10 * v21 - v22 * v10));
       if (v29 == 1)
       {
         break;
@@ -326,33 +326,33 @@ uint64_t __68__PXDayAssetsSectionBodyLayout_enumerateRowsWithOptions_usingBlock_
 {
   if (([(PXDayAssetsSectionBodyLayout *)self style]- 3) <= 2)
   {
-    v4 = [(PXGGeneratedLayout *)self generator];
-    if (v4)
+    generator = [(PXGGeneratedLayout *)self generator];
+    if (generator)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_4:
-        v5 = [v4 metrics];
-        [v5 interitemSpacing];
+        metrics = [generator metrics];
+        [metrics interitemSpacing];
         v7 = v6;
 
         return v7;
       }
 
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = objc_opt_class();
       v11 = NSStringFromClass(v12);
-      v13 = [v4 px_descriptionForAssertionMessage];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:464 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v11, v13}];
+      px_descriptionForAssertionMessage = [generator px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:464 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v11, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      [v9 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:464 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v11}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:464 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v11}];
     }
 
     goto LABEL_4;
@@ -366,32 +366,32 @@ LABEL_4:
   v4 = 0.0;
   if (([(PXDayAssetsSectionBodyLayout *)self style]- 3) <= 2)
   {
-    v5 = [(PXGGeneratedLayout *)self generator];
-    if (v5)
+    generator = [(PXGGeneratedLayout *)self generator];
+    if (generator)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_4:
-        [v5 buildingBlockSize];
+        [generator buildingBlockSize];
         v4 = v6;
 
         return v4;
       }
 
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = objc_opt_class();
       v10 = NSStringFromClass(v11);
-      v12 = [v5 px_descriptionForAssertionMessage];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:445 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v10, v12}];
+      px_descriptionForAssertionMessage = [generator px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:445 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v10, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      [v8 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:445 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v10}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:445 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v10}];
     }
 
     goto LABEL_4;
@@ -402,10 +402,10 @@ LABEL_4:
 
 - (CGSize)minPlayableSpriteSize
 {
-  v3 = [(PXDayAssetsSectionBodyLayout *)self spec];
-  v4 = [v3 allowsVideoPlaybackAtAnySize];
+  spec = [(PXDayAssetsSectionBodyLayout *)self spec];
+  allowsVideoPlaybackAtAnySize = [spec allowsVideoPlaybackAtAnySize];
 
-  if (v4)
+  if (allowsVideoPlaybackAtAnySize)
   {
     v5 = *MEMORY[0x1E695F060];
     v6 = *(MEMORY[0x1E695F060] + 8);
@@ -421,13 +421,13 @@ LABEL_4:
   return result;
 }
 
-- (void)enumerateHeroSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateHeroSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   [(PXDayAssetsSectionBodyLayout *)self minimumItemSize];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -435,8 +435,8 @@ LABEL_4:
   v13[3] = &unk_1E7743968;
   v15 = v10;
   v16 = v11;
-  v14 = v9;
-  v12 = v9;
+  v14 = blockCopy;
+  v12 = blockCopy;
   [(PXDayAssetsSectionBodyLayout *)self enumerateSpritesInRect:v13 usingBlock:x, y, width, height];
 }
 
@@ -448,9 +448,9 @@ void __70__PXDayAssetsSectionBodyLayout_enumerateHeroSpritesInRect_usingBlock___
   }
 }
 
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PXDayAssetsSectionBodyLayout *)self visibleRect];
   [(PXDayAssetsSectionBodyLayout *)self safeAreaInsets];
   v5 = +[PXCuratedLibrarySettings sharedInstance];
@@ -470,20 +470,20 @@ void __81__PXDayAssetsSectionBodyLayout_enumerateVisibleAnchoringSpriteIndexesUs
 
 - (CGSize)_minSizeOfDominantSprites
 {
-  v4 = [(PXDayAssetsSectionBodyLayout *)self style];
-  if ((v4 - 3) < 3)
+  style = [(PXDayAssetsSectionBodyLayout *)self style];
+  if ((style - 3) < 3)
   {
-    v5 = [(PXGGeneratedLayout *)self generator];
-    if (v5)
+    generator = [(PXGGeneratedLayout *)self generator];
+    if (generator)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_4:
-        [v5 headerItemSize];
+        [generator headerItemSize];
         v7 = v6;
         v9 = v8;
-        [v5 minHeroItemsSize];
+        [generator minHeroItemsSize];
         if (v7 >= v10)
         {
           v7 = v10;
@@ -497,33 +497,33 @@ LABEL_4:
         goto LABEL_11;
       }
 
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = objc_opt_class();
       v18 = NSStringFromClass(v19);
-      v20 = [v5 px_descriptionForAssertionMessage];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:331 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v18, v20}];
+      px_descriptionForAssertionMessage = [generator px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:331 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v18, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      [v16 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:331 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v18}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:331 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v18}];
     }
 
     goto LABEL_4;
   }
 
-  if ((v4 - 1) > 1)
+  if ((style - 1) > 1)
   {
     v7 = 1.79769313e308;
     v9 = 1.79769313e308;
     goto LABEL_12;
   }
 
-  v5 = [(PXGGeneratedLayout *)self generator];
-  [v5 size];
+  generator = [(PXGGeneratedLayout *)self generator];
+  [generator size];
   v7 = v12;
   v9 = v13;
 LABEL_11:
@@ -538,61 +538,61 @@ LABEL_12:
 
 - (CGSize)minimumItemSize
 {
-  v4 = [(PXDayAssetsSectionBodyLayout *)self style];
-  if ((v4 - 3) >= 3)
+  style = [(PXDayAssetsSectionBodyLayout *)self style];
+  if ((style - 3) >= 3)
   {
-    if ((v4 - 1) > 1)
+    if ((style - 1) > 1)
     {
       v7 = *off_1E7722230;
       v9 = *(off_1E7722230 + 1);
       goto LABEL_10;
     }
 
-    v10 = [(PXGGeneratedLayout *)self generator];
-    v5 = [v10 metrics];
+    generator = [(PXGGeneratedLayout *)self generator];
+    metrics = [generator metrics];
 
-    if (v5)
+    if (metrics)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_8:
-        [v5 referenceSize];
+        [metrics referenceSize];
         v12 = v11;
-        [v5 interitemSpacing];
-        v14 = (v12 + v13) / [v5 numberOfColumns];
-        [v5 interitemSpacing];
+        [metrics interitemSpacing];
+        v14 = (v12 + v13) / [metrics numberOfColumns];
+        [metrics interitemSpacing];
         v7 = v14 - v15;
-        [v5 itemAspectRatio];
+        [metrics itemAspectRatio];
         v9 = v7 / v16;
         goto LABEL_9;
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = objc_opt_class();
       v26 = NSStringFromClass(v27);
-      v28 = [v5 px_descriptionForAssertionMessage];
-      [v24 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:299 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator.metrics", v26, v28}];
+      px_descriptionForAssertionMessage = [metrics px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:299 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator.metrics", v26, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      [v24 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:299 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator.metrics", v26}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:299 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator.metrics", v26}];
     }
 
     goto LABEL_8;
   }
 
-  v5 = [(PXGGeneratedLayout *)self generator];
-  if (!v5)
+  metrics = [(PXGGeneratedLayout *)self generator];
+  if (!metrics)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:307 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v21}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:307 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v21}];
 LABEL_14:
 
     goto LABEL_4;
@@ -601,17 +601,17 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v5 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:307 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v21, v23}];
+    px_descriptionForAssertionMessage2 = [metrics px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:307 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v21, px_descriptionForAssertionMessage2}];
 
     goto LABEL_14;
   }
 
 LABEL_4:
-  [v5 minimumItemSize];
+  [metrics minimumItemSize];
   v7 = v6;
   v9 = v8;
 LABEL_9:
@@ -632,51 +632,51 @@ LABEL_10:
   PXEdgeInsetsInsetRect();
 }
 
-- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)a3
+- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PXDayAssetsSectionBodyLayout *)self style];
-  if (v9 > 8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  style = [(PXDayAssetsSectionBodyLayout *)self style];
+  if (style > 8)
   {
     return 0;
   }
 
-  if (((1 << v9) & 0x1F9) != 0)
+  if (((1 << style) & 0x1F9) != 0)
   {
     return *off_1E7722038;
   }
 
   if (![(PXDayAssetsSectionBodyLayout *)self needsUpdate])
   {
-    v13 = [(PXGGeneratedLayout *)self generator];
-    if (v13)
+    generator = [(PXGGeneratedLayout *)self generator];
+    if (generator)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_11:
-        v14 = [v13 geometriesRangeCoveringRect:{x, y, width, height}];
+        v14 = [generator geometriesRangeCoveringRect:{x, y, width, height}];
         v16 = v15;
 
         return (v14 | (v16 << 32));
       }
 
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = objc_opt_class();
       v19 = NSStringFromClass(v20);
-      v21 = [v13 px_descriptionForAssertionMessage];
-      [v17 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v19, v21}];
+      px_descriptionForAssertionMessage = [generator px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.generator", v19, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      [v17 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v19}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:265 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.generator", v19}];
     }
 
     goto LABEL_11;
@@ -699,10 +699,10 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = PXDayAssetsSectionBodyLayout;
   [(PXGGeneratedLayout *)&v7 contentSizeDidChange];
-  v3 = [(PXDayAssetsSectionBodyLayout *)self style];
-  if (v3 > 2)
+  style = [(PXDayAssetsSectionBodyLayout *)self style];
+  if (style > 2)
   {
-    if ((v3 - 3) >= 6)
+    if ((style - 3) >= 6)
     {
       return;
     }
@@ -710,43 +710,43 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  switch(v3)
+  switch(style)
   {
     case 0:
       [(PXDayAssetsSectionBodyLayout *)self setLastBaseline:0.0];
       return;
     case 1:
 LABEL_3:
-      v4 = [(PXGGeneratedLayout *)self generator];
-      [v4 size];
+      generator = [(PXGGeneratedLayout *)self generator];
+      [generator size];
       v6 = v5;
 LABEL_4:
       [(PXDayAssetsSectionBodyLayout *)self setLastBaseline:v6];
 
       return;
     case 2:
-      v4 = [(PXGGeneratedLayout *)self generator];
-      [v4 lastFullRowBottomEdge];
+      generator = [(PXGGeneratedLayout *)self generator];
+      [generator lastFullRowBottomEdge];
       goto LABEL_4;
   }
 }
 
-- (id)_inputItemAtIndex:(unsigned int)a3
+- (id)_inputItemAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(PXGItemsLayout *)self delegate];
-  v6 = [v5 generatedLayout:self inputItemAtIndex:v3];
+  v3 = *&index;
+  delegate = [(PXGItemsLayout *)self delegate];
+  v6 = [delegate generatedLayout:self inputItemAtIndex:v3];
 
   return v6;
 }
 
 - (id)exploreGenerator
 {
-  v2 = [(PXGGeneratedLayout *)self generator];
+  generator = [(PXGGeneratedLayout *)self generator];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = generator;
   }
 
   else
@@ -759,11 +759,11 @@ LABEL_4:
 
 - (id)newGenerator
 {
-  v4 = [(PXDayAssetsSectionBodyLayout *)self style];
-  v5 = [(PXDayAssetsSectionBodyLayout *)self spec];
-  [v5 interitemSpacing];
+  style = [(PXDayAssetsSectionBodyLayout *)self style];
+  spec = [(PXDayAssetsSectionBodyLayout *)self spec];
+  [spec interitemSpacing];
   v7 = v6;
-  [v5 bodyCornerRadius];
+  [spec bodyCornerRadius];
   [(PXGGeneratedLayout *)self setEdgeCornerRadius:?];
   [(PXDayAssetsSectionBodyLayout *)self referenceSize];
   v9 = v8;
@@ -797,45 +797,45 @@ LABEL_4:
   v49 = v27;
   v50 = v26;
   v48 = v28;
-  v29 = [v5 userInterfaceIdiom];
-  if ([v5 userInterfaceIdiom] == 2 || v29 == 4)
+  userInterfaceIdiom = [spec userInterfaceIdiom];
+  if ([spec userInterfaceIdiom] == 2 || userInterfaceIdiom == 4)
   {
     PXEdgeInsetsAdd();
   }
 
-  if (v4 > 8)
+  if (style > 8)
   {
     goto LABEL_23;
   }
 
-  if (((1 << v4) & 0x38) != 0)
+  if (((1 << style) & 0x38) != 0)
   {
-    v35 = [[PXExploreLayoutMetrics alloc] initWithSpec:v5];
+    v35 = [[PXExploreLayoutMetrics alloc] initWithSpec:spec];
     v30 = v35;
-    if (v4 == 4)
+    if (style == 4)
     {
       v36 = 1;
     }
 
     else
     {
-      if (v4 != 5)
+      if (style != 5)
       {
 LABEL_27:
         v37 = v16;
         v38 = v21;
-        if ([v5 useHorizontalContentGuideInsets])
+        if ([spec useHorizontalContentGuideInsets])
         {
-          [v5 contentGuideInsetsForScrollAxis:1];
+          [spec contentGuideInsetsForScrollAxis:1];
           v40 = v39;
           v42 = v37 - (v39 + v41);
         }
 
         else
         {
-          [v5 horizontalMargin];
+          [spec horizontalMargin];
           v42 = v37 - (v23 + v19) + v43 * -2.0;
-          [v5 horizontalMargin];
+          [spec horizontalMargin];
         }
 
         v44 = v19 + v40;
@@ -866,7 +866,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (((1 << v4) & 0x1C0) != 0)
+  if (((1 << style) & 0x1C0) != 0)
   {
     v47 = v21;
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -877,9 +877,9 @@ LABEL_27:
     aBlock[5] = a2;
     v30 = _Block_copy(aBlock);
     v31 = objc_alloc_init(PXSmallCollectionLayoutMetrics);
-    [(PXSmallCollectionLayoutMetrics *)v31 setStyle:(*&v30->super._referenceSize.height)(v30, v4)];
+    [(PXSmallCollectionLayoutMetrics *)v31 setStyle:(*&v30->super._referenceSize.height)(v30, style)];
     [(PXLayoutMetrics *)v31 setReferenceSize:v16, v51];
-    if (v4 - 7 >= 2)
+    if (style - 7 >= 2)
     {
       v32 = v7;
     }
@@ -889,7 +889,7 @@ LABEL_27:
       v32 = 6.0;
     }
 
-    if (v4 == 6)
+    if (style == 6)
     {
       v33 = +[PXLemonadeSettings sharedInstance];
       [v33 detailsViewHeaderAspectRatio];
@@ -914,10 +914,10 @@ LABEL_27:
     goto LABEL_31;
   }
 
-  if (((1 << v4) & 6) != 0)
+  if (((1 << style) & 6) != 0)
   {
     v30 = objc_alloc_init(PXCuratedLibraryGridLayoutMetrics);
-    -[PXCuratedLibraryGridLayoutMetrics setNumberOfColumns:](v30, "setNumberOfColumns:", [v5 numberOfColumns]);
+    -[PXCuratedLibraryGridLayoutMetrics setNumberOfColumns:](v30, "setNumberOfColumns:", [spec numberOfColumns]);
     [(PXCuratedLibraryGridLayoutMetrics *)v30 setInteritemSpacing:v7];
     [(PXCuratedLibraryGridLayoutMetrics *)v30 setPadding:v52, v19, v21, v23];
     [(PXDayAssetsSectionBodyLayout *)self displayScale];
@@ -933,10 +933,10 @@ LABEL_31:
   }
 
 LABEL_23:
-  if (!v4)
+  if (!style)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v46 handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:123 description:@"None style is not supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDayAssetsSectionBodyLayout.m" lineNumber:123 description:@"None style is not supported"];
 
     abort();
   }
@@ -993,33 +993,33 @@ id __44__PXDayAssetsSectionBodyLayout_newGenerator__block_invoke_3(uint64_t a1, 
   [(PXGGeneratedLayout *)self metricsDidChange];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PXGGeneratedLayout *)self metricsDidChange];
   }
 }
 
-- (void)setNumberOfPrecedingAssets:(int64_t)a3
+- (void)setNumberOfPrecedingAssets:(int64_t)assets
 {
-  if (self->_numberOfPrecedingAssets != a3)
+  if (self->_numberOfPrecedingAssets != assets)
   {
-    self->_numberOfPrecedingAssets = a3;
+    self->_numberOfPrecedingAssets = assets;
     [(PXGGeneratedLayout *)self metricsDidChange];
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXGGeneratedLayout *)self metricsDidChange];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
@@ -1031,9 +1031,9 @@ id __44__PXDayAssetsSectionBodyLayout_newGenerator__block_invoke_3(uint64_t a1, 
   if (v2)
   {
     v3 = +[PXKeyboardSettings sharedInstance];
-    v4 = [v3 daysFocusAnimationStyle];
+    daysFocusAnimationStyle = [v3 daysFocusAnimationStyle];
     [v3 daysFocusPadding];
-    [(PXGItemsLayout *)v2 setAnimationParameters:v4 forStylableType:v5, 1];
+    [(PXGItemsLayout *)v2 setAnimationParameters:daysFocusAnimationStyle forStylableType:v5, 1];
     v6 = +[PXCursorInteractionSettings sharedInstance];
     if ([v6 enableDaysEffect])
     {
@@ -1045,16 +1045,16 @@ id __44__PXDayAssetsSectionBodyLayout_newGenerator__block_invoke_3(uint64_t a1, 
   return v2;
 }
 
-+ (CGSize)estimatedSizeWithReferenceSize:(CGSize)a3 spec:(id)a4 style:(int64_t)a5 numberOfAssets:(int64_t)a6
++ (CGSize)estimatedSizeWithReferenceSize:(CGSize)size spec:(id)spec style:(int64_t)style numberOfAssets:(int64_t)assets
 {
-  width = a3.width;
-  if (a6)
+  width = size.width;
+  if (assets)
   {
-    v9 = [off_1E7721798 photosGridLayoutColumnsForWidth:{a4, a3.width, a3.height}];
-    v10 = width + width / v9 * (a6 / v9);
-    if (a5 == 2)
+    v9 = [off_1E7721798 photosGridLayoutColumnsForWidth:{spec, size.width, size.height}];
+    v10 = width + width / v9 * (assets / v9);
+    if (style == 2)
     {
-      v10 = width / v9 * (a6 / v9);
+      v10 = width / v9 * (assets / v9);
     }
   }
 

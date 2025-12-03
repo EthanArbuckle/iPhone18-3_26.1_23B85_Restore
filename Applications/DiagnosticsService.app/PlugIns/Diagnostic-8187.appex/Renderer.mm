@@ -1,13 +1,13 @@
 @interface Renderer
-- (Renderer)initWithDevice:(id)a3 scene:(id)a4 size:(CGSize)a5;
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newArgumentEncoderForResources:(id)a3;
-- (id)newComputePipelineStateWithFunction:(id)a3 linkedFunctions:(id)a4;
-- (id)specializedFunctionWithName:(id)a3;
+- (Renderer)initWithDevice:(id)device scene:(id)scene size:(CGSize)size;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newArgumentEncoderForResources:(id)resources;
+- (id)newComputePipelineStateWithFunction:(id)function linkedFunctions:(id)functions;
+- (id)specializedFunctionWithName:(id)name;
 - (void)createAccelerationStructures;
 - (void)createBuffers;
 - (void)createPipelines;
-- (void)drawableSizeWillChange:(CGSize)a3;
+- (void)drawableSizeWillChange:(CGSize)change;
 - (void)loadMetal;
 - (void)render;
 - (void)updateUniforms;
@@ -15,24 +15,24 @@
 
 @implementation Renderer
 
-- (Renderer)initWithDevice:(id)a3 scene:(id)a4 size:(CGSize)a5
+- (Renderer)initWithDevice:(id)device scene:(id)scene size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a4;
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  sceneCopy = scene;
   v17.receiver = self;
   v17.super_class = Renderer;
   v12 = [(Renderer *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_device, a3);
+    objc_storeStrong(&v12->_device, device);
     v14 = dispatch_semaphore_create(3);
     sem = v13->_sem;
     v13->_sem = v14;
 
-    objc_storeStrong(&v13->_scene, a4);
+    objc_storeStrong(&v13->_scene, scene);
     [(Renderer *)v13 loadMetal];
     [(Renderer *)v13 createBuffers];
     [(Renderer *)v13 createAccelerationStructures];
@@ -45,25 +45,25 @@
 
 - (void)loadMetal
 {
-  v3 = [(MTLDevice *)self->_device newDefaultLibrary];
+  newDefaultLibrary = [(MTLDevice *)self->_device newDefaultLibrary];
   library = self->_library;
-  self->_library = v3;
+  self->_library = newDefaultLibrary;
 
-  v5 = [(MTLDevice *)self->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
   queue = self->_queue;
-  self->_queue = v5;
+  self->_queue = newCommandQueue;
 
   _objc_release_x1();
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 linkedFunctions:(id)a4
+- (id)newComputePipelineStateWithFunction:(id)function linkedFunctions:(id)functions
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  functionCopy = function;
+  functionsCopy = functions;
+  if (functionsCopy)
   {
     v8 = objc_alloc_init(MTLLinkedFunctions);
-    [v8 setFunctions:v7];
+    [v8 setFunctions:functionsCopy];
   }
 
   else
@@ -72,7 +72,7 @@
   }
 
   v9 = objc_alloc_init(MTLComputePipelineDescriptor);
-  [v9 setComputeFunction:v6];
+  [v9 setComputeFunction:functionCopy];
   [v9 setLinkedFunctions:v8];
   [v9 setThreadGroupSizeIsMultipleOfThreadExecutionWidth:1];
   device = self->_device;
@@ -82,9 +82,9 @@
   return v11;
 }
 
-- (id)specializedFunctionWithName:(id)a3
+- (id)specializedFunctionWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(MTLFunctionConstantValues);
   resourcesStride = self->_resourcesStride;
   [v5 setConstantValue:&resourcesStride type:33 atIndex:0];
@@ -92,7 +92,7 @@
   [v5 setConstantValue:&self->_usePerPrimitiveData type:53 atIndex:2];
   library = self->_library;
   v9 = 0;
-  v7 = [(MTLLibrary *)library newFunctionWithName:v4 constantValues:v5 error:&v9];
+  v7 = [(MTLLibrary *)library newFunctionWithName:nameCopy constantValues:v5 error:&v9];
 
   return v7;
 }
@@ -104,8 +104,8 @@
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v3 = [(Scene *)self->_scene geometries];
-  v4 = [v3 countByEnumeratingWithState:&v53 objects:v58 count:16];
+  geometries = [(Scene *)self->_scene geometries];
+  v4 = [geometries countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v4)
   {
     v5 = *v54;
@@ -115,11 +115,11 @@
       {
         if (*v54 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(geometries);
         }
 
-        v7 = [*(*(&v53 + 1) + 8 * i) intersectionFunctionName];
-        v8 = v7 == 0;
+        intersectionFunctionName = [*(*(&v53 + 1) + 8 * i) intersectionFunctionName];
+        v8 = intersectionFunctionName == 0;
 
         if (!v8)
         {
@@ -128,7 +128,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v53 objects:v58 count:16];
+      v4 = [geometries countByEnumeratingWithState:&v53 objects:v58 count:16];
       if (v4)
       {
         continue;
@@ -145,8 +145,8 @@ LABEL_11:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v10 = [(Scene *)self->_scene geometries];
-  v11 = [v10 countByEnumeratingWithState:&v49 objects:v57 count:16];
+  geometries2 = [(Scene *)self->_scene geometries];
+  v11 = [geometries2 countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v11)
   {
     v12 = *v50;
@@ -156,45 +156,45 @@ LABEL_11:
       {
         if (*v50 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(geometries2);
         }
 
         v14 = *(*(&v49 + 1) + 8 * j);
-        v15 = [v14 intersectionFunctionName];
-        if (v15)
+        intersectionFunctionName2 = [v14 intersectionFunctionName];
+        if (intersectionFunctionName2)
         {
-          v16 = [v14 intersectionFunctionName];
-          v17 = [v9 objectForKey:v16];
+          intersectionFunctionName3 = [v14 intersectionFunctionName];
+          v17 = [v9 objectForKey:intersectionFunctionName3];
           v18 = v17 == 0;
 
           if (v18)
           {
-            v19 = [v14 intersectionFunctionName];
-            v20 = [(Renderer *)self specializedFunctionWithName:v19];
+            intersectionFunctionName4 = [v14 intersectionFunctionName];
+            v20 = [(Renderer *)self specializedFunctionWithName:intersectionFunctionName4];
 
-            v21 = [v14 intersectionFunctionName];
-            [v9 setObject:v20 forKeyedSubscript:v21];
+            intersectionFunctionName5 = [v14 intersectionFunctionName];
+            [v9 setObject:v20 forKeyedSubscript:intersectionFunctionName5];
           }
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      v11 = [geometries2 countByEnumeratingWithState:&v49 objects:v57 count:16];
     }
 
     while (v11);
   }
 
   v22 = [(Renderer *)self specializedFunctionWithName:@"raytracingKernel"];
-  v23 = [v9 allValues];
-  v24 = [(Renderer *)self newComputePipelineStateWithFunction:v22 linkedFunctions:v23];
+  allValues = [v9 allValues];
+  v24 = [(Renderer *)self newComputePipelineStateWithFunction:v22 linkedFunctions:allValues];
   raytracingPipeline = self->_raytracingPipeline;
   self->_raytracingPipeline = v24;
 
   if (self->_useIntersectionFunctions)
   {
     v26 = objc_alloc_init(MTLIntersectionFunctionTableDescriptor);
-    v27 = [(Scene *)self->_scene geometries];
-    [v26 setFunctionCount:{objc_msgSend(v27, "count")}];
+    geometries3 = [(Scene *)self->_scene geometries];
+    [v26 setFunctionCount:{objc_msgSend(geometries3, "count")}];
 
     v28 = [(MTLComputePipelineState *)self->_raytracingPipeline newIntersectionFunctionTableWithDescriptor:v26];
     intersectionFunctionTable = self->_intersectionFunctionTable;
@@ -207,24 +207,24 @@ LABEL_11:
 
     for (k = 0; ; ++k)
     {
-      v31 = [(Scene *)self->_scene geometries];
-      v32 = k < [v31 count];
+      geometries4 = [(Scene *)self->_scene geometries];
+      v32 = k < [geometries4 count];
 
       if (!v32)
       {
         break;
       }
 
-      v33 = [(Scene *)self->_scene geometries];
-      v34 = [v33 objectAtIndexedSubscript:k];
+      geometries5 = [(Scene *)self->_scene geometries];
+      v34 = [geometries5 objectAtIndexedSubscript:k];
 
-      v35 = [v34 intersectionFunctionName];
-      LOBYTE(v33) = v35 == 0;
+      intersectionFunctionName6 = [v34 intersectionFunctionName];
+      LOBYTE(geometries5) = intersectionFunctionName6 == 0;
 
-      if ((v33 & 1) == 0)
+      if ((geometries5 & 1) == 0)
       {
-        v36 = [v34 intersectionFunctionName];
-        v37 = [v9 objectForKeyedSubscript:v36];
+        intersectionFunctionName7 = [v34 intersectionFunctionName];
+        v37 = [v9 objectForKeyedSubscript:intersectionFunctionName7];
 
         v38 = [(MTLComputePipelineState *)self->_raytracingPipeline functionHandleWithFunction:v37];
         [(MTLIntersectionFunctionTable *)self->_intersectionFunctionTable setFunction:v38 atIndex:k];
@@ -239,8 +239,8 @@ LABEL_11:
   v41 = [(MTLLibrary *)self->_library newFunctionWithName:@"copyFragment"];
   [v39 setFragmentFunction:v41];
 
-  v42 = [v39 colorAttachments];
-  v43 = [v42 objectAtIndexedSubscript:0];
+  colorAttachments = [v39 colorAttachments];
+  v43 = [colorAttachments objectAtIndexedSubscript:0];
   [v43 setPixelFormat:115];
 
   device = self->_device;
@@ -251,15 +251,15 @@ LABEL_11:
   self->_copyPipeline = v45;
 }
 
-- (id)newArgumentEncoderForResources:(id)a3
+- (id)newArgumentEncoderForResources:(id)resources
 {
-  v3 = a3;
+  resourcesCopy = resources;
   v4 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = resourcesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -319,8 +319,8 @@ LABEL_11:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(Scene *)self->_scene geometries];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  geometries = [(Scene *)self->_scene geometries];
+  v7 = [geometries countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
     v8 = *v30;
@@ -330,21 +330,21 @@ LABEL_11:
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(geometries);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
-        v11 = [v10 resources];
-        v12 = self->_resourcesStride < 8 * [v11 count];
+        resources = [v10 resources];
+        v12 = self->_resourcesStride < 8 * [resources count];
 
         if (v12)
         {
-          v13 = [v10 resources];
-          self->_resourcesStride = 8 * [v13 count];
+          resources2 = [v10 resources];
+          self->_resourcesStride = 8 * [resources2 count];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v7 = [geometries countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v7);
@@ -352,37 +352,37 @@ LABEL_11:
 
   device = self->_device;
   resourcesStride = self->_resourcesStride;
-  v16 = [(Scene *)self->_scene geometries];
-  v17 = -[MTLDevice newBufferWithLength:options:](device, "newBufferWithLength:options:", [v16 count] * resourcesStride, ManagedBufferStorageMode);
+  geometries2 = [(Scene *)self->_scene geometries];
+  v17 = -[MTLDevice newBufferWithLength:options:](device, "newBufferWithLength:options:", [geometries2 count] * resourcesStride, ManagedBufferStorageMode);
   resourceBuffer = self->_resourceBuffer;
   self->_resourceBuffer = v17;
 
   v19 = 0;
 LABEL_11:
-  v20 = [(Scene *)self->_scene geometries];
-  v21 = v19 < [v20 count];
+  geometries3 = [(Scene *)self->_scene geometries];
+  v21 = v19 < [geometries3 count];
 
   if (v21)
   {
-    v22 = [(Scene *)self->_scene geometries];
-    v23 = [v22 objectAtIndexedSubscript:v19];
+    geometries4 = [(Scene *)self->_scene geometries];
+    v23 = [geometries4 objectAtIndexedSubscript:v19];
 
-    v24 = [v23 resources];
+    resources3 = [v23 resources];
     v25 = 0;
     v26 = [(MTLBuffer *)self->_resourceBuffer contents]+ self->_resourcesStride * v19;
     while (1)
     {
-      if (v25 >= [v24 count])
+      if (v25 >= [resources3 count])
       {
 
         ++v19;
         goto LABEL_11;
       }
 
-      v27 = [v24 objectAtIndexedSubscript:v25];
+      v27 = [resources3 objectAtIndexedSubscript:v25];
       if ([v27 conformsToProtocol:&OBJC_PROTOCOL___MTLBuffer])
       {
-        v28 = [v27 gpuAddress];
+        gpuAddress = [v27 gpuAddress];
       }
 
       else
@@ -392,10 +392,10 @@ LABEL_11:
           goto LABEL_19;
         }
 
-        v28 = [v27 gpuResourceID];
+        gpuAddress = [v27 gpuResourceID];
       }
 
-      *&v26[8 * v25] = v28;
+      *&v26[8 * v25] = gpuAddress;
 LABEL_19:
 
       ++v25;
@@ -403,16 +403,16 @@ LABEL_19:
   }
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v16 = 0;
   v17 = 0;
   v18 = 0;
   device = self->_device;
   if (device)
   {
-    [(MTLDevice *)device accelerationStructureSizesWithDescriptor:v4];
+    [(MTLDevice *)device accelerationStructureSizesWithDescriptor:descriptorCopy];
     device = self->_device;
     v6 = v16;
   }
@@ -424,22 +424,22 @@ LABEL_19:
 
   v7 = [(MTLDevice *)device newAccelerationStructureWithSize:v6];
   v8 = [(MTLDevice *)self->_device newBufferWithLength:v17 options:32];
-  v9 = [(MTLCommandQueue *)self->_queue commandBuffer];
-  v10 = [v9 accelerationStructureCommandEncoder];
+  commandBuffer = [(MTLCommandQueue *)self->_queue commandBuffer];
+  accelerationStructureCommandEncoder = [commandBuffer accelerationStructureCommandEncoder];
   v11 = [(MTLDevice *)self->_device newBufferWithLength:4 options:0];
-  [v10 buildAccelerationStructure:v7 descriptor:v4 scratchBuffer:v8 scratchBufferOffset:0];
-  [v10 writeCompactedAccelerationStructureSize:v7 toBuffer:v11 offset:0];
-  [v10 endEncoding];
-  [v9 commit];
-  [v9 waitUntilCompleted];
+  [accelerationStructureCommandEncoder buildAccelerationStructure:v7 descriptor:descriptorCopy scratchBuffer:v8 scratchBufferOffset:0];
+  [accelerationStructureCommandEncoder writeCompactedAccelerationStructureSize:v7 toBuffer:v11 offset:0];
+  [accelerationStructureCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   v12 = -[MTLDevice newAccelerationStructureWithSize:](self->_device, "newAccelerationStructureWithSize:", *[v11 contents]);
-  v13 = [(MTLCommandQueue *)self->_queue commandBuffer];
+  commandBuffer2 = [(MTLCommandQueue *)self->_queue commandBuffer];
 
-  v14 = [v13 accelerationStructureCommandEncoder];
+  accelerationStructureCommandEncoder2 = [commandBuffer2 accelerationStructureCommandEncoder];
 
-  [v14 copyAndCompactAccelerationStructure:v7 toAccelerationStructure:v12];
-  [v14 endEncoding];
-  [v13 commit];
+  [accelerationStructureCommandEncoder2 copyAndCompactAccelerationStructure:v7 toAccelerationStructure:v12];
+  [accelerationStructureCommandEncoder2 endEncoding];
+  [commandBuffer2 commit];
 
   return v12;
 }
@@ -453,21 +453,21 @@ LABEL_19:
 
   for (i = 0; ; ++i)
   {
-    v7 = [(Scene *)self->_scene geometries];
-    v8 = i < [v7 count];
+    geometries = [(Scene *)self->_scene geometries];
+    v8 = i < [geometries count];
 
     if (!v8)
     {
       break;
     }
 
-    v9 = [(Scene *)self->_scene geometries];
-    v10 = [v9 objectAtIndexedSubscript:i];
+    geometries2 = [(Scene *)self->_scene geometries];
+    v10 = [geometries2 objectAtIndexedSubscript:i];
 
-    v11 = [v10 geometryDescriptor];
-    [v11 setIntersectionFunctionTableOffset:i];
+    geometryDescriptor = [v10 geometryDescriptor];
+    [geometryDescriptor setIntersectionFunctionTableOffset:i];
     v12 = +[MTLPrimitiveAccelerationStructureDescriptor descriptor];
-    v47 = v11;
+    v47 = geometryDescriptor;
     v13 = [NSArray arrayWithObjects:&v47 count:1];
     [v12 setGeometryDescriptors:v13];
 
@@ -476,14 +476,14 @@ LABEL_19:
   }
 
   device = self->_device;
-  v16 = [(Scene *)self->_scene instances];
-  v17 = -[MTLDevice newBufferWithLength:options:](device, "newBufferWithLength:options:", [v16 count] << 6, ManagedBufferStorageMode);
+  instances = [(Scene *)self->_scene instances];
+  v17 = -[MTLDevice newBufferWithLength:options:](device, "newBufferWithLength:options:", [instances count] << 6, ManagedBufferStorageMode);
   instanceBuffer = self->_instanceBuffer;
   self->_instanceBuffer = v17;
 
-  v19 = [(MTLBuffer *)self->_instanceBuffer contents];
+  contents = [(MTLBuffer *)self->_instanceBuffer contents];
   v20 = 0;
-  for (j = v19; ; j += 64)
+  for (j = contents; ; j += 64)
   {
     v22 = [(Scene *)self->_scene instances:v43];
     v23 = v20 < [v22 count];
@@ -493,18 +493,18 @@ LABEL_19:
       break;
     }
 
-    v24 = [(Scene *)self->_scene instances];
-    v25 = [v24 objectAtIndexedSubscript:v20];
+    instances2 = [(Scene *)self->_scene instances];
+    v25 = [instances2 objectAtIndexedSubscript:v20];
 
-    v26 = [(Scene *)self->_scene geometries];
-    v27 = [v25 geometry];
-    v28 = [v26 indexOfObject:v27];
+    geometries3 = [(Scene *)self->_scene geometries];
+    geometry = [v25 geometry];
+    v28 = [geometries3 indexOfObject:geometry];
 
-    v29 = &v19[64 * v20];
+    v29 = &contents[64 * v20];
     *(v29 + 15) = v28;
-    v30 = [v25 geometry];
-    v31 = [v30 intersectionFunctionName];
-    *(v29 + 12) = 4 * (v31 == 0);
+    geometry2 = [v25 geometry];
+    intersectionFunctionName = [geometry2 intersectionFunctionName];
+    *(v29 + 12) = 4 * (intersectionFunctionName == 0);
 
     *(v29 + 14) = 0;
     v32 = 0;
@@ -533,8 +533,8 @@ LABEL_19:
 
   v39 = +[MTLInstanceAccelerationStructureDescriptor descriptor];
   [v39 setInstancedAccelerationStructures:self->_primitiveAccelerationStructures];
-  v40 = [(Scene *)self->_scene instances];
-  [v39 setInstanceCount:{objc_msgSend(v40, "count")}];
+  instances3 = [(Scene *)self->_scene instances];
+  [v39 setInstanceCount:{objc_msgSend(instances3, "count")}];
 
   [v39 setInstanceDescriptorBuffer:self->_instanceBuffer];
   v41 = [(Renderer *)self newAccelerationStructureWithDescriptor:v39];
@@ -542,11 +542,11 @@ LABEL_19:
   self->_instanceAccelerationStructure = v41;
 }
 
-- (void)drawableSizeWillChange:(CGSize)a3
+- (void)drawableSizeWillChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
-  self->_size = a3;
+  height = change.height;
+  width = change.width;
+  self->_size = change;
   v6 = objc_alloc_init(MTLTextureDescriptor);
   [v6 setPixelFormat:125];
   [v6 setTextureType:2];
@@ -666,7 +666,7 @@ LABEL_19:
 {
   p_sem = &self->_sem;
   dispatch_semaphore_wait(self->_sem, 0xFFFFFFFFFFFFFFFFLL);
-  v20 = [(OS_dispatch_semaphore *)*(p_sem - 13) commandBuffer];
+  commandBuffer = [(OS_dispatch_semaphore *)*(p_sem - 13) commandBuffer];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3032000000;
@@ -678,31 +678,31 @@ LABEL_19:
   v37[2] = sub_10000B358;
   v37[3] = &unk_1000185C0;
   v37[4] = v38;
-  [v20 addCompletedHandler:v37];
+  [commandBuffer addCompletedHandler:v37];
   [(Renderer *)self updateUniforms];
   size = self->_size;
-  v4 = [v20 computeCommandEncoder];
-  [v4 setBuffer:self->_uniformBuffer offset:self->_uniformBufferOffset atIndex:0];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setBuffer:self->_uniformBuffer offset:self->_uniformBufferOffset atIndex:0];
   if (!self->_usePerPrimitiveData)
   {
-    [v4 setBuffer:self->_resourceBuffer offset:0 atIndex:1];
+    [computeCommandEncoder setBuffer:self->_resourceBuffer offset:0 atIndex:1];
   }
 
-  [v4 setBuffer:self->_instanceBuffer offset:0 atIndex:2];
-  v5 = [(Scene *)self->_scene lightBuffer];
-  [v4 setBuffer:v5 offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_instanceBuffer offset:0 atIndex:2];
+  lightBuffer = [(Scene *)self->_scene lightBuffer];
+  [computeCommandEncoder setBuffer:lightBuffer offset:0 atIndex:3];
 
-  [v4 setAccelerationStructure:self->_instanceAccelerationStructure atBufferIndex:4];
-  [v4 setIntersectionFunctionTable:self->_intersectionFunctionTable atBufferIndex:5];
-  [v4 setTexture:self->_randomTexture atIndex:0];
-  [v4 setTexture:self->_accumulationTargets[0] atIndex:1];
-  [v4 setTexture:self->_accumulationTargets[1] atIndex:2];
+  [computeCommandEncoder setAccelerationStructure:self->_instanceAccelerationStructure atBufferIndex:4];
+  [computeCommandEncoder setIntersectionFunctionTable:self->_intersectionFunctionTable atBufferIndex:5];
+  [computeCommandEncoder setTexture:self->_randomTexture atIndex:0];
+  [computeCommandEncoder setTexture:self->_accumulationTargets[0] atIndex:1];
+  [computeCommandEncoder setTexture:self->_accumulationTargets[1] atIndex:2];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(Scene *)self->_scene geometries];
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  geometries = [(Scene *)self->_scene geometries];
+  v7 = [geometries countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v7)
   {
     v8 = *v34;
@@ -713,7 +713,7 @@ LABEL_19:
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(geometries);
         }
 
         v10 = *(*(&v33 + 1) + 8 * v9);
@@ -721,8 +721,8 @@ LABEL_19:
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v11 = [v10 resources];
-        v12 = [v11 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        resources = [v10 resources];
+        v12 = [resources countByEnumeratingWithState:&v29 objects:v41 count:16];
         if (v12)
         {
           v13 = *v30;
@@ -733,15 +733,15 @@ LABEL_19:
             {
               if (*v30 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(resources);
               }
 
-              [v4 useResource:*(*(&v29 + 1) + 8 * v14) usage:1];
+              [computeCommandEncoder useResource:*(*(&v29 + 1) + 8 * v14) usage:1];
               v14 = v14 + 1;
             }
 
             while (v12 != v14);
-            v12 = [v11 countByEnumeratingWithState:&v29 objects:v41 count:16];
+            v12 = [resources countByEnumeratingWithState:&v29 objects:v41 count:16];
           }
 
           while (v12);
@@ -751,7 +751,7 @@ LABEL_19:
       }
 
       while (v9 != v7);
-      v7 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v7 = [geometries countByEnumeratingWithState:&v33 objects:v42 count:16];
     }
 
     while (v7);
@@ -776,7 +776,7 @@ LABEL_19:
           objc_enumerationMutation(v15);
         }
 
-        [v4 useResource:*(*(&v25 + 1) + 8 * v18) usage:1];
+        [computeCommandEncoder useResource:*(*(&v25 + 1) + 8 * v18) usage:1];
         v18 = v18 + 1;
       }
 
@@ -787,15 +787,15 @@ LABEL_19:
     while (v16);
   }
 
-  [v4 setComputePipelineState:self->_raytracingPipeline];
+  [computeCommandEncoder setComputePipelineState:self->_raytracingPipeline];
   v23 = vshrq_n_u64(vaddq_s64(vcvtq_u64_f64(size), vdupq_n_s64(7uLL)), 3uLL);
   v24 = 1;
   v21 = vdupq_n_s64(8uLL);
   v22 = 1;
-  [v4 dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
-  [v4 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
   *self->_accumulationTargets = vextq_s8(*self->_accumulationTargets, *self->_accumulationTargets, 8uLL);
-  [v20 commit];
+  [commandBuffer commit];
 
   _Block_object_dispose(v38, 8);
 }

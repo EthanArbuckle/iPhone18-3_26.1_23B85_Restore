@@ -1,29 +1,29 @@
 @interface CRLPathKnobTracker
-- (CRLPathKnobTracker)initWithRep:(id)a3 creatingKnobAtPoint:(CGPoint)a4 initialPoint:(BOOL)a5 reversed:(BOOL)a6;
-- (CRLPathKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLPathKnobTracker)initWithRep:(id)rep creatingKnobAtPoint:(CGPoint)point initialPoint:(BOOL)initialPoint reversed:(BOOL)reversed;
+- (CRLPathKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (id)editablePathSource;
-- (int)reflectionStateForBendingNodeType:(int64_t)a3 originalReflectionState:(int)a4;
+- (int)reflectionStateForBendingNodeType:(int64_t)type originalReflectionState:(int)state;
 - (void)beginMovingKnob;
 - (void)endMovingKnob;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
-- (void)moveSmoothControlKnob:(id)a3 to:(CGPoint)a4;
+- (void)moveKnobToRepPosition:(CGPoint)position;
+- (void)moveSmoothControlKnob:(id)knob to:(CGPoint)to;
 - (void)p_closeCommandGroupIfNeeded;
-- (void)startWithNodeCreationBlock:(id)a3;
+- (void)startWithNodeCreationBlock:(id)block;
 - (void)updateKnobs;
 @end
 
 @implementation CRLPathKnobTracker
 
-- (CRLPathKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLPathKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
   v41.receiver = self;
   v41.super_class = CRLPathKnobTracker;
-  v32 = a3;
-  v33 = a4;
-  v5 = [(CRLCanvasKnobTracker *)&v41 initWithRep:v32 knob:?];
+  repCopy = rep;
+  knobCopy = knob;
+  v5 = [(CRLCanvasKnobTracker *)&v41 initWithRep:repCopy knob:?];
   if (v5)
   {
-    if (([v32 conformsToProtocol:&OBJC_PROTOCOL___CRLPathEditableRep] & 1) == 0)
+    if (([repCopy conformsToProtocol:&OBJC_PROTOCOL___CRLPathEditableRep] & 1) == 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -54,7 +54,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:48 isFatal:0 description:"reps conforming to CRLPathEditableRep protocol only valid for path node knob tracker"];
     }
 
-    if ([v33 tag] != 17 && objc_msgSend(v33, "tag") != 18 && objc_msgSend(v33, "tag") != 19 && objc_msgSend(v33, "tag") != 20 && objc_msgSend(v33, "tag") != 22 && objc_msgSend(v33, "tag") != 21 && objc_msgSend(v33, "tag") != 23 && objc_msgSend(v33, "tag") != 24)
+    if ([knobCopy tag] != 17 && objc_msgSend(knobCopy, "tag") != 18 && objc_msgSend(knobCopy, "tag") != 19 && objc_msgSend(knobCopy, "tag") != 20 && objc_msgSend(knobCopy, "tag") != 22 && objc_msgSend(knobCopy, "tag") != 21 && objc_msgSend(knobCopy, "tag") != 23 && objc_msgSend(knobCopy, "tag") != 24)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -85,9 +85,9 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:49 isFatal:0 description:"wrong knob for path node knob tracker"];
     }
 
-    if ([v33 tag] == 22 || objc_msgSend(v33, "tag") == 24)
+    if ([knobCopy tag] == 22 || objc_msgSend(knobCopy, "tag") == 24)
     {
-      v31 = [(CRLPathKnobTracker *)v5 pathKnob];
+      pathKnob = [(CRLPathKnobTracker *)v5 pathKnob];
       [(CRLPathKnobTracker *)v5 p_createDelegateIfNecessary];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
@@ -95,7 +95,7 @@
       v38[3] = &unk_10185D010;
       v12 = v5;
       v39 = v12;
-      v13 = v31;
+      v13 = pathKnob;
       v40 = v13;
       [(CRLPathKnobTracker *)v12 startWithNodeCreationBlock:v38];
       v36 = 0u;
@@ -103,9 +103,9 @@
       v34 = 0u;
       v35 = 0u;
       v14 = [(CRLCanvasKnobTracker *)v12 rep];
-      v15 = [v14 knobs];
+      knobs = [v14 knobs];
 
-      v16 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v16 = [knobs countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v16)
       {
         v17 = *v35;
@@ -115,7 +115,7 @@
           {
             if (*v35 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(knobs);
             }
 
             v19 = *(*(&v34 + 1) + 8 * i);
@@ -124,11 +124,11 @@
             v22 = v21;
             if (v21)
             {
-              v23 = [v21 nodeIndex];
-              if (v23 == [v13 nodeIndex] + 1)
+              nodeIndex = [v21 nodeIndex];
+              if (nodeIndex == [v13 nodeIndex] + 1)
               {
-                v24 = [v22 subpathIndex];
-                if (v24 == [v13 subpathIndex] && objc_msgSend(v22, "tag") == 17)
+                subpathIndex = [v22 subpathIndex];
+                if (subpathIndex == [v13 subpathIndex] && objc_msgSend(v22, "tag") == 17)
                 {
                   [(CRLCanvasKnobTracker *)v12 setKnob:v22];
 
@@ -138,7 +138,7 @@
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v16 = [knobs countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v16)
           {
             continue;
@@ -152,8 +152,8 @@ LABEL_44:
     }
   }
 
-  v25 = [(CRLCanvasKnobTracker *)v5 knob];
-  v26 = v25 == 0;
+  knob = [(CRLCanvasKnobTracker *)v5 knob];
+  v26 = knob == 0;
 
   if (v26)
   {
@@ -189,45 +189,45 @@ LABEL_44:
   return v5;
 }
 
-- (CRLPathKnobTracker)initWithRep:(id)a3 creatingKnobAtPoint:(CGPoint)a4 initialPoint:(BOOL)a5 reversed:(BOOL)a6
+- (CRLPathKnobTracker)initWithRep:(id)rep creatingKnobAtPoint:(CGPoint)point initialPoint:(BOOL)initialPoint reversed:(BOOL)reversed
 {
-  y = a4.y;
-  x = a4.x;
-  v38 = a3;
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
   v49.receiver = self;
   v49.super_class = CRLPathKnobTracker;
   v11 = [(CRLCanvasKnobTracker *)&v49 init];
   v12 = v11;
   if (v11)
   {
-    [(CRLCanvasKnobTracker *)v11 setRep:v38];
+    [(CRLCanvasKnobTracker *)v11 setRep:repCopy];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_100499178;
     v43[3] = &unk_101867000;
     v13 = v12;
     v44 = v13;
-    v47 = a5;
+    initialPointCopy = initialPoint;
     v45 = x;
     v46 = y;
-    v48 = a6;
+    reversedCopy = reversed;
     [(CRLPathKnobTracker *)v13 startWithNodeCreationBlock:v43];
-    v37 = [(CRLPathKnobTracker *)v13 editablePathSource];
-    v14 = [v37 subpaths];
-    v36 = [v14 lastObject];
+    editablePathSource = [(CRLPathKnobTracker *)v13 editablePathSource];
+    subpaths = [editablePathSource subpaths];
+    lastObject = [subpaths lastObject];
 
-    v15 = [v37 subpaths];
-    v16 = [v15 count];
+    subpaths2 = [editablePathSource subpaths];
+    v16 = [subpaths2 count];
 
-    if (a6)
+    if (reversed)
     {
       v17 = 0;
     }
 
     else
     {
-      v18 = [v36 nodes];
-      v19 = [v18 count];
+      nodes = [lastObject nodes];
+      v19 = [nodes count];
 
       v17 = v19 - 1;
     }
@@ -237,9 +237,9 @@ LABEL_44:
     v39 = 0u;
     v40 = 0u;
     v20 = [(CRLCanvasKnobTracker *)v13 rep];
-    v21 = [v20 knobs];
+    knobs = [v20 knobs];
 
-    v22 = [v21 countByEnumeratingWithState:&v39 objects:v50 count:16];
+    v22 = [knobs countByEnumeratingWithState:&v39 objects:v50 count:16];
     if (v22)
     {
       v23 = v16 - 1;
@@ -250,7 +250,7 @@ LABEL_44:
         {
           if (*v40 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(knobs);
           }
 
           v26 = *(*(&v39 + 1) + 8 * i);
@@ -265,7 +265,7 @@ LABEL_44:
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v39 objects:v50 count:16];
+        v22 = [knobs countByEnumeratingWithState:&v39 objects:v50 count:16];
         if (v22)
         {
           continue;
@@ -278,8 +278,8 @@ LABEL_44:
 LABEL_17:
 
     [(CRLPathKnobTracker *)v13 setIsCreatingNode:1];
-    v30 = [(CRLCanvasKnobTracker *)v13 knob];
-    v31 = v30 == 0;
+    knob = [(CRLCanvasKnobTracker *)v13 knob];
+    v31 = knob == 0;
 
     if (v31)
     {
@@ -316,34 +316,34 @@ LABEL_17:
   return v12;
 }
 
-- (void)startWithNodeCreationBlock:(id)a3
+- (void)startWithNodeCreationBlock:(id)block
 {
-  v11 = a3;
+  blockCopy = block;
   v4 = [(CRLCanvasKnobTracker *)self icc];
-  v5 = [v4 commandController];
+  commandController = [v4 commandController];
 
   if (![(CRLPathKnobTracker *)self didOpenGroup])
   {
-    [v5 openGroup];
+    [commandController openGroup];
   }
 
-  [v5 enableProgressiveEnqueuingInCurrentGroup];
+  [commandController enableProgressiveEnqueuingInCurrentGroup];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Add Point" value:0 table:@"UndoStrings"];
-  [v5 setCurrentGroupActionString:v7];
+  [commandController setCurrentGroupActionString:v7];
 
-  v8 = [(CRLPathKnobTracker *)self pathRep];
-  [v8 dynamicOperationDidBeginWithRealTimeCommands:0];
-  [v8 dynamicMovePathKnobDidBegin];
-  v11[2]();
-  [v8 dynamicMovePathKnobDidEndWithTracker:0];
-  [v8 dynamicOperationDidEnd];
-  [v8 invalidateKnobs];
-  v9 = [v8 layout];
-  [v9 invalidateFrame];
+  pathRep = [(CRLPathKnobTracker *)self pathRep];
+  [pathRep dynamicOperationDidBeginWithRealTimeCommands:0];
+  [pathRep dynamicMovePathKnobDidBegin];
+  blockCopy[2]();
+  [pathRep dynamicMovePathKnobDidEndWithTracker:0];
+  [pathRep dynamicOperationDidEnd];
+  [pathRep invalidateKnobs];
+  layout = [pathRep layout];
+  [layout invalidateFrame];
 
-  v10 = [v8 layout];
-  [v10 validate];
+  layout2 = [pathRep layout];
+  [layout2 validate];
 
   [(CRLPathKnobTracker *)self setDidOpenGroup:1];
   self->mCreatedNode = 1;
@@ -352,22 +352,22 @@ LABEL_17:
 - (id)editablePathSource
 {
   v2 = [(CRLCanvasKnobTracker *)self rep];
-  v3 = [v2 editablePathSource];
+  editablePathSource = [v2 editablePathSource];
 
-  return v3;
+  return editablePathSource;
 }
 
 - (void)updateKnobs
 {
-  v2 = [(CRLPathKnobTracker *)self editablePathSource];
+  editablePathSource = [(CRLPathKnobTracker *)self editablePathSource];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
   v3 = [(CRLCanvasKnobTracker *)self rep];
-  v4 = [v3 knobs];
-  v5 = [(CRLCanvasKnobTracker *)self knob];
-  v6 = [v4 arrayByAddingObject:v5];
+  knobs = [v3 knobs];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v6 = [knobs arrayByAddingObject:knob];
 
   v7 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v7)
@@ -387,16 +387,16 @@ LABEL_17:
         v12 = sub_100014370(v11, v10);
         if (v12)
         {
-          v13 = [v2 subpaths];
-          v14 = [v13 objectAtIndex:{objc_msgSend(v12, "subpathIndex")}];
+          subpaths = [editablePathSource subpaths];
+          v14 = [subpaths objectAtIndex:{objc_msgSend(v12, "subpathIndex")}];
 
-          v15 = [v14 nodes];
-          v16 = [v15 objectAtIndex:{objc_msgSend(v12, "nodeIndex")}];
+          nodes = [v14 nodes];
+          v16 = [nodes objectAtIndex:{objc_msgSend(v12, "nodeIndex")}];
           [v12 setNode:v16];
 
-          if (([v14 isClosed] & 1) != 0 || (v17 = objc_msgSend(v12, "nodeIndex"), v17 + 1 < objc_msgSend(v15, "count")))
+          if (([v14 isClosed] & 1) != 0 || (v17 = objc_msgSend(v12, "nodeIndex"), v17 + 1 < objc_msgSend(nodes, "count")))
           {
-            v18 = [v15 objectAtIndex:{(objc_msgSend(v12, "nodeIndex") + 1) % objc_msgSend(v15, "count")}];
+            v18 = [nodes objectAtIndex:{(objc_msgSend(v12, "nodeIndex") + 1) % objc_msgSend(nodes, "count")}];
             [v12 setNextNode:v18];
           }
 
@@ -404,15 +404,15 @@ LABEL_17:
           {
             if ([v12 nodeIndex])
             {
-              v19 = [v12 nodeIndex];
+              nodeIndex = [v12 nodeIndex];
             }
 
             else
             {
-              v19 = [v15 count];
+              nodeIndex = [nodes count];
             }
 
-            v20 = [v15 objectAtIndex:v19 - 1];
+            v20 = [nodes objectAtIndex:nodeIndex - 1];
             [v12 setPrevNode:v20];
           }
         }
@@ -426,15 +426,15 @@ LABEL_17:
 
   if ([(CRLPathKnobTracker *)self didOpenGroup]|| [(CRLPathKnobTracker *)self isCreatingNode])
   {
-    v21 = [(CRLPathKnobTracker *)self pathKnob];
+    pathKnob = [(CRLPathKnobTracker *)self pathKnob];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
     v22 = [(CRLCanvasKnobTracker *)self rep];
-    v23 = [v22 knobs];
+    knobs2 = [v22 knobs];
 
-    v24 = [v23 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    v24 = [knobs2 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v24)
     {
       v25 = *v36;
@@ -444,7 +444,7 @@ LABEL_17:
         {
           if (*v36 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(knobs2);
           }
 
           v27 = *(*(&v35 + 1) + 8 * j);
@@ -453,14 +453,14 @@ LABEL_17:
           v30 = v29;
           if (v29)
           {
-            v31 = [v29 subpathIndex];
-            if (v31 == [v21 subpathIndex])
+            subpathIndex = [v29 subpathIndex];
+            if (subpathIndex == [pathKnob subpathIndex])
             {
-              v32 = [v30 nodeIndex];
-              if (v32 == [v21 nodeIndex])
+              nodeIndex2 = [v30 nodeIndex];
+              if (nodeIndex2 == [pathKnob nodeIndex])
               {
                 v33 = [v30 tag];
-                if (v33 == [v21 tag])
+                if (v33 == [pathKnob tag])
                 {
                   [(CRLCanvasKnobTracker *)self setKnob:v30];
 
@@ -471,7 +471,7 @@ LABEL_17:
           }
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v24 = [knobs2 countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v24)
         {
           continue;
@@ -492,13 +492,13 @@ LABEL_34:
   [(CRLCanvasKnobTracker *)&v55 beginMovingKnob];
   [(CRLPathKnobTracker *)self p_createDelegateIfNecessary];
   v44 = [(CRLCanvasKnobTracker *)self icc];
-  v47 = [(CRLPathKnobTracker *)self pathKnob];
+  pathKnob = [(CRLPathKnobTracker *)self pathKnob];
   v46 = [(CRLCanvasKnobTracker *)self rep];
   [v44 addDecorator:self];
   [v46 dynamicMovePathKnobDidBegin];
   [(CRLPathKnobTracker *)self updateKnobs];
-  v45 = [(CRLPathKnobTracker *)self editablePathSource];
-  v3 = [[CRLEditableBezierPathSourceMorphInfo alloc] initWithEditableBezierPathSource:v45];
+  editablePathSource = [(CRLPathKnobTracker *)self editablePathSource];
+  v3 = [[CRLEditableBezierPathSourceMorphInfo alloc] initWithEditableBezierPathSource:editablePathSource];
   mMorphInfo = self->mMorphInfo;
   self->mMorphInfo = v3;
 
@@ -508,38 +508,38 @@ LABEL_34:
   }
 
   v5 = [(CRLCanvasKnobTracker *)self icc];
-  v6 = [v5 commandController];
+  commandController = [v5 commandController];
 
   if (![(CRLPathKnobTracker *)self didOpenGroup])
   {
-    [v6 openGroup];
+    [commandController openGroup];
   }
 
-  if (-[CRLPathKnobTracker createBezierNode](self, "createBezierNode") && ([v47 node], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type") == 2, v7, !v8))
+  if (-[CRLPathKnobTracker createBezierNode](self, "createBezierNode") && ([pathKnob node], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type") == 2, v7, !v8))
   {
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"Make Bézier Point" value:0 table:@"UndoStrings"];
-    [v6 setCurrentGroupActionString:v13];
+    [commandController setCurrentGroupActionString:v13];
     v14 = 2;
   }
 
   else
   {
-    v9 = [v47 node];
-    if ([v9 type] == 3)
+    node = [pathKnob node];
+    if ([node type] == 3)
     {
     }
 
     else
     {
-      v10 = [v47 node];
-      v11 = [v10 type] == 2;
+      node2 = [pathKnob node];
+      v11 = [node2 type] == 2;
 
       if (!v11)
       {
         v12 = +[NSBundle mainBundle];
         v13 = [v12 localizedStringForKey:@"Make Smooth Point" value:0 table:@"UndoStrings"];
-        [v6 setCurrentGroupActionString:v13];
+        [commandController setCurrentGroupActionString:v13];
         v14 = 3;
         goto LABEL_12;
       }
@@ -547,41 +547,41 @@ LABEL_34:
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"Make Sharp Point" value:0 table:@"UndoStrings"];
-    [v6 setCurrentGroupActionString:v13];
+    [commandController setCurrentGroupActionString:v13];
     v14 = 1;
   }
 
 LABEL_12:
 
   [(CRLPathKnobTracker *)self setDidOpenGroup:1];
-  v15 = [v47 node];
-  v16 = [v47 prevNode];
-  v17 = [v47 nextNode];
-  [v45 toggleNode:v15 toType:v14 prevNode:v16 nextNode:v17];
+  node3 = [pathKnob node];
+  prevNode = [pathKnob prevNode];
+  nextNode = [pathKnob nextNode];
+  [editablePathSource toggleNode:node3 toType:v14 prevNode:prevNode nextNode:nextNode];
 
 LABEL_13:
-  v18 = [v47 node];
-  self->mInitialReflectState = [v18 reflectedState];
+  node4 = [pathKnob node];
+  self->mInitialReflectState = [node4 reflectedState];
 
-  v19 = [v47 prevNode];
-  self->mPrevInitialReflectState = [v19 reflectedState];
+  prevNode2 = [pathKnob prevNode];
+  self->mPrevInitialReflectState = [prevNode2 reflectedState];
 
-  v20 = [v47 prevNode];
-  self->mPrevNodeOriginalType = [v20 type];
+  prevNode3 = [pathKnob prevNode];
+  self->mPrevNodeOriginalType = [prevNode3 type];
 
-  v21 = [v47 node];
-  self->mNodeOriginalType = [v21 type];
+  node5 = [pathKnob node];
+  self->mNodeOriginalType = [node5 type];
 
-  v22 = [v47 nextNode];
-  self->mNextNodeOriginalType = [v22 type];
+  nextNode2 = [pathKnob nextNode];
+  self->mNextNodeOriginalType = [nextNode2 type];
 
   memset(&v54, 0, sizeof(v54));
   v23 = [(CRLCanvasKnobTracker *)self rep];
-  v24 = [v23 layout];
-  v25 = v24;
-  if (v24)
+  layout = [v23 layout];
+  v25 = layout;
+  if (layout)
   {
-    [v24 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -589,11 +589,11 @@ LABEL_13:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v26 = [(CRLPathKnobTracker *)self pathRep];
-  v27 = v26;
-  if (v26)
+  pathRep = [(CRLPathKnobTracker *)self pathRep];
+  v27 = pathRep;
+  if (pathRep)
   {
-    [v26 naturalToEditablePathSpaceTransform];
+    [pathRep naturalToEditablePathSpaceTransform];
   }
 
   else
@@ -603,17 +603,17 @@ LABEL_13:
 
   CGAffineTransformConcat(&v54, &t1, &t2);
 
-  [v47 position];
+  [pathKnob position];
   self->mOriginalUnscaledKnobPosition = vaddq_f64(*&v54.tx, vmlaq_n_f64(vmulq_n_f64(*&v54.c, v28), *&v54.a, v29));
-  v30 = [v47 node];
-  [v30 setSelected:1];
+  node6 = [pathKnob node];
+  [node6 setSelected:1];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v31 = [v46 knobs];
-  v32 = [v31 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  knobs = [v46 knobs];
+  v32 = [knobs countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v32)
   {
     v33 = *v49;
@@ -623,7 +623,7 @@ LABEL_13:
       {
         if (*v49 != v33)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(knobs);
         }
 
         v35 = *(*(&v48 + 1) + 8 * i);
@@ -632,15 +632,15 @@ LABEL_13:
         v38 = v37;
         if (v37)
         {
-          v39 = [v37 node];
-          v40 = [v47 node];
-          if (v39 == v40)
+          node7 = [v37 node];
+          node8 = [pathKnob node];
+          if (node7 == node8)
           {
             goto LABEL_30;
           }
 
-          v41 = [v38 node];
-          if (([v41 isSelected] & 1) == 0)
+          node9 = [v38 node];
+          if (([node9 isSelected] & 1) == 0)
           {
 
 LABEL_30:
@@ -651,8 +651,8 @@ LABEL_30:
 
           if (v42)
           {
-            v43 = [v38 node];
-            [v43 setSelected:0];
+            node10 = [v38 node];
+            [node10 setSelected:0];
 
             [v38 updateImage];
           }
@@ -661,56 +661,56 @@ LABEL_30:
 LABEL_31:
       }
 
-      v32 = [v31 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      v32 = [knobs countByEnumeratingWithState:&v48 objects:v56 count:16];
     }
 
     while (v32);
   }
 
   [v46 invalidateKnobs];
-  [v47 updateImage];
+  [pathKnob updateImage];
 }
 
-- (int)reflectionStateForBendingNodeType:(int64_t)a3 originalReflectionState:(int)a4
+- (int)reflectionStateForBendingNodeType:(int64_t)type originalReflectionState:(int)state
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    a4 = 0;
+    state = 0;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return 1;
   }
 
   else
   {
-    return a4;
+    return state;
   }
 }
 
-- (void)moveSmoothControlKnob:(id)a3 to:(CGPoint)a4
+- (void)moveSmoothControlKnob:(id)knob to:(CGPoint)to
 {
-  y = a4.y;
-  x = a4.x;
-  v183 = a3;
-  if ([v183 tag] == 21)
+  y = to.y;
+  x = to.x;
+  knobCopy = knob;
+  if ([knobCopy tag] == 21)
   {
-    v5 = [v183 node];
-    [v183 nextNode];
+    node = [knobCopy node];
+    [knobCopy nextNode];
   }
 
   else
   {
-    v5 = [v183 prevNode];
-    [v183 node];
+    node = [knobCopy prevNode];
+    [knobCopy node];
   }
   v6 = ;
-  v7 = v5;
-  [v5 nodePoint];
+  v7 = node;
+  [node nodePoint];
   v9 = v8;
   v11 = v10;
-  [v5 outControlPoint];
+  [node outControlPoint];
   if (sub_10011ECC8(v9, v11, v12, v13))
   {
     [v6 inControlPoint];
@@ -719,12 +719,12 @@ LABEL_31:
     [v6 nodePoint];
     if (sub_10011ECC8(v15, v17, v18, v19))
     {
-      [v5 nodePoint];
+      [node nodePoint];
       v21 = v20;
       v23 = v22;
       [v6 nodePoint];
-      [v5 setOutControlPoint:{sub_100120ABC(v21, v23, v24, v25, 0.333333333)}];
-      [v5 nodePoint];
+      [node setOutControlPoint:{sub_100120ABC(v21, v23, v24, v25, 0.333333333)}];
+      [node nodePoint];
       v27 = v26;
       v29 = v28;
       [v6 nodePoint];
@@ -732,10 +732,10 @@ LABEL_31:
     }
   }
 
-  [v5 nodePoint];
+  [node nodePoint];
   v33 = v32;
   v35 = v34;
-  [v5 outControlPoint];
+  [node outControlPoint];
   v37 = v36;
   v39 = v38;
   [v6 inControlPoint];
@@ -744,9 +744,9 @@ LABEL_31:
   [v6 nodePoint];
   v45 = v44;
   v47 = v46;
-  if ([v183 tag] == 23)
+  if ([knobCopy tag] == 23)
   {
-    [v183 tValue];
+    [knobCopy tValue];
     if (v48 > 0.5)
     {
       v49 = v35;
@@ -798,9 +798,9 @@ LABEL_31:
 
     v169 = v48;
     v53 = sub_100120074(x - v52, y - v35);
-    [v183 bendParameter];
+    [knobCopy bendParameter];
     v55 = v54;
-    [v183 bendParameter];
+    [knobCopy bendParameter];
     v165 = v56;
     v57 = v53;
     v58 = v52 - v51;
@@ -831,12 +831,12 @@ LABEL_31:
     v80 = v35;
     v81 = sub_10011F340(v79, v35, (*&v63 * 3.0));
     v83 = v82;
-    v84 = [v5 type];
+    type = [node type];
     v85 = y + v166 + v159 + v78 + v83;
     v86 = ((*&v63 + -1.0) * ((*&v63 * 3.0) * (*&v63 + -1.0)));
     v87 = (x + v170 + v161 + v76 + v81) / v86;
     v88 = v85 / v86;
-    if (v84 == 1 && [v6 type] == 1)
+    if (type == 1 && [v6 type] == 1)
     {
       v89 = v158;
       v90 = v80;
@@ -887,26 +887,26 @@ LABEL_31:
       goto LABEL_42;
     }
 
-    [v183 tValue];
+    [knobCopy tValue];
     if (v122 <= 0.5)
     {
       v148 = [(CRLPathKnobTracker *)self reflectionStateForBendingNodeType:self->mPrevNodeOriginalType originalReflectionState:self->mPrevInitialReflectState];
-      v102 = [v183 prevNode];
-      [v102 setOutControlPoint:v148 reflect:0 constrain:{v87, v88}];
+      prevNode = [knobCopy prevNode];
+      [prevNode setOutControlPoint:v148 reflect:0 constrain:{v87, v88}];
     }
 
     else
     {
       v123 = [(CRLPathKnobTracker *)self reflectionStateForBendingNodeType:self->mNodeOriginalType originalReflectionState:self->mInitialReflectState];
-      v102 = [v183 node];
-      [v102 setInControlPoint:v123 reflect:0 constrain:{v87, v88}];
+      prevNode = [knobCopy node];
+      [prevNode setInControlPoint:v123 reflect:0 constrain:{v87, v88}];
     }
   }
 
-  else if ([v183 tag] == 21)
+  else if ([knobCopy tag] == 21)
   {
     mNodeOriginalType = self->mNodeOriginalType;
-    v102 = [v183 node];
+    prevNode = [knobCopy node];
     v178 = sub_10011F340(v33, v35, -1.0);
     v175 = y + v103;
     v104 = sub_10011F340(v41, v43, 3.0);
@@ -926,18 +926,18 @@ LABEL_31:
     v118 = v113 + v117;
     v119 = sub_10011F340(v33, v35, (v110 * 3.0));
     v121 = ((v110 + -1.0) * ((v110 * 3.0) * (v110 + -1.0)));
-    [v102 setOutControlPoint:mNodeOriginalType == 3 reflect:0 constrain:{(x + v178 + v111 + v116 + v119) / v121, (v118 + v120) / v121}];
+    [prevNode setOutControlPoint:mNodeOriginalType == 3 reflect:0 constrain:{(x + v178 + v111 + v116 + v119) / v121, (v118 + v120) / v121}];
   }
 
   else
   {
-    if ([v183 tag] != 20)
+    if ([knobCopy tag] != 20)
     {
       goto LABEL_42;
     }
 
     v124 = self->mNodeOriginalType;
-    v102 = [v183 node];
+    prevNode = [knobCopy node];
     v172 = v35 - y;
     v125 = sub_10011F340(v33, v35, -1.0);
     v163 = v126;
@@ -961,44 +961,44 @@ LABEL_31:
     v143 = sub_10011F340(v33, v35, -3.0);
     v145 = sub_10011F340(v179 + v143, v176 + v144, v133);
     v147 = ((v133 + -1.0) * (v133 * (v133 * 3.0)));
-    [v102 setInControlPoint:v124 == 3 reflect:0 constrain:{(v33 - x + v181 + v140 + v145) / v147, (v142 + v146) / v147}];
+    [prevNode setInControlPoint:v124 == 3 reflect:0 constrain:{(v33 - x + v181 + v140 + v145) / v147, (v142 + v146) / v147}];
   }
 
 LABEL_42:
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = [(CRLCanvasKnobTracker *)self rep];
-  v7 = [v6 interactiveCanvasController];
-  v8 = [v7 canvasBackground];
+  interactiveCanvasController = [v6 interactiveCanvasController];
+  canvasBackground = [interactiveCanvasController canvasBackground];
 
-  v9 = [v8 alignmentProvider];
-  if (!v9)
+  alignmentProvider = [canvasBackground alignmentProvider];
+  if (!alignmentProvider)
   {
     goto LABEL_9;
   }
 
   v10 = [(CRLCanvasKnobTracker *)self rep];
-  v11 = [v10 interactiveCanvasController];
-  if (([v11 isCanvasBackgroundAlignmentSnappingEnabled] & 1) == 0)
+  interactiveCanvasController2 = [v10 interactiveCanvasController];
+  if (([interactiveCanvasController2 isCanvasBackgroundAlignmentSnappingEnabled] & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v12 = [(CRLPathKnobTracker *)self pathKnob];
-  v13 = [v12 node];
-  if ([v13 type] != 1)
+  pathKnob = [(CRLPathKnobTracker *)self pathKnob];
+  node = [pathKnob node];
+  if ([node type] != 1)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [(CRLPathKnobTracker *)self pathKnob];
-  v15 = [v14 tag];
+  pathKnob2 = [(CRLPathKnobTracker *)self pathKnob];
+  v15 = [pathKnob2 tag];
 
   if (v15 == 23)
   {
@@ -1010,7 +1010,7 @@ LABEL_7:
   v18 = v17;
   v20 = v19;
 
-  [v9 alignmentPointForPoint:{v18, v20}];
+  [alignmentProvider alignmentPointForPoint:{v18, v20}];
   v22 = v21;
   v24 = v23;
   v10 = [(CRLCanvasKnobTracker *)self rep];
@@ -1020,14 +1020,14 @@ LABEL_7:
 LABEL_8:
 
 LABEL_9:
-  v27 = [(CRLPathKnobTracker *)self editablePathSource];
-  v28 = [(CRLPathKnobTracker *)self pathKnob];
+  editablePathSource = [(CRLPathKnobTracker *)self editablePathSource];
+  pathKnob3 = [(CRLPathKnobTracker *)self pathKnob];
   memset(&v85, 0, sizeof(v85));
-  v29 = [(CRLPathKnobTracker *)self pathRep];
-  v30 = v29;
-  if (v29)
+  pathRep = [(CRLPathKnobTracker *)self pathRep];
+  v30 = pathRep;
+  if (pathRep)
   {
-    [v29 naturalToEditablePathSpaceTransform];
+    [pathRep naturalToEditablePathSpaceTransform];
   }
 
   else
@@ -1043,11 +1043,11 @@ LABEL_9:
   {
     memset(&v84, 0, sizeof(v84));
     v31 = [(CRLCanvasKnobTracker *)self rep];
-    v32 = [v31 layout];
-    v33 = v32;
-    if (v32)
+    layout = [v31 layout];
+    v33 = layout;
+    if (layout)
     {
-      [v32 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -1079,9 +1079,9 @@ LABEL_9:
 
     else
     {
-      v43 = [(CRLPathKnobTracker *)self toggleMirrored];
+      toggleMirrored = [(CRLPathKnobTracker *)self toggleMirrored];
 
-      if ((v43 & 1) == 0)
+      if ((toggleMirrored & 1) == 0)
       {
         v45 = 2;
         goto LABEL_27;
@@ -1089,16 +1089,16 @@ LABEL_9:
     }
   }
 
-  v44 = [(CRLPathKnobTracker *)self initialReflectState];
-  if (((v44 == 0) ^ [(CRLPathKnobTracker *)self toggleMirrored]))
+  initialReflectState = [(CRLPathKnobTracker *)self initialReflectState];
+  if (((initialReflectState == 0) ^ [(CRLPathKnobTracker *)self toggleMirrored]))
   {
     v45 = 0;
   }
 
   else
   {
-    v46 = [(CRLPathKnobTracker *)self initialReflectState];
-    if ((v46 != 2) != [(CRLPathKnobTracker *)self toggleMirrorMagnitude])
+    initialReflectState2 = [(CRLPathKnobTracker *)self initialReflectState];
+    if ((initialReflectState2 != 2) != [(CRLPathKnobTracker *)self toggleMirrorMagnitude])
     {
       v45 = 1;
     }
@@ -1112,8 +1112,8 @@ LABEL_9:
 LABEL_27:
   if ([(CRLPathKnobTracker *)self isCreatingNode])
   {
-    v47 = [v28 node];
-    [v47 nodePoint];
+    node2 = [pathKnob3 node];
+    [node2 nodePoint];
     v50 = sub_100120090(v81, v80, v48, v49);
 
     v51 = [(CRLCanvasKnobTracker *)self icc];
@@ -1135,18 +1135,18 @@ LABEL_27:
       mNodeOriginalType = 3;
     }
 
-    v57 = [v28 node];
-    v58 = [v57 type];
+    node3 = [pathKnob3 node];
+    type = [node3 type];
 
-    if (mNodeOriginalType == v58)
+    if (mNodeOriginalType == type)
     {
       v59 = 0;
     }
 
     else
     {
-      v60 = [v28 node];
-      [v60 setType:mNodeOriginalType];
+      node4 = [pathKnob3 node];
+      [node4 setType:mNodeOriginalType];
 
       v61 = [(CRLCanvasKnobTracker *)self rep];
       [v61 invalidateKnobs];
@@ -1156,8 +1156,8 @@ LABEL_27:
 
     if (mNodeOriginalType == 2)
     {
-      v62 = [v28 node];
-      [v62 setOutControlPoint:v45 reflect:-[CRLPathKnobTracker constrain](self constrain:{"constrain"), v81, v80}];
+      node5 = [pathKnob3 node];
+      [node5 setOutControlPoint:v45 reflect:-[CRLPathKnobTracker constrain](self constrain:{"constrain"), v81, v80}];
 
       v63 = [(CRLCanvasKnobTracker *)self rep];
       [v63 invalidateKnobs];
@@ -1166,8 +1166,8 @@ LABEL_27:
     }
 
     v64 = [(CRLCanvasKnobTracker *)self icc];
-    v65 = [v64 editorController];
-    v66 = [v65 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+    editorController = [v64 editorController];
+    v66 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
     v67 = [(CRLCanvasKnobTracker *)self rep];
     [v67 convertNaturalPointToUnscaledCanvas:{v81, v80}];
@@ -1179,29 +1179,29 @@ LABEL_27:
     }
 
 LABEL_51:
-    [v27 morphWithMorphInfo:self->mMorphInfo];
+    [editablePathSource morphWithMorphInfo:self->mMorphInfo];
     goto LABEL_52;
   }
 
-  v55 = [v28 tag];
+  v55 = [pathKnob3 tag];
   if (v55 <= 19)
   {
     if (v55 == 17)
     {
-      v68 = [v28 node];
-      [v68 nodePoint];
+      node6 = [pathKnob3 node];
+      [node6 nodePoint];
       v70 = sub_10011F31C(v81, v80, v69);
       v72 = v71;
 
-      [v27 offsetSelectedNodesByDelta:{v70, v72}];
+      [editablePathSource offsetSelectedNodesByDelta:{v70, v72}];
     }
 
     else
     {
       if (v55 == 18)
       {
-        v56 = [v28 node];
-        [v56 setInControlPoint:v45 reflect:-[CRLPathKnobTracker constrain](self constrain:{"constrain"), v81, v80}];
+        node7 = [pathKnob3 node];
+        [node7 setInControlPoint:v45 reflect:-[CRLPathKnobTracker constrain](self constrain:{"constrain"), v81, v80}];
       }
 
       else
@@ -1211,8 +1211,8 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        v56 = [v28 node];
-        [v56 setOutControlPoint:v45 reflect:-[CRLPathKnobTracker constrain](self constrain:{"constrain"), v81, v80}];
+        node7 = [pathKnob3 node];
+        [node7 setOutControlPoint:v45 reflect:-[CRLPathKnobTracker constrain](self constrain:{"constrain"), v81, v80}];
       }
     }
 
@@ -1221,21 +1221,21 @@ LABEL_51:
 
   if ((v55 - 20) < 2 || v55 == 23)
   {
-    [(CRLPathKnobTracker *)self moveSmoothControlKnob:v28 to:v81, v80];
+    [(CRLPathKnobTracker *)self moveSmoothControlKnob:pathKnob3 to:v81, v80];
   }
 
 LABEL_52:
-  v73 = [(CRLPathKnobTracker *)self pathRep];
-  [v73 dynamicallyMovedPathKnobTo:self withTracker:{v81, v80}];
+  pathRep2 = [(CRLPathKnobTracker *)self pathRep];
+  [pathRep2 dynamicallyMovedPathKnobTo:self withTracker:{v81, v80}];
 
   v74 = [(CRLCanvasKnobTracker *)self rep];
   v75 = [(CRLCanvasKnobTracker *)self rep];
-  v76 = [v75 knobs];
-  [v74 updatePositionsOfKnobs:v76];
+  knobs = [v75 knobs];
+  [v74 updatePositionsOfKnobs:knobs];
 
   v77 = [(CRLCanvasKnobTracker *)self rep];
-  v78 = [v77 layout];
-  [v78 adjustCustomMagnetPositions];
+  layout2 = [v77 layout];
+  [layout2 adjustCustomMagnetPositions];
 }
 
 - (void)endMovingKnob
@@ -1243,18 +1243,18 @@ LABEL_52:
   v22.receiver = self;
   v22.super_class = CRLPathKnobTracker;
   [(CRLCanvasKnobTracker *)&v22 endMovingKnob];
-  v3 = [(CRLPathKnobTracker *)self pathRep];
-  [v3 dynamicMovePathKnobDidEndWithTracker:self];
+  pathRep = [(CRLPathKnobTracker *)self pathRep];
+  [pathRep dynamicMovePathKnobDidEndWithTracker:self];
 
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v6 = [v5 commandsForAdjustingMagnetsFromClineLayouts];
+  layout = [v4 layout];
+  commandsForAdjustingMagnetsFromClineLayouts = [layout commandsForAdjustingMagnetsFromClineLayouts];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = commandsForAdjustingMagnetsFromClineLayouts;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
@@ -1271,8 +1271,8 @@ LABEL_52:
 
         v11 = *(*(&v18 + 1) + 8 * v10);
         v12 = [(CRLCanvasKnobTracker *)self icc];
-        v13 = [v12 commandController];
-        [v13 enqueueCommand:v11];
+        commandController = [v12 commandController];
+        [commandController enqueueCommand:v11];
 
         v10 = v10 + 1;
       }
@@ -1289,8 +1289,8 @@ LABEL_52:
 
   [(CRLPathKnobTracker *)self p_closeCommandGroupIfNeeded];
   v15 = [(CRLCanvasKnobTracker *)self icc];
-  v16 = [v15 editorController];
-  v17 = [v16 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  editorController = [v15 editorController];
+  v17 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
   if (v17)
   {
@@ -1303,9 +1303,9 @@ LABEL_52:
   if ([(CRLPathKnobTracker *)self didOpenGroup])
   {
     v3 = [(CRLCanvasKnobTracker *)self icc];
-    v4 = [v3 commandController];
+    commandController = [v3 commandController];
 
-    if (!v4)
+    if (!commandController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1336,7 +1336,7 @@ LABEL_52:
       [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:647 isFatal:0 description:"Can't close command group. This is bad news."];
     }
 
-    [v4 closeGroup];
+    [commandController closeGroup];
   }
 }
 

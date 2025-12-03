@@ -1,25 +1,25 @@
 @interface HFPrimaryStateIconDescriptor
-- (BOOL)isEqual:(id)a3;
-- (HFPrimaryStateIconDescriptor)initWithIdentifier:(id)a3 primaryState:(int64_t)a4;
-- (id)iconDescriptorByMergingWithIconDescriptor:(id)a3;
-- (int64_t)compare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFPrimaryStateIconDescriptor)initWithIdentifier:(id)identifier primaryState:(int64_t)state;
+- (id)iconDescriptorByMergingWithIconDescriptor:(id)descriptor;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation HFPrimaryStateIconDescriptor
 
-- (HFPrimaryStateIconDescriptor)initWithIdentifier:(id)a3 primaryState:(int64_t)a4
+- (HFPrimaryStateIconDescriptor)initWithIdentifier:(id)identifier primaryState:(int64_t)state
 {
   v14[10] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = HFPrimaryStateIconDescriptor;
   v8 = [(HFPrimaryStateIconDescriptor *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_primaryState = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_primaryState = state;
     v14[0] = @"HFImageIconIdentifierAppleTVRegular";
     v14[1] = @"HFImageIconIdentifierAppleTVSmall";
     v14[2] = @"HFImageIconIdentifierServiceCarbonDioxideSensorOn";
@@ -31,26 +31,26 @@
     v14[8] = @"HFCAPackageIconIdentifierCarbonMonoxideSensor";
     v14[9] = @"HFCAPackageIconIdentifierCarbonDioxideSensor";
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:10];
-    v9->_shouldForceLTR = [v10 containsObject:v7];
+    v9->_shouldForceLTR = [v10 containsObject:identifierCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    v7 = [(HFPrimaryStateIconDescriptor *)self identifier];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    identifier2 = [(HFPrimaryStateIconDescriptor *)self identifier];
+    v8 = [identifier isEqualToString:identifier2];
 
-    v9 = [v5 primaryState];
-    if (v9 == [(HFPrimaryStateIconDescriptor *)self primaryState])
+    primaryState = [v5 primaryState];
+    if (primaryState == [(HFPrimaryStateIconDescriptor *)self primaryState])
     {
       v10 = v8;
     }
@@ -71,33 +71,33 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HFPrimaryStateIconDescriptor *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(HFPrimaryStateIconDescriptor *)self primaryState];
+  identifier = [(HFPrimaryStateIconDescriptor *)self identifier];
+  v4 = [identifier hash];
+  primaryState = [(HFPrimaryStateIconDescriptor *)self primaryState];
 
-  return v5 ^ v4;
+  return primaryState ^ v4;
 }
 
-- (id)iconDescriptorByMergingWithIconDescriptor:(id)a3
+- (id)iconDescriptorByMergingWithIconDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 identifier], v5 = objc_claimAutoreleasedReturnValue(), -[HFPrimaryStateIconDescriptor identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([descriptorCopy identifier], v5 = objc_claimAutoreleasedReturnValue(), -[HFPrimaryStateIconDescriptor identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
   {
-    v8 = [(HFPrimaryStateIconDescriptor *)self primaryState];
-    if (v8 == [v4 primaryState])
+    primaryState = [(HFPrimaryStateIconDescriptor *)self primaryState];
+    if (primaryState == [descriptorCopy primaryState])
     {
-      v9 = [(HFPrimaryStateIconDescriptor *)self primaryState];
+      primaryState2 = [(HFPrimaryStateIconDescriptor *)self primaryState];
     }
 
     else
     {
-      v9 = 2;
+      primaryState2 = 2;
     }
 
     v11 = objc_alloc(objc_opt_class());
-    v12 = [(HFPrimaryStateIconDescriptor *)self identifier];
-    v10 = [v11 initWithIdentifier:v12 primaryState:v9];
+    identifier = [(HFPrimaryStateIconDescriptor *)self identifier];
+    v10 = [v11 initWithIdentifier:identifier primaryState:primaryState2];
   }
 
   else
@@ -108,11 +108,11 @@
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
-  v5 = v4;
+  v5 = compareCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;

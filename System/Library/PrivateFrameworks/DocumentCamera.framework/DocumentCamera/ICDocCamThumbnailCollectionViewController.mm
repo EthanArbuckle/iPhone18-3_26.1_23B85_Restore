@@ -1,27 +1,27 @@
 @interface ICDocCamThumbnailCollectionViewController
 - (CGRect)targetViewRect;
-- (CGSize)collectionView:(id)a3 imageSizeAtIndex:(int64_t)a4;
-- (ICDocCamThumbnailCollectionViewController)initWithDelegate:(id)a3;
+- (CGSize)collectionView:(id)view imageSizeAtIndex:(int64_t)index;
+- (ICDocCamThumbnailCollectionViewController)initWithDelegate:(id)delegate;
 - (ICDocCamThumbnailViewDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)rootView;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)addNewDocument:(id)a3 completionBlock:(id)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)addNewDocument:(id)document completionBlock:(id)block;
 - (void)animateLayoutChange;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didReceiveMemoryWarning;
 - (void)reloadDataForCollectionView;
-- (void)setImageWithUUID:(id)a3 forCell:(id)a4 useResizedImage:(BOOL)a5;
+- (void)setImageWithUUID:(id)d forCell:(id)cell useResizedImage:(BOOL)image;
 - (void)update;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICDocCamThumbnailCollectionViewController
 
-- (ICDocCamThumbnailCollectionViewController)initWithDelegate:(id)a3
+- (ICDocCamThumbnailCollectionViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(ICDocCamThumbnailCollectionViewLayout);
   v14.receiver = self;
   v14.super_class = ICDocCamThumbnailCollectionViewController;
@@ -30,19 +30,19 @@
   if (v6)
   {
     [(ICDocCamThumbnailCollectionViewController *)v6 setLayout:v5];
-    v8 = [(ICDocCamThumbnailCollectionViewController *)v7 collectionView];
-    [v8 setDataSource:v7];
+    collectionView = [(ICDocCamThumbnailCollectionViewController *)v7 collectionView];
+    [collectionView setDataSource:v7];
 
-    v9 = [(ICDocCamThumbnailCollectionViewController *)v7 collectionView];
-    [v9 setDelegate:v7];
+    collectionView2 = [(ICDocCamThumbnailCollectionViewController *)v7 collectionView];
+    [collectionView2 setDelegate:v7];
 
-    v10 = [(ICDocCamThumbnailCollectionViewController *)v7 collectionView];
+    collectionView3 = [(ICDocCamThumbnailCollectionViewController *)v7 collectionView];
     v11 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.0];
-    [v10 setBackgroundColor:v11];
+    [collectionView3 setBackgroundColor:v11];
 
-    [(ICDocCamThumbnailCollectionViewController *)v7 setDelegate:v4];
-    v12 = [(ICDocCamThumbnailCollectionViewController *)v7 layout];
-    [v12 setDelegate:v7];
+    [(ICDocCamThumbnailCollectionViewController *)v7 setDelegate:delegateCopy];
+    layout = [(ICDocCamThumbnailCollectionViewController *)v7 layout];
+    [layout setDelegate:v7];
   }
 
   return v7;
@@ -53,11 +53,11 @@
   v5.receiver = self;
   v5.super_class = ICDocCamThumbnailCollectionViewController;
   [(ICDocCamThumbnailCollectionViewController *)&v5 viewDidLoad];
-  v3 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICDocCamThumbnailCellKind"];
+  collectionView = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ICDocCamThumbnailCellKind"];
 
-  v4 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
-  [v4 setClipsToBounds:0];
+  collectionView2 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+  [collectionView2 setClipsToBounds:0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,24 +67,24 @@
   [(ICDocCamThumbnailCollectionViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (CGSize)collectionView:(id)a3 imageSizeAtIndex:(int64_t)a4
+- (CGSize)collectionView:(id)view imageSizeAtIndex:(int64_t)index
 {
-  v6 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-  if (v6 && (v7 = v6, -[ICDocCamThumbnailCollectionViewController documentInfoArray](self, "documentInfoArray"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7, v9))
+  documentInfoArray = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+  if (documentInfoArray && (v7 = documentInfoArray, -[ICDocCamThumbnailCollectionViewController documentInfoArray](self, "documentInfoArray"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7, v9))
   {
-    v10 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-    v11 = [v10 objectAtIndexedSubscript:a4];
-    v12 = [v11 croppedAndFilteredImageUUID];
+    documentInfoArray2 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+    v11 = [documentInfoArray2 objectAtIndexedSubscript:index];
+    croppedAndFilteredImageUUID = [v11 croppedAndFilteredImageUUID];
 
-    if (!v12)
+    if (!croppedAndFilteredImageUUID)
     {
-      v13 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-      v14 = [v13 objectAtIndexedSubscript:a4];
-      v12 = [v14 meshAnimImageUUID];
+      documentInfoArray3 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+      v14 = [documentInfoArray3 objectAtIndexedSubscript:index];
+      croppedAndFilteredImageUUID = [v14 meshAnimImageUUID];
     }
 
-    v15 = [(ICDocCamThumbnailCollectionViewController *)self imageCache];
-    [v15 getImageSize:v12];
+    imageCache = [(ICDocCamThumbnailCollectionViewController *)self imageCache];
+    [imageCache getImageSize:croppedAndFilteredImageUUID];
     v17 = v16;
     v19 = v18;
 
@@ -105,8 +105,8 @@
 
 - (CGRect)targetViewRect
 {
-  v2 = [(ICDocCamThumbnailCollectionViewController *)self delegate];
-  [v2 targetViewRect];
+  delegate = [(ICDocCamThumbnailCollectionViewController *)self delegate];
+  [delegate targetViewRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -125,88 +125,88 @@
 
 - (id)rootView
 {
-  v2 = [(ICDocCamThumbnailCollectionViewController *)self delegate];
-  v3 = [v2 rootView];
+  delegate = [(ICDocCamThumbnailCollectionViewController *)self delegate];
+  rootView = [delegate rootView];
 
-  return v3;
+  return rootView;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray:a3];
+  v5 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray:view];
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-  v8 = [v7 count];
+  documentInfoArray = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+  v8 = [documentInfoArray count];
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-  v10 = [v9 count];
+  documentInfoArray2 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+  v10 = [documentInfoArray2 count];
 
   return v10;
 }
 
-- (void)setImageWithUUID:(id)a3 forCell:(id)a4 useResizedImage:(BOOL)a5
+- (void)setImageWithUUID:(id)d forCell:(id)cell useResizedImage:(BOOL)image
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ICDocCamThumbnailCollectionViewController *)self imageCache];
-  v11 = [v10 getImage:v8];
+  imageCopy = image;
+  dCopy = d;
+  cellCopy = cell;
+  imageCache = [(ICDocCamThumbnailCollectionViewController *)self imageCache];
+  v11 = [imageCache getImage:dCopy];
 
   if (!v11)
   {
     v28 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [ICDocCamThumbnailCollectionViewController setImageWithUUID:v8 forCell:v28 useResizedImage:?];
+      [ICDocCamThumbnailCollectionViewController setImageWithUUID:dCopy forCell:v28 useResizedImage:?];
     }
 
     goto LABEL_7;
   }
 
-  if (!v5)
+  if (!imageCopy)
   {
 LABEL_7:
-    v13 = [v9 imageView];
-    [v13 setImage:v11];
+    imageView = [cellCopy imageView];
+    [imageView setImage:v11];
     goto LABEL_8;
   }
 
-  v12 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
-  v13 = [v12 collectionViewLayout];
+  collectionView = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+  imageView = [collectionView collectionViewLayout];
 
   [v11 size];
   v15 = v14;
   v17 = v16;
-  [v13 frameSizeForImageSize:?];
+  [imageView frameSizeForImageSize:?];
   v19 = v18;
   v21 = v20;
-  v22 = [MEMORY[0x277D759A0] mainScreen];
-  [v22 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v24 = v23;
 
   v25 = fmax(v24, 1.0);
   [ICDocCamUtilities aspectFillSize:v15 targetSize:v17, v19 * v25, v21 * v25];
   v26 = [ICDocCamUtilities resizedImage:v11 newSize:3 interpolationQuality:?];
-  v27 = [v9 imageView];
-  [v27 setImage:v26];
+  imageView2 = [cellCopy imageView];
+  [imageView2 setImage:v26];
 
 LABEL_8:
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"ICDocCamThumbnailCellKind" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"ICDocCamThumbnailCellKind" forIndexPath:pathCopy];
   if ([(ICDocCamThumbnailCollectionViewController *)self isPerformingBatchUpdates])
   {
     v8 = 0.5;
@@ -217,64 +217,64 @@ LABEL_8:
     v8 = 1.0;
   }
 
-  v9 = [v7 layer];
+  layer = [v7 layer];
   *&v10 = v8;
-  [v9 setSpeed:v10];
+  [layer setSpeed:v10];
 
-  v11 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-  if (v11)
+  documentInfoArray = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+  if (documentInfoArray)
   {
-    v12 = v11;
-    v13 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-    v14 = [v13 count];
+    v12 = documentInfoArray;
+    documentInfoArray2 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+    v14 = [documentInfoArray2 count];
 
     if (v14)
     {
-      v15 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-      v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
-      v17 = [v16 croppedAndFilteredImageUUID];
+      documentInfoArray3 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+      v16 = [documentInfoArray3 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+      croppedAndFilteredImageUUID = [v16 croppedAndFilteredImageUUID];
 
-      if (!v17)
+      if (!croppedAndFilteredImageUUID)
       {
-        v18 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-        v19 = [v18 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
-        v17 = [v19 meshAnimImageUUID];
+        documentInfoArray4 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+        v19 = [documentInfoArray4 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+        croppedAndFilteredImageUUID = [v19 meshAnimImageUUID];
       }
 
-      [(ICDocCamThumbnailCollectionViewController *)self setImageWithUUID:v17 forCell:v7 useResizedImage:[(ICDocCamThumbnailCollectionViewController *)self isPerformingBatchUpdates]^ 1];
+      [(ICDocCamThumbnailCollectionViewController *)self setImageWithUUID:croppedAndFilteredImageUUID forCell:v7 useResizedImage:[(ICDocCamThumbnailCollectionViewController *)self isPerformingBatchUpdates]^ 1];
     }
   }
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICDocCamThumbnailCollectionViewController *)self delegate];
-  [v6 thumbnailViewDidTap:v5];
+  pathCopy = path;
+  delegate = [(ICDocCamThumbnailCollectionViewController *)self delegate];
+  [delegate thumbnailViewDidTap:pathCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = ICDocCamThumbnailCollectionViewController;
-  v7 = a4;
-  [(ICDocCamThumbnailCollectionViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
-  [v8 setClipsToBounds:1];
+  coordinatorCopy = coordinator;
+  [(ICDocCamThumbnailCollectionViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+  [collectionView setClipsToBounds:1];
 
-  v9 = [(ICDocCamThumbnailCollectionViewController *)self layout];
-  [v9 setTransitioning:1];
+  layout = [(ICDocCamThumbnailCollectionViewController *)self layout];
+  [layout setTransitioning:1];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __96__ICDocCamThumbnailCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v10[3] = &unk_278F92D48;
   v10[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_19 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_19 completion:v10];
 }
 
 void __96__ICDocCamThumbnailCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -308,8 +308,8 @@ void __96__ICDocCamThumbnailCollectionViewController_viewWillTransitionToSize_wi
 
   else
   {
-    v3 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
-    [v3 reloadData];
+    collectionView = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
@@ -323,28 +323,28 @@ void __96__ICDocCamThumbnailCollectionViewController_viewWillTransitionToSize_wi
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)addNewDocument:(id)a3 completionBlock:(id)a4
+- (void)addNewDocument:(id)document completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  blockCopy = block;
   v8 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICDocCamThumbnailCollectionViewController addNewDocument:v6 completionBlock:v8];
+    [ICDocCamThumbnailCollectionViewController addNewDocument:documentCopy completionBlock:v8];
   }
 
   [(ICDocCamThumbnailCollectionViewController *)self setIsPerformingBatchUpdates:1];
-  v9 = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
-  v10 = [v9 count];
+  documentInfoArray = [(ICDocCamThumbnailCollectionViewController *)self documentInfoArray];
+  v10 = [documentInfoArray count];
 
   v11 = [MEMORY[0x277CCAA70] indexPathForItem:v10 inSection:0];
-  v12 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+  collectionView = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __76__ICDocCamThumbnailCollectionViewController_addNewDocument_completionBlock___block_invoke;
   v20[3] = &unk_278F93258;
   v20[4] = self;
-  v21 = v6;
+  v21 = documentCopy;
   v22 = v11;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -353,11 +353,11 @@ void __96__ICDocCamThumbnailCollectionViewController_viewWillTransitionToSize_wi
   v16[4] = self;
   v17 = v22;
   v18 = v21;
-  v19 = v7;
-  v13 = v7;
+  v19 = blockCopy;
+  v13 = blockCopy;
   v14 = v22;
   v15 = v21;
-  [v12 performBatchUpdates:v20 completion:v16];
+  [collectionView performBatchUpdates:v20 completion:v16];
 }
 
 void __76__ICDocCamThumbnailCollectionViewController_addNewDocument_completionBlock___block_invoke(uint64_t a1)
@@ -414,12 +414,12 @@ void __76__ICDocCamThumbnailCollectionViewController_addNewDocument_completionBl
   v3 = objc_alloc_init(ICDocCamThumbnailCollectionViewLayout);
   [(ICDocCamThumbnailCollectionViewController *)self setLayout:v3];
 
-  v4 = [(ICDocCamThumbnailCollectionViewController *)self layout];
-  [v4 setDelegate:self];
+  layout = [(ICDocCamThumbnailCollectionViewController *)self layout];
+  [layout setDelegate:self];
 
-  v6 = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
-  v5 = [(ICDocCamThumbnailCollectionViewController *)self layout];
-  [v6 setCollectionViewLayout:v5 animated:1];
+  collectionView = [(ICDocCamThumbnailCollectionViewController *)self collectionView];
+  layout2 = [(ICDocCamThumbnailCollectionViewController *)self layout];
+  [collectionView setCollectionViewLayout:layout2 animated:1];
 }
 
 - (ICDocCamThumbnailViewDelegate)delegate

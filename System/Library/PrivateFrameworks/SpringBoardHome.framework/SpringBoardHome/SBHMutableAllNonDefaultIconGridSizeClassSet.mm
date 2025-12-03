@@ -1,18 +1,18 @@
 @interface SBHMutableAllNonDefaultIconGridSizeClassSet
-- (BOOL)containsGridSizeClass:(id)a3;
-- (void)addGridSizeClass:(id)a3;
-- (void)intersectGridSizeClassSet:(id)a3;
-- (void)removeGridSizeClass:(id)a3;
-- (void)unionGridSizeClassSet:(id)a3;
+- (BOOL)containsGridSizeClass:(id)class;
+- (void)addGridSizeClass:(id)class;
+- (void)intersectGridSizeClassSet:(id)set;
+- (void)removeGridSizeClass:(id)class;
+- (void)unionGridSizeClassSet:(id)set;
 @end
 
 @implementation SBHMutableAllNonDefaultIconGridSizeClassSet
 
-- (void)addGridSizeClass:(id)a3
+- (void)addGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = v4;
-  if (!*(&self->super._containsAllNonDefaultGridSizeClasses + 1) && (!v4 || [v4 isEqualToString:@"SBHIconGridSizeClassDefault"]))
+  classCopy = class;
+  v5 = classCopy;
+  if (!*(&self->super._containsAllNonDefaultGridSizeClasses + 1) && (!classCopy || [classCopy isEqualToString:@"SBHIconGridSizeClassDefault"]))
   {
     *(&self->super._containsAllNonDefaultGridSizeClasses + 1) = 1;
   }
@@ -22,11 +22,11 @@
   [(SBHMutableIconGridSizeClassSet *)&v6 addGridSizeClass:v5];
 }
 
-- (void)removeGridSizeClass:(id)a3
+- (void)removeGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(&self->super._containsAllNonDefaultGridSizeClasses + 1) && (!v4 || [v4 isEqualToString:@"SBHIconGridSizeClassDefault"]))
+  classCopy = class;
+  v5 = classCopy;
+  if (*(&self->super._containsAllNonDefaultGridSizeClasses + 1) && (!classCopy || [classCopy isEqualToString:@"SBHIconGridSizeClassDefault"]))
   {
     *(&self->super._containsAllNonDefaultGridSizeClasses + 1) = 0;
   }
@@ -36,27 +36,27 @@
   [(SBHMutableIconGridSizeClassSet *)&v6 removeGridSizeClass:v5];
 }
 
-- (BOOL)containsGridSizeClass:(id)a3
+- (BOOL)containsGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(SBHMutableIconGridSizeClassSet *)self _removedGridSizeClasses];
-  v6 = [v5 containsObject:v4];
+  classCopy = class;
+  _removedGridSizeClasses = [(SBHMutableIconGridSizeClassSet *)self _removedGridSizeClasses];
+  v6 = [_removedGridSizeClasses containsObject:classCopy];
 
-  v7 = (v6 & 1) == 0 && (v4 && ![v4 isEqualToString:@"SBHIconGridSizeClassDefault"] || *(&self->super._containsAllNonDefaultGridSizeClasses + 1));
+  v7 = (v6 & 1) == 0 && (classCopy && ![classCopy isEqualToString:@"SBHIconGridSizeClassDefault"] || *(&self->super._containsAllNonDefaultGridSizeClasses + 1));
   return v7;
 }
 
-- (void)intersectGridSizeClassSet:(id)a3
+- (void)intersectGridSizeClassSet:(id)set
 {
-  if ([a3 containsGridSizeClass:@"SBHIconGridSizeClassDefault"])
+  if ([set containsGridSizeClass:@"SBHIconGridSizeClassDefault"])
   {
     *(&self->super._containsAllNonDefaultGridSizeClasses + 1) = 0;
   }
 }
 
-- (void)unionGridSizeClassSet:(id)a3
+- (void)unionGridSizeClassSet:(id)set
 {
-  if ([a3 containsGridSizeClass:@"SBHIconGridSizeClassDefault"])
+  if ([set containsGridSizeClass:@"SBHIconGridSizeClassDefault"])
   {
     *(&self->super._containsAllNonDefaultGridSizeClasses + 1) = 1;
   }

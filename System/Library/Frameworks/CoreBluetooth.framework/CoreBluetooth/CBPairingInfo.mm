@@ -1,14 +1,14 @@
 @interface CBPairingInfo
-- (CBPairingInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBPairingInfo)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBPairingInfo
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   device = self->_device;
   CUXPCEncodeObject();
   if (self->_error)
@@ -19,15 +19,15 @@
   flags = self->_flags;
   if (flags)
   {
-    xpc_dictionary_set_uint64(v4, "prFl", flags);
+    xpc_dictionary_set_uint64(objectCopy, "prFl", flags);
   }
 
   pin = self->_pin;
-  xdict = v4;
-  v8 = [(NSString *)pin UTF8String];
-  if (v8)
+  xdict = objectCopy;
+  uTF8String = [(NSString *)pin UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "prPN", v8);
+    xpc_dictionary_set_string(xdict, "prPN", uTF8String);
   }
 
   pairingType = self->_pairingType;
@@ -70,9 +70,9 @@
   return v12;
 }
 
-- (CBPairingInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBPairingInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

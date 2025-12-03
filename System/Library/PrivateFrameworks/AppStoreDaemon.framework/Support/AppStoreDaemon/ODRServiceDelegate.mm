@@ -1,12 +1,12 @@
 @interface ODRServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ODRServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -28,7 +28,7 @@
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Refusing connection to the foundation interface. This device has not been unlocked since boot, and we can do no useful work.", v9, 2u);
     }
 
-    [v4 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v6 == 1;

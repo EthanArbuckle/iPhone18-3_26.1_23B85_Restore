@@ -1,12 +1,12 @@
 @interface SBHOpenApplicationWindowsContextMenuProvider
-- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)a3;
-- (BOOL)canProvideContextMenuSectionsForIconView:(id)a3;
+- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)identifier;
+- (BOOL)canProvideContextMenuSectionsForIconView:(id)view;
 - (SBHOpenApplicationWindowsContextMenuProvider)init;
-- (SBHOpenApplicationWindowsContextMenuProvider)initWithUniqueIdentifier:(id)a3;
+- (SBHOpenApplicationWindowsContextMenuProvider)initWithUniqueIdentifier:(id)identifier;
 - (SBHOpenApplicationWindowsContextMenuProviderDelegate)delegate;
-- (id)applicationBundleIDForIconView:(id)a3;
-- (id)contextMenuSectionsForBundleIdentifier:(id)a3;
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4;
+- (id)applicationBundleIDForIconView:(id)view;
+- (id)contextMenuSectionsForBundleIdentifier:(id)identifier;
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location;
 @end
 
 @implementation SBHOpenApplicationWindowsContextMenuProvider
@@ -19,15 +19,15 @@
   return v4;
 }
 
-- (SBHOpenApplicationWindowsContextMenuProvider)initWithUniqueIdentifier:(id)a3
+- (SBHOpenApplicationWindowsContextMenuProvider)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBHOpenApplicationWindowsContextMenuProvider;
   v5 = [(SBHOpenApplicationWindowsContextMenuProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
   }
@@ -35,12 +35,12 @@
   return v5;
 }
 
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location
 {
-  v5 = a3;
-  if ([(SBHOpenApplicationWindowsContextMenuProvider *)self canProvideContextMenuSectionsForIconView:v5])
+  viewCopy = view;
+  if ([(SBHOpenApplicationWindowsContextMenuProvider *)self canProvideContextMenuSectionsForIconView:viewCopy])
   {
-    v6 = [(SBHOpenApplicationWindowsContextMenuProvider *)self applicationBundleIDForIconView:v5];
+    v6 = [(SBHOpenApplicationWindowsContextMenuProvider *)self applicationBundleIDForIconView:viewCopy];
     if (v6)
     {
       v7 = [(SBHOpenApplicationWindowsContextMenuProvider *)self contextMenuSectionsForBundleIdentifier:v6];
@@ -60,19 +60,19 @@
   return v7;
 }
 
-- (id)contextMenuSectionsForBundleIdentifier:(id)a3
+- (id)contextMenuSectionsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(SBHOpenApplicationWindowsContextMenuProvider *)self canProvideContextMenuSectionsForBundleIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(SBHOpenApplicationWindowsContextMenuProvider *)self canProvideContextMenuSectionsForBundleIdentifier:identifierCopy])
   {
-    v5 = [(SBHOpenApplicationWindowsContextMenuProvider *)self delegate];
+    delegate = [(SBHOpenApplicationWindowsContextMenuProvider *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 dataSourceForOpenApplicationWindowsContextMenuProvider:self];
+      v6 = [delegate dataSourceForOpenApplicationWindowsContextMenuProvider:self];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 openApplicationWindowsContextMenuProvider:self contextMenuSectionsForBundleIdentifier:v4];
+        v8 = [v6 openApplicationWindowsContextMenuProvider:self contextMenuSectionsForBundleIdentifier:identifierCopy];
       }
 
       else
@@ -95,13 +95,13 @@
   return v8;
 }
 
-- (BOOL)canProvideContextMenuSectionsForIconView:(id)a3
+- (BOOL)canProvideContextMenuSectionsForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  if ([v5 isLeafIcon] && (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if ([icon isLeafIcon] && (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
-    v8 = [(SBHOpenApplicationWindowsContextMenuProvider *)self applicationBundleIDForIconView:v4];
+    v8 = [(SBHOpenApplicationWindowsContextMenuProvider *)self applicationBundleIDForIconView:viewCopy];
     v9 = [(SBHOpenApplicationWindowsContextMenuProvider *)self canProvideContextMenuSectionsForBundleIdentifier:v8];
   }
 
@@ -113,13 +113,13 @@
   return v9;
 }
 
-- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)a3
+- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(SBHOpenApplicationWindowsContextMenuProvider *)self delegate];
-    v6 = (objc_opt_respondsToSelector() & 1) == 0 || [v5 openApplicationWindowsContextMenuProvider:self canProvideContextMenuSectionsForBundleIdentifier:v4];
+    delegate = [(SBHOpenApplicationWindowsContextMenuProvider *)self delegate];
+    v6 = (objc_opt_respondsToSelector() & 1) == 0 || [delegate openApplicationWindowsContextMenuProvider:self canProvideContextMenuSectionsForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -130,13 +130,13 @@
   return v6;
 }
 
-- (id)applicationBundleIDForIconView:(id)a3
+- (id)applicationBundleIDForIconView:(id)view
 {
-  v3 = [a3 icon];
-  if ([v3 isLeafIcon])
+  icon = [view icon];
+  if ([icon isLeafIcon])
   {
     v4 = objc_opt_class();
-    v5 = v3;
+    v5 = icon;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -157,15 +157,15 @@
 
     v8 = v6;
 
-    v7 = [v8 applicationBundleID];
+    applicationBundleID = [v8 applicationBundleID];
   }
 
   else
   {
-    v7 = 0;
+    applicationBundleID = 0;
   }
 
-  return v7;
+  return applicationBundleID;
 }
 
 - (SBHOpenApplicationWindowsContextMenuProviderDelegate)delegate

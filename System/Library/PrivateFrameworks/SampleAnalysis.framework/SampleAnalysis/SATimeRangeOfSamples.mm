@@ -1,11 +1,11 @@
 @interface SATimeRangeOfSamples
-- (SATimeRangeOfSamples)initWithStartTime:(id)a3 endTime:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6;
+- (SATimeRangeOfSamples)initWithStartTime:(id)time endTime:(id)endTime startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex;
 - (id)debugDescription;
 @end
 
 @implementation SATimeRangeOfSamples
 
-- (SATimeRangeOfSamples)initWithStartTime:(id)a3 endTime:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6
+- (SATimeRangeOfSamples)initWithStartTime:(id)time endTime:(id)endTime startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex
 {
   v13.receiver = self;
   v13.super_class = SATimeRangeOfSamples;
@@ -13,10 +13,10 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_startTime, a3);
-    objc_storeStrong(&v11->_endTime, a4);
-    v11->_startSampleIndex = a5;
-    v11->_endSampleIndex = a6;
+    objc_storeStrong(&v10->_startTime, time);
+    objc_storeStrong(&v11->_endTime, endTime);
+    v11->_startSampleIndex = index;
+    v11->_endSampleIndex = sampleIndex;
   }
 
   return v11;

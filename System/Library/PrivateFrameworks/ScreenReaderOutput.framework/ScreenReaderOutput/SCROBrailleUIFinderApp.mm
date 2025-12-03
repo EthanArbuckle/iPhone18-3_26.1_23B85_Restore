@@ -8,23 +8,23 @@
 - (BOOL)_isContextMenuOptionsOpen;
 - (BOOL)_isCreateNewMenuOpen;
 - (BOOL)_isEditing;
-- (BOOL)_isFileSizeAcceptableForURL:(id)a3;
+- (BOOL)_isFileSizeAcceptableForURL:(id)l;
 - (BOOL)_isOpen;
-- (BOOL)_isPathComponentBad:(id)a3;
+- (BOOL)_isPathComponentBad:(id)bad;
 - (BOOL)_isShowingAlert;
 - (BOOL)_isShowingDeleteConfirmView;
 - (BOOL)_isShowingFindField;
-- (BOOL)_isTitleGood:(id)a3;
+- (BOOL)_isTitleGood:(id)good;
 - (BOOL)_isViewerContextMenuOpen;
 - (BOOL)_isViewing;
-- (SCROBrailleUIFinderApp)initWithDelegate:(id)a3;
+- (SCROBrailleUIFinderApp)initWithDelegate:(id)delegate;
 - (id)_bookmarkLocationsInCurrentLine;
-- (id)_brfContentForURL:(id)a3;
-- (id)_brfForUnicodeBraille:(id)a3;
+- (id)_brfContentForURL:(id)l;
+- (id)_brfForUnicodeBraille:(id)braille;
 - (id)_currentFileRelativePath;
-- (id)_fileItemsInURL:(id)a3 directoriesOnly:(BOOL)a4 excluding:(id)a5;
+- (id)_fileItemsInURL:(id)l directoriesOnly:(BOOL)only excluding:(id)excluding;
 - (id)_rawBookmarks;
-- (id)_secureURLWithBase:(id)a3 userInput:(id)a4;
+- (id)_secureURLWithBase:(id)base userInput:(id)input;
 - (id)views;
 - (int64_t)_loadReadingCursorForCurrentFile;
 - (void)_closeAlert;
@@ -37,48 +37,48 @@
 - (void)_closeFindField;
 - (void)_closeViewerContextMenu;
 - (void)_closeViewerForBRF;
-- (void)_handleActionInAlert:(id)a3;
-- (void)_handleActionInContextMenu:(id)a3;
-- (void)_handleActionInContextMenuOptions:(id)a3;
-- (void)_handleActionInCreateNewMenu:(id)a3;
-- (void)_handleActionInDeleteConfirmView:(id)a3;
-- (void)_handleActionInEditor:(id)a3;
-- (void)_handleActionInFilesList:(id)a3;
-- (void)_handleActionInFindField:(id)a3;
-- (void)_handleActionInViewer:(id)a3;
-- (void)_handleActionInViewerContextMenu:(id)a3;
+- (void)_handleActionInAlert:(id)alert;
+- (void)_handleActionInContextMenu:(id)menu;
+- (void)_handleActionInContextMenuOptions:(id)options;
+- (void)_handleActionInCreateNewMenu:(id)menu;
+- (void)_handleActionInDeleteConfirmView:(id)view;
+- (void)_handleActionInEditor:(id)editor;
+- (void)_handleActionInFilesList:(id)list;
+- (void)_handleActionInFindField:(id)field;
+- (void)_handleActionInViewer:(id)viewer;
+- (void)_handleActionInViewerContextMenu:(id)menu;
 - (void)_handleReturnInViewer;
 - (void)_moveToNextBookmark;
 - (void)_moveToPreviousBookmark;
-- (void)_openAlertWithMessage:(id)a3;
-- (void)_openContextMenuForURL:(id)a3;
-- (void)_openContextMoveOptionsExcluding:(id)a3;
+- (void)_openAlertWithMessage:(id)message;
+- (void)_openContextMenuForURL:(id)l;
+- (void)_openContextMoveOptionsExcluding:(id)excluding;
 - (void)_openCreateNewMenu;
 - (void)_openDeleteConfirmView;
-- (void)_openEditorForBRF:(id)a3;
-- (void)_openFilesListInURL:(id)a3 withFocusAtIdentifier:(id)a4 display:(BOOL)a5;
+- (void)_openEditorForBRF:(id)f;
+- (void)_openFilesListInURL:(id)l withFocusAtIdentifier:(id)identifier display:(BOOL)display;
 - (void)_openFindField;
-- (void)_openViewerContextMenuWithFocusSearch:(BOOL)a3;
-- (void)_openViewerForBRF:(id)a3;
+- (void)_openViewerContextMenuWithFocusSearch:(BOOL)search;
+- (void)_openViewerForBRF:(id)f;
 - (void)_saveBookmarks;
-- (void)_saveReadingRange:(_NSRange)a3;
+- (void)_saveReadingRange:(_NSRange)range;
 - (void)_startAutoSave;
 - (void)_stopAutoSave;
-- (void)_writeUnicodeContent:(id)a3 toURL:(id)a4;
+- (void)_writeUnicodeContent:(id)content toURL:(id)l;
 - (void)close;
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 - (void)lazyLoad;
 - (void)open;
-- (void)openWithURL:(id)a3;
+- (void)openWithURL:(id)l;
 @end
 
 @implementation SCROBrailleUIFinderApp
 
-- (SCROBrailleUIFinderApp)initWithDelegate:(id)a3
+- (SCROBrailleUIFinderApp)initWithDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = SCROBrailleUIFinderApp;
-  v3 = [(SCROBrailleUIApp *)&v9 initWithDelegate:a3];
+  v3 = [(SCROBrailleUIApp *)&v9 initWithDelegate:delegate];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.scrod.braille.ui.finder", 0);
@@ -103,11 +103,11 @@
       [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:v3];
 
       [(SCROBrailleUIFinderApp *)self setCurrentDirectoryDepth:0];
-      v4 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-      [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v4];
+      currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+      [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL];
 
-      v8 = self;
-      v5 = &v8;
+      selfCopy = self;
+      v5 = &selfCopy;
     }
 
     else
@@ -131,32 +131,32 @@
   }
 }
 
-- (void)openWithURL:(id)a3
+- (void)openWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = v4;
-    v6 = [v4 URLByStandardizingPath];
+    v5 = lCopy;
+    uRLByStandardizingPath = [lCopy URLByStandardizingPath];
 
     v19 = 0;
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8 isDirectory:&v19];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [uRLByStandardizingPath path];
+    v9 = [defaultManager fileExistsAtPath:path isDirectory:&v19];
 
-    v10 = [v6 pathExtension];
-    v11 = [v10 lowercaseString];
-    v12 = [v11 isEqualToString:@"brf"];
+    pathExtension = [uRLByStandardizingPath pathExtension];
+    lowercaseString = [pathExtension lowercaseString];
+    v12 = [lowercaseString isEqualToString:@"brf"];
 
     if (v9)
     {
       if (v19 == 1)
       {
-        [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:v6];
+        [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:uRLByStandardizingPath];
         [(SCROBrailleUIFinderApp *)self setCurrentDirectoryDepth:0];
-        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v6];
-        v18 = self;
-        v13 = &v18;
+        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:uRLByStandardizingPath];
+        selfCopy = self;
+        v13 = &selfCopy;
 LABEL_7:
         v13->super_class = SCROBrailleUIFinderApp;
         [(objc_super *)v13 open];
@@ -165,15 +165,15 @@ LABEL_7:
 
       if (v12)
       {
-        v14 = [v6 URLByDeletingLastPathComponent];
-        v15 = [v14 URLByStandardizingPath];
-        [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:v15];
+        uRLByDeletingLastPathComponent = [uRLByStandardizingPath URLByDeletingLastPathComponent];
+        uRLByStandardizingPath2 = [uRLByDeletingLastPathComponent URLByStandardizingPath];
+        [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:uRLByStandardizingPath2];
 
         [(SCROBrailleUIFinderApp *)self setCurrentDirectoryDepth:0];
-        v16 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v16 withFocusAtIdentifier:0 display:0];
+        currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL withFocusAtIdentifier:0 display:0];
 
-        [(SCROBrailleUIFinderApp *)self _openViewerForBRF:v6];
+        [(SCROBrailleUIFinderApp *)self _openViewerForBRF:uRLByStandardizingPath];
         v17.receiver = self;
         v13 = &v17;
         goto LABEL_7;
@@ -239,153 +239,153 @@ LABEL_8:
 - (id)views
 {
   v3 = objc_opt_new();
-  v4 = [(SCROBrailleUIFinderApp *)self filesListView];
+  filesListView = [(SCROBrailleUIFinderApp *)self filesListView];
 
-  if (v4)
+  if (filesListView)
   {
-    v5 = [(SCROBrailleUIFinderApp *)self filesListView];
-    [v3 addObject:v5];
+    filesListView2 = [(SCROBrailleUIFinderApp *)self filesListView];
+    [v3 addObject:filesListView2];
   }
 
-  v6 = [(SCROBrailleUIFinderApp *)self viewerView];
+  viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
 
-  if (v6)
+  if (viewerView)
   {
-    v7 = [(SCROBrailleUIFinderApp *)self viewerView];
-    [v3 addObject:v7];
+    viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+    [v3 addObject:viewerView2];
   }
 
-  v8 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+  viewerContextMenuView = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
 
-  if (v8)
+  if (viewerContextMenuView)
   {
-    v9 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-    [v3 addObject:v9];
+    viewerContextMenuView2 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+    [v3 addObject:viewerContextMenuView2];
   }
 
-  v10 = [(SCROBrailleUIFinderApp *)self editorView];
+  editorView = [(SCROBrailleUIFinderApp *)self editorView];
 
-  if (v10)
+  if (editorView)
   {
-    v11 = [(SCROBrailleUIFinderApp *)self editorView];
-    [v3 addObject:v11];
+    editorView2 = [(SCROBrailleUIFinderApp *)self editorView];
+    [v3 addObject:editorView2];
   }
 
-  v12 = [(SCROBrailleUIFinderApp *)self findFieldView];
+  findFieldView = [(SCROBrailleUIFinderApp *)self findFieldView];
 
-  if (v12)
+  if (findFieldView)
   {
-    v13 = [(SCROBrailleUIFinderApp *)self findFieldView];
-    [v3 addObject:v13];
+    findFieldView2 = [(SCROBrailleUIFinderApp *)self findFieldView];
+    [v3 addObject:findFieldView2];
   }
 
-  v14 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+  createNewMenuView = [(SCROBrailleUIFinderApp *)self createNewMenuView];
 
-  if (v14)
+  if (createNewMenuView)
   {
-    v15 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-    [v3 addObject:v15];
+    createNewMenuView2 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+    [v3 addObject:createNewMenuView2];
   }
 
-  v16 = [(SCROBrailleUIFinderApp *)self contextMenuView];
+  contextMenuView = [(SCROBrailleUIFinderApp *)self contextMenuView];
 
-  if (v16)
+  if (contextMenuView)
   {
-    v17 = [(SCROBrailleUIFinderApp *)self contextMenuView];
-    [v3 addObject:v17];
+    contextMenuView2 = [(SCROBrailleUIFinderApp *)self contextMenuView];
+    [v3 addObject:contextMenuView2];
   }
 
-  v18 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
+  contextMenuOptionsView = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
 
-  if (v18)
+  if (contextMenuOptionsView)
   {
-    v19 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
-    [v3 addObject:v19];
+    contextMenuOptionsView2 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
+    [v3 addObject:contextMenuOptionsView2];
   }
 
-  v20 = [(SCROBrailleUIFinderApp *)self alertView];
+  alertView = [(SCROBrailleUIFinderApp *)self alertView];
 
-  if (v20)
+  if (alertView)
   {
-    v21 = [(SCROBrailleUIFinderApp *)self alertView];
-    [v3 addObject:v21];
+    alertView2 = [(SCROBrailleUIFinderApp *)self alertView];
+    [v3 addObject:alertView2];
   }
 
-  v22 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
+  deleteConfirmView = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
 
-  if (v22)
+  if (deleteConfirmView)
   {
-    v23 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
-    [v3 addObject:v23];
+    deleteConfirmView2 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
+    [v3 addObject:deleteConfirmView2];
   }
 
   return v3;
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(SCROBrailleUIFinderApp *)self _isOpen])
   {
     if ([(SCROBrailleUIFinderApp *)self _isShowingAlert])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInAlert:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInAlert:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isShowingDeleteConfirmView])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInDeleteConfirmView:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInDeleteConfirmView:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isCreateNewMenuOpen])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInCreateNewMenu:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInCreateNewMenu:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isShowingFindField])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInFindField:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInFindField:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isViewerContextMenuOpen])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInViewerContextMenu:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInViewerContextMenu:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isViewing])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInViewer:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInViewer:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isEditing])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInEditor:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInEditor:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isContextMenuOptionsOpen])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInContextMenuOptions:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInContextMenuOptions:actionCopy];
     }
 
     else if ([(SCROBrailleUIFinderApp *)self _isContextMenuOpen])
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInContextMenu:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInContextMenu:actionCopy];
     }
 
     else
     {
-      [(SCROBrailleUIFinderApp *)self _handleActionInFilesList:v4];
+      [(SCROBrailleUIFinderApp *)self _handleActionInFilesList:actionCopy];
     }
   }
 }
 
-- (void)_handleActionInAlert:(id)a3
+- (void)_handleActionInAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if ([(SCROBrailleUIFinderApp *)self _isShowingAlert])
   {
-    v5 = [v4 type];
-    if (v5 <= 4 && ((1 << v5) & 0x16) != 0)
+    type = [alertCopy type];
+    if (type <= 4 && ((1 << type) & 0x16) != 0)
     {
       [(SCROBrailleUIFinderApp *)self close];
     }
@@ -394,35 +394,35 @@ LABEL_8:
     {
       v6.receiver = self;
       v6.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v6 handleAction:v4];
+      [(SCROBrailleUIApp *)&v6 handleAction:alertCopy];
     }
   }
 }
 
-- (void)_handleActionInDeleteConfirmView:(id)a3
+- (void)_handleActionInDeleteConfirmView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if ([(SCROBrailleUIFinderApp *)self _isShowingDeleteConfirmView])
   {
-    v5 = [v4 type];
-    if (v5 == 2)
+    type = [viewCopy type];
+    if (type == 2)
     {
       [(SCROBrailleUIFinderApp *)self _closeDeleteConfirmView];
     }
 
-    else if (v5 == 1)
+    else if (type == 1)
     {
-      v6 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
-      v7 = [v6 focusedItem];
-      v8 = [v7 identifier];
+      deleteConfirmView = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
+      focusedItem = [deleteConfirmView focusedItem];
+      identifier = [focusedItem identifier];
 
-      if ([v8 isEqualToString:@"finder.delete.confirm.delete"])
+      if ([identifier isEqualToString:@"finder.delete.confirm.delete"])
       {
-        v9 = [MEMORY[0x277CCAA00] defaultManager];
-        v10 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
         v17 = 0;
-        [v9 removeItemAtURL:v10 error:&v17];
+        [defaultManager removeItemAtURL:currentFileURL error:&v17];
         v11 = v17;
 
         if (v11)
@@ -430,15 +430,15 @@ LABEL_8:
           v12 = _SCROD_LOG();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+            currentFileURL2 = [(SCROBrailleUIFinderApp *)self currentFileURL];
             *buf = 138412290;
-            v19 = v13;
+            v19 = currentFileURL2;
             _os_log_impl(&dword_26490B000, v12, OS_LOG_TYPE_DEFAULT, "Failed to remove file at %@", buf, 0xCu);
           }
         }
 
-        v14 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v14];
+        currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL];
 
         [(SCROBrailleUIFinderApp *)self _closeDeleteConfirmView];
         [(SCROBrailleUIFinderApp *)self _closeContextMenu];
@@ -449,24 +449,24 @@ LABEL_8:
     {
       v16.receiver = self;
       v16.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v16 handleAction:v4];
+      [(SCROBrailleUIApp *)&v16 handleAction:viewCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInFilesList:(id)a3
+- (void)_handleActionInFilesList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   if ([(SCROBrailleUIFinderApp *)self _isOpen])
   {
-    v5 = [(SCROBrailleUIFinderApp *)self filesListView];
-    v6 = [v5 focusedItem];
-    v7 = [v6 identifier];
+    filesListView = [(SCROBrailleUIFinderApp *)self filesListView];
+    focusedItem = [filesListView focusedItem];
+    identifier = [focusedItem identifier];
 
-    v8 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-    v9 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v8 userInput:v7];
+    currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+    v9 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:currentDirectoryURL userInput:identifier];
 
     if (!v9)
     {
@@ -476,18 +476,18 @@ LABEL_17:
     }
 
     v24 = 0;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v9 path];
-    [v10 fileExistsAtPath:v11 isDirectory:&v24];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v9 path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v24];
 
-    v12 = [v4 type];
-    switch(v12)
+    type = [listCopy type];
+    switch(type)
     {
       case 4:
-        v21 = [(SCROBrailleUIFinderApp *)self filesListView];
-        v22 = [v21 focusedIndex];
+        filesListView2 = [(SCROBrailleUIFinderApp *)self filesListView];
+        focusedIndex = [filesListView2 focusedIndex];
 
-        if (v22)
+        if (focusedIndex)
         {
           [(SCROBrailleUIFinderApp *)self _openContextMenuForURL:v9];
         }
@@ -496,17 +496,17 @@ LABEL_17:
       case 2:
         if ([(SCROBrailleUIFinderApp *)self _canGoUpOneLevel])
         {
-          v16 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-          v15 = [v16 lastPathComponent];
+          currentDirectoryURL2 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+          lastPathComponent = [currentDirectoryURL2 lastPathComponent];
 
-          v17 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-          v18 = [v17 URLByDeletingLastPathComponent];
-          v19 = [v18 URLByStandardizingPath];
-          [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:v19];
+          currentDirectoryURL3 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+          uRLByDeletingLastPathComponent = [currentDirectoryURL3 URLByDeletingLastPathComponent];
+          uRLByStandardizingPath = [uRLByDeletingLastPathComponent URLByStandardizingPath];
+          [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:uRLByStandardizingPath];
 
           [(SCROBrailleUIFinderApp *)self setCurrentDirectoryDepth:[(SCROBrailleUIFinderApp *)self currentDirectoryDepth]- 1];
-          v20 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-          [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v20 withFocusAtIdentifier:v15];
+          currentDirectoryURL4 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+          [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL4 withFocusAtIdentifier:lastPathComponent];
 
 LABEL_11:
           goto LABEL_17;
@@ -514,10 +514,10 @@ LABEL_11:
 
         break;
       case 1:
-        v13 = [(SCROBrailleUIFinderApp *)self filesListView];
-        v14 = [v13 focusedIndex];
+        filesListView3 = [(SCROBrailleUIFinderApp *)self filesListView];
+        focusedIndex2 = [filesListView3 focusedIndex];
 
-        if (!v14)
+        if (!focusedIndex2)
         {
           [(SCROBrailleUIFinderApp *)self _openCreateNewMenu];
           goto LABEL_17;
@@ -531,35 +531,35 @@ LABEL_11:
 
         [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:v9];
         [(SCROBrailleUIFinderApp *)self setCurrentDirectoryDepth:[(SCROBrailleUIFinderApp *)self currentDirectoryDepth]+ 1];
-        v15 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v15];
+        lastPathComponent = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+        [(SCROBrailleUIFinderApp *)self _openFilesListInURL:lastPathComponent];
         goto LABEL_11;
     }
 
     v23.receiver = self;
     v23.super_class = SCROBrailleUIFinderApp;
-    [(SCROBrailleUIApp *)&v23 handleAction:v4];
+    [(SCROBrailleUIApp *)&v23 handleAction:listCopy];
     goto LABEL_17;
   }
 
 LABEL_18:
 }
 
-- (void)_handleActionInViewer:(id)a3
+- (void)_handleActionInViewer:(id)viewer
 {
-  v4 = a3;
+  viewerCopy = viewer;
   if ([(SCROBrailleUIFinderApp *)self _isViewing])
   {
-    v5 = [v4 type];
-    if (v5 <= 3)
+    type = [viewerCopy type];
+    if (type <= 3)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         [(SCROBrailleUIFinderApp *)self _handleReturnInViewer];
         goto LABEL_13;
       }
 
-      if (v5 == 2)
+      if (type == 2)
       {
         [(SCROBrailleUIFinderApp *)self _closeViewerForBRF];
         goto LABEL_13;
@@ -568,75 +568,75 @@ LABEL_18:
 LABEL_9:
       v8.receiver = self;
       v8.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v8 handleAction:v4];
+      [(SCROBrailleUIApp *)&v8 handleAction:viewerCopy];
       goto LABEL_13;
     }
 
-    if (v5 == 4)
+    if (type == 4)
     {
-      v6 = self;
+      selfCopy2 = self;
       v7 = 0;
     }
 
     else
     {
-      if (v5 != 5)
+      if (type != 5)
       {
         goto LABEL_9;
       }
 
-      v6 = self;
+      selfCopy2 = self;
       v7 = 1;
     }
 
-    [(SCROBrailleUIFinderApp *)v6 _openViewerContextMenuWithFocusSearch:v7];
+    [(SCROBrailleUIFinderApp *)selfCopy2 _openViewerContextMenuWithFocusSearch:v7];
   }
 
 LABEL_13:
 }
 
-- (void)_handleActionInViewerContextMenu:(id)a3
+- (void)_handleActionInViewerContextMenu:(id)menu
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  menuCopy = menu;
   if ([(SCROBrailleUIFinderApp *)self _isViewerContextMenuOpen])
   {
-    v5 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-    v6 = [v5 focusedItem];
-    v7 = [v6 identifier];
+    viewerContextMenuView = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+    focusedItem = [viewerContextMenuView focusedItem];
+    identifier = [focusedItem identifier];
 
-    v8 = [v4 type];
-    if (v8 == 2)
+    type = [menuCopy type];
+    if (type == 2)
     {
 LABEL_12:
       [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
       goto LABEL_13;
     }
 
-    if (v8 != 1)
+    if (type != 1)
     {
       v39.receiver = self;
       v39.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v39 handleAction:v4];
+      [(SCROBrailleUIApp *)&v39 handleAction:menuCopy];
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    if ([v7 isEqualToString:@"finder.viewer.context.menu.next.bookmark"])
+    if ([identifier isEqualToString:@"finder.viewer.context.menu.next.bookmark"])
     {
       [(SCROBrailleUIFinderApp *)self setCurrentSearchString:0];
       [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
       [(SCROBrailleUIFinderApp *)self _moveToNextBookmark];
 LABEL_6:
-      v9 = self;
+      selfCopy2 = self;
       v10 = 1;
 LABEL_11:
-      [(SCROBrailleUIFinderApp *)v9 setSearchingForward:v10];
+      [(SCROBrailleUIFinderApp *)selfCopy2 setSearchingForward:v10];
       goto LABEL_12;
     }
 
-    if ([v7 isEqualToString:@"finder.viewer.context.menu.previous.bookmark"])
+    if ([identifier isEqualToString:@"finder.viewer.context.menu.previous.bookmark"])
     {
       [(SCROBrailleUIFinderApp *)self setCurrentSearchString:0];
       [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
@@ -645,67 +645,67 @@ LABEL_11:
 
     else
     {
-      if ([v7 isEqualToString:@"finder.viewer.context.menu.search"])
+      if ([identifier isEqualToString:@"finder.viewer.context.menu.search"])
       {
-        v12 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-        v13 = [v12 value];
-        [(SCROBrailleUIFinderApp *)self setCurrentSearchString:v13];
+        viewerContextMenuView2 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+        value = [viewerContextMenuView2 value];
+        [(SCROBrailleUIFinderApp *)self setCurrentSearchString:value];
 
         [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
-        v14 = [(SCROBrailleUIFinderApp *)self viewerView];
-        v15 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-        [v14 handleFindForSearchBraille:v15];
+        viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+        currentSearchString = [(SCROBrailleUIFinderApp *)self currentSearchString];
+        [viewerView handleFindForSearchBraille:currentSearchString];
 
         goto LABEL_6;
       }
 
-      if (![v7 isEqualToString:@"finder.viewer.context.menu.previous.search"])
+      if (![identifier isEqualToString:@"finder.viewer.context.menu.previous.search"])
       {
-        if ([v7 isEqualToString:@"finder.viewer.context.menu.add.bookmark"])
+        if ([identifier isEqualToString:@"finder.viewer.context.menu.add.bookmark"])
         {
           [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
-          v20 = [(SCROBrailleUIFinderApp *)self viewerView];
-          v21 = [v20 focus];
+          viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+          focus = [viewerView2 focus];
 
-          v22 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-          v23 = [v22 count];
+          bookmarkLocations = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+          v23 = [bookmarkLocations count];
 
           v24 = 0;
           if (v23)
           {
             do
             {
-              v25 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-              v26 = [v25 objectAtIndexedSubscript:v24];
-              v27 = [v26 integerValue];
+              bookmarkLocations2 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+              v26 = [bookmarkLocations2 objectAtIndexedSubscript:v24];
+              integerValue = [v26 integerValue];
 
-              if (v27 > v21)
+              if (integerValue > focus)
               {
                 break;
               }
 
               ++v24;
-              v28 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-              v29 = [v28 count];
+              bookmarkLocations3 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+              v29 = [bookmarkLocations3 count];
             }
 
             while (v24 < v29);
           }
 
-          v30 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-          v31 = [MEMORY[0x277CCABB0] numberWithInteger:v21];
-          [v30 insertObject:v31 atIndex:v24];
+          bookmarkLocations4 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+          v31 = [MEMORY[0x277CCABB0] numberWithInteger:focus];
+          [bookmarkLocations4 insertObject:v31 atIndex:v24];
         }
 
-        else if ([v7 isEqualToString:@"finder.viewer.context.menu.remove.bookmark"])
+        else if ([identifier isEqualToString:@"finder.viewer.context.menu.remove.bookmark"])
         {
           [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
           v42 = 0u;
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v32 = [(SCROBrailleUIFinderApp *)self _bookmarkLocationsInCurrentLine];
-          v33 = [v32 countByEnumeratingWithState:&v40 objects:v44 count:16];
+          _bookmarkLocationsInCurrentLine = [(SCROBrailleUIFinderApp *)self _bookmarkLocationsInCurrentLine];
+          v33 = [_bookmarkLocationsInCurrentLine countByEnumeratingWithState:&v40 objects:v44 count:16];
           if (v33)
           {
             v34 = v33;
@@ -717,18 +717,18 @@ LABEL_11:
               {
                 if (*v41 != v35)
                 {
-                  objc_enumerationMutation(v32);
+                  objc_enumerationMutation(_bookmarkLocationsInCurrentLine);
                 }
 
                 v37 = *(*(&v40 + 1) + 8 * v36);
-                v38 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-                [v38 removeObject:v37];
+                bookmarkLocations5 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+                [bookmarkLocations5 removeObject:v37];
 
                 ++v36;
               }
 
               while (v34 != v36);
-              v34 = [v32 countByEnumeratingWithState:&v40 objects:v44 count:16];
+              v34 = [_bookmarkLocationsInCurrentLine countByEnumeratingWithState:&v40 objects:v44 count:16];
             }
 
             while (v34);
@@ -738,17 +738,17 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v16 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-      v17 = [v16 value];
-      [(SCROBrailleUIFinderApp *)self setCurrentSearchString:v17];
+      viewerContextMenuView3 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+      value2 = [viewerContextMenuView3 value];
+      [(SCROBrailleUIFinderApp *)self setCurrentSearchString:value2];
 
       [(SCROBrailleUIFinderApp *)self _closeViewerContextMenu];
-      v18 = [(SCROBrailleUIFinderApp *)self viewerView];
-      v19 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-      [v18 handlePreviousFindForSearchBraille:v19];
+      viewerView3 = [(SCROBrailleUIFinderApp *)self viewerView];
+      currentSearchString2 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+      [viewerView3 handlePreviousFindForSearchBraille:currentSearchString2];
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
     goto LABEL_11;
   }
@@ -758,18 +758,18 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInEditor:(id)a3
+- (void)_handleActionInEditor:(id)editor
 {
-  v4 = a3;
+  editorCopy = editor;
   if ([(SCROBrailleUIFinderApp *)self _isEditing])
   {
-    v5 = [v4 type];
-    if (v5 == 2)
+    type = [editorCopy type];
+    if (type == 2)
     {
       [(SCROBrailleUIFinderApp *)self _closeEditorForBRF];
     }
 
-    else if (v5 == 5)
+    else if (type == 5)
     {
       [(SCROBrailleUIFinderApp *)self _openFindField];
     }
@@ -778,57 +778,57 @@ LABEL_14:
     {
       v6.receiver = self;
       v6.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v6 handleAction:v4];
+      [(SCROBrailleUIApp *)&v6 handleAction:editorCopy];
     }
   }
 }
 
-- (void)_handleActionInCreateNewMenu:(id)a3
+- (void)_handleActionInCreateNewMenu:(id)menu
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  menuCopy = menu;
   if ([(SCROBrailleUIFinderApp *)self _isCreateNewMenuOpen])
   {
-    v5 = [v4 type];
-    if (v5 == 2)
+    type = [menuCopy type];
+    if (type == 2)
     {
       [(SCROBrailleUIFinderApp *)self _closeCreateNewMenu];
     }
 
-    else if (v5 == 1)
+    else if (type == 1)
     {
-      v6 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-      v7 = [v6 focusedItem];
-      v8 = [v7 identifier];
+      createNewMenuView = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+      focusedItem = [createNewMenuView focusedItem];
+      identifier = [focusedItem identifier];
 
-      if ([v8 isEqualToString:@"finder.create.new.brf.file"])
+      if ([identifier isEqualToString:@"finder.create.new.brf.file"])
       {
-        v9 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-        v10 = [v9 value];
+        createNewMenuView2 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+        value = [createNewMenuView2 value];
 
         v11 = +[SCROBrailleTranslationManager inputManager];
-        v34 = v10;
-        v12 = [v11 textForPrintBraille:v10 language:0 mode:1 locations:0];
+        v34 = value;
+        v12 = [v11 textForPrintBraille:value language:0 mode:1 locations:0];
 
         v13 = [v12 stringByAppendingString:@".brf"];
-        v14 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-        v15 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v14 userInput:v13];
+        currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+        v15 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:currentDirectoryURL userInput:v13];
 
-        v16 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         if (v15)
         {
           [v15 path];
-          v18 = v17 = v8;
-          v19 = [v16 fileExistsAtPath:v18];
+          v18 = v17 = identifier;
+          v19 = [defaultManager fileExistsAtPath:v18];
 
-          v8 = v17;
+          identifier = v17;
           if ((v19 & 1) == 0)
           {
-            v20 = [v15 path];
+            path = [v15 path];
             v21 = objc_opt_new();
-            v22 = [v16 createFileAtPath:v20 contents:v21 attributes:0];
+            v22 = [defaultManager createFileAtPath:path contents:v21 attributes:0];
 
-            v8 = v17;
+            identifier = v17;
             if (v22)
             {
               [(SCROBrailleUIFinderApp *)self _openEditorForBRF:v15];
@@ -838,23 +838,23 @@ LABEL_14:
         }
       }
 
-      else if ([v8 isEqualToString:@"finder.create.new.directory"])
+      else if ([identifier isEqualToString:@"finder.create.new.directory"])
       {
-        v23 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-        v24 = [v23 value];
+        createNewMenuView3 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+        value2 = [createNewMenuView3 value];
 
         v25 = +[SCROBrailleTranslationManager inputManager];
-        v26 = [v25 textForPrintBraille:v24 language:0 mode:1 locations:0];
+        v26 = [v25 textForPrintBraille:value2 language:0 mode:1 locations:0];
 
-        v27 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-        v28 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v27 userInput:v26];
+        currentDirectoryURL2 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+        v28 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:currentDirectoryURL2 userInput:v26];
 
         if (v28)
         {
-          v29 = [MEMORY[0x277CCAA00] defaultManager];
-          v30 = [v28 path];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          path2 = [v28 path];
           v36 = 0;
-          [v29 createDirectoryAtPath:v30 withIntermediateDirectories:1 attributes:MEMORY[0x277CBEC10] error:&v36];
+          [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:MEMORY[0x277CBEC10] error:&v36];
           v31 = v36;
 
           if (v31)
@@ -890,41 +890,41 @@ LABEL_14:
     {
       v35.receiver = self;
       v35.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v35 handleAction:v4];
+      [(SCROBrailleUIApp *)&v35 handleAction:menuCopy];
     }
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInContextMenu:(id)a3
+- (void)_handleActionInContextMenu:(id)menu
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  menuCopy = menu;
   if ([(SCROBrailleUIFinderApp *)self _isContextMenuOpen])
   {
-    v5 = [v4 type];
-    if (v5 == 2)
+    type = [menuCopy type];
+    if (type == 2)
     {
       [(SCROBrailleUIFinderApp *)self _closeContextMenu];
     }
 
     else
     {
-      if (v5 == 1)
+      if (type == 1)
       {
-        v6 = [(SCROBrailleUIFinderApp *)self contextMenuView];
-        v7 = [v6 focusedItem];
-        v8 = [v7 identifier];
+        contextMenuView = [(SCROBrailleUIFinderApp *)self contextMenuView];
+        focusedItem = [contextMenuView focusedItem];
+        identifier = [focusedItem identifier];
 
-        v9 = [(SCROBrailleUIFinderApp *)self filesListView];
-        v10 = [v9 focusedItem];
-        v11 = [v10 identifier];
+        filesListView = [(SCROBrailleUIFinderApp *)self filesListView];
+        focusedItem2 = [filesListView focusedItem];
+        identifier2 = [focusedItem2 identifier];
 
-        v12 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-        v13 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v12 userInput:v11];
+        currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+        v13 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:currentDirectoryURL userInput:identifier2];
 
-        if ([v8 isEqualToString:@"finder.context.menu.edit"])
+        if ([identifier isEqualToString:@"finder.context.menu.edit"])
         {
           if (v13)
           {
@@ -936,13 +936,13 @@ LABEL_14:
           goto LABEL_28;
         }
 
-        if ([v8 isEqualToString:@"finder.context.menu.delete"])
+        if ([identifier isEqualToString:@"finder.context.menu.delete"])
         {
           [(SCROBrailleUIFinderApp *)self _openDeleteConfirmView];
           goto LABEL_28;
         }
 
-        if ([v8 isEqualToString:@"finder.context.menu.move"])
+        if ([identifier isEqualToString:@"finder.context.menu.move"])
         {
           if (v13)
           {
@@ -952,27 +952,27 @@ LABEL_14:
           goto LABEL_28;
         }
 
-        if (![v8 isEqualToString:@"finder.context.menu.rename"])
+        if (![identifier isEqualToString:@"finder.context.menu.rename"])
         {
 LABEL_28:
 
           goto LABEL_29;
         }
 
-        v14 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-        v15 = [(SCROBrailleUIFinderApp *)self contextMenuView];
-        v16 = [v15 value];
+        currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
+        contextMenuView2 = [(SCROBrailleUIFinderApp *)self contextMenuView];
+        value = [contextMenuView2 value];
 
         v17 = +[SCROBrailleTranslationManager inputManager];
-        v18 = [v17 textForPrintBraille:v16 language:0 mode:1 locations:0];
+        v18 = [v17 textForPrintBraille:value language:0 mode:1 locations:0];
 
         if ([v18 length])
         {
-          v34 = v16;
+          v34 = value;
           v38 = 0;
-          v19 = [MEMORY[0x277CCAA00] defaultManager];
-          v20 = [v14 path];
-          [v19 fileExistsAtPath:v20 isDirectory:&v38];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          path = [currentFileURL path];
+          [defaultManager fileExistsAtPath:path isDirectory:&v38];
 
           if ((v38 & 1) == 0)
           {
@@ -981,51 +981,51 @@ LABEL_28:
             v18 = v21;
           }
 
-          v22 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-          v23 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v22 userInput:v18];
+          currentDirectoryURL2 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+          v23 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:currentDirectoryURL2 userInput:v18];
 
           if (!v23)
           {
 
-            v31 = v16;
+            v31 = value;
             goto LABEL_27;
           }
 
           v33 = v23;
           [(SCROBrailleUIFinderApp *)self setCurrentFileURL:v23];
-          v24 = [MEMORY[0x277CCAA00] defaultManager];
-          v25 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          currentFileURL2 = [(SCROBrailleUIFinderApp *)self currentFileURL];
           v37 = 0;
-          v35 = v14;
-          [v24 moveItemAtURL:v14 toURL:v25 error:&v37];
-          v14 = v37;
+          v35 = currentFileURL;
+          [defaultManager2 moveItemAtURL:currentFileURL toURL:currentFileURL2 error:&v37];
+          currentFileURL = v37;
 
-          if (v14)
+          if (currentFileURL)
           {
             v26 = _SCROD_LOG();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+              currentFileURL3 = [(SCROBrailleUIFinderApp *)self currentFileURL];
               *buf = 138412546;
               v40 = v35;
               v41 = 2112;
-              v42 = v27;
+              v42 = currentFileURL3;
               _os_log_impl(&dword_26490B000, v26, OS_LOG_TYPE_DEFAULT, "Failed to move file at %@ to %@", buf, 0x16u);
             }
           }
 
-          v28 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-          v29 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-          v30 = [v29 lastPathComponent];
-          [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v28 withFocusAtIdentifier:v30];
+          currentDirectoryURL3 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+          currentFileURL4 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+          lastPathComponent = [currentFileURL4 lastPathComponent];
+          [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL3 withFocusAtIdentifier:lastPathComponent];
 
-          v16 = v34;
+          value = v34;
         }
 
         else
         {
-          v35 = v14;
-          v14 = 0;
+          v35 = currentFileURL;
+          currentFileURL = 0;
         }
 
         [(SCROBrailleUIFinderApp *)self _closeContextMenu];
@@ -1038,7 +1038,7 @@ LABEL_27:
 
       v36.receiver = self;
       v36.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v36 handleAction:v4];
+      [(SCROBrailleUIApp *)&v36 handleAction:menuCopy];
     }
   }
 
@@ -1047,51 +1047,51 @@ LABEL_29:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInContextMenuOptions:(id)a3
+- (void)_handleActionInContextMenuOptions:(id)options
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(SCROBrailleUIFinderApp *)self _isContextMenuOptionsOpen])
   {
-    v5 = [v4 type];
-    if (v5 == 2)
+    type = [optionsCopy type];
+    if (type == 2)
     {
       [(SCROBrailleUIFinderApp *)self _closeContextMenuOptions];
     }
 
-    else if (v5 == 1)
+    else if (type == 1)
     {
-      v6 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
-      v7 = [v6 focusedItem];
-      v8 = [v7 identifier];
+      contextMenuOptionsView = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
+      focusedItem = [contextMenuOptionsView focusedItem];
+      identifier = [focusedItem identifier];
 
-      LODWORD(v6) = [v8 isEqualToString:@"finder.context.menu.options.up.one.level"];
-      v9 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-      v10 = v9;
-      if (v6)
+      LODWORD(contextMenuOptionsView) = [identifier isEqualToString:@"finder.context.menu.options.up.one.level"];
+      currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+      v10 = currentDirectoryURL;
+      if (contextMenuOptionsView)
       {
-        v11 = [v9 URLByDeletingLastPathComponent];
-        v12 = [v11 URLByStandardizingPath];
+        uRLByDeletingLastPathComponent = [currentDirectoryURL URLByDeletingLastPathComponent];
+        uRLByStandardizingPath = [uRLByDeletingLastPathComponent URLByStandardizingPath];
 
         v13 = -1;
       }
 
       else
       {
-        v12 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v9 userInput:v8];
+        uRLByStandardizingPath = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:currentDirectoryURL userInput:identifier];
         v13 = 1;
       }
 
-      if (v12)
+      if (uRLByStandardizingPath)
       {
-        v14 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-        v15 = [v14 lastPathComponent];
+        currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
+        lastPathComponent = [currentFileURL lastPathComponent];
 
-        v16 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:v12 userInput:v15];
-        v17 = [MEMORY[0x277CCAA00] defaultManager];
-        v18 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+        v16 = [(SCROBrailleUIFinderApp *)self _secureURLWithBase:uRLByStandardizingPath userInput:lastPathComponent];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        currentFileURL2 = [(SCROBrailleUIFinderApp *)self currentFileURL];
         v24 = 0;
-        [v17 moveItemAtURL:v18 toURL:v16 error:&v24];
+        [defaultManager moveItemAtURL:currentFileURL2 toURL:v16 error:&v24];
         v19 = v24;
 
         if (v19)
@@ -1099,9 +1099,9 @@ LABEL_29:
           v20 = _SCROD_LOG();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+            currentFileURL3 = [(SCROBrailleUIFinderApp *)self currentFileURL];
             *buf = 138412546;
-            v26 = v21;
+            v26 = currentFileURL3;
             v27 = 2112;
             v28 = v16;
             _os_log_impl(&dword_26490B000, v20, OS_LOG_TYPE_DEFAULT, "Failed to move %@ to %@", buf, 0x16u);
@@ -1110,9 +1110,9 @@ LABEL_29:
 
         else
         {
-          [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:v12];
+          [(SCROBrailleUIFinderApp *)self setCurrentDirectoryURL:uRLByStandardizingPath];
           [(SCROBrailleUIFinderApp *)self setCurrentDirectoryDepth:[(SCROBrailleUIFinderApp *)self currentDirectoryDepth]+ v13];
-          [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v12 withFocusAtIdentifier:v15];
+          [(SCROBrailleUIFinderApp *)self _openFilesListInURL:uRLByStandardizingPath withFocusAtIdentifier:lastPathComponent];
         }
       }
 
@@ -1124,73 +1124,73 @@ LABEL_29:
     {
       v23.receiver = self;
       v23.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v23 handleAction:v4];
+      [(SCROBrailleUIApp *)&v23 handleAction:optionsCopy];
     }
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInFindField:(id)a3
+- (void)_handleActionInFindField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   if ([(SCROBrailleUIFinderApp *)self _isShowingFindField])
   {
-    v5 = [v4 type];
-    if (v5 == 2)
+    type = [fieldCopy type];
+    if (type == 2)
     {
       [(SCROBrailleUIFinderApp *)self _closeFindField];
     }
 
     else
     {
-      if (v5 == 1)
+      if (type == 1)
       {
-        v6 = [(SCROBrailleUIFinderApp *)self findFieldView];
-        v7 = [v6 focusedItem];
-        v8 = [v7 identifier];
+        findFieldView = [(SCROBrailleUIFinderApp *)self findFieldView];
+        focusedItem = [findFieldView focusedItem];
+        identifier = [focusedItem identifier];
 
-        if (![v8 isEqualToString:@"finder.find.field.enter.search.text"])
+        if (![identifier isEqualToString:@"finder.find.field.enter.search.text"])
         {
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        v9 = [(SCROBrailleUIFinderApp *)self findFieldView];
-        v10 = [v9 value];
+        findFieldView2 = [(SCROBrailleUIFinderApp *)self findFieldView];
+        value = [findFieldView2 value];
 
         [(SCROBrailleUIFinderApp *)self _closeFindField];
-        v11 = [(SCROBrailleUIFinderApp *)self editorView];
+        editorView = [(SCROBrailleUIFinderApp *)self editorView];
 
-        if (v11)
+        if (editorView)
         {
-          v12 = [(SCROBrailleUIFinderApp *)self editorView];
+          editorView2 = [(SCROBrailleUIFinderApp *)self editorView];
         }
 
         else
         {
-          v13 = [(SCROBrailleUIFinderApp *)self viewerView];
+          viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
 
-          if (!v13)
+          if (!viewerView)
           {
 LABEL_12:
 
             goto LABEL_13;
           }
 
-          v12 = [(SCROBrailleUIFinderApp *)self viewerView];
+          editorView2 = [(SCROBrailleUIFinderApp *)self viewerView];
         }
 
-        v14 = v12;
-        [v12 handleFindForSearchBraille:v10];
+        v14 = editorView2;
+        [editorView2 handleFindForSearchBraille:value];
 
         goto LABEL_12;
       }
 
       v15.receiver = self;
       v15.super_class = SCROBrailleUIFinderApp;
-      [(SCROBrailleUIApp *)&v15 handleAction:v4];
+      [(SCROBrailleUIApp *)&v15 handleAction:fieldCopy];
     }
   }
 
@@ -1199,16 +1199,16 @@ LABEL_14:
 
 - (BOOL)_isOpen
 {
-  v3 = [(SCROBrailleUIFinderApp *)self filesListView];
-  if (v3)
+  filesListView = [(SCROBrailleUIFinderApp *)self filesListView];
+  if (filesListView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SCROBrailleUIFinderApp *)self alertView];
-    v4 = v5 != 0;
+    alertView = [(SCROBrailleUIFinderApp *)self alertView];
+    v4 = alertView != 0;
   }
 
   return v4;
@@ -1217,8 +1217,8 @@ LABEL_14:
 - (void)_closeFilesList
 {
   [(SCROBrailleUIFinderApp *)self setCurrentFileURL:0];
-  v3 = [(SCROBrailleUIFinderApp *)self filesListView];
-  [v3 dismiss];
+  filesListView = [(SCROBrailleUIFinderApp *)self filesListView];
+  [filesListView dismiss];
 
   [(SCROBrailleUIFinderApp *)self setFilesListView:0];
 }
@@ -1237,15 +1237,15 @@ LABEL_14:
 {
   if (_SCROBrailleUIFinderAppIsRootCloud == 1)
   {
-    v4 = [a1 _absoluteRootURL];
+    _absoluteRootURL = [self _absoluteRootURL];
   }
 
   else
   {
-    v4 = 0;
+    _absoluteRootURL = 0;
   }
 
-  return v4;
+  return _absoluteRootURL;
 }
 
 + (id)_absoluteRootURL
@@ -1376,54 +1376,54 @@ LABEL_22:
 
   else
   {
-    v3 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+    currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
     v4 = +[SCROBrailleUIFinderApp _absoluteRootURL];
-    v5 = [v3 isEqual:v4] ^ 1;
+    v5 = [currentDirectoryURL isEqual:v4] ^ 1;
   }
 
   return v5;
 }
 
-- (void)_openFilesListInURL:(id)a3 withFocusAtIdentifier:(id)a4 display:(BOOL)a5
+- (void)_openFilesListInURL:(id)l withFocusAtIdentifier:(id)identifier display:(BOOL)display
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  [SCROBrailleUIUtilities tryDownloadingIfNeededForURL:v9];
+  displayCopy = display;
+  identifierCopy = identifier;
+  lCopy = l;
+  [SCROBrailleUIUtilities tryDownloadingIfNeededForURL:lCopy];
   v17 = objc_opt_new();
   v10 = [SCROBrailleUIListItem alloc];
   v11 = SCROBrailleUILocString(@"finder.create.new.label");
   v12 = [(SCROBrailleUIListItem *)v10 initWithIdentifier:@"finder.create.new.menu" label:v11 isInline:0];
 
   [v17 addObject:v12];
-  v13 = [(SCROBrailleUIFinderApp *)self _fileItemsInURL:v9 directoriesOnly:0];
+  v13 = [(SCROBrailleUIFinderApp *)self _fileItemsInURL:lCopy directoriesOnly:0];
 
   [v17 addObjectsFromArray:v13];
-  v14 = [[SCROBrailleUIListView alloc] initWithIdentifier:@"finder.files.list" items:v17 initialFocus:v8];
+  v14 = [[SCROBrailleUIListView alloc] initWithIdentifier:@"finder.files.list" items:v17 initialFocus:identifierCopy];
 
-  v15 = [(SCROBrailleUIFinderApp *)self filesListView];
+  filesListView = [(SCROBrailleUIFinderApp *)self filesListView];
   [(SCROBrailleUIFinderApp *)self setFilesListView:v14];
-  if (v5)
+  if (displayCopy)
   {
-    v16 = [(SCROBrailleUIFinderApp *)self filesListView];
-    [v16 display];
+    filesListView2 = [(SCROBrailleUIFinderApp *)self filesListView];
+    [filesListView2 display];
   }
 
-  [v15 dismiss];
+  [filesListView dismiss];
 }
 
-- (id)_fileItemsInURL:(id)a3 directoriesOnly:(BOOL)a4 excluding:(id)a5
+- (id)_fileItemsInURL:(id)l directoriesOnly:(BOOL)only excluding:(id)excluding
 {
-  v6 = a4;
+  onlyCopy = only;
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v38 = a5;
+  lCopy = l;
+  excludingCopy = excluding;
   v9 = 0x277CCA000uLL;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v40 = v8;
-  v11 = [v8 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v40 = lCopy;
+  path = [lCopy path];
   v45 = 0;
-  v12 = [v10 contentsOfDirectoryAtPath:v11 error:&v45];
+  v12 = [defaultManager contentsOfDirectoryAtPath:path error:&v45];
   v13 = v45;
 
   if (v13)
@@ -1431,9 +1431,9 @@ LABEL_22:
     v14 = _SCROD_LOG();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v40 path];
+      path2 = [v40 path];
       *buf = 138412290;
-      v48 = v15;
+      v48 = path2;
       _os_log_impl(&dword_26490B000, v14, OS_LOG_TYPE_DEFAULT, "Failed to fetch subpaths in the path %@", buf, 0xCu);
     }
 
@@ -1453,7 +1453,7 @@ LABEL_22:
     if (v16)
     {
       v17 = v16;
-      v36 = !v6;
+      v36 = !onlyCopy;
       v39 = *v42;
       do
       {
@@ -1471,15 +1471,15 @@ LABEL_22:
             v21 = [v19 hasPrefix:@"."];
             buf[0] = 0;
             v22 = v9;
-            v23 = [*(v9 + 2560) defaultManager];
-            v24 = [v20 path];
-            [v23 fileExistsAtPath:v24 isDirectory:buf];
+            defaultManager2 = [*(v9 + 2560) defaultManager];
+            path3 = [v20 path];
+            [defaultManager2 fileExistsAtPath:path3 isDirectory:buf];
 
-            v25 = [v20 pathExtension];
-            v26 = [v25 lowercaseString];
-            v27 = [v26 isEqualToString:@"brf"];
+            pathExtension = [v20 pathExtension];
+            lowercaseString = [pathExtension lowercaseString];
+            v27 = [lowercaseString isEqualToString:@"brf"];
 
-            v28 = [v38 isEqual:v20];
+            v28 = [excludingCopy isEqual:v20];
             if ((v21 & 1) == 0 && !(v28 & 1 | (((buf[0] | v36 & v27) & 1) == 0)))
             {
               v29 = v19;
@@ -1523,12 +1523,12 @@ uint64_t __68__SCROBrailleUIFinderApp__fileItemsInURL_directoriesOnly_excluding_
   return v7;
 }
 
-- (id)_brfForUnicodeBraille:(id)a3
+- (id)_brfForUnicodeBraille:(id)braille
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 newlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  brailleCopy = braille;
+  newlineCharacterSet = [v3 newlineCharacterSet];
+  v6 = [brailleCopy componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v7 = [v6 ax_mappedArrayUsingBlock:&__block_literal_global_112];
   v8 = [v7 componentsJoinedByString:@"\n"];
@@ -1536,16 +1536,16 @@ uint64_t __68__SCROBrailleUIFinderApp__fileItemsInURL_directoriesOnly_excluding_
   return v8;
 }
 
-- (BOOL)_isFileSizeAcceptableForURL:(id)a3
+- (BOOL)_isFileSizeAcceptableForURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
+  path = [lCopy path];
 
   v15 = 0;
-  v7 = [v5 attributesOfItemAtPath:v6 error:&v15];
+  v7 = [defaultManager attributesOfItemAtPath:path error:&v15];
   v8 = v15;
 
   if (v7)
@@ -1593,14 +1593,14 @@ LABEL_12:
   return v11;
 }
 
-- (id)_brfContentForURL:(id)a3
+- (id)_brfContentForURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [SCROBrailleUIUtilities tryDownloadingIfNeededForURL:v3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 contentsAtPath:v5];
+  lCopy = l;
+  [SCROBrailleUIUtilities tryDownloadingIfNeededForURL:lCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager contentsAtPath:path];
 
   if (v6)
   {
@@ -1612,9 +1612,9 @@ LABEL_12:
     v8 = _SCROD_LOG();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v3 path];
+      path2 = [lCopy path];
       v12 = 138412290;
-      v13 = v9;
+      v13 = path2;
       _os_log_impl(&dword_26490B000, v8, OS_LOG_TYPE_DEFAULT, "Braille UI Finder: Failed to get contents at path %@", &v12, 0xCu);
     }
 
@@ -1626,14 +1626,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)_writeUnicodeContent:(id)a3 toURL:(id)a4
+- (void)_writeUnicodeContent:(id)content toURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SCROBrailleUIFinderApp *)self _brfForUnicodeBraille:a3];
-  v8 = [v6 path];
+  lCopy = l;
+  v7 = [(SCROBrailleUIFinderApp *)self _brfForUnicodeBraille:content];
+  path = [lCopy path];
   v13 = 0;
-  [v7 writeToFile:v8 atomically:0 encoding:4 error:&v13];
+  [v7 writeToFile:path atomically:0 encoding:4 error:&v13];
   v9 = v13;
 
   if (v9)
@@ -1641,9 +1641,9 @@ LABEL_12:
     v10 = _SCROD_LOG();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 path];
+      path2 = [lCopy path];
       *buf = 138412290;
-      v15 = v11;
+      v15 = path2;
       _os_log_impl(&dword_26490B000, v10, OS_LOG_TYPE_DEFAULT, "Failed to write to file at %@", buf, 0xCu);
     }
   }
@@ -1651,76 +1651,76 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveReadingRange:(_NSRange)a3
+- (void)_saveReadingRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(SCROBrailleUIFinderApp *)self brfFile];
-  v16 = [v6 locationMap];
+  length = range.length;
+  location = range.location;
+  brfFile = [(SCROBrailleUIFinderApp *)self brfFile];
+  locationMap = [brfFile locationMap];
 
-  if (location >= [v16 count])
+  if (location >= [locationMap count])
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v7 = [v16 objectAtIndex:location];
-    v8 = [v7 integerValue];
+    v7 = [locationMap objectAtIndex:location];
+    integerValue = [v7 integerValue];
   }
 
   v9 = location + length;
-  if (v9 >= [v16 count])
+  if (v9 >= [locationMap count])
   {
     v12 = 0;
   }
 
   else
   {
-    v10 = [v16 objectAtIndex:v9];
-    v11 = [v10 integerValue] - v8;
+    v10 = [locationMap objectAtIndex:v9];
+    v11 = [v10 integerValue] - integerValue;
 
     v12 = v11 & ~(v11 >> 63);
   }
 
-  v13 = [MEMORY[0x277CBEA90] dataWithRange:{v8, v12}];
+  v13 = [MEMORY[0x277CBEA90] dataWithRange:{integerValue, v12}];
   v14 = +[SCROBrailleUIPersistenceManager sharedInstance];
-  v15 = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
-  [v14 setValue:v13 forKey:v15 cache:@"Files" maxRecordCount:100];
+  _currentFileRelativePath = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
+  [v14 setValue:v13 forKey:_currentFileRelativePath cache:@"Files" maxRecordCount:100];
 }
 
 - (int64_t)_loadReadingCursorForCurrentFile
 {
   v3 = +[SCROBrailleUIPersistenceManager sharedInstance];
-  v4 = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
-  v5 = [v3 getValueForKey:v4 cache:@"Files"];
+  _currentFileRelativePath = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
+  v5 = [v3 getValueForKey:_currentFileRelativePath cache:@"Files"];
 
   if (v5)
   {
-    v6 = [v5 range];
+    range = [v5 range];
   }
 
   else
   {
-    v6 = 0;
+    range = 0;
   }
 
-  return v6;
+  return range;
 }
 
 - (void)_saveBookmarks
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(SCROBrailleUIFinderApp *)self brfFile];
-  v5 = [v4 locationMap];
+  brfFile = [(SCROBrailleUIFinderApp *)self brfFile];
+  locationMap = [brfFile locationMap];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  bookmarkLocations = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+  v7 = [bookmarkLocations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1732,16 +1732,16 @@ LABEL_12:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bookmarkLocations);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) integerValue];
-        if ((v11 & 0x8000000000000000) == 0)
+        integerValue = [*(*(&v17 + 1) + 8 * v10) integerValue];
+        if ((integerValue & 0x8000000000000000) == 0)
         {
-          v12 = v11;
-          if (v11 < [v5 count])
+          v12 = integerValue;
+          if (integerValue < [locationMap count])
           {
-            v13 = [v5 objectAtIndex:v12];
+            v13 = [locationMap objectAtIndex:v12];
             [v3 addObject:v13];
           }
         }
@@ -1750,15 +1750,15 @@ LABEL_12:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [bookmarkLocations countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
   v14 = +[SCROBrailleUIPersistenceManager sharedInstance];
-  v15 = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
-  [v14 setValue:v3 forKey:v15 cache:@"FilesBookmarks" maxRecordCount:100];
+  _currentFileRelativePath = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
+  [v14 setValue:v3 forKey:_currentFileRelativePath cache:@"FilesBookmarks" maxRecordCount:100];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -1766,8 +1766,8 @@ LABEL_12:
 - (id)_rawBookmarks
 {
   v3 = +[SCROBrailleUIPersistenceManager sharedInstance];
-  v4 = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
-  v5 = [v3 getValueForKey:v4 cache:@"FilesBookmarks"];
+  _currentFileRelativePath = [(SCROBrailleUIFinderApp *)self _currentFileRelativePath];
+  v5 = [v3 getValueForKey:_currentFileRelativePath cache:@"FilesBookmarks"];
   v6 = [v5 mutableCopy];
 
   if (v6)
@@ -1787,30 +1787,30 @@ LABEL_12:
 
 - (id)_currentFileRelativePath
 {
-  v3 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-  v4 = [v3 path];
-  v5 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-  v6 = [v5 path];
-  v7 = [v4 substringFromIndex:{objc_msgSend(v6, "length")}];
+  currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
+  path = [currentFileURL path];
+  currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+  path2 = [currentDirectoryURL path];
+  v7 = [path substringFromIndex:{objc_msgSend(path2, "length")}];
 
   return v7;
 }
 
 - (BOOL)_isViewing
 {
-  v2 = [(SCROBrailleUIFinderApp *)self viewerView];
-  v3 = v2 != 0;
+  viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+  v3 = viewerView != 0;
 
   return v3;
 }
 
-- (void)_openViewerForBRF:(id)a3
+- (void)_openViewerForBRF:(id)f
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fCopy = f;
   if (![(SCROBrailleUIFinderApp *)self _isViewing])
   {
-    if ([(SCROBrailleUIFinderApp *)self _isFileSizeAcceptableForURL:v4])
+    if ([(SCROBrailleUIFinderApp *)self _isFileSizeAcceptableForURL:fCopy])
     {
       [(SCROBrailleUIFinderApp *)self setIsViewerViewLoading:1];
       v5 = SCROBrailleUILocString(@"finder.viewer.loading");
@@ -1819,18 +1819,18 @@ LABEL_12:
       v7 = [[SCROBrailleUIBrailleAreaView alloc] initWithIdentifier:@"finder.viewer" initialContent:v6 initialCursor:0x7FFFFFFFFFFFFFFFLL];
       [(SCROBrailleUIFinderApp *)self setViewerView:v7];
 
-      v8 = [(SCROBrailleUIFinderApp *)self viewerView];
-      [v8 setIsReadOnly:1];
+      viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+      [viewerView setIsReadOnly:1];
 
-      v9 = [(SCROBrailleUIFinderApp *)self viewerView];
-      [v9 display];
+      viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+      [viewerView2 display];
 
-      [(SCROBrailleUIFinderApp *)self setCurrentFileURL:v4];
-      v10 = [(SCROBrailleUIApp *)self delegate];
+      [(SCROBrailleUIFinderApp *)self setCurrentFileURL:fCopy];
+      delegate = [(SCROBrailleUIApp *)self delegate];
       v13 = kSCROBrailleUIRequestTypeKey[0];
       v14[0] = &unk_2876519B0;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      [v10 handleBrailleUIRequest:v11];
+      [delegate handleBrailleUIRequest:v11];
 
       [(SCROBrailleUIFinderApp *)self _startAutoSave];
     }
@@ -1852,47 +1852,47 @@ LABEL_12:
     [(SCROBrailleUIFinderApp *)self setIsViewerViewLoading:0];
     [(SCROBrailleUIFinderApp *)self setCurrentSearchString:0];
     [(SCROBrailleUIFinderApp *)self setSearchingForward:1];
-    v3 = [(SCROBrailleUIFinderApp *)self _loadReadingCursorForCurrentFile];
-    v24 = [(SCROBrailleUIFinderApp *)self _rawBookmarks];
+    _loadReadingCursorForCurrentFile = [(SCROBrailleUIFinderApp *)self _loadReadingCursorForCurrentFile];
+    _rawBookmarks = [(SCROBrailleUIFinderApp *)self _rawBookmarks];
     v4 = +[SCROBrailleUISettingsManager sharedInstance];
-    v5 = [v4 isBRFReflowEnabled];
+    isBRFReflowEnabled = [v4 isBRFReflowEnabled];
 
-    if (v5)
+    if (isBRFReflowEnabled)
     {
       v6 = +[SCROBrailleUISettingsManager sharedInstance];
-      v7 = [v6 brfReflowSize];
+      brfReflowSize = [v6 brfReflowSize];
     }
 
     else
     {
-      v7 = 0x7FFFFFFFFFFFFFFFLL;
+      brfReflowSize = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     v8 = +[SCROBrailleUISettingsManager sharedInstance];
-    v9 = [v8 isBRFWordWrapEnabled];
+    isBRFWordWrapEnabled = [v8 isBRFWordWrapEnabled];
 
     v10 = +[SCROBrailleUISettingsManager sharedInstance];
-    v11 = [v10 isBRFStripPageIndicatorsEnabled];
+    isBRFStripPageIndicatorsEnabled = [v10 isBRFStripPageIndicatorsEnabled];
 
     v12 = [SCROBrailleUIBRFFile alloc];
-    v13 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-    v14 = [(SCROBrailleUIFinderApp *)self _brfContentForURL:v13];
-    v15 = [(SCROBrailleUIBRFFile *)v12 initWithBRF:v14 rawInitialLocation:v3 rawBookmarks:v24 reflowSize:v7 shouldWordWrap:v9 shouldStripPageIndicators:v11];
+    currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
+    v14 = [(SCROBrailleUIFinderApp *)self _brfContentForURL:currentFileURL];
+    v15 = [(SCROBrailleUIBRFFile *)v12 initWithBRF:v14 rawInitialLocation:_loadReadingCursorForCurrentFile rawBookmarks:_rawBookmarks reflowSize:brfReflowSize shouldWordWrap:isBRFWordWrapEnabled shouldStripPageIndicators:isBRFStripPageIndicatorsEnabled];
     [(SCROBrailleUIFinderApp *)self setBrfFile:v15];
 
-    v16 = [(SCROBrailleUIFinderApp *)self brfFile];
-    v17 = [v16 bookmarks];
-    v18 = [v17 mutableCopy];
+    brfFile = [(SCROBrailleUIFinderApp *)self brfFile];
+    bookmarks = [brfFile bookmarks];
+    v18 = [bookmarks mutableCopy];
     [(SCROBrailleUIFinderApp *)self setBookmarkLocations:v18];
 
-    v19 = [(SCROBrailleUIFinderApp *)self viewerView];
-    v20 = [(SCROBrailleUIFinderApp *)self brfFile];
-    v21 = [v20 unicode];
-    v22 = [(SCROBrailleUIFinderApp *)self brfFile];
-    [v19 loadContent:v21 cursor:{objc_msgSend(v22, "initialLocation")}];
+    viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+    brfFile2 = [(SCROBrailleUIFinderApp *)self brfFile];
+    unicode = [brfFile2 unicode];
+    brfFile3 = [(SCROBrailleUIFinderApp *)self brfFile];
+    [viewerView loadContent:unicode cursor:{objc_msgSend(brfFile3, "initialLocation")}];
 
-    v23 = [(SCROBrailleUIFinderApp *)self viewerView];
-    [v23 display];
+    viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+    [viewerView2 display];
   }
 }
 
@@ -1901,19 +1901,19 @@ LABEL_12:
   if ([(SCROBrailleUIFinderApp *)self _isViewing])
   {
     [(SCROBrailleUIFinderApp *)self _stopAutoSave];
-    v3 = [(SCROBrailleUIFinderApp *)self viewerView];
-    v4 = [v3 focus];
-    [(SCROBrailleUIFinderApp *)self _saveReadingRange:v4, v5];
+    viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+    focus = [viewerView focus];
+    [(SCROBrailleUIFinderApp *)self _saveReadingRange:focus, v5];
 
     [(SCROBrailleUIFinderApp *)self _saveBookmarks];
     [(SCROBrailleUIFinderApp *)self setBookmarkLocations:0];
-    v6 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-    v7 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-    v8 = [v7 lastPathComponent];
-    [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v6 withFocusAtIdentifier:v8];
+    currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+    currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
+    lastPathComponent = [currentFileURL lastPathComponent];
+    [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL withFocusAtIdentifier:lastPathComponent];
 
-    v9 = [(SCROBrailleUIFinderApp *)self viewerView];
-    [v9 dismiss];
+    viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+    [viewerView2 dismiss];
 
     [(SCROBrailleUIFinderApp *)self setViewerView:0];
   }
@@ -1948,16 +1948,16 @@ LABEL_12:
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
-        v9 = [v8 integerValue];
-        v10 = [(SCROBrailleUIFinderApp *)self viewerView];
-        v11 = [v10 focus];
-        if (v9 < v11 || v9 - v11 >= v12)
+        integerValue = [v8 integerValue];
+        viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+        focus = [viewerView focus];
+        if (integerValue < focus || integerValue - focus >= v12)
         {
-          v14 = [(SCROBrailleUIFinderApp *)self viewerView];
-          v15 = [v14 focus];
-          v17 = v15 + v16;
+          viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+          focus2 = [viewerView2 focus];
+          v17 = focus2 + v16;
 
-          if (v9 != v17)
+          if (integerValue != v17)
           {
             continue;
           }
@@ -1994,8 +1994,8 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-  v4 = [v3 count] != 0;
+  bookmarkLocations = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+  v4 = [bookmarkLocations count] != 0;
 
   return v4;
 }
@@ -2005,25 +2005,25 @@ LABEL_18:
   v29 = *MEMORY[0x277D85DE8];
   if ([(SCROBrailleUIFinderApp *)self _isViewing])
   {
-    v3 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-    v4 = [v3 count];
+    bookmarkLocations = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+    v4 = [bookmarkLocations count];
 
     if (v4)
     {
-      v5 = [(SCROBrailleUIFinderApp *)self viewerView];
-      v6 = [v5 focus];
+      viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+      focus = [viewerView focus];
       v8 = v7;
 
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v9 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-      v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      bookmarkLocations2 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+      v10 = [bookmarkLocations2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v10)
       {
         v11 = v10;
-        v12 = v6 + v8;
+        v12 = focus + v8;
         v13 = *v25;
 LABEL_5:
         v14 = 0;
@@ -2031,30 +2031,30 @@ LABEL_5:
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(bookmarkLocations2);
           }
 
-          v15 = [*(*(&v24 + 1) + 8 * v14) integerValue];
-          v16 = [(SCROBrailleUIFinderApp *)self viewerView];
-          v17 = [v16 value];
-          v18 = [v17 length];
+          integerValue = [*(*(&v24 + 1) + 8 * v14) integerValue];
+          viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+          value = [viewerView2 value];
+          v18 = [value length];
 
-          if (v15 > v18)
+          if (integerValue > v18)
           {
             break;
           }
 
-          if (v15 > v12)
+          if (integerValue > v12)
           {
-            v22 = [(SCROBrailleUIFinderApp *)self viewerView];
-            [v22 moveFocusTo:v15];
+            viewerView3 = [(SCROBrailleUIFinderApp *)self viewerView];
+            [viewerView3 moveFocusTo:integerValue];
 
             goto LABEL_14;
           }
 
           if (v11 == ++v14)
           {
-            v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v11 = [bookmarkLocations2 countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v11)
             {
               goto LABEL_5;
@@ -2065,12 +2065,12 @@ LABEL_5:
         }
       }
 
-      v19 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-      v20 = [v19 firstObject];
-      v21 = [v20 integerValue];
+      bookmarkLocations3 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+      firstObject = [bookmarkLocations3 firstObject];
+      integerValue2 = [firstObject integerValue];
 
-      v9 = [(SCROBrailleUIFinderApp *)self viewerView];
-      [v9 moveFocusTo:v21];
+      bookmarkLocations2 = [(SCROBrailleUIFinderApp *)self viewerView];
+      [bookmarkLocations2 moveFocusTo:integerValue2];
 LABEL_14:
     }
   }
@@ -2083,22 +2083,22 @@ LABEL_14:
   v28 = *MEMORY[0x277D85DE8];
   if ([(SCROBrailleUIFinderApp *)self _isViewing])
   {
-    v3 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-    v4 = [v3 count];
+    bookmarkLocations = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+    v4 = [bookmarkLocations count];
 
     if (v4)
     {
-      v5 = [(SCROBrailleUIFinderApp *)self viewerView];
-      v6 = [v5 focus];
+      viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+      focus = [viewerView focus];
 
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v7 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-      v8 = [v7 reverseObjectEnumerator];
+      bookmarkLocations2 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+      reverseObjectEnumerator = [bookmarkLocations2 reverseObjectEnumerator];
 
-      v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2110,18 +2110,18 @@ LABEL_14:
           {
             if (*v24 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
-            v13 = [*(*(&v23 + 1) + 8 * v12) integerValue];
-            v14 = [(SCROBrailleUIFinderApp *)self viewerView];
-            v15 = [v14 value];
-            v16 = [v15 length];
+            integerValue = [*(*(&v23 + 1) + 8 * v12) integerValue];
+            viewerView2 = [(SCROBrailleUIFinderApp *)self viewerView];
+            value = [viewerView2 value];
+            v16 = [value length];
 
-            if (v13 <= v16 && v13 < v6)
+            if (integerValue <= v16 && integerValue < focus)
             {
-              v21 = [(SCROBrailleUIFinderApp *)self viewerView];
-              [v21 moveFocusTo:v13];
+              viewerView3 = [(SCROBrailleUIFinderApp *)self viewerView];
+              [viewerView3 moveFocusTo:integerValue];
 
               goto LABEL_16;
             }
@@ -2130,7 +2130,7 @@ LABEL_14:
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v10)
           {
             continue;
@@ -2140,12 +2140,12 @@ LABEL_14:
         }
       }
 
-      v18 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
-      v19 = [v18 lastObject];
-      v20 = [v19 integerValue];
+      bookmarkLocations3 = [(SCROBrailleUIFinderApp *)self bookmarkLocations];
+      lastObject = [bookmarkLocations3 lastObject];
+      integerValue2 = [lastObject integerValue];
 
-      v8 = [(SCROBrailleUIFinderApp *)self viewerView];
-      [v8 moveFocusTo:v20];
+      reverseObjectEnumerator = [(SCROBrailleUIFinderApp *)self viewerView];
+      [reverseObjectEnumerator moveFocusTo:integerValue2];
 LABEL_16:
     }
   }
@@ -2155,23 +2155,23 @@ LABEL_16:
 
 - (BOOL)_isViewerContextMenuOpen
 {
-  v2 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-  v3 = v2 != 0;
+  viewerContextMenuView = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+  v3 = viewerContextMenuView != 0;
 
   return v3;
 }
 
 - (void)_closeViewerContextMenu
 {
-  v3 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-  [v3 dismiss];
+  viewerContextMenuView = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+  [viewerContextMenuView dismiss];
 
   [(SCROBrailleUIFinderApp *)self setViewerContextMenuView:0];
 }
 
-- (void)_openViewerContextMenuWithFocusSearch:(BOOL)a3
+- (void)_openViewerContextMenuWithFocusSearch:(BOOL)search
 {
-  v3 = a3;
+  searchCopy = search;
   v39 = objc_opt_new();
   if ([(SCROBrailleUIFinderApp *)self _hasBookMark])
   {
@@ -2188,12 +2188,12 @@ LABEL_16:
   }
 
   v11 = SCROBrailleUILocString(@"finder.viewer.context.menu.find");
-  v12 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-  if (v12 && (v13 = v12, v14 = [(SCROBrailleUIFinderApp *)self searchingForward], v13, v14))
+  currentSearchString = [(SCROBrailleUIFinderApp *)self currentSearchString];
+  if (currentSearchString && (v13 = currentSearchString, v14 = [(SCROBrailleUIFinderApp *)self searchingForward], v13, v14))
   {
     v15 = [SCROBrailleUIListItem alloc];
-    v16 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-    v17 = [(SCROBrailleUIListItem *)v15 initWithIdentifier:@"finder.viewer.context.menu.search" label:v11 prepopulatedBraille:v16];
+    currentSearchString2 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+    v17 = [(SCROBrailleUIListItem *)v15 initWithIdentifier:@"finder.viewer.context.menu.search" label:v11 prepopulatedBraille:currentSearchString2];
   }
 
   else
@@ -2203,12 +2203,12 @@ LABEL_16:
 
   [v39 addObject:v17];
   v18 = SCROBrailleUILocString(@"finder.viewer.context.menu.previous.find");
-  v19 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-  if (v19 && (v20 = v19, v21 = [(SCROBrailleUIFinderApp *)self searchingForward], v20, !v21))
+  currentSearchString3 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+  if (currentSearchString3 && (v20 = currentSearchString3, v21 = [(SCROBrailleUIFinderApp *)self searchingForward], v20, !v21))
   {
     v23 = [SCROBrailleUIListItem alloc];
-    v24 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-    v22 = [(SCROBrailleUIListItem *)v23 initWithIdentifier:@"finder.viewer.context.menu.previous.search" label:v18 prepopulatedBraille:v24];
+    currentSearchString4 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+    v22 = [(SCROBrailleUIListItem *)v23 initWithIdentifier:@"finder.viewer.context.menu.previous.search" label:v18 prepopulatedBraille:currentSearchString4];
   }
 
   else
@@ -2217,8 +2217,8 @@ LABEL_16:
   }
 
   [v39 addObject:v22];
-  v25 = [(SCROBrailleUIFinderApp *)self _bookmarkLocationsInCurrentLine];
-  v26 = [v25 count];
+  _bookmarkLocationsInCurrentLine = [(SCROBrailleUIFinderApp *)self _bookmarkLocationsInCurrentLine];
+  v26 = [_bookmarkLocationsInCurrentLine count];
   v27 = [SCROBrailleUIListItem alloc];
   if (v26)
   {
@@ -2234,13 +2234,13 @@ LABEL_16:
   v30 = [(SCROBrailleUIListItem *)v27 initWithIdentifier:v28 label:v29 isInline:0];
 
   [v39 addObject:v30];
-  v31 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+  currentSearchString5 = [(SCROBrailleUIFinderApp *)self currentSearchString];
 
-  if (v31 || v3)
+  if (currentSearchString5 || searchCopy)
   {
-    v35 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+    currentSearchString6 = [(SCROBrailleUIFinderApp *)self currentSearchString];
     v36 = @"finder.viewer.context.menu.search";
-    if (v35 && ![(SCROBrailleUIFinderApp *)self searchingForward])
+    if (currentSearchString6 && ![(SCROBrailleUIFinderApp *)self searchingForward])
     {
       v36 = @"finder.viewer.context.menu.previous.search";
     }
@@ -2250,9 +2250,9 @@ LABEL_16:
 
   else
   {
-    v32 = [(SCROBrailleUIFinderApp *)self searchingForward];
+    searchingForward = [(SCROBrailleUIFinderApp *)self searchingForward];
     v33 = @"finder.viewer.context.menu.previous.bookmark";
-    if (v32)
+    if (searchingForward)
     {
       v33 = @"finder.viewer.context.menu.next.bookmark";
     }
@@ -2263,33 +2263,33 @@ LABEL_16:
   v37 = [[SCROBrailleUIListView alloc] initWithIdentifier:@"finder.viewer.context.menu" items:v39 initialFocus:v34];
 
   [(SCROBrailleUIFinderApp *)self setViewerContextMenuView:v37];
-  v38 = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
-  [v38 display];
+  viewerContextMenuView = [(SCROBrailleUIFinderApp *)self viewerContextMenuView];
+  [viewerContextMenuView display];
 }
 
 - (void)_handleReturnInViewer
 {
   if ([(SCROBrailleUIFinderApp *)self _isViewing])
   {
-    v3 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+    currentSearchString = [(SCROBrailleUIFinderApp *)self currentSearchString];
 
-    v4 = [(SCROBrailleUIFinderApp *)self searchingForward];
-    if (v3)
+    searchingForward = [(SCROBrailleUIFinderApp *)self searchingForward];
+    if (currentSearchString)
     {
-      v6 = [(SCROBrailleUIFinderApp *)self viewerView];
-      v5 = [(SCROBrailleUIFinderApp *)self currentSearchString];
-      if (v4)
+      viewerView = [(SCROBrailleUIFinderApp *)self viewerView];
+      currentSearchString2 = [(SCROBrailleUIFinderApp *)self currentSearchString];
+      if (searchingForward)
       {
-        [v6 handleFindForSearchBraille:v5];
+        [viewerView handleFindForSearchBraille:currentSearchString2];
       }
 
       else
       {
-        [v6 handlePreviousFindForSearchBraille:v5];
+        [viewerView handlePreviousFindForSearchBraille:currentSearchString2];
       }
     }
 
-    else if (v4)
+    else if (searchingForward)
     {
 
       [(SCROBrailleUIFinderApp *)self _moveToNextBookmark];
@@ -2305,40 +2305,40 @@ LABEL_16:
 
 - (BOOL)_isEditing
 {
-  v2 = [(SCROBrailleUIFinderApp *)self editorView];
-  v3 = v2 != 0;
+  editorView = [(SCROBrailleUIFinderApp *)self editorView];
+  v3 = editorView != 0;
 
   return v3;
 }
 
-- (void)_openEditorForBRF:(id)a3
+- (void)_openEditorForBRF:(id)f
 {
-  v12 = a3;
+  fCopy = f;
   if (![(SCROBrailleUIFinderApp *)self _isEditing])
   {
-    if ([(SCROBrailleUIFinderApp *)self _isFileSizeAcceptableForURL:v12])
+    if ([(SCROBrailleUIFinderApp *)self _isFileSizeAcceptableForURL:fCopy])
     {
-      [(SCROBrailleUIFinderApp *)self setCurrentFileURL:v12];
-      v4 = [(SCROBrailleUIFinderApp *)self _loadReadingCursorForCurrentFile];
+      [(SCROBrailleUIFinderApp *)self setCurrentFileURL:fCopy];
+      _loadReadingCursorForCurrentFile = [(SCROBrailleUIFinderApp *)self _loadReadingCursorForCurrentFile];
       v5 = [SCROBrailleUIBRFFile alloc];
-      v6 = [(SCROBrailleUIFinderApp *)self _brfContentForURL:v12];
-      v7 = [(SCROBrailleUIBRFFile *)v5 initWithBRF:v6 initialLocation:v4 bookmarks:MEMORY[0x277CBEBF8]];
+      v6 = [(SCROBrailleUIFinderApp *)self _brfContentForURL:fCopy];
+      v7 = [(SCROBrailleUIBRFFile *)v5 initWithBRF:v6 initialLocation:_loadReadingCursorForCurrentFile bookmarks:MEMORY[0x277CBEBF8]];
       [(SCROBrailleUIFinderApp *)self setBrfFile:v7];
 
-      v8 = [(SCROBrailleUIFinderApp *)self brfFile];
-      v9 = [v8 unicode];
+      brfFile = [(SCROBrailleUIFinderApp *)self brfFile];
+      unicode = [brfFile unicode];
 
-      v10 = [[SCROBrailleUIBrailleAreaView alloc] initWithIdentifier:@"finder.editor" initialContent:v9 initialCursor:v4];
+      v10 = [[SCROBrailleUIBrailleAreaView alloc] initWithIdentifier:@"finder.editor" initialContent:unicode initialCursor:_loadReadingCursorForCurrentFile];
       [(SCROBrailleUIFinderApp *)self setEditorView:v10];
 
-      v11 = [(SCROBrailleUIFinderApp *)self editorView];
-      [v11 display];
+      editorView = [(SCROBrailleUIFinderApp *)self editorView];
+      [editorView display];
     }
 
     else
     {
-      v9 = SCROBrailleUILocString(@"finder.file.too.big");
-      [(SCROBrailleUIFinderApp *)self _openAlertWithMessage:v9];
+      unicode = SCROBrailleUILocString(@"finder.file.too.big");
+      [(SCROBrailleUIFinderApp *)self _openAlertWithMessage:unicode];
     }
   }
 }
@@ -2347,23 +2347,23 @@ LABEL_16:
 {
   if ([(SCROBrailleUIFinderApp *)self _isEditing])
   {
-    v3 = [(SCROBrailleUIFinderApp *)self editorView];
-    v12 = [v3 value];
+    editorView = [(SCROBrailleUIFinderApp *)self editorView];
+    value = [editorView value];
 
-    v4 = [(SCROBrailleUIFinderApp *)self editorView];
-    v5 = [v4 selection];
-    [(SCROBrailleUIFinderApp *)self _saveReadingRange:v5, v6];
+    editorView2 = [(SCROBrailleUIFinderApp *)self editorView];
+    selection = [editorView2 selection];
+    [(SCROBrailleUIFinderApp *)self _saveReadingRange:selection, v6];
 
-    v7 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-    [(SCROBrailleUIFinderApp *)self _writeUnicodeContent:v12 toURL:v7];
+    currentFileURL = [(SCROBrailleUIFinderApp *)self currentFileURL];
+    [(SCROBrailleUIFinderApp *)self _writeUnicodeContent:value toURL:currentFileURL];
 
-    v8 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-    v9 = [(SCROBrailleUIFinderApp *)self currentFileURL];
-    v10 = [v9 lastPathComponent];
-    [(SCROBrailleUIFinderApp *)self _openFilesListInURL:v8 withFocusAtIdentifier:v10];
+    currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+    currentFileURL2 = [(SCROBrailleUIFinderApp *)self currentFileURL];
+    lastPathComponent = [currentFileURL2 lastPathComponent];
+    [(SCROBrailleUIFinderApp *)self _openFilesListInURL:currentDirectoryURL withFocusAtIdentifier:lastPathComponent];
 
-    v11 = [(SCROBrailleUIFinderApp *)self editorView];
-    [v11 dismiss];
+    editorView3 = [(SCROBrailleUIFinderApp *)self editorView];
+    [editorView3 dismiss];
 
     [(SCROBrailleUIFinderApp *)self setEditorView:0];
   }
@@ -2371,8 +2371,8 @@ LABEL_16:
 
 - (BOOL)_isCreateNewMenuOpen
 {
-  v2 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-  v3 = v2 != 0;
+  createNewMenuView = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+  v3 = createNewMenuView != 0;
 
   return v3;
 }
@@ -2397,8 +2397,8 @@ LABEL_16:
     v11 = [(SCROBrailleUIListView *)v9 initWithIdentifier:@"finder.create.new.menu" items:v10];
     [(SCROBrailleUIFinderApp *)self setCreateNewMenuView:v11];
 
-    v12 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-    [v12 display];
+    createNewMenuView = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+    [createNewMenuView display];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2406,27 +2406,27 @@ LABEL_16:
 
 - (void)_closeCreateNewMenu
 {
-  v3 = [(SCROBrailleUIFinderApp *)self createNewMenuView];
-  [v3 dismiss];
+  createNewMenuView = [(SCROBrailleUIFinderApp *)self createNewMenuView];
+  [createNewMenuView dismiss];
 
   [(SCROBrailleUIFinderApp *)self setCreateNewMenuView:0];
 }
 
 - (BOOL)_isContextMenuOpen
 {
-  v2 = [(SCROBrailleUIFinderApp *)self contextMenuView];
-  v3 = v2 != 0;
+  contextMenuView = [(SCROBrailleUIFinderApp *)self contextMenuView];
+  v3 = contextMenuView != 0;
 
   return v3;
 }
 
-- (void)_openContextMenuForURL:(id)a3
+- (void)_openContextMenuForURL:(id)l
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if (![(SCROBrailleUIFinderApp *)self _isContextMenuOpen])
   {
-    [(SCROBrailleUIFinderApp *)self setCurrentFileURL:v4];
+    [(SCROBrailleUIFinderApp *)self setCurrentFileURL:lCopy];
     v5 = [SCROBrailleUIListItem alloc];
     v6 = SCROBrailleUILocString(@"finder.context.menu.rename.edit");
     v7 = [(SCROBrailleUIListItem *)v5 initWithIdentifier:@"finder.context.menu.edit" label:v6 isInline:0];
@@ -2444,9 +2444,9 @@ LABEL_16:
     v16 = [(SCROBrailleUIListItem *)v14 initWithIdentifier:@"finder.context.menu.rename" label:v15 isInline:1];
 
     v26 = 0;
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [v4 path];
-    [v17 fileExistsAtPath:v18 isDirectory:&v26];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v26];
 
     if (v26 == 1)
     {
@@ -2473,8 +2473,8 @@ LABEL_16:
     v23 = [[SCROBrailleUIListView alloc] initWithIdentifier:@"finder.context.menu" items:v22];
     [(SCROBrailleUIFinderApp *)self setContextMenuView:v23];
 
-    v24 = [(SCROBrailleUIFinderApp *)self contextMenuView];
-    [v24 display];
+    contextMenuView = [(SCROBrailleUIFinderApp *)self contextMenuView];
+    [contextMenuView display];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -2483,27 +2483,27 @@ LABEL_16:
 - (void)_closeContextMenu
 {
   [(SCROBrailleUIFinderApp *)self setCurrentFileURL:0];
-  v3 = [(SCROBrailleUIFinderApp *)self contextMenuView];
-  [v3 dismiss];
+  contextMenuView = [(SCROBrailleUIFinderApp *)self contextMenuView];
+  [contextMenuView dismiss];
 
   [(SCROBrailleUIFinderApp *)self setContextMenuView:0];
 }
 
 - (BOOL)_isContextMenuOptionsOpen
 {
-  v2 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
-  v3 = v2 != 0;
+  contextMenuOptionsView = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
+  v3 = contextMenuOptionsView != 0;
 
   return v3;
 }
 
-- (void)_openContextMoveOptionsExcluding:(id)a3
+- (void)_openContextMoveOptionsExcluding:(id)excluding
 {
-  v12 = a3;
+  excludingCopy = excluding;
   if (![(SCROBrailleUIFinderApp *)self _isContextMenuOptionsOpen])
   {
-    v4 = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
-    v5 = [(SCROBrailleUIFinderApp *)self _fileItemsInURL:v4 directoriesOnly:1 excluding:v12];
+    currentDirectoryURL = [(SCROBrailleUIFinderApp *)self currentDirectoryURL];
+    v5 = [(SCROBrailleUIFinderApp *)self _fileItemsInURL:currentDirectoryURL directoriesOnly:1 excluding:excludingCopy];
     v6 = [v5 mutableCopy];
 
     if ([(SCROBrailleUIFinderApp *)self _canGoUpOneLevel])
@@ -2518,31 +2518,31 @@ LABEL_16:
     v10 = [[SCROBrailleUIListView alloc] initWithIdentifier:@"finder.context.menu.options" items:v6];
     [(SCROBrailleUIFinderApp *)self setContextMenuOptionsView:v10];
 
-    v11 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
-    [v11 display];
+    contextMenuOptionsView = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
+    [contextMenuOptionsView display];
   }
 }
 
 - (void)_closeContextMenuOptions
 {
-  v3 = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
-  [v3 dismiss];
+  contextMenuOptionsView = [(SCROBrailleUIFinderApp *)self contextMenuOptionsView];
+  [contextMenuOptionsView dismiss];
 
   [(SCROBrailleUIFinderApp *)self setContextMenuOptionsView:0];
 }
 
 - (BOOL)_isShowingFindField
 {
-  v2 = [(SCROBrailleUIFinderApp *)self findFieldView];
-  v3 = v2 != 0;
+  findFieldView = [(SCROBrailleUIFinderApp *)self findFieldView];
+  v3 = findFieldView != 0;
 
   return v3;
 }
 
 - (void)_closeFindField
 {
-  v3 = [(SCROBrailleUIFinderApp *)self findFieldView];
-  [v3 dismiss];
+  findFieldView = [(SCROBrailleUIFinderApp *)self findFieldView];
+  [findFieldView dismiss];
 
   [(SCROBrailleUIFinderApp *)self setFindFieldView:0];
 }
@@ -2562,8 +2562,8 @@ LABEL_16:
     v8 = [(SCROBrailleUIListView *)v6 initWithIdentifier:@"finder.find.field" items:v7];
     [(SCROBrailleUIFinderApp *)self setFindFieldView:v8];
 
-    v9 = [(SCROBrailleUIFinderApp *)self findFieldView];
-    [v9 display];
+    findFieldView = [(SCROBrailleUIFinderApp *)self findFieldView];
+    [findFieldView display];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2571,13 +2571,13 @@ LABEL_16:
 
 - (void)_startAutoSave
 {
-  v3 = [(SCROBrailleUIFinderApp *)self autoSaveTimer];
+  autoSaveTimer = [(SCROBrailleUIFinderApp *)self autoSaveTimer];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke;
   v4[3] = &unk_279B73DD0;
   v4[4] = self;
-  [v3 afterDelay:v4 processBlock:5.0];
+  [autoSaveTimer afterDelay:v4 processBlock:5.0];
 }
 
 uint64_t __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke(uint64_t a1)
@@ -2605,14 +2605,14 @@ uint64_t __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke(uint64_t a1)
 
 - (void)_stopAutoSave
 {
-  v2 = [(SCROBrailleUIFinderApp *)self autoSaveTimer];
-  [v2 cancel];
+  autoSaveTimer = [(SCROBrailleUIFinderApp *)self autoSaveTimer];
+  [autoSaveTimer cancel];
 }
 
 - (BOOL)_isShowingAlert
 {
-  v2 = [(SCROBrailleUIFinderApp *)self alertView];
-  v3 = v2 != 0;
+  alertView = [(SCROBrailleUIFinderApp *)self alertView];
+  v3 = alertView != 0;
 
   return v3;
 }
@@ -2621,28 +2621,28 @@ uint64_t __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke(uint64_t a1)
 {
   if ([(SCROBrailleUIFinderApp *)self _isShowingAlert])
   {
-    v3 = [(SCROBrailleUIFinderApp *)self alertView];
-    [v3 dismiss];
+    alertView = [(SCROBrailleUIFinderApp *)self alertView];
+    [alertView dismiss];
 
     [(SCROBrailleUIFinderApp *)self setAlertView:0];
   }
 }
 
-- (void)_openAlertWithMessage:(id)a3
+- (void)_openAlertWithMessage:(id)message
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (![(SCROBrailleUIFinderApp *)self _isShowingAlert])
   {
-    v5 = [[SCROBrailleUIListItem alloc] initWithIdentifier:@"finder.alert.message" label:v4 isInline:0];
+    v5 = [[SCROBrailleUIListItem alloc] initWithIdentifier:@"finder.alert.message" label:messageCopy isInline:0];
     v6 = [SCROBrailleUIListView alloc];
     v11[0] = v5;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v8 = [(SCROBrailleUIListView *)v6 initWithIdentifier:@"finder.alert" items:v7];
     [(SCROBrailleUIFinderApp *)self setAlertView:v8];
 
-    v9 = [(SCROBrailleUIFinderApp *)self alertView];
-    [v9 display];
+    alertView = [(SCROBrailleUIFinderApp *)self alertView];
+    [alertView display];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2650,8 +2650,8 @@ uint64_t __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke(uint64_t a1)
 
 - (BOOL)_isShowingDeleteConfirmView
 {
-  v2 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
-  v3 = v2 != 0;
+  deleteConfirmView = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
+  v3 = deleteConfirmView != 0;
 
   return v3;
 }
@@ -2660,8 +2660,8 @@ uint64_t __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke(uint64_t a1)
 {
   if ([(SCROBrailleUIFinderApp *)self _isShowingDeleteConfirmView])
   {
-    v3 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
-    [v3 dismiss];
+    deleteConfirmView = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
+    [deleteConfirmView dismiss];
 
     [(SCROBrailleUIFinderApp *)self setDeleteConfirmView:0];
   }
@@ -2687,38 +2687,38 @@ uint64_t __40__SCROBrailleUIFinderApp__startAutoSave__block_invoke(uint64_t a1)
     v11 = [(SCROBrailleUIListView *)v9 initWithIdentifier:@"finder.delete.confirm" items:v10];
     [(SCROBrailleUIFinderApp *)self setDeleteConfirmView:v11];
 
-    v12 = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
-    [v12 display];
+    deleteConfirmView = [(SCROBrailleUIFinderApp *)self deleteConfirmView];
+    [deleteConfirmView display];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isTitleGood:(id)a3
+- (BOOL)_isTitleGood:(id)good
 {
-  v3 = a3;
-  if (![v3 length] || objc_msgSend(v3, "length") > 0xFF || (objc_msgSend(v3, "hasPrefix:", @":") & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @".") & 1) != 0)
+  goodCopy = good;
+  if (![goodCopy length] || objc_msgSend(goodCopy, "length") > 0xFF || (objc_msgSend(goodCopy, "hasPrefix:", @":") & 1) != 0 || (objc_msgSend(goodCopy, "hasPrefix:", @".") & 1) != 0)
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 containsString:@"/"] ^ 1;
+    v4 = [goodCopy containsString:@"/"] ^ 1;
   }
 
   return v4;
 }
 
-- (id)_secureURLWithBase:(id)a3 userInput:(id)a4
+- (id)_secureURLWithBase:(id)base userInput:(id)input
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 length] || objc_msgSend(v7, "length") >= 0x100)
+  baseCopy = base;
+  inputCopy = input;
+  if (![inputCopy length] || objc_msgSend(inputCopy, "length") >= 0x100)
   {
-    v8 = _SCROD_LOG();
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    stringByRemovingPercentEncoding = _SCROD_LOG();
+    if (!os_log_type_enabled(stringByRemovingPercentEncoding, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_6:
       v10 = 0;
@@ -2728,14 +2728,14 @@ LABEL_6:
     LOWORD(v22) = 0;
     v9 = "Braille UI Finder: URL not secure; invalid length of user input";
 LABEL_5:
-    _os_log_impl(&dword_26490B000, v8, OS_LOG_TYPE_DEFAULT, v9, &v22, 2u);
+    _os_log_impl(&dword_26490B000, stringByRemovingPercentEncoding, OS_LOG_TYPE_DEFAULT, v9, &v22, 2u);
     goto LABEL_6;
   }
 
-  if ([(SCROBrailleUIFinderApp *)self _isPathComponentBad:v7])
+  if ([(SCROBrailleUIFinderApp *)self _isPathComponentBad:inputCopy])
   {
-    v8 = _SCROD_LOG();
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    stringByRemovingPercentEncoding = _SCROD_LOG();
+    if (!os_log_type_enabled(stringByRemovingPercentEncoding, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_6;
     }
@@ -2745,8 +2745,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v8 = [v7 stringByRemovingPercentEncoding];
-  if ([(SCROBrailleUIFinderApp *)self _isPathComponentBad:v8])
+  stringByRemovingPercentEncoding = [inputCopy stringByRemovingPercentEncoding];
+  if ([(SCROBrailleUIFinderApp *)self _isPathComponentBad:stringByRemovingPercentEncoding])
   {
     v13 = _SCROD_LOG();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2760,16 +2760,16 @@ LABEL_5:
 
   else
   {
-    v13 = [v6 URLByAppendingPathComponent:v8];
-    v14 = [v13 URLByResolvingSymlinksInPath];
-    v15 = [v14 URLByStandardizingPath];
-    v16 = [v15 path];
-    v17 = [v6 path];
-    v18 = [v16 hasPrefix:v17];
+    v13 = [baseCopy URLByAppendingPathComponent:stringByRemovingPercentEncoding];
+    uRLByResolvingSymlinksInPath = [v13 URLByResolvingSymlinksInPath];
+    uRLByStandardizingPath = [uRLByResolvingSymlinksInPath URLByStandardizingPath];
+    path = [uRLByStandardizingPath path];
+    path2 = [baseCopy path];
+    v18 = [path hasPrefix:path2];
 
     if (v18)
     {
-      v10 = v15;
+      v10 = uRLByStandardizingPath;
     }
 
     else
@@ -2777,12 +2777,12 @@ LABEL_5:
       v19 = _SCROD_LOG();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v15 path];
-        v21 = [v6 path];
+        path3 = [uRLByStandardizingPath path];
+        path4 = [baseCopy path];
         v22 = 138412546;
-        v23 = v20;
+        v23 = path3;
         v24 = 2112;
-        v25 = v21;
+        v25 = path4;
         _os_log_impl(&dword_26490B000, v19, OS_LOG_TYPE_DEFAULT, "Braille UI Finder: URL not secure; processed path %@ does have the %@ as a base", &v22, 0x16u);
       }
 
@@ -2796,17 +2796,17 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)_isPathComponentBad:(id)a3
+- (BOOL)_isPathComponentBad:(id)bad
 {
-  v3 = a3;
-  if ([v3 containsString:@"/"] & 1) != 0 || (objc_msgSend(v3, "containsString:", @"..") & 1) != 0 || (objc_msgSend(v3, "containsString:", @":") & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @".") & 1) != 0 || (objc_msgSend(v3, "containsString:", @"~"))
+  badCopy = bad;
+  if ([badCopy containsString:@"/"] & 1) != 0 || (objc_msgSend(badCopy, "containsString:", @"..") & 1) != 0 || (objc_msgSend(badCopy, "containsString:", @":") & 1) != 0 || (objc_msgSend(badCopy, "hasPrefix:", @".") & 1) != 0 || (objc_msgSend(badCopy, "containsString:", @"~"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsString:&stru_28763E0C8];
+    v4 = [badCopy containsString:&stru_28763E0C8];
   }
 
   return v4;

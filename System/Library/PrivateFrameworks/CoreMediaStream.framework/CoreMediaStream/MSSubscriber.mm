@@ -1,89 +1,89 @@
 @interface MSSubscriber
 + (BOOL)isInRetryState;
 + (id)_clearInstantiatedSubscribersByPersonID;
-+ (id)_descriptionForRetrievalState:(int)a3;
-+ (id)_descriptionForState:(int)a3;
++ (id)_descriptionForRetrievalState:(int)state;
++ (id)_descriptionForState:(int)state;
 + (id)nextActivityDate;
-+ (id)nextActivityDateForPersonID:(id)a3;
++ (id)nextActivityDateForPersonID:(id)d;
 + (id)personIDsWithOutstandingActivities;
-+ (id)subscriberForPersonID:(id)a3;
-+ (void)_setMasterNextActivityDate:(id)a3 forPersonID:(id)a4;
-+ (void)forgetPersonID:(id)a3;
++ (id)subscriberForPersonID:(id)d;
++ (void)_setMasterNextActivityDate:(id)date forPersonID:(id)d;
++ (void)forgetPersonID:(id)d;
 + (void)stopAllActivities;
 - (BOOL)_hasOutstandingPoll;
 - (BOOL)_isAllowedToDownload;
-- (MSSubscriber)initWithPersonID:(id)a3 baseURL:(id)a4;
+- (MSSubscriber)initWithPersonID:(id)d baseURL:(id)l;
 - (id)_subscriptionsByStreamID;
 - (id)ownSubscribedStream;
 - (id)subscribedStreams;
 - (void)_abort;
 - (void)_checkForNewAssetCollections;
 - (void)_didFinishRetrievingSubscriptionUpdate;
-- (void)_didReceiveAuthenticationError:(id)a3;
-- (void)_finishedRetrievingAsset:(id)a3;
+- (void)_didReceiveAuthenticationError:(id)error;
+- (void)_finishedRetrievingAsset:(id)asset;
 - (void)_forget;
 - (void)_reauthorizeAssets;
 - (void)_refreshServerSideConfigurationParameters;
 - (void)_retrieveAssets;
 - (void)_retrieveNextAssets;
-- (void)_serverSideConfigurationDidChange:(id)a3;
-- (void)_setSubscriptionsByStreamID:(id)a3;
-- (void)_stopOutSubscriberState:(int *)a3 outRetrievalState:(int *)a4;
+- (void)_serverSideConfigurationDidChange:(id)change;
+- (void)_setSubscriptionsByStreamID:(id)d;
+- (void)_stopOutSubscriberState:(int *)state outRetrievalState:(int *)retrievalState;
 - (void)_updateMasterManifest;
 - (void)checkForNewAssetCollections;
 - (void)checkForNewAssetCollectionsIfMissingCtag;
 - (void)checkForOutstandingActivities;
 - (void)deactivate;
 - (void)dealloc;
-- (void)reauthorizationProtocol:(id)a3 didReceiveAuthenticationError:(id)a4;
-- (void)reauthorizationProtocol:(id)a3 reauthorizedAssets:(id)a4 rejectedAssets:(id)a5 error:(id)a6;
+- (void)reauthorizationProtocol:(id)protocol didReceiveAuthenticationError:(id)error;
+- (void)reauthorizationProtocol:(id)protocol reauthorizedAssets:(id)assets rejectedAssets:(id)rejectedAssets error:(id)error;
 - (void)resetSync;
-- (void)retrieveAssets:(id)a3;
-- (void)subscribeStorageProtocol:(id)a3 didFinishRetrievingAsset:(id)a4 error:(id)a5;
-- (void)subscribeStorageProtocolDidFinishRetrievingAllAssets:(id)a3;
-- (void)subscribeStreamsProtocol:(id)a3 didFindDisappearedSubscriptionForPersonID:(id)a4;
-- (void)subscribeStreamsProtocol:(id)a3 didFindTemporarilyUnavailableSubscriptionForPersonID:(id)a4;
-- (void)subscribeStreamsProtocol:(id)a3 didFinishError:(id)a4;
-- (void)subscribeStreamsProtocol:(id)a3 didFinishReceivingUpdatesForPersonID:(id)a4 ctag:(id)a5;
-- (void)subscribeStreamsProtocol:(id)a3 didReceiveAssetCollections:(id)a4 forPersonID:(id)a5;
-- (void)subscribeStreamsProtocol:(id)a3 willReceiveUpdatesForPersonID:(id)a4 wasReset:(BOOL)a5 metadata:(id)a6;
+- (void)retrieveAssets:(id)assets;
+- (void)subscribeStorageProtocol:(id)protocol didFinishRetrievingAsset:(id)asset error:(id)error;
+- (void)subscribeStorageProtocolDidFinishRetrievingAllAssets:(id)assets;
+- (void)subscribeStreamsProtocol:(id)protocol didFindDisappearedSubscriptionForPersonID:(id)d;
+- (void)subscribeStreamsProtocol:(id)protocol didFindTemporarilyUnavailableSubscriptionForPersonID:(id)d;
+- (void)subscribeStreamsProtocol:(id)protocol didFinishError:(id)error;
+- (void)subscribeStreamsProtocol:(id)protocol didFinishReceivingUpdatesForPersonID:(id)d ctag:(id)ctag;
+- (void)subscribeStreamsProtocol:(id)protocol didReceiveAssetCollections:(id)collections forPersonID:(id)d;
+- (void)subscribeStreamsProtocol:(id)protocol willReceiveUpdatesForPersonID:(id)d wasReset:(BOOL)reset metadata:(id)metadata;
 @end
 
 @implementation MSSubscriber
 
-- (void)reauthorizationProtocol:(id)a3 reauthorizedAssets:(id)a4 rejectedAssets:(id)a5 error:(id)a6
+- (void)reauthorizationProtocol:(id)protocol reauthorizedAssets:(id)assets rejectedAssets:(id)rejectedAssets error:(id)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 count];
-  if (!v11 && v12)
+  assetsCopy = assets;
+  rejectedAssetsCopy = rejectedAssets;
+  errorCopy = error;
+  v12 = [rejectedAssetsCopy count];
+  if (!errorCopy && v12)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = MSCFCopyLocalizedString(@"ERROR_SUBSCRIBER_NOT_AUTH");
-    v11 = [v13 MSErrorWithDomain:@"MSSubscriberErrorDomain" code:3 description:v14];
+    errorCopy = [v13 MSErrorWithDomain:@"MSSubscriberErrorDomain" code:3 description:v14];
   }
 
-  if (!v11)
+  if (!errorCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       *buf = 138543874;
       v55 = v17;
       v56 = 2112;
-      v57 = v19;
+      v57 = personID;
       v58 = 2048;
-      v59 = [v9 count];
+      v59 = [assetsCopy count];
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Successfully reauthorized %lu assets.", buf, 0x20u);
     }
 
     daemon = self->_daemon;
-    v21 = [(MSCupidStateMachine *)self personID];
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v21];
+    personID2 = [(MSCupidStateMachine *)self personID];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID2];
 
 LABEL_28:
     [(MSObjectQueue *)self->_retrievalQueue commitObjectsWrappers:self->_assetsBeingRetrieved];
@@ -91,38 +91,38 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v15 = [v11 MSIsTemporaryNetworkError];
+  mSIsTemporaryNetworkError = [errorCopy MSIsTemporaryNetworkError];
   v16 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-  v48 = v11;
-  if (!v15)
+  v48 = errorCopy;
+  if (!mSIsTemporaryNetworkError)
   {
-    v45 = v9;
+    v45 = assetsCopy;
     if (v16)
     {
       v39 = objc_opt_class();
       v40 = v39;
-      v41 = [(MSCupidStateMachine *)self personID];
-      v42 = [v10 count];
-      v43 = [v48 MSVerboseDescription];
+      personID3 = [(MSCupidStateMachine *)self personID];
+      v42 = [rejectedAssetsCopy count];
+      mSVerboseDescription = [v48 MSVerboseDescription];
       *buf = 138544130;
       v55 = v39;
       v56 = 2112;
-      v57 = v41;
+      v57 = personID3;
       v58 = 2048;
       v59 = v42;
-      v11 = v48;
+      errorCopy = v48;
       v60 = 2114;
-      v61 = v43;
+      v61 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Reauthorization resulted in %lu rejected assets. Error: %{public}@", buf, 0x2Au);
     }
 
-    v46 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v44 = v10;
-    obj = v10;
+    v44 = rejectedAssetsCopy;
+    obj = rejectedAssetsCopy;
     v22 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v22)
     {
@@ -145,8 +145,8 @@ LABEL_28:
             while (1)
             {
               v28 = [(NSMutableArray *)self->_assetsBeingRetrieved objectAtIndex:v27];
-              v29 = [v28 object];
-              v30 = [v29 isEqual:v26];
+              object = [v28 object];
+              v30 = [object isEqual:v26];
 
               if (v30)
               {
@@ -159,14 +159,14 @@ LABEL_28:
               }
             }
 
-            [v46 addObject:v28];
+            [array addObject:v28];
             [(NSMutableArray *)self->_assetsBeingRetrieved removeObjectAtIndex:v27];
           }
 
 LABEL_25:
           [(MSSubscriber *)self _finishedRetrievingAsset:v26];
           v31 = v26;
-          v11 = v48;
+          errorCopy = v48;
           [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRetrievingAsset:v31 error:v48];
           ++v25;
         }
@@ -179,14 +179,14 @@ LABEL_25:
     }
 
     storageProtocol = self->_storageProtocol;
-    v33 = [MSObjectWrapper objectsFromWrappers:v46];
+    v33 = [MSObjectWrapper objectsFromWrappers:array];
     [(MSSubscribeStorageProtocol *)storageProtocol didFinishUsingAssets:v33];
 
-    [(MSObjectQueue *)self->_retrievalQueue removeObjectWrappersFromQueue:v46];
+    [(MSObjectQueue *)self->_retrievalQueue removeObjectWrappersFromQueue:array];
     [(MSSubscriber *)self _updateMasterManifest];
 
-    v10 = v44;
-    v9 = v45;
+    rejectedAssetsCopy = v44;
+    assetsCopy = v45;
     goto LABEL_28;
   }
 
@@ -194,17 +194,17 @@ LABEL_25:
   {
     v35 = objc_opt_class();
     v36 = v35;
-    v37 = [(MSCupidStateMachine *)self personID];
-    v38 = [v11 MSVerboseDescription];
+    personID4 = [(MSCupidStateMachine *)self personID];
+    mSVerboseDescription2 = [errorCopy MSVerboseDescription];
     *buf = 138543874;
     v55 = v35;
     v56 = 2112;
-    v57 = v37;
+    v57 = personID4;
     v58 = 2114;
-    v59 = v38;
+    v59 = mSVerboseDescription2;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Encountered temporary network error during subscription update. Trying again later. Error :%{public}@", buf, 0x20u);
 
-    v11 = v48;
+    errorCopy = v48;
   }
 
   [(MSObjectQueue *)self->_retrievalQueue commitObjectsWrappers:self->_assetsBeingRetrieved];
@@ -215,49 +215,49 @@ LABEL_29:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reauthorizationProtocol:(id)a3 didReceiveAuthenticationError:(id)a4
+- (void)reauthorizationProtocol:(id)protocol didReceiveAuthenticationError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v9 = a4;
+    errorCopy = error;
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(MSCupidStateMachine *)self personID];
-    v13 = [v9 MSVerboseDescription];
+    personID = [(MSCupidStateMachine *)self personID];
+    mSVerboseDescription = [errorCopy MSVerboseDescription];
 
     v14 = 138543874;
     v15 = v10;
     v16 = 2112;
-    v17 = v12;
+    v17 = personID;
     v18 = 2114;
-    v19 = v13;
+    v19 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Reauthorization protocol received authentication error: %{public}@", &v14, 0x20u);
   }
 
   daemon = self->_daemon;
-  v7 = [(MSCupidStateMachine *)self personID];
-  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v7];
+  personID2 = [(MSCupidStateMachine *)self personID];
+  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID2];
 
   [(MSSubscriber *)self _changeRetrievalStateTo:3];
   [(MSDaemon *)self->_daemon releaseBusy];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStorageProtocolDidFinishRetrievingAllAssets:(id)a3
+- (void)subscribeStorageProtocolDidFinishRetrievingAllAssets:(id)assets
 {
   v86 = *MEMORY[0x277D85DE8];
-  v63 = a3;
+  assetsCopy = assets;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = v4;
-    v6 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v7 = [(NSMutableArray *)self->_assetsBeingRetrieved count];
     *buf = 138543874;
     v81 = v4;
     v82 = 2112;
-    v83 = v6;
+    v83 = personID;
     v84 = 2048;
     v85 = v7;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Finished retrieving assets. Checking for errors on %lu assets...", buf, 0x20u);
@@ -289,25 +289,25 @@ LABEL_29:
         }
 
         v14 = *(*(&v74 + 1) + 8 * i);
-        v15 = [v14 object];
-        v16 = [v15 error];
-        v17 = v16;
-        if (v16)
+        object = [v14 object];
+        error = [object error];
+        v17 = error;
+        if (error)
         {
-          if ([v16 MSCanBeIgnored])
+          if ([error MSCanBeIgnored])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
               v42 = objc_opt_class();
               v43 = v42;
-              v44 = [(MSCupidStateMachine *)self personID];
-              v45 = [v17 MSVerboseDescription];
+              personID2 = [(MSCupidStateMachine *)self personID];
+              mSVerboseDescription = [v17 MSVerboseDescription];
               *buf = 138543874;
               v81 = v42;
               v82 = 2112;
-              v83 = v44;
+              v83 = personID2;
               v84 = 2114;
-              v85 = v45;
+              v85 = mSVerboseDescription;
               _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Ignoring error: %{public}@", buf, 0x20u);
             }
 
@@ -320,11 +320,11 @@ LABEL_29:
             {
               v18 = objc_opt_class();
               v19 = v18;
-              v20 = [(MSCupidStateMachine *)self personID];
+              personID3 = [(MSCupidStateMachine *)self personID];
               *buf = 138543618;
               v81 = v18;
               v82 = 2112;
-              v83 = v20;
+              v83 = personID3;
               _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Encountered temporary network error.", buf, 0x16u);
 
               v11 = MEMORY[0x277D86220];
@@ -339,12 +339,12 @@ LABEL_29:
             {
               v21 = objc_opt_class();
               v22 = v21;
-              v23 = [(MSCupidStateMachine *)self personID];
+              personID4 = [(MSCupidStateMachine *)self personID];
               *buf = 138543618;
               v81 = v21;
               v11 = MEMORY[0x277D86220];
               v82 = 2112;
-              v83 = v23;
+              v83 = personID4;
               _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Encountered authentication error.", buf, 0x16u);
             }
 
@@ -357,12 +357,12 @@ LABEL_29:
             {
               v24 = objc_opt_class();
               v25 = v24;
-              v26 = [(MSCupidStateMachine *)self personID];
+              personID5 = [(MSCupidStateMachine *)self personID];
               *buf = 138543618;
               v81 = v24;
               v11 = MEMORY[0x277D86220];
               v82 = 2112;
-              v83 = v26;
+              v83 = personID5;
               _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Encountered bad asset retrieval token.", buf, 0x16u);
 
               v8 = v65;
@@ -375,13 +375,13 @@ LABEL_29:
               {
                 v39 = objc_opt_class();
                 v40 = v39;
-                v41 = [(MSCupidStateMachine *)self personID];
+                personID6 = [(MSCupidStateMachine *)self personID];
                 *buf = 138543874;
                 v81 = v39;
                 v82 = 2112;
-                v83 = v41;
+                v83 = personID6;
                 v84 = 2114;
-                v85 = v15;
+                v85 = object;
                 _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Too many errors encountered for asset. Aborting download. %{public}@", buf, 0x20u);
               }
 
@@ -389,10 +389,10 @@ LABEL_29:
               v28 = MEMORY[0x277CCA9B8];
               v29 = MSCFCopyLocalizedString(@"ERROR_SUBSCRIBER_CANNOT_RETRIEVE");
               v30 = [v28 MSErrorWithDomain:@"MSSubscriberErrorDomain" code:5 description:v29];
-              [(MSSubscriberDelegate *)delegate subscriber:self didFinishRetrievingAsset:v15 error:v30];
+              [(MSSubscriberDelegate *)delegate subscriber:self didFinishRetrievingAsset:object error:v30];
 
               v8 = v65;
-              [v65 addObject:v15];
+              [v65 addObject:object];
               v64 = 1;
               v11 = MEMORY[0x277D86220];
             }
@@ -409,22 +409,22 @@ LABEL_29:
             {
               v35 = objc_opt_class();
               v36 = v35;
-              v37 = [(MSCupidStateMachine *)self personID];
-              v38 = [v17 MSVerboseDescription];
+              personID7 = [(MSCupidStateMachine *)self personID];
+              mSVerboseDescription2 = [v17 MSVerboseDescription];
               *buf = 138543874;
               v81 = v35;
               v8 = v65;
               v82 = 2112;
-              v83 = v37;
+              v83 = personID7;
               v84 = 2114;
-              v85 = v38;
+              v85 = mSVerboseDescription2;
               _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Asset retrieval failed with error: %{public}@", buf, 0x20u);
 
               v11 = MEMORY[0x277D86220];
             }
 
-            [v8 addObject:v15];
-            [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRetrievingAsset:v15 error:v17];
+            [v8 addObject:object];
+            [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRetrievingAsset:object error:v17];
           }
 
           if ([v17 MSNeedsBackoff])
@@ -432,10 +432,10 @@ LABEL_29:
             [(MSCupidStateMachine *)self _backoffMMCSBackoffTimer];
           }
 
-          v31 = [v17 MSMMCSRetryAfterDate];
-          if (v31)
+          mSMMCSRetryAfterDate = [v17 MSMMCSRetryAfterDate];
+          if (mSMMCSRetryAfterDate)
           {
-            [(MSCupidStateMachine *)self _didReceiveMMCSRetryAfterDate:v31];
+            [(MSCupidStateMachine *)self _didReceiveMMCSRetryAfterDate:mSMMCSRetryAfterDate];
           }
         }
 
@@ -445,20 +445,20 @@ LABEL_29:
           {
             v32 = objc_opt_class();
             v33 = v32;
-            v34 = [(MSCupidStateMachine *)self personID];
+            personID8 = [(MSCupidStateMachine *)self personID];
             *buf = 138543874;
             v81 = v32;
             v8 = v65;
             v82 = 2112;
-            v83 = v34;
+            v83 = personID8;
             v84 = 2114;
-            v85 = v15;
+            v85 = object;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Found orphaned asset. Ignoring. %{public}@", buf, 0x20u);
 
             v11 = MEMORY[0x277D86220];
           }
 
-          [v8 addObject:v15];
+          [v8 addObject:object];
         }
       }
 
@@ -514,15 +514,15 @@ LABEL_29:
   }
 
   daemon = self->_daemon;
-  v52 = [(MSCupidStateMachine *)self personID];
+  personID9 = [(MSCupidStateMachine *)self personID];
   if (v66)
   {
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v52];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID9];
   }
 
   else
   {
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v52];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID9];
   }
 
   v8 = v65;
@@ -542,11 +542,11 @@ LABEL_29:
   {
     v54 = objc_opt_class();
     v55 = v54;
-    v56 = [(MSCupidStateMachine *)self personID];
+    personID10 = [(MSCupidStateMachine *)self personID];
     *buf = 138543618;
     v81 = v54;
     v82 = 2112;
-    v83 = v56;
+    v83 = personID10;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ ...Finished handling errors.", buf, 0x16u);
 
     v8 = v65;
@@ -555,16 +555,16 @@ LABEL_29:
   [(MSDaemon *)self->_daemon releaseBusy];
   if (v67)
   {
-    v57 = v63;
+    v57 = assetsCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v58 = objc_opt_class();
       v59 = v58;
-      v60 = [(MSCupidStateMachine *)self personID];
+      personID11 = [(MSCupidStateMachine *)self personID];
       *buf = 138543618;
       v81 = v58;
       v82 = 2112;
-      v83 = v60;
+      v83 = personID11;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Found temporary network errors during asset downloading. Trying again later.", buf, 0x16u);
 
       v8 = v65;
@@ -580,21 +580,21 @@ LABEL_29:
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
 LABEL_65:
-    v57 = v63;
+    v57 = assetsCopy;
   }
 
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStorageProtocol:(id)a3 didFinishRetrievingAsset:(id)a4 error:(id)a5
+- (void)subscribeStorageProtocol:(id)protocol didFinishRetrievingAsset:(id)asset error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  protocolCopy = protocol;
+  assetCopy = asset;
+  errorCopy = error;
+  if (errorCopy)
   {
-    [v9 setError:v10];
+    [assetCopy setError:errorCopy];
   }
 
   else
@@ -603,34 +603,34 @@ LABEL_65:
     {
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v17 = 138543618;
       v18 = v11;
       v19 = 2112;
-      v20 = v13;
+      v20 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Finished retrieving asset.", &v17, 0x16u);
     }
 
-    v14 = [v9 path];
-    [(MSSubscriber *)self _finishedRetrievingAsset:v9];
-    [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRetrievingAsset:v9 error:0];
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    [v15 removeItemAtPath:v14 error:0];
+    path = [assetCopy path];
+    [(MSSubscriber *)self _finishedRetrievingAsset:assetCopy];
+    [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRetrievingAsset:assetCopy error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:path error:0];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishedRetrievingAsset:(id)a3
+- (void)_finishedRetrievingAsset:(id)asset
 {
-  v4 = [MSObjectWrapper indexOfObject:a3 inWrapperArray:self->_assetsBeingRetrieved];
+  v4 = [MSObjectWrapper indexOfObject:asset inWrapperArray:self->_assetsBeingRetrieved];
   if (v4 != -1)
   {
     v5 = v4;
     v11 = [(NSMutableArray *)self->_assetsBeingRetrieved objectAtIndex:v4];
-    v6 = [v11 object];
+    object = [v11 object];
     storageProtocol = self->_storageProtocol;
-    v8 = [MEMORY[0x277CBEA60] arrayWithObject:v6];
+    v8 = [MEMORY[0x277CBEA60] arrayWithObject:object];
     [(MSSubscribeStorageProtocol *)storageProtocol didFinishUsingAssets:v8];
 
     retrievalQueue = self->_retrievalQueue;
@@ -701,8 +701,8 @@ LABEL_65:
           }
 
           v15 = self->_delegate;
-          v16 = [*(*(&v18 + 1) + 8 * i) object];
-          [(MSSubscriberDelegate *)v15 subscriber:self didFinishRetrievingAsset:v16 error:v5];
+          object = [*(*(&v18 + 1) + 8 * i) object];
+          [(MSSubscriberDelegate *)v15 subscriber:self didFinishRetrievingAsset:object error:v5];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -723,7 +723,7 @@ LABEL_65:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopOutSubscriberState:(int *)a3 outRetrievalState:(int *)a4
+- (void)_stopOutSubscriberState:(int *)state outRetrievalState:(int *)retrievalState
 {
   if (self->_state == 2)
   {
@@ -765,14 +765,14 @@ LABEL_8:
     self->_checkOneMoreTime = 0;
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = self->_state;
+    *state = self->_state;
   }
 
-  if (a4)
+  if (retrievalState)
   {
-    *a4 = self->_retrievalState;
+    *retrievalState = self->_retrievalState;
   }
 
   [(MSSubscriber *)self _changeStateTo:0];
@@ -791,12 +791,12 @@ LABEL_8:
     {
       v3 = objc_opt_class();
       v4 = v3;
-      v5 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v6 = [(NSMutableArray *)self->_assetsBeingRetrieved count];
       v11 = 138543874;
       v12 = v3;
       v13 = 2112;
-      v14 = v5;
+      v14 = personID;
       v15 = 2048;
       v16 = v6;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Reauthorizing retrieval of %lu assets...", &v11, 0x20u);
@@ -849,10 +849,10 @@ LABEL_8:
 
           v7 = *(*(&v23 + 1) + 8 * v9);
 
-          v11 = [v7 object];
-          v12 = [v11 MMCSAccessHeader];
+          object = [v7 object];
+          mMCSAccessHeader = [object MMCSAccessHeader];
 
-          if (v12)
+          if (mMCSAccessHeader)
           {
             [(NSMutableArray *)self->_assetsBeingRetrieved addObject:v7];
           }
@@ -874,12 +874,12 @@ LABEL_8:
       {
         v13 = objc_opt_class();
         v14 = v13;
-        v15 = [(MSCupidStateMachine *)self personID];
+        personID = [(MSCupidStateMachine *)self personID];
         v16 = [(NSMutableArray *)self->_assetsBeingRetrieved count];
         *buf = 138543874;
         v28 = v13;
         v29 = 2112;
-        v30 = v15;
+        v30 = personID;
         v31 = 2048;
         v32 = v16;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Retrieving %lu assets...", buf, 0x20u);
@@ -906,11 +906,11 @@ LABEL_8:
     {
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [(MSCupidStateMachine *)self personID];
+      personID2 = [(MSCupidStateMachine *)self personID];
       *buf = 138543618;
       v28 = v19;
       v29 = 2112;
-      v30 = v21;
+      v30 = personID2;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ No more assets to retrieve.", buf, 0x16u);
     }
 
@@ -931,11 +931,11 @@ LABEL_8:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v3 = objc_opt_class();
-      v4 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v11 = 138543618;
       v12 = v3;
       v13 = 2112;
-      v14 = v4;
+      v14 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not retrieving assets because we're shutting down.", &v11, 0x16u);
     }
 
@@ -946,12 +946,12 @@ LABEL_8:
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(MSCupidStateMachine *)self personID];
+    personID2 = [(MSCupidStateMachine *)self personID];
     retrievalState = self->_retrievalState;
     v11 = 138543874;
     v12 = v7;
     v13 = 2112;
-    v14 = v9;
+    v14 = personID2;
     v15 = 1024;
     v16 = retrievalState;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Retrieval state: %d", &v11, 0x1Cu);
@@ -1011,11 +1011,11 @@ LABEL_17:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v3 = objc_opt_class();
-      v4 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v7 = 138543618;
       v8 = v3;
       v9 = 2112;
-      v10 = v4;
+      v10 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not checking for outstanding activities because we're shutting down.", &v7, 0x16u);
     }
 
@@ -1040,17 +1040,17 @@ LABEL_10:
   [(MSSubscriber *)self checkForNewAssetCollections];
 }
 
-- (void)retrieveAssets:(id)a3
+- (void)retrieveAssets:(id)assets
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v5 = v4;
+    v5 = assetsCopy;
     v6 = [v5 countByEnumeratingWithState:&v36 objects:v47 count:16];
     if (v6)
     {
@@ -1079,18 +1079,18 @@ LABEL_10:
       while (v7);
     }
 
-    v31 = v4;
+    v31 = assetsCopy;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v14 = [v5 count];
       *buf = 138543874;
       v42 = v11;
       v43 = 2112;
-      v44 = v13;
+      v44 = personID;
       v45 = 2048;
       v46 = v14;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Scheduling retrieval of %ld assets.", buf, 0x20u);
@@ -1119,8 +1119,8 @@ LABEL_10:
           v21 = *(*(&v32 + 1) + 8 * j);
           if ([v21 _fileSize])
           {
-            v22 = [MEMORY[0x277CCACA8] MSMakeUUID];
-            [v21 addMetadataValue:v22 forKey:@"MSAssetMetadataAssetFileTransferUUID"];
+            mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+            [v21 addMetadataValue:mSMakeUUID forKey:@"MSAssetMetadataAssetFileTransferUUID"];
 
             v23 = +[MSObjectWrapper wrapperWithObject:size:](MSObjectWrapper, "wrapperWithObject:size:", v21, [v21 _fileSize]);
             [v15 addObject:v23];
@@ -1132,11 +1132,11 @@ LABEL_10:
             {
               v27 = objc_opt_class();
               v28 = v27;
-              v29 = [(MSCupidStateMachine *)self personID];
+              personID2 = [(MSCupidStateMachine *)self personID];
               *buf = 138543874;
               v42 = v27;
               v43 = 2112;
-              v44 = v29;
+              v44 = personID2;
               v45 = 2114;
               v46 = v21;
               _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Rejected invalid asset %{public}@.", buf, 0x20u);
@@ -1160,104 +1160,104 @@ LABEL_10:
     [(MSSubscriber *)self _updateMasterManifest];
     [(MSSubscriber *)self _retrieveAssets];
 
-    v4 = v31;
+    assetsCopy = v31;
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStreamsProtocol:(id)a3 didFindTemporarilyUnavailableSubscriptionForPersonID:(id)a4
+- (void)subscribeStreamsProtocol:(id)protocol didFindTemporarilyUnavailableSubscriptionForPersonID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = a4;
+    dCopy = d;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
 
     v11 = 138543874;
     v12 = v7;
     v13 = 2112;
-    v14 = v9;
+    v14 = personID;
     v15 = 2114;
-    v16 = v6;
+    v16 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Subscription stream for person ID %{public}@ is temporarily unavailable.", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didReceiveAuthenticationError:(id)a3
+- (void)_didReceiveAuthenticationError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v8 = a3;
+    errorCopy = error;
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [(MSCupidStateMachine *)self personID];
-    v12 = [v8 MSVerboseDescription];
+    personID = [(MSCupidStateMachine *)self personID];
+    mSVerboseDescription = [errorCopy MSVerboseDescription];
 
     v13 = 138543874;
     v14 = v9;
     v15 = 2112;
-    v16 = v11;
+    v16 = personID;
     v17 = 2114;
-    v18 = v12;
+    v18 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Received authentication error: %{public}@", &v13, 0x20u);
   }
 
   daemon = self->_daemon;
-  v6 = [(MSCupidStateMachine *)self personID];
-  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v6];
+  personID2 = [(MSCupidStateMachine *)self personID];
+  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID2];
 
   [(MSSubscriber *)self _changeStateTo:1];
   [(MSDaemon *)self->_daemon releaseBusy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStreamsProtocol:(id)a3 didFinishError:(id)a4
+- (void)subscribeStreamsProtocol:(id)protocol didFinishError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  protocolCopy = protocol;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!errorCopy)
   {
     daemon = self->_daemon;
-    v12 = [(MSCupidStateMachine *)self personID];
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v12];
+    personID = [(MSCupidStateMachine *)self personID];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID];
 
     [(MSCupidStateMachine *)self _resetStreamsBackoffTimer];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v13 = objc_opt_class();
       v14 = v13;
-      v15 = [(MSCupidStateMachine *)self personID];
+      personID2 = [(MSCupidStateMachine *)self personID];
       v24 = 138543618;
       v25 = v13;
       v26 = 2112;
-      v27 = v15;
+      v27 = personID2;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Finished retrieving subscription updates.", &v24, 0x16u);
     }
 
     goto LABEL_13;
   }
 
-  v9 = [v7 MSIsTemporaryNetworkError];
+  mSIsTemporaryNetworkError = [errorCopy MSIsTemporaryNetworkError];
   v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-  if (!v9)
+  if (!mSIsTemporaryNetworkError)
   {
     if (v10)
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [(MSCupidStateMachine *)self personID];
+      personID3 = [(MSCupidStateMachine *)self personID];
       v24 = 138543874;
       v25 = v21;
       v26 = 2112;
-      v27 = v23;
+      v27 = personID3;
       v28 = 2114;
       v29 = v8;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Found error when retrieving subscription updates: %{public}@", &v24, 0x20u);
@@ -1278,14 +1278,14 @@ LABEL_13:
   {
     v17 = objc_opt_class();
     v18 = v17;
-    v19 = [(MSCupidStateMachine *)self personID];
-    v20 = [v8 MSVerboseDescription];
+    personID4 = [(MSCupidStateMachine *)self personID];
+    mSVerboseDescription = [v8 MSVerboseDescription];
     v24 = 138543874;
     v25 = v17;
     v26 = 2112;
-    v27 = v19;
+    v27 = personID4;
     v28 = 2114;
-    v29 = v20;
+    v29 = mSVerboseDescription;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Found temporary network error. Trying again later. Error: %{public}@", &v24, 0x20u);
   }
 
@@ -1296,52 +1296,52 @@ LABEL_14:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStreamsProtocol:(id)a3 didFindDisappearedSubscriptionForPersonID:(id)a4
+- (void)subscribeStreamsProtocol:(id)protocol didFindDisappearedSubscriptionForPersonID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v13 = 138543874;
     v14 = v8;
     v15 = 2112;
-    v16 = v10;
+    v16 = personID;
     v17 = 2112;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Subscription for personID %@ is no longer available.", &v13, 0x20u);
   }
 
-  [(NSMutableDictionary *)self->_newSubscriptionsByStreamID removeObjectForKey:v7];
+  [(NSMutableDictionary *)self->_newSubscriptionsByStreamID removeObjectForKey:dCopy];
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MSSubscriberDelegate *)self->_delegate subscriber:self didFindDisappearedSubscriptionforStreamID:v7];
+    [(MSSubscriberDelegate *)self->_delegate subscriber:self didFindDisappearedSubscriptionforStreamID:dCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStreamsProtocol:(id)a3 didFinishReceivingUpdatesForPersonID:(id)a4 ctag:(id)a5
+- (void)subscribeStreamsProtocol:(id)protocol didFinishReceivingUpdatesForPersonID:(id)d ctag:(id)ctag
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protocolCopy = protocol;
+  dCopy = d;
+  ctagCopy = ctag;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v25 = 138543874;
     v26 = v11;
     v27 = 2112;
-    v28 = v13;
+    v28 = personID;
     v29 = 2112;
-    v30 = v9;
+    v30 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Finished receiving updates for personID: %@.", &v25, 0x20u);
   }
 
@@ -1349,45 +1349,45 @@ LABEL_14:
   {
     v22 = objc_opt_class();
     v23 = v22;
-    v24 = [(MSCupidStateMachine *)self personID];
+    personID2 = [(MSCupidStateMachine *)self personID];
     v25 = 138543874;
     v26 = v22;
     v27 = 2112;
-    v28 = v24;
+    v28 = personID2;
     v29 = 2114;
-    v30 = v10;
+    v30 = ctagCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ New ctag: %{public}@", &v25, 0x20u);
   }
 
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRequestingAssetRetrievalForStreamID:v9];
+    [(MSSubscriberDelegate *)self->_delegate subscriber:self didFinishRequestingAssetRetrievalForStreamID:dCopy];
   }
 
-  v15 = [(NSMutableDictionary *)self->_newSubscriptionsByStreamID objectForKey:v9];
+  v15 = [(NSMutableDictionary *)self->_newSubscriptionsByStreamID objectForKey:dCopy];
   v16 = v15;
   if (v15)
   {
-    [v15 setCtag:v10];
+    [v15 setCtag:ctagCopy];
   }
 
-  else if (v10)
+  else if (ctagCopy)
   {
-    v17 = [MSSubscribedStream subscribedStreamWithStreamID:v9];
-    [v17 setCtag:v10];
-    [(NSMutableDictionary *)self->_newSubscriptionsByStreamID setObject:v17 forKey:v9];
+    v17 = [MSSubscribedStream subscribedStreamWithStreamID:dCopy];
+    [v17 setCtag:ctagCopy];
+    [(NSMutableDictionary *)self->_newSubscriptionsByStreamID setObject:v17 forKey:dCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v18 = objc_opt_class();
       v19 = v18;
-      v20 = [(MSCupidStateMachine *)self personID];
+      personID3 = [(MSCupidStateMachine *)self personID];
       v25 = 138543874;
       v26 = v18;
       v27 = 2112;
-      v28 = v20;
+      v28 = personID3;
       v29 = 2112;
-      v30 = v9;
+      v30 = dCopy;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Received CTAG for new person ID %@.", &v25, 0x20u);
     }
   }
@@ -1395,33 +1395,33 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStreamsProtocol:(id)a3 didReceiveAssetCollections:(id)a4 forPersonID:(id)a5
+- (void)subscribeStreamsProtocol:(id)protocol didReceiveAssetCollections:(id)collections forPersonID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
+  protocolCopy = protocol;
+  collectionsCopy = collections;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     v31 = v10;
     v32 = 2112;
-    v33 = v12;
+    v33 = personID;
     v34 = 2048;
-    v35 = [v8 count];
+    v35 = [collectionsCopy count];
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Found %ld new asset collections.", buf, 0x20u);
   }
 
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v14 = [MEMORY[0x277CBEB18] array];
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v8;
+  v15 = collectionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v16)
   {
@@ -1439,7 +1439,7 @@ LABEL_14:
         v20 = *(*(&v25 + 1) + 8 * i);
         if ([v20 wasDeleted])
         {
-          v21 = v14;
+          v21 = array;
         }
 
         else
@@ -1463,55 +1463,55 @@ LABEL_14:
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "New Collections: %{public}@", buf, 0xCu);
   }
 
-  if ([v14 count])
+  if ([array count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v31 = v14;
+      v31 = array;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Deleted asset collections: %{public}@", buf, 0xCu);
     }
 
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
     {
-      [(MSSubscriberDelegate *)self->_delegate subscriber:self didReceiveDeleteForAssetCollections:v14 streamID:v9];
+      [(MSSubscriberDelegate *)self->_delegate subscriber:self didReceiveDeleteForAssetCollections:array streamID:dCopy];
     }
   }
 
-  [(MSSubscriberDelegate *)self->_delegate subscriber:self didRequestAssetRetrievalForAssetCollections:v13 streamID:v9];
+  [(MSSubscriberDelegate *)self->_delegate subscriber:self didRequestAssetRetrievalForAssetCollections:v13 streamID:dCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeStreamsProtocol:(id)a3 willReceiveUpdatesForPersonID:(id)a4 wasReset:(BOOL)a5 metadata:(id)a6
+- (void)subscribeStreamsProtocol:(id)protocol willReceiveUpdatesForPersonID:(id)d wasReset:(BOOL)reset metadata:(id)metadata
 {
-  v7 = a5;
+  resetCopy = reset;
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  protocolCopy = protocol;
+  dCopy = d;
+  metadataCopy = metadata;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = objc_opt_class();
     v14 = v13;
-    v15 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v27 = 138543618;
     v28 = v13;
     v29 = 2112;
-    v30 = v15;
+    v30 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Checking for subscription updates...", &v27, 0x16u);
   }
 
-  if (v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  if (resetCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_opt_class();
     v17 = v16;
-    v18 = [(MSCupidStateMachine *)self personID];
+    personID2 = [(MSCupidStateMachine *)self personID];
     v27 = 138543618;
     v28 = v16;
     v29 = 2112;
-    v30 = v18;
+    v30 = personID2;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Subscriber state was reset by the server.", &v27, 0x16u);
   }
 
@@ -1519,24 +1519,24 @@ LABEL_14:
   {
     v24 = objc_opt_class();
     v25 = v24;
-    v26 = [(MSCupidStateMachine *)self personID];
+    personID3 = [(MSCupidStateMachine *)self personID];
     v27 = 138544386;
     v28 = v24;
     v29 = 2112;
-    v30 = v26;
+    v30 = personID3;
     v31 = 2112;
-    v32 = v11;
+    v32 = dCopy;
     v33 = 1024;
-    v34 = v7;
+    v34 = resetCopy;
     v35 = 2114;
-    v36 = v12;
+    v36 = metadataCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Beginning subscriber updates for personID: %@ wasReset: %d\nMetadata: %{public}@", &v27, 0x30u);
   }
 
-  v19 = [(NSMutableDictionary *)self->_newSubscriptionsByStreamID objectForKey:v11];
+  v19 = [(NSMutableDictionary *)self->_newSubscriptionsByStreamID objectForKey:dCopy];
   if (v19)
   {
-    if (!v7)
+    if (!resetCopy)
     {
       goto LABEL_13;
     }
@@ -1544,28 +1544,28 @@ LABEL_14:
 
   else
   {
-    v19 = [MSSubscribedStream subscribedStreamWithStreamID:v11];
-    [(NSMutableDictionary *)self->_newSubscriptionsByStreamID setObject:v19 forKey:v11];
-    if (!v7)
+    v19 = [MSSubscribedStream subscribedStreamWithStreamID:dCopy];
+    [(NSMutableDictionary *)self->_newSubscriptionsByStreamID setObject:v19 forKey:dCopy];
+    if (!resetCopy)
     {
       goto LABEL_13;
     }
   }
 
-  v20 = [(MSSubscriber *)self daemon];
-  [v20 didReceiveGlobalResetSyncForPersonID:v11];
+  daemon = [(MSSubscriber *)self daemon];
+  [daemon didReceiveGlobalResetSyncForPersonID:dCopy];
 
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MSSubscriberDelegate *)self->_delegate subscriber:self didResetSyncForStreamID:v11];
+    [(MSSubscriberDelegate *)self->_delegate subscriber:self didResetSyncForStreamID:dCopy];
   }
 
 LABEL_13:
   v22 = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MSSubscriberDelegate *)self->_delegate subscriber:self willBeginRequestingAssetRetrievalForStreamID:v11];
+    [(MSSubscriberDelegate *)self->_delegate subscriber:self willBeginRequestingAssetRetrievalForStreamID:dCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1607,13 +1607,13 @@ LABEL_13:
 {
   v23 = *MEMORY[0x277D85DE8];
   [(MSSubscriber *)self _changeStateTo:2];
-  v3 = [(MSSubscriber *)self _subscriptionsByStreamID];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  _subscriptionsByStreamID = [(MSSubscriber *)self _subscriptionsByStreamID];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(_subscriptionsByStreamID, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = _subscriptionsByStreamID;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -1630,13 +1630,13 @@ LABEL_13:
         }
 
         v10 = [v5 objectForKey:{*(*(&v18 + 1) + 8 * v9), v18}];
-        v11 = [v10 ctag];
+        ctag = [v10 ctag];
 
-        if (v11)
+        if (ctag)
         {
-          v12 = [v10 ctag];
-          v13 = [v10 streamID];
-          [v4 setObject:v12 forKey:v13];
+          ctag2 = [v10 ctag];
+          streamID = [v10 streamID];
+          [v4 setObject:ctag2 forKey:streamID];
         }
 
         ++v9;
@@ -1649,8 +1649,8 @@ LABEL_13:
     while (v7);
   }
 
-  v14 = [(MSSubscriber *)self _subscriptionsByStreamID];
-  v15 = [v14 mutableCopy];
+  _subscriptionsByStreamID2 = [(MSSubscriber *)self _subscriptionsByStreamID];
+  v15 = [_subscriptionsByStreamID2 mutableCopy];
   newSubscriptionsByStreamID = self->_newSubscriptionsByStreamID;
   self->_newSubscriptionsByStreamID = v15;
 
@@ -1666,11 +1666,11 @@ LABEL_13:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v3 = objc_opt_class();
-      v4 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v8 = 138543618;
       v9 = v3;
       v10 = 2112;
-      v11 = v4;
+      v11 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not checking for new asset collections because we're shutting down.", &v8, 0x16u);
     }
   }
@@ -1716,16 +1716,16 @@ LABEL_13:
 - (void)checkForNewAssetCollectionsIfMissingCtag
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(MSSubscriber *)self _subscriptionsByStreamID];
+  _subscriptionsByStreamID = [(MSSubscriber *)self _subscriptionsByStreamID];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v4 = [_subscriptionsByStreamID countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
-    v14 = self;
+    selfCopy = self;
     v6 = 0;
     v7 = *v16;
     v8 = MEMORY[0x277D86220];
@@ -1735,14 +1735,14 @@ LABEL_13:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_subscriptionsByStreamID);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
-        v12 = [v11 ctag];
+        v11 = [_subscriptionsByStreamID objectForKey:v10];
+        ctag = [v11 ctag];
 
-        if (!v12)
+        if (!ctag)
         {
           v6 = 1;
           if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1754,13 +1754,13 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v5 = [_subscriptionsByStreamID countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v5);
     if (v6)
     {
-      [(MSSubscriber *)v14 checkForNewAssetCollections];
+      [(MSSubscriber *)selfCopy checkForNewAssetCollections];
     }
   }
 
@@ -1770,9 +1770,9 @@ LABEL_13:
 - (BOOL)_isAllowedToDownload
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(MSSubscriber *)self daemon];
-  v4 = [(MSCupidStateMachine *)self personID];
-  if (![v3 mayDownloadPersonID:v4])
+  daemon = [(MSSubscriber *)self daemon];
+  personID = [(MSCupidStateMachine *)self personID];
+  if (![daemon mayDownloadPersonID:personID])
   {
     goto LABEL_6;
   }
@@ -1785,9 +1785,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(MSCupidStateMachine *)self _latestNextActivityDate];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 compare:v7];
+  _latestNextActivityDate = [(MSCupidStateMachine *)self _latestNextActivityDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [_latestNextActivityDate compare:date];
 
   if (v8 != 1)
   {
@@ -1802,11 +1802,11 @@ LABEL_7:
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [(MSCupidStateMachine *)self personID];
+    personID2 = [(MSCupidStateMachine *)self personID];
     v15 = 138543618;
     v16 = v11;
     v17 = 2112;
-    v18 = v13;
+    v18 = personID2;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not downloading at this time.", &v15, 0x16u);
 
     result = 0;
@@ -1824,64 +1824,64 @@ LABEL_9:
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v8 = 138543618;
     v9 = v3;
     v10 = 2112;
-    v11 = v5;
+    v11 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Subscriber sync state was reset locally.", &v8, 0x16u);
   }
 
   [(MSSubscriber *)self _stopOutSubscriberState:0 outRetrievalState:0];
-  v6 = [(MSSubscriber *)self _subscriptionsByStreamID];
-  [v6 removeAllObjects];
+  _subscriptionsByStreamID = [(MSSubscriber *)self _subscriptionsByStreamID];
+  [_subscriptionsByStreamID removeAllObjects];
 
   [(MSCupidStateMachine *)self _commitUserManifest];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setSubscriptionsByStreamID:(id)a3
+- (void)_setSubscriptionsByStreamID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSCupidStateMachine *)self _userManifest];
-  [v5 setObject:v4 forKey:@"subs"];
+  dCopy = d;
+  _userManifest = [(MSCupidStateMachine *)self _userManifest];
+  [_userManifest setObject:dCopy forKey:@"subs"];
 
   [(MSCupidStateMachine *)self _commitUserManifest];
 }
 
 - (id)_subscriptionsByStreamID
 {
-  v3 = [(MSCupidStateMachine *)self _userManifest];
-  v4 = [v3 objectForKey:@"subs"];
-  if (!v4)
+  _userManifest = [(MSCupidStateMachine *)self _userManifest];
+  dictionary = [_userManifest objectForKey:@"subs"];
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v3 setObject:v4 forKey:@"subs"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [_userManifest setObject:dictionary forKey:@"subs"];
     [(MSCupidStateMachine *)self _commitUserManifest];
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (BOOL)_hasOutstandingPoll
 {
-  v2 = [(MSCupidStateMachine *)self _userManifest];
-  v3 = [v2 objectForKey:@"poll"];
-  v4 = [v3 BOOLValue];
+  _userManifest = [(MSCupidStateMachine *)self _userManifest];
+  v3 = [_userManifest objectForKey:@"poll"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)_updateMasterManifest
 {
-  v6 = [(MSCupidStateMachine *)self _latestNextActivityDate];
+  _latestNextActivityDate = [(MSCupidStateMachine *)self _latestNextActivityDate];
   if ([(MSSubscriber *)self _hasOutstandingPoll])
   {
-    if (v6)
+    if (_latestNextActivityDate)
     {
 LABEL_3:
-      v3 = [(MSCupidStateMachine *)self personID];
-      v4 = v6;
+      personID = [(MSCupidStateMachine *)self personID];
+      v4 = _latestNextActivityDate;
       goto LABEL_10;
     }
   }
@@ -1890,7 +1890,7 @@ LABEL_3:
   {
     if ([(MSObjectQueue *)self->_retrievalQueue count])
     {
-      v5 = v6 == 0;
+      v5 = _latestNextActivityDate == 0;
     }
 
     else
@@ -1904,29 +1904,29 @@ LABEL_3:
     }
   }
 
-  v3 = [(MSCupidStateMachine *)self personID];
+  personID = [(MSCupidStateMachine *)self personID];
   v4 = 0;
 LABEL_10:
-  [MSSubscriber _setMasterNextActivityDate:v4 forPersonID:v3];
+  [MSSubscriber _setMasterNextActivityDate:v4 forPersonID:personID];
 
   _commitMasterManifest_269();
 }
 
-- (void)_serverSideConfigurationDidChange:(id)a3
+- (void)_serverSideConfigurationDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACC8];
-  v16 = a3;
-  v5 = [v4 currentThread];
-  v6 = [MEMORY[0x277CCACC8] mainThread];
+  changeCopy = change;
+  currentThread = [v4 currentThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
 
-  if (v5 == v6)
+  if (currentThread == mainThread)
   {
-    v8 = [v16 userInfo];
+    userInfo = [changeCopy userInfo];
 
-    v9 = [v8 objectForKey:@"personID"];
-    v10 = [(MSCupidStateMachine *)self personID];
-    v11 = [v9 isEqualToString:v10];
+    v9 = [userInfo objectForKey:@"personID"];
+    personID = [(MSCupidStateMachine *)self personID];
+    v11 = [v9 isEqualToString:personID];
 
     if (v11)
     {
@@ -1934,11 +1934,11 @@ LABEL_10:
       {
         v12 = objc_opt_class();
         v13 = v12;
-        v14 = [(MSCupidStateMachine *)self personID];
+        personID2 = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         v18 = v12;
         v19 = 2112;
-        v20 = v14;
+        v20 = personID2;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Server-side configuration has changed. Reading new values.", buf, 0x16u);
       }
 
@@ -1950,21 +1950,21 @@ LABEL_10:
 
   else
   {
-    [(MSSubscriber *)self performSelectorOnMainThread:sel__serverSideConfigurationDidChange_ withObject:v16 waitUntilDone:0];
+    [(MSSubscriber *)self performSelectorOnMainThread:sel__serverSideConfigurationDidChange_ withObject:changeCopy waitUntilDone:0];
     v7 = *MEMORY[0x277D85DE8];
   }
 }
 
 - (void)_refreshServerSideConfigurationParameters
 {
-  v3 = [(MSCupidStateMachine *)self personID];
-  self->_targetRetrievalByteCount = [MSServerSideConfigManager longLongValueForParameter:@"mme.streams.client.subDownloadBatchTargetSize" forPersonID:v3 defaultValue:10485760];
+  personID = [(MSCupidStateMachine *)self personID];
+  self->_targetRetrievalByteCount = [MSServerSideConfigManager longLongValueForParameter:@"mme.streams.client.subDownloadBatchTargetSize" forPersonID:personID defaultValue:10485760];
 
-  v4 = [(MSCupidStateMachine *)self personID];
-  self->_retrievalBatchSize = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.subMaxDownloadBatchCount" forPersonID:v4 defaultValue:10];
+  personID2 = [(MSCupidStateMachine *)self personID];
+  self->_retrievalBatchSize = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.subMaxDownloadBatchCount" forPersonID:personID2 defaultValue:10];
 
-  v5 = [(MSCupidStateMachine *)self personID];
-  self->_maxErrorCount = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.subMaxErrorRetryCount" forPersonID:v5 defaultValue:3];
+  personID3 = [(MSCupidStateMachine *)self personID];
+  self->_maxErrorCount = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.subMaxErrorRetryCount" forPersonID:personID3 defaultValue:3];
 }
 
 - (void)dealloc
@@ -1977,8 +1977,8 @@ LABEL_10:
 
 - (void)deactivate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MSSubscriber *)self stop];
   assetsBeingRetrieved = self->_assetsBeingRetrieved;
@@ -2005,26 +2005,26 @@ LABEL_10:
   [(MSCupidStateMachine *)&v10 deactivate];
 }
 
-- (MSSubscriber)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSSubscriber)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = MSSubscriber;
-  v8 = [(MSCupidStateMachine *)&v23 initWithPersonID:v6];
+  v8 = [(MSCupidStateMachine *)&v23 initWithPersonID:dCopy];
   if (v8)
   {
-    v9 = [[MSSubscribeStreamsProtocol alloc] initWithPersonID:v6 baseURL:v7];
+    v9 = [[MSSubscribeStreamsProtocol alloc] initWithPersonID:dCopy baseURL:lCopy];
     protocol = v8->_protocol;
     v8->_protocol = v9;
 
     [(MSSubscribeStreamsProtocol *)v8->_protocol setDelegate:v8];
-    v11 = [[MSSubscribeMMCSProtocol alloc] initWithPersonID:v6];
+    v11 = [[MSSubscribeMMCSProtocol alloc] initWithPersonID:dCopy];
     storageProtocol = v8->_storageProtocol;
     v8->_storageProtocol = v11;
 
     [(MSSubscribeStorageProtocol *)v8->_storageProtocol setDelegate:v8];
-    v13 = [[MSReauthorizationProtocol alloc] initWithPersonID:v6 baseURL:v7];
+    v13 = [[MSReauthorizationProtocol alloc] initWithPersonID:dCopy baseURL:lCopy];
     reauthProtocol = v8->_reauthProtocol;
     v8->_reauthProtocol = v13;
 
@@ -2034,13 +2034,13 @@ LABEL_10:
     v8->_assetsBeingRetrieved = v15;
 
     v17 = [MSObjectQueue alloc];
-    v18 = MSPathSubscriberRetrievalQueueForPersonID(v6);
+    v18 = MSPathSubscriberRetrievalQueueForPersonID(dCopy);
     v19 = [(MSObjectQueue *)v17 initWithPath:v18];
     retrievalQueue = v8->_retrievalQueue;
     v8->_retrievalQueue = v19;
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v8 selector:sel__serverSideConfigurationDidChange_ name:@"MSServerSideConfigChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__serverSideConfigurationDidChange_ name:@"MSServerSideConfigChanged" object:0];
 
     [(MSSubscriber *)v8 _refreshServerSideConfigurationParameters];
   }
@@ -2050,9 +2050,9 @@ LABEL_10:
 
 - (id)ownSubscribedStream
 {
-  v3 = [(MSSubscriber *)self _subscriptionsByStreamID];
-  v4 = [(MSCupidStateMachine *)self personID];
-  v5 = [v3 objectForKey:v4];
+  _subscriptionsByStreamID = [(MSSubscriber *)self _subscriptionsByStreamID];
+  personID = [(MSCupidStateMachine *)self personID];
+  v5 = [_subscriptionsByStreamID objectForKey:personID];
 
   return v5;
 }
@@ -2061,15 +2061,15 @@ LABEL_10:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(MSSubscriber *)self _subscriptionsByStreamID];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  _subscriptionsByStreamID = [(MSSubscriber *)self _subscriptionsByStreamID];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(_subscriptionsByStreamID, "count")}];
 
-  v6 = [(MSSubscriber *)self _subscriptionsByStreamID];
+  _subscriptionsByStreamID2 = [(MSSubscriber *)self _subscriptionsByStreamID];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [_subscriptionsByStreamID2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2080,14 +2080,14 @@ LABEL_10:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_subscriptionsByStreamID2);
         }
 
-        v11 = [v6 objectForKey:*(*(&v14 + 1) + 8 * i)];
+        v11 = [_subscriptionsByStreamID2 objectForKey:*(*(&v14 + 1) + 8 * i)];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [_subscriptionsByStreamID2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -2098,29 +2098,29 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_descriptionForRetrievalState:(int)a3
++ (id)_descriptionForRetrievalState:(int)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return @"???";
   }
 
   else
   {
-    return off_278E90598[a3];
+    return off_278E90598[state];
   }
 }
 
-+ (id)_descriptionForState:(int)a3
++ (id)_descriptionForState:(int)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return @"???";
   }
 
   else
   {
-    return off_278E90580[a3];
+    return off_278E90580[state];
   }
 }
 
@@ -2131,8 +2131,8 @@ LABEL_10:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_subscriberByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_subscriberByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -2142,7 +2142,7 @@ LABEL_10:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) _isInRetryState])
@@ -2152,7 +2152,7 @@ LABEL_10:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -2175,8 +2175,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_subscriberByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_subscriberByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2188,14 +2188,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) stop];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -2207,16 +2207,16 @@ LABEL_11:
 + (id)personIDsWithOutstandingActivities
 {
   v2 = _masterNextActivityDateByPersonID_296();
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-+ (id)nextActivityDateForPersonID:(id)a3
++ (id)nextActivityDateForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _masterNextActivityDateByPersonID_296();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dCopy];
 
   return v5;
 }
@@ -2270,23 +2270,23 @@ LABEL_11:
   return v5;
 }
 
-+ (void)_setMasterNextActivityDate:(id)a3 forPersonID:(id)a4
++ (void)_setMasterNextActivityDate:(id)date forPersonID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  dCopy = d;
+  if (dCopy)
   {
     v7 = _masterNextActivityDateByPersonID_296();
     v8 = v7;
-    if (v5)
+    if (dateCopy)
     {
-      [v7 setObject:v5 forKey:v6];
+      [v7 setObject:dateCopy forKey:dCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [v7 removeObjectForKey:dCopy];
     }
 
     _commitMasterManifest_269();
@@ -2305,15 +2305,15 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)forgetPersonID:(id)a3
++ (void)forgetPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v3 = [_subscriberByID objectForKey:?];
   v4 = v3;
   if (v3)
   {
     [v3 forget];
-    [_subscriberByID removeObjectForKey:v5];
+    [_subscriberByID removeObjectForKey:dCopy];
   }
 }
 
@@ -2327,10 +2327,10 @@ LABEL_8:
   return v2;
 }
 
-+ (id)subscriberForPersonID:(id)a3
++ (id)subscriberForPersonID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = _subscriberByID;
     if (!_subscriberByID)
@@ -2342,15 +2342,15 @@ LABEL_8:
       v4 = _subscriberByID;
     }
 
-    v7 = [v4 objectForKey:v3];
+    v7 = [v4 objectForKey:dCopy];
     if (!v7)
     {
       v8 = [MSSubscriber alloc];
       v9 = MSPlatform();
-      v10 = [v9 baseURLForPersonID:v3];
-      v7 = [(MSSubscriber *)v8 initWithPersonID:v3 baseURL:v10];
+      v10 = [v9 baseURLForPersonID:dCopy];
+      v7 = [(MSSubscriber *)v8 initWithPersonID:dCopy baseURL:v10];
 
-      [_subscriberByID setObject:v7 forKey:v3];
+      [_subscriberByID setObject:v7 forKey:dCopy];
     }
   }
 

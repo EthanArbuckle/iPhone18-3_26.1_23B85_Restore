@@ -1,18 +1,18 @@
 @interface LACUIFaceIDLightweightLeadingView
-- (CGColor)_tintColorForState:(int64_t)a3;
-- (LACUIFaceIDLightweightLeadingView)initWithInitialState:(int64_t)a3;
-- (double)_opacityForState:(int64_t)a3;
-- (id)_animationForState:(int64_t)a3 propertyName:(id)a4;
+- (CGColor)_tintColorForState:(int64_t)state;
+- (LACUIFaceIDLightweightLeadingView)initWithInitialState:(int64_t)state;
+- (double)_opacityForState:(int64_t)state;
+- (id)_animationForState:(int64_t)state propertyName:(id)name;
 - (void)_setup;
-- (void)_updateOpacityForState:(int64_t)a3 animated:(BOOL)a4;
-- (void)_updateTintColorForState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setState:(int64_t)a3;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_updateOpacityForState:(int64_t)state animated:(BOOL)animated;
+- (void)_updateTintColorForState:(int64_t)state animated:(BOOL)animated;
+- (void)setState:(int64_t)state;
+- (void)setState:(int64_t)state animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation LACUIFaceIDLightweightLeadingView
 
-- (LACUIFaceIDLightweightLeadingView)initWithInitialState:(int64_t)a3
+- (LACUIFaceIDLightweightLeadingView)initWithInitialState:(int64_t)state
 {
   v9.receiver = self;
   v9.super_class = LACUIFaceIDLightweightLeadingView;
@@ -23,9 +23,9 @@
     faceIDSpinnerView = v4->_faceIDSpinnerView;
     v4->_faceIDSpinnerView = v5;
 
-    v4->_state = a3;
-    v7 = [(LACUIFaceIDSpinnerView *)v4->_faceIDSpinnerView faceLayer];
-    v4->_defaultContentsMultiplyColor = [v7 contentsMultiplyColor];
+    v4->_state = state;
+    faceLayer = [(LACUIFaceIDSpinnerView *)v4->_faceIDSpinnerView faceLayer];
+    v4->_defaultContentsMultiplyColor = [faceLayer contentsMultiplyColor];
 
     [(LACUIFaceIDLightweightLeadingView *)v4 _setup];
   }
@@ -40,21 +40,21 @@
   [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(LACUIFaceIDLightweightLeadingView *)self setState:self->_state animated:0 completion:0];
   v14 = MEMORY[0x277CCAAD0];
-  v17 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView leadingAnchor];
-  v16 = [(LACUIFaceIDLightweightLeadingView *)self leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  leadingAnchor = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView leadingAnchor];
+  leadingAnchor2 = [(LACUIFaceIDLightweightLeadingView *)self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v15;
-  v3 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView trailingAnchor];
-  v4 = [(LACUIFaceIDLightweightLeadingView *)self trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  trailingAnchor = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView trailingAnchor];
+  trailingAnchor2 = [(LACUIFaceIDLightweightLeadingView *)self trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v5;
-  v6 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView topAnchor];
-  v7 = [(LACUIFaceIDLightweightLeadingView *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView topAnchor];
+  topAnchor2 = [(LACUIFaceIDLightweightLeadingView *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[2] = v8;
-  v9 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView bottomAnchor];
-  v10 = [(LACUIFaceIDLightweightLeadingView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView bottomAnchor];
+  bottomAnchor2 = [(LACUIFaceIDLightweightLeadingView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:4];
   [v14 activateConstraints:v12];
@@ -62,114 +62,114 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [LACUIFaceIDLightweightLeadingView setState:"setState:animated:completion:" animated:? completion:?];
   }
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setState:(int64_t)state animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
-  [(LACUIFaceIDLightweightLeadingView *)self _updateOpacityForState:a3 animated:1];
-  [(LACUIFaceIDLightweightLeadingView *)self _updateTintColorForState:a3 animated:1];
-  if (v7)
+  [(LACUIFaceIDLightweightLeadingView *)self _updateOpacityForState:state animated:1];
+  [(LACUIFaceIDLightweightLeadingView *)self _updateTintColorForState:state animated:1];
+  if (completionCopy)
   {
     v8 = MEMORY[0x277CD9FF0];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__LACUIFaceIDLightweightLeadingView_setState_animated_completion___block_invoke;
     v9[3] = &unk_27981EA98;
-    v10 = v7;
+    v10 = completionCopy;
     [v8 setCompletionBlock:v9];
   }
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)_updateOpacityForState:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateOpacityForState:(int64_t)state animated:(BOOL)animated
 {
   [(LACUIFaceIDLightweightLeadingView *)self _opacityForState:?];
   v8 = v7;
-  v9 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-  [v9 opacity];
+  faceLayer = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+  [faceLayer opacity];
   v11 = v10;
 
   if (v11 != v8)
   {
-    if (a4)
+    if (animated)
     {
-      v21 = [(LACUIFaceIDLightweightLeadingView *)self _animationForState:a3 propertyName:@"opacity"];
+      faceLayer5 = [(LACUIFaceIDLightweightLeadingView *)self _animationForState:state propertyName:@"opacity"];
       v12 = MEMORY[0x277CCABB0];
-      v13 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-      [v13 opacity];
+      faceLayer2 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      [faceLayer2 opacity];
       v14 = [v12 numberWithFloat:?];
-      [v21 setFromValue:v14];
+      [faceLayer5 setFromValue:v14];
 
       *&v15 = v8;
       v16 = [MEMORY[0x277CCABB0] numberWithFloat:v15];
-      [v21 setToValue:v16];
+      [faceLayer5 setToValue:v16];
 
-      v17 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      faceLayer3 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
       *&v18 = v8;
-      [v17 setOpacity:v18];
+      [faceLayer3 setOpacity:v18];
 
-      v19 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-      [v19 addAnimation:v21 forKey:@"opacity"];
+      faceLayer4 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      [faceLayer4 addAnimation:faceLayer5 forKey:@"opacity"];
     }
 
     else
     {
-      v21 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      faceLayer5 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
       *&v20 = v8;
-      [v21 setOpacity:v20];
+      [faceLayer5 setOpacity:v20];
     }
   }
 }
 
-- (void)_updateTintColorForState:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateTintColorForState:(int64_t)state animated:(BOOL)animated
 {
   v7 = [(LACUIFaceIDLightweightLeadingView *)self _tintColorForState:?];
-  v8 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-  v9 = CGColorEqualToColor(v7, [v8 contentsMultiplyColor]);
+  faceLayer = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+  v9 = CGColorEqualToColor(v7, [faceLayer contentsMultiplyColor]);
 
   if (!v9)
   {
-    if (a4)
+    if (animated)
     {
-      v13 = [(LACUIFaceIDLightweightLeadingView *)self _animationForState:a3 propertyName:@"contentsMultiplyColor"];
-      v10 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-      [v13 setFromValue:{objc_msgSend(v10, "contentsMultiplyColor")}];
+      faceLayer5 = [(LACUIFaceIDLightweightLeadingView *)self _animationForState:state propertyName:@"contentsMultiplyColor"];
+      faceLayer2 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      [faceLayer5 setFromValue:{objc_msgSend(faceLayer2, "contentsMultiplyColor")}];
 
-      [v13 setToValue:v7];
-      v11 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-      [v11 setContentsMultiplyColor:v7];
+      [faceLayer5 setToValue:v7];
+      faceLayer3 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      [faceLayer3 setContentsMultiplyColor:v7];
 
-      v12 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-      [v12 addAnimation:v13 forKey:@"contentsMultiplyColor"];
+      faceLayer4 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      [faceLayer4 addAnimation:faceLayer5 forKey:@"contentsMultiplyColor"];
     }
 
     else
     {
-      v13 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
-      [v13 setContentsMultiplyColor:v7];
+      faceLayer5 = [(LACUIFaceIDSpinnerView *)self->_faceIDSpinnerView faceLayer];
+      [faceLayer5 setContentsMultiplyColor:v7];
     }
   }
 }
 
-- (double)_opacityForState:(int64_t)a3
+- (double)_opacityForState:(int64_t)state
 {
   result = 0.4;
-  if (a3 == 1)
+  if (state == 1)
   {
     result = 1.0;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return 0.2;
   }
@@ -177,29 +177,29 @@
   return result;
 }
 
-- (CGColor)_tintColorForState:(int64_t)a3
+- (CGColor)_tintColorForState:(int64_t)state
 {
-  if (!a3 || a3 == 2)
+  if (!state || state == 2)
   {
     return *(self + 53);
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    v3 = [MEMORY[0x277D75348] systemGreenColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
     v4 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-    v5 = [v3 resolvedColorWithTraitCollection:v4];
-    v6 = [v5 CGColor];
+    v5 = [systemGreenColor resolvedColorWithTraitCollection:v4];
+    cGColor = [v5 CGColor];
 
-    return v6;
+    return cGColor;
   }
 
   return self;
 }
 
-- (id)_animationForState:(int64_t)a3 propertyName:(id)a4
+- (id)_animationForState:(int64_t)state propertyName:(id)name
 {
-  v4 = [MEMORY[0x277CD9E10] animationWithKeyPath:a4];
+  v4 = [MEMORY[0x277CD9E10] animationWithKeyPath:name];
   [v4 setDuration:0.25];
 
   return v4;

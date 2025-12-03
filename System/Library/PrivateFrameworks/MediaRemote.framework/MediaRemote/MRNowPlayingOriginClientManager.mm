@@ -1,42 +1,42 @@
 @interface MRNowPlayingOriginClientManager
 + (id)sharedManager;
-- (MRNowPlayingOriginClient)_createOriginClientForPlayerPath:(void *)a3 routingContextID:;
+- (MRNowPlayingOriginClient)_createOriginClientForPlayerPath:(void *)path routingContextID:;
 - (MRNowPlayingOriginClientManager)init;
 - (NSArray)originClientRequests;
 - (NSArray)originClients;
 - (NSOperationQueue)playbackQueueDataSourceOperationQueue;
-- (id)activeSystemEndpointOutputDeviceUIDForType:(int64_t)a3;
-- (id)clientForPlayerPath:(id)a3;
-- (id)clientRequestsForPlayerPath:(id)a3;
-- (id)createCustomOriginClientForOrigin:(id)a3 routingContextID:(id)a4;
+- (id)activeSystemEndpointOutputDeviceUIDForType:(int64_t)type;
+- (id)clientForPlayerPath:(id)path;
+- (id)clientRequestsForPlayerPath:(id)path;
+- (id)createCustomOriginClientForOrigin:(id)origin routingContextID:(id)d;
 - (id)createNewPlayerCallback;
 - (id)debugDescription;
 - (id)destroyPlayerCallback;
-- (id)existingClientRequestsForPlayerPath:(id)a3;
-- (id)existingOriginClientForPlayerPath:(id *)a1;
-- (id)existingOriginClientRequestsForPlayerPath:(id)a3;
-- (id)existingPlayerClientRequestsForPlayerPath:(id)a3;
+- (id)existingClientRequestsForPlayerPath:(id)path;
+- (id)existingOriginClientForPlayerPath:(id *)path;
+- (id)existingOriginClientRequestsForPlayerPath:(id)path;
+- (id)existingPlayerClientRequestsForPlayerPath:(id)path;
 - (id)generatePlayerIDCallback;
 - (id)localOriginClient;
-- (id)originClientForOrigin:(id)a3;
-- (id)originClientForPlayerPath:(id)a3;
-- (id)originClientRequestsForPlayerPath:(id)a3;
-- (id)playerClientForPlayerPath:(id)a3;
-- (id)playerClientRequestsForPlayerPath:(id)a3;
+- (id)originClientForOrigin:(id)origin;
+- (id)originClientForPlayerPath:(id)path;
+- (id)originClientRequestsForPlayerPath:(id)path;
+- (id)playerClientForPlayerPath:(id)path;
+- (id)playerClientRequestsForPlayerPath:(id)path;
 - (uint64_t)_allowLocalOriginUsage;
-- (void)_clearSystemEndpointForType:(void *)a3 reason:(void *)a4 queue:;
-- (void)_resolveActiveSystemEndpointWithType:(void *)a3 requestName:(void *)a4 requestType:(void *)a5 requestID:(void *)a6 timeout:(void *)a7 queue:(double)a8 completion:;
-- (void)clearActiveSystemEndpointsWithReason:(id)a3;
-- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(int64_t)a3 queue:(id)a4 completion:(id)a5;
-- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(void *)a3 requestID:(void *)a4 queue:(void *)a5 completion:;
-- (void)removeOrigin:(id)a3;
-- (void)removeOriginRequests:(id)a3;
-- (void)resolveActiveSystemEndpointWithType:(int64_t)a3 timeout:(double)a4 queue:(id)a5 completion:(id)a6;
+- (void)_clearSystemEndpointForType:(void *)type reason:(void *)reason queue:;
+- (void)_resolveActiveSystemEndpointWithType:(void *)type requestName:(void *)name requestType:(void *)requestType requestID:(void *)d timeout:(void *)timeout queue:(double)queue completion:;
+- (void)clearActiveSystemEndpointsWithReason:(id)reason;
+- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(int64_t)type queue:(id)queue completion:(id)completion;
+- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(void *)type requestID:(void *)d queue:(void *)queue completion:;
+- (void)removeOrigin:(id)origin;
+- (void)removeOriginRequests:(id)requests;
+- (void)resolveActiveSystemEndpointWithType:(int64_t)type timeout:(double)timeout queue:(id)queue completion:(id)completion;
 - (void)restoreNowPlayingClientState;
-- (void)setCreateNewPlayerCallback:(id)a3;
-- (void)setDestroyPlayerCallback:(id)a3;
-- (void)setGeneratePlayerIDCallback:(id)a3;
-- (void)updateActiveSystemEndpointOutputDeviceUID:(id)a3 forType:(int64_t)a4 reason:(id)a5;
+- (void)setCreateNewPlayerCallback:(id)callback;
+- (void)setDestroyPlayerCallback:(id)callback;
+- (void)setGeneratePlayerIDCallback:(id)callback;
+- (void)updateActiveSystemEndpointOutputDeviceUID:(id)d forType:(int64_t)type reason:(id)reason;
 @end
 
 @implementation MRNowPlayingOriginClientManager
@@ -81,7 +81,7 @@ void __48__MRNowPlayingOriginClientManager_sharedManager__block_invoke()
 
 - (uint64_t)_allowLocalOriginUsage
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -110,10 +110,10 @@ void __48__MRNowPlayingOriginClientManager_sharedManager__block_invoke()
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSMutableDictionary count](v2->_activeSystemEndpointUIDs, "count")}];
-  activeSystemEndpointUIDs = v2->_activeSystemEndpointUIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSMutableDictionary count](selfCopy->_activeSystemEndpointUIDs, "count")}];
+  activeSystemEndpointUIDs = selfCopy->_activeSystemEndpointUIDs;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __51__MRNowPlayingOriginClientManager_debugDescription__block_invoke;
@@ -122,23 +122,23 @@ void __48__MRNowPlayingOriginClientManager_sharedManager__block_invoke()
   v24 = v20;
   [(NSMutableDictionary *)activeSystemEndpointUIDs enumerateKeysAndObjectsUsingBlock:v23];
   v5 = MEMORY[0x1E696AEC0];
-  v22 = [(MRNowPlayingOriginClientManager *)v2 originClients];
-  v19 = MRCreateIndentedDebugDescriptionFromArray(v22);
-  v21 = [(MRNowPlayingOriginClientManager *)v2 originClientRequests];
-  v18 = MRCreateIndentedDebugDescriptionFromArray(v21);
-  v16 = MEMORY[0x1A58E3570](v2->_createPlayerCallback);
+  originClients = [(MRNowPlayingOriginClientManager *)selfCopy originClients];
+  v19 = MRCreateIndentedDebugDescriptionFromArray(originClients);
+  originClientRequests = [(MRNowPlayingOriginClientManager *)selfCopy originClientRequests];
+  v18 = MRCreateIndentedDebugDescriptionFromArray(originClientRequests);
+  v16 = MEMORY[0x1A58E3570](selfCopy->_createPlayerCallback);
   v17 = MRCreateIndentedDebugDescriptionFromObject(v16);
-  v6 = MEMORY[0x1A58E3570](v2->_destroyPlayerCallback);
+  v6 = MEMORY[0x1A58E3570](selfCopy->_destroyPlayerCallback);
   v7 = MRCreateIndentedDebugDescriptionFromObject(v6);
-  v8 = MEMORY[0x1A58E3570](v2->_generatePlayerIDCallback);
+  v8 = MEMORY[0x1A58E3570](selfCopy->_generatePlayerIDCallback);
   v9 = MRCreateIndentedDebugDescriptionFromObject(v8);
   v10 = MRCreateIndentedDebugDescriptionFromObject(v20);
-  v11 = MRCreateIndentedDebugDescriptionFromObject(v2->_activeSystemEndpointUIDCompletions);
-  v12 = MRCreateIndentedDebugDescriptionFromObject(v2->_resolveActiveSystemEndpointCompletions);
+  v11 = MRCreateIndentedDebugDescriptionFromObject(selfCopy->_activeSystemEndpointUIDCompletions);
+  v12 = MRCreateIndentedDebugDescriptionFromObject(selfCopy->_resolveActiveSystemEndpointCompletions);
   v13 = [v5 stringWithFormat:@"    originClients = %@\n    originClientRequests = %@\n    createPlayerCallback = %@\n    destroyPlayerCallback = %@\n    generatePlayerIDCallback = %@\n    activeSystemEndpoint = %@\n    activeSystemEndpointUIDCompletions = %@\n    resolveActiveSystemEndpointCompletions = %@\n", v19, v18, v17, v7, v9, v10, v11, v12];
-  v14 = MRCreateFormattedDebugDescriptionFromClass(v2, v13);
+  v14 = MRCreateFormattedDebugDescriptionFromClass(selfCopy, v13);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -155,8 +155,8 @@ void __51__MRNowPlayingOriginClientManager_debugDescription__block_invoke(uint64
 {
   v3 = self->_originClients;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_originClients allValues];
-  v5 = [v4 copy];
+  allValues = [(NSMutableDictionary *)self->_originClients allValues];
+  v5 = [allValues copy];
 
   objc_sync_exit(v3);
 
@@ -167,76 +167,76 @@ void __51__MRNowPlayingOriginClientManager_debugDescription__block_invoke(uint64
 {
   v3 = self->_originClientRequests;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_originClientRequests allValues];
-  v5 = [v4 copy];
+  allValues = [(NSMutableDictionary *)self->_originClientRequests allValues];
+  v5 = [allValues copy];
 
   objc_sync_exit(v3);
 
   return v5;
 }
 
-- (void)setCreateNewPlayerCallback:(id)a3
+- (void)setCreateNewPlayerCallback:(id)callback
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  createPlayerCallback = v4->_createPlayerCallback;
-  v4->_createPlayerCallback = v5;
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [callbackCopy copy];
+  createPlayerCallback = selfCopy->_createPlayerCallback;
+  selfCopy->_createPlayerCallback = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)createNewPlayerCallback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_createPlayerCallback copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_createPlayerCallback copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDestroyPlayerCallback:(id)a3
+- (void)setDestroyPlayerCallback:(id)callback
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  destroyPlayerCallback = v4->_destroyPlayerCallback;
-  v4->_destroyPlayerCallback = v5;
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [callbackCopy copy];
+  destroyPlayerCallback = selfCopy->_destroyPlayerCallback;
+  selfCopy->_destroyPlayerCallback = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)destroyPlayerCallback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_destroyPlayerCallback copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_destroyPlayerCallback copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setGeneratePlayerIDCallback:(id)a3
+- (void)setGeneratePlayerIDCallback:(id)callback
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  generatePlayerIDCallback = v4->_generatePlayerIDCallback;
-  v4->_generatePlayerIDCallback = v5;
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [callbackCopy copy];
+  generatePlayerIDCallback = selfCopy->_generatePlayerIDCallback;
+  selfCopy->_generatePlayerIDCallback = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)generatePlayerIDCallback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_generatePlayerIDCallback copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_generatePlayerIDCallback copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -265,81 +265,81 @@ uint64_t __72__MRNowPlayingOriginClientManager_playbackQueueDataSourceOperationQ
   return [v2 setMaxConcurrentOperationCount:6];
 }
 
-- (id)originClientForOrigin:(id)a3
+- (id)originClientForOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = [[MRPlayerPath alloc] initWithOrigin:v4 client:0 player:0];
+  originCopy = origin;
+  v5 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
 
   v6 = [(MRNowPlayingOriginClientManager *)self originClientForPlayerPath:v5];
 
   return v6;
 }
 
-- (id)existingOriginClientForPlayerPath:(id *)a1
+- (id)existingOriginClientForPlayerPath:(id *)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
     v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:v3];
-    v5 = [v4 origin];
+    origin = [v4 origin];
 
-    if (!v5)
+    if (!origin)
     {
       [MRNowPlayingOriginClientManager existingOriginClientForPlayerPath:];
     }
 
-    v6 = a1[1];
+    v6 = path[1];
     objc_sync_enter(v6);
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v5, "identifier")}];
-    a1 = [a1[1] objectForKey:v7];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(origin, "identifier")}];
+    path = [path[1] objectForKey:v7];
 
     objc_sync_exit(v6);
   }
 
-  return a1;
+  return path;
 }
 
-- (id)createCustomOriginClientForOrigin:(id)a3 routingContextID:(id)a4
+- (id)createCustomOriginClientForOrigin:(id)origin routingContextID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  originCopy = origin;
+  dCopy = d;
+  if (!originCopy)
   {
     [MRNowPlayingOriginClientManager createCustomOriginClientForOrigin:a2 routingContextID:self];
   }
 
-  v9 = [[MRPlayerPath alloc] initWithOrigin:v7 client:0 player:0];
+  v9 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
   v10 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:v9];
 
-  v11 = [(MRNowPlayingOriginClientManager *)self _createOriginClientForPlayerPath:v10 routingContextID:v8];
+  v11 = [(MRNowPlayingOriginClientManager *)self _createOriginClientForPlayerPath:v10 routingContextID:dCopy];
 
   return v11;
 }
 
-- (MRNowPlayingOriginClient)_createOriginClientForPlayerPath:(void *)a3 routingContextID:
+- (MRNowPlayingOriginClient)_createOriginClientForPlayerPath:(void *)path routingContextID:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  pathCopy = path;
+  if (self)
   {
     v7 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:v5];
-    v8 = [v7 origin];
+    origin = [v7 origin];
 
-    if (!v8)
+    if (!origin)
     {
       [MRNowPlayingOriginClientManager _createOriginClientForPlayerPath:routingContextID:];
     }
 
-    v9 = *(a1 + 8);
+    v9 = *(self + 8);
     objc_sync_enter(v9);
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v8, "identifier")}];
-    v11 = [*(a1 + 8) objectForKey:v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(origin, "identifier")}];
+    v11 = [*(self + 8) objectForKey:v10];
     if (!v11)
     {
-      v11 = [[MRNowPlayingOriginClient alloc] initWithOrigin:v8 routingContextID:v6];
+      v11 = [[MRNowPlayingOriginClient alloc] initWithOrigin:origin routingContextID:pathCopy];
       if (v11)
       {
-        [*(a1 + 8) setObject:v11 forKey:v10];
+        [*(self + 8) setObject:v11 forKey:v10];
       }
     }
 
@@ -364,20 +364,20 @@ uint64_t __57__MRNowPlayingOriginClientManager__allowLocalOriginUsage__block_inv
   return MRProcessIsHomePodCannedDemo();
 }
 
-- (id)originClientForPlayerPath:(id)a3
+- (id)originClientForPlayerPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:a3];
-  v5 = [v4 origin];
-  if (![v5 isLocal])
+  v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:path];
+  origin = [v4 origin];
+  if (![origin isLocal])
   {
 
     goto LABEL_3;
   }
 
-  v14 = [(MRNowPlayingOriginClientManager *)self _allowLocalOriginUsage];
+  _allowLocalOriginUsage = [(MRNowPlayingOriginClientManager *)self _allowLocalOriginUsage];
 
-  if (v14)
+  if (_allowLocalOriginUsage)
   {
 LABEL_3:
     v6 = [(MRNowPlayingOriginClientManager *)&self->super.isa existingOriginClientForPlayerPath:v4];
@@ -387,15 +387,15 @@ LABEL_3:
       goto LABEL_10;
     }
 
-    v10 = _MRLogForCategory(0);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    callStackSymbols2 = _MRLogForCategory(0);
+    if (os_log_type_enabled(callStackSymbols2, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v15 = 138412546;
       v16 = v4;
       v17 = 2112;
-      v18 = v11;
-      _os_log_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingOriginClientManager] Cannot implicitly create a custom originClient for %@: %@. Instead MediaRemote should be explicitly creating this originClient in NowPlayingSessionManager", &v15, 0x16u);
+      v18 = callStackSymbols;
+      _os_log_impl(&dword_1A2860000, callStackSymbols2, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingOriginClientManager] Cannot implicitly create a custom originClient for %@: %@. Instead MediaRemote should be explicitly creating this originClient in NowPlayingSessionManager", &v15, 0x16u);
     }
 
     goto LABEL_8;
@@ -407,11 +407,11 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x1E696AF00] callStackSymbols];
+  callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
   v15 = 138412546;
   v16 = v4;
   v17 = 2112;
-  v18 = v10;
+  v18 = callStackSymbols2;
   _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingOriginClientManager] Cannot create a local originClient in framework for %@: %@", &v15, 0x16u);
 LABEL_8:
 
@@ -424,37 +424,37 @@ LABEL_10:
   return v9;
 }
 
-- (id)clientForPlayerPath:(id)a3
+- (id)clientForPlayerPath:(id)path
 {
-  v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:a3];
+  v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:path];
   v5 = [(MRNowPlayingOriginClientManager *)self originClientForPlayerPath:v4];
   v6 = [v5 nowPlayingClientForPlayerPath:v4];
 
   return v6;
 }
 
-- (id)playerClientForPlayerPath:(id)a3
+- (id)playerClientForPlayerPath:(id)path
 {
-  v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:a3];
+  v4 = [MRPlayerPath localResolvedPlayerPathFromPlayerPath:path];
   v5 = [(MRNowPlayingOriginClientManager *)self clientForPlayerPath:v4];
   v6 = [v5 nowPlayingPlayerClientForPlayerPath:v4];
 
   return v6;
 }
 
-- (id)originClientRequestsForPlayerPath:(id)a3
+- (id)originClientRequestsForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 origin];
-  if (v5)
+  pathCopy = path;
+  origin = [pathCopy origin];
+  if (origin)
   {
     v6 = self->_originClientRequests;
     objc_sync_enter(v6);
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v5, "identifier")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(origin, "identifier")}];
     v8 = [(NSMutableDictionary *)self->_originClientRequests objectForKey:v7];
     if (!v8)
     {
-      v8 = [[MRNowPlayingOriginClientRequests alloc] initWithOrigin:v5];
+      v8 = [[MRNowPlayingOriginClientRequests alloc] initWithOrigin:origin];
       [(NSMutableDictionary *)self->_originClientRequests setObject:v8 forKey:v7];
     }
 
@@ -469,33 +469,33 @@ LABEL_10:
   return v8;
 }
 
-- (id)clientRequestsForPlayerPath:(id)a3
+- (id)clientRequestsForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MRNowPlayingOriginClientManager *)self originClientRequestsForPlayerPath:v4];
-  v6 = [v5 nowPlayingClientRequestsForPlayerPath:v4];
+  pathCopy = path;
+  v5 = [(MRNowPlayingOriginClientManager *)self originClientRequestsForPlayerPath:pathCopy];
+  v6 = [v5 nowPlayingClientRequestsForPlayerPath:pathCopy];
 
   return v6;
 }
 
-- (id)playerClientRequestsForPlayerPath:(id)a3
+- (id)playerClientRequestsForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MRNowPlayingOriginClientManager *)self clientRequestsForPlayerPath:v4];
-  v6 = [v5 nowPlayingPlayerClientRequestsForPlayerPath:v4];
+  pathCopy = path;
+  v5 = [(MRNowPlayingOriginClientManager *)self clientRequestsForPlayerPath:pathCopy];
+  v6 = [v5 nowPlayingPlayerClientRequestsForPlayerPath:pathCopy];
 
   return v6;
 }
 
-- (id)existingOriginClientRequestsForPlayerPath:(id)a3
+- (id)existingOriginClientRequestsForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 origin];
-  if (v5)
+  pathCopy = path;
+  origin = [pathCopy origin];
+  if (origin)
   {
     v6 = self->_originClientRequests;
     objc_sync_enter(v6);
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v5, "identifier")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(origin, "identifier")}];
     v8 = [(NSMutableDictionary *)self->_originClientRequests objectForKey:v7];
 
     objc_sync_exit(v6);
@@ -509,20 +509,20 @@ LABEL_10:
   return v8;
 }
 
-- (id)existingClientRequestsForPlayerPath:(id)a3
+- (id)existingClientRequestsForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MRNowPlayingOriginClientManager *)self existingOriginClientRequestsForPlayerPath:v4];
-  v6 = [v5 existingNowPlayingClientRequestsForPlayerPath:v4];
+  pathCopy = path;
+  v5 = [(MRNowPlayingOriginClientManager *)self existingOriginClientRequestsForPlayerPath:pathCopy];
+  v6 = [v5 existingNowPlayingClientRequestsForPlayerPath:pathCopy];
 
   return v6;
 }
 
-- (id)existingPlayerClientRequestsForPlayerPath:(id)a3
+- (id)existingPlayerClientRequestsForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MRNowPlayingOriginClientManager *)self existingClientRequestsForPlayerPath:v4];
-  v6 = [v5 existingNowPlayingPlayerClientRequestsForPlayerPath:v4];
+  pathCopy = path;
+  v5 = [(MRNowPlayingOriginClientManager *)self existingClientRequestsForPlayerPath:pathCopy];
+  v6 = [v5 existingNowPlayingPlayerClientRequestsForPlayerPath:pathCopy];
 
   return v6;
 }
@@ -534,8 +534,8 @@ LABEL_10:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(MRNowPlayingOriginClientManager *)self originClientRequests];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  originClientRequests = [(MRNowPlayingOriginClientManager *)self originClientRequests];
+  v4 = [originClientRequests countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -547,14 +547,14 @@ LABEL_10:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(originClientRequests);
         }
 
         [*(*(&v18 + 1) + 8 * v7++) restoreNowPlayingClientState];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [originClientRequests countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
@@ -564,8 +564,8 @@ LABEL_10:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(MRNowPlayingOriginClientManager *)self originClients];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  originClients = [(MRNowPlayingOriginClientManager *)self originClients];
+  v9 = [originClients countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -577,14 +577,14 @@ LABEL_10:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(originClients);
         }
 
         [*(*(&v14 + 1) + 8 * v12++) restoreNowPlayingClientState];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v10 = [originClients countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v10);
@@ -593,11 +593,11 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeOrigin:(id)a3
+- (void)removeOrigin:(id)origin
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  originCopy = origin;
+  if (!originCopy)
   {
     [MRNowPlayingOriginClientManager removeOrigin:];
   }
@@ -605,7 +605,7 @@ LABEL_10:
   v5 = self->_originClients;
   objc_sync_enter(v5);
   originClients = self->_originClients;
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "identifier")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(originCopy, "identifier")}];
   v8 = [(NSMutableDictionary *)originClients objectForKey:v7];
 
   if (!v8)
@@ -614,23 +614,23 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v4;
+      v14 = originCopy;
       _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingOriginClientManager] RemoveOrigin: Could not find originClient for origin %{public}@", &v13, 0xCu);
     }
   }
 
   v10 = self->_originClients;
-  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "identifier")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(originCopy, "identifier")}];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
   objc_sync_exit(v5);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeOriginRequests:(id)a3
+- (void)removeOriginRequests:(id)requests
 {
-  v7 = a3;
-  if (!v7)
+  requestsCopy = requests;
+  if (!requestsCopy)
   {
     [MRNowPlayingOriginClientManager removeOriginRequests:];
   }
@@ -638,35 +638,35 @@ LABEL_10:
   v4 = self->_originClientRequests;
   objc_sync_enter(v4);
   originClientRequests = self->_originClientRequests;
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "identifier")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestsCopy, "identifier")}];
   [(NSMutableDictionary *)originClientRequests removeObjectForKey:v6];
 
   objc_sync_exit(v4);
 }
 
-- (void)updateActiveSystemEndpointOutputDeviceUID:(id)a3 forType:(int64_t)a4 reason:(id)a5
+- (void)updateActiveSystemEndpointOutputDeviceUID:(id)d forType:(int64_t)type reason:(id)reason
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  activeSystemEndpointUIDs = v10->_activeSystemEndpointUIDs;
+  dCopy = d;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeSystemEndpointUIDs = selfCopy->_activeSystemEndpointUIDs;
   if (!activeSystemEndpointUIDs)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v13 = v10->_activeSystemEndpointUIDs;
-    v10->_activeSystemEndpointUIDs = v12;
+    v13 = selfCopy->_activeSystemEndpointUIDs;
+    selfCopy->_activeSystemEndpointUIDs = v12;
 
-    activeSystemEndpointUIDs = v10->_activeSystemEndpointUIDs;
+    activeSystemEndpointUIDs = selfCopy->_activeSystemEndpointUIDs;
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v15 = [(NSMutableDictionary *)activeSystemEndpointUIDs objectForKeyedSubscript:v14];
 
-  if (v8)
+  if (dCopy)
   {
-    v16 = v8;
+    v16 = dCopy;
   }
 
   else
@@ -676,11 +676,11 @@ LABEL_10:
 
   v17 = v16;
   v18 = [v16 copy];
-  v19 = v10->_activeSystemEndpointUIDs;
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v19 = selfCopy->_activeSystemEndpointUIDs;
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
 
-  active = MRMediaRemoteActiveEndpointTypeCopyDescription(a4);
+  active = MRMediaRemoteActiveEndpointTypeCopyDescription(type);
   v22 = _MRLogForCategory(0);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
@@ -691,71 +691,71 @@ LABEL_10:
     v28 = 2114;
     v29 = v17;
     v30 = 2114;
-    v31 = v9;
+    v31 = reasonCopy;
     _os_log_impl(&dword_1A2860000, v22, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingOriginClientManager] %{public}@SystemEndpoint changed from %{public}@ to %{public}@ because %{public}@", &v24, 0x2Au);
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearActiveSystemEndpointsWithReason:(id)a3
+- (void)clearActiveSystemEndpointsWithReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  activeSystemEndpointUIDs = v5->_activeSystemEndpointUIDs;
-  v5->_activeSystemEndpointUIDs = 0;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeSystemEndpointUIDs = selfCopy->_activeSystemEndpointUIDs;
+  selfCopy->_activeSystemEndpointUIDs = 0;
 
   v7 = _MRLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingOriginClientManager] Clearing system endpoint UIDs because %{public}@", &v9, 0xCu);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(int64_t)a3 queue:(id)a4 completion:(id)a5
+- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(int64_t)type queue:(id)queue completion:(id)completion
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 UUID];
-  v12 = [v11 UUIDString];
+  completionCopy = completion;
+  queueCopy = queue;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(MRNowPlayingOriginClientManager *)self handleActiveSystemEndpointOutputDeviceUIDForType:a3 requestID:v12 queue:v10 completion:v9];
+  [(MRNowPlayingOriginClientManager *)self handleActiveSystemEndpointOutputDeviceUIDForType:type requestID:uUIDString queue:queueCopy completion:completionCopy];
 }
 
-- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(void *)a3 requestID:(void *)a4 queue:(void *)a5 completion:
+- (void)handleActiveSystemEndpointOutputDeviceUIDForType:(void *)type requestID:(void *)d queue:(void *)queue completion:
 {
   v68 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v45 = a4;
-  v10 = a5;
-  if (a1)
+  typeCopy = type;
+  dCopy = d;
+  queueCopy = queue;
+  if (self)
   {
-    v44 = v10;
-    if (!v10)
+    v44 = queueCopy;
+    if (!queueCopy)
     {
-      [MRNowPlayingOriginClientManager handleActiveSystemEndpointOutputDeviceUIDForType:a1 requestID:? queue:? completion:?];
+      [MRNowPlayingOriginClientManager handleActiveSystemEndpointOutputDeviceUIDForType:self requestID:? queue:? completion:?];
     }
 
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     active = MRMediaRemoteActiveEndpointTypeCopyDescription(a2);
     v13 = [MRBlockGuard alloc];
-    v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@<%@>", @"handleActiveSystemEndpointOutputDeviceUIDForType", v9];
-    v15 = [(MRBlockGuard *)v13 initWithTimeout:v14 reason:0 handler:0.0];
+    typeCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@<%@>", @"handleActiveSystemEndpointOutputDeviceUIDForType", typeCopy];
+    v15 = [(MRBlockGuard *)v13 initWithTimeout:typeCopy reason:0 handler:0.0];
 
-    v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"handleActiveSystemEndpointOutputDeviceUIDForType", v9];
-    v17 = v16;
+    typeCopy2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"handleActiveSystemEndpointOutputDeviceUIDForType", typeCopy];
+    v17 = typeCopy2;
     if (active)
     {
-      [(__CFString *)v16 appendFormat:@" for %@", active];
+      [(__CFString *)typeCopy2 appendFormat:@" for %@", active];
     }
 
     v18 = _MRLogForCategory(0xAuLL);
@@ -775,24 +775,24 @@ LABEL_10:
     v19 = active;
     v54 = v19;
     v55 = @"handleActiveSystemEndpointOutputDeviceUIDForType";
-    v20 = v9;
+    v20 = typeCopy;
     v56 = v20;
-    v42 = v11;
+    v42 = date;
     v57 = v42;
-    v41 = v45;
+    v41 = dCopy;
     v58 = v41;
     v59 = v44;
     v21 = MEMORY[0x1A58E3570](v52);
-    v22 = a1;
-    objc_sync_enter(v22);
-    v23 = v22[6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v23 = selfCopy[6];
     if (!v23)
     {
       v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v25 = v22[6];
-      v22[6] = v24;
+      v25 = selfCopy[6];
+      selfCopy[6] = v24;
 
-      v23 = v22[6];
+      v23 = selfCopy[6];
     }
 
     v26 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
@@ -800,20 +800,20 @@ LABEL_10:
 
     if (v27)
     {
-      v28 = [v22 activeSystemEndpointOutputDeviceUIDForType:a2];
+      v28 = [selfCopy activeSystemEndpointOutputDeviceUIDForType:a2];
       (v21)[2](v21, v28, 0);
     }
 
     else
     {
-      v29 = v22[7];
+      v29 = selfCopy[7];
       if (!v29)
       {
         v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v31 = v22[7];
-        v22[7] = v30;
+        v31 = selfCopy[7];
+        selfCopy[7] = v30;
 
-        v29 = v22[7];
+        v29 = selfCopy[7];
       }
 
       v32 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
@@ -822,7 +822,7 @@ LABEL_10:
       if (!v28)
       {
         v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v33 = v22[7];
+        v33 = selfCopy[7];
         v34 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
         [v33 setObject:v28 forKeyedSubscript:v34];
       }
@@ -853,7 +853,7 @@ LABEL_10:
         v46[2] = __111__MRNowPlayingOriginClientManager_handleActiveSystemEndpointOutputDeviceUIDForType_requestID_queue_completion___block_invoke_62;
         v46[3] = &unk_1E76A4160;
         v51 = a2;
-        v46[4] = v22;
+        v46[4] = selfCopy;
         v47 = @"handleActiveSystemEndpointOutputDeviceUIDForType";
         v48 = v20;
         v49 = v19;
@@ -869,8 +869,8 @@ LABEL_10:
       }
     }
 
-    objc_sync_exit(v22);
-    v10 = v44;
+    objc_sync_exit(selfCopy);
+    queueCopy = v44;
   }
 
   v40 = *MEMORY[0x1E69E9840];
@@ -1112,19 +1112,19 @@ void __111__MRNowPlayingOriginClientManager_handleActiveSystemEndpointOutputDevi
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)activeSystemEndpointOutputDeviceUIDForType:(int64_t)a3
+- (id)activeSystemEndpointOutputDeviceUIDForType:(int64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  activeSystemEndpointUIDs = v4->_activeSystemEndpointUIDs;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeSystemEndpointUIDs = selfCopy->_activeSystemEndpointUIDs;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [(NSMutableDictionary *)activeSystemEndpointUIDs objectForKeyedSubscript:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (!v7)
   {
     v8 = MRGetSharedService();
-    v9 = [v8 getActiveSystemEndpointUIDForType:a3];
+    v9 = [v8 getActiveSystemEndpointUIDForType:type];
     v10 = v9;
     if (v9)
     {
@@ -1138,7 +1138,7 @@ void __111__MRNowPlayingOriginClientManager_handleActiveSystemEndpointOutputDevi
 
     v7 = v11;
 
-    [(MRNowPlayingOriginClientManager *)v4 updateActiveSystemEndpointOutputDeviceUID:v7 forType:a3 reason:@"fetching data from server"];
+    [(MRNowPlayingOriginClientManager *)selfCopy updateActiveSystemEndpointOutputDeviceUID:v7 forType:type reason:@"fetching data from server"];
   }
 
   v12 = +[MRAVOutputDevice localDeviceUID];
@@ -1155,17 +1155,17 @@ void __111__MRNowPlayingOriginClientManager_handleActiveSystemEndpointOutputDevi
   return v14;
 }
 
-- (void)resolveActiveSystemEndpointWithType:(int64_t)a3 timeout:(double)a4 queue:(id)a5 completion:(id)a6
+- (void)resolveActiveSystemEndpointWithType:(int64_t)type timeout:(double)timeout queue:(id)queue completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  active = MRMediaRemoteActiveEndpointTypeCopyDescription(a3);
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [MEMORY[0x1E696AFB0] UUID];
-  v15 = [v14 UUIDString];
+  queueCopy = queue;
+  completionCopy = completion;
+  active = MRMediaRemoteActiveEndpointTypeCopyDescription(type);
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"ResolveActiveEndpoint", v15];
+  v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"ResolveActiveEndpoint", uUIDString];
   v17 = v16;
   if (active)
   {
@@ -1187,14 +1187,14 @@ void __111__MRNowPlayingOriginClientManager_handleActiveSystemEndpointOutputDevi
   v19 = active;
   v38 = v19;
   v39 = @"ResolveActiveEndpoint";
-  v20 = v15;
+  v20 = uUIDString;
   v40 = v20;
-  v41 = v13;
-  v42 = v10;
-  v43 = v11;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
+  v41 = date;
+  v42 = queueCopy;
+  v43 = completionCopy;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v23 = date;
   v24 = MEMORY[0x1A58E3570](v37);
   if (resolveActiveSystemEndpointWithType_timeout_queue_completion__onceToken != -1)
   {
@@ -1210,9 +1210,9 @@ void __111__MRNowPlayingOriginClientManager_handleActiveSystemEndpointOutputDevi
   v31 = @"ResolveActiveEndpoint";
   v32 = v19;
   v33 = v20;
-  v36 = a4;
+  timeoutCopy = timeout;
   v34 = v24;
-  v35 = a3;
+  typeCopy = type;
   v26 = v24;
   v27 = v20;
   v28 = v19;
@@ -1419,25 +1419,25 @@ void __96__MRNowPlayingOriginClientManager_resolveActiveSystemEndpointWithType_t
   resolveActiveSystemEndpointWithType_timeout_queue_completion__workerQueue = v0;
 }
 
-- (void)_resolveActiveSystemEndpointWithType:(void *)a3 requestName:(void *)a4 requestType:(void *)a5 requestID:(void *)a6 timeout:(void *)a7 queue:(double)a8 completion:
+- (void)_resolveActiveSystemEndpointWithType:(void *)type requestName:(void *)name requestType:(void *)requestType requestID:(void *)d timeout:(void *)timeout queue:(double)queue completion:
 {
-  v31 = a3;
-  v30 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (a1)
+  typeCopy = type;
+  nameCopy = name;
+  requestTypeCopy = requestType;
+  dCopy = d;
+  timeoutCopy = timeout;
+  if (self)
   {
-    v18 = a1;
-    objc_sync_enter(v18);
-    v19 = v18[8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v19 = selfCopy[8];
     if (!v19)
     {
       v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v21 = v18[8];
-      v18[8] = v20;
+      v21 = selfCopy[8];
+      selfCopy[8] = v20;
 
-      v19 = v18[8];
+      v19 = selfCopy[8];
     }
 
     if ((a2 & 0xFFFFFFFFFFFFFFFELL) == 4)
@@ -1450,39 +1450,39 @@ void __96__MRNowPlayingOriginClientManager_resolveActiveSystemEndpointWithType_t
       v22 = a2;
     }
 
-    v23 = [MEMORY[0x1E696AD98] numberWithInteger:{a2, v30}];
+    v23 = [MEMORY[0x1E696AD98] numberWithInteger:{a2, nameCopy}];
     v24 = [v19 objectForKeyedSubscript:v23];
 
     if (!v24)
     {
       v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v25 = v18[8];
+      v25 = selfCopy[8];
       v26 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
       [v25 setObject:v24 forKeyedSubscript:v26];
     }
 
-    v27 = [v17 copy];
+    v27 = [timeoutCopy copy];
     v28 = MEMORY[0x1A58E3570]();
-    [v24 setObject:v28 forKeyedSubscript:v15];
+    [v24 setObject:v28 forKeyedSubscript:requestTypeCopy];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __131__MRNowPlayingOriginClientManager__resolveActiveSystemEndpointWithType_requestName_requestType_requestID_timeout_queue_completion___block_invoke;
     v32[3] = &unk_1E76A4228;
     v40 = a2;
-    v33 = v31;
-    v34 = v15;
-    v41 = a8;
-    v35 = v16;
-    v36 = v18;
+    v33 = typeCopy;
+    v34 = requestTypeCopy;
+    queueCopy = queue;
+    v35 = dCopy;
+    v36 = selfCopy;
     v29 = v24;
     v37 = v29;
     v42 = v22;
-    v38 = v30;
-    v39 = v17;
-    [(MRNowPlayingOriginClientManager *)v18 handleActiveSystemEndpointOutputDeviceUIDForType:v22 requestID:v34 queue:v35 completion:v32];
+    v38 = nameCopy;
+    v39 = timeoutCopy;
+    [(MRNowPlayingOriginClientManager *)selfCopy handleActiveSystemEndpointOutputDeviceUIDForType:v22 requestID:v34 queue:v35 completion:v32];
 
-    objc_sync_exit(v18);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1833,9 +1833,9 @@ LABEL_41:
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_clearSystemEndpointForType:(void *)a3 reason:(void *)a4 queue:
+- (void)_clearSystemEndpointForType:(void *)type reason:(void *)reason queue:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
     if (a2 <= 3)
@@ -1843,12 +1843,12 @@ LABEL_41:
       v5 = qword_1A2B81200[a2];
     }
 
-    v6 = a4;
-    v7 = a3;
-    v8 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 type:v5 reason:v7];
+    reasonCopy = reason;
+    typeCopy = type;
+    v8 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 type:v5 reason:typeCopy];
 
     [(MRUpdateActiveSystemEndpointRequest *)v8 setChangeType:1];
-    [(MRUpdateActiveSystemEndpointRequest *)v8 perform:v6 completion:0];
+    [(MRUpdateActiveSystemEndpointRequest *)v8 perform:reasonCopy completion:0];
   }
 }
 

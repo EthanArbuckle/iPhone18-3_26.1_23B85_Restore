@@ -1,31 +1,31 @@
 @interface COStateObserver
-- (COStateObserver)initWithDispatchQueue:(id)a3 predicate:(id)a4 block:(id)a5;
+- (COStateObserver)initWithDispatchQueue:(id)queue predicate:(id)predicate block:(id)block;
 - (id)description;
-- (void)notify:(id)a3;
+- (void)notify:(id)notify;
 @end
 
 @implementation COStateObserver
 
-- (COStateObserver)initWithDispatchQueue:(id)a3 predicate:(id)a4 block:(id)a5
+- (COStateObserver)initWithDispatchQueue:(id)queue predicate:(id)predicate block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  predicateCopy = predicate;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = COStateObserver;
   v12 = [(COStateObserver *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dispatchQueue, a3);
-    v14 = MEMORY[0x245D5F6A0](v11);
+    objc_storeStrong(&v12->_dispatchQueue, queue);
+    v14 = MEMORY[0x245D5F6A0](blockCopy);
     block = v13->_block;
     v13->_block = v14;
 
-    objc_storeStrong(&v13->_predicate, a4);
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v13->_predicate, predicate);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lastChanges = v13->_lastChanges;
-    v13->_lastChanges = v16;
+    v13->_lastChanges = dictionary;
   }
 
   return v13;
@@ -34,25 +34,25 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(COStateObserver *)self predicate];
-  v5 = [v3 stringWithFormat:@"<COStateObserver: %p Predicate: %@>", self, v4];
+  predicate = [(COStateObserver *)self predicate];
+  v5 = [v3 stringWithFormat:@"<COStateObserver: %p Predicate: %@>", self, predicate];
 
   return v5;
 }
 
-- (void)notify:(id)a3
+- (void)notify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   objc_initWeak(&location, self);
-  v5 = [(COStateObserver *)self dispatchQueue];
+  dispatchQueue = [(COStateObserver *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__COStateObserver_notify___block_invoke;
   block[3] = &unk_278E12878;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = notifyCopy;
+  v6 = notifyCopy;
+  dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

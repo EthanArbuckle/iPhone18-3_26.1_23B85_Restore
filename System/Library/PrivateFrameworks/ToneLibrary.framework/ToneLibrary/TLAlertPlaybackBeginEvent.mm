@@ -1,20 +1,20 @@
 @interface TLAlertPlaybackBeginEvent
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithAudioSessionReporterID:(int64_t)a3 isForMusicPlayback:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithAudioSessionReporterID:(int64_t)d isForMusicPlayback:(BOOL)playback;
 - (id)description;
 @end
 
 @implementation TLAlertPlaybackBeginEvent
 
-- (id)_initWithAudioSessionReporterID:(int64_t)a3 isForMusicPlayback:(BOOL)a4
+- (id)_initWithAudioSessionReporterID:(int64_t)d isForMusicPlayback:(BOOL)playback
 {
   v7.receiver = self;
   v7.super_class = TLAlertPlaybackBeginEvent;
   result = [(TLAlertPlaybackBeginEvent *)&v7 init];
   if (result)
   {
-    *(result + 2) = a3;
-    *(result + 8) = a4;
+    *(result + 2) = d;
+    *(result + 8) = playback;
   }
 
   return result;
@@ -38,10 +38,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -49,7 +49,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_audioSessionReporterID == v4->_audioSessionReporterID && self->_forMusicPlayback == v4->_forMusicPlayback;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_audioSessionReporterID == equalCopy->_audioSessionReporterID && self->_forMusicPlayback == equalCopy->_forMusicPlayback;
   }
 
   return v5;

@@ -1,13 +1,13 @@
 @interface AmbientEditButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_TtC11PosterBoard17AmbientEditButton)initWithCoder:(id)a3;
+- (_TtC11PosterBoard17AmbientEditButton)initWithCoder:(id)coder;
 @end
 
 @implementation AmbientEditButton
 
-- (_TtC11PosterBoard17AmbientEditButton)initWithCoder:(id)a3
+- (_TtC11PosterBoard17AmbientEditButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard17AmbientEditButton_contentStyleCoordinator) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard17AmbientEditButton_contentStyleItemView) = 0;
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(AmbientEditButton *)self intrinsicContentSize:a3.width];
+  [(AmbientEditButton *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;

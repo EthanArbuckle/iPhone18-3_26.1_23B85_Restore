@@ -1,63 +1,63 @@
 @interface CKLocationShareOfferChatItem
 + (id)placeholderPreviewCache;
-+ (id)titleBarMaskImageForWidth:(double)a3;
-- (BOOL)shouldUpdatePreviewWithLocation:(id)a3 lastKnownLocation:(id)a4 previewURL:(id)a5;
-- (CKLocationShareOfferChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
++ (id)titleBarMaskImageForWidth:(double)width;
+- (BOOL)shouldUpdatePreviewWithLocation:(id)location lastKnownLocation:(id)knownLocation previewURL:(id)l;
+- (CKLocationShareOfferChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (IMHandle)sender;
 - (NSString)locationText;
 - (NSString)titleText;
-- (id)_desaturatedImageForImage:(id)a3;
-- (id)_generatePlaceholderThumbnailFillToSize:(CGSize)a3;
-- (id)_generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4 withCoordinate:(CLLocationCoordinate2D)a5 forState:(int64_t)a6;
+- (id)_desaturatedImageForImage:(id)image;
+- (id)_generatePlaceholderThumbnailFillToSize:(CGSize)size;
+- (id)_generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets withCoordinate:(CLLocationCoordinate2D)coordinate forState:(int64_t)state;
 - (id)_placeholderCacheKey;
-- (id)_previewCacheKey:(unint64_t)a3;
-- (id)modificationDateForPreview:(id)a3;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
+- (id)_previewCacheKey:(unint64_t)key;
+- (id)modificationDateForPreview:(id)preview;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
 - (id)previewURL;
-- (id)previewURLForWidth:(unint64_t)a3;
-- (id)savedPreviewFromURL:(id)a3;
+- (id)previewURLForWidth:(unint64_t)width;
+- (id)savedPreviewFromURL:(id)l;
 - (id)time;
 - (id)transcriptTraitCollection;
 - (int64_t)offerState;
 - (void)_generateMapPreview;
-- (void)_handleLocationDidChangeNotification:(id)a3;
+- (void)_handleLocationDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)savePreview:(id)a3 toURL:(id)a4;
+- (void)savePreview:(id)preview toURL:(id)l;
 @end
 
 @implementation CKLocationShareOfferChatItem
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKLocationShareOfferChatItem;
   [(CKLocationShareOfferChatItem *)&v4 dealloc];
 }
 
-- (CKLocationShareOfferChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKLocationShareOfferChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v13.receiver = self;
   v13.super_class = CKLocationShareOfferChatItem;
-  v4 = [(CKChatItem *)&v13 initWithIMChatItem:a3 maxWidth:a4];
+  v4 = [(CKChatItem *)&v13 initWithIMChatItem:item maxWidth:width];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__handleLocationDidChangeNotification_ name:*MEMORY[0x1E69A5988] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__handleLocationDidChangeNotification_ name:*MEMORY[0x1E69A5988] object:0];
 
-    v6 = [MEMORY[0x1E69A5B70] sharedInstance];
-    v7 = [(CKLocationShareOfferChatItem *)v4 sender];
-    v8 = [v6 findMyLocationForHandleOrSibling:v7];
+    mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+    sender = [(CKLocationShareOfferChatItem *)v4 sender];
+    v8 = [mEMORY[0x1E69A5B70] findMyLocationForHandleOrSibling:sender];
 
-    v9 = [v8 fmfLocation];
-    v10 = v9;
-    if (v9)
+    fmfLocation = [v8 fmfLocation];
+    v10 = fmfLocation;
+    if (fmfLocation)
     {
-      v11 = [v9 location];
+      location = [fmfLocation location];
 
-      if (v11)
+      if (location)
       {
         [(CKLocationShareOfferChatItem *)v4 setLastKnownLocation:v10];
       }
@@ -69,32 +69,32 @@
 
 - (id)time
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 time];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  time = [iMChatItem time];
 
-  return v3;
+  return time;
 }
 
 - (IMHandle)sender
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 sender];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  sender = [iMChatItem sender];
 
-  return v3;
+  return sender;
 }
 
 - (int64_t)offerState
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 offerState];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  offerState = [iMChatItem offerState];
 
-  return v3;
+  return offerState;
 }
 
 - (NSString)titleText
 {
-  v3 = [(CKLocationShareOfferChatItem *)self sender];
-  v4 = [v3 _displayNameWithAbbreviation];
+  sender = [(CKLocationShareOfferChatItem *)self sender];
+  _displayNameWithAbbreviation = [sender _displayNameWithAbbreviation];
 
   if (![(CKLocationShareOfferChatItem *)self offerState])
   {
@@ -109,12 +109,12 @@ LABEL_6:
     v6 = MEMORY[0x1E696AEC0];
     v7 = CKFrameworkBundle();
     v8 = [v7 localizedStringForKey:v5 value:&stru_1F04268F8 table:@"ChatKit"];
-    v9 = [v6 stringWithFormat:v8, v4];
+    v9 = [v6 stringWithFormat:v8, _displayNameWithAbbreviation];
 
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v10 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = @"\u200F";
     }
@@ -137,26 +137,26 @@ LABEL_10:
 
 - (NSString)locationText
 {
-  v2 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
-  v3 = [v2 shortAddress];
+  lastKnownLocation = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
+  shortAddress = [lastKnownLocation shortAddress];
 
-  if (!v3 || [v3 isEqualToString:&stru_1F04268F8])
+  if (!shortAddress || [shortAddress isEqualToString:&stru_1F04268F8])
   {
     v4 = CKFrameworkBundle();
     v5 = [v4 localizedStringForKey:@"LOCATING" value:&stru_1F04268F8 table:@"ChatKit"];
 
-    v3 = v5;
+    shortAddress = v5;
   }
 
-  return v3;
+  return shortAddress;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
-  v8 = (v7 * a3);
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v8 = (v7 * width);
 
   v9 = [(CKLocationShareOfferChatItem *)self _previewCacheKey:v8];
   v10 = +[CKPreviewDispatchCache transcriptPreviewCache];
@@ -192,24 +192,24 @@ LABEL_10:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v27 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_DEBUG, "%@ preview read from disk.", buf, 0xCu);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v25 = self;
+    selfCopy2 = self;
     _CKLog();
   }
 
-  [v10 setCachedPreview:v11 key:{v9, v25}];
+  [v10 setCachedPreview:v11 key:{v9, selfCopy2}];
   if (!v11)
   {
 LABEL_15:
-    v15 = [(CKLocationShareOfferChatItem *)self _placeholderCacheKey];
+    _placeholderCacheKey = [(CKLocationShareOfferChatItem *)self _placeholderCacheKey];
     v16 = +[CKLocationShareOfferChatItem placeholderPreviewCache];
-    v11 = [v16 objectForKey:v15];
+    v11 = [v16 objectForKey:_placeholderCacheKey];
 
     if (v11)
     {
@@ -224,7 +224,7 @@ LABEL_28:
       if (v11)
       {
         v17 = +[CKLocationShareOfferChatItem placeholderPreviewCache];
-        [v17 setObject:v11 forKey:v15];
+        [v17 setObject:v11 forKey:_placeholderCacheKey];
 
         goto LABEL_28;
       }
@@ -235,7 +235,7 @@ LABEL_28:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v27 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Preview is nil for location chat item: %@ and state: IMLocationShareOfferStateExpired", buf, 0xCu);
         }
 
@@ -249,7 +249,7 @@ LABEL_26:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v27 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Preview is nil for location chat item: %@", buf, 0xCu);
       }
 
@@ -263,8 +263,8 @@ LABEL_26:
 LABEL_29:
   if ([(CKLocationShareOfferChatItem *)self offerState]!= 2)
   {
-    v19 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
-    v20 = v19 == 0;
+    lastKnownLocation = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
+    v20 = lastKnownLocation == 0;
 
     if (v20)
     {
@@ -276,9 +276,9 @@ LABEL_29:
       v12 = [(CKLocationShareOfferChatItem *)self previewURLForWidth:v8];
     }
 
-    v21 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
-    v22 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
-    v23 = [(CKLocationShareOfferChatItem *)self shouldUpdatePreviewWithLocation:v21 lastKnownLocation:v22 previewURL:v12];
+    lastKnownLocation2 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
+    lastKnownLocation3 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
+    v23 = [(CKLocationShareOfferChatItem *)self shouldUpdatePreviewWithLocation:lastKnownLocation2 lastKnownLocation:lastKnownLocation3 previewURL:v12];
 
     if (v23)
     {
@@ -290,15 +290,15 @@ LABEL_34:
   return v11;
 }
 
-- (id)_previewCacheKey:(unint64_t)a3
+- (id)_previewCacheKey:(unint64_t)key
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(CKLocationShareOfferChatItem *)self sender];
-  v7 = [v6 ID];
-  v8 = [(CKLocationShareOfferChatItem *)self offerState];
-  v9 = [(CKBalloonChatItem *)self balloonOrientation];
-  v10 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-  v11 = [v5 stringWithFormat:@"%@-%d-%d-%d-%ld", v7, v8, a3, v9, objc_msgSend(v10, "userInterfaceStyle")];
+  sender = [(CKLocationShareOfferChatItem *)self sender];
+  v7 = [sender ID];
+  offerState = [(CKLocationShareOfferChatItem *)self offerState];
+  balloonOrientation = [(CKBalloonChatItem *)self balloonOrientation];
+  transcriptTraitCollection = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+  v11 = [v5 stringWithFormat:@"%@-%d-%d-%d-%ld", v7, offerState, key, balloonOrientation, objc_msgSend(transcriptTraitCollection, "userInterfaceStyle")];
 
   return v11;
 }
@@ -306,9 +306,9 @@ LABEL_34:
 - (id)_placeholderCacheKey
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKLocationShareOfferChatItem *)self offerState];
-  v5 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-  v6 = [v3 stringWithFormat:@"placeholder-%d-%ld", v4, objc_msgSend(v5, "userInterfaceStyle")];
+  offerState = [(CKLocationShareOfferChatItem *)self offerState];
+  transcriptTraitCollection = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+  v6 = [v3 stringWithFormat:@"placeholder-%d-%ld", offerState, objc_msgSend(transcriptTraitCollection, "userInterfaceStyle")];
 
   return v6;
 }
@@ -319,19 +319,19 @@ LABEL_34:
   [v3 previewMaxWidth];
   v5 = v4;
 
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v8 = (v5 * v7);
 
   return [(CKLocationShareOfferChatItem *)self previewURLForWidth:v8];
 }
 
-- (id)previewURLForWidth:(unint64_t)a3
+- (id)previewURLForWidth:(unint64_t)width
 {
-  v5 = [(CKLocationShareOfferChatItem *)self sender];
-  v6 = [v5 ID];
-  v7 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-  v8 = CKLocationSharePreviewCachesFileURL(v6, a3, @"jpeg", [v7 userInterfaceStyle]);
+  sender = [(CKLocationShareOfferChatItem *)self sender];
+  v6 = [sender ID];
+  transcriptTraitCollection = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+  v8 = CKLocationSharePreviewCachesFileURL(v6, width, @"jpeg", [transcriptTraitCollection userInterfaceStyle]);
 
   return v8;
 }
@@ -343,8 +343,8 @@ LABEL_34:
   [v3 mapPreviewMaxWidth];
   v5 = v4;
 
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v8 = (v5 * v7);
 
   v9 = [(CKLocationShareOfferChatItem *)self _previewCacheKey:v8];
@@ -388,7 +388,7 @@ LABEL_34:
     v12[3] = &unk_1E72EBC60;
     v13 = v10;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     p_buf = &buf;
     v17 = v8;
     [v13 enqueueGenerationBlock:v18 completion:v12 withPriority:-1 forKey:v14];
@@ -502,16 +502,16 @@ void __51__CKLocationShareOfferChatItem__generateMapPreview__block_invoke_3(uint
   [*(a1 + 32) savePreview:*(a1 + 40) toURL:v6];
 }
 
-- (id)_generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4 withCoordinate:(CLLocationCoordinate2D)a5 forState:(int64_t)a6
+- (id)_generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets withCoordinate:(CLLocationCoordinate2D)coordinate forState:(int64_t)state
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
   v88 = *MEMORY[0x1E69E9840];
   if (_generateThumbnailFillToSize_contentAlignmentInsets_withCoordinate_forState___pred_CLLocationCoordinate2DIsValidCoreLocation != -1)
   {
@@ -567,8 +567,8 @@ void __51__CKLocationShareOfferChatItem__generateMapPreview__block_invoke_3(uint
     v59 = v20 + v23;
     v24 = height + v20 + v23;
     [v13 setSize:{width, v24}];
-    v25 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-    [v13 setTraitCollection:v25];
+    transcriptTraitCollection = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+    [v13 setTraitCollection:transcriptTraitCollection];
 
     v26 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"fmf_disc"];
     *&v83 = 0;
@@ -602,17 +602,17 @@ void __51__CKLocationShareOfferChatItem__generateMapPreview__block_invoke_3(uint
     *&v87 = v28;
     *(&v87 + 1) = v30;
     v38 = [CKEntity alloc];
-    v39 = [(CKLocationShareOfferChatItem *)self sender];
-    v40 = [(CKEntity *)v38 initWithIMHandle:v39];
+    sender = [(CKLocationShareOfferChatItem *)self sender];
+    v40 = [(CKEntity *)v38 initWithIMHandle:sender];
 
-    v41 = [(CKEntity *)v40 locationShareBalloonContactImage];
+    locationShareBalloonContactImage = [(CKEntity *)v40 locationShareBalloonContactImage];
     v72[0] = 0;
     v72[1] = v72;
     v72[2] = 0x4010000000;
     v72[3] = &unk_190F92BB2;
     v73 = 0u;
     v74 = 0u;
-    [v41 size];
+    [locationShareBalloonContactImage size];
     v43 = v42;
     v45 = v44;
     if (CKMainScreenScale_once_1 != -1)
@@ -646,7 +646,7 @@ void __51__CKLocationShareOfferChatItem__generateMapPreview__block_invoke_3(uint
     v68 = v72;
     v50 = v26;
     v63 = v50;
-    v51 = v41;
+    v51 = locationShareBalloonContactImage;
     v64 = v51;
     v52 = v48;
     v65 = v52;
@@ -662,7 +662,7 @@ void __51__CKLocationShareOfferChatItem__generateMapPreview__block_invoke_3(uint
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v82 = self;
+          selfCopy = self;
           _os_log_impl(&dword_19020E000, v54, OS_LOG_TYPE_INFO, "%@ thumbnail generation timed out.", buf, 0xCu);
         }
       }
@@ -771,29 +771,29 @@ void __108__CKLocationShareOfferChatItem__generateThumbnailFillToSize_contentAli
 {
   v7.receiver = self;
   v7.super_class = CKLocationShareOfferChatItem;
-  v2 = [(CKChatItem *)&v7 transcriptTraitCollection];
-  v3 = v2;
-  if (v2)
+  transcriptTraitCollection = [(CKChatItem *)&v7 transcriptTraitCollection];
+  v3 = transcriptTraitCollection;
+  if (transcriptTraitCollection)
   {
-    v4 = v2;
+    traitCollection = transcriptTraitCollection;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DD2E8] keyWindow];
-    v4 = [v5 traitCollection];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    traitCollection = [keyWindow traitCollection];
   }
 
-  return v4;
+  return traitCollection;
 }
 
-- (id)_generatePlaceholderThumbnailFillToSize:(CGSize)a3
+- (id)_generatePlaceholderThumbnailFillToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v50 = *MEMORY[0x1E69E9840];
-  v6 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-  v7 = CKLocationSharePreviewPlaceHolderCacheFileURL(v6, width, @"jpeg");
+  transcriptTraitCollection = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+  v7 = CKLocationSharePreviewPlaceHolderCacheFileURL(transcriptTraitCollection, width, @"jpeg");
 
   v40 = 0;
   v41 = &v40;
@@ -802,8 +802,8 @@ void __108__CKLocationShareOfferChatItem__generateThumbnailFillToSize_contentAli
   v44 = __Block_byref_object_dispose__1;
   v45 = 0;
   v39[0] = [(CKBalloonChatItem *)self balloonOrientation];
-  v8 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-  v39[1] = [v8 userInterfaceStyle];
+  transcriptTraitCollection2 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+  v39[1] = [transcriptTraitCollection2 userInterfaceStyle];
 
   v9 = [MEMORY[0x1E696B098] value:v39 withObjCType:"{?=cq}"];
   v10 = +[CKLocationMediaObject placeholderPreviewCache];
@@ -869,12 +869,12 @@ LABEL_17:
   {
     v21 = objc_alloc_init(v20);
     [v21 setMapType:105];
-    v22 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
-    [v21 setTraitCollection:v22];
+    transcriptTraitCollection3 = [(CKLocationShareOfferChatItem *)self transcriptTraitCollection];
+    [v21 setTraitCollection:transcriptTraitCollection3];
 
     [v21 setSize:{width, height}];
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v23 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     [v21 setScale:?];
 
     v24 = MEMORY[0x193AF5EC0](@"MKMapSnapshotter", @"MapKit");
@@ -903,7 +903,7 @@ LABEL_17:
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v47 = self;
+            selfCopy = self;
             _os_log_impl(&dword_19020E000, v30, OS_LOG_TYPE_INFO, "%@ thumbnail generation timed out.", buf, 0xCu);
           }
         }
@@ -940,7 +940,7 @@ LABEL_17:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v47 = @"MKMapSnapshotter";
+          selfCopy = @"MKMapSnapshotter";
           v48 = 2112;
           v49 = @"MapKit";
           _os_log_impl(&dword_19020E000, v35, OS_LOG_TYPE_INFO, "Failed weak linking %@ from %@.", buf, 0x16u);
@@ -959,7 +959,7 @@ LABEL_17:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v47 = @"MKMapSnapshotOptions";
+        selfCopy = @"MKMapSnapshotOptions";
         v48 = 2112;
         v49 = @"MapKit";
         _os_log_impl(&dword_19020E000, v34, OS_LOG_TYPE_INFO, "Failed weak linking %@ from %@.", buf, 0x16u);
@@ -1000,14 +1000,14 @@ void __72__CKLocationShareOfferChatItem__generatePlaceholderThumbnailFillToSize_
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)savePreview:(id)a3 toURL:(id)a4
+- (void)savePreview:(id)preview toURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  previewCopy = preview;
+  lCopy = l;
+  if (lCopy)
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = previewCopy;
+    v8 = lCopy;
     im_perform_with_task_assertion();
   }
 }
@@ -1039,13 +1039,13 @@ void __50__CKLocationShareOfferChatItem_savePreview_toURL___block_invoke(uint64_
   }
 }
 
-- (id)savedPreviewFromURL:(id)a3
+- (id)savedPreviewFromURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = MEMORY[0x1E695DEF0];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithContentsOfURL:v4 options:1 error:0];
+    lCopy = l;
+    v5 = [[v3 alloc] initWithContentsOfURL:lCopy options:1 error:0];
 
     if (v5)
     {
@@ -1066,49 +1066,49 @@ void __50__CKLocationShareOfferChatItem_savePreview_toURL___block_invoke(uint64_
   return v6;
 }
 
-- (id)modificationDateForPreview:(id)a3
+- (id)modificationDateForPreview:(id)preview
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  previewCopy = preview;
+  defaultManager = [v3 defaultManager];
+  path = [previewCopy path];
 
-  v7 = [v5 attributesOfItemAtPath:v6 error:0];
+  v7 = [defaultManager attributesOfItemAtPath:path error:0];
   v8 = [v7 objectForKey:*MEMORY[0x1E696A350]];
 
   return v8;
 }
 
-- (void)_handleLocationDidChangeNotification:(id)a3
+- (void)_handleLocationDidChangeNotification:(id)notification
 {
-  v14 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v14 fmfHandle];
+    fmfHandle = [object fmfHandle];
   }
 
   else
   {
-    v4 = 0;
+    fmfHandle = 0;
   }
 
-  v5 = [(CKLocationShareOfferChatItem *)self sender];
-  v6 = [v5 findMySiblingHandles];
-  v7 = [v6 __im_fmfHandles];
+  sender = [(CKLocationShareOfferChatItem *)self sender];
+  findMySiblingHandles = [sender findMySiblingHandles];
+  __im_fmfHandles = [findMySiblingHandles __im_fmfHandles];
 
-  if (v4 && [v7 containsObject:v4])
+  if (fmfHandle && [__im_fmfHandles containsObject:fmfHandle])
   {
-    v8 = [MEMORY[0x1E69A5B70] sharedInstance];
-    v9 = [(CKLocationShareOfferChatItem *)self sender];
-    v10 = [v8 findMyLocationForHandleOrSibling:v9];
-    v11 = [v10 fmfLocation];
+    mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+    sender2 = [(CKLocationShareOfferChatItem *)self sender];
+    v10 = [mEMORY[0x1E69A5B70] findMyLocationForHandleOrSibling:sender2];
+    fmfLocation = [v10 fmfLocation];
 
-    v12 = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
-    v13 = [(CKLocationShareOfferChatItem *)self previewURL];
-    LODWORD(v10) = [(CKLocationShareOfferChatItem *)self shouldUpdatePreviewWithLocation:v11 lastKnownLocation:v12 previewURL:v13];
+    lastKnownLocation = [(CKLocationShareOfferChatItem *)self lastKnownLocation];
+    previewURL = [(CKLocationShareOfferChatItem *)self previewURL];
+    LODWORD(v10) = [(CKLocationShareOfferChatItem *)self shouldUpdatePreviewWithLocation:fmfLocation lastKnownLocation:lastKnownLocation previewURL:previewURL];
 
-    [(CKLocationShareOfferChatItem *)self setLastKnownLocation:v11];
+    [(CKLocationShareOfferChatItem *)self setLastKnownLocation:fmfLocation];
     if (v10)
     {
       [(CKLocationShareOfferChatItem *)self _generateMapPreview];
@@ -1116,76 +1116,76 @@ void __50__CKLocationShareOfferChatItem_savePreview_toURL___block_invoke(uint64_
   }
 }
 
-- (BOOL)shouldUpdatePreviewWithLocation:(id)a3 lastKnownLocation:(id)a4 previewURL:(id)a5
+- (BOOL)shouldUpdatePreviewWithLocation:(id)location lastKnownLocation:(id)knownLocation previewURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  locationCopy = location;
+  knownLocationCopy = knownLocation;
+  lCopy = l;
+  if (locationCopy)
   {
-    v11 = [v8 location];
+    location = [locationCopy location];
 
-    if (v11)
+    if (location)
     {
-      if (v9 && (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v12 = objc_claimAutoreleasedReturnValue(), [v12 locationValidInterval], v14 = v13, v12, objc_msgSend(v8, "timestamp"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "timestamp"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "timeIntervalSinceDate:", v16), v18 = v17, v16, v15, v18 <= v14))
+      if (knownLocationCopy && (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v12 = objc_claimAutoreleasedReturnValue(), [v12 locationValidInterval], v14 = v13, v12, objc_msgSend(locationCopy, "timestamp"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(knownLocationCopy, "timestamp"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "timeIntervalSinceDate:", v16), v18 = v17, v16, v15, v18 <= v14))
       {
-        v19 = [(CKLocationShareOfferChatItem *)self modificationDateForPreview:v10];
+        v19 = [(CKLocationShareOfferChatItem *)self modificationDateForPreview:lCopy];
         v20 = v19;
         if (v19)
         {
-          v21 = v19;
+          distantPast = v19;
         }
 
         else
         {
-          v21 = [MEMORY[0x1E695DF00] distantPast];
+          distantPast = [MEMORY[0x1E695DF00] distantPast];
         }
 
-        v22 = v21;
+        v22 = distantPast;
 
-        v11 = [MEMORY[0x1E695DF00] date];
-        [v11 timeIntervalSinceDate:v22];
+        location = [MEMORY[0x1E695DF00] date];
+        [location timeIntervalSinceDate:v22];
         v24 = v23;
 
-        LOBYTE(v11) = v24 > v14;
+        LOBYTE(location) = v24 > v14;
       }
 
       else
       {
-        LOBYTE(v11) = 1;
+        LOBYTE(location) = 1;
       }
     }
   }
 
   else
   {
-    LOBYTE(v11) = 0;
+    LOBYTE(location) = 0;
   }
 
-  return v11;
+  return location;
 }
 
-- (id)_desaturatedImageForImage:(id)a3
+- (id)_desaturatedImageForImage:(id)image
 {
   v3 = MEMORY[0x1E69DCEB0];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  [v5 scale];
+  imageCopy = image;
+  mainScreen = [v3 mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
-  [v4 size];
+  [imageCopy size];
   v9 = v7 * v8;
-  [v4 size];
+  [imageCopy size];
   v11 = v7 * v10;
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v13 = CGBitmapContextCreate(0, v9, v11, 8uLL, 0, DeviceGray, 0);
-  v14 = [v4 CGImage];
+  cGImage = [imageCopy CGImage];
 
   v19.origin.x = 0.0;
   v19.origin.y = 0.0;
   v19.size.width = v9;
   v19.size.height = v11;
-  CGContextDrawImage(v13, v19, v14);
+  CGContextDrawImage(v13, v19, cGImage);
   Image = CGBitmapContextCreateImage(v13);
   v16 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:Image scale:0 orientation:v7];
   CGColorSpaceRelease(DeviceGray);
@@ -1198,14 +1198,14 @@ void __50__CKLocationShareOfferChatItem_savePreview_toURL___block_invoke(uint64_
   return v16;
 }
 
-+ (id)titleBarMaskImageForWidth:(double)a3
++ (id)titleBarMaskImageForWidth:(double)width
 {
   v4 = *&titleBarMaskImageForWidth__sWidth;
-  if (*&titleBarMaskImageForWidth__sWidth != a3)
+  if (*&titleBarMaskImageForWidth__sWidth != width)
   {
-    titleBarMaskImageForWidth__sWidth = *&a3;
+    titleBarMaskImageForWidth__sWidth = *&width;
     v5 = +[CKUIBehavior sharedBehaviors];
-    [v5 locationOfferMapThumbnailFillSizeForWidth:a3];
+    [v5 locationOfferMapThumbnailFillSizeForWidth:width];
     v7 = v6;
     v9 = v8;
 
@@ -1219,8 +1219,8 @@ void __50__CKLocationShareOfferChatItem_savePreview_toURL___block_invoke(uint64_
     v22.width = v7;
     v22.height = v9;
     UIGraphicsBeginImageContextWithOptions(v22, 0, 0.0);
-    v16 = [MEMORY[0x1E69DC888] blackColor];
-    [v16 set];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [blackColor set];
 
     v23.origin.x = 0.0;
     v23.origin.y = v9 - v15;

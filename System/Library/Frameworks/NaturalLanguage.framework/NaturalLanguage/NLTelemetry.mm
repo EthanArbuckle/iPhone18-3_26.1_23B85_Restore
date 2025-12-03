@@ -1,8 +1,8 @@
 @interface NLTelemetry
 + (id)sharedInstance;
 - (NLTelemetry)init;
-- (void)_registerPayload:(id)a3 forEvent:(id)a4;
-- (void)reportEmbeddingLoadedWithIdentifier:(id)a3 localeIdentifier:(id)a4 useANE:(BOOL)a5 status:(int64_t)a6;
+- (void)_registerPayload:(id)payload forEvent:(id)event;
+- (void)reportEmbeddingLoadedWithIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier useANE:(BOOL)e status:(int64_t)status;
 @end
 
 @implementation NLTelemetry
@@ -41,33 +41,33 @@ uint64_t __29__NLTelemetry_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_registerPayload:(id)a3 forEvent:(id)a4
+- (void)_registerPayload:(id)payload forEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  eventCopy = event;
   analyticsQueue = self->_analyticsQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __41__NLTelemetry__registerPayload_forEvent___block_invoke;
   v11[3] = &unk_1E76297D0;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = eventCopy;
+  v13 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = eventCopy;
   dispatch_async(analyticsQueue, v11);
 }
 
-- (void)reportEmbeddingLoadedWithIdentifier:(id)a3 localeIdentifier:(id)a4 useANE:(BOOL)a5 status:(int64_t)a6
+- (void)reportEmbeddingLoadedWithIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier useANE:(BOOL)e status:(int64_t)status
 {
-  v7 = a5;
+  eCopy = e;
   v10 = MEMORY[0x1E695DF90];
-  v11 = a4;
-  v12 = a3;
-  v18 = [v10 dictionary];
-  [v18 setObject:v12 forKeyedSubscript:@"identifier"];
+  localeIdentifierCopy = localeIdentifier;
+  identifierCopy = identifier;
+  dictionary = [v10 dictionary];
+  [dictionary setObject:identifierCopy forKeyedSubscript:@"identifier"];
 
-  [v18 setObject:v11 forKeyedSubscript:@"locale"];
-  if (v7)
+  [dictionary setObject:localeIdentifierCopy forKeyedSubscript:@"locale"];
+  if (eCopy)
   {
     v13 = @"ane";
   }
@@ -77,16 +77,16 @@ uint64_t __29__NLTelemetry_sharedInstance__block_invoke()
     v13 = @"cpu";
   }
 
-  [v18 setObject:v13 forKeyedSubscript:@"engine"];
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
-  [v18 setObject:v14 forKeyedSubscript:@"status"];
+  [dictionary setObject:v13 forKeyedSubscript:@"engine"];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:status];
+  [dictionary setObject:v14 forKeyedSubscript:@"status"];
 
-  v15 = [MEMORY[0x1E696AAE8] mainBundle];
-  v16 = [v15 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v16)
+  if (bundleIdentifier)
   {
-    v17 = v16;
+    v17 = bundleIdentifier;
   }
 
   else
@@ -94,8 +94,8 @@ uint64_t __29__NLTelemetry_sharedInstance__block_invoke()
     v17 = @"unknown";
   }
 
-  [v18 setObject:v17 forKeyedSubscript:@"app_bundle"];
-  [(NLTelemetry *)self _registerPayload:v18 forEvent:@"com.apple.NaturalLanguage.EmbeddingStatus"];
+  [dictionary setObject:v17 forKeyedSubscript:@"app_bundle"];
+  [(NLTelemetry *)self _registerPayload:dictionary forEvent:@"com.apple.NaturalLanguage.EmbeddingStatus"];
 }
 
 @end

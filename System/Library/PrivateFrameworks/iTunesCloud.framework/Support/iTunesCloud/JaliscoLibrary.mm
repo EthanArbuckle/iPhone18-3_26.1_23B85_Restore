@@ -1,18 +1,18 @@
 @interface JaliscoLibrary
 + (id)logCategory;
 + (id)oversizeLogCategory;
-- (JaliscoLibrary)initWithConfiguration:(id)a3;
+- (JaliscoLibrary)initWithConfiguration:(id)configuration;
 @end
 
 @implementation JaliscoLibrary
 
-- (JaliscoLibrary)initWithConfiguration:(id)a3
+- (JaliscoLibrary)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[CloudPendingChangesCoordinator alloc] initWithConfiguration:v4 prefix:@"Jalisco-Media" loggable:objc_opt_class()];
+  configurationCopy = configuration;
+  v5 = [[CloudPendingChangesCoordinator alloc] initWithConfiguration:configurationCopy prefix:@"Jalisco-Media" loggable:objc_opt_class()];
   v8.receiver = self;
   v8.super_class = JaliscoLibrary;
-  v6 = [(CloudLibrary *)&v8 _initWithConfiguration:v4 pendingChangesCoordinator:v5];
+  v6 = [(CloudLibrary *)&v8 _initWithConfiguration:configurationCopy pendingChangesCoordinator:v5];
 
   return v6;
 }

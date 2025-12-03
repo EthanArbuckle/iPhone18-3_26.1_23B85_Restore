@@ -1,12 +1,12 @@
 @interface BMPBPhotosKnowledgeGraphEnrichmentLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBPhotosKnowledgeGraphEnrichmentLocation
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BMPBPhotosKnowledgeGraphEnrichmentLocation;
   v4 = [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)&v8 description];
-  v5 = [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   street = self->_street;
   if (street)
   {
-    [v3 setObject:street forKey:@"street"];
+    [dictionary setObject:street forKey:@"street"];
   }
 
   city = self->_city;
@@ -60,109 +60,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_street)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_city)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_state)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_country)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encodedLocation)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_street)
   {
-    [v4 setStreet:?];
-    v4 = v5;
+    [toCopy setStreet:?];
+    toCopy = v5;
   }
 
   if (self->_city)
   {
     [v5 setCity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_state)
   {
     [v5 setState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_country)
   {
     [v5 setCountry:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encodedLocation)
   {
     [v5 setEncodedLocation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_street copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_street copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_city copyWithZone:a3];
+  v8 = [(NSString *)self->_city copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_state copyWithZone:a3];
+  v10 = [(NSString *)self->_state copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_country copyWithZone:a3];
+  v12 = [(NSString *)self->_country copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSData *)self->_encodedLocation copyWithZone:a3];
+  v14 = [(NSData *)self->_encodedLocation copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((street = self->_street, !(street | v4[5])) || -[NSString isEqual:](street, "isEqual:")) && ((city = self->_city, !(city | v4[1])) || -[NSString isEqual:](city, "isEqual:")) && ((state = self->_state, !(state | v4[4])) || -[NSString isEqual:](state, "isEqual:")) && ((country = self->_country, !(country | v4[2])) || -[NSString isEqual:](country, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((street = self->_street, !(street | equalCopy[5])) || -[NSString isEqual:](street, "isEqual:")) && ((city = self->_city, !(city | equalCopy[1])) || -[NSString isEqual:](city, "isEqual:")) && ((state = self->_state, !(state | equalCopy[4])) || -[NSString isEqual:](state, "isEqual:")) && ((country = self->_country, !(country | equalCopy[2])) || -[NSString isEqual:](country, "isEqual:")))
   {
     encodedLocation = self->_encodedLocation;
-    if (encodedLocation | v4[3])
+    if (encodedLocation | equalCopy[3])
     {
       v10 = [(NSData *)encodedLocation isEqual:?];
     }
@@ -190,30 +190,30 @@
   return v6 ^ [(NSData *)self->_encodedLocation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self setStreet:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self setCity:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self setState:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self setCountry:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentLocation *)self setEncodedLocation:?];
   }

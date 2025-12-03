@@ -1,27 +1,27 @@
 @interface RFSchemaRFGradingDialogReportedTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFSchemaRFGradingDialogReportedTier1)initWithDictionary:(id)a3;
-- (RFSchemaRFGradingDialogReportedTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RFSchemaRFGradingDialogReportedTier1)initWithDictionary:(id)dictionary;
+- (RFSchemaRFGradingDialogReportedTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addDialogLines:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDialogLines:(id)lines;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFSchemaRFGradingDialogReportedTier1
 
-- (RFSchemaRFGradingDialogReportedTier1)initWithDictionary:(id)a3
+- (RFSchemaRFGradingDialogReportedTier1)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = RFSchemaRFGradingDialogReportedTier1;
   v5 = [(RFSchemaRFGradingDialogReportedTier1 *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dialogLines"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogLines"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (RFSchemaRFGradingDialogReportedTier1)initWithJSON:(id)a3
+- (RFSchemaRFGradingDialogReportedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFSchemaRFGradingDialogReportedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFSchemaRFGradingDialogReportedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFSchemaRFGradingDialogReportedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,10 +108,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_dialogLines count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -131,16 +131,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -150,26 +150,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"dialogLines"];
+    [dictionary setObject:array forKeyedSubscript:@"dialogLines"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v13];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v13];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines];
-    v6 = [v4 dialogLines];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    dialogLines = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines];
+    dialogLines2 = [equalCopy dialogLines];
+    v7 = dialogLines2;
+    if ((dialogLines != 0) != (dialogLines2 == 0))
     {
-      v8 = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines];
-      if (!v8)
+      dialogLines3 = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines];
+      if (!dialogLines3)
       {
 
 LABEL_10:
@@ -177,10 +177,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines];
-      v11 = [v4 dialogLines];
-      v12 = [v10 isEqual:v11];
+      v9 = dialogLines3;
+      dialogLines4 = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines];
+      dialogLines5 = [equalCopy dialogLines];
+      v12 = [dialogLines4 isEqual:dialogLines5];
 
       if (v12)
       {
@@ -199,10 +199,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -235,32 +235,32 @@ LABEL_8:
   }
 }
 
-- (void)addDialogLines:(id)a3
+- (void)addDialogLines:(id)lines
 {
-  v4 = a3;
+  linesCopy = lines;
   dialogLines = self->_dialogLines;
-  v8 = v4;
+  v8 = linesCopy;
   if (!dialogLines)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dialogLines;
-    self->_dialogLines = v6;
+    self->_dialogLines = array;
 
-    v4 = v8;
+    linesCopy = v8;
     dialogLines = self->_dialogLines;
   }
 
-  [(NSArray *)dialogLines addObject:v4];
+  [(NSArray *)dialogLines addObject:linesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = RFSchemaRFGradingDialogReportedTier1;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(RFSchemaRFGradingDialogReportedTier1 *)self dialogLines:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(RFSchemaRFGradingDialogReportedTier1 *)self setDialogLines:v7];
 

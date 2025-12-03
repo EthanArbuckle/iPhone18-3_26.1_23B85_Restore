@@ -31,15 +31,15 @@
   if ([MEMORY[0x277D218D0] isLunarCalendarDefaultOn])
   {
     v6 = MEMORY[0x277D218D0];
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v7 localeIdentifier];
-    v9 = [v6 preferredLunarCalendarForLocaleID:v8];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v9 = [v6 preferredLunarCalendarForLocaleID:localeIdentifier];
     [(NSMutableDictionary *)self->payload setObject:v9 forKeyedSubscript:@"defaultOverlayCalendarID"];
   }
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [MEMORY[0x277CF74E0] shared];
-  v12 = [v10 numberWithBool:{objc_msgSend(v11, "get_enableTravelAdvisoriesForAutomaticBehavior")}];
+  mEMORY[0x277CF74E0] = [MEMORY[0x277CF74E0] shared];
+  v12 = [v10 numberWithBool:{objc_msgSend(mEMORY[0x277CF74E0], "get_enableTravelAdvisoriesForAutomaticBehavior")}];
   [(NSMutableDictionary *)self->payload setObject:v12 forKeyedSubscript:@"travelAdvisoryEnabled"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "getBooleanPreference:defaultValue:", @"ShowWeekNumbers", 0)}];

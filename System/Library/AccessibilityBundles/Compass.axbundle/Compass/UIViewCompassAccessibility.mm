@@ -1,8 +1,8 @@
 @interface UIViewCompassAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityScrollStatus;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityHint;
@@ -11,25 +11,25 @@
 
 @implementation UIViewCompassAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_altitudeLabel" withType:"UILabel"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_placeLabel" withType:"UILabel"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_degreesSymbolLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_altitudeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_placeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_degreesSymbolLabel" withType:"UILabel"];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"compassPageView"])
+  accessibilityIdentifier = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"compassPageView"])
   {
 
     return 1;
   }
 
-  v4 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"levelPageView"];
+  accessibilityIdentifier2 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier2 isEqualToString:@"levelPageView"];
 
   if (v5)
   {
@@ -43,8 +43,8 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"compassPageView"];
+  accessibilityIdentifier = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"compassPageView"];
 
   if (v4)
   {
@@ -67,31 +67,31 @@
       [v11 setIsAccessibilityElement:1];
     }
 
-    v12 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{3, v6, v11, v9}];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{3, v6, v11, v9}];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = UIViewCompassAccessibility;
-    v12 = [(UIViewCompassAccessibility *)&v14 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(UIViewCompassAccessibility *)&v14 _accessibilitySupplementaryFooterViews];
   }
 
-  return v12;
+  return _accessibilitySupplementaryFooterViews;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v23 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(UIViewCompassAccessibility *)self _accessibilitySupplementaryFooterViews];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  _accessibilitySupplementaryFooterViews = [(UIViewCompassAccessibility *)self _accessibilitySupplementaryFooterViews];
+  v9 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -102,12 +102,12 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_accessibilitySupplementaryFooterViews);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
         [(UIViewCompassAccessibility *)self convertPoint:v13 toView:x, y];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
           v14 = v13;
 
@@ -115,7 +115,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -127,7 +127,7 @@
 
   v17.receiver = self;
   v17.super_class = UIViewCompassAccessibility;
-  v14 = [(UIViewCompassAccessibility *)&v17 _accessibilityHitTest:v7 withEvent:x, y];
+  v14 = [(UIViewCompassAccessibility *)&v17 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_11:
 
   v15 = *MEMORY[0x29EDCA608];
@@ -137,99 +137,99 @@ LABEL_11:
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"compassPageView"];
+  accessibilityIdentifier = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"compassPageView"];
 
   if (v4)
   {
     v5 = axCompassPageViewController();
     v6 = [v5 safeValueForKey:@"_degreesLabel"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
 
     v8 = [v5 safeValueForKey:@"_degreesSymbolLabel"];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel2 = [v8 accessibilityLabel];
 
     v10 = [v5 safeValueForKey:@"_directionLabel"];
-    v11 = [v10 accessibilityLabel];
+    accessibilityLabel3 = [v10 accessibilityLabel];
 
-    v12 = [v7 stringByAppendingString:v9];
-    v13 = __UIAXStringForVariables();
+    v12 = [accessibilityLabel stringByAppendingString:accessibilityLabel2];
+    v7AccessibilityLabel = __UIAXStringForVariables();
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  v14 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  v15 = [v14 isEqualToString:@"levelPageView"];
+  accessibilityIdentifier2 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  v15 = [accessibilityIdentifier2 isEqualToString:@"levelPageView"];
 
   if (v15)
   {
     v5 = axLevelPageViewController();
-    v7 = [v5 safeValueForKey:@"_degreesLabel"];
-    v13 = [v7 accessibilityLabel];
+    accessibilityLabel = [v5 safeValueForKey:@"_degreesLabel"];
+    v7AccessibilityLabel = [accessibilityLabel accessibilityLabel];
     goto LABEL_5;
   }
 
   v17.receiver = self;
   v17.super_class = UIViewCompassAccessibility;
-  v13 = [(UIViewCompassAccessibility *)&v17 accessibilityLabel];
+  v7AccessibilityLabel = [(UIViewCompassAccessibility *)&v17 accessibilityLabel];
 LABEL_7:
 
-  return v13;
+  return v7AccessibilityLabel;
 }
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"compassPageView"];
+  accessibilityIdentifier = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"compassPageView"];
 
   if (v4)
   {
     v5 = axCompassPageViewController();
     v6 = [v5 safeValueForKey:@"_coordinatesLabel"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
 
-    v8 = [(UIViewCompassAccessibility *)self accessibilityLabel];
-    v9 = __UIAXStringForVariables();
+    accessibilityLabel2 = [(UIViewCompassAccessibility *)self accessibilityLabel];
+    _accessibilityScrollStatus = __UIAXStringForVariables();
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UIViewCompassAccessibility;
-    v9 = [(UIViewCompassAccessibility *)&v11 _accessibilityScrollStatus];
+    _accessibilityScrollStatus = [(UIViewCompassAccessibility *)&v11 _accessibilityScrollStatus];
   }
 
-  return v9;
+  return _accessibilityScrollStatus;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"compassPageView"];
+  accessibilityIdentifier = [(UIViewCompassAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"compassPageView"];
 
   if (v4)
   {
-    v5 = accessibilityLocalizedString(@"compass.usage.hint");
+    accessibilityHint = accessibilityLocalizedString(@"compass.usage.hint");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIViewCompassAccessibility;
-    v5 = [(UIViewCompassAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(UIViewCompassAccessibility *)&v7 accessibilityHint];
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if ((a3 - 1) > 1)
+  if ((scroll - 1) > 1)
   {
     v9.receiver = self;
     v9.super_class = UIViewCompassAccessibility;
-    return [(UIViewCompassAccessibility *)&v9 accessibilityScroll:a3];
+    return [(UIViewCompassAccessibility *)&v9 accessibilityScroll:scroll];
   }
 
   else
@@ -237,7 +237,7 @@ LABEL_7:
     v4 = axCompassController();
     v5 = [v4 safeValueForKey:@"_pageControl"];
 
-    if (a3 == 2)
+    if (scroll == 2)
     {
       [v5 accessibilityIncrement];
     }
@@ -248,8 +248,8 @@ LABEL_7:
     }
 
     v7 = *MEMORY[0x29EDC7EA8];
-    v8 = [v5 accessibilityValue];
-    UIAccessibilityPostNotification(v7, v8);
+    accessibilityValue = [v5 accessibilityValue];
+    UIAccessibilityPostNotification(v7, accessibilityValue);
 
     return 1;
   }

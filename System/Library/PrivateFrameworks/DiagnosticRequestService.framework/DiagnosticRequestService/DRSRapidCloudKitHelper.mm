@@ -1,22 +1,22 @@
 @interface DRSRapidCloudKitHelper
 + (id)devHelper;
 + (id)prodHelper;
-- (id)_initWithEnvironment:(int64_t)a3;
-- (void)submitRapidPayload:(id)a3 replyHandler:(id)a4;
+- (id)_initWithEnvironment:(int64_t)environment;
+- (void)submitRapidPayload:(id)payload replyHandler:(id)handler;
 @end
 
 @implementation DRSRapidCloudKitHelper
 
-- (id)_initWithEnvironment:(int64_t)a3
+- (id)_initWithEnvironment:(int64_t)environment
 {
-  if (a3 == 3)
+  if (environment == 3)
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v5 = [[DiagnosticPipelineRapidServiceFunctionsClientObjc alloc] initWithEnvironment:a3];
+    v5 = [[DiagnosticPipelineRapidServiceFunctionsClientObjc alloc] initWithEnvironment:environment];
     if (v5)
     {
       v9.receiver = self;
@@ -29,16 +29,16 @@
       }
 
       self = v7;
-      v4 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v4 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 + (id)devHelper
@@ -79,25 +79,25 @@ void __36__DRSRapidCloudKitHelper_prodHelper__block_invoke()
   prodHelper_prodHelper = v0;
 }
 
-- (void)submitRapidPayload:(id)a3 replyHandler:(id)a4
+- (void)submitRapidPayload:(id)payload replyHandler:(id)handler
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v8 = DPLogHandle_CKCFUpload();
   if (os_signpost_enabled(v8))
   {
-    v9 = [v6 description];
+    v9 = [payloadCopy description];
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v9;
     _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CloudFunctionsRequestUpload", "Upload for %{public}@", &buf, 0xCu);
   }
 
-  if ([v6 requestState] == 1)
+  if ([payloadCopy requestState] == 1)
   {
-    if (([v6 uploadStarted] & 1) == 0)
+    if (([payloadCopy uploadStarted] & 1) == 0)
       v10 = {;
-      (*(v7 + 2))(v7, 0, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v10);
 
       v11 = DPLogHandle_CKCFUpload();
       if (os_signpost_enabled(v11))
@@ -112,51 +112,51 @@ LABEL_18:
     }
   }
 
-  else if ([v6 requestState] != 2)
+  else if ([payloadCopy requestState] != 2)
   {
     v33 = MEMORY[0x277CCACA8];
-    v34 = [v6 requestStateString];
-    v11 = [v33 stringWithFormat:@"Unexpected request state: %@", v34];
+    requestStateString = [payloadCopy requestStateString];
+    v11 = [v33 stringWithFormat:@"Unexpected request state: %@", requestStateString];
 
     v35 = DRSRapidErrorWithDescription(v11);
-    (*(v7 + 2))(v7, 0, 0, v35);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v35);
 
     v36 = DPLogHandle_CKCFUpload();
     if (os_signpost_enabled(v36))
     {
-      v37 = [v6 requestStateString];
+      requestStateString2 = [payloadCopy requestStateString];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v37;
+      *(&buf + 4) = requestStateString2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v36, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "CloudFunctionsRequestUpload", "Request in unexpected state: %{public}@", &buf, 0xCu);
     }
 
-    if (![v6 requestOutcome])
+    if (![payloadCopy requestOutcome])
     {
-      [v6 updateToState:4355 errorDescription:@"Attempted to upload while in unexpected state" errorOut:0];
+      [payloadCopy updateToState:4355 errorDescription:@"Attempted to upload while in unexpected state" errorOut:0];
     }
 
     goto LABEL_25;
   }
 
-  if ([v6 hasUploadableContent])
+  if ([payloadCopy hasUploadableContent])
   {
     v13 = MEMORY[0x277CBEA90];
-    v14 = [v6 logs];
-    v15 = [v14 firstObject];
-    v16 = [v15 path];
-    v11 = [v13 dataWithContentsOfFile:v16];
+    logs = [payloadCopy logs];
+    firstObject = [logs firstObject];
+    path = [firstObject path];
+    v11 = [v13 dataWithContentsOfFile:path];
 
     if (v11)
     {
-      v17 = [v6 logs];
-      v18 = [v17 firstObject];
-      v19 = [v18 name];
+      logs2 = [payloadCopy logs];
+      firstObject2 = [logs2 firstObject];
+      name = [firstObject2 name];
 
-      if (v19)
+      if (name)
       {
         v20 = +[DRSSystemProfile sharedInstance];
-        v21 = [v6 requestDate];
-        [v21 timeIntervalSince1970];
+        requestDate = [payloadCopy requestDate];
+        [requestDate timeIntervalSince1970];
         v23 = v22;
 
         v47 = dispatch_queue_create("DRSRapidCloudKitHelper sync queue", 0);
@@ -169,20 +169,20 @@ LABEL_18:
         v70[1] = v70;
         v70[2] = 0x2020000000;
         v71 = 0;
-        v24 = [(DRSRapidCloudKitHelper *)self objcClient];
-        v25 = [v20 buildVariant];
-        v56 = [v20 deviceCategory];
-        v55 = [v20 deviceModel];
-        v54 = [v20 platformString];
-        v53 = [v6 teamID];
-        v50 = [v6 issueCategory];
-        v52 = [v6 contextDictionaryData];
-        v51 = [v6 build];
-        v26 = [v6 logType];
+        objcClient = [(DRSRapidCloudKitHelper *)self objcClient];
+        buildVariant = [v20 buildVariant];
+        deviceCategory = [v20 deviceCategory];
+        deviceModel = [v20 deviceModel];
+        platformString = [v20 platformString];
+        teamID = [payloadCopy teamID];
+        issueCategory = [payloadCopy issueCategory];
+        contextDictionaryData = [payloadCopy contextDictionaryData];
+        build = [payloadCopy build];
+        logType = [payloadCopy logType];
         v46 = [v11 length];
-        v45 = [v6 uploadAttemptCount];
-        v44 = v24;
-        v27 = v25;
+        uploadAttemptCount = [payloadCopy uploadAttemptCount];
+        v44 = objcClient;
+        v27 = buildVariant;
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __58__DRSRapidCloudKitHelper_submitRapidPayload_replyHandler___block_invoke;
@@ -191,15 +191,15 @@ LABEL_18:
         v64 = v28;
         p_buf = &buf;
         v69 = v70;
-        v48 = v6;
+        v48 = payloadCopy;
         v65 = v48;
-        v43 = v7;
+        v43 = handlerCopy;
         v67 = v43;
         v29 = v49;
         v66 = v29;
         v30 = v20;
-        LODWORD(v42) = v45;
-        [v44 submitRapidPayloadWithBuildVariant:v27 deviceCategory:v56 deviceModel:v55 platform:v54 teamID:v53 issueCategory:v50 contextDictionaryData:v52 requestTime:v23 build:v51 logType:v26 logSize:v46 fileName:v19 uploadAttempts:v42 payload:v11 completionHandler:v63];
+        LODWORD(v42) = uploadAttemptCount;
+        [v44 submitRapidPayloadWithBuildVariant:v27 deviceCategory:deviceCategory deviceModel:deviceModel platform:platformString teamID:teamID issueCategory:issueCategory contextDictionaryData:contextDictionaryData requestTime:v23 build:build logType:logType logSize:v46 fileName:name uploadAttempts:v42 payload:v11 completionHandler:v63];
 
         v31 = dispatch_time(0, 120000000000);
         v32 = dispatch_semaphore_wait(v29, v31);
@@ -221,7 +221,7 @@ LABEL_18:
       else
       {
         v40 = DRSRapidErrorWithDescription(@"Could not determine file name");
-        (*(v7 + 2))(v7, 0, 0, v40);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, v40);
 
         v30 = DPLogHandle_CKCFUpload();
         if (os_signpost_enabled(v30))
@@ -235,13 +235,13 @@ LABEL_18:
     else
     {
       v39 = DRSRapidErrorWithDescription(@"Invalid payload");
-      (*(v7 + 2))(v7, 0, 0, v39);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v39);
 
-      v19 = DPLogHandle_CKCFUpload();
-      if (os_signpost_enabled(v19))
+      name = DPLogHandle_CKCFUpload();
+      if (os_signpost_enabled(name))
       {
         LOWORD(buf) = 0;
-        _os_signpost_emit_with_name_impl(&dword_232906000, v19, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "CloudFunctionsRequestUpload", "Invalid payload", &buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_232906000, name, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "CloudFunctionsRequestUpload", "Invalid payload", &buf, 2u);
       }
     }
   }
@@ -249,7 +249,7 @@ LABEL_18:
   else
   {
     v38 = DRSRapidErrorWithDescription(@"File not available");
-    (*(v7 + 2))(v7, 0, 0, v38);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v38);
 
     v11 = DPLogHandle_CKCFUpload();
     if (os_signpost_enabled(v11))

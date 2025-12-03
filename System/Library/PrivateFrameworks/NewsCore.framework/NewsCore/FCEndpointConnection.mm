@@ -1,21 +1,21 @@
 @interface FCEndpointConnection
-+ (id)URLSessionWithSourceApplicationBundleIdentifier:(id)a3;
-- (FCEndpointConnection)initWithSourceApplicationBundleIdentifier:(id)a3 networkBehaviorMonitor:(id)a4;
++ (id)URLSessionWithSourceApplicationBundleIdentifier:(id)identifier;
+- (FCEndpointConnection)initWithSourceApplicationBundleIdentifier:(id)identifier networkBehaviorMonitor:(id)monitor;
 - (id)session;
-- (void)performAuthenticatedHTTPRequestWithURL:(id)a3 valuesByHTTPHeaderField:(id)a4 method:(id)a5 data:(id)a6 contentType:(id)a7 priority:(float)a8 reauthenticateIfNeeded:(BOOL)a9 networkEventType:(int)a10 callbackQueue:(id)a11 completion:(id)a12;
-- (void)performHTTPRequestWithURL:(id)a3 valuesByHTTPHeaderField:(id)a4 method:(id)a5 data:(id)a6 contentType:(id)a7 priority:(float)a8 requiresMescalSigning:(BOOL)a9 requiresAuthKitHeaders:(BOOL)a10 networkEventType:(int)a11 callbackQueue:(id)a12 completion:(id)a13;
+- (void)performAuthenticatedHTTPRequestWithURL:(id)l valuesByHTTPHeaderField:(id)field method:(id)method data:(id)data contentType:(id)type priority:(float)priority reauthenticateIfNeeded:(BOOL)needed networkEventType:(int)self0 callbackQueue:(id)self1 completion:(id)self2;
+- (void)performHTTPRequestWithURL:(id)l valuesByHTTPHeaderField:(id)field method:(id)method data:(id)data contentType:(id)type priority:(float)priority requiresMescalSigning:(BOOL)signing requiresAuthKitHeaders:(BOOL)self0 networkEventType:(int)self1 callbackQueue:(id)self2 completion:(id)self3;
 @end
 
 @implementation FCEndpointConnection
 
-+ (id)URLSessionWithSourceApplicationBundleIdentifier:(id)a3
++ (id)URLSessionWithSourceApplicationBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
-  v5 = v4;
-  if (v3)
+  identifierCopy = identifier;
+  ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
+  v5 = ephemeralSessionConfiguration;
+  if (identifierCopy)
   {
-    [v4 set_sourceApplicationBundleIdentifier:v3];
+    [ephemeralSessionConfiguration set_sourceApplicationBundleIdentifier:identifierCopy];
   }
 
   if (FCProcessIsMemoryConstrained())
@@ -24,8 +24,8 @@
   }
 
   [v5 setNetworkServiceType:0];
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  [v5 setHTTPMaximumConnectionsPerHost:{2 * objc_msgSend(v6, "processorCount")}];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [v5 setHTTPMaximumConnectionsPerHost:{2 * objc_msgSend(processInfo, "processorCount")}];
 
   [v5 set_timingDataOptions:{objc_msgSend(v5, "_timingDataOptions") | 1}];
   v7 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v5 delegate:0 delegateQueue:0];
@@ -33,23 +33,23 @@
   return v7;
 }
 
-- (FCEndpointConnection)initWithSourceApplicationBundleIdentifier:(id)a3 networkBehaviorMonitor:(id)a4
+- (FCEndpointConnection)initWithSourceApplicationBundleIdentifier:(id)identifier networkBehaviorMonitor:(id)monitor
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  monitorCopy = monitor;
   v16.receiver = self;
   v16.super_class = FCEndpointConnection;
   v8 = [(FCEndpointConnection *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_networkBehaviorMonitor, a4);
+    objc_storeStrong(&v8->_networkBehaviorMonitor, monitor);
     v10 = objc_alloc(MEMORY[0x1E69B68D8]);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __89__FCEndpointConnection_initWithSourceApplicationBundleIdentifier_networkBehaviorMonitor___block_invoke;
     v14[3] = &unk_1E7C36F98;
-    v15 = v6;
+    v15 = identifierCopy;
     v11 = [v10 initWithConstructor:v14];
     lazySession = v9->_lazySession;
     v9->_lazySession = v11;
@@ -60,30 +60,30 @@
 
 - (id)session
 {
-  v2 = [(FCEndpointConnection *)self lazySession];
-  v3 = [v2 value];
+  lazySession = [(FCEndpointConnection *)self lazySession];
+  value = [lazySession value];
 
-  return v3;
+  return value;
 }
 
-- (void)performHTTPRequestWithURL:(id)a3 valuesByHTTPHeaderField:(id)a4 method:(id)a5 data:(id)a6 contentType:(id)a7 priority:(float)a8 requiresMescalSigning:(BOOL)a9 requiresAuthKitHeaders:(BOOL)a10 networkEventType:(int)a11 callbackQueue:(id)a12 completion:(id)a13
+- (void)performHTTPRequestWithURL:(id)l valuesByHTTPHeaderField:(id)field method:(id)method data:(id)data contentType:(id)type priority:(float)priority requiresMescalSigning:(BOOL)signing requiresAuthKitHeaders:(BOOL)self0 networkEventType:(int)self1 callbackQueue:(id)self2 completion:(id)self3
 {
-  v13 = a9;
+  signingCopy = signing;
   v88[2] = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v63 = a5;
-  v22 = a6;
-  v62 = a7;
-  v23 = a12;
-  v24 = a13;
+  lCopy = l;
+  fieldCopy = field;
+  methodCopy = method;
+  dataCopy = data;
+  typeCopy = type;
+  queueCopy = queue;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __194__FCEndpointConnection_performHTTPRequestWithURL_valuesByHTTPHeaderField_method_data_contentType_priority_requiresMescalSigning_requiresAuthKitHeaders_networkEventType_callbackQueue_completion___block_invoke;
   aBlock[3] = &unk_1E7C3EDE0;
-  v25 = v23;
+  v25 = queueCopy;
   v85 = v25;
-  v26 = v24;
+  v26 = completionCopy;
   v86 = v26;
   v27 = _Block_copy(aBlock);
   v28 = NewsCoreUserDefaults();
@@ -91,19 +91,19 @@
   {
     v57 = v26;
     v58 = v25;
-    v60 = v22;
+    v60 = dataCopy;
     v29 = MEMORY[0x1E696AEC0];
-    v30 = [v20 host];
-    [v29 stringWithFormat:@"%@-type:%d", v30, a11];
-    v32 = v31 = v20;
+    host = [lCopy host];
+    [v29 stringWithFormat:@"%@-type:%d", host, eventType];
+    v32 = v31 = lCopy;
 
     v83 = 0.0;
     v33 = +[FCThrottleRegistry shared];
     v59 = v32;
-    LODWORD(v30) = [v33 shouldThrottleGroup:v32 outRetryAfter:&v83];
+    LODWORD(host) = [v33 shouldThrottleGroup:v32 outRetryAfter:&v83];
 
-    v61 = v21;
-    if (v30)
+    v61 = fieldCopy;
+    if (host)
     {
       v34 = MEMORY[0x1E696ABC0];
       v35 = *MEMORY[0x1E696A998];
@@ -116,21 +116,21 @@
       v38 = [v34 fc_errorWithCode:12 description:@"The operation was throttled." additionalUserInfo:v37];
 
       (*(v27 + 2))(v27, 0, 0, v38);
-      v20 = v31;
+      lCopy = v31;
 LABEL_24:
       v26 = v57;
 
-      v21 = v61;
+      fieldCopy = v61;
       v25 = v58;
       goto LABEL_25;
     }
 
-    v39 = v63;
+    v39 = methodCopy;
     v40 = v39;
-    if (v13)
+    if (signingCopy)
     {
-      v20 = v31;
-      v41 = self;
+      lCopy = v31;
+      selfCopy2 = self;
       if ([(__CFString *)v39 isEqualToString:@"Signed_GET"])
       {
         v42 = @"GET";
@@ -159,41 +159,41 @@ LABEL_24:
     else
     {
       v42 = v39;
-      v20 = v31;
-      v41 = self;
+      lCopy = v31;
+      selfCopy2 = self;
     }
 
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __194__FCEndpointConnection_performHTTPRequestWithURL_valuesByHTTPHeaderField_method_data_contentType_priority_requiresMescalSigning_requiresAuthKitHeaders_networkEventType_callbackQueue_completion___block_invoke_3;
     v70[3] = &unk_1E7C418B8;
-    v46 = v20;
+    v46 = lCopy;
     v71 = v46;
-    v81 = a10;
+    headersCopy = headers;
     v38 = v42;
     v72 = v38;
-    v73 = v62;
+    v73 = typeCopy;
     v74 = v61;
-    v82 = v13;
+    v82 = signingCopy;
     v75 = v40;
-    v76 = v41;
-    v79 = a11;
+    v76 = selfCopy2;
+    eventTypeCopy = eventType;
     v77 = v59;
     v47 = v27;
     v78 = v47;
-    v80 = a8;
+    priorityCopy = priority;
     v48 = _Block_copy(v70);
     v49 = v48;
-    v22 = v60;
+    dataCopy = v60;
     if (v60)
     {
-      if (v13)
+      if (signingCopy)
       {
         v55 = v46;
         if ([v28 BOOLForKey:@"simulate_bad_analytics_mescal_signature"])
         {
-          v50 = [MEMORY[0x1E695DF00] date];
-          v51 = [v50 description];
+          date = [MEMORY[0x1E695DF00] date];
+          v51 = [date description];
           v56 = [v51 dataUsingEncoding:4];
         }
 
@@ -213,7 +213,7 @@ LABEL_24:
         v64[1] = 3221225472;
         v64[2] = __194__FCEndpointConnection_performHTTPRequestWithURL_valuesByHTTPHeaderField_method_data_contentType_priority_requiresMescalSigning_requiresAuthKitHeaders_networkEventType_callbackQueue_completion___block_invoke_42;
         v64[3] = &unk_1E7C418E0;
-        v64[4] = v41;
+        v64[4] = selfCopy2;
         v65 = v55;
         v67 = v47;
         v68 = v49;
@@ -496,38 +496,38 @@ void __194__FCEndpointConnection_performHTTPRequestWithURL_valuesByHTTPHeaderFie
   }
 }
 
-- (void)performAuthenticatedHTTPRequestWithURL:(id)a3 valuesByHTTPHeaderField:(id)a4 method:(id)a5 data:(id)a6 contentType:(id)a7 priority:(float)a8 reauthenticateIfNeeded:(BOOL)a9 networkEventType:(int)a10 callbackQueue:(id)a11 completion:(id)a12
+- (void)performAuthenticatedHTTPRequestWithURL:(id)l valuesByHTTPHeaderField:(id)field method:(id)method data:(id)data contentType:(id)type priority:(float)priority reauthenticateIfNeeded:(BOOL)needed networkEventType:(int)self0 callbackQueue:(id)self1 completion:(id)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a11;
-  v24 = a12;
+  lCopy = l;
+  fieldCopy = field;
+  methodCopy = method;
+  dataCopy = data;
+  typeCopy = type;
+  queueCopy = queue;
+  completionCopy = completion;
   v25 = +[FCAppleAccount sharedAccount];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __185__FCEndpointConnection_performAuthenticatedHTTPRequestWithURL_valuesByHTTPHeaderField_method_data_contentType_priority_reauthenticateIfNeeded_networkEventType_callbackQueue_completion___block_invoke;
   v34[3] = &unk_1E7C41930;
-  v35 = v19;
-  v36 = self;
-  v37 = v18;
-  v38 = v20;
-  v39 = v21;
-  v40 = v22;
-  v43 = a10;
-  v41 = v23;
-  v42 = v24;
-  v45 = a9;
-  v44 = a8;
-  v26 = v23;
-  v27 = v22;
-  v28 = v21;
-  v29 = v20;
-  v30 = v18;
-  v31 = v19;
-  v32 = v24;
+  v35 = fieldCopy;
+  selfCopy = self;
+  v37 = lCopy;
+  v38 = methodCopy;
+  v39 = dataCopy;
+  v40 = typeCopy;
+  eventTypeCopy = eventType;
+  v41 = queueCopy;
+  v42 = completionCopy;
+  neededCopy = needed;
+  priorityCopy = priority;
+  v26 = queueCopy;
+  v27 = typeCopy;
+  v28 = dataCopy;
+  v29 = methodCopy;
+  v30 = lCopy;
+  v31 = fieldCopy;
+  v32 = completionCopy;
   [v25 getGSTokenWithCompletionHandler:v34];
 }
 

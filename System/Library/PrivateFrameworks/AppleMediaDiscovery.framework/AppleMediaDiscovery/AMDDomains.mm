@@ -1,16 +1,16 @@
 @interface AMDDomains
-+ (int64_t)getCodeForDomain:(id)a3;
++ (int64_t)getCodeForDomain:(id)domain;
 @end
 
 @implementation AMDDomains
 
-+ (int64_t)getCodeForDomain:(id)a3
++ (int64_t)getCodeForDomain:(id)domain
 {
   v12[8] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   if (location[0])
   {
     if (!getCodeForDomain__domainMap)
@@ -40,15 +40,15 @@
     v7 = [getCodeForDomain__domainMap objectForKey:location[0]];
     if (v7)
     {
-      v6 = [v7 unsignedIntValue];
+      unsignedIntValue = [v7 unsignedIntValue];
     }
 
     else
     {
-      v6 = 0;
+      unsignedIntValue = 0;
     }
 
-    v10 = v6;
+    v10 = unsignedIntValue;
     v8 = 1;
     objc_storeStrong(&v7, 0);
   }

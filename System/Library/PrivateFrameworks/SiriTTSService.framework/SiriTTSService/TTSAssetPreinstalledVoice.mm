@@ -6,7 +6,7 @@
 
 - (TTSAssetSource)assetSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1AF1B5C();
 
   return v3;

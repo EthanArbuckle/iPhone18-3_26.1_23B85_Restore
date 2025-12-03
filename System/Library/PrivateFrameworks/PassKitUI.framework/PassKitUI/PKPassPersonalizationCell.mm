@@ -1,89 +1,89 @@
 @interface PKPassPersonalizationCell
 + (double)minimumCellHeight;
-+ (double)textLabelWidthForText:(id)a3;
++ (double)textLabelWidthForText:(id)text;
 - (BOOL)becomeFirstResponder;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (PKPassPersonalizationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (PKPassPersonalizationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (PKPassPersonalizationCellDelegate)delegate;
-- (void)_editableTextFieldChanged:(id)a3;
+- (void)_editableTextFieldChanged:(id)changed;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContext:(id)a3 andContact:(id)a4;
+- (void)setContext:(id)context andContact:(id)contact;
 @end
 
 @implementation PKPassPersonalizationCell
 
-- (PKPassPersonalizationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKPassPersonalizationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v30.receiver = self;
   v30.super_class = PKPassPersonalizationCell;
-  v4 = [(PKPassPersonalizationCell *)&v30 initWithStyle:1000 reuseIdentifier:a4];
+  v4 = [(PKPassPersonalizationCell *)&v30 initWithStyle:1000 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(PKPassPersonalizationCell *)v4 setSelectionStyle:0];
-    v6 = [(PKPassPersonalizationCell *)v5 textLabel];
-    v7 = [objc_opt_class() _textLabelFont];
-    [v6 setFont:v7];
+    textLabel = [(PKPassPersonalizationCell *)v5 textLabel];
+    _textLabelFont = [objc_opt_class() _textLabelFont];
+    [textLabel setFont:_textLabelFont];
 
-    v8 = [(PKPassPersonalizationCell *)v5 textLabel];
-    [v8 setMinimumScaleFactor:0.7];
+    textLabel2 = [(PKPassPersonalizationCell *)v5 textLabel];
+    [textLabel2 setMinimumScaleFactor:0.7];
 
-    v9 = [(PKPassPersonalizationCell *)v5 textLabel];
-    [v9 setBaselineAdjustment:1];
+    textLabel3 = [(PKPassPersonalizationCell *)v5 textLabel];
+    [textLabel3 setBaselineAdjustment:1];
 
-    v10 = [(PKPassPersonalizationCell *)v5 textLabel];
-    [v10 setAdjustsFontSizeToFitWidth:1];
+    textLabel4 = [(PKPassPersonalizationCell *)v5 textLabel];
+    [textLabel4 setAdjustsFontSizeToFitWidth:1];
 
-    v11 = [(PKPassPersonalizationCell *)v5 textLabel];
-    [v11 setText:0];
+    textLabel5 = [(PKPassPersonalizationCell *)v5 textLabel];
+    [textLabel5 setText:0];
 
-    v12 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v12 setText:0];
+    editableTextField = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField setText:0];
 
-    v13 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v13 setSecureTextEntry:0];
+    editableTextField2 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField2 setSecureTextEntry:0];
 
-    v14 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    v15 = [objc_opt_class() _textFieldFont];
-    [v14 setFont:v15];
+    editableTextField3 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    _textFieldFont = [objc_opt_class() _textFieldFont];
+    [editableTextField3 setFont:_textFieldFont];
 
-    v16 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    v17 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v16 setTextColor:v17];
+    editableTextField4 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [editableTextField4 setTextColor:systemBlueColor];
 
-    v18 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v18 setAdjustsFontSizeToFitWidth:0];
+    editableTextField5 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField5 setAdjustsFontSizeToFitWidth:0];
 
-    v19 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    editableTextField6 = [(PKPassPersonalizationCell *)v5 editableTextField];
     v20 = PKLocalizedPaymentString(&cfstr_Required.isa);
-    [v19 setPlaceholder:v20];
+    [editableTextField6 setPlaceholder:v20];
 
-    v21 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v21 setClearButtonMode:1];
+    editableTextField7 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField7 setClearButtonMode:1];
 
-    v22 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v22 setAutocorrectionType:1];
+    editableTextField8 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField8 setAutocorrectionType:1];
 
-    v23 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v23 setKeyboardType:0];
+    editableTextField9 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField9 setKeyboardType:0];
 
-    v24 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v24 setTextContentType:0];
+    editableTextField10 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField10 setTextContentType:0];
 
-    v25 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v25 setReturnKeyType:4];
+    editableTextField11 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField11 setReturnKeyType:4];
 
-    v26 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v26 setInputView:0];
+    editableTextField12 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField12 setInputView:0];
 
-    v27 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v27 setDelegate:v5];
+    editableTextField13 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField13 setDelegate:v5];
 
-    v28 = [(PKPassPersonalizationCell *)v5 editableTextField];
-    [v28 addTarget:v5 action:sel__editableTextFieldChanged_ forControlEvents:0x20000];
+    editableTextField14 = [(PKPassPersonalizationCell *)v5 editableTextField];
+    [editableTextField14 addTarget:v5 action:sel__editableTextFieldChanged_ forControlEvents:0x20000];
   }
 
   return v5;
@@ -91,8 +91,8 @@
 
 - (void)dealloc
 {
-  v3 = [(PKPassPersonalizationCell *)self editableTextField];
-  [v3 setDelegate:0];
+  editableTextField = [(PKPassPersonalizationCell *)self editableTextField];
+  [editableTextField setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = PKPassPersonalizationCell;
@@ -101,10 +101,10 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(PKPassPersonalizationCell *)self editableTextField];
-  v3 = [v2 becomeFirstResponder];
+  editableTextField = [(PKPassPersonalizationCell *)self editableTextField];
+  becomeFirstResponder = [editableTextField becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (void)prepareForReuse
@@ -114,24 +114,24 @@
   [(PKPassPersonalizationCell *)&v10 prepareForReuse];
   [(PKPassPersonalizationCell *)self setContext:0 andContact:0];
   [(PKPassPersonalizationCell *)self setDelegate:0];
-  v3 = [(PKPassPersonalizationCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(PKPassPersonalizationCell *)self textLabel];
+  [textLabel setText:0];
 
-  v4 = [(PKPassPersonalizationCell *)self editableTextField];
-  [v4 setText:0];
+  editableTextField = [(PKPassPersonalizationCell *)self editableTextField];
+  [editableTextField setText:0];
 
-  v5 = [(PKPassPersonalizationCell *)self editableTextField];
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v5 setTextColor:v6];
+  editableTextField2 = [(PKPassPersonalizationCell *)self editableTextField];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [editableTextField2 setTextColor:systemBlueColor];
 
-  v7 = [(PKPassPersonalizationCell *)self editableTextField];
-  [v7 setKeyboardType:0];
+  editableTextField3 = [(PKPassPersonalizationCell *)self editableTextField];
+  [editableTextField3 setKeyboardType:0];
 
-  v8 = [(PKPassPersonalizationCell *)self editableTextField];
-  [v8 setTextContentType:0];
+  editableTextField4 = [(PKPassPersonalizationCell *)self editableTextField];
+  [editableTextField4 setTextContentType:0];
 
-  v9 = [(PKPassPersonalizationCell *)self editableTextField];
-  [v9 setAutocapitalizationType:0];
+  editableTextField5 = [(PKPassPersonalizationCell *)self editableTextField];
+  [editableTextField5 setAutocapitalizationType:0];
 }
 
 - (void)layoutSubviews
@@ -139,29 +139,29 @@
   v55.receiver = self;
   v55.super_class = PKPassPersonalizationCell;
   [(PKPassPersonalizationCell *)&v55 layoutSubviews];
-  v3 = [(PKPassPersonalizationCell *)self textLabel];
-  v4 = [(PKPassPersonalizationCell *)self editableTextField];
-  if (v4)
+  textLabel = [(PKPassPersonalizationCell *)self textLabel];
+  editableTextField = [(PKPassPersonalizationCell *)self editableTextField];
+  if (editableTextField)
   {
-    v5 = [(PKPassPersonalizationCell *)self contentView];
-    [v3 frame];
+    contentView = [(PKPassPersonalizationCell *)self contentView];
+    [textLabel frame];
     v7 = v6;
     v50 = v9;
     v51 = v8;
     rect = v10;
-    [v4 frame];
+    [editableTextField frame];
     v12 = v11;
     v53 = v14;
     v54 = v13;
     v49 = v15;
-    v16 = [(PKPassPersonalizationCell *)self _shouldReverseLayoutDirection];
-    [v5 bounds];
+    _shouldReverseLayoutDirection = [(PKPassPersonalizationCell *)self _shouldReverseLayoutDirection];
+    [contentView bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v46 = v23;
-    [v5 layoutMargins];
+    [contentView layoutMargins];
     v26 = v25;
     v47 = v28;
     v48 = v27;
@@ -185,11 +185,11 @@
     v35 = v20 + v26;
     v36 = v22 - (v30 + v33);
     v37 = v46 - (v26 + v48);
-    [v3 sizeThatFits:{v36, v37}];
+    [textLabel sizeThatFits:{v36, v37}];
     v39 = v38;
     [(PKPassPersonalizationCellContext *)self->_context minimumTextLabelWidth];
     v41 = fmin(fmax(v39, v40), v36 + -122.0);
-    if (v16)
+    if (_shouldReverseLayoutDirection)
     {
       v59.origin.x = v34;
       v59.origin.y = v35;
@@ -197,13 +197,13 @@
       v59.size.height = v37;
       v42 = CGRectGetMaxX(v59);
       v43 = v42 - v41;
-      [v3 setFrame:{v42 - v41, v51, v41, rect}];
+      [textLabel setFrame:{v42 - v41, v51, v41, rect}];
       v44 = v43 - v34 + -22.0;
     }
 
     else
     {
-      [v3 setFrame:{v34, v51, v41, rect}];
+      [textLabel setFrame:{v34, v51, v41, rect}];
       v60.origin.x = v34;
       v60.origin.y = v51;
       v60.size.width = v41;
@@ -217,11 +217,11 @@
       v34 = v45;
     }
 
-    [v4 setFrame:{v34, v54, v44, v53}];
+    [editableTextField setFrame:{v34, v54, v44, v53}];
   }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -238,7 +238,7 @@
   return v6;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -267,59 +267,59 @@
   return result;
 }
 
-+ (double)textLabelWidthForText:(id)a3
++ (double)textLabelWidthForText:(id)text
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E69DB648];
-  v4 = a3;
-  v5 = [a1 _textLabelFont];
-  v11[0] = v5;
+  textCopy = text;
+  _textLabelFont = [self _textLabelFont];
+  v11[0] = _textLabelFont;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  [v4 sizeWithAttributes:v6];
+  [textCopy sizeWithAttributes:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setContext:(id)a3 andContact:(id)a4
+- (void)setContext:(id)context andContact:(id)contact
 {
-  v17 = a3;
-  v7 = a4;
-  if (self->_context != v17)
+  contextCopy = context;
+  contactCopy = contact;
+  if (self->_context != contextCopy)
   {
-    objc_storeStrong(&self->_context, a3);
+    objc_storeStrong(&self->_context, context);
   }
 
-  if (self->_contact != v7)
+  if (self->_contact != contactCopy)
   {
-    objc_storeStrong(&self->_contact, a4);
+    objc_storeStrong(&self->_contact, contact);
   }
 
   if (self->_context)
   {
-    v8 = [(PKPassPersonalizationCell *)self textLabel];
-    v9 = [(PKPassPersonalizationCellContext *)v17 title];
-    [v8 setText:v9];
+    textLabel = [(PKPassPersonalizationCell *)self textLabel];
+    title = [(PKPassPersonalizationCellContext *)contextCopy title];
+    [textLabel setText:title];
 
-    v10 = [(PKPassPersonalizationCell *)self editableTextField];
-    [v10 setKeyboardType:{-[PKPassPersonalizationCellContext keyboardType](v17, "keyboardType")}];
+    editableTextField = [(PKPassPersonalizationCell *)self editableTextField];
+    [editableTextField setKeyboardType:{-[PKPassPersonalizationCellContext keyboardType](contextCopy, "keyboardType")}];
 
-    v11 = [(PKPassPersonalizationCell *)self editableTextField];
-    v12 = [(PKPassPersonalizationCellContext *)v17 textContentType];
-    [v11 setTextContentType:v12];
+    editableTextField2 = [(PKPassPersonalizationCell *)self editableTextField];
+    textContentType = [(PKPassPersonalizationCellContext *)contextCopy textContentType];
+    [editableTextField2 setTextContentType:textContentType];
 
-    v13 = [(PKPassPersonalizationCell *)self editableTextField];
-    [v13 setAutocapitalizationType:{-[PKPassPersonalizationCellContext autocapitalizationType](v17, "autocapitalizationType")}];
+    editableTextField3 = [(PKPassPersonalizationCell *)self editableTextField];
+    [editableTextField3 setAutocapitalizationType:{-[PKPassPersonalizationCellContext autocapitalizationType](contextCopy, "autocapitalizationType")}];
 
     if (self->_contact)
     {
-      v14 = [(PKPassPersonalizationCellContext *)self->_context stringRepresentationBlock];
-      if (v14)
+      stringRepresentationBlock = [(PKPassPersonalizationCellContext *)self->_context stringRepresentationBlock];
+      if (stringRepresentationBlock)
       {
-        v15 = [(PKPassPersonalizationCell *)self editableTextField];
-        v16 = (v14)[2](v14, self->_contact);
-        [v15 setText:v16];
+        editableTextField4 = [(PKPassPersonalizationCell *)self editableTextField];
+        v16 = (stringRepresentationBlock)[2](stringRepresentationBlock, self->_contact);
+        [editableTextField4 setText:v16];
       }
     }
 
@@ -327,25 +327,25 @@
   }
 }
 
-- (void)_editableTextFieldChanged:(id)a3
+- (void)_editableTextFieldChanged:(id)changed
 {
-  v12 = [(PKPassPersonalizationCellContext *)self->_context contactUpdateBlock];
-  v4 = [(PKPassPersonalizationCellContext *)self->_context stringRepresentationBlock];
-  v5 = [(PKPassPersonalizationCell *)self editableTextField];
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  [v5 setTextColor:v6];
+  contactUpdateBlock = [(PKPassPersonalizationCellContext *)self->_context contactUpdateBlock];
+  stringRepresentationBlock = [(PKPassPersonalizationCellContext *)self->_context stringRepresentationBlock];
+  editableTextField = [(PKPassPersonalizationCell *)self editableTextField];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [editableTextField setTextColor:labelColor];
 
-  if (v12)
+  if (contactUpdateBlock)
   {
-    v7 = [(PKPassPersonalizationCell *)self editableTextField];
-    v8 = [v7 text];
-    v12[2](v12, v8, self->_contact);
+    editableTextField2 = [(PKPassPersonalizationCell *)self editableTextField];
+    text = [editableTextField2 text];
+    contactUpdateBlock[2](contactUpdateBlock, text, self->_contact);
 
     if ([(PKPassPersonalizationCellContext *)self->_context bindTextToStringRepresentation])
     {
-      v9 = [(PKPassPersonalizationCell *)self editableTextField];
-      v10 = (v4)[2](v4, self->_contact);
-      [v9 setText:v10];
+      editableTextField3 = [(PKPassPersonalizationCell *)self editableTextField];
+      v10 = (stringRepresentationBlock)[2](stringRepresentationBlock, self->_contact);
+      [editableTextField3 setText:v10];
     }
   }
 

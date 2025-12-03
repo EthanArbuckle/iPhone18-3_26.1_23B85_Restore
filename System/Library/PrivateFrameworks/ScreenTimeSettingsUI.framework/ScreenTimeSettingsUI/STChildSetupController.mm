@@ -1,20 +1,20 @@
 @interface STChildSetupController
-+ (BOOL)isCommunicationSafetyAlreadyEnabledForUser:(id)a3;
-- (STChildSetupController)initWithDSID:(id)a3 isChildDevice:(BOOL)a4 childAge:(id)a5 childName:(id)a6 updateExistingSettings:(BOOL)a7;
-- (id)initExpressSetupOnChildDeviceWithDSID:(id)a3 childAge:(id)a4 childName:(id)a5 completionHandler:(id)a6;
-- (id)initExpressSetupWithDSID:(id)a3 childAge:(id)a4 childName:(id)a5 completionHandler:(id)a6;
++ (BOOL)isCommunicationSafetyAlreadyEnabledForUser:(id)user;
+- (STChildSetupController)initWithDSID:(id)d isChildDevice:(BOOL)device childAge:(id)age childName:(id)name updateExistingSettings:(BOOL)settings;
+- (id)initExpressSetupOnChildDeviceWithDSID:(id)d childAge:(id)age childName:(id)name completionHandler:(id)handler;
+- (id)initExpressSetupWithDSID:(id)d childAge:(id)age childName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation STChildSetupController
 
-- (STChildSetupController)initWithDSID:(id)a3 isChildDevice:(BOOL)a4 childAge:(id)a5 childName:(id)a6 updateExistingSettings:(BOOL)a7
+- (STChildSetupController)initWithDSID:(id)d isChildDevice:(BOOL)device childAge:(id)age childName:(id)name updateExistingSettings:(BOOL)settings
 {
-  v7 = a7;
-  v30 = a4;
+  settingsCopy = settings;
+  deviceCopy = device;
   v42 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  ageCopy = age;
+  nameCopy = name;
   v39.receiver = self;
   v39.super_class = STChildSetupController;
   v14 = [(STChildSetupController *)&v39 init];
@@ -24,55 +24,55 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      *&buf[4] = v11;
+      *&buf[4] = dCopy;
       *&buf[12] = 1026;
-      *&buf[14] = v30;
+      *&buf[14] = deviceCopy;
       *&buf[18] = 2112;
-      *&buf[20] = v12;
+      *&buf[20] = ageCopy;
       *&buf[28] = 2112;
-      *&buf[30] = v13;
+      *&buf[30] = nameCopy;
       *&buf[38] = 1026;
-      LODWORD(v41) = v7;
+      LODWORD(v41) = settingsCopy;
       _os_log_impl(&dword_264BA2000, v15, OS_LOG_TYPE_DEFAULT, "Initializing STChildSetupController with dsid:%@ isChildDevice:%{public}d childAge:%@ childName:%@ updateExistingSettings:%{public}d", buf, 0x2Cu);
     }
 
-    v16 = [[STRootViewModelCoordinator alloc] initWithUserDSID:v11 deviceIdentifier:0 usageReportType:0 usageContext:0];
+    v16 = [[STRootViewModelCoordinator alloc] initWithUserDSID:dCopy deviceIdentifier:0 usageReportType:0 usageContext:0];
     objc_storeStrong(&v14->_coordinator, v16);
-    if (v13)
+    if (nameCopy)
     {
-      v17 = v13;
+      givenName = nameCopy;
     }
 
     else
     {
-      v18 = [(STRootViewModelCoordinator *)v16 viewModel];
-      v19 = [v18 me];
-      v17 = [v19 givenName];
+      viewModel = [(STRootViewModelCoordinator *)v16 viewModel];
+      v19 = [viewModel me];
+      givenName = [v19 givenName];
     }
 
     v20 = [STIntroductionController alloc];
-    v21 = [(STChildSetupController *)v14 coordinator];
-    v22 = [(STIntroductionController *)v20 initWithDSID:v11 childAge:v12 childName:v17 updateExistingSettings:v7 restrictionsDataSource:v21];
+    coordinator = [(STChildSetupController *)v14 coordinator];
+    v22 = [(STIntroductionController *)v20 initWithDSID:dCopy childAge:ageCopy childName:givenName updateExistingSettings:settingsCopy restrictionsDataSource:coordinator];
     introductionController = v14->_introductionController;
     v14->_introductionController = v22;
 
     [(STIntroductionController *)v14->_introductionController setAllowParentalControls:1];
     [(STIntroductionController *)v14->_introductionController setForceParentalControls:1];
     [(STIntroductionController *)v14->_introductionController setSkipAppLimitsPane:1];
-    if (v7)
+    if (settingsCopy)
     {
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       buf[24] = 1;
-      v24 = [MEMORY[0x277D4B898] sharedController];
+      mEMORY[0x277D4B898] = [MEMORY[0x277D4B898] sharedController];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __95__STChildSetupController_initWithDSID_isChildDevice_childAge_childName_updateExistingSettings___block_invoke;
       v36[3] = &unk_279B7CFC8;
-      v37 = v11;
+      v37 = dCopy;
       v38 = buf;
-      [v24 performBackgroundTaskAndWait:v36];
+      [mEMORY[0x277D4B898] performBackgroundTaskAndWait:v36];
       [(STIntroductionController *)v14->_introductionController setShowCommunicationSafetyPane:(*(*&buf[8] + 24) & 1) == 0];
 
       _Block_object_dispose(buf, 8);
@@ -94,15 +94,15 @@
     v31[1] = 3221225472;
     v31[2] = __95__STChildSetupController_initWithDSID_isChildDevice_childAge_childName_updateExistingSettings___block_invoke_28;
     v31[3] = &unk_279B7D018;
-    v34 = v30;
+    v34 = deviceCopy;
     v33 = buf;
-    v35 = v7;
+    v35 = settingsCopy;
     v26 = v16;
     v32 = v26;
     [(STIntroductionController *)v14->_introductionController setCompletionBlock:v31];
-    v27 = [(STIntroductionController *)v14->_introductionController initialViewController];
+    initialViewController = [(STIntroductionController *)v14->_introductionController initialViewController];
     initialViewController = v25->_initialViewController;
-    v25->_initialViewController = v27;
+    v25->_initialViewController = initialViewController;
 
     _Block_object_dispose(buf, 8);
   }
@@ -281,27 +281,27 @@ void __95__STChildSetupController_initWithDSID_isChildDevice_childAge_childName_
   }
 }
 
-- (id)initExpressSetupWithDSID:(id)a3 childAge:(id)a4 childName:(id)a5 completionHandler:(id)a6
+- (id)initExpressSetupWithDSID:(id)d childAge:(id)age childName:(id)name completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(STChildSetupController *)self initWithDSID:v10 updateExistingSettings:0 childAge:v11 childName:v12];
+  dCopy = d;
+  ageCopy = age;
+  nameCopy = name;
+  handlerCopy = handler;
+  v14 = [(STChildSetupController *)self initWithDSID:dCopy updateExistingSettings:0 childAge:ageCopy childName:nameCopy];
   v15 = +[STUILog childSetup];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v35 = v10;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = ageCopy;
     v38 = 2112;
-    v39 = v12;
+    v39 = nameCopy;
     _os_log_impl(&dword_264BA2000, v15, OS_LOG_TYPE_DEFAULT, "Initializing [STChildSetupController initExpressSetupWithDSID:] with dsid:%@ childAge:%@ childName:%@", buf, 0x20u);
   }
 
-  v16 = [[STIntroductionController alloc] initExpressSetupWithDSID:v10 childAge:v11 childName:v12 restrictionsDataSource:v14->_coordinator];
+  v16 = [[STIntroductionController alloc] initExpressSetupWithDSID:dCopy childAge:ageCopy childName:nameCopy restrictionsDataSource:v14->_coordinator];
   introductionController = v14->_introductionController;
   v14->_introductionController = v16;
 
@@ -309,15 +309,15 @@ void __95__STChildSetupController_initWithDSID_isChildDevice_childAge_childName_
   v27 = 3221225472;
   v28 = __88__STChildSetupController_initExpressSetupWithDSID_childAge_childName_completionHandler___block_invoke;
   v29 = &unk_279B7D040;
-  v30 = v10;
-  v31 = v11;
-  v32 = v12;
-  v33 = v13;
+  v30 = dCopy;
+  v31 = ageCopy;
+  v32 = nameCopy;
+  v33 = handlerCopy;
   v18 = v14->_introductionController;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
-  v22 = v13;
+  v19 = nameCopy;
+  v20 = ageCopy;
+  v21 = dCopy;
+  v22 = handlerCopy;
   [(STIntroductionController *)v18 setCompletionBlock:&v26];
   v23 = [(STIntroductionController *)v14->_introductionController initialViewController:v26];
   initialViewController = v14->_initialViewController;
@@ -398,27 +398,27 @@ void __88__STChildSetupController_initExpressSetupWithDSID_childAge_childName_co
   }
 }
 
-- (id)initExpressSetupOnChildDeviceWithDSID:(id)a3 childAge:(id)a4 childName:(id)a5 completionHandler:(id)a6
+- (id)initExpressSetupOnChildDeviceWithDSID:(id)d childAge:(id)age childName:(id)name completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(STChildSetupController *)self initWithDSID:v10 updateExistingSettings:0 childAge:v11 childName:v12];
+  dCopy = d;
+  ageCopy = age;
+  nameCopy = name;
+  handlerCopy = handler;
+  v14 = [(STChildSetupController *)self initWithDSID:dCopy updateExistingSettings:0 childAge:ageCopy childName:nameCopy];
   v15 = +[STUILog childSetup];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = ageCopy;
     v29 = 2112;
-    v30 = v12;
+    v30 = nameCopy;
     _os_log_impl(&dword_264BA2000, v15, OS_LOG_TYPE_DEFAULT, "Initializing [STChildSetupController initExpressSetupOnChildDeviceWithDSID:] with dsid:%@ childAge:%@ childName:%@", buf, 0x20u);
   }
 
-  v16 = [[STIntroductionController alloc] initExpressSetupWithDSID:v10 childAge:v11 childName:v12 restrictionsDataSource:v14->_coordinator];
+  v16 = [[STIntroductionController alloc] initExpressSetupWithDSID:dCopy childAge:ageCopy childName:nameCopy restrictionsDataSource:v14->_coordinator];
   introductionController = v14->_introductionController;
   v14->_introductionController = v16;
 
@@ -426,13 +426,13 @@ void __88__STChildSetupController_initExpressSetupWithDSID_childAge_childName_co
   v23[1] = 3221225472;
   v23[2] = __101__STChildSetupController_initExpressSetupOnChildDeviceWithDSID_childAge_childName_completionHandler___block_invoke;
   v23[3] = &unk_279B7D068;
-  v24 = v13;
+  v24 = handlerCopy;
   v18 = v14->_introductionController;
-  v19 = v13;
+  v19 = handlerCopy;
   [(STIntroductionController *)v18 setCompletionBlock:v23];
-  v20 = [(STIntroductionController *)v14->_introductionController initialViewController];
+  initialViewController = [(STIntroductionController *)v14->_introductionController initialViewController];
   initialViewController = v14->_initialViewController;
-  v14->_initialViewController = v20;
+  v14->_initialViewController = initialViewController;
 
   return v14;
 }
@@ -482,20 +482,20 @@ void __101__STChildSetupController_initExpressSetupOnChildDeviceWithDSID_childAg
   v16();
 }
 
-+ (BOOL)isCommunicationSafetyAlreadyEnabledForUser:(id)a3
++ (BOOL)isCommunicationSafetyAlreadyEnabledForUser:(id)user
 {
-  v3 = a3;
-  if ([v3 isCommunicationSafetyReceivingRestricted] & 1) != 0 || (objc_msgSend(v3, "isCommunicationSafetySendingRestricted"))
+  userCopy = user;
+  if ([userCopy isCommunicationSafetyReceivingRestricted] & 1) != 0 || (objc_msgSend(userCopy, "isCommunicationSafetySendingRestricted"))
   {
-    v4 = 1;
+    isCommunicationSafetyNotificationEnabled = 1;
   }
 
   else
   {
-    v4 = [v3 isCommunicationSafetyNotificationEnabled];
+    isCommunicationSafetyNotificationEnabled = [userCopy isCommunicationSafetyNotificationEnabled];
   }
 
-  return v4;
+  return isCommunicationSafetyNotificationEnabled;
 }
 
 void __95__STChildSetupController_initWithDSID_isChildDevice_childAge_childName_updateExistingSettings___block_invoke_cold_1(uint64_t a1, NSObject *a2)

@@ -18,7 +18,7 @@
 
   if (v6)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = &off_2856BBF60;
     v7 = objc_msgSendSuper2(&v15, sel_instanceFromCMSCoded_, v5);
     if (!v7)
@@ -27,7 +27,7 @@
       goto LABEL_15;
     }
 
-    v8 = [objc_alloc(MEMORY[0x277CD3A00]) initWithMediaDestinationResolutionResult:v7];
+    needsValue = [objc_alloc(MEMORY[0x277CD3A00]) initWithMediaDestinationResolutionResult:v7];
   }
 
   else
@@ -56,7 +56,7 @@
 
     if (v13)
     {
-      v8 = [MEMORY[0x277CD3A00] needsValue];
+      needsValue = [MEMORY[0x277CD3A00] needsValue];
     }
 
     else
@@ -68,11 +68,11 @@
         goto LABEL_15;
       }
 
-      v8 = [MEMORY[0x277CD3A00] notRequired];
+      needsValue = [MEMORY[0x277CD3A00] notRequired];
     }
   }
 
-  v9 = v8;
+  v9 = needsValue;
 LABEL_15:
 
 LABEL_16:

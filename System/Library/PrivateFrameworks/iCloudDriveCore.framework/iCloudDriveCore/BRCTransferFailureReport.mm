@@ -1,25 +1,25 @@
 @interface BRCTransferFailureReport
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransferFailureReport:(id)a3;
-- (BRCTransferFailureReport)initWithError:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransferFailureReport:(id)report;
+- (BRCTransferFailureReport)initWithError:(id)error;
 - (id)description;
 - (unint64_t)hash;
-- (void)encounteredErrors:(unint64_t)a3 atDate:(id)a4;
-- (void)setLastFailureDate:(id)a3;
+- (void)encounteredErrors:(unint64_t)errors atDate:(id)date;
+- (void)setLastFailureDate:(id)date;
 @end
 
 @implementation BRCTransferFailureReport
 
-- (BRCTransferFailureReport)initWithError:(id)a3
+- (BRCTransferFailureReport)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = BRCTransferFailureReport;
   v6 = [(BRCTransferFailureReport *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     v8 = objc_opt_new();
     privateDBErrorCountByPCSAndEDPState = v7->_privateDBErrorCountByPCSAndEDPState;
     v7->_privateDBErrorCountByPCSAndEDPState = v8;
@@ -32,15 +32,15 @@
   return v7;
 }
 
-- (void)setLastFailureDate:(id)a3
+- (void)setLastFailureDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   lastFailureDate = self->_lastFailureDate;
   p_lastFailureDate = &self->_lastFailureDate;
-  v12 = v5;
+  v12 = dateCopy;
   if (lastFailureDate)
   {
-    [v5 timeIntervalSinceDate:?];
+    [dateCopy timeIntervalSinceDate:?];
     if (v8 <= 0.0)
     {
       goto LABEL_4;
@@ -49,24 +49,24 @@
     goto LABEL_3;
   }
 
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
-  [v12 timeIntervalSinceDate:v9];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [v12 timeIntervalSinceDate:distantPast];
   v11 = v10;
 
   if (v11 > 0.0)
   {
 LABEL_3:
-    objc_storeStrong(p_lastFailureDate, a3);
+    objc_storeStrong(p_lastFailureDate, date);
   }
 
 LABEL_4:
 }
 
-- (void)encounteredErrors:(unint64_t)a3 atDate:(id)a4
+- (void)encounteredErrors:(unint64_t)errors atDate:(id)date
 {
   v6 = MEMORY[0x277CFAE78];
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
+  dateCopy = date;
   v9 = [BRCUserDefaults defaultsForMangledID:0];
   v10 = [v7 numberWithBool:{objc_msgSend(v9, "supportsEnhancedDrivePrivacy")}];
   v14 = [v6 pairWithLeft:&unk_2837B00B8 andRight:v10];
@@ -75,16 +75,16 @@ LABEL_4:
   if (v11)
   {
     v12 = v11;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "unsignedLongLongValue") + a3}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "unsignedLongLongValue") + errors}];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:errors];
   }
 
   [(NSMutableDictionary *)self->_privateDBErrorCountByPCSAndEDPState setObject:v13 forKeyedSubscript:v14];
-  [(BRCTransferFailureReport *)self setLastFailureDate:v8];
+  [(BRCTransferFailureReport *)self setLastFailureDate:dateCopy];
 }
 
 - (id)description
@@ -97,19 +97,19 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v3 = [(NSError *)self->_error domain];
-  v4 = [v3 hash];
+  domain = [(NSError *)self->_error domain];
+  v4 = [domain hash];
   v5 = [(NSError *)self->_error code]^ v4;
-  v6 = [(NSError *)self->_error brc_cloudKitErrorMessage];
-  v7 = [v6 hash];
+  brc_cloudKitErrorMessage = [(NSError *)self->_error brc_cloudKitErrorMessage];
+  v7 = [brc_cloudKitErrorMessage hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -117,45 +117,45 @@ LABEL_4:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCTransferFailureReport *)self isEqualToTransferFailureReport:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCTransferFailureReport *)self isEqualToTransferFailureReport:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTransferFailureReport:(id)a3
+- (BOOL)isEqualToTransferFailureReport:(id)report
 {
-  v4 = a3;
-  v5 = [(NSError *)self->_error userInfo];
+  reportCopy = report;
+  userInfo = [(NSError *)self->_error userInfo];
   v6 = *MEMORY[0x277CCA7E8];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-  v8 = [v4 error];
-  v9 = [v8 userInfo];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  error = [reportCopy error];
+  userInfo2 = [error userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:v6];
 
-  v11 = [(NSError *)self->_error domain];
-  v12 = [v4 error];
-  v13 = [v12 domain];
-  if (([v11 isEqualToString:v13] & 1) == 0)
+  domain = [(NSError *)self->_error domain];
+  error2 = [reportCopy error];
+  domain2 = [error2 domain];
+  if (([domain isEqualToString:domain2] & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v14 = [(NSError *)self->_error code];
-  v15 = [v4 error];
-  if (v14 != [v15 code])
+  code = [(NSError *)self->_error code];
+  error3 = [reportCopy error];
+  if (code != [error3 code])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v16 = [(NSError *)self->_error brc_cloudKitErrorMessage];
-  v29 = [v4 error];
-  v17 = [v29 brc_cloudKitErrorMessage];
-  v18 = v17;
-  if (v16 == v17)
+  brc_cloudKitErrorMessage = [(NSError *)self->_error brc_cloudKitErrorMessage];
+  error4 = [reportCopy error];
+  brc_cloudKitErrorMessage2 = [error4 brc_cloudKitErrorMessage];
+  v18 = brc_cloudKitErrorMessage2;
+  if (brc_cloudKitErrorMessage == brc_cloudKitErrorMessage2)
   {
 
 LABEL_12:
@@ -165,12 +165,12 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    v11 = [v7 domain];
-    v12 = [v10 domain];
-    if ([v11 isEqualToString:v12])
+    domain = [v7 domain];
+    error2 = [v10 domain];
+    if ([domain isEqualToString:error2])
     {
-      v25 = [v7 code];
-      v23 = v25 == [v10 code];
+      code2 = [v7 code];
+      v23 = code2 == [v10 code];
       goto LABEL_9;
     }
 
@@ -181,13 +181,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v19 = [(NSError *)self->_error brc_cloudKitErrorMessage];
-  [v4 error];
+  brc_cloudKitErrorMessage3 = [(NSError *)self->_error brc_cloudKitErrorMessage];
+  [reportCopy error];
   v20 = v28 = v7;
   [v20 brc_cloudKitErrorMessage];
-  v26 = v16;
+  v26 = brc_cloudKitErrorMessage;
   v22 = v21 = v10;
-  v27 = [v19 isEqualToString:v22];
+  v27 = [brc_cloudKitErrorMessage3 isEqualToString:v22];
 
   v10 = v21;
   v7 = v28;

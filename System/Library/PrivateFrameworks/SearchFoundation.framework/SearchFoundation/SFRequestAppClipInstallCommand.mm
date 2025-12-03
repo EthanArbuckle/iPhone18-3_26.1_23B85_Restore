@@ -1,39 +1,39 @@
 @interface SFRequestAppClipInstallCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFRequestAppClipInstallCommand)initWithCoder:(id)a3;
-- (SFRequestAppClipInstallCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFRequestAppClipInstallCommand)initWithCoder:(id)coder;
+- (SFRequestAppClipInstallCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFRequestAppClipInstallCommand
 
-- (SFRequestAppClipInstallCommand)initWithProtobuf:(id)a3
+- (SFRequestAppClipInstallCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v13.receiver = self;
   v13.super_class = SFRequestAppClipInstallCommand;
   v5 = [(SFRequestAppClipInstallCommand *)&v13 init];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [protobufCopy url];
 
     if (v6)
     {
-      v7 = [v4 url];
+      v7 = [protobufCopy url];
       v8 = _SFPBURLHandwrittenTranslator(v7);
       [(SFRequestAppClipInstallCommand *)v5 setUrl:v8];
     }
 
-    v9 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v9)
+    if (applicationBundleIdentifier)
     {
-      v10 = [v4 applicationBundleIdentifier];
-      [(SFRequestAppClipInstallCommand *)v5 setApplicationBundleIdentifier:v10];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFRequestAppClipInstallCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v11 = v5;
@@ -49,29 +49,29 @@
   v3 = [(SFCommand *)&v9 hash];
   v4 = [(SFRequestAppClipInstallCommand *)self url];
   v5 = [v4 hash];
-  v6 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
+  applicationBundleIdentifier = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+  v7 = v5 ^ [applicationBundleIdentifier hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFRequestAppClipInstallCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFRequestAppClipInstallCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFRequestAppClipInstallCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
+        v6 = equalCopy;
         v7 = [(SFRequestAppClipInstallCommand *)self url];
         v8 = [(SFRequestAppClipInstallCommand *)v6 url];
         if ((v7 != 0) == (v8 == 0))
@@ -99,10 +99,10 @@ LABEL_19:
           v21 = v10;
         }
 
-        v12 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-        v13 = [(SFRequestAppClipInstallCommand *)v6 applicationBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        applicationBundleIdentifier = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFRequestAppClipInstallCommand *)v6 applicationBundleIdentifier];
+        v14 = applicationBundleIdentifier2;
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
@@ -110,14 +110,14 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-          if (v15)
+          applicationBundleIdentifier3 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+          if (applicationBundleIdentifier3)
           {
-            v16 = v15;
-            v19 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+            v16 = applicationBundleIdentifier3;
+            applicationBundleIdentifier4 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
             [(SFRequestAppClipInstallCommand *)v6 applicationBundleIdentifier];
             v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v11 = [applicationBundleIdentifier4 isEqual:v17];
 
             v3 = v20;
           }
@@ -147,17 +147,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFRequestAppClipInstallCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
   v5 = [(SFRequestAppClipInstallCommand *)self url];
   v6 = [v5 copy];
   [v4 setUrl:v6];
 
-  v7 = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
-  v8 = [v7 copy];
+  applicationBundleIdentifier = [(SFRequestAppClipInstallCommand *)self applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v8];
 
   return v4;
@@ -166,31 +166,31 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRequestAppClipInstallCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBRequestAppClipInstallCommand *)v2 jsonData];
+  jsonData = [(_SFPBRequestAppClipInstallCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRequestAppClipInstallCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBRequestAppClipInstallCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRequestAppClipInstallCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFRequestAppClipInstallCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFRequestAppClipInstallCommand)initWithCoder:(id)a3
+- (SFRequestAppClipInstallCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFRequestAppClipInstallCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
@@ -200,20 +200,20 @@ LABEL_21:
     v9 = [(SFCommand *)v8 url];
     [(SFRequestAppClipInstallCommand *)v5 setUrl:v9];
 
-    v10 = [(SFCommand *)v8 applicationBundleIdentifier];
-    [(SFRequestAppClipInstallCommand *)v5 setApplicationBundleIdentifier:v10];
+    applicationBundleIdentifier = [(SFCommand *)v8 applicationBundleIdentifier];
+    [(SFRequestAppClipInstallCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

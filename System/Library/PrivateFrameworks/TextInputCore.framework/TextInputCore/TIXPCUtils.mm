@@ -1,13 +1,13 @@
 @interface TIXPCUtils
-+ (id)obtainApplicationIdentifierFromConnection:(id)a3;
-+ (id)obtainBundleIdentifierFromConnection:(id)a3;
++ (id)obtainApplicationIdentifierFromConnection:(id)connection;
++ (id)obtainBundleIdentifierFromConnection:(id)connection;
 @end
 
 @implementation TIXPCUtils
 
-+ (id)obtainBundleIdentifierFromConnection:(id)a3
++ (id)obtainBundleIdentifierFromConnection:(id)connection
 {
-  if (a3 && ([a3 _xpcConnection], v3 = objc_claimAutoreleasedReturnValue(), v4 = xpc_connection_copy_bundle_id(), v3, v4))
+  if (connection && ([connection _xpcConnection], v3 = objc_claimAutoreleasedReturnValue(), v4 = xpc_connection_copy_bundle_id(), v3, v4))
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:v4];
     free(v4);
@@ -21,10 +21,10 @@
   return v5;
 }
 
-+ (id)obtainApplicationIdentifierFromConnection:(id)a3
++ (id)obtainApplicationIdentifierFromConnection:(id)connection
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 && ([a3 auditToken], (v3 = SecTaskCreateWithAuditToken(0, &token)) != 0))
+  if (connection && ([connection auditToken], (v3 = SecTaskCreateWithAuditToken(0, &token)) != 0))
   {
     v4 = v3;
     error = 0;
@@ -39,9 +39,9 @@
       v6 = TIOSLogFacility();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Cannot obtain application identifier: %@", "+[TIXPCUtils obtainApplicationIdentifierFromConnection:]", error];
+        error = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Cannot obtain application identifier: %@", "+[TIXPCUtils obtainApplicationIdentifierFromConnection:]", error];
         token.val[0] = 138412290;
-        *&token.val[1] = v9;
+        *&token.val[1] = error;
         _os_log_debug_impl(&dword_22CA55000, v6, OS_LOG_TYPE_DEBUG, "%@", &token, 0xCu);
       }
 

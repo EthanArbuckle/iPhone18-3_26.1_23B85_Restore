@@ -1,96 +1,96 @@
 @interface IRServiceDO
-+ (IRServiceDO)serviceDOWithLastSeenDate:(id)a3 clientIdentifier:(id)a4 serviceIdentifier:(id)a5 servicePackage:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToServiceDO:(id)a3;
-- (IRServiceDO)initWithCoder:(id)a3;
-- (IRServiceDO)initWithLastSeenDate:(id)a3 clientIdentifier:(id)a4 serviceIdentifier:(id)a5 servicePackage:(int64_t)a6;
-- (id)copyWithReplacementClientIdentifier:(id)a3;
-- (id)copyWithReplacementLastSeenDate:(id)a3;
-- (id)copyWithReplacementServiceIdentifier:(id)a3;
-- (id)copyWithReplacementServicePackage:(int64_t)a3;
++ (IRServiceDO)serviceDOWithLastSeenDate:(id)date clientIdentifier:(id)identifier serviceIdentifier:(id)serviceIdentifier servicePackage:(int64_t)package;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToServiceDO:(id)o;
+- (IRServiceDO)initWithCoder:(id)coder;
+- (IRServiceDO)initWithLastSeenDate:(id)date clientIdentifier:(id)identifier serviceIdentifier:(id)serviceIdentifier servicePackage:(int64_t)package;
+- (id)copyWithReplacementClientIdentifier:(id)identifier;
+- (id)copyWithReplacementLastSeenDate:(id)date;
+- (id)copyWithReplacementServiceIdentifier:(id)identifier;
+- (id)copyWithReplacementServicePackage:(int64_t)package;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRServiceDO
 
-- (IRServiceDO)initWithLastSeenDate:(id)a3 clientIdentifier:(id)a4 serviceIdentifier:(id)a5 servicePackage:(int64_t)a6
+- (IRServiceDO)initWithLastSeenDate:(id)date clientIdentifier:(id)identifier serviceIdentifier:(id)serviceIdentifier servicePackage:(int64_t)package
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
+  serviceIdentifierCopy = serviceIdentifier;
   v17.receiver = self;
   v17.super_class = IRServiceDO;
   v14 = [(IRServiceDO *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_lastSeenDate, a3);
-    objc_storeStrong(&v15->_clientIdentifier, a4);
-    objc_storeStrong(&v15->_serviceIdentifier, a5);
-    v15->_servicePackage = a6;
+    objc_storeStrong(&v14->_lastSeenDate, date);
+    objc_storeStrong(&v15->_clientIdentifier, identifier);
+    objc_storeStrong(&v15->_serviceIdentifier, serviceIdentifier);
+    v15->_servicePackage = package;
   }
 
   return v15;
 }
 
-+ (IRServiceDO)serviceDOWithLastSeenDate:(id)a3 clientIdentifier:(id)a4 serviceIdentifier:(id)a5 servicePackage:(int64_t)a6
++ (IRServiceDO)serviceDOWithLastSeenDate:(id)date clientIdentifier:(id)identifier serviceIdentifier:(id)serviceIdentifier servicePackage:(int64_t)package
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithLastSeenDate:v12 clientIdentifier:v11 serviceIdentifier:v10 servicePackage:a6];
+  serviceIdentifierCopy = serviceIdentifier;
+  identifierCopy = identifier;
+  dateCopy = date;
+  v13 = [[self alloc] initWithLastSeenDate:dateCopy clientIdentifier:identifierCopy serviceIdentifier:serviceIdentifierCopy servicePackage:package];
 
   return v13;
 }
 
-- (id)copyWithReplacementLastSeenDate:(id)a3
+- (id)copyWithReplacementLastSeenDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:v4 clientIdentifier:self->_clientIdentifier serviceIdentifier:self->_serviceIdentifier servicePackage:self->_servicePackage];
+  dateCopy = date;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:dateCopy clientIdentifier:self->_clientIdentifier serviceIdentifier:self->_serviceIdentifier servicePackage:self->_servicePackage];
 
   return v5;
 }
 
-- (id)copyWithReplacementClientIdentifier:(id)a3
+- (id)copyWithReplacementClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate clientIdentifier:v4 serviceIdentifier:self->_serviceIdentifier servicePackage:self->_servicePackage];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate clientIdentifier:identifierCopy serviceIdentifier:self->_serviceIdentifier servicePackage:self->_servicePackage];
 
   return v5;
 }
 
-- (id)copyWithReplacementServiceIdentifier:(id)a3
+- (id)copyWithReplacementServiceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate clientIdentifier:self->_clientIdentifier serviceIdentifier:v4 servicePackage:self->_servicePackage];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate clientIdentifier:self->_clientIdentifier serviceIdentifier:identifierCopy servicePackage:self->_servicePackage];
 
   return v5;
 }
 
-- (id)copyWithReplacementServicePackage:(int64_t)a3
+- (id)copyWithReplacementServicePackage:(int64_t)package
 {
   v5 = objc_alloc(objc_opt_class());
   lastSeenDate = self->_lastSeenDate;
   clientIdentifier = self->_clientIdentifier;
   serviceIdentifier = self->_serviceIdentifier;
 
-  return [v5 initWithLastSeenDate:lastSeenDate clientIdentifier:clientIdentifier serviceIdentifier:serviceIdentifier servicePackage:a3];
+  return [v5 initWithLastSeenDate:lastSeenDate clientIdentifier:clientIdentifier serviceIdentifier:serviceIdentifier servicePackage:package];
 }
 
-- (BOOL)isEqualToServiceDO:(id)a3
+- (BOOL)isEqualToServiceDO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (!oCopy)
   {
     goto LABEL_12;
   }
 
   v6 = self->_lastSeenDate == 0;
-  v7 = [v4 lastSeenDate];
-  v8 = v7 != 0;
+  lastSeenDate = [oCopy lastSeenDate];
+  v8 = lastSeenDate != 0;
 
   if (v6 == v8)
   {
@@ -100,8 +100,8 @@
   lastSeenDate = self->_lastSeenDate;
   if (lastSeenDate)
   {
-    v10 = [v5 lastSeenDate];
-    v11 = [(NSDate *)lastSeenDate isEqual:v10];
+    lastSeenDate2 = [v5 lastSeenDate];
+    v11 = [(NSDate *)lastSeenDate isEqual:lastSeenDate2];
 
     if (!v11)
     {
@@ -110,8 +110,8 @@
   }
 
   v12 = self->_clientIdentifier == 0;
-  v13 = [v5 clientIdentifier];
-  v14 = v13 != 0;
+  clientIdentifier = [v5 clientIdentifier];
+  v14 = clientIdentifier != 0;
 
   if (v12 == v14)
   {
@@ -121,8 +121,8 @@
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    v16 = [v5 clientIdentifier];
-    v17 = [(NSString *)clientIdentifier isEqual:v16];
+    clientIdentifier2 = [v5 clientIdentifier];
+    v17 = [(NSString *)clientIdentifier isEqual:clientIdentifier2];
 
     if (!v17)
     {
@@ -131,8 +131,8 @@
   }
 
   v18 = self->_serviceIdentifier == 0;
-  v19 = [v5 serviceIdentifier];
-  v20 = v19 != 0;
+  serviceIdentifier = [v5 serviceIdentifier];
+  v20 = serviceIdentifier != 0;
 
   if (v18 == v20 || (serviceIdentifier = self->_serviceIdentifier) != 0 && ([v5 serviceIdentifier], v22 = objc_claimAutoreleasedReturnValue(), v23 = -[NSString isEqual:](serviceIdentifier, "isEqual:", v22), v22, !v23))
   {
@@ -149,18 +149,18 @@ LABEL_12:
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRServiceDO *)self isEqualToServiceDO:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRServiceDO *)self isEqualToServiceDO:v5];
   }
 
   return v6;
@@ -174,11 +174,11 @@ LABEL_12:
   return self->_servicePackage - (v5 - v4 + 32 * v4) + 32 * (v5 - v4 + 32 * v4);
 }
 
-- (IRServiceDO)initWithCoder:(id)a3
+- (IRServiceDO)initWithCoder:(id)coder
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenDate"];
   if (v5)
   {
     objc_opt_class();
@@ -193,19 +193,19 @@ LABEL_12:
       v34[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
       v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRServiceDOOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 LABEL_15:
 
 LABEL_16:
 LABEL_17:
-      v14 = 0;
+      selfCopy = 0;
 LABEL_18:
 
       goto LABEL_19;
     }
 
 LABEL_6:
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     if (v7)
     {
       objc_opt_class();
@@ -220,7 +220,7 @@ LABEL_6:
         v32 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
         v17 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRServiceDOOCNTErrorDomain" code:3 userInfo:v12];
-        [v4 failWithError:v17];
+        [coderCopy failWithError:v17];
 LABEL_14:
 
         goto LABEL_15;
@@ -229,18 +229,18 @@ LABEL_14:
 
     else
     {
-      v18 = [v4 error];
+      error = [coderCopy error];
 
-      if (v18)
+      if (error)
       {
-        v14 = 0;
+        selfCopy = 0;
 LABEL_19:
 
         goto LABEL_20;
       }
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
     if (v9)
     {
       objc_opt_class();
@@ -255,7 +255,7 @@ LABEL_19:
         v30 = v12;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         v21 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRServiceDOOCNTErrorDomain" code:3 userInfo:v17];
-        [v4 failWithError:v21];
+        [coderCopy failWithError:v21];
 
         goto LABEL_14;
       }
@@ -263,32 +263,32 @@ LABEL_19:
 
     else
     {
-      v24 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v24)
+      if (error2)
       {
         goto LABEL_17;
       }
     }
 
-    v25 = [v4 decodeInt64ForKey:@"servicePackage"];
+    v25 = [coderCopy decodeInt64ForKey:@"servicePackage"];
     if (v25)
     {
       goto LABEL_23;
     }
 
-    v26 = [v4 error];
+    error3 = [coderCopy error];
 
-    if (v26)
+    if (error3)
     {
       goto LABEL_17;
     }
 
-    if ([v4 containsValueForKey:@"servicePackage"])
+    if ([coderCopy containsValueForKey:@"servicePackage"])
     {
 LABEL_23:
       self = [(IRServiceDO *)self initWithLastSeenDate:v5 clientIdentifier:v7 serviceIdentifier:v9 servicePackage:v25];
-      v14 = self;
+      selfCopy = self;
       goto LABEL_18;
     }
 
@@ -296,50 +296,50 @@ LABEL_23:
     v28 = @"Missing serialized value for IRServiceDO.servicePackage";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRServiceDOOCNTErrorDomain" code:1 userInfo:v10];
-    [v4 failWithError:v11];
+    [coderCopy failWithError:v11];
     goto LABEL_16;
   }
 
-  v13 = [v4 error];
+  error4 = [coderCopy error];
 
-  if (!v13)
+  if (!error4)
   {
     goto LABEL_6;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_20:
 
   v22 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   lastSeenDate = self->_lastSeenDate;
-  v8 = v4;
+  v8 = coderCopy;
   if (lastSeenDate)
   {
-    [v4 encodeObject:lastSeenDate forKey:@"lastSeenDate"];
-    v4 = v8;
+    [coderCopy encodeObject:lastSeenDate forKey:@"lastSeenDate"];
+    coderCopy = v8;
   }
 
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
     [v8 encodeObject:clientIdentifier forKey:@"clientIdentifier"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   serviceIdentifier = self->_serviceIdentifier;
   if (serviceIdentifier)
   {
     [v8 encodeObject:serviceIdentifier forKey:@"serviceIdentifier"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
-  [v4 encodeInt64:self->_servicePackage forKey:@"servicePackage"];
+  [coderCopy encodeInt64:self->_servicePackage forKey:@"servicePackage"];
 }
 
 - (id)description

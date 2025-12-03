@@ -1,6 +1,6 @@
 @interface HKMedicationsTokenizer
 - (HKMedicationsTokenizer)init;
-- (id)wordsFromTranscript:(id)a3;
+- (id)wordsFromTranscript:(id)transcript;
 @end
 
 @implementation HKMedicationsTokenizer
@@ -21,25 +21,25 @@
   return v3;
 }
 
-- (id)wordsFromTranscript:(id)a3
+- (id)wordsFromTranscript:(id)transcript
 {
-  v4 = a3;
+  transcriptCopy = transcript;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HKMedicationsTokenizer *)self tokenizer];
-  [v5 setString:v4];
+  tokenizer = [(HKMedicationsTokenizer *)self tokenizer];
+  [tokenizer setString:transcriptCopy];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [(HKMedicationsTokenizer *)self tokenizer];
-  v8 = [v4 length];
+  tokenizer2 = [(HKMedicationsTokenizer *)self tokenizer];
+  v8 = [transcriptCopy length];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__HKMedicationsTokenizer_wordsFromTranscript___block_invoke;
   v13[3] = &unk_2796D2A80;
-  v14 = v4;
+  v14 = transcriptCopy;
   v9 = v6;
   v15 = v9;
-  v10 = v4;
-  [v7 enumerateTokensInRange:0 usingBlock:{v8, v13}];
+  v10 = transcriptCopy;
+  [tokenizer2 enumerateTokensInRange:0 usingBlock:{v8, v13}];
 
   v11 = v9;
   os_unfair_lock_unlock(&self->_lock);

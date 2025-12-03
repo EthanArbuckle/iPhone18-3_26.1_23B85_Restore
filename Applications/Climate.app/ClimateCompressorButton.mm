@@ -1,20 +1,20 @@
 @interface ClimateCompressorButton
-- (void)cabinService:(id)a3 didUpdateCompressorOn:(BOOL)a4;
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3;
+- (void)cabinService:(id)service didUpdateCompressorOn:(BOOL)on;
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter;
 @end
 
 @implementation ClimateCompressorButton
 
-- (void)cabinService:(id)a3 didUpdateCompressorOn:(BOOL)a4
+- (void)cabinService:(id)service didUpdateCompressorOn:(BOOL)on
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_100003390();
 }
 
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter
 {
-  v3 = self;
+  selfCopy = self;
   sub_100003458();
 }
 

@@ -1,10 +1,10 @@
 @interface ULEventLogStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)insertDataObjects:(const void *)a3;
+- (BOOL)insertDataObjects:(const void *)objects;
 - (id)insertDataObjects:;
 - (optional<ULEventLogDO>)fetchMostRecentLoggedEventBeforeTime:(optional<ULEventLogDO> *__return_ptr)retstr;
 - (uint64_t)insertDataObjects:;
-- (vector<ULEventLogDO,)fetchLoggedEventsFromTime:(ULEventLogStore *)self toTime:(SEL)a3 limit:(optional<const double>)a4;
+- (vector<ULEventLogDO,)fetchLoggedEventsFromTime:(ULEventLogStore *)self toTime:(SEL)time limit:(optional<const double>)limit;
 @end
 
 @implementation ULEventLogStore
@@ -12,45 +12,45 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULLoggedEventsTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A719B8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A719B8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A561F0;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULEventLogDO,ULEventLogMO>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULEventLogDO,ULEventLogMO>(self, objects, v7);
   std::__function::__value_func<ULEventLogMO * ()(ULEventLogDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (vector<ULEventLogDO,)fetchLoggedEventsFromTime:(ULEventLogStore *)self toTime:(SEL)a3 limit:(optional<const double>)a4
+- (vector<ULEventLogDO,)fetchLoggedEventsFromTime:(ULEventLogStore *)self toTime:(SEL)time limit:(optional<const double>)limit
 {
   v6 = a6;
   var1 = a5.var1;
   v8 = a5.var0.var1;
-  v9 = a4.var1;
-  v10 = a4.var0.var1;
+  v9 = limit.var1;
+  v10 = limit.var0.var1;
   v34[1] = *MEMORY[0x277D85DE8];
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -58,33 +58,33 @@
   if (!a6)
   {
     v13 = +[ULDefaultsSingleton shared];
-    v14 = [v13 defaultsDictionary];
+    defaultsDictionary = [v13 defaultsDictionary];
 
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULDatabaseSelectionLimit"];
-    v16 = [v14 objectForKey:v15];
+    v16 = [defaultsDictionary objectForKey:v15];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v17 = [v16 unsignedIntValue];
+      unsignedIntValue = [v16 unsignedIntValue];
     }
 
     else
     {
-      v17 = [&unk_286A719A0 unsignedIntValue];
+      unsignedIntValue = [&unk_286A719A0 unsignedIntValue];
     }
 
-    v18 = v17;
+    v18 = unsignedIntValue;
 
     v6 = v18;
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v9)
   {
     v21 = MEMORY[0x277CCAC30];
     v22 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
     v23 = [v21 predicateWithFormat:@"%K > %@", @"timestamp", v22];
-    [v20 addObject:v23];
+    [array addObject:v23];
   }
 
   if (var1)
@@ -92,13 +92,13 @@
     v24 = MEMORY[0x277CCAC30];
     v25 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
     v26 = [v24 predicateWithFormat:@"%K <= %@", @"timestamp", v25];
-    [v20 addObject:v26];
+    [array addObject:v26];
   }
 
   v27 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:0];
   v34[0] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-  [(ULEventLogStore *)self _fetchLoggedEventsByAndPredicates:v20 sortDescriptors:v28 andLimit:v6];
+  [(ULEventLogStore *)self _fetchLoggedEventsByAndPredicates:array sortDescriptors:v28 andLimit:v6];
   std::vector<ULEventLogDO>::__vdeallocate(retstr);
   *&retstr->var0 = v31;
   retstr->var2 = v32;
@@ -144,7 +144,7 @@
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -155,8 +155,8 @@
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULEventLogMO createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULEventLogMO createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

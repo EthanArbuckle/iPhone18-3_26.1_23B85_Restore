@@ -11,11 +11,11 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 calendar];
-    v7 = [v6 sharingStatus];
+    calendar = [v4 calendar];
+    sharingStatus = [calendar sharingStatus];
 
-    v8 = 2 * (v7 == 2);
-    if (v7 == 1)
+    v8 = 2 * (sharingStatus == 2);
+    if (sharingStatus == 1)
     {
       v8 = 1;
     }
@@ -27,21 +27,21 @@
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v13 = [v10 firstObject];
+        firstObject2 = [v10 firstObject];
       }
 
       else
       {
-        v13 = 0;
+        firstObject2 = 0;
       }
 
-      v28 = v13;
+      v28 = firstObject2;
     }
 
     else
@@ -49,21 +49,21 @@
       v28 = 0;
     }
 
-    v27 = [v5 eventIdentifier];
-    v26 = [v5 startDate];
-    v15 = [v5 endDate];
-    v16 = [v5 title];
-    v17 = [v5 location];
-    v18 = [v5 isAllDay];
-    v19 = [v5 isTentative];
+    eventIdentifier = [v5 eventIdentifier];
+    startDate = [v5 startDate];
+    endDate = [v5 endDate];
+    title = [v5 title];
+    location = [v5 location];
+    isAllDay = [v5 isAllDay];
+    isTentative = [v5 isTentative];
     v20 = [objc_opt_class() isParticipationOptional:v5];
-    v21 = [v5 suggestionInfo];
-    v22 = [v21 opaqueKey];
+    suggestionInfo = [v5 suggestionInfo];
+    opaqueKey = [suggestionInfo opaqueKey];
     BYTE1(v25) = v20;
-    LOBYTE(v25) = v19;
-    v23 = [a1 initWithEventIdentifier:v27 startDate:v26 endDate:v15 title:v16 location:v17 allDay:v18 sharingStatus:v29 tentative:v25 participationOptional:v22 suggestionInfo_opaqueKey:v28 suggestionsSchemaOrg:?];
+    LOBYTE(v25) = isTentative;
+    v23 = [self initWithEventIdentifier:eventIdentifier startDate:startDate endDate:endDate title:title location:location allDay:isAllDay sharingStatus:v29 tentative:v25 participationOptional:opaqueKey suggestionInfo_opaqueKey:v28 suggestionsSchemaOrg:?];
 
-    a1 = v23;
+    self = v23;
     v14 = v23;
   }
 

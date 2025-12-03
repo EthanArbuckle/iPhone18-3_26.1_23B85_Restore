@@ -1,8 +1,8 @@
 @interface FamilyCircleOperation
 - (id)_cachePath;
-- (id)_cachedFamilyCircleWithAccountIdentifier:(id)a3;
-- (id)_familyCircleForDictionary:(id)a3;
-- (void)_writeCacheWithFamilyCircle:(id)a3 accountIdentifier:(id)a4;
+- (id)_cachedFamilyCircleWithAccountIdentifier:(id)identifier;
+- (id)_familyCircleForDictionary:(id)dictionary;
+- (void)_writeCacheWithFamilyCircle:(id)circle accountIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)run;
 @end
@@ -39,15 +39,15 @@
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
     if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -122,15 +122,15 @@ LABEL_22:
         v22 = +[SSLogConfig sharedConfig];
       }
 
-      v23 = [v22 shouldLog];
+      shouldLog2 = [v22 shouldLog];
       if ([v22 shouldLogToDisk])
       {
-        v24 = v23 | 2;
+        v24 = shouldLog2 | 2;
       }
 
       else
       {
-        v24 = v23;
+        v24 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -168,10 +168,10 @@ LABEL_34:
   self->_familyCircle = v14;
 }
 
-- (id)_cachedFamilyCircleWithAccountIdentifier:(id)a3
+- (id)_cachedFamilyCircleWithAccountIdentifier:(id)identifier
 {
-  v4 = [(FamilyCircleOperation *)self _cachePath];
-  if (v4 && (v5 = [[NSData alloc] initWithContentsOfFile:v4]) != 0)
+  _cachePath = [(FamilyCircleOperation *)self _cachePath];
+  if (_cachePath && (v5 = [[NSData alloc] initWithContentsOfFile:_cachePath]) != 0)
   {
     v6 = v5;
     v7 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:0];
@@ -180,7 +180,7 @@ LABEL_34:
     {
       [+[NSDate date](NSDate timeIntervalSinceDate:"timeIntervalSinceDate:", v10];
       v12 = v11;
-      v13 = [v8 isEqualToNumber:a3];
+      v13 = [v8 isEqualToNumber:identifier];
       v14 = 0;
       if (v13 && v12 > 2.22044605e-16 && v12 < 604800.0)
       {
@@ -210,11 +210,11 @@ LABEL_34:
   return v3;
 }
 
-- (id)_familyCircleForDictionary:(id)a3
+- (id)_familyCircleForDictionary:(id)dictionary
 {
   v36 = +[NSMutableArray array];
-  v33 = a3;
-  v4 = [a3 objectForKey:@"family"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionary objectForKey:@"family"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -302,7 +302,7 @@ LABEL_34:
   }
 
   v19 = +[NSMutableArray array];
-  v20 = [v33 objectForKey:@"iTunesAccountNames"];
+  v20 = [dictionaryCopy objectForKey:@"iTunesAccountNames"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -349,7 +349,7 @@ LABEL_34:
   v27 = objc_alloc_init(ACAccountStore);
   v28 = [objc_msgSend(v27 "aa_primaryAppleAccount")];
 
-  v29 = 0;
+  firstObject = 0;
   if (v26 && v28)
   {
     v38[0] = _NSConcreteStackBlock;
@@ -358,10 +358,10 @@ LABEL_34:
     v38[3] = &unk_100327430;
     v38[4] = v28;
     v38[5] = v26;
-    v29 = [objc_msgSend(v36 filteredArrayUsingPredicate:{+[NSPredicate predicateWithBlock:](NSPredicate, "predicateWithBlock:", v38)), "firstObject"}];
+    firstObject = [objc_msgSend(v36 filteredArrayUsingPredicate:{+[NSPredicate predicateWithBlock:](NSPredicate, "predicateWithBlock:", v38)), "firstObject"}];
   }
 
-  if (v26 && !v29)
+  if (v26 && !firstObject)
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -371,16 +371,16 @@ LABEL_34:
     v30 = [v36 filteredArrayUsingPredicate:{+[NSPredicate predicateWithBlock:](NSPredicate, "predicateWithBlock:", v37)}];
     if ([v30 count] == 1)
     {
-      v29 = [v30 firstObject];
+      firstObject = [v30 firstObject];
     }
 
     else
     {
-      v29 = 0;
+      firstObject = 0;
     }
   }
 
-  [v29 setMe:1];
+  [firstObject setMe:1];
   [v36 sortUsingComparator:&stru_100327498];
   v31 = objc_alloc_init(SSFamilyCircle);
   [v31 setITunesAccountNames:v19];
@@ -388,18 +388,18 @@ LABEL_34:
   return v31;
 }
 
-- (void)_writeCacheWithFamilyCircle:(id)a3 accountIdentifier:(id)a4
+- (void)_writeCacheWithFamilyCircle:(id)circle accountIdentifier:(id)identifier
 {
-  v10 = [a3 newCacheRepresentation];
-  if (v10)
+  newCacheRepresentation = [circle newCacheRepresentation];
+  if (newCacheRepresentation)
   {
-    v6 = [(FamilyCircleOperation *)self _cachePath];
-    if (v6)
+    _cachePath = [(FamilyCircleOperation *)self _cachePath];
+    if (_cachePath)
     {
-      v7 = v6;
+      v7 = _cachePath;
       v8 = objc_alloc_init(NSMutableDictionary);
-      [v8 setObject:a4 forKey:@"account"];
-      [v8 setObject:v10 forKey:@"circle"];
+      [v8 setObject:identifier forKey:@"account"];
+      [v8 setObject:newCacheRepresentation forKey:@"circle"];
       [v8 setObject:+[NSDate date](NSDate forKey:{"date"), @"timestamp"}];
       v9 = [NSPropertyListSerialization dataWithPropertyList:v8 format:200 options:0 error:0];
       if (v9)

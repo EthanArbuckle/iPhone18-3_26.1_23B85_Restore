@@ -1,18 +1,18 @@
 @interface TRANSITPbTransitMacTile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMacs:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addMacs:(id)macs;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExpirationAgeSecs:(BOOL)a3;
-- (void)setHasTileX:(BOOL)a3;
-- (void)setHasTileY:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasExpirationAgeSecs:(BOOL)secs;
+- (void)setHasTileX:(BOOL)x;
+- (void)setHasTileY:(BOOL)y;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TRANSITPbTransitMacTile
@@ -25,9 +25,9 @@
   [(TRANSITPbTransitMacTile *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTileX:(BOOL)a3
+- (void)setHasTileX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 4;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTileY:(BOOL)a3
+- (void)setHasTileY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 8;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasExpirationAgeSecs:(BOOL)a3
+- (void)setHasExpirationAgeSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 2;
   }
@@ -85,7 +85,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addMacs:(id)a3
+- (void)addMacs:(id)macs
 {
   macs = self->_macs;
   if (!macs)
@@ -94,7 +94,7 @@
     self->_macs = macs;
   }
 
-  [(NSMutableArray *)macs addObject:a3];
+  [(NSMutableArray *)macs addObject:macs];
 }
 
 - (id)description
@@ -202,7 +202,7 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -291,13 +291,13 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 10) = self->_version;
-    *(a3 + 44) |= 0x10u;
+    *(to + 10) = self->_version;
+    *(to + 44) |= 0x10u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -316,8 +316,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 8) = self->_tileX;
-  *(a3 + 44) |= 4u;
+  *(to + 8) = self->_tileX;
+  *(to + 44) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -328,8 +328,8 @@ LABEL_4:
     }
 
 LABEL_15:
-    *(a3 + 1) = *&self->_generationTimeSecs;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = *&self->_generationTimeSecs;
+    *(to + 44) |= 1u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_7;
@@ -339,8 +339,8 @@ LABEL_15:
   }
 
 LABEL_14:
-  *(a3 + 9) = self->_tileY;
-  *(a3 + 44) |= 8u;
+  *(to + 9) = self->_tileY;
+  *(to + 44) |= 8u;
   has = self->_has;
   if (has)
   {
@@ -351,29 +351,29 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    *(a3 + 4) = self->_expirationAgeSecs;
-    *(a3 + 44) |= 2u;
+    *(to + 4) = self->_expirationAgeSecs;
+    *(to + 44) |= 2u;
   }
 
 LABEL_7:
   if ([(TRANSITPbTransitMacTile *)self macsCount])
   {
-    [a3 clearMacs];
-    v6 = [(TRANSITPbTransitMacTile *)self macsCount];
-    if (v6)
+    [to clearMacs];
+    macsCount = [(TRANSITPbTransitMacTile *)self macsCount];
+    if (macsCount)
     {
-      v7 = v6;
+      v7 = macsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addMacs:{-[TRANSITPbTransitMacTile macsAtIndex:](self, "macsAtIndex:", i)}];
+        [to addMacs:{-[TRANSITPbTransitMacTile macsAtIndex:](self, "macsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -457,7 +457,7 @@ LABEL_7:
           objc_enumerationMutation(macs);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v6 addMacs:v13];
       }
 
@@ -470,20 +470,20 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_version != *(a3 + 10))
+      if ((*(equal + 44) & 0x10) == 0 || self->_version != *(equal + 10))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
 LABEL_29:
       LOBYTE(v5) = 0;
@@ -492,58 +492,58 @@ LABEL_29:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_tileX != *(a3 + 8))
+      if ((*(equal + 44) & 4) == 0 || self->_tileX != *(equal + 8))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_29;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_tileY != *(a3 + 9))
+      if ((*(equal + 44) & 8) == 0 || self->_tileY != *(equal + 9))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
       goto LABEL_29;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_generationTimeSecs != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_generationTimeSecs != *(equal + 1))
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_29;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_expirationAgeSecs != *(a3 + 4))
+      if ((*(equal + 44) & 2) == 0 || self->_expirationAgeSecs != *(equal + 4))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
       goto LABEL_29;
     }
 
     macs = self->_macs;
-    if (macs | *(a3 + 3))
+    if (macs | *(equal + 3))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)macs isEqual:?];
@@ -647,14 +647,14 @@ LABEL_13:
   return v9 ^ v8 ^ v10 ^ v14 ^ v15 ^ [(NSMutableArray *)self->_macs hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = *(a3 + 44);
+  v4 = *(from + 44);
   if ((v4 & 0x10) != 0)
   {
-    self->_version = *(a3 + 10);
+    self->_version = *(from + 10);
     *&self->_has |= 0x10u;
-    v4 = *(a3 + 44);
+    v4 = *(from + 44);
     if ((v4 & 4) == 0)
     {
 LABEL_3:
@@ -667,14 +667,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 4) == 0)
+  else if ((*(from + 44) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_tileX = *(a3 + 8);
+  self->_tileX = *(from + 8);
   *&self->_has |= 4u;
-  v4 = *(a3 + 44);
+  v4 = *(from + 44);
   if ((v4 & 8) == 0)
   {
 LABEL_4:
@@ -687,9 +687,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_tileY = *(a3 + 9);
+  self->_tileY = *(from + 9);
   *&self->_has |= 8u;
-  v4 = *(a3 + 44);
+  v4 = *(from + 44);
   if ((v4 & 1) == 0)
   {
 LABEL_5:
@@ -702,12 +702,12 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_generationTimeSecs = *(a3 + 1);
+  self->_generationTimeSecs = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 44) & 2) != 0)
+  if ((*(from + 44) & 2) != 0)
   {
 LABEL_6:
-    self->_expirationAgeSecs = *(a3 + 4);
+    self->_expirationAgeSecs = *(from + 4);
     *&self->_has |= 2u;
   }
 
@@ -716,7 +716,7 @@ LABEL_7:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

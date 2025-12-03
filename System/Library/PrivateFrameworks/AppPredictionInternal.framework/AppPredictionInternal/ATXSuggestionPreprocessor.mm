@@ -1,49 +1,49 @@
 @interface ATXSuggestionPreprocessor
-+ (id)bundleIdAssociatedWithSuggestion:(id)a3;
-+ (id)contactIdsAssociatedWithContactsWidgetIntent:(id)a3;
-+ (id)contactIdsAssociatedWithSuggestion:(id)a3;
++ (id)bundleIdAssociatedWithSuggestion:(id)suggestion;
++ (id)contactIdsAssociatedWithContactsWidgetIntent:(id)intent;
++ (id)contactIdsAssociatedWithSuggestion:(id)suggestion;
 - (ATXSuggestionPreprocessor)init;
-- (ATXSuggestionPreprocessor)initWithEngagementRecordManager:(id)a3 notificationsLoggingServer:(id)a4 lockscreenBlacklist:(id)a5 actionToWidgetConverter:(id)a6;
-- (BOOL)_bundleSupportsINPlayMediaIntentForBundleId:(id)a3 fromUnitTest:(BOOL)a4;
-- (BOOL)shouldFilterOutSuggestion:(id)a3 withBundleId:(id)a4 fromAppsThatCannotBeSuggested:(id)a5 fromAppsWhoseContentsCannotBeSuggested:(id)a6;
-- (id)filterOutRecentlyEngagedSuggestions:(id)a3;
-- (id)filterOutSuggestionsForUninstalledOrRestrictedApps:(id)a3;
-- (id)preprocessedSuggestionsForAppSwitcherConsumer:(id)a3;
-- (id)suggestionsWithInvalidSuggestionsRemoved:(id)a3;
+- (ATXSuggestionPreprocessor)initWithEngagementRecordManager:(id)manager notificationsLoggingServer:(id)server lockscreenBlacklist:(id)blacklist actionToWidgetConverter:(id)converter;
+- (BOOL)_bundleSupportsINPlayMediaIntentForBundleId:(id)id fromUnitTest:(BOOL)test;
+- (BOOL)shouldFilterOutSuggestion:(id)suggestion withBundleId:(id)id fromAppsThatCannotBeSuggested:(id)suggested fromAppsWhoseContentsCannotBeSuggested:(id)beSuggested;
+- (id)filterOutRecentlyEngagedSuggestions:(id)suggestions;
+- (id)filterOutSuggestionsForUninstalledOrRestrictedApps:(id)apps;
+- (id)preprocessedSuggestionsForAppSwitcherConsumer:(id)consumer;
+- (id)suggestionsWithInvalidSuggestionsRemoved:(id)removed;
 @end
 
 @implementation ATXSuggestionPreprocessor
 
 - (ATXSuggestionPreprocessor)init
 {
-  v3 = [MEMORY[0x277CEB500] sharedInstance];
+  mEMORY[0x277CEB500] = [MEMORY[0x277CEB500] sharedInstance];
   v4 = +[ATXNotificationsLoggingServer sharedInstance];
   v5 = +[ATXLockscreenBlacklist sharedInstance];
   v6 = objc_opt_new();
-  v7 = [(ATXSuggestionPreprocessor *)self initWithEngagementRecordManager:v3 notificationsLoggingServer:v4 lockscreenBlacklist:v5 actionToWidgetConverter:v6];
+  v7 = [(ATXSuggestionPreprocessor *)self initWithEngagementRecordManager:mEMORY[0x277CEB500] notificationsLoggingServer:v4 lockscreenBlacklist:v5 actionToWidgetConverter:v6];
 
   return v7;
 }
 
-- (ATXSuggestionPreprocessor)initWithEngagementRecordManager:(id)a3 notificationsLoggingServer:(id)a4 lockscreenBlacklist:(id)a5 actionToWidgetConverter:(id)a6
+- (ATXSuggestionPreprocessor)initWithEngagementRecordManager:(id)manager notificationsLoggingServer:(id)server lockscreenBlacklist:(id)blacklist actionToWidgetConverter:(id)converter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  serverCopy = server;
+  blacklistCopy = blacklist;
+  converterCopy = converter;
   v22.receiver = self;
   v22.super_class = ATXSuggestionPreprocessor;
   v15 = [(ATXSuggestionPreprocessor *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_converter, a6);
-    objc_storeStrong(&v16->_notificationsLoggingServer, a4);
-    objc_storeStrong(&v16->_lockscreenBlacklist, a5);
-    objc_storeStrong(&v16->_engagementRecordManager, a3);
-    v17 = [MEMORY[0x277D41B98] sharedInstance];
+    objc_storeStrong(&v15->_converter, converter);
+    objc_storeStrong(&v16->_notificationsLoggingServer, server);
+    objc_storeStrong(&v16->_lockscreenBlacklist, blacklist);
+    objc_storeStrong(&v16->_engagementRecordManager, manager);
+    mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
     hyperParameters = v16->_hyperParameters;
-    v16->_hyperParameters = v17;
+    v16->_hyperParameters = mEMORY[0x277D41B98];
 
     v19 = +[ATXSuggestionModeFilter sharedInstance];
     modeFilter = v16->_modeFilter;
@@ -56,23 +56,23 @@
   return v16;
 }
 
-- (id)suggestionsWithInvalidSuggestionsRemoved:(id)a3
+- (id)suggestionsWithInvalidSuggestionsRemoved:(id)removed
 {
-  v4 = [(ATXSuggestionPreprocessor *)self filterOutSuggestionsForUninstalledOrRestrictedApps:a3];
+  v4 = [(ATXSuggestionPreprocessor *)self filterOutSuggestionsForUninstalledOrRestrictedApps:removed];
   v5 = [(ATXSuggestionPreprocessor *)self filterOutRecentlyEngagedSuggestions:v4];
 
   return v5;
 }
 
-- (id)filterOutRecentlyEngagedSuggestions:(id)a3
+- (id)filterOutRecentlyEngagedSuggestions:(id)suggestions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = [v4 count];
+    v22 = [suggestionsCopy count];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Blending: Blending Layer is removing recently engaged suggestions. # suggestions at start: %lu", buf, 0xCu);
   }
 
@@ -84,10 +84,10 @@
   v16 = 3221225472;
   v17 = __65__ATXSuggestionPreprocessor_filterOutRecentlyEngagedSuggestions___block_invoke;
   v18 = &unk_278599660;
-  v19 = self;
+  selfCopy = self;
   v20 = v8;
   v9 = v8;
-  v10 = [v4 _pas_filteredArrayWithTest:&v15];
+  v10 = [suggestionsCopy _pas_filteredArrayWithTest:&v15];
   v11 = __atxlog_handle_blending();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,15 +122,15 @@ uint64_t __65__ATXSuggestionPreprocessor_filterOutRecentlyEngagedSuggestions___b
   return v4 ^ 1u;
 }
 
-- (id)filterOutSuggestionsForUninstalledOrRestrictedApps:(id)a3
+- (id)filterOutSuggestionsForUninstalledOrRestrictedApps:(id)apps
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v35 = [v4 count];
+    v35 = [appsCopy count];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Blending: Blending Layer is removing suggestions for unsupported apps. # suggestions at start: %lu", buf, 0xCu);
   }
 
@@ -151,30 +151,30 @@ uint64_t __65__ATXSuggestionPreprocessor_filterOutRecentlyEngagedSuggestions___b
 
   v11 = [v6 initWithArray:v10];
   v12 = objc_opt_new();
-  v13 = [v12 hiddenOrLockedBundleIDs];
+  hiddenOrLockedBundleIDs = [v12 hiddenOrLockedBundleIDs];
 
   v14 = objc_alloc(MEMORY[0x277CBEB98]);
   v15 = +[_ATXAppIconState sharedInstance];
-  v16 = [v15 allInstalledAppsKnownToSpringBoard];
-  v17 = [v14 initWithArray:v16];
+  allInstalledAppsKnownToSpringBoard = [v15 allInstalledAppsKnownToSpringBoard];
+  v17 = [v14 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v18 = +[ATXDigitalHealthBlacklist sharedInstance];
-  v19 = [v18 blacklistedBundleIds];
+  blacklistedBundleIds = [v18 blacklistedBundleIds];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __80__ATXSuggestionPreprocessor_filterOutSuggestionsForUninstalledOrRestrictedApps___block_invoke;
   v29[3] = &unk_27859D9E0;
   v29[4] = self;
-  v30 = v19;
+  v30 = blacklistedBundleIds;
   v31 = v11;
-  v32 = v13;
+  v32 = hiddenOrLockedBundleIDs;
   v33 = v17;
   v20 = v17;
-  v21 = v13;
+  v21 = hiddenOrLockedBundleIDs;
   v22 = v11;
-  v23 = v19;
-  v24 = [v4 _pas_filteredArrayWithTest:v29];
+  v23 = blacklistedBundleIds;
+  v24 = [appsCopy _pas_filteredArrayWithTest:v29];
   v25 = __atxlog_handle_blending();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -269,17 +269,17 @@ LABEL_4:
   return v7;
 }
 
-+ (id)bundleIdAssociatedWithSuggestion:(id)a3
++ (id)bundleIdAssociatedWithSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 executableSpecification];
-  v5 = [v4 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  v6 = [v3 executableSpecification];
-  v7 = v6;
-  if (v5 == 1)
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  v7 = executableSpecification2;
+  if (executableType == 1)
   {
-    v8 = [v6 executableObject];
+    executableObject = [executableSpecification2 executableObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -290,35 +290,35 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  v10 = [v6 executableType];
+  executableType2 = [executableSpecification2 executableType];
 
-  if (v10 == 2)
+  if (executableType2 == 2)
   {
-    v11 = [v3 atxActionExecutableObject];
+    atxActionExecutableObject = [suggestionCopy atxActionExecutableObject];
 LABEL_6:
-    v8 = v11;
-    v12 = [v11 bundleId];
+    executableObject = atxActionExecutableObject;
+    bundleId = [atxActionExecutableObject bundleId];
     goto LABEL_9;
   }
 
-  v13 = [v3 executableSpecification];
-  v14 = [v13 executableType];
+  executableSpecification3 = [suggestionCopy executableSpecification];
+  executableType3 = [executableSpecification3 executableType];
 
-  if (v14 == 3)
+  if (executableType3 == 3)
   {
-    v8 = [v3 atxInfoSuggestionExecutableObject];
-    v12 = [v8 appBundleIdentifier];
+    executableObject = [suggestionCopy atxInfoSuggestionExecutableObject];
+    bundleId = [executableObject appBundleIdentifier];
     goto LABEL_9;
   }
 
-  v16 = [v3 executableSpecification];
-  v17 = [v16 executableType];
+  executableSpecification4 = [suggestionCopy executableSpecification];
+  executableType4 = [executableSpecification4 executableType];
 
-  v18 = [v3 executableSpecification];
-  v19 = v18;
-  if (v17 == 6)
+  executableSpecification5 = [suggestionCopy executableSpecification];
+  v19 = executableSpecification5;
+  if (executableType4 == 6)
   {
-    v8 = [v18 executableObject];
+    executableObject = [executableSpecification5 executableObject];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -327,52 +327,52 @@ LABEL_3:
       v9 = 0;
 LABEL_10:
 
-      v8 = v9;
+      executableObject = v9;
       goto LABEL_11;
     }
 
-    v12 = [v8 bundleID];
+    bundleId = [executableObject bundleID];
 LABEL_9:
-    v9 = v12;
+    v9 = bundleId;
     goto LABEL_10;
   }
 
-  v20 = [v18 executableType];
+  executableType5 = [executableSpecification5 executableType];
 
-  if (v20 == 10)
+  if (executableType5 == 10)
   {
-    v11 = [v3 linkActionExecutableObject];
+    atxActionExecutableObject = [suggestionCopy linkActionExecutableObject];
     goto LABEL_6;
   }
 
-  v8 = 0;
+  executableObject = 0;
 LABEL_11:
 
-  return v8;
+  return executableObject;
 }
 
-+ (id)contactIdsAssociatedWithSuggestion:(id)a3
++ (id)contactIdsAssociatedWithSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 executableSpecification];
-  v6 = [v5 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v6 == 2)
+  if (executableType == 2)
   {
-    v7 = [v4 atxActionExecutableObject];
-    v8 = [v7 intent];
+    atxActionExecutableObject = [suggestionCopy atxActionExecutableObject];
+    intent = [atxActionExecutableObject intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v10 = [v7 intent];
-    v11 = v10;
+    intent2 = [atxActionExecutableObject intent];
+    intent3 = intent2;
     if (isKindOfClass)
     {
-      v12 = [v10 recipients];
-      v13 = v12;
+      recipients = [intent2 recipients];
+      v13 = recipients;
       v14 = &__block_literal_global_123;
 LABEL_10:
-      v20 = [v12 _pas_mappedArrayWithTransform:v14];
+      v20 = [recipients _pas_mappedArrayWithTransform:v14];
 
       v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v20];
       goto LABEL_14;
@@ -383,9 +383,9 @@ LABEL_10:
 
     if (v19)
     {
-      v11 = [v7 intent];
-      v12 = [v11 contacts];
-      v13 = v12;
+      intent3 = [atxActionExecutableObject intent];
+      recipients = [intent3 contacts];
+      v13 = recipients;
       v14 = &__block_literal_global_36_2;
       goto LABEL_10;
     }
@@ -393,29 +393,29 @@ LABEL_10:
 
   else
   {
-    v15 = [v4 executableSpecification];
-    v16 = [v15 executableType];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableType2 = [executableSpecification2 executableType];
 
-    if (v16 != 3)
+    if (executableType2 != 3)
     {
       v18 = 0;
       goto LABEL_16;
     }
 
-    v7 = [v4 atxInfoSuggestionExecutableObject];
-    v11 = [v7 widgetBundleIdentifier];
-    if (![v11 isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"])
+    atxActionExecutableObject = [suggestionCopy atxInfoSuggestionExecutableObject];
+    intent3 = [atxActionExecutableObject widgetBundleIdentifier];
+    if (![intent3 isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"])
     {
       v18 = 0;
       goto LABEL_14;
     }
 
-    v17 = [v7 intent];
+    intent4 = [atxActionExecutableObject intent];
 
-    if (v17)
+    if (intent4)
     {
-      v11 = [v7 intent];
-      v18 = [a1 contactIdsAssociatedWithContactsWidgetIntent:v11];
+      intent3 = [atxActionExecutableObject intent];
+      v18 = [self contactIdsAssociatedWithContactsWidgetIntent:intent3];
 LABEL_14:
 
       goto LABEL_15;
@@ -430,32 +430,32 @@ LABEL_16:
   return v18;
 }
 
-+ (id)contactIdsAssociatedWithContactsWidgetIntent:(id)a3
++ (id)contactIdsAssociatedWithContactsWidgetIntent:(id)intent
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  intentCopy = intent;
   v4 = objc_opt_new();
-  v5 = [v3 atx_nonNilParametersByName];
-  v6 = [v5 objectForKeyedSubscript:@"person"];
+  atx_nonNilParametersByName = [intentCopy atx_nonNilParametersByName];
+  v6 = [atx_nonNilParametersByName objectForKeyedSubscript:@"person"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
-    v8 = [v7 identifier];
+    identifier = [v7 identifier];
 
-    if (v8)
+    if (identifier)
     {
-      v9 = [v7 identifier];
-      [v4 addObject:v9];
+      identifier2 = [v7 identifier];
+      [v4 addObject:identifier2];
     }
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"people"];
+  v10 = [atx_nonNilParametersByName objectForKeyedSubscript:@"people"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v23 = v6;
-    v24 = v3;
+    v24 = intentCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -480,12 +480,12 @@ LABEL_16:
           if (objc_opt_isKindOfClass())
           {
             v17 = v16;
-            v18 = [v17 identifier];
+            identifier3 = [v17 identifier];
 
-            if (v18)
+            if (identifier3)
             {
-              v19 = [v17 identifier];
-              [v4 addObject:v19];
+              identifier4 = [v17 identifier];
+              [v4 addObject:identifier4];
             }
           }
         }
@@ -497,7 +497,7 @@ LABEL_16:
     }
 
     v6 = v23;
-    v3 = v24;
+    intentCopy = v24;
   }
 
   v20 = [v4 copy];
@@ -507,34 +507,34 @@ LABEL_16:
   return v20;
 }
 
-- (BOOL)shouldFilterOutSuggestion:(id)a3 withBundleId:(id)a4 fromAppsThatCannotBeSuggested:(id)a5 fromAppsWhoseContentsCannotBeSuggested:(id)a6
+- (BOOL)shouldFilterOutSuggestion:(id)suggestion withBundleId:(id)id fromAppsThatCannotBeSuggested:(id)suggested fromAppsWhoseContentsCannotBeSuggested:(id)beSuggested
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 executableSpecification];
-  v14 = [v13 executableType];
+  suggestionCopy = suggestion;
+  idCopy = id;
+  suggestedCopy = suggested;
+  beSuggestedCopy = beSuggested;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v14 == 1)
+  if (executableType == 1)
   {
-    v15 = v11;
+    v15 = suggestedCopy;
     goto LABEL_10;
   }
 
-  v16 = [v9 executableSpecification];
-  if ([v16 executableType] != 3)
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  if ([executableSpecification2 executableType] != 3)
   {
-    v17 = [v9 executableSpecification];
-    if ([v17 executableType] != 2)
+    executableSpecification3 = [suggestionCopy executableSpecification];
+    if ([executableSpecification3 executableType] != 2)
     {
-      v18 = [v9 executableSpecification];
-      if ([v18 executableType] != 6)
+      executableSpecification4 = [suggestionCopy executableSpecification];
+      if ([executableSpecification4 executableType] != 6)
       {
-        v20 = [v9 executableSpecification];
-        v21 = [v20 executableType];
+        executableSpecification5 = [suggestionCopy executableSpecification];
+        executableType2 = [executableSpecification5 executableType];
 
-        if (v21 != 10)
+        if (executableType2 != 10)
         {
           goto LABEL_13;
         }
@@ -545,9 +545,9 @@ LABEL_16:
   }
 
 LABEL_9:
-  v15 = v12;
+  v15 = beSuggestedCopy;
 LABEL_10:
-  if (([v15 containsObject:v10] & 1) == 0)
+  if (([v15 containsObject:idCopy] & 1) == 0)
   {
 LABEL_13:
     v19 = 0;
@@ -759,14 +759,14 @@ uint64_t __77__ATXSuggestionPreprocessor_preprocessedSuggestionsForMediaControls
   return isKindOfClass & 1;
 }
 
-- (id)preprocessedSuggestionsForAppSwitcherConsumer:(id)a3
+- (id)preprocessedSuggestionsForAppSwitcherConsumer:(id)consumer
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __75__ATXSuggestionPreprocessor_preprocessedSuggestionsForAppSwitcherConsumer___block_invoke;
   v5[3] = &unk_2785996B0;
   v5[4] = self;
-  v3 = [a3 _pas_filteredArrayWithTest:v5];
+  v3 = [consumer _pas_filteredArrayWithTest:v5];
 
   return v3;
 }
@@ -805,18 +805,18 @@ uint64_t __75__ATXSuggestionPreprocessor_preprocessedSuggestionsForAppSwitcherCo
   return v8;
 }
 
-- (BOOL)_bundleSupportsINPlayMediaIntentForBundleId:(id)a3 fromUnitTest:(BOOL)a4
+- (BOOL)_bundleSupportsINPlayMediaIntentForBundleId:(id)id fromUnitTest:(BOOL)test
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CEB3B8] appInfoForBundle:a3];
+  v5 = [MEMORY[0x277CEB3B8] appInfoForBundle:id];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 supportedActions];
-  v9 = [v8 containsObject:v7];
+  supportedActions = [v5 supportedActions];
+  v9 = [supportedActions containsObject:v7];
 
   if (v9)
   {
-    if (a4 || ([v5 actionsRestrictedWhileLocked], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v7), v10, !v11))
+    if (test || ([v5 actionsRestrictedWhileLocked], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v7), v10, !v11))
     {
       v14 = 1;
       goto LABEL_11;

@@ -1,14 +1,14 @@
 @interface IMXMLParser
 + (id)sharedInstance;
-- (BOOL)parseContext:(id)a3;
-- (id)_newDataByTidyingData:(id)a3;
+- (BOOL)parseContext:(id)context;
+- (id)_newDataByTidyingData:(id)data;
 - (void)_setupTidy;
 - (void)_teardownTidy;
-- (void)invokedTidyAndSucceeded:(BOOL)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 foundIgnorableWhitespace:(id)a4;
+- (void)invokedTidyAndSucceeded:(BOOL)succeeded;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser foundIgnorableWhitespace:(id)whitespace;
 @end
 
 @implementation IMXMLParser
@@ -47,15 +47,15 @@
   }
 }
 
-- (id)_newDataByTidyingData:(id)a3
+- (id)_newDataByTidyingData:(id)data
 {
   [(IMXMLParser *)self _setupTidy];
   memset(&buf, 0, sizeof(buf));
   memset(&errbuf, 0, sizeof(errbuf));
-  v5 = [a3 bytes];
-  LODWORD(a3) = [a3 length];
+  bytes = [data bytes];
+  LODWORD(data) = [data length];
   v6 = tidySetCharEncoding(self->_tidyDoc, "utf8");
-  tidyBufAttach(&buf, v5, a3);
+  tidyBufAttach(&buf, bytes, data);
   if (v6 < 0 || tidySetErrorBuffer(self->_tidyDoc, &errbuf) < 0 || (MEMORY[0x1AC5720F0](self->_tidyDoc, &buf) & 0x80000000) != 0 || tidyCleanAndRepair(self->_tidyDoc) < 0 || tidyRunDiagnostics(self->_tidyDoc) > 1)
   {
     [(IMXMLParser *)self _teardownTidy];
@@ -78,9 +78,9 @@
   return v8;
 }
 
-- (void)invokedTidyAndSucceeded:(BOOL)a3
+- (void)invokedTidyAndSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     [objc_msgSend(MEMORY[0x1E696AE30] "processInfo")];
     getpid();
@@ -89,19 +89,19 @@
   }
 }
 
-- (BOOL)parseContext:(id)a3
+- (BOOL)parseContext:(id)context
 {
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v19 = sub_1A86B7728;
   v20 = &unk_1E78297D0;
-  v21 = self;
+  selfCopy = self;
   v15 = sub_1A86B77B4;
   v16 = &unk_1E7826DA8;
-  v17 = self;
-  v5 = [a3 inContentAsData];
-  self->_context = a3;
-  v6 = [a3 name];
+  selfCopy2 = self;
+  inContentAsData = [context inContentAsData];
+  self->_context = context;
+  name = [context name];
   v7 = qword_1EB30B3C0;
   if (!qword_1EB30B3C0)
   {
@@ -110,19 +110,19 @@
     qword_1EB30B3C0 = v7;
   }
 
-  Value = CFDictionaryGetValue(v7, v6);
+  Value = CFDictionaryGetValue(v7, name);
   self->_framespace = Value;
   if (!Value)
   {
     v10 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], 0);
     v11 = CFMakeCollectable(v10);
     self->_framespace = v11;
-    CFDictionarySetValue(qword_1EB30B3C0, v6, v11);
+    CFDictionarySetValue(qword_1EB30B3C0, name, v11);
   }
 
-  if (v19(v18, v5))
+  if (v19(v18, inContentAsData))
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(inContentAsData) = 1;
   }
 
   else
@@ -130,32 +130,32 @@
     [objc_msgSend(MEMORY[0x1E696AE30] "processInfo")];
     getpid();
     IMLogSimulateCrashForProcessAndPID();
-    v12 = [(IMXMLParser *)self _newDataByTidyingData:v5];
+    v12 = [(IMXMLParser *)self _newDataByTidyingData:inContentAsData];
     if (v12)
     {
       v15(&v14);
-      v5 = v19(v18, v12);
-      [(IMXMLParser *)self invokedTidyAndSucceeded:v5];
+      inContentAsData = v19(v18, v12);
+      [(IMXMLParser *)self invokedTidyAndSucceeded:inContentAsData];
     }
 
     else
     {
 
-      LOBYTE(v5) = 0;
+      LOBYTE(inContentAsData) = 0;
     }
   }
 
   v15(&v14);
   self->_context = 0;
-  return v5;
+  return inContentAsData;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v11 = objc_autoreleasePoolPush();
   context = self->_context;
   framespace = self->_framespace;
-  MutableCopy = CFStringCreateMutableCopy(0, 0, a4);
+  MutableCopy = CFStringCreateMutableCopy(0, 0, element);
   CFStringUppercase(MutableCopy, 0);
   Value = CFDictionaryGetValue(framespace, MutableCopy);
   v19 = MEMORY[0x1E69E9820];
@@ -191,18 +191,18 @@
   }
 
   self->_topFrame = v17;
-  [(IMXMLParserFrame *)v17 parser:self context:self->_context didStartElement:a4 namespaceURI:a5 qualifiedName:a6 attributes:a7, a7, v19, v20];
+  [(IMXMLParserFrame *)v17 parser:self context:self->_context didStartElement:element namespaceURI:i qualifiedName:name attributes:attributes, attributes, v19, v20];
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   v10 = objc_autoreleasePoolPush();
-  [(IMXMLParserFrame *)self->_topFrame parser:self context:self->_context didEndElement:a4 namespaceURI:a5 qualifiedName:a6];
+  [(IMXMLParserFrame *)self->_topFrame parser:self context:self->_context didEndElement:element namespaceURI:i qualifiedName:name];
 
-  v11 = [(NSMutableArray *)self->_otherFrames lastObject];
-  self->_topFrame = v11;
-  if (v11)
+  lastObject = [(NSMutableArray *)self->_otherFrames lastObject];
+  self->_topFrame = lastObject;
+  if (lastObject)
   {
     [(NSMutableArray *)self->_otherFrames removeLastObject];
   }
@@ -210,18 +210,18 @@
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   v6 = objc_autoreleasePoolPush();
-  [(IMXMLParserFrame *)self->_topFrame parser:self context:self->_context foundCharacters:a4];
+  [(IMXMLParserFrame *)self->_topFrame parser:self context:self->_context foundCharacters:characters];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)parser:(id)a3 foundIgnorableWhitespace:(id)a4
+- (void)parser:(id)parser foundIgnorableWhitespace:(id)whitespace
 {
   v6 = objc_autoreleasePoolPush();
-  [(IMXMLParserFrame *)self->_topFrame parser:self context:self->_context foundIgnorableWhitespace:a4];
+  [(IMXMLParserFrame *)self->_topFrame parser:self context:self->_context foundIgnorableWhitespace:whitespace];
 
   objc_autoreleasePoolPop(v6);
 }

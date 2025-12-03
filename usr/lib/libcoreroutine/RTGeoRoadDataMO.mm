@@ -1,15 +1,15 @@
 @interface RTGeoRoadDataMO
-+ (id)managedObjectWithGeoRoadData:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithGeoRoadData:(id)data inManagedObjectContext:(id)context;
 @end
 
 @implementation RTGeoRoadDataMO
 
-+ (id)managedObjectWithGeoRoadData:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithGeoRoadData:(id)data inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  dataCopy = data;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!dataCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -25,22 +25,22 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTGeoRoadDataMO alloc] initWithContext:v6];
-    -[RTGeoRoadDataMO setClRoadID:](v8, "setClRoadID:", [v5 clRoadID]);
-    -[RTGeoRoadDataMO setGeoRoadID:](v8, "setGeoRoadID:", [v5 geoRoadID]);
-    -[RTGeoRoadDataMO setRoadTraversedCount:](v8, "setRoadTraversedCount:", [v5 roadTraversedCount]);
-    [v5 geoRoadStartLatitude];
+    v8 = [[RTGeoRoadDataMO alloc] initWithContext:contextCopy];
+    -[RTGeoRoadDataMO setClRoadID:](v8, "setClRoadID:", [dataCopy clRoadID]);
+    -[RTGeoRoadDataMO setGeoRoadID:](v8, "setGeoRoadID:", [dataCopy geoRoadID]);
+    -[RTGeoRoadDataMO setRoadTraversedCount:](v8, "setRoadTraversedCount:", [dataCopy roadTraversedCount]);
+    [dataCopy geoRoadStartLatitude];
     [(RTGeoRoadDataMO *)v8 setGeoRoadStartLatitude:?];
-    [v5 geoRoadStartLongitude];
+    [dataCopy geoRoadStartLongitude];
     [(RTGeoRoadDataMO *)v8 setGeoRoadStartLongitude:?];
-    [v5 geoRoadEndLatitude];
+    [dataCopy geoRoadEndLatitude];
     [(RTGeoRoadDataMO *)v8 setGeoRoadEndLatitude:?];
-    [v5 geoRoadEndLongitude];
+    [dataCopy geoRoadEndLongitude];
     [(RTGeoRoadDataMO *)v8 setGeoRoadEndLongitude:?];
-    -[RTGeoRoadDataMO setGeoRoadClass:](v8, "setGeoRoadClass:", [v5 geoRoadClass]);
-    -[RTGeoRoadDataMO setGeoFormOfWay:](v8, "setGeoFormOfWay:", [v5 geoFormOfWay]);
+    -[RTGeoRoadDataMO setGeoRoadClass:](v8, "setGeoRoadClass:", [dataCopy geoRoadClass]);
+    -[RTGeoRoadDataMO setGeoFormOfWay:](v8, "setGeoFormOfWay:", [dataCopy geoFormOfWay]);
     goto LABEL_8;
   }
 

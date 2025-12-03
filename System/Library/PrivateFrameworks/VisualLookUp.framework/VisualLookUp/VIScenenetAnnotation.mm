@@ -1,32 +1,32 @@
 @interface VIScenenetAnnotation
-- (BOOL)isEqual:(id)a3;
-- (VIScenenetAnnotation)initWithAnnotations:(id)a3 revision:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VIScenenetAnnotation)initWithAnnotations:(id)annotations revision:(unint64_t)revision;
 @end
 
 @implementation VIScenenetAnnotation
 
-- (VIScenenetAnnotation)initWithAnnotations:(id)a3 revision:(unint64_t)a4
+- (VIScenenetAnnotation)initWithAnnotations:(id)annotations revision:(unint64_t)revision
 {
-  v6 = a3;
+  annotationsCopy = annotations;
   v11.receiver = self;
   v11.super_class = VIScenenetAnnotation;
   v7 = [(VIScenenetAnnotation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [annotationsCopy copy];
     annotations = v7->_annotations;
     v7->_annotations = v8;
 
-    v7->_revision = a4;
+    v7->_revision = revision;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -49,8 +49,8 @@
     if (revision == [(VIScenenetAnnotation *)v6 revision])
     {
       annotations = self->_annotations;
-      v9 = [(VIScenenetAnnotation *)v6 annotations];
-      IsEqual = VIObjectIsEqual(annotations, v9);
+      annotations = [(VIScenenetAnnotation *)v6 annotations];
+      IsEqual = VIObjectIsEqual(annotations, annotations);
     }
 
     else

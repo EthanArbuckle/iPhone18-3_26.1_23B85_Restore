@@ -1,19 +1,19 @@
 @interface WFGetHomeAccessoryStateAction
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (NSString)homeIdentifier;
 - (id)characteristic;
 - (id)home;
 - (id)homeName;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
 - (id)outputContentClasses;
 - (id)outputMeasurementUnitType;
 - (void)dealloc;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)updateCharacteristicsEnumeration;
-- (void)wasAddedToWorkflow:(id)a3;
-- (void)wasAddedToWorkflowByUser:(id)a3;
+- (void)wasAddedToWorkflow:(id)workflow;
+- (void)wasAddedToWorkflowByUser:(id)user;
 @end
 
 @implementation WFGetHomeAccessoryStateAction
@@ -22,56 +22,56 @@
 {
   v6 = [(WFAction *)self parameterForKey:@"WFHMCharacteristic"];
   v3 = [(WFAction *)self parameterStateForKey:@"WFHMService"];
-  v4 = [v3 service];
-  v5 = [v3 homeIdentifier];
-  [v6 setService:v4 homeIdentifier:v5];
+  service = [v3 service];
+  homeIdentifier = [v3 homeIdentifier];
+  [v6 setService:service homeIdentifier:homeIdentifier];
 }
 
 - (id)characteristic
 {
   v2 = [(WFAction *)self parameterStateForKey:@"WFHMCharacteristic"];
-  v3 = [v2 characteristic];
+  characteristic = [v2 characteristic];
 
-  return v3;
+  return characteristic;
 }
 
 - (id)homeName
 {
-  v2 = [(WFGetHomeAccessoryStateAction *)self home];
-  v3 = [v2 name];
+  home = [(WFGetHomeAccessoryStateAction *)self home];
+  name = [home name];
 
-  return v3;
+  return name;
 }
 
 - (id)home
 {
   v2 = [(WFAction *)self parameterStateForKey:@"WFHMService"];
-  v3 = [v2 homeIdentifier];
+  homeIdentifier = [v2 homeIdentifier];
 
-  if (v3)
+  if (homeIdentifier)
   {
     v4 = +[WFHomeManager sharedManager];
-    v5 = [v2 homeIdentifier];
-    v3 = [v4 homeWithIdentifier:v5];
+    homeIdentifier2 = [v2 homeIdentifier];
+    homeIdentifier = [v4 homeWithIdentifier:homeIdentifier2];
   }
 
-  return v3;
+  return homeIdentifier;
 }
 
 - (NSString)homeIdentifier
 {
   v2 = [(WFAction *)self parameterStateForKey:@"WFHMService"];
-  v3 = [v2 homeIdentifier];
+  homeIdentifier = [v2 homeIdentifier];
 
-  if (v3)
+  if (homeIdentifier)
   {
-    v3 = [v2 homeIdentifier];
+    homeIdentifier = [v2 homeIdentifier];
   }
 
-  return v3;
+  return homeIdentifier;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -90,22 +90,22 @@ uint64_t __59__WFGetHomeAccessoryStateAction_homeManagerDidUpdateHomes___block_i
   return [v2 updateCharacteristicsEnumeration];
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFGetHomeAccessoryStateAction *)self characteristic];
-  v6 = [v5 localizedDescription];
-  v7 = v6;
-  if (v6)
+  contextCopy = context;
+  characteristic = [(WFGetHomeAccessoryStateAction *)self characteristic];
+  localizedDescription = [characteristic localizedDescription];
+  v7 = localizedDescription;
+  if (localizedDescription)
   {
-    v8 = v6;
+    v8 = localizedDescription;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFGetHomeAccessoryStateAction;
-    v8 = [(WFAction *)&v11 localizedDefaultOutputNameWithContext:v4];
+    v8 = [(WFAction *)&v11 localizedDefaultOutputNameWithContext:contextCopy];
   }
 
   v9 = v8;
@@ -115,13 +115,13 @@ uint64_t __59__WFGetHomeAccessoryStateAction_homeManagerDidUpdateHomes___block_i
 
 - (id)outputMeasurementUnitType
 {
-  v3 = [(WFGetHomeAccessoryStateAction *)self characteristic];
+  characteristic = [(WFGetHomeAccessoryStateAction *)self characteristic];
 
-  if (v3)
+  if (characteristic)
   {
     v4 = MEMORY[0x1E69E0BE8];
-    v5 = [(WFGetHomeAccessoryStateAction *)self characteristic];
-    v6 = WFUnitForHMCharacteristic(v5);
+    characteristic2 = [(WFGetHomeAccessoryStateAction *)self characteristic];
+    v6 = WFUnitForHMCharacteristic(characteristic2);
     v7 = [v4 unitTypeForUnitClass:objc_opt_class()];
   }
 
@@ -136,14 +136,14 @@ uint64_t __59__WFGetHomeAccessoryStateAction_homeManagerDidUpdateHomes___block_i
 - (id)outputContentClasses
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFGetHomeAccessoryStateAction *)self characteristic];
-  v4 = [v3 metadata];
-  v5 = [v4 format];
+  characteristic = [(WFGetHomeAccessoryStateAction *)self characteristic];
+  metadata = [characteristic metadata];
+  format = [metadata format];
 
   v6 = getHMCharacteristicMetadataFormatBool();
-  LODWORD(v4) = [v5 isEqualToString:v6];
+  LODWORD(metadata) = [format isEqualToString:v6];
 
-  if (v4)
+  if (metadata)
   {
     v26[0] = objc_opt_class();
     v7 = MEMORY[0x1E695DEC8];
@@ -154,7 +154,7 @@ LABEL_5:
   }
 
   v9 = getHMCharacteristicMetadataFormatString();
-  v10 = [v5 isEqualToString:v9];
+  v10 = [format isEqualToString:v9];
 
   if (v10)
   {
@@ -165,13 +165,13 @@ LABEL_5:
   }
 
   v12 = getHMCharacteristicMetadataFormatInt();
-  if ([v5 isEqualToString:v12])
+  if ([format isEqualToString:v12])
   {
     goto LABEL_15;
   }
 
   v13 = getHMCharacteristicMetadataFormatFloat();
-  if ([v5 isEqualToString:v13])
+  if ([format isEqualToString:v13])
   {
 LABEL_14:
 
@@ -180,7 +180,7 @@ LABEL_15:
   }
 
   v14 = getHMCharacteristicMetadataFormatUInt8();
-  if ([v5 isEqualToString:v14])
+  if ([format isEqualToString:v14])
   {
 LABEL_13:
 
@@ -188,7 +188,7 @@ LABEL_13:
   }
 
   v15 = getHMCharacteristicMetadataFormatUInt16();
-  if ([v5 isEqualToString:v15])
+  if ([format isEqualToString:v15])
   {
 LABEL_12:
 
@@ -196,14 +196,14 @@ LABEL_12:
   }
 
   v16 = getHMCharacteristicMetadataFormatUInt32();
-  if ([v5 isEqualToString:v16])
+  if ([format isEqualToString:v16])
   {
 
     goto LABEL_12;
   }
 
   v22 = getHMCharacteristicMetadataFormatUInt64();
-  v23 = [v5 isEqualToString:v22];
+  v23 = [format isEqualToString:v22];
 
   if ((v23 & 1) == 0)
   {
@@ -212,9 +212,9 @@ LABEL_12:
   }
 
 LABEL_16:
-  v17 = [(WFGetHomeAccessoryStateAction *)self outputMeasurementUnitType];
+  outputMeasurementUnitType = [(WFGetHomeAccessoryStateAction *)self outputMeasurementUnitType];
   v18 = 0x1E6996EC0;
-  if (v17)
+  if (outputMeasurementUnitType)
   {
     v18 = 0x1E6996EA8;
   }
@@ -229,7 +229,7 @@ LABEL_19:
   return v11;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = +[WFHomeManager sharedManager];
   v5[0] = MEMORY[0x1E69E9820];
@@ -295,13 +295,13 @@ void __60__WFGetHomeAccessoryStateAction_runAsynchronouslyWithInput___block_invo
   [*(a1 + 32) finishRunningWithError:v11];
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"WFHome"])
+  stateCopy = state;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"WFHome"])
   {
-    v8 = v6;
+    v8 = stateCopy;
     if (v8)
     {
       objc_opt_class();
@@ -323,13 +323,13 @@ void __60__WFGetHomeAccessoryStateAction_runAsynchronouslyWithInput___block_invo
 
     v11 = v9;
 
-    v12 = [v11 value];
+    value = [v11 value];
 
-    v10 = v12 != 0;
-    if (v12)
+    v10 = value != 0;
+    if (value)
     {
-      v13 = [[WFHMServiceParameterState alloc] initWithService:0 homeIdentifier:v12];
-      v14 = [[WFHMCharacteristicSubstitutableState alloc] initWithCharacteristic:0 homeIdentifier:v12];
+      v13 = [[WFHMServiceParameterState alloc] initWithService:0 homeIdentifier:value];
+      v14 = [[WFHMCharacteristicSubstitutableState alloc] initWithCharacteristic:0 homeIdentifier:value];
       [(WFGetHomeAccessoryStateAction *)self setParameterState:v13 forKey:@"WFHMService"];
       [(WFGetHomeAccessoryStateAction *)self setParameterState:v14 forKey:@"WFHMCharacteristic"];
     }
@@ -339,14 +339,14 @@ void __60__WFGetHomeAccessoryStateAction_runAsynchronouslyWithInput___block_invo
   {
     v16.receiver = self;
     v16.super_class = WFGetHomeAccessoryStateAction;
-    if ([(WFAction *)&v16 setParameterState:v6 forKey:v7])
+    if ([(WFAction *)&v16 setParameterState:stateCopy forKey:keyCopy])
     {
-      if ([v7 isEqualToString:@"WFHMCharacteristic"])
+      if ([keyCopy isEqualToString:@"WFHMCharacteristic"])
       {
         [(WFAction *)self outputDetailsUpdated];
       }
 
-      if ([v7 isEqualToString:@"WFHMService"])
+      if ([keyCopy isEqualToString:@"WFHMService"])
       {
         [(WFGetHomeAccessoryStateAction *)self updateCharacteristicsEnumeration];
       }
@@ -363,23 +363,23 @@ void __60__WFGetHomeAccessoryStateAction_runAsynchronouslyWithInput___block_invo
   return v10;
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
-  v4 = a3;
+  workflowCopy = workflow;
   v7.receiver = self;
   v7.super_class = WFGetHomeAccessoryStateAction;
-  [(WFAction *)&v7 wasAddedToWorkflow:v4];
+  [(WFAction *)&v7 wasAddedToWorkflow:workflowCopy];
   v5 = [(WFAction *)self parameterForKey:@"WFHome"];
-  v6 = [v4 environment] == 2 || objc_msgSend(v4, "environment") == 1;
+  v6 = [workflowCopy environment] == 2 || objc_msgSend(workflowCopy, "environment") == 1;
   [v5 setHidden:v6];
 }
 
-- (void)wasAddedToWorkflowByUser:(id)a3
+- (void)wasAddedToWorkflowByUser:(id)user
 {
-  v4 = a3;
-  v5 = [(WFGetHomeAccessoryStateAction *)self home];
+  userCopy = user;
+  home = [(WFGetHomeAccessoryStateAction *)self home];
 
-  if (!v5)
+  if (!home)
   {
     v6 = +[WFHomeManager sharedManager];
     v8[0] = MEMORY[0x1E69E9820];
@@ -392,7 +392,7 @@ void __60__WFGetHomeAccessoryStateAction_runAsynchronouslyWithInput___block_invo
 
   v7.receiver = self;
   v7.super_class = WFGetHomeAccessoryStateAction;
-  [(WFAction *)&v7 wasAddedToWorkflowByUser:v4];
+  [(WFAction *)&v7 wasAddedToWorkflowByUser:userCopy];
 }
 
 void __58__WFGetHomeAccessoryStateAction_wasAddedToWorkflowByUser___block_invoke(uint64_t a1)

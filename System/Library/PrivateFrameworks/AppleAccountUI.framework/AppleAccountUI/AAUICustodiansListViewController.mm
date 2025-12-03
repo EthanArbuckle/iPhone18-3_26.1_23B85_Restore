@@ -1,18 +1,18 @@
 @interface AAUICustodiansListViewController
-- (AAUICustodiansListViewController)initWithContacts:(id)a3;
+- (AAUICustodiansListViewController)initWithContacts:(id)contacts;
 - (id)_pictureStore;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setupTableView;
 - (void)viewDidLoad;
 @end
 
 @implementation AAUICustodiansListViewController
 
-- (AAUICustodiansListViewController)initWithContacts:(id)a3
+- (AAUICustodiansListViewController)initWithContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [[AAUIOBCustodiansListViewModel alloc] initWithContacts:v4];
+  contactsCopy = contacts;
+  v5 = [[AAUIOBCustodiansListViewModel alloc] initWithContacts:contactsCopy];
 
   viewModel = self->_viewModel;
   self->_viewModel = v5;
@@ -33,37 +33,37 @@
 
 - (void)_setupTableView
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 setDelegate:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDelegate:self];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 setDataSource:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDataSource:self];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(AAOBCustodiansListViewModel *)self->_viewModel contacts:a3];
+  v4 = [(AAOBCustodiansListViewModel *)self->_viewModel contacts:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CustodiansListCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CustodiansListCell"];
   if (!v7)
   {
     v7 = [[AAUITrustedContactCell alloc] initWithStyle:0 reuseIdentifier:@"CustodiansListCell"];
   }
 
-  v8 = [(AAOBCustodiansListViewModel *)self->_viewModel contacts];
-  v9 = [v6 row];
+  contacts = [(AAOBCustodiansListViewModel *)self->_viewModel contacts];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [contacts objectAtIndexedSubscript:v9];
 
-  v11 = [(AAUICustodiansListViewController *)self _pictureStore];
-  [(AAUITrustedContactCell *)v7 updateWithContact:v10 pictureStore:v11];
+  _pictureStore = [(AAUICustodiansListViewController *)self _pictureStore];
+  [(AAUITrustedContactCell *)v7 updateWithContact:v10 pictureStore:_pictureStore];
 
   return v7;
 }

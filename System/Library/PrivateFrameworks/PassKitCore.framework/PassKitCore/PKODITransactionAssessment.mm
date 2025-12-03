@@ -1,20 +1,20 @@
 @interface PKODITransactionAssessment
-- (PKODITransactionAssessment)initWithAssessmentType:(unint64_t)a3;
+- (PKODITransactionAssessment)initWithAssessmentType:(unint64_t)type;
 - (void)createODISession;
-- (void)createODISessionWithType:(unint64_t)a3;
-- (void)getAssessmentWithCompletion:(id)a3;
+- (void)createODISessionWithType:(unint64_t)type;
+- (void)getAssessmentWithCompletion:(id)completion;
 @end
 
 @implementation PKODITransactionAssessment
 
-- (PKODITransactionAssessment)initWithAssessmentType:(unint64_t)a3
+- (PKODITransactionAssessment)initWithAssessmentType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKODITransactionAssessment;
   result = [(PKODIAssessment *)&v5 init];
   if (result)
   {
-    result->_assessmentType = a3;
+    result->_assessmentType = type;
   }
 
   return result;
@@ -22,20 +22,20 @@
 
 - (void)createODISession
 {
-  v3 = [(PKODITransactionAssessment *)self assessmentType];
+  assessmentType = [(PKODITransactionAssessment *)self assessmentType];
 
-  [(PKODITransactionAssessment *)self createODISessionWithType:v3];
+  [(PKODITransactionAssessment *)self createODISessionWithType:assessmentType];
 }
 
-- (void)createODISessionWithType:(unint64_t)a3
+- (void)createODISessionWithType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = MEMORY[0x1E6998600];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = MEMORY[0x1E6998608];
 LABEL_5:
@@ -51,18 +51,18 @@ LABEL_7:
   [(PKODIAssessment *)self setOdiSession:v7];
 }
 
-- (void)getAssessmentWithCompletion:(id)a3
+- (void)getAssessmentWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
-    v5 = [(PKODIAssessment *)self odiSession];
+    v7 = completionCopy;
+    odiSession = [(PKODIAssessment *)self odiSession];
 
-    if (v5)
+    if (odiSession)
     {
-      v6 = [(PKODIAssessment *)self odiSession];
-      [v6 getAssessmentForTransaction:v7];
+      odiSession2 = [(PKODIAssessment *)self odiSession];
+      [odiSession2 getAssessmentForTransaction:v7];
     }
 
     else
@@ -70,7 +70,7 @@ LABEL_7:
       (*(v7 + 2))(v7, 0, 0);
     }
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 

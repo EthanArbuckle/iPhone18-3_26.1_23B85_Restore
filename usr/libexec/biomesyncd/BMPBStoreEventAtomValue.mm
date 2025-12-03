@@ -1,10 +1,10 @@
 @interface BMPBStoreEventAtomValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBStoreEventAtomValue
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = BMPBStoreEventAtomValue;
   v3 = [(BMPBStoreEventAtomValue *)&v7 description];
-  v4 = [(BMPBStoreEventAtomValue *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BMPBStoreEventAtomValue *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -47,16 +47,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     dataVersion = self->_dataVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -64,19 +64,19 @@
   {
     dataTimestamp = self->_dataTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_eventData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -92,31 +92,31 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSData *)self->_eventData copyWithZone:a3];
+  v8 = [(NSData *)self->_eventData copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_dataVersion != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_dataVersion != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -125,19 +125,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_dataTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_dataTimestamp != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_14;
   }
 
   eventData = self->_eventData;
-  if (eventData | *(v4 + 3))
+  if (eventData | *(equalCopy + 3))
   {
     v7 = [(NSData *)eventData isEqual:?];
   }

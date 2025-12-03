@@ -1,22 +1,22 @@
 @interface TransparencyGPBTimestamp
 + (id)descriptor;
 - (NSDate)date;
-- (TransparencyGPBTimestamp)initWithDate:(id)a3;
-- (TransparencyGPBTimestamp)initWithTimeIntervalSince1970:(double)a3;
-- (void)setDate:(id)a3;
-- (void)setTimeIntervalSince1970:(double)a3;
+- (TransparencyGPBTimestamp)initWithDate:(id)date;
+- (TransparencyGPBTimestamp)initWithTimeIntervalSince1970:(double)since1970;
+- (void)setDate:(id)date;
+- (void)setTimeIntervalSince1970:(double)since1970;
 @end
 
 @implementation TransparencyGPBTimestamp
 
-- (TransparencyGPBTimestamp)initWithDate:(id)a3
+- (TransparencyGPBTimestamp)initWithDate:(id)date
 {
-  [a3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
 
   return [(TransparencyGPBTimestamp *)self initWithTimeIntervalSince1970:?];
 }
 
-- (TransparencyGPBTimestamp)initWithTimeIntervalSince1970:(double)a3
+- (TransparencyGPBTimestamp)initWithTimeIntervalSince1970:(double)since1970
 {
   v9.receiver = self;
   v9.super_class = TransparencyGPBTimestamp;
@@ -24,7 +24,7 @@
   if (v4)
   {
     __y = 0.0;
-    v5 = modf(a3, &__y);
+    v5 = modf(since1970, &__y);
     v6 = __y;
     if (v5 < 0.0)
     {
@@ -47,17 +47,17 @@
   return [NSDate dateWithTimeIntervalSince1970:?];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  [a3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
 
   [(TransparencyGPBTimestamp *)self setTimeIntervalSince1970:?];
 }
 
-- (void)setTimeIntervalSince1970:(double)a3
+- (void)setTimeIntervalSince1970:(double)since1970
 {
   __y = 0.0;
-  v4 = modf(a3, &__y);
+  v4 = modf(since1970, &__y);
   v5 = __y;
   if (v4 < 0.0)
   {

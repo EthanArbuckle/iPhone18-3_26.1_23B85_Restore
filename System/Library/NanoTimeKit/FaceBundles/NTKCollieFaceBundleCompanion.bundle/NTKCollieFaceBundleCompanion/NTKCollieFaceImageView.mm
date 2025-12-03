@@ -2,16 +2,16 @@
 + (UIImage)loadingImage;
 - (id)image;
 - (void)_recomputeContentsRect;
-- (void)setImage:(id)a3;
-- (void)setLoadingTag:(id)a3;
+- (void)setImage:(id)image;
+- (void)setLoadingTag:(id)tag;
 @end
 
 @implementation NTKCollieFaceImageView
 
 + (UIImage)loadingImage
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_33280);
   if (!WeakRetained)
   {
@@ -43,7 +43,7 @@
     objc_storeWeak(&qword_33280, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -57,8 +57,8 @@
 
   v19.receiver = self;
   v19.super_class = NTKCollieFaceImageView;
-  v8 = [(NTKCollieFaceImageView *)&v19 image];
-  [v8 size];
+  image = [(NTKCollieFaceImageView *)&v19 image];
+  [image size];
   v10 = v9;
   v12 = v11;
 
@@ -87,15 +87,15 @@
     }
   }
 
-  v18 = [(NTKCollieFaceImageView *)self layer];
-  [v18 setContentsRect:{0.0, v15, v16, v17}];
+  layer = [(NTKCollieFaceImageView *)self layer];
+  [layer setContentsRect:{0.0, v15, v16, v17}];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = NTKCollieFaceImageView;
-  [(NTKCollieFaceImageView *)&v5 setImage:a3];
+  [(NTKCollieFaceImageView *)&v5 setImage:image];
   [(NTKCollieFaceImageView *)self _recomputeContentsRect];
   loadingTag = self->_loadingTag;
   self->_loadingTag = 0;
@@ -105,31 +105,31 @@
 {
   v5.receiver = self;
   v5.super_class = NTKCollieFaceImageView;
-  v2 = [(NTKCollieFaceImageView *)&v5 image];
-  if (v2)
+  image = [(NTKCollieFaceImageView *)&v5 image];
+  if (image)
   {
-    v3 = [objc_opt_class() loadingImage];
+    loadingImage = [objc_opt_class() loadingImage];
 
-    if (v2 == v3)
+    if (image == loadingImage)
     {
 
-      v2 = 0;
+      image = 0;
     }
   }
 
-  return v2;
+  return image;
 }
 
-- (void)setLoadingTag:(id)a3
+- (void)setLoadingTag:(id)tag
 {
-  v4 = a3;
-  if (v4 && ![(NSString *)self->_loadingTag isEqualToString:v4])
+  tagCopy = tag;
+  if (tagCopy && ![(NSString *)self->_loadingTag isEqualToString:tagCopy])
   {
     self->_taggedTime = CACurrentMediaTime();
   }
 
   loadingTag = self->_loadingTag;
-  self->_loadingTag = v4;
+  self->_loadingTag = tagCopy;
 }
 
 @end

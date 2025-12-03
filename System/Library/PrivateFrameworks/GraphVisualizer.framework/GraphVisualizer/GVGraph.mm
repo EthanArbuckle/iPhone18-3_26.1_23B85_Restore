@@ -1,31 +1,31 @@
 @interface GVGraph
-- (BOOL)hasEdgeBetween:(id)a3 :(id)a4;
-- (BOOL)hasEdgeFrom:(id)a3 to:(id)a4 reversed:(BOOL)a5;
-- (BOOL)render:(id)a3;
+- (BOOL)hasEdgeBetween:(id)between :(id)a4;
+- (BOOL)hasEdgeFrom:(id)from to:(id)to reversed:(BOOL)reversed;
+- (BOOL)render:(id)render;
 - (CGRect)bounds;
 - (GVGraph)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)findEdgeBetween:(id)a3 and:(id)a4;
-- (id)findEdgeFrom:(id)a3 to:(id)a4;
-- (id)inNodesOf:(id)a3;
-- (id)outNodesOf:(id)a3;
+- (id)findEdgeBetween:(id)between and:(id)and;
+- (id)findEdgeFrom:(id)from to:(id)to;
+- (id)inNodesOf:(id)of;
+- (id)outNodesOf:(id)of;
 - (int64_t)minimumSlack;
-- (int64_t)slackOfEdge:(id)a3;
-- (unint64_t)inDegreeOf:(id)a3;
-- (unint64_t)inEdgeCountOf:(id)a3;
-- (unint64_t)outDegreeOf:(id)a3;
-- (unint64_t)outEdgeCountOf:(id)a3;
-- (void)addNode:(id)a3;
-- (void)addNodeGroup:(id)a3 identifier:(id)a4 margins:(id)a5;
+- (int64_t)slackOfEdge:(id)edge;
+- (unint64_t)inDegreeOf:(id)of;
+- (unint64_t)inEdgeCountOf:(id)of;
+- (unint64_t)outDegreeOf:(id)of;
+- (unint64_t)outEdgeCountOf:(id)of;
+- (void)addNode:(id)node;
+- (void)addNodeGroup:(id)group identifier:(id)identifier margins:(id)margins;
 - (void)dealloc;
-- (void)removeEdge:(id)a3;
-- (void)removeEdgeFrom:(id)a3 to:(id)a4;
-- (void)removeNode:(id)a3;
-- (void)reverseEdge:(id)a3;
-- (void)traverseEdgesFromStart:(id)a3 callback:(id)a4;
-- (void)traverseNodesFromStart:(id)a3 direction:(int)a4 randomize:(BOOL)a5 callback:(id)a6;
+- (void)removeEdge:(id)edge;
+- (void)removeEdgeFrom:(id)from to:(id)to;
+- (void)removeNode:(id)node;
+- (void)reverseEdge:(id)edge;
+- (void)traverseEdgesFromStart:(id)start callback:(id)callback;
+- (void)traverseNodesFromStart:(id)start direction:(int)direction randomize:(BOOL)randomize callback:(id)callback;
 @end
 
 @implementation GVGraph
@@ -57,10 +57,10 @@
   [(GVGraph *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v23 = 0u;
@@ -124,27 +124,27 @@
   return v4;
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
   if (([(NSMutableOrderedSet *)self->_nodes containsObject:?]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_nodes addObject:a3];
-    [(NSMutableOrderedSet *)self->_sourceNodes addObject:a3];
+    [(NSMutableOrderedSet *)self->_nodes addObject:node];
+    [(NSMutableOrderedSet *)self->_sourceNodes addObject:node];
     sinkNodes = self->_sinkNodes;
 
-    [(NSMutableOrderedSet *)sinkNodes addObject:a3];
+    [(NSMutableOrderedSet *)sinkNodes addObject:node];
   }
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
   v27 = *MEMORY[0x277D85DE8];
   if ([(NSMutableOrderedSet *)self->_nodes containsObject:?])
   {
-    [(NSMutableOrderedSet *)self->_nodes removeObject:a3];
-    [(NSMutableOrderedSet *)self->_sourceNodes removeObject:a3];
-    [(NSMutableOrderedSet *)self->_sinkNodes removeObject:a3];
-    v5 = [MEMORY[0x277CBEB18] array];
+    [(NSMutableOrderedSet *)self->_nodes removeObject:node];
+    [(NSMutableOrderedSet *)self->_sourceNodes removeObject:node];
+    [(NSMutableOrderedSet *)self->_sinkNodes removeObject:node];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -165,14 +165,14 @@
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          if ([v11 to] == a3)
+          if ([v11 to] == node)
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
 
-          if ([v11 from] == a3)
+          if ([v11 from] == node)
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -186,7 +186,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    v12 = [array countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -197,13 +197,13 @@
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(array);
           }
 
           [(NSMutableOrderedSet *)self->_edges removeObject:*(*(&v17 + 1) + 8 * j)];
         }
 
-        v13 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v13 = [array countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v13);
@@ -213,7 +213,7 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)inNodesOf:(id)a3
+- (id)inNodesOf:(id)of
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -237,7 +237,7 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 to] == a3)
+        if ([v11 to] == of)
         {
           [v5 addObject:{objc_msgSend(v11, "from")}];
         }
@@ -253,7 +253,7 @@
   return v5;
 }
 
-- (id)outNodesOf:(id)a3
+- (id)outNodesOf:(id)of
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -277,7 +277,7 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 from] == a3)
+        if ([v11 from] == of)
         {
           [v5 addObject:{objc_msgSend(v11, "to")}];
         }
@@ -293,7 +293,7 @@
   return v5;
 }
 
-- (unint64_t)inEdgeCountOf:(id)a3
+- (unint64_t)inEdgeCountOf:(id)of
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -316,7 +316,7 @@
           objc_enumerationMutation(edges);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) to] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) to] == of)
         {
           ++v7;
         }
@@ -337,7 +337,7 @@
   return v7;
 }
 
-- (unint64_t)outEdgeCountOf:(id)a3
+- (unint64_t)outEdgeCountOf:(id)of
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -360,7 +360,7 @@
           objc_enumerationMutation(edges);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) from] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) from] == of)
         {
           ++v7;
         }
@@ -381,36 +381,36 @@
   return v7;
 }
 
-- (unint64_t)inDegreeOf:(id)a3
+- (unint64_t)inDegreeOf:(id)of
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [-[GVGraph inNodesOf:](self inNodesOf:{a3), "count"}];
+  v6 = [-[GVGraph inNodesOf:](self inNodesOf:{of), "count"}];
   objc_autoreleasePoolPop(v5);
   return v6;
 }
 
-- (unint64_t)outDegreeOf:(id)a3
+- (unint64_t)outDegreeOf:(id)of
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [-[GVGraph outNodesOf:](self outNodesOf:{a3), "count"}];
+  v6 = [-[GVGraph outNodesOf:](self outNodesOf:{of), "count"}];
   objc_autoreleasePoolPop(v5);
   return v6;
 }
 
-- (void)traverseEdgesFromStart:(id)a3 callback:(id)a4
+- (void)traverseEdgesFromStart:(id)start callback:(id)callback
 {
   v7 = [MEMORY[0x277CBEB58] set];
 
-  _traverse_edges(self, 0, 0, a3, 2, 0, v7, a4);
+  _traverse_edges(self, 0, 0, start, 2, 0, v7, callback);
 }
 
-- (void)traverseNodesFromStart:(id)a3 direction:(int)a4 randomize:(BOOL)a5 callback:(id)a6
+- (void)traverseNodesFromStart:(id)start direction:(int)direction randomize:(BOOL)randomize callback:(id)callback
 {
-  v7 = a5;
-  if ([(NSMutableOrderedSet *)self->_nodes containsObject:?]&& (*(a6 + 2))(a6, a3) != 1)
+  randomizeCopy = randomize;
+  if ([(NSMutableOrderedSet *)self->_nodes containsObject:?]&& (*(callback + 2))(callback, start) != 1)
   {
     v11 = [MEMORY[0x277CBEB58] set];
-    if (v7)
+    if (randomizeCopy)
     {
       p_randomSeed = &self->randomSeed;
     }
@@ -424,12 +424,12 @@
     v13[1] = 3221225472;
     v13[2] = __63__GVGraph_traverseNodesFromStart_direction_randomize_callback___block_invoke;
     v13[3] = &unk_27969D6A0;
-    v13[4] = a6;
-    _traverse_edges(self, 0, 0, a3, a4, p_randomSeed, v11, v13);
+    v13[4] = callback;
+    _traverse_edges(self, 0, 0, start, direction, p_randomSeed, v11, v13);
   }
 }
 
-- (id)findEdgeFrom:(id)a3 to:(id)a4
+- (id)findEdgeFrom:(id)from to:(id)to
 {
   v8 = 0;
   v9 = &v8;
@@ -442,8 +442,8 @@
   v7[1] = 3221225472;
   v7[2] = __27__GVGraph_findEdgeFrom_to___block_invoke;
   v7[3] = &unk_27969D6C8;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = from;
+  v7[5] = to;
   v7[6] = &v8;
   [(NSMutableOrderedSet *)edges enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
@@ -467,7 +467,7 @@ uint64_t __27__GVGraph_findEdgeFrom_to___block_invoke(void *a1, void *a2, uint64
   return result;
 }
 
-- (id)findEdgeBetween:(id)a3 and:(id)a4
+- (id)findEdgeBetween:(id)between and:(id)and
 {
   v8 = 0;
   v9 = &v8;
@@ -480,8 +480,8 @@ uint64_t __27__GVGraph_findEdgeFrom_to___block_invoke(void *a1, void *a2, uint64
   v7[1] = 3221225472;
   v7[2] = __31__GVGraph_findEdgeBetween_and___block_invoke;
   v7[3] = &unk_27969D6C8;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = between;
+  v7[5] = and;
   v7[6] = &v8;
   [(NSMutableOrderedSet *)edges enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
@@ -500,14 +500,14 @@ uint64_t __31__GVGraph_findEdgeBetween_and___block_invoke(void *a1, void *a2, ui
   return result;
 }
 
-- (BOOL)hasEdgeFrom:(id)a3 to:(id)a4 reversed:(BOOL)a5
+- (BOOL)hasEdgeFrom:(id)from to:(id)to reversed:(BOOL)reversed
 {
-  v5 = a5;
+  reversedCopy = reversed;
   v22 = *MEMORY[0x277D85DE8];
   LODWORD(v9) = [(NSMutableOrderedSet *)self->_nodes containsObject:?];
   if (v9)
   {
-    LODWORD(v9) = [(NSMutableOrderedSet *)self->_nodes containsObject:a4];
+    LODWORD(v9) = [(NSMutableOrderedSet *)self->_nodes containsObject:to];
     if (v9)
     {
       v19 = 0u;
@@ -531,7 +531,7 @@ uint64_t __31__GVGraph_findEdgeBetween_and___block_invoke(void *a1, void *a2, ui
             }
 
             v14 = *(*(&v17 + 1) + 8 * v13);
-            if ([v14 from] == a3 && objc_msgSend(v14, "to") == a4 && objc_msgSend(v14, "reversed") == v5)
+            if ([v14 from] == from && objc_msgSend(v14, "to") == to && objc_msgSend(v14, "reversed") == reversedCopy)
             {
               LOBYTE(v9) = 1;
               goto LABEL_15;
@@ -559,7 +559,7 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)hasEdgeBetween:(id)a3 :(id)a4
+- (BOOL)hasEdgeBetween:(id)between :(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -583,7 +583,7 @@ LABEL_15:
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        if ([v11 from] == a3 && objc_msgSend(v11, "to") == a4 || objc_msgSend(v11, "from") == a4 && objc_msgSend(v11, "to") == a3)
+        if ([v11 from] == between && objc_msgSend(v11, "to") == a4 || objc_msgSend(v11, "from") == a4 && objc_msgSend(v11, "to") == between)
         {
           LOBYTE(v7) = 1;
           goto LABEL_14;
@@ -609,22 +609,22 @@ LABEL_14:
   return v7;
 }
 
-- (void)removeEdge:(id)a3
+- (void)removeEdge:(id)edge
 {
   if ([(NSMutableOrderedSet *)self->_edges containsObject:?])
   {
     edges = self->_edges;
 
-    [(NSMutableOrderedSet *)edges removeObject:a3];
+    [(NSMutableOrderedSet *)edges removeObject:edge];
   }
 }
 
-- (void)reverseEdge:(id)a3
+- (void)reverseEdge:(id)edge
 {
   v21 = *MEMORY[0x277D85DE8];
-  [a3 reverse];
-  -[NSMutableOrderedSet removeObject:](self->_sourceNodes, "removeObject:", [a3 to]);
-  -[NSMutableOrderedSet removeObject:](self->_sinkNodes, "removeObject:", [a3 from]);
+  [edge reverse];
+  -[NSMutableOrderedSet removeObject:](self->_sourceNodes, "removeObject:", [edge to]);
+  -[NSMutableOrderedSet removeObject:](self->_sinkNodes, "removeObject:", [edge from]);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -647,10 +647,10 @@ LABEL_14:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [a3 to];
+        v13 = [edge to];
         v8 |= v13 == [v12 from];
-        v14 = [a3 from];
-        v9 |= v14 == [v12 to];
+        from = [edge from];
+        v9 |= from == [v12 to];
       }
 
       v7 = [(NSMutableOrderedSet *)edges countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -659,7 +659,7 @@ LABEL_14:
     while (v7);
     if (v8)
     {
-      -[NSMutableOrderedSet removeObject:](self->_sinkNodes, "removeObject:", [a3 to]);
+      -[NSMutableOrderedSet removeObject:](self->_sinkNodes, "removeObject:", [edge to]);
       goto LABEL_13;
     }
   }
@@ -669,36 +669,36 @@ LABEL_14:
     v9 = 0;
   }
 
-  if ((-[NSMutableOrderedSet containsObject:](self->_sinkNodes, "containsObject:", [a3 to]) & 1) == 0)
+  if ((-[NSMutableOrderedSet containsObject:](self->_sinkNodes, "containsObject:", [edge to]) & 1) == 0)
   {
-    -[NSMutableOrderedSet addObject:](self->_sinkNodes, "addObject:", [a3 to]);
+    -[NSMutableOrderedSet addObject:](self->_sinkNodes, "addObject:", [edge to]);
   }
 
 LABEL_13:
   if (v9)
   {
-    -[NSMutableOrderedSet removeObject:](self->_sourceNodes, "removeObject:", [a3 from]);
+    -[NSMutableOrderedSet removeObject:](self->_sourceNodes, "removeObject:", [edge from]);
   }
 
-  else if ((-[NSMutableOrderedSet containsObject:](self->_sourceNodes, "containsObject:", [a3 from]) & 1) == 0)
+  else if ((-[NSMutableOrderedSet containsObject:](self->_sourceNodes, "containsObject:", [edge from]) & 1) == 0)
   {
-    -[NSMutableOrderedSet addObject:](self->_sourceNodes, "addObject:", [a3 from]);
+    -[NSMutableOrderedSet addObject:](self->_sourceNodes, "addObject:", [edge from]);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEdgeFrom:(id)a3 to:(id)a4
+- (void)removeEdgeFrom:(id)from to:(id)to
 {
-  v5 = [(GVGraph *)self findEdgeFrom:a3 to:a4];
+  v5 = [(GVGraph *)self findEdgeFrom:from to:to];
 
   [(GVGraph *)self removeEdge:v5];
 }
 
-- (int64_t)slackOfEdge:(id)a3
+- (int64_t)slackOfEdge:(id)edge
 {
-  v4 = [objc_msgSend(a3 "from")];
-  v5 = [objc_msgSend(a3 "to")];
+  v4 = [objc_msgSend(edge "from")];
+  v5 = [objc_msgSend(edge "to")];
   v6 = v4 - v5;
   if (v4 - v5 < 0)
   {
@@ -863,26 +863,26 @@ LABEL_3:
   return result;
 }
 
-- (void)addNodeGroup:(id)a3 identifier:(id)a4 margins:(id)a5
+- (void)addNodeGroup:(id)group identifier:(id)identifier margins:(id)margins
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (identifier)
   {
-    [(NSMutableDictionary *)self->_groups removeObjectForKey:a4, a5.var0, a5.var1, a5.var2, a5.var3];
-    if (![a3 count])
+    [(NSMutableDictionary *)self->_groups removeObjectForKey:identifier, margins.var0, margins.var1, margins.var2, margins.var3];
+    if (![group count])
     {
       goto LABEL_22;
     }
 
     memset(v22, 0, sizeof(v22));
-    if (!-[NSMutableDictionary countByEnumeratingWithState:objects:count:](self->_groups, "countByEnumeratingWithState:objects:count:", v22, v24, 16) || (v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_groups, "objectForKeyedSubscript:", **(&v22[0] + 1)), ![v8 intersectsSet:a3]) || (objc_msgSend(v8, "isSubsetOfSet:", a3) & 1) != 0 || (objc_msgSend(a3, "isSubsetOfSet:", v8) & 1) != 0)
+    if (!-[NSMutableDictionary countByEnumeratingWithState:objects:count:](self->_groups, "countByEnumeratingWithState:objects:count:", v22, v24, 16) || (v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_groups, "objectForKeyedSubscript:", **(&v22[0] + 1)), ![v8 intersectsSet:group]) || (objc_msgSend(v8, "isSubsetOfSet:", group) & 1) != 0 || (objc_msgSend(group, "isSubsetOfSet:", v8) & 1) != 0)
     {
-      [(NSMutableDictionary *)self->_groups setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)self->_groups setObject:group forKey:identifier];
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v9 = [a3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v9 = [group countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v9)
       {
         v10 = v9;
@@ -893,7 +893,7 @@ LABEL_3:
           {
             if (*v19 != v11)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(group);
             }
 
             v13 = *(*(&v18 + 1) + 8 * i);
@@ -903,7 +903,7 @@ LABEL_3:
             }
           }
 
-          v10 = [a3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+          v10 = [group countByEnumeratingWithState:&v18 objects:v23 count:16];
         }
 
         while (v10);
@@ -912,7 +912,7 @@ LABEL_3:
       goto LABEL_22;
     }
 
-    if ([a3 isEqualToSet:v8])
+    if ([group isEqualToSet:v8])
     {
       if (gvgraph_logger_onceToken != -1)
       {
@@ -966,22 +966,22 @@ LABEL_22:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)render:(id)a3
+- (BOOL)render:(id)render
 {
   v5 = objc_autoreleasePoolPush();
   if (objc_opt_respondsToSelector())
   {
-    v6 = [a3 direction];
+    direction = [render direction];
   }
 
   else
   {
-    v6 = 0;
+    direction = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [a3 separation];
+    [render separation];
     v8 = v7;
     v10 = v9;
   }
@@ -993,10 +993,10 @@ LABEL_22:
   }
 
   v11 = objc_alloc_init(GVLayout);
-  [(GVLayout *)v11 doLayout:self direction:v6 separation:v8, v10];
-  if ([a3 setCanvasWidth:v12 height:v13])
+  [(GVLayout *)v11 doLayout:self direction:direction separation:v8, v10];
+  if ([render setCanvasWidth:v12 height:v13])
   {
-    [(GVLayout *)v11 render:a3];
+    [(GVLayout *)v11 render:render];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -1036,10 +1036,10 @@ LABEL_22:
           objc_enumerationMutation(nodes);
         }
 
-        v10 = [*(*(&v52 + 1) + 8 * i) rank];
-        if (v7 <= v10)
+        rank = [*(*(&v52 + 1) + 8 * i) rank];
+        if (v7 <= rank)
         {
-          v7 = v10;
+          v7 = rank;
         }
       }
 
@@ -1075,10 +1075,10 @@ LABEL_22:
           objc_enumerationMutation(v12);
         }
 
-        v18 = [*(*(&v48 + 1) + 8 * j) index];
-        if (v15 <= v18)
+        index = [*(*(&v48 + 1) + 8 * j) index];
+        if (v15 <= index)
         {
-          v15 = v18;
+          v15 = index;
         }
       }
 

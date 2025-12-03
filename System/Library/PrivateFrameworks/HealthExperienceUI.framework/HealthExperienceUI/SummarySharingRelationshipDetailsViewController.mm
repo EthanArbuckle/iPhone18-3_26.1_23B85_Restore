@@ -1,8 +1,8 @@
 @interface SummarySharingRelationshipDetailsViewController
-- (_TtC18HealthExperienceUI47SummarySharingRelationshipDetailsViewController)initWithCollectionViewLayout:(id)a3;
+- (_TtC18HealthExperienceUI47SummarySharingRelationshipDetailsViewController)initWithCollectionViewLayout:(id)layout;
 - (void)doneButtonTapped;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -10,25 +10,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA085E0C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA086250(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA086250(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA0864F4(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1BA0864F4(scrollCopy);
 }
 
-- (_TtC18HealthExperienceUI47SummarySharingRelationshipDetailsViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI47SummarySharingRelationshipDetailsViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -37,7 +37,7 @@
 
 - (void)doneButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA088028();
 }
 

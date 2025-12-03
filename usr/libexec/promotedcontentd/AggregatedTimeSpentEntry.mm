@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AggregatedTimeSpentEntry.description.getter();
 
   v3 = sub_100398F28();

@@ -1,15 +1,15 @@
 @interface SKUIItemOfferButtonAppearance
-- (SKUIItemOfferButtonAppearance)initWithColorScheme:(id)a3;
+- (SKUIItemOfferButtonAppearance)initWithColorScheme:(id)scheme;
 @end
 
 @implementation SKUIItemOfferButtonAppearance
 
-- (SKUIItemOfferButtonAppearance)initWithColorScheme:(id)a3
+- (SKUIItemOfferButtonAppearance)initWithColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   if (!os_variant_has_internal_content() || !_os_feature_enabled_impl() || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
-    if (v4)
+    if (schemeCopy)
     {
       goto LABEL_5;
     }
@@ -20,7 +20,7 @@ LABEL_16:
   }
 
   [SKUIItemOfferButtonAppearance initWithColorScheme:];
-  if (!v4)
+  if (!schemeCopy)
   {
     goto LABEL_16;
   }
@@ -31,16 +31,16 @@ LABEL_5:
   v5 = [(SKUIItemOfferButtonAppearance *)&v15 init];
   if (v5)
   {
-    v6 = [v4 secondaryTextColor];
+    secondaryTextColor = [schemeCopy secondaryTextColor];
     v7 = *(v5 + 1);
-    *(v5 + 1) = v6;
+    *(v5 + 1) = secondaryTextColor;
 
-    v8 = [v4 schemeStyle];
-    if (v8 <= 1)
+    schemeStyle = [schemeCopy schemeStyle];
+    if (schemeStyle <= 1)
     {
-      if (v8)
+      if (schemeStyle)
       {
-        if (v8 != 1)
+        if (schemeStyle != 1)
         {
           goto LABEL_18;
         }
@@ -56,12 +56,12 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v8 == 2)
+    if (schemeStyle == 2)
     {
       goto LABEL_13;
     }
 
-    if (v8 == 3)
+    if (schemeStyle == 3)
     {
 LABEL_12:
       v9 = MEMORY[0x277D75348];

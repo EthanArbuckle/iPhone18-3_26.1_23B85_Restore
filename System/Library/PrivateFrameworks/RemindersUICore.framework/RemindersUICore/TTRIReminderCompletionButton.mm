@@ -1,13 +1,13 @@
 @interface TTRIReminderCompletionButton
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityUserInputLabels;
-- (void)onButtonPress:(id)a3;
+- (void)onButtonPress:(id)press;
 - (void)updateConfiguration;
 @end
 
 @implementation TTRIReminderCompletionButton
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore28TTRIReminderCompletionButton_alternativeIntrinsicSizeDefiningImage);
   v4 = v3 == 0;
@@ -39,7 +39,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIReminderCompletionButton.accessibilityUserInputLabels.getter();
 
   if (v3)
@@ -55,10 +55,10 @@
   return v4;
 }
 
-- (void)onButtonPress:(id)a3
+- (void)onButtonPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
+  pressCopy = press;
+  selfCopy = self;
   sub_21D8FF9DC();
 }
 

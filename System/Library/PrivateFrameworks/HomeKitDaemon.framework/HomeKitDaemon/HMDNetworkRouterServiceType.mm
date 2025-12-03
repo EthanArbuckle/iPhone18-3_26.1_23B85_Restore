@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterServiceType
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterServiceType)init;
-- (HMDNetworkRouterServiceType)initWithName:(id)a3;
+- (HMDNetworkRouterServiceType)initWithName:(id)name;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterServiceType
@@ -14,16 +14,16 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDNetworkRouterServiceType *)self name];
-  v4 = [v2 stringWithFormat:@"<HMDNetworkRouterServiceType name=%@>", v3];
+  name = [(HMDNetworkRouterServiceType *)self name];
+  v4 = [v2 stringWithFormat:@"<HMDNetworkRouterServiceType name=%@>", name];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -33,19 +33,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDNetworkRouterServiceType *)self name];
-      v7 = [(HMDNetworkRouterServiceType *)v5 name];
-      if (v6 == v7)
+      v5 = equalCopy;
+      name = [(HMDNetworkRouterServiceType *)self name];
+      name2 = [(HMDNetworkRouterServiceType *)v5 name];
+      if (name == name2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HMDNetworkRouterServiceType *)self name];
-        v9 = [(HMDNetworkRouterServiceType *)v5 name];
-        v10 = [v8 isEqual:v9];
+        name3 = [(HMDNetworkRouterServiceType *)self name];
+        name4 = [(HMDNetworkRouterServiceType *)v5 name];
+        v10 = [name3 isEqual:name4];
       }
     }
 
@@ -58,16 +58,16 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterServiceType allocWithZone:a3];
-  v5 = [(HMDNetworkRouterServiceType *)self name];
-  v6 = [(HMDNetworkRouterServiceType *)v4 initWithName:v5];
+  v4 = [HMDNetworkRouterServiceType allocWithZone:zone];
+  name = [(HMDNetworkRouterServiceType *)self name];
+  v6 = [(HMDNetworkRouterServiceType *)v4 initWithName:name];
 
   return v6;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v34 = 0u;
@@ -92,16 +92,16 @@
   v15 = 0u;
   v16 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterServiceType *)self name];
+  name = [(HMDNetworkRouterServiceType *)self name];
 
-  if (!v5)
+  if (!name)
   {
     goto LABEL_8;
   }
 
-  v6 = [(HMDNetworkRouterServiceType *)self name];
+  name2 = [(HMDNetworkRouterServiceType *)self name];
   v14 = 0;
-  v7 = [v6 serializeWithError:&v14];
+  v7 = [name2 serializeWithError:&v14];
   v8 = v14;
 
   if (!v8)
@@ -112,11 +112,11 @@
 
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_11;
       }
 
@@ -130,11 +130,11 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v8;
     v10 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_11;
   }
 
@@ -148,23 +148,23 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (v9)
   {
-    v20 = self;
+    selfCopy = self;
     v10 = 0;
     v11 = 0;
-    v12 = v8 + v9;
+    v12 = bytes + v9;
     do
     {
       v26 = 0;
@@ -174,10 +174,10 @@ LABEL_11:
       v23 = 0;
       if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
       {
-        if (a4)
+        if (error)
         {
           HMErrorFromOSStatus();
-          *a4 = v17 = 0;
+          *error = v17 = 0;
           goto LABEL_23;
         }
 
@@ -218,11 +218,11 @@ LABEL_11:
     if (v11)
     {
 LABEL_14:
-      if (a4)
+      if (error)
       {
         v16 = v11;
         v17 = 0;
-        *a4 = v11;
+        *error = v11;
         goto LABEL_23;
       }
 
@@ -232,7 +232,7 @@ LABEL_19:
     }
 
 LABEL_21:
-    self = v20;
+    self = selfCopy;
   }
 
   else
@@ -248,16 +248,16 @@ LABEL_23:
   return v17;
 }
 
-- (HMDNetworkRouterServiceType)initWithName:(id)a3
+- (HMDNetworkRouterServiceType)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = HMDNetworkRouterServiceType;
   v6 = [(HMDNetworkRouterServiceType *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
@@ -270,24 +270,24 @@ LABEL_23:
   return [(HMDNetworkRouterServiceType *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterServiceType);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterServiceType *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterServiceType *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

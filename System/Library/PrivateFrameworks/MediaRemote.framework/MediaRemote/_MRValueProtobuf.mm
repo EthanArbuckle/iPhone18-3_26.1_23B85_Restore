@@ -1,23 +1,23 @@
 @interface _MRValueProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addArrayValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasFloatValue:(BOOL)a3;
-- (void)setHasInt64Value:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addArrayValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasFloatValue:(BOOL)value;
+- (void)setHasInt64Value:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRValueProtobuf
 
-- (void)setHasInt64Value:(BOOL)a3
+- (void)setHasInt64Value:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFloatValue:(BOOL)a3
+- (void)setHasFloatValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -60,22 +60,22 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addArrayValue:(id)a3
+- (void)addArrayValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   arrayValues = self->_arrayValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!arrayValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_arrayValues;
     self->_arrayValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     arrayValues = self->_arrayValues;
   }
 
-  [(NSMutableArray *)arrayValues addObject:v4];
+  [(NSMutableArray *)arrayValues addObject:valueCopy];
 }
 
 - (id)description
@@ -84,8 +84,8 @@
   v8.receiver = self;
   v8.super_class = _MRValueProtobuf;
   v4 = [(_MRValueProtobuf *)&v8 description];
-  v5 = [(_MRValueProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRValueProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -93,12 +93,12 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   has = self->_has;
@@ -177,8 +177,8 @@ LABEL_7:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -193,8 +193,8 @@ LABEL_7:
   dictionaryValue = self->_dictionaryValue;
   if (dictionaryValue)
   {
-    v20 = [(_MRDictionaryProtobuf *)dictionaryValue dictionaryRepresentation];
-    [v5 setObject:v20 forKey:@"dictionaryValue"];
+    dictionaryRepresentation2 = [(_MRDictionaryProtobuf *)dictionaryValue dictionaryRepresentation];
+    [v5 setObject:dictionaryRepresentation2 forKey:@"dictionaryValue"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -202,10 +202,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
@@ -297,21 +297,21 @@ LABEL_7:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v10;
+    [toCopy setStringValue:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_int64Value;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 2) = self->_int64Value;
+    *(toCopy + 76) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -330,26 +330,26 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 14) = LODWORD(self->_floatValue);
-  *(v4 + 76) |= 4u;
+  *(toCopy + 14) = LODWORD(self->_floatValue);
+  *(toCopy + 76) |= 4u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = *&self->_doubleValue;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = *&self->_doubleValue;
+    *(toCopy + 76) |= 1u;
   }
 
 LABEL_7:
   if (self->_dataValue)
   {
     [v10 setDataValue:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 72) = self->_BOOLValue;
-    *(v4 + 76) |= 8u;
+    *(toCopy + 72) = self->_BOOLValue;
+    *(toCopy + 76) |= 8u;
   }
 
   if (self->_dateValue)
@@ -360,10 +360,10 @@ LABEL_7:
   if ([(_MRValueProtobuf *)self arrayValuesCount])
   {
     [v10 clearArrayValues];
-    v6 = [(_MRValueProtobuf *)self arrayValuesCount];
-    if (v6)
+    arrayValuesCount = [(_MRValueProtobuf *)self arrayValuesCount];
+    if (arrayValuesCount)
     {
-      v7 = v6;
+      v7 = arrayValuesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(_MRValueProtobuf *)self arrayValueAtIndex:i];
@@ -378,11 +378,11 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -419,7 +419,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v9 = [(NSData *)self->_dataValue copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -429,7 +429,7 @@ LABEL_5:
     *(v5 + 76) |= 8u;
   }
 
-  v11 = [(NSString *)self->_dateValue copyWithZone:a3];
+  v11 = [(NSString *)self->_dateValue copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -452,7 +452,7 @@ LABEL_5:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{a3, v23}];
+        v18 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{zone, v23}];
         [v5 addArrayValue:v18];
       }
 
@@ -462,7 +462,7 @@ LABEL_5:
     while (v15);
   }
 
-  v19 = [(_MRDictionaryProtobuf *)self->_dictionaryValue copyWithZone:a3];
+  v19 = [(_MRDictionaryProtobuf *)self->_dictionaryValue copyWithZone:zone];
   v20 = *(v5 + 48);
   *(v5 + 48) = v19;
 
@@ -470,16 +470,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 8))
+  if (stringValue | *(equalCopy + 8))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -488,48 +488,48 @@ LABEL_5:
   }
 
   has = self->_has;
-  v7 = *(v4 + 76);
+  v7 = *(equalCopy + 76);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_int64Value != *(v4 + 2))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_int64Value != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_floatValue != *(v4 + 14))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_floatValue != *(equalCopy + 14))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_31;
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 4))
+  if (dataValue | *(equalCopy + 4))
   {
     if (![(NSData *)dataValue isEqual:?])
     {
@@ -539,10 +539,10 @@ LABEL_5:
     has = self->_has;
   }
 
-  v9 = *(v4 + 76);
+  v9 = *(equalCopy + 76);
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 76) & 8) == 0)
+    if ((*(equalCopy + 76) & 8) == 0)
     {
       goto LABEL_24;
     }
@@ -552,34 +552,34 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ((*(v4 + 76) & 8) == 0)
+  if ((*(equalCopy + 76) & 8) == 0)
   {
     goto LABEL_31;
   }
 
-  v15 = *(v4 + 72);
+  v15 = *(equalCopy + 72);
   if (self->_BOOLValue)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_31;
   }
 
 LABEL_24:
   dateValue = self->_dateValue;
-  if (dateValue | *(v4 + 5) && ![(NSString *)dateValue isEqual:?])
+  if (dateValue | *(equalCopy + 5) && ![(NSString *)dateValue isEqual:?])
   {
     goto LABEL_31;
   }
 
   arrayValues = self->_arrayValues;
-  if (arrayValues | *(v4 + 3))
+  if (arrayValues | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)arrayValues isEqual:?])
     {
@@ -588,7 +588,7 @@ LABEL_24:
   }
 
   dictionaryValue = self->_dictionaryValue;
-  if (dictionaryValue | *(v4 + 6))
+  if (dictionaryValue | *(equalCopy + 6))
   {
     v13 = [(_MRDictionaryProtobuf *)dictionaryValue isEqual:?];
   }
@@ -703,21 +703,21 @@ LABEL_9:
   return v19 ^ [(_MRDictionaryProtobuf *)self->_dictionaryValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(_MRValueProtobuf *)self setStringValue:?];
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 2) != 0)
   {
-    self->_int64Value = *(v4 + 2);
+    self->_int64Value = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -730,33 +730,33 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 76) & 4) == 0)
+  else if ((*(fromCopy + 76) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_floatValue = *(v4 + 14);
+  self->_floatValue = *(fromCopy + 14);
   *&self->_has |= 4u;
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
 LABEL_6:
-    self->_doubleValue = *(v4 + 1);
+    self->_doubleValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRValueProtobuf *)self setDataValue:?];
   }
 
-  if ((*(v4 + 76) & 8) != 0)
+  if ((*(fromCopy + 76) & 8) != 0)
   {
-    self->_BOOLValue = *(v4 + 72);
+    self->_BOOLValue = *(fromCopy + 72);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRValueProtobuf *)self setDateValue:?];
   }
@@ -765,7 +765,7 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -790,7 +790,7 @@ LABEL_7:
   }
 
   dictionaryValue = self->_dictionaryValue;
-  v12 = *(v4 + 6);
+  v12 = *(fromCopy + 6);
   if (dictionaryValue)
   {
     if (v12)

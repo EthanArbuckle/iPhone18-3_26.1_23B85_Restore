@@ -1,23 +1,23 @@
 @interface SSSViewControllerManager
 - (SSSViewControllerManager)init;
 - (void)_actuallyMoveFromRemoteViewControllerToRemoteAlertViewController;
-- (void)_moveDittoRootViewControllerFromViewController:(id)a3 toViewController:(id)a4;
-- (void)_observeRemoteAlertViewControllerNotification:(id)a3;
-- (void)_observeRemoteViewControllerNotification:(id)a3;
+- (void)_moveDittoRootViewControllerFromViewController:(id)controller toViewController:(id)viewController;
+- (void)_observeRemoteAlertViewControllerNotification:(id)notification;
+- (void)_observeRemoteViewControllerNotification:(id)notification;
 - (void)_prepareRootViewControllerIfNecessary;
-- (void)_screenshotManagerHasNoScreenshotsBeingTracked:(id)a3;
+- (void)_screenshotManagerHasNoScreenshotsBeingTracked:(id)tracked;
 - (void)dealloc;
 - (void)dismissScreenshots;
-- (void)dittoRemoteAlertViewControllerViewWillAppear:(id)a3;
+- (void)dittoRemoteAlertViewControllerViewWillAppear:(id)appear;
 - (void)moveFromRemoteAlertViewControllerToRemoteViewController;
-- (void)moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:(id)a3;
-- (void)receiveEnvironmentDescription:(id)a3 completion:(id)a4;
-- (void)registerRemoteAlertViewController:(id)a3;
-- (void)registerRemoteViewController:(id)a3;
-- (void)remoteAlertHandleProviderDidDeactivate:(id)a3;
+- (void)moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:(id)ready;
+- (void)receiveEnvironmentDescription:(id)description completion:(id)completion;
+- (void)registerRemoteAlertViewController:(id)controller;
+- (void)registerRemoteViewController:(id)controller;
+- (void)remoteAlertHandleProviderDidDeactivate:(id)deactivate;
 - (void)screenshotsDismissed;
-- (void)unregisterRemoteAlertViewController:(id)a3;
-- (void)unregisterRemoteViewController:(id)a3;
+- (void)unregisterRemoteAlertViewController:(id)controller;
+- (void)unregisterRemoteViewController:(id)controller;
 @end
 
 @implementation SSSViewControllerManager
@@ -77,28 +77,28 @@
   }
 }
 
-- (void)receiveEnvironmentDescription:(id)a3 completion:(id)a4
+- (void)receiveEnvironmentDescription:(id)description completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  completionCopy = completion;
   v8 = +[SSSScreenshotManager sharedScreenshotManager];
-  v9 = [v8 createScreenshotWithEnvironmentDescription:v6];
+  v9 = [v8 createScreenshotWithEnvironmentDescription:descriptionCopy];
 
   [(SSSViewControllerManager *)self _prepareRootViewControllerIfNecessary];
-  v10 = [v6 loggableDescription];
+  loggableDescription = [descriptionCopy loggableDescription];
   v11 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v10;
+    v18 = loggableDescription;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Service received environment description %@", &v17, 0xCu);
   }
 
-  v12 = [v6 sessionIdentifier];
-  if (([(NSMutableSet *)self->_receivedSessionIdentifiers containsObject:v12]& 1) == 0)
+  sessionIdentifier = [descriptionCopy sessionIdentifier];
+  if (([(NSMutableSet *)self->_receivedSessionIdentifiers containsObject:sessionIdentifier]& 1) == 0)
   {
-    [(NSMutableSet *)self->_receivedSessionIdentifiers addObject:v12];
-    if (([v6 skipShutterSound] & 1) == 0)
+    [(NSMutableSet *)self->_receivedSessionIdentifiers addObject:sessionIdentifier];
+    if (([descriptionCopy skipShutterSound] & 1) == 0)
     {
       +[SSScreenCapturer playScreenshotSound];
     }
@@ -106,16 +106,16 @@
 
   if ([v9 saveLocation] == 3)
   {
-    [v9 insertIntoQuickNoteWithCompletion:v7];
+    [v9 insertIntoQuickNoteWithCompletion:completionCopy];
   }
 
   else
   {
-    v13 = [(SSSDittoRootViewController *)self->_rootViewController hostingViewController];
+    hostingViewController = [(SSSDittoRootViewController *)self->_rootViewController hostingViewController];
 
-    if (v13)
+    if (hostingViewController)
     {
-      [(SSSDittoRootViewController *)self->_rootViewController screenshotReceived:v9 completion:v7];
+      [(SSSDittoRootViewController *)self->_rootViewController screenshotReceived:v9 completion:completionCopy];
     }
 
     else
@@ -124,11 +124,11 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v10;
+        v18 = loggableDescription;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "No hosting view controller to deliver environment description, waiting for remote view controller to deliver %@", &v17, 0xCu);
       }
 
-      v15 = [[SSSPendingScreenshotRecord alloc] initWithScreenshot:v9 deliveryCompletionBlock:v7];
+      v15 = [[SSSPendingScreenshotRecord alloc] initWithScreenshot:v9 deliveryCompletionBlock:completionCopy];
       [(NSMutableArray *)self->_pendingScreenshotRecordsForRootViewController addObject:v15];
       if (self->_remoteViewController)
       {
@@ -144,36 +144,36 @@
   }
 }
 
-- (void)_observeRemoteViewControllerNotification:(id)a3
+- (void)_observeRemoteViewControllerNotification:(id)notification
 {
-  v4 = [a3 object];
-  [(SSSViewControllerManager *)self registerRemoteViewController:v4];
+  object = [notification object];
+  [(SSSViewControllerManager *)self registerRemoteViewController:object];
 }
 
-- (void)_observeRemoteAlertViewControllerNotification:(id)a3
+- (void)_observeRemoteAlertViewControllerNotification:(id)notification
 {
-  v4 = [a3 object];
-  [(SSSViewControllerManager *)self registerRemoteAlertViewController:v4];
+  object = [notification object];
+  [(SSSViewControllerManager *)self registerRemoteAlertViewController:object];
 }
 
-- (void)remoteAlertHandleProviderDidDeactivate:(id)a3
+- (void)remoteAlertHandleProviderDidDeactivate:(id)deactivate
 {
-  v6 = a3;
-  v4 = [(SSSDittoRootViewController *)self->_rootViewController hostingViewController];
+  deactivateCopy = deactivate;
+  hostingViewController = [(SSSDittoRootViewController *)self->_rootViewController hostingViewController];
   remoteAlertViewController = self->_remoteAlertViewController;
 
-  if (v4 == remoteAlertViewController)
+  if (hostingViewController == remoteAlertViewController)
   {
     [(SSSViewControllerManager *)self dismissScreenshots];
   }
 
-  [v6 invalidate];
+  [deactivateCopy invalidate];
 }
 
-- (void)registerRemoteViewController:(id)a3
+- (void)registerRemoteViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_remoteViewController != v5)
+  controllerCopy = controller;
+  if (self->_remoteViewController != controllerCopy)
   {
     v6 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -190,13 +190,13 @@
       v29 = 2112;
       v30 = v11;
       v31 = 2048;
-      v32 = v5;
+      v32 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Registered new remote view controller old: <%@: %p>, new: <%@: %p>", buf, 0x2Au);
     }
 
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_remoteViewController, controller);
     [(SSSDittoRemoteViewController *)self->_remoteViewController setViewControllerManager:self];
-    [(SSSViewControllerManager *)self _moveDittoRootViewControllerFromViewController:0 toViewController:v5];
+    [(SSSViewControllerManager *)self _moveDittoRootViewControllerFromViewController:0 toViewController:controllerCopy];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -217,9 +217,9 @@
           }
 
           v17 = *(*(&v20 + 1) + 8 * i);
-          v18 = [v17 screenshot];
-          v19 = [v17 deliveryCompletionBlock];
-          [(SSSDittoRootViewController *)self->_rootViewController screenshotReceived:v18 completion:v19];
+          screenshot = [v17 screenshot];
+          deliveryCompletionBlock = [v17 deliveryCompletionBlock];
+          [(SSSDittoRootViewController *)self->_rootViewController screenshotReceived:screenshot completion:deliveryCompletionBlock];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -232,7 +232,7 @@
   }
 }
 
-- (void)unregisterRemoteViewController:(id)a3
+- (void)unregisterRemoteViewController:(id)controller
 {
   v4 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -247,9 +247,9 @@
   self->_remoteViewController = 0;
 }
 
-- (void)registerRemoteAlertViewController:(id)a3
+- (void)registerRemoteAlertViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -258,14 +258,14 @@
   }
 
   remoteAlertViewController = self->_remoteAlertViewController;
-  self->_remoteAlertViewController = v4;
-  v7 = v4;
+  self->_remoteAlertViewController = controllerCopy;
+  v7 = controllerCopy;
 
   [(SSSDittoRemoteAlertViewController *)self->_remoteAlertViewController setViewControllerManager:self];
   [(SSSDittoRemoteAlertViewController *)self->_remoteAlertViewController setDittoRemoteAlertDelegate:self];
 }
 
-- (void)unregisterRemoteAlertViewController:(id)a3
+- (void)unregisterRemoteAlertViewController:(id)controller
 {
   v4 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -280,15 +280,15 @@
   self->_remoteAlertViewController = 0;
 }
 
-- (void)_moveDittoRootViewControllerFromViewController:(id)a3 toViewController:(id)a4
+- (void)_moveDittoRootViewControllerFromViewController:(id)controller toViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   [(SSSViewControllerManager *)self _prepareRootViewControllerIfNecessary];
-  if (v7)
+  if (viewControllerCopy)
   {
-    [v6 cleanupRootViewController];
-    [v7 becomeParentOfDittoRootViewController:self->_rootViewController];
+    [controllerCopy cleanupRootViewController];
+    [viewControllerCopy becomeParentOfDittoRootViewController:self->_rootViewController];
   }
 
   else
@@ -300,11 +300,11 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Moving to a nil view controller", v9, 2u);
     }
 
-    [v6 stopBeingParentOfDittoRootViewController:self->_rootViewController];
-    [v6 cleanupRootViewController];
+    [controllerCopy stopBeingParentOfDittoRootViewController:self->_rootViewController];
+    [controllerCopy cleanupRootViewController];
   }
 
-  [(SSSDittoRootViewController *)self->_rootViewController setHostingViewController:v7];
+  [(SSSDittoRootViewController *)self->_rootViewController setHostingViewController:viewControllerCopy];
 }
 
 - (void)_actuallyMoveFromRemoteViewControllerToRemoteAlertViewController
@@ -320,9 +320,9 @@
   [(SSSDittoRemoteViewController *)self->_remoteViewController setWillSoonUnparentChildDittoRootViewController:0];
 }
 
-- (void)moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:(id)a3
+- (void)moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:(id)ready
 {
-  v4 = [a3 copy];
+  v4 = [ready copy];
   changeBlockForWhenAlertWillAppear = self->_changeBlockForWhenAlertWillAppear;
   self->_changeBlockForWhenAlertWillAppear = v4;
 
@@ -366,8 +366,8 @@
 
 - (void)screenshotsDismissed
 {
-  v3 = [(SSSDittoRootViewController *)self->_rootViewController hostingViewController];
-  [(SSSViewControllerManager *)self _moveDittoRootViewControllerFromViewController:v3 toViewController:0];
+  hostingViewController = [(SSSDittoRootViewController *)self->_rootViewController hostingViewController];
+  [(SSSViewControllerManager *)self _moveDittoRootViewControllerFromViewController:hostingViewController toViewController:0];
 
   rootViewController = self->_rootViewController;
   self->_rootViewController = 0;
@@ -378,7 +378,7 @@
   [(SSSViewControllerManager *)self unregisterRemoteViewController:0];
 }
 
-- (void)_screenshotManagerHasNoScreenshotsBeingTracked:(id)a3
+- (void)_screenshotManagerHasNoScreenshotsBeingTracked:(id)tracked
 {
   v4 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -390,7 +390,7 @@
   [(SSSViewControllerManager *)self screenshotsDismissed];
 }
 
-- (void)dittoRemoteAlertViewControllerViewWillAppear:(id)a3
+- (void)dittoRemoteAlertViewControllerViewWillAppear:(id)appear
 {
   if (self->_changeBlockForWhenAlertWillAppear)
   {

@@ -1,12 +1,12 @@
 @interface TPSCollectionViewFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result;
 - (CGSize)collectionViewContentSize;
 - (TPSCollectionViewFlowLayout)init;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)_updateParallaxForLayoutAttributes:(id)a3;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)_updateParallaxForLayoutAttributes:(id)attributes;
 - (void)prepareLayout;
 - (void)updateLayoutAttributesCache;
 @end
@@ -43,13 +43,13 @@
   [(TPSCollectionViewFlowLayout *)&v13 collectionViewContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(TPSCollectionViewFlowLayout *)self collectionView];
-  v8 = [v7 numberOfItemsInSection:0];
+  collectionView = [(TPSCollectionViewFlowLayout *)self collectionView];
+  v8 = [collectionView numberOfItemsInSection:0];
 
   if (v8 >= 2)
   {
-    v9 = [(TPSCollectionViewFlowLayout *)self collectionView];
-    [v9 _interpageSpacing];
+    collectionView2 = [(TPSCollectionViewFlowLayout *)self collectionView];
+    [collectionView2 _interpageSpacing];
     v4 = v4 + v10 * (v8 - 1);
   }
 
@@ -78,8 +78,8 @@
 - (void)updateLayoutAttributesCache
 {
   [(NSMutableArray *)self->_layoutAttributesCache removeAllObjects];
-  v3 = [(TPSCollectionViewFlowLayout *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(TPSCollectionViewFlowLayout *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   if (v4 >= 1)
   {
@@ -95,12 +95,12 @@
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v17.receiver = self;
   v17.super_class = TPSCollectionViewFlowLayout;
   v8 = [(TPSCollectionViewFlowLayout *)&v17 shouldInvalidateLayoutForBoundsChange:?];
@@ -120,11 +120,11 @@
   {
     self->_cacheBounds.size.width = v10;
 LABEL_4:
-    v11 = [(TPSCollectionViewFlowLayout *)self collectionView];
-    v12 = [v11 indexPathsForVisibleItems];
-    v13 = [v12 firstObject];
+    collectionView = [(TPSCollectionViewFlowLayout *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    firstObject = [indexPathsForVisibleItems firstObject];
     preRotationIndexPath = self->_preRotationIndexPath;
-    self->_preRotationIndexPath = v13;
+    self->_preRotationIndexPath = firstObject;
 
     return 1;
   }
@@ -137,32 +137,32 @@ LABEL_4:
   return MinX != CGRectGetMinX(v19);
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = change.size.height;
+  width = change.size.width;
   v13.receiver = self;
   v13.super_class = TPSCollectionViewFlowLayout;
-  v6 = [(TPSCollectionViewFlowLayout *)&v13 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y];
+  v6 = [(TPSCollectionViewFlowLayout *)&v13 invalidationContextForBoundsChange:change.origin.x, change.origin.y];
   [v6 setInvalidateFlowLayoutDelegateMetrics:1];
   [v6 setInvalidateFlowLayoutAttributes:1];
-  v7 = [(TPSCollectionViewFlowLayout *)self collectionView];
-  [v7 bounds];
+  collectionView = [(TPSCollectionViewFlowLayout *)self collectionView];
+  [collectionView bounds];
   if (width == v9 && height == v8)
   {
-    v11 = [v7 indexPathsForVisibleItems];
-    [v6 invalidateItemsAtIndexPaths:v11];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    [v6 invalidateItemsAtIndexPaths:indexPathsForVisibleItems];
   }
 
   return v6;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -239,21 +239,21 @@ LABEL_4:
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (([v4 row] & 0x8000000000000000) != 0 || (v5 = objc_msgSend(v4, "row"), v5 >= -[NSMutableArray count](self->_layoutAttributesCache, "count")) || (-[NSMutableArray objectAtIndexedSubscript:](self->_layoutAttributesCache, "objectAtIndexedSubscript:", objc_msgSend(v4, "row")), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  pathCopy = path;
+  if (([pathCopy row] & 0x8000000000000000) != 0 || (v5 = objc_msgSend(pathCopy, "row"), v5 >= -[NSMutableArray count](self->_layoutAttributesCache, "count")) || (-[NSMutableArray objectAtIndexedSubscript:](self->_layoutAttributesCache, "objectAtIndexedSubscript:", objc_msgSend(pathCopy, "row")), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v17.receiver = self;
     v17.super_class = TPSCollectionViewFlowLayout;
-    v6 = [(TPSCollectionViewFlowLayout *)&v17 layoutAttributesForItemAtIndexPath:v4];
+    v6 = [(TPSCollectionViewFlowLayout *)&v17 layoutAttributesForItemAtIndexPath:pathCopy];
     [v6 frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(TPSCollectionViewFlowLayout *)self collectionView];
-    [v13 _interpageSpacing];
-    v15 = (v10 + v14) * [v4 row];
+    collectionView = [(TPSCollectionViewFlowLayout *)self collectionView];
+    [collectionView _interpageSpacing];
+    v15 = (v10 + v14) * [pathCopy row];
 
     [v6 setFrame:{v15, v8, v10, v12}];
   }
@@ -263,17 +263,17 @@ LABEL_4:
   return v6;
 }
 
-- (void)_updateParallaxForLayoutAttributes:(id)a3
+- (void)_updateParallaxForLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v6 = [(TPSCollectionViewFlowLayout *)self collectionView];
-  [v6 bounds];
-  [v6 adjustedContentInset];
-  [v4 frame];
+  attributesCopy = attributes;
+  collectionView = [(TPSCollectionViewFlowLayout *)self collectionView];
+  [collectionView bounds];
+  [collectionView adjustedContentInset];
+  [attributesCopy frame];
   parallaxComputer = self->_parallaxComputer;
-  [v4 frame];
+  [attributesCopy frame];
   [TPSParallaxComputer contentParallaxOffsetForViewFrame:"contentParallaxOffsetForViewFrame:visibleRect:" visibleRect:?];
-  [v4 setParallaxOffset:?];
+  [attributesCopy setParallaxOffset:?];
 }
 
 @end

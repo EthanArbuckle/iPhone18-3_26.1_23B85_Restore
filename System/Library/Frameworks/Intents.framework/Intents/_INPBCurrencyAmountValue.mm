@@ -1,35 +1,35 @@
 @interface _INPBCurrencyAmountValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBCurrencyAmountValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCurrencyAmountValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrencyCode:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrencyCode:(id)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCurrencyAmountValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCurrencyAmountValue *)self amount];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"amount"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  amount = [(_INPBCurrencyAmountValue *)self amount];
+  dictionaryRepresentation = [amount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"amount"];
 
   if (self->_currencyCode)
   {
-    v6 = [(_INPBCurrencyAmountValue *)self currencyCode];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"currencyCode"];
+    currencyCode = [(_INPBCurrencyAmountValue *)self currencyCode];
+    v7 = [currencyCode copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"currencyCode"];
   }
 
-  v8 = [(_INPBCurrencyAmountValue *)self valueMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBCurrencyAmountValue *)self valueMetadata];
+  dictionaryRepresentation2 = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -39,28 +39,28 @@
   return v4 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBCurrencyAmountValue *)self amount];
-  v6 = [v4 amount];
-  if ((v5 != 0) == (v6 == 0))
+  amount = [(_INPBCurrencyAmountValue *)self amount];
+  amount2 = [equalCopy amount];
+  if ((amount != 0) == (amount2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBCurrencyAmountValue *)self amount];
-  if (v7)
+  amount3 = [(_INPBCurrencyAmountValue *)self amount];
+  if (amount3)
   {
-    v8 = v7;
-    v9 = [(_INPBCurrencyAmountValue *)self amount];
-    v10 = [v4 amount];
-    v11 = [v9 isEqual:v10];
+    v8 = amount3;
+    amount4 = [(_INPBCurrencyAmountValue *)self amount];
+    amount5 = [equalCopy amount];
+    v11 = [amount4 isEqual:amount5];
 
     if (!v11)
     {
@@ -72,20 +72,20 @@
   {
   }
 
-  v5 = [(_INPBCurrencyAmountValue *)self currencyCode];
-  v6 = [v4 currencyCode];
-  if ((v5 != 0) == (v6 == 0))
+  amount = [(_INPBCurrencyAmountValue *)self currencyCode];
+  amount2 = [equalCopy currencyCode];
+  if ((amount != 0) == (amount2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBCurrencyAmountValue *)self currencyCode];
-  if (v12)
+  currencyCode = [(_INPBCurrencyAmountValue *)self currencyCode];
+  if (currencyCode)
   {
-    v13 = v12;
-    v14 = [(_INPBCurrencyAmountValue *)self currencyCode];
-    v15 = [v4 currencyCode];
-    v16 = [v14 isEqual:v15];
+    v13 = currencyCode;
+    currencyCode2 = [(_INPBCurrencyAmountValue *)self currencyCode];
+    currencyCode3 = [equalCopy currencyCode];
+    v16 = [currencyCode2 isEqual:currencyCode3];
 
     if (!v16)
     {
@@ -97,12 +97,12 @@
   {
   }
 
-  v5 = [(_INPBCurrencyAmountValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  amount = [(_INPBCurrencyAmountValue *)self valueMetadata];
+  amount2 = [equalCopy valueMetadata];
+  if ((amount != 0) != (amount2 == 0))
   {
-    v17 = [(_INPBCurrencyAmountValue *)self valueMetadata];
-    if (!v17)
+    valueMetadata = [(_INPBCurrencyAmountValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_20:
@@ -110,10 +110,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBCurrencyAmountValue *)self valueMetadata];
-    v20 = [v4 valueMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = valueMetadata;
+    valueMetadata2 = [(_INPBCurrencyAmountValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v21 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v21)
     {
@@ -133,79 +133,79 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCurrencyAmountValue allocWithZone:](_INPBCurrencyAmountValue init];
-  v6 = [(_INPBDecimalNumberValue *)self->_amount copyWithZone:a3];
+  v6 = [(_INPBDecimalNumberValue *)self->_amount copyWithZone:zone];
   [(_INPBCurrencyAmountValue *)v5 setAmount:v6];
 
-  v7 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v7 = [(NSString *)self->_currencyCode copyWithZone:zone];
   [(_INPBCurrencyAmountValue *)v5 setCurrencyCode:v7];
 
-  v8 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v8 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBCurrencyAmountValue *)v5 setValueMetadata:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCurrencyAmountValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBCurrencyAmountValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCurrencyAmountValue)initWithCoder:(id)a3
+- (_INPBCurrencyAmountValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCurrencyAmountValue *)self initWithData:v6];
+    self = [(_INPBCurrencyAmountValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBCurrencyAmountValue *)self amount];
+  toCopy = to;
+  amount = [(_INPBCurrencyAmountValue *)self amount];
 
-  if (v4)
+  if (amount)
   {
-    v5 = [(_INPBCurrencyAmountValue *)self amount];
+    amount2 = [(_INPBCurrencyAmountValue *)self amount];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBCurrencyAmountValue *)self currencyCode];
+  currencyCode = [(_INPBCurrencyAmountValue *)self currencyCode];
 
-  if (v6)
+  if (currencyCode)
   {
     currencyCode = self->_currencyCode;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBCurrencyAmountValue *)self valueMetadata];
+  valueMetadata = [(_INPBCurrencyAmountValue *)self valueMetadata];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (valueMetadata)
   {
-    v10 = [(_INPBCurrencyAmountValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBCurrencyAmountValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setCurrencyCode:(id)a3
+- (void)setCurrencyCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   currencyCode = self->_currencyCode;
   self->_currencyCode = v4;
 

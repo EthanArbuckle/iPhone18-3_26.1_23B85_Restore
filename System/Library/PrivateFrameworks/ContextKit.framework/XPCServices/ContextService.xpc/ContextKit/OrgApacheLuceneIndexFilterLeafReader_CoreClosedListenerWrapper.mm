@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper)initWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3 withId:(id)a4 withId:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper)initWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener withId:(id)id withId:(id)withId;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)onCloseWithId:(id)a3;
+- (void)onCloseWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper
 
-- (OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper)initWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3 withId:(id)a4 withId:(id)a5
+- (OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper)initWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener withId:(id)id withId:(id)withId
 {
-  JreStrongAssign(&self->in_, a3);
-  JreStrongAssign(&self->thisCoreKey_, a4);
-  JreStrongAssign(&self->inCoreKey_, a5);
+  JreStrongAssign(&self->in_, listener);
+  JreStrongAssign(&self->thisCoreKey_, id);
+  JreStrongAssign(&self->inCoreKey_, withId);
   return self;
 }
 
-- (void)onCloseWithId:(id)a3
+- (void)onCloseWithId:(id)id
 {
   if (!self->in_)
   {
@@ -29,20 +29,20 @@
   [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)in onCloseWithId:thisCoreKey];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_5;
   }
 
-  v5 = [a3 getClass];
+  getClass = [equal getClass];
   if (qword_100554248 != -1)
   {
     sub_100098F94();
   }
 
-  if (v5 == qword_100554240)
+  if (getClass == qword_100554240)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -56,10 +56,10 @@
       JreThrowNullPointerException();
     }
 
-    v6 = [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)in isEqual:*(a3 + 1)];
+    v6 = [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)in isEqual:*(equal + 1)];
     if (v6)
     {
-      LOBYTE(v6) = self->thisCoreKey_ == *(a3 + 2);
+      LOBYTE(v6) = self->thisCoreKey_ == *(equal + 2);
     }
   }
 
@@ -74,9 +74,9 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v5 = [(OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper *)self getClass];
+  getClass = [(OrgApacheLuceneIndexFilterLeafReader_CoreClosedListenerWrapper *)self getClass];
   v6 = *&self->in_;
-  v3 = [IOSObjectArray arrayWithObjects:&v5 count:3 type:NSObject_class_()];
+  v3 = [IOSObjectArray arrayWithObjects:&getClass count:3 type:NSObject_class_()];
   return OrgLukhnosPortmobileUtilObjects_hash__WithNSObjectArray_(v3);
 }
 

@@ -1,19 +1,19 @@
 @interface SAUIAlertingAssertion
-- (SAUIAlertingAssertion)initWithPreferredLayoutModeAssertion:(id)a3 invalidationInterval:(double)a4;
+- (SAUIAlertingAssertion)initWithPreferredLayoutModeAssertion:(id)assertion invalidationInterval:(double)interval;
 @end
 
 @implementation SAUIAlertingAssertion
 
-- (SAUIAlertingAssertion)initWithPreferredLayoutModeAssertion:(id)a3 invalidationInterval:(double)a4
+- (SAUIAlertingAssertion)initWithPreferredLayoutModeAssertion:(id)assertion invalidationInterval:(double)interval
 {
-  v7 = a3;
+  assertionCopy = assertion;
   v19.receiver = self;
   v19.super_class = SAUIAlertingAssertion;
-  v8 = [(SAAutomaticallyInvalidatingAssertion *)&v19 initWithInvalidationInterval:a4];
+  v8 = [(SAAutomaticallyInvalidatingAssertion *)&v19 initWithInvalidationInterval:interval];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_preferredLayoutModeAssertion, a3);
+    objc_storeStrong(&v8->_preferredLayoutModeAssertion, assertion);
     objc_initWeak(&location, v9);
     objc_initWeak(&from, v9->_preferredLayoutModeAssertion);
     v14[0] = MEMORY[0x277D85DD0];

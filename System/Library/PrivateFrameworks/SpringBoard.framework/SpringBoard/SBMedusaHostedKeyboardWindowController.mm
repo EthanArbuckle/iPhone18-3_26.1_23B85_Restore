@@ -1,18 +1,18 @@
 @interface SBMedusaHostedKeyboardWindowController
 - (BOOL)isKeyboardVisibleForSpringBoard;
-- (BOOL)shouldKeyboardBeWindowSizedForHostWithIdentity:(id)a3;
-- (SBMedusaHostedKeyboardWindowController)initWithWindowScene:(id)a3;
+- (BOOL)shouldKeyboardBeWindowSizedForHostWithIdentity:(id)identity;
+- (SBMedusaHostedKeyboardWindowController)initWithWindowScene:(id)scene;
 - (id)_keyboardLayersClientSettingsDiffInspector;
-- (id)newMedusaHostedKeyboardWindowLevelAssertionWithPriority:(unint64_t)a3 windowLevel:(double)a4;
-- (void)_doObserverCalloutWithBlock:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)newMedusaHostedKeyboardWindowLevelAssertionWithPriority:(unint64_t)priority windowLevel:(double)level;
+- (void)_doObserverCalloutWithBlock:(id)block;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
 - (void)updateMedusaHostedKeyboardWindow;
-- (void)updateMedusaHostedKeyboardWindowForScene:(id)a3 isForeground:(BOOL *)a4;
+- (void)updateMedusaHostedKeyboardWindowForScene:(id)scene isForeground:(BOOL *)foreground;
 @end
 
 @implementation SBMedusaHostedKeyboardWindowController
@@ -156,8 +156,8 @@ id __84__SBMedusaHostedKeyboardWindowController__keyboardLayersClientSettingsDif
 {
   if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v5 = [v3 sceneWithIdentifier:*MEMORY[0x277D22AC8]];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    v5 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:*MEMORY[0x277D22AC8]];
 
     v4 = v5;
     if (v5)
@@ -168,16 +168,16 @@ id __84__SBMedusaHostedKeyboardWindowController__keyboardLayersClientSettingsDif
   }
 }
 
-- (SBMedusaHostedKeyboardWindowController)initWithWindowScene:(id)a3
+- (SBMedusaHostedKeyboardWindowController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = SBMedusaHostedKeyboardWindowController;
   v5 = [(SBMedusaHostedKeyboardWindowController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
   }
 
   return v6;
@@ -225,7 +225,7 @@ void __84__SBMedusaHostedKeyboardWindowController__keyboardLayersClientSettingsD
   }
 }
 
-- (id)newMedusaHostedKeyboardWindowLevelAssertionWithPriority:(unint64_t)a3 windowLevel:(double)a4
+- (id)newMedusaHostedKeyboardWindowLevelAssertionWithPriority:(unint64_t)priority windowLevel:(double)level
 {
   if ([MEMORY[0x277D75658] usesInputSystemUI])
   {
@@ -234,77 +234,77 @@ void __84__SBMedusaHostedKeyboardWindowController__keyboardLayersClientSettingsD
 
   medusaHostedKeyboardWindow = self->_medusaHostedKeyboardWindow;
 
-  return [(UIWindow *)medusaHostedKeyboardWindow newWindowLevelAssertionWithPriority:a3 windowLevel:a4];
+  return [(UIWindow *)medusaHostedKeyboardWindow newWindowLevelAssertionWithPriority:priority windowLevel:level];
 }
 
 - (BOOL)isKeyboardVisibleForSpringBoard
 {
   if (![MEMORY[0x277D75658] usesInputSystemUI])
   {
-    v2 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v3 = [v2 sceneWithIdentifier:*MEMORY[0x277D22AC8]];
-    v6 = [v3 clientSettings];
-    v7 = [v6 preferredSceneHostIdentifier];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    keyboardFocusController = [mEMORY[0x277D0AAD8] sceneWithIdentifier:*MEMORY[0x277D22AC8]];
+    clientSettings = [keyboardFocusController clientSettings];
+    preferredSceneHostIdentifier = [clientSettings preferredSceneHostIdentifier];
 
-    v8 = [v3 clientSettings];
-    v9 = [v8 preferredSceneHostIdentity];
+    clientSettings2 = [keyboardFocusController clientSettings];
+    preferredSceneHostIdentity = [clientSettings2 preferredSceneHostIdentity];
 
-    if (v9)
+    if (preferredSceneHostIdentity)
     {
-      v10 = [v2 sceneFromIdentityToken:v9];
+      v10 = [mEMORY[0x277D0AAD8] sceneFromIdentityToken:preferredSceneHostIdentity];
     }
 
     else
     {
-      if (![v7 length])
+      if (![preferredSceneHostIdentifier length])
       {
-        v4 = 0;
+        inputUISceneController = 0;
         goto LABEL_8;
       }
 
-      v10 = [v2 sceneWithIdentifier:v7];
+      v10 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:preferredSceneHostIdentifier];
     }
 
-    v4 = v10;
+    inputUISceneController = v10;
 LABEL_8:
-    v11 = [v4 clientProcess];
-    v5 = [v11 isCurrentProcess];
+    clientProcess = [inputUISceneController clientProcess];
+    isCurrentProcess = [clientProcess isCurrentProcess];
 
     goto LABEL_9;
   }
 
-  v2 = +[SBWorkspace mainWorkspace];
-  v3 = [v2 keyboardFocusController];
-  v4 = [v3 inputUISceneController];
-  v5 = [v4 isVisibleForSpringBoard];
+  mEMORY[0x277D0AAD8] = +[SBWorkspace mainWorkspace];
+  keyboardFocusController = [mEMORY[0x277D0AAD8] keyboardFocusController];
+  inputUISceneController = [keyboardFocusController inputUISceneController];
+  isCurrentProcess = [inputUISceneController isVisibleForSpringBoard];
 LABEL_9:
 
-  return v5;
+  return isCurrentProcess;
 }
 
-- (BOOL)shouldKeyboardBeWindowSizedForHostWithIdentity:(id)a3
+- (BOOL)shouldKeyboardBeWindowSizedForHostWithIdentity:(id)identity
 {
-  v3 = a3;
-  if (v3)
+  identityCopy = identity;
+  if (identityCopy)
   {
-    v4 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v5 = [v4 sceneFromIdentityToken:v3];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    v5 = [mEMORY[0x277D0AAD8] sceneFromIdentityToken:identityCopy];
 
     if (v5)
     {
-      v6 = [v5 clientProcess];
-      if ([v6 isApplicationProcess])
+      clientProcess = [v5 clientProcess];
+      if ([clientProcess isApplicationProcess])
       {
         v7 = +[SBApplicationController sharedInstance];
-        v8 = [v6 bundleIdentifier];
-        v9 = [v7 applicationWithBundleIdentifier:v8];
+        bundleIdentifier = [clientProcess bundleIdentifier];
+        v9 = [v7 applicationWithBundleIdentifier:bundleIdentifier];
 
-        v10 = [v5 uiSettings];
-        if ([v10 enhancedWindowingEnabled])
+        uiSettings = [v5 uiSettings];
+        if ([uiSettings enhancedWindowingEnabled])
         {
-          v11 = [v9 supportsChamoisSceneResizing];
+          supportsChamoisSceneResizing = [v9 supportsChamoisSceneResizing];
 
-          v12 = v11 - 1;
+          v12 = supportsChamoisSceneResizing - 1;
         }
 
         else
@@ -334,18 +334,18 @@ LABEL_9:
   return v12 & 1;
 }
 
-- (void)updateMedusaHostedKeyboardWindowForScene:(id)a3 isForeground:(BOOL *)a4
+- (void)updateMedusaHostedKeyboardWindowForScene:(id)scene isForeground:(BOOL *)foreground
 {
   v125 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sceneCopy = scene;
   if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v8 = [v6 settings];
-    v9 = [v8 sb_displayIdentityForSceneManagers];
+    settings = [sceneCopy settings];
+    sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
 
-    v10 = [WeakRetained _fbsDisplayIdentity];
-    v11 = [v9 isEqual:v10];
+    _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+    v11 = [sb_displayIdentityForSceneManagers isEqual:_fbsDisplayIdentity];
 
     if (!v11)
     {
@@ -354,27 +354,27 @@ LABEL_99:
       goto LABEL_100;
     }
 
-    v12 = [v6 settings];
-    v110 = [v12 isForeground];
+    settings2 = [sceneCopy settings];
+    isForeground = [settings2 isForeground];
 
-    v13 = [v6 clientSettings];
-    v14 = [v13 preferredSceneHostIdentifier];
+    clientSettings = [sceneCopy clientSettings];
+    preferredSceneHostIdentifier = [clientSettings preferredSceneHostIdentifier];
 
-    v15 = [v6 clientSettings];
-    v16 = [v15 preferredSceneHostIdentity];
+    clientSettings2 = [sceneCopy clientSettings];
+    preferredSceneHostIdentity = [clientSettings2 preferredSceneHostIdentity];
 
     v17 = +[SBSceneManagerCoordinator sharedInstance];
-    v18 = [v17 sceneManagerForDisplayIdentity:v9];
+    v18 = [v17 sceneManagerForDisplayIdentity:sb_displayIdentityForSceneManagers];
 
-    v108 = v9;
+    v108 = sb_displayIdentityForSceneManagers;
     v109 = WeakRetained;
-    v102 = a4;
-    v103 = v14;
+    foregroundCopy = foreground;
+    v103 = preferredSceneHostIdentifier;
     v104 = v18;
-    if (v16)
+    if (preferredSceneHostIdentity)
     {
-      v19 = [MEMORY[0x277D0AAD8] sharedInstance];
-      v20 = [v19 sceneFromIdentityToken:v16];
+      mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+      v20 = [mEMORY[0x277D0AAD8] sceneFromIdentityToken:preferredSceneHostIdentity];
 
       if (v20)
       {
@@ -385,13 +385,13 @@ LABEL_99:
       v118 = 0u;
       v115 = 0u;
       v116 = 0u;
-      v21 = [v18 externalForegroundApplicationSceneHandles];
-      v22 = [v21 countByEnumeratingWithState:&v115 objects:v124 count:16];
+      externalForegroundApplicationSceneHandles = [v18 externalForegroundApplicationSceneHandles];
+      v22 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v115 objects:v124 count:16];
       if (v22)
       {
         v23 = v22;
         v24 = *v116;
-        v100 = v21;
+        v100 = externalForegroundApplicationSceneHandles;
         v98 = *v116;
         do
         {
@@ -401,21 +401,21 @@ LABEL_99:
           {
             if (*v116 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(externalForegroundApplicationSceneHandles);
             }
 
-            v26 = [*(*(&v115 + 1) + 8 * v25) sceneIfExists];
-            if (v26)
+            sceneIfExists = [*(*(&v115 + 1) + 8 * v25) sceneIfExists];
+            if (sceneIfExists)
             {
               v113 = 0u;
               v114 = 0u;
               v111 = 0u;
               v112 = 0u;
-              v105 = v26;
-              v27 = [v26 clientSettings];
-              v28 = [v27 layers];
+              v105 = sceneIfExists;
+              clientSettings3 = [sceneIfExists clientSettings];
+              layers = [clientSettings3 layers];
 
-              v29 = [v28 countByEnumeratingWithState:&v111 objects:v123 count:16];
+              v29 = [layers countByEnumeratingWithState:&v111 objects:v123 count:16];
               if (v29)
               {
                 v30 = v29;
@@ -426,29 +426,29 @@ LABEL_99:
                   {
                     if (*v112 != v31)
                     {
-                      objc_enumerationMutation(v28);
+                      objc_enumerationMutation(layers);
                     }
 
                     v33 = *(*(&v111 + 1) + 8 * i);
                     if ([v33 isKeyboardProxyLayer])
                     {
-                      v34 = [v33 keyboardOwner];
+                      keyboardOwner = [v33 keyboardOwner];
                       v35 = BSEqualObjects();
 
                       if (v35)
                       {
 
                         WeakRetained = v109;
-                        v14 = v103;
+                        preferredSceneHostIdentifier = v103;
                         v18 = v104;
                         v20 = v105;
-                        v21 = v100;
+                        externalForegroundApplicationSceneHandles = v100;
                         goto LABEL_29;
                       }
                     }
                   }
 
-                  v30 = [v28 countByEnumeratingWithState:&v111 objects:v123 count:16];
+                  v30 = [layers countByEnumeratingWithState:&v111 objects:v123 count:16];
                   if (v30)
                   {
                     continue;
@@ -461,7 +461,7 @@ LABEL_99:
               WeakRetained = v109;
               v18 = v104;
               v23 = v99;
-              v21 = v100;
+              externalForegroundApplicationSceneHandles = v100;
               v24 = v98;
             }
 
@@ -469,9 +469,9 @@ LABEL_99:
           }
 
           while (v25 != v23);
-          v23 = [v21 countByEnumeratingWithState:&v115 objects:v124 count:16];
+          v23 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v115 objects:v124 count:16];
           v20 = 0;
-          v14 = v103;
+          preferredSceneHostIdentifier = v103;
         }
 
         while (v23);
@@ -485,14 +485,14 @@ LABEL_99:
 
     else
     {
-      if (![v14 length])
+      if (![preferredSceneHostIdentifier length])
       {
         v20 = 0;
         goto LABEL_34;
       }
 
-      v21 = [MEMORY[0x277D0AAD8] sharedInstance];
-      v20 = [v21 sceneWithIdentifier:v14];
+      externalForegroundApplicationSceneHandles = [MEMORY[0x277D0AAD8] sharedInstance];
+      v20 = [externalForegroundApplicationSceneHandles sceneWithIdentifier:preferredSceneHostIdentifier];
     }
 
 LABEL_29:
@@ -501,39 +501,39 @@ LABEL_29:
     {
 LABEL_30:
       v36 = [v18 existingSceneHandleForScene:v20];
-      v37 = [v18 externalForegroundApplicationSceneHandles];
-      v38 = [v37 containsObject:v36];
+      externalForegroundApplicationSceneHandles2 = [v18 externalForegroundApplicationSceneHandles];
+      v38 = [externalForegroundApplicationSceneHandles2 containsObject:v36];
 
       v101 = v36;
       if (v38)
       {
-        v39 = 1;
+        isForeground2 = 1;
       }
 
       else
       {
-        v40 = [v36 sceneIfExists];
-        v41 = [v40 workspaceIdentifier];
+        sceneIfExists2 = [v36 sceneIfExists];
+        workspaceIdentifier = [sceneIfExists2 workspaceIdentifier];
 
-        if (v41)
+        if (workspaceIdentifier)
         {
-          v42 = [v36 scene];
-          v43 = [v42 settings];
-          v39 = [v43 isForeground];
+          scene = [v36 scene];
+          settings3 = [scene settings];
+          isForeground2 = [settings3 isForeground];
         }
 
         else
         {
-          v39 = 0;
+          isForeground2 = 0;
         }
       }
 
-      v45 = [v20 clientProcess];
-      if ([v45 isApplicationProcess])
+      clientProcess = [v20 clientProcess];
+      if ([clientProcess isApplicationProcess])
       {
         v46 = +[SBApplicationController sharedInstance];
-        v47 = [v45 bundleIdentifier];
-        v106 = [v46 applicationWithBundleIdentifier:v47];
+        bundleIdentifier = [clientProcess bundleIdentifier];
+        v106 = [v46 applicationWithBundleIdentifier:bundleIdentifier];
       }
 
       else
@@ -541,18 +541,18 @@ LABEL_30:
         v106 = 0;
       }
 
-      v48 = [v20 uiPresentationManager];
-      v49 = [v48 defaultPresentationContext];
-      v50 = [v49 presentedLayerTypes];
+      uiPresentationManager = [v20 uiPresentationManager];
+      defaultPresentationContext = [uiPresentationManager defaultPresentationContext];
+      presentedLayerTypes = [defaultPresentationContext presentedLayerTypes];
 
-      if ((v50 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+      if ((presentedLayerTypes & 0xFFFFFFFFFFFFFFFDLL) != 0)
       {
         v51 = 0;
       }
 
       else
       {
-        v51 = v39;
+        v51 = isForeground2;
       }
 
       if (v51 == 1)
@@ -568,15 +568,15 @@ LABEL_30:
           _os_log_impl(&dword_21ED4E000, v52, OS_LOG_TYPE_INFO, "%{public}@ keyboardIsForMedusa is YES because the scene is foreground and can't present the keyboard itself", buf, 0xCu);
         }
 
-        v110 = 1;
+        isForeground = 1;
 LABEL_60:
 
 LABEL_61:
         v63 = +[SBWorkspace mainWorkspace];
-        v64 = [v63 pipCoordinator];
-        v65 = [v64 isPresentingPictureInPictureRequiringMedusaKeyboard];
+        pipCoordinator = [v63 pipCoordinator];
+        isPresentingPictureInPictureRequiringMedusaKeyboard = [pipCoordinator isPresentingPictureInPictureRequiringMedusaKeyboard];
 
-        if (v65)
+        if (isPresentingPictureInPictureRequiringMedusaKeyboard)
         {
           v66 = SBLogMedusaKeyboard();
           if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
@@ -588,15 +588,15 @@ LABEL_61:
           }
 
           v44 = 1;
-          v110 = 1;
+          isForeground = 1;
         }
 
         v107 = v20;
-        if (v16)
+        if (preferredSceneHostIdentity)
         {
-          v68 = [SBApp systemUIScenesCoordinator];
-          v69 = [v68 overlayUISceneController];
-          v70 = [v69 sceneFromIdentityToken:v16];
+          systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+          overlayUISceneController = [systemUIScenesCoordinator overlayUISceneController];
+          v70 = [overlayUISceneController sceneFromIdentityToken:preferredSceneHostIdentity];
 
           if (v70)
           {
@@ -610,18 +610,18 @@ LABEL_61:
             }
 
             v44 = 1;
-            v110 = 1;
+            isForeground = 1;
           }
 
-          v73 = [v68 momentsUISceneController];
-          v74 = [v73 sceneFromIdentityToken:v16];
+          momentsUISceneController = [systemUIScenesCoordinator momentsUISceneController];
+          v74 = [momentsUISceneController sceneFromIdentityToken:preferredSceneHostIdentity];
 
           if (v74)
           {
-            v75 = [v74 uiSettings];
-            v76 = [v75 enhancedWindowingEnabled];
+            uiSettings = [v74 uiSettings];
+            enhancedWindowingEnabled = [uiSettings enhancedWindowingEnabled];
 
-            if (v76)
+            if (enhancedWindowingEnabled)
             {
               v77 = SBLogMedusaKeyboard();
               if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
@@ -633,52 +633,52 @@ LABEL_61:
               }
 
               v44 = 1;
-              v110 = 1;
+              isForeground = 1;
             }
           }
         }
 
-        v79 = [SBApp windowSceneManager];
-        v80 = [v79 windowSceneForDisplayIdentity:v108];
+        windowSceneManager = [SBApp windowSceneManager];
+        v80 = [windowSceneManager windowSceneForDisplayIdentity:v108];
 
-        v81 = [WeakRetained switcherController];
-        v82 = [v16 stringRepresentation];
-        v83 = [v81 windowManagementContext];
-        if ([v83 baseStyle]&& v82)
+        switcherController = [WeakRetained switcherController];
+        stringRepresentation = [preferredSceneHostIdentity stringRepresentation];
+        windowManagementContext = [switcherController windowManagementContext];
+        if ([windowManagementContext baseStyle]&& stringRepresentation)
         {
-          v84 = [SBApp remoteTransientOverlaySessionManager];
-          v85 = [v84 hasActiveSessionWithSceneIdentityTokenString:v82 options:0];
+          remoteTransientOverlaySessionManager = [SBApp remoteTransientOverlaySessionManager];
+          v85 = [remoteTransientOverlaySessionManager hasActiveSessionWithSceneIdentityTokenString:stringRepresentation options:0];
 
           if (!v85)
           {
             goto LABEL_85;
           }
 
-          v86 = [v80 transientOverlayPresenter];
-          v87 = [v86 isTopmostPresentationFromSceneWithIdentityTokenString:v82];
+          transientOverlayPresenter = [v80 transientOverlayPresenter];
+          v87 = [transientOverlayPresenter isTopmostPresentationFromSceneWithIdentityTokenString:stringRepresentation];
 
-          if ((v87 & 1) != 0 || [v81 unlockedEnvironmentMode] != 3)
+          if ((v87 & 1) != 0 || [switcherController unlockedEnvironmentMode] != 3)
           {
             goto LABEL_85;
           }
 
-          v83 = SBLogMedusaKeyboard();
+          windowManagementContext = SBLogMedusaKeyboard();
           v44 = 1;
-          if (os_log_type_enabled(v83, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(windowManagementContext, OS_LOG_TYPE_INFO))
           {
             v88 = _SBFLoggingMethodProem();
             *buf = 138543362;
             v120 = v88;
-            _os_log_impl(&dword_21ED4E000, v83, OS_LOG_TYPE_INFO, "%{public}@ host is embedded remote transient overlay scene so keyboardIsForMedusa is YES", buf, 0xCu);
+            _os_log_impl(&dword_21ED4E000, windowManagementContext, OS_LOG_TYPE_INFO, "%{public}@ host is embedded remote transient overlay scene so keyboardIsForMedusa is YES", buf, 0xCu);
           }
 
-          v110 = 1;
+          isForeground = 1;
         }
 
 LABEL_85:
         if (!self->_medusaHostedKeyboardWindow)
         {
-          v89 = [[SBMedusaHostedKeyboardWindow alloc] initWithWindowScene:v80 keyboardScene:v6];
+          v89 = [[SBMedusaHostedKeyboardWindow alloc] initWithWindowScene:v80 keyboardScene:sceneCopy];
           medusaHostedKeyboardWindow = self->_medusaHostedKeyboardWindow;
           self->_medusaHostedKeyboardWindow = &v89->super.super.super;
         }
@@ -722,24 +722,24 @@ LABEL_85:
           [(SBMedusaHostedKeyboardWindowController *)self _doObserverCalloutWithBlock:&__block_literal_global_22];
         }
 
-        if (v102)
+        if (foregroundCopy)
         {
-          *v102 = v110;
+          *foregroundCopy = isForeground;
         }
 
-        v9 = v108;
+        sb_displayIdentityForSceneManagers = v108;
         WeakRetained = v109;
         goto LABEL_99;
       }
 
       v54 = FBSystemAppBundleID();
-      v55 = [v14 isEqualToString:v54];
+      v55 = [preferredSceneHostIdentifier isEqualToString:v54];
 
       WeakRetained = v109;
       if (v55)
       {
         v52 = SBLogMedusaKeyboard();
-        v110 = 1;
+        isForeground = 1;
         if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
         {
           v56 = _SBFLoggingMethodProem();
@@ -752,17 +752,17 @@ LABEL_85:
         goto LABEL_60;
       }
 
-      v57 = [v109 switcherController];
-      v58 = [v57 windowManagementContext];
-      if ([v58 isChamoisOrFlexibleWindowing])
+      switcherController2 = [v109 switcherController];
+      windowManagementContext2 = [switcherController2 windowManagementContext];
+      if ([windowManagementContext2 isChamoisOrFlexibleWindowing])
       {
-        v59 = [v20 uiSettings];
-        if ([v59 enhancedWindowingEnabled])
+        uiSettings2 = [v20 uiSettings];
+        if ([uiSettings2 enhancedWindowingEnabled])
         {
-          v60 = [v106 supportsChamoisSceneResizing];
+          supportsChamoisSceneResizing = [v106 supportsChamoisSceneResizing];
 
           WeakRetained = v109;
-          if (v60)
+          if (supportsChamoisSceneResizing)
           {
             v52 = SBLogMedusaKeyboard();
             v44 = 1;
@@ -788,7 +788,7 @@ LABEL_57:
           }
 
           v44 = 0;
-          v110 = 0;
+          isForeground = 0;
           goto LABEL_60;
         }
 
@@ -815,44 +815,44 @@ void __96__SBMedusaHostedKeyboardWindowController_updateMedusaHostedKeyboardWind
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v8;
-  if (v8)
+  v4 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    [(NSHashTable *)observers addObject:observerCopy];
+    v4 = observerCopy;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v5;
-  if (v5)
+  v4 = observerCopy;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v5];
-    v4 = v5;
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
+    v4 = observerCopy;
   }
 }
 
-- (void)_doObserverCalloutWithBlock:(id)a3
+- (void)_doObserverCalloutWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSHashTable *)self->_observers copy];
   v11 = 0u;
   v12 = 0u;
@@ -874,7 +874,7 @@ void __96__SBMedusaHostedKeyboardWindowController_updateMedusaHostedKeyboardWind
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -885,46 +885,46 @@ void __96__SBMedusaHostedKeyboardWindowController_updateMedusaHostedKeyboardWind
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 settingsDiff];
-  v8 = [v6 previousSettings];
-  v9 = [v6 transitionContext];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  previousSettings = [settingsCopy previousSettings];
+  transitionContext = [settingsCopy transitionContext];
 
   if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
   {
-    v10 = [v14 settings];
-    v11 = [v10 isForeground];
+    settings = [sceneCopy settings];
+    isForeground = [settings isForeground];
 
-    if (v11)
+    if (isForeground)
     {
       v12 = objc_alloc_init(SBKeyboardClientSettingObserverContext);
-      [(SBKeyboardClientSettingObserverContext *)v12 setScene:v14];
-      [(SBKeyboardClientSettingObserverContext *)v12 setOldClientSettings:v8];
-      [(SBCameraHardwareButton *)v12 setDispatchingRuleAssertion:v9];
-      v13 = [(SBMedusaHostedKeyboardWindowController *)self _keyboardLayersClientSettingsDiffInspector];
-      [v7 evaluateWithInspector:v13 context:v12];
+      [(SBKeyboardClientSettingObserverContext *)v12 setScene:sceneCopy];
+      [(SBKeyboardClientSettingObserverContext *)v12 setOldClientSettings:previousSettings];
+      [(SBCameraHardwareButton *)v12 setDispatchingRuleAssertion:transitionContext];
+      _keyboardLayersClientSettingsDiffInspector = [(SBMedusaHostedKeyboardWindowController *)self _keyboardLayersClientSettingsDiffInspector];
+      [settingsDiff evaluateWithInspector:_keyboardLayersClientSettingsDiffInspector context:v12];
     }
   }
 }
 
-- (void)scene:(id)a3 didCompleteUpdateWithContext:(id)a4 error:(id)a5
+- (void)scene:(id)scene didCompleteUpdateWithContext:(id)context error:(id)error
 {
-  v6 = a3;
+  sceneCopy = scene;
   if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
   {
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x277D22AC8]];
+    identifier = [sceneCopy identifier];
+    v8 = [identifier isEqualToString:*MEMORY[0x277D22AC8]];
 
     if (v8)
     {
-      v9 = [v6 settings];
-      v10 = [v9 isForeground];
+      settings = [sceneCopy settings];
+      isForeground = [settings isForeground];
 
-      v11 = v10;
-      [(SBMedusaHostedKeyboardWindowController *)self updateMedusaHostedKeyboardWindowForScene:v6 isForeground:&v11];
+      v11 = isForeground;
+      [(SBMedusaHostedKeyboardWindowController *)self updateMedusaHostedKeyboardWindowForScene:sceneCopy isForeground:&v11];
     }
   }
 }

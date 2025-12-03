@@ -1,27 +1,27 @@
 @interface VUIImageBackgroundColorDecorator
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)expectedSize;
 - (CGSize)loaderScaleToSize;
 - (CGSize)size;
-- (VUIImageBackgroundColorDecorator)initWithBackgroundColor:(id)a3 andSize:(CGSize)a4;
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5;
+- (VUIImageBackgroundColorDecorator)initWithBackgroundColor:(id)color andSize:(CGSize)size;
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit;
 - (id)decoratorIdentifier;
 @end
 
 @implementation VUIImageBackgroundColorDecorator
 
-- (VUIImageBackgroundColorDecorator)initWithBackgroundColor:(id)a3 andSize:(CGSize)a4
+- (VUIImageBackgroundColorDecorator)initWithBackgroundColor:(id)color andSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v12.receiver = self;
   v12.super_class = VUIImageBackgroundColorDecorator;
   v9 = [(VUIImageBackgroundColorDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backgroundColor, a3);
+    objc_storeStrong(&v9->_backgroundColor, color);
     v10->_size.width = width;
     v10->_size.height = height;
   }
@@ -60,12 +60,12 @@
   return v3;
 }
 
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit
 {
-  v6 = a3;
+  decorateCopy = decorate;
   v7 = +[VUIGraphicsImageRenderer preferredFormat];
-  v8 = [v6 uiImage];
-  [v8 size];
+  uiImage = [decorateCopy uiImage];
+  [uiImage size];
   v10 = v9;
   v12 = v11;
 
@@ -77,9 +77,9 @@
   v25 = 0;
   v26 = v10;
   v27 = v12;
-  v22 = self;
-  v23 = v6;
-  v13 = v6;
+  selfCopy = self;
+  v23 = decorateCopy;
+  v13 = decorateCopy;
   v14 = [VUIGraphicsImageRenderer imageWithSize:v7 format:&v18 actions:v10, v12];
   v15 = v14;
   v16 = +[VUIImage imageWithCGImageRef:preserveAlpha:](VUIImage, "imageWithCGImageRef:preserveAlpha:", [v15 CGImage], 1);
@@ -98,15 +98,15 @@ void __73__VUIImageBackgroundColorDecorator_decorate_scaledWithSize_croppedToFit
   [v5 drawInRect:{*(a1 + 48), *(a1 + 56), *(a1 + 64), *(a1 + 72)}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decoratorIdentifier];
-    v6 = [(VUIImageBackgroundColorDecorator *)self decoratorIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    decoratorIdentifier = [equalCopy decoratorIdentifier];
+    decoratorIdentifier2 = [(VUIImageBackgroundColorDecorator *)self decoratorIdentifier];
+    v7 = [decoratorIdentifier isEqualToString:decoratorIdentifier2];
   }
 
   else

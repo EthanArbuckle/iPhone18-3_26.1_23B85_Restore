@@ -1,22 +1,22 @@
 @interface SAOutputStream
-- (int)appendData:(id)a3;
-- (int)appendString:(id)a3;
-- (int)printWithFormat:(id)a3;
+- (int)appendData:(id)data;
+- (int)appendString:(id)string;
+- (int)printWithFormat:(id)format;
 @end
 
 @implementation SAOutputStream
 
-- (int)printWithFormat:(id)a3
+- (int)printWithFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 arguments:&v6];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format arguments:&v6];
   LODWORD(self) = [(SAOutputStream *)self appendString:v4];
 
   return self;
 }
 
-- (int)appendString:(id)a3
+- (int)appendString:(id)string
 {
-  v5 = [a3 lengthOfBytesUsingEncoding:4];
+  v5 = [string lengthOfBytesUsingEncoding:4];
   if (!v5)
   {
     return 0;
@@ -24,7 +24,7 @@
 
   v6 = v5;
   v7 = malloc_type_malloc(v5 + 1, 0xB626F0C3uLL);
-  if ([a3 getCString:v7 maxLength:v6 + 1 encoding:4])
+  if ([string getCString:v7 maxLength:v6 + 1 encoding:4])
   {
     v8 = [(SAOutputStream *)self write:v7 maxLength:v6];
   }
@@ -32,7 +32,7 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [a3 dataUsingEncoding:4 allowLossyConversion:1];
+    v10 = [string dataUsingEncoding:4 allowLossyConversion:1];
     if (v10)
     {
       v8 = [(SAOutputStream *)self appendData:v10];
@@ -50,7 +50,7 @@
   return v8;
 }
 
-- (int)appendData:(id)a3
+- (int)appendData:(id)data
 {
   v3 = *__error();
   v4 = _sa_logt();

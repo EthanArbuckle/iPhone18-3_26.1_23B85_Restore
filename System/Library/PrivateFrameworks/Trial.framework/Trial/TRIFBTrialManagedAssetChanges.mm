@@ -1,91 +1,91 @@
 @interface TRIFBTrialManagedAssetChanges
-- (void)replaceAssetId:(id)a3;
-- (void)replaceAssetName:(id)a3;
-- (void)replaceCloudKitMetadataWithAsset:(id)a3;
-- (void)replaceCloudKitMetadataWithTreatment:(id)a3;
-- (void)replacePath:(id)a3;
+- (void)replaceAssetId:(id)id;
+- (void)replaceAssetName:(id)name;
+- (void)replaceCloudKitMetadataWithAsset:(id)asset;
+- (void)replaceCloudKitMetadataWithTreatment:(id)treatment;
+- (void)replacePath:(id)path;
 @end
 
 @implementation TRIFBTrialManagedAssetChanges
 
-- (void)replacePath:(id)a3
+- (void)replacePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   self->_changeTypePath = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = pathCopy;
+  if (!pathCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1716 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1716 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    pathCopy = 0;
   }
 
-  self->_replacementPath = [v5 unsignedIntValue];
+  self->_replacementPath = [pathCopy unsignedIntValue];
 }
 
-- (void)replaceAssetId:(id)a3
+- (void)replaceAssetId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   self->_changeTypeAssetId = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = idCopy;
+  if (!idCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1760 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1760 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    idCopy = 0;
   }
 
-  self->_replacementAssetId = [v5 unsignedIntValue];
+  self->_replacementAssetId = [idCopy unsignedIntValue];
 }
 
-- (void)replaceCloudKitMetadataWithTreatment:(id)a3
+- (void)replaceCloudKitMetadataWithTreatment:(id)treatment
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  treatmentCopy = treatment;
+  v7 = treatmentCopy;
+  if (!treatmentCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1782 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1782 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    treatmentCopy = 0;
   }
 
   *&self->_replacementCloudKitMetadataType = 257;
-  self->_replacementCloudKitMetadata = [v5 unsignedIntValue];
+  self->_replacementCloudKitMetadata = [treatmentCopy unsignedIntValue];
 }
 
-- (void)replaceCloudKitMetadataWithAsset:(id)a3
+- (void)replaceCloudKitMetadataWithAsset:(id)asset
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  assetCopy = asset;
+  v7 = assetCopy;
+  if (!assetCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1789 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1789 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    assetCopy = 0;
   }
 
   *&self->_replacementCloudKitMetadataType = 258;
-  self->_replacementCloudKitMetadata = [v5 unsignedIntValue];
+  self->_replacementCloudKitMetadata = [assetCopy unsignedIntValue];
 }
 
-- (void)replaceAssetName:(id)a3
+- (void)replaceAssetName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   self->_changeTypeAssetName = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = nameCopy;
+  if (!nameCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1851 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1851 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    nameCopy = 0;
   }
 
-  self->_replacementAssetName = [v5 unsignedIntValue];
+  self->_replacementAssetName = [nameCopy unsignedIntValue];
 }
 
 @end

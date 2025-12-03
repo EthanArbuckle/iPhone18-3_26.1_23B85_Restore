@@ -1,16 +1,16 @@
 @interface AMSUIActionContext
-- (AMSUIActionContext)initWithAccount:(id)a3 bag:(id)a4 presentingViewController:(id)a5 processInfo:(id)a6;
+- (AMSUIActionContext)initWithAccount:(id)account bag:(id)bag presentingViewController:(id)controller processInfo:(id)info;
 @end
 
 @implementation AMSUIActionContext
 
-- (AMSUIActionContext)initWithAccount:(id)a3 bag:(id)a4 presentingViewController:(id)a5 processInfo:(id)a6
+- (AMSUIActionContext)initWithAccount:(id)account bag:(id)bag presentingViewController:(id)controller processInfo:(id)info
 {
-  v10 = a3;
+  accountCopy = account;
   swift_unknownObjectRetain();
-  v11 = a5;
-  v12 = a6;
-  return UIActionContext.init(account:bag:presentingViewController:processInfo:)(a3, a4, a5, a6);
+  controllerCopy = controller;
+  infoCopy = info;
+  return UIActionContext.init(account:bag:presentingViewController:processInfo:)(account, bag, controller, info);
 }
 
 @end

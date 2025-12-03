@@ -1,5 +1,5 @@
 @interface PushToTalkTalkButtonGestureRecognizer
-- (_TtC15ConversationKit37PushToTalkTalkButtonGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC15ConversationKit37PushToTalkTalkButtonGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   PushToTalkTalkButtonGestureRecognizer.reset()();
 }
 
-- (_TtC15ConversationKit37PushToTalkTalkButtonGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC15ConversationKit37PushToTalkTalkButtonGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

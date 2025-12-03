@@ -1,16 +1,16 @@
 @interface _ATXAppLaunchSequenceManager
 + (_ATXAppLaunchSequenceManager)sharedInstance;
 - (_ATXAppLaunchSequenceManager)init;
-- (_ATXAppLaunchSequenceManager)initWithDataStore:(id)a3;
+- (_ATXAppLaunchSequenceManager)initWithDataStore:(id)store;
 - (_ATXAppLaunchSequenceManager)initWithInMemoryStore;
 - (id)launchSequence;
-- (id)launchSequenceForAppAction:(id)a3;
-- (id)launchSequenceForBundle:(id)a3;
-- (void)addBundleIdToLaunchSequence:(id)a3 date:(id)a4;
-- (void)decayAllAppActionLaunchSequencesWithHalfLifeInDays:(double)a3;
-- (void)decayAllLaunchSequencesWithHalfLifeInDays:(double)a3;
-- (void)deleteAllLaunchesForAppActions:(id)a3;
-- (void)deleteAllLaunchesForBundles:(id)a3;
+- (id)launchSequenceForAppAction:(id)action;
+- (id)launchSequenceForBundle:(id)bundle;
+- (void)addBundleIdToLaunchSequence:(id)sequence date:(id)date;
+- (void)decayAllAppActionLaunchSequencesWithHalfLifeInDays:(double)days;
+- (void)decayAllLaunchSequencesWithHalfLifeInDays:(double)days;
+- (void)deleteAllLaunchesForAppActions:(id)actions;
+- (void)deleteAllLaunchesForBundles:(id)bundles;
 @end
 
 @implementation _ATXAppLaunchSequenceManager
@@ -37,16 +37,16 @@
 
 - (_ATXAppLaunchSequenceManager)initWithInMemoryStore
 {
-  v3 = [[_ATXDataStore alloc] initWithInMemoryDataStore];
-  v4 = [(_ATXAppLaunchSequenceManager *)self initWithDataStore:v3];
+  initWithInMemoryDataStore = [[_ATXDataStore alloc] initWithInMemoryDataStore];
+  v4 = [(_ATXAppLaunchSequenceManager *)self initWithDataStore:initWithInMemoryDataStore];
 
   return v4;
 }
 
-- (_ATXAppLaunchSequenceManager)initWithDataStore:(id)a3
+- (_ATXAppLaunchSequenceManager)initWithDataStore:(id)store
 {
-  v6 = a3;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
     [(_ATXAppLaunchSequenceManager *)a2 initWithDataStore:?];
   }
@@ -58,20 +58,20 @@
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     syncQueue = v7->_syncQueue;
     v7->_syncQueue = v12;
 
-    objc_storeStrong(&v7->_datastore, a3);
-    v14 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    objc_storeStrong(&v7->_datastore, store);
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     appLaunchSequence = v7->_appLaunchSequence;
-    v7->_appLaunchSequence = v14;
+    v7->_appLaunchSequence = strongToWeakObjectsMapTable;
 
-    v16 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     appActionLaunchSequence = v7->_appActionLaunchSequence;
-    v7->_appActionLaunchSequence = v16;
+    v7->_appActionLaunchSequence = strongToWeakObjectsMapTable2;
 
     objc_initWeak(&location, v7);
     v18 = objc_opt_new();
@@ -98,10 +98,10 @@
   return v7;
 }
 
-- (id)launchSequenceForBundle:(id)a3
+- (id)launchSequenceForBundle:(id)bundle
 {
-  v5 = a3;
-  if (!v5)
+  bundleCopy = bundle;
+  if (!bundleCopy)
   {
     [(_ATXAppLaunchSequenceManager *)a2 launchSequenceForBundle:?];
   }
@@ -117,10 +117,10 @@
   block[1] = 3221225472;
   block[2] = __56___ATXAppLaunchSequenceManager_launchSequenceForBundle___block_invoke;
   block[3] = &unk_27859A8B0;
-  v11 = v5;
+  v11 = bundleCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v5;
+  v7 = bundleCopy;
   dispatch_sync(syncQueue, block);
   v8 = v14[5];
 
@@ -129,10 +129,10 @@
   return v8;
 }
 
-- (id)launchSequenceForAppAction:(id)a3
+- (id)launchSequenceForAppAction:(id)action
 {
-  v5 = a3;
-  if (!v5)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [(_ATXAppLaunchSequenceManager *)a2 launchSequenceForAppAction:?];
   }
@@ -148,10 +148,10 @@
   block[1] = 3221225472;
   block[2] = __59___ATXAppLaunchSequenceManager_launchSequenceForAppAction___block_invoke;
   block[3] = &unk_27859A8B0;
-  v11 = v5;
+  v11 = actionCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v5;
+  v7 = actionCopy;
   dispatch_sync(syncQueue, block);
   v8 = v14[5];
 
@@ -160,7 +160,7 @@
   return v8;
 }
 
-- (void)decayAllLaunchSequencesWithHalfLifeInDays:(double)a3
+- (void)decayAllLaunchSequencesWithHalfLifeInDays:(double)days
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -168,11 +168,11 @@
   v4[2] = __74___ATXAppLaunchSequenceManager_decayAllLaunchSequencesWithHalfLifeInDays___block_invoke;
   v4[3] = &unk_278598278;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = days;
   dispatch_async(syncQueue, v4);
 }
 
-- (void)decayAllAppActionLaunchSequencesWithHalfLifeInDays:(double)a3
+- (void)decayAllAppActionLaunchSequencesWithHalfLifeInDays:(double)days
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -180,14 +180,14 @@
   v4[2] = __83___ATXAppLaunchSequenceManager_decayAllAppActionLaunchSequencesWithHalfLifeInDays___block_invoke;
   v4[3] = &unk_278598278;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = days;
   dispatch_async(syncQueue, v4);
 }
 
-- (void)deleteAllLaunchesForBundles:(id)a3
+- (void)deleteAllLaunchesForBundles:(id)bundles
 {
-  v4 = a3;
-  if ([v4 count])
+  bundlesCopy = bundles;
+  if ([bundlesCopy count])
   {
     syncQueue = self->_syncQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -195,15 +195,15 @@
     v6[2] = __60___ATXAppLaunchSequenceManager_deleteAllLaunchesForBundles___block_invoke;
     v6[3] = &unk_278596C10;
     v6[4] = self;
-    v7 = v4;
+    v7 = bundlesCopy;
     dispatch_sync(syncQueue, v6);
   }
 }
 
-- (void)deleteAllLaunchesForAppActions:(id)a3
+- (void)deleteAllLaunchesForAppActions:(id)actions
 {
-  v4 = a3;
-  if ([v4 count])
+  actionsCopy = actions;
+  if ([actionsCopy count])
   {
     syncQueue = self->_syncQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -211,7 +211,7 @@
     v6[2] = __63___ATXAppLaunchSequenceManager_deleteAllLaunchesForAppActions___block_invoke;
     v6[3] = &unk_278596C10;
     v6[4] = self;
-    v7 = v4;
+    v7 = actionsCopy;
     dispatch_sync(syncQueue, v6);
   }
 }
@@ -238,20 +238,20 @@
   return v3;
 }
 
-- (void)addBundleIdToLaunchSequence:(id)a3 date:(id)a4
+- (void)addBundleIdToLaunchSequence:(id)sequence date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  sequenceCopy = sequence;
+  dateCopy = date;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65___ATXAppLaunchSequenceManager_addBundleIdToLaunchSequence_date___block_invoke;
   block[3] = &unk_278597828;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sequenceCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = sequenceCopy;
   dispatch_sync(syncQueue, block);
 }
 

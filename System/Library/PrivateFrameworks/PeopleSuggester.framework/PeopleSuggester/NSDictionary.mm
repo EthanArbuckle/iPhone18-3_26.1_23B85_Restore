@@ -1,51 +1,51 @@
 @interface NSDictionary
-- (_PSFeatureDictionary)_ps_dictionaryByAddingEntryForObject:(void *)a3 withKey:;
+- (_PSFeatureDictionary)_ps_dictionaryByAddingEntryForObject:(void *)object withKey:;
 @end
 
 @implementation NSDictionary
 
-- (_PSFeatureDictionary)_ps_dictionaryByAddingEntryForObject:(void *)a3 withKey:
+- (_PSFeatureDictionary)_ps_dictionaryByAddingEntryForObject:(void *)object withKey:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  objectCopy = object;
+  if (self)
   {
-    v7 = [(_PSFeatureDictionary *)a1 objectForKeyedSubscript:v6];
+    v7 = [(_PSFeatureDictionary *)self objectForKeyedSubscript:objectCopy];
 
     if (v7 == v5)
     {
-      v9 = [(_PSFeatureDictionary *)a1 copy];
+      v9 = [(_PSFeatureDictionary *)self copy];
     }
 
     else
     {
-      if ([(_PSFeatureDictionary *)a1 count])
+      if ([(_PSFeatureDictionary *)self count])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [(_PSFeatureDictionary *)a1 mutableCopy];
+          v8 = [(_PSFeatureDictionary *)self mutableCopy];
         }
 
         else
         {
-          v8 = [[_PSFeatureDictionary alloc] initWithDictionary:a1];
+          v8 = [[_PSFeatureDictionary alloc] initWithDictionary:self];
         }
 
-        a1 = v8;
-        [(_PSFeatureDictionary *)v8 setObject:v5 forKeyedSubscript:v6];
+        self = v8;
+        [(_PSFeatureDictionary *)v8 setObject:v5 forKeyedSubscript:objectCopy];
         goto LABEL_11;
       }
 
-      v9 = [[_PSFeatureDictionary alloc] initWithObjectsAndKeys:v5, v6, 0];
+      v9 = [[_PSFeatureDictionary alloc] initWithObjectsAndKeys:v5, objectCopy, 0];
     }
 
-    a1 = v9;
+    self = v9;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 @end

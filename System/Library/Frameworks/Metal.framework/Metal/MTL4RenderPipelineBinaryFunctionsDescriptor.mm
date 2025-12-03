@@ -1,7 +1,7 @@
 @interface MTL4RenderPipelineBinaryFunctionsDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4RenderPipelineBinaryFunctionsDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
@@ -16,20 +16,20 @@
   return [(MTL4RenderPipelineBinaryFunctionsDescriptor *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(NSArray *)self->_vertexAdditionalBinaryFunctions copyWithZone:a3];
-  v5[2] = [(NSArray *)self->_fragmentAdditionalBinaryFunctions copyWithZone:a3];
-  v5[3] = [(NSArray *)self->_tileAdditionalBinaryFunctions copyWithZone:a3];
-  v5[4] = [(NSArray *)self->_objectAdditionalBinaryFunctions copyWithZone:a3];
-  v5[5] = [(NSArray *)self->_meshAdditionalBinaryFunctions copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(NSArray *)self->_vertexAdditionalBinaryFunctions copyWithZone:zone];
+  v5[2] = [(NSArray *)self->_fragmentAdditionalBinaryFunctions copyWithZone:zone];
+  v5[3] = [(NSArray *)self->_tileAdditionalBinaryFunctions copyWithZone:zone];
+  v5[4] = [(NSArray *)self->_objectAdditionalBinaryFunctions copyWithZone:zone];
+  v5[5] = [(NSArray *)self->_meshAdditionalBinaryFunctions copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -37,22 +37,22 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
-      v6 = MTLCompareArray(self->_vertexAdditionalBinaryFunctions, *(a3 + 1), 1, 0);
+      v6 = MTLCompareArray(self->_vertexAdditionalBinaryFunctions, *(equal + 1), 1, 0);
       if (v6)
       {
-        v6 = MTLCompareArray(self->_fragmentAdditionalBinaryFunctions, *(a3 + 2), 1, 0);
+        v6 = MTLCompareArray(self->_fragmentAdditionalBinaryFunctions, *(equal + 2), 1, 0);
         if (v6)
         {
-          v6 = MTLCompareArray(self->_tileAdditionalBinaryFunctions, *(a3 + 3), 1, 0);
+          v6 = MTLCompareArray(self->_tileAdditionalBinaryFunctions, *(equal + 3), 1, 0);
           if (v6)
           {
-            v6 = MTLCompareArray(self->_objectAdditionalBinaryFunctions, *(a3 + 4), 1, 0);
+            v6 = MTLCompareArray(self->_objectAdditionalBinaryFunctions, *(equal + 4), 1, 0);
             if (v6)
             {
               meshAdditionalBinaryFunctions = self->_meshAdditionalBinaryFunctions;
-              v8 = *(a3 + 5);
+              v8 = *(equal + 5);
 
               LOBYTE(v6) = MTLCompareArray(meshAdditionalBinaryFunctions, v8, 1, 0);
             }

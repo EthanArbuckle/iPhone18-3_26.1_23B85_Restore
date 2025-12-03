@@ -1,13 +1,13 @@
 @interface CNUIMemojiMetadata
-+ (id)metadataWithAvatarRecordData:(id)a3 poseConfigurationData:(id)a4;
-+ (id)suggestedAnimojiMetadataWithCount:(unint64_t)a3;
-+ (id)suggestedMemojiMetadataWithCount:(unint64_t)a3;
-+ (id)variantsOfMemojiMetadata:(id)a3 count:(unint64_t)a4;
++ (id)metadataWithAvatarRecordData:(id)data poseConfigurationData:(id)configurationData;
++ (id)suggestedAnimojiMetadataWithCount:(unint64_t)count;
++ (id)suggestedMemojiMetadataWithCount:(unint64_t)count;
++ (id)variantsOfMemojiMetadata:(id)metadata count:(unint64_t)count;
 - (BOOL)hasTallContent;
 - (BOOL)poseHasBody;
-- (CNUIMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4;
-- (CNUIMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 avatar:(id)a5;
-- (CNUIMemojiMetadata)initWithMemojiMetadata:(id)a3;
+- (CNUIMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration;
+- (CNUIMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration avatar:(id)avatar;
+- (CNUIMemojiMetadata)initWithMemojiMetadata:(id)metadata;
 - (NSData)avatarRecordData;
 - (NSData)poseConfigurationData;
 - (NSString)accessibilityDescription;
@@ -16,31 +16,31 @@
 
 @implementation CNUIMemojiMetadata
 
-+ (id)suggestedMemojiMetadataWithCount:(unint64_t)a3
++ (id)suggestedMemojiMetadataWithCount:(unint64_t)count
 {
   v4 = objc_alloc_init(getAVTPAvatarStoreClass());
-  v5 = [getAVTAvatarFetchRequestClass() requestForStorePrimaryAvatar];
+  requestForStorePrimaryAvatar = [getAVTAvatarFetchRequestClass() requestForStorePrimaryAvatar];
   v24 = 0;
-  v6 = [v4 avatarsForFetchRequest:v5 error:&v24];
+  v6 = [v4 avatarsForFetchRequest:requestForStorePrimaryAvatar error:&v24];
   v7 = v24;
-  v8 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
 LABEL_4:
     v12 = getkAVTStickerPackPoses();
-    v13 = [v8 isEditable];
+    isEditable = [firstObject isEditable];
     AVTStickerConfigurationClass = getAVTStickerConfigurationClass();
     v15 = AVTStickerConfigurationClass;
-    if (v13)
+    if (isEditable)
     {
       v16 = [AVTStickerConfigurationClass stickerConfigurationsForMemojiInStickerPack:v12];
     }
 
     else
     {
-      v17 = [v8 identifier];
-      v16 = [v15 stickerConfigurationsForAnimojiNamed:v17 inStickerPack:v12];
+      identifier = [firstObject identifier];
+      v16 = [v15 stickerConfigurationsForAnimojiNamed:identifier inStickerPack:v12];
     }
 
     if ([v16 count])
@@ -48,7 +48,7 @@ LABEL_4:
       for (i = [MEMORY[0x1E695DF70] array];
       {
         v19 = [v16 objectAtIndex:{arc4random_uniform(objc_msgSend(v16, "count"))}];
-        v20 = [[CNUIMemojiMetadata alloc] initWithAvatarRecord:v8 poseConfiguration:v19];
+        v20 = [[CNUIMemojiMetadata alloc] initWithAvatarRecord:firstObject poseConfiguration:v19];
         [i addObject:v20];
       }
     }
@@ -58,7 +58,7 @@ LABEL_4:
       v21 = +[CNUICoreLogProvider memoji_os_log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [CNUIMemojiMetadata suggestedMemojiMetadataWithCount:v8];
+        [CNUIMemojiMetadata suggestedMemojiMetadataWithCount:firstObject];
       }
 
       i = MEMORY[0x1E695E0F0];
@@ -67,71 +67,71 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  v9 = [getAVTAvatarFetchRequestClass() requestForAllAvatars];
+  requestForAllAvatars = [getAVTAvatarFetchRequestClass() requestForAllAvatars];
 
   v23 = v7;
-  v10 = [v4 avatarsForFetchRequest:v9 error:&v23];
+  v10 = [v4 avatarsForFetchRequest:requestForAllAvatars error:&v23];
   v11 = v23;
 
-  v8 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v5 = v9;
+    requestForStorePrimaryAvatar = requestForAllAvatars;
     v7 = v11;
     goto LABEL_4;
   }
 
-  v8 = +[CNUICoreLogProvider memoji_os_log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  firstObject = +[CNUICoreLogProvider memoji_os_log];
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
   {
     [CNUIMemojiMetadata suggestedMemojiMetadataWithCount:v11];
   }
 
   i = MEMORY[0x1E695E0F0];
-  v5 = v9;
+  requestForStorePrimaryAvatar = requestForAllAvatars;
   v7 = v11;
 LABEL_15:
 
   return i;
 }
 
-+ (id)suggestedAnimojiMetadataWithCount:(unint64_t)a3
++ (id)suggestedAnimojiMetadataWithCount:(unint64_t)count
 {
   v4 = objc_alloc_init(getAVTPAvatarStoreClass());
-  v5 = [getAVTAvatarFetchRequestClass() requestForPredefinedAvatars];
+  requestForPredefinedAvatars = [getAVTAvatarFetchRequestClass() requestForPredefinedAvatars];
   v21 = 0;
-  v6 = [v4 avatarsForFetchRequest:v5 error:&v21];
+  v6 = [v4 avatarsForFetchRequest:requestForPredefinedAvatars error:&v21];
   v7 = v21;
   if ([v6 count])
   {
     v8 = getkAVTStickerPackPoses();
-    v9 = [MEMORY[0x1E695DF70] array];
-    if (a3)
+    array = [MEMORY[0x1E695DF70] array];
+    if (count)
     {
       v18 = v7;
-      v19 = v5;
+      v19 = requestForPredefinedAvatars;
       v20 = v4;
       v10 = 0;
       do
       {
         v11 = [v6 objectAtIndex:{v10 % objc_msgSend(v6, "count", v18, v19, v20)}];
         AVTStickerConfigurationClass = getAVTStickerConfigurationClass();
-        v13 = [v11 identifier];
-        v14 = [AVTStickerConfigurationClass stickerConfigurationsForAnimojiNamed:v13 inStickerPack:v8];
+        identifier = [v11 identifier];
+        v14 = [AVTStickerConfigurationClass stickerConfigurationsForAnimojiNamed:identifier inStickerPack:v8];
 
         if ([v14 count])
         {
           v15 = [v14 objectAtIndex:{arc4random_uniform(objc_msgSend(v14, "count"))}];
           v16 = [[CNUIMemojiMetadata alloc] initWithAvatarRecord:v11 poseConfiguration:v15];
-          [v9 addObject:v16];
+          [array addObject:v16];
         }
 
         ++v10;
       }
 
-      while (a3 != v10);
-      v5 = v19;
+      while (count != v10);
+      requestForPredefinedAvatars = v19;
       v4 = v20;
       v7 = v18;
     }
@@ -145,35 +145,35 @@ LABEL_15:
       [CNUIMemojiMetadata suggestedAnimojiMetadataWithCount:v7];
     }
 
-    v9 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)variantsOfMemojiMetadata:(id)a3 count:(unint64_t)a4
++ (id)variantsOfMemojiMetadata:(id)metadata count:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [v5 avatarRecord];
+  metadataCopy = metadata;
+  avatarRecord = [metadataCopy avatarRecord];
   v7 = getkAVTStickerPackPoses();
-  v8 = [v6 isEditable];
+  isEditable = [avatarRecord isEditable];
   AVTStickerConfigurationClass = getAVTStickerConfigurationClass();
   v10 = AVTStickerConfigurationClass;
-  if (v8)
+  if (isEditable)
   {
     v11 = [AVTStickerConfigurationClass stickerConfigurationsForMemojiInStickerPack:v7];
   }
 
   else
   {
-    v12 = [v6 identifier];
-    v11 = [v10 stickerConfigurationsForAnimojiNamed:v12 inStickerPack:v7];
+    identifier = [avatarRecord identifier];
+    v11 = [v10 stickerConfigurationsForAnimojiNamed:identifier inStickerPack:v7];
   }
 
   if ([v11 count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
-    if (a4)
+    array = [MEMORY[0x1E695DF70] array];
+    if (count)
     {
       v22 = v7;
       v14 = 0;
@@ -181,15 +181,15 @@ LABEL_15:
       {
         v15 = [v11 objectAtIndex:{v14 % objc_msgSend(v11, "count")}];
         v16 = [CNUIMemojiMetadata alloc];
-        v17 = [v5 avatar];
-        v18 = [v17 copy];
-        v19 = [(CNUIMemojiMetadata *)v16 initWithAvatarRecord:v6 poseConfiguration:v15 avatar:v18];
-        [v13 addObject:v19];
+        avatar = [metadataCopy avatar];
+        v18 = [avatar copy];
+        v19 = [(CNUIMemojiMetadata *)v16 initWithAvatarRecord:avatarRecord poseConfiguration:v15 avatar:v18];
+        [array addObject:v19];
 
         ++v14;
       }
 
-      while (a4 != v14);
+      while (count != v14);
       v7 = v22;
     }
   }
@@ -199,55 +199,55 @@ LABEL_15:
     v20 = +[CNUICoreLogProvider memoji_os_log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [CNUIMemojiMetadata suggestedMemojiMetadataWithCount:v6];
+      [CNUIMemojiMetadata suggestedMemojiMetadataWithCount:avatarRecord];
     }
 
-    v13 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v13;
+  return array;
 }
 
-+ (id)metadataWithAvatarRecordData:(id)a3 poseConfigurationData:(id)a4
++ (id)metadataWithAvatarRecordData:(id)data poseConfigurationData:(id)configurationData
 {
   v4 = 0;
-  if (a3 && a4)
+  if (data && configurationData)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [getAVTAvatarRecordSerializerClass() avatarRecordFromData:v8];
+    configurationDataCopy = configurationData;
+    dataCopy = data;
+    v9 = [getAVTAvatarRecordSerializerClass() avatarRecordFromData:dataCopy];
 
-    v10 = [MEMORY[0x1E695CF08] poseConfigurationForData:v7 withAvatarRecord:v9];
+    v10 = [MEMORY[0x1E695CF08] poseConfigurationForData:configurationDataCopy withAvatarRecord:v9];
 
-    v4 = [[a1 alloc] initWithAvatarRecord:v9 poseConfiguration:v10];
+    v4 = [[self alloc] initWithAvatarRecord:v9 poseConfiguration:v10];
   }
 
   return v4;
 }
 
-- (CNUIMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 avatar:(id)a5
+- (CNUIMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration avatar:(id)avatar
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recordCopy = record;
+  configurationCopy = configuration;
+  avatarCopy = avatar;
   v15.receiver = self;
   v15.super_class = CNUIMemojiMetadata;
   v12 = [(CNUIMemojiMetadata *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avatarRecord, a3);
-    objc_storeStrong(&v13->_poseConfiguration, a4);
-    objc_storeStrong(&v13->_avatar, a5);
+    objc_storeStrong(&v12->_avatarRecord, record);
+    objc_storeStrong(&v13->_poseConfiguration, configuration);
+    objc_storeStrong(&v13->_avatar, avatar);
   }
 
   return v13;
 }
 
-- (CNUIMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4
+- (CNUIMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  configurationCopy = configuration;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -266,35 +266,35 @@ LABEL_15:
 
   v9 = v8;
   _Block_object_dispose(&v14, 8);
-  v10 = [v8 avatarForRecord:v6];
-  v11 = [(CNUIMemojiMetadata *)self initWithAvatarRecord:v6 poseConfiguration:v7 avatar:v10];
+  v10 = [v8 avatarForRecord:recordCopy];
+  v11 = [(CNUIMemojiMetadata *)self initWithAvatarRecord:recordCopy poseConfiguration:configurationCopy avatar:v10];
 
   return v11;
 }
 
-- (CNUIMemojiMetadata)initWithMemojiMetadata:(id)a3
+- (CNUIMemojiMetadata)initWithMemojiMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 avatarRecord];
-  v6 = [v4 poseConfiguration];
+  metadataCopy = metadata;
+  avatarRecord = [metadataCopy avatarRecord];
+  poseConfiguration = [metadataCopy poseConfiguration];
 
-  v7 = [(CNUIMemojiMetadata *)self initWithAvatarRecord:v5 poseConfiguration:v6];
+  v7 = [(CNUIMemojiMetadata *)self initWithAvatarRecord:avatarRecord poseConfiguration:poseConfiguration];
   return v7;
 }
 
 - (NSString)identifier
 {
-  v2 = [(CNUIMemojiMetadata *)self avatarRecord];
-  v3 = [v2 identifier];
+  avatarRecord = [(CNUIMemojiMetadata *)self avatarRecord];
+  identifier = [avatarRecord identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSData)avatarRecordData
 {
   AVTAvatarRecordSerializerClass = getAVTAvatarRecordSerializerClass();
-  v4 = [(CNUIMemojiMetadata *)self avatarRecord];
-  v5 = [AVTAvatarRecordSerializerClass dataFromAvatarRecord:v4];
+  avatarRecord = [(CNUIMemojiMetadata *)self avatarRecord];
+  v5 = [AVTAvatarRecordSerializerClass dataFromAvatarRecord:avatarRecord];
 
   return v5;
 }
@@ -302,8 +302,8 @@ LABEL_15:
 - (NSData)poseConfigurationData
 {
   v2 = MEMORY[0x1E695CF08];
-  v3 = [(CNUIMemojiMetadata *)self poseConfiguration];
-  v4 = [v2 dataForPoseConfiguration:v3];
+  poseConfiguration = [(CNUIMemojiMetadata *)self poseConfiguration];
+  v4 = [v2 dataForPoseConfiguration:poseConfiguration];
 
   return v4;
 }
@@ -315,13 +315,13 @@ LABEL_15:
   if (!accessibilityDescription)
   {
     AXUIAvatarUtilitiesClass = getAXUIAvatarUtilitiesClass();
-    v5 = [(CNUIMemojiMetadata *)self avatarRecord];
-    v6 = [(objc_class *)AXUIAvatarUtilitiesClass descriptionForAvatarWithRecord:v5 includeVideoPrefix:0];
+    avatarRecord = [(CNUIMemojiMetadata *)self avatarRecord];
+    v6 = [(objc_class *)AXUIAvatarUtilitiesClass descriptionForAvatarWithRecord:avatarRecord includeVideoPrefix:0];
 
-    v7 = [(CNUIMemojiMetadata *)self poseConfiguration];
-    v8 = [v7 localizedName];
+    poseConfiguration = [(CNUIMemojiMetadata *)self poseConfiguration];
+    localizedName = [poseConfiguration localizedName];
 
-    v13[0] = v8;
+    v13[0] = localizedName;
     v13[1] = v6;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v10 = [v9 componentsJoinedByString:{@", "}];
@@ -336,39 +336,39 @@ LABEL_15:
 
 - (BOOL)poseHasBody
 {
-  v3 = [(CNUIMemojiMetadata *)self poseConfiguration];
+  poseConfiguration = [(CNUIMemojiMetadata *)self poseConfiguration];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(CNUIMemojiMetadata *)self poseConfiguration];
-  v6 = v5;
+  poseConfiguration2 = [(CNUIMemojiMetadata *)self poseConfiguration];
+  poseConfiguration3 = poseConfiguration2;
   if (v4)
   {
-    v7 = [v5 showsBody];
+    showsBody = [poseConfiguration2 showsBody];
   }
 
   else
   {
-    [v5 loadIfNeeded];
+    [poseConfiguration2 loadIfNeeded];
 
-    v6 = [(CNUIMemojiMetadata *)self poseConfiguration];
-    v8 = [v6 bodyPose];
-    v7 = v8 != 0;
+    poseConfiguration3 = [(CNUIMemojiMetadata *)self poseConfiguration];
+    bodyPose = [poseConfiguration3 bodyPose];
+    showsBody = bodyPose != 0;
   }
 
-  return v7;
+  return showsBody;
 }
 
 - (BOOL)hasTallContent
 {
-  v3 = [(CNUIMemojiMetadata *)self avatar];
+  avatar = [(CNUIMemojiMetadata *)self avatar];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CNUIMemojiMetadata *)self avatar];
-    v6 = [v5 name];
-    v7 = [v6 isEqualToString:@"giraffe"];
+    avatar2 = [(CNUIMemojiMetadata *)self avatar];
+    name = [avatar2 name];
+    v7 = [name isEqualToString:@"giraffe"];
 
     return v7;
   }

@@ -1,5 +1,5 @@
 @interface JavaUtilTreeMap_KeySet_$1
-- (JavaUtilTreeMap_KeySet_$1)initWithJavaUtilTreeMap_KeySet:(id)a3 withJavaUtilTreeMap_Node:(id)a4;
+- (JavaUtilTreeMap_KeySet_$1)initWithJavaUtilTreeMap_KeySet:(id)set withJavaUtilTreeMap_Node:(id)node;
 - (id)next;
 @end
 
@@ -7,21 +7,21 @@
 
 - (id)next
 {
-  v2 = [(JavaUtilTreeMap_MapIterator *)self stepForward];
-  if (!v2)
+  stepForward = [(JavaUtilTreeMap_MapIterator *)self stepForward];
+  if (!stepForward)
   {
     JreThrowNullPointerException();
   }
 
-  return v2[4];
+  return stepForward[4];
 }
 
-- (JavaUtilTreeMap_KeySet_$1)initWithJavaUtilTreeMap_KeySet:(id)a3 withJavaUtilTreeMap_Node:(id)a4
+- (JavaUtilTreeMap_KeySet_$1)initWithJavaUtilTreeMap_KeySet:(id)set withJavaUtilTreeMap_Node:(id)node
 {
-  Weak = objc_loadWeak(a3 + 1);
+  Weak = objc_loadWeak(set + 1);
   JreStrongAssign(&self->super.this$0_, Weak);
   self->super.expectedModCount_ = Weak[11];
-  JreStrongAssign(&self->super.next_, a4);
+  JreStrongAssign(&self->super.next_, node);
   return self;
 }
 

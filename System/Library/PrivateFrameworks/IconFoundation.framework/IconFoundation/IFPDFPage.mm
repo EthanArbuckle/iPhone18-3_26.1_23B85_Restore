@@ -1,21 +1,21 @@
 @interface IFPDFPage
-- (IFPDFPage)initWithCGPDFPage:(CGPDFPage *)a3;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
+- (IFPDFPage)initWithCGPDFPage:(CGPDFPage *)page;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
 - (void)dealloc;
 @end
 
 @implementation IFPDFPage
 
-- (IFPDFPage)initWithCGPDFPage:(CGPDFPage *)a3
+- (IFPDFPage)initWithCGPDFPage:(CGPDFPage *)page
 {
   v7.receiver = self;
   v7.super_class = IFPDFPage;
   v4 = [(IFPDFPage *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (page && v4)
   {
-    CFRetain(a3);
-    v5->_pdfPage = a3;
+    CFRetain(page);
+    v5->_pdfPage = page;
   }
 
   return v5;
@@ -34,17 +34,17 @@
   [(IFPDFPage *)&v4 dealloc];
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
   if (self->_pdfPage)
   {
-    height = a3.height;
-    width = a3.width;
-    v8 = (a3.width * a4);
-    v9 = (a3.height * a4);
+    height = size.height;
+    width = size.width;
+    v8 = (size.width * scale);
+    v9 = (size.height * scale);
     v10 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
     v11 = CGBitmapContextCreate(0, v8, v9, 8uLL, 4 * v8, v10, 2u);
-    CGContextScaleCTM(v11, a4, a4);
+    CGContextScaleCTM(v11, scale, scale);
     v25.origin.x = 0.0;
     v25.origin.y = 0.0;
     v25.size.width = width;
@@ -99,7 +99,7 @@
     if (Image)
     {
       v18 = Image;
-      v19 = [[IFImage alloc] initWithCGImage:Image scale:a4];
+      v19 = [[IFImage alloc] initWithCGImage:Image scale:scale];
       CFRelease(v18);
     }
 

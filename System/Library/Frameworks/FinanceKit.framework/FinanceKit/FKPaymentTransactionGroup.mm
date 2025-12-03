@@ -1,33 +1,33 @@
 @interface FKPaymentTransactionGroup
-- (BOOL)isEqual:(id)a3;
-- (FKPaymentTransactionGroup)initWithStartDate:(id)a3 endDate:(id)a4 transactionCount:(int64_t)a5 type:(unint64_t)a6 bankConnectSectionIdentifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKPaymentTransactionGroup)initWithStartDate:(id)date endDate:(id)endDate transactionCount:(int64_t)count type:(unint64_t)type bankConnectSectionIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKPaymentTransactionGroup
 
-- (FKPaymentTransactionGroup)initWithStartDate:(id)a3 endDate:(id)a4 transactionCount:(int64_t)a5 type:(unint64_t)a6 bankConnectSectionIdentifier:(id)a7
+- (FKPaymentTransactionGroup)initWithStartDate:(id)date endDate:(id)endDate transactionCount:(int64_t)count type:(unint64_t)type bankConnectSectionIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = FKPaymentTransactionGroup;
   v15 = [(FKPaymentTransactionGroup *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dateCopy copy];
     startDate = v15->_startDate;
     v15->_startDate = v16;
 
-    v18 = [v13 copy];
+    v18 = [endDateCopy copy];
     endDate = v15->_endDate;
     v15->_endDate = v18;
 
-    v15->_transactionCount = a5;
-    v15->_type = a6;
-    v20 = [v14 copy];
+    v15->_transactionCount = count;
+    v15->_type = type;
+    v20 = [identifierCopy copy];
     bankConnectSectionIdentifier = v15->_bankConnectSectionIdentifier;
     v15->_bankConnectSectionIdentifier = v20;
   }
@@ -35,18 +35,18 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(FKPaymentTransactionGroup);
-  v6 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_startDate copyWithZone:zone];
   startDate = v5->_startDate;
   v5->_startDate = v6;
 
-  v8 = [(NSDate *)self->_endDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_endDate copyWithZone:zone];
   endDate = v5->_endDate;
   v5->_endDate = v8;
 
-  v10 = [(NSString *)self->_bankConnectSectionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_bankConnectSectionIdentifier copyWithZone:zone];
   bankConnectSectionIdentifier = v5->_bankConnectSectionIdentifier;
   v5->_bankConnectSectionIdentifier = v10;
 
@@ -68,16 +68,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = FKEqualObjects(self->_startDate, v6[1]) && FKEqualObjects(self->_endDate, v6[2]) && FKEqualObjects(self->_bankConnectSectionIdentifier, v6[5]) && self->_transactionCount == v6[3] && self->_type == v6[4];

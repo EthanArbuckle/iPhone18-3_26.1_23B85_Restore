@@ -1,13 +1,13 @@
 @interface SessionSimulator
-- (void)replaySensorDidFinishLoadingWithStartTimestamp:(double)a3 endTimestamp:(double)a4;
+- (void)replaySensorDidFinishLoadingWithStartTimestamp:(double)timestamp endTimestamp:(double)endTimestamp;
 @end
 
 @implementation SessionSimulator
 
-- (void)replaySensorDidFinishLoadingWithStartTimestamp:(double)a3 endTimestamp:(double)a4
+- (void)replaySensorDidFinishLoadingWithStartTimestamp:(double)timestamp endTimestamp:(double)endTimestamp
 {
-  v6 = self;
-  sub_1000A697C(a3, a4);
+  selfCopy = self;
+  sub_1000A697C(timestamp, endTimestamp);
 }
 
 @end

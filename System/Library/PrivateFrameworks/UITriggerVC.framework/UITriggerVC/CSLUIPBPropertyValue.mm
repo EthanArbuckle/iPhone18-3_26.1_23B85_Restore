@@ -1,33 +1,33 @@
 @interface CSLUIPBPropertyValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addArrayValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addArrayValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSLUIPBPropertyValue
 
-- (void)addArrayValues:(id)a3
+- (void)addArrayValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   arrayValues = self->_arrayValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!arrayValues)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_arrayValues;
     self->_arrayValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     arrayValues = self->_arrayValues;
   }
 
-  [(NSMutableArray *)arrayValues addObject:v4];
+  [(NSMutableArray *)arrayValues addObject:valuesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = CSLUIPBPropertyValue;
   v4 = [(CSLUIPBPropertyValue *)&v8 description];
-  v5 = [(CSLUIPBPropertyValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CSLUIPBPropertyValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,19 +45,19 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   numberValue = self->_numberValue;
   if (numberValue)
   {
-    v7 = [(CSLUIPBNumber *)numberValue dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"numberValue"];
+    dictionaryRepresentation = [(CSLUIPBNumber *)numberValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"numberValue"];
   }
 
   uUIDValue = self->_uUIDValue;
@@ -75,15 +75,15 @@
   sizeValue = self->_sizeValue;
   if (sizeValue)
   {
-    v11 = [(CSLUIPBSize *)sizeValue dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"sizeValue"];
+    dictionaryRepresentation2 = [(CSLUIPBSize *)sizeValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"sizeValue"];
   }
 
   dictionaryKey = self->_dictionaryKey;
   if (dictionaryKey)
   {
-    v13 = [(CSLUIPBPropertyValue *)dictionaryKey dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"dictionaryKey"];
+    dictionaryRepresentation3 = [(CSLUIPBPropertyValue *)dictionaryKey dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"dictionaryKey"];
   }
 
   if ([(NSMutableArray *)self->_arrayValues count])
@@ -108,8 +108,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation4 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation4];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -126,10 +126,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
@@ -195,80 +195,80 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
-    [v8 setStringValue:?];
+    [toCopy setStringValue:?];
   }
 
   if (self->_numberValue)
   {
-    [v8 setNumberValue:?];
+    [toCopy setNumberValue:?];
   }
 
   if (self->_uUIDValue)
   {
-    [v8 setUUIDValue:?];
+    [toCopy setUUIDValue:?];
   }
 
   if (self->_dataValue)
   {
-    [v8 setDataValue:?];
+    [toCopy setDataValue:?];
   }
 
   if (self->_sizeValue)
   {
-    [v8 setSizeValue:?];
+    [toCopy setSizeValue:?];
   }
 
   if (self->_dictionaryKey)
   {
-    [v8 setDictionaryKey:?];
+    [toCopy setDictionaryKey:?];
   }
 
   if ([(CSLUIPBPropertyValue *)self arrayValuesCount])
   {
-    [v8 clearArrayValues];
-    v4 = [(CSLUIPBPropertyValue *)self arrayValuesCount];
-    if (v4)
+    [toCopy clearArrayValues];
+    arrayValuesCount = [(CSLUIPBPropertyValue *)self arrayValuesCount];
+    if (arrayValuesCount)
     {
-      v5 = v4;
+      v5 = arrayValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CSLUIPBPropertyValue *)self arrayValuesAtIndex:i];
-        [v8 addArrayValues:v7];
+        [toCopy addArrayValues:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(CSLUIPBNumber *)self->_numberValue copyWithZone:a3];
+  v8 = [(CSLUIPBNumber *)self->_numberValue copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSData *)self->_uUIDValue copyWithZone:a3];
+  v10 = [(NSData *)self->_uUIDValue copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v12 = [(NSData *)self->_dataValue copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(CSLUIPBSize *)self->_sizeValue copyWithZone:a3];
+  v14 = [(CSLUIPBSize *)self->_sizeValue copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(CSLUIPBPropertyValue *)self->_dictionaryKey copyWithZone:a3];
+  v16 = [(CSLUIPBPropertyValue *)self->_dictionaryKey copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
@@ -292,7 +292,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addArrayValues:v23];
 
         ++v22;
@@ -309,13 +309,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((stringValue = self->_stringValue, !(stringValue | v4[6])) || -[NSString isEqual:](stringValue, "isEqual:")) && ((numberValue = self->_numberValue, !(numberValue | v4[4])) || -[CSLUIPBNumber isEqual:](numberValue, "isEqual:")) && ((uUIDValue = self->_uUIDValue, !(uUIDValue | v4[7])) || -[NSData isEqual:](uUIDValue, "isEqual:")) && ((dataValue = self->_dataValue, !(dataValue | v4[2])) || -[NSData isEqual:](dataValue, "isEqual:")) && ((sizeValue = self->_sizeValue, !(sizeValue | v4[5])) || -[CSLUIPBSize isEqual:](sizeValue, "isEqual:")) && ((dictionaryKey = self->_dictionaryKey, !(dictionaryKey | v4[3])) || -[CSLUIPBPropertyValue isEqual:](dictionaryKey, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((stringValue = self->_stringValue, !(stringValue | equalCopy[6])) || -[NSString isEqual:](stringValue, "isEqual:")) && ((numberValue = self->_numberValue, !(numberValue | equalCopy[4])) || -[CSLUIPBNumber isEqual:](numberValue, "isEqual:")) && ((uUIDValue = self->_uUIDValue, !(uUIDValue | equalCopy[7])) || -[NSData isEqual:](uUIDValue, "isEqual:")) && ((dataValue = self->_dataValue, !(dataValue | equalCopy[2])) || -[NSData isEqual:](dataValue, "isEqual:")) && ((sizeValue = self->_sizeValue, !(sizeValue | equalCopy[5])) || -[CSLUIPBSize isEqual:](sizeValue, "isEqual:")) && ((dictionaryKey = self->_dictionaryKey, !(dictionaryKey | equalCopy[3])) || -[CSLUIPBPropertyValue isEqual:](dictionaryKey, "isEqual:")))
   {
     arrayValues = self->_arrayValues;
-    if (arrayValues | v4[1])
+    if (arrayValues | equalCopy[1])
     {
       v12 = [(NSMutableArray *)arrayValues isEqual:?];
     }
@@ -345,17 +345,17 @@
   return v6 ^ v8 ^ [(NSMutableArray *)self->_arrayValues hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(CSLUIPBPropertyValue *)self setStringValue:?];
   }
 
   numberValue = self->_numberValue;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (numberValue)
   {
     if (v6)
@@ -369,18 +369,18 @@
     [(CSLUIPBPropertyValue *)self setNumberValue:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(CSLUIPBPropertyValue *)self setUUIDValue:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(CSLUIPBPropertyValue *)self setDataValue:?];
   }
 
   sizeValue = self->_sizeValue;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (sizeValue)
   {
     if (v8)
@@ -395,7 +395,7 @@
   }
 
   dictionaryKey = self->_dictionaryKey;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (dictionaryKey)
   {
     if (v10)
@@ -413,7 +413,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {

@@ -1,8 +1,8 @@
 @interface ASCLockupContentView
-+ (BOOL)isOfferButtonFixedHeightForSize:(id)a3;
-+ (BOOL)offerButtonShouldTopAlignForSize:(id)a3;
-- (ASCLockupContentView)initWithCoder:(id)a3;
-- (ASCLockupContentView)initWithFrame:(CGRect)a3;
++ (BOOL)isOfferButtonFixedHeightForSize:(id)size;
++ (BOOL)offerButtonShouldTopAlignForSize:(id)size;
+- (ASCLockupContentView)initWithCoder:(id)coder;
+- (ASCLockupContentView)initWithFrame:(CGRect)frame;
 - (BOOL)isMiniLockup;
 - (BOOL)isOfferButtonOnlyLockup;
 - (BOOL)isSmallOfferButtonOnlyLockup;
@@ -11,7 +11,7 @@
 - (BOOL)shouldHideSubtitle;
 - (CGSize)intrinsicContentSize;
 - (CGSize)preferredIconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
 - (UIColor)loadingColor;
 - (UILabel)headingLabel;
@@ -20,36 +20,36 @@
 - (id)defaultOfferTheme;
 - (id)makeLayout;
 - (id)saveOfferState;
-- (void)addOfferTarget:(id)a3 action:(SEL)a4;
-- (void)beginOfferModalStateWithCancelBlock:(id)a3;
+- (void)addOfferTarget:(id)target action:(SEL)action;
+- (void)beginOfferModalStateWithCancelBlock:(id)block;
 - (void)endOfferModalState;
 - (void)headingLabel;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
-- (void)offerButton:(id)a3 willTransitionToMetadata:(id)a4 usingAnimator:(id)a5;
+- (void)offerButton:(id)button willTransitionToMetadata:(id)metadata usingAnimator:(id)animator;
 - (void)offerStatusLabel;
-- (void)removeOfferTarget:(id)a3 action:(SEL)a4;
-- (void)setBadge:(id)a3;
+- (void)removeOfferTarget:(id)target action:(SEL)action;
+- (void)setBadge:(id)badge;
 - (void)setDataChanged;
-- (void)setDisplayContext:(id)a3;
-- (void)setHeading:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconImage:(id)a3 withDecoration:(id)a4;
-- (void)setLoading:(BOOL)a3;
-- (void)setLoadingColor:(id)a3;
-- (void)setLockupSize:(id)a3;
-- (void)setLockupTheme:(id)a3;
-- (void)setOfferEnabled:(BOOL)a3;
-- (void)setOfferInteractive:(BOOL)a3;
-- (void)setOfferMetadata:(id)a3;
-- (void)setOfferStatus:(id)a3;
-- (void)setOfferTheme:(id)a3;
-- (void)setPrefersRightToLeftLayout:(BOOL)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDisplayContext:(id)context;
+- (void)setHeading:(id)heading;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconImage:(id)image withDecoration:(id)decoration;
+- (void)setLoading:(BOOL)loading;
+- (void)setLoadingColor:(id)color;
+- (void)setLockupSize:(id)size;
+- (void)setLockupTheme:(id)theme;
+- (void)setOfferEnabled:(BOOL)enabled;
+- (void)setOfferInteractive:(BOOL)interactive;
+- (void)setOfferMetadata:(id)metadata;
+- (void)setOfferStatus:(id)status;
+- (void)setOfferTheme:(id)theme;
+- (void)setPrefersRightToLeftLayout:(BOOL)layout;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateLockupTheme;
-- (void)updateOfferLayoutPropertiesForSize:(void *)a1;
+- (void)updateOfferLayoutPropertiesForSize:(void *)size;
 - (void)updateOfferTheme;
 - (void)updateViewsVisibility;
 @end
@@ -58,16 +58,16 @@
 
 - (BOOL)isOfferButtonOnlyLockup
 {
-  v3 = [(ASCLockupContentView *)self lockupSize];
-  if (ASCLockupViewSizeIsSmallOfferButton(v3, v4))
+  lockupSize = [(ASCLockupContentView *)self lockupSize];
+  if (ASCLockupViewSizeIsSmallOfferButton(lockupSize, v4))
   {
     IsMediumOfferButton = 1;
   }
 
   else
   {
-    v6 = [(ASCLockupContentView *)self lockupSize];
-    IsMediumOfferButton = ASCLockupViewSizeIsMediumOfferButton(v6, v7);
+    lockupSize2 = [(ASCLockupContentView *)self lockupSize];
+    IsMediumOfferButton = ASCLockupViewSizeIsMediumOfferButton(lockupSize2, v7);
   }
 
   return IsMediumOfferButton;
@@ -75,47 +75,47 @@
 
 - (BOOL)isSmallOfferButtonOnlyLockup
 {
-  v2 = [(ASCLockupContentView *)self lockupSize];
-  v3 = [ASCLockupContentView isSmallOfferButtonLockupForSize:v2];
+  lockupSize = [(ASCLockupContentView *)self lockupSize];
+  v3 = [ASCLockupContentView isSmallOfferButtonLockupForSize:lockupSize];
 
   return v3;
 }
 
 - (BOOL)isMiniLockup
 {
-  v2 = [(ASCLockupContentView *)self lockupSize];
-  IsMini = ASCLockupViewSizeIsMini(v2, v3);
+  lockupSize = [(ASCLockupContentView *)self lockupSize];
+  IsMini = ASCLockupViewSizeIsMini(lockupSize, v3);
 
   return IsMini;
 }
 
-+ (BOOL)isOfferButtonFixedHeightForSize:(id)a3
++ (BOOL)isOfferButtonFixedHeightForSize:(id)size
 {
-  v3 = a3;
-  if (ASCLockupViewSizeIsLargeAppShowcase(v3, v4))
+  sizeCopy = size;
+  if (ASCLockupViewSizeIsLargeAppShowcase(sizeCopy, v4))
   {
     IsLargeAppAd = 1;
   }
 
   else
   {
-    IsLargeAppAd = ASCLockupViewSizeIsLargeAppAd(v3, v5);
+    IsLargeAppAd = ASCLockupViewSizeIsLargeAppAd(sizeCopy, v5);
   }
 
   return IsLargeAppAd;
 }
 
-+ (BOOL)offerButtonShouldTopAlignForSize:(id)a3
++ (BOOL)offerButtonShouldTopAlignForSize:(id)size
 {
-  v4 = a3;
-  if (([a1 isOfferButtonFixedHeightForSize:v4] & 1) != 0 || (objc_msgSend(a1, "offerButtonTopPaddingForSize:", v4), v6 > 0.0))
+  sizeCopy = size;
+  if (([self isOfferButtonFixedHeightForSize:sizeCopy] & 1) != 0 || (objc_msgSend(self, "offerButtonTopPaddingForSize:", sizeCopy), v6 > 0.0))
   {
     IsMediumOfferButton = 1;
   }
 
   else
   {
-    IsMediumOfferButton = ASCLockupViewSizeIsMediumOfferButton(v4, v5);
+    IsMediumOfferButton = ASCLockupViewSizeIsMediumOfferButton(sizeCopy, v5);
   }
 
   return IsMediumOfferButton;
@@ -123,13 +123,13 @@
 
 - (BOOL)shouldHideHeading
 {
-  v3 = [(ASCLockupContentView *)self isOfferButtonOnlyLockup];
-  if (!v3)
+  isOfferButtonOnlyLockup = [(ASCLockupContentView *)self isOfferButtonOnlyLockup];
+  if (!isOfferButtonOnlyLockup)
   {
     [(ASCLockupContentView *)self isMiniLockup];
   }
 
-  return v3;
+  return isOfferButtonOnlyLockup;
 }
 
 - (BOOL)shouldHideSubtitle
@@ -141,9 +141,9 @@
 
   if ([(ASCLockupContentView *)self isMiniLockup])
   {
-    v4 = [(ASCLockupContentView *)self headingLabelIfLoaded];
-    v5 = [v4 text];
-    v6 = [v5 length];
+    headingLabelIfLoaded = [(ASCLockupContentView *)self headingLabelIfLoaded];
+    text = [headingLabelIfLoaded text];
+    v6 = [text length];
     v3 = v6 != 0;
     if (!v6)
     {
@@ -170,12 +170,12 @@
   return [(ASCLockupContentView *)self isMiniLockup];
 }
 
-- (ASCLockupContentView)initWithFrame:(CGRect)a3
+- (ASCLockupContentView)initWithFrame:(CGRect)frame
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = ASCLockupContentView;
-  v3 = [(ASCLockupContentView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCLockupContentView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -229,7 +229,7 @@
   return v4;
 }
 
-- (ASCLockupContentView)initWithCoder:(id)a3
+- (ASCLockupContentView)initWithCoder:(id)coder
 {
   [(ASCLockupContentView *)self doesNotRecognizeSelector:a2];
 
@@ -272,8 +272,8 @@
 
 - (CGSize)preferredIconSize
 {
-  v2 = [(ASCLockupContentView *)self iconArtworkView];
-  [v2 preferredSize];
+  iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+  [iconArtworkView preferredSize];
   v4 = v3;
   v6 = v5;
 
@@ -284,9 +284,9 @@
   return result;
 }
 
-- (void)setLockupSize:(id)a3
+- (void)setLockupSize:(id)size
 {
-  obj = a3;
+  obj = size;
   v4 = self->_lockupSize;
   v5 = v4;
   if (obj && v4)
@@ -315,21 +315,21 @@ LABEL_6:
 
 - (UIColor)loadingColor
 {
-  v2 = [(ASCLockupContentView *)self titleLabel];
-  v3 = [v2 skeletonColor];
+  titleLabel = [(ASCLockupContentView *)self titleLabel];
+  skeletonColor = [titleLabel skeletonColor];
 
-  return v3;
+  return skeletonColor;
 }
 
-- (void)setLoadingColor:(id)a3
+- (void)setLoadingColor:(id)color
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  colorCopy = color;
+  v12 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
-    v6 = [(ASCLockupContentView *)self iconArtworkView];
-    [v6 setPlaceholderColor:v5];
+    v5 = colorCopy;
+    iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+    [iconArtworkView setPlaceholderColor:v5];
 
     v7 = v5;
     v8 = v7;
@@ -338,73 +338,73 @@ LABEL_6:
   else
   {
     v8 = +[ASCSemanticColor artworkPlaceholder];
-    v9 = [(ASCLockupContentView *)self iconArtworkView];
-    [v9 setPlaceholderColor:v8];
+    iconArtworkView2 = [(ASCLockupContentView *)self iconArtworkView];
+    [iconArtworkView2 setPlaceholderColor:v8];
 
     v7 = +[ASCSemanticColor loading];
   }
 
-  v10 = [(ASCLockupContentView *)self titleLabel];
-  [v10 setSkeletonColor:v7];
+  titleLabel = [(ASCLockupContentView *)self titleLabel];
+  [titleLabel setSkeletonColor:v7];
 
-  v11 = [(ASCLockupContentView *)self subtitleLabel];
-  [v11 setSkeletonColor:v7];
+  subtitleLabel = [(ASCLockupContentView *)self subtitleLabel];
+  [subtitleLabel setSkeletonColor:v7];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = ASCLockupContentView;
   [(ASCLockupContentView *)&v6 setHighlighted:?];
-  v5 = [(ASCLockupContentView *)self iconArtworkView];
-  [v5 setHighlighted:v3];
+  iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+  [iconArtworkView setHighlighted:highlightedCopy];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v11.receiver = self;
   v11.super_class = ASCLockupContentView;
   [(ASCLockupContentView *)&v11 setSemanticContentAttribute:?];
-  v5 = [(ASCLockupContentView *)self headingLabelIfLoaded];
-  [v5 setSemanticContentAttribute:a3];
+  headingLabelIfLoaded = [(ASCLockupContentView *)self headingLabelIfLoaded];
+  [headingLabelIfLoaded setSemanticContentAttribute:attribute];
 
-  v6 = [(ASCLockupContentView *)self iconArtworkView];
-  [v6 setSemanticContentAttribute:a3];
+  iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+  [iconArtworkView setSemanticContentAttribute:attribute];
 
-  v7 = [(ASCLockupContentView *)self titleLabel];
-  [v7 setSemanticContentAttribute:a3];
+  titleLabel = [(ASCLockupContentView *)self titleLabel];
+  [titleLabel setSemanticContentAttribute:attribute];
 
-  v8 = [(ASCLockupContentView *)self subtitleLabel];
-  [v8 setSemanticContentAttribute:a3];
+  subtitleLabel = [(ASCLockupContentView *)self subtitleLabel];
+  [subtitleLabel setSemanticContentAttribute:attribute];
 
-  v9 = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
-  [v9 setSemanticContentAttribute:a3];
+  offerStatusLabelIfLoaded = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
+  [offerStatusLabelIfLoaded setSemanticContentAttribute:attribute];
 
-  v10 = [(ASCLockupContentView *)self offerButton];
-  [v10 setSemanticContentAttribute:a3];
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton setSemanticContentAttribute:attribute];
 }
 
 - (id)makeLayout
 {
-  v3 = [(ASCLockupContentView *)self lockupSize];
-  v4 = [(ASCLockupContentView *)self traitCollection];
-  v5 = [(ASCLockupContentView *)self iconArtworkView];
-  v6 = [(ASCLockupContentView *)self headingLabelIfLoaded];
-  v7 = [(ASCLockupContentView *)self titleLabel];
-  v8 = [(ASCLockupContentView *)self subtitleLabel];
-  v9 = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
-  v10 = [(ASCLockupContentView *)self offerButton];
-  v11 = [(ASCLockupContentView *)self badgeView];
-  v12 = [__ASCLayoutProxy lockupLayoutOfSize:v3 traitCollection:v4 artworkView:v5 headingText:v6 titleText:v7 subtitleText:v8 offerText:v9 offerButton:v10 badge:v11];
+  lockupSize = [(ASCLockupContentView *)self lockupSize];
+  traitCollection = [(ASCLockupContentView *)self traitCollection];
+  iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+  headingLabelIfLoaded = [(ASCLockupContentView *)self headingLabelIfLoaded];
+  titleLabel = [(ASCLockupContentView *)self titleLabel];
+  subtitleLabel = [(ASCLockupContentView *)self subtitleLabel];
+  offerStatusLabelIfLoaded = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  badgeView = [(ASCLockupContentView *)self badgeView];
+  v12 = [__ASCLayoutProxy lockupLayoutOfSize:lockupSize traitCollection:traitCollection artworkView:iconArtworkView headingText:headingLabelIfLoaded titleText:titleLabel subtitleText:subtitleLabel offerText:offerStatusLabelIfLoaded offerButton:offerButton badge:badgeView];
 
   return v12;
 }
 
 - (double)minimumLockupHeight
 {
-  v2 = [(ASCLockupContentView *)self iconArtworkView];
-  [v2 preferredSize];
+  iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+  [iconArtworkView preferredSize];
   v4 = v3;
 
   return v4;
@@ -417,8 +417,8 @@ LABEL_6:
   [(ASCLockupContentView *)&v4 invalidateIntrinsicContentSize];
   if ([(ASCLockupContentView *)self translatesAutoresizingMaskIntoConstraints])
   {
-    v3 = [(ASCLockupContentView *)self superview];
-    [v3 invalidateIntrinsicContentSize];
+    superview = [(ASCLockupContentView *)self superview];
+    [superview invalidateIntrinsicContentSize];
   }
 }
 
@@ -430,10 +430,10 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(ASCLockupContentView *)self layoutMargins];
   v10 = v6;
   v11 = v8;
@@ -457,16 +457,16 @@ LABEL_6:
     v13 = 0.0;
   }
 
-  v14 = [(ASCLockupContentView *)self makeLayout];
-  v15 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v14 measuredSizeFittingSize:v15 inTraitEnvironment:{v12, v13}];
+  makeLayout = [(ASCLockupContentView *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout measuredSizeFittingSize:asc_layoutTraitEnvironment inTraitEnvironment:{v12, v13}];
   v17 = v16;
   v19 = v18;
 
   if ([(ASCLockupContentView *)self isSmallOfferButtonOnlyLockup])
   {
-    v20 = [(ASCLockupContentView *)self offerButton];
-    v21 = [v20 size];
+    offerButton = [(ASCLockupContentView *)self offerButton];
+    v21 = [offerButton size];
     [__ASCLayoutProxy offerButtonRegularWidthForSize:v21];
     width = v22;
 
@@ -506,35 +506,35 @@ LABEL_6:
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(ASCLockupContentView *)self makeLayout];
-  v20 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v19 placeChildrenRelativeToRect:v20 inTraitEnvironment:{v12, v14, v16, v18}];
+  makeLayout = [(ASCLockupContentView *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout placeChildrenRelativeToRect:asc_layoutTraitEnvironment inTraitEnvironment:{v12, v14, v16, v18}];
 }
 
-- (void)addOfferTarget:(id)a3 action:(SEL)a4
+- (void)addOfferTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  v7 = [(ASCLockupContentView *)self offerButton];
-  [v7 addTarget:v6 action:a4 forControlEvents:64];
+  targetCopy = target;
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton addTarget:targetCopy action:action forControlEvents:64];
 }
 
-- (void)removeOfferTarget:(id)a3 action:(SEL)a4
+- (void)removeOfferTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  v7 = [(ASCLockupContentView *)self offerButton];
-  [v7 removeTarget:v6 action:a4 forControlEvents:64];
+  targetCopy = target;
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton removeTarget:targetCopy action:action forControlEvents:64];
 }
 
-- (void)setLockupTheme:(id)a3
+- (void)setLockupTheme:(id)theme
 {
-  v9 = a3;
+  themeCopy = theme;
   v5 = self->_lockupTheme;
   v6 = v5;
-  if (v9 && v5)
+  if (themeCopy && v5)
   {
-    v7 = [(ASCLockupTheme *)v5 isEqual:v9];
+    v7 = [(ASCLockupTheme *)v5 isEqual:themeCopy];
 
-    v8 = v9;
+    v8 = themeCopy;
     if (v7)
     {
       goto LABEL_6;
@@ -543,27 +543,27 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v8 = v9;
-  if (v6 != v9)
+  v8 = themeCopy;
+  if (v6 != themeCopy)
   {
 LABEL_4:
-    objc_storeStrong(&self->_lockupTheme, a3);
+    objc_storeStrong(&self->_lockupTheme, theme);
     [(ASCLockupContentView *)self updateLockupTheme];
-    v8 = v9;
+    v8 = themeCopy;
   }
 
 LABEL_6:
 }
 
-- (void)setDisplayContext:(id)a3
+- (void)setDisplayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   displayContext = self->_displayContext;
-  if (v4 && displayContext)
+  if (contextCopy && displayContext)
   {
-    v9 = v4;
-    v6 = [(ASCLockupDisplayContext *)displayContext isEqual:v4];
-    v4 = v9;
+    v9 = contextCopy;
+    v6 = [(ASCLockupDisplayContext *)displayContext isEqual:contextCopy];
+    contextCopy = v9;
     if (v6)
     {
       goto LABEL_6;
@@ -572,10 +572,10 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (displayContext != v4)
+  if (displayContext != contextCopy)
   {
 LABEL_4:
-    v7 = [(ASCLockupDisplayContext *)v4 copy];
+    v7 = [(ASCLockupDisplayContext *)contextCopy copy];
     v8 = self->_displayContext;
     self->_displayContext = v7;
 
@@ -590,23 +590,23 @@ LABEL_6:
 - (id)saveOfferState
 {
   v3 = [ASCOfferPresenterViewState alloc];
-  v4 = [(ASCLockupContentView *)self offerButton];
-  v5 = [v4 metadata];
-  v6 = [(ASCLockupContentView *)self offerTheme];
-  v7 = [(ASCOfferPresenterViewState *)v3 initWithMetadata:v5 theme:v6];
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  metadata = [offerButton metadata];
+  offerTheme = [(ASCLockupContentView *)self offerTheme];
+  v7 = [(ASCOfferPresenterViewState *)v3 initWithMetadata:metadata theme:offerTheme];
 
   return v7;
 }
 
-- (void)setOfferTheme:(id)a3
+- (void)setOfferTheme:(id)theme
 {
-  v4 = a3;
+  themeCopy = theme;
   offerTheme = self->_offerTheme;
-  if (v4 && offerTheme)
+  if (themeCopy && offerTheme)
   {
-    v9 = v4;
-    v6 = [(ASCOfferTheme *)offerTheme isEqual:v4];
-    v4 = v9;
+    v9 = themeCopy;
+    v6 = [(ASCOfferTheme *)offerTheme isEqual:themeCopy];
+    themeCopy = v9;
     if (v6)
     {
       goto LABEL_6;
@@ -615,10 +615,10 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (offerTheme != v4)
+  if (offerTheme != themeCopy)
   {
 LABEL_4:
-    v7 = [(ASCOfferTheme *)v4 copy];
+    v7 = [(ASCOfferTheme *)themeCopy copy];
     v8 = self->_offerTheme;
     self->_offerTheme = v7;
 
@@ -630,45 +630,45 @@ LABEL_6:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setOfferEnabled:(BOOL)a3
+- (void)setOfferEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(ASCLockupContentView *)self offerButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton setEnabled:enabledCopy];
 }
 
-- (void)setOfferInteractive:(BOOL)a3
+- (void)setOfferInteractive:(BOOL)interactive
 {
-  v3 = a3;
-  v4 = [(ASCLockupContentView *)self offerButton];
-  [v4 setUserInteractionEnabled:v3];
+  interactiveCopy = interactive;
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton setUserInteractionEnabled:interactiveCopy];
 }
 
-- (void)beginOfferModalStateWithCancelBlock:(id)a3
+- (void)beginOfferModalStateWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ASCLockupContentView *)self offerButton];
-  [v5 beginModalStateWithCancelBlock:v4];
+  blockCopy = block;
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton beginModalStateWithCancelBlock:blockCopy];
 }
 
 - (void)endOfferModalState
 {
-  v2 = [(ASCLockupContentView *)self offerButton];
-  [v2 endModalState];
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  [offerButton endModalState];
 }
 
-- (void)offerButton:(id)a3 willTransitionToMetadata:(id)a4 usingAnimator:(id)a5
+- (void)offerButton:(id)button willTransitionToMetadata:(id)metadata usingAnimator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  buttonCopy = button;
+  metadataCopy = metadata;
+  animatorCopy = animator;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__ASCLockupContentView_offerButton_willTransitionToMetadata_usingAnimator___block_invoke;
   v11[3] = &unk_2781CBD28;
   objc_copyWeak(&v12, &location);
-  [v10 addAnimations:v11];
+  [animatorCopy addAnimations:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
@@ -685,114 +685,114 @@ void __75__ASCLockupContentView_offerButton_willTransitionToMetadata_usingAnimat
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupContentView *)self headingLabelIfLoaded];
-  v5 = [v4 text];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"heading"];
+  headingLabelIfLoaded = [(ASCLockupContentView *)self headingLabelIfLoaded];
+  text = [headingLabelIfLoaded text];
+  [(ASCDescriber *)v3 addObject:text withName:@"heading"];
 
-  v6 = [(ASCLockupContentView *)self titleLabel];
-  v7 = [v6 text];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"title"];
+  titleLabel = [(ASCLockupContentView *)self titleLabel];
+  text2 = [titleLabel text];
+  [(ASCDescriber *)v3 addObject:text2 withName:@"title"];
 
-  v8 = [(ASCLockupContentView *)self subtitleLabel];
-  v9 = [v8 text];
-  [(ASCDescriber *)v3 addObject:v9 withName:@"subtitle"];
+  subtitleLabel = [(ASCLockupContentView *)self subtitleLabel];
+  text3 = [subtitleLabel text];
+  [(ASCDescriber *)v3 addObject:text3 withName:@"subtitle"];
 
-  v10 = [(ASCLockupContentView *)self lockupTheme];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"lockupTheme"];
+  lockupTheme = [(ASCLockupContentView *)self lockupTheme];
+  [(ASCDescriber *)v3 addObject:lockupTheme withName:@"lockupTheme"];
 
-  v11 = [(ASCLockupContentView *)self displayContext];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"displayContext"];
+  displayContext = [(ASCLockupContentView *)self displayContext];
+  [(ASCDescriber *)v3 addObject:displayContext withName:@"displayContext"];
 
-  v12 = [(ASCLockupContentView *)self offerButton];
-  v13 = [v12 size];
+  offerButton = [(ASCLockupContentView *)self offerButton];
+  v13 = [offerButton size];
   [(ASCDescriber *)v3 addObject:v13 withName:@"offerSize"];
 
-  v14 = [(ASCLockupContentView *)self offerButton];
-  v15 = [v14 theme];
-  [(ASCDescriber *)v3 addObject:v15 withName:@"offerTheme"];
+  offerButton2 = [(ASCLockupContentView *)self offerButton];
+  theme = [offerButton2 theme];
+  [(ASCDescriber *)v3 addObject:theme withName:@"offerTheme"];
 
-  v16 = [(ASCLockupContentView *)self offerButton];
-  v17 = [v16 metadata];
-  [(ASCDescriber *)v3 addObject:v17 withName:@"offerMetadata"];
+  offerButton3 = [(ASCLockupContentView *)self offerButton];
+  metadata = [offerButton3 metadata];
+  [(ASCDescriber *)v3 addObject:metadata withName:@"offerMetadata"];
 
-  v18 = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
-  v19 = [v18 text];
-  [(ASCDescriber *)v3 addObject:v19 withName:@"offerStatus"];
+  offerStatusLabelIfLoaded = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
+  text4 = [offerStatusLabelIfLoaded text];
+  [(ASCDescriber *)v3 addObject:text4 withName:@"offerStatus"];
 
-  v20 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v20;
+  return finalizeDescription;
 }
 
 - (void)updateLockupTheme
 {
-  if (a1)
+  if (self)
   {
     +[ASCDefaultLockupTheme sharedTheme];
     objc_claimAutoreleasedReturnValue();
-    v3 = [OUTLINED_FUNCTION_0_3() traitCollection];
-    [v1 applyToLockupContentView:a1 compatibleWithTraitCollection:v3];
+    traitCollection = [OUTLINED_FUNCTION_0_3() traitCollection];
+    [v1 applyToLockupContentView:self compatibleWithTraitCollection:traitCollection];
 
-    v5 = [a1 lockupTheme];
-    v4 = [a1 traitCollection];
-    [v5 applyToLockupContentView:a1 compatibleWithTraitCollection:v4];
+    lockupTheme = [self lockupTheme];
+    traitCollection2 = [self traitCollection];
+    [lockupTheme applyToLockupContentView:self compatibleWithTraitCollection:traitCollection2];
   }
 }
 
-- (void)updateOfferLayoutPropertiesForSize:(void *)a1
+- (void)updateOfferLayoutPropertiesForSize:(void *)size
 {
-  if (a1)
+  if (size)
   {
     v4 = a2;
     ASCLockupViewSizeGetOfferButtonSize(v4);
     objc_claimAutoreleasedReturnValue();
-    v5 = [OUTLINED_FUNCTION_4() offerButton];
-    [v5 setSize:v2];
+    offerButton = [OUTLINED_FUNCTION_4() offerButton];
+    [offerButton setSize:v2];
 
     ASCLockupViewSizeOfferButtonSubtitlePosition(v4);
-    v6 = [OUTLINED_FUNCTION_4() offerButton];
-    [v6 setSubtitlePosition:v2];
+    offerButton2 = [OUTLINED_FUNCTION_4() offerButton];
+    [offerButton2 setSubtitlePosition:v2];
 
     [OUTLINED_FUNCTION_5() isOfferButtonFixedHeightForSize:?];
-    v7 = [OUTLINED_FUNCTION_4() offerButton];
-    [v7 setFixedHeight:v2];
+    offerButton3 = [OUTLINED_FUNCTION_4() offerButton];
+    [offerButton3 setFixedHeight:v2];
 
     [OUTLINED_FUNCTION_5() offerButtonShouldTopAlignForSize:?];
-    v8 = [OUTLINED_FUNCTION_4() offerButton];
-    [v8 setShouldTopAlign:v2];
+    offerButton4 = [OUTLINED_FUNCTION_4() offerButton];
+    [offerButton4 setShouldTopAlign:v2];
 
     [OUTLINED_FUNCTION_5() offerButtonTopPaddingForSize:?];
     v10 = v9;
-    v11 = [a1 offerButton];
-    [v11 setTopPadding:v10];
+    offerButton5 = [size offerButton];
+    [offerButton5 setTopPadding:v10];
 
     v12 = [OUTLINED_FUNCTION_5() offerButtonShouldExpandBackgroundForSize:?];
-    v13 = [a1 offerButton];
-    [v13 setShouldExpandBackground:v12];
+    offerButton6 = [size offerButton];
+    [offerButton6 setShouldExpandBackground:v12];
   }
 }
 
 - (void)updateOfferTheme
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v3 = [a1 offerTheme];
+  offerTheme = [self offerTheme];
 
-  if (!v3)
+  if (!offerTheme)
   {
-    v5 = [a1 titleLabel];
-    [v5 skeleton];
+    titleLabel = [self titleLabel];
+    [titleLabel skeleton];
     if (objc_claimAutoreleasedReturnValue())
     {
-      v6 = [OUTLINED_FUNCTION_4() subtitleLabel];
-      v7 = [v6 skeleton];
+      subtitleLabel = [OUTLINED_FUNCTION_4() subtitleLabel];
+      skeleton = [subtitleLabel skeleton];
 
-      if (v7)
+      if (skeleton)
       {
-        v4 = +[ASCOfferTheme loadingTheme];
+        defaultOfferTheme = +[ASCOfferTheme loadingTheme];
         goto LABEL_7;
       }
     }
@@ -801,15 +801,15 @@ void __75__ASCLockupContentView_offerButton_willTransitionToMetadata_usingAnimat
     {
     }
 
-    v4 = [(ASCLockupContentView *)a1 defaultOfferTheme];
+    defaultOfferTheme = [(ASCLockupContentView *)self defaultOfferTheme];
     goto LABEL_7;
   }
 
-  v4 = [a1 offerTheme];
+  defaultOfferTheme = [self offerTheme];
 LABEL_7:
-  v9 = v4;
-  v8 = [a1 offerButton];
-  [v8 setTheme:v9];
+  v9 = defaultOfferTheme;
+  offerButton = [self offerButton];
+  [offerButton setTheme:v9];
 }
 
 - (void)setDataChanged
@@ -829,82 +829,82 @@ LABEL_7:
 
 - (void)updateViewsVisibility
 {
-  if (a1)
+  if (self)
   {
-    [a1 shouldHideIconArtwork];
-    v4 = [OUTLINED_FUNCTION_0_3() iconArtworkView];
-    OUTLINED_FUNCTION_2_0(v4, v5);
+    [self shouldHideIconArtwork];
+    iconArtworkView = [OUTLINED_FUNCTION_0_3() iconArtworkView];
+    OUTLINED_FUNCTION_2_0(iconArtworkView, v5);
 
-    [a1 shouldHideTitle];
-    v6 = [OUTLINED_FUNCTION_0_3() titleLabel];
-    OUTLINED_FUNCTION_2_0(v6, v7);
+    [self shouldHideTitle];
+    titleLabel = [OUTLINED_FUNCTION_0_3() titleLabel];
+    OUTLINED_FUNCTION_2_0(titleLabel, v7);
 
-    [a1 shouldHideSubtitle];
-    v8 = [OUTLINED_FUNCTION_0_3() subtitleLabel];
-    OUTLINED_FUNCTION_2_0(v8, v9);
+    [self shouldHideSubtitle];
+    subtitleLabel = [OUTLINED_FUNCTION_0_3() subtitleLabel];
+    OUTLINED_FUNCTION_2_0(subtitleLabel, v9);
 
-    [a1 shouldHideHeading];
-    v10 = [OUTLINED_FUNCTION_0_3() headingLabelIfLoaded];
-    OUTLINED_FUNCTION_2_0(v10, v11);
+    [self shouldHideHeading];
+    headingLabelIfLoaded = [OUTLINED_FUNCTION_0_3() headingLabelIfLoaded];
+    OUTLINED_FUNCTION_2_0(headingLabelIfLoaded, v11);
 
-    [a1 shouldHideOfferStatus];
-    v12 = [OUTLINED_FUNCTION_0_3() offerStatusLabelIfLoaded];
-    [v12 setHidden:v1];
+    [self shouldHideOfferStatus];
+    offerStatusLabelIfLoaded = [OUTLINED_FUNCTION_0_3() offerStatusLabelIfLoaded];
+    [offerStatusLabelIfLoaded setHidden:v1];
   }
 }
 
 - (id)defaultOfferTheme
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 offerButton];
-    v3 = [v2 metadata];
-    v4 = ASCOfferMetadataGetOfferTheme(v3);
+    offerButton = [self offerButton];
+    metadata = [offerButton metadata];
+    v4 = ASCOfferMetadataGetOfferTheme(metadata);
     v5 = v4;
     if (v4)
     {
-      v1 = v4;
+      selfCopy = v4;
     }
 
     else
     {
-      v6 = [v1 lockupSize];
-      v1 = ASCLockupViewSizeGetOfferTheme(v6);
+      lockupSize = [selfCopy lockupSize];
+      selfCopy = ASCLockupViewSizeGetOfferTheme(lockupSize);
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setIconImage:(id)a3 withDecoration:(id)a4
+- (void)setIconImage:(id)image withDecoration:(id)decoration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCLockupContentView *)self iconArtworkView];
-  [v8 setImage:v7];
+  decorationCopy = decoration;
+  imageCopy = image;
+  iconArtworkView = [(ASCLockupContentView *)self iconArtworkView];
+  [iconArtworkView setImage:imageCopy];
 
-  v9 = [(ASCLockupContentView *)self iconArtworkView];
-  [v9 setDecoration:v6];
+  iconArtworkView2 = [(ASCLockupContentView *)self iconArtworkView];
+  [iconArtworkView2 setDecoration:decorationCopy];
 
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setHeading:(id)a3
+- (void)setHeading:(id)heading
 {
   v5 = MEMORY[0x277CCA898];
-  v6 = a3;
-  v7 = [OUTLINED_FUNCTION_4() traitCollection];
-  v13 = [v5 asc_attributedStringWithLockupHeading:v3 compatibleWithTraitCollection:v7];
+  headingCopy = heading;
+  traitCollection = [OUTLINED_FUNCTION_4() traitCollection];
+  v13 = [v5 asc_attributedStringWithLockupHeading:v3 compatibleWithTraitCollection:traitCollection];
 
   if (v13 && [v13 length])
   {
-    v12 = [(ASCLockupContentView *)self headingLabel];
-    [v12 setAttributedText:v13];
+    headingLabel = [(ASCLockupContentView *)self headingLabel];
+    [headingLabel setAttributedText:v13];
 
     [(ASCLockupContentView *)self shouldHideHeading];
-    v9 = [OUTLINED_FUNCTION_4() headingLabel];
-    v10 = v9;
+    headingLabel2 = [OUTLINED_FUNCTION_4() headingLabel];
+    v10 = headingLabel2;
     v11 = v3;
   }
 
@@ -915,19 +915,19 @@ LABEL_7:
     OUTLINED_FUNCTION_7();
     [v8 setAttributedText:?];
 
-    v9 = [(ASCLockupContentView *)self headingLabelIfLoaded];
-    v10 = v9;
+    headingLabel2 = [(ASCLockupContentView *)self headingLabelIfLoaded];
+    v10 = headingLabel2;
     v11 = 1;
   }
 
-  [v9 setHidden:v11];
+  [headingLabel2 setHidden:v11];
 
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   [OUTLINED_FUNCTION_0_3() titleLabel];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_3();
@@ -936,9 +936,9 @@ LABEL_7:
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v6 = a3;
+  subtitleCopy = subtitle;
   [OUTLINED_FUNCTION_0_3() subtitleLabel];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_3();
@@ -947,32 +947,32 @@ LABEL_7:
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v5 = a3;
-  v6 = [OUTLINED_FUNCTION_0_3() badgeView];
-  [v6 removeFromSuperview];
+  badgeCopy = badge;
+  badgeView = [OUTLINED_FUNCTION_0_3() badgeView];
+  [badgeView removeFromSuperview];
 
   [(ASCLockupContentView *)self setBadgeView:v3];
-  v7 = [(ASCLockupContentView *)self badgeView];
+  badgeView2 = [(ASCLockupContentView *)self badgeView];
 
-  if (v7)
+  if (badgeView2)
   {
     [(ASCLockupContentView *)self badgeView];
     objc_claimAutoreleasedReturnValue();
-    [OUTLINED_FUNCTION_0_3() addSubview:v7];
+    [OUTLINED_FUNCTION_0_3() addSubview:badgeView2];
   }
 
   [(ASCLockupContentView *)self shouldHideBadge];
-  v8 = [OUTLINED_FUNCTION_0_3() badgeView];
-  OUTLINED_FUNCTION_2_0(v8, v9);
+  badgeView3 = [OUTLINED_FUNCTION_0_3() badgeView];
+  OUTLINED_FUNCTION_2_0(badgeView3, v9);
 
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setPrefersRightToLeftLayout:(BOOL)a3
+- (void)setPrefersRightToLeftLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v4 = 4;
   }
@@ -987,9 +987,9 @@ LABEL_7:
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
     [ASCContentSkeleton fractionalSkeleton:0.76];
     objc_claimAutoreleasedReturnValue();
@@ -1022,9 +1022,9 @@ LABEL_7:
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setOfferMetadata:(id)a3
+- (void)setOfferMetadata:(id)metadata
 {
-  v6 = a3;
+  metadataCopy = metadata;
   [OUTLINED_FUNCTION_0_3() offerButton];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_3();
@@ -1035,18 +1035,18 @@ LABEL_7:
   [(ASCLockupContentView *)self setDataChanged];
 }
 
-- (void)setOfferStatus:(id)a3
+- (void)setOfferStatus:(id)status
 {
-  v6 = a3;
-  v12 = v6;
-  if (v6 && [v6 length])
+  statusCopy = status;
+  v12 = statusCopy;
+  if (statusCopy && [statusCopy length])
   {
-    v11 = [(ASCLockupContentView *)self offerStatusLabel];
-    [v11 setText:v12];
+    offerStatusLabel = [(ASCLockupContentView *)self offerStatusLabel];
+    [offerStatusLabel setText:v12];
 
     [(ASCLockupContentView *)self shouldHideOfferStatus];
-    v8 = [OUTLINED_FUNCTION_4() offerStatusLabel];
-    v9 = v8;
+    offerStatusLabel2 = [OUTLINED_FUNCTION_4() offerStatusLabel];
+    v9 = offerStatusLabel2;
     v10 = v4;
   }
 
@@ -1057,12 +1057,12 @@ LABEL_7:
     OUTLINED_FUNCTION_7();
     [v7 setText:?];
 
-    v8 = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
-    v9 = v8;
+    offerStatusLabel2 = [(ASCLockupContentView *)self offerStatusLabelIfLoaded];
+    v9 = offerStatusLabel2;
     v10 = 1;
   }
 
-  [v8 setHidden:v10];
+  [offerStatusLabel2 setHidden:v10];
 
   [(ASCLockupContentView *)self setDataChanged];
 }
@@ -1072,13 +1072,13 @@ LABEL_7:
   v6 = objc_alloc(MEMORY[0x277D756B8]);
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   *a3 = v7;
-  [v7 setSemanticContentAttribute:{objc_msgSend(a1, "semanticContentAttribute")}];
-  [a1 addSubview:v7];
+  [v7 setSemanticContentAttribute:{objc_msgSend(self, "semanticContentAttribute")}];
+  [self addSubview:v7];
   objc_storeStrong(a2, v7);
   v8 = ASCAXIdentifierWithSuffix(@"Lockup.offerStatus");
   [*a2 setAccessibilityIdentifier:v8];
 
-  [(ASCLockupContentView *)a1 updateLockupTheme];
+  [(ASCLockupContentView *)self updateLockupTheme];
 }
 
 - (void)headingLabel
@@ -1086,13 +1086,13 @@ LABEL_7:
   v6 = objc_alloc(MEMORY[0x277D756B8]);
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   *a3 = v7;
-  [v7 setSemanticContentAttribute:{objc_msgSend(a1, "semanticContentAttribute")}];
-  [a1 addSubview:v7];
+  [v7 setSemanticContentAttribute:{objc_msgSend(self, "semanticContentAttribute")}];
+  [self addSubview:v7];
   objc_storeStrong(a2, v7);
   v8 = ASCAXIdentifierWithSuffix(@"Lockup.heading");
   [*a2 setAccessibilityIdentifier:v8];
 
-  [(ASCLockupContentView *)a1 updateLockupTheme];
+  [(ASCLockupContentView *)self updateLockupTheme];
 }
 
 - (uint64_t)setLockupSize:(void *)a3 .cold.1(id obj, id *location, void *a3)

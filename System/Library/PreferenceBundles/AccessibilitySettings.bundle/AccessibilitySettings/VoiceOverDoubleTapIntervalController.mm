@@ -1,6 +1,6 @@
 @interface VoiceOverDoubleTapIntervalController
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation VoiceOverDoubleTapIntervalController
@@ -14,10 +14,10 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setVoiceOverDoubleTapInterval:a3];
+  [v4 setVoiceOverDoubleTapInterval:user];
 }
 
 @end

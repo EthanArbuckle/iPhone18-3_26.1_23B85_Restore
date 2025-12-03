@@ -2,13 +2,13 @@
 + (BOOL)isClassCLocked;
 + (BOOL)isDeviceUnlocked;
 + (BOOL)isUnlocked;
-+ (id)registerForLockStateChangeForDeviceNotifications:(id)a3;
-+ (id)registerForLockStateChangeNotifications:(id)a3;
-+ (void)registerForAKSEventsNotifications:(id)a3;
-+ (void)runBlockWhenDeviceIsClassCUnlockedWithQoS:(unsigned int)a3 block:(id)a4;
-+ (void)unregisterForAKSEventsNotifications:(void *)a3;
-+ (void)unregisterForLockStateChangeNotifications:(id)a3;
-+ (void)unregisterForLockStateChangeforDeviceNotifications:(id)a3;
++ (id)registerForLockStateChangeForDeviceNotifications:(id)notifications;
++ (id)registerForLockStateChangeNotifications:(id)notifications;
++ (void)registerForAKSEventsNotifications:(id)notifications;
++ (void)runBlockWhenDeviceIsClassCUnlockedWithQoS:(unsigned int)s block:(id)block;
++ (void)unregisterForAKSEventsNotifications:(void *)notifications;
++ (void)unregisterForLockStateChangeNotifications:(id)notifications;
++ (void)unregisterForLockStateChangeforDeviceNotifications:(id)notifications;
 @end
 
 @implementation _PASDeviceState
@@ -17,7 +17,7 @@
 {
   v45 = *MEMORY[0x1E69E9840];
   v2 = atomic_load(&cb);
-  v3 = (*v2)(a1, a2);
+  v3 = (*v2)(self, a2);
   if (v3)
   {
     v32 = v3;
@@ -150,71 +150,71 @@ LABEL_24:
 + (BOOL)isDeviceUnlocked
 {
   v2 = atomic_load(&cb);
-  v3 = (*(v2 + 32))(a1, a2);
+  v3 = (*(v2 + 32))(self, a2);
   return !v3 || v3 == 3;
 }
 
-+ (void)unregisterForAKSEventsNotifications:(void *)a3
++ (void)unregisterForAKSEventsNotifications:(void *)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = atomic_load(&cb);
-    (*(v3 + 88))(a3);
+    (*(v3 + 88))(notifications);
   }
 }
 
-+ (void)registerForAKSEventsNotifications:(id)a3
++ (void)registerForAKSEventsNotifications:(id)notifications
 {
   v3 = atomic_load(&cb);
   v4 = *(v3 + 80);
   v5 = getAKSEventsNotificationsQueue_onceToken;
-  v6 = a3;
+  notificationsCopy = notifications;
   if (v5 != -1)
   {
     dispatch_once(&getAKSEventsNotificationsQueue_onceToken, &__block_literal_global_60);
   }
 
-  v7 = v4(getAKSEventsNotificationsQueue_queue, v6);
+  v7 = v4(getAKSEventsNotificationsQueue_queue, notificationsCopy);
 
   return v7;
 }
 
-+ (void)unregisterForLockStateChangeforDeviceNotifications:(id)a3
++ (void)unregisterForLockStateChangeforDeviceNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = atomic_load(&cb);
-    (*(v3 + 72))(a3);
+    (*(v3 + 72))(notifications);
   }
 }
 
-+ (id)registerForLockStateChangeForDeviceNotifications:(id)a3
++ (id)registerForLockStateChangeForDeviceNotifications:(id)notifications
 {
   v3 = atomic_load(&cb);
   v4 = *(v3 + 64);
-  v5 = a3;
+  notificationsCopy = notifications;
   v6 = getLockStateChangedQueue();
-  v7 = v4(v6, v5);
+  v7 = v4(v6, notificationsCopy);
 
   return v7;
 }
 
-+ (void)unregisterForLockStateChangeNotifications:(id)a3
++ (void)unregisterForLockStateChangeNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = atomic_load(&cb);
-    (*(v3 + 56))(a3);
+    (*(v3 + 56))(notifications);
   }
 }
 
-+ (id)registerForLockStateChangeNotifications:(id)a3
++ (id)registerForLockStateChangeNotifications:(id)notifications
 {
   v3 = atomic_load(&cb);
   v4 = *(v3 + 48);
-  v5 = a3;
+  notificationsCopy = notifications;
   v6 = getLockStateChangedQueue();
-  v7 = v4(v6, v5);
+  v7 = v4(v6, notificationsCopy);
 
   return v7;
 }
@@ -222,16 +222,16 @@ LABEL_24:
 + (BOOL)isUnlocked
 {
   v2 = atomic_load(&cb);
-  v3 = (*(v2 + 24))(a1, a2);
+  v3 = (*(v2 + 24))(self, a2);
   return !v3 || v3 == 3;
 }
 
-+ (void)runBlockWhenDeviceIsClassCUnlockedWithQoS:(unsigned int)a3 block:(id)a4
++ (void)runBlockWhenDeviceIsClassCUnlockedWithQoS:(unsigned int)s block:(id)block
 {
-  v5 = a4;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v16 = v5;
+    v16 = blockCopy;
     v6 = atomic_load(&cb);
     v7 = (*(v6 + 8))();
     if (v7)
@@ -264,13 +264,13 @@ LABEL_24:
       v14 = *(v12 + 8);
       *(v12 + 8) = v13;
 
-      *(v12 + 16) = a3;
+      *(v12 + 16) = s;
       [cUnlockBlocks addObject:v12];
       pthread_mutex_unlock(&cUnlockMutex);
       +[_PASDeviceState isClassCLocked];
     }
 
-    v5 = v16;
+    blockCopy = v16;
   }
 }
 

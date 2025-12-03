@@ -1,26 +1,26 @@
 @interface SKDPipelineEvent
-+ (id)_pipelineEventForEventType:(unsigned __int8)a3 code:(int64_t)a4;
-- (SKDPipelineEvent)initWithEventType:(unsigned __int8)a3 info:(id)a4;
-- (SKDPipelineEvent)initWithEventType:(unsigned __int8)a3 status:(unsigned __int8)a4;
++ (id)_pipelineEventForEventType:(unsigned __int8)type code:(int64_t)code;
+- (SKDPipelineEvent)initWithEventType:(unsigned __int8)type info:(id)info;
+- (SKDPipelineEvent)initWithEventType:(unsigned __int8)type status:(unsigned __int8)status;
 - (id)message;
 @end
 
 @implementation SKDPipelineEvent
 
-+ (id)_pipelineEventForEventType:(unsigned __int8)a3 code:(int64_t)a4
++ (id)_pipelineEventForEventType:(unsigned __int8)type code:(int64_t)code
 {
-  v5 = a3;
+  typeCopy = type;
   if (_pipelineEventForEventType_code__oncePipelineMapToken != -1)
   {
     +[SKDPipelineEvent _pipelineEventForEventType:code:];
   }
 
   v6 = _pipelineEventForEventType_code__sUnknownEvent;
-  if (v5 > 3)
+  if (typeCopy > 3)
   {
-    if (v5 != 4)
+    if (typeCopy != 4)
     {
-      if (v5 != 6)
+      if (typeCopy != 6)
       {
         goto LABEL_19;
       }
@@ -29,8 +29,8 @@
       goto LABEL_18;
     }
 
-    v7 = a4 - 7;
-    if (a4 - 7) < 0xB && ((0x7E7u >> v7))
+    v7 = code - 7;
+    if (code - 7) < 0xB && ((0x7E7u >> v7))
     {
       v8 = off_27893E218;
       goto LABEL_17;
@@ -39,10 +39,10 @@
 
   else
   {
-    if (v5 == 2)
+    if (typeCopy == 2)
     {
-      v7 = a4 - 1;
-      if ((a4 - 1) >= 6)
+      v7 = code - 1;
+      if ((code - 1) >= 6)
       {
         goto LABEL_19;
       }
@@ -51,10 +51,10 @@
       goto LABEL_17;
     }
 
-    if (v5 == 3)
+    if (typeCopy == 3)
     {
-      v7 = a4 - 10;
-      if (a4 - 10) < 0xA && ((0x303u >> v7))
+      v7 = code - 10;
+      if (code - 10) < 0xA && ((0x303u >> v7))
       {
         v8 = off_27893E1C8;
 LABEL_17:
@@ -159,7 +159,7 @@ void __52__SKDPipelineEvent__pipelineEventForEventType_code___block_invoke()
   _pipelineEventForEventType_code__sProcessBatchStartEvent = v40;
 }
 
-- (SKDPipelineEvent)initWithEventType:(unsigned __int8)a3 status:(unsigned __int8)a4
+- (SKDPipelineEvent)initWithEventType:(unsigned __int8)type status:(unsigned __int8)status
 {
   v10.receiver = self;
   v10.super_class = SKDPipelineEvent;
@@ -167,8 +167,8 @@ void __52__SKDPipelineEvent__pipelineEventForEventType_code___block_invoke()
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    v6->_status = a4;
+    v6->_type = type;
+    v6->_status = status;
     identifier = v6->_identifier;
     v6->_identifier = @"pipelineFlag";
   }
@@ -176,21 +176,21 @@ void __52__SKDPipelineEvent__pipelineEventForEventType_code___block_invoke()
   return v7;
 }
 
-- (SKDPipelineEvent)initWithEventType:(unsigned __int8)a3 info:(id)a4
+- (SKDPipelineEvent)initWithEventType:(unsigned __int8)type info:(id)info
 {
-  v7 = a4;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = SKDPipelineEvent;
   v8 = [(SKDPipelineEvent *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
+    v8->_type = type;
     v8->_status = 0;
     identifier = v8->_identifier;
     v8->_identifier = @"pipelineFlag";
 
-    objc_storeStrong(&v9->_info, a4);
+    objc_storeStrong(&v9->_info, info);
   }
 
   return v9;
@@ -198,33 +198,33 @@ void __52__SKDPipelineEvent__pipelineEventForEventType_code___block_invoke()
 
 - (id)message
 {
-  v3 = [(SKDPipelineEvent *)self info];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"messageInfoKey"];
+  info = [(SKDPipelineEvent *)self info];
+  userInfo = [info userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"messageInfoKey"];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    identifier = v5;
   }
 
   else
   {
-    v7 = [(SKDPipelineEvent *)self identifier];
+    identifier = [(SKDPipelineEvent *)self identifier];
   }
 
-  v8 = v7;
+  v8 = identifier;
 
   if (v8)
   {
-    v9 = v8;
+    typeMessage = v8;
   }
 
   else
   {
-    v9 = [(SKDPipelineEvent *)self typeMessage];
+    typeMessage = [(SKDPipelineEvent *)self typeMessage];
   }
 
-  v10 = v9;
+  v10 = typeMessage;
 
   return v10;
 }

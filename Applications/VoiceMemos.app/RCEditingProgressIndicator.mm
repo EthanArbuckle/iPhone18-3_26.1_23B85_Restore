@@ -1,43 +1,43 @@
 @interface RCEditingProgressIndicator
 - (CGPath)_progressPath;
 - (CGSize)intrinsicContentSize;
-- (RCEditingProgressIndicator)initWithCoder:(id)a3;
-- (RCEditingProgressIndicator)initWithFrame:(CGRect)a3;
+- (RCEditingProgressIndicator)initWithCoder:(id)coder;
+- (RCEditingProgressIndicator)initWithFrame:(CGRect)frame;
 - (double)_radius;
 - (void)_commonInit;
 - (void)_styleView;
 - (void)_updateLayers;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)setProgress:(float)a3;
-- (void)setProgressColor:(id)a3;
+- (void)setProgress:(float)progress;
+- (void)setProgressColor:(id)color;
 @end
 
 @implementation RCEditingProgressIndicator
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  self->_progress = a3;
-  v4 = [(RCEditingProgressIndicator *)self _progressPath];
-  v5 = [(RCEditingProgressIndicator *)self progressLayer];
-  [v5 setPath:v4];
+  self->_progress = progress;
+  _progressPath = [(RCEditingProgressIndicator *)self _progressPath];
+  progressLayer = [(RCEditingProgressIndicator *)self progressLayer];
+  [progressLayer setPath:_progressPath];
 }
 
-- (void)setProgressColor:(id)a3
+- (void)setProgressColor:(id)color
 {
-  objc_storeStrong(&self->_progressColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_progressColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(RCEditingProgressIndicator *)self progressLayer];
-  [v7 setFillColor:v6];
+  progressLayer = [(RCEditingProgressIndicator *)self progressLayer];
+  [progressLayer setFillColor:cGColor];
 }
 
-- (RCEditingProgressIndicator)initWithCoder:(id)a3
+- (RCEditingProgressIndicator)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RCEditingProgressIndicator;
-  v3 = [(RCEditingProgressIndicator *)&v6 initWithCoder:a3];
+  v3 = [(RCEditingProgressIndicator *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -47,11 +47,11 @@
   return v4;
 }
 
-- (RCEditingProgressIndicator)initWithFrame:(CGRect)a3
+- (RCEditingProgressIndicator)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RCEditingProgressIndicator;
-  v3 = [(RCEditingProgressIndicator *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCEditingProgressIndicator *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,22 +63,22 @@
 
 - (void)_commonInit
 {
-  v5 = [(RCEditingProgressIndicator *)self layer];
+  layer = [(RCEditingProgressIndicator *)self layer];
   v3 = objc_opt_new();
   [v3 setAnchorPoint:{0.0, 0.0}];
   [(RCEditingProgressIndicator *)self setProgressLayer:v3];
   v4 = +[UIColor secondaryLabelColor];
   [(RCEditingProgressIndicator *)self setProgressColor:v4];
 
-  [v5 addSublayer:v3];
+  [layer addSublayer:v3];
   [(RCEditingProgressIndicator *)self _updateLayers];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = RCEditingProgressIndicator;
-  [(RCEditingProgressIndicator *)&v4 layoutSublayersOfLayer:a3];
+  [(RCEditingProgressIndicator *)&v4 layoutSublayersOfLayer:layer];
   [(RCEditingProgressIndicator *)self _updateLayers];
 }
 
@@ -93,12 +93,12 @@
 
 - (void)_updateLayers
 {
-  v4 = [(RCEditingProgressIndicator *)self progressLayer];
-  v3 = [(RCEditingProgressIndicator *)self layer];
-  [v3 bounds];
-  [v4 setBounds:?];
+  progressLayer = [(RCEditingProgressIndicator *)self progressLayer];
+  layer = [(RCEditingProgressIndicator *)self layer];
+  [layer bounds];
+  [progressLayer setBounds:?];
 
-  [v4 setPath:{-[RCEditingProgressIndicator _progressPath](self, "_progressPath")}];
+  [progressLayer setPath:{-[RCEditingProgressIndicator _progressPath](self, "_progressPath")}];
 }
 
 - (CGPath)_progressPath
@@ -109,8 +109,8 @@
   [(RCEditingProgressIndicator *)self _radius];
   v7 = v6;
   v8 = v5 + v6;
-  v9 = [(RCEditingProgressIndicator *)self progressLayer];
-  [v9 bounds];
+  progressLayer = [(RCEditingProgressIndicator *)self progressLayer];
+  [progressLayer bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -146,9 +146,9 @@
     [v3 addLineToPoint:{MidX, v20}];
   }
 
-  v23 = [v3 CGPath];
+  cGPath = [v3 CGPath];
 
-  return v23;
+  return cGPath;
 }
 
 - (double)_radius
@@ -173,11 +173,11 @@
 
 - (void)_styleView
 {
-  v6 = [(RCEditingProgressIndicator *)self progressColor];
-  v3 = v6;
-  v4 = [v6 CGColor];
-  v5 = [(RCEditingProgressIndicator *)self progressLayer];
-  [v5 setFillColor:v4];
+  progressColor = [(RCEditingProgressIndicator *)self progressColor];
+  v3 = progressColor;
+  cGColor = [progressColor CGColor];
+  progressLayer = [(RCEditingProgressIndicator *)self progressLayer];
+  [progressLayer setFillColor:cGColor];
 }
 
 @end

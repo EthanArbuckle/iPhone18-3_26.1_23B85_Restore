@@ -1,10 +1,10 @@
 @interface RouteRecommendationDisplayMonitorSuppressor
-- (id)suppressionPolicyWithContext:(id)a3;
+- (id)suppressionPolicyWithContext:(id)context;
 @end
 
 @implementation RouteRecommendationDisplayMonitorSuppressor
 
-- (id)suppressionPolicyWithContext:(id)a3
+- (id)suppressionPolicyWithContext:(id)context
 {
   v3 = *&self->displayMonitor[24];
   v4 = *&self->displayMonitor[32];

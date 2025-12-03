@@ -1,14 +1,14 @@
 @interface MailStatusObserver
-- (MailStatusObserver)initWithMailboxRepository:(id)a3 delegate:(id)a4;
+- (MailStatusObserver)initWithMailboxRepository:(id)repository delegate:(id)delegate;
 - (MailStatusObserverDelegate)delegate;
-- (void)_fetchInAppMessageWithCompletion:(id)a3;
-- (void)_inAppMessageChanged:(id)a3;
-- (void)_startBadgeCountObserversWithLabel:(id)a3;
+- (void)_fetchInAppMessageWithCompletion:(id)completion;
+- (void)_inAppMessageChanged:(id)changed;
+- (void)_startBadgeCountObserversWithLabel:(id)label;
 - (void)checkForiCloudQuotaUpsellOffer;
 - (void)dealloc;
-- (void)icqOfferDidChange:(id)a3;
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
-- (void)startObservingForActivityStatusMailboxes:(id)a3 badgeCountStatusMailboxes:(id)a4 filterPredicate:(id)a5 label:(id)a6;
+- (void)icqOfferDidChange:(id)change;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
+- (void)startObservingForActivityStatusMailboxes:(id)mailboxes badgeCountStatusMailboxes:(id)statusMailboxes filterPredicate:(id)predicate label:(id)label;
 - (void)stopObserving;
 @end
 
@@ -50,18 +50,18 @@
   return WeakRetained;
 }
 
-- (MailStatusObserver)initWithMailboxRepository:(id)a3 delegate:(id)a4
+- (MailStatusObserver)initWithMailboxRepository:(id)repository delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  repositoryCopy = repository;
+  delegateCopy = delegate;
   v41.receiver = self;
   v41.super_class = MailStatusObserver;
   v9 = [(MailStatusObserver *)&v41 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mailboxRepository, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_mailboxRepository, repository);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.mobilemail.statusobserver", v11);
     queue = v10->_queue;
@@ -71,7 +71,7 @@
     v38[1] = 3221225472;
     v38[2] = sub_1001338E0;
     v38[3] = &unk_10064C660;
-    v14 = v8;
+    v14 = delegateCopy;
     v39 = v14;
     v15 = v10;
     v40 = v15;
@@ -89,11 +89,11 @@
     v15->_mailboxActivityObserver = v20;
 
     v22 = +[UIApplication sharedApplication];
-    v23 = [v22 daemonInterface];
-    v24 = [v23 activityRegistry];
+    daemonInterface = [v22 daemonInterface];
+    activityRegistry = [daemonInterface activityRegistry];
 
-    v25 = [(MailStatusObserver *)v15 mailboxActivityObserver];
-    [v25 startWithRegistry:v24];
+    mailboxActivityObserver = [(MailStatusObserver *)v15 mailboxActivityObserver];
+    [mailboxActivityObserver startWithRegistry:activityRegistry];
 
     if (MUISolariumFeatureEnabled())
     {
@@ -129,12 +129,12 @@
 - (void)dealloc
 {
   sub_10000FD50(self);
-  v3 = [(MailStatusObserver *)self mailboxActivityObserver];
-  [v3 tearDown];
+  mailboxActivityObserver = [(MailStatusObserver *)self mailboxActivityObserver];
+  [mailboxActivityObserver tearDown];
 
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(MailStatusObserver *)self inAppMessagingToken];
-  [v4 removeObserver:v5];
+  inAppMessagingToken = [(MailStatusObserver *)self inAppMessagingToken];
+  [v4 removeObserver:inAppMessagingToken];
 
   [(MailStatusObserver *)self setInAppMessagingToken:0];
   if (self->_networkObserverID)
@@ -149,16 +149,16 @@
   [(MailStatusObserver *)&v7 dealloc];
 }
 
-- (void)startObservingForActivityStatusMailboxes:(id)a3 badgeCountStatusMailboxes:(id)a4 filterPredicate:(id)a5 label:(id)a6
+- (void)startObservingForActivityStatusMailboxes:(id)mailboxes badgeCountStatusMailboxes:(id)statusMailboxes filterPredicate:(id)predicate label:(id)label
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  mailboxesCopy = mailboxes;
+  statusMailboxesCopy = statusMailboxes;
+  predicateCopy = predicate;
+  labelCopy = label;
   [(MailStatusObserver *)self stopObserving];
-  v14 = [(MailStatusObserver *)self mailboxActivityObserver];
-  v15 = [(MailStatusObserver *)self mailboxRepository];
-  [v14 setMailboxesOfInterest:v10 mailboxTypeResolver:v15];
+  mailboxActivityObserver = [(MailStatusObserver *)self mailboxActivityObserver];
+  mailboxRepository = [(MailStatusObserver *)self mailboxRepository];
+  [mailboxActivityObserver setMailboxesOfInterest:mailboxesCopy mailboxTypeResolver:mailboxRepository];
 
   objc_initWeak(&location, self);
   activityStatusUpdateScheduler = self->_activityStatusUpdateScheduler;
@@ -167,11 +167,11 @@
   v20[2] = sub_100133C94;
   v20[3] = &unk_1006511E8;
   objc_copyWeak(&v24, &location);
-  v17 = v11;
+  v17 = statusMailboxesCopy;
   v21 = v17;
-  v18 = v12;
+  v18 = predicateCopy;
   v22 = v18;
-  v19 = v13;
+  v19 = labelCopy;
   v23 = v19;
   [(EFScheduler *)activityStatusUpdateScheduler performBlock:v20];
 
@@ -179,18 +179,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_startBadgeCountObserversWithLabel:(id)a3
+- (void)_startBadgeCountObserversWithLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(MailStatusObserver *)self badgeCountStatusMailboxes];
-  if ([v5 count])
+  labelCopy = label;
+  badgeCountStatusMailboxes = [(MailStatusObserver *)self badgeCountStatusMailboxes];
+  if ([badgeCountStatusMailboxes count])
   {
-    v28 = v4;
-    v6 = [(MailStatusObserver *)self delegate];
-    v27 = v6;
-    if (v6)
+    v28 = labelCopy;
+    delegate = [(MailStatusObserver *)self delegate];
+    v27 = delegate;
+    if (delegate)
     {
-      v7 = [v6 preferUnreadCountInsteadOfTotalCount:self];
+      v7 = [delegate preferUnreadCountInsteadOfTotalCount:self];
     }
 
     else
@@ -198,27 +198,27 @@
       v7 = 0;
     }
 
-    v8 = [EMMessageListItemPredicates predicateForMessagesInMailboxes:v5];
+    v8 = [EMMessageListItemPredicates predicateForMessagesInMailboxes:badgeCountStatusMailboxes];
     v9 = [NSMutableArray arrayWithObject:v8];
 
     v26 = v9;
-    v10 = [(MailStatusObserver *)self filterPredicate];
-    if (v10)
+    filterPredicate = [(MailStatusObserver *)self filterPredicate];
+    if (filterPredicate)
     {
-      [v9 addObject:v10];
+      [v9 addObject:filterPredicate];
     }
 
     if (v7)
     {
       v11 = +[EMMessageListItemPredicates predicateForUnreadMessages];
-      if (([v10 isEqual:v11] & 1) == 0)
+      if (([filterPredicate isEqual:v11] & 1) == 0)
       {
         [v9 addObject:v11];
       }
     }
 
     v24 = [NSCompoundPredicate ef_andCompoundPredicateWithSubpredicates:v9];
-    v29 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:v24 sortDescriptors:&__NSArray0__struct queryOptions:0 label:v4];
+    v29 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:v24 sortDescriptors:&__NSArray0__struct queryOptions:0 label:labelCopy];
     v40 = 0;
     v41 = &v40;
     v42 = 0x3032000000;
@@ -237,11 +237,11 @@
     v12 = objc_alloc_init(NSMutableSet);
     v33 = v12;
     v35 = &v36;
-    v13 = [v5 ef_filter:v32];
+    v13 = [badgeCountStatusMailboxes ef_filter:v32];
     v14 = v13;
     if (v37[3])
     {
-      v15 = 0;
+      mailboxScope = 0;
     }
 
     else if ([v13 count] || objc_msgSend(v12, "count"))
@@ -256,38 +256,38 @@
       v18 = [v17 ef_mapSelector:"objectID"];
 
       v19 = [[NSSet alloc] initWithArray:v18];
-      v15 = [[EMMailboxScope alloc] initWithMailboxTypes:v16 excludeTypes:0 mailboxObjectIDs:v19 excludeMailboxes:0];
+      mailboxScope = [[EMMailboxScope alloc] initWithMailboxTypes:v16 excludeTypes:0 mailboxObjectIDs:v19 excludeMailboxes:0];
     }
 
     else
     {
-      v15 = [v41[5] mailboxScope];
+      mailboxScope = [v41[5] mailboxScope];
     }
 
     v20 = +[UIApplication sharedApplication];
-    v21 = [v20 daemonInterface];
-    v22 = [v21 messageRepository];
-    v23 = [v22 startCountingQuery:v29 includingServerCountsForMailboxScope:v15 withObserver:self];
+    daemonInterface = [v20 daemonInterface];
+    messageRepository = [daemonInterface messageRepository];
+    v23 = [messageRepository startCountingQuery:v29 includingServerCountsForMailboxScope:mailboxScope withObserver:self];
     [(MailStatusObserver *)self setBadgeCountObserverCancelable:v23];
 
     _Block_object_dispose(&v36, 8);
     _Block_object_dispose(&v40, 8);
 
-    v4 = v28;
+    labelCopy = v28;
   }
 }
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
-  [(MailStatusObserver *)self setBadgeCount:a5, a4];
-  v7 = [(MailStatusObserver *)self delegate];
-  if (v7)
+  [(MailStatusObserver *)self setBadgeCount:change, query];
+  delegate = [(MailStatusObserver *)self delegate];
+  if (delegate)
   {
-    [v7 badgeCountUpdated:self badgeCount:a5];
+    [delegate badgeCountUpdated:self badgeCount:change];
   }
 }
 
-- (void)icqOfferDidChange:(id)a3
+- (void)icqOfferDidChange:(id)change
 {
   v4 = +[ICQOfferManager sharedOfferManager];
   v5[0] = _NSConcreteStackBlock;
@@ -298,7 +298,7 @@
   [v4 getOfferWithCompletion:v5];
 }
 
-- (void)_inAppMessageChanged:(id)a3
+- (void)_inAppMessageChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -311,15 +311,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchInAppMessageWithCompletion:(id)a3
+- (void)_fetchInAppMessageWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[ICQInAppMessaging shared];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001349B0;
   v6[3] = &unk_1006512B0;
-  v5 = v3;
+  v5 = completionCopy;
   v7 = v5;
   [v4 fetchMessageWithCompletion:v6];
 }

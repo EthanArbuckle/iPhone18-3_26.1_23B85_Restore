@@ -1,15 +1,15 @@
 @interface RTElevationMO
-+ (id)managedObjectWithElevation:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithElevation:(id)elevation inManagedObjectContext:(id)context;
 @end
 
 @implementation RTElevationMO
 
-+ (id)managedObjectWithElevation:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithElevation:(id)elevation inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  elevationCopy = elevation;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!elevationCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -25,20 +25,20 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTElevationMO alloc] initWithContext:v6];
-    [v5 elevation];
+    v8 = [[RTElevationMO alloc] initWithContext:contextCopy];
+    [elevationCopy elevation];
     [(RTElevationMO *)v8 setElevation:?];
-    v9 = [v5 startDate];
-    [(RTElevationMO *)v8 setStartDate:v9];
+    startDate = [elevationCopy startDate];
+    [(RTElevationMO *)v8 setStartDate:startDate];
 
-    v10 = [v5 endDate];
-    [(RTElevationMO *)v8 setEndDate:v10];
+    endDate = [elevationCopy endDate];
+    [(RTElevationMO *)v8 setEndDate:endDate];
 
-    [v5 elevationUncertainty];
+    [elevationCopy elevationUncertainty];
     [(RTElevationMO *)v8 setElevationUncertainty:?];
-    -[RTElevationMO setEstimationStatus:](v8, "setEstimationStatus:", [v5 estimationStatus]);
+    -[RTElevationMO setEstimationStatus:](v8, "setEstimationStatus:", [elevationCopy estimationStatus]);
     goto LABEL_8;
   }
 

@@ -1,26 +1,26 @@
 @interface NSArray
 - (BOOL)sr_prefersUTF8StringRepresentation;
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3;
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream;
 @end
 
 @implementation NSArray
 
 - (BOOL)sr_prefersUTF8StringRepresentation
 {
-  v2 = [(NSArray *)self firstObject];
-  v3 = [v2 conformsToProtocol:&OBJC_PROTOCOL___SRSampleDirectExporting];
+  firstObject = [(NSArray *)self firstObject];
+  v3 = [firstObject conformsToProtocol:&OBJC_PROTOCOL___SRSampleDirectExporting];
   if (v3)
   {
 
-    LOBYTE(v3) = [v2 sr_prefersUTF8StringRepresentation];
+    LOBYTE(v3) = [firstObject sr_prefersUTF8StringRepresentation];
   }
 
   return v3;
 }
 
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream
 {
-  v5 = [a3 write:"[" maxLength:1];
+  v5 = [stream write:"[" maxLength:1];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -44,11 +44,11 @@
         v11 = *(*(&v13 + 1) + 8 * v10);
         if ((v9 & 1) == 0)
         {
-          v5 = &v5[[a3 write:" maxLength:{\n", 2}]];
+          v5 = &v5[[stream write:" maxLength:{\n", 2}]];
         }
 
         v9 = 0;
-        v5 = &v5[[v11 sr_writeUTF8RepresentationToOutputStream:a3]];
+        v5 = &v5[[v11 sr_writeUTF8RepresentationToOutputStream:stream]];
         v10 = v10 + 1;
       }
 
@@ -60,7 +60,7 @@
     while (v7);
   }
 
-  return &v5[[a3 write:"]" maxLength:1]];
+  return &v5[[stream write:"]" maxLength:1]];
 }
 
 @end

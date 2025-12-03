@@ -1,33 +1,33 @@
 @interface AVCaptureControlsOverlay
-- (AVCaptureControlsOverlay)initWithSession:(id)a3;
+- (AVCaptureControlsOverlay)initWithSession:(id)session;
 - (void)_activateIsolated;
 - (void)_invalidateIsolated;
 - (void)_sendControlsIsolated;
-- (void)_updateControlIsolated:(id)a3;
+- (void)_updateControlIsolated:(id)isolated;
 - (void)activate;
-- (void)cameraOverlayConnection:(id)a3 didApplyControlUpdate:(id)a4;
-- (void)cameraOverlayConnection:(id)a3 didChangeActiveControlIdentifier:(id)a4;
-- (void)cameraOverlayConnection:(id)a3 didChangeFocusLocked:(BOOL)a4;
-- (void)cameraOverlayConnection:(id)a3 didChangeInterfaceReduced:(BOOL)a4;
-- (void)cameraOverlayConnection:(id)a3 didChangeOverlayVisible:(BOOL)a4 activeControlIdentifier:(id)a5;
-- (void)cameraOverlayConnection:(id)a3 didChangeStatus:(unint64_t)a4;
+- (void)cameraOverlayConnection:(id)connection didApplyControlUpdate:(id)update;
+- (void)cameraOverlayConnection:(id)connection didChangeActiveControlIdentifier:(id)identifier;
+- (void)cameraOverlayConnection:(id)connection didChangeFocusLocked:(BOOL)locked;
+- (void)cameraOverlayConnection:(id)connection didChangeInterfaceReduced:(BOOL)reduced;
+- (void)cameraOverlayConnection:(id)connection didChangeOverlayVisible:(BOOL)visible activeControlIdentifier:(id)identifier;
+- (void)cameraOverlayConnection:(id)connection didChangeStatus:(unint64_t)status;
 - (void)dealloc;
 - (void)invalidate;
 - (void)rebuildControls;
-- (void)updateControl:(id)a3;
-- (void)updateControls:(id)a3;
+- (void)updateControl:(id)control;
+- (void)updateControls:(id)controls;
 @end
 
 @implementation AVCaptureControlsOverlay
 
-- (AVCaptureControlsOverlay)initWithSession:(id)a3
+- (AVCaptureControlsOverlay)initWithSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = AVCaptureControlsOverlay;
   v4 = [(AVCaptureControlsOverlay *)&v7 init];
   if (v4)
   {
-    v4->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+    v4->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:session];
     v5 = dispatch_queue_create("com.apple.avfoundation.controls-overlay", 0);
     v4->_controlsLock._os_unfair_lock_opaque = 0;
     v4->_connectionQueue = v5;
@@ -86,7 +86,7 @@
   [(AVCaptureControlsOverlay *)&v10 dealloc];
 }
 
-- (void)updateControls:(id)a3
+- (void)updateControls:(id)controls
 {
   os_unfair_lock_lock(&self->_controlsLock);
   v5 = [(NSArray *)self->_orderedIdentifiers copy];
@@ -96,14 +96,14 @@
   v52 = &v51;
   v53 = 0x2020000000;
   v54 = 0;
-  v7 = [a3 count];
+  v7 = [controls count];
   if (v7 == [v5 count])
   {
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __43__AVCaptureControlsOverlay_updateControls___block_invoke;
     v50[3] = &unk_1E7875CD0;
-    v50[4] = a3;
+    v50[4] = controls;
     v50[5] = v6;
     v50[6] = &v51;
     [v5 enumerateObjectsUsingBlock:v50];
@@ -136,7 +136,7 @@
         }
 
         v11 = [v6 objectForKeyedSubscript:*(*(&v46 + 1) + 8 * i)];
-        if (([a3 containsObject:{objc_msgSend(v11, "control")}] & 1) == 0)
+        if (([controls containsObject:{objc_msgSend(v11, "control")}] & 1) == 0)
         {
           [objc_msgSend(v11 "control")];
         }
@@ -154,7 +154,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v13 = [a3 countByEnumeratingWithState:&v41 objects:v40 count:16];
+  v13 = [controls countByEnumeratingWithState:&v41 objects:v40 count:16];
   if (v13)
   {
     v14 = *v42;
@@ -164,19 +164,19 @@
       {
         if (*v42 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(controls);
         }
 
         v16 = *(*(&v41 + 1) + 8 * j);
-        v17 = [v16 identifier];
+        identifier = [v16 identifier];
         v18 = -[AVCaptureControlsOverlayItem initWithControl:overlayControl:]([AVCaptureControlsOverlayItem alloc], "initWithControl:overlayControl:", v16, [v16 overlayControl]);
-        [v12 setObject:v18 forKeyedSubscript:v17];
+        [v12 setObject:v18 forKeyedSubscript:identifier];
 
-        [v28 addObject:v17];
+        [v28 addObject:identifier];
         [v16 setOverlay:self];
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v41 objects:v40 count:16];
+      v13 = [controls countByEnumeratingWithState:&v41 objects:v40 count:16];
     }
 
     while (v13);
@@ -271,7 +271,7 @@ uint64_t __43__AVCaptureControlsOverlay_updateControls___block_invoke(uint64_t a
   os_unfair_lock_lock(&self->_controlsLock);
   v4 = [(NSArray *)self->_orderedIdentifiers copy];
   v5 = [(NSDictionary *)self->_itemsByIdentifier copy];
-  v14 = self;
+  selfCopy = self;
   os_unfair_lock_unlock(&self->_controlsLock);
   v19 = 0u;
   v20 = 0u;
@@ -292,7 +292,7 @@ uint64_t __43__AVCaptureControlsOverlay_updateControls___block_invoke(uint64_t a
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [objc_msgSend(v5 objectForKeyedSubscript:{v10, v14), "control"}];
+        v11 = [objc_msgSend(v5 objectForKeyedSubscript:{v10, selfCopy), "control"}];
         v12 = -[AVCaptureControlsOverlayItem initWithControl:overlayControl:]([AVCaptureControlsOverlayItem alloc], "initWithControl:overlayControl:", v11, [v11 overlayControl]);
         [v3 setObject:v12 forKeyedSubscript:v10];
       }
@@ -303,17 +303,17 @@ uint64_t __43__AVCaptureControlsOverlay_updateControls___block_invoke(uint64_t a
     while (v7);
   }
 
-  os_unfair_lock_lock(&v14->_controlsLock);
+  os_unfair_lock_lock(&selfCopy->_controlsLock);
 
-  v14->_itemsByIdentifier = [v3 copy];
-  os_unfair_lock_unlock(&v14->_controlsLock);
+  selfCopy->_itemsByIdentifier = [v3 copy];
+  os_unfair_lock_unlock(&selfCopy->_controlsLock);
 
-  connectionQueue = v14->_connectionQueue;
+  connectionQueue = selfCopy->_connectionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__AVCaptureControlsOverlay_rebuildControls__block_invoke;
   block[3] = &unk_1E786EC08;
-  block[4] = v14;
+  block[4] = selfCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -386,15 +386,15 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
   [*(a1 + 32) _invalidateIsolated];
 }
 
-- (void)cameraOverlayConnection:(id)a3 didApplyControlUpdate:(id)a4
+- (void)cameraOverlayConnection:(id)connection didApplyControlUpdate:(id)update
 {
   dispatch_assert_queue_V2(self->_connectionQueue);
   os_unfair_lock_lock(&self->_controlsLock);
-  v6 = -[NSDictionary objectForKeyedSubscript:](self->_itemsByIdentifier, "objectForKeyedSubscript:", [a4 controlIdentifier]);
+  v6 = -[NSDictionary objectForKeyedSubscript:](self->_itemsByIdentifier, "objectForKeyedSubscript:", [update controlIdentifier]);
   os_unfair_lock_unlock(&self->_controlsLock);
-  v7 = [v6 control];
+  control = [v6 control];
 
-  [v7 enqueueActionWithUpdate:a4];
+  [control enqueueActionWithUpdate:update];
 }
 
 - (void)_sendControlsIsolated
@@ -407,8 +407,8 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
     v4 = [(NSArray *)self->_orderedIdentifiers copy];
     v5 = [(NSDictionary *)self->_itemsByIdentifier copy];
     os_unfair_lock_unlock(&self->_controlsLock);
-    v6 = [MEMORY[0x1E695DF70] array];
-    v13 = OUTLINED_FUNCTION_1_12(v6, v7, &v95, v8, v9, v10, v11, v12, v62, v67, v71, v75, v79, v83, v87, v91, 0, 0, 0, 0, 0, 0, 0, 0, v103, v104, v105, v106, v107, v108, v109, v110, v111, *(&v111 + 1), v112, *(&v112 + 1), v113, *(&v113 + 1), v114, *(&v114 + 1), v115);
+    array = [MEMORY[0x1E695DF70] array];
+    v13 = OUTLINED_FUNCTION_1_12(array, v7, &v95, v8, v9, v10, v11, v12, v62, v67, v71, v75, v79, v83, v87, v91, 0, 0, 0, 0, 0, 0, 0, 0, v103, v104, v105, v106, v107, v108, v109, v110, v111, *(&v111 + 1), v112, *(&v112 + 1), v113, *(&v113 + 1), v114, *(&v114 + 1), v115);
     if (v13)
     {
       v14 = v13;
@@ -423,7 +423,7 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
             objc_enumerationMutation(v4);
           }
 
-          v17 = [v6 addObject:{objc_msgSend(objc_msgSend(v5, "objectForKeyedSubscript:", *(v96 + 8 * v15++)), "overlayControl")}];
+          v17 = [array addObject:{objc_msgSend(objc_msgSend(v5, "objectForKeyedSubscript:", *(v96 + 8 * v15++)), "overlayControl")}];
         }
 
         while (v14 != v15);
@@ -433,13 +433,13 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
       while (v14);
     }
 
-    v64 = [v6 copy];
-    v24 = [MEMORY[0x1E695DF70] array];
+    v64 = [array copy];
+    array2 = [MEMORY[0x1E695DF70] array];
     v116 = 0u;
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
-    v31 = OUTLINED_FUNCTION_1_12(v24, v25, &v116, v26, v27, v28, v29, v30, v64, v68, v72, v76, v80, v84, v88, v92, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, *(&v111 + 1), v112, *(&v112 + 1), v113, *(&v113 + 1), v114, *(&v114 + 1), v115);
+    v31 = OUTLINED_FUNCTION_1_12(array2, v25, &v116, v26, v27, v28, v29, v30, v64, v68, v72, v76, v80, v84, v88, v92, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, *(&v111 + 1), v112, *(&v112 + 1), v113, *(&v113 + 1), v114, *(&v114 + 1), v115);
     if (v31)
     {
       v39 = v31;
@@ -455,13 +455,13 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
           }
 
           v42 = [objc_msgSend(v5 objectForKeyedSubscript:{*(*(&v116 + 1) + 8 * v41)), "control"}];
-          v43 = [v42 isEnabled];
-          if ((v43 & 1) == 0)
+          isEnabled = [v42 isEnabled];
+          if ((isEnabled & 1) == 0)
           {
-            v43 = [v42 enabledUpdate];
-            if (v43)
+            isEnabled = [v42 enabledUpdate];
+            if (isEnabled)
             {
-              v43 = [v24 addObject:v43];
+              isEnabled = [array2 addObject:isEnabled];
             }
           }
 
@@ -469,7 +469,7 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
         }
 
         while (v39 != v41);
-        v31 = OUTLINED_FUNCTION_1_12(v43, v44, &v116, v45, v46, v47, v48, v49, v65, v69, v73, v77, v81, v85, v89, v93, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, *(&v111 + 1), v112, *(&v112 + 1), v113, *(&v113 + 1), v114, *(&v114 + 1), v115);
+        v31 = OUTLINED_FUNCTION_1_12(isEnabled, v44, &v116, v45, v46, v47, v48, v49, v65, v69, v73, v77, v81, v85, v89, v93, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, *(&v111 + 1), v112, *(&v112 + 1), v113, *(&v113 + 1), v114, *(&v114 + 1), v115);
         v39 = v31;
       }
 
@@ -495,7 +495,7 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
             objc_enumerationMutation(v4);
           }
 
-          v53 = [v24 addObject:{objc_msgSend(objc_msgSend(objc_msgSend(v5, "objectForKeyedSubscript:", *(*(&v111 + 1) + 8 * v52++)), "control"), "overlayUpdate")}];
+          v53 = [array2 addObject:{objc_msgSend(objc_msgSend(objc_msgSend(v5, "objectForKeyedSubscript:", *(*(&v111 + 1) + 8 * v52++)), "control"), "overlayUpdate")}];
         }
 
         while (v51 != v52);
@@ -505,14 +505,14 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
       while (v51);
     }
 
-    v61 = [v24 copy];
+    v61 = [array2 copy];
     [CAMOverlayServiceConnection configureWithControls:"configureWithControls:initialUpdates:completion:" initialUpdates:? completion:?];
   }
 }
 
-- (void)updateControl:(id)a3
+- (void)updateControl:(id)control
 {
-  if (a3)
+  if (control)
   {
     connectionQueue = self->_connectionQueue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -520,19 +520,19 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
     v4[2] = __42__AVCaptureControlsOverlay_updateControl___block_invoke;
     v4[3] = &unk_1E786EAA8;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = control;
     dispatch_async(connectionQueue, v4);
   }
 }
 
-- (void)_updateControlIsolated:(id)a3
+- (void)_updateControlIsolated:(id)isolated
 {
   dispatch_assert_queue_V2(self->_connectionQueue);
   connection = self->_connection;
   if (connection && [(CAMOverlayServiceConnection *)connection status]== 1)
   {
 
-    [(CAMOverlayServiceConnection *)connection applyControlUpdate:a3 completion:&__block_literal_global_25];
+    [(CAMOverlayServiceConnection *)connection applyControlUpdate:isolated completion:&__block_literal_global_25];
   }
 }
 
@@ -548,28 +548,28 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)cameraOverlayConnection:(id)a3 didChangeStatus:(unint64_t)a4
+- (void)cameraOverlayConnection:(id)connection didChangeStatus:(unint64_t)status
 {
   dispatch_assert_queue_V2(self->_connectionQueue);
-  if (self->_connection == a3)
+  if (self->_connection == connection)
   {
-    v6 = [a3 status];
-    if (v6 == 1)
+    status = [connection status];
+    if (status == 1)
     {
 
       [(AVCaptureControlsOverlay *)self _sendControlsIsolated];
     }
 
-    else if (v6 == 2)
+    else if (status == 2)
     {
-      v7 = [(AVWeakReference *)self->_sessionReference referencedObject];
+      referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
 
-      [v7 handleControlsOverlayInvalidated:self];
+      [referencedObject handleControlsOverlayInvalidated:self];
     }
   }
 }
 
-- (void)cameraOverlayConnection:(id)a3 didChangeOverlayVisible:(BOOL)a4 activeControlIdentifier:(id)a5
+- (void)cameraOverlayConnection:(id)connection didChangeOverlayVisible:(BOOL)visible activeControlIdentifier:(id)identifier
 {
   OUTLINED_FUNCTION_2_5(self);
   os_unfair_lock_lock((v6 + 32));
@@ -578,7 +578,7 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
   *(v6 + 64) = 0;
   if (v5)
   {
-    *(v6 + 64) = [a5 copy];
+    *(v6 + 64) = [identifier copy];
   }
 
   v8 = [*(v6 + 40) copy];
@@ -599,11 +599,11 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
 
         v21 = [v8 objectForKeyedSubscript:*(8 * i)];
         [objc_msgSend(v21 "control")];
-        v22 = [v21 control];
+        control = [v21 control];
         if (v5)
         {
-          v23 = [objc_msgSend(v22 "identifier")];
-          v22 = [v21 control];
+          v23 = [objc_msgSend(control "identifier")];
+          control = [v21 control];
           v24 = v23;
         }
 
@@ -612,7 +612,7 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
           v24 = 0;
         }
 
-        v25 = [v22 overlayDidMakeControlActive:v24];
+        v25 = [control overlayDidMakeControlActive:v24];
       }
 
       v18 = OUTLINED_FUNCTION_0_9(v25, v26, v27, v28, v29, v30, v31, v32, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v66);
@@ -621,29 +621,29 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
     while (v18);
   }
 
-  if (a5)
+  if (identifier)
   {
-    a5 = [objc_msgSend(v8 objectForKeyedSubscript:{a5), "control"}];
+    identifier = [objc_msgSend(v8 objectForKeyedSubscript:{identifier), "control"}];
   }
 
-  v33 = [*(v6 + 8) referencedObject];
-  if (v33)
+  referencedObject = [*(v6 + 8) referencedObject];
+  if (referencedObject)
   {
-    [v33 handleControlsOverlay:v6 didChangeVisibility:v5 activeControl:a5];
+    [referencedObject handleControlsOverlay:v6 didChangeVisibility:v5 activeControl:identifier];
   }
 }
 
-- (void)cameraOverlayConnection:(id)a3 didChangeActiveControlIdentifier:(id)a4
+- (void)cameraOverlayConnection:(id)connection didChangeActiveControlIdentifier:(id)identifier
 {
   dispatch_assert_queue_V2(self->_connectionQueue);
-  v6 = [(AVWeakReference *)self->_sessionReference referencedObject];
-  if (v6)
+  referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
+  if (referencedObject)
   {
-    v7 = v6;
+    v7 = referencedObject;
     os_unfair_lock_lock(&self->_controlsLock);
     v8 = [(NSDictionary *)self->_itemsByIdentifier copy];
 
-    self->_activeControlIdentifier = [a4 copy];
+    self->_activeControlIdentifier = [identifier copy];
     os_unfair_lock_unlock(&self->_controlsLock);
     v17 = OUTLINED_FUNCTION_0_9(v9, v10, v11, v12, v13, v14, v15, v16, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, 0);
     if (v17)
@@ -669,29 +669,29 @@ void __38__AVCaptureControlsOverlay_invalidate__block_invoke(uint64_t a1)
       while (v18);
     }
 
-    [v7 handleControlsOverlay:self didChangeActiveControl:{objc_msgSend(objc_msgSend(v8, "objectForKeyedSubscript:", a4), "control")}];
+    [v7 handleControlsOverlay:self didChangeActiveControl:{objc_msgSend(objc_msgSend(v8, "objectForKeyedSubscript:", identifier), "control")}];
   }
 }
 
-- (void)cameraOverlayConnection:(id)a3 didChangeInterfaceReduced:(BOOL)a4
+- (void)cameraOverlayConnection:(id)connection didChangeInterfaceReduced:(BOOL)reduced
 {
   OUTLINED_FUNCTION_2_5(self);
-  v6 = [*(v5 + 8) referencedObject];
-  if (v6)
+  referencedObject = [*(v5 + 8) referencedObject];
+  if (referencedObject)
   {
 
-    [v6 handleControlsOverlay:v5 didChangeInterfaceReduced:v4];
+    [referencedObject handleControlsOverlay:v5 didChangeInterfaceReduced:v4];
   }
 }
 
-- (void)cameraOverlayConnection:(id)a3 didChangeFocusLocked:(BOOL)a4
+- (void)cameraOverlayConnection:(id)connection didChangeFocusLocked:(BOOL)locked
 {
   OUTLINED_FUNCTION_2_5(self);
-  v6 = [*(v5 + 8) referencedObject];
-  if (v6)
+  referencedObject = [*(v5 + 8) referencedObject];
+  if (referencedObject)
   {
 
-    [v6 handleControlsOverlay:v5 didChangeFocusLocked:v4];
+    [referencedObject handleControlsOverlay:v5 didChangeFocusLocked:v4];
   }
 }
 

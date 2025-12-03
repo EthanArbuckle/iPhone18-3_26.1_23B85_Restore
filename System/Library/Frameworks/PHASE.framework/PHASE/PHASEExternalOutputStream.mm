@@ -1,8 +1,8 @@
 @interface PHASEExternalOutputStream
-+ (void)streamWithEngine:(id)a3 definition:(id)a4 startsPaused:(BOOL)a5 delegate:(id)a6 renderBlock:(id)a7 callback:(id)a8;
-+ (void)streamWithEngine:(id)a3 uuid:(id)a4 definition:(id)a5 startsPaused:(BOOL)a6 delegate:(id)a7 renderBlock:(id)a8 callback:(id)a9;
++ (void)streamWithEngine:(id)engine definition:(id)definition startsPaused:(BOOL)paused delegate:(id)delegate renderBlock:(id)block callback:(id)callback;
++ (void)streamWithEngine:(id)engine uuid:(id)uuid definition:(id)definition startsPaused:(BOOL)paused delegate:(id)delegate renderBlock:(id)block callback:(id)callback;
 - (PHASEExternalOutputStream)init;
-- (PHASEExternalOutputStream)initWithStreamGroupUUID:(id)a3 streamUUID:(id)a4 engine:(id)a5 streamDefinition:(id)a6 startsPaused:(BOOL)a7 delegate:(id)a8 renderBlock:(id)a9;
+- (PHASEExternalOutputStream)initWithStreamGroupUUID:(id)d streamUUID:(id)iD engine:(id)engine streamDefinition:(id)definition startsPaused:(BOOL)paused delegate:(id)delegate renderBlock:(id)block;
 - (id)description;
 @end
 
@@ -15,19 +15,19 @@
   return 0;
 }
 
-- (PHASEExternalOutputStream)initWithStreamGroupUUID:(id)a3 streamUUID:(id)a4 engine:(id)a5 streamDefinition:(id)a6 startsPaused:(BOOL)a7 delegate:(id)a8 renderBlock:(id)a9
+- (PHASEExternalOutputStream)initWithStreamGroupUUID:(id)d streamUUID:(id)iD engine:(id)engine streamDefinition:(id)definition startsPaused:(BOOL)paused delegate:(id)delegate renderBlock:(id)block
 {
-  v10 = a7;
-  v16 = a6;
-  v17 = a9;
+  pausedCopy = paused;
+  definitionCopy = definition;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = PHASEExternalOutputStream;
-  v18 = [(PHASEExternalStream *)&v23 initWithEngine:a5 streamGroupUUID:a3 streamUUID:a4 startsPaused:v10 delegate:a8];
+  v18 = [(PHASEExternalStream *)&v23 initWithEngine:engine streamGroupUUID:d streamUUID:iD startsPaused:pausedCopy delegate:delegate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_definition, a6);
-    v20 = _Block_copy(v17);
+    objc_storeStrong(&v18->_definition, definition);
+    v20 = _Block_copy(blockCopy);
     renderBlock = v19->_renderBlock;
     v19->_renderBlock = v20;
   }
@@ -35,39 +35,39 @@
   return v19;
 }
 
-+ (void)streamWithEngine:(id)a3 definition:(id)a4 startsPaused:(BOOL)a5 delegate:(id)a6 renderBlock:(id)a7 callback:(id)a8
++ (void)streamWithEngine:(id)engine definition:(id)definition startsPaused:(BOOL)paused delegate:(id)delegate renderBlock:(id)block callback:(id)callback
 {
-  v11 = a5;
-  v18 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  pausedCopy = paused;
+  engineCopy = engine;
+  definitionCopy = definition;
+  delegateCopy = delegate;
+  blockCopy = block;
+  callbackCopy = callback;
   v17 = +[PHASEExternalStream newUUID];
-  [PHASEExternalOutputStream streamWithEngine:v18 uuid:v17 definition:v13 startsPaused:v11 delegate:v14 renderBlock:v15 callback:v16];
+  [PHASEExternalOutputStream streamWithEngine:engineCopy uuid:v17 definition:definitionCopy startsPaused:pausedCopy delegate:delegateCopy renderBlock:blockCopy callback:callbackCopy];
 }
 
-+ (void)streamWithEngine:(id)a3 uuid:(id)a4 definition:(id)a5 startsPaused:(BOOL)a6 delegate:(id)a7 renderBlock:(id)a8 callback:(id)a9
++ (void)streamWithEngine:(id)engine uuid:(id)uuid definition:(id)definition startsPaused:(BOOL)paused delegate:(id)delegate renderBlock:(id)block callback:(id)callback
 {
-  v11 = a6;
+  pausedCopy = paused;
   v89[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v63 = a4;
-  v15 = a5;
-  v61 = a7;
-  v62 = a8;
-  v16 = a9;
-  val = v14;
-  v17 = [v15 format];
-  v18 = [v17 commonFormat];
+  engineCopy = engine;
+  uuidCopy = uuid;
+  definitionCopy = definition;
+  delegateCopy = delegate;
+  blockCopy = block;
+  callbackCopy = callback;
+  val = engineCopy;
+  format = [definitionCopy format];
+  commonFormat = [format commonFormat];
 
-  if (v18 != 1)
+  if (commonFormat != 1)
   {
     v24 = *MEMORY[0x277CCA450];
     v88 = *MEMORY[0x277CCA450];
     v25 = MEMORY[0x277CCACA8];
-    v26 = [v15 format];
-    v27 = [v25 stringWithFormat:@"Can only create stream with float32 common format, not provided common format %lu", objc_msgSend(v26, "commonFormat")];
+    format2 = [definitionCopy format];
+    v27 = [v25 stringWithFormat:@"Can only create stream with float32 common format, not provided common format %lu", objc_msgSend(format2, "commonFormat")];
     v89[0] = v27;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:&v88 count:1];
 
@@ -81,22 +81,22 @@
       v76 = 1024;
       v77 = 443;
       v78 = 2080;
-      v79 = [v31 UTF8String];
+      uTF8String = [v31 UTF8String];
       _os_log_impl(&dword_23A302000, v30, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
     goto LABEL_7;
   }
 
-  v19 = [v15 format];
-  v20 = [v19 channelLayout];
-  if (v20)
+  format3 = [definitionCopy format];
+  channelLayout = [format3 channelLayout];
+  if (channelLayout)
   {
-    v21 = [v15 format];
-    v22 = [v21 channelLayout];
-    v23 = [v22 layoutTag];
+    format4 = [definitionCopy format];
+    channelLayout2 = [format4 channelLayout];
+    layoutTag = [channelLayout2 layoutTag];
 
-    if (v23)
+    if (layoutTag)
     {
       goto LABEL_16;
     }
@@ -106,13 +106,13 @@
   {
   }
 
-  v34 = [v15 format];
-  if ([v34 channelCount] != 1)
+  format5 = [definitionCopy format];
+  if ([format5 channelCount] != 1)
   {
-    v35 = [v15 format];
-    v36 = [v35 channelCount];
+    format6 = [definitionCopy format];
+    channelCount = [format6 channelCount];
 
-    if (v36 == 2)
+    if (channelCount == 2)
     {
       goto LABEL_12;
     }
@@ -120,8 +120,8 @@
     v53 = *MEMORY[0x277CCA450];
     v86 = *MEMORY[0x277CCA450];
     v54 = MEMORY[0x277CCACA8];
-    v55 = [v15 format];
-    v56 = [v54 stringWithFormat:@"Cannot synthesize audio channel layout with channel count %d. Please provide non-nil channel layout as part of stream definition's format.", objc_msgSend(v55, "channelCount")];
+    format7 = [definitionCopy format];
+    v56 = [v54 stringWithFormat:@"Cannot synthesize audio channel layout with channel count %d. Please provide non-nil channel layout as part of stream definition's format.", objc_msgSend(format7, "channelCount")];
     v87 = v56;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
 
@@ -135,21 +135,21 @@
       v76 = 1024;
       v77 = 470;
       v78 = 2080;
-      v79 = [v58 UTF8String];
+      uTF8String = [v58 UTF8String];
       _os_log_impl(&dword_23A302000, v30, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
 LABEL_7:
 
     v33 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346922849 userInfo:v28];
-    v16[2](v16, 0, v33);
+    callbackCopy[2](callbackCopy, 0, v33);
 
     goto LABEL_19;
   }
 
 LABEL_12:
-  v37 = [v15 format];
-  if ([v37 channelCount] == 1)
+  format8 = [definitionCopy format];
+  if ([format8 channelCount] == 1)
   {
     v38 = 6553601;
   }
@@ -160,55 +160,55 @@ LABEL_12:
   }
 
   v39 = objc_alloc(MEMORY[0x277CB83A8]);
-  v40 = [v15 format];
-  [v40 sampleRate];
+  format9 = [definitionCopy format];
+  [format9 sampleRate];
   v42 = v41;
   v43 = [objc_alloc(MEMORY[0x277CB8368]) initWithLayoutTag:v38];
   v44 = [v39 initStandardFormatWithSampleRate:v43 channelLayout:v42];
-  [v15 setFormat:v44];
+  [definitionCopy setFormat:v44];
 
 LABEL_16:
-  v45 = [MEMORY[0x277CCAD78] UUID];
-  v46 = [v14 implementation];
-  v47 = *(v46 + 52);
-  v48 = **(Phase::Logger::GetInstance(v46) + 928);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  implementation = [engineCopy implementation];
+  v47 = *(implementation + 52);
+  v48 = **(Phase::Logger::GetInstance(implementation) + 928);
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    v49 = [v15 description];
-    v50 = [v49 UTF8String];
-    v51 = [v63 UUIDString];
-    v52 = [v45 UUIDString];
+    v49 = [definitionCopy description];
+    uTF8String2 = [v49 UTF8String];
+    uUIDString = [uuidCopy UUIDString];
+    uUIDString2 = [uUID UUIDString];
     *buf = 136316418;
     v75 = "PHASEExternalStream.mm";
     v76 = 1024;
     v77 = 482;
     v78 = 2080;
-    v79 = v50;
+    uTF8String = uTF8String2;
     v80 = 2112;
-    v81 = v51;
+    v81 = uUIDString;
     v82 = 2112;
-    v83 = v52;
+    v83 = uUIDString2;
     v84 = 1024;
-    v85 = v11;
+    v85 = pausedCopy;
     _os_log_impl(&dword_23A302000, v48, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Creating external output stream: %s, uuid [%@, %@], startsPaused %d", buf, 0x36u);
   }
 
   objc_initWeak(buf, val);
-  objc_initWeak(&location, v61);
+  objc_initWeak(&location, delegateCopy);
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __105__PHASEExternalOutputStream_streamWithEngine_uuid_definition_startsPaused_delegate_renderBlock_callback___block_invoke;
   v64[3] = &unk_278B4F7E8;
   objc_copyWeak(&v70, buf);
   objc_copyWeak(&v71, &location);
-  v68 = v16;
-  v65 = v63;
-  v28 = v45;
+  v68 = callbackCopy;
+  v65 = uuidCopy;
+  v28 = uUID;
   v66 = v28;
-  v67 = v15;
-  v72 = v11;
-  v69 = v62;
-  (*(*v47 + 16))(v47, v65, v28, v67, v11, v69, v64);
+  v67 = definitionCopy;
+  v72 = pausedCopy;
+  v69 = blockCopy;
+  (*(*v47 + 16))(v47, v65, v28, v67, pausedCopy, v69, v64);
 
   objc_destroyWeak(&v71);
   objc_destroyWeak(&v70);
@@ -270,10 +270,10 @@ void __105__PHASEExternalOutputStream_streamWithEngine_uuid_definition_startsPau
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PHASEExternalStream *)self streamUUID];
-  v5 = [(PHASEExternalStream *)self uuid];
-  v6 = [(PHASEExternalOutputStream *)self definition];
-  v7 = [v3 stringWithFormat:@"<PHASEExternalOutputStream: %p, streamUUID=%@, streamGroupUUID=%@, audioSessionToken=0x%x>", self, v4, v5, objc_msgSend(v6, "audioSessionToken")];
+  streamUUID = [(PHASEExternalStream *)self streamUUID];
+  uuid = [(PHASEExternalStream *)self uuid];
+  definition = [(PHASEExternalOutputStream *)self definition];
+  v7 = [v3 stringWithFormat:@"<PHASEExternalOutputStream: %p, streamUUID=%@, streamGroupUUID=%@, audioSessionToken=0x%x>", self, streamUUID, uuid, objc_msgSend(definition, "audioSessionToken")];
 
   return v7;
 }

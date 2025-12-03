@@ -1,46 +1,46 @@
 @interface TSWPiOSCanvasViewController
 - (BOOL)canDisplayHyperlinkUI;
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4;
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3;
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point;
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point;
 - (TSWPInteractiveCanvasController)interactiveCanvasController;
-- (id)_dragItemsForInteraction:(id)a3 session:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)_hitRepAtPoint:(CGPoint)a3;
-- (id)_hyperLinkFieldAtPoint:(CGPoint)a3;
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)p_newSwipeGestureRecognizerWithDirection:(int)a3 numberOfTouchesRequired:(unsigned int)a4;
+- (id)_dragItemsForInteraction:(id)interaction session:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)_hitRepAtPoint:(CGPoint)point;
+- (id)_hyperLinkFieldAtPoint:(CGPoint)point;
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)p_newSwipeGestureRecognizerWithDirection:(int)direction numberOfTouchesRequired:(unsigned int)required;
 - (void)_clearSelectedRange;
-- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)a3 resultHandler:(id)a4;
+- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)point resultHandler:(id)handler;
 - (void)_resetAndClearInteractions;
 - (void)_resetLinkInteraction;
 - (void)addSwipeGestureRecognizers;
 - (void)cancelDelayedTapAction;
 - (void)cancelInteractionWithLink;
 - (void)dealloc;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
 - (void)finishDelayedTapAction;
-- (void)p_addSwipeGestureRecognizer:(id)a3 failRequiredFor:(id)a4;
+- (void)p_addSwipeGestureRecognizer:(id)recognizer failRequiredFor:(id)for;
 - (void)removeSwipeGestureRecognizers;
 - (void)setUpGestureRecognizers;
-- (void)startDelayedTapAction:(id)a3;
-- (void)startInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)startLongInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)tapLinkAtPoint:(CGPoint)a3;
+- (void)startDelayedTapAction:(id)action;
+- (void)startInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)startLongInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)tapLinkAtPoint:(CGPoint)point;
 - (void)teardown;
-- (void)validateInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)validateInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TSWPiOSCanvasViewController
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = TSWPiOSCanvasViewController;
-  [(TSDiOSCanvasViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(TSDiOSCanvasViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(TSWPiOSCanvasViewController *)self cancelDelayedTapAction];
   objc_opt_class();
   [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] editorController] textInputEditor];
@@ -51,22 +51,22 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TSWPiOSCanvasViewController;
-  [(TSWPiOSCanvasViewController *)&v4 viewDidAppear:a3];
+  [(TSWPiOSCanvasViewController *)&v4 viewDidAppear:appear];
   if (TSUSupportsTextInteraction())
   {
     [(TSDCanvasView *)[(TSDiOSCanvasViewController *)self canvasView] addInteraction:self->_textInteraction];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = TSWPiOSCanvasViewController;
-  [(TSWPiOSCanvasViewController *)&v4 viewDidDisappear:a3];
+  [(TSWPiOSCanvasViewController *)&v4 viewDidDisappear:disappear];
   if (TSUSupportsTextInteraction())
   {
     [(TSDCanvasView *)[(TSDiOSCanvasViewController *)self canvasView] removeInteraction:self->_textInteraction];
@@ -164,51 +164,51 @@
 
   else
   {
-    v6 = [(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] gestureDispatcher];
-    v15 = [(UIGestureRecognizer *)[TSWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPDoubleTapAndTouch"];
+    gestureDispatcher = [(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] gestureDispatcher];
+    v15 = [(UIGestureRecognizer *)[TSWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPDoubleTapAndTouch"];
     [(TSWPTapAndTouchGestureRecognizer *)v15 setNumberOfTapsRequired:2];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{v15), "addGestureRecognizer:", v15}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:v15];
-    v7 = [(UIGestureRecognizer *)[TSWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPTapAndTouch"];
+    v7 = [(UIGestureRecognizer *)[TSWPTapAndTouchGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPTapAndTouch"];
     [(TSWPTapAndTouchGestureRecognizer *)v7 setNumberOfTapsRequired:1];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{v7), "addGestureRecognizer:", v7}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:v7];
-    v8 = [(UIGestureRecognizer *)[TSWPLongPressGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPLongPress"];
+    v8 = [(UIGestureRecognizer *)[TSWPLongPressGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPLongPress"];
     self->_longPressGestureRecognizer = v8;
     [(TSWPLongPressGestureRecognizer *)v8 setNumberOfTapsRequired:0];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{self->_longPressGestureRecognizer), "addGestureRecognizer:", self->_longPressGestureRecognizer}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:self->_longPressGestureRecognizer];
-    v9 = [(UIGestureRecognizer *)[TSWPLongPressGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPImmediatePress"];
+    v9 = [(UIGestureRecognizer *)[TSWPLongPressGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPImmediatePress"];
     [(TSWPLongPressGestureRecognizer *)v9 setNumberOfTapsRequired:0];
     [(TSWPLongPressGestureRecognizer *)v9 setMinimumPressDuration:0.0];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{v9), "addGestureRecognizer:", v9}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:v9];
-    v10 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPImmediateDoubleTap"];
+    v10 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPImmediateDoubleTap"];
     [(TSWPTapGestureRecognizer *)v10 setNumberOfTapsRequired:2];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{v10), "addGestureRecognizer:", v10}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:v10];
-    v11 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPSecondarySingleTap"];
+    v11 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPSecondarySingleTap"];
     self->_secondarySingleTapGestureRecognizer = &v11->super;
     [(TSWPTapGestureRecognizer *)v11 setEnabled:0];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{self->_secondarySingleTapGestureRecognizer), "addGestureRecognizer:", self->_secondarySingleTapGestureRecognizer}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:self->_secondarySingleTapGestureRecognizer];
-    v12 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPImmediateSingleTap"];
+    v12 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPImmediateSingleTap"];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{v12), "addGestureRecognizer:", v12}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:v12];
-    v13 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:v6 gestureKind:@"TSWPTwoFingerTap"];
+    v13 = [(UIGestureRecognizer *)[TSWPTapGestureRecognizer alloc] initWithGestureDispatcher:gestureDispatcher gestureKind:@"TSWPTwoFingerTap"];
     [(TSWPTapGestureRecognizer *)v13 setNumberOfTouchesRequired:2];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](self viewForGestureRecognizer:{v13), "addGestureRecognizer:", v13}];
     [(NSMutableArray *)self->_gestureRecognizers addObject:v13];
     v14 = [objc_alloc(MEMORY[0x277D75468]) initWithDelegate:self];
     [-[TSWPiOSCanvasViewController view](self "view")];
 
-    [(TSDGestureDispatcher *)v6 prioritizeRecognizer:v7 overRecognizer:v12];
-    [(TSDGestureDispatcher *)v6 allowSimultaneousRecognitionByRecognizers:v12, self->_secondarySingleTapGestureRecognizer, 0];
-    [(TSDGestureDispatcher *)v6 allowSimultaneousRecognitionByRecognizers:self->_secondarySingleTapGestureRecognizer, self->_longPressGestureRecognizer, 0];
-    [(TSDGestureDispatcher *)v6 allowSimultaneousRecognitionByRecognizers:v7, v9, 0];
-    [(TSDGestureDispatcher *)v6 allowSimultaneousRecognitionByRecognizers:v12, v7, 0];
-    [(TSDGestureDispatcher *)v6 allowSimultaneousRecognitionByRecognizers:v15, v10, 0];
-    [(TSDGestureDispatcher *)v6 allowSimultaneousRecognitionByRecognizers:v15, v7, 0];
+    [(TSDGestureDispatcher *)gestureDispatcher prioritizeRecognizer:v7 overRecognizer:v12];
+    [(TSDGestureDispatcher *)gestureDispatcher allowSimultaneousRecognitionByRecognizers:v12, self->_secondarySingleTapGestureRecognizer, 0];
+    [(TSDGestureDispatcher *)gestureDispatcher allowSimultaneousRecognitionByRecognizers:self->_secondarySingleTapGestureRecognizer, self->_longPressGestureRecognizer, 0];
+    [(TSDGestureDispatcher *)gestureDispatcher allowSimultaneousRecognitionByRecognizers:v7, v9, 0];
+    [(TSDGestureDispatcher *)gestureDispatcher allowSimultaneousRecognitionByRecognizers:v12, v7, 0];
+    [(TSDGestureDispatcher *)gestureDispatcher allowSimultaneousRecognitionByRecognizers:v15, v10, 0];
+    [(TSDGestureDispatcher *)gestureDispatcher allowSimultaneousRecognitionByRecognizers:v15, v7, 0];
     if (![(TSWPiOSCanvasViewController *)self onlyAllowTextSwipesWhenEditing])
     {
       [(TSWPiOSCanvasViewController *)self addSwipeGestureRecognizers];
@@ -218,24 +218,24 @@
 
 - (BOOL)canDisplayHyperlinkUI
 {
-  v2 = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] editorController] textInputEditor];
-  result = (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_class(), [v2 selection], (v3 = TSUDynamicCast()) == 0) || objc_msgSend(v3, "infoCount") < 2;
+  textInputEditor = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] editorController] textInputEditor];
+  result = (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_class(), [textInputEditor selection], (v3 = TSUDynamicCast()) == 0) || objc_msgSend(v3, "infoCount") < 2;
   return result;
 }
 
-- (id)actionForHyperlink:(id)a3 inRep:(id)a4 gesture:(id)a5
+- (id)actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
-  v9 = [(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] delegate];
+  delegate = [(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    return [(TSDInteractiveCanvasControllerDelegate *)v9 actionForHyperlink:a3 inRep:a4 gesture:a5];
+    return [(TSDInteractiveCanvasControllerDelegate *)delegate actionForHyperlink:hyperlink inRep:rep gesture:gesture];
   }
 
-  else if ([a5 gestureKind] == @"TSWPImmediateSingleTap" && -[TSDInteractiveCanvasController inReadMode](-[TSWPiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), "inReadMode"))
+  else if ([gesture gestureKind] == @"TSWPImmediateSingleTap" && -[TSDInteractiveCanvasController inReadMode](-[TSWPiOSCanvasViewController interactiveCanvasController](self, "interactiveCanvasController"), "inReadMode"))
   {
 
-    return [TSWPHyperlinkAction hyperlinkActionWithHyperlink:a3 inRep:a4 action:&__block_literal_global_74];
+    return [TSWPHyperlinkAction hyperlinkActionWithHyperlink:hyperlink inRep:rep action:&__block_literal_global_74];
   }
 
   else
@@ -262,12 +262,12 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   }
 }
 
-- (void)startDelayedTapAction:(id)a3
+- (void)startDelayedTapAction:(id)action
 {
   [(TSWPiOSCanvasViewController *)self cancelDelayedTapAction];
-  v5 = a3;
-  self->_delayedTapAction = v5;
-  [(TSWPTwoPartAction *)v5 performStartAction];
+  actionCopy = action;
+  self->_delayedTapAction = actionCopy;
+  [(TSWPTwoPartAction *)actionCopy performStartAction];
   if ([(TSWPTwoPartAction *)self->_delayedTapAction performImmediately])
   {
 
@@ -308,9 +308,9 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   {
     v4 = v3;
     [v3 setRange:{objc_msgSend(v3, "range"), 0}];
-    v5 = [(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] textInputResponder];
+    textInputResponder = [(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] textInputResponder];
 
-    [(TSDTextInputResponder *)v5 setSelectedTextRange:v4];
+    [(TSDTextInputResponder *)textInputResponder setSelectedTextRange:v4];
   }
 }
 
@@ -318,16 +318,16 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
 {
   if ((self->_leftSwipeGestureRecognizer || self->_rightSwipeGestureRecognizer) && [(TSWPiOSCanvasViewController *)self onlyAllowTextSwipesWhenEditing])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPiOSCanvasViewController addSwipeGestureRecognizers]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPiOSCanvasViewController.m"), 438, @"swipe gesture recognizers should be nil, this might mean we're calling this method without releasing them"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPiOSCanvasViewController.m"), 438, @"swipe gesture recognizers should be nil, this might mean we're calling this method without releasing them"}];
   }
 
   if (!self->_leftSwipeGestureRecognizer && !self->_rightSwipeGestureRecognizer || ![(TSWPiOSCanvasViewController *)self onlyAllowTextSwipesWhenEditing])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    [v5 addObjectsFromArray:{-[NSSet allObjects](-[TSDiOSCanvasViewController panGestureRecognizers](self, "panGestureRecognizers"), "allObjects")}];
-    [v5 addObject:{-[TSDiOSCanvasViewController zoomGestureRecognizer](self, "zoomGestureRecognizer")}];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObjectsFromArray:{-[NSSet allObjects](-[TSDiOSCanvasViewController panGestureRecognizers](self, "panGestureRecognizers"), "allObjects")}];
+    [array addObject:{-[TSDiOSCanvasViewController zoomGestureRecognizer](self, "zoomGestureRecognizer")}];
     leftSwipeGestureRecognizer = self->_leftSwipeGestureRecognizer;
     if (!leftSwipeGestureRecognizer)
     {
@@ -337,7 +337,7 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
       leftSwipeGestureRecognizer = self->_leftSwipeGestureRecognizer;
     }
 
-    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:leftSwipeGestureRecognizer failRequiredFor:v5];
+    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:leftSwipeGestureRecognizer failRequiredFor:array];
     rightSwipeGestureRecognizer = self->_rightSwipeGestureRecognizer;
     if (!rightSwipeGestureRecognizer)
     {
@@ -347,27 +347,27 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
       rightSwipeGestureRecognizer = self->_rightSwipeGestureRecognizer;
     }
 
-    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:rightSwipeGestureRecognizer failRequiredFor:v5];
-    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:4 numberOfTouchesRequired:1] failRequiredFor:v5];
-    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:8 numberOfTouchesRequired:1] failRequiredFor:v5];
+    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:rightSwipeGestureRecognizer failRequiredFor:array];
+    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:4 numberOfTouchesRequired:1] failRequiredFor:array];
+    [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:8 numberOfTouchesRequired:1] failRequiredFor:array];
     [(TSDiOSCanvasViewController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0 || [(TSDiOSCanvasViewControllerDelegate *)[(TSDiOSCanvasViewController *)self delegate] canvasViewController:self enableSwipeGestureWithNumberOfTouches:2])
     {
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:2 numberOfTouchesRequired:2] failRequiredFor:v5];
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:1 numberOfTouchesRequired:2] failRequiredFor:v5];
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:4 numberOfTouchesRequired:2] failRequiredFor:v5];
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:8 numberOfTouchesRequired:2] failRequiredFor:v5];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:2 numberOfTouchesRequired:2] failRequiredFor:array];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:1 numberOfTouchesRequired:2] failRequiredFor:array];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:4 numberOfTouchesRequired:2] failRequiredFor:array];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:8 numberOfTouchesRequired:2] failRequiredFor:array];
     }
 
     [(TSDiOSCanvasViewController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0 || [(TSDiOSCanvasViewControllerDelegate *)[(TSDiOSCanvasViewController *)self delegate] canvasViewController:self enableSwipeGestureWithNumberOfTouches:3])
     {
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:2 numberOfTouchesRequired:3] failRequiredFor:v5];
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:1 numberOfTouchesRequired:3] failRequiredFor:v5];
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:4 numberOfTouchesRequired:3] failRequiredFor:v5];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:2 numberOfTouchesRequired:3] failRequiredFor:array];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:1 numberOfTouchesRequired:3] failRequiredFor:array];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:[(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:4 numberOfTouchesRequired:3] failRequiredFor:array];
       v10 = [(TSWPiOSCanvasViewController *)self p_newSwipeGestureRecognizerWithDirection:8 numberOfTouchesRequired:3];
 
-      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:v10 failRequiredFor:v5];
+      [(TSWPiOSCanvasViewController *)self p_addSwipeGestureRecognizer:v10 failRequiredFor:array];
     }
   }
 }
@@ -378,8 +378,8 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [-[TSWPiOSCanvasViewController view](self view];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  view = [-[TSWPiOSCanvasViewController view](self view];
+  v4 = [view countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -391,7 +391,7 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(view);
         }
 
         objc_opt_class();
@@ -408,7 +408,7 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [view countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -418,10 +418,10 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   self->_rightSwipeGestureRecognizer = 0;
 }
 
-- (id)_dragItemsForInteraction:(id)a3 session:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)_dragItemsForInteraction:(id)interaction session:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v15[1] = *MEMORY[0x277D85DE8];
   objc_opt_class();
   [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] editorController] textInputEditor];
@@ -429,12 +429,12 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 dragItemForCurrentSelectionWithDragInteraction:a3 session:a4 withTouchPoint:{x, y}];
+    v12 = [v10 dragItemForCurrentSelectionWithDragInteraction:interaction session:session withTouchPoint:{x, y}];
   }
 
   else
   {
-    v12 = [TSWPEditingController dragItemForHitRepWithDragInteraction:a3 session:a4 canvasView:[(TSWPiOSCanvasViewController *)self view] icc:[(TSWPiOSCanvasViewController *)self interactiveCanvasController] withTouchPoint:x, y];
+    v12 = [TSWPEditingController dragItemForHitRepWithDragInteraction:interaction session:session canvasView:[(TSWPiOSCanvasViewController *)self view] icc:[(TSWPiOSCanvasViewController *)self interactiveCanvasController] withTouchPoint:x, y];
   }
 
   v13 = v12;
@@ -448,27 +448,27 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   return [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  [a4 locationInView:{-[TSWPiOSCanvasViewController view](self, "view")}];
+  [session locationInView:{-[TSWPiOSCanvasViewController view](self, "view")}];
 
-  return [(TSWPiOSCanvasViewController *)self _dragItemsForInteraction:a3 session:a4 withTouchAtPoint:?];
+  return [(TSWPiOSCanvasViewController *)self _dragItemsForInteraction:interaction session:session withTouchAtPoint:?];
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  [(TSWPLongPressGestureRecognizer *)[(TSWPiOSCanvasViewController *)self longPressGestureRecognizer:a3] setEnabled:0];
-  v6 = [(TSWPiOSCanvasViewController *)self longPressGestureRecognizer];
+  [(TSWPLongPressGestureRecognizer *)[(TSWPiOSCanvasViewController *)self longPressGestureRecognizer:interaction] setEnabled:0];
+  longPressGestureRecognizer = [(TSWPiOSCanvasViewController *)self longPressGestureRecognizer];
 
-  [(TSWPLongPressGestureRecognizer *)v6 setEnabled:1];
+  [(TSWPLongPressGestureRecognizer *)longPressGestureRecognizer setEnabled:1];
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v8 = [(TSWPiOSCanvasViewController *)self view];
-  v9 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  view = [(TSWPiOSCanvasViewController *)self view];
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
 
-  return [TSWPEditingController retargetedDragItem:a4 withDefault:a5 canvasView:v8 icc:v9];
+  return [TSWPEditingController retargetedDragItem:item withDefault:default canvasView:view icc:interactiveCanvasController];
 }
 
 - (TSWPInteractiveCanvasController)interactiveCanvasController
@@ -478,16 +478,16 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   return TSUDynamicCast();
 }
 
-- (void)p_addSwipeGestureRecognizer:(id)a3 failRequiredFor:(id)a4
+- (void)p_addSwipeGestureRecognizer:(id)recognizer failRequiredFor:(id)for
 {
   v16 = *MEMORY[0x277D85DE8];
   [-[TSWPiOSCanvasViewController view](self "view")];
-  [(NSMutableArray *)self->_gestureRecognizers addObject:a3];
+  [(NSMutableArray *)self->_gestureRecognizers addObject:recognizer];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [for countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -499,24 +499,24 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(for);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) requireGestureRecognizerToFail:a3];
+        [*(*(&v11 + 1) + 8 * v10++) requireGestureRecognizerToFail:recognizer];
       }
 
       while (v8 != v10);
-      v8 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [for countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)p_newSwipeGestureRecognizerWithDirection:(int)a3 numberOfTouchesRequired:(unsigned int)a4
+- (id)p_newSwipeGestureRecognizerWithDirection:(int)direction numberOfTouchesRequired:(unsigned int)required
 {
-  v5 = *&a3;
-  if (a4 == 3)
+  v5 = *&direction;
+  if (required == 3)
   {
     v6 = TSWPThreeFingerSwipe;
   }
@@ -524,28 +524,28 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   else
   {
     v6 = TSWPTwoFingerSwipe;
-    if (a4 != 2)
+    if (required != 2)
     {
       v6 = TSWPOneFingerSwipe;
     }
   }
 
   v7 = [(UIGestureRecognizer *)[TSWPSwipeGestureRecognizer alloc] initWithGestureDispatcher:[(TSDInteractiveCanvasController *)[(TSWPiOSCanvasViewController *)self interactiveCanvasController] gestureDispatcher] gestureKind:*v6];
-  [(TSWPSwipeGestureRecognizer *)v7 setNumberOfTouchesRequired:a4];
+  [(TSWPSwipeGestureRecognizer *)v7 setNumberOfTouchesRequired:required];
   [(TSWPSwipeGestureRecognizer *)v7 setDirection:v5];
   [(TSWPSwipeGestureRecognizer *)v7 setAllowedTouchTypes:&unk_287DDCC00];
   return v7;
 }
 
-- (id)_hitRepAtPoint:(CGPoint)a3
+- (id)_hitRepAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v6 convertUnscaledToBoundsPoint:x, y];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:x, y];
   v8 = v7;
   v10 = v9;
-  [(TSDInteractiveCanvasController *)v6 convertBoundsToUnscaledPoint:x, y];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
   v12 = v11;
   v14 = v13;
   v24 = 0;
@@ -554,7 +554,7 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   v27 = __Block_byref_object_copy__23;
   v28 = __Block_byref_object_dispose__23;
   v29 = 0;
-  v15 = [(TSWPiOSCanvasViewController *)self _textInteractionBlockingRepClasses];
+  _textInteractionBlockingRepClasses = [(TSWPiOSCanvasViewController *)self _textInteractionBlockingRepClasses];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -566,11 +566,11 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
   v19[3] = &unk_279D49D80;
   v19[8] = v8;
   v19[9] = v10;
-  v19[4] = v6;
-  v19[5] = v15;
+  v19[4] = interactiveCanvasController;
+  v19[5] = _textInteractionBlockingRepClasses;
   v19[6] = &v24;
   v19[7] = &v20;
-  [(TSDInteractiveCanvasController *)v6 hitRep:0 withGesture:v19 passingTest:v12, v14];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController hitRep:0 withGesture:v19 passingTest:v12, v14];
   v16 = TSUDynamicCast();
   if (!v16)
   {
@@ -581,10 +581,10 @@ uint64_t __64__TSWPiOSCanvasViewController_actionForHyperlink_inRep_gesture___bl
 
     else
     {
-      v16 = [(TSWPInteractiveCanvasController *)v6 closestRepToPoint:v12, v14];
+      v16 = [(TSWPInteractiveCanvasController *)interactiveCanvasController closestRepToPoint:v12, v14];
       if (v16)
       {
-        [(TSDInteractiveCanvasController *)v6 beginEditingRep:v16];
+        [(TSDInteractiveCanvasController *)interactiveCanvasController beginEditingRep:v16];
       }
     }
   }
@@ -631,15 +631,15 @@ BOOL __46__TSWPiOSCanvasViewController__hitRepAtPoint___block_invoke(uint64_t a1
   return v3 != 0;
 }
 
-- (id)_hyperLinkFieldAtPoint:(CGPoint)a3
+- (id)_hyperLinkFieldAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v5 convertBoundsToUnscaledPoint:x, y];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
   v7 = v6;
   v9 = v8;
-  [(TSDInteractiveCanvasController *)v5 convertBoundsToUnscaledPoint:x, y];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3052000000;
@@ -653,7 +653,7 @@ BOOL __46__TSWPiOSCanvasViewController__hitRepAtPoint___block_invoke(uint64_t a1
   v12[5] = v7;
   v12[6] = v9;
   v12[4] = &v13;
-  [(TSDInteractiveCanvasController *)v5 hitRep:0 withGesture:v12 passingTest:?];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController hitRep:0 withGesture:v12 passingTest:?];
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
   return v10;
@@ -682,10 +682,10 @@ uint64_t __54__TSWPiOSCanvasViewController__hyperLinkFieldAtPoint___block_invoke
   return result;
 }
 
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v7 = TSUSupportsTextInteraction();
   if (v7)
   {
@@ -706,10 +706,10 @@ uint64_t __54__TSWPiOSCanvasViewController__hyperLinkFieldAtPoint___block_invoke
   }
 }
 
-- (void)tapLinkAtPoint:(CGPoint)a3
+- (void)tapLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     [(TSWPiOSCanvasViewController *)self startInteractionWithLinkAtPoint:x, y];
@@ -718,10 +718,10 @@ uint64_t __54__TSWPiOSCanvasViewController__hyperLinkFieldAtPoint___block_invoke
   }
 }
 
-- (void)startInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)startInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     self->_interactionHyperlinkField = [(TSWPiOSCanvasViewController *)self _hyperLinkFieldAtPoint:x, y];
@@ -730,10 +730,10 @@ uint64_t __54__TSWPiOSCanvasViewController__hyperLinkFieldAtPoint___block_invoke
   }
 }
 
-- (void)validateInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)validateInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction() && self->_isInteractingWithHyperLink)
   {
     if ([-[TSWPiOSCanvasViewController _hyperLinkFieldAtPoint:](self _hyperLinkFieldAtPoint:{x, y), "isEqual:", self->_interactionHyperlinkField}])
@@ -787,10 +787,10 @@ uint64_t __66__TSWPiOSCanvasViewController_validateInteractionWithLinkAtPoint___
   }
 }
 
-- (void)startLongInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)startLongInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     self->_linkInteractionIsLongPress = 1;
@@ -799,10 +799,10 @@ uint64_t __66__TSWPiOSCanvasViewController_validateInteractionWithLinkAtPoint___
   }
 }
 
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = TSUSupportsTextInteraction();
   if (v6)
   {
@@ -812,15 +812,15 @@ uint64_t __66__TSWPiOSCanvasViewController_validateInteractionWithLinkAtPoint___
   return v6;
 }
 
-- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)a3 resultHandler:(id)a4
+- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)point resultHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v7 convertUnscaledToBoundsPoint:x, y];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(TSWPiOSCanvasViewController *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:x, y];
   v9 = v8;
   v11 = v10;
-  [(TSDInteractiveCanvasController *)v7 convertBoundsToUnscaledPoint:x, y];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __86__TSWPiOSCanvasViewController__requestTextItemConstrainedToLineAtPoint_resultHandler___block_invoke;
@@ -829,9 +829,9 @@ uint64_t __66__TSWPiOSCanvasViewController_validateInteractionWithLinkAtPoint___
   v12[7] = v11;
   *&v12[8] = x;
   *&v12[9] = y;
-  v12[4] = v7;
-  v12[5] = a4;
-  [(TSDInteractiveCanvasController *)v7 hitRep:0 withGesture:v12 passingTest:?];
+  v12[4] = interactiveCanvasController;
+  v12[5] = handler;
+  [(TSDInteractiveCanvasController *)interactiveCanvasController hitRep:0 withGesture:v12 passingTest:?];
 }
 
 BOOL __86__TSWPiOSCanvasViewController__requestTextItemConstrainedToLineAtPoint_resultHandler___block_invoke(uint64_t a1)

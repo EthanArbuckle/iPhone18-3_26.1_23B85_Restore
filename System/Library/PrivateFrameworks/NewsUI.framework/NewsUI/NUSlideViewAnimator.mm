@@ -1,21 +1,21 @@
 @interface NUSlideViewAnimator
-- (CGAffineTransform)fromViewTransformForDirection:(SEL)a3;
-- (CGAffineTransform)toViewTransformForDirection:(SEL)a3;
+- (CGAffineTransform)fromViewTransformForDirection:(SEL)direction;
+- (CGAffineTransform)toViewTransformForDirection:(SEL)direction;
 - (CGRect)bounds;
-- (NUSlideViewAnimator)initWithBounds:(CGRect)a3;
-- (unint64_t)animationOptionsForAnimationFactory:(id)a3;
-- (void)setMediaTimingFunction:(id)a3;
-- (void)translateFromView:(id)a3 toView:(id)a4 direction:(unint64_t)a5 completion:(id)a6;
+- (NUSlideViewAnimator)initWithBounds:(CGRect)bounds;
+- (unint64_t)animationOptionsForAnimationFactory:(id)factory;
+- (void)setMediaTimingFunction:(id)function;
+- (void)translateFromView:(id)view toView:(id)toView direction:(unint64_t)direction completion:(id)completion;
 @end
 
 @implementation NUSlideViewAnimator
 
-- (NUSlideViewAnimator)initWithBounds:(CGRect)a3
+- (NUSlideViewAnimator)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = NUSlideViewAnimator;
   result = [(NUSlideViewAnimator *)&v8 init];
@@ -33,38 +33,38 @@
   return result;
 }
 
-- (void)translateFromView:(id)a3 toView:(id)a4 direction:(unint64_t)a5 completion:(id)a6
+- (void)translateFromView:(id)view toView:(id)toView direction:(unint64_t)direction completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  viewCopy = view;
+  toViewCopy = toView;
+  completionCopy = completion;
   [MEMORY[0x277CCACC8] isMainThread];
   [(NUSlideViewAnimator *)self setAnimating:1];
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
-  [(NUSlideViewAnimator *)self toViewTransformForDirection:a5];
+  [(NUSlideViewAnimator *)self toViewTransformForDirection:direction];
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
-  [(NUSlideViewAnimator *)self fromViewTransformForDirection:a5];
+  [(NUSlideViewAnimator *)self fromViewTransformForDirection:direction];
   v32[0] = v36;
   v32[1] = v37;
   v32[2] = v38;
-  [v11 setTransform:v32];
-  v13 = [(NUSlideViewAnimator *)self animationFactory];
-  v14 = [(NUSlideViewAnimator *)self animationOptionsForAnimationFactory:v13];
+  [toViewCopy setTransform:v32];
+  animationFactory = [(NUSlideViewAnimator *)self animationFactory];
+  v14 = [(NUSlideViewAnimator *)self animationOptionsForAnimationFactory:animationFactory];
 
   v15 = MEMORY[0x277D75D18];
   [(NUSlideViewAnimator *)self duration];
   v17 = v16;
-  v18 = [(NUSlideViewAnimator *)self animationFactory];
+  animationFactory2 = [(NUSlideViewAnimator *)self animationFactory];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __69__NUSlideViewAnimator_translateFromView_toView_direction_completion___block_invoke;
   v26[3] = &unk_2799A33C8;
-  v27 = v11;
-  v28 = v10;
+  v27 = toViewCopy;
+  v28 = viewCopy;
   v29 = v33;
   v30 = v34;
   v31 = v35;
@@ -72,13 +72,13 @@
   v22[1] = 3221225472;
   v22[2] = __69__NUSlideViewAnimator_translateFromView_toView_direction_completion___block_invoke_2;
   v22[3] = &unk_2799A33F0;
-  v24 = self;
-  v25 = v12;
+  selfCopy = self;
+  v25 = completionCopy;
   v23 = v28;
-  v19 = v12;
+  v19 = completionCopy;
   v20 = v28;
-  v21 = v11;
-  [v15 _animateWithDuration:v14 delay:v18 options:v26 factory:v22 animations:v17 completion:0.0];
+  v21 = toViewCopy;
+  [v15 _animateWithDuration:v14 delay:animationFactory2 options:v26 factory:v22 animations:v17 completion:0.0];
 }
 
 uint64_t __69__NUSlideViewAnimator_translateFromView_toView_direction_completion___block_invoke(uint64_t a1)
@@ -113,12 +113,12 @@ uint64_t __69__NUSlideViewAnimator_translateFromView_toView_direction_completion
   return [*(a1 + 40) setAnimating:0];
 }
 
-- (void)setMediaTimingFunction:(id)a3
+- (void)setMediaTimingFunction:(id)function
 {
-  v5 = a3;
-  if (v5)
+  functionCopy = function;
+  if (functionCopy)
   {
-    v4 = [[NUAnimationFactory alloc] initWithMediaTimingFunction:v5];
+    v4 = [[NUAnimationFactory alloc] initWithMediaTimingFunction:functionCopy];
     [(NUSlideViewAnimator *)self setAnimationFactory:v4];
   }
 
@@ -128,7 +128,7 @@ uint64_t __69__NUSlideViewAnimator_translateFromView_toView_direction_completion
   }
 }
 
-- (CGAffineTransform)fromViewTransformForDirection:(SEL)a3
+- (CGAffineTransform)fromViewTransformForDirection:(SEL)direction
 {
   [(NUSlideViewAnimator *)self bounds];
   Height = CGRectGetHeight(v16);
@@ -172,7 +172,7 @@ uint64_t __69__NUSlideViewAnimator_translateFromView_toView_direction_completion
   return CGAffineTransformMakeTranslation(retstr, v14, v13);
 }
 
-- (CGAffineTransform)toViewTransformForDirection:(SEL)a3
+- (CGAffineTransform)toViewTransformForDirection:(SEL)direction
 {
   [(NUSlideViewAnimator *)self bounds];
   Height = CGRectGetHeight(v16);
@@ -219,9 +219,9 @@ uint64_t __69__NUSlideViewAnimator_translateFromView_toView_direction_completion
   return CGAffineTransformMakeTranslation(retstr, v14, v13);
 }
 
-- (unint64_t)animationOptionsForAnimationFactory:(id)a3
+- (unint64_t)animationOptionsForAnimationFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
     return 393216;
   }

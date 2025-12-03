@@ -1,125 +1,125 @@
 @interface CLSCollectionItem
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (CLSCollectionItem)initWithCKRecord:(id)a3;
-- (CLSCollectionItem)initWithDatabaseRow:(id)a3;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (CLSCollectionItem)initWithCKRecord:(id)record;
+- (CLSCollectionItem)initWithDatabaseRow:(id)row;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSCollectionItem
 
-- (CLSCollectionItem)initWithCKRecord:(id)a3
+- (CLSCollectionItem)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CLSCollectionItem *)self _init];
-  v6 = v5;
-  if (v5)
+  recordCopy = record;
+  _init = [(CLSCollectionItem *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithRecord:v4];
-    v7 = [v4 objectForKeyedSubscript:@"type"];
+    [_init _initCommonPropsWithRecord:recordCopy];
+    v7 = [recordCopy objectForKeyedSubscript:@"type"];
     [v6 setType:CLSCollectionItemTypeFromString()];
 
-    v8 = [v4 objectForKeyedSubscript:@"referenceObjectID"];
+    v8 = [recordCopy objectForKeyedSubscript:@"referenceObjectID"];
     [v6 setReferenceObjectID:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"displayOrder"];
+    v9 = [recordCopy objectForKeyedSubscript:@"displayOrder"];
     [v6 setDisplayOrder:{objc_msgSend(v9, "unsignedIntegerValue")}];
   }
 
   return v6;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v8.receiver = self;
   v8.super_class = CLSCollectionItem;
-  v4 = a3;
-  [(CLSCollectionItem *)&v8 populate:v4];
+  populateCopy = populate;
+  [(CLSCollectionItem *)&v8 populate:populateCopy];
   [(CLSCollectionItem *)self type:v8.receiver];
   v5 = NSStringFromCollectionItemType();
-  [v4 setObject:v5 forKeyedSubscript:@"type"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"type"];
 
-  v6 = [(CLSCollectionItem *)self referenceObjectID];
-  [v4 setObject:v6 forKeyedSubscript:@"referenceObjectID"];
+  referenceObjectID = [(CLSCollectionItem *)self referenceObjectID];
+  [populateCopy setObject:referenceObjectID forKeyedSubscript:@"referenceObjectID"];
 
   v7 = [NSNumber numberWithUnsignedInteger:[(CLSCollectionItem *)self displayOrder]];
-  [v4 setObject:v7 forKeyedSubscript:@"displayOrder"];
+  [populateCopy setObject:v7 forKeyedSubscript:@"displayOrder"];
 
-  [(CLSCollectionItem *)self updateParentReferencesForRecord:v4];
+  [(CLSCollectionItem *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v3 = [(CLSCollectionItem *)self parent];
-  v4 = [v3 type] != 2 && objc_msgSend(v3, "type") != 5;
+  parent = [(CLSCollectionItem *)self parent];
+  v4 = [parent type] != 2 && objc_msgSend(parent, "type") != 5;
 
   return v4;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v10.receiver = self;
   v10.super_class = CLSCollectionItem;
-  v4 = a3;
-  [(CLSCollectionItem *)&v10 bindTo:v4];
+  toCopy = to;
+  [(CLSCollectionItem *)&v10 bindTo:toCopy];
   v11 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v11 count:1, v10.receiver, v10.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSCollectionItem *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSCollectionItem *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
   v7 = [NSNumber numberWithInteger:[(CLSCollectionItem *)self type]];
-  sub_1000982FC(v4, v7, @"type");
+  sub_1000982FC(toCopy, v7, @"type");
 
-  v8 = [(CLSCollectionItem *)self referenceObjectID];
-  sub_1000982FC(v4, v8, @"referenceObjectID");
+  referenceObjectID = [(CLSCollectionItem *)self referenceObjectID];
+  sub_1000982FC(toCopy, referenceObjectID, @"referenceObjectID");
 
   v9 = [NSNumber numberWithUnsignedInteger:[(CLSCollectionItem *)self displayOrder]];
-  sub_1000982FC(v4, v9, @"displayOrder");
+  sub_1000982FC(toCopy, v9, @"displayOrder");
 }
 
-- (CLSCollectionItem)initWithDatabaseRow:(id)a3
+- (CLSCollectionItem)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSCollectionItem *)self _init];
-  [v5 _initCommonPropsWithDatabaseRow:v4];
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSCollectionItem *)self _init];
+  [_init _initCommonPropsWithDatabaseRow:rowCopy];
+  if (_init)
   {
-    v6 = sub_10016D778(v4, @"parentObjectID");
-    [v5 setParentObjectID:v6];
+    v6 = sub_10016D778(rowCopy, @"parentObjectID");
+    [_init setParentObjectID:v6];
 
-    v7 = sub_10016D778(v4, @"type");
-    [v5 setType:{objc_msgSend(v7, "integerValue")}];
+    v7 = sub_10016D778(rowCopy, @"type");
+    [_init setType:{objc_msgSend(v7, "integerValue")}];
 
-    v8 = sub_10016D778(v4, @"referenceObjectID");
-    [v5 setReferenceObjectID:v8];
+    v8 = sub_10016D778(rowCopy, @"referenceObjectID");
+    [_init setReferenceObjectID:v8];
 
-    v9 = sub_10016D778(v4, @"displayOrder");
-    [v5 setDisplayOrder:{objc_msgSend(v9, "unsignedIntegerValue")}];
+    v9 = sub_10016D778(rowCopy, @"displayOrder");
+    [_init setDisplayOrder:{objc_msgSend(v9, "unsignedIntegerValue")}];
   }
 
-  return v5;
+  return _init;
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
+  databaseCopy = database;
+  v8 = databaseCopy;
   v9 = 1;
-  if (a3 <= 1)
+  if (version <= 1)
   {
-    if (a3)
+    if (version)
     {
-      if (a3 != 1)
+      if (version != 1)
       {
         goto LABEL_38;
       }
     }
 
-    else if (!sub_1000B9298(v7, @"create table CLSCollectionItem(   objectID           text not null,    parentObjectID     text not null,    type               integer,    dateCreated        real not null,    dateLastModified   real not null,    referenceObjectID  text not null,    appIdentifier      text not null,foreign key (parentObjectID) references CLSCollection(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSCollectionItem_objectID on CLSCollectionItem (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSCollectionItem_parentObjectID on CLSCollectionItem (parentObjectID)", 0, 0, 0))
+    else if (!sub_1000B9298(databaseCopy, @"create table CLSCollectionItem(   objectID           text not null,    parentObjectID     text not null,    type               integer,    dateCreated        real not null,    dateLastModified   real not null,    referenceObjectID  text not null,    appIdentifier      text not null,foreign key (parentObjectID) references CLSCollection(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSCollectionItem_objectID on CLSCollectionItem (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSCollectionItem_parentObjectID on CLSCollectionItem (parentObjectID)", 0, 0, 0))
     {
       goto LABEL_37;
     }
@@ -143,7 +143,7 @@ LABEL_36:
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (version == 2)
   {
 LABEL_10:
     if ((sub_1000B9298(v8, @"alter table CLSCollectionItem add column displayOrder integer default 0", 0, 0, 0) & 1) == 0)
@@ -163,7 +163,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 != 3)
+  if (version != 3)
   {
     goto LABEL_38;
   }
@@ -255,27 +255,27 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  *a4 = 4;
+  *finalVersion = 4;
 LABEL_38:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSCollectionItem *)self referenceObjectID];
+  databaseCopy = database;
+  referenceObjectID = [(CLSCollectionItem *)self referenceObjectID];
   if ([(CLSCollectionItem *)self type]== 2)
   {
     v6 = objc_opt_class();
-    v7 = [(CLSCollectionItem *)self parentObjectID];
-    v8 = [v4 select:v6 identity:v7];
+    parentObjectID = [(CLSCollectionItem *)self parentObjectID];
+    v8 = [databaseCopy select:v6 identity:parentObjectID];
 
     if (v8 && ([v8 type] == 2 || objc_msgSend(v8, "type") == 5))
     {
-      v10 = v5;
+      v10 = referenceObjectID;
       v9 = [NSArray arrayWithObjects:&v10 count:1];
-      [v4 deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v9];
+      [databaseCopy deleteAll:objc_opt_class() where:@"objectID = ?" bindings:v9];
     }
   }
 }

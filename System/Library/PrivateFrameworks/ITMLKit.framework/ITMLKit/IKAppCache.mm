@@ -1,74 +1,74 @@
 @interface IKAppCache
 + (id)_appContextDelegateSelectors;
-- (BOOL)appContext:(id)a3 validateDOMDocument:(id)a4 inContext:(id)a5 error:(id *)a6;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IKAppCache)initWithApplication:(id)a3;
+- (BOOL)appContext:(id)context validateDOMDocument:(id)document inContext:(id)inContext error:(id *)error;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IKAppCache)initWithApplication:(id)application;
 - (IKAppCacheDelegate)delegate;
 - (IKAppContextDelegate)appContextDelegate;
 - (IKApplication)app;
-- (id)_cacheFileURLForAppJS:(id)a3 checksum:(id)a4 error:(id *)a5;
-- (id)_validatedChecksumForScript:(id)a3 error:(id *)a4;
-- (id)deviceConfigForContext:(id)a3;
-- (id)modalControllerForContext:(id)a3;
-- (id)navigationControllerForContext:(id)a3;
-- (id)objectForMediaItem:(id)a3;
-- (id)objectForPlayer:(id)a3;
-- (id)objectForPlaylist:(id)a3;
-- (id)tabBarForContext:(id)a3;
+- (id)_cacheFileURLForAppJS:(id)s checksum:(id)checksum error:(id *)error;
+- (id)_validatedChecksumForScript:(id)script error:(id *)error;
+- (id)deviceConfigForContext:(id)context;
+- (id)modalControllerForContext:(id)context;
+- (id)navigationControllerForContext:(id)context;
+- (id)objectForMediaItem:(id)item;
+- (id)objectForPlayer:(id)player;
+- (id)objectForPlaylist:(id)playlist;
+- (id)tabBarForContext:(id)context;
 - (void)_checkManifest;
 - (void)_cleanupValidationContext;
 - (void)_loadManifest;
 - (void)_storeManifest;
-- (void)appContext:(id)a3 didFailWithError:(id)a4;
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4 validatedJSString:(id)a5;
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5;
-- (void)appJSURLWithCompletion:(id)a3;
-- (void)cleanBlobStorageWithCompletion:(id)a3;
-- (void)refreshWithCompletion:(id)a3;
-- (void)updateCacheWithValidatedJS:(id)a3 completion:(id)a4;
+- (void)appContext:(id)context didFailWithError:(id)error;
+- (void)appContext:(id)context didStartWithOptions:(id)options validatedJSString:(id)string;
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext;
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options;
+- (void)appJSURLWithCompletion:(id)completion;
+- (void)cleanBlobStorageWithCompletion:(id)completion;
+- (void)refreshWithCompletion:(id)completion;
+- (void)updateCacheWithValidatedJS:(id)s completion:(id)completion;
 @end
 
 @implementation IKAppCache
 
-- (IKAppCache)initWithApplication:(id)a3
+- (IKAppCache)initWithApplication:(id)application
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationCopy = application;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 appJSCachePath];
+    appJSCachePath = [applicationCopy appJSCachePath];
   }
 
   else
   {
-    v5 = 0;
+    appJSCachePath = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 appLocalJSURL];
+    appLocalJSURL = [applicationCopy appLocalJSURL];
   }
 
   else
   {
-    v6 = 0;
+    appLocalJSURL = 0;
   }
 
-  if ([v5 isFileURL])
+  if ([appJSCachePath isFileURL])
   {
-    v7 = [v5 path];
-    if (v7)
+    selfCopy = [appJSCachePath path];
+    if (selfCopy)
     {
       v36 = 0;
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
-      v9 = [v8 fileExistsAtPath:v7 isDirectory:&v36];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v9 = [defaultManager fileExistsAtPath:selfCopy isDirectory:&v36];
 
       if ((v9 & 1) == 0)
       {
-        v10 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v35 = 0;
-        v11 = [v10 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v35];
+        v11 = [defaultManager2 createDirectoryAtPath:selfCopy withIntermediateDirectories:1 attributes:0 error:&v35];
         v12 = v35;
 
         v36 = v11;
@@ -99,12 +99,12 @@
       }
 
       v13->_status = 0;
-      objc_storeWeak(&v13->_app, v4);
+      objc_storeWeak(&v13->_app, applicationCopy);
       self->_shouldIgnoreHTTPCache = 1;
       v14 = MEMORY[0x277CCACA8];
-      v15 = [MEMORY[0x277CCA8D8] mainBundle];
-      v16 = [v15 bundleIdentifier];
-      v12 = [v14 stringWithFormat:@"%@.ITML.cache", v16];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v12 = [v14 stringWithFormat:@"%@.ITML.cache", bundleIdentifier];
 
       v17 = v12;
       v18 = dispatch_queue_create([v12 cStringUsingEncoding:1], 0);
@@ -116,17 +116,17 @@
       dispatch_set_target_queue(v20, v21);
 
       dispatch_queue_set_specific(self->_appCacheQueue, "kIKAppCacheQueueTag", self, 0);
-      v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
+      v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:selfCopy];
       appJSFileURL = self->_appJSFileURL;
       self->_appJSFileURL = v22;
 
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
-      v25 = [(IKAppCache *)v6 path];
-      LODWORD(v21) = [v24 fileExistsAtPath:v25];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      path = [(IKAppCache *)appLocalJSURL path];
+      LODWORD(v21) = [defaultManager3 fileExistsAtPath:path];
 
       if (v21)
       {
-        v26 = v6;
+        v26 = appLocalJSURL;
         p_super = &self->_appLocalJSFileURL->super;
         self->_appLocalJSFileURL = v26;
       }
@@ -137,7 +137,7 @@
         if (os_log_type_enabled(p_super, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v38 = v6;
+          v38 = appLocalJSURL;
           _os_log_impl(&dword_2549A4000, p_super, OS_LOG_TYPE_INFO, "Bundle JS does not exist at %@", buf, 0xCu);
         }
       }
@@ -146,7 +146,7 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v38 = v7;
+        v38 = selfCopy;
         _os_log_impl(&dword_2549A4000, v29, OS_LOG_TYPE_INFO, "Cache created with cache path: %@", buf, 0xCu);
       }
 
@@ -164,17 +164,17 @@ LABEL_25:
 LABEL_26:
       self = self;
 
-      v7 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v30 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
 void __34__IKAppCache_initWithApplication___block_invoke(uint64_t a1)
@@ -188,10 +188,10 @@ void __34__IKAppCache_initWithApplication___block_invoke(uint64_t a1)
   }
 }
 
-- (void)appJSURLWithCompletion:(id)a3
+- (void)appJSURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
@@ -199,7 +199,7 @@ void __34__IKAppCache_initWithApplication___block_invoke(uint64_t a1)
     v5[2] = __37__IKAppCache_appJSURLWithCompletion___block_invoke;
     v5[3] = &unk_279799460;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = completionCopy;
     [(IKAppCache *)self _performAsync:v5];
 
     objc_destroyWeak(&v7);
@@ -232,28 +232,28 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
   if ([(IKAppCache *)self status]>= 2)
   {
     v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-    v4 = [(IKAppCache *)self appLocalJSChecksum];
+    appLocalJSChecksum = [(IKAppCache *)self appLocalJSChecksum];
 
-    if (v4)
+    if (appLocalJSChecksum)
     {
-      v5 = [(IKAppCache *)self appLocalJSChecksum];
-      [v3 setObject:v5 forKey:@"IKAppCacheManifestAppLocalJSChecksumKey"];
+      appLocalJSChecksum2 = [(IKAppCache *)self appLocalJSChecksum];
+      [v3 setObject:appLocalJSChecksum2 forKey:@"IKAppCacheManifestAppLocalJSChecksumKey"];
     }
 
-    v6 = [(IKAppCache *)self appJSChecksum];
+    appJSChecksum = [(IKAppCache *)self appJSChecksum];
 
-    if (v6)
+    if (appJSChecksum)
     {
-      v7 = [(IKAppCache *)self appJSChecksum];
-      [v3 setObject:v7 forKey:@"IKAppCacheManifestAppJSChecksumKey"];
+      appJSChecksum2 = [(IKAppCache *)self appJSChecksum];
+      [v3 setObject:appJSChecksum2 forKey:@"IKAppCacheManifestAppJSChecksumKey"];
     }
 
-    v8 = [(IKAppCache *)self appJSChecksumHistory];
+    appJSChecksumHistory = [(IKAppCache *)self appJSChecksumHistory];
 
-    if (v8)
+    if (appJSChecksumHistory)
     {
-      v9 = [(IKAppCache *)self appJSChecksumHistory];
-      [v3 setObject:v9 forKey:@"IKAppCacheManifestChecksumHistoryKey"];
+      appJSChecksumHistory2 = [(IKAppCache *)self appJSChecksumHistory];
+      [v3 setObject:appJSChecksumHistory2 forKey:@"IKAppCacheManifestChecksumHistoryKey"];
     }
 
     v10 = _IKMobileGestaltForKey();
@@ -267,9 +267,9 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
     v12 = v19;
     if (v11)
     {
-      v13 = [(IKAppCache *)self appJSFileURL];
-      v14 = [v13 path];
-      v15 = [v14 stringByAppendingPathComponent:@"manifest.json"];
+      appJSFileURL = [(IKAppCache *)self appJSFileURL];
+      path = [appJSFileURL path];
+      v15 = [path stringByAppendingPathComponent:@"manifest.json"];
 
       v16 = ITMLKitGetLogObject(2);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -309,9 +309,9 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
   v35 = *MEMORY[0x277D85DE8];
   if (![(IKAppCache *)self status])
   {
-    v3 = [(IKAppCache *)self appJSFileURL];
-    v4 = [v3 path];
-    v5 = [v4 stringByAppendingPathComponent:@"manifest.json"];
+    appJSFileURL = [(IKAppCache *)self appJSFileURL];
+    path = [appJSFileURL path];
+    v5 = [path stringByAppendingPathComponent:@"manifest.json"];
 
     v6 = ITMLKitGetLogObject(2);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -321,8 +321,8 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
       _os_log_impl(&dword_2549A4000, v6, OS_LOG_TYPE_INFO, "Loading manifest from %@", buf, 0xCu);
     }
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager fileExistsAtPath:v5];
 
     if (v8)
     {
@@ -429,17 +429,17 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2549A4000, v3, OS_LOG_TYPE_INFO, "Checking manifest...", buf, 2u);
   }
 
-  v4 = [(IKAppCache *)self appLocalJSFileURL];
-  v5 = [v4 path];
+  appLocalJSFileURL = [(IKAppCache *)self appLocalJSFileURL];
+  path = [appLocalJSFileURL path];
 
-  v6 = _IKFileHash(v5);
-  v7 = [(IKAppCache *)self appJSChecksum];
-  if (v7)
+  v6 = _IKFileHash(path);
+  appJSChecksum = [(IKAppCache *)self appJSChecksum];
+  if (appJSChecksum)
   {
-    v8 = [(IKAppCache *)self appJSFileURL];
-    v9 = [v8 path];
-    v10 = [(IKAppCache *)self appJSChecksum];
-    v11 = [v9 stringByAppendingPathComponent:v10];
+    appJSFileURL = [(IKAppCache *)self appJSFileURL];
+    path2 = [appJSFileURL path];
+    appJSChecksum2 = [(IKAppCache *)self appJSChecksum];
+    v11 = [path2 stringByAppendingPathComponent:appJSChecksum2];
   }
 
   else
@@ -447,9 +447,9 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
     v11 = 0;
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v48 = 0;
-  v13 = [v12 attributesOfItemAtPath:v5 error:&v48];
+  v13 = [defaultManager attributesOfItemAtPath:path error:&v48];
   v14 = v48;
 
   if (!v13)
@@ -464,9 +464,9 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
   v44 = v14;
   v16 = *MEMORY[0x277CCA108];
   v17 = [v13 objectForKey:*MEMORY[0x277CCA108]];
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v47 = 0;
-  v19 = [v18 attributesOfItemAtPath:v11 error:&v47];
+  v19 = [defaultManager2 attributesOfItemAtPath:v11 error:&v47];
   v20 = v47;
 
   if (!v19)
@@ -514,7 +514,7 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
 
     else
     {
-      v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
+      v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
       objc_storeStrong(&self->_appLocalJSChecksum, v6);
       v27 = ITMLKitGetLogObject(2);
       if (!os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -523,7 +523,7 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
       }
 
       *buf = 138412290;
-      v50 = v5;
+      v50 = path;
       v28 = "appLocal (%@) exists and appJS does not exists, using appLocal JS.";
     }
 
@@ -532,8 +532,8 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
     goto LABEL_35;
   }
 
-  v24 = [(IKAppCache *)self appLocalJSChecksum];
-  v25 = [v6 isEqualToString:v24];
+  appLocalJSChecksum = [(IKAppCache *)self appLocalJSChecksum];
+  v25 = [v6 isEqualToString:appLocalJSChecksum];
 
   if ((v25 & 1) != 0 || [v17 compare:v23] != 1)
   {
@@ -551,7 +551,7 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
 
       v50 = v30;
       v51 = 2112;
-      v52 = v5;
+      v52 = path;
       v53 = 2112;
       v54 = v17;
       v55 = 2112;
@@ -565,7 +565,7 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
 
   else
   {
-    v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
+    v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
     objc_storeStrong(&self->_appLocalJSChecksum, v6);
     v27 = ITMLKitGetLogObject(2);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -573,7 +573,7 @@ void __37__IKAppCache_appJSURLWithCompletion___block_invoke(uint64_t a1)
       *buf = 138413314;
       v50 = @"changed";
       v51 = 2112;
-      v52 = v5;
+      v52 = path;
       v53 = 2112;
       v54 = v17;
       v55 = 2112;
@@ -592,8 +592,8 @@ LABEL_35:
 LABEL_39:
   v34 = v6;
 
-  v35 = [(NSURL *)v26 path];
-  v36 = _IKFileHash(v35);
+  path3 = [(NSURL *)v26 path];
+  v36 = _IKFileHash(path3);
 
   v37 = ITMLKitGetLogObject(2);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -618,16 +618,16 @@ LABEL_42:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshWithCompletion:(id)a3
+- (void)refreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__IKAppCache_refreshWithCompletion___block_invoke;
   v6[3] = &unk_279799460;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(IKAppCache *)self _performAsync:v6];
 
@@ -712,16 +712,16 @@ void __36__IKAppCache_refreshWithCompletion___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanBlobStorageWithCompletion:(id)a3
+- (void)cleanBlobStorageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__IKAppCache_cleanBlobStorageWithCompletion___block_invoke;
   v6[3] = &unk_2797994B0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v6[4] = self;
   v7 = v5;
   [(IKAppCache *)self _performAsync:v6];
@@ -868,15 +868,15 @@ LABEL_29:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v5 = [objc_opt_class() _appContextDelegateSelectors];
-  v6 = NSStringFromSelector(a3);
-  v7 = [v5 containsObject:v6];
+  _appContextDelegateSelectors = [objc_opt_class() _appContextDelegateSelectors];
+  v6 = NSStringFromSelector(selector);
+  v7 = [_appContextDelegateSelectors containsObject:v6];
 
   if (v7)
   {
-    v8 = [(IKAppCache *)self appContextDelegate];
+    appContextDelegate = [(IKAppCache *)self appContextDelegate];
     v9 = objc_opt_respondsToSelector();
   }
 
@@ -884,39 +884,39 @@ LABEL_29:
   {
     v11.receiver = self;
     v11.super_class = IKAppCache;
-    v9 = [(IKAppCache *)&v11 respondsToSelector:a3];
+    v9 = [(IKAppCache *)&v11 respondsToSelector:selector];
   }
 
   return v9 & 1;
 }
 
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4 validatedJSString:(id)a5
+- (void)appContext:(id)context didStartWithOptions:(id)options validatedJSString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  stringCopy = string;
   v11 = ITMLKitGetLogObject(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 resolvedBootURL];
+    resolvedBootURL = [contextCopy resolvedBootURL];
     *buf = 138412290;
-    v20 = v12;
+    v20 = resolvedBootURL;
     _os_log_impl(&dword_2549A4000, v11, OS_LOG_TYPE_INFO, "Validation context succeeded for %@...", buf, 0xCu);
   }
 
-  v13 = [(IKAppCache *)self validationCompletionHandler];
-  [v8 stop];
+  validationCompletionHandler = [(IKAppCache *)self validationCompletionHandler];
+  [contextCopy stop];
   objc_initWeak(buf, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_invoke;
   v16[3] = &unk_2797994D8;
-  v14 = v13;
+  v14 = validationCompletionHandler;
   v17 = v14;
   objc_copyWeak(&v18, buf);
   v16[4] = self;
-  [(IKAppCache *)self updateCacheWithValidatedJS:v10 completion:v16];
+  [(IKAppCache *)self updateCacheWithValidatedJS:stringCopy completion:v16];
   objc_destroyWeak(&v18);
 
   objc_destroyWeak(buf);
@@ -948,21 +948,21 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   }
 }
 
-- (void)appContext:(id)a3 didFailWithError:(id)a4
+- (void)appContext:(id)context didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  errorCopy = error;
   v8 = ITMLKitGetLogObject(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(IKAppCache *)v6 appContext:v7 didFailWithError:v8];
+    [(IKAppCache *)contextCopy appContext:errorCopy didFailWithError:v8];
   }
 
-  v9 = [(IKAppCache *)self validationCompletionHandler];
-  [v6 stop];
-  if (v9)
+  validationCompletionHandler = [(IKAppCache *)self validationCompletionHandler];
+  [contextCopy stop];
+  if (validationCompletionHandler)
   {
-    (v9)[2](v9, 0, v7);
+    (validationCompletionHandler)[2](validationCompletionHandler, 0, errorCopy);
   }
 
   [(IKAppCache *)self _cleanupValidationContext];
@@ -983,32 +983,32 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   [(IKAppCache *)self setValidationCompletionHandler:0];
 }
 
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  inContextCopy = inContext;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(IKAppCache *)self appContextDelegate];
-    [v9 appContext:v10 evaluateAppJavaScriptInContext:v6];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    [appContextDelegate2 appContext:contextCopy evaluateAppJavaScriptInContext:inContextCopy];
   }
 }
 
-- (BOOL)appContext:(id)a3 validateDOMDocument:(id)a4 inContext:(id)a5 error:(id *)a6
+- (BOOL)appContext:(id)context validateDOMDocument:(id)document inContext:(id)inContext error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  documentCopy = document;
+  inContextCopy = inContext;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(IKAppCache *)self appContextDelegate];
-    v16 = [v15 appContext:v10 validateDOMDocument:v11 inContext:v12 error:a6];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v16 = [appContextDelegate2 appContext:contextCopy validateDOMDocument:documentCopy inContext:inContextCopy error:error];
   }
 
   else
@@ -1019,16 +1019,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v16;
 }
 
-- (id)deviceConfigForContext:(id)a3
+- (id)deviceConfigForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 deviceConfigForContext:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 deviceConfigForContext:contextCopy];
   }
 
   else
@@ -1039,16 +1039,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (id)navigationControllerForContext:(id)a3
+- (id)navigationControllerForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 navigationControllerForContext:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 navigationControllerForContext:contextCopy];
   }
 
   else
@@ -1059,16 +1059,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (id)tabBarForContext:(id)a3
+- (id)tabBarForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 tabBarForContext:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 tabBarForContext:contextCopy];
   }
 
   else
@@ -1079,16 +1079,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (id)modalControllerForContext:(id)a3
+- (id)modalControllerForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 navigationControllerForContext:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 navigationControllerForContext:contextCopy];
   }
 
   else
@@ -1099,16 +1099,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (id)objectForPlayer:(id)a3
+- (id)objectForPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  playerCopy = player;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 objectForPlayer:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 objectForPlayer:playerCopy];
   }
 
   else
@@ -1119,16 +1119,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (id)objectForPlaylist:(id)a3
+- (id)objectForPlaylist:(id)playlist
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  playlistCopy = playlist;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 objectForPlaylist:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 objectForPlaylist:playlistCopy];
   }
 
   else
@@ -1139,16 +1139,16 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (id)objectForMediaItem:(id)a3
+- (id)objectForMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(IKAppCache *)self appContextDelegate];
+  itemCopy = item;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IKAppCache *)self appContextDelegate];
-    v8 = [v7 objectForMediaItem:v4];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    v8 = [appContextDelegate2 objectForMediaItem:itemCopy];
   }
 
   else
@@ -1159,26 +1159,26 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
   return v8;
 }
 
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(IKAppCache *)self appContextDelegate];
+  contextCopy = context;
+  optionsCopy = options;
+  appContextDelegate = [(IKAppCache *)self appContextDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(IKAppCache *)self appContextDelegate];
-    [v11 appContext:v12 needsReloadWithUrgency:a4 options:v8];
+    appContextDelegate2 = [(IKAppCache *)self appContextDelegate];
+    [appContextDelegate2 appContext:contextCopy needsReloadWithUrgency:urgency options:optionsCopy];
   }
 }
 
-- (id)_validatedChecksumForScript:(id)a3 error:(id *)a4
+- (id)_validatedChecksumForScript:(id)script error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = _IKStringHash(a3);
-  v7 = [(IKAppCache *)self appLocalJSChecksum];
-  v8 = [v7 isEqualToString:v6];
+  v6 = _IKStringHash(script);
+  appLocalJSChecksum = [(IKAppCache *)self appLocalJSChecksum];
+  v8 = [appLocalJSChecksum isEqualToString:v6];
 
   if (v8)
   {
@@ -1194,8 +1194,8 @@ void __63__IKAppCache_appContext_didStartWithOptions_validatedJSString___block_i
     goto LABEL_7;
   }
 
-  v11 = [(IKAppCache *)self appJSChecksum];
-  v12 = [v11 isEqualToString:v6];
+  appJSChecksum = [(IKAppCache *)self appJSChecksum];
+  v12 = [appJSChecksum isEqualToString:v6];
 
   if (!v12)
   {
@@ -1214,10 +1214,10 @@ LABEL_7:
 
 LABEL_8:
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"IKAppCacheErrorDomain" code:1 userInfo:0];
-    *a4 = v6 = 0;
+    *error = v6 = 0;
   }
 
   else
@@ -1231,19 +1231,19 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateCacheWithValidatedJS:(id)a3 completion:(id)a4
+- (void)updateCacheWithValidatedJS:(id)s completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke;
   v10[3] = &unk_279799500;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = sCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(IKAppCache *)self _performAsync:v10];
 
@@ -1277,20 +1277,20 @@ void __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke(uint6
   }
 }
 
-- (id)_cacheFileURLForAppJS:(id)a3 checksum:(id)a4 error:(id *)a5
+- (id)_cacheFileURLForAppJS:(id)s checksum:(id)checksum error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length])
+  sCopy = s;
+  checksumCopy = checksum;
+  if ([sCopy length])
   {
     v10 = MEMORY[0x277CBEBC0];
-    v11 = [(IKAppCache *)self appJSFileURL];
-    v12 = [v11 path];
-    v13 = [v12 stringByAppendingPathComponent:v9];
+    appJSFileURL = [(IKAppCache *)self appJSFileURL];
+    path = [appJSFileURL path];
+    v13 = [path stringByAppendingPathComponent:checksumCopy];
     v14 = [v10 fileURLWithPath:v13];
 
-    v15 = [v8 dataUsingEncoding:4];
+    v15 = [sCopy dataUsingEncoding:4];
     v16 = ITMLKitGetLogObject(2);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -1299,20 +1299,20 @@ void __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke(uint6
       _os_log_impl(&dword_2549A4000, v16, OS_LOG_TYPE_INFO, "Writing validated Javascript to %@", buf, 0xCu);
     }
 
-    v17 = [v14 path];
-    v18 = [v15 writeToFile:v17 atomically:1];
+    path2 = [v14 path];
+    v18 = [v15 writeToFile:path2 atomically:1];
 
     if (v18)
     {
       v34 = v15;
       obj = v14;
-      v19 = [(IKAppCache *)self appJSChecksum];
+      appJSChecksum = [(IKAppCache *)self appJSChecksum];
 
-      if (v19)
+      if (appJSChecksum)
       {
-        v20 = [(IKAppCache *)self appJSChecksumHistory];
-        v21 = [(IKAppCache *)self appJSChecksum];
-        [v20 addObject:v21];
+        appJSChecksumHistory = [(IKAppCache *)self appJSChecksumHistory];
+        appJSChecksum2 = [(IKAppCache *)self appJSChecksum];
+        [appJSChecksumHistory addObject:appJSChecksum2];
       }
 
       v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
@@ -1320,8 +1320,8 @@ void __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke(uint6
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v23 = [(IKAppCache *)self appJSChecksumHistory];
-      v24 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      appJSChecksumHistory2 = [(IKAppCache *)self appJSChecksumHistory];
+      v24 = [appJSChecksumHistory2 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v24)
       {
         v25 = v24;
@@ -1332,29 +1332,29 @@ void __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke(uint6
           {
             if (*v37 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(appJSChecksumHistory2);
             }
 
             v28 = *(*(&v36 + 1) + 8 * i);
-            if ([v28 isEqualToString:v9])
+            if ([v28 isEqualToString:checksumCopy])
             {
               [v22 addObject:v28];
             }
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v25 = [appJSChecksumHistory2 countByEnumeratingWithState:&v36 objects:v40 count:16];
         }
 
         while (v25);
       }
 
-      v29 = [(IKAppCache *)self appJSChecksumHistory];
-      [v29 removeObjectsInArray:v22];
+      appJSChecksumHistory3 = [(IKAppCache *)self appJSChecksumHistory];
+      [appJSChecksumHistory3 removeObjectsInArray:v22];
 
-      objc_storeStrong(&self->_appJSChecksum, a4);
+      objc_storeStrong(&self->_appJSChecksum, checksum);
       v14 = obj;
       objc_storeStrong(&self->_currentAppJSURL, obj);
-      objc_storeStrong(&self->_currentAppJSChecksum, a4);
+      objc_storeStrong(&self->_currentAppJSChecksum, checksum);
       [(IKAppCache *)self _storeManifest];
       v30 = obj;
 
@@ -1369,10 +1369,10 @@ void __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke(uint6
         [IKAppCache _cacheFileURLForAppJS:checksum:error:];
       }
 
-      if (a5)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"IKAppCacheErrorDomain" code:0 userInfo:0];
-        *a5 = v30 = 0;
+        *error = v30 = 0;
       }
 
       else
@@ -1382,10 +1382,10 @@ void __52__IKAppCache_updateCacheWithValidatedJS_completion___block_invoke(uint6
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"IKAppCacheErrorDomain" code:0 userInfo:0];
-    *a5 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else

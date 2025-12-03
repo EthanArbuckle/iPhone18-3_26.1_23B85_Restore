@@ -1,6 +1,6 @@
 @interface ATXSpotlightZKWTrialClientWrapper
 + (id)sharedInstance;
-- (ATXSpotlightZKWTrialClientWrapper)initWithClientIdentifier:(int)a3;
+- (ATXSpotlightZKWTrialClientWrapper)initWithClientIdentifier:(int)identifier;
 - (BOOL)matchesAlternateRecentsControlCodePath;
 - (BOOL)matchesAlternateRecentsTreatmentCodePath;
 - (BOOL)matchesSuggestionsMaxCount;
@@ -104,11 +104,11 @@ void __50__ATXSpotlightZKWTrialClientWrapper_updateFactors__block_invoke(uint64_
   return v3;
 }
 
-- (ATXSpotlightZKWTrialClientWrapper)initWithClientIdentifier:(int)a3
+- (ATXSpotlightZKWTrialClientWrapper)initWithClientIdentifier:(int)identifier
 {
   v9.receiver = self;
   v9.super_class = ATXSpotlightZKWTrialClientWrapper;
-  v3 = [(ATXTrialClientWrapper *)&v9 initWithClientIdentifier:*&a3 namespaceName:@"SPOTLIGHT_UI"];
+  v3 = [(ATXTrialClientWrapper *)&v9 initWithClientIdentifier:*&identifier namespaceName:@"SPOTLIGHT_UI"];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69C5D60]);
@@ -132,10 +132,10 @@ void __50__ATXSpotlightZKWTrialClientWrapper_updateFactors__block_invoke(uint64_
 
 - (BOOL)matchesSuggestionsMaxCount
 {
-  v3 = [(ATXSpotlightZKWTrialClientWrapper *)self codepathIDs];
-  v4 = [(ATXSpotlightZKWTrialClientWrapper *)self codePathIdForSuggestionsMaxCount];
-  v5 = [v4 UUIDString];
-  v6 = [v3 containsString:v5];
+  codepathIDs = [(ATXSpotlightZKWTrialClientWrapper *)self codepathIDs];
+  codePathIdForSuggestionsMaxCount = [(ATXSpotlightZKWTrialClientWrapper *)self codePathIdForSuggestionsMaxCount];
+  uUIDString = [codePathIdForSuggestionsMaxCount UUIDString];
+  v6 = [codepathIDs containsString:uUIDString];
 
   return v6;
 }
@@ -156,20 +156,20 @@ void __50__ATXSpotlightZKWTrialClientWrapper_updateFactors__block_invoke(uint64_
 
 - (BOOL)matchesAlternateRecentsControlCodePath
 {
-  v3 = [(ATXSpotlightZKWTrialClientWrapper *)self codepathIDs];
-  v4 = [(ATXSpotlightZKWTrialClientWrapper *)self codePathForAlternateRecentsControl];
-  v5 = [v4 UUIDString];
-  v6 = [v3 containsString:v5];
+  codepathIDs = [(ATXSpotlightZKWTrialClientWrapper *)self codepathIDs];
+  codePathForAlternateRecentsControl = [(ATXSpotlightZKWTrialClientWrapper *)self codePathForAlternateRecentsControl];
+  uUIDString = [codePathForAlternateRecentsControl UUIDString];
+  v6 = [codepathIDs containsString:uUIDString];
 
   return v6;
 }
 
 - (BOOL)matchesAlternateRecentsTreatmentCodePath
 {
-  v3 = [(ATXSpotlightZKWTrialClientWrapper *)self codepathIDs];
-  v4 = [(ATXSpotlightZKWTrialClientWrapper *)self codePathForAlternateRecentsTreatment];
-  v5 = [v4 UUIDString];
-  v6 = [v3 containsString:v5];
+  codepathIDs = [(ATXSpotlightZKWTrialClientWrapper *)self codepathIDs];
+  codePathForAlternateRecentsTreatment = [(ATXSpotlightZKWTrialClientWrapper *)self codePathForAlternateRecentsTreatment];
+  uUIDString = [codePathForAlternateRecentsTreatment UUIDString];
+  v6 = [codepathIDs containsString:uUIDString];
 
   return v6;
 }

@@ -1,25 +1,25 @@
 @interface NTKFaceSupportDateDatabase
-- (NTKFaceSupportDateDatabase)initWithFileAtPath:(id)a3;
+- (NTKFaceSupportDateDatabase)initWithFileAtPath:(id)path;
 - (id)_queue_save;
 - (void)_queue_loadLookup;
-- (void)deleteDateForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)recordDate:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)retreiveDateForBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)deleteDateForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)recordDate:(id)date bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)retreiveDateForBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation NTKFaceSupportDateDatabase
 
-- (NTKFaceSupportDateDatabase)initWithFileAtPath:(id)a3
+- (NTKFaceSupportDateDatabase)initWithFileAtPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length] && (objc_msgSend(v4, "pathExtension"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"db"), v5, v6))
+  pathCopy = path;
+  if ([pathCopy length] && (objc_msgSend(pathCopy, "pathExtension"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"db"), v5, v6))
   {
     v15.receiver = self;
     v15.super_class = NTKFaceSupportDateDatabase;
     v7 = [(NTKFaceSupportDateDatabase *)&v15 init];
     if (v7)
     {
-      v8 = [v4 copy];
+      v8 = [pathCopy copy];
       filePath = v7->_filePath;
       v7->_filePath = v8;
 
@@ -30,31 +30,31 @@
     }
 
     self = v7;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)recordDate:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)recordDate:(id)date bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dateCopy = date;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = v9;
+    v11 = identifierCopy;
     goto LABEL_9;
   }
 
-  v11 = [v9 copy];
+  v11 = [identifierCopy copy];
 
-  if (!v8)
+  if (!dateCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKFaceSupportDateDatabaseErrorDomain" code:405 userInfo:0];
     fileQueue = self->_fileQueue;
@@ -63,7 +63,7 @@
     block[2] = __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___block_invoke;
     block[3] = &unk_27877E570;
     v27 = v13;
-    v28 = v10;
+    v28 = completionCopy;
     v15 = v13;
     dispatch_async(fileQueue, block);
 
@@ -82,7 +82,7 @@ LABEL_8:
     v23[2] = __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___block_invoke_2;
     v23[3] = &unk_27877E570;
     v24 = v17;
-    v25 = v10;
+    v25 = completionCopy;
     v15 = v17;
     dispatch_async(v18, v23);
 
@@ -96,10 +96,10 @@ LABEL_8:
   v19[2] = __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___block_invoke_3;
   v19[3] = &unk_2787808C8;
   v19[4] = self;
-  v20 = v8;
+  v20 = dateCopy;
   v11 = v11;
   v21 = v11;
-  v22 = v10;
+  v22 = completionCopy;
   dispatch_async(v12, v19);
 
 LABEL_9:
@@ -118,13 +118,13 @@ void __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___b
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)retreiveDateForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)retreiveDateForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
 
     if ([v8 length])
     {
@@ -136,7 +136,7 @@ void __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___b
       block[4] = self;
       v8 = v8;
       v14 = v8;
-      v15 = v7;
+      v15 = completionCopy;
       dispatch_async(fileQueue, block);
     }
 
@@ -149,7 +149,7 @@ void __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___b
       v16[2] = __73__NTKFaceSupportDateDatabase_retreiveDateForBundleIdentifier_completion___block_invoke;
       v16[3] = &unk_27877E570;
       v17 = v10;
-      v18 = v7;
+      v18 = completionCopy;
       v12 = v10;
       dispatch_async(v11, v16);
     }
@@ -157,7 +157,7 @@ void __69__NTKFaceSupportDateDatabase_recordDate_bundleIdentifier_completion___b
 
   else
   {
-    v8 = v6;
+    v8 = identifierCopy;
   }
 }
 
@@ -180,13 +180,13 @@ void __73__NTKFaceSupportDateDatabase_retreiveDateForBundleIdentifier_completion
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)deleteDateForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)deleteDateForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
 
     if ([v8 length])
     {
@@ -200,7 +200,7 @@ void __73__NTKFaceSupportDateDatabase_retreiveDateForBundleIdentifier_completion
         v16[4] = self;
         v8 = v8;
         v17 = v8;
-        v18 = v7;
+        v18 = completionCopy;
         dispatch_async(fileQueue, v16);
 
         goto LABEL_9;
@@ -213,7 +213,7 @@ void __73__NTKFaceSupportDateDatabase_retreiveDateForBundleIdentifier_completion
       block[2] = __71__NTKFaceSupportDateDatabase_deleteDateForBundleIdentifier_completion___block_invoke_2;
       block[3] = &unk_27877E570;
       v20 = v9;
-      v21 = v7;
+      v21 = completionCopy;
       v11 = v9;
       dispatch_async(v10, block);
 
@@ -229,7 +229,7 @@ void __73__NTKFaceSupportDateDatabase_retreiveDateForBundleIdentifier_completion
       v22[2] = __71__NTKFaceSupportDateDatabase_deleteDateForBundleIdentifier_completion___block_invoke;
       v22[3] = &unk_27877E570;
       v23 = v13;
-      v24 = v7;
+      v24 = completionCopy;
       v11 = v13;
       dispatch_async(v14, v22);
 
@@ -239,7 +239,7 @@ void __73__NTKFaceSupportDateDatabase_retreiveDateForBundleIdentifier_completion
 
   else
   {
-    v8 = v6;
+    v8 = identifierCopy;
   }
 
 LABEL_9:
@@ -268,8 +268,8 @@ void __71__NTKFaceSupportDateDatabase_deleteDateForBundleIdentifier_completion__
   dispatch_assert_queue_V2(self->_fileQueue);
   if (!self->_lookup)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 fileExistsAtPath:self->_filePath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [defaultManager fileExistsAtPath:self->_filePath];
 
     if (v4)
     {
@@ -292,33 +292,33 @@ void __71__NTKFaceSupportDateDatabase_deleteDateForBundleIdentifier_completion__
         [v6 enumerateKeysAndObjectsUsingBlock:v14];
         if (v16[3])
         {
-          v8 = v6;
+          dictionary = v6;
         }
 
         else
         {
-          v8 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
         }
 
         lookup = self->_lookup;
-        self->_lookup = v8;
+        self->_lookup = dictionary;
 
         _Block_object_dispose(&v15, 8);
       }
 
       else
       {
-        v11 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         v12 = self->_lookup;
-        self->_lookup = v11;
+        self->_lookup = dictionary2;
       }
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       v10 = self->_lookup;
-      self->_lookup = v9;
+      self->_lookup = dictionary3;
     }
   }
 }
@@ -344,17 +344,17 @@ void __47__NTKFaceSupportDateDatabase__queue_loadLookup__block_invoke(uint64_t a
   v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:self->_lookup options:3 error:0];
   if (v3)
   {
-    v4 = [(NSString *)self->_filePath stringByDeletingLastPathComponent];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 fileExistsAtPath:self->_filePath isDirectory:0];
+    stringByDeletingLastPathComponent = [(NSString *)self->_filePath stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:self->_filePath isDirectory:0];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v20 = *MEMORY[0x277CCA1B0];
       v21[0] = *MEMORY[0x277CCA1B8];
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      [v7 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:v8 error:0];
+      [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v8 error:0];
     }
 
     filePath = self->_filePath;

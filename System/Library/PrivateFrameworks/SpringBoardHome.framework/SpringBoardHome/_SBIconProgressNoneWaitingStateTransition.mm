@@ -1,25 +1,25 @@
 @interface _SBIconProgressNoneWaitingStateTransition
-- (void)_updateView:(id)a3;
+- (void)_updateView:(id)view;
 @end
 
 @implementation _SBIconProgressNoneWaitingStateTransition
 
-- (void)_updateView:(id)a3
+- (void)_updateView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v6.receiver = self;
   v6.super_class = _SBIconProgressNoneWaitingStateTransition;
-  [(_SBIconProgressStateTransition *)&v6 _updateView:v4];
-  [v4 setCircleRadiusFraction:0.0];
-  [v4 setForegroundAlpha:0.0];
+  [(_SBIconProgressStateTransition *)&v6 _updateView:viewCopy];
+  [viewCopy setCircleRadiusFraction:0.0];
+  [viewCopy setForegroundAlpha:0.0];
   fraction = self->super._fraction;
   if (self->super._fromState)
   {
     fraction = 1.0 - fraction;
   }
 
-  [v4 setBackgroundAlpha:fraction];
-  [v4 setNeedsDisplay];
+  [viewCopy setBackgroundAlpha:fraction];
+  [viewCopy setNeedsDisplay];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface JRSchemaJRCandidateBooleanMask
-- (BOOL)isApplicableToCandidateAtIndex:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRCandidateBooleanMask)initWithDictionary:(id)a3;
-- (JRSchemaJRCandidateBooleanMask)initWithJSON:(id)a3;
+- (BOOL)isApplicableToCandidateAtIndex:(unint64_t)index;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRCandidateBooleanMask)initWithDictionary:(id)dictionary;
+- (JRSchemaJRCandidateBooleanMask)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addIsApplicableToCandidate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addIsApplicableToCandidate:(BOOL)candidate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRCandidateBooleanMask
 
-- (JRSchemaJRCandidateBooleanMask)initWithDictionary:(id)a3
+- (JRSchemaJRCandidateBooleanMask)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = JRSchemaJRCandidateBooleanMask;
   v5 = [(JRSchemaJRCandidateBooleanMask *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isApplicableToCandidate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isApplicableToCandidate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (JRSchemaJRCandidateBooleanMask)initWithJSON:(id)a3
+- (JRSchemaJRCandidateBooleanMask)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRCandidateBooleanMask *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRCandidateBooleanMask *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRCandidateBooleanMask *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_isApplicableToCandidates count])
   {
-    v4 = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"isApplicableToCandidate"];
+    isApplicableToCandidates = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
+    v5 = [isApplicableToCandidates copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"isApplicableToCandidate"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
-    v6 = [v4 isApplicableToCandidates];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    isApplicableToCandidates = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
+    isApplicableToCandidates2 = [equalCopy isApplicableToCandidates];
+    v7 = isApplicableToCandidates2;
+    if ((isApplicableToCandidates != 0) != (isApplicableToCandidates2 == 0))
     {
-      v8 = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
-      if (!v8)
+      isApplicableToCandidates3 = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
+      if (!isApplicableToCandidates3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
-      v11 = [v4 isApplicableToCandidates];
-      v12 = [v10 isEqual:v11];
+      v9 = isApplicableToCandidates3;
+      isApplicableToCandidates4 = [(JRSchemaJRCandidateBooleanMask *)self isApplicableToCandidates];
+      isApplicableToCandidates5 = [equalCopy isApplicableToCandidates];
+      v12 = [isApplicableToCandidates4 isEqual:isApplicableToCandidates5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,28 +196,28 @@ LABEL_8:
   }
 }
 
-- (BOOL)isApplicableToCandidateAtIndex:(unint64_t)a3
+- (BOOL)isApplicableToCandidateAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isApplicableToCandidates objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isApplicableToCandidates objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsApplicableToCandidate:(BOOL)a3
+- (void)addIsApplicableToCandidate:(BOOL)candidate
 {
-  v3 = a3;
+  candidateCopy = candidate;
   isApplicableToCandidates = self->_isApplicableToCandidates;
   if (!isApplicableToCandidates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isApplicableToCandidates;
-    self->_isApplicableToCandidates = v6;
+    self->_isApplicableToCandidates = array;
 
     isApplicableToCandidates = self->_isApplicableToCandidates;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:candidateCopy];
   [(NSArray *)isApplicableToCandidates addObject:v8];
 }
 

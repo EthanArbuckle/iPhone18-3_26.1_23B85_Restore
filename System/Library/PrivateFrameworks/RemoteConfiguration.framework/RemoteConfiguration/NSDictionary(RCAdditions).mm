@@ -53,7 +53,7 @@
     [NSDictionary(RCAdditions) rc_dictionaryByTransformingKeysWithKeyAndValueBlock:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__NSDictionary_RCAdditions__rc_dictionaryByTransformingKeysWithKeyAndValueBlock___block_invoke;
@@ -62,7 +62,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v11];
+  [self enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -77,7 +77,7 @@
     [NSDictionary(RCAdditions) rc_dictionaryByTransformingValuesWithKeyAndValueBlock:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __83__NSDictionary_RCAdditions__rc_dictionaryByTransformingValuesWithKeyAndValueBlock___block_invoke;
@@ -86,7 +86,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v11];
+  [self enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -118,7 +118,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:{v11, v15}];
+        v12 = [self objectForKeyedSubscript:{v11, v15}];
         if (v12)
         {
           [v5 setObject:v12 forKeyedSubscript:v11];

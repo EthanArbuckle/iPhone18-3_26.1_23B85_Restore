@@ -1,39 +1,39 @@
 @interface PRXFeature
-+ (id)featureWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-+ (id)featureWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 tintColor:(id)a6;
-+ (id)optionalFeatureWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 tintColor:(id)a6 valueChangedBlock:(id)a7;
-- (PRXFeature)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 tintColor:(id)a6 valueChangedBlock:(id)a7;
-- (PRXFeature)initWithTitle:(id)a3 detailText:(id)a4 imageView:(id)a5 valueChangedBlock:(id)a6;
++ (id)featureWithTitle:(id)title detailText:(id)text icon:(id)icon;
++ (id)featureWithTitle:(id)title detailText:(id)text icon:(id)icon tintColor:(id)color;
++ (id)optionalFeatureWithTitle:(id)title detailText:(id)text icon:(id)icon tintColor:(id)color valueChangedBlock:(id)block;
+- (PRXFeature)initWithTitle:(id)title detailText:(id)text icon:(id)icon tintColor:(id)color valueChangedBlock:(id)block;
+- (PRXFeature)initWithTitle:(id)title detailText:(id)text imageView:(id)view valueChangedBlock:(id)block;
 - (UISwitch)switchControl;
-- (void)setOn:(BOOL)a3;
-- (void)setSwitchControl:(id)a3;
+- (void)setOn:(BOOL)on;
+- (void)setSwitchControl:(id)control;
 @end
 
 @implementation PRXFeature
 
-- (PRXFeature)initWithTitle:(id)a3 detailText:(id)a4 imageView:(id)a5 valueChangedBlock:(id)a6
+- (PRXFeature)initWithTitle:(id)title detailText:(id)text imageView:(id)view valueChangedBlock:(id)block
 {
-  v10 = a5;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = PRXFeature;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  blockCopy = block;
+  textCopy = text;
+  titleCopy = title;
   v14 = [(PRXFeature *)&v24 init];
-  v15 = [v13 copy];
+  v15 = [titleCopy copy];
 
   title = v14->_title;
   v14->_title = v15;
 
-  v17 = [v12 copy];
+  v17 = [textCopy copy];
   detailText = v14->_detailText;
   v14->_detailText = v17;
 
   imageView = v14->_imageView;
-  v14->_imageView = v10;
-  v20 = v10;
+  v14->_imageView = viewCopy;
+  v20 = viewCopy;
 
-  v21 = [v11 copy];
+  v21 = [blockCopy copy];
   handler = v14->_handler;
   v14->_handler = v21;
 
@@ -41,17 +41,17 @@
   return v14;
 }
 
-- (PRXFeature)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 tintColor:(id)a6 valueChangedBlock:(id)a7
+- (PRXFeature)initWithTitle:(id)title detailText:(id)text icon:(id)icon tintColor:(id)color valueChangedBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v14)
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  colorCopy = color;
+  blockCopy = block;
+  if (iconCopy)
   {
-    v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v14];
-    [v17 setTintColor:v15];
+    v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:iconCopy];
+    [v17 setTintColor:colorCopy];
     [v17 setContentMode:1];
     self->_imageViewSize = 32.0;
   }
@@ -62,49 +62,49 @@
   }
 
   icon = self->_icon;
-  self->_icon = v14;
-  v19 = v14;
+  self->_icon = iconCopy;
+  v19 = iconCopy;
 
   tintColor = self->_tintColor;
-  self->_tintColor = v15;
+  self->_tintColor = colorCopy;
 
-  v21 = [(PRXFeature *)self initWithTitle:v12 detailText:v13 imageView:v17 valueChangedBlock:v16];
+  v21 = [(PRXFeature *)self initWithTitle:titleCopy detailText:textCopy imageView:v17 valueChangedBlock:blockCopy];
   return v21;
 }
 
-+ (id)optionalFeatureWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 tintColor:(id)a6 valueChangedBlock:(id)a7
++ (id)optionalFeatureWithTitle:(id)title detailText:(id)text icon:(id)icon tintColor:(id)color valueChangedBlock:(id)block
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithTitle:v16 detailText:v15 icon:v14 tintColor:v13 valueChangedBlock:v12];
+  blockCopy = block;
+  colorCopy = color;
+  iconCopy = icon;
+  textCopy = text;
+  titleCopy = title;
+  v17 = [[self alloc] initWithTitle:titleCopy detailText:textCopy icon:iconCopy tintColor:colorCopy valueChangedBlock:blockCopy];
 
   return v17;
 }
 
-+ (id)featureWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 tintColor:(id)a6
++ (id)featureWithTitle:(id)title detailText:(id)text icon:(id)icon tintColor:(id)color
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithTitle:v13 detailText:v12 icon:v11 tintColor:v10 valueChangedBlock:0];
+  colorCopy = color;
+  iconCopy = icon;
+  textCopy = text;
+  titleCopy = title;
+  v14 = [[self alloc] initWithTitle:titleCopy detailText:textCopy icon:iconCopy tintColor:colorCopy valueChangedBlock:0];
 
   return v14;
 }
 
-+ (id)featureWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
++ (id)featureWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v12 = [v8 makeImageView];
-  v13 = [v11 initWithTitle:v10 detailText:v9 imageView:v12 valueChangedBlock:0];
+  iconCopy = icon;
+  textCopy = text;
+  titleCopy = title;
+  v11 = [self alloc];
+  makeImageView = [iconCopy makeImageView];
+  v13 = [v11 initWithTitle:titleCopy detailText:textCopy imageView:makeImageView valueChangedBlock:0];
 
-  [v8 platterSize];
+  [iconCopy platterSize];
   v15 = v14;
 
   [v13 setImageViewSize:v15];
@@ -112,20 +112,20 @@
   return v13;
 }
 
-- (void)setSwitchControl:(id)a3
+- (void)setSwitchControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   WeakRetained = objc_loadWeakRetained(&self->_switchControl);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != controlCopy)
   {
     v6 = objc_loadWeakRetained(&self->_switchControl);
     [v6 removeActionForIdentifier:@"PRXToggleSwitch" forControlEvents:4096];
 
-    v7 = objc_storeWeak(&self->_switchControl, v4);
+    v7 = objc_storeWeak(&self->_switchControl, controlCopy);
     on = self->_on;
     v9 = v7;
-    [v4 setOn:on];
+    [controlCopy setOn:on];
 
     objc_initWeak(&location, self);
     v10 = objc_loadWeakRetained(&self->_switchControl);
@@ -156,9 +156,9 @@ void __31__PRXFeature_setSwitchControl___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
     if (!self->_handler)
     {
@@ -166,10 +166,10 @@ void __31__PRXFeature_setSwitchControl___block_invoke(uint64_t a1)
       objc_exception_throw(v7);
     }
 
-    v4 = a3;
-    self->_on = a3;
+    onCopy = on;
+    self->_on = on;
     WeakRetained = objc_loadWeakRetained(&self->_switchControl);
-    [WeakRetained setOn:v4 animated:1];
+    [WeakRetained setOn:onCopy animated:1];
 
     v6 = *(self->_handler + 2);
 

@@ -1,22 +1,22 @@
 @interface CPMessageListItemTrailingConfiguration
-- (CPMessageListItemTrailingConfiguration)initWithCoder:(id)a3;
+- (CPMessageListItemTrailingConfiguration)initWithCoder:(id)coder;
 - (CPMessageListItemTrailingConfiguration)initWithTrailingItem:(CPMessageTrailingItem)trailingItem trailingImage:(UIImage *)trailingImage;
 - (UIImage)trailingImage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPMessageListItemTrailingConfiguration
 
-- (CPMessageListItemTrailingConfiguration)initWithCoder:(id)a3
+- (CPMessageListItemTrailingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPMessageListItemTrailingConfiguration;
   v5 = [(CPMessageListItemTrailingConfiguration *)&v9 init];
   if (v5)
   {
-    v5->_trailingItem = [v4 decodeIntegerForKey:@"kCPMessageListItemTrailingConfigurationItemKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTrailingConfigurationImageSetKey"];
+    v5->_trailingItem = [coderCopy decodeIntegerForKey:@"kCPMessageListItemTrailingConfigurationItemKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMessageListItemTrailingConfigurationImageSetKey"];
     trailingImageSet = v5->_trailingImageSet;
     v5->_trailingImageSet = v6;
   }
@@ -24,12 +24,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CPMessageListItemTrailingConfiguration trailingItem](self forKey:{"trailingItem"), @"kCPMessageListItemTrailingConfigurationItemKey"}];
-  v5 = [(CPMessageListItemTrailingConfiguration *)self trailingImageSet];
-  [v4 encodeObject:v5 forKey:@"kCPMessageListItemTrailingConfigurationImageSetKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CPMessageListItemTrailingConfiguration trailingItem](self forKey:{"trailingItem"), @"kCPMessageListItemTrailingConfigurationItemKey"}];
+  trailingImageSet = [(CPMessageListItemTrailingConfiguration *)self trailingImageSet];
+  [coderCopy encodeObject:trailingImageSet forKey:@"kCPMessageListItemTrailingConfigurationImageSetKey"];
 }
 
 - (CPMessageListItemTrailingConfiguration)initWithTrailingItem:(CPMessageTrailingItem)trailingItem trailingImage:(UIImage *)trailingImage
@@ -55,10 +55,10 @@
 
 - (UIImage)trailingImage
 {
-  v2 = [(CPMessageListItemTrailingConfiguration *)self trailingImageSet];
-  v3 = [v2 image];
+  trailingImageSet = [(CPMessageListItemTrailingConfiguration *)self trailingImageSet];
+  image = [trailingImageSet image];
 
-  return v3;
+  return image;
 }
 
 @end

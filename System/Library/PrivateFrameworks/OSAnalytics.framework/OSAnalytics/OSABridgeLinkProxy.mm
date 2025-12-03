@@ -1,14 +1,14 @@
 @interface OSABridgeLinkProxy
-+ (void)setLink:(id)a3;
-+ (void)transfer:(id)a3 key:(id)a4;
-- (void)transferInternal:(id)a3 key:(id)a4;
++ (void)setLink:(id)link;
++ (void)transfer:(id)transfer key:(id)key;
+- (void)transferInternal:(id)internal key:(id)key;
 @end
 
 @implementation OSABridgeLinkProxy
 
-+ (void)setLink:(id)a3
++ (void)setLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
   if (_sharedProxyInstance)
   {
     +[OSABridgeLinkProxy setLink:];
@@ -18,31 +18,31 @@
   block[1] = 3221225472;
   block[2] = __30__OSABridgeLinkProxy_setLink___block_invoke;
   block[3] = &unk_1E7A26EC0;
-  v7 = v3;
+  v7 = linkCopy;
   v4 = setLink__onceToken;
-  v5 = v3;
+  v5 = linkCopy;
   if (v4 != -1)
   {
     dispatch_once(&setLink__onceToken, block);
   }
 }
 
-- (void)transferInternal:(id)a3 key:(id)a4
+- (void)transferInternal:(id)internal key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  internalCopy = internal;
+  keyCopy = key;
   __assert_rtn("[OSABridgeLinkProxy transferInternal:key:]", "OSABridgeLinkProxy.m", 31, "0");
 }
 
-+ (void)transfer:(id)a3 key:(id)a4
++ (void)transfer:(id)transfer key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  transferCopy = transfer;
+  keyCopy = key;
   if (OSAIsRSDDevice())
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v7 addSuiteNamed:@"com.apple.osanalytics.factoryproxysync"];
-    if (OSAIsConfiguredRSDDevice() && [v7 BOOLForKey:@"disablePushOnWrite"])
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults addSuiteNamed:@"com.apple.osanalytics.factoryproxysync"];
+    if (OSAIsConfiguredRSDDevice() && [standardUserDefaults BOOLForKey:@"disablePushOnWrite"])
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -53,7 +53,7 @@
 
     else if (_sharedProxyInstance)
     {
-      [_sharedProxyInstance transferInternal:v5 key:v6];
+      [_sharedProxyInstance transferInternal:transferCopy key:keyCopy];
     }
 
     else
@@ -67,8 +67,8 @@
       {
         v8 = xpc_dictionary_create(0, 0, 0);
         xpc_dictionary_set_uint64(v8, "operation", 5uLL);
-        xpc_dictionary_set_string(v8, "log_filepath", [v5 UTF8String]);
-        xpc_dictionary_set_string(v8, "log_countkey", [v6 UTF8String]);
+        xpc_dictionary_set_string(v8, "log_filepath", [transferCopy UTF8String]);
+        xpc_dictionary_set_string(v8, "log_countkey", [keyCopy UTF8String]);
         xpc_connection_send_message(transfer_key__connection, v8);
       }
     }

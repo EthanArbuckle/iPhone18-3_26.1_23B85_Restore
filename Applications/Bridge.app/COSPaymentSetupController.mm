@@ -1,7 +1,7 @@
 @interface COSPaymentSetupController
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3;
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate;
 + (void)_markApplePayOfferingComplete;
-+ (void)_updateGizmoForSuccess:(BOOL)a3;
++ (void)_updateGizmoForSuccess:(BOOL)success;
 - (COSBuddyControllerDelegate)delegate;
 - (COSPasscodeChangeComplexViewController)passcodeViewController;
 - (COSPaymentSetupController)init;
@@ -9,15 +9,15 @@
 - (PKPasscodeUpgradeFlowController)passcodeUpgradeFlowController;
 - (PKPaymentSetupViewControllerDelegate)vcDelegate;
 - (id)localizedWaitScreenDescription;
-- (void)_endPasscodeUpgradeWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_invokePasscodeUpgradeCompletionWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_endPasscodeUpgradeWithSuccess:(BOOL)success error:(id)error;
+- (void)_invokePasscodeUpgradeCompletionWithSuccess:(BOOL)success error:(id)error;
 - (void)dealloc;
 - (void)didEstablishHold;
-- (void)passcodeChangeComplexViewController:(id)a3 didChangeVisibilityWithIsVisible:(BOOL)a4;
-- (void)peerPaymentAddAssociatedAccountViewController:(id)a3 didFinishWithSuccess:(BOOL)a4 updatedPeerPaymentAccount:(id)a5;
-- (void)peerPaymentAddAssociatedAccountViewControllerDidSkipSetup:(id)a3;
-- (void)viewController:(id)a3 requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)a4 completion:(id)a5;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)passcodeChangeComplexViewController:(id)controller didChangeVisibilityWithIsVisible:(BOOL)visible;
+- (void)peerPaymentAddAssociatedAccountViewController:(id)controller didFinishWithSuccess:(BOOL)success updatedPeerPaymentAccount:(id)account;
+- (void)peerPaymentAddAssociatedAccountViewControllerDidSkipSetup:(id)setup;
+- (void)viewController:(id)controller requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)flowController completion:(id)completion;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation COSPaymentSetupController
@@ -29,8 +29,8 @@
   v2 = [(COSPaymentSetupController *)&v5 init];
   if (v2)
   {
-    v3 = [UIApp setupController];
-    objc_storeWeak(&v2->_setupController, v3);
+    setupController = [UIApp setupController];
+    objc_storeWeak(&v2->_setupController, setupController);
   }
 
   return v2;
@@ -38,11 +38,11 @@
 
 - (void)dealloc
 {
-  v3 = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
+  passcodeUpgradeCompletion = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
 
-  if (v3)
+  if (passcodeUpgradeCompletion)
   {
-    v3 = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
+    passcodeUpgradeCompletion = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
     [(COSPaymentSetupController *)self setPasscodeUpgradeCompletion:0];
   }
 
@@ -50,9 +50,9 @@
   block[1] = 3221225472;
   block[2] = sub_100088CE0;
   block[3] = &unk_10026A0F8;
-  v7 = v3;
+  v7 = passcodeUpgradeCompletion;
   v8 = 0;
-  v4 = v3;
+  v4 = passcodeUpgradeCompletion;
   dispatch_async(&_dispatch_main_q, block);
 
   v5.receiver = self;
@@ -60,20 +60,20 @@
   [(COSPaymentSetupController *)&v5 dealloc];
 }
 
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_alloc_init(ACAccountStore);
-  v5 = [v4 aa_primaryAppleAccount];
-  v6 = [UIApp setupController];
-  v7 = [v6 appleIDSignInModel];
-  v8 = [v7 hasSignedInToiCloud];
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  hasSignedInToiCloud = [appleIDSignInModel hasSignedInToiCloud];
 
-  v9 = [v3 hasAddedPasscode];
-  v10 = [UIApp bridgeController];
-  v11 = [v10 isTinkerPairing];
+  hasAddedPasscode = [delegateCopy hasAddedPasscode];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v11 && (v8 & 1) == 0)
+  if (isTinkerPairing && (hasSignedInToiCloud & 1) == 0)
   {
     v12 = pbb_bridge_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -82,17 +82,17 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(child-apple-pay) assuming addedAccountToWatch", buf, 2u);
     }
 
-    v8 = 1;
+    hasSignedInToiCloud = 1;
   }
 
-  if (((v5 != 0) & v9 & v8) == 0)
+  if (((aa_primaryAppleAccount != 0) & hasAddedPasscode & hasSignedInToiCloud) == 0)
   {
     v23 = pbb_bridge_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [NSNumber numberWithBool:v5 != 0];
-      v25 = [NSNumber numberWithBool:v8];
-      v26 = [NSNumber numberWithBool:v9];
+      v24 = [NSNumber numberWithBool:aa_primaryAppleAccount != 0];
+      v25 = [NSNumber numberWithBool:hasSignedInToiCloud];
+      v26 = [NSNumber numberWithBool:hasAddedPasscode];
       *buf = 138412802;
       v32 = v24;
       v33 = 2112;
@@ -165,8 +165,8 @@ LABEL_18:
   if (PBLogPerformanceMetrics())
   {
     v3 = +[PBBridgeResponsePerformanceMonitor shareMonitor];
-    v4 = [(COSPaymentSetupController *)self holdActivityIdentifier];
-    [v3 beginMacroActivity:v4 beginTime:CFAbsoluteTimeGetCurrent()];
+    holdActivityIdentifier = [(COSPaymentSetupController *)self holdActivityIdentifier];
+    [v3 beginMacroActivity:holdActivityIdentifier beginTime:CFAbsoluteTimeGetCurrent()];
   }
 
   v19[0] = _NSConcreteStackBlock;
@@ -177,9 +177,9 @@ LABEL_18:
   objc_copyWeak(&v20, &location);
   v5 = objc_retainBlock(v19);
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v7 = [WeakRetained paymentExpressSetupManager];
+  paymentExpressSetupManager = [WeakRetained paymentExpressSetupManager];
 
-  if (v7 && (v8 = objc_loadWeakRetained(&self->_setupController), v9 = [v8 expressMode], v8, v9))
+  if (paymentExpressSetupManager && (v8 = objc_loadWeakRetained(&self->_setupController), v9 = [v8 expressMode], v8, v9))
   {
     v10 = pbb_setupflow_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -192,8 +192,8 @@ LABEL_18:
     v14[1] = 3221225472;
     v14[2] = sub_10008968C;
     v14[3] = &unk_100268A38;
-    v15 = v7;
-    v16 = self;
+    v15 = paymentExpressSetupManager;
+    selfCopy = self;
     v17 = v5;
     [v15 configureExpressSetupProvisioningContextWithCompletion:v14];
   }
@@ -218,56 +218,56 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   [objc_opt_class() _markApplePayOfferingComplete];
-  v4 = [(COSPaymentSetupController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSPaymentSetupController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)viewController:(id)a3 requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)a4 completion:(id)a5
+- (void)viewController:(id)controller requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)flowController completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  flowControllerCopy = flowController;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000898A8;
   block[3] = &unk_10026A198;
   objc_copyWeak(&v18, &location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = controllerCopy;
+  v16 = flowControllerCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = flowControllerCopy;
+  v13 = controllerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)peerPaymentAddAssociatedAccountViewController:(id)a3 didFinishWithSuccess:(BOOL)a4 updatedPeerPaymentAccount:(id)a5
+- (void)peerPaymentAddAssociatedAccountViewController:(id)controller didFinishWithSuccess:(BOOL)success updatedPeerPaymentAccount:(id)account
 {
-  v5 = a4;
-  v7 = a3;
+  successCopy = success;
+  controllerCopy = controller;
   v8 = pbb_bridge_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
     v10 = "[COSPaymentSetupController peerPaymentAddAssociatedAccountViewController:didFinishWithSuccess:updatedPeerPaymentAccount:]";
     v11 = 1024;
-    v12 = v5;
+    v12 = successCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "COSPaymentSetupController: %{public}s with success %d", &v9, 0x12u);
   }
 
-  [(COSPaymentSetupController *)self viewControllerDidTerminateSetupFlow:v7];
+  [(COSPaymentSetupController *)self viewControllerDidTerminateSetupFlow:controllerCopy];
 }
 
-- (void)peerPaymentAddAssociatedAccountViewControllerDidSkipSetup:(id)a3
+- (void)peerPaymentAddAssociatedAccountViewControllerDidSkipSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -276,41 +276,41 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "COSPaymentSetupController: %{public}s", &v6, 0xCu);
   }
 
-  [(COSPaymentSetupController *)self viewControllerDidTerminateSetupFlow:v4];
+  [(COSPaymentSetupController *)self viewControllerDidTerminateSetupFlow:setupCopy];
 }
 
-- (void)passcodeChangeComplexViewController:(id)a3 didChangeVisibilityWithIsVisible:(BOOL)a4
+- (void)passcodeChangeComplexViewController:(id)controller didChangeVisibilityWithIsVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  controllerCopy = controller;
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (visibleCopy)
     {
       v8 = @"YES";
     }
 
     v12 = 138412546;
-    v13 = v6;
+    v13 = controllerCopy;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "passcodeChangeComplexViewController: %@ did change visibility with isVisible: %@", &v12, 0x16u);
   }
 
-  v9 = [(COSPaymentSetupController *)self passcodeUpgradeFlowController];
-  v10 = v9;
-  if (v9)
+  passcodeUpgradeFlowController = [(COSPaymentSetupController *)self passcodeUpgradeFlowController];
+  v10 = passcodeUpgradeFlowController;
+  if (passcodeUpgradeFlowController)
   {
-    if (v4)
+    if (visibleCopy)
     {
-      [v9 beginShowingViewController];
+      [passcodeUpgradeFlowController beginShowingViewController];
     }
 
     else
     {
-      [v9 endedShowingViewController];
+      [passcodeUpgradeFlowController endedShowingViewController];
     }
   }
 
@@ -325,52 +325,52 @@ LABEL_18:
   }
 }
 
-- (void)_endPasscodeUpgradeWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_endPasscodeUpgradeWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100089EF0;
   v8[3] = &unk_100268380;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
-  v9 = v6;
-  v7 = v6;
+  successCopy = success;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_invokePasscodeUpgradeCompletionWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_invokePasscodeUpgradeCompletionWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
+  successCopy = success;
+  errorCopy = error;
+  passcodeUpgradeCompletion = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
 
-  if (v6)
+  if (passcodeUpgradeCompletion)
   {
-    v7 = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
-    (v7)[2](v7, v4, v8);
+    passcodeUpgradeCompletion2 = [(COSPaymentSetupController *)self passcodeUpgradeCompletion];
+    (passcodeUpgradeCompletion2)[2](passcodeUpgradeCompletion2, successCopy, errorCopy);
 
     [(COSPaymentSetupController *)self setPasscodeUpgradeCompletion:0];
   }
 }
 
-+ (void)_updateGizmoForSuccess:(BOOL)a3
++ (void)_updateGizmoForSuccess:(BOOL)success
 {
-  v3 = a3;
-  v4 = [UIApp bridgeController];
-  v5 = v4;
-  if (v3)
+  successCopy = success;
+  bridgeController = [UIApp bridgeController];
+  v5 = bridgeController;
+  if (successCopy)
   {
-    [v4 tellGizmoToPushControllerType:20];
+    [bridgeController tellGizmoToPushControllerType:20];
   }
 
   else
   {
-    [v4 tellGizmoToPopToControllerType:20];
+    [bridgeController tellGizmoToPopToControllerType:20];
   }
 }
 
@@ -378,21 +378,21 @@ LABEL_18:
 {
   if (sub_100009A74())
   {
-    v2 = +[NSBundle mainBundle];
-    v3 = [v2 localizedStringForKey:@"APPLE_PAY_WAITING_DESCRIPTION" value:&stru_10026E598 table:@"Localizable"];
+    localizedCapitalizedString = +[NSBundle mainBundle];
+    v3 = [localizedCapitalizedString localizedStringForKey:@"APPLE_PAY_WAITING_DESCRIPTION" value:&stru_10026E598 table:@"Localizable"];
   }
 
   else
   {
-    v4 = [UIApp setupController];
-    v5 = [v4 tinkerUserName];
-    v2 = [v5 localizedCapitalizedString];
+    setupController = [UIApp setupController];
+    tinkerUserName = [setupController tinkerUserName];
+    localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
 
     v6 = +[NSBundle mainBundle];
-    if (v2)
+    if (localizedCapitalizedString)
     {
       v7 = [v6 localizedStringForKey:@"APPLEID_ACCOUNT_HOLD_DESCRIPTION_TINKER_USER_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-      v3 = [NSString stringWithFormat:v7, v2];
+      v3 = [NSString stringWithFormat:v7, localizedCapitalizedString];
     }
 
     else
@@ -406,8 +406,8 @@ LABEL_18:
 
 + (void)_markApplePayOfferingComplete
 {
-  v2 = [UIApp setupController];
-  [v2 updateActivelyPairingWatchBuddyStage:8];
+  setupController = [UIApp setupController];
+  [setupController updateActivelyPairingWatchBuddyStage:8];
 }
 
 - (COSBuddyControllerDelegate)delegate

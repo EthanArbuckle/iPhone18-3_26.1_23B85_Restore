@@ -18,7 +18,7 @@
 - (void)updateRightEarMidAnglelDuration;
 - (void)updateSoundProfileCreationDuration;
 - (void)updateSoundProfileCreationDurationStart;
-- (void)updateStatus:(BOOL)a3 EnrollmentResult:(id)a4;
+- (void)updateStatus:(BOOL)status EnrollmentResult:(id)result;
 @end
 
 @implementation HPSSpatialProfileAnalytics
@@ -60,10 +60,10 @@
         v7 = v15;
         if (v6)
         {
-          v8 = [v6 bundle];
-          v9 = [v8 identifier];
+          bundle = [v6 bundle];
+          identifier = [bundle identifier];
           v10 = v2->_parentBundleID;
-          v2->_parentBundleID = v9;
+          v2->_parentBundleID = identifier;
         }
       }
 
@@ -336,12 +336,12 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStatus:(BOOL)a3 EnrollmentResult:(id)a4
+- (void)updateStatus:(BOOL)status EnrollmentResult:(id)result
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  objc_storeStrong(&self->_result, a4);
-  self->_status = a3;
+  resultCopy = result;
+  objc_storeStrong(&self->_result, result);
+  self->_status = status;
   v8 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -350,7 +350,7 @@
     v12[0] = 67109378;
     v12[1] = status;
     v13 = 2112;
-    v14 = result;
+    resultCopy2 = result;
     _os_log_impl(&dword_251143000, v8, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Analytics Update Status : %d Result %@", v12, 0x12u);
   }
 
@@ -481,8 +481,8 @@
     AnalyticsSendEventLazy();
     if (!self->_status)
     {
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v16 postNotificationName:@"SpatialProfileEnrollmentNotCompleted" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"SpatialProfileEnrollmentNotCompleted" object:0];
     }
 
     self->_submitted = 1;

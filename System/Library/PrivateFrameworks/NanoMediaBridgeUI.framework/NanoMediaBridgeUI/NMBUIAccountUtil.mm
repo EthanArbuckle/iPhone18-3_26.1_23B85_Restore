@@ -3,8 +3,8 @@
 - (BOOL)hasITunesAccount;
 - (NMBUIAccountUtil)init;
 - (id)account;
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
 - (void)_updateActiveAccount;
 @end
 
@@ -40,11 +40,11 @@ uint64_t __34__NMBUIAccountUtil_sharedInstance__block_invoke()
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:*MEMORY[0x277D7FA08] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:*MEMORY[0x277D7FA08] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleActiveUserIdentityDidChangeNotification_ name:*MEMORY[0x277D7F8C8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleActiveUserIdentityDidChangeNotification_ name:*MEMORY[0x277D7F8C8] object:0];
   }
 
   return v2;
@@ -81,9 +81,9 @@ void __36__NMBUIAccountUtil_hasITunesAccount__block_invoke(uint64_t a1)
   account = self->_account;
   if (!account)
   {
-    v4 = [MEMORY[0x277D7FB30] sharedAccountStore];
+    mEMORY[0x277D7FB30] = [MEMORY[0x277D7FB30] sharedAccountStore];
     v10 = 0;
-    v5 = [v4 activeStoreAccountWithError:&v10];
+    v5 = [mEMORY[0x277D7FB30] activeStoreAccountWithError:&v10];
     v6 = v10;
     v7 = self->_account;
     self->_account = v5;
@@ -106,9 +106,9 @@ void __36__NMBUIAccountUtil_hasITunesAccount__block_invoke(uint64_t a1)
 - (void)_updateActiveAccount
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [MEMORY[0x277D7FB30] sharedAccountStore];
+  mEMORY[0x277D7FB30] = [MEMORY[0x277D7FB30] sharedAccountStore];
   v14 = 0;
-  v4 = [v3 activeStoreAccountWithError:&v14];
+  v4 = [mEMORY[0x277D7FB30] activeStoreAccountWithError:&v14];
   v5 = v14;
 
   if (v4)
@@ -130,17 +130,17 @@ void __36__NMBUIAccountUtil_hasITunesAccount__block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [(ACAccount *)self->_account ic_DSID];
-  v9 = [v8 unsignedLongLongValue];
+  ic_DSID = [(ACAccount *)self->_account ic_DSID];
+  unsignedLongLongValue = [ic_DSID unsignedLongLongValue];
 
   account = self->_account;
   self->_account = v4;
   v11 = v4;
 
-  v12 = [(ACAccount *)self->_account ic_DSID];
+  ic_DSID2 = [(ACAccount *)self->_account ic_DSID];
 
-  v13 = [v12 unsignedLongLongValue];
-  if (v13 != v9)
+  unsignedLongLongValue2 = [ic_DSID2 unsignedLongLongValue];
+  if (unsignedLongLongValue2 != unsignedLongLongValue)
   {
     dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_10);
   }
@@ -152,7 +152,7 @@ void __40__NMBUIAccountUtil__updateActiveAccount__block_invoke()
   [v0 postNotificationName:@"NMBUIITunesAccountDidChangeNotification" object:0];
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -174,7 +174,7 @@ uint64_t __66__NMBUIAccountUtil__handleUserIdentityStoreDidChangeNotification___
   return [*(a1 + 32) _updateActiveAccount];
 }
 
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

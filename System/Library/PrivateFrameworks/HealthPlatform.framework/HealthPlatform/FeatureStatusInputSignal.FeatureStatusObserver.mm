@@ -1,16 +1,16 @@
 @interface FeatureStatusInputSignal.FeatureStatusObserver
 - (_TtCC14HealthPlatform24FeatureStatusInputSignal21FeatureStatusObserver)init;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 @end
 
 @implementation FeatureStatusInputSignal.FeatureStatusObserver
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_22844D330(a3, v7);
+  statusCopy = status;
+  selfCopy = self;
+  sub_22844D330(providing, statusCopy);
   swift_unknownObjectRelease();
 }
 

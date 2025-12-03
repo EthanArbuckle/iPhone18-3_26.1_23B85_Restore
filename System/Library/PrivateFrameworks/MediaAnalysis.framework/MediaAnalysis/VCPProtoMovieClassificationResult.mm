@@ -1,34 +1,34 @@
 @interface VCPProtoMovieClassificationResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)addClassification:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassification:(id)classification;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieClassificationResult
 
-- (void)addClassification:(id)a3
+- (void)addClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   classifications = self->_classifications;
-  v8 = v4;
+  v8 = classificationCopy;
   if (!classifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_classifications;
     self->_classifications = v6;
 
-    v4 = v8;
+    classificationCopy = v8;
     classifications = self->_classifications;
   }
 
-  [(NSMutableArray *)classifications addObject:v4];
+  [(NSMutableArray *)classifications addObject:classificationCopy];
 }
 
 - (id)description
@@ -37,8 +37,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieClassificationResult;
   v4 = [(VCPProtoMovieClassificationResult *)&v8 description];
-  v5 = [(VCPProtoMovieClassificationResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieClassificationResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -46,12 +46,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   if ([(NSMutableArray *)self->_classifications count])
@@ -76,8 +76,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -86,16 +86,16 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"classification"];
+    [dictionary setObject:v6 forKey:@"classification"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   v12 = 0u;
   v13 = 0u;
@@ -129,31 +129,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setTimeRange:self->_timeRange];
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
   if ([(VCPProtoMovieClassificationResult *)self classificationsCount])
   {
-    [v8 clearClassifications];
-    v4 = [(VCPProtoMovieClassificationResult *)self classificationsCount];
-    if (v4)
+    [toCopy clearClassifications];
+    classificationsCount = [(VCPProtoMovieClassificationResult *)self classificationsCount];
+    if (classificationsCount)
     {
-      v5 = v4;
+      v5 = classificationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoMovieClassificationResult *)self classificationAtIndex:i];
-        [v8 addClassification:v7];
+        [toCopy addClassification:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addClassification:v13];
 
         ++v12;
@@ -193,13 +193,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[2])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[2])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")))
   {
     classifications = self->_classifications;
-    if (classifications | v4[1])
+    if (classifications | equalCopy[1])
     {
       v7 = [(NSMutableArray *)classifications isEqual:?];
     }
@@ -218,12 +218,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (timeRange)
   {
     if (v6)
@@ -241,7 +241,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -266,12 +266,12 @@
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v13, 0, sizeof(v13));
-  CMTimeRangeMakeFromDictionary(&v13, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v13, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = v4;
   if ((v13.start.flags & 1) == 0)
   {
@@ -328,15 +328,15 @@ void __82__VCPProtoMovieClassificationResult_LegacyConversion__resultFromLegacyD
     [v5 confidence];
     v7 = [v6 numberWithFloat:?];
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v5, "identifier")}];
-    v9 = [v8 stringValue];
-    [v3 setObject:v7 forKey:v9];
+    stringValue = [v8 stringValue];
+    [v3 setObject:v7 forKey:stringValue];
   }
 
-  v10 = [(VCPProtoMovieClassificationResult *)self timeRange];
-  v11 = v10;
-  if (v10)
+  timeRange = [(VCPProtoMovieClassificationResult *)self timeRange];
+  v11 = timeRange;
+  if (timeRange)
   {
-    [v10 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else

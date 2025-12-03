@@ -1,38 +1,38 @@
 @interface BWZoomCommandHandler
 - (BWZoomCommandHandler)init;
-- (float)_applyFudgeToZoomFactor:(uint64_t)a3;
-- (float)_removeFudgeFromZoomFactor:(uint64_t)a3;
-- (float)_updateZoomModelForNextFrameWithPTS:(uint64_t)a3;
-- (float)_zoomFactorForDurationBasedRampAtPTS:(int)a3 updateCurrentZoomRampState:(int)a4;
-- (float)_zoomFactorForRampAtPTS:(uint64_t)a1 updateCurrentZoomRampState:(uint64_t)a2;
-- (float)_zoomFactorForRateBasedRampAtPTS:(int)a3 updateCurrentZoomRampState:(int)a4;
-- (float)_zoomFactorForSpringBasedRampAtPTS:(int)a3 updateCurrentZoomRampState:(int)a4;
+- (float)_applyFudgeToZoomFactor:(uint64_t)factor;
+- (float)_removeFudgeFromZoomFactor:(uint64_t)factor;
+- (float)_updateZoomModelForNextFrameWithPTS:(uint64_t)s;
+- (float)_zoomFactorForDurationBasedRampAtPTS:(int)s updateCurrentZoomRampState:(int)state;
+- (float)_zoomFactorForRampAtPTS:(uint64_t)s updateCurrentZoomRampState:(uint64_t)state;
+- (float)_zoomFactorForRateBasedRampAtPTS:(int)s updateCurrentZoomRampState:(int)state;
+- (float)_zoomFactorForSpringBasedRampAtPTS:(int)s updateCurrentZoomRampState:(int)state;
 - (float)allowableMinimumDigitalZoomFactorDuringZoomOut;
 - (float)appliedZoomFactor;
 - (float)appliedZoomFactorWithoutFudge;
-- (float)applyFudgeToZoomFactor:(float)a3;
+- (float)applyFudgeToZoomFactor:(float)factor;
 - (float)earlySwitchOverScaleFactorForZoomIn;
-- (float)predictRampZoomFactorAfterNumberOfFrames:(int)a3 settingZoomFactorOfInterest:(float)a4;
+- (float)predictRampZoomFactorAfterNumberOfFrames:(int)frames settingZoomFactorOfInterest:(float)interest;
 - (float)rampTargetZoomFactor;
 - (float)rampZoomFactorOfInterest;
-- (float)removeFudgeFromZoomFactor:(float)a3;
+- (float)removeFudgeFromZoomFactor:(float)factor;
 - (float)requestedZoomFactor;
 - (float)requestedZoomFactorWithoutFudge;
-- (float)updateZoomModelAndAppliedZoomFactorForNextFrameWithPTS:(id *)a3 captureID:(int)a4 delayedISPAppliedZoomFactor:(float)a5;
-- (float)updateZoomModelForNextFrameWithPTS:(id *)a3 captureID:(int)a4;
+- (float)updateZoomModelAndAppliedZoomFactorForNextFrameWithPTS:(id *)s captureID:(int)d delayedISPAppliedZoomFactor:(float)factor;
+- (float)updateZoomModelForNextFrameWithPTS:(id *)s captureID:(int)d;
 - (int)rampTuning;
 - (int64_t)timeForLastRequestedZoomFactor;
-- (uint64_t)_updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)a3 zoomFactorChangedOut:;
+- (uint64_t)_updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)factor zoomFactorChangedOut:;
 - (void)dealloc;
-- (void)rampToVideoZoomFactor:(float)a3 usingSpringWithTension:(float)a4 friction:(float)a5 snapFraction:(float)a6 rampTuning:(int)a7 earlySwitchOverScaleFactorForZoomIn:(float)a8 allowableMinimumDigitalZoomFactorDuringZoomOut:(float)a9 rampStartFrameDelayAt30fps:(int)a10 commandID:(int)a11;
-- (void)rampToVideoZoomFactor:(float)a3 withRampType:(int)a4 rate:(float)a5 duration:(double)a6 snapToTargetZoomFactorWithinRampFraction:(float)a7 rampTuning:(int)a8 earlySwitchOverScaleFactorForZoomIn:(float)a9 allowableMinimumDigitalZoomFactorDuringZoomOut:(float)a10 commandID:(int)a11;
+- (void)rampToVideoZoomFactor:(float)factor usingSpringWithTension:(float)tension friction:(float)friction snapFraction:(float)fraction rampTuning:(int)tuning earlySwitchOverScaleFactorForZoomIn:(float)in allowableMinimumDigitalZoomFactorDuringZoomOut:(float)out rampStartFrameDelayAt30fps:(int)self0 commandID:(int)self1;
+- (void)rampToVideoZoomFactor:(float)factor withRampType:(int)type rate:(float)rate duration:(double)duration snapToTargetZoomFactorWithinRampFraction:(float)fraction rampTuning:(int)tuning earlySwitchOverScaleFactorForZoomIn:(float)in allowableMinimumDigitalZoomFactorDuringZoomOut:(float)self0 commandID:(int)self1;
 - (void)reset;
 - (void)resetZoomFactorOfInterest;
-- (void)setFudgedZoomRanges:(id)a3;
-- (void)setRequestedZoomFactor:(float)a3;
-- (void)setTypicalISPZoomDelay:(unsigned int)a3 maxISPZoomDelay:(unsigned int)a4 clientCanCompensateForDelay:(BOOL)a5;
-- (void)updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)a3;
-- (void)updateISPZoomDelay:(unsigned int)a3;
+- (void)setFudgedZoomRanges:(id)ranges;
+- (void)setRequestedZoomFactor:(float)factor;
+- (void)setTypicalISPZoomDelay:(unsigned int)delay maxISPZoomDelay:(unsigned int)zoomDelay clientCanCompensateForDelay:(BOOL)forDelay;
+- (void)updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)factor;
+- (void)updateISPZoomDelay:(unsigned int)delay;
 @end
 
 @implementation BWZoomCommandHandler
@@ -160,22 +160,22 @@
   return lastRequestedZoomFactor;
 }
 
-- (void)setRequestedZoomFactor:(float)a3
+- (void)setRequestedZoomFactor:(float)factor
 {
-  if (a3 >= 1.0)
+  if (factor >= 1.0)
   {
-    v4 = a3;
+    factorCopy = factor;
   }
 
   else
   {
-    v4 = 1.0;
+    factorCopy = 1.0;
   }
 
   os_unfair_lock_lock(&self->_zoomLock);
-  if (v4 != self->_lastRequestedZoomFactor)
+  if (factorCopy != self->_lastRequestedZoomFactor)
   {
-    self->_lastRequestedZoomFactor = v4;
+    self->_lastRequestedZoomFactor = factorCopy;
     self->_zoomFactorServiced = 0;
     self->_timeForLastRequestedZoomFactor = FigGetUpTimeNanoseconds() / 0xF4240uLL;
   }
@@ -190,24 +190,24 @@
   os_unfair_lock_unlock(&self->_zoomLock);
 }
 
-- (void)setFudgedZoomRanges:(id)a3
+- (void)setFudgedZoomRanges:(id)ranges
 {
   os_unfair_lock_lock(&self->_zoomLock);
 
-  self->_fudgedZoomRanges = [a3 copy];
+  self->_fudgedZoomRanges = [ranges copy];
 
   os_unfair_lock_unlock(&self->_zoomLock);
 }
 
-- (float)removeFudgeFromZoomFactor:(float)a3
+- (float)removeFudgeFromZoomFactor:(float)factor
 {
   os_unfair_lock_lock(&self->_zoomLock);
-  v12 = [(BWZoomCommandHandler *)self _removeFudgeFromZoomFactor:v5, v6, v7, v8, v9, v10, v11, a3];
+  factor = [(BWZoomCommandHandler *)self _removeFudgeFromZoomFactor:v5, v6, v7, v8, v9, v10, v11, factor];
   os_unfair_lock_unlock(&self->_zoomLock);
-  return v12;
+  return factor;
 }
 
-- (void)rampToVideoZoomFactor:(float)a3 withRampType:(int)a4 rate:(float)a5 duration:(double)a6 snapToTargetZoomFactorWithinRampFraction:(float)a7 rampTuning:(int)a8 earlySwitchOverScaleFactorForZoomIn:(float)a9 allowableMinimumDigitalZoomFactorDuringZoomOut:(float)a10 commandID:(int)a11
+- (void)rampToVideoZoomFactor:(float)factor withRampType:(int)type rate:(float)rate duration:(double)duration snapToTargetZoomFactorWithinRampFraction:(float)fraction rampTuning:(int)tuning earlySwitchOverScaleFactorForZoomIn:(float)in allowableMinimumDigitalZoomFactorDuringZoomOut:(float)self0 commandID:(int)self1
 {
   os_unfair_lock_lock(&self->_zoomLock);
   self->_rampStartTime = self->_lastFramePTSes[0];
@@ -215,30 +215,30 @@
   rampCurrentVelocity = self->_rampCurrentVelocity;
   self->_rampStartFactor = lastRequestedZoomFactor;
   self->_rampStartVelocity = rampCurrentVelocity;
-  self->_rampTargetFactor = a3;
-  self->_rampCommandID = a11;
+  self->_rampTargetFactor = factor;
+  self->_rampCommandID = d;
   self->_rampZoomFactorOfInterest = 0.0;
-  self->_rampType = a4;
-  self->_rampTuning = a8;
-  self->_earlySwitchOverScaleFactorForZoomIn = a9;
-  self->_allowableMinimumDigitalZoomFactorDuringZoomOut = a10;
-  switch(a4)
+  self->_rampType = type;
+  self->_rampTuning = tuning;
+  self->_earlySwitchOverScaleFactorForZoomIn = in;
+  self->_allowableMinimumDigitalZoomFactorDuringZoomOut = out;
+  switch(type)
   {
     case 3:
       self->_rampTargetVelocity = 0.0;
-      self->_rampDuration = a6;
-      self->_rampSnapFraction = a7;
-      *&self->_springRampTension = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32(lastRequestedZoomFactor < a3), 0x1FuLL)), 0x41A8000042B80000, 0x41B8000043070000);
+      self->_rampDuration = duration;
+      self->_rampSnapFraction = fraction;
+      *&self->_springRampTension = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32(lastRequestedZoomFactor < factor), 0x1FuLL)), 0x41A8000042B80000, 0x41B8000043070000);
       self->_springRampStartFrameDelayAt30fps = 1;
       break;
     case 2:
       self->_rampTargetVelocity = 0.0;
-      self->_rampDuration = a6;
-      self->_rampSnapFraction = a7;
+      self->_rampDuration = duration;
+      self->_rampSnapFraction = fraction;
       break;
     case 1:
-      v23 = fabsf(a5);
-      if (lastRequestedZoomFactor >= a3)
+      v23 = fabsf(rate);
+      if (lastRequestedZoomFactor >= factor)
       {
         v24 = -v23;
       }
@@ -257,38 +257,38 @@
   os_unfair_lock_unlock(&self->_zoomLock);
 }
 
-- (void)rampToVideoZoomFactor:(float)a3 usingSpringWithTension:(float)a4 friction:(float)a5 snapFraction:(float)a6 rampTuning:(int)a7 earlySwitchOverScaleFactorForZoomIn:(float)a8 allowableMinimumDigitalZoomFactorDuringZoomOut:(float)a9 rampStartFrameDelayAt30fps:(int)a10 commandID:(int)a11
+- (void)rampToVideoZoomFactor:(float)factor usingSpringWithTension:(float)tension friction:(float)friction snapFraction:(float)fraction rampTuning:(int)tuning earlySwitchOverScaleFactorForZoomIn:(float)in allowableMinimumDigitalZoomFactorDuringZoomOut:(float)out rampStartFrameDelayAt30fps:(int)self0 commandID:(int)self1
 {
   os_unfair_lock_lock(&self->_zoomLock);
   self->_rampStartTime = self->_lastFramePTSes[0];
   rampCurrentVelocity = self->_rampCurrentVelocity;
   self->_rampStartFactor = self->_lastRequestedZoomFactor;
   self->_rampStartVelocity = rampCurrentVelocity;
-  self->_rampTargetFactor = a3;
+  self->_rampTargetFactor = factor;
   self->_rampZoomFactorOfInterest = 0.0;
   self->_rampType = 3;
-  self->_rampTuning = a7;
+  self->_rampTuning = tuning;
   self->_rampTargetVelocity = 0.0;
-  self->_rampCommandID = a11;
-  self->_rampSnapFraction = a6;
-  self->_springRampTension = a4;
-  self->_springRampFriction = a5;
-  self->_earlySwitchOverScaleFactorForZoomIn = a8;
-  self->_allowableMinimumDigitalZoomFactorDuringZoomOut = a9;
-  self->_springRampStartFrameDelayAt30fps = a10;
+  self->_rampCommandID = d;
+  self->_rampSnapFraction = fraction;
+  self->_springRampTension = tension;
+  self->_springRampFriction = friction;
+  self->_earlySwitchOverScaleFactorForZoomIn = in;
+  self->_allowableMinimumDigitalZoomFactorDuringZoomOut = out;
+  self->_springRampStartFrameDelayAt30fps = at30fps;
 
   os_unfair_lock_unlock(&self->_zoomLock);
 }
 
-- (void)updateISPZoomDelay:(unsigned int)a3
+- (void)updateISPZoomDelay:(unsigned int)delay
 {
   os_unfair_lock_lock(&self->_zoomLock);
-  [(BWZoomDelayBuffer *)self->_zoomDelayBuffer updateZoomDelay:a3];
+  [(BWZoomDelayBuffer *)self->_zoomDelayBuffer updateZoomDelay:delay];
 
   os_unfair_lock_unlock(&self->_zoomLock);
 }
 
-- (float)predictRampZoomFactorAfterNumberOfFrames:(int)a3 settingZoomFactorOfInterest:(float)a4
+- (float)predictRampZoomFactorAfterNumberOfFrames:(int)frames settingZoomFactorOfInterest:(float)interest
 {
   os_unfair_lock_lock(&self->_zoomLock);
   v7 = self->_rampTargetVelocity != 0.0 || self->_rampCurrentVelocity != 0.0 || self->_rampCommandID != 0;
@@ -309,15 +309,15 @@
     lhs = self->_lastFramePTSes[0];
     v25 = self->_lastFramePTSes[1];
     CMTimeSubtract(&time, &lhs, &v25);
-    CMTimeMultiply(&lhs, &time, a3);
+    CMTimeMultiply(&lhs, &time, frames);
     time = self->_lastFramePTSes[0];
     CMTimeAdd(&v28, &time, &lhs);
     lhs = v28;
     v11 = [BWZoomCommandHandler _zoomFactorForRampAtPTS:&lhs updateCurrentZoomRampState:?];
     v9 = [(BWZoomCommandHandler *)self _applyFudgeToZoomFactor:v12, v13, v14, v15, v16, v17, v18, v11];
-    if (a4 != 0.0 && self->_rampZoomFactorOfInterest == 0.0)
+    if (interest != 0.0 && self->_rampZoomFactorOfInterest == 0.0)
     {
-      [(BWZoomCommandHandler *)self predictRampZoomFactorAfterNumberOfFrames:v19 settingZoomFactorOfInterest:v20, v21, v22, v23, v24, a4, v9];
+      [(BWZoomCommandHandler *)self predictRampZoomFactorAfterNumberOfFrames:v19 settingZoomFactorOfInterest:v20, v21, v22, v23, v24, interest, v9];
     }
   }
 
@@ -341,26 +341,26 @@
   return timeForLastRequestedZoomFactor;
 }
 
-- (float)updateZoomModelForNextFrameWithPTS:(id *)a3 captureID:(int)a4
+- (float)updateZoomModelForNextFrameWithPTS:(id *)s captureID:(int)d
 {
   os_unfair_lock_lock(&self->_zoomLock);
-  if (!self || a4 == -1 || (lastFrameCaptureID = self->_lastFrameCaptureID, v14 = __OFSUB__(lastFrameCaptureID, a4), v15 = lastFrameCaptureID - a4, (v15 < 0) ^ v14) || (v16 = 0.0, v15 >= 1000))
+  if (!self || d == -1 || (lastFrameCaptureID = self->_lastFrameCaptureID, v14 = __OFSUB__(lastFrameCaptureID, d), v15 = lastFrameCaptureID - d, (v15 < 0) ^ v14) || (v16 = 0.0, v15 >= 1000))
   {
-    v18 = *&a3->var0;
-    var3 = a3->var3;
+    v18 = *&s->var0;
+    var3 = s->var3;
     v16 = [(BWZoomCommandHandler *)self _updateZoomModelForNextFrameWithPTS:v7, v8, v9, v10, v11, v12];
-    self->_lastFrameCaptureID = a4;
+    self->_lastFrameCaptureID = d;
   }
 
   os_unfair_lock_unlock(&self->_zoomLock);
   return v16;
 }
 
-- (void)updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)a3
+- (void)updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)factor
 {
   v9 = 0;
   os_unfair_lock_lock(&self->_zoomLock);
-  [(BWZoomCommandHandler *)self _updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:a3 zoomFactorChangedOut:?];
+  [(BWZoomCommandHandler *)self _updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:factor zoomFactorChangedOut:?];
   v6 = v5;
   os_unfair_lock_unlock(&self->_zoomLock);
   if (v9)
@@ -374,18 +374,18 @@
   }
 }
 
-- (float)updateZoomModelAndAppliedZoomFactorForNextFrameWithPTS:(id *)a3 captureID:(int)a4 delayedISPAppliedZoomFactor:(float)a5
+- (float)updateZoomModelAndAppliedZoomFactorForNextFrameWithPTS:(id *)s captureID:(int)d delayedISPAppliedZoomFactor:(float)factor
 {
   v26 = 0;
   os_unfair_lock_lock(&self->_zoomLock);
-  if (!self || a4 == -1 || (lastFrameCaptureID = self->_lastFrameCaptureID, v16 = __OFSUB__(lastFrameCaptureID, a4), v17 = lastFrameCaptureID - a4, (v17 < 0) ^ v16) || v17 >= 1000)
+  if (!self || d == -1 || (lastFrameCaptureID = self->_lastFrameCaptureID, v16 = __OFSUB__(lastFrameCaptureID, d), v17 = lastFrameCaptureID - d, (v17 < 0) ^ v16) || v17 >= 1000)
   {
-    v24 = *&a3->var0;
-    var3 = a3->var3;
+    v24 = *&s->var0;
+    var3 = s->var3;
     v19 = [(BWZoomCommandHandler *)self _updateZoomModelForNextFrameWithPTS:v9, v10, v11, v12, v13, v14];
-    [(BWZoomCommandHandler *)self _updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:a5 zoomFactorChangedOut:?];
+    [(BWZoomCommandHandler *)self _updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:factor zoomFactorChangedOut:?];
     v18 = v20;
-    self->_lastFrameCaptureID = a4;
+    self->_lastFrameCaptureID = d;
   }
 
   else
@@ -408,15 +408,15 @@
   return v19;
 }
 
-- (float)_applyFudgeToZoomFactor:(uint64_t)a3
+- (float)_applyFudgeToZoomFactor:(uint64_t)factor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v10 = *(a1 + 208);
-  v11 = OUTLINED_FUNCTION_2_0(a1, a2, a3, a4, a5, a6, a7, a8, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, 0);
+  v10 = *(self + 208);
+  v11 = OUTLINED_FUNCTION_2_0(self, a2, factor, a4, a5, a6, a7, a8, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, 0);
   if (v11)
   {
     v12 = v11;
@@ -431,10 +431,10 @@
         }
 
         v15 = *(8 * i);
-        v16 = [v15 lowerBound];
+        lowerBound = [v15 lowerBound];
         if (v24 <= a9)
         {
-          v16 = [v15 upperBound];
+          lowerBound = [v15 upperBound];
           if (*&v25 >= a9)
           {
             *&v25 = a9;
@@ -444,7 +444,7 @@
         }
       }
 
-      v12 = OUTLINED_FUNCTION_2_0(v16, v17, v18, v19, v20, v21, v22, v23, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v60);
+      v12 = OUTLINED_FUNCTION_2_0(lowerBound, v17, v18, v19, v20, v21, v22, v23, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v60);
       if (v12)
       {
         continue;
@@ -457,7 +457,7 @@
   return a9;
 }
 
-- (float)applyFudgeToZoomFactor:(float)a3
+- (float)applyFudgeToZoomFactor:(float)factor
 {
   os_unfair_lock_lock(&self->_zoomLock);
   v12 = OUTLINED_FUNCTION_4_87(v4, v5, v6, v7, v8, v9, v10, v11);
@@ -465,15 +465,15 @@
   return v12;
 }
 
-- (float)_removeFudgeFromZoomFactor:(uint64_t)a3
+- (float)_removeFudgeFromZoomFactor:(uint64_t)factor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v10 = *(a1 + 208);
-  v11 = OUTLINED_FUNCTION_2_0(a1, a2, a3, a4, a5, a6, a7, a8, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, 0);
+  v10 = *(self + 208);
+  v11 = OUTLINED_FUNCTION_2_0(self, a2, factor, a4, a5, a6, a7, a8, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, 0);
   if (v11)
   {
     v12 = v11;
@@ -488,10 +488,10 @@
         }
 
         v15 = *(8 * i);
-        v16 = [v15 fudgedLowerBound];
+        fudgedLowerBound = [v15 fudgedLowerBound];
         if (v24 <= a9)
         {
-          v16 = [v15 fudgedUpperBound];
+          fudgedLowerBound = [v15 fudgedUpperBound];
           if (*&v25 >= a9)
           {
             *&v25 = a9;
@@ -501,7 +501,7 @@
         }
       }
 
-      v12 = OUTLINED_FUNCTION_2_0(v16, v17, v18, v19, v20, v21, v22, v23, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v60);
+      v12 = OUTLINED_FUNCTION_2_0(fudgedLowerBound, v17, v18, v19, v20, v21, v22, v23, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v60);
       if (v12)
       {
         continue;
@@ -514,17 +514,17 @@
   return a9;
 }
 
-- (void)setTypicalISPZoomDelay:(unsigned int)a3 maxISPZoomDelay:(unsigned int)a4 clientCanCompensateForDelay:(BOOL)a5
+- (void)setTypicalISPZoomDelay:(unsigned int)delay maxISPZoomDelay:(unsigned int)zoomDelay clientCanCompensateForDelay:(BOOL)forDelay
 {
-  v5 = a5;
-  self->_clientCanCompensateForDelay = a5;
+  forDelayCopy = forDelay;
+  self->_clientCanCompensateForDelay = forDelay;
   os_unfair_lock_lock(&self->_zoomLock);
   v9 = self->_rampTargetVelocity != 0.0 || self->_rampCurrentVelocity != 0.0;
   self->_rampActive = v9;
 
-  v10 = [[BWZoomDelayBuffer alloc] initWithMaxZoomDelay:a4 currentZoomDelay:a3];
+  v10 = [[BWZoomDelayBuffer alloc] initWithMaxZoomDelay:zoomDelay currentZoomDelay:delay];
   self->_zoomDelayBuffer = v10;
-  if (v5)
+  if (forDelayCopy)
   {
     if (!v10)
     {
@@ -541,7 +541,7 @@
       goto LABEL_10;
     }
 
-    rampActive = 2 * (a3 != 0);
+    rampActive = 2 * (delay != 0);
   }
 
   v10->_operatingMode = rampActive;
@@ -550,18 +550,18 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_zoomLock);
 }
 
-- (float)_zoomFactorForRampAtPTS:(uint64_t)a1 updateCurrentZoomRampState:(uint64_t)a2
+- (float)_zoomFactorForRampAtPTS:(uint64_t)s updateCurrentZoomRampState:(uint64_t)state
 {
   v2 = 0.0;
-  if (a1)
+  if (s)
   {
-    if (*(a2 + 12))
+    if (*(state + 12))
     {
-      time1 = *a2;
-      v31 = *(a1 + 120);
+      time1 = *state;
+      v31 = *(s + 120);
       if (CMTimeCompare(&time1, &v31) >= 1)
       {
-        v4 = *(a1 + 172);
+        v4 = *(s + 172);
         switch(v4)
         {
           case 1:
@@ -583,86 +583,86 @@ LABEL_10:
   return v2;
 }
 
-- (float)_updateZoomModelForNextFrameWithPTS:(uint64_t)a3
+- (float)_updateZoomModelForNextFrameWithPTS:(uint64_t)s
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  *(a1 + 80) = *(a1 + 56);
-  *(a1 + 96) = *(a1 + 72);
+  *(self + 80) = *(self + 56);
+  *(self + 96) = *(self + 72);
   v9 = *(a2 + 16);
-  *(a1 + 56) = *a2;
-  *(a1 + 72) = v9;
-  if (*(a1 + 160) == 0.0 && *(a1 + 196) == 0.0 && *(a1 + 184) == 0.0 && !*(a1 + 164))
+  *(self + 56) = *a2;
+  *(self + 72) = v9;
+  if (*(self + 160) == 0.0 && *(self + 196) == 0.0 && *(self + 184) == 0.0 && !*(self + 164))
   {
     v10 = 0;
-    v11 = *(a1 + 156);
+    v11 = *(self + 156);
   }
 
   else
   {
     v23 = *a2;
     v24 = *(a2 + 16);
-    v12 = [BWZoomCommandHandler _zoomFactorForRampAtPTS:a1 updateCurrentZoomRampState:&v23];
-    if (v12 >= 1.0 && v12 != *(a1 + 16))
+    v12 = [BWZoomCommandHandler _zoomFactorForRampAtPTS:self updateCurrentZoomRampState:&v23];
+    if (v12 >= 1.0 && v12 != *(self + 16))
     {
-      *(a1 + 16) = v12;
-      *(a1 + 20) = 0;
-      *(a1 + 112) = FigGetUpTimeNanoseconds() / 0xF4240uLL;
+      *(self + 16) = v12;
+      *(self + 20) = 0;
+      *(self + 112) = FigGetUpTimeNanoseconds() / 0xF4240uLL;
     }
 
-    v10 = *(a1 + 164);
-    v13 = *(a1 + 156);
+    v10 = *(self + 164);
+    v13 = *(self + 156);
     v11 = LODWORD(v13);
-    if (v12 == v13 || *(a1 + 160) == 0.0 && *(a1 + 196) == 0.0)
+    if (v12 == v13 || *(self + 160) == 0.0 && *(self + 196) == 0.0)
     {
       v10 |= 0x100000000uLL;
-      *(a1 + 160) = 0;
-      *(a1 + 196) = 0;
-      *(a1 + 184) = 0;
-      *(a1 + 176) = 0;
+      *(self + 160) = 0;
+      *(self + 196) = 0;
+      *(self + 184) = 0;
+      *(self + 176) = 0;
       __asm { FMOV            V0.2S, #1.0 }
 
-      *(a1 + 240) = _D0;
-      *(a1 + 248) = 0;
+      *(self + 240) = _D0;
+      *(self + 248) = 0;
     }
 
-    else if ((*(a1 + 168) & 1) == 0)
+    else if ((*(self + 168) & 1) == 0)
     {
-      if (*(a1 + 32) == 1)
+      if (*(self + 32) == 1)
       {
-        v19 = *(a1 + 24);
+        v19 = *(self + 24);
         if (v19)
         {
           *(v19 + 32) = 1;
         }
       }
 
-      *(a1 + 168) = 1;
+      *(self + 168) = 1;
     }
   }
 
-  v20 = *(a1 + 16);
+  v20 = *(self + 16);
   v21 = 0.0;
-  if ((*(a1 + 20) & 1) == 0)
+  if ((*(self + 20) & 1) == 0)
   {
-    v21 = [(BWZoomCommandHandler *)a1 _applyFudgeToZoomFactor:a2, a3, a4, a5, a6, a7, a8, *(a1 + 16)];
-    *(a1 + 20) = 1;
+    v21 = [(BWZoomCommandHandler *)self _applyFudgeToZoomFactor:a2, s, a4, a5, a6, a7, a8, *(self + 16)];
+    *(self + 20) = 1;
   }
 
-  [(BWZoomDelayBuffer *)*(a1 + 24) addZoomRequest:v10];
+  [(BWZoomDelayBuffer *)*(self + 24) addZoomRequest:v10];
   return v21;
 }
 
-- (uint64_t)_updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)a3 zoomFactorChangedOut:
+- (uint64_t)_updateAppliedZoomFactorForDelayedISPAppliedZoomFactor:(float)factor zoomFactorChangedOut:
 {
   if (result)
   {
     v4 = result;
     v5 = *(result + 24);
-    result = [(BWZoomDelayBuffer *)v5 zoomRequestForISPAppliedZoomFactor:a3 earlySwitchOverScaleFactorForZoomIn:*(result + 240)];
+    result = [(BWZoomDelayBuffer *)v5 zoomRequestForISPAppliedZoomFactor:factor earlySwitchOverScaleFactorForZoomIn:*(result + 240)];
     v7 = *(v4 + 12);
     if (v7 != *&result)
     {
@@ -688,14 +688,14 @@ LABEL_10:
   return result;
 }
 
-- (float)_zoomFactorForDurationBasedRampAtPTS:(int)a3 updateCurrentZoomRampState:(int)a4
+- (float)_zoomFactorForDurationBasedRampAtPTS:(int)s updateCurrentZoomRampState:(int)state
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  OUTLINED_FUNCTION_0_112(a1, a2, a3, a4, a5, a6, a7, a8, v30, v31, v32, v33, v34, time.value);
+  OUTLINED_FUNCTION_0_112(self, a2, s, state, a5, a6, a7, a8, v30, v31, v32, v33, v34, time.value);
   Seconds = CMTimeGetSeconds(&time);
   v19 = 1.0 - pow(0.00499999523, Seconds / *(v8 + 184));
   v20 = *(v8 + 148);
@@ -744,14 +744,14 @@ LABEL_10:
   return v23;
 }
 
-- (float)_zoomFactorForRateBasedRampAtPTS:(int)a3 updateCurrentZoomRampState:(int)a4
+- (float)_zoomFactorForRateBasedRampAtPTS:(int)s updateCurrentZoomRampState:(int)state
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  OUTLINED_FUNCTION_0_112(a1, a2, a3, a4, a5, a6, a7, a8, v42, v43, v44, v45, v46, time.value);
+  OUTLINED_FUNCTION_0_112(self, a2, s, state, a5, a6, a7, a8, v42, v43, v44, v45, v46, time.value);
   Seconds = CMTimeGetSeconds(&time);
   v12 = *(v8 + 156);
   v11 = *(v8 + 160);
@@ -856,14 +856,14 @@ LABEL_10:
   return v36;
 }
 
-- (float)_zoomFactorForSpringBasedRampAtPTS:(int)a3 updateCurrentZoomRampState:(int)a4
+- (float)_zoomFactorForSpringBasedRampAtPTS:(int)s updateCurrentZoomRampState:(int)state
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  OUTLINED_FUNCTION_0_112(a1, a2, a3, a4, a5, a6, a7, a8, v36, v37, v38, v39, v40, time.value);
+  OUTLINED_FUNCTION_0_112(self, a2, s, state, a5, a6, a7, a8, v36, v37, v38, v39, v40, time.value);
   Seconds = CMTimeGetSeconds(&time);
   v11 = *(v8 + 156);
   v12 = *(v8 + 148);
@@ -892,7 +892,7 @@ LABEL_10:
       [(BWSpringSimulation *)v15 update];
       if (*(v8 + 192) > 0.0)
       {
-        v19 = [(BWSpringSimulation *)v15 output];
+        output = [(BWSpringSimulation *)v15 output];
         if (v27 >= 1.0 - *(v8 + 192))
         {
           break;
@@ -915,7 +915,7 @@ LABEL_11:
 LABEL_14:
     if (Seconds != 0.0)
     {
-      OUTLINED_FUNCTION_4_87(v19, v20, v21, v22, v23, v24, v25, v26);
+      OUTLINED_FUNCTION_4_87(output, v20, v21, v22, v23, v24, v25, v26);
       OUTLINED_FUNCTION_3_99();
       if (!v33)
       {
@@ -944,13 +944,13 @@ LABEL_14:
   }
 
 LABEL_10:
-  v19 = [(BWSpringSimulation *)v15 isCompleted];
-  if (v19)
+  output = [(BWSpringSimulation *)v15 isCompleted];
+  if (output)
   {
     goto LABEL_11;
   }
 
-  v19 = [(BWSpringSimulation *)v15 output];
+  output = [(BWSpringSimulation *)v15 output];
   *&v29 = v29;
   v28 = *(v8 + 148) + (*&v29 * (*(v8 + 156) - *(v8 + 148)));
   if (v9)

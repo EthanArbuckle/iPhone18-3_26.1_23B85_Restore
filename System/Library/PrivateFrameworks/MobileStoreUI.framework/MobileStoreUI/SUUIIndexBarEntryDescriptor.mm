@@ -1,15 +1,15 @@
 @interface SUUIIndexBarEntryDescriptor
-+ (id)entryDescriptorWithArtwork:(id)a3;
-+ (id)entryDescriptorWithAttributedString:(id)a3;
-+ (id)entryDescriptorWithImage:(id)a3;
-+ (id)placeholderEntryDescriptorWithSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)entryDescriptorWithArtwork:(id)artwork;
++ (id)entryDescriptorWithAttributedString:(id)string;
++ (id)entryDescriptorWithImage:(id)image;
++ (id)placeholderEntryDescriptorWithSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (UIEdgeInsets)contentEdgeInsets;
 - (unint64_t)hash;
-- (void)setArtwork:(id)a3;
-- (void)setAttributedString:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setArtwork:(id)artwork;
+- (void)setAttributedString:(id)string;
+- (void)setImage:(id)image;
 @end
 
 @implementation SUUIIndexBarEntryDescriptor
@@ -22,22 +22,22 @@
   return v4 ^ v5 ^ [(UIImage *)self->_image hash]^ (self->_size.width * 1000.0) ^ (self->_size.height * 10000.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_16;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || v4->_entryDescriptorType != self->_entryDescriptorType || (v4->_size.width == self->_size.width ? (v5 = v4->_size.height == self->_size.height) : (v5 = 0), !v5 || (image = v4->_image, image != self->_image) && ![(UIImage *)image isEqual:?]|| (attributedString = v4->_attributedString, attributedString != self->_attributedString) && ![(NSAttributedString *)attributedString isEqualToAttributedString:?]))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || equalCopy->_entryDescriptorType != self->_entryDescriptorType || (equalCopy->_size.width == self->_size.width ? (v5 = equalCopy->_size.height == self->_size.height) : (v5 = 0), !v5 || (image = equalCopy->_image, image != self->_image) && ![(UIImage *)image isEqual:?]|| (attributedString = equalCopy->_attributedString, attributedString != self->_attributedString) && ![(NSAttributedString *)attributedString isEqualToAttributedString:?]))
   {
     v9 = 0;
     goto LABEL_17;
   }
 
-  artwork = v4->_artwork;
+  artwork = equalCopy->_artwork;
   if (artwork == self->_artwork)
   {
 LABEL_16:
@@ -51,40 +51,40 @@ LABEL_17:
   return v9;
 }
 
-+ (id)entryDescriptorWithArtwork:(id)a3
++ (id)entryDescriptorWithArtwork:(id)artwork
 {
-  v3 = a3;
+  artworkCopy = artwork;
   v4 = objc_alloc_init(SUUIIndexBarEntryDescriptor);
   [(SUUIIndexBarEntryDescriptor *)v4 setEntryDescriptorType:2];
-  [(SUUIIndexBarEntryDescriptor *)v4 setArtwork:v3];
+  [(SUUIIndexBarEntryDescriptor *)v4 setArtwork:artworkCopy];
 
   return v4;
 }
 
-+ (id)entryDescriptorWithAttributedString:(id)a3
++ (id)entryDescriptorWithAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(SUUIIndexBarEntryDescriptor);
   [(SUUIIndexBarEntryDescriptor *)v4 setEntryDescriptorType:1];
-  [(SUUIIndexBarEntryDescriptor *)v4 setAttributedString:v3];
+  [(SUUIIndexBarEntryDescriptor *)v4 setAttributedString:stringCopy];
 
   return v4;
 }
 
-+ (id)entryDescriptorWithImage:(id)a3
++ (id)entryDescriptorWithImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = objc_alloc_init(SUUIIndexBarEntryDescriptor);
   [(SUUIIndexBarEntryDescriptor *)v4 setEntryDescriptorType:3];
-  [(SUUIIndexBarEntryDescriptor *)v4 setImage:v3];
+  [(SUUIIndexBarEntryDescriptor *)v4 setImage:imageCopy];
 
   return v4;
 }
 
-+ (id)placeholderEntryDescriptorWithSize:(CGSize)a3
++ (id)placeholderEntryDescriptorWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(SUUIIndexBarEntryDescriptor);
   [(SUUIIndexBarEntryDescriptor *)v5 setEntryDescriptorType:0];
   [(SUUIIndexBarEntryDescriptor *)v5 setSize:width, height];
@@ -92,37 +92,37 @@ LABEL_17:
   return v5;
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  v5 = a3;
+  artworkCopy = artwork;
   artwork = self->_artwork;
-  if (artwork != v5)
+  if (artwork != artworkCopy)
   {
-    v9 = v5;
-    artwork = [artwork isEqual:v5];
-    v5 = v9;
+    v9 = artworkCopy;
+    artwork = [artwork isEqual:artworkCopy];
+    artworkCopy = v9;
     if ((artwork & 1) == 0)
     {
-      objc_storeStrong(&self->_artwork, a3);
+      objc_storeStrong(&self->_artwork, artwork);
       artwork = [(SUUIArtwork *)self->_artwork size];
-      v5 = v9;
+      artworkCopy = v9;
       self->_size.width = v7;
       self->_size.height = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](artwork, v5);
+  MEMORY[0x2821F96F8](artwork, artworkCopy);
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   attributedString = self->_attributedString;
-  if (attributedString != v4)
+  if (attributedString != stringCopy)
   {
-    v10 = v4;
-    attributedString = [attributedString isEqualToAttributedString:v4];
-    v4 = v10;
+    v10 = stringCopy;
+    attributedString = [attributedString isEqualToAttributedString:stringCopy];
+    stringCopy = v10;
     if ((attributedString & 1) == 0)
     {
       v6 = [v10 copy];
@@ -130,35 +130,35 @@ LABEL_17:
       self->_attributedString = v6;
 
       attributedString = [(NSAttributedString *)self->_attributedString size];
-      v4 = v10;
+      stringCopy = v10;
       self->_size.width = v8;
       self->_size.height = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](attributedString, v4);
+  MEMORY[0x2821F96F8](attributedString, stringCopy);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   image = self->_image;
-  if (image != v5)
+  if (image != imageCopy)
   {
-    v9 = v5;
-    image = [image isEqual:v5];
-    v5 = v9;
+    v9 = imageCopy;
+    image = [image isEqual:imageCopy];
+    imageCopy = v9;
     if ((image & 1) == 0)
     {
-      objc_storeStrong(&self->_image, a3);
+      objc_storeStrong(&self->_image, image);
       image = [(UIImage *)self->_image size];
-      v5 = v9;
+      imageCopy = v9;
       self->_size.width = v7;
       self->_size.height = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](image, v5);
+  MEMORY[0x2821F96F8](image, imageCopy);
 }
 
 - (UIEdgeInsets)contentEdgeInsets

@@ -1,17 +1,17 @@
 @interface HMDAppleMediaAccessoryModel
-+ (id)appleMediaAccessoryModelWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
-+ (id)homePodAccessoryModelWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
++ (id)appleMediaAccessoryModelWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
++ (id)homePodAccessoryModelWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
 + (id)properties;
-- (id)_initWithObjectChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
+- (id)_initWithObjectChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
 @end
 
 @implementation HMDAppleMediaAccessoryModel
 
-- (id)_initWithObjectChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
+- (id)_initWithObjectChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
   v6.receiver = self;
   v6.super_class = HMDAppleMediaAccessoryModel;
-  return [(HMDBackingStoreModelObject *)&v6 initWithObjectChangeType:a3 uuid:a4 parentUUID:a5];
+  return [(HMDBackingStoreModelObject *)&v6 initWithObjectChangeType:type uuid:uuid parentUUID:d];
 }
 
 + (id)properties
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __41__HMDAppleMediaAccessoryModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_93997 != -1)
   {
     dispatch_once(&properties_onceToken_93997, block);
@@ -129,20 +129,20 @@ void __41__HMDAppleMediaAccessoryModel_properties__block_invoke(uint64_t a1)
   v41 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)homePodAccessoryModelWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
++ (id)homePodAccessoryModelWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [objc_alloc(objc_opt_class()) _initWithObjectChangeType:a3 uuid:v8 parentUUID:v7];
+  dCopy = d;
+  uuidCopy = uuid;
+  v9 = [objc_alloc(objc_opt_class()) _initWithObjectChangeType:type uuid:uuidCopy parentUUID:dCopy];
 
   return v9;
 }
 
-+ (id)appleMediaAccessoryModelWithChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
++ (id)appleMediaAccessoryModelWithChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [objc_alloc(objc_opt_class()) _initWithObjectChangeType:a3 uuid:v8 parentUUID:v7];
+  dCopy = d;
+  uuidCopy = uuid;
+  v9 = [objc_alloc(objc_opt_class()) _initWithObjectChangeType:type uuid:uuidCopy parentUUID:dCopy];
 
   return v9;
 }

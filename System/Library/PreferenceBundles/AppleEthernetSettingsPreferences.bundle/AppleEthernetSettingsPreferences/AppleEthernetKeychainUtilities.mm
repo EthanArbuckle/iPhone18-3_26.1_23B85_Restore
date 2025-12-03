@@ -1,7 +1,7 @@
 @interface AppleEthernetKeychainUtilities
-+ (id)_passwordForHost:(id)a3 username:(id)a4 port:(int)a5;
-+ (void)removePasswordForHost:(id)a3 username:(id)a4 port:(int)a5;
-+ (void)setPassword:(id)a3 forHost:(id)a4 username:(id)a5 port:(int)a6;
++ (id)_passwordForHost:(id)host username:(id)username port:(int)port;
++ (void)removePasswordForHost:(id)host username:(id)username port:(int)port;
++ (void)setPassword:(id)password forHost:(id)host username:(id)username port:(int)port;
 - (AppleEthernetKeychainUtilities)init;
 @end
 
@@ -14,11 +14,11 @@
   return [(AppleEthernetKeychainUtilities *)&v3 init];
 }
 
-+ (id)_passwordForHost:(id)a3 username:(id)a4 port:(int)a5
++ (id)_passwordForHost:(id)host username:(id)username port:(int)port
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length") && (v8 = CFURLCredentialStorageCreate()) != 0)
+  hostCopy = host;
+  usernameCopy = username;
+  if ([hostCopy length] && objc_msgSend(usernameCopy, "length") && (v8 = CFURLCredentialStorageCreate()) != 0)
   {
     v9 = v8;
     v10 = CFURLProtectionSpaceCreate();
@@ -57,22 +57,22 @@
   return v14;
 }
 
-+ (void)setPassword:(id)a3 forHost:(id)a4 username:(id)a5 port:(int)a6
++ (void)setPassword:(id)password forHost:(id)host username:(id)username port:(int)port
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v8 length])
+  passwordCopy = password;
+  hostCopy = host;
+  usernameCopy = username;
+  if (![hostCopy length])
   {
     goto LABEL_14;
   }
 
-  if (![v17 length])
+  if (![passwordCopy length])
   {
     goto LABEL_14;
   }
 
-  if (![v9 length])
+  if (![usernameCopy length])
   {
     goto LABEL_14;
   }
@@ -116,16 +116,16 @@ LABEL_10:
 LABEL_14:
 }
 
-+ (void)removePasswordForHost:(id)a3 username:(id)a4 port:(int)a5
++ (void)removePasswordForHost:(id)host username:(id)username port:(int)port
 {
-  v17 = a3;
-  v6 = a4;
-  if (![v17 length])
+  hostCopy = host;
+  usernameCopy = username;
+  if (![hostCopy length])
   {
     goto LABEL_19;
   }
 
-  if (![v6 length])
+  if (![usernameCopy length])
   {
     goto LABEL_19;
   }

@@ -1,18 +1,18 @@
 @interface LocationViewModel
 + (id)createModel;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC14FamilyCircleUI17LocationViewModel)init;
 - (void)dealloc;
 @end
 
 @implementation LocationViewModel
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   swift_beginAccess();
   v4 = qword_27CDB9740;
-  qword_27CDB9740 = a3;
-  v5 = a3;
+  qword_27CDB9740 = shared;
+  sharedCopy = shared;
 }
 
 - (void)dealloc
@@ -27,11 +27,11 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_21BBA9018(0, 0, v6, &unk_21BE40590, v8);
 
   v10 = type metadata accessor for LocationViewModel();
-  v11.receiver = v9;
+  v11.receiver = selfCopy;
   v11.super_class = v10;
   [(LocationViewModel *)&v11 dealloc];
 }

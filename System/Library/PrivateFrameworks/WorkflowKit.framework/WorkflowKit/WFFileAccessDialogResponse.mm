@@ -1,36 +1,36 @@
 @interface WFFileAccessDialogResponse
-- (WFFileAccessDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFFileAccessDialogResponse)initWithCoder:(id)a3;
-- (WFFileAccessDialogResponse)initWithFileResponseCode:(unint64_t)a3 error:(id)a4;
+- (WFFileAccessDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFFileAccessDialogResponse)initWithCoder:(id)coder;
+- (WFFileAccessDialogResponse)initWithFileResponseCode:(unint64_t)code error:(id)error;
 - (id)description;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFileAccessDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFFileAccessDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v7 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:-[WFFileAccessDialogResponse fileResponseCode](self forKey:{"fileResponseCode", v7.receiver, v7.super_class), @"fileResponseCode"}];
-  v5 = [(WFFileAccessDialogResponse *)self error];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v7 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[WFFileAccessDialogResponse fileResponseCode](self forKey:{"fileResponseCode", v7.receiver, v7.super_class), @"fileResponseCode"}];
+  error = [(WFFileAccessDialogResponse *)self error];
   v6 = WFEncodableError();
-  [v4 encodeObject:v6 forKey:@"error"];
+  [coderCopy encodeObject:v6 forKey:@"error"];
 }
 
-- (WFFileAccessDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFFileAccessDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFFileAccessDialogResponse;
-  v5 = [(WFDialogResponse *)&v10 initWithBSXPCCoder:v4];
+  v5 = [(WFDialogResponse *)&v10 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_fileResponseCode = [v4 decodeInt64ForKey:@"fileResponseCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v5->_fileResponseCode = [coderCopy decodeInt64ForKey:@"fileResponseCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v6;
 
@@ -40,28 +40,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFFileAccessDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v7 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFFileAccessDialogResponse fileResponseCode](self forKey:{"fileResponseCode", v7.receiver, v7.super_class), @"fileResponseCode"}];
-  v5 = [(WFFileAccessDialogResponse *)self error];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFFileAccessDialogResponse fileResponseCode](self forKey:{"fileResponseCode", v7.receiver, v7.super_class), @"fileResponseCode"}];
+  error = [(WFFileAccessDialogResponse *)self error];
   v6 = WFEncodableError();
-  [v4 encodeObject:v6 forKey:@"error"];
+  [coderCopy encodeObject:v6 forKey:@"error"];
 }
 
-- (WFFileAccessDialogResponse)initWithCoder:(id)a3
+- (WFFileAccessDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFFileAccessDialogResponse;
-  v5 = [(WFDialogResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFDialogResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_fileResponseCode = [v4 decodeIntegerForKey:@"fileResponseCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v5->_fileResponseCode = [coderCopy decodeIntegerForKey:@"fileResponseCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v6;
 
@@ -81,17 +81,17 @@
   return v6;
 }
 
-- (WFFileAccessDialogResponse)initWithFileResponseCode:(unint64_t)a3 error:(id)a4
+- (WFFileAccessDialogResponse)initWithFileResponseCode:(unint64_t)code error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = WFFileAccessDialogResponse;
-  v8 = [(WFDialogResponse *)&v12 initWithCancelled:a3 == 0];
+  v8 = [(WFDialogResponse *)&v12 initWithCancelled:code == 0];
   v9 = v8;
   if (v8)
   {
-    v8->_fileResponseCode = a3;
-    objc_storeStrong(&v8->_error, a4);
+    v8->_fileResponseCode = code;
+    objc_storeStrong(&v8->_error, error);
     v10 = v9;
   }
 

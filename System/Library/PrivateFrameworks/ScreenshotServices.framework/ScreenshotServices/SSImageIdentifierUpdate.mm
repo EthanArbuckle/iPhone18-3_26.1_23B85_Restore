@@ -1,41 +1,41 @@
 @interface SSImageIdentifierUpdate
 - (BSSettings)bsSettings;
 - (NSString)loggableDescription;
-- (SSImageIdentifierUpdate)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSImageIdentifierUpdate)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSImageIdentifierUpdate
 
-- (SSImageIdentifierUpdate)initWithBSXPCCoder:(id)a3
+- (SSImageIdentifierUpdate)initWithBSXPCCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = SSImageIdentifierUpdate;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(SSImageIdentifierUpdate *)&v11 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"SSImageIdentifierUpdateKeyImageIdentifier", v11.receiver, v11.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"SSImageIdentifierUpdateKeyImageIdentifier", v11.receiver, v11.super_class}];
   imageIdentifier = v4->_imageIdentifier;
   v4->_imageIdentifier = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SSImageIdentifierUpdateKeyEnvironmentDescriptionIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSImageIdentifierUpdateKeyEnvironmentDescriptionIdentifier"];
   environmentDescriptionIdentifier = v4->_environmentDescriptionIdentifier;
   v4->_environmentDescriptionIdentifier = v7;
 
-  v9 = [v3 decodeBoolForKey:@"SSImageIdentifierUpdateKeySuccess"];
+  v9 = [coderCopy decodeBoolForKey:@"SSImageIdentifierUpdateKeySuccess"];
   v4->_success = v9;
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(SSImageIdentifierUpdate *)self imageIdentifier];
-  [v6 encodeObject:v4 forKey:@"SSImageIdentifierUpdateKeyImageIdentifier"];
+  coderCopy = coder;
+  imageIdentifier = [(SSImageIdentifierUpdate *)self imageIdentifier];
+  [coderCopy encodeObject:imageIdentifier forKey:@"SSImageIdentifierUpdateKeyImageIdentifier"];
 
-  v5 = [(SSImageIdentifierUpdate *)self environmentDescriptionIdentifier];
-  [v6 encodeObject:v5 forKey:@"SSImageIdentifierUpdateKeyEnvironmentDescriptionIdentifier"];
+  environmentDescriptionIdentifier = [(SSImageIdentifierUpdate *)self environmentDescriptionIdentifier];
+  [coderCopy encodeObject:environmentDescriptionIdentifier forKey:@"SSImageIdentifierUpdateKeyEnvironmentDescriptionIdentifier"];
 
-  [v6 encodeBool:-[SSImageIdentifierUpdate success](self forKey:{"success"), @"SSImageIdentifierUpdateKeySuccess"}];
+  [coderCopy encodeBool:-[SSImageIdentifierUpdate success](self forKey:{"success"), @"SSImageIdentifierUpdateKeySuccess"}];
 }
 
 - (BSSettings)bsSettings
@@ -48,31 +48,31 @@
 
 - (NSString)loggableDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SSImageIdentifierUpdate *)self imageIdentifier];
-  v6 = [v5 shorterLoggableString];
-  v7 = [v4 stringWithFormat:@"imageIdentifier: %@ ", v6];
-  [v3 appendString:v7];
+  imageIdentifier = [(SSImageIdentifierUpdate *)self imageIdentifier];
+  shorterLoggableString = [imageIdentifier shorterLoggableString];
+  v7 = [v4 stringWithFormat:@"imageIdentifier: %@ ", shorterLoggableString];
+  [string appendString:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(SSImageIdentifierUpdate *)self environmentDescriptionIdentifier];
-  v10 = [v9 shorterLoggableString];
-  v11 = [v8 stringWithFormat:@"environmentDescriptionIdentifier: %@", v10];
-  [v3 appendString:v11];
+  environmentDescriptionIdentifier = [(SSImageIdentifierUpdate *)self environmentDescriptionIdentifier];
+  shorterLoggableString2 = [environmentDescriptionIdentifier shorterLoggableString];
+  v11 = [v8 stringWithFormat:@"environmentDescriptionIdentifier: %@", shorterLoggableString2];
+  [string appendString:v11];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(SSImageIdentifierUpdate *)self success];
+  success = [(SSImageIdentifierUpdate *)self success];
   v14 = @"NO";
-  if (v13)
+  if (success)
   {
     v14 = @"YES";
   }
 
   v15 = [v12 stringWithFormat:@"success: %@", v14];
-  [v3 appendString:v15];
+  [string appendString:v15];
 
-  return v3;
+  return string;
 }
 
 @end

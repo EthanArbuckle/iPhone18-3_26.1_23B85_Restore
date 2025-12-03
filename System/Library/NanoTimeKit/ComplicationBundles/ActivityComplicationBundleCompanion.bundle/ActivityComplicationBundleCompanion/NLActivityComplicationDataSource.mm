@@ -1,30 +1,30 @@
 @interface NLActivityComplicationDataSource
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
-+ (id)widgetKindForFamily:(int64_t)a3;
-- (NLActivityComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_activityStatisticsForData:(id)a3 unit:(id)a4;
-- (id)_activityStatisticsForStandHours:(id)a3;
-- (id)_timelineEntryFromModel:(id)a3 family:(int64_t)a4;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
++ (id)widgetKindForFamily:(int64_t)family;
+- (NLActivityComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_activityStatisticsForData:(id)data unit:(id)unit;
+- (id)_activityStatisticsForStandHours:(id)hours;
+- (id)_timelineEntryFromModel:(id)model family:(int64_t)family;
 - (id)lockedTemplate;
 - (id)sampleTemplate;
-- (void)activityDataProviderCurrentDataModelUpdated:(id)a3;
+- (void)activityDataProviderCurrentDataModelUpdated:(id)updated;
 - (void)dealloc;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation NLActivityComplicationDataSource
 
-+ (id)widgetKindForFamily:(int64_t)a3
++ (id)widgetKindForFamily:(int64_t)family
 {
   v3 = @"ActivityRingsComplication";
-  if (a3 == 3)
+  if (family == 3)
   {
     v3 = @"ActivityComplication";
   }
 
-  if (a3 == 11)
+  if (family == 11)
   {
     return @"ActivityGraphComplication";
   }
@@ -35,10 +35,10 @@
   }
 }
 
-- (NLActivityComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NLActivityComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   _HKInitializeLogging();
   v10 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEBUG))
@@ -48,7 +48,7 @@
 
   v14.receiver = self;
   v14.super_class = NLActivityComplicationDataSource;
-  v11 = [(NLActivityComplicationDataSource *)&v14 initWithComplication:v8 family:a4 forDevice:v9];
+  v11 = [(NLActivityComplicationDataSource *)&v14 initWithComplication:complicationCopy family:family forDevice:deviceCopy];
   if (v11)
   {
     v12 = +[FIUIActivityDataProvider sharedModel];
@@ -75,9 +75,9 @@
   [(NLActivityComplicationDataSource *)&v5 dealloc];
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   v7 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
@@ -90,15 +90,15 @@
   v8 = [CLKWidgetComplicationDescriptor alloc];
   v9 = +[NLActivityComplicationDataSource widgetExtensionBundleIdentifier];
   v10 = +[NLActivityComplicationDataSource appIdentifier];
-  v11 = [NLActivityComplicationDataSource widgetKindForFamily:a4];
+  v11 = [NLActivityComplicationDataSource widgetKindForFamily:family];
   v12 = [v8 initWithExtensionBundleIdentifier:v9 containerBundleIdentifier:v10 kind:v11 intent:0];
 
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
-  v4 = a4;
+  deviceCopy = device;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
@@ -109,20 +109,20 @@
   }
 
   v6 = [[NSUUID alloc] initWithUUIDString:@"8DD39CF2-0515-442A-99FD-06F9AAA59249"];
-  v7 = [v4 supportsCapability:v6];
+  v7 = [deviceCopy supportsCapability:v6];
 
   return v7;
 }
 
-- (void)activityDataProviderCurrentDataModelUpdated:(id)a3
+- (void)activityDataProviderCurrentDataModelUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = updatedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Received updated current activity data model: %@, appending to timeline entries", buf, 0xCu);
   }
 
@@ -131,8 +131,8 @@
   v7[2] = sub_60B0;
   v7[3] = &unk_105F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
@@ -143,8 +143,8 @@
   v5 = [HKQuantity quantityWithUnit:v4 doubleValue:500.0];
   [v3 setActiveEnergyGoal:v5];
 
-  v6 = [v3 activeEnergyGoal];
-  [v3 setActiveEnergyTotal:v6];
+  activeEnergyGoal = [v3 activeEnergyGoal];
+  [v3 setActiveEnergyTotal:activeEnergyGoal];
 
   [v3 setAppleStandHoursGoal:12];
   [v3 setAppleStandHoursTotal:{objc_msgSend(v3, "appleStandHoursGoal")}];
@@ -172,15 +172,15 @@
   }
 
   v14 = [(NLActivityComplicationDataSource *)self _timelineEntryFromModel:v3 family:[(NLActivityComplicationDataSource *)self family]];
-  v15 = [v14 complicationTemplate];
+  complicationTemplate = [v14 complicationTemplate];
 
-  return v15;
+  return complicationTemplate;
 }
 
-- (id)_activityStatisticsForData:(id)a3 unit:(id)a4
+- (id)_activityStatisticsForData:(id)data unit:(id)unit
 {
-  v5 = a3;
-  v25 = a4;
+  dataCopy = data;
+  unitCopy = unit;
   v24 = objc_alloc_init(NSMutableArray);
   v6 = +[NSCalendar currentCalendar];
   v7 = +[NSDate date];
@@ -192,7 +192,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = dataCopy;
   v10 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   v26 = v9;
   if (v10)
@@ -216,7 +216,7 @@
         v9 = [v23 dateByAddingUnit:64 value:v15 toDate:v26 options:0];
         v18 = [[_HKActivityStatisticsQuantityInfo alloc] initWithStartDate:v16 endDate:v9];
         [v17 doubleValue];
-        v19 = [HKQuantity quantityWithUnit:v25 doubleValue:?];
+        v19 = [HKQuantity quantityWithUnit:unitCopy doubleValue:?];
         [v18 setQuantityValue:v19];
         [v24 addObject:v18];
 
@@ -238,9 +238,9 @@
   return v20;
 }
 
-- (id)_activityStatisticsForStandHours:(id)a3
+- (id)_activityStatisticsForStandHours:(id)hours
 {
-  v3 = a3;
+  hoursCopy = hours;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[NSCalendar currentCalendar];
   v6 = +[NSDate date];
@@ -251,7 +251,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v3;
+  v9 = hoursCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   v11 = v8;
   if (v10)
@@ -271,16 +271,16 @@
           objc_enumerationMutation(v9);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * v15) intValue];
+        intValue = [*(*(&v23 + 1) + 8 * v15) intValue];
         [v16 timeIntervalSinceReferenceDate];
-        if (v17 == 1)
+        if (intValue == 1)
         {
           v19 = 0;
         }
 
         else
         {
-          if (v17 != 2)
+          if (intValue != 2)
           {
             goto LABEL_11;
           }
@@ -323,14 +323,14 @@ LABEL_11:
 
   v4 = +[FIUIActivityDataModel lockedModel];
   v5 = [(NLActivityComplicationDataSource *)self _timelineEntryFromModel:v4 family:[(NLActivityComplicationDataSource *)self family]];
-  v6 = [v5 complicationTemplate];
+  complicationTemplate = [v5 complicationTemplate];
 
-  return v6;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
@@ -345,26 +345,26 @@ LABEL_11:
   v8[2] = sub_6A58;
   v8[3] = &unk_10620;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 getCurrentActivityDataModelWithHandler:v8];
 }
 
-- (id)_timelineEntryFromModel:(id)a3 family:(int64_t)a4
+- (id)_timelineEntryFromModel:(id)model family:(int64_t)family
 {
-  v5 = a3;
-  v6 = [[NLActivityTimelineEntryModel alloc] initWithDataModel:v5];
+  modelCopy = model;
+  v6 = [[NLActivityTimelineEntryModel alloc] initWithDataModel:modelCopy];
 
-  v7 = [(NLActivityTimelineEntryModel *)v6 entryForComplicationFamily:a4];
+  v7 = [(NLActivityTimelineEntryModel *)v6 entryForComplicationFamily:family];
 
   return v7;
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = [NSURL URLWithString:@"ActivityMonitorApp://rings"];
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
 @end

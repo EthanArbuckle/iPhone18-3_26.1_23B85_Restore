@@ -1,30 +1,30 @@
 @interface MPMediaEntity
 + (BOOL)canFilterByProperty:(NSString *)property;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaEntity)initWithCoder:(id)a3;
-- (MPMediaEntity)initWithMultiverseIdentifier:(id)a3 library:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaEntity)initWithCoder:(id)coder;
+- (MPMediaEntity)initWithMultiverseIdentifier:(id)identifier library:(id)library;
 - (MPMediaEntityPersistentID)persistentID;
 - (MPMediaLibrary)mediaLibrary;
-- (id)genericModelObjectWithRequestedProperties:(id)a3;
+- (id)genericModelObjectWithRequestedProperties:(id)properties;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)enumerateValuesForProperties:(NSSet *)properties usingBlock:(void *)block;
 @end
 
 @implementation MPMediaEntity
 
-- (id)genericModelObjectWithRequestedProperties:(id)a3
+- (id)genericModelObjectWithRequestedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = [MPModelGenericObject alloc];
   v6 = +[MPIdentifierSet emptyIdentifierSet];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__MPMediaEntity_NewMP__genericModelObjectWithRequestedProperties___block_invoke;
   v10[3] = &unk_1E7676FE0;
-  v7 = v4;
+  v7 = propertiesCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v8 = [(MPModelObject *)v5 initWithIdentifiers:v6 block:v10];
 
   return v8;
@@ -453,8 +453,8 @@ LABEL_15:
 
 - (MPMediaLibrary)mediaLibrary
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:130 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:130 description:@"subclass must implement"];
 
   return 0;
 }
@@ -465,8 +465,8 @@ LABEL_15:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedLongLongValue];
-    v6 = v5 ^ HIDWORD(v5);
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
+    v6 = unsignedLongLongValue ^ HIDWORD(unsignedLongLongValue);
   }
 
   else
@@ -479,13 +479,13 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (-[MPMediaEntity valueForProperty:](self, "valueForProperty:", @"persistentID"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (-[MPMediaEntity valueForProperty:](self, "valueForProperty:", @"persistentID"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v4 valueForProperty:@"persistentID"];
+    v7 = [equalCopy valueForProperty:@"persistentID"];
     v8 = [v6 isEqual:v7];
   }
 
@@ -493,30 +493,30 @@ LABEL_15:
   {
     v10.receiver = self;
     v10.super_class = MPMediaEntity;
-    v8 = [(MPMediaEntity *)&v10 isEqual:v4];
+    v8 = [(MPMediaEntity *)&v10 isEqual:equalCopy];
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:94 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:94 description:@"subclass must implement"];
 }
 
-- (MPMediaEntity)initWithCoder:(id)a3
+- (MPMediaEntity)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:89 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:89 description:@"subclass must implement"];
 
   return 0;
 }
 
-- (MPMediaEntity)initWithMultiverseIdentifier:(id)a3 library:(id)a4
+- (MPMediaEntity)initWithMultiverseIdentifier:(id)identifier library:(id)library
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:84 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaEntity.m" lineNumber:84 description:@"subclass must implement"];
 
   return 0;
 }
@@ -545,9 +545,9 @@ void __57__MPMediaEntity_enumerateValuesForProperties_usingBlock___block_invoke(
 - (MPMediaEntityPersistentID)persistentID
 {
   v2 = [(MPMediaEntity *)self valueForProperty:@"persistentID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 + (BOOL)canFilterByProperty:(NSString *)property

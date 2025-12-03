@@ -1,29 +1,29 @@
 @interface BRCServerChangeState
 - (BOOL)hasNeverSyncedDown;
-- (BRCServerChangeState)initWithCoder:(id)a3;
-- (BRCServerChangeState)initWithServerSyncState:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BRCServerChangeState)initWithCoder:(id)coder;
+- (BRCServerChangeState)initWithServerSyncState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 - (void)forgetChangeTokens;
-- (void)updateWithServerChangeToken:(id)a3 clientRequestID:(unint64_t)a4 caughtUp:(BOOL)a5;
+- (void)updateWithServerChangeToken:(id)token clientRequestID:(unint64_t)d caughtUp:(BOOL)up;
 @end
 
 @implementation BRCServerChangeState
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:64];
-  v7 = [(BRCServerChangeState *)v5 lastSyncDownDate];
-  if (v7)
+  lastSyncDownDate = [(BRCServerChangeState *)selfCopy lastSyncDownDate];
+  if (lastSyncDownDate)
   {
     v8 = [BRCUserDefaults defaultsForMangledID:0];
-    v9 = [v8 dumpDateFormatter];
+    dumpDateFormatter = [v8 dumpDateFormatter];
 
-    v10 = [v9 stringFromDate:v7];
+    v10 = [dumpDateFormatter stringFromDate:lastSyncDownDate];
     [v6 appendFormat:@"last-sync:%@", v10];
   }
 
@@ -32,12 +32,12 @@
     [v6 appendString:@"last-sync:never"];
   }
 
-  if (v5->_clientRequestID)
+  if (selfCopy->_clientRequestID)
   {
-    [v6 appendFormat:@", requestID:%llu", v5->_clientRequestID];
+    [v6 appendFormat:@", requestID:%llu", selfCopy->_clientRequestID];
   }
 
-  lastSyncDownStatus = v5->_lastSyncDownStatus;
+  lastSyncDownStatus = selfCopy->_lastSyncDownStatus;
   if (lastSyncDownStatus > 1)
   {
     if (lastSyncDownStatus == 3)
@@ -53,7 +53,7 @@
     }
 
 LABEL_13:
-    [v6 appendFormat:@", status:%d(?)", v5->_lastSyncDownStatus];
+    [v6 appendFormat:@", status:%d(?)", selfCopy->_lastSyncDownStatus];
     goto LABEL_16;
   }
 
@@ -71,48 +71,48 @@ LABEL_13:
 LABEL_15:
   [v6 appendString:v12];
 LABEL_16:
-  changeToken = v5->_changeToken;
+  changeToken = selfCopy->_changeToken;
   if (changeToken)
   {
-    v14 = prettyPrintServerChangeToken(changeToken, v4);
+    v14 = prettyPrintServerChangeToken(changeToken, contextCopy);
     [v6 appendFormat:@", token:%@", v14];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (BOOL)hasNeverSyncedDown
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastSyncDownDate == 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastSyncDownDate == 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)updateWithServerChangeToken:(id)a3 clientRequestID:(unint64_t)a4 caughtUp:(BOOL)a5
+- (void)updateWithServerChangeToken:(id)token clientRequestID:(unint64_t)d caughtUp:(BOOL)up
 {
-  v5 = a5;
-  v13 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
-  objc_storeStrong(&v9->_changeToken, a3);
-  v10 = [MEMORY[0x277CBEAA8] date];
-  lastSyncDownDate = v9->_lastSyncDownDate;
-  v9->_lastSyncDownDate = v10;
+  upCopy = up;
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_changeToken, token);
+  date = [MEMORY[0x277CBEAA8] date];
+  lastSyncDownDate = selfCopy->_lastSyncDownDate;
+  selfCopy->_lastSyncDownDate = date;
 
   v12 = 2;
-  if (v5)
+  if (upCopy)
   {
     v12 = 3;
   }
 
-  v9->_lastSyncDownStatus = v12;
-  v9->_clientRequestID = a4;
-  objc_sync_exit(v9);
+  selfCopy->_lastSyncDownStatus = v12;
+  selfCopy->_clientRequestID = d;
+  objc_sync_exit(selfCopy);
 }
 
 - (void)forgetChangeTokens
@@ -129,50 +129,50 @@ LABEL_16:
   objc_sync_exit(obj);
 }
 
-- (BRCServerChangeState)initWithCoder:(id)a3
+- (BRCServerChangeState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BRCServerChangeState;
   v5 = [(BRCServerChangeState *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lsdDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lsdDate"];
     lastSyncDownDate = v5->_lastSyncDownDate;
     v5->_lastSyncDownDate = v6;
 
-    v5->_lastSyncDownStatus = [v4 decodeInt64ForKey:@"lsdStatus"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v5->_lastSyncDownStatus = [coderCopy decodeInt64ForKey:@"lsdStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     changeToken = v5->_changeToken;
     v5->_changeToken = v8;
 
-    v5->_clientRequestID = [v4 decodeInt64ForKey:@"requestID"];
+    v5->_clientRequestID = [coderCopy decodeInt64ForKey:@"requestID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 encodeObject:v4->_lastSyncDownDate forKey:@"lsdDate"];
-  [v5 encodeObject:v4->_changeToken forKey:@"token"];
-  [v5 encodeInt64:v4->_lastSyncDownStatus forKey:@"lsdStatus"];
-  [v5 encodeInt64:v4->_clientRequestID forKey:@"requestID"];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_lastSyncDownDate forKey:@"lsdDate"];
+  [coderCopy encodeObject:selfCopy->_changeToken forKey:@"token"];
+  [coderCopy encodeInt64:selfCopy->_lastSyncDownStatus forKey:@"lsdStatus"];
+  [coderCopy encodeInt64:selfCopy->_clientRequestID forKey:@"requestID"];
+  objc_sync_exit(selfCopy);
 }
 
-- (BRCServerChangeState)initWithServerSyncState:(id)a3
+- (BRCServerChangeState)initWithServerSyncState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8.receiver = self;
   v8.super_class = BRCServerChangeState;
   v5 = [(BRCServerChangeState *)&v8 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = stateCopy;
     objc_sync_enter(v6);
     objc_storeStrong(&v5->_lastSyncDownDate, *(v6 + 1));
     v5->_lastSyncDownStatus = *(v6 + 2);
@@ -184,9 +184,9 @@ LABEL_16:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithServerSyncState:self];
 }

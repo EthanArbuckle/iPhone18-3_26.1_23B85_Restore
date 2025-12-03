@@ -1,23 +1,23 @@
 @interface SBInCallBannerSceneBackgroundView
-- (SBInCallBannerSceneBackgroundView)initWithFrame:(CGRect)a3 wallpaperVariant:(int64_t)a4 transformOptions:(unint64_t)a5;
+- (SBInCallBannerSceneBackgroundView)initWithFrame:(CGRect)frame wallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options;
 - (void)_updateBackdropView;
 - (void)layoutSubviews;
-- (void)setWallpaperAlpha:(double)a3;
-- (void)setWallpaperStyle:(int64_t)a3;
+- (void)setWallpaperAlpha:(double)alpha;
+- (void)setWallpaperStyle:(int64_t)style;
 @end
 
 @implementation SBInCallBannerSceneBackgroundView
 
-- (SBInCallBannerSceneBackgroundView)initWithFrame:(CGRect)a3 wallpaperVariant:(int64_t)a4 transformOptions:(unint64_t)a5
+- (SBInCallBannerSceneBackgroundView)initWithFrame:(CGRect)frame wallpaperVariant:(int64_t)variant transformOptions:(unint64_t)options
 {
   v8.receiver = self;
   v8.super_class = SBInCallBannerSceneBackgroundView;
-  result = [(SBInCallBannerSceneBackgroundView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SBInCallBannerSceneBackgroundView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_wallpaperStyle = 1;
-    result->_wallpaperVariant = a4;
-    result->_transformOptions = a5;
+    result->_wallpaperVariant = variant;
+    result->_transformOptions = options;
   }
 
   return result;
@@ -37,11 +37,11 @@
   [(SBWallpaperEffectView *)self->_wallpaperEffectView setFrame:v4, v6, v8, v10];
 }
 
-- (void)setWallpaperAlpha:(double)a3
+- (void)setWallpaperAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_wallpaperAlpha = a3;
+    self->_wallpaperAlpha = alpha;
     if (BSFloatGreaterThanFloat() && !self->_wallpaperEffectView)
     {
       v6[0] = MEMORY[0x277D85DD0];
@@ -91,11 +91,11 @@ uint64_t __55__SBInCallBannerSceneBackgroundView_setWallpaperAlpha___block_invok
   return [v7 addSubview:v8];
 }
 
-- (void)setWallpaperStyle:(int64_t)a3
+- (void)setWallpaperStyle:(int64_t)style
 {
-  if (self->_wallpaperStyle != a3)
+  if (self->_wallpaperStyle != style)
   {
-    self->_wallpaperStyle = a3;
+    self->_wallpaperStyle = style;
     [(SBInCallBannerSceneBackgroundView *)self _updateBackdropView];
     wallpaperEffectView = self->_wallpaperEffectView;
     wallpaperStyle = self->_wallpaperStyle;

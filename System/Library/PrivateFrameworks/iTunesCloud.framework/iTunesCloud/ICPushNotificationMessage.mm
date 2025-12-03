@@ -1,29 +1,29 @@
 @interface ICPushNotificationMessage
-- (ICPushNotificationMessage)initWithMessageUserInfo:(id)a3;
+- (ICPushNotificationMessage)initWithMessageUserInfo:(id)info;
 - (NSArray)jaliscoChangedMediaTypes;
 - (NSArray)sagaUpdatedSubscribedPlaylistIDs;
 @end
 
 @implementation ICPushNotificationMessage
 
-- (ICPushNotificationMessage)initWithMessageUserInfo:(id)a3
+- (ICPushNotificationMessage)initWithMessageUserInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   v6 = [(ICPushNotificationMessage *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userInfo, a3);
-    v7->_accountDSID = [v5 ic_int64ValueForKey:@"0"];
-    v7->_actionType = [v5 ic_intValueForKey:@"1"];
-    v8 = [v5 ic_stringValueForKey:@"10"];
+    objc_storeStrong(&v6->_userInfo, info);
+    v7->_accountDSID = [infoCopy ic_int64ValueForKey:@"0"];
+    v7->_actionType = [infoCopy ic_intValueForKey:@"1"];
+    v8 = [infoCopy ic_stringValueForKey:@"10"];
     v9 = v8;
     if (v8 && ![v8 isEqualToString:@"application/json"])
     {
       if ([v9 isEqualToString:@"application/gzip"])
       {
-        v10 = [v5 ic_stringValueForKey:@"aps"];
+        v10 = [infoCopy ic_stringValueForKey:@"aps"];
         if (v10)
         {
           v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v10 options:0];
@@ -92,7 +92,7 @@
       }
     }
 
-    v19 = [v5 ic_dictionaryValueForKey:@"aps"];
+    v19 = [infoCopy ic_dictionaryValueForKey:@"aps"];
     v20 = v7->_apsPayload;
     v7->_apsPayload = v19;
 

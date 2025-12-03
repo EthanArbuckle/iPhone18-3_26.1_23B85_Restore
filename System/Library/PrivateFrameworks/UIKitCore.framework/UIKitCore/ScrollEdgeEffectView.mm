@@ -1,9 +1,9 @@
 @interface ScrollEdgeEffectView
 - (NSString)description;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_TtC5UIKit20ScrollEdgeEffectView)initWithFrame:(CGRect)a3;
-- (id)focusItemsInRect:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC5UIKit20ScrollEdgeEffectView)initWithFrame:(CGRect)frame;
+- (id)focusItemsInRect:(CGRect)rect;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -12,15 +12,15 @@
 
 @implementation ScrollEdgeEffectView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v14.receiver = self;
   v14.super_class = swift_getObjectType();
   v7 = v14.receiver;
-  v8 = a4;
-  v9 = [(UIView *)&v14 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(UIView *)&v14 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -46,19 +46,19 @@ LABEL_7:
 
 - (void)updateDebugView
 {
-  v2 = self;
+  selfCopy = self;
   sub_189032D20();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189032F64();
 }
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_189034384();
   v4 = v3;
   v6 = v5;
@@ -87,11 +87,11 @@ LABEL_7:
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_189034634();
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA933EB0);
   v4 = swift_allocObject();
@@ -107,7 +107,7 @@ LABEL_7:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_18903510C();
 
   v3 = sub_18A4A7258();
@@ -115,7 +115,7 @@ LABEL_7:
   return v3;
 }
 
-- (_TtC5UIKit20ScrollEdgeEffectView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit20ScrollEdgeEffectView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

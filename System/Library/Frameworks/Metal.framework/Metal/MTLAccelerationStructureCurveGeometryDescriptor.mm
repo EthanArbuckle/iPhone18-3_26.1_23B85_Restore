@@ -1,8 +1,8 @@
 @interface MTLAccelerationStructureCurveGeometryDescriptor
 + (MTLAccelerationStructureCurveGeometryDescriptor)descriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructureCurveGeometryDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -41,11 +41,11 @@
   [(MTLAccelerationStructureGeometryDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTLAccelerationStructureCurveGeometryDescriptor;
-  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v6 copyWithZone:zone];
   [v4 setControlPointBuffer:self->_controlPointBuffer];
   [v4 setControlPointBufferOffset:self->_controlPointBufferOffset];
   [v4 setControlPointCount:self->_controlPointCount];
@@ -66,9 +66,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -78,78 +78,78 @@
     v28 = v3;
     v29 = v4;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_3;
     }
 
     v27.receiver = self;
     v27.super_class = MTLAccelerationStructureCurveGeometryDescriptor;
-    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v27 isEqual:a3];
+    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v27 isEqual:equal];
     if (!v8)
     {
       return v8;
     }
 
-    v9 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointBuffer];
-    if (v9 != [a3 controlPointBuffer])
+    controlPointBuffer = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointBuffer];
+    if (controlPointBuffer != [equal controlPointBuffer])
     {
       goto LABEL_3;
     }
 
-    v10 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointBufferOffset];
-    if (v10 != [a3 controlPointBufferOffset])
+    controlPointBufferOffset = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointBufferOffset];
+    if (controlPointBufferOffset != [equal controlPointBufferOffset])
     {
       goto LABEL_3;
     }
 
-    v11 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointCount];
-    if (v11 != [a3 controlPointCount])
+    controlPointCount = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointCount];
+    if (controlPointCount != [equal controlPointCount])
     {
       goto LABEL_3;
     }
 
-    v12 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointStride];
-    if (v12 != [a3 controlPointStride])
+    controlPointStride = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointStride];
+    if (controlPointStride != [equal controlPointStride])
     {
       goto LABEL_3;
     }
 
-    v13 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointFormat];
-    if (v13 != [a3 controlPointFormat])
+    controlPointFormat = [(MTLAccelerationStructureCurveGeometryDescriptor *)self controlPointFormat];
+    if (controlPointFormat != [equal controlPointFormat])
     {
       goto LABEL_3;
     }
 
-    v14 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusBuffer];
-    if (v14 != [a3 radiusBuffer])
+    radiusBuffer = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusBuffer];
+    if (radiusBuffer != [equal radiusBuffer])
     {
       goto LABEL_3;
     }
 
-    v15 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusBufferOffset];
-    if (v15 != [a3 radiusBufferOffset])
+    radiusBufferOffset = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusBufferOffset];
+    if (radiusBufferOffset != [equal radiusBufferOffset])
     {
       goto LABEL_3;
     }
 
-    v16 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusFormat];
-    if (v16 != [a3 radiusFormat])
+    radiusFormat = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusFormat];
+    if (radiusFormat != [equal radiusFormat])
     {
       goto LABEL_3;
     }
 
-    v17 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusStride];
-    if (v17 != [a3 radiusStride])
+    radiusStride = [(MTLAccelerationStructureCurveGeometryDescriptor *)self radiusStride];
+    if (radiusStride != [equal radiusStride])
     {
       goto LABEL_3;
     }
 
-    v18 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self indexBuffer];
-    if (v18 == [a3 indexBuffer] && (v19 = -[MTLAccelerationStructureCurveGeometryDescriptor indexBufferOffset](self, "indexBufferOffset"), v19 == objc_msgSend(a3, "indexBufferOffset")) && (v20 = -[MTLAccelerationStructureCurveGeometryDescriptor indexType](self, "indexType"), v20 == objc_msgSend(a3, "indexType")) && (v21 = -[MTLAccelerationStructureCurveGeometryDescriptor segmentCount](self, "segmentCount"), v21 == objc_msgSend(a3, "segmentCount")) && (v22 = -[MTLAccelerationStructureCurveGeometryDescriptor segmentControlPointCount](self, "segmentControlPointCount"), v22 == objc_msgSend(a3, "segmentControlPointCount")) && (v23 = -[MTLAccelerationStructureCurveGeometryDescriptor curveType](self, "curveType"), v23 == objc_msgSend(a3, "curveType")) && (v24 = -[MTLAccelerationStructureCurveGeometryDescriptor curveBasis](self, "curveBasis"), v24 == objc_msgSend(a3, "curveBasis")))
+    indexBuffer = [(MTLAccelerationStructureCurveGeometryDescriptor *)self indexBuffer];
+    if (indexBuffer == [equal indexBuffer] && (v19 = -[MTLAccelerationStructureCurveGeometryDescriptor indexBufferOffset](self, "indexBufferOffset"), v19 == objc_msgSend(equal, "indexBufferOffset")) && (v20 = -[MTLAccelerationStructureCurveGeometryDescriptor indexType](self, "indexType"), v20 == objc_msgSend(equal, "indexType")) && (v21 = -[MTLAccelerationStructureCurveGeometryDescriptor segmentCount](self, "segmentCount"), v21 == objc_msgSend(equal, "segmentCount")) && (v22 = -[MTLAccelerationStructureCurveGeometryDescriptor segmentControlPointCount](self, "segmentControlPointCount"), v22 == objc_msgSend(equal, "segmentControlPointCount")) && (v23 = -[MTLAccelerationStructureCurveGeometryDescriptor curveType](self, "curveType"), v23 == objc_msgSend(equal, "curveType")) && (v24 = -[MTLAccelerationStructureCurveGeometryDescriptor curveBasis](self, "curveBasis"), v24 == objc_msgSend(equal, "curveBasis")))
     {
-      v25 = [(MTLAccelerationStructureCurveGeometryDescriptor *)self endCaps];
-      LOBYTE(v8) = v25 == [a3 endCaps];
+      endCaps = [(MTLAccelerationStructureCurveGeometryDescriptor *)self endCaps];
+      LOBYTE(v8) = endCaps == [equal endCaps];
     }
 
     else

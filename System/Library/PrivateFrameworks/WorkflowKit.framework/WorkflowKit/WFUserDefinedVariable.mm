@@ -2,15 +2,15 @@
 - (BOOL)isAvailable;
 - (BOOL)requiresModernVariableSupport;
 - (NSString)name;
-- (WFUserDefinedVariable)initWithDictionary:(id)a3 variableProvider:(id)a4;
-- (WFUserDefinedVariable)initWithName:(id)a3 variableProvider:(id)a4 aggrandizements:(id)a5;
+- (WFUserDefinedVariable)initWithDictionary:(id)dictionary variableProvider:(id)provider;
+- (WFUserDefinedVariable)initWithName:(id)name variableProvider:(id)provider aggrandizements:(id)aggrandizements;
 - (id)calculateAvailability;
 - (id)icon;
 - (id)possibleContentClasses;
 - (id)variableProvider;
-- (void)retrieveContentCollectionWithVariableSource:(id)a3 completionHandler:(id)a4;
-- (void)variableProvider:(id)a3 variableNameDidChangeTo:(id)a4;
-- (void)variableProviderDidInvalidateOutputDetails:(id)a3;
+- (void)retrieveContentCollectionWithVariableSource:(id)source completionHandler:(id)handler;
+- (void)variableProvider:(id)provider variableNameDidChangeTo:(id)to;
+- (void)variableProviderDidInvalidateOutputDetails:(id)details;
 @end
 
 @implementation WFUserDefinedVariable
@@ -22,20 +22,20 @@
   return WeakRetained;
 }
 
-- (void)variableProviderDidInvalidateOutputDetails:(id)a3
+- (void)variableProviderDidInvalidateOutputDetails:(id)details
 {
   v10.receiver = self;
   v10.super_class = WFUserDefinedVariable;
-  [(WFVariable *)&v10 variableProviderDidInvalidateOutputDetails:a3];
-  v4 = [(WFUserDefinedVariable *)self cachedAvailablility];
-  v5 = [(WFUserDefinedVariable *)self cachedContentClasses];
+  [(WFVariable *)&v10 variableProviderDidInvalidateOutputDetails:details];
+  cachedAvailablility = [(WFUserDefinedVariable *)self cachedAvailablility];
+  cachedContentClasses = [(WFUserDefinedVariable *)self cachedContentClasses];
   [(WFUserDefinedVariable *)self setCachedAvailablility:0];
   [(WFUserDefinedVariable *)self setCachedContentClasses:0];
-  if (v4)
+  if (cachedAvailablility)
   {
-    v6 = [(WFUserDefinedVariable *)self isAvailable];
-    v7 = v6 ^ [v4 BOOLValue];
-    if (!v5)
+    isAvailable = [(WFUserDefinedVariable *)self isAvailable];
+    v7 = isAvailable ^ [cachedAvailablility BOOLValue];
+    if (!cachedContentClasses)
     {
       if (!v7)
       {
@@ -48,7 +48,7 @@
 
   else
   {
-    if (!v5)
+    if (!cachedContentClasses)
     {
       goto LABEL_10;
     }
@@ -56,8 +56,8 @@
     LOBYTE(v7) = 0;
   }
 
-  v8 = [(WFUserDefinedVariable *)self possibleContentClasses];
-  v9 = [v8 isEqualToOrderedSet:v5];
+  possibleContentClasses = [(WFUserDefinedVariable *)self possibleContentClasses];
+  v9 = [possibleContentClasses isEqualToOrderedSet:cachedContentClasses];
 
   if (!v9 || (v7 & 1) != 0)
   {
@@ -68,16 +68,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)variableProvider:(id)a3 variableNameDidChangeTo:(id)a4
+- (void)variableProvider:(id)provider variableNameDidChangeTo:(id)to
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFVariable *)self dictionary];
-  v9 = [v8 mutableCopy];
+  toCopy = to;
+  providerCopy = provider;
+  dictionary = [(WFVariable *)self dictionary];
+  v9 = [dictionary mutableCopy];
 
-  if (v6)
+  if (toCopy)
   {
-    v10 = [v6 copy];
+    v10 = [toCopy copy];
     [v9 setObject:v10 forKey:@"VariableName"];
   }
 
@@ -90,31 +90,31 @@ LABEL_10:
   [(WFVariable *)self variableUpdated];
   v11.receiver = self;
   v11.super_class = WFUserDefinedVariable;
-  [(WFVariable *)&v11 variableProvider:v7 variableNameDidChangeTo:v6];
+  [(WFVariable *)&v11 variableProvider:providerCopy variableNameDidChangeTo:toCopy];
 }
 
-- (void)retrieveContentCollectionWithVariableSource:(id)a3 completionHandler:(id)a4
+- (void)retrieveContentCollectionWithVariableSource:(id)source completionHandler:(id)handler
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(WFVariable *)self dictionary];
-  v8 = [v7 objectForKey:@"VariableName"];
-  v9 = [v6 contentForVariableWithName:v8];
+  handlerCopy = handler;
+  sourceCopy = source;
+  dictionary = [(WFVariable *)self dictionary];
+  v8 = [dictionary objectForKey:@"VariableName"];
+  v9 = [sourceCopy contentForVariableWithName:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E6996D40]);
   }
 
-  v10[2](v10, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
 - (id)possibleContentClasses
 {
   cachedContentClasses = self->_cachedContentClasses;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (cachedContentClasses == v4)
+  if (cachedContentClasses == null)
   {
     v5 = 0;
   }
@@ -127,23 +127,23 @@ LABEL_10:
 
   else
   {
-    v6 = [(WFUserDefinedVariable *)self variableProvider];
-    v7 = [(WFVariable *)self dictionary];
-    v8 = [v7 objectForKey:@"VariableName"];
-    v5 = [v6 possibleContentClassesForVariableNamed:v8];
+    variableProvider = [(WFUserDefinedVariable *)self variableProvider];
+    dictionary = [(WFVariable *)self dictionary];
+    v8 = [dictionary objectForKey:@"VariableName"];
+    v5 = [variableProvider possibleContentClassesForVariableNamed:v8];
 
     if (v5)
     {
-      v9 = v5;
+      null2 = v5;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
     cachedContentClasses = self->_cachedContentClasses;
-    self->_cachedContentClasses = v9;
+    self->_cachedContentClasses = null2;
   }
 
   return v5;
@@ -151,8 +151,8 @@ LABEL_10:
 
 - (NSString)name
 {
-  v2 = [(WFVariable *)self dictionary];
-  v3 = [v2 objectForKey:@"VariableName"];
+  dictionary = [(WFVariable *)self dictionary];
+  v3 = [dictionary objectForKey:@"VariableName"];
   v4 = v3;
   v5 = &stru_1F4A1C408;
   if (v3)
@@ -191,8 +191,8 @@ LABEL_8:
 
 - (id)icon
 {
-  v2 = [(WFVariable *)self dictionary];
-  v3 = [v2 objectForKey:@"VariableName"];
+  dictionary = [(WFVariable *)self dictionary];
+  v3 = [dictionary objectForKey:@"VariableName"];
   v4 = v3;
   v5 = &stru_1F4A1C408;
   if (v3)
@@ -219,8 +219,8 @@ LABEL_8:
 
 - (BOOL)requiresModernVariableSupport
 {
-  v2 = [(WFVariable *)self aggrandizements];
-  v3 = [v2 count] != 0;
+  aggrandizements = [(WFVariable *)self aggrandizements];
+  v3 = [aggrandizements count] != 0;
 
   return v3;
 }
@@ -228,9 +228,9 @@ LABEL_8:
 - (id)calculateAvailability
 {
   cachedAvailablility = self->_cachedAvailablility;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (cachedAvailablility == v4)
+  if (cachedAvailablility == null)
   {
     v5 = 0;
   }
@@ -244,23 +244,23 @@ LABEL_8:
   else
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(WFUserDefinedVariable *)self variableProvider];
-    v8 = [(WFVariable *)self dictionary];
-    v9 = [v8 objectForKey:@"VariableName"];
-    v5 = [v6 numberWithBool:{objc_msgSend(v7, "isVariableWithNameAvailable:", v9)}];
+    variableProvider = [(WFUserDefinedVariable *)self variableProvider];
+    dictionary = [(WFVariable *)self dictionary];
+    v9 = [dictionary objectForKey:@"VariableName"];
+    v5 = [v6 numberWithBool:{objc_msgSend(variableProvider, "isVariableWithNameAvailable:", v9)}];
 
     if (v5)
     {
-      v10 = v5;
+      null2 = v5;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
     cachedAvailablility = self->_cachedAvailablility;
-    self->_cachedAvailablility = v10;
+    self->_cachedAvailablility = null2;
   }
 
   return v5;
@@ -268,18 +268,18 @@ LABEL_8:
 
 - (BOOL)isAvailable
 {
-  v2 = [(WFUserDefinedVariable *)self calculateAvailability];
-  v3 = [v2 BOOLValue];
+  calculateAvailability = [(WFUserDefinedVariable *)self calculateAvailability];
+  bOOLValue = [calculateAvailability BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (WFUserDefinedVariable)initWithDictionary:(id)a3 variableProvider:(id)a4
+- (WFUserDefinedVariable)initWithDictionary:(id)dictionary variableProvider:(id)provider
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"VariableName"];
+  dictionaryCopy = dictionary;
+  providerCopy = provider;
+  v8 = [dictionaryCopy objectForKey:@"VariableName"];
   v9 = objc_opt_class();
   v10 = v8;
   if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -307,38 +307,38 @@ LABEL_8:
     v11 = v10;
   }
 
-  if (v11 && (v18.receiver = self, v18.super_class = WFUserDefinedVariable, v14 = [(WFVariable *)&v18 initWithDictionary:v6 variableProvider:v7], (self = v14) != 0))
+  if (v11 && (v18.receiver = self, v18.super_class = WFUserDefinedVariable, v14 = [(WFVariable *)&v18 initWithDictionary:dictionaryCopy variableProvider:providerCopy], (self = v14) != 0))
   {
-    objc_storeWeak(&v14->_variableProvider, v7);
+    objc_storeWeak(&v14->_variableProvider, providerCopy);
     self = self;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-- (WFUserDefinedVariable)initWithName:(id)a3 variableProvider:(id)a4 aggrandizements:(id)a5
+- (WFUserDefinedVariable)initWithName:(id)name variableProvider:(id)provider aggrandizements:(id)aggrandizements
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  nameCopy = name;
+  providerCopy = provider;
+  aggrandizementsCopy = aggrandizements;
+  if (!nameCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFUserDefinedVariable.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFUserDefinedVariable.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
-  v12 = WFVariableDictionaryWithAggrandizements(v11);
+  v12 = WFVariableDictionaryWithAggrandizements(aggrandizementsCopy);
   v13 = [v12 mutableCopy];
 
-  [v13 setObject:v9 forKey:@"VariableName"];
-  v14 = [(WFUserDefinedVariable *)self initWithDictionary:v13 variableProvider:v10];
+  [v13 setObject:nameCopy forKey:@"VariableName"];
+  v14 = [(WFUserDefinedVariable *)self initWithDictionary:v13 variableProvider:providerCopy];
 
   return v14;
 }

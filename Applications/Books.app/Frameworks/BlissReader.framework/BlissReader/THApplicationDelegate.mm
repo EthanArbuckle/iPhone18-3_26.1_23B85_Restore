@@ -1,26 +1,26 @@
 @interface THApplicationDelegate
-+ (id)cacheDirectoryForAsset:(id)a3;
-+ (id)contextDirectoryForAsset:(id)a3;
-+ (void)ensureCacheDirectory:(id)a3;
-+ (void)ensureContextDirectoryExists:(id)a3;
-+ (void)p_upgradeContextDirectoryForAsset:(id)a3 newPath:(id)a4;
++ (id)cacheDirectoryForAsset:(id)asset;
++ (id)contextDirectoryForAsset:(id)asset;
++ (void)ensureCacheDirectory:(id)directory;
++ (void)ensureContextDirectoryExists:(id)exists;
++ (void)p_upgradeContextDirectoryForAsset:(id)asset newPath:(id)path;
 + (void)setupSurrogateDelegate;
 - (BCExternalURLOpenPrompter)externalURLLoadPrompter;
 - (BCExternalURLOpenPrompter)externalURLOpenPrompter;
-- (BOOL)_maybeOpenExternalURL:(id)a3 sourceDocumentRoot:(id)a4;
-- (BOOL)openURL:(id)a3 sourceDocumentRoot:(id)a4;
-- (BOOL)shouldAuthorizeURLToLoad:(id)a3 loadContext:(id)a4 completion:(id)a5;
+- (BOOL)_maybeOpenExternalURL:(id)l sourceDocumentRoot:(id)root;
+- (BOOL)openURL:(id)l sourceDocumentRoot:(id)root;
+- (BOOL)shouldAuthorizeURLToLoad:(id)load loadContext:(id)context completion:(id)completion;
 - (THApplicationDelegate)init;
-- (id)cachedBookDescriptionForURL:(id)a3;
-- (id)descriptionForURL:(id)a3;
+- (id)cachedBookDescriptionForURL:(id)l;
+- (id)descriptionForURL:(id)l;
 - (id)urlSchemesNotRequiringUserPrompt;
 - (id)validStoreURLSchemes;
 - (id)validURLSchemes;
-- (void)cacheBookDescription:(id)a3 forURL:(id)a4;
+- (void)cacheBookDescription:(id)description forURL:(id)l;
 - (void)clearBookDescriptionCache;
 - (void)dealloc;
-- (void)presentAlertController:(id)a3 promptContext:(id)a4;
-- (void)uncacheBookDescriptionForURL:(id)a3;
+- (void)presentAlertController:(id)controller promptContext:(id)context;
+- (void)uncacheBookDescriptionForURL:(id)l;
 @end
 
 @implementation THApplicationDelegate
@@ -33,16 +33,16 @@
   }
 }
 
-+ (id)contextDirectoryForAsset:(id)a3
++ (id)contextDirectoryForAsset:(id)asset
 {
-  v5 = +[UIApplication contextDirectoryForAssetWithID:](UIApplication, "contextDirectoryForAssetWithID:", [a3 assetID]);
-  [a1 p_upgradeContextDirectoryForAsset:a3 newPath:v5];
+  v5 = +[UIApplication contextDirectoryForAssetWithID:](UIApplication, "contextDirectoryForAssetWithID:", [asset assetID]);
+  [self p_upgradeContextDirectoryForAsset:asset newPath:v5];
   return v5;
 }
 
-+ (void)ensureContextDirectoryExists:(id)a3
++ (void)ensureContextDirectoryExists:(id)exists
 {
-  v3 = [a1 contextDirectoryForAsset:a3];
+  v3 = [self contextDirectoryForAsset:exists];
   v4 = +[NSFileManager defaultManager];
   if (![(NSFileManager *)v4 fileExistsAtPath:v3])
   {
@@ -57,17 +57,17 @@
   }
 }
 
-+ (id)cacheDirectoryForAsset:(id)a3
++ (id)cacheDirectoryForAsset:(id)asset
 {
   v4 = +[UIApplication applicationCacheDirectory];
-  v5 = [a3 assetID];
+  assetID = [asset assetID];
 
-  return [v4 stringByAppendingPathComponent:v5];
+  return [v4 stringByAppendingPathComponent:assetID];
 }
 
-+ (void)ensureCacheDirectory:(id)a3
++ (void)ensureCacheDirectory:(id)directory
 {
-  v3 = [a1 cacheDirectoryForAsset:a3];
+  v3 = [self cacheDirectoryForAsset:directory];
   v4 = +[NSFileManager defaultManager];
   if (![(NSFileManager *)v4 fileExistsAtPath:v3])
   {
@@ -82,14 +82,14 @@
   }
 }
 
-+ (void)p_upgradeContextDirectoryForAsset:(id)a3 newPath:(id)a4
++ (void)p_upgradeContextDirectoryForAsset:(id)asset newPath:(id)path
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1A4E84;
   v4[3] = &unk_45AE58;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = asset;
+  v4[5] = path;
   if (qword_5678F0 != -1)
   {
     dispatch_once(&qword_5678F0, v4);
@@ -124,9 +124,9 @@
   }
 
   v3 = qword_5678F8;
-  v4 = [(THApplicationDelegate *)self validStoreURLSchemes];
+  validStoreURLSchemes = [(THApplicationDelegate *)self validStoreURLSchemes];
 
-  return [v3 setByAddingObjectsFromSet:v4];
+  return [v3 setByAddingObjectsFromSet:validStoreURLSchemes];
 }
 
 - (id)validStoreURLSchemes
@@ -139,32 +139,32 @@
   return qword_567908;
 }
 
-- (BOOL)openURL:(id)a3 sourceDocumentRoot:(id)a4
+- (BOOL)openURL:(id)l sourceDocumentRoot:(id)root
 {
-  v5 = a3;
+  lCopy = l;
   if (![+[UIApplication canOpenURL:"canOpenURL:"]
   {
-    v5 = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@", [(NSURL *)v5 resourceSpecifier]]];
+    lCopy = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@", [(NSURL *)lCopy resourceSpecifier]]];
   }
 
-  return [(THApplicationDelegate *)self _maybeOpenExternalURL:v5 sourceDocumentRoot:a4];
+  return [(THApplicationDelegate *)self _maybeOpenExternalURL:lCopy sourceDocumentRoot:root];
 }
 
-- (id)descriptionForURL:(id)a3
+- (id)descriptionForURL:(id)l
 {
   objc_sync_enter(self);
   objc_opt_class();
-  [(NSMutableDictionary *)[(THApplicationDelegate *)self bookDescriptionCache] objectForKey:a3];
+  [(NSMutableDictionary *)[(THApplicationDelegate *)self bookDescriptionCache] objectForKey:l];
   v5 = TSUDynamicCast();
   if (!v5)
   {
-    if (THIsApplePubAtPath([a3 path]))
+    if (THIsApplePubAtPath([l path]))
     {
       [(THApplicationDelegate *)self clearBookDescriptionCache];
-      v5 = [THBookDescription descriptionWithURL:a3];
+      v5 = [THBookDescription descriptionWithURL:l];
       if (v5)
       {
-        [(THApplicationDelegate *)self cacheBookDescription:v5 forURL:a3];
+        [(THApplicationDelegate *)self cacheBookDescription:v5 forURL:l];
       }
     }
 
@@ -178,55 +178,55 @@
   return v5;
 }
 
-- (id)cachedBookDescriptionForURL:(id)a3
+- (id)cachedBookDescriptionForURL:(id)l
 {
-  v4 = [(THApplicationDelegate *)self bookDescriptionCache];
+  bookDescriptionCache = [(THApplicationDelegate *)self bookDescriptionCache];
 
-  return [(NSMutableDictionary *)v4 objectForKey:a3];
+  return [(NSMutableDictionary *)bookDescriptionCache objectForKey:l];
 }
 
-- (void)cacheBookDescription:(id)a3 forURL:(id)a4
+- (void)cacheBookDescription:(id)description forURL:(id)l
 {
-  v6 = [(THApplicationDelegate *)self bookDescriptionCache];
+  bookDescriptionCache = [(THApplicationDelegate *)self bookDescriptionCache];
 
-  [(NSMutableDictionary *)v6 setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)bookDescriptionCache setObject:description forKey:l];
 }
 
-- (void)uncacheBookDescriptionForURL:(id)a3
+- (void)uncacheBookDescriptionForURL:(id)l
 {
-  v4 = [(THApplicationDelegate *)self bookDescriptionCache];
+  bookDescriptionCache = [(THApplicationDelegate *)self bookDescriptionCache];
 
-  [(NSMutableDictionary *)v4 removeObjectForKey:a3];
+  [(NSMutableDictionary *)bookDescriptionCache removeObjectForKey:l];
 }
 
 - (void)clearBookDescriptionCache
 {
-  v2 = [(THApplicationDelegate *)self bookDescriptionCache];
+  bookDescriptionCache = [(THApplicationDelegate *)self bookDescriptionCache];
 
-  [(NSMutableDictionary *)v2 removeAllObjects];
+  [(NSMutableDictionary *)bookDescriptionCache removeAllObjects];
 }
 
-- (BOOL)_maybeOpenExternalURL:(id)a3 sourceDocumentRoot:(id)a4
+- (BOOL)_maybeOpenExternalURL:(id)l sourceDocumentRoot:(id)root
 {
   if ([-[THApplicationDelegate urlSchemesNotRequiringUserPrompt](self "urlSchemesNotRequiringUserPrompt")])
   {
     v11.receiver = self;
     v11.super_class = THApplicationDelegate;
-    return [(THApplicationDelegate *)&v11 openURL:a3 sourceDocumentRoot:a4];
+    return [(THApplicationDelegate *)&v11 openURL:l sourceDocumentRoot:root];
   }
 
   else
   {
-    v8 = [a4 viewController];
+    viewController = [root viewController];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1A5560;
     v10[3] = &unk_45E798;
-    v10[4] = a3;
-    v10[5] = a4;
+    v10[4] = l;
+    v10[5] = root;
     v10[6] = self;
     v7 = 1;
-    [(BCExternalURLOpenPrompter *)[(THApplicationDelegate *)self externalURLOpenPrompter] maybePromptUserBeforeOpeningExternalURL:a3 shouldThrottle:1 promptContext:v8 completion:v10];
+    [(BCExternalURLOpenPrompter *)[(THApplicationDelegate *)self externalURLOpenPrompter] maybePromptUserBeforeOpeningExternalURL:l shouldThrottle:1 promptContext:viewController completion:v10];
   }
 
   return v7;
@@ -242,16 +242,16 @@
   return qword_567918;
 }
 
-- (BOOL)shouldAuthorizeURLToLoad:(id)a3 loadContext:(id)a4 completion:(id)a5
+- (BOOL)shouldAuthorizeURLToLoad:(id)load loadContext:(id)context completion:(id)completion
 {
   if ([-[THApplicationDelegate urlSchemesNotRequiringUserPrompt](self "urlSchemesNotRequiringUserPrompt")])
   {
     return 1;
   }
 
-  v10 = [(THApplicationDelegate *)self externalURLLoadPrompter];
+  externalURLLoadPrompter = [(THApplicationDelegate *)self externalURLLoadPrompter];
 
-  return [(BCExternalURLOpenPrompter *)v10 maybePromptUserBeforeOpeningExternalURL:a3 shouldThrottle:0 promptContext:a4 completion:a5];
+  return [(BCExternalURLOpenPrompter *)externalURLLoadPrompter maybePromptUserBeforeOpeningExternalURL:load shouldThrottle:0 promptContext:context completion:completion];
 }
 
 - (BCExternalURLOpenPrompter)externalURLOpenPrompter
@@ -288,7 +288,7 @@
   return result;
 }
 
-- (void)presentAlertController:(id)a3 promptContext:(id)a4
+- (void)presentAlertController:(id)controller promptContext:(id)context
 {
   v5 = +[UIView areAnimationsEnabled];
   objc_opt_class();
@@ -296,14 +296,14 @@
   if (v6)
   {
 
-    [v6 presentViewController:a3 animated:v5 completion:0];
+    [v6 presentViewController:controller animated:v5 completion:0];
   }
 
   else
   {
     v7 = +[AEAssetEngine appInfoMgr];
 
-    [v7 presentViewControllerOverMainCanvas:a3 animated:v5 completion:0];
+    [v7 presentViewControllerOverMainCanvas:controller animated:v5 completion:0];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface HUUserAccessoryAccessViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUUserAccessoryAccessViewController)initWithHome:(id)a3 user:(id)a4 accessoryCategoryType:(id)a5;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUUserAccessoryAccessViewController)initWithHome:(id)home user:(id)user accessoryCategoryType:(id)type;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
 - (void)viewDidLoad;
 @end
 
 @implementation HUUserAccessoryAccessViewController
 
-- (HUUserAccessoryAccessViewController)initWithHome:(id)a3 user:(id)a4 accessoryCategoryType:(id)a5
+- (HUUserAccessoryAccessViewController)initWithHome:(id)home user:(id)user accessoryCategoryType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  homeCopy = home;
+  userCopy = user;
+  typeCopy = type;
+  if (homeCopy)
   {
-    if (v11)
+    if (userCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"user"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"user"}];
 
-    if (v12)
+    if (typeCopy)
     {
       goto LABEL_4;
     }
@@ -33,35 +33,35 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
-  if (!v11)
+  if (!userCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (typeCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"accessoryCategoryType"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"accessoryCategoryType"}];
 
 LABEL_4:
-  v13 = [[HUUserAccessoryAccessItemManager alloc] initWithHome:v10 user:v11 accessoryCategoryType:v12];
+  v13 = [[HUUserAccessoryAccessItemManager alloc] initWithHome:homeCopy user:userCopy accessoryCategoryType:typeCopy];
   v24.receiver = self;
   v24.super_class = HUUserAccessoryAccessViewController;
   v14 = [(HUItemTableViewController *)&v24 initWithItemManager:v13 tableViewStyle:1];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_home, a3);
-    objc_storeStrong(&v15->_user, a4);
-    objc_storeStrong(&v15->_accessoryCategoryType, a5);
+    objc_storeStrong(&v14->_home, home);
+    objc_storeStrong(&v15->_user, user);
+    objc_storeStrong(&v15->_accessoryCategoryType, type);
     objc_storeStrong(&v15->_userAccessoryAccessItemManager, v13);
     v16 = objc_opt_new();
     inFlightAllowedAccessoryRemovals = v15->_inFlightAllowedAccessoryRemovals;
@@ -81,28 +81,28 @@ LABEL_4:
   v6.super_class = HUUserAccessoryAccessViewController;
   [(HUItemTableViewController *)&v6 viewDidLoad];
   v3 = MEMORY[0x277CD1650];
-  v4 = [(HUUserAccessoryAccessViewController *)self accessoryCategoryType];
-  v5 = [v3 hf_userFriendlyLocalizedCapitalizedPluralDescription:v4];
+  accessoryCategoryType = [(HUUserAccessoryAccessViewController *)self accessoryCategoryType];
+  v5 = [v3 hf_userFriendlyLocalizedCapitalizedPluralDescription:accessoryCategoryType];
 
   [(HUUserAccessoryAccessViewController *)self setTitle:v5];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUUserAccessoryAccessViewController *)self userAccessoryAccessItemManager];
-  v7 = [v6 transformedAllowedAccessoryItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 containsObject:v5];
+  itemCopy = item;
+  userAccessoryAccessItemManager = [(HUUserAccessoryAccessViewController *)self userAccessoryAccessItemManager];
+  transformedAllowedAccessoryItemProvider = [userAccessoryAccessItemManager transformedAllowedAccessoryItemProvider];
+  items = [transformedAllowedAccessoryItemProvider items];
+  v9 = [items containsObject:itemCopy];
 
   if (v9)
   {
-    v10 = [(HUUserAccessoryAccessViewController *)self home];
-    if ([v10 hf_currentUserIsAdministrator])
+    home = [(HUUserAccessoryAccessViewController *)self home];
+    if ([home hf_currentUserIsAdministrator])
     {
-      v11 = [(HUUserAccessoryAccessViewController *)self home];
-      v12 = [(HUUserAccessoryAccessViewController *)self user];
-      [v11 hf_userIsRestrictedGuest:v12];
+      home2 = [(HUUserAccessoryAccessViewController *)self home];
+      user = [(HUUserAccessoryAccessViewController *)self user];
+      [home2 hf_userIsRestrictedGuest:user];
     }
 
     v13 = objc_opt_class();
@@ -116,17 +116,17 @@ LABEL_4:
   return v13;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = HUUserAccessoryAccessViewController;
-  [(HUItemTableViewController *)&v22 setupCell:v8 forItem:v9 indexPath:a5];
-  v10 = [(HUUserAccessoryAccessViewController *)self userAccessoryAccessItemManager];
-  v11 = [v10 transformedAllowedAccessoryItemProvider];
-  v12 = [v11 items];
-  v13 = [v12 containsObject:v9];
+  [(HUItemTableViewController *)&v22 setupCell:cellCopy forItem:itemCopy indexPath:path];
+  userAccessoryAccessItemManager = [(HUUserAccessoryAccessViewController *)self userAccessoryAccessItemManager];
+  transformedAllowedAccessoryItemProvider = [userAccessoryAccessItemManager transformedAllowedAccessoryItemProvider];
+  items = [transformedAllowedAccessoryItemProvider items];
+  v13 = [items containsObject:itemCopy];
 
   if (v13)
   {
@@ -134,7 +134,7 @@ LABEL_4:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v14 = v8;
+      v14 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v15 = v14;
@@ -153,8 +153,8 @@ LABEL_12:
       v19 = +[HUIconCellContentMetrics compactMetrics];
       [v16 setContentMetrics:v19];
 
-      v20 = [v9 latestResults];
-      v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+      latestResults = [itemCopy latestResults];
+      v21 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
       [v16 setAccessibilityIdentifier:v21];
 
       goto LABEL_13;
@@ -164,7 +164,7 @@ LABEL_12:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v17 = v8;
+      v17 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v18 = v17;
@@ -187,12 +187,12 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v7 = [v6 cellForRowAtIndexPath:v5];
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -209,27 +209,27 @@ LABEL_13:
   return v9 == 0;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(HUUserAccessoryAccessViewController *)self tableView];
-  v9 = [v8 indexPathForCell:v7];
+  cellCopy = cell;
+  tableView = [(HUUserAccessoryAccessViewController *)self tableView];
+  v9 = [tableView indexPathForCell:cellCopy];
 
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 displayedItemAtIndexPath:v9];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v11 = [itemManager displayedItemAtIndexPath:v9];
 
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v7 text];
+    text = [cellCopy text];
     *buf = 136315906;
     v46 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]";
     v47 = 2112;
-    v48 = v13;
+    v48 = text;
     v49 = 1024;
-    v50 = v4;
+    v50 = onCopy;
     v51 = 2112;
     v52 = v11;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "(%s) User tapped switch cell: '%@' | isOn = %{BOOL}d | item = %@", buf, 0x26u);
@@ -250,10 +250,10 @@ LABEL_13:
   v16 = v15;
 
   objc_opt_class();
-  v17 = [v16 sourceItem];
+  sourceItem = [v16 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = sourceItem;
   }
 
   else
@@ -263,38 +263,38 @@ LABEL_13:
 
   v33 = v18;
 
-  v19 = [(HUUserAccessoryAccessViewController *)self home];
-  if (![v19 hf_currentUserIsAdministrator])
+  home = [(HUUserAccessoryAccessViewController *)self home];
+  if (![home hf_currentUserIsAdministrator])
   {
     goto LABEL_12;
   }
 
   v31 = a2;
-  v20 = v4;
-  v21 = [(HUUserAccessoryAccessViewController *)self home];
-  v22 = [(HUUserAccessoryAccessViewController *)self user];
-  v23 = [v21 hf_userIsRestrictedGuest:v22];
+  v20 = onCopy;
+  home2 = [(HUUserAccessoryAccessViewController *)self home];
+  user = [(HUUserAccessoryAccessViewController *)self user];
+  v23 = [home2 hf_userIsRestrictedGuest:user];
 
   if (v23)
   {
-    v24 = [v33 accessory];
-    v25 = [(HUUserAccessoryAccessViewController *)self home];
-    v26 = [(HUUserAccessoryAccessViewController *)self user];
+    accessory = [v33 accessory];
+    home3 = [(HUUserAccessoryAccessViewController *)self home];
+    user2 = [(HUUserAccessoryAccessViewController *)self user];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke;
     aBlock[3] = &unk_277DBC0E8;
     v44 = v20;
-    v38 = v24;
-    v39 = self;
-    v40 = v25;
-    v41 = v26;
+    v38 = accessory;
+    selfCopy = self;
+    v40 = home3;
+    v41 = user2;
     v43 = v31;
-    v27 = v7;
+    v27 = cellCopy;
     v42 = v27;
-    v32 = v26;
-    v30 = v25;
-    v19 = v24;
+    v32 = user2;
+    v30 = home3;
+    home = accessory;
     v28 = _Block_copy(aBlock);
     v29 = MEMORY[0x277D75D28];
     v34[0] = MEMORY[0x277D85DD0];
@@ -303,7 +303,7 @@ LABEL_13:
     v34[3] = &unk_277DB7EE0;
     v35 = v27;
     v36 = v20;
-    [v29 hu_presentingLockLimitAlertIfNeededFromViewController:self home:v30 user:v32 accessory:v19 include:v20 continueActionBlock:v28 cancelActionBlock:v34];
+    [v29 hu_presentingLockLimitAlertIfNeededFromViewController:self home:v30 user:v32 accessory:home include:v20 continueActionBlock:v28 cancelActionBlock:v34];
 
 LABEL_12:
   }

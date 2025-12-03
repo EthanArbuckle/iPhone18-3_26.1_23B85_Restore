@@ -1,7 +1,7 @@
 @interface ArticleThumbnailComponentSizerFactory
 - (NSString)type;
 - (_TtC12NewsArticles37ArticleThumbnailComponentSizerFactory)init;
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6;
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider;
 @end
 
 @implementation ArticleThumbnailComponentSizerFactory
@@ -21,22 +21,22 @@
   return result;
 }
 
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = a5;
+  optionsCopy = options;
   swift_unknownObjectRetain();
-  v12 = self;
-  v13 = [a6 componentStyleForComponent_];
-  v14 = *(v12 + OBJC_IVAR____TtC12NewsArticles37ArticleThumbnailComponentSizerFactory_linkedContentProvider);
+  selfCopy = self;
+  componentStyleForComponent_ = [provider componentStyleForComponent_];
+  v14 = *(selfCopy + OBJC_IVAR____TtC12NewsArticles37ArticleThumbnailComponentSizerFactory_linkedContentProvider);
   v15 = type metadata accessor for ArticleThumbnailComponentSizer();
   v16 = objc_allocWithZone(v15);
   *&v16[OBJC_IVAR____TtC12NewsArticles30ArticleThumbnailComponentSizer_linkedContentProvider] = v14;
   v20.receiver = v16;
   v20.super_class = v15;
   v17 = v14;
-  v18 = [(ArticleThumbnailComponentSizerFactory *)&v20 initWithComponent:a3 componentLayout:a4 componentStyle:v13 DOMObjectProvider:a6 layoutOptions:v11];
+  v18 = [(ArticleThumbnailComponentSizerFactory *)&v20 initWithComponent:component componentLayout:layout componentStyle:componentStyleForComponent_ DOMObjectProvider:provider layoutOptions:optionsCopy];
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();

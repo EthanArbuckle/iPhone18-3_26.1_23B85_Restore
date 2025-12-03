@@ -1,28 +1,28 @@
 @interface NTKGreenfieldCompanionSharePhotosPickerViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (NTKGreenfieldCompanionSharePhotosPickerViewController)initWithPhotosFace:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (NTKGreenfieldCompanionSharePhotosPickerViewController)initWithPhotosFace:(id)face;
 - (NTKGreenfieldCompanionSharePhotosPickerViewControllerDelegate)delegate;
 - (id)_queue_fetchAssets;
 - (id)_queue_fetchOptions;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)_createPhotosEditorWithCompletionBlock:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)_createPhotosEditorWithCompletionBlock:(id)block;
 - (void)_didTapDeselectAll;
 - (void)_didTapOnDoneButton;
-- (void)_handleDidFinishWithNewResourcesDirectory:(id)a3;
+- (void)_handleDidFinishWithNewResourcesDirectory:(id)directory;
 - (void)_handleEditorDidCreated;
 - (void)_handleSelectionChanged;
 - (void)_queue_fetchAssets;
 - (void)_setupCollectionView;
 - (void)_setupNavigationItems;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKGreenfieldCompanionSharePhotosPickerViewController
 
-- (NTKGreenfieldCompanionSharePhotosPickerViewController)initWithPhotosFace:(id)a3
+- (NTKGreenfieldCompanionSharePhotosPickerViewController)initWithPhotosFace:(id)face
 {
-  v5 = a3;
+  faceCopy = face;
   v6 = objc_alloc_init(NTKCFaceDetailCustomPhotosFlowLayout);
   v15.receiver = self;
   v15.super_class = NTKGreenfieldCompanionSharePhotosPickerViewController;
@@ -30,10 +30,10 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_originalFace, a3);
-    v9 = [MEMORY[0x277CCAB58] indexSet];
+    objc_storeStrong(&v7->_originalFace, face);
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     selectedIndexes = v8->_selectedIndexes;
-    v8->_selectedIndexes = v9;
+    v8->_selectedIndexes = indexSet;
 
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v12 = dispatch_queue_create("com.apple.NanoTimeKit.NTKGreenfieldCompanionSharePhotosPickerViewController", v11);
@@ -52,15 +52,15 @@
   [(NTKGreenfieldCompanionSharePhotosPickerViewController *)&v17 viewDidLoad];
   v3 = NTKClockFaceLocalizedString(@"GREENFIELD_SHARING_PHOTOS_NAV_PROMPT_LOADING", @"Share up to %d photos from this album");
   v4 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v3, -[NSMutableIndexSet count](self->_selectedIndexes, "count")];
-  v5 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
-  [v5 setPrompt:v4];
+  navigationItem = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
+  [navigationItem setPrompt:v4];
 
-  v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v7 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v8 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationController];
-  [v8 setToolbarHidden:0];
+  navigationController = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationController];
+  [navigationController setToolbarHidden:0];
 
   v10 = NTKCCustomizationLocalizedString(@"PHOTOS_DESELECT_ALL", @"Deselect All", v9);
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v10 style:0 target:self action:sel__didTapDeselectAll];
@@ -93,12 +93,12 @@ void __68__NTKGreenfieldCompanionSharePhotosPickerViewController_viewDidLoad__bl
 - (void)_setupNavigationItems
 {
   v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__didTapOnCancelButton];
-  v3 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:v15];
+  navigationItem = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v15];
 
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__didTapOnDoneButton];
-  v5 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem2 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v4];
 
   if (NTKPhotosIsCustomPhotosFace(self->_originalFace))
   {
@@ -122,13 +122,13 @@ LABEL_6:
   if (NTKPhotosIsSyncedAlbumPhotosFace(self->_originalFace))
   {
     v9 = [NTKCompanionSyncedAlbumEditor alloc];
-    v10 = [(NTKFace *)self->_originalFace resourceDirectory];
-    v11 = [(NTKFace *)self->_originalFace device];
-    v8 = [(NTKCompanionSinglePHAssetEditor *)v9 initWithResourceDirectory:v10 forDevice:v11 shouldFinalize:0];
+    resourceDirectory = [(NTKFace *)self->_originalFace resourceDirectory];
+    device = [(NTKFace *)self->_originalFace device];
+    v8 = [(NTKCompanionSinglePHAssetEditor *)v9 initWithResourceDirectory:resourceDirectory forDevice:device shouldFinalize:0];
 
-    v12 = [(NTKCompanionSinglePHAssetEditor *)v8 albumIdentifier];
-    v13 = [(NTKFace *)self->_originalFace device];
-    v14 = NTKAlbumNameForLocalIdentifier(v12, v13);
+    albumIdentifier = [(NTKCompanionSinglePHAssetEditor *)v8 albumIdentifier];
+    device2 = [(NTKFace *)self->_originalFace device];
+    v14 = NTKAlbumNameForLocalIdentifier(albumIdentifier, device2);
     [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self setTitle:v14];
 
     goto LABEL_6;
@@ -142,8 +142,8 @@ LABEL_7:
   v3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v3 startAnimating];
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v3];
-  v5 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   v6 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, -[NTKCompanionCustomPhotosEditor photosCount](self->_editor, "photosCount")}];
   [v6 removeIndexes:self->_selectedIndexes];
@@ -211,17 +211,17 @@ void __76__NTKGreenfieldCompanionSharePhotosPickerViewController__didTapOnDoneBu
   }
 }
 
-- (void)_createPhotosEditorWithCompletionBlock:(id)a3
+- (void)_createPhotosEditorWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEditorWithCompletionBlock___block_invoke;
   v7[3] = &unk_27877FF60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -257,14 +257,14 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
 {
   v52 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NTKFace *)self->_originalFace device];
+  device = [(NTKFace *)self->_originalFace device];
   if (NTKPhotosIsSyncedAlbumPhotosFace(self->_originalFace))
   {
-    v4 = [(NTKFace *)self->_originalFace resourceDirectory];
-    v5 = [NTKPhotosReader readerForResourceDirectory:v4];
+    resourceDirectory = [(NTKFace *)self->_originalFace resourceDirectory];
+    v5 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory];
 
-    v37 = [v5 assetCollectionIdentifier];
-    if (v37)
+    assetCollectionIdentifier = [v5 assetCollectionIdentifier];
+    if (assetCollectionIdentifier)
     {
       v6 = 4;
     }
@@ -279,8 +279,8 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
   {
     if (!NTKPhotosIsMemoryPhotosFace(self->_originalFace))
     {
-      v37 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      assetCollectionIdentifier = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
+      if (os_log_type_enabled(assetCollectionIdentifier, OS_LOG_TYPE_ERROR))
       {
         [(NTKGreenfieldCompanionSharePhotosPickerViewController *)&self->_originalFace _queue_fetchAssets];
       }
@@ -289,7 +289,7 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
       goto LABEL_44;
     }
 
-    v37 = 0;
+    assetCollectionIdentifier = 0;
     v6 = 3;
   }
 
@@ -299,18 +299,18 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
     *buf = 134218242;
     v49 = v6;
     v50 = 2112;
-    v51 = v37;
+    v51 = assetCollectionIdentifier;
     _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "Fetching assets with collectionTarget:%ld albumIdentifier:%@", buf, 0x16u);
   }
 
   v8 = objc_alloc(MEMORY[0x277D2BA48]);
-  v9 = [v3 nrDevice];
-  v10 = [v8 initWithCollectionTarget:v6 device:v9];
+  nrDevice = [device nrDevice];
+  v10 = [v8 initWithCollectionTarget:v6 device:nrDevice];
 
-  if (!v37 || v6 == 3)
+  if (!assetCollectionIdentifier || v6 == 3)
   {
-    v11 = [v10 assetCollections];
-    v12 = [v11 anyObject];
+    assetCollections = [v10 assetCollections];
+    anyObject = [assetCollections anyObject];
   }
 
   else
@@ -319,26 +319,26 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v11 = [v10 assetCollections];
-    v12 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
-    if (v12)
+    assetCollections = [v10 assetCollections];
+    anyObject = [assetCollections countByEnumeratingWithState:&v42 objects:v47 count:16];
+    if (anyObject)
     {
-      v34 = self;
+      selfCopy = self;
       v35 = v10;
-      v36 = v3;
+      v36 = device;
       v13 = *v43;
       while (2)
       {
-        for (i = 0; i != v12; i = i + 1)
+        for (i = 0; i != anyObject; i = i + 1)
         {
           if (*v43 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(assetCollections);
           }
 
           v15 = *(*(&v42 + 1) + 8 * i);
           v16 = objc_alloc(MEMORY[0x277CCAD78]);
-          v17 = [MEMORY[0x277CD9840] uuidFromLocalIdentifier:v37];
+          v17 = [MEMORY[0x277CD9840] uuidFromLocalIdentifier:assetCollectionIdentifier];
           v18 = [v16 initWithUUIDString:v17];
 
           v19 = NTK_npto_uuid(v15);
@@ -346,14 +346,14 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
 
           if (v20)
           {
-            v12 = v15;
+            anyObject = v15;
 
             goto LABEL_26;
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
-        if (v12)
+        anyObject = [assetCollections countByEnumeratingWithState:&v42 objects:v47 count:16];
+        if (anyObject)
         {
           continue;
         }
@@ -362,7 +362,7 @@ void __96__NTKGreenfieldCompanionSharePhotosPickerViewController__createPhotosEd
       }
 
 LABEL_26:
-      v3 = v36;
+      device = v36;
     }
   }
 
@@ -370,14 +370,14 @@ LABEL_26:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v49 = v12;
+    v49 = anyObject;
     _os_log_impl(&dword_22D9C5000, v22, OS_LOG_TYPE_DEFAULT, "Fetching assets with assetCollection: %@", buf, 0xCu);
   }
 
-  if (v12)
+  if (anyObject)
   {
-    v23 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self _queue_fetchOptions];
-    v24 = [v10 fetchAssetsInAssetCollection:v12 options:v23];
+    _queue_fetchOptions = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self _queue_fetchOptions];
+    v24 = [v10 fetchAssetsInAssetCollection:anyObject options:_queue_fetchOptions];
 
     v25 = objc_opt_new();
     v38 = 0u;
@@ -399,7 +399,7 @@ LABEL_26:
             objc_enumerationMutation(v26);
           }
 
-          [v25 addObject:{*(*(&v38 + 1) + 8 * j), v34, v35, v36}];
+          [v25 addObject:{*(*(&v38 + 1) + 8 * j), selfCopy, v35, v36}];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -454,17 +454,17 @@ LABEL_44:
 
 - (void)_setupCollectionView
 {
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  collectionView = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
+  [collectionView setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
+  collectionView2 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
   v6 = objc_opt_class();
   v7 = +[NTKCPhotoListCell reuseIdentifier];
-  [v5 registerClass:v6 forCellWithReuseIdentifier:v7];
+  [collectionView2 registerClass:v6 forCellWithReuseIdentifier:v7];
 
-  v8 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
-  [v8 setAlwaysBounceVertical:1];
+  collectionView3 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
+  [collectionView3 setAlwaysBounceVertical:1];
 }
 
 - (void)_handleSelectionChanged
@@ -473,47 +473,47 @@ LABEL_44:
   v3 = NTKClockFaceLocalizedString(@"GREENFIELD_SHARING_PHOTOS_NAV_PROMPT_SELECTED_COUNT", @"%lu Selected");
   v4 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v3, -[NSMutableIndexSet count](self->_selectedIndexes, "count")];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:v10, 24, v4];
-  v6 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
-  [v6 setPrompt:v5];
+  navigationItem = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
+  [navigationItem setPrompt:v5];
 
   v7 = [(NSMutableIndexSet *)self->_selectedIndexes count]!= 0;
-  v8 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
-  v9 = [v8 rightBarButtonItem];
-  [v9 setEnabled:v7];
+  navigationItem2 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v7];
 }
 
-- (void)_handleDidFinishWithNewResourcesDirectory:(id)a3
+- (void)_handleDidFinishWithNewResourcesDirectory:(id)directory
 {
-  v8 = a3;
-  if (v8)
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    v4 = [(NTKFace *)self->_originalFace deepCopy];
-    [v4 setResourceDirectory:v8];
-    v5 = [(NTKFace *)self->_originalFace device];
-    v6 = [NTKPhotosContentEditOption optionWithPhotosContent:1 forDevice:v5];
-    [v4 selectOption:v6 forCustomEditMode:12 slot:0];
-    v7 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self delegate];
-    [v7 companionSharePhotosPickerViewController:self didFinishWithFace:v4];
+    deepCopy = [(NTKFace *)self->_originalFace deepCopy];
+    [deepCopy setResourceDirectory:directoryCopy];
+    device = [(NTKFace *)self->_originalFace device];
+    v6 = [NTKPhotosContentEditOption optionWithPhotosContent:1 forDevice:device];
+    [deepCopy selectOption:v6 forCustomEditMode:12 slot:0];
+    delegate = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self delegate];
+    [delegate companionSharePhotosPickerViewController:self didFinishWithFace:deepCopy];
   }
 
   else
   {
-    v4 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self delegate];
-    [v4 companionSharePhotosPickerViewController:self didFinishWithFace:0];
+    deepCopy = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self delegate];
+    [deepCopy companionSharePhotosPickerViewController:self didFinishWithFace:0];
   }
 }
 
 - (void)_handleEditorDidCreated
 {
-  v3 = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
-  if (v3 >= 0x18)
+  photosCount = [(NTKCompanionCustomPhotosEditor *)self->_editor photosCount];
+  if (photosCount >= 0x18)
   {
     v4 = 24;
   }
 
   else
   {
-    v4 = v3;
+    v4 = photosCount;
   }
 
   if (v4)
@@ -525,8 +525,8 @@ LABEL_44:
   }
 
   [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self _handleSelectionChanged];
-  v6 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
-  [v6 reloadData];
+  collectionView = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)_didTapDeselectAll
@@ -537,10 +537,10 @@ LABEL_44:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -552,7 +552,7 @@ LABEL_44:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -566,7 +566,7 @@ LABEL_44:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -575,16 +575,16 @@ LABEL_44:
   [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self _handleSelectionChanged];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
+  viewCopy = view;
+  pathCopy = path;
+  collectionView = [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self collectionView];
   v9 = +[NTKCPhotoListCell reuseIdentifier];
-  v10 = [v8 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v7];
+  v10 = [collectionView dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = [v7 item];
-  [v10 setIndex:v11];
+  item = [pathCopy item];
+  [v10 setIndex:item];
   objc_initWeak(&location, self);
   editor = self->_editor;
   v16 = MEMORY[0x277D85DD0];
@@ -593,12 +593,12 @@ LABEL_44:
   v19 = &unk_278781400;
   v13 = v10;
   v20 = v13;
-  v21[1] = v11;
+  v21[1] = item;
   objc_copyWeak(v21, &location);
-  [(NTKCompanionCustomPhotosEditor *)editor imageAndCropForPhotoAtIndex:v11 completion:&v16];
+  [(NTKCompanionCustomPhotosEditor *)editor imageAndCropForPhotoAtIndex:item completion:&v16];
   [v13 setPhoto:{0, v16, v17, v18, v19}];
   [v13 setCrop:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v13 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedIndexes, "containsIndex:", v11)}];
+  [v13 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedIndexes, "containsIndex:", item)}];
   v14 = v13;
   objc_destroyWeak(v21);
 
@@ -640,26 +640,26 @@ void __95__NTKGreenfieldCompanionSharePhotosPickerViewController_collectionView_
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 item];
-  v9 = [v7 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  item = [pathCopy item];
+  v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   if (([v9 isSelected] & 1) != 0 || -[NSMutableIndexSet count](self->_selectedIndexes, "count") < 0x18)
   {
     [v9 setSelected:{objc_msgSend(v9, "isSelected") ^ 1}];
-    v10 = [v9 isSelected];
+    isSelected = [v9 isSelected];
     selectedIndexes = self->_selectedIndexes;
-    if (v10)
+    if (isSelected)
     {
-      [(NSMutableIndexSet *)selectedIndexes addIndex:v8];
+      [(NSMutableIndexSet *)selectedIndexes addIndex:item];
     }
 
     else
     {
-      [(NSMutableIndexSet *)selectedIndexes removeIndex:v8];
+      [(NSMutableIndexSet *)selectedIndexes removeIndex:item];
     }
 
     [(NTKGreenfieldCompanionSharePhotosPickerViewController *)self _handleSelectionChanged];
@@ -668,14 +668,14 @@ void __95__NTKGreenfieldCompanionSharePhotosPickerViewController_collectionView_
   return 0;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   editor = self->_editor;
-  v7 = a5;
-  v8 = [a4 item];
-  v9 = [v7 item];
+  indexPathCopy = indexPath;
+  item = [path item];
+  item2 = [indexPathCopy item];
 
-  [(NTKCompanionCustomPhotosEditor *)editor movePhotoAtIndex:v8 toIndex:v9];
+  [(NTKCompanionCustomPhotosEditor *)editor movePhotoAtIndex:item toIndex:item2];
 }
 
 - (NTKGreenfieldCompanionSharePhotosPickerViewControllerDelegate)delegate
@@ -688,7 +688,7 @@ void __95__NTKGreenfieldCompanionSharePhotosPickerViewController_collectionView_
 - (void)_queue_fetchAssets
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_22D9C5000, a2, OS_LOG_TYPE_ERROR, "Can't handle photos face: %@", &v3, 0xCu);

@@ -1,26 +1,26 @@
 @interface VCPSoundClassifier
-- (VCPSoundClassifier)initWithTrackStart:(id *)a3 threshold:(float)a4 resultsKey:(id)a5;
+- (VCPSoundClassifier)initWithTrackStart:(id *)start threshold:(float)threshold resultsKey:(id)key;
 - (id)results;
-- (int)finalizeAnalysisAtTime:(id *)a3;
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 confidence:(float)a5;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (int)finalizeAnalysisAtTime:(id *)time;
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime confidence:(float)confidence;
+- (void)request:(id)request didProduceResult:(id)result;
 @end
 
 @implementation VCPSoundClassifier
 
-- (VCPSoundClassifier)initWithTrackStart:(id *)a3 threshold:(float)a4 resultsKey:(id)a5
+- (VCPSoundClassifier)initWithTrackStart:(id *)start threshold:(float)threshold resultsKey:(id)key
 {
-  v9 = a5;
-  if (v9)
+  keyCopy = key;
+  if (keyCopy)
   {
     v20.receiver = self;
     v20.super_class = VCPSoundClassifier;
     v10 = [(VCPSoundClassifier *)&v20 init];
     if (v10)
     {
-      v11 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v12 = *(v10 + 1);
-      *(v10 + 1) = v11;
+      *(v10 + 1) = array;
 
       v13 = MEMORY[0x1E6960C70];
       v14 = *(MEMORY[0x1E6960C70] + 16);
@@ -30,38 +30,38 @@
       *(v10 + 40) = v15;
       *(v10 + 7) = *(v13 + 16);
       *(v10 + 16) = 0;
-      v16 = *&a3->var0;
-      *(v10 + 11) = a3->var3;
+      v16 = *&start->var0;
+      *(v10 + 11) = start->var3;
       *(v10 + 72) = v16;
       *(v10 + 24) = 0;
-      *(v10 + 25) = a4;
+      *(v10 + 25) = threshold;
       v17 = *(v10 + 14);
       *(v10 + 14) = @"aggregated";
 
-      objc_storeStrong(v10 + 15, a5);
+      objc_storeStrong(v10 + 15, key);
     }
 
     self = v10;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 confidence:(float)a5
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime confidence:(float)confidence
 {
   v21[3] = *MEMORY[0x1E69E9840];
   memset(&v18, 0, sizeof(v18));
   v15.start = self->_trackStart;
-  rhs = *a3;
+  rhs = *time;
   CMTimeAdd(&start, &v15.start, &rhs);
   v15.start = self->_trackStart;
-  rhs = *a4;
+  rhs = *toTime;
   CMTimeAdd(&end, &v15.start, &rhs);
   CMTimeRangeFromTimeToTime(&v18, &start, &end);
   if ((v18.start.flags & 1) != 0 && (v18.duration.flags & 1) != 0 && !v18.duration.epoch && (v18.duration.value & 0x8000000000000000) == 0)
@@ -76,7 +76,7 @@
     v11 = [(__CFDictionary *)v8 objectForKey:?];
     v21[1] = v11;
     v20[2] = @"quality";
-    *&v12 = a5;
+    *&v12 = confidence;
     v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
     v21[2] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
@@ -84,16 +84,16 @@
   }
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  resultCopy = result;
+  if (resultCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = resultCopy;
       memset(v18, 0, sizeof(v18));
       v17 = 0u;
       [v8 timeRange];
@@ -160,7 +160,7 @@ LABEL_13:
 LABEL_14:
 }
 
-- (int)finalizeAnalysisAtTime:(id *)a3
+- (int)finalizeAnalysisAtTime:(id *)time
 {
   if (self->_activeStart.flags)
   {

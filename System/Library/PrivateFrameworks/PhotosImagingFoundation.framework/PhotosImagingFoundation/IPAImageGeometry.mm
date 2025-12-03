@@ -1,11 +1,11 @@
 @interface IPAImageGeometry
-+ (id)inputGeometryWithImageSize:(CGSize)a3;
++ (id)inputGeometryWithImageSize:(CGSize)size;
 - (CGRect)domain;
 - (CGRect)extent;
 - (IPAImageGeometry)init;
-- (IPAImageGeometry)initWithIdentifier:(id)a3 extent:(CGRect)a4;
-- (IPAImageGeometry)initWithIdentifier:(id)a3 extent:(CGRect)a4 domain:(CGRect)a5;
-- (IPAImageGeometry)initWithIdentifier:(id)a3 extent:(CGRect)a4 imageQuad:(const Quad2d *)a5;
+- (IPAImageGeometry)initWithIdentifier:(id)identifier extent:(CGRect)extent;
+- (IPAImageGeometry)initWithIdentifier:(id)identifier extent:(CGRect)extent domain:(CGRect)domain;
+- (IPAImageGeometry)initWithIdentifier:(id)identifier extent:(CGRect)extent imageQuad:(const Quad2d *)quad;
 - (NSString)description;
 - (Quad2d)imageQuad;
 @end
@@ -83,47 +83,47 @@
   return result;
 }
 
-- (IPAImageGeometry)initWithIdentifier:(id)a3 extent:(CGRect)a4
+- (IPAImageGeometry)initWithIdentifier:(id)identifier extent:(CGRect)extent
 {
-  v5[0] = *&a4.origin.x;
-  v5[1] = *&a4.origin.y;
-  *&v5[2] = a4.origin.x + a4.size.width;
-  v5[3] = *&a4.origin.y;
-  v5[4] = *&a4.origin.x;
-  *&v5[5] = a4.origin.y + a4.size.height;
-  *&v5[6] = a4.origin.x + a4.size.width;
-  *&v5[7] = a4.origin.y + a4.size.height;
-  return [(IPAImageGeometry *)self initWithIdentifier:a3 extent:v5 imageQuad:?];
+  v5[0] = *&extent.origin.x;
+  v5[1] = *&extent.origin.y;
+  *&v5[2] = extent.origin.x + extent.size.width;
+  v5[3] = *&extent.origin.y;
+  v5[4] = *&extent.origin.x;
+  *&v5[5] = extent.origin.y + extent.size.height;
+  *&v5[6] = extent.origin.x + extent.size.width;
+  *&v5[7] = extent.origin.y + extent.size.height;
+  return [(IPAImageGeometry *)self initWithIdentifier:identifier extent:v5 imageQuad:?];
 }
 
-- (IPAImageGeometry)initWithIdentifier:(id)a3 extent:(CGRect)a4 domain:(CGRect)a5
+- (IPAImageGeometry)initWithIdentifier:(id)identifier extent:(CGRect)extent domain:(CGRect)domain
 {
-  v6[0] = *&a5.origin.x;
-  v6[1] = *&a5.origin.y;
-  *&v6[2] = a5.origin.x + a5.size.width;
-  v6[3] = *&a5.origin.y;
-  v6[4] = *&a5.origin.x;
-  *&v6[5] = a5.origin.y + a5.size.height;
-  *&v6[6] = a5.origin.x + a5.size.width;
-  *&v6[7] = a5.origin.y + a5.size.height;
-  return [(IPAImageGeometry *)self initWithIdentifier:a3 extent:v6 imageQuad:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v6[0] = *&domain.origin.x;
+  v6[1] = *&domain.origin.y;
+  *&v6[2] = domain.origin.x + domain.size.width;
+  v6[3] = *&domain.origin.y;
+  v6[4] = *&domain.origin.x;
+  *&v6[5] = domain.origin.y + domain.size.height;
+  *&v6[6] = domain.origin.x + domain.size.width;
+  *&v6[7] = domain.origin.y + domain.size.height;
+  return [(IPAImageGeometry *)self initWithIdentifier:identifier extent:v6 imageQuad:extent.origin.x, extent.origin.y, extent.size.width, extent.size.height];
 }
 
-- (IPAImageGeometry)initWithIdentifier:(id)a3 extent:(CGRect)a4 imageQuad:(const Quad2d *)a5
+- (IPAImageGeometry)initWithIdentifier:(id)identifier extent:(CGRect)extent imageQuad:(const Quad2d *)quad
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  if (v11)
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v22.receiver = self;
     v22.super_class = IPAImageGeometry;
     v12 = [(IPAImageGeometry *)&v22 init];
     if (v12)
     {
-      v13 = [v11 copy];
+      v13 = [identifierCopy copy];
       identifier = v12->_identifier;
       v12->_identifier = v13;
 
@@ -131,14 +131,14 @@
       v12->_extent.origin.y = y;
       v12->_extent.size.width = width;
       v12->_extent.size.height = height;
-      V0 = a5->V0;
-      V1 = a5->V1;
-      V3 = a5->V3;
-      v12->_imageQuad.V2 = a5->V2;
+      V0 = quad->V0;
+      V1 = quad->V1;
+      V3 = quad->V3;
+      v12->_imageQuad.V2 = quad->V2;
       v12->_imageQuad.V3 = V3;
       v12->_imageQuad.V0 = V0;
       v12->_imageQuad.V1 = V1;
-      v12->_domain.origin.x = PA::Quad2d::boundingRect(a5);
+      v12->_domain.origin.x = PA::Quad2d::boundingRect(quad);
       v12->_domain.origin.y = v18;
       v12->_domain.size.width = v19;
       v12->_domain.size.height = v20;
@@ -156,15 +156,15 @@
   return result;
 }
 
-+ (id)inputGeometryWithImageSize:(CGSize)a3
++ (id)inputGeometryWithImageSize:(CGSize)size
 {
-  if (a3.width == *MEMORY[0x277CBF3A8] && a3.height == *(MEMORY[0x277CBF3A8] + 8))
+  if (size.width == *MEMORY[0x277CBF3A8] && size.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     _PFAssertFailHandler();
     JUMPOUT(0x25E5D33DCLL);
   }
 
-  v4 = [[IPAImageGeometry alloc] initWithIdentifier:@"input" extent:0.0, 0.0, a3.width, a3.height];
+  v4 = [[IPAImageGeometry alloc] initWithIdentifier:@"input" extent:0.0, 0.0, size.width, size.height];
 
   return v4;
 }

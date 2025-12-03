@@ -1,12 +1,12 @@
 @interface AVExternalPlaybackController
-+ (id)externalPlaybackStateDescriptionForState:(int64_t)a3;
-- (void)_invokeClientCompletionHandlerWithPlaybackState:(int64_t)a3;
-- (void)willBeginPlaybackFromAppWithBundleID:(id)a3 completionHandler:(id)a4;
++ (id)externalPlaybackStateDescriptionForState:(int64_t)state;
+- (void)_invokeClientCompletionHandlerWithPlaybackState:(int64_t)state;
+- (void)willBeginPlaybackFromAppWithBundleID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation AVExternalPlaybackController
 
-- (void)_invokeClientCompletionHandlerWithPlaybackState:(int64_t)a3
+- (void)_invokeClientCompletionHandlerWithPlaybackState:(int64_t)state
 {
   v12 = *MEMORY[0x1E69E9840];
   if (self->_clientCompletionHandler)
@@ -14,7 +14,7 @@
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [AVExternalPlaybackController externalPlaybackStateDescriptionForState:a3];
+      v6 = [AVExternalPlaybackController externalPlaybackStateDescriptionForState:state];
       v8 = 136315394;
       v9 = "[AVExternalPlaybackController _invokeClientCompletionHandlerWithPlaybackState:]";
       v10 = 2112;
@@ -28,19 +28,19 @@
   }
 }
 
-- (void)willBeginPlaybackFromAppWithBundleID:(id)a3 completionHandler:(id)a4
+- (void)willBeginPlaybackFromAppWithBundleID:(id)d completionHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    dCopy = [mainBundle bundleIdentifier];
   }
 
-  v9 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v10 = [v9 hasRouteSharingPolicyLongFormVideo:v6];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  v10 = [mEMORY[0x1E69AED10] hasRouteSharingPolicyLongFormVideo:dCopy];
 
   v11 = _AVLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -54,27 +54,27 @@
 
   if (v10)
   {
-    v12 = [MEMORY[0x1E6958828] longFormVideoRoutingSessionManager];
-    v13 = [v12 currentRoutingSession];
+    longFormVideoRoutingSessionManager = [MEMORY[0x1E6958828] longFormVideoRoutingSessionManager];
+    currentRoutingSession = [longFormVideoRoutingSessionManager currentRoutingSession];
     v14 = _AVLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v12 prefersLikelyDestinationsOverCurrentRoutingSession];
+      prefersLikelyDestinationsOverCurrentRoutingSession = [longFormVideoRoutingSessionManager prefersLikelyDestinationsOverCurrentRoutingSession];
       *buf = 136315650;
       *&buf[4] = "[AVExternalPlaybackController willBeginPlaybackFromAppWithBundleID:completionHandler:]";
       *&buf[12] = 2112;
-      *&buf[14] = v13;
+      *&buf[14] = currentRoutingSession;
       *&buf[22] = 1024;
-      LODWORD(v49) = v15;
+      LODWORD(v49) = prefersLikelyDestinationsOverCurrentRoutingSession;
       _os_log_impl(&dword_18B49C000, v14, OS_LOG_TYPE_DEFAULT, "%s Current routing session: %@, routingSessionManager.prefersLikelyDestinationsOverCurrentRoutingSession: %i", buf, 0x1Cu);
     }
 
-    if (v13 && ([v12 prefersLikelyDestinationsOverCurrentRoutingSession] & 1) == 0)
+    if (currentRoutingSession && ([longFormVideoRoutingSessionManager prefersLikelyDestinationsOverCurrentRoutingSession] & 1) == 0)
     {
-      v35 = [v13 destination];
-      v36 = [v35 providesExternalVideoPlayback];
+      destination = [currentRoutingSession destination];
+      providesExternalVideoPlayback = [destination providesExternalVideoPlayback];
 
-      v37 = v36;
+      v37 = providesExternalVideoPlayback;
       v38 = _AVLog();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
@@ -86,7 +86,7 @@
         _os_log_impl(&dword_18B49C000, v38, OS_LOG_TYPE_DEFAULT, "%s Using current routing session. Calling client completion handler with playbackState: %@", buf, 0x16u);
       }
 
-      v7[2](v7, v37);
+      handlerCopy[2](handlerCopy, v37);
     }
 
     else
@@ -94,20 +94,20 @@
       v16 = _AVLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v12 likelyExternalDestinations];
-        v18 = [v17 count];
-        v19 = [v12 likelyExternalDestinations];
+        likelyExternalDestinations = [longFormVideoRoutingSessionManager likelyExternalDestinations];
+        v18 = [likelyExternalDestinations count];
+        likelyExternalDestinations2 = [longFormVideoRoutingSessionManager likelyExternalDestinations];
         *buf = 136315650;
         *&buf[4] = "[AVExternalPlaybackController willBeginPlaybackFromAppWithBundleID:completionHandler:]";
         *&buf[12] = 2048;
         *&buf[14] = v18;
         *&buf[22] = 2112;
-        v49 = v19;
+        v49 = likelyExternalDestinations2;
         _os_log_impl(&dword_18B49C000, v16, OS_LOG_TYPE_DEFAULT, "%s Not using current routing session. AVRoutingSessionManager has %lu likely external destinations: %@", buf, 0x20u);
       }
 
-      v20 = [v12 likelyExternalDestinations];
-      v21 = [v20 count] == 0;
+      likelyExternalDestinations3 = [longFormVideoRoutingSessionManager likelyExternalDestinations];
+      v21 = [likelyExternalDestinations3 count] == 0;
 
       if (v21)
       {
@@ -122,7 +122,7 @@
           _os_log_impl(&dword_18B49C000, v40, OS_LOG_TYPE_DEFAULT, "%s No likely external destinations. Calling client completion handler with playback state: %@", buf, 0x16u);
         }
 
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
 
       else
@@ -193,7 +193,7 @@
         }
 
         [(MPMediaControls *)self->_mediaControls present];
-        v31 = [v7 copy];
+        v31 = [handlerCopy copy];
         clientCompletionHandler = self->_clientCompletionHandler;
         self->_clientCompletionHandler = v31;
       }
@@ -213,7 +213,7 @@
       _os_log_impl(&dword_18B49C000, v33, OS_LOG_TYPE_DEFAULT, "%s Not a long-form video app. Calling client completion handler with playback state: %@", buf, 0x16u);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -315,16 +315,16 @@ LABEL_21:
   }
 }
 
-+ (id)externalPlaybackStateDescriptionForState:(int64_t)a3
++ (id)externalPlaybackStateDescriptionForState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7208988[a3];
+    return off_1E7208988[state];
   }
 }
 

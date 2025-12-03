@@ -1,37 +1,37 @@
 @interface RestorationMailboxDecoder
-+ (id)decoderWithDaemonInterface:(id)a3 log:(id)a4;
++ (id)decoderWithDaemonInterface:(id)interface log:(id)log;
 - (EMDaemonInterface)daemonInterface;
-- (RestorationMailboxDecoder)initWithDaemonInterface:(id)a3 log:(id)a4;
-- (id)_decodeGenericMailbox:(id)a3;
-- (id)_decodeSmartMailbox:(id)a3;
-- (id)_decodeUnifiedMailbox:(id)a3;
-- (id)decodeMailboxData:(id)a3;
+- (RestorationMailboxDecoder)initWithDaemonInterface:(id)interface log:(id)log;
+- (id)_decodeGenericMailbox:(id)mailbox;
+- (id)_decodeSmartMailbox:(id)mailbox;
+- (id)_decodeUnifiedMailbox:(id)mailbox;
+- (id)decodeMailboxData:(id)data;
 @end
 
 @implementation RestorationMailboxDecoder
 
-+ (id)decoderWithDaemonInterface:(id)a3 log:(id)a4
++ (id)decoderWithDaemonInterface:(id)interface log:(id)log
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[RestorationMailboxDecoder alloc] initWithDaemonInterface:v5 log:v6];
+  interfaceCopy = interface;
+  logCopy = log;
+  v7 = [[RestorationMailboxDecoder alloc] initWithDaemonInterface:interfaceCopy log:logCopy];
 
   return v7;
 }
 
-- (RestorationMailboxDecoder)initWithDaemonInterface:(id)a3 log:(id)a4
+- (RestorationMailboxDecoder)initWithDaemonInterface:(id)interface log:(id)log
 {
-  v6 = a3;
+  interfaceCopy = interface;
   v11.receiver = self;
   v11.super_class = RestorationMailboxDecoder;
   v7 = [(RestorationMailboxDecoder *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_daemonInterface, v6);
-    if (a4)
+    objc_storeWeak(&v7->_daemonInterface, interfaceCopy);
+    if (log)
     {
-      v8->_log = a4;
+      v8->_log = log;
     }
 
     else
@@ -44,11 +44,11 @@
   return v8;
 }
 
-- (id)decodeMailboxData:(id)a3
+- (id)decodeMailboxData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy || ![dataCopy length])
   {
     v14 = [(RestorationMailboxDecoder *)self log];
     v12 = [NSError mf_restorationMailboxNotAvailableErrorWithUnderlyingError:0];
@@ -141,16 +141,16 @@ LABEL_15:
   return v13;
 }
 
-- (id)_decodeGenericMailbox:(id)a3
+- (id)_decodeGenericMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v5 = [(RestorationMailboxDecoder *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10048CD30();
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ObjectID"];
+  v6 = [mailboxCopy decodeObjectOfClass:objc_opt_class() forKey:@"ObjectID"];
   if (v6)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -158,9 +158,9 @@ LABEL_15:
       sub_10048CD64();
     }
 
-    v7 = [(RestorationMailboxDecoder *)self daemonInterface];
-    v8 = [v7 mailboxRepository];
-    v9 = [v8 mailboxForObjectID:v6];
+    daemonInterface = [(RestorationMailboxDecoder *)self daemonInterface];
+    mailboxRepository = [daemonInterface mailboxRepository];
+    v9 = [mailboxRepository mailboxForObjectID:v6];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -197,87 +197,87 @@ LABEL_15:
   return v11;
 }
 
-- (id)_decodeSmartMailbox:(id)a3
+- (id)_decodeSmartMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v5 = [(RestorationMailboxDecoder *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10048CE74();
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SmartMailboxSourceType"];
+  v6 = [mailboxCopy decodeObjectOfClass:objc_opt_class() forKey:@"SmartMailboxSourceType"];
   v7 = v6;
   if (!v6)
   {
     v14 = v5;
-    v11 = [NSError mf_restorationMailboxNotAvailableErrorWithUnderlyingError:0];
+    mailbox = [NSError mf_restorationMailboxNotAvailableErrorWithUnderlyingError:0];
     v10 = v14;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [v11 ef_publicDescription];
+      [mailbox ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       sub_10048CFB0();
     }
 
-    v13 = [EFFuture futureWithError:v11];
+    v13 = [EFFuture futureWithError:mailbox];
     goto LABEL_14;
   }
 
-  v8 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
   if (_MSSourceTypeIsValid())
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_10048CEF4(v8, v5);
+      sub_10048CEF4(unsignedIntegerValue, v5);
     }
 
-    v9 = [SharedMailboxController sharedInstanceForSourceType:v8];
+    v9 = [SharedMailboxController sharedInstanceForSourceType:unsignedIntegerValue];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 mailbox];
+      mailbox = [v9 mailbox];
       v12 = v5;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [v11 ef_publicDescription];
+        [mailbox ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
         sub_10048CF6C();
       }
 
-      v13 = [EFFuture futureWithResult:v11];
+      v13 = [EFFuture futureWithResult:mailbox];
 LABEL_14:
       v15 = v13;
       goto LABEL_22;
     }
 
-    v21 = [NSString stringWithFormat:@"No SharedMailboxController found for source type (%lu)", v8];
+    v21 = [NSString stringWithFormat:@"No SharedMailboxController found for source type (%lu)", unsignedIntegerValue];
     v22 = v5;
     v19 = v21;
     v23 = [NSError mf_restorationMailboxNotAvailableErrorWithUnderlyingError:0];
     v18 = v22;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v23 ef_publicDescription];
-      sub_10048CEA8(v19, v24, v26);
+      ef_publicDescription = [v23 ef_publicDescription];
+      sub_10048CEA8(v19, ef_publicDescription, v26);
     }
 
     v15 = [EFFuture futureWithError:v23];
 
-    v11 = v19;
+    mailbox = v19;
   }
 
   else
   {
-    v16 = [NSString stringWithFormat:@"Decoded smart mailbox source type (%lu) is invalid.", v8];
+    v16 = [NSString stringWithFormat:@"Decoded smart mailbox source type (%lu) is invalid.", unsignedIntegerValue];
     v17 = v5;
     v18 = v16;
     v19 = [NSError mf_restorationMailboxNotAvailableErrorWithUnderlyingError:0];
-    v11 = v17;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    mailbox = v17;
+    if (os_log_type_enabled(mailbox, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v19 ef_publicDescription];
-      sub_10048CEA8(v18, v20, v26);
+      ef_publicDescription2 = [v19 ef_publicDescription];
+      sub_10048CEA8(v18, ef_publicDescription2, v26);
     }
 
     v15 = [EFFuture futureWithError:v19];
@@ -289,24 +289,24 @@ LABEL_22:
   return v15;
 }
 
-- (id)_decodeUnifiedMailbox:(id)a3
+- (id)_decodeUnifiedMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v5 = [(RestorationMailboxDecoder *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10048D008();
   }
 
-  if ([v4 containsValueForKey:@"UnifiedMailboxType"])
+  if ([mailboxCopy containsValueForKey:@"UnifiedMailboxType"])
   {
-    v6 = [v4 decodeIntegerForKey:@"UnifiedMailboxType"];
+    v6 = [mailboxCopy decodeIntegerForKey:@"UnifiedMailboxType"];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       sub_10048D094(v6, v5);
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnifiedMailboxName"];
+    v7 = [mailboxCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnifiedMailboxName"];
     if (v6 == 5)
     {
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -315,8 +315,8 @@ LABEL_22:
       }
 
       v8 = +[LocalAccount localAccount];
-      v9 = [v8 transientDraftsFolder];
-      v10 = [v9 URL];
+      transientDraftsFolder = [v8 transientDraftsFolder];
+      v10 = [transientDraftsFolder URL];
 
       v11 = [EMMessageListItemPredicates predicateForExcludingMessagesInMailboxWithURL:v10];
     }

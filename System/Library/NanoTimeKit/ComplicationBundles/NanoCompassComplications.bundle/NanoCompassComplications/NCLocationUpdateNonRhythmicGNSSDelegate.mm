@@ -1,6 +1,6 @@
 @interface NCLocationUpdateNonRhythmicGNSSDelegate
 - (void)_cancelLocationAssertion;
-- (void)_idleTimerFired:(id)a3;
+- (void)_idleTimerFired:(id)fired;
 - (void)_invalidateIdleTimer;
 - (void)_invalidateLocationTimersAndAssertion;
 - (void)_invalidateQueryDurationTimer;
@@ -81,7 +81,7 @@
   }
 }
 
-- (void)_idleTimerFired:(id)a3
+- (void)_idleTimerFired:(id)fired
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = NCLogForCategory(1uLL);

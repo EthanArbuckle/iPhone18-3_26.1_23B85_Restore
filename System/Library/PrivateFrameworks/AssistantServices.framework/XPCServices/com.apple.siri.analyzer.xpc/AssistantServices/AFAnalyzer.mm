@@ -1,12 +1,12 @@
 @interface AFAnalyzer
 + (id)analyzer;
-- (double)_measureTimeToLoadURL:(id)a3 withMethod:(id)a4;
-- (id)_addressToPingForHost:(id)a3;
-- (id)_resultForCommand:(const char *)a3;
-- (void)_getDefaultGateway:(id *)a3 iface:(id *)a4;
-- (void)_handleMessage:(id)a3;
-- (void)_pingHost:(id)a3 time:(double *)a4 sentPackets:(int64_t *)a5 droppedPackets:(int64_t *)a6;
-- (void)_startAnalysisWithMessage:(id)a3;
+- (double)_measureTimeToLoadURL:(id)l withMethod:(id)method;
+- (id)_addressToPingForHost:(id)host;
+- (id)_resultForCommand:(const char *)command;
+- (void)_getDefaultGateway:(id *)gateway iface:(id *)iface;
+- (void)_handleMessage:(id)message;
+- (void)_pingHost:(id)host time:(double *)time sentPackets:(int64_t *)packets droppedPackets:(int64_t *)droppedPackets;
+- (void)_startAnalysisWithMessage:(id)message;
 - (void)runAnalysis;
 - (void)runAnalyzerService;
 @end
@@ -34,20 +34,20 @@
   xpc_main(sub_100000E58);
 }
 
-- (void)_handleMessage:(id)a3
+- (void)_handleMessage:(id)message
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "message");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "message");
   if (!strcmp(string, "analyze"))
   {
-    [(AFAnalyzer *)self _startAnalysisWithMessage:v5];
+    [(AFAnalyzer *)self _startAnalysisWithMessage:messageCopy];
   }
 }
 
-- (void)_startAnalysisWithMessage:(id)a3
+- (void)_startAnalysisWithMessage:(id)message
 {
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "url");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "url");
   if (string)
   {
     v6 = string;
@@ -67,7 +67,7 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Attempting analysis on URL {%@}.", &v22, 0x16u);
       }
 
-      v11 = xpc_dictionary_get_value(v4, "interface");
+      v11 = xpc_dictionary_get_value(messageCopy, "interface");
       v12 = v11;
       if (v11)
       {
@@ -79,7 +79,7 @@
         v13 = 0;
       }
 
-      v16 = xpc_dictionary_get_value(v4, "send buffer");
+      v16 = xpc_dictionary_get_value(messageCopy, "send buffer");
       v17 = v16;
       if (v16)
       {
@@ -91,9 +91,9 @@
         v18 = 0;
       }
 
-      v19 = xpc_dictionary_get_BOOL(v4, "request failure");
-      v20 = xpc_dictionary_get_BOOL(v4, "wwan preferred");
-      [(AFAnalyzer *)self _logAnalysisForURL:v8 failedIFaceIndex:v13 sendBufferSize:v18 isUserFailure:v19 isWWANPreferred:v20 isRetrySuccess:xpc_dictionary_get_BOOL(v4, "successful retry")];
+      v19 = xpc_dictionary_get_BOOL(messageCopy, "request failure");
+      v20 = xpc_dictionary_get_BOOL(messageCopy, "wwan preferred");
+      [(AFAnalyzer *)self _logAnalysisForURL:v8 failedIFaceIndex:v13 sendBufferSize:v18 isUserFailure:v19 isWWANPreferred:v20 isRetrySuccess:xpc_dictionary_get_BOOL(messageCopy, "successful retry")];
       v21 = dispatch_time(0, 1000000000);
       dispatch_after(v21, &_dispatch_main_q, &stru_100008518);
     }
@@ -130,22 +130,22 @@ LABEL_17:
 LABEL_18:
 }
 
-- (double)_measureTimeToLoadURL:(id)a3 withMethod:(id)a4
+- (double)_measureTimeToLoadURL:(id)l withMethod:(id)method
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  methodCopy = method;
   v7 = AFSiriLogContextAnalysis;
   if (os_log_type_enabled(AFSiriLogContextAnalysis, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[AFAnalyzer _measureTimeToLoadURL:withMethod:]";
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = lCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Attempting to load %@", buf, 0x16u);
   }
 
-  v8 = [[NSMutableURLRequest alloc] initWithURL:v5];
-  [v8 setHTTPMethod:v6];
+  v8 = [[NSMutableURLRequest alloc] initWithURL:lCopy];
+  [v8 setHTTPMethod:methodCopy];
   [v8 setHTTPShouldHandleCookies:0];
   v9 = +[NSProcessInfo processInfo];
   [v9 systemUptime];
@@ -196,10 +196,10 @@ LABEL_18:
   return v19;
 }
 
-- (void)_pingHost:(id)a3 time:(double *)a4 sentPackets:(int64_t *)a5 droppedPackets:(int64_t *)a6
+- (void)_pingHost:(id)host time:(double *)time sentPackets:(int64_t *)packets droppedPackets:(int64_t *)droppedPackets
 {
-  v8 = a3;
-  v9 = [(AFAnalyzer *)self _addressToPingForHost:v8];
+  hostCopy = host;
+  v9 = [(AFAnalyzer *)self _addressToPingForHost:hostCopy];
   if (v9)
   {
     v10 = arc4random_uniform(0xFFFFu);
@@ -213,7 +213,7 @@ LABEL_18:
         *buf = 136315650;
         *&buf[4] = "[AFAnalyzer _pingHost:time:sentPackets:droppedPackets:]";
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = hostCopy;
         *&buf[22] = 1024;
         LODWORD(v64) = v10;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Pinging %@ using id %d", buf, 0x1Cu);
@@ -289,7 +289,7 @@ LABEL_18:
       v28 = dispatch_time(0, 10000000000);
       dispatch_semaphore_wait(v22, v28);
       dispatch_source_cancel(v23);
-      if (a4)
+      if (time)
       {
         v29 = *(v60 + 6);
         if (v29 < 1)
@@ -302,17 +302,17 @@ LABEL_18:
           v30 = v56[3] / v29;
         }
 
-        *a4 = v30;
+        *time = v30;
       }
 
-      if (a5)
+      if (packets)
       {
-        *a5 = 5;
+        *packets = 5;
       }
 
-      if (a6)
+      if (droppedPackets)
       {
-        *a6 = 5 - *(v60 + 6);
+        *droppedPackets = 5 - *(v60 + 6);
       }
 
       _Block_object_dispose(buf, 8);
@@ -331,15 +331,15 @@ LABEL_18:
       *buf = 136315394;
       *&buf[4] = "[AFAnalyzer _pingHost:time:sentPackets:droppedPackets:]";
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = hostCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Couldn't find addr for host %@", buf, 0x16u);
     }
   }
 }
 
-- (id)_addressToPingForHost:(id)a3
+- (id)_addressToPingForHost:(id)host
 {
-  if (!a3)
+  if (!host)
   {
     goto LABEL_10;
   }
@@ -347,7 +347,7 @@ LABEL_18:
   v13 = 0;
   memset(&v12, 0, sizeof(v12));
   *&v12.ai_family = 0x200000002;
-  v3 = getaddrinfo([a3 UTF8String], 0, &v12, &v13);
+  v3 = getaddrinfo([host UTF8String], 0, &v12, &v13);
   if (v3)
   {
     v4 = v3;
@@ -399,7 +399,7 @@ LABEL_11:
   return v10;
 }
 
-- (void)_getDefaultGateway:(id *)a3 iface:(id *)a4
+- (void)_getDefaultGateway:(id *)gateway iface:(id *)iface
 {
   *v25 = xmmword_100004518;
   v26 = 1;
@@ -408,7 +408,7 @@ LABEL_11:
   {
     v8 = 0;
     v20 = 0;
-    if (!a3)
+    if (!gateway)
     {
       goto LABEL_27;
     }
@@ -498,24 +498,24 @@ LABEL_31:
   }
 
   free(v7);
-  if (a3)
+  if (gateway)
   {
 LABEL_26:
     v22 = v20;
-    *a3 = v20;
+    *gateway = v20;
   }
 
 LABEL_27:
-  if (a4)
+  if (iface)
   {
     v23 = v8;
-    *a4 = v8;
+    *iface = v8;
   }
 }
 
-- (id)_resultForCommand:(const char *)a3
+- (id)_resultForCommand:(const char *)command
 {
-  v4 = popen(a3, "r");
+  v4 = popen(command, "r");
   if (v4)
   {
     v5 = v4;
@@ -548,7 +548,7 @@ LABEL_27:
       v15 = 1024;
       v16 = v11;
       v17 = 2080;
-      v18 = a3;
+      commandCopy = command;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Unable to run (%d): %s", &v13, 0x1Cu);
     }
 

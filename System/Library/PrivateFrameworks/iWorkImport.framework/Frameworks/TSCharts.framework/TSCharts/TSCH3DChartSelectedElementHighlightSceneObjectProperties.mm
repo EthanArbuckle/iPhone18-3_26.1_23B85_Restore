@@ -3,8 +3,8 @@
 - (TSCH3DPrefilteredLineRenderer)renderer;
 - (id).cxx_construct;
 - (tvec4<float>)color;
-- (void)setColor:(tvec4<float>)a3;
-- (void)setSelectedSeriesIndex:(unint64_t)a3;
+- (void)setColor:(tvec4<float>)color;
+- (void)setSelectedSeriesIndex:(unint64_t)index;
 @end
 
 @implementation TSCH3DChartSelectedElementHighlightSceneObjectProperties
@@ -37,9 +37,9 @@
   return renderer;
 }
 
-- (void)setSelectedSeriesIndex:(unint64_t)a3
+- (void)setSelectedSeriesIndex:(unint64_t)index
 {
-  if (self->_selectedSeriesIndex != a3)
+  if (self->_selectedSeriesIndex != index)
   {
     renderer = self->_renderer;
     self->_renderer = 0;
@@ -47,14 +47,14 @@
     edgeVertices = self->_edgeVertices;
     self->_edgeVertices = 0;
 
-    self->_selectedSeriesIndex = a3;
+    self->_selectedSeriesIndex = index;
   }
 }
 
-- (void)setColor:(tvec4<float>)a3
+- (void)setColor:(tvec4<float>)color
 {
-  v3 = *&a3.var0.var0;
-  if (**&a3.var0.var0 != self->_color.var0.var0 || *(*&a3.var0.var0 + 4) != self->_color.var1.var0 || *(*&a3.var0.var0 + 8) != self->_color.var2.var0 || *(*&a3.var0.var0 + 12) != self->_color.var3.var0)
+  v3 = *&color.var0.var0;
+  if (**&color.var0.var0 != self->_color.var0.var0 || *(*&color.var0.var0 + 4) != self->_color.var1.var0 || *(*&color.var0.var0 + 8) != self->_color.var2.var0 || *(*&color.var0.var0 + 12) != self->_color.var3.var0)
   {
     renderer = self->_renderer;
     self->_renderer = 0;

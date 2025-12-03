@@ -1,10 +1,10 @@
 @interface HKUserTrackedMedication
-+ (id)_newUserTrackedMedicationWithNickname:(char)a3 isArchived:(char)a4 hasSchedule:(void *)a5 medication:(uint64_t)a6 device:(void *)a7 config:;
-+ (id)userTrackedMedicationWithNickname:(id)a3 isArchived:(BOOL)a4 hasSchedule:(BOOL)a5 medication:(id)a6 device:(id)a7;
-- (BOOL)isEquivalent:(id)a3;
++ (id)_newUserTrackedMedicationWithNickname:(char)nickname isArchived:(char)archived hasSchedule:(void *)schedule medication:(uint64_t)medication device:(void *)device config:;
++ (id)userTrackedMedicationWithNickname:(id)nickname isArchived:(BOOL)archived hasSchedule:(BOOL)schedule medication:(id)medication device:(id)device;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKUserTrackedMedication)init;
-- (HKUserTrackedMedication)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKUserTrackedMedication)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserTrackedMedication
@@ -19,30 +19,30 @@
   return 0;
 }
 
-+ (id)userTrackedMedicationWithNickname:(id)a3 isArchived:(BOOL)a4 hasSchedule:(BOOL)a5 medication:(id)a6 device:(id)a7
++ (id)userTrackedMedicationWithNickname:(id)nickname isArchived:(BOOL)archived hasSchedule:(BOOL)schedule medication:(id)medication device:(id)device
 {
-  v7 = [(HKUserTrackedMedication *)a1 _newUserTrackedMedicationWithNickname:a3 isArchived:a4 hasSchedule:a5 medication:a6 device:a6 config:0];
+  v7 = [(HKUserTrackedMedication *)self _newUserTrackedMedicationWithNickname:nickname isArchived:archived hasSchedule:schedule medication:medication device:medication config:0];
 
   return v7;
 }
 
-+ (id)_newUserTrackedMedicationWithNickname:(char)a3 isArchived:(char)a4 hasSchedule:(void *)a5 medication:(uint64_t)a6 device:(void *)a7 config:
++ (id)_newUserTrackedMedicationWithNickname:(char)nickname isArchived:(char)archived hasSchedule:(void *)schedule medication:(uint64_t)medication device:(void *)device config:
 {
   v11 = a2;
-  v12 = a5;
-  v13 = a7;
+  scheduleCopy = schedule;
+  deviceCopy = device;
   v14 = objc_opt_self();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __113__HKUserTrackedMedication__newUserTrackedMedicationWithNickname_isArchived_hasSchedule_medication_device_config___block_invoke;
   aBlock[3] = &unk_1E7384998;
-  v27 = a3;
-  v28 = a4;
+  nicknameCopy = nickname;
+  archivedCopy = archived;
   v24 = v11;
-  v25 = v12;
-  v26 = v13;
-  v15 = v13;
-  v16 = v12;
+  v25 = scheduleCopy;
+  v26 = deviceCopy;
+  v15 = deviceCopy;
+  v16 = scheduleCopy;
   v17 = v11;
   v18 = _Block_copy(aBlock);
   v19 = [(HKObjectType *)HKUserTrackedConceptType userTrackedConceptTypeForIdentifier:@"HKUserTrackedConceptTypeIdentifierMedication"];
@@ -73,10 +73,10 @@ void __113__HKUserTrackedMedication__newUserTrackedMedicationWithNickname_isArch
   }
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
-  if (self == v4)
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy)
   {
     v14 = 1;
   }
@@ -86,26 +86,26 @@ void __113__HKUserTrackedMedication__newUserTrackedMedicationWithNickname_isArch
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKUserTrackedMedication *)v5 nickname];
-      v7 = [(HKUserTrackedMedication *)self nickname];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equivalentCopy;
+      nickname = [(HKUserTrackedMedication *)v5 nickname];
+      nickname2 = [(HKUserTrackedMedication *)self nickname];
+      v8 = nickname2;
+      if (nickname == nickname2)
       {
       }
 
       else
       {
-        v9 = [(HKUserTrackedMedication *)self nickname];
-        if (!v9)
+        nickname3 = [(HKUserTrackedMedication *)self nickname];
+        if (!nickname3)
         {
           goto LABEL_16;
         }
 
-        v10 = v9;
-        v11 = [(HKUserTrackedMedication *)v5 nickname];
-        v12 = [(HKUserTrackedMedication *)self nickname];
-        v13 = [v11 isEqualToString:v12];
+        v10 = nickname3;
+        nickname4 = [(HKUserTrackedMedication *)v5 nickname];
+        nickname5 = [(HKUserTrackedMedication *)self nickname];
+        v13 = [nickname4 isEqualToString:nickname5];
 
         if (!v13)
         {
@@ -113,22 +113,22 @@ void __113__HKUserTrackedMedication__newUserTrackedMedicationWithNickname_isArch
         }
       }
 
-      v15 = [(HKUserTrackedMedication *)v5 isArchived];
-      if (v15 != [(HKUserTrackedMedication *)self isArchived])
+      isArchived = [(HKUserTrackedMedication *)v5 isArchived];
+      if (isArchived != [(HKUserTrackedMedication *)self isArchived])
       {
         goto LABEL_17;
       }
 
-      v16 = [(HKUserTrackedMedication *)v5 hasSchedule];
-      if (v16 != [(HKUserTrackedMedication *)self hasSchedule])
+      hasSchedule = [(HKUserTrackedMedication *)v5 hasSchedule];
+      if (hasSchedule != [(HKUserTrackedMedication *)self hasSchedule])
       {
         goto LABEL_17;
       }
 
-      v6 = [(HKUserTrackedMedication *)v5 medication];
-      v17 = [(HKUserTrackedMedication *)self medication];
-      v8 = v17;
-      if (v6 == v17)
+      nickname = [(HKUserTrackedMedication *)v5 medication];
+      medication = [(HKUserTrackedMedication *)self medication];
+      v8 = medication;
+      if (nickname == medication)
       {
 
 LABEL_21:
@@ -136,13 +136,13 @@ LABEL_21:
         goto LABEL_18;
       }
 
-      v18 = [(HKUserTrackedMedication *)self medication];
-      if (v18)
+      medication2 = [(HKUserTrackedMedication *)self medication];
+      if (medication2)
       {
-        v19 = v18;
-        v20 = [(HKUserTrackedMedication *)v5 medication];
-        v21 = [(HKUserTrackedMedication *)self medication];
-        v22 = [v20 isEqual:v21];
+        v19 = medication2;
+        medication3 = [(HKUserTrackedMedication *)v5 medication];
+        medication4 = [(HKUserTrackedMedication *)self medication];
+        v22 = [medication3 isEqual:medication4];
 
         if (v22)
         {
@@ -169,21 +169,21 @@ LABEL_19:
   return v14;
 }
 
-- (HKUserTrackedMedication)initWithCoder:(id)a3
+- (HKUserTrackedMedication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKUserTrackedMedication;
-  v5 = [(HKUserTrackedConcept *)&v11 initWithCoder:v4];
+  v5 = [(HKUserTrackedConcept *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NicknameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NicknameKey"];
     nickname = v5->_nickname;
     v5->_nickname = v6;
 
-    v5->_isArchived = [v4 decodeBoolForKey:@"IsArchivedKey"];
-    v5->_hasSchedule = [v4 decodeBoolForKey:@"HasScheduleKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationKey"];
+    v5->_isArchived = [coderCopy decodeBoolForKey:@"IsArchivedKey"];
+    v5->_hasSchedule = [coderCopy decodeBoolForKey:@"HasScheduleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationKey"];
     medication = v5->_medication;
     v5->_medication = v8;
   }
@@ -191,14 +191,14 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nickname = self->_nickname;
-  v5 = a3;
-  [v5 encodeObject:nickname forKey:@"NicknameKey"];
-  [v5 encodeBool:self->_isArchived forKey:@"IsArchivedKey"];
-  [v5 encodeBool:self->_hasSchedule forKey:@"HasScheduleKey"];
-  [v5 encodeObject:self->_medication forKey:@"MedicationKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nickname forKey:@"NicknameKey"];
+  [coderCopy encodeBool:self->_isArchived forKey:@"IsArchivedKey"];
+  [coderCopy encodeBool:self->_hasSchedule forKey:@"HasScheduleKey"];
+  [coderCopy encodeObject:self->_medication forKey:@"MedicationKey"];
 }
 
 @end

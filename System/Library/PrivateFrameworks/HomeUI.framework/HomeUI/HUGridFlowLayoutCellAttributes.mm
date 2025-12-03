@@ -1,26 +1,26 @@
 @interface HUGridFlowLayoutCellAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HUBackgroundEffectViewGrouping)backgroundEffectViewGrouper;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUGridFlowLayoutCellAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = HUGridFlowLayoutCellAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v7 copyWithZone:a3];
-  v5 = [(HUGridFlowLayoutCellAttributes *)self backgroundEffectViewGrouper];
-  [v4 setBackgroundEffectViewGrouper:v5];
+  v4 = [(UICollectionViewLayoutAttributes *)&v7 copyWithZone:zone];
+  backgroundEffectViewGrouper = [(HUGridFlowLayoutCellAttributes *)self backgroundEffectViewGrouper];
+  [v4 setBackgroundEffectViewGrouper:backgroundEffectViewGrouper];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -30,19 +30,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HUGridFlowLayoutCellAttributes *)self backgroundEffectViewGrouper];
-      v7 = [(HUGridFlowLayoutCellAttributes *)v5 backgroundEffectViewGrouper];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      backgroundEffectViewGrouper = [(HUGridFlowLayoutCellAttributes *)self backgroundEffectViewGrouper];
+      backgroundEffectViewGrouper2 = [(HUGridFlowLayoutCellAttributes *)v5 backgroundEffectViewGrouper];
+      v8 = backgroundEffectViewGrouper2;
+      if (backgroundEffectViewGrouper == backgroundEffectViewGrouper2)
       {
       }
 
       else
       {
-        v9 = [(HUGridFlowLayoutCellAttributes *)self backgroundEffectViewGrouper];
-        v10 = [(HUGridFlowLayoutCellAttributes *)v5 backgroundEffectViewGrouper];
-        v11 = [v9 isEqual:v10];
+        backgroundEffectViewGrouper3 = [(HUGridFlowLayoutCellAttributes *)self backgroundEffectViewGrouper];
+        backgroundEffectViewGrouper4 = [(HUGridFlowLayoutCellAttributes *)v5 backgroundEffectViewGrouper];
+        v11 = [backgroundEffectViewGrouper3 isEqual:backgroundEffectViewGrouper4];
 
         if (!v11)
         {

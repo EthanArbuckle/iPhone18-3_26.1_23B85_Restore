@@ -1,23 +1,23 @@
 @interface TUIHStack
 - (CGSize)layoutSize;
-- (TUIHStack)initWithLayout:(id)a3;
-- (TUIHStack)initWithLayout:(id)a3 children:(id)a4;
+- (TUIHStack)initWithLayout:(id)layout;
+- (TUIHStack)initWithLayout:(id)layout children:(id)children;
 - (TUILayout)layout;
-- (void)computeLayoutWithOrigin:(CGPoint)a3;
+- (void)computeLayoutWithOrigin:(CGPoint)origin;
 @end
 
 @implementation TUIHStack
 
-- (TUIHStack)initWithLayout:(id)a3
+- (TUIHStack)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = TUIHStack;
   v5 = [(TUIHStack *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layout, v4);
+    objc_storeWeak(&v5->_layout, layoutCopy);
     *&v6->_specifiedWidth.value = TUILengthNull;
     *&v6->_specifiedWidth._flags = TUILengthNull;
     *&v6->_computedHeight = vdupq_n_s64(0x7FF8000000000000uLL);
@@ -26,13 +26,13 @@
   return v6;
 }
 
-- (TUIHStack)initWithLayout:(id)a3 children:(id)a4
+- (TUIHStack)initWithLayout:(id)layout children:(id)children
 {
-  v6 = a4;
-  v7 = [(TUIHStack *)self initWithLayout:a3];
+  childrenCopy = children;
+  v7 = [(TUIHStack *)self initWithLayout:layout];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [childrenCopy copy];
     children = v7->_children;
     v7->_children = v8;
   }
@@ -40,7 +40,7 @@
   return v7;
 }
 
-- (void)computeLayoutWithOrigin:(CGPoint)a3
+- (void)computeLayoutWithOrigin:(CGPoint)origin
 {
   computedWidth = self->_computedWidth;
   [(TUIGuideLayoutController *)self->_guideLayoutController reset];
@@ -48,8 +48,8 @@
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v5 = [(TUIHStack *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v133 objects:v142 count:16];
+  children = [(TUIHStack *)self children];
+  v6 = [children countByEnumeratingWithState:&v133 objects:v142 count:16];
   if (v6)
   {
     v7 = v6;
@@ -62,7 +62,7 @@
       {
         if (*v134 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v133 + 1) + 8 * i);
@@ -72,7 +72,7 @@
         [v11 validateLayout];
         [v11 computedTransformedSize];
         v13 = v12;
-        v14 = [v11 computedWidth];
+        computedWidth = [v11 computedWidth];
         v16 = v15;
         if ((v15 & 0x8000000000000) != 0 || !self->_prefersEqualWidth && ([v11 box], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "hcompressed"), v17, v18))
         {
@@ -102,13 +102,13 @@
 
           v21 = [v11 box];
           v112 = v19;
-          [v19 addLayout:v11 length:v14 compressed:{v16, objc_msgSend(v21, "hcompressed")}];
+          [v19 addLayout:v11 length:computedWidth compressed:{v16, objc_msgSend(v21, "hcompressed")}];
         }
 
         v9 = v9 + v13;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v133 objects:v142 count:16];
+      v7 = [children countByEnumeratingWithState:&v133 objects:v142 count:16];
     }
 
     while (v7);
@@ -117,7 +117,7 @@
     {
       if (v9 != computedWidth || self->_prefersEqualWidth)
       {
-        v22 = [(TUIHStack *)self specifiedWidth];
+        specifiedWidth = [(TUIHStack *)self specifiedWidth];
         if (computedWidth <= -3.40282347e38)
         {
           v24 = 4286578687;
@@ -133,15 +133,15 @@
           }
         }
 
-        [v112 computeWithMeasured:v24 | v22 & 0xFFFFFFFF00000000 desired:{v23 & 0xFFE8FFFFFFFFFFFFLL, v9}];
+        [v112 computeWithMeasured:v24 | specifiedWidth & 0xFFFFFFFF00000000 desired:{v23 & 0xFFE8FFFFFFFFFFFFLL, v9}];
         [v112 adjustedNaturalLengthWithMeasured:v9 computed:computedWidth];
         v129 = 0u;
         v130 = 0u;
         v109 = v26;
         v131 = 0u;
         v132 = 0u;
-        v5 = [v112 layouts];
-        v27 = [v5 countByEnumeratingWithState:&v129 objects:v141 count:16];
+        children = [v112 layouts];
+        v27 = [children countByEnumeratingWithState:&v129 objects:v141 count:16];
         if (v27)
         {
           v28 = v27;
@@ -152,7 +152,7 @@
             {
               if (*v130 != v29)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(children);
               }
 
               v31 = *(*(&v129 + 1) + 8 * j);
@@ -164,7 +164,7 @@
               }
             }
 
-            v28 = [v5 countByEnumeratingWithState:&v129 objects:v141 count:16];
+            v28 = [children countByEnumeratingWithState:&v129 objects:v141 count:16];
           }
 
           while (v28);
@@ -200,8 +200,8 @@ LABEL_40:
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v37 = [(TUIHStack *)self children];
-  v38 = [v37 countByEnumeratingWithState:&v125 objects:v140 count:16];
+  children2 = [(TUIHStack *)self children];
+  v38 = [children2 countByEnumeratingWithState:&v125 objects:v140 count:16];
   if (v38)
   {
     v39 = v38;
@@ -215,7 +215,7 @@ LABEL_40:
       {
         if (*v126 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(children2);
         }
 
         v45 = *(*(&v125 + 1) + 8 * k);
@@ -225,16 +225,16 @@ LABEL_40:
           v48 = v47;
           if (self->_guideLayoutController)
           {
-            v49 = [v45 effectiveGuideTop];
-            v50 = [v45 effectiveGuideBottom];
-            if (v49)
+            effectiveGuideTop = [v45 effectiveGuideTop];
+            effectiveGuideBottom = [v45 effectiveGuideBottom];
+            if (effectiveGuideTop)
             {
-              [(TUIGuideLayoutController *)self->_guideLayoutController addEdgeFrom:v110 to:v49 length:0, 0xB00007F7FFFFFLL];
+              [(TUIGuideLayoutController *)self->_guideLayoutController addEdgeFrom:v110 to:effectiveGuideTop length:0, 0xB00007F7FFFFFLL];
             }
 
-            if (v50)
+            if (effectiveGuideBottom)
             {
-              [(TUIGuideLayoutController *)self->_guideLayoutController addEdgeFrom:v50 to:v36 length:0, 0xB00007F7FFFFFLL];
+              [(TUIGuideLayoutController *)self->_guideLayoutController addEdgeFrom:effectiveGuideBottom to:v36 length:0, 0xB00007F7FFFFFLL];
             }
           }
 
@@ -250,7 +250,7 @@ LABEL_40:
         }
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v125 objects:v140 count:16];
+      v39 = [children2 countByEnumeratingWithState:&v125 objects:v140 count:16];
     }
 
     while (v39);
@@ -281,8 +281,8 @@ LABEL_69:
           v120 = 0u;
           v117 = 0u;
           v118 = 0u;
-          v64 = [(TUIHStack *)self children];
-          v65 = [v64 countByEnumeratingWithState:&v117 objects:v138 count:16];
+          children3 = [(TUIHStack *)self children];
+          v65 = [children3 countByEnumeratingWithState:&v117 objects:v138 count:16];
           if (v65)
           {
             v66 = v65;
@@ -293,7 +293,7 @@ LABEL_69:
               {
                 if (*v118 != v67)
                 {
-                  objc_enumerationMutation(v64);
+                  objc_enumerationMutation(children3);
                 }
 
                 v69 = *(*(&v117 + 1) + 8 * m);
@@ -301,7 +301,7 @@ LABEL_69:
                 [v69 validateLayout];
               }
 
-              v66 = [v64 countByEnumeratingWithState:&v117 objects:v138 count:16];
+              v66 = [children3 countByEnumeratingWithState:&v117 objects:v138 count:16];
             }
 
             while (v66);
@@ -322,8 +322,8 @@ LABEL_69:
   v122 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v56 = [(TUIHStack *)self children];
-  v57 = [v56 countByEnumeratingWithState:&v121 objects:v139 count:16];
+  children4 = [(TUIHStack *)self children];
+  v57 = [children4 countByEnumeratingWithState:&v121 objects:v139 count:16];
   if (v57)
   {
     v58 = v57;
@@ -334,13 +334,13 @@ LABEL_69:
       {
         if (*v122 != v59)
         {
-          objc_enumerationMutation(v56);
+          objc_enumerationMutation(children4);
         }
 
         [*(*(&v121 + 1) + 8 * n) validateLayout];
       }
 
-      v58 = [v56 countByEnumeratingWithState:&v121 objects:v139 count:16];
+      v58 = [children4 countByEnumeratingWithState:&v121 objects:v139 count:16];
     }
 
     while (v58);
@@ -375,9 +375,9 @@ LABEL_81:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_layout);
-  v79 = [WeakRetained computedLayoutDirection];
+  computedLayoutDirection = [WeakRetained computedLayoutDirection];
 
-  if (v79 == &dword_0 + 2)
+  if (computedLayoutDirection == &dword_0 + 2)
   {
     v80 = computedWidth;
   }
@@ -388,18 +388,18 @@ LABEL_81:
   }
 
   v81 = objc_loadWeakRetained(&self->_layout);
-  v82 = [v81 layoutAncestor];
-  v83 = [v82 isHorizontallyAligningChildren];
+  layoutAncestor = [v81 layoutAncestor];
+  isHorizontallyAligningChildren = [layoutAncestor isHorizontallyAligningChildren];
 
-  if ((v83 & 1) == 0)
+  if ((isHorizontallyAligningChildren & 1) == 0)
   {
     v84 = objc_loadWeakRetained(&self->_layout);
     v85 = [v84 box];
-    v86 = [v85 halign];
+    halign = [v85 halign];
 
-    if (v86 == &dword_0 + 3)
+    if (halign == &dword_0 + 3)
     {
-      if (v79 == &dword_0 + 2)
+      if (computedLayoutDirection == &dword_0 + 2)
       {
         v80 = v43;
       }
@@ -410,9 +410,9 @@ LABEL_81:
       }
     }
 
-    else if (v86 == &dword_0 + 2)
+    else if (halign == &dword_0 + 2)
     {
-      if (v79 == &dword_0 + 2)
+      if (computedLayoutDirection == &dword_0 + 2)
       {
         v80 = v43 + (computedWidth - v43) * 0.5;
       }
@@ -428,8 +428,8 @@ LABEL_81:
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v87 = [(TUIHStack *)self children];
-  v88 = [v87 countByEnumeratingWithState:&v113 objects:v137 count:16];
+  children5 = [(TUIHStack *)self children];
+  v88 = [children5 countByEnumeratingWithState:&v113 objects:v137 count:16];
   if (v88)
   {
     v89 = v88;
@@ -440,7 +440,7 @@ LABEL_81:
       {
         if (*v114 != v90)
         {
-          objc_enumerationMutation(v87);
+          objc_enumerationMutation(children5);
         }
 
         v92 = *(*(&v113 + 1) + 8 * ii);
@@ -451,7 +451,7 @@ LABEL_81:
           v96 = v95;
           [v92 computedHeightAbovePivot];
           v98 = v97;
-          if (v79 == &dword_0 + 2)
+          if (computedLayoutDirection == &dword_0 + 2)
           {
             v99 = v80 - v94;
           }
@@ -466,19 +466,19 @@ LABEL_81:
             goto LABEL_112;
           }
 
-          v100 = [v92 effectiveGuideTop];
-          v101 = [v92 effectiveGuideBottom];
-          v102 = v101;
-          if (v100)
+          effectiveGuideTop2 = [v92 effectiveGuideTop];
+          effectiveGuideBottom2 = [v92 effectiveGuideBottom];
+          v102 = effectiveGuideBottom2;
+          if (effectiveGuideTop2)
           {
-            [v100 guideOffset];
+            [effectiveGuideTop2 guideOffset];
             v104 = v103;
             goto LABEL_111;
           }
 
-          if (v101)
+          if (effectiveGuideBottom2)
           {
-            [v101 guideOffset];
+            [effectiveGuideBottom2 guideOffset];
             v104 = v105 - v96;
 LABEL_111:
           }
@@ -487,9 +487,9 @@ LABEL_111:
           {
 LABEL_112:
             v106 = [v92 box];
-            v107 = [v106 valign];
+            valign = [v106 valign];
 
-            if (v107 < 2)
+            if (valign < 2)
             {
               v104 = v42 - v98;
             }
@@ -497,12 +497,12 @@ LABEL_112:
             else
             {
               v108 = v55 - v96;
-              if (v107 == &dword_4)
+              if (valign == &dword_4)
               {
                 v108 = (v55 - v96) * 0.5;
               }
 
-              if (v107 == (&dword_0 + 2))
+              if (valign == (&dword_0 + 2))
               {
                 v104 = 0.0;
               }
@@ -514,8 +514,8 @@ LABEL_112:
             }
           }
 
-          [v92 setComputedOrigin:{a3.x + v99, a3.y + v104}];
-          if (v79 == &dword_0 + 2)
+          [v92 setComputedOrigin:{origin.x + v99, origin.y + v104}];
+          if (computedLayoutDirection == &dword_0 + 2)
           {
             v80 = v80 - v94;
           }
@@ -529,7 +529,7 @@ LABEL_112:
         }
       }
 
-      v89 = [v87 countByEnumeratingWithState:&v113 objects:v137 count:16];
+      v89 = [children5 countByEnumeratingWithState:&v113 objects:v137 count:16];
     }
 
     while (v89);

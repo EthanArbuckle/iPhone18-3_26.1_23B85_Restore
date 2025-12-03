@@ -1,24 +1,24 @@
 @interface WRWorkflowProviderSingleWorkflow
-- (WRWorkflowProviderSingleWorkflow)initWithWorkflowName:(id)a3 queue:(id)a4 callback:(id)a5;
-- (void)handleSettingsChanged:(BOOL)a3;
+- (WRWorkflowProviderSingleWorkflow)initWithWorkflowName:(id)name queue:(id)queue callback:(id)callback;
+- (void)handleSettingsChanged:(BOOL)changed;
 @end
 
 @implementation WRWorkflowProviderSingleWorkflow
 
-- (WRWorkflowProviderSingleWorkflow)initWithWorkflowName:(id)a3 queue:(id)a4 callback:(id)a5
+- (WRWorkflowProviderSingleWorkflow)initWithWorkflowName:(id)name queue:(id)queue callback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  callbackCopy = callback;
   v16.receiver = self;
   v16.super_class = WRWorkflowProviderSingleWorkflow;
-  v10 = [(WRWorkflowProvider *)&v16 initWithQueue:a4];
+  v10 = [(WRWorkflowProvider *)&v16 initWithQueue:queue];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     workflowName = v10->_workflowName;
     v10->_workflowName = v11;
 
-    v13 = MEMORY[0x277C5A9A0](v9);
+    v13 = MEMORY[0x277C5A9A0](callbackCopy);
     callback = v10->_callback;
     v10->_callback = v13;
   }
@@ -26,7 +26,7 @@
   return v10;
 }
 
-- (void)handleSettingsChanged:(BOOL)a3
+- (void)handleSettingsChanged:(BOOL)changed
 {
   v32 = *MEMORY[0x277D85DE8];
   if (self)
@@ -72,7 +72,7 @@
     *v6 = v9;
   }
 
-  if (a3)
+  if (changed)
   {
 LABEL_26:
     if (!self)

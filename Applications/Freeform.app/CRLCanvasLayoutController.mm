@@ -1,54 +1,54 @@
 @interface CRLCanvasLayoutController
-+ (Class)effectiveLayoutClassForInfo:(id)a3;
-+ (void)temporaryLayoutControllerForInfos:(id)a3 useInBlock:(id)a4;
++ (Class)effectiveLayoutClassForInfo:(id)info;
++ (void)temporaryLayoutControllerForInfos:(id)infos useInBlock:(id)block;
 - (CGRect)rectOfTopLevelLayouts;
 - (CRLBoardItemOwning)boardItemOwner;
 - (CRLCanvas)canvas;
-- (CRLCanvasLayoutController)initWithCanvas:(id)a3;
-- (id)layoutForInfo:(id)a3;
-- (id)layoutForInfo:(id)a3 childOfLayout:(id)a4;
-- (id)layoutsForInfo:(id)a3;
-- (id)layoutsForInfos:(id)a3;
-- (id)sortLayoutsForDependencies:(id)a3;
-- (id)validatedLayoutForInfo:(id)a3;
-- (id)validatedLayoutForInfo:(id)a3 childOfLayout:(id)a4;
-- (id)validatedLayoutsForInfo:(id)a3;
+- (CRLCanvasLayoutController)initWithCanvas:(id)canvas;
+- (id)layoutForInfo:(id)info;
+- (id)layoutForInfo:(id)info childOfLayout:(id)layout;
+- (id)layoutsForInfo:(id)info;
+- (id)layoutsForInfos:(id)infos;
+- (id)sortLayoutsForDependencies:(id)dependencies;
+- (id)validatedLayoutForInfo:(id)info;
+- (id)validatedLayoutForInfo:(id)info childOfLayout:(id)layout;
+- (id)validatedLayoutsForInfo:(id)info;
 - (void)dealloc;
-- (void)i_enumerateLayoutsUsingBlock:(id)a3;
-- (void)i_registerLayout:(id)a3;
+- (void)i_enumerateLayoutsUsingBlock:(id)block;
+- (void)i_registerLayout:(id)layout;
 - (void)i_removeAllLayouts;
-- (void)i_unregisterLayout:(id)a3;
-- (void)invalidateChildrenOfLayout:(id)a3;
-- (void)invalidateLayout:(id)a3;
-- (void)invalidateLayoutForRecreation:(id)a3;
+- (void)i_unregisterLayout:(id)layout;
+- (void)invalidateChildrenOfLayout:(id)layout;
+- (void)invalidateLayout:(id)layout;
+- (void)invalidateLayoutForRecreation:(id)recreation;
 - (void)notifyThatLayoutsChangedOutsideOfLayout;
-- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)a3;
-- (void)p_validateLayouts:(id)a3 shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)a4;
-- (void)setInfos:(id)a3;
-- (void)validateLayoutWithDependencies:(id)a3;
+- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)layouts;
+- (void)p_validateLayouts:(id)layouts shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)validation;
+- (void)setInfos:(id)infos;
+- (void)validateLayoutWithDependencies:(id)dependencies;
 - (void)validateLayouts;
-- (void)validateLayoutsWithDependencies:(id)a3;
+- (void)validateLayoutsWithDependencies:(id)dependencies;
 @end
 
 @implementation CRLCanvasLayoutController
 
-- (CRLCanvasLayoutController)initWithCanvas:(id)a3
+- (CRLCanvasLayoutController)initWithCanvas:(id)canvas
 {
-  v4 = a3;
+  canvasCopy = canvas;
   v19.receiver = self;
   v19.super_class = CRLCanvasLayoutController;
   v5 = [(CRLCanvasLayoutController *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_canvas, v4);
-    v7 = [v4 rootLayoutClass];
-    if (!v7)
+    objc_storeWeak(&v5->_canvas, canvasCopy);
+    rootLayoutClass = [canvasCopy rootLayoutClass];
+    if (!rootLayoutClass)
     {
-      v7 = objc_opt_class();
+      rootLayoutClass = objc_opt_class();
     }
 
-    v8 = [[v7 alloc] initWithLayoutController:v6];
+    v8 = [[rootLayoutClass alloc] initWithLayoutController:v6];
     rootLayout = v6->_rootLayout;
     v6->_rootLayout = v8;
 
@@ -83,39 +83,39 @@
 - (CRLBoardItemOwning)boardItemOwner
 {
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
-  v3 = [WeakRetained boardItemOwner];
+  boardItemOwner = [WeakRetained boardItemOwner];
 
-  return v3;
+  return boardItemOwner;
 }
 
-+ (void)temporaryLayoutControllerForInfos:(id)a3 useInBlock:(id)a4
++ (void)temporaryLayoutControllerForInfos:(id)infos useInBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = [[CRLCanvas alloc] initForTemporaryLayout];
-  v7 = [[CRLCanvasLayoutControllerTemporaryCanvasDelegate alloc] initWithInfos:v6];
-  [v11 setDelegate:v7];
-  v8 = [v11 layoutController];
-  [v8 setInfos:v6];
+  blockCopy = block;
+  infosCopy = infos;
+  initForTemporaryLayout = [[CRLCanvas alloc] initForTemporaryLayout];
+  v7 = [[CRLCanvasLayoutControllerTemporaryCanvasDelegate alloc] initWithInfos:infosCopy];
+  [initForTemporaryLayout setDelegate:v7];
+  layoutController = [initForTemporaryLayout layoutController];
+  [layoutController setInfos:infosCopy];
 
-  v9 = [v11 layoutController];
-  [v9 validateLayouts];
+  layoutController2 = [initForTemporaryLayout layoutController];
+  [layoutController2 validateLayouts];
 
-  v10 = [v11 layoutController];
-  v5[2](v5, v10);
+  layoutController3 = [initForTemporaryLayout layoutController];
+  blockCopy[2](blockCopy, layoutController3);
 
-  [v11 teardown];
+  [initForTemporaryLayout teardown];
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = infosCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -135,14 +135,14 @@
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 allObjects];
-          [v5 addObjectsFromArray:v14];
+          allObjects = [v12 allObjects];
+          [v5 addObjectsFromArray:allObjects];
         }
 
         else
         {
-          v14 = [objc_alloc(objc_msgSend(objc_opt_class() effectiveLayoutClassForInfo:{v11)), "initWithInfo:", v11}];
-          [v5 addObject:v14];
+          allObjects = [objc_alloc(objc_msgSend(objc_opt_class() effectiveLayoutClassForInfo:{v11)), "initWithInfo:", v11}];
+          [v5 addObject:allObjects];
         }
       }
 
@@ -152,8 +152,8 @@
     while (v8);
   }
 
-  v15 = [(CRLCanvasAbstractLayout *)self->_rootLayout children];
-  v16 = [v15 isEqual:v5];
+  children = [(CRLCanvasAbstractLayout *)self->_rootLayout children];
+  v16 = [children isEqual:v5];
 
   if ((v16 & 1) == 0)
   {
@@ -165,39 +165,39 @@
   [v5 makeObjectsPerformSelector:{"updateChildrenFromInfo", v18}];
 }
 
-- (void)invalidateLayout:(id)a3
+- (void)invalidateLayout:(id)layout
 {
-  if (self->_validatingLayout != a3)
+  if (self->_validatingLayout != layout)
   {
     invalidLayouts = self->_invalidLayouts;
-    v6 = a3;
-    [(NSMutableSet *)invalidLayouts addObject:v6];
-    sub_1002637FC(v6);
+    layoutCopy = layout;
+    [(NSMutableSet *)invalidLayouts addObject:layoutCopy];
+    sub_1002637FC(layoutCopy);
     WeakRetained = objc_loadWeakRetained(&self->_canvas);
-    [WeakRetained canvasInvalidatedForLayout:v6];
+    [WeakRetained canvasInvalidatedForLayout:layoutCopy];
   }
 }
 
-- (void)invalidateChildrenOfLayout:(id)a3
+- (void)invalidateChildrenOfLayout:(id)layout
 {
-  [(NSMutableSet *)self->_invalidChildrenLayouts addObject:a3];
+  [(NSMutableSet *)self->_invalidChildrenLayouts addObject:layout];
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   [WeakRetained layoutInvalidated];
 }
 
-- (void)invalidateLayoutForRecreation:(id)a3
+- (void)invalidateLayoutForRecreation:(id)recreation
 {
-  [(NSMutableSet *)self->_layoutsNeedingRecreating addObject:a3];
+  [(NSMutableSet *)self->_layoutsNeedingRecreating addObject:recreation];
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   [WeakRetained layoutInvalidated];
 }
 
-+ (Class)effectiveLayoutClassForInfo:(id)a3
++ (Class)effectiveLayoutClassForInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 isSupported])
+  infoCopy = info;
+  if ([infoCopy isSupported])
   {
-    v4 = [v3 layoutClass];
+    layoutClass = [infoCopy layoutClass];
   }
 
   else
@@ -211,22 +211,22 @@
     if (os_log_type_enabled(off_1019EDA60, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = infoCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Element is not supported: %@", &v8, 0xCu);
     }
 
-    v4 = objc_opt_class();
+    layoutClass = objc_opt_class();
   }
 
-  v6 = v4;
+  v6 = layoutClass;
 
   return v6;
 }
 
-- (id)layoutForInfo:(id)a3
+- (id)layoutForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLCanvasLayoutController *)self layoutsForInfo:v4];
+  infoCopy = info;
+  v5 = [(CRLCanvasLayoutController *)self layoutsForInfo:infoCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -269,23 +269,23 @@
   return v8;
 }
 
-- (id)layoutsForInfo:(id)a3
+- (id)layoutsForInfo:(id)info
 {
-  v3 = [(NSMapTable *)self->_layoutsByInfo objectForKey:a3];
+  v3 = [(NSMapTable *)self->_layoutsByInfo objectForKey:info];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)layoutsForInfos:(id)a3
+- (id)layoutsForInfos:(id)infos
 {
-  v4 = a3;
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  infosCopy = infos;
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [infosCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = infosCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -313,10 +313,10 @@
   return v5;
 }
 
-- (id)layoutForInfo:(id)a3 childOfLayout:(id)a4
+- (id)layoutForInfo:(id)info childOfLayout:(id)layout
 {
-  v6 = a4;
-  [(CRLCanvasLayoutController *)self layoutsForInfo:a3];
+  layoutCopy = layout;
+  [(CRLCanvasLayoutController *)self layoutsForInfo:info];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -335,9 +335,9 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 parent];
+        parent = [v11 parent];
 
-        if (v12 == v6)
+        if (parent == layoutCopy)
         {
           v8 = v11;
           goto LABEL_11;
@@ -369,8 +369,8 @@ LABEL_11:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(CRLCanvasAbstractLayout *)self->_rootLayout children];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  children = [(CRLCanvasAbstractLayout *)self->_rootLayout children];
+  v7 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -381,7 +381,7 @@ LABEL_11:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
@@ -402,7 +402,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [children countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v8);
@@ -421,13 +421,13 @@ LABEL_11:
 
 - (void)validateLayouts
 {
-  v2 = self;
+  selfCopy = self;
   [(CRLCanvasLayoutController *)self p_recreateLayoutsIfNeededToValidateLayouts:0];
-  v60 = v2;
-  if ([(NSMutableSet *)v2->_invalidChildrenLayouts count])
+  v60 = selfCopy;
+  if ([(NSMutableSet *)selfCopy->_invalidChildrenLayouts count])
   {
-    v3 = [(NSMutableSet *)v2->_invalidChildrenLayouts copy];
-    [(NSMutableSet *)v2->_invalidChildrenLayouts removeAllObjects];
+    v3 = [(NSMutableSet *)selfCopy->_invalidChildrenLayouts copy];
+    [(NSMutableSet *)selfCopy->_invalidChildrenLayouts removeAllObjects];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -456,9 +456,9 @@ LABEL_11:
       while (v6);
     }
 
-    if ([(NSMutableSet *)v2->_invalidChildrenLayouts intersectsSet:v4])
+    if ([(NSMutableSet *)selfCopy->_invalidChildrenLayouts intersectsSet:v4])
     {
-      v9 = [(NSMutableSet *)v2->_invalidChildrenLayouts mutableCopy];
+      v9 = [(NSMutableSet *)selfCopy->_invalidChildrenLayouts mutableCopy];
       [v9 intersectSet:v4];
       v67 = 0u;
       v68 = 0u;
@@ -541,17 +541,17 @@ LABEL_11:
       v23 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasLayoutController.m"];
       [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:290 isFatal:0 description:"one of these layouts had invalidateChildren while updating: %{public}@ %@", v14, v10];
 
-      v2 = v60;
+      selfCopy = v60;
     }
   }
 
-  if ([(NSMutableSet *)v2->_invalidLayouts count])
+  if ([(NSMutableSet *)selfCopy->_invalidLayouts count])
   {
     p_info = CRLiOSMultiSelectGestureRecognizer.info;
     do
     {
       v25 = p_info;
-      v26 = [(NSMutableSet *)v2->_invalidLayouts copy];
+      v26 = [(NSMutableSet *)selfCopy->_invalidLayouts copy];
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
@@ -581,15 +581,15 @@ LABEL_11:
       }
 
       p_info = v25;
-      if (([(NSMutableSet *)v2->_invalidLayouts isSubsetOfSet:v27]& 1) == 0)
+      if (([(NSMutableSet *)selfCopy->_invalidLayouts isSubsetOfSet:v27]& 1) == 0)
       {
-        v32 = [(NSMutableSet *)v2->_invalidLayouts copy];
+        v32 = [(NSMutableSet *)selfCopy->_invalidLayouts copy];
         [v32 minusSet:v27];
         v33 = [v32 crl_setByMappingObjectsUsingBlock:&stru_101859208];
-        v34 = [v33 allObjects];
-        v35 = [v34 componentsJoinedByString:{@", "}];
+        allObjects = [v33 allObjects];
+        v35 = [allObjects componentsJoinedByString:{@", "}];
 
-        v36 = [v25 + 206 _atomicIncrementAssertCount];
+        _atomicIncrementAssertCount = [v25 + 206 _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
         {
           sub_10135B904();
@@ -601,7 +601,7 @@ LABEL_11:
           v52 = v37;
           v53 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 count]);
           *buf = 67110658;
-          v74 = v36;
+          v74 = _atomicIncrementAssertCount;
           v75 = 2082;
           v76 = "[CRLCanvasLayoutController validateLayouts]";
           v77 = 2082;
@@ -626,11 +626,11 @@ LABEL_11:
         if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
         {
           v54 = v38;
-          v55 = [v25 + 206 packedBacktraceString];
+          packedBacktraceString = [v25 + 206 packedBacktraceString];
           *buf = 67109378;
-          v74 = v36;
+          v74 = _atomicIncrementAssertCount;
           v75 = 2114;
-          v76 = v55;
+          v76 = packedBacktraceString;
           _os_log_error_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
         }
 
@@ -639,19 +639,19 @@ LABEL_11:
         v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 count]);
         [p_info + 206 handleFailureInFunction:v39 file:v40 lineNumber:310 isFatal:0 description:{"a layout that was not about to be validated was invalidated as part of preparation for validation %{public}@ %{public}@, %@", v35, v41, v32}];
 
-        v2 = v60;
+        selfCopy = v60;
       }
 
-      [(CRLCanvasLayoutController *)v2 p_validateLayouts:v27 shouldMarkValidLayoutsThatDoNotWantValidation:1];
-      if ([(NSMutableSet *)v2->_invalidLayouts intersectsSet:v27])
+      [(CRLCanvasLayoutController *)selfCopy p_validateLayouts:v27 shouldMarkValidLayoutsThatDoNotWantValidation:1];
+      if ([(NSMutableSet *)selfCopy->_invalidLayouts intersectsSet:v27])
       {
-        v42 = [(NSMutableSet *)v2->_invalidLayouts mutableCopy];
+        v42 = [(NSMutableSet *)selfCopy->_invalidLayouts mutableCopy];
         [v42 intersectSet:v27];
         v43 = [v42 crl_setByMappingObjectsUsingBlock:&stru_101859268];
-        v44 = [v43 allObjects];
-        v45 = [v44 componentsJoinedByString:{@", "}];
+        allObjects2 = [v43 allObjects];
+        v45 = [allObjects2 componentsJoinedByString:{@", "}];
 
-        v46 = [p_info + 206 _atomicIncrementAssertCount];
+        _atomicIncrementAssertCount2 = [p_info + 206 _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
         {
           sub_10135B954();
@@ -663,7 +663,7 @@ LABEL_11:
           v56 = v47;
           v57 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v42 count]);
           *buf = 67110658;
-          v74 = v46;
+          v74 = _atomicIncrementAssertCount2;
           v75 = 2082;
           v76 = "[CRLCanvasLayoutController validateLayouts]";
           v77 = 2082;
@@ -688,11 +688,11 @@ LABEL_11:
         if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
         {
           v58 = v48;
-          v59 = [p_info + 206 packedBacktraceString];
+          packedBacktraceString2 = [p_info + 206 packedBacktraceString];
           *buf = 67109378;
-          v74 = v46;
+          v74 = _atomicIncrementAssertCount2;
           v75 = 2114;
-          v76 = v59;
+          v76 = packedBacktraceString2;
           _os_log_error_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
         }
 
@@ -701,33 +701,33 @@ LABEL_11:
         v51 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v42 count]);
         [p_info + 206 handleFailureInFunction:v49 file:v50 lineNumber:326 isFatal:0 description:{"one of these layouts was invalidated while validating: %{public}@ %{public}@ %@", v45, v51, v42}];
 
-        v2 = v60;
+        selfCopy = v60;
       }
     }
 
-    while ([(NSMutableSet *)v2->_invalidLayouts count]);
+    while ([(NSMutableSet *)selfCopy->_invalidLayouts count]);
   }
 }
 
-- (id)sortLayoutsForDependencies:(id)a3
+- (id)sortLayoutsForDependencies:(id)dependencies
 {
-  v3 = a3;
-  if ([v3 count])
+  dependenciesCopy = dependencies;
+  if ([dependenciesCopy count])
   {
-    if ([v3 count] == 1)
+    if ([dependenciesCopy count] == 1)
     {
-      v4 = [v3 anyObject];
-      v124 = v4;
+      anyObject = [dependenciesCopy anyObject];
+      v124 = anyObject;
       v68 = [NSArray arrayWithObjects:&v124 count:1];
     }
 
     else
     {
-      v5 = [v3 mutableCopy];
-      v68 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
-      v6 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:{objc_msgSend(v3, "count")}];
-      v71 = v3;
-      v7 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:{objc_msgSend(v3, "count")}];
+      v5 = [dependenciesCopy mutableCopy];
+      v68 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dependenciesCopy count]);
+      v6 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:{objc_msgSend(dependenciesCopy, "count")}];
+      v71 = dependenciesCopy;
+      v7 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:{objc_msgSend(dependenciesCopy, "count")}];
       v101 = 0u;
       v102 = 0u;
       v103 = 0u;
@@ -780,11 +780,11 @@ LABEL_11:
             }
 
             v17 = *(*(&v97 + 1) + 8 * j);
-            v18 = [v17 dependentLayouts];
-            v19 = [NSMutableSet setWithArray:v18];
+            dependentLayouts = [v17 dependentLayouts];
+            v19 = [NSMutableSet setWithArray:dependentLayouts];
 
-            v20 = [v17 reliedOnLayouts];
-            v21 = [NSMutableSet setWithSet:v20];
+            reliedOnLayouts = [v17 reliedOnLayouts];
+            v21 = [NSMutableSet setWithSet:reliedOnLayouts];
 
             [v21 intersectSet:v71];
             [v19 intersectSet:v71];
@@ -862,8 +862,8 @@ LABEL_11:
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v4 = obj;
-      v35 = [v4 countByEnumeratingWithState:&v85 objects:v119 count:16];
+      anyObject = obj;
+      v35 = [anyObject countByEnumeratingWithState:&v85 objects:v119 count:16];
       if (v35)
       {
         v36 = v35;
@@ -874,7 +874,7 @@ LABEL_11:
           {
             if (*v86 != v37)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(anyObject);
             }
 
             v39 = *(*(&v85 + 1) + 8 * n);
@@ -885,26 +885,26 @@ LABEL_11:
             }
           }
 
-          v36 = [v4 countByEnumeratingWithState:&v85 objects:v119 count:16];
+          v36 = [anyObject countByEnumeratingWithState:&v85 objects:v119 count:16];
         }
 
         while (v36);
       }
 
-      if ([v4 count])
+      if ([anyObject count])
       {
-        v74 = v4;
+        v74 = anyObject;
         while ([v34 count])
         {
-          v41 = [v34 anyObject];
-          [v34 removeObject:v41];
-          [v4 removeObject:v41];
-          [v68 addObject:v41];
+          anyObject2 = [v34 anyObject];
+          [v34 removeObject:anyObject2];
+          [anyObject removeObject:anyObject2];
+          [v68 addObject:anyObject2];
           v79 = 0u;
           v80 = 0u;
           v77 = 0u;
           v78 = 0u;
-          v42 = [v7 objectForKey:v41];
+          v42 = [v7 objectForKey:anyObject2];
           v43 = [v42 countByEnumeratingWithState:&v77 objects:v105 count:16];
           if (v43)
           {
@@ -928,7 +928,7 @@ LABEL_11:
 
                 else
                 {
-                  [v48 removeObject:v41];
+                  [v48 removeObject:anyObject2];
                 }
               }
 
@@ -938,7 +938,7 @@ LABEL_11:
             while (v44);
           }
 
-          v4 = v74;
+          anyObject = v74;
           if (![v74 count])
           {
             goto LABEL_75;
@@ -950,7 +950,7 @@ LABEL_11:
         v82 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v50 = v4;
+        v50 = anyObject;
         v51 = [v50 countByEnumeratingWithState:&v81 objects:v118 count:16];
         if (v51)
         {
@@ -1031,15 +1031,15 @@ LABEL_11:
         v63 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvasLayoutController.m"];
         +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v62, v63, 400, 0, "Layout dependency loop. %lu total. %{public}@", [v50 count], v49);
 
-        v64 = [v50 allObjects];
-        [v68 addObjectsFromArray:v64];
+        allObjects = [v50 allObjects];
+        [v68 addObjectsFromArray:allObjects];
 
-        v4 = v74;
+        anyObject = v74;
       }
 
 LABEL_75:
 
-      v3 = v71;
+      dependenciesCopy = v71;
     }
   }
 
@@ -1051,9 +1051,9 @@ LABEL_75:
   return v68;
 }
 
-- (void)p_validateLayouts:(id)a3 shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)a4
+- (void)p_validateLayouts:(id)layouts shouldMarkValidLayoutsThatDoNotWantValidation:(BOOL)validation
 {
-  v6 = [(CRLCanvasLayoutController *)self sortLayoutsForDependencies:a3];
+  v6 = [(CRLCanvasLayoutController *)self sortLayoutsForDependencies:layouts];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1083,7 +1083,7 @@ LABEL_75:
           [v11 i_didValidateLayout];
         }
 
-        else if (!a4)
+        else if (!validation)
         {
           continue;
         }
@@ -1098,16 +1098,16 @@ LABEL_75:
   }
 }
 
-- (void)validateLayoutsWithDependencies:(id)a3
+- (void)validateLayoutsWithDependencies:(id)dependencies
 {
-  v4 = a3;
-  [(CRLCanvasLayoutController *)self p_recreateLayoutsIfNeededToValidateLayouts:v4];
+  dependenciesCopy = dependencies;
+  [(CRLCanvasLayoutController *)self p_recreateLayoutsIfNeededToValidateLayouts:dependenciesCopy];
   v27 = objc_alloc_init(NSMutableSet);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = dependenciesCopy;
   v28 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v28)
   {
@@ -1173,10 +1173,10 @@ LABEL_75:
         }
 
         while ((v11 & 1) != 0);
-        v15 = [v6 rootLayout];
-        v16 = [(CRLCanvasLayoutController *)self rootLayout];
+        rootLayout = [v6 rootLayout];
+        rootLayout2 = [(CRLCanvasLayoutController *)self rootLayout];
 
-        if (v15 == v16)
+        if (rootLayout == rootLayout2)
         {
           [v7 intersectSet:self->_invalidLayouts];
         }
@@ -1192,49 +1192,49 @@ LABEL_75:
 
   [(CRLCanvasLayoutController *)self p_validateLayouts:v27 shouldMarkValidLayoutsThatDoNotWantValidation:0];
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
-  v18 = [WeakRetained delegate];
-  if (!v18)
+  delegate = [WeakRetained delegate];
+  if (!delegate)
   {
     goto LABEL_27;
   }
 
-  v19 = v18;
+  v19 = delegate;
   v20 = objc_loadWeakRetained(&self->_canvas);
-  v21 = [v20 delegate];
+  delegate2 = [v20 delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
     WeakRetained = objc_loadWeakRetained(&self->_canvas);
-    v23 = [WeakRetained delegate];
+    delegate3 = [WeakRetained delegate];
     v24 = objc_loadWeakRetained(&self->_canvas);
-    [v23 canvasDidValidateLayoutsWithDependencies:v24];
+    [delegate3 canvasDidValidateLayoutsWithDependencies:v24];
 
 LABEL_27:
   }
 }
 
-- (void)validateLayoutWithDependencies:(id)a3
+- (void)validateLayoutWithDependencies:(id)dependencies
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:dependencies];
   [(CRLCanvasLayoutController *)self validateLayoutsWithDependencies:v4];
 }
 
-- (id)validatedLayoutForInfo:(id)a3
+- (id)validatedLayoutForInfo:(id)info
 {
-  v3 = [(CRLCanvasLayoutController *)self validatedLayoutsForInfo:a3];
-  v4 = [v3 anyObject];
+  v3 = [(CRLCanvasLayoutController *)self validatedLayoutsForInfo:info];
+  anyObject = [v3 anyObject];
 
-  return v4;
+  return anyObject;
 }
 
-- (id)validatedLayoutsForInfo:(id)a3
+- (id)validatedLayoutsForInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLCanvasLayoutController *)self layoutsForInfo:v4];
+  infoCopy = info;
+  v5 = [(CRLCanvasLayoutController *)self layoutsForInfo:infoCopy];
   if (!v5)
   {
-    v6 = [objc_alloc(objc_msgSend(objc_opt_class() effectiveLayoutClassForInfo:{v4)), "initWithInfo:", v4}];
+    v6 = [objc_alloc(objc_msgSend(objc_opt_class() effectiveLayoutClassForInfo:{infoCopy)), "initWithInfo:", infoCopy}];
     if (v6)
     {
       v5 = [NSSet setWithObject:v6];
@@ -1315,10 +1315,10 @@ LABEL_27:
   return v5;
 }
 
-- (id)validatedLayoutForInfo:(id)a3 childOfLayout:(id)a4
+- (id)validatedLayoutForInfo:(id)info childOfLayout:(id)layout
 {
-  v6 = a4;
-  [(CRLCanvasLayoutController *)self validatedLayoutsForInfo:a3];
+  layoutCopy = layout;
+  [(CRLCanvasLayoutController *)self validatedLayoutsForInfo:info];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1337,9 +1337,9 @@ LABEL_27:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 parent];
+        parent = [v11 parent];
 
-        if (v12 == v6)
+        if (parent == layoutCopy)
         {
           v8 = v11;
           goto LABEL_11;
@@ -1382,24 +1382,24 @@ LABEL_11:
   }
 }
 
-- (void)i_registerLayout:(id)a3
+- (void)i_registerLayout:(id)layout
 {
-  v7 = a3;
-  [v7 willBeAddedToLayoutController:self];
-  if (v7 && self->_layoutsByInfo)
+  layoutCopy = layout;
+  [layoutCopy willBeAddedToLayoutController:self];
+  if (layoutCopy && self->_layoutsByInfo)
   {
-    v4 = [v7 info];
-    if (v4)
+    info = [layoutCopy info];
+    if (info)
     {
-      v5 = [(NSMapTable *)self->_layoutsByInfo objectForKey:v4];
+      v5 = [(NSMapTable *)self->_layoutsByInfo objectForKey:info];
       if (!v5)
       {
         v5 = +[NSMutableSet set];
-        [(NSMapTable *)self->_layoutsByInfo setObject:v5 forKey:v4];
+        [(NSMapTable *)self->_layoutsByInfo setObject:v5 forKey:info];
       }
 
-      [v5 addObject:v7];
-      [(CRLCanvasLayoutChangeObserver *)self->_layoutRegistrationObserver i_layoutRegistered:v7];
+      [v5 addObject:layoutCopy];
+      [(CRLCanvasLayoutChangeObserver *)self->_layoutRegistrationObserver i_layoutRegistered:layoutCopy];
     }
   }
 
@@ -1407,35 +1407,35 @@ LABEL_11:
   [WeakRetained layoutInvalidated];
 }
 
-- (void)i_unregisterLayout:(id)a3
+- (void)i_unregisterLayout:(id)layout
 {
-  v8 = a3;
-  [v8 willBeRemovedFromLayoutController:self];
-  if (v8 && self->_layoutsByInfo)
+  layoutCopy = layout;
+  [layoutCopy willBeRemovedFromLayoutController:self];
+  if (layoutCopy && self->_layoutsByInfo)
   {
-    v4 = [v8 info];
-    if (v4)
+    info = [layoutCopy info];
+    if (info)
     {
-      v5 = [(NSMapTable *)self->_layoutsByInfo objectForKey:v4];
+      v5 = [(NSMapTable *)self->_layoutsByInfo objectForKey:info];
       v6 = v5;
       if (v5)
       {
-        [v5 removeObject:v8];
+        [v5 removeObject:layoutCopy];
         if (![v6 count])
         {
-          [(NSMapTable *)self->_layoutsByInfo removeObjectForKey:v4];
+          [(NSMapTable *)self->_layoutsByInfo removeObjectForKey:info];
         }
       }
 
-      [(CRLCanvasLayoutChangeObserver *)self->_layoutRegistrationObserver i_layoutUnregistered:v8];
+      [(CRLCanvasLayoutChangeObserver *)self->_layoutRegistrationObserver i_layoutUnregistered:layoutCopy];
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   [WeakRetained layoutInvalidated];
 
-  [(NSMutableSet *)self->_invalidLayouts removeObject:v8];
-  [(NSMutableSet *)self->_invalidChildrenLayouts removeObject:v8];
+  [(NSMutableSet *)self->_invalidLayouts removeObject:layoutCopy];
+  [(NSMutableSet *)self->_invalidChildrenLayouts removeObject:layoutCopy];
 }
 
 - (void)i_removeAllLayouts
@@ -1448,15 +1448,15 @@ LABEL_11:
   [(NSMutableSet *)invalidChildrenLayouts removeAllObjects];
 }
 
-- (void)i_enumerateLayoutsUsingBlock:(id)a3
+- (void)i_enumerateLayoutsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMapTable *)self->_layoutsByInfo objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMapTable *)self->_layoutsByInfo objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1468,7 +1468,7 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -1476,26 +1476,26 @@ LABEL_11:
         v11[1] = 3221225472;
         v11[2] = sub_100368540;
         v11[3] = &unk_101859310;
-        v12 = v4;
+        v12 = blockCopy;
         [v10 enumerateObjectsUsingBlock:v11];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)a3
+- (void)p_recreateLayoutsIfNeededToValidateLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   if ([(NSMutableSet *)self->_layoutsNeedingRecreating count])
   {
-    if ([v4 intersectsSet:self->_layoutsNeedingRecreating])
+    if ([layoutsCopy intersectsSet:self->_layoutsNeedingRecreating])
     {
       v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1546,15 +1546,15 @@ LABEL_11:
 
           v15 = *(*(&v22 + 1) + 8 * i);
           v16 = objc_opt_class();
-          v17 = [v15 info];
-          v18 = objc_alloc([v16 effectiveLayoutClassForInfo:v17]);
-          v19 = [v15 info];
-          v20 = [v18 initWithInfo:v19];
+          info = [v15 info];
+          v18 = objc_alloc([v16 effectiveLayoutClassForInfo:info]);
+          info2 = [v15 info];
+          v20 = [v18 initWithInfo:info2];
 
           [(NSMutableSet *)self->_invalidLayouts removeObject:v15];
           [(NSMutableSet *)self->_invalidLayouts addObject:v20];
-          v21 = [v15 parent];
-          [v21 replaceChild:v15 with:v20];
+          parent = [v15 parent];
+          [parent replaceChild:v15 with:v20];
 
           [(CRLCanvasLayoutController *)self invalidateChildrenOfLayout:v20];
         }

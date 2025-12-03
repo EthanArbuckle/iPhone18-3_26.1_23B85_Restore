@@ -1,24 +1,24 @@
 @interface FCImageOnTopPremiumHeadlineTemplate
-- (FCImageOnTopPremiumHeadlineTemplate)initWithJSONDictionary:(id)a3 versionNumber:(int64_t)a4 URLGenerator:(id)a5 allowNil:(BOOL)a6;
+- (FCImageOnTopPremiumHeadlineTemplate)initWithJSONDictionary:(id)dictionary versionNumber:(int64_t)number URLGenerator:(id)generator allowNil:(BOOL)nil;
 @end
 
 @implementation FCImageOnTopPremiumHeadlineTemplate
 
-- (FCImageOnTopPremiumHeadlineTemplate)initWithJSONDictionary:(id)a3 versionNumber:(int64_t)a4 URLGenerator:(id)a5 allowNil:(BOOL)a6
+- (FCImageOnTopPremiumHeadlineTemplate)initWithJSONDictionary:(id)dictionary versionNumber:(int64_t)number URLGenerator:(id)generator allowNil:(BOOL)nil
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = FCImageOnTopPremiumHeadlineTemplate;
-  v11 = [(FCHeadlineTemplate *)&v21 initWithJSONDictionary:v10 versionNumber:a4 URLGenerator:a5];
+  v11 = [(FCHeadlineTemplate *)&v21 initWithJSONDictionary:dictionaryCopy versionNumber:number URLGenerator:generator];
   v12 = v11;
   if (v11)
   {
-    if (v10)
+    if (dictionaryCopy)
     {
-      if (a4 == 2)
+      if (number == 2)
       {
-        v17 = [v10 objectForKeyedSubscript:@"templateType"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"templateType"];
         v18 = [v17 isEqualToString:@"Image On Top"];
 
         if ((v18 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -37,9 +37,9 @@
         }
       }
 
-      else if (a4 == 1)
+      else if (number == 1)
       {
-        v13 = [v10 objectForKeyedSubscript:@"templateType"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"templateType"];
         v14 = [v13 isEqualToString:@"Image On Top"];
 
         if ((v14 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -60,7 +60,7 @@ LABEL_14:
       }
     }
 
-    else if (!a6)
+    else if (!nil)
     {
 
       v12 = 0;

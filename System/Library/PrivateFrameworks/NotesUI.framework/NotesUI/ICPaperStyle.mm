@@ -1,19 +1,19 @@
 @interface ICPaperStyle
-+ (id)linedPaperWithPaperStyleType:(unint64_t)a3;
-+ (void)drawPaperStyleType:(unint64_t)a3 inRect:(CGRect)a4;
++ (id)linedPaperWithPaperStyleType:(unint64_t)type;
++ (void)drawPaperStyleType:(unint64_t)type inRect:(CGRect)rect;
 @end
 
 @implementation ICPaperStyle
 
-+ (id)linedPaperWithPaperStyleType:(unint64_t)a3
++ (id)linedPaperWithPaperStyleType:(unint64_t)type
 {
   v3 = *MEMORY[0x1E69785A0] * 24.0 / 375.0;
   v4 = *MEMORY[0x1E69785A0] + v3 * -2.0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
     v5 = v4 / 6.0;
     v6 = v5 * 0.5;
-    if (a3 == 2)
+    if (type == 2)
     {
       v6 = v6 * 0.5;
       v7 = v6;
@@ -22,11 +22,11 @@
     else
     {
       v7 = v5 * 0.5;
-      if (a3 != 3)
+      if (type != 3)
       {
         v6 = *(MEMORY[0x1E695EFF8] + 8);
         v7 = *MEMORY[0x1E695EFF8];
-        if (a3 == 4)
+        if (type == 4)
         {
           v6 = v5;
           v7 = v5;
@@ -37,13 +37,13 @@
     goto LABEL_14;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     v8 = 24.0;
     goto LABEL_12;
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
     v6 = v4 * 0.0625;
     v7 = 0.0;
@@ -52,7 +52,7 @@
 
   v6 = *(MEMORY[0x1E695EFF8] + 8);
   v7 = *MEMORY[0x1E695EFF8];
-  if (a3 == 7)
+  if (type == 7)
   {
     v8 = 12.0;
 LABEL_12:
@@ -74,13 +74,13 @@ LABEL_14:
   return v9;
 }
 
-+ (void)drawPaperStyleType:(unint64_t)a3 inRect:(CGRect)a4
++ (void)drawPaperStyleType:(unint64_t)type inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a1 linedPaperWithPaperStyleType:a3];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [self linedPaperWithPaperStyleType:type];
   if (v8)
   {
     v28 = v8;

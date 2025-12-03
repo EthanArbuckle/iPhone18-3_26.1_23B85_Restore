@@ -1,14 +1,14 @@
 @interface InAppDownloadManager
 + (id)manager;
-- (BOOL)startDownloadWithID:(id)a3 client:(id)a4 auditToken:(id *)a5;
+- (BOOL)startDownloadWithID:(id)d client:(id)client auditToken:(id *)token;
 - (InAppDownloadManager)init;
-- (id)addDownloadObserver:(id)a3;
-- (id)processDownloadsForTransactions:(id)a3;
-- (void)_notifyObserversDownloadStatusChanged:(id)a3;
-- (void)cancelDownloadWithID:(id)a3;
-- (void)pauseDownloadWithID:(id)a3;
-- (void)removeDownloadObserver:(id)a3;
-- (void)removeDownloadsForTransactionID:(id)a3;
+- (id)addDownloadObserver:(id)observer;
+- (id)processDownloadsForTransactions:(id)transactions;
+- (void)_notifyObserversDownloadStatusChanged:(id)changed;
+- (void)cancelDownloadWithID:(id)d;
+- (void)pauseDownloadWithID:(id)d;
+- (void)removeDownloadObserver:(id)observer;
+- (void)removeDownloadsForTransactionID:(id)d;
 @end
 
 @implementation InAppDownloadManager
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000AF0C;
   block[3] = &unk_10037F9B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003D3AC8 != -1)
   {
     dispatch_once(&qword_1003D3AC8, block);
@@ -58,37 +58,37 @@
   return v2;
 }
 
-- (id)addDownloadObserver:(id)a3
+- (id)addDownloadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
   v7 = self->_observers;
   objc_sync_enter(v7);
-  [(NSMapTable *)self->_observers setObject:v4 forKey:v6];
+  [(NSMapTable *)self->_observers setObject:observerCopy forKey:uUIDString];
   objc_sync_exit(v7);
 
-  return v6;
+  return uUIDString;
 }
 
-- (void)removeDownloadObserver:(id)a3
+- (void)removeDownloadObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSMapTable *)self->_observers removeObjectForKey:v5];
+  [(NSMapTable *)self->_observers removeObjectForKey:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (BOOL)startDownloadWithID:(id)a3 client:(id)a4 auditToken:(id *)a5
+- (BOOL)startDownloadWithID:(id)d client:(id)client auditToken:(id *)token
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  clientCopy = client;
   [(NSLock *)self->_downloadLock lock];
-  v9 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:v7];
-  v10 = [v9 task];
-  v11 = v10;
+  v9 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:dCopy];
+  task = [v9 task];
+  v11 = task;
   if (!v9)
   {
     if (qword_1003D3B18 != -1)
@@ -99,28 +99,28 @@
     v21 = off_1003CAB48;
     if (os_log_type_enabled(off_1003CAB48, OS_LOG_TYPE_ERROR))
     {
-      sub_1002C7810(v21, self, v7);
+      sub_1002C7810(v21, self, dCopy);
     }
 
     goto LABEL_25;
   }
 
-  if (!v10)
+  if (!task)
   {
     goto LABEL_15;
   }
 
-  v12 = [(InAppDownloadTask *)v10 status];
-  if (![v12 state])
+  status = [(InAppDownloadTask *)task status];
+  if (![status state])
   {
 
     goto LABEL_21;
   }
 
-  v13 = [(InAppDownloadTask *)v11 status];
-  v14 = [v13 state];
+  status2 = [(InAppDownloadTask *)v11 status];
+  state = [status2 state];
 
-  if (v14 == 1)
+  if (state == 1)
   {
 LABEL_21:
     if (qword_1003D3B18 != -1)
@@ -132,21 +132,21 @@ LABEL_21:
     if (os_log_type_enabled(off_1003CAB48, OS_LOG_TYPE_INFO))
     {
       v30 = v29;
-      v31 = [(InAppDownloadTask *)v11 logKey];
+      logKey = [(InAppDownloadTask *)v11 logKey];
       *buf = 138543618;
-      v40 = v31;
+      v40 = logKey;
       v41 = 2114;
-      v42 = v7;
+      v42 = dCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[%{public}@] Download already started for ID %{public}@", buf, 0x16u);
     }
 
     goto LABEL_25;
   }
 
-  v15 = [(InAppDownloadTask *)v11 status];
-  v16 = [v15 state];
+  status3 = [(InAppDownloadTask *)v11 status];
+  state2 = [status3 state];
 
-  if (v16 == 3)
+  if (state2 == 3)
   {
     if (qword_1003D3B18 != -1)
     {
@@ -157,16 +157,16 @@ LABEL_21:
     if (os_log_type_enabled(off_1003CAB48, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [(InAppDownloadTask *)v11 logKey];
+      logKey2 = [(InAppDownloadTask *)v11 logKey];
       *buf = 138543618;
-      v40 = v19;
+      v40 = logKey2;
       v41 = 2114;
-      v42 = v7;
+      v42 = dCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}@] Download already finished for ID %{public}@", buf, 0x16u);
     }
 
-    v20 = [(InAppDownloadTask *)v11 status];
-    [(InAppDownloadManager *)self _notifyObserversDownloadStatusChanged:v20];
+    status4 = [(InAppDownloadTask *)v11 status];
+    [(InAppDownloadManager *)self _notifyObserversDownloadStatusChanged:status4];
 
 LABEL_25:
     v28 = 0;
@@ -175,9 +175,9 @@ LABEL_25:
 
 LABEL_15:
   v22 = [InAppDownloadTask alloc];
-  v23 = [v9 info];
-  v24 = [v8 callerBundleID];
-  v25 = [(InAppDownloadTask *)v22 initWithDownloadID:v7 info:v23 bundleID:v24 containerID:0];
+  info = [v9 info];
+  callerBundleID = [clientCopy callerBundleID];
+  v25 = [(InAppDownloadTask *)v22 initWithDownloadID:dCopy info:info bundleID:callerBundleID containerID:0];
 
   [v9 setTask:v25];
   objc_initWeak(&location, self);
@@ -199,7 +199,7 @@ LABEL_15:
     *buf = 138543618;
     v40 = v27;
     v41 = 2114;
-    v42 = v7;
+    v42 = dCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting downloads for ID %{public}@", buf, 0x16u);
   }
 
@@ -214,11 +214,11 @@ LABEL_26:
   return v28;
 }
 
-- (void)cancelDownloadWithID:(id)a3
+- (void)cancelDownloadWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_downloadLock lock];
-  v5 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (!v5)
   {
@@ -233,23 +233,23 @@ LABEL_26:
       goto LABEL_19;
     }
 
-    v14 = v15;
+    task4 = v15;
     *v19 = 138543618;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2114;
-    *&v19[14] = v4;
+    *&v19[14] = dCopy;
     v16 = *&v19[4];
     v17 = "%{public}@: No downloads to cancel for ID %{public}@";
 LABEL_17:
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v17, v19, 0x16u);
+    _os_log_impl(&_mh_execute_header, task4, OS_LOG_TYPE_DEFAULT, v17, v19, 0x16u);
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = [v5 task];
+  task = [v5 task];
 
-  if (!v7)
+  if (!task)
   {
     if (qword_1003D3B18 != -1)
     {
@@ -262,20 +262,20 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v14 = v18;
+    task4 = v18;
     *v19 = 138543618;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2114;
-    *&v19[14] = v4;
+    *&v19[14] = dCopy;
     v16 = *&v19[4];
     v17 = "%{public}@: Download is not started for ID %{public}@";
     goto LABEL_17;
   }
 
-  v8 = [v6 task];
-  v9 = [v8 isExecuting];
+  task2 = [v6 task];
+  isExecuting = [task2 isExecuting];
 
-  if (v9)
+  if (isExecuting)
   {
     if (qword_1003D3B18 != -1)
     {
@@ -286,17 +286,17 @@ LABEL_18:
     if (os_log_type_enabled(off_1003CAB48, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v6 task];
-      v13 = [v12 logKey];
+      task3 = [v6 task];
+      logKey = [task3 logKey];
       *v19 = 138543618;
-      *&v19[4] = v13;
+      *&v19[4] = logKey;
       *&v19[12] = 2114;
-      *&v19[14] = v4;
+      *&v19[14] = dCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cancelling download for ID %{public}@", v19, 0x16u);
     }
 
-    v14 = [v6 task];
-    [v14 cancel];
+    task4 = [v6 task];
+    [task4 cancel];
     goto LABEL_18;
   }
 
@@ -304,11 +304,11 @@ LABEL_19:
   [(NSLock *)self->_downloadLock unlock:*v19];
 }
 
-- (void)pauseDownloadWithID:(id)a3
+- (void)pauseDownloadWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_downloadLock lock];
-  v5 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (!v5)
   {
@@ -323,23 +323,23 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v14 = v15;
+    task4 = v15;
     *v19 = 138543618;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2114;
-    *&v19[14] = v4;
+    *&v19[14] = dCopy;
     v16 = *&v19[4];
     v17 = "%{public}@: No downloads to pause for ID %{public}@";
 LABEL_17:
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v17, v19, 0x16u);
+    _os_log_impl(&_mh_execute_header, task4, OS_LOG_TYPE_DEFAULT, v17, v19, 0x16u);
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = [v5 task];
+  task = [v5 task];
 
-  if (!v7)
+  if (!task)
   {
     if (qword_1003D3B18 != -1)
     {
@@ -352,20 +352,20 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v14 = v18;
+    task4 = v18;
     *v19 = 138543618;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2114;
-    *&v19[14] = v4;
+    *&v19[14] = dCopy;
     v16 = *&v19[4];
     v17 = "%{public}@: Download is not started for ID %{public}@";
     goto LABEL_17;
   }
 
-  v8 = [v6 task];
-  v9 = [v8 isExecuting];
+  task2 = [v6 task];
+  isExecuting = [task2 isExecuting];
 
-  if (v9)
+  if (isExecuting)
   {
     if (qword_1003D3B18 != -1)
     {
@@ -376,17 +376,17 @@ LABEL_18:
     if (os_log_type_enabled(off_1003CAB48, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v6 task];
-      v13 = [v12 logKey];
+      task3 = [v6 task];
+      logKey = [task3 logKey];
       *v19 = 138543618;
-      *&v19[4] = v13;
+      *&v19[4] = logKey;
       *&v19[12] = 2114;
-      *&v19[14] = v4;
+      *&v19[14] = dCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Pausing download for ID %{public}@", v19, 0x16u);
     }
 
-    v14 = [v6 task];
-    [v14 pause];
+    task4 = [v6 task];
+    [task4 pause];
     goto LABEL_18;
   }
 
@@ -394,17 +394,17 @@ LABEL_19:
   [(NSLock *)self->_downloadLock unlock:*v19];
 }
 
-- (void)removeDownloadsForTransactionID:(id)a3
+- (void)removeDownloadsForTransactionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSMutableArray);
   [(NSLock *)self->_downloadLock lock];
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v6 = [(NSMutableDictionary *)self->_pendingDownloads allValues];
-  v7 = [v6 countByEnumeratingWithState:&v54 objects:v65 count:16];
+  allValues = [(NSMutableDictionary *)self->_pendingDownloads allValues];
+  v7 = [allValues countByEnumeratingWithState:&v54 objects:v65 count:16];
   if (v7)
   {
     v8 = v7;
@@ -415,21 +415,21 @@ LABEL_19:
       {
         if (*v55 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v54 + 1) + 8 * i);
-        v12 = [v11 transactionIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        transactionIdentifier = [v11 transactionIdentifier];
+        v13 = [transactionIdentifier isEqualToString:dCopy];
 
         if (v13)
         {
-          v14 = [v11 identifier];
-          [v5 addObject:v14];
+          identifier = [v11 identifier];
+          [v5 addObject:identifier];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v54 objects:v65 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v54 objects:v65 count:16];
     }
 
     while (v8);
@@ -455,7 +455,7 @@ LABEL_19:
       v61 = 2048;
       v62 = v19;
       v63 = 2113;
-      v64 = v4;
+      v64 = dCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing %lu downloads for transaction %{private}@", buf, 0x20u);
     }
 
@@ -486,11 +486,11 @@ LABEL_19:
           v24 = [(NSMutableDictionary *)self->_pendingDownloads objectForKeyedSubscript:v23];
           [(NSMutableDictionary *)self->_pendingDownloads setObject:0 forKeyedSubscript:v23];
           [(NSLock *)self->_downloadLock unlock];
-          v25 = [v24 task];
-          v26 = [v25 status];
-          v27 = [v26 installPath];
+          task = [v24 task];
+          status = [task status];
+          installPath = [status installPath];
 
-          if (v27)
+          if (installPath)
           {
             if (qword_1003D3B18 != -1)
             {
@@ -507,16 +507,16 @@ LABEL_19:
               v61 = 2114;
               v62 = v23;
               v63 = 2114;
-              v64 = v27;
+              v64 = installPath;
               v31 = v30;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing downloaded content for %{public}@ at %{public}@", buf, 0x20u);
             }
 
             v32 = +[NSFileManager defaultManager];
-            if ([v32 fileExistsAtPath:v27])
+            if ([v32 fileExistsAtPath:installPath])
             {
               v49 = 0;
-              [v32 removeItemAtPath:v27 error:&v49];
+              [v32 removeItemAtPath:installPath error:&v49];
               v33 = v49;
               if (v33)
               {
@@ -559,7 +559,7 @@ LABEL_19:
                 v61 = 2114;
                 v62 = v23;
                 v63 = 2114;
-                v64 = v27;
+                v64 = installPath;
                 v42 = v41;
                 _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%{public}@: Downloaded content was already moved or removed for %{public}@ at %{public}@", buf, 0x20u);
               }
@@ -603,17 +603,17 @@ LABEL_19:
   [(NSLock *)self->_downloadLock unlock];
 }
 
-- (id)processDownloadsForTransactions:(id)a3
+- (id)processDownloadsForTransactions:(id)transactions
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-  v39 = self;
+  transactionsCopy = transactions;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(transactionsCopy, "count")}];
+  selfCopy = self;
   [(NSLock *)self->_downloadLock lock];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v4;
+  obj = transactionsCopy;
   v6 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v6)
   {
@@ -642,8 +642,8 @@ LABEL_19:
         v16 = v15;
         if (v13 && [v15 count])
         {
-          v17 = [v16 firstObject];
-          v18 = [v17 mutableCopy];
+          firstObject = [v16 firstObject];
+          v18 = [firstObject mutableCopy];
 
           v19 = [v11 tcr_stringForKey:off_1003CB1A8];
           [v18 setObject:v19 forKeyedSubscript:off_1003CB1A8];
@@ -659,7 +659,7 @@ LABEL_19:
           v23 = [NSArray arrayWithObjects:&v48 count:1];
           [v12 setObject:v23 forKeyedSubscript:@"assets"];
 
-          v24 = [(NSMutableDictionary *)v39->_pendingDownloads objectForKeyedSubscript:v13];
+          v24 = [(NSMutableDictionary *)selfCopy->_pendingDownloads objectForKeyedSubscript:v13];
           if (v24)
           {
             if (qword_1003D3B18 != -1)
@@ -704,7 +704,7 @@ LABEL_19:
             }
 
             v26 = [[InAppDownload alloc] initWithIdentifier:v13 transactionIdentifier:v14 info:v18];
-            [(NSMutableDictionary *)v39->_pendingDownloads setObject:v26 forKeyedSubscript:v13];
+            [(NSMutableDictionary *)selfCopy->_pendingDownloads setObject:v26 forKeyedSubscript:v13];
 LABEL_18:
 
             v5 = v35;
@@ -726,22 +726,22 @@ LABEL_18:
     while (v8);
   }
 
-  [(NSLock *)v39->_downloadLock unlock];
+  [(NSLock *)selfCopy->_downloadLock unlock];
 
   return v5;
 }
 
-- (void)_notifyObserversDownloadStatusChanged:(id)a3
+- (void)_notifyObserversDownloadStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = self->_observers;
   objc_sync_enter(v5);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMapTable *)self->_observers objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_observers objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -752,15 +752,15 @@ LABEL_18:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) downloadManager:self updatedStatus:v4];
+        [*(*(&v10 + 1) + 8 * v9) downloadManager:self updatedStatus:changedCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

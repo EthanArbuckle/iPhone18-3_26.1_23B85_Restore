@@ -7,8 +7,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(BuddyUIImageViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 hasPrefix:@"LockScreenTitle"];
+  accessibilityIdentifier = [(BuddyUIImageViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier hasPrefix:@"LockScreenTitle"];
 
   if (v4)
   {
@@ -22,22 +22,22 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(BuddyUIImageViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 hasPrefix:@"LockScreenTitle"];
+  accessibilityIdentifier = [(BuddyUIImageViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier hasPrefix:@"LockScreenTitle"];
 
   if (v4)
   {
-    v5 = AXDeviceGetLocalizedShortModelName();
+    accessibilityLabel = AXDeviceGetLocalizedShortModelName();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BuddyUIImageViewAccessibility;
-    v5 = [(BuddyUIImageViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(BuddyUIImageViewAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

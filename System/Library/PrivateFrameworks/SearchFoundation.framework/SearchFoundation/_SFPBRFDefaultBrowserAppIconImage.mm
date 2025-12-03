@@ -1,24 +1,24 @@
 @interface _SFPBRFDefaultBrowserAppIconImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFDefaultBrowserAppIconImage)initWithDictionary:(id)a3;
-- (_SFPBRFDefaultBrowserAppIconImage)initWithFacade:(id)a3;
-- (_SFPBRFDefaultBrowserAppIconImage)initWithJSON:(id)a3;
+- (_SFPBRFDefaultBrowserAppIconImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFDefaultBrowserAppIconImage)initWithFacade:(id)facade;
+- (_SFPBRFDefaultBrowserAppIconImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFDefaultBrowserAppIconImage
 
-- (_SFPBRFDefaultBrowserAppIconImage)initWithFacade:(id)a3
+- (_SFPBRFDefaultBrowserAppIconImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFDefaultBrowserAppIconImage *)self init];
   if (v5)
   {
-    if ([v4 hasImage_style])
+    if ([facadeCopy hasImage_style])
     {
-      -[_SFPBRFDefaultBrowserAppIconImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[_SFPBRFDefaultBrowserAppIconImage setImage_style:](v5, "setImage_style:", [facadeCopy image_style]);
     }
 
     v6 = v5;
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (_SFPBRFDefaultBrowserAppIconImage)initWithDictionary:(id)a3
+- (_SFPBRFDefaultBrowserAppIconImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBRFDefaultBrowserAppIconImage;
   v5 = [(_SFPBRFDefaultBrowserAppIconImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"imageStyle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"imageStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (_SFPBRFDefaultBrowserAppIconImage)initWithJSON:(id)a3
+- (_SFPBRFDefaultBrowserAppIconImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFDefaultBrowserAppIconImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFDefaultBrowserAppIconImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFDefaultBrowserAppIconImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,33 +84,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_image_style)
   {
-    v4 = [(_SFPBRFDefaultBrowserAppIconImage *)self image_style];
-    if (v4 < 0x2A && ((0x3FFDFFFFFFFuLL >> v4) & 1) != 0)
+    image_style = [(_SFPBRFDefaultBrowserAppIconImage *)self image_style];
+    if (image_style < 0x2A && ((0x3FFDFFFFFFFuLL >> image_style) & 1) != 0)
     {
-      v5 = off_1E7ACE270[v4];
+      v5 = off_1E7ACE270[image_style];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_style];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"imageStyle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"imageStyle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     image_style = self->_image_style;
-    v6 = image_style == [v4 image_style];
+    v6 = image_style == [equalCopy image_style];
   }
 
   else
@@ -121,9 +121,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBRFDefaultBrowserAppIconImage *)self image_style])
   {
     PBDataWriterWriteInt32Field();

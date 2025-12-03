@@ -7,8 +7,8 @@
 - (NSString)homeSharingAppleID;
 - (NSString)homeSharingGroupID;
 - (SSAccount)activeiTunesStoreAccount;
-- (id)accountTypesWithDefaultAccountID:(id)a3;
-- (id)defaultAccountIDForAuthenticationAccountType:(unint64_t)a3;
+- (id)accountTypesWithDefaultAccountID:(id)d;
+- (id)defaultAccountIDForAuthenticationAccountType:(unint64_t)type;
 @end
 
 @implementation TRAccountsManager
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __35__TRAccountsManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -46,10 +46,10 @@ uint64_t __35__TRAccountsManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (SSAccount)activeiTunesStoreAccount
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  return v3;
+  return activeAccount;
 }
 
 - (ACAccountStore)iCloudAccountStore
@@ -57,9 +57,9 @@ uint64_t __35__TRAccountsManager_sharedInstance__block_invoke(uint64_t a1)
   iCloudAccountStore = self->_iCloudAccountStore;
   if (!iCloudAccountStore)
   {
-    v4 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     v5 = self->_iCloudAccountStore;
-    self->_iCloudAccountStore = v4;
+    self->_iCloudAccountStore = defaultStore;
 
     iCloudAccountStore = self->_iCloudAccountStore;
   }
@@ -69,10 +69,10 @@ uint64_t __35__TRAccountsManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (ACAccount)activeiCloudAccount
 {
-  v2 = [(TRAccountsManager *)self iCloudAccountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  iCloudAccountStore = [(TRAccountsManager *)self iCloudAccountStore];
+  aa_primaryAppleAccount = [iCloudAccountStore aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 - (NSString)homeSharingAppleID
@@ -109,58 +109,58 @@ uint64_t __35__TRAccountsManager_sharedInstance__block_invoke(uint64_t a1)
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 localPlayer];
+  localPlayer = [v2 localPlayer];
 
-  return v4;
+  return localPlayer;
 }
 
-- (id)defaultAccountIDForAuthenticationAccountType:(unint64_t)a3
+- (id)defaultAccountIDForAuthenticationAccountType:(unint64_t)type
 {
-  v3 = 0;
-  if (a3 <= 2)
+  homeSharingAppleID = 0;
+  if (type <= 2)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_12;
       }
 
-      v4 = [(TRAccountsManager *)self activeiCloudAccount];
-      v5 = [v4 username];
+      activeiCloudAccount = [(TRAccountsManager *)self activeiCloudAccount];
+      username = [activeiCloudAccount username];
       goto LABEL_10;
     }
 
-    v6 = [(TRAccountsManager *)self activeiTunesStoreAccount];
+    activeiTunesStoreAccount = [(TRAccountsManager *)self activeiTunesStoreAccount];
 LABEL_9:
-    v4 = v6;
-    v5 = [v6 accountName];
+    activeiCloudAccount = activeiTunesStoreAccount;
+    username = [activeiTunesStoreAccount accountName];
 LABEL_10:
-    v3 = v5;
+    homeSharingAppleID = username;
 
     goto LABEL_12;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
       goto LABEL_12;
     }
 
-    v6 = [(TRAccountsManager *)self localGameCenterPlayer];
+    activeiTunesStoreAccount = [(TRAccountsManager *)self localGameCenterPlayer];
     goto LABEL_9;
   }
 
-  v3 = [(TRAccountsManager *)self homeSharingAppleID];
+  homeSharingAppleID = [(TRAccountsManager *)self homeSharingAppleID];
 LABEL_12:
 
-  return v3;
+  return homeSharingAppleID;
 }
 
-- (id)accountTypesWithDefaultAccountID:(id)a3
+- (id)accountTypesWithDefaultAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x277CBEB18] arrayWithArray:&unk_287F62A50];
   if ([v5 count])
   {
@@ -168,10 +168,10 @@ LABEL_12:
     do
     {
       v7 = [v5 objectAtIndexedSubscript:v6];
-      v8 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-      v9 = [(TRAccountsManager *)self defaultAccountIDForAuthenticationAccountType:v8];
-      if (([v9 isEqualToString:v4] & 1) == 0)
+      v9 = [(TRAccountsManager *)self defaultAccountIDForAuthenticationAccountType:unsignedIntegerValue];
+      if (([v9 isEqualToString:dCopy] & 1) == 0)
       {
         [v5 removeObjectAtIndex:v6--];
       }

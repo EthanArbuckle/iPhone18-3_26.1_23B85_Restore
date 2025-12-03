@@ -1,13 +1,13 @@
 @interface NearbyPeerPaymentFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithCoder:(id)a3;
-- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithCoder:(id)coder;
+- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation NearbyPeerPaymentFooterView
 
-- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithCoder:(id)a3
+- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9PassKitUI27NearbyPeerPaymentFooterView_stateLabelsView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for NearbyPeerPaymentStateLabelsView()) init];
@@ -20,14 +20,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD89EBF8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1BD89EECC(width);
   v7 = v6;
 
@@ -38,7 +38,7 @@
   return result;
 }
 
-- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI27NearbyPeerPaymentFooterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

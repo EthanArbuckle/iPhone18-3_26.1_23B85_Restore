@@ -1,15 +1,15 @@
 @interface BUZipEntry
-- (BOOL)extractFromArchive:(id)a3 destinationURL:(id)a4 error:(id *)a5;
-- (_xmlDoc)xmlDocumentFromArchive:(id)a3;
-- (id)_dataFromArchive:(id)a3 error:(id *)a4;
-- (id)_extractFromArchiveData:(id)a3 destinationURL:(id)a4 allowEntriesOutsideRoot:(BOOL)a5 error:(id *)a6;
-- (id)dataFromArchive:(id)a3;
+- (BOOL)extractFromArchive:(id)archive destinationURL:(id)l error:(id *)error;
+- (_xmlDoc)xmlDocumentFromArchive:(id)archive;
+- (id)_dataFromArchive:(id)archive error:(id *)error;
+- (id)_extractFromArchiveData:(id)data destinationURL:(id)l allowEntriesOutsideRoot:(BOOL)root error:(id *)error;
+- (id)dataFromArchive:(id)archive;
 - (id)description;
-- (id)extractFromArchive:(id)a3;
-- (id)plistFromArchive:(id)a3;
-- (id)stringFromArchive:(id)a3;
+- (id)extractFromArchive:(id)archive;
+- (id)plistFromArchive:(id)archive;
+- (id)stringFromArchive:(id)archive;
 - (id)usableName;
-- (void)_beginStreamingWriteForArchive:(id)a3 forDestinationURL:(id)a4 completion:(id)a5;
+- (void)_beginStreamingWriteForArchive:(id)archive forDestinationURL:(id)l completion:(id)completion;
 @end
 
 @implementation BUZipEntry
@@ -49,10 +49,10 @@
   return v9;
 }
 
-- (id)_dataFromArchive:(id)a3 error:(id *)a4
+- (id)_dataFromArchive:(id)archive error:(id *)error
 {
-  v6 = a3;
-  v8 = objc_msgSend_readChannelForEntry_(v6, v7, self);
+  archiveCopy = archive;
+  v8 = objc_msgSend_readChannelForEntry_(archiveCopy, v7, self);
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -78,9 +78,9 @@
   objc_msgSend_readWithHandler_(v8, v11, v16);
   dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   objc_msgSend_close(v8, v12, v13);
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v14 = v27[5];
@@ -91,10 +91,10 @@
   return v14;
 }
 
-- (id)stringFromArchive:(id)a3
+- (id)stringFromArchive:(id)archive
 {
   v13 = 0;
-  v3 = objc_msgSend__dataFromArchive_error_(self, a2, a3, &v13);
+  v3 = objc_msgSend__dataFromArchive_error_(self, a2, archive, &v13);
   v4 = v13;
   if (v3)
   {
@@ -119,10 +119,10 @@
   return v8;
 }
 
-- (id)dataFromArchive:(id)a3
+- (id)dataFromArchive:(id)archive
 {
   v13 = 0;
-  v3 = objc_msgSend__dataFromArchive_error_(self, a2, a3, &v13);
+  v3 = objc_msgSend__dataFromArchive_error_(self, a2, archive, &v13);
   v4 = v13;
   if (v3)
   {
@@ -147,10 +147,10 @@
   return v8;
 }
 
-- (id)plistFromArchive:(id)a3
+- (id)plistFromArchive:(id)archive
 {
   v15 = 0;
-  v3 = objc_msgSend__dataFromArchive_error_(self, a2, a3, &v15);
+  v3 = objc_msgSend__dataFromArchive_error_(self, a2, archive, &v15);
   v4 = v15;
   if (v3)
   {
@@ -186,11 +186,11 @@
   return v7;
 }
 
-- (_xmlDoc)xmlDocumentFromArchive:(id)a3
+- (_xmlDoc)xmlDocumentFromArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   v38 = 0;
-  v6 = objc_msgSend__dataFromArchive_error_(self, v5, v4, &v38);
+  v6 = objc_msgSend__dataFromArchive_error_(self, v5, archiveCopy, &v38);
   v7 = v38;
   if (v6)
   {
@@ -264,9 +264,9 @@
   return myDoc;
 }
 
-- (id)extractFromArchive:(id)a3
+- (id)extractFromArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   v5 = [BUTemporaryDirectory alloc];
   v46 = 0;
   v7 = objc_msgSend_initWithError_(v5, v6, &v46);
@@ -274,7 +274,7 @@
   if (v7)
   {
     v11 = objc_msgSend_URL(v7, v8, v9);
-    v14 = objc_msgSend_options(v4, v12, v13);
+    v14 = objc_msgSend_options(archiveCopy, v12, v13);
     v15 = MEMORY[0x277CBEBC0];
     v18 = objc_msgSend_usableName(self, v16, v17);
     v20 = objc_msgSend_fileURLWithPath_relativeToURL_(v15, v19, v18, v11);
@@ -282,7 +282,7 @@
     if ((v14 & 0x10) != 0 || objc_msgSend_bu_isContainedWithinFileURL_(v20, v21, v11))
     {
       v45 = v10;
-      v22 = objc_msgSend__dataFromArchive_error_(self, v21, v4, &v45);
+      v22 = objc_msgSend__dataFromArchive_error_(self, v21, archiveCopy, &v45);
       v23 = v45;
 
       if (v22)
@@ -363,16 +363,16 @@
   return v34;
 }
 
-- (id)_extractFromArchiveData:(id)a3 destinationURL:(id)a4 allowEntriesOutsideRoot:(BOOL)a5 error:(id *)a6
+- (id)_extractFromArchiveData:(id)data destinationURL:(id)l allowEntriesOutsideRoot:(BOOL)root error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  lCopy = l;
   size_ptr = 0;
   buffer_ptr = 0;
-  v11 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v11 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   v12 = MEMORY[0x277CBEBC0];
   v15 = objc_msgSend_usableName(self, v13, v14);
-  v17 = objc_msgSend_fileURLWithPath_relativeToURL_(v12, v16, v15, v10);
+  v17 = objc_msgSend_fileURLWithPath_relativeToURL_(v12, v16, v15, lCopy);
 
   if (objc_msgSend_isSymLink(self, v18, v19))
   {
@@ -383,7 +383,7 @@
       v28 = objc_msgSend_URLByDeletingLastPathComponent(v17, v26, v27);
       v30 = objc_msgSend_fileURLWithPath_relativeToURL_(MEMORY[0x277CBEBC0], v29, v23, v28);
       v33 = v30;
-      if (a5 || objc_msgSend_bu_isContainedWithinFileURL_(v30, v31, v10))
+      if (root || objc_msgSend_bu_isContainedWithinFileURL_(v30, v31, lCopy))
       {
         v61 = v33;
         v34 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v31, v32);
@@ -476,10 +476,10 @@
     }
   }
 
-  if (a6)
+  if (error)
   {
     v57 = v42;
-    *a6 = v42;
+    *error = v42;
   }
 
   v58 = v41;
@@ -487,11 +487,11 @@
   return v58;
 }
 
-- (BOOL)extractFromArchive:(id)a3 destinationURL:(id)a4 error:(id *)a5
+- (BOOL)extractFromArchive:(id)archive destinationURL:(id)l error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  archiveCopy = archive;
+  lCopy = l;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -503,10 +503,10 @@
   v42 = 0x2020000000;
   v43 = 0;
   v10 = MEMORY[0x277CBEBC0];
-  v13 = objc_msgSend_path(v9, v11, v12);
+  v13 = objc_msgSend_path(lCopy, v11, v12);
   v15 = objc_msgSend_fileURLWithPath_isDirectory_(v10, v14, v13, 1);
 
-  LOBYTE(v13) = objc_msgSend_options(v8, v16, v17);
+  LOBYTE(v13) = objc_msgSend_options(archiveCopy, v16, v17);
   v18 = objc_alloc(MEMORY[0x277CBEBC0]);
   v21 = objc_msgSend_usableName(self, v19, v20);
   inited = objc_msgSend_initFileURLWithPath_relativeToURL_(v18, v22, v21, v15);
@@ -518,7 +518,7 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v8;
+      v51 = archiveCopy;
       _os_log_impl(&dword_241DA6000, v26, OS_LOG_TYPE_DEFAULT, "Beginning streaming extraction for archive %@", buf, 0xCu);
     }
 
@@ -532,10 +532,10 @@
     v39 = v24 >> 4;
     v36 = v15;
     v38 = &v40;
-    objc_msgSend__beginStreamingWriteForArchive_forDestinationURL_completion_(self, v27, v8, v35, v34);
-    if (a5)
+    objc_msgSend__beginStreamingWriteForArchive_forDestinationURL_completion_(self, v27, archiveCopy, v35, v34);
+    if (error)
     {
-      *a5 = v45[5];
+      *error = v45[5];
     }
 
     v28 = *(v41 + 24);
@@ -561,23 +561,23 @@
   return v28 & 1;
 }
 
-- (void)_beginStreamingWriteForArchive:(id)a3 forDestinationURL:(id)a4 completion:(id)a5
+- (void)_beginStreamingWriteForArchive:(id)archive forDestinationURL:(id)l completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  archiveCopy = archive;
+  lCopy = l;
+  completionCopy = completion;
   v11 = [BUTemporaryDirectory alloc];
   v63 = 0;
-  v13 = objc_msgSend_initForWritingToURL_error_(v11, v12, v9, &v63);
+  v13 = objc_msgSend_initForWritingToURL_error_(v11, v12, lCopy, &v63);
   v16 = v63;
   if (v13)
   {
     v17 = objc_msgSend_URL(v13, v14, v15);
-    v20 = objc_msgSend_lastPathComponent(v9, v18, v19);
+    v20 = objc_msgSend_lastPathComponent(lCopy, v18, v19);
     v22 = objc_msgSend_URLByAppendingPathComponent_(v17, v21, v20);
 
-    v24 = objc_msgSend_readChannelForEntry_(v8, v23, self);
+    v24 = objc_msgSend_readChannelForEntry_(archiveCopy, v23, self);
     v57 = 0;
     v58 = &v57;
     v59 = 0x3032000000;
@@ -617,7 +617,7 @@
         {
           v45 = v51[5];
           *buf = 138412802;
-          v65 = v8;
+          v65 = archiveCopy;
           v66 = 2112;
           v67 = v22;
           v68 = 2112;
@@ -625,7 +625,7 @@
           _os_log_error_impl(&dword_241DA6000, v36, OS_LOG_TYPE_ERROR, "Failed to write archive %@ to URL %@. Error: %@", buf, 0x20u);
         }
 
-        v37 = MEMORY[0x245D00360](v10);
+        v37 = MEMORY[0x245D00360](completionCopy);
         v38 = v37;
         if (v37)
         {
@@ -635,7 +635,7 @@
 
       else
       {
-        v44 = MEMORY[0x245D00360](v10);
+        v44 = MEMORY[0x245D00360](completionCopy);
         v38 = v44;
         if (v44)
         {
@@ -654,7 +654,7 @@
         sub_241DD18F4();
       }
 
-      v42 = MEMORY[0x245D00360](v10);
+      v42 = MEMORY[0x245D00360](completionCopy);
       v43 = v42;
       if (v42)
       {
@@ -673,7 +673,7 @@
       sub_241DD1960();
     }
 
-    v40 = MEMORY[0x245D00360](v10);
+    v40 = MEMORY[0x245D00360](completionCopy);
     v22 = v40;
     if (v40)
     {

@@ -1,25 +1,25 @@
 @interface AXMPipelineContextInput
-+ (AXMPipelineContextInput)inputWithCIImage:(id)a3;
-+ (AXMPipelineContextInput)inputWithCIImage:(id)a3 photoLibraryURL:(id)a4;
-+ (AXMPipelineContextInput)inputWithPHAssetLocalIdentifier:(id)a3 photoLibraryURL:(id)a4;
-+ (AXMPipelineContextInput)inputWithPixelBuffer:(id)a3;
-+ (AXMPipelineContextInput)inputWithURL:(id)a3;
-+ (AXMPipelineContextInput)inputWithURL:(id)a3 photoLibraryURL:(id)a4;
++ (AXMPipelineContextInput)inputWithCIImage:(id)image;
++ (AXMPipelineContextInput)inputWithCIImage:(id)image photoLibraryURL:(id)l;
++ (AXMPipelineContextInput)inputWithPHAssetLocalIdentifier:(id)identifier photoLibraryURL:(id)l;
++ (AXMPipelineContextInput)inputWithPixelBuffer:(id)buffer;
++ (AXMPipelineContextInput)inputWithURL:(id)l;
++ (AXMPipelineContextInput)inputWithURL:(id)l photoLibraryURL:(id)rL;
 - (AXMPipelineContextInput)init;
-- (AXMPipelineContextInput)initWithCoder:(id)a3;
+- (AXMPipelineContextInput)initWithCoder:(id)coder;
 - (CGColorSpace)imageColorSpace;
-- (CGImage)createCGImageWithMetrics:(id)a3;
+- (CGImage)createCGImageWithMetrics:(id)metrics;
 - (CGSize)size;
 - (__CVBuffer)wrappedPixelBuffer;
-- (id)_initWithCIImage:(id)a3;
-- (id)_initWithCIImage:(id)a3 photoLibraryURL:(id)a4;
-- (id)_initWithPHAssetLocalIdentifier:(id)a3 photoLibraryURL:(id)a4;
-- (id)_initWithPixelBuffer:(id)a3;
-- (id)_initWithURL:(id)a3;
-- (id)_initWithURL:(id)a3 photoLibraryURL:(id)a4;
+- (id)_initWithCIImage:(id)image;
+- (id)_initWithCIImage:(id)image photoLibraryURL:(id)l;
+- (id)_initWithPHAssetLocalIdentifier:(id)identifier photoLibraryURL:(id)l;
+- (id)_initWithPixelBuffer:(id)buffer;
+- (id)_initWithURL:(id)l;
+- (id)_initWithURL:(id)l photoLibraryURL:(id)rL;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMPipelineContextInput
@@ -31,60 +31,60 @@
   return 0;
 }
 
-+ (AXMPipelineContextInput)inputWithCIImage:(id)a3
++ (AXMPipelineContextInput)inputWithCIImage:(id)image
 {
-  v3 = a3;
-  v4 = [[AXMPipelineContextInput alloc] _initWithCIImage:v3];
+  imageCopy = image;
+  v4 = [[AXMPipelineContextInput alloc] _initWithCIImage:imageCopy];
 
   return v4;
 }
 
-+ (AXMPipelineContextInput)inputWithCIImage:(id)a3 photoLibraryURL:(id)a4
++ (AXMPipelineContextInput)inputWithCIImage:(id)image photoLibraryURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AXMPipelineContextInput alloc] _initWithCIImage:v6 photoLibraryURL:v5];
+  lCopy = l;
+  imageCopy = image;
+  v7 = [[AXMPipelineContextInput alloc] _initWithCIImage:imageCopy photoLibraryURL:lCopy];
 
   return v7;
 }
 
-+ (AXMPipelineContextInput)inputWithPixelBuffer:(id)a3
++ (AXMPipelineContextInput)inputWithPixelBuffer:(id)buffer
 {
-  v3 = a3;
-  v4 = [[AXMPipelineContextInput alloc] _initWithPixelBuffer:v3];
+  bufferCopy = buffer;
+  v4 = [[AXMPipelineContextInput alloc] _initWithPixelBuffer:bufferCopy];
 
   return v4;
 }
 
-+ (AXMPipelineContextInput)inputWithURL:(id)a3
++ (AXMPipelineContextInput)inputWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[AXMPipelineContextInput alloc] _initWithURL:v3];
+  lCopy = l;
+  v4 = [[AXMPipelineContextInput alloc] _initWithURL:lCopy];
 
   return v4;
 }
 
-+ (AXMPipelineContextInput)inputWithURL:(id)a3 photoLibraryURL:(id)a4
++ (AXMPipelineContextInput)inputWithURL:(id)l photoLibraryURL:(id)rL
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AXMPipelineContextInput alloc] _initWithURL:v6 photoLibraryURL:v5];
+  rLCopy = rL;
+  lCopy = l;
+  v7 = [[AXMPipelineContextInput alloc] _initWithURL:lCopy photoLibraryURL:rLCopy];
 
   return v7;
 }
 
-+ (AXMPipelineContextInput)inputWithPHAssetLocalIdentifier:(id)a3 photoLibraryURL:(id)a4
++ (AXMPipelineContextInput)inputWithPHAssetLocalIdentifier:(id)identifier photoLibraryURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AXMPipelineContextInput alloc] _initWithPHAssetLocalIdentifier:v6 photoLibraryURL:v5];
+  lCopy = l;
+  identifierCopy = identifier;
+  v7 = [[AXMPipelineContextInput alloc] _initWithPHAssetLocalIdentifier:identifierCopy photoLibraryURL:lCopy];
 
   return v7;
 }
 
-- (id)_initWithCIImage:(id)a3
+- (id)_initWithCIImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = AXMPipelineContextInput;
   v6 = [(AXMPipelineContextInput *)&v9 init];
@@ -92,16 +92,16 @@
   if (v6)
   {
     v6->_inputType = 0;
-    objc_storeStrong(&v6->_ciImage, a3);
+    objc_storeStrong(&v6->_ciImage, image);
   }
 
   return v7;
 }
 
-- (id)_initWithCIImage:(id)a3 photoLibraryURL:(id)a4
+- (id)_initWithCIImage:(id)image photoLibraryURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = AXMPipelineContextInput;
   v9 = [(AXMPipelineContextInput *)&v12 init];
@@ -109,16 +109,16 @@
   if (v9)
   {
     v9->_inputType = 0;
-    objc_storeStrong(&v9->_ciImage, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_ciImage, image);
+    objc_storeStrong(p_isa + 3, l);
   }
 
   return p_isa;
 }
 
-- (id)_initWithPixelBuffer:(id)a3
+- (id)_initWithPixelBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v9.receiver = self;
   v9.super_class = AXMPipelineContextInput;
   v6 = [(AXMPipelineContextInput *)&v9 init];
@@ -126,15 +126,15 @@
   if (v6)
   {
     v6->_inputType = 1;
-    objc_storeStrong(&v6->_pixelBuffer, a3);
+    objc_storeStrong(&v6->_pixelBuffer, buffer);
   }
 
   return v7;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = AXMPipelineContextInput;
   v6 = [(AXMPipelineContextInput *)&v9 init];
@@ -142,17 +142,17 @@
   if (v6)
   {
     v6->_inputType = 2;
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v7->_cachedImageURLSize = *MEMORY[0x1E695F060];
   }
 
   return v7;
 }
 
-- (id)_initWithURL:(id)a3 photoLibraryURL:(id)a4
+- (id)_initWithURL:(id)l photoLibraryURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v12.receiver = self;
   v12.super_class = AXMPipelineContextInput;
   v9 = [(AXMPipelineContextInput *)&v12 init];
@@ -160,18 +160,18 @@
   if (v9)
   {
     v9->_inputType = 2;
-    objc_storeStrong(&v9->_URL, a3);
+    objc_storeStrong(&v9->_URL, l);
     v10->_cachedImageURLSize = *MEMORY[0x1E695F060];
-    objc_storeStrong(&v10->_photoLibraryURL, a4);
+    objc_storeStrong(&v10->_photoLibraryURL, rL);
   }
 
   return v10;
 }
 
-- (id)_initWithPHAssetLocalIdentifier:(id)a3 photoLibraryURL:(id)a4
+- (id)_initWithPHAssetLocalIdentifier:(id)identifier photoLibraryURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = AXMPipelineContextInput;
   v9 = [(AXMPipelineContextInput *)&v12 init];
@@ -179,8 +179,8 @@
   if (v9)
   {
     v9->_inputType = 3;
-    objc_storeStrong(&v9->_phAssetLocalIdentifier, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_phAssetLocalIdentifier, identifier);
+    objc_storeStrong(p_isa + 3, l);
   }
 
   return p_isa;
@@ -277,27 +277,27 @@
   return result;
 }
 
-- (AXMPipelineContextInput)initWithCoder:(id)a3
+- (AXMPipelineContextInput)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputType"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputType"];
+  integerValue = [v5 integerValue];
 
-  if (v6 <= 1)
+  if (integerValue <= 1)
   {
-    if (v6)
+    if (integerValue)
     {
-      if (v6 == 1)
+      if (integerValue == 1)
       {
-        v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ciImage"];
-        v8 = [v7 pixelBuffer];
-        if (v8)
+        v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ciImage"];
+        pixelBuffer = [v7 pixelBuffer];
+        if (pixelBuffer)
         {
-          v9 = v8;
-          v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orientation"];
-          v11 = [v10 integerValue];
+          v9 = pixelBuffer;
+          v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orientation"];
+          integerValue2 = [v10 integerValue];
 
-          v12 = [AXMPixelBufferWrapper wrapperWithPixelBuffer:v9 orientation:v11];
+          v12 = [AXMPixelBufferWrapper wrapperWithPixelBuffer:v9 orientation:integerValue2];
           v13 = [(AXMPipelineContextInput *)self _initWithPixelBuffer:v12];
 LABEL_14:
           self = v13;
@@ -311,10 +311,10 @@ LABEL_14:
       goto LABEL_19;
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ciImage"];
-    if ([v4 containsValueForKey:@"photoLibraryURL"])
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ciImage"];
+    if ([coderCopy containsValueForKey:@"photoLibraryURL"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryURL"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryURL"];
       v13 = [(AXMPipelineContextInput *)self _initWithCIImage:v7 photoLibraryURL:v12];
       goto LABEL_14;
     }
@@ -325,13 +325,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v6 == 2)
+  if (integerValue == 2)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     v14 = [(AXMPipelineContextInput *)self _initWithURL:v7];
-    if ([v4 containsValueForKey:@"photoLibraryURL"])
+    if ([coderCopy containsValueForKey:@"photoLibraryURL"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryURL"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryURL"];
       v13 = [v14 _initWithURL:v7 photoLibraryURL:v12];
       goto LABEL_14;
     }
@@ -340,12 +340,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v6 == 3)
+  if (integerValue == 3)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetLocalIdentifier"];
-    if ([v4 containsValueForKey:@"photoLibraryURL"])
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetLocalIdentifier"];
+    if ([coderCopy containsValueForKey:@"photoLibraryURL"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryURL"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryURL"];
       v13 = [(AXMPipelineContextInput *)self _initWithPHAssetLocalIdentifier:v7 photoLibraryURL:v12];
       goto LABEL_14;
     }
@@ -358,35 +358,35 @@ LABEL_19:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AXMPipelineContextInput inputType](self, "inputType")}];
-  [v15 encodeObject:v4 forKey:@"inputType"];
+  [coderCopy encodeObject:v4 forKey:@"inputType"];
 
   if ([(AXMPipelineContextInput *)self inputType])
   {
     if ([(AXMPipelineContextInput *)self inputType]== 1)
     {
-      v5 = [(AXMPipelineContextInput *)self pixelBuffer];
-      v6 = [v5 pixelBuffer];
+      pixelBuffer = [(AXMPipelineContextInput *)self pixelBuffer];
+      v5PixelBuffer = [pixelBuffer pixelBuffer];
 
-      if (!v6)
+      if (!v5PixelBuffer)
       {
         goto LABEL_13;
       }
 
       v7 = MEMORY[0x1E695F658];
-      v8 = [(AXMPipelineContextInput *)self pixelBuffer];
-      v9 = [v7 imageWithCVPixelBuffer:{objc_msgSend(v8, "pixelBuffer")}];
+      pixelBuffer2 = [(AXMPipelineContextInput *)self pixelBuffer];
+      photoLibraryURL = [v7 imageWithCVPixelBuffer:{objc_msgSend(pixelBuffer2, "pixelBuffer")}];
 
-      if (v9)
+      if (photoLibraryURL)
       {
-        [v15 encodeObject:v9 forKey:@"ciImage"];
+        [coderCopy encodeObject:photoLibraryURL forKey:@"ciImage"];
         v10 = MEMORY[0x1E696AD98];
-        v11 = [(AXMPipelineContextInput *)self pixelBuffer];
-        v12 = [v10 numberWithUnsignedInt:{objc_msgSend(v11, "orientation")}];
-        [v15 encodeObject:v12 forKey:@"orientation"];
+        pixelBuffer3 = [(AXMPipelineContextInput *)self pixelBuffer];
+        v12 = [v10 numberWithUnsignedInt:{objc_msgSend(pixelBuffer3, "orientation")}];
+        [coderCopy encodeObject:v12 forKey:@"orientation"];
       }
 
       goto LABEL_12;
@@ -394,7 +394,7 @@ LABEL_19:
 
     if ([(AXMPipelineContextInput *)self inputType]== 2)
     {
-      v13 = [(AXMPipelineContextInput *)self URL];
+      phAssetLocalIdentifier = [(AXMPipelineContextInput *)self URL];
       v14 = @"URL";
     }
 
@@ -405,21 +405,21 @@ LABEL_19:
         goto LABEL_13;
       }
 
-      v13 = [(AXMPipelineContextInput *)self phAssetLocalIdentifier];
+      phAssetLocalIdentifier = [(AXMPipelineContextInput *)self phAssetLocalIdentifier];
       v14 = @"assetLocalIdentifier";
     }
   }
 
   else
   {
-    v13 = [(AXMPipelineContextInput *)self ciImage];
+    phAssetLocalIdentifier = [(AXMPipelineContextInput *)self ciImage];
     v14 = @"ciImage";
   }
 
-  [v15 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:phAssetLocalIdentifier forKey:v14];
 
-  v9 = [(AXMPipelineContextInput *)self photoLibraryURL];
-  [v15 encodeObject:v9 forKey:@"photoLibraryURL"];
+  photoLibraryURL = [(AXMPipelineContextInput *)self photoLibraryURL];
+  [coderCopy encodeObject:photoLibraryURL forKey:@"photoLibraryURL"];
 LABEL_12:
 
 LABEL_13:
@@ -447,9 +447,9 @@ LABEL_13:
   return v6;
 }
 
-- (CGImage)createCGImageWithMetrics:(id)a3
+- (CGImage)createCGImageWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -460,7 +460,7 @@ LABEL_13:
   v8[3] = &unk_1E7A1DB48;
   v8[4] = self;
   v10 = &v11;
-  v5 = v4;
+  v5 = metricsCopy;
   v9 = v5;
   [v5 measure:@"Convert to CGImage" execute:v8];
   v6 = v12[3];
@@ -527,18 +527,18 @@ void __52__AXMPipelineContextInput_createCGImageWithMetrics___block_invoke(uint6
   inputType = self->_inputType;
   if (inputType == 1)
   {
-    v3 = [(AXMPipelineContextInput *)self pixelBuffer];
+    pixelBuffer = [(AXMPipelineContextInput *)self pixelBuffer];
     goto LABEL_5;
   }
 
   if (!inputType)
   {
-    v3 = [(AXMPipelineContextInput *)self ciImage];
+    pixelBuffer = [(AXMPipelineContextInput *)self ciImage];
 LABEL_5:
-    v4 = v3;
-    v5 = [v3 pixelBuffer];
+    v4 = pixelBuffer;
+    v3PixelBuffer = [pixelBuffer pixelBuffer];
 
-    return v5;
+    return v3PixelBuffer;
   }
 
   return 0;

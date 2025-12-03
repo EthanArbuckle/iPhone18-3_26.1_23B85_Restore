@@ -1,37 +1,37 @@
 @interface SUScheduler
 + (id)sharedInstance;
-- (BOOL)_activityIsScheduled:(id)a3 cancelIfExpired:(BOOL)a4 scheduledActivity:(id *)a5;
-- (BOOL)activityWasPreviouslyScheduledForFutureDate:(id)a3 passed:(BOOL *)a4 copy:(id *)a5;
+- (BOOL)_activityIsScheduled:(id)scheduled cancelIfExpired:(BOOL)expired scheduledActivity:(id *)activity;
+- (BOOL)activityWasPreviouslyScheduledForFutureDate:(id)date passed:(BOOL *)passed copy:(id *)copy;
 - (SUScheduler)init;
 - (double)_autoDownloadTimeInterval;
-- (id)_autoInstallActivityCriteriaWithInstallDate:(id)a3 descriptor:(id)a4;
-- (id)_next7OClockFrom:(id)a3 after:(double)a4;
+- (id)_autoInstallActivityCriteriaWithInstallDate:(id)date descriptor:(id)descriptor;
+- (id)_next7OClockFrom:(id)from after:(double)after;
 - (id)nextScheduledAutoScan;
-- (int)scanTypeForActivityName:(id)a3;
+- (int)scanTypeForActivityName:(id)name;
 - (void)_invalidateRetryAutoInstallaTimer;
 - (void)_queue_cancelAutoInstallStartInstallTask;
-- (void)_queue_handleActivity:(id)a3 info:(id)a4;
-- (void)_queue_handleAnalyticsSubmission:(id)a3 info:(id)a4;
-- (void)_queue_handleAutoDownload:(id)a3 info:(id)a4;
-- (void)_queue_handleAutoInstallEnd:(id)a3 info:(id)a4;
-- (void)_queue_handleAutoInstallGetKeybag:(id)a3 info:(id)a4;
-- (void)_queue_handleAutoInstallStart:(id)a3 info:(id)a4;
-- (void)_queue_handleAutoInstallUnlock:(id)a3 info:(id)a4;
-- (void)_queue_handleAutoScan:(id)a3 info:(id)a4 rescheduler:(BOOL)a5;
+- (void)_queue_handleActivity:(id)activity info:(id)info;
+- (void)_queue_handleAnalyticsSubmission:(id)submission info:(id)info;
+- (void)_queue_handleAutoDownload:(id)download info:(id)info;
+- (void)_queue_handleAutoInstallEnd:(id)end info:(id)info;
+- (void)_queue_handleAutoInstallGetKeybag:(id)keybag info:(id)info;
+- (void)_queue_handleAutoInstallStart:(id)start info:(id)info;
+- (void)_queue_handleAutoInstallUnlock:(id)unlock info:(id)info;
+- (void)_queue_handleAutoScan:(id)scan info:(id)info rescheduler:(BOOL)rescheduler;
 - (void)_queue_handleCancelPresentBannerOnUnlock;
-- (void)_queue_handleInstallAlert:(id)a3 info:(id)a4;
-- (void)_queue_handlePresentBanner:(id)a3 info:(id)a4;
-- (void)_queue_handleScanIntervalConfigChange:(id)a3;
-- (void)_queue_handleServerConfigScan:(id)a3 info:(id)a4;
-- (void)_queue_handleSplatFollowUp:(id)a3 info:(id)a4;
+- (void)_queue_handleInstallAlert:(id)alert info:(id)info;
+- (void)_queue_handlePresentBanner:(id)banner info:(id)info;
+- (void)_queue_handleScanIntervalConfigChange:(id)change;
+- (void)_queue_handleServerConfigScan:(id)scan info:(id)info;
+- (void)_queue_handleSplatFollowUp:(id)up info:(id)info;
 - (void)_queue_invalidateRetryAutoInstallaTimer;
-- (void)_queue_setAutoinstallActivity:(id)a3;
-- (void)_queue_unscheduleActivity:(id)a3;
-- (void)_queue_unscheduleAllActivitiesWithName:(id)a3;
-- (void)_scheduleActivity:(id)a3;
-- (void)_scheduleAutoInstallGetKeybagTaskForDate:(id)a3;
-- (void)_unscheduleActivity:(id)a3;
-- (void)cancelAllAutoInstallTasksIncludingStartInstallTask:(BOOL)a3;
+- (void)_queue_setAutoinstallActivity:(id)activity;
+- (void)_queue_unscheduleActivity:(id)activity;
+- (void)_queue_unscheduleAllActivitiesWithName:(id)name;
+- (void)_scheduleActivity:(id)activity;
+- (void)_scheduleAutoInstallGetKeybagTaskForDate:(id)date;
+- (void)_unscheduleActivity:(id)activity;
+- (void)cancelAllAutoInstallTasksIncludingStartInstallTask:(BOOL)task;
 - (void)cancelAllAutoScanTasks;
 - (void)cancelAllBackgroundScans;
 - (void)cancelAllEmergencyBackgroundScans;
@@ -47,28 +47,28 @@
 - (void)cancelRollbackReboot;
 - (void)cancelSplatFollowUpNotification;
 - (void)dealloc;
-- (void)handleXPCEvent:(id)a3;
-- (void)scheduleAllAutoInstallUpdateTasks:(id)a3 descriptor:(id)a4;
-- (void)scheduleAnalyticsSubmission:(id)a3;
+- (void)handleXPCEvent:(id)event;
+- (void)scheduleAllAutoInstallUpdateTasks:(id)tasks descriptor:(id)descriptor;
+- (void)scheduleAnalyticsSubmission:(id)submission;
 - (void)scheduleAnalyticsSubmissionIfNecessary;
 - (void)scheduleAutoDownloadIfNecessary;
-- (void)scheduleAutoDownloadWithDate:(id)a3 requirePower:(int)a4 minimumPowerRquirement:(id)a5;
-- (void)scheduleAutoInstallExpirationTask:(id)a3;
-- (void)scheduleAutoInstallGetKeybagTaskForDescriptor:(id)a3;
-- (void)scheduleAutoInstallStartInstallTask:(id)a3 descriptor:(id)a4;
-- (void)scheduleAutoInstallStartInstallTaskWithDate:(id)a3 descriptor:(id)a4 fromFailure:(BOOL)a5;
-- (void)scheduleAutoInstallUnlockWindowStartTask:(id)a3;
-- (void)scheduleBackgroundScan:(id)a3 scanDate:(id)a4;
-- (void)scheduleBackgroundScanIfNecessary:(id)a3 scanType:(int *)a4;
-- (void)scheduleInstallAlertRegistration:(id)a3;
+- (void)scheduleAutoDownloadWithDate:(id)date requirePower:(int)power minimumPowerRquirement:(id)rquirement;
+- (void)scheduleAutoInstallExpirationTask:(id)task;
+- (void)scheduleAutoInstallGetKeybagTaskForDescriptor:(id)descriptor;
+- (void)scheduleAutoInstallStartInstallTask:(id)task descriptor:(id)descriptor;
+- (void)scheduleAutoInstallStartInstallTaskWithDate:(id)date descriptor:(id)descriptor fromFailure:(BOOL)failure;
+- (void)scheduleAutoInstallUnlockWindowStartTask:(id)task;
+- (void)scheduleBackgroundScan:(id)scan scanDate:(id)date;
+- (void)scheduleBackgroundScanIfNecessary:(id)necessary scanType:(int *)type;
+- (void)scheduleInstallAlertRegistration:(id)registration;
 - (void)schedulePresentAutoUpdateBanner;
-- (void)scheduleRollbackReboot:(id)a3;
+- (void)scheduleRollbackReboot:(id)reboot;
 - (void)scheduleSimulatedAutoInstallTask;
-- (void)scheduleSplatFollowUpNotification:(id)a3;
+- (void)scheduleSplatFollowUpNotification:(id)notification;
 - (void)scheduleStartupTasksIfNecessary;
-- (void)serverConfigManager:(id)a3 configValuesChanged:(id)a4;
+- (void)serverConfigManager:(id)manager configValuesChanged:(id)changed;
 - (void)setAutoInstallActivityStateDone;
-- (void)setAutoinstallActivity:(id)a3;
+- (void)setAutoinstallActivity:(id)activity;
 @end
 
 @implementation SUScheduler
@@ -85,9 +85,9 @@
 
     if (*(v2 + 16))
     {
-      v4 = [MEMORY[0x277D64200] sharedInstance];
+      mEMORY[0x277D64200] = [MEMORY[0x277D64200] sharedInstance];
       v5 = *(v2 + 3);
-      *(v2 + 3) = v4;
+      *(v2 + 3) = mEMORY[0x277D64200];
 
       v6 = *(v2 + 1);
       *(v2 + 1) = 0;
@@ -97,9 +97,9 @@
 
     else
     {
-      v14 = [MEMORY[0x277D64150] sharedInstance];
+      mEMORY[0x277D64150] = [MEMORY[0x277D64150] sharedInstance];
       v15 = *(v2 + 1);
-      *(v2 + 1) = v14;
+      *(v2 + 1) = mEMORY[0x277D64150];
 
       v16 = *(v2 + 3);
       *(v2 + 3) = 0;
@@ -131,9 +131,9 @@
     *(v2 + 7) = v30;
 
     v32 = +[SUManagerServer sharedInstance];
-    v33 = [v32 autoInstallManager];
+    autoInstallManager = [v32 autoInstallManager];
     v34 = *(v2 + 8);
-    *(v2 + 8) = v33;
+    *(v2 + 8) = autoInstallManager;
 
     v35 = *(v2 + 4);
     *(v2 + 4) = 0;
@@ -197,23 +197,23 @@ uint64_t __29__SUScheduler_sharedInstance__block_invoke()
   [(SUScheduler *)self cancelAllEmergencyBackgroundScans];
 }
 
-- (void)scheduleAllAutoInstallUpdateTasks:(id)a3 descriptor:(id)a4
+- (void)scheduleAllAutoInstallUpdateTasks:(id)tasks descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  [(SUScheduler *)self scheduleAutoInstallExpirationTask:v7];
-  [(SUScheduler *)self scheduleAutoInstallUnlockWindowStartTask:v7];
-  [(SUScheduler *)self scheduleAutoInstallGetKeybagTaskForDescriptor:v6];
-  [(SUScheduler *)self scheduleAutoInstallStartInstallTask:v7 descriptor:v6];
+  descriptorCopy = descriptor;
+  tasksCopy = tasks;
+  [(SUScheduler *)self scheduleAutoInstallExpirationTask:tasksCopy];
+  [(SUScheduler *)self scheduleAutoInstallUnlockWindowStartTask:tasksCopy];
+  [(SUScheduler *)self scheduleAutoInstallGetKeybagTaskForDescriptor:descriptorCopy];
+  [(SUScheduler *)self scheduleAutoInstallStartInstallTask:tasksCopy descriptor:descriptorCopy];
 }
 
-- (void)cancelAllAutoInstallTasksIncludingStartInstallTask:(BOOL)a3
+- (void)cancelAllAutoInstallTasksIncludingStartInstallTask:(BOOL)task
 {
-  v3 = a3;
+  taskCopy = task;
   [(SUScheduler *)self cancelAutoInstallWindowExpirationTask];
   [(SUScheduler *)self cancelAutoInstallUnlockWindowStartTask];
   [(SUScheduler *)self cancelAutoInstallGetKeybagTask];
-  if (v3)
+  if (taskCopy)
   {
     SULogDebug(@"Will cancelAutoInstallStartInstallTask", v5, v6, v7, v8, v9, v10, v11, v12);
     [(SUScheduler *)self cancelAutoInstallStartInstallTask];
@@ -227,31 +227,31 @@ uint64_t __29__SUScheduler_sharedInstance__block_invoke()
   [(SUScheduler *)self cancelPresentAutoUpdateBanner];
 }
 
-- (void)scheduleBackgroundScanIfNecessary:(id)a3 scanType:(int *)a4
+- (void)scheduleBackgroundScanIfNecessary:(id)necessary scanType:(int *)type
 {
-  v6 = a3;
-  v7 = [(SUScheduler *)self _activityIsScheduled:v6 cancelIfExpired:1];
+  necessaryCopy = necessary;
+  v7 = [(SUScheduler *)self _activityIsScheduled:necessaryCopy cancelIfExpired:1];
   if (self->_useSUCoreXPCActivityManager)
   {
     v26 = 0;
-    v8 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:v6];
-    if ([(SUScheduler *)self activityWasPreviouslyScheduledForFutureDate:v6 passed:&v26 copy:0])
+    v8 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:necessaryCopy];
+    if ([(SUScheduler *)self activityWasPreviouslyScheduledForFutureDate:necessaryCopy passed:&v26 copy:0])
     {
       v24 = [SUUtility prettyPrintDate:v8];
-      SULogInfo(@"%@ was previously scheduled to run at %@. Re-scheduling for the same time", v9, v10, v11, v12, v13, v14, v15, v6);
+      SULogInfo(@"%@ was previously scheduled to run at %@. Re-scheduling for the same time", v9, v10, v11, v12, v13, v14, v15, necessaryCopy);
 
       if (v8)
       {
 LABEL_8:
         v25 = [SUUtility prettyPrintDate:v8];
-        SULogInfo(@"Expired or no background scan activity found for %@. Rescheduling for %@", v17, v18, v19, v20, v21, v22, v23, v6);
+        SULogInfo(@"Expired or no background scan activity found for %@. Rescheduling for %@", v17, v18, v19, v20, v21, v22, v23, necessaryCopy);
 
-        [(SUScheduler *)self scheduleBackgroundScan:v6 scanDate:v8];
+        [(SUScheduler *)self scheduleBackgroundScan:necessaryCopy scanDate:v8];
         goto LABEL_9;
       }
 
 LABEL_7:
-      [(SUScheduler *)self _randomizedAutoScanDelayForType:a4];
+      [(SUScheduler *)self _randomizedAutoScanDelayForType:type];
       v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v16];
       goto LABEL_8;
     }
@@ -265,24 +265,24 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)scheduleBackgroundScan:(id)a3 scanDate:(id)a4
+- (void)scheduleBackgroundScan:(id)scan scanDate:(id)date
 {
-  v17 = a3;
-  v6 = a4;
+  scanCopy = scan;
+  dateCopy = date;
   v7 = objc_alloc_init(MEMORY[0x277D64148]);
   v15 = v7;
   if (v7)
   {
-    [v7 setRunDate:v6];
+    [v7 setRunDate:dateCopy];
     [v15 setNetworkState:2];
     [v15 setWaking:2];
-    v16 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:v17 options:v15];
+    v16 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:scanCopy options:v15];
     [(SUScheduler *)self _scheduleActivity:v16];
   }
 
   else
   {
-    SULogError(@"Failed to create options for activity %@", v8, v9, v10, v11, v12, v13, v14, v17);
+    SULogError(@"Failed to create options for activity %@", v8, v9, v10, v11, v12, v13, v14, scanCopy);
   }
 }
 
@@ -313,14 +313,14 @@ LABEL_9:
   if (![(SUManagerInterface *)self->_manager isDownloading])
   {
     v10 = +[SUState currentState];
-    v11 = [v10 lastAutoDownloadDate];
+    lastAutoDownloadDate = [v10 lastAutoDownloadDate];
 
-    if (!v11)
+    if (!lastAutoDownloadDate)
     {
       SULogInfo(@"[Auto download] Setting last auto download date to now since it is nil", v12, v13, v14, v15, v16, v17, v18, v68);
       v19 = +[SUState currentState];
-      v20 = [MEMORY[0x277CBEAA8] date];
-      [v19 setLastAutoDownloadDate:v20];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v19 setLastAutoDownloadDate:date];
     }
 
     v72 = 0;
@@ -336,11 +336,11 @@ LABEL_9:
       v33 = v32;
       if (v31)
       {
-        v41 = [v32 runDate];
-        if (v41)
+        runDate = [v32 runDate];
+        if (runDate)
         {
-          v42 = [v33 runDate];
-          SULogInfo(@"Found auto download which was previously set to run on %@ but is not currently scheduled", v43, v44, v45, v46, v47, v48, v49, v42);
+          runDate2 = [v33 runDate];
+          SULogInfo(@"Found auto download which was previously set to run on %@ but is not currently scheduled", v43, v44, v45, v46, v47, v48, v49, runDate2);
         }
 
         else
@@ -374,32 +374,32 @@ LABEL_9:
     {
       SULogInfo(@"[Auto download] Found auto download activity: %@", v23, v24, v25, v26, v27, v28, v29, v33);
       [(SUScheduler *)self cancelAutoDownloadTask];
-      v57 = [v33 runDate];
-      if (v57 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      runDate3 = [v33 runDate];
+      if (runDate3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v58 = [MEMORY[0x277CBEAA8] date];
-        if ([v58 compare:v57] != 1)
+        date2 = [MEMORY[0x277CBEAA8] date];
+        if ([date2 compare:runDate3] != 1)
         {
 LABEL_26:
 
-          v66 = [v33 plugInState];
-          v67 = [v33 batteryLevelGreaterThan];
-          [(SUScheduler *)self scheduleAutoDownloadWithDate:v57 requirePower:v66 minimumPowerRquirement:v67];
+          plugInState = [v33 plugInState];
+          batteryLevelGreaterThan = [v33 batteryLevelGreaterThan];
+          [(SUScheduler *)self scheduleAutoDownloadWithDate:runDate3 requirePower:plugInState minimumPowerRquirement:batteryLevelGreaterThan];
 
           [(SUManagerInterface *)self->_manager loadBrainOnUnlock];
           goto LABEL_27;
         }
 
-        SULogInfo(@"[Auto download] Auto download activity had a run date in the past(%@). Clearing it for next schedule attempt", v59, v60, v61, v62, v63, v64, v65, v57);
+        SULogInfo(@"[Auto download] Auto download activity had a run date in the past(%@). Clearing it for next schedule attempt", v59, v60, v61, v62, v63, v64, v65, runDate3);
       }
 
       else
       {
         SULogInfo(@"[Auto download] Setting runDate for autoDownload activity to nil because of invalid/unset runDate on downloadActivity object", v50, v51, v52, v53, v54, v55, v56, v69);
-        v58 = v57;
+        date2 = runDate3;
       }
 
-      v57 = 0;
+      runDate3 = 0;
       goto LABEL_26;
     }
 
@@ -415,33 +415,33 @@ LABEL_27:
   SULogInfo(@"[Auto download] Not scheduling auto download: Currently Downloading", v3, v4, v5, v6, v7, v8, v9, v74);
 }
 
-- (void)scheduleAutoDownloadWithDate:(id)a3 requirePower:(int)a4 minimumPowerRquirement:(id)a5
+- (void)scheduleAutoDownloadWithDate:(id)date requirePower:(int)power minimumPowerRquirement:(id)rquirement
 {
-  v8 = a3;
-  v9 = a5;
-  [v9 intValue];
-  SULogInfo(@"Scheduling an auto download for %@; requirePower=%d, minimumPowerRequirement=%d", v10, v11, v12, v13, v14, v15, v16, v8);
-  if (v8)
+  dateCopy = date;
+  rquirementCopy = rquirement;
+  [rquirementCopy intValue];
+  SULogInfo(@"Scheduling an auto download for %@; requirePower=%d, minimumPowerRequirement=%d", v10, v11, v12, v13, v14, v15, v16, dateCopy);
+  if (dateCopy)
   {
     v24 = objc_alloc_init(MEMORY[0x277D64148]);
     v25 = v24;
-    if (a4 == 1)
+    if (power == 1)
     {
-      v26 = 0;
+      powerCopy = 0;
     }
 
     else
     {
-      v26 = a4;
+      powerCopy = power;
     }
 
-    [v24 setPlugInState:v26];
+    [v24 setPlugInState:powerCopy];
     [v25 setWifiState:2];
     [v25 setWaking:2];
-    [v25 setRunDate:v8];
-    if (a4 == 1 && v9)
+    [v25 setRunDate:dateCopy];
+    if (power == 1 && rquirementCopy)
     {
-      [v25 setBatteryLevelGreaterThan:v9];
+      [v25 setBatteryLevelGreaterThan:rquirementCopy];
     }
 
     v27 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.autoDownload" options:v25];
@@ -472,19 +472,19 @@ LABEL_27:
   dispatch_async(schedulerQueue, block);
 }
 
-- (void)scheduleAutoInstallExpirationTask:(id)a3
+- (void)scheduleAutoInstallExpirationTask:(id)task
 {
-  v4 = [a3 suEndDate];
-  if (v4)
+  suEndDate = [task suEndDate];
+  if (suEndDate)
   {
-    v7 = v4;
+    v7 = suEndDate;
     v5 = objc_alloc_init(MEMORY[0x277D64148]);
     [v5 setWaking:2];
     [v5 setRunDate:v7];
     v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.autoInstallEnd" options:v5];
     [(SUScheduler *)self _scheduleActivity:v6];
 
-    v4 = v7;
+    suEndDate = v7;
   }
 }
 
@@ -499,19 +499,19 @@ LABEL_27:
   dispatch_async(schedulerQueue, block);
 }
 
-- (void)scheduleAutoInstallUnlockWindowStartTask:(id)a3
+- (void)scheduleAutoInstallUnlockWindowStartTask:(id)task
 {
-  v4 = [a3 unlockStartDate];
-  if (v4)
+  unlockStartDate = [task unlockStartDate];
+  if (unlockStartDate)
   {
-    v7 = v4;
+    v7 = unlockStartDate;
     v5 = objc_alloc_init(MEMORY[0x277D64148]);
     [v5 setWaking:2];
     [v5 setRunDate:v7];
     v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.autoInstallUnlock" options:v5];
     [(SUScheduler *)self _scheduleActivity:v6];
 
-    v4 = v7;
+    unlockStartDate = v7;
   }
 }
 
@@ -526,9 +526,9 @@ LABEL_27:
   dispatch_async(schedulerQueue, block);
 }
 
-- (id)_next7OClockFrom:(id)a3 after:(double)a4
+- (id)_next7OClockFrom:(id)from after:(double)after
 {
-  v4 = [a3 dateByAddingTimeInterval:a4];
+  v4 = [from dateByAddingTimeInterval:after];
   v5 = specificTimeOnDate(v4, 7, 0, 0);
   v6 = specificTimeOnDate(v4, 19, 0, 0);
   v7 = [v5 dateByAddingTimeInterval:86400.0];
@@ -551,28 +551,28 @@ LABEL_27:
   return v8;
 }
 
-- (void)_scheduleAutoInstallGetKeybagTaskForDate:(id)a3
+- (void)_scheduleAutoInstallGetKeybagTaskForDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v4 = MEMORY[0x277D64148];
-    v5 = a3;
+    dateCopy = date;
     v7 = objc_alloc_init(v4);
-    [v7 setRunDate:v5];
+    [v7 setRunDate:dateCopy];
 
     v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.autoInstallGetKeybag" options:v7];
     [(SUScheduler *)self _scheduleActivity:v6];
   }
 }
 
-- (void)scheduleAutoInstallGetKeybagTaskForDescriptor:(id)a3
+- (void)scheduleAutoInstallGetKeybagTaskForDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  descriptorCopy = descriptor;
   v18 = [v4 now];
   v6 = [(SUScheduler *)self _next7OClockFrom:0.0 after:?];
   v7 = +[SUKeybagInterface sharedInstance];
-  v8 = [v7 installationKeybagStateForDescriptor:v5];
+  v8 = [v7 installationKeybagStateForDescriptor:descriptorCopy];
 
   if (v8 == 1)
   {
@@ -600,27 +600,27 @@ LABEL_27:
   dispatch_async(schedulerQueue, block);
 }
 
-- (void)scheduleAutoInstallStartInstallTask:(id)a3 descriptor:(id)a4
+- (void)scheduleAutoInstallStartInstallTask:(id)task descriptor:(id)descriptor
 {
-  v7 = a4;
-  v6 = [a3 suStartDate];
-  if (v6)
+  descriptorCopy = descriptor;
+  suStartDate = [task suStartDate];
+  if (suStartDate)
   {
-    [(SUScheduler *)self scheduleAutoInstallStartInstallTaskWithDate:v6 descriptor:v7 fromFailure:0];
+    [(SUScheduler *)self scheduleAutoInstallStartInstallTaskWithDate:suStartDate descriptor:descriptorCopy fromFailure:0];
     +[SUUtility writeAUKeepAliveFile];
   }
 }
 
-- (id)_autoInstallActivityCriteriaWithInstallDate:(id)a3 descriptor:(id)a4
+- (id)_autoInstallActivityCriteriaWithInstallDate:(id)date descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  descriptorCopy = descriptor;
   empty = xpc_dictionary_create_empty();
   xpc_dictionary_set_int64(empty, *MEMORY[0x277D86270], 0);
-  if (v6)
+  if (dateCopy)
   {
     v9 = *MEMORY[0x277D86250];
-    [v6 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     xpc_dictionary_set_int64(empty, v9, v10);
   }
 
@@ -637,11 +637,11 @@ LABEL_27:
     xpc_dictionary_set_BOOL(v11, [*MEMORY[0x277D06A88] UTF8String], 1);
   }
 
-  if (v7)
+  if (descriptorCopy)
   {
     v19 = objc_alloc_init(SUInstallOptions);
     [(SUInstallOptions *)v19 setAutomaticInstallation:1];
-    v20 = (SURequiredBatteryLevelForInstallation(v7, v19) * 100.0);
+    v20 = (SURequiredBatteryLevelForInstallation(descriptorCopy, v19) * 100.0);
     SULogInfo(@"Require %lld battery for das to fire", v21, v22, v23, v24, v25, v26, v27, v20);
     xpc_dictionary_set_int64(v11, [*MEMORY[0x277D06A80] UTF8String], v20);
   }
@@ -651,25 +651,25 @@ LABEL_27:
   return empty;
 }
 
-- (void)scheduleAutoInstallStartInstallTaskWithDate:(id)a3 descriptor:(id)a4 fromFailure:(BOOL)a5
+- (void)scheduleAutoInstallStartInstallTaskWithDate:(id)date descriptor:(id)descriptor fromFailure:(BOOL)failure
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  failureCopy = failure;
+  dateCopy = date;
+  descriptorCopy = descriptor;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__SUScheduler_scheduleAutoInstallStartInstallTaskWithDate_descriptor_fromFailure___block_invoke;
   v18[3] = &unk_279CAA798;
   v18[4] = self;
-  v10 = v8;
+  v10 = dateCopy;
   v19 = v10;
-  v11 = v9;
+  v11 = descriptorCopy;
   v20 = v11;
   v12 = MEMORY[0x26D668B30](v18);
   dispatch_assert_queue_not_V2(self->_schedulerQueue);
   [v10 timeIntervalSinceNow];
   schedulerQueue = self->_schedulerQueue;
-  if (v5 && v13 > 0.0)
+  if (failureCopy && v13 > 0.0)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -823,13 +823,13 @@ void __82__SUScheduler_scheduleAutoInstallStartInstallTaskWithDate_descriptor_fr
   {
     SULogInfo(@"%s: Scheduled simulated auto install activity", v3, v4, v5, v6, v7, v8, v9, "[SUScheduler scheduleSimulatedAutoInstallTask]");
     v10 = [(SUScheduler *)self _autoInstallActivityCriteriaWithInstallDate:0 descriptor:0];
-    v11 = [@"com.apple.softwareupdate.autoinstall.simulated.startInstall" UTF8String];
+    uTF8String = [@"com.apple.softwareupdate.autoinstall.simulated.startInstall" UTF8String];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __47__SUScheduler_scheduleSimulatedAutoInstallTask__block_invoke;
     handler[3] = &unk_279CABC00;
     handler[4] = self;
-    xpc_activity_register(v11, v10, handler);
+    xpc_activity_register(uTF8String, v10, handler);
   }
 }
 
@@ -929,9 +929,9 @@ BOOL __48__SUScheduler_cancelAutoInstallStartInstallTask__block_invoke(uint64_t 
   v9 = self->_retryAutoInstallTimer;
   if (v9)
   {
-    v10 = [(NSTimer *)v9 isValid];
+    isValid = [(NSTimer *)v9 isValid];
     v9 = self->_retryAutoInstallTimer;
-    if (v10)
+    if (isValid)
     {
       [(NSTimer *)v9 invalidate];
       v9 = self->_retryAutoInstallTimer;
@@ -951,15 +951,15 @@ BOOL __48__SUScheduler_cancelAutoInstallStartInstallTask__block_invoke(uint64_t 
 - (void)schedulePresentAutoUpdateBanner
 {
   v3 = +[SUPreferences sharedInstance];
-  v16 = [v3 bannerDelay];
+  bannerDelay = [v3 bannerDelay];
 
   v4 = 0x409C200000000000;
-  if (v16)
+  if (bannerDelay)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v16 doubleValue];
+      [bannerDelay doubleValue];
       v4 = v5;
     }
   }
@@ -995,16 +995,16 @@ uint64_t __44__SUScheduler_cancelPresentAutoUpdateBanner__block_invoke(uint64_t 
   return [v2 _queue_handleCancelPresentBannerOnUnlock];
 }
 
-- (void)scheduleSplatFollowUpNotification:(id)a3
+- (void)scheduleSplatFollowUpNotification:(id)notification
 {
   v4 = MEMORY[0x277D64148];
-  v5 = a3;
+  notificationCopy = notification;
   v15 = objc_alloc_init(v4);
   [v15 setWaking:2];
-  [v15 setRunDate:v5];
+  [v15 setRunDate:notificationCopy];
   v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.splatFollowUp" options:v15];
   [(SUScheduler *)self _scheduleActivity:v6];
-  v7 = [SUUtility prettyPrintDate:v5];
+  v7 = [SUUtility prettyPrintDate:notificationCopy];
 
   SULogInfo(@"Scheduled splat follow-up notification for %@", v8, v9, v10, v11, v12, v13, v14, v7);
 }
@@ -1021,13 +1021,13 @@ uint64_t __44__SUScheduler_cancelPresentAutoUpdateBanner__block_invoke(uint64_t 
   SULogInfo(@"Cancelled splat follow-up notification", v3, v4, v5, v6, v7, v8, v9, v10);
 }
 
-- (void)scheduleRollbackReboot:(id)a3
+- (void)scheduleRollbackReboot:(id)reboot
 {
   v4 = MEMORY[0x277D64148];
-  v5 = a3;
+  rebootCopy = reboot;
   v7 = objc_alloc_init(v4);
   [v7 setWaking:2];
-  [v7 setRunDate:v5];
+  [v7 setRunDate:rebootCopy];
 
   v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.rollbackReboot" options:v7];
   [(SUScheduler *)self _scheduleActivity:v6];
@@ -1044,10 +1044,10 @@ uint64_t __44__SUScheduler_cancelPresentAutoUpdateBanner__block_invoke(uint64_t 
   dispatch_async(schedulerQueue, block);
 }
 
-- (void)scheduleInstallAlertRegistration:(id)a3
+- (void)scheduleInstallAlertRegistration:(id)registration
 {
   v4 = MEMORY[0x277D64148];
-  v5 = a3;
+  registrationCopy = registration;
   v7 = objc_alloc_init(v4);
   [v7 setBatteryLevelGreaterThan:&unk_287B6F6D0];
   [v7 setPhoneCallState:1];
@@ -1055,7 +1055,7 @@ uint64_t __44__SUScheduler_cancelPresentAutoUpdateBanner__block_invoke(uint64_t 
   [v7 setMediaPlayingState:1];
   [v7 setNetworkState:2];
   [v7 setWaking:2];
-  [v7 setRunDate:v5];
+  [v7 setRunDate:registrationCopy];
 
   v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.installAlert" options:v7];
   [(SUScheduler *)self _scheduleActivity:v6];
@@ -1110,8 +1110,8 @@ uint64_t __44__SUScheduler_cancelPresentAutoUpdateBanner__block_invoke(uint64_t 
     if (objc_opt_isKindOfClass())
     {
       v23 = SULogAnalytics();
-      v24 = [v22 unsignedIntValue];
-      SULogInfoForSubsystem(v23, @"Setting analytics submission delay to %u", v25, v26, v27, v28, v29, v30, v24);
+      unsignedIntValue = [v22 unsignedIntValue];
+      SULogInfoForSubsystem(v23, @"Setting analytics submission delay to %u", v25, v26, v27, v28, v29, v30, unsignedIntValue);
     }
 
     v31 = +[SUUtility randomIntWithMinVal:maxVal:](SUUtility, "randomIntWithMinVal:maxVal:", 30, 60 * [v22 unsignedIntValue]);
@@ -1130,30 +1130,30 @@ uint64_t __44__SUScheduler_cancelPresentAutoUpdateBanner__block_invoke(uint64_t 
 LABEL_13:
 }
 
-- (void)scheduleAnalyticsSubmission:(id)a3
+- (void)scheduleAnalyticsSubmission:(id)submission
 {
   v4 = MEMORY[0x277D64148];
-  v5 = a3;
+  submissionCopy = submission;
   v7 = objc_alloc_init(v4);
   [v7 setNetworkState:2];
   [v7 setWaking:2];
-  [v7 setRunDate:v5];
+  [v7 setRunDate:submissionCopy];
 
   v6 = [objc_alloc(MEMORY[0x277D64140]) initWithActivityName:@"com.apple.softwareupdateservicesd.activity.analyticsSubmission" options:v7];
   [(SUScheduler *)self _scheduleActivity:v6];
 }
 
-- (void)_scheduleActivity:(id)a3
+- (void)_scheduleActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   schedulerQueue = self->_schedulerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SUScheduler__scheduleActivity___block_invoke;
   v7[3] = &unk_279CAA7C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activityCopy;
+  selfCopy = self;
+  v6 = activityCopy;
   dispatch_async(schedulerQueue, v7);
 }
 
@@ -1309,18 +1309,18 @@ void __33__SUScheduler__scheduleActivity___block_invoke_4(uint64_t a1, void *a2,
   dispatch_async(v8, block);
 }
 
-- (void)_unscheduleActivity:(id)a3
+- (void)_unscheduleActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_not_V2(self->_schedulerQueue);
   schedulerQueue = self->_schedulerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUScheduler__unscheduleActivity___block_invoke;
   v7[3] = &unk_279CAA7C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activityCopy;
+  selfCopy = self;
+  v6 = activityCopy;
   dispatch_sync(schedulerQueue, v7);
 }
 
@@ -1365,148 +1365,148 @@ void __35__SUScheduler__unscheduleActivity___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)_queue_unscheduleAllActivitiesWithName:(id)a3
+- (void)_queue_unscheduleAllActivitiesWithName:(id)name
 {
-  v11 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_schedulerQueue);
   if (self->_useSUCoreXPCActivityManager)
   {
-    if ([(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler unscheduleActivity:v11])
+    if ([(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler unscheduleActivity:nameCopy])
     {
-      SULogInfo(@"Failed to unshedule activity %@", v4, v5, v6, v7, v8, v9, v10, v11);
+      SULogInfo(@"Failed to unshedule activity %@", v4, v5, v6, v7, v8, v9, v10, nameCopy);
     }
 
     else
     {
-      SULogInfo(@"Successfully unscheduled activity %@", v4, v5, v6, v7, v8, v9, v10, v11);
+      SULogInfo(@"Successfully unscheduled activity %@", v4, v5, v6, v7, v8, v9, v10, nameCopy);
     }
   }
 
   else
   {
-    [(SUCoreActivityScheduler *)self->_coreScheduler unregisterActivitiesWithName:v11];
+    [(SUCoreActivityScheduler *)self->_coreScheduler unregisterActivitiesWithName:nameCopy];
   }
 }
 
-- (void)_queue_unscheduleActivity:(id)a3
+- (void)_queue_unscheduleActivity:(id)activity
 {
   schedulerQueue = self->_schedulerQueue;
-  v6 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(schedulerQueue);
   if (self->_useSUCoreXPCActivityManager)
   {
-    v5 = [v6 activityName];
+    activityName = [activityCopy activityName];
 
-    [(SUScheduler *)self _queue_unscheduleAllActivitiesWithName:v5];
-    v6 = v5;
+    [(SUScheduler *)self _queue_unscheduleAllActivitiesWithName:activityName];
+    activityCopy = activityName;
   }
 
   else
   {
-    [(SUCoreActivityScheduler *)self->_coreScheduler unregisterActivity:v6];
+    [(SUCoreActivityScheduler *)self->_coreScheduler unregisterActivity:activityCopy];
   }
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   schedulerQueue = self->_schedulerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__SUScheduler_handleXPCEvent___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(schedulerQueue, v7);
 }
 
-- (void)_queue_handleActivity:(id)a3 info:(id)a4
+- (void)_queue_handleActivity:(id)activity info:(id)info
 {
-  v26 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_schedulerQueue);
-  SULogInfo(@"Received activity: %@ with info: %@", v7, v8, v9, v10, v11, v12, v13, v26);
+  SULogInfo(@"Received activity: %@ with info: %@", v7, v8, v9, v10, v11, v12, v13, activityCopy);
   v14 = +[SUTransactionManager sharedInstance];
   [v14 beginTransaction:@"schedulerAction" keepAlive:1];
-  if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoScan"] || objc_msgSend(v26, "isEqualToString:", @"com.apple.softwareupdateservicesd.activity.emergencyAutoScan") || objc_msgSend(v26, "isEqualToString:", @"com.apple.softwareupdateservicesd.activity.splatAutoScan"))
+  if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoScan"] || objc_msgSend(activityCopy, "isEqualToString:", @"com.apple.softwareupdateservicesd.activity.emergencyAutoScan") || objc_msgSend(activityCopy, "isEqualToString:", @"com.apple.softwareupdateservicesd.activity.splatAutoScan"))
   {
-    v15 = self;
-    v16 = v26;
-    v17 = v6;
+    selfCopy2 = self;
+    v16 = activityCopy;
+    v17 = infoCopy;
     v18 = 1;
 LABEL_5:
-    [(SUScheduler *)v15 _queue_handleAutoScan:v16 info:v17 rescheduler:v18];
+    [(SUScheduler *)selfCopy2 _queue_handleAutoScan:v16 info:v17 rescheduler:v18];
     goto LABEL_6;
   }
 
-  if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.delayEndScan"])
+  if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.delayEndScan"])
   {
-    v15 = self;
-    v16 = v26;
-    v17 = v6;
+    selfCopy2 = self;
+    v16 = activityCopy;
+    v17 = infoCopy;
     v18 = 0;
     goto LABEL_5;
   }
 
-  if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoDownload"])
+  if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoDownload"])
   {
-    [(SUScheduler *)self _queue_handleAutoDownload:v26 info:v6];
+    [(SUScheduler *)self _queue_handleAutoDownload:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdate.autoinstall.startInstall"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdate.autoinstall.startInstall"])
   {
-    [(SUScheduler *)self _queue_handleAutoInstallStart:v26 info:v6];
+    [(SUScheduler *)self _queue_handleAutoInstallStart:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoInstallEnd"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoInstallEnd"])
   {
-    [(SUScheduler *)self _queue_handleAutoInstallEnd:v26 info:v6];
+    [(SUScheduler *)self _queue_handleAutoInstallEnd:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoInstallUnlock"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoInstallUnlock"])
   {
-    [(SUScheduler *)self _queue_handleAutoInstallUnlock:v26 info:v6];
+    [(SUScheduler *)self _queue_handleAutoInstallUnlock:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoInstallGetKeybag"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoInstallGetKeybag"])
   {
-    [(SUScheduler *)self _queue_handleAutoInstallGetKeybag:v26 info:v6];
+    [(SUScheduler *)self _queue_handleAutoInstallGetKeybag:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.installAlert"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.installAlert"])
   {
-    [(SUScheduler *)self _queue_handleInstallAlert:v26 info:v6];
+    [(SUScheduler *)self _queue_handleInstallAlert:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.presentBanner"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.presentBanner"])
   {
-    [(SUScheduler *)self _queue_handlePresentBanner:v26 info:v6];
+    [(SUScheduler *)self _queue_handlePresentBanner:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.SUCoreConfigScheduledScan"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.SUCoreConfigScheduledScan"])
   {
-    [(SUScheduler *)self _queue_handleServerConfigScan:v26 info:v6];
+    [(SUScheduler *)self _queue_handleServerConfigScan:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.analyticsSubmission"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.analyticsSubmission"])
   {
-    [(SUScheduler *)self _queue_handleAnalyticsSubmission:v26 info:v6];
+    [(SUScheduler *)self _queue_handleAnalyticsSubmission:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.rollbackReboot"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.rollbackReboot"])
   {
-    [(SUScheduler *)self _queue_handleRollbackReboot:v26 info:v6];
+    [(SUScheduler *)self _queue_handleRollbackReboot:activityCopy info:infoCopy];
   }
 
-  else if ([v26 isEqualToString:@"com.apple.softwareupdateservicesd.activity.splatFollowUp"])
+  else if ([activityCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.splatFollowUp"])
   {
-    [(SUScheduler *)self _queue_handleSplatFollowUp:v26 info:v6];
+    [(SUScheduler *)self _queue_handleSplatFollowUp:activityCopy info:infoCopy];
   }
 
   else
   {
-    SULogError(@"Unknown activity: %@", v19, v20, v21, v22, v23, v24, v25, v26);
+    SULogError(@"Unknown activity: %@", v19, v20, v21, v22, v23, v24, v25, activityCopy);
   }
 
 LABEL_6:
@@ -1516,29 +1516,29 @@ LABEL_6:
 - (double)_autoDownloadTimeInterval
 {
   v3 = +[SUPreferences sharedInstance];
-  v4 = [v3 autoDownloadOverrideInterval];
+  autoDownloadOverrideInterval = [v3 autoDownloadOverrideInterval];
 
-  if (v4)
+  if (autoDownloadOverrideInterval)
   {
     v5 = +[SUPreferences sharedInstance];
-    v6 = [v5 autoDownloadOverrideInterval];
-    SULogInfo(@"[Auto download] Using auto download override value: %@", v7, v8, v9, v10, v11, v12, v13, v6);
+    autoDownloadOverrideInterval2 = [v5 autoDownloadOverrideInterval];
+    SULogInfo(@"[Auto download] Using auto download override value: %@", v7, v8, v9, v10, v11, v12, v13, autoDownloadOverrideInterval2);
 
     v14 = +[SUPreferences sharedInstance];
-    v15 = [v14 autoDownloadOverrideInterval];
-    v16 = [v15 intValue];
+    autoDownloadOverrideInterval3 = [v14 autoDownloadOverrideInterval];
+    intValue = [autoDownloadOverrideInterval3 intValue];
 
 LABEL_5:
-    return v16;
+    return intValue;
   }
 
-  v17 = [(SUServerConfigurationManager *)self->_serverConfigManager softwareUpdateAutoScanInterval];
-  if (v17)
+  softwareUpdateAutoScanInterval = [(SUServerConfigurationManager *)self->_serverConfigManager softwareUpdateAutoScanInterval];
+  if (softwareUpdateAutoScanInterval)
   {
-    v14 = v17;
-    v16 = (60 * [v17 intValue]);
-    v18 = [v14 intValue];
-    SULogInfo(@"[Auto download] Using server configured auto scan interval - download once every %d minutes", v19, v20, v21, v22, v23, v24, v25, v18);
+    v14 = softwareUpdateAutoScanInterval;
+    intValue = (60 * [softwareUpdateAutoScanInterval intValue]);
+    intValue2 = [v14 intValue];
+    SULogInfo(@"[Auto download] Using server configured auto scan interval - download once every %d minutes", v19, v20, v21, v22, v23, v24, v25, intValue2);
     goto LABEL_5;
   }
 
@@ -1546,9 +1546,9 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)activityWasPreviouslyScheduledForFutureDate:(id)a3 passed:(BOOL *)a4 copy:(id *)a5
+- (BOOL)activityWasPreviouslyScheduledForFutureDate:(id)date passed:(BOOL *)passed copy:(id *)copy
 {
-  v15 = a3;
+  dateCopy = date;
   if (!self->_useSUCoreXPCActivityManager)
   {
     SULogInfo(@"%s is not supported in this configuration", v8, v9, v10, v11, v12, v13, v14, "[SUScheduler activityWasPreviouslyScheduledForFutureDate:passed:copy:]");
@@ -1557,42 +1557,42 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v23 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityTrackedButUnsheduled:v15];
-  if (a5)
+  v23 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityTrackedButUnsheduled:dateCopy];
+  if (copy)
   {
-    v24 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getActivityForName:v15];
+    v24 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getActivityForName:dateCopy];
     if (v24)
     {
       v25 = objc_alloc(MEMORY[0x277D64140]);
-      v26 = [v24 activityName];
-      v27 = [v24 activityOptions];
-      *a5 = [v25 initWithActivityName:v26 options:v27];
+      activityName = [v24 activityName];
+      activityOptions = [v24 activityOptions];
+      *copy = [v25 initWithActivityName:activityName options:activityOptions];
     }
   }
 
   if (!v23)
   {
-    SULogInfo(@"Activity %@ is not one that was previously tracked but unsheduled", v16, v17, v18, v19, v20, v21, v22, v15);
+    SULogInfo(@"Activity %@ is not one that was previously tracked but unsheduled", v16, v17, v18, v19, v20, v21, v22, dateCopy);
     goto LABEL_13;
   }
 
-  v28 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:v15];
+  v28 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:dateCopy];
   if (v28 && ([MEMORY[0x277CBEAA8] date], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "compare:", v29), v29, v30 == -1))
   {
     v48 = [MEMORY[0x277D64400] stringFromDate:v28];
-    SULogInfo(@"Activity %@ is tracked, not currently scheduled and has a run date(%@) in the past", v40, v41, v42, v43, v44, v45, v46, v15);
+    SULogInfo(@"Activity %@ is tracked, not currently scheduled and has a run date(%@) in the past", v40, v41, v42, v43, v44, v45, v46, dateCopy);
 
     v38 = 0;
-    if (a4)
+    if (passed)
     {
-      *a4 = 1;
+      *passed = 1;
     }
   }
 
   else
   {
     v47 = [MEMORY[0x277D64400] stringFromDate:v28];
-    SULogInfo(@"Activity %@ is tracked, not currently scheduled and has a rundate(%@) in the future", v31, v32, v33, v34, v35, v36, v37, v15);
+    SULogInfo(@"Activity %@ is tracked, not currently scheduled and has a rundate(%@) in the future", v31, v32, v33, v34, v35, v36, v37, dateCopy);
 
     v38 = 1;
   }
@@ -1601,45 +1601,45 @@ LABEL_14:
   return v38;
 }
 
-- (BOOL)_activityIsScheduled:(id)a3 cancelIfExpired:(BOOL)a4 scheduledActivity:(id *)a5
+- (BOOL)_activityIsScheduled:(id)scheduled cancelIfExpired:(BOOL)expired scheduledActivity:(id *)activity
 {
-  v62 = a4;
+  expiredCopy = expired;
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  scheduledCopy = scheduled;
   if (self->_useSUCoreXPCActivityManager)
   {
-    v8 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityTrackedButUnsheduled:v7];
-    v16 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityScheduled:v7];
-    if (a5)
+    v8 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityTrackedButUnsheduled:scheduledCopy];
+    v16 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityScheduled:scheduledCopy];
+    if (activity)
     {
-      v17 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getActivityForName:v7];
+      v17 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getActivityForName:scheduledCopy];
       if (v17)
       {
         v18 = objc_alloc(MEMORY[0x277D64140]);
-        v19 = [v17 activityName];
-        v20 = [v17 activityOptions];
-        *a5 = [v18 initWithActivityName:v19 options:v20];
+        activityName = [v17 activityName];
+        activityOptions = [v17 activityOptions];
+        *activity = [v18 initWithActivityName:activityName options:activityOptions];
       }
     }
 
     if (((v16 | v8) & 1) == 0)
     {
-      SULogInfo(@"Activity %@ is not scheduled", v9, v10, v11, v12, v13, v14, v15, v7);
+      SULogInfo(@"Activity %@ is not scheduled", v9, v10, v11, v12, v13, v14, v15, scheduledCopy);
       goto LABEL_32;
     }
 
-    SULogInfo(@"Activity %@ is %s", v9, v10, v11, v12, v13, v14, v15, v7);
-    if (v62)
+    SULogInfo(@"Activity %@ is %s", v9, v10, v11, v12, v13, v14, v15, scheduledCopy);
+    if (expiredCopy)
     {
-      v21 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:v7];
+      v21 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:scheduledCopy];
       if (!v21 || ([MEMORY[0x277CBEAA8] date], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "compare:", v22), v22, v23 != -1))
       {
 
         goto LABEL_37;
       }
 
-      SULogInfo(@"Activity %@ is past its run date. Unscheduling", v24, v25, v26, v27, v28, v29, v30, v7);
-      [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler unscheduleActivity:v7];
+      SULogInfo(@"Activity %@ is past its run date. Unscheduling", v24, v25, v26, v27, v28, v29, v30, scheduledCopy);
+      [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler unscheduleActivity:scheduledCopy];
 
 LABEL_32:
       LOBYTE(v16) = 0;
@@ -1648,22 +1648,22 @@ LABEL_32:
 
   else
   {
-    v31 = [(SUCoreActivityScheduler *)self->_coreScheduler copyScheduledActivities];
+    copyScheduledActivities = [(SUCoreActivityScheduler *)self->_coreScheduler copyScheduledActivities];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = v31;
+    obj = copyScheduledActivities;
     v32 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
     if (v32)
     {
       v33 = v32;
-      v60 = a5;
-      v61 = self;
+      activityCopy = activity;
+      selfCopy = self;
       v34 = 0;
       v35 = 0;
       v36 = *v67;
-      v64 = v7;
+      v64 = scheduledCopy;
       do
       {
         for (i = 0; i != v33; ++i)
@@ -1674,33 +1674,33 @@ LABEL_32:
           }
 
           v38 = *(*(&v66 + 1) + 8 * i);
-          v39 = [v38 activityName];
-          v40 = [v39 isEqualToString:v7];
+          activityName2 = [v38 activityName];
+          v40 = [activityName2 isEqualToString:scheduledCopy];
 
           if (v40)
           {
             v48 = v35 + 1;
             SULogInfo(@"Found scheduled activity: %@", v41, v42, v43, v44, v45, v46, v47, v38);
-            v49 = [v38 runDate];
-            if (v49)
+            runDate = [v38 runDate];
+            if (runDate)
             {
-              v50 = v49;
+              v50 = runDate;
               v63 = v35;
-              v51 = [v38 runDate];
-              v52 = [MEMORY[0x277CBEAA8] date];
+              runDate2 = [v38 runDate];
+              date = [MEMORY[0x277CBEAA8] date];
               v53 = v33;
               v54 = v36;
               v55 = v34;
-              v56 = [v51 compare:v52];
+              v56 = [runDate2 compare:date];
 
               v57 = v56 == -1;
               v34 = v55;
               v36 = v54;
               v33 = v53;
-              v57 = !v57 || !v62;
+              v57 = !v57 || !expiredCopy;
               if (!v57)
               {
-                [(SUScheduler *)v61 _unscheduleActivity:v38];
+                [(SUScheduler *)selfCopy _unscheduleActivity:v38];
                 v48 = v63;
               }
             }
@@ -1708,12 +1708,12 @@ LABEL_32:
             if (v48 < 1)
             {
               v35 = v48;
-              v7 = v64;
+              scheduledCopy = v64;
             }
 
             else
             {
-              v7 = v64;
+              scheduledCopy = v64;
               if (!v34)
               {
                 v34 = v38;
@@ -1729,7 +1729,7 @@ LABEL_32:
 
       while (v33);
       LOBYTE(v16) = v35 > 0;
-      a5 = v60;
+      activity = activityCopy;
     }
 
     else
@@ -1738,9 +1738,9 @@ LABEL_32:
       LOBYTE(v16) = 0;
     }
 
-    if (a5)
+    if (activity)
     {
-      *a5 = [v34 copy];
+      *activity = [v34 copy];
     }
   }
 
@@ -1757,19 +1757,19 @@ LABEL_37:
   {
     if ([(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler isActivityScheduled:@"com.apple.softwareupdateservicesd.activity.autoScan"])
     {
-      v3 = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:@"com.apple.softwareupdateservicesd.activity.autoScan"];
+      runDate = [(SUCoreXPCActivityManager *)self->_coreXPCActivityScheduler getExpectedRunDateForActivity:@"com.apple.softwareupdateservicesd.activity.autoScan"];
       goto LABEL_15;
     }
   }
 
   else
   {
-    v4 = [(SUCoreActivityScheduler *)self->_coreScheduler copyScheduledActivities];
+    copyScheduledActivities = [(SUCoreActivityScheduler *)self->_coreScheduler copyScheduledActivities];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v4;
+    v5 = copyScheduledActivities;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -1785,12 +1785,12 @@ LABEL_37:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 activityName];
-          v12 = [v11 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoScan"];
+          activityName = [v10 activityName];
+          v12 = [activityName isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoScan"];
 
           if (v12)
           {
-            v3 = [v10 runDate];
+            runDate = [v10 runDate];
 
             goto LABEL_15;
           }
@@ -1807,24 +1807,24 @@ LABEL_37:
     }
   }
 
-  v3 = 0;
+  runDate = 0;
 LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return runDate;
 }
 
-- (void)_queue_setAutoinstallActivity:(id)a3
+- (void)_queue_setAutoinstallActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(self->_schedulerQueue);
   autoInstallActivity = self->_autoInstallActivity;
-  self->_autoInstallActivity = v4;
+  self->_autoInstallActivity = activityCopy;
 }
 
-- (void)setAutoinstallActivity:(id)a3
+- (void)setAutoinstallActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_not_V2(self->_schedulerQueue);
   schedulerQueue = self->_schedulerQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1832,35 +1832,35 @@ LABEL_15:
   v7[2] = __38__SUScheduler_setAutoinstallActivity___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_sync(schedulerQueue, v7);
 }
 
-- (void)_queue_handleScanIntervalConfigChange:(id)a3
+- (void)_queue_handleScanIntervalConfigChange:(id)change
 {
   dispatch_assert_queue_V2(self->_schedulerQueue);
   SULogInfo(@"Scan interval server configuration changed", v4, v5, v6, v7, v8, v9, v10, v14);
-  v15 = [(SUScheduler *)self nextScheduledAutoScan];
+  nextScheduledAutoScan = [(SUScheduler *)self nextScheduledAutoScan];
   v11 = MEMORY[0x277CBEAA8];
   [(SUScheduler *)self _autoScanTimeIntervalForType:0];
   v12 = [v11 dateWithTimeIntervalSinceNow:?];
-  if (!v15 && v12 || v15 && v12 && ([v15 laterDate:v12], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == v15))
+  if (!nextScheduledAutoScan && v12 || nextScheduledAutoScan && v12 && ([nextScheduledAutoScan laterDate:v12], v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == nextScheduledAutoScan))
   {
     [(SUScheduler *)self cancelAllBackgroundScans];
     [(SUScheduler *)self scheduleBackgroundScan:v12];
   }
 }
 
-- (void)_queue_handleAutoScan:(id)a3 info:(id)a4 rescheduler:(BOOL)a5
+- (void)_queue_handleAutoScan:(id)scan info:(id)info rescheduler:(BOOL)rescheduler
 {
-  v5 = a5;
-  v7 = a3;
+  reschedulerCopy = rescheduler;
+  scanCopy = scan;
   dispatch_assert_queue_V2(self->_schedulerQueue);
-  SULogInfo(@"Handling auto scan: %@", v8, v9, v10, v11, v12, v13, v14, v7);
-  v15 = [(SUScheduler *)self scanTypeForActivityName:v7];
-  [(SUScheduler *)self _queue_unscheduleAllActivitiesWithName:v7];
-  if (v5)
+  SULogInfo(@"Handling auto scan: %@", v8, v9, v10, v11, v12, v13, v14, scanCopy);
+  v15 = [(SUScheduler *)self scanTypeForActivityName:scanCopy];
+  [(SUScheduler *)self _queue_unscheduleAllActivitiesWithName:scanCopy];
+  if (reschedulerCopy)
   {
     v16 = +[SUUtility mainWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
@@ -1869,7 +1869,7 @@ LABEL_15:
     block[3] = &unk_279CACA78;
     block[4] = self;
     v19 = v15;
-    v18 = v7;
+    v18 = scanCopy;
     dispatch_async(v16, block);
   }
 }
@@ -1900,20 +1900,20 @@ void __54__SUScheduler__queue_handleAutoScan_info_rescheduler___block_invoke_2(u
   [v1 scheduleBackgroundScan:v2 scanDate:v4];
 }
 
-- (int)scanTypeForActivityName:(id)a3
+- (int)scanTypeForActivityName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoScan"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.autoScan"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.softwareupdateservicesd.activity.emergencyAutoScan"])
+  else if ([nameCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.emergencyAutoScan"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.softwareupdateservicesd.activity.splatAutoScan"])
+  else if ([nameCopy isEqualToString:@"com.apple.softwareupdateservicesd.activity.splatAutoScan"])
   {
     v4 = 4;
   }
@@ -1926,11 +1926,11 @@ void __54__SUScheduler__queue_handleAutoScan_info_rescheduler___block_invoke_2(u
   return v4;
 }
 
-- (void)_queue_handleAutoDownload:(id)a3 info:(id)a4
+- (void)_queue_handleAutoDownload:(id)download info:(id)info
 {
-  v5 = a3;
-  SULogInfo(@"Handling auto download: %@", v6, v7, v8, v9, v10, v11, v12, v5);
-  [(SUScheduler *)self _queue_unscheduleAllActivitiesWithName:v5];
+  downloadCopy = download;
+  SULogInfo(@"Handling auto download: %@", v6, v7, v8, v9, v10, v11, v12, downloadCopy);
+  [(SUScheduler *)self _queue_unscheduleAllActivitiesWithName:downloadCopy];
 
   v13 = +[SUUtility mainWorkQueue];
   block[0] = MEMORY[0x277D85DD0];
@@ -1941,9 +1941,9 @@ void __54__SUScheduler__queue_handleAutoScan_info_rescheduler___block_invoke_2(u
   dispatch_async(v13, block);
 }
 
-- (void)_queue_handleAutoInstallStart:(id)a3 info:(id)a4
+- (void)_queue_handleAutoInstallStart:(id)start info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:start];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SUScheduler__queue_handleAutoInstallStart_info___block_invoke;
@@ -1952,9 +1952,9 @@ void __54__SUScheduler__queue_handleAutoScan_info_rescheduler___block_invoke_2(u
   dispatch_async(v5, block);
 }
 
-- (void)_queue_handleAutoInstallEnd:(id)a3 info:(id)a4
+- (void)_queue_handleAutoInstallEnd:(id)end info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:end];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SUScheduler__queue_handleAutoInstallEnd_info___block_invoke;
@@ -1971,9 +1971,9 @@ uint64_t __48__SUScheduler__queue_handleAutoInstallEnd_info___block_invoke(uint6
   return [v2 cancelAutoInstallWindowExpirationTask];
 }
 
-- (void)_queue_handleAutoInstallUnlock:(id)a3 info:(id)a4
+- (void)_queue_handleAutoInstallUnlock:(id)unlock info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:unlock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SUScheduler__queue_handleAutoInstallUnlock_info___block_invoke;
@@ -1990,9 +1990,9 @@ uint64_t __51__SUScheduler__queue_handleAutoInstallUnlock_info___block_invoke(ui
   return [v2 cancelAutoInstallUnlockWindowStartTask];
 }
 
-- (void)_queue_handleAutoInstallGetKeybag:(id)a3 info:(id)a4
+- (void)_queue_handleAutoInstallGetKeybag:(id)keybag info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:keybag];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SUScheduler__queue_handleAutoInstallGetKeybag_info___block_invoke;
@@ -2012,9 +2012,9 @@ void __54__SUScheduler__queue_handleAutoInstallGetKeybag_info___block_invoke(uin
   [v9 _scheduleAutoInstallGetKeybagTaskForDate:v11];
 }
 
-- (void)_queue_handleInstallAlert:(id)a3 info:(id)a4
+- (void)_queue_handleInstallAlert:(id)alert info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:alert];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SUScheduler__queue_handleInstallAlert_info___block_invoke;
@@ -2023,9 +2023,9 @@ void __54__SUScheduler__queue_handleAutoInstallGetKeybag_info___block_invoke(uin
   dispatch_async(v5, block);
 }
 
-- (void)_queue_handlePresentBanner:(id)a3 info:(id)a4
+- (void)_queue_handlePresentBanner:(id)banner info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:banner];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SUScheduler__queue_handlePresentBanner_info___block_invoke;
@@ -2053,9 +2053,9 @@ uint64_t __47__SUScheduler__queue_handlePresentBanner_info___block_invoke(uint64
   }
 }
 
-- (void)_queue_handleServerConfigScan:(id)a3 info:(id)a4
+- (void)_queue_handleServerConfigScan:(id)scan info:(id)info
 {
-  v4 = [SUUtility mainWorkQueue:a3];
+  v4 = [SUUtility mainWorkQueue:scan];
   dispatch_async(v4, &__block_literal_global_602);
 }
 
@@ -2065,9 +2065,9 @@ void __50__SUScheduler__queue_handleServerConfigScan_info___block_invoke()
   [v0 installServerSettings];
 }
 
-- (void)_queue_handleAnalyticsSubmission:(id)a3 info:(id)a4
+- (void)_queue_handleAnalyticsSubmission:(id)submission info:(id)info
 {
-  v5 = [SUUtility mainWorkQueue:a3];
+  v5 = [SUUtility mainWorkQueue:submission];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SUScheduler__queue_handleAnalyticsSubmission_info___block_invoke;
@@ -2255,9 +2255,9 @@ LABEL_31:
   dispatch_async(v3, block);
 }
 
-- (void)_queue_handleSplatFollowUp:(id)a3 info:(id)a4
+- (void)_queue_handleSplatFollowUp:(id)up info:(id)info
 {
-  SULogInfo(@"Handling splat follow-up notification activity", a2, a3, a4, v4, v5, v6, v7, v10);
+  SULogInfo(@"Handling splat follow-up notification activity", a2, up, info, v4, v5, v6, v7, v10);
   v9 = +[SUUtility mainWorkQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2267,17 +2267,17 @@ LABEL_31:
   dispatch_async(v9, block);
 }
 
-- (void)serverConfigManager:(id)a3 configValuesChanged:(id)a4
+- (void)serverConfigManager:(id)manager configValuesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   schedulerQueue = self->_schedulerQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__SUScheduler_serverConfigManager_configValuesChanged___block_invoke;
   v8[3] = &unk_279CAA7C0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changedCopy;
+  selfCopy = self;
+  v7 = changedCopy;
   dispatch_async(schedulerQueue, v8);
 }
 

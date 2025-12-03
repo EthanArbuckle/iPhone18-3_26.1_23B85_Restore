@@ -1,50 +1,50 @@
 @interface NUSoftwareBuildNumber
-+ (id)buildNumberWithString:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)buildNumberWithString:(id)string error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NUSoftwareBuildNumber)init;
-- (NUSoftwareBuildNumber)initWithMajor:(unsigned __int16)a3 minor:(char)a4 update:(unsigned __int16)a5 rebuild:(char)a6;
-- (int64_t)compareToBuildNumber:(id)a3;
+- (NUSoftwareBuildNumber)initWithMajor:(unsigned __int16)major minor:(char)minor update:(unsigned __int16)update rebuild:(char)rebuild;
+- (int64_t)compareToBuildNumber:(id)number;
 @end
 
 @implementation NUSoftwareBuildNumber
 
-- (int64_t)compareToBuildNumber:(id)a3
+- (int64_t)compareToBuildNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(NUSoftwareBuildNumber *)self major];
-  if (v5 < [v4 major])
+  numberCopy = number;
+  major = [(NUSoftwareBuildNumber *)self major];
+  if (major < [numberCopy major])
   {
     goto LABEL_2;
   }
 
-  v7 = [(NUSoftwareBuildNumber *)self major];
-  if (v7 > [v4 major])
+  major2 = [(NUSoftwareBuildNumber *)self major];
+  if (major2 > [numberCopy major])
   {
 LABEL_4:
     v6 = 1;
     goto LABEL_5;
   }
 
-  v9 = [(NUSoftwareBuildNumber *)self minor];
-  if (v9 >= [v4 minor])
+  minor = [(NUSoftwareBuildNumber *)self minor];
+  if (minor >= [numberCopy minor])
   {
-    v10 = [(NUSoftwareBuildNumber *)self minor];
-    if (v10 > [v4 minor])
+    minor2 = [(NUSoftwareBuildNumber *)self minor];
+    if (minor2 > [numberCopy minor])
     {
       goto LABEL_4;
     }
 
-    v11 = [(NUSoftwareBuildNumber *)self update];
-    if (v11 >= [v4 update])
+    update = [(NUSoftwareBuildNumber *)self update];
+    if (update >= [numberCopy update])
     {
-      v12 = [(NUSoftwareBuildNumber *)self update];
-      if (v12 <= [v4 update])
+      update2 = [(NUSoftwareBuildNumber *)self update];
+      if (update2 <= [numberCopy update])
       {
-        v13 = [(NUSoftwareBuildNumber *)self rebuild];
-        if (v13 >= [v4 rebuild])
+        rebuild = [(NUSoftwareBuildNumber *)self rebuild];
+        if (rebuild >= [numberCopy rebuild])
         {
-          v14 = [(NUSoftwareBuildNumber *)self rebuild];
-          v6 = v14 > [v4 rebuild];
+          rebuild2 = [(NUSoftwareBuildNumber *)self rebuild];
+          v6 = rebuild2 > [numberCopy rebuild];
           goto LABEL_5;
         }
 
@@ -62,10 +62,10 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -73,21 +73,21 @@ LABEL_5:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSoftwareBuildNumber *)self isEqualToSoftwareBuildNumber:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSoftwareBuildNumber *)self isEqualToSoftwareBuildNumber:equalCopy];
   }
 
   return v5;
 }
 
-- (NUSoftwareBuildNumber)initWithMajor:(unsigned __int16)a3 minor:(char)a4 update:(unsigned __int16)a5 rebuild:(char)a6
+- (NUSoftwareBuildNumber)initWithMajor:(unsigned __int16)major minor:(char)minor update:(unsigned __int16)update rebuild:(char)rebuild
 {
   v11.receiver = self;
   v11.super_class = NUSoftwareBuildNumber;
   result = [(NUSoftwareBuildNumber *)&v11 init];
-  result->_major = a3;
-  result->_minor = a4;
-  result->_update = a5;
-  result->_rebuild = a6;
+  result->_major = major;
+  result->_minor = minor;
+  result->_update = update;
+  result->_rebuild = rebuild;
   return result;
 }
 
@@ -137,8 +137,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -154,8 +154,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -171,11 +171,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUSoftwareBuildNumber init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 249, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (id)buildNumberWithString:(id)a3 error:(id *)a4
++ (id)buildNumberWithString:(id)string error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  stringCopy = string;
+  if (!error)
   {
     v13 = NUAssertLogger_5637();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -196,8 +196,8 @@ LABEL_14:
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v20;
         v34 = 2114;
@@ -208,8 +208,8 @@ LABEL_14:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -218,18 +218,18 @@ LABEL_14:
     _NUAssertFailHandler("+[NUSoftwareBuildNumber buildNumberWithString:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 210, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "error != NULL");
   }
 
-  v6 = v5;
+  v6 = stringCopy;
   *buf = 0;
   v31 = 0;
   v30 = 0;
   v29 = 0;
-  v7 = sscanf([v5 UTF8String], "%d%c%d%c", buf, &v31, &v30, &v29);
+  v7 = sscanf([stringCopy UTF8String], "%d%c%d%c", buf, &v31, &v30, &v29);
   if (v7 <= 2)
   {
     v8 = [NUError invalidError:@"Build number string does not match expected format" object:v6];
 LABEL_14:
     v10 = 0;
-    *a4 = v8;
+    *error = v8;
     goto LABEL_15;
   }
 

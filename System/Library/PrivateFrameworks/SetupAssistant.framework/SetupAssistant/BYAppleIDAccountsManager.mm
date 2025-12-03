@@ -1,14 +1,14 @@
 @interface BYAppleIDAccountsManager
 + (id)sharedManager;
 - (AASetupAssistantService)aaService;
-- (id)initForDelegateBundleIDs:(id)a3;
+- (id)initForDelegateBundleIDs:(id)ds;
 - (id)storedLoginContext;
-- (void)attemptPostRestoreRenewForAccount:(id)a3 loginContext:(id)a4 allowFollowUp:(BOOL)a5 completion:(id)a6;
+- (void)attemptPostRestoreRenewForAccount:(id)account loginContext:(id)context allowFollowUp:(BOOL)up completion:(id)completion;
 - (void)clearStoredLoginContext;
-- (void)enableDataClassesForAccount:(id)a3 completion:(id)a4;
+- (void)enableDataClassesForAccount:(id)account completion:(id)completion;
 - (void)performSilentICDPUpgrade;
-- (void)preloadDefaultLoginParametersWithBundleIDs:(id)a3;
-- (void)repeatedlyAttemptPostRestoreRenewForAccount:(id)a3 loginContext:(id)a4 numberOfAttemptsAllowed:(unint64_t)a5 completion:(id)a6;
+- (void)preloadDefaultLoginParametersWithBundleIDs:(id)ds;
+- (void)repeatedlyAttemptPostRestoreRenewForAccount:(id)account loginContext:(id)context numberOfAttemptsAllowed:(unint64_t)allowed completion:(id)completion;
 - (void)runPostRestoreRenewCredentialsIfNeeded;
 @end
 
@@ -33,9 +33,9 @@ uint64_t __41__BYAppleIDAccountsManager_sharedManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)initForDelegateBundleIDs:(id)a3
+- (id)initForDelegateBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = BYAppleIDAccountsManager;
   v5 = [(BYAppleIDAccountsManager *)&v11 init];
@@ -59,11 +59,11 @@ uint64_t __41__BYAppleIDAccountsManager_sharedManager__block_invoke()
 
     v7 = v6;
     _Block_object_dispose(&v13, 8);
-    v8 = [v6 sharedInstance];
+    sharedInstance = [v6 sharedInstance];
     appleIDLoginPluginManager = v5->_appleIDLoginPluginManager;
-    v5->_appleIDLoginPluginManager = v8;
+    v5->_appleIDLoginPluginManager = sharedInstance;
 
-    [(AALoginPluginManager *)v5->_appleIDLoginPluginManager restrictToPluginBundleIDs:v4];
+    [(AALoginPluginManager *)v5->_appleIDLoginPluginManager restrictToPluginBundleIDs:dsCopy];
     [(AALoginPluginManager *)v5->_appleIDLoginPluginManager setShouldStashLoginResponse:1];
   }
 
@@ -103,17 +103,17 @@ uint64_t __41__BYAppleIDAccountsManager_sharedManager__block_invoke()
   return aaService;
 }
 
-- (void)preloadDefaultLoginParametersWithBundleIDs:(id)a3
+- (void)preloadDefaultLoginParametersWithBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__BYAppleIDAccountsManager_preloadDefaultLoginParametersWithBundleIDs___block_invoke;
   v7[3] = &unk_1E7D03330;
   v7[4] = self;
-  v8 = v4;
+  v8 = dsCopy;
   v5 = preloadDefaultLoginParametersWithBundleIDs__onceToken;
-  v6 = v4;
+  v6 = dsCopy;
   if (v5 != -1)
   {
     dispatch_once(&preloadDefaultLoginParametersWithBundleIDs__onceToken, v7);
@@ -306,11 +306,11 @@ uint64_t __123__BYAppleIDAccountsManager_loginDelegateAccountsWithUsername_passw
   return result;
 }
 
-- (void)enableDataClassesForAccount:(id)a3 completion:(id)a4
+- (void)enableDataClassesForAccount:(id)account completion:(id)completion
 {
   v90 = *MEMORY[0x1E69E9840];
-  v61 = a3;
-  v60 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
@@ -336,21 +336,21 @@ uint64_t __123__BYAppleIDAccountsManager_loginDelegateAccountsWithUsername_passw
   _Block_object_dispose(&v81, 8);
   v80 = objc_alloc_init(v5);
   v62 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v61 aa_isPrimaryEmailVerified])
+  if ([accountCopy aa_isPrimaryEmailVerified])
   {
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v7 = [v61 provisionedDataclasses];
-    v8 = [v7 countByEnumeratingWithState:&v71 objects:v86 count:16];
+    provisionedDataclasses = [accountCopy provisionedDataclasses];
+    v8 = [provisionedDataclasses countByEnumeratingWithState:&v71 objects:v86 count:16];
     if (!v8)
     {
       goto LABEL_46;
     }
 
     v9 = *v72;
-    obj = v7;
+    obj = provisionedDataclasses;
     while (1)
     {
       v10 = 0;
@@ -519,7 +519,7 @@ LABEL_22:
 
             if (v34)
             {
-              v35 = [v61 aa_needsEmailConfiguration];
+              aa_needsEmailConfiguration = [accountCopy aa_needsEmailConfiguration];
               goto LABEL_34;
             }
 
@@ -556,18 +556,18 @@ LABEL_22:
               goto LABEL_43;
             }
 
-            if (([v61 aa_isPrimaryAccount] & 1) != 0 || (objc_msgSend(v61, "aa_needsEmailConfiguration") & 1) == 0)
+            if (([accountCopy aa_isPrimaryAccount] & 1) != 0 || (objc_msgSend(accountCopy, "aa_needsEmailConfiguration") & 1) == 0)
             {
-              if ([v61 aa_isPrimaryAccount])
+              if ([accountCopy aa_isPrimaryAccount])
               {
 LABEL_43:
-                [v61 setEnabled:1 forDataclass:v11];
+                [accountCopy setEnabled:1 forDataclass:v11];
                 goto LABEL_23;
               }
 
-              v35 = [v61 aa_isManagedAppleID];
+              aa_needsEmailConfiguration = [accountCopy aa_isManagedAppleID];
 LABEL_34:
-              if (v35)
+              if (aa_needsEmailConfiguration)
               {
                 goto LABEL_23;
               }
@@ -582,7 +582,7 @@ LABEL_23:
       }
 
       while (v8 != v10);
-      v7 = obj;
+      provisionedDataclasses = obj;
       v41 = [obj countByEnumeratingWithState:&v71 objects:v86 count:16];
       v8 = v41;
       if (!v41)
@@ -590,14 +590,14 @@ LABEL_23:
 LABEL_46:
 
         kdebug_trace();
-        v42 = [v76[5] dataclassActionsForAccountSave:v61];
+        v42 = [v76[5] dataclassActionsForAccountSave:accountCopy];
         kdebug_trace();
         v69 = 0u;
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v43 = [v61 provisionedDataclasses];
-        v44 = [v43 countByEnumeratingWithState:&v67 objects:v85 count:16];
+        provisionedDataclasses2 = [accountCopy provisionedDataclasses];
+        v44 = [provisionedDataclasses2 countByEnumeratingWithState:&v67 objects:v85 count:16];
         if (v44)
         {
           v45 = *v68;
@@ -607,33 +607,33 @@ LABEL_46:
             {
               if (*v68 != v45)
               {
-                objc_enumerationMutation(v43);
+                objc_enumerationMutation(provisionedDataclasses2);
               }
 
               v47 = *(*(&v67 + 1) + 8 * i);
               v48 = [v42 objectForKeyedSubscript:v47];
               if ([v48 count] == 1)
               {
-                v49 = [v48 lastObject];
-                if ([v49 type])
+                lastObject = [v48 lastObject];
+                if ([lastObject type])
                 {
                   v50 = _BYLoggingFacility();
                   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
                   {
-                    v51 = [v49 type];
+                    type = [lastObject type];
                     *buf = 134218242;
-                    *&buf[4] = v51;
+                    *&buf[4] = type;
                     *&buf[12] = 2114;
                     *&buf[14] = v47;
                     _os_log_impl(&dword_1B862F000, v50, OS_LOG_TYPE_DEFAULT, "Setting action %lu for dataclass %{public}@", buf, 0x16u);
                   }
 
-                  [v62 setObject:v49 forKey:v47];
+                  [v62 setObject:lastObject forKey:v47];
                 }
               }
             }
 
-            v44 = [v43 countByEnumeratingWithState:&v67 objects:v85 count:16];
+            v44 = [provisionedDataclasses2 countByEnumeratingWithState:&v67 objects:v85 count:16];
           }
 
           while (v44);
@@ -662,7 +662,7 @@ LABEL_46:
         if (v52)
         {
           v55 = *v52;
-          [v61 setEnabled:1 forDataclass:v55];
+          [accountCopy setEnabled:1 forDataclass:v55];
 
           break;
         }
@@ -688,10 +688,10 @@ LABEL_68:
   v64[1] = 3221225472;
   v64[2] = __67__BYAppleIDAccountsManager_enableDataClassesForAccount_completion___block_invoke;
   v64[3] = &unk_1E7D034E8;
-  v58 = v60;
+  v58 = completionCopy;
   v65 = v58;
   v66 = &v75;
-  [v57 saveAccount:v61 withDataclassActions:v62 completion:v64];
+  [v57 saveAccount:accountCopy withDataclassActions:v62 completion:v64];
 
   _Block_object_dispose(&v75, 8);
   v59 = *MEMORY[0x1E69E9840];
@@ -763,33 +763,33 @@ void __67__BYAppleIDAccountsManager_enableDataClassesForAccount_completion___blo
 - (void)runPostRestoreRenewCredentialsIfNeeded
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6959A48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
-    if ([v4 isAuthenticated])
+    if ([aa_primaryAppleAccount isAuthenticated])
     {
-      v5 = _BYLoggingFacility();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      storedLoginContext = _BYLoggingFacility();
+      if (os_log_type_enabled(storedLoginContext, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v6 = "Post-restore renew unneccessary: primary account already authenticated";
 LABEL_7:
-        _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, v6, buf, 2u);
+        _os_log_impl(&dword_1B862F000, storedLoginContext, OS_LOG_TYPE_DEFAULT, v6, buf, 2u);
         goto LABEL_18;
       }
 
       goto LABEL_18;
     }
 
-    v5 = [(BYAppleIDAccountsManager *)self storedLoginContext];
-    v7 = [v5 appleID];
-    if (v7)
+    storedLoginContext = [(BYAppleIDAccountsManager *)self storedLoginContext];
+    appleID = [storedLoginContext appleID];
+    if (appleID)
     {
-      v8 = v7;
-      v9 = [v5 rawPassword];
-      if (v9)
+      v8 = appleID;
+      rawPassword = [storedLoginContext rawPassword];
+      if (rawPassword)
       {
 
 LABEL_12:
@@ -806,13 +806,13 @@ LABEL_12:
         v14[2] = __66__BYAppleIDAccountsManager_runPostRestoreRenewCredentialsIfNeeded__block_invoke;
         v14[3] = &unk_1E7D027A8;
         v14[4] = self;
-        [(BYAppleIDAccountsManager *)self repeatedlyAttemptPostRestoreRenewForAccount:v4 loginContext:v5 numberOfAttemptsAllowed:3 completion:v14];
+        [(BYAppleIDAccountsManager *)self repeatedlyAttemptPostRestoreRenewForAccount:aa_primaryAppleAccount loginContext:storedLoginContext numberOfAttemptsAllowed:3 completion:v14];
         goto LABEL_18;
       }
 
-      v10 = [v5 continuationKey];
+      continuationKey = [storedLoginContext continuationKey];
 
-      if (v10)
+      if (continuationKey)
       {
         goto LABEL_12;
       }
@@ -828,8 +828,8 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v5 = _BYLoggingFacility();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  storedLoginContext = _BYLoggingFacility();
+  if (os_log_type_enabled(storedLoginContext, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     v6 = "Unable to perform post-restore renew; no primary account!";
@@ -841,13 +841,13 @@ LABEL_18:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)repeatedlyAttemptPostRestoreRenewForAccount:(id)a3 loginContext:(id)a4 numberOfAttemptsAllowed:(unint64_t)a5 completion:(id)a6
+- (void)repeatedlyAttemptPostRestoreRenewForAccount:(id)account loginContext:(id)context numberOfAttemptsAllowed:(unint64_t)allowed completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (a5)
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (allowed)
   {
     v14 = _BYLoggingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -861,16 +861,16 @@ LABEL_18:
     v15[2] = __120__BYAppleIDAccountsManager_repeatedlyAttemptPostRestoreRenewForAccount_loginContext_numberOfAttemptsAllowed_completion___block_invoke;
     v15[3] = &unk_1E7D03538;
     v18 = v13;
-    v19 = a5;
+    allowedCopy = allowed;
     v15[4] = self;
-    v16 = v10;
-    v17 = v11;
-    [(BYAppleIDAccountsManager *)self attemptPostRestoreRenewForAccount:v16 loginContext:v17 allowFollowUp:a5 == 1 completion:v15];
+    v16 = accountCopy;
+    v17 = contextCopy;
+    [(BYAppleIDAccountsManager *)self attemptPostRestoreRenewForAccount:v16 loginContext:v17 allowFollowUp:allowed == 1 completion:v15];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -992,19 +992,19 @@ LABEL_23:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)attemptPostRestoreRenewForAccount:(id)a3 loginContext:(id)a4 allowFollowUp:(BOOL)a5 completion:(id)a6
+- (void)attemptPostRestoreRenewForAccount:(id)account loginContext:(id)context allowFollowUp:(BOOL)up completion:(id)completion
 {
-  v7 = a5;
+  upCopy = up;
   v22[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v10 rawPassword];
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
+  rawPassword = [contextCopy rawPassword];
 
-  if (v12)
+  if (rawPassword)
   {
-    v13 = [v10 rawPassword];
-    [v9 _aa_setRawPassword:v13];
+    rawPassword2 = [contextCopy rawPassword];
+    [accountCopy _aa_setRawPassword:rawPassword2];
   }
 
   v14 = *MEMORY[0x1E6959AA8];
@@ -1015,7 +1015,7 @@ LABEL_23:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
   v16 = [v15 mutableCopy];
 
-  if (v7)
+  if (upCopy)
   {
     v17 = _BYLoggingFacility();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1027,8 +1027,8 @@ LABEL_23:
     [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"AARenewShouldPostFollowUp"];
   }
 
-  v18 = [MEMORY[0x1E6959A48] defaultStore];
-  [v18 renewCredentialsForAccount:v9 options:v16 completion:v11];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  [defaultStore renewCredentialsForAccount:accountCopy options:v16 completion:completionCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -1053,8 +1053,8 @@ LABEL_23:
 
   v3 = v2;
   _Block_object_dispose(&v16, 8);
-  v4 = [v2 contextForPrimaryAccount];
-  if (v4)
+  contextForPrimaryAccount = [v2 contextForPrimaryAccount];
+  if (contextForPrimaryAccount)
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1087,7 +1087,7 @@ LABEL_23:
 
     v7 = v6;
     _Block_object_dispose(&v21, 8);
-    v8 = [[v6 alloc] initWithContext:v4];
+    v8 = [[v6 alloc] initWithContext:contextForPrimaryAccount];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __52__BYAppleIDAccountsManager_performSilentICDPUpgrade__block_invoke;
@@ -1150,10 +1150,10 @@ void __52__BYAppleIDAccountsManager_performSilentICDPUpgrade__block_invoke(uint6
   storedLoginContext = self->_storedLoginContext;
   if (!storedLoginContext)
   {
-    v4 = [getAALoginContextTransientStorageClass() sharedStorage];
-    v5 = [v4 storedContext];
+    sharedStorage = [getAALoginContextTransientStorageClass() sharedStorage];
+    storedContext = [sharedStorage storedContext];
     v6 = self->_storedLoginContext;
-    self->_storedLoginContext = v5;
+    self->_storedLoginContext = storedContext;
 
     storedLoginContext = self->_storedLoginContext;
   }
@@ -1170,8 +1170,8 @@ void __52__BYAppleIDAccountsManager_performSilentICDPUpgrade__block_invoke(uint6
     _os_log_impl(&dword_1B862F000, v3, OS_LOG_TYPE_DEFAULT, "Clearing stored login context", v6, 2u);
   }
 
-  v4 = [getAALoginContextTransientStorageClass() sharedStorage];
-  [v4 clear];
+  sharedStorage = [getAALoginContextTransientStorageClass() sharedStorage];
+  [sharedStorage clear];
 
   storedLoginContext = self->_storedLoginContext;
   self->_storedLoginContext = 0;

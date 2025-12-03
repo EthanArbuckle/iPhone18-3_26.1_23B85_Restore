@@ -1,9 +1,9 @@
 @interface NoSessionViewController
 - (UIView)substitutableView;
-- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)setDeviceInformationView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)setDeviceInformationView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -11,38 +11,38 @@
 
 - (UIView)substitutableView
 {
-  v2 = [(NoSessionViewController *)self headerView];
+  headerView = [(NoSessionViewController *)self headerView];
 
-  return v2;
+  return headerView;
 }
 
-- (void)setDeviceInformationView:(id)a3
+- (void)setDeviceInformationView:(id)view
 {
   v4 = *&self->OBWelcomeController_opaque[OBJC_IVAR____TtC11Diagnostics23NoSessionViewController__deviceInformationView];
-  *&self->OBWelcomeController_opaque[OBJC_IVAR____TtC11Diagnostics23NoSessionViewController__deviceInformationView] = a3;
-  v3 = a3;
+  *&self->OBWelcomeController_opaque[OBJC_IVAR____TtC11Diagnostics23NoSessionViewController__deviceInformationView] = view;
+  viewCopy = view;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E5AE8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000E5DD4(a3);
+  selfCopy = self;
+  sub_1000E5DD4(appear);
 }
 
-- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics23NoSessionViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

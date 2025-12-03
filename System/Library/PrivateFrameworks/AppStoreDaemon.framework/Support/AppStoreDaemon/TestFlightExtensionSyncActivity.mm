@@ -16,7 +16,7 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014621C();
 }
 

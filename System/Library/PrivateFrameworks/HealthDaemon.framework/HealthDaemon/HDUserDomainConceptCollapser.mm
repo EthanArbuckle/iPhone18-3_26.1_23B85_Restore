@@ -1,5 +1,5 @@
 @interface HDUserDomainConceptCollapser
-+ (id)collapseUserDomainConcept:(id)a3 with:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
++ (id)collapseUserDomainConcept:(id)concept with:(id)with profile:(id)profile transaction:(id)transaction error:(id *)error;
 - (HDUserDomainConceptCollapser)init;
 @end
 
@@ -15,20 +15,20 @@
   return 0;
 }
 
-+ (id)collapseUserDomainConcept:(id)a3 with:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (id)collapseUserDomainConcept:(id)concept with:(id)with profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v87[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v12;
-  v17 = v13;
-  if ([a1 keepOldestConcept])
+  conceptCopy = concept;
+  withCopy = with;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  v16 = conceptCopy;
+  v17 = withCopy;
+  if ([self keepOldestConcept])
   {
-    v18 = [v17 creationDate];
-    v19 = [v16 creationDate];
-    v20 = [v18 hk_isBeforeDate:v19];
+    creationDate = [v17 creationDate];
+    creationDate2 = [v16 creationDate];
+    v20 = [creationDate hk_isBeforeDate:creationDate2];
 
     v21 = v16;
     v22 = v17;
@@ -40,9 +40,9 @@
     goto LABEL_5;
   }
 
-  v23 = [v17 modificationDate];
-  v24 = [v16 modificationDate];
-  v25 = [v23 hk_isAfterDate:v24];
+  modificationDate = [v17 modificationDate];
+  modificationDate2 = [v16 modificationDate];
+  v25 = [modificationDate hk_isAfterDate:modificationDate2];
 
   v21 = v16;
   v22 = v17;
@@ -57,20 +57,20 @@ LABEL_5:
 LABEL_6:
   v26 = v22;
   v27 = v21;
-  v28 = v14;
-  v29 = v15;
+  v28 = profileCopy;
+  v29 = transactionCopy;
   v30 = objc_opt_self();
-  if (![v30 preDeduplicationProcessingForUserDomainConcept:v27 duplicateConcept:v26 transaction:v29 error:a7])
+  if (![v30 preDeduplicationProcessingForUserDomainConcept:v27 duplicateConcept:v26 transaction:v29 error:error])
   {
     goto LABEL_19;
   }
 
-  v31 = [v26 UUID];
-  v32 = [v27 UUID];
-  v33 = a7;
-  v34 = v32;
-  v83 = v33;
-  v35 = [HDUserDomainConceptEntity updateLinksTargetingUserDomainConceptUUID:v31 toTargetUserDomainConceptUUID:v32 profile:v28 transaction:v29 error:?];
+  uUID = [v26 UUID];
+  uUID2 = [v27 UUID];
+  errorCopy = error;
+  v34 = uUID2;
+  v83 = errorCopy;
+  v35 = [HDUserDomainConceptEntity updateLinksTargetingUserDomainConceptUUID:uUID toTargetUserDomainConceptUUID:uUID2 profile:v28 transaction:v29 error:?];
 
   if (!v35)
   {
@@ -89,47 +89,47 @@ LABEL_19:
   v38 = v36;
   v39 = v37;
   objc_opt_self();
-  v40 = [v39 propertyCollection];
+  propertyCollection = [v39 propertyCollection];
 
-  v41 = [v38 copyUserDomainConceptByMergingInPropertyCollection:v40];
+  v41 = [v38 copyUserDomainConceptByMergingInPropertyCollection:propertyCollection];
   v77 = v38;
 
   v76 = v41;
   v42 = v41;
   v43 = v39;
   v82 = [objc_opt_self() mergeSubclassDataTo:v42 fromDuplicateConcept:v43];
-  v44 = [v42 codingCollection];
-  v45 = [v44 codings];
-  v46 = [v45 mutableCopy];
+  codingCollection = [v42 codingCollection];
+  codings = [codingCollection codings];
+  v46 = [codings mutableCopy];
 
-  v47 = [v43 codingCollection];
-  v48 = [v47 codings];
+  codingCollection2 = [v43 codingCollection];
+  codings2 = [codingCollection2 codings];
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
   *&buf[16] = __103__HDUserDomainConceptCollapser__migrateLinkAndCodingCollectionsAndSubclassDataFrom_to_outShouldUpdate___block_invoke;
   v86 = &unk_27861DDA8;
   v49 = v46;
   v87[0] = v49;
-  [v49 hk_addObjectsFromArray:v48 passingTest:buf];
+  [v49 hk_addObjectsFromArray:codings2 passingTest:buf];
 
   v50 = [v49 count];
-  v51 = [v42 codingCollection];
-  v52 = [v51 codings];
-  v53 = [v52 count];
+  codingCollection3 = [v42 codingCollection];
+  codings3 = [codingCollection3 codings];
+  v53 = [codings3 count];
 
   v55 = v50 != v53 || v82 != v42;
   v56 = v43;
   v57 = v42;
   objc_opt_self();
-  v58 = [v57 linkCollection];
+  linkCollection = [v57 linkCollection];
 
   v59 = MEMORY[0x277CCDB08];
-  v60 = [v56 linkCollection];
+  linkCollection2 = [v56 linkCollection];
   v84 = v56;
 
-  v61 = [v59 collectionByMergingCollection:v58 otherCollection:v60];
+  v61 = [v59 collectionByMergingCollection:linkCollection otherCollection:linkCollection2];
 
-  if (v61 != v58 && (!v58 || ([v61 isEqual:v58] & 1) == 0))
+  if (v61 != linkCollection && (!linkCollection || ([v61 isEqual:linkCollection] & 1) == 0))
   {
 
     goto LABEL_21;
@@ -180,8 +180,8 @@ LABEL_25:
       _os_log_impl(&dword_228986000, v67, OS_LOG_TYPE_DEFAULT, "%{public}@: Update UDC %{public}@ during deduplication by merging %{public}@ into %{public}@", buf, 0x2Au);
     }
 
-    v68 = [v81 userDomainConceptManager];
-    v69 = [v68 updateUserDomainConcept:v62 error:v83];
+    userDomainConceptManager = [v81 userDomainConceptManager];
+    v69 = [userDomainConceptManager updateUserDomainConcept:v62 error:v83];
 
     if (!v69)
     {
@@ -207,8 +207,8 @@ LABEL_25:
     _os_log_impl(&dword_228986000, v70, OS_LOG_TYPE_DEFAULT, "%{public}@: Delete duplicate UDC %{public}@ keeping UDC %{public}@", buf, 0x20u);
   }
 
-  v71 = [v81 userDomainConceptManager];
-  v72 = [v71 deleteUserDomainConcept:v84 error:v83];
+  userDomainConceptManager2 = [v81 userDomainConceptManager];
+  v72 = [userDomainConceptManager2 deleteUserDomainConcept:v84 error:v83];
 
   if (v72)
   {

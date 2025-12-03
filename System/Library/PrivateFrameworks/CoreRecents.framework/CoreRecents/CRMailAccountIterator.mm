@@ -1,10 +1,10 @@
 @interface CRMailAccountIterator
-+ (id)receivedEmailAddressesFromAccount:(id)a3;
++ (id)receivedEmailAddressesFromAccount:(id)account;
 - (CRMailAccountIterator)init;
-- (CRMailAccountIterator)initWithAccountStore:(id)a3;
-- (id)emailAddressesForAccount:(id)a3;
+- (CRMailAccountIterator)initWithAccountStore:(id)store;
+- (id)emailAddressesForAccount:(id)account;
 - (id)mailAccounts;
-- (void)enumerateEmailAddresses:(id)a3;
+- (void)enumerateEmailAddresses:(id)addresses;
 @end
 
 @implementation CRMailAccountIterator
@@ -17,25 +17,25 @@
   return v4;
 }
 
-- (CRMailAccountIterator)initWithAccountStore:(id)a3
+- (CRMailAccountIterator)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CRMailAccountIterator;
   v6 = [(CRMailAccountIterator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)enumerateEmailAddresses:(id)a3
+- (void)enumerateEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   [(CRMailAccountIterator *)self mailAccounts];
   v24 = 0u;
   v25 = 0u;
@@ -59,7 +59,7 @@
 
         v9 = *(*(&v24 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:v18];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
         v12 = [v9 objectForKeyedSubscript:v7];
         v20 = 0u;
@@ -80,7 +80,7 @@
                 objc_enumerationMutation(v12);
               }
 
-              v4[2](v4, *(*(&v20 + 1) + 8 * j), v11);
+              addressesCopy[2](addressesCopy, *(*(&v20 + 1) + 8 * j), bOOLValue);
             }
 
             v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -100,27 +100,27 @@
 - (id)mailAccounts
 {
   v2 = objc_alloc_init(CNPromise);
-  v3 = [v2 future];
-  [v3 addFailureBlock:&stru_10002CAF0];
+  future = [v2 future];
+  [future addFailureBlock:&stru_10002CAF0];
 
   v9[0] = MSAccountResultsKeyFromEmailAddressesIncludingDisabled;
   v9[1] = MSAccountResultsKeyRestrictedFromSyncingRecents;
   v4 = [NSArray arrayWithObjects:v9 count:2];
-  v5 = [v2 completionHandlerAdapter];
-  [MSAccounts accountValuesForKeys:v4 completionBlock:v5];
+  completionHandlerAdapter = [v2 completionHandlerAdapter];
+  [MSAccounts accountValuesForKeys:v4 completionBlock:completionHandlerAdapter];
 
-  v6 = [v2 future];
-  v7 = [v6 resultWithTimeout:0 error:10.0];
+  future2 = [v2 future];
+  v7 = [future2 resultWithTimeout:0 error:10.0];
 
   return v7;
 }
 
-- (id)emailAddressesForAccount:(id)a3
+- (id)emailAddressesForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(NSMutableSet);
-  v5 = [v3 accountProperties];
-  v6 = [v5 objectForKeyedSubscript:ACAccountPropertyIdentityEmailAddress];
+  accountProperties = [accountCopy accountProperties];
+  v6 = [accountProperties objectForKeyedSubscript:ACAccountPropertyIdentityEmailAddress];
 
   if (v6)
   {
@@ -132,7 +132,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v3 objectForKeyedSubscript:ACEmailAliasKeyEmailAddresses];
+  v8 = [accountCopy objectForKeyedSubscript:ACEmailAliasKeyEmailAddresses];
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v9)
   {
@@ -157,8 +157,8 @@
     while (v10);
   }
 
-  v14 = [v3 accountProperties];
-  v15 = [v14 objectForKeyedSubscript:@"defaultAddress"];
+  accountProperties2 = [accountCopy accountProperties];
+  v15 = [accountProperties2 objectForKeyedSubscript:@"defaultAddress"];
 
   if (v15)
   {
@@ -166,7 +166,7 @@
     [v4 addObject:v16];
   }
 
-  v17 = [objc_opt_class() receivedEmailAddressesFromAccount:v3];
+  v17 = [objc_opt_class() receivedEmailAddressesFromAccount:accountCopy];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -195,14 +195,14 @@
     while (v19);
   }
 
-  v23 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v23;
+  return allObjects;
 }
 
-+ (id)receivedEmailAddressesFromAccount:(id)a3
++ (id)receivedEmailAddressesFromAccount:(id)account
 {
-  v3 = [a3 objectForKeyedSubscript:@"ReceiveEmailAliasAddresses"];
+  v3 = [account objectForKeyedSubscript:@"ReceiveEmailAliasAddresses"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -220,9 +220,9 @@
 
     v6 = v5;
 
-    v7 = [v6 allKeys];
+    allKeys = [v6 allKeys];
 LABEL_11:
-    v9 = v7;
+    v9 = allKeys;
 
     goto LABEL_13;
   }
@@ -242,7 +242,7 @@ LABEL_11:
       v8 = 0;
     }
 
-    v7 = v8;
+    allKeys = v8;
     goto LABEL_11;
   }
 

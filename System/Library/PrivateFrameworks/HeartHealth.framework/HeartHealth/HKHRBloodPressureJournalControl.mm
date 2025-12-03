@@ -2,40 +2,40 @@
 + (id)clientInterface;
 + (id)serverInterface;
 + (id)taskIdentifier;
-- (BOOL)_synchronouslyRegisterForJournalChangesWithError:(id *)a3;
-- (HKHRBloodPressureJournalControl)initWithHealthStore:(id)a3;
+- (BOOL)_synchronouslyRegisterForJournalChangesWithError:(id *)error;
+- (HKHRBloodPressureJournalControl)initWithHealthStore:(id)store;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (void)_handleAutomaticProxyReconnection;
-- (void)_registerForJournalChanges:(BOOL)a3 completion:(id)a4;
+- (void)_registerForJournalChanges:(BOOL)changes completion:(id)completion;
 - (void)_startObservingJournalChanges;
 - (void)_stopObservingJournalChanges;
-- (void)client_notifyDidAddOrModifyBloodPressureJournals:(id)a3;
-- (void)closeJournal:(id)a3 completion:(id)a4;
-- (void)closeJournalWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchActiveJournalWithCompletion:(id)a3;
-- (void)fetchAllJournalsWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)saveJournal:(id)a3 completion:(id)a4;
-- (void)snoozeJournalNotificationWithIdentifier:(id)a3 journalType:(int64_t)a4 userInfo:(id)a5 onDate:(id)a6 completion:(id)a7;
-- (void)unitTest_noOpWithCompletion:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)client_notifyDidAddOrModifyBloodPressureJournals:(id)journals;
+- (void)closeJournal:(id)journal completion:(id)completion;
+- (void)closeJournalWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchActiveJournalWithCompletion:(id)completion;
+- (void)fetchAllJournalsWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)saveJournal:(id)journal completion:(id)completion;
+- (void)snoozeJournalNotificationWithIdentifier:(id)identifier journalType:(int64_t)type userInfo:(id)info onDate:(id)date completion:(id)completion;
+- (void)unitTest_noOpWithCompletion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKHRBloodPressureJournalControl
 
-- (HKHRBloodPressureJournalControl)initWithHealthStore:(id)a3
+- (HKHRBloodPressureJournalControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v24.receiver = self;
   v24.super_class = HKHRBloodPressureJournalControl;
   v5 = [(HKHRBloodPressureJournalControl *)&v24 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v9 = [v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -70,16 +70,16 @@ void __55__HKHRBloodPressureJournalControl_initWithHealthStore___block_invoke(ui
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (void)saveJournal:(id)a3 completion:(id)a4
+- (void)saveJournal:(id)journal completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  journalCopy = journal;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__HKHRBloodPressureJournalControl_saveJournal_completion___block_invoke;
   v13[3] = &unk_27860B340;
-  v14 = v6;
+  v14 = journalCopy;
   v15 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -88,7 +88,7 @@ void __55__HKHRBloodPressureJournalControl_initWithHealthStore___block_invoke(ui
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = journalCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -105,9 +105,9 @@ void __58__HKHRBloodPressureJournalControl_saveJournal_completion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchActiveJournalWithCompletion:(id)a3
+- (void)fetchActiveJournalWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -137,9 +137,9 @@ void __68__HKHRBloodPressureJournalControl_fetchActiveJournalWithCompletion___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAllJournalsWithCompletion:(id)a3
+- (void)fetchAllJournalsWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -169,16 +169,16 @@ void __66__HKHRBloodPressureJournalControl_fetchAllJournalsWithCompletion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)closeJournal:(id)a3 completion:(id)a4
+- (void)closeJournal:(id)journal completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  journalCopy = journal;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__HKHRBloodPressureJournalControl_closeJournal_completion___block_invoke;
   v13[3] = &unk_27860B340;
-  v14 = v6;
+  v14 = journalCopy;
   v15 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -187,7 +187,7 @@ void __66__HKHRBloodPressureJournalControl_fetchAllJournalsWithCompletion___bloc
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = journalCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -204,16 +204,16 @@ void __59__HKHRBloodPressureJournalControl_closeJournal_completion___block_invok
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)closeJournalWithIdentifier:(id)a3 completion:(id)a4
+- (void)closeJournalWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__HKHRBloodPressureJournalControl_closeJournalWithIdentifier_completion___block_invoke;
   v13[3] = &unk_27860B340;
-  v14 = v6;
+  v14 = identifierCopy;
   v15 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -222,7 +222,7 @@ void __59__HKHRBloodPressureJournalControl_closeJournal_completion___block_invok
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = identifierCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -239,21 +239,21 @@ void __73__HKHRBloodPressureJournalControl_closeJournalWithIdentifier_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)snoozeJournalNotificationWithIdentifier:(id)a3 journalType:(int64_t)a4 userInfo:(id)a5 onDate:(id)a6 completion:(id)a7
+- (void)snoozeJournalNotificationWithIdentifier:(id)identifier journalType:(int64_t)type userInfo:(id)info onDate:(id)date completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a7];
+  identifierCopy = identifier;
+  infoCopy = info;
+  dateCopy = date;
+  v15 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __114__HKHRBloodPressureJournalControl_snoozeJournalNotificationWithIdentifier_journalType_userInfo_onDate_completion___block_invoke;
   v24[3] = &unk_27860B390;
-  v25 = v12;
-  v26 = v13;
-  v29 = a4;
-  v27 = v14;
+  v25 = identifierCopy;
+  v26 = infoCopy;
+  typeCopy = type;
+  v27 = dateCopy;
   v28 = v15;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -264,8 +264,8 @@ void __73__HKHRBloodPressureJournalControl_closeJournalWithIdentifier_completion
   v23 = v28;
   v17 = v28;
   v18 = v25;
-  v19 = v14;
-  v20 = v13;
+  v19 = dateCopy;
+  v20 = infoCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v24 errorHandler:v21];
 }
 
@@ -282,7 +282,7 @@ void __114__HKHRBloodPressureJournalControl_snoozeJournalNotificationWithIdentif
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -290,10 +290,10 @@ void __114__HKHRBloodPressureJournalControl_snoozeJournalNotificationWithIdentif
   v5[2] = __58__HKHRBloodPressureJournalControl_registerObserver_queue___block_invoke;
   v5[3] = &unk_27860AE60;
   v5[4] = self;
-  [(HKHRBloodPressureJournalControlObserver *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKHRBloodPressureJournalControlObserver *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -301,7 +301,7 @@ void __114__HKHRBloodPressureJournalControl_snoozeJournalNotificationWithIdentif
   v4[2] = __54__HKHRBloodPressureJournalControl_unregisterObserver___block_invoke;
   v4[3] = &unk_27860AE60;
   v4[4] = self;
-  [(HKHRBloodPressureJournalControlObserver *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKHRBloodPressureJournalControlObserver *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 - (void)_startObservingJournalChanges
@@ -356,15 +356,15 @@ void __63__HKHRBloodPressureJournalControl__stopObservingJournalChanges__block_i
   [*(a1 + 32) _callUnitTestObservationChangeHandlerWith:a2 isObserving:a2 ^ 1 error:v5];
 }
 
-- (void)_registerForJournalChanges:(BOOL)a3 completion:(id)a4
+- (void)_registerForJournalChanges:(BOOL)changes completion:(id)completion
 {
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__HKHRBloodPressureJournalControl__registerForJournalChanges_completion___block_invoke;
   v11[3] = &unk_27860B3E0;
-  v13 = a3;
+  changesCopy = changes;
   v12 = v6;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -383,7 +383,7 @@ void __63__HKHRBloodPressureJournalControl__stopObservingJournalChanges__block_i
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_synchronouslyRegisterForJournalChangesWithError:(id *)a3
+- (BOOL)_synchronouslyRegisterForJournalChangesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -412,10 +412,10 @@ void __63__HKHRBloodPressureJournalControl__stopObservingJournalChanges__block_i
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -479,37 +479,37 @@ uint64_t __84__HKHRBloodPressureJournalControl__synchronouslyRegisterForJournalC
   return [v2 serverInterface];
 }
 
-- (void)client_notifyDidAddOrModifyBloodPressureJournals:(id)a3
+- (void)client_notifyDidAddOrModifyBloodPressureJournals:(id)journals
 {
-  v4 = a3;
+  journalsCopy = journals;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__HKHRBloodPressureJournalControl_client_notifyDidAddOrModifyBloodPressureJournals___block_invoke;
   v7[3] = &unk_27860B430;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = journalsCopy;
+  v6 = journalsCopy;
   [(HKHRBloodPressureJournalControlObserver *)observers notifyObservers:v7];
 }
 
-- (void)unitTest_noOpWithCompletion:(id)a3
+- (void)unitTest_noOpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  completionCopy = completion;
+  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__HKHRBloodPressureJournalControl_unitTest_noOpWithCompletion___block_invoke;
   v11[3] = &unk_27860B368;
-  v12 = v4;
+  v12 = completionCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__HKHRBloodPressureJournalControl_unitTest_noOpWithCompletion___block_invoke_2;
   v9[3] = &unk_27860A9D0;
   v10 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 

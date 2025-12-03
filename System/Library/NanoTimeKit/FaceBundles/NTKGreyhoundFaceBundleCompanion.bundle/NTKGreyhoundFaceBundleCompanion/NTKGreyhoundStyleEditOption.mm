@@ -1,15 +1,15 @@
 @interface NTKGreyhoundStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)defaultOptionForDevice:(id)a3;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)defaultOptionForDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKGreyhoundStyleEditOption
 
-+ (id)defaultOptionForDevice:(id)a3
++ (id)defaultOptionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = CLKLocaleCurrentNumberSystem();
   v5 = 3;
   if (v4 != 2)
@@ -27,21 +27,21 @@
     v6 = v5;
   }
 
-  v7 = [NTKGreyhoundStyleEditOption optionWithStyle:v6 forDevice:v3];
+  v7 = [NTKGreyhoundStyleEditOption optionWithStyle:v6 forDevice:deviceCopy];
 
   return v7;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 4)
+  if (value > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_145E8[a3];
+    return off_145E8[value];
   }
 }
 
@@ -61,8 +61,8 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(NTKGreyhoundStyleEditOption *)self device];
-    v4 = [v3 supportsPDRCapability:270936181];
+    device = [(NTKGreyhoundStyleEditOption *)self device];
+    v4 = [device supportsPDRCapability:270936181];
   }
 
   else
@@ -70,7 +70,7 @@
     v4 = 0;
   }
 
-  v5 = [(NTKGreyhoundStyleEditOption *)self style];
+  style = [(NTKGreyhoundStyleEditOption *)self style];
   v6 = @"EDIT_OPTION_LABEL_STYLE_ARABIC_INDIC_COMPATIBILITY";
   if (v4)
   {
@@ -78,17 +78,17 @@
   }
 
   v7 = @"EDIT_OPTION_LABEL_STYLE_CHINESE";
-  if (v5 != 4)
+  if (style != 4)
   {
     v7 = 0;
   }
 
-  if (v5 == 3)
+  if (style == 3)
   {
     v7 = @"EDIT_OPTION_LABEL_STYLE_DEVANAGARI";
   }
 
-  if (v5 != 2)
+  if (style != 2)
   {
     v6 = v7;
   }
@@ -99,17 +99,17 @@
     v8 = @"EDIT_OPTION_LABEL_STYLE_ARABIC_COMPATIBILITY";
   }
 
-  if (v5 != 1)
+  if (style != 1)
   {
     v8 = 0;
   }
 
-  if (!v5)
+  if (!style)
   {
     v8 = @"EDIT_OPTION_LABEL_STYLE_ROMAN";
   }
 
-  if (v5 <= 1)
+  if (style <= 1)
   {
     v9 = v8;
   }

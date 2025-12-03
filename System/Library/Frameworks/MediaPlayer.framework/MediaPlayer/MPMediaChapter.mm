@@ -1,24 +1,24 @@
 @interface MPMediaChapter
-- (MPMediaChapter)initWithCoder:(id)a3;
+- (MPMediaChapter)initWithCoder:(id)coder;
 - (MPMediaLibraryArtworkDataSource)artworkDataSource;
 - (id)artworkCatalog;
 - (id)description;
 - (id)title;
 - (id)value;
-- (int64_t)_sortByChapterIndex:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_sortByChapterIndex:(id)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMediaChapter
 
 - (id)artworkCatalog
 {
-  v3 = [(MPMediaChapter *)self artworkDataSource];
+  artworkDataSource = [(MPMediaChapter *)self artworkDataSource];
   v4 = [MPArtworkCatalog alloc];
-  v5 = [(MPMediaChapter *)self artworkRequest];
-  v6 = [(MPArtworkCatalog *)v4 initWithToken:v5 dataSource:v3];
+  artworkRequest = [(MPMediaChapter *)self artworkRequest];
+  v6 = [(MPArtworkCatalog *)v4 initWithToken:artworkRequest dataSource:artworkDataSource];
 
-  if ([v3 areRepresentationsAvailableForCatalog:v6])
+  if ([artworkDataSource areRepresentationsAvailableForCatalog:v6])
   {
     v7 = v6;
   }
@@ -31,14 +31,14 @@
   return v7;
 }
 
-- (int64_t)_sortByChapterIndex:(id)a3
+- (int64_t)_sortByChapterIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(MPMediaChapter *)self indexInChaptersWithAnyType];
-  if (v5 >= [v4 indexInChaptersWithAnyType])
+  indexCopy = index;
+  indexInChaptersWithAnyType = [(MPMediaChapter *)self indexInChaptersWithAnyType];
+  if (indexInChaptersWithAnyType >= [indexCopy indexInChaptersWithAnyType])
   {
-    v7 = [(MPMediaChapter *)self indexInChaptersWithAnyType];
-    v6 = v7 > [v4 indexInChaptersWithAnyType];
+    indexInChaptersWithAnyType2 = [(MPMediaChapter *)self indexInChaptersWithAnyType];
+    v6 = indexInChaptersWithAnyType2 > [indexCopy indexInChaptersWithAnyType];
   }
 
   else
@@ -88,65 +88,65 @@
   return v4;
 }
 
-- (MPMediaChapter)initWithCoder:(id)a3
+- (MPMediaChapter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = [(MPMediaChapter *)self init];
     if (v5)
     {
-      v6 = [v4 valueForKey:@"MPChapterIndex"];
+      v6 = [coderCopy valueForKey:@"MPChapterIndex"];
 
       if (v6)
       {
-        v7 = [v4 decodeIntegerForKey:@"MPChapterIndex"];
+        v7 = [coderCopy decodeIntegerForKey:@"MPChapterIndex"];
         v5->_indexInChaptersWithAnyType = v7;
       }
 
       else
       {
-        v5->_indexInChaptersWithAnyType = [v4 decodeIntegerForKey:@"MPIndexInChaptersOfAnyType"];
-        v7 = [v4 decodeIntegerForKey:@"MPIndexInChaptersOfSameType"];
+        v5->_indexInChaptersWithAnyType = [coderCopy decodeIntegerForKey:@"MPIndexInChaptersOfAnyType"];
+        v7 = [coderCopy decodeIntegerForKey:@"MPIndexInChaptersOfSameType"];
       }
 
       v5->_indexInChaptersWithSameType = v7;
-      v5->_chapterType = [v4 decodeIntegerForKey:@"MPChapterType"];
-      [v4 decodeDoubleForKey:@"MPPlaybackDuration"];
+      v5->_chapterType = [coderCopy decodeIntegerForKey:@"MPChapterType"];
+      [coderCopy decodeDoubleForKey:@"MPPlaybackDuration"];
       v5->_playbackDuration = v9;
-      [v4 decodeDoubleForKey:@"MPPlaybackTime"];
+      [coderCopy decodeDoubleForKey:@"MPPlaybackTime"];
       v5->_playbackTime = v10;
-      v11 = [v4 decodeObjectForKey:@"MPValue"];
+      v11 = [coderCopy decodeObjectForKey:@"MPValue"];
       value = v5->_value;
       v5->_value = v11;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:@"only keyed archiving is supported"];
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeInteger:self->_indexInChaptersWithAnyType forKey:@"MPIndexInChaptersOfAnyType"];
-    [v4 encodeInteger:self->_indexInChaptersWithSameType forKey:@"MPIndexInChaptersOfSameType"];
-    [v4 encodeInteger:self->_chapterType forKey:@"MPChapterType"];
-    [v4 encodeDouble:@"MPPlaybackDuration" forKey:self->_playbackDuration];
-    [v4 encodeDouble:@"MPPlaybackTime" forKey:self->_playbackTime];
+    [coderCopy encodeInteger:self->_indexInChaptersWithAnyType forKey:@"MPIndexInChaptersOfAnyType"];
+    [coderCopy encodeInteger:self->_indexInChaptersWithSameType forKey:@"MPIndexInChaptersOfSameType"];
+    [coderCopy encodeInteger:self->_chapterType forKey:@"MPChapterType"];
+    [coderCopy encodeDouble:@"MPPlaybackDuration" forKey:self->_playbackDuration];
+    [coderCopy encodeDouble:@"MPPlaybackTime" forKey:self->_playbackTime];
     if ([self->_value conformsToProtocol:&unk_1F150E840])
     {
-      [v4 encodeObject:self->_value forKey:@"MPValue"];
+      [coderCopy encodeObject:self->_value forKey:@"MPValue"];
     }
   }
 
@@ -164,13 +164,13 @@
   v15 = @"urlDescription";
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPMediaChapter *)self indexInChaptersWithAnyType];
+  indexInChaptersWithAnyType = [(MPMediaChapter *)self indexInChaptersWithAnyType];
   [(MPMediaChapter *)self playbackTime];
   v7 = v6;
   [(MPMediaChapter *)self playbackTime];
   v9 = v8;
   [(MPMediaChapter *)self playbackDuration];
-  v11 = [v3 stringWithFormat:@"<%@: %p> chapter %lu, time = range = [%.2f, %.2f], %@ = %@", v4, self, v5, v7, v9 + v10, *(v14 + -[MPMediaChapter chapterType](self, "chapterType")), self->_value];
+  v11 = [v3 stringWithFormat:@"<%@: %p> chapter %lu, time = range = [%.2f, %.2f], %@ = %@", v4, self, indexInChaptersWithAnyType, v7, v9 + v10, *(v14 + -[MPMediaChapter chapterType](self, "chapterType")), self->_value];
   for (i = 32; i != -8; i -= 8)
   {
   }

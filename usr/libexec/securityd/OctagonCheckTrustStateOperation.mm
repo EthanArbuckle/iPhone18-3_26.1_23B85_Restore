@@ -1,16 +1,16 @@
 @interface OctagonCheckTrustStateOperation
-- (OctagonCheckTrustStateOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5;
-- (void)afterTPHTrustState:(id)a3 trustedPeers:(id)a4;
+- (OctagonCheckTrustStateOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
+- (void)afterTPHTrustState:(id)state trustedPeers:(id)peers;
 - (void)groupStart;
 @end
 
 @implementation OctagonCheckTrustStateOperation
 
-- (void)afterTPHTrustState:(id)a3 trustedPeers:(id)a4
+- (void)afterTPHTrustState:(id)state trustedPeers:(id)peers
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 memberChanges])
+  stateCopy = state;
+  peersCopy = peers;
+  if ([stateCopy memberChanges])
   {
     v8 = sub_100006274("octagon");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -19,22 +19,22 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Member list changed", buf, 2u);
     }
 
-    v9 = [(OctagonCheckTrustStateOperation *)self deps];
-    v10 = [v9 octagonAdapter];
-    [v10 sendTrustedPeerSetChangedUpdate];
+    deps = [(OctagonCheckTrustStateOperation *)self deps];
+    octagonAdapter = [deps octagonAdapter];
+    [octagonAdapter sendTrustedPeerSetChangedUpdate];
   }
 
-  v11 = [(OctagonCheckTrustStateOperation *)self deps];
-  v12 = [v11 stateHolder];
+  deps2 = [(OctagonCheckTrustStateOperation *)self deps];
+  stateHolder = [deps2 stateHolder];
   v88 = 0;
-  v13 = [v12 loadOrCreateAccountMetadata:&v88];
+  v13 = [stateHolder loadOrCreateAccountMetadata:&v88];
   v14 = v88;
 
   if (v14)
   {
-    v15 = [(OctagonCheckTrustStateOperation *)self deps];
-    v16 = [v15 lockStateTracker];
-    v17 = [v16 isLockedError:v14];
+    deps3 = [(OctagonCheckTrustStateOperation *)self deps];
+    lockStateTracker = [deps3 lockStateTracker];
+    v17 = [lockStateTracker isLockedError:v14];
 
     v18 = sub_100006274("SecError");
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -61,18 +61,18 @@
 LABEL_92:
     [(OctagonCheckTrustStateOperation *)self setNextState:v20];
 LABEL_93:
-    v51 = [(OctagonCheckTrustStateOperation *)self finishedOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v51];
+    finishedOp = [(OctagonCheckTrustStateOperation *)self finishedOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp];
     goto LABEL_94;
   }
 
-  if (([v6 peerStatus] & 4) != 0 || (objc_msgSend(v6, "peerStatus") & 0x20) != 0)
+  if (([stateCopy peerStatus] & 4) != 0 || (objc_msgSend(stateCopy, "peerStatus") & 0x20) != 0)
   {
     v21 = 1;
     v22 = 1;
   }
 
-  else if ([v6 peerStatus] & 0x40) != 0 || (objc_msgSend(v6, "peerStatus") & 2) != 0 || (objc_msgSend(v6, "peerStatus"))
+  else if ([stateCopy peerStatus] & 0x40) != 0 || (objc_msgSend(stateCopy, "peerStatus") & 2) != 0 || (objc_msgSend(stateCopy, "peerStatus"))
   {
     v21 = 0;
     v22 = 2;
@@ -87,7 +87,7 @@ LABEL_93:
   v23 = sub_100006274("octagon-consistency");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    [v6 peerStatus];
+    [stateCopy peerStatus];
     v24 = TPPeerStatusToString();
     v25 = *(&off_100343A28 + v22);
     *buf = 138412546;
@@ -97,13 +97,13 @@ LABEL_93:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "TPH's trust state (%@) is considered %@", buf, 0x16u);
   }
 
-  v26 = [v13 trustState];
-  if (v22 == v26)
+  trustState = [v13 trustState];
+  if (v22 == trustState)
   {
     v27 = sub_100006274("octagon-consistency");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      [v6 peerStatus];
+      [stateCopy peerStatus];
       v28 = TPPeerStatusToString();
       *buf = 138412290;
       v90 = v28;
@@ -119,15 +119,15 @@ LABEL_93:
     v30 = sub_100006274("SecError");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v13 trustState];
-      if (v31 >= 3)
+      trustState2 = [v13 trustState];
+      if (trustState2 >= 3)
       {
-        v32 = [NSString stringWithFormat:@"(unknown: %i)", v31];
+        v32 = [NSString stringWithFormat:@"(unknown: %i)", trustState2];
       }
 
       else
       {
-        v32 = *(&off_100343A28 + v31);
+        v32 = *(&off_100343A28 + trustState2);
       }
 
       v33 = v32;
@@ -139,9 +139,9 @@ LABEL_93:
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "octagon-consistency: Locally cached status (%@) does not match TPH's current peer status (%@)", buf, 0x16u);
     }
 
-    v35 = [v13 trustState];
+    trustState3 = [v13 trustState];
     v36 = v21 ^ 1;
-    if (v35 != 2)
+    if (trustState3 != 2)
     {
       v36 = 1;
     }
@@ -155,40 +155,40 @@ LABEL_93:
     [v13 setTrustState:v22];
   }
 
-  v38 = [v6 peerID];
-  v39 = [v13 peerID];
-  if ([v38 isEqualToString:v39])
+  peerID = [stateCopy peerID];
+  peerID2 = [v13 peerID];
+  if ([peerID isEqualToString:peerID2])
   {
 
     goto LABEL_39;
   }
 
-  v42 = [v6 peerID];
-  if (v42)
+  peerID3 = [stateCopy peerID];
+  if (peerID3)
   {
 
 LABEL_46:
     v44 = sub_100006274("SecError");
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
-      v45 = [v13 peerID];
-      v46 = [v6 peerID];
+      peerID4 = [v13 peerID];
+      peerID5 = [stateCopy peerID];
       *buf = 138412546;
-      v90 = v45;
+      v90 = peerID4;
       v91 = 2112;
-      v92 = v46;
+      v92 = peerID5;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "octagon-consistency: Locally cached peer ID (%@) does not match TPH's current peer ID (%@)", buf, 0x16u);
     }
 
-    v47 = [v6 peerID];
-    [v13 setPeerID:v47];
+    peerID6 = [stateCopy peerID];
+    [v13 setPeerID:peerID6];
 
     goto LABEL_49;
   }
 
-  v43 = [v13 peerID];
+  peerID7 = [v13 peerID];
 
-  if (v43)
+  if (peerID7)
   {
     goto LABEL_46;
   }
@@ -197,52 +197,52 @@ LABEL_39:
   v40 = sub_100006274("octagon-consistency");
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [v6 peerID];
+    peerID8 = [stateCopy peerID];
     *buf = 138412290;
-    v90 = v41;
+    v90 = peerID8;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "TPH peer ID matches cache: (%@)", buf, 0xCu);
   }
 
-  if (v22 == v26)
+  if (v22 == trustState)
   {
 LABEL_54:
-    v53 = [v6 osVersion];
+    osVersion = [stateCopy osVersion];
 
-    if (v53)
+    if (osVersion)
     {
-      v54 = [(OctagonCheckTrustStateOperation *)self deps];
-      v55 = [v54 deviceInformationAdapter];
-      v56 = [v55 osVersion];
+      deps4 = [(OctagonCheckTrustStateOperation *)self deps];
+      deviceInformationAdapter = [deps4 deviceInformationAdapter];
+      osVersion2 = [deviceInformationAdapter osVersion];
 
-      if (v56)
+      if (osVersion2)
       {
-        v57 = [v6 osVersion];
-        v58 = [v56 isEqualToString:v57];
+        osVersion3 = [stateCopy osVersion];
+        v58 = [osVersion2 isEqualToString:osVersion3];
 
         if ((v58 & 1) == 0)
         {
           v59 = [[OctagonPendingFlag alloc] initWithFlag:@"recd_push" conditions:1];
-          v60 = [(OctagonCheckTrustStateOperation *)self deps];
-          v61 = [v60 flagHandler];
-          [v61 handlePendingFlag:v59];
+          deps5 = [(OctagonCheckTrustStateOperation *)self deps];
+          flagHandler = [deps5 flagHandler];
+          [flagHandler handlePendingFlag:v59];
         }
       }
     }
 
-    v62 = [v13 peerID];
-    if (v62)
+    peerID9 = [v13 peerID];
+    if (peerID9)
     {
-      v63 = v62;
-      v64 = [v13 trustState];
+      v63 = peerID9;
+      trustState4 = [v13 trustState];
 
-      if (v64 == 2)
+      if (trustState4 == 2)
       {
         v65 = sub_100006274("octagon");
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
         {
-          v66 = [v13 peerID];
+          peerID10 = [v13 peerID];
           *buf = 138412290;
-          v90 = v66;
+          v90 = peerID10;
           _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "Appear to be trusted for peer %@; ensuring correct state", buf, 0xCu);
         }
 
@@ -251,13 +251,13 @@ LABEL_54:
       }
     }
 
-    v68 = [(OctagonCheckTrustStateOperation *)self deps];
-    v69 = [v68 sosAdapter];
-    if ([v69 sosEnabled])
+    deps6 = [(OctagonCheckTrustStateOperation *)self deps];
+    sosAdapter = [deps6 sosAdapter];
+    if ([sosAdapter sosEnabled])
     {
-      v70 = [v13 trustState];
+      trustState5 = [v13 trustState];
 
-      if (v70 != 2)
+      if (trustState5 != 2)
       {
         v65 = sub_100006274("octagon");
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
@@ -277,22 +277,22 @@ LABEL_54:
     {
     }
 
-    v78 = [v13 trustState];
+    trustState6 = [v13 trustState];
     v65 = sub_100006274("octagon");
     v79 = os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT);
-    if (v78 == 2)
+    if (trustState6 == 2)
     {
       if (v79)
       {
-        v80 = [v13 trustState];
-        if (v80 >= 3)
+        trustState7 = [v13 trustState];
+        if (trustState7 >= 3)
         {
-          v81 = [NSString stringWithFormat:@"(unknown: %i)", v80];
+          v81 = [NSString stringWithFormat:@"(unknown: %i)", trustState7];
         }
 
         else
         {
-          v81 = *(&off_100343A28 + v80);
+          v81 = *(&off_100343A28 + trustState7);
         }
 
         *buf = 138412290;
@@ -305,15 +305,15 @@ LABEL_89:
 
     else if (v79)
     {
-      v83 = [v13 trustState];
-      if (v83 >= 3)
+      trustState8 = [v13 trustState];
+      if (trustState8 >= 3)
       {
-        v81 = [NSString stringWithFormat:@"(unknown: %i)", v83];
+        v81 = [NSString stringWithFormat:@"(unknown: %i)", trustState8];
       }
 
       else
       {
-        v81 = *(&off_100343A28 + v83);
+        v81 = *(&off_100343A28 + trustState8);
       }
 
       *buf = 138412290;
@@ -330,18 +330,18 @@ LABEL_91:
   }
 
 LABEL_49:
-  v48 = [(OctagonCheckTrustStateOperation *)self deps];
-  v49 = [v48 stateHolder];
+  deps7 = [(OctagonCheckTrustStateOperation *)self deps];
+  stateHolder2 = [deps7 stateHolder];
   v86[0] = _NSConcreteStackBlock;
   v86[1] = 3221225472;
   v86[2] = sub_1001AB8C8;
   v86[3] = &unk_100344BD8;
   v87 = v13;
   v85 = 0;
-  v50 = [v49 persistAccountChanges:v86 error:&v85];
-  v51 = v85;
+  v50 = [stateHolder2 persistAccountChanges:v86 error:&v85];
+  finishedOp = v85;
 
-  if (v50 && !v51)
+  if (v50 && !finishedOp)
   {
     v52 = sub_100006274("octagon-consistency");
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -353,9 +353,9 @@ LABEL_49:
     goto LABEL_54;
   }
 
-  v72 = [(OctagonCheckTrustStateOperation *)self deps];
-  v73 = [v72 lockStateTracker];
-  v74 = [v73 isLockedError:v51];
+  deps8 = [(OctagonCheckTrustStateOperation *)self deps];
+  lockStateTracker2 = [deps8 lockStateTracker];
+  v74 = [lockStateTracker2 isLockedError:finishedOp];
 
   v75 = sub_100006274("SecError");
   v76 = os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT);
@@ -364,7 +364,7 @@ LABEL_49:
     if (v76)
     {
       *buf = 138412290;
-      v90 = v51;
+      v90 = finishedOp;
       _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "octagon-consistency: Unable to save new account state due to lock state: %@", buf, 0xCu);
     }
 
@@ -376,17 +376,17 @@ LABEL_49:
     if (v76)
     {
       *buf = 138412290;
-      v90 = v51;
+      v90 = finishedOp;
       _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "octagon-consistency: Unable to save new account state. Erroring: %@", buf, 0xCu);
     }
 
-    [(CKKSResultOperation *)self setError:v51];
+    [(CKKSResultOperation *)self setError:finishedOp];
     v77 = &off_1003439D8;
   }
 
   [(OctagonCheckTrustStateOperation *)self setNextState:*v77];
-  v82 = [(OctagonCheckTrustStateOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self runBeforeGroupFinished:v82];
+  finishedOp2 = [(OctagonCheckTrustStateOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp2];
 
 LABEL_94:
 }
@@ -396,39 +396,39 @@ LABEL_94:
   v3 = objc_alloc_init(NSOperation);
   [(OctagonCheckTrustStateOperation *)self setFinishedOp:v3];
 
-  v4 = [(OctagonCheckTrustStateOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v4];
+  finishedOp = [(OctagonCheckTrustStateOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   objc_initWeak(&location, self);
-  v5 = [(OctagonCheckTrustStateOperation *)self deps];
-  v6 = [v5 cuttlefishXPCWrapper];
-  v7 = [(OctagonCheckTrustStateOperation *)self deps];
-  v8 = [v7 activeAccount];
+  deps = [(OctagonCheckTrustStateOperation *)self deps];
+  cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+  deps2 = [(OctagonCheckTrustStateOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001ABA98;
   v9[3] = &unk_1003439E8;
   objc_copyWeak(&v10, &location);
-  [v6 fetchTrustStateWithSpecificUser:v8 reply:v9];
+  [cuttlefishXPCWrapper fetchTrustStateWithSpecificUser:activeAccount reply:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (OctagonCheckTrustStateOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5
+- (OctagonCheckTrustStateOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v15.receiver = self;
   v15.super_class = OctagonCheckTrustStateOperation;
   v12 = [(CKKSGroupOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a3);
-    objc_storeStrong(&v13->_intendedState, a4);
-    objc_storeStrong(&v13->_nextState, a5);
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
   }
 
   return v13;

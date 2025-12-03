@@ -1,26 +1,26 @@
 @interface PRInlineComplicationContainerViewController
-- (PRInlineComplicationContainerViewController)initWithComplicationDescriptor:(id)a3;
+- (PRInlineComplicationContainerViewController)initWithComplicationDescriptor:(id)descriptor;
 - (PRInlineComplicationContainerViewControllerDelegate)delegate;
-- (void)_tapGestureRecognized:(id)a3;
-- (void)setComplicationDescriptor:(id)a3;
-- (void)setFocused:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFocused:(BOOL)a3 animationSettings:(id)a4;
-- (void)setVibrancyConfiguration:(id)a3;
+- (void)_tapGestureRecognized:(id)recognized;
+- (void)setComplicationDescriptor:(id)descriptor;
+- (void)setFocused:(BOOL)focused animated:(BOOL)animated;
+- (void)setFocused:(BOOL)focused animationSettings:(id)settings;
+- (void)setVibrancyConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
 @implementation PRInlineComplicationContainerViewController
 
-- (PRInlineComplicationContainerViewController)initWithComplicationDescriptor:(id)a3
+- (PRInlineComplicationContainerViewController)initWithComplicationDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v8.receiver = self;
   v8.super_class = PRInlineComplicationContainerViewController;
   v5 = [(PRInlineComplicationContainerViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PRInlineComplicationContainerViewController *)v5 setComplicationDescriptor:v4];
+    [(PRInlineComplicationContainerViewController *)v5 setComplicationDescriptor:descriptorCopy];
   }
 
   return v6;
@@ -31,31 +31,31 @@
   v7.receiver = self;
   v7.super_class = PRInlineComplicationContainerViewController;
   [(PRInlineComplicationContainerViewController *)&v7 viewDidLoad];
-  v3 = [(PRInlineComplicationContainerViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  view = [(PRInlineComplicationContainerViewController *)self view];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 
   v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tapGestureRecognized_];
-  v6 = [(PRInlineComplicationContainerViewController *)self view];
-  [v6 addGestureRecognizer:v5];
+  view2 = [(PRInlineComplicationContainerViewController *)self view];
+  [view2 addGestureRecognizer:v5];
 }
 
-- (void)setComplicationDescriptor:(id)a3
+- (void)setComplicationDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (self->_complicationDescriptor != v5)
+  descriptorCopy = descriptor;
+  if (self->_complicationDescriptor != descriptorCopy)
   {
-    objc_storeStrong(&self->_complicationDescriptor, a3);
+    objc_storeStrong(&self->_complicationDescriptor, descriptor);
     if (self->_hostViewController)
     {
       [(PRInlineComplicationContainerViewController *)self bs_removeChildViewController:?];
       [(CHUISWidgetHostViewController *)self->_hostViewController invalidate];
     }
 
-    if (v5)
+    if (descriptorCopy)
     {
       v6 = objc_alloc(MEMORY[0x1E6994530]);
-      v7 = [v6 pr_initWithComplicationDescriptor:v5];
+      v7 = [v6 pr_initWithComplicationDescriptor:descriptorCopy];
 
       v8 = objc_alloc_init(MEMORY[0x1E69942B8]);
       [v8 setShowsDateAlongsideText:1];
@@ -74,28 +74,28 @@
       [v7 setContentType:0];
       [v7 setShouldShareTouchesWithHost:1];
       [v7 setColorScheme:2];
-      v11 = [(PRInlineComplicationContainerViewController *)self vibrancyConfiguration];
-      [v7 setVibrancyConfiguration:v11];
+      vibrancyConfiguration = [(PRInlineComplicationContainerViewController *)self vibrancyConfiguration];
+      [v7 setVibrancyConfiguration:vibrancyConfiguration];
 
-      v12 = [v7 view];
-      [v12 setUserInteractionEnabled:0];
+      view = [v7 view];
+      [view setUserInteractionEnabled:0];
 
       v13 = [objc_alloc(MEMORY[0x1E6994428]) initWithPrimaryTintColor:0 secondaryTintColor:0 filterStyle:1 fallbackFilterStyle:1 fraction:1.0];
       [v7 setTintParameters:v13];
-      v14 = [(PRComplicationDescriptor *)v5 widget];
+      widget = [(PRComplicationDescriptor *)descriptorCopy widget];
       v15 = PRSharedWidgetExtensionProvider();
-      v16 = [v15 widgetDescriptorForWidget:v14];
+      v16 = [v15 widgetDescriptorForWidget:widget];
 
-      v17 = [v16 intentType];
-      if (v17 && (v18 = v17, [v14 intent], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, !v19))
+      intentType = [v16 intentType];
+      if (intentType && (v18 = intentType, [widget intent], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, !v19))
       {
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __73__PRInlineComplicationContainerViewController_setComplicationDescriptor___block_invoke;
         v22[3] = &unk_1E7845450;
         v23 = v7;
-        v24 = v14;
-        v25 = v5;
+        v24 = widget;
+        v25 = descriptorCopy;
         [v16 loadDefaultIntent:v22];
       }
 
@@ -140,10 +140,10 @@ void __73__PRInlineComplicationContainerViewController_setComplicationDescriptor
   }
 }
 
-- (void)setFocused:(BOOL)a3 animated:(BOOL)a4
+- (void)setFocused:(BOOL)focused animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  focusedCopy = focused;
+  if (animated)
   {
     v6 = [MEMORY[0x1E698E608] settingsWithDuration:0.3];
   }
@@ -154,27 +154,27 @@ void __73__PRInlineComplicationContainerViewController_setComplicationDescriptor
   }
 
   v7 = v6;
-  [(PRInlineComplicationContainerViewController *)self setFocused:v4 animationSettings:v6];
+  [(PRInlineComplicationContainerViewController *)self setFocused:focusedCopy animationSettings:v6];
 }
 
-- (void)setFocused:(BOOL)a3 animationSettings:(id)a4
+- (void)setFocused:(BOOL)focused animationSettings:(id)settings
 {
-  if (self->_focused != a3)
+  if (self->_focused != focused)
   {
-    self->_focused = a3;
+    self->_focused = focused;
   }
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_vibrancyConfiguration, a3);
-  v5 = a3;
-  [(CHUISWidgetHostViewController *)self->_hostViewController setVibrancyConfiguration:v5];
+  objc_storeStrong(&self->_vibrancyConfiguration, configuration);
+  configurationCopy = configuration;
+  [(CHUISWidgetHostViewController *)self->_hostViewController setVibrancyConfiguration:configurationCopy];
 }
 
-- (void)_tapGestureRecognized:(id)a3
+- (void)_tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (self->_focused)
   {
     if (!self->_complicationDescriptor)
@@ -182,19 +182,19 @@ void __73__PRInlineComplicationContainerViewController_setComplicationDescriptor
       goto LABEL_6;
     }
 
-    v6 = v4;
-    v5 = [(PRInlineComplicationContainerViewController *)self delegate];
-    [v5 inlineComplicationContainerViewController:self didEditComplication:self->_complicationDescriptor];
+    v6 = recognizedCopy;
+    delegate = [(PRInlineComplicationContainerViewController *)self delegate];
+    [delegate inlineComplicationContainerViewController:self didEditComplication:self->_complicationDescriptor];
   }
 
   else
   {
-    v6 = v4;
-    v5 = [(PRInlineComplicationContainerViewController *)self delegate];
-    [v5 inlineComplicationContainerViewControllerDidTapAdd:self];
+    v6 = recognizedCopy;
+    delegate = [(PRInlineComplicationContainerViewController *)self delegate];
+    [delegate inlineComplicationContainerViewControllerDidTapAdd:self];
   }
 
-  v4 = v6;
+  recognizedCopy = v6;
 LABEL_6:
 }
 

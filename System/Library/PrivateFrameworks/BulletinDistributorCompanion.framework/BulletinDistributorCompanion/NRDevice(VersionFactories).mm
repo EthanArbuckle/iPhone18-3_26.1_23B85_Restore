@@ -9,36 +9,36 @@
 
 - (uint64_t)watchOSVersion
 {
-  v1 = [a1 valueForProperty:*MEMORY[0x277D2BC20]];
+  v1 = [self valueForProperty:*MEMORY[0x277D2BC20]];
   v2 = [MEMORY[0x277D2BCC8] versionForString:v1];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0xFFFFFFFFLL;
+    unsignedIntegerValue = 0xFFFFFFFFLL;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)bltVersion
 {
-  v1 = [a1 watchOSVersion];
-  if (v1 > 0x6FFFF)
+  watchOSVersion = [self watchOSVersion];
+  if (watchOSVersion > 0x6FFFF)
   {
     return 8;
   }
 
-  if (v1 > 0x5FFFF)
+  if (watchOSVersion > 0x5FFFF)
   {
     return 7;
   }
 
-  if (v1 >> 18)
+  if (watchOSVersion >> 18)
   {
     return 6;
   }
@@ -46,22 +46,22 @@
   v3 = 4;
   v4 = 3;
   v5 = 2;
-  if (!(v1 >> 17))
+  if (!(watchOSVersion >> 17))
   {
-    v5 = (v1 & 0xFFFFFFFFFFFF0000) != 0;
+    v5 = (watchOSVersion & 0xFFFFFFFFFFFF0000) != 0;
   }
 
-  if (v1 >> 9 <= 0x100)
+  if (watchOSVersion >> 9 <= 0x100)
   {
     v4 = v5;
   }
 
-  if (v1 <= 0x2FFFF)
+  if (watchOSVersion <= 0x2FFFF)
   {
     v3 = v4;
   }
 
-  if (v1 <= 0x301FF)
+  if (watchOSVersion <= 0x301FF)
   {
     return v3;
   }
@@ -74,10 +74,10 @@
 
 + (BOOL)activePairedDeviceSupportIsGreaterEqualVersion:()VersionFactories
 {
-  v4 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
-  v5 = [v4 watchOSVersion];
+  blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+  watchOSVersion = [blt_boundedWaitForActivePairedDevice watchOSVersion];
 
-  return v5 >= a3;
+  return watchOSVersion >= a3;
 }
 
 + (id)versionForString:()VersionFactories

@@ -1,8 +1,8 @@
 @interface MNVehicleParkingInfo
-- (MNVehicleParkingInfo)initWithCoder:(id)a3;
+- (MNVehicleParkingInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRemainingWalkingRoute:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRemainingWalkingRoute:(id)route;
 @end
 
 @implementation MNVehicleParkingInfo
@@ -29,18 +29,18 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Type: %@, remaining walking route: %@", v4, self->_walkingRouteDisplayETAInfo];
 }
 
-- (MNVehicleParkingInfo)initWithCoder:(id)a3
+- (MNVehicleParkingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MNVehicleParkingInfo *)self init];
   if (v5)
   {
-    v5->_parkingType = [v4 decodeIntegerForKey:@"_parkingType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_walkingRouteDisplayETAInfo"];
+    v5->_parkingType = [coderCopy decodeIntegerForKey:@"_parkingType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_walkingRouteDisplayETAInfo"];
     walkingRouteDisplayETAInfo = v5->_walkingRouteDisplayETAInfo;
     v5->_walkingRouteDisplayETAInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
     routeID = v5->_routeID;
     v5->_routeID = v8;
 
@@ -58,29 +58,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_parkingType forKey:@"_parkingType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_parkingType forKey:@"_parkingType"];
   remainingWalkingRoute = self->_remainingWalkingRoute;
   if (remainingWalkingRoute)
   {
     MNSaveRouteWithSubpath(remainingWalkingRoute, 0, 1, 0);
-    [v5 encodeObject:self->_routeID forKey:@"_routeID"];
+    [coderCopy encodeObject:self->_routeID forKey:@"_routeID"];
   }
 
-  [v5 encodeObject:self->_walkingRouteDisplayETAInfo forKey:@"_walkingRouteDisplayETAInfo"];
+  [coderCopy encodeObject:self->_walkingRouteDisplayETAInfo forKey:@"_walkingRouteDisplayETAInfo"];
 }
 
-- (void)setRemainingWalkingRoute:(id)a3
+- (void)setRemainingWalkingRoute:(id)route
 {
-  v4 = a3;
-  v5 = [v4 uniqueRouteID];
+  routeCopy = route;
+  uniqueRouteID = [routeCopy uniqueRouteID];
   routeID = self->_routeID;
-  self->_routeID = v5;
+  self->_routeID = uniqueRouteID;
 
   remainingWalkingRoute = self->_remainingWalkingRoute;
-  self->_remainingWalkingRoute = v4;
+  self->_remainingWalkingRoute = routeCopy;
 }
 
 @end

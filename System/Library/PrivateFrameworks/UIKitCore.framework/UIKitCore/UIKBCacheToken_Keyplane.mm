@@ -1,74 +1,74 @@
 @interface UIKBCacheToken_Keyplane
-+ (id)tokenForKeyplane:(id)a3 renderConfig:(id)a4;
-- (BOOL)isUsableForCacheToken:(id)a3 withRenderFlags:(int64_t)a4;
++ (id)tokenForKeyplane:(id)keyplane renderConfig:(id)config;
+- (BOOL)isUsableForCacheToken:(id)token withRenderFlags:(int64_t)flags;
 - (CGSize)size;
-- (id)_initWithKeyplane:(id)a3 keylayout:(id)a4 renderConfig:(id)a5;
-- (id)stringForSplitState:(BOOL)a3 handBias:(int64_t)a4;
-- (void)annotateWithBool:(BOOL)a3;
-- (void)annotateWithInt:(int)a3;
+- (id)_initWithKeyplane:(id)keyplane keylayout:(id)keylayout renderConfig:(id)config;
+- (id)stringForSplitState:(BOOL)state handBias:(int64_t)bias;
+- (void)annotateWithBool:(BOOL)bool;
+- (void)annotateWithInt:(int)int;
 @end
 
 @implementation UIKBCacheToken_Keyplane
 
-- (id)_initWithKeyplane:(id)a3 keylayout:(id)a4 renderConfig:(id)a5
+- (id)_initWithKeyplane:(id)keyplane keylayout:(id)keylayout renderConfig:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 name];
+  keyplaneCopy = keyplane;
+  keylayoutCopy = keylayout;
+  configCopy = config;
+  name = [keyplaneCopy name];
   v37.receiver = self;
   v37.super_class = UIKBCacheToken_Keyplane;
-  v12 = [(UIKBCacheToken *)&v37 initWithName:v11];
+  v12 = [(UIKBCacheToken *)&v37 initWithName:name];
 
   if (v12)
   {
-    [v9 frame];
+    [keylayoutCopy frame];
     v12->_size.width = v13;
     v12->_size.height = v14;
-    v15 = [v8 visualStyling];
-    *&v12->_style.styling = v15;
-    v12->_style.intValue = v15 & 0xFFFFFF7F;
-    v16 = [v9 geometrySet:0];
-    v17 = [v16 name];
-    v18 = v17;
+    visualStyling = [keyplaneCopy visualStyling];
+    *&v12->_style.styling = visualStyling;
+    v12->_style.intValue = visualStyling & 0xFFFFFF7F;
+    v16 = [keylayoutCopy geometrySet:0];
+    name2 = [v16 name];
+    v18 = name2;
     v19 = &stru_1EFB14550;
-    if (v17)
+    if (name2)
     {
-      v19 = v17;
+      v19 = name2;
     }
 
     v20 = v19;
 
-    v21 = [v9 keySet];
-    v22 = [v21 name];
+    keySet = [keylayoutCopy keySet];
+    name3 = [keySet name];
 
-    v12->_colorAdaptiveBackground = [v10 colorAdaptiveBackground];
-    v12->_lightKeyboard = [v10 lightKeyboard];
-    v12->_animatedBackground = [v10 animatedBackground];
-    v12->_usesCompactKeycapsFont = [v10 usesCompactKeycapsFont];
-    v23 = [v10 controlKeyBackgroundName];
-    v12->_controlKeyBackgroundName = [v23 hash];
+    v12->_colorAdaptiveBackground = [configCopy colorAdaptiveBackground];
+    v12->_lightKeyboard = [configCopy lightKeyboard];
+    v12->_animatedBackground = [configCopy animatedBackground];
+    v12->_usesCompactKeycapsFont = [configCopy usesCompactKeycapsFont];
+    controlKeyBackgroundName = [configCopy controlKeyBackgroundName];
+    v12->_controlKeyBackgroundName = [controlKeyBackgroundName hash];
 
     v24 = _UIKBTrimKBStarName_iOS(v20);
 
     geometrySetName = v12->_geometrySetName;
     v12->_geometrySetName = v24;
 
-    v26 = _UIKBTrimKBStarName_iOS(v22);
+    v26 = _UIKBTrimKBStarName_iOS(name3);
     keySetName = v12->_keySetName;
     v12->_keySetName = v26;
 
-    v28 = [v9 cachedGestureLayout];
-    v29 = [v28 keySet];
-    v30 = [v29 name];
-    v31 = _UIKBTrimKBStarName_iOS(v30);
+    cachedGestureLayout = [keylayoutCopy cachedGestureLayout];
+    keySet2 = [cachedGestureLayout keySet];
+    name4 = [keySet2 name];
+    v31 = _UIKBTrimKBStarName_iOS(name4);
     cachedGestureKeySetName = v12->_cachedGestureKeySetName;
     v12->_cachedGestureKeySetName = v31;
 
-    v33 = [MEMORY[0x1E695DF58] preferredLocale];
-    v34 = [v33 localeIdentifier];
+    preferredLocale = [MEMORY[0x1E695DF58] preferredLocale];
+    localeIdentifier = [preferredLocale localeIdentifier];
     locale = v12->_locale;
-    v12->_locale = v34;
+    v12->_locale = localeIdentifier;
 
     v12->super._scale = 0.0;
   }
@@ -85,20 +85,20 @@
   return result;
 }
 
-- (void)annotateWithBool:(BOOL)a3
+- (void)annotateWithBool:(BOOL)bool
 {
-  v3 = a3;
+  boolCopy = bool;
   annotations = self->_annotations;
   if (!annotations)
   {
-    v6 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
     v7 = self->_annotations;
-    self->_annotations = v6;
+    self->_annotations = string;
 
     annotations = self->_annotations;
   }
 
-  if (v3)
+  if (boolCopy)
   {
     v8 = @"1";
   }
@@ -113,15 +113,15 @@
   self->_annotations = v9;
 }
 
-- (void)annotateWithInt:(int)a3
+- (void)annotateWithInt:(int)int
 {
-  v3 = *&a3;
+  v3 = *&int;
   annotations = self->_annotations;
   if (!annotations)
   {
-    v6 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
     v7 = self->_annotations;
-    self->_annotations = v6;
+    self->_annotations = string;
 
     annotations = self->_annotations;
   }
@@ -131,24 +131,24 @@
   self->_annotations = v8;
 }
 
-+ (id)tokenForKeyplane:(id)a3 renderConfig:(id)a4
++ (id)tokenForKeyplane:(id)keyplane renderConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 subtrees];
-  if (![v7 count])
+  keyplaneCopy = keyplane;
+  configCopy = config;
+  subtrees = [keyplaneCopy subtrees];
+  if (![subtrees count])
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v8 = [v5 subtrees];
-  v9 = [v8 objectAtIndex:0];
+  subtrees2 = [keyplaneCopy subtrees];
+  v9 = [subtrees2 objectAtIndex:0];
 
   if (v9)
   {
-    v10 = [objc_alloc(objc_opt_class()) _initWithKeyplane:v5 keylayout:v9 renderConfig:v6];
-    v7 = v9;
+    v10 = [objc_alloc(objc_opt_class()) _initWithKeyplane:keyplaneCopy keylayout:v9 renderConfig:configCopy];
+    subtrees = v9;
 LABEL_5:
 
     goto LABEL_7;
@@ -160,42 +160,42 @@ LABEL_7:
   return v10;
 }
 
-- (id)stringForSplitState:(BOOL)a3 handBias:(int64_t)a4
+- (id)stringForSplitState:(BOOL)state handBias:(int64_t)bias
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__UIKBCacheToken_Keyplane_stringForSplitState_handBias___block_invoke;
   v6[3] = &unk_1E710E808;
-  v7 = a3;
+  stateCopy = state;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = bias;
   v4 = [(UIKBCacheToken *)self stringForConstruction:v6];
 
   return v4;
 }
 
-- (BOOL)isUsableForCacheToken:(id)a3 withRenderFlags:(int64_t)a4
+- (BOOL)isUsableForCacheToken:(id)token withRenderFlags:(int64_t)flags
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_style.intValue != v6[18])
+  flagsCopy = flags;
+  tokenCopy = token;
+  v7 = tokenCopy;
+  if (self->_style.intValue != tokenCopy[18])
   {
     goto LABEL_8;
   }
 
   transformationIdentifiers = self->super._transformationIdentifiers;
-  v9 = [v6 transformationIdentifiers];
-  LODWORD(transformationIdentifiers) = [(NSSet *)transformationIdentifiers isEqualToSet:v9];
+  transformationIdentifiers = [tokenCopy transformationIdentifiers];
+  LODWORD(transformationIdentifiers) = [(NSSet *)transformationIdentifiers isEqualToSet:transformationIdentifiers];
 
   if (!transformationIdentifiers)
   {
     goto LABEL_8;
   }
 
-  if ((v4 & 0x34) == 0)
+  if ((flagsCopy & 0x34) == 0)
   {
-    if ((v4 & 3) != 0)
+    if ((flagsCopy & 3) != 0)
     {
       geometrySetName = self->_geometrySetName;
       cachedGestureKeySetName = v7[10];
@@ -215,8 +215,8 @@ LABEL_8:
   }
 
   v10 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v11 = [v10 preferencesActions];
-  v12 = [v11 BOOLForPreferenceKey:@"GesturesEnabled"];
+  preferencesActions = [v10 preferencesActions];
+  v12 = [preferencesActions BOOLForPreferenceKey:@"GesturesEnabled"];
 
   if (!v12)
   {

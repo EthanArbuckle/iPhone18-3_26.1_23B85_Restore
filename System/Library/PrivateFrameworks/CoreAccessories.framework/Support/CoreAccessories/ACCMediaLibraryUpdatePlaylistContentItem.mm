@@ -1,27 +1,27 @@
 @interface ACCMediaLibraryUpdatePlaylistContentItem
-- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)a3 persistentID:(unint64_t)a4 playlistPersistentID:(unint64_t)a5;
-- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)a3 playlistPersistentID:(unint64_t)a4 dict:(id)a5;
-- (id)copyNSRepresentation:(int)a3;
+- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)library persistentID:(unint64_t)d playlistPersistentID:(unint64_t)iD;
+- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)library playlistPersistentID:(unint64_t)d dict:(id)dict;
+- (id)copyNSRepresentation:(int)representation;
 - (id)debugDescription;
-- (void)fillStruct:(id *)a3;
+- (void)fillStruct:(id *)struct;
 @end
 
 @implementation ACCMediaLibraryUpdatePlaylistContentItem
 
-- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)a3 persistentID:(unint64_t)a4 playlistPersistentID:(unint64_t)a5
+- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)library persistentID:(unint64_t)d playlistPersistentID:(unint64_t)iD
 {
-  v9 = a3;
+  libraryCopy = library;
   v19.receiver = self;
   v19.super_class = ACCMediaLibraryUpdatePlaylistContentItem;
   v10 = [(ACCMediaLibraryUpdatePlaylistContentItem *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_mediaLibraryUID, a3);
-    v11->_playlistPersistentID = a5;
+    objc_storeStrong(&v10->_mediaLibraryUID, library);
+    v11->_playlistPersistentID = iD;
     v11->_validMask = 1;
     title = v11->_title;
-    v11->_persistentID = a4;
+    v11->_persistentID = d;
     v11->_title = 0;
 
     albumTitle = v11->_albumTitle;
@@ -43,18 +43,18 @@
   return v11;
 }
 
-- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)a3 playlistPersistentID:(unint64_t)a4 dict:(id)a5
+- (ACCMediaLibraryUpdatePlaylistContentItem)initWithMediaLibrary:(id)library playlistPersistentID:(unint64_t)d dict:(id)dict
 {
-  v9 = a3;
-  v10 = a5;
+  libraryCopy = library;
+  dictCopy = dict;
   v40.receiver = self;
   v40.super_class = ACCMediaLibraryUpdatePlaylistContentItem;
   v11 = [(ACCMediaLibraryUpdatePlaylistContentItem *)&v40 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaLibraryUID, a3);
-    v12->_playlistPersistentID = a4;
+    objc_storeStrong(&v11->_mediaLibraryUID, library);
+    v12->_playlistPersistentID = d;
     title = v12->_title;
     v12->_persistentID = 0;
     v12->_title = 0;
@@ -75,76 +75,76 @@
     v12->_composer = 0;
 
     v12->_validMask = 0;
-    v19 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemPersistentID"];
+    v19 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemPersistentID"];
 
     if (v19)
     {
-      v20 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemPersistentID"];
+      v20 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemPersistentID"];
       v12->_persistentID = [v20 unsignedLongLongValue];
 
       v12->_validMask |= 1uLL;
     }
 
-    v21 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemTitle"];
+    v21 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemTitle"];
 
     if (v21)
     {
-      v22 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemTitle"];
+      v22 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemTitle"];
       v23 = v12->_title;
       v12->_title = v22;
 
       v12->_validMask |= 2uLL;
     }
 
-    v24 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemAlbumTitle"];
+    v24 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemAlbumTitle"];
 
     if (v24)
     {
-      v25 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemAlbumTitle"];
+      v25 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemAlbumTitle"];
       v26 = v12->_albumTitle;
       v12->_albumTitle = v25;
 
       v12->_validMask |= 0x40uLL;
     }
 
-    v27 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemArtist"];
+    v27 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemArtist"];
 
     if (v27)
     {
-      v28 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemArtist"];
+      v28 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemArtist"];
       v29 = v12->_artist;
       v12->_artist = v28;
 
       v12->_validMask |= 0x1000uLL;
     }
 
-    v30 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemAlbumArtist"];
+    v30 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemAlbumArtist"];
 
     if (v30)
     {
-      v31 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemAlbumArtist"];
+      v31 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemAlbumArtist"];
       v32 = v12->_albumArtist;
       v12->_albumArtist = v31;
 
       v12->_validMask |= 0x4000uLL;
     }
 
-    v33 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemGenre"];
+    v33 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemGenre"];
 
     if (v33)
     {
-      v34 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemGenre"];
+      v34 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemGenre"];
       v35 = v12->_genre;
       v12->_genre = v34;
 
       v12->_validMask |= 0x10000uLL;
     }
 
-    v36 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemComposer"];
+    v36 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemComposer"];
 
     if (v36)
     {
-      v37 = [v10 objectForKey:@"ACCMediaLibraryPlaylistItemComposer"];
+      v37 = [dictCopy objectForKey:@"ACCMediaLibraryPlaylistItemComposer"];
       v38 = v12->_composer;
       v12->_composer = v37;
 
@@ -164,9 +164,9 @@
   return v5;
 }
 
-- (id)copyNSRepresentation:(int)a3
+- (id)copyNSRepresentation:(int)representation
 {
-  if (a3 != 1)
+  if (representation != 1)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     validMask = self->_validMask;
@@ -264,17 +264,17 @@ LABEL_17:
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (void)fillStruct:(id *)a3
+- (void)fillStruct:(id *)struct
 {
-  *&a3->var4 = 0u;
-  *&a3->var6 = 0u;
-  *&a3->var0 = 0u;
-  *&a3->var2 = 0u;
+  *&struct->var4 = 0u;
+  *&struct->var6 = 0u;
+  *&struct->var0 = 0u;
+  *&struct->var2 = 0u;
   validMask = self->_validMask;
   if (validMask)
   {
-    a3->var1 = self->_persistentID;
-    a3->var0 |= 1u;
+    struct->var1 = self->_persistentID;
+    struct->var0 |= 1u;
     validMask = self->_validMask;
     if ((validMask & 2) == 0)
     {
@@ -300,8 +300,8 @@ LABEL_3:
     validMask = self->_validMask;
   }
 
-  a3->var2 = title;
-  a3->var0 |= 2u;
+  struct->var2 = title;
+  struct->var0 |= 2u;
   if ((validMask & 0x40) == 0)
   {
 LABEL_4:
@@ -321,8 +321,8 @@ LABEL_13:
     validMask = self->_validMask;
   }
 
-  a3->var3 = albumTitle;
-  a3->var0 |= 0x40u;
+  struct->var3 = albumTitle;
+  struct->var0 |= 0x40u;
   if ((validMask & 0x1000) == 0)
   {
 LABEL_5:
@@ -342,8 +342,8 @@ LABEL_16:
     validMask = self->_validMask;
   }
 
-  a3->var4 = artist;
-  a3->var0 |= 0x1000u;
+  struct->var4 = artist;
+  struct->var0 |= 0x1000u;
   if ((validMask & 0x4000) == 0)
   {
 LABEL_6:
@@ -363,8 +363,8 @@ LABEL_19:
     validMask = self->_validMask;
   }
 
-  a3->var5 = albumArtist;
-  a3->var0 |= 0x4000u;
+  struct->var5 = albumArtist;
+  struct->var0 |= 0x4000u;
   if ((validMask & 0x10000) == 0)
   {
 LABEL_7:
@@ -384,8 +384,8 @@ LABEL_22:
     validMask = self->_validMask;
   }
 
-  a3->var6 = genre;
-  a3->var0 |= 0x10000u;
+  struct->var6 = genre;
+  struct->var0 |= 0x10000u;
   if ((validMask & 0x40000) != 0)
   {
 LABEL_25:
@@ -395,8 +395,8 @@ LABEL_25:
       composer = [(NSString *)composer UTF8String];
     }
 
-    a3->var7 = composer;
-    a3->var0 |= 0x40000u;
+    struct->var7 = composer;
+    struct->var0 |= 0x40000u;
   }
 }
 

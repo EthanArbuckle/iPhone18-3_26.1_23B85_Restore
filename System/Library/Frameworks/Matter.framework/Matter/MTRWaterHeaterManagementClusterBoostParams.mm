@@ -1,8 +1,8 @@
 @interface MTRWaterHeaterManagementClusterBoostParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRWaterHeaterManagementClusterBoostParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWaterHeaterManagementClusterBoostParams);
-  v5 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  [(MTRWaterHeaterManagementClusterBoostParams *)v4 setBoostInfo:v5];
+  boostInfo = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  [(MTRWaterHeaterManagementClusterBoostParams *)v4 setBoostInfo:boostInfo];
 
-  v6 = [(MTRWaterHeaterManagementClusterBoostParams *)self timedInvokeTimeoutMs];
-  [(MTRWaterHeaterManagementClusterBoostParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRWaterHeaterManagementClusterBoostParams *)self timedInvokeTimeoutMs];
+  [(MTRWaterHeaterManagementClusterBoostParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRWaterHeaterManagementClusterBoostParams *)self serverSideProcessingTimeout];
-  [(MTRWaterHeaterManagementClusterBoostParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRWaterHeaterManagementClusterBoostParams *)self serverSideProcessingTimeout];
+  [(MTRWaterHeaterManagementClusterBoostParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,9 +54,9 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v43 = 0;
+  unsignedIntValue = 0;
   LOBYTE(v44) = 0;
   LOBYTE(v45) = 0;
   v46 = 0;
@@ -65,64 +65,64 @@
   v42[0] = 0;
   v42[1] = 0;
   v41 = v42;
-  v5 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  v6 = [v5 duration];
-  v43 = [v6 unsignedIntValue];
+  boostInfo = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  duration = [boostInfo duration];
+  unsignedIntValue = [duration unsignedIntValue];
 
-  v7 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  v8 = [v7 oneShot];
+  boostInfo2 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  oneShot = [boostInfo2 oneShot];
 
-  if (v8)
+  if (oneShot)
   {
     v44 = 1;
-    v9 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-    v10 = [v9 oneShot];
-    HIBYTE(v44) = [v10 BOOLValue];
+    boostInfo3 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+    oneShot2 = [boostInfo3 oneShot];
+    HIBYTE(v44) = [oneShot2 BOOLValue];
   }
 
-  v11 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  v12 = [v11 emergencyBoost];
+  boostInfo4 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  emergencyBoost = [boostInfo4 emergencyBoost];
 
-  if (v12)
+  if (emergencyBoost)
   {
     v45 = 1;
-    v13 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-    v14 = [v13 emergencyBoost];
-    HIBYTE(v45) = [v14 BOOLValue];
+    boostInfo5 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+    emergencyBoost2 = [boostInfo5 emergencyBoost];
+    HIBYTE(v45) = [emergencyBoost2 BOOLValue];
   }
 
-  v15 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  v16 = [v15 temporarySetpoint];
+  boostInfo6 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  temporarySetpoint = [boostInfo6 temporarySetpoint];
 
-  if (v16)
+  if (temporarySetpoint)
   {
     v46 = 1;
-    v47 = 0;
-    v17 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-    v18 = [v17 temporarySetpoint];
-    v47 = [v18 shortValue];
+    shortValue = 0;
+    boostInfo7 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+    temporarySetpoint2 = [boostInfo7 temporarySetpoint];
+    shortValue = [temporarySetpoint2 shortValue];
   }
 
-  v19 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  v20 = [v19 targetPercentage];
+  boostInfo8 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  targetPercentage = [boostInfo8 targetPercentage];
 
-  if (v20)
+  if (targetPercentage)
   {
     v48 = 1;
-    v21 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-    v22 = [v21 targetPercentage];
-    HIBYTE(v48) = [v22 unsignedCharValue];
+    boostInfo9 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+    targetPercentage2 = [boostInfo9 targetPercentage];
+    HIBYTE(v48) = [targetPercentage2 unsignedCharValue];
   }
 
-  v23 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-  v24 = [v23 targetReheat];
+  boostInfo10 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+  targetReheat = [boostInfo10 targetReheat];
 
-  if (v24)
+  if (targetReheat)
   {
     v49 = 1;
-    v25 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
-    v26 = [v25 targetReheat];
-    HIBYTE(v49) = [v26 unsignedCharValue];
+    boostInfo11 = [(MTRWaterHeaterManagementClusterBoostParams *)self boostInfo];
+    targetReheat2 = [boostInfo11 targetReheat];
+    HIBYTE(v49) = [targetReheat2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v40);
@@ -135,7 +135,7 @@
     v39 = 0;
     sub_238EA16C4(&v36, &v40, 0);
     sub_2393C7BF0(v35, &v36, 0xFFFFFFFF);
-    v27 = sub_238F32DCC(&v43, v35, 0x100uLL);
+    v27 = sub_238F32DCC(&unsignedIntValue, v35, 0x100uLL);
     v29 = v27;
     if (v27 || (v27 = sub_238DD2EFC(v35, &v40), v29 = v27, v27))
     {
@@ -144,8 +144,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v40);
-      v27 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v40);
+      v27 = sub_2393C7114(reader, 21, 256);
       v30 = v34;
       v29 = v27;
     }
@@ -173,19 +173,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRWaterHeaterManagementClusterBoostParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -196,7 +196,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x3F1700000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

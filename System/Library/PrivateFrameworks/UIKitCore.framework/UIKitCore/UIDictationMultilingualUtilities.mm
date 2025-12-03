@@ -1,30 +1,30 @@
 @interface UIDictationMultilingualUtilities
-+ (BOOL)hasMultilingualAttributesForAttributedString:(id)a3;
-+ (id)multilingualAttributesForAttributedString:(id)a3;
-+ (id)textReplacementFromMultilingualString:(id)a3 replacementRange:(id)a4 stringToReplace:(id)a5;
++ (BOOL)hasMultilingualAttributesForAttributedString:(id)string;
++ (id)multilingualAttributesForAttributedString:(id)string;
++ (id)textReplacementFromMultilingualString:(id)string replacementRange:(id)range stringToReplace:(id)replace;
 @end
 
 @implementation UIDictationMultilingualUtilities
 
-+ (BOOL)hasMultilingualAttributesForAttributedString:(id)a3
++ (BOOL)hasMultilingualAttributesForAttributedString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v3 = [a1 multilingualAttributesForAttributedString:?];
+  v3 = [self multilingualAttributesForAttributedString:?];
   v4 = [v3 objectForKey:@"bestAlternatives"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-+ (id)multilingualAttributesForAttributedString:(id)a3
++ (id)multilingualAttributesForAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     v5 = [v4 attribute:@"_UITextInputDictationResultMetadata" atIndex:0 effectiveRange:0];
     v6 = [v5 objectForKey:@"bestText"];
@@ -43,15 +43,15 @@
       v7 = 0;
     }
 
-    v9 = [v4 string];
-    if (v9)
+    string = [v4 string];
+    if (string)
     {
       if (qword_1ED49F2D8 != -1)
       {
         dispatch_once(&qword_1ED49F2D8, &__block_literal_global_816_0);
       }
 
-      v10 = [v9 stringByTrimmingCharactersInSet:qword_1ED49F2D0];
+      v10 = [string stringByTrimmingCharactersInSet:qword_1ED49F2D0];
     }
 
     else
@@ -80,34 +80,34 @@
   return v8;
 }
 
-+ (id)textReplacementFromMultilingualString:(id)a3 replacementRange:(id)a4 stringToReplace:(id)a5
++ (id)textReplacementFromMultilingualString:(id)string replacementRange:(id)range stringToReplace:(id)replace
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 text];
-  v11 = [v9 text];
-  v12 = [UITextReplacement replacementWithRange:v8 original:v7 replacement:v10 menuTitle:v11];
+  replaceCopy = replace;
+  rangeCopy = range;
+  stringCopy = string;
+  text = [stringCopy text];
+  text2 = [stringCopy text];
+  v12 = [UITextReplacement replacementWithRange:rangeCopy original:replaceCopy replacement:text menuTitle:text2];
 
-  v13 = [v9 dominantLanguage];
-  v14 = [v9 correctionIdentifier];
-  v15 = [v9 interactionIdentifier];
-  v16 = [v9 phrases];
+  dominantLanguage = [stringCopy dominantLanguage];
+  correctionIdentifier = [stringCopy correctionIdentifier];
+  interactionIdentifier = [stringCopy interactionIdentifier];
+  phrases = [stringCopy phrases];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __107__UIDictationMultilingualUtilities_textReplacementFromMultilingualString_replacementRange_stringToReplace___block_invoke;
   v23[3] = &unk_1E7115828;
-  v24 = v13;
-  v25 = v7;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v7;
-  v21 = v13;
+  v24 = dominantLanguage;
+  v25 = replaceCopy;
+  v26 = correctionIdentifier;
+  v27 = interactionIdentifier;
+  v28 = phrases;
+  v17 = phrases;
+  v18 = interactionIdentifier;
+  v19 = correctionIdentifier;
+  v20 = replaceCopy;
+  v21 = dominantLanguage;
   [v12 setReplacementCompletionBlock:v23];
 
   return v12;

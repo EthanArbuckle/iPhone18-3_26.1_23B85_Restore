@@ -1,11 +1,11 @@
 @interface VoiceOverBrailleStatusCellController
 - (id)specifiers;
-- (id)statusCellGeneralEnabled:(id)a3;
-- (id)statusCellTextStyleEnabled:(id)a3;
-- (void)setEnableStatusCellGeneral:(id)a3 specifier:(id)a4;
-- (void)setEnableStatusCellTextStyle:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)statusCellGeneralEnabled:(id)enabled;
+- (id)statusCellTextStyleEnabled:(id)enabled;
+- (void)setEnableStatusCellGeneral:(id)general specifier:(id)specifier;
+- (void)setEnableStatusCellTextStyle:(id)style specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverBrailleStatusCellController
@@ -16,7 +16,7 @@
   if (!v3)
   {
     v17 = OBJC_IVAR___PSListController__specifiers;
-    v18 = self;
+    selfCopy = self;
     v4 = [(VoiceOverBrailleStatusCellController *)self loadSpecifiersFromPlistName:@"BrailleStatusCellSettings" target:self];
     v5 = +[NSMutableArray array];
     v20 = 0u;
@@ -73,10 +73,10 @@ LABEL_11:
       {
 LABEL_14:
 
-        v15 = *&v18->AXUISettingsBaseListController_opaque[v17];
-        *&v18->AXUISettingsBaseListController_opaque[v17] = v5;
+        v15 = *&selfCopy->AXUISettingsBaseListController_opaque[v17];
+        *&selfCopy->AXUISettingsBaseListController_opaque[v17] = v5;
 
-        v3 = *&v18->AXUISettingsBaseListController_opaque[v17];
+        v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v17];
         break;
       }
     }
@@ -85,10 +85,10 @@ LABEL_14:
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = [(VoiceOverBrailleStatusCellController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(VoiceOverBrailleStatusCellController *)self specifierForIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -101,7 +101,7 @@ LABEL_14:
 LABEL_7:
         v10 = 1;
 LABEL_10:
-        [v11 setChecked:v10];
+        [cellCopy setChecked:v10];
 
         goto LABEL_11;
       }
@@ -119,14 +119,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = VoiceOverBrailleStatusCellController;
-  [(VoiceOverBrailleStatusCellController *)&v20 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  [(VoiceOverBrailleStatusCellController *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -134,8 +134,8 @@ LABEL_11:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v6 visibleCells];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v10 = [visibleCells countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -147,7 +147,7 @@ LABEL_11:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v16 + 1) + 8 * v13) setChecked:0];
@@ -155,14 +155,14 @@ LABEL_11:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v11 = [visibleCells countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v11);
     }
 
     [v8 setChecked:1];
-    v14 = [(VoiceOverBrailleStatusCellController *)self specifierForIndexPath:v7];
+    v14 = [(VoiceOverBrailleStatusCellController *)self specifierForIndexPath:pathCopy];
     v15 = [v14 propertyForKey:@"statusCellOption"];
     if (([v15 isEqualToString:@"left"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"right"))
     {
@@ -174,16 +174,16 @@ LABEL_11:
   }
 }
 
-- (void)setEnableStatusCellTextStyle:(id)a3 specifier:(id)a4
+- (void)setEnableStatusCellTextStyle:(id)style specifier:(id)specifier
 {
-  v4 = a3;
+  styleCopy = style;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [styleCopy BOOLValue];
 
-  [v6 setVoiceOverTouchBrailleShowTextStyleStatus:v5];
+  [v6 setVoiceOverTouchBrailleShowTextStyleStatus:bOOLValue];
 }
 
-- (id)statusCellTextStyleEnabled:(id)a3
+- (id)statusCellTextStyleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleShowTextStyleStatus]);
@@ -191,16 +191,16 @@ LABEL_11:
   return v4;
 }
 
-- (void)setEnableStatusCellGeneral:(id)a3 specifier:(id)a4
+- (void)setEnableStatusCellGeneral:(id)general specifier:(id)specifier
 {
-  v4 = a3;
+  generalCopy = general;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [generalCopy BOOLValue];
 
-  [v6 setVoiceOverTouchBrailleShowGeneralStatus:v5];
+  [v6 setVoiceOverTouchBrailleShowGeneralStatus:bOOLValue];
 }
 
-- (id)statusCellGeneralEnabled:(id)a3
+- (id)statusCellGeneralEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleShowGeneralStatus]);

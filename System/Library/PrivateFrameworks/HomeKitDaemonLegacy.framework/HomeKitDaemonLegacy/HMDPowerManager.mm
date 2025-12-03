@@ -2,32 +2,32 @@
 + (id)logCategory;
 - (BOOL)isPowerAsserted;
 - (HMDPowerManager)init;
-- (HMDPowerManager)initWithPowerManager:(id)a3 timerProvider:(id)a4 ttrManager:(id)a5;
+- (HMDPowerManager)initWithPowerManager:(id)manager timerProvider:(id)provider ttrManager:(id)ttrManager;
 - (int)_ensureNetworkInterfaceMonitorStarted;
 - (void)_ensureNetworkInterfaceMonitorStopped;
 - (void)_update;
 - (void)dealloc;
-- (void)setNetworkAccessRequired:(BOOL)a3;
+- (void)setNetworkAccessRequired:(BOOL)required;
 - (void)start;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDPowerManager
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   verificationTimer = self->_verificationTimer;
-  if (verificationTimer == v4)
+  if (verificationTimer == fireCopy)
   {
     self->_verificationTimer = 0;
 
     if (![(HMDPowerManager *)self isPowerAsserted])
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -38,7 +38,7 @@
       }
 
       objc_autoreleasePoolPop(v6);
-      ttrManager = v7->_ttrManager;
+      ttrManager = selfCopy->_ttrManager;
       if (ttrManager)
       {
         [(HMMRadarInitiating *)ttrManager requestRadarWithDisplayReason:@"Power Assertion was released unexpectedly" radarTitle:@"Power Assertion was released unexpectedly" componentName:@"HomeKit" componentVersion:@"Resident" componentID:938669];
@@ -64,7 +64,7 @@
     }
 
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -98,9 +98,9 @@
     goto LABEL_35;
   }
 
-  v3 = self;
-  v3->_scContext = v3;
-  context.info = v3;
+  selfCopy = self;
+  selfCopy->_scContext = selfCopy;
+  context.info = selfCopy;
   v4 = SCDynamicStoreCreate(0, @"HomeKit:NetworkInterfaceMonitor", _handleNetworkInterfaceChanged, &context);
   if (v4)
   {
@@ -150,7 +150,7 @@ LABEL_26:
       }
     }
 
-    if (SCDynamicStoreSetDispatchQueue(v4, v3->_dispatchQueue))
+    if (SCDynamicStoreSetDispatchQueue(v4, selfCopy->_dispatchQueue))
     {
       goto LABEL_7;
     }
@@ -162,14 +162,14 @@ LABEL_26:
       {
 LABEL_7:
         self->_scStore = v4;
-        [(HMDPowerManager *)v3 setNetworkInterfaceActive:_isNetworkIntefaceActive(v3)];
+        [(HMDPowerManager *)selfCopy setNetworkInterfaceActive:_isNetworkIntefaceActive(selfCopy)];
         if (gLogCategory_HMDPowerManager <= 30 && (gLogCategory_HMDPowerManager != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
         }
 
         v11 = objc_autoreleasePoolPush();
-        v12 = v3;
+        v12 = selfCopy;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
@@ -223,7 +223,7 @@ LABEL_28:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = v3;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
@@ -256,9 +256,9 @@ LABEL_35:
     [(HMDPowerManager *)self _ensureNetworkInterfaceMonitorStopped];
   }
 
-  v3 = [(HMDPowerManager *)self networkInterfaceActive];
+  networkInterfaceActive = [(HMDPowerManager *)self networkInterfaceActive];
   powerAssertion = self->_powerAssertion;
-  if (v3)
+  if (networkInterfaceActive)
   {
     if (powerAssertion)
     {
@@ -275,7 +275,7 @@ LABEL_35:
       }
 
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -289,7 +289,7 @@ LABEL_35:
 
 LABEL_39:
       objc_autoreleasePoolPop(v13);
-      ttrManager = v14->_ttrManager;
+      ttrManager = selfCopy->_ttrManager;
       if (ttrManager)
       {
         [(HMMRadarInitiating *)ttrManager requestRadarWithDisplayReason:@"Unable to create power assertion" radarTitle:@"Unable to create power assertion" componentName:@"HomeKit" componentVersion:@"Resident" componentID:938669];
@@ -304,7 +304,7 @@ LABEL_39:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -315,12 +315,12 @@ LABEL_39:
     }
 
     objc_autoreleasePoolPop(v17);
-    v21 = [(HMDPowerManager *)v18 isPowerAsserted];
+    isPowerAsserted = [(HMDPowerManager *)selfCopy2 isPowerAsserted];
     v13 = objc_autoreleasePoolPush();
-    v14 = v18;
+    selfCopy = selfCopy2;
     v22 = HMFGetOSLogHandle();
     v23 = v22;
-    if (!v21)
+    if (!isPowerAsserted)
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -342,14 +342,14 @@ LABEL_39:
     }
 
     objc_autoreleasePoolPop(v13);
-    v25 = [(HMDPowerManager *)v14 timerProvider];
-    v26 = [v25 timerWithTimeInterval:0 options:2.5];
-    verificationTimer = v14->_verificationTimer;
-    v14->_verificationTimer = v26;
+    timerProvider = [(HMDPowerManager *)selfCopy timerProvider];
+    v26 = [timerProvider timerWithTimeInterval:0 options:2.5];
+    verificationTimer = selfCopy->_verificationTimer;
+    selfCopy->_verificationTimer = v26;
 
-    [(HMFTimer *)v14->_verificationTimer setDelegate:v14];
-    [(HMFTimer *)v14->_verificationTimer setDelegateQueue:v14->_dispatchQueue];
-    [(HMFTimer *)v14->_verificationTimer resume];
+    [(HMFTimer *)selfCopy->_verificationTimer setDelegate:selfCopy];
+    [(HMFTimer *)selfCopy->_verificationTimer setDelegateQueue:selfCopy->_dispatchQueue];
+    [(HMFTimer *)selfCopy->_verificationTimer resume];
   }
 
   else
@@ -364,7 +364,7 @@ LABEL_39:
       }
 
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy3 = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -389,13 +389,13 @@ LABEL_24:
 - (BOOL)isPowerAsserted
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = [(HMDIOPM *)v2->_iopmLib iopmUpdateAssertionsByProcess];
-  if (v3)
+  selfCopy = self;
+  iopmUpdateAssertionsByProcess = [(HMDIOPM *)selfCopy->_iopmLib iopmUpdateAssertionsByProcess];
+  if (iopmUpdateAssertionsByProcess)
   {
-    v4 = v3;
+    v4 = iopmUpdateAssertionsByProcess;
     v5 = objc_autoreleasePoolPush();
-    v6 = v2;
+    v6 = selfCopy;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -417,8 +417,8 @@ LABEL_24:
     goto LABEL_15;
   }
 
-  v10 = [(HMDIOPM *)v2->_iopmLib assertionsByPID];
-  if (!v10 || (v11 = v10, *buf = getpid(), v12 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberIntType, buf), Value = CFDictionaryGetValue(v11, v12), CFRelease(v12), !Value))
+  assertionsByPID = [(HMDIOPM *)selfCopy->_iopmLib assertionsByPID];
+  if (!assertionsByPID || (v11 = assertionsByPID, *buf = getpid(), v12 = CFNumberCreate(*MEMORY[0x277CBECE8], kCFNumberIntType, buf), Value = CFDictionaryGetValue(v11, v12), CFRelease(v12), !Value))
   {
 LABEL_15:
     v16 = 0;
@@ -484,14 +484,14 @@ LABEL_16:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)setNetworkAccessRequired:(BOOL)a3
+- (void)setNetworkAccessRequired:(BOOL)required
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__HMDPowerManager_setNetworkAccessRequired___block_invoke;
   v4[3] = &unk_279735D28;
-  v5 = a3;
+  requiredCopy = required;
   v4[4] = self;
   dispatch_async(dispatchQueue, v4);
 }
@@ -520,11 +520,11 @@ uint64_t __44__HMDPowerManager_setNetworkAccessRequired___block_invoke(uint64_t 
   [(HMDPowerManager *)&v4 dealloc];
 }
 
-- (HMDPowerManager)initWithPowerManager:(id)a3 timerProvider:(id)a4 ttrManager:(id)a5
+- (HMDPowerManager)initWithPowerManager:(id)manager timerProvider:(id)provider ttrManager:(id)ttrManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  providerCopy = provider;
+  ttrManagerCopy = ttrManager;
   v17.receiver = self;
   v17.super_class = HMDPowerManager;
   v12 = [(HMDPowerManager *)&v17 init];
@@ -535,11 +535,11 @@ uint64_t __44__HMDPowerManager_setNetworkAccessRequired___block_invoke(uint64_t 
     dispatchQueue = v12->_dispatchQueue;
     v12->_dispatchQueue = v14;
 
-    objc_storeStrong(&v12->_iopmLib, a3);
-    objc_storeStrong(&v12->_timerProvider, a4);
-    if (v11)
+    objc_storeStrong(&v12->_iopmLib, manager);
+    objc_storeStrong(&v12->_timerProvider, provider);
+    if (ttrManagerCopy)
     {
-      objc_storeStrong(&v12->_ttrManager, a5);
+      objc_storeStrong(&v12->_ttrManager, ttrManager);
     }
   }
 

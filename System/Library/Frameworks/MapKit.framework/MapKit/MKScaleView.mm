@@ -2,30 +2,30 @@
 + (MKScaleView)scaleViewWithMapView:(MKMapView *)mapView;
 - (CGSize)intrinsicContentSize;
 - (MKMapView)mapView;
-- (MKScaleView)initWithFrame:(CGRect)a3;
-- (MKScaleView)initWithMapView:(id)a3;
+- (MKScaleView)initWithFrame:(CGRect)frame;
+- (MKScaleView)initWithMapView:(id)view;
 - (UIEdgeInsets)alignmentRectInsets;
-- (id)_formattedStringForFloat:(double)a3;
-- (id)_scaleViewFormattedStringForFloat:(double)a3;
-- (id)_scaleViewFormattedStringForInteger:(int64_t)a3;
+- (id)_formattedStringForFloat:(double)float;
+- (id)_scaleViewFormattedStringForFloat:(double)float;
+- (id)_scaleViewFormattedStringForInteger:(int64_t)integer;
 - (id)_setupOutlineView;
-- (id)_setupSegmentView:(BOOL)a3;
+- (id)_setupSegmentView:(BOOL)view;
 - (void)_calculateSegments;
-- (void)_localizedDistanceStringsWithMeters:(unsigned int)a3 imperial:(double)a4 useFeet:(BOOL)a5 inMetric:(BOOL)a6 displaysYardsForShortDistances:(BOOL)a7 strings:(id)a8;
-- (void)_setControlSize:(unint64_t)a3;
-- (void)_traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)_localizedDistanceStringsWithMeters:(unsigned int)meters imperial:(double)imperial useFeet:(BOOL)feet inMetric:(BOOL)metric displaysYardsForShortDistances:(BOOL)distances strings:(id)strings;
+- (void)_setControlSize:(unint64_t)size;
+- (void)_traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)_updateStrings;
 - (void)_updateVisibility;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)memoryWarning:(id)a3;
-- (void)setDistanceInMeters:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)memoryWarning:(id)warning;
+- (void)setDistanceInMeters:(double)meters;
+- (void)setFrame:(CGRect)frame;
 - (void)setLegendAlignment:(MKScaleViewAlignment)legendAlignment;
 - (void)setMapView:(MKMapView *)mapView;
 - (void)setScaleVisibility:(MKFeatureVisibility)scaleVisibility;
-- (void)setUseLightText:(BOOL)a3;
-- (void)updateLocale:(id)a3;
+- (void)setUseLightText:(BOOL)text;
+- (void)updateLocale:(id)locale;
 - (void)updateMetrics;
 @end
 
@@ -85,22 +85,22 @@
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v5 = [v4 layer];
-  [v5 setBackgroundColor:0];
+  layer = [v4 layer];
+  [layer setBackgroundColor:0];
 
-  v6 = [v4 layer];
-  [v6 setBorderWidth:1.0];
+  layer2 = [v4 layer];
+  [layer2 setBorderWidth:1.0];
 
   segmentBorderWidth = self->_segmentBorderWidth;
-  v8 = [v4 layer];
-  [v8 setBorderWidth:segmentBorderWidth];
+  layer3 = [v4 layer];
+  [layer3 setBorderWidth:segmentBorderWidth];
 
   v9 = *MEMORY[0x1E69796E8];
-  v10 = [v4 layer];
-  [v10 setCornerCurve:v9];
+  layer4 = [v4 layer];
+  [layer4 setCornerCurve:v9];
 
-  v11 = [v4 layer];
-  [v11 setMaskedCorners:15];
+  layer5 = [v4 layer];
+  [layer5 setMaskedCorners:15];
 
   return v4;
 }
@@ -114,15 +114,15 @@
 
 - (void)_updateVisibility
 {
-  v3 = [(MKScaleView *)self mapView];
-  v4 = v3;
-  if (!v3)
+  mapView = [(MKScaleView *)self mapView];
+  v4 = mapView;
+  if (!mapView)
   {
     goto LABEL_13;
   }
 
-  v5 = [v3 mapType];
-  if (([v4 _showsNightMode] & 1) == 0 && (v5 - 1) >= 4 && v5 != 107)
+  mapType = [mapView mapType];
+  if (([v4 _showsNightMode] & 1) == 0 && (mapType - 1) >= 4 && mapType != 107)
   {
     if (![(MKScaleView *)self useLightText])
     {
@@ -220,14 +220,14 @@ LABEL_14:
   }
 
   v82 = v83;
-  v9 = [(UIView *)self->_contentView layer];
+  layer = [(UIView *)self->_contentView layer];
   v81 = v82;
-  [v9 setTransform:&v81];
+  [layer setTransform:&v81];
 
   v80 = v83;
-  v10 = [(_MKScaleUnitsView *)self->_unitsView layer];
+  layer2 = [(_MKScaleUnitsView *)self->_unitsView layer];
   v81 = v80;
-  [v10 setTransform:&v81];
+  [layer2 setTransform:&v81];
 
   [(MKScaleView *)self _calculateSegments];
   [(MKScaleView *)self bounds];
@@ -322,14 +322,14 @@ LABEL_18:
   v40 = v93.size.height;
   [(UIView *)self->_displayedOutline setFrame:x, y, width, height];
   [(UIView *)self->_displayedWhiteOutline setFrame:v37, v38, v39, v40];
-  v41 = [(MKScaleView *)self mapView];
-  v42 = [v41 mapType];
-  if ((v42 - 1) < 4 || v42 == 107 || (v43 = [(MKScaleView *)self mapType], v43 - 1 < 4) || v43 == 107)
+  mapView = [(MKScaleView *)self mapView];
+  mapType = [mapView mapType];
+  if ((mapType - 1) < 4 || mapType == 107 || (v43 = [(MKScaleView *)self mapType], v43 - 1 < 4) || v43 == 107)
   {
 
     [v23 addObject:self->_displayedWhiteOutline];
-    v41 = [(UIView *)self->_displayedWhiteOutline layer];
-    [v41 setCornerRadius:v40 * 0.5];
+    mapView = [(UIView *)self->_displayedWhiteOutline layer];
+    [mapView setCornerRadius:v40 * 0.5];
   }
 
   oldNumberOfSegments = self->_oldNumberOfSegments;
@@ -394,11 +394,11 @@ LABEL_18:
     }
   }
 
-  v54 = [(UIView *)self->_displayedOutline layer];
-  [v54 setCornerRadius:height * 0.5];
+  layer3 = [(UIView *)self->_displayedOutline layer];
+  [layer3 setCornerRadius:height * 0.5];
 
-  v55 = [(UIView *)self->_displayedWhiteOutline layer];
-  [v55 setCornerRadius:v40 * 0.5];
+  layer4 = [(UIView *)self->_displayedWhiteOutline layer];
+  [layer4 setCornerRadius:v40 * 0.5];
 
   v78 = 0u;
   v79 = 0u;
@@ -494,18 +494,18 @@ LABEL_18:
     {
       [(MKScaleView *)self bounds];
       v5 = v4;
-      v6 = [(MKScaleView *)self mapView];
-      v7 = v6;
-      if (v6)
+      mapView = [(MKScaleView *)self mapView];
+      v7 = mapView;
+      if (mapView)
       {
-        [v6 bounds];
+        [mapView bounds];
         v9 = v8;
       }
 
       else
       {
-        v10 = [(MKScaleView *)self superview];
-        [v10 bounds];
+        superview = [(MKScaleView *)self superview];
+        [superview bounds];
         v9 = v11;
       }
 
@@ -561,9 +561,9 @@ LABEL_12:
       }
 
       [(_MKScaleUnitsView *)self->_unitsView setSegmentLengthInPixels:self->_segmentLengthInPixels];
-      v22 = [MEMORY[0x1E695DF70] array];
-      [(MKScaleView *)self _localizedDistanceStringsWithMeters:self->_resultSegmentLengthInMeters imperial:v13 useFeet:self->_useMetric inMetric:self->_useYardsForShortDistances displaysYardsForShortDistances:v22 strings:self->_resultSegmentLength];
-      [(_MKScaleUnitsView *)self->_unitsView setUnits:v22];
+      array = [MEMORY[0x1E695DF70] array];
+      [(MKScaleView *)self _localizedDistanceStringsWithMeters:self->_resultSegmentLengthInMeters imperial:v13 useFeet:self->_useMetric inMetric:self->_useYardsForShortDistances displaysYardsForShortDistances:array strings:self->_resultSegmentLength];
+      [(_MKScaleUnitsView *)self->_unitsView setUnits:array];
     }
   }
 }
@@ -588,16 +588,16 @@ LABEL_12:
       dispatch_once(&intrinsicContentSize_onceToken, block);
     }
 
-    v5 = [(MKScaleView *)self _controlSize];
+    _controlSize = [(MKScaleView *)self _controlSize];
     v6 = &intrinsicContentSize_largeIntrinsicContentSize_1;
-    if (v5 != 2)
+    if (_controlSize != 2)
     {
       v6 = &intrinsicContentSize_intrinsicSize_1;
     }
 
     v4 = *v6;
     v7 = &intrinsicContentSize_largeIntrinsicContentSize_0;
-    if (v5 != 2)
+    if (_controlSize != 2)
     {
       v7 = &intrinsicContentSize_intrinsicSize_0;
     }
@@ -610,97 +610,97 @@ LABEL_12:
   return result;
 }
 
-- (void)_localizedDistanceStringsWithMeters:(unsigned int)a3 imperial:(double)a4 useFeet:(BOOL)a5 inMetric:(BOOL)a6 displaysYardsForShortDistances:(BOOL)a7 strings:(id)a8
+- (void)_localizedDistanceStringsWithMeters:(unsigned int)meters imperial:(double)imperial useFeet:(BOOL)feet inMetric:(BOOL)metric displaysYardsForShortDistances:(BOOL)distances strings:(id)strings
 {
-  v8 = a7;
-  v9 = a6;
-  v14 = a3;
-  v17 = a8;
-  [v17 removeAllObjects];
-  if (v9)
+  distancesCopy = distances;
+  metricCopy = metric;
+  metersCopy = meters;
+  stringsCopy = strings;
+  [stringsCopy removeAllObjects];
+  if (metricCopy)
   {
-    if (a3 < 0x1F5)
+    if (meters < 0x1F5)
     {
-      v15 = [(MKScaleView *)self _scaleViewFormattedStringForInteger:a3];
+      v15 = [(MKScaleView *)self _scaleViewFormattedStringForInteger:meters];
       v16 = &OBJC_IVAR___MKScaleView__metersAbbreviation;
     }
 
     else
     {
-      v15 = [(MKScaleView *)self _scaleViewFormattedStringForFloat:v14 / 1000.0];
+      v15 = [(MKScaleView *)self _scaleViewFormattedStringForFloat:metersCopy / 1000.0];
       v16 = &OBJC_IVAR___MKScaleView__kilometersAbbreviation;
     }
   }
 
-  else if ((a4 <= 0.95 || a4 > 1.05 || a5) && (a4 < 0.1 || a5))
+  else if ((imperial <= 0.95 || imperial > 1.05 || feet) && (imperial < 0.1 || feet))
   {
-    if (v8)
+    if (distancesCopy)
     {
-      v15 = [(MKScaleView *)self _scaleViewFormattedStringForInteger:llround(v14 * 1.0936133)];
+      v15 = [(MKScaleView *)self _scaleViewFormattedStringForInteger:llround(metersCopy * 1.0936133)];
       v16 = &OBJC_IVAR___MKScaleView__yardAbbreviation;
     }
 
     else
     {
-      v15 = [(MKScaleView *)self _scaleViewFormattedStringForInteger:llround(a4)];
+      v15 = [(MKScaleView *)self _scaleViewFormattedStringForInteger:llround(imperial)];
       v16 = &OBJC_IVAR___MKScaleView__feetAbbreviation;
     }
   }
 
   else
   {
-    v15 = [(MKScaleView *)self _scaleViewFormattedStringForFloat:a4];
+    v15 = [(MKScaleView *)self _scaleViewFormattedStringForFloat:imperial];
     v16 = &OBJC_IVAR___MKScaleView__milesAbbreviation;
   }
 
-  [v17 addObject:v15];
+  [stringsCopy addObject:v15];
 
-  [v17 addObject:*(&self->super.super.super.isa + *v16)];
+  [stringsCopy addObject:*(&self->super.super.super.isa + *v16)];
 }
 
-- (id)_scaleViewFormattedStringForInteger:(int64_t)a3
+- (id)_scaleViewFormattedStringForInteger:(int64_t)integer
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v6 = [(NSMutableDictionary *)self->_formattedNumberCache objectForKey:v5];
   if (!v6)
   {
-    v6 = [MEMORY[0x1E696AEC0] _navigation_formattedStringForInteger:a3];
+    v6 = [MEMORY[0x1E696AEC0] _navigation_formattedStringForInteger:integer];
     [(NSMutableDictionary *)self->_formattedNumberCache setObject:v6 forKeyedSubscript:v5];
   }
 
   return v6;
 }
 
-- (id)_scaleViewFormattedStringForFloat:(double)a3
+- (id)_scaleViewFormattedStringForFloat:(double)float
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v6 = [(NSMutableDictionary *)self->_formattedNumberCache objectForKey:v5];
   if (!v6)
   {
-    v6 = [(MKScaleView *)self _formattedStringForFloat:a3];
+    v6 = [(MKScaleView *)self _formattedStringForFloat:float];
     [(NSMutableDictionary *)self->_formattedNumberCache setObject:v6 forKeyedSubscript:v5];
   }
 
   return v6;
 }
 
-- (id)_formattedStringForFloat:(double)a3
+- (id)_formattedStringForFloat:(double)float
 {
   floatNumberFormatter = self->_floatNumberFormatter;
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:float];
   v5 = [(NSNumberFormatter *)floatNumberFormatter stringFromNumber:v4];
 
   return v5;
 }
 
-- (void)setUseLightText:(BOOL)a3
+- (void)setUseLightText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v36 = *MEMORY[0x1E69E9840];
   useLightText = self->_useLightText;
-  if (!useLightText || [(NSNumber *)useLightText BOOLValue]!= a3)
+  if (!useLightText || [(NSNumber *)useLightText BOOLValue]!= text)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:textCopy];
     v7 = self->_useLightText;
     self->_useLightText = v6;
 
@@ -760,16 +760,16 @@ LABEL_12:
     }
 
     while (v19);
-    v21 = [(MKScaleView *)self mapView];
-    v22 = [v21 mapType];
+    mapView = [(MKScaleView *)self mapView];
+    mapType = [mapView mapType];
     v23 = 0;
     v24 = &OBJC_IVAR___MKScaleView__borderColorSatellite;
-    if ((v22 - 1) >= 4 && v22 != 107)
+    if ((mapType - 1) >= 4 && mapType != 107)
     {
-      v25 = [(MKScaleView *)self mapType];
-      v26 = v25 - 1;
+      mapType2 = [(MKScaleView *)self mapType];
+      v26 = mapType2 - 1;
       v27 = &OBJC_IVAR___MKScaleView__borderColorRegular;
-      if (v25 == 107)
+      if (mapType2 == 107)
       {
         v27 = &OBJC_IVAR___MKScaleView__borderColorSatellite;
         v28 = 0;
@@ -801,52 +801,52 @@ LABEL_12:
       }
     }
 
-    v29 = [*(&self->super.super.super.isa + *v24) CGColor];
-    v30 = [(UIView *)self->_displayedOutline layer];
-    [v30 setBorderColor:v29];
+    cGColor = [*(&self->super.super.super.isa + *v24) CGColor];
+    layer = [(UIView *)self->_displayedOutline layer];
+    [layer setBorderColor:cGColor];
 
     [(UIView *)self->_displayedWhiteOutline setHidden:v23];
     [(MKScaleView *)self setNeedsLayout];
-    [(_MKScaleUnitsView *)self->_unitsView setUseLightText:v3];
+    [(_MKScaleUnitsView *)self->_unitsView setUseLightText:textCopy];
     [(_MKScaleUnitsView *)self->_unitsView setNeedsLayout];
   }
 }
 
-- (void)_setControlSize:(unint64_t)a3
+- (void)_setControlSize:(unint64_t)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     [(MKScaleView *)self updateMetrics];
     [(MKScaleView *)self invalidateIntrinsicContentSize];
-    v5 = [(MKScaleView *)self mapView];
-    [v5 _updateScalePosition];
+    mapView = [(MKScaleView *)self mapView];
+    [mapView _updateScalePosition];
   }
 }
 
-- (id)_setupSegmentView:(BOOL)a3
+- (id)_setupSegmentView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [MEMORY[0x1E69DC730] effectWithStyle:1200];
   v5 = [MEMORY[0x1E69DD248] effectForBlurEffect:v4 style:4];
   v6 = objc_alloc_init(MEMORY[0x1E69DD298]);
   v7 = v6;
-  if (v3)
+  if (viewCopy)
   {
     [v6 setEffect:v5];
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    v9 = [v7 contentView];
-    [v9 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    contentView = [v7 contentView];
+    [contentView setBackgroundColor:blackColor];
   }
 
   return v7;
 }
 
-- (void)setDistanceInMeters:(double)a3
+- (void)setDistanceInMeters:(double)meters
 {
-  if (self->_distanceInMeters != a3)
+  if (self->_distanceInMeters != meters)
   {
-    self->_distanceInMeters = a3;
+    self->_distanceInMeters = meters;
     v4 = self->_layoutCounter + 1;
     self->_layoutCounter = v4;
     if ((-1431655765 * v4 + 715827882) <= 0x55555554)
@@ -857,46 +857,46 @@ LABEL_12:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MKScaleView;
-  [(MKScaleView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MKScaleView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MKScaleView *)self setNeedsLayout];
 }
 
-- (void)memoryWarning:(id)a3
+- (void)memoryWarning:(id)warning
 {
-  [(_MKScaleUnitsView *)self->_unitsView clearCaches:a3];
+  [(_MKScaleUnitsView *)self->_unitsView clearCaches:warning];
   formattedNumberCache = self->_formattedNumberCache;
 
   [(NSMutableDictionary *)formattedNumberCache removeAllObjects];
 }
 
-- (void)updateLocale:(id)a3
+- (void)updateLocale:(id)locale
 {
   v4 = MEMORY[0x1E695DF58];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  self->_useMetric = [v6 _navigation_distanceUsesMetricSystem];
-  self->_useYardsForShortDistances = [v6 _navigation_useYardsForShortDistances];
+  localeCopy = locale;
+  currentLocale = [v4 currentLocale];
+  self->_useMetric = [currentLocale _navigation_distanceUsesMetricSystem];
+  self->_useYardsForShortDistances = [currentLocale _navigation_useYardsForShortDistances];
   [(MKScaleView *)self _updateStrings];
-  [(MKScaleView *)self memoryWarning:v5];
+  [(MKScaleView *)self memoryWarning:localeCopy];
 }
 
-- (void)_traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)_traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v9 = a4;
+  collectionCopy = collection;
   if (![(MKScaleView *)self usedInternallyByMapView])
   {
-    v5 = [(MKScaleView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
-    v7 = [v9 userInterfaceStyle];
+    traitCollection = [(MKScaleView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-    if (v6 != v7)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
-      v8 = [(MKScaleView *)self traitCollection];
-      -[MKScaleView setUseLightText:](self, "setUseLightText:", [v8 userInterfaceStyle] == 2);
+      traitCollection2 = [(MKScaleView *)self traitCollection];
+      -[MKScaleView setUseLightText:](self, "setUseLightText:", [traitCollection2 userInterfaceStyle] == 2);
     }
   }
 }
@@ -937,8 +937,8 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
   [(MKMapView *)WeakRetained _stopPostingScaleUpdateNotifications];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = MKScaleView;
@@ -968,9 +968,9 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
       v6 = objc_loadWeakRetained(&self->_mapView);
       [(MKMapView *)v6 _stopPostingScaleUpdateNotifications];
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v8 = objc_loadWeakRetained(&self->_mapView);
-      [v7 removeObserver:self name:0 object:v8];
+      [defaultCenter removeObserver:self name:0 object:v8];
     }
 
     v9 = objc_storeWeak(&self->_mapView, obj);
@@ -983,13 +983,13 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
         ++v10[165];
       }
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v12 = objc_loadWeakRetained(&self->_mapView);
-      [v11 addObserver:self selector:sel_shouldUpdateScaleNotification_ name:@"MKMapViewShouldUpdateScaleNotification" object:v12];
+      [defaultCenter2 addObserver:self selector:sel_shouldUpdateScaleNotification_ name:@"MKMapViewShouldUpdateScaleNotification" object:v12];
 
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
       v14 = objc_loadWeakRetained(&self->_mapView);
-      [v13 addObserver:self selector:sel_shouldUpdateScaleNotification_ name:@"MKMapViewDidChangeMapTypeNotification" object:v14];
+      [defaultCenter3 addObserver:self selector:sel_shouldUpdateScaleNotification_ name:@"MKMapViewDidChangeMapTypeNotification" object:v14];
     }
 
     [(MKScaleView *)self _updateVisibility];
@@ -1005,14 +1005,14 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
   }
 }
 
-- (MKScaleView)initWithFrame:(CGRect)a3
+- (MKScaleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v40[1] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = MKScaleView;
-  v5 = [(MKScaleView *)&v39 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(MKScaleView *)&v39 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -1020,12 +1020,12 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
     v5->_controlSize = 1;
     [(MKScaleView *)v5 updateMetrics];
     [(MKScaleView *)v6 updateLocale:0];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = MNLocaleDidChangeNotification();
-    [v7 addObserver:v6 selector:sel_updateLocale_ name:v8 object:0];
+    [defaultCenter addObserver:v6 selector:sel_updateLocale_ name:v8 object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v6 selector:sel_memoryWarning_ name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_memoryWarning_ name:*MEMORY[0x1E69DDAD8] object:0];
 
     *v6->_magicNumbers = xmmword_1A30F71E0;
     v6->_magicNumbers[2] = 5.0;
@@ -1037,8 +1037,8 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
     borderColorSatellite = v6->_borderColorSatellite;
     v6->_borderColorSatellite = v12;
 
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKScaleView *)v6 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKScaleView *)v6 setBackgroundColor:clearColor];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     segments = v6->_segments;
@@ -1056,19 +1056,19 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
     [(_MKScaleUnitsView *)v6->_unitsView setFontSize:v6->_fontSize];
     [(_MKScaleUnitsView *)v6->_unitsView setLegendMarginLeft:v6->_legendMarginLeft];
     [(UIView *)v6->_contentView addSubview:v6->_unitsView];
-    v21 = [(MKScaleView *)v6 _setupOutlineView];
+    _setupOutlineView = [(MKScaleView *)v6 _setupOutlineView];
     displayedOutline = v6->_displayedOutline;
-    v6->_displayedOutline = v21;
+    v6->_displayedOutline = _setupOutlineView;
 
     [(UIView *)v6->_contentView addSubview:v6->_displayedOutline];
-    v23 = [(MKScaleView *)v6 _setupOutlineView];
+    _setupOutlineView2 = [(MKScaleView *)v6 _setupOutlineView];
     displayedWhiteOutline = v6->_displayedWhiteOutline;
-    v6->_displayedWhiteOutline = v23;
+    v6->_displayedWhiteOutline = _setupOutlineView2;
 
-    v25 = [MEMORY[0x1E69DC888] whiteColor];
-    v26 = [v25 CGColor];
-    v27 = [(UIView *)v6->_displayedWhiteOutline layer];
-    [v27 setBorderColor:v26];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    cGColor = [whiteColor CGColor];
+    layer = [(UIView *)v6->_displayedWhiteOutline layer];
+    [layer setBorderColor:cGColor];
 
     [(UIView *)v6->_contentView addSubview:v6->_displayedWhiteOutline];
     v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1077,8 +1077,8 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
 
     [(MKScaleView *)v6 setUseLightText:0];
     [(MKScaleView *)v6 _updateStrings];
-    v30 = [MEMORY[0x1E69DC938] currentDevice];
-    v6->_grQuality = [v30 _graphicsQuality];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v6->_grQuality = [currentDevice _graphicsQuality];
 
     v6->_layoutCounter = -1;
     v31 = objc_alloc_init(MEMORY[0x1E696ADA0]);
@@ -1086,8 +1086,8 @@ uint64_t __32__MKScaleView__updateVisibility__block_invoke_2(uint64_t result, in
     v6->_floatNumberFormatter = v31;
 
     v33 = v6->_floatNumberFormatter;
-    v34 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSNumberFormatter *)v33 setLocale:v34];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSNumberFormatter *)v33 setLocale:autoupdatingCurrentLocale];
 
     [(NSNumberFormatter *)v6->_floatNumberFormatter setNumberStyle:1];
     [(NSNumberFormatter *)v6->_floatNumberFormatter setRoundingMode:6];
@@ -1132,9 +1132,9 @@ double __35__MKScaleView_intrinsicContentSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (MKScaleView)initWithMapView:(id)a3
+- (MKScaleView)initWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(MKScaleView *)self initWithFrame:0.0, 0.0, 170.0, 20.0];
   v6 = v5;
   if (v5)
@@ -1142,7 +1142,7 @@ double __35__MKScaleView_intrinsicContentSize__block_invoke(uint64_t a1)
     [(MKScaleView *)v5 setAlpha:0.0];
     [(MKScaleView *)v6 setHidden:1];
     v6->_isVisible = 0;
-    [(MKScaleView *)v6 setMapView:v4];
+    [(MKScaleView *)v6 setMapView:viewCopy];
   }
 
   return v6;
@@ -1151,7 +1151,7 @@ double __35__MKScaleView_intrinsicContentSize__block_invoke(uint64_t a1)
 + (MKScaleView)scaleViewWithMapView:(MKMapView *)mapView
 {
   v4 = mapView;
-  v5 = [[a1 alloc] initWithMapView:v4];
+  v5 = [[self alloc] initWithMapView:v4];
 
   return v5;
 }

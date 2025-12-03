@@ -1,16 +1,16 @@
 @interface SBFTapToWakeGestureRecognizer
-- (BOOL)_isTapEvent:(__IOHIDEvent *)a3;
-- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (BOOL)_isTapEvent:(__IOHIDEvent *)event;
+- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SBFTapToWakeGestureRecognizer
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [a4 _hidEvent];
-  v6 = [(SBFTapToWakeGestureRecognizer *)self _isTapEvent:v5];
+  _hidEvent = [event _hidEvent];
+  v6 = [(SBFTapToWakeGestureRecognizer *)self _isTapEvent:_hidEvent];
   v7 = SBLogScreenWake();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -24,17 +24,17 @@
 
   if (v6)
   {
-    [(SBFTapToWakeGestureRecognizer *)self _succesfullyRecognizeFromEvent:v5];
+    [(SBFTapToWakeGestureRecognizer *)self _succesfullyRecognizeFromEvent:_hidEvent];
   }
 }
 
-- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)a3
+- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)event
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = +[SBWakeLogger sharedInstance];
   [v4 wakeMayBegin:1 withTimestamp:IOHIDEventGetTimeStamp()];
 
-  v5 = [(SBFTapToWakeGestureRecognizer *)self state];
+  state = [(SBFTapToWakeGestureRecognizer *)self state];
   v6 = SBLogScreenWake();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -42,17 +42,17 @@
     v8 = 138543618;
     v9 = v7;
     v10 = 2048;
-    v11 = v5;
+    v11 = state;
     _os_log_impl(&dword_1BEA11000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: state=%ld", &v8, 0x16u);
   }
 
-  if (!v5)
+  if (!state)
   {
     [(SBFTapToWakeGestureRecognizer *)self setState:3];
   }
 }
 
-- (BOOL)_isTapEvent:(__IOHIDEvent *)a3
+- (BOOL)_isTapEvent:(__IOHIDEvent *)event
 {
   v9 = 0;
   v10 = &v9;

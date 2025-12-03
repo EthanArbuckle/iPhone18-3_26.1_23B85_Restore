@@ -1,19 +1,19 @@
 @interface NTKSpectrumConicQuad
-- (NTKSpectrumConicQuad)initWithRole:(unint64_t)a3 screenScale:(double)a4;
+- (NTKSpectrumConicQuad)initWithRole:(unint64_t)role screenScale:(double)scale;
 - (void)_significantTimeChanged;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)dealloc;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setFromColor:(id)a3 toColor:(id)a4;
-- (void)setFromColor:(id)a3 toColor:(id)a4 midColor:(id)a5 interpolation:(unint64_t)a6;
-- (void)setOverrideDate:(id)a3 duration:(double)a4 completion:(id)a5;
-- (void)setOverrideDate:(id)a3 hourRadians:(double)a4 minuteRadians:(double)a5 secondRadians:(double)a6;
-- (void)setupForQuadView:(id)a3;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setFromColor:(id)color toColor:(id)toColor;
+- (void)setFromColor:(id)color toColor:(id)toColor midColor:(id)midColor interpolation:(unint64_t)interpolation;
+- (void)setOverrideDate:(id)date duration:(double)duration completion:(id)completion;
+- (void)setOverrideDate:(id)date hourRadians:(double)radians minuteRadians:(double)minuteRadians secondRadians:(double)secondRadians;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKSpectrumConicQuad
 
-- (NTKSpectrumConicQuad)initWithRole:(unint64_t)a3 screenScale:(double)a4
+- (NTKSpectrumConicQuad)initWithRole:(unint64_t)role screenScale:(double)scale
 {
   v19.receiver = self;
   v19.super_class = NTKSpectrumConicQuad;
@@ -21,17 +21,17 @@
   v7 = v6;
   if (v6)
   {
-    v6->_screenScale = a4;
-    v8 = [off_27877BF18 sharedDevice];
+    v6->_screenScale = scale;
+    sharedDevice = [off_27877BF18 sharedDevice];
     device = v7->_device;
-    v7->_device = v8;
+    v7->_device = sharedDevice;
 
     v10 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
     calendar = v7->_calendar;
     v7->_calendar = v10;
 
     v7->_style = 2;
-    v7->_role = a3;
+    v7->_role = role;
     v7->_opacity = 1.0;
     v12 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
     mediaTimingFunction = v7->_mediaTimingFunction;
@@ -50,8 +50,8 @@
     }
 
     while (v14 != 3);
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v7 selector:sel__significantTimeChanged name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__significantTimeChanged name:*MEMORY[0x277D766F0] object:0];
   }
 
   return v7;
@@ -67,18 +67,18 @@
     self->_resourceManager = 0;
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D766F0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D766F0] object:0];
 
   v6.receiver = self;
   v6.super_class = NTKSpectrumConicQuad;
   [(NTKSpectrumConicQuad *)&v6 dealloc];
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v10 = a3;
-  [v10 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5.f64[1] = v4;
   *self->_size = vcvt_f32_f64(vmulq_n_f64(v5, self->_screenScale));
   resourceManager = self->_resourceManager;
@@ -89,41 +89,41 @@
     self->_resourceManager = 0;
   }
 
-  v8 = +[NTKSpectrumResourceManager sharedInstanceWithPixelFormat:](NTKSpectrumResourceManager, "sharedInstanceWithPixelFormat:", [v10 colorPixelFormat]);
+  v8 = +[NTKSpectrumResourceManager sharedInstanceWithPixelFormat:](NTKSpectrumResourceManager, "sharedInstanceWithPixelFormat:", [viewCopy colorPixelFormat]);
   v9 = self->_resourceManager;
   self->_resourceManager = v8;
 
   [(NTKSpectrumResourceManager *)self->_resourceManager addClient];
 }
 
-- (void)setFromColor:(id)a3 toColor:(id)a4
+- (void)setFromColor:(id)color toColor:(id)toColor
 {
-  v5 = a4;
-  v6 = a3;
+  toColorCopy = toColor;
+  colorCopy = color;
   CLKUIConvertToRGBfFromUIColor();
 }
 
-- (void)setFromColor:(id)a3 toColor:(id)a4 midColor:(id)a5 interpolation:(unint64_t)a6
+- (void)setFromColor:(id)color toColor:(id)toColor midColor:(id)midColor interpolation:(unint64_t)interpolation
 {
-  v7 = a5;
-  v8 = a4;
+  midColorCopy = midColor;
+  toColorCopy = toColor;
   CLKUIConvertToRGBfFromUIColor();
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   frame = self->_frame;
   self->_frame = frame + 1;
   v6 = self->_conicUniformsBuffers[frame % 3];
-  v7 = [(MTLBuffer *)v6 contents];
-  *(v7 + 80) = vmul_f32(*self->_size, 0xBF000000BF000000);
-  *(v7 + 24) = *self->_fromColor;
-  *(v7 + 32) = *self->_toColor;
-  *(v7 + 40) = *self->_midColor;
-  *(v7 + 48) = *self->_aliasColor;
-  *(v7 + 92) = self->_vignetteOpacity;
-  *(v7 + 96) = self->_overlayOpacity;
+  contents = [(MTLBuffer *)v6 contents];
+  *(contents + 80) = vmul_f32(*self->_size, 0xBF000000BF000000);
+  *(contents + 24) = *self->_fromColor;
+  *(contents + 32) = *self->_toColor;
+  *(contents + 40) = *self->_midColor;
+  *(contents + 48) = *self->_aliasColor;
+  *(contents + 92) = self->_vignetteOpacity;
+  *(contents + 96) = self->_overlayOpacity;
   _S10 = 1.0;
   if (![(CLKUIQuad *)self isOpaque])
   {
@@ -133,8 +133,8 @@
   v9 = self->_masking && self->_maskRadius > 0.0;
   __asm { FCVT            H0, S10 }
 
-  *(v7 + 8) = _H0;
-  *(v7 + 88) = self->_maskRadius;
+  *(contents + 8) = _H0;
+  *(contents + 88) = self->_maskRadius;
   v15 = CACurrentMediaTime();
   v16 = _S10 < 1.0;
   v17 = 2;
@@ -322,8 +322,8 @@
         if (!v30)
         {
           v32 = *self->_midColor;
-          *(v7 + 24) = v32;
-          *(v7 + 32) = v32;
+          *(contents + 24) = v32;
+          *(contents + 32) = v32;
           v25 = v23;
           v24 = v23;
           v31 = v23;
@@ -434,7 +434,7 @@
   v57.i32[2] = v52;
   v57.f32[3] = *&v52 + -1.0;
   v56.i64[1] = __PAIR64__(LODWORD(v55), LODWORD(v54));
-  *v7 = vcvt_f16_f32(v57);
+  *contents = vcvt_f16_f32(v57);
   v58 = vextq_s8(v56, v56, 0xCuLL);
   v58.f32[2] = *&v52 + -1.0;
   v59 = vsubq_f32(v56, v58);
@@ -442,61 +442,61 @@
 
   *v59.f32 = vcvt_f16_f32(vdivq_f32(_Q4, v59));
   _Q4.i64[0] = __PAIR64__(LODWORD(v55), LODWORD(v54));
-  *(v7 + 16) = vext_s8(*v59.f32, *v59.f32, 6uLL);
+  *(contents + 16) = vext_s8(*v59.f32, *v59.f32, 6uLL);
   _Q4.i64[1] = v52;
   x = vmlaq_f32(vdupq_n_s32(0x40490FDBu), vdupq_n_s32(0x40C90FDBu), _Q4);
   v67 = _simd_sin_f4(x);
   v61 = _simd_cos_f4(x);
-  *(v7 + 56) = vzip1_s32(*v67.f32, *v61.i8);
-  *(v7 + 64) = vzip2_s32(*v67.f32, *v61.i8);
-  *(v7 + 72) = vzip1_s32(*&vextq_s8(v67, v67, 8uLL), *&vextq_s8(v61, v61, 8uLL));
-  [v4 setLabel:@"Spectrum Encoder"];
+  *(contents + 56) = vzip1_s32(*v67.f32, *v61.i8);
+  *(contents + 64) = vzip2_s32(*v67.f32, *v61.i8);
+  *(contents + 72) = vzip1_s32(*&vextq_s8(v67, v67, 8uLL), *&vextq_s8(v61, v61, 8uLL));
+  [encoderCopy setLabel:@"Spectrum Encoder"];
   v62 = *self->_size;
   v68[0] = 0.0;
   v68[1] = 0.0;
   v69 = vcvtq_f64_f32(v62);
   v70 = xmmword_22DCE7880;
-  [v4 setViewport:v68];
-  [v4 setCullMode:0];
-  [v4 setRenderPipelineState:v19];
+  [encoderCopy setViewport:v68];
+  [encoderCopy setCullMode:0];
+  [encoderCopy setRenderPipelineState:v19];
   if ((v18 & 8) != 0)
   {
-    v63 = [(NTKSpectrumResourceManager *)self->_resourceManager vignetteTexture];
-    [v4 setFragmentTexture:v63 atIndex:1];
+    vignetteTexture = [(NTKSpectrumResourceManager *)self->_resourceManager vignetteTexture];
+    [encoderCopy setFragmentTexture:vignetteTexture atIndex:1];
   }
 
   if ((v18 & 4) != 0)
   {
-    v64 = [(NTKSpectrumResourceManager *)self->_resourceManager overlayTexture];
-    [v4 setFragmentTexture:v64 atIndex:2];
+    overlayTexture = [(NTKSpectrumResourceManager *)self->_resourceManager overlayTexture];
+    [encoderCopy setFragmentTexture:overlayTexture atIndex:2];
   }
 
-  v65 = [(NTKSpectrumResourceManager *)self->_resourceManager verticesBuffer];
-  [v4 setVertexBuffer:v65 offset:0 atIndex:0];
+  verticesBuffer = [(NTKSpectrumResourceManager *)self->_resourceManager verticesBuffer];
+  [encoderCopy setVertexBuffer:verticesBuffer offset:0 atIndex:0];
 
-  [v4 setVertexBuffer:v6 offset:0 atIndex:1];
-  [v4 setFragmentBuffer:v6 offset:0 atIndex:0];
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy setVertexBuffer:v6 offset:0 atIndex:1];
+  [encoderCopy setFragmentBuffer:v6 offset:0 atIndex:0];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
 }
 
-- (void)setOverrideDate:(id)a3 hourRadians:(double)a4 minuteRadians:(double)a5 secondRadians:(double)a6
+- (void)setOverrideDate:(id)date hourRadians:(double)radians minuteRadians:(double)minuteRadians secondRadians:(double)secondRadians
 {
-  v12 = a3;
-  if (v12)
+  dateCopy = date;
+  if (dateCopy)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     v11 = CACurrentMediaTime();
     self->_startOverrideTime = v11;
     self->_endOverrideTime = v11;
-    *&v11 = a6;
+    *&v11 = secondRadians;
     *&v11 = (*&v11 / 6.2832) - floorf(*&v11 / 6.2832);
     self->_startSecondAngle = *&v11;
     self->_endSecondAngle = *&v11;
-    *&v11 = a5;
+    *&v11 = minuteRadians;
     *&v11 = (*&v11 / 6.2832) - floorf(*&v11 / 6.2832);
     self->_startMinuteAngle = *&v11;
     self->_endMinuteAngle = *&v11;
-    *&v11 = a4;
+    *&v11 = radians;
     *&v11 = (*&v11 / 6.2832) - floorf(*&v11 / 6.2832);
     self->_startHourAngle = *&v11;
     self->_endHourAngle = *&v11;
@@ -508,11 +508,11 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4 completion:(id)a5
+- (void)setOverrideDate:(id)date duration:(double)duration completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = NTKEqualObjects(v9, self->_overrideDate);
+  dateCopy = date;
+  completionCopy = completion;
+  v11 = NTKEqualObjects(dateCopy, self->_overrideDate);
   v12 = &OBJC_IVAR___NTKSnapshotQueue__requestHandler;
   v13 = &OBJC_IVAR___NTKSnapshotQueue__requestHandler;
   v14 = &OBJC_IVAR___NTKSnapshotQueue__requestHandler;
@@ -529,21 +529,21 @@
     }
 
     v20 = overrideDate;
-    if (v9)
+    if (dateCopy)
     {
-      v21 = v9;
+      v21 = dateCopy;
     }
 
     else
     {
-      v21 = [v18 dateByAddingTimeInterval:a4];
+      v21 = [v18 dateByAddingTimeInterval:duration];
     }
 
     v22 = v21;
     v23 = CACurrentMediaTime();
     self->_startOverrideTime = v23;
-    self->_endOverrideTime = v23 + a4;
-    objc_storeStrong(&self->_overrideDate, a3);
+    self->_endOverrideTime = v23 + duration;
+    objc_storeStrong(&self->_overrideDate, date);
     v41 = 0.0;
     v42 = 0.0;
     v40 = 0.0;
@@ -609,51 +609,51 @@
     v12 = &OBJC_IVAR___NTKSnapshotQueue__requestHandler;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, *(&self->super.super.isa + v12[896]), self->_endOverrideTime, *(&self->super.super.isa + v13[899]), *(&self->super.super.isa + v14[900]), *(&self->super.super.isa + v15[901]), *(&self->super.super.isa + v16[902]));
+    completionCopy[2](completionCopy, *(&self->super.super.isa + v12[896]), self->_endOverrideTime, *(&self->super.super.isa + v13[899]), *(&self->super.super.isa + v14[900]), *(&self->super.super.isa + v15[901]), *(&self->super.super.isa + v16[902]));
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   *(self + 192) |= 1u;
-  v5 = a3;
-  self->_styleTransitionFraction = v5;
-  self->_style = a4;
-  self->_toStyle = a5;
+  fractionCopy = fraction;
+  self->_styleTransitionFraction = fractionCopy;
+  self->_style = style;
+  self->_toStyle = toStyle;
 }
 
 - (void)_significantTimeChanged
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   v4 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(NSCalendar *)self->_calendar timeZone];
-    v8 = [v7 name];
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    name = [timeZone name];
     v14 = 138412546;
     v15 = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "%@ received significant time change with current timezone: %@", &v14, 0x16u);
   }
 
-  [(NSCalendar *)self->_calendar setTimeZone:v3];
+  [(NSCalendar *)self->_calendar setTimeZone:systemTimeZone];
   v9 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [(NSCalendar *)self->_calendar timeZone];
-    v13 = [v12 name];
+    timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+    name2 = [timeZone2 name];
     v14 = 138412546;
     v15 = v11;
     v16 = 2112;
-    v17 = v13;
+    v17 = name2;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "%@ did set new timezone after significant time change to: %@", &v14, 0x16u);
   }
 }

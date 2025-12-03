@@ -1,25 +1,25 @@
 @interface BKLibraryDataSourceMediaLibraryCloud
 + (id)cloudAudiobooksDataSource;
-- (BKLibraryDataSourceMediaLibraryCloud)initWithIdentifier:(id)a3;
+- (BKLibraryDataSourceMediaLibraryCloud)initWithIdentifier:(id)identifier;
 - (BKLibraryManager)libraryManager;
-- (void)_addAssetIDsToCacheManager:(id)a3;
-- (void)_purchaseSucceeded:(id)a3;
-- (void)_removeAssetIDsFromCacheManager:(id)a3;
-- (void)accountControllerDidAttemptToRedeemCode:(id)a3;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)_addAssetIDsToCacheManager:(id)manager;
+- (void)_purchaseSucceeded:(id)succeeded;
+- (void)_removeAssetIDsFromCacheManager:(id)manager;
+- (void)accountControllerDidAttemptToRedeemCode:(id)code;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
-- (void)fetchReadyPurchaseItemStoreIDs:(id)a3 completion:(id)a4;
-- (void)mediaLibraryCacheAddedBookletAssets:(id)a3 removedBookletAssets:(id)a4;
-- (void)mediaLibraryCacheAddedCloudAssets:(id)a3 updatedCloudAssets:(id)a4 removedCloudAssets:(id)a5;
-- (void)mediaLibraryCacheRequestsReload:(id)a3;
-- (void)mostRecentPurchaseDate:(id)a3;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)updatePurchaseItemsWithCompletion:(id)a3;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
+- (void)fetchReadyPurchaseItemStoreIDs:(id)ds completion:(id)completion;
+- (void)mediaLibraryCacheAddedBookletAssets:(id)assets removedBookletAssets:(id)bookletAssets;
+- (void)mediaLibraryCacheAddedCloudAssets:(id)assets updatedCloudAssets:(id)cloudAssets removedCloudAssets:(id)removedCloudAssets;
+- (void)mediaLibraryCacheRequestsReload:(id)reload;
+- (void)mostRecentPurchaseDate:(id)date;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
+- (void)updatePurchaseItemsWithCompletion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourceMediaLibraryCloud
@@ -31,14 +31,14 @@
   return v2;
 }
 
-- (BKLibraryDataSourceMediaLibraryCloud)initWithIdentifier:(id)a3
+- (BKLibraryDataSourceMediaLibraryCloud)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v5 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100790580(v4, v5);
+    sub_100790580(identifierCopy, v5);
   }
 
   v14.receiver = self;
@@ -46,7 +46,7 @@
   v6 = [(BKLibraryDataSourceMediaLibraryCloud *)&v14 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     dataSourceIdentifier = v6->_dataSourceIdentifier;
     v6->_dataSourceIdentifier = v7;
 
@@ -83,142 +83,142 @@
   [(BKLibraryDataSourceMediaLibraryCloud *)&v5 dealloc];
 }
 
-- (void)mostRecentPurchaseDate:(id)a3
+- (void)mostRecentPurchaseDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   +[BCStopWatch stopwatch];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100193F20;
   v7[3] = &unk_100A05E40;
   v8 = v7[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = dateCopy;
+  v5 = dateCopy;
   v6 = v8;
   [(BKLibraryDataSourceMediaLibraryCloud *)self fetchAssetIDsWithCompletion:v7];
 }
 
-- (void)mediaLibraryCacheRequestsReload:(id)a3
+- (void)mediaLibraryCacheRequestsReload:(id)reload
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
-  [v5 reloadDataSource:self completion:v4];
+  reloadCopy = reload;
+  libraryManager = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
+  [libraryManager reloadDataSource:self completion:reloadCopy];
 }
 
-- (void)mediaLibraryCacheAddedCloudAssets:(id)a3 updatedCloudAssets:(id)a4 removedCloudAssets:(id)a5
+- (void)mediaLibraryCacheAddedCloudAssets:(id)assets updatedCloudAssets:(id)cloudAssets removedCloudAssets:(id)removedCloudAssets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  cloudAssetsCopy = cloudAssets;
+  removedCloudAssetsCopy = removedCloudAssets;
   v11 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134218496;
-    v19 = [v8 count];
+    v19 = [assetsCopy count];
     v20 = 2048;
-    v21 = [v10 count];
+    v21 = [removedCloudAssetsCopy count];
     v22 = 2048;
-    v23 = [v9 count];
+    v23 = [cloudAssetsCopy count];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Cloud library changed adding %lu, removing %lu, updating %lu audiobooks.", &v18, 0x20u);
   }
 
-  if ([v10 count])
+  if ([removedCloudAssetsCopy count])
   {
-    v12 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
-    [v12 libraryDataSource:self removedAssets:v10];
+    libraryManager = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
+    [libraryManager libraryDataSource:self removedAssets:removedCloudAssetsCopy];
 
-    [(BKLibraryDataSourceMediaLibraryCloud *)self _removeAssetIDsFromCacheManager:v10];
+    [(BKLibraryDataSourceMediaLibraryCloud *)self _removeAssetIDsFromCacheManager:removedCloudAssetsCopy];
   }
 
-  if ([v8 count])
+  if ([assetsCopy count])
   {
-    v13 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
-    [v13 libraryDataSource:self addedAssets:v8];
+    libraryManager2 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
+    [libraryManager2 libraryDataSource:self addedAssets:assetsCopy];
 
-    [(BKLibraryDataSourceMediaLibraryCloud *)self _addAssetIDsToCacheManager:v8];
+    [(BKLibraryDataSourceMediaLibraryCloud *)self _addAssetIDsToCacheManager:assetsCopy];
   }
 
-  if ([v9 count])
+  if ([cloudAssetsCopy count])
   {
     v14 = +[BCCacheManager defaultCacheManager];
-    v15 = [v9 valueForKey:@"assetID"];
+    v15 = [cloudAssetsCopy valueForKey:@"assetID"];
     v16 = [NSSet setWithArray:v15];
     [v14 incrementVersionForIdentifiers:v16];
 
-    v17 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
-    [v17 libraryDataSource:self updatedAssets:v9];
+    libraryManager3 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
+    [libraryManager3 libraryDataSource:self updatedAssets:cloudAssetsCopy];
   }
 }
 
-- (void)mediaLibraryCacheAddedBookletAssets:(id)a3 removedBookletAssets:(id)a4
+- (void)mediaLibraryCacheAddedBookletAssets:(id)assets removedBookletAssets:(id)bookletAssets
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  bookletAssetsCopy = bookletAssets;
   v8 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218240;
-    v12 = [v6 count];
+    v12 = [assetsCopy count];
     v13 = 2048;
-    v14 = [v7 count];
+    v14 = [bookletAssetsCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Cloud library changed adding %lu, removing %lu booklets.", &v11, 0x16u);
   }
 
-  if ([v7 count])
+  if ([bookletAssetsCopy count])
   {
-    v9 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
-    [v9 libraryDataSource:self removedAssets:v7];
+    libraryManager = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
+    [libraryManager libraryDataSource:self removedAssets:bookletAssetsCopy];
 
-    [(BKLibraryDataSourceMediaLibraryCloud *)self _removeAssetIDsFromCacheManager:v7];
+    [(BKLibraryDataSourceMediaLibraryCloud *)self _removeAssetIDsFromCacheManager:bookletAssetsCopy];
   }
 
-  if ([v6 count])
+  if ([assetsCopy count])
   {
-    v10 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
-    [v10 libraryDataSource:self addedAssets:v6];
+    libraryManager2 = [(BKLibraryDataSourceMediaLibraryCloud *)self libraryManager];
+    [libraryManager2 libraryDataSource:self addedAssets:assetsCopy];
 
-    [(BKLibraryDataSourceMediaLibraryCloud *)self _addAssetIDsToCacheManager:v6];
+    [(BKLibraryDataSourceMediaLibraryCloud *)self _addAssetIDsToCacheManager:assetsCopy];
   }
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
-  [v5 fetchAssetIDsOfType:1 includeBooklets:1 completion:v4];
+  completionCopy = completion;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
+  [mediaLibraryCache fetchAssetIDsOfType:1 includeBooklets:1 completion:completionCopy];
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
+  completionCopy = completion;
+  dsCopy = ds;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001947D4;
   v10[3] = &unk_100A05E68;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchAssetsWithIDs:v7 type:1 includeBooklets:1 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [mediaLibraryCache fetchAssetsWithIDs:dsCopy type:1 includeBooklets:1 completion:v10];
 }
 
-- (void)fetchAssetsWithCompletion:(id)a3
+- (void)fetchAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
-  [v5 fetchAssetsOfType:1 includeBooklets:1 completion:v4];
+  completionCopy = completion;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
+  [mediaLibraryCache fetchAssetsOfType:1 includeBooklets:1 completion:completionCopy];
 }
 
-- (void)_addAssetIDsToCacheManager:(id)a3
+- (void)_addAssetIDsToCacheManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = managerCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -234,8 +234,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 assetID];
-        if (v12)
+        assetID = [v11 assetID];
+        if (assetID)
         {
           [v11 assetID];
         }
@@ -263,15 +263,15 @@
   }
 }
 
-- (void)_removeAssetIDsFromCacheManager:(id)a3
+- (void)_removeAssetIDsFromCacheManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = managerCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -287,8 +287,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 assetID];
-        if (v12)
+        assetID = [v11 assetID];
+        if (assetID)
         {
           [v11 assetID];
         }
@@ -316,17 +316,17 @@
   }
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
-  [v9 bookCoverForLibraryAssetProperties:v8 type:1 completion:v7];
+  completionCopy = completion;
+  propertiesCopy = properties;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
+  [mediaLibraryCache bookCoverForLibraryAssetProperties:propertiesCopy type:1 completion:completionCopy];
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -335,47 +335,47 @@
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     sub_100792A30();
   }
 
-  v12 = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100194E70;
   v16[3] = &unk_100A09CE8;
-  v17 = v8;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
-  [v12 assetForLibraryAsset:v15 type:1 completion:v16];
+  v17 = assetCopy;
+  selfCopy = self;
+  v19 = optionsCopy;
+  v20 = completionCopy;
+  v13 = optionsCopy;
+  v14 = completionCopy;
+  v15 = assetCopy;
+  [mediaLibraryCache assetForLibraryAsset:v15 type:1 completion:v16];
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
-  [v8 assetForLibraryAsset:v7 type:1 completion:v6];
+  completionCopy = completion;
+  assetCopy = asset;
+  mediaLibraryCache = [(BKLibraryDataSourceMediaLibraryCloud *)self mediaLibraryCache];
+  [mediaLibraryCache assetForLibraryAsset:assetCopy type:1 completion:completionCopy];
 }
 
-- (void)_purchaseSucceeded:(id)a3
+- (void)_purchaseSucceeded:(id)succeeded
 {
-  v3 = [a3 userInfo];
-  v4 = v3;
-  if (v3)
+  userInfo = [succeeded userInfo];
+  v4 = userInfo;
+  if (userInfo)
   {
-    v5 = [v3 objectForKeyedSubscript:BLDownloadQueuePropertyIsPurchase];
+    v5 = [userInfo objectForKeyedSubscript:BLDownloadQueuePropertyIsPurchase];
     objc_opt_class();
     v6 = BUDynamicCast();
     if ([v6 BOOLValue])
@@ -415,22 +415,22 @@
   }
 }
 
-- (void)accountControllerDidAttemptToRedeemCode:(id)a3
+- (void)accountControllerDidAttemptToRedeemCode:(id)code
 {
   v3 = +[MPCloudController sharedCloudController];
   [v3 updateJaliscoMediaLibraryWithReason:1 completionHandler:&stru_100A09D28];
 }
 
-- (void)fetchReadyPurchaseItemStoreIDs:(id)a3 completion:(id)a4
+- (void)fetchReadyPurchaseItemStoreIDs:(id)ds completion:(id)completion
 {
-  v5 = a3;
-  v16 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v6 = objc_alloc_init(NSMutableSet);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v8)
   {
@@ -481,21 +481,21 @@
   v17[1] = 3221225472;
   v17[2] = sub_100195A94;
   v17[3] = &unk_100A09D50;
-  v18 = v16;
-  v15 = v16;
+  v18 = completionCopy;
+  v15 = completionCopy;
   [BKMusicLibraryUtilities storeIDsWithNonEmptyPurchasedToken:v6 completion:v17];
 }
 
-- (void)updatePurchaseItemsWithCompletion:(id)a3
+- (void)updatePurchaseItemsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MPCloudController sharedCloudController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100195CA8;
   v6[3] = &unk_100A03CA0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 updateJaliscoMediaLibraryWithReason:1 completionHandler:v6];
 }
 

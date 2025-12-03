@@ -1,15 +1,15 @@
 @interface AFHomeInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFHomeInfo)initWithBuilder:(id)a3;
-- (AFHomeInfo)initWithCoder:(id)a3;
-- (AFHomeInfo)initWithDictionaryRepresentation:(id)a3;
-- (AFHomeInfo)initWithHomeIdentifier:(id)a3 activityNotificationsEnabledForPersonalRequests:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFHomeInfo)initWithBuilder:(id)builder;
+- (AFHomeInfo)initWithCoder:(id)coder;
+- (AFHomeInfo)initWithDictionaryRepresentation:(id)representation;
+- (AFHomeInfo)initWithHomeIdentifier:(id)identifier activityNotificationsEnabledForPersonalRequests:(BOOL)requests;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFHomeInfo
@@ -32,12 +32,12 @@
   return v7;
 }
 
-- (AFHomeInfo)initWithDictionaryRepresentation:(id)a3
+- (AFHomeInfo)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"homeIdentifier"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"homeIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
       v6 = 0;
     }
 
-    v8 = [v4 objectForKey:@"activityNotificationsEnabledForPersonalRequests"];
+    v8 = [representationCopy objectForKey:@"activityNotificationsEnabledForPersonalRequests"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -62,45 +62,45 @@
       v9 = 0;
     }
 
-    v10 = [v9 BOOLValue];
-    self = [(AFHomeInfo *)self initWithHomeIdentifier:v6 activityNotificationsEnabledForPersonalRequests:v10];
+    bOOLValue = [v9 BOOLValue];
+    self = [(AFHomeInfo *)self initWithHomeIdentifier:v6 activityNotificationsEnabledForPersonalRequests:bOOLValue];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   homeIdentifier = self->_homeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:homeIdentifier forKey:@"AFHomeInfo::homeIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:homeIdentifier forKey:@"AFHomeInfo::homeIdentifier"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_activityNotificationsEnabledForPersonalRequests];
-  [v5 encodeObject:v6 forKey:@"AFHomeInfo::activityNotificationsEnabledForPersonalRequests"];
+  [coderCopy encodeObject:v6 forKey:@"AFHomeInfo::activityNotificationsEnabledForPersonalRequests"];
 }
 
-- (AFHomeInfo)initWithCoder:(id)a3
+- (AFHomeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeInfo::homeIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeInfo::activityNotificationsEnabledForPersonalRequests"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeInfo::homeIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeInfo::activityNotificationsEnabledForPersonalRequests"];
 
-  v7 = [v6 BOOLValue];
-  v8 = [(AFHomeInfo *)self initWithHomeIdentifier:v5 activityNotificationsEnabledForPersonalRequests:v7];
+  bOOLValue = [v6 BOOLValue];
+  v8 = [(AFHomeInfo *)self initWithHomeIdentifier:v5 activityNotificationsEnabledForPersonalRequests:bOOLValue];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -110,13 +110,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       activityNotificationsEnabledForPersonalRequests = self->_activityNotificationsEnabledForPersonalRequests;
       if (activityNotificationsEnabledForPersonalRequests == [(AFHomeInfo *)v5 activityNotificationsEnabledForPersonalRequests])
       {
-        v7 = [(AFHomeInfo *)v5 homeIdentifier];
+        homeIdentifier = [(AFHomeInfo *)v5 homeIdentifier];
         homeIdentifier = self->_homeIdentifier;
-        v9 = homeIdentifier == v7 || [(NSUUID *)homeIdentifier isEqual:v7];
+        v9 = homeIdentifier == homeIdentifier || [(NSUUID *)homeIdentifier isEqual:homeIdentifier];
       }
 
       else
@@ -143,7 +143,7 @@
   return v5 ^ v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -166,16 +166,16 @@
   return v9;
 }
 
-- (AFHomeInfo)initWithHomeIdentifier:(id)a3 activityNotificationsEnabledForPersonalRequests:(BOOL)a4
+- (AFHomeInfo)initWithHomeIdentifier:(id)identifier activityNotificationsEnabledForPersonalRequests:(BOOL)requests
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__AFHomeInfo_initWithHomeIdentifier_activityNotificationsEnabledForPersonalRequests___block_invoke;
   v10[3] = &unk_1E7348890;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = identifierCopy;
+  requestsCopy = requests;
+  v7 = identifierCopy;
   v8 = [(AFHomeInfo *)self initWithBuilder:v10];
 
   return v8;
@@ -189,21 +189,21 @@ void __85__AFHomeInfo_initWithHomeIdentifier_activityNotificationsEnabledForPers
   [v4 setActivityNotificationsEnabledForPersonalRequests:*(a1 + 40)];
 }
 
-- (AFHomeInfo)initWithBuilder:(id)a3
+- (AFHomeInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFHomeInfo;
   v5 = [(AFHomeInfo *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFHomeInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFHomeInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFHomeInfoMutation *)v7 getHomeIdentifier];
-      v9 = [v8 copy];
+      getHomeIdentifier = [(_AFHomeInfoMutation *)v7 getHomeIdentifier];
+      v9 = [getHomeIdentifier copy];
       homeIdentifier = v6->_homeIdentifier;
       v6->_homeIdentifier = v9;
 
@@ -214,26 +214,26 @@ void __85__AFHomeInfo_initWithHomeIdentifier_activityNotificationsEnabledForPers
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFHomeInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFHomeInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFHomeInfo);
-      v7 = [(_AFHomeInfoMutation *)v5 getHomeIdentifier];
-      v8 = [v7 copy];
+      getHomeIdentifier = [(_AFHomeInfoMutation *)v5 getHomeIdentifier];
+      v8 = [getHomeIdentifier copy];
       homeIdentifier = v6->_homeIdentifier;
       v6->_homeIdentifier = v8;
 

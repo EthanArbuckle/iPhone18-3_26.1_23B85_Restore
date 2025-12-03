@@ -1,35 +1,35 @@
 @interface FCFDBConnection
-- (FCFDBConnection)initWithPath:(id)a3;
-- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5 maxCountByFeedLookupID:(id)a6 totalMaxCount:(unint64_t)a7;
-- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5 totalMaxCount:(unint64_t)a6;
-- (id)_queryWhereClauseForFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5;
-- (id)selectFeedItemIDsWithFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5 maxCountByFeedLookupID:(id)a6 totalMaxCount:(unint64_t)a7;
-- (id)selectFeedItemsWithIDs:(id)a3;
-- (id)selectFeedsWithFeedIDs:(id)a3;
+- (FCFDBConnection)initWithPath:(id)path;
+- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature maxCountByFeedLookupID:(id)d totalMaxCount:(unint64_t)count;
+- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature totalMaxCount:(unint64_t)count;
+- (id)_queryWhereClauseForFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature;
+- (id)selectFeedItemIDsWithFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature maxCountByFeedLookupID:(id)d totalMaxCount:(unint64_t)count;
+- (id)selectFeedItemsWithIDs:(id)ds;
+- (id)selectFeedsWithFeedIDs:(id)ds;
 - (int64_t)selectMaxFeedLookupID;
 - (void)_prepareForUse;
 - (void)beginTransaction;
 - (void)commitTransaction;
 - (void)dealloc;
-- (void)deleteFeedItemIndexesFromFeedLookupID:(id)a3 feedRange:(id)a4;
-- (void)deleteFeedItemsWithIDs:(id)a3;
-- (void)insertFeatureIndexesForFeedItems:(id)a3 knownFeedsByID:(id)a4;
-- (void)insertFeedItems:(id)a3 knownFeedsByID:(id)a4;
-- (void)insertFeeds:(id)a3;
-- (void)insertIndexesForFeedItems:(id)a3 knownFeedsByID:(id)a4;
+- (void)deleteFeedItemIndexesFromFeedLookupID:(id)d feedRange:(id)range;
+- (void)deleteFeedItemsWithIDs:(id)ds;
+- (void)insertFeatureIndexesForFeedItems:(id)items knownFeedsByID:(id)d;
+- (void)insertFeedItems:(id)items knownFeedsByID:(id)d;
+- (void)insertFeeds:(id)feeds;
+- (void)insertIndexesForFeedItems:(id)items knownFeedsByID:(id)d;
 @end
 
 @implementation FCFDBConnection
 
-- (FCFDBConnection)initWithPath:(id)a3
+- (FCFDBConnection)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = FCFDBConnection;
   v5 = [(FCFDBConnection *)&v10 init];
   if (v5)
   {
-    if (FCFDBInvokeOpen([v4 cStringUsingEncoding:4], &v5->_db))
+    if (FCFDBInvokeOpen([pathCopy cStringUsingEncoding:4], &v5->_db))
     {
       v6 = v5;
       db = v5->_db;
@@ -81,10 +81,10 @@ uint64_t __32__FCFDBConnection_initWithPath___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)selectFeedsWithFeedIDs:(id)a3
+- (id)selectFeedsWithFeedIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = objc_msgSend(MEMORY[0x1E696AD60], "stringWithString:", @"SELECT * FROM feed WHERE feed_id IN (");
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -92,7 +92,7 @@ uint64_t __32__FCFDBConnection_initWithPath___block_invoke(uint64_t a1)
   v17[3] = &unk_1E7C389E0;
   v7 = v6;
   v18 = v7;
-  [v4 enumerateObjectsUsingBlock:v17];
+  [dsCopy enumerateObjectsUsingBlock:v17];
   [v7 appendString:@";"]);
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, v7, &pStmt);
@@ -104,13 +104,13 @@ uint64_t __32__FCFDBConnection_initWithPath___block_invoke(uint64_t a1)
     v11 = sqlite3_column_int64(pStmt, 3);
     v12 = sqlite3_column_blob(pStmt, 4);
     v13 = [[FCFDBFeed alloc] initFromSQLWithFeedID:v8 feedLookupID:v9 refreshedFromOrder:v10 refreshedToOrder:v11 fetchedRangesBytes:v12 fetchedRangesLength:sqlite3_column_bytes(pStmt, 4)];
-    v14 = [v13 feedID];
-    [v5 setObject:v13 forKey:v14];
+    feedID = [v13 feedID];
+    [dictionary setObject:v13 forKey:feedID];
   }
 
   FCFDBInvokeFinalize(self->_db, pStmt);
 
-  return v5;
+  return dictionary;
 }
 
 void __42__FCFDBConnection_selectFeedsWithFeedIDs___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -124,27 +124,27 @@ void __42__FCFDBConnection_selectFeedsWithFeedIDs___block_invoke(uint64_t a1, vo
   [*(a1 + 32) appendFormat:@"'%@'", v5];
 }
 
-- (id)selectFeedItemIDsWithFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5 maxCountByFeedLookupID:(id)a6 totalMaxCount:(unint64_t)a7
+- (id)selectFeedItemIDsWithFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature maxCountByFeedLookupID:(id)d totalMaxCount:(unint64_t)count
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  rangeCopy = range;
+  featureCopy = feature;
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_maxCountByFeedLookupID_totalMaxCount___block_invoke;
   v26[3] = &unk_1E7C38A08;
-  v17 = v15;
+  v17 = dCopy;
   v27 = v17;
-  v28 = self;
-  v18 = v12;
+  selfCopy = self;
+  v18 = dsCopy;
   v29 = v18;
-  v19 = v13;
+  v19 = rangeCopy;
   v30 = v19;
-  v20 = v14;
+  v20 = featureCopy;
   v31 = v20;
-  v32 = a7;
+  countCopy = count;
   v21 = __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_maxCountByFeedLookupID_totalMaxCount___block_invoke(v26);
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, v21, &pStmt);
@@ -152,12 +152,12 @@ void __42__FCFDBConnection_selectFeedsWithFeedIDs___block_invoke(uint64_t a1, vo
   {
     v22 = sqlite3_column_int64(pStmt, 0);
     v23 = [MEMORY[0x1E696AD98] numberWithLongLong:{v22 | (sqlite3_column_int64(pStmt, 1) << 20)}];
-    [v16 addObject:v23];
+    [array addObject:v23];
   }
 
   FCFDBInvokeFinalize(self->_db, pStmt);
 
-  return v16;
+  return array;
 }
 
 id __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_maxCountByFeedLookupID_totalMaxCount___block_invoke(void *a1)
@@ -181,10 +181,10 @@ id __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_m
   return v7;
 }
 
-- (id)selectFeedItemsWithIDs:(id)a3
+- (id)selectFeedItemsWithIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = objc_msgSend(MEMORY[0x1E696AD60], "stringWithString:", @"SELECT * FROM feed_item WHERE id IN (");
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -192,7 +192,7 @@ id __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_m
   v16[3] = &unk_1E7C38A30;
   v7 = v6;
   v17 = v7;
-  [v4 enumerateObjectsUsingBlock:v16];
+  [dsCopy enumerateObjectsUsingBlock:v16];
   [v7 appendString:@";"]);
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, v7, &pStmt);
@@ -206,7 +206,7 @@ id __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_m
     if (v12)
     {
       v13 = [MEMORY[0x1E696AD98] numberWithLongLong:v9];
-      [v5 setObject:v12 forKey:v13];
+      [dictionary setObject:v12 forKey:v13];
     }
 
     objc_autoreleasePoolPop(v8);
@@ -214,7 +214,7 @@ id __109__FCFDBConnection_selectFeedItemIDsWithFeedLookupIDs_feedRange_feature_m
 
   FCFDBInvokeFinalize(self->_db, pStmt);
 
-  return v5;
+  return dictionary;
 }
 
 void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -244,17 +244,17 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
   FCFDBInvokeFinalize(self->_db, pStmt);
 }
 
-- (void)insertFeeds:(id)a3
+- (void)insertFeeds:(id)feeds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  feedsCopy = feeds;
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, @"INSERT OR REPLACE INTO feed (feed_id, lookup_id, refreshed_from_order, refreshed_to_order, fetched_ranges) VALUES (?, ?, ?, ?, ?);", &pStmt);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = feedsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v6)
   {
@@ -271,14 +271,14 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = pStmt;
-        v12 = [v10 feedID];
-        sqlite3_bind_text(v11, 1, [v12 cStringUsingEncoding:4], -1, 0);
+        feedID = [v10 feedID];
+        sqlite3_bind_text(v11, 1, [feedID cStringUsingEncoding:4], -1, 0);
 
         sqlite3_bind_int64(pStmt, 2, [v10 feedLookupID]);
         sqlite3_bind_int64(pStmt, 3, [v10 refreshedFromOrder]);
         sqlite3_bind_int64(pStmt, 4, [v10 refreshedToOrder]);
-        v13 = [v10 fetchedRangesData];
-        sqlite3_bind_blob(pStmt, 5, [v13 bytes], objc_msgSend(v13, "length"), 0xFFFFFFFFFFFFFFFFLL);
+        fetchedRangesData = [v10 fetchedRangesData];
+        sqlite3_bind_blob(pStmt, 5, [fetchedRangesData bytes], objc_msgSend(fetchedRangesData, "length"), 0xFFFFFFFFFFFFFFFFLL);
         FCFDBInvokeStep(self->_db, pStmt);
         sqlite3_reset(pStmt);
       }
@@ -293,18 +293,18 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertFeedItems:(id)a3 knownFeedsByID:(id)a4
+- (void)insertFeedItems:(id)items knownFeedsByID:(id)d
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  dCopy = d;
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, @"INSERT OR IGNORE INTO feed_item (id, encoded) VALUES (?, ?);", &pStmt);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v36 count:16];
   if (v9)
   {
@@ -322,8 +322,8 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 feedID];
-        v16 = [v7 objectForKey:v15];
+        feedID = [v14 feedID];
+        v16 = [dCopy objectForKey:feedID];
 
         if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -339,11 +339,11 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
           _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
         }
 
-        v17 = [v16 feedLookupID];
-        v18 = v17 | ([v14 order] << 20);
-        v19 = [v14 data];
+        feedLookupID = [v16 feedLookupID];
+        v18 = feedLookupID | ([v14 order] << 20);
+        data = [v14 data];
         sqlite3_bind_int64(pStmt, 1, v18);
-        sqlite3_bind_blob(pStmt, 2, [v19 bytes], objc_msgSend(v19, "length"), 0);
+        sqlite3_bind_blob(pStmt, 2, [data bytes], objc_msgSend(data, "length"), 0);
         FCFDBInvokeStep(self->_db, pStmt);
         sqlite3_reset(pStmt);
       }
@@ -358,18 +358,18 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertIndexesForFeedItems:(id)a3 knownFeedsByID:(id)a4
+- (void)insertIndexesForFeedItems:(id)items knownFeedsByID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  dCopy = d;
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, @"INSERT OR IGNORE INTO feed_item_lookup (feed_lookup_id, feed_item_order, feature) VALUES (?, ?, 0);", &pStmt);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v34 count:16];
   if (v9)
   {
@@ -388,8 +388,8 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 feedID];
-        v17 = [v7 objectForKey:v16];
+        feedID = [v15 feedID];
+        v17 = [dCopy objectForKey:feedID];
 
         if (!v17 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
@@ -421,22 +421,22 @@ void __42__FCFDBConnection_selectFeedItemsWithIDs___block_invoke(uint64_t a1, vo
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertFeatureIndexesForFeedItems:(id)a3 knownFeedsByID:(id)a4
+- (void)insertFeatureIndexesForFeedItems:(id)items knownFeedsByID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v14 = 0;
   db = self->_db;
-  v8 = a3;
+  itemsCopy = items;
   FCFDBInvokePrepare(db, @"INSERT OR IGNORE INTO feed_item_lookup (feed_lookup_id, feed_item_order, feature) VALUES (?, ?, ?);", &v14);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__FCFDBConnection_insertFeatureIndexesForFeedItems_knownFeedsByID___block_invoke;
   v10[3] = &unk_1E7C38A80;
-  v12 = self;
+  selfCopy = self;
   v13 = v14;
-  v11 = v6;
-  v9 = v6;
-  [v8 enumerateObjectsUsingBlock:v10];
+  v11 = dCopy;
+  v9 = dCopy;
+  [itemsCopy enumerateObjectsUsingBlock:v10];
 
   FCFDBInvokeFinalize(self->_db, v14);
 }
@@ -494,16 +494,16 @@ uint64_t __67__FCFDBConnection_insertFeatureIndexesForFeedItems_knownFeedsByID__
   return sqlite3_reset(v8);
 }
 
-- (void)deleteFeedItemIndexesFromFeedLookupID:(id)a3 feedRange:(id)a4
+- (void)deleteFeedItemIndexesFromFeedLookupID:(id)d feedRange:(id)range
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 top];
-  v10 = [v9 order];
-  v11 = [v7 bottom];
+  rangeCopy = range;
+  dCopy = d;
+  v9 = [rangeCopy top];
+  order = [v9 order];
+  bottom = [rangeCopy bottom];
 
-  v12 = [v6 stringWithFormat:@"DELETE FROM feed_item_lookup WHERE feed_lookup_id = %@ AND feed_item_order <= %llu AND feed_item_order > %llu", v8, v10, objc_msgSend(v11, "order")];;
+  v12 = [v6 stringWithFormat:@"DELETE FROM feed_item_lookup WHERE feed_lookup_id = %@ AND feed_item_order <= %llu AND feed_item_order > %llu", dCopy, order, objc_msgSend(bottom, "order")];;
 
   pStmt = 0;
   FCFDBInvokePrepare(self->_db, v12, &pStmt);
@@ -511,10 +511,10 @@ uint64_t __67__FCFDBConnection_insertFeatureIndexesForFeedItems_knownFeedsByID__
   FCFDBInvokeFinalize(self->_db, pStmt);
 }
 
-- (void)deleteFeedItemsWithIDs:(id)a3
+- (void)deleteFeedItemsWithIDs:(id)ds
 {
   v4 = MEMORY[0x1E696AD60];
-  v5 = a3;
+  dsCopy = ds;
   v6 = objc_msgSend(v4, "stringWithString:", @"DELETE FROM feed_item WHERE id IN (");
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -522,7 +522,7 @@ uint64_t __67__FCFDBConnection_insertFeatureIndexesForFeedItems_knownFeedsByID__
   v9[3] = &unk_1E7C38A30;
   v10 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [dsCopy enumerateObjectsUsingBlock:v9];
 
   [v7 appendString:@";"]);
   pStmt = 0;
@@ -556,12 +556,12 @@ void __42__FCFDBConnection_deleteFeedItemsWithIDs___block_invoke(uint64_t a1, vo
   FCFDBInvokeExec(db, "CREATE UNIQUE INDEX IF NOT EXISTS index_feed_item_lookup ON feed_item_lookup (feed_lookup_id, feed_item_order, feature);");
 }
 
-- (id)_queryWhereClauseForFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5
+- (id)_queryWhereClauseForFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature
 {
   v7 = MEMORY[0x1E696AD60];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  featureCopy = feature;
+  rangeCopy = range;
+  dsCopy = ds;
   v11 = objc_msgSend(v7, "stringWithString:", @"WHERE feed_lookup_id IN (");
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -569,14 +569,14 @@ void __42__FCFDBConnection_deleteFeedItemsWithIDs___block_invoke(uint64_t a1, vo
   v18[3] = &unk_1E7C38A30;
   v12 = v11;
   v19 = v12;
-  [v10 enumerateObjectsUsingBlock:v18];
+  [dsCopy enumerateObjectsUsingBlock:v18];
 
-  v13 = [v9 top];
-  v14 = [v13 order];
-  v15 = [v9 bottom];
+  v13 = [rangeCopy top];
+  order = [v13 order];
+  bottom = [rangeCopy bottom];
 
-  [v12 appendFormat:@" AND feed_item_order <= %llu AND feed_item_order > %llu"], v14, objc_msgSend(v15, "order"));
-  v16 = [v8 hash];
+  [v12 appendFormat:@" AND feed_item_order <= %llu AND feed_item_order > %llu"], order, objc_msgSend(bottom, "order"));
+  v16 = [featureCopy hash];
 
   [v12 appendFormat:@" AND feature = %lld", v16];
 
@@ -594,19 +594,19 @@ void __71__FCFDBConnection__queryWhereClauseForFeedLookupIDs_feedRange_feature__
   [*(a1 + 32) appendFormat:@"%@", v5];
 }
 
-- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5 totalMaxCount:(unint64_t)a6
+- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature totalMaxCount:(unint64_t)count
 {
   v10 = MEMORY[0x1E696AD60];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  featureCopy = feature;
+  rangeCopy = range;
+  dsCopy = ds;
   v14 = [v10 stringWithString:{@"SELECT feed_lookup_id, feed_item_order FROM feed_item_lookup "}];
-  v15 = [(FCFDBConnection *)self _queryWhereClauseForFeedLookupIDs:v13 feedRange:v12 feature:v11];
+  v15 = [(FCFDBConnection *)self _queryWhereClauseForFeedLookupIDs:dsCopy feedRange:rangeCopy feature:featureCopy];
 
   [v14 appendString:v15];
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (count - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    [v14 appendFormat:@" ORDER BY feed_item_order DESC LIMIT %lu", a6];
+    [v14 appendFormat:@" ORDER BY feed_item_order DESC LIMIT %lu", count];
   }
 
   [v14 appendString:@";"];
@@ -614,15 +614,15 @@ void __71__FCFDBConnection__queryWhereClauseForFeedLookupIDs_feedRange_feature__
   return v14;
 }
 
-- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)a3 feedRange:(id)a4 feature:(id)a5 maxCountByFeedLookupID:(id)a6 totalMaxCount:(unint64_t)a7
+- (id)_queryToSelectFeedItemIDsWithFeedLookupIDs:(id)ds feedRange:(id)range feature:(id)feature maxCountByFeedLookupID:(id)d totalMaxCount:(unint64_t)count
 {
-  v12 = a6;
+  dCopy = d;
   v13 = MEMORY[0x1E696AD60];
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  featureCopy = feature;
+  rangeCopy = range;
+  dsCopy = ds;
   v17 = objc_msgSend(v13, "stringWithString:", @"WITH items AS (SELECT feed_lookup_id, feed_item_order, ROW_NUMBER() OVER (PARTITION BY feed_lookup_id ORDER BY feed_item_order DESC) AS row_num FROM feed_item_lookup ");
-  v18 = [(FCFDBConnection *)self _queryWhereClauseForFeedLookupIDs:v16 feedRange:v15 feature:v14];
+  v18 = [(FCFDBConnection *)self _queryWhereClauseForFeedLookupIDs:dsCopy feedRange:rangeCopy feature:featureCopy];
 
   [v17 appendString:v18];
   [v17 appendString:{@" SELECT feed_lookup_id, feed_item_order FROM items WHERE "}]);
@@ -632,13 +632,13 @@ void __71__FCFDBConnection__queryWhereClauseForFeedLookupIDs_feedRange_feature__
   v24[3] = &unk_1E7C38AA8;
   v19 = v17;
   v25 = v19;
-  v26 = v12;
-  v20 = v12;
-  [v16 enumerateObjectsUsingBlock:v24];
+  v26 = dCopy;
+  v20 = dCopy;
+  [dsCopy enumerateObjectsUsingBlock:v24];
 
-  if (a7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (count - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    [v19 appendFormat:@" ORDER BY feed_item_order DESC LIMIT %lu", a7];
+    [v19 appendFormat:@" ORDER BY feed_item_order DESC LIMIT %lu", count];
   }
 
   [v19 appendString:@";"];

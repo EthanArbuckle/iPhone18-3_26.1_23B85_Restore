@@ -1,26 +1,26 @@
 @interface NMCUISpecifierController
-+ (id)settingSpecifierWithTarget:(id)a3 set:(SEL)a4 get:(SEL)a5;
++ (id)settingSpecifierWithTarget:(id)target set:(SEL)set get:(SEL)get;
 + (id)titleSettingSpecifier;
 - (BOOL)hasCloudNotificationAccounts;
 - (PSListController)listController;
-- (id)_cloudNotificationsEnabled:(id)a3;
-- (id)groupSpecifierForTinker:(BOOL)a3;
-- (id)specifierForAccount:(id)a3 onTap:(SEL)a4;
+- (id)_cloudNotificationsEnabled:(id)enabled;
+- (id)groupSpecifierForTinker:(BOOL)tinker;
+- (id)specifierForAccount:(id)account onTap:(SEL)tap;
 - (id)specifiers;
-- (void)_accountSpecifierTapped:(id)a3;
-- (void)_setCloudNotificationsEnabled:(id)a3 withSpecifier:(id)a4;
+- (void)_accountSpecifierTapped:(id)tapped;
+- (void)_setCloudNotificationsEnabled:(id)enabled withSpecifier:(id)specifier;
 @end
 
 @implementation NMCUISpecifierController
 
-+ (id)settingSpecifierWithTarget:(id)a3 set:(SEL)a4 get:(SEL)a5
++ (id)settingSpecifierWithTarget:(id)target set:(SEL)set get:(SEL)get
 {
   v7 = MEMORY[0x277D3FAD8];
   v8 = MEMORY[0x277CCA8D8];
-  v9 = a3;
+  targetCopy = target;
   v10 = [v8 bundleWithIdentifier:@"com.apple.NanoMailCompanionUI"];
   v11 = [v10 localizedStringForKey:@"CLOUD_NOTIFICATIONS_TITLE" value:&stru_286C65BF0 table:@"NanoMailCompanionUI"];
-  v12 = [v7 preferenceSpecifierNamed:v11 target:v9 set:a4 get:a5 detail:0 cell:6 edit:0];
+  v12 = [v7 preferenceSpecifierNamed:v11 target:targetCopy set:set get:get detail:0 cell:6 edit:0];
 
   return v12;
 }
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (id)groupSpecifierForTinker:(BOOL)a3
+- (id)groupSpecifierForTinker:(BOOL)tinker
 {
   v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"cloud-notifications"];
-  if (!a3)
+  if (!tinker)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoMailCompanionUI"];
     v7 = [v6 localizedStringForKey:@"STANDALONE_HEADER_TITLE" value:&stru_286C65BF0 table:@"NanoMailCompanionUI"];
@@ -55,18 +55,18 @@
   return v5;
 }
 
-- (id)specifierForAccount:(id)a3 onTap:(SEL)a4
+- (id)specifierForAccount:(id)account onTap:(SEL)tap
 {
-  v6 = a3;
+  accountCopy = account;
   v7 = MEMORY[0x277D3FAD8];
-  v8 = [v6 displayName];
-  v9 = [v7 preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  displayName = [accountCopy displayName];
+  v9 = [v7 preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   [v9 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   v10 = *MEMORY[0x277D3FF38];
   [v9 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
-  v11 = [(NMCUISpecifierController *)self dataSource];
-  v12 = [v11 accountIsPending:v6];
+  dataSource = [(NMCUISpecifierController *)self dataSource];
+  v12 = [dataSource accountIsPending:accountCopy];
 
   if (v12)
   {
@@ -78,13 +78,13 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  v16 = [(NMCUISpecifierController *)self dataSource];
-  if ([v16 cloudNotificationsEnabled] && !+[NMCUICloudNotificationAccountDataSource accountHasCredentials:](NMCUICloudNotificationAccountDataSource, "accountHasCredentials:", v6))
+  dataSource2 = [(NMCUISpecifierController *)self dataSource];
+  if ([dataSource2 cloudNotificationsEnabled] && !+[NMCUICloudNotificationAccountDataSource accountHasCredentials:](NMCUICloudNotificationAccountDataSource, "accountHasCredentials:", accountCopy))
   {
 
-    if (a4)
+    if (tap)
     {
-      [v9 setButtonAction:a4];
+      [v9 setButtonAction:tap];
       v19 = MEMORY[0x277CBEC38];
       [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"MFNanoSettingsSpecifierWarningKey"];
       v15 = v9;
@@ -99,10 +99,10 @@ LABEL_3:
   }
 
 LABEL_7:
-  v17 = [v6 username];
-  [v9 setObject:v17 forKeyedSubscript:@"MFNanoSettingsSpecifierDetailKey"];
+  username = [accountCopy username];
+  [v9 setObject:username forKeyedSubscript:@"MFNanoSettingsSpecifierDetailKey"];
 
-  [v9 setProperty:v6 forKey:@"NMCUISettingsSpecifierAccountKey"];
+  [v9 setProperty:accountCopy forKey:@"NMCUISettingsSpecifierAccountKey"];
 
   return v9;
 }
@@ -110,10 +110,10 @@ LABEL_7:
 - (id)specifiers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(NMCUISpecifierController *)self dataSource];
-  v4 = [v3 showsAlerts];
+  dataSource = [(NMCUISpecifierController *)self dataSource];
+  showsAlerts = [dataSource showsAlerts];
 
-  if (v4)
+  if (showsAlerts)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -137,10 +137,10 @@ LABEL_7:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(NMCUISpecifierController *)self dataSource];
-    v11 = [v10 accounts];
+    dataSource2 = [(NMCUISpecifierController *)self dataSource];
+    accounts = [dataSource2 accounts];
 
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v12 = [accounts countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -151,7 +151,7 @@ LABEL_7:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accounts);
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
@@ -159,15 +159,15 @@ LABEL_7:
           {
             v17 = 0;
 LABEL_13:
-            v18 = [(NMCUISpecifierController *)self specifierForAccount:v16 onTap:v17];
-            [v6 addObject:v18];
+            dataSource3 = [(NMCUISpecifierController *)self specifierForAccount:v16 onTap:v17];
+            [v6 addObject:dataSource3];
 LABEL_17:
 
             continue;
           }
 
-          v18 = [(NMCUISpecifierController *)self dataSource];
-          if (![v18 deviceSupportsCloudNotifications])
+          dataSource3 = [(NMCUISpecifierController *)self dataSource];
+          if (![dataSource3 deviceSupportsCloudNotifications])
           {
             goto LABEL_17;
           }
@@ -181,7 +181,7 @@ LABEL_17:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [accounts countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
@@ -213,19 +213,19 @@ LABEL_17:
 - (BOOL)hasCloudNotificationAccounts
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(NMCUISpecifierController *)self dataSource];
-  v4 = [v3 deviceSupportsCloudNotifications];
+  dataSource = [(NMCUISpecifierController *)self dataSource];
+  deviceSupportsCloudNotifications = [dataSource deviceSupportsCloudNotifications];
 
-  if (v4)
+  if (deviceSupportsCloudNotifications)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NMCUISpecifierController *)self dataSource];
-    v6 = [v5 accounts];
+    dataSource2 = [(NMCUISpecifierController *)self dataSource];
+    accounts = [dataSource2 accounts];
 
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = *v13;
@@ -235,7 +235,7 @@ LABEL_17:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(accounts);
           }
 
           if ([NMCUICloudNotificationAccountDataSource accountSupportsNotifications:*(*(&v12 + 1) + 8 * i)])
@@ -245,7 +245,7 @@ LABEL_17:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -267,23 +267,23 @@ LABEL_13:
   return v7;
 }
 
-- (void)_setCloudNotificationsEnabled:(id)a3 withSpecifier:(id)a4
+- (void)_setCloudNotificationsEnabled:(id)enabled withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 BOOLValue])
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  if ([enabledCopy BOOLValue])
   {
     objc_initWeak(&location, self);
     v8 = [NMCUICloudNotificationOnboardingViewController alloc];
-    v9 = [(NMCUISpecifierController *)self dataSource];
-    v10 = [v9 accounts];
-    v11 = [(NMCUISpecifierController *)self dataSource];
+    dataSource = [(NMCUISpecifierController *)self dataSource];
+    accounts = [dataSource accounts];
+    dataSource2 = [(NMCUISpecifierController *)self dataSource];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __72__NMCUISpecifierController__setCloudNotificationsEnabled_withSpecifier___block_invoke;
     v20 = &unk_2799348A8;
     objc_copyWeak(&v21, &location);
-    v12 = [(NMCUICloudNotificationOnboardingViewController *)v8 initWithAccounts:v10 dataSource:v11 completion:&v17];
+    v12 = [(NMCUICloudNotificationOnboardingViewController *)v8 initWithAccounts:accounts dataSource:dataSource2 completion:&v17];
 
     v13 = [(NMCUISpecifierController *)self listController:v17];
     [v13 presentViewController:v12 animated:1 completion:0];
@@ -294,13 +294,13 @@ LABEL_13:
 
   else
   {
-    v14 = [v6 BOOLValue];
-    v15 = [(NMCUISpecifierController *)self dataSource];
-    [v15 setCloudNotificationsEnabled:v14];
+    bOOLValue = [enabledCopy BOOLValue];
+    dataSource3 = [(NMCUISpecifierController *)self dataSource];
+    [dataSource3 setCloudNotificationsEnabled:bOOLValue];
   }
 
-  v16 = [(NMCUISpecifierController *)self listController];
-  [v16 reloadSpecifiers];
+  listController = [(NMCUISpecifierController *)self listController];
+  [listController reloadSpecifiers];
 }
 
 void __72__NMCUISpecifierController__setCloudNotificationsEnabled_withSpecifier___block_invoke(uint64_t a1)
@@ -321,30 +321,30 @@ void __72__NMCUISpecifierController__setCloudNotificationsEnabled_withSpecifier_
   [v1 reloadSpecifiers];
 }
 
-- (id)_cloudNotificationsEnabled:(id)a3
+- (id)_cloudNotificationsEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(NMCUISpecifierController *)self dataSource];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "cloudNotificationsEnabled")}];
+  dataSource = [(NMCUISpecifierController *)self dataSource];
+  v5 = [v3 numberWithBool:{objc_msgSend(dataSource, "cloudNotificationsEnabled")}];
 
   return v5;
 }
 
-- (void)_accountSpecifierTapped:(id)a3
+- (void)_accountSpecifierTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"NMCUISettingsSpecifierAccountKey"];
+  tappedCopy = tapped;
+  v5 = [tappedCopy propertyForKey:@"NMCUISettingsSpecifierAccountKey"];
   if (v5)
   {
     objc_initWeak(&location, self);
-    v6 = [(NMCUISpecifierController *)self dataSource];
-    v7 = [(NMCUISpecifierController *)self listController];
+    dataSource = [(NMCUISpecifierController *)self dataSource];
+    listController = [(NMCUISpecifierController *)self listController];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __52__NMCUISpecifierController__accountSpecifierTapped___block_invoke;
     v8[3] = &unk_2799348A8;
     objc_copyWeak(&v9, &location);
-    [v6 handleAccountAuthenication:v5 viewController:v7 stateUpdateHandler:v8];
+    [dataSource handleAccountAuthenication:v5 viewController:listController stateUpdateHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);

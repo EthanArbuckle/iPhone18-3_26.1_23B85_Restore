@@ -1,9 +1,9 @@
 @interface FTGetRegionMetadataMessage
 - (FTGetRegionMetadataMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation FTGetRegionMetadataMessage
@@ -17,8 +17,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSBaseMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSBaseMessage *)v2 setTopic:lastObject];
 
     [(IDSBaseMessage *)v2 setWantsResponse:1];
   }
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = FTGetRegionMetadataMessage;
-  v4 = [(IDSBaseMessage *)&v8 copyWithZone:a3];
-  v5 = [(FTGetRegionMetadataMessage *)self language];
-  [v4 setLanguage:v5];
+  v4 = [(IDSBaseMessage *)&v8 copyWithZone:zone];
+  language = [(FTGetRegionMetadataMessage *)self language];
+  [v4 setLanguage:language];
 
-  v6 = [(FTGetRegionMetadataMessage *)self responseRegionInformation];
-  [v4 setResponseRegionInformation:v6];
+  responseRegionInformation = [(FTGetRegionMetadataMessage *)self responseRegionInformation];
+  [v4 setResponseRegionInformation:responseRegionInformation];
 
   return v4;
 }
@@ -51,10 +51,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(FTGetRegionMetadataMessage *)self language];
-  if (v4)
+  language = [(FTGetRegionMetadataMessage *)self language];
+  if (language)
   {
-    CFDictionarySetValue(v3, @"accept-language", v4);
+    CFDictionarySetValue(v3, @"accept-language", language);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"regions"];
+  v4 = [dictionary objectForKey:@"regions"];
   [(FTGetRegionMetadataMessage *)self setResponseRegionInformation:v4];
 }
 

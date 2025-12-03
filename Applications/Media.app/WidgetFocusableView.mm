@@ -1,6 +1,6 @@
 @interface WidgetFocusableView
-- (void)focusableItemFocused:(BOOL)a3;
-- (void)focusableItemPressed:(BOOL)a3;
+- (void)focusableItemFocused:(BOOL)focused;
+- (void)focusableItemPressed:(BOOL)pressed;
 - (void)focusableItemSelected;
 - (void)layoutSubviews;
 @end
@@ -9,26 +9,26 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100074B08();
 }
 
-- (void)focusableItemPressed:(BOOL)a3
+- (void)focusableItemPressed:(BOOL)pressed
 {
-  v4 = self;
-  sub_100074C28(a3);
+  selfCopy = self;
+  sub_100074C28(pressed);
 }
 
 - (void)focusableItemSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_100074DD4();
 }
 
-- (void)focusableItemFocused:(BOOL)a3
+- (void)focusableItemFocused:(BOOL)focused
 {
-  v4 = self;
-  sub_100074F9C(a3);
+  selfCopy = self;
+  sub_100074F9C(focused);
 }
 
 @end

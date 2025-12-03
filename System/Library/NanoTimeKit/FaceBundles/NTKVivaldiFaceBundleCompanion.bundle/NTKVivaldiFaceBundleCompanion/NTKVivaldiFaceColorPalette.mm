@@ -6,7 +6,7 @@
 
 - (id)_numeralsShadow
 {
-  v2 = [(NTKVivaldiFaceColorPalette *)self background];
+  background = [(NTKVivaldiFaceColorPalette *)self background];
   v3 = NTKColorByBrightening();
 
   return v3;

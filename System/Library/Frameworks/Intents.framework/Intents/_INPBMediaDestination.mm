@@ -1,41 +1,41 @@
 @interface _INPBMediaDestination
-- (BOOL)isEqual:(id)a3;
-- (_INPBMediaDestination)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBMediaDestination)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsMediaDestinationType:(id)a3;
+- (int)StringAsMediaDestinationType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMediaDestinationType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMediaDestinationType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBMediaDestination
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBMediaDestination *)self hasMediaDestinationType])
   {
-    v4 = [(_INPBMediaDestination *)self mediaDestinationType];
-    if (v4 >= 3)
+    mediaDestinationType = [(_INPBMediaDestination *)self mediaDestinationType];
+    if (mediaDestinationType >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", mediaDestinationType];
     }
 
     else
     {
-      v5 = off_1E72868C8[v4];
+      v5 = off_1E72868C8[mediaDestinationType];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"mediaDestinationType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"mediaDestinationType"];
   }
 
-  v6 = [(_INPBMediaDestination *)self playlistName];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"playlistName"];
+  playlistName = [(_INPBMediaDestination *)self playlistName];
+  dictionaryRepresentation = [playlistName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"playlistName"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -53,23 +53,23 @@
   return [(_INPBString *)self->_playlistName hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBMediaDestination *)self hasMediaDestinationType];
-    if (v5 == [v4 hasMediaDestinationType])
+    hasMediaDestinationType = [(_INPBMediaDestination *)self hasMediaDestinationType];
+    if (hasMediaDestinationType == [equalCopy hasMediaDestinationType])
     {
-      if (!-[_INPBMediaDestination hasMediaDestinationType](self, "hasMediaDestinationType") || ![v4 hasMediaDestinationType] || (mediaDestinationType = self->_mediaDestinationType, mediaDestinationType == objc_msgSend(v4, "mediaDestinationType")))
+      if (!-[_INPBMediaDestination hasMediaDestinationType](self, "hasMediaDestinationType") || ![equalCopy hasMediaDestinationType] || (mediaDestinationType = self->_mediaDestinationType, mediaDestinationType == objc_msgSend(equalCopy, "mediaDestinationType")))
       {
-        v7 = [(_INPBMediaDestination *)self playlistName];
-        v8 = [v4 playlistName];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        playlistName = [(_INPBMediaDestination *)self playlistName];
+        playlistName2 = [equalCopy playlistName];
+        v9 = playlistName2;
+        if ((playlistName != 0) != (playlistName2 == 0))
         {
-          v10 = [(_INPBMediaDestination *)self playlistName];
-          if (!v10)
+          playlistName3 = [(_INPBMediaDestination *)self playlistName];
+          if (!playlistName3)
           {
 
 LABEL_14:
@@ -77,10 +77,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(_INPBMediaDestination *)self playlistName];
-          v13 = [v4 playlistName];
-          v14 = [v12 isEqual:v13];
+          v11 = playlistName3;
+          playlistName4 = [(_INPBMediaDestination *)self playlistName];
+          playlistName5 = [equalCopy playlistName];
+          v14 = [playlistName4 isEqual:playlistName5];
 
           if (v14)
           {
@@ -101,7 +101,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBMediaDestination allocWithZone:](_INPBMediaDestination init];
   if ([(_INPBMediaDestination *)self hasMediaDestinationType])
@@ -109,71 +109,71 @@ LABEL_12:
     [(_INPBMediaDestination *)v5 setMediaDestinationType:[(_INPBMediaDestination *)self mediaDestinationType]];
   }
 
-  v6 = [(_INPBString *)self->_playlistName copyWithZone:a3];
+  v6 = [(_INPBString *)self->_playlistName copyWithZone:zone];
   [(_INPBMediaDestination *)v5 setPlaylistName:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBMediaDestination *)self data];
+  coderCopy = coder;
+  data = [(_INPBMediaDestination *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBMediaDestination)initWithCoder:(id)a3
+- (_INPBMediaDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBMediaDestination *)self initWithData:v6];
+    self = [(_INPBMediaDestination *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBMediaDestination *)self hasMediaDestinationType])
   {
     mediaDestinationType = self->_mediaDestinationType;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBMediaDestination *)self playlistName];
+  playlistName = [(_INPBMediaDestination *)self playlistName];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (playlistName)
   {
-    v7 = [(_INPBMediaDestination *)self playlistName];
+    playlistName2 = [(_INPBMediaDestination *)self playlistName];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (int)StringAsMediaDestinationType:(id)a3
+- (int)StringAsMediaDestinationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_DESTINATION"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_DESTINATION"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LIBRARY"])
+  else if ([typeCopy isEqualToString:@"LIBRARY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PLAYLIST"])
+  else if ([typeCopy isEqualToString:@"PLAYLIST"])
   {
     v4 = 2;
   }
@@ -186,10 +186,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)setMediaDestinationType:(int)a3
+- (void)setMediaDestinationType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -197,7 +197,7 @@ LABEL_12:
   else
   {
     *&self->_has = has | 1;
-    self->_mediaDestinationType = a3;
+    self->_mediaDestinationType = type;
   }
 }
 

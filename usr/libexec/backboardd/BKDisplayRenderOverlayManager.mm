@@ -1,37 +1,37 @@
 @interface BKDisplayRenderOverlayManager
 + (id)sharedInstance;
-- (BOOL)applyOverlay:(id)a3 withAnimationSettings:(id)a4;
-- (BOOL)freezeOverlay:(id)a3;
+- (BOOL)applyOverlay:(id)overlay withAnimationSettings:(id)settings;
+- (BOOL)freezeOverlay:(id)overlay;
 - (BOOL)isShowingNonBootUIOverlays;
-- (BOOL)removeOverlay:(id)a3 withAnimationSettings:(id)a4;
+- (BOOL)removeOverlay:(id)overlay withAnimationSettings:(id)settings;
 - (NSMutableSet)activeOverlays;
-- (id)_initWithPersistenceCoordinator:(id)a3 orientationManager:(id)a4 backlightManager:(id)a5 windowServer:(id)a6;
-- (id)_updateWindowServerUpdatesForOverlays:(id)a3;
-- (id)activeOverlayWithDescriptor:(id)a3;
+- (id)_initWithPersistenceCoordinator:(id)coordinator orientationManager:(id)manager backlightManager:(id)backlightManager windowServer:(id)server;
+- (id)_updateWindowServerUpdatesForOverlays:(id)overlays;
+- (id)activeOverlayWithDescriptor:(id)descriptor;
 - (id)description;
-- (void)_lock_freezeOverlay:(id)a3;
-- (void)_lock_setBacklightLocked:(BOOL)a3;
-- (void)_lock_setLockedOrientation:(int64_t)a3;
-- (void)_lock_setOverlaysDisablingUpdates:(id)a3;
+- (void)_lock_freezeOverlay:(id)overlay;
+- (void)_lock_setBacklightLocked:(BOOL)locked;
+- (void)_lock_setLockedOrientation:(int64_t)orientation;
+- (void)_lock_setOverlaysDisablingUpdates:(id)updates;
 - (void)_lock_updateStateForActiveOverlayChange;
 - (void)prepareForRestart;
 @end
 
 @implementation BKDisplayRenderOverlayManager
 
-- (id)_updateWindowServerUpdatesForOverlays:(id)a3
+- (id)_updateWindowServerUpdatesForOverlays:(id)overlays
 {
-  v4 = a3;
+  overlaysCopy = overlays;
   v38 = objc_alloc_init(NSMutableSet);
-  v5 = [(CAWindowServer *)self->_windowServer displays];
-  v6 = [v5 mutableCopy];
+  displays = [(CAWindowServer *)self->_windowServer displays];
+  v6 = [displays mutableCopy];
 
   v7 = objc_alloc_init(NSMutableArray);
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v8 = v4;
+  v8 = overlaysCopy;
   v9 = [v8 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v9)
   {
@@ -50,8 +50,8 @@
         if ([v13 disablesDisplayUpdates])
         {
           windowServer = self->_windowServer;
-          v15 = [v13 display];
-          v16 = -[CAWindowServer displayWithDisplayId:](windowServer, "displayWithDisplayId:", [v15 displayId]);
+          display = [v13 display];
+          v16 = -[CAWindowServer displayWithDisplayId:](windowServer, "displayWithDisplayId:", [display displayId]);
 
           [v38 addObject:v13];
           [v6 removeObject:v16];
@@ -92,9 +92,9 @@
           v24 = sub_100052810();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v23 displayId];
+            displayId = [v23 displayId];
             *buf = v36;
-            v53 = v25;
+            v53 = displayId;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Disabling framebuffer changes on display (%d) because we have overlays that require disabled updates.", buf, 8u);
           }
 
@@ -135,9 +135,9 @@
           v33 = sub_100052810();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v32 displayId];
+            displayId2 = [v32 displayId];
             *buf = v37;
-            v53 = v34;
+            v53 = displayId2;
             _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Enabling framebuffer changes on display (%d) because we have don't have any overlays that require disabled updates.", buf, 8u);
           }
 
@@ -154,18 +154,18 @@
   return v38;
 }
 
-- (void)_lock_setBacklightLocked:(BOOL)a3
+- (void)_lock_setBacklightLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_backlightLocked != v3)
+  if (self->_backlightLocked != lockedCopy)
   {
-    self->_backlightLocked = v3;
+    self->_backlightLocked = lockedCopy;
     v5 = sub_100052810();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109120;
-      v9[1] = v3;
+      v9[1] = lockedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "backlight locked now:%{BOOL}u for render overlays", v9, 8u);
     }
 
@@ -176,19 +176,19 @@
   }
 }
 
-- (void)_lock_setLockedOrientation:(int64_t)a3
+- (void)_lock_setLockedOrientation:(int64_t)orientation
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_lockedOrientation != a3)
+  if (self->_lockedOrientation != orientation)
   {
-    self->_lockedOrientation = a3;
+    self->_lockedOrientation = orientation;
     IsValid = BSInterfaceOrientationIsValid();
     orientationManager = self->_orientationManager;
     v7 = BSGetVersionedPID();
     if (IsValid)
     {
 
-      sub_100091D58(orientationManager, 4, a3, v7);
+      sub_100091D58(orientationManager, 4, orientation, v7);
     }
 
     else
@@ -207,13 +207,13 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v13 = self;
+  selfCopy = self;
   v4 = self->_activeOverlays;
   v5 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    interfaceOrientation = 0;
     v8 = *v15;
     do
     {
@@ -228,19 +228,19 @@
         [v10 interfaceOrientation];
         if (BSInterfaceOrientationIsValid())
         {
-          if (BSInterfaceOrientationIsValid() && v7 != [v10 interfaceOrientation])
+          if (BSInterfaceOrientationIsValid() && interfaceOrientation != [v10 interfaceOrientation])
           {
             v11 = sub_100052810();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
-              v12 = [v10 succinctDescription];
+              succinctDescription = [v10 succinctDescription];
               *buf = 138543362;
-              v19 = v12;
+              v19 = succinctDescription;
               _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Conflicting choices for orientation lock, choosing orientation for this overlay: %{public}@", buf, 0xCu);
             }
           }
 
-          v7 = [v10 interfaceOrientation];
+          interfaceOrientation = [v10 interfaceOrientation];
         }
 
         if ([v10 lockBacklight])
@@ -257,27 +257,27 @@
 
   else
   {
-    v7 = 0;
+    interfaceOrientation = 0;
   }
 
-  [(BKDisplayRenderOverlayManager *)v13 _lock_setLockedOrientation:v7];
-  -[BKDisplayRenderOverlayManager _lock_setBacklightLocked:](v13, "_lock_setBacklightLocked:", [v3 count] != 0);
+  [(BKDisplayRenderOverlayManager *)selfCopy _lock_setLockedOrientation:interfaceOrientation];
+  -[BKDisplayRenderOverlayManager _lock_setBacklightLocked:](selfCopy, "_lock_setBacklightLocked:", [v3 count] != 0);
 }
 
-- (void)_lock_freezeOverlay:(id)a3
+- (void)_lock_freezeOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 isFrozen];
+  isFrozen = [overlayCopy isFrozen];
   v6 = sub_100052810();
-  v7 = v6;
-  if (v5)
+  display = v6;
+  if (isFrozen)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543362;
-      v16[0] = v4;
-      _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Requested freezing of an already frozen overlay; ignoring freeze request for overlay:%{public}@", &v15, 0xCu);
+      v16[0] = overlayCopy;
+      _os_log_error_impl(&_mh_execute_header, display, OS_LOG_TYPE_ERROR, "Requested freezing of an already frozen overlay; ignoring freeze request for overlay:%{public}@", &v15, 0xCu);
     }
 
 LABEL_17:
@@ -288,27 +288,27 @@ LABEL_17:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16[0] = v4;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Freezing overlay:%{public}@", &v15, 0xCu);
+    v16[0] = overlayCopy;
+    _os_log_impl(&_mh_execute_header, display, OS_LOG_TYPE_DEFAULT, "Freezing overlay:%{public}@", &v15, 0xCu);
   }
 
-  [v4 freeze];
+  [overlayCopy freeze];
   v8 = [(BKDisplayRenderOverlayManager *)self _updateWindowServerUpdatesForOverlays:self->_overlaysDisablingUpdates];
   [(BKDisplayRenderOverlayManager *)self _lock_setOverlaysDisablingUpdates:v8];
 
-  if ([v4 disablesDisplayUpdates])
+  if ([overlayCopy disablesDisplayUpdates])
   {
-    v7 = [v4 display];
-    v9 = [v7 displayId];
-    if (([(NSMutableIndexSet *)self->_frozenDisplayIDs containsIndex:v9]& 1) != 0)
+    display = [overlayCopy display];
+    displayId = [display displayId];
+    if (([(NSMutableIndexSet *)self->_frozenDisplayIDs containsIndex:displayId]& 1) != 0)
     {
       v10 = sub_100052810();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v15 = 67109378;
-        LODWORD(v16[0]) = v9;
+        LODWORD(v16[0]) = displayId;
         WORD2(v16[0]) = 2114;
-        *(v16 + 6) = v4;
+        *(v16 + 6) = overlayCopy;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Display %d previously frozen; ignoring freeze request for overlay:%{public}@", &v15, 0x12u);
       }
     }
@@ -325,8 +325,8 @@ LABEL_17:
         frozenDisplayIDs = self->_frozenDisplayIDs;
       }
 
-      [(NSMutableIndexSet *)frozenDisplayIDs addIndex:v9];
-      v10 = [(CAWindowServer *)self->_windowServer displayWithDisplayId:v9];
+      [(NSMutableIndexSet *)frozenDisplayIDs addIndex:displayId];
+      v10 = [(CAWindowServer *)self->_windowServer displayWithDisplayId:displayId];
       if (v10)
       {
         v14 = sub_100052810();
@@ -347,15 +347,15 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_lock_setOverlaysDisablingUpdates:(id)a3
+- (void)_lock_setOverlaysDisablingUpdates:(id)updates
 {
-  v7 = a3;
+  updatesCopy = updates;
   os_unfair_lock_assert_owner(&self->_lock);
   overlaysDisablingUpdates = self->_overlaysDisablingUpdates;
   p_overlaysDisablingUpdates = &self->_overlaysDisablingUpdates;
-  if (overlaysDisablingUpdates != v7)
+  if (overlaysDisablingUpdates != updatesCopy)
   {
-    objc_storeStrong(p_overlaysDisablingUpdates, a3);
+    objc_storeStrong(p_overlaysDisablingUpdates, updates);
   }
 }
 
@@ -441,14 +441,14 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)freezeOverlay:(id)a3
+- (BOOL)freezeOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableSet *)self->_activeOverlays containsObject:v4];
+  v5 = [(NSMutableSet *)self->_activeOverlays containsObject:overlayCopy];
   if (v5)
   {
-    [(BKDisplayRenderOverlayManager *)self _lock_freezeOverlay:v4];
+    [(BKDisplayRenderOverlayManager *)self _lock_freezeOverlay:overlayCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -456,17 +456,17 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)removeOverlay:(id)a3 withAnimationSettings:(id)a4
+- (BOOL)removeOverlay:(id)overlay withAnimationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableSet *)self->_activeOverlays containsObject:v6];
+  v8 = [(NSMutableSet *)self->_activeOverlays containsObject:overlayCopy];
   if (v8)
   {
-    [v6 dismissWithAnimationSettings:v7];
-    [(NSMutableSet *)self->_activeOverlays removeObject:v6];
-    [(NSMutableSet *)self->_overlaysDisablingUpdates removeObject:v6];
+    [overlayCopy dismissWithAnimationSettings:settingsCopy];
+    [(NSMutableSet *)self->_activeOverlays removeObject:overlayCopy];
+    [(NSMutableSet *)self->_overlaysDisablingUpdates removeObject:overlayCopy];
     v9 = [(BKDisplayRenderOverlayManager *)self _updateWindowServerUpdatesForOverlays:self->_overlaysDisablingUpdates];
     [(BKDisplayRenderOverlayManager *)self _lock_setOverlaysDisablingUpdates:v9];
 
@@ -478,16 +478,16 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)applyOverlay:(id)a3 withAnimationSettings:(id)a4
+- (BOOL)applyOverlay:(id)overlay withAnimationSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v6 presentWithAnimationSettings:v7];
+  v8 = [overlayCopy presentWithAnimationSettings:settingsCopy];
 
   if (v8)
   {
-    [(NSMutableSet *)self->_activeOverlays addObject:v6];
+    [(NSMutableSet *)self->_activeOverlays addObject:overlayCopy];
     [(BKDisplayRenderOverlayManager *)self _lock_updateStateForActiveOverlayChange];
   }
 
@@ -505,9 +505,9 @@ LABEL_12:
   return v3;
 }
 
-- (id)activeOverlayWithDescriptor:(id)a3
+- (id)activeOverlayWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
@@ -528,8 +528,8 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 descriptor];
-        v11 = [v10 isEqual:v4];
+        descriptor = [v9 descriptor];
+        v11 = [descriptor isEqual:descriptorCopy];
 
         if (v11)
         {
@@ -559,24 +559,24 @@ LABEL_11:
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendObject:self->_activeOverlays withName:@"activeOverlays"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (id)_initWithPersistenceCoordinator:(id)a3 orientationManager:(id)a4 backlightManager:(id)a5 windowServer:(id)a6
+- (id)_initWithPersistenceCoordinator:(id)coordinator orientationManager:(id)manager backlightManager:(id)backlightManager windowServer:(id)server
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
+  backlightManagerCopy = backlightManager;
+  serverCopy = server;
   v49.receiver = self;
   v49.super_class = BKDisplayRenderOverlayManager;
   v15 = [(BKDisplayRenderOverlayManager *)&v49 init];
   v16 = v15;
   if (v15)
   {
-    if (!v14)
+    if (!serverCopy)
     {
       v29 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"windowServer"];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -605,7 +605,7 @@ LABEL_11:
       JUMPOUT(0x10009A354);
     }
 
-    if (!v13)
+    if (!backlightManagerCopy)
     {
       v33 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"backlightManager"];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -634,7 +634,7 @@ LABEL_11:
       JUMPOUT(0x10009A44CLL);
     }
 
-    if (!v12)
+    if (!managerCopy)
     {
       v37 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"orientationManager"];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -663,7 +663,7 @@ LABEL_11:
       JUMPOUT(0x10009A544);
     }
 
-    if (!v11)
+    if (!coordinatorCopy)
     {
       v41 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"persistenceCoordinator"];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -692,9 +692,9 @@ LABEL_11:
       JUMPOUT(0x10009A63CLL);
     }
 
-    objc_storeStrong(&v15->_windowServer, a6);
-    objc_storeStrong(&v16->_orientationManager, a4);
-    objc_storeStrong(&v16->_backlightManager, a5);
+    objc_storeStrong(&v15->_windowServer, server);
+    objc_storeStrong(&v16->_orientationManager, manager);
+    objc_storeStrong(&v16->_backlightManager, backlightManager);
     v17 = objc_alloc_init(NSMutableSet);
     activeOverlays = v16->_activeOverlays;
     v16->_activeOverlays = v17;
@@ -702,8 +702,8 @@ LABEL_11:
     v16->_lock._os_unfair_lock_opaque = 0;
     v16->_lockedOrientation = 0;
     v16->_backlightLocked = 0;
-    v19 = [v11 rebuildPersistentOverlays];
-    v20 = [NSSet setWithArray:v19];
+    rebuildPersistentOverlays = [coordinatorCopy rebuildPersistentOverlays];
+    v20 = [NSSet setWithArray:rebuildPersistentOverlays];
 
     v21 = [(BKDisplayRenderOverlayManager *)v16 _updateWindowServerUpdatesForOverlays:v20];
     overlaysDisablingUpdates = v16->_overlaysDisablingUpdates;

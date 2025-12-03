@@ -2,9 +2,9 @@
 - (SFAirDropClassroomTransferDelegate)delegate;
 - (void)activate;
 - (void)invalidate;
-- (void)transferWithIdentifierWasAccepted:(id)a3;
-- (void)transferWithIdentifierWasDeclined:(id)a3 withFailureReason:(unint64_t)a4;
-- (void)updateTransferWithIdentifier:(id)a3 withState:(int64_t)a4 information:(id)a5 completionHandler:(id)a6;
+- (void)transferWithIdentifierWasAccepted:(id)accepted;
+- (void)transferWithIdentifierWasDeclined:(id)declined withFailureReason:(unint64_t)reason;
+- (void)updateTransferWithIdentifier:(id)identifier withState:(int64_t)state information:(id)information completionHandler:(id)handler;
 @end
 
 @implementation SFAirDropClassroomTransferManager
@@ -23,11 +23,11 @@
   [(SFXPCClient *)&v2 _invalidate];
 }
 
-- (void)updateTransferWithIdentifier:(id)a3 withState:(int64_t)a4 information:(id)a5 completionHandler:(id)a6
+- (void)updateTransferWithIdentifier:(id)identifier withState:(int64_t)state information:(id)information completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  informationCopy = information;
+  handlerCopy = handler;
   v13 = _os_activity_create(&dword_1A9662000, "Sharing/SFAirDropClassroomTransferManager/updateTransferWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -37,12 +37,12 @@
   v17[2] = __106__SFAirDropClassroomTransferManager_updateTransferWithIdentifier_withState_information_completionHandler___block_invoke;
   v17[3] = &unk_1E788D5B0;
   v17[4] = self;
-  v14 = v10;
+  v14 = identifierCopy;
   v18 = v14;
-  v21 = a4;
-  v15 = v11;
+  stateCopy = state;
+  v15 = informationCopy;
   v19 = v15;
-  v16 = v12;
+  v16 = handlerCopy;
   v20 = v16;
   [(SFAirDropClassroomTransferManager *)self _getRemoteObjectProxyOnQueue:v17];
 
@@ -117,46 +117,46 @@ void __106__SFAirDropClassroomTransferManager_updateTransferWithIdentifier_withS
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferWithIdentifierWasAccepted:(id)a3
+- (void)transferWithIdentifierWasAccepted:(id)accepted
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  acceptedCopy = accepted;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = acceptedCopy;
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "transferWithIdentifierWasAccepted %@", &v8, 0xCu);
   }
 
-  v6 = [(SFAirDropClassroomTransferManager *)self delegate];
-  [v6 transferWithIdentifierWasAccepted:v4];
+  delegate = [(SFAirDropClassroomTransferManager *)self delegate];
+  [delegate transferWithIdentifierWasAccepted:acceptedCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferWithIdentifierWasDeclined:(id)a3 withFailureReason:(unint64_t)a4
+- (void)transferWithIdentifierWasDeclined:(id)declined withFailureReason:(unint64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  declinedCopy = declined;
   v7 = airdrop_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v6;
+    v15 = declinedCopy;
     v16 = 1024;
-    v17 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_1A9662000, v7, OS_LOG_TYPE_DEFAULT, "transferWithIdentifierWasDeclined %@, withFailureReason: %d", &v14, 0x12u);
   }
 
-  v8 = [(SFAirDropClassroomTransferManager *)self delegate];
+  delegate = [(SFAirDropClassroomTransferManager *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [(SFAirDropClassroomTransferManager *)self delegate];
-  v11 = v10;
+  delegate2 = [(SFAirDropClassroomTransferManager *)self delegate];
+  delegate3 = delegate2;
   if (v9)
   {
-    [v10 transferWithIdentifierWasDeclined:v6 withFailureReason:a4];
+    [delegate2 transferWithIdentifierWasDeclined:declinedCopy withFailureReason:reason];
 LABEL_7:
 
     goto LABEL_8;
@@ -166,8 +166,8 @@ LABEL_7:
 
   if (v12)
   {
-    v11 = [(SFAirDropClassroomTransferManager *)self delegate];
-    [v11 transferWithIdentifierWasDeclined:v6];
+    delegate3 = [(SFAirDropClassroomTransferManager *)self delegate];
+    [delegate3 transferWithIdentifierWasDeclined:declinedCopy];
     goto LABEL_7;
   }
 

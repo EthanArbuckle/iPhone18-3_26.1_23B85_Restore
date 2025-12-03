@@ -25,14 +25,14 @@
 + (id)mf_imageWithColor:()MessageUI size:
 {
   v7 = a5;
-  v8 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{a1, a2}];
+  v8 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{self, a2}];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __45__UIImage_MessageUI__mf_imageWithColor_size___block_invoke;
   v12[3] = &unk_1E8070A18;
   v9 = v7;
   v13 = v9;
-  v14 = a1;
+  selfCopy = self;
   v15 = a2;
   v10 = [v8 imageWithActions:v12];
 
@@ -154,10 +154,10 @@ LABEL_15:
 
 + (uint64_t)mf_symbolicTraitsForView:()MessageUI
 {
-  v4 = [a1 mf_symbolImageCapAtContentSizeCategoryForView:?];
+  v4 = [self mf_symbolImageCapAtContentSizeCategoryForView:?];
 
-  v5 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v7 = *MEMORY[0x1E69DDC90];
 
   if (v4 != v7 && IsAccessibilityCategory)
@@ -229,21 +229,21 @@ LABEL_15:
 
 + (id)mf_systemImageNamed:()MessageUI textStyle:scale:
 {
-  v5 = [a1 mf_systemImageNamed:a3 textStyle:a4 scale:a5 weight:0];
+  v5 = [self mf_systemImageNamed:a3 textStyle:a4 scale:a5 weight:0];
 
   return v5;
 }
 
 + (id)mf_systemImageNamed:()MessageUI textStyle:scale:weight:
 {
-  v6 = [a1 mf_systemImageNamed:a3 textStyle:a4 scale:a5 weight:a6 maximumContentSizeCategory:*MEMORY[0x1E69DDC90]];
+  v6 = [self mf_systemImageNamed:a3 textStyle:a4 scale:a5 weight:a6 maximumContentSizeCategory:*MEMORY[0x1E69DDC90]];
 
   return v6;
 }
 
 + (id)mf_systemImageNamed:()MessageUI textStyle:scale:weight:maximumContentSizeCategory:
 {
-  v7 = [a1 _mf_systemImageNamed:a3 textStyle:a4 scale:a5 weight:a6 imageSymbolType:2 traits:0 maximumContentSizeCategory:a7];
+  v7 = [self _mf_systemImageNamed:a3 textStyle:a4 scale:a5 weight:a6 imageSymbolType:2 traits:0 maximumContentSizeCategory:a7];
 
   return v7;
 }
@@ -251,7 +251,7 @@ LABEL_15:
 + (id)_mf_systemImageNamed:()MessageUI textStyle:scale:weight:imageSymbolType:traits:maximumContentSizeCategory:
 {
   v15 = a3;
-  v16 = [a1 mf_symbolConfigurationForImageSymbolType:a7 textStyle:a4 scale:a5 weight:a6 traits:a8 maximumContentSizeCategory:a9];
+  v16 = [self mf_symbolConfigurationForImageSymbolType:a7 textStyle:a4 scale:a5 weight:a6 traits:a8 maximumContentSizeCategory:a9];
   v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:v15 withConfiguration:v16];
 
   return v17;
@@ -314,7 +314,7 @@ LABEL_15:
   v9 = [MEMORY[0x1E69DCAB8] mf_symbolImageWeightForView:a3];
   v10 = [MEMORY[0x1E69DCAB8] mf_symbolicTraitsForView:a3];
   v11 = [MEMORY[0x1E69DCAB8] mf_symbolImageCapAtContentSizeCategoryForView:a3];
-  v12 = [a1 mf_symbolConfigurationForImageSymbolType:a4 textStyle:v7 scale:v8 weight:v9 traits:v10 maximumContentSizeCategory:v11];
+  v12 = [self mf_symbolConfigurationForImageSymbolType:a4 textStyle:v7 scale:v8 weight:v9 traits:v10 maximumContentSizeCategory:v11];
 
   return v12;
 }
@@ -339,11 +339,11 @@ LABEL_15:
 
     v16 = v17;
 
-    v18 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    v19 = v18;
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    v19 = preferredContentSizeCategory;
     if (a3 == 1)
     {
-      v20 = [MEMORY[0x1E69DC668] _defaultContentSizeCategory];
+      _defaultContentSizeCategory = [MEMORY[0x1E69DC668] _defaultContentSizeCategory];
     }
 
     else
@@ -357,10 +357,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v20 = MFUIContentSizeCategoryMin(v18, v14);
+      _defaultContentSizeCategory = MFUIContentSizeCategoryMin(preferredContentSizeCategory, v14);
     }
 
-    v21 = v20;
+    v21 = _defaultContentSizeCategory;
 
     v19 = v21;
     goto LABEL_12;
@@ -383,24 +383,24 @@ LABEL_14:
   v9 = v8;
   [v7 size];
   v11 = a2 / v10;
-  if (a1 / v9 >= v11)
+  if (self / v9 >= v11)
   {
     v12 = v11;
   }
 
   else
   {
-    v12 = a1 / v9;
+    v12 = self / v9;
   }
 
   [v7 size];
   v14 = v13;
   [v7 size];
   v16 = v15;
-  v20.width = a1;
+  v20.width = self;
   v20.height = a2;
   UIGraphicsBeginImageContextWithOptions(v20, 0, 0.0);
-  [v7 drawInRect:{(a1 - v12 * v14) * 0.5, (a2 - v12 * v16) * 0.5}];
+  [v7 drawInRect:{(self - v12 * v14) * 0.5, (a2 - v12 * v16) * 0.5}];
   v17 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
@@ -414,8 +414,8 @@ LABEL_14:
   if (!v7)
   {
     v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v6];
-    [v9 _scaledValueForValue:a1];
-    a1 = v12;
+    [v9 _scaledValueForValue:self];
+    self = v12;
     goto LABEL_5;
   }
 
@@ -424,13 +424,13 @@ LABEL_14:
     v8 = MEMORY[0x1E69DB878];
     v9 = [MEMORY[0x1E69DCAB8] mf_symbolImageCapAtContentSizeCategoryForView:a4];
     v10 = [v8 _preferredFontForTextStyle:v6 maximumContentSizeCategory:v9];
-    [v10 _scaledValueForValue:a1];
-    a1 = v11;
+    [v10 _scaledValueForValue:self];
+    self = v11;
 
 LABEL_5:
   }
 
-  return a1;
+  return self;
 }
 
 @end

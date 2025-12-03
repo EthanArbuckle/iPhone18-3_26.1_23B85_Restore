@@ -1,38 +1,38 @@
 @interface MKTransitIncidentItemCellBackgroundView
-- (MKTransitIncidentItemCellBackgroundView)initWithFrame:(CGRect)a3;
+- (MKTransitIncidentItemCellBackgroundView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
-- (void)setFillColor:(id)a3;
-- (void)setPosition:(int64_t)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFillColor:(id)color;
+- (void)setPosition:(int64_t)position;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation MKTransitIncidentItemCellBackgroundView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v44 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = MKTransitIncidentItemCellBackgroundView;
   [(MKTransitIncidentItemCellBackgroundView *)&v37 drawRect:?];
-  v8 = [(MKTransitIncidentItemCellBackgroundView *)self fillColor];
+  fillColor = [(MKTransitIncidentItemCellBackgroundView *)self fillColor];
 
-  if (v8)
+  if (fillColor)
   {
-    v9 = [(MKTransitIncidentItemCellBackgroundView *)self fillColor];
-    [v9 setFill];
+    fillColor2 = [(MKTransitIncidentItemCellBackgroundView *)self fillColor];
+    [fillColor2 setFill];
   }
 
-  v10 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
+  strokeColor = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
 
-  if (v10)
+  if (strokeColor)
   {
-    v11 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
-    [v11 setStroke];
+    strokeColor2 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
+    [strokeColor2 setStroke];
   }
 
   cornerRadius = self->_cornerRadius;
@@ -47,17 +47,17 @@
     v14 = 1.0 / scale;
   }
 
-  v15 = [(MKTransitIncidentItemCellBackgroundView *)self position];
-  if (v15 <= 1)
+  position = [(MKTransitIncidentItemCellBackgroundView *)self position];
+  if (position <= 1)
   {
-    if (!v15)
+    if (!position)
     {
       v16 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:-1 byRoundingCorners:x cornerRadii:{y, width, height, cornerRadius, cornerRadius}];
       [v16 setLineWidth:v14];
       [v16 fill];
-      v31 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
+      strokeColor3 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
 
-      if (v31)
+      if (strokeColor3)
       {
         [v16 stroke];
       }
@@ -65,7 +65,7 @@
       goto LABEL_23;
     }
 
-    if (v15 != 1)
+    if (position != 1)
     {
       return;
     }
@@ -104,9 +104,9 @@
     v24 = MaxY;
 LABEL_15:
     CGPathAddLineToPoint(v22, 0, v23, v24);
-    v29 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
+    strokeColor4 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
 
-    if (v29)
+    if (strokeColor4)
     {
       v30 = MEMORY[0x1E69DC728];
 LABEL_21:
@@ -121,9 +121,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v15 != 2)
+  if (position != 2)
   {
-    if (v15 != 3)
+    if (position != 3)
     {
       return;
     }
@@ -196,9 +196,9 @@ LABEL_21:
   v39 = v33;
   v40 = v34;
   CGPathAddLines(Mutable, 0, &v38, 2uLL);
-  v35 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
+  strokeColor5 = [(MKTransitIncidentItemCellBackgroundView *)self strokeColor];
 
-  if (v35)
+  if (strokeColor5)
   {
     v30 = MEMORY[0x1E69DC728];
     goto LABEL_21;
@@ -214,85 +214,85 @@ LABEL_23:
   v9.receiver = self;
   v9.super_class = MKTransitIncidentItemCellBackgroundView;
   [(MKTransitIncidentItemCellBackgroundView *)&v9 didMoveToWindow];
-  v3 = [(MKTransitIncidentItemCellBackgroundView *)self window];
-  v4 = [v3 screen];
-  v5 = v4;
-  if (v4)
+  window = [(MKTransitIncidentItemCellBackgroundView *)self window];
+  screen = [window screen];
+  v5 = screen;
+  if (screen)
   {
-    [v4 nativeScale];
+    [screen nativeScale];
     self->_scale = v6;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 nativeScale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeScale];
     self->_scale = v8;
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_strokeColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_strokeColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_strokeColor, a3);
+      objc_storeStrong(&self->_strokeColor, color);
       [(MKTransitIncidentItemCellBackgroundView *)self setNeedsDisplay];
       v6 = v8;
     }
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_fillColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_fillColor, a3);
+      objc_storeStrong(&self->_fillColor, color);
       [(MKTransitIncidentItemCellBackgroundView *)self setNeedsDisplay];
       v6 = v8;
     }
   }
 }
 
-- (void)setPosition:(int64_t)a3
+- (void)setPosition:(int64_t)position
 {
-  if (self->_position != a3)
+  if (self->_position != position)
   {
-    self->_position = a3;
+    self->_position = position;
     [(MKTransitIncidentItemCellBackgroundView *)self setNeedsDisplay];
   }
 }
 
-- (MKTransitIncidentItemCellBackgroundView)initWithFrame:(CGRect)a3
+- (MKTransitIncidentItemCellBackgroundView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = MKTransitIncidentItemCellBackgroundView;
-  v3 = [(MKTransitIncidentItemCellBackgroundView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKTransitIncidentItemCellBackgroundView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MKTransitIncidentItemCellBackgroundView *)v3 setOpaque:0];
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 nativeScale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeScale];
     v4->_scale = v6;
 
-    v7 = [(MKTransitIncidentItemCellBackgroundView *)v4 traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(MKTransitIncidentItemCellBackgroundView *)v4 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
     v9 = 10.0;
-    if (v8 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v9 = 8.0;
     }

@@ -1,7 +1,7 @@
 @interface CIKMeans
 + (id)customAttributes;
-- (id)_combine:(id)a3;
-- (id)defuse:(id)a3 seed:(int)a4;
+- (id)_combine:(id)_combine;
+- (id)defuse:(id)defuse seed:(int)seed;
 - (id)outputImage;
 - (void)outputImage;
 @end
@@ -59,37 +59,37 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:6];
 }
 
-- (id)_combine:(id)a3
+- (id)_combine:(id)_combine
 {
-  v4 = [a3 count];
+  v4 = [_combine count];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
   if (v4)
   {
     v6 = v5;
     for (i = 0; i != v4; ++i)
     {
-      [a3 objectAtIndexedSubscript:i];
+      [_combine objectAtIndexedSubscript:i];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v9 = [a3 objectAtIndexedSubscript:i];
+      v9 = [_combine objectAtIndexedSubscript:i];
       if ((isKindOfClass & 1) == 0)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [a3 objectAtIndexedSubscript:i];
+          v10 = [_combine objectAtIndexedSubscript:i];
         }
 
         else
         {
-          [a3 objectAtIndexedSubscript:i];
+          [_combine objectAtIndexedSubscript:i];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             return 0;
           }
 
-          v11 = [a3 objectAtIndexedSubscript:i];
+          v11 = [_combine objectAtIndexedSubscript:i];
           if ([v11 count] == 3)
           {
             [v11 X];
@@ -147,14 +147,14 @@
   }
 }
 
-- (id)defuse:(id)a3 seed:(int)a4
+- (id)defuse:(id)defuse seed:(int)seed
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  [a3 extent];
+  [defuse extent];
   v7 = v6;
   v8 = v6;
   v9 = [[CIFilter filterWithName:?]];
-  CGAffineTransformMakeTranslation(&v14, a4, 0.0);
+  CGAffineTransformMakeTranslation(&v14, seed, 0.0);
   v10 = [[(CIImage *)v9 imageByApplyingTransform:&v14] imageBySettingAlphaOneInExtent:0.0, 0.0, v8, 1.0];
   v11 = [CIKernel kernelWithInternalRepresentation:&CI::_KM_defuse];
   v13[0] = MEMORY[0x1E69E9820];
@@ -165,7 +165,7 @@
   v13[5] = 0;
   *&v13[6] = v8;
   v13[7] = 0x3FF0000000000000;
-  v15[0] = a3;
+  v15[0] = defuse;
   v15[1] = v10;
   v15[2] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v7];
   v15[3] = &unk_1F1085478;
@@ -174,17 +174,17 @@
 
 - (id)outputImage
 {
-  v2 = self;
+  selfCopy = self;
   v57[4] = *MEMORY[0x1E69E9840];
   inputMeans = self->inputMeans;
   if (inputMeans)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v5 = v2->inputMeans;
+    v5 = selfCopy->inputMeans;
     if (isKindOfClass)
     {
-      v6 = [(CIKMeans *)v2 _combine:v2->inputMeans];
+      v6 = [(CIKMeans *)selfCopy _combine:selfCopy->inputMeans];
       if (!v6)
       {
         v13 = ci_logger_api();
@@ -197,22 +197,22 @@
       }
 
       v7 = v6;
-      v8 = [(CIImage *)v5 count];
+      unsignedIntegerValue = [(CIImage *)v5 count];
     }
 
     else
     {
       if (v5)
       {
-        [(CIImage *)v2->inputMeans extent];
+        [(CIImage *)selfCopy->inputMeans extent];
         v11 = v10;
-        v8 = vcvtas_u32_f32(v11);
-        [(CIImage *)v2->inputMeans extent];
+        unsignedIntegerValue = vcvtas_u32_f32(v11);
+        [(CIImage *)selfCopy->inputMeans extent];
       }
 
       else
       {
-        v8 = [(NSNumber *)v2->inputCount unsignedIntegerValue];
+        unsignedIntegerValue = [(NSNumber *)selfCopy->inputCount unsignedIntegerValue];
       }
 
       v7 = inputMeans;
@@ -255,20 +255,20 @@
       return +[CIImage emptyImage];
     }
 
-    v8 = [(NSNumber *)inputCount unsignedIntegerValue];
+    unsignedIntegerValue = [(NSNumber *)inputCount unsignedIntegerValue];
     v7 = 0;
   }
 
-  if (v8 - 129 <= 0xFFFFFFFFFFFFFF7FLL)
+  if (unsignedIntegerValue - 129 <= 0xFFFFFFFFFFFFFF7FLL)
   {
 
     return +[CIImage emptyImage];
   }
 
-  inputExtent = v2->super.inputExtent;
+  inputExtent = selfCopy->super.inputExtent;
   if (!inputExtent)
   {
-    inputImage = v2->super.inputImage;
+    inputImage = selfCopy->super.inputImage;
 LABEL_35:
     [(CIImage *)inputImage extent];
     goto LABEL_36;
@@ -286,8 +286,8 @@ LABEL_35:
     return 0;
   }
 
-  v24 = v2->super.inputExtent;
-  inputImage = v2->super.inputImage;
+  v24 = selfCopy->super.inputExtent;
+  inputImage = selfCopy->super.inputImage;
   if (!v24)
   {
     goto LABEL_35;
@@ -299,45 +299,45 @@ LABEL_36:
   v30 = v26;
   v31 = v27;
   v32 = v28;
-  inputPerceptual = v2->inputPerceptual;
+  inputPerceptual = selfCopy->inputPerceptual;
   if (inputPerceptual)
   {
-    v34 = [(NSNumber *)inputPerceptual BOOLValue];
+    bOOLValue = [(NSNumber *)inputPerceptual BOOLValue];
   }
 
   else
   {
-    v34 = 0;
+    bOOLValue = 0;
   }
 
-  inputPasses = v2->inputPasses;
+  inputPasses = selfCopy->inputPasses;
   if (inputPasses)
   {
-    v49 = [(NSNumber *)inputPasses intValue];
+    intValue = [(NSNumber *)inputPasses intValue];
   }
 
   else
   {
-    v49 = 0;
+    intValue = 0;
   }
 
-  v36 = [(CIKMeans *)v2 _kernelKmeans];
+  _kernelKmeans = [(CIKMeans *)selfCopy _kernelKmeans];
   if (!inputMeans)
   {
     v56[0] = @"inputPoint0";
     v57[0] = [CIVector vectorWithX:0.0 Y:0.0];
     v56[1] = @"inputPoint1";
-    v57[1] = [CIVector vectorWithX:(v8 - 1) Y:0.0];
+    v57[1] = [CIVector vectorWithX:(unsignedIntegerValue - 1) Y:0.0];
     v56[2] = @"inputColor0";
     v57[2] = +[CIColor magentaColor];
     v56[3] = @"inputColor1";
     v57[3] = +[CIColor greenColor];
-    v7 = -[CIImage imageByCroppingToRect:](-[CIFilter outputImage](+[CIFilter filterWithName:withInputParameters:](CIFilter, "filterWithName:withInputParameters:", @"CILinearGradient", [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:4]), "outputImage"), "imageByCroppingToRect:", 0.0, 0.0, v8, 1.0);
+    v7 = -[CIImage imageByCroppingToRect:](-[CIFilter outputImage](+[CIFilter filterWithName:withInputParameters:](CIFilter, "filterWithName:withInputParameters:", @"CILinearGradient", [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:4]), "outputImage"), "imageByCroppingToRect:", 0.0, 0.0, unsignedIntegerValue, 1.0);
   }
 
-  if (v49)
+  if (intValue)
   {
-    v37 = v34;
+    v37 = bOOLValue;
   }
 
   else
@@ -351,17 +351,17 @@ LABEL_36:
     v7 = [(CIImage *)v7 imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
   }
 
-  v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
-  if (v49)
+  v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:unsignedIntegerValue];
+  if (intValue)
   {
     v39 = v38;
-    v47 = v36;
+    v47 = _kernelKmeans;
     v40 = 0;
-    v48 = v2;
+    v48 = selfCopy;
     do
     {
       v50 = v40;
-      v51 = [(CIKMeans *)v2 defuse:v7 seed:?];
+      v51 = [(CIKMeans *)selfCopy defuse:v7 seed:?];
       v41 = 0;
       v42 = MEMORY[0x1E69E9820];
       do
@@ -372,11 +372,11 @@ LABEL_36:
         v52[3] = &__block_descriptor_64_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
         v52[4] = 0;
         v52[5] = 0;
-        *&v52[6] = v8;
+        *&v52[6] = unsignedIntegerValue;
         v52[7] = 0x3FF0000000000000;
         v55[0] = inputImage;
         v55[1] = v51;
-        v55[2] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v8];
+        v55[2] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:unsignedIntegerValue];
         v55[3] = [MEMORY[0x1E696AD98] numberWithInt:v41];
         v43 = v39;
         v44 = [v47 applyWithExtent:v52 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v55, 4), v29, v30, v31, v32}];
@@ -388,13 +388,13 @@ LABEL_36:
         [v43 setObject:objc_msgSend(objc_msgSend(v46 atIndexedSubscript:{"imageByApplyingFilter:withInputParameters:", @"CIAreaAverage", v45), "imageByUnpremultiplyingAlpha"), v41++}];
       }
 
-      while (v8 != v41);
-      v2 = v48;
+      while (unsignedIntegerValue != v41);
+      selfCopy = v48;
       v7 = [(CIKMeans *)v48 _combine:v43];
       v40 = v50 + 1;
     }
 
-    while (v50 + 1 != v49);
+    while (v50 + 1 != intValue);
   }
 
   return [(CIImage *)v7 imageBySettingProperties:MEMORY[0x1E695E0F8]];

@@ -4,11 +4,11 @@
 - (id)_primaryAccount;
 - (id)_primaryAccountAltDSID;
 - (id)forwardingEmailForPrimaryAccount;
-- (void)bestDomainForAppIdentifier:(id)a3 completion:(id)a4;
-- (void)createHideMyEmailAddressWithKey:(id)a3 completion:(id)a4;
-- (void)findHideMyEmailAddressWithKey:(id)a3 completion:(id)a4;
-- (void)isAvailable:(id)a3;
-- (void)registerHideMyEmailAddressWithKey:(id)a3 originIdentifier:(id)a4 merchantIdentifier:(id)a5 isWebPayment:(BOOL)a6 completion:(id)a7;
+- (void)bestDomainForAppIdentifier:(id)identifier completion:(id)completion;
+- (void)createHideMyEmailAddressWithKey:(id)key completion:(id)completion;
+- (void)findHideMyEmailAddressWithKey:(id)key completion:(id)completion;
+- (void)isAvailable:(id)available;
+- (void)registerHideMyEmailAddressWithKey:(id)key originIdentifier:(id)identifier merchantIdentifier:(id)merchantIdentifier isWebPayment:(BOOL)payment completion:(id)completion;
 @end
 
 @implementation PKHideMyEmailManager
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (void)isAvailable:(id)a3
+- (void)isAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
@@ -51,7 +51,7 @@
   if (isAvailable)
   {
 LABEL_7:
-    v4[2](v4, isAvailable == 1, 0);
+    availableCopy[2](availableCopy, isAvailable == 1, 0);
     goto LABEL_8;
   }
 
@@ -61,7 +61,7 @@ LABEL_7:
   v8[2] = __36__PKHideMyEmailManager_isAvailable___block_invoke;
   v8[3] = &unk_1E79CB3D0;
   v8[4] = self;
-  v9 = v4;
+  v9 = availableCopy;
   [v6 requestFeatureWithId:@"mail.hide-my-email.create" completion:v8];
 
 LABEL_8:
@@ -109,23 +109,23 @@ void __36__PKHideMyEmailManager_isAvailable___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)createHideMyEmailAddressWithKey:(id)a3 completion:(id)a4
+- (void)createHideMyEmailAddressWithKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKHideMyEmailManager *)self _primaryAccountAltDSID];
-  v9 = v8;
-  if (v8)
+  keyCopy = key;
+  completionCopy = completion;
+  _primaryAccountAltDSID = [(PKHideMyEmailManager *)self _primaryAccountAltDSID];
+  v9 = _primaryAccountAltDSID;
+  if (_primaryAccountAltDSID)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__PKHideMyEmailManager_createHideMyEmailAddressWithKey_completion___block_invoke;
     v15[3] = &unk_1E79CB448;
     v15[4] = self;
-    v16 = v8;
-    v17 = v6;
-    v18 = v7;
-    v10 = v7;
+    v16 = _primaryAccountAltDSID;
+    v17 = keyCopy;
+    v18 = completionCopy;
+    v10 = completionCopy;
     [(PKHideMyEmailManager *)self findHideMyEmailAddressWithKey:v17 completion:v15];
 
     v11 = v16;
@@ -137,8 +137,8 @@ void __36__PKHideMyEmailManager_isAvailable___block_invoke(uint64_t a1, void *a2
     block[1] = 3221225472;
     block[2] = __67__PKHideMyEmailManager_createHideMyEmailAddressWithKey_completion___block_invoke_48;
     block[3] = &unk_1E79C4428;
-    v14 = v7;
-    v12 = v7;
+    v14 = completionCopy;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v11 = v14;
   }
@@ -220,28 +220,28 @@ void __67__PKHideMyEmailManager_createHideMyEmailAddressWithKey_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)registerHideMyEmailAddressWithKey:(id)a3 originIdentifier:(id)a4 merchantIdentifier:(id)a5 isWebPayment:(BOOL)a6 completion:(id)a7
+- (void)registerHideMyEmailAddressWithKey:(id)key originIdentifier:(id)identifier merchantIdentifier:(id)merchantIdentifier isWebPayment:(BOOL)payment completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(PKHideMyEmailManager *)self _primaryAccountAltDSID];
-  if (v16)
+  keyCopy = key;
+  identifierCopy = identifier;
+  merchantIdentifierCopy = merchantIdentifier;
+  completionCopy = completion;
+  _primaryAccountAltDSID = [(PKHideMyEmailManager *)self _primaryAccountAltDSID];
+  if (_primaryAccountAltDSID)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __118__PKHideMyEmailManager_registerHideMyEmailAddressWithKey_originIdentifier_merchantIdentifier_isWebPayment_completion___block_invoke;
     v22[3] = &unk_1E79CB4C0;
     v17 = &v28;
-    v28 = v15;
-    v23 = v12;
-    v24 = v16;
-    v29 = a6;
-    v25 = v13;
-    v26 = v14;
-    v27 = self;
-    v18 = v15;
+    v28 = completionCopy;
+    v23 = keyCopy;
+    v24 = _primaryAccountAltDSID;
+    paymentCopy = payment;
+    v25 = identifierCopy;
+    v26 = merchantIdentifierCopy;
+    selfCopy = self;
+    v18 = completionCopy;
     [(PKHideMyEmailManager *)self findHideMyEmailAddressWithKey:v23 completion:v22];
   }
 
@@ -252,8 +252,8 @@ void __67__PKHideMyEmailManager_createHideMyEmailAddressWithKey_completion___blo
     v20[2] = __118__PKHideMyEmailManager_registerHideMyEmailAddressWithKey_originIdentifier_merchantIdentifier_isWebPayment_completion___block_invoke_55;
     v20[3] = &unk_1E79C4428;
     v17 = &v21;
-    v21 = v15;
-    v19 = v15;
+    v21 = completionCopy;
+    v19 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v20);
   }
 }
@@ -392,22 +392,22 @@ void __118__PKHideMyEmailManager_registerHideMyEmailAddressWithKey_originIdentif
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)findHideMyEmailAddressWithKey:(id)a3 completion:(id)a4
+- (void)findHideMyEmailAddressWithKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKHideMyEmailManager *)self _primaryAccountAltDSID];
-  if (v8)
+  keyCopy = key;
+  completionCopy = completion;
+  _primaryAccountAltDSID = [(PKHideMyEmailManager *)self _primaryAccountAltDSID];
+  if (_primaryAccountAltDSID)
   {
-    v9 = [objc_alloc(MEMORY[0x1E698DDB8]) initWithKey:v6 altDSID:v8];
+    v9 = [objc_alloc(MEMORY[0x1E698DDB8]) initWithKey:keyCopy altDSID:_primaryAccountAltDSID];
     controller = self->_controller;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __65__PKHideMyEmailManager_findHideMyEmailAddressWithKey_completion___block_invoke;
     v14[3] = &unk_1E79CB510;
-    v15 = v6;
-    v16 = v7;
-    v11 = v7;
+    v15 = keyCopy;
+    v16 = completionCopy;
+    v11 = completionCopy;
     [(AKPrivateEmailController *)controller lookupPrivateEmailWithContext:v9 completion:v14];
   }
 
@@ -417,8 +417,8 @@ void __118__PKHideMyEmailManager_registerHideMyEmailAddressWithKey_originIdentif
     block[1] = 3221225472;
     block[2] = __65__PKHideMyEmailManager_findHideMyEmailAddressWithKey_completion___block_invoke_56;
     block[3] = &unk_1E79C4428;
-    v13 = v7;
-    v9 = v7;
+    v13 = completionCopy;
+    v9 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v11 = v13;
   }
@@ -500,19 +500,19 @@ void __65__PKHideMyEmailManager_findHideMyEmailAddressWithKey_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)bestDomainForAppIdentifier:(id)a3 completion:(id)a4
+- (void)bestDomainForAppIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = getSFSafariCredentialStoreClass[0];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = v6();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__PKHideMyEmailManager_bestDomainForAppIdentifier_completion___block_invoke;
   v10[3] = &unk_1E79C50E0;
-  v11 = v5;
-  v9 = v5;
-  [(objc_class *)v8 bestDomainForAppID:v7 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(objc_class *)v8 bestDomainForAppID:identifierCopy completionHandler:v10];
 }
 
 void __62__PKHideMyEmailManager_bestDomainForAppIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -533,17 +533,17 @@ void __62__PKHideMyEmailManager_bestDomainForAppIdentifier_completion___block_in
 
 - (BOOL)_isHSA2Enabled
 {
-  v3 = [(PKHideMyEmailManager *)self _primaryAccount];
-  if ([v3 aa_isManagedAppleID])
+  _primaryAccount = [(PKHideMyEmailManager *)self _primaryAccount];
+  if ([_primaryAccount aa_isManagedAppleID])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698DC80] sharedInstance];
-    v6 = [(PKHideMyEmailManager *)self _primaryAccount];
-    v4 = [v5 securityLevelForAccount:v6] > 3;
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    _primaryAccount2 = [(PKHideMyEmailManager *)self _primaryAccount];
+    v4 = [mEMORY[0x1E698DC80] securityLevelForAccount:_primaryAccount2] > 3;
   }
 
   return v4;
@@ -551,25 +551,25 @@ void __62__PKHideMyEmailManager_bestDomainForAppIdentifier_completion___block_in
 
 - (id)_primaryAccount
 {
-  v2 = [MEMORY[0x1E698DC80] sharedInstance];
-  v3 = [v2 primaryAuthKitAccount];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
 
-  return v3;
+  return primaryAuthKitAccount;
 }
 
 - (id)_primaryAccountAltDSID
 {
-  v2 = [(PKHideMyEmailManager *)self _primaryAccount];
-  v3 = [v2 accountPropertyForKey:@"altDSID"];
+  _primaryAccount = [(PKHideMyEmailManager *)self _primaryAccount];
+  v3 = [_primaryAccount accountPropertyForKey:@"altDSID"];
 
   return v3;
 }
 
 - (id)forwardingEmailForPrimaryAccount
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(PKHideMyEmailManager *)self _primaryAccount];
-  v5 = [v3 forwardingEmailForAccount:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  _primaryAccount = [(PKHideMyEmailManager *)self _primaryAccount];
+  v5 = [mEMORY[0x1E698DC80] forwardingEmailForAccount:_primaryAccount];
 
   return v5;
 }

@@ -7,8 +7,8 @@
 
 - (NSString)eventSubType
 {
-  v3 = [(DABackupRestoreLogLine *)self fields];
-  v4 = [v3 count];
+  fields = [(DABackupRestoreLogLine *)self fields];
+  v4 = [fields count];
 
   if (v4 < 3)
   {
@@ -17,8 +17,8 @@
 
   else
   {
-    v5 = [(DABackupRestoreLogLine *)self fields];
-    v6 = [v5 objectAtIndexedSubscript:2];
+    fields2 = [(DABackupRestoreLogLine *)self fields];
+    v6 = [fields2 objectAtIndexedSubscript:2];
   }
 
   return v6;
@@ -26,15 +26,15 @@
 
 - (int64_t)backupRestoreEventType
 {
-  v3 = [(DABackupRestoreLogLine *)self eventSubType];
-  if ([v3 isEqualToString:@"iCloudBackup"])
+  eventSubType = [(DABackupRestoreLogLine *)self eventSubType];
+  if ([eventSubType isEqualToString:@"iCloudBackup"])
   {
 
     return 1000;
   }
 
-  v4 = [(DABackupRestoreLogLine *)self eventSubType];
-  v5 = [v4 isEqualToString:@"iTunesBackup"];
+  eventSubType2 = [(DABackupRestoreLogLine *)self eventSubType];
+  v5 = [eventSubType2 isEqualToString:@"iTunesBackup"];
 
   if (v5)
   {

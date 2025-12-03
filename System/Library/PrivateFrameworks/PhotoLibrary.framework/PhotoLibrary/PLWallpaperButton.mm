@@ -1,68 +1,68 @@
 @interface PLWallpaperButton
-+ (id)autoLayoutCommonWallpaperButtonWithStyle:(int64_t)a3;
-- (PLWallpaperButton)initWithFrame:(CGRect)a3 style:(int64_t)a4;
++ (id)autoLayoutCommonWallpaperButtonWithStyle:(int64_t)style;
+- (PLWallpaperButton)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (void)_setupBackdropView;
 - (void)_updateContentEdgeInsets;
-- (void)backdropViewDidChange:(id)a3;
+- (void)backdropViewDidChange:(id)change;
 - (void)dealloc;
 - (void)safeAreaInsetsDidChange;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PLWallpaperButton
 
-- (void)backdropViewDidChange:(id)a3
+- (void)backdropViewDidChange:(id)change
 {
-  v4 = [objc_msgSend(a3 "outputSettings")];
+  v4 = [objc_msgSend(change "outputSettings")];
 
   [(PLWallpaperButton *)self setTitleColor:v4 forState:0];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PLWallpaperButton *)self backdropView];
-  v6 = [(_UIBackdropView *)v5 inputSettings];
-  v7 = [(_UIBackdropView *)v5 outputSettings];
+  enabledCopy = enabled;
+  backdropView = [(PLWallpaperButton *)self backdropView];
+  inputSettings = [(_UIBackdropView *)backdropView inputSettings];
+  outputSettings = [(_UIBackdropView *)backdropView outputSettings];
   v8.receiver = self;
   v8.super_class = PLWallpaperButton;
-  [(PLWallpaperButton *)&v8 setEnabled:v3];
-  [v6 restoreDefaultValues];
-  [v6 setEnabled:{-[PLWallpaperButton isEnabled](self, "isEnabled")}];
-  [v7 computeOutputSettingsUsingModel:v6];
-  [(_UIBackdropView *)v5 applySettings:v7];
+  [(PLWallpaperButton *)&v8 setEnabled:enabledCopy];
+  [inputSettings restoreDefaultValues];
+  [inputSettings setEnabled:{-[PLWallpaperButton isEnabled](self, "isEnabled")}];
+  [outputSettings computeOutputSettingsUsingModel:inputSettings];
+  [(_UIBackdropView *)backdropView applySettings:outputSettings];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(PLWallpaperButton *)self backdropView];
-  v6 = [(_UIBackdropView *)v5 inputSettings];
-  v7 = [(_UIBackdropView *)v5 outputSettings];
+  selectedCopy = selected;
+  backdropView = [(PLWallpaperButton *)self backdropView];
+  inputSettings = [(_UIBackdropView *)backdropView inputSettings];
+  outputSettings = [(_UIBackdropView *)backdropView outputSettings];
   v8.receiver = self;
   v8.super_class = PLWallpaperButton;
-  [(PLWallpaperButton *)&v8 setSelected:v3];
-  [v6 restoreDefaultValues];
-  [v6 setSelected:{-[PLWallpaperButton isSelected](self, "isSelected")}];
-  [v7 computeOutputSettingsUsingModel:v6];
-  [(_UIBackdropView *)v5 applySettings:v7];
+  [(PLWallpaperButton *)&v8 setSelected:selectedCopy];
+  [inputSettings restoreDefaultValues];
+  [inputSettings setSelected:{-[PLWallpaperButton isSelected](self, "isSelected")}];
+  [outputSettings computeOutputSettingsUsingModel:inputSettings];
+  [(_UIBackdropView *)backdropView applySettings:outputSettings];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(PLWallpaperButton *)self backdropView];
-  v6 = [(_UIBackdropView *)v5 inputSettings];
-  v7 = [(_UIBackdropView *)v5 outputSettings];
+  highlightedCopy = highlighted;
+  backdropView = [(PLWallpaperButton *)self backdropView];
+  inputSettings = [(_UIBackdropView *)backdropView inputSettings];
+  outputSettings = [(_UIBackdropView *)backdropView outputSettings];
   v8.receiver = self;
   v8.super_class = PLWallpaperButton;
-  [(PLWallpaperButton *)&v8 setHighlighted:v3];
-  [v6 restoreDefaultValues];
-  [v6 setHighlighted:{-[PLWallpaperButton isHighlighted](self, "isHighlighted")}];
-  [v7 computeOutputSettingsUsingModel:v6];
-  [(_UIBackdropView *)v5 applySettings:v7];
+  [(PLWallpaperButton *)&v8 setHighlighted:highlightedCopy];
+  [inputSettings restoreDefaultValues];
+  [inputSettings setHighlighted:{-[PLWallpaperButton isHighlighted](self, "isHighlighted")}];
+  [outputSettings computeOutputSettingsUsingModel:inputSettings];
+  [(_UIBackdropView *)backdropView applySettings:outputSettings];
 }
 
 - (void)_setupBackdropView
@@ -101,16 +101,16 @@
   [(PLWallpaperButton *)self _updateContentEdgeInsets];
 }
 
-- (PLWallpaperButton)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (PLWallpaperButton)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = PLWallpaperButton;
-  v5 = [(PLWallpaperButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PLWallpaperButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(PLWallpaperButton *)v5 setOpaque:0];
-    if (!a4)
+    if (!style)
     {
       [(PLWallpaperButton *)v6 _setupBackdropView];
     }
@@ -121,10 +121,10 @@
   return v6;
 }
 
-+ (id)autoLayoutCommonWallpaperButtonWithStyle:(int64_t)a3
++ (id)autoLayoutCommonWallpaperButtonWithStyle:(int64_t)style
 {
   v4 = [PLWallpaperButton alloc];
-  v5 = [(PLWallpaperButton *)v4 initWithFrame:a3 style:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v5 = [(PLWallpaperButton *)v4 initWithFrame:style style:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(PLWallpaperButton *)v5 setExclusiveTouch:1];
   [(PLWallpaperButton *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v6) = 1144750080;

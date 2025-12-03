@@ -1,27 +1,27 @@
 @interface HALSchemaHALCompanionDeviceDiscoveryContext
-- (BOOL)isEqual:(id)a3;
-- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithDictionary:(id)a3;
-- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithDictionary:(id)dictionary;
+- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithJSON:(id)n;
 - (HALSchemaHALCompanionDeviceDiscoveryEnded)ended;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteEnded;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HALSchemaHALCompanionDeviceDiscoveryContext
 
-- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithDictionary:(id)a3
+- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = HALSchemaHALCompanionDeviceDiscoveryContext;
   v5 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ended"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,30 +35,30 @@
   return v5;
 }
 
-- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithJSON:(id)a3
+- (HALSchemaHALCompanionDeviceDiscoveryContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -71,43 +71,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichContextevent = self->_whichContextevent;
-    if (whichContextevent == [v4 whichContextevent])
+    if (whichContextevent == [equalCopy whichContextevent])
     {
-      v6 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
-      v7 = [v4 ended];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      ended = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
+      ended2 = [equalCopy ended];
+      v8 = ended2;
+      if ((ended != 0) != (ended2 == 0))
       {
-        v9 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
-        if (!v9)
+        ended3 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
+        if (!ended3)
         {
 
 LABEL_11:
@@ -115,10 +115,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
-        v12 = [v4 ended];
-        v13 = [v11 isEqual:v12];
+        v10 = ended3;
+        ended4 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
+        ended5 = [equalCopy ended];
+        v13 = [ended4 isEqual:ended5];
 
         if (v13)
         {
@@ -138,14 +138,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
+  toCopy = to;
+  ended = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
 
-  if (v4)
+  if (ended)
   {
-    v5 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
+    ended2 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -175,17 +175,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = HALSchemaHALCompanionDeviceDiscoveryContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(HALSchemaHALCompanionDeviceDiscoveryContext *)self ended:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(HALSchemaHALCompanionDeviceDiscoveryContext *)self deleteEnded];
   }

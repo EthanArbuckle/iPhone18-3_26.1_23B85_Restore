@@ -1,41 +1,41 @@
 @interface NLRouterSchemaNLRouterBridgeHandleFailed
-- (BOOL)isEqual:(id)a3;
-- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithDictionary:(id)a3;
-- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithDictionary:(id)dictionary;
+- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLRouterSchemaNLRouterBridgeHandleFailed
 
-- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithDictionary:(id)a3
+- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLRouterSchemaNLRouterBridgeHandleFailed;
   v5 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterBridgeHandleFailed setErrorDomain:](v5, "setErrorDomain:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterBridgeHandleFailed setErrorCode:](v5, "setErrorCode:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"routingDecision"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"routingDecision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithJSON:(id)a3
+- (NLRouterSchemaNLRouterBridgeHandleFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[NLRouterSchemaNLRouterBridgeHandleFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v5 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorCode"];
 
     has = self->_has;
   }
@@ -107,28 +107,28 @@
       v6 = @"NLROUTERBRIDGEERRORDOMAIN_UNKNOWN";
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorDomain"];
   }
 
   if (self->_routingDecision)
   {
-    v7 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    routingDecision = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
+    dictionaryRepresentation = [routingDecision dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"routingDecision"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"routingDecision"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"routingDecision"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"routingDecision"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -157,16 +157,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NLRouterSchemaNLRouterBridgeRoutingDecision *)self->_routingDecision hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -175,27 +175,27 @@ LABEL_3:
   if (*&has)
   {
     errorDomain = self->_errorDomain;
-    if (errorDomain != [v4 errorDomain])
+    if (errorDomain != [equalCopy errorDomain])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (errorCode = self->_errorCode, errorCode == [v4 errorCode]))
+    if (!v8 || (errorCode = self->_errorCode, errorCode == [equalCopy errorCode]))
     {
-      v10 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
-      v11 = [v4 routingDecision];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      routingDecision = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
+      routingDecision2 = [equalCopy routingDecision];
+      v12 = routingDecision2;
+      if ((routingDecision != 0) != (routingDecision2 == 0))
       {
-        v13 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
-        if (!v13)
+        routingDecision3 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
+        if (!routingDecision3)
         {
 
 LABEL_17:
@@ -203,10 +203,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
-        v16 = [v4 routingDecision];
-        v17 = [v15 isEqual:v16];
+        v14 = routingDecision3;
+        routingDecision4 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
+        routingDecision5 = [equalCopy routingDecision];
+        v17 = [routingDecision4 isEqual:routingDecision5];
 
         if (v17)
         {
@@ -227,9 +227,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -242,21 +242,21 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
+  routingDecision = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (routingDecision)
   {
-    v7 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
+    routingDecision2 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -269,17 +269,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLRouterSchemaNLRouterBridgeHandleFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLRouterSchemaNLRouterBridgeHandleFailed *)self routingDecision:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLRouterSchemaNLRouterBridgeHandleFailed *)self deleteRoutingDecision];
   }

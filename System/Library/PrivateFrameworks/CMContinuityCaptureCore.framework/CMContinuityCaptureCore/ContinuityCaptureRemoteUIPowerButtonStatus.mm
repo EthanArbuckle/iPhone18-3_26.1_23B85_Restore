@@ -1,7 +1,7 @@
 @interface ContinuityCaptureRemoteUIPowerButtonStatus
 + (id)sharedInstance;
 + (void)invalidate;
-- (ContinuityCaptureRemoteUIPowerButtonStatus)initWithQueue:(id)a3;
+- (ContinuityCaptureRemoteUIPowerButtonStatus)initWithQueue:(id)queue;
 - (void)invalidate;
 - (void)setupPowerButtonMonitor;
 @end
@@ -48,16 +48,16 @@ uint64_t __60__ContinuityCaptureRemoteUIPowerButtonStatus_sharedInstance__block_
   }
 }
 
-- (ContinuityCaptureRemoteUIPowerButtonStatus)initWithQueue:(id)a3
+- (ContinuityCaptureRemoteUIPowerButtonStatus)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = ContinuityCaptureRemoteUIPowerButtonStatus;
   v6 = [(ContinuityCaptureRemoteUIPowerButtonStatus *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(ContinuityCaptureButtonPressTracker);
     hidButtonTracker = v7->_hidButtonTracker;
     v7->_hidButtonTracker = v8;
@@ -104,7 +104,7 @@ void __60__ContinuityCaptureRemoteUIPowerButtonStatus_initWithQueue___block_invo
       {
         v6 = self->_hidEventSystemClient;
         *buf = 138412546;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
         v16 = v6;
         _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%@ hidEventSystemClient: %@", buf, 0x16u);
@@ -132,7 +132,7 @@ void __60__ContinuityCaptureRemoteUIPowerButtonStatus_initWithQueue___block_invo
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%@ hidEventSystemClient failure ", buf, 0xCu);
       }
     }

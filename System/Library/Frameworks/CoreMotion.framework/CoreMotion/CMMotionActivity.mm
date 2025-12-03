@@ -1,14 +1,14 @@
 @interface CMMotionActivity
 - (BOOL)automotive;
-- (BOOL)isSameStateAs:(id)a3;
+- (BOOL)isSameStateAs:(id)as;
 - (BOOL)walking;
-- (CMMotionActivity)initWithCoder:(id)a3;
-- (CMMotionActivity)initWithMotionActivity:(CLMotionActivity *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMMotionActivity)initWithCoder:(id)coder;
+- (CMMotionActivity)initWithMotionActivity:(CLMotionActivity *)activity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMMotionActivity
@@ -83,9 +83,9 @@ LABEL_7:
   return (type & 0xFFFFFFFE) == 0xA || v3;
 }
 
-- (CMMotionActivity)initWithMotionActivity:(CLMotionActivity *)a3
+- (CMMotionActivity)initWithMotionActivity:(CLMotionActivity *)activity
 {
-  timestamp = a3->timestamp;
+  timestamp = activity->timestamp;
   v24.receiver = self;
   v24.super_class = CMMotionActivity;
   v14 = [(CMLogItem *)&v24 initWithTimestamp:timestamp, a10];
@@ -93,28 +93,28 @@ LABEL_7:
   if (v14)
   {
     v14->fEndTime = 1.79769313e308;
-    v18 = *&a3[1].mountedConfidence;
-    v17 = *&a3[1].isStanding;
-    v19 = *&a3[1].type;
-    *&v14->_anon_60[48] = *&a3[1].isVehicleConnected;
+    v18 = *&activity[1].mountedConfidence;
+    v17 = *&activity[1].isStanding;
+    v19 = *&activity[1].type;
+    *&v14->_anon_60[48] = *&activity[1].isVehicleConnected;
     *&v14->_anon_60[16] = v18;
     *&v14->_anon_60[32] = v17;
     *v14->_anon_60 = v19;
-    v21 = *&a3->mountedConfidence;
-    v20 = *&a3->isStanding;
-    v22 = *&a3->vehicleType;
-    *&v14->fState.isVehicleConnected = *&a3->isVehicleConnected;
+    v21 = *&activity->mountedConfidence;
+    v20 = *&activity->isStanding;
+    v22 = *&activity->vehicleType;
+    *&v14->fState.isVehicleConnected = *&activity->isVehicleConnected;
     *&v14->fState.vehicleType = v22;
     *&v14->fState.mountedConfidence = v21;
     *&v14->fState.isStanding = v20;
-    *&v14->fState.type = *&a3->type;
+    *&v14->fState.type = *&activity->type;
     objc_msgSend_setIsRunWalk_(v14, v15, 0);
   }
 
   return v16;
 }
 
-- (CMMotionActivity)initWithCoder:(id)a3
+- (CMMotionActivity)initWithCoder:(id)coder
 {
   v31.receiver = self;
   v31.super_class = CMMotionActivity;
@@ -140,13 +140,13 @@ LABEL_7:
     *(v4 + 16) = 0;
     *(v4 + 17) = 0;
     *(v4 + 36) = 0;
-    *(v4 + 4) = objc_msgSend_decodeIntegerForKey_(a3, v5, @"kCMMotionActivityCodingKeyType");
-    *(v6 + 5) = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCMMotionActivityCodingKeyConfidence");
-    objc_msgSend_decodeDoubleForKey_(a3, v8, @"kCMMotionActivityCodingKeyStartTime");
+    *(v4 + 4) = objc_msgSend_decodeIntegerForKey_(coder, v5, @"kCMMotionActivityCodingKeyType");
+    *(v6 + 5) = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCMMotionActivityCodingKeyConfidence");
+    objc_msgSend_decodeDoubleForKey_(coder, v8, @"kCMMotionActivityCodingKeyStartTime");
     *(v6 + 12) = v9;
-    objc_msgSend_decodeDoubleForKey_(a3, v10, @"kCMMotionActivityCodingKeyVehicleConnected");
+    objc_msgSend_decodeDoubleForKey_(coder, v10, @"kCMMotionActivityCodingKeyVehicleConnected");
     v6[64] = v11 != 0.0;
-    if (objc_msgSend_decodeBoolForKey_(a3, v12, @"kCMMotionActivityCodingKeyVehicularGpsHint"))
+    if (objc_msgSend_decodeBoolForKey_(coder, v12, @"kCMMotionActivityCodingKeyVehicularGpsHint"))
     {
       v14 = 2;
     }
@@ -157,7 +157,7 @@ LABEL_7:
     }
 
     v6[112] = v6[112] & 0xFD | v14;
-    if (objc_msgSend_decodeBoolForKey_(a3, v13, @"kCMMotionActivityCodingKeyVehicularBasebandHint"))
+    if (objc_msgSend_decodeBoolForKey_(coder, v13, @"kCMMotionActivityCodingKeyVehicularBasebandHint"))
     {
       v16 = 4;
     }
@@ -168,7 +168,7 @@ LABEL_7:
     }
 
     v6[112] = v6[112] & 0xFB | v16;
-    if (objc_msgSend_decodeBoolForKey_(a3, v15, @"kCMMotionActivityCodingKeyVehicularWifiHint"))
+    if (objc_msgSend_decodeBoolForKey_(coder, v15, @"kCMMotionActivityCodingKeyVehicularWifiHint"))
     {
       v18 = 8;
     }
@@ -179,8 +179,8 @@ LABEL_7:
     }
 
     v6[112] = v6[112] & 0xF7 | v18;
-    v6[112] = v6[112] & 0xFE | objc_msgSend_decodeBoolForKey_(a3, v17, @"kCMMotionActivityCodingKeyVehicularMotionHint");
-    if (objc_msgSend_decodeBoolForKey_(a3, v19, @"kCMMotionActivityCodingKeyVehicularBTHint"))
+    v6[112] = v6[112] & 0xFE | objc_msgSend_decodeBoolForKey_(coder, v17, @"kCMMotionActivityCodingKeyVehicularMotionHint");
+    if (objc_msgSend_decodeBoolForKey_(coder, v19, @"kCMMotionActivityCodingKeyVehicularBTHint"))
     {
       v21 = 16;
     }
@@ -191,13 +191,13 @@ LABEL_7:
     }
 
     v6[112] = v6[112] & 0xEF | v21;
-    objc_msgSend_decodeDoubleForKey_(a3, v20, @"kCMMotionActivityCodingKeyTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v20, @"kCMMotionActivityCodingKeyTimestamp");
     *(v6 + 7) = v22;
-    *(v6 + 9) = objc_msgSend_decodeIntegerForKey_(a3, v23, @"kCMMotionActivityCodingKeyMounted");
-    objc_msgSend_decodeDoubleForKey_(a3, v24, @"kCMMotionActivityCodingKeyMountedProbability");
+    *(v6 + 9) = objc_msgSend_decodeIntegerForKey_(coder, v23, @"kCMMotionActivityCodingKeyMounted");
+    objc_msgSend_decodeDoubleForKey_(coder, v24, @"kCMMotionActivityCodingKeyMountedProbability");
     *(v6 + 5) = v25;
-    *(v6 + 20) = objc_msgSend_decodeIntegerForKey_(a3, v26, @"kCMMotionActivityCodingKeyVehicleType");
-    objc_msgSend_decodeDoubleForKey_(a3, v27, @"kCMMotionActivityCodingKeyEndTime");
+    *(v6 + 20) = objc_msgSend_decodeIntegerForKey_(coder, v26, @"kCMMotionActivityCodingKeyVehicleType");
+    objc_msgSend_decodeDoubleForKey_(coder, v27, @"kCMMotionActivityCodingKeyEndTime");
     *(v6 + 19) = v28;
     objc_msgSend_setIsRunWalk_(v6, v29, 0);
   }
@@ -205,11 +205,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = CMMotionActivity;
-  result = [(CMLogItem *)&v11 copyWithZone:a3];
+  result = [(CMLogItem *)&v11 copyWithZone:zone];
   if (result)
   {
     *(result + 1) = *&self->fState.type;
@@ -233,26 +233,26 @@ LABEL_7:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20.receiver = self;
   v20.super_class = CMMotionActivity;
   [(CMLogItem *)&v20 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->fState.type, @"kCMMotionActivityCodingKeyType");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->fState.confidence, @"kCMMotionActivityCodingKeyConfidence");
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kCMMotionActivityCodingKeyStartTime", *self->_anon_60);
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->fState.type, @"kCMMotionActivityCodingKeyType");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->fState.confidence, @"kCMMotionActivityCodingKeyConfidence");
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kCMMotionActivityCodingKeyStartTime", *self->_anon_60);
   LOBYTE(v8) = self->fState.isVehicleConnected;
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMMotionActivityCodingKeyVehicleConnected", v8);
-  objc_msgSend_encodeBool_forKey_(a3, v10, (self->_anon_60[16] >> 1) & 1, @"kCMMotionActivityCodingKeyVehicularGpsHint");
-  objc_msgSend_encodeBool_forKey_(a3, v11, (self->_anon_60[16] >> 2) & 1, @"kCMMotionActivityCodingKeyVehicularBasebandHint");
-  objc_msgSend_encodeBool_forKey_(a3, v12, (self->_anon_60[16] >> 3) & 1, @"kCMMotionActivityCodingKeyVehicularWifiHint");
-  objc_msgSend_encodeBool_forKey_(a3, v13, self->_anon_60[16] & 1, @"kCMMotionActivityCodingKeyVehicularMotionHint");
-  objc_msgSend_encodeBool_forKey_(a3, v14, (self->_anon_60[16] >> 4) & 1, @"kCMMotionActivityCodingKeyVehicularBTHint");
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"kCMMotionActivityCodingKeyTimestamp", self->fState.timestamp);
-  objc_msgSend_encodeInteger_forKey_(a3, v16, self->fState.conservativeMountedState, @"kCMMotionActivityCodingKeyMounted");
-  objc_msgSend_encodeDouble_forKey_(a3, v17, @"kCMMotionActivityCodingKeyMountedProbability", self->fState.conservativeMountedProbability);
-  objc_msgSend_encodeInteger_forKey_(a3, v18, self->fState.vehicleType, @"kCMMotionActivityCodingKeyVehicleType");
-  objc_msgSend_encodeDouble_forKey_(a3, v19, @"kCMMotionActivityCodingKeyEndTime", self->fEndTime);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMMotionActivityCodingKeyVehicleConnected", v8);
+  objc_msgSend_encodeBool_forKey_(coder, v10, (self->_anon_60[16] >> 1) & 1, @"kCMMotionActivityCodingKeyVehicularGpsHint");
+  objc_msgSend_encodeBool_forKey_(coder, v11, (self->_anon_60[16] >> 2) & 1, @"kCMMotionActivityCodingKeyVehicularBasebandHint");
+  objc_msgSend_encodeBool_forKey_(coder, v12, (self->_anon_60[16] >> 3) & 1, @"kCMMotionActivityCodingKeyVehicularWifiHint");
+  objc_msgSend_encodeBool_forKey_(coder, v13, self->_anon_60[16] & 1, @"kCMMotionActivityCodingKeyVehicularMotionHint");
+  objc_msgSend_encodeBool_forKey_(coder, v14, (self->_anon_60[16] >> 4) & 1, @"kCMMotionActivityCodingKeyVehicularBTHint");
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"kCMMotionActivityCodingKeyTimestamp", self->fState.timestamp);
+  objc_msgSend_encodeInteger_forKey_(coder, v16, self->fState.conservativeMountedState, @"kCMMotionActivityCodingKeyMounted");
+  objc_msgSend_encodeDouble_forKey_(coder, v17, @"kCMMotionActivityCodingKeyMountedProbability", self->fState.conservativeMountedProbability);
+  objc_msgSend_encodeInteger_forKey_(coder, v18, self->fState.vehicleType, @"kCMMotionActivityCodingKeyVehicleType");
+  objc_msgSend_encodeDouble_forKey_(coder, v19, @"kCMMotionActivityCodingKeyEndTime", self->fEndTime);
 }
 
 - (id)descriptionInternal
@@ -283,9 +283,9 @@ LABEL_7:
   return objc_msgSend_stringWithFormat_(v65, v53, @"%@ @ %f,<startDate,%@,endDate,%@,confidence,%ld,unknown,%d,stationary,%d,walking,%d,running,%d,cycling,%d,automotive,%d,vehicleType,%ld,vehicleConnected,%d,motionHint,%d,gpsHint,%d,btHint,%d,wifiHint,%d,bbHint,%d,mounted,%d,mountedProb,%lf>", v64, v7, started, v62, v61, v60, v59, v58, v57, v56, v26, v29, isVehicleConnected, isVehicleMotionHint, isVehicleGpsHint, isVehicleBTHint, isVehicleWifiHint, isVehicleBasebandHint, isMounted, v54);
 }
 
-- (BOOL)isSameStateAs:(id)a3
+- (BOOL)isSameStateAs:(id)as
 {
-  if (objc_msgSend_unknown(self, a2, a3) && (objc_msgSend_unknown(a3, v5, v6) & 1) != 0 || ((objc_msgSend_walking(self, v5, v6) & 1) != 0 || objc_msgSend_running(self, v7, v8)) && ((objc_msgSend_walking(a3, v7, v8) & 1) != 0 || (objc_msgSend_running(a3, v9, v10) & 1) != 0) || objc_msgSend_cycling(self, v7, v8) && (objc_msgSend_cycling(a3, v11, v12) & 1) != 0 || (objc_msgSend_stationary(self, v11, v12) & 1) == 0 && objc_msgSend_automotive(self, v14, v15) && (objc_msgSend_stationary(a3, v14, v15) & 1) == 0 && (objc_msgSend_automotive(a3, v14, v15) & 1) != 0 || (objc_msgSend_stationary(self, v14, v15) & 1) == 0 && objc_msgSend_automotive(self, v16, v17) && objc_msgSend_stationary(a3, v16, v17) && (objc_msgSend_automotive(a3, v16, v17) & 1) != 0 || objc_msgSend_stationary(self, v16, v17) && objc_msgSend_automotive(self, v18, v19) && (objc_msgSend_stationary(a3, v18, v19) & 1) == 0 && (objc_msgSend_automotive(a3, v18, v19) & 1) != 0 || objc_msgSend_stationary(self, v18, v19) && objc_msgSend_automotive(self, v20, v21) && objc_msgSend_stationary(a3, v20, v21) && (objc_msgSend_automotive(a3, v20, v21) & 1) != 0)
+  if (objc_msgSend_unknown(self, a2, as) && (objc_msgSend_unknown(as, v5, v6) & 1) != 0 || ((objc_msgSend_walking(self, v5, v6) & 1) != 0 || objc_msgSend_running(self, v7, v8)) && ((objc_msgSend_walking(as, v7, v8) & 1) != 0 || (objc_msgSend_running(as, v9, v10) & 1) != 0) || objc_msgSend_cycling(self, v7, v8) && (objc_msgSend_cycling(as, v11, v12) & 1) != 0 || (objc_msgSend_stationary(self, v11, v12) & 1) == 0 && objc_msgSend_automotive(self, v14, v15) && (objc_msgSend_stationary(as, v14, v15) & 1) == 0 && (objc_msgSend_automotive(as, v14, v15) & 1) != 0 || (objc_msgSend_stationary(self, v14, v15) & 1) == 0 && objc_msgSend_automotive(self, v16, v17) && objc_msgSend_stationary(as, v16, v17) && (objc_msgSend_automotive(as, v16, v17) & 1) != 0 || objc_msgSend_stationary(self, v16, v17) && objc_msgSend_automotive(self, v18, v19) && (objc_msgSend_stationary(as, v18, v19) & 1) == 0 && (objc_msgSend_automotive(as, v18, v19) & 1) != 0 || objc_msgSend_stationary(self, v18, v19) && objc_msgSend_automotive(self, v20, v21) && objc_msgSend_stationary(as, v20, v21) && (objc_msgSend_automotive(as, v20, v21) & 1) != 0)
   {
     LOBYTE(v13) = 1;
   }
@@ -296,7 +296,7 @@ LABEL_7:
     if (v13)
     {
 
-      LOBYTE(v13) = objc_msgSend_stationary(a3, v22, v23);
+      LOBYTE(v13) = objc_msgSend_stationary(as, v22, v23);
     }
   }
 

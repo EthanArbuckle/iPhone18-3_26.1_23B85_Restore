@@ -1,37 +1,37 @@
 @interface PTDomainServer
-- (BOOL)_hasValueChangedFromDefault:(id)a3 forKeypath:(id)a4 settingsClassName:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_hasValueChangedFromDefault:(id)default forKeypath:(id)keypath settingsClassName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSDictionary)domainInfoByID;
 - (NSDictionary)testRecipeInfoByID;
 - (PTDomainServer)init;
-- (id)_queue_archiveForDomainID:(id)a3;
+- (id)_queue_archiveForDomainID:(id)d;
 - (id)activeTestRecipeID;
-- (id)localSettingsOfClass:(Class)a3;
-- (id)rootSettingsArchiveForDomainID:(id)a3;
-- (id)rootSettingsProxyDefinitionForDomainID:(id)a3;
-- (void)_queue_applyArchiveValue:(id)a3 forKeyPath:(id)a4 domainID:(id)a5;
-- (void)_queue_invokeOutletAtKeyPath:(id)a3 domainID:(id)a4;
+- (id)localSettingsOfClass:(Class)class;
+- (id)rootSettingsArchiveForDomainID:(id)d;
+- (id)rootSettingsProxyDefinitionForDomainID:(id)d;
+- (void)_queue_applyArchiveValue:(id)value forKeyPath:(id)path domainID:(id)d;
+- (void)_queue_invokeOutletAtKeyPath:(id)path domainID:(id)d;
 - (void)_queue_persistChanges;
-- (void)_queue_removeClient:(id)a3;
-- (void)_queue_restoreDefaultsForDomainID:(id)a3;
+- (void)_queue_removeClient:(id)client;
+- (void)_queue_restoreDefaultsForDomainID:(id)d;
 - (void)_queue_schedulePersistChanges;
-- (void)_queue_sendArchiveValue:(id)a3 forKeyPath:(id)a4 domainID:(id)a5;
-- (void)_queue_sendRestoreDefaultsForDomainID:(id)a3;
-- (void)applyArchiveValue:(id)a3 forKeyPath:(id)a4 domainID:(id)a5 completion:(id)a6;
-- (void)applyArchiveValue:(id)a3 forRootSettingsKeyPath:(id)a4 domainID:(id)a5;
+- (void)_queue_sendArchiveValue:(id)value forKeyPath:(id)path domainID:(id)d;
+- (void)_queue_sendRestoreDefaultsForDomainID:(id)d;
+- (void)applyArchiveValue:(id)value forKeyPath:(id)path domainID:(id)d completion:(id)completion;
+- (void)applyArchiveValue:(id)value forRootSettingsKeyPath:(id)path domainID:(id)d;
 - (void)init;
-- (void)invokeOutletAtKeyPath:(id)a3 domainID:(id)a4;
+- (void)invokeOutletAtKeyPath:(id)path domainID:(id)d;
 - (void)persistChanges;
-- (void)registerDomainWithInfo:(id)a3;
-- (void)registerRootSettingsProxyDefinition:(id)a3 forDomainID:(id)a4;
-- (void)registerTestRecipeWithInfo:(id)a3;
-- (void)requestArchiveDictionaryForDomainID:(id)a3 completion:(id)a4;
-- (void)restoreDefaultValuesForDomainID:(id)a3;
-- (void)restoreDefaultValuesForDomainID:(id)a3 completion:(id)a4;
-- (void)sendEvent:(int64_t)a3 forTestRecipeID:(id)a4;
-- (void)setActiveTestRecipeID:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
-- (void)settingsDidRestoreDefaults:(id)a3;
+- (void)registerDomainWithInfo:(id)info;
+- (void)registerRootSettingsProxyDefinition:(id)definition forDomainID:(id)d;
+- (void)registerTestRecipeWithInfo:(id)info;
+- (void)requestArchiveDictionaryForDomainID:(id)d completion:(id)completion;
+- (void)restoreDefaultValuesForDomainID:(id)d;
+- (void)restoreDefaultValuesForDomainID:(id)d completion:(id)completion;
+- (void)sendEvent:(int64_t)event forTestRecipeID:(id)d;
+- (void)setActiveTestRecipeID:(id)d;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
+- (void)settingsDidRestoreDefaults:(id)defaults;
 @end
 
 @implementation PTDomainServer
@@ -117,8 +117,8 @@
     parameterRecordsPersistenceManager = v3->_parameterRecordsPersistenceManager;
     v3->_parameterRecordsPersistenceManager = v31;
 
-    v33 = [(PTParameterRecordsPersistenceManager *)v3->_parameterRecordsPersistenceManager createParameterRecordsFromArchiveDictionary];
-    [(PTDomainServer *)v3 setParameterRecordsOfTunedSettings:v33];
+    createParameterRecordsFromArchiveDictionary = [(PTParameterRecordsPersistenceManager *)v3->_parameterRecordsPersistenceManager createParameterRecordsFromArchiveDictionary];
+    [(PTDomainServer *)v3 setParameterRecordsOfTunedSettings:createParameterRecordsFromArchiveDictionary];
   }
 
   return v3;
@@ -130,7 +130,7 @@ void __22__PTDomainServer_init__block_invoke()
   [v0 postNotificationName:@"PTDomainServerActiveTestRecipeChangedNotification" object:0];
 }
 
-- (id)localSettingsOfClass:(Class)a3
+- (id)localSettingsOfClass:(Class)class
 {
   v7 = 0;
   v8 = &v7;
@@ -144,7 +144,7 @@ void __22__PTDomainServer_init__block_invoke()
   block[2] = __39__PTDomainServer_localSettingsOfClass___block_invoke;
   block[3] = &unk_27835F078;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = class;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -261,9 +261,9 @@ uint64_t __36__PTDomainServer_testRecipeInfoByID__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)rootSettingsProxyDefinitionForDomainID:(id)a3
+- (id)rootSettingsProxyDefinitionForDomainID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -275,10 +275,10 @@ uint64_t __36__PTDomainServer_testRecipeInfoByID__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __57__PTDomainServer_rootSettingsProxyDefinitionForDomainID___block_invoke;
   block[3] = &unk_27835F0C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -297,9 +297,9 @@ uint64_t __57__PTDomainServer_rootSettingsProxyDefinitionForDomainID___block_inv
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)rootSettingsArchiveForDomainID:(id)a3
+- (id)rootSettingsArchiveForDomainID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -311,10 +311,10 @@ uint64_t __57__PTDomainServer_rootSettingsProxyDefinitionForDomainID___block_inv
   block[1] = 3221225472;
   block[2] = __49__PTDomainServer_rootSettingsArchiveForDomainID___block_invoke;
   block[3] = &unk_27835F0C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -335,74 +335,74 @@ void __49__PTDomainServer_rootSettingsArchiveForDomainID___block_invoke(uint64_t
 - (id)activeTestRecipeID
 {
   v2 = +[PTDefaults sharedInstance];
-  v3 = [v2 activeTestRecipeIdentifier];
+  activeTestRecipeIdentifier = [v2 activeTestRecipeIdentifier];
 
-  return v3;
+  return activeTestRecipeIdentifier;
 }
 
-- (void)applyArchiveValue:(id)a3 forRootSettingsKeyPath:(id)a4 domainID:(id)a5
+- (void)applyArchiveValue:(id)value forRootSettingsKeyPath:(id)path domainID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  pathCopy = path;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__PTDomainServer_applyArchiveValue_forRootSettingsKeyPath_domainID___block_invoke;
   v15[3] = &unk_27835F0F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = valueCopy;
+  v17 = pathCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = pathCopy;
+  v14 = valueCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)restoreDefaultValuesForDomainID:(id)a3
+- (void)restoreDefaultValuesForDomainID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__PTDomainServer_restoreDefaultValuesForDomainID___block_invoke;
   v7[3] = &unk_27835EC80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)invokeOutletAtKeyPath:(id)a3 domainID:(id)a4
+- (void)invokeOutletAtKeyPath:(id)path domainID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__PTDomainServer_invokeOutletAtKeyPath_domainID___block_invoke;
   block[3] = &unk_27835ED60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = pathCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = pathCopy;
   dispatch_async(queue, block);
 }
 
-- (void)sendEvent:(int64_t)a3 forTestRecipeID:(id)a4
+- (void)sendEvent:(int64_t)event forTestRecipeID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__PTDomainServer_sendEvent_forTestRecipeID___block_invoke;
   block[3] = &unk_27835F118;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = dCopy;
+  eventCopy = event;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -459,12 +459,12 @@ void __44__PTDomainServer_sendEvent_forTestRecipeID___block_invoke(void *a1)
   }
 }
 
-- (void)setActiveTestRecipeID:(id)a3
+- (void)setActiveTestRecipeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[PTDefaults sharedInstance];
-  v6 = [v5 testRecipeIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  testRecipeIdentifier = [v5 testRecipeIdentifier];
+  v7 = [testRecipeIdentifier isEqualToString:dCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -481,26 +481,26 @@ void __44__PTDomainServer_sendEvent_forTestRecipeID___block_invoke(void *a1)
     block[3] = &unk_27835F0C8;
     v17 = &v18;
     block[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     v16 = v9;
     dispatch_sync(queue, block);
     if (v9)
     {
       [v5 setTestRecipeIdentifier:v9];
-      v10 = [v19[5] recipeDescription];
-      [v5 setTestRecipeDescription:v10];
+      recipeDescription = [v19[5] recipeDescription];
+      [v5 setTestRecipeDescription:recipeDescription];
 
-      v11 = [v19[5] events];
-      [v5 setTestRecipeEatsVolumeUp:{objc_msgSend(v11, "containsIndex:", 1)}];
+      events = [v19[5] events];
+      [v5 setTestRecipeEatsVolumeUp:{objc_msgSend(events, "containsIndex:", 1)}];
 
-      v12 = [v19[5] events];
-      [v5 setTestRecipeEatsVolumeDown:{objc_msgSend(v12, "containsIndex:", 2)}];
+      events2 = [v19[5] events];
+      [v5 setTestRecipeEatsVolumeDown:{objc_msgSend(events2, "containsIndex:", 2)}];
 
-      v13 = [v19[5] events];
-      [v5 setTestRecipeEatsRingerSwitch:{objc_msgSend(v13, "containsIndex:", 3)}];
+      events3 = [v19[5] events];
+      [v5 setTestRecipeEatsRingerSwitch:{objc_msgSend(events3, "containsIndex:", 3)}];
 
-      v14 = [v19[5] events];
-      [v5 setTestRecipeEatsRingerButton:{objc_msgSend(v14, "containsIndex:", 4)}];
+      events4 = [v19[5] events];
+      [v5 setTestRecipeEatsRingerButton:{objc_msgSend(events4, "containsIndex:", 4)}];
     }
 
     else
@@ -527,44 +527,44 @@ uint64_t __40__PTDomainServer_setActiveTestRecipeID___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)applyArchiveValue:(id)a3 forKeyPath:(id)a4 domainID:(id)a5 completion:(id)a6
+- (void)applyArchiveValue:(id)value forKeyPath:(id)path domainID:(id)d completion:(id)completion
 {
-  v10 = a6;
-  [(PTDomainServer *)self applyArchiveValue:a3 forRootSettingsKeyPath:a4 domainID:a5];
-  v10[2](v10, 0);
+  completionCopy = completion;
+  [(PTDomainServer *)self applyArchiveValue:value forRootSettingsKeyPath:path domainID:d];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)requestArchiveDictionaryForDomainID:(id)a3 completion:(id)a4
+- (void)requestArchiveDictionaryForDomainID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = [(PTDomainServer *)self rootSettingsArchiveForDomainID:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  completionCopy = completion;
+  v8 = [(PTDomainServer *)self rootSettingsArchiveForDomainID:d];
+  (*(completion + 2))(completionCopy, v8, 0);
 }
 
-- (void)restoreDefaultValuesForDomainID:(id)a3 completion:(id)a4
+- (void)restoreDefaultValuesForDomainID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  [(PTDomainServer *)self restoreDefaultValuesForDomainID:a3];
-  v6[2](v6, 0);
+  completionCopy = completion;
+  [(PTDomainServer *)self restoreDefaultValuesForDomainID:d];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _archiveValueForKeyPath:v7];
+  settingsCopy = settings;
+  pathCopy = path;
+  v8 = [settingsCopy _archiveValueForKeyPath:pathCopy];
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__PTDomainServer_settings_changedValueForKeyPath___block_invoke;
   v13[3] = &unk_27835F0F0;
-  v14 = v6;
-  v15 = self;
+  v14 = settingsCopy;
+  selfCopy = self;
   v16 = v8;
-  v17 = v7;
-  v10 = v7;
+  v17 = pathCopy;
+  v10 = pathCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = settingsCopy;
   dispatch_async(queue, v13);
 }
 
@@ -575,18 +575,18 @@ void __50__PTDomainServer_settings_changedValueForKeyPath___block_invoke(uint64_
   [*(a1 + 40) _queue_applyArchiveValue:*(a1 + 48) forKeyPath:*(a1 + 56) domainID:v3];
 }
 
-- (void)settingsDidRestoreDefaults:(id)a3
+- (void)settingsDidRestoreDefaults:(id)defaults
 {
-  v4 = a3;
-  [v4 addKeyPathObserver:self];
+  defaultsCopy = defaults;
+  [defaultsCopy addKeyPathObserver:self];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__PTDomainServer_settingsDidRestoreDefaults___block_invoke;
   v7[3] = &unk_27835EC80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = defaultsCopy;
+  selfCopy = self;
+  v6 = defaultsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -597,20 +597,20 @@ void __45__PTDomainServer_settingsDidRestoreDefaults___block_invoke(uint64_t a1)
   [*(a1 + 40) _queue_restoreDefaultsForDomainID:v3];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__PTDomainServer_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_27835ED60;
-  v13 = v6;
-  v14 = v7;
-  v15 = self;
-  v9 = v7;
-  v10 = v6;
+  v13 = listenerCopy;
+  v14 = connectionCopy;
+  selfCopy = self;
+  v9 = connectionCopy;
+  v10 = listenerCopy;
   dispatch_async(queue, block);
 
   return 1;
@@ -675,22 +675,22 @@ void __53__PTDomainServer_listener_shouldAcceptNewConnection___block_invoke_3(ui
   [v1 _queue_removeClient:WeakRetained];
 }
 
-- (void)registerDomainWithInfo:(id)a3
+- (void)registerDomainWithInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     PTTransactionBegin(@"PTDomainServer domain registration");
-    v5 = [MEMORY[0x277CCAE80] currentConnection];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__PTDomainServer_registerDomainWithInfo___block_invoke;
     block[3] = &unk_27835ED60;
-    v9 = v4;
-    v10 = self;
-    v11 = v5;
-    v7 = v5;
+    v9 = infoCopy;
+    selfCopy = self;
+    v11 = currentConnection;
+    v7 = currentConnection;
     dispatch_async(queue, block);
   }
 
@@ -774,10 +774,10 @@ void __41__PTDomainServer_registerDomainWithInfo___block_invoke_40()
   [v0 postNotificationName:@"PTDomainServerDomainsChangedNotification" object:0];
 }
 
-- (void)registerTestRecipeWithInfo:(id)a3
+- (void)registerTestRecipeWithInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     PTTransactionBegin(@"PTDomainServer test recipe registration");
     queue = self->_queue;
@@ -785,8 +785,8 @@ void __41__PTDomainServer_registerDomainWithInfo___block_invoke_40()
     v7[1] = 3221225472;
     v7[2] = __45__PTDomainServer_registerTestRecipeWithInfo___block_invoke;
     v7[3] = &unk_27835EC80;
-    v8 = v4;
-    v9 = self;
+    v8 = infoCopy;
+    selfCopy = self;
     dispatch_async(queue, v7);
     v6 = v8;
   }
@@ -845,12 +845,12 @@ void __45__PTDomainServer_registerTestRecipeWithInfo___block_invoke_46()
   [v0 postNotificationName:@"PTDomainServerTestRecipesChangedNotification" object:0];
 }
 
-- (void)registerRootSettingsProxyDefinition:(id)a3 forDomainID:(id)a4
+- (void)registerRootSettingsProxyDefinition:(id)definition forDomainID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  definitionCopy = definition;
+  dCopy = d;
+  v8 = dCopy;
+  if (definitionCopy && dCopy)
   {
     PTTransactionBegin(@"PTDomainServer proxy definition registration");
     queue = self->_queue;
@@ -858,7 +858,7 @@ void __45__PTDomainServer_registerTestRecipeWithInfo___block_invoke_46()
     v11[1] = 3221225472;
     v11[2] = __66__PTDomainServer_registerRootSettingsProxyDefinition_forDomainID___block_invoke;
     v11[3] = &unk_27835EC80;
-    v12 = v6;
+    v12 = definitionCopy;
     v13 = v8;
     dispatch_async(queue, v11);
 
@@ -902,83 +902,83 @@ void __66__PTDomainServer_registerRootSettingsProxyDefinition_forDomainID___bloc
   [v3 postNotificationName:@"PTDomainServerSettingsProxyDefinitionChangedNotification" object:0 userInfo:v2];
 }
 
-- (id)_queue_archiveForDomainID:(id)a3
+- (id)_queue_archiveForDomainID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_settingsArchivesByDomainID objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_settingsArchivesByDomainID objectForKeyedSubscript:dCopy];
   if (!v5)
   {
-    if (([(NSMutableSet *)self->_loadedDomainIDs containsObject:v4]& 1) != 0)
+    if (([(NSMutableSet *)self->_loadedDomainIDs containsObject:dCopy]& 1) != 0)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = _PTReadSettingsArchive(v4);
-      [(NSMutableDictionary *)self->_settingsArchivesByDomainID setObject:v5 forKeyedSubscript:v4];
-      [(NSMutableSet *)self->_loadedDomainIDs addObject:v4];
+      v5 = _PTReadSettingsArchive(dCopy);
+      [(NSMutableDictionary *)self->_settingsArchivesByDomainID setObject:v5 forKeyedSubscript:dCopy];
+      [(NSMutableSet *)self->_loadedDomainIDs addObject:dCopy];
     }
   }
 
   return v5;
 }
 
-- (void)_queue_applyArchiveValue:(id)a3 forKeyPath:(id)a4 domainID:(id)a5
+- (void)_queue_applyArchiveValue:(id)value forKeyPath:(id)path domainID:(id)d
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PTDomainServer *)self _queue_archiveForDomainID:v9];
-  v11 = [(NSMutableDictionary *)self->_domainInfoByID objectForKeyedSubscript:v9];
-  v12 = [v11 settingsClassName];
+  valueCopy = value;
+  pathCopy = path;
+  dCopy = d;
+  v10 = [(PTDomainServer *)self _queue_archiveForDomainID:dCopy];
+  v11 = [(NSMutableDictionary *)self->_domainInfoByID objectForKeyedSubscript:dCopy];
+  settingsClassName = [v11 settingsClassName];
 
   if (!v10)
   {
-    v10 = [PTSettings emptyArchiveForSettingsClassName:v12];
-    [(NSMutableDictionary *)self->_settingsArchivesByDomainID setObject:v10 forKeyedSubscript:v9];
+    v10 = [PTSettings emptyArchiveForSettingsClassName:settingsClassName];
+    [(NSMutableDictionary *)self->_settingsArchivesByDomainID setObject:v10 forKeyedSubscript:dCopy];
   }
 
-  [PTSettings _applyArchiveValue:v18 forKeyPath:v8 toArchive:v10];
-  [(PTDomainServer *)self _queue_sendArchiveValue:v18 forKeyPath:v8 domainID:v9];
-  [(NSMutableSet *)self->_dirtyDomainIDs addObject:v9];
+  [PTSettings _applyArchiveValue:valueCopy forKeyPath:pathCopy toArchive:v10];
+  [(PTDomainServer *)self _queue_sendArchiveValue:valueCopy forKeyPath:pathCopy domainID:dCopy];
+  [(NSMutableSet *)self->_dirtyDomainIDs addObject:dCopy];
   [(PTDomainServer *)self _queue_schedulePersistChanges];
-  v13 = [(PTDomainServer *)self _hasValueChangedFromDefault:v18 forKeypath:v8 settingsClassName:v12];
-  v14 = [(PTDomainServer *)self parameterRecordsOfTunedSettings];
-  v15 = v14;
+  v13 = [(PTDomainServer *)self _hasValueChangedFromDefault:valueCopy forKeypath:pathCopy settingsClassName:settingsClassName];
+  parameterRecordsOfTunedSettings = [(PTDomainServer *)self parameterRecordsOfTunedSettings];
+  v15 = parameterRecordsOfTunedSettings;
   if (v13)
   {
-    [v14 addRecordWithKeyPath:v8 domainID:v9 recordClassName:v12 value:v18];
+    [parameterRecordsOfTunedSettings addRecordWithKeyPath:pathCopy domainID:dCopy recordClassName:settingsClassName value:valueCopy];
   }
 
   else
   {
-    [v14 removeRecordWithKeyPath:v8 domainID:v9];
+    [parameterRecordsOfTunedSettings removeRecordWithKeyPath:pathCopy domainID:dCopy];
   }
 
   parameterRecordsPersistenceManager = self->_parameterRecordsPersistenceManager;
-  v17 = [(PTDomainServer *)self parameterRecordsOfTunedSettings];
-  [(PTParameterRecordsPersistenceManager *)parameterRecordsPersistenceManager writeToDisk:v17];
+  parameterRecordsOfTunedSettings2 = [(PTDomainServer *)self parameterRecordsOfTunedSettings];
+  [(PTParameterRecordsPersistenceManager *)parameterRecordsPersistenceManager writeToDisk:parameterRecordsOfTunedSettings2];
 }
 
-- (BOOL)_hasValueChangedFromDefault:(id)a3 forKeypath:(id)a4 settingsClassName:(id)a5
+- (BOOL)_hasValueChangedFromDefault:(id)default forKeypath:(id)keypath settingsClassName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(NSClassFromString(a5)) initWithDefaultValues];
-  v10 = [v9 valueForKeyPath:v8];
+  defaultCopy = default;
+  keypathCopy = keypath;
+  initWithDefaultValues = [objc_alloc(NSClassFromString(name)) initWithDefaultValues];
+  v10 = [initWithDefaultValues valueForKeyPath:keypathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v7 doubleValue];
+    [defaultCopy doubleValue];
     [v10 doubleValue];
     v11 = BSFloatEqualToFloat();
   }
 
   else
   {
-    v11 = [v7 isEqual:v10];
+    v11 = [defaultCopy isEqual:v10];
   }
 
   v12 = v11;
@@ -986,29 +986,29 @@ void __66__PTDomainServer_registerRootSettingsProxyDefinition_forDomainID___bloc
   return v12 ^ 1;
 }
 
-- (void)_queue_restoreDefaultsForDomainID:(id)a3
+- (void)_queue_restoreDefaultsForDomainID:(id)d
 {
   settingsArchivesByDomainID = self->_settingsArchivesByDomainID;
-  v5 = a3;
-  [(NSMutableDictionary *)settingsArchivesByDomainID removeObjectForKey:v5];
-  [(NSMutableSet *)self->_loadedDomainIDs addObject:v5];
-  [(PTDomainServer *)self _queue_sendRestoreDefaultsForDomainID:v5];
-  [(NSMutableSet *)self->_dirtyDomainIDs addObject:v5];
+  dCopy = d;
+  [(NSMutableDictionary *)settingsArchivesByDomainID removeObjectForKey:dCopy];
+  [(NSMutableSet *)self->_loadedDomainIDs addObject:dCopy];
+  [(PTDomainServer *)self _queue_sendRestoreDefaultsForDomainID:dCopy];
+  [(NSMutableSet *)self->_dirtyDomainIDs addObject:dCopy];
 
   [(PTDomainServer *)self _queue_schedulePersistChanges];
 }
 
-- (void)_queue_removeClient:(id)a3
+- (void)_queue_removeClient:(id)client
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_unregisteredClients removeObject:v4];
+  clientCopy = client;
+  [(NSMutableSet *)self->_unregisteredClients removeObject:clientCopy];
   clientsByDomainID = self->_clientsByDomainID;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__PTDomainServer__queue_removeClient___block_invoke;
   v7[3] = &unk_27835F168;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   [(NSMutableDictionary *)clientsByDomainID enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1052,9 +1052,9 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
   PTTransactionBegin(@"PTDomainServer persisting changes");
   if ([(NSMutableSet *)self->_dirtyDomainIDs count])
   {
-    v3 = [MEMORY[0x277CCAB68] string];
-    v4 = [(NSMutableSet *)self->_dirtyDomainIDs allObjects];
-    v5 = [v4 count];
+    string = [MEMORY[0x277CCAB68] string];
+    allObjects = [(NSMutableSet *)self->_dirtyDomainIDs allObjects];
+    v5 = [allObjects count];
     if (v5)
     {
       v6 = v5;
@@ -1062,11 +1062,11 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
       v8 = v5 - 1;
       do
       {
-        v9 = [v4 objectAtIndex:v7];
-        [v3 appendString:v9];
+        v9 = [allObjects objectAtIndex:v7];
+        [string appendString:v9];
         if (v7 < v8)
         {
-          [v3 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         ++v7;
@@ -1079,7 +1079,7 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v3;
+      v25 = string;
       _os_log_impl(&dword_21E61D000, v10, OS_LOG_TYPE_DEFAULT, "Persisting changes for domains: %{public}@", buf, 0xCu);
     }
   }
@@ -1127,16 +1127,16 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
   PTTransactionEnd(@"PTDomainServer persisting changes");
 }
 
-- (void)_queue_sendArchiveValue:(id)a3 forKeyPath:(id)a4 domainID:(id)a5
+- (void)_queue_sendArchiveValue:(id)value forKeyPath:(id)path domainID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(NSMutableDictionary *)self->_clientsByDomainID objectForKey:a5, 0];
+  v10 = [(NSMutableDictionary *)self->_clientsByDomainID objectForKey:d, 0];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -1152,8 +1152,8 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v16 + 1) + 8 * v14) remoteObjectProxy];
-        [v15 setArchiveValue:v8 forKeyPath:v9];
+        remoteObjectProxy = [*(*(&v16 + 1) + 8 * v14) remoteObjectProxy];
+        [remoteObjectProxy setArchiveValue:valueCopy forKeyPath:pathCopy];
 
         ++v14;
       }
@@ -1166,14 +1166,14 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
   }
 }
 
-- (void)_queue_sendRestoreDefaultsForDomainID:(id)a3
+- (void)_queue_sendRestoreDefaultsForDomainID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_clientsByDomainID objectForKey:a3, 0];
+  v3 = [(NSMutableDictionary *)self->_clientsByDomainID objectForKey:d, 0];
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -1189,8 +1189,8 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
-        [v8 restoreDefaultSettings];
+        remoteObjectProxy = [*(*(&v9 + 1) + 8 * v7) remoteObjectProxy];
+        [remoteObjectProxy restoreDefaultSettings];
 
         ++v7;
       }
@@ -1203,18 +1203,18 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
   }
 }
 
-- (void)_queue_invokeOutletAtKeyPath:(id)a3 domainID:(id)a4
+- (void)_queue_invokeOutletAtKeyPath:(id)path domainID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  dCopy = d;
   v8 = PTLogObjectForTopic(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v6;
+    v21 = pathCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = dCopy;
     _os_log_impl(&dword_21E61D000, v8, OS_LOG_TYPE_DEFAULT, "Invoking outlet %@ in domain %@", buf, 0x16u);
   }
 
@@ -1222,7 +1222,7 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(NSMutableDictionary *)self->_clientsByDomainID objectForKey:v7, 0];
+  v9 = [(NSMutableDictionary *)self->_clientsByDomainID objectForKey:dCopy, 0];
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -1238,8 +1238,8 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v15 + 1) + 8 * v13) remoteObjectProxy];
-        [v14 invokeOutletAtKeyPath:v6];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v13) remoteObjectProxy];
+        [remoteObjectProxy invokeOutletAtKeyPath:pathCopy];
 
         ++v13;
       }
@@ -1254,8 +1254,8 @@ void __47__PTDomainServer__queue_schedulePersistChanges__block_invoke(uint64_t a
 
 - (void)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"PTDomainServer.m" lineNumber:62 description:@"PTDomainServer should only be instantiated once."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"PTDomainServer.m" lineNumber:62 description:@"PTDomainServer should only be instantiated once."];
 }
 
 @end

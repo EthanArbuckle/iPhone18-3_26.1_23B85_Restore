@@ -1,7 +1,7 @@
 @interface ClimateSteeringWheelButton
 - (_TtC7Climate26ClimateSteeringWheelButton)init;
-- (void)steeringWheelHeatingCoolingService:(id)a3 didUpdateAutoMode:(BOOL)a4;
-- (void)steeringWheelHeatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4;
+- (void)steeringWheelHeatingCoolingService:(id)service didUpdateAutoMode:(BOOL)mode;
+- (void)steeringWheelHeatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level;
 @end
 
 @implementation ClimateSteeringWheelButton
@@ -16,15 +16,15 @@
   return result;
 }
 
-- (void)steeringWheelHeatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4
+- (void)steeringWheelHeatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level
 {
-  v4 = self;
+  selfCopy = self;
   sub_10005C4F0();
 }
 
-- (void)steeringWheelHeatingCoolingService:(id)a3 didUpdateAutoMode:(BOOL)a4
+- (void)steeringWheelHeatingCoolingService:(id)service didUpdateAutoMode:(BOOL)mode
 {
-  v4 = self;
+  selfCopy = self;
   sub_10005C4F0();
 }
 

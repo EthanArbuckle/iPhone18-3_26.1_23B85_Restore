@@ -6,10 +6,10 @@
 - (id)windowScene;
 - (void)attach;
 - (void)detach;
-- (void)longPressGestureRecognizerFired:(id)a3;
-- (void)panGestureRecognizerFired:(id)a3;
-- (void)sceneDidActivateNotification:(id)a3;
-- (void)setInitialPosition:(CGPoint)a3;
+- (void)longPressGestureRecognizerFired:(id)fired;
+- (void)panGestureRecognizerFired:(id)fired;
+- (void)sceneDidActivateNotification:(id)notification;
+- (void)setInitialPosition:(CGPoint)position;
 - (void)toggleState;
 - (void)updateTintAndIconLabel;
 - (void)updateViewForCurrentState;
@@ -18,14 +18,14 @@
 
 @implementation MapsFloatingDebugViewController
 
-- (void)sceneDidActivateNotification:(id)a3
+- (void)sceneDidActivateNotification:(id)notification
 {
-  v5 = [(MapsFloatingDebugViewController *)self windowScene];
-  v4 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  [v4 setWindowScene:v5];
+  windowScene = [(MapsFloatingDebugViewController *)self windowScene];
+  floatingDebugWindow = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  [floatingDebugWindow setWindowScene:windowScene];
 }
 
-- (void)longPressGestureRecognizerFired:(id)a3
+- (void)longPressGestureRecognizerFired:(id)fired
 {
   v4 = [UIAlertController alertControllerWithTitle:@"Choose an action" message:0 preferredStyle:0];
   v16[0] = _NSConcreteStackBlock;
@@ -36,12 +36,12 @@
   v5 = [UIAlertAction actionWithTitle:@"Dismiss foating debug UI" style:0 handler:v16];
   [v4 addAction:v5];
 
-  v6 = [(MapsFloatingDebugViewController *)self additionalLongPressActions];
+  additionalLongPressActions = [(MapsFloatingDebugViewController *)self additionalLongPressActions];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [additionalLongPressActions countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -53,7 +53,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(additionalLongPressActions);
         }
 
         [v4 addAction:*(*(&v12 + 1) + 8 * v10)];
@@ -61,7 +61,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [additionalLongPressActions countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
@@ -73,48 +73,48 @@
   [(MapsFloatingDebugViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)panGestureRecognizerFired:(id)a3
+- (void)panGestureRecognizerFired:(id)fired
 {
-  v4 = a3;
-  v5 = [(MapsFloatingDebugViewController *)self view];
-  v6 = [v5 superview];
-  [v4 translationInView:v6];
+  firedCopy = fired;
+  view = [(MapsFloatingDebugViewController *)self view];
+  superview = [view superview];
+  [firedCopy translationInView:superview];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(MapsFloatingDebugViewController *)self view];
-  [v11 frame];
+  view2 = [(MapsFloatingDebugViewController *)self view];
+  [view2 frame];
   v13 = v12 + v8;
-  v14 = [(MapsFloatingDebugViewController *)self view];
-  [v14 frame];
+  view3 = [(MapsFloatingDebugViewController *)self view];
+  [view3 frame];
   v16 = v15 + v10;
 
-  v17 = [(MapsFloatingDebugViewController *)self leadingConstraint];
-  [v17 setConstant:v13];
+  leadingConstraint = [(MapsFloatingDebugViewController *)self leadingConstraint];
+  [leadingConstraint setConstant:v13];
 
-  v18 = [(MapsFloatingDebugViewController *)self topConstraint];
-  [v18 setConstant:v16];
+  topConstraint = [(MapsFloatingDebugViewController *)self topConstraint];
+  [topConstraint setConstant:v16];
 
-  v19 = [(MapsFloatingDebugViewController *)self view];
-  [v4 setTranslation:v19 inView:{CGPointZero.x, CGPointZero.y}];
+  view4 = [(MapsFloatingDebugViewController *)self view];
+  [firedCopy setTranslation:view4 inView:{CGPointZero.x, CGPointZero.y}];
 
-  v20 = [(MapsFloatingDebugViewController *)self contentView];
-  [v20 setNeedsLayout];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView setNeedsLayout];
 
-  v21 = [(MapsFloatingDebugViewController *)self contentView];
-  [v21 layoutIfNeeded];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView2 layoutIfNeeded];
 
-  v22 = [v4 state];
-  if (v22 == 3)
+  state = [firedCopy state];
+  if (state == 3)
   {
 
     [(MapsFloatingDebugViewController *)self setInitialPosition:v13, v16];
   }
 }
 
-- (void)setInitialPosition:(CGPoint)a3
+- (void)setInitialPosition:(CGPoint)position
 {
-  v7 = NSStringFromCGPoint(a3);
+  v7 = NSStringFromCGPoint(position);
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [NSString stringWithFormat:@"%@%@", @"kFloatingDebugViewControllerInitialPositionKeyPrefix", v4];
@@ -154,213 +154,213 @@
 
 - (void)updateTintAndIconLabel
 {
-  v3 = [(MapsFloatingDebugViewController *)self tintColor];
-  v4 = [(MapsFloatingDebugViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  tintColor = [(MapsFloatingDebugViewController *)self tintColor];
+  view = [(MapsFloatingDebugViewController *)self view];
+  [view setBackgroundColor:tintColor];
 
-  v5 = [(MapsFloatingDebugViewController *)self tintColor];
-  v6 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v6 setBackgroundColor:v5];
+  tintColor2 = [(MapsFloatingDebugViewController *)self tintColor];
+  thumbnailIconLabel = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel setBackgroundColor:tintColor2];
 
-  v8 = [(MapsFloatingDebugViewController *)self iconText];
-  v7 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v7 setText:v8];
+  iconText = [(MapsFloatingDebugViewController *)self iconText];
+  thumbnailIconLabel2 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel2 setText:iconText];
 }
 
 - (void)updateViewForCurrentState
 {
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v3 == 1)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState == 1)
   {
-    v29 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    [v29 removeFromSuperview];
+    thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    [thumbnailImageView removeFromSuperview];
 
-    v30 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-    [v30 removeFromSuperview];
+    thumbnailIconLabel = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+    [thumbnailIconLabel removeFromSuperview];
 
-    v31 = [(MapsFloatingDebugViewController *)self view];
-    v32 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    [v31 addSubview:v32];
+    view = [(MapsFloatingDebugViewController *)self view];
+    grabberContainerView = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    [view addSubview:grabberContainerView];
 
-    v107 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    v101 = [v107 leadingAnchor];
-    v104 = [(MapsFloatingDebugViewController *)self view];
-    v98 = [v104 leadingAnchor];
-    v95 = [v101 constraintEqualToAnchor:v98];
+    grabberContainerView2 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    leadingAnchor = [grabberContainerView2 leadingAnchor];
+    view2 = [(MapsFloatingDebugViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v95 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v109[0] = v95;
-    v91 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    v86 = [v91 trailingAnchor];
-    v89 = [(MapsFloatingDebugViewController *)self view];
-    v81 = [v89 trailingAnchor];
-    v78 = [v86 constraintEqualToAnchor:v81];
+    grabberContainerView3 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    trailingAnchor = [grabberContainerView3 trailingAnchor];
+    view3 = [(MapsFloatingDebugViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v78 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v109[1] = v78;
-    v33 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    v34 = [v33 topAnchor];
-    v35 = [(MapsFloatingDebugViewController *)self view];
-    v36 = [v35 topAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    grabberContainerView4 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    topAnchor = [grabberContainerView4 topAnchor];
+    view4 = [(MapsFloatingDebugViewController *)self view];
+    topAnchor2 = [view4 topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v109[2] = v37;
-    v38 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    v39 = [v38 heightAnchor];
-    v40 = [v39 constraintEqualToConstant:44.0];
+    grabberContainerView5 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    heightAnchor = [grabberContainerView5 heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:44.0];
     v109[3] = v40;
     v41 = [NSArray arrayWithObjects:v109 count:4];
     [NSLayoutConstraint activateConstraints:v41];
 
-    v42 = [(MapsFloatingDebugViewController *)self view];
-    v43 = [(MapsFloatingDebugViewController *)self scrollView];
-    [v42 addSubview:v43];
+    view5 = [(MapsFloatingDebugViewController *)self view];
+    scrollView = [(MapsFloatingDebugViewController *)self scrollView];
+    [view5 addSubview:scrollView];
 
-    v92 = [(MapsFloatingDebugViewController *)self scrollView];
-    v87 = [v92 leadingAnchor];
-    v84 = [(MapsFloatingDebugViewController *)self view];
-    v79 = [v84 leadingAnchor];
-    v76 = [v87 constraintEqualToAnchor:v79];
+    scrollView2 = [(MapsFloatingDebugViewController *)self scrollView];
+    leadingAnchor3 = [scrollView2 leadingAnchor];
+    view6 = [(MapsFloatingDebugViewController *)self view];
+    leadingAnchor4 = [view6 leadingAnchor];
+    v76 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v108[0] = v76;
-    v82 = [(MapsFloatingDebugViewController *)self scrollView];
-    v75 = [v82 trailingAnchor];
-    v71 = [(MapsFloatingDebugViewController *)self view];
-    v106 = [v71 trailingAnchor];
-    v103 = [v75 constraintEqualToAnchor:?];
+    scrollView3 = [(MapsFloatingDebugViewController *)self scrollView];
+    trailingAnchor3 = [scrollView3 trailingAnchor];
+    view7 = [(MapsFloatingDebugViewController *)self view];
+    trailingAnchor4 = [view7 trailingAnchor];
+    v103 = [trailingAnchor3 constraintEqualToAnchor:?];
     v108[1] = v103;
-    v100 = [(MapsFloatingDebugViewController *)self scrollView];
-    v44 = [v100 topAnchor];
-    v94 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    v57 = [v94 bottomAnchor];
-    v97 = v44;
-    v73 = [v44 constraintEqualToAnchor:v57];
+    scrollView4 = [(MapsFloatingDebugViewController *)self scrollView];
+    topAnchor3 = [scrollView4 topAnchor];
+    grabberContainerView6 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    bottomAnchor = [grabberContainerView6 bottomAnchor];
+    heightAnchor5 = topAnchor3;
+    v73 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v108[2] = v73;
-    v69 = [(MapsFloatingDebugViewController *)self scrollView];
-    v65 = [v69 bottomAnchor];
-    v67 = [(MapsFloatingDebugViewController *)self view];
-    v63 = [v67 bottomAnchor];
-    v61 = [v65 constraintEqualToAnchor:v63];
+    scrollView5 = [(MapsFloatingDebugViewController *)self scrollView];
+    bottomAnchor2 = [scrollView5 bottomAnchor];
+    view8 = [(MapsFloatingDebugViewController *)self view];
+    bottomAnchor3 = [view8 bottomAnchor];
+    v61 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v108[3] = v61;
-    v59 = [(MapsFloatingDebugViewController *)self contentView];
-    v56 = [v59 widthAnchor];
-    v45 = [(MapsFloatingDebugViewController *)self view];
-    v46 = [v45 widthAnchor];
-    v47 = [v56 constraintEqualToAnchor:v46];
+    contentView = [(MapsFloatingDebugViewController *)self contentView];
+    widthAnchor = [contentView widthAnchor];
+    view9 = [(MapsFloatingDebugViewController *)self view];
+    widthAnchor2 = [view9 widthAnchor];
+    v47 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v108[4] = v47;
-    v48 = [(MapsFloatingDebugViewController *)self contentView];
-    v49 = [v48 heightAnchor];
-    v50 = [(MapsFloatingDebugViewController *)self view];
-    v51 = [v50 heightAnchor];
-    v52 = [v49 constraintGreaterThanOrEqualToAnchor:v51 constant:-44.0];
+    contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+    heightAnchor2 = [contentView2 heightAnchor];
+    view10 = [(MapsFloatingDebugViewController *)self view];
+    heightAnchor3 = [view10 heightAnchor];
+    v52 = [heightAnchor2 constraintGreaterThanOrEqualToAnchor:heightAnchor3 constant:-44.0];
     v108[5] = v52;
     v53 = [NSArray arrayWithObjects:v108 count:6];
     [NSLayoutConstraint activateConstraints:v53];
 
-    v27 = v57;
-    v22 = v79;
+    v27 = bottomAnchor;
+    centerXAnchor2 = leadingAnchor4;
 
     v23 = v76;
-    v21 = v84;
+    view17 = view6;
 
-    v26 = v71;
-    v20 = v87;
+    view18 = view7;
+    centerXAnchor = leadingAnchor3;
 
-    v24 = v82;
-    v19 = v92;
+    thumbnailIconLabel4 = scrollView3;
+    thumbnailIconLabel3 = scrollView2;
 
-    v25 = v75;
+    topAnchor6 = trailingAnchor3;
     v28 = 5.0;
   }
 
   else
   {
-    if (v3)
+    if (viewState)
     {
       return;
     }
 
-    v4 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-    [v4 removeFromSuperview];
+    grabberContainerView7 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+    [grabberContainerView7 removeFromSuperview];
 
-    v5 = [(MapsFloatingDebugViewController *)self scrollView];
-    [v5 removeFromSuperview];
+    scrollView6 = [(MapsFloatingDebugViewController *)self scrollView];
+    [scrollView6 removeFromSuperview];
 
-    v6 = [(MapsFloatingDebugViewController *)self view];
-    v7 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    [v6 addSubview:v7];
+    view11 = [(MapsFloatingDebugViewController *)self view];
+    thumbnailImageView2 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    [view11 addSubview:thumbnailImageView2];
 
-    v105 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v99 = [v105 leadingAnchor];
-    v102 = [(MapsFloatingDebugViewController *)self view];
-    v96 = [v102 leadingAnchor];
-    v93 = [v99 constraintEqualToAnchor:v96 constant:5.0];
+    thumbnailImageView3 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    leadingAnchor5 = [thumbnailImageView3 leadingAnchor];
+    view12 = [(MapsFloatingDebugViewController *)self view];
+    leadingAnchor6 = [view12 leadingAnchor];
+    v93 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:5.0];
     v111[0] = v93;
-    v90 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v85 = [v90 trailingAnchor];
-    v88 = [(MapsFloatingDebugViewController *)self view];
-    v83 = [v88 trailingAnchor];
-    v80 = [v85 constraintEqualToAnchor:v83 constant:-5.0];
+    thumbnailImageView4 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    trailingAnchor5 = [thumbnailImageView4 trailingAnchor];
+    view13 = [(MapsFloatingDebugViewController *)self view];
+    trailingAnchor6 = [view13 trailingAnchor];
+    v80 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-5.0];
     v111[1] = v80;
-    v77 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v72 = [v77 topAnchor];
-    v74 = [(MapsFloatingDebugViewController *)self view];
-    v70 = [v74 topAnchor];
-    v68 = [v72 constraintEqualToAnchor:v70 constant:5.0];
+    thumbnailImageView5 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    topAnchor4 = [thumbnailImageView5 topAnchor];
+    view14 = [(MapsFloatingDebugViewController *)self view];
+    topAnchor5 = [view14 topAnchor];
+    v68 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:5.0];
     v111[2] = v68;
-    v66 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v62 = [v66 bottomAnchor];
-    v64 = [(MapsFloatingDebugViewController *)self view];
-    v60 = [v64 bottomAnchor];
-    v58 = [v62 constraintEqualToAnchor:v60 constant:-5.0];
+    thumbnailImageView6 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    bottomAnchor4 = [thumbnailImageView6 bottomAnchor];
+    view15 = [(MapsFloatingDebugViewController *)self view];
+    bottomAnchor5 = [view15 bottomAnchor];
+    v58 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-5.0];
     v111[3] = v58;
-    v8 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v9 = [v8 widthAnchor];
-    v10 = [v9 constraintEqualToConstant:34.0];
+    thumbnailImageView7 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    widthAnchor3 = [thumbnailImageView7 widthAnchor];
+    v10 = [widthAnchor3 constraintEqualToConstant:34.0];
     v111[4] = v10;
-    v11 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v12 = [v11 heightAnchor];
-    v13 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-    v14 = [v13 widthAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14 multiplier:1.0];
+    thumbnailImageView8 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    heightAnchor4 = [thumbnailImageView8 heightAnchor];
+    thumbnailImageView9 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+    widthAnchor4 = [thumbnailImageView9 widthAnchor];
+    v15 = [heightAnchor4 constraintEqualToAnchor:widthAnchor4 multiplier:1.0];
     v111[5] = v15;
     v16 = [NSArray arrayWithObjects:v111 count:6];
     [NSLayoutConstraint activateConstraints:v16];
 
-    v17 = [(MapsFloatingDebugViewController *)self view];
-    v18 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-    [v17 addSubview:v18];
+    view16 = [(MapsFloatingDebugViewController *)self view];
+    thumbnailIconLabel2 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+    [view16 addSubview:thumbnailIconLabel2];
 
-    v19 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-    v20 = [v19 centerXAnchor];
-    v21 = [(MapsFloatingDebugViewController *)self view];
-    v22 = [v21 centerXAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    thumbnailIconLabel3 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+    centerXAnchor = [thumbnailIconLabel3 centerXAnchor];
+    view17 = [(MapsFloatingDebugViewController *)self view];
+    centerXAnchor2 = [view17 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v110[0] = v23;
-    v24 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-    v25 = [v24 topAnchor];
-    v26 = [(MapsFloatingDebugViewController *)self view];
-    v106 = [v26 bottomAnchor];
-    v103 = [v25 constraintEqualToAnchor:5.0 constant:?];
+    thumbnailIconLabel4 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+    topAnchor6 = [thumbnailIconLabel4 topAnchor];
+    view18 = [(MapsFloatingDebugViewController *)self view];
+    trailingAnchor4 = [view18 bottomAnchor];
+    v103 = [topAnchor6 constraintEqualToAnchor:5.0 constant:?];
     v110[1] = v103;
-    v100 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-    v97 = [v100 heightAnchor];
-    v94 = [v97 constraintEqualToConstant:18.0];
-    v110[2] = v94;
+    scrollView4 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+    heightAnchor5 = [scrollView4 heightAnchor];
+    grabberContainerView6 = [heightAnchor5 constraintEqualToConstant:18.0];
+    v110[2] = grabberContainerView6;
     v27 = [NSArray arrayWithObjects:v110 count:3];
     [NSLayoutConstraint activateConstraints:v27];
     v28 = 22.0;
   }
 
-  v54 = [(MapsFloatingDebugViewController *)self view];
-  v55 = [v54 layer];
-  [v55 setCornerRadius:v28];
+  view19 = [(MapsFloatingDebugViewController *)self view];
+  layer = [view19 layer];
+  [layer setCornerRadius:v28];
 }
 
 - (void)toggleState
 {
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (!v3)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (!viewState)
   {
     v4 = 1;
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (viewState == 1)
   {
     v4 = 0;
 LABEL_5:
@@ -378,42 +378,42 @@ LABEL_5:
 - (id)windowScene
 {
   v2 = +[UIApplication _maps_lockScreenSceneDelegate];
-  v3 = [v2 lockScreenWindow];
-  v4 = [v3 windowScene];
-  v5 = v4;
-  if (v4)
+  lockScreenWindow = [v2 lockScreenWindow];
+  windowScene = [lockScreenWindow windowScene];
+  v5 = windowScene;
+  if (windowScene)
   {
-    v6 = v4;
+    windowScene2 = windowScene;
   }
 
   else
   {
     v7 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v8 = [v7 window];
-    v6 = [v8 windowScene];
+    window = [v7 window];
+    windowScene2 = [window windowScene];
   }
 
-  return v6;
+  return windowScene2;
 }
 
 - (BOOL)isAttached
 {
-  v2 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  v3 = [v2 isHidden];
+  floatingDebugWindow = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  isHidden = [floatingDebugWindow isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (void)detach
 {
-  v2 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  [v2 setHidden:1];
+  floatingDebugWindow = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  [floatingDebugWindow setHidden:1];
 }
 
 - (void)attach
 {
-  v3 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  [v3 setHidden:0];
+  floatingDebugWindow = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  [floatingDebugWindow setHidden:0];
 
   [(MapsFloatingDebugViewController *)self loadViewIfNeeded];
 }
@@ -444,190 +444,190 @@ LABEL_5:
   v157.super_class = MapsFloatingDebugViewController;
   [(MapsFloatingDebugViewController *)&v157 viewDidLoad];
   v156 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"panGestureRecognizerFired:"];
-  v3 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  [v3 addGestureRecognizer:v156];
+  floatingDebugWindow = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  [floatingDebugWindow addGestureRecognizer:v156];
 
   v155 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"tapGestureRecognizerFired:"];
-  v4 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  [v4 addGestureRecognizer:v155];
+  floatingDebugWindow2 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  [floatingDebugWindow2 addGestureRecognizer:v155];
 
   v154 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"longPressGestureRecognizerFired:"];
-  v5 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  [v5 addGestureRecognizer:v154];
+  floatingDebugWindow3 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  [floatingDebugWindow3 addGestureRecognizer:v154];
 
-  v6 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
-  v7 = [(MapsFloatingDebugViewController *)self view];
-  [v6 addSubview:v7];
+  floatingDebugWindow4 = [(MapsFloatingDebugViewController *)self floatingDebugWindow];
+  view = [(MapsFloatingDebugViewController *)self view];
+  [floatingDebugWindow4 addSubview:view];
 
-  v8 = [(MapsFloatingDebugViewController *)self view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(MapsFloatingDebugViewController *)self view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(MapsFloatingDebugViewController *)self tintColor];
-  v10 = [(MapsFloatingDebugViewController *)self view];
-  [v10 setBackgroundColor:v9];
+  tintColor = [(MapsFloatingDebugViewController *)self tintColor];
+  view3 = [(MapsFloatingDebugViewController *)self view];
+  [view3 setBackgroundColor:tintColor];
 
-  v11 = [(MapsFloatingDebugViewController *)self view];
-  v12 = [v11 leadingAnchor];
-  v13 = [(MapsFloatingDebugViewController *)self view];
-  v14 = [v13 superview];
-  v15 = [v14 leadingAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  view4 = [(MapsFloatingDebugViewController *)self view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(MapsFloatingDebugViewController *)self view];
+  superview = [view5 superview];
+  leadingAnchor2 = [superview leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(MapsFloatingDebugViewController *)self setLeadingConstraint:v16];
 
-  v17 = [(MapsFloatingDebugViewController *)self view];
-  v18 = [v17 topAnchor];
-  v19 = [(MapsFloatingDebugViewController *)self view];
-  v20 = [v19 superview];
-  v21 = [v20 topAnchor];
-  v22 = [v18 constraintEqualToAnchor:v21];
+  view6 = [(MapsFloatingDebugViewController *)self view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(MapsFloatingDebugViewController *)self view];
+  superview2 = [view7 superview];
+  topAnchor2 = [superview2 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(MapsFloatingDebugViewController *)self setTopConstraint:v22];
 
-  v23 = [(MapsFloatingDebugViewController *)self leadingConstraint];
+  leadingConstraint = [(MapsFloatingDebugViewController *)self leadingConstraint];
   LODWORD(v24) = 1148829696;
-  [v23 setPriority:v24];
+  [leadingConstraint setPriority:v24];
 
-  v25 = [(MapsFloatingDebugViewController *)self topConstraint];
+  topConstraint = [(MapsFloatingDebugViewController *)self topConstraint];
   LODWORD(v26) = 1148829696;
-  [v25 setPriority:v26];
+  [topConstraint setPriority:v26];
 
   [(MapsFloatingDebugViewController *)self initialPosition];
   v28 = v27;
-  v29 = [(MapsFloatingDebugViewController *)self leadingConstraint];
-  [v29 setConstant:v28];
+  leadingConstraint2 = [(MapsFloatingDebugViewController *)self leadingConstraint];
+  [leadingConstraint2 setConstant:v28];
 
   [(MapsFloatingDebugViewController *)self initialPosition];
   v31 = v30;
-  v32 = [(MapsFloatingDebugViewController *)self topConstraint];
-  [v32 setConstant:v31];
+  topConstraint2 = [(MapsFloatingDebugViewController *)self topConstraint];
+  [topConstraint2 setConstant:v31];
 
-  v152 = [(MapsFloatingDebugViewController *)self view];
-  v143 = [v152 topAnchor];
-  v149 = [(MapsFloatingDebugViewController *)self view];
-  v146 = [v149 superview];
-  v140 = [v146 safeAreaLayoutGuide];
-  v137 = [v140 topAnchor];
-  v134 = [v143 constraintGreaterThanOrEqualToAnchor:v137];
+  view8 = [(MapsFloatingDebugViewController *)self view];
+  topAnchor3 = [view8 topAnchor];
+  view9 = [(MapsFloatingDebugViewController *)self view];
+  superview3 = [view9 superview];
+  safeAreaLayoutGuide = [superview3 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v134 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v161[0] = v134;
-  v132 = [(MapsFloatingDebugViewController *)self view];
-  v126 = [v132 bottomAnchor];
-  v130 = [(MapsFloatingDebugViewController *)self view];
-  v128 = [v130 superview];
-  v125 = [v128 safeAreaLayoutGuide];
-  v123 = [v125 bottomAnchor];
-  v120 = [v126 constraintLessThanOrEqualToAnchor:v123];
+  view10 = [(MapsFloatingDebugViewController *)self view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(MapsFloatingDebugViewController *)self view];
+  superview4 = [view11 superview];
+  safeAreaLayoutGuide2 = [superview4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v120 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v161[1] = v120;
-  v119 = [(MapsFloatingDebugViewController *)self view];
-  v116 = [v119 leadingAnchor];
-  v118 = [(MapsFloatingDebugViewController *)self view];
-  v117 = [v118 superview];
-  v115 = [v117 safeAreaLayoutGuide];
-  v114 = [v115 leadingAnchor];
-  v113 = [v116 constraintGreaterThanOrEqualToAnchor:v114];
+  view12 = [(MapsFloatingDebugViewController *)self view];
+  leadingAnchor3 = [view12 leadingAnchor];
+  view13 = [(MapsFloatingDebugViewController *)self view];
+  superview5 = [view13 superview];
+  safeAreaLayoutGuide3 = [superview5 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide3 leadingAnchor];
+  v113 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
   v161[2] = v113;
-  v112 = [(MapsFloatingDebugViewController *)self view];
-  v33 = [v112 trailingAnchor];
-  v34 = [(MapsFloatingDebugViewController *)self view];
-  v35 = [v34 superview];
-  v36 = [v35 safeAreaLayoutGuide];
-  v37 = [v36 trailingAnchor];
-  v38 = [v33 constraintLessThanOrEqualToAnchor:v37];
+  view14 = [(MapsFloatingDebugViewController *)self view];
+  trailingAnchor = [view14 trailingAnchor];
+  view15 = [(MapsFloatingDebugViewController *)self view];
+  superview6 = [view15 superview];
+  safeAreaLayoutGuide4 = [superview6 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+  v38 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v161[3] = v38;
-  v39 = [(MapsFloatingDebugViewController *)self leadingConstraint];
-  v161[4] = v39;
-  v40 = [(MapsFloatingDebugViewController *)self topConstraint];
-  v161[5] = v40;
+  leadingConstraint3 = [(MapsFloatingDebugViewController *)self leadingConstraint];
+  v161[4] = leadingConstraint3;
+  topConstraint3 = [(MapsFloatingDebugViewController *)self topConstraint];
+  v161[5] = topConstraint3;
   v41 = [NSArray arrayWithObjects:v161 count:6];
   [NSLayoutConstraint activateConstraints:v41];
 
   v42 = [[UIImageView alloc] initWithImage:0];
   [(MapsFloatingDebugViewController *)self setThumbnailImageView:v42];
 
-  v43 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v44 = +[UIColor whiteColor];
-  v45 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v45 setTintColor:v44];
+  thumbnailImageView2 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView2 setTintColor:v44];
 
-  v46 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v46 setContentMode:1];
+  thumbnailImageView3 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView3 setContentMode:1];
 
-  v47 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  thumbnailImageView4 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
   LODWORD(v48) = 1148846080;
-  [v47 setContentCompressionResistancePriority:1 forAxis:v48];
+  [thumbnailImageView4 setContentCompressionResistancePriority:1 forAxis:v48];
 
-  v49 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  thumbnailImageView5 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
   LODWORD(v50) = 1148846080;
-  [v49 setContentCompressionResistancePriority:0 forAxis:v50];
+  [thumbnailImageView5 setContentCompressionResistancePriority:0 forAxis:v50];
 
   v51 = [FloatingDebugIconLabel alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v55 = [(FloatingDebugIconLabel *)v51 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(MapsFloatingDebugViewController *)self setThumbnailIconLabel:v55];
+  height = [(FloatingDebugIconLabel *)v51 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(MapsFloatingDebugViewController *)self setThumbnailIconLabel:height];
 
-  v56 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v56 setTranslatesAutoresizingMaskIntoConstraints:0];
+  thumbnailIconLabel = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v57 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v57 setTextAlignment:1];
+  thumbnailIconLabel2 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel2 setTextAlignment:1];
 
   v58 = +[UIColor whiteColor];
-  v59 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v59 setTextColor:v58];
+  thumbnailIconLabel3 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel3 setTextColor:v58];
 
   v60 = [UIFont systemFontOfSize:14.0];
-  v61 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v61 setFont:v60];
+  thumbnailIconLabel4 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel4 setFont:v60];
 
-  v62 = [(MapsFloatingDebugViewController *)self tintColor];
-  v63 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v63 setBackgroundColor:v62];
+  tintColor2 = [(MapsFloatingDebugViewController *)self tintColor];
+  thumbnailIconLabel5 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel5 setBackgroundColor:tintColor2];
 
-  v64 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v64 setClipsToBounds:1];
+  thumbnailIconLabel6 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel6 setClipsToBounds:1];
 
-  v65 = [(MapsFloatingDebugViewController *)self iconText];
-  v66 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  [v66 setText:v65];
+  iconText = [(MapsFloatingDebugViewController *)self iconText];
+  thumbnailIconLabel7 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  [thumbnailIconLabel7 setText:iconText];
 
-  v67 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
-  v68 = [v67 layer];
-  [v68 setCornerRadius:9.0];
+  thumbnailIconLabel8 = [(MapsFloatingDebugViewController *)self thumbnailIconLabel];
+  layer = [thumbnailIconLabel8 layer];
+  [layer setCornerRadius:9.0];
 
   v69 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(MapsFloatingDebugViewController *)self setGrabberContainerView:v69];
 
-  v70 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  [v70 setTranslatesAutoresizingMaskIntoConstraints:0];
+  grabberContainerView = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  [grabberContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v71 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v71 setTranslatesAutoresizingMaskIntoConstraints:0];
   v72 = +[UIColor whiteColor];
   [v71 setBackgroundColor:v72];
 
-  v73 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  [v73 addSubview:v71];
+  grabberContainerView2 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  [grabberContainerView2 addSubview:v71];
 
-  v147 = [v71 leadingAnchor];
-  v150 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  v144 = [v150 leadingAnchor];
-  v141 = [v147 constraintEqualToAnchor:v144 constant:8.0];
+  leadingAnchor5 = [v71 leadingAnchor];
+  grabberContainerView3 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  leadingAnchor6 = [grabberContainerView3 leadingAnchor];
+  v141 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:8.0];
   v160[0] = v141;
-  v135 = [v71 trailingAnchor];
-  v138 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  v74 = [v138 trailingAnchor];
-  v75 = [v135 constraintEqualToAnchor:v74 constant:-8.0];
+  trailingAnchor3 = [v71 trailingAnchor];
+  grabberContainerView4 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  trailingAnchor4 = [grabberContainerView4 trailingAnchor];
+  v75 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-8.0];
   v160[1] = v75;
   v153 = v71;
-  v76 = [v71 bottomAnchor];
-  v77 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  v78 = [v77 bottomAnchor];
-  v79 = [v76 constraintEqualToAnchor:v78];
+  bottomAnchor3 = [v71 bottomAnchor];
+  grabberContainerView5 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  bottomAnchor4 = [grabberContainerView5 bottomAnchor];
+  v79 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v160[2] = v79;
-  v80 = [v71 heightAnchor];
-  v81 = [v80 constraintEqualToConstant:1.0];
+  heightAnchor = [v71 heightAnchor];
+  v81 = [heightAnchor constraintEqualToConstant:1.0];
   v160[3] = v81;
   v82 = [NSArray arrayWithObjects:v160 count:4];
   [NSLayoutConstraint activateConstraints:v82];
@@ -637,19 +637,19 @@ LABEL_5:
   v84 = +[UIColor whiteColor];
   [v83 setBackgroundColor:v84];
 
-  v85 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  [v85 addSubview:v83];
+  grabberContainerView6 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  [grabberContainerView6 addSubview:v83];
 
   v151 = v83;
-  v86 = [v83 centerXAnchor];
-  v87 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  v88 = [v87 centerXAnchor];
-  v89 = [v86 constraintEqualToAnchor:v88];
+  centerXAnchor = [v83 centerXAnchor];
+  grabberContainerView7 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  centerXAnchor2 = [grabberContainerView7 centerXAnchor];
+  v89 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v159[0] = v89;
-  v90 = [v83 centerYAnchor];
-  v91 = [(MapsFloatingDebugViewController *)self grabberContainerView];
-  v92 = [v91 centerYAnchor];
-  v93 = [v90 constraintEqualToAnchor:v92];
+  centerYAnchor = [v83 centerYAnchor];
+  grabberContainerView8 = [(MapsFloatingDebugViewController *)self grabberContainerView];
+  centerYAnchor2 = [grabberContainerView8 centerYAnchor];
+  v93 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v159[1] = v93;
   v94 = [NSArray arrayWithObjects:v159 count:2];
   [NSLayoutConstraint activateConstraints:v94];
@@ -657,44 +657,44 @@ LABEL_5:
   v95 = objc_opt_new();
   [(MapsFloatingDebugViewController *)self setScrollView:v95];
 
-  v96 = [(MapsFloatingDebugViewController *)self scrollView];
-  [v96 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(MapsFloatingDebugViewController *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v97 = [(MapsFloatingDebugViewController *)self scrollView];
+  scrollView2 = [(MapsFloatingDebugViewController *)self scrollView];
   LODWORD(v98) = 1148846080;
-  [v97 setContentHuggingPriority:1 forAxis:v98];
+  [scrollView2 setContentHuggingPriority:1 forAxis:v98];
 
-  v99 = [(MapsFloatingDebugViewController *)self scrollView];
+  scrollView3 = [(MapsFloatingDebugViewController *)self scrollView];
   LODWORD(v100) = 1132068864;
-  [v99 setContentCompressionResistancePriority:1 forAxis:v100];
+  [scrollView3 setContentCompressionResistancePriority:1 forAxis:v100];
 
-  v101 = [(MapsFloatingDebugViewController *)self scrollView];
-  v102 = [(MapsFloatingDebugViewController *)self contentView];
-  [v101 addSubview:v102];
+  scrollView4 = [(MapsFloatingDebugViewController *)self scrollView];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [scrollView4 addSubview:contentView];
 
-  v148 = [(MapsFloatingDebugViewController *)self contentView];
-  v142 = [v148 leadingAnchor];
-  v145 = [(MapsFloatingDebugViewController *)self scrollView];
-  v139 = [v145 leadingAnchor];
-  v136 = [v142 constraintEqualToAnchor:v139];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor7 = [contentView2 leadingAnchor];
+  scrollView5 = [(MapsFloatingDebugViewController *)self scrollView];
+  leadingAnchor8 = [scrollView5 leadingAnchor];
+  v136 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v158[0] = v136;
-  v133 = [(MapsFloatingDebugViewController *)self contentView];
-  v129 = [v133 trailingAnchor];
-  v131 = [(MapsFloatingDebugViewController *)self scrollView];
-  v127 = [v131 trailingAnchor];
-  v124 = [v129 constraintEqualToAnchor:v127];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor5 = [contentView3 trailingAnchor];
+  scrollView6 = [(MapsFloatingDebugViewController *)self scrollView];
+  trailingAnchor6 = [scrollView6 trailingAnchor];
+  v124 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v158[1] = v124;
-  v122 = [(MapsFloatingDebugViewController *)self contentView];
-  v121 = [v122 topAnchor];
-  v103 = [(MapsFloatingDebugViewController *)self scrollView];
-  v104 = [v103 topAnchor];
-  v105 = [v121 constraintEqualToAnchor:v104];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor5 = [contentView4 topAnchor];
+  scrollView7 = [(MapsFloatingDebugViewController *)self scrollView];
+  topAnchor6 = [scrollView7 topAnchor];
+  v105 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v158[2] = v105;
-  v106 = [(MapsFloatingDebugViewController *)self contentView];
-  v107 = [v106 bottomAnchor];
-  v108 = [(MapsFloatingDebugViewController *)self scrollView];
-  v109 = [v108 bottomAnchor];
-  v110 = [v107 constraintEqualToAnchor:v109];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor5 = [contentView5 bottomAnchor];
+  scrollView8 = [(MapsFloatingDebugViewController *)self scrollView];
+  bottomAnchor6 = [scrollView8 bottomAnchor];
+  v110 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v158[3] = v110;
   v111 = [NSArray arrayWithObjects:v158 count:4];
   [NSLayoutConstraint activateConstraints:v111];
@@ -713,8 +713,8 @@ LABEL_5:
     [v3 addObserver:v2 selector:"sceneDidActivateNotification:" name:UISceneDidActivateNotification object:0];
 
     v4 = [PassThroughWindow alloc];
-    v5 = [(MapsFloatingDebugViewController *)v2 windowScene];
-    v6 = [(PassThroughWindow *)v4 initWithWindowScene:v5];
+    windowScene = [(MapsFloatingDebugViewController *)v2 windowScene];
+    v6 = [(PassThroughWindow *)v4 initWithWindowScene:windowScene];
     floatingDebugWindow = v2->_floatingDebugWindow;
     v2->_floatingDebugWindow = v6;
 

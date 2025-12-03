@@ -1,34 +1,34 @@
 @interface SiriCoreNetworkSessionProvider
 - (BOOL)providerStatsIndicatePoorLinkQuality;
-- (SiriCoreNetworkSessionProvider)initWithQueue:(id)a3;
+- (SiriCoreNetworkSessionProvider)initWithQueue:(id)queue;
 - (id)analysisInfo;
 - (id)connectionType;
 - (id)delegate;
-- (void)URLSession:(id)a3 betterRouteDiscoveredForStreamTask:(id)a4;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 streamTask:(id)a4 didBecomeInputStream:(id)a5 outputStream:(id)a6;
+- (void)URLSession:(id)session betterRouteDiscoveredForStreamTask:(id)task;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session streamTask:(id)task didBecomeInputStream:(id)stream outputStream:(id)outputStream;
 - (void)_cancelOpenTimer;
 - (void)_cancelStaleConnectionTimer;
-- (void)_closeWithError:(id)a3;
-- (void)_invokeOpenCompletionWithError:(id)a3;
+- (void)_closeWithError:(id)error;
+- (void)_invokeOpenCompletionWithError:(id)error;
 - (void)_setupOpenTimer;
 - (void)_setupStaleConnectionTimer;
 - (void)_streamDidBecomeUnviable;
 - (void)close;
-- (void)openConnectionForURL:(id)a3 withConnectionId:(id)a4 initialPayload:(id)a5 completion:(id)a6;
-- (void)readData:(id)a3;
-- (void)setPolicyRoute:(id)a3;
-- (void)setProviderConnectionPolicy:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)writeData:(id)a3 completion:(id)a4;
+- (void)openConnectionForURL:(id)l withConnectionId:(id)id initialPayload:(id)payload completion:(id)completion;
+- (void)readData:(id)data;
+- (void)setPolicyRoute:(id)route;
+- (void)setProviderConnectionPolicy:(id)policy;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)writeData:(id)data completion:(id)completion;
 @end
 
 @implementation SiriCoreNetworkSessionProvider
 
-- (void)writeData:(id)a3 completion:(id)a4
+- (void)writeData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -44,8 +44,8 @@
     v10[3] = &unk_279BD59A0;
     v10[4] = self;
     v10[5] = &v11;
-    dispatch_data_apply(v6, v10);
-    if (!v7)
+    dispatch_data_apply(dataCopy, v10);
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -57,10 +57,10 @@
   v9 = v12[5];
   v12[5] = v8;
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_5:
-    v7[2](v7, v12[5]);
+    completionCopy[2](completionCopy, v12[5]);
   }
 
 LABEL_6:
@@ -88,9 +88,9 @@ BOOL __55__SiriCoreNetworkSessionProvider_writeData_completion___block_invoke(ui
   return v6 >= 0;
 }
 
-- (void)readData:(id)a3
+- (void)readData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   readGroup = self->_readGroup;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -98,8 +98,8 @@ BOOL __55__SiriCoreNetworkSessionProvider_writeData_completion___block_invoke(ui
   v8[2] = __43__SiriCoreNetworkSessionProvider_readData___block_invoke;
   v8[3] = &unk_279BD6148;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dataCopy;
+  v7 = dataCopy;
   dispatch_group_notify(readGroup, queue, v8);
 }
 
@@ -137,28 +137,28 @@ LABEL_7:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setProviderConnectionPolicy:(id)a3
+- (void)setProviderConnectionPolicy:(id)policy
 {
-  v4 = [a3 copy];
+  v4 = [policy copy];
   policy = self->_policy;
   self->_policy = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setPolicyRoute:(id)a3
+- (void)setPolicyRoute:(id)route
 {
-  v4 = [a3 copy];
+  v4 = [route copy];
   route = self->_route;
   self->_route = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CEF0A8];
   v6 = *MEMORY[0x277CEF0A8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_INFO))
@@ -221,20 +221,20 @@ LABEL_7:
       v23 = 136315138;
       v24 = "[SiriCoreNetworkSessionProvider _closeWithError:]";
       _os_log_error_impl(&dword_2669D1000, v14, OS_LOG_TYPE_ERROR, "%s Invoking open completion on close", &v23, 0xCu);
-      if (v4)
+      if (errorCopy)
       {
         goto LABEL_15;
       }
     }
 
-    else if (v4)
+    else if (errorCopy)
     {
 LABEL_15:
-      [(SiriCoreNetworkSessionProvider *)self _invokeOpenCompletionWithError:v4];
+      [(SiriCoreNetworkSessionProvider *)self _invokeOpenCompletionWithError:errorCopy];
       goto LABEL_16;
     }
 
-    v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:17 userInfo:0];
+    errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:17 userInfo:0];
     goto LABEL_15;
   }
 
@@ -392,9 +392,9 @@ void __70__SiriCoreNetworkSessionProvider_providerStatsIndicatePoorLinkQuality__
   url = self->_url;
   interfaceIndex = self->_interfaceIndex;
   prefersWWAN = self->_prefersWWAN;
-  v7 = [(SiriCoreNetworkSessionProvider *)self connectionType];
-  v8 = [(SAConnectionPolicy *)self->_policy policyId];
-  v9 = [(SiriCoreAceConnectionAnalysisInfo *)v3 initWithConnectionURL:url interfaceIndex:interfaceIndex sendBufferSize:&unk_2878381E0 wwanPreferred:prefersWWAN connectionType:v7 policyId:v8];
+  connectionType = [(SiriCoreNetworkSessionProvider *)self connectionType];
+  policyId = [(SAConnectionPolicy *)self->_policy policyId];
+  v9 = [(SiriCoreAceConnectionAnalysisInfo *)v3 initWithConnectionURL:url interfaceIndex:interfaceIndex sendBufferSize:&unk_2878381E0 wwanPreferred:prefersWWAN connectionType:connectionType policyId:policyId];
 
   return v9;
 }
@@ -414,7 +414,7 @@ void __70__SiriCoreNetworkSessionProvider_providerStatsIndicatePoorLinkQuality__
     v4 = self->_outputStream;
     isMPTCP = self->_isMPTCP;
     v6 = [(NSOutputStream *)v4 propertyForKey:*MEMORY[0x277CBADC0]];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     v8 = MEMORY[0x277CEF0A8];
     v9 = *MEMORY[0x277CEF0A8];
@@ -423,7 +423,7 @@ void __70__SiriCoreNetworkSessionProvider_providerStatsIndicatePoorLinkQuality__
       v10 = MEMORY[0x277CCABB0];
       v11 = v9;
       v12 = [v10 numberWithBool:isMPTCP];
-      v13 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+      v13 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
       v27 = 136315650;
       v28 = "[SiriCoreNetworkSessionProvider connectionType]";
       v29 = 2112;
@@ -492,7 +492,7 @@ void __70__SiriCoreNetworkSessionProvider_providerStatsIndicatePoorLinkQuality__
         goto LABEL_21;
       }
 
-      v14 = [SiriCoreNetworkManager connectionTypeForInterfaceName:self->_interfaceName isCellular:v7];
+      v14 = [SiriCoreNetworkManager connectionTypeForInterfaceName:self->_interfaceName isCellular:bOOLValue];
     }
 
     v24 = self->_connectionType;
@@ -509,13 +509,13 @@ LABEL_23:
   return v15;
 }
 
-- (void)openConnectionForURL:(id)a3 withConnectionId:(id)a4 initialPayload:(id)a5 completion:(id)a6
+- (void)openConnectionForURL:(id)l withConnectionId:(id)id initialPayload:(id)payload completion:(id)completion
 {
   v100 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v85 = a5;
-  v84 = a6;
+  lCopy = l;
+  idCopy = id;
+  payloadCopy = payload;
+  completionCopy = completion;
   kdebug_trace();
   if (self->_completion_block)
   {
@@ -526,49 +526,49 @@ LABEL_23:
   [(SiriCoreNetworkSessionProvider *)self _setupOpenTimer];
   v13 = self->_route;
   prefersWWAN = self->_prefersWWAN;
-  v14 = [(SiriCoreNetworkSessionProvider *)v10 copy];
+  v14 = [(SiriCoreNetworkSessionProvider *)lCopy copy];
   url = self->_url;
   self->_url = v14;
 
-  v16 = [(SiriCoreNetworkSessionProvider *)v11 copy];
+  v16 = [(SiriCoreNetworkSessionProvider *)idCopy copy];
   connectionId = self->_connectionId;
   self->_connectionId = v16;
 
   self->_isCanceled = 0;
   v18 = v13;
-  v19 = [(SiriCoreNetworkSessionProvider *)v10 host];
-  v20 = [(SAConnectionPolicyRoute *)v18 resolver];
-  v21 = [(SAConnectionPolicyRoute *)v18 cname];
-  v22 = v21;
-  if (v21)
+  host = [(SiriCoreNetworkSessionProvider *)lCopy host];
+  resolver = [(SAConnectionPolicyRoute *)v18 resolver];
+  cname = [(SAConnectionPolicyRoute *)v18 cname];
+  v22 = cname;
+  if (cname)
   {
-    v23 = v21;
+    v23 = cname;
   }
 
   else
   {
-    v23 = v19;
+    v23 = host;
   }
 
   v24 = v23;
 
-  if (v20)
+  if (resolver)
   {
-    v25 = [(SAConnectionPolicyRoute *)v18 type];
-    v26 = [v25 isEqualToString:*MEMORY[0x277D47CB8]];
+    type = [(SAConnectionPolicyRoute *)v18 type];
+    v26 = [type isEqualToString:*MEMORY[0x277D47CB8]];
 
     if (v26)
     {
-      v27 = [(SAConnectionPolicyRoute *)v18 host];
-      v28 = v27;
-      if (v27)
+      host2 = [(SAConnectionPolicyRoute *)v18 host];
+      v28 = host2;
+      if (host2)
       {
-        v29 = v27;
+        v29 = host2;
       }
 
       else
       {
-        v29 = v19;
+        v29 = host;
       }
 
       v30 = v29;
@@ -580,7 +580,7 @@ LABEL_23:
   if (!v24 && ([MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:10 userInfo:0], (v31 = objc_claimAutoreleasedReturnValue()) != 0) || self->_isCanceled && (objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", @"SiriCoreSiriConnectionErrorDomain", 11, 0), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v36 = v31;
-    v37 = v84;
+    v37 = completionCopy;
 LABEL_70:
     (v37)[2](v37, v36);
 
@@ -588,14 +588,14 @@ LABEL_70:
   }
 
   connectByPOPEnabled = self->_connectByPOPEnabled;
-  v32 = [(SiriCoreNetworkSessionProvider *)v10 port];
-  v78 = [(SiriCoreNetworkSessionProvider *)v10 scheme];
-  v33 = [v78 caseInsensitiveCompare:@"https"];
+  port = [(SiriCoreNetworkSessionProvider *)lCopy port];
+  scheme = [(SiriCoreNetworkSessionProvider *)lCopy scheme];
+  v33 = [scheme caseInsensitiveCompare:@"https"];
   policy = self->_policy;
   if (policy)
   {
-    v35 = [(SAConnectionPolicy *)policy enableTcpFastOpen];
-    HIDWORD(v74) = [v35 BOOLValue];
+    enableTcpFastOpen = [(SAConnectionPolicy *)policy enableTcpFastOpen];
+    HIDWORD(v74) = [enableTcpFastOpen BOOLValue];
   }
 
   else if (AFIsInternalInstall() && (AFIsNano() & 1) == 0)
@@ -608,10 +608,10 @@ LABEL_70:
     HIDWORD(v74) = 0;
   }
 
-  v80 = v11;
-  if (v32)
+  v80 = idCopy;
+  if (port)
   {
-    v79 = [v32 intValue];
+    intValue = [port intValue];
   }
 
   else
@@ -626,18 +626,18 @@ LABEL_70:
       v38 = 443;
     }
 
-    v79 = v38;
+    intValue = v38;
   }
 
   LODWORD(v74) = v33 == 0;
-  v39 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v40 = *MEMORY[0x277CEF0A8];
   v77 = v33;
   if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_INFO))
   {
     v41 = v33 == 0;
-    v42 = v39;
-    v43 = v32;
+    v42 = dictionary;
+    v43 = port;
     v44 = MEMORY[0x277CCABB0];
     v45 = v40;
     v46 = [v44 numberWithBool:v41];
@@ -645,28 +645,28 @@ LABEL_70:
     *buf = 136316418;
     v93 = "[SiriCoreNetworkSessionProvider openConnectionForURL:withConnectionId:initialPayload:completion:]";
     v94 = 2112;
-    v95 = v10;
+    selfCopy = lCopy;
     v96 = 2112;
     v97 = v24;
     v98 = 1024;
-    *v99 = v79;
+    *v99 = intValue;
     *&v99[4] = 2112;
     *&v99[6] = v46;
     *&v99[14] = 2112;
     *&v99[16] = v47;
     _os_log_impl(&dword_2669D1000, v45, OS_LOG_TYPE_INFO, "%s Connecting to %@ (resolved host = %@, port = %u, secure = %@, WWAN preferred %@)", buf, 0x3Au);
 
-    v32 = v43;
-    v39 = v42;
+    port = v43;
+    dictionary = v42;
     v33 = v77;
   }
 
-  v48 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v48 setAllowsCellularAccess:1];
-  [v48 setNetworkServiceType:4];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setAllowsCellularAccess:1];
+  [defaultSessionConfiguration setNetworkServiceType:4];
   v49 = *MEMORY[0x277CBED28];
-  [v39 setObject:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CBACD8]];
-  [v39 setObject:v49 forKey:*MEMORY[0x277CBADB8]];
+  [dictionary setObject:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CBACD8]];
+  [dictionary setObject:v49 forKey:*MEMORY[0x277CBADB8]];
   if (prefersWWAN)
   {
     v50 = *MEMORY[0x277CEF0A8];
@@ -677,25 +677,25 @@ LABEL_70:
       _os_log_impl(&dword_2669D1000, v50, OS_LOG_TYPE_INFO, "%s Preferring WWAN", buf, 0xCu);
     }
 
-    [v48 set_CTDataConnectionServiceType:*MEMORY[0x277CC39E0]];
+    [defaultSessionConfiguration set_CTDataConnectionServiceType:*MEMORY[0x277CC39E0]];
   }
 
   else if ((AFIsHorseman() & 1) == 0)
   {
-    v51 = [(SAConnectionPolicyRoute *)v18 mptcp];
-    v52 = v51;
-    if (v51)
+    mptcp = [(SAConnectionPolicyRoute *)v18 mptcp];
+    v52 = mptcp;
+    if (mptcp)
     {
-      v53 = [v51 BOOLValue];
+      bOOLValue = [mptcp BOOLValue];
     }
 
     else
     {
-      v53 = 1;
+      bOOLValue = 1;
     }
 
-    [v48 set_allowsMultipathTCP:v53];
-    [v48 setMultipathServiceType:2];
+    [defaultSessionConfiguration set_allowsMultipathTCP:bOOLValue];
+    [defaultSessionConfiguration setMultipathServiceType:2];
   }
 
   if (connectByPOPEnabled)
@@ -708,7 +708,7 @@ LABEL_70:
       _os_log_impl(&dword_2669D1000, v54, OS_LOG_TYPE_INFO, "%s Did not enable TLS. Using POP Connection method.", buf, 0xCu);
     }
 
-    [v48 set_sourceApplicationSecondaryIdentifier:@"ace.siri.apple.com"];
+    [defaultSessionConfiguration set_sourceApplicationSecondaryIdentifier:@"ace.siri.apple.com"];
   }
 
   else if (v33)
@@ -719,7 +719,7 @@ LABEL_70:
       *buf = 136315394;
       v93 = "[SiriCoreNetworkSessionProvider openConnectionForURL:withConnectionId:initialPayload:completion:]";
       v94 = 2112;
-      v95 = v10;
+      selfCopy = lCopy;
       _os_log_impl(&dword_2669D1000, v55, OS_LOG_TYPE_INFO, "%s Connecting to insecure ace server: %@", buf, 0x16u);
     }
   }
@@ -729,33 +729,33 @@ LABEL_70:
     v90 = *MEMORY[0x277CBACD0];
     v91 = v49;
     v56 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-    [v39 setObject:v56 forKey:*MEMORY[0x277CBAE68]];
-    [v48 set_allowsTLSSessionTickets:1];
+    [dictionary setObject:v56 forKey:*MEMORY[0x277CBAE68]];
+    [defaultSessionConfiguration set_allowsTLSSessionTickets:1];
     if (v76)
     {
-      [v48 set_allowsTCPFastOpen:1];
+      [defaultSessionConfiguration set_allowsTCPFastOpen:1];
     }
   }
 
-  [v48 set_socketStreamProperties:v39];
-  [v48 set_allowTCPIOConnectionStreamTask:1];
+  [defaultSessionConfiguration set_socketStreamProperties:dictionary];
+  [defaultSessionConfiguration set_allowTCPIOConnectionStreamTask:1];
   v57 = *MEMORY[0x277CEF0A8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_INFO))
   {
     v58 = v57;
-    v59 = [v48 _socketStreamProperties];
+    _socketStreamProperties = [defaultSessionConfiguration _socketStreamProperties];
     *buf = 136315394;
     v93 = "[SiriCoreNetworkSessionProvider openConnectionForURL:withConnectionId:initialPayload:completion:]";
     v94 = 2112;
-    v95 = v59;
+    selfCopy = _socketStreamProperties;
     _os_log_impl(&dword_2669D1000, v58, OS_LOG_TYPE_INFO, "%s stream properties %@", buf, 0x16u);
   }
 
-  v60 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v48 delegate:self delegateQueue:self->_opQueue];
+  v60 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:self->_opQueue];
   v61 = v60;
-  if (v24 && ([v60 streamTaskWithHostName:v24 port:v79], v62 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(&self->_resolvedHost, v24), v62))
+  if (v24 && ([v60 streamTaskWithHostName:v24 port:intValue], v62 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(&self->_resolvedHost, v24), v62))
   {
-    v83 = v32;
+    v83 = port;
     v63 = *MEMORY[0x277CEF0A8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_INFO))
     {
@@ -763,7 +763,7 @@ LABEL_70:
       v93 = "[SiriCoreNetworkSessionProvider openConnectionForURL:withConnectionId:initialPayload:completion:]";
       v64 = @"No TFO";
       v94 = 2112;
-      v95 = self;
+      selfCopy = self;
       if ((v75 & v76) != 0)
       {
         v64 = @"Enabling TFO";
@@ -786,13 +786,13 @@ LABEL_70:
     v86[3] = &unk_279BD5950;
     v66 = v65;
     v87 = v66;
-    v88 = self;
-    v89 = v84;
+    selfCopy2 = self;
+    v89 = completionCopy;
     v67 = MEMORY[0x26D5E5DB0](v86);
     completion_block = self->_completion_block;
     self->_completion_block = v67;
 
-    [(NSURLSessionStreamTask *)v62 set_initialDataPayload:v85];
+    [(NSURLSessionStreamTask *)v62 set_initialDataPayload:payloadCopy];
     if (connectByPOPEnabled)
     {
       if (v80)
@@ -806,7 +806,7 @@ LABEL_70:
         *buf = 136315394;
         v93 = "[SiriCoreNetworkSessionProvider openConnectionForURL:withConnectionId:initialPayload:completion:]";
         v94 = 2112;
-        v95 = v80;
+        selfCopy = v80;
         _os_log_impl(&dword_2669D1000, v69, OS_LOG_TYPE_INFO, "%s Setting NSPServiceName to %@", buf, 0x16u);
       }
     }
@@ -825,7 +825,7 @@ LABEL_70:
 
     objc_storeStrong(&self->_urlSession, v61);
     v36 = 0;
-    v32 = v83;
+    port = v83;
   }
 
   else
@@ -836,7 +836,7 @@ LABEL_70:
       *buf = 136315394;
       v93 = "[SiriCoreNetworkSessionProvider openConnectionForURL:withConnectionId:initialPayload:completion:]";
       v94 = 2112;
-      v95 = v24;
+      selfCopy = v24;
       _os_log_impl(&dword_2669D1000, v70, OS_LOG_TYPE_INFO, "%s Failed to create task for host:%@", buf, 0x16u);
     }
 
@@ -845,8 +845,8 @@ LABEL_70:
     [v61 invalidateAndCancel];
   }
 
-  v11 = v80;
-  v37 = v84;
+  idCopy = v80;
+  v37 = completionCopy;
   if (v36)
   {
     goto LABEL_70;
@@ -897,7 +897,7 @@ void __98__SiriCoreNetworkSessionProvider_openConnectionForURL_withConnectionId_
   v8[3] = &unk_279BD6540;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_source_set_event_handler(v5, v8);
   dispatch_resume(v5);
   openTimer = self->_openTimer;
@@ -1051,21 +1051,21 @@ void __60__SiriCoreNetworkSessionProvider__setupStaleConnectionTimer__block_invo
   }
 
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:3 userInfo:0];
-  v5 = [(SiriCoreNetworkSessionProvider *)self delegate];
-  [v5 connectionProvider:self receivedError:v4];
+  delegate = [(SiriCoreNetworkSessionProvider *)self delegate];
+  [delegate connectionProvider:self receivedError:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 streamTask:(id)a4 didBecomeInputStream:(id)a5 outputStream:(id)a6
+- (void)URLSession:(id)session streamTask:(id)task didBecomeInputStream:(id)stream outputStream:(id)outputStream
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   urlSession = self->_urlSession;
-  if (urlSession == v10)
+  if (urlSession == sessionCopy)
   {
     self->_urlSession = 0;
 
@@ -1075,22 +1075,22 @@ void __60__SiriCoreNetworkSessionProvider__setupStaleConnectionTimer__block_invo
       dispatch_assert_queue_V2(queue);
     }
 
-    if (v12 && v13)
+    if (streamCopy && outputStreamCopy)
     {
-      [v12 setDelegate:self];
-      [v13 setDelegate:self];
-      [v12 open];
-      [v13 open];
-      v17 = [v12 streamError];
-      if (!v17)
+      [streamCopy setDelegate:self];
+      [outputStreamCopy setDelegate:self];
+      [streamCopy open];
+      [outputStreamCopy open];
+      streamError = [streamCopy streamError];
+      if (!streamError)
       {
-        v17 = [v13 streamError];
-        if (!v17)
+        streamError = [outputStreamCopy streamError];
+        if (!streamError)
         {
-          if (self->_queue || ([MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:20 userInfo:0], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (self->_queue || ([MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:20 userInfo:0], (streamError = objc_claimAutoreleasedReturnValue()) == 0))
           {
-            objc_storeStrong(&self->_inputStream, a5);
-            objc_storeStrong(&self->_outputStream, a6);
+            objc_storeStrong(&self->_inputStream, stream);
+            objc_storeStrong(&self->_outputStream, outputStream);
             MEMORY[0x26D5E5010](self->_inputStream, self->_queue);
             MEMORY[0x26D5E5060](self->_outputStream, self->_queue);
             objc_initWeak(&location, self);
@@ -1099,8 +1099,8 @@ void __60__SiriCoreNetworkSessionProvider__setupStaleConnectionTimer__block_invo
             v23 = __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputStream_outputStream___block_invoke;
             v24 = &unk_279BD5928;
             objc_copyWeak(&v25, &location);
-            CFWriteStreamSetProperty(v13, *MEMORY[0x277CBAC88], &v21);
-            v18 = [v13 propertyForKey:{*MEMORY[0x277CBADC8], v21, v22, v23, v24}];
+            CFWriteStreamSetProperty(outputStreamCopy, *MEMORY[0x277CBAC88], &v21);
+            v18 = [outputStreamCopy propertyForKey:{*MEMORY[0x277CBADC8], v21, v22, v23, v24}];
             self->_isMPTCP = [v18 BOOLValue];
 
             v19 = *MEMORY[0x277CEF0A8];
@@ -1119,24 +1119,24 @@ void __60__SiriCoreNetworkSessionProvider__setupStaleConnectionTimer__block_invo
         }
       }
 
-      [v12 close];
-      [v13 close];
+      [streamCopy close];
+      [outputStreamCopy close];
       [(SiriCoreNetworkSessionProvider *)self _cancelOpenTimer];
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:16 userInfo:0];
+      streamError = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreSiriConnectionErrorDomain" code:16 userInfo:0];
       [(SiriCoreNetworkSessionProvider *)self _cancelOpenTimer];
-      if (!v17)
+      if (!streamError)
       {
 LABEL_17:
         [(SiriCoreNetworkSessionProvider *)self _setupStaleConnectionTimer];
-        v17 = 0;
+        streamError = 0;
       }
     }
 
-    [(SiriCoreNetworkSessionProvider *)self _invokeOpenCompletionWithError:v17];
+    [(SiriCoreNetworkSessionProvider *)self _invokeOpenCompletionWithError:streamError];
 
     goto LABEL_19;
   }
@@ -1147,7 +1147,7 @@ LABEL_17:
     *buf = 136315650;
     v28 = "[SiriCoreNetworkSessionProvider URLSession:streamTask:didBecomeInputStream:outputStream:]";
     v29 = 2112;
-    v30 = v10;
+    v30 = sessionCopy;
     v31 = 2112;
     v32 = urlSession;
     _os_log_impl(&dword_2669D1000, v15, OS_LOG_TYPE_INFO, "%s Ignoring session callback from session %@ current session %@", buf, 0x20u);
@@ -1180,11 +1180,11 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = MEMORY[0x277CEF0A8];
   v9 = *MEMORY[0x277CEF0A8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_INFO))
@@ -1192,18 +1192,18 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
     v13 = 136315650;
     v14 = "[SiriCoreNetworkSessionProvider URLSession:didBecomeInvalidWithError:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = sessionCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = errorCopy;
     _os_log_impl(&dword_2669D1000, v9, OS_LOG_TYPE_INFO, "%s %@ %@", &v13, 0x20u);
   }
 
   urlSession = self->_urlSession;
-  if (urlSession == v6)
+  if (urlSession == sessionCopy)
   {
     self->_urlSession = 0;
 
-    [(SiriCoreNetworkSessionProvider *)self _invokeOpenCompletionWithError:v7];
+    [(SiriCoreNetworkSessionProvider *)self _invokeOpenCompletionWithError:errorCopy];
   }
 
   else
@@ -1214,7 +1214,7 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
       v13 = 136315650;
       v14 = "[SiriCoreNetworkSessionProvider URLSession:didBecomeInvalidWithError:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = sessionCopy;
       v17 = 2112;
       v18 = urlSession;
       _os_log_impl(&dword_2669D1000, v11, OS_LOG_TYPE_INFO, "%s Ignoring session callback from session %@ current session %@", &v13, 0x20u);
@@ -1224,7 +1224,7 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 betterRouteDiscoveredForStreamTask:(id)a4
+- (void)URLSession:(id)session betterRouteDiscoveredForStreamTask:(id)task
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF0A8];
@@ -1238,31 +1238,31 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   v7 = *MEMORY[0x277CEF0A8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A8], OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[SiriCoreNetworkSessionProvider stream:handleEvent:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = streamCopy;
     v18 = 2048;
-    v19 = a4;
+    eventCopy = event;
     _os_log_impl(&dword_2669D1000, v7, OS_LOG_TYPE_DEFAULT, "%s %@ %lu", &v14, 0x20u);
   }
 
-  if (self->_inputStream == v6)
+  if (self->_inputStream == streamCopy)
   {
-    if (a4 == 16 || a4 == 8)
+    if (event == 16 || event == 8)
     {
-      v8 = [(NSInputStream *)v6 streamError];
-      v9 = v8;
-      if (v8)
+      streamError = [(NSInputStream *)streamCopy streamError];
+      v9 = streamError;
+      if (streamError)
       {
-        v10 = v8;
+        v10 = streamError;
       }
 
       else
@@ -1273,11 +1273,11 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
       v11 = v10;
 
       [(SiriCoreNetworkSessionProvider *)self _closeWithError:v11];
-      v12 = [(SiriCoreNetworkSessionProvider *)self delegate];
-      [v12 connectionProvider:self receivedError:v11];
+      delegate = [(SiriCoreNetworkSessionProvider *)self delegate];
+      [delegate connectionProvider:self receivedError:v11];
     }
 
-    else if (a4 == 2 && self->_waitingOnReadGroup)
+    else if (event == 2 && self->_waitingOnReadGroup)
     {
       dispatch_group_leave(self->_readGroup);
       self->_waitingOnReadGroup = 0;
@@ -1287,17 +1287,17 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokeOpenCompletionWithError:(id)a3
+- (void)_invokeOpenCompletionWithError:(id)error
 {
   completion_block = self->_completion_block;
   if (completion_block)
   {
-    v5 = a3;
+    errorCopy = error;
     v7 = MEMORY[0x26D5E5DB0](completion_block);
     v6 = self->_completion_block;
     self->_completion_block = 0;
 
-    v7[2](v7, v5);
+    v7[2](v7, errorCopy);
   }
 }
 
@@ -1308,9 +1308,9 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
   return WeakRetained;
 }
 
-- (SiriCoreNetworkSessionProvider)initWithQueue:(id)a3
+- (SiriCoreNetworkSessionProvider)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = SiriCoreNetworkSessionProvider;
   v6 = [(SiriCoreNetworkSessionProvider *)&v12 init];
@@ -1320,9 +1320,9 @@ void __90__SiriCoreNetworkSessionProvider_URLSession_streamTask_didBecomeInputSt
     v8 = *(v6 + 11);
     *(v6 + 11) = v7;
 
-    [*(v6 + 11) setUnderlyingQueue:v5];
+    [*(v6 + 11) setUnderlyingQueue:queueCopy];
     [*(v6 + 11) setMaxConcurrentOperationCount:1];
-    objc_storeStrong(v6 + 16, a3);
+    objc_storeStrong(v6 + 16, queue);
     v9 = dispatch_group_create();
     v10 = *(v6 + 1298);
     *(v6 + 1298) = v9;

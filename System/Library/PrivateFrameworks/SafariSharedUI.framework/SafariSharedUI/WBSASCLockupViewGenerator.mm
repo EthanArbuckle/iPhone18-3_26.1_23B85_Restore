@@ -1,19 +1,19 @@
 @interface WBSASCLockupViewGenerator
-+ (id)_lockupContextForLockupViewType:(int64_t)a3;
-+ (id)_lockupViewGroupForLockupViewType:(int64_t)a3;
++ (id)_lockupContextForLockupViewType:(int64_t)type;
++ (id)_lockupViewGroupForLockupViewType:(int64_t)type;
 + (id)cloudLockupViewGroup;
 + (id)importLockupViewGroup;
 + (id)recommendationsLockupViewGroup;
 + (id)sharedGenerator;
-- (id)productDetailsPresentationContextForLockupView:(id)a3;
+- (id)productDetailsPresentationContextForLockupView:(id)view;
 - (void)_allLockupViewRequestsCompleted;
-- (void)_lockupViewRequestedCompleted:(id)a3 loadedSuccessfully:(BOOL)a4;
-- (void)generateLockupViewsForAvailableApps:(id)a3 lockupViewType:(int64_t)a4 maintainRequestedOrderOfApps:(BOOL)a5 completionHandler:(id)a6;
-- (void)getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:(id)a3;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupView:(id)a3 preprocessOffer:(id)a4 inState:(id)a5 completionBlock:(id)a6;
-- (void)lockupViewDidBeginRequest:(id)a3;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)_lockupViewRequestedCompleted:(id)completed loadedSuccessfully:(BOOL)successfully;
+- (void)generateLockupViewsForAvailableApps:(id)apps lockupViewType:(int64_t)type maintainRequestedOrderOfApps:(BOOL)ofApps completionHandler:(id)handler;
+- (void)getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:(id)handler;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupView:(id)view preprocessOffer:(id)offer inState:(id)state completionBlock:(id)block;
+- (void)lockupViewDidBeginRequest:(id)request;
+- (void)lockupViewDidFinishRequest:(id)request;
 @end
 
 @implementation WBSASCLockupViewGenerator
@@ -94,21 +94,21 @@ void __59__WBSASCLockupViewGenerator_recommendationsLockupViewGroup__block_invok
   +[WBSASCLockupViewGenerator recommendationsLockupViewGroup]::group = v0;
 }
 
-- (void)generateLockupViewsForAvailableApps:(id)a3 lockupViewType:(int64_t)a4 maintainRequestedOrderOfApps:(BOOL)a5 completionHandler:(id)a6
+- (void)generateLockupViewsForAvailableApps:(id)apps lockupViewType:(int64_t)type maintainRequestedOrderOfApps:(BOOL)ofApps completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  appsCopy = apps;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __127__WBSASCLockupViewGenerator_generateLockupViewsForAvailableApps_lockupViewType_maintainRequestedOrderOfApps_completionHandler___block_invoke;
   block[3] = &unk_1E82833B8;
   block[4] = self;
-  v15 = v10;
-  v18 = a5;
-  v16 = v11;
-  v17 = a4;
-  v12 = v10;
-  v13 = v11;
+  v15 = appsCopy;
+  ofAppsCopy = ofApps;
+  v16 = handlerCopy;
+  typeCopy = type;
+  v12 = appsCopy;
+  v13 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -343,9 +343,9 @@ void __127__WBSASCLockupViewGenerator_generateLockupViewsForAvailableApps_lockup
   }
 }
 
-+ (id)_lockupContextForLockupViewType:(int64_t)a3
++ (id)_lockupContextForLockupViewType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = MEMORY[0x1E698B340];
 LABEL_5:
@@ -354,7 +354,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = MEMORY[0x1E698B348];
     goto LABEL_5;
@@ -365,45 +365,45 @@ LABEL_5:
   return v5;
 }
 
-+ (id)_lockupViewGroupForLockupViewType:(int64_t)a3
++ (id)_lockupViewGroupForLockupViewType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v3 = [objc_opt_class() recommendationsLockupViewGroup];
+    recommendationsLockupViewGroup = [objc_opt_class() recommendationsLockupViewGroup];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v3 = [objc_opt_class() importLockupViewGroup];
+    recommendationsLockupViewGroup = [objc_opt_class() importLockupViewGroup];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_8;
     }
 
-    v3 = [objc_opt_class() cloudLockupViewGroup];
+    recommendationsLockupViewGroup = [objc_opt_class() cloudLockupViewGroup];
   }
 
-  a2 = v3;
+  a2 = recommendationsLockupViewGroup;
 LABEL_8:
 
   return a2;
 }
 
-- (void)_lockupViewRequestedCompleted:(id)a3 loadedSuccessfully:(BOOL)a4
+- (void)_lockupViewRequestedCompleted:(id)completed loadedSuccessfully:(BOOL)successfully
 {
-  v4 = a4;
-  v6 = a3;
+  successfullyCopy = successfully;
+  completedCopy = completed;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (successfullyCopy)
   {
-    [(NSMutableArray *)self->_succesfullyLoadedLockupViews addObject:v6];
+    [(NSMutableArray *)self->_succesfullyLoadedLockupViews addObject:completedCopy];
   }
 
-  [(NSMutableArray *)self->_lockupViewsPendingLoad removeObject:v6];
+  [(NSMutableArray *)self->_lockupViewsPendingLoad removeObject:completedCopy];
   if (![(NSMutableArray *)self->_lockupViewsPendingLoad count])
   {
     [(WBSASCLockupViewGenerator *)self _allLockupViewRequestsCompleted];
@@ -475,21 +475,21 @@ uint64_t __60__WBSASCLockupViewGenerator__allLockupViewRequestsCompleted__block_
   return v9;
 }
 
-- (void)getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:(id)a3
+- (void)getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(NSArray *)self->_cachedRecommendedAppsWithExtensions count])
   {
-    v4[2](v4, self->_cachedRecommendedAppsWithExtensions);
+    handlerCopy[2](handlerCopy, self->_cachedRecommendedAppsWithExtensions);
   }
 
   else
   {
     v5 = MEMORY[0x1E698C7D8];
-    v6 = [MEMORY[0x1E698C9E0] bagSubProfile];
-    v7 = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
-    v8 = [v5 bagForProfile:v6 profileVersion:v7];
+    bagSubProfile = [MEMORY[0x1E698C9E0] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
+    v8 = [v5 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v9 = [objc_alloc(MEMORY[0x1E698C9E0]) initWithType:5 clientIdentifier:@"com.apple.MobileSafari.Extensions" clientVersion:@"1" bag:v8];
     v21[0] = @"1377753262";
@@ -500,19 +500,19 @@ uint64_t __60__WBSASCLockupViewGenerator__allLockupViewRequestsCompleted__block_
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     [v9 setIncludedResultKeys:v11];
 
-    v12 = [v9 perform];
-    if (v12)
+    perform = [v9 perform];
+    if (perform)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __104__WBSASCLockupViewGenerator_getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler___block_invoke;
       v14[3] = &unk_1E8283478;
-      v18 = self;
-      v19 = v4;
+      selfCopy = self;
+      v19 = handlerCopy;
       v15 = @"relationships";
       v16 = @"canvas";
       v17 = @"data";
-      [v12 addFinishBlock:v14];
+      [perform addFinishBlock:v14];
     }
 
     else
@@ -523,7 +523,7 @@ uint64_t __60__WBSASCLockupViewGenerator__allLockupViewRequestsCompleted__block_
         [WBSASCLockupViewGenerator getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:v13];
       }
 
-      v4[2](v4, MEMORY[0x1E695E0F0]);
+      handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0]);
     }
   }
 }
@@ -689,51 +689,51 @@ uint64_t __104__WBSASCLockupViewGenerator_getAvailableAppsFromAppStoreExtensionE
   return v5();
 }
 
-- (void)lockupViewDidBeginRequest:(id)a3
+- (void)lockupViewDidBeginRequest:(id)request
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = WBS_LOG_CHANNEL_PREFIXCloudExtensions();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138477827;
-    v6 = v3;
+    v6 = requestCopy;
     _os_log_impl(&dword_1C6968000, v4, OS_LOG_TYPE_INFO, "Started loading lockup view: %{private}@", &v5, 0xCu);
   }
 }
 
-- (void)lockupView:(id)a3 preprocessOffer:(id)a4 inState:(id)a5 completionBlock:(id)a6
+- (void)lockupView:(id)view preprocessOffer:(id)offer inState:(id)state completionBlock:(id)block
 {
-  v15 = a3;
-  v8 = a5;
-  v9 = a6;
-  v10 = [v15 group];
-  v11 = [objc_opt_class() recommendationsLockupViewGroup];
-  v12 = [v10 isEqual:v11];
+  viewCopy = view;
+  stateCopy = state;
+  blockCopy = block;
+  group = [viewCopy group];
+  recommendationsLockupViewGroup = [objc_opt_class() recommendationsLockupViewGroup];
+  v12 = [group isEqual:recommendationsLockupViewGroup];
 
-  if ((v12 & 1) != 0 && (*MEMORY[0x1E698B2A0] != v8 ? (v13 = *MEMORY[0x1E698B2C0] == v8) : (v13 = 1), v13))
+  if ((v12 & 1) != 0 && (*MEMORY[0x1E698B2A0] != stateCopy ? (v13 = *MEMORY[0x1E698B2C0] == stateCopy) : (v13 = 1), v13))
   {
-    [v15 presentProductDetailsViewController];
+    [viewCopy presentProductDetailsViewController];
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.SafariSharedUI.Extensions.WBSAMSSafariErrorDomain" code:1 userInfo:0];
-    v9[2](v9, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   else
   {
-    v9[2](v9, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__WBSASCLockupViewGenerator_lockupViewDidFinishRequest___block_invoke;
   v6[3] = &unk_1E8282EA0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = requestCopy;
+  selfCopy = self;
+  v5 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -786,19 +786,19 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__WBSASCLockupViewGenerator_lockupView_didFailRequestWithError___block_invoke;
   block[3] = &unk_1E8282EF0;
-  v11 = v7;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v7;
+  v11 = errorCopy;
+  v12 = viewCopy;
+  selfCopy = self;
+  v8 = viewCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -819,24 +819,24 @@ uint64_t __64__WBSASCLockupViewGenerator_lockupView_didFailRequestWithError___bl
   return [a1[6] _lockupViewRequestedCompleted:a1[5] loadedSuccessfully:0];
 }
 
-- (id)productDetailsPresentationContextForLockupView:(id)a3
+- (id)productDetailsPresentationContextForLockupView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 group];
-  v5 = [objc_opt_class() importLockupViewGroup];
-  v6 = [v4 isEqual:v5];
+  viewCopy = view;
+  group = [viewCopy group];
+  importLockupViewGroup = [objc_opt_class() importLockupViewGroup];
+  v6 = [group isEqual:importLockupViewGroup];
 
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E698B3B8]) initWithPresentationStyle:1];
+    defaultPresentationContext = [objc_alloc(MEMORY[0x1E698B3B8]) initWithPresentationStyle:1];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E698B3B8] defaultPresentationContext];
+    defaultPresentationContext = [MEMORY[0x1E698B3B8] defaultPresentationContext];
   }
 
-  v8 = v7;
+  v8 = defaultPresentationContext;
 
   return v8;
 }

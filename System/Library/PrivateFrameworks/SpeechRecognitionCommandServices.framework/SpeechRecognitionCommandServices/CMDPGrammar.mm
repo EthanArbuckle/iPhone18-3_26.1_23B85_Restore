@@ -1,25 +1,25 @@
 @interface CMDPGrammar
-- (CMDPGrammar)initWithCommandTreeDictionary:(id)a3 forLocaleIdentifier:(id)a4;
+- (CMDPGrammar)initWithCommandTreeDictionary:(id)dictionary forLocaleIdentifier:(id)identifier;
 - (id).cxx_construct;
-- (void)addPhrase:(id)a3 toFst:(void *)a4 withArc:(_FstArc)a5;
-- (void)buildGrammarFst:(void *)a3 forCommandTree:(id)a4 withFstArcDictionary:(id)a5;
+- (void)addPhrase:(id)phrase toFst:(void *)fst withArc:(_FstArc)arc;
+- (void)buildGrammarFst:(void *)fst forCommandTree:(id)tree withFstArcDictionary:(id)dictionary;
 - (void)grammarFst;
 @end
 
 @implementation CMDPGrammar
 
-- (CMDPGrammar)initWithCommandTreeDictionary:(id)a3 forLocaleIdentifier:(id)a4
+- (CMDPGrammar)initWithCommandTreeDictionary:(id)dictionary forLocaleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = CMDPGrammar;
   if ([(CMDPGrammar *)&v10 init])
   {
     v8 = *MEMORY[0x277CBECE8];
-    if (v7)
+    if (identifierCopy)
     {
-      CFLocaleCreate(v8, v7);
+      CFLocaleCreate(v8, identifierCopy);
       operator new();
     }
 
@@ -45,36 +45,36 @@
   return self->_grammarFst.__ptr_;
 }
 
-- (void)buildGrammarFst:(void *)a3 forCommandTree:(id)a4 withFstArcDictionary:(id)a5
+- (void)buildGrammarFst:(void *)fst forCommandTree:(id)tree withFstArcDictionary:(id)dictionary
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
+  treeCopy = tree;
+  dictionaryCopy = dictionary;
+  v9 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
   v10 = [v9 objectForKey:kSRCSCommandParseAttributeOptional[0]];
-  v52 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  v11 = [v8 objectForKey:v7];
-  v53 = [v11 arcValue];
+  v11 = [dictionaryCopy objectForKey:treeCopy];
+  arcValue = [v11 arcValue];
 
-  v12 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyText[0]];
+  v12 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyText[0]];
 
   if (v12)
   {
-    v13 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyText[0]];
-    [(CMDPGrammar *)self addPhrase:v13 toFst:a3 withArc:v53];
+    v13 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyText[0]];
+    [(CMDPGrammar *)self addPhrase:v13 toFst:fst withArc:arcValue];
 
     goto LABEL_3;
   }
 
-  v14 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
+  v14 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
   if ([v14 BOOLValue])
   {
-    v15 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+    v15 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
     if ([v15 isEqualToString:@"BuiltInLM.Dictation"])
     {
 
 LABEL_21:
-      v25 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+      v25 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
       v26 = [[CMDPGrammarData alloc] initWithGrammarDataWord:0 lmIdentifer:v25 commandIdentifier:self->_currentCommandIdentifier];
       [(NSMutableArray *)self->_grammarDataArray addObject:v26];
       nextLabelIndex = self->_nextLabelIndex;
@@ -93,7 +93,7 @@ LABEL_21:
       }
 
       [(CMDPGrammar *)self addAdlibFstWithLabel:v56 outputIndex:[(NSMutableArray *)self->_grammarDataArray count]- 1];
-      CMDPFst::addArc(a3, v53, SHIDWORD(v53), v56, v56, 0.0);
+      CMDPFst::addArc(fst, arcValue, SHIDWORD(arcValue), v56, v56, 0.0);
       if (SHIBYTE(v57) < 0)
       {
         operator delete(v56[0]);
@@ -102,7 +102,7 @@ LABEL_21:
       goto LABEL_3;
     }
 
-    v23 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+    v23 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
     v24 = [v23 isEqualToString:@"BuiltInLM.Dictation.2"];
 
     if (v24)
@@ -115,20 +115,20 @@ LABEL_21:
   {
   }
 
-  v16 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
+  v16 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
 
   if (v16)
   {
-    v17 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+    v17 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
 
     if (v17)
     {
-      v18 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
-      v19 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
-      v20 = [v19 BOOLValue];
+      v18 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+      v19 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
+      bOOLValue2 = [v19 BOOLValue];
 
       v21 = 80;
-      if (v20)
+      if (bOOLValue2)
       {
         v21 = 72;
       }
@@ -136,8 +136,8 @@ LABEL_21:
       v22 = *(&self->super.isa + v21);
       *(&self->super.isa + v21) = v18;
 
-      v49 = v20;
-      LODWORD(v17) = v20 ^ 1;
+      v49 = bOOLValue2;
+      LODWORD(v17) = bOOLValue2 ^ 1;
     }
 
     else
@@ -145,7 +145,7 @@ LABEL_21:
       v49 = 0;
     }
 
-    v30 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
+    v30 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
     v48 = v17;
     v31 = [v30 count];
     v32 = v31;
@@ -157,7 +157,7 @@ LABEL_21:
       do
       {
         v34 = [v30 objectAtIndex:v33];
-        v35 = [v7 objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
+        v35 = [treeCopy objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
         v36 = [v35 objectForKey:kSRCSCommandParseAttributePath[0]];
 
         if (v36)
@@ -167,53 +167,53 @@ LABEL_21:
             if (v51 == v33)
             {
               v37 = [v30 objectAtIndex:v50];
-              v38 = [v8 objectForKey:v37];
-              v39 = [v38 arcValue];
+              v38 = [dictionaryCopy objectForKey:v37];
+              arcValue2 = [v38 arcValue];
 
-              [MEMORY[0x277CCAE60] valueWithArc:v53 & 0xFFFFFFFF00000000 | HIDWORD(v39)];
+              [MEMORY[0x277CCAE60] valueWithArc:arcValue & 0xFFFFFFFF00000000 | HIDWORD(arcValue2)];
             }
 
             else
             {
               v37 = [v30 objectAtIndex:v33 - 1];
-              v41 = [v8 objectForKey:v37];
-              v42 = [v41 arcValue];
+              v41 = [dictionaryCopy objectForKey:v37];
+              arcValue3 = [v41 arcValue];
 
               v43 = (self->_nextFstState + 1);
               self->_nextFstState = v43;
               *(&v44 + 1) = v43;
-              *&v44 = v42;
+              *&v44 = arcValue3;
               [MEMORY[0x277CCAE60] valueWithArc:(v44 >> 32)];
             }
             v40 = ;
-            [v8 setObject:v40 forKey:v34];
+            [dictionaryCopy setObject:v40 forKey:v34];
           }
 
           else
           {
             if (v32 == 1)
             {
-              [MEMORY[0x277CCAE60] valueWithArc:v53];
+              [MEMORY[0x277CCAE60] valueWithArc:arcValue];
             }
 
             else
             {
               v45 = (self->_nextFstState + 1);
               self->_nextFstState = v45;
-              [MEMORY[0x277CCAE60] valueWithArc:v53 | (v45 << 32)];
+              [MEMORY[0x277CCAE60] valueWithArc:arcValue | (v45 << 32)];
             }
             v37 = ;
-            [v8 setObject:v37 forKey:v34];
+            [dictionaryCopy setObject:v37 forKey:v34];
           }
         }
 
         else
         {
-          v37 = [MEMORY[0x277CCAE60] valueWithArc:v53];
-          [v8 setObject:v37 forKey:v34];
+          v37 = [MEMORY[0x277CCAE60] valueWithArc:arcValue];
+          [dictionaryCopy setObject:v37 forKey:v34];
         }
 
-        [(CMDPGrammar *)self buildGrammarFst:a3 forCommandTree:v34 withFstArcDictionary:v8];
+        [(CMDPGrammar *)self buildGrammarFst:fst forCommandTree:v34 withFstArcDictionary:dictionaryCopy];
         ++v33;
       }
 
@@ -235,11 +235,11 @@ LABEL_21:
 
   else
   {
-    NSLog(&cfstr_ErrorInBuildgr.isa, v7);
+    NSLog(&cfstr_ErrorInBuildgr.isa, treeCopy);
   }
 
 LABEL_3:
-  if (v52)
+  if (bOOLValue)
   {
     if (self->_addOptionalFst)
     {
@@ -249,7 +249,7 @@ LABEL_3:
 
     std::string::basic_string[abi:ne200100]<0>(v56, kCMDPReplaceOptionalLabel);
     std::string::basic_string[abi:ne200100]<0>(&__p, kCMDPReplaceOptionalLabel);
-    CMDPFst::addArc(a3, v53, SHIDWORD(v53), v56, &__p, 0.0);
+    CMDPFst::addArc(fst, arcValue, SHIDWORD(arcValue), v56, &__p, 0.0);
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
       operator delete(__p.__r_.__value_.__l.__data_);
@@ -262,13 +262,13 @@ LABEL_3:
   }
 }
 
-- (void)addPhrase:(id)a3 toFst:(void *)a4 withArc:(_FstArc)a5
+- (void)addPhrase:(id)phrase toFst:(void *)fst withArc:(_FstArc)arc
 {
-  v8 = CMDPNormalizer::tokenizedString(self->_normalizer.__ptr_, a3);
+  v8 = CMDPNormalizer::tokenizedString(self->_normalizer.__ptr_, phrase);
   v9 = [v8 count];
   v10 = v9;
-  __val = a5.var0;
-  v11 = HIDWORD(*&a5);
+  __val = arc.var0;
+  v11 = HIDWORD(*&arc);
   if (v9)
   {
     v19 = v9 - 1;
@@ -320,7 +320,7 @@ LABEL_11:
 
           v18 = [[CMDPGrammarData alloc] initWithGrammarDataWord:v13 lmIdentifer:self->_currentBuiltInLMString commandIdentifier:self->_currentCommandIdentifier];
           [(NSMutableArray *)self->_grammarDataArray addObject:v18];
-          CMDPFst::addArc(a4, nextFstState, v16, &v23, [(NSMutableArray *)self->_grammarDataArray count]- 1, 0.0);
+          CMDPFst::addArc(fst, nextFstState, v16, &v23, [(NSMutableArray *)self->_grammarDataArray count]- 1, 0.0);
           std::__tree<std::string>::__emplace_unique_key_args<std::string,std::string const&>(&self->_symbol_set, &v23.__r_.__value_.__l.__data_);
 
           if (SHIBYTE(v23.__r_.__value_.__r.__words[2]) < 0)
@@ -352,7 +352,7 @@ LABEL_11:
 
     std::string::basic_string[abi:ne200100]<0>(&v23, kCMDPReplaceOptionalLabel);
     std::string::basic_string[abi:ne200100]<0>(__p, kCMDPReplaceOptionalLabel);
-    CMDPFst::addArc(a4, a5.var0, a5.var1, &v23, __p, 0.0);
+    CMDPFst::addArc(fst, arc.var0, arc.var1, &v23, __p, 0.0);
     if (v22 < 0)
     {
       operator delete(__p[0]);

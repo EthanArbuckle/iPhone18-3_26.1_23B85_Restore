@@ -1,24 +1,24 @@
 @interface BMDeviceMetadataEvent_v1
-- (BMDeviceMetadataEvent_v1)initWithProto:(id)a3;
+- (BMDeviceMetadataEvent_v1)initWithProto:(id)proto;
 @end
 
 @implementation BMDeviceMetadataEvent_v1
 
-- (BMDeviceMetadataEvent_v1)initWithProto:(id)a3
+- (BMDeviceMetadataEvent_v1)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 name];
-      v7 = [v5 build];
-      v8 = [v5 supplementalBuild];
-      v9 = [v5 platform];
-      v10 = v9;
-      if (v9 >= 9)
+      v5 = protoCopy;
+      name = [v5 name];
+      build = [v5 build];
+      supplementalBuild = [v5 supplementalBuild];
+      platform = [v5 platform];
+      v10 = platform;
+      if (platform >= 9)
       {
         v13 = __biome_log_for_category();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -31,12 +31,12 @@
 
       else
       {
-        v11 = v9;
+        v11 = platform;
       }
 
-      self = [(BMDeviceMetadataEvent *)self initWithName:v6 build:v7 supplementalBuild:v8 platform:v11 rapidSecurityResponsePreReboot:[v5 rapidSecurityResponsePreReboot]];
+      self = [(BMDeviceMetadataEvent *)self initWithName:name build:build supplementalBuild:supplementalBuild platform:v11 rapidSecurityResponsePreReboot:[v5 rapidSecurityResponsePreReboot]];
 
-      v12 = self;
+      selfCopy = self;
     }
 
     else
@@ -47,16 +47,16 @@
         [BMDeviceMetadataEvent initWithProto:];
       }
 
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

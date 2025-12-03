@@ -2,9 +2,9 @@
 - (PLCoreDataChangeMerger)init;
 - (void)dealloc;
 - (void)invalidate;
-- (void)mergeChangesFromRemoteContextSave:(id)a3 intoAllContextsNotIdenticalTo:(id)a4 debugEvent:(id)a5 completionHandler:(id)a6;
+- (void)mergeChangesFromRemoteContextSave:(id)save intoAllContextsNotIdenticalTo:(id)to debugEvent:(id)event completionHandler:(id)handler;
 - (void)refreshAllObjects;
-- (void)registerToReceiveCoreDataChanges:(id)a3;
+- (void)registerToReceiveCoreDataChanges:(id)changes;
 @end
 
 @implementation PLCoreDataChangeMerger
@@ -45,12 +45,12 @@
 - (void)refreshAllObjects
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PLCoreDataChangeMerger *)self allContexts];
+  allContexts = [(PLCoreDataChangeMerger *)self allContexts];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [allContexts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -62,7 +62,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allContexts);
         }
 
         v7 = *(*(&v9 + 1) + 8 * v6);
@@ -76,7 +76,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allContexts countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -318,12 +318,12 @@ void __49__PLCoreDataChangeMerger_handleUnknownMergeEvent__block_invoke_4(uint64
   }
 }
 
-- (void)mergeChangesFromRemoteContextSave:(id)a3 intoAllContextsNotIdenticalTo:(id)a4 debugEvent:(id)a5 completionHandler:(id)a6
+- (void)mergeChangesFromRemoteContextSave:(id)save intoAllContextsNotIdenticalTo:(id)to debugEvent:(id)event completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  saveCopy = save;
+  eventCopy = event;
+  handlerCopy = handler;
+  toCopy = to;
   v14 = PLBackendGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -331,20 +331,20 @@ void __49__PLCoreDataChangeMerger_handleUnknownMergeEvent__block_invoke_4(uint64
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "mergeChangesFromRemoteContextSave", buf, 2u);
   }
 
-  objc_initWeak(buf, v13);
+  objc_initWeak(buf, toCopy);
   mergeChangesQueue = self->_mergeChangesQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __119__PLCoreDataChangeMerger_mergeChangesFromRemoteContextSave_intoAllContextsNotIdenticalTo_debugEvent_completionHandler___block_invoke;
   block[3] = &unk_1E7573148;
-  v20 = v11;
-  v21 = self;
-  v23 = v12;
-  v16 = v12;
-  v17 = v11;
+  v20 = eventCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = eventCopy;
   objc_copyWeak(&v24, buf);
-  v22 = v10;
-  v18 = v10;
+  v22 = saveCopy;
+  v18 = saveCopy;
   dispatch_async(mergeChangesQueue, block);
 
   objc_destroyWeak(&v24);
@@ -414,23 +414,23 @@ void __119__PLCoreDataChangeMerger_mergeChangesFromRemoteContextSave_intoAllCont
   }
 }
 
-- (void)registerToReceiveCoreDataChanges:(id)a3
+- (void)registerToReceiveCoreDataChanges:(id)changes
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   v5 = PLPhotosObjectLifecycleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412802;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = changesCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ %p registerToReceiveCoreDataChanges:%@", &v6, 0x20u);
   }
 
-  [(PLManagedObjectContextList *)self->_contextsToReceiveNotifications addContext:v4];
+  [(PLManagedObjectContextList *)self->_contextsToReceiveNotifications addContext:changesCopy];
 }
 
 - (void)dealloc
@@ -442,7 +442,7 @@ void __119__PLCoreDataChangeMerger_mergeChangesFromRemoteContextSave_intoAllCont
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -460,7 +460,7 @@ void __119__PLCoreDataChangeMerger_mergeChangesFromRemoteContextSave_intoAllCont
     *buf = 138412546;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p invalidate BEGIN", buf, 0x16u);
   }
 

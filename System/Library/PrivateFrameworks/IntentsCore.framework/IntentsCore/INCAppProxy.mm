@@ -1,8 +1,8 @@
 @interface INCAppProxy
-+ (BOOL)shouldLaunchAppInBackgroundWithIntent:(id)a3 intentResponse:(id)a4;
++ (BOOL)shouldLaunchAppInBackgroundWithIntent:(id)intent intentResponse:(id)response;
 + (void)initialize;
 - (INCExtensionConnection)_connection;
-- (id)_initWithConnection:(id)a3;
+- (id)_initWithConnection:(id)connection;
 @end
 
 @implementation INCAppProxy
@@ -14,16 +14,16 @@
   return WeakRetained;
 }
 
-- (id)_initWithConnection:(id)a3
+- (id)_initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = INCAppProxy;
   v5 = [(INCAppProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
   }
 
   return v6;
@@ -69,11 +69,11 @@ void __112__INCAppProxy_launchAppInBackground_restrictAppsToCarPlay_userActivity
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)shouldLaunchAppInBackgroundWithIntent:(id)a3 intentResponse:(id)a4
++ (BOOL)shouldLaunchAppInBackgroundWithIntent:(id)intent intentResponse:(id)response
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  intentCopy = intent;
+  responseCopy = response;
   v7 = *MEMORY[0x277CD38C8];
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
   {
@@ -82,19 +82,19 @@ void __112__INCAppProxy_launchAppInBackground_restrictAppsToCarPlay_userActivity
     _os_log_impl(&dword_255503000, v7, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v8 = [objc_alloc(getCARSessionStatusClass()) initAndWaitUntilSessionUpdated];
-  v9 = [v8 currentSession];
+  initAndWaitUntilSessionUpdated = [objc_alloc(getCARSessionStatusClass()) initAndWaitUntilSessionUpdated];
+  currentSession = [initAndWaitUntilSessionUpdated currentSession];
 
-  v10 = v9 != 0;
-  v11 = [v9 configuration];
-  v12 = [v11 videoPlaybackSupported];
+  v10 = currentSession != 0;
+  configuration = [currentSession configuration];
+  videoPlaybackSupported = [configuration videoPlaybackSupported];
 
   v13 = INIsDeviceLocked();
-  if (v13 & 1 | (v9 != 0))
+  if (v13 & 1 | (currentSession != 0))
   {
-    v43 = [v5 _intents_bundleIdForLaunching];
+    _intents_bundleIdForLaunching = [intentCopy _intents_bundleIdForLaunching];
     objc_opt_class();
-    if ((v13 & v12 & objc_opt_isKindOfClass()) == 1 && ![INCCarPlayUtils appIsSupportedInCarPlayWithBundleId:v43 hasPayload:1])
+    if ((v13 & videoPlaybackSupported & objc_opt_isKindOfClass()) == 1 && ![INCCarPlayUtils appIsSupportedInCarPlayWithBundleId:_intents_bundleIdForLaunching hasPayload:1])
     {
       v10 = 1;
 LABEL_51:
@@ -102,7 +102,7 @@ LABEL_51:
       goto LABEL_52;
     }
 
-    v14 = v5;
+    v14 = intentCopy;
     if (v14)
     {
       objc_opt_class();
@@ -185,12 +185,12 @@ LABEL_50:
     v44[1] = 3221225472;
     v44[2] = __68__INCAppProxy_shouldLaunchAppInBackgroundWithIntent_intentResponse___block_invoke;
     v44[3] = &unk_2797E7A10;
-    v24 = v43;
+    v24 = _intents_bundleIdForLaunching;
     v45 = v24;
     v25 = [v41 providersPassingTest:v44];
-    v26 = [v25 firstObject];
+    firstObject = [v25 firstObject];
 
-    if (!v26)
+    if (!firstObject)
     {
       v27 = *MEMORY[0x277CD38C8];
       if (!os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_FAULT))
@@ -210,7 +210,7 @@ LABEL_29:
       goto LABEL_49;
     }
 
-    if ([v26 isSystemProvider])
+    if ([firstObject isSystemProvider])
     {
 LABEL_25:
       v10 = 1;
@@ -219,7 +219,7 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if ([v6 _intentResponseCode] == 6)
+    if ([responseCopy _intentResponseCode] == 6)
     {
       v31 = *MEMORY[0x277CD38C8];
       if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
@@ -245,45 +245,45 @@ LABEL_49:
         v32 = v18;
       }
 
-      v33 = [v32 destinationType];
-      v34 = v33;
-      if (v33 == 3)
+      destinationType = [v32 destinationType];
+      v34 = destinationType;
+      if (destinationType == 3)
       {
-        v35 = [v26 supportsVoicemail];
+        supportsVoicemail = [firstObject supportsVoicemail];
         goto LABEL_48;
       }
 
-      if (v33 == 2)
+      if (destinationType == 2)
       {
-        v35 = [v26 supportsEmergency];
+        supportsVoicemail = [firstObject supportsEmergency];
         goto LABEL_48;
       }
 
       if (v42)
       {
-        v40 = [v42 callCapability];
-        v36 = v40;
-        if (v40 != 2)
+        callCapability = [v42 callCapability];
+        v36 = callCapability;
+        if (callCapability != 2)
         {
-          if (v40 != 1)
+          if (callCapability != 1)
           {
             goto LABEL_45;
           }
 
 LABEL_58:
-          if ([v26 supportsAudioOnly])
+          if ([firstObject supportsAudioOnly])
           {
             goto LABEL_25;
           }
 
-          v35 = [v26 supportsAudioAndVideo];
+          supportsVoicemail = [firstObject supportsAudioAndVideo];
 LABEL_48:
-          v10 = v35;
+          v10 = supportsVoicemail;
           goto LABEL_49;
         }
 
 LABEL_43:
-        v35 = [v26 supportsAudioAndVideo];
+        supportsVoicemail = [firstObject supportsAudioAndVideo];
         goto LABEL_48;
       }
 
@@ -340,7 +340,7 @@ uint64_t __68__INCAppProxy_shouldLaunchAppInBackgroundWithIntent_intentResponse_
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

@@ -1,11 +1,11 @@
 @interface THWIntroMediaController
 - (CGSize)size;
-- (THWIntroMediaController)initWithDocumentRoot:(id)a3;
+- (THWIntroMediaController)initWithDocumentRoot:(id)root;
 - (TSDInfo)info;
 - (UIView)controlsView;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)p_controlsCanvasController;
-- (void)autosizedCanvasControllerDidResize:(id)a3;
+- (void)autosizedCanvasControllerDidResize:(id)resize;
 - (void)dealloc;
 - (void)hostViewSizeDidChange;
 - (void)p_positionControlPanel;
@@ -13,24 +13,24 @@
 
 @implementation THWIntroMediaController
 
-- (THWIntroMediaController)initWithDocumentRoot:(id)a3
+- (THWIntroMediaController)initWithDocumentRoot:(id)root
 {
   v9.receiver = self;
   v9.super_class = THWIntroMediaController;
   v4 = [(THWIntroMediaController *)&v9 init];
   if (v4)
   {
-    v5 = [a3 properties];
-    if (![v5 introMediaUrl])
+    properties = [root properties];
+    if (![properties introMediaUrl])
     {
       goto LABEL_8;
     }
 
-    v4->_documentRoot = a3;
-    v4->_url = [v5 introMediaUrl];
-    v6 = [v5 introMediaIsVideo];
-    v4->_isMovie = v6;
-    if (v6)
+    v4->_documentRoot = root;
+    v4->_url = [properties introMediaUrl];
+    introMediaIsVideo = [properties introMediaIsVideo];
+    v4->_isMovie = introMediaIsVideo;
+    if (introMediaIsVideo)
     {
       v4->_imageData = 0;
     }
@@ -145,9 +145,9 @@ LABEL_13:
 
 - (CGSize)size
 {
-  v2 = [(TSDInfo *)[(THWIntroMediaController *)self info] geometry];
+  geometry = [(TSDInfo *)[(THWIntroMediaController *)self info] geometry];
 
-  [v2 size];
+  [geometry size];
   result.height = v4;
   result.width = v3;
   return result;
@@ -155,9 +155,9 @@ LABEL_13:
 
 - (UIView)controlsView
 {
-  v2 = [(THWIntroMediaController *)self p_controlsCanvasController];
+  p_controlsCanvasController = [(THWIntroMediaController *)self p_controlsCanvasController];
 
-  return [v2 canvasView];
+  return [p_controlsCanvasController canvasView];
 }
 
 - (void)hostViewSizeDidChange
@@ -167,7 +167,7 @@ LABEL_13:
   [(THWIntroMediaController *)self p_positionControlPanel];
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   [(THWIntroMediaControllerDelegate *)self->_delegate hostViewSizeForIntroMediaController:self];
   v4 = v3;
@@ -179,11 +179,11 @@ LABEL_13:
   return [v5 initWithSize:v8 transform:{v4, 59.0}];
 }
 
-- (void)autosizedCanvasControllerDidResize:(id)a3
+- (void)autosizedCanvasControllerDidResize:(id)resize
 {
-  if (a3)
+  if (resize)
   {
-    if (self->_controlsCanvasController == a3)
+    if (self->_controlsCanvasController == resize)
     {
       [(THWIntroMediaController *)self p_positionControlPanel];
     }
@@ -225,9 +225,9 @@ LABEL_13:
       v8 = 59.0;
     }
 
-    v9 = [(THWAutosizedCanvasController *)self->_controlsCanvasController canvasView];
+    canvasView = [(THWAutosizedCanvasController *)self->_controlsCanvasController canvasView];
 
-    [(TSDCanvasView *)v9 setFrame:0.0, v6 + -59.0 + -40.0, v4, v8];
+    [(TSDCanvasView *)canvasView setFrame:0.0, v6 + -59.0 + -40.0, v4, v8];
   }
 }
 

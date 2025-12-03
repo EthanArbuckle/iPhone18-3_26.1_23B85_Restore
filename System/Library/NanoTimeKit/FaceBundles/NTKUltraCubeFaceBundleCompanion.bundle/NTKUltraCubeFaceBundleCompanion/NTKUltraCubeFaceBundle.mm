@@ -1,28 +1,28 @@
 @interface NTKUltraCubeFaceBundle
-- (id)_galleryFaceForDevice:(id)a3;
+- (id)_galleryFaceForDevice:(id)device;
 - (id)_randomSampleResourceDirectoryPath;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryDescriptionForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryDescriptionForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKUltraCubeFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKUltraCubeFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKUltraCubeFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryDescriptionForDevice:(id)a3
+- (id)galleryDescriptionForDevice:(id)device
 {
-  if ([NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:a3])
+  if ([NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:device])
   {
     v3 = @"FACE_STYLE_ULTRACUBE_GALLERY_DESCRIPTION";
   }
@@ -37,24 +37,24 @@
   return v4;
 }
 
-- (id)_galleryFaceForDevice:(id)a3
+- (id)_galleryFaceForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [objc_opt_class() identifier];
-  v6 = [objc_opt_class() analyticsIdentifier];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_6490;
   v9[3] = &unk_48D70;
   v9[4] = self;
-  v7 = [NTKUltraCubeFace bundledFaceWithIdentifier:v5 analyticsIdentifier:v6 forDevice:v4 initCustomization:v9];
+  v7 = [NTKUltraCubeFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:v9];
 
   return v7;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v3 = [(NTKUltraCubeFaceBundle *)self _galleryFaceForDevice:a3];
+  v3 = [(NTKUltraCubeFaceBundle *)self _galleryFaceForDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -70,9 +70,9 @@
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v3 = [a3 supportsPDRCapability:4067975928];
+  v3 = [device supportsPDRCapability:4067975928];
   v4 = _os_feature_enabled_impl();
   if (v3 && (v4 & 1) != 0)
   {
@@ -87,22 +87,22 @@
   return v5;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3887189377])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3887189377])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    if ([v4 supportsPDRCapability:360081074])
+    if ([deviceCopy supportsPDRCapability:360081074])
     {
       v6 = 200;
     }
 
-    else if ([v4 deviceCategory] == &dword_0 + 3)
+    else if ([deviceCopy deviceCategory] == &dword_0 + 3)
     {
       v6 = 200;
     }
@@ -112,7 +112,7 @@
       v6 = 100;
     }
 
-    v7 = [(NTKUltraCubeFaceBundle *)self _galleryFaceForDevice:v4];
+    v7 = [(NTKUltraCubeFaceBundle *)self _galleryFaceForDevice:deviceCopy];
     v8 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v7 priority:v6];
     v9 = v8;
     if (v8)
@@ -133,8 +133,8 @@
 - (id)_randomSampleResourceDirectoryPath
 {
   v23 = [NSBundle bundleForClass:objc_opt_class()];
-  v22 = [v23 bundlePath];
-  v21 = [v22 stringByAppendingPathComponent:@"SampleResourceDirectories"];
+  bundlePath = [v23 bundlePath];
+  v21 = [bundlePath stringByAppendingPathComponent:@"SampleResourceDirectories"];
   v2 = [NSURL fileURLWithPath:?];
   v3 = +[NSFileManager defaultManager];
   v31[0] = NSURLNameKey;

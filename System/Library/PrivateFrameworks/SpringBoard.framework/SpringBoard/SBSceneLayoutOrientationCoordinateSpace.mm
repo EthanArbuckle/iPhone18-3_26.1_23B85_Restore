@@ -1,9 +1,9 @@
 @interface SBSceneLayoutOrientationCoordinateSpace
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (SBSceneLayoutOrientationCoordinateSpace)initWithInterfaceOrientation:(int64_t)a3 withReferenceCoordinateSpace:(id)a4 inOrientation:(int64_t)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (SBSceneLayoutOrientationCoordinateSpace)initWithInterfaceOrientation:(int64_t)orientation withReferenceCoordinateSpace:(id)space inOrientation:(int64_t)inOrientation;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBSceneLayoutOrientationCoordinateSpace
@@ -39,32 +39,32 @@
   return result;
 }
 
-- (SBSceneLayoutOrientationCoordinateSpace)initWithInterfaceOrientation:(int64_t)a3 withReferenceCoordinateSpace:(id)a4 inOrientation:(int64_t)a5
+- (SBSceneLayoutOrientationCoordinateSpace)initWithInterfaceOrientation:(int64_t)orientation withReferenceCoordinateSpace:(id)space inOrientation:(int64_t)inOrientation
 {
   v8.receiver = self;
   v8.super_class = SBSceneLayoutOrientationCoordinateSpace;
-  result = [(SBSceneLayoutCoordinateSpace *)&v8 initWithParentCoordinateSpace:a4];
+  result = [(SBSceneLayoutCoordinateSpace *)&v8 initWithParentCoordinateSpace:space];
   if (result)
   {
-    result->_orientation = a3;
-    result->_referenceOrientation = a5;
+    result->_orientation = orientation;
+    result->_referenceOrientation = inOrientation;
   }
 
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  v5 = a4;
+  spaceCopy = space;
   [(UICoordinateSpace *)self->super._parentCoordinateSpace bounds];
   _UIWindowConvertRectFromOrientationToOrientation();
   v10 = v6;
   v11 = v7;
   v12 = v8;
   v13 = v9;
-  if (v5)
+  if (spaceCopy)
   {
-    [v5 convertRect:self->super._parentCoordinateSpace fromCoordinateSpace:{v6, v7, v8, v9}];
+    [spaceCopy convertRect:self->super._parentCoordinateSpace fromCoordinateSpace:{v6, v7, v8, v9}];
     v10 = v14;
     v11 = v15;
     v12 = v16;
@@ -82,11 +82,11 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  if (a4)
+  if (space)
   {
-    [a4 convertRect:self->super._parentCoordinateSpace toCoordinateSpace:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+    [space convertRect:self->super._parentCoordinateSpace toCoordinateSpace:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   }
 
   [(UICoordinateSpace *)self->super._parentCoordinateSpace bounds];
@@ -99,20 +99,20 @@
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = SBSceneLayoutOrientationCoordinateSpace;
-  v4 = a3;
-  v5 = [(SBSceneLayoutCoordinateSpace *)&v12 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(SBSceneLayoutCoordinateSpace *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__SBSceneLayoutOrientationCoordinateSpace_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

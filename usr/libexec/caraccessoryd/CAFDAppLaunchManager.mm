@@ -1,10 +1,10 @@
 @interface CAFDAppLaunchManager
 - (_TtC13caraccessoryd20CAFDAppLaunchManager)init;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)historicalNotificationService:(id)a3 didUpdateHidden:(BOOL)a4;
-- (void)historicalNotificationService:(id)a3 didUpdateTimestamp:(id)a4;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)historicalNotificationService:(id)service didUpdateHidden:(BOOL)hidden;
+- (void)historicalNotificationService:(id)service didUpdateTimestamp:(id)timestamp;
 @end
 
 @implementation CAFDAppLaunchManager
@@ -16,38 +16,38 @@
   return result;
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CAFDAppLaunchManager.carManager(_:didUpdateCurrentCar:)(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  specialized CAFDAppLaunchManager.carManager(_:didUpdateCurrentCar:)(car);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  CAFDAppLaunchManager.carDidUpdateAccessories(_:)(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  CAFDAppLaunchManager.carDidUpdateAccessories(_:)(accessoriesCopy);
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
   swift_beginAccess();
-  v6 = a3;
-  v7 = self;
-  v8 = specialized Set._Variant.remove(_:)(v6);
+  assertionCopy = assertion;
+  selfCopy = self;
+  v8 = specialized Set._Variant.remove(_:)(assertionCopy);
   swift_endAccess();
 }
 
-- (void)historicalNotificationService:(id)a3 didUpdateHidden:(BOOL)a4
+- (void)historicalNotificationService:(id)service didUpdateHidden:(BOOL)hidden
 {
-  v5 = a3;
-  v6 = self;
-  CAFDAppLaunchManager.requestLaunch(app:for:)(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFDAppLaunchManager.requestLaunch(app:for:)(serviceCopy);
 }
 
-- (void)historicalNotificationService:(id)a3 didUpdateTimestamp:(id)a4
+- (void)historicalNotificationService:(id)service didUpdateTimestamp:(id)timestamp
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo14NSUnitDurationCGMd, &_s10Foundation11MeasurementVySo14NSUnitDurationCGMR);
   v5 = *(v4 - 8);

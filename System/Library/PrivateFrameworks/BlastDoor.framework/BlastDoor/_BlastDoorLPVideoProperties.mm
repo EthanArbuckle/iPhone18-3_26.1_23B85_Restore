@@ -1,18 +1,18 @@
 @interface _BlastDoorLPVideoProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _BlastDoorLPVideoProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPVideoProperties allocWithZone:a3];
+  v4 = [_BlastDoorLPVideoProperties allocWithZone:zone];
   if (v4)
   {
     [(_BlastDoorLPVideoProperties *)v4 setHasAudio:[(_BlastDoorLPVideoProperties *)self hasAudio]];
-    v5 = [(_BlastDoorLPVideoProperties *)self accessibilityText];
-    v6 = [v5 copy];
+    accessibilityText = [(_BlastDoorLPVideoProperties *)self accessibilityText];
+    v6 = [accessibilityText copy];
     [(_BlastDoorLPVideoProperties *)v4 setAccessibilityText:v6];
 
     v7 = v4;
@@ -21,19 +21,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = _BlastDoorLPVideoProperties;
-  v5 = [(_BlastDoorLPVideoProperties *)&v11 isEqual:v4];
+  v5 = [(_BlastDoorLPVideoProperties *)&v11 isEqual:equalCopy];
   if (!v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 8) == self->_hasAudio)
       {

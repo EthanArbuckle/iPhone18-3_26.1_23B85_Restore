@@ -1,32 +1,32 @@
 @interface COAlarmReadRequest
 + (id)acceptableResponses;
-- (COAlarmReadRequest)initWithAccessory:(id)a3;
-- (COAlarmReadRequest)initWithAccessoryUniqueIdentifier:(id)a3 requiresFilter:(BOOL)a4;
-- (COAlarmReadRequest)initWithCoder:(id)a3;
+- (COAlarmReadRequest)initWithAccessory:(id)accessory;
+- (COAlarmReadRequest)initWithAccessoryUniqueIdentifier:(id)identifier requiresFilter:(BOOL)filter;
+- (COAlarmReadRequest)initWithCoder:(id)coder;
 - (id)initForMerge;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COAlarmReadRequest
 
-- (COAlarmReadRequest)initWithAccessoryUniqueIdentifier:(id)a3 requiresFilter:(BOOL)a4
+- (COAlarmReadRequest)initWithAccessoryUniqueIdentifier:(id)identifier requiresFilter:(BOOL)filter
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(COMeshCommand *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accessoryUniqueIdentifier, a3);
-    v9->_requiresFilter = a4;
+    objc_storeStrong(&v8->_accessoryUniqueIdentifier, identifier);
+    v9->_requiresFilter = filter;
   }
 
   return v9;
 }
 
-- (COAlarmReadRequest)initWithAccessory:(id)a3
+- (COAlarmReadRequest)initWithAccessory:(id)accessory
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(COAlarmReadRequest *)self initWithAccessoryUniqueIdentifier:v4];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v5 = [(COAlarmReadRequest *)self initWithAccessoryUniqueIdentifier:uniqueIdentifier];
 
   return v5;
 }
@@ -43,26 +43,26 @@
   return result;
 }
 
-- (COAlarmReadRequest)initWithCoder:(id)a3
+- (COAlarmReadRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = COAlarmReadRequest;
-  v5 = [(COMeshCommand *)&v11 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"identifier"])
+    if ([coderCopy containsValueForKey:@"identifier"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       accessoryUniqueIdentifier = v5->_accessoryUniqueIdentifier;
       v5->_accessoryUniqueIdentifier = v6;
     }
 
-    v5->_requiresFilter = [v4 containsValueForKey:@"filtered"];
-    v5->_isForMerge = [v4 containsValueForKey:@"merge"];
-    if ([v4 containsValueForKey:@"etag"])
+    v5->_requiresFilter = [coderCopy containsValueForKey:@"filtered"];
+    v5->_isForMerge = [coderCopy containsValueForKey:@"merge"];
+    if ([coderCopy containsValueForKey:@"etag"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"etag"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"etag"];
       eTag = v5->_eTag;
       v5->_eTag = v8;
     }
@@ -71,34 +71,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = COAlarmReadRequest;
-  [(COMeshCommand *)&v8 encodeWithCoder:v4];
-  v5 = [(COAlarmReadRequest *)self accessoryUniqueIdentifier];
-  if (v5)
+  [(COMeshCommand *)&v8 encodeWithCoder:coderCopy];
+  accessoryUniqueIdentifier = [(COAlarmReadRequest *)self accessoryUniqueIdentifier];
+  if (accessoryUniqueIdentifier)
   {
-    [v4 encodeObject:v5 forKey:@"identifier"];
+    [coderCopy encodeObject:accessoryUniqueIdentifier forKey:@"identifier"];
   }
 
   if ([(COAlarmReadRequest *)self requiresFilter])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
   }
 
   if ([(COAlarmReadRequest *)self isForMerge])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"merge"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"merge"];
   }
 
-  v6 = [(COAlarmReadRequest *)self eTag];
+  eTag = [(COAlarmReadRequest *)self eTag];
 
-  if (v6)
+  if (eTag)
   {
-    v7 = [(COAlarmReadRequest *)self eTag];
-    [v4 encodeObject:v7 forKey:@"etag"];
+    eTag2 = [(COAlarmReadRequest *)self eTag];
+    [coderCopy encodeObject:eTag2 forKey:@"etag"];
   }
 }
 

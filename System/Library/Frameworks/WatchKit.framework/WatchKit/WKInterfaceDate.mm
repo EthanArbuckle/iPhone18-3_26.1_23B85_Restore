@@ -1,26 +1,26 @@
 @interface WKInterfaceDate
-- (void)setCalendar:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (void)setCalendar:(id)calendar;
+- (void)setTextColor:(id)color;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation WKInterfaceDate
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v4 = [a3 name];
-  [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"timezone"];
+  name = [zone name];
+  [(WKInterfaceObject *)self _sendValueChanged:name forProperty:@"timezone"];
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v4 = [a3 calendarIdentifier];
-  [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"calendar"];
+  calendarIdentifier = [calendar calendarIdentifier];
+  [(WKInterfaceObject *)self _sendValueChanged:calendarIdentifier forProperty:@"calendar"];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = [SPColorWrapper wrapperForColor:a3];
+  v4 = [SPColorWrapper wrapperForColor:color];
   [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"color"];
 }
 

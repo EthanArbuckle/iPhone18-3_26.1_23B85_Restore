@@ -31,7 +31,7 @@
   v17 = __Block_byref_object_copy__5;
   v18 = __Block_byref_object_dispose__5;
   v19 = 0;
-  v5 = [a1 acceptedPasses];
+  acceptedPasses = [self acceptedPasses];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__PKPaymentAuthorizationDataModel_NanoPassKit__npkSetPassAndPaymentApplicationForAID___block_invoke;
@@ -40,20 +40,20 @@
   v11 = v6;
   v12 = &v20;
   v13 = &v14;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [acceptedPasses enumerateObjectsUsingBlock:v10];
 
-  [a1 beginUpdates];
+  [self beginUpdates];
   if ([v21[5] isPeerPaymentPass])
   {
     v7 = NPKSharedPeerPaymentAccountManager();
-    v8 = [v7 account];
-    v9 = [v8 currentBalance];
-    [v21[5] setPeerPaymentBalance:v9];
+    account = [v7 account];
+    currentBalance = [account currentBalance];
+    [v21[5] setPeerPaymentBalance:currentBalance];
   }
 
-  [a1 setPass:v21[5]];
-  [a1 setPaymentApplication:v15[5]];
-  [a1 endUpdates];
+  [self setPass:v21[5]];
+  [self setPaymentApplication:v15[5]];
+  [self endUpdates];
 
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v20, 8);
@@ -61,53 +61,53 @@
 
 - (BOOL)npkIsPeerPayment
 {
-  v1 = [a1 peerPaymentQuote];
-  v2 = v1 != 0;
+  peerPaymentQuote = [self peerPaymentQuote];
+  v2 = peerPaymentQuote != 0;
 
   return v2;
 }
 
 - (uint64_t)npkIsNearbyPeerPayment
 {
-  v1 = [a1 paymentRequest];
-  v2 = [v1 peerPaymentRequest];
+  paymentRequest = [self paymentRequest];
+  peerPaymentRequest = [paymentRequest peerPaymentRequest];
 
-  if (v2)
+  if (peerPaymentRequest)
   {
-    v3 = [v2 isDeviceTap];
+    isDeviceTap = [peerPaymentRequest isDeviceTap];
   }
 
   else
   {
-    v3 = 0;
+    isDeviceTap = 0;
   }
 
-  return v3;
+  return isDeviceTap;
 }
 
 - (BOOL)npkIsSkeletonPeerPayment
 {
-  if (![a1 npkIsPeerPayment])
+  if (![self npkIsPeerPayment])
   {
     return 0;
   }
 
-  v2 = [a1 paymentRequest];
-  v3 = [v2 paymentSummaryItems];
-  v4 = [v3 lastObject];
-  v5 = [v4 type] == 1;
+  paymentRequest = [self paymentRequest];
+  paymentSummaryItems = [paymentRequest paymentSummaryItems];
+  lastObject = [paymentSummaryItems lastObject];
+  v5 = [lastObject type] == 1;
 
   return v5;
 }
 
 - (BOOL)npkIsTopUp
 {
-  v2 = [a1 peerPaymentQuote];
-  v3 = [v2 firstQuoteItemOfType:1];
+  peerPaymentQuote = [self peerPaymentQuote];
+  v3 = [peerPaymentQuote firstQuoteItemOfType:1];
   if (v3)
   {
-    v4 = [a1 peerPaymentQuote];
-    v5 = [v4 firstQuoteItemOfType:2];
+    peerPaymentQuote2 = [self peerPaymentQuote];
+    v5 = [peerPaymentQuote2 firstQuoteItemOfType:2];
     v6 = v5 == 0;
   }
 
@@ -121,12 +121,12 @@
 
 - (BOOL)npkIsSplitPeerPayment
 {
-  v2 = [a1 peerPaymentQuote];
-  v3 = [v2 firstQuoteItemOfType:1];
+  peerPaymentQuote = [self peerPaymentQuote];
+  v3 = [peerPaymentQuote firstQuoteItemOfType:1];
   if (v3)
   {
-    v4 = [a1 peerPaymentQuote];
-    v5 = [v4 firstQuoteItemOfType:2];
+    peerPaymentQuote2 = [self peerPaymentQuote];
+    v5 = [peerPaymentQuote2 firstQuoteItemOfType:2];
     v6 = v5 != 0;
   }
 
@@ -140,11 +140,11 @@
 
 - (uint64_t)npkIsSplitPeerPaymentWithAnotherPaymentMethod
 {
-  result = [a1 npkIsSplitPeerPayment];
+  result = [self npkIsSplitPeerPayment];
   if (result)
   {
 
-    return [a1 _hasNonPeerPaymentAcceptedPasses];
+    return [self _hasNonPeerPaymentAcceptedPasses];
   }
 
   return result;
@@ -152,10 +152,10 @@
 
 - (uint64_t)npkIsSplitPeerPaymentWithoutAnotherPaymentMethod
 {
-  result = [a1 npkIsSplitPeerPayment];
+  result = [self npkIsSplitPeerPayment];
   if (result)
   {
-    return [a1 _hasNonPeerPaymentAcceptedPasses] ^ 1;
+    return [self _hasNonPeerPaymentAcceptedPasses] ^ 1;
   }
 
   return result;
@@ -163,46 +163,46 @@
 
 - (BOOL)_hasNonPeerPaymentAcceptedPasses
 {
-  v1 = [a1 acceptedPasses];
-  v2 = [v1 npkFindFirstObjectMatchingCondition:&__block_literal_global_9];
+  acceptedPasses = [self acceptedPasses];
+  v2 = [acceptedPasses npkFindFirstObjectMatchingCondition:&__block_literal_global_9];
 
   return v2 != 0;
 }
 
 - (BOOL)npkIsOutgoingPeerPayment
 {
-  if (![a1 npkIsPeerPayment])
+  if (![self npkIsPeerPayment])
   {
     return 0;
   }
 
-  v2 = [a1 peerPaymentQuote];
-  v3 = [v2 recipient];
-  v4 = v3 != 0;
+  peerPaymentQuote = [self peerPaymentQuote];
+  recipient = [peerPaymentQuote recipient];
+  v4 = recipient != 0;
 
   return v4;
 }
 
 - (BOOL)npkIsCardOnFilePayment
 {
-  v1 = [a1 paymentRequest];
-  v2 = [v1 requestType] == 1;
+  paymentRequest = [self paymentRequest];
+  v2 = [paymentRequest requestType] == 1;
 
   return v2;
 }
 
 - (BOOL)npkIsExternalContextAuthorization
 {
-  v1 = [a1 paymentRequest];
-  v2 = [v1 requestType] == 7;
+  paymentRequest = [self paymentRequest];
+  v2 = [paymentRequest requestType] == 7;
 
   return v2;
 }
 
 - (BOOL)npkIsCompanionAuthForTvOS
 {
-  v1 = [a1 paymentRequest];
-  v2 = [v1 requestorDeviceType] == 1;
+  paymentRequest = [self paymentRequest];
+  v2 = [paymentRequest requestorDeviceType] == 1;
 
   return v2;
 }

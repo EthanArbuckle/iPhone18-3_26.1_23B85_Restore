@@ -1,21 +1,21 @@
 @interface BTVCLinkClient
 + (id)sharedClient;
 - (BTVCLinkClient)init;
-- (id)addBTVCBonjourLinkDelegate:(id)a3;
-- (void)btvcBonjourLink:(id)a3 didConnectToPeer:(id)a4 parameters:(id)a5 role:(int64_t)a6 error:(id)a7;
-- (void)btvcBonjourLink:(id)a3 didDeferAdvertisingType:(int64_t)a4;
-- (void)btvcBonjourLink:(id)a3 didDisconnectFromPeer:(id)a4 parameters:(id)a5 error:(id)a6;
-- (void)btvcBonjourLink:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6 peerInfo:(id)a7;
-- (void)btvcBonjourLink:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)btvcBonjourLink:(id)a3 didFailToStartScanningForType:(int64_t)a4 WithError:(id)a5;
-- (void)btvcBonjourLink:(id)a3 didLosePeer:(id)a4 type:(int64_t)a5;
-- (void)btvcBonjourLink:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5;
-- (void)btvcBonjourLink:(id)a3 didSendData:(id)a4 toPeer:(id)a5 error:(id)a6;
-- (void)btvcBonjourLink:(id)a3 didStartAdvertisingType:(int64_t)a4;
-- (void)btvcBonjourLink:(id)a3 didStartScanningForType:(int64_t)a4;
-- (void)btvcBonjourLink:(id)a3 didStopAdvertisingType:(int64_t)a4 withError:(id)a5;
-- (void)btvcBonjourLinkDidUpdateState:(id)a3;
-- (void)removeBTVCBonjourLinkDelegate:(id)a3;
+- (id)addBTVCBonjourLinkDelegate:(id)delegate;
+- (void)btvcBonjourLink:(id)link didConnectToPeer:(id)peer parameters:(id)parameters role:(int64_t)role error:(id)error;
+- (void)btvcBonjourLink:(id)link didDeferAdvertisingType:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didDisconnectFromPeer:(id)peer parameters:(id)parameters error:(id)error;
+- (void)btvcBonjourLink:(id)link didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer peerInfo:(id)info;
+- (void)btvcBonjourLink:(id)link didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)btvcBonjourLink:(id)link didFailToStartScanningForType:(int64_t)type WithError:(id)error;
+- (void)btvcBonjourLink:(id)link didLosePeer:(id)peer type:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didReceiveData:(id)data fromPeer:(id)peer;
+- (void)btvcBonjourLink:(id)link didSendData:(id)data toPeer:(id)peer error:(id)error;
+- (void)btvcBonjourLink:(id)link didStartAdvertisingType:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didStartScanningForType:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didStopAdvertisingType:(int64_t)type withError:(id)error;
+- (void)btvcBonjourLinkDidUpdateState:(id)state;
+- (void)removeBTVCBonjourLinkDelegate:(id)delegate;
 @end
 
 @implementation BTVCLinkClient
@@ -53,9 +53,9 @@
   return v2;
 }
 
-- (id)addBTVCBonjourLinkDelegate:(id)a3
+- (id)addBTVCBonjourLinkDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,35 +64,35 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v14, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (!v6->_btvcBonjourLink)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_btvcBonjourLink)
   {
-    v7 = [[BTVCBonjourLink alloc] initWithDelegate:v6 queue:v6->_dispatchQueue];
-    btvcBonjourLink = v6->_btvcBonjourLink;
-    v6->_btvcBonjourLink = v7;
+    v7 = [[BTVCBonjourLink alloc] initWithDelegate:selfCopy queue:selfCopy->_dispatchQueue];
+    btvcBonjourLink = selfCopy->_btvcBonjourLink;
+    selfCopy->_btvcBonjourLink = v7;
   }
 
-  btvcBonjourLinkDelegates = v6->_btvcBonjourLinkDelegates;
+  btvcBonjourLinkDelegates = selfCopy->_btvcBonjourLinkDelegates;
   if (!btvcBonjourLinkDelegates)
   {
     v10 = objc_alloc_init(NSMutableSet);
-    v11 = v6->_btvcBonjourLinkDelegates;
-    v6->_btvcBonjourLinkDelegates = v10;
+    v11 = selfCopy->_btvcBonjourLinkDelegates;
+    selfCopy->_btvcBonjourLinkDelegates = v10;
 
-    btvcBonjourLinkDelegates = v6->_btvcBonjourLinkDelegates;
+    btvcBonjourLinkDelegates = selfCopy->_btvcBonjourLinkDelegates;
   }
 
-  [(NSMutableSet *)btvcBonjourLinkDelegates addObject:v4];
-  v12 = v6->_btvcBonjourLink;
-  objc_sync_exit(v6);
+  [(NSMutableSet *)btvcBonjourLinkDelegates addObject:delegateCopy];
+  v12 = selfCopy->_btvcBonjourLink;
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (void)removeBTVCBonjourLinkDelegate:(id)a3
+- (void)removeBTVCBonjourLinkDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,10 +101,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSMutableSet *)v6->_btvcBonjourLinkDelegates removeObject:v4];
-  if (![(NSMutableSet *)v6->_btvcBonjourLinkDelegates count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates removeObject:delegateCopy];
+  if (![(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates count])
   {
     v7 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -114,17 +114,17 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Invalidate BTVCBonjourLink", &v9, 0xCu);
     }
 
-    [(BTVCBonjourLink *)v6->_btvcBonjourLink invalidate];
-    btvcBonjourLink = v6->_btvcBonjourLink;
-    v6->_btvcBonjourLink = 0;
+    [(BTVCBonjourLink *)selfCopy->_btvcBonjourLink invalidate];
+    btvcBonjourLink = selfCopy->_btvcBonjourLink;
+    selfCopy->_btvcBonjourLink = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLinkDidUpdateState:(id)a3
+- (void)btvcBonjourLinkDidUpdateState:(id)state
 {
-  v12 = a3;
+  stateCopy = state;
   v4 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,14 +133,14 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableSet *)v5->_btvcBonjourLinkDelegates allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -151,16 +151,16 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 dispatchQueue];
-          if (v11 == v5->_dispatchQueue)
+          dispatchQueue = [v10 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v10 btvcBonjourLinkDidUpdateState:v12];
+            [v10 btvcBonjourLinkDidUpdateState:stateCopy];
           }
 
           else
@@ -170,32 +170,32 @@
             block[2] = sub_1003841CC;
             block[3] = &unk_100AE0B60;
             block[4] = v10;
-            v14 = v12;
-            dispatch_async(v11, block);
+            v14 = stateCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v11 = 0;
+          dispatchQueue = 0;
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didStartAdvertisingType:(int64_t)a4
+- (void)btvcBonjourLink:(id)link didStartAdvertisingType:(int64_t)type
 {
-  v15 = a3;
+  linkCopy = link;
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -204,15 +204,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v7;
-  v9 = [(NSMutableSet *)v7->_btvcBonjourLinkDelegates allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = selfCopy;
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = *v20;
@@ -223,16 +223,16 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v13 dispatchQueue];
-          if (v14 == v8->_dispatchQueue)
+          dispatchQueue = [v13 dispatchQueue];
+          if (dispatchQueue == v8->_dispatchQueue)
           {
-            [v13 btvcBonjourLink:v15 didStartAdvertisingType:a4];
+            [v13 btvcBonjourLink:linkCopy didStartAdvertisingType:type];
           }
 
           else
@@ -242,22 +242,22 @@
             block[2] = sub_100384480;
             block[3] = &unk_100AE25C8;
             block[4] = v13;
-            v17 = v15;
-            v18 = a4;
-            dispatch_async(v14, block);
+            v17 = linkCopy;
+            typeCopy = type;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v14 = 0;
+          dispatchQueue = 0;
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -266,18 +266,18 @@
   objc_sync_exit(v8);
 }
 
-- (void)btvcBonjourLink:(id)a3 didStopAdvertisingType:(int64_t)a4 withError:(id)a5
+- (void)btvcBonjourLink:(id)link didStopAdvertisingType:(int64_t)type withError:(id)error
 {
-  v15 = a3;
-  v16 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
+  linkCopy = link;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(NSMutableSet *)v8->_btvcBonjourLinkDelegates allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = *v22;
@@ -288,16 +288,16 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v13 dispatchQueue];
-          if (v14 == v8->_dispatchQueue)
+          dispatchQueue = [v13 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v13 btvcBonjourLink:v15 didStopAdvertisingType:a4 withError:v16];
+            [v13 btvcBonjourLink:linkCopy didStopAdvertisingType:type withError:errorCopy];
           }
 
           else
@@ -307,43 +307,43 @@
             block[2] = sub_100384714;
             block[3] = &unk_100AEE758;
             block[4] = v13;
-            v18 = v15;
-            v20 = a4;
-            v19 = v16;
-            dispatch_async(v14, block);
+            v18 = linkCopy;
+            typeCopy = type;
+            v19 = errorCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v14 = 0;
+          dispatchQueue = 0;
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didDeferAdvertisingType:(int64_t)a4
+- (void)btvcBonjourLink:(id)link didDeferAdvertisingType:(int64_t)type
 {
-  v14 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  linkCopy = link;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
-  v8 = [(NSMutableSet *)v6->_btvcBonjourLinkDelegates allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = selfCopy;
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -354,16 +354,16 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v12 dispatchQueue];
-          if (v13 == v7->_dispatchQueue)
+          dispatchQueue = [v12 dispatchQueue];
+          if (dispatchQueue == v7->_dispatchQueue)
           {
-            [v12 btvcBonjourLink:v14 didDeferAdvertisingType:a4];
+            [v12 btvcBonjourLink:linkCopy didDeferAdvertisingType:type];
           }
 
           else
@@ -373,22 +373,22 @@
             block[2] = sub_100384974;
             block[3] = &unk_100AE25C8;
             block[4] = v12;
-            v16 = v14;
-            v17 = a4;
-            dispatch_async(v13, block);
+            v16 = linkCopy;
+            typeCopy = type;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v13 = 0;
+          dispatchQueue = 0;
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -397,18 +397,18 @@
   objc_sync_exit(v7);
 }
 
-- (void)btvcBonjourLink:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)btvcBonjourLink:(id)link didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v15 = a3;
-  v16 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
+  linkCopy = link;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(NSMutableSet *)v8->_btvcBonjourLinkDelegates allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = *v22;
@@ -419,16 +419,16 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v13 dispatchQueue];
-          if (v14 == v8->_dispatchQueue)
+          dispatchQueue = [v13 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v13 btvcBonjourLink:v15 didFailToStartAdvertisingOfType:a4 withError:v16];
+            [v13 btvcBonjourLink:linkCopy didFailToStartAdvertisingOfType:type withError:errorCopy];
           }
 
           else
@@ -438,43 +438,43 @@
             block[2] = sub_100384C08;
             block[3] = &unk_100AEE758;
             block[4] = v13;
-            v18 = v15;
-            v20 = a4;
-            v19 = v16;
-            dispatch_async(v14, block);
+            v18 = linkCopy;
+            typeCopy = type;
+            v19 = errorCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v14 = 0;
+          dispatchQueue = 0;
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didStartScanningForType:(int64_t)a4
+- (void)btvcBonjourLink:(id)link didStartScanningForType:(int64_t)type
 {
-  v14 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  linkCopy = link;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
-  v8 = [(NSMutableSet *)v6->_btvcBonjourLinkDelegates allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = selfCopy;
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -485,16 +485,16 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v12 dispatchQueue];
-          if (v13 == v7->_dispatchQueue)
+          dispatchQueue = [v12 dispatchQueue];
+          if (dispatchQueue == v7->_dispatchQueue)
           {
-            [v12 btvcBonjourLink:v14 didStartScanningForType:a4];
+            [v12 btvcBonjourLink:linkCopy didStartScanningForType:type];
           }
 
           else
@@ -504,22 +504,22 @@
             block[2] = sub_100384E68;
             block[3] = &unk_100AE25C8;
             block[4] = v12;
-            v16 = v14;
-            v17 = a4;
-            dispatch_async(v13, block);
+            v16 = linkCopy;
+            typeCopy = type;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v13 = 0;
+          dispatchQueue = 0;
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -528,18 +528,18 @@
   objc_sync_exit(v7);
 }
 
-- (void)btvcBonjourLink:(id)a3 didFailToStartScanningForType:(int64_t)a4 WithError:(id)a5
+- (void)btvcBonjourLink:(id)link didFailToStartScanningForType:(int64_t)type WithError:(id)error
 {
-  v15 = a3;
-  v16 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
+  linkCopy = link;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(NSMutableSet *)v8->_btvcBonjourLinkDelegates allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = *v22;
@@ -550,16 +550,16 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v13 dispatchQueue];
-          if (v14 == v8->_dispatchQueue)
+          dispatchQueue = [v13 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v13 btvcBonjourLink:v15 didFailToStartScanningForType:a4 WithError:v16];
+            [v13 btvcBonjourLink:linkCopy didFailToStartScanningForType:type WithError:errorCopy];
           }
 
           else
@@ -569,46 +569,46 @@
             block[2] = sub_1003850FC;
             block[3] = &unk_100AEE758;
             block[4] = v13;
-            v18 = v15;
-            v20 = a4;
-            v19 = v16;
-            dispatch_async(v14, block);
+            v18 = linkCopy;
+            typeCopy = type;
+            v19 = errorCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v14 = 0;
+          dispatchQueue = 0;
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6 peerInfo:(id)a7
+- (void)btvcBonjourLink:(id)link didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer peerInfo:(id)info
 {
-  v20 = a3;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v12 = self;
-  objc_sync_enter(v12);
+  linkCopy = link;
+  dataCopy = data;
+  peerCopy = peer;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v12;
-  v13 = [(NSMutableSet *)v12->_btvcBonjourLinkDelegates allObjects];
-  v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  obj = selfCopy;
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v14 = [allObjects countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
     v15 = *v33;
@@ -620,16 +620,16 @@
       {
         if (*v33 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v32 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v17 dispatchQueue];
-          if (v18 == obj->_dispatchQueue)
+          dispatchQueue = [v17 dispatchQueue];
+          if (dispatchQueue == obj->_dispatchQueue)
           {
-            [v17 btvcBonjourLink:v20 didDiscoverType:a4 withData:v21 fromPeer:v22 peerInfo:v23];
+            [v17 btvcBonjourLink:linkCopy didDiscoverType:type withData:dataCopy fromPeer:peerCopy peerInfo:infoCopy];
           }
 
           else
@@ -639,25 +639,25 @@
             v26[0] = sub_1003853FC;
             v26[1] = &unk_100AEE780;
             v26[2] = v17;
-            v27 = v20;
-            v31 = a4;
-            v28 = v21;
-            v29 = v22;
-            v30 = v23;
-            dispatch_async(v18, block);
+            v27 = linkCopy;
+            typeCopy = type;
+            v28 = dataCopy;
+            v29 = peerCopy;
+            v30 = infoCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v18 = 0;
+          dispatchQueue = 0;
         }
 
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v14);
@@ -666,18 +666,18 @@
   objc_sync_exit(obj);
 }
 
-- (void)btvcBonjourLink:(id)a3 didLosePeer:(id)a4 type:(int64_t)a5
+- (void)btvcBonjourLink:(id)link didLosePeer:(id)peer type:(int64_t)type
 {
-  v15 = a3;
-  v16 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  linkCopy = link;
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(NSMutableSet *)v8->_btvcBonjourLinkDelegates allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = *v22;
@@ -688,16 +688,16 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v13 dispatchQueue];
-          if (v14 == v8->_dispatchQueue)
+          dispatchQueue = [v13 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v13 btvcBonjourLink:v15 didLosePeer:v16 type:a5];
+            [v13 btvcBonjourLink:linkCopy didLosePeer:peerCopy type:type];
           }
 
           else
@@ -707,37 +707,37 @@
             block[2] = sub_100385690;
             block[3] = &unk_100AEE758;
             block[4] = v13;
-            v18 = v15;
-            v19 = v16;
-            v20 = a5;
-            dispatch_async(v14, block);
+            v18 = linkCopy;
+            v19 = peerCopy;
+            typeCopy = type;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v14 = 0;
+          dispatchQueue = 0;
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didConnectToPeer:(id)a4 parameters:(id)a5 role:(int64_t)a6 error:(id)a7
+- (void)btvcBonjourLink:(id)link didConnectToPeer:(id)peer parameters:(id)parameters role:(int64_t)role error:(id)error
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a7;
+  linkCopy = link;
+  peerCopy = peer;
+  parametersCopy = parameters;
+  errorCopy = error;
   v11 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -746,14 +746,14 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = [(NSMutableSet *)v12->_btvcBonjourLinkDelegates allObjects];
-  v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v14 = [allObjects countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
     v15 = *v33;
@@ -765,16 +765,16 @@
       {
         if (*v33 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v32 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v17 dispatchQueue];
-          if (v18 == v12->_dispatchQueue)
+          dispatchQueue = [v17 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v17 btvcBonjourLink:v21 didConnectToPeer:v22 parameters:v23 role:a6 error:v24];
+            [v17 btvcBonjourLink:linkCopy didConnectToPeer:peerCopy parameters:parametersCopy role:role error:errorCopy];
           }
 
           else
@@ -784,39 +784,39 @@
             v26[0] = sub_1003859DC;
             v26[1] = &unk_100AEE780;
             v26[2] = v17;
-            v27 = v21;
-            v28 = v22;
-            v29 = v23;
-            v31 = a6;
-            v30 = v24;
-            dispatch_async(v18, block);
+            v27 = linkCopy;
+            v28 = peerCopy;
+            v29 = parametersCopy;
+            roleCopy = role;
+            v30 = errorCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v18 = 0;
+          dispatchQueue = 0;
         }
 
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v14);
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didDisconnectFromPeer:(id)a4 parameters:(id)a5 error:(id)a6
+- (void)btvcBonjourLink:(id)link didDisconnectFromPeer:(id)peer parameters:(id)parameters error:(id)error
 {
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
+  linkCopy = link;
+  peerCopy = peer;
+  parametersCopy = parameters;
+  errorCopy = error;
   v10 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -825,15 +825,15 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v11;
-  v12 = [(NSMutableSet *)v11->_btvcBonjourLinkDelegates allObjects];
-  v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  obj = selfCopy;
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v13 = [allObjects countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v13)
   {
     v15 = *v34;
@@ -846,17 +846,17 @@
       {
         if (*v34 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v33 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          v18 = [v17 dispatchQueue];
+          dispatchQueue = [v17 dispatchQueue];
           dispatchQueue = obj->_dispatchQueue;
           v20 = qword_100BCEA70;
           v21 = os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT);
-          if (v18 == dispatchQueue)
+          if (dispatchQueue == dispatchQueue)
           {
             if (v21)
             {
@@ -865,7 +865,7 @@
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: 1", buf, 0xCu);
             }
 
-            [v17 btvcBonjourLink:v23 didDisconnectFromPeer:v24 parameters:v25 error:{v26, v22}];
+            [v17 btvcBonjourLink:linkCopy didDisconnectFromPeer:peerCopy parameters:parametersCopy error:{errorCopy, v22}];
           }
 
           else
@@ -882,24 +882,24 @@
             block[2] = sub_100385DD4;
             block[3] = &unk_100AEE7A8;
             block[4] = v17;
-            v29 = v23;
-            v30 = v24;
-            v31 = v25;
-            v32 = v26;
-            dispatch_async(v18, block);
+            v29 = linkCopy;
+            v30 = peerCopy;
+            v31 = parametersCopy;
+            v32 = errorCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v18 = 0;
+          dispatchQueue = 0;
         }
 
         v16 = v16 + 1;
       }
 
       while (v13 != v16);
-      v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v13);
@@ -908,20 +908,20 @@
   objc_sync_exit(obj);
 }
 
-- (void)btvcBonjourLink:(id)a3 didSendData:(id)a4 toPeer:(id)a5 error:(id)a6
+- (void)btvcBonjourLink:(id)link didSendData:(id)data toPeer:(id)peer error:(id)error
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v10 = self;
-  objc_sync_enter(v10);
+  linkCopy = link;
+  dataCopy = data;
+  peerCopy = peer;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [(NSMutableSet *)v10->_btvcBonjourLinkDelegates allObjects];
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v12 = [allObjects countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
     v13 = *v29;
@@ -933,16 +933,16 @@
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v15 = *(*(&v28 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          v16 = [v15 dispatchQueue];
-          if (v16 == v10->_dispatchQueue)
+          dispatchQueue = [v15 dispatchQueue];
+          if (dispatchQueue == selfCopy->_dispatchQueue)
           {
-            [v15 btvcBonjourLink:v18 didSendData:v19 toPeer:v20 error:v21];
+            [v15 btvcBonjourLink:linkCopy didSendData:dataCopy toPeer:peerCopy error:errorCopy];
           }
 
           else
@@ -952,46 +952,46 @@
             v23[0] = sub_1003860BC;
             v23[1] = &unk_100AEE7A8;
             v23[2] = v15;
-            v24 = v18;
-            v25 = v19;
-            v26 = v20;
-            v27 = v21;
-            dispatch_async(v16, block);
+            v24 = linkCopy;
+            v25 = dataCopy;
+            v26 = peerCopy;
+            v27 = errorCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v16 = 0;
+          dispatchQueue = 0;
         }
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v12);
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)btvcBonjourLink:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5
+- (void)btvcBonjourLink:(id)link didReceiveData:(id)data fromPeer:(id)peer
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
+  linkCopy = link;
+  dataCopy = data;
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v8;
-  v9 = [(NSMutableSet *)v8->_btvcBonjourLinkDelegates allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  obj = selfCopy;
+  allObjects = [(NSMutableSet *)selfCopy->_btvcBonjourLinkDelegates allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v10)
   {
     v12 = *v29;
@@ -1004,17 +1004,17 @@
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          v15 = [v14 dispatchQueue];
+          dispatchQueue = [v14 dispatchQueue];
           dispatchQueue = obj->_dispatchQueue;
           v17 = qword_100BCEA70;
           v18 = os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT);
-          if (v15 == dispatchQueue)
+          if (dispatchQueue == dispatchQueue)
           {
             if (v18)
             {
@@ -1023,7 +1023,7 @@
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: 1", buf, 0xCu);
             }
 
-            [v14 btvcBonjourLink:v20 didReceiveData:v21 fromPeer:{v22, v19}];
+            [v14 btvcBonjourLink:linkCopy didReceiveData:dataCopy fromPeer:{peerCopy, v19}];
           }
 
           else
@@ -1040,23 +1040,23 @@
             block[2] = sub_100386434;
             block[3] = &unk_100AEE7D0;
             block[4] = v14;
-            v25 = v20;
-            v26 = v21;
-            v27 = v22;
-            dispatch_async(v15, block);
+            v25 = linkCopy;
+            v26 = dataCopy;
+            v27 = peerCopy;
+            dispatch_async(dispatchQueue, block);
           }
         }
 
         else
         {
-          v15 = 0;
+          dispatchQueue = 0;
         }
 
         v13 = v13 + 1;
       }
 
       while (v10 != v13);
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v10);

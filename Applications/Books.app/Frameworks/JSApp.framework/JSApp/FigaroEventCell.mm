@@ -1,13 +1,13 @@
 @interface FigaroEventCell
-- (_TtC5JSApp15FigaroEventCell)initWithCoder:(id)a3;
-- (_TtC5JSApp15FigaroEventCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5JSApp15FigaroEventCell)initWithCoder:(id)coder;
+- (_TtC5JSApp15FigaroEventCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation FigaroEventCell
 
-- (_TtC5JSApp15FigaroEventCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5JSApp15FigaroEventCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_843AC();
     v5 = sub_8437C();
@@ -25,7 +25,7 @@
   return v6;
 }
 
-- (_TtC5JSApp15FigaroEventCell)initWithCoder:(id)a3
+- (_TtC5JSApp15FigaroEventCell)initWithCoder:(id)coder
 {
   result = sub_84AFC();
   __break(1u);

@@ -1,101 +1,101 @@
 @interface RMConfigurationUIItem
-+ (id)configurationUIItemWithConfiguration:(id)a3 details:(id)a4;
-+ (id)configurationUIItemWithIdentifier:(id)a3 serverToken:(id)a4 type:(id)a5 details:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfigurationUI:(id)a3;
-- (RMConfigurationUIItem)initWithCoder:(id)a3;
-- (RMConfigurationUIItem)initWithConfiguration:(id)a3 details:(id)a4;
-- (RMConfigurationUIItem)initWithIdentifier:(id)a3 serverToken:(id)a4 type:(id)a5 details:(id)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)configurationUIItemWithConfiguration:(id)configuration details:(id)details;
++ (id)configurationUIItemWithIdentifier:(id)identifier serverToken:(id)token type:(id)type details:(id)details;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfigurationUI:(id)i;
+- (RMConfigurationUIItem)initWithCoder:(id)coder;
+- (RMConfigurationUIItem)initWithConfiguration:(id)configuration details:(id)details;
+- (RMConfigurationUIItem)initWithIdentifier:(id)identifier serverToken:(id)token type:(id)type details:(id)details;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMConfigurationUIItem
 
-+ (id)configurationUIItemWithConfiguration:(id)a3 details:(id)a4
++ (id)configurationUIItemWithConfiguration:(id)configuration details:(id)details
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RMConfigurationUIItem alloc] initWithConfiguration:v6 details:v5];
+  detailsCopy = details;
+  configurationCopy = configuration;
+  v7 = [[RMConfigurationUIItem alloc] initWithConfiguration:configurationCopy details:detailsCopy];
 
   return v7;
 }
 
-+ (id)configurationUIItemWithIdentifier:(id)a3 serverToken:(id)a4 type:(id)a5 details:(id)a6
++ (id)configurationUIItemWithIdentifier:(id)identifier serverToken:(id)token type:(id)type details:(id)details
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[RMConfigurationUIItem alloc] initWithIdentifier:v12 serverToken:v11 type:v10 details:v9];
+  detailsCopy = details;
+  typeCopy = type;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  v13 = [[RMConfigurationUIItem alloc] initWithIdentifier:identifierCopy serverToken:tokenCopy type:typeCopy details:detailsCopy];
 
   return v13;
 }
 
-- (RMConfigurationUIItem)initWithConfiguration:(id)a3 details:(id)a4
+- (RMConfigurationUIItem)initWithConfiguration:(id)configuration details:(id)details
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 declarationIdentifier];
-  v9 = [v7 declarationServerToken];
-  v10 = [v7 declarationType];
+  detailsCopy = details;
+  configurationCopy = configuration;
+  declarationIdentifier = [configurationCopy declarationIdentifier];
+  declarationServerToken = [configurationCopy declarationServerToken];
+  declarationType = [configurationCopy declarationType];
 
-  v11 = [(RMConfigurationUIItem *)self initWithIdentifier:v8 serverToken:v9 type:v10 details:v6];
+  v11 = [(RMConfigurationUIItem *)self initWithIdentifier:declarationIdentifier serverToken:declarationServerToken type:declarationType details:detailsCopy];
   return v11;
 }
 
-- (RMConfigurationUIItem)initWithIdentifier:(id)a3 serverToken:(id)a4 type:(id)a5 details:(id)a6
+- (RMConfigurationUIItem)initWithIdentifier:(id)identifier serverToken:(id)token type:(id)type details:(id)details
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  typeCopy = type;
+  detailsCopy = details;
   v18.receiver = self;
   v18.super_class = RMConfigurationUIItem;
   v15 = [(RMConfigurationUIItem *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_declarationIdentifier, a3);
-    objc_storeStrong(&v16->_declarationServerToken, a4);
-    objc_storeStrong(&v16->_declarationType, a5);
-    objc_storeStrong(&v16->_declarationDetails, a6);
+    objc_storeStrong(&v15->_declarationIdentifier, identifier);
+    objc_storeStrong(&v16->_declarationServerToken, token);
+    objc_storeStrong(&v16->_declarationType, type);
+    objc_storeStrong(&v16->_declarationDetails, details);
   }
 
   return v16;
 }
 
-- (RMConfigurationUIItem)initWithCoder:(id)a3
+- (RMConfigurationUIItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"server-token"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"details"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"server-token"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"details"];
 
   v9 = [(RMConfigurationUIItem *)self initWithIdentifier:v5 serverToken:v6 type:v7 details:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMConfigurationUIItem *)self declarationIdentifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  declarationIdentifier = [(RMConfigurationUIItem *)self declarationIdentifier];
+  [coderCopy encodeObject:declarationIdentifier forKey:@"identifier"];
 
-  v6 = [(RMConfigurationUIItem *)self declarationServerToken];
-  [v4 encodeObject:v6 forKey:@"server-token"];
+  declarationServerToken = [(RMConfigurationUIItem *)self declarationServerToken];
+  [coderCopy encodeObject:declarationServerToken forKey:@"server-token"];
 
-  v7 = [(RMConfigurationUIItem *)self declarationType];
-  [v4 encodeObject:v7 forKey:@"type"];
+  declarationType = [(RMConfigurationUIItem *)self declarationType];
+  [coderCopy encodeObject:declarationType forKey:@"type"];
 
-  v8 = [(RMConfigurationUIItem *)self declarationDetails];
-  [v4 encodeObject:v8 forKey:@"details"];
+  declarationDetails = [(RMConfigurationUIItem *)self declarationDetails];
+  [coderCopy encodeObject:declarationDetails forKey:@"details"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -103,30 +103,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMConfigurationUIItem *)self isEqualToConfigurationUI:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMConfigurationUIItem *)self isEqualToConfigurationUI:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToConfigurationUI:(id)a3
+- (BOOL)isEqualToConfigurationUI:(id)i
 {
-  v4 = a3;
-  v5 = [(RMConfigurationUIItem *)self declarationIdentifier];
-  v6 = [v4 declarationIdentifier];
-  if ([v5 isEqualToString:v6])
+  iCopy = i;
+  declarationIdentifier = [(RMConfigurationUIItem *)self declarationIdentifier];
+  declarationIdentifier2 = [iCopy declarationIdentifier];
+  if ([declarationIdentifier isEqualToString:declarationIdentifier2])
   {
-    v7 = [(RMConfigurationUIItem *)self declarationServerToken];
-    v8 = [v4 declarationServerToken];
-    if ([v7 isEqualToString:v8])
+    declarationServerToken = [(RMConfigurationUIItem *)self declarationServerToken];
+    declarationServerToken2 = [iCopy declarationServerToken];
+    if ([declarationServerToken isEqualToString:declarationServerToken2])
     {
-      v9 = [(RMConfigurationUIItem *)self declarationType];
-      v10 = [v4 declarationType];
-      if ([v9 isEqualToString:v10])
+      declarationType = [(RMConfigurationUIItem *)self declarationType];
+      declarationType2 = [iCopy declarationType];
+      if ([declarationType isEqualToString:declarationType2])
       {
-        v11 = [(RMConfigurationUIItem *)self declarationDetails];
-        v12 = [v4 declarationDetails];
-        v13 = [v11 isEqual:v12];
+        declarationDetails = [(RMConfigurationUIItem *)self declarationDetails];
+        declarationDetails2 = [iCopy declarationDetails];
+        v13 = [declarationDetails isEqual:declarationDetails2];
       }
 
       else

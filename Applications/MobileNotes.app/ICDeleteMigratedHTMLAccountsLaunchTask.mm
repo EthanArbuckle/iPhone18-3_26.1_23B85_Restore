@@ -6,8 +6,8 @@
 
 - (void)runLaunchTask
 {
-  v2 = [(ICWorkerContextLaunchTask *)self workerContext];
-  [ICMigrationUtilities deleteMigratedHTMLAccountsInContext:v2];
+  workerContext = [(ICWorkerContextLaunchTask *)self workerContext];
+  [ICMigrationUtilities deleteMigratedHTMLAccountsInContext:workerContext];
 }
 
 @end

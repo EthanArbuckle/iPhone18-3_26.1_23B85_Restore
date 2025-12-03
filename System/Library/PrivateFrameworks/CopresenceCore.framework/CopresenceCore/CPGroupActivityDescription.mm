@@ -1,13 +1,13 @@
 @interface CPGroupActivityDescription
-+ (id)activityContextWithDescriptionIdentifier:(id)a3;
++ (id)activityContextWithDescriptionIdentifier:(id)identifier;
 - (CPGroupActivityDescription)init;
 @end
 
 @implementation CPGroupActivityDescription
 
-+ (id)activityContextWithDescriptionIdentifier:(id)a3
++ (id)activityContextWithDescriptionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = specialized static CPGroupActivityDescription.activityContext(with:)();
 
   return v4;

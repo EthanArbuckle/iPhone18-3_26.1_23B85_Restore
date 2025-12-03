@@ -6,9 +6,9 @@
 - (id)duplicate;
 - (id)order;
 - (id)slice;
-- (id)subSequenceFrom:(int)a3 to:(int)a4;
+- (id)subSequenceFrom:(int)from to:(int)to;
 - (unsigned)get;
-- (unsigned)getWithInt:(int)a3;
+- (unsigned)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -22,9 +22,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
+  asReadOnlyBuffer = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
   v5 = [JavaNioByteBufferAsCharBuffer alloc];
-  sub_10020C348(v5, v4);
+  sub_10020C348(v5, asReadOnlyBuffer);
   v6 = v5;
   v6->super.super.limit_ = self->super.super.limit_;
   v6->super.super.position_ = self->super.super.position_;
@@ -95,7 +95,7 @@
   return [(JavaNioByteBuffer *)byteBuffer getCharWithInt:(2 * position)];
 }
 
-- (unsigned)getWithInt:(int)a3
+- (unsigned)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -104,7 +104,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaNioByteBuffer *)byteBuffer getCharWithInt:(2 * a3)];
+  return [(JavaNioByteBuffer *)byteBuffer getCharWithInt:(2 * int)];
 }
 
 - (BOOL)isDirect
@@ -156,18 +156,18 @@
   return v7;
 }
 
-- (id)subSequenceFrom:(int)a3 to:(int)a4
+- (id)subSequenceFrom:(int)from to:(int)to
 {
   [JavaNioBuffer checkStartEndRemainingWithInt:"checkStartEndRemainingWithInt:withInt:" withInt:?];
-  v7 = [(JavaNioByteBufferAsCharBuffer *)self duplicate];
-  if (!v7)
+  duplicate = [(JavaNioByteBufferAsCharBuffer *)self duplicate];
+  if (!duplicate)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = v7;
-  [v7 limitWithInt:(self->super.super.position_ + a4)];
-  [v8 positionWithInt:(self->super.super.position_ + a3)];
+  v8 = duplicate;
+  [duplicate limitWithInt:(self->super.super.position_ + to)];
+  [v8 positionWithInt:(self->super.super.position_ + from)];
   return v8;
 }
 

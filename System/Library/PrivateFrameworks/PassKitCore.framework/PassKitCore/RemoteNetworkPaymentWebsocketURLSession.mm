@@ -1,66 +1,66 @@
 @interface RemoteNetworkPaymentWebsocketURLSession
 - (_TtC11PassKitCore39RemoteNetworkPaymentWebsocketURLSession)init;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didCloseWithCode:(int64_t)a5 reason:(id)a6;
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didOpenWithProtocol:(id)a5;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session webSocketTask:(id)task didCloseWithCode:(int64_t)code reason:(id)reason;
+- (void)URLSession:(id)session webSocketTask:(id)task didOpenWithProtocol:(id)protocol;
 @end
 
 @implementation RemoteNetworkPaymentWebsocketURLSession
 
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didOpenWithProtocol:(id)a5
+- (void)URLSession:(id)session webSocketTask:(id)task didOpenWithProtocol:(id)protocol
 {
-  if (a5)
+  if (protocol)
   {
     sub_1ADB063B0();
   }
 
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
   sub_1AD4DAEEC();
 }
 
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didCloseWithCode:(int64_t)a5 reason:(id)a6
+- (void)URLSession:(id)session webSocketTask:(id)task didCloseWithCode:(int64_t)code reason:(id)reason
 {
-  v6 = a6;
-  if (a6)
+  reasonCopy = reason;
+  if (reason)
   {
-    v10 = a3;
-    v11 = a4;
-    v12 = self;
-    v13 = v6;
-    v6 = sub_1ADB05D70();
+    sessionCopy = session;
+    taskCopy = task;
+    selfCopy = self;
+    v13 = reasonCopy;
+    reasonCopy = sub_1ADB05D70();
     v15 = v14;
   }
 
   else
   {
-    v16 = a3;
-    v17 = a4;
-    v18 = self;
+    sessionCopy2 = session;
+    taskCopy2 = task;
+    selfCopy2 = self;
     v15 = 0xF000000000000000;
   }
 
-  sub_1AD4DB258(a5, v6, v15);
-  sub_1AD422FB0(v6, v15);
+  sub_1AD4DB258(code, reasonCopy, v15);
+  sub_1AD422FB0(reasonCopy, v15);
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1AD4DB434(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1AD4DB434(error);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1AD4DB5C0(v9, a5);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1AD4DB5C0(taskCopy, error);
 }
 
 - (_TtC11PassKitCore39RemoteNetworkPaymentWebsocketURLSession)init

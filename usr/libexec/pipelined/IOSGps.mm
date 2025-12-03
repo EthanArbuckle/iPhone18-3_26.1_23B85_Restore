@@ -1,12 +1,12 @@
 @interface IOSGps
-- (IOSGps)initWithDisableBackground:(BOOL)a3;
+- (IOSGps)initWithDisableBackground:(BOOL)background;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation IOSGps
 
-- (IOSGps)initWithDisableBackground:(BOOL)a3
+- (IOSGps)initWithDisableBackground:(BOOL)background
 {
   v4.receiver = self;
   v4.super_class = IOSGps;

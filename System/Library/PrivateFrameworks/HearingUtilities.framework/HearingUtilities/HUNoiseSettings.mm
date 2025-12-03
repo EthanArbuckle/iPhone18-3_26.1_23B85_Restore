@@ -1,7 +1,7 @@
 @interface HUNoiseSettings
 + (id)sharedInstance;
 - (BOOL)notificationsEnabled;
-- (BOOL)preferenceIsSetForRetrieveSelector:(SEL)a3;
+- (BOOL)preferenceIsSetForRetrieveSelector:(SEL)selector;
 - (HUNoiseSettings)init;
 - (NPSDomainAccessor)domainAccessor;
 - (NSAttributedString)noiseThresholdFooterDescriptionWithLink;
@@ -9,26 +9,26 @@
 - (NSDate)notificationMuteDate;
 - (NSString)noiseThresholdFooterDescription;
 - (NSString)noiseThresholdValueFooterDescription;
-- (id)_preferenceKeyForSelector:(SEL)a3;
-- (id)_valueForPreferenceKey:(id)a3;
-- (id)localizedNoiseThresholdDetailValue:(int64_t)a3;
-- (id)localizedNoiseThresholdValue:(int64_t)a3;
+- (id)_preferenceKeyForSelector:(SEL)selector;
+- (id)_valueForPreferenceKey:(id)key;
+- (id)localizedNoiseThresholdDetailValue:(int64_t)value;
+- (id)localizedNoiseThresholdValue:(int64_t)value;
 - (int64_t)noiseThresholdCurrentValue;
 - (unint64_t)notificationThreshold;
-- (void)_handlePreferenceChanged:(id)a3;
-- (void)_registerForNotification:(id)a3;
-- (void)_setValue:(id)a3 forPreferenceKey:(id)a4;
-- (void)_synchronizeIfNecessary:(id)a3;
+- (void)_handlePreferenceChanged:(id)changed;
+- (void)_registerForNotification:(id)notification;
+- (void)_setValue:(id)value forPreferenceKey:(id)key;
+- (void)_synchronizeIfNecessary:(id)necessary;
 - (void)dealloc;
-- (void)pairedWatchDidChange:(id)a3;
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5;
-- (void)setCurrentLeq:(double)a3;
-- (void)setLeqDuration:(double)a3;
-- (void)setLeqTimestamp:(id)a3;
-- (void)setNoiseEnabled:(BOOL)a3;
-- (void)setNotificationMuteDate:(id)a3;
-- (void)setNotificationThreshold:(unint64_t)a3;
-- (void)setThresholdVersion:(unint64_t)a3;
+- (void)pairedWatchDidChange:(id)change;
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener;
+- (void)setCurrentLeq:(double)leq;
+- (void)setLeqDuration:(double)duration;
+- (void)setLeqTimestamp:(id)timestamp;
+- (void)setNoiseEnabled:(BOOL)enabled;
+- (void)setNotificationMuteDate:(id)date;
+- (void)setNotificationThreshold:(unint64_t)threshold;
+- (void)setThresholdVersion:(unint64_t)version;
 @end
 
 @implementation HUNoiseSettings
@@ -77,17 +77,17 @@ uint64_t __33__HUNoiseSettings_sharedInstance__block_invoke()
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, AccessibilitySettingsChangedOnCompanion, @"NanoNoiseSettingsChanged", 0, 0);
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3688] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3688] object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3660] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3660] object:0];
   }
 
   return v2;
 }
 
-- (void)pairedWatchDidChange:(id)a3
+- (void)pairedWatchDidChange:(id)change
 {
   domainAccessor = self->_domainAccessor;
   self->_domainAccessor = 0;
@@ -112,23 +112,23 @@ uint64_t __33__HUNoiseSettings_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUNoiseSettings;
   [(HUNoiseSettings *)&v4 dealloc];
 }
 
-- (void)_handlePreferenceChanged:(id)a3
+- (void)_handlePreferenceChanged:(id)changed
 {
-  v8 = [a3 stringByReplacingOccurrencesOfString:@"_AXNotification_" withString:&stru_1F5614A78];
+  v8 = [changed stringByReplacingOccurrencesOfString:@"_AXNotification_" withString:&stru_1F5614A78];
   [(NSLock *)self->_synchronizeDomainsLock lock];
-  v4 = [(HUNoiseSettings *)self synchronizePreferences];
-  [v4 addObject:v8];
+  synchronizePreferences = [(HUNoiseSettings *)self synchronizePreferences];
+  [synchronizePreferences addObject:v8];
 
-  v5 = [(HUNoiseSettings *)self updateBlocks];
-  v6 = [v5 objectForKey:v8];
+  updateBlocks = [(HUNoiseSettings *)self updateBlocks];
+  v6 = [updateBlocks objectForKey:v8];
   v7 = [v6 copy];
 
   [(NSLock *)self->_synchronizeDomainsLock unlock];
@@ -146,7 +146,7 @@ void __44__HUNoiseSettings__handlePreferenceChanged___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_preferenceKeyForSelector:(SEL)a3
+- (id)_preferenceKeyForSelector:(SEL)selector
 {
   if (_preferenceKeyForSelector__onceToken != -1)
   {
@@ -154,7 +154,7 @@ void __44__HUNoiseSettings__handlePreferenceChanged___block_invoke(uint64_t a1, 
   }
 
   v4 = _preferenceKeyForSelector__SelectorMap;
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(selector);
   v6 = [v4 objectForKey:v5];
 
   if (v6)
@@ -191,9 +191,9 @@ void __45__HUNoiseSettings__preferenceKeyForSelector___block_invoke()
   _preferenceKeyForSelector__SelectorMap = v10;
 }
 
-- (void)_registerForNotification:(id)a3
+- (void)_registerForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (_registerForNotification__onceToken != -1)
   {
     [HUNoiseSettings _registerForNotification:];
@@ -205,8 +205,8 @@ void __45__HUNoiseSettings__preferenceKeyForSelector___block_invoke()
   v7[2] = __44__HUNoiseSettings__registerForNotification___block_invoke_2;
   v7[3] = &unk_1E85C9F38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   [v5 performSynchronousWritingBlock:v7];
 }
 
@@ -231,40 +231,40 @@ void __44__HUNoiseSettings__registerForNotification___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9];
+  blockCopy = block;
+  listenerCopy = listener;
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:listenerCopy];
   [(NSLock *)self->_synchronizeDomainsLock lock];
-  v11 = [(HUNoiseSettings *)self updateBlocks];
-  v12 = [v11 copy];
+  updateBlocks = [(HUNoiseSettings *)self updateBlocks];
+  v12 = [updateBlocks copy];
 
   [(NSLock *)self->_synchronizeDomainsLock unlock];
-  v13 = [(HUNoiseSettings *)self _preferenceKeyForSelector:a4];
-  v14 = [v12 objectForKey:v13];
-  if (v8)
+  v13 = [(HUNoiseSettings *)self _preferenceKeyForSelector:selector];
+  array = [v12 objectForKey:v13];
+  if (blockCopy)
   {
     v26[0] = v10;
-    v15 = _Block_copy(v8);
+    v15 = _Block_copy(blockCopy);
     v26[1] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
 
-    if (!v14)
+    if (!array)
     {
-      v14 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    [v14 addObject:v16];
-    v17 = objc_getAssociatedObject(v9, &AXHASettingsDestructionHelperKey);
+    [array addObject:v16];
+    v17 = objc_getAssociatedObject(listenerCopy, &AXHASettingsDestructionHelperKey);
     if (!v17)
     {
-      v17 = [[HUNoiseSettingsListenerHelper alloc] initWithListenerAddress:v9];
-      objc_setAssociatedObject(v9, &AXHASettingsDestructionHelperKey, v17, 1);
+      v17 = [[HUNoiseSettingsListenerHelper alloc] initWithListenerAddress:listenerCopy];
+      objc_setAssociatedObject(listenerCopy, &AXHASettingsDestructionHelperKey, v17, 1);
     }
 
-    [(HUNoiseSettingsListenerHelper *)v17 addSelectorKey:a4];
+    [(HUNoiseSettingsListenerHelper *)v17 addSelectorKey:selector];
     [(HUNoiseSettings *)self _registerForNotification:v13];
   }
 
@@ -275,18 +275,18 @@ void __44__HUNoiseSettings__registerForNotification___block_invoke_2(uint64_t a1
     v23 = __72__HUNoiseSettings_registerUpdateBlock_forRetrieveSelector_withListener___block_invoke;
     v24 = &unk_1E85CA868;
     v25 = v10;
-    v18 = [v14 indexesOfObjectsPassingTest:&v21];
+    v18 = [array indexesOfObjectsPassingTest:&v21];
     if ([v18 count])
     {
-      [v14 removeObjectsAtIndexes:v18];
+      [array removeObjectsAtIndexes:v18];
     }
 
     v16 = v25;
   }
 
   [(NSLock *)self->_synchronizeDomainsLock lock];
-  v19 = [(HUNoiseSettings *)self updateBlocks];
-  [v19 setObject:v14 forKey:v13];
+  updateBlocks2 = [(HUNoiseSettings *)self updateBlocks];
+  [updateBlocks2 setObject:array forKey:v13];
 
   [(NSLock *)self->_synchronizeDomainsLock unlock];
   v20 = *MEMORY[0x1E69E9840];
@@ -309,36 +309,36 @@ uint64_t __72__HUNoiseSettings_registerUpdateBlock_forRetrieveSelector_withListe
   return v5;
 }
 
-- (BOOL)preferenceIsSetForRetrieveSelector:(SEL)a3
+- (BOOL)preferenceIsSetForRetrieveSelector:(SEL)selector
 {
-  v3 = self;
-  v4 = [(HUNoiseSettings *)self _preferenceKeyForSelector:a3];
-  v5 = [(HUNoiseSettings *)v3 _valueForPreferenceKey:v4];
-  LOBYTE(v3) = v5 != 0;
+  selfCopy = self;
+  v4 = [(HUNoiseSettings *)self _preferenceKeyForSelector:selector];
+  v5 = [(HUNoiseSettings *)selfCopy _valueForPreferenceKey:v4];
+  LOBYTE(selfCopy) = v5 != 0;
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)_setValue:(id)value forPreferenceKey:(id)key
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUNoiseSettings *)self domainAccessor];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  domainAccessor = [(HUNoiseSettings *)self domainAccessor];
+  [domainAccessor setObject:valueCopy forKey:keyCopy];
 
-  v9 = [(HUNoiseSettings *)self domainAccessor];
-  v10 = [v9 synchronize];
+  domainAccessor2 = [(HUNoiseSettings *)self domainAccessor];
+  synchronize = [domainAccessor2 synchronize];
 
   v11 = objc_opt_new();
   v12 = kAXSNoisePreferenceDomain;
   v13 = MEMORY[0x1E695DFD8];
-  v19[0] = v6;
+  v19[0] = keyCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v15 = [v13 setWithArray:v14];
   [v11 synchronizeNanoDomain:v12 keys:v15];
 
-  v16 = [(HUNoiseSettings *)self notificationForPreferenceKey:v6];
+  v16 = [(HUNoiseSettings *)self notificationForPreferenceKey:keyCopy];
 
   if (v16)
   {
@@ -349,39 +349,39 @@ uint64_t __72__HUNoiseSettings_registerUpdateBlock_forRetrieveSelector_withListe
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_synchronizeIfNecessary:(id)a3
+- (void)_synchronizeIfNecessary:(id)necessary
 {
-  v5 = a3;
+  necessaryCopy = necessary;
   [(NSLock *)self->_synchronizeDomainsLock lock];
-  v4 = [(HUNoiseSettings *)self synchronizePreferences];
-  if ([v4 containsObject:v5])
+  synchronizePreferences = [(HUNoiseSettings *)self synchronizePreferences];
+  if ([synchronizePreferences containsObject:necessaryCopy])
   {
     CFPreferencesAppSynchronize(kAXSNoisePreferenceDomain);
-    [v4 removeObject:v5];
+    [synchronizePreferences removeObject:necessaryCopy];
   }
 
   [(NSLock *)self->_synchronizeDomainsLock unlock];
 }
 
-- (id)_valueForPreferenceKey:(id)a3
+- (id)_valueForPreferenceKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HUNoiseSettings *)self domainAccessor];
-  v6 = [v5 synchronize];
+  keyCopy = key;
+  domainAccessor = [(HUNoiseSettings *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
-  v7 = [(HUNoiseSettings *)self domainAccessor];
-  v8 = [v7 objectForKey:v4];
+  domainAccessor2 = [(HUNoiseSettings *)self domainAccessor];
+  v8 = [domainAccessor2 objectForKey:keyCopy];
 
   return v8;
 }
 
-- (void)setNoiseEnabled:(BOOL)a3
+- (void)setNoiseEnabled:(BOOL)enabled
 {
   v4 = [MEMORY[0x1E696AD98] numberWithBool:?];
   [(HUNoiseSettings *)self _setValue:v4 forPreferenceKey:@"NoiseEnabled"];
 
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  LODWORD(v4) = [v5 isHealthDataSubmissionAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  LODWORD(v4) = [mEMORY[0x1E69ADFB8] isHealthDataSubmissionAllowed];
 
   if (v4)
   {
@@ -404,14 +404,14 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
 
 - (BOOL)notificationsEnabled
 {
-  v3 = [(HUNoiseSettings *)self notificationsEnabledOverride];
+  notificationsEnabledOverride = [(HUNoiseSettings *)self notificationsEnabledOverride];
 
-  if (v3)
+  if (notificationsEnabledOverride)
   {
-    v4 = [(HUNoiseSettings *)self notificationsEnabledOverride];
-    v5 = [v4 BOOLValue];
+    notificationsEnabledOverride2 = [(HUNoiseSettings *)self notificationsEnabledOverride];
+    bOOLValue = [notificationsEnabledOverride2 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -423,14 +423,14 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
 
 - (unint64_t)notificationThreshold
 {
-  v3 = [(HUNoiseSettings *)self notificationsThreshholdOverride];
+  notificationsThreshholdOverride = [(HUNoiseSettings *)self notificationsThreshholdOverride];
 
-  if (v3)
+  if (notificationsThreshholdOverride)
   {
-    v4 = [(HUNoiseSettings *)self notificationsThreshholdOverride];
-    v5 = [v4 unsignedIntegerValue];
+    notificationsThreshholdOverride2 = [(HUNoiseSettings *)self notificationsThreshholdOverride];
+    unsignedIntegerValue = [notificationsThreshholdOverride2 unsignedIntegerValue];
 
-    return v5;
+    return unsignedIntegerValue;
   }
 
   else
@@ -440,9 +440,9 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setNotificationThreshold:(unint64_t)a3
+- (void)setNotificationThreshold:(unint64_t)threshold
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:threshold];
   [(HUNoiseSettings *)self _setValue:v4 forPreferenceKey:@"NotificationsThreshold"];
 }
 
@@ -454,17 +454,17 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
   return [v3 dateWithTimeIntervalSinceReferenceDate:v2];
 }
 
-- (void)setNotificationMuteDate:(id)a3
+- (void)setNotificationMuteDate:(id)date
 {
   v4 = MEMORY[0x1E696AD98];
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v5 = [v4 numberWithDouble:?];
   [(HUNoiseSettings *)self _setValue:v5 forPreferenceKey:@"NotificationsMuteDate"];
 }
 
-- (void)setCurrentLeq:(double)a3
+- (void)setCurrentLeq:(double)leq
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:leq];
   [(HUNoiseSettings *)self _setValue:v4 forPreferenceKey:@"CurrentLeq"];
 }
 
@@ -476,37 +476,37 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
   return [v3 dateWithTimeIntervalSinceReferenceDate:v2];
 }
 
-- (void)setLeqTimestamp:(id)a3
+- (void)setLeqTimestamp:(id)timestamp
 {
   v4 = MEMORY[0x1E696AD98];
-  [a3 timeIntervalSinceReferenceDate];
+  [timestamp timeIntervalSinceReferenceDate];
   v5 = [v4 numberWithDouble:?];
   [(HUNoiseSettings *)self _setValue:v5 forPreferenceKey:@"LeqTimestamp"];
 }
 
-- (void)setLeqDuration:(double)a3
+- (void)setLeqDuration:(double)duration
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(HUNoiseSettings *)self _setValue:v4 forPreferenceKey:@"LeqDuration"];
 }
 
-- (void)setThresholdVersion:(unint64_t)a3
+- (void)setThresholdVersion:(unint64_t)version
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:version];
   [(HUNoiseSettings *)self _setValue:v4 forPreferenceKey:@"ThresholdVersion"];
 }
 
 - (NSAttributedString)noiseThresholdFooterDescriptionWithLink
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(HUNoiseSettings *)self noiseThresholdFooterDescription];
-  v4 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3];
+  noiseThresholdFooterDescription = [(HUNoiseSettings *)self noiseThresholdFooterDescription];
+  v4 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:noiseThresholdFooterDescription];
   v12 = @"NSLink";
-  v5 = [(HUNoiseSettings *)self noiseThresholdFooterLinkURL];
-  v13[0] = v5;
+  noiseThresholdFooterLinkURL = [(HUNoiseSettings *)self noiseThresholdFooterLinkURL];
+  v13[0] = noiseThresholdFooterLinkURL;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v7 = [(HUNoiseSettings *)self noiseThresholdFooterLinkTitle];
-  v8 = [v3 rangeOfString:v7];
+  noiseThresholdFooterLinkTitle = [(HUNoiseSettings *)self noiseThresholdFooterLinkTitle];
+  v8 = [noiseThresholdFooterDescription rangeOfString:noiseThresholdFooterLinkTitle];
   [v4 setAttributes:v6 range:{v8, v9}];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -517,7 +517,7 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
 - (NSString)noiseThresholdFooterDescription
 {
   v3 = HUNoiseLocString(@"NOISE_THRESHOLD_FOOTER");
-  v6 = [(HUNoiseSettings *)self noiseThresholdFooterLinkTitle];
+  noiseThresholdFooterLinkTitle = [(HUNoiseSettings *)self noiseThresholdFooterLinkTitle];
   v4 = AXCFormattedString();
 
   return v4;
@@ -533,9 +533,9 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
   return [(HUNoiseSettings *)self notificationThreshold];
 }
 
-- (id)localizedNoiseThresholdValue:(int64_t)a3
+- (id)localizedNoiseThresholdValue:(int64_t)value
 {
-  if (a3)
+  if (value)
   {
     v3 = HUNoiseLocString(@"DECIBELS");
     v4 = AXCFormattedString();
@@ -549,11 +549,11 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)localizedNoiseThresholdDetailValue:(int64_t)a3
+- (id)localizedNoiseThresholdDetailValue:(int64_t)value
 {
-  if (a3 > 89)
+  if (value > 89)
   {
-    switch(a3)
+    switch(value)
     {
       case 'Z':
         v3 = @"LIMIT_90DB";
@@ -569,7 +569,7 @@ id __35__HUNoiseSettings_setNoiseEnabled___block_invoke(uint64_t a1)
 
   else
   {
-    switch(a3)
+    switch(value)
     {
       case 0:
         v4 = HUNoiseLocString(@"NO_NOTIFICATIONS");

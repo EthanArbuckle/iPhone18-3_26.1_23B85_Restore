@@ -1,17 +1,17 @@
 @interface AudiobookTOCCell
 - (NSArray)accessibilityUserInputLabels;
-- (_TtC5Books16AudiobookTOCCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5Books16AudiobookTOCCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setAccessibilityUserInputLabels:(id)a3;
+- (void)setAccessibilityUserInputLabels:(id)labels;
 @end
 
 @implementation AudiobookTOCCell
 
-- (_TtC5Books16AudiobookTOCCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5Books16AudiobookTOCCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1007A2254();
+    identifier = sub_1007A2254();
     v6 = v5;
   }
 
@@ -20,18 +20,18 @@
     v6 = 0;
   }
 
-  return sub_1004FC4B0(a3, a4, v6);
+  return sub_1004FC4B0(style, identifier, v6);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004FCFE4();
 }
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004FDB88();
 
   if (v3)
@@ -47,18 +47,18 @@
   return v4.super.isa;
 }
 
-- (void)setAccessibilityUserInputLabels:(id)a3
+- (void)setAccessibilityUserInputLabels:(id)labels
 {
-  if (a3)
+  if (labels)
   {
     sub_1007A25E4();
-    v4 = self;
+    selfCopy = self;
     v5.super.isa = sub_1007A25D4().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5.super.isa = 0;
   }
 

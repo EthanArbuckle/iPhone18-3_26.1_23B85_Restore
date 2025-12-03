@@ -1,16 +1,16 @@
 @interface VUIDebugCollectionViewNavigationCell
-- (VUIDebugCollectionViewNavigationCell)initWithFrame:(CGRect)a3;
-- (void)configureWithTitle:(id)a3;
+- (VUIDebugCollectionViewNavigationCell)initWithFrame:(CGRect)frame;
+- (void)configureWithTitle:(id)title;
 - (void)layoutSubviews;
 @end
 
 @implementation VUIDebugCollectionViewNavigationCell
 
-- (VUIDebugCollectionViewNavigationCell)initWithFrame:(CGRect)a3
+- (VUIDebugCollectionViewNavigationCell)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = VUIDebugCollectionViewNavigationCell;
-  v3 = [(VUIDebugCollectionViewNavigationCell *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIDebugCollectionViewNavigationCell *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUITextLayout);
@@ -19,8 +19,8 @@
     [(VUITextLayout *)v4 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v4 setTextStyle:3];
     [(VUITextLayout *)v4 setMaximumContentSizeCategory:3];
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v4 setColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v4 setColor:blackColor];
 
     titleLayout = v3->_titleLayout;
     v3->_titleLayout = v4;
@@ -30,8 +30,8 @@
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v8;
 
-    v10 = [(VUIDebugCollectionViewNavigationCell *)v3 contentView];
-    [v10 addSubview:v3->_titleLabel];
+    contentView = [(VUIDebugCollectionViewNavigationCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v11 = [VUIImageResourceMap imageForResourceName:@"list-chevron"];
     v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];
@@ -39,15 +39,15 @@
     v3->_accessoryView = v12;
 
     [(UIImageView *)v3->_accessoryView sizeToFit];
-    v14 = [(VUIDebugCollectionViewNavigationCell *)v3 contentView];
-    [v14 addSubview:v3->_accessoryView];
+    contentView2 = [(VUIDebugCollectionViewNavigationCell *)v3 contentView];
+    [contentView2 addSubview:v3->_accessoryView];
 
-    v15 = [(VUIDebugCollectionViewNavigationCell *)v3 contentView];
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    [v15 setBackgroundColor:v16];
+    contentView3 = [(VUIDebugCollectionViewNavigationCell *)v3 contentView];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [contentView3 setBackgroundColor:whiteColor];
 
-    v17 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:v17];
+    systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:systemLightGrayColor];
 
     v18 = objc_alloc_init(VUISeparatorView);
     separatorView = v3->_separatorView;
@@ -59,12 +59,12 @@
   return v3;
 }
 
-- (void)configureWithTitle:(id)a3
+- (void)configureWithTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(VUIDebugCollectionViewNavigationCell *)self titleLayout];
-  v5 = [(VUIDebugCollectionViewNavigationCell *)self titleLabel];
-  v6 = [VUILabel labelWithString:v7 textLayout:v4 existingLabel:v5];
+  titleCopy = title;
+  titleLayout = [(VUIDebugCollectionViewNavigationCell *)self titleLayout];
+  titleLabel = [(VUIDebugCollectionViewNavigationCell *)self titleLabel];
+  v6 = [VUILabel labelWithString:titleCopy textLayout:titleLayout existingLabel:titleLabel];
 }
 
 - (void)layoutSubviews

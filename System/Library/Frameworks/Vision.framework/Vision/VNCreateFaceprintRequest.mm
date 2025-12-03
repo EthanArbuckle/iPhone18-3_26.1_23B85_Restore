@@ -1,46 +1,46 @@
 @interface VNCreateFaceprintRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)a3 fromDescriptorData:(const void *)a4 length:(unint64_t)a5 elementCount:(unint64_t)a6 error:(id *)a7;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)revision fromDescriptorData:(const void *)data length:(unint64_t)length elementCount:(unint64_t)count error:(id *)error;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
 + (id)publicRevisionsSet;
 - (BOOL)forceFaceprintCreation;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (void)setForceFaceprintCreation:(BOOL)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)warmUpSession:(id)session error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (void)setForceFaceprintCreation:(BOOL)creation;
 @end
 
 @implementation VNCreateFaceprintRequest
 
-+ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)a3 fromDescriptorData:(const void *)a4 length:(unint64_t)a5 elementCount:(unint64_t)a6 error:(id *)a7
++ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)revision fromDescriptorData:(const void *)data length:(unint64_t)length elementCount:(unint64_t)count error:(id *)error
 {
   v11 = [VNFaceprint alloc];
   LODWORD(v12) = 1.0;
-  v13 = [(VNFaceprint *)v11 initWithData:a4 elementCount:a6 elementType:1 lengthInBytes:a5 confidence:a3 requestRevision:v12];
+  v13 = [(VNFaceprint *)v11 initWithData:data elementCount:count elementType:1 lengthInBytes:length confidence:revision requestRevision:v12];
 
   return v13;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForUnsupportedRevision:1 ofRequestClass:objc_opt_class()];
+    *error = [VNError errorForUnsupportedRevision:1 ofRequestClass:objc_opt_class()];
   }
 
   return 0;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNCreateFaceprintRequest *)self forceFaceprintCreation];
-  if (v5 == [v4 forceFaceprintCreation])
+  configurationCopy = configuration;
+  forceFaceprintCreation = [(VNCreateFaceprintRequest *)self forceFaceprintCreation];
+  if (forceFaceprintCreation == [configurationCopy forceFaceprintCreation])
   {
     v8.receiver = self;
     v8.super_class = VNCreateFaceprintRequest;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -51,41 +51,41 @@
   return v6;
 }
 
-- (void)setForceFaceprintCreation:(BOOL)a3
+- (void)setForceFaceprintCreation:(BOOL)creation
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setForceFaceprintCreation:v3];
+  creationCopy = creation;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setForceFaceprintCreation:creationCopy];
 }
 
 - (BOOL)forceFaceprintCreation
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 forceFaceprintCreation];
+  configuration = [(VNRequest *)self configuration];
+  forceFaceprintCreation = [configuration forceFaceprintCreation];
 
-  return v3;
+  return forceFaceprintCreation;
 }
 
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4
+- (BOOL)warmUpSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = VNCreateFaceprintRequest;
-  if ([(VNRequest *)&v18 warmUpSession:v6 error:a4])
+  if ([(VNRequest *)&v18 warmUpSession:sessionCopy error:error])
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __48__VNCreateFaceprintRequest_warmUpSession_error___block_invoke;
     v15 = &unk_1E77B62D0;
-    v16 = self;
-    v17 = v6;
+    selfCopy = self;
+    v17 = sessionCopy;
     v7 = _Block_copy(&v12);
     v8 = [(VNRequest *)self resolvedRevision:v12];
     if (v8 > 3737841668)
     {
       if (v8 == 3737841669)
       {
-        v9 = v7[2](v7, 7, a4);
+        v9 = v7[2](v7, 7, error);
       }
 
       else
@@ -95,7 +95,7 @@
           goto LABEL_10;
         }
 
-        v9 = v7[2](v7, 101, a4);
+        v9 = v7[2](v7, 101, error);
       }
     }
 
@@ -105,15 +105,15 @@
       {
         if (v8 == 3737841667)
         {
-          v9 = v7[2](v7, 6, a4);
+          v9 = v7[2](v7, 6, error);
           goto LABEL_14;
         }
 
 LABEL_10:
-        if (a4)
+        if (error)
         {
           [VNError errorForUnsupportedRevision:v8 ofRequest:self];
-          *a4 = v10 = 0;
+          *error = v10 = 0;
 LABEL_17:
 
           goto LABEL_18;
@@ -124,7 +124,7 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v9 = v7[2](v7, 100, a4);
+      v9 = v7[2](v7, 100, error);
     }
 
 LABEL_14:
@@ -167,10 +167,10 @@ uint64_t __48__VNCreateFaceprintRequest_warmUpSession_error___block_invoke(uint6
   return v12;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  v5 = a3 - 3737841666u;
-  if (a3 - 3737841666u < 5 && ((0x1Bu >> v5) & 1) != 0)
+  v5 = revision - 3737841666u;
+  if (revision - 3737841666u < 5 && ((0x1Bu >> v5) & 1) != 0)
   {
     v6 = off_1E77B62F0[v5];
   }
@@ -179,7 +179,7 @@ uint64_t __48__VNCreateFaceprintRequest_warmUpSession_error___block_invoke(uint6
   {
     v9 = v3;
     v10 = v4;
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___VNCreateFaceprintRequest;
     v6 = objc_msgSendSuper2(&v8, sel_descriptionForPrivateRevision_);
   }
@@ -213,18 +213,18 @@ uint64_t __47__VNCreateFaceprintRequest_privateRevisionsSet__block_invoke(uint64
   return v2;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNCreateFaceprintRequest;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
 @end

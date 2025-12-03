@@ -1,22 +1,22 @@
 @interface CLAuthPromptPayloadProvider
 + (id)provider;
-- (id)errorWithReason:(id)a3;
-- (void)createLearnedRouteAuthPromptPayloadWithBundlePath:(id)a3 completionHandler:(id)a4;
+- (id)errorWithReason:(id)reason;
+- (void)createLearnedRouteAuthPromptPayloadWithBundlePath:(id)path completionHandler:(id)handler;
 @end
 
 @implementation CLAuthPromptPayloadProvider
 
 + (id)provider
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)createLearnedRouteAuthPromptPayloadWithBundlePath:(id)a3 completionHandler:(id)a4
+- (void)createLearnedRouteAuthPromptPayloadWithBundlePath:(id)path completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     if (qword_1000118A8 != -1)
@@ -51,10 +51,10 @@
     v15[1] = 3221225472;
     v15[2] = sub_1000013B8;
     v15[3] = &unk_10000C368;
-    v16 = v6;
+    v16 = pathCopy;
     v17 = v9;
-    v18 = self;
-    v19 = v7;
+    selfCopy = self;
+    v19 = handlerCopy;
     v13 = v9;
     dispatch_group_notify(v11, v12, v15);
   }
@@ -75,17 +75,17 @@
     }
 
     v11 = [(CLAuthPromptPayloadProvider *)self errorWithReason:@"this method should NEVER be called if the feature flag is off returning nil"];;
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (id)errorWithReason:(id)a3
+- (id)errorWithReason:(id)reason
 {
   v3 = kCLErrorDomainPrivate;
   v8 = NSLocalizedDescriptionKey;
-  v9 = a3;
-  v4 = a3;
-  v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+  reasonCopy = reason;
+  reasonCopy2 = reason;
+  v5 = [NSDictionary dictionaryWithObjects:&reasonCopy forKeys:&v8 count:1];
   v6 = [NSError errorWithDomain:v3 code:5 userInfo:v5];
 
   return v6;

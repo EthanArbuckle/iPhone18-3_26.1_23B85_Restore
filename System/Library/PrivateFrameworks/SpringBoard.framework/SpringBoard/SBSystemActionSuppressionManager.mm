@@ -1,15 +1,15 @@
 @interface SBSystemActionSuppressionManager
-- (id)initWithSelectedAction:(id *)a1;
+- (id)initWithSelectedAction:(id *)action;
 - (uint64_t)removeObserver:(uint64_t)result;
 - (uint64_t)suppressionStatus;
 - (uint64_t)systemActionInteractionDidStartWithLongPressTimeout:(uint64_t)result;
-- (void)_didReduceState:(id)a3;
-- (void)_queryPocketStateWithTimeout:(double)a3;
+- (void)_didReduceState:(id)state;
+- (void)_queryPocketStateWithTimeout:(double)timeout;
 - (void)_subscribeToViewObstructionEvents;
 - (void)_unsubscribeFromViewObstructionEvents;
 - (void)_updateViewObstructionSubscription;
-- (void)addObserver:(uint64_t)a1;
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4;
+- (void)addObserver:(uint64_t)observer;
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state;
 @end
 
 @implementation SBSystemActionSuppressionManager
@@ -38,7 +38,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) unsubscribing from VO", &v6, 0xCu);
     }
 
@@ -53,28 +53,28 @@
 
 - (uint64_t)suppressionStatus
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(SBHomeScreenConfigurationServer *)a1[4] listener];
+    self = [(SBHomeScreenConfigurationServer *)self[4] listener];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithSelectedAction:(id *)a1
+- (id)initWithSelectedAction:(id *)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
-    v19.receiver = a1;
+    v19.receiver = action;
     v19.super_class = SBSystemActionSuppressionManager;
-    a1 = objc_msgSendSuper2(&v19, sel_init);
-    if (a1)
+    action = objc_msgSendSuper2(&v19, sel_init);
+    if (action)
     {
-      v4 = [MEMORY[0x277CF0880] sharedBacklight];
-      [v4 addObserver:a1];
-      objc_initWeak(&location, a1);
+      mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+      [mEMORY[0x277CF0880] addObserver:action];
+      objc_initWeak(&location, action);
       v13 = MEMORY[0x277D85DD0];
       v14 = 3221225472;
       v15 = __59__SBSystemActionSuppressionManager_initWithSelectedAction___block_invoke;
@@ -83,27 +83,27 @@
       v5 = MEMORY[0x223D6F7F0](&v13);
       v6 = [SBSystemActionSuppressionManagerStateReducer alloc];
       v7 = +[SBSystemActionViewObstructionState emptyState];
-      v8 = -[SBSystemActionSuppressionManagerStateReducer initWithReduceBlock:viewObstructionEligibility:viewObstructionState:selectedAction:pocketState:displayState:isAlwaysOnDisplayEnabled:](&v6->super.isa, v5, 1, v7, v3, 0, [v4 backlightState], objc_msgSend(v4, "isAlwaysOnEnabled"));
-      v9 = a1[3];
-      a1[3] = v8;
+      v8 = -[SBSystemActionSuppressionManagerStateReducer initWithReduceBlock:viewObstructionEligibility:viewObstructionState:selectedAction:pocketState:displayState:isAlwaysOnDisplayEnabled:](&v6->super.isa, v5, 1, v7, v3, 0, [mEMORY[0x277CF0880] backlightState], objc_msgSend(mEMORY[0x277CF0880], "isAlwaysOnEnabled"));
+      v9 = action[3];
+      action[3] = v8;
 
       if ([MEMORY[0x277CC1D28] isPocketStateAvailable])
       {
         v10 = objc_alloc_init(MEMORY[0x277CC1D28]);
-        v11 = a1[2];
-        a1[2] = v10;
+        v11 = action[2];
+        action[2] = v10;
 
-        [a1[2] setDelegate:a1];
+        [action[2] setDelegate:action];
       }
 
-      [a1 _updateViewObstructionSubscription];
+      [action _updateViewObstructionSubscription];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
     }
   }
 
-  return a1;
+  return action;
 }
 
 void __59__SBSystemActionSuppressionManager_initWithSelectedAction___block_invoke(uint64_t a1, void *a2)
@@ -122,7 +122,7 @@ void __59__SBSystemActionSuppressionManager_initWithSelectedAction___block_invok
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) subscribing to VO", buf, 0xCu);
     }
 
@@ -139,13 +139,13 @@ void __59__SBSystemActionSuppressionManager_initWithSelectedAction___block_invok
     self->_subscribedToViewObstructionEvents = 1;
     [(CMSuppressionManager *)suppressionManager startService];
     v7 = self->_suppressionManager;
-    v8 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__SBSystemActionSuppressionManager__subscribeToViewObstructionEvents__block_invoke;
     v9[3] = &unk_2783B0558;
     v9[4] = self;
-    [(CMSuppressionManager *)v7 startSuppressionUpdatesToQueue:v8 withOptions:1 withHandler:v9];
+    [(CMSuppressionManager *)v7 startSuppressionUpdatesToQueue:mainQueue withOptions:1 withHandler:v9];
   }
 }
 
@@ -198,7 +198,7 @@ void __69__SBSystemActionSuppressionManager__subscribeToViewObstructionEvents__b
   [(SBSystemActionSuppressionManagerStateReducer *)v10 setViewObstructionState:v11];
 }
 
-- (void)_queryPocketStateWithTimeout:(double)a3
+- (void)_queryPocketStateWithTimeout:(double)timeout
 {
   v14 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277CC1D28] isPocketStateAvailable])
@@ -207,7 +207,7 @@ void __69__SBSystemActionSuppressionManager__subscribeToViewObstructionEvents__b
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) querying pocket state", buf, 0xCu);
     }
 
@@ -222,7 +222,7 @@ void __69__SBSystemActionSuppressionManager__subscribeToViewObstructionEvents__b
     v10[3] = &unk_2783B0580;
     objc_copyWeak(v11, buf);
     v11[1] = v7;
-    [(CMPocketStateManager *)pocketStateManager queryStateOntoQueue:MEMORY[0x277D85CD0] andMonitorFor:v10 withTimeout:10.0 andHandler:a3];
+    [(CMPocketStateManager *)pocketStateManager queryStateOntoQueue:MEMORY[0x277D85CD0] andMonitorFor:v10 withTimeout:10.0 andHandler:timeout];
 
     objc_destroyWeak(v11);
     objc_destroyWeak(buf);
@@ -267,17 +267,17 @@ void __65__SBSystemActionSuppressionManager__queryPocketStateWithTimeout___block
   }
 }
 
-- (void)_didReduceState:(id)a3
+- (void)_didReduceState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = self->_state;
-    objc_storeStrong(&self->_state, a3);
+    objc_storeStrong(&self->_state, state);
     [(SBSystemActionSuppressionManager *)self _updateViewObstructionSubscription];
-    v7 = [(SBHomeScreenConfigurationServer *)self->_state listener];
-    v8 = [(SBHomeScreenConfigurationServer *)v6 listener];
+    listener = [(SBHomeScreenConfigurationServer *)self->_state listener];
+    listener2 = [(SBHomeScreenConfigurationServer *)v6 listener];
     v9 = BSEqualObjects();
 
     if ((v9 & 1) == 0)
@@ -303,8 +303,8 @@ void __65__SBSystemActionSuppressionManager__queryPocketStateWithTimeout___block
             }
 
             v15 = *(*(&v17 + 1) + 8 * v14);
-            v16 = [(SBHomeScreenConfigurationServer *)self->_state listener];
-            [v15 systemActionSuppressionManager:self didUpdateSuppressionStatus:v16];
+            listener3 = [(SBHomeScreenConfigurationServer *)self->_state listener];
+            [v15 systemActionSuppressionManager:self didUpdateSuppressionStatus:listener3];
 
             ++v14;
           }
@@ -319,14 +319,14 @@ void __65__SBSystemActionSuppressionManager__queryPocketStateWithTimeout___block
   }
 }
 
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __70__SBSystemActionSuppressionManager_pocketStateManager_didUpdateState___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = state;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -368,20 +368,20 @@ void __70__SBSystemActionSuppressionManager_pocketStateManager_didUpdateState___
   return result;
 }
 
-- (void)addObserver:(uint64_t)a1
+- (void)addObserver:(uint64_t)observer
 {
   v3 = a2;
-  if (a1)
+  if (observer)
   {
-    v4 = *(a1 + 48);
+    v4 = *(observer + 48);
     v7 = v3;
     if (!v4)
     {
-      v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-      v6 = *(a1 + 48);
-      *(a1 + 48) = v5;
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      v6 = *(observer + 48);
+      *(observer + 48) = weakObjectsHashTable;
 
-      v4 = *(a1 + 48);
+      v4 = *(observer + 48);
     }
 
     [v4 addObject:v7];

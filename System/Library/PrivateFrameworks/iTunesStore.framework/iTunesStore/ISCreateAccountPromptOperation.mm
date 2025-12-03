@@ -1,23 +1,23 @@
 @interface ISCreateAccountPromptOperation
 - (BOOL)_hasActiveICloudAccount;
-- (ISCreateAccountPromptOperation)initWithReason:(id)a3;
+- (ISCreateAccountPromptOperation)initWithReason:(id)reason;
 - (id)_newCreateAccountDialog;
-- (int64_t)_mapCorrectSelectedButtonWithDialog:(id)a3;
+- (int64_t)_mapCorrectSelectedButtonWithDialog:(id)dialog;
 - (void)run;
 @end
 
 @implementation ISCreateAccountPromptOperation
 
-- (ISCreateAccountPromptOperation)initWithReason:(id)a3
+- (ISCreateAccountPromptOperation)initWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   v9.receiver = self;
   v9.super_class = ISCreateAccountPromptOperation;
   v6 = [(ISOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reason, a3);
+    objc_storeStrong(&v6->_reason, reason);
   }
 
   return v7;
@@ -28,31 +28,31 @@
   v49 = *MEMORY[0x277D85DE8];
   v3 = ISWeakLinkedClassForString(&cfstr_Mcprofileconne.isa, 0x11);
   v4 = ISWeakLinkedStringConstantForString("MCFeatureAccountModificationAllowed", 0x11);
-  v5 = [(objc_class *)v3 sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:v4];
+  sharedConnection = [(objc_class *)v3 sharedConnection];
+  v6 = [sharedConnection effectiveBoolValueForSetting:v4];
 
   if (v6 != 2)
   {
-    v7 = [(ISCreateAccountPromptOperation *)self _newCreateAccountDialog];
-    v14 = [MEMORY[0x277D69B38] sharedAccountsConfig];
-    if (!v14)
+    _newCreateAccountDialog = [(ISCreateAccountPromptOperation *)self _newCreateAccountDialog];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v14 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v16 &= 2u;
     }
@@ -70,24 +70,24 @@
         goto LABEL_25;
       }
 
-      v17 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v47, v43}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v47, v43}];
       free(v19);
       SSFileLog();
     }
 
 LABEL_25:
     v20 = [MEMORY[0x277CBEB98] setWithObjects:{@"com.apple.TestFlight", @"com.apple.iTunesU", 0}];
-    v21 = [MEMORY[0x277CCA8D8] mainBundle];
-    v22 = [v21 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v23 = [v20 containsObject:v22];
+    v23 = [v20 containsObject:bundleIdentifier];
     v24 = off_27A66FA50;
     if (!v23)
     {
       v24 = off_27A66F978;
     }
 
-    v25 = [(__objc2_class *)*v24 operationWithDialog:v7];
+    v25 = [(__objc2_class *)*v24 operationWithDialog:_newCreateAccountDialog];
     v26 = [MEMORY[0x277CBEA60] arrayWithObject:@"com.apple.itunesstored.lock.createaccount"];
     [v25 setSerializationLockIdentifiers:v26];
 
@@ -102,28 +102,28 @@ LABEL_25:
 
     v45 = v20;
     v27 = [(ISCreateAccountPromptOperation *)self _mapCorrectSelectedButtonWithDialog:v25];
-    v28 = [MEMORY[0x277D69B38] sharedAccountsConfig];
-    v29 = v28;
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedAccountsConfig];
+    mEMORY[0x277D69B38]3 = mEMORY[0x277D69B38]2;
     if (v27 == 1)
     {
-      if (!v28)
+      if (!mEMORY[0x277D69B38]2)
       {
-        v29 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v35 = [v29 shouldLog];
-      if ([v29 shouldLogToDisk])
+      shouldLog2 = [mEMORY[0x277D69B38]3 shouldLog];
+      if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
       {
-        v35 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      v31 = [v29 OSLogObject];
-      if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [mEMORY[0x277D69B38]3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
-        v35 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (!v35)
+      if (!shouldLog2)
       {
         v13 = 3;
         goto LABEL_60;
@@ -146,24 +146,24 @@ LABEL_25:
 
     else if (v27)
     {
-      if (!v28)
+      if (!mEMORY[0x277D69B38]2)
       {
-        v29 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v38 = [v29 shouldLog];
-      if ([v29 shouldLogToDisk])
+      shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+      if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
       {
-        v38 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      v31 = [v29 OSLogObject];
-      if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [mEMORY[0x277D69B38]3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
-        v38 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      if (!v38)
+      if (!shouldLog3)
       {
         v13 = 2;
         goto LABEL_60;
@@ -191,24 +191,24 @@ LABEL_62:
 
     else
     {
-      if (!v28)
+      if (!mEMORY[0x277D69B38]2)
       {
-        v29 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v30 = [v29 shouldLog];
-      if ([v29 shouldLogToDisk])
+      shouldLog4 = [mEMORY[0x277D69B38]3 shouldLog];
+      if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
       {
-        v30 |= 2u;
+        shouldLog4 |= 2u;
       }
 
-      v31 = [v29 OSLogObject];
-      if (!os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [mEMORY[0x277D69B38]3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
-        v30 &= 2u;
+        shouldLog4 &= 2u;
       }
 
-      if (!v30)
+      if (!shouldLog4)
       {
         v13 = 4;
         goto LABEL_60;
@@ -229,34 +229,34 @@ LABEL_62:
       }
     }
 
-    v31 = [MEMORY[0x277CCACA8] stringWithCString:v34 encoding:{4, &v47, v44}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v34 encoding:{4, &v47, v44}];
     free(v34);
-    v42 = v31;
+    v42 = oSLogObject2;
     SSFileLog();
 LABEL_60:
 
     goto LABEL_61;
   }
 
-  v7 = [MEMORY[0x277D69B38] sharedAccountsConfig];
-  if (!v7)
+  _newCreateAccountDialog = [MEMORY[0x277D69B38] sharedAccountsConfig];
+  if (!_newCreateAccountDialog)
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
+    _newCreateAccountDialog = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  shouldLog5 = [_newCreateAccountDialog shouldLog];
+  if ([_newCreateAccountDialog shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog5 | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog5;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [_newCreateAccountDialog OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v9 &= 2u;
   }
@@ -275,9 +275,9 @@ LABEL_60:
 
   if (v12)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, &v47, v43}];
+    oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, &v47, v43}];
     free(v12);
-    v42 = v10;
+    v42 = oSLogObject3;
     SSFileLog();
 LABEL_12:
 
@@ -331,10 +331,10 @@ LABEL_63:
   [(ISDialog *)v3 setDefaultButtonIndex:v14];
   [(ISDialog *)v3 setExpectsResponse:1];
   [(ISDialog *)v3 setOneButtonPerLine:1];
-  v15 = [(ISCreateAccountPromptOperation *)self reason];
-  if ([v15 length])
+  reason = [(ISCreateAccountPromptOperation *)self reason];
+  if ([reason length])
   {
-    [(ISDialog *)v3 setMessage:v15];
+    [(ISDialog *)v3 setMessage:reason];
     v16 = @"SIGN_IN_WITH_REASON";
   }
 
@@ -351,15 +351,15 @@ LABEL_63:
   return v3;
 }
 
-- (int64_t)_mapCorrectSelectedButtonWithDialog:(id)a3
+- (int64_t)_mapCorrectSelectedButtonWithDialog:(id)dialog
 {
-  v4 = a3;
-  v5 = [v4 selectedButton];
-  if (v5)
+  dialogCopy = dialog;
+  selectedButton = [dialogCopy selectedButton];
+  if (selectedButton)
   {
-    v6 = [v4 dialog];
-    v7 = [v6 buttons];
-    v8 = [v7 indexOfObjectIdenticalTo:v5];
+    dialog = [dialogCopy dialog];
+    buttons = [dialog buttons];
+    v8 = [buttons indexOfObjectIdenticalTo:selectedButton];
   }
 
   else
@@ -367,14 +367,14 @@ LABEL_63:
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = [(ISCreateAccountPromptOperation *)self _hasActiveICloudAccount];
+  _hasActiveICloudAccount = [(ISCreateAccountPromptOperation *)self _hasActiveICloudAccount];
   v10 = 2 * (v8 == 1);
   if (v8 == 2)
   {
     v10 = 1;
   }
 
-  if (v9)
+  if (_hasActiveICloudAccount)
   {
     v11 = 2 * (v8 == 0);
   }
@@ -390,11 +390,11 @@ LABEL_63:
 - (BOOL)_hasActiveICloudAccount
 {
   v2 = objc_alloc_init(getACAccountStoreClass());
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_personID];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
 
-  LOBYTE(v3) = [v4 length] != 0;
-  return v3;
+  LOBYTE(aa_primaryAppleAccount) = [aa_personID length] != 0;
+  return aa_primaryAppleAccount;
 }
 
 @end

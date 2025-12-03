@@ -1,28 +1,28 @@
 @interface CMIVideoDeghostingTrackingV1
-- (CGPoint)_applyDistortionPolynomial:(float *)a3 ToPoint:(CGPoint *)a4;
-- (CGPoint)_pixelBufferToRawBuffer:(CGPoint *)a3;
-- (CGPoint)_rawBufferToPixelBuffer:(CGPoint *)a3;
-- (CGPoint)_reflectPoint:(CGPoint *)a3 pivotPoint:(CGPoint *)a4;
+- (CGPoint)_applyDistortionPolynomial:(float *)polynomial ToPoint:(CGPoint *)point;
+- (CGPoint)_pixelBufferToRawBuffer:(CGPoint *)buffer;
+- (CGPoint)_rawBufferToPixelBuffer:(CGPoint *)buffer;
+- (CGPoint)_reflectPoint:(CGPoint *)point pivotPoint:(CGPoint *)pivotPoint;
 - (CGPoint)bias;
 - (CGRect)ghostRectImageBased;
 - (CGRect)ghostRectMetadataBased;
 - (CGRect)lightSourceRect;
-- (CMIVideoDeghostingTrackingV1)initWithMetalContext:(id)a3 tuningParameters:(id)a4;
-- (float)_getRadialMagnificationAtDistanceMM:(float)a3 WithPolynomial:(float *)a4;
-- (int)_extractAndCheckTuningParameters:(id)a3;
+- (CMIVideoDeghostingTrackingV1)initWithMetalContext:(id)context tuningParameters:(id)parameters;
+- (float)_getRadialMagnificationAtDistanceMM:(float)m WithPolynomial:(float *)polynomial;
+- (int)_extractAndCheckTuningParameters:(id)parameters;
 - (int)_extractCalibrationData;
 - (int)resetState;
-- (void)_calibrateGhostSizeWithAngle:(float)a3;
+- (void)_calibrateGhostSizeWithAngle:(float)angle;
 - (void)_extractCameraInfo;
-- (void)_pushGhostToHistory:(CGPoint *)a3 shapeScore:(float)a4 lensPosition:(float)a5 adjustedPrincipalPoint:(CGPoint *)a6 quaternion:(id *)a7;
+- (void)_pushGhostToHistory:(CGPoint *)history shapeScore:(float)score lensPosition:(float)position adjustedPrincipalPoint:(CGPoint *)point quaternion:(id *)quaternion;
 @end
 
 @implementation CMIVideoDeghostingTrackingV1
 
-- (CMIVideoDeghostingTrackingV1)initWithMetalContext:(id)a3 tuningParameters:(id)a4
+- (CMIVideoDeghostingTrackingV1)initWithMetalContext:(id)context tuningParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = CMIVideoDeghostingTrackingV1;
   v8 = [(CMIVideoDeghostingTrackingV1 *)&v19 init];
@@ -35,7 +35,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if ([(CMIVideoDeghostingTrackingV1 *)v8 _extractAndCheckTuningParameters:v7])
+  if ([(CMIVideoDeghostingTrackingV1 *)v8 _extractAndCheckTuningParameters:parametersCopy])
   {
     sub_23E98();
     goto LABEL_15;
@@ -71,7 +71,7 @@ LABEL_15:
   motionSampleRingBuffer = v9->_motionSampleRingBuffer;
   v9->_motionSampleRingBuffer = 0;
 
-  v15 = [[VDGMetalUtilsV1 alloc] initWithMetalContext:v6];
+  v15 = [[VDGMetalUtilsV1 alloc] initWithMetalContext:contextCopy];
   vdgMetalUtils = v9->_vdgMetalUtils;
   v9->_vdgMetalUtils = v15;
 
@@ -122,7 +122,7 @@ LABEL_8:
   return v8;
 }
 
-- (void)_calibrateGhostSizeWithAngle:(float)a3
+- (void)_calibrateGhostSizeWithAngle:(float)angle
 {
   pixelScale = self->_pixelScale;
   v5 = pixelScale * self->_minBreathingMagnitude;
@@ -146,7 +146,7 @@ LABEL_8:
       }
 
       v12 = self->_contextScore * (v11 * (pixelScale * self->_slopeMultiplier));
-      v10 = v12 * expf(-a3 / self->_angularHalfLife);
+      v10 = v12 * expf(-angle / self->_angularHalfLife);
     }
 
     v13 = pixelScale * maxBreathingMagnitude;
@@ -204,7 +204,7 @@ LABEL_8:
   self->_ghostSizeBias = minGhostSizeBias;
 }
 
-- (void)_pushGhostToHistory:(CGPoint *)a3 shapeScore:(float)a4 lensPosition:(float)a5 adjustedPrincipalPoint:(CGPoint *)a6 quaternion:(id *)a7
+- (void)_pushGhostToHistory:(CGPoint *)history shapeScore:(float)score lensPosition:(float)position adjustedPrincipalPoint:(CGPoint *)point quaternion:(id *)quaternion
 {
   ghostHistoryCount = self->_ghostHistoryCount;
   if (ghostHistoryCount)
@@ -247,28 +247,28 @@ LABEL_8:
     v19 = ghostHistoryCount;
   }
 
-  [(CMIVideoDeghostingTrackingV1 *)self _reflectPoint:a3 pivotPoint:&self->_adjustedPrincipalPoint];
+  [(CMIVideoDeghostingTrackingV1 *)self _reflectPoint:history pivotPoint:&self->_adjustedPrincipalPoint];
   self->_lightSourceRect.origin.x = v20 + -1.0;
   self->_lightSourceRect.origin.y = v21 + -1.0;
   self->_lightSourceRect.size.width = 2.0;
   self->_lightSourceRect.size.height = 2.0;
-  [(CMIVideoDeghostingTrackingV1 *)self _applyDistortionPolynomial:&self->_lensDistortionCoefficients ToPoint:a3];
+  [(CMIVideoDeghostingTrackingV1 *)self _applyDistortionPolynomial:&self->_lensDistortionCoefficients ToPoint:history];
   self->_ghostHistory[0].ghostLoc.x = v22;
   self->_ghostHistory[0].ghostLoc.y = v23;
-  self->_ghostHistory[0].shapeScore = a4;
-  self->_ghostHistory[0].lensPosition = a5;
-  self->_ghostHistory[0].adjustedPrincipalPoint = *a6;
-  v24 = *&a7->var2;
-  *&self->_ghostHistory[0].quaternion.w = *&a7->var0;
+  self->_ghostHistory[0].shapeScore = score;
+  self->_ghostHistory[0].lensPosition = position;
+  self->_ghostHistory[0].adjustedPrincipalPoint = *point;
+  v24 = *&quaternion->var2;
+  *&self->_ghostHistory[0].quaternion.w = *&quaternion->var0;
   *&self->_ghostHistory[0].quaternion.y = v24;
   self->_ghostHistoryCount = v19 + 1;
 }
 
-- (int)_extractAndCheckTuningParameters:(id)a3
+- (int)_extractAndCheckTuningParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (!parametersCopy)
   {
     sub_2478C(&v44);
 LABEL_31:
@@ -276,7 +276,7 @@ LABEL_31:
     goto LABEL_16;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"MinShapeScore"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"MinShapeScore"];
 
   if (!v6)
   {
@@ -486,11 +486,11 @@ LABEL_16:
         v18 = v17;
         if (v17)
         {
-          v19 = [v17 bytes];
-          v20 = v19[3];
-          v22 = *v19;
-          v21 = v19[1];
-          *p_lensDistortionCorrectionBasePolynomial->inverseOrders = v19[2];
+          bytes = [v17 bytes];
+          v20 = bytes[3];
+          v22 = *bytes;
+          v21 = bytes[1];
+          *p_lensDistortionCorrectionBasePolynomial->inverseOrders = bytes[2];
           *&p_lensDistortionCorrectionBasePolynomial->inverseOrders[4] = v20;
           *p_lensDistortionCorrectionBasePolynomial->forwardOrders = v22;
           *&p_lensDistortionCorrectionBasePolynomial->forwardOrders[4] = v21;
@@ -500,11 +500,11 @@ LABEL_16:
         v24 = v23;
         if (v23)
         {
-          v25 = [v23 bytes];
-          v26 = v25[3];
-          v28 = *v25;
-          v27 = v25[1];
-          *p_lensDistortionCorrectionDynamicPolynomial->inverseOrders = v25[2];
+          bytes2 = [v23 bytes];
+          v26 = bytes2[3];
+          v28 = *bytes2;
+          v27 = bytes2[1];
+          *p_lensDistortionCorrectionDynamicPolynomial->inverseOrders = bytes2[2];
           *&p_lensDistortionCorrectionDynamicPolynomial->inverseOrders[4] = v26;
           *p_lensDistortionCorrectionDynamicPolynomial->forwardOrders = v28;
           *&p_lensDistortionCorrectionDynamicPolynomial->forwardOrders[4] = v27;
@@ -516,26 +516,26 @@ LABEL_16:
   }
 }
 
-- (CGPoint)_reflectPoint:(CGPoint *)a3 pivotPoint:(CGPoint *)a4
+- (CGPoint)_reflectPoint:(CGPoint *)point pivotPoint:(CGPoint *)pivotPoint
 {
   __asm { FMOV            V2.2D, #2.0 }
 
-  v9 = vaddq_f64(vmlaq_f64(vnegq_f64(*a3), _Q2, *a4), self->_bias);
+  v9 = vaddq_f64(vmlaq_f64(vnegq_f64(*point), _Q2, *pivotPoint), self->_bias);
   v10 = v9.f64[1];
   result.x = v9.f64[0];
   result.y = v10;
   return result;
 }
 
-- (CGPoint)_applyDistortionPolynomial:(float *)a3 ToPoint:(CGPoint *)a4
+- (CGPoint)_applyDistortionPolynomial:(float *)polynomial ToPoint:(CGPoint *)point
 {
-  [(CMIVideoDeghostingTrackingV1 *)self _pixelBufferToRawBuffer:a4];
+  [(CMIVideoDeghostingTrackingV1 *)self _pixelBufferToRawBuffer:point];
   v7 = v6 - self->_distortionOpticalCenterRaw.x;
   v9 = v8 - self->_distortionOpticalCenterRaw.y;
   v10 = v9 * v9 + v7 * v7;
   *&v10 = v10;
   *&v10 = (0.001 / self->_pixelsPerMicron) * sqrtf(*&v10);
-  [(CMIVideoDeghostingTrackingV1 *)self _getRadialMagnificationAtDistanceMM:a3 WithPolynomial:v10];
+  [(CMIVideoDeghostingTrackingV1 *)self _getRadialMagnificationAtDistanceMM:polynomial WithPolynomial:v10];
   v12 = v11;
   v13 = self->_distortionOpticalCenterRaw.x + v7 * v12;
   v14 = self->_distortionOpticalCenterRaw.y + v9 * v12;
@@ -547,28 +547,28 @@ LABEL_16:
   return result;
 }
 
-- (float)_getRadialMagnificationAtDistanceMM:(float)a3 WithPolynomial:(float *)a4
+- (float)_getRadialMagnificationAtDistanceMM:(float)m WithPolynomial:(float *)polynomial
 {
-  v4 = a3 * a3;
+  v4 = m * m;
   v5 = v4 * (v4 * v4);
   v6 = v4 * (v4 * v5);
-  return 1.0 / (((((((((*a4 + (v4 * a4[1])) + ((v4 * v4) * a4[2])) + (v5 * a4[3])) + ((v4 * v5) * a4[4])) + (v6 * a4[5])) + ((v4 * v6) * a4[6])) + ((v4 * (v4 * v6)) * a4[7])) / 100.0) + 1.0);
+  return 1.0 / (((((((((*polynomial + (v4 * polynomial[1])) + ((v4 * v4) * polynomial[2])) + (v5 * polynomial[3])) + ((v4 * v5) * polynomial[4])) + (v6 * polynomial[5])) + ((v4 * v6) * polynomial[6])) + ((v4 * (v4 * v6)) * polynomial[7])) / 100.0) + 1.0);
 }
 
-- (CGPoint)_pixelBufferToRawBuffer:(CGPoint *)a3
+- (CGPoint)_pixelBufferToRawBuffer:(CGPoint *)buffer
 {
-  v3 = vaddq_f64(self->_rawSensorCenter, vdivq_f64(vsubq_f64(*a3, self->_pixelBufferCenter), vdupq_lane_s64(COERCE__INT64(self->_scalingFactor), 0)));
+  v3 = vaddq_f64(self->_rawSensorCenter, vdivq_f64(vsubq_f64(*buffer, self->_pixelBufferCenter), vdupq_lane_s64(COERCE__INT64(self->_scalingFactor), 0)));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
   return result;
 }
 
-- (CGPoint)_rawBufferToPixelBuffer:(CGPoint *)a3
+- (CGPoint)_rawBufferToPixelBuffer:(CGPoint *)buffer
 {
   scalingFactor = self->_scalingFactor;
-  v4 = self->_pixelBufferCenter.x + (a3->x - self->_rawSensorCenter.x) * scalingFactor;
-  v5 = self->_pixelBufferCenter.y + (a3->y - self->_rawSensorCenter.y) * scalingFactor;
+  v4 = self->_pixelBufferCenter.x + (buffer->x - self->_rawSensorCenter.x) * scalingFactor;
+  v5 = self->_pixelBufferCenter.y + (buffer->y - self->_rawSensorCenter.y) * scalingFactor;
   result.y = v5;
   result.x = v4;
   return result;
@@ -680,16 +680,16 @@ LABEL_16:
   self->_pixelBufferCenter = vmulq_f64(v23, _Q2);
   self->_rawSensorCenter = vmulq_f64(vaddq_f64(vcvtq_f64_u64(v17), _Q1), _Q2);
   v26 = [(NSDictionary *)self->_metadataDictionary objectForKeyedSubscript:kFigCaptureStreamMetadata_QuadraBinningFactor];
-  v27 = [v26 intValue];
+  intValue = [v26 intValue];
 
-  if (v27 <= 1)
+  if (intValue <= 1)
   {
     v28 = 1;
   }
 
   else
   {
-    v28 = v27;
+    v28 = intValue;
   }
 
   v29 = self->_sensorBinningFactorHorizontal * v28;

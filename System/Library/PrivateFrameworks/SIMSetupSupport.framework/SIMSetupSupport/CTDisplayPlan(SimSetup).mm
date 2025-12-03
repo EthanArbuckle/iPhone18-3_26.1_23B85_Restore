@@ -16,48 +16,48 @@
 
 - (id)remotePlan
 {
-  v2 = [a1 plan];
+  plan = [self plan];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 plan];
+    plan2 = [self plan];
   }
 
   else
   {
-    v4 = 0;
+    plan2 = 0;
   }
 
-  return v4;
+  return plan2;
 }
 
 - (uint64_t)installRestriction
 {
-  v1 = [a1 remotePlan];
-  v2 = v1;
-  if (v1)
+  remotePlan = [self remotePlan];
+  v2 = remotePlan;
+  if (remotePlan)
   {
-    v3 = [v1 transferAttributes];
-    v4 = [v3 installRestriction];
+    transferAttributes = [remotePlan transferAttributes];
+    installRestriction = [transferAttributes installRestriction];
   }
 
   else
   {
-    v4 = 0;
+    installRestriction = 0;
   }
 
-  return v4;
+  return installRestriction;
 }
 
 - (uint64_t)isTransferablePlan
 {
-  v1 = [a1 transferCapability];
+  transferCapability = [self transferCapability];
   result = 1;
-  if (v1 != 2 && v1 != 4)
+  if (transferCapability != 2 && transferCapability != 4)
   {
-    if (v1 == 8)
+    if (transferCapability == 8)
     {
       return +[TSUtilities inBuddy]^ 1;
     }
@@ -73,106 +73,106 @@
 
 - (uint64_t)isPlanHiddenRequiredForCloudFlow
 {
-  v1 = [a1 remotePlan];
-  if (v1 && (objc_opt_respondsToSelector() & 1) != 0)
+  remotePlan = [self remotePlan];
+  if (remotePlan && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v2 = [v1 needHideForCloudFlow];
-    v3 = [v2 BOOLValue];
+    needHideForCloudFlow = [remotePlan needHideForCloudFlow];
+    bOOLValue = [needHideForCloudFlow BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)requireVisitStoreOnce
 {
-  v1 = [a1 remotePlan];
-  if (v1 && (objc_opt_respondsToSelector() & 1) != 0)
+  remotePlan = [self remotePlan];
+  if (remotePlan && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v2 = [v1 needVisitStoreForTransfer];
-    v3 = [v2 BOOLValue];
+    needVisitStoreForTransfer = [remotePlan needVisitStoreForTransfer];
+    bOOLValue = [needVisitStoreForTransfer BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)isAccountMemberTransferablePlan
 {
-  v1 = [a1 remotePlan];
-  v2 = [v1 primaryAccount];
+  remotePlan = [self remotePlan];
+  primaryAccount = [remotePlan primaryAccount];
 
-  if (v2)
+  if (primaryAccount)
   {
-    v3 = [v1 primaryAccount];
-    v2 = [v3 BOOLValue] ^ 1;
+    primaryAccount2 = [remotePlan primaryAccount];
+    primaryAccount = [primaryAccount2 BOOLValue] ^ 1;
   }
 
-  return v2;
+  return primaryAccount;
 }
 
 - (void)transferCapability
 {
-  v1 = [a1 remotePlan];
-  v2 = v1;
-  if (v1)
+  remotePlan = [self remotePlan];
+  v2 = remotePlan;
+  if (remotePlan)
   {
-    v3 = [v1 transferAttributes];
+    transferAttributes = [remotePlan transferAttributes];
 
-    if (v3)
+    if (transferAttributes)
     {
-      v4 = [v2 transferAttributes];
-      v3 = [v4 transferCapability];
+      transferAttributes2 = [v2 transferAttributes];
+      transferAttributes = [transferAttributes2 transferCapability];
     }
   }
 
   else
   {
-    v3 = 0;
+    transferAttributes = 0;
   }
 
-  return v3;
+  return transferAttributes;
 }
 
 - (uint64_t)transferCapabilityForMessage
 {
-  v2 = [a1 transferCapability];
-  if (v2 != 20)
+  transferCapability = [self transferCapability];
+  if (transferCapability != 20)
   {
-    if ([a1 installRestriction] == 5)
+    if ([self installRestriction] == 5)
     {
       return 16;
     }
 
-    else if ([a1 requireVisitStoreOnce] && !objc_msgSend(a1, "isTransferablePlan"))
+    else if ([self requireVisitStoreOnce] && !objc_msgSend(self, "isTransferablePlan"))
     {
       return 11001;
     }
   }
 
-  return v2;
+  return transferCapability;
 }
 
 - (uint64_t)isPlanWithIccid:()SimSetup
 {
   v4 = a3;
-  if ([v4 length] && (objc_msgSend(a1, "plan"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
+  if ([v4 length] && (objc_msgSend(self, "plan"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
-    v7 = [a1 plan];
-    v8 = [v7 performSelector:sel_planID];
+    plan = [self plan];
+    v8 = [plan performSelector:sel_planID];
 
     if (v8)
     {
-      v9 = [v8 iccid];
-      v10 = [v4 isEqualToString:v9];
+      iccid = [v8 iccid];
+      v10 = [v4 isEqualToString:iccid];
     }
 
     else
@@ -191,25 +191,25 @@
 
 - (__CFString)identifier
 {
-  v2 = [a1 plan];
+  plan = [self plan];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 carrierName];
+    carrierName = [self carrierName];
     goto LABEL_9;
   }
 
-  v5 = [a1 plan];
+  plan2 = [self plan];
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
 
-  v7 = [a1 plan];
-  v8 = v7;
+  plan3 = [self plan];
+  plan4 = plan3;
   if (v6)
   {
-    v4 = [v7 iccidHash];
+    carrierName = [plan3 iccidHash];
 LABEL_7:
 
     goto LABEL_9;
@@ -220,38 +220,38 @@ LABEL_7:
 
   if (v9)
   {
-    v8 = [a1 plan];
-    v10 = [v8 planID];
-    v4 = [v10 iccid];
+    plan4 = [self plan];
+    planID = [plan4 planID];
+    carrierName = [planID iccid];
 
     goto LABEL_7;
   }
 
-  v4 = &stru_28753DF48;
+  carrierName = &stru_28753DF48;
 LABEL_9:
 
-  return v4;
+  return carrierName;
 }
 
 - (id)deviceName
 {
-  v2 = [a1 plan];
+  plan = [self plan];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 plan];
-    v5 = [v4 deviceID];
-    v6 = [v5 deviceName];
+    plan2 = [self plan];
+    deviceID = [plan2 deviceID];
+    deviceName = [deviceID deviceName];
   }
 
   else
   {
-    v6 = 0;
+    deviceName = 0;
   }
 
-  return v6;
+  return deviceName;
 }
 
 @end

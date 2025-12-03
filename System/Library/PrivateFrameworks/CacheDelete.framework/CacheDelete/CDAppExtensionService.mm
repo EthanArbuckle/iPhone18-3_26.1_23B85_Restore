@@ -1,22 +1,22 @@
 @interface CDAppExtensionService
-- (CDAppExtensionService)initWithInfo:(id)a3 extension:(id)a4;
+- (CDAppExtensionService)initWithInfo:(id)info extension:(id)extension;
 - (void)invalidateConnection;
-- (void)obtainXPCConnection:(id)a3;
+- (void)obtainXPCConnection:(id)connection;
 @end
 
 @implementation CDAppExtensionService
 
-- (CDAppExtensionService)initWithInfo:(id)a3 extension:(id)a4
+- (CDAppExtensionService)initWithInfo:(id)info extension:(id)extension
 {
-  v6 = a4;
+  extensionCopy = extension;
   v12.receiver = self;
   v12.super_class = CDAppExtensionService;
-  v7 = [(CDXPCService *)&v12 initWithInfo:a3];
+  v7 = [(CDXPCService *)&v12 initWithInfo:info];
   if (v7)
   {
-    if (v6)
+    if (extensionCopy)
     {
-      v8 = v6;
+      v8 = extensionCopy;
       extension = v7->_extension;
       v7->_extension = v8;
     }
@@ -32,21 +32,21 @@
   return v7;
 }
 
-- (void)obtainXPCConnection:(id)a3
+- (void)obtainXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CDXPCService *)self xpcConnection];
-  if (v5)
+  connectionCopy = connection;
+  xpcConnection = [(CDXPCService *)self xpcConnection];
+  if (xpcConnection)
   {
   }
 
   else
   {
-    v6 = [(CDAppExtensionService *)self requestId];
+    requestId = [(CDAppExtensionService *)self requestId];
 
-    if (!v6)
+    if (!requestId)
     {
-      v8 = [(CDAppExtensionService *)self extension];
+      extension = [(CDAppExtensionService *)self extension];
       v9 = [(CDService *)self ID];
       objc_initWeak(&location, self);
       v18[0] = 0;
@@ -61,9 +61,9 @@
       objc_copyWeak(&v17, &location);
       v10 = v9;
       v13 = v10;
-      v11 = v8;
+      v11 = extension;
       v14 = v11;
-      v15 = v4;
+      v15 = connectionCopy;
       [v11 beginExtensionRequestWithOptions:0 inputItems:0 completion:v12];
 
       objc_destroyWeak(&v17);
@@ -219,28 +219,28 @@ LABEL_10:
 
 - (void)invalidateConnection
 {
-  v3 = [(CDXPCService *)self xpcConnection];
-  if (v3)
+  xpcConnection = [(CDXPCService *)self xpcConnection];
+  if (xpcConnection)
   {
-    v4 = v3;
-    v5 = [(CDXPCService *)self isConnected];
+    v4 = xpcConnection;
+    isConnected = [(CDXPCService *)self isConnected];
 
-    if (v5)
+    if (isConnected)
     {
-      v6 = [(CDAppExtensionService *)self extension];
-      v7 = [(CDAppExtensionService *)self requestId];
-      [v6 cancelExtensionRequestWithIdentifier:v7];
+      extension = [(CDAppExtensionService *)self extension];
+      requestId = [(CDAppExtensionService *)self requestId];
+      [extension cancelExtensionRequestWithIdentifier:requestId];
     }
   }
 
   [(CDAppExtensionService *)self setRequestId:0];
   [(CDXPCService *)self connectionWasInvalidated];
-  v8 = [(CDXPCService *)self watchdog_timer];
+  watchdog_timer = [(CDXPCService *)self watchdog_timer];
 
-  if (v8)
+  if (watchdog_timer)
   {
-    v9 = [(CDXPCService *)self watchdog_timer];
-    dispatch_source_cancel(v9);
+    watchdog_timer2 = [(CDXPCService *)self watchdog_timer];
+    dispatch_source_cancel(watchdog_timer2);
 
     [(CDXPCService *)self setWatchdog_timer:0];
   }
@@ -250,11 +250,11 @@ LABEL_10:
     v10 = CDGetLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CDXPCService *)self watchdog_timer];
+      watchdog_timer3 = [(CDXPCService *)self watchdog_timer];
       v12 = 134218240;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = v11;
+      v15 = watchdog_timer3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "watchdog timer is nil, self: %p, timer: %p", &v12, 0x16u);
     }
   }

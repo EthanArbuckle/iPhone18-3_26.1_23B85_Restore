@@ -8,17 +8,17 @@
 - (BOOL)isFileURL
 {
   v2 = [(UIActivityItemURLRep *)self URL];
-  v3 = [v2 isFileURL];
+  isFileURL = [v2 isFileURL];
 
-  return v3;
+  return isFileURL;
 }
 
 - (id)scheme
 {
   v2 = [(UIActivityItemURLRep *)self URL];
-  v3 = [v2 scheme];
+  scheme = [v2 scheme];
 
-  return v3;
+  return scheme;
 }
 
 @end

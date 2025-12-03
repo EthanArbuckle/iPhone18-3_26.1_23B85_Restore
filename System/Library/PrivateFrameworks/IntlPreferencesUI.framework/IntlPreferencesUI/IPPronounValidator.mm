@@ -1,34 +1,34 @@
 @interface IPPronounValidator
 + (BOOL)currentUILocaleSupportsPronounPicking;
-+ (BOOL)languageSupportsPronounPicking:(id)a3;
++ (BOOL)languageSupportsPronounPicking:(id)picking;
 + (id)initialPronounPickerLanguage;
-+ (id)preferredPronounLocalizationForLanguage:(id)a3;
-- (BOOL)pronounHasValidChars:(id)a3;
-- (BOOL)userSuppliedPronouns:(id)a3 matchKnownPronouns:(id)a4;
-- (IPPronounValidator)initWithLocale:(id)a3;
-- (id)autofillPronouns:(id)a3;
-- (id)morphologyFromString:(id)a3;
++ (id)preferredPronounLocalizationForLanguage:(id)language;
+- (BOOL)pronounHasValidChars:(id)chars;
+- (BOOL)userSuppliedPronouns:(id)pronouns matchKnownPronouns:(id)knownPronouns;
+- (IPPronounValidator)initWithLocale:(id)locale;
+- (id)autofillPronouns:(id)pronouns;
+- (id)morphologyFromString:(id)string;
 - (void)_clearUserEntries;
-- (void)fillInMissingEntriesInArray:(id)a3 fromArray:(id)a4;
-- (void)rememberUserEntry:(id)a3;
+- (void)fillInMissingEntriesInArray:(id)array fromArray:(id)fromArray;
+- (void)rememberUserEntry:(id)entry;
 @end
 
 @implementation IPPronounValidator
 
-- (IPPronounValidator)initWithLocale:(id)a3
+- (IPPronounValidator)initWithLocale:(id)locale
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localeCopy = locale;
   v51.receiver = self;
   v51.super_class = IPPronounValidator;
   v5 = [(IPPronounValidator *)&v51 init];
   if (v5)
   {
-    if (v4)
+    if (localeCopy)
     {
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v7 = [v4 localeIdentifier];
-      v8 = [IPPronounValidator preferredPronounLocalizationForLanguage:v7];
+      localeIdentifier = [localeCopy localeIdentifier];
+      v8 = [IPPronounValidator preferredPronounLocalizationForLanguage:localeIdentifier];
       v9 = v8;
       v10 = @"en";
       if (v8)
@@ -67,22 +67,22 @@
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"RememberedPronouns_%@", v11];
       [(IPPronounValidator *)v5 setPropertyPreferenceName:v25];
 
-      v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v27 = [(IPPronounValidator *)v5 propertyPreferenceName];
-      v28 = [v26 arrayForKey:v27];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      propertyPreferenceName = [(IPPronounValidator *)v5 propertyPreferenceName];
+      v28 = [standardUserDefaults arrayForKey:propertyPreferenceName];
       v29 = [v28 mutableCopy];
       [(IPPronounValidator *)v5 setRememberedPronouns:v29];
 
-      v30 = [(IPPronounValidator *)v5 rememberedPronouns];
+      rememberedPronouns = [(IPPronounValidator *)v5 rememberedPronouns];
 
-      if (!v30)
+      if (!rememberedPronouns)
       {
-        v31 = [MEMORY[0x277CBEB18] array];
-        [(IPPronounValidator *)v5 setRememberedPronouns:v31];
+        array = [MEMORY[0x277CBEB18] array];
+        [(IPPronounValidator *)v5 setRememberedPronouns:array];
       }
 
       [(IPPronounValidator *)v5 setLanguage:v11];
-      v32 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
@@ -104,7 +104,7 @@
             }
 
             v38 = [(IPPronounValidator *)v5 morphologyFromString:*(*(&v47 + 1) + 8 * v37)];
-            [v32 addObject:v38];
+            [array2 addObject:v38];
 
             ++v37;
           }
@@ -116,10 +116,10 @@
         while (v35);
       }
 
-      v39 = [MEMORY[0x277CBEA60] arrayWithArray:v32];
+      v39 = [MEMORY[0x277CBEA60] arrayWithArray:array2];
       [(IPPronounValidator *)v5 setDisplayedMorphologies:v39];
 
-      v40 = v46;
+      array3 = v46;
     }
 
     else
@@ -132,8 +132,8 @@
       [(IPPronounValidator *)v5 setExampleStrings:MEMORY[0x277CBEBF8]];
       [(IPPronounValidator *)v5 setExamplePlaceholders:v42];
       [(IPPronounValidator *)v5 setPropertyPreferenceName:&stru_286773B58];
-      v40 = [MEMORY[0x277CBEB18] array];
-      [(IPPronounValidator *)v5 setRememberedPronouns:v40];
+      array3 = [MEMORY[0x277CBEB18] array];
+      [(IPPronounValidator *)v5 setRememberedPronouns:array3];
     }
   }
 
@@ -141,14 +141,14 @@
   return v5;
 }
 
-- (id)morphologyFromString:(id)a3
+- (id)morphologyFromString:(id)string
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
   [v4 setGrammaticalPerson:3];
-  v16 = v3;
-  [v3 componentsSeparatedByString:@"-"];
+  v16 = stringCopy;
+  [stringCopy componentsSeparatedByString:@"-"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -201,35 +201,35 @@
   return v4;
 }
 
-- (BOOL)pronounHasValidChars:(id)a3
+- (BOOL)pronounHasValidChars:(id)chars
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = [(IPPronounValidator *)self validationRegex];
-  v7 = [v6 rangeOfFirstMatchInString:v4 options:0 range:{0, v5}];
+  charsCopy = chars;
+  v5 = [charsCopy length];
+  validationRegex = [(IPPronounValidator *)self validationRegex];
+  v7 = [validationRegex rangeOfFirstMatchInString:charsCopy options:0 range:{0, v5}];
   v9 = v8;
 
   return !v7 && v5 == v9;
 }
 
-- (id)autofillPronouns:(id)a3
+- (id)autofillPronouns:(id)pronouns
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 mutableCopy];
+  v4 = [pronouns mutableCopy];
   v5 = _os_feature_enabled_impl();
-  v6 = [(IPPronounValidator *)self rememberedPronouns];
-  v7 = v6;
+  rememberedPronouns = [(IPPronounValidator *)self rememberedPronouns];
+  v7 = rememberedPronouns;
   if (v5)
   {
-    v37[0] = v6;
-    v8 = [(IPPronounValidator *)self knownPronouns];
-    v37[1] = v8;
+    v37[0] = rememberedPronouns;
+    knownPronouns = [(IPPronounValidator *)self knownPronouns];
+    v37[1] = knownPronouns;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
   }
 
   else
   {
-    v36 = v6;
+    v36 = rememberedPronouns;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
   }
 
@@ -315,17 +315,17 @@ LABEL_22:
   return v22;
 }
 
-- (void)rememberUserEntry:(id)a3
+- (void)rememberUserEntry:(id)entry
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  entryCopy = entry;
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v4 pronouns];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  pronouns = [entryCopy pronouns];
+  v7 = [pronouns countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -336,61 +336,61 @@ LABEL_22:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pronouns);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * i) pronoun];
-        [v5 addObject:v11];
+        pronoun = [*(*(&v23 + 1) + 8 * i) pronoun];
+        [array addObject:pronoun];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [pronouns countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(IPPronounValidator *)self rememberedPronouns];
-  v13 = [v12 indexOfObject:v5];
+  rememberedPronouns = [(IPPronounValidator *)self rememberedPronouns];
+  v13 = [rememberedPronouns indexOfObject:array];
 
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [(IPPronounValidator *)self rememberedPronouns];
-    [v14 removeObjectAtIndex:v13];
+    rememberedPronouns2 = [(IPPronounValidator *)self rememberedPronouns];
+    [rememberedPronouns2 removeObjectAtIndex:v13];
   }
 
-  v15 = [(IPPronounValidator *)self rememberedPronouns];
-  [v15 insertObject:v5 atIndex:0];
+  rememberedPronouns3 = [(IPPronounValidator *)self rememberedPronouns];
+  [rememberedPronouns3 insertObject:array atIndex:0];
 
-  v16 = [(IPPronounValidator *)self rememberedPronouns];
-  v17 = [v16 count];
+  rememberedPronouns4 = [(IPPronounValidator *)self rememberedPronouns];
+  v17 = [rememberedPronouns4 count];
 
   if (v17 >= 9)
   {
-    v18 = [(IPPronounValidator *)self rememberedPronouns];
-    [v18 removeLastObject];
+    rememberedPronouns5 = [(IPPronounValidator *)self rememberedPronouns];
+    [rememberedPronouns5 removeLastObject];
   }
 
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v20 = [(IPPronounValidator *)self rememberedPronouns];
-  v21 = [(IPPronounValidator *)self propertyPreferenceName];
-  [v19 setObject:v20 forKey:v21];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  rememberedPronouns6 = [(IPPronounValidator *)self rememberedPronouns];
+  propertyPreferenceName = [(IPPronounValidator *)self propertyPreferenceName];
+  [standardUserDefaults setObject:rememberedPronouns6 forKey:propertyPreferenceName];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_clearUserEntries
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [(IPPronounValidator *)self propertyPreferenceName];
-  [v4 removeObjectForKey:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  propertyPreferenceName = [(IPPronounValidator *)self propertyPreferenceName];
+  [standardUserDefaults removeObjectForKey:propertyPreferenceName];
 }
 
-- (BOOL)userSuppliedPronouns:(id)a3 matchKnownPronouns:(id)a4
+- (BOOL)userSuppliedPronouns:(id)pronouns matchKnownPronouns:(id)knownPronouns
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 != [v6 count] || !objc_msgSend(v5, "count"))
+  pronounsCopy = pronouns;
+  knownPronounsCopy = knownPronouns;
+  v7 = [pronounsCopy count];
+  if (v7 != [knownPronounsCopy count] || !objc_msgSend(pronounsCopy, "count"))
   {
     goto LABEL_10;
   }
@@ -399,8 +399,8 @@ LABEL_22:
   v9 = 0;
   while (1)
   {
-    v10 = [v5 objectAtIndexedSubscript:v8];
-    v11 = [v6 objectAtIndexedSubscript:v8];
+    v10 = [pronounsCopy objectAtIndexedSubscript:v8];
+    v11 = [knownPronounsCopy objectAtIndexedSubscript:v8];
     if ([v10 length])
     {
       break;
@@ -408,7 +408,7 @@ LABEL_22:
 
 LABEL_7:
 
-    if (++v8 >= [v5 count])
+    if (++v8 >= [pronounsCopy count])
     {
       goto LABEL_11;
     }
@@ -427,61 +427,61 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (void)fillInMissingEntriesInArray:(id)a3 fromArray:(id)a4
+- (void)fillInMissingEntriesInArray:(id)array fromArray:(id)fromArray
 {
-  v10 = a3;
-  v5 = a4;
-  if ([v10 count])
+  arrayCopy = array;
+  fromArrayCopy = fromArray;
+  if ([arrayCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v10 objectAtIndexedSubscript:v6];
+      v7 = [arrayCopy objectAtIndexedSubscript:v6];
       v8 = [v7 length];
 
       if (!v8)
       {
-        v9 = [v5 objectAtIndexedSubscript:v6];
-        [v10 setObject:v9 atIndexedSubscript:v6];
+        v9 = [fromArrayCopy objectAtIndexedSubscript:v6];
+        [arrayCopy setObject:v9 atIndexedSubscript:v6];
       }
 
       ++v6;
     }
 
-    while (v6 < [v10 count]);
+    while (v6 < [arrayCopy count]);
   }
 }
 
-+ (id)preferredPronounLocalizationForLanguage:(id)a3
++ (id)preferredPronounLocalizationForLanguage:(id)language
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (language)
   {
     v3 = MEMORY[0x277CBEAF8];
-    v4 = a3;
+    languageCopy = language;
     v5 = +[IPPronounValidator supportedPronounLocalizations];
-    v11[0] = v4;
+    v11[0] = languageCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v7 = [v3 matchedLanguagesFromAvailableLanguages:v5 forPreferredLanguages:v6];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 + (BOOL)currentUILocaleSupportsPronounPicking
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [IPPronounValidator languageSupportsPronounPicking:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v4 = [IPPronounValidator languageSupportsPronounPicking:localeIdentifier];
 
   return v4;
 }
@@ -489,14 +489,14 @@ LABEL_11:
 + (id)initialPronounPickerLanguage
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a1 currentUILocaleSupportsPronounPicking])
+  if ([self currentUILocaleSupportsPronounPicking])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v2 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v3 = [preferredLanguages countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
       v4 = v3;
@@ -508,7 +508,7 @@ LABEL_11:
         {
           if (*v12 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(preferredLanguages);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
@@ -519,7 +519,7 @@ LABEL_11:
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [preferredLanguages countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v4)
         {
           continue;
@@ -547,9 +547,9 @@ LABEL_14:
   return v6;
 }
 
-+ (BOOL)languageSupportsPronounPicking:(id)a3
++ (BOOL)languageSupportsPronounPicking:(id)picking
 {
-  v3 = [IPPronounValidator preferredPronounLocalizationForLanguage:a3];
+  v3 = [IPPronounValidator preferredPronounLocalizationForLanguage:picking];
   v4 = v3 != 0;
 
   return v4;

@@ -1,21 +1,21 @@
 @interface PKApplyWebServiceApplyStepInfo
-- (PKApplyWebServiceApplyStepInfo)initWithJSONObject:(id)a3 featureApplication:(id)a4;
-- (void)_handleCertificates:(id)a3;
+- (PKApplyWebServiceApplyStepInfo)initWithJSONObject:(id)object featureApplication:(id)application;
+- (void)_handleCertificates:(id)certificates;
 @end
 
 @implementation PKApplyWebServiceApplyStepInfo
 
-- (PKApplyWebServiceApplyStepInfo)initWithJSONObject:(id)a3 featureApplication:(id)a4
+- (PKApplyWebServiceApplyStepInfo)initWithJSONObject:(id)object featureApplication:(id)application
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v58 = a4;
+  objectCopy = object;
+  applicationCopy = application;
   v67.receiver = self;
   v67.super_class = PKApplyWebServiceApplyStepInfo;
   v7 = [(PKApplyWebServiceApplyStepInfo *)&v67 init];
   if (v7)
   {
-    v8 = [v6 PKStringForKey:@"contextType"];
+    v8 = [objectCopy PKStringForKey:@"contextType"];
     v7->_contextType = PKApplyContextTypeFromString(v8);
 
     contextType = v7->_contextType;
@@ -23,14 +23,14 @@
     {
       if (!contextType)
       {
-        [(PKApplyWebServiceApplyStepInfo *)v7 _handleCertificates:v6];
-        v18 = [v6 PKArrayContaining:objc_opt_class() forKey:@"requiredFieldsByPage"];
-        v19 = [MEMORY[0x1E695DF70] array];
-        v20 = [v6 PKDictionaryForKey:@"requiredFieldOptions"];
-        v21 = [v6 PKStringForKey:@"identifier"];
+        [(PKApplyWebServiceApplyStepInfo *)v7 _handleCertificates:objectCopy];
+        v18 = [objectCopy PKArrayContaining:objc_opt_class() forKey:@"requiredFieldsByPage"];
+        array = [MEMORY[0x1E695DF70] array];
+        v20 = [objectCopy PKDictionaryForKey:@"requiredFieldOptions"];
+        v21 = [objectCopy PKStringForKey:@"identifier"];
         v22 = v21;
         v55 = v7;
-        v56 = v6;
+        v56 = objectCopy;
         if (v21)
         {
           v23 = v21;
@@ -38,7 +38,7 @@
 
         else
         {
-          v23 = [v6 PKStringForKey:@"contextIdentifier"];
+          v23 = [objectCopy PKStringForKey:@"contextIdentifier"];
         }
 
         v44 = v23;
@@ -65,11 +65,11 @@
                 objc_enumerationMutation(v11);
               }
 
-              v51 = [[PKApplyRequiredFieldsPage alloc] initWithDictionary:*(*(&v63 + 1) + 8 * v49) fieldOptions:v20 featureApplication:v58];
+              v51 = [[PKApplyRequiredFieldsPage alloc] initWithDictionary:*(*(&v63 + 1) + 8 * v49) fieldOptions:v20 featureApplication:applicationCopy];
               v47 = v50 + 1;
               [(PKDynamicProvisioningPageContent *)v51 setPageNumber:v50];
               [(PKDynamicProvisioningPageContent *)v51 setIdentifier:v44];
-              [v19 safelyAddObject:v51];
+              [array safelyAddObject:v51];
 
               ++v49;
               ++v50;
@@ -82,19 +82,19 @@
           while (v46);
         }
 
-        coreIDVSessionID = v19;
-        v52 = [v19 copy];
+        coreIDVSessionID = array;
+        v52 = [array copy];
         v7 = v55;
         pages = v55->_pages;
         v55->_pages = v52;
 
-        v6 = v56;
+        objectCopy = v56;
         goto LABEL_7;
       }
 
       if (contextType == 1)
       {
-        v36 = [[PKDynamicProvisioningPageContent alloc] initWithDictonary:v6];
+        v36 = [[PKDynamicProvisioningPageContent alloc] initWithDictonary:objectCopy];
         v11 = v36;
         if (v36)
         {
@@ -104,15 +104,15 @@
           v7->_pages = v37;
         }
 
-        v39 = [v6 PKStringForKey:@"coreIDVTier"];
+        v39 = [objectCopy PKStringForKey:@"coreIDVTier"];
         coreIDVTier = v7->_coreIDVTier;
         v7->_coreIDVTier = v39;
 
-        v41 = [v6 PKStringForKey:@"coreIDVServiceProviderName"];
+        v41 = [objectCopy PKStringForKey:@"coreIDVServiceProviderName"];
         coreIDVServiceProviderName = v7->_coreIDVServiceProviderName;
         v7->_coreIDVServiceProviderName = v41;
 
-        v43 = [v6 PKStringForKey:@"coreIDVSessionID"];
+        v43 = [objectCopy PKStringForKey:@"coreIDVSessionID"];
         coreIDVSessionID = v7->_coreIDVSessionID;
         v7->_coreIDVSessionID = v43;
         goto LABEL_7;
@@ -123,8 +123,8 @@
         goto LABEL_9;
       }
 
-      [(PKApplyWebServiceApplyStepInfo *)v7 _handleCertificates:v6];
-      v17 = [[PKApplyDocumentUploadPage alloc] initWithJSONObject:v6];
+      [(PKApplyWebServiceApplyStepInfo *)v7 _handleCertificates:objectCopy];
+      v17 = [[PKApplyDocumentUploadPage alloc] initWithJSONObject:objectCopy];
       v11 = v17;
       if (!v17)
       {
@@ -142,13 +142,13 @@
       {
         if (contextType == 9)
         {
-          v24 = [v6 PKDictionaryForKey:@"requiredFieldOptions"];
-          v25 = [v6 PKStringForKey:@"verificationType"];
+          v24 = [objectCopy PKDictionaryForKey:@"requiredFieldOptions"];
+          v25 = [objectCopy PKStringForKey:@"verificationType"];
           v26 = PKApplyVerificationTypeFromString(v25);
 
-          v27 = [v6 PKIntegerForKey:@"verificationCodeLength"];
-          coreIDVSessionID = [v6 PKArrayContaining:objc_opt_class() forKey:@"requiredFieldsByPage"];
-          v28 = [MEMORY[0x1E695DF70] array];
+          v27 = [objectCopy PKIntegerForKey:@"verificationCodeLength"];
+          coreIDVSessionID = [objectCopy PKArrayContaining:objc_opt_class() forKey:@"requiredFieldsByPage"];
+          array2 = [MEMORY[0x1E695DF70] array];
           if ([coreIDVSessionID count])
           {
             v29 = v24;
@@ -162,7 +162,7 @@
             {
               v32 = v31;
               v54 = coreIDVSessionID;
-              v57 = v6;
+              v57 = objectCopy;
               v33 = *v60;
               do
               {
@@ -174,14 +174,14 @@
                   }
 
                   v35 = [[PKApplyVerificationPage alloc] initWithDictionary:*(*(&v59 + 1) + 8 * i) type:v26 codeLength:v27 fieldOptions:v29];
-                  [v28 safelyAddObject:v35];
+                  [array2 safelyAddObject:v35];
                 }
 
                 v32 = [(PKApplyVerificationPage *)v30 countByEnumeratingWithState:&v59 objects:v69 count:16];
               }
 
               while (v32);
-              v6 = v57;
+              objectCopy = v57;
               coreIDVSessionID = v54;
             }
           }
@@ -189,13 +189,13 @@
           else
           {
             v29 = v24;
-            v30 = [[PKApplyVerificationPage alloc] initWithDictionary:v6 type:v26 codeLength:v27 fieldOptions:v24];
-            [v28 safelyAddObject:v30];
+            v30 = [[PKApplyVerificationPage alloc] initWithDictionary:objectCopy type:v26 codeLength:v27 fieldOptions:v24];
+            [array2 safelyAddObject:v30];
           }
 
-          if ([v28 count])
+          if ([array2 count])
           {
-            objc_storeStrong(&v7->_pages, v28);
+            objc_storeStrong(&v7->_pages, array2);
           }
 
           v11 = v29;
@@ -208,7 +208,7 @@
         }
       }
 
-      v10 = [[PKDynamicProvisioningPageContent alloc] initWithDictonary:v6];
+      v10 = [[PKDynamicProvisioningPageContent alloc] initWithDictonary:objectCopy];
       v11 = v10;
       if (!v10)
       {
@@ -235,16 +235,16 @@ LABEL_9:
   return v7;
 }
 
-- (void)_handleCertificates:(id)a3
+- (void)_handleCertificates:(id)certificates
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  certificatesCopy = certificates;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 PKArrayContaining:objc_opt_class() forKey:{@"encryptionCertificates", 0}];
+  v6 = [certificatesCopy PKArrayContaining:objc_opt_class() forKey:{@"encryptionCertificates", 0}];
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -261,7 +261,7 @@ LABEL_9:
         }
 
         v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:*(*(&v16 + 1) + 8 * v10) options:0];
-        [v5 safelyAddObject:v11];
+        [array safelyAddObject:v11];
 
         ++v10;
       }
@@ -273,11 +273,11 @@ LABEL_9:
     while (v8);
   }
 
-  v12 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
+  v12 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   encryptionCertificates = self->_encryptionCertificates;
   self->_encryptionCertificates = v12;
 
-  v14 = [v4 PKStringForKey:@"encryptionVersion"];
+  v14 = [certificatesCopy PKStringForKey:@"encryptionVersion"];
   encryptionVersion = self->_encryptionVersion;
   self->_encryptionVersion = v14;
 }

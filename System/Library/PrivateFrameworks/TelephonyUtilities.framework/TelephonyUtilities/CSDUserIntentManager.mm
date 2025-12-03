@@ -1,25 +1,25 @@
 @interface CSDUserIntentManager
-- (BOOL)validateBackgroundCallIntentForCallSource:(id)a3;
-- (BOOL)validateUserIntentForCallSource:(id)a3;
+- (BOOL)validateBackgroundCallIntentForCallSource:(id)source;
+- (BOOL)validateUserIntentForCallSource:(id)source;
 @end
 
 @implementation CSDUserIntentManager
 
-- (BOOL)validateUserIntentForCallSource:(id)a3
+- (BOOL)validateUserIntentForCallSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002A0DE4(v4);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1002A0DE4(sourceCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (BOOL)validateBackgroundCallIntentForCallSource:(id)a3
+- (BOOL)validateBackgroundCallIntentForCallSource:(id)source
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002A1384(v4);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1002A1384(sourceCopy);
   LOBYTE(self) = v6;
 
   return self & 1;

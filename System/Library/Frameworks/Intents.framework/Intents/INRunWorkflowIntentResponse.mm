@@ -1,30 +1,30 @@
 @interface INRunWorkflowIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INArchivedObject)underlyingIntent;
 - (INArchivedObject)underlyingIntentResponse;
-- (INRunWorkflowIntentResponse)initWithBackingStore:(id)a3;
-- (INRunWorkflowIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (INRunWorkflowIntentResponse)initWithCoder:(id)a3;
+- (INRunWorkflowIntentResponse)initWithBackingStore:(id)store;
+- (INRunWorkflowIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (INRunWorkflowIntentResponse)initWithCoder:(id)coder;
 - (NSArray)steps;
 - (NSNumber)continueRunning;
 - (NSNumber)requestsIntentExecution;
 - (NSNumber)waitingForResume;
 - (NSString)utterance;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)code;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContinueRunning:(id)a3;
-- (void)setRequestsIntentExecution:(id)a3;
-- (void)setSteps:(id)a3;
-- (void)setUnderlyingIntent:(id)a3;
-- (void)setUnderlyingIntentResponse:(id)a3;
-- (void)setUtterance:(id)a3;
-- (void)setWaitingForResume:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContinueRunning:(id)running;
+- (void)setRequestsIntentExecution:(id)execution;
+- (void)setSteps:(id)steps;
+- (void)setUnderlyingIntent:(id)intent;
+- (void)setUnderlyingIntentResponse:(id)response;
+- (void)setUtterance:(id)utterance;
+- (void)setWaitingForResume:(id)resume;
 @end
 
 @implementation INRunWorkflowIntentResponse
@@ -33,98 +33,98 @@
 {
   v30[8] = *MEMORY[0x1E69E9840];
   v29[0] = @"code";
-  v3 = [(INRunWorkflowIntentResponse *)self code];
-  v28 = v3;
-  if (v3 < 0xA)
+  code = [(INRunWorkflowIntentResponse *)self code];
+  v28 = code;
+  if (code < 0xA)
   {
-    v4 = off_1E7286620[v3];
-    v27 = v4;
+    null = off_1E7286620[code];
+    v27 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v27 = 0;
   }
 
-  v25 = v4;
-  v30[0] = v4;
+  v25 = null;
+  v30[0] = null;
   v29[1] = @"underlyingIntent";
-  v5 = [(INRunWorkflowIntentResponse *)self underlyingIntent];
-  v6 = v5;
-  if (!v5)
+  underlyingIntent = [(INRunWorkflowIntentResponse *)self underlyingIntent];
+  v6 = underlyingIntent;
+  if (!underlyingIntent)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    underlyingIntent = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v5;
-  v30[1] = v5;
+  v24 = underlyingIntent;
+  v30[1] = underlyingIntent;
   v29[2] = @"underlyingIntentResponse";
-  v7 = [(INRunWorkflowIntentResponse *)self underlyingIntentResponse];
-  v8 = v7;
-  if (!v7)
+  underlyingIntentResponse = [(INRunWorkflowIntentResponse *)self underlyingIntentResponse];
+  v8 = underlyingIntentResponse;
+  if (!underlyingIntentResponse)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    underlyingIntentResponse = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v7;
-  v30[2] = v7;
+  v23 = underlyingIntentResponse;
+  v30[2] = underlyingIntentResponse;
   v29[3] = @"utterance";
-  v9 = [(INRunWorkflowIntentResponse *)self utterance];
-  v10 = v9;
-  if (!v9)
+  utterance = [(INRunWorkflowIntentResponse *)self utterance];
+  v10 = utterance;
+  if (!utterance)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    utterance = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v9;
-  v30[3] = v9;
+  v22 = utterance;
+  v30[3] = utterance;
   v29[4] = @"waitingForResume";
-  v11 = [(INRunWorkflowIntentResponse *)self waitingForResume];
-  v12 = v11;
-  if (!v11)
+  waitingForResume = [(INRunWorkflowIntentResponse *)self waitingForResume];
+  v12 = waitingForResume;
+  if (!waitingForResume)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    waitingForResume = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[4] = v11;
+  v30[4] = waitingForResume;
   v29[5] = @"continueRunning";
-  v13 = [(INRunWorkflowIntentResponse *)self continueRunning];
-  v14 = v13;
-  if (!v13)
+  continueRunning = [(INRunWorkflowIntentResponse *)self continueRunning];
+  null2 = continueRunning;
+  if (!continueRunning)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[5] = v14;
+  v30[5] = null2;
   v29[6] = @"steps";
-  v15 = [(INRunWorkflowIntentResponse *)self steps];
-  v16 = v15;
-  if (!v15)
+  steps = [(INRunWorkflowIntentResponse *)self steps];
+  null3 = steps;
+  if (!steps)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v16;
+  v30[6] = null3;
   v29[7] = @"requestsIntentExecution";
-  v17 = [(INRunWorkflowIntentResponse *)self requestsIntentExecution];
-  v18 = v17;
-  if (!v17)
+  requestsIntentExecution = [(INRunWorkflowIntentResponse *)self requestsIntentExecution];
+  null4 = requestsIntentExecution;
+  if (!requestsIntentExecution)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[7] = v18;
+  v30[7] = null4;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:8];
-  if (!v17)
+  if (!requestsIntentExecution)
   {
   }
 
-  if (!v15)
+  if (!steps)
   {
   }
 
-  if (!v13)
+  if (!continueRunning)
   {
   }
 
@@ -153,118 +153,118 @@
   return v26;
 }
 
-- (void)setRequestsIntentExecution:(id)a3
+- (void)setRequestsIntentExecution:(id)execution
 {
-  v7 = a3;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if (v7)
+  executionCopy = execution;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if (executionCopy)
   {
-    [v4 setRequestsIntentExecution:{objc_msgSend(v7, "BOOLValue")}];
+    [_responseMessagePBRepresentation setRequestsIntentExecution:{objc_msgSend(executionCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasRequestsIntentExecution:0];
+    [_responseMessagePBRepresentation setHasRequestsIntentExecution:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setSteps:(id)a3
+- (void)setSteps:(id)steps
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToVoiceCommandStepInfos(v4);
+  stepsCopy = steps;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToVoiceCommandStepInfos(stepsCopy);
 
-  [v5 setSteps:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setSteps:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setContinueRunning:(id)a3
+- (void)setContinueRunning:(id)running
 {
-  v7 = a3;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if (v7)
+  runningCopy = running;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if (runningCopy)
   {
-    [v4 setContinueRunning:{objc_msgSend(v7, "BOOLValue")}];
+    [_responseMessagePBRepresentation setContinueRunning:{objc_msgSend(runningCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasContinueRunning:0];
+    [_responseMessagePBRepresentation setHasContinueRunning:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setWaitingForResume:(id)a3
+- (void)setWaitingForResume:(id)resume
 {
-  v7 = a3;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if (v7)
+  resumeCopy = resume;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if (resumeCopy)
   {
-    [v4 setWaitingForResume:{objc_msgSend(v7, "BOOLValue")}];
+    [_responseMessagePBRepresentation setWaitingForResume:{objc_msgSend(resumeCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasWaitingForResume:0];
+    [_responseMessagePBRepresentation setHasWaitingForResume:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setUtterance:(id)a3
+- (void)setUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v5 setUtterance:v4];
+  utteranceCopy = utterance;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation setUtterance:utteranceCopy];
 
-  v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v7 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setUnderlyingIntentResponse:(id)a3
+- (void)setUnderlyingIntentResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToArchivedObject(v4);
+  responseCopy = response;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToArchivedObject(responseCopy);
 
-  [v5 setUnderlyingIntentResponse:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setUnderlyingIntentResponse:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setUnderlyingIntent:(id)a3
+- (void)setUnderlyingIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToArchivedObject(v4);
+  intentCopy = intent;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToArchivedObject(intentCopy);
 
-  [v5 setUnderlyingIntent:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setUnderlyingIntent:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSNumber)requestsIntentExecution
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasRequestsIntentExecution])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasRequestsIntentExecution])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "requestsIntentExecution")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithBool:{objc_msgSend(_responseMessagePBRepresentation2, "requestsIntentExecution")}];
   }
 
   else
@@ -277,21 +277,21 @@
 
 - (NSArray)steps
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 steps];
-  v4 = INIntentSlotValueTransformFromVoiceCommandStepInfos(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  steps = [_responseMessagePBRepresentation steps];
+  v4 = INIntentSlotValueTransformFromVoiceCommandStepInfos(steps);
 
   return v4;
 }
 
 - (NSNumber)continueRunning
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasContinueRunning])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasContinueRunning])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "continueRunning")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithBool:{objc_msgSend(_responseMessagePBRepresentation2, "continueRunning")}];
   }
 
   else
@@ -304,12 +304,12 @@
 
 - (NSNumber)waitingForResume
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasWaitingForResume])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasWaitingForResume])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "waitingForResume")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithBool:{objc_msgSend(_responseMessagePBRepresentation2, "waitingForResume")}];
   }
 
   else
@@ -322,67 +322,67 @@
 
 - (NSString)utterance
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 utterance];
-  v4 = [v3 copy];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  utterance = [_responseMessagePBRepresentation utterance];
+  v4 = [utterance copy];
 
   return v4;
 }
 
 - (INArchivedObject)underlyingIntentResponse
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 underlyingIntentResponse];
-  v4 = INIntentSlotValueTransformFromArchivedObject(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  underlyingIntentResponse = [_responseMessagePBRepresentation underlyingIntentResponse];
+  v4 = INIntentSlotValueTransformFromArchivedObject(underlyingIntentResponse);
 
   return v4;
 }
 
 - (INArchivedObject)underlyingIntent
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 underlyingIntent];
-  v4 = INIntentSlotValueTransformFromArchivedObject(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  underlyingIntent = [_responseMessagePBRepresentation underlyingIntent];
+  v4 = INIntentSlotValueTransformFromArchivedObject(underlyingIntent);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INRunWorkflowIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INRunWorkflowIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeHandleInApp"])
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeHandleInApp"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeUserConfirmationRequired"])
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeUserConfirmationRequired"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeFailure"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INRunWorkflowIntentResponseCodeFailureNotFound"])
+  if ([nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeFailureNotFound"])
   {
     v5 = 8;
   }
@@ -392,7 +392,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INRunWorkflowIntentResponseCodeFailureAnotherWorkflowRunning"];
+  v6 = [nameCopy isEqualToString:@"INRunWorkflowIntentResponseCodeFailureAnotherWorkflowRunning"];
 
   if (v6)
   {
@@ -407,30 +407,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INRunWorkflowIntentResponse *)self code];
-  if ((v2 - 1) > 8)
+  code = [(INRunWorkflowIntentResponse *)self code];
+  if ((code - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F4C0[v2 - 1];
+    return qword_18EE5F4C0[code - 1];
   }
 }
 
-- (INRunWorkflowIntentResponse)initWithCoder:(id)a3
+- (INRunWorkflowIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INRunWorkflowIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INRunWorkflowIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (int64_t)code
@@ -440,61 +440,61 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INRunWorkflowIntentResponse)initWithBackingStore:(id)a3
+- (INRunWorkflowIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INRunWorkflowIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INRunWorkflowIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
-- (INRunWorkflowIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (INRunWorkflowIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  activityCopy = activity;
   v7 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 9)
+    if (code > 9)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_1E7286620[a3];
+      v9 = off_1E7286620[code];
     }
 
     v10 = v9;
     *buf = 136315906;
     v16 = "[INRunWorkflowIntentResponse initWithCode:userActivity:]";
     v17 = 2048;
-    v18 = a3;
+    codeCopy = code;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v6;
+    v22 = activityCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s code = %zd (%@), userActivity = %@", buf, 0x2Au);
   }
 
   v14.receiver = self;
   v14.super_class = INRunWorkflowIntentResponse;
-  v11 = [(INIntentResponse *)&v14 _initWithCode:a3 userActivity:v6];
+  v11 = [(INIntentResponse *)&v14 _initWithCode:code userActivity:activityCopy];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 9)
+  if (code == 9)
   {
     v3 = 1;
   }
@@ -504,7 +504,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 8)
+  if (code == 8)
   {
     return 0;
   }
@@ -515,29 +515,29 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 8)
+  if ((code - 1) > 8)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F498[a3 - 1];
+    return dword_18EE5F498[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
   v6 = 5;
-  if (a3 != 7)
+  if (type != 7)
   {
-    v6 = a3 == 5;
+    v6 = type == 5;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     v5 = v6;
   }
@@ -545,32 +545,32 @@
   v7 = 3;
   v8 = 8;
   v9 = 6;
-  if (a5)
+  if (requested)
   {
     v9 = 7;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v9 = 9;
   }
 
-  if (a4)
+  if (code)
   {
     v8 = v9;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v7 = v8;
   }
 
-  if (a3 <= 3)
+  if (type <= 3)
   {
     return v7;
   }

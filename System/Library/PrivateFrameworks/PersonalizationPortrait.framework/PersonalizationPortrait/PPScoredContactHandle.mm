@@ -1,29 +1,29 @@
 @interface PPScoredContactHandle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScoredContactHandle:(id)a3;
-- (PPScoredContactHandle)initWithCoder:(id)a3;
-- (PPScoredContactHandle)initWithContactHandle:(id)a3 score:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScoredContactHandle:(id)handle;
+- (PPScoredContactHandle)initWithCoder:(id)coder;
+- (PPScoredContactHandle)initWithContactHandle:(id)handle score:(double)score;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (int64_t)reverseCompare:(id)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)reverseCompare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPScoredContactHandle
 
-- (BOOL)isEqualToScoredContactHandle:(id)a3
+- (BOOL)isEqualToScoredContactHandle:(id)handle
 {
-  v4 = a3;
-  if (!v4)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_contactHandle;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == handleCopy[1])
   {
 
     goto LABEL_6;
@@ -34,7 +34,7 @@
   if (v7)
   {
 LABEL_6:
-    v8 = self->_score == *(v4 + 2);
+    v8 = self->_score == *(handleCopy + 2);
     goto LABEL_7;
   }
 
@@ -45,27 +45,27 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredContactHandle *)self isEqualToScoredContactHandle:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredContactHandle *)self isEqualToScoredContactHandle:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(NSString *)self->_contactHandle copyWithZone:a3];
+  v6 = [(NSString *)self->_contactHandle copyWithZone:zone];
   v7 = [v5 initWithContactHandle:v6 score:self->_score];
 
   return v7;
@@ -80,49 +80,49 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactHandle = self->_contactHandle;
-  v5 = a3;
-  [v5 encodeObject:contactHandle forKey:@"ch"];
-  [v5 encodeDouble:@"sc" forKey:self->_score];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactHandle forKey:@"ch"];
+  [coderCopy encodeDouble:@"sc" forKey:self->_score];
 }
 
-- (PPScoredContactHandle)initWithCoder:(id)a3
+- (PPScoredContactHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = pp_default_log_handle();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"ch" withCoder:v4 expectNonNull:1 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"ch" withCoder:coderCopy expectNonNull:1 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v7];
 
   if (v8)
   {
-    [v4 decodeDoubleForKey:@"sc"];
+    [coderCopy decodeDoubleForKey:@"sc"];
     self = [(PPScoredContactHandle *)self initWithContactHandle:v8 score:?];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (int64_t)reverseCompare:(id)a3
+- (int64_t)reverseCompare:(id)compare
 {
   score = self->_score;
-  [a3 score];
+  [compare score];
 
   return [PPUtils reverseCompareDouble:score withDouble:v4];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   score = self->_score;
-  [a3 score];
+  [compare score];
 
   return [PPUtils compareDouble:score withDouble:v4];
 }
@@ -134,17 +134,17 @@ LABEL_7:
   return v2;
 }
 
-- (PPScoredContactHandle)initWithContactHandle:(id)a3 score:(double)a4
+- (PPScoredContactHandle)initWithContactHandle:(id)handle score:(double)score
 {
-  v7 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = PPScoredContactHandle;
   v8 = [(PPScoredContactHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contactHandle, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_contactHandle, handle);
+    v9->_score = score;
   }
 
   return v9;

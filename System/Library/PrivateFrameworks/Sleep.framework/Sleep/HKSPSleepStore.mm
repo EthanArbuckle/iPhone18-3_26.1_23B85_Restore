@@ -1,106 +1,106 @@
 @interface HKSPSleepStore
-+ (id)_updatedHistoricalSleepGoalForSleepSchedule:(id)a3 options:(unint64_t)a4 date:(id)a5;
-+ (id)_updatedHistoricalSleepSchedulesFromSleepSchedule:(id)a3 options:(unint64_t)a4 date:(id)a5;
-- (BOOL)_resultHasSchedule:(id)a3;
-- (BOOL)_resultScheduleIsValid:(id)a3;
-- (BOOL)_resultScheduleMeetsDefaultGoal:(id)a3;
-- (BOOL)_shouldNotifyObserversForClientIdentifier:(id)a3;
++ (id)_updatedHistoricalSleepGoalForSleepSchedule:(id)schedule options:(unint64_t)options date:(id)date;
++ (id)_updatedHistoricalSleepSchedulesFromSleepSchedule:(id)schedule options:(unint64_t)options date:(id)date;
+- (BOOL)_resultHasSchedule:(id)schedule;
+- (BOOL)_resultScheduleIsValid:(id)valid;
+- (BOOL)_resultScheduleMeetsDefaultGoal:(id)goal;
+- (BOOL)_shouldNotifyObserversForClientIdentifier:(id)identifier;
 - (BOOL)hasSleepFocusMode;
-- (BOOL)shouldReloadWidgetOfKind:(id)a3;
+- (BOOL)shouldReloadWidgetOfKind:(id)kind;
 - (HKSPSleepFocusConfiguration)sleepFocusConfiguration;
 - (HKSPSleepStore)init;
-- (HKSPSleepStore)initWithConnectionProviderProvider:(id)a3 identifier:(id)a4 healthStore:(id)a5 options:(unint64_t)a6;
-- (HKSPSleepStore)initWithConnectionProviderProvider:(id)a3 identifier:(id)a4 healthStore:(id)a5 options:(unint64_t)a6 analyticsManager:(id)a7 throttlerProvider:(id)a8 callbackScheduler:(id)a9 sleepFocusModeBridgeProvider:(id)a10 widgetTimelineControllersProvider:(id)a11 widgetRelevanceControllerProvider:(id)a12 currentDateProvider:(id)a13;
-- (HKSPSleepStore)initWithHealthStore:(id)a3;
+- (HKSPSleepStore)initWithConnectionProviderProvider:(id)provider identifier:(id)identifier healthStore:(id)store options:(unint64_t)options;
+- (HKSPSleepStore)initWithConnectionProviderProvider:(id)provider identifier:(id)identifier healthStore:(id)store options:(unint64_t)options analyticsManager:(id)manager throttlerProvider:(id)throttlerProvider callbackScheduler:(id)scheduler sleepFocusModeBridgeProvider:(id)self0 widgetTimelineControllersProvider:(id)self1 widgetRelevanceControllerProvider:(id)self2 currentDateProvider:(id)self3;
+- (HKSPSleepStore)initWithHealthStore:(id)store;
 - (NSString)description;
 - (id)_clearWidgetOverrideOnServer;
 - (id)_confirmAwakeOnServer;
 - (id)_dismissGoodMorningOnServer;
 - (id)_dismissSleepLockOnServer;
-- (id)_prepareObjectForSave:(id)a3 options:(unint64_t)a4;
-- (id)_publishNotificationOnServerWithIdentifier:(id)a3 userInfo:(id)a4;
+- (id)_prepareObjectForSave:(id)save options:(unint64_t)options;
+- (id)_publishNotificationOnServerWithIdentifier:(id)identifier userInfo:(id)info;
 - (id)_publishWakeUpResultsNotificationOnServer;
-- (id)_saveCurrentSleepEventRecordOnServer:(id)a3 options:(unint64_t)a4;
-- (id)_saveCurrentSleepScheduleOnServer:(id)a3 options:(unint64_t)a4;
-- (id)_saveCurrentSleepSettingsOnServer:(id)a3 options:(unint64_t)a4;
-- (id)_sendScheduleChangedAnalyticsWithContext:(id)a3;
-- (id)_setLockScreenOverrideStateOnServerWithState:(int64_t)a3 userInfo:(id)a4;
-- (id)_setSleepModeOnServer:(int64_t)a3 reason:(unint64_t)a4;
-- (id)_setWidgetOverrideStateOnServerWithState:(int64_t)a3;
-- (id)_sleepAlarmWasDismissedOnDateOnServer:(id)a3 source:(unint64_t)a4;
-- (id)_sleepAlarmWasModifiedOnServer:(unint64_t)a3;
-- (id)_sleepAlarmWasSnoozedUntilDateOnServer:(id)a3 source:(unint64_t)a4;
-- (id)_writeHistoricalSchedule:(id)a3 options:(unint64_t)a4;
-- (id)currentSleepEventRecordWithError:(id *)a3;
-- (id)currentSleepScheduleWithError:(id *)a3;
-- (id)currentSleepSettingsWithError:(id *)a3;
-- (id)nextEventDueAfterDate:(id)a3 error:(id *)a4;
-- (id)nextEventDueAfterDateFuture:(id)a3;
-- (id)nextEventWithIdentifier:(id)a3 dueAfterDate:(id)a4 error:(id *)a5;
-- (id)nextEventWithIdentifierFuture:(id)a3 dueAfterDate:(id)a4;
-- (id)saveCurrentSleepEventRecord:(id)a3 options:(unint64_t)a4;
-- (id)saveCurrentSleepSchedule:(id)a3 options:(unint64_t)a4 context:(id)a5;
-- (id)saveCurrentSleepSettings:(id)a3 options:(unint64_t)a4;
+- (id)_saveCurrentSleepEventRecordOnServer:(id)server options:(unint64_t)options;
+- (id)_saveCurrentSleepScheduleOnServer:(id)server options:(unint64_t)options;
+- (id)_saveCurrentSleepSettingsOnServer:(id)server options:(unint64_t)options;
+- (id)_sendScheduleChangedAnalyticsWithContext:(id)context;
+- (id)_setLockScreenOverrideStateOnServerWithState:(int64_t)state userInfo:(id)info;
+- (id)_setSleepModeOnServer:(int64_t)server reason:(unint64_t)reason;
+- (id)_setWidgetOverrideStateOnServerWithState:(int64_t)state;
+- (id)_sleepAlarmWasDismissedOnDateOnServer:(id)server source:(unint64_t)source;
+- (id)_sleepAlarmWasModifiedOnServer:(unint64_t)server;
+- (id)_sleepAlarmWasSnoozedUntilDateOnServer:(id)server source:(unint64_t)source;
+- (id)_writeHistoricalSchedule:(id)schedule options:(unint64_t)options;
+- (id)currentSleepEventRecordWithError:(id *)error;
+- (id)currentSleepScheduleWithError:(id *)error;
+- (id)currentSleepSettingsWithError:(id *)error;
+- (id)nextEventDueAfterDate:(id)date error:(id *)error;
+- (id)nextEventDueAfterDateFuture:(id)future;
+- (id)nextEventWithIdentifier:(id)identifier dueAfterDate:(id)date error:(id *)error;
+- (id)nextEventWithIdentifierFuture:(id)future dueAfterDate:(id)date;
+- (id)saveCurrentSleepEventRecord:(id)record options:(unint64_t)options;
+- (id)saveCurrentSleepSchedule:(id)schedule options:(unint64_t)options context:(id)context;
+- (id)saveCurrentSleepSettings:(id)settings options:(unint64_t)options;
 - (id)sleepModeOnFuture;
-- (id)sleepScheduleModelWithError:(id *)a3;
-- (id)upcomingResolvedScheduleOccurrenceAfterDate:(id)a3 alarmStatus:(int64_t *)a4 error:(id *)a5;
-- (id)upcomingScheduleOccurrenceAfterDate:(id)a3 alarmStatus:(int64_t *)a4 error:(id *)a5;
-- (id)upcomingScheduleOccurrenceAfterDate:(id)a3 error:(id *)a4;
-- (id)upcomingScheduleOccurrenceAfterDateFuture:(id)a3;
-- (int64_t)sleepModeWithError:(id *)a3;
-- (int64_t)sleepWidgetStateWithError:(id *)a3;
-- (unint64_t)currentSleepScheduleStateWithError:(id *)a3;
+- (id)sleepScheduleModelWithError:(id *)error;
+- (id)upcomingResolvedScheduleOccurrenceAfterDate:(id)date alarmStatus:(int64_t *)status error:(id *)error;
+- (id)upcomingScheduleOccurrenceAfterDate:(id)date alarmStatus:(int64_t *)status error:(id *)error;
+- (id)upcomingScheduleOccurrenceAfterDate:(id)date error:(id *)error;
+- (id)upcomingScheduleOccurrenceAfterDateFuture:(id)future;
+- (int64_t)sleepModeWithError:(id *)error;
+- (int64_t)sleepWidgetStateWithError:(id *)error;
+- (unint64_t)currentSleepScheduleStateWithError:(id *)error;
 - (void)_checkInWithCurrentSyncAnchor;
-- (void)_notifyObserversForChangedSleepEventRecord:(id)a3;
-- (void)_notifyObserversForChangedSleepMode:(int64_t)a3 reason:(unint64_t)a4;
-- (void)_notifyObserversForChangedSleepSchedule:(id)a3;
-- (void)_notifyObserversForChangedSleepScheduleState:(unint64_t)a3 reason:(unint64_t)a4;
-- (void)_notifyObserversForChangedSleepSettings:(id)a3;
-- (void)_notifyObserversForSleepEvent:(id)a3;
-- (void)_updateAndNotifyForChangedSleepEventRecord:(id)a3 clientIdentifier:(id)a4;
-- (void)_updateAndNotifyForChangedSleepMode:(id)a3;
-- (void)_updateAndNotifyForChangedSleepSchedule:(id)a3 clientIdentifier:(id)a4;
-- (void)_updateAndNotifyForChangedSleepScheduleState:(id)a3;
-- (void)_updateAndNotifyForChangedSleepSettings:(id)a3 clientIdentifier:(id)a4;
-- (void)_updateAndNotifyForSleepEvent:(id)a3;
-- (void)clearWidgetOverrideWithCompletion:(id)a3;
-- (void)configureSleepFocusWithState:(unint64_t)a3 completion:(id)a4;
-- (void)confirmAwakeWithCompletion:(id)a3;
-- (void)connectSynchronously:(BOOL)a3;
-- (void)createSleepFocusInState:(unint64_t)a3 completion:(id)a4;
-- (void)currentSleepEventRecordWithCompletion:(id)a3;
-- (void)currentSleepScheduleStateWithCompletion:(id)a3;
-- (void)currentSleepScheduleWithCompletion:(id)a3;
-- (void)currentSleepSettingsWithCompletion:(id)a3;
+- (void)_notifyObserversForChangedSleepEventRecord:(id)record;
+- (void)_notifyObserversForChangedSleepMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)_notifyObserversForChangedSleepSchedule:(id)schedule;
+- (void)_notifyObserversForChangedSleepScheduleState:(unint64_t)state reason:(unint64_t)reason;
+- (void)_notifyObserversForChangedSleepSettings:(id)settings;
+- (void)_notifyObserversForSleepEvent:(id)event;
+- (void)_updateAndNotifyForChangedSleepEventRecord:(id)record clientIdentifier:(id)identifier;
+- (void)_updateAndNotifyForChangedSleepMode:(id)mode;
+- (void)_updateAndNotifyForChangedSleepSchedule:(id)schedule clientIdentifier:(id)identifier;
+- (void)_updateAndNotifyForChangedSleepScheduleState:(id)state;
+- (void)_updateAndNotifyForChangedSleepSettings:(id)settings clientIdentifier:(id)identifier;
+- (void)_updateAndNotifyForSleepEvent:(id)event;
+- (void)clearWidgetOverrideWithCompletion:(id)completion;
+- (void)configureSleepFocusWithState:(unint64_t)state completion:(id)completion;
+- (void)confirmAwakeWithCompletion:(id)completion;
+- (void)connectSynchronously:(BOOL)synchronously;
+- (void)createSleepFocusInState:(unint64_t)state completion:(id)completion;
+- (void)currentSleepEventRecordWithCompletion:(id)completion;
+- (void)currentSleepScheduleStateWithCompletion:(id)completion;
+- (void)currentSleepScheduleWithCompletion:(id)completion;
+- (void)currentSleepSettingsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteSleepFocusModeWithCompletion:(id)a3;
-- (void)dismissGoodMorningWithCompletion:(id)a3;
-- (void)dismissSleepLockWithCompletion:(id)a3;
-- (void)nextEventDueAfterDate:(id)a3 completion:(id)a4;
-- (void)nextEventWithIdentifier:(id)a3 dueAfterDate:(id)a4 completion:(id)a5;
-- (void)publishNotificationWithIdentifier:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)publishWakeUpResultsNotificationWithCompletion:(id)a3;
+- (void)deleteSleepFocusModeWithCompletion:(id)completion;
+- (void)dismissGoodMorningWithCompletion:(id)completion;
+- (void)dismissSleepLockWithCompletion:(id)completion;
+- (void)nextEventDueAfterDate:(id)date completion:(id)completion;
+- (void)nextEventWithIdentifier:(id)identifier dueAfterDate:(id)date completion:(id)completion;
+- (void)publishNotificationWithIdentifier:(id)identifier userInfo:(id)info completion:(id)completion;
+- (void)publishWakeUpResultsNotificationWithCompletion:(id)completion;
 - (void)reconnect;
-- (void)saveCurrentSleepEventRecord:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)saveCurrentSleepSchedule:(id)a3 options:(unint64_t)a4 context:(id)a5 completion:(id)a6;
-- (void)saveCurrentSleepSettings:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)setLockScreenOverrideState:(int64_t)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)setSleepCoachingOnboardingCompletedVersion:(int64_t)a3 completion:(id)a4;
-- (void)setSleepModeOn:(BOOL)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)setSleepTrackingOnboardingCompletedVersion:(int64_t)a3 completion:(id)a4;
-- (void)setSleepWindDownShortcutsOnboardingCompletedVersion:(int64_t)a3 completion:(id)a4;
-- (void)setWidgetOverrideState:(int64_t)a3 completion:(id)a4;
-- (void)sleepAlarmWasDismissedOnDate:(id)a3 source:(unint64_t)a4 completion:(id)a5;
-- (void)sleepAlarmWasModifiedFromSource:(unint64_t)a3 completion:(id)a4;
-- (void)sleepAlarmWasSnoozedUntilDate:(id)a3 source:(unint64_t)a4 completion:(id)a5;
-- (void)sleepFocusModeBridge:(id)a3 didUpdateSleepFocusConfiguration:(id)a4;
-- (void)sleepModeOnWithCompletion:(id)a3;
-- (void)sleepModeWithCompletion:(id)a3;
-- (void)sleepScheduleModelWithCompletion:(id)a3;
-- (void)sleepWidgetStateWithCompletion:(id)a3;
-- (void)suggestedSleepScheduleWithProviders:(id)a3 completion:(id)a4;
-- (void)trackSleepDataInteractionEventWithType:(unint64_t)a3 isOnboardedVitals:(BOOL)a4 completion:(id)a5;
-- (void)upcomingScheduleOccurrenceAfterDate:(id)a3 completion:(id)a4;
+- (void)saveCurrentSleepEventRecord:(id)record options:(unint64_t)options completion:(id)completion;
+- (void)saveCurrentSleepSchedule:(id)schedule options:(unint64_t)options context:(id)context completion:(id)completion;
+- (void)saveCurrentSleepSettings:(id)settings options:(unint64_t)options completion:(id)completion;
+- (void)setLockScreenOverrideState:(int64_t)state userInfo:(id)info completion:(id)completion;
+- (void)setSleepCoachingOnboardingCompletedVersion:(int64_t)version completion:(id)completion;
+- (void)setSleepModeOn:(BOOL)on reason:(unint64_t)reason completion:(id)completion;
+- (void)setSleepTrackingOnboardingCompletedVersion:(int64_t)version completion:(id)completion;
+- (void)setSleepWindDownShortcutsOnboardingCompletedVersion:(int64_t)version completion:(id)completion;
+- (void)setWidgetOverrideState:(int64_t)state completion:(id)completion;
+- (void)sleepAlarmWasDismissedOnDate:(id)date source:(unint64_t)source completion:(id)completion;
+- (void)sleepAlarmWasModifiedFromSource:(unint64_t)source completion:(id)completion;
+- (void)sleepAlarmWasSnoozedUntilDate:(id)date source:(unint64_t)source completion:(id)completion;
+- (void)sleepFocusModeBridge:(id)bridge didUpdateSleepFocusConfiguration:(id)configuration;
+- (void)sleepModeOnWithCompletion:(id)completion;
+- (void)sleepModeWithCompletion:(id)completion;
+- (void)sleepScheduleModelWithCompletion:(id)completion;
+- (void)sleepWidgetStateWithCompletion:(id)completion;
+- (void)suggestedSleepScheduleWithProviders:(id)providers completion:(id)completion;
+- (void)trackSleepDataInteractionEventWithType:(unint64_t)type isOnboardedVitals:(BOOL)vitals completion:(id)completion;
+- (void)upcomingScheduleOccurrenceAfterDate:(id)date completion:(id)completion;
 @end
 
 @implementation HKSPSleepStore
@@ -110,24 +110,24 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKSPXPCClientIdentifier *)self->_clientIdentifier loggingIdentifier];
-  v7 = [v3 stringWithFormat:@"[%@.%@.%p]", v5, v6, self];
+  loggingIdentifier = [(HKSPXPCClientIdentifier *)self->_clientIdentifier loggingIdentifier];
+  v7 = [v3 stringWithFormat:@"[%@.%@.%p]", v5, loggingIdentifier, self];
 
   return v7;
 }
 
-- (void)trackSleepDataInteractionEventWithType:(unint64_t)a3 isOnboardedVitals:(BOOL)a4 completion:(id)a5
+- (void)trackSleepDataInteractionEventWithType:(unint64_t)type isOnboardedVitals:(BOOL)vitals completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __97__HKSPSleepStore_Analytics__trackSleepDataInteractionEventWithType_isOnboardedVitals_completion___block_invoke;
   v10[3] = &unk_279C73D20;
   v10[4] = self;
-  v11 = v8;
-  v12 = a3;
-  v13 = a4;
-  v9 = v8;
+  v11 = completionCopy;
+  typeCopy = type;
+  vitalsCopy = vitals;
+  v9 = completionCopy;
   [(HKSPSleepStore *)self sleepScheduleModelWithCompletion:v10];
 }
 
@@ -173,16 +173,16 @@ void __97__HKSPSleepStore_Analytics__trackSleepDataInteractionEventWithType_isOn
   }
 }
 
-- (void)suggestedSleepScheduleWithProviders:(id)a3 completion:(id)a4
+- (void)suggestedSleepScheduleWithProviders:(id)providers completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providersCopy = providers;
+  completionCopy = completion;
   v8 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ requesting suggested sleep schedule", buf, 0xCu);
   }
 
@@ -190,11 +190,11 @@ void __97__HKSPSleepStore_Analytics__trackSleepDataInteractionEventWithType_isOn
   v12[1] = 3221225472;
   v12[2] = __76__HKSPSleepStore_Proactive__suggestedSleepScheduleWithProviders_completion___block_invoke;
   v12[3] = &unk_279C74550;
-  v13 = v6;
-  v14 = v7;
+  v13 = providersCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = providersCopy;
+  v10 = completionCopy;
   [(HKSPSleepStore *)self currentSleepScheduleWithCompletion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -403,28 +403,28 @@ void __76__HKSPSleepStore_Proactive__suggestedSleepScheduleWithProviders_complet
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_resultHasSchedule:(id)a3
+- (BOOL)_resultHasSchedule:(id)schedule
 {
-  v3 = [a3 schedule];
-  v4 = v3 != 0;
+  schedule = [schedule schedule];
+  v4 = schedule != 0;
 
   return v4;
 }
 
-- (BOOL)_resultScheduleMeetsDefaultGoal:(id)a3
+- (BOOL)_resultScheduleMeetsDefaultGoal:(id)goal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 schedule];
-  v5 = [v4 meetsDefaultSleepGoal];
+  schedule = [goal schedule];
+  meetsDefaultSleepGoal = [schedule meetsDefaultSleepGoal];
 
   v6 = HKSPLogForCategory(1uLL);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (meetsDefaultSleepGoal)
   {
     if (v7)
     {
       v11 = 138543362;
-      v12 = self;
+      selfCopy2 = self;
       v8 = "%{public}@ suggested schedule meets default sleep goal";
 LABEL_6:
       _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, v8, &v11, 0xCu);
@@ -434,40 +434,40 @@ LABEL_6:
   else if (v7)
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     v8 = "%{public}@ suggested schedule doesn't meet default sleep goal";
     goto LABEL_6;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v5;
+  return meetsDefaultSleepGoal;
 }
 
-- (BOOL)_resultScheduleIsValid:(id)a3
+- (BOOL)_resultScheduleIsValid:(id)valid
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  validCopy = valid;
   v5 = [(HKSPSleepStore *)self sleepScheduleModelWithError:0];
-  v6 = [v4 schedule];
+  schedule = [validCopy schedule];
 
-  v7 = [v5 sleepSettings];
-  v8 = [v5 sleepEventRecord];
-  v9 = [HKSPSleepScheduleModel sleepScheduleModelWithSleepSchedule:v6 sleepSettings:v7 sleepEventRecord:v8];
+  sleepSettings = [v5 sleepSettings];
+  sleepEventRecord = [v5 sleepEventRecord];
+  v9 = [HKSPSleepScheduleModel sleepScheduleModelWithSleepSchedule:schedule sleepSettings:sleepSettings sleepEventRecord:sleepEventRecord];
 
-  v10 = [(HKSPSleepStore *)self currentDateProvider];
-  v11 = v10[2]();
+  currentDateProvider = [(HKSPSleepStore *)self currentDateProvider];
+  v11 = currentDateProvider[2]();
   v12 = [HKSPSleepEventTimelineBuilder builderWithSleepScheduleModel:v9 date:v11];
 
   v13 = [v12 buildTimelineWithOptions:2];
-  v14 = [v13 sleepScheduleInvalid];
+  sleepScheduleInvalid = [v13 sleepScheduleInvalid];
   v15 = HKSPLogForCategory(1uLL);
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v14)
+  if (sleepScheduleInvalid)
   {
     if (v16)
     {
       v20 = 138543362;
-      v21 = self;
+      selfCopy2 = self;
       v17 = "%{public}@ suggested schedule is invalid";
 LABEL_6:
       _os_log_impl(&dword_269A84000, v15, OS_LOG_TYPE_DEFAULT, v17, &v20, 0xCu);
@@ -477,13 +477,13 @@ LABEL_6:
   else if (v16)
   {
     v20 = 138543362;
-    v21 = self;
+    selfCopy2 = self;
     v17 = "%{public}@ suggested schedule is valid";
     goto LABEL_6;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v14 ^ 1;
+  return sleepScheduleInvalid ^ 1;
 }
 
 - (HKSPSleepStore)init
@@ -494,11 +494,11 @@ LABEL_6:
   return v4;
 }
 
-- (HKSPSleepStore)initWithHealthStore:(id)a3
+- (HKSPSleepStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = HKSPGenerateSleepStoreIdentifier(&stru_287A719F0);
-  v6 = [(HKSPSleepStore *)self initWithIdentifier:v5 healthStore:v4];
+  v6 = [(HKSPSleepStore *)self initWithIdentifier:v5 healthStore:storeCopy];
 
   return v6;
 }
@@ -527,25 +527,25 @@ id __57__HKSPSleepStore_initWithIdentifier_healthStore_options___block_invoke(ui
   return v9;
 }
 
-- (HKSPSleepStore)initWithConnectionProviderProvider:(id)a3 identifier:(id)a4 healthStore:(id)a5 options:(unint64_t)a6
+- (HKSPSleepStore)initWithConnectionProviderProvider:(id)provider identifier:(id)identifier healthStore:(id)store options:(unint64_t)options
 {
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __84__HKSPSleepStore_initWithConnectionProviderProvider_identifier_healthStore_options___block_invoke_2;
   v24 = &__block_descriptor_40_e33____HKSPSleepFocusModeBridge__8__0l;
-  v25 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  optionsCopy = options;
+  storeCopy = store;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v13 = MEMORY[0x26D64AA30](&v21);
   v14 = [HKSPAnalyticsManager alloc];
-  v15 = [MEMORY[0x277CBEBD0] hksp_analyticsUserDefaults];
-  v16 = [(HKSPAnalyticsManager *)v14 initWithUserDefaults:v15];
-  v17 = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
+  hksp_analyticsUserDefaults = [MEMORY[0x277CBEBD0] hksp_analyticsUserDefaults];
+  v16 = [(HKSPAnalyticsManager *)v14 initWithUserDefaults:hksp_analyticsUserDefaults];
+  hkspMainThreadScheduler = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
   v18 = HKSPCurrentDateProvider();
-  v19 = [(HKSPSleepStore *)self initWithConnectionProviderProvider:v12 identifier:v11 healthStore:v10 options:a6 analyticsManager:v16 throttlerProvider:&__block_literal_global_306_0 callbackScheduler:v17 sleepFocusModeBridgeProvider:v13 widgetTimelineControllersProvider:&__block_literal_global_315 widgetRelevanceControllerProvider:&__block_literal_global_319 currentDateProvider:v18, v21, v22, v23, v24, v25];
+  optionsCopy = [(HKSPSleepStore *)self initWithConnectionProviderProvider:providerCopy identifier:identifierCopy healthStore:storeCopy options:options analyticsManager:v16 throttlerProvider:&__block_literal_global_306_0 callbackScheduler:hkspMainThreadScheduler sleepFocusModeBridgeProvider:v13 widgetTimelineControllersProvider:&__block_literal_global_315 widgetRelevanceControllerProvider:&__block_literal_global_319 currentDateProvider:v18, v21, v22, v23, v24, optionsCopy];
 
-  return v19;
+  return optionsCopy;
 }
 
 HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifier_healthStore_options___block_invoke(uint64_t a1, void *a2)
@@ -558,28 +558,28 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
   return v5;
 }
 
-- (HKSPSleepStore)initWithConnectionProviderProvider:(id)a3 identifier:(id)a4 healthStore:(id)a5 options:(unint64_t)a6 analyticsManager:(id)a7 throttlerProvider:(id)a8 callbackScheduler:(id)a9 sleepFocusModeBridgeProvider:(id)a10 widgetTimelineControllersProvider:(id)a11 widgetRelevanceControllerProvider:(id)a12 currentDateProvider:(id)a13
+- (HKSPSleepStore)initWithConnectionProviderProvider:(id)provider identifier:(id)identifier healthStore:(id)store options:(unint64_t)options analyticsManager:(id)manager throttlerProvider:(id)throttlerProvider callbackScheduler:(id)scheduler sleepFocusModeBridgeProvider:(id)self0 widgetTimelineControllersProvider:(id)self1 widgetRelevanceControllerProvider:(id)self2 currentDateProvider:(id)self3
 {
   v68 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v62 = a5;
-  obj = a7;
-  v57 = a7;
-  v19 = a8;
-  v61 = a9;
-  v60 = a10;
-  v59 = a11;
-  v20 = a12;
-  v21 = a13;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  storeCopy = store;
+  obj = manager;
+  managerCopy = manager;
+  throttlerProviderCopy = throttlerProvider;
+  schedulerCopy = scheduler;
+  bridgeProviderCopy = bridgeProvider;
+  controllersProviderCopy = controllersProvider;
+  controllerProviderCopy = controllerProvider;
+  dateProviderCopy = dateProvider;
   v65.receiver = self;
   v65.super_class = HKSPSleepStore;
   v22 = [(HKSPSleepStore *)&v65 init];
   if (v22)
   {
     v23 = [HKSPXPCClientIdentifier alloc];
-    v24 = [MEMORY[0x277CCAD78] UUID];
-    v25 = [(HKSPXPCClientIdentifier *)v23 initWithUniqueIdentifier:v24 loggingIdentifier:v18];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v25 = [(HKSPXPCClientIdentifier *)v23 initWithUniqueIdentifier:uUID loggingIdentifier:identifierCopy];
     clientIdentifier = v22->_clientIdentifier;
     v22->_clientIdentifier = v25;
 
@@ -591,7 +591,7 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
       _os_log_impl(&dword_269A84000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ initializing...", buf, 0xCu);
     }
 
-    v28 = [[HKSPSyncAnchorContainer alloc] initWithIdentifier:v18];
+    v28 = [[HKSPSyncAnchorContainer alloc] initWithIdentifier:identifierCopy];
     syncAnchorContainer = v22->_syncAnchorContainer;
     v22->_syncAnchorContainer = v28;
 
@@ -600,9 +600,9 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
     v22->_sleepStoreExportedObject = v30;
 
     [(HKSPSleepStoreExportedObject *)v22->_sleepStoreExportedObject setSleepStore:v22];
-    if (v17)
+    if (providerCopy)
     {
-      v32 = v17[2](v17, v22);
+      v32 = providerCopy[2](providerCopy, v22);
     }
 
     else
@@ -614,12 +614,12 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
     v22->_connectionProvider = v32;
 
     [(HKSPXPCConnectionProvider *)v22->_connectionProvider setDelegate:v22];
-    if (v62)
+    if (storeCopy)
     {
-      v34 = [MEMORY[0x277CCDD30] sharedBehavior];
-      if ([v34 hksp_supportsHealthData])
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      if ([mEMORY[0x277CCDD30] hksp_supportsHealthData])
       {
-        v35 = [objc_alloc(MEMORY[0x277D626B0]) initWithHealthStore:v62];
+        v35 = [objc_alloc(MEMORY[0x277D626B0]) initWithHealthStore:storeCopy];
       }
 
       else
@@ -633,11 +633,11 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
 
     else
     {
-      v34 = v22->_sleepHealthStore;
+      mEMORY[0x277CCDD30] = v22->_sleepHealthStore;
       v22->_sleepHealthStore = 0;
     }
 
-    v22->_options = a6;
+    v22->_options = options;
     if ([(HKSPSleepStore *)v22 _cachingEnabled])
     {
       v37 = objc_alloc_init(HKSPSleepStoreModelCache);
@@ -651,18 +651,18 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
     sleepStoreCache = v22->_sleepStoreCache;
     v22->_sleepStoreCache = v37;
 
-    v39 = [[HKSPObserverSet alloc] initWithCallbackScheduler:v61];
+    v39 = [[HKSPObserverSet alloc] initWithCallbackScheduler:schedulerCopy];
     observers = v22->_observers;
     v22->_observers = v39;
 
-    v41 = [v21 copy];
+    v41 = [dateProviderCopy copy];
     currentDateProvider = v22->_currentDateProvider;
     v22->_currentDateProvider = v41;
 
     objc_storeStrong(&v22->_analyticsManager, obj);
     if ([(HKSPSleepStore *)v22 _observeSleepFocusMode])
     {
-      v43 = v60[2]();
+      v43 = bridgeProviderCopy[2]();
     }
 
     else
@@ -677,8 +677,8 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
     if ([(HKSPSleepStore *)v22 _reloadsWidgets])
     {
       v45 = [HKSPSleepWidgetManager alloc];
-      v46 = v59[2]();
-      v47 = v20[2](v20);
+      v46 = controllersProviderCopy[2]();
+      v47 = controllerProviderCopy[2](controllerProviderCopy);
       v48 = [(HKSPSleepWidgetManager *)v45 initWithTimelineControllers:v46 relevanceController:v47];
       widgetManager = v22->_widgetManager;
       v22->_widgetManager = v48;
@@ -697,7 +697,7 @@ HKSPThrottler *__84__HKSPSleepStore_initWithConnectionProviderProvider_identifie
     v63[2] = __254__HKSPSleepStore_initWithConnectionProviderProvider_identifier_healthStore_options_analyticsManager_throttlerProvider_callbackScheduler_sleepFocusModeBridgeProvider_widgetTimelineControllersProvider_widgetRelevanceControllerProvider_currentDateProvider___block_invoke;
     v63[3] = &unk_279C74E70;
     objc_copyWeak(&v64, buf);
-    v50 = v19[2](v19, v63);
+    v50 = throttlerProviderCopy[2](throttlerProviderCopy, v63);
     reconnectThrottler = v22->_reconnectThrottler;
     v22->_reconnectThrottler = v50;
 
@@ -728,7 +728,7 @@ void __254__HKSPSleepStore_initWithConnectionProviderProvider_identifier_healthS
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ reconnecting", &v5, 0xCu);
   }
 
@@ -736,27 +736,27 @@ void __254__HKSPSleepStore_initWithConnectionProviderProvider_identifier_healthS
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectSynchronously:(BOOL)a3
+- (void)connectSynchronously:(BOOL)synchronously
 {
-  v3 = a3;
+  synchronouslyCopy = synchronously;
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v6)
+  if (hksp_supportsSleepDaemon)
   {
     v7 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ connecting", buf, 0xCu);
     }
 
     v8 = [(HKSPSleepStore *)self description];
     objc_initWeak(buf, self);
     v9 = [HKSPXPCMessage alloc];
-    if (v3)
+    if (synchronouslyCopy)
     {
       v10 = 3;
     }
@@ -835,19 +835,19 @@ void __39__HKSPSleepStore_connectSynchronously___block_invoke_3(uint64_t a1, voi
 - (void)_checkInWithCurrentSyncAnchor
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v4)
+  if (hksp_supportsSleepDaemon)
   {
     v5 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(HKSPSleepStore *)self syncAnchorContainer];
+      syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
       *buf = 138543618;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
-      v21 = v6;
+      v21 = syncAnchorContainer;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ checking in with sync anchor container: %{public}@", buf, 0x16u);
     }
 
@@ -968,17 +968,17 @@ void __52__HKSPSleepStore__getSleepScheduleFromServerDoSync___block_invoke_346(u
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentSleepScheduleWithCompletion:(id)a3
+- (void)currentSleepScheduleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self currentSleepScheduleFuture];
+  completionCopy = completion;
+  currentSleepScheduleFuture = [(HKSPSleepStore *)self currentSleepScheduleFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__HKSPSleepStore_currentSleepScheduleWithCompletion___block_invoke;
   v8[3] = &unk_279C74FB0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [currentSleepScheduleFuture addCompletionBlock:v8];
 }
 
 void __53__HKSPSleepStore_currentSleepScheduleWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -992,7 +992,7 @@ void __53__HKSPSleepStore_currentSleepScheduleWithCompletion___block_invoke(uint
   }
 }
 
-- (id)currentSleepScheduleWithError:(id *)a3
+- (id)currentSleepScheduleWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -1015,9 +1015,9 @@ void __53__HKSPSleepStore_currentSleepScheduleWithCompletion___block_invoke(uint
   v8[5] = &v9;
   v5 = [v4 addCompletionBlock:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -1041,35 +1041,35 @@ void __48__HKSPSleepStore_currentSleepScheduleWithError___block_invoke(uint64_t 
   *(v9 + 40) = v5;
 }
 
-- (id)upcomingScheduleOccurrenceAfterDate:(id)a3 error:(id *)a4
+- (id)upcomingScheduleOccurrenceAfterDate:(id)date error:(id *)error
 {
-  v4 = [(HKSPSleepStore *)self upcomingResolvedScheduleOccurrenceAfterDate:a3 error:a4];
-  v5 = [v4 occurrence];
+  v4 = [(HKSPSleepStore *)self upcomingResolvedScheduleOccurrenceAfterDate:date error:error];
+  occurrence = [v4 occurrence];
 
-  return v5;
+  return occurrence;
 }
 
-- (id)upcomingScheduleOccurrenceAfterDate:(id)a3 alarmStatus:(int64_t *)a4 error:(id *)a5
+- (id)upcomingScheduleOccurrenceAfterDate:(id)date alarmStatus:(int64_t *)status error:(id *)error
 {
-  v5 = [(HKSPSleepStore *)self upcomingResolvedScheduleOccurrenceAfterDate:a3 alarmStatus:a4 error:a5];
-  v6 = [v5 occurrence];
+  v5 = [(HKSPSleepStore *)self upcomingResolvedScheduleOccurrenceAfterDate:date alarmStatus:status error:error];
+  occurrence = [v5 occurrence];
 
-  return v6;
+  return occurrence;
 }
 
-- (id)upcomingResolvedScheduleOccurrenceAfterDate:(id)a3 alarmStatus:(int64_t *)a4 error:(id *)a5
+- (id)upcomingResolvedScheduleOccurrenceAfterDate:(id)date alarmStatus:(int64_t *)status error:(id *)error
 {
-  v8 = a3;
-  v9 = [(HKSPSleepStore *)self sleepScheduleModelWithError:a5];
+  dateCopy = date;
+  v9 = [(HKSPSleepStore *)self sleepScheduleModelWithError:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 upcomingResolvedOccurrenceAfterDate:v8];
+    v11 = [v9 upcomingResolvedOccurrenceAfterDate:dateCopy];
     v12 = v11;
-    if (a4)
+    if (status)
     {
-      v13 = [v11 occurrence];
-      *a4 = [v10 alarmStatusForOccurrence:v13];
+      occurrence = [v11 occurrence];
+      *status = [v10 alarmStatusForOccurrence:occurrence];
     }
   }
 
@@ -1081,16 +1081,16 @@ void __48__HKSPSleepStore_currentSleepScheduleWithError___block_invoke(uint64_t 
   return v12;
 }
 
-- (void)upcomingScheduleOccurrenceAfterDate:(id)a3 completion:(id)a4
+- (void)upcomingScheduleOccurrenceAfterDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HKSPSleepStore *)self upcomingScheduleOccurrenceAfterDateFuture:a3];
+  completionCopy = completion;
+  v7 = [(HKSPSleepStore *)self upcomingScheduleOccurrenceAfterDateFuture:date];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__HKSPSleepStore_upcomingScheduleOccurrenceAfterDate_completion___block_invoke;
   v10[3] = &unk_279C75000;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   v9 = [v7 addCompletionBlock:v10];
 }
 
@@ -1105,17 +1105,17 @@ void __65__HKSPSleepStore_upcomingScheduleOccurrenceAfterDate_completion___block
   }
 }
 
-- (id)upcomingScheduleOccurrenceAfterDateFuture:(id)a3
+- (id)upcomingScheduleOccurrenceAfterDateFuture:(id)future
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self sleepScheduleModelFuture];
+  futureCopy = future;
+  sleepScheduleModelFuture = [(HKSPSleepStore *)self sleepScheduleModelFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__HKSPSleepStore_upcomingScheduleOccurrenceAfterDateFuture___block_invoke;
   v9[3] = &unk_279C75028;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v10 = futureCopy;
+  v6 = futureCopy;
+  v7 = [sleepScheduleModelFuture flatMap:v9];
 
   return v7;
 }
@@ -1200,17 +1200,17 @@ void __52__HKSPSleepStore__getSleepSettingsFromServerDoSync___block_invoke_351(u
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentSleepSettingsWithCompletion:(id)a3
+- (void)currentSleepSettingsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self currentSleepSettingsFuture];
+  completionCopy = completion;
+  currentSleepSettingsFuture = [(HKSPSleepStore *)self currentSleepSettingsFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__HKSPSleepStore_currentSleepSettingsWithCompletion___block_invoke;
   v8[3] = &unk_279C75078;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [currentSleepSettingsFuture addCompletionBlock:v8];
 }
 
 void __53__HKSPSleepStore_currentSleepSettingsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1224,7 +1224,7 @@ void __53__HKSPSleepStore_currentSleepSettingsWithCompletion___block_invoke(uint
   }
 }
 
-- (id)currentSleepSettingsWithError:(id *)a3
+- (id)currentSleepSettingsWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -1247,9 +1247,9 @@ void __53__HKSPSleepStore_currentSleepSettingsWithCompletion___block_invoke(uint
   v8[5] = &v9;
   v5 = [v4 addCompletionBlock:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -1343,17 +1343,17 @@ void __55__HKSPSleepStore__getSleepEventRecordFromServerDoSync___block_invoke_35
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentSleepEventRecordWithCompletion:(id)a3
+- (void)currentSleepEventRecordWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
+  completionCopy = completion;
+  currentSleepEventRecordFuture = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HKSPSleepStore_currentSleepEventRecordWithCompletion___block_invoke;
   v8[3] = &unk_279C750F0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [currentSleepEventRecordFuture addCompletionBlock:v8];
 }
 
 void __56__HKSPSleepStore_currentSleepEventRecordWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1367,7 +1367,7 @@ void __56__HKSPSleepStore_currentSleepEventRecordWithCompletion___block_invoke(u
   }
 }
 
-- (id)currentSleepEventRecordWithError:(id *)a3
+- (id)currentSleepEventRecordWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -1390,9 +1390,9 @@ void __56__HKSPSleepStore_currentSleepEventRecordWithCompletion___block_invoke(u
   v8[5] = &v9;
   v5 = [v4 addCompletionBlock:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -1486,17 +1486,17 @@ void __57__HKSPSleepStore__getSleepScheduleModelFromServerDoSync___block_invoke_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelWithCompletion:(id)a3
+- (void)sleepScheduleModelWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self sleepScheduleModelFuture];
+  completionCopy = completion;
+  sleepScheduleModelFuture = [(HKSPSleepStore *)self sleepScheduleModelFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HKSPSleepStore_sleepScheduleModelWithCompletion___block_invoke;
   v8[3] = &unk_279C75168;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [sleepScheduleModelFuture addCompletionBlock:v8];
 }
 
 void __51__HKSPSleepStore_sleepScheduleModelWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1510,7 +1510,7 @@ void __51__HKSPSleepStore_sleepScheduleModelWithCompletion___block_invoke(uint64
   }
 }
 
-- (id)sleepScheduleModelWithError:(id *)a3
+- (id)sleepScheduleModelWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -1533,9 +1533,9 @@ void __51__HKSPSleepStore_sleepScheduleModelWithCompletion___block_invoke(uint64
   v8[5] = &v9;
   v5 = [v4 addCompletionBlock:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -1616,8 +1616,8 @@ void __48__HKSPSleepStore__getSleepModeFromServerDoSync___block_invoke_358(uint6
 
 - (id)sleepModeOnFuture
 {
-  v2 = [(HKSPSleepStore *)self sleepModeFuture];
-  v3 = [v2 flatMap:&__block_literal_global_361];
+  sleepModeFuture = [(HKSPSleepStore *)self sleepModeFuture];
+  v3 = [sleepModeFuture flatMap:&__block_literal_global_361];
 
   return v3;
 }
@@ -1634,17 +1634,17 @@ id __35__HKSPSleepStore_sleepModeOnFuture__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)sleepModeWithCompletion:(id)a3
+- (void)sleepModeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self sleepModeFuture];
+  completionCopy = completion;
+  sleepModeFuture = [(HKSPSleepStore *)self sleepModeFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__HKSPSleepStore_sleepModeWithCompletion___block_invoke;
   v8[3] = &unk_279C75228;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [sleepModeFuture addCompletionBlock:v8];
 }
 
 void __42__HKSPSleepStore_sleepModeWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1658,17 +1658,17 @@ void __42__HKSPSleepStore_sleepModeWithCompletion___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)sleepModeOnWithCompletion:(id)a3
+- (void)sleepModeOnWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self sleepModeOnFuture];
+  completionCopy = completion;
+  sleepModeOnFuture = [(HKSPSleepStore *)self sleepModeOnFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__HKSPSleepStore_sleepModeOnWithCompletion___block_invoke;
   v8[3] = &unk_279C75228;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [sleepModeOnFuture addCompletionBlock:v8];
 }
 
 void __44__HKSPSleepStore_sleepModeOnWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1682,7 +1682,7 @@ void __44__HKSPSleepStore_sleepModeOnWithCompletion___block_invoke(uint64_t a1, 
   }
 }
 
-- (int64_t)sleepModeWithError:(id *)a3
+- (int64_t)sleepModeWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1762,17 +1762,17 @@ void __55__HKSPSleepStore__getSleepWidgetStateFromServerDoSync___block_invoke_36
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepWidgetStateWithCompletion:(id)a3
+- (void)sleepWidgetStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self sleepWidgetStateFuture];
+  completionCopy = completion;
+  sleepWidgetStateFuture = [(HKSPSleepStore *)self sleepWidgetStateFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__HKSPSleepStore_sleepWidgetStateWithCompletion___block_invoke;
   v8[3] = &unk_279C75228;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [sleepWidgetStateFuture addCompletionBlock:v8];
 }
 
 void __49__HKSPSleepStore_sleepWidgetStateWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1786,7 +1786,7 @@ void __49__HKSPSleepStore_sleepWidgetStateWithCompletion___block_invoke(uint64_t
   }
 }
 
-- (int64_t)sleepWidgetStateWithError:(id *)a3
+- (int64_t)sleepWidgetStateWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1811,10 +1811,10 @@ void __44__HKSPSleepStore_sleepWidgetStateWithError___block_invoke(uint64_t a1, 
   *(*(*(a1 + 32) + 8) + 24) = [v3 integerValue];
 }
 
-- (BOOL)shouldReloadWidgetOfKind:(id)a3
+- (BOOL)shouldReloadWidgetOfKind:(id)kind
 {
   v17 = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:@"com.apple.health.SleepWidget"])
+  if ([kind isEqualToString:@"com.apple.health.SleepWidget"])
   {
     v12 = 0;
     v4 = [(HKSPSleepStore *)self sleepWidgetStateWithError:&v12];
@@ -1906,17 +1906,17 @@ void __57__HKSPSleepStore__getSleepScheduleStateFromServerDoSync___block_invoke_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentSleepScheduleStateWithCompletion:(id)a3
+- (void)currentSleepScheduleStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self currentSleepScheduleStateFuture];
+  completionCopy = completion;
+  currentSleepScheduleStateFuture = [(HKSPSleepStore *)self currentSleepScheduleStateFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HKSPSleepStore_currentSleepScheduleStateWithCompletion___block_invoke;
   v8[3] = &unk_279C75228;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [currentSleepScheduleStateFuture addCompletionBlock:v8];
 }
 
 void __58__HKSPSleepStore_currentSleepScheduleStateWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1927,7 +1927,7 @@ void __58__HKSPSleepStore_currentSleepScheduleStateWithCompletion___block_invoke
   (*(v4 + 16))(v4, [v6 integerValue], a2 != 0, v5);
 }
 
-- (unint64_t)currentSleepScheduleStateWithError:(id *)a3
+- (unint64_t)currentSleepScheduleStateWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -1952,26 +1952,26 @@ void __53__HKSPSleepStore_currentSleepScheduleStateWithError___block_invoke(uint
   *(*(*(a1 + 32) + 8) + 24) = [v3 integerValue];
 }
 
-- (id)_saveCurrentSleepScheduleOnServer:(id)a3 options:(unint64_t)a4
+- (id)_saveCurrentSleepScheduleOnServer:(id)server options:(unint64_t)options
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 hksp_supportsSleepDaemon];
+  serverCopy = server;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v7)
+  if (hksp_supportsSleepDaemon)
   {
     v8 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
-      v32 = v5;
+      v32 = serverCopy;
       _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ updating current sleep schedule on server: %{public}@", buf, 0x16u);
     }
 
-    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepSchedule:v5];
+    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepSchedule:serverCopy];
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -1985,7 +1985,7 @@ void __53__HKSPSleepStore_currentSleepScheduleStateWithError___block_invoke(uint
     v24[1] = 3221225472;
     v24[2] = __60__HKSPSleepStore__saveCurrentSleepScheduleOnServer_options___block_invoke_2;
     v24[3] = &unk_279C74F38;
-    v25 = v5;
+    v25 = serverCopy;
     v26 = v11;
     v27 = v9;
     v21[0] = MEMORY[0x277D85DD0];
@@ -2004,8 +2004,8 @@ void __53__HKSPSleepStore_currentSleepScheduleStateWithError___block_invoke(uint
   else
   {
     v17 = MEMORY[0x277D2C900];
-    v18 = [objc_opt_class() _sleepDisabledError];
-    v16 = [v17 futureWithError:v18];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v16 = [v17 futureWithError:_sleepDisabledError];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2072,31 +2072,31 @@ void __60__HKSPSleepStore__saveCurrentSleepScheduleOnServer_options___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)saveCurrentSleepSchedule:(id)a3 options:(unint64_t)a4 context:(id)a5
+- (id)saveCurrentSleepSchedule:(id)schedule options:(unint64_t)options context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v12 = [v11 hksp_supportsHealthData];
+  scheduleCopy = schedule;
+  contextCopy = context;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsHealthData = [mEMORY[0x277CCDD30] hksp_supportsHealthData];
 
-  if (a4 & 4) != 0 || (v12)
+  if (options & 4) != 0 || (hksp_supportsHealthData)
   {
-    if ((a4 & 4) == 0 && !self->_sleepHealthStore)
+    if ((options & 4) == 0 && !self->_sleepHealthStore)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"HKSPSleepStore.m" lineNumber:791 description:@"Attempted to save a sleep schedule without a sleep health store"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPSleepStore.m" lineNumber:791 description:@"Attempted to save a sleep schedule without a sleep health store"];
     }
 
-    v16 = [(HKSPSleepStore *)self _prepareObjectForSave:v9 options:a4];
-    v17 = [(HKSPSleepStore *)self _saveCurrentSleepScheduleOnServer:v16 options:a4];
+    v16 = [(HKSPSleepStore *)self _prepareObjectForSave:scheduleCopy options:options];
+    v17 = [(HKSPSleepStore *)self _saveCurrentSleepScheduleOnServer:v16 options:options];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __59__HKSPSleepStore_saveCurrentSleepSchedule_options_context___block_invoke;
     v21[3] = &unk_279C752C8;
     v21[4] = self;
     v22 = v16;
-    v24 = a4;
-    v23 = v10;
+    optionsCopy = options;
+    v23 = contextCopy;
     v18 = v16;
     v15 = [v17 flatMap:v21];
   }
@@ -2125,20 +2125,20 @@ id __59__HKSPSleepStore_saveCurrentSleepSchedule_options_context___block_invoke(
   return v3;
 }
 
-- (id)_sendScheduleChangedAnalyticsWithContext:(id)a3
+- (id)_sendScheduleChangedAnalyticsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self currentSleepSettingsFuture];
+  contextCopy = context;
+  currentSleepSettingsFuture = [(HKSPSleepStore *)self currentSleepSettingsFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HKSPSleepStore__sendScheduleChangedAnalyticsWithContext___block_invoke;
   v9[3] = &unk_279C752F0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v9];
+  v10 = contextCopy;
+  v6 = contextCopy;
+  v7 = [currentSleepSettingsFuture addCompletionBlock:v9];
 
-  return v5;
+  return currentSleepSettingsFuture;
 }
 
 void __59__HKSPSleepStore__sendScheduleChangedAnalyticsWithContext___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2187,31 +2187,31 @@ void __59__HKSPSleepStore__sendScheduleChangedAnalyticsWithContext___block_invok
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCurrentSleepSchedule:(id)a3 options:(unint64_t)a4 context:(id)a5 completion:(id)a6
+- (void)saveCurrentSleepSchedule:(id)schedule options:(unint64_t)options context:(id)context completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(HKSPSleepStore *)self saveCurrentSleepSchedule:a3 options:a4 context:a5];
+  completionCopy = completion;
+  v11 = [(HKSPSleepStore *)self saveCurrentSleepSchedule:schedule options:options context:context];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__HKSPSleepStore_saveCurrentSleepSchedule_options_context_completion___block_invoke;
   v14[3] = &unk_279C75318;
-  v15 = v10;
-  v12 = v10;
+  v15 = completionCopy;
+  v12 = completionCopy;
   v13 = [v11 addCompletionBlock:v14];
 }
 
-- (id)_writeHistoricalSchedule:(id)a3 options:(unint64_t)a4
+- (id)_writeHistoricalSchedule:(id)schedule options:(unint64_t)options
 {
-  v6 = a3;
+  scheduleCopy = schedule;
   if (self->_sleepHealthStore)
   {
     v7 = (*(self->_currentDateProvider + 2))();
-    v8 = [objc_opt_class() _updatedHistoricalSleepSchedulesFromSleepSchedule:v6 options:a4 date:v7];
-    v9 = [objc_opt_class() _updatedHistoricalSleepGoalForSleepSchedule:v6 options:a4 date:v7];
-    v10 = objc_alloc_init(MEMORY[0x277D2C900]);
+    v8 = [objc_opt_class() _updatedHistoricalSleepSchedulesFromSleepSchedule:scheduleCopy options:options date:v7];
+    v9 = [objc_opt_class() _updatedHistoricalSleepGoalForSleepSchedule:scheduleCopy options:options date:v7];
+    futureWithNoResult = objc_alloc_init(MEMORY[0x277D2C900]);
     sleepHealthStore = self->_sleepHealthStore;
-    v12 = [v10 hksp_BOOLErrorCompletionHandlerAdapter];
-    [(HKSleepHealthStore *)sleepHealthStore updateCurrentSleepSchedules:v8 sleepDurationGoal:v9 completion:v12];
+    hksp_BOOLErrorCompletionHandlerAdapter = [futureWithNoResult hksp_BOOLErrorCompletionHandlerAdapter];
+    [(HKSleepHealthStore *)sleepHealthStore updateCurrentSleepSchedules:v8 sleepDurationGoal:v9 completion:hksp_BOOLErrorCompletionHandlerAdapter];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -2222,15 +2222,15 @@ void __59__HKSPSleepStore__sendScheduleChangedAnalyticsWithContext___block_invok
     v19 = v9;
     v13 = v9;
     v14 = v8;
-    v15 = [v10 addCompletionBlock:v17];
+    v15 = [futureWithNoResult addCompletionBlock:v17];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v10;
+  return futureWithNoResult;
 }
 
 void __51__HKSPSleepStore__writeHistoricalSchedule_options___block_invoke(void *a1, uint64_t a2, void *a3)
@@ -2269,30 +2269,30 @@ void __51__HKSPSleepStore__writeHistoricalSchedule_options___block_invoke(void *
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_updatedHistoricalSleepSchedulesFromSleepSchedule:(id)a3 options:(unint64_t)a4 date:(id)a5
++ (id)_updatedHistoricalSleepSchedulesFromSleepSchedule:(id)schedule options:(unint64_t)options date:(id)date
 {
-  v6 = a4;
+  optionsCopy = options;
   v39[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (!v7 || (v6 & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 hasChangeAffectingScheduling])
+  scheduleCopy = schedule;
+  dateCopy = date;
+  if (!scheduleCopy || (optionsCopy & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [scheduleCopy hasChangeAffectingScheduling])
   {
-    v9 = [v7 occurrences];
-    v10 = [v9 na_filter:&__block_literal_global_382];
+    occurrences = [scheduleCopy occurrences];
+    v10 = [occurrences na_filter:&__block_literal_global_382];
 
-    if ([v10 count] && objc_msgSend(v7, "isEnabled"))
+    if ([v10 count] && objc_msgSend(scheduleCopy, "isEnabled"))
     {
       v34 = MEMORY[0x277D85DD0];
       v35 = 3221225472;
       v36 = __81__HKSPSleepStore__updatedHistoricalSleepSchedulesFromSleepSchedule_options_date___block_invoke_2;
       v37 = &unk_279C75368;
-      v11 = v8;
+      v11 = dateCopy;
       v38 = v11;
       v12 = [v10 na_map:&v34];
-      if ([v7 weekdaysWithoutOccurrences])
+      if ([scheduleCopy weekdaysWithoutOccurrences])
       {
         v13 = MEMORY[0x277CCD9E8];
-        v14 = HKSleepScheduleWeekdaysFromHKSPWeekdays([v7 weekdaysWithoutOccurrences]);
+        v14 = HKSleepScheduleWeekdaysFromHKSPWeekdays([scheduleCopy weekdaysWithoutOccurrences]);
         v15 = [v13 sleepScheduleWithDate:v11 weekdays:v14 wakeTimeComponents:0 bedTimeComponents:0 overrideDayIndex:0 device:0 metadata:{0, v34, v35, v36, v37}];
         v16 = [v12 arrayByAddingObject:v15];
 
@@ -2302,15 +2302,15 @@ void __51__HKSPSleepStore__writeHistoricalSchedule_options___block_invoke(void *
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = v7;
+        v17 = scheduleCopy;
         if ([v17 hasOverrideOccurrenceRemoval])
         {
-          v18 = [v17 lastOverrideOccurrenceWakeUpComponents];
-          v19 = v18;
-          if (v18)
+          lastOverrideOccurrenceWakeUpComponents = [v17 lastOverrideOccurrenceWakeUpComponents];
+          v19 = lastOverrideOccurrenceWakeUpComponents;
+          if (lastOverrideOccurrenceWakeUpComponents)
           {
             v20 = MEMORY[0x277CCD9E8];
-            v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v18, "hk_dayIndex")}];
+            v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(lastOverrideOccurrenceWakeUpComponents, "hk_dayIndex")}];
             v22 = [v20 sleepScheduleWithDate:v11 weekdays:0 wakeTimeComponents:0 bedTimeComponents:0 overrideDayIndex:v21 device:0 metadata:0];
 
             v23 = [v12 arrayByAddingObject:v22];
@@ -2320,32 +2320,32 @@ void __51__HKSPSleepStore__writeHistoricalSchedule_options___block_invoke(void *
         }
       }
 
-      v24 = v38;
+      wakeUpComponents = v38;
     }
 
     else
     {
-      v25 = [MEMORY[0x277CCD9E8] sleepScheduleWithDate:v8 weekdays:*MEMORY[0x277CCCDD0] wakeTimeComponents:0 bedTimeComponents:0 overrideDayIndex:0 device:0 metadata:0];
+      v25 = [MEMORY[0x277CCD9E8] sleepScheduleWithDate:dateCopy weekdays:*MEMORY[0x277CCCDD0] wakeTimeComponents:0 bedTimeComponents:0 overrideDayIndex:0 device:0 metadata:0];
       v39[0] = v25;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
 
-      v26 = [v7 overrideOccurrence];
+      overrideOccurrence = [scheduleCopy overrideOccurrence];
 
-      if (!v26)
+      if (!overrideOccurrence)
       {
 LABEL_20:
 
         goto LABEL_22;
       }
 
-      v27 = [v7 overrideOccurrence];
-      v24 = [v27 wakeUpComponents];
+      overrideOccurrence2 = [scheduleCopy overrideOccurrence];
+      wakeUpComponents = [overrideOccurrence2 wakeUpComponents];
 
-      if (v24)
+      if (wakeUpComponents)
       {
         v28 = MEMORY[0x277CCD9E8];
-        v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v24, "hk_dayIndex")}];
-        v30 = [v28 sleepScheduleWithDate:v8 weekdays:0 wakeTimeComponents:0 bedTimeComponents:0 overrideDayIndex:v29 device:0 metadata:0];
+        v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(wakeUpComponents, "hk_dayIndex")}];
+        v30 = [v28 sleepScheduleWithDate:dateCopy weekdays:0 wakeTimeComponents:0 bedTimeComponents:0 overrideDayIndex:v29 device:0 metadata:0];
 
         v31 = [v12 arrayByAddingObject:v30];
 
@@ -2389,30 +2389,30 @@ id __81__HKSPSleepStore__updatedHistoricalSleepSchedulesFromSleepSchedule_option
   return v12;
 }
 
-+ (id)_updatedHistoricalSleepGoalForSleepSchedule:(id)a3 options:(unint64_t)a4 date:(id)a5
++ (id)_updatedHistoricalSleepGoalForSleepSchedule:(id)schedule options:(unint64_t)options date:(id)date
 {
-  v6 = a4;
+  optionsCopy = options;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (!v8 || (v6 & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v8 hasChangeToSleepDurationGoal])
+  scheduleCopy = schedule;
+  dateCopy = date;
+  if (!scheduleCopy || (optionsCopy & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [scheduleCopy hasChangeToSleepDurationGoal])
   {
     v10 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543362;
-      v21 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ sleep duration goal changed", &v20, 0xCu);
     }
 
     v11 = MEMORY[0x277CCD800];
-    v12 = [MEMORY[0x277CCD830] sleepDurationGoalType];
+    sleepDurationGoalType = [MEMORY[0x277CCD830] sleepDurationGoalType];
     v13 = MEMORY[0x277CCD7E8];
     v14 = MEMORY[0x277CCABB0];
-    [v8 sleepDurationGoal];
+    [scheduleCopy sleepDurationGoal];
     v15 = [v14 numberWithDouble:?];
     v16 = [v13 hk_quantityWithSeconds:v15];
-    v17 = [v11 quantitySampleWithType:v12 quantity:v16 startDate:v9 endDate:v9];
+    v17 = [v11 quantitySampleWithType:sleepDurationGoalType quantity:v16 startDate:dateCopy endDate:dateCopy];
   }
 
   else
@@ -2425,26 +2425,26 @@ id __81__HKSPSleepStore__updatedHistoricalSleepSchedulesFromSleepSchedule_option
   return v17;
 }
 
-- (id)_saveCurrentSleepSettingsOnServer:(id)a3 options:(unint64_t)a4
+- (id)_saveCurrentSleepSettingsOnServer:(id)server options:(unint64_t)options
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 hksp_supportsSleepDaemon];
+  serverCopy = server;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v7)
+  if (hksp_supportsSleepDaemon)
   {
     v8 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
-      v32 = v5;
+      v32 = serverCopy;
       _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ updating current sleep settings on server: %{public}@", buf, 0x16u);
     }
 
-    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepSettings:v5];
+    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepSettings:serverCopy];
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -2458,7 +2458,7 @@ id __81__HKSPSleepStore__updatedHistoricalSleepSchedulesFromSleepSchedule_option
     v24[1] = 3221225472;
     v24[2] = __60__HKSPSleepStore__saveCurrentSleepSettingsOnServer_options___block_invoke_2;
     v24[3] = &unk_279C74F38;
-    v25 = v5;
+    v25 = serverCopy;
     v26 = v11;
     v27 = v9;
     v21[0] = MEMORY[0x277D85DD0];
@@ -2477,8 +2477,8 @@ id __81__HKSPSleepStore__updatedHistoricalSleepSchedulesFromSleepSchedule_option
   else
   {
     v17 = MEMORY[0x277D2C900];
-    v18 = [objc_opt_class() _sleepDisabledError];
-    v16 = [v17 futureWithError:v18];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v16 = [v17 futureWithError:_sleepDisabledError];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2545,71 +2545,71 @@ void __60__HKSPSleepStore__saveCurrentSleepSettingsOnServer_options___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)saveCurrentSleepSettings:(id)a3 options:(unint64_t)a4
+- (id)saveCurrentSleepSettings:(id)settings options:(unint64_t)options
 {
-  v6 = [(HKSPSleepStore *)self _prepareObjectForSave:a3 options:?];
-  v7 = [(HKSPSleepStore *)self _saveCurrentSleepSettingsOnServer:v6 options:a4];
+  v6 = [(HKSPSleepStore *)self _prepareObjectForSave:settings options:?];
+  v7 = [(HKSPSleepStore *)self _saveCurrentSleepSettingsOnServer:v6 options:options];
 
   return v7;
 }
 
-- (void)saveCurrentSleepSettings:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)saveCurrentSleepSettings:(id)settings options:(unint64_t)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(HKSPSleepStore *)self saveCurrentSleepSettings:a3 options:a4];
+  completionCopy = completion;
+  v9 = [(HKSPSleepStore *)self saveCurrentSleepSettings:settings options:options];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__HKSPSleepStore_saveCurrentSleepSettings_options_completion___block_invoke;
   v12[3] = &unk_279C75318;
-  v13 = v8;
-  v10 = v8;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [v9 addCompletionBlock:v12];
 }
 
-- (id)_prepareObjectForSave:(id)a3 options:(unint64_t)a4
+- (id)_prepareObjectForSave:(id)save options:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if ([v5 conformsToProtocol:&unk_287A88DD8])
+  optionsCopy = options;
+  saveCopy = save;
+  v6 = saveCopy;
+  if ([saveCopy conformsToProtocol:&unk_287A88DD8])
   {
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
-      v7 = [v5 copyWithZone:0];
+      v7 = [saveCopy copyWithZone:0];
     }
 
     else
     {
-      v7 = [v5 mutableCopy];
+      v7 = [saveCopy mutableCopy];
     }
 
     v6 = v7;
-    [v5 freeze];
+    [saveCopy freeze];
   }
 
   return v6;
 }
 
-- (id)_saveCurrentSleepEventRecordOnServer:(id)a3 options:(unint64_t)a4
+- (id)_saveCurrentSleepEventRecordOnServer:(id)server options:(unint64_t)options
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 hksp_supportsSleepDaemon];
+  serverCopy = server;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v7)
+  if (hksp_supportsSleepDaemon)
   {
     v8 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
-      v32 = v5;
+      v32 = serverCopy;
       _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ updating current sleep event record on server: %{public}@", buf, 0x16u);
     }
 
-    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepEventRecord:v5];
+    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepEventRecord:serverCopy];
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -2623,7 +2623,7 @@ void __60__HKSPSleepStore__saveCurrentSleepSettingsOnServer_options___block_invo
     v24[1] = 3221225472;
     v24[2] = __63__HKSPSleepStore__saveCurrentSleepEventRecordOnServer_options___block_invoke_2;
     v24[3] = &unk_279C74F38;
-    v25 = v5;
+    v25 = serverCopy;
     v26 = v11;
     v27 = v9;
     v21[0] = MEMORY[0x277D85DD0];
@@ -2642,8 +2642,8 @@ void __60__HKSPSleepStore__saveCurrentSleepSettingsOnServer_options___block_invo
   else
   {
     v17 = MEMORY[0x277D2C900];
-    v18 = [objc_opt_class() _sleepDisabledError];
-    v16 = [v17 futureWithError:v18];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v16 = [v17 futureWithError:_sleepDisabledError];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2710,42 +2710,42 @@ void __63__HKSPSleepStore__saveCurrentSleepEventRecordOnServer_options___block_i
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)saveCurrentSleepEventRecord:(id)a3 options:(unint64_t)a4
+- (id)saveCurrentSleepEventRecord:(id)record options:(unint64_t)options
 {
-  v6 = [(HKSPSleepStore *)self _prepareObjectForSave:a3 options:?];
-  v7 = [(HKSPSleepStore *)self _saveCurrentSleepEventRecordOnServer:v6 options:a4];
+  v6 = [(HKSPSleepStore *)self _prepareObjectForSave:record options:?];
+  v7 = [(HKSPSleepStore *)self _saveCurrentSleepEventRecordOnServer:v6 options:options];
 
   return v7;
 }
 
-- (void)saveCurrentSleepEventRecord:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)saveCurrentSleepEventRecord:(id)record options:(unint64_t)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(HKSPSleepStore *)self saveCurrentSleepEventRecord:a3 options:a4];
+  completionCopy = completion;
+  v9 = [(HKSPSleepStore *)self saveCurrentSleepEventRecord:record options:options];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__HKSPSleepStore_saveCurrentSleepEventRecord_options_completion___block_invoke;
   v12[3] = &unk_279C75318;
-  v13 = v8;
-  v10 = v8;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [v9 addCompletionBlock:v12];
 }
 
-- (id)_setSleepModeOnServer:(int64_t)a3 reason:(unint64_t)a4
+- (id)_setSleepModeOnServer:(int64_t)server reason:(unint64_t)reason
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v8)
+  if (hksp_supportsSleepDaemon)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = NSStringFromHKSPSleepMode(a3);
-      v11 = NSStringFromHKSPSleepModeChangeReason(a4);
+      v10 = NSStringFromHKSPSleepMode(server);
+      v11 = NSStringFromHKSPSleepModeChangeReason(reason);
       *buf = 138543874;
-      v34 = self;
+      selfCopy = self;
       v35 = 2114;
       v36 = v10;
       v37 = 2114;
@@ -2753,7 +2753,7 @@ void __63__HKSPSleepStore__saveCurrentSleepEventRecordOnServer_options___block_i
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ updating sleep mode on server: %{public}@ (%{public}@)", buf, 0x20u);
     }
 
-    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepMode:a3];
+    [(HKSPSleepStoreModelCache *)self->_sleepStoreCache updateCachedSleepMode:server];
     v12 = objc_alloc_init(MEMORY[0x277D2C900]);
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -2767,8 +2767,8 @@ void __63__HKSPSleepStore__saveCurrentSleepEventRecordOnServer_options___block_i
     v27[1] = 3221225472;
     v27[2] = __47__HKSPSleepStore__setSleepModeOnServer_reason___block_invoke_2;
     v27[3] = &unk_279C75390;
-    v30 = a3;
-    v31 = a4;
+    serverCopy = server;
+    reasonCopy = reason;
     v28 = v14;
     v29 = v12;
     v24[0] = MEMORY[0x277D85DD0];
@@ -2787,8 +2787,8 @@ void __63__HKSPSleepStore__saveCurrentSleepEventRecordOnServer_options___block_i
   else
   {
     v20 = MEMORY[0x277D2C900];
-    v21 = [objc_opt_class() _sleepDisabledError];
-    v19 = [v20 futureWithError:v21];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v19 = [v20 futureWithError:_sleepDisabledError];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -2856,19 +2856,19 @@ void __47__HKSPSleepStore__setSleepModeOnServer_reason___block_invoke_486(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSleepModeOn:(BOOL)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)setSleepModeOn:(BOOL)on reason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a3;
+  onCopy = on;
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (a4 <= 0xA && ((1 << a4) & 0x60C) != 0)
+  completionCopy = completion;
+  if (reason <= 0xA && ((1 << reason) & 0x60C) != 0)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = NSStringFromHKSPSleepModeChangeReason(a4);
+      v12 = NSStringFromHKSPSleepModeChangeReason(reason);
       *buf = 138543618;
       v20 = v10;
       v21 = 2114;
@@ -2876,12 +2876,12 @@ void __47__HKSPSleepStore__setSleepModeOnServer_reason___block_invoke_486(uint64
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] ignoring set sleep mode with reason: %{public}@", buf, 0x16u);
     }
 
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    if (v6)
+    if (onCopy)
     {
       v14 = 2;
     }
@@ -2891,12 +2891,12 @@ void __47__HKSPSleepStore__setSleepModeOnServer_reason___block_invoke_486(uint64
       v14 = 0;
     }
 
-    v15 = [(HKSPSleepStore *)self _setSleepModeOnServer:v14 reason:a4];
+    v15 = [(HKSPSleepStore *)self _setSleepModeOnServer:v14 reason:reason];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __51__HKSPSleepStore_setSleepModeOn_reason_completion___block_invoke;
     v17[3] = &unk_279C75318;
-    v18 = v8;
+    v18 = completionCopy;
     v16 = [v15 addCompletionBlock:v17];
   }
 
@@ -2917,16 +2917,16 @@ uint64_t __51__HKSPSleepStore_setSleepModeOn_reason_completion___block_invoke(ui
 - (id)_confirmAwakeOnServer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v4)
+  if (hksp_supportsSleepDaemon)
   {
     v5 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Confirming awake on server", buf, 0xCu);
     }
 
@@ -2946,7 +2946,7 @@ uint64_t __51__HKSPSleepStore_setSleepModeOn_reason_completion___block_invoke(ui
     v17 = v21;
     v9 = v20;
     v18 = v9;
-    v10 = v21;
+    _sleepDisabledError = v21;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v19 withErrorHandler:v16];
     v11 = v18;
     v12 = v9;
@@ -2955,8 +2955,8 @@ uint64_t __51__HKSPSleepStore_setSleepModeOn_reason_completion___block_invoke(ui
   else
   {
     v13 = MEMORY[0x277D2C900];
-    v10 = [objc_opt_class() _sleepDisabledError];
-    v12 = [v13 futureWithError:v10];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v12 = [v13 futureWithError:_sleepDisabledError];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3032,17 +3032,17 @@ void __39__HKSPSleepStore__confirmAwakeOnServer__block_invoke_488(uint64_t a1, v
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmAwakeWithCompletion:(id)a3
+- (void)confirmAwakeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self _confirmAwakeOnServer];
+  completionCopy = completion;
+  _confirmAwakeOnServer = [(HKSPSleepStore *)self _confirmAwakeOnServer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HKSPSleepStore_confirmAwakeWithCompletion___block_invoke;
   v8[3] = &unk_279C75318;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [_confirmAwakeOnServer addCompletionBlock:v8];
 }
 
 uint64_t __45__HKSPSleepStore_confirmAwakeWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3059,16 +3059,16 @@ uint64_t __45__HKSPSleepStore_confirmAwakeWithCompletion___block_invoke(uint64_t
 - (id)_dismissGoodMorningOnServer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v4)
+  if (hksp_supportsSleepDaemon)
   {
     v5 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Dismissing good morning on server", buf, 0xCu);
     }
 
@@ -3088,7 +3088,7 @@ uint64_t __45__HKSPSleepStore_confirmAwakeWithCompletion___block_invoke(uint64_t
     v17 = v21;
     v9 = v20;
     v18 = v9;
-    v10 = v21;
+    _sleepDisabledError = v21;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v19 withErrorHandler:v16];
     v11 = v18;
     v12 = v9;
@@ -3097,8 +3097,8 @@ uint64_t __45__HKSPSleepStore_confirmAwakeWithCompletion___block_invoke(uint64_t
   else
   {
     v13 = MEMORY[0x277D2C900];
-    v10 = [objc_opt_class() _sleepDisabledError];
-    v12 = [v13 futureWithError:v10];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v12 = [v13 futureWithError:_sleepDisabledError];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3174,17 +3174,17 @@ void __45__HKSPSleepStore__dismissGoodMorningOnServer__block_invoke_489(uint64_t
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissGoodMorningWithCompletion:(id)a3
+- (void)dismissGoodMorningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self _dismissGoodMorningOnServer];
+  completionCopy = completion;
+  _dismissGoodMorningOnServer = [(HKSPSleepStore *)self _dismissGoodMorningOnServer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HKSPSleepStore_dismissGoodMorningWithCompletion___block_invoke;
   v8[3] = &unk_279C75318;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [_dismissGoodMorningOnServer addCompletionBlock:v8];
 }
 
 uint64_t __51__HKSPSleepStore_dismissGoodMorningWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3201,16 +3201,16 @@ uint64_t __51__HKSPSleepStore_dismissGoodMorningWithCompletion___block_invoke(ui
 - (id)_dismissSleepLockOnServer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v4)
+  if (hksp_supportsSleepDaemon)
   {
     v5 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Dismissing sleep lock on server", buf, 0xCu);
     }
 
@@ -3230,7 +3230,7 @@ uint64_t __51__HKSPSleepStore_dismissGoodMorningWithCompletion___block_invoke(ui
     v17 = v21;
     v9 = v20;
     v18 = v9;
-    v10 = v21;
+    _sleepDisabledError = v21;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v19 withErrorHandler:v16];
     v11 = v18;
     v12 = v9;
@@ -3239,8 +3239,8 @@ uint64_t __51__HKSPSleepStore_dismissGoodMorningWithCompletion___block_invoke(ui
   else
   {
     v13 = MEMORY[0x277D2C900];
-    v10 = [objc_opt_class() _sleepDisabledError];
-    v12 = [v13 futureWithError:v10];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v12 = [v13 futureWithError:_sleepDisabledError];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3316,17 +3316,17 @@ void __43__HKSPSleepStore__dismissSleepLockOnServer__block_invoke_490(uint64_t a
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissSleepLockWithCompletion:(id)a3
+- (void)dismissSleepLockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self _dismissSleepLockOnServer];
+  completionCopy = completion;
+  _dismissSleepLockOnServer = [(HKSPSleepStore *)self _dismissSleepLockOnServer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__HKSPSleepStore_dismissSleepLockWithCompletion___block_invoke;
   v8[3] = &unk_279C75318;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [_dismissSleepLockOnServer addCompletionBlock:v8];
 }
 
 uint64_t __49__HKSPSleepStore_dismissSleepLockWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3340,16 +3340,16 @@ uint64_t __49__HKSPSleepStore_dismissSleepLockWithCompletion___block_invoke(uint
   return result;
 }
 
-- (void)sleepAlarmWasDismissedOnDate:(id)a3 source:(unint64_t)a4 completion:(id)a5
+- (void)sleepAlarmWasDismissedOnDate:(id)date source:(unint64_t)source completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(HKSPSleepStore *)self _sleepAlarmWasDismissedOnDateOnServer:a3 source:a4];
+  completionCopy = completion;
+  v9 = [(HKSPSleepStore *)self _sleepAlarmWasDismissedOnDateOnServer:date source:source];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__HKSPSleepStore_sleepAlarmWasDismissedOnDate_source_completion___block_invoke;
   v12[3] = &unk_279C75318;
-  v13 = v8;
-  v10 = v8;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [v9 addCompletionBlock:v12];
 }
 
@@ -3364,34 +3364,34 @@ uint64_t __65__HKSPSleepStore_sleepAlarmWasDismissedOnDate_source_completion___b
   return result;
 }
 
-- (id)_sleepAlarmWasDismissedOnDateOnServer:(id)a3 source:(unint64_t)a4
+- (id)_sleepAlarmWasDismissedOnDateOnServer:(id)server source:(unint64_t)source
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 hksp_supportsSleepDaemon];
+  serverCopy = server;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v8)
+  if (hksp_supportsSleepDaemon)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"Local";
-      if (a4 == 1)
+      if (source == 1)
       {
         v10 = @"NanoSync";
       }
 
-      if (a4 == 2)
+      if (source == 2)
       {
         v10 = @"CloudSync";
       }
 
       v11 = v10;
       *buf = 138543874;
-      v32 = self;
+      selfCopy = self;
       v33 = 2114;
-      v34 = v6;
+      v34 = serverCopy;
       v35 = 2114;
       v36 = v11;
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Sleep alarm was dismissed on date %{public}@ (%{public}@)", buf, 0x20u);
@@ -3404,8 +3404,8 @@ uint64_t __65__HKSPSleepStore_sleepAlarmWasDismissedOnDate_source_completion___b
     v26[1] = 3221225472;
     v26[2] = __63__HKSPSleepStore__sleepAlarmWasDismissedOnDateOnServer_source___block_invoke;
     v26[3] = &unk_279C753E0;
-    v27 = v6;
-    v30 = a4;
+    v27 = serverCopy;
+    sourceCopy = source;
     v28 = v12;
     v29 = v13;
     v23[0] = MEMORY[0x277D85DD0];
@@ -3424,8 +3424,8 @@ uint64_t __65__HKSPSleepStore_sleepAlarmWasDismissedOnDate_source_completion___b
   else
   {
     v19 = MEMORY[0x277D2C900];
-    v20 = [objc_opt_class() _sleepDisabledError];
-    v18 = [v19 futureWithError:v20];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v18 = [v19 futureWithError:_sleepDisabledError];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -3503,16 +3503,16 @@ void __63__HKSPSleepStore__sleepAlarmWasDismissedOnDateOnServer_source___block_i
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepAlarmWasSnoozedUntilDate:(id)a3 source:(unint64_t)a4 completion:(id)a5
+- (void)sleepAlarmWasSnoozedUntilDate:(id)date source:(unint64_t)source completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(HKSPSleepStore *)self _sleepAlarmWasSnoozedUntilDateOnServer:a3 source:a4];
+  completionCopy = completion;
+  v9 = [(HKSPSleepStore *)self _sleepAlarmWasSnoozedUntilDateOnServer:date source:source];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HKSPSleepStore_sleepAlarmWasSnoozedUntilDate_source_completion___block_invoke;
   v12[3] = &unk_279C75318;
-  v13 = v8;
-  v10 = v8;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [v9 addCompletionBlock:v12];
 }
 
@@ -3527,34 +3527,34 @@ uint64_t __66__HKSPSleepStore_sleepAlarmWasSnoozedUntilDate_source_completion___
   return result;
 }
 
-- (id)_sleepAlarmWasSnoozedUntilDateOnServer:(id)a3 source:(unint64_t)a4
+- (id)_sleepAlarmWasSnoozedUntilDateOnServer:(id)server source:(unint64_t)source
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 hksp_supportsSleepDaemon];
+  serverCopy = server;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v8)
+  if (hksp_supportsSleepDaemon)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"Local";
-      if (a4 == 1)
+      if (source == 1)
       {
         v10 = @"NanoSync";
       }
 
-      if (a4 == 2)
+      if (source == 2)
       {
         v10 = @"CloudSync";
       }
 
       v11 = v10;
       *buf = 138543874;
-      v32 = self;
+      selfCopy = self;
       v33 = 2114;
-      v34 = v6;
+      v34 = serverCopy;
       v35 = 2114;
       v36 = v11;
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Sleep alarm was snoozed until date %{public}@ (%{public}@)", buf, 0x20u);
@@ -3567,8 +3567,8 @@ uint64_t __66__HKSPSleepStore_sleepAlarmWasSnoozedUntilDate_source_completion___
     v26[1] = 3221225472;
     v26[2] = __64__HKSPSleepStore__sleepAlarmWasSnoozedUntilDateOnServer_source___block_invoke;
     v26[3] = &unk_279C753E0;
-    v27 = v6;
-    v30 = a4;
+    v27 = serverCopy;
+    sourceCopy = source;
     v28 = v12;
     v29 = v13;
     v23[0] = MEMORY[0x277D85DD0];
@@ -3587,8 +3587,8 @@ uint64_t __66__HKSPSleepStore_sleepAlarmWasSnoozedUntilDate_source_completion___
   else
   {
     v19 = MEMORY[0x277D2C900];
-    v20 = [objc_opt_class() _sleepDisabledError];
-    v18 = [v19 futureWithError:v20];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v18 = [v19 futureWithError:_sleepDisabledError];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -3666,16 +3666,16 @@ void __64__HKSPSleepStore__sleepAlarmWasSnoozedUntilDateOnServer_source___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepAlarmWasModifiedFromSource:(unint64_t)a3 completion:(id)a4
+- (void)sleepAlarmWasModifiedFromSource:(unint64_t)source completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HKSPSleepStore *)self _sleepAlarmWasModifiedOnServer:a3];
+  completionCopy = completion;
+  v7 = [(HKSPSleepStore *)self _sleepAlarmWasModifiedOnServer:source];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__HKSPSleepStore_sleepAlarmWasModifiedFromSource_completion___block_invoke;
   v10[3] = &unk_279C75318;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   v9 = [v7 addCompletionBlock:v10];
 }
 
@@ -3690,31 +3690,31 @@ uint64_t __61__HKSPSleepStore_sleepAlarmWasModifiedFromSource_completion___block
   return result;
 }
 
-- (id)_sleepAlarmWasModifiedOnServer:(unint64_t)a3
+- (id)_sleepAlarmWasModifiedOnServer:(unint64_t)server
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v6)
+  if (hksp_supportsSleepDaemon)
   {
     v7 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"Local";
-      if (a3 == 1)
+      if (server == 1)
       {
         v8 = @"NanoSync";
       }
 
-      if (a3 == 2)
+      if (server == 2)
       {
         v8 = @"CloudSync";
       }
 
       v9 = v8;
       *buf = 138543618;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
       v31 = v9;
       _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Sleep alarm was modified (%{public}@)", buf, 0x16u);
@@ -3727,7 +3727,7 @@ uint64_t __61__HKSPSleepStore_sleepAlarmWasModifiedFromSource_completion___block
     v24[1] = 3221225472;
     v24[2] = __49__HKSPSleepStore__sleepAlarmWasModifiedOnServer___block_invoke;
     v24[3] = &unk_279C75408;
-    v27 = a3;
+    serverCopy = server;
     v25 = v10;
     v26 = v11;
     v21[0] = MEMORY[0x277D85DD0];
@@ -3746,8 +3746,8 @@ uint64_t __61__HKSPSleepStore_sleepAlarmWasModifiedFromSource_completion___block
   else
   {
     v17 = MEMORY[0x277D2C900];
-    v18 = [objc_opt_class() _sleepDisabledError];
-    v16 = [v17 futureWithError:v18];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v16 = [v17 futureWithError:_sleepDisabledError];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3854,23 +3854,23 @@ void __75__HKSPSleepStore_setWakeUpAlarmEnabled_resolvedOccurrence_date_completi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_publishNotificationOnServerWithIdentifier:(id)a3 userInfo:(id)a4
+- (id)_publishNotificationOnServerWithIdentifier:(id)identifier userInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v9 = [v8 hksp_supportsSleepDaemon];
+  identifierCopy = identifier;
+  infoCopy = info;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v9)
+  if (hksp_supportsSleepDaemon)
   {
     v10 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
-      v32 = v6;
+      v32 = identifierCopy;
       _os_log_impl(&dword_269A84000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Publishing notification with identifier on server: %{public}@", buf, 0x16u);
     }
 
@@ -3881,8 +3881,8 @@ void __75__HKSPSleepStore_setWakeUpAlarmEnabled_resolvedOccurrence_date_completi
     v24[1] = 3221225472;
     v24[2] = __70__HKSPSleepStore__publishNotificationOnServerWithIdentifier_userInfo___block_invoke;
     v24[3] = &unk_279C75458;
-    v25 = v6;
-    v26 = v7;
+    v25 = identifierCopy;
+    v26 = infoCopy;
     v27 = v11;
     v28 = v12;
     v21[0] = MEMORY[0x277D85DD0];
@@ -3892,7 +3892,7 @@ void __75__HKSPSleepStore_setWakeUpAlarmEnabled_resolvedOccurrence_date_completi
     v22 = v28;
     v14 = v27;
     v23 = v14;
-    v15 = v28;
+    _sleepDisabledError = v28;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v24 withErrorHandler:v21];
     v16 = v23;
     v17 = v14;
@@ -3901,8 +3901,8 @@ void __75__HKSPSleepStore_setWakeUpAlarmEnabled_resolvedOccurrence_date_completi
   else
   {
     v18 = MEMORY[0x277D2C900];
-    v15 = [objc_opt_class() _sleepDisabledError];
-    v17 = [v18 futureWithError:v15];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v17 = [v18 futureWithError:_sleepDisabledError];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3980,19 +3980,19 @@ void __70__HKSPSleepStore__publishNotificationOnServerWithIdentifier_userInfo___
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishNotificationWithIdentifier:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)publishNotificationWithIdentifier:(id)identifier userInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 copy];
-  v11 = [(HKSPSleepStore *)self _publishNotificationOnServerWithIdentifier:v9 userInfo:v10];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  v10 = [info copy];
+  v11 = [(HKSPSleepStore *)self _publishNotificationOnServerWithIdentifier:identifierCopy userInfo:v10];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__HKSPSleepStore_publishNotificationWithIdentifier_userInfo_completion___block_invoke;
   v14[3] = &unk_279C75318;
-  v15 = v8;
-  v12 = v8;
+  v15 = completionCopy;
+  v12 = completionCopy;
   v13 = [v11 addCompletionBlock:v14];
 }
 
@@ -4007,25 +4007,25 @@ uint64_t __72__HKSPSleepStore_publishNotificationWithIdentifier_userInfo_complet
   return result;
 }
 
-- (id)_setLockScreenOverrideStateOnServerWithState:(int64_t)a3 userInfo:(id)a4
+- (id)_setLockScreenOverrideStateOnServerWithState:(int64_t)state userInfo:(id)info
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 hksp_supportsSleepDaemon];
+  infoCopy = info;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v8)
+  if (hksp_supportsSleepDaemon)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = NSStringFromHKSPSleepLockScreenState(a3);
+      v10 = NSStringFromHKSPSleepLockScreenState(state);
       *buf = 138543874;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = v10;
       v34 = 2114;
-      v35 = v6;
+      v35 = infoCopy;
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Overriding lock screen state on server: %{public}@ (userInfo: %{public}@)", buf, 0x20u);
     }
 
@@ -4036,8 +4036,8 @@ uint64_t __72__HKSPSleepStore_publishNotificationWithIdentifier_userInfo_complet
     v25[1] = 3221225472;
     v25[2] = __72__HKSPSleepStore__setLockScreenOverrideStateOnServerWithState_userInfo___block_invoke;
     v25[3] = &unk_279C753E0;
-    v29 = a3;
-    v26 = v6;
+    stateCopy = state;
+    v26 = infoCopy;
     v27 = v11;
     v28 = v12;
     v22[0] = MEMORY[0x277D85DD0];
@@ -4056,8 +4056,8 @@ uint64_t __72__HKSPSleepStore_publishNotificationWithIdentifier_userInfo_complet
   else
   {
     v18 = MEMORY[0x277D2C900];
-    v19 = [objc_opt_class() _sleepDisabledError];
-    v17 = [v18 futureWithError:v19];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v17 = [v18 futureWithError:_sleepDisabledError];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -4135,17 +4135,17 @@ void __72__HKSPSleepStore__setLockScreenOverrideStateOnServerWithState_userInfo_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLockScreenOverrideState:(int64_t)a3 userInfo:(id)a4 completion:(id)a5
+- (void)setLockScreenOverrideState:(int64_t)state userInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = [a4 copy];
-  v10 = [(HKSPSleepStore *)self _setLockScreenOverrideStateOnServerWithState:a3 userInfo:v9];
+  completionCopy = completion;
+  v9 = [info copy];
+  v10 = [(HKSPSleepStore *)self _setLockScreenOverrideStateOnServerWithState:state userInfo:v9];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__HKSPSleepStore_setLockScreenOverrideState_userInfo_completion___block_invoke;
   v13[3] = &unk_279C75318;
-  v14 = v8;
-  v11 = v8;
+  v14 = completionCopy;
+  v11 = completionCopy;
   v12 = [v10 addCompletionBlock:v13];
 }
 
@@ -4160,21 +4160,21 @@ uint64_t __65__HKSPSleepStore_setLockScreenOverrideState_userInfo_completion___b
   return result;
 }
 
-- (void)createSleepFocusInState:(unint64_t)a3 completion:(id)a4
+- (void)createSleepFocusInState:(unint64_t)state completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 hksp_supportsSleepDaemon];
+  completionCopy = completion;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v8)
+  if (hksp_supportsSleepDaemon)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = NSStringFromHKSPSleepFocusConfigurationState(a3);
+      v10 = NSStringFromHKSPSleepFocusConfigurationState(state);
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v10;
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Creating sleep focus (%{public}@) mode on server", buf, 0x16u);
@@ -4186,22 +4186,22 @@ uint64_t __65__HKSPSleepStore_setLockScreenOverrideState_userInfo_completion___b
     v18[1] = 3221225472;
     v18[2] = __53__HKSPSleepStore_createSleepFocusInState_completion___block_invoke;
     v18[3] = &unk_279C75480;
-    v20 = a3;
-    v19 = v6;
+    stateCopy = state;
+    v19 = completionCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __53__HKSPSleepStore_createSleepFocusInState_completion___block_invoke_2;
     v15[3] = &unk_279C754A8;
     v16 = v11;
     v17 = v19;
-    v13 = v11;
+    _sleepDisabledError = v11;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v18 withErrorHandler:v15];
   }
 
   else
   {
-    v13 = [objc_opt_class() _sleepDisabledError];
-    (*(v6 + 2))(v6, 0, v13);
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    (*(completionCopy + 2))(completionCopy, 0, _sleepDisabledError);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -4226,20 +4226,20 @@ void __53__HKSPSleepStore_createSleepFocusInState_completion___block_invoke_2(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSleepFocusModeWithCompletion:(id)a3
+- (void)deleteSleepFocusModeWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 hksp_supportsSleepDaemon];
+  completionCopy = completion;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v6)
+  if (hksp_supportsSleepDaemon)
   {
     v7 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Deleting sleep focus mode on server", buf, 0xCu);
     }
 
@@ -4249,7 +4249,7 @@ void __53__HKSPSleepStore_createSleepFocusInState_completion___block_invoke_2(ui
     v16[1] = 3221225472;
     v16[2] = __53__HKSPSleepStore_deleteSleepFocusModeWithCompletion___block_invoke;
     v16[3] = &unk_279C754D0;
-    v17 = v4;
+    v17 = completionCopy;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__HKSPSleepStore_deleteSleepFocusModeWithCompletion___block_invoke_2;
@@ -4262,8 +4262,8 @@ void __53__HKSPSleepStore_createSleepFocusInState_completion___block_invoke_2(ui
 
   else
   {
-    v11 = [objc_opt_class() _sleepDisabledError];
-    (*(v4 + 2))(v4, 0, v11);
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    (*(completionCopy + 2))(completionCopy, 0, _sleepDisabledError);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -4288,21 +4288,21 @@ void __53__HKSPSleepStore_deleteSleepFocusModeWithCompletion___block_invoke_2(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureSleepFocusWithState:(unint64_t)a3 completion:(id)a4
+- (void)configureSleepFocusWithState:(unint64_t)state completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v8 = [v7 hksp_supportsSleepDaemon];
+  completionCopy = completion;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v8)
+  if (hksp_supportsSleepDaemon)
   {
     v9 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = NSStringFromHKSPSleepFocusConfigurationState(a3);
+      v10 = NSStringFromHKSPSleepFocusConfigurationState(state);
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v10;
       _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Configuring sleep focus (state: %{public}@) on server", buf, 0x16u);
@@ -4314,22 +4314,22 @@ void __53__HKSPSleepStore_deleteSleepFocusModeWithCompletion___block_invoke_2(ui
     v18[1] = 3221225472;
     v18[2] = __58__HKSPSleepStore_configureSleepFocusWithState_completion___block_invoke;
     v18[3] = &unk_279C75480;
-    v20 = a3;
-    v19 = v6;
+    stateCopy = state;
+    v19 = completionCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __58__HKSPSleepStore_configureSleepFocusWithState_completion___block_invoke_2;
     v15[3] = &unk_279C754A8;
     v16 = v11;
     v17 = v19;
-    v13 = v11;
+    _sleepDisabledError = v11;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v18 withErrorHandler:v15];
   }
 
   else
   {
-    v13 = [objc_opt_class() _sleepDisabledError];
-    (*(v6 + 2))(v6, 0, v13);
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    (*(completionCopy + 2))(completionCopy, 0, _sleepDisabledError);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -4354,20 +4354,20 @@ void __58__HKSPSleepStore_configureSleepFocusWithState_completion___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_setWidgetOverrideStateOnServerWithState:(int64_t)a3
+- (id)_setWidgetOverrideStateOnServerWithState:(int64_t)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v6)
+  if (hksp_supportsSleepDaemon)
   {
     v7 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = NSStringFromHKSPSleepWidgetState(a3);
+      v8 = NSStringFromHKSPSleepWidgetState(state);
       *buf = 138543618;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
       v30 = v8;
       _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Overriding sleep widget state on server: %{public}@", buf, 0x16u);
@@ -4380,7 +4380,7 @@ void __58__HKSPSleepStore_configureSleepFocusWithState_completion___block_invoke
     v23[1] = 3221225472;
     v23[2] = __59__HKSPSleepStore__setWidgetOverrideStateOnServerWithState___block_invoke;
     v23[3] = &unk_279C75408;
-    v26 = a3;
+    stateCopy = state;
     v24 = v9;
     v25 = v10;
     v20[0] = MEMORY[0x277D85DD0];
@@ -4399,8 +4399,8 @@ void __58__HKSPSleepStore_configureSleepFocusWithState_completion___block_invoke
   else
   {
     v16 = MEMORY[0x277D2C900];
-    v17 = [objc_opt_class() _sleepDisabledError];
-    v15 = [v16 futureWithError:v17];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v15 = [v16 futureWithError:_sleepDisabledError];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -4477,16 +4477,16 @@ void __59__HKSPSleepStore__setWidgetOverrideStateOnServerWithState___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWidgetOverrideState:(int64_t)a3 completion:(id)a4
+- (void)setWidgetOverrideState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HKSPSleepStore *)self _setWidgetOverrideStateOnServerWithState:a3];
+  completionCopy = completion;
+  v7 = [(HKSPSleepStore *)self _setWidgetOverrideStateOnServerWithState:state];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__HKSPSleepStore_setWidgetOverrideState_completion___block_invoke;
   v10[3] = &unk_279C75318;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   v9 = [v7 addCompletionBlock:v10];
 }
 
@@ -4504,16 +4504,16 @@ uint64_t __52__HKSPSleepStore_setWidgetOverrideState_completion___block_invoke(u
 - (id)_clearWidgetOverrideOnServer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v4)
+  if (hksp_supportsSleepDaemon)
   {
     v5 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Clearing sleep widget override on server", buf, 0xCu);
     }
 
@@ -4533,7 +4533,7 @@ uint64_t __52__HKSPSleepStore_setWidgetOverrideState_completion___block_invoke(u
     v17 = v21;
     v9 = v20;
     v18 = v9;
-    v10 = v21;
+    _sleepDisabledError = v21;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v19 withErrorHandler:v16];
     v11 = v18;
     v12 = v9;
@@ -4542,8 +4542,8 @@ uint64_t __52__HKSPSleepStore_setWidgetOverrideState_completion___block_invoke(u
   else
   {
     v13 = MEMORY[0x277D2C900];
-    v10 = [objc_opt_class() _sleepDisabledError];
-    v12 = [v13 futureWithError:v10];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v12 = [v13 futureWithError:_sleepDisabledError];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -4619,17 +4619,17 @@ void __46__HKSPSleepStore__clearWidgetOverrideOnServer__block_invoke_498(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearWidgetOverrideWithCompletion:(id)a3
+- (void)clearWidgetOverrideWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self _clearWidgetOverrideOnServer];
+  completionCopy = completion;
+  _clearWidgetOverrideOnServer = [(HKSPSleepStore *)self _clearWidgetOverrideOnServer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__HKSPSleepStore_clearWidgetOverrideWithCompletion___block_invoke;
   v8[3] = &unk_279C75318;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [_clearWidgetOverrideOnServer addCompletionBlock:v8];
 }
 
 uint64_t __52__HKSPSleepStore_clearWidgetOverrideWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4646,16 +4646,16 @@ uint64_t __52__HKSPSleepStore_clearWidgetOverrideWithCompletion___block_invoke(u
 - (id)_publishWakeUpResultsNotificationOnServer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 hksp_supportsSleepDaemon];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  hksp_supportsSleepDaemon = [mEMORY[0x277CCDD30] hksp_supportsSleepDaemon];
 
-  if (v4)
+  if (hksp_supportsSleepDaemon)
   {
     v5 = HKSPLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Publishing wake up results notification on server", buf, 0xCu);
     }
 
@@ -4675,7 +4675,7 @@ uint64_t __52__HKSPSleepStore_clearWidgetOverrideWithCompletion___block_invoke(u
     v17 = v21;
     v9 = v20;
     v18 = v9;
-    v10 = v21;
+    _sleepDisabledError = v21;
     [(HKSPXPCConnectionProvider *)connectionProvider performRemoteBlock:v19 withErrorHandler:v16];
     v11 = v18;
     v12 = v9;
@@ -4684,8 +4684,8 @@ uint64_t __52__HKSPSleepStore_clearWidgetOverrideWithCompletion___block_invoke(u
   else
   {
     v13 = MEMORY[0x277D2C900];
-    v10 = [objc_opt_class() _sleepDisabledError];
-    v12 = [v13 futureWithError:v10];
+    _sleepDisabledError = [objc_opt_class() _sleepDisabledError];
+    v12 = [v13 futureWithError:_sleepDisabledError];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -4753,17 +4753,17 @@ void __59__HKSPSleepStore__publishWakeUpResultsNotificationOnServer__block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishWakeUpResultsNotificationWithCompletion:(id)a3
+- (void)publishWakeUpResultsNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self _publishWakeUpResultsNotificationOnServer];
+  completionCopy = completion;
+  _publishWakeUpResultsNotificationOnServer = [(HKSPSleepStore *)self _publishWakeUpResultsNotificationOnServer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__HKSPSleepStore_publishWakeUpResultsNotificationWithCompletion___block_invoke;
   v8[3] = &unk_279C75520;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addCompletionBlock:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [_publishWakeUpResultsNotificationOnServer addCompletionBlock:v8];
 }
 
 void __65__HKSPSleepStore_publishWakeUpResultsNotificationWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4774,16 +4774,16 @@ void __65__HKSPSleepStore_publishWakeUpResultsNotificationWithCompletion___block
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)nextEventDueAfterDate:(id)a3 completion:(id)a4
+- (void)nextEventDueAfterDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HKSPSleepStore *)self nextEventDueAfterDateFuture:a3];
+  completionCopy = completion;
+  v7 = [(HKSPSleepStore *)self nextEventDueAfterDateFuture:date];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__HKSPSleepStore_nextEventDueAfterDate_completion___block_invoke;
   v10[3] = &unk_279C75548;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   v9 = [v7 addCompletionBlock:v10];
 }
 
@@ -4798,16 +4798,16 @@ void __51__HKSPSleepStore_nextEventDueAfterDate_completion___block_invoke(uint64
   }
 }
 
-- (void)nextEventWithIdentifier:(id)a3 dueAfterDate:(id)a4 completion:(id)a5
+- (void)nextEventWithIdentifier:(id)identifier dueAfterDate:(id)date completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(HKSPSleepStore *)self nextEventWithIdentifierFuture:a3 dueAfterDate:a4];
+  completionCopy = completion;
+  v9 = [(HKSPSleepStore *)self nextEventWithIdentifierFuture:identifier dueAfterDate:date];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HKSPSleepStore_nextEventWithIdentifier_dueAfterDate_completion___block_invoke;
   v12[3] = &unk_279C75570;
-  v13 = v8;
-  v10 = v8;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [v9 addCompletionBlock:v12];
 }
 
@@ -4822,17 +4822,17 @@ void __66__HKSPSleepStore_nextEventWithIdentifier_dueAfterDate_completion___bloc
   }
 }
 
-- (id)nextEventDueAfterDateFuture:(id)a3
+- (id)nextEventDueAfterDateFuture:(id)future
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self sleepScheduleModelFuture];
+  futureCopy = future;
+  sleepScheduleModelFuture = [(HKSPSleepStore *)self sleepScheduleModelFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__HKSPSleepStore_nextEventDueAfterDateFuture___block_invoke;
   v9[3] = &unk_279C75028;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v10 = futureCopy;
+  v6 = futureCopy;
+  v7 = [sleepScheduleModelFuture flatMap:v9];
 
   return v7;
 }
@@ -4847,29 +4847,29 @@ id __46__HKSPSleepStore_nextEventDueAfterDateFuture___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)nextEventDueAfterDate:(id)a3 error:(id *)a4
+- (id)nextEventDueAfterDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HKSPSleepStore *)self sleepScheduleModelWithError:a4];
-  v8 = [v7 nextEventDueAfterDate:v6];
+  dateCopy = date;
+  v7 = [(HKSPSleepStore *)self sleepScheduleModelWithError:error];
+  v8 = [v7 nextEventDueAfterDate:dateCopy];
 
   return v8;
 }
 
-- (id)nextEventWithIdentifierFuture:(id)a3 dueAfterDate:(id)a4
+- (id)nextEventWithIdentifierFuture:(id)future dueAfterDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKSPSleepStore *)self sleepScheduleModelFuture];
+  futureCopy = future;
+  dateCopy = date;
+  sleepScheduleModelFuture = [(HKSPSleepStore *)self sleepScheduleModelFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__HKSPSleepStore_nextEventWithIdentifierFuture_dueAfterDate___block_invoke;
   v13[3] = &unk_279C75598;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 flatMap:v13];
+  v14 = futureCopy;
+  v15 = dateCopy;
+  v9 = dateCopy;
+  v10 = futureCopy;
+  v11 = [sleepScheduleModelFuture flatMap:v13];
 
   return v11;
 }
@@ -4884,41 +4884,41 @@ id __61__HKSPSleepStore_nextEventWithIdentifierFuture_dueAfterDate___block_invok
   return v5;
 }
 
-- (id)nextEventWithIdentifier:(id)a3 dueAfterDate:(id)a4 error:(id *)a5
+- (id)nextEventWithIdentifier:(id)identifier dueAfterDate:(id)date error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HKSPSleepStore *)self sleepScheduleModelWithError:a5];
-  v11 = [v10 nextEventWithIdentifier:v9 dueAfterDate:v8];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v10 = [(HKSPSleepStore *)self sleepScheduleModelWithError:error];
+  v11 = [v10 nextEventWithIdentifier:identifierCopy dueAfterDate:dateCopy];
 
   return v11;
 }
 
-- (void)setSleepCoachingOnboardingCompletedVersion:(int64_t)a3 completion:(id)a4
+- (void)setSleepCoachingOnboardingCompletedVersion:(int64_t)version completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:version];
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting sleep coaching onboarding version to %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
+  currentSleepEventRecordFuture = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__HKSPSleepStore_setSleepCoachingOnboardingCompletedVersion_completion___block_invoke;
   v13[3] = &unk_279C755C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = a3;
-  v10 = v6;
-  v11 = [v9 addCompletionBlock:v13];
+  v14 = completionCopy;
+  versionCopy = version;
+  v10 = completionCopy;
+  v11 = [currentSleepEventRecordFuture addCompletionBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -4965,31 +4965,31 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSleepTrackingOnboardingCompletedVersion:(int64_t)a3 completion:(id)a4
+- (void)setSleepTrackingOnboardingCompletedVersion:(int64_t)version completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:version];
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting sleep tracking onboarding version to %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
+  currentSleepEventRecordFuture = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__HKSPSleepStore_setSleepTrackingOnboardingCompletedVersion_completion___block_invoke;
   v13[3] = &unk_279C755C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = a3;
-  v10 = v6;
-  v11 = [v9 addCompletionBlock:v13];
+  v14 = completionCopy;
+  versionCopy = version;
+  v10 = completionCopy;
+  v11 = [currentSleepEventRecordFuture addCompletionBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -5036,31 +5036,31 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSleepWindDownShortcutsOnboardingCompletedVersion:(int64_t)a3 completion:(id)a4
+- (void)setSleepWindDownShortcutsOnboardingCompletedVersion:(int64_t)version completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:version];
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting sleep wind down shortcuts onboarding version to %{public}@", buf, 0x16u);
   }
 
-  v9 = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
+  currentSleepEventRecordFuture = [(HKSPSleepStore *)self currentSleepEventRecordFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__HKSPSleepStore_setSleepWindDownShortcutsOnboardingCompletedVersion_completion___block_invoke;
   v13[3] = &unk_279C755C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = a3;
-  v10 = v6;
-  v11 = [v9 addCompletionBlock:v13];
+  v14 = completionCopy;
+  versionCopy = version;
+  v10 = completionCopy;
+  v11 = [currentSleepEventRecordFuture addCompletionBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -5107,17 +5107,17 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversForChangedSleepSchedule:(id)a3
+- (void)_notifyObserversForChangedSleepSchedule:(id)schedule
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scheduleCopy = schedule;
   v5 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = scheduleCopy;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notifying observers for changed sleep schedule: %{public}@", buf, 0x16u);
   }
 
@@ -5127,8 +5127,8 @@ LABEL_9:
   v9[2] = __58__HKSPSleepStore__notifyObserversForChangedSleepSchedule___block_invoke;
   v9[3] = &unk_279C75610;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = scheduleCopy;
+  v7 = scheduleCopy;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -5170,17 +5170,17 @@ void __58__HKSPSleepStore__notifyObserversForChangedSleepSchedule___block_invoke
   [*(a1 + 40) sleepStore:*(a1 + 48) sleepScheduleModelDidChange:v7];
 }
 
-- (void)_notifyObserversForChangedSleepSettings:(id)a3
+- (void)_notifyObserversForChangedSleepSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = settingsCopy;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notifying observers for changed sleep settings: %{public}@", buf, 0x16u);
   }
 
@@ -5190,8 +5190,8 @@ void __58__HKSPSleepStore__notifyObserversForChangedSleepSchedule___block_invoke
   v9[2] = __58__HKSPSleepStore__notifyObserversForChangedSleepSettings___block_invoke;
   v9[3] = &unk_279C75610;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = settingsCopy;
+  v7 = settingsCopy;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -5233,17 +5233,17 @@ void __58__HKSPSleepStore__notifyObserversForChangedSleepSettings___block_invoke
   [*(a1 + 40) sleepStore:*(a1 + 48) sleepScheduleModelDidChange:v7];
 }
 
-- (void)_notifyObserversForChangedSleepEventRecord:(id)a3
+- (void)_notifyObserversForChangedSleepEventRecord:(id)record
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = recordCopy;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notifying observers for changed sleep event record: %{public}@", buf, 0x16u);
   }
 
@@ -5253,8 +5253,8 @@ void __58__HKSPSleepStore__notifyObserversForChangedSleepSettings___block_invoke
   v9[2] = __61__HKSPSleepStore__notifyObserversForChangedSleepEventRecord___block_invoke;
   v9[3] = &unk_279C75610;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = recordCopy;
+  v7 = recordCopy;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -5295,16 +5295,16 @@ void __61__HKSPSleepStore__notifyObserversForChangedSleepEventRecord___block_inv
   [*(a1 + 40) sleepStore:*(a1 + 48) sleepScheduleModelDidChange:v6];
 }
 
-- (void)_notifyObserversForChangedSleepMode:(int64_t)a3 reason:(unint64_t)a4
+- (void)_notifyObserversForChangedSleepMode:(int64_t)mode reason:(unint64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromHKSPSleepMode(a3);
-    v9 = NSStringFromHKSPSleepModeChangeReason(a4);
+    v8 = NSStringFromHKSPSleepMode(mode);
+    v9 = NSStringFromHKSPSleepModeChangeReason(reason);
     *buf = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = v8;
     v17 = 2114;
@@ -5318,8 +5318,8 @@ void __61__HKSPSleepStore__notifyObserversForChangedSleepEventRecord___block_inv
   v12[2] = __61__HKSPSleepStore__notifyObserversForChangedSleepMode_reason___block_invoke;
   v12[3] = &unk_279C75638;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a4;
+  v12[5] = mode;
+  v12[6] = reason;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v12];
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -5338,17 +5338,17 @@ void __61__HKSPSleepStore__notifyObserversForChangedSleepMode_reason___block_inv
   }
 }
 
-- (void)_notifyObserversForSleepEvent:(id)a3
+- (void)_notifyObserversForSleepEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = eventCopy;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ notifying observers for sleep event: %{public}@", buf, 0x16u);
   }
 
@@ -5358,8 +5358,8 @@ void __61__HKSPSleepStore__notifyObserversForChangedSleepMode_reason___block_inv
   v9[2] = __48__HKSPSleepStore__notifyObserversForSleepEvent___block_invoke;
   v9[3] = &unk_279C75610;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = eventCopy;
+  v7 = eventCopy;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -5374,16 +5374,16 @@ void __48__HKSPSleepStore__notifyObserversForSleepEvent___block_invoke(uint64_t 
   }
 }
 
-- (void)_notifyObserversForChangedSleepScheduleState:(unint64_t)a3 reason:(unint64_t)a4
+- (void)_notifyObserversForChangedSleepScheduleState:(unint64_t)state reason:(unint64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromHKSPSleepScheduleState(a3);
-    v9 = NSStringFromHKSPSleepScheduleStateChangeReason(a4);
+    v8 = NSStringFromHKSPSleepScheduleState(state);
+    v9 = NSStringFromHKSPSleepScheduleStateChangeReason(reason);
     *buf = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = v8;
     v17 = 2114;
@@ -5397,8 +5397,8 @@ void __48__HKSPSleepStore__notifyObserversForSleepEvent___block_invoke(uint64_t 
   v12[2] = __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___block_invoke;
   v12[3] = &unk_279C75638;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a4;
+  v12[5] = state;
+  v12[6] = reason;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v12];
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -5417,19 +5417,19 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
   }
 }
 
-- (BOOL)_shouldNotifyObserversForClientIdentifier:(id)a3
+- (BOOL)_shouldNotifyObserversForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HKSPSleepStore *)self options];
+  identifierCopy = identifier;
+  options = [(HKSPSleepStore *)self options];
   LOBYTE(v6) = 1;
-  if (v4 && (v5 & 0x20) != 0)
+  if (identifierCopy && (options & 0x20) != 0)
   {
-    v7 = [(HKSPSleepStore *)self clientIdentifier];
+    clientIdentifier = [(HKSPSleepStore *)self clientIdentifier];
 
-    if (v7)
+    if (clientIdentifier)
     {
-      v8 = [(HKSPSleepStore *)self clientIdentifier];
-      v6 = [v4 isEqual:v8] ^ 1;
+      clientIdentifier2 = [(HKSPSleepStore *)self clientIdentifier];
+      v6 = [identifierCopy isEqual:clientIdentifier2] ^ 1;
     }
 
     else
@@ -5441,36 +5441,36 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
   return v6;
 }
 
-- (void)_updateAndNotifyForChangedSleepSchedule:(id)a3 clientIdentifier:(id)a4
+- (void)_updateAndNotifyForChangedSleepSchedule:(id)schedule clientIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = HKSPSleepScheduleUnwrap(v7);
+  identifierCopy = identifier;
+  scheduleCopy = schedule;
+  v8 = HKSPSleepScheduleUnwrap(scheduleCopy);
   v9 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v8;
     _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepScheduleChanged: %{public}@", &v15, 0x16u);
   }
 
-  v10 = [(HKSPSleepStore *)self syncAnchorContainer];
-  v11 = [v7 syncAnchor];
+  syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
+  syncAnchor = [scheduleCopy syncAnchor];
 
-  [v10 updateSleepScheduleSyncAnchor:v11];
-  v12 = [(HKSPSleepStore *)self clientIdentifier];
-  LODWORD(v10) = [v6 isEqual:v12];
+  [syncAnchorContainer updateSleepScheduleSyncAnchor:syncAnchor];
+  clientIdentifier = [(HKSPSleepStore *)self clientIdentifier];
+  LODWORD(syncAnchorContainer) = [identifierCopy isEqual:clientIdentifier];
 
-  if (!v10 || !v8)
+  if (!syncAnchorContainer || !v8)
   {
-    v13 = [(HKSPSleepStore *)self sleepStoreCache];
-    [v13 updateCachedSleepSchedule:v8];
+    sleepStoreCache = [(HKSPSleepStore *)self sleepStoreCache];
+    [sleepStoreCache updateCachedSleepSchedule:v8];
   }
 
-  if ([(HKSPSleepStore *)self _shouldNotifyObserversForClientIdentifier:v6])
+  if ([(HKSPSleepStore *)self _shouldNotifyObserversForClientIdentifier:identifierCopy])
   {
     [(HKSPSleepStore *)self _notifyObserversForChangedSleepSchedule:v8];
   }
@@ -5478,113 +5478,113 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAndNotifyForChangedSleepSettings:(id)a3 clientIdentifier:(id)a4
+- (void)_updateAndNotifyForChangedSleepSettings:(id)settings clientIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   v8 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = settingsCopy;
     _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepSettingsChanged: %{public}@", &v14, 0x16u);
   }
 
-  v9 = [(HKSPSleepStore *)self syncAnchorContainer];
-  v10 = [v6 syncAnchor];
-  [v9 updateSleepSettingsSyncAnchor:v10];
+  syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
+  syncAnchor = [settingsCopy syncAnchor];
+  [syncAnchorContainer updateSleepSettingsSyncAnchor:syncAnchor];
 
-  v11 = [(HKSPSleepStore *)self clientIdentifier];
-  LOBYTE(v10) = [v7 isEqual:v11];
+  clientIdentifier = [(HKSPSleepStore *)self clientIdentifier];
+  LOBYTE(syncAnchor) = [identifierCopy isEqual:clientIdentifier];
 
-  if ((v10 & 1) == 0)
+  if ((syncAnchor & 1) == 0)
   {
-    v12 = [(HKSPSleepStore *)self sleepStoreCache];
-    [v12 updateCachedSleepSettings:v6];
+    sleepStoreCache = [(HKSPSleepStore *)self sleepStoreCache];
+    [sleepStoreCache updateCachedSleepSettings:settingsCopy];
   }
 
-  if ([(HKSPSleepStore *)self _shouldNotifyObserversForClientIdentifier:v7])
+  if ([(HKSPSleepStore *)self _shouldNotifyObserversForClientIdentifier:identifierCopy])
   {
-    [(HKSPSleepStore *)self _notifyObserversForChangedSleepSettings:v6];
+    [(HKSPSleepStore *)self _notifyObserversForChangedSleepSettings:settingsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAndNotifyForChangedSleepEventRecord:(id)a3 clientIdentifier:(id)a4
+- (void)_updateAndNotifyForChangedSleepEventRecord:(id)record clientIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  identifierCopy = identifier;
   v8 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = recordCopy;
     _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepEventRecordChanged: %{public}@", &v14, 0x16u);
   }
 
-  v9 = [(HKSPSleepStore *)self syncAnchorContainer];
-  v10 = [v6 syncAnchor];
-  [v9 updateSleepEventRecordSyncAnchor:v10];
+  syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
+  syncAnchor = [recordCopy syncAnchor];
+  [syncAnchorContainer updateSleepEventRecordSyncAnchor:syncAnchor];
 
-  v11 = [(HKSPSleepStore *)self clientIdentifier];
-  LOBYTE(v10) = [v7 isEqual:v11];
+  clientIdentifier = [(HKSPSleepStore *)self clientIdentifier];
+  LOBYTE(syncAnchor) = [identifierCopy isEqual:clientIdentifier];
 
-  if ((v10 & 1) == 0)
+  if ((syncAnchor & 1) == 0)
   {
-    v12 = [(HKSPSleepStore *)self sleepStoreCache];
-    [v12 updateCachedSleepEventRecord:v6];
+    sleepStoreCache = [(HKSPSleepStore *)self sleepStoreCache];
+    [sleepStoreCache updateCachedSleepEventRecord:recordCopy];
   }
 
-  if ([(HKSPSleepStore *)self _shouldNotifyObserversForClientIdentifier:v7])
+  if ([(HKSPSleepStore *)self _shouldNotifyObserversForClientIdentifier:identifierCopy])
   {
-    [(HKSPSleepStore *)self _notifyObserversForChangedSleepEventRecord:v6];
+    [(HKSPSleepStore *)self _notifyObserversForChangedSleepEventRecord:recordCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAndNotifyForSleepEvent:(id)a3
+- (void)_updateAndNotifyForSleepEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = eventCopy;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepEventOccurred: %{public}@", &v9, 0x16u);
   }
 
-  v6 = [(HKSPSleepStore *)self syncAnchorContainer];
-  v7 = [v4 syncAnchor];
-  [v6 updateSleepEventSyncAnchor:v7];
+  syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
+  syncAnchor = [eventCopy syncAnchor];
+  [syncAnchorContainer updateSleepEventSyncAnchor:syncAnchor];
 
-  [(HKSPSleepStore *)self _notifyObserversForSleepEvent:v4];
+  [(HKSPSleepStore *)self _notifyObserversForSleepEvent:eventCopy];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAndNotifyForChangedSleepScheduleState:(id)a3
+- (void)_updateAndNotifyForChangedSleepScheduleState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 scheduleState];
-  v6 = [v4 changeReason];
+  stateCopy = state;
+  scheduleState = [stateCopy scheduleState];
+  changeReason = [stateCopy changeReason];
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromHKSPSleepScheduleState(v5);
-    v9 = NSStringFromHKSPSleepScheduleStateChangeReason(v6);
+    v8 = NSStringFromHKSPSleepScheduleState(scheduleState);
+    v9 = NSStringFromHKSPSleepScheduleStateChangeReason(changeReason);
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v8;
     v18 = 2114;
@@ -5592,30 +5592,30 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepScheduleStateChanged: %{public}@ (%{public}@)", &v14, 0x20u);
   }
 
-  v10 = [(HKSPSleepStore *)self syncAnchorContainer];
-  v11 = [v4 syncAnchor];
-  [v10 updateSleepScheduleStateSyncAnchor:v11];
+  syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
+  syncAnchor = [stateCopy syncAnchor];
+  [syncAnchorContainer updateSleepScheduleStateSyncAnchor:syncAnchor];
 
-  v12 = [(HKSPSleepStore *)self sleepStoreCache];
-  [v12 updateCachedSleepScheduleState:v5];
+  sleepStoreCache = [(HKSPSleepStore *)self sleepStoreCache];
+  [sleepStoreCache updateCachedSleepScheduleState:scheduleState];
 
-  [(HKSPSleepStore *)self _notifyObserversForChangedSleepScheduleState:v5 reason:v6];
+  [(HKSPSleepStore *)self _notifyObserversForChangedSleepScheduleState:scheduleState reason:changeReason];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAndNotifyForChangedSleepMode:(id)a3
+- (void)_updateAndNotifyForChangedSleepMode:(id)mode
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sleepMode];
-  v6 = [v4 changeReason];
+  modeCopy = mode;
+  sleepMode = [modeCopy sleepMode];
+  changeReason = [modeCopy changeReason];
   v7 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromHKSPSleepMode(v5);
-    v9 = NSStringFromHKSPSleepModeChangeReason(v6);
+    v8 = NSStringFromHKSPSleepMode(sleepMode);
+    v9 = NSStringFromHKSPSleepModeChangeReason(changeReason);
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v8;
     v18 = 2114;
@@ -5623,14 +5623,14 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
     _os_log_impl(&dword_269A84000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepModeChanged: %{public}@ (%{public}@)", &v14, 0x20u);
   }
 
-  v10 = [(HKSPSleepStore *)self syncAnchorContainer];
-  v11 = [v4 syncAnchor];
-  [v10 updateSleepModeSyncAnchor:v11];
+  syncAnchorContainer = [(HKSPSleepStore *)self syncAnchorContainer];
+  syncAnchor = [modeCopy syncAnchor];
+  [syncAnchorContainer updateSleepModeSyncAnchor:syncAnchor];
 
-  v12 = [(HKSPSleepStore *)self sleepStoreCache];
-  [v12 updateCachedSleepMode:v5];
+  sleepStoreCache = [(HKSPSleepStore *)self sleepStoreCache];
+  [sleepStoreCache updateCachedSleepMode:sleepMode];
 
-  [(HKSPSleepStore *)self _notifyObserversForChangedSleepMode:v5 reason:v6];
+  [(HKSPSleepStore *)self _notifyObserversForChangedSleepMode:sleepMode reason:changeReason];
   v13 = *MEMORY[0x277D85DE8];
 }
 
@@ -5641,7 +5641,7 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocing...", buf, 0xCu);
   }
 
@@ -5653,22 +5653,22 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepFocusModeBridge:(id)a3 didUpdateSleepFocusConfiguration:(id)a4
+- (void)sleepFocusModeBridge:(id)bridge didUpdateSleepFocusConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  configurationCopy = configuration;
   v6 = HKSPLogForCategory(1uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v5;
+    v16 = configurationCopy;
     _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ notifying observers for sleep focus mode update: %{public}@", buf, 0x16u);
   }
 
-  v7 = [(HKSPSleepStore *)self sleepStoreCache];
-  [v7 purgeCachedSleepMode];
+  sleepStoreCache = [(HKSPSleepStore *)self sleepStoreCache];
+  [sleepStoreCache purgeCachedSleepMode];
 
   observers = self->_observers;
   v11[0] = MEMORY[0x277D85DD0];
@@ -5676,8 +5676,8 @@ void __70__HKSPSleepStore__notifyObserversForChangedSleepScheduleState_reason___
   v11[2] = __72__HKSPSleepStore_sleepFocusModeBridge_didUpdateSleepFocusConfiguration___block_invoke;
   v11[3] = &unk_279C75610;
   v11[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = configurationCopy;
+  v9 = configurationCopy;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -5694,22 +5694,22 @@ void __72__HKSPSleepStore_sleepFocusModeBridge_didUpdateSleepFocusConfiguration_
 
 - (BOOL)hasSleepFocusMode
 {
-  v2 = [(HKSPSleepStore *)self sleepFocusConfiguration];
-  v3 = [v2 hasSleepFocusMode];
+  sleepFocusConfiguration = [(HKSPSleepStore *)self sleepFocusConfiguration];
+  hasSleepFocusMode = [sleepFocusConfiguration hasSleepFocusMode];
 
-  return v3;
+  return hasSleepFocusMode;
 }
 
 - (HKSPSleepFocusConfiguration)sleepFocusConfiguration
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPSleepStore *)self sleepFocusModeBridge];
+  sleepFocusModeBridge = [(HKSPSleepStore *)self sleepFocusModeBridge];
 
-  if (v3)
+  if (sleepFocusModeBridge)
   {
-    v4 = [(HKSPSleepStore *)self sleepFocusModeBridge];
+    sleepFocusModeBridge2 = [(HKSPSleepStore *)self sleepFocusModeBridge];
     v11 = 0;
-    v5 = [v4 sleepFocusConfiguration:&v11];
+    v5 = [sleepFocusModeBridge2 sleepFocusConfiguration:&v11];
     v6 = v11;
 
     v7 = HKSPLogForCategory(1uLL);
@@ -5719,7 +5719,7 @@ void __72__HKSPSleepStore_sleepFocusModeBridge_didUpdateSleepFocusConfiguration_
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2114;
         v15 = v6;
         _os_log_error_impl(&dword_269A84000, v8, OS_LOG_TYPE_ERROR, "%{public}@ error retrieving sleep focus config: %{public}@", buf, 0x16u);
@@ -5729,7 +5729,7 @@ void __72__HKSPSleepStore_sleepFocusModeBridge_didUpdateSleepFocusConfiguration_
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2114;
       v15 = v5;
       _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ sleepFocusConfiguration: %{public}@", buf, 0x16u);

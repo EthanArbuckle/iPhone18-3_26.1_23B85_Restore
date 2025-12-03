@@ -18,13 +18,13 @@
 
 + (id)buildString
 {
-  v2 = [MEMORY[0x29EDBA0B0] processInfo];
-  v3 = [v2 operatingSystemVersionString];
-  v4 = [v3 componentsSeparatedByString:@" "];
+  processInfo = [MEMORY[0x29EDBA0B0] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
+  v4 = [operatingSystemVersionString componentsSeparatedByString:@" "];
 
-  v5 = [v4 lastObject];
-  v6 = [v4 lastObject];
-  v7 = [v5 substringToIndex:{objc_msgSend(v6, "length") - 1}];
+  lastObject = [v4 lastObject];
+  lastObject2 = [v4 lastObject];
+  v7 = [lastObject substringToIndex:{objc_msgSend(lastObject2, "length") - 1}];
 
   return v7;
 }

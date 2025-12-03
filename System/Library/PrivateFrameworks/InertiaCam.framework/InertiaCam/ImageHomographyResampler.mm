@@ -1,11 +1,11 @@
 @interface ImageHomographyResampler
-- (CGImage)ResampleCGImage:(CGImage *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5;
+- (CGImage)ResampleCGImage:(CGImage *)image clipToRect:(CGRect)rect outputSize:(CGSize)size;
 - (ImageHomographyResampler)init;
-- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5;
-- (signed)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5 toPixelBuffer:(__CVBuffer *)a6;
-- (void)ClearOutOfBoundsPixels:(WorkingPixmapRecord *)a3;
-- (void)EraseCVPixelBuffer:(__CVBuffer *)a3;
-- (void)setHomographyMatrix:(double *)a3;
+- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size;
+- (signed)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size toPixelBuffer:(__CVBuffer *)buffer;
+- (void)ClearOutOfBoundsPixels:(WorkingPixmapRecord *)pixels;
+- (void)EraseCVPixelBuffer:(__CVBuffer *)buffer;
+- (void)setHomographyMatrix:(double *)matrix;
 @end
 
 @implementation ImageHomographyResampler
@@ -26,36 +26,36 @@
   return [(ImageHomographyResampler *)&v3 init];
 }
 
-- (void)setHomographyMatrix:(double *)a3
+- (void)setHomographyMatrix:(double *)matrix
 {
   for (i = 0; i != 9; ++i)
   {
-    self->homographyMatrix[i] = a3[i];
+    self->homographyMatrix[i] = matrix[i];
   }
 }
 
-- (CGImage)ResampleCGImage:(CGImage *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5
+- (CGImage)ResampleCGImage:(CGImage *)image clipToRect:(CGRect)rect outputSize:(CGSize)size
 {
-  CGImageGetBitmapInfo(a3);
-  CGImageGetBitsPerPixel(a3);
-  CGImageGetBytesPerRow(a3);
-  DataProvider = CGImageGetDataProvider(a3);
+  CGImageGetBitmapInfo(image);
+  CGImageGetBitsPerPixel(image);
+  CGImageGetBytesPerRow(image);
+  DataProvider = CGImageGetDataProvider(image);
   cf = CGDataProviderCopyData(DataProvider);
   CFDataGetBytePtr(cf);
-  CGImageGetWidth(a3);
-  CGImageGetHeight(a3);
+  CGImageGetWidth(image);
+  CGImageGetHeight(image);
   operator new();
 }
 
-- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5
+- (__CVBuffer)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  height = size.height;
+  width = size.width;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(pixels);
   pixelBufferOut = 0;
   v14 = CVPixelBufferCreate(0, width, height, PixelFormatType, 0, &pixelBufferOut);
   v15 = pixelBufferOut;
@@ -71,25 +71,25 @@
 
   if (!v16)
   {
-    [(ImageHomographyResampler *)self ResampleCVPixels:a3 clipToRect:x outputSize:y toPixelBuffer:v8, v7, width, height];
+    [(ImageHomographyResampler *)self ResampleCVPixels:pixels clipToRect:x outputSize:y toPixelBuffer:v8, v7, width, height];
     return pixelBufferOut;
   }
 
   return v15;
 }
 
-- (void)EraseCVPixelBuffer:(__CVBuffer *)a3
+- (void)EraseCVPixelBuffer:(__CVBuffer *)buffer
 {
-  CVPixelBufferLockBaseAddress(a3, 0);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   bzero(BaseAddress, BytesPerRow * Height);
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
 }
 
-- (void)ClearOutOfBoundsPixels:(WorkingPixmapRecord *)a3
+- (void)ClearOutOfBoundsPixels:(WorkingPixmapRecord *)pixels
 {
   v80 = *MEMORY[0x277D85DE8];
   v6 = self->homographyMatrix[7];
@@ -129,19 +129,19 @@
     v67.i32[i] = v20;
   }
 
-  var2 = a3->var2;
+  var2 = pixels->var2;
   if (var2 >= 1)
   {
     v22 = 0;
-    var3 = a3->var3;
-    var1 = a3->var1;
+    var3 = pixels->var3;
+    var1 = pixels->var1;
     *&v11 = var1;
     *&v16 = var2;
     v65 = *&v68[8];
     v66 = *&v67.i32[1];
     v25 = *&v69[8];
     v26 = &v70;
-    v27 = a3->var2 & 0x7FFFFFFF;
+    v27 = pixels->var2 & 0x7FFFFFFF;
     v28 = vdupq_n_s64((var1 & 0x7FFFFFFF) - 1);
     v29 = vdupq_lane_s32(v67, 0);
     v30 = vdupq_lane_s32(*v68, 0);
@@ -151,7 +151,7 @@
     v34 = vld1q_dup_f32(v26);
     v35 = vdupq_lane_s32(*&v11, 0);
     v36 = vdupq_lane_s32(*&v16, 0);
-    v37 = a3->var0 + 1;
+    v37 = pixels->var0 + 1;
     __asm { FMOV            V23.4S, #1.0 }
 
     v43 = vdupq_n_s64(0x3F747AE147AE147BuLL);
@@ -227,24 +227,24 @@
   }
 }
 
-- (signed)ResampleCVPixels:(__CVBuffer *)a3 clipToRect:(CGRect)a4 outputSize:(CGSize)a5 toPixelBuffer:(__CVBuffer *)a6
+- (signed)ResampleCVPixels:(__CVBuffer *)pixels clipToRect:(CGRect)rect outputSize:(CGSize)size toPixelBuffer:(__CVBuffer *)buffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v81 = *MEMORY[0x277D85DE8];
-  [(ImageHomographyResampler *)self EraseCVPixelBuffer:a6, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, a5.width, a5.height];
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(a6, 0);
-  CleanRect = CVImageBufferGetCleanRect(a3);
+  [(ImageHomographyResampler *)self EraseCVPixelBuffer:buffer, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, size.width, size.height];
+  CVPixelBufferLockBaseAddress(pixels, 0);
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  CleanRect = CVImageBufferGetCleanRect(pixels);
   v13 = CleanRect.origin.x;
   v14 = CleanRect.origin.y;
   v15 = CleanRect.size.width;
   v16 = CleanRect.size.height;
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  v18 = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(pixels);
+  v18 = CVPixelBufferGetHeight(pixels);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(pixels);
   v20 = BytesPerRow;
   v21 = self->homographyMatrix[7];
   v22 = self->homographyMatrix[8];
@@ -279,8 +279,8 @@
   v35 = y;
   v36 = width + x;
   v37 = height + y;
-  v38 = CVPixelBufferGetBytesPerRow(a6);
-  v39 = CVPixelBufferGetBaseAddress(a6);
+  v38 = CVPixelBufferGetBytesPerRow(buffer);
+  v39 = CVPixelBufferGetBaseAddress(buffer);
   for (i = 0; i != 9; ++i)
   {
     v41 = *(&v72 + i);
@@ -295,9 +295,9 @@
   *&v69 = v39;
   *(&v69 + 1) = v38;
   *&v70 = 4;
-  *(&v70 + 1) = CVPixelBufferGetWidth(a6);
-  v50 = a6;
-  *&v71 = CVPixelBufferGetWidth(a6);
+  *(&v70 + 1) = CVPixelBufferGetWidth(buffer);
+  bufferCopy = buffer;
+  *&v71 = CVPixelBufferGetWidth(buffer);
   *(&v71 + 1) = v35;
   group = dispatch_group_create();
   v42 = qos_class_self();
@@ -345,8 +345,8 @@
 
   while (v47);
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
-  CVPixelBufferUnlockBaseAddress(a3, 0);
-  CVPixelBufferUnlockBaseAddress(v50, 0);
+  CVPixelBufferUnlockBaseAddress(pixels, 0);
+  CVPixelBufferUnlockBaseAddress(bufferCopy, 0);
 
   return 0;
 }

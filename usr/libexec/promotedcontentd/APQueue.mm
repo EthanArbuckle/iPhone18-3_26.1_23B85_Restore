@@ -1,7 +1,7 @@
 @interface APQueue
 - (APQueue)init;
 - (id)dequeue;
-- (void)enqueue:(id)a3;
+- (void)enqueue:(id)enqueue;
 @end
 
 @implementation APQueue
@@ -25,37 +25,37 @@
   return v2;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
-  v5 = [(APQueue *)self lock];
-  [v5 lock];
+  enqueueCopy = enqueue;
+  lock = [(APQueue *)self lock];
+  [lock lock];
 
-  v6 = [(APQueue *)self container];
-  [v6 addObject:v4];
+  container = [(APQueue *)self container];
+  [container addObject:enqueueCopy];
 
-  v7 = [(APQueue *)self lock];
-  [v7 unlock];
+  lock2 = [(APQueue *)self lock];
+  [lock2 unlock];
 }
 
 - (id)dequeue
 {
-  v3 = [(APQueue *)self lock];
-  [v3 lock];
+  lock = [(APQueue *)self lock];
+  [lock lock];
 
-  v4 = [(APQueue *)self container];
-  v5 = [v4 firstObject];
+  container = [(APQueue *)self container];
+  firstObject = [container firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [(APQueue *)self container];
-    [v6 removeObjectAtIndex:0];
+    container2 = [(APQueue *)self container];
+    [container2 removeObjectAtIndex:0];
   }
 
-  v7 = [(APQueue *)self lock];
-  [v7 unlock];
+  lock2 = [(APQueue *)self lock];
+  [lock2 unlock];
 
-  return v5;
+  return firstObject;
 }
 
 @end

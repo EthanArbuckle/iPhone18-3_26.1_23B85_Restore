@@ -1,7 +1,7 @@
 @interface PBOfficeArtReaderState
-- (PBOfficeArtReaderState)initWithPresentationState:(id)a3;
+- (PBOfficeArtReaderState)initWithPresentationState:(id)state;
 - (PBPresentationReaderState)presentationState;
-- (id)drawableOnTgtSlideForShapeId:(int)a3;
+- (id)drawableOnTgtSlideForShapeId:(int)id;
 - (id)xmlDocumentState;
 - (id)xmlDrawingState;
 @end
@@ -15,14 +15,14 @@
   return WeakRetained;
 }
 
-- (PBOfficeArtReaderState)initWithPresentationState:(id)a3
+- (PBOfficeArtReaderState)initWithPresentationState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(OABReaderState *)self initWithClient:objc_opt_class()];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mPresentationState, v4);
+    objc_storeWeak(&v5->mPresentationState, stateCopy);
   }
 
   return v6;
@@ -34,14 +34,14 @@
   if (!mXmlDocumentState)
   {
     WeakRetained = objc_loadWeakRetained(&self->mPresentationState);
-    v5 = [WeakRetained tgtPresentation];
+    tgtPresentation = [WeakRetained tgtPresentation];
 
     v6 = objc_alloc_init(PXPresentationState);
     v7 = self->mXmlDocumentState;
     self->mXmlDocumentState = v6;
 
-    v8 = [(PXPresentationState *)self->mXmlDocumentState officeArtState];
-    [OABDrawable setUpXmlDrawingState:v8 withBinaryReaderState:self targetDocument:v5 colorMap:0];
+    officeArtState = [(PXPresentationState *)self->mXmlDocumentState officeArtState];
+    [OABDrawable setUpXmlDrawingState:officeArtState withBinaryReaderState:self targetDocument:tgtPresentation colorMap:0];
 
     mXmlDocumentState = self->mXmlDocumentState;
   }
@@ -51,37 +51,37 @@
 
 - (id)xmlDocumentState
 {
-  v2 = [(PBOfficeArtReaderState *)self xmlDrawingState];
-  v3 = [v2 client];
-  v4 = [v3 presentationState];
+  xmlDrawingState = [(PBOfficeArtReaderState *)self xmlDrawingState];
+  client = [xmlDrawingState client];
+  presentationState = [client presentationState];
 
-  return v4;
+  return presentationState;
 }
 
-- (id)drawableOnTgtSlideForShapeId:(int)a3
+- (id)drawableOnTgtSlideForShapeId:(int)id
 {
-  v4 = [(OABReaderState *)self drawableForShapeId:*&a3];
+  v4 = [(OABReaderState *)self drawableForShapeId:*&id];
   if (v4)
   {
-    v5 = [(PBOfficeArtReaderState *)self presentationState];
-    v6 = [v5 tgtSlide];
+    presentationState = [(PBOfficeArtReaderState *)self presentationState];
+    tgtSlide = [presentationState tgtSlide];
 
-    if (v6)
+    if (tgtSlide)
     {
       while (1)
       {
-        v7 = [v6 drawables];
-        v8 = [v7 containsObject:v4];
+        drawables = [tgtSlide drawables];
+        v8 = [drawables containsObject:v4];
 
         if (v8)
         {
           break;
         }
 
-        v9 = [v6 parentSlideBase];
+        parentSlideBase = [tgtSlide parentSlideBase];
 
-        v6 = v9;
-        if (!v9)
+        tgtSlide = parentSlideBase;
+        if (!parentSlideBase)
         {
           goto LABEL_5;
         }
@@ -91,7 +91,7 @@
     else
     {
 LABEL_5:
-      v6 = v4;
+      tgtSlide = v4;
       v4 = 0;
     }
   }

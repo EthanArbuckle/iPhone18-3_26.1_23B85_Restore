@@ -1,38 +1,38 @@
 @interface PHSearchFeedbackDiagnostics
 + (id)_diagnosticsFilename;
-+ (id)collectDiagnosticsForLibrary:(id)a3 resultJSON:(id)a4 onScreenAssets:(id)a5 toPath:(id)a6;
-+ (id)collectDiagnosticsForLibrary:(id)a3 toPath:(id)a4;
-+ (id)jsonForSearchQueryResult:(id)a3;
-+ (id)saveDiagnostics:(id)a3 toPath:(id)a4;
-+ (id)saveSearchUIDiagnosticDetails:(id)a3 photoLibrary:(id)a4 queue:(id)a5;
++ (id)collectDiagnosticsForLibrary:(id)library resultJSON:(id)n onScreenAssets:(id)assets toPath:(id)path;
++ (id)collectDiagnosticsForLibrary:(id)library toPath:(id)path;
++ (id)jsonForSearchQueryResult:(id)result;
++ (id)saveDiagnostics:(id)diagnostics toPath:(id)path;
++ (id)saveSearchUIDiagnosticDetails:(id)details photoLibrary:(id)library queue:(id)queue;
 + (void)assertIfNotCorrectConfiguration;
-+ (void)purgeSearchUIDiagnosticDetailsForPhotoLibrary:(id)a3 queue:(id)a4;
-- (BOOL)_writeToPath:(id)a3;
++ (void)purgeSearchUIDiagnosticDetailsForPhotoLibrary:(id)library queue:(id)queue;
+- (BOOL)_writeToPath:(id)path;
 - (PHSearchFeedbackDiagnostics)init;
-- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)a3;
-- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)a3 resultJSON:(id)a4 onScreenAssets:(id)a5;
-- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)a3 resultJSON:(id)a4 onScreenAssets:(id)a5 startTime:(double)a6;
-- (id)_assetThumbnailPathsForAssets:(id)a3 photoLibrary:(id)a4;
+- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)library;
+- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)library resultJSON:(id)n onScreenAssets:(id)assets;
+- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)library resultJSON:(id)n onScreenAssets:(id)assets startTime:(double)time;
+- (id)_assetThumbnailPathsForAssets:(id)assets photoLibrary:(id)library;
 - (id)_deviceInfoJSON;
-- (id)_fetchAssets:(id)a3 photoLibrary:(id)a4;
-- (id)_indexSummaryJSONForPhotoLibrary:(id)a3;
-- (id)_indexingContextForPhotoLibrary:(id)a3;
+- (id)_fetchAssets:(id)assets photoLibrary:(id)library;
+- (id)_indexSummaryJSONForPhotoLibrary:(id)library;
+- (id)_indexingContextForPhotoLibrary:(id)library;
 - (id)_jsonDateFormatter;
-- (id)_resultAttributesJSONForAssets:(id)a3 photoLibrary:(id)a4;
-- (id)_spotlightClientStateStatusForPhotoLibrary:(id)a3;
-- (void)_collectPhotosAppOnScreenSearchDetailsWithHandler:(id)a3;
-- (void)_writeJSONObject:(id)a3 toPath:(id)a4;
+- (id)_resultAttributesJSONForAssets:(id)assets photoLibrary:(id)library;
+- (id)_spotlightClientStateStatusForPhotoLibrary:(id)library;
+- (void)_collectPhotosAppOnScreenSearchDetailsWithHandler:(id)handler;
+- (void)_writeJSONObject:(id)object toPath:(id)path;
 @end
 
 @implementation PHSearchFeedbackDiagnostics
 
-- (void)_collectPhotosAppOnScreenSearchDetailsWithHandler:(id)a3
+- (void)_collectPhotosAppOnScreenSearchDetailsWithHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHSearchFeedbackDiagnostics.m" lineNumber:547 description:{@"Invalid parameter not satisfying: %@", @"replyHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchFeedbackDiagnostics.m" lineNumber:547 description:{@"Invalid parameter not satisfying: %@", @"replyHandler"}];
   }
 
   v31 = 0;
@@ -99,7 +99,7 @@
     v16 = v6;
   }
 
-  v5[2](v5, v15, v16);
+  handlerCopy[2](handlerCopy, v15, v16);
 
   _Block_object_dispose(&v25, 8);
   _Block_object_dispose(&v31, 8);
@@ -165,13 +165,13 @@ void __81__PHSearchFeedbackDiagnostics__collectPhotosAppOnScreenSearchDetailsWit
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_writeJSONObject:(id)a3 toPath:(id)a4
+- (void)_writeJSONObject:(id)object toPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  pathCopy = path;
   v14 = 0;
-  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:3 error:&v14];
+  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objectCopy options:3 error:&v14];
   v8 = v14;
   v9 = v8;
   if (!v7)
@@ -180,7 +180,7 @@ void __81__PHSearchFeedbackDiagnostics__collectPhotosAppOnScreenSearchDetailsWit
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v5;
+      v16 = objectCopy;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, "Failed to encode json data for object: %@, error: %@", buf, 0x16u);
@@ -190,7 +190,7 @@ void __81__PHSearchFeedbackDiagnostics__collectPhotosAppOnScreenSearchDetailsWit
   }
 
   v13 = v8;
-  v10 = [v7 writeToFile:v6 options:1 error:&v13];
+  v10 = [v7 writeToFile:pathCopy options:1 error:&v13];
   v11 = v13;
 
   if ((v10 & 1) == 0)
@@ -199,7 +199,7 @@ void __81__PHSearchFeedbackDiagnostics__collectPhotosAppOnScreenSearchDetailsWit
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v6;
+      v16 = pathCopy;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, "Failed to write json data to path: %@, error: %@", buf, 0x16u);
@@ -212,19 +212,19 @@ LABEL_8:
   }
 }
 
-- (id)_spotlightClientStateStatusForPhotoLibrary:(id)a3
+- (id)_spotlightClientStateStatusForPhotoLibrary:(id)library
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 wellKnownPhotoLibraryIdentifier];
-  if (v4 != 3)
+  libraryCopy = library;
+  wellKnownPhotoLibraryIdentifier = [libraryCopy wellKnownPhotoLibraryIdentifier];
+  if (wellKnownPhotoLibraryIdentifier != 3)
   {
-    v6 = v4;
-    v7 = [v3 photoLibrary];
-    v8 = [v7 globalValues];
-    v9 = [v8 searchIndexSpotlightClientStateData];
+    v6 = wellKnownPhotoLibraryIdentifier;
+    photoLibrary = [libraryCopy photoLibrary];
+    globalValues = [photoLibrary globalValues];
+    searchIndexSpotlightClientStateData = [globalValues searchIndexSpotlightClientStateData];
 
-    v10 = [v9 result];
+    result = [searchIndexSpotlightClientStateData result];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
@@ -235,16 +235,16 @@ LABEL_8:
     if ([MEMORY[0x1E69BE810] spotlightPrivateIndexEnabled] && objc_msgSend(MEMORY[0x1E69BE810], "shouldUseSpotlightPrivateIndexForLibraryIdentifier:", v6))
     {
       v12 = objc_alloc(MEMORY[0x1E6964E38]);
-      v13 = [v3 pathManager];
-      v14 = [v13 spotlightSearchIndexPath];
-      v15 = [v12 initWithName:v11 protectionClass:0 path:v14];
+      pathManager = [libraryCopy pathManager];
+      spotlightSearchIndexPath = [pathManager spotlightSearchIndexPath];
+      v15 = [v12 initWithName:v11 protectionClass:0 path:spotlightSearchIndexPath];
 
       if (v15)
       {
 LABEL_6:
         v16 = dispatch_group_create();
         dispatch_group_enter(v16);
-        v17 = [MEMORY[0x1E69BE810] photosBundleIdentifier];
+        photosBundleIdentifier = [MEMORY[0x1E69BE810] photosBundleIdentifier];
         v22 = MEMORY[0x1E69E9820];
         v23 = 3221225472;
         v24 = __74__PHSearchFeedbackDiagnostics__spotlightClientStateStatusForPhotoLibrary___block_invoke;
@@ -252,7 +252,7 @@ LABEL_6:
         v27 = &v28;
         v18 = v16;
         v26 = v18;
-        [v15 fetchLastClientStateWithProtectionClass:0 forBundleID:v17 clientStateName:v11 options:32 completionHandler:&v22];
+        [v15 fetchLastClientStateWithProtectionClass:0 forBundleID:photosBundleIdentifier clientStateName:v11 options:32 completionHandler:&v22];
 
         v19 = dispatch_time(0, 10000000000);
         if (dispatch_group_wait(v18, v19))
@@ -268,7 +268,7 @@ LABEL_6:
           v5 = @"Undefined";
         }
 
-        else if ([v10 isEqualToData:{v29[5], v22, v23, v24, v25}])
+        else if ([result isEqualToData:{v29[5], v22, v23, v24, v25}])
         {
           v5 = @"In Sync";
         }
@@ -336,27 +336,27 @@ void __74__PHSearchFeedbackDiagnostics__spotlightClientStateStatusForPhotoLibrar
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)_indexingContextForPhotoLibrary:(id)a3
+- (id)_indexingContextForPhotoLibrary:(id)library
 {
   v4 = MEMORY[0x1E69BE788];
-  v5 = a3;
-  v6 = [v4 locale];
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
+  libraryCopy = library;
+  locale = [v4 locale];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v8 = objc_alloc_init(MEMORY[0x1E69BE798]);
   v9 = objc_alloc_init(MEMORY[0x1E69BE7A0]);
   v10 = objc_alloc_init(MEMORY[0x1E69BE790]);
-  v11 = [v5 photoLibrary];
+  photoLibrary = [libraryCopy photoLibrary];
 
-  v12 = [v11 pathManager];
+  pathManager = [photoLibrary pathManager];
   v20 = 0;
-  v13 = [v12 internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:0 error:&v20];
+  v13 = [pathManager internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:0 error:&v20];
   v14 = v20;
 
   v19 = v14;
   v15 = [objc_alloc(MEMORY[0x1E6999148]) initExistingDB:v13 error:&v19];
   v16 = v19;
 
-  v17 = [objc_alloc(MEMORY[0x1E69BE7A8]) initWithSceneTaxonomyProvider:v9 csuTaxonomyObjectStore:v15 locale:v6 calendar:v7 indexDateFormatter:v8 countrySynonymProvider:v10 delegate:self];
+  v17 = [objc_alloc(MEMORY[0x1E69BE7A8]) initWithSceneTaxonomyProvider:v9 csuTaxonomyObjectStore:v15 locale:locale calendar:currentCalendar indexDateFormatter:v8 countrySynonymProvider:v10 delegate:self];
 
   return v17;
 }
@@ -365,8 +365,8 @@ void __74__PHSearchFeedbackDiagnostics__spotlightClientStateStatusForPhotoLibrar
 {
   v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZZZ"];
-  v3 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v2 setTimeZone:v3];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v2 setTimeZone:localTimeZone];
 
   return v2;
 }
@@ -375,52 +375,52 @@ void __74__PHSearchFeedbackDiagnostics__spotlightClientStateStatusForPhotoLibrar
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v2 = MGCopyAnswer();
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v13[0] = @"buildVersion";
-  v4 = v2;
+  null = v2;
   if (!v2)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"currentLocale";
-  v5 = [v3 localeIdentifier];
-  v6 = v5;
-  if (!v5)
+  localeIdentifier = [currentLocale localeIdentifier];
+  null2 = localeIdentifier;
+  if (!localeIdentifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v6;
+  v14[1] = null2;
   v13[2] = @"currentLanguageCode";
-  v7 = [v3 languageCode];
-  v8 = v7;
-  if (!v7)
+  languageCode = [currentLocale languageCode];
+  null3 = languageCode;
+  if (!languageCode)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v8;
+  v14[2] = null3;
   v13[3] = @"currentRegionCode";
-  v9 = [v3 regionCode];
-  v10 = v9;
-  if (!v9)
+  regionCode = [currentLocale regionCode];
+  null4 = regionCode;
+  if (!regionCode)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[3] = v10;
+  v14[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
-  if (!v9)
+  if (!regionCode)
   {
   }
 
-  if (!v7)
+  if (!languageCode)
   {
   }
 
-  if (!v5)
+  if (!localeIdentifier)
   {
   }
 
@@ -431,38 +431,38 @@ void __74__PHSearchFeedbackDiagnostics__spotlightClientStateStatusForPhotoLibrar
   return v11;
 }
 
-- (id)_fetchAssets:(id)a3 photoLibrary:(id)a4
+- (id)_fetchAssets:(id)assets photoLibrary:(id)library
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 librarySpecificFetchOptions];
+  assetsCopy = assets;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
   v11[0] = @"PHAssetPropertySetIdentifier";
   v11[1] = @"PHAssetPropertySetCore";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-  [v6 setFetchPropertySets:v7];
+  [librarySpecificFetchOptions setFetchPropertySets:v7];
 
-  [v6 setIncludeGuestAssets:1];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@", v5];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  assetsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@", assetsCopy];
 
-  [v6 setInternalPredicate:v8];
-  v9 = [PHAsset fetchAssetsWithOptions:v6];
+  [librarySpecificFetchOptions setInternalPredicate:assetsCopy];
+  v9 = [PHAsset fetchAssetsWithOptions:librarySpecificFetchOptions];
 
   return v9;
 }
 
-- (id)_assetThumbnailPathsForAssets:(id)a3 photoLibrary:(id)a4
+- (id)_assetThumbnailPathsForAssets:(id)assets photoLibrary:(id)library
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = v4;
-    v5 = v4;
+    v24 = assetsCopy;
+    v5 = assetsCopy;
     v6 = [v5 countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v6)
     {
@@ -501,33 +501,33 @@ void __74__PHSearchFeedbackDiagnostics__spotlightClientStateStatusForPhotoLibrar
                 v17 = *(*(&v26 + 1) + 8 * j);
                 if ([v17 type] == 102)
                 {
-                  v18 = [v10 uuid];
-                  if (v18)
+                  uuid = [v10 uuid];
+                  if (uuid)
                   {
-                    v19 = [v17 privateFileURL];
-                    v20 = [v19 path];
-                    if (v20)
+                    privateFileURL = [v17 privateFileURL];
+                    path = [privateFileURL path];
+                    if (path)
                     {
-                      [v25 setObject:v20 forKeyedSubscript:v18];
+                      [v25 setObject:path forKeyedSubscript:uuid];
                     }
 
                     else
                     {
-                      v21 = [MEMORY[0x1E695DFB0] null];
-                      [v25 setObject:v21 forKeyedSubscript:v18];
+                      null = [MEMORY[0x1E695DFB0] null];
+                      [v25 setObject:null forKeyedSubscript:uuid];
                     }
                   }
 
                   else
                   {
-                    v19 = PLSearchBackendFeedbackDiagnosticsGetLog();
-                    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+                    privateFileURL = PLSearchBackendFeedbackDiagnosticsGetLog();
+                    if (os_log_type_enabled(privateFileURL, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138543618;
                       v35 = 0;
                       v36 = 2112;
                       v37 = v10;
-                      _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "nil file path for asset uuid: %{public}@, asset: %@", buf, 0x16u);
+                      _os_log_impl(&dword_19C86F000, privateFileURL, OS_LOG_TYPE_ERROR, "nil file path for asset uuid: %{public}@, asset: %@", buf, 0x16u);
                     }
                   }
 
@@ -555,7 +555,7 @@ LABEL_24:
     }
 
     v22 = [v25 copy];
-    v4 = v24;
+    assetsCopy = v24;
   }
 
   else
@@ -566,20 +566,20 @@ LABEL_24:
   return v22;
 }
 
-- (id)_indexSummaryJSONForPhotoLibrary:(id)a3
+- (id)_indexSummaryJSONForPhotoLibrary:(id)library
 {
   v53[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(PHSearchFeedbackDiagnostics *)self _deviceInfoJSON];
-  [v6 setObject:v7 forKeyedSubscript:@"deviceInfo"];
+  _deviceInfoJSON = [(PHSearchFeedbackDiagnostics *)self _deviceInfoJSON];
+  [v6 setObject:_deviceInfoJSON forKeyedSubscript:@"deviceInfo"];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isReadyForAnalysis")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(libraryCopy, "isReadyForAnalysis")}];
   [v6 setObject:v8 forKeyedSubscript:@"isReadyForAnalysis"];
 
   v51[1] = 0;
   v50 = objc_alloc_init(PHFeatureAvailabilityReadOptions);
-  v9 = [v5 featureAvailabilityForFeature:3 readOptions:? error:?];
+  v9 = [libraryCopy featureAvailabilityForFeature:3 readOptions:? error:?];
   v10 = 0;
   v11 = v10;
   if (!v9)
@@ -597,30 +597,30 @@ LABEL_24:
   v45 = [v12 numberWithDouble:?];
   v53[1] = v45;
   v52[2] = @"dateComputed";
-  v13 = [v9 dateComputed];
-  v49 = self;
-  if (v13)
+  dateComputed = [v9 dateComputed];
+  selfCopy = self;
+  if (dateComputed)
   {
-    v14 = [(PHSearchFeedbackDiagnostics *)self _jsonDateFormatter];
-    v44 = [v9 dateComputed];
-    v15 = [v14 stringFromDate:?];
+    _jsonDateFormatter = [(PHSearchFeedbackDiagnostics *)self _jsonDateFormatter];
+    dateComputed2 = [v9 dateComputed];
+    null = [_jsonDateFormatter stringFromDate:?];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v14 = v15;
+    null = [MEMORY[0x1E695DFB0] null];
+    _jsonDateFormatter = null;
   }
 
-  v48 = v5;
-  v53[2] = v15;
+  v48 = libraryCopy;
+  v53[2] = null;
   v52[3] = @"dateSearchIndexSnapshotLastUpdated";
-  v16 = [v9 dateSearchIndexSnapshotLastUpdated];
-  if (v16)
+  dateSearchIndexSnapshotLastUpdated = [v9 dateSearchIndexSnapshotLastUpdated];
+  if (dateSearchIndexSnapshotLastUpdated)
   {
-    v3 = [(PHSearchFeedbackDiagnostics *)v49 _jsonDateFormatter];
-    v5 = [v9 dateSearchIndexSnapshotLastUpdated];
-    [v3 stringFromDate:v5];
+    _jsonDateFormatter2 = [(PHSearchFeedbackDiagnostics *)selfCopy _jsonDateFormatter];
+    libraryCopy = [v9 dateSearchIndexSnapshotLastUpdated];
+    [_jsonDateFormatter2 stringFromDate:libraryCopy];
   }
 
   else
@@ -629,36 +629,36 @@ LABEL_24:
   }
   v17 = ;
   v53[3] = v17;
-  v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:4];
-  if (v16)
+  null2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:4];
+  if (dateSearchIndexSnapshotLastUpdated)
   {
 
-    v17 = v3;
+    v17 = _jsonDateFormatter2;
   }
 
-  if (v13)
+  if (dateComputed)
   {
   }
 
-  v5 = v48;
-  self = v49;
+  libraryCopy = v48;
+  self = selfCopy;
   v11 = v47;
-  if (!v18)
+  if (!null2)
   {
 LABEL_13:
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v6 setObject:v18 forKeyedSubscript:@"featureAvailability"];
+  [v6 setObject:null2 forKeyedSubscript:@"featureAvailability"];
 
-  v19 = [v5 photoLibrary];
-  v20 = [v19 pathManager];
+  photoLibrary = [libraryCopy photoLibrary];
+  pathManager = [photoLibrary pathManager];
   v51[0] = v11;
-  v21 = [v20 internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:0 error:v51];
+  v21 = [pathManager internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:0 error:v51];
   v22 = v51[0];
 
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
-  v24 = [v23 fileExistsAtPath:v21 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v24 = [defaultManager fileExistsAtPath:v21 isDirectory:0];
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:v24];
   [v6 setObject:v25 forKeyedSubscript:@"isCSUTaxonomyAvailable"];
@@ -671,12 +671,12 @@ LABEL_13:
   v29 = [MEMORY[0x1E696AD98] numberWithBool:v27];
   [v6 setObject:v29 forKeyedSubscript:@"isSemanticSearchIndexingSupported"];
 
-  v30 = [v19 globalValues];
-  v31 = [v30 searchIndexingEntityToRebuild];
+  globalValues = [photoLibrary globalValues];
+  searchIndexingEntityToRebuild = [globalValues searchIndexingEntityToRebuild];
 
-  if (v31)
+  if (searchIndexingEntityToRebuild)
   {
-    if (v31 == 1 && ([v19 globalValues], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "searchIndexRebuildResumeMarker"), v33 = objc_claimAutoreleasedReturnValue(), v33, v32, !v33))
+    if (searchIndexingEntityToRebuild == 1 && ([photoLibrary globalValues], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "searchIndexRebuildResumeMarker"), v33 = objc_claimAutoreleasedReturnValue(), v33, v32, !v33))
     {
       v34 = @"not started";
     }
@@ -693,33 +693,33 @@ LABEL_13:
   }
 
   [v6 setObject:v34 forKeyedSubscript:@"rebuildStatus"];
-  v35 = [v19 globalValues];
-  v36 = [v35 searchIndexVersion];
-  if (v36)
+  globalValues2 = [photoLibrary globalValues];
+  searchIndexVersion = [globalValues2 searchIndexVersion];
+  if (searchIndexVersion)
   {
-    [v6 setObject:v36 forKeyedSubscript:@"searchIndexVersion"];
+    [v6 setObject:searchIndexVersion forKeyedSubscript:@"searchIndexVersion"];
   }
 
   else
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
-    [v6 setObject:v37 forKeyedSubscript:@"searchIndexVersion"];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    [v6 setObject:null3 forKeyedSubscript:@"searchIndexVersion"];
   }
 
-  v38 = [v19 globalValues];
-  v39 = [v38 searchIndexLocaleIdentifier];
-  if (v39)
+  globalValues3 = [photoLibrary globalValues];
+  searchIndexLocaleIdentifier = [globalValues3 searchIndexLocaleIdentifier];
+  if (searchIndexLocaleIdentifier)
   {
-    [v6 setObject:v39 forKeyedSubscript:@"searchIndexLocaleIdentifier"];
+    [v6 setObject:searchIndexLocaleIdentifier forKeyedSubscript:@"searchIndexLocaleIdentifier"];
   }
 
   else
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
-    [v6 setObject:v40 forKeyedSubscript:@"searchIndexLocaleIdentifier"];
+    null4 = [MEMORY[0x1E695DFB0] null];
+    [v6 setObject:null4 forKeyedSubscript:@"searchIndexLocaleIdentifier"];
   }
 
-  v41 = [(PHSearchFeedbackDiagnostics *)self _spotlightClientStateStatusForPhotoLibrary:v5];
+  v41 = [(PHSearchFeedbackDiagnostics *)self _spotlightClientStateStatusForPhotoLibrary:libraryCopy];
   if (v41)
   {
     [v6 setObject:v41 forKeyedSubscript:@"spotlightClientStateStatus"];
@@ -727,27 +727,27 @@ LABEL_13:
 
   else
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
-    [v6 setObject:v42 forKeyedSubscript:@"spotlightClientStateStatus"];
+    null5 = [MEMORY[0x1E695DFB0] null];
+    [v6 setObject:null5 forKeyedSubscript:@"spotlightClientStateStatus"];
   }
 
   return v6;
 }
 
-- (id)_resultAttributesJSONForAssets:(id)a3 photoLibrary:(id)a4
+- (id)_resultAttributesJSONForAssets:(id)assets photoLibrary:(id)library
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  assetsCopy = assets;
+  libraryCopy = library;
+  if ([assetsCopy count])
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v22 = v5;
-    v8 = v5;
+    v22 = assetsCopy;
+    v8 = assetsCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v9)
     {
@@ -763,13 +763,13 @@ LABEL_13:
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [v13 localIdentifier];
+          localIdentifier = [v13 localIdentifier];
           v23 = 0;
-          v15 = [v6 searchDebugInformationForAssetLocalIdentifier:v14 redacted:1 error:&v23];
+          v15 = [libraryCopy searchDebugInformationForAssetLocalIdentifier:localIdentifier redacted:1 error:&v23];
           v16 = v23;
 
-          v17 = [v13 uuid];
-          if (v17)
+          uuid = [v13 uuid];
+          if (uuid)
           {
             v18 = v15 == 0;
           }
@@ -785,14 +785,14 @@ LABEL_13:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543362;
-              v29 = v17;
+              v29 = uuid;
               _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Failed to get search attributes for asset UUID: %{public}@", buf, 0xCu);
             }
           }
 
           else
           {
-            [v7 setObject:v15 forKeyedSubscript:v17];
+            [v7 setObject:v15 forKeyedSubscript:uuid];
           }
         }
 
@@ -803,7 +803,7 @@ LABEL_13:
     }
 
     v20 = [v7 copy];
-    v5 = v22;
+    assetsCopy = v22;
   }
 
   else
@@ -814,13 +814,13 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)_writeToPath:(id)a3
+- (BOOL)_writeToPath:(id)path
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v24 = 0;
-  v6 = [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v24];
+  v6 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v24];
   v7 = v24;
 
   if ((v6 & 1) == 0)
@@ -832,7 +832,7 @@ LABEL_13:
     }
 
     *buf = 138412290;
-    v26 = v4;
+    v26 = pathCopy;
     v10 = "Failed to create Photos Search Feedback diagnostics directory at path: %@";
     v11 = v9;
     v12 = 12;
@@ -843,7 +843,7 @@ LABEL_21:
 
   if (self->_queryResultJSON)
   {
-    v8 = [v4 stringByAppendingPathComponent:@"Search Result Details.json"];
+    v8 = [pathCopy stringByAppendingPathComponent:@"Search Result Details.json"];
     [(PHSearchFeedbackDiagnostics *)self _writeJSONObject:self->_queryResultJSON toPath:v8];
   }
 
@@ -859,7 +859,7 @@ LABEL_21:
 
   if (self->_resultAttributesJSON)
   {
-    v13 = [v4 stringByAppendingPathComponent:@"On-Screen Search Result Details.json"];
+    v13 = [pathCopy stringByAppendingPathComponent:@"On-Screen Search Result Details.json"];
     [(PHSearchFeedbackDiagnostics *)self _writeJSONObject:self->_resultAttributesJSON toPath:v13];
   }
 
@@ -875,7 +875,7 @@ LABEL_21:
 
   if (self->_indexStatusJSON)
   {
-    v14 = [v4 stringByAppendingPathComponent:@"Search Index Details.json"];
+    v14 = [pathCopy stringByAppendingPathComponent:@"Search Index Details.json"];
     [(PHSearchFeedbackDiagnostics *)self _writeJSONObject:self->_indexStatusJSON toPath:v14];
   }
 
@@ -904,10 +904,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v9 = [v4 stringByAppendingPathComponent:@"On-Screen Search Result Thumbnails"];
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [pathCopy stringByAppendingPathComponent:@"On-Screen Search Result Thumbnails"];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v23 = v7;
-  v16 = [v15 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v23];
+  v16 = [defaultManager2 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v23];
   v17 = v23;
 
   if (v16)
@@ -969,24 +969,24 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
   }
 }
 
-- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)a3 resultJSON:(id)a4 onScreenAssets:(id)a5
+- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)library resultJSON:(id)n onScreenAssets:(id)assets
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  assetsCopy = assets;
+  nCopy = n;
+  libraryCopy = library;
   [v8 timeIntervalSinceReferenceDate];
-  v12 = [(PHSearchFeedbackDiagnostics *)self initWithPhotoLibrary:v11 resultJSON:v10 onScreenAssets:v9 startTime:?];
+  v12 = [(PHSearchFeedbackDiagnostics *)self initWithPhotoLibrary:libraryCopy resultJSON:nCopy onScreenAssets:assetsCopy startTime:?];
 
   return v12;
 }
 
-- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)a3 resultJSON:(id)a4 onScreenAssets:(id)a5 startTime:(double)a6
+- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)library resultJSON:(id)n onScreenAssets:(id)assets startTime:(double)time
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  libraryCopy = library;
+  nCopy = n;
+  assetsCopy = assets;
   v13 = [(PHSearchFeedbackDiagnostics *)self init];
   if (v13)
   {
@@ -998,13 +998,13 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
     }
 
     v15 = MEMORY[0x1E69BE4E8];
-    v16 = [v10 photoLibrary];
-    v17 = [v16 managedObjectContext];
-    v18 = [v15 activeLibraryScopeInManagedObjectContext:v17];
+    photoLibrary = [libraryCopy photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
+    v18 = [v15 activeLibraryScopeInManagedObjectContext:managedObjectContext];
     v13->_isSharedLibraryEnabled = v18 != 0;
 
-    v19 = [(PHSearchFeedbackDiagnostics *)v13 _fetchAssets:v12 photoLibrary:v10];
-    v20 = _GuardValidJSON(v11);
+    v19 = [(PHSearchFeedbackDiagnostics *)v13 _fetchAssets:assetsCopy photoLibrary:libraryCopy];
+    v20 = _GuardValidJSON(nCopy);
     v21 = v20;
     v22 = MEMORY[0x1E695E0F8];
     if (v20)
@@ -1019,7 +1019,7 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
 
     objc_storeStrong(&v13->_queryResultJSON, v23);
 
-    v24 = [(PHSearchFeedbackDiagnostics *)v13 _resultAttributesJSONForAssets:v19 photoLibrary:v10];
+    v24 = [(PHSearchFeedbackDiagnostics *)v13 _resultAttributesJSONForAssets:v19 photoLibrary:libraryCopy];
     v25 = _GuardValidJSON(v24);
     v26 = v25;
     if (v25)
@@ -1034,7 +1034,7 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
 
     objc_storeStrong(&v13->_resultAttributesJSON, v27);
 
-    v28 = [(PHSearchFeedbackDiagnostics *)v13 _assetThumbnailPathsForAssets:v19 photoLibrary:v10];
+    v28 = [(PHSearchFeedbackDiagnostics *)v13 _assetThumbnailPathsForAssets:v19 photoLibrary:libraryCopy];
     v29 = _GuardValidJSON(v28);
     v30 = v29;
     if (v29)
@@ -1049,7 +1049,7 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
 
     objc_storeStrong(&v13->_assetThumbnailPaths, v31);
 
-    v32 = [(PHSearchFeedbackDiagnostics *)v13 _indexSummaryJSONForPhotoLibrary:v10];
+    v32 = [(PHSearchFeedbackDiagnostics *)v13 _indexSummaryJSONForPhotoLibrary:libraryCopy];
     v33 = _GuardValidJSON(v32);
     v34 = v33;
     if (v33)
@@ -1070,7 +1070,7 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       v40 = 134218242;
-      v41 = (v37 - a6) * 1000.0;
+      v41 = (v37 - time) * 1000.0;
       v42 = 2112;
       v43 = v13;
       _os_log_impl(&dword_19C86F000, v38, OS_LOG_TYPE_DEFAULT, "Generated Photos Search Feedback diagnostics in in %0.4fms, %@", &v40, 0x16u);
@@ -1080,9 +1080,9 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
   return v13;
 }
 
-- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)a3
+- (PHSearchFeedbackDiagnostics)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   +[PHSearchFeedbackDiagnostics assertIfNotCorrectConfiguration];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
@@ -1105,7 +1105,7 @@ void __44__PHSearchFeedbackDiagnostics__writeToPath___block_invoke(uint64_t a1, 
   v9[4] = &v16;
   v9[5] = &v10;
   [(PHSearchFeedbackDiagnostics *)self _collectPhotosAppOnScreenSearchDetailsWithHandler:v9];
-  v7 = [(PHSearchFeedbackDiagnostics *)self initWithPhotoLibrary:v4 resultJSON:v17[5] onScreenAssets:v11[5] startTime:v6];
+  v7 = [(PHSearchFeedbackDiagnostics *)self initWithPhotoLibrary:libraryCopy resultJSON:v17[5] onScreenAssets:v11[5] startTime:v6];
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
@@ -1175,31 +1175,31 @@ void __52__PHSearchFeedbackDiagnostics_initWithPhotoLibrary___block_invoke(uint6
   return v6;
 }
 
-+ (id)jsonForSearchQueryResult:(id)a3
++ (id)jsonForSearchQueryResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [a3 redactedJSONDictionary];
+    redactedJSONDictionary = [result redactedJSONDictionary];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F8];
+    redactedJSONDictionary = MEMORY[0x1E695E0F8];
   }
 
-  return v4;
+  return redactedJSONDictionary;
 }
 
-+ (id)saveDiagnostics:(id)a3 toPath:(id)a4
++ (id)saveDiagnostics:(id)diagnostics toPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  diagnosticsCopy = diagnostics;
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v8 = [a1 _diagnosticsFilename];
-    v9 = [v7 stringByAppendingPathComponent:v8];
-    if ([v6 _writeToPath:v9])
+    _diagnosticsFilename = [self _diagnosticsFilename];
+    v9 = [pathCopy stringByAppendingPathComponent:_diagnosticsFilename];
+    if ([diagnosticsCopy _writeToPath:v9])
     {
       v10 = PLSearchBackendFeedbackDiagnosticsGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1222,11 +1222,11 @@ void __52__PHSearchFeedbackDiagnostics_initWithPhotoLibrary___block_invoke(uint6
 
   else
   {
-    v8 = PLSearchBackendFeedbackDiagnosticsGetLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _diagnosticsFilename = PLSearchBackendFeedbackDiagnosticsGetLog();
+    if (os_log_type_enabled(_diagnosticsFilename, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "Empty destination path. Unable to collect diagnostics.", &v14, 2u);
+      _os_log_impl(&dword_19C86F000, _diagnosticsFilename, OS_LOG_TYPE_ERROR, "Empty destination path. Unable to collect diagnostics.", &v14, 2u);
     }
 
     v12 = 0;
@@ -1235,15 +1235,15 @@ void __52__PHSearchFeedbackDiagnostics_initWithPhotoLibrary___block_invoke(uint6
   return v12;
 }
 
-+ (id)collectDiagnosticsForLibrary:(id)a3 toPath:(id)a4
++ (id)collectDiagnosticsForLibrary:(id)library toPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  pathCopy = path;
   +[PHSearchFeedbackDiagnostics assertIfNotCorrectConfiguration];
-  if ([v7 length])
+  if ([pathCopy length])
   {
-    v8 = [[PHSearchFeedbackDiagnostics alloc] initWithPhotoLibrary:v6];
-    v9 = [a1 saveDiagnostics:v8 toPath:v7];
+    v8 = [[PHSearchFeedbackDiagnostics alloc] initWithPhotoLibrary:libraryCopy];
+    v9 = [self saveDiagnostics:v8 toPath:pathCopy];
   }
 
   else
@@ -1261,16 +1261,16 @@ void __52__PHSearchFeedbackDiagnostics_initWithPhotoLibrary___block_invoke(uint6
   return v9;
 }
 
-+ (id)collectDiagnosticsForLibrary:(id)a3 resultJSON:(id)a4 onScreenAssets:(id)a5 toPath:(id)a6
++ (id)collectDiagnosticsForLibrary:(id)library resultJSON:(id)n onScreenAssets:(id)assets toPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 length])
+  libraryCopy = library;
+  nCopy = n;
+  assetsCopy = assets;
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v14 = [[PHSearchFeedbackDiagnostics alloc] initWithPhotoLibrary:v10 resultJSON:v11 onScreenAssets:v12];
-    v15 = [a1 saveDiagnostics:v14 toPath:v13];
+    v14 = [[PHSearchFeedbackDiagnostics alloc] initWithPhotoLibrary:libraryCopy resultJSON:nCopy onScreenAssets:assetsCopy];
+    v15 = [self saveDiagnostics:v14 toPath:pathCopy];
   }
 
   else
@@ -1288,11 +1288,11 @@ void __52__PHSearchFeedbackDiagnostics_initWithPhotoLibrary___block_invoke(uint6
   return v15;
 }
 
-+ (void)purgeSearchUIDiagnosticDetailsForPhotoLibrary:(id)a3 queue:(id)a4
++ (void)purgeSearchUIDiagnosticDetailsForPhotoLibrary:(id)library queue:(id)queue
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 urlForApplicationDataFolderIdentifier:15 error:0];
+  queueCopy = queue;
+  v6 = [library urlForApplicationDataFolderIdentifier:15 error:0];
   v7 = PLSearchBackendFeedbackDiagnosticsGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1308,7 +1308,7 @@ void __52__PHSearchFeedbackDiagnostics_initWithPhotoLibrary___block_invoke(uint6
     block[2] = __83__PHSearchFeedbackDiagnostics_purgeSearchUIDiagnosticDetailsForPhotoLibrary_queue___block_invoke;
     block[3] = &unk_1E75AB270;
     v9 = v6;
-    dispatch_async(v5, block);
+    dispatch_async(queueCopy, block);
   }
 }
 
@@ -1371,17 +1371,17 @@ void __83__PHSearchFeedbackDiagnostics_purgeSearchUIDiagnosticDetailsForPhotoLib
   }
 }
 
-+ (id)saveSearchUIDiagnosticDetails:(id)a3 photoLibrary:(id)a4 queue:(id)a5
++ (id)saveSearchUIDiagnosticDetails:(id)details photoLibrary:(id)library queue:(id)queue
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
   v9 = MEMORY[0x1E696AEC0];
   v10 = MEMORY[0x1E696AFB0];
-  v11 = a4;
-  v12 = [v10 UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v9 stringWithFormat:@"%@.txt", v13];
+  libraryCopy = library;
+  uUID = [v10 UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [v9 stringWithFormat:@"%@.txt", uUIDString];
 
   v15 = PLSearchBackendFeedbackDiagnosticsGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1390,7 +1390,7 @@ void __83__PHSearchFeedbackDiagnostics_purgeSearchUIDiagnosticDetailsForPhotoLib
     _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEFAULT, "Writing blob file to disk...", buf, 2u);
   }
 
-  v16 = [v11 urlForApplicationDataFolderIdentifier:15 error:0];
+  v16 = [libraryCopy urlForApplicationDataFolderIdentifier:15 error:0];
 
   v17 = PLSearchBackendFeedbackDiagnosticsGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1418,10 +1418,10 @@ void __83__PHSearchFeedbackDiagnostics_purgeSearchUIDiagnosticDetailsForPhotoLib
       block[1] = 3221225472;
       block[2] = __80__PHSearchFeedbackDiagnostics_saveSearchUIDiagnosticDetails_photoLibrary_queue___block_invoke;
       block[3] = &unk_1E75AB248;
-      v28 = v7;
+      v28 = detailsCopy;
       v29 = v18;
       v30 = v19;
-      dispatch_async(v8, block);
+      dispatch_async(queueCopy, block);
 
       v21 = v28;
     }
@@ -1449,11 +1449,11 @@ void __83__PHSearchFeedbackDiagnostics_purgeSearchUIDiagnosticDetailsForPhotoLib
     v18 = 0;
   }
 
-  v22 = [v18 absoluteString];
-  v23 = v22;
-  if (v22)
+  absoluteString = [v18 absoluteString];
+  v23 = absoluteString;
+  if (absoluteString)
   {
-    v24 = v22;
+    v24 = absoluteString;
   }
 
   else

@@ -1,6 +1,6 @@
 @interface MTRApplicationLauncherClusterApplicationStruct
 - (MTRApplicationLauncherClusterApplicationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRApplicationLauncherClusterApplicationStruct);
-  v5 = [(MTRApplicationLauncherClusterApplicationStruct *)self catalogVendorID];
-  [(MTRApplicationLauncherClusterApplicationStruct *)v4 setCatalogVendorID:v5];
+  catalogVendorID = [(MTRApplicationLauncherClusterApplicationStruct *)self catalogVendorID];
+  [(MTRApplicationLauncherClusterApplicationStruct *)v4 setCatalogVendorID:catalogVendorID];
 
-  v6 = [(MTRApplicationLauncherClusterApplicationStruct *)self applicationID];
-  [(MTRApplicationLauncherClusterApplicationStruct *)v4 setApplicationID:v6];
+  applicationID = [(MTRApplicationLauncherClusterApplicationStruct *)self applicationID];
+  [(MTRApplicationLauncherClusterApplicationStruct *)v4 setApplicationID:applicationID];
 
   return v4;
 }

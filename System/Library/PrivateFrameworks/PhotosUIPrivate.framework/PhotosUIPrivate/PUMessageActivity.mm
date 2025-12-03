@@ -1,11 +1,11 @@
 @interface PUMessageActivity
-+ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)a3;
-- (BOOL)canPerformWithActivityItems:(id)a3;
++ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)controller;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (PXActivityItemSourceController)itemSourceController;
 - (id)activityViewController;
-- (void)_prepareWithMomentShareLink:(id)a3;
+- (void)_prepareWithMomentShareLink:(id)link;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation PUMessageActivity
@@ -19,8 +19,8 @@
 
 - (void)performActivity
 {
-  v3 = [(PUMessageActivity *)self itemSourceController];
-  if ([v3 momentSharePublishAttempted] && (objc_msgSend(v3, "publishedURL"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  itemSourceController = [(PUMessageActivity *)self itemSourceController];
+  if ([itemSourceController momentSharePublishAttempted] && (objc_msgSend(itemSourceController, "publishedURL"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v5 = PLSharingGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -42,8 +42,8 @@
 
 - (id)activityViewController
 {
-  v3 = [(PUMessageActivity *)self itemSourceController];
-  if ([v3 momentSharePublishAttempted] && (objc_msgSend(v3, "publishedURL"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  itemSourceController = [(PUMessageActivity *)self itemSourceController];
+  if ([itemSourceController momentSharePublishAttempted] && (objc_msgSend(itemSourceController, "publishedURL"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v7 = PLSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -52,48 +52,48 @@
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "Share Sheet: Failed to get anything to share to Messages. Skipping compose presentation", buf, 2u);
     }
 
-    v5 = 0;
+    activityViewController = 0;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PUMessageActivity;
-    v5 = [(UIMessageActivity *)&v8 activityViewController];
+    activityViewController = [(UIMessageActivity *)&v8 activityViewController];
   }
 
-  return v5;
+  return activityViewController;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUMessageActivity *)self itemSourceController];
-  v6 = [v5 publishedURL];
+  itemsCopy = items;
+  itemSourceController = [(PUMessageActivity *)self itemSourceController];
+  publishedURL = [itemSourceController publishedURL];
 
-  if (v6)
+  if (publishedURL)
   {
-    v7 = [v5 publishedURL];
-    [(PUMessageActivity *)self _prepareWithMomentShareLink:v7];
+    publishedURL2 = [itemSourceController publishedURL];
+    [(PUMessageActivity *)self _prepareWithMomentShareLink:publishedURL2];
   }
 
   else
   {
     v22.receiver = self;
     v22.super_class = PUMessageActivity;
-    [(UIMessageActivity *)&v22 prepareWithActivityItems:v4];
+    [(UIMessageActivity *)&v22 prepareWithActivityItems:itemsCopy];
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(PUMessageActivity *)self itemSourceController];
-  v10 = [v9 assetItemSources];
+  itemSourceController2 = [(PUMessageActivity *)self itemSourceController];
+  assetItemSources = [itemSourceController2 assetItemSources];
 
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v11 = [assetItemSources countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -105,32 +105,32 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(assetItemSources);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) asset];
-        v16 = [v15 uuid];
-        [v8 addObject:v16];
+        asset = [*(*(&v18 + 1) + 8 * v14) asset];
+        uuid = [asset uuid];
+        [array addObject:uuid];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v12 = [assetItemSources countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  v17 = [(UIMessageActivity *)self messageComposeViewController];
-  [v17 setPhotoIDs:v8];
+  messageComposeViewController = [(UIMessageActivity *)self messageComposeViewController];
+  [messageComposeViewController setPhotoIDs:array];
 }
 
-- (void)_prepareWithMomentShareLink:(id)a3
+- (void)_prepareWithMomentShareLink:(id)link
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  linkCopy = link;
+  if (linkCopy)
   {
     if (PXCMMSupportsLiveBubbles())
     {
@@ -144,14 +144,14 @@
         v7 = PLSharingGetLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v4 pl_redactedShareURL];
+          pl_redactedShareURL = [linkCopy pl_redactedShareURL];
           *buf = 138543362;
-          v21 = v8;
+          v21 = pl_redactedShareURL;
           _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Share Sheet: Staging Live Bubble for moment share URL: %{public}@", buf, 0xCu);
         }
 
-        v9 = [(UIMessageActivity *)self messageComposeViewController];
-        [v9 setMessage:v6];
+        messageComposeViewController = [(UIMessageActivity *)self messageComposeViewController];
+        [messageComposeViewController setMessage:v6];
 
         goto LABEL_16;
       }
@@ -159,9 +159,9 @@
       v11 = PLSharingGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v4 pl_redactedShareURL];
+        pl_redactedShareURL2 = [linkCopy pl_redactedShareURL];
         *buf = 138543362;
-        v21 = v12;
+        v21 = pl_redactedShareURL2;
         v13 = "Share Sheet: Unable to create MSMessage for URL: %{public}@. Falling back to plain link";
         v14 = v11;
         v15 = OS_LOG_TYPE_ERROR;
@@ -174,9 +174,9 @@
       v11 = PLSharingGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 pl_redactedShareURL];
+        pl_redactedShareURL2 = [linkCopy pl_redactedShareURL];
         *buf = 138543362;
-        v21 = v12;
+        v21 = pl_redactedShareURL2;
         v13 = "Share Sheet: Live Bubbles not supported. Sending moment share URL as text: %{public}@";
         v14 = v11;
         v15 = OS_LOG_TYPE_DEFAULT;
@@ -185,7 +185,7 @@ LABEL_14:
       }
     }
 
-    v19 = v4;
+    v19 = linkCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
     v17.receiver = self;
     v17.super_class = PUMessageActivity;
@@ -208,22 +208,22 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = PUMessageActivity;
-  if (![(UIMessageActivity *)&v19 canPerformWithActivityItems:a3])
+  if (![(UIMessageActivity *)&v19 canPerformWithActivityItems:items])
   {
     return 0;
   }
 
-  v4 = [(PUMessageActivity *)self itemSourceController];
-  v5 = [v4 assets];
-  v6 = [v5 firstObject];
-  v7 = [v6 photoLibrary];
+  itemSourceController = [(PUMessageActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  firstObject = [assets firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  if (v7)
+  if (photoLibrary)
   {
     v8 = PXCMMHasSendAndReceiveCapabilities();
   }
@@ -233,9 +233,9 @@ LABEL_17:
     v10 = PLSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v5 count];
+      v11 = [assets count];
       *buf = 138412546;
-      v21 = v4;
+      v21 = itemSourceController;
       v22 = 2048;
       v23 = v11;
       _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_ERROR, "Share Sheet: PUMessageActivity had a nil photo library from itemSourceController: %@, number of assets: %lu", buf, 0x16u);
@@ -244,8 +244,8 @@ LABEL_17:
     v8 = 0;
   }
 
-  v12 = [v4 itemSourcesSupportMomentShareLinkCreation];
-  v13 = [v4 shouldUseMomentShareLinkInMessagesIfThresholdMet];
+  itemSourcesSupportMomentShareLinkCreation = [itemSourceController itemSourcesSupportMomentShareLinkCreation];
+  shouldUseMomentShareLinkInMessagesIfThresholdMet = [itemSourceController shouldUseMomentShareLinkInMessagesIfThresholdMet];
   if (PLCPLIsExceedingPrimarySyncQuota())
   {
     v14 = PLSharingGetLog();
@@ -256,53 +256,53 @@ LABEL_17:
     }
   }
 
-  v15 = [MEMORY[0x1E69C33D8] sharedInstance];
-  v16 = [v15 cmmShareSheetBehavior];
+  mEMORY[0x1E69C33D8] = [MEMORY[0x1E69C33D8] sharedInstance];
+  cmmShareSheetBehavior = [mEMORY[0x1E69C33D8] cmmShareSheetBehavior];
 
-  if (v16 == 3)
+  if (cmmShareSheetBehavior == 3)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = v13;
+    v17 = shouldUseMomentShareLinkInMessagesIfThresholdMet;
   }
 
-  if (v8 & v12) == 1 && (v17)
+  if (v8 & itemSourcesSupportMomentShareLinkCreation) == 1 && (v17)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [objc_opt_class() canPerformActivityAsIndividualItemsInSourceController:v4];
+    v9 = [objc_opt_class() canPerformActivityAsIndividualItemsInSourceController:itemSourceController];
   }
 
   return v9;
 }
 
-+ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)a3
++ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 assetItemSources];
-  v5 = [v4 count];
+  controllerCopy = controller;
+  assetItemSources = [controllerCopy assetItemSources];
+  v5 = [assetItemSources count];
 
-  v6 = [v3 preferredPreparationType];
-  v7 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v8 = [v7 maxMessagesAssetLimit];
+  preferredPreparationType = [controllerCopy preferredPreparationType];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  maxMessagesAssetLimit = [mEMORY[0x1E69C3A18] maxMessagesAssetLimit];
 
-  if (v6)
+  if (preferredPreparationType)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8 == 0;
+    v9 = maxMessagesAssetLimit == 0;
   }
 
-  return v9 || v5 <= v8;
+  return v9 || v5 <= maxMessagesAssetLimit;
 }
 
 @end

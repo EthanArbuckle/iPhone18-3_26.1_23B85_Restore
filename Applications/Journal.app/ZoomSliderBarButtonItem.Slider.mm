@@ -1,11 +1,11 @@
 @interface ZoomSliderBarButtonItem.Slider
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithCoder:(id)a3;
-- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithFrame:(CGRect)a3;
+- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithCoder:(id)coder;
+- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ZoomSliderBarButtonItem.Slider
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
-  v3 = sub_100831910(self, a3.origin.x, a2, &selRef_minimumValueImageRectForBounds_);
+  v3 = sub_100831910(self, bounds.origin.x, a2, &selRef_minimumValueImageRectForBounds_);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -29,9 +29,9 @@
   return result;
 }
 
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
 {
-  v3 = sub_100831910(self, a3.origin.x, a2, &selRef_maximumValueImageRectForBounds_);
+  v3 = sub_100831910(self, bounds.origin.x, a2, &selRef_maximumValueImageRectForBounds_);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  v3 = sub_100831910(self, a3.origin.x, a2, &selRef_trackRectForBounds_);
+  v3 = sub_100831910(self, bounds.origin.x, a2, &selRef_trackRectForBounds_);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -49,14 +49,14 @@
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  v10 = sub_100831C70(x, y, width, height, a5);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  v10 = sub_100831C70(x, y, width, height, value);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -72,12 +72,12 @@
   return result;
 }
 
-- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithFrame:(CGRect)a3
+- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (self + OBJC_IVAR____TtCC7Journal23ZoomSliderBarButtonItem6Slider_contentInsets);
   *v7 = xmmword_10096D590;
   v7[1] = xmmword_10096D590;
@@ -87,7 +87,7 @@
   return [(ZoomSliderBarButtonItem.Slider *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithCoder:(id)a3
+- (_TtCC7Journal23ZoomSliderBarButtonItem6Slider)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtCC7Journal23ZoomSliderBarButtonItem6Slider_contentInsets);
   *v4 = xmmword_10096D590;
@@ -95,8 +95,8 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC7Journal23ZoomSliderBarButtonItem6Slider_thumbSize) = xmmword_10096D5A0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ZoomSliderBarButtonItem.Slider();
-  v5 = a3;
-  v6 = [(ZoomSliderBarButtonItem.Slider *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ZoomSliderBarButtonItem.Slider *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,14 +1,14 @@
 @interface DetailsInfoTabView.KeyTransparency.ContactVerificationController.Coordinator
 - (_TtCVOV7ChatKit18DetailsInfoTabView15KeyTransparency29ContactVerificationController11Coordinator)init;
-- (void)keyTransparencyConversationViewControllerDidComplete:(id)a3;
+- (void)keyTransparencyConversationViewControllerDidComplete:(id)complete;
 @end
 
 @implementation DetailsInfoTabView.KeyTransparency.ContactVerificationController.Coordinator
 
-- (void)keyTransparencyConversationViewControllerDidComplete:(id)a3
+- (void)keyTransparencyConversationViewControllerDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
+  completeCopy = complete;
+  selfCopy = self;
   sub_190AE239C();
 }
 

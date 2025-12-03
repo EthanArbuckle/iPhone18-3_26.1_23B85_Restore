@@ -1,27 +1,27 @@
 @interface CPLMomentSharePreviewData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCuratedAssetIdentifiers:(id)a3;
-- (void)addPreviewImageData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCuratedAssetIdentifiers:(id)identifiers;
+- (void)addPreviewImageData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLMomentSharePreviewData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[4];
+  v5 = fromCopy[4];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -45,12 +45,12 @@
     while (v7);
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(CPLMomentSharePreviewData *)self setKeyAssetIdentifier:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(CPLMomentSharePreviewData *)self setCropRectString:?];
   }
@@ -59,7 +59,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -94,13 +94,13 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_curatedAssetIdentifiers hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((previewImageDatas = self->_previewImageDatas, !(previewImageDatas | v4[4])) || -[NSMutableArray isEqual:](previewImageDatas, "isEqual:")) && ((keyAssetIdentifier = self->_keyAssetIdentifier, !(keyAssetIdentifier | v4[3])) || -[NSString isEqual:](keyAssetIdentifier, "isEqual:")) && ((cropRectString = self->_cropRectString, !(cropRectString | v4[1])) || -[NSString isEqual:](cropRectString, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((previewImageDatas = self->_previewImageDatas, !(previewImageDatas | equalCopy[4])) || -[NSMutableArray isEqual:](previewImageDatas, "isEqual:")) && ((keyAssetIdentifier = self->_keyAssetIdentifier, !(keyAssetIdentifier | equalCopy[3])) || -[NSString isEqual:](keyAssetIdentifier, "isEqual:")) && ((cropRectString = self->_cropRectString, !(cropRectString | equalCopy[1])) || -[NSString isEqual:](cropRectString, "isEqual:")))
   {
     curatedAssetIdentifiers = self->_curatedAssetIdentifiers;
-    if (curatedAssetIdentifiers | v4[2])
+    if (curatedAssetIdentifiers | equalCopy[2])
     {
       v9 = [(NSMutableArray *)curatedAssetIdentifiers isEqual:?];
     }
@@ -119,10 +119,10 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -143,7 +143,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v28 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v28 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addPreviewImageData:v11];
 
         ++v10;
@@ -156,11 +156,11 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_keyAssetIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_keyAssetIdentifier copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_cropRectString copyWithZone:a3];
+  v14 = [(NSString *)self->_cropRectString copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
@@ -184,7 +184,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{zone, v24}];
         [v5 addCuratedAssetIdentifiers:v21];
 
         ++v20;
@@ -201,54 +201,54 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(CPLMomentSharePreviewData *)self previewImageDatasCount])
   {
-    [v12 clearPreviewImageDatas];
-    v4 = [(CPLMomentSharePreviewData *)self previewImageDatasCount];
-    if (v4)
+    [toCopy clearPreviewImageDatas];
+    previewImageDatasCount = [(CPLMomentSharePreviewData *)self previewImageDatasCount];
+    if (previewImageDatasCount)
     {
-      v5 = v4;
+      v5 = previewImageDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CPLMomentSharePreviewData *)self previewImageDataAtIndex:i];
-        [v12 addPreviewImageData:v7];
+        [toCopy addPreviewImageData:v7];
       }
     }
   }
 
   if (self->_keyAssetIdentifier)
   {
-    [v12 setKeyAssetIdentifier:?];
+    [toCopy setKeyAssetIdentifier:?];
   }
 
   if (self->_cropRectString)
   {
-    [v12 setCropRectString:?];
+    [toCopy setCropRectString:?];
   }
 
   if ([(CPLMomentSharePreviewData *)self curatedAssetIdentifiersCount])
   {
-    [v12 clearCuratedAssetIdentifiers];
-    v8 = [(CPLMomentSharePreviewData *)self curatedAssetIdentifiersCount];
-    if (v8)
+    [toCopy clearCuratedAssetIdentifiers];
+    curatedAssetIdentifiersCount = [(CPLMomentSharePreviewData *)self curatedAssetIdentifiersCount];
+    if (curatedAssetIdentifiersCount)
     {
-      v9 = v8;
+      v9 = curatedAssetIdentifiersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(CPLMomentSharePreviewData *)self curatedAssetIdentifiersAtIndex:j];
-        [v12 addCuratedAssetIdentifiers:v11];
+        [toCopy addCuratedAssetIdentifiers:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -328,12 +328,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   previewImageDatas = self->_previewImageDatas;
   if (previewImageDatas)
   {
-    [v3 setObject:previewImageDatas forKey:@"previewImageData"];
+    [dictionary setObject:previewImageDatas forKey:@"previewImageData"];
   }
 
   keyAssetIdentifier = self->_keyAssetIdentifier;
@@ -363,46 +363,46 @@
   v8.receiver = self;
   v8.super_class = CPLMomentSharePreviewData;
   v4 = [(CPLMomentSharePreviewData *)&v8 description];
-  v5 = [(CPLMomentSharePreviewData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLMomentSharePreviewData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addCuratedAssetIdentifiers:(id)a3
+- (void)addCuratedAssetIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   curatedAssetIdentifiers = self->_curatedAssetIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!curatedAssetIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_curatedAssetIdentifiers;
     self->_curatedAssetIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     curatedAssetIdentifiers = self->_curatedAssetIdentifiers;
   }
 
-  [(NSMutableArray *)curatedAssetIdentifiers addObject:v4];
+  [(NSMutableArray *)curatedAssetIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addPreviewImageData:(id)a3
+- (void)addPreviewImageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   previewImageDatas = self->_previewImageDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!previewImageDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_previewImageDatas;
     self->_previewImageDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     previewImageDatas = self->_previewImageDatas;
   }
 
-  [(NSMutableArray *)previewImageDatas addObject:v4];
+  [(NSMutableArray *)previewImageDatas addObject:dataCopy];
 }
 
 @end

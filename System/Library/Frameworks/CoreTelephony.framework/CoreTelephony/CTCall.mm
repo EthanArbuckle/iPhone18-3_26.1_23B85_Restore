@@ -1,14 +1,14 @@
 @interface CTCall
-+ (id)callForCXCall:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)callForCXCall:(id)call;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation CTCall
 
-+ (id)callForCXCall:(id)a3
++ (id)callForCXCall:(id)call
 {
-  if (!a3)
+  if (!call)
   {
     return 0;
   }
@@ -20,7 +20,7 @@
   }
 
   v5 = v4;
-  if ([a3 isOutgoing])
+  if ([call isOutgoing])
   {
     v6 = @"CTCallStateDialing";
   }
@@ -31,17 +31,17 @@
   }
 
   [(CTCall *)v5 setCallState:v6];
-  if ([a3 hasConnected])
+  if ([call hasConnected])
   {
     [(CTCall *)v5 setCallState:@"CTCallStateConnected"];
   }
 
-  if ([a3 hasEnded])
+  if ([call hasEnded])
   {
     [(CTCall *)v5 setCallState:@"CTCallStateDisconnected"];
   }
 
-  -[CTCall setCallID:](v5, "setCallID:", [objc_msgSend(a3 "UUID")]);
+  -[CTCall setCallID:](v5, "setCallID:", [objc_msgSend(call "UUID")]);
 
   return v5;
 }
@@ -53,17 +53,17 @@
   [(CTCall *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!-[CTCall callID](self, "callID") || ![a3 callID])
+  if (!-[CTCall callID](self, "callID") || ![equal callID])
   {
     return 0;
   }
 
-  v5 = [(CTCall *)self callID];
-  v6 = [a3 callID];
+  callID = [(CTCall *)self callID];
+  callID2 = [equal callID];
 
-  return [(NSString *)v5 isEqualToString:v6];
+  return [(NSString *)callID isEqualToString:callID2];
 }
 
 @end

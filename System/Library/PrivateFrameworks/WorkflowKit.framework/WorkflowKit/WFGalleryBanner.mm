@@ -1,7 +1,7 @@
 @interface WFGalleryBanner
 + (CGSize)pointSize;
 + (NSDictionary)properties;
-- (WFGalleryBanner)initWithIdentifier:(id)a3 name:(id)a4 subtitle:(id)a5 detailPage:(id)a6 imageFile:(id)a7 language:(id)a8 base:(id)a9 persistentIdentifier:(id)a10 supportedIdioms:(id)a11;
+- (WFGalleryBanner)initWithIdentifier:(id)identifier name:(id)name subtitle:(id)subtitle detailPage:(id)page imageFile:(id)file language:(id)language base:(id)base persistentIdentifier:(id)self0 supportedIdioms:(id)self1;
 - (WFImage)image;
 @end
 
@@ -9,13 +9,13 @@
 
 - (WFImage)image
 {
-  v2 = [(WFGalleryBanner *)self imageFile];
-  v3 = v2;
-  if (v2)
+  imageFile = [(WFGalleryBanner *)self imageFile];
+  v3 = imageFile;
+  if (imageFile)
   {
     v4 = MEMORY[0x1E69E0B58];
-    v5 = [v2 mappedData];
-    v6 = [v4 imageWithData:v5 scale:0 allowAnimated:1.0];
+    mappedData = [imageFile mappedData];
+    v6 = [v4 imageWithData:mappedData scale:0 allowAnimated:1.0];
   }
 
   else
@@ -26,46 +26,46 @@
   return v6;
 }
 
-- (WFGalleryBanner)initWithIdentifier:(id)a3 name:(id)a4 subtitle:(id)a5 detailPage:(id)a6 imageFile:(id)a7 language:(id)a8 base:(id)a9 persistentIdentifier:(id)a10 supportedIdioms:(id)a11
+- (WFGalleryBanner)initWithIdentifier:(id)identifier name:(id)name subtitle:(id)subtitle detailPage:(id)page imageFile:(id)file language:(id)language base:(id)base persistentIdentifier:(id)self0 supportedIdioms:(id)self1
 {
-  v42 = a3;
-  v17 = a4;
-  v18 = a5;
-  obj = a6;
-  v41 = a6;
-  v40 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = v17;
-  v22 = a10;
-  v23 = a11;
+  identifierCopy = identifier;
+  nameCopy = name;
+  subtitleCopy = subtitle;
+  obj = page;
+  pageCopy = page;
+  fileCopy = file;
+  languageCopy = language;
+  baseCopy = base;
+  v21 = nameCopy;
+  persistentIdentifierCopy = persistentIdentifier;
+  idiomsCopy = idioms;
   v43.receiver = self;
   v43.super_class = WFGalleryBanner;
   v24 = [(WFGalleryBanner *)&v43 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_identifier, a3);
+    objc_storeStrong(&v24->_identifier, identifier);
     v26 = [v21 copy];
     name = v25->_name;
     v25->_name = v26;
 
-    v28 = [v18 copy];
+    v28 = [subtitleCopy copy];
     subtitle = v25->_subtitle;
     v25->_subtitle = v28;
 
     objc_storeStrong(&v25->_detailPage, obj);
-    objc_storeStrong(&v25->_imageFile, a7);
-    v30 = [v19 copy];
+    objc_storeStrong(&v25->_imageFile, file);
+    v30 = [languageCopy copy];
     language = v25->_language;
     v25->_language = v30;
 
-    objc_storeStrong(&v25->_base, a9);
-    v32 = [v22 copy];
+    objc_storeStrong(&v25->_base, base);
+    v32 = [persistentIdentifierCopy copy];
     persistentIdentifier = v25->_persistentIdentifier;
     v25->_persistentIdentifier = v32;
 
-    v34 = [v23 copy];
+    v34 = [idiomsCopy copy];
     supportedIdioms = v25->_supportedIdioms;
     v25->_supportedIdioms = v34;
 

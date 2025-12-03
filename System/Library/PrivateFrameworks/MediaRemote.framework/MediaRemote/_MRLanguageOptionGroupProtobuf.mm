@@ -1,33 +1,33 @@
 @interface _MRLanguageOptionGroupProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLanguageOptions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLanguageOptions:(id)options;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRLanguageOptionGroupProtobuf
 
-- (void)addLanguageOptions:(id)a3
+- (void)addLanguageOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   languageOptions = self->_languageOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!languageOptions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_languageOptions;
     self->_languageOptions = v6;
 
-    v4 = v8;
+    optionsCopy = v8;
     languageOptions = self->_languageOptions;
   }
 
-  [(NSMutableArray *)languageOptions addObject:v4];
+  [(NSMutableArray *)languageOptions addObject:optionsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = _MRLanguageOptionGroupProtobuf;
   v4 = [(_MRLanguageOptionGroupProtobuf *)&v8 description];
-  v5 = [(_MRLanguageOptionGroupProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRLanguageOptionGroupProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,18 +45,18 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowEmptySelection];
-    [v3 setObject:v4 forKey:@"allowEmptySelection"];
+    [dictionary setObject:v4 forKey:@"allowEmptySelection"];
   }
 
   defaultLanguageOption = self->_defaultLanguageOption;
   if (defaultLanguageOption)
   {
-    v6 = [(_MRLanguageOptionProtobuf *)defaultLanguageOption dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"defaultLanguageOption"];
+    dictionaryRepresentation = [(_MRLanguageOptionProtobuf *)defaultLanguageOption dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"defaultLanguageOption"];
   }
 
   if ([(NSMutableArray *)self->_languageOptions count])
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -91,18 +91,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"languageOptions"];
+    [dictionary setObject:v7 forKey:@"languageOptions"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     allowEmptySelection = self->_allowEmptySelection;
@@ -149,28 +149,28 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[24] = self->_allowEmptySelection;
-    v4[28] |= 1u;
+    toCopy[24] = self->_allowEmptySelection;
+    toCopy[28] |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_defaultLanguageOption)
   {
-    [v4 setDefaultLanguageOption:?];
+    [toCopy setDefaultLanguageOption:?];
   }
 
   if ([(_MRLanguageOptionGroupProtobuf *)self languageOptionsCount])
   {
     [v9 clearLanguageOptions];
-    v5 = [(_MRLanguageOptionGroupProtobuf *)self languageOptionsCount];
-    if (v5)
+    languageOptionsCount = [(_MRLanguageOptionGroupProtobuf *)self languageOptionsCount];
+    if (languageOptionsCount)
     {
-      v6 = v5;
+      v6 = languageOptionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(_MRLanguageOptionGroupProtobuf *)self languageOptionsAtIndex:i];
@@ -180,10 +180,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -191,7 +191,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(_MRLanguageOptionProtobuf *)self->_defaultLanguageOption copyWithZone:a3];
+  v7 = [(_MRLanguageOptionProtobuf *)self->_defaultLanguageOption copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -215,7 +215,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * v13) copyWithZone:{zone, v17}];
         [v6 addLanguageOptions:v14];
 
         ++v13;
@@ -232,26 +232,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v5 = *(v4 + 24);
+    v5 = *(equalCopy + 24);
     if (self->_allowEmptySelection)
     {
-      if (*(v4 + 24))
+      if (*(equalCopy + 24))
       {
         goto LABEL_4;
       }
@@ -269,13 +269,13 @@ LABEL_9:
 
 LABEL_4:
   defaultLanguageOption = self->_defaultLanguageOption;
-  if (defaultLanguageOption | *(v4 + 1) && ![(_MRLanguageOptionProtobuf *)defaultLanguageOption isEqual:?])
+  if (defaultLanguageOption | *(equalCopy + 1) && ![(_MRLanguageOptionProtobuf *)defaultLanguageOption isEqual:?])
   {
     goto LABEL_9;
   }
 
   languageOptions = self->_languageOptions;
-  if (languageOptions | *(v4 + 2))
+  if (languageOptions | *(equalCopy + 2))
   {
     v8 = [(NSMutableArray *)languageOptions isEqual:?];
   }
@@ -306,14 +306,14 @@ LABEL_10:
   return v4 ^ [(NSMutableArray *)self->_languageOptions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[28])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[28])
   {
-    self->_allowEmptySelection = v4[24];
+    self->_allowEmptySelection = fromCopy[24];
     *&self->_has |= 1u;
   }
 

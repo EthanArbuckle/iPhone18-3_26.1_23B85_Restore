@@ -1,27 +1,27 @@
 @interface FLOWSchemaFLOWContact
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWContact)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWContact)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWContact)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWContact)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsUnnamedPhoneNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsUnnamedPhoneNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWContact
 
-- (FLOWSchemaFLOWContact)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWContact)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWContact;
   v5 = [(FLOWSchemaFLOWContact *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(FLOWSchemaFLOWContact *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isRelationship"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isRelationship"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWContact setIsRelationship:](v5, "setIsRelationship:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isUnnamedPhoneNumber"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isUnnamedPhoneNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWContact)initWithJSON:(id)a3
+- (FLOWSchemaFLOWContact)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWContact *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWContact *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWContact *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isUnnamedPhoneNumber + 1);
   if (v4)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWContact isRelationship](self, "isRelationship")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isRelationship"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isRelationship"];
 
     v4 = *(&self->_isUnnamedPhoneNumber + 1);
   }
@@ -98,28 +98,28 @@
   if ((v4 & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWContact isUnnamedPhoneNumber](self, "isUnnamedPhoneNumber")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isUnnamedPhoneNumber"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isUnnamedPhoneNumber"];
   }
 
   if (self->_linkId)
   {
-    v7 = [(FLOWSchemaFLOWContact *)self linkId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    linkId = [(FLOWSchemaFLOWContact *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -149,30 +149,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(FLOWSchemaFLOWContact *)self linkId];
-  v6 = [v4 linkId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWContact *)self linkId];
+  linkId2 = [equalCopy linkId];
+  v7 = linkId2;
+  if ((linkId != 0) == (linkId2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(FLOWSchemaFLOWContact *)self linkId];
-  if (v8)
+  linkId3 = [(FLOWSchemaFLOWContact *)self linkId];
+  if (linkId3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWContact *)self linkId];
-    v11 = [v4 linkId];
-    v12 = [v10 isEqual:v11];
+    v9 = linkId3;
+    linkId4 = [(FLOWSchemaFLOWContact *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v12 = [linkId4 isEqual:linkId5];
 
     if (!v12)
     {
@@ -185,7 +185,7 @@ LABEL_3:
   }
 
   v13 = *(&self->_isUnnamedPhoneNumber + 1);
-  v14 = v4[18];
+  v14 = equalCopy[18];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -196,10 +196,10 @@ LABEL_16:
   if (v13)
   {
     isRelationship = self->_isRelationship;
-    if (isRelationship == [v4 isRelationship])
+    if (isRelationship == [equalCopy isRelationship])
     {
       v13 = *(&self->_isUnnamedPhoneNumber + 1);
-      v14 = v4[18];
+      v14 = equalCopy[18];
       goto LABEL_12;
     }
 
@@ -216,7 +216,7 @@ LABEL_12:
   if (v16)
   {
     isUnnamedPhoneNumber = self->_isUnnamedPhoneNumber;
-    if (isUnnamedPhoneNumber != [v4 isUnnamedPhoneNumber])
+    if (isUnnamedPhoneNumber != [equalCopy isUnnamedPhoneNumber])
     {
       goto LABEL_16;
     }
@@ -228,14 +228,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(FLOWSchemaFLOWContact *)self linkId];
+  toCopy = to;
+  linkId = [(FLOWSchemaFLOWContact *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(FLOWSchemaFLOWContact *)self linkId];
+    linkId2 = [(FLOWSchemaFLOWContact *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -246,17 +246,17 @@ LABEL_17:
     v6 = *(&self->_isUnnamedPhoneNumber + 1);
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((v6 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasIsUnnamedPhoneNumber:(BOOL)a3
+- (void)setHasIsUnnamedPhoneNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 2;
   }
@@ -269,17 +269,17 @@ LABEL_17:
   *(&self->_isUnnamedPhoneNumber + 1) = *(&self->_isUnnamedPhoneNumber + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLOWSchemaFLOWContact;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLOWSchemaFLOWContact *)self linkId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(FLOWSchemaFLOWContact *)self deleteLinkId];
   }

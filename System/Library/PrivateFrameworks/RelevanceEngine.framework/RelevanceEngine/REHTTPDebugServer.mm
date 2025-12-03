@@ -1,39 +1,39 @@
 @interface REHTTPDebugServer
-- (BOOL)_isReservedFilePath:(id)a3;
+- (BOOL)_isReservedFilePath:(id)path;
 - (REHTTPDebugServerDataSource)dataSource;
-- (SEL)_serverMethod:(id)a3;
+- (SEL)_serverMethod:(id)method;
 - (id)_aboutPage;
 - (id)_create404Element;
-- (id)_createContentItemWithTitle:(id)a3 content:(id)a4;
+- (id)_createContentItemWithTitle:(id)title content:(id)content;
 - (id)_enginesPage;
 - (id)_landingPage;
 - (id)_pageMap;
-- (id)_radarLinkWithTitle:(id)a3;
-- (void)_availableEngineInstancesForProcess:(id)a3 completion:(id)a4;
-- (void)_handleFileRequest:(id)a3 completion:(id)a4;
-- (void)_loadAvailableEngines:(id)a3;
-- (void)_loadEngineListWithRequest:(id)a3 completion:(id)a4;
-- (void)_loadPageForReservedPath:(id)a3 completion:(id)a4;
-- (void)httpServer:(id)a3 handleRequest:(id)a4 completion:(id)a5;
+- (id)_radarLinkWithTitle:(id)title;
+- (void)_availableEngineInstancesForProcess:(id)process completion:(id)completion;
+- (void)_handleFileRequest:(id)request completion:(id)completion;
+- (void)_loadAvailableEngines:(id)engines;
+- (void)_loadEngineListWithRequest:(id)request completion:(id)completion;
+- (void)_loadPageForReservedPath:(id)path completion:(id)completion;
+- (void)httpServer:(id)server handleRequest:(id)request completion:(id)completion;
 @end
 
 @implementation REHTTPDebugServer
 
-- (void)_loadAvailableEngines:(id)a3
+- (void)_loadAvailableEngines:(id)engines
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(REHTTPDebugServer *)self setAvailableEngines:v4];
-  v5 = [MEMORY[0x277CBEB18] array];
+  enginesCopy = engines;
+  [(REHTTPDebugServer *)self setAvailableEngines:enginesCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   obj = [(REHTTPDebugServer *)self _pageMap];
   v6 = [obj countByEnumeratingWithState:&v74 objects:v80 count:16];
-  v65 = self;
-  v60 = v5;
-  v62 = v4;
+  selfCopy = self;
+  v60 = array;
+  v62 = enginesCopy;
   if (v6)
   {
     v7 = v6;
@@ -48,26 +48,26 @@
         }
 
         v10 = *(*(&v74 + 1) + 8 * i);
-        v11 = [(REHTTPDebugServer *)self _pageMap];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        _pageMap = [(REHTTPDebugServer *)self _pageMap];
+        v12 = [_pageMap objectForKeyedSubscript:v10];
 
-        v13 = [v12 attributes];
-        v14 = [v13 objectForKeyedSubscript:@"re-display-name"];
+        attributes = [v12 attributes];
+        v14 = [attributes objectForKeyedSubscript:@"re-display-name"];
         v15 = v14;
         if (v14)
         {
-          v16 = v14;
+          _pageTitle = v14;
         }
 
         else
         {
-          v16 = [(REHTTPDebugServer *)self _pageTitle];
+          _pageTitle = [(REHTTPDebugServer *)self _pageTitle];
         }
 
-        v17 = v16;
+        v17 = _pageTitle;
 
-        v18 = [(REHTTPDebugServer *)self _pageTitle];
-        v19 = [v17 isEqualToString:v18];
+        _pageTitle2 = [(REHTTPDebugServer *)self _pageTitle];
+        v19 = [v17 isEqualToString:_pageTitle2];
 
         if (v19)
         {
@@ -75,14 +75,14 @@
           v22 = [@"/" stringByAppendingPathComponent:v10];
           v20 = [(REHTMLPageNavigationLink *)v21 initWithLocation:v22 title:v17];
 
-          v5 = v60;
+          array = v60;
           [v60 addObject:v20];
 
-          self = v65;
+          self = selfCopy;
           goto LABEL_14;
         }
 
-        self = v65;
+        self = selfCopy;
       }
 
       v7 = [obj countByEnumeratingWithState:&v74 objects:v80 count:16];
@@ -95,9 +95,9 @@
     }
 
     v20 = 0;
-    v5 = v60;
+    array = v60;
 LABEL_14:
-    v4 = v62;
+    enginesCopy = v62;
   }
 
   else
@@ -105,16 +105,16 @@ LABEL_14:
     v20 = 0;
   }
 
-  if ([v4 count])
+  if ([enginesCopy count])
   {
-    v23 = [v4 sortedArrayUsingComparator:&__block_literal_global_28];
+    v23 = [enginesCopy sortedArrayUsingComparator:&__block_literal_global_28];
 
     v24 = [REHTMLPageNavigationLink alloc];
-    v25 = [(REHTTPDebugServer *)self processName];
-    v26 = v25;
-    if (v25)
+    processName = [(REHTTPDebugServer *)self processName];
+    v26 = processName;
+    if (processName)
     {
-      v27 = v25;
+      v27 = processName;
     }
 
     else
@@ -123,7 +123,7 @@ LABEL_14:
     }
 
     v28 = [(REHTMLPageNavigationLink *)v24 initWithLocation:&stru_283B97458 title:v27, v60];
-    [v5 addObject:v28];
+    [array addObject:v28];
 
     v72 = 0u;
     v73 = 0u;
@@ -151,7 +151,7 @@ LABEL_14:
           v37 = [@"/" stringByAppendingPathComponent:v36];
           v38 = [(REHTMLPageNavigationLink *)v35 initWithLocation:v37 title:v34];
 
-          [v5 addObject:v38];
+          [array addObject:v38];
         }
 
         v29 = v62;
@@ -161,10 +161,10 @@ LABEL_14:
       while (v31);
     }
 
-    self = v65;
+    self = selfCopy;
   }
 
-  v39 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
@@ -187,9 +187,9 @@ LABEL_14:
         v44 = *(*(&v66 + 1) + 8 * k);
         if (v20)
         {
-          v45 = [(REHTMLPageNavigationLink *)v20 location];
-          v46 = [v45 lastPathComponent];
-          v47 = [v44 isEqualToString:v46];
+          location = [(REHTMLPageNavigationLink *)v20 location];
+          lastPathComponent = [location lastPathComponent];
+          v47 = [v44 isEqualToString:lastPathComponent];
 
           if (v47)
           {
@@ -197,29 +197,29 @@ LABEL_14:
           }
         }
 
-        v48 = [(REHTTPDebugServer *)v65 _pageMap];
-        v49 = [v48 objectForKeyedSubscript:v44];
+        _pageMap2 = [(REHTTPDebugServer *)selfCopy _pageMap];
+        v49 = [_pageMap2 objectForKeyedSubscript:v44];
 
-        v50 = [v49 attributes];
-        v51 = [v50 objectForKeyedSubscript:@"re-display-name"];
+        attributes2 = [v49 attributes];
+        v51 = [attributes2 objectForKeyedSubscript:@"re-display-name"];
         v52 = v51;
         if (v51)
         {
-          v53 = v51;
+          _pageTitle3 = v51;
         }
 
         else
         {
-          v53 = [(REHTTPDebugServer *)v65 _pageTitle];
+          _pageTitle3 = [(REHTTPDebugServer *)selfCopy _pageTitle];
         }
 
-        v54 = v53;
+        v54 = _pageTitle3;
 
         v55 = [REHTMLPageNavigationLink alloc];
         v56 = [@"/" stringByAppendingPathComponent:v44];
         v57 = [(REHTMLPageNavigationLink *)v55 initWithLocation:v56 title:v54];
 
-        [v39 addObject:v57];
+        [array2 addObject:v57];
       }
 
       v41 = [obja countByEnumeratingWithState:&v66 objects:v78 count:16];
@@ -228,16 +228,16 @@ LABEL_14:
     while (v41);
   }
 
-  if ([v39 count])
+  if ([array2 count])
   {
-    [v39 sortUsingComparator:&__block_literal_global_36_0];
+    [array2 sortUsingComparator:&__block_literal_global_36_0];
     v58 = [[REHTMLPageNavigationLink alloc] initWithLocation:&stru_283B97458 title:&stru_283B97458];
     [v61 addObject:v58];
 
-    [v61 addObjectsFromArray:v39];
+    [v61 addObjectsFromArray:array2];
   }
 
-  [(REHTMLPageBuilder *)v65->_pageBuilder setLinks:v61];
+  [(REHTMLPageBuilder *)selfCopy->_pageBuilder setLinks:v61];
 
   v59 = *MEMORY[0x277D85DE8];
 }
@@ -252,16 +252,16 @@ uint64_t __43__REHTTPDebugServer__loadAvailableEngines___block_invoke_2(uint64_t
   return v7;
 }
 
-- (id)_createContentItemWithTitle:(id)a3 content:(id)a4
+- (id)_createContentItemWithTitle:(id)title content:(id)content
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  titleCopy = title;
+  contentCopy = content;
+  if (titleCopy)
   {
     v7 = +[REHTMLElement div];
     v8 = [v7 elementByAddingClass:@"section"];
 
-    v9 = [REHTMLElement elementWithHTMLString:v5];
+    v9 = [REHTMLElement elementWithHTMLString:titleCopy];
     v10 = [v8 addChild:v9];
   }
 
@@ -280,9 +280,9 @@ uint64_t __43__REHTTPDebugServer__loadAvailableEngines___block_invoke_2(uint64_t
     v12 = v13;
   }
 
-  if (v6)
+  if (contentCopy)
   {
-    v14 = [v12 addChild:v6];
+    v14 = [v12 addChild:contentCopy];
 
     v12 = v14;
   }
@@ -295,70 +295,70 @@ uint64_t __43__REHTTPDebugServer__loadAvailableEngines___block_invoke_2(uint64_t
   v3 = [REHTMLElement elementWithHTMLString:@"<br><div style=display: inline-block text-align: center; font-size: 300%; width: 100%;>👻</div><br><br>"];;
   v4 = [(REHTTPDebugServer *)self _createContentItemWithTitle:@"Page not found — 404" content:v3];
   pageBuilder = self->_pageBuilder;
-  v6 = [(REHTTPDebugServer *)self _pageTitle];
-  v7 = [(REHTMLPageBuilder *)pageBuilder pageWithTitle:v6 content:v4 backLocation:0];
+  _pageTitle = [(REHTTPDebugServer *)self _pageTitle];
+  v7 = [(REHTMLPageBuilder *)pageBuilder pageWithTitle:_pageTitle content:v4 backLocation:0];
 
   return v7;
 }
 
-- (void)_handleFileRequest:(id)a3 completion:(id)a4
+- (void)_handleFileRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v8 = WeakRetained;
     if (WeakRetained && (*&self->_dataSourceCallbacks & 2) != 0)
     {
-      [WeakRetained debugServer:self processName:self->_processName handleFileRequest:v9 completion:v6];
+      [WeakRetained debugServer:self processName:self->_processName handleFileRequest:requestCopy completion:completionCopy];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
 
-- (void)_availableEngineInstancesForProcess:(id)a3 completion:(id)a4
+- (void)_availableEngineInstancesForProcess:(id)process completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  processCopy = process;
+  completionCopy = completion;
+  if (completionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v8 = WeakRetained;
     if (WeakRetained && (*&self->_dataSourceCallbacks & 1) != 0)
     {
-      [WeakRetained debugServer:self availableEngineInstancesForProcess:v9 completion:v6];
+      [WeakRetained debugServer:self availableEngineInstancesForProcess:processCopy completion:completionCopy];
     }
 
     else
     {
-      v6[2](v6, MEMORY[0x277CBEBF8]);
+      completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
     }
   }
 }
 
-- (void)httpServer:(id)a3 handleRequest:(id)a4 completion:(id)a5
+- (void)httpServer:(id)server handleRequest:(id)request completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = MEMORY[0x277CCACE0];
-  v10 = [v7 url];
+  v10 = [requestCopy url];
   v11 = [v9 componentsWithURL:v10 resolvingAgainstBaseURL:0];
 
   [v11 setQuery:0];
-  v12 = [v11 path];
-  if (v12)
+  path = [v11 path];
+  if (path)
   {
-    v13 = v12;
-    v14 = [v7 url];
-    v15 = [v14 hasDirectoryPath];
+    v13 = path;
+    v14 = [requestCopy url];
+    hasDirectoryPath = [v14 hasDirectoryPath];
 
-    if (v15)
+    if (hasDirectoryPath)
     {
       v16 = [(__CFString *)v13 stringByAppendingPathComponent:@"index.html"];
 
@@ -377,10 +377,10 @@ uint64_t __43__REHTTPDebugServer__loadAvailableEngines___block_invoke_2(uint64_t
   v34 = &unk_2785FBC50;
   v17 = v13;
   v35 = v17;
-  v18 = v7;
+  v18 = requestCopy;
   v36 = v18;
-  v37 = self;
-  v19 = v8;
+  selfCopy = self;
+  v19 = completionCopy;
   v38 = v19;
   v20 = MEMORY[0x22AABC5E0](&v31);
   v21 = [(REHTTPDebugServer *)self _serverMethod:v17, v31, v32, v33, v34];
@@ -409,7 +409,7 @@ uint64_t __43__REHTTPDebugServer__loadAvailableEngines___block_invoke_2(uint64_t
   {
     v26 = [(REHTTPFileCache *)self->_cache loadFileAtPath:v17];
     v27 = [v18 url];
-    v28 = [v27 path];
+    path2 = [v27 path];
 
     if (v26)
     {
@@ -420,10 +420,10 @@ uint64_t __43__REHTTPDebugServer__loadAvailableEngines___block_invoke_2(uint64_t
 
     else
     {
-      [(REHTTPDebugServer *)self _handleFileRequest:v28 completion:v20];
+      [(REHTTPDebugServer *)self _handleFileRequest:path2 completion:v20];
     }
 
-    v17 = v28;
+    v17 = path2;
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -487,7 +487,7 @@ void __29__REHTTPDebugServer__pageMap__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (SEL)_serverMethod:(id)a3
+- (SEL)_serverMethod:(id)method
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -495,13 +495,13 @@ void __29__REHTTPDebugServer__pageMap__block_invoke(uint64_t a1)
   block[3] = &unk_2785F9AB8;
   block[4] = self;
   v3 = _serverMethod__onceToken;
-  v4 = a3;
+  methodCopy = method;
   if (v3 != -1)
   {
     dispatch_once(&_serverMethod__onceToken, block);
   }
 
-  v5 = [@"/" stringByAppendingPathComponent:v4];
+  v5 = [@"/" stringByAppendingPathComponent:methodCopy];
 
   v6 = [_serverMethod__MethodMap objectForKey:v5];
   return v6;
@@ -517,7 +517,7 @@ void __35__REHTTPDebugServer__serverMethod___block_invoke(uint64_t a1)
   _serverMethod__MethodMap = v2;
 }
 
-- (BOOL)_isReservedFilePath:(id)a3
+- (BOOL)_isReservedFilePath:(id)path
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -525,13 +525,13 @@ void __35__REHTTPDebugServer__serverMethod___block_invoke(uint64_t a1)
   block[3] = &unk_2785F9AB8;
   block[4] = self;
   v3 = _isReservedFilePath__onceToken;
-  v4 = a3;
+  pathCopy = path;
   if (v3 != -1)
   {
     dispatch_once(&_isReservedFilePath__onceToken, block);
   }
 
-  v5 = [@"/" stringByAppendingPathComponent:v4];
+  v5 = [@"/" stringByAppendingPathComponent:pathCopy];
 
   v6 = [_isReservedFilePath__Paths containsObject:v5];
   return v6;
@@ -584,39 +584,39 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadPageForReservedPath:(id)a3 completion:(id)a4
+- (void)_loadPageForReservedPath:(id)path completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 lastPathComponent];
+  completionCopy = completion;
+  lastPathComponent = [path lastPathComponent];
   v8 = RELogForDomain(21);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = lastPathComponent;
     _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_INFO, "Vending system page %@", &v14, 0xCu);
   }
 
-  v9 = [(REHTTPDebugServer *)self _pageMap];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  _pageMap = [(REHTTPDebugServer *)self _pageMap];
+  v10 = [_pageMap objectForKeyedSubscript:lastPathComponent];
 
-  v11 = [v10 attributes];
-  v12 = [v11 objectForKeyedSubscript:@"re-display-name"];
+  attributes = [v10 attributes];
+  v12 = [attributes objectForKeyedSubscript:@"re-display-name"];
 
-  v6[2](v6, v10, v12);
+  completionCopy[2](completionCopy, v10, v12);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_radarLinkWithTitle:(id)a3
+- (id)_radarLinkWithTitle:(id)title
 {
-  v3 = a3;
-  if (![(__CFString *)v3 length])
+  titleCopy = title;
+  if (![(__CFString *)titleCopy length])
   {
 
-    v3 = @"Relevance Engine | 2.0";
+    titleCopy = @"Relevance Engine | 2.0";
   }
 
-  v4 = [REHTMLElement link:@"rdar://new/problem/component=Relevance%20Engine&version=2.0" title:v3];
+  v4 = [REHTMLElement link:@"rdar://new/problem/component=Relevance%20Engine&version=2.0" title:titleCopy];
 
   return v4;
 }
@@ -635,8 +635,8 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
 
 - (id)_landingPage
 {
-  v3 = [(REHTTPDebugServer *)self _landPageFileName];
-  v4 = [(REHTTPFileCache *)self->_cache loadFileAtPath:v3];
+  _landPageFileName = [(REHTTPDebugServer *)self _landPageFileName];
+  v4 = [(REHTTPFileCache *)self->_cache loadFileAtPath:_landPageFileName];
   v5 = [REHTMLElement elementWithHTMLData:v4];
 
   return v5;
@@ -657,12 +657,12 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)_loadEngineListWithRequest:(id)a3 completion:(id)a4
+- (void)_loadEngineListWithRequest:(id)request completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v34 = 0;
     v35 = &v34;
@@ -676,9 +676,9 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
     v30[3] = &unk_2785FBC78;
     v30[4] = self;
     v33 = &v34;
-    v7 = v25;
+    v7 = requestCopy;
     v31 = v7;
-    v32 = v6;
+    v32 = completionCopy;
     v23 = MEMORY[0x22AABC5E0](v30);
     v8 = MEMORY[0x277CCACE0];
     v9 = [v7 url];
@@ -688,8 +688,8 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v24 queryItems];
-    v11 = [v10 countByEnumeratingWithState:&v26 objects:v42 count:16];
+    queryItems = [v24 queryItems];
+    v11 = [queryItems countByEnumeratingWithState:&v26 objects:v42 count:16];
     if (v11)
     {
       v12 = *v27;
@@ -699,18 +699,18 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(queryItems);
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          v15 = [v14 name];
-          v16 = [v15 isEqualToString:@"engine"];
+          name = [v14 name];
+          v16 = [name isEqualToString:@"engine"];
 
           if (v16)
           {
-            v18 = [v14 value];
+            value = [v14 value];
             v19 = v35[5];
-            v35[5] = v18;
+            v35[5] = value;
 
             v20 = RELogForDomain(21);
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -726,7 +726,7 @@ void __41__REHTTPDebugServer__isReservedFilePath___block_invoke(uint64_t a1)
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v26 objects:v42 count:16];
+        v11 = [queryItems countByEnumeratingWithState:&v26 objects:v42 count:16];
         if (v11)
         {
           continue;

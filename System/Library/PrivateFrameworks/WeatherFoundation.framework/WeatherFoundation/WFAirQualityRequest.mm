@@ -1,49 +1,49 @@
 @interface WFAirQualityRequest
-+ (id)airQualityRequestForLocation:(id)a3 locale:(id)a4 completionHandler:(id)a5;
-- (WFAirQualityRequest)initWithLocation:(id)a3 locale:(id)a4 completionHandler:(id)a5;
++ (id)airQualityRequestForLocation:(id)location locale:(id)locale completionHandler:(id)handler;
+- (WFAirQualityRequest)initWithLocation:(id)location locale:(id)locale completionHandler:(id)handler;
 - (id)options;
 - (void)cleanup;
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4;
-- (void)handleResponse:(id)a3;
-- (void)startWithService:(id)a3;
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier;
+- (void)handleResponse:(id)response;
+- (void)startWithService:(id)service;
 @end
 
 @implementation WFAirQualityRequest
 
-+ (id)airQualityRequestForLocation:(id)a3 locale:(id)a4 completionHandler:(id)a5
++ (id)airQualityRequestForLocation:(id)location locale:(id)locale completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithLocation:v9 locale:v8 completionHandler:v7];
+  handlerCopy = handler;
+  localeCopy = locale;
+  locationCopy = location;
+  v10 = [objc_alloc(objc_opt_class()) initWithLocation:locationCopy locale:localeCopy completionHandler:handlerCopy];
 
   return v10;
 }
 
-- (WFAirQualityRequest)initWithLocation:(id)a3 locale:(id)a4 completionHandler:(id)a5
+- (WFAirQualityRequest)initWithLocation:(id)location locale:(id)locale completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  localeCopy = locale;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = WFAirQualityRequest;
   v11 = [(WFTask *)&v15 initWithResponseRequired:1];
   v12 = v11;
   if (v11)
   {
-    if (v9)
+    if (localeCopy)
     {
-      [(WFAirQualityRequest *)v11 setLocale:v9];
+      [(WFAirQualityRequest *)v11 setLocale:localeCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
-      [(WFAirQualityRequest *)v12 setLocale:v13];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      [(WFAirQualityRequest *)v12 setLocale:currentLocale];
     }
 
-    [(WFAirQualityRequest *)v12 setLocation:v8];
-    [(WFAirQualityRequest *)v12 setCompletionHandler:v10];
+    [(WFAirQualityRequest *)v12 setLocation:locationCopy];
+    [(WFAirQualityRequest *)v12 setCompletionHandler:handlerCopy];
   }
 
   return v12;
@@ -67,44 +67,44 @@
   return v2;
 }
 
-- (void)startWithService:(id)a3
+- (void)startWithService:(id)service
 {
-  v4 = a3;
-  v8 = [(WFAirQualityRequest *)self location];
-  v5 = [(WFAirQualityRequest *)self locale];
-  v6 = [(WFAirQualityRequest *)self options];
-  v7 = [(WFTask *)self identifier];
-  [v4 airQualityForLocation:v8 locale:v5 options:v6 taskIdentifier:v7];
+  serviceCopy = service;
+  location = [(WFAirQualityRequest *)self location];
+  locale = [(WFAirQualityRequest *)self locale];
+  options = [(WFAirQualityRequest *)self options];
+  identifier = [(WFTask *)self identifier];
+  [serviceCopy airQualityForLocation:location locale:locale options:options taskIdentifier:identifier];
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(WFAirQualityRequest *)self completionHandler];
+  responseCopy = response;
+  completionHandler = [(WFAirQualityRequest *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(WFAirQualityRequest *)self completionHandler];
-    v7 = [v4 airQualityConditions];
-    v8 = [v4 error];
-    (v6)[2](v6, v7, v8);
+    completionHandler2 = [(WFAirQualityRequest *)self completionHandler];
+    airQualityConditions = [responseCopy airQualityConditions];
+    error = [responseCopy error];
+    (completionHandler2)[2](completionHandler2, airQualityConditions, error);
   }
 
   v9.receiver = self;
   v9.super_class = WFAirQualityRequest;
-  [(WFTask *)&v9 handleResponse:v4];
+  [(WFTask *)&v9 handleResponse:responseCopy];
 }
 
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFAirQualityRequest *)self completionHandler];
-  (v8)[2](v8, 0, v7);
+  identifierCopy = identifier;
+  errorCopy = error;
+  completionHandler = [(WFAirQualityRequest *)self completionHandler];
+  (completionHandler)[2](completionHandler, 0, errorCopy);
 
   v9.receiver = self;
   v9.super_class = WFAirQualityRequest;
-  [(WFTask *)&v9 handleError:v7 forResponseIdentifier:v6];
+  [(WFTask *)&v9 handleError:errorCopy forResponseIdentifier:identifierCopy];
 }
 
 - (void)cleanup

@@ -1,18 +1,18 @@
 @interface MUPlaceFooterActionsSectionController
-- (MUPlaceFooterActionsSectionController)initWithMapItem:(id)a3 actionManager:(id)a4;
+- (MUPlaceFooterActionsSectionController)initWithMapItem:(id)item actionManager:(id)manager;
 @end
 
 @implementation MUPlaceFooterActionsSectionController
 
-- (MUPlaceFooterActionsSectionController)initWithMapItem:(id)a3 actionManager:(id)a4
+- (MUPlaceFooterActionsSectionController)initWithMapItem:(id)item actionManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = MUPlaceFooterActionsSectionController;
-  v7 = [(MUPlaceSectionController *)&v11 initWithMapItem:a3];
+  v7 = [(MUPlaceSectionController *)&v11 initWithMapItem:item];
   if (v7)
   {
-    v8 = [[MUFooterActionsSectionController alloc] initWithActionManager:v6];
+    v8 = [[MUFooterActionsSectionController alloc] initWithActionManager:managerCopy];
     underlyingSectionController = v7->_underlyingSectionController;
     v7->_underlyingSectionController = v8;
   }

@@ -1,10 +1,10 @@
 @interface CTCarrierSpaceDataPlanMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceDataPlanMetrics)init;
-- (CTCarrierSpaceDataPlanMetrics)initWithCoder:(id)a3;
+- (CTCarrierSpaceDataPlanMetrics)initWithCoder:(id)coder;
 - (CTCarrierSpaceDataPlanMetricsItem)domestic;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceDataPlanMetrics
@@ -34,25 +34,25 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceDataPlanMetrics *)self billingCycleEndDate];
-  [v3 appendFormat:@", billingCycleEndDate=%@", v4];
+  billingCycleEndDate = [(CTCarrierSpaceDataPlanMetrics *)self billingCycleEndDate];
+  [v3 appendFormat:@", billingCycleEndDate=%@", billingCycleEndDate];
 
   [v3 appendFormat:@", regStatus=%s", CTCarrierSpaceRegistrationStatusAsString(-[CTCarrierSpaceDataPlanMetrics regStatus](self, "regStatus"))];
-  v5 = [(CTCarrierSpaceDataPlanMetrics *)self domesticCapacity];
-  [v3 appendFormat:@", domesticCapacity=%@", v5];
+  domesticCapacity = [(CTCarrierSpaceDataPlanMetrics *)self domesticCapacity];
+  [v3 appendFormat:@", domesticCapacity=%@", domesticCapacity];
 
-  v6 = [(CTCarrierSpaceDataPlanMetrics *)self domestic];
-  [v3 appendFormat:@", domestic=%@", v6];
+  domestic = [(CTCarrierSpaceDataPlanMetrics *)self domestic];
+  [v3 appendFormat:@", domestic=%@", domestic];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -62,17 +62,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTCarrierSpaceDataPlanMetrics *)self billingCycleEndDate];
-      v8 = [(CTCarrierSpaceDataPlanMetrics *)v6 billingCycleEndDate];
-      if (v7 == v8 || (-[CTCarrierSpaceDataPlanMetrics billingCycleEndDate](self, "billingCycleEndDate"), v3 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpaceDataPlanMetrics billingCycleEndDate](v6, "billingCycleEndDate"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToDate:v4]))
+      billingCycleEndDate = [(CTCarrierSpaceDataPlanMetrics *)self billingCycleEndDate];
+      billingCycleEndDate2 = [(CTCarrierSpaceDataPlanMetrics *)equalCopy billingCycleEndDate];
+      if (billingCycleEndDate == billingCycleEndDate2 || (-[CTCarrierSpaceDataPlanMetrics billingCycleEndDate](self, "billingCycleEndDate"), v3 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpaceDataPlanMetrics billingCycleEndDate](equalCopy, "billingCycleEndDate"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToDate:v4]))
       {
-        v10 = [(CTCarrierSpaceDataPlanMetrics *)self regStatus];
-        if (v10 == [(CTCarrierSpaceDataPlanMetrics *)v6 regStatus])
+        regStatus = [(CTCarrierSpaceDataPlanMetrics *)self regStatus];
+        if (regStatus == [(CTCarrierSpaceDataPlanMetrics *)equalCopy regStatus])
         {
-          v11 = [(CTCarrierSpaceDataPlanMetrics *)self domesticCapacity];
-          v12 = [(CTCarrierSpaceDataPlanMetrics *)v6 domesticCapacity];
-          v13 = v12;
-          if (v11 == v12)
+          domesticCapacity = [(CTCarrierSpaceDataPlanMetrics *)self domesticCapacity];
+          domesticCapacity2 = [(CTCarrierSpaceDataPlanMetrics *)equalCopy domesticCapacity];
+          v13 = domesticCapacity2;
+          if (domesticCapacity == domesticCapacity2)
           {
 
             v9 = 1;
@@ -80,9 +80,9 @@
 
           else
           {
-            v14 = [(CTCarrierSpaceDataPlanMetrics *)self domesticCapacity];
-            v15 = [(CTCarrierSpaceDataPlanMetrics *)v6 domesticCapacity];
-            v9 = [v14 isEqualToNumber:v15];
+            domesticCapacity3 = [(CTCarrierSpaceDataPlanMetrics *)self domesticCapacity];
+            domesticCapacity4 = [(CTCarrierSpaceDataPlanMetrics *)equalCopy domesticCapacity];
+            v9 = [domesticCapacity3 isEqualToNumber:domesticCapacity4];
           }
         }
 
@@ -91,7 +91,7 @@
           v9 = 0;
         }
 
-        if (v7 == v8)
+        if (billingCycleEndDate == billingCycleEndDate2)
         {
           goto LABEL_15;
         }
@@ -130,29 +130,29 @@ LABEL_16:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   billingCycleEndDate = self->_billingCycleEndDate;
-  v5 = a3;
-  [v5 encodeObject:billingCycleEndDate forKey:@"billingCycleEndDate"];
-  [v5 encodeInteger:self->_regStatus forKey:@"regStatus"];
-  [v5 encodeObject:self->_domesticCapacity forKey:@"domesticCapacity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:billingCycleEndDate forKey:@"billingCycleEndDate"];
+  [coderCopy encodeInteger:self->_regStatus forKey:@"regStatus"];
+  [coderCopy encodeObject:self->_domesticCapacity forKey:@"domesticCapacity"];
 }
 
-- (CTCarrierSpaceDataPlanMetrics)initWithCoder:(id)a3
+- (CTCarrierSpaceDataPlanMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTCarrierSpaceDataPlanMetrics;
   v5 = [(CTCarrierSpaceDataPlanMetrics *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingCycleEndDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingCycleEndDate"];
     billingCycleEndDate = v5->_billingCycleEndDate;
     v5->_billingCycleEndDate = v6;
 
-    v5->_regStatus = [v4 decodeIntegerForKey:@"regStatus"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domesticCapacity"];
+    v5->_regStatus = [coderCopy decodeIntegerForKey:@"regStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domesticCapacity"];
     domesticCapacity = v5->_domesticCapacity;
     v5->_domesticCapacity = v8;
   }

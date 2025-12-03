@@ -1,15 +1,15 @@
 @interface RTSettingsMapView.Coordinator
 - (_TtCV19CoreRoutineSettings17RTSettingsMapView11Coordinator)init;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
 @end
 
 @implementation RTSettingsMapView.Coordinator
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_91AC();
 
   swift_unknownObjectRelease();

@@ -1,41 +1,41 @@
 @interface READSchemaREADRequestPreprocessingEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (READSchemaREADRequestPreprocessingEnded)initWithDictionary:(id)a3;
-- (READSchemaREADRequestPreprocessingEnded)initWithJSON:(id)a3;
+- (READSchemaREADRequestPreprocessingEnded)initWithDictionary:(id)dictionary;
+- (READSchemaREADRequestPreprocessingEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEstimatedDuration:(BOOL)a3;
-- (void)setHasUtteranceCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEstimatedDuration:(BOOL)duration;
+- (void)setHasUtteranceCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation READSchemaREADRequestPreprocessingEnded
 
-- (READSchemaREADRequestPreprocessingEnded)initWithDictionary:(id)a3
+- (READSchemaREADRequestPreprocessingEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = READSchemaREADRequestPreprocessingEnded;
   v5 = [(READSchemaREADRequestPreprocessingEnded *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"articleTextLength"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"articleTextLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[READSchemaREADRequestPreprocessingEnded setArticleTextLength:](v5, "setArticleTextLength:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"utteranceCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"utteranceCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[READSchemaREADRequestPreprocessingEnded setUtteranceCount:](v5, "setUtteranceCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"estimatedDuration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"estimatedDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (READSchemaREADRequestPreprocessingEnded)initWithJSON:(id)a3
+- (READSchemaREADRequestPreprocessingEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(READSchemaREADRequestPreprocessingEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(READSchemaREADRequestPreprocessingEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(READSchemaREADRequestPreprocessingEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[READSchemaREADRequestPreprocessingEnded articleTextLength](self, "articleTextLength")}];
-    [v3 setObject:v7 forKeyedSubscript:@"articleTextLength"];
+    [dictionary setObject:v7 forKeyedSubscript:@"articleTextLength"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -113,19 +113,19 @@ LABEL_3:
   v8 = MEMORY[0x1E696AD98];
   [(READSchemaREADRequestPreprocessingEnded *)self estimatedDuration];
   v9 = [v8 numberWithFloat:?];
-  [v3 setObject:v9 forKeyedSubscript:@"estimatedDuration"];
+  [dictionary setObject:v9 forKeyedSubscript:@"estimatedDuration"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[READSchemaREADRequestPreprocessingEnded utteranceCount](self, "utteranceCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"utteranceCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"utteranceCount"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -197,16 +197,16 @@ LABEL_4:
   return v5 ^ v4 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_13;
@@ -215,13 +215,13 @@ LABEL_4:
   if (*&has)
   {
     articleTextLength = self->_articleTextLength;
-    if (articleTextLength != [v4 articleTextLength])
+    if (articleTextLength != [equalCopy articleTextLength])
     {
       goto LABEL_13;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -230,19 +230,19 @@ LABEL_4:
     if (v8)
     {
       utteranceCount = self->_utteranceCount;
-      if (utteranceCount != [v4 utteranceCount])
+      if (utteranceCount != [equalCopy utteranceCount])
       {
         goto LABEL_13;
       }
 
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
     }
 
     v10 = (*&has >> 2) & 1;
     if (v10 == ((v6 >> 2) & 1))
     {
-      if (!v10 || (estimatedDuration = self->_estimatedDuration, [v4 estimatedDuration], estimatedDuration == v12))
+      if (!v10 || (estimatedDuration = self->_estimatedDuration, [equalCopy estimatedDuration], estimatedDuration == v12))
       {
         v13 = 1;
         goto LABEL_14;
@@ -257,15 +257,15 @@ LABEL_14:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -285,20 +285,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasEstimatedDuration:(BOOL)a3
+- (void)setHasEstimatedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -311,9 +311,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUtteranceCount:(BOOL)a3
+- (void)setHasUtteranceCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

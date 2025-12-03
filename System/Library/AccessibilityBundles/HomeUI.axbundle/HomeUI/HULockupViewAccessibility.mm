@@ -1,16 +1,16 @@
 @interface HULockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HULockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HULockupView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULockupView" hasInstanceMethod:@"downloadControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUDownloadControl" hasInstanceMethod:@"controlStatus" withFullSignature:{"{HUDownloadControlStatus=qd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HULockupView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULockupView" hasInstanceMethod:@"downloadControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUDownloadControl" hasInstanceMethod:@"controlStatus" withFullSignature:{"{HUDownloadControlStatus=qd}", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -32,7 +32,7 @@
   objc_copyWeak(&v10, &location);
   v6 = v3;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   [v5 setAccessibilityLabelBlock:v7];
 
   objc_destroyWeak(&v10);

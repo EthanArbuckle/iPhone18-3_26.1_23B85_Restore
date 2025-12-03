@@ -1,43 +1,43 @@
 @interface HRImageLabel
 - (BOOL)_isTextTallerThanImage;
 - (CGSize)imageSize;
-- (HRImageLabel)initWithImage:(id)a3 size:(CGSize)a4 text:(id)a5 userInterfaceStyleChanged:(id)a6;
+- (HRImageLabel)initWithImage:(id)image size:(CGSize)size text:(id)text userInterfaceStyleChanged:(id)changed;
 - (id)_textLabelBoldFont;
 - (id)_textLabelFont;
-- (id)initWIthImage:(id)a3 text:(id)a4;
+- (id)initWIthImage:(id)image text:(id)text;
 - (void)_setUpConstraints;
 - (void)_setUpUI;
 - (void)_updateCurrentUserInterfaceStyleIfNeeded;
 - (void)_updateImageTextAlignmentConstraints;
 - (void)_updateTextLabelFont;
 - (void)layoutSubviews;
-- (void)setBoldText:(BOOL)a3;
-- (void)setImageLeadingSpacing:(double)a3;
-- (void)setImageTrailingSpacing:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBoldText:(BOOL)text;
+- (void)setImageLeadingSpacing:(double)spacing;
+- (void)setImageTrailingSpacing:(double)spacing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HRImageLabel
 
-- (HRImageLabel)initWithImage:(id)a3 size:(CGSize)a4 text:(id)a5 userInterfaceStyleChanged:(id)a6
+- (HRImageLabel)initWithImage:(id)image size:(CGSize)size text:(id)text userInterfaceStyleChanged:(id)changed
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  textCopy = text;
+  changedCopy = changed;
   v20.receiver = self;
   v20.super_class = HRImageLabel;
   v15 = [(HRImageLabel *)&v20 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_image, a3);
+    objc_storeStrong(&v15->_image, image);
     v16->_imageSize.width = width;
     v16->_imageSize.height = height;
-    objc_storeStrong(&v16->_text, a5);
+    objc_storeStrong(&v16->_text, text);
     v16->_imageAlignment = 0;
-    v17 = MEMORY[0x25309CD70](v14);
+    v17 = MEMORY[0x25309CD70](changedCopy);
     userInterfaceStyleChanged = v16->_userInterfaceStyleChanged;
     v16->_userInterfaceStyleChanged = v17;
 
@@ -48,49 +48,49 @@
   return v16;
 }
 
-- (id)initWIthImage:(id)a3 text:(id)a4
+- (id)initWIthImage:(id)image text:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_alloc(objc_opt_class()) initWithImage:v7 size:v6 text:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  textCopy = text;
+  imageCopy = image;
+  v8 = [objc_alloc(objc_opt_class()) initWithImage:imageCopy size:textCopy text:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
   return v8;
 }
 
-- (void)setBoldText:(BOOL)a3
+- (void)setBoldText:(BOOL)text
 {
-  self->_boldText = a3;
+  self->_boldText = text;
   [(HRImageLabel *)self _updateTextLabelFont];
 
   [(HRImageLabel *)self _updateImageTextAlignmentConstraints];
 }
 
-- (void)setImageLeadingSpacing:(double)a3
+- (void)setImageLeadingSpacing:(double)spacing
 {
-  self->_imageLeadingSpacing = a3;
-  v4 = [(HRImageLabel *)self imageLeadingConstraint];
-  [v4 setConstant:a3];
+  self->_imageLeadingSpacing = spacing;
+  imageLeadingConstraint = [(HRImageLabel *)self imageLeadingConstraint];
+  [imageLeadingConstraint setConstant:spacing];
 }
 
-- (void)setImageTrailingSpacing:(double)a3
+- (void)setImageTrailingSpacing:(double)spacing
 {
-  self->_imageTrailingSpacing = a3;
-  v4 = [(HRImageLabel *)self imageTrailingConstraint];
-  [v4 setConstant:a3];
+  self->_imageTrailingSpacing = spacing;
+  imageTrailingConstraint = [(HRImageLabel *)self imageTrailingConstraint];
+  [imageTrailingConstraint setConstant:spacing];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = HRImageLabel;
-  [(HRImageLabel *)&v9 traitCollectionDidChange:a3];
-  v4 = [(HRImageLabel *)self textLabel];
-  v5 = [v4 font];
-  v6 = [(HRImageLabel *)self traitCollection];
-  v7 = [v5 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v6];
+  [(HRImageLabel *)&v9 traitCollectionDidChange:change];
+  textLabel = [(HRImageLabel *)self textLabel];
+  font = [textLabel font];
+  traitCollection = [(HRImageLabel *)self traitCollection];
+  v7 = [font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
-  v8 = [(HRImageLabel *)self textLabel];
-  [v8 setFont:v7];
+  textLabel2 = [(HRImageLabel *)self textLabel];
+  [textLabel2 setFont:v7];
 
   [(HRImageLabel *)self _updateImageTextAlignmentConstraints];
 }
@@ -106,18 +106,18 @@
 
 - (void)_updateCurrentUserInterfaceStyleIfNeeded
 {
-  v3 = [(HRImageLabel *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(HRImageLabel *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if ([(HRImageLabel *)self currentUserInterfaceStyle]!= v4)
+  if ([(HRImageLabel *)self currentUserInterfaceStyle]!= userInterfaceStyle)
   {
-    [(HRImageLabel *)self setCurrentUserInterfaceStyle:v4];
-    v5 = [(HRImageLabel *)self userInterfaceStyleChanged];
+    [(HRImageLabel *)self setCurrentUserInterfaceStyle:userInterfaceStyle];
+    userInterfaceStyleChanged = [(HRImageLabel *)self userInterfaceStyleChanged];
 
-    if (v5)
+    if (userInterfaceStyleChanged)
     {
-      v6 = [(HRImageLabel *)self userInterfaceStyleChanged];
-      v6[2](v6, self, v4);
+      userInterfaceStyleChanged2 = [(HRImageLabel *)self userInterfaceStyleChanged];
+      userInterfaceStyleChanged2[2](userInterfaceStyleChanged2, self, userInterfaceStyle);
     }
   }
 }
@@ -125,38 +125,38 @@
 - (void)_setUpUI
 {
   v3 = objc_alloc(MEMORY[0x277D755E8]);
-  v4 = [(HRImageLabel *)self image];
-  v5 = [v3 initWithImage:v4];
+  image = [(HRImageLabel *)self image];
+  v5 = [v3 initWithImage:image];
   [(HRImageLabel *)self setImageView:v5];
 
-  v6 = [(HRImageLabel *)self imageView];
-  [v6 setContentMode:1];
+  imageView = [(HRImageLabel *)self imageView];
+  [imageView setContentMode:1];
 
-  v7 = [(HRImageLabel *)self imageView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView2 = [(HRImageLabel *)self imageView];
+  [imageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(HRImageLabel *)self imageView];
-  [(HRImageLabel *)self addSubview:v8];
+  imageView3 = [(HRImageLabel *)self imageView];
+  [(HRImageLabel *)self addSubview:imageView3];
 
   v9 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRImageLabel *)self setTextLabel:v9];
 
-  v10 = [(HRImageLabel *)self text];
-  v11 = [(HRImageLabel *)self textLabel];
-  [v11 setText:v10];
+  text = [(HRImageLabel *)self text];
+  textLabel = [(HRImageLabel *)self textLabel];
+  [textLabel setText:text];
 
   v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v13 = [(HRImageLabel *)self textLabel];
-  [v13 setFont:v12];
+  textLabel2 = [(HRImageLabel *)self textLabel];
+  [textLabel2 setFont:v12];
 
-  v14 = [(HRImageLabel *)self textLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [(HRImageLabel *)self textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(HRImageLabel *)self textLabel];
-  [v15 setNumberOfLines:0];
+  textLabel4 = [(HRImageLabel *)self textLabel];
+  [textLabel4 setNumberOfLines:0];
 
-  v16 = [(HRImageLabel *)self textLabel];
-  [(HRImageLabel *)self addSubview:v16];
+  textLabel5 = [(HRImageLabel *)self textLabel];
+  [(HRImageLabel *)self addSubview:textLabel5];
 }
 
 - (void)_setUpConstraints
@@ -164,46 +164,46 @@
   [(HRImageLabel *)self imageSize];
   if (v4 != *MEMORY[0x277CBF3A8] || v3 != *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = [(HRImageLabel *)self imageView];
-    v7 = [v6 widthAnchor];
+    imageView = [(HRImageLabel *)self imageView];
+    widthAnchor = [imageView widthAnchor];
     [(HRImageLabel *)self imageSize];
-    v8 = [v7 constraintEqualToConstant:?];
+    v8 = [widthAnchor constraintEqualToConstant:?];
     [v8 setActive:1];
 
-    v9 = [(HRImageLabel *)self imageView];
-    v10 = [v9 heightAnchor];
+    imageView2 = [(HRImageLabel *)self imageView];
+    heightAnchor = [imageView2 heightAnchor];
     [(HRImageLabel *)self imageSize];
-    v12 = [v10 constraintEqualToConstant:v11];
+    v12 = [heightAnchor constraintEqualToConstant:v11];
     [v12 setActive:1];
   }
 
   [(HRImageLabel *)self setImageLeadingSpacing:0.0];
   [(HRImageLabel *)self setImageTrailingSpacing:14.0];
-  v13 = [(HRImageLabel *)self imageView];
-  v14 = [v13 leadingAnchor];
-  v15 = [(HRImageLabel *)self leadingAnchor];
+  imageView3 = [(HRImageLabel *)self imageView];
+  leadingAnchor = [imageView3 leadingAnchor];
+  leadingAnchor2 = [(HRImageLabel *)self leadingAnchor];
   [(HRImageLabel *)self imageLeadingSpacing];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:?];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   [(HRImageLabel *)self setImageLeadingConstraint:v16];
 
-  v17 = [(HRImageLabel *)self imageLeadingConstraint];
-  [v17 setActive:1];
+  imageLeadingConstraint = [(HRImageLabel *)self imageLeadingConstraint];
+  [imageLeadingConstraint setActive:1];
 
-  v18 = [(HRImageLabel *)self textLabel];
-  v19 = [v18 leadingAnchor];
-  v20 = [(HRImageLabel *)self imageView];
-  v21 = [v20 trailingAnchor];
+  textLabel = [(HRImageLabel *)self textLabel];
+  leadingAnchor3 = [textLabel leadingAnchor];
+  imageView4 = [(HRImageLabel *)self imageView];
+  trailingAnchor = [imageView4 trailingAnchor];
   [(HRImageLabel *)self imageTrailingSpacing];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:?];
+  v22 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
   [(HRImageLabel *)self setImageTrailingConstraint:v22];
 
-  v23 = [(HRImageLabel *)self imageTrailingConstraint];
-  [v23 setActive:1];
+  imageTrailingConstraint = [(HRImageLabel *)self imageTrailingConstraint];
+  [imageTrailingConstraint setActive:1];
 
-  v24 = [(HRImageLabel *)self textLabel];
-  v25 = [v24 trailingAnchor];
-  v26 = [(HRImageLabel *)self trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  textLabel2 = [(HRImageLabel *)self textLabel];
+  trailingAnchor2 = [textLabel2 trailingAnchor];
+  trailingAnchor3 = [(HRImageLabel *)self trailingAnchor];
+  v27 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v27 setActive:1];
 
   [(HRImageLabel *)self _updateImageTextAlignmentConstraints];
@@ -221,44 +221,44 @@
     [(HRImageLabel *)self _textLabelFont];
   }
   v4 = ;
-  v3 = [(HRImageLabel *)self textLabel];
-  [v3 setFont:v4];
+  textLabel = [(HRImageLabel *)self textLabel];
+  [textLabel setFont:v4];
 }
 
 - (void)_updateImageTextAlignmentConstraints
 {
   v67[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HRImageLabel *)self imageTextAlignmentConstraints];
+  imageTextAlignmentConstraints = [(HRImageLabel *)self imageTextAlignmentConstraints];
 
-  if (v3)
+  if (imageTextAlignmentConstraints)
   {
-    v4 = [(HRImageLabel *)self imageTextAlignmentConstraints];
-    [(HRImageLabel *)self removeConstraints:v4];
+    imageTextAlignmentConstraints2 = [(HRImageLabel *)self imageTextAlignmentConstraints];
+    [(HRImageLabel *)self removeConstraints:imageTextAlignmentConstraints2];
 
     [(HRImageLabel *)self setImageTextAlignmentConstraints:0];
   }
 
-  v5 = [(HRImageLabel *)self imageAlignment];
-  if (v5 > 1)
+  imageAlignment = [(HRImageLabel *)self imageAlignment];
+  if (imageAlignment > 1)
   {
-    if (v5 == 2)
+    if (imageAlignment == 2)
     {
-      v40 = [(HRImageLabel *)self textLabel];
-      v41 = [v40 topAnchor];
-      v42 = [(HRImageLabel *)self topAnchor];
-      v9 = [v41 constraintEqualToAnchor:v42];
+      textLabel = [(HRImageLabel *)self textLabel];
+      topAnchor = [textLabel topAnchor];
+      topAnchor2 = [(HRImageLabel *)self topAnchor];
+      v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
       [v9 setActive:1];
-      v43 = [(HRImageLabel *)self imageView];
-      v44 = [v43 topAnchor];
-      v45 = [(HRImageLabel *)self topAnchor];
-      v14 = [v44 constraintEqualToAnchor:v45];
+      imageView = [(HRImageLabel *)self imageView];
+      topAnchor3 = [imageView topAnchor];
+      topAnchor4 = [(HRImageLabel *)self topAnchor];
+      v14 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
 
       LODWORD(v46) = 1148846080;
       [v14 setPriority:v46];
-      LODWORD(v43) = [(HRImageLabel *)self _isTextTallerThanImage];
-      v47 = [(HRImageLabel *)self bottomAnchor];
-      if (v43)
+      LODWORD(imageView) = [(HRImageLabel *)self _isTextTallerThanImage];
+      bottomAnchor = [(HRImageLabel *)self bottomAnchor];
+      if (imageView)
       {
         [(HRImageLabel *)self textLabel];
       }
@@ -268,8 +268,8 @@
         [(HRImageLabel *)self imageView];
       }
       v54 = ;
-      v55 = [v54 bottomAnchor];
-      v19 = [v47 constraintEqualToAnchor:v55];
+      bottomAnchor2 = [v54 bottomAnchor];
+      v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
       LODWORD(v56) = 1144750080;
       [v19 setPriority:v56];
@@ -282,28 +282,28 @@
 
     else
     {
-      if (v5 != 3)
+      if (imageAlignment != 3)
       {
         goto LABEL_20;
       }
 
-      v20 = [(HRImageLabel *)self textLabel];
-      v21 = [v20 topAnchor];
-      v22 = [(HRImageLabel *)self topAnchor];
-      v9 = [v21 constraintEqualToAnchor:v22];
+      textLabel2 = [(HRImageLabel *)self textLabel];
+      topAnchor5 = [textLabel2 topAnchor];
+      topAnchor6 = [(HRImageLabel *)self topAnchor];
+      v9 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
 
       [v9 setActive:1];
-      v23 = [(HRImageLabel *)self imageView];
-      v24 = [v23 firstBaselineAnchor];
-      v25 = [(HRImageLabel *)self textLabel];
-      v26 = [v25 firstBaselineAnchor];
-      v14 = [v24 constraintEqualToAnchor:v26];
+      imageView2 = [(HRImageLabel *)self imageView];
+      firstBaselineAnchor = [imageView2 firstBaselineAnchor];
+      textLabel3 = [(HRImageLabel *)self textLabel];
+      firstBaselineAnchor2 = [textLabel3 firstBaselineAnchor];
+      v14 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
 
       [v14 setActive:1];
-      v27 = [(HRImageLabel *)self bottomAnchor];
-      v28 = [(HRImageLabel *)self textLabel];
-      v29 = [v28 bottomAnchor];
-      v19 = [v27 constraintEqualToAnchor:v29];
+      bottomAnchor3 = [(HRImageLabel *)self bottomAnchor];
+      textLabel4 = [(HRImageLabel *)self textLabel];
+      bottomAnchor4 = [textLabel4 bottomAnchor];
+      v19 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
 
       [v19 setActive:1];
       v60 = v9;
@@ -320,39 +320,39 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v5)
+  if (!imageAlignment)
   {
-    v32 = [(HRImageLabel *)self imageView];
-    v33 = [v32 centerYAnchor];
-    v34 = [(HRImageLabel *)self textLabel];
-    v35 = [v34 centerYAnchor];
-    v9 = [v33 constraintEqualToAnchor:v35];
+    imageView3 = [(HRImageLabel *)self imageView];
+    centerYAnchor = [imageView3 centerYAnchor];
+    textLabel5 = [(HRImageLabel *)self textLabel];
+    centerYAnchor2 = [textLabel5 centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     LODWORD(v36) = 1144750080;
     [v9 setPriority:v36];
     if ([(HRImageLabel *)self _isTextTallerThanImage])
     {
-      v37 = [(HRImageLabel *)self textLabel];
-      v38 = [v37 topAnchor];
-      v39 = [(HRImageLabel *)self topAnchor];
-      v14 = [v38 constraintEqualToAnchor:v39];
+      textLabel6 = [(HRImageLabel *)self textLabel];
+      topAnchor7 = [textLabel6 topAnchor];
+      topAnchor8 = [(HRImageLabel *)self topAnchor];
+      v14 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
 
       [(HRImageLabel *)self textLabel];
     }
 
     else
     {
-      v48 = [(HRImageLabel *)self imageView];
-      v49 = [v48 topAnchor];
-      v50 = [(HRImageLabel *)self topAnchor];
-      v14 = [v49 constraintEqualToAnchor:v50];
+      imageView4 = [(HRImageLabel *)self imageView];
+      topAnchor9 = [imageView4 topAnchor];
+      topAnchor10 = [(HRImageLabel *)self topAnchor];
+      v14 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
 
       [(HRImageLabel *)self imageView];
     }
     v51 = ;
-    v52 = [v51 bottomAnchor];
-    v53 = [(HRImageLabel *)self bottomAnchor];
-    v19 = [v52 constraintEqualToAnchor:v53];
+    bottomAnchor5 = [v51 bottomAnchor];
+    bottomAnchor6 = [(HRImageLabel *)self bottomAnchor];
+    v19 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
 
     v67[0] = v14;
     v67[1] = v19;
@@ -362,23 +362,23 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v5 == 1)
+  if (imageAlignment == 1)
   {
-    v6 = [(HRImageLabel *)self textLabel];
-    v7 = [v6 topAnchor];
-    v8 = [(HRImageLabel *)self topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    textLabel7 = [(HRImageLabel *)self textLabel];
+    topAnchor11 = [textLabel7 topAnchor];
+    topAnchor12 = [(HRImageLabel *)self topAnchor];
+    v9 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
 
     [v9 setActive:1];
-    v10 = [(HRImageLabel *)self imageView];
-    v11 = [v10 centerYAnchor];
-    v12 = [(HRImageLabel *)self textLabel];
-    v13 = [v12 topAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    imageView5 = [(HRImageLabel *)self imageView];
+    centerYAnchor3 = [imageView5 centerYAnchor];
+    textLabel8 = [(HRImageLabel *)self textLabel];
+    topAnchor13 = [textLabel8 topAnchor];
+    v14 = [centerYAnchor3 constraintEqualToAnchor:topAnchor13];
 
-    v15 = [(HRImageLabel *)self textLabel];
-    v16 = [v15 font];
-    [v16 lineHeight];
+    textLabel9 = [(HRImageLabel *)self textLabel];
+    font = [textLabel9 font];
+    [font lineHeight];
     [v14 setConstant:v17 * 0.5];
 
     LODWORD(v18) = 1144750080;
@@ -392,27 +392,27 @@ LABEL_19:
 
 LABEL_20:
   v58 = MEMORY[0x277CCAAD0];
-  v59 = [(HRImageLabel *)self imageTextAlignmentConstraints];
-  [v58 activateConstraints:v59];
+  imageTextAlignmentConstraints3 = [(HRImageLabel *)self imageTextAlignmentConstraints];
+  [v58 activateConstraints:imageTextAlignmentConstraints3];
 }
 
 - (BOOL)_isTextTallerThanImage
 {
-  v2 = self;
-  v3 = [(HRImageLabel *)self textLabel];
-  [v3 frame];
+  selfCopy = self;
+  textLabel = [(HRImageLabel *)self textLabel];
+  [textLabel frame];
   Height = CGRectGetHeight(v7);
-  [(HRImageLabel *)v2 imageSize];
-  LOBYTE(v2) = Height > v5;
+  [(HRImageLabel *)selfCopy imageSize];
+  LOBYTE(selfCopy) = Height > v5;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_textLabelFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HRImageLabel *)self _textLabelFontStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _textLabelFontStyle = [(HRImageLabel *)self _textLabelFontStyle];
+  v4 = [v2 preferredFontForTextStyle:_textLabelFontStyle];
 
   return v4;
 }
@@ -420,8 +420,8 @@ LABEL_20:
 - (id)_textLabelBoldFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HRImageLabel *)self _textLabelFontStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:2];
+  _textLabelFontStyle = [(HRImageLabel *)self _textLabelFontStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_textLabelFontStyle symbolicTraits:2];
 
   return v4;
 }

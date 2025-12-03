@@ -1,19 +1,19 @@
 @interface PAEPoke
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEPoke)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEPoke)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)handleUIEventWithPosition:(CGPoint)a3 velocity:(CGPoint)a4 scale:(double)a5 scaleVelocity:(double)a6 rotation:(double)a7 rotationVelocity:(double)a8;
+- (void)handleUIEventWithPosition:(CGPoint)position velocity:(CGPoint)velocity scale:(double)scale scaleVelocity:(double)scaleVelocity rotation:(double)rotation rotationVelocity:(double)rotationVelocity;
 @end
 
 @implementation PAEPoke
 
-- (PAEPoke)initWithAPIManager:(id)a3
+- (PAEPoke)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEPoke;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -43,46 +43,46 @@
   return v3 != 0;
 }
 
-- (void)handleUIEventWithPosition:(CGPoint)a3 velocity:(CGPoint)a4 scale:(double)a5 scaleVelocity:(double)a6 rotation:(double)a7 rotationVelocity:(double)a8
+- (void)handleUIEventWithPosition:(CGPoint)position velocity:(CGPoint)velocity scale:(double)scale scaleVelocity:(double)scaleVelocity rotation:(double)rotation rotationVelocity:(double)rotationVelocity
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E448, a3.x, a3.y, a4.x, a4.y, a5, a6, a7, a8];
-  if (v11)
+  y = position.y;
+  x = position.x;
+  rotationVelocity = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E448, position.x, position.y, velocity.x, velocity.y, scale, scaleVelocity, rotation, rotationVelocity];
+  if (rotationVelocity)
   {
-    v12 = v11;
+    v12 = rotationVelocity;
     v13 = *MEMORY[0x277CC08F0];
     v14 = *(MEMORY[0x277CC08F0] + 16);
-    [v11 setFloatValue:3 toParm:&v13 atFxTime:a5 * 0.5];
+    [rotationVelocity setFloatValue:3 toParm:&v13 atFxTime:scale * 0.5];
     [v12 setXValue:1 YValue:&v13 toParm:x atFxTime:y];
   }
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v8)
   {
     v9 = v8;
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
     __asm { FMOV            V0.2D, #0.5 }
 
     v22 = _Q0;
-    [v9 getXValue:&v22 YValue:&v22 + 8 fromParm:1 atFxTime:a5->var0.var1];
+    [v9 getXValue:&v22 YValue:&v22 + 8 fromParm:1 atFxTime:info->var0.var1];
     v21 = 300.0;
-    [v9 getFloatValue:&v21 fromParm:2 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v21 fromParm:2 atFxTime:info->var0.var1];
     v15 = v21;
     if (v21 < 0.00001)
     {
@@ -91,11 +91,11 @@
 
     v21 = v15;
     v20 = 0x3FE0000000000000;
-    [v9 getFloatValue:&v20 fromParm:3 atFxTime:a5->var0.var1];
-    v16 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-    [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v22 withImage:a4];
+    [v9 getFloatValue:&v20 fromParm:3 atFxTime:info->var0.var1];
+    v16 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+    [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v22 withImage:input];
     v22 = v19;
-    if (v16 && [a4 imageType] == 3)
+    if (v16 && [input imageType] == 3)
     {
       v17 = HGObject::operator new(0x2A0uLL);
       HPoke::HPoke(v17);

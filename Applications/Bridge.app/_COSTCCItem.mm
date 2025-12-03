@@ -1,27 +1,27 @@
 @interface _COSTCCItem
-- (_COSTCCItem)initWithBundleID:(id)a3 displayName:(id)a4 enabled:(BOOL)a5;
+- (_COSTCCItem)initWithBundleID:(id)d displayName:(id)name enabled:(BOOL)enabled;
 @end
 
 @implementation _COSTCCItem
 
-- (_COSTCCItem)initWithBundleID:(id)a3 displayName:(id)a4 enabled:(BOOL)a5
+- (_COSTCCItem)initWithBundleID:(id)d displayName:(id)name enabled:(BOOL)enabled
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = _COSTCCItem;
   v10 = [(_COSTCCItem *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     bundleID = v10->_bundleID;
     v10->_bundleID = v11;
 
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     displayName = v10->_displayName;
     v10->_displayName = v13;
 
-    v10->_enabled = a5;
+    v10->_enabled = enabled;
   }
 
   return v10;

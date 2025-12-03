@@ -6,49 +6,49 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v22.receiver = self;
   v22.super_class = HMDVideoStreamConfig;
-  [(HMDMediaStreamConfig *)&v22 addToDescription:v3];
-  [v3 appendFormat:@"\n"];
-  v4 = [(AVCMediaStreamConfig *)self video];
-  v5 = [v4 txCodecType];
-  v6 = [(AVCMediaStreamConfig *)self video];
-  v7 = AVCVideoCodecTypeAsString([v6 txCodecType]);
-  [v3 appendFormat:@"video.txCodecType     = %tu, %@\n", v5, v7];
+  [(HMDMediaStreamConfig *)&v22 addToDescription:string];
+  [string appendFormat:@"\n"];
+  video = [(AVCMediaStreamConfig *)self video];
+  txCodecType = [video txCodecType];
+  video2 = [(AVCMediaStreamConfig *)self video];
+  v7 = AVCVideoCodecTypeAsString([video2 txCodecType]);
+  [string appendFormat:@"video.txCodecType     = %tu, %@\n", txCodecType, v7];
 
-  v8 = [(AVCMediaStreamConfig *)self video];
-  v9 = [v8 rxCodecType];
-  v10 = [(AVCMediaStreamConfig *)self video];
-  v11 = AVCVideoCodecTypeAsString([v10 txCodecType]);
-  [v3 appendFormat:@"video.rxCodecType     = %tu, %@\n", v9, v11];
+  video3 = [(AVCMediaStreamConfig *)self video];
+  rxCodecType = [video3 rxCodecType];
+  video4 = [(AVCMediaStreamConfig *)self video];
+  v11 = AVCVideoCodecTypeAsString([video4 txCodecType]);
+  [string appendFormat:@"video.rxCodecType     = %tu, %@\n", rxCodecType, v11];
 
-  v12 = [(AVCMediaStreamConfig *)self video];
-  v13 = [v12 videoResolution];
-  v14 = [(AVCMediaStreamConfig *)self video];
-  v15 = [v14 videoResolution];
-  if (v15 < 0xF && ((0x43FFu >> v15) & 1) != 0)
+  video5 = [(AVCMediaStreamConfig *)self video];
+  videoResolution = [video5 videoResolution];
+  video6 = [(AVCMediaStreamConfig *)self video];
+  videoResolution2 = [video6 videoResolution];
+  if (videoResolution2 < 0xF && ((0x43FFu >> videoResolution2) & 1) != 0)
   {
-    v16 = off_2797294E8[v15];
+    v16 = off_2797294E8[videoResolution2];
   }
 
   else
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown AVC video resolution (%ld)", v15];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown AVC video resolution (%ld)", videoResolution2];
   }
 
-  [v3 appendFormat:@"video.videoResolution = %tu, %@\n", v13, v16];
+  [string appendFormat:@"video.videoResolution = %tu, %@\n", videoResolution, v16];
 
-  v17 = [(AVCMediaStreamConfig *)self video];
-  [v3 appendFormat:@"video.framerate       = %tu\n", objc_msgSend(v17, "framerate")];
+  video7 = [(AVCMediaStreamConfig *)self video];
+  [string appendFormat:@"video.framerate       = %tu\n", objc_msgSend(video7, "framerate")];
 
-  v18 = [(AVCMediaStreamConfig *)self video];
-  [v3 appendFormat:@"video.rxMaxBitrate    = %tu\n", objc_msgSend(v18, "rxMaxBitrate")];
+  video8 = [(AVCMediaStreamConfig *)self video];
+  [string appendFormat:@"video.rxMaxBitrate    = %tu\n", objc_msgSend(video8, "rxMaxBitrate")];
 
-  v19 = [(AVCMediaStreamConfig *)self video];
-  [v3 appendFormat:@"video.rxMinBitrate    = %tu\n", objc_msgSend(v19, "rxMinBitrate")];
+  video9 = [(AVCMediaStreamConfig *)self video];
+  [string appendFormat:@"video.rxMinBitrate    = %tu\n", objc_msgSend(video9, "rxMinBitrate")];
 
-  v20 = [v3 copy];
+  v20 = [string copy];
 
   return v20;
 }

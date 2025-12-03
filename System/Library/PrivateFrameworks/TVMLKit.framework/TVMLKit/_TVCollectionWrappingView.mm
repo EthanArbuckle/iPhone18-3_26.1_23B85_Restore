@@ -1,43 +1,43 @@
 @interface _TVCollectionWrappingView
-+ (void)gradientConfigForCollection:(id)a3 gradientMask:(int64_t)a4 gradientLengths:(UIEdgeInsets *)a5 gradientInset:(UIEdgeInsets *)a6 gradientBoundsInset:(UIEdgeInsets *)a7;
++ (void)gradientConfigForCollection:(id)collection gradientMask:(int64_t)mask gradientLengths:(UIEdgeInsets *)lengths gradientInset:(UIEdgeInsets *)inset gradientBoundsInset:(UIEdgeInsets *)boundsInset;
 - (BOOL)shouldBindRowsTogether;
 - (CGRect)_adjustedHeaderFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_adjustedPadding;
-- (_TVCollectionWrappingView)initWithFrame:(CGRect)a3;
+- (_TVCollectionWrappingView)initWithFrame:(CGRect)frame;
 - (double)_adjustedShowcaseFactor;
-- (double)_showcaseContentScaleForExpectedWidth:(double)a3;
-- (id)_collectionRowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4 forShowcase:(BOOL)a5;
+- (double)_showcaseContentScaleForExpectedWidth:(double)width;
+- (id)_collectionRowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index forShowcase:(BOOL)showcase;
 - (id)_currentHeaderView;
 - (id)preferredFocusEnvironments;
-- (id)rowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4;
+- (id)rowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index;
 - (void)_updateGradientLayer;
 - (void)_updateSubviews;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)reevaluateFooterFrame;
 - (void)reevaluateHeaderFrame;
-- (void)setCentered:(BOOL)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderFloating:(BOOL)a3;
-- (void)setHeaderHidden:(BOOL)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setIkBackgroundColor:(id)a3;
-- (void)setShowcaseConfig:(TVShowcaseConfig *)a3;
-- (void)setValue:(id)a3 forTVViewStyle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)tv_setShowcaseFactor:(double)a3;
+- (void)setCentered:(BOOL)centered;
+- (void)setCollectionView:(id)view;
+- (void)setFooterView:(id)view;
+- (void)setHeaderFloating:(BOOL)floating;
+- (void)setHeaderHidden:(BOOL)hidden;
+- (void)setHeaderView:(id)view;
+- (void)setIkBackgroundColor:(id)color;
+- (void)setShowcaseConfig:(TVShowcaseConfig *)config;
+- (void)setValue:(id)value forTVViewStyle:(id)style;
+- (void)traitCollectionDidChange:(id)change;
+- (void)tv_setShowcaseFactor:(double)factor;
 @end
 
 @implementation _TVCollectionWrappingView
 
-+ (void)gradientConfigForCollection:(id)a3 gradientMask:(int64_t)a4 gradientLengths:(UIEdgeInsets *)a5 gradientInset:(UIEdgeInsets *)a6 gradientBoundsInset:(UIEdgeInsets *)a7
++ (void)gradientConfigForCollection:(id)collection gradientMask:(int64_t)mask gradientLengths:(UIEdgeInsets *)lengths gradientInset:(UIEdgeInsets *)inset gradientBoundsInset:(UIEdgeInsets *)boundsInset
 {
-  v10 = a4;
-  [a3 contentInset];
+  maskCopy = mask;
+  [collection contentInset];
   v15 = *MEMORY[0x277D768C8];
-  if (v10)
+  if (maskCopy)
   {
     v18 = 90.0;
     if (v11 < 100.0)
@@ -67,7 +67,7 @@
   v20 = *MEMORY[0x277D768C8];
 LABEL_8:
   v21 = *(MEMORY[0x277D768C8] + 16);
-  if ((v10 & 4) != 0)
+  if ((maskCopy & 4) != 0)
   {
     v22 = 90.0;
     if (v13 < 150.0)
@@ -92,7 +92,7 @@ LABEL_8:
   v24 = *(MEMORY[0x277D768C8] + 16);
 LABEL_15:
   v25 = *(MEMORY[0x277D768C8] + 8);
-  if ((v10 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
     v27 = 90.0;
     if (v12 < 100.0)
@@ -122,7 +122,7 @@ LABEL_15:
   v29 = *(MEMORY[0x277D768C8] + 8);
 LABEL_22:
   v30 = *(MEMORY[0x277D768C8] + 24);
-  if ((v10 & 0x10) == 0)
+  if ((maskCopy & 0x10) == 0)
   {
     v16 = v14 < 100.0;
     v31 = -(100.0 - v14);
@@ -138,7 +138,7 @@ LABEL_22:
 
 LABEL_29:
     v34 = *(MEMORY[0x277D768C8] + 24);
-    if (!a5)
+    if (!lengths)
     {
       goto LABEL_31;
     }
@@ -155,38 +155,38 @@ LABEL_29:
   v33 = 100.0 - v14;
   v34 = -(100.0 - v14);
   v30 = v33 + v30;
-  if (a5)
+  if (lengths)
   {
 LABEL_30:
-    a5->top = v18;
-    a5->left = v27;
-    a5->bottom = v22;
-    a5->right = v32;
+    lengths->top = v18;
+    lengths->left = v27;
+    lengths->bottom = v22;
+    lengths->right = v32;
   }
 
 LABEL_31:
-  if (a6)
+  if (inset)
   {
-    a6->top = v15;
-    a6->left = v25;
-    a6->bottom = v21;
-    a6->right = v30;
+    inset->top = v15;
+    inset->left = v25;
+    inset->bottom = v21;
+    inset->right = v30;
   }
 
-  if (a7)
+  if (boundsInset)
   {
-    a7->top = v20;
-    a7->left = v29;
-    a7->bottom = v24;
-    a7->right = v34;
+    boundsInset->top = v20;
+    boundsInset->left = v29;
+    boundsInset->bottom = v24;
+    boundsInset->right = v34;
   }
 }
 
-- (_TVCollectionWrappingView)initWithFrame:(CGRect)a3
+- (_TVCollectionWrappingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVCollectionWrappingView;
-  v3 = [(_TVCollectionWrappingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVCollectionWrappingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     +[_TVShelfViewLayout defaultHeaderSelectionMargin];
@@ -198,13 +198,13 @@ LABEL_31:
   return v3;
 }
 
-- (void)setHeaderFloating:(BOOL)a3
+- (void)setHeaderFloating:(BOOL)floating
 {
-  if (self->_headerFloating != a3)
+  if (self->_headerFloating != floating)
   {
-    self->_headerFloating = a3;
-    v5 = [(_TVCollectionWrappingView *)self headerView];
-    [v5 removeFromSuperview];
+    self->_headerFloating = floating;
+    headerView = [(_TVCollectionWrappingView *)self headerView];
+    [headerView removeFromSuperview];
 
     [(_TVCollectionWrappingView *)self _updateSubviews];
 
@@ -212,26 +212,26 @@ LABEL_31:
   }
 }
 
-- (void)setHeaderHidden:(BOOL)a3
+- (void)setHeaderHidden:(BOOL)hidden
 {
   headerHidden = self->_headerHidden;
-  if (headerHidden != a3)
+  if (headerHidden != hidden)
   {
-    self->_headerHidden = a3;
-    v5 = [(_TVCollectionWrappingView *)self headerView];
-    [v5 setHidden:self->_headerHidden];
+    self->_headerHidden = hidden;
+    headerView = [(_TVCollectionWrappingView *)self headerView];
+    [headerView setHidden:self->_headerHidden];
 
     [(_TVCollectionWrappingView *)self setNeedsLayout];
     if (headerHidden)
     {
-      v6 = [(_TVCollectionWrappingView *)self window];
-      v7 = [v6 screen];
-      obj = [v7 focusedView];
+      window = [(_TVCollectionWrappingView *)self window];
+      screen = [window screen];
+      obj = [screen focusedView];
 
-      v8 = [(_TVCollectionWrappingView *)self collectionView];
-      LODWORD(v7) = [obj isDescendantOfView:v8];
+      collectionView = [(_TVCollectionWrappingView *)self collectionView];
+      LODWORD(screen) = [obj isDescendantOfView:collectionView];
 
-      if (v7)
+      if (screen)
       {
         objc_storeStrong(&self->_selectingView, obj);
         [(_TVCollectionWrappingView *)self reevaluateHeaderFrame];
@@ -240,15 +240,15 @@ LABEL_31:
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v8 = v5;
-  if (headerView != v5)
+  v8 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     v7 = *(MEMORY[0x277CBF3A0] + 16);
     self->_headerFrame.origin = *MEMORY[0x277CBF3A0];
     self->_headerFrame.size = v7;
@@ -258,15 +258,15 @@ LABEL_31:
   [(_TVCollectionWrappingView *)self setNeedsLayout];
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  v7 = v5;
-  if (collectionView != v5)
+  v7 = viewCopy;
+  if (collectionView != viewCopy)
   {
     [(_TVCollectionView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     self->_collectionViewFlags.respondsToAugmentedSelectionFrameForFrame = objc_opt_respondsToSelector() & 1;
     [(_TVCollectionWrappingView *)self _updateSubviews];
   }
@@ -274,24 +274,24 @@ LABEL_31:
   [(_TVCollectionWrappingView *)self setNeedsLayout];
 }
 
-- (void)setCentered:(BOOL)a3
+- (void)setCentered:(BOOL)centered
 {
-  if (self->_centered != a3)
+  if (self->_centered != centered)
   {
-    self->_centered = a3;
+    self->_centered = centered;
     [(_TVCollectionWrappingView *)self setNeedsLayout];
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  v8 = v5;
-  if (footerView != v5)
+  v8 = viewCopy;
+  if (footerView != viewCopy)
   {
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     v7 = *(MEMORY[0x277CBF3A0] + 16);
     self->_footerFrame.origin = *MEMORY[0x277CBF3A0];
     self->_footerFrame.size = v7;
@@ -303,13 +303,13 @@ LABEL_31:
 
 - (void)reevaluateFooterFrame
 {
-  v3 = [(_TVCollectionWrappingView *)self _currentFooterView];
+  _currentFooterView = [(_TVCollectionWrappingView *)self _currentFooterView];
   v15 = CGRectIntegral(self->_footerFrame);
   x = v15.origin.x;
   y = v15.origin.y;
   width = v15.size.width;
   height = v15.size.height;
-  [v3 frame];
+  [_currentFooterView frame];
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -321,7 +321,7 @@ LABEL_31:
     v9[1] = 3221225472;
     v9[2] = __50___TVCollectionWrappingView_reevaluateFooterFrame__block_invoke;
     v9[3] = &unk_279D6EAB8;
-    v10 = v3;
+    v10 = _currentFooterView;
     v11 = x;
     v12 = y;
     v13 = width;
@@ -332,13 +332,13 @@ LABEL_31:
 
 - (void)reevaluateHeaderFrame
 {
-  v3 = [(_TVCollectionWrappingView *)self _currentHeaderView];
+  _currentHeaderView = [(_TVCollectionWrappingView *)self _currentHeaderView];
   [(_TVCollectionWrappingView *)self _adjustedHeaderFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 frame];
+  [_currentHeaderView frame];
   v20.origin.x = v5;
   v20.origin.y = v7;
   v20.size.width = v9;
@@ -350,7 +350,7 @@ LABEL_31:
     v13[1] = 3221225472;
     v13[2] = __50___TVCollectionWrappingView_reevaluateHeaderFrame__block_invoke;
     v13[3] = &unk_279D6EAB8;
-    v14 = v3;
+    v14 = _currentHeaderView;
     v15 = v5;
     v16 = v7;
     v17 = v9;
@@ -359,37 +359,37 @@ LABEL_31:
   }
 }
 
-- (void)tv_setShowcaseFactor:(double)a3
+- (void)tv_setShowcaseFactor:(double)factor
 {
-  if (self->_showcaseFactor != a3)
+  if (self->_showcaseFactor != factor)
   {
-    self->_showcaseFactor = a3;
-    v5 = [(_TVCollectionWrappingView *)self collectionView];
-    [v5 tv_setShowcaseFactor:a3];
+    self->_showcaseFactor = factor;
+    collectionView = [(_TVCollectionWrappingView *)self collectionView];
+    [collectionView tv_setShowcaseFactor:factor];
 
     [(_TVCollectionWrappingView *)self setNeedsLayout];
   }
 }
 
-- (void)setValue:(id)a3 forTVViewStyle:(id)a4
+- (void)setValue:(id)value forTVViewStyle:(id)style
 {
   v5.receiver = self;
   v5.super_class = _TVCollectionWrappingView;
-  [(UIView *)&v5 setValue:a3 forTVViewStyle:a4];
+  [(UIView *)&v5 setValue:value forTVViewStyle:style];
   [(_TVCollectionWrappingView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(_TVCollectionWrappingView *)self _adjustedPadding:a3.width];
+  width = fits.width;
+  [(_TVCollectionWrappingView *)self _adjustedPadding:fits.width];
   v69 = v5;
   v70 = v6;
   v8 = v7;
   v10 = v9;
   v68 = v9;
-  v11 = [(_TVCollectionWrappingView *)self headerView];
-  [v11 tv_margin];
+  headerView = [(_TVCollectionWrappingView *)self headerView];
+  [headerView tv_margin];
   v65 = v12;
   v14 = v13;
   v16 = v15;
@@ -409,15 +409,15 @@ LABEL_31:
   }
 
   v64 = v21;
-  v22 = [(_TVCollectionWrappingView *)self headerView];
-  [v22 tv_sizeThatFits:{v21, 0.0}];
+  headerView2 = [(_TVCollectionWrappingView *)self headerView];
+  [headerView2 tv_sizeThatFits:{v21, 0.0}];
   v24 = v23;
 
-  v25 = [(_TVCollectionWrappingView *)self collectionView];
-  v26 = [v25 _displaysHorizontalIndexTitleBar];
+  collectionView = [(_TVCollectionWrappingView *)self collectionView];
+  _displaysHorizontalIndexTitleBar = [collectionView _displaysHorizontalIndexTitleBar];
 
   v27 = *MEMORY[0x277D77428];
-  if (!v26)
+  if (!_displaysHorizontalIndexTitleBar)
   {
     v27 = 0.0;
   }
@@ -453,8 +453,8 @@ LABEL_31:
 
   v62 = v36;
   v63 = v32;
-  v37 = [(_TVCollectionWrappingView *)self footerView];
-  [v37 tv_margin];
+  footerView = [(_TVCollectionWrappingView *)self footerView];
+  [footerView tv_margin];
   v58 = v39;
   v60 = v38;
   v41 = v40;
@@ -483,8 +483,8 @@ LABEL_31:
   }
 
   v50 = v70 + v49 + v28 * v47 + v48;
-  v51 = [(_TVCollectionWrappingView *)self collectionView];
-  [v51 tv_sizeThatFits:v67 withContentInset:{0.0, v69 + v62 + v34 + v29 + v66 + v63, v8, v50, v68}];
+  collectionView2 = [(_TVCollectionWrappingView *)self collectionView];
+  [collectionView2 tv_sizeThatFits:v67 withContentInset:{0.0, v69 + v62 + v34 + v29 + v66 + v63, v8, v50, v68}];
   v53 = v52;
   v55 = v54;
 
@@ -505,8 +505,8 @@ LABEL_31:
   v139 = v4;
   v124 = v5;
   v7 = v6;
-  v8 = [(_TVCollectionWrappingView *)self collectionView];
-  v9 = [(_TVCollectionWrappingView *)self _currentHeaderView];
+  collectionView = [(_TVCollectionWrappingView *)self collectionView];
+  _currentHeaderView = [(_TVCollectionWrappingView *)self _currentHeaderView];
   [(_TVCollectionWrappingView *)self _adjustedPadding];
   v132 = v10;
   v127 = v11;
@@ -515,7 +515,7 @@ LABEL_31:
   [(UIView *)self tv_padding];
   v16 = v15;
   v18 = v17;
-  [v9 tv_margin];
+  [_currentHeaderView tv_margin];
   v130 = v19;
   v131 = v20;
   v22 = v21;
@@ -536,14 +536,14 @@ LABEL_31:
     v28 = v7;
   }
 
-  v29 = [(_TVCollectionWrappingView *)self effectiveUserInterfaceLayoutDirection];
-  [v9 tv_sizeThatFits:{v28, 0.0}];
+  effectiveUserInterfaceLayoutDirection = [(_TVCollectionWrappingView *)self effectiveUserInterfaceLayoutDirection];
+  [_currentHeaderView tv_sizeThatFits:{v28, 0.0}];
   v31 = v30;
   v33 = v32;
   v134 = v14;
   v34 = v7 - (v14 + v24 + v30);
   v125 = v16;
-  if (v29 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v35 = v34;
   }
@@ -555,14 +555,14 @@ LABEL_31:
 
   if (v30 < v28)
   {
-    v36 = [v9 tv_alignment];
+    tv_alignment = [_currentHeaderView tv_alignment];
     v37 = floor((v7 - v31) * 0.5);
-    if (v36 != 2)
+    if (tv_alignment != 2)
     {
       v37 = v35;
     }
 
-    if (v36 == 3)
+    if (tv_alignment == 3)
     {
       v35 = v34;
     }
@@ -583,21 +583,21 @@ LABEL_31:
   v41 = v40;
   v43 = v42;
   v45 = v44;
-  v46 = [v9 layer];
-  [v46 anchorPoint];
+  layer = [_currentHeaderView layer];
+  [layer anchorPoint];
   v48 = v47;
   v50 = v49;
 
-  [v9 setBounds:{0.0, 0.0, v43, v45}];
+  [_currentHeaderView setBounds:{0.0, 0.0, v43, v45}];
   v117 = v41;
   v118 = v39;
   v115 = v45;
   v116 = v43;
   v51 = v39 + v43 * v48;
   v52 = v41 + v45 * v50;
-  [v9 setCenter:{roundf(v51), roundf(v52)}];
-  v53 = [v8 _displaysHorizontalIndexTitleBar];
-  if (v53)
+  [_currentHeaderView setCenter:{roundf(v51), roundf(v52)}];
+  _displaysHorizontalIndexTitleBar = [collectionView _displaysHorizontalIndexTitleBar];
+  if (_displaysHorizontalIndexTitleBar)
   {
     v54 = *MEMORY[0x277D77428];
   }
@@ -608,7 +608,7 @@ LABEL_31:
   }
 
   v55 = 18.0;
-  if (!v53)
+  if (!_displaysHorizontalIndexTitleBar)
   {
     v55 = 0.0;
   }
@@ -618,10 +618,10 @@ LABEL_31:
   v122 = floor((1.0 - v136) * v120);
   v129 = ceil(v136 * v120);
   v119 = ceil(v139 / sx);
-  [v8 setFrame:0.0];
+  [collectionView setFrame:0.0];
   [(CAGradientLayer *)self->_gradientLayer setFrame:v138, v124, v7, v139];
-  v56 = [(_TVCollectionWrappingView *)self _currentFooterView];
-  [v56 tv_margin];
+  _currentFooterView = [(_TVCollectionWrappingView *)self _currentFooterView];
+  [_currentFooterView tv_margin];
   v59 = v57;
   v61 = v60;
   v62 = v58;
@@ -635,11 +635,11 @@ LABEL_31:
     v63 = v7;
   }
 
-  [v56 tv_sizeThatFits:{v63, 0.0}];
+  [_currentFooterView tv_sizeThatFits:{v63, 0.0}];
   v65 = v64;
   v67 = v66;
   v68 = v7 - (v134 + v62 + v64);
-  if (v29 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v69 = v68;
   }
@@ -651,14 +651,14 @@ LABEL_31:
 
   if (v64 < v63)
   {
-    v70 = [v56 tv_alignment];
+    tv_alignment2 = [_currentFooterView tv_alignment];
     v71 = floor((v7 - v65) * 0.5);
-    if (v70 != 2)
+    if (tv_alignment2 != 2)
     {
       v71 = v69;
     }
 
-    if (v70 == 3)
+    if (tv_alignment2 == 3)
     {
       v69 = v68;
     }
@@ -681,20 +681,20 @@ LABEL_31:
   y = v149.origin.y;
   width = v149.size.width;
   height = v149.size.height;
-  v77 = [v56 layer];
-  [v77 anchorPoint];
+  layer2 = [_currentFooterView layer];
+  [layer2 anchorPoint];
   v79 = v78;
   v81 = v80;
 
-  [v56 setBounds:{0.0, 0.0, width, height}];
+  [_currentFooterView setBounds:{0.0, 0.0, width, height}];
   v82 = x + width * v79;
   v83 = v132 + v122;
   *&v82 = v82;
   v84 = y + height * v81;
-  [v56 setCenter:{roundf(*&v82), roundf(v84)}];
+  [_currentFooterView setCenter:{roundf(*&v82), roundf(v84)}];
   [(_TVCollectionWrappingView *)self _updateGradientLayer];
-  v85 = [(_TVCollectionWrappingView *)self effectiveUserInterfaceLayoutDirection];
-  if (v85 == 1)
+  effectiveUserInterfaceLayoutDirection2 = [(_TVCollectionWrappingView *)self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection2 == 1)
   {
     v86 = v134;
   }
@@ -704,7 +704,7 @@ LABEL_31:
     v86 = v127;
   }
 
-  if (v85 == 1)
+  if (effectiveUserInterfaceLayoutDirection2 == 1)
   {
     v87 = v127;
   }
@@ -714,27 +714,27 @@ LABEL_31:
     v87 = v134;
   }
 
-  [v8 contentInset];
+  [collectionView contentInset];
   if (v91 != v86 || (v88 == v83 ? (v92 = v90 == v87) : (v92 = 0), v92 ? (v93 = v89 == v72) : (v93 = 0), !v93))
   {
-    [v8 contentOffset];
+    [collectionView contentOffset];
     v95 = v94;
     v97 = v96;
-    [v8 contentInset];
+    [collectionView contentInset];
     v99 = v98;
     v133 = v100;
     v135 = v101;
     v128 = v102;
-    [v8 setContentInset:{v83, v86, v72, v87}];
+    [collectionView setContentInset:{v83, v86, v72, v87}];
     v103 = v121;
     if (v121 > 0.0)
     {
-      [v8 _setHorizontalIndexTitleBarOffset:{0.0, -(v120 - (v131 + v130 + self->_headerFrame.size.height))}];
+      [collectionView _setHorizontalIndexTitleBarOffset:{0.0, -(v120 - (v131 + v130 + self->_headerFrame.size.height))}];
     }
 
     if ([(_TVCollectionWrappingView *)self collectionGradientMask]< 1)
     {
-      [v8 _setGradientMaskLengths:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+      [collectionView _setGradientMaskLengths:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
     }
 
     else
@@ -746,8 +746,8 @@ LABEL_31:
       v144 = v104;
       v141 = *&v140.m11;
       v142 = v104;
-      [objc_opt_class() gradientConfigForCollection:v8 gradientMask:-[_TVCollectionWrappingView collectionGradientMask](self gradientLengths:"collectionGradientMask") gradientInset:&v140 gradientBoundsInset:{&v143, &v141}];
-      if (([(_TVCollectionWrappingView *)self collectionGradientMask]& 1) != 0 && v9 && [(_TVCollectionWrappingView *)self isHeaderFloating])
+      [objc_opt_class() gradientConfigForCollection:collectionView gradientMask:-[_TVCollectionWrappingView collectionGradientMask](self gradientLengths:"collectionGradientMask") gradientInset:&v140 gradientBoundsInset:{&v143, &v141}];
+      if (([(_TVCollectionWrappingView *)self collectionGradientMask]& 1) != 0 && _currentHeaderView && [(_TVCollectionWrappingView *)self isHeaderFloating])
       {
         v150.origin.y = v117;
         v150.origin.x = v118;
@@ -756,14 +756,14 @@ LABEL_31:
         *&v143 = *&v143 + v131 + CGRectGetMaxY(v150);
       }
 
-      [v8 _setGradientMaskLengths:{v140.m11, v140.m12, v140.m13, v140.m14}];
-      [v8 _setGradientMaskEdgeInsets:{v143, v144}];
-      [v8 _setGradientBoundsInsets:{v141, v142}];
+      [collectionView _setGradientMaskLengths:{v140.m11, v140.m12, v140.m13, v140.m14}];
+      [collectionView _setGradientMaskEdgeInsets:{v143, v144}];
+      [collectionView _setGradientBoundsInsets:{v141, v142}];
     }
 
-    if (([v8 isDragging] & 1) == 0 && (objc_msgSend(v8, "isDecelerating") & 1) == 0)
+    if (([collectionView isDragging] & 1) == 0 && (objc_msgSend(collectionView, "isDecelerating") & 1) == 0)
     {
-      [v8 contentSize];
+      [collectionView contentSize];
       v107 = v128 + v106 - v7;
       v108 = v87 + v106 - v7;
       if (v95 < v107)
@@ -788,54 +788,54 @@ LABEL_31:
         v110 = -v83;
       }
 
-      [v8 setContentOffset:0 animated:{v108, v110}];
+      [collectionView setContentOffset:0 animated:{v108, v110}];
     }
   }
 
   [(_TVCollectionWrappingView *)self setBounds:v138, v129, v7, v139];
   [TVMLUtilities _headerFadeForShowcaseFactor:v136];
   v112 = v111;
-  [v9 setAlpha:?];
-  v113 = [v8 _horizontalIndexTitleBar];
-  [v113 setAlpha:v112];
+  [_currentHeaderView setAlpha:?];
+  _horizontalIndexTitleBar = [collectionView _horizontalIndexTitleBar];
+  [_horizontalIndexTitleBar setAlpha:v112];
 
-  v114 = [(_TVCollectionWrappingView *)self layer];
+  layer3 = [(_TVCollectionWrappingView *)self layer];
   CATransform3DMakeScale(&v140, sx, sx, 1.0);
-  [v114 setSublayerTransform:&v140];
+  [layer3 setSublayerTransform:&v140];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = [a3 nextFocusedView];
-  v8 = [(_TVCollectionWrappingView *)self _currentHeaderView];
+  coordinatorCopy = coordinator;
+  nextFocusedView = [context nextFocusedView];
+  _currentHeaderView = [(_TVCollectionWrappingView *)self _currentHeaderView];
   if ([(_TVCollectionWrappingView *)self headerCanBecomeFocused])
   {
-    -[_TVCollectionWrappingView setHeaderFocused:](self, "setHeaderFocused:", [v7 isDescendantOfView:v8]);
+    -[_TVCollectionWrappingView setHeaderFocused:](self, "setHeaderFocused:", [nextFocusedView isDescendantOfView:_currentHeaderView]);
   }
 
-  if (v8)
+  if (_currentHeaderView)
   {
     if (![(_TVCollectionWrappingView *)self isHeaderFocused])
     {
-      v9 = [(_TVCollectionWrappingView *)self collectionView];
-      v10 = [v7 isDescendantOfView:v9];
+      collectionView = [(_TVCollectionWrappingView *)self collectionView];
+      v10 = [nextFocusedView isDescendantOfView:collectionView];
 
       if (v10)
       {
-        [v8 frame];
+        [_currentHeaderView frame];
         v12 = v11 < self->_headerFrame.origin.y;
-        objc_storeStrong(&self->_selectingView, v7);
+        objc_storeStrong(&self->_selectingView, nextFocusedView);
         v22 = MEMORY[0x277D85DD0];
         v23 = 3221225472;
         v24 = __78___TVCollectionWrappingView_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
         v25 = &unk_279D6E7F8;
-        v26 = self;
+        selfCopy = self;
         v13 = &v22;
-        v14 = v6;
+        v14 = coordinatorCopy;
         v15 = v12;
 LABEL_9:
-        [v14 addCoordinatedAnimationsForAnimation:v15 animations:v13 completion:{0, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26}];
+        [v14 addCoordinatedAnimationsForAnimation:v15 animations:v13 completion:{0, v17, v18, v19, v20, selfCopy2, v22, v23, v24, v25, selfCopy}];
         goto LABEL_10;
       }
     }
@@ -850,9 +850,9 @@ LABEL_9:
     v18 = 3221225472;
     v19 = __78___TVCollectionWrappingView_didUpdateFocusInContext_withAnimationCoordinator___block_invoke_2;
     v20 = &unk_279D6E7F8;
-    v21 = self;
+    selfCopy2 = self;
     v13 = &v17;
-    v14 = v6;
+    v14 = coordinatorCopy;
     v15 = 1;
     goto LABEL_9;
   }
@@ -865,18 +865,18 @@ LABEL_10:
   v7[1] = *MEMORY[0x277D85DE8];
   if ([(_TVCollectionWrappingView *)self headerCanBecomeFocused]&& [(_TVCollectionWrappingView *)self isHeaderFocused])
   {
-    v3 = [(_TVCollectionWrappingView *)self _currentHeaderView];
+    _currentHeaderView = [(_TVCollectionWrappingView *)self _currentHeaderView];
   }
 
   else
   {
-    v3 = [(_TVCollectionWrappingView *)self collectionView];
+    _currentHeaderView = [(_TVCollectionWrappingView *)self collectionView];
   }
 
-  v4 = v3;
-  if (v3)
+  v4 = _currentHeaderView;
+  if (_currentHeaderView)
   {
-    v7[0] = v3;
+    v7[0] = _currentHeaderView;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -888,7 +888,7 @@ LABEL_10:
   return v5;
 }
 
-- (id)rowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4
+- (id)rowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index
 {
   v83[1] = *MEMORY[0x277D85DE8];
   [(_TVCollectionWrappingView *)self _adjustedPadding];
@@ -897,18 +897,18 @@ LABEL_10:
   v71 = v9;
   v12 = v11;
   v81 = 0x7FFFFFFFFFFFFFFFLL;
-  v13 = [(_TVCollectionWrappingView *)self _collectionRowMetricsForExpectedWidth:&v81 firstItemRowIndex:0 forShowcase:a3];
+  v13 = [(_TVCollectionWrappingView *)self _collectionRowMetricsForExpectedWidth:&v81 firstItemRowIndex:0 forShowcase:width];
   v79 = 0u;
   v80 = 0u;
   v78 = 0u;
   memset(v77, 0, sizeof(v77));
   if ([v13 count])
   {
-    v14 = [v13 firstObject];
-    v15 = v14;
-    if (v14)
+    firstObject = [v13 firstObject];
+    v15 = firstObject;
+    if (firstObject)
     {
-      [v14 tv_rowMetricsValue];
+      [firstObject tv_rowMetricsValue];
     }
 
     else
@@ -928,10 +928,10 @@ LABEL_10:
     memset(v77, 0, sizeof(v77));
   }
 
-  v16 = [(_TVCollectionWrappingView *)self collectionView];
-  v17 = [v16 _displaysHorizontalIndexTitleBar];
+  collectionView = [(_TVCollectionWrappingView *)self collectionView];
+  _displaysHorizontalIndexTitleBar = [collectionView _displaysHorizontalIndexTitleBar];
 
-  if (v17)
+  if (_displaysHorizontalIndexTitleBar)
   {
     *(v77 + 8) = vaddq_f64(*(v77 + 8), vdupq_lane_s64(COERCE__INT64(*MEMORY[0x277D77428] + 18.0), 0));
     *&v80 = 0;
@@ -939,24 +939,24 @@ LABEL_10:
     *&v78 = 0;
   }
 
-  v18 = [(_TVCollectionWrappingView *)self headerView];
+  headerView = [(_TVCollectionWrappingView *)self headerView];
 
-  if (v18)
+  if (headerView)
   {
-    v20 = [(_TVCollectionWrappingView *)self headerView];
-    [v20 tv_margin];
+    headerView2 = [(_TVCollectionWrappingView *)self headerView];
+    [headerView2 tv_margin];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
 
-    v29 = a3 - (v71 + v24 + v70 + v28) >= 2.22044605e-16 ? a3 - (v71 + v24 + v70 + v28) : a3;
-    v30 = [(_TVCollectionWrappingView *)self headerView];
-    [v30 tv_sizeThatFits:{v29, 0.0}];
+    v29 = width - (v71 + v24 + v70 + v28) >= 2.22044605e-16 ? width - (v71 + v24 + v70 + v28) : width;
+    headerView3 = [(_TVCollectionWrappingView *)self headerView];
+    [headerView3 tv_sizeThatFits:{v29, 0.0}];
     v32 = v31;
 
-    v33 = [(_TVCollectionWrappingView *)self headerView];
-    [v33 tv_alignmentInsetsForExpectedWidth:v29];
+    headerView4 = [(_TVCollectionWrappingView *)self headerView];
+    [headerView4 tv_alignmentInsetsForExpectedWidth:v29];
     v35 = v34;
 
     v36 = v8 + v22;
@@ -1009,20 +1009,20 @@ LABEL_10:
 
   v13 = v42;
 LABEL_20:
-  v43 = [(_TVCollectionWrappingView *)self footerView];
+  footerView = [(_TVCollectionWrappingView *)self footerView];
 
-  if (!v43)
+  if (!footerView)
   {
     goto LABEL_37;
   }
 
   if ([v13 count])
   {
-    v44 = [v13 lastObject];
-    v45 = v44;
-    if (v44)
+    lastObject = [v13 lastObject];
+    v45 = lastObject;
+    if (lastObject)
     {
-      [v44 tv_rowMetricsValue];
+      [lastObject tv_rowMetricsValue];
     }
 
     else
@@ -1049,29 +1049,29 @@ LABEL_20:
     memset(v77, 0, sizeof(v77));
   }
 
-  v46 = [(_TVCollectionWrappingView *)self footerView];
-  [v46 tv_margin];
+  footerView2 = [(_TVCollectionWrappingView *)self footerView];
+  [footerView2 tv_margin];
   v48 = v47;
   v50 = v49;
   v52 = v51;
   v54 = v53;
 
-  if (a3 - (v71 + v50 + v70 + v54) >= 2.22044605e-16)
+  if (width - (v71 + v50 + v70 + v54) >= 2.22044605e-16)
   {
-    v55 = a3 - (v71 + v50 + v70 + v54);
+    widthCopy = width - (v71 + v50 + v70 + v54);
   }
 
   else
   {
-    v55 = a3;
+    widthCopy = width;
   }
 
-  v56 = [(_TVCollectionWrappingView *)self footerView];
-  [v56 tv_sizeThatFits:{v55, 0.0}];
+  footerView3 = [(_TVCollectionWrappingView *)self footerView];
+  [footerView3 tv_sizeThatFits:{widthCopy, 0.0}];
   v58 = v57;
 
-  v59 = [(_TVCollectionWrappingView *)self footerView];
-  [v59 tv_alignmentInsetsForExpectedWidth:v55];
+  footerView4 = [(_TVCollectionWrappingView *)self footerView];
+  [footerView4 tv_alignmentInsetsForExpectedWidth:widthCopy];
   v61 = v60;
 
   v62 = v52 + v48 + v58;
@@ -1121,9 +1121,9 @@ LABEL_20:
 
   v13 = v68;
 LABEL_37:
-  if (a4)
+  if (index)
   {
-    *a4 = v81;
+    *index = v81;
   }
 
   return v13;
@@ -1131,10 +1131,10 @@ LABEL_37:
 
 - (BOOL)shouldBindRowsTogether
 {
-  v3 = [(_TVCollectionWrappingView *)self collectionView];
-  if ([v3 conformsToProtocol:&unk_287E7FA58])
+  collectionView = [(_TVCollectionWrappingView *)self collectionView];
+  if ([collectionView conformsToProtocol:&unk_287E7FA58])
   {
-    v4 = [(_TVCollectionWrappingView *)self collectionView];
+    collectionView2 = [(_TVCollectionWrappingView *)self collectionView];
     v5 = objc_opt_respondsToSelector();
 
     if ((v5 & 1) == 0)
@@ -1142,21 +1142,21 @@ LABEL_37:
       return 0;
     }
 
-    v3 = [(_TVCollectionWrappingView *)self collectionView];
-    v6 = [v3 shouldBindRowsTogether];
+    collectionView = [(_TVCollectionWrappingView *)self collectionView];
+    shouldBindRowsTogether = [collectionView shouldBindRowsTogether];
   }
 
   else
   {
-    v6 = 0;
+    shouldBindRowsTogether = 0;
   }
 
-  return v6;
+  return shouldBindRowsTogether;
 }
 
-- (id)_collectionRowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4 forShowcase:(BOOL)a5
+- (id)_collectionRowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index forShowcase:(BOOL)showcase
 {
-  v5 = a5;
+  showcaseCopy = showcase;
   v53[1] = *MEMORY[0x277D85DE8];
   v51 = 0x7FFFFFFFFFFFFFFFLL;
   [(_TVCollectionWrappingView *)self _adjustedPadding];
@@ -1164,26 +1164,26 @@ LABEL_37:
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(_TVCollectionWrappingView *)self headerView];
+  headerView = [(_TVCollectionWrappingView *)self headerView];
 
-  if (v17)
+  if (headerView)
   {
     v10 = 0.0;
   }
 
-  v18 = [(_TVCollectionWrappingView *)self collectionView];
-  v19 = [v18 conformsToProtocol:&unk_287E7FB40];
+  collectionView = [(_TVCollectionWrappingView *)self collectionView];
+  v19 = [collectionView conformsToProtocol:&unk_287E7FB40];
 
-  v20 = [(_TVCollectionWrappingView *)self collectionView];
-  v21 = v20;
+  collectionView2 = [(_TVCollectionWrappingView *)self collectionView];
+  v21 = collectionView2;
   if (v19)
   {
     v22 = objc_opt_respondsToSelector();
 
-    if (!v5 || (v22 & 1) == 0 || (-[_TVCollectionWrappingView collectionView](self, "collectionView"), v23 = objc_claimAutoreleasedReturnValue(), [v23 showcaseRowMetricsForExpectedWidth:a3 withContentInset:{v10, v12, v14, v16}], v21 = objc_claimAutoreleasedReturnValue(), v23, !v21))
+    if (!showcaseCopy || (v22 & 1) == 0 || (-[_TVCollectionWrappingView collectionView](self, "collectionView"), v23 = objc_claimAutoreleasedReturnValue(), [v23 showcaseRowMetricsForExpectedWidth:width withContentInset:{v10, v12, v14, v16}], v21 = objc_claimAutoreleasedReturnValue(), v23, !v21))
     {
-      v24 = [(_TVCollectionWrappingView *)self collectionView];
-      v25 = [v24 rowMetricsForExpectedWidth:&v51 withContentInset:a3 firstItemRowIndex:{v10, v12, v14, v16}];
+      collectionView3 = [(_TVCollectionWrappingView *)self collectionView];
+      v25 = [collectionView3 rowMetricsForExpectedWidth:&v51 withContentInset:width firstItemRowIndex:{v10, v12, v14, v16}];
 LABEL_10:
       v21 = v25;
     }
@@ -1195,26 +1195,26 @@ LABEL_10:
     if (v21)
     {
       memset(&v50[1], 0, 64);
-      v26 = [(_TVCollectionWrappingView *)self collectionView];
-      [v26 tv_sizeThatFits:a3 withContentInset:{0.0, v10, v12, v14, v16}];
+      collectionView4 = [(_TVCollectionWrappingView *)self collectionView];
+      [collectionView4 tv_sizeThatFits:width withContentInset:{0.0, v10, v12, v14, v16}];
       v28 = v27;
 
       *&v50[0] = 0;
       *(&v50[0] + 1) = v28;
-      v24 = [MEMORY[0x277CCAE60] tv_valueWithRowMetrics:v50];
-      v53[0] = v24;
+      collectionView3 = [MEMORY[0x277CCAE60] tv_valueWithRowMetrics:v50];
+      v53[0] = collectionView3;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
       goto LABEL_10;
     }
   }
 
-  if (v5)
+  if (showcaseCopy)
   {
-    [(_TVCollectionWrappingView *)self _showcaseContentScaleForExpectedWidth:a3];
+    [(_TVCollectionWrappingView *)self _showcaseContentScaleForExpectedWidth:width];
     v44 = v29;
     if (*&v29 < 1.0)
     {
-      v30 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -1267,7 +1267,7 @@ LABEL_10:
             v45[0] = v50[0];
             v45[1] = v50[1];
             v42 = [MEMORY[0x277CCAE60] tv_valueWithRowMetrics:{v45, v44}];
-            [v30 addObject:v42];
+            [array addObject:v42];
           }
 
           v33 = [v31 countByEnumeratingWithState:&v46 objects:v52 count:16];
@@ -1276,13 +1276,13 @@ LABEL_10:
         while (v33);
       }
 
-      v21 = [v30 copy];
+      v21 = [array copy];
     }
   }
 
-  if (a4)
+  if (index)
   {
-    *a4 = v51;
+    *index = v51;
   }
 
   return v21;
@@ -1297,7 +1297,7 @@ LABEL_10:
   height = self->_headerFrame.size.height;
   if (self->_selectingView && [(_TVCollectionWrappingView *)self isHeaderAuxiliarySelecting]&& [(_TVCollectionWrappingView *)self isHeaderFloating])
   {
-    v8 = [(_TVCollectionWrappingView *)self collectionView];
+    collectionView = [(_TVCollectionWrappingView *)self collectionView];
     [(UIView *)self tv_padding];
     v69 = v9;
     v66 = v10;
@@ -1322,8 +1322,8 @@ LABEL_10:
     v31 = v14 - v21;
     v32 = v16 + v22 + v24;
     v33 = v18 + v21 + v23;
-    v34 = [(UIView *)self->_selectingView superview];
-    [v8 convertRect:v34 fromView:{v30, v31, v32, v33}];
+    superview = [(UIView *)self->_selectingView superview];
+    [collectionView convertRect:superview fromView:{v30, v31, v32, v33}];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -1332,16 +1332,16 @@ LABEL_10:
     v65 = x;
     if (self->_collectionViewFlags.respondsToAugmentedSelectionFrameForFrame)
     {
-      v43 = [(_TVCollectionWrappingView *)self collectionView];
-      [v43 tv_augmentedSelectionFrameForFrame:{v36, v38, v40, v42}];
+      collectionView2 = [(_TVCollectionWrappingView *)self collectionView];
+      [collectionView2 tv_augmentedSelectionFrameForFrame:{v36, v38, v40, v42}];
       v36 = v44;
       v38 = v45;
       v40 = v46;
       v42 = v47;
     }
 
-    v48 = [(_TVCollectionWrappingView *)self collectionView];
-    [(_TVCollectionWrappingView *)self convertRect:v48 fromView:v36, v38, v40, v42];
+    collectionView3 = [(_TVCollectionWrappingView *)self collectionView];
+    [(_TVCollectionWrappingView *)self convertRect:collectionView3 fromView:v36, v38, v40, v42];
     v50 = v49;
     v67 = v52;
     v68 = v51;
@@ -1395,8 +1395,8 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    v8 = [(_TVCollectionWrappingView *)self collectionView];
-    [v8 contentInset];
+    collectionView = [(_TVCollectionWrappingView *)self collectionView];
+    [collectionView contentInset];
     y = y - v25;
   }
 
@@ -1420,11 +1420,11 @@ LABEL_9:
   {
     [(_TVCollectionWrappingView *)self bounds];
     v12 = v11 - (v6 + v10);
-    v13 = [(_TVCollectionWrappingView *)self collectionView];
-    v14 = [v13 collectionViewLayout];
+    collectionView = [(_TVCollectionWrappingView *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
 
-    [v14 prepareLayout];
-    [v14 collectionViewContentSize];
+    [collectionViewLayout prepareLayout];
+    [collectionViewLayout collectionViewContentSize];
     if (v15 < v12)
     {
       v16 = v15;
@@ -1459,74 +1459,74 @@ LABEL_9:
   }
 }
 
-- (double)_showcaseContentScaleForExpectedWidth:(double)a3
+- (double)_showcaseContentScaleForExpectedWidth:(double)width
 {
   [(_TVCollectionWrappingView *)self _adjustedPadding];
   v6 = v5;
   v8 = v7;
   [(_TVCollectionWrappingView *)self showcaseConfig];
-  return fmin((a3 + 0.0 * -2.0) / (a3 - (v6 + v8)), 1.0);
+  return fmin((width + 0.0 * -2.0) / (width - (v6 + v8)), 1.0);
 }
 
 - (id)_currentHeaderView
 {
   if ([(_TVCollectionWrappingView *)self isHeaderHidden])
   {
-    v3 = 0;
+    headerView = 0;
   }
 
   else
   {
-    v3 = [(_TVCollectionWrappingView *)self headerView];
+    headerView = [(_TVCollectionWrappingView *)self headerView];
   }
 
-  return v3;
+  return headerView;
 }
 
-- (void)setIkBackgroundColor:(id)a3
+- (void)setIkBackgroundColor:(id)color
 {
-  v10 = a3;
+  colorCopy = color;
   if (([(IKColor *)self->_ikBackgroundColor isEqual:?]& 1) == 0)
   {
     [(CAGradientLayer *)self->_gradientLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_ikBackgroundColor, a3);
-    v5 = [MEMORY[0x277D75348] clearColor];
-    if (v10)
+    objc_storeStrong(&self->_ikBackgroundColor, color);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    if (colorCopy)
     {
-      v6 = [v10 color];
+      color = [colorCopy color];
 
-      if ([v10 colorType] == 3)
+      if ([colorCopy colorType] == 3)
       {
-        v7 = [MEMORY[0x277CD9EB0] layer];
+        layer = [MEMORY[0x277CD9EB0] layer];
         gradientLayer = self->_gradientLayer;
-        self->_gradientLayer = v7;
+        self->_gradientLayer = layer;
 
         [(_TVCollectionWrappingView *)self _updateGradientLayer];
-        v9 = [(_TVCollectionWrappingView *)self layer];
-        [v9 insertSublayer:self->_gradientLayer atIndex:0];
+        layer2 = [(_TVCollectionWrappingView *)self layer];
+        [layer2 insertSublayer:self->_gradientLayer atIndex:0];
       }
     }
 
     else
     {
-      v6 = v5;
+      color = clearColor;
     }
 
-    [(_TVCollectionWrappingView *)self setBackgroundColor:v6];
+    [(_TVCollectionWrappingView *)self setBackgroundColor:color];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [(_TVCollectionWrappingView *)self traitCollection];
-  if ([v4 userInterfaceStyle])
+  changeCopy = change;
+  traitCollection = [(_TVCollectionWrappingView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle])
   {
-    v5 = [v8 userInterfaceStyle];
-    v6 = [(_TVCollectionWrappingView *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    userInterfaceStyle = [changeCopy userInterfaceStyle];
+    traitCollection2 = [(_TVCollectionWrappingView *)self traitCollection];
+    userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-    if (v5 != v7)
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
       [(_TVCollectionWrappingView *)self _updateGradientLayer];
     }
@@ -1541,87 +1541,87 @@ LABEL_9:
 {
   if (self->_gradientLayer)
   {
-    v3 = [(IKColor *)self->_ikBackgroundColor gradientColors];
-    v4 = [v3 count];
+    gradientColors = [(IKColor *)self->_ikBackgroundColor gradientColors];
+    v4 = [gradientColors count];
 
     if (v4)
     {
       v5 = MEMORY[0x277CBEB18];
-      v6 = [(IKColor *)self->_ikBackgroundColor gradientColors];
-      v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+      gradientColors2 = [(IKColor *)self->_ikBackgroundColor gradientColors];
+      v7 = [v5 arrayWithCapacity:{objc_msgSend(gradientColors2, "count")}];
 
-      v8 = [(IKColor *)self->_ikBackgroundColor gradientColors];
+      gradientColors3 = [(IKColor *)self->_ikBackgroundColor gradientColors];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __49___TVCollectionWrappingView__updateGradientLayer__block_invoke;
       v12[3] = &unk_279D6F808;
       v13 = v7;
       v9 = v7;
-      [v8 enumerateObjectsUsingBlock:v12];
+      [gradientColors3 enumerateObjectsUsingBlock:v12];
 
       [(CAGradientLayer *)self->_gradientLayer setColors:v9];
       gradientLayer = self->_gradientLayer;
-      v11 = [(IKColor *)self->_ikBackgroundColor gradientPoints];
-      [(CAGradientLayer *)gradientLayer setLocations:v11];
+      gradientPoints = [(IKColor *)self->_ikBackgroundColor gradientPoints];
+      [(CAGradientLayer *)gradientLayer setLocations:gradientPoints];
     }
   }
 }
 
 - (void)_updateSubviews
 {
-  v3 = [(_TVCollectionWrappingView *)self collectionView];
-  if (v3)
+  collectionView = [(_TVCollectionWrappingView *)self collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    v5 = [(_TVCollectionWrappingView *)self collectionView];
-    v6 = [v5 superview];
+    v4 = collectionView;
+    collectionView2 = [(_TVCollectionWrappingView *)self collectionView];
+    superview = [collectionView2 superview];
 
-    if (!v6)
+    if (!superview)
     {
-      v7 = [(_TVCollectionWrappingView *)self headerView];
-      v8 = [v7 superview];
+      headerView = [(_TVCollectionWrappingView *)self headerView];
+      superview2 = [headerView superview];
 
-      v9 = [(_TVCollectionWrappingView *)self collectionView];
-      if (v8 == self)
+      collectionView3 = [(_TVCollectionWrappingView *)self collectionView];
+      if (superview2 == self)
       {
-        v10 = [(_TVCollectionWrappingView *)self headerView];
-        [(_TVCollectionWrappingView *)self insertSubview:v9 below:v10];
+        headerView2 = [(_TVCollectionWrappingView *)self headerView];
+        [(_TVCollectionWrappingView *)self insertSubview:collectionView3 below:headerView2];
       }
 
       else
       {
-        [(_TVCollectionWrappingView *)self addSubview:v9];
+        [(_TVCollectionWrappingView *)self addSubview:collectionView3];
       }
     }
   }
 
-  v11 = [(_TVCollectionWrappingView *)self headerView];
-  if (v11)
+  headerView3 = [(_TVCollectionWrappingView *)self headerView];
+  if (headerView3)
   {
-    v12 = v11;
-    v13 = [(_TVCollectionWrappingView *)self headerView];
-    v14 = [v13 superview];
+    v12 = headerView3;
+    headerView4 = [(_TVCollectionWrappingView *)self headerView];
+    superview3 = [headerView4 superview];
 
-    if (!v14)
+    if (!superview3)
     {
-      v15 = [(_TVCollectionWrappingView *)self isHeaderFloating];
-      v16 = [(_TVCollectionWrappingView *)self collectionView];
-      v17 = v16;
-      if (v15)
+      isHeaderFloating = [(_TVCollectionWrappingView *)self isHeaderFloating];
+      collectionView4 = [(_TVCollectionWrappingView *)self collectionView];
+      v17 = collectionView4;
+      if (isHeaderFloating)
       {
-        v18 = [v16 superview];
+        superview4 = [collectionView4 superview];
 
-        v19 = [(_TVCollectionWrappingView *)self headerView];
-        if (v18 != self)
+        headerView5 = [(_TVCollectionWrappingView *)self headerView];
+        if (superview4 != self)
         {
-          [(_TVCollectionWrappingView *)self addSubview:v19];
+          [(_TVCollectionWrappingView *)self addSubview:headerView5];
 LABEL_16:
 
           goto LABEL_17;
         }
 
-        v20 = [(_TVCollectionWrappingView *)self collectionView];
-        [(_TVCollectionWrappingView *)self insertSubview:v19 above:v20];
+        collectionView5 = [(_TVCollectionWrappingView *)self collectionView];
+        [(_TVCollectionWrappingView *)self insertSubview:headerView5 above:collectionView5];
 LABEL_15:
 
         goto LABEL_16;
@@ -1629,47 +1629,47 @@ LABEL_15:
 
       if (v17)
       {
-        v19 = [(_TVCollectionWrappingView *)self collectionView];
-        v20 = [(_TVCollectionWrappingView *)self headerView];
-        [v19 addSubview:v20];
+        headerView5 = [(_TVCollectionWrappingView *)self collectionView];
+        collectionView5 = [(_TVCollectionWrappingView *)self headerView];
+        [headerView5 addSubview:collectionView5];
         goto LABEL_15;
       }
     }
   }
 
 LABEL_17:
-  v21 = [(_TVCollectionWrappingView *)self footerView];
-  if (v21)
+  footerView = [(_TVCollectionWrappingView *)self footerView];
+  if (footerView)
   {
-    v22 = v21;
-    v23 = [(_TVCollectionWrappingView *)self footerView];
-    v24 = [v23 superview];
+    v22 = footerView;
+    footerView2 = [(_TVCollectionWrappingView *)self footerView];
+    superview5 = [footerView2 superview];
 
-    if (!v24)
+    if (!superview5)
     {
-      v25 = [(_TVCollectionWrappingView *)self collectionView];
-      v26 = [v25 superview];
+      collectionView6 = [(_TVCollectionWrappingView *)self collectionView];
+      superview6 = [collectionView6 superview];
 
-      v27 = [(_TVCollectionWrappingView *)self footerView];
-      v29 = v27;
-      if (v26 == self)
+      footerView3 = [(_TVCollectionWrappingView *)self footerView];
+      v29 = footerView3;
+      if (superview6 == self)
       {
-        v28 = [(_TVCollectionWrappingView *)self collectionView];
-        [(_TVCollectionWrappingView *)self insertSubview:v29 above:v28];
+        collectionView7 = [(_TVCollectionWrappingView *)self collectionView];
+        [(_TVCollectionWrappingView *)self insertSubview:v29 above:collectionView7];
       }
 
       else
       {
-        [(_TVCollectionWrappingView *)self addSubview:v27];
+        [(_TVCollectionWrappingView *)self addSubview:footerView3];
       }
     }
   }
 }
 
-- (void)setShowcaseConfig:(TVShowcaseConfig *)a3
+- (void)setShowcaseConfig:(TVShowcaseConfig *)config
 {
-  inset = a3->inset;
-  *&self->_showcaseConfig.flavor = *&a3->flavor;
+  inset = config->inset;
+  *&self->_showcaseConfig.flavor = *&config->flavor;
   self->_showcaseConfig.inset = inset;
 }
 

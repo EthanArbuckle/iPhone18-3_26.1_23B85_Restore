@@ -1,42 +1,42 @@
 @interface TCXmlStreamWriter
-+ (BOOL)startElementInStream:(_xmlTextWriter *)a3 name:(id)a4 prefix:(id)a5 ns:(const char *)a6;
-+ (BOOL)startPlainElementInStream:(_xmlTextWriter *)a3 name:(id)a4;
-+ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)a3 name:(id)a4;
-+ (BOOL)writeAttributeToStream:(_xmlTextWriter *)a3 name:(id)a4 content:(id)a5 prefix:(id)a6 ns:(const char *)a7;
-+ (BOOL)writeDtdToStream:(_xmlTextWriter *)a3 name:(id)a4 pubid:(id)a5 sysid:(id)a6 subset:(id)a7;
-+ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)a3 prefix:(id)a4 uri:(const char *)a5;
-+ (BOOL)writePlainAttributeToStream:(_xmlTextWriter *)a3 name:(id)a4 content:(id)a5;
-+ (BOOL)writeStringToStream:(_xmlTextWriter *)a3 text:(id)a4;
-+ (id)newXmlStreamWriterWithZipEntryName:(id)a3 outputStream:(id)a4 isCompressed:(BOOL)a5;
++ (BOOL)startElementInStream:(_xmlTextWriter *)stream name:(id)name prefix:(id)prefix ns:(const char *)ns;
++ (BOOL)startPlainElementInStream:(_xmlTextWriter *)stream name:(id)name;
++ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)stream name:(id)name;
++ (BOOL)writeAttributeToStream:(_xmlTextWriter *)stream name:(id)name content:(id)content prefix:(id)prefix ns:(const char *)ns;
++ (BOOL)writeDtdToStream:(_xmlTextWriter *)stream name:(id)name pubid:(id)pubid sysid:(id)sysid subset:(id)subset;
++ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)stream prefix:(id)prefix uri:(const char *)uri;
++ (BOOL)writePlainAttributeToStream:(_xmlTextWriter *)stream name:(id)name content:(id)content;
++ (BOOL)writeStringToStream:(_xmlTextWriter *)stream text:(id)text;
++ (id)newXmlStreamWriterWithZipEntryName:(id)name outputStream:(id)stream isCompressed:(BOOL)compressed;
 - (BOOL)endElement;
-- (BOOL)endElementsToDepth:(unsigned int)a3;
+- (BOOL)endElementsToDepth:(unsigned int)depth;
 - (BOOL)setUp;
-- (BOOL)startElement:(id)a3 prefix:(id)a4 ns:(const char *)a5;
+- (BOOL)startElement:(id)element prefix:(id)prefix ns:(const char *)ns;
 - (BOOL)tearDown;
-- (BOOL)writeAnchorTarget:(id)a3;
-- (BOOL)writeAttribute:(id)a3 BOOLContent:(BOOL)a4 prefix:(id)a5 ns:(const char *)a6;
-- (BOOL)writeAttribute:(id)a3 content:(id)a4 prefix:(id)a5 ns:(const char *)a6;
-- (BOOL)writeAttribute:(id)a3 doubleContent:(double)a4 prefix:(id)a5 ns:(const char *)a6;
-- (BOOL)writeAttribute:(id)a3 enumContent:(int)a4 map:(id)a5 prefix:(id)a6 ns:(const char *)a7;
-- (BOOL)writeAttribute:(id)a3 intContent:(int64_t)a4 prefix:(id)a5 ns:(const char *)a6;
-- (BOOL)writeDtd:(id)a3 pubid:(id)a4 sysid:(id)a5 subset:(id)a6;
-- (BOOL)writeElementId:(id)a3;
-- (BOOL)writeNamespace:(id)a3 uri:(const char *)a4;
-- (BOOL)writeString:(id)a3;
-- (TCXmlStreamWriter)initWithTextWriterProvider:(id)a3;
+- (BOOL)writeAnchorTarget:(id)target;
+- (BOOL)writeAttribute:(id)attribute BOOLContent:(BOOL)content prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeAttribute:(id)attribute content:(id)content prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeAttribute:(id)attribute doubleContent:(double)content prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeAttribute:(id)attribute enumContent:(int)content map:(id)map prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeAttribute:(id)attribute intContent:(int64_t)content prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeDtd:(id)dtd pubid:(id)pubid sysid:(id)sysid subset:(id)subset;
+- (BOOL)writeElementId:(id)id;
+- (BOOL)writeNamespace:(id)namespace uri:(const char *)uri;
+- (BOOL)writeString:(id)string;
+- (TCXmlStreamWriter)initWithTextWriterProvider:(id)provider;
 - (void)dealloc;
 @end
 
 @implementation TCXmlStreamWriter
 
-- (TCXmlStreamWriter)initWithTextWriterProvider:(id)a3
+- (TCXmlStreamWriter)initWithTextWriterProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = [(TCXmlStreamWriter *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mTextWriterProvider, a3);
+    objc_storeStrong(&v6->mTextWriterProvider, provider);
     v7->mCurrentDepth = 0;
     v7->mContentAddedToTopElement = 0;
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -62,43 +62,43 @@
     return 1;
   }
 
-  v4 = [(TCXmlStreamWriter *)self textWriterProvider];
-  v5 = [v4 setUp];
+  textWriterProvider = [(TCXmlStreamWriter *)self textWriterProvider];
+  setUp = [textWriterProvider setUp];
 
-  return v5 && xmlTextWriterStartDocument([(TCXmlStreamWriter *)self textWriter], 0, "UTF-8", 0) >= 0;
+  return setUp && xmlTextWriterStartDocument([(TCXmlStreamWriter *)self textWriter], 0, "UTF-8", 0) >= 0;
 }
 
 - (BOOL)tearDown
 {
-  v3 = [(TCXmlStreamWriter *)self isWriting];
-  if (v3)
+  isWriting = [(TCXmlStreamWriter *)self isWriting];
+  if (isWriting)
   {
     [(TCXmlStreamWriter *)self endElementsToDepth:0];
     xmlTextWriterEndDocument([(TCXmlStreamWriter *)self textWriter]);
     xmlTextWriterFlush([(TCXmlStreamWriter *)self textWriter]);
-    v4 = [(TCXmlStreamWriter *)self textWriterProvider];
-    [v4 tearDown];
+    textWriterProvider = [(TCXmlStreamWriter *)self textWriterProvider];
+    [textWriterProvider tearDown];
   }
 
-  return v3;
+  return isWriting;
 }
 
-+ (id)newXmlStreamWriterWithZipEntryName:(id)a3 outputStream:(id)a4 isCompressed:(BOOL)a5
++ (id)newXmlStreamWriterWithZipEntryName:(id)name outputStream:(id)stream isCompressed:(BOOL)compressed
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [[TCZipEntryTextWriterProvider alloc] initWithEntryName:v7 outputStream:v8 isCompressed:v5];
+  compressedCopy = compressed;
+  nameCopy = name;
+  streamCopy = stream;
+  v9 = [[TCZipEntryTextWriterProvider alloc] initWithEntryName:nameCopy outputStream:streamCopy isCompressed:compressedCopy];
   v10 = [objc_alloc(objc_opt_class()) initWithTextWriterProvider:v9];
 
   return v10;
 }
 
-- (BOOL)startElement:(id)a3 prefix:(id)a4 ns:(const char *)a5
+- (BOOL)startElement:(id)element prefix:(id)prefix ns:(const char *)ns
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() startElementInStream:-[TCXmlStreamWriter textWriter](self name:"textWriter") prefix:v8 ns:{v9, a5}];
+  elementCopy = element;
+  prefixCopy = prefix;
+  v10 = [objc_opt_class() startElementInStream:-[TCXmlStreamWriter textWriter](self name:"textWriter") prefix:elementCopy ns:{prefixCopy, ns}];
   if (v10)
   {
     self->mContentAddedToTopElement = 0;
@@ -129,36 +129,36 @@
   return v3;
 }
 
-- (BOOL)writeString:(id)a3
+- (BOOL)writeString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->mContentAddedToTopElement || [v4 length] != 0;
+  stringCopy = string;
+  v5 = stringCopy;
+  v6 = self->mContentAddedToTopElement || [stringCopy length] != 0;
   self->mContentAddedToTopElement = v6;
   v7 = [objc_opt_class() writeStringToStream:-[TCXmlStreamWriter textWriter](self text:{"textWriter"), v5}];
 
   return v7;
 }
 
-- (BOOL)endElementsToDepth:(unsigned int)a3
+- (BOOL)endElementsToDepth:(unsigned int)depth
 {
   do
   {
     mCurrentDepth = self->mCurrentDepth;
   }
 
-  while (mCurrentDepth > a3 && [(TCXmlStreamWriter *)self endElement]);
-  return mCurrentDepth <= a3;
+  while (mCurrentDepth > depth && [(TCXmlStreamWriter *)self endElement]);
+  return mCurrentDepth <= depth;
 }
 
-- (BOOL)writeAttribute:(id)a3 content:(id)a4 prefix:(id)a5 ns:(const char *)a6
+- (BOOL)writeAttribute:(id)attribute content:(id)content prefix:(id)prefix ns:(const char *)ns
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  attributeCopy = attribute;
+  contentCopy = content;
+  prefixCopy = prefix;
+  if (contentCopy)
   {
-    v13 = v11;
+    v13 = contentCopy;
   }
 
   else
@@ -168,7 +168,7 @@
 
   if (self->mCurrentDepth)
   {
-    v14 = [objc_opt_class() writeAttributeToStream:-[TCXmlStreamWriter textWriter](self name:"textWriter") content:v10 prefix:v13 ns:{v12, a6}];
+    v14 = [objc_opt_class() writeAttributeToStream:-[TCXmlStreamWriter textWriter](self name:"textWriter") content:attributeCopy prefix:v13 ns:{prefixCopy, ns}];
   }
 
   else
@@ -179,170 +179,170 @@
   return v14;
 }
 
-- (BOOL)writeAttribute:(id)a3 intContent:(int64_t)a4 prefix:(id)a5 ns:(const char *)a6
+- (BOOL)writeAttribute:(id)attribute intContent:(int64_t)content prefix:(id)prefix ns:(const char *)ns
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = TCXmlStringForInt(a4);
-  LOBYTE(a6) = [(TCXmlStreamWriter *)self writeAttribute:v10 content:v12 prefix:v11 ns:a6];
+  attributeCopy = attribute;
+  prefixCopy = prefix;
+  v12 = TCXmlStringForInt(content);
+  LOBYTE(ns) = [(TCXmlStreamWriter *)self writeAttribute:attributeCopy content:v12 prefix:prefixCopy ns:ns];
 
-  return a6;
+  return ns;
 }
 
-- (BOOL)writeAttribute:(id)a3 BOOLContent:(BOOL)a4 prefix:(id)a5 ns:(const char *)a6
+- (BOOL)writeAttribute:(id)attribute BOOLContent:(BOOL)content prefix:(id)prefix ns:(const char *)ns
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = TCXmlStringForBool(v8);
-  LOBYTE(a6) = [(TCXmlStreamWriter *)self writeAttribute:v10 content:v12 prefix:v11 ns:a6];
+  contentCopy = content;
+  attributeCopy = attribute;
+  prefixCopy = prefix;
+  v12 = TCXmlStringForBool(contentCopy);
+  LOBYTE(ns) = [(TCXmlStreamWriter *)self writeAttribute:attributeCopy content:v12 prefix:prefixCopy ns:ns];
 
-  return a6;
+  return ns;
 }
 
-- (BOOL)writeAttribute:(id)a3 enumContent:(int)a4 map:(id)a5 prefix:(id)a6 ns:(const char *)a7
+- (BOOL)writeAttribute:(id)attribute enumContent:(int)content map:(id)map prefix:(id)prefix ns:(const char *)ns
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = TCXmlStringForEnum(v10, a5);
-  LOBYTE(a7) = [(TCXmlStreamWriter *)self writeAttribute:v12 content:v14 prefix:v13 ns:a7];
+  v10 = *&content;
+  attributeCopy = attribute;
+  prefixCopy = prefix;
+  v14 = TCXmlStringForEnum(v10, map);
+  LOBYTE(ns) = [(TCXmlStreamWriter *)self writeAttribute:attributeCopy content:v14 prefix:prefixCopy ns:ns];
 
-  return a7;
+  return ns;
 }
 
-- (BOOL)writeAttribute:(id)a3 doubleContent:(double)a4 prefix:(id)a5 ns:(const char *)a6
+- (BOOL)writeAttribute:(id)attribute doubleContent:(double)content prefix:(id)prefix ns:(const char *)ns
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = TCXmlStringForDouble(a4);
-  LOBYTE(a6) = [(TCXmlStreamWriter *)self writeAttribute:v10 content:v12 prefix:v11 ns:a6];
+  attributeCopy = attribute;
+  prefixCopy = prefix;
+  v12 = TCXmlStringForDouble(content);
+  LOBYTE(ns) = [(TCXmlStreamWriter *)self writeAttribute:attributeCopy content:v12 prefix:prefixCopy ns:ns];
 
-  return a6;
+  return ns;
 }
 
-- (BOOL)writeElementId:(id)a3
+- (BOOL)writeElementId:(id)id
 {
-  v4 = a3;
-  if (!v4)
+  idCopy = id;
+  if (!idCopy)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"b%d", ++elementIdCount];
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"b%d", ++elementIdCount];
   }
 
-  v5 = [(TCXmlStreamWriter *)self writePlainAttribute:@"id" content:v4];
+  v5 = [(TCXmlStreamWriter *)self writePlainAttribute:@"id" content:idCopy];
 
   return v5;
 }
 
-- (BOOL)writeNamespace:(id)a3 uri:(const char *)a4
+- (BOOL)writeNamespace:(id)namespace uri:(const char *)uri
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_opt_class() writeNamespaceToStream:-[TCXmlStreamWriter textWriter](self prefix:"textWriter") uri:{v6, a4}];
+  namespaceCopy = namespace;
+  LOBYTE(uri) = [objc_opt_class() writeNamespaceToStream:-[TCXmlStreamWriter textWriter](self prefix:"textWriter") uri:{namespaceCopy, uri}];
 
-  return a4;
+  return uri;
 }
 
-- (BOOL)writeDtd:(id)a3 pubid:(id)a4 sysid:(id)a5 subset:(id)a6
+- (BOOL)writeDtd:(id)dtd pubid:(id)pubid sysid:(id)sysid subset:(id)subset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  LOBYTE(self) = [objc_opt_class() writeDtdToStream:-[TCXmlStreamWriter textWriter](self name:"textWriter") pubid:v10 sysid:v11 subset:{v12, v13}];
+  dtdCopy = dtd;
+  pubidCopy = pubid;
+  sysidCopy = sysid;
+  subsetCopy = subset;
+  LOBYTE(self) = [objc_opt_class() writeDtdToStream:-[TCXmlStreamWriter textWriter](self name:"textWriter") pubid:dtdCopy sysid:pubidCopy subset:{sysidCopy, subsetCopy}];
 
   return self;
 }
 
-- (BOOL)writeAnchorTarget:(id)a3
+- (BOOL)writeAnchorTarget:(id)target
 {
-  v4 = a3;
-  LOBYTE(self) = [objc_opt_class() writeAnchorTargetToStream:-[TCXmlStreamWriter textWriter](self name:{"textWriter"), v4}];
+  targetCopy = target;
+  LOBYTE(self) = [objc_opt_class() writeAnchorTargetToStream:-[TCXmlStreamWriter textWriter](self name:{"textWriter"), targetCopy}];
 
   return self;
 }
 
-+ (BOOL)startPlainElementInStream:(_xmlTextWriter *)a3 name:(id)a4
++ (BOOL)startPlainElementInStream:(_xmlTextWriter *)stream name:(id)name
 {
-  v5 = a4;
-  LOBYTE(a3) = [objc_opt_class() startElementInStream:a3 name:v5 prefix:0 ns:0];
+  nameCopy = name;
+  LOBYTE(stream) = [objc_opt_class() startElementInStream:stream name:nameCopy prefix:0 ns:0];
 
-  return a3;
+  return stream;
 }
 
-+ (BOOL)startElementInStream:(_xmlTextWriter *)a3 name:(id)a4 prefix:(id)a5 ns:(const char *)a6
++ (BOOL)startElementInStream:(_xmlTextWriter *)stream name:(id)name prefix:(id)prefix ns:(const char *)ns
 {
-  v9 = a4;
-  v10 = a5;
-  LODWORD(a6) = xmlTextWriterStartElementNS(a3, [v10 UTF8String], objc_msgSend(v9, "UTF8String"), a6);
+  nameCopy = name;
+  prefixCopy = prefix;
+  LODWORD(ns) = xmlTextWriterStartElementNS(stream, [prefixCopy UTF8String], objc_msgSend(nameCopy, "UTF8String"), ns);
 
-  return a6 >= 0;
+  return ns >= 0;
 }
 
-+ (BOOL)writeStringToStream:(_xmlTextWriter *)a3 text:(id)a4
++ (BOOL)writeStringToStream:(_xmlTextWriter *)stream text:(id)text
 {
-  v5 = a4;
-  v6 = [v5 tc_stringByRemovingInvalidXmlChars];
+  textCopy = text;
+  tc_stringByRemovingInvalidXmlChars = [textCopy tc_stringByRemovingInvalidXmlChars];
 
-  LODWORD(a3) = xmlTextWriterWriteString(a3, [v6 UTF8String]);
-  return a3 >= 0;
+  LODWORD(stream) = xmlTextWriterWriteString(stream, [tc_stringByRemovingInvalidXmlChars UTF8String]);
+  return stream >= 0;
 }
 
-+ (BOOL)writePlainAttributeToStream:(_xmlTextWriter *)a3 name:(id)a4 content:(id)a5
++ (BOOL)writePlainAttributeToStream:(_xmlTextWriter *)stream name:(id)name content:(id)content
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 tc_stringByRemovingInvalidXmlChars];
+  nameCopy = name;
+  contentCopy = content;
+  tc_stringByRemovingInvalidXmlChars = [contentCopy tc_stringByRemovingInvalidXmlChars];
 
-  LODWORD(a3) = xmlTextWriterWriteAttribute(a3, [v7 UTF8String], objc_msgSend(v9, "UTF8String"));
-  return a3 >= 0;
+  LODWORD(stream) = xmlTextWriterWriteAttribute(stream, [nameCopy UTF8String], objc_msgSend(tc_stringByRemovingInvalidXmlChars, "UTF8String"));
+  return stream >= 0;
 }
 
-+ (BOOL)writeAttributeToStream:(_xmlTextWriter *)a3 name:(id)a4 content:(id)a5 prefix:(id)a6 ns:(const char *)a7
++ (BOOL)writeAttributeToStream:(_xmlTextWriter *)stream name:(id)name content:(id)content prefix:(id)prefix ns:(const char *)ns
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 tc_stringByRemovingInvalidXmlChars];
+  nameCopy = name;
+  contentCopy = content;
+  prefixCopy = prefix;
+  tc_stringByRemovingInvalidXmlChars = [contentCopy tc_stringByRemovingInvalidXmlChars];
 
-  LODWORD(a7) = xmlTextWriterWriteAttributeNS(a3, [v13 UTF8String], objc_msgSend(v11, "UTF8String"), a7, objc_msgSend(v14, "UTF8String"));
-  return a7 >= 0;
+  LODWORD(ns) = xmlTextWriterWriteAttributeNS(stream, [prefixCopy UTF8String], objc_msgSend(nameCopy, "UTF8String"), ns, objc_msgSend(tc_stringByRemovingInvalidXmlChars, "UTF8String"));
+  return ns >= 0;
 }
 
-+ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)a3 prefix:(id)a4 uri:(const char *)a5
++ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)stream prefix:(id)prefix uri:(const char *)uri
 {
-  v7 = a4;
-  if (v7)
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"xmlns:%@", v7];
+    prefixCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"xmlns:%@", prefixCopy];
   }
 
   else
   {
-    v8 = @"xmlns";
+    prefixCopy = @"xmlns";
   }
 
-  v9 = xmlTextWriterWriteAttribute(a3, [(__CFString *)v8 UTF8String], a5);
+  v9 = xmlTextWriterWriteAttribute(stream, [(__CFString *)prefixCopy UTF8String], uri);
 
   return v9 >= 0;
 }
 
-+ (BOOL)writeDtdToStream:(_xmlTextWriter *)a3 name:(id)a4 pubid:(id)a5 sysid:(id)a6 subset:(id)a7
++ (BOOL)writeDtdToStream:(_xmlTextWriter *)stream name:(id)name pubid:(id)pubid sysid:(id)sysid subset:(id)subset
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  xmlTextWriterSetIndent(a3, 1);
-  v15 = xmlTextWriterWriteDTD(a3, [v11 UTF8String], objc_msgSend(v12, "UTF8String"), objc_msgSend(v13, "UTF8String"), objc_msgSend(v14, "UTF8String"));
-  xmlTextWriterSetIndent(a3, 0);
+  nameCopy = name;
+  pubidCopy = pubid;
+  sysidCopy = sysid;
+  subsetCopy = subset;
+  xmlTextWriterSetIndent(stream, 1);
+  v15 = xmlTextWriterWriteDTD(stream, [nameCopy UTF8String], objc_msgSend(pubidCopy, "UTF8String"), objc_msgSend(sysidCopy, "UTF8String"), objc_msgSend(subsetCopy, "UTF8String"));
+  xmlTextWriterSetIndent(stream, 0);
 
   return v15 >= 0;
 }
 
-+ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)a3 name:(id)a4
++ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)stream name:(id)name
 {
-  v5 = a4;
-  v6 = [objc_opt_class() startPlainElementInStream:a3 name:@"span"] && objc_msgSend(objc_opt_class(), "writePlainAttributeToStream:name:content:", a3, @"id", v5) && (objc_msgSend(objc_opt_class(), "endElementInStream:", a3) & 1) != 0;
+  nameCopy = name;
+  v6 = [objc_opt_class() startPlainElementInStream:stream name:@"span"] && objc_msgSend(objc_opt_class(), "writePlainAttributeToStream:name:content:", stream, @"id", nameCopy) && (objc_msgSend(objc_opt_class(), "endElementInStream:", stream) & 1) != 0;
 
   return v6;
 }

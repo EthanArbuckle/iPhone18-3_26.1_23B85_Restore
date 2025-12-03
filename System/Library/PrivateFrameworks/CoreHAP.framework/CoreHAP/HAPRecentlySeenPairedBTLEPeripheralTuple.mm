@@ -1,7 +1,7 @@
 @interface HAPRecentlySeenPairedBTLEPeripheralTuple
 - (id)description;
-- (id)initRecentlySeenPairedHAPBLEPeripheral:(id)a3;
-- (void)updateWithPeripheral:(id)a3;
+- (id)initRecentlySeenPairedHAPBLEPeripheral:(id)peripheral;
+- (void)updateWithPeripheral:(id)peripheral;
 @end
 
 @implementation HAPRecentlySeenPairedBTLEPeripheralTuple
@@ -11,14 +11,14 @@
   v3 = 0.0;
   if (self->_lastSeen > 0.0)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v4 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v3 = v5 - self->_lastSeen;
   }
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(HAPRecentlySeenPairedBTLEPeripheralTuple *)self identifier];
-  v8 = [(HAPRecentlySeenPairedBTLEPeripheralTuple *)self stateNumber];
+  identifier = [(HAPRecentlySeenPairedBTLEPeripheralTuple *)self identifier];
+  stateNumber = [(HAPRecentlySeenPairedBTLEPeripheralTuple *)self stateNumber];
   if (v3 <= 0.0)
   {
     v9 = -1.0;
@@ -32,65 +32,65 @@
   [(HAPRecentlySeenPairedBTLEPeripheralTuple *)self monitorState];
   v10 = HMFBooleanToString();
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAPRecentlySeenPairedBTLEPeripheralTuple connectionPriority](self, "connectionPriority")}];
-  v12 = [v6 stringWithFormat:@"%@/%@ - Seen(%0.2fm)/Monitor(%@)/Priority(%@)", v7, v8, *&v9, v10, v11];
+  v12 = [v6 stringWithFormat:@"%@/%@ - Seen(%0.2fm)/Monitor(%@)/Priority(%@)", identifier, stateNumber, *&v9, v10, v11];
 
   return v12;
 }
 
-- (void)updateWithPeripheral:(id)a3
+- (void)updateWithPeripheral:(id)peripheral
 {
-  v15 = a3;
-  v4 = [v15 stateNumber];
+  peripheralCopy = peripheral;
+  stateNumber = [peripheralCopy stateNumber];
 
-  if (v4)
+  if (stateNumber)
   {
-    v5 = [v15 stateNumber];
+    stateNumber2 = [peripheralCopy stateNumber];
     stateNumber = self->_stateNumber;
-    self->_stateNumber = v5;
+    self->_stateNumber = stateNumber2;
   }
 
-  v7 = [v15 configNumber];
+  configNumber = [peripheralCopy configNumber];
 
-  if (v7)
+  if (configNumber)
   {
-    v8 = [v15 configNumber];
+    configNumber2 = [peripheralCopy configNumber];
     configNumber = self->_configNumber;
-    self->_configNumber = v8;
+    self->_configNumber = configNumber2;
   }
 
-  v10 = [v15 category];
+  category = [peripheralCopy category];
 
-  if (v10)
+  if (category)
   {
-    v11 = [v15 category];
+    category2 = [peripheralCopy category];
     category = self->_category;
-    self->_category = v11;
+    self->_category = category2;
   }
 
-  [v15 lastSeen];
+  [peripheralCopy lastSeen];
   if (v13 > 0.0)
   {
-    [v15 lastSeen];
+    [peripheralCopy lastSeen];
     self->_lastSeen = v14;
   }
 }
 
-- (id)initRecentlySeenPairedHAPBLEPeripheral:(id)a3
+- (id)initRecentlySeenPairedHAPBLEPeripheral:(id)peripheral
 {
-  v4 = a3;
+  peripheralCopy = peripheral;
   v9.receiver = self;
   v9.super_class = HAPRecentlySeenPairedBTLEPeripheralTuple;
   v5 = [(HAPRecentlySeenPairedBTLEPeripheralTuple *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [peripheralCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
 
-    v5->_advertisementFormat = [v4 advertisementFormat];
+    v5->_advertisementFormat = [peripheralCopy advertisementFormat];
     v5->_connectionPriority = 0;
     v5->_monitorState = 1;
-    [(HAPRecentlySeenPairedBTLEPeripheralTuple *)v5 updateWithPeripheral:v4];
+    [(HAPRecentlySeenPairedBTLEPeripheralTuple *)v5 updateWithPeripheral:peripheralCopy];
   }
 
   return v5;

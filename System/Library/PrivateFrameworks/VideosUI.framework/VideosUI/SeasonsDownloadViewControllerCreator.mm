@@ -1,13 +1,13 @@
 @interface SeasonsDownloadViewControllerCreator
-- (id)seasonsDownloadViewControllerWith:(id)a3;
+- (id)seasonsDownloadViewControllerWith:(id)with;
 @end
 
 @implementation SeasonsDownloadViewControllerCreator
 
-- (id)seasonsDownloadViewControllerWith:(id)a3
+- (id)seasonsDownloadViewControllerWith:(id)with
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1E3EF491C();
   swift_unknownObjectRelease();
 

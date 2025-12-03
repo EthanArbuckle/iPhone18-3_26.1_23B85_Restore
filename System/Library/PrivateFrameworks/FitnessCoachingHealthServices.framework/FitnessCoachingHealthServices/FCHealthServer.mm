@@ -1,29 +1,29 @@
 @interface FCHealthServer
 + (id)requiredEntitlements;
-- (FCHealthServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (FCHealthServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)connectionInvalidated;
-- (void)handleRegisterGoalProgressConfigurationData:(id)a3 service:(id)a4 completion:(id)a5;
-- (void)pluginMessage:(unint64_t)a3 data:(id)a4 completionHandler:(id)a5;
+- (void)handleRegisterGoalProgressConfigurationData:(id)data service:(id)service completion:(id)completion;
+- (void)pluginMessage:(unint64_t)message data:(id)data completionHandler:(id)handler;
 @end
 
 @implementation FCHealthServer
 
-- (FCHealthServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (FCHealthServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a3;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = FCHealthServer;
-  v12 = [(HDStandardTaskServer *)&v19 initWithUUID:v11 configuration:a4 client:a5 delegate:a6];
+  v12 = [(HDStandardTaskServer *)&v19 initWithUUID:dCopy configuration:configuration client:client delegate:delegate];
   v13 = v12;
   if (v12)
   {
-    v14 = [(HDStandardTaskServer *)v12 profile];
-    v15 = [v14 profileExtensionsConformingToProtocol:&unk_285E8B690];
-    v16 = [v15 firstObject];
+    profile = [(HDStandardTaskServer *)v12 profile];
+    v15 = [profile profileExtensionsConformingToProtocol:&unk_285E8B690];
+    firstObject = [v15 firstObject];
     profileExtension = v13->_profileExtension;
-    v13->_profileExtension = v16;
+    v13->_profileExtension = firstObject;
 
-    objc_storeStrong(&v13->_taskUUID, a3);
+    objc_storeStrong(&v13->_taskUUID, d);
     v13->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
@@ -55,26 +55,26 @@
   return v2;
 }
 
-- (void)pluginMessage:(unint64_t)a3 data:(id)a4 completionHandler:(id)a5
+- (void)pluginMessage:(unint64_t)message data:(id)data completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [(FCHealthProfileExtending *)self->_profileExtension fitnessCoachingHealthService];
-  if (a3 == 1)
+  dataCopy = data;
+  handlerCopy = handler;
+  fitnessCoachingHealthService = [(FCHealthProfileExtending *)self->_profileExtension fitnessCoachingHealthService];
+  if (message == 1)
   {
-    [(FCHealthServer *)self handleRegisterGoalProgressConfigurationData:v10 service:v9 completion:v8];
+    [(FCHealthServer *)self handleRegisterGoalProgressConfigurationData:dataCopy service:fitnessCoachingHealthService completion:handlerCopy];
   }
 }
 
-- (void)handleRegisterGoalProgressConfigurationData:(id)a3 service:(id)a4 completion:(id)a5
+- (void)handleRegisterGoalProgressConfigurationData:(id)data service:(id)service completion:(id)completion
 {
   v7 = MEMORY[0x277D09CB0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithTransportData:v10];
+  completionCopy = completion;
+  serviceCopy = service;
+  dataCopy = data;
+  v11 = [[v7 alloc] initWithTransportData:dataCopy];
 
-  [v9 registerGoalProgressConfiguration:v11 completion:v8];
+  [serviceCopy registerGoalProgressConfiguration:v11 completion:completionCopy];
 }
 
 @end

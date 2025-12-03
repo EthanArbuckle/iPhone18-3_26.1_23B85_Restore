@@ -1,18 +1,18 @@
 @interface CHInferenceRecordController
 - (CHInferenceRecordController)init;
-- (void)retrieveRecordsFor:(HKWorkout *)a3 completionHandler:(id)a4;
+- (void)retrieveRecordsFor:(HKWorkout *)for completionHandler:(id)handler;
 @end
 
 @implementation CHInferenceRecordController
 
-- (void)retrieveRecordsFor:(HKWorkout *)a3 completionHandler:(id)a4
+- (void)retrieveRecordsFor:(HKWorkout *)for completionHandler:(id)handler
 {
   v7 = sub_100140278(&qword_1008E1760);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -27,8 +27,8 @@
   v14[3] = 0;
   v14[4] = &unk_1006FDEE0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_1005D7C20(0, 0, v9, &unk_1006DD4B0, v14);
 }
 

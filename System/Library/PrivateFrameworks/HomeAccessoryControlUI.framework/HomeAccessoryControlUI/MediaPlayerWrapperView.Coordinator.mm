@@ -1,6 +1,6 @@
 @interface MediaPlayerWrapperView.Coordinator
 - (_TtCV22HomeAccessoryControlUI22MediaPlayerWrapperView11Coordinator)init;
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5;
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion;
 @end
 
 @implementation MediaPlayerWrapperView.Coordinator
@@ -17,10 +17,10 @@
   return [(MediaPlayerWrapperView.Coordinator *)&v6 init];
 }
 
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(animations);
+  v9 = _Block_copy(completion);
   v10 = v9;
   if (v8)
   {
@@ -48,9 +48,9 @@ LABEL_3:
 
   v12 = 0;
 LABEL_6:
-  v13 = a3;
-  v14 = self;
-  sub_252531F04(v13, v8, v11, v10, v12);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_252531F04(controllerCopy, v8, v11, v10, v12);
   sub_25247CDCC(v10);
   sub_25247CDCC(v8);
 }

@@ -1,108 +1,108 @@
 @interface DNDSServer
-- (BOOL)_setDefaultScheduleTriggerWithScheduleSettings:(id)a3;
-- (BOOL)_setDimsLockScreenSetting:(unint64_t)a3 forModeConfigurationWithIdentifier:(id)a4;
-- (BOOL)_setLostModeState:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_setScheduleTrigger:(id)a3 forModeConfigurationWithIdentifier:(id)a4;
-- (BOOL)eventBehaviorResolver:(id)a3 isAvailabilityActiveForBundleIdentifier:(id)a4;
-- (BOOL)isCloudSyncDisabledForSyncManager:(id)a3;
-- (BOOL)layoutIsLocked:(id)a3;
-- (BOOL)remoteAppConfigurationServiceProvider:(id)a3 invalidateAppContextForActionIdentifier:(id)a4 bundleIdentifier:(id)a5 withError:(id *)a6;
-- (BOOL)remoteServiceProvider:(id)a3 clearAppActionWithIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withError:(id *)a7;
-- (BOOL)remoteServiceProvider:(id)a3 clearSystemActionWithIdentifier:(id)a4 forModeIdentifier:(id)a5 withError:(id *)a6;
-- (BOOL)remoteServiceProvider:(id)a3 clearSystemConfigurationActionWithIdentifier:(id)a4 modeIdentifier:(id)a5 withError:(id *)a6;
-- (BOOL)remoteServiceProvider:(id)a3 setAppAction:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withError:(id *)a7;
-- (BOOL)remoteServiceProvider:(id)a3 setAppConfigurationPredicate:(id)a4 forActionIdentifier:(id)a5 forApplicationIdentifier:(id)a6 modeIdentifier:(id)a7 withError:(id *)a8;
-- (BOOL)remoteServiceProvider:(id)a3 setAppConfigurationTargetContentIdentifierPrefix:(id)a4 forActionIdentifier:(id)a5 forApplicationIdentifier:(id)a6 modeIdentifier:(id)a7 withError:(id *)a8;
-- (BOOL)remoteServiceProvider:(id)a3 setCloudSyncPreferenceEnabled:(BOOL)a4 withError:(id *)a5;
-- (BOOL)remoteServiceProvider:(id)a3 setScheduleSettings:(id)a4 withError:(id *)a5;
-- (BOOL)remoteServiceProvider:(id)a3 setSystemAction:(id)a4 forModeIdentifier:(id)a5 withError:(id *)a6;
-- (BOOL)remoteServiceProvider:(id)a3 syncModeConfigurationsReturningError:(id *)a4;
+- (BOOL)_setDefaultScheduleTriggerWithScheduleSettings:(id)settings;
+- (BOOL)_setDimsLockScreenSetting:(unint64_t)setting forModeConfigurationWithIdentifier:(id)identifier;
+- (BOOL)_setLostModeState:(unint64_t)state error:(id *)error;
+- (BOOL)_setScheduleTrigger:(id)trigger forModeConfigurationWithIdentifier:(id)identifier;
+- (BOOL)eventBehaviorResolver:(id)resolver isAvailabilityActiveForBundleIdentifier:(id)identifier;
+- (BOOL)isCloudSyncDisabledForSyncManager:(id)manager;
+- (BOOL)layoutIsLocked:(id)locked;
+- (BOOL)remoteAppConfigurationServiceProvider:(id)provider invalidateAppContextForActionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider clearSystemActionWithIdentifier:(id)identifier forModeIdentifier:(id)modeIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider clearSystemConfigurationActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider setAppConfigurationPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider setAppConfigurationTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider setCloudSyncPreferenceEnabled:(BOOL)enabled withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider setScheduleSettings:(id)settings withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider setSystemAction:(id)action forModeIdentifier:(id)identifier withError:(id *)error;
+- (BOOL)remoteServiceProvider:(id)provider syncModeConfigurationsReturningError:(id *)error;
 - (DNDSServer)init;
-- (id)_activeDateIntervalForModeAssertion:(id)a3 currentlyActive:(BOOL)a4;
+- (id)_activeDateIntervalForModeAssertion:(id)assertion currentlyActive:(BOOL)active;
 - (id)_allModes;
 - (id)_createDefaultModeForWorkoutTriggerIfNecessary;
-- (id)_invalidateModeAssertionForClientIdentifier:(id)a3 reason:(unint64_t)a4 reasonOverride:(unint64_t)a5 details:(id)a6 error:(id *)a7;
+- (id)_invalidateModeAssertionForClientIdentifier:(id)identifier reason:(unint64_t)reason reasonOverride:(unint64_t)override details:(id)details error:(id *)error;
 - (id)_scheduleSettingsForModeConfigurations;
 - (id)_scheduleSettingsFromDefaultScheduleTrigger;
-- (id)_scheduleSettingsMatchingTrigger:(id)a3;
-- (id)_scheduleTriggerMatchingSettings:(id)a3;
+- (id)_scheduleSettingsMatchingTrigger:(id)trigger;
+- (id)_scheduleTriggerMatchingSettings:(id)settings;
 - (id)_stateSystemSnapshot;
-- (id)_updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:(id)a3 error:(id *)a4;
-- (id)appForegroundTriggerConfigurationForAppForegroundTriggerManager:(id)a3;
-- (id)currentStateForAppFocusConfigurationCoordinator:(id)a3;
-- (id)currentStateForEventBehaviorResolver:(id)a3;
-- (id)currentStateForLegacyAssertionSyncManager:(id)a3;
-- (id)currentStateForSystemFocusConfigurationCoordinator:(id)a3;
-- (id)drivingModeForDrivingTriggerManager:(id)a3;
-- (id)eventBehaviorResolver:(id)a3 bypassSettingsForClientIdentifier:(id)a4;
-- (id)eventBehaviorResolver:(id)a3 configurationForModeIdentifier:(id)a4;
-- (id)gamingModeForGamingTriggerManager:(id)a3;
-- (id)hearingTestModeForHearingTestTriggerManager:(id)a3;
-- (id)lifetimeMonitor:(id)a3 modeAssertionsWithLifetimeClass:(Class)a4;
-- (id)lifetimeMonitor:(id)a3 takeModeAssertionWithDetails:(id)a4 clientIdentifier:(id)a5 error:(id *)a6;
-- (id)locationTriggerConfigurationForLifetimeMonitor:(id)a3;
-- (id)mindfulnessModeForMindfulnessTriggerManager:(id)a3;
-- (id)modesSupportingSmartEntryForSmartTriggerManager:(id)a3;
-- (id)pairedCloudDevicesForSyncManager:(id)a3;
-- (id)pairedDevicesForSyncManager:(id)a3;
-- (id)phoneCallBypassSettingsForSyncManager:(id)a3;
-- (id)remoteAppConfigurationServiceProvider:(id)a3 getCurrentAppConfigurationForActionIdentifier:(id)a4 bundleIdentifier:(id)a5 withError:(id *)a6;
-- (id)remoteServiceProvider:(id)a3 activeAssertionWithClientIdentifer:(id)a4 error:(id *)a5;
-- (id)remoteServiceProvider:(id)a3 allActiveModeAssertionsWithError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 allModesReturningError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 assertionWithClientIdentifer:(id)a4 error:(id *)a5;
-- (id)remoteServiceProvider:(id)a3 availableModesReturningError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 behaviorSettingsWithError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 currentStateWithError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 getAppInfoForBundleIdentifiers:(id)a4 withError:(id *)a5;
-- (id)remoteServiceProvider:(id)a3 invalidateAllModeAssertionsTakenBeforeDate:(id)a4 forReason:(unint64_t)a5 clientIdentifier:(id)a6 error:(id *)a7;
-- (id)remoteServiceProvider:(id)a3 invalidateModeAssertionWithUUID:(id)a4 reason:(unint64_t)a5 reasonOverride:(unint64_t)a6 clientIdentifier:(id)a7 error:(id *)a8;
-- (id)remoteServiceProvider:(id)a3 latestInvalidationWithClientIdentifer:(id)a4 error:(id *)a5;
-- (id)remoteServiceProvider:(id)a3 publishStatusKitAvailabilityReturningError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 resolveBehaviorForEventDetails:(id)a4 clientDetails:(id)a5 date:(id)a6 error:(id *)a7;
-- (id)remoteServiceProvider:(id)a3 scheduleSettingsWithError:(id *)a4;
-- (id)remoteServiceProvider:(id)a3 takeModeAssertionWithDetails:(id)a4 clientIdentifier:(id)a5 error:(id *)a6;
-- (id)scheduleSettingsForSyncManager:(id)a3;
-- (id)sleepingModeForSleepingTriggerManager:(id)a3;
-- (id)syncManager:(id)a3 deviceForDeviceIdentifier:(id)a4;
-- (id)syncManager:(id)a3 scheduleSettingsForModeIdentifier:(id)a4;
-- (id)syncManager:(id)a3 updateOutboundModeAssertion:(id)a4;
-- (id)triggerManager:(id)a3 assertionsWithClientIdentifer:(id)a4 error:(id *)a5;
-- (id)triggerManager:(id)a3 invalidateModeAssertionWithUUID:(id)a4 reason:(unint64_t)a5 reasonOverride:(unint64_t)a6 clientIdentifier:(id)a7 error:(id *)a8;
-- (id)triggerManager:(id)a3 latestInvalidationWithClientIdentifer:(id)a4 error:(id *)a5;
-- (id)triggerManager:(id)a3 takeModeAssertionWithDetails:(id)a4 clientIdentifier:(id)a5 error:(id *)a6;
-- (id)workoutModeForWorkoutTriggerManager:(id)a3;
-- (void)_forceConfigurationSyncIfNeededWithUpdateResult:(id)a3;
+- (id)_updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:(id)handler error:(id *)error;
+- (id)appForegroundTriggerConfigurationForAppForegroundTriggerManager:(id)manager;
+- (id)currentStateForAppFocusConfigurationCoordinator:(id)coordinator;
+- (id)currentStateForEventBehaviorResolver:(id)resolver;
+- (id)currentStateForLegacyAssertionSyncManager:(id)manager;
+- (id)currentStateForSystemFocusConfigurationCoordinator:(id)coordinator;
+- (id)drivingModeForDrivingTriggerManager:(id)manager;
+- (id)eventBehaviorResolver:(id)resolver bypassSettingsForClientIdentifier:(id)identifier;
+- (id)eventBehaviorResolver:(id)resolver configurationForModeIdentifier:(id)identifier;
+- (id)gamingModeForGamingTriggerManager:(id)manager;
+- (id)hearingTestModeForHearingTestTriggerManager:(id)manager;
+- (id)lifetimeMonitor:(id)monitor modeAssertionsWithLifetimeClass:(Class)class;
+- (id)lifetimeMonitor:(id)monitor takeModeAssertionWithDetails:(id)details clientIdentifier:(id)identifier error:(id *)error;
+- (id)locationTriggerConfigurationForLifetimeMonitor:(id)monitor;
+- (id)mindfulnessModeForMindfulnessTriggerManager:(id)manager;
+- (id)modesSupportingSmartEntryForSmartTriggerManager:(id)manager;
+- (id)pairedCloudDevicesForSyncManager:(id)manager;
+- (id)pairedDevicesForSyncManager:(id)manager;
+- (id)phoneCallBypassSettingsForSyncManager:(id)manager;
+- (id)remoteAppConfigurationServiceProvider:(id)provider getCurrentAppConfigurationForActionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier withError:(id *)error;
+- (id)remoteServiceProvider:(id)provider activeAssertionWithClientIdentifer:(id)identifer error:(id *)error;
+- (id)remoteServiceProvider:(id)provider allActiveModeAssertionsWithError:(id *)error;
+- (id)remoteServiceProvider:(id)provider allModesReturningError:(id *)error;
+- (id)remoteServiceProvider:(id)provider assertionWithClientIdentifer:(id)identifer error:(id *)error;
+- (id)remoteServiceProvider:(id)provider availableModesReturningError:(id *)error;
+- (id)remoteServiceProvider:(id)provider behaviorSettingsWithError:(id *)error;
+- (id)remoteServiceProvider:(id)provider currentStateWithError:(id *)error;
+- (id)remoteServiceProvider:(id)provider getAppInfoForBundleIdentifiers:(id)identifiers withError:(id *)error;
+- (id)remoteServiceProvider:(id)provider invalidateAllModeAssertionsTakenBeforeDate:(id)date forReason:(unint64_t)reason clientIdentifier:(id)identifier error:(id *)error;
+- (id)remoteServiceProvider:(id)provider invalidateModeAssertionWithUUID:(id)d reason:(unint64_t)reason reasonOverride:(unint64_t)override clientIdentifier:(id)identifier error:(id *)error;
+- (id)remoteServiceProvider:(id)provider latestInvalidationWithClientIdentifer:(id)identifer error:(id *)error;
+- (id)remoteServiceProvider:(id)provider publishStatusKitAvailabilityReturningError:(id *)error;
+- (id)remoteServiceProvider:(id)provider resolveBehaviorForEventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error;
+- (id)remoteServiceProvider:(id)provider scheduleSettingsWithError:(id *)error;
+- (id)remoteServiceProvider:(id)provider takeModeAssertionWithDetails:(id)details clientIdentifier:(id)identifier error:(id *)error;
+- (id)scheduleSettingsForSyncManager:(id)manager;
+- (id)sleepingModeForSleepingTriggerManager:(id)manager;
+- (id)syncManager:(id)manager deviceForDeviceIdentifier:(id)identifier;
+- (id)syncManager:(id)manager scheduleSettingsForModeIdentifier:(id)identifier;
+- (id)syncManager:(id)manager updateOutboundModeAssertion:(id)assertion;
+- (id)triggerManager:(id)manager assertionsWithClientIdentifer:(id)identifer error:(id *)error;
+- (id)triggerManager:(id)manager invalidateModeAssertionWithUUID:(id)d reason:(unint64_t)reason reasonOverride:(unint64_t)override clientIdentifier:(id)identifier error:(id *)error;
+- (id)triggerManager:(id)manager latestInvalidationWithClientIdentifer:(id)identifer error:(id *)error;
+- (id)triggerManager:(id)manager takeModeAssertionWithDetails:(id)details clientIdentifier:(id)identifier error:(id *)error;
+- (id)workoutModeForWorkoutTriggerManager:(id)manager;
+- (void)_forceConfigurationSyncIfNeededWithUpdateResult:(id)result;
 - (void)_handleSignificantTimeChange;
 - (void)_migrateBypassSettingsIfNeeded;
 - (void)_migrateDefaultDoNotDisturbModeIfNeeded;
 - (void)_migrateReduceInterruptionsIfNeeded;
 - (void)_queue_handlePairedDeviceAndSyncSettingsChange;
 - (void)_queue_resume;
-- (void)_queue_updateScheduleManagerLifetimeMonitorsAndStateForReason:(unint64_t)a3 source:(int64_t)a4 options:(int64_t)a5;
-- (void)activeAssertionsDidChangeForLifetimeMonitor:(id)a3;
-- (void)appFocusConfigurationCoordinator:(id)a3 didUpdateAppConfigurationContextForModeIdentifier:(id)a4;
-- (void)globalConfigurationManager:(id)a3 didUpdateModesCanImpactAvailabilitySetting:(BOOL)a4;
-- (void)globalConfigurationManager:(id)a3 didUpdatePhoneCallBypassSettings:(id)a4;
-- (void)keybagDidUnlockForTheFirstTime:(id)a3;
-- (void)lifetimeMonitor:(id)a3 lifetimeDidExpireForAssertionUUIDs:(id)a4 expirationDate:(id)a5;
-- (void)modeConfigurationManager:(id)a3 didModifyAvailableMode:(id)a4;
-- (void)modeConfigurationManager:(id)a3 didModifyExceptionsForContacts:(id)a4 forModeConfiguration:(id)a5;
-- (void)modeConfigurationManager:(id)a3 didUpdateAvailableModes:(id)a4;
-- (void)pairedDeviceStateMonitor:(id)a3 cloudPairingChangedFromDevices:(id)a4 toDevices:(id)a5;
-- (void)pairedDeviceStateMonitor:(id)a3 pairingChangedFromDevice:(id)a4 toDevice:(id)a5;
-- (void)reachabilityChangedTo:(BOOL)a3;
-- (void)remoteServiceProvider:(id)a3 didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)a4;
+- (void)_queue_updateScheduleManagerLifetimeMonitorsAndStateForReason:(unint64_t)reason source:(int64_t)source options:(int64_t)options;
+- (void)activeAssertionsDidChangeForLifetimeMonitor:(id)monitor;
+- (void)appFocusConfigurationCoordinator:(id)coordinator didUpdateAppConfigurationContextForModeIdentifier:(id)identifier;
+- (void)globalConfigurationManager:(id)manager didUpdateModesCanImpactAvailabilitySetting:(BOOL)setting;
+- (void)globalConfigurationManager:(id)manager didUpdatePhoneCallBypassSettings:(id)settings;
+- (void)keybagDidUnlockForTheFirstTime:(id)time;
+- (void)lifetimeMonitor:(id)monitor lifetimeDidExpireForAssertionUUIDs:(id)ds expirationDate:(id)date;
+- (void)modeConfigurationManager:(id)manager didModifyAvailableMode:(id)mode;
+- (void)modeConfigurationManager:(id)manager didModifyExceptionsForContacts:(id)contacts forModeConfiguration:(id)configuration;
+- (void)modeConfigurationManager:(id)manager didUpdateAvailableModes:(id)modes;
+- (void)pairedDeviceStateMonitor:(id)monitor cloudPairingChangedFromDevices:(id)devices toDevices:(id)toDevices;
+- (void)pairedDeviceStateMonitor:(id)monitor pairingChangedFromDevice:(id)device toDevice:(id)toDevice;
+- (void)reachabilityChangedTo:(BOOL)to;
+- (void)remoteServiceProvider:(id)provider didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)identifier;
 - (void)resume;
-- (void)setWorkoutTriggerEnabled:(BOOL)a3 forWorkoutTriggerManager:(id)a4;
-- (void)settingsManager:(id)a3 didReceiveUpdatedBehaviorSettings:(id)a4;
-- (void)settingsManager:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4;
-- (void)settingsManager:(id)a3 didReceiveUpdatedScheduleSettings:(id)a4;
-- (void)settingsManager:(id)a3 didReceiveUpdatedSyncSettings:(id)a4;
-- (void)syncManager:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4;
-- (void)syncManager:(id)a3 didReceiveUpdatedScheduleSettings:(id)a4;
-- (void)syncManager:(id)a3 performModeAssertionUpdatesWithHandler:(id)a4;
-- (void)syncManager:(id)a3 prepareForSyncToDevices:(id)a4;
+- (void)setWorkoutTriggerEnabled:(BOOL)enabled forWorkoutTriggerManager:(id)manager;
+- (void)settingsManager:(id)manager didReceiveUpdatedBehaviorSettings:(id)settings;
+- (void)settingsManager:(id)manager didReceiveUpdatedPhoneCallBypassSettings:(id)settings;
+- (void)settingsManager:(id)manager didReceiveUpdatedScheduleSettings:(id)settings;
+- (void)settingsManager:(id)manager didReceiveUpdatedSyncSettings:(id)settings;
+- (void)syncManager:(id)manager didReceiveUpdatedPhoneCallBypassSettings:(id)settings;
+- (void)syncManager:(id)manager didReceiveUpdatedScheduleSettings:(id)settings;
+- (void)syncManager:(id)manager performModeAssertionUpdatesWithHandler:(id)handler;
+- (void)syncManager:(id)manager prepareForSyncToDevices:(id)devices;
 @end
 
 @implementation DNDSServer
@@ -115,42 +115,42 @@ uint64_t __18__DNDSServer_init__block_invoke_128(uint64_t a1)
   return [v1 setUILockState:v2 error:0];
 }
 
-- (id)triggerManager:(id)a3 assertionsWithClientIdentifer:(id)a4 error:(id *)a5
+- (id)triggerManager:(id)manager assertionsWithClientIdentifer:(id)identifer error:(id *)error
 {
-  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:a4];
+  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:identifer];
   v7 = MEMORY[0x277D05938];
-  v8 = [v6 identifiers];
-  v9 = [v7 predicateForModeAssertionsWithClientIdentifiers:v8];
+  identifiers = [v6 identifiers];
+  v9 = [v7 predicateForModeAssertionsWithClientIdentifiers:identifiers];
 
   v10 = [(DNDSModeAssertionManager *)self->_modeAssertionManager modeAssertionsMatchingPredicate:v9];
 
   return v10;
 }
 
-- (id)triggerManager:(id)a3 takeModeAssertionWithDetails:(id)a4 clientIdentifier:(id)a5 error:(id *)a6
+- (id)triggerManager:(id)manager takeModeAssertionWithDetails:(id)details clientIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  identifierCopy = identifier;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __114__DNDSServer_DNDSAutomationManagerDataSource__triggerManager_takeModeAssertionWithDetails_clientIdentifier_error___block_invoke;
   v24 = &unk_278F8A128;
-  v25 = v10;
-  v26 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v21 error:a6];
-  v14 = [v13 assertions];
-  v15 = [v14 firstObject];
+  v25 = identifierCopy;
+  v26 = detailsCopy;
+  v11 = detailsCopy;
+  v12 = identifierCopy;
+  v13 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v21 error:error];
+  assertions = [v13 assertions];
+  firstObject = [assertions firstObject];
 
   clientDetailsProvider = self->_clientDetailsProvider;
-  v17 = [v15 source];
-  v18 = [v17 clientIdentifier];
-  v19 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:v18];
+  source = [firstObject source];
+  clientIdentifier = [source clientIdentifier];
+  v19 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:clientIdentifier];
 
-  [(DNDSMetricsManager *)self->_metricsManager assertionTaken:v15 withClientDetails:v19 lockState:[(DNDSServer *)self lockState]];
+  [(DNDSMetricsManager *)self->_metricsManager assertionTaken:firstObject withClientDetails:v19 lockState:[(DNDSServer *)self lockState]];
 
-  return v15;
+  return firstObject;
 }
 
 uint64_t __114__DNDSServer_DNDSAutomationManagerDataSource__triggerManager_takeModeAssertionWithDetails_clientIdentifier_error___block_invoke(uint64_t a1, void *a2)
@@ -164,25 +164,25 @@ uint64_t __114__DNDSServer_DNDSAutomationManagerDataSource__triggerManager_takeM
   return 1;
 }
 
-- (id)triggerManager:(id)a3 invalidateModeAssertionWithUUID:(id)a4 reason:(unint64_t)a5 reasonOverride:(unint64_t)a6 clientIdentifier:(id)a7 error:(id *)a8
+- (id)triggerManager:(id)manager invalidateModeAssertionWithUUID:(id)d reason:(unint64_t)reason reasonOverride:(unint64_t)override clientIdentifier:(id)identifier error:(id *)error
 {
-  v13 = a4;
-  v14 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __139__DNDSServer_DNDSAutomationManagerDataSource__triggerManager_invalidateModeAssertionWithUUID_reason_reasonOverride_clientIdentifier_error___block_invoke;
   v24 = &unk_278F8A150;
-  v25 = v13;
-  v26 = v14;
-  v27 = a5;
-  v28 = a6;
-  v15 = v14;
-  v16 = v13;
-  v17 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v21 error:a8];
-  v18 = [v17 invalidations];
-  v19 = [v18 firstObject];
+  v25 = dCopy;
+  v26 = identifierCopy;
+  reasonCopy = reason;
+  overrideCopy = override;
+  v15 = identifierCopy;
+  v16 = dCopy;
+  v17 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v21 error:error];
+  invalidations = [v17 invalidations];
+  firstObject = [invalidations firstObject];
 
-  return v19;
+  return firstObject;
 }
 
 uint64_t __139__DNDSServer_DNDSAutomationManagerDataSource__triggerManager_invalidateModeAssertionWithUUID_reason_reasonOverride_clientIdentifier_error___block_invoke(void *a1, void *a2)
@@ -202,20 +202,20 @@ uint64_t __139__DNDSServer_DNDSAutomationManagerDataSource__triggerManager_inval
   return 1;
 }
 
-- (id)triggerManager:(id)a3 latestInvalidationWithClientIdentifer:(id)a4 error:(id *)a5
+- (id)triggerManager:(id)manager latestInvalidationWithClientIdentifer:(id)identifer error:(id *)error
 {
-  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:a4];
+  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:identifer];
   v7 = MEMORY[0x277D05968];
-  v8 = [v6 identifiers];
-  v9 = [v7 predicateForModeAssertionInvalidationsWithAssertionClientIdentifiers:v8];
+  identifiers = [v6 identifiers];
+  v9 = [v7 predicateForModeAssertionInvalidationsWithAssertionClientIdentifiers:identifiers];
 
   v10 = [(DNDSModeAssertionManager *)self->_modeAssertionManager modeAssertionInvalidationsMatchingPredicate:v9];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)appForegroundTriggerConfigurationForAppForegroundTriggerManager:(id)a3
+- (id)appForegroundTriggerConfigurationForAppForegroundTriggerManager:(id)manager
 {
   v4 = objc_alloc_init(DNDSAppForegroundTriggerConfiguration);
   v5 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationsWithError:0];
@@ -276,9 +276,9 @@ void __121__DNDSServer_DNDSAppForegroundTriggerManagerDataSource__appForegroundT
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)drivingModeForDrivingTriggerManager:(id)a3
+- (id)drivingModeForDrivingTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -351,9 +351,9 @@ void __87__DNDSServer_DNDSDrivingTriggerManagerDataSource__drivingModeForDriving
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)gamingModeForGamingTriggerManager:(id)a3
+- (id)gamingModeForGamingTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -426,9 +426,9 @@ void __84__DNDSServer_DNDSGamingTriggerManagerDataSource__gamingModeForGamingTri
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hearingTestModeForHearingTestTriggerManager:(id)a3
+- (id)hearingTestModeForHearingTestTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -466,9 +466,9 @@ void __99__DNDSServer_DNDSHearingTestTriggerManagerDataSource__hearingTestModeFo
   }
 }
 
-- (id)mindfulnessModeForMindfulnessTriggerManager:(id)a3
+- (id)mindfulnessModeForMindfulnessTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -541,9 +541,9 @@ void __99__DNDSServer_DNDSMindfulnessTriggerManagerDataSource__mindfulnessModeFo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sleepingModeForSleepingTriggerManager:(id)a3
+- (id)sleepingModeForSleepingTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -616,9 +616,9 @@ void __90__DNDSServer_DNDSSleepingTriggerManagerDataSource__sleepingModeForSleep
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modesSupportingSmartEntryForSmartTriggerManager:(id)a3
+- (id)modesSupportingSmartEntryForSmartTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -692,9 +692,9 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)workoutModeForWorkoutTriggerManager:(id)a3
+- (id)workoutModeForWorkoutTriggerManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -760,17 +760,17 @@ void __87__DNDSServer_DNDSWorkoutTriggerManagerDataSource__workoutModeForWorkout
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWorkoutTriggerEnabled:(BOOL)a3 forWorkoutTriggerManager:(id)a4
+- (void)setWorkoutTriggerEnabled:(BOOL)enabled forWorkoutTriggerManager:(id)manager
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = [(DNDSServer *)self workoutModeForWorkoutTriggerManager:a4];
+  v6 = [(DNDSServer *)self workoutModeForWorkoutTriggerManager:manager];
   v7 = [v6 mutableCopy];
 
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277D059E8]);
-    if (v4)
+    if (enabledCopy)
     {
       v9 = 2;
     }
@@ -781,24 +781,24 @@ void __87__DNDSServer_DNDSWorkoutTriggerManagerDataSource__workoutModeForWorkout
     }
 
     v10 = [v8 initWithEnabledSetting:v9];
-    v11 = [v7 triggers];
-    v12 = [v11 bs_filter:&__block_literal_global_31];
+    triggers = [v7 triggers];
+    v12 = [triggers bs_filter:&__block_literal_global_31];
     v13 = [v12 mutableCopy];
 
     [v13 addObject:v10];
     [v7 setTriggers:v13];
     modeConfigurationManager = self->_modeConfigurationManager;
     v19 = 0;
-    LOBYTE(v11) = [(DNDSModeConfigurationManager *)modeConfigurationManager setModeConfiguration:v7 withError:&v19];
+    LOBYTE(triggers) = [(DNDSModeConfigurationManager *)modeConfigurationManager setModeConfiguration:v7 withError:&v19];
     v15 = v19;
-    if ((v11 & 1) == 0)
+    if ((triggers & 1) == 0)
     {
       v16 = DNDSLogWorkoutTrigger;
       if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v17 = @"N";
         *buf = 138543874;
-        if (v4)
+        if (enabledCopy)
         {
           v17 = @"Y";
         }
@@ -825,50 +825,50 @@ BOOL __101__DNDSServer_DNDSWorkoutTriggerManagerDataSource__setWorkoutTriggerEna
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)globalConfigurationManager:(id)a3 didUpdatePhoneCallBypassSettings:(id)a4
+- (void)globalConfigurationManager:(id)manager didUpdatePhoneCallBypassSettings:(id)settings
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = managerCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "DND phone call bypass settings changed, will refresh state; manager=%{public}@, settings=%{public}@", &v10, 0x16u);
   }
 
-  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedPhoneCallBypassSettings:v7];
+  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedPhoneCallBypassSettings:settingsCopy];
   [(DNDSSettingsSyncManager *)self->_settingsSyncManager update];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)globalConfigurationManager:(id)a3 didUpdateModesCanImpactAvailabilitySetting:(BOOL)a4
+- (void)globalConfigurationManager:(id)manager didUpdateModesCanImpactAvailabilitySetting:(BOOL)setting
 {
-  v4 = a4;
+  settingCopy = setting;
   v6 = [(DNDSSettingsManager *)self->_settingsManager syncSettingsWithError:0];
-  v7 = [v6 isCloudSyncEnabled];
+  isCloudSyncEnabled = [v6 isCloudSyncEnabled];
 
-  if (v4)
+  if (settingCopy)
   {
-    if (v7)
+    if (isCloudSyncEnabled)
     {
       userAvailabilityCoordinator = self->_userAvailabilityCoordinator;
-      v9 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager relevantContacts];
-      v10 = [v9 allObjects];
+      relevantContacts = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager relevantContacts];
+      allObjects = [relevantContacts allObjects];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurationManager_didUpdateModesCanImpactAvailabilitySetting___block_invoke;
       v13[3] = &unk_278F8C058;
       v13[4] = self;
-      [(DNDSUserAvailabilityCoordinator *)userAvailabilityCoordinator resumeUpdatingInvitationsForContacts:v10 completionHandler:v13];
+      [(DNDSUserAvailabilityCoordinator *)userAvailabilityCoordinator resumeUpdatingInvitationsForContacts:allObjects completionHandler:v13];
     }
   }
 
-  else if (v7)
+  else if (isCloudSyncEnabled)
   {
     v11 = self->_userAvailabilityCoordinator;
     v12[0] = MEMORY[0x277D85DD0];
@@ -958,8 +958,8 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, DNDHandleSignificantTimeChange, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
     v15 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v15, v2, DNDSHandleLostModeStateChange, *MEMORY[0x277D08FB8], 0, CFNotificationSuspensionBehaviorCoalesce);
-    v16 = [MEMORY[0x277D08F78] sharedInstance];
-    v2->_lostModeState = [v16 lostModeIsActive];
+    mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+    v2->_lostModeState = [mEMORY[0x277D08F78] lostModeIsActive];
 
     v17 = objc_alloc_init(DNDSIntelligentBehaviorResolver);
     intelligentBehaviorResolver = v2->_intelligentBehaviorResolver;
@@ -970,8 +970,8 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     v2->_auxiliaryStateMonitor = v19;
 
     v21 = [DNDSModeAssertionManager alloc];
-    v22 = [MEMORY[0x277CBEBC0] dnds_localAssertionBackingStoreFileURL];
-    v23 = [(DNDSModeAssertionManager *)v21 initWithBackingStoreURL:v22 clientDetailsProvider:v2->_clientDetailsProvider];
+    dnds_localAssertionBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_localAssertionBackingStoreFileURL];
+    v23 = [(DNDSModeAssertionManager *)v21 initWithBackingStoreURL:dnds_localAssertionBackingStoreFileURL clientDetailsProvider:v2->_clientDetailsProvider];
     modeAssertionManager = v2->_modeAssertionManager;
     v2->_modeAssertionManager = v23;
 
@@ -1030,15 +1030,15 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     v2->_scheduleManager = v43;
 
     [(DNDSScheduleManager *)v2->_scheduleManager setDataSource:v2];
-    v45 = [MEMORY[0x277D058F8] currentDevice];
-    if ([v45 deviceClass] == 5 || objc_msgSend(v45, "deviceClass") == 1)
+    currentDevice = [MEMORY[0x277D058F8] currentDevice];
+    if ([currentDevice deviceClass] == 5 || objc_msgSend(currentDevice, "deviceClass") == 1)
     {
       v46 = [objc_alloc(MEMORY[0x277D18778]) initWithService:@"com.apple.private.alloy.donotdisturb"];
       idsLocalService = v2->_idsLocalService;
       v2->_idsLocalService = v46;
     }
 
-    v145 = v45;
+    v145 = currentDevice;
     v144 = objc_alloc_init(DNDSModeRepository);
     v48 = [[DNDSEventBehaviorResolver alloc] initWithModeRepository:v144 contactStore:v13 auxiliaryStateMonitor:v2->_auxiliaryStateMonitor intelligentBehaviorResolver:v2->_intelligentBehaviorResolver IDSLocalService:v2->_idsLocalService];
     eventBehaviorResolver = v2->_eventBehaviorResolver;
@@ -1055,8 +1055,8 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
 
     v54 = [[DNDSIDSSyncService alloc] initWithIDSService:v2->_idsLocalService];
     v55 = [DNDSIDSSyncEngineMetadataStore alloc];
-    v56 = [MEMORY[0x277CBEBC0] dnds_idsSyncEngineMetadataFileURL];
-    v57 = [(DNDSIDSSyncEngineMetadataStore *)v55 initWithURL:v56];
+    dnds_idsSyncEngineMetadataFileURL = [MEMORY[0x277CBEBC0] dnds_idsSyncEngineMetadataFileURL];
+    v57 = [(DNDSIDSSyncEngineMetadataStore *)v55 initWithURL:dnds_idsSyncEngineMetadataFileURL];
 
     v142 = v57;
     v143 = v54;
@@ -1064,8 +1064,8 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     idsSyncEngine = v2->_idsSyncEngine;
     v2->_idsSyncEngine = v58;
 
-    v60 = [MEMORY[0x277CBEBC0] dnds_globalConfigurationBackingStoreFileURL];
-    v61 = [DNDSGlobalConfiguration backingStoreWithFileURL:v60];
+    dnds_globalConfigurationBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_globalConfigurationBackingStoreFileURL];
+    v61 = [DNDSGlobalConfiguration backingStoreWithFileURL:dnds_globalConfigurationBackingStoreFileURL];
 
     v141 = v61;
     v140 = [[DNDSMemoryCachedBackingStore alloc] initWithUnderlyingBackingStore:v61];
@@ -1078,9 +1078,9 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     v2->_globalConfigurationManager = v64;
 
     [(DNDSGlobalConfigurationManager *)v2->_globalConfigurationManager setDelegate:v2];
-    v66 = [MEMORY[0x277CBEBC0] dnds_modeConfigurationsBackingStoreFileURL];
-    v67 = [MEMORY[0x277CBEBC0] dnds_modeConfigurationsSecureBackingStoreFileURL];
-    v68 = [DNDSModeConfigurationsRecord backingStoreWithFileURL:v66 secureFileURL:v67];
+    dnds_modeConfigurationsBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_modeConfigurationsBackingStoreFileURL];
+    dnds_modeConfigurationsSecureBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_modeConfigurationsSecureBackingStoreFileURL];
+    v68 = [DNDSModeConfigurationsRecord backingStoreWithFileURL:dnds_modeConfigurationsBackingStoreFileURL secureFileURL:dnds_modeConfigurationsSecureBackingStoreFileURL];
 
     v139 = v68;
     v138 = [[DNDSMemoryCachedBackingStore alloc] initWithUnderlyingBackingStore:v68];
@@ -1094,8 +1094,8 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     v2->_modeConfigurationManager = v71;
 
     [(DNDSModeConfigurationManager *)v2->_modeConfigurationManager setDelegate:v2];
-    v73 = [MEMORY[0x277CBEBC0] dnds_placeholderModesLocalBackingStoreFileURL];
-    v74 = [DNDSPlaceholderModesRecord backingStoreWithFileURL:v73];
+    dnds_placeholderModesLocalBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_placeholderModesLocalBackingStoreFileURL];
+    v74 = [DNDSPlaceholderModesRecord backingStoreWithFileURL:dnds_placeholderModesLocalBackingStoreFileURL];
 
     v75 = [[DNDSMemoryCachedBackingStore alloc] initWithUnderlyingBackingStore:v74];
     v76 = [[DNDSPlaceholderModeManager alloc] initWithBackingStore:v75];
@@ -1163,8 +1163,8 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
     v2->_pairedDeviceStateMonitor = v98;
 
     [(DNDSPairedDeviceStateMonitor *)v2->_pairedDeviceStateMonitor setDelegate:v2];
-    v100 = [MEMORY[0x277CBEBC0] dnds_settingsBackingStoreFileURL];
-    v101 = [DNDSSettingsRecord backingStoreWithFileURL:v100];
+    dnds_settingsBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_settingsBackingStoreFileURL];
+    v101 = [DNDSSettingsRecord backingStoreWithFileURL:dnds_settingsBackingStoreFileURL];
 
     v102 = [[DNDSMemoryCachedBackingStore alloc] initWithUnderlyingBackingStore:v101];
     v103 = [[DNDSSettingsManager alloc] initWithBackingStore:v102 contactStore:v13];
@@ -1242,15 +1242,15 @@ void __124__DNDSServer_DNDSGlobalConfigurationManagerDelegate__globalConfigurati
       [(DNDSUserAvailabilityCoordinator *)v130 suspend];
     }
 
-    v131 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
     v148[0] = MEMORY[0x277D85DD0];
     v148[1] = 3221225472;
     v148[2] = __18__DNDSServer_init__block_invoke_128;
     v148[3] = &unk_278F8C080;
     v132 = v2;
     v149 = v132;
-    [v131 setTransitionHandler:v148];
-    v133 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v131];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v148];
+    v133 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     layoutMonitor = v132->_layoutMonitor;
     v132->_layoutMonitor = v133;
 
@@ -1315,9 +1315,9 @@ uint64_t __42__DNDSServer__handleSignificantTimeChange__block_invoke(uint64_t a1
   return [v2 _queue_validateIDSSyncEngine];
 }
 
-- (BOOL)_setLostModeState:(unint64_t)a3 error:(id *)a4
+- (BOOL)_setLostModeState:(unint64_t)state error:(id *)error
 {
-  [(DNDSServer *)self setLostModeState:a3, a4];
+  [(DNDSServer *)self setLostModeState:state, error];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1328,69 +1328,69 @@ uint64_t __42__DNDSServer__handleSignificantTimeChange__block_invoke(uint64_t a1
   return 1;
 }
 
-- (id)currentStateForEventBehaviorResolver:(id)a3
+- (id)currentStateForEventBehaviorResolver:(id)resolver
 {
-  v3 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v4 = v3;
-  if (v3)
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  v4 = lastCalculatedState;
+  if (lastCalculatedState)
   {
-    v5 = v3;
+    fallbackState = lastCalculatedState;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D05AA0] fallbackState];
+    fallbackState = [MEMORY[0x277D05AA0] fallbackState];
   }
 
-  v6 = v5;
+  v6 = fallbackState;
 
   return v6;
 }
 
-- (id)eventBehaviorResolver:(id)a3 bypassSettingsForClientIdentifier:(id)a4
+- (id)eventBehaviorResolver:(id)resolver bypassSettingsForClientIdentifier:(id)identifier
 {
-  v4 = [(DNDSServer *)self currentStateForEventBehaviorResolver:a3, a4];
-  v5 = [v4 activeModeConfiguration];
+  identifier = [(DNDSServer *)self currentStateForEventBehaviorResolver:resolver, identifier];
+  activeModeConfiguration = [identifier activeModeConfiguration];
 
-  v6 = [v5 configuration];
-  v7 = [v6 phoneCallBypassSettings];
+  configuration = [activeModeConfiguration configuration];
+  phoneCallBypassSettings = [configuration phoneCallBypassSettings];
 
-  return v7;
+  return phoneCallBypassSettings;
 }
 
-- (id)eventBehaviorResolver:(id)a3 configurationForModeIdentifier:(id)a4
+- (id)eventBehaviorResolver:(id)resolver configurationForModeIdentifier:(id)identifier
 {
   modeConfigurationManager = self->_modeConfigurationManager;
   v13 = 0;
-  v6 = [(DNDSModeConfigurationManager *)modeConfigurationManager modeConfigurationForModeIdentifier:a4 withError:&v13];
+  v6 = [(DNDSModeConfigurationManager *)modeConfigurationManager modeConfigurationForModeIdentifier:identifier withError:&v13];
   v7 = v13;
-  v8 = [v6 configuration];
-  v9 = v8;
-  if (v8)
+  configuration = [v6 configuration];
+  v9 = configuration;
+  if (configuration)
   {
-    v10 = v8;
+    fallbackConfiguration = configuration;
   }
 
   else
   {
-    v10 = [(DNDSGlobalConfigurationManager *)self->_globalConfigurationManager fallbackConfiguration];
+    fallbackConfiguration = [(DNDSGlobalConfigurationManager *)self->_globalConfigurationManager fallbackConfiguration];
   }
 
-  v11 = v10;
+  v11 = fallbackConfiguration;
 
   return v11;
 }
 
-- (BOOL)eventBehaviorResolver:(id)a3 isAvailabilityActiveForBundleIdentifier:(id)a4
+- (BOOL)eventBehaviorResolver:(id)resolver isAvailabilityActiveForBundleIdentifier:(id)identifier
 {
-  v4 = [(DNDSServer *)self currentStateForEventBehaviorResolver:a3, a4];
-  v5 = [v4 activeModeConfiguration];
-  v6 = [v5 impactsAvailability];
+  identifier = [(DNDSServer *)self currentStateForEventBehaviorResolver:resolver, identifier];
+  activeModeConfiguration = [identifier activeModeConfiguration];
+  impactsAvailability = [activeModeConfiguration impactsAvailability];
 
-  return v6 != 1;
+  return impactsAvailability != 1;
 }
 
-- (void)keybagDidUnlockForTheFirstTime:(id)a3
+- (void)keybagDidUnlockForTheFirstTime:(id)time
 {
   [(DNDSServer *)self _migrateDefaultDoNotDisturbModeIfNeeded];
   if (+[DNDSPlatformEligibility isIntelligenceAvailable])
@@ -1400,15 +1400,15 @@ uint64_t __42__DNDSServer__handleSignificantTimeChange__block_invoke(uint64_t a1
   }
 }
 
-- (id)lifetimeMonitor:(id)a3 modeAssertionsWithLifetimeClass:(Class)a4
+- (id)lifetimeMonitor:(id)monitor modeAssertionsWithLifetimeClass:(Class)class
 {
-  v5 = [MEMORY[0x277D05938] predicateForModeAssertionsWithLifetimeClass:a4];
+  v5 = [MEMORY[0x277D05938] predicateForModeAssertionsWithLifetimeClass:class];
   v6 = [(DNDSModeAssertionManager *)self->_modeAssertionManager modeAssertionsMatchingPredicate:v5];
 
   return v6;
 }
 
-- (id)locationTriggerConfigurationForLifetimeMonitor:(id)a3
+- (id)locationTriggerConfigurationForLifetimeMonitor:(id)monitor
 {
   v4 = objc_alloc_init(DNDSLocationTriggerConfiguration);
   v5 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationsWithError:0];
@@ -1419,8 +1419,8 @@ uint64_t __42__DNDSServer__handleSignificantTimeChange__block_invoke(uint64_t a1
   v12 = v4;
   v6 = v4;
   [v5 enumerateKeysAndObjectsUsingBlock:v11];
-  v7 = [(DNDSLocationTriggerConfiguration *)v6 regions];
-  if ([v7 count])
+  regions = [(DNDSLocationTriggerConfiguration *)v6 regions];
+  if ([regions count])
   {
     v8 = v6;
   }
@@ -1480,15 +1480,15 @@ void __61__DNDSServer_locationTriggerConfigurationForLifetimeMonitor___block_inv
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activeAssertionsDidChangeForLifetimeMonitor:(id)a3
+- (void)activeAssertionsDidChangeForLifetimeMonitor:(id)monitor
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  monitorCopy = monitor;
   v5 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = v4;
+    v13 = monitorCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Lifetime monitor says active assertions changed; monitor=%p", buf, 0xCu);
   }
 
@@ -1497,9 +1497,9 @@ void __61__DNDSServer_locationTriggerConfigurationForLifetimeMonitor___block_inv
   v9[1] = 3221225472;
   v9[2] = __58__DNDSServer_activeAssertionsDidChangeForLifetimeMonitor___block_invoke;
   v9[3] = &unk_278F89F48;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = monitorCopy;
+  selfCopy = self;
+  v7 = monitorCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1522,30 +1522,30 @@ uint64_t __58__DNDSServer_activeAssertionsDidChangeForLifetimeMonitor___block_in
   return [v1 _queue_updateScheduleManagerLifetimeMonitorsAndStateForReason:v3 source:1];
 }
 
-- (id)lifetimeMonitor:(id)a3 takeModeAssertionWithDetails:(id)a4 clientIdentifier:(id)a5 error:(id *)a6
+- (id)lifetimeMonitor:(id)monitor takeModeAssertionWithDetails:(id)details clientIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  identifierCopy = identifier;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __82__DNDSServer_lifetimeMonitor_takeModeAssertionWithDetails_clientIdentifier_error___block_invoke;
   v24 = &unk_278F8A128;
-  v25 = v10;
-  v26 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v21 error:a6];
-  v14 = [v13 assertions];
-  v15 = [v14 firstObject];
+  v25 = identifierCopy;
+  v26 = detailsCopy;
+  v11 = detailsCopy;
+  v12 = identifierCopy;
+  v13 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v21 error:error];
+  assertions = [v13 assertions];
+  firstObject = [assertions firstObject];
 
   clientDetailsProvider = self->_clientDetailsProvider;
-  v17 = [v15 source];
-  v18 = [v17 clientIdentifier];
-  v19 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:v18];
+  source = [firstObject source];
+  clientIdentifier = [source clientIdentifier];
+  v19 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:clientIdentifier];
 
-  [(DNDSMetricsManager *)self->_metricsManager assertionTaken:v15 withClientDetails:v19 lockState:[(DNDSServer *)self lockState]];
+  [(DNDSMetricsManager *)self->_metricsManager assertionTaken:firstObject withClientDetails:v19 lockState:[(DNDSServer *)self lockState]];
 
-  return v15;
+  return firstObject;
 }
 
 uint64_t __82__DNDSServer_lifetimeMonitor_takeModeAssertionWithDetails_clientIdentifier_error___block_invoke(uint64_t a1, void *a2)
@@ -1559,21 +1559,21 @@ uint64_t __82__DNDSServer_lifetimeMonitor_takeModeAssertionWithDetails_clientIde
   return 1;
 }
 
-- (void)lifetimeMonitor:(id)a3 lifetimeDidExpireForAssertionUUIDs:(id)a4 expirationDate:(id)a5
+- (void)lifetimeMonitor:(id)monitor lifetimeDidExpireForAssertionUUIDs:(id)ds expirationDate:(id)date
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  monitorCopy = monitor;
+  dsCopy = ds;
+  dateCopy = date;
+  if ([dsCopy count])
   {
     v11 = DNDSLogGeneral;
     if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = v8;
+      v22 = monitorCopy;
       v23 = 2114;
-      v24 = v9;
+      v24 = dsCopy;
       _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Lifetime monitor says UUIDs should expire; monitor=%{public}@, UUIDs=%{public}@", buf, 0x16u);
     }
 
@@ -1581,10 +1581,10 @@ uint64_t __82__DNDSServer_lifetimeMonitor_takeModeAssertionWithDetails_clientIde
     v16[1] = 3221225472;
     v16[2] = __80__DNDSServer_lifetimeMonitor_lifetimeDidExpireForAssertionUUIDs_expirationDate___block_invoke;
     v16[3] = &unk_278F8C0A8;
-    v17 = v9;
-    v18 = v8;
-    v19 = self;
-    v20 = v10;
+    v17 = dsCopy;
+    v18 = monitorCopy;
+    selfCopy = self;
+    v20 = dateCopy;
     v15 = 0;
     v12 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:v16 error:&v15];
     v13 = v15;
@@ -1622,33 +1622,33 @@ uint64_t __80__DNDSServer_lifetimeMonitor_lifetimeDidExpireForAssertionUUIDs_exp
   return 1;
 }
 
-- (id)remoteServiceProvider:(id)a3 resolveBehaviorForEventDetails:(id)a4 clientDetails:(id)a5 date:(id)a6 error:(id *)a7
+- (id)remoteServiceProvider:(id)provider resolveBehaviorForEventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   metricsManager = self->_metricsManager;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  dateCopy = date;
+  clientDetailsCopy = clientDetails;
+  detailsCopy = details;
   [(DNDSMetricsManager *)metricsManager sendMetricsHeartbeatsIfNeeded];
-  v15 = [(DNDSEventBehaviorResolver *)self->_eventBehaviorResolver resolveBehaviorForEventDetails:v14 clientDetails:v13 date:v12 error:a7];
+  v15 = [(DNDSEventBehaviorResolver *)self->_eventBehaviorResolver resolveBehaviorForEventDetails:detailsCopy clientDetails:clientDetailsCopy date:dateCopy error:error];
 
-  v16 = [v15 eventDetails];
-  v17 = [v16 bundleIdentifier];
+  eventDetails = [v15 eventDetails];
+  bundleIdentifier = [eventDetails bundleIdentifier];
 
-  if (v17)
+  if (bundleIdentifier)
   {
     v18 = DNDSPowerLogInterruptionSuppressionForDNDInterruptionSuppression([v15 interruptionSuppression]);
     v19 = DNDSLogMetrics;
     if (os_log_type_enabled(DNDSLogMetrics, OS_LOG_TYPE_INFO))
     {
       v22 = 138543618;
-      v23 = v17;
+      v23 = bundleIdentifier;
       v24 = 2048;
       v25 = v18;
       _os_log_impl(&dword_24912E000, v19, OS_LOG_TYPE_INFO, "Notifying PowerLog of Focus interruption suppression event: bundleIdentifier=%{public}@ suppression=%ld", &v22, 0x16u);
     }
 
-    DNDSPowerLogFocusInterruptionSuppresionEvent(v17, v18);
+    DNDSPowerLogFocusInterruptionSuppresionEvent(bundleIdentifier, v18);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1656,26 +1656,26 @@ uint64_t __80__DNDSServer_lifetimeMonitor_lifetimeDidExpireForAssertionUUIDs_exp
   return v15;
 }
 
-- (id)remoteServiceProvider:(id)a3 activeAssertionWithClientIdentifer:(id)a4 error:(id *)a5
+- (id)remoteServiceProvider:(id)provider activeAssertionWithClientIdentifer:(id)identifer error:(id *)error
 {
-  v6 = a4;
-  v7 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v8 = [(DNDSStateProvider *)self->_stateProvider lastSystemSnapshot];
-  v9 = [v7 activeModeIdentifier];
-  v10 = [v8 assertions];
+  identiferCopy = identifer;
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  lastSystemSnapshot = [(DNDSStateProvider *)self->_stateProvider lastSystemSnapshot];
+  activeModeIdentifier = [lastCalculatedState activeModeIdentifier];
+  assertions = [lastSystemSnapshot assertions];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __77__DNDSServer_remoteServiceProvider_activeAssertionWithClientIdentifer_error___block_invoke;
   v20[3] = &unk_278F8AEF8;
-  v11 = v8;
+  v11 = lastSystemSnapshot;
   v21 = v11;
-  v12 = v9;
+  v12 = activeModeIdentifier;
   v22 = v12;
-  v13 = [v10 bs_filter:v20];
+  v13 = [assertions bs_filter:v20];
 
   if ([v13 count] < 2)
   {
-    v15 = [v13 firstObject];
+    firstObject = [v13 firstObject];
   }
 
   else
@@ -1684,21 +1684,21 @@ uint64_t __80__DNDSServer_lifetimeMonitor_lifetimeDidExpireForAssertionUUIDs_exp
     v18[1] = 3221225472;
     v18[2] = __77__DNDSServer_remoteServiceProvider_activeAssertionWithClientIdentifer_error___block_invoke_2;
     v18[3] = &unk_278F8A0B0;
-    v19 = v6;
+    v19 = identiferCopy;
     v14 = [v13 bs_filter:v18];
     if ([v14 count] == 1)
     {
-      v15 = [v14 firstObject];
+      firstObject = [v14 firstObject];
     }
 
     else
     {
       v16 = [v13 sortedArrayUsingComparator:&__block_literal_global_145];
-      v15 = [v16 lastObject];
+      firstObject = [v16 lastObject];
     }
   }
 
-  return v15;
+  return firstObject;
 }
 
 uint64_t __77__DNDSServer_remoteServiceProvider_activeAssertionWithClientIdentifer_error___block_invoke(uint64_t a1, void *a2)
@@ -1740,27 +1740,27 @@ uint64_t __77__DNDSServer_remoteServiceProvider_activeAssertionWithClientIdentif
   return v7;
 }
 
-- (id)remoteServiceProvider:(id)a3 assertionWithClientIdentifer:(id)a4 error:(id *)a5
+- (id)remoteServiceProvider:(id)provider assertionWithClientIdentifer:(id)identifer error:(id *)error
 {
-  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:a4];
+  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:identifer];
   v7 = MEMORY[0x277D05938];
-  v8 = [v6 identifiers];
-  v9 = [v7 predicateForModeAssertionsWithClientIdentifiers:v8];
+  identifiers = [v6 identifiers];
+  v9 = [v7 predicateForModeAssertionsWithClientIdentifiers:identifiers];
 
   v10 = [(DNDSModeAssertionManager *)self->_modeAssertionManager modeAssertionsMatchingPredicate:v9];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)remoteServiceProvider:(id)a3 takeModeAssertionWithDetails:(id)a4 clientIdentifier:(id)a5 error:(id *)a6
+- (id)remoteServiceProvider:(id)provider takeModeAssertionWithDetails:(id)details clientIdentifier:(id)identifier error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  identifierCopy = identifier;
   modeConfigurationManager = self->_modeConfigurationManager;
-  v12 = [v9 modeIdentifier];
-  v13 = [(DNDSModeConfigurationManager *)modeConfigurationManager modeConfigurationForModeIdentifier:v12 withError:a6];
+  modeIdentifier = [detailsCopy modeIdentifier];
+  v13 = [(DNDSModeConfigurationManager *)modeConfigurationManager modeConfigurationForModeIdentifier:modeIdentifier withError:error];
 
   if (v13)
   {
@@ -1768,48 +1768,48 @@ uint64_t __77__DNDSServer_remoteServiceProvider_activeAssertionWithClientIdentif
     v30 = 3221225472;
     v31 = __88__DNDSServer_remoteServiceProvider_takeModeAssertionWithDetails_clientIdentifier_error___block_invoke;
     v32 = &unk_278F8A128;
-    v33 = v10;
-    v34 = v9;
-    v14 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v29 error:a6];
-    v15 = [v14 assertions];
-    v16 = [v15 firstObject];
+    v33 = identifierCopy;
+    v34 = detailsCopy;
+    v14 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v29 error:error];
+    assertions = [v14 assertions];
+    firstObject = [assertions firstObject];
 
     clientDetailsProvider = self->_clientDetailsProvider;
-    v18 = [v16 source];
-    v19 = [v18 clientIdentifier];
-    v20 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:v19];
+    source = [firstObject source];
+    clientIdentifier = [source clientIdentifier];
+    v20 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:clientIdentifier];
 
-    [(DNDSMetricsManager *)self->_metricsManager assertionTaken:v16 withClientDetails:v20 lockState:[(DNDSServer *)self lockState]];
+    [(DNDSMetricsManager *)self->_metricsManager assertionTaken:firstObject withClientDetails:v20 lockState:[(DNDSServer *)self lockState]];
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       v21 = MEMORY[0x277CCA9B8];
       v22 = *MEMORY[0x277D05840];
       v37 = *MEMORY[0x277CCA450];
       v38[0] = @"No mode configuration found for mode identifier.";
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-      *a6 = [v21 errorWithDomain:v22 code:1003 userInfo:v23];
+      *error = [v21 errorWithDomain:v22 code:1003 userInfo:v23];
     }
 
     v24 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [v9 modeIdentifier];
+      modeIdentifier2 = [detailsCopy modeIdentifier];
       *buf = 138543362;
-      v36 = v26;
+      v36 = modeIdentifier2;
       _os_log_impl(&dword_24912E000, v25, OS_LOG_TYPE_DEFAULT, "No mode configuration found for mode identifier: modeIdentifier=%{public}@", buf, 0xCu);
     }
 
-    v16 = 0;
+    firstObject = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return firstObject;
 }
 
 uint64_t __88__DNDSServer_remoteServiceProvider_takeModeAssertionWithDetails_clientIdentifier_error___block_invoke(uint64_t a1, void *a2)
@@ -1823,29 +1823,29 @@ uint64_t __88__DNDSServer_remoteServiceProvider_takeModeAssertionWithDetails_cli
   return 1;
 }
 
-- (id)remoteServiceProvider:(id)a3 invalidateModeAssertionWithUUID:(id)a4 reason:(unint64_t)a5 reasonOverride:(unint64_t)a6 clientIdentifier:(id)a7 error:(id *)a8
+- (id)remoteServiceProvider:(id)provider invalidateModeAssertionWithUUID:(id)d reason:(unint64_t)reason reasonOverride:(unint64_t)override clientIdentifier:(id)identifier error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = *MEMORY[0x277D05870];
-  if (a7)
+  dCopy = d;
+  identifierCopy = *MEMORY[0x277D05870];
+  if (identifier)
   {
-    v14 = a7;
+    identifierCopy = identifier;
   }
 
-  v15 = v14;
+  v15 = identifierCopy;
   modeAssertionManager = self->_modeAssertionManager;
   v17 = MEMORY[0x277D05938];
-  v42[0] = v13;
+  v42[0] = dCopy;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
   v19 = [v17 predicateForModeAssertionsWithUUIDs:v18];
   v20 = [(DNDSModeAssertionManager *)modeAssertionManager modeAssertionsMatchingPredicate:v19];
-  v21 = [v20 firstObject];
+  firstObject = [v20 firstObject];
 
-  v22 = [v21 source];
-  v23 = [v22 clientIdentifier];
+  source = [firstObject source];
+  clientIdentifier = [source clientIdentifier];
 
-  if ([v23 hasSuffix:@".private.schedule"])
+  if ([clientIdentifier hasSuffix:@".private.schedule"])
   {
     v24 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
@@ -1853,11 +1853,11 @@ uint64_t __88__DNDSServer_remoteServiceProvider_takeModeAssertionWithDetails_cli
       *buf = 138543618;
       v39 = v15;
       v40 = 2114;
-      v41 = v23;
+      v41 = clientIdentifier;
       _os_log_impl(&dword_24912E000, v24, OS_LOG_TYPE_DEFAULT, "Overriding invalidation client (%{public}@) with assertion client (%{public}@)", buf, 0x16u);
     }
 
-    v25 = [(DNDSServer *)self _invalidateModeAssertionForClientIdentifier:v23 reason:a5 reasonOverride:a6 details:0 error:a8];
+    firstObject2 = [(DNDSServer *)self _invalidateModeAssertionForClientIdentifier:clientIdentifier reason:reason reasonOverride:override details:0 error:error];
   }
 
   else
@@ -1866,18 +1866,18 @@ uint64_t __88__DNDSServer_remoteServiceProvider_takeModeAssertionWithDetails_cli
     v31 = 3221225472;
     v32 = __113__DNDSServer_remoteServiceProvider_invalidateModeAssertionWithUUID_reason_reasonOverride_clientIdentifier_error___block_invoke;
     v33 = &unk_278F8A150;
-    v34 = v13;
+    v34 = dCopy;
     v35 = v15;
-    v36 = a5;
-    v37 = a6;
-    v26 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v30 error:a8];
-    v27 = [v26 invalidations];
-    v25 = [v27 firstObject];
+    reasonCopy = reason;
+    overrideCopy = override;
+    v26 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:&v30 error:error];
+    invalidations = [v26 invalidations];
+    firstObject2 = [invalidations firstObject];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return firstObject2;
 }
 
 uint64_t __113__DNDSServer_remoteServiceProvider_invalidateModeAssertionWithUUID_reason_reasonOverride_clientIdentifier_error___block_invoke(void *a1, void *a2)
@@ -1897,26 +1897,26 @@ uint64_t __113__DNDSServer_remoteServiceProvider_invalidateModeAssertionWithUUID
   return 1;
 }
 
-- (id)_invalidateModeAssertionForClientIdentifier:(id)a3 reason:(unint64_t)a4 reasonOverride:(unint64_t)a5 details:(id)a6 error:(id *)a7
+- (id)_invalidateModeAssertionForClientIdentifier:(id)identifier reason:(unint64_t)reason reasonOverride:(unint64_t)override details:(id)details error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
+  identifierCopy = identifier;
+  detailsCopy = details;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __94__DNDSServer__invalidateModeAssertionForClientIdentifier_reason_reasonOverride_details_error___block_invoke;
   v20[3] = &unk_278F8C0D0;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v23 = a4;
-  v24 = a5;
-  v14 = v13;
-  v15 = v12;
-  v16 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:v20 error:a7];
-  v17 = [v16 invalidations];
-  v18 = [v17 firstObject];
+  v21 = identifierCopy;
+  v22 = detailsCopy;
+  reasonCopy = reason;
+  overrideCopy = override;
+  v14 = detailsCopy;
+  v15 = identifierCopy;
+  v16 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:v20 error:error];
+  invalidations = [v16 invalidations];
+  firstObject = [invalidations firstObject];
 
-  return v18;
+  return firstObject;
 }
 
 uint64_t __94__DNDSServer__invalidateModeAssertionForClientIdentifier_reason_reasonOverride_details_error___block_invoke(void *a1, void *a2)
@@ -1934,36 +1934,36 @@ uint64_t __94__DNDSServer__invalidateModeAssertionForClientIdentifier_reason_rea
   return 1;
 }
 
-- (id)remoteServiceProvider:(id)a3 latestInvalidationWithClientIdentifer:(id)a4 error:(id *)a5
+- (id)remoteServiceProvider:(id)provider latestInvalidationWithClientIdentifer:(id)identifer error:(id *)error
 {
-  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:a4];
+  v6 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:identifer];
   v7 = MEMORY[0x277D05968];
-  v8 = [v6 identifiers];
-  v9 = [v7 predicateForModeAssertionInvalidationsWithAssertionClientIdentifiers:v8];
+  identifiers = [v6 identifiers];
+  v9 = [v7 predicateForModeAssertionInvalidationsWithAssertionClientIdentifiers:identifiers];
 
   v10 = [(DNDSModeAssertionManager *)self->_modeAssertionManager modeAssertionInvalidationsMatchingPredicate:v9];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)remoteServiceProvider:(id)a3 invalidateAllModeAssertionsTakenBeforeDate:(id)a4 forReason:(unint64_t)a5 clientIdentifier:(id)a6 error:(id *)a7
+- (id)remoteServiceProvider:(id)provider invalidateAllModeAssertionsTakenBeforeDate:(id)date forReason:(unint64_t)reason clientIdentifier:(id)identifier error:(id *)error
 {
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  identifierCopy = identifier;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __112__DNDSServer_remoteServiceProvider_invalidateAllModeAssertionsTakenBeforeDate_forReason_clientIdentifier_error___block_invoke;
   v18[3] = &unk_278F8B298;
-  v19 = v12;
-  v20 = v11;
-  v21 = a5;
-  v13 = v11;
-  v14 = v12;
-  v15 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:v18 error:a7];
-  v16 = [v15 invalidations];
+  v19 = identifierCopy;
+  v20 = dateCopy;
+  reasonCopy = reason;
+  v13 = dateCopy;
+  v14 = identifierCopy;
+  v15 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:v18 error:error];
+  invalidations = [v15 invalidations];
 
-  return v16;
+  return invalidations;
 }
 
 uint64_t __112__DNDSServer_remoteServiceProvider_invalidateAllModeAssertionsTakenBeforeDate_forReason_clientIdentifier_error___block_invoke(void *a1, void *a2)
@@ -1977,17 +1977,17 @@ uint64_t __112__DNDSServer_remoteServiceProvider_invalidateAllModeAssertionsTake
   return 1;
 }
 
-- (id)remoteServiceProvider:(id)a3 allActiveModeAssertionsWithError:(id *)a4
+- (id)remoteServiceProvider:(id)provider allActiveModeAssertionsWithError:(id *)error
 {
-  v4 = [(DNDSServer *)self _stateSystemSnapshot:a3];
-  v5 = [v4 assertions];
+  v4 = [(DNDSServer *)self _stateSystemSnapshot:provider];
+  assertions = [v4 assertions];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__DNDSServer_remoteServiceProvider_allActiveModeAssertionsWithError___block_invoke;
   v9[3] = &unk_278F8A0B0;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 bs_filter:v9];
+  v7 = [assertions bs_filter:v9];
 
   return v7;
 }
@@ -2003,7 +2003,7 @@ uint64_t __69__DNDSServer_remoteServiceProvider_allActiveModeAssertionsWithError
   return v6;
 }
 
-- (id)remoteServiceProvider:(id)a3 currentStateWithError:(id *)a4
+- (id)remoteServiceProvider:(id)provider currentStateWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -2035,69 +2035,69 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)appFocusConfigurationCoordinator:(id)a3 didUpdateAppConfigurationContextForModeIdentifier:(id)a4
+- (void)appFocusConfigurationCoordinator:(id)coordinator didUpdateAppConfigurationContextForModeIdentifier:(id)identifier
 {
-  v10 = a4;
-  v5 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  v6 = lastCalculatedState;
+  if (lastCalculatedState)
   {
-    v7 = v5;
+    fallbackState = lastCalculatedState;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D05AA0] fallbackState];
+    fallbackState = [MEMORY[0x277D05AA0] fallbackState];
   }
 
-  v8 = v7;
+  v8 = fallbackState;
 
-  v9 = [v8 activeModeIdentifier];
-  if (!(v10 | v9) || v9 && [v9 isEqualToString:v10])
+  activeModeIdentifier = [v8 activeModeIdentifier];
+  if (!(identifierCopy | activeModeIdentifier) || activeModeIdentifier && [activeModeIdentifier isEqualToString:identifierCopy])
   {
-    [(DNDSRemoteServiceProvider *)self->_serviceProvider handleAppConfigurationContextUpdateForModeIdentifier:v10];
+    [(DNDSRemoteServiceProvider *)self->_serviceProvider handleAppConfigurationContextUpdateForModeIdentifier:identifierCopy];
   }
 }
 
-- (id)currentStateForAppFocusConfigurationCoordinator:(id)a3
+- (id)currentStateForAppFocusConfigurationCoordinator:(id)coordinator
 {
-  v3 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v4 = v3;
-  if (v3)
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  v4 = lastCalculatedState;
+  if (lastCalculatedState)
   {
-    v5 = v3;
+    fallbackState = lastCalculatedState;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D05AA0] fallbackState];
+    fallbackState = [MEMORY[0x277D05AA0] fallbackState];
   }
 
-  v6 = v5;
+  v6 = fallbackState;
 
   return v6;
 }
 
-- (id)currentStateForSystemFocusConfigurationCoordinator:(id)a3
+- (id)currentStateForSystemFocusConfigurationCoordinator:(id)coordinator
 {
-  v3 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v4 = v3;
-  if (v3)
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  v4 = lastCalculatedState;
+  if (lastCalculatedState)
   {
-    v5 = v3;
+    fallbackState = lastCalculatedState;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D05AA0] fallbackState];
+    fallbackState = [MEMORY[0x277D05AA0] fallbackState];
   }
 
-  v6 = v5;
+  v6 = fallbackState;
 
   return v6;
 }
 
-- (id)remoteServiceProvider:(id)a3 behaviorSettingsWithError:(id *)a4
+- (id)remoteServiceProvider:(id)provider behaviorSettingsWithError:(id *)error
 {
   settingsManager = self->_settingsManager;
   v13 = 0;
@@ -2106,10 +2106,10 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   v8 = v7;
   if (v6 | v7)
   {
-    if (a4 && v7)
+    if (error && v7)
     {
       v10 = v7;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -2127,9 +2127,9 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   return v6;
 }
 
-- (id)remoteServiceProvider:(id)a3 scheduleSettingsWithError:(id *)a4
+- (id)remoteServiceProvider:(id)provider scheduleSettingsWithError:(id *)error
 {
-  v4 = [(DNDSServer *)self _scheduleSettingsFromDefaultScheduleTrigger:a3];
+  v4 = [(DNDSServer *)self _scheduleSettingsFromDefaultScheduleTrigger:provider];
   if (!v4)
   {
     v4 = objc_alloc_init(MEMORY[0x277D05A80]);
@@ -2144,18 +2144,18 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   return v4;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 setScheduleSettings:(id)a4 withError:(id *)a5
+- (BOOL)remoteServiceProvider:(id)provider setScheduleSettings:(id)settings withError:(id *)error
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = [v6 date];
-  v9 = [DNDSScheduleSettings settingsWithClientSettings:v7 creationDate:v8];
+  settingsCopy = settings;
+  date = [v6 date];
+  v9 = [DNDSScheduleSettings settingsWithClientSettings:settingsCopy creationDate:date];
 
   LOBYTE(self) = [(DNDSServer *)self _setDefaultScheduleTriggerWithScheduleSettings:v9];
   return self;
 }
 
-- (id)pairedCloudDevicesForSyncManager:(id)a3
+- (id)pairedCloudDevicesForSyncManager:(id)manager
 {
   v4 = [(DNDSSettingsManager *)self->_settingsManager syncSettingsWithError:0];
   if (![v4 isCloudSyncEnabled] || (-[DNDSPairedDeviceStateMonitor cloudDevices](self->_pairedDeviceStateMonitor, "cloudDevices"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -2171,7 +2171,7 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   return v5;
 }
 
-- (id)pairedDevicesForSyncManager:(id)a3
+- (id)pairedDevicesForSyncManager:(id)manager
 {
   v4 = [(DNDSSettingsManager *)self->_settingsManager syncSettingsWithError:0];
   if (![v4 isCloudSyncEnabled] || (-[DNDSPairedDeviceStateMonitor cloudDevices](self->_pairedDeviceStateMonitor, "cloudDevices"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -2181,10 +2181,10 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
 
   if ([v4 isPairSyncEnabled])
   {
-    v6 = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor pairedDevice];
-    if (v6)
+    pairedDevice = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor pairedDevice];
+    if (pairedDevice)
     {
-      v7 = [v5 setByAddingObject:v6];
+      v7 = [v5 setByAddingObject:pairedDevice];
 
       v5 = v7;
     }
@@ -2208,9 +2208,9 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   return v5;
 }
 
-- (id)syncManager:(id)a3 deviceForDeviceIdentifier:(id)a4
+- (id)syncManager:(id)manager deviceForDeviceIdentifier:(id)identifier
 {
-  v5 = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor pairedDeviceForDeviceIdentifier:a4];
+  v5 = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor pairedDeviceForDeviceIdentifier:identifier];
   v6 = [(DNDSSettingsManager *)self->_settingsManager syncSettingsWithError:0];
   if ([v5 syncServiceType] == 2 && !objc_msgSend(v6, "isCloudSyncEnabled") || objc_msgSend(v5, "syncServiceType") == 1 && (objc_msgSend(v6, "isPairSyncEnabled") & 1) == 0)
   {
@@ -2221,36 +2221,36 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   return v5;
 }
 
-- (id)syncManager:(id)a3 updateOutboundModeAssertion:(id)a4
+- (id)syncManager:(id)manager updateOutboundModeAssertion:(id)assertion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 details];
-  v7 = [v6 mutableCopy];
+  assertionCopy = assertion;
+  details = [assertionCopy details];
+  v7 = [details mutableCopy];
 
   modeConfigurationManager = self->_modeConfigurationManager;
-  v9 = [v7 modeIdentifier];
-  v10 = [(DNDSModeConfigurationManager *)modeConfigurationManager modeConfigurationForModeIdentifier:v9 withError:0];
+  modeIdentifier = [v7 modeIdentifier];
+  v10 = [(DNDSModeConfigurationManager *)modeConfigurationManager modeConfigurationForModeIdentifier:modeIdentifier withError:0];
 
   if (v10)
   {
-    v11 = [v10 lastModified];
-    if (v11 && ([MEMORY[0x277CBEAA8] distantPast], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqualToDate:", v12), v12, (v13 & 1) == 0))
+    lastModified = [v10 lastModified];
+    if (lastModified && ([MEMORY[0x277CBEAA8] distantPast], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(lastModified, "isEqualToDate:", v12), v12, (v13 & 1) == 0))
     {
-      v21 = [v10 lastModified];
-      [v7 setModeConfigurationModifiedDate:v21];
+      lastModified2 = [v10 lastModified];
+      [v7 setModeConfigurationModifiedDate:lastModified2];
 
       v22 = objc_alloc(MEMORY[0x277D05938]);
-      v23 = [v5 UUID];
-      v24 = [v5 startDate];
-      v25 = [v5 source];
-      v17 = [v22 initWithUUID:v23 startDate:v24 details:v7 source:v25];
+      uUID = [assertionCopy UUID];
+      startDate = [assertionCopy startDate];
+      source = [assertionCopy source];
+      v17 = [v22 initWithUUID:uUID startDate:startDate details:v7 source:source];
 
       v26 = DNDSLogGeneral;
       if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_INFO))
       {
         v27 = 138412546;
-        v28 = v11;
+        v28 = lastModified;
         v29 = 2112;
         v30 = v17;
         _os_log_impl(&dword_24912E000, v26, OS_LOG_TYPE_INFO, "Updated mode modifification date to %@ on assertion %@", &v27, 0x16u);
@@ -2263,18 +2263,18 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
       if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v14;
-        v16 = [v7 modeIdentifier];
+        modeIdentifier2 = [v7 modeIdentifier];
         v27 = 138412546;
-        v28 = v16;
+        v28 = modeIdentifier2;
         v29 = 2112;
-        v30 = v11;
+        v30 = lastModified;
         _os_log_impl(&dword_24912E000, v15, OS_LOG_TYPE_DEFAULT, "%@ configuration doesn't have a useful modification date: %@", &v27, 0x16u);
       }
 
-      v17 = v5;
+      v17 = assertionCopy;
     }
 
-    v5 = v17;
+    assertionCopy = v17;
   }
 
   else
@@ -2288,34 +2288,34 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return assertionCopy;
 }
 
-- (id)syncManager:(id)a3 scheduleSettingsForModeIdentifier:(id)a4
+- (id)syncManager:(id)manager scheduleSettingsForModeIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(DNDSServer *)self _scheduleSettingsForModeConfigurations];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  identifierCopy = identifier;
+  _scheduleSettingsForModeConfigurations = [(DNDSServer *)self _scheduleSettingsForModeConfigurations];
+  v7 = [_scheduleSettingsForModeConfigurations objectForKeyedSubscript:identifierCopy];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (BOOL)isCloudSyncDisabledForSyncManager:(id)a3
+- (BOOL)isCloudSyncDisabledForSyncManager:(id)manager
 {
   v3 = [(DNDSSettingsManager *)self->_settingsManager syncSettingsWithError:0];
-  v4 = [v3 isCloudSyncEnabled];
+  isCloudSyncEnabled = [v3 isCloudSyncEnabled];
 
-  return v4 ^ 1;
+  return isCloudSyncEnabled ^ 1;
 }
 
-- (void)syncManager:(id)a3 performModeAssertionUpdatesWithHandler:(id)a4
+- (void)syncManager:(id)manager performModeAssertionUpdatesWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   v13 = 0;
-  v7 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:a4 error:&v13];
+  v7 = [(DNDSServer *)self _updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:handler error:&v13];
   v8 = v13;
   if (v7)
   {
@@ -2328,7 +2328,7 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
       if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v15 = v6;
+        v15 = managerCopy;
         _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Performed update for sync manager; manager=%{public}@", buf, 0xCu);
       }
     }
@@ -2342,9 +2342,9 @@ uint64_t __58__DNDSServer_remoteServiceProvider_currentStateWithError___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncManager:(id)a3 prepareForSyncToDevices:(id)a4
+- (void)syncManager:(id)manager prepareForSyncToDevices:(id)devices
 {
-  if ([a4 bs_containsObjectPassingTest:&__block_literal_global_162])
+  if ([devices bs_containsObjectPassingTest:&__block_literal_global_162])
   {
     syncEngine = self->_syncEngine;
 
@@ -2381,79 +2381,79 @@ void __50__DNDSServer_syncManager_prepareForSyncToDevices___block_invoke_2(uint6
   }
 }
 
-- (id)currentStateForLegacyAssertionSyncManager:(id)a3
+- (id)currentStateForLegacyAssertionSyncManager:(id)manager
 {
-  v3 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v4 = v3;
-  if (v3)
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  v4 = lastCalculatedState;
+  if (lastCalculatedState)
   {
-    v5 = v3;
+    fallbackState = lastCalculatedState;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D05AA0] fallbackState];
+    fallbackState = [MEMORY[0x277D05AA0] fallbackState];
   }
 
-  v6 = v5;
+  v6 = fallbackState;
 
   return v6;
 }
 
-- (id)phoneCallBypassSettingsForSyncManager:(id)a3
+- (id)phoneCallBypassSettingsForSyncManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v5 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:*MEMORY[0x277D05830] withError:0];
-  v6 = [v5 configuration];
-  v7 = [v6 phoneCallBypassSettings];
+  configuration = [v5 configuration];
+  phoneCallBypassSettings = [configuration phoneCallBypassSettings];
 
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = managerCopy;
     v13 = 2114;
-    v14 = v7;
+    v14 = phoneCallBypassSettings;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Sync manager gets bypass settings; manager=%{public}@, settings=%{public}@", &v11, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return phoneCallBypassSettings;
 }
 
-- (id)scheduleSettingsForSyncManager:(id)a3
+- (id)scheduleSettingsForSyncManager:(id)manager
 {
-  v3 = [(DNDSServer *)self _scheduleSettingsFromDefaultScheduleTrigger];
-  v4 = v3;
-  if (v3)
+  _scheduleSettingsFromDefaultScheduleTrigger = [(DNDSServer *)self _scheduleSettingsFromDefaultScheduleTrigger];
+  v4 = _scheduleSettingsFromDefaultScheduleTrigger;
+  if (_scheduleSettingsFromDefaultScheduleTrigger)
   {
-    v5 = v3;
+    v5 = _scheduleSettingsFromDefaultScheduleTrigger;
   }
 
   else
   {
     v6 = objc_alloc_init(MEMORY[0x277D05A80]);
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v5 = [DNDSScheduleSettings settingsWithClientSettings:v6 creationDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    v5 = [DNDSScheduleSettings settingsWithClientSettings:v6 creationDate:date];
   }
 
   return v5;
 }
 
-- (void)syncManager:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4
+- (void)syncManager:(id)manager didReceiveUpdatedPhoneCallBypassSettings:(id)settings
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v6;
+    v22 = managerCopy;
     v23 = 2114;
-    v24 = v7;
+    v24 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Received updated bypass settings via sync; manager=%{public}@, settings=%{public}@", buf, 0x16u);
   }
 
@@ -2474,10 +2474,10 @@ void __50__DNDSServer_syncManager_prepareForSyncToDevices___block_invoke_2(uint6
   else
   {
     v14 = [v11 mutableCopy];
-    v15 = [v14 configuration];
-    v16 = [v15 mutableCopy];
+    configuration = [v14 configuration];
+    v16 = [configuration mutableCopy];
 
-    [v16 setPhoneCallBypassSettings:v7];
+    [v16 setPhoneCallBypassSettings:settingsCopy];
     [v14 setConfiguration:v16];
     v17 = self->_modeConfigurationManager;
     v19 = 0;
@@ -2492,38 +2492,38 @@ void __50__DNDSServer_syncManager_prepareForSyncToDevices___block_invoke_2(uint6
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncManager:(id)a3 didReceiveUpdatedScheduleSettings:(id)a4
+- (void)syncManager:(id)manager didReceiveUpdatedScheduleSettings:(id)settings
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = managerCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Received updated schedule settings via sync; manager=%{public}@, settings=%{public}@", &v10, 0x16u);
   }
 
-  [(DNDSServer *)self _setDefaultScheduleTriggerWithScheduleSettings:v7];
+  [(DNDSServer *)self _setDefaultScheduleTriggerWithScheduleSettings:settingsCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsManager:(id)a3 didReceiveUpdatedBehaviorSettings:(id)a4
+- (void)settingsManager:(id)manager didReceiveUpdatedBehaviorSettings:(id)settings
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = v6;
+    v13 = managerCopy;
     v14 = 2114;
-    v15 = v7;
+    v15 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "DND behavior settings changed, will refresh state; manager=%{public}@, settings=%{public}@", buf, 0x16u);
   }
 
@@ -2534,48 +2534,48 @@ void __50__DNDSServer_syncManager_prepareForSyncToDevices___block_invoke_2(uint6
   block[3] = &unk_278F89ED0;
   block[4] = self;
   dispatch_async(queue, block);
-  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedBehaviorSettings:v7];
+  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedBehaviorSettings:settingsCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsManager:(id)a3 didReceiveUpdatedPhoneCallBypassSettings:(id)a4
+- (void)settingsManager:(id)manager didReceiveUpdatedPhoneCallBypassSettings:(id)settings
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = managerCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "DND phone call bypass settings changed, will refresh state; manager=%{public}@, settings=%{public}@", &v10, 0x16u);
   }
 
-  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedPhoneCallBypassSettings:v7];
+  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedPhoneCallBypassSettings:settingsCopy];
   [(DNDSSettingsSyncManager *)self->_settingsSyncManager update];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsManager:(id)a3 didReceiveUpdatedScheduleSettings:(id)a4
+- (void)settingsManager:(id)manager didReceiveUpdatedScheduleSettings:(id)settings
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = v6;
+    v13 = managerCopy;
     v14 = 2114;
-    v15 = v7;
+    v15 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "DND schedule settings changed, will refresh state; manager=%{public}@, settings=%{public}@", buf, 0x16u);
   }
 
-  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedScheduleSettings:v7];
+  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedScheduleSettings:settingsCopy];
   [(DNDSSettingsSyncManager *)self->_settingsSyncManager update];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2588,37 +2588,37 @@ void __50__DNDSServer_syncManager_prepareForSyncToDevices___block_invoke_2(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsManager:(id)a3 didReceiveUpdatedSyncSettings:(id)a4
+- (void)settingsManager:(id)manager didReceiveUpdatedSyncSettings:(id)settings
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  settingsCopy = settings;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = v6;
+    v21 = managerCopy;
     v22 = 2114;
-    v23 = v7;
+    v23 = settingsCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Sync settings updated; manager=%{public}@, settings=%{public}@", buf, 0x16u);
   }
 
-  -[DNDSSyncEngine setSyncPreferenceEnabled:](self->_syncEngine, "setSyncPreferenceEnabled:", [v7 isCloudSyncEnabled]);
-  v9 = [v7 isCloudSyncEnabled];
+  -[DNDSSyncEngine setSyncPreferenceEnabled:](self->_syncEngine, "setSyncPreferenceEnabled:", [settingsCopy isCloudSyncEnabled]);
+  isCloudSyncEnabled = [settingsCopy isCloudSyncEnabled];
   v10 = [(DNDSGlobalConfigurationManager *)self->_globalConfigurationManager getModesCanImpactAvailabilityReturningError:0];
-  if (v9)
+  if (isCloudSyncEnabled)
   {
     if (v10)
     {
       userAvailabilityCoordinator = self->_userAvailabilityCoordinator;
-      v12 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager relevantContacts];
-      v13 = [v12 allObjects];
+      relevantContacts = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager relevantContacts];
+      allObjects = [relevantContacts allObjects];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __60__DNDSServer_settingsManager_didReceiveUpdatedSyncSettings___block_invoke;
       v19[3] = &unk_278F8C058;
       v19[4] = self;
-      [(DNDSUserAvailabilityCoordinator *)userAvailabilityCoordinator resumeUpdatingInvitationsForContacts:v13 completionHandler:v19];
+      [(DNDSUserAvailabilityCoordinator *)userAvailabilityCoordinator resumeUpdatingInvitationsForContacts:allObjects completionHandler:v19];
     }
   }
 
@@ -2698,18 +2698,18 @@ uint64_t __60__DNDSServer_settingsManager_didReceiveUpdatedSyncSettings___block_
   return [v2 _queue_updateScheduleManagerLifetimeMonitorsAndStateForReason:1 source:1 options:1];
 }
 
-- (void)modeConfigurationManager:(id)a3 didUpdateAvailableModes:(id)a4
+- (void)modeConfigurationManager:(id)manager didUpdateAvailableModes:(id)modes
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  modesCopy = modes;
   v8 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v31 = v6;
+    v31 = managerCopy;
     v32 = 2114;
-    v33 = v7;
+    v33 = modesCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Available modes updated; manager=%{public}@, modes=%{public}@", buf, 0x16u);
   }
 
@@ -2721,13 +2721,13 @@ uint64_t __60__DNDSServer_settingsManager_didReceiveUpdatedSyncSettings___block_
   [(DNDSSleepingTriggerManager *)self->_sleepingTriggerManager refresh];
   [(DNDSSmartTriggerManager *)self->_smartTriggerManager refresh];
   [(DNDSWorkoutTriggerManager *)self->_workoutTriggerManager refresh];
-  v9 = [(DNDSServer *)self _allModes];
-  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedModes:v9 availableModes:v7];
-  [(DNDSAppConfigurationManager *)self->_appConfigurationManager refreshWithAvailableModes:v7];
-  v10 = [v6 relevantApplicationIdentifiers];
-  [(DNDSAppInfoCache *)self->_appInfoCache monitorApplicationIdentifiers:v10];
+  _allModes = [(DNDSServer *)self _allModes];
+  [(DNDSRemoteServiceProvider *)self->_serviceProvider handleUpdatedModes:_allModes availableModes:modesCopy];
+  [(DNDSAppConfigurationManager *)self->_appConfigurationManager refreshWithAvailableModes:modesCopy];
+  relevantApplicationIdentifiers = [managerCopy relevantApplicationIdentifiers];
+  [(DNDSAppInfoCache *)self->_appInfoCache monitorApplicationIdentifiers:relevantApplicationIdentifiers];
   v11 = MEMORY[0x277D05938];
-  v12 = [v7 bs_map:&__block_literal_global_168];
+  v12 = [modesCopy bs_map:&__block_literal_global_168];
   v13 = [v11 predicateForModeAssertionsWithModeIdentifiersNotContainedIn:v12];
 
   v14 = [(DNDSModeAssertionManager *)self->_modeAssertionManager modeAssertionsMatchingPredicate:v13];
@@ -2748,26 +2748,26 @@ uint64_t __60__DNDSServer_settingsManager_didReceiveUpdatedSyncSettings___block_
     v16 = 0;
   }
 
-  v17 = [v16 assertions];
-  if ([v17 count])
+  assertions = [v16 assertions];
+  if ([assertions count])
   {
   }
 
   else
   {
     [v16 invalidations];
-    v26 = v7;
+    v26 = modesCopy;
     v18 = v13;
-    v19 = v10;
-    v20 = v9;
-    v22 = v21 = v6;
+    v19 = relevantApplicationIdentifiers;
+    v20 = _allModes;
+    v22 = v21 = managerCopy;
     v23 = [v22 count];
 
-    v6 = v21;
-    v9 = v20;
-    v10 = v19;
+    managerCopy = v21;
+    _allModes = v20;
+    relevantApplicationIdentifiers = v19;
     v13 = v18;
-    v7 = v26;
+    modesCopy = v26;
 
     if (!v23)
     {
@@ -2816,35 +2816,35 @@ uint64_t __63__DNDSServer_modeConfigurationManager_didUpdateAvailableModes___blo
   return 1;
 }
 
-- (void)modeConfigurationManager:(id)a3 didModifyAvailableMode:(id)a4
+- (void)modeConfigurationManager:(id)manager didModifyAvailableMode:(id)mode
 {
-  v5 = a4;
-  v6 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v7 = v6;
-  if (v6)
+  modeCopy = mode;
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  v7 = lastCalculatedState;
+  if (lastCalculatedState)
   {
-    v8 = v6;
+    fallbackState = lastCalculatedState;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D05AA0] fallbackState];
+    fallbackState = [MEMORY[0x277D05AA0] fallbackState];
   }
 
-  v9 = v8;
+  v9 = fallbackState;
 
   if ([v9 isActive])
   {
-    v10 = [v5 modeIdentifier];
-    v11 = [v9 activeModeIdentifier];
-    v12 = [v10 isEqual:v11];
+    modeIdentifier = [modeCopy modeIdentifier];
+    activeModeIdentifier = [v9 activeModeIdentifier];
+    v12 = [modeIdentifier isEqual:activeModeIdentifier];
 
     if (v12)
     {
-      v13 = [(DNDSSyncEngine *)self->_syncEngine hasLocalChanges];
+      hasLocalChanges = [(DNDSSyncEngine *)self->_syncEngine hasLocalChanges];
       v14 = DNDSLogGeneral;
       v15 = os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT);
-      if (v13)
+      if (hasLocalChanges)
       {
         if (v15)
         {
@@ -2864,30 +2864,30 @@ uint64_t __63__DNDSServer_modeConfigurationManager_didUpdateAvailableModes___blo
   }
 }
 
-- (void)modeConfigurationManager:(id)a3 didModifyExceptionsForContacts:(id)a4 forModeConfiguration:(id)a5
+- (void)modeConfigurationManager:(id)manager didModifyExceptionsForContacts:(id)contacts forModeConfiguration:(id)configuration
 {
   userAvailabilityCoordinator = self->_userAvailabilityCoordinator;
-  v6 = [a4 allKeys];
-  [(DNDSUserAvailabilityCoordinator *)userAvailabilityCoordinator sendStatusKitInvitationsForContacts:v6 completionHandler:0];
+  allKeys = [contacts allKeys];
+  [(DNDSUserAvailabilityCoordinator *)userAvailabilityCoordinator sendStatusKitInvitationsForContacts:allKeys completionHandler:0];
 }
 
-- (void)pairedDeviceStateMonitor:(id)a3 pairingChangedFromDevice:(id)a4 toDevice:(id)a5
+- (void)pairedDeviceStateMonitor:(id)monitor pairingChangedFromDevice:(id)device toDevice:(id)toDevice
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  monitorCopy = monitor;
+  deviceCopy = device;
+  toDeviceCopy = toDevice;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__DNDSServer_pairedDeviceStateMonitor_pairingChangedFromDevice_toDevice___block_invoke;
   v15[3] = &unk_278F8AB30;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = monitorCopy;
+  v17 = deviceCopy;
+  v18 = toDeviceCopy;
+  selfCopy = self;
+  v12 = toDeviceCopy;
+  v13 = deviceCopy;
+  v14 = monitorCopy;
   dispatch_async(queue, v15);
 }
 
@@ -2917,21 +2917,21 @@ uint64_t __73__DNDSServer_pairedDeviceStateMonitor_pairingChangedFromDevice_toDe
   return result;
 }
 
-- (void)pairedDeviceStateMonitor:(id)a3 cloudPairingChangedFromDevices:(id)a4 toDevices:(id)a5
+- (void)pairedDeviceStateMonitor:(id)monitor cloudPairingChangedFromDevices:(id)devices toDevices:(id)toDevices
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  monitorCopy = monitor;
+  devicesCopy = devices;
+  toDevicesCopy = toDevices;
   v11 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v20 = v8;
+    v20 = monitorCopy;
     v21 = 2114;
-    v22 = v9;
+    v22 = devicesCopy;
     v23 = 2114;
-    v24 = v10;
+    v24 = toDevicesCopy;
     _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Cloud devices changed; monitor=%{public}@, previousDevices=%{public}@, devices=%{public}@", buf, 0x20u);
   }
 
@@ -2940,10 +2940,10 @@ uint64_t __73__DNDSServer_pairedDeviceStateMonitor_pairingChangedFromDevice_toDe
   aBlock[2] = __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_toDevices___block_invoke;
   aBlock[3] = &unk_278F8C118;
   aBlock[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
+  v17 = toDevicesCopy;
+  v18 = devicesCopy;
+  v12 = devicesCopy;
+  v13 = toDevicesCopy;
   v14 = _Block_copy(aBlock);
   v14[2](v14, self->_assertionSyncManager);
   v14[2](v14, self->_legacyAssertionSyncManager);
@@ -2977,14 +2977,14 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
   [v2 updateDevices:v3];
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 setCloudSyncPreferenceEnabled:(BOOL)a4 withError:(id *)a5
+- (BOOL)remoteServiceProvider:(id)provider setCloudSyncPreferenceEnabled:(BOOL)enabled withError:(id *)error
 {
-  v6 = a4;
+  enabledCopy = enabled;
   v41 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 setBool:!v6 forKey:@"disableCloudSync"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:!enabledCopy forKey:@"disableCloudSync"];
 
-  if (!v6)
+  if (!enabledCopy)
   {
     modeConfigurationManager = self->_modeConfigurationManager;
     v37 = 0;
@@ -3002,13 +3002,13 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
     else
     {
       v30 = v10;
-      v31 = a5;
+      errorCopy = error;
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v13 = [v10 allValues];
-      v14 = [v13 countByEnumeratingWithState:&v33 objects:v40 count:16];
+      allValues = [v10 allValues];
+      v14 = [allValues countByEnumeratingWithState:&v33 objects:v40 count:16];
       if (v14)
       {
         v15 = v14;
@@ -3020,7 +3020,7 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
           {
             if (*v34 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allValues);
             }
 
             v19 = *(*(&v33 + 1) + 8 * i);
@@ -3030,8 +3030,8 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
               [v20 setCompatibilityVersion:v17];
               if (([v20 isSupportedConfiguration] & 1) == 0)
               {
-                v21 = [v20 triggers];
-                v22 = [v21 bs_filter:&__block_literal_global_178];
+                triggers = [v20 triggers];
+                v22 = [triggers bs_filter:&__block_literal_global_178];
                 [v20 setTriggers:v22];
               }
 
@@ -3053,7 +3053,7 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v33 objects:v40 count:16];
+          v15 = [allValues countByEnumeratingWithState:&v33 objects:v40 count:16];
         }
 
         while (v15);
@@ -3061,13 +3061,13 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
 
       v12 = 0;
       v10 = v30;
-      a5 = v31;
+      error = errorCopy;
     }
 
-    if (a5)
+    if (error)
     {
       v27 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -3075,12 +3075,12 @@ void __80__DNDSServer_pairedDeviceStateMonitor_cloudPairingChangedFromDevices_to
   return 1;
 }
 
-- (void)remoteServiceProvider:(id)a3 didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)a4
+- (void)remoteServiceProvider:(id)provider didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)identifier
 {
   userAvailabilityCoordinator = self->_userAvailabilityCoordinator;
   v6 = MEMORY[0x277D058C8];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithBundleID:v7];
+  identifierCopy = identifier;
+  v8 = [[v6 alloc] initWithBundleID:identifierCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -3113,9 +3113,9 @@ void __95__DNDSServer_remoteServiceProvider_didChangeFocusStatusSharingSettingFo
   DNDSPowerLogFocusStatusChangeEvent(v10, v6, 0, 0, v9, a3);
 }
 
-- (id)remoteServiceProvider:(id)a3 allModesReturningError:(id *)a4
+- (id)remoteServiceProvider:(id)provider allModesReturningError:(id *)error
 {
-  v5 = [(DNDSServer *)self _allModes:a3];
+  v5 = [(DNDSServer *)self _allModes:provider];
   [(DNDSIDSSyncEngine *)self->_idsSyncEngine sync];
   [(DNDSSyncEngine *)self->_syncEngine fetchChanges:0 withCompletionHandler:&__block_literal_global_181];
 
@@ -3141,13 +3141,13 @@ void __59__DNDSServer_remoteServiceProvider_allModesReturningError___block_invok
   }
 }
 
-- (id)remoteServiceProvider:(id)a3 availableModesReturningError:(id *)a4
+- (id)remoteServiceProvider:(id)provider availableModesReturningError:(id *)error
 {
   [(DNDSIDSSyncEngine *)self->_idsSyncEngine sync];
   [(DNDSSyncEngine *)self->_syncEngine fetchChanges:0 withCompletionHandler:&__block_literal_global_183];
   modeConfigurationManager = self->_modeConfigurationManager;
 
-  return [(DNDSModeConfigurationManager *)modeConfigurationManager availableModesFilteringPlaceholders:1 returningError:a4];
+  return [(DNDSModeConfigurationManager *)modeConfigurationManager availableModesFilteringPlaceholders:1 returningError:error];
 }
 
 void __65__DNDSServer_remoteServiceProvider_availableModesReturningError___block_invoke(uint64_t a1, void *a2)
@@ -3169,7 +3169,7 @@ void __65__DNDSServer_remoteServiceProvider_availableModesReturningError___block
   }
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 syncModeConfigurationsReturningError:(id *)a4
+- (BOOL)remoteServiceProvider:(id)provider syncModeConfigurationsReturningError:(id *)error
 {
   v5 = DNDSLogCloudSync;
   if (os_log_type_enabled(DNDSLogCloudSync, OS_LOG_TYPE_DEFAULT))
@@ -3202,23 +3202,23 @@ void __73__DNDSServer_remoteServiceProvider_syncModeConfigurationsReturningError
   }
 }
 
-- (id)remoteServiceProvider:(id)a3 publishStatusKitAvailabilityReturningError:(id *)a4
+- (id)remoteServiceProvider:(id)provider publishStatusKitAvailabilityReturningError:(id *)error
 {
-  v4 = [(DNDSUserAvailabilityCoordinator *)self->_userAvailabilityCoordinator publishStatusKitAvailabilityReturningError:a4];
-  v5 = [v4 identifier];
+  v4 = [(DNDSUserAvailabilityCoordinator *)self->_userAvailabilityCoordinator publishStatusKitAvailabilityReturningError:error];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (id)remoteAppConfigurationServiceProvider:(id)a3 getCurrentAppConfigurationForActionIdentifier:(id)a4 bundleIdentifier:(id)a5 withError:(id *)a6
+- (id)remoteAppConfigurationServiceProvider:(id)provider getCurrentAppConfigurationForActionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier withError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v12 = [v11 activeModeIdentifier];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  activeModeIdentifier = [lastCalculatedState activeModeIdentifier];
 
-  if (!v12)
+  if (!activeModeIdentifier)
   {
     v16 = 0;
 LABEL_11:
@@ -3226,46 +3226,46 @@ LABEL_11:
     if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v10;
+      v31 = bundleIdentifierCopy;
       v32 = 2112;
-      v33 = v12;
+      v33 = activeModeIdentifier;
       _os_log_impl(&dword_24912E000, v20, OS_LOG_TYPE_DEFAULT, "No enabled action for %@ in active mode %@", buf, 0x16u);
     }
 
-    if (a6 && v16)
+    if (error && v16)
     {
       v21 = v16;
-      v17 = 0;
-      *a6 = v16;
+      action = 0;
+      *error = v16;
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
         v22 = MEMORY[0x277CCA9B8];
         v23 = *MEMORY[0x277D05840];
         v28 = *MEMORY[0x277CCA450];
         v29 = @"No current action is available. Supply the caller with the default.";
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-        *a6 = [v22 errorWithDomain:v23 code:1007 userInfo:v24];
+        *error = [v22 errorWithDomain:v23 code:1007 userInfo:v24];
       }
 
-      v17 = 0;
+      action = 0;
     }
 
     goto LABEL_19;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v10];
+  v13 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:bundleIdentifierCopy];
   appConfigurationManager = self->_appConfigurationManager;
   v27 = 0;
-  v15 = [(DNDSAppConfigurationManager *)appConfigurationManager appActionForActionIdentifier:v9 applicationIdentifier:v13 modeIdentifier:v12 error:&v27];
+  v15 = [(DNDSAppConfigurationManager *)appConfigurationManager appActionForActionIdentifier:identifierCopy applicationIdentifier:v13 modeIdentifier:activeModeIdentifier error:&v27];
   v16 = v27;
-  v17 = 0;
+  action = 0;
   if ([v15 isEnabled])
   {
-    v17 = [v15 action];
+    action = [v15 action];
   }
 
   v18 = DNDSLogGeneral;
@@ -3273,20 +3273,20 @@ LABEL_11:
   {
     v19 = @"Found";
     *buf = 138412802;
-    if (!v17)
+    if (!action)
     {
       v19 = @"No";
     }
 
     v31 = v19;
     v32 = 2112;
-    v33 = v10;
+    v33 = bundleIdentifierCopy;
     v34 = 2112;
-    v35 = v12;
+    v35 = activeModeIdentifier;
     _os_log_impl(&dword_24912E000, v18, OS_LOG_TYPE_DEFAULT, "%@ action for '%@' in active mode %@", buf, 0x20u);
   }
 
-  if (!v17)
+  if (!action)
   {
     goto LABEL_11;
   }
@@ -3295,42 +3295,42 @@ LABEL_19:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return action;
 }
 
-- (BOOL)remoteAppConfigurationServiceProvider:(id)a3 invalidateAppContextForActionIdentifier:(id)a4 bundleIdentifier:(id)a5 withError:(id *)a6
+- (BOOL)remoteAppConfigurationServiceProvider:(id)provider invalidateAppContextForActionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier withError:(id *)error
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v11 = [v10 activeModeIdentifier];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  activeModeIdentifier = [lastCalculatedState activeModeIdentifier];
 
-  if (v11)
+  if (activeModeIdentifier)
   {
-    v12 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v9];
-    [(DNDSAppConfigurationManager *)self->_appConfigurationManager invalidateAppContextForActionIdentifier:v8 applicationIdentifier:v12 modeIdentifier:v11];
+    v12 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:bundleIdentifierCopy];
+    [(DNDSAppConfigurationManager *)self->_appConfigurationManager invalidateAppContextForActionIdentifier:identifierCopy applicationIdentifier:v12 modeIdentifier:activeModeIdentifier];
   }
 
   return 1;
 }
 
-- (id)remoteServiceProvider:(id)a3 getAppInfoForBundleIdentifiers:(id)a4 withError:(id *)a5
+- (id)remoteServiceProvider:(id)provider getAppInfoForBundleIdentifiers:(id)identifiers withError:(id *)error
 {
   appInfoCache = self->_appInfoCache;
-  v6 = [MEMORY[0x277CBEB98] setWithArray:a4];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:identifiers];
   v7 = [(DNDSAppInfoCache *)appInfoCache appInfoForBundleIdentifiers:v6];
-  v8 = [v7 allValues];
+  allValues = [v7 allValues];
 
-  return v8;
+  return allValues;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 setAppConfigurationPredicate:(id)a4 forActionIdentifier:(id)a5 forApplicationIdentifier:(id)a6 modeIdentifier:(id)a7 withError:(id *)a8
+- (BOOL)remoteServiceProvider:(id)provider setAppConfigurationPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withError:(id *)error
 {
-  v9 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager setPredicate:a4 forActionIdentifier:a5 forApplicationIdentifier:a6 modeIdentifier:a7];
-  if (a8)
+  v9 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager setPredicate:predicate forActionIdentifier:identifier forApplicationIdentifier:applicationIdentifier modeIdentifier:modeIdentifier];
+  if (error)
   {
     v9 = v9;
-    *a8 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -3338,13 +3338,13 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 setAppConfigurationTargetContentIdentifierPrefix:(id)a4 forActionIdentifier:(id)a5 forApplicationIdentifier:(id)a6 modeIdentifier:(id)a7 withError:(id *)a8
+- (BOOL)remoteServiceProvider:(id)provider setAppConfigurationTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withError:(id *)error
 {
-  v9 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager setTargetContentIdentifierPrefix:a4 forActionIdentifier:a5 forApplicationIdentifier:a6 modeIdentifier:a7];
-  if (a8)
+  v9 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager setTargetContentIdentifierPrefix:prefix forActionIdentifier:identifier forApplicationIdentifier:applicationIdentifier modeIdentifier:modeIdentifier];
+  if (error)
   {
     v9 = v9;
-    *a8 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -3352,13 +3352,13 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 clearSystemConfigurationActionWithIdentifier:(id)a4 modeIdentifier:(id)a5 withError:(id *)a6
+- (BOOL)remoteServiceProvider:(id)provider clearSystemConfigurationActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier withError:(id *)error
 {
-  v7 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager clearSystemActionWithIdentifier:a4 modeIdentifier:a5];
-  if (a6)
+  v7 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager clearSystemActionWithIdentifier:identifier modeIdentifier:modeIdentifier];
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   v8 = v7 == 0;
@@ -3366,43 +3366,43 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 setAppAction:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withError:(id *)a7
+- (BOOL)remoteServiceProvider:(id)provider setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier withError:(id *)error
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [v13 action];
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  actionCopy = action;
+  action = [actionCopy action];
 
   appConfigurationManager = self->_appConfigurationManager;
-  if (v14)
+  if (action)
   {
-    v16 = [(DNDSAppConfigurationManager *)appConfigurationManager setAppAction:v13 forApplicationIdentifier:v11 modeIdentifier:v12];
+    v16 = [(DNDSAppConfigurationManager *)appConfigurationManager setAppAction:actionCopy forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy];
   }
 
   else
   {
-    v17 = [v13 identifier];
+    identifier = [actionCopy identifier];
 
-    v16 = [(DNDSAppConfigurationManager *)appConfigurationManager clearAppActionWithIdentifier:v17 forApplicationIdentifier:v11 modeIdentifier:v12];
-    v13 = v17;
+    v16 = [(DNDSAppConfigurationManager *)appConfigurationManager clearAppActionWithIdentifier:identifier forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy];
+    actionCopy = identifier;
   }
 
-  if (a7)
+  if (error)
   {
     v18 = v16;
-    *a7 = v16;
+    *error = v16;
   }
 
   return v16 == 0;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 clearAppActionWithIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withError:(id *)a7
+- (BOOL)remoteServiceProvider:(id)provider clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withError:(id *)error
 {
-  v8 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager clearAppActionWithIdentifier:a4 forApplicationIdentifier:a5 modeIdentifier:a6];
-  if (a7)
+  v8 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager clearAppActionWithIdentifier:identifier forApplicationIdentifier:applicationIdentifier modeIdentifier:modeIdentifier];
+  if (error)
   {
     v8 = v8;
-    *a7 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -3410,13 +3410,13 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 setSystemAction:(id)a4 forModeIdentifier:(id)a5 withError:(id *)a6
+- (BOOL)remoteServiceProvider:(id)provider setSystemAction:(id)action forModeIdentifier:(id)identifier withError:(id *)error
 {
-  v7 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager setSystemAction:a4 modeIdentifier:a5];
-  if (a6)
+  v7 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager setSystemAction:action modeIdentifier:identifier];
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   v8 = v7 == 0;
@@ -3424,13 +3424,13 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)remoteServiceProvider:(id)a3 clearSystemActionWithIdentifier:(id)a4 forModeIdentifier:(id)a5 withError:(id *)a6
+- (BOOL)remoteServiceProvider:(id)provider clearSystemActionWithIdentifier:(id)identifier forModeIdentifier:(id)modeIdentifier withError:(id *)error
 {
-  v7 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager clearSystemActionWithIdentifier:a4 modeIdentifier:a5];
-  if (a6)
+  v7 = [(DNDSAppConfigurationManager *)self->_appConfigurationManager clearSystemActionWithIdentifier:identifier modeIdentifier:modeIdentifier];
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   v8 = v7 == 0;
@@ -3438,12 +3438,12 @@ LABEL_19:
   return v8;
 }
 
-- (void)reachabilityChangedTo:(BOOL)a3
+- (void)reachabilityChangedTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   v5 = DNDSLogGeneral;
   v6 = os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (toCopy)
   {
     if (v6)
     {
@@ -3509,12 +3509,12 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
   [(DNDSRemoteAppConfigurationServiceProvider *)appConfigurationServiceProvider resume];
 }
 
-- (void)_queue_updateScheduleManagerLifetimeMonitorsAndStateForReason:(unint64_t)a3 source:(int64_t)a4 options:(int64_t)a5
+- (void)_queue_updateScheduleManagerLifetimeMonitorsAndStateForReason:(unint64_t)reason source:(int64_t)source options:(int64_t)options
 {
   v70 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   [(DNDSScheduleManager *)self->_scheduleManager refresh];
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -3535,7 +3535,7 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v59 + 1) + 8 * v12++) refreshMonitorForDate:v7];
+        [*(*(&v59 + 1) + 8 * v12++) refreshMonitorForDate:date];
       }
 
       while (v10 != v12);
@@ -3545,68 +3545,68 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
     while (v10);
   }
 
-  v13 = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
-  v14 = [(DNDSServer *)self _stateSystemSnapshot];
-  v15 = [(DNDSStateProvider *)self->_stateProvider recalculateStateForSnapshot:v14];
-  v16 = [v13 activeModeIdentifier];
+  lastCalculatedState = [(DNDSStateProvider *)self->_stateProvider lastCalculatedState];
+  _stateSystemSnapshot = [(DNDSServer *)self _stateSystemSnapshot];
+  v15 = [(DNDSStateProvider *)self->_stateProvider recalculateStateForSnapshot:_stateSystemSnapshot];
+  activeModeIdentifier = [lastCalculatedState activeModeIdentifier];
 
-  if (v16)
+  if (activeModeIdentifier)
   {
-    v17 = [v13 activeModeConfiguration];
+    activeModeConfiguration = [lastCalculatedState activeModeConfiguration];
   }
 
   else
   {
-    v17 = 0;
+    activeModeConfiguration = 0;
   }
 
-  v18 = [v15 activeModeIdentifier];
+  activeModeIdentifier2 = [v15 activeModeIdentifier];
 
-  if (v18)
+  if (activeModeIdentifier2)
   {
-    v19 = [v15 activeModeConfiguration];
+    activeModeConfiguration2 = [v15 activeModeConfiguration];
   }
 
   else
   {
-    v19 = 0;
+    activeModeConfiguration2 = 0;
   }
 
-  v52 = v19;
-  v20 = [v19 mode];
+  v52 = activeModeConfiguration2;
+  mode = [activeModeConfiguration2 mode];
   v21 = DNDSLogStateProvider;
   if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    v23 = [v20 modeIdentifier];
-    [v20 name];
-    v47 = v13;
+    modeIdentifier = [mode modeIdentifier];
+    [mode name];
+    v47 = lastCalculatedState;
     v49 = v15;
-    v25 = v24 = a3;
-    [v20 symbolImageName];
-    v27 = v26 = v17;
+    v25 = v24 = reason;
+    [mode symbolImageName];
+    v27 = v26 = activeModeConfiguration;
     *buf = 138412802;
-    v64 = v23;
+    v64 = modeIdentifier;
     v65 = 2112;
     v66 = v25;
     v67 = 2112;
     v68 = v27;
     _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "Sending modeIdentifier: %@, modeName:%@, symbolImageName: %@ to focusStatusDomainPublisher", buf, 0x20u);
 
-    v17 = v26;
-    a3 = v24;
-    v13 = v47;
+    activeModeConfiguration = v26;
+    reason = v24;
+    lastCalculatedState = v47;
     v15 = v49;
   }
 
   focusStatusDomainPublisher = self->_focusStatusDomainPublisher;
-  if (v20)
+  if (mode)
   {
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __91__DNDSServer__queue_updateScheduleManagerLifetimeMonitorsAndStateForReason_source_options___block_invoke;
     v57[3] = &unk_278F8C168;
-    v58 = v20;
+    v58 = mode;
     [(STFocusStatusDomainPublisher *)focusStatusDomainPublisher updateDataWithBlock:v57];
   }
 
@@ -3615,7 +3615,7 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
     v29 = objc_alloc_init(MEMORY[0x277D6B990]);
     [(STFocusStatusDomainPublisher *)focusStatusDomainPublisher setData:v29];
 
-    v20 = 0;
+    mode = 0;
     v30 = DNDSLogStateProvider;
     if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
     {
@@ -3624,18 +3624,18 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
     }
   }
 
-  if (v13 && ([v13 isEqual:v15] & 1) == 0)
+  if (lastCalculatedState && ([lastCalculatedState isEqual:v15] & 1) == 0)
   {
-    v31 = v20;
-    v48 = v17;
-    v32 = [objc_alloc(MEMORY[0x277D05AB8]) initWithPreviousState:v13 state:v15 reason:a3 source:a4 options:a5];
+    v31 = mode;
+    v48 = activeModeConfiguration;
+    v32 = [objc_alloc(MEMORY[0x277D05AB8]) initWithPreviousState:lastCalculatedState state:v15 reason:reason source:source options:options];
     v33 = DNDSLogStateProvider;
     if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v33;
-      v35 = [v32 previousState];
+      previousState = [v32 previousState];
       *buf = 138477827;
-      v64 = v35;
+      v64 = previousState;
       _os_log_impl(&dword_24912E000, v34, OS_LOG_TYPE_DEFAULT, "State was updated: previousState=%{private}@", buf, 0xCu);
     }
 
@@ -3643,9 +3643,9 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v36;
-      v38 = [v32 state];
+      state = [v32 state];
       *buf = 138477827;
-      v64 = v38;
+      v64 = state;
       _os_log_impl(&dword_24912E000, v37, OS_LOG_TYPE_DEFAULT, "State was updated: currentState=%{private}@", buf, 0xCu);
     }
 
@@ -3679,11 +3679,11 @@ void __36__DNDSServer_reachabilityChangedTo___block_invoke_2(uint64_t a1)
     [(DNDSSystemFocusConfigurationCoordinator *)self->_systemFocusConfigurationCoordinator handleStateUpdate:v43];
     userAvailabilityCoordinator = self->_userAvailabilityCoordinator;
     v53 = v52;
-    v54 = v7;
-    v17 = v48;
+    v54 = date;
+    activeModeConfiguration = v48;
     [DNDSUserAvailabilityCoordinator coordinateUserAvailability:"coordinateUserAvailability:fromConfiguration:toConfiguration:completionHandler:" fromConfiguration:v43 toConfiguration:? completionHandler:?];
 
-    v20 = v31;
+    mode = v31;
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -3775,7 +3775,7 @@ void __91__DNDSServer__queue_updateScheduleManagerLifetimeMonitorsAndStateForRea
 - (void)_migrateBypassSettingsIfNeeded
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0(&dword_24912E000, a1, a3, "Unable to fetch global configuration to migrate bypass settings: error=%{public}@", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0(&dword_24912E000, self, a3, "Unable to fetch global configuration to migrate bypass settings: error=%{public}@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -3816,26 +3816,26 @@ void __91__DNDSServer__queue_updateScheduleManagerLifetimeMonitorsAndStateForRea
     v23 = &v24;
     [v4 enumerateObjectsUsingBlock:v21];
     v5 = objc_alloc(MEMORY[0x277D05930]);
-    v6 = [v25[5] name];
-    v7 = [v25[5] modeIdentifier];
-    v8 = [v25[5] symbolImageName];
-    v9 = [v25[5] tintColorName];
-    v10 = [v5 initWithName:v6 modeIdentifier:v7 symbolImageName:v8 tintColorName:v9 semanticType:{objc_msgSend(v25[5], "semanticType")}];
+    name = [v25[5] name];
+    modeIdentifier = [v25[5] modeIdentifier];
+    symbolImageName = [v25[5] symbolImageName];
+    tintColorName = [v25[5] tintColorName];
+    v10 = [v5 initWithName:name modeIdentifier:modeIdentifier symbolImageName:symbolImageName tintColorName:tintColorName semanticType:{objc_msgSend(v25[5], "semanticType")}];
 
-    v11 = [MEMORY[0x277D05A20] defaultConfiguration];
+    defaultConfiguration = [MEMORY[0x277D05A20] defaultConfiguration];
     v12 = objc_alloc_init(MEMORY[0x277D059E8]);
     v34[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
 
-    v14 = [objc_alloc(MEMORY[0x277D05A50]) initWithMode:v10 configuration:v11 triggers:v13];
+    v14 = [objc_alloc(MEMORY[0x277D05A50]) initWithMode:v10 configuration:defaultConfiguration triggers:v13];
     [v14 setImpactsAvailability:0];
     [v14 setDimsLockScreen:1];
     [v14 setAutomaticallyGenerated:1];
     modeConfigurationManager = self->_modeConfigurationManager;
     v20 = 0;
-    LOBYTE(v9) = [(DNDSModeConfigurationManager *)modeConfigurationManager setModeConfiguration:v14 withError:&v20];
+    LOBYTE(tintColorName) = [(DNDSModeConfigurationManager *)modeConfigurationManager setModeConfiguration:v14 withError:&v20];
     v16 = v20;
-    if (v9)
+    if (tintColorName)
     {
       v3 = [v14 copy];
     }
@@ -3876,14 +3876,14 @@ void __60__DNDSServer__createDefaultModeForWorkoutTriggerIfNecessary__block_invo
   }
 }
 
-- (BOOL)_setDimsLockScreenSetting:(unint64_t)a3 forModeConfigurationWithIdentifier:(id)a4
+- (BOOL)_setDimsLockScreenSetting:(unint64_t)setting forModeConfigurationWithIdentifier:(id)identifier
 {
-  v6 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:a4 withError:0];
+  v6 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:identifier withError:0];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 mutableCopy];
-    [v8 setDimsLockScreen:a3];
+    [v8 setDimsLockScreen:setting];
     v9 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager setModeConfiguration:v8 withError:0];
   }
 
@@ -3895,21 +3895,21 @@ void __60__DNDSServer__createDefaultModeForWorkoutTriggerIfNecessary__block_invo
   return v9;
 }
 
-- (BOOL)_setScheduleTrigger:(id)a3 forModeConfigurationWithIdentifier:(id)a4
+- (BOOL)_setScheduleTrigger:(id)trigger forModeConfigurationWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:a4 withError:0];
+  triggerCopy = trigger;
+  v7 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:identifier withError:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 triggers];
-    v10 = [v9 bs_filter:&__block_literal_global_221];
+    triggers = [v7 triggers];
+    v10 = [triggers bs_filter:&__block_literal_global_221];
 
     v11 = [v8 mutableCopy];
-    v12 = [v11 triggers];
-    v13 = [v12 arrayByExcludingObjectsInArray:v10];
+    triggers2 = [v11 triggers];
+    v13 = [triggers2 arrayByExcludingObjectsInArray:v10];
 
-    v14 = [v13 arrayByAddingObject:v6];
+    v14 = [v13 arrayByAddingObject:triggerCopy];
 
     [v11 setTriggers:v14];
     v15 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager setModeConfiguration:v11 withError:0];
@@ -3932,14 +3932,14 @@ uint64_t __69__DNDSServer__setScheduleTrigger_forModeConfigurationWithIdentifier
   return isKindOfClass & 1;
 }
 
-- (BOOL)_setDefaultScheduleTriggerWithScheduleSettings:(id)a3
+- (BOOL)_setDefaultScheduleTriggerWithScheduleSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(DNDSServer *)self _scheduleTriggerMatchingSettings:v4];
+  settingsCopy = settings;
+  v5 = [(DNDSServer *)self _scheduleTriggerMatchingSettings:settingsCopy];
   v6 = *MEMORY[0x277D05830];
   if ([(DNDSServer *)self _setScheduleTrigger:v5 forModeConfigurationWithIdentifier:*MEMORY[0x277D05830]])
   {
-    v7 = -[DNDSServer _setDimsLockScreenSetting:forModeConfigurationWithIdentifier:](self, "_setDimsLockScreenSetting:forModeConfigurationWithIdentifier:", [v4 bedtimeBehaviorEnabledSetting], v6);
+    v7 = -[DNDSServer _setDimsLockScreenSetting:forModeConfigurationWithIdentifier:](self, "_setDimsLockScreenSetting:forModeConfigurationWithIdentifier:", [settingsCopy bedtimeBehaviorEnabledSetting], v6);
   }
 
   else
@@ -3952,7 +3952,7 @@ uint64_t __69__DNDSServer__setScheduleTrigger_forModeConfigurationWithIdentifier
 
 - (id)_scheduleSettingsForModeConfigurations
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationsWithError:0];
   if (v4)
   {
@@ -3960,12 +3960,12 @@ uint64_t __69__DNDSServer__setScheduleTrigger_forModeConfigurationWithIdentifier
     v8 = 3221225472;
     v9 = __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke;
     v10 = &unk_278F8C228;
-    v11 = self;
-    v12 = v3;
+    selfCopy = self;
+    v12 = dictionary;
     [v4 enumerateKeysAndObjectsUsingBlock:&v7];
   }
 
-  v5 = [v3 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }
@@ -3999,36 +3999,36 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
 
 - (id)_scheduleSettingsFromDefaultScheduleTrigger
 {
-  v2 = [(DNDSServer *)self _scheduleSettingsForModeConfigurations];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D05830]];
-  v4 = [v3 firstObject];
+  _scheduleSettingsForModeConfigurations = [(DNDSServer *)self _scheduleSettingsForModeConfigurations];
+  v3 = [_scheduleSettingsForModeConfigurations objectForKeyedSubscript:*MEMORY[0x277D05830]];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)_scheduleSettingsMatchingTrigger:(id)a3
+- (id)_scheduleSettingsMatchingTrigger:(id)trigger
 {
-  v3 = a3;
+  triggerCopy = trigger;
   v4 = [DNDSScheduleSettings alloc];
-  v5 = [v3 enabledSetting];
-  v6 = [v3 timePeriod];
-  v7 = [v3 creationDate];
+  enabledSetting = [triggerCopy enabledSetting];
+  timePeriod = [triggerCopy timePeriod];
+  creationDate = [triggerCopy creationDate];
 
-  v8 = [(DNDSScheduleSettings *)v4 initWithScheduleEnabledSetting:v5 timePeriod:v6 bedtimeBehaviorEnabledSetting:0 creationDate:v7];
+  v8 = [(DNDSScheduleSettings *)v4 initWithScheduleEnabledSetting:enabledSetting timePeriod:timePeriod bedtimeBehaviorEnabledSetting:0 creationDate:creationDate];
 
   return v8;
 }
 
-- (id)_scheduleTriggerMatchingSettings:(id)a3
+- (id)_scheduleTriggerMatchingSettings:(id)settings
 {
   v3 = MEMORY[0x277D059C0];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = [v3 alloc];
-  v6 = [v4 timePeriod];
-  v7 = [v4 creationDate];
-  v8 = [v4 scheduleEnabledSetting];
+  timePeriod = [settingsCopy timePeriod];
+  creationDate = [settingsCopy creationDate];
+  scheduleEnabledSetting = [settingsCopy scheduleEnabledSetting];
 
-  v9 = [v5 initWithTimePeriod:v6 creationDate:v7 enabledSetting:v8];
+  v9 = [v5 initWithTimePeriod:timePeriod creationDate:creationDate enabledSetting:scheduleEnabledSetting];
 
   return v9;
 }
@@ -4044,7 +4044,7 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
   v7 = [MEMORY[0x277CCAC30] predicateWithValue:1];
   v8 = [(DNDSModeAssertionManager *)v6 modeAssertionInvalidationsMatchingPredicate:v7];
 
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
@@ -4058,7 +4058,7 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
     do
     {
       v14 = 0;
-      v15 = v9;
+      v15 = distantPast;
       do
       {
         if (*v82 != v13)
@@ -4066,11 +4066,11 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
           objc_enumerationMutation(v10);
         }
 
-        v16 = [*(*(&v81 + 1) + 8 * v14) invalidationDate];
-        v9 = [v15 laterDate:v16];
+        invalidationDate = [*(*(&v81 + 1) + 8 * v14) invalidationDate];
+        distantPast = [v15 laterDate:invalidationDate];
 
         ++v14;
-        v15 = v9;
+        v15 = distantPast;
       }
 
       while (v12 != v14);
@@ -4097,7 +4097,7 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v62 = self;
+  selfCopy = self;
   v19 = self->_lifetimeMonitors;
   v20 = [(NSArray *)v19 countByEnumeratingWithState:&v75 objects:v86 count:16];
   if (v20)
@@ -4113,13 +4113,13 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v75 + 1) + 8 * i) activeLifetimeAssertionUUIDs];
+        activeLifetimeAssertionUUIDs = [*(*(&v75 + 1) + 8 * i) activeLifetimeAssertionUUIDs];
         v73[0] = MEMORY[0x277D85DD0];
         v73[1] = 3221225472;
         v73[2] = __34__DNDSServer__stateSystemSnapshot__block_invoke_3;
         v73[3] = &unk_278F8C278;
         v74 = v66;
-        v25 = [v24 bs_filter:v73];
+        v25 = [activeLifetimeAssertionUUIDs bs_filter:v73];
 
         [v68 addObjectsFromArray:v25];
       }
@@ -4139,12 +4139,12 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
   v67 = [obj countByEnumeratingWithState:&v69 objects:v85 count:16];
   if (!v67)
   {
-    p_isa = &v62->super.isa;
+    p_isa = &selfCopy->super.isa;
     goto LABEL_35;
   }
 
   v64 = *v70;
-  p_isa = &v62->super.isa;
+  p_isa = &selfCopy->super.isa;
   do
   {
     v27 = 0;
@@ -4156,70 +4156,70 @@ uint64_t __52__DNDSServer__scheduleSettingsForModeConfigurations__block_invoke_2
       }
 
       v28 = *(*(&v69 + 1) + 8 * v27);
-      v29 = [v28 UUID];
-      v30 = [v68 containsObject:v29];
+      uUID = [v28 UUID];
+      v30 = [v68 containsObject:uUID];
 
       v31 = [p_isa _activeDateIntervalForModeAssertion:v28 currentlyActive:v30];
-      v32 = [v28 UUID];
-      [v65 setObject:v31 forKey:v32];
+      uUID2 = [v28 UUID];
+      [v65 setObject:v31 forKey:uUID2];
 
       if (v30)
       {
-        v33 = [v31 startDate];
-        v34 = [v9 laterDate:v33];
+        startDate = [v31 startDate];
+        v34 = [distantPast laterDate:startDate];
 LABEL_28:
 
-        v9 = v34;
+        distantPast = v34;
         goto LABEL_29;
       }
 
-      v35 = [v28 details];
-      v36 = [v35 reason];
+      details = [v28 details];
+      reason = [details reason];
 
-      v37 = [v28 details];
-      v38 = [v37 identifier];
-      v39 = [v38 isEqualToString:@"schedule"];
+      details2 = [v28 details];
+      identifier = [details2 identifier];
+      v39 = [identifier isEqualToString:@"schedule"];
 
-      v40 = [p_isa[21] lastSystemSnapshot];
-      v41 = [v40 activeAssertionUUIDs];
-      v42 = [v28 UUID];
-      v43 = [v41 containsObject:v42];
+      lastSystemSnapshot = [p_isa[21] lastSystemSnapshot];
+      activeAssertionUUIDs = [lastSystemSnapshot activeAssertionUUIDs];
+      uUID3 = [v28 UUID];
+      v43 = [activeAssertionUUIDs containsObject:uUID3];
 
-      if (v36 == 2 && v39)
+      if (reason == 2 && v39)
       {
-        p_isa = &v62->super.isa;
+        p_isa = &selfCopy->super.isa;
         if (!v43)
         {
           goto LABEL_29;
         }
 
-        v33 = [MEMORY[0x277CBEAA8] date];
+        startDate = [MEMORY[0x277CBEAA8] date];
         [v31 duration];
-        v45 = [v33 dateByAddingTimeInterval:-v44];
-        scheduleLifetimeMonitor = v62->_scheduleLifetimeMonitor;
-        v47 = [v28 details];
-        v48 = [v47 lifetime];
-        v49 = [(DNDSScheduleLifetimeMonitor *)scheduleLifetimeMonitor activeDateIntervalForScheduleLifetime:v48 assertion:v28 date:v45];
+        v45 = [startDate dateByAddingTimeInterval:-v44];
+        scheduleLifetimeMonitor = selfCopy->_scheduleLifetimeMonitor;
+        details3 = [v28 details];
+        lifetime = [details3 lifetime];
+        v49 = [(DNDSScheduleLifetimeMonitor *)scheduleLifetimeMonitor activeDateIntervalForScheduleLifetime:lifetime assertion:v28 date:v45];
 
-        v50 = [v49 endDate];
-        [v50 timeIntervalSinceDate:v33];
+        endDate = [v49 endDate];
+        [endDate timeIntervalSinceDate:startDate];
         v52 = v51;
 
         if (v52 < 0.0)
         {
-          v53 = [v49 endDate];
-          v54 = [v9 laterDate:v53];
+          endDate2 = [v49 endDate];
+          v54 = [distantPast laterDate:endDate2];
 
-          v9 = v54;
+          distantPast = v54;
         }
 
-        v34 = v9;
+        v34 = distantPast;
 
-        v9 = v45;
+        distantPast = v45;
         goto LABEL_28;
       }
 
-      p_isa = &v62->super.isa;
+      p_isa = &selfCopy->super.isa;
 LABEL_29:
 
       ++v27;
@@ -4238,7 +4238,7 @@ LABEL_35:
   [(DNDSMutableStateProviderSystemSnapshot *)v56 setActiveAssertionUUIDs:v68];
   [(DNDSMutableStateProviderSystemSnapshot *)v56 setActiveDateIntervalByAssertionUUID:v65];
   -[DNDSMutableStateProviderSystemSnapshot setLostModeState:](v56, "setLostModeState:", [p_isa lostModeState]);
-  [(DNDSMutableStateProviderSystemSnapshot *)v56 setLastUpdate:v9];
+  [(DNDSMutableStateProviderSystemSnapshot *)v56 setLastUpdate:distantPast];
   v57 = [p_isa[29] behaviorSettingsWithError:0];
   -[DNDSMutableStateProviderSystemSnapshot setInterruptionBehaviorSetting:](v56, "setInterruptionBehaviorSetting:", [v57 interruptionBehaviorSetting]);
 
@@ -4266,38 +4266,38 @@ id __34__DNDSServer__stateSystemSnapshot__block_invoke_2(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)_activeDateIntervalForModeAssertion:(id)a3 currentlyActive:(BOOL)a4
+- (id)_activeDateIntervalForModeAssertion:(id)assertion currentlyActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 details];
-  v8 = [v7 lifetime];
+  activeCopy = active;
+  assertionCopy = assertion;
+  details = [assertionCopy details];
+  lifetime = [details lifetime];
 
-  v9 = [v8 lifetimeType];
-  v10 = 0;
-  if (v9 > 2)
+  lifetimeType = [lifetime lifetimeType];
+  dateInterval = 0;
+  if (lifetimeType > 2)
   {
-    if (v9 != 5)
+    if (lifetimeType != 5)
     {
-      if (v9 == 4)
+      if (lifetimeType == 4)
       {
-        v12 = v8;
+        startDate = lifetime;
         scheduleLifetimeMonitor = self->_scheduleLifetimeMonitor;
-        v22 = [MEMORY[0x277CBEAA8] date];
-        if (v4)
+        date = [MEMORY[0x277CBEAA8] date];
+        if (activeCopy)
         {
-          [(DNDSScheduleLifetimeMonitor *)scheduleLifetimeMonitor activeDateIntervalForScheduleLifetime:v12 assertion:v6 date:v22];
+          [(DNDSScheduleLifetimeMonitor *)scheduleLifetimeMonitor activeDateIntervalForScheduleLifetime:startDate assertion:assertionCopy date:date];
         }
 
         else
         {
-          [(DNDSScheduleLifetimeMonitor *)scheduleLifetimeMonitor nextActiveDateIntervalForScheduleLifetime:v12 assertion:v6 date:v22];
+          [(DNDSScheduleLifetimeMonitor *)scheduleLifetimeMonitor nextActiveDateIntervalForScheduleLifetime:startDate assertion:assertionCopy date:date];
         }
-        v13 = ;
+        distantFuture = ;
 
-        if (v13)
+        if (distantFuture)
         {
-          v14 = v13;
+          v14 = distantFuture;
         }
 
         else
@@ -4308,7 +4308,7 @@ id __34__DNDSServer__stateSystemSnapshot__block_invoke_2(uint64_t a1, void *a2)
         goto LABEL_10;
       }
 
-      if (v9 != 3)
+      if (lifetimeType != 3)
       {
         goto LABEL_13;
       }
@@ -4316,41 +4316,41 @@ id __34__DNDSServer__stateSystemSnapshot__block_invoke_2(uint64_t a1, void *a2)
 
 LABEL_9:
     v11 = objc_alloc(MEMORY[0x277CCA970]);
-    v12 = [v6 startDate];
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
-    v14 = [v11 initWithStartDate:v12 endDate:v13];
+    startDate = [assertionCopy startDate];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v14 = [v11 initWithStartDate:startDate endDate:distantFuture];
 LABEL_10:
-    v10 = v14;
+    dateInterval = v14;
     goto LABEL_11;
   }
 
-  switch(v9)
+  switch(lifetimeType)
   {
     case 0:
       goto LABEL_9;
     case 1:
-      v12 = v8;
+      startDate = lifetime;
       calendarEventLifetimeMonitor = self->_calendarEventLifetimeMonitor;
-      v17 = [v6 startDate];
-      v10 = [(DNDSCalendarEventLifetimeMonitor *)calendarEventLifetimeMonitor activeDateIntervalForCalendarEventLifetime:v12 assertionStartDate:v17];
+      startDate2 = [assertionCopy startDate];
+      dateInterval = [(DNDSCalendarEventLifetimeMonitor *)calendarEventLifetimeMonitor activeDateIntervalForCalendarEventLifetime:startDate assertionStartDate:startDate2];
 
-      if (v10)
+      if (dateInterval)
       {
         goto LABEL_12;
       }
 
       v18 = objc_alloc(MEMORY[0x277CCA970]);
-      v13 = [v6 startDate];
-      v19 = v13;
-      if (!v13)
+      distantFuture = [assertionCopy startDate];
+      date2 = distantFuture;
+      if (!distantFuture)
       {
-        v19 = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
       }
 
-      v20 = [MEMORY[0x277CBEAA8] distantFuture];
-      v10 = [v18 initWithStartDate:v19 endDate:v20];
+      distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+      dateInterval = [v18 initWithStartDate:date2 endDate:distantFuture2];
 
-      if (!v13)
+      if (!distantFuture)
       {
       }
 
@@ -4359,24 +4359,24 @@ LABEL_11:
 LABEL_12:
       break;
     case 2:
-      v10 = [v8 dateInterval];
+      dateInterval = [lifetime dateInterval];
       break;
   }
 
 LABEL_13:
 
-  return v10;
+  return dateInterval;
 }
 
-- (void)_forceConfigurationSyncIfNeededWithUpdateResult:(id)a3
+- (void)_forceConfigurationSyncIfNeededWithUpdateResult:(id)result
 {
   v51 = *MEMORY[0x277D85DE8];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [a3 assertions];
-  v5 = [v4 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  assertions = [result assertions];
+  v5 = [assertions countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (!v5)
   {
 
@@ -4393,7 +4393,7 @@ LABEL_13:
     {
       if (*v41 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(assertions);
       }
 
       v10 = *(*(&v40 + 1) + 8 * i);
@@ -4401,32 +4401,32 @@ LABEL_13:
       if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEBUG))
       {
         v23 = v11;
-        v24 = [v10 source];
-        v25 = [v24 deviceIdentifier];
+        source = [v10 source];
+        deviceIdentifier = [source deviceIdentifier];
         *buf = v37;
-        v45 = v25;
+        v45 = deviceIdentifier;
         v46 = 2112;
         v47 = v10;
         _os_log_debug_impl(&dword_24912E000, v23, OS_LOG_TYPE_DEBUG, "Checking configuration from %@ for %@", buf, 0x16u);
       }
 
-      v12 = [v10 source];
-      v13 = [v12 deviceIdentifier];
+      source2 = [v10 source];
+      deviceIdentifier2 = [source2 deviceIdentifier];
 
-      if (v13)
+      if (deviceIdentifier2)
       {
-        v14 = [v10 details];
-        v15 = [v14 modeIdentifier];
+        details = [v10 details];
+        modeIdentifier = [details modeIdentifier];
 
-        v16 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:v15 withError:0];
+        v16 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager modeConfigurationForModeIdentifier:modeIdentifier withError:0];
         if (v16)
         {
           v17 = v16;
-          v18 = [v10 details];
-          v19 = [v18 modeConfigurationModifiedDate];
+          details2 = [v10 details];
+          modeConfigurationModifiedDate = [details2 modeConfigurationModifiedDate];
 
-          v20 = [v17 lastModified];
-          [v19 timeIntervalSinceDate:v20];
+          lastModified = [v17 lastModified];
+          [modeConfigurationModifiedDate timeIntervalSinceDate:lastModified];
           v22 = v21;
 
           if (v22 <= 1.0)
@@ -4435,25 +4435,25 @@ LABEL_13:
             continue;
           }
 
-          v28 = v15;
+          v28 = modeIdentifier;
           v29 = DNDSLogGeneral;
           if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
           {
             v30 = v29;
-            v31 = [v17 lastModified];
+            lastModified2 = [v17 lastModified];
             *buf = 138412802;
             v45 = v28;
             v46 = 2112;
-            v47 = v19;
+            v47 = modeConfigurationModifiedDate;
             v48 = 2112;
-            v49 = v31;
+            v49 = lastModified2;
             _os_log_impl(&dword_24912E000, v30, OS_LOG_TYPE_DEFAULT, "Configuration for %@ is out of date. %@ < %@", buf, 0x20u);
           }
         }
 
         else
         {
-          v26 = v15;
+          v26 = modeIdentifier;
           v27 = DNDSLogGeneral;
           if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
           {
@@ -4467,7 +4467,7 @@ LABEL_13:
       }
     }
 
-    v7 = [v4 countByEnumeratingWithState:&v40 objects:v50 count:16];
+    v7 = [assertions countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v7)
     {
       continue;
@@ -4476,16 +4476,16 @@ LABEL_13:
     break;
   }
 
-  v15 = 0;
+  modeIdentifier = 0;
 LABEL_22:
 
-  if (v15)
+  if (modeIdentifier)
   {
     v32 = DNDSLogGeneral;
     if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v45 = v15;
+      v45 = modeIdentifier;
       _os_log_impl(&dword_24912E000, v32, OS_LOG_TYPE_DEFAULT, "Requesting configuration sync for stale mode %@.", buf, 0xCu);
     }
 
@@ -4495,8 +4495,8 @@ LABEL_22:
     v38[1] = 3221225472;
     v38[2] = __62__DNDSServer__forceConfigurationSyncIfNeededWithUpdateResult___block_invoke;
     v38[3] = &unk_278F8C2A0;
-    v39 = v15;
-    v34 = v15;
+    v39 = modeIdentifier;
+    v34 = modeIdentifier;
     [(DNDSSyncEngine *)syncEngine fetchChanges:1 withCompletionHandler:v38];
 
     goto LABEL_28;
@@ -4538,17 +4538,17 @@ void __62__DNDSServer__forceConfigurationSyncIfNeededWithUpdateResult___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:(id)a3 error:(id *)a4
+- (id)_updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler:(id)handler error:(id *)error
 {
   v99 = *MEMORY[0x277D85DE8];
-  v4 = [(DNDSModeAssertionManager *)self->_modeAssertionManager updateModeAssertionsWithContextHandler:a3 error:a4];
+  v4 = [(DNDSModeAssertionManager *)self->_modeAssertionManager updateModeAssertionsWithContextHandler:handler error:error];
   v5 = DNDSLogStateProvider;
   if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 assertions];
+    assertions = [v4 assertions];
     *buf = 138543362;
-    v98 = v7;
+    v98 = assertions;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "Mode assertion update result:\n assertions=%{public}@", buf, 0xCu);
   }
 
@@ -4556,26 +4556,26 @@ void __62__DNDSServer__forceConfigurationSyncIfNeededWithUpdateResult___block_in
   if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v4 invalidations];
+    invalidations = [v4 invalidations];
     *buf = 138543362;
-    v98 = v10;
+    v98 = invalidations;
     _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Mode assertion update result:\n invalidations=%{public}@", buf, 0xCu);
   }
 
-  v11 = [v4 assertions];
-  if ([v11 count])
+  assertions2 = [v4 assertions];
+  if ([assertions2 count])
   {
 
     goto LABEL_8;
   }
 
-  v12 = [v4 invalidations];
-  v13 = [v12 count];
+  invalidations2 = [v4 invalidations];
+  v13 = [invalidations2 count];
 
   if (v13)
   {
 LABEL_8:
-    v14 = self;
+    selfCopy3 = self;
     [(DNDSRemoteServiceProvider *)self->_serviceProvider handleModeAssertionUpdateResult:v4];
     [(DNDSServer *)self _forceConfigurationSyncIfNeededWithUpdateResult:v4];
     v93 = 0u;
@@ -4605,10 +4605,10 @@ LABEL_8:
           }
 
           v21 = *(*(&v91 + 1) + 8 * i);
-          clientDetailsProvider = v14->_clientDetailsProvider;
-          v23 = [v21 source];
-          v24 = [v23 clientIdentifier];
-          v25 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:v24];
+          clientDetailsProvider = selfCopy3->_clientDetailsProvider;
+          source = [v21 source];
+          clientIdentifier = [source clientIdentifier];
+          v25 = [(DNDSClientDetailsProvider *)clientDetailsProvider clientDetailsForIdentifier:clientIdentifier];
 
           if ([v25 isUserInteractionClient])
           {
@@ -4627,14 +4627,14 @@ LABEL_8:
 
             else
             {
-              v28 = [v21 assertion];
-              v29 = [v28 source];
-              v30 = [v29 clientIdentifier];
-              v78 = v30 != @"com.apple.donotdisturb.private.schedule";
+              assertion = [v21 assertion];
+              source2 = [assertion source];
+              clientIdentifier2 = [source2 clientIdentifier];
+              v78 = clientIdentifier2 != @"com.apple.donotdisturb.private.schedule";
               v31 = v18;
               v32 = v16;
               v33 = v19;
-              v34 = v30 == @"com.apple.donotdisturb.private.schedule";
+              v34 = clientIdentifier2 == @"com.apple.donotdisturb.private.schedule";
 
               v35 = v73 | v34;
               v36 = v33;
@@ -4642,14 +4642,14 @@ LABEL_8:
               v18 = v31;
               v73 = v35;
               v19 = v36 | v78;
-              v14 = self;
+              selfCopy3 = self;
               v77 = 1;
             }
           }
 
-          v37 = [v21 source];
-          v38 = [v37 deviceIdentifier];
-          v18 |= v38 != 0;
+          source3 = [v21 source];
+          deviceIdentifier = [source3 deviceIdentifier];
+          v18 |= deviceIdentifier != 0;
 
           v17 |= [v25 forcesAssertionStatusUpdate];
         }
@@ -4687,12 +4687,12 @@ LABEL_8:
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v40 = [v4 assertions];
-    v41 = [v40 countByEnumeratingWithState:&v87 objects:v95 count:16];
+    assertions3 = [v4 assertions];
+    v41 = [assertions3 countByEnumeratingWithState:&v87 objects:v95 count:16];
     if (v41)
     {
       v42 = v41;
-      v72 = v40;
+      v72 = assertions3;
       v67 = v39;
       v79 = 0;
       v81 = 0;
@@ -4709,10 +4709,10 @@ LABEL_8:
           }
 
           v45 = *(*(&v87 + 1) + 8 * j);
-          v46 = v14->_clientDetailsProvider;
-          v47 = [v45 source];
-          v48 = [v47 clientIdentifier];
-          v49 = [(DNDSClientDetailsProvider *)v46 clientDetailsForIdentifier:v48];
+          v46 = selfCopy3->_clientDetailsProvider;
+          source4 = [v45 source];
+          clientIdentifier3 = [source4 clientIdentifier];
+          v49 = [(DNDSClientDetailsProvider *)v46 clientDetailsForIdentifier:clientIdentifier3];
 
           if ([v49 isUserInteractionClient])
           {
@@ -4721,19 +4721,19 @@ LABEL_8:
 
           else
           {
-            v50 = [v45 source];
-            v51 = [v50 clientIdentifier];
-            v52 = v51 != @"com.apple.donotdisturb.private.schedule";
-            v53 = v51 == @"com.apple.donotdisturb.private.schedule";
+            source5 = [v45 source];
+            clientIdentifier4 = [source5 clientIdentifier];
+            v52 = clientIdentifier4 != @"com.apple.donotdisturb.private.schedule";
+            v53 = clientIdentifier4 == @"com.apple.donotdisturb.private.schedule";
 
             v81 |= v53;
-            v14 = self;
+            selfCopy3 = self;
             v79 |= v52;
           }
 
-          v54 = [v45 source];
-          v55 = [v54 deviceIdentifier];
-          v43 |= v55 != 0;
+          source6 = [v45 source];
+          deviceIdentifier2 = [source6 deviceIdentifier];
+          v43 |= deviceIdentifier2 != 0;
 
           v17 |= [v49 forcesAssertionStatusUpdate];
         }
@@ -4754,8 +4754,8 @@ LABEL_49:
           v60 = 2;
         }
 
-        v61 = v14;
-        queue = v14->_queue;
+        v61 = selfCopy3;
+        queue = selfCopy3->_queue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __86__DNDSServer__updateModeAssertionManagerAndRefreshLifetimesAndStateWithHandler_error___block_invoke;
@@ -4857,15 +4857,15 @@ void __86__DNDSServer__updateModeAssertionManagerAndRefreshLifetimesAndStateWith
 - (id)_allModes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(DNDSModeConfigurationManager *)self->_modeConfigurationManager availableModesFilteringPlaceholders:0 returningError:0];
   v5 = [(DNDSPlaceholderModeManager *)self->_placeholderModeManager placeholderModesWithError:0];
   v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"isPlaceholder == NO"];
   v21 = [v4 filteredArrayUsingPredicate:?];
-  [v3 addObjectsFromArray:?];
+  [array addObjectsFromArray:?];
   v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NONE %@.modeIdentifier == modeIdentifier", v4];
   v19 = [v5 filteredArrayUsingPredicate:?];
-  [v3 addObjectsFromArray:?];
+  [array addObjectsFromArray:?];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"isPlaceholder == YES"];
   v7 = [v4 filteredArrayUsingPredicate:v6];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY %@.modeIdentifier == modeIdentifier", v7];
@@ -4892,7 +4892,7 @@ void __86__DNDSServer__updateModeAssertionManagerAndRefreshLifetimesAndStateWith
         }
 
         v15 = [MEMORY[0x277D05930] placeholderModeFromMode:*(*(&v24 + 1) + 8 * i)];
-        [v3 addObject:v15];
+        [array addObject:v15];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -4901,7 +4901,7 @@ void __86__DNDSServer__updateModeAssertionManagerAndRefreshLifetimesAndStateWith
     while (v12);
   }
 
-  v16 = [v3 copy];
+  v16 = [array copy];
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
@@ -4911,16 +4911,16 @@ void __86__DNDSServer__updateModeAssertionManagerAndRefreshLifetimesAndStateWith
 {
   v33 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor cloudDevices];
+  cloudDevices = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor cloudDevices];
   v4 = [(DNDSSettingsManager *)self->_settingsManager syncSettingsWithError:0];
-  v5 = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor pairedDevice];
+  pairedDevice = [(DNDSPairedDeviceStateMonitor *)self->_pairedDeviceStateMonitor pairedDevice];
   v6 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138543874;
-    v28 = v5;
+    v28 = pairedDevice;
     v29 = 2114;
-    v30 = v3;
+    v30 = cloudDevices;
     v31 = 2114;
     v32 = v4;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "Current DND sync status: local device=%{public}@, cloud devices=%{public}@, settings=%{public}@", &v27, 0x20u);
@@ -4937,35 +4937,35 @@ void __86__DNDSServer__updateModeAssertionManagerAndRefreshLifetimesAndStateWith
 
   [(DNDSIDSSyncEngine *)self->_idsSyncEngine setPairedDevice:0 syncEnabled:0];
   v10 = [[DNDSIDSSyncService alloc] initWithIDSService:self->_idsCloudService];
-  v11 = [MEMORY[0x277D058F8] currentDevice];
-  if ([v11 deviceClass] == 1)
+  currentDevice = [MEMORY[0x277D058F8] currentDevice];
+  if ([currentDevice deviceClass] == 1)
   {
 
 LABEL_6:
-    if ([v5 deviceClass] == 3 && objc_msgSend(v5, "assertionSyncProtocolVersion") == 1)
+    if ([pairedDevice deviceClass] == 3 && objc_msgSend(pairedDevice, "assertionSyncProtocolVersion") == 1)
     {
-      v14 = [[DNDSLegacyAssertionSyncManager alloc] initWithClientDetailsProvider:self->_clientDetailsProvider pairedDevice:v5];
+      v14 = [[DNDSLegacyAssertionSyncManager alloc] initWithClientDetailsProvider:self->_clientDetailsProvider pairedDevice:pairedDevice];
       v15 = self->_legacyAssertionSyncManager;
       self->_legacyAssertionSyncManager = v14;
 
-      v16 = [DNDSLegacySettingsSyncManager sendManagerForPairedDevice:v5];
+      v16 = [DNDSLegacySettingsSyncManager sendManagerForPairedDevice:pairedDevice];
       v17 = self->_settingsSyncManager;
       self->_settingsSyncManager = v16;
     }
 
     else
     {
-      if ([v5 deviceClass])
+      if ([pairedDevice deviceClass])
       {
         v18 = [[DNDSIDSSyncService alloc] initWithIDSService:self->_idsLocalService];
-        v19 = [MEMORY[0x277D058F8] currentDevice];
-        if ([v19 deviceClass] == 1)
+        currentDevice2 = [MEMORY[0x277D058F8] currentDevice];
+        if ([currentDevice2 deviceClass] == 1)
         {
-          v20 = [v5 deviceClass];
+          deviceClass = [pairedDevice deviceClass];
 
-          if (v20 == 3)
+          if (deviceClass == 3)
           {
-            if ([v5 configurationSyncProtocolVersion] > 8)
+            if ([pairedDevice configurationSyncProtocolVersion] > 8)
             {
               +[DNDSLegacyAssertionSyncManager cleanupState];
               +[DNDSLegacySettingsSyncManager cleanupState];
@@ -4973,7 +4973,7 @@ LABEL_6:
 
             else
             {
-              v21 = [DNDSLegacySettingsSyncManager sendManagerForPairedDevice:v5];
+              v21 = [DNDSLegacySettingsSyncManager sendManagerForPairedDevice:pairedDevice];
               v22 = self->_settingsSyncManager;
               self->_settingsSyncManager = v21;
             }
@@ -4997,15 +4997,15 @@ LABEL_18:
     v25 = self->_assertionSyncManager;
     self->_assertionSyncManager = v24;
 
-    -[DNDSIDSSyncEngine setPairedDevice:syncEnabled:](self->_idsSyncEngine, "setPairedDevice:syncEnabled:", v5, [v4 isPairSyncEnabled]);
+    -[DNDSIDSSyncEngine setPairedDevice:syncEnabled:](self->_idsSyncEngine, "setPairedDevice:syncEnabled:", pairedDevice, [v4 isPairSyncEnabled]);
     [(DNDSSyncEngine *)self->_syncEngine pairedDeviceDidChange];
     goto LABEL_19;
   }
 
-  v12 = [MEMORY[0x277D058F8] currentDevice];
-  v13 = [v12 deviceClass];
+  currentDevice3 = [MEMORY[0x277D058F8] currentDevice];
+  deviceClass2 = [currentDevice3 deviceClass];
 
-  if (v13 == 5)
+  if (deviceClass2 == 5)
   {
     goto LABEL_6;
   }
@@ -5029,15 +5029,15 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)layoutIsLocked:(id)a3
+- (BOOL)layoutIsLocked:(id)locked
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 elements];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  elements = [locked elements];
+  v4 = [elements countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5049,11 +5049,11 @@ LABEL_19:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elements);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) identifier];
-        v10 = [v9 isEqualToString:v7];
+        identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+        v10 = [identifier isEqualToString:v7];
 
         if (v10)
         {
@@ -5062,7 +5062,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [elements countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;

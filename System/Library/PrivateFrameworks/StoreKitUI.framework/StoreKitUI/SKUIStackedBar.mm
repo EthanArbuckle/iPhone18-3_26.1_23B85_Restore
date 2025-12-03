@@ -1,26 +1,26 @@
 @interface SKUIStackedBar
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIStackedBar)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIStackedBar)initWithFrame:(CGRect)frame;
 - (SKUIStackedBarDelegate)delegate;
-- (void)_backAction:(id)a3;
-- (void)_buttonAction:(id)a3;
+- (void)_backAction:(id)action;
+- (void)_buttonAction:(id)action;
 - (void)_reload;
-- (void)_selectItemAtIndex:(int64_t)a3;
+- (void)_selectItemAtIndex:(int64_t)index;
 - (void)animateToFullSizeIfNecessary;
 - (void)layoutSubviews;
-- (void)setItems:(id)a3;
-- (void)setLastItemExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOffset:(double)a3;
+- (void)setItems:(id)items;
+- (void)setLastItemExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setOffset:(double)offset;
 - (void)sizeToFit;
 @end
 
 @implementation SKUIStackedBar
 
-- (SKUIStackedBar)initWithFrame:(CGRect)a3
+- (SKUIStackedBar)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SKUIStackedBar;
-  v3 = [(SKUIStackedBar *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SKUIStackedBar *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
@@ -39,13 +39,13 @@
     maskView = v3->_maskView;
     v3->_maskView = v8;
 
-    v10 = [(UIView *)v3->_maskView layer];
+    layer = [(UIView *)v3->_maskView layer];
     v11 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA310]];
-    [v10 setCompositingFilter:v11];
+    [layer setCompositingFilter:v11];
 
     v12 = v3->_maskView;
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v12 setBackgroundColor:whiteColor];
 
     [(UIView *)v3->_wrapperView addSubview:v3->_maskView];
   }
@@ -53,23 +53,23 @@
   return v3;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v5 = a3;
-  if (self->_items != v5)
+  itemsCopy = items;
+  if (self->_items != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_items, a3);
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_items, items);
     [(SKUIStackedBar *)self _reload];
-    v5 = v6;
+    itemsCopy = v6;
   }
 }
 
-- (void)setLastItemExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setLastItemExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (self->_lastItemExpanded != a3)
+  if (self->_lastItemExpanded != expanded)
   {
-    if (a4)
+    if (animated)
     {
       [(SKUIStackedBar *)self layoutIfNeeded];
       v7[0] = MEMORY[0x277D85DD0];
@@ -77,7 +77,7 @@
       v7[2] = __47__SKUIStackedBar_setLastItemExpanded_animated___block_invoke;
       v7[3] = &unk_2781FC228;
       v7[4] = self;
-      v8 = a3;
+      expandedCopy = expanded;
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __47__SKUIStackedBar_setLastItemExpanded_animated___block_invoke_2;
@@ -88,7 +88,7 @@
 
     else
     {
-      self->_lastItemExpanded = a3;
+      self->_lastItemExpanded = expanded;
 
       [(SKUIStackedBar *)self _reload];
     }
@@ -109,11 +109,11 @@ uint64_t __47__SKUIStackedBar_setLastItemExpanded_animated___block_invoke(uint64
   return [v10 layoutIfNeeded];
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
-  if (!self->_splitViewStyle && self->_offset != a3)
+  if (!self->_splitViewStyle && self->_offset != offset)
   {
-    self->_offset = a3;
+    self->_offset = offset;
     [(SKUIStackedBar *)self sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
     offset = self->_offset;
     if (offset < self->_newOffset && offset > -v4)
@@ -198,10 +198,10 @@ uint64_t __47__SKUIStackedBar_setLastItemExpanded_animated___block_invoke(uint64
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(NSArray *)self->_items count:a3.width];
+  width = fits.width;
+  v5 = [(NSArray *)self->_items count:fits.width];
   if (v5)
   {
     if (v5 == 1)
@@ -331,14 +331,14 @@ double __46__SKUIStackedBar_animateToFullSizeIfNecessary__block_invoke_2(uint64_
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = [(NSArray *)self->_cells indexOfObject:a3];
+  v4 = [(NSArray *)self->_cells indexOfObject:action];
 
   [(SKUIStackedBar *)self _selectItemAtIndex:v4];
 }
 
-- (void)_backAction:(id)a3
+- (void)_backAction:(id)action
 {
   v4 = [(NSArray *)self->_items count]- 2;
 
@@ -367,15 +367,15 @@ double __46__SKUIStackedBar_animateToFullSizeIfNecessary__block_invoke_2(uint64_
         v6 = [(NSArray *)v3 objectAtIndex:v4];
       }
 
-      v7 = [v5 title];
-      [(SKUIStackedBarCell *)v6 setTitle:v7 forState:0];
+      title = [v5 title];
+      [(SKUIStackedBarCell *)v6 setTitle:title forState:0];
 
       v8 = !self->_alwaysShowsBackButton && [(NSArray *)self->_items count]< 2 || [(SKUIStackedBar *)self splitViewStyle];
-      v9 = [(SKUIStackedBarCell *)v6 backButton];
-      [v9 setHidden:v8];
+      backButton = [(SKUIStackedBarCell *)v6 backButton];
+      [backButton setHidden:v8];
 
-      v10 = [(SKUIStackedBarCell *)v6 backButton];
-      [v10 addTarget:self action:sel__backAction_ forControlEvents:64];
+      backButton2 = [(SKUIStackedBarCell *)v6 backButton];
+      [backButton2 addTarget:self action:sel__backAction_ forControlEvents:64];
 
       v11 = self->_lastItemExpanded && v4 == [(NSArray *)self->_items count]- 1;
       [(SKUIStackedBarCell *)v6 setExpanded:v11];
@@ -395,12 +395,12 @@ double __46__SKUIStackedBar_animateToFullSizeIfNecessary__block_invoke_2(uint64_
   [(SKUIStackedBar *)self setNeedsLayout];
 }
 
-- (void)_selectItemAtIndex:(int64_t)a3
+- (void)_selectItemAtIndex:(int64_t)index
 {
-  v5 = [(SKUIStackedBar *)self delegate];
+  delegate = [(SKUIStackedBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 stackedBar:self didSelectItemAtIndex:a3];
+    [delegate stackedBar:self didSelectItemAtIndex:index];
   }
 }
 

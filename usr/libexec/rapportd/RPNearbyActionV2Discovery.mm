@@ -1,9 +1,9 @@
 @interface RPNearbyActionV2Discovery
 - (RPNearbyActionV2Discovery)init;
 - (id)description;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_actionV2Discovery)
   {
     v5 = objc_alloc_init(off_1001D3B68());
@@ -66,7 +66,7 @@
     v8[1] = 3221225472;
     v8[2] = sub_100059F8C;
     v8[3] = &unk_1001AC998;
-    v9 = v4;
+    v9 = completionCopy;
     [(CBDiscovery *)v7 activateWithCompletion:v8];
   }
 }
@@ -90,13 +90,13 @@
   }
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v4 = a3;
-  v5 = [v4 stableIdentifier];
-  if (v5 || ([v4 identifier], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  foundCopy = found;
+  stableIdentifier = [foundCopy stableIdentifier];
+  if (stableIdentifier || ([foundCopy identifier], (stableIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
+    v6 = stableIdentifier;
     actionV2Devices = self->_actionV2Devices;
     if (!actionV2Devices)
     {
@@ -130,7 +130,7 @@
       if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = foundCopy;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, v12, "BLE NearbyActionV2 device found", "BLE NearbyActionV2 device found: %@\n", &v15, 0xCu);
       }
     }
@@ -164,14 +164,14 @@
   return v3;
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 stableIdentifier];
-  if (v4 || ([v8 identifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  lostCopy = lost;
+  stableIdentifier = [lostCopy stableIdentifier];
+  if (stableIdentifier || ([lostCopy identifier], (stableIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
-    if ([(NSMutableArray *)self->_actionV2Devices containsObject:v4])
+    v5 = stableIdentifier;
+    if ([(NSMutableArray *)self->_actionV2Devices containsObject:stableIdentifier])
     {
       [(NSMutableArray *)self->_actionV2Devices removeObject:v5];
       if (dword_1001D3AF8 <= 30 && (dword_1001D3AF8 != -1 || _LogCategory_Initialize()))

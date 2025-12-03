@@ -1,33 +1,33 @@
 @interface _TVRUIAppInfoItem
-+ (id)itemWithAppInfo:(id)a3;
++ (id)itemWithAppInfo:(id)info;
 + (id)unhideItem;
-- (BOOL)isEqual:(id)a3;
-- (_TVRUIAppInfoItem)initWithAppInfo:(id)a3 isUnhideItem:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (_TVRUIAppInfoItem)initWithAppInfo:(id)info isUnhideItem:(BOOL)item;
 - (unint64_t)hash;
 @end
 
 @implementation _TVRUIAppInfoItem
 
-- (_TVRUIAppInfoItem)initWithAppInfo:(id)a3 isUnhideItem:(BOOL)a4
+- (_TVRUIAppInfoItem)initWithAppInfo:(id)info isUnhideItem:(BOOL)item
 {
-  v7 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = _TVRUIAppInfoItem;
   v8 = [(_TVRUIAppInfoItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appInfo, a3);
-    v9->_isUnhideItem = a4;
+    objc_storeStrong(&v8->_appInfo, info);
+    v9->_isUnhideItem = item;
   }
 
   return v9;
 }
 
-+ (id)itemWithAppInfo:(id)a3
++ (id)itemWithAppInfo:(id)info
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithAppInfo:v3 isUnhideItem:0];
+  infoCopy = info;
+  v4 = [objc_alloc(objc_opt_class()) initWithAppInfo:infoCopy isUnhideItem:0];
 
   return v4;
 }
@@ -39,13 +39,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,9 +56,9 @@
 
       else
       {
-        v8 = [v6 appInfo];
-        v9 = [(_TVRUIAppInfoItem *)self appInfo];
-        v7 = [v8 isEqual:v9];
+        appInfo = [v6 appInfo];
+        appInfo2 = [(_TVRUIAppInfoItem *)self appInfo];
+        v7 = [appInfo isEqual:appInfo2];
       }
     }
 
@@ -83,8 +83,8 @@
     return 1;
   }
 
-  v4 = [(_TVRUIAppInfoItem *)self appInfo];
-  v5 = [v4 hash];
+  appInfo = [(_TVRUIAppInfoItem *)self appInfo];
+  v5 = [appInfo hash];
 
   return v5;
 }

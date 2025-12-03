@@ -1,22 +1,22 @@
 @interface PPCustomDonation
-+ (BOOL)donateLabeledStrings:(id)a3 bundleId:(id)a4 groupId:(id)a5 documentId:(id)a6 error:(id *)a7;
-+ (BOOL)donateNotification:(id)a3 error:(id *)a4;
-+ (BOOL)donateParsecNamedEntitiesAndTopics:(id)a3 rawQuery:(id)a4 reformulatedQuery:(id)a5 source:(id)a6 error:(id *)a7;
-+ (BOOL)donatePhotosLocationNamedEntities:(id)a3 bundleId:(id)a4 error:(id *)a5;
-+ (BOOL)donatePhotosNamedEntities:(id)a3 bundleId:(id)a4 date:(id)a5 error:(id *)a6;
-+ (BOOL)donatePhotosOneUpLocationNamedEntities:(id)a3 bundleId:(id)a4 error:(id *)a5;
-+ (BOOL)donatePhotosTopics:(id)a3 bundleId:(id)a4 date:(id)a5 error:(id *)a6;
-+ (BOOL)donateSiriQuery:(id)a3 results:(id)a4 error:(id *)a5;
++ (BOOL)donateLabeledStrings:(id)strings bundleId:(id)id groupId:(id)groupId documentId:(id)documentId error:(id *)error;
++ (BOOL)donateNotification:(id)notification error:(id *)error;
++ (BOOL)donateParsecNamedEntitiesAndTopics:(id)topics rawQuery:(id)query reformulatedQuery:(id)reformulatedQuery source:(id)source error:(id *)error;
++ (BOOL)donatePhotosLocationNamedEntities:(id)entities bundleId:(id)id error:(id *)error;
++ (BOOL)donatePhotosNamedEntities:(id)entities bundleId:(id)id date:(id)date error:(id *)error;
++ (BOOL)donatePhotosOneUpLocationNamedEntities:(id)entities bundleId:(id)id error:(id *)error;
++ (BOOL)donatePhotosTopics:(id)topics bundleId:(id)id date:(id)date error:(id *)error;
++ (BOOL)donateSiriQuery:(id)query results:(id)results error:(id *)error;
 @end
 
 @implementation PPCustomDonation
 
-+ (BOOL)donateLabeledStrings:(id)a3 bundleId:(id)a4 groupId:(id)a5 documentId:(id)a6 error:(id *)a7
++ (BOOL)donateLabeledStrings:(id)strings bundleId:(id)id groupId:(id)groupId documentId:(id)documentId error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  stringsCopy = strings;
+  idCopy = id;
+  groupIdCopy = groupId;
+  documentIdCopy = documentId;
   v15 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.suggestd.PersonalizationPortrait.StringDonation" options:0];
   v16 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1B561D8];
   [v15 setRemoteObjectInterface:v16];
@@ -39,11 +39,11 @@
   v20[2] = __75__PPCustomDonation_donateLabeledStrings_bundleId_groupId_documentId_error___block_invoke_117;
   v20[3] = &unk_1E77F7B20;
   v20[4] = &v22;
-  [v17 donateLabeledStrings:v11 bundleId:v12 groupId:v13 documentId:v14 completion:v20];
+  [v17 donateLabeledStrings:stringsCopy bundleId:idCopy groupId:groupIdCopy documentId:documentIdCopy completion:v20];
   [v15 invalidate];
-  if (a7)
+  if (error)
   {
-    *a7 = v23[5];
+    *error = v23[5];
   }
 
   v18 = v23[5] == 0;
@@ -71,18 +71,18 @@ void __75__PPCustomDonation_donateLabeledStrings_bundleId_groupId_documentId_err
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)donateParsecNamedEntitiesAndTopics:(id)a3 rawQuery:(id)a4 reformulatedQuery:(id)a5 source:(id)a6 error:(id *)a7
++ (BOOL)donateParsecNamedEntitiesAndTopics:(id)topics rawQuery:(id)query reformulatedQuery:(id)reformulatedQuery source:(id)source error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  topicsCopy = topics;
+  queryCopy = query;
+  reformulatedQueryCopy = reformulatedQuery;
+  sourceCopy = source;
   v15 = pp_default_log_handle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v11 count];
+    *(&buf + 4) = [topicsCopy count];
     _os_log_impl(&dword_1A7FD3000, v15, OS_LOG_TYPE_DEFAULT, "Received donation of %tu entity groups(s) from parsec", &buf, 0xCu);
   }
 
@@ -106,13 +106,13 @@ void __75__PPCustomDonation_donateLabeledStrings_bundleId_groupId_documentId_err
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  if ([v11 count])
+  if ([topicsCopy count])
   {
     v16 = pp_entities_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *v55 = 138739971;
-      v56 = v12;
+      v56 = queryCopy;
       _os_log_debug_impl(&dword_1A7FD3000, v16, OS_LOG_TYPE_DEBUG, "Raw Parsec query: %{sensitive}@", v55, 0xCu);
     }
 
@@ -120,7 +120,7 @@ void __75__PPCustomDonation_donateLabeledStrings_bundleId_groupId_documentId_err
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *v55 = 138739971;
-      v56 = v13;
+      v56 = reformulatedQueryCopy;
       _os_log_debug_impl(&dword_1A7FD3000, v17, OS_LOG_TYPE_DEBUG, "Reformulated Parsec query: %{sensitive}@", v55, 0xCu);
     }
 
@@ -129,11 +129,11 @@ void __75__PPCustomDonation_donateLabeledStrings_bundleId_groupId_documentId_err
     v33[2] = __95__PPCustomDonation_donateParsecNamedEntitiesAndTopics_rawQuery_reformulatedQuery_source_error___block_invoke;
     v33[3] = &unk_1E77F7A80;
     v35 = &v43;
-    v34 = v14;
+    v34 = sourceCopy;
     p_buf = &buf;
     v37 = &v39;
     v38 = &v47;
-    [v11 enumerateKeysAndObjectsUsingBlock:v33];
+    [topicsCopy enumerateKeysAndObjectsUsingBlock:v33];
     if (v44[3])
     {
       if (v40[3])
@@ -167,24 +167,24 @@ void __75__PPCustomDonation_donateLabeledStrings_bundleId_groupId_documentId_err
         goto LABEL_31;
       }
 
-      if (a7)
+      if (error)
       {
         v29 = v48[5];
         if (v29)
         {
-          *a7 = v29;
+          *error = v29;
           v28 = v40;
           goto LABEL_26;
         }
       }
     }
 
-    else if (a7)
+    else if (error)
     {
       v27 = *(*(&buf + 1) + 40);
       if (v27)
       {
-        *a7 = v27;
+        *error = v27;
         v28 = v44;
 LABEL_26:
         v22 = *(v28 + 24);
@@ -206,7 +206,7 @@ LABEL_31:
     _os_log_error_impl(&dword_1A7FD3000, v23, OS_LOG_TYPE_ERROR, "%@", v55, 0xCu);
   }
 
-  if (a7)
+  if (error)
   {
     v24 = objc_alloc(MEMORY[0x1E696ABC0]);
     v53 = @"PPErrorInfoKey";
@@ -214,7 +214,7 @@ LABEL_31:
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     v26 = [v24 initWithDomain:@"PPErrorDomain" code:5 userInfo:v25];
     v22 = 0;
-    *a7 = v26;
+    *error = v26;
 LABEL_32:
 
     goto LABEL_33;
@@ -322,23 +322,23 @@ BOOL __95__PPCustomDonation_donateParsecNamedEntitiesAndTopics_rawQuery_reformul
   return v5;
 }
 
-+ (BOOL)donatePhotosTopics:(id)a3 bundleId:(id)a4 date:(id)a5 error:(id *)a6
++ (BOOL)donatePhotosTopics:(id)topics bundleId:(id)id date:(id)date error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  topicsCopy = topics;
+  idCopy = id;
+  dateCopy = date;
   v12 = pp_topics_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v33 = [v9 count];
+    v33 = [topicsCopy count];
     v34 = 2112;
-    v35 = v10;
+    v35 = idCopy;
     _os_log_impl(&dword_1A7FD3000, v12, OS_LOG_TYPE_DEFAULT, "Received donation of %tu topic(s) from %@", buf, 0x16u);
   }
 
-  if ([v9 count])
+  if ([topicsCopy count])
   {
     v13 = objc_opt_new();
     v28[0] = MEMORY[0x1E69E9820];
@@ -346,32 +346,32 @@ BOOL __95__PPCustomDonation_donateParsecNamedEntitiesAndTopics_rawQuery_reformul
     v28[2] = __59__PPCustomDonation_donatePhotosTopics_bundleId_date_error___block_invoke;
     v28[3] = &unk_1E77F7A30;
     v29 = v13;
-    v14 = v13;
-    [v9 enumerateKeysAndObjectsUsingBlock:v28];
+    idCopy = v13;
+    [topicsCopy enumerateKeysAndObjectsUsingBlock:v28];
     v15 = [PPSource alloc];
     v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-    [v11 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v18 = [v16 initWithFormat:@"%@-%f", @"photos-unmapped", v17];
-    v19 = [(PPSource *)v15 initWithBundleId:v10 groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosGraphDonation" documentId:v18 date:v11];
+    v19 = [(PPSource *)v15 initWithBundleId:idCopy groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosGraphDonation" documentId:v18 date:dateCopy];
 
     v20 = objc_opt_new();
-    v21 = [v20 donateTopics:v14 source:v19 algorithm:5 cloudSync:0 sentimentScore:0 exactMatchesInSourceText:a6 error:0.0];
+    v21 = [v20 donateTopics:idCopy source:v19 algorithm:5 cloudSync:0 sentimentScore:0 exactMatchesInSourceText:error error:0.0];
 
     v22 = v29;
   }
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No topics donated by %@", v10];
+    idCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No topics donated by %@", idCopy];
     v23 = pp_default_log_handle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v33 = v14;
+      v33 = idCopy;
       _os_log_error_impl(&dword_1A7FD3000, v23, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (!a6)
+    if (!error)
     {
       v21 = 0;
       goto LABEL_10;
@@ -379,11 +379,11 @@ BOOL __95__PPCustomDonation_donateParsecNamedEntitiesAndTopics_rawQuery_reformul
 
     v24 = objc_alloc(MEMORY[0x1E696ABC0]);
     v30 = @"PPErrorInfoKey";
-    v31 = v14;
+    v31 = idCopy;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v25 = [v24 initWithDomain:@"PPErrorDomain" code:5 userInfo:v22];
     v21 = 0;
-    *a6 = v25;
+    *error = v25;
   }
 
 LABEL_10:
@@ -405,30 +405,30 @@ void __59__PPCustomDonation_donatePhotosTopics_bundleId_date_error___block_invok
   [*(a1 + 32) addObject:v10];
 }
 
-+ (BOOL)donatePhotosNamedEntities:(id)a3 bundleId:(id)a4 date:(id)a5 error:(id *)a6
++ (BOOL)donatePhotosNamedEntities:(id)entities bundleId:(id)id date:(id)date error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entitiesCopy = entities;
+  idCopy = id;
+  dateCopy = date;
   v12 = pp_entities_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v28 = [v9 count];
+    v28 = [entitiesCopy count];
     v29 = 2112;
-    v30 = v10;
+    v30 = idCopy;
     _os_log_impl(&dword_1A7FD3000, v12, OS_LOG_TYPE_DEFAULT, "Received donation of %tu named entities(s) from %@", buf, 0x16u);
   }
 
   v13 = [PPSource alloc];
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  [v11 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v16 = [v14 initWithFormat:@"photos-%f", v15];
-  v17 = [(PPSource *)v13 initWithBundleId:v10 groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosGraphDonation" documentId:v16 date:v11];
+  v17 = [(PPSource *)v13 initWithBundleId:idCopy groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosGraphDonation" documentId:v16 date:dateCopy];
 
   v18 = objc_opt_new();
-  v19 = [v18 donateNamedEntities:v9 source:v17 algorithm:11 cloudSync:0 sentimentScore:a6 error:0.0];
+  v19 = [v18 donateNamedEntities:entitiesCopy source:v17 algorithm:11 cloudSync:0 sentimentScore:error error:0.0];
 
   if (v19)
   {
@@ -453,25 +453,25 @@ void __59__PPCustomDonation_donatePhotosTopics_bundleId_date_error___block_invok
   return v19;
 }
 
-+ (BOOL)donatePhotosLocationNamedEntities:(id)a3 bundleId:(id)a4 error:(id *)a5
++ (BOOL)donatePhotosLocationNamedEntities:(id)entities bundleId:(id)id error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  entitiesCopy = entities;
+  idCopy = id;
   v9 = pp_entities_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134218242;
-    v16 = [v7 count];
+    v16 = [entitiesCopy count];
     v17 = 2112;
-    v18 = v8;
+    v18 = idCopy;
     _os_log_impl(&dword_1A7FD3000, v9, OS_LOG_TYPE_DEFAULT, "Received donation of %tu graph location named entities(s) from %@", &v15, 0x16u);
   }
 
-  v10 = [v7 _pas_mappedArrayWithTransform:&__block_literal_global_6780];
+  v10 = [entitiesCopy _pas_mappedArrayWithTransform:&__block_literal_global_6780];
 
   v11 = objc_opt_new();
-  v12 = [v11 donateLocationNamedEntities:v10 bundleId:v8 groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosGraphDonation" error:a5];
+  v12 = [v11 donateLocationNamedEntities:v10 bundleId:idCopy groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosGraphDonation" error:error];
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
@@ -494,54 +494,54 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
   return v2;
 }
 
-+ (BOOL)donatePhotosOneUpLocationNamedEntities:(id)a3 bundleId:(id)a4 error:(id *)a5
++ (BOOL)donatePhotosOneUpLocationNamedEntities:(id)entities bundleId:(id)id error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  entitiesCopy = entities;
+  idCopy = id;
   v9 = pp_entities_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134218242;
-    v15 = [v7 count];
+    v15 = [entitiesCopy count];
     v16 = 2112;
-    v17 = v8;
+    v17 = idCopy;
     _os_log_impl(&dword_1A7FD3000, v9, OS_LOG_TYPE_DEFAULT, "Received donation of %tu one-up location named entities(s) from %@", &v14, 0x16u);
   }
 
   v10 = objc_opt_new();
-  v11 = [v10 donateLocationNamedEntities:v7 bundleId:v8 groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosOneUpDonation" error:a5];
+  v11 = [v10 donateLocationNamedEntities:entitiesCopy bundleId:idCopy groupId:@"com.apple.proactive.PersonalizationPortrait.PhotosOneUpDonation" error:error];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (BOOL)donateNotification:(id)a3 error:(id *)a4
++ (BOOL)donateNotification:(id)notification error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  notificationCopy = notification;
   v7 = pp_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v6;
+    v28 = notificationCopy;
     v29 = 2112;
     v30 = @"com.apple.proactive.PersonalizationPortrait.Notifications";
     _os_log_impl(&dword_1A7FD3000, v7, OS_LOG_TYPE_DEFAULT, "PPCustomDonation: received notification: %@ groupId: %@", buf, 0x16u);
   }
 
   v8 = objc_opt_new();
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
   v25[0] = @"textContent";
-  v10 = [v6 message];
-  v26[0] = v10;
+  message = [notificationCopy message];
+  v26[0] = message;
   v25[1] = @"title";
-  v11 = [v6 title];
-  v12 = v11;
-  if (v11)
+  title = [notificationCopy title];
+  v12 = title;
+  if (title)
   {
-    v13 = v11;
+    v13 = title;
   }
 
   else
@@ -551,11 +551,11 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
 
   v26[1] = v13;
   v25[2] = @"contentDescription";
-  v14 = [v6 subtitle];
-  v15 = v14;
-  if (v14)
+  subtitle = [notificationCopy subtitle];
+  v15 = subtitle;
+  if (subtitle)
   {
-    v16 = v14;
+    v16 = subtitle;
   }
 
   else
@@ -565,9 +565,9 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
 
   v26[2] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
-  v18 = [v6 bundleId];
+  bundleId = [notificationCopy bundleId];
   v24 = 0;
-  [a1 donateLabeledStrings:v17 bundleId:v18 groupId:@"com.apple.proactive.PersonalizationPortrait.Notifications" documentId:v9 error:&v24];
+  [self donateLabeledStrings:v17 bundleId:bundleId groupId:@"com.apple.proactive.PersonalizationPortrait.Notifications" documentId:uUIDString error:&v24];
   v19 = v24;
 
   if (v19)
@@ -580,10 +580,10 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
       _os_log_error_impl(&dword_1A7FD3000, v20, OS_LOG_TYPE_ERROR, "Error donating notification to PersonalizationPortrait: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v21 = v19;
-      *a4 = v19;
+      *error = v19;
     }
   }
 
@@ -591,27 +591,27 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
   return v19 == 0;
 }
 
-+ (BOOL)donateSiriQuery:(id)a3 results:(id)a4 error:(id *)a5
++ (BOOL)donateSiriQuery:(id)query results:(id)results error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v10 = pp_default_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v71 = [v9 count];
+    v71 = [resultsCopy count];
     _os_log_impl(&dword_1A7FD3000, v10, OS_LOG_TYPE_DEFAULT, "Received donation of %tu result(s) from Siri", buf, 0xCu);
   }
 
   v11 = objc_opt_new();
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
   v68 = @"textContent";
-  v69 = v8;
+  v69 = queryCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
   v66 = 0;
-  [a1 donateLabeledStrings:v13 bundleId:@"com.apple.siri.assistant_service" groupId:@"com.apple.proactive.PersonalizationPortrait.SiriDonation" documentId:v12 error:&v66];
+  [self donateLabeledStrings:v13 bundleId:@"com.apple.siri.assistant_service" groupId:@"com.apple.proactive.PersonalizationPortrait.SiriDonation" documentId:uUIDString error:&v66];
   v14 = v66;
 
   if (v14)
@@ -624,11 +624,11 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
       _os_log_error_impl(&dword_1A7FD3000, v15, OS_LOG_TYPE_ERROR, "Error piping Siri query into suggestd: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v14;
       v17 = 0;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -639,59 +639,59 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
 
   else
   {
-    v59 = a5;
+    errorCopy = error;
     v18 = objc_opt_new();
-    v19 = [MEMORY[0x1E695DF58] currentLocale];
-    v20 = [v19 languageCode];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    languageCode = [currentLocale languageCode];
 
-    v21 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v22 = [v21 count];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    v22 = [preferredLanguages count];
 
-    v60 = v8;
+    v60 = queryCopy;
     if (v22 >= 2)
     {
-      v23 = v12;
-      v24 = v9;
+      v23 = uUIDString;
+      v24 = resultsCopy;
       v25 = MEMORY[0x1E69BDC58];
       v26 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v27 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v28 = [v26 initWithArray:v27];
-      v29 = [v25 detectLanguageFromTextHeuristicallyWithLanguages:v8 languages:v28 defaultLanguage:0];
+      preferredLanguages2 = [MEMORY[0x1E695DF58] preferredLanguages];
+      v28 = [v26 initWithArray:preferredLanguages2];
+      v29 = [v25 detectLanguageFromTextHeuristicallyWithLanguages:queryCopy languages:v28 defaultLanguage:0];
       v30 = v29;
       if (v29)
       {
-        v31 = v29;
+        languageCode2 = v29;
       }
 
       else
       {
-        v32 = [MEMORY[0x1E695DF58] currentLocale];
-        v31 = [v32 languageCode];
+        currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+        languageCode2 = [currentLocale2 languageCode];
 
-        v20 = v32;
+        languageCode = currentLocale2;
       }
 
-      v20 = v31;
-      v8 = v60;
-      v9 = v24;
-      v12 = v23;
+      languageCode = languageCode2;
+      queryCopy = v60;
+      resultsCopy = v24;
+      uUIDString = v23;
     }
 
-    v33 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v20];
+    v33 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:languageCode];
     v34 = [v33 objectForKeyedSubscript:*MEMORY[0x1E695D9B0]];
 
-    v35 = -[PPSourceMetadata initWithDwellTimeSeconds:lengthSeconds:lengthCharacters:donationCount:contactHandleCount:flags:]([PPSourceMetadata alloc], "initWithDwellTimeSeconds:lengthSeconds:lengthCharacters:donationCount:contactHandleCount:flags:", 0, 0, [v8 length], 0, 0, 0);
+    v35 = -[PPSourceMetadata initWithDwellTimeSeconds:lengthSeconds:lengthCharacters:donationCount:contactHandleCount:flags:]([PPSourceMetadata alloc], "initWithDwellTimeSeconds:lengthSeconds:lengthCharacters:donationCount:contactHandleCount:flags:", 0, 0, [queryCopy length], 0, 0, 0);
     v36 = [PPSource alloc];
     v37 = objc_opt_new();
     v57 = v35;
     v58 = v34;
-    v56 = [(PPSource *)v36 initWithBundleId:@"com.apple.siri.assistant_service" groupId:@"com.apple.proactive.PersonalizationPortrait.SiriDonation" documentId:v12 date:v37 relevanceDate:0 contactHandles:0 language:v34 metadata:v35];
+    v56 = [(PPSource *)v36 initWithBundleId:@"com.apple.siri.assistant_service" groupId:@"com.apple.proactive.PersonalizationPortrait.SiriDonation" documentId:uUIDString date:v37 relevanceDate:0 contactHandles:0 language:v34 metadata:v35];
 
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v38 = v9;
+    v38 = resultsCopy;
     v39 = [v38 countByEnumeratingWithState:&v62 objects:v67 count:16];
     if (v39)
     {
@@ -716,8 +716,8 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
             v47 = [(PPTopic *)v45 initWithTopicIdentifier:v46];
 
             v48 = [PPScoredItem alloc];
-            v49 = [v43 confidence];
-            [v49 doubleValue];
+            confidence = [v43 confidence];
+            [confidence doubleValue];
             v50 = [(PPScoredItem *)v48 initWithItem:v47 score:?];
             [v18 addObject:v50];
           }
@@ -734,13 +734,13 @@ id __69__PPCustomDonation_donatePhotosLocationNamedEntities_bundleId_error___blo
     v17 = [v51 donateTopics:v18 source:v56 algorithm:2 cloudSync:1 sentimentScore:0 exactMatchesInSourceText:&v61 error:0.0];
     v52 = v61;
 
-    if (v59 && v52)
+    if (errorCopy && v52)
     {
       v53 = v52;
-      *v59 = v52;
+      *errorCopy = v52;
     }
 
-    v8 = v60;
+    queryCopy = v60;
     v14 = 0;
   }
 

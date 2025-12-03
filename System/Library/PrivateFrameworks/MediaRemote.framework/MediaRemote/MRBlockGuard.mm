@@ -1,23 +1,23 @@
 @interface MRBlockGuard
-- (MRBlockGuard)initWithTimeout:(double)a3 reason:(id)a4 handler:(id)a5;
-- (MRBlockGuard)initWithTimeout:(double)a3 reason:(id)a4 queue:(id)a5 handler:(id)a6;
+- (MRBlockGuard)initWithTimeout:(double)timeout reason:(id)reason handler:(id)handler;
+- (MRBlockGuard)initWithTimeout:(double)timeout reason:(id)reason queue:(id)queue handler:(id)handler;
 @end
 
 @implementation MRBlockGuard
 
-- (MRBlockGuard)initWithTimeout:(double)a3 reason:(id)a4 queue:(id)a5 handler:(id)a6
+- (MRBlockGuard)initWithTimeout:(double)timeout reason:(id)reason queue:(id)queue handler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __53__MRBlockGuard_initWithTimeout_reason_queue_handler___block_invoke;
   v16[3] = &unk_1E769BCD0;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = [(MRBlockGuard *)self initWithTimeout:a4 reason:v16 handler:a3];
+  v17 = queueCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = [(MRBlockGuard *)self initWithTimeout:reason reason:v16 handler:timeout];
 
   return v14;
 }
@@ -37,10 +37,10 @@ void __53__MRBlockGuard_initWithTimeout_reason_queue_handler___block_invoke(uint
   dispatch_async(v4, v7);
 }
 
-- (MRBlockGuard)initWithTimeout:(double)a3 reason:(id)a4 handler:(id)a5
+- (MRBlockGuard)initWithTimeout:(double)timeout reason:(id)reason handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -50,14 +50,14 @@ void __53__MRBlockGuard_initWithTimeout_reason_queue_handler___block_invoke(uint
   v15[2] = __47__MRBlockGuard_initWithTimeout_reason_handler___block_invoke;
   v15[3] = &unk_1E76A0B50;
   v18 = v20;
-  v10 = v8;
+  v10 = reasonCopy;
   v16 = v10;
-  v19 = a3;
-  v11 = v9;
+  timeoutCopy = timeout;
+  v11 = handlerCopy;
   v17 = v11;
   v14.receiver = self;
   v14.super_class = MRBlockGuard;
-  v12 = [(MSVBlockGuard *)&v14 initWithTimeout:v15 interruptionHandler:a3];
+  v12 = [(MSVBlockGuard *)&v14 initWithTimeout:v15 interruptionHandler:timeout];
 
   _Block_object_dispose(v20, 8);
   return v12;

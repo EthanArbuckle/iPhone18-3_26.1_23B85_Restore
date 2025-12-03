@@ -25,44 +25,44 @@
   v5 = [debugBackgroundImageWithBadges__cache objectForKey:v4];
   if (!v5)
   {
-    v6 = [MEMORY[0x1E69DC888] grayColor];
-    v7 = v6;
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    v7 = grayColor;
     if ((a3 & 0x20000000) != 0)
     {
-      v8 = [MEMORY[0x1E69DC888] orangeColor];
+      orangeColor = [MEMORY[0x1E69DC888] orangeColor];
     }
 
     else
     {
-      v8 = v6;
+      orangeColor = grayColor;
     }
 
-    v9 = v8;
+    v9 = orangeColor;
     if ((a3 & 0x40000000) != 0)
     {
-      v10 = [MEMORY[0x1E69DC888] purpleColor];
+      purpleColor = [MEMORY[0x1E69DC888] purpleColor];
     }
 
     else
     {
-      v10 = v7;
+      purpleColor = v7;
     }
 
-    v11 = v10;
-    v12 = [MEMORY[0x1E6979380] layer];
-    [v12 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 10.0, 2.0}];
+    v11 = purpleColor;
+    layer = [MEMORY[0x1E6979380] layer];
+    [layer setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 10.0, 2.0}];
     v15[0] = [v9 CGColor];
     v15[1] = [v7 CGColor];
     v15[2] = [v11 CGColor];
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
-    [v12 setColors:v13];
+    [layer setColors:v13];
 
-    [v12 setStartPoint:{0.0, 0.5}];
-    [v12 setEndPoint:{1.0, 0.5}];
+    [layer setStartPoint:{0.0, 0.5}];
+    [layer setEndPoint:{1.0, 0.5}];
     v17.width = 10.0;
     v17.height = 2.0;
     UIGraphicsBeginImageContext(v17);
-    [v12 renderInContext:UIGraphicsGetCurrentContext()];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
     v5 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [debugBackgroundImageWithBadges__cache setObject:v5 forKey:v4];
@@ -119,9 +119,9 @@
         v5 = PLServicesLivePortraitLocalizedFrameworkString();
 LABEL_3:
         v6 = v5;
-        v7 = [v5 localizedUppercaseString];
+        localizedUppercaseString = [v5 localizedUppercaseString];
 
-        if (v7)
+        if (localizedUppercaseString)
         {
           goto LABEL_7;
         }
@@ -144,8 +144,8 @@ LABEL_2:
 
     if ((v4 & 0x400000000) != 0)
     {
-      v7 = PXLocalizedStringFromTable(@"PXInfoPanelEXIFVideoProResBadge", @"PhotosUICore");
-      if (v7)
+      localizedUppercaseString = PXLocalizedStringFromTable(@"PXInfoPanelEXIFVideoProResBadge", @"PhotosUICore");
+      if (localizedUppercaseString)
       {
         goto LABEL_7;
       }
@@ -167,10 +167,10 @@ LABEL_4:
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "Unable to determine accessibility label for 1-Up badge!", buf, 2u);
   }
 
-  v7 = &stru_1F1741150;
+  localizedUppercaseString = &stru_1F1741150;
 LABEL_7:
 
-  return v7;
+  return localizedUppercaseString;
 }
 
 + (id)textForBadgeInfo:()iOS style:
@@ -210,7 +210,7 @@ LABEL_7:
 
       if ((v4 & 0x40000000000000) == 0)
       {
-        v7 = 0;
+        localizedUppercaseString = 0;
         goto LABEL_4;
       }
 
@@ -218,11 +218,11 @@ LABEL_7:
       v10 = @"ProResRAW";
     }
 
-    v7 = PXLocalizedStringFromTable(v9, v10);
+    localizedUppercaseString = PXLocalizedStringFromTable(v9, v10);
     goto LABEL_4;
   }
 
-  v7 = 0;
+  localizedUppercaseString = 0;
   if (a4 <= 6 && ((1 << a4) & 0x58) != 0)
   {
     if ((v4 & 0x80) == 0 && (v4 & 0x100) == 0 && (v4 & 0x200) == 0 && (v4 & 0x10) != 0)
@@ -235,12 +235,12 @@ LABEL_2:
     v5 = PLLocalizedFrameworkString();
 LABEL_3:
     v6 = v5;
-    v7 = [v5 localizedUppercaseString];
+    localizedUppercaseString = [v5 localizedUppercaseString];
   }
 
 LABEL_4:
 
-  return v7;
+  return localizedUppercaseString;
 }
 
 + (__CFString)systemImageNameForBadges:()iOS
@@ -336,15 +336,15 @@ LABEL_4:
   v5 = *a3;
   if (a4 == 1 && (v5 & 0x380) != 0)
   {
-    v6 = [objc_opt_class() loopingBadgeTemplateImage];
+    loopingBadgeTemplateImage = [objc_opt_class() loopingBadgeTemplateImage];
 LABEL_10:
-    v8 = v6;
+    v8 = loopingBadgeTemplateImage;
     goto LABEL_12;
   }
 
   if (a4 == 5 && (v5 & 0x40) != 0 && a5 != 0)
   {
-    v6 = [objc_opt_class() livePhotoBadgeShadowedImage];
+    loopingBadgeTemplateImage = [objc_opt_class() livePhotoBadgeShadowedImage];
     goto LABEL_10;
   }
 
@@ -364,8 +364,8 @@ LABEL_12:
     PFPosterDeviceSupportsSpatialPhoto();
   }
 
-  *a1 = 0u;
-  a1[1] = 0u;
+  *self = 0u;
+  self[1] = 0u;
 
   PXAssetBadgeInfoCreateWithBadges();
 }
@@ -375,12 +375,12 @@ LABEL_12:
   v6 = a2[1];
   v11 = *a2;
   v12 = v6;
-  [a1 topLeftPrimaryBadgeInfoForBadgeInfo:&v11];
+  [self topLeftPrimaryBadgeInfoForBadgeInfo:&v11];
   v7 = v13;
   v8 = a2[1];
   v11 = *a2;
   v12 = v8;
-  [a1 topRightBadgeInfoForBadgeInfo:&v11];
+  [self topRightBadgeInfoForBadgeInfo:&v11];
   a2->n128_u64[0] &= ~(v10 | v7);
   result = a2[1];
   *a3 = *a2;
@@ -390,8 +390,8 @@ LABEL_12:
 
 + (void)topLeftPrimaryBadgeInfoForBadgeInfo:()iOS
 {
-  *a1 = 0u;
-  a1[1] = 0u;
+  *self = 0u;
+  self[1] = 0u;
   PXAssetBadgeInfoCreateWithBadges();
 }
 

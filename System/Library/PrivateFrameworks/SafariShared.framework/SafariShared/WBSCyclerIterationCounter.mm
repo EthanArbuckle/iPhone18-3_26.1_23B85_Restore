@@ -1,6 +1,6 @@
 @interface WBSCyclerIterationCounter
 - (WBSCyclerIterationCounter)init;
-- (WBSCyclerIterationCounter)initWithMaximumIterationCount:(unint64_t)a3;
+- (WBSCyclerIterationCounter)initWithMaximumIterationCount:(unint64_t)count;
 @end
 
 @implementation WBSCyclerIterationCounter
@@ -21,13 +21,13 @@
   return v3;
 }
 
-- (WBSCyclerIterationCounter)initWithMaximumIterationCount:(unint64_t)a3
+- (WBSCyclerIterationCounter)initWithMaximumIterationCount:(unint64_t)count
 {
   v4 = [(WBSCyclerIterationCounter *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_maximumIterationCount = a3;
+    v4->_maximumIterationCount = count;
     v6 = v4;
   }
 

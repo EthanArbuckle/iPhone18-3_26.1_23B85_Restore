@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTransmissionModeCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFTransmissionModeCharacteristic *)self transmissionModeValue];
+  transmissionModeValue = [(CAFTransmissionModeCharacteristic *)self transmissionModeValue];
 
-  return NSStringFromTransmissionMode(v2);
+  return NSStringFromTransmissionMode(transmissionModeValue);
 }
 
 @end

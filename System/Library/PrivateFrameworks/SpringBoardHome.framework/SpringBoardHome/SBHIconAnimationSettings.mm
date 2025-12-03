@@ -7,32 +7,32 @@
 
 - (void)setDefaultValues
 {
-  v3 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v3 setAnimationType:1];
+  centralAnimationSettings = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings setAnimationType:1];
 
-  v4 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v4 setMass:2.0];
+  centralAnimationSettings2 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings2 setMass:2.0];
 
-  v5 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v5 setStiffness:700.0];
+  centralAnimationSettings3 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings3 setStiffness:700.0];
 
-  v6 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v6 setDamping:600.0];
+  centralAnimationSettings4 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings4 setDamping:600.0];
 
-  v7 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v7 setCurve:393216];
+  centralAnimationSettings5 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings5 setCurve:393216];
 
-  v8 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  v9 = [v8 controlPoint1Settings];
-  [v9 setPointValue:{0.3825, 0.091}];
+  centralAnimationSettings6 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  controlPoint1Settings = [centralAnimationSettings6 controlPoint1Settings];
+  [controlPoint1Settings setPointValue:{0.3825, 0.091}];
 
-  v10 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  v11 = [v10 controlPoint2Settings];
-  [v11 setPointValue:{0.98, 0.785}];
+  centralAnimationSettings7 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  controlPoint2Settings = [centralAnimationSettings7 controlPoint2Settings];
+  [controlPoint2Settings setPointValue:{0.98, 0.785}];
 
-  v12 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  centralAnimationSettings8 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
   v14 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v12 setFrameRateRange:1114123 highFrameRateReason:{*&v14.minimum, *&v14.maximum, *&v14.preferred}];
+  [centralAnimationSettings8 setFrameRateRange:1114123 highFrameRateReason:{*&v14.minimum, *&v14.maximum, *&v14.preferred}];
 }
 
 + (id)settingsControllerModule

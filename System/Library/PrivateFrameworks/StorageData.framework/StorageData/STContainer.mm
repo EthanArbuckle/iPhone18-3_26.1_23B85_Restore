@@ -1,13 +1,13 @@
 @interface STContainer
-+ (STContainer)containerWithIdentifier:(id)a3 containerClass:(unint64_t)a4 personaUniqueString:(id)a5;
-+ (id)containersWithClass:(unint64_t)a3 personaUniqueString:(id)a4;
-- (STContainer)initWithLibsystemContainer:(container_object_s *)a3;
++ (STContainer)containerWithIdentifier:(id)identifier containerClass:(unint64_t)class personaUniqueString:(id)string;
++ (id)containersWithClass:(unint64_t)class personaUniqueString:(id)string;
+- (STContainer)initWithLibsystemContainer:(container_object_s *)container;
 - (void)dealloc;
 @end
 
 @implementation STContainer
 
-- (STContainer)initWithLibsystemContainer:(container_object_s *)a3
+- (STContainer)initWithLibsystemContainer:(container_object_s *)container
 {
   v9.receiver = self;
   v9.super_class = STContainer;
@@ -37,18 +37,18 @@
   [(STContainer *)&v3 dealloc];
 }
 
-+ (id)containersWithClass:(unint64_t)a3 personaUniqueString:(id)a4
++ (id)containersWithClass:(unint64_t)class personaUniqueString:(id)string
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a4;
-  v6 = [v4 array];
+  stringCopy = string;
+  array = [v4 array];
   container_query_create();
   container_query_set_class();
   container_query_set_include_other_owners();
-  v7 = [v5 UTF8String];
+  uTF8String = [stringCopy UTF8String];
 
   v8 = *MEMORY[0x277D85ED0];
-  if (!v7)
+  if (!uTF8String)
   {
     v9 = *MEMORY[0x277D85ED0];
   }
@@ -56,7 +56,7 @@
   container_query_set_persona_unique_string();
   container_query_operation_set_flags();
   v13 = MEMORY[0x277D85DD0];
-  v10 = v6;
+  v10 = array;
   v14 = v10;
   if ((container_query_iterate_results_sync() & 1) == 0)
   {
@@ -81,22 +81,22 @@ uint64_t __55__STContainer_containersWithClass_personaUniqueString___block_invok
   return 1;
 }
 
-+ (STContainer)containerWithIdentifier:(id)a3 containerClass:(unint64_t)a4 personaUniqueString:(id)a5
++ (STContainer)containerWithIdentifier:(id)identifier containerClass:(unint64_t)class personaUniqueString:(id)string
 {
-  v7 = a5;
-  v8 = a3;
+  stringCopy = string;
+  identifierCopy = identifier;
   container_query_create();
-  v9 = [v8 UTF8String];
+  uTF8String = [identifierCopy UTF8String];
 
-  v10 = xpc_string_create(v9);
+  v10 = xpc_string_create(uTF8String);
   container_query_set_identifiers();
 
   container_query_set_class();
   container_query_set_include_other_owners();
-  v11 = [v7 UTF8String];
+  uTF8String2 = [stringCopy UTF8String];
 
   v12 = *MEMORY[0x277D85ED0];
-  if (!v11)
+  if (!uTF8String2)
   {
     v13 = *MEMORY[0x277D85ED0];
   }
@@ -106,7 +106,7 @@ uint64_t __55__STContainer_containersWithClass_personaUniqueString___block_invok
   single_result = container_query_get_single_result();
   if (single_result)
   {
-    v15 = [[a1 alloc] initWithLibsystemContainer:single_result];
+    v15 = [[self alloc] initWithLibsystemContainer:single_result];
   }
 
   else

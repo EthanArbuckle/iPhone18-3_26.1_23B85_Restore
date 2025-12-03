@@ -1,17 +1,17 @@
 @interface HUMediaServiceSettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
 - (HUMediaServiceSettingsItemModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUMediaServiceSettingsItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -29,16 +29,16 @@
   return v7;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = HUMediaServiceSettingsItemModuleController;
-  [(HUItemModuleController *)&v19 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v19 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v8;
+  v10 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -51,19 +51,19 @@
 
   v12 = v11;
 
-  v13 = [v9 latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults = [itemCopy latestResults];
+  v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v12 setTitleText:v14];
 
   [v12 setAccessoryType:1];
-  v15 = [(HUItemModuleController *)self module];
-  v16 = [v15 defaultAccountsItem];
+  module = [(HUItemModuleController *)self module];
+  defaultAccountsItem = [module defaultAccountsItem];
 
-  if (v16 == v9)
+  if (defaultAccountsItem == itemCopy)
   {
     [v12 setHideIcon:1];
-    v17 = [v9 latestResults];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    latestResults2 = [itemCopy latestResults];
+    v18 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     [v12 setValueText:v18];
   }
 
@@ -73,21 +73,21 @@
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 defaultAccountsItem];
-  v7 = v6;
-  if (v6 == v4)
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  defaultAccountsItem = [module defaultAccountsItem];
+  v7 = defaultAccountsItem;
+  if (defaultAccountsItem == itemCopy)
   {
-    v8 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
+    delegate = [(HUMediaServiceSettingsItemModuleController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
-      [v10 didSelectDefaultAccounts:self];
+      delegate2 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
+      [delegate2 didSelectDefaultAccounts:self];
 LABEL_7:
 
       goto LABEL_8;
@@ -98,13 +98,13 @@ LABEL_7:
   {
   }
 
-  v11 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
+  delegate3 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v10 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
-    [v10 mediaServiceSettingsItemModuleController:self didSelectMediaService:v4];
+    delegate2 = [(HUMediaServiceSettingsItemModuleController *)self delegate];
+    [delegate2 mediaServiceSettingsItemModuleController:self didSelectMediaService:itemCopy];
     goto LABEL_7;
   }
 

@@ -1,21 +1,21 @@
 @interface BRDaemonConnection
-+ (void)registerPersonaDomainIdentifer:(id)a3 databaseID:(id)a4 delegate:(id)a5;
-+ (void)unregisterPersonaDomainIdentifierAndDatabaseIDForDelegate:(id)a3;
-- (BOOL)validateConnectionExtensionInfoForPersonaID:(id)a3;
++ (void)registerPersonaDomainIdentifer:(id)identifer databaseID:(id)d delegate:(id)delegate;
++ (void)unregisterPersonaDomainIdentifierAndDatabaseIDForDelegate:(id)delegate;
+- (BOOL)validateConnectionExtensionInfoForPersonaID:(id)d;
 @end
 
 @implementation BRDaemonConnection
 
-+ (void)registerPersonaDomainIdentifer:(id)a3 databaseID:(id)a4 delegate:(id)a5
++ (void)registerPersonaDomainIdentifer:(id)identifer databaseID:(id)d delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identiferCopy = identifer;
+  dCopy = d;
+  delegateCopy = delegate;
   v11 = +[UMUserManager sharedManager];
-  v12 = [v11 br_currentPersonaID];
+  br_currentPersonaID = [v11 br_currentPersonaID];
 
-  v13 = a1;
-  objc_sync_enter(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_100052378)
   {
     v14 = objc_opt_new();
@@ -23,8 +23,8 @@
     qword_100052378 = v14;
   }
 
-  v16 = [[BRICDExtensionInfo alloc] initWithDomainIdentifier:v8 databaseID:v9 delegate:v10];
-  v17 = [qword_100052378 objectForKeyedSubscript:v12];
+  v16 = [[BRICDExtensionInfo alloc] initWithDomainIdentifier:identiferCopy databaseID:dCopy delegate:delegateCopy];
+  v17 = [qword_100052378 objectForKeyedSubscript:br_currentPersonaID];
   if (v17)
   {
     if (![(BRICDExtensionInfo *)v16 isEqualToExtensionInfo:v17])
@@ -41,19 +41,19 @@
       }
 
       brc_append_system_info_to_message();
-      v29 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("+[BRDaemonConnection(FPFSExtensionAdditions) registerPersonaDomainIdentifer:databaseID:delegate:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/os-plugins/fileprovider-extension-iclouddrive/BRDaemonConnection+FPFSExtensionAdditions.m", 112, v29);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("+[BRDaemonConnection(FPFSExtensionAdditions) registerPersonaDomainIdentifer:databaseID:delegate:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/os-plugins/fileprovider-extension-iclouddrive/BRDaemonConnection+FPFSExtensionAdditions.m", 112, uTF8String);
     }
 
-    v18 = [v17 delegates];
-    [v18 addObject:v10];
+    delegates = [v17 delegates];
+    [delegates addObject:delegateCopy];
 
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       v30 = 138412802;
-      v31 = v10;
+      v31 = delegateCopy;
       v32 = 2112;
       v33 = v17;
       v34 = 2112;
@@ -68,7 +68,7 @@ LABEL_10:
 
   else
   {
-    [qword_100052378 setObject:v16 forKeyedSubscript:v12];
+    [qword_100052378 setObject:v16 forKeyedSubscript:br_currentPersonaID];
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -76,9 +76,9 @@ LABEL_10:
       v30 = 138413058;
       v31 = v16;
       v32 = 2112;
-      v33 = v12;
+      v33 = br_currentPersonaID;
       v34 = 2112;
-      v35 = v10;
+      v35 = delegateCopy;
       v36 = 2112;
       v37 = v19;
       v21 = "[DEBUG] Registered extensionInfo %@ for persona %@ for delegate %@%@";
@@ -88,23 +88,23 @@ LABEL_10:
     }
   }
 
-  objc_sync_exit(v13);
-  v24 = [v13 defaultConnectionIfExistsForPersonaID:v12];
-  [v24 validateConnectionExtensionInfoForPersonaID:v12];
+  objc_sync_exit(selfCopy);
+  v24 = [selfCopy defaultConnectionIfExistsForPersonaID:br_currentPersonaID];
+  [v24 validateConnectionExtensionInfoForPersonaID:br_currentPersonaID];
 
-  v25 = [v13 secondaryConnectionIfExistsForPersonaID:v12];
-  [v25 validateConnectionExtensionInfoForPersonaID:v12];
+  v25 = [selfCopy secondaryConnectionIfExistsForPersonaID:br_currentPersonaID];
+  [v25 validateConnectionExtensionInfoForPersonaID:br_currentPersonaID];
 }
 
-+ (void)unregisterPersonaDomainIdentifierAndDatabaseIDForDelegate:(id)a3
++ (void)unregisterPersonaDomainIdentifierAndDatabaseIDForDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = +[UMUserManager sharedManager];
-  v7 = [v6 br_currentPersonaID];
+  br_currentPersonaID = [v6 br_currentPersonaID];
 
-  v8 = [qword_100052378 objectForKeyedSubscript:v7];
+  v8 = [qword_100052378 objectForKeyedSubscript:br_currentPersonaID];
   if (!v8)
   {
     v21 = brc_bread_crumbs();
@@ -115,14 +115,14 @@ LABEL_10:
     }
   }
 
-  v9 = [v8 delegates];
-  v10 = [v9 count];
+  delegates = [v8 delegates];
+  v10 = [delegates count];
 
-  v11 = [v8 delegates];
-  [v11 removeObject:v4];
+  delegates2 = [v8 delegates];
+  [delegates2 removeObject:delegateCopy];
 
-  v12 = [v8 delegates];
-  v13 = [v12 count];
+  delegates3 = [v8 delegates];
+  v13 = [delegates3 count];
 
   if (v10 == v13)
   {
@@ -131,7 +131,7 @@ LABEL_10:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
       v23 = 138412802;
-      v24 = v4;
+      v24 = delegateCopy;
       v25 = 2112;
       v26 = v8;
       v27 = 2112;
@@ -147,7 +147,7 @@ LABEL_10:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v23 = 138412802;
-      v24 = v4;
+      v24 = delegateCopy;
       v25 = 2112;
       v26 = v8;
       v27 = 2112;
@@ -175,7 +175,7 @@ LABEL_10:
       sub_100027164();
     }
 
-    [qword_100052378 setObject:0 forKeyedSubscript:v7];
+    [qword_100052378 setObject:0 forKeyedSubscript:br_currentPersonaID];
     v20 = +[BRDaemonConnection defaultConnectionIfExists];
     [v20 invalidate];
 
@@ -183,22 +183,22 @@ LABEL_10:
     [v16 invalidate];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)validateConnectionExtensionInfoForPersonaID:(id)a3
+- (BOOL)validateConnectionExtensionInfoForPersonaID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [qword_100052378 objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [qword_100052378 objectForKeyedSubscript:dCopy];
   if (v6)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v7 = [v6 databaseID];
+    databaseID = [v6 databaseID];
 
-    if (!v7)
+    if (!databaseID)
     {
       v8 = brc_bread_crumbs();
       v9 = brc_default_log();
@@ -220,27 +220,27 @@ LABEL_10:
       sub_100027254();
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
-  v12 = [(BRDaemonConnection *)v5 newFPFSSyncProxy];
-  v13 = [v6 domainIdentifier];
-  v14 = [v6 databaseID];
+  newFPFSSyncProxy = [(BRDaemonConnection *)selfCopy newFPFSSyncProxy];
+  domainIdentifier = [v6 domainIdentifier];
+  databaseID2 = [v6 databaseID];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10000DB84;
   v19[3] = &unk_100044A48;
   v20 = v6;
-  v21 = v5;
-  v22 = v12;
-  v15 = v12;
+  v21 = selfCopy;
+  v22 = newFPFSSyncProxy;
+  v15 = newFPFSSyncProxy;
   v16 = v6;
-  [v15 validateConnectionDomainWithDomainIdentifier:v13 databaseID:v14 reply:v19];
+  [v15 validateConnectionDomainWithDomainIdentifier:domainIdentifier databaseID:databaseID2 reply:v19];
 
-  v17 = [v15 result];
-  LOBYTE(v13) = [v17 BOOLValue];
+  result = [v15 result];
+  LOBYTE(domainIdentifier) = [result BOOLValue];
 
-  return v13;
+  return domainIdentifier;
 }
 
 @end

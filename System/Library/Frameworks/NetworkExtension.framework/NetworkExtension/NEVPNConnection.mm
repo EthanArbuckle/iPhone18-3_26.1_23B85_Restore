@@ -1,23 +1,23 @@
 @interface NEVPNConnection
-+ (id)createConnectionForEnabledEnterpriseConfigurationWithName:(id)a3;
++ (id)createConnectionForEnabledEnterpriseConfigurationWithName:(id)name;
 + (id)createConnectionForURLFilter;
-+ (id)createDisconnectErrorWithDomain:(id)a3 code:(unsigned int)a4;
++ (id)createDisconnectErrorWithDomain:(id)domain code:(unsigned int)code;
 - (BOOL)startVPNTunnelWithOptions:(NSDictionary *)options andReturnError:(NSError *)error;
 - (NEVPNManager)manager;
-- (id)initWithType:(void *)a1;
+- (id)initWithType:(void *)type;
 - (uint64_t)reload;
-- (void)createSessionWithConfigurationIdentifier:(uint64_t)a3 forceInfoFetch:(void *)a4 completionHandler:;
+- (void)createSessionWithConfigurationIdentifier:(uint64_t)identifier forceInfoFetch:(void *)fetch completionHandler:;
 - (void)dealloc;
 - (void)destroySession;
-- (void)fetchExtendedStatusWithCompletionHandler:(id)a3;
+- (void)fetchExtendedStatusWithCompletionHandler:(id)handler;
 - (void)fetchLastDisconnectErrorWithCompletionHandler:(void *)handler;
 - (void)fetchServerParameters;
-- (void)fetchStatisticsWithCompletionHandler:(id)a3;
+- (void)fetchStatisticsWithCompletionHandler:(id)handler;
 - (void)notifyStatusChanged;
 - (void)resetCache;
-- (void)resetLastDisconnectError:(void *)a1;
+- (void)resetLastDisconnectError:(void *)error;
 - (void)stopVPNTunnel;
-- (void)updateSessionInfoForce:(uint64_t)a3 notify:(void *)a4 withCompletionHandler:;
+- (void)updateSessionInfoForce:(uint64_t)force notify:(void *)notify withCompletionHandler:;
 @end
 
 @implementation NEVPNConnection
@@ -64,16 +64,16 @@
   }
 }
 
-- (void)fetchStatisticsWithCompletionHandler:(id)a3
+- (void)fetchStatisticsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     session = self->_session;
   }
 
-  v7 = v4;
-  v6 = v4;
+  v7 = handlerCopy;
+  v6 = handlerCopy;
   ne_session_get_info();
 }
 
@@ -93,28 +93,28 @@ void __56__NEVPNConnection_fetchStatisticsWithCompletionHandler___block_invoke(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchExtendedStatusWithCompletionHandler:(id)a3
+- (void)fetchExtendedStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__NEVPNConnection_fetchExtendedStatusWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7F0B050;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(NEVPNConnection *)self updateSessionInfoForce:0 notify:v6 withCompletionHandler:?];
 }
 
-- (void)updateSessionInfoForce:(uint64_t)a3 notify:(void *)a4 withCompletionHandler:
+- (void)updateSessionInfoForce:(uint64_t)force notify:(void *)notify withCompletionHandler:
 {
-  v5 = a4;
-  v6 = v5;
-  if (a1)
+  notifyCopy = notify;
+  v6 = notifyCopy;
+  if (self)
   {
-    if (*(a1 + 56))
+    if (*(self + 56))
     {
-      v10 = *(a1 + 56);
-      v9 = v5;
+      v10 = *(self + 56);
+      v9 = notifyCopy;
       ne_session_get_info2();
     }
 
@@ -312,33 +312,33 @@ LABEL_33:
 LABEL_36:
 }
 
-- (void)resetLastDisconnectError:(void *)a1
+- (void)resetLastDisconnectError:(void *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (error)
   {
-    v5 = a1;
-    objc_sync_enter(v5);
-    v7 = v5 + 9;
-    v6 = v5[9];
+    errorCopy = error;
+    objc_sync_enter(errorCopy);
+    v7 = errorCopy + 9;
+    v6 = errorCopy[9];
     if (v6 == v4 || ([v6 isEqual:v4] & 1) != 0)
     {
-      objc_sync_exit(v5);
+      objc_sync_exit(errorCopy);
 
       goto LABEL_29;
     }
 
-    v8 = v5[5];
-    v9 = [v5 manager];
+    v8 = errorCopy[5];
+    manager = [errorCopy manager];
 
-    if (v9)
+    if (manager)
     {
-      v10 = [v5 manager];
-      v11 = [v10 configuration];
-      v12 = [v11 name];
+      manager2 = [errorCopy manager];
+      configuration = [manager2 configuration];
+      name = [configuration name];
 
-      v8 = v12;
+      v8 = name;
     }
 
     if (v8)
@@ -349,32 +349,32 @@ LABEL_36:
         v14 = *v7;
         if (*v7)
         {
-          v15 = [*v7 localizedDescription];
+          localizedDescription = [*v7 localizedDescription];
           if (v4)
           {
 LABEL_11:
-            v16 = [v4 localizedDescription];
+            localizedDescription2 = [v4 localizedDescription];
             goto LABEL_18;
           }
         }
 
         else
         {
-          v15 = @"none";
+          localizedDescription = @"none";
           if (v4)
           {
             goto LABEL_11;
           }
         }
 
-        v16 = @"none";
+        localizedDescription2 = @"none";
 LABEL_18:
         v20 = 138412802;
         v21 = v8;
         v22 = 2112;
-        v23 = v15;
+        v23 = localizedDescription;
         v24 = 2112;
-        v25 = v16;
+        v25 = localizedDescription2;
         _os_log_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_DEFAULT, "Last disconnect error for %@ changed from %@ to %@", &v20, 0x20u);
         if (v4)
         {
@@ -390,11 +390,11 @@ LABEL_18:
 
 LABEL_28:
 
-      [v5 willChangeValueForKey:@"lastDisconnectError"];
-      objc_storeStrong(v5 + 9, a2);
+      [errorCopy willChangeValueForKey:@"lastDisconnectError"];
+      objc_storeStrong(errorCopy + 9, a2);
 
-      objc_sync_exit(v5);
-      [v5 didChangeValueForKey:@"lastDisconnectError"];
+      objc_sync_exit(errorCopy);
+      [errorCopy didChangeValueForKey:@"lastDisconnectError"];
       goto LABEL_29;
     }
 
@@ -407,30 +407,30 @@ LABEL_28:
     v17 = *v7;
     if (*v7)
     {
-      v15 = [*v7 localizedDescription];
+      localizedDescription = [*v7 localizedDescription];
       if (v4)
       {
 LABEL_15:
-        v18 = [v4 localizedDescription];
+        localizedDescription3 = [v4 localizedDescription];
         goto LABEL_24;
       }
     }
 
     else
     {
-      v15 = @"none";
+      localizedDescription = @"none";
       if (v4)
       {
         goto LABEL_15;
       }
     }
 
-    v18 = @"none";
+    localizedDescription3 = @"none";
 LABEL_24:
     v20 = 138412546;
-    v21 = v15;
+    v21 = localizedDescription;
     v22 = 2112;
-    v23 = v18;
+    v23 = localizedDescription3;
     _os_log_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_DEFAULT, "Last disconnect error changed from %@ to %@", &v20, 0x16u);
     if (v4)
     {
@@ -453,10 +453,10 @@ LABEL_29:
 
 - (void)notifyStatusChanged
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 postNotificationName:@"com.apple.networkextension.statuschanged" object:a1];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.networkextension.statuschanged" object:self];
   }
 }
 
@@ -648,8 +648,8 @@ LABEL_38:
 
 - (void)stopVPNTunnel
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (+[NEProvider isRunningInProvider])
   {
     v3 = ne_log_obj();
@@ -660,19 +660,19 @@ LABEL_38:
     }
   }
 
-  else if (v2 && v2->_session)
+  else if (selfCopy && selfCopy->_session)
   {
     ne_session_stop();
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)startVPNTunnelWithOptions:(NSDictionary *)options andReturnError:(NSError *)error
 {
   v6 = options;
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (+[NEProvider isRunningInProvider])
   {
     v8 = ne_log_obj();
@@ -700,8 +700,8 @@ LABEL_17:
     *error = 0;
   }
 
-  v10 = [(NEVPNConnection *)v7 status];
-  if (!v7 || !v10 || !v7->_session)
+  status = [(NEVPNConnection *)selfCopy status];
+  if (!selfCopy || !status || !selfCopy->_session)
   {
     if (error)
     {
@@ -715,26 +715,26 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([(NEVPNConnection *)v7 status]== NEVPNStatusDisconnected)
+  if ([(NEVPNConnection *)selfCopy status]== NEVPNStatusDisconnected)
   {
-    v11 = [(NEVPNConnection *)v7 manager];
-    if (v11)
+    manager = [(NEVPNConnection *)selfCopy manager];
+    if (manager)
     {
-      v12 = [(NEVPNConnection *)v7 manager];
-      v13 = [v12 configuration];
-      v14 = [v13 VPN];
+      manager2 = [(NEVPNConnection *)selfCopy manager];
+      configuration = [manager2 configuration];
+      v14 = [configuration VPN];
       if ([v14 isEnabled])
       {
       }
 
       else
       {
-        v17 = [(NEVPNConnection *)v7 manager];
-        v18 = [v17 configuration];
-        v19 = [v18 appVPN];
-        v23 = [v19 isEnabled];
+        manager3 = [(NEVPNConnection *)selfCopy manager];
+        configuration2 = [manager3 configuration];
+        appVPN = [configuration2 appVPN];
+        isEnabled = [appVPN isEnabled];
 
-        if ((v23 & 1) == 0)
+        if ((isEnabled & 1) == 0)
         {
           if (error)
           {
@@ -748,7 +748,7 @@ LABEL_27:
     }
   }
 
-  if (v6 || (-[NEVPNConnection manager](v7, "manager"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && (-[NEVPNConnection manager](v7, "manager"), v20 = objc_claimAutoreleasedReturnValue(), v6 = [v20 copyCurrentUserStartOptions], v20, v6))
+  if (v6 || (-[NEVPNConnection manager](selfCopy, "manager"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && (-[NEVPNConnection manager](selfCopy, "manager"), v20 = objc_claimAutoreleasedReturnValue(), v6 = [v20 copyCurrentUserStartOptions], v20, v6))
   {
     v15 = _CFXPCCreateXPCObjectFromCFObject();
   }
@@ -758,12 +758,12 @@ LABEL_27:
     v15 = 0;
   }
 
-  session = v7->_session;
+  session = selfCopy->_session;
   ne_session_start_with_options();
   v16 = 1;
 LABEL_28:
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   return v16;
 }
 
@@ -961,27 +961,27 @@ void __25__NEVPNConnection_reload__block_invoke_2(uint64_t a1, void *a2)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createSessionWithConfigurationIdentifier:(uint64_t)a3 forceInfoFetch:(void *)a4 completionHandler:
+- (void)createSessionWithConfigurationIdentifier:(uint64_t)identifier forceInfoFetch:(void *)fetch completionHandler:
 {
   v38[2] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  fetchCopy = fetch;
+  if (self)
   {
-    v9 = a1;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v38[0] = 0;
     v38[1] = 0;
     if (v7)
     {
-      if (*(v9 + 7))
+      if (*(selfCopy + 7))
       {
         ne_session_cancel();
-        *(v9 + 7) = 0;
+        *(selfCopy + 7) = 0;
       }
 
       [v7 getUUIDBytes:v38];
-      v10 = v9[3];
+      v10 = selfCopy[3];
       v11 = ne_session_create();
       if (v11)
       {
@@ -990,17 +990,17 @@ void __25__NEVPNConnection_reload__block_invoke_2(uint64_t a1, void *a2)
         v23 = 3221225472;
         v24 = __93__NEVPNConnection_createSessionWithConfigurationIdentifier_forceInfoFetch_completionHandler___block_invoke_2;
         v25 = &unk_1E7F0B028;
-        v26 = v9;
+        v26 = selfCopy;
         v27 = v11;
         ne_session_set_event_handler();
 
-        *(v9 + 7) = v11;
+        *(selfCopy + 7) = v11;
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __93__NEVPNConnection_createSessionWithConfigurationIdentifier_forceInfoFetch_completionHandler___block_invoke_3;
         v20[3] = &unk_1E7F0B050;
-        v21 = v8;
-        [(NEVPNConnection *)v9 updateSessionInfoForce:a3 notify:1 withCompletionHandler:v20];
+        v21 = fetchCopy;
+        [(NEVPNConnection *)selfCopy updateSessionInfoForce:identifier notify:1 withCompletionHandler:v20];
       }
 
       else
@@ -1015,7 +1015,7 @@ void __25__NEVPNConnection_reload__block_invoke_2(uint64_t a1, void *a2)
           _os_log_error_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_ERROR, "%s: Cannot create ne_session for configID: %@", buf, 0x16u);
         }
 
-        if (v8)
+        if (fetchCopy)
         {
           v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NEVPNErrorDomain" code:1 userInfo:0];
           v28[0] = MEMORY[0x1E69E9820];
@@ -1023,7 +1023,7 @@ void __25__NEVPNConnection_reload__block_invoke_2(uint64_t a1, void *a2)
           v28[2] = __93__NEVPNConnection_createSessionWithConfigurationIdentifier_forceInfoFetch_completionHandler___block_invoke_30;
           v28[3] = &unk_1E7F0B588;
           v29 = v17;
-          v30 = v8;
+          v30 = fetchCopy;
           v18 = v17;
           dispatch_async(MEMORY[0x1E69E96A0], v28);
         }
@@ -1040,7 +1040,7 @@ void __25__NEVPNConnection_reload__block_invoke_2(uint64_t a1, void *a2)
         _os_log_error_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_ERROR, "%s: Cannot create ne_session for nil configID", buf, 0xCu);
       }
 
-      if (v8)
+      if (fetchCopy)
       {
         v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NEVPNErrorDomain" code:1 userInfo:0];
         block[0] = MEMORY[0x1E69E9820];
@@ -1048,13 +1048,13 @@ void __25__NEVPNConnection_reload__block_invoke_2(uint64_t a1, void *a2)
         block[2] = __93__NEVPNConnection_createSessionWithConfigurationIdentifier_forceInfoFetch_completionHandler___block_invoke;
         block[3] = &unk_1E7F0B588;
         v32 = v14;
-        v33 = v8;
+        v33 = fetchCopy;
         v15 = v14;
         dispatch_async(MEMORY[0x1E69E96A0], block);
       }
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -1141,14 +1141,14 @@ uint64_t __47__NEVPNConnection_createConnectionForURLFilter__block_invoke()
   return [(NEVPNConnection *)v11 reload];
 }
 
-- (id)initWithType:(void *)a1
+- (id)initWithType:(void *)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = type;
   v7.super_class = NEVPNConnection;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   v4 = v3;
@@ -1165,16 +1165,16 @@ uint64_t __47__NEVPNConnection_createConnectionForURLFilter__block_invoke()
   return v4;
 }
 
-+ (id)createConnectionForEnabledEnterpriseConfigurationWithName:(id)a3
++ (id)createConnectionForEnabledEnterpriseConfigurationWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__NEVPNConnection_createConnectionForEnabledEnterpriseConfigurationWithName___block_invoke;
   block[3] = &unk_1E7F0B0E8;
-  v9 = v3;
+  v9 = nameCopy;
   v4 = createConnectionForEnabledEnterpriseConfigurationWithName__onceToken;
-  v5 = v3;
+  v5 = nameCopy;
   if (v4 != -1)
   {
     dispatch_once(&createConnectionForEnabledEnterpriseConfigurationWithName__onceToken, block);
@@ -1230,15 +1230,15 @@ uint64_t __77__NEVPNConnection_createConnectionForEnabledEnterpriseConfiguration
   return [(NEVPNConnection *)v14 reload];
 }
 
-+ (id)createDisconnectErrorWithDomain:(id)a3 code:(unsigned int)a4
++ (id)createDisconnectErrorWithDomain:(id)domain code:(unsigned int)code
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 isEqualToString:@"NEVPNConnectionErrorDomainPlugin"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"NEVPNConnectionErrorDomainPlugin"])
   {
     v6 = 0;
     v7 = 0;
-    switch(a4)
+    switch(code)
     {
       case 2u:
         v8 = @"VPN_DISCONNECT_ERROR_OVERSLEPT";
@@ -1317,10 +1317,10 @@ uint64_t __77__NEVPNConnection_createConnectionForEnabledEnterpriseConfiguration
   else
   {
     v6 = 0;
-    if ([v5 isEqualToString:@"NEVPNConnectionErrorDomainIPSec"])
+    if ([domainCopy isEqualToString:@"NEVPNConnectionErrorDomainIPSec"])
     {
       v7 = 0;
-      switch(a4)
+      switch(code)
       {
         case 2u:
 LABEL_19:
@@ -1411,7 +1411,7 @@ LABEL_32:
           v13 = *MEMORY[0x1E696A578];
           v14[0] = v6;
           v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-          v7 = [v9 initWithDomain:v5 code:a4 userInfo:v10];
+          v7 = [v9 initWithDomain:domainCopy code:code userInfo:v10];
 
           break;
         default:
@@ -1434,9 +1434,9 @@ LABEL_34:
 
 - (void)destroySession
 {
-  if (a1)
+  if (self)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     v1 = obj;
     if (obj[7])
@@ -1450,8 +1450,8 @@ LABEL_34:
     if (v1[2])
     {
       v1[2] = 0;
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v3 postNotificationName:@"com.apple.networkextension.statuschanged" object:obj];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"com.apple.networkextension.statuschanged" object:obj];
 
       v2 = obj;
     }

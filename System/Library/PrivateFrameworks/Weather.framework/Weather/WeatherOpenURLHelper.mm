@@ -1,31 +1,31 @@
 @interface WeatherOpenURLHelper
-+ (BOOL)handleOpenURL:(id)a3 withContainerViewController:(id)a4 completion:(id)a5;
-+ (id)URLForCity:(id)a3;
-+ (id)URLForWeatherCityComponents:(id)a3;
-+ (id)cityFromURL:(id)a3 withContainerViewController:(id)a4;
-+ (id)cityFromURLComponents:(id)a3 listedCities:(id)a4;
-+ (id)transientCityFromURLComponents:(id)a3;
-+ (void)displayCity:(id)a3 usingController:(id)a4 completion:(id)a5;
-+ (void)presentAddTransientCityDialog:(id)a3 usingController:(id)a4;
++ (BOOL)handleOpenURL:(id)l withContainerViewController:(id)controller completion:(id)completion;
++ (id)URLForCity:(id)city;
++ (id)URLForWeatherCityComponents:(id)components;
++ (id)cityFromURL:(id)l withContainerViewController:(id)controller;
++ (id)cityFromURLComponents:(id)components listedCities:(id)cities;
++ (id)transientCityFromURLComponents:(id)components;
++ (void)displayCity:(id)city usingController:(id)controller completion:(id)completion;
++ (void)presentAddTransientCityDialog:(id)dialog usingController:(id)controller;
 @end
 
 @implementation WeatherOpenURLHelper
 
-+ (id)URLForCity:(id)a3
++ (id)URLForCity:(id)city
 {
-  v4 = [a3 urlComponents];
-  v5 = [a1 URLForWeatherCityComponents:v4];
+  urlComponents = [city urlComponents];
+  v5 = [self URLForWeatherCityComponents:urlComponents];
 
   return v5;
 }
 
-+ (id)URLForWeatherCityComponents:(id)a3
++ (id)URLForWeatherCityComponents:(id)components
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"lat"];
+  componentsCopy = components;
+  v4 = [componentsCopy objectForKeyedSubscript:@"lat"];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"long"];
+    v5 = [componentsCopy objectForKeyedSubscript:@"long"];
     if (v5)
     {
       v6 = 1;
@@ -33,7 +33,7 @@
 
     else
     {
-      v7 = [v3 objectForKeyedSubscript:@"lng"];
+      v7 = [componentsCopy objectForKeyedSubscript:@"lng"];
       v6 = v7 != 0;
     }
   }
@@ -43,21 +43,21 @@
     v6 = 0;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"index"];
+  v8 = [componentsCopy objectForKeyedSubscript:@"index"];
 
-  v9 = [v3 objectForKeyedSubscript:@"isLocal"];
-  v10 = [v9 BOOLValue];
+  v9 = [componentsCopy objectForKeyedSubscript:@"isLocal"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v6 || v8 || v10)
+  if (v6 || v8 || bOOLValue)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __52__WeatherOpenURLHelper_URLForWeatherCityComponents___block_invoke;
     v16[3] = &unk_279E68F68;
-    v17 = v12;
-    v13 = v12;
-    [v3 enumerateKeysAndObjectsUsingBlock:v16];
+    v17 = array;
+    v13 = array;
+    [componentsCopy enumerateKeysAndObjectsUsingBlock:v16];
     v14 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v14 setScheme:@"weather"];
     [v14 setQueryItems:v13];
@@ -89,19 +89,19 @@ void __52__WeatherOpenURLHelper_URLForWeatherCityComponents___block_invoke(uint6
   [v7 addObject:v8];
 }
 
-+ (id)cityFromURL:(id)a3 withContainerViewController:(id)a4
++ (id)cityFromURL:(id)l withContainerViewController:(id)controller
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CCACE0] componentsWithURL:v5 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  controllerCopy = controller;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 queryItems];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  queryItems = [v8 queryItems];
+  v10 = [queryItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -112,31 +112,31 @@ void __52__WeatherOpenURLHelper_URLForWeatherCityComponents___block_invoke(uint6
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(queryItems);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 value];
-        v16 = [v14 name];
-        [v7 setObject:v15 forKeyedSubscript:v16];
+        value = [v14 value];
+        name = [v14 name];
+        [dictionary setObject:value forKeyedSubscript:name];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [queryItems countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
   }
 
-  v17 = [v7 objectForKey:@"index"];
-  v18 = [v6 cities];
+  v17 = [dictionary objectForKey:@"index"];
+  cities = [controllerCopy cities];
   if (v17)
   {
-    [v18 objectAtIndex:{objc_msgSend(v17, "integerValue")}];
+    [cities objectAtIndex:{objc_msgSend(v17, "integerValue")}];
   }
 
   else
   {
-    [a1 cityFromURLComponents:v7 listedCities:v18];
+    [self cityFromURLComponents:dictionary listedCities:cities];
   }
   v19 = ;
 
@@ -145,35 +145,35 @@ void __52__WeatherOpenURLHelper_URLForWeatherCityComponents___block_invoke(uint6
   return v19;
 }
 
-+ (BOOL)handleOpenURL:(id)a3 withContainerViewController:(id)a4 completion:(id)a5
++ (BOOL)handleOpenURL:(id)l withContainerViewController:(id)controller completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 cityFromURL:a3 withContainerViewController:v8];
+  controllerCopy = controller;
+  completionCopy = completion;
+  v10 = [self cityFromURL:l withContainerViewController:controllerCopy];
   if (v10)
   {
-    [a1 displayCity:v10 usingController:v8 completion:v9];
+    [self displayCity:v10 usingController:controllerCopy completion:completionCopy];
   }
 
   return v10 != 0;
 }
 
-+ (void)displayCity:(id)a3 usingController:(id)a4 completion:(id)a5
++ (void)displayCity:(id)city usingController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cityCopy = city;
+  controllerCopy = controller;
+  completionCopy = completion;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __63__WeatherOpenURLHelper_displayCity_usingController_completion___block_invoke;
   v18 = &unk_279E68F90;
-  v11 = v9;
+  v11 = controllerCopy;
   v19 = v11;
-  v12 = v8;
+  v12 = cityCopy;
   v20 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v21 = v13;
-  v22 = a1;
+  selfCopy = self;
   v14 = MEMORY[0x2743D4690](&v15);
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
@@ -231,17 +231,17 @@ void __63__WeatherOpenURLHelper_displayCity_usingController_completion___block_i
   }
 }
 
-+ (void)presentAddTransientCityDialog:(id)a3 usingController:(id)a4
++ (void)presentAddTransientCityDialog:(id)dialog usingController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isTransient])
+  dialogCopy = dialog;
+  controllerCopy = controller;
+  if ([dialogCopy isTransient])
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"ADD_TRANSIENT_CITY_ALERT_TITLE-%@" value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
-    v10 = [v5 name];
-    v24 = [v7 stringWithFormat:v9, v10];
+    name = [dialogCopy name];
+    v24 = [v7 stringWithFormat:v9, name];
 
     v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v24 message:0 preferredStyle:1];
     v12 = MEMORY[0x277CCACA8];
@@ -262,8 +262,8 @@ void __63__WeatherOpenURLHelper_displayCity_usingController_completion___block_i
     v25[1] = 3221225472;
     v25[2] = __70__WeatherOpenURLHelper_presentAddTransientCityDialog_usingController___block_invoke_2;
     v25[3] = &unk_279E68FD8;
-    v26 = v5;
-    v22 = v6;
+    v26 = dialogCopy;
+    v22 = controllerCopy;
     v27 = v22;
     v23 = [v21 actionWithTitle:v20 style:0 handler:v25];
     [v11 addAction:v23];
@@ -280,12 +280,12 @@ uint64_t __70__WeatherOpenURLHelper_presentAddTransientCityDialog_usingControlle
   return [v2 saveStateToDisk];
 }
 
-+ (id)cityFromURLComponents:(id)a3 listedCities:(id)a4
++ (id)cityFromURLComponents:(id)components listedCities:(id)cities
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"lat"];
-  v9 = [v6 objectForKey:@"long"];
+  componentsCopy = components;
+  citiesCopy = cities;
+  v8 = [componentsCopy objectForKey:@"lat"];
+  v9 = [componentsCopy objectForKey:@"long"];
   v10 = v9;
   if (v9)
   {
@@ -294,26 +294,26 @@ uint64_t __70__WeatherOpenURLHelper_presentAddTransientCityDialog_usingControlle
 
   else
   {
-    v11 = [v6 objectForKey:@"lng"];
+    v11 = [componentsCopy objectForKey:@"lng"];
   }
 
   v12 = v11;
 
-  v13 = [v6 objectForKey:@"city"];
+  v13 = [componentsCopy objectForKey:@"city"];
   v14 = objc_alloc(MEMORY[0x277CE41F8]);
   [v8 floatValue];
   v16 = v15;
   [v12 floatValue];
   v18 = [v14 initWithLatitude:v16 longitude:v17];
-  v19 = [v6 objectForKey:@"isLocal"];
-  v20 = [v19 BOOLValue];
+  v19 = [componentsCopy objectForKey:@"isLocal"];
+  bOOLValue = [v19 BOOLValue];
 
-  if (!v20 || ([v7 na_firstObjectPassingTest:&__block_literal_global_56], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!bOOLValue || ([citiesCopy na_firstObjectPassingTest:&__block_literal_global_56], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v21 = [City cityContainingLocation:v18 expectedName:v13 fromCities:v7];
+    v21 = [City cityContainingLocation:v18 expectedName:v13 fromCities:citiesCopy];
     if (!v21)
     {
-      v21 = [a1 transientCityFromURLComponents:v6];
+      v21 = [self transientCityFromURLComponents:componentsCopy];
     }
   }
 
@@ -322,11 +322,11 @@ uint64_t __70__WeatherOpenURLHelper_presentAddTransientCityDialog_usingControlle
   return v22;
 }
 
-+ (id)transientCityFromURLComponents:(id)a3
++ (id)transientCityFromURLComponents:(id)components
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"lat"];
-  v5 = [v3 objectForKey:@"long"];
+  componentsCopy = components;
+  v4 = [componentsCopy objectForKey:@"lat"];
+  v5 = [componentsCopy objectForKey:@"long"];
   v6 = v5;
   if (v5)
   {
@@ -335,12 +335,12 @@ uint64_t __70__WeatherOpenURLHelper_presentAddTransientCityDialog_usingControlle
 
   else
   {
-    v7 = [v3 objectForKey:@"lng"];
+    v7 = [componentsCopy objectForKey:@"lng"];
   }
 
   v8 = v7;
 
-  v9 = [v3 objectForKey:@"city"];
+  v9 = [componentsCopy objectForKey:@"city"];
   v10 = objc_opt_new();
   [v10 setName:v9];
   [v4 floatValue];

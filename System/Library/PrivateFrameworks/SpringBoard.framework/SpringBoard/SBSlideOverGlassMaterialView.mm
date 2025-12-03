@@ -1,24 +1,24 @@
 @interface SBSlideOverGlassMaterialView
-- (SBSlideOverGlassMaterialView)initWithFrame:(CGRect)a3;
+- (SBSlideOverGlassMaterialView)initWithFrame:(CGRect)frame;
 - (id)_darkGlassBackgroundFilterParameters;
 - (id)_lightGlassBackgroundFilterParameters;
-- (void)_increaseContrastDidChange:(id)a3;
-- (void)_reduceTransparencyDidChange:(id)a3;
-- (void)_updateWithInterfaceStyle:(int64_t)a3;
-- (void)addSDFElementView:(id)a3;
+- (void)_increaseContrastDidChange:(id)change;
+- (void)_reduceTransparencyDidChange:(id)change;
+- (void)_updateWithInterfaceStyle:(int64_t)style;
+- (void)addSDFElementView:(id)view;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SBSlideOverGlassMaterialView
 
-- (SBSlideOverGlassMaterialView)initWithFrame:(CGRect)a3
+- (SBSlideOverGlassMaterialView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = SBSlideOverGlassMaterialView;
-  v3 = [(SBSlideOverGlassMaterialView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSlideOverGlassMaterialView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_SBSlideOverGlassMaterialBackgroundView alloc];
@@ -30,30 +30,30 @@
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v9;
 
-    v11 = [(_SBSlideOverGlassMaterialBackgroundView *)v3->_backgroundView layer];
-    [v11 setScale:0.2];
+    layer = [(_SBSlideOverGlassMaterialBackgroundView *)v3->_backgroundView layer];
+    [layer setScale:0.2];
     [(SBSlideOverGlassMaterialView *)v3 addSubview:v3->_backgroundView];
     v12 = [[SBSDFView alloc] initWithFrame:v5, v6, v7, v8];
     backgroundSDFView = v3->_backgroundSDFView;
     v3->_backgroundSDFView = v12;
 
-    v14 = [(SBSDFView *)v3->_backgroundSDFView layer];
-    [v14 setSmoothness:28.0];
+    layer2 = [(SBSDFView *)v3->_backgroundSDFView layer];
+    [layer2 setSmoothness:28.0];
 
-    v15 = [(SBSDFView *)v3->_backgroundSDFView layer];
-    [v15 setName:@"SDF Output"];
+    layer3 = [(SBSDFView *)v3->_backgroundSDFView layer];
+    [layer3 setName:@"SDF Output"];
     [(_SBSlideOverGlassMaterialBackgroundView *)v3->_backgroundView addSubview:v3->_backgroundSDFView];
     v16 = [[SBSDFView alloc] initWithFrame:v5, v6, v7, v8];
     specularSDFView = v3->_specularSDFView;
     v3->_specularSDFView = v16;
 
-    v18 = [(SBSDFView *)v3->_specularSDFView layer];
-    [v18 setSmoothness:28.0];
+    layer4 = [(SBSDFView *)v3->_specularSDFView layer];
+    [layer4 setSmoothness:28.0];
 
     [(SBSlideOverGlassMaterialView *)v3 addSubview:v3->_specularSDFView];
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v3 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
-    [v19 addObserver:v3 selector:sel__increaseContrastDidChange_ name:*MEMORY[0x277D76460] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    [defaultCenter addObserver:v3 selector:sel__increaseContrastDidChange_ name:*MEMORY[0x277D76460] object:0];
   }
 
   return v3;
@@ -61,18 +61,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBSlideOverGlassMaterialView;
   [(SBSlideOverGlassMaterialView *)&v4 dealloc];
 }
 
-- (void)addSDFElementView:(id)a3
+- (void)addSDFElementView:(id)view
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   backgroundSDFView = self->_backgroundSDFView;
   specularSDFView = self->_specularSDFView;
   v16 = 0u;
@@ -99,9 +99,9 @@
 
         v12 = *(*(&v16 + 1) + 8 * v11);
         v13 = objc_alloc_init(MEMORY[0x277D76180]);
-        v14 = [v13 layer];
-        v15 = [v4 layer];
-        [v14 setSourceLayer:v15];
+        layer = [v13 layer];
+        layer2 = [viewCopy layer];
+        [layer setSourceLayer:layer2];
 
         [v13 setHidesSourceView:1];
         [v13 setMatchesPosition:1];
@@ -131,20 +131,20 @@
   [(_SBSlideOverGlassMaterialBackgroundView *)backgroundView setCenter:?];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (v4)
+  windowCopy = window;
+  if (windowCopy)
   {
-    v5 = [(SBSlideOverGlassMaterialView *)self window];
+    window = [(SBSlideOverGlassMaterialView *)self window];
 
     v7.receiver = self;
     v7.super_class = SBSlideOverGlassMaterialView;
-    [(SBSlideOverGlassMaterialView *)&v7 willMoveToWindow:v4];
-    if (!v5)
+    [(SBSlideOverGlassMaterialView *)&v7 willMoveToWindow:windowCopy];
+    if (!window)
     {
-      v6 = [(SBSlideOverGlassMaterialView *)self traitCollection];
-      -[SBSlideOverGlassMaterialView _updateWithInterfaceStyle:](self, "_updateWithInterfaceStyle:", [v6 userInterfaceStyle]);
+      traitCollection = [(SBSlideOverGlassMaterialView *)self traitCollection];
+      -[SBSlideOverGlassMaterialView _updateWithInterfaceStyle:](self, "_updateWithInterfaceStyle:", [traitCollection userInterfaceStyle]);
     }
   }
 
@@ -156,73 +156,73 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SBSlideOverGlassMaterialView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(SBSlideOverGlassMaterialView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v7 = [v4 userInterfaceStyle];
-  if (v6 && v6 != v7)
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle && userInterfaceStyle != userInterfaceStyle2)
   {
 
-    [(SBSlideOverGlassMaterialView *)self _updateWithInterfaceStyle:v6];
+    [(SBSlideOverGlassMaterialView *)self _updateWithInterfaceStyle:userInterfaceStyle];
   }
 }
 
-- (void)_reduceTransparencyDidChange:(id)a3
+- (void)_reduceTransparencyDidChange:(id)change
 {
-  v4 = [(SBSlideOverGlassMaterialView *)self traitCollection];
-  -[SBSlideOverGlassMaterialView _updateWithInterfaceStyle:](self, "_updateWithInterfaceStyle:", [v4 userInterfaceStyle]);
+  traitCollection = [(SBSlideOverGlassMaterialView *)self traitCollection];
+  -[SBSlideOverGlassMaterialView _updateWithInterfaceStyle:](self, "_updateWithInterfaceStyle:", [traitCollection userInterfaceStyle]);
 }
 
-- (void)_increaseContrastDidChange:(id)a3
+- (void)_increaseContrastDidChange:(id)change
 {
-  v4 = [(SBSlideOverGlassMaterialView *)self traitCollection];
-  -[SBSlideOverGlassMaterialView _updateWithInterfaceStyle:](self, "_updateWithInterfaceStyle:", [v4 userInterfaceStyle]);
+  traitCollection = [(SBSlideOverGlassMaterialView *)self traitCollection];
+  -[SBSlideOverGlassMaterialView _updateWithInterfaceStyle:](self, "_updateWithInterfaceStyle:", [traitCollection userInterfaceStyle]);
 }
 
-- (void)_updateWithInterfaceStyle:(int64_t)a3
+- (void)_updateWithInterfaceStyle:(int64_t)style
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v19 = [(_SBSlideOverGlassMaterialBackgroundView *)self->_backgroundView layer];
+  layer = [(_SBSlideOverGlassMaterialBackgroundView *)self->_backgroundView layer];
   v4 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA330]];
-  v5 = [(SBSlideOverGlassMaterialView *)self _lightGlassBackgroundFilterParameters];
+  _lightGlassBackgroundFilterParameters = [(SBSlideOverGlassMaterialView *)self _lightGlassBackgroundFilterParameters];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __58__SBSlideOverGlassMaterialView__updateWithInterfaceStyle___block_invoke;
   v26[3] = &unk_2783AD138;
   v27 = v4;
   v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v26];
+  [_lightGlassBackgroundFilterParameters enumerateKeysAndObjectsUsingBlock:v26];
   v29[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-  [v19 setFilters:v7];
+  [layer setFilters:v7];
 
-  v8 = [(SBSDFView *)self->_backgroundSDFView layer];
+  layer2 = [(SBSDFView *)self->_backgroundSDFView layer];
   v9 = objc_alloc_init(MEMORY[0x277CD9F70]);
-  [v8 setEffect:v9];
-  v10 = [(SBSDFView *)self->_specularSDFView layer];
+  [layer2 setEffect:v9];
+  layer3 = [(SBSDFView *)self->_specularSDFView layer];
   v11 = objc_alloc_init(MEMORY[0x277CD9F60]);
   [v11 setKeyHeight:1.0];
   [v11 setCurvature:0.7];
   [v11 setKeyAngle:0.0];
   [v11 setKeySpread:2.7925268];
   [v11 setKeyAmount:0.5];
-  v12 = [MEMORY[0x277D75348] whiteColor];
-  v13 = [v12 colorWithAlphaComponent:1.0];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v13 = [whiteColor colorWithAlphaComponent:1.0];
   [v11 setKeyColor:{objc_msgSend(v13, "CGColor")}];
 
   [v11 setFillHeight:1.0];
   [v11 setFillAngle:3.14159265];
   [v11 setFillSpread:2.7925268];
   [v11 setFillAmount:0.5];
-  v14 = [MEMORY[0x277D75348] whiteColor];
-  v15 = [v14 colorWithAlphaComponent:1.0];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  v15 = [whiteColor2 colorWithAlphaComponent:1.0];
   [v11 setKeyColor:{objc_msgSend(v15, "CGColor")}];
 
   [v11 setGlobal:0];
-  [v10 setEffect:v11];
+  [layer3 setEffect:v11];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -241,7 +241,7 @@
   [v16 setValue:&unk_28336F380 forKey:@"inputClamp"];
   v28 = v16;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-  [v10 setFilters:v18];
+  [layer3 setFilters:v18];
 }
 
 - (id)_lightGlassBackgroundFilterParameters
@@ -411,11 +411,11 @@
   v34 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v55[22] = v34;
   v54[23] = *MEMORY[0x277CDA478];
-  v35 = [MEMORY[0x277D75348] whiteColor];
-  v36 = [v35 colorWithAlphaComponent:v15];
-  v37 = [v36 CGColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v36 = [whiteColor colorWithAlphaComponent:v15];
+  cGColor = [v36 CGColor];
   v38 = *MEMORY[0x277CDA370];
-  v55[23] = v37;
+  v55[23] = cGColor;
   v55[24] = &unk_28336F3D0;
   v39 = *MEMORY[0x277CDA3B8];
   v54[24] = v38;
@@ -444,10 +444,10 @@
   v54[33] = v45;
   v55[33] = &unk_28336F380;
   v54[34] = *MEMORY[0x277CDA388];
-  v46 = [MEMORY[0x277D75348] clearColor];
-  v47 = [v46 CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [clearColor CGColor];
   v54[35] = *MEMORY[0x277CDA528];
-  v55[34] = v47;
+  v55[34] = cGColor2;
   v55[35] = &unk_28336F3D0;
   v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:36];
 
@@ -516,11 +516,11 @@
   v13 = *MEMORY[0x277CDA478];
   v29[22] = *MEMORY[0x277CDA480];
   v29[23] = v13;
-  v14 = [MEMORY[0x277D75348] blackColor];
-  v15 = [v14 colorWithAlphaComponent:0.1];
-  v16 = [v15 CGColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v15 = [blackColor colorWithAlphaComponent:0.1];
+  cGColor = [v15 CGColor];
   v17 = *MEMORY[0x277CDA370];
-  v30[23] = v16;
+  v30[23] = cGColor;
   v30[24] = &unk_28336F3D0;
   v18 = *MEMORY[0x277CDA3B8];
   v29[24] = v17;
@@ -549,10 +549,10 @@
   v29[33] = v24;
   v30[33] = &unk_28336F380;
   v29[34] = *MEMORY[0x277CDA388];
-  v25 = [MEMORY[0x277D75348] clearColor];
-  v26 = [v25 CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [clearColor CGColor];
   v29[35] = *MEMORY[0x277CDA528];
-  v30[34] = v26;
+  v30[34] = cGColor2;
   v30[35] = &unk_28336F3D0;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:36];
 

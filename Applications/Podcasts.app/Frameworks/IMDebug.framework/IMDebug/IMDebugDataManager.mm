@@ -1,16 +1,16 @@
 @interface IMDebugDataManager
 + (id)deviceName;
-+ (id)writeDebugDataWithProgress:(id)a3;
++ (id)writeDebugDataWithProgress:(id)progress;
 + (void)initialize;
-+ (void)registerDataProvider:(id)a3;
-+ (void)writeDebugData:(id)a3 completion:(id)a4;
++ (void)registerDataProvider:(id)provider;
++ (void)writeDebugData:(id)data completion:(id)completion;
 @end
 
 @implementation IMDebugDataManager
 
 + (void)initialize
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___IMDebugDataManager;
   objc_msgSendSuper2(&v12, "initialize");
   v3 = objc_alloc_init(NSMutableArray);
@@ -22,43 +22,43 @@
   asyncDataProviders = v5;
 
   v7 = objc_alloc_init(IMDebugViewHierarchyDataProvider);
-  [a1 registerDataProvider:v7];
+  [self registerDataProvider:v7];
 
   v8 = objc_alloc_init(IMDebugViewControllerHierarchyDataProvider);
-  [a1 registerDataProvider:v8];
+  [self registerDataProvider:v8];
 
   v9 = objc_alloc_init(IMDebugScreenShotDataProvider);
-  [a1 registerDataProvider:v9];
+  [self registerDataProvider:v9];
 
   v10 = objc_alloc_init(IMDebugUserDefaultsDataProvider);
-  [a1 registerDataProvider:v10];
+  [self registerDataProvider:v10];
 
   v11 = objc_alloc_init(IMDebugDownloadReportDataProvider);
-  [a1 registerAsyncDataProvider:v11];
+  [self registerAsyncDataProvider:v11];
 }
 
-+ (void)registerDataProvider:(id)a3
++ (void)registerDataProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     [dataProviders addObject:?];
   }
 }
 
-+ (void)writeDebugData:(id)a3 completion:(id)a4
++ (void)writeDebugData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __48__IMDebugDataManager_writeDebugData_completion___block_invoke;
   block[3] = &unk_104E0;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = completionCopy;
+  selfCopy = self;
+  v12 = dataCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
   dispatch_async(v8, block);
 }
 
@@ -90,14 +90,14 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
 + (id)deviceName
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 name];
+  name = [v2 name];
 
-  return v3;
+  return name;
 }
 
-+ (id)writeDebugDataWithProgress:(id)a3
++ (id)writeDebugDataWithProgress:(id)progress
 {
-  v53 = a3;
+  progressCopy = progress;
   v60 = +[DebugUtil applicationDocumentsDirectory];
   v3 = +[NSBundle mainBundle];
   v62 = [v3 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
@@ -105,8 +105,8 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
   v4 = +[NSDate now];
   v58 = [v4 description];
 
-  v5 = [objc_opt_class() deviceName];
-  v57 = [NSString stringWithFormat:@"%@ %@ %@", v62, v58, v5];
+  deviceName = [objc_opt_class() deviceName];
+  v57 = [NSString stringWithFormat:@"%@ %@ %@", v62, v58, deviceName];
 
   v6 = [v60 URLByAppendingPathComponent:v57];
   v7 = [v6 URLByAppendingPathExtension:@"zip"];
@@ -133,21 +133,21 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
         }
 
         v13 = *(*(&v88 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        v15 = [v7 pathExtension];
-        v16 = [v14 isEqualToString:v15];
+        pathExtension = [v13 pathExtension];
+        pathExtension2 = [v7 pathExtension];
+        v16 = [pathExtension isEqualToString:pathExtension2];
 
         if (v16)
         {
-          v17 = [v13 pathComponents];
-          v18 = [v17 lastObject];
+          pathComponents = [v13 pathComponents];
+          lastObject = [pathComponents lastObject];
           v19 = +[NSCharacterSet whitespaceCharacterSet];
-          v20 = [v18 componentsSeparatedByCharactersInSet:v19];
+          v20 = [lastObject componentsSeparatedByCharactersInSet:v19];
 
-          v21 = [v20 firstObject];
-          LODWORD(v18) = [v21 isEqualToString:v62];
+          firstObject = [v20 firstObject];
+          LODWORD(lastObject) = [firstObject isEqualToString:v62];
 
-          if (v18)
+          if (lastObject)
           {
             v22 = +[NSFileManager defaultManager];
             [v22 removeItemAtURL:v13 error:0];
@@ -161,9 +161,9 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
     while (v10);
   }
 
-  v23 = [v7 path];
-  v24 = v23;
-  [v23 cStringUsingEncoding:4];
+  path = [v7 path];
+  v24 = path;
+  [path cStringUsingEncoding:4];
   v59 = zipOpen();
 
   if (!v59)
@@ -174,16 +174,16 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
   v56 = +[NSDate date];
   v55 = +[NSCalendar currentCalendar];
   v61 = [v55 components:252 fromDate:v56];
-  v52 = [v61 second];
-  v25 = [v61 minute];
-  v26 = [v61 hour];
+  second = [v61 second];
+  minute = [v61 minute];
+  hour = [v61 hour];
   v27 = [v61 day];
-  v28 = [v61 month];
-  v29 = [v61 year];
+  month = [v61 month];
+  year = [v61 year];
   v30 = dispatch_group_create();
   v31 = [dataProviders count];
   v32 = [asyncDataProviders count];
-  v33 = v28 - 1;
+  v33 = month - 1;
   v34 = &v31[v32];
   v87[0] = 0;
   v87[1] = v87;
@@ -194,16 +194,16 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
   v72[2] = __49__IMDebugDataManager_writeDebugDataWithProgress___block_invoke;
   v72[3] = &unk_10530;
   v76 = v59;
-  v77 = v52;
-  v78 = v25;
-  v79 = v26;
+  v77 = second;
+  v78 = minute;
+  v79 = hour;
   v80 = v27;
   v81 = v33;
-  v82 = v29;
+  v82 = year;
   v84 = 0;
   v85 = 0;
   v83 = 0;
-  v54 = v53;
+  v54 = progressCopy;
   v74 = v54;
   v75 = v87;
   v86 = v34;
@@ -230,9 +230,9 @@ uint64_t __48__IMDebugDataManager_writeDebugData_completion___block_invoke_2(uin
 
         v41 = *(*(&v68 + 1) + 8 * j);
         dispatch_group_enter(v35);
-        v42 = [v41 debugData];
-        v43 = [v41 debugDataFileName];
-        (v36[2])(v36, v42, v43);
+        debugData = [v41 debugData];
+        debugDataFileName = [v41 debugDataFileName];
+        (v36[2])(v36, debugData, debugDataFileName);
       }
 
       v38 = [v37 countByEnumeratingWithState:&v68 objects:v93 count:16];

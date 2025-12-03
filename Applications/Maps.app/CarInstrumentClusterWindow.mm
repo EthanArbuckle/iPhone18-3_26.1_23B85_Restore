@@ -1,21 +1,21 @@
 @interface CarInstrumentClusterWindow
 - (CRSUIInstrumentClusterSceneSettings)currentSceneSettings;
 - (CarInstrumentClusterConfigurationDelegate)configurationDelegate;
-- (CarInstrumentClusterWindow)initWithWindowScene:(id)a3;
+- (CarInstrumentClusterWindow)initWithWindowScene:(id)scene;
 - (CarInstrumentClusterWindowZoomDelegate)zoomDelegate;
 - (void)_updateChromeConfiguration;
-- (void)_windowWantsToZoomInDirection:(int64_t)a3;
-- (void)clusterWindow:(id)a3 didChangeCompassSetting:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeETASetting:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeItemType:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeLayoutJustification:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeSpeedLimitSetting:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didZoomInDirection:(int64_t)a4;
+- (void)_windowWantsToZoomInDirection:(int64_t)direction;
+- (void)clusterWindow:(id)window didChangeCompassSetting:(unint64_t)setting;
+- (void)clusterWindow:(id)window didChangeETASetting:(unint64_t)setting;
+- (void)clusterWindow:(id)window didChangeItemType:(unint64_t)type;
+- (void)clusterWindow:(id)window didChangeLayoutJustification:(unint64_t)justification;
+- (void)clusterWindow:(id)window didChangeSpeedLimitSetting:(unint64_t)setting;
+- (void)clusterWindow:(id)window didZoomInDirection:(int64_t)direction;
 - (void)notificationLayoutGuideDidChange;
-- (void)setChromeConfiguration:(id)a3;
-- (void)setConfigurationDelegate:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setRootViewController:(id)a3;
+- (void)setChromeConfiguration:(id)configuration;
+- (void)setConfigurationDelegate:(id)delegate;
+- (void)setHidden:(BOOL)hidden;
+- (void)setRootViewController:(id)controller;
 @end
 
 @implementation CarInstrumentClusterWindow
@@ -34,135 +34,135 @@
   return WeakRetained;
 }
 
-- (void)clusterWindow:(id)a3 didChangeLayoutJustification:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeLayoutJustification:(unint64_t)justification
 {
-  v6 = a3;
+  windowCopy = window;
   v7 = sub_100799AF0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349568;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = windowCopy;
     v12 = 2048;
-    v13 = a4;
+    justificationCopy = justification;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] clusterWindow:didChangeLayoutJustification: %p, %lu", &v8, 0x20u);
   }
 
   [(CarInstrumentClusterWindow *)self _updateChromeConfiguration];
 }
 
-- (void)clusterWindow:(id)a3 didChangeItemType:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeItemType:(unint64_t)type
 {
-  v6 = a3;
+  windowCopy = window;
   v7 = sub_100799AF0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349568;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = windowCopy;
     v12 = 2048;
-    v13 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] clusterWindow:didChangeItemType: %p, %lu", &v8, 0x20u);
   }
 
   [(CarInstrumentClusterWindow *)self _updateChromeConfiguration];
 }
 
-- (void)clusterWindow:(id)a3 didZoomInDirection:(int64_t)a4
+- (void)clusterWindow:(id)window didZoomInDirection:(int64_t)direction
 {
-  v6 = a3;
+  windowCopy = window;
   v7 = sub_100799AF0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349568;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = windowCopy;
     v12 = 2048;
-    v13 = a4;
+    directionCopy = direction;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] clusterWindow:didZoomInDirection: %p, %ld", &v8, 0x20u);
   }
 
-  [(CarInstrumentClusterWindow *)self _windowWantsToZoomInDirection:a4];
+  [(CarInstrumentClusterWindow *)self _windowWantsToZoomInDirection:direction];
 }
 
-- (void)clusterWindow:(id)a3 didChangeSpeedLimitSetting:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeSpeedLimitSetting:(unint64_t)setting
 {
-  v6 = a3;
+  windowCopy = window;
   v7 = sub_100799AF0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349568;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = windowCopy;
     v12 = 2048;
-    v13 = a4;
+    settingCopy = setting;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] clusterWindow:didChangeSpeedLimitSetting: %p, %lu", &v8, 0x20u);
   }
 
   [(CarInstrumentClusterWindow *)self _updateChromeConfiguration];
 }
 
-- (void)clusterWindow:(id)a3 didChangeETASetting:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeETASetting:(unint64_t)setting
 {
-  v6 = a3;
+  windowCopy = window;
   v7 = sub_100799AF0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349568;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = windowCopy;
     v12 = 2048;
-    v13 = a4;
+    settingCopy = setting;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] clusterWindow:didChangeETASetting: %p, %lu", &v8, 0x20u);
   }
 
   [(CarInstrumentClusterWindow *)self _updateChromeConfiguration];
 }
 
-- (void)clusterWindow:(id)a3 didChangeCompassSetting:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeCompassSetting:(unint64_t)setting
 {
-  v6 = a3;
+  windowCopy = window;
   v7 = sub_100799AF0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134349568;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = windowCopy;
     v12 = 2048;
-    v13 = a4;
+    settingCopy = setting;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] clusterWindow:didChangeCompassSetting: %p, %lu", &v8, 0x20u);
   }
 
   [(CarInstrumentClusterWindow *)self _updateChromeConfiguration];
 }
 
-- (void)_windowWantsToZoomInDirection:(int64_t)a3
+- (void)_windowWantsToZoomInDirection:(int64_t)direction
 {
-  v4 = [(CarInstrumentClusterWindow *)self zoomDelegate];
-  [v4 windowWantsToZoomInDirection:a3];
+  zoomDelegate = [(CarInstrumentClusterWindow *)self zoomDelegate];
+  [zoomDelegate windowWantsToZoomInDirection:direction];
 }
 
 - (void)_updateChromeConfiguration
 {
   v3 = [CarInstrumentClusterChromeConfiguration alloc];
-  v5 = [(CarInstrumentClusterWindow *)self currentSceneSettings];
-  v4 = [(CarInstrumentClusterChromeConfiguration *)v3 initWithInstrumentClusterSceneSettings:v5];
+  currentSceneSettings = [(CarInstrumentClusterWindow *)self currentSceneSettings];
+  v4 = [(CarInstrumentClusterChromeConfiguration *)v3 initWithInstrumentClusterSceneSettings:currentSceneSettings];
   [(CarInstrumentClusterWindow *)self setChromeConfiguration:v4];
 }
 
 - (CRSUIInstrumentClusterSceneSettings)currentSceneSettings
 {
-  v3 = [(CarInstrumentClusterWindow *)self windowScene];
-  v4 = [v3 _FBSScene];
-  v5 = [v4 settings];
+  windowScene = [(CarInstrumentClusterWindow *)self windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
 
-  if (v5)
+  if (settings)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -171,9 +171,9 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v17 = 136315906;
-        v18 = "[CarInstrumentClusterWindow currentSceneSettings]";
+        selfCopy = "[CarInstrumentClusterWindow currentSceneSettings]";
         v19 = 2080;
-        v20 = "CarInstrumentClusterWindow.m";
+        selfCopy2 = "CarInstrumentClusterWindow.m";
         v21 = 1024;
         *v22 = 94;
         *&v22[4] = 2080;
@@ -188,7 +188,7 @@
         {
           v16 = +[NSThread callStackSymbols];
           v17 = 138412290;
-          v18 = v16;
+          selfCopy = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
         }
       }
@@ -197,7 +197,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = settings;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -222,9 +222,9 @@
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
         v17 = 134349826;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2048;
         *v22 = v10;
         *&v22[8] = 2112;
@@ -244,59 +244,59 @@
   return v8;
 }
 
-- (void)setChromeConfiguration:(id)a3
+- (void)setChromeConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_chromeConfiguration] & 1) == 0)
+  configurationCopy = configuration;
+  if (([configurationCopy isEqual:self->_chromeConfiguration] & 1) == 0)
   {
     v6 = sub_100799AF0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 134349570;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v5;
+      v14 = configurationCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Will update chrome configuration on window: %p with configuration: %@", &v9, 0x20u);
     }
 
-    objc_storeStrong(&self->_chromeConfiguration, a3);
+    objc_storeStrong(&self->_chromeConfiguration, configuration);
     WeakRetained = objc_loadWeakRetained(&self->_configurationDelegate);
-    v8 = [(CarInstrumentClusterWindow *)self chromeConfiguration];
-    [WeakRetained sceneConfigurationDidChange:v8];
+    chromeConfiguration = [(CarInstrumentClusterWindow *)self chromeConfiguration];
+    [WeakRetained sceneConfigurationDidChange:chromeConfiguration];
   }
 }
 
-- (void)setConfigurationDelegate:(id)a3
+- (void)setConfigurationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_configurationDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_configurationDelegate, v4);
+    objc_storeWeak(&self->_configurationDelegate, delegateCopy);
     v6 = sub_100799AF0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = objc_opt_class();
-      v8 = [(CarInstrumentClusterWindow *)self chromeConfiguration];
+      chromeConfiguration = [(CarInstrumentClusterWindow *)self chromeConfiguration];
       v11 = 134350082;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
       v16 = v7;
       v17 = 2048;
-      v18 = v4;
+      v18 = delegateCopy;
       v19 = 2112;
-      v20 = v8;
+      v20 = chromeConfiguration;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] configurationDelegate of window: %p changed to: <%@:%p>. current configuration: %@", &v11, 0x34u);
     }
 
     v9 = objc_loadWeakRetained(&self->_configurationDelegate);
-    v10 = [(CarInstrumentClusterWindow *)self chromeConfiguration];
-    [v9 sceneConfigurationDidChange:v10];
+    chromeConfiguration2 = [(CarInstrumentClusterWindow *)self chromeConfiguration];
+    [v9 sceneConfigurationDidChange:chromeConfiguration2];
   }
 }
 
@@ -306,25 +306,25 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] notificationLayoutGuideDidChange", &v8, 0xCu);
   }
 
-  v4 = [(CarInstrumentClusterWindow *)self rootViewController];
+  rootViewController = [(CarInstrumentClusterWindow *)self rootViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CarInstrumentClusterWindow *)self notificationLayoutGuide];
-    v7 = [(CarInstrumentClusterWindow *)self rootViewController];
-    [v7 setNotificationLayoutGuide:v6];
+    notificationLayoutGuide = [(CarInstrumentClusterWindow *)self notificationLayoutGuide];
+    rootViewController2 = [(CarInstrumentClusterWindow *)self rootViewController];
+    [rootViewController2 setNotificationLayoutGuide:notificationLayoutGuide];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = CarInstrumentClusterWindow;
   [(CarInstrumentClusterWindow *)&v6 setHidden:?];
@@ -332,17 +332,17 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = v3;
+    v10 = hiddenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] setHidden:%ld", buf, 0x16u);
   }
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CarInstrumentClusterWindow *)self rootViewController];
+  controllerCopy = controller;
+  rootViewController = [(CarInstrumentClusterWindow *)self rootViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -354,15 +354,15 @@
       goto LABEL_5;
     }
 
-    v5 = [(CarInstrumentClusterWindow *)self rootViewController];
-    [v5 setNotificationLayoutGuide:0];
+    rootViewController = [(CarInstrumentClusterWindow *)self rootViewController];
+    [rootViewController setNotificationLayoutGuide:0];
   }
 
 LABEL_5:
   v13.receiver = self;
   v13.super_class = CarInstrumentClusterWindow;
-  [(CarInstrumentClusterWindow *)&v13 setRootViewController:v4];
-  v7 = v4;
+  [(CarInstrumentClusterWindow *)&v13 setRootViewController:controllerCopy];
+  v7 = controllerCopy;
   if ([v7 conformsToProtocol:&OBJC_PROTOCOL___CarInstrumentClusterConfigurationDelegate])
   {
     v8 = v7;
@@ -392,11 +392,11 @@ LABEL_5:
   [(CarInstrumentClusterWindow *)self setZoomDelegate:v12];
 }
 
-- (CarInstrumentClusterWindow)initWithWindowScene:(id)a3
+- (CarInstrumentClusterWindow)initWithWindowScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = CarInstrumentClusterWindow;
-  v3 = [(CarInstrumentClusterWindow *)&v6 initWithWindowScene:a3];
+  v3 = [(CarInstrumentClusterWindow *)&v6 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {

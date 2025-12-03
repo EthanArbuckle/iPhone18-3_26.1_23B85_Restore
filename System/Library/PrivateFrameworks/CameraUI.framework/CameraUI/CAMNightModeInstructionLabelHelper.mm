@@ -1,5 +1,5 @@
 @interface CAMNightModeInstructionLabelHelper
-+ (id)localizedTextWithSeconds:(int64_t)a3;
++ (id)localizedTextWithSeconds:(int64_t)seconds;
 - (CAMNightModeInstructionLabelHelper)init;
 @end
 
@@ -12,7 +12,7 @@
   return [(CAMNightModeInstructionLabelHelper *)&v3 init];
 }
 
-+ (id)localizedTextWithSeconds:(int64_t)a3
++ (id)localizedTextWithSeconds:(int64_t)seconds
 {
   _s8CameraUI31NightModeInstructionLabelHelperC13localizedText7secondsSSSi_tFZ_0();
   v3 = sub_1A3A31810();

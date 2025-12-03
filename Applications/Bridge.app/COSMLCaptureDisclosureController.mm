@@ -1,6 +1,6 @@
 @interface COSMLCaptureDisclosureController
 + (unint64_t)disclosureState;
-+ (void)setUserAcceptedDisclosure:(BOOL)a3;
++ (void)setUserAcceptedDisclosure:(BOOL)disclosure;
 @end
 
 @implementation COSMLCaptureDisclosureController
@@ -26,9 +26,9 @@
   }
 }
 
-+ (void)setUserAcceptedDisclosure:(BOOL)a3
++ (void)setUserAcceptedDisclosure:(BOOL)disclosure
 {
-  v3 = [NSNumber numberWithInt:!a3];
+  v3 = [NSNumber numberWithInt:!disclosure];
 
   CFPreferencesSetAppValue(@"COSMLCaptureDenied", v3, @"com.apple.Bridge");
 }

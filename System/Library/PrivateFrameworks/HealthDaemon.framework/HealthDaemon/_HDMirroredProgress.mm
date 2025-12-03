@@ -2,42 +2,42 @@
 + (id)_KVOKeyPaths;
 - (void)_update;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _HDMirroredProgress
 
 - (void)_update
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 128));
-    if ([*(a1 + 120) isCancelled])
+    os_unfair_lock_lock((self + 128));
+    if ([*(self + 120) isCancelled])
     {
-      [a1 cancel];
+      [self cancel];
     }
 
     else
     {
-      if ([*(a1 + 120) isIndeterminate])
+      if ([*(self + 120) isIndeterminate])
       {
-        [a1 setTotalUnitCount:-1];
-        v2 = a1;
+        [self setTotalUnitCount:-1];
+        selfCopy2 = self;
         v3 = -1;
       }
 
       else
       {
-        [a1 setTotalUnitCount:100000];
-        [*(a1 + 120) fractionCompleted];
+        [self setTotalUnitCount:100000];
+        [*(self + 120) fractionCompleted];
         v3 = (v4 * 100000.0);
-        v2 = a1;
+        selfCopy2 = self;
       }
 
-      [v2 setCompletedUnitCount:v3];
+      [selfCopy2 setCompletedUnitCount:v3];
     }
 
-    os_unfair_lock_unlock((a1 + 128));
+    os_unfair_lock_unlock((self + 128));
   }
 }
 
@@ -103,9 +103,9 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_HDProgressMirrorObserverContext == a6)
+  if (_HDProgressMirrorObserverContext == context)
   {
 
     [(_HDMirroredProgress *)self _update];
@@ -117,7 +117,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = _HDMirroredProgress;
-    [(_HDMirroredProgress *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_HDMirroredProgress *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

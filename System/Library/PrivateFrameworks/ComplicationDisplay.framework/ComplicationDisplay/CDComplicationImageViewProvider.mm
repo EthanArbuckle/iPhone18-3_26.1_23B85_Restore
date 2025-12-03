@@ -1,21 +1,21 @@
 @interface CDComplicationImageViewProvider
-+ (BOOL)existingImageView:(id)a3 supportsImageProvider:(id)a4;
-+ (id)viewForImageProvider:(id)a3;
++ (BOOL)existingImageView:(id)view supportsImageProvider:(id)provider;
++ (id)viewForImageProvider:(id)provider;
 @end
 
 @implementation CDComplicationImageViewProvider
 
-+ (id)viewForImageProvider:(id)a3
++ (id)viewForImageProvider:(id)provider
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  providerCopy = provider;
+  v4 = providerCopy;
+  if (providerCopy)
   {
-    v5 = [v3 imageViewCreationHandler];
-    if (v5)
+    imageViewCreationHandler = [providerCopy imageViewCreationHandler];
+    if (imageViewCreationHandler)
     {
       [v4 maxSize];
-      v6 = v5[2](v5);
+      v6 = imageViewCreationHandler[2](imageViewCreationHandler);
     }
 
     else
@@ -34,18 +34,18 @@
   return v7;
 }
 
-+ (BOOL)existingImageView:(id)a3 supportsImageProvider:(id)a4
++ (BOOL)existingImageView:(id)view supportsImageProvider:(id)provider
 {
-  v5 = a3;
-  v6 = [a4 imageViewCreationHandler];
+  viewCopy = view;
+  imageViewCreationHandler = [provider imageViewCreationHandler];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v8 = 0;
-  if (v5 && a4)
+  if (viewCopy && provider)
   {
-    v8 = (v6 != 0) ^ isKindOfClass;
+    v8 = (imageViewCreationHandler != 0) ^ isKindOfClass;
   }
 
   return v8 & 1;

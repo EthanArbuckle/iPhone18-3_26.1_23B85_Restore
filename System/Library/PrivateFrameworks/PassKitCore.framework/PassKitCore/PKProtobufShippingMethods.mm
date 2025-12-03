@@ -1,32 +1,32 @@
 @interface PKProtobufShippingMethods
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMethods:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMethods:(id)methods;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufShippingMethods
 
-- (void)addMethods:(id)a3
+- (void)addMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   methods = self->_methods;
-  v8 = v4;
+  v8 = methodsCopy;
   if (!methods)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_methods;
     self->_methods = v6;
 
-    v4 = v8;
+    methodsCopy = v8;
     methods = self->_methods;
   }
 
-  [(NSMutableArray *)methods addObject:v4];
+  [(NSMutableArray *)methods addObject:methodsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = PKProtobufShippingMethods;
   v4 = [(PKProtobufShippingMethods *)&v8 description];
-  v5 = [(PKProtobufShippingMethods *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufShippingMethods *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_methods count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_methods, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -77,23 +77,23 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"methods"];
+    [dictionary setObject:v4 forKey:@"methods"];
   }
 
   defaultMethod = self->_defaultMethod;
   if (defaultMethod)
   {
-    v12 = [(PKProtobufShippingMethod *)defaultMethod dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"defaultMethod"];
+    dictionaryRepresentation2 = [(PKProtobufShippingMethod *)defaultMethod dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"defaultMethod"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -131,34 +131,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(PKProtobufShippingMethods *)self methodsCount])
   {
-    [v8 clearMethods];
-    v4 = [(PKProtobufShippingMethods *)self methodsCount];
-    if (v4)
+    [toCopy clearMethods];
+    methodsCount = [(PKProtobufShippingMethods *)self methodsCount];
+    if (methodsCount)
     {
-      v5 = v4;
+      v5 = methodsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PKProtobufShippingMethods *)self methodsAtIndex:i];
-        [v8 addMethods:v7];
+        [toCopy addMethods:v7];
       }
     }
   }
 
   if (self->_defaultMethod)
   {
-    [v8 setDefaultMethod:?];
+    [toCopy setDefaultMethod:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -179,7 +179,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) copyWithZone:{a3, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * v10) copyWithZone:{zone, v15}];
         [v5 addMethods:v11];
 
         ++v10;
@@ -192,20 +192,20 @@
     while (v8);
   }
 
-  v12 = [(PKProtobufShippingMethod *)self->_defaultMethod copyWithZone:a3];
+  v12 = [(PKProtobufShippingMethod *)self->_defaultMethod copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((methods = self->_methods, !(methods | v4[2])) || -[NSMutableArray isEqual:](methods, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((methods = self->_methods, !(methods | equalCopy[2])) || -[NSMutableArray isEqual:](methods, "isEqual:")))
   {
     defaultMethod = self->_defaultMethod;
-    if (defaultMethod | v4[1])
+    if (defaultMethod | equalCopy[1])
     {
       v7 = [(PKProtobufShippingMethod *)defaultMethod isEqual:?];
     }
@@ -224,15 +224,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -257,7 +257,7 @@
   }
 
   defaultMethod = self->_defaultMethod;
-  v11 = v4[1];
+  v11 = fromCopy[1];
   if (defaultMethod)
   {
     if (v11)

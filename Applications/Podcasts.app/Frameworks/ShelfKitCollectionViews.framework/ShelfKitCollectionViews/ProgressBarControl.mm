@@ -1,11 +1,11 @@
 @interface ProgressBarControl
 - (BOOL)isSelected;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC23ShelfKitCollectionViews18ProgressBarControl)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews18ProgressBarControl)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
-- (void)updateProgressWithDisplayLink:(id)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)updateProgressWithDisplayLink:(id)link;
 @end
 
 @implementation ProgressBarControl
@@ -17,13 +17,13 @@
   return [(ProgressBarControl *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ProgressBarControl();
   v4 = v7.receiver;
-  [(ProgressBarControl *)&v7 setSelected:v3];
+  [(ProgressBarControl *)&v7 setSelected:selectedCopy];
   v5 = *&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews18ProgressBarControl_videoControlButton];
   if (v5)
   {
@@ -34,19 +34,19 @@
 
 - (void)didMoveToSuperview
 {
-  v4 = self;
-  v2 = [(ProgressBarControl *)v4 superview];
-  if (!v2)
+  selfCopy = self;
+  superview = [(ProgressBarControl *)selfCopy superview];
+  if (!superview)
   {
-    v3 = *(&v4->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews18ProgressBarControl_displayLink);
+    v3 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews18ProgressBarControl_displayLink);
     [v3 invalidate];
-    v2 = v3;
+    superview = v3;
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B75E4();
 }
 
@@ -70,14 +70,14 @@
   return result;
 }
 
-- (void)updateProgressWithDisplayLink:(id)a3
+- (void)updateProgressWithDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_2B7824(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_2B7824(linkCopy);
 }
 
-- (_TtC23ShelfKitCollectionViews18ProgressBarControl)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews18ProgressBarControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,11 +1,11 @@
 @interface BlockedSenderSettingsPane
 + (OS_os_log)log;
 - (PSListController)parentListController;
-- (id)blockSenderStateWithSpecifier:(id)a3;
+- (id)blockSenderStateWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setBlockSenderState:(id)a3 withSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setBlockSenderState:(id)state withSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation BlockedSenderSettingsPane
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_2AE0;
   block[3] = &unk_3CD10;
-  block[4] = a1;
+  block[4] = self;
   if (qword_448C8 != -1)
   {
     dispatch_once(&qword_448C8, block);
@@ -46,11 +46,11 @@
       v5 = @"OFF";
     }
 
-    v6 = [(BlockedSenderSettingsPane *)self blockSenderOptionState];
+    blockSenderOptionState = [(BlockedSenderSettingsPane *)self blockSenderOptionState];
     *buf = 138543618;
     v18 = v5;
     v19 = 2048;
-    v20 = [v6 integerValue];
+    integerValue = [blockSenderOptionState integerValue];
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "current block sender '%{public}@' and preference action '%li'", buf, 0x16u);
   }
 
@@ -64,13 +64,13 @@
     v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setBlockSenderState:withSpecifier:" get:"blockSenderStateWithSpecifier:" detail:objc_opt_class() cell:6 edit:0];
     [(BlockedSenderSettingsPane *)self setBlockSenderSwitch:v12];
 
-    v13 = [(BlockedSenderSettingsPane *)self blockSenderSwitch];
-    [v9 addObject:v13];
+    blockSenderSwitch = [(BlockedSenderSettingsPane *)self blockSenderSwitch];
+    [v9 addObject:blockSenderSwitch];
 
     if ([(BlockedSenderSettingsPane *)self blockSenderEnabled])
     {
-      v14 = [(BlockedSenderSettingsPane *)self _blockedSenderActionOptionsSpecifier];
-      [v9 addObjectsFromArray:v14];
+      _blockedSenderActionOptionsSpecifier = [(BlockedSenderSettingsPane *)self _blockedSenderActionOptionsSpecifier];
+      [v9 addObjectsFromArray:_blockedSenderActionOptionsSpecifier];
     }
 
     v15 = *&self->PSListController_opaque[v7];
@@ -82,50 +82,50 @@
   return v8;
 }
 
-- (id)blockSenderStateWithSpecifier:(id)a3
+- (id)blockSenderStateWithSpecifier:(id)specifier
 {
   v3 = [NSNumber numberWithBool:[(BlockedSenderSettingsPane *)self blockSenderEnabled]];
 
   return v3;
 }
 
-- (void)setBlockSenderState:(id)a3 withSpecifier:(id)a4
+- (void)setBlockSenderState:(id)state withSpecifier:(id)specifier
 {
-  v10 = a3;
-  -[BlockedSenderSettingsPane setBlockSenderEnabled:](self, "setBlockSenderEnabled:", [v10 BOOLValue]);
-  v5 = [(BlockedSenderSettingsPane *)self blockSenderEnabled];
-  v6 = [(BlockedSenderSettingsPane *)self blockSenderOptionState];
-  -[BlockedSenderSettingsPane _writeBlockSenderEnabled:optionValue:](self, "_writeBlockSenderEnabled:optionValue:", v5, [v6 integerValue]);
+  stateCopy = state;
+  -[BlockedSenderSettingsPane setBlockSenderEnabled:](self, "setBlockSenderEnabled:", [stateCopy BOOLValue]);
+  blockSenderEnabled = [(BlockedSenderSettingsPane *)self blockSenderEnabled];
+  blockSenderOptionState = [(BlockedSenderSettingsPane *)self blockSenderOptionState];
+  -[BlockedSenderSettingsPane _writeBlockSenderEnabled:optionValue:](self, "_writeBlockSenderEnabled:optionValue:", blockSenderEnabled, [blockSenderOptionState integerValue]);
 
   if ([(BlockedSenderSettingsPane *)self blockSenderEnabled])
   {
-    v7 = [(BlockedSenderSettingsPane *)self _blockedSenderActionOptionsSpecifier];
-    v8 = [(BlockedSenderSettingsPane *)self blockSenderSwitch];
-    [(BlockedSenderSettingsPane *)self insertContiguousSpecifiers:v7 afterSpecifier:v8];
+    _blockedSenderActionOptionsSpecifier = [(BlockedSenderSettingsPane *)self _blockedSenderActionOptionsSpecifier];
+    blockSenderSwitch = [(BlockedSenderSettingsPane *)self blockSenderSwitch];
+    [(BlockedSenderSettingsPane *)self insertContiguousSpecifiers:_blockedSenderActionOptionsSpecifier afterSpecifier:blockSenderSwitch];
   }
 
   else
   {
     [(BlockedSenderSettingsPane *)self beginUpdates];
-    v9 = [(BlockedSenderSettingsPane *)self actionOptionsSpecifiers];
-    [(BlockedSenderSettingsPane *)self removeContiguousSpecifiers:v9 animated:0];
+    actionOptionsSpecifiers = [(BlockedSenderSettingsPane *)self actionOptionsSpecifiers];
+    [(BlockedSenderSettingsPane *)self removeContiguousSpecifiers:actionOptionsSpecifiers animated:0];
 
     [(BlockedSenderSettingsPane *)self endUpdates];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = BlockedSenderSettingsPane;
-  [(BlockedSenderSettingsPane *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(BlockedSenderSettingsPane *)self indexForIndexPath:v6];
-  v8 = -[BlockedSenderSettingsPane specifierAtIndex:](self, "specifierAtIndex:", -[BlockedSenderSettingsPane indexOfGroup:](self, "indexOfGroup:", [v6 section]));
+  [(BlockedSenderSettingsPane *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(BlockedSenderSettingsPane *)self indexForIndexPath:pathCopy];
+  v8 = -[BlockedSenderSettingsPane specifierAtIndex:](self, "specifierAtIndex:", -[BlockedSenderSettingsPane indexOfGroup:](self, "indexOfGroup:", [pathCopy section]));
   v9 = [v8 propertyForKey:PSIsRadioGroupKey];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = [(BlockedSenderSettingsPane *)self specifierAtIndex:v7];
     v12 = [v11 propertyForKey:PSValueKey];
@@ -133,21 +133,21 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = BlockedSenderSettingsPane;
-  v7 = [(BlockedSenderSettingsPane *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = -[BlockedSenderSettingsPane specifierAtIndex:](self, "specifierAtIndex:", -[BlockedSenderSettingsPane indexOfGroup:](self, "indexOfGroup:", [v6 section]));
+  v7 = [(BlockedSenderSettingsPane *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = -[BlockedSenderSettingsPane specifierAtIndex:](self, "specifierAtIndex:", -[BlockedSenderSettingsPane indexOfGroup:](self, "indexOfGroup:", [pathCopy section]));
   v9 = [v8 propertyForKey:@"AllowMultiLines"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v11 = [v7 textLabel];
-    [v11 setLineBreakMode:0];
-    [v11 setNumberOfLines:0];
+    textLabel = [v7 textLabel];
+    [textLabel setLineBreakMode:0];
+    [textLabel setNumberOfLines:0];
   }
 
   return v7;

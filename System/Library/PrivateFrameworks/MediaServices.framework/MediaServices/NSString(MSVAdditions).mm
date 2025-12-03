@@ -7,8 +7,8 @@
 
 - (id)msv_stringByResolvingRealPath
 {
-  v2 = [a1 copy];
-  v3 = realpath_DARWIN_EXTSN([a1 fileSystemRepresentation], 0);
+  v2 = [self copy];
+  v3 = realpath_DARWIN_EXTSN([self fileSystemRepresentation], 0);
   if (v3)
   {
     v4 = v3;
@@ -22,17 +22,17 @@
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
     v7 = [v2 copy];
-    v8 = v7;
+    stringByDeletingLastPathComponent = v7;
     while ([v7 length])
     {
-      v9 = v8;
-      v10 = [v8 lastPathComponent];
-      v8 = [v8 stringByDeletingLastPathComponent];
+      v9 = stringByDeletingLastPathComponent;
+      lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
+      stringByDeletingLastPathComponent = [stringByDeletingLastPathComponent stringByDeletingLastPathComponent];
 
-      [v6 addObject:v10];
-      if ([v8 length])
+      [v6 addObject:lastPathComponent];
+      if ([stringByDeletingLastPathComponent length])
       {
-        v11 = realpath_DARWIN_EXTSN([v8 fileSystemRepresentation], 0);
+        v11 = realpath_DARWIN_EXTSN([stringByDeletingLastPathComponent fileSystemRepresentation], 0);
         if (v11)
         {
           v12 = v11;
@@ -58,7 +58,7 @@
         }
       }
 
-      v7 = v8;
+      v7 = stringByDeletingLastPathComponent;
     }
   }
 
@@ -67,9 +67,9 @@
 
 - (unint64_t)msv_unsignedLongLongValue
 {
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
 
-  return strtoull(v1, 0, 0);
+  return strtoull(uTF8String, 0, 0);
 }
 
 @end

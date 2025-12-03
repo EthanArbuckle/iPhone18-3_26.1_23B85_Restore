@@ -1,39 +1,39 @@
 @interface PXPersonTiledImageCombinerItem
-- (PXPersonTiledImageCombinerItem)initWithPerson:(id)a3;
-- (void)px_requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6;
+- (PXPersonTiledImageCombinerItem)initWithPerson:(id)person;
+- (void)px_requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler;
 @end
 
 @implementation PXPersonTiledImageCombinerItem
 
-- (void)px_requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6
+- (void)px_requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"!CGSizeEqualToSize(targetSize, CGSizeZero)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"!CGSizeEqualToSize(targetSize, CGSizeZero)"}];
   }
 
-  if (a4 <= 0.0)
+  if (scale <= 0.0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"displayScale > 0"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_10:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
 
     goto LABEL_8;
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     goto LABEL_10;
   }
@@ -44,9 +44,9 @@ LABEL_8:
   v18[1] = 3221225472;
   v18[2] = __97__PXPersonTiledImageCombinerItem_px_requestImageWithTargetSize_displayScale_isRTL_resultHandler___block_invoke;
   v18[3] = &unk_1E774B680;
-  v19 = v11;
-  v14 = v11;
-  [(PXPerson *)person requestFaceCropImageWithTargetSize:0 displayScale:0 cropFactor:1 style:1 cacheResult:v18 synchronous:width resultHandler:height, a4];
+  v19 = handlerCopy;
+  v14 = handlerCopy;
+  [(PXPerson *)person requestFaceCropImageWithTargetSize:0 displayScale:0 cropFactor:1 style:1 cacheResult:v18 synchronous:width resultHandler:height, scale];
 }
 
 void __97__PXPersonTiledImageCombinerItem_px_requestImageWithTargetSize_displayScale_isRTL_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -57,13 +57,13 @@ void __97__PXPersonTiledImageCombinerItem_px_requestImageWithTargetSize_displayS
   (*(v4 + 16))(v4, v5, v6);
 }
 
-- (PXPersonTiledImageCombinerItem)initWithPerson:(id)a3
+- (PXPersonTiledImageCombinerItem)initWithPerson:(id)person
 {
-  v6 = a3;
-  if (!v6)
+  personCopy = person;
+  if (!personCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPerson+PXFaceTileImageCombinerItem.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v11.receiver = self;
@@ -72,7 +72,7 @@ void __97__PXPersonTiledImageCombinerItem_px_requestImageWithTargetSize_displayS
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_person, a3);
+    objc_storeStrong(&v7->_person, person);
   }
 
   return v8;

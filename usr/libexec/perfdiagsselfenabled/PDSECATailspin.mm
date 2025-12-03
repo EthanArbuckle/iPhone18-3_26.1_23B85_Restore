@@ -10,11 +10,11 @@
 + (BOOL)wantsEnablement
 {
   v2 = +[HTPrefs sharedPrefs];
-  v3 = [v2 pdseCATailspinPeriodDays];
+  pdseCATailspinPeriodDays = [v2 pdseCATailspinPeriodDays];
   v4 = sub_10000BE10(@"PDSECATailspin");
-  LOBYTE(v3) = sub_10000BB68(v3, 1, v4);
+  LOBYTE(pdseCATailspinPeriodDays) = sub_10000BB68(pdseCATailspinPeriodDays, 1, v4);
 
-  return v3;
+  return pdseCATailspinPeriodDays;
 }
 
 + (BOOL)willEnableDiagnostics

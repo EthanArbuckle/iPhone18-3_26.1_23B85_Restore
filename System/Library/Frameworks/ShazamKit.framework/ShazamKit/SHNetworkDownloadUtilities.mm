@@ -1,22 +1,22 @@
 @interface SHNetworkDownloadUtilities
-+ (id)cachedFileURLWithFilename:(id)a3 type:(id)a4;
++ (id)cachedFileURLWithFilename:(id)filename type:(id)type;
 + (id)downloadDirectory;
-+ (id)renameDownloadedFile:(id)a3 withFilename:(id)a4 usingType:(id)a5 error:(id *)a6;
++ (id)renameDownloadedFile:(id)file withFilename:(id)filename usingType:(id)type error:(id *)error;
 @end
 
 @implementation SHNetworkDownloadUtilities
 
-+ (id)renameDownloadedFile:(id)a3 withFilename:(id)a4 usingType:(id)a5 error:(id *)a6
++ (id)renameDownloadedFile:(id)file withFilename:(id)filename usingType:(id)type error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a1 downloadDirectory];
-  v14 = [v13 URLByAppendingPathComponent:v12 conformingToType:v11];
+  fileCopy = file;
+  typeCopy = type;
+  filenameCopy = filename;
+  downloadDirectory = [self downloadDirectory];
+  v14 = [downloadDirectory URLByAppendingPathComponent:filenameCopy conformingToType:typeCopy];
 
   v15 = +[NSFileManager defaultManager];
-  v16 = [v14 path];
-  if (([v15 fileExistsAtPath:v16] & 1) == 0)
+  path = [v14 path];
+  if (([v15 fileExistsAtPath:path] & 1) == 0)
   {
 
     goto LABEL_9;
@@ -35,7 +35,7 @@ LABEL_9:
   v19 = sh_log_object();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v20 = *a6;
+    v20 = *error;
     v33 = 138412546;
     v34 = v14;
     v35 = 2112;
@@ -44,10 +44,10 @@ LABEL_9:
   }
 
   v21 = +[NSProcessInfo processInfo];
-  v22 = [v21 globallyUniqueString];
+  globallyUniqueString = [v21 globallyUniqueString];
 
-  v23 = [a1 downloadDirectory];
-  v24 = [v23 URLByAppendingPathComponent:v22 conformingToType:v11];
+  downloadDirectory2 = [self downloadDirectory];
+  v24 = [downloadDirectory2 URLByAppendingPathComponent:globallyUniqueString conformingToType:typeCopy];
 
   v25 = sh_log_object();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -59,7 +59,7 @@ LABEL_9:
 
 LABEL_10:
   v26 = +[NSFileManager defaultManager];
-  v27 = [v26 moveItemAtURL:v10 toURL:v24 error:a6];
+  v27 = [v26 moveItemAtURL:fileCopy toURL:v24 error:error];
 
   v28 = sh_log_object();
   v29 = v28;
@@ -79,9 +79,9 @@ LABEL_10:
   {
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v31 = *a6;
+      v31 = *error;
       v33 = 138412802;
-      v34 = v10;
+      v34 = fileCopy;
       v35 = 2112;
       v36 = v24;
       v37 = 2112;
@@ -95,18 +95,18 @@ LABEL_10:
   return v30;
 }
 
-+ (id)cachedFileURLWithFilename:(id)a3 type:(id)a4
++ (id)cachedFileURLWithFilename:(id)filename type:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 downloadDirectory];
-  v9 = [v8 URLByAppendingPathComponent:v7 conformingToType:v6];
+  typeCopy = type;
+  filenameCopy = filename;
+  downloadDirectory = [self downloadDirectory];
+  v9 = [downloadDirectory URLByAppendingPathComponent:filenameCopy conformingToType:typeCopy];
 
   v10 = +[NSFileManager defaultManager];
-  v11 = [v9 path];
-  LODWORD(v7) = [v10 fileExistsAtPath:v11];
+  path = [v9 path];
+  LODWORD(filenameCopy) = [v10 fileExistsAtPath:path];
 
-  if (v7)
+  if (filenameCopy)
   {
     v12 = v9;
   }
@@ -122,11 +122,11 @@ LABEL_10:
 + (id)downloadDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  firstObject = [v2 firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = v3;
+    v5 = firstObject;
   }
 
   else
@@ -141,8 +141,8 @@ LABEL_10:
 
   v20 = 0;
   v9 = +[NSFileManager defaultManager];
-  v10 = [v8 path];
-  v11 = [v9 fileExistsAtPath:v10 isDirectory:&v20];
+  path = [v8 path];
+  v11 = [v9 fileExistsAtPath:path isDirectory:&v20];
   v12 = v20;
 
   if (!v11 || (v12 & 1) == 0)

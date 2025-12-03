@@ -1,6 +1,6 @@
 @interface WFExpandingParameter
 - (NSString)hintLabel;
-- (WFExpandingParameter)initWithDefinition:(id)a3;
+- (WFExpandingParameter)initWithDefinition:(id)definition;
 - (WFExpandingParameterHintProvider)hintProvider;
 @end
 
@@ -15,11 +15,11 @@
 
 - (NSString)hintLabel
 {
-  v3 = [(WFExpandingParameter *)self hintProvider];
-  if (v3)
+  hintProvider = [(WFExpandingParameter *)self hintProvider];
+  if (hintProvider)
   {
-    v4 = [(WFExpandingParameter *)self hintProvider];
-    v5 = [v4 hintForExpandingParameter:self];
+    hintProvider2 = [(WFExpandingParameter *)self hintProvider];
+    v5 = [hintProvider2 hintForExpandingParameter:self];
   }
 
   else
@@ -30,16 +30,16 @@
   return v5;
 }
 
-- (WFExpandingParameter)initWithDefinition:(id)a3
+- (WFExpandingParameter)initWithDefinition:(id)definition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFExpandingParameter;
-  v5 = [(WFParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"HintLabel"];
+    v6 = [definitionCopy objectForKey:@"HintLabel"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

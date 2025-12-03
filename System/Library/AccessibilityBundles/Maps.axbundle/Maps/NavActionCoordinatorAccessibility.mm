@@ -1,14 +1,14 @@
 @interface NavActionCoordinatorAccessibility
-- (void)sender:(id)a3 switchToNavigationCameraMode:(unint64_t)a4;
+- (void)sender:(id)sender switchToNavigationCameraMode:(unint64_t)mode;
 @end
 
 @implementation NavActionCoordinatorAccessibility
 
-- (void)sender:(id)a3 switchToNavigationCameraMode:(unint64_t)a4
+- (void)sender:(id)sender switchToNavigationCameraMode:(unint64_t)mode
 {
   v4.receiver = self;
   v4.super_class = NavActionCoordinatorAccessibility;
-  [(NavActionCoordinatorAccessibility *)&v4 sender:a3 switchToNavigationCameraMode:a4];
+  [(NavActionCoordinatorAccessibility *)&v4 sender:sender switchToNavigationCameraMode:mode];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 

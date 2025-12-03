@@ -6,8 +6,8 @@
 
 - (uint64_t)isBSServiceConnectionError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"BSServiceConnectionErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"BSServiceConnectionErrorDomain"];
 
   return v2;
 }

@@ -1,6 +1,6 @@
 @interface FCPrefetchConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FCPrefetchConfiguration)initWithConfigDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCPrefetchConfiguration)initWithConfigDictionary:(id)dictionary;
 - (FCPrefetchConfiguration)initWithDefaults;
 @end
 
@@ -30,44 +30,44 @@
   return v3;
 }
 
-- (FCPrefetchConfiguration)initWithConfigDictionary:(id)a3
+- (FCPrefetchConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FCPrefetchConfiguration;
   v6 = [(FCPrefetchConfiguration *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configDict, a3);
-    v7->_backgroundFetchEnabled = FCAppConfigurationBoolValue(v5, @"backgroundFetchEnabled2", 1);
-    v7->_minimumBackgroundFetchInterval = FCAppConfigurationIntegerValue(v5, @"backgroundFetchMinimumInterval", 0);
-    v7->_shouldPrefetchForYouFeed = FCAppConfigurationBoolValue(v5, @"feedPrefetchForYou", 1);
-    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(v5, @"scheduledBGFetchTimes", &unk_1F2E71AF0);
+    objc_storeStrong(&v6->_configDict, dictionary);
+    v7->_backgroundFetchEnabled = FCAppConfigurationBoolValue(dictionaryCopy, @"backgroundFetchEnabled2", 1);
+    v7->_minimumBackgroundFetchInterval = FCAppConfigurationIntegerValue(dictionaryCopy, @"backgroundFetchMinimumInterval", 0);
+    v7->_shouldPrefetchForYouFeed = FCAppConfigurationBoolValue(dictionaryCopy, @"feedPrefetchForYou", 1);
+    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"scheduledBGFetchTimes", &unk_1F2E71AF0);
     scheduledBGFetchTimes = v7->_scheduledBGFetchTimes;
     v7->_scheduledBGFetchTimes = v8;
 
-    v7->_scheduledBGFetchTimeJitter = FCAppConfigurationIntegerValue(v5, @"scheduledBGFetchJitter", 3600);
+    v7->_scheduledBGFetchTimeJitter = FCAppConfigurationIntegerValue(dictionaryCopy, @"scheduledBGFetchJitter", 3600);
     v10 = FCDefaultScheduledMicroUpdateTimes();
-    v11 = FCAppConfigurationDictionaryValueWithDefaultValue(v5, @"scheduledMicroUpdateTimes", v10);
+    v11 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"scheduledMicroUpdateTimes", v10);
     scheduledMicroUpdateTimes = v7->_scheduledMicroUpdateTimes;
     v7->_scheduledMicroUpdateTimes = v11;
 
-    v7->_scheduledMicroUpdateTimeJitter = FCAppConfigurationIntegerValue(v5, @"scheduledMicroUpdateJitter", 3600);
+    v7->_scheduledMicroUpdateTimeJitter = FCAppConfigurationIntegerValue(dictionaryCopy, @"scheduledMicroUpdateJitter", 3600);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

@@ -2,7 +2,7 @@
 - (NSString)symbolName;
 - (NSString)titleString;
 - (_TtC4Maps37MapsGridButtonCollectionViewCellModel)init;
-- (_TtC4Maps37MapsGridButtonCollectionViewCellModel)initWithTitleString:(id)a3 symbolName:(id)a4 actionStyle:(int64_t)a5 actionBlock:(id)a6;
+- (_TtC4Maps37MapsGridButtonCollectionViewCellModel)initWithTitleString:(id)string symbolName:(id)name actionStyle:(int64_t)style actionBlock:(id)block;
 - (id)actionBlock;
 @end
 
@@ -54,14 +54,14 @@
   return v3;
 }
 
-- (_TtC4Maps37MapsGridButtonCollectionViewCellModel)initWithTitleString:(id)a3 symbolName:(id)a4 actionStyle:(int64_t)a5 actionBlock:(id)a6
+- (_TtC4Maps37MapsGridButtonCollectionViewCellModel)initWithTitleString:(id)string symbolName:(id)name actionStyle:(int64_t)style actionBlock:(id)block
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(block);
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
-  if (a4)
+  if (name)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    name = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = v13;
   }
 
@@ -76,9 +76,9 @@
   *v16 = v10;
   v16[1] = v12;
   v17 = (self + OBJC_IVAR____TtC4Maps37MapsGridButtonCollectionViewCellModel_symbolName);
-  *v17 = a4;
+  *v17 = name;
   v17[1] = v14;
-  *(self + OBJC_IVAR____TtC4Maps37MapsGridButtonCollectionViewCellModel_actionStyle) = a5;
+  *(self + OBJC_IVAR____TtC4Maps37MapsGridButtonCollectionViewCellModel_actionStyle) = style;
   v18 = (self + OBJC_IVAR____TtC4Maps37MapsGridButtonCollectionViewCellModel_actionBlock);
   *v18 = sub_1000FA694;
   v18[1] = v15;

@@ -1,32 +1,32 @@
 @interface PKPeerPaymentRecurringPaymentActionRequest
-- (PKPeerPaymentRecurringPaymentActionRequest)initWithRecurringPaymentIdentifier:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentRecurringPaymentActionRequest)initWithRecurringPaymentIdentifier:(id)identifier;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentActionRequest
 
-- (PKPeerPaymentRecurringPaymentActionRequest)initWithRecurringPaymentIdentifier:(id)a3
+- (PKPeerPaymentRecurringPaymentActionRequest)initWithRecurringPaymentIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentRecurringPaymentActionRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recurringPaymentIdentifier, a3);
+    objc_storeStrong(&v6->_recurringPaymentIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -103,16 +103,16 @@ LABEL_17:
   v23[0] = @"recurringPayment";
   v23[1] = recurringPaymentIdentifier;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
-  v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
+  v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
 
   [v11 setHTTPMethod:@"POST"];
   [v11 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = v12;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v13 = dictionary;
   action = self->_action;
   if (action)
   {
-    [v12 setObject:action forKey:@"action"];
+    [dictionary setObject:action forKey:@"action"];
   }
 
   v15 = [objc_opt_class() _HTTPBodyWithDictionary:v13];

@@ -1,14 +1,14 @@
 @interface PPContextPredictor
-- (PPContextPredictor)initWithLanguage:(id)a3;
-- (PPContextPredictor)initWithLanguage:(id)a3 mlModelURL:(id)a4;
-- (PPContextPredictor)initWithMLModel:(id)a3 language:(id)a4;
-- (PPContextPredictor)initWithMLModel:(id)a3 language:(id)a4 sentenceEmbeddingVersion:(unint64_t)a5;
-- (id)contextForSentence:(id)a3;
+- (PPContextPredictor)initWithLanguage:(id)language;
+- (PPContextPredictor)initWithLanguage:(id)language mlModelURL:(id)l;
+- (PPContextPredictor)initWithMLModel:(id)model language:(id)language;
+- (PPContextPredictor)initWithMLModel:(id)model language:(id)language sentenceEmbeddingVersion:(unint64_t)version;
+- (id)contextForSentence:(id)sentence;
 @end
 
 @implementation PPContextPredictor
 
-- (id)contextForSentence:(id)a3
+- (id)contextForSentence:(id)sentence
 {
   v53 = *MEMORY[0x277D85DE8];
   if (!self->_mlModel)
@@ -17,7 +17,7 @@
     goto LABEL_36;
   }
 
-  v4 = a3;
+  sentenceCopy = sentence;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CD89B0] wordEmbeddingForLanguage:self->_language revision:self->_sentenceEmbeddingVersion];
@@ -25,9 +25,9 @@
   if (v7 && [v7 dimension] < 0x12D)
   {
     bzero(buf, 0x5DC0uLL);
-    if ([v4 count] <= 0x14)
+    if ([sentenceCopy count] <= 0x14)
     {
-      v10 = [v4 count];
+      v10 = [sentenceCopy count];
       if (!v10)
       {
 LABEL_13:
@@ -60,7 +60,7 @@ LABEL_13:
             v44 = __52__PPContextPredictor_contextUsingCoreMLForSentence___block_invoke_56;
             v45 = &unk_278976388;
             v48 = &v35;
-            v46 = self;
+            selfCopy = self;
             oslog = v17;
             v47 = oslog;
             dispatch_sync(coremlQueue, &block);
@@ -68,15 +68,15 @@ LABEL_13:
             if (v19)
             {
               v20 = [v19 featureValueForName:@"probabilities"];
-              v21 = [v20 multiArrayValue];
+              multiArrayValue = [v20 multiArrayValue];
 
-              if (v21)
+              if (multiArrayValue)
               {
                 v22 = objc_opt_new();
-                for (i = 0; i < [v21 count]; ++i)
+                for (i = 0; i < [multiArrayValue count]; ++i)
                 {
                   v24 = objc_autoreleasePoolPush();
-                  v25 = [v21 objectAtIndexedSubscript:i];
+                  v25 = [multiArrayValue objectAtIndexedSubscript:i];
                   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
                   [v22 setObject:v25 forKeyedSubscript:v26];
 
@@ -150,7 +150,7 @@ LABEL_13:
     v12 = buf;
     do
     {
-      v13 = [v4 objectAtIndexedSubscript:v11];
+      v13 = [sentenceCopy objectAtIndexedSubscript:v11];
       [v7 getVector:v12 forString:v13];
 
       ++v11;
@@ -206,53 +206,53 @@ void __52__PPContextPredictor_contextUsingCoreMLForSentence___block_invoke_56(vo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (PPContextPredictor)initWithMLModel:(id)a3 language:(id)a4 sentenceEmbeddingVersion:(unint64_t)a5
+- (PPContextPredictor)initWithMLModel:(id)model language:(id)language sentenceEmbeddingVersion:(unint64_t)version
 {
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  languageCopy = language;
   v16.receiver = self;
   v16.super_class = PPContextPredictor;
   v11 = [(PPContextPredictor *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mlModel, a3);
-    objc_storeStrong(&v12->_language, a4);
+    objc_storeStrong(&v11->_mlModel, model);
+    objc_storeStrong(&v12->_language, language);
     v13 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"PPContextPredictor-modelQueue"];
     coremlQueue = v12->_coremlQueue;
     v12->_coremlQueue = v13;
 
-    v12->_sentenceEmbeddingVersion = a5;
+    v12->_sentenceEmbeddingVersion = version;
   }
 
   return v12;
 }
 
-- (PPContextPredictor)initWithMLModel:(id)a3 language:(id)a4
+- (PPContextPredictor)initWithMLModel:(id)model language:(id)language
 {
-  v6 = a4;
-  v7 = a3;
+  languageCopy = language;
+  modelCopy = model;
   v8 = +[PPConfiguration sharedInstance];
-  v9 = -[PPContextPredictor initWithMLModel:language:sentenceEmbeddingVersion:](self, "initWithMLModel:language:sentenceEmbeddingVersion:", v7, v6, [v8 sentenceEmbeddingVersion]);
+  v9 = -[PPContextPredictor initWithMLModel:language:sentenceEmbeddingVersion:](self, "initWithMLModel:language:sentenceEmbeddingVersion:", modelCopy, languageCopy, [v8 sentenceEmbeddingVersion]);
 
   return v9;
 }
 
-- (PPContextPredictor)initWithLanguage:(id)a3 mlModelURL:(id)a4
+- (PPContextPredictor)initWithLanguage:(id)language mlModelURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  lCopy = l;
   v8 = objc_opt_new();
   [v8 setComputeUnits:0];
   v15 = 0;
-  v9 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v7 configuration:v8 error:&v15];
+  v9 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:lCopy configuration:v8 error:&v15];
 
   v10 = v15;
   if (v9)
   {
-    self = [(PPContextPredictor *)self initWithMLModel:v9 language:v6 sentenceEmbeddingVersion:1];
-    v11 = self;
+    self = [(PPContextPredictor *)self initWithMLModel:v9 language:languageCopy sentenceEmbeddingVersion:1];
+    selfCopy = self;
   }
 
   else
@@ -265,19 +265,19 @@ void __52__PPContextPredictor_contextUsingCoreMLForSentence___block_invoke_56(vo
       _os_log_error_impl(&dword_23224A000, v12, OS_LOG_TYPE_ERROR, "PPContextPredictor: failed to load ML model: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
-- (PPContextPredictor)initWithLanguage:(id)a3
+- (PPContextPredictor)initWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = +[PPTrialWrapper sharedInstance];
   v6 = [v5 mlModelForModelName:@"context_predictor.mlmodelc" namespaceName:@"PERSONALIZATION_PORTRAIT_GLOBAL" error:0];
-  v7 = [(PPContextPredictor *)self initWithMLModel:v6 language:v4];
+  v7 = [(PPContextPredictor *)self initWithMLModel:v6 language:languageCopy];
 
   return v7;
 }

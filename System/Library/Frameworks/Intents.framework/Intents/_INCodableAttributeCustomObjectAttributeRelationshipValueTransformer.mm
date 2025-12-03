@@ -1,18 +1,18 @@
 @interface _INCodableAttributeCustomObjectAttributeRelationshipValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation _INCodableAttributeCustomObjectAttributeRelationshipValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = valueCopy;
     }
 
     else
@@ -27,17 +27,17 @@
   }
 
   v5 = v4;
-  v6 = [v5 identifier];
-  v7 = v6;
-  if (v6)
+  identifier = [v5 identifier];
+  v7 = identifier;
+  if (identifier)
   {
-    v8 = v6;
+    v8 = identifier;
   }
 
   else
   {
-    v9 = v3;
-    if (v3)
+    v9 = valueCopy;
+    if (valueCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

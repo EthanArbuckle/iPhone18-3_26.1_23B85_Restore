@@ -8,15 +8,15 @@
 - (id)accessibilityValue
 {
   v2 = [(CAMRAWStatusIndicatorAccessibility *)self safeValueForKey:@"rawMode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (!v3)
+  if (!integerValue)
   {
     v4 = @"RAW_MODE_BUTTON_VALUE_OFF";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (integerValue == 1)
   {
     v4 = @"RAW_MODE_BUTTON_VALUE_ON";
 LABEL_5:

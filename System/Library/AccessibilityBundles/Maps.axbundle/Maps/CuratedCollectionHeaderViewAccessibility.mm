@@ -1,5 +1,5 @@
 @interface CuratedCollectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotatePublisherLogoImageView;
 - (void)_updateHeaderContent;
@@ -7,14 +7,14 @@
 
 @implementation CuratedCollectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CuratedCollectionHeaderView" hasInstanceVariable:@"_titleSingleLineLabel" withType:"UILabel"];
-  [v3 validateClass:@"CuratedCollectionHeaderView" hasInstanceVariable:@"_titleMultiLineLabel" withType:"UILabel"];
-  [v3 validateClass:@"CuratedCollectionHeaderView" hasInstanceVariable:@"_publisherLogoImageView" withType:"UIImageView"];
-  [v3 validateClass:@"CuratedCollectionHeaderView" hasInstanceMethod:@"curatedCollection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CuratedCollectionHeaderView" hasInstanceMethod:@"_updateHeaderContent" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CuratedCollectionHeaderView" hasInstanceVariable:@"_titleSingleLineLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CuratedCollectionHeaderView" hasInstanceVariable:@"_titleMultiLineLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CuratedCollectionHeaderView" hasInstanceVariable:@"_publisherLogoImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"CuratedCollectionHeaderView" hasInstanceMethod:@"curatedCollection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CuratedCollectionHeaderView" hasInstanceMethod:@"_updateHeaderContent" withFullSignature:{"v", 0}];
 }
 
 - (void)_axAnnotatePublisherLogoImageView

@@ -6,9 +6,9 @@
 
 - (LNEntity)entity
 {
-  v3 = [MEMORY[0x277D23928] wf_placeDescriptorObjectClass];
+  wf_placeDescriptorObjectClass = [MEMORY[0x277D23928] wf_placeDescriptorObjectClass];
 
-  return [(WFContentItem *)self objectForClass:v3];
+  return [(WFContentItem *)self objectForClass:wf_placeDescriptorObjectClass];
 }
 
 @end

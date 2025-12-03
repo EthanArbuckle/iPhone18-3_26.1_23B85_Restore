@@ -1,10 +1,10 @@
 @interface VKCameraDelegateMediator
-- (ReferenceCountedAccess<md::VKCameraRegionChange>)willBeginRegionChangeAccess:(SEL)a3;
+- (ReferenceCountedAccess<md::VKCameraRegionChange>)willBeginRegionChangeAccess:(SEL)access;
 - (VKCameraDelegateMediator)init;
 - (VKMapViewCameraDelegate)cameraDelegate;
 - (__n128)mapLayerWillAnimateToLocation:;
 - (id).cxx_construct;
-- (id)mapLayerPresentationForAnnotation:(id)a3;
+- (id)mapLayerPresentationForAnnotation:(id)annotation;
 - (uint64_t)mapLayerCanEnter3DModeDidChange:;
 - (uint64_t)mapLayerCanZoomInDidChange:;
 - (uint64_t)mapLayerCanZoomOutDidChange:;
@@ -13,32 +13,32 @@
 - (uint64_t)willBeginRegionChangeAccess:;
 - (unint64_t)regionChangeCount;
 - (void)dealloc;
-- (void)didEndRegionChangeAccess:(void *)a3;
+- (void)didEndRegionChangeAccess:(void *)access;
 - (void)mapLayerCanEnter3DModeDidChange:;
-- (void)mapLayerCanEnter3DModeDidChange:(BOOL)a3;
+- (void)mapLayerCanEnter3DModeDidChange:(BOOL)change;
 - (void)mapLayerCanZoomInDidChange:;
-- (void)mapLayerCanZoomInDidChange:(BOOL)a3;
+- (void)mapLayerCanZoomInDidChange:(BOOL)change;
 - (void)mapLayerCanZoomOutDidChange:;
-- (void)mapLayerCanZoomOutDidChange:(BOOL)a3;
+- (void)mapLayerCanZoomOutDidChange:(BOOL)change;
 - (void)mapLayerDidBecomePitched:;
-- (void)mapLayerDidBecomePitched:(BOOL)a3;
-- (void)mapLayerDidChangeRegionAnimated:(BOOL)a3;
+- (void)mapLayerDidBecomePitched:(BOOL)pitched;
+- (void)mapLayerDidChangeRegionAnimated:(BOOL)animated;
 - (void)mapLayerDidChangeVisibleRegion;
 - (void)mapLayerDidFinishInitialTrackingAnimation;
 - (void)mapLayerMuninAvailabilityDidChange:;
-- (void)mapLayerMuninAvailabilityDidChange:(int64_t)a3;
+- (void)mapLayerMuninAvailabilityDidChange:(int64_t)change;
 - (void)mapLayerNavigationCameraDidLeaveDefaultZoom;
 - (void)mapLayerNavigationCameraDidReturnToDefaultZoom;
 - (void)mapLayerNavigationCameraHasStartedPanning;
 - (void)mapLayerNavigationCameraHasStoppedPanning;
 - (void)mapLayerWasUnableToAnimate;
 - (void)mapLayerWillAnimateToLocation:;
-- (void)mapLayerWillAnimateToLocation:(id)a3;
-- (void)mapLayerWillChangeRegionAnimated:(BOOL)a3;
+- (void)mapLayerWillAnimateToLocation:(id)location;
+- (void)mapLayerWillChangeRegionAnimated:(BOOL)animated;
 - (void)mapLayerWillPerformZoomBounceAnimation;
 - (void)processDeferredDelegates;
-- (void)pushAccess:(void *)a3 animated:(BOOL)a4;
-- (void)setDeferredDelegates:(void *)a3;
+- (void)pushAccess:(void *)access animated:(BOOL)animated;
+- (void)setDeferredDelegates:(void *)delegates;
 - (void)willBeginRegionChangeAccess:;
 @end
 
@@ -110,7 +110,7 @@
 
 - (void)mapLayerDidChangeVisibleRegion
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
@@ -181,18 +181,18 @@
   return WeakRetained;
 }
 
-- (void)setDeferredDelegates:(void *)a3
+- (void)setDeferredDelegates:(void *)delegates
 {
   p_deferredDelegates = &self->_deferredDelegates;
-  if (&self->_deferredDelegates == a3)
+  if (&self->_deferredDelegates == delegates)
   {
     return;
   }
 
-  v5 = *(a3 + 4);
+  v5 = *(delegates + 4);
   v6 = (v5 >> 4) & 0xFFFFFFFFFFFFFF8;
-  v7 = *(a3 + 1);
-  if (*(a3 + 2) == v7)
+  v7 = *(delegates + 1);
+  if (*(delegates + 2) == v7)
   {
     v12 = 0;
     v8 = 0;
@@ -200,8 +200,8 @@
 
   else
   {
-    v8 = *(v7 + v6) + 32 * (*(a3 + 4) & 0x7FLL);
-    v9 = *(a3 + 5) + v5;
+    v8 = *(v7 + v6) + 32 * (*(delegates + 4) & 0x7FLL);
+    v9 = *(delegates + 5) + v5;
     v10 = (v9 >> 4) & 0xFFFFFFFFFFFFFF8;
     v11 = v9 & 0x7F;
     if (*(v7 + v10) + 32 * v11 == v8)
@@ -211,7 +211,7 @@
 
     else
     {
-      v12 = (v11 | (16 * (v10 - v6))) - (*(a3 + 4) & 0x7FLL);
+      v12 = (v11 | (16 * (v10 - v6))) - (*(delegates + 4) & 0x7FLL);
       size = self->_deferredDelegates.c.__size_;
       if (size < v12)
       {
@@ -533,7 +533,7 @@
   }
 }
 
-- (void)mapLayerDidChangeRegionAnimated:(BOOL)a3
+- (void)mapLayerDidChangeRegionAnimated:(BOOL)animated
 {
   if (!self->_isChangingMapType)
   {
@@ -541,30 +541,30 @@
   }
 }
 
-- (void)mapLayerWillChangeRegionAnimated:(BOOL)a3
+- (void)mapLayerWillChangeRegionAnimated:(BOOL)animated
 {
   if (!self->_isChangingMapType)
   {
-    [(VKCameraDelegateMediator *)self pushAccess:&self->_directAccess animated:a3];
+    [(VKCameraDelegateMediator *)self pushAccess:&self->_directAccess animated:animated];
   }
 }
 
-- (void)pushAccess:(void *)a3 animated:(BOOL)a4
+- (void)pushAccess:(void *)access animated:(BOOL)animated
 {
   v6 = *MEMORY[0x1E69E9840];
-  [(VKCameraDelegateMediator *)self willBeginRegionChangeAccess:a4];
-  gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::operator=(a3, v5);
+  [(VKCameraDelegateMediator *)self willBeginRegionChangeAccess:animated];
+  gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::operator=(access, v5);
   gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v5);
 }
 
-- (void)didEndRegionChangeAccess:(void *)a3
+- (void)didEndRegionChangeAccess:(void *)access
 {
   v3[10] = *MEMORY[0x1E69E9840];
-  gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::ReferenceCountedAccess(v3, a3);
+  gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::ReferenceCountedAccess(v3, access);
   gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v3);
 }
 
-- (ReferenceCountedAccess<md::VKCameraRegionChange>)willBeginRegionChangeAccess:(SEL)a3
+- (ReferenceCountedAccess<md::VKCameraRegionChange>)willBeginRegionChangeAccess:(SEL)access
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
@@ -621,7 +621,7 @@
 
 - (void)willBeginRegionChangeAccess:
 {
-  objc_destroyWeak((a1 + 16));
+  objc_destroyWeak((self + 16));
 
   JUMPOUT(0x1B8C62190);
 }
@@ -696,11 +696,11 @@
   }
 }
 
-- (void)mapLayerWillAnimateToLocation:(id)a3
+- (void)mapLayerWillAnimateToLocation:(id)location
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = &unk_1F2A46740;
-  v4 = a3;
+  locationCopy = location;
   v5 = &v3;
   checkIfDeferred(self, &v3);
   std::__function::__value_func<void ()(VKCameraDelegateMediator *)>::~__value_func[abi:nn200100](&v3);
@@ -715,14 +715,14 @@
   if (v4)
   {
     v5 = objc_loadWeakRetained(v6 + 1);
-    [v5 mapLayerWillAnimateToLocation:{*(a1 + 8), *(a1 + 16)}];
+    [v5 mapLayerWillAnimateToLocation:{*(self + 8), *(self + 16)}];
   }
 }
 
 - (__n128)mapLayerWillAnimateToLocation:
 {
   *a2 = &unk_1F2A46740;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
@@ -779,11 +779,11 @@
   }
 }
 
-- (void)mapLayerCanZoomOutDidChange:(BOOL)a3
+- (void)mapLayerCanZoomOutDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = &unk_1F2A465D8;
-  v4 = a3;
+  changeCopy = change;
   v5 = &v3;
   checkIfDeferred(self, &v3);
   std::__function::__value_func<void ()(VKCameraDelegateMediator *)>::~__value_func[abi:nn200100](&v3);
@@ -798,7 +798,7 @@
   if (v4)
   {
     v5 = objc_loadWeakRetained(v6 + 1);
-    [v5 mapLayerCanZoomOutDidChange:*(a1 + 8)];
+    [v5 mapLayerCanZoomOutDidChange:*(self + 8)];
   }
 }
 
@@ -809,11 +809,11 @@
   return result;
 }
 
-- (void)mapLayerCanZoomInDidChange:(BOOL)a3
+- (void)mapLayerCanZoomInDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = &unk_1F2A46590;
-  v4 = a3;
+  changeCopy = change;
   v5 = &v3;
   checkIfDeferred(self, &v3);
   std::__function::__value_func<void ()(VKCameraDelegateMediator *)>::~__value_func[abi:nn200100](&v3);
@@ -828,7 +828,7 @@
   if (v4)
   {
     v5 = objc_loadWeakRetained(v6 + 1);
-    [v5 mapLayerCanZoomInDidChange:*(a1 + 8)];
+    [v5 mapLayerCanZoomInDidChange:*(self + 8)];
   }
 }
 
@@ -839,11 +839,11 @@
   return result;
 }
 
-- (void)mapLayerMuninAvailabilityDidChange:(int64_t)a3
+- (void)mapLayerMuninAvailabilityDidChange:(int64_t)change
 {
   v3[4] = *MEMORY[0x1E69E9840];
   v3[0] = &unk_1F2A46548;
-  v3[1] = a3;
+  v3[1] = change;
   v3[3] = v3;
   checkIfDeferred(self, v3);
   std::__function::__value_func<void ()(VKCameraDelegateMediator *)>::~__value_func[abi:nn200100](v3);
@@ -858,7 +858,7 @@
   if (v4)
   {
     v5 = objc_loadWeakRetained(v6 + 1);
-    [v5 mapLayerMuninAvailabilityDidChange:*(a1 + 8)];
+    [v5 mapLayerMuninAvailabilityDidChange:*(self + 8)];
   }
 }
 
@@ -870,11 +870,11 @@
   return result;
 }
 
-- (void)mapLayerCanEnter3DModeDidChange:(BOOL)a3
+- (void)mapLayerCanEnter3DModeDidChange:(BOOL)change
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = &unk_1F2A46500;
-  v4 = a3;
+  changeCopy = change;
   v5 = &v3;
   checkIfDeferred(self, &v3);
   std::__function::__value_func<void ()(VKCameraDelegateMediator *)>::~__value_func[abi:nn200100](&v3);
@@ -889,7 +889,7 @@
   if (v4)
   {
     v5 = objc_loadWeakRetained(v6 + 1);
-    [v5 mapLayerCanEnter3DModeDidChange:*(a1 + 8)];
+    [v5 mapLayerCanEnter3DModeDidChange:*(self + 8)];
   }
 }
 
@@ -900,11 +900,11 @@
   return result;
 }
 
-- (void)mapLayerDidBecomePitched:(BOOL)a3
+- (void)mapLayerDidBecomePitched:(BOOL)pitched
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = &unk_1F2A464B8;
-  v4 = a3;
+  pitchedCopy = pitched;
   v5 = &v3;
   checkIfDeferred(self, &v3);
   std::__function::__value_func<void ()(VKCameraDelegateMediator *)>::~__value_func[abi:nn200100](&v3);
@@ -919,7 +919,7 @@
   if (v4)
   {
     v5 = objc_loadWeakRetained(v6 + 1);
-    [v5 mapLayerDidBecomePitched:*(a1 + 8)];
+    [v5 mapLayerDidBecomePitched:*(self + 8)];
   }
 }
 
@@ -930,10 +930,10 @@
   return result;
 }
 
-- (id)mapLayerPresentationForAnnotation:(id)a3
+- (id)mapLayerPresentationForAnnotation:(id)annotation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  annotationCopy = annotation;
   if (self->_delegateUpdateFenced)
   {
     if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -960,7 +960,7 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_cameraDelegate);
-    v9 = [v8 mapLayerPresentationForAnnotation:v4];
+    v9 = [v8 mapLayerPresentationForAnnotation:annotationCopy];
   }
 
   else

@@ -1,41 +1,41 @@
 @interface WBSCloudHistoryServiceProxy
-- (WBSCloudHistoryServiceProxy)initWithProxy:(id)a3;
-- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)a3;
-- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4;
-- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)a3;
-- (void)resetForAccountChangeWithCompletionHandler:(id)a3;
-- (void)saveChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4;
-- (void)updateConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)a3 completionHandler:(id)a4;
+- (WBSCloudHistoryServiceProxy)initWithProxy:(id)proxy;
+- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)handler;
+- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler;
+- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)handler;
+- (void)resetForAccountChangeWithCompletionHandler:(id)handler;
+- (void)saveChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler;
+- (void)updateConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)map completionHandler:(id)handler;
 @end
 
 @implementation WBSCloudHistoryServiceProxy
 
-- (WBSCloudHistoryServiceProxy)initWithProxy:(id)a3
+- (WBSCloudHistoryServiceProxy)initWithProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v10.receiver = self;
   v10.super_class = WBSCloudHistoryServiceProxy;
   v6 = [(WBSCloudHistoryServiceProxy *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxy, a3);
+    objc_storeStrong(&v6->_proxy, proxy);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)a3
+- (id)_defaultProxyErrorHandlerWithSimpleReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__WBSCloudHistoryServiceProxy__defaultProxyErrorHandlerWithSimpleReplyHandler___block_invoke;
   v7[3] = &unk_1E7FB8300;
-  v8 = v3;
-  v4 = v3;
+  v8 = handlerCopy;
+  v4 = handlerCopy;
   v5 = MEMORY[0x1BFB13CE0](v7);
 
   return v5;
@@ -60,58 +60,58 @@ void __79__WBSCloudHistoryServiceProxy__defaultProxyErrorHandlerWithSimpleReplyH
   }
 }
 
-- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)a3
+- (void)fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v5 = a3;
-  v6 = [(WBSCloudHistoryServiceProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:v5];
+  handlerCopy = handler;
+  v6 = [(WBSCloudHistoryServiceProxy *)self _defaultProxyErrorHandlerWithSimpleReplyHandler:handlerCopy];
   v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
 
-  [v7 fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:v5];
+  [v7 fetchDateOfNextPermittedSaveChangesAttemptWithCompletionHandler:handlerCopy];
 }
 
-- (void)updateConfiguration:(id)a3 completionHandler:(id)a4
+- (void)updateConfiguration:(id)configuration completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v8 updateConfiguration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v8 updateConfiguration:configurationCopy completionHandler:handlerCopy];
 }
 
-- (void)resetForAccountChangeWithCompletionHandler:(id)a3
+- (void)resetForAccountChangeWithCompletionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v4 = a3;
-  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v4];
-  [v5 resetForAccountChangeWithCompletionHandler:v4];
+  handlerCopy = handler;
+  v5 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v5 resetForAccountChangeWithCompletionHandler:handlerCopy];
 }
 
-- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4
+- (void)fetchAndMergeChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler
 {
-  v4 = a3;
+  throttlerCopy = throttler;
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v7 fetchAndMergeChangesBypassingThrottler:v4 completionHandler:v6];
+  handlerCopy = handler;
+  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v7 fetchAndMergeChangesBypassingThrottler:throttlerCopy completionHandler:handlerCopy];
 }
 
-- (void)saveChangesBypassingThrottler:(BOOL)a3 completionHandler:(id)a4
+- (void)saveChangesBypassingThrottler:(BOOL)throttler completionHandler:(id)handler
 {
-  v4 = a3;
+  throttlerCopy = throttler;
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v7 saveChangesBypassingThrottler:v4 completionHandler:v6];
+  handlerCopy = handler;
+  v7 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v7 saveChangesBypassingThrottler:throttlerCopy completionHandler:handlerCopy];
 }
 
-- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)a3 completionHandler:(id)a4
+- (void)updateProfileLocalIdentifiersToServerIdentifiersMap:(id)map completionHandler:(id)handler
 {
   proxy = self->_proxy;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:v6];
-  [v8 updateProfileLocalIdentifiersToServerIdentifiersMap:v7 completionHandler:v6];
+  handlerCopy = handler;
+  mapCopy = map;
+  v8 = [(NSXPCProxyCreating *)proxy remoteObjectProxyWithErrorHandler:handlerCopy];
+  [v8 updateProfileLocalIdentifiersToServerIdentifiersMap:mapCopy completionHandler:handlerCopy];
 }
 
 void __79__WBSCloudHistoryServiceProxy__defaultProxyErrorHandlerWithSimpleReplyHandler___block_invoke_cold_1(void *a1, void *a2)

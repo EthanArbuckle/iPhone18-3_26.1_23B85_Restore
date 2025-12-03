@@ -1,18 +1,18 @@
 @interface AVCatalystGlassTransportControlsView
-- (AVCatalystGlassTransportControlsView)initWithFrame:(CGRect)a3 styleSheet:(id)a4;
+- (AVCatalystGlassTransportControlsView)initWithFrame:(CGRect)frame styleSheet:(id)sheet;
 - (AVCatalystTransportControlsViewDelegate)delegate;
-- (BOOL)_subviewIsCustomMenuItemView:(id)a3;
+- (BOOL)_subviewIsCustomMenuItemView:(id)view;
 - (BOOL)isCollapsedOrExcluded;
 - (CGSize)extrinsicContentSize;
 - (CGSize)intrinsicContentSize;
 - (NSArray)doubleRowViews;
 - (NSArray)singleRowViews;
 - (NSTimer)scrubInstructionsTimer;
-- (double)_doubleRowLayoutSpacingAfterSubview:(id)a3;
-- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)a3;
-- (double)_singeRowLayoutSpacingAfterSubview:(id)a3;
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3;
-- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)a3;
+- (double)_doubleRowLayoutSpacingAfterSubview:(id)subview;
+- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)row;
+- (double)_singeRowLayoutSpacingAfterSubview:(id)subview;
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row;
+- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)subview;
 - (void)_layoutDoubleRowViews;
 - (void)_layoutSingleRowViews;
 - (void)_showScrubInstructions;
@@ -20,27 +20,27 @@
 - (void)_updateFontSizes;
 - (void)_updateScrubInstructionsFrame;
 - (void)_updateScrubInstructionsLabelsText;
-- (void)avkit_reevaluateHiddenStateOfItem:(id)a3;
-- (void)beginScrubbing:(id)a3;
+- (void)avkit_reevaluateHiddenStateOfItem:(id)item;
+- (void)beginScrubbing:(id)scrubbing;
 - (void)didMoveToWindow;
-- (void)endScrubbing:(id)a3;
+- (void)endScrubbing:(id)scrubbing;
 - (void)layoutSubviews;
 - (void)reevaluateHiddenStateOfAllItems;
-- (void)scrubberValueChanged:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setCustomContentTransitioningInfoPanel:(id)a3;
-- (void)setCustomItems:(id)a3;
-- (void)setCustomMenuItemsViews:(id)a3;
-- (void)setDoubleRowLayoutEnabled:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setHasFullScreenAppearance:(BOOL)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)a3;
-- (void)setPrefersFlexibleWidthScrubber:(BOOL)a3;
-- (void)setShowsLiveStreamingControls:(BOOL)a3;
-- (void)setShowsLoadingIndicator:(BOOL)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrubberValueChanged:(id)changed;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setCustomContentTransitioningInfoPanel:(id)panel;
+- (void)setCustomItems:(id)items;
+- (void)setCustomMenuItemsViews:(id)views;
+- (void)setDoubleRowLayoutEnabled:(BOOL)enabled;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setHasFullScreenAppearance:(BOOL)appearance;
+- (void)setIncluded:(BOOL)included;
+- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)scrubber;
+- (void)setPrefersFlexibleWidthScrubber:(BOOL)scrubber;
+- (void)setShowsLiveStreamingControls:(BOOL)controls;
+- (void)setShowsLoadingIndicator:(BOOL)indicator;
+- (void)setStyleSheet:(id)sheet;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AVCatalystGlassTransportControlsView
@@ -68,18 +68,18 @@
   return WeakRetained;
 }
 
-- (BOOL)_subviewIsCustomMenuItemView:(id)a3
+- (BOOL)_subviewIsCustomMenuItemView:(id)view
 {
-  v4 = a3;
-  v5 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+  viewCopy = view;
+  customMenuItemsViews = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
 
-  if (v5)
+  if (customMenuItemsViews)
   {
-    v6 = v4;
+    v6 = viewCopy;
     if (v6)
     {
-      v7 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
-      v8 = [v7 containsObject:v6];
+      customMenuItemsViews2 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+      v8 = [customMenuItemsViews2 containsObject:v6];
     }
 
     else
@@ -121,12 +121,12 @@
   v15[12] = self->_playbackSpeedButton;
   v15[13] = controlOverflowButton;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:14];
-  v11 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+  customMenuItemsViews = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
 
-  if (v11)
+  if (customMenuItemsViews)
   {
-    v12 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
-    v13 = [v10 arrayByAddingObjectsFromArray:v12];
+    customMenuItemsViews2 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+    v13 = [v10 arrayByAddingObjectsFromArray:customMenuItemsViews2];
 
     v10 = v13;
   }
@@ -157,15 +157,15 @@
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&mediaSelectionButton count:1];
   v10 = [v8 arrayByAddingObjectsFromArray:v9];
 
-  v11 = [(AVCatalystGlassTransportControlsView *)self customItems];
-  v12 = [v10 arrayByAddingObjectsFromArray:v11];
+  customItems = [(AVCatalystGlassTransportControlsView *)self customItems];
+  v12 = [v10 arrayByAddingObjectsFromArray:customItems];
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+  customMenuItemsViews = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
 
-  if (v13)
+  if (customMenuItemsViews)
   {
-    v14 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
-    v15 = [v12 arrayByAddingObjectsFromArray:v14];
+    customMenuItemsViews2 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+    v15 = [v12 arrayByAddingObjectsFromArray:customMenuItemsViews2];
 
     v12 = v15;
   }
@@ -181,48 +181,48 @@
 
 - (void)_updateCustomContentTransitioningInfoPanelLayout
 {
-  v3 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+  customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
 
-  if (!v3)
+  if (!customContentTransitioningInfoPanel)
   {
     return;
   }
 
-  v4 = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
-  v5 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-  v6 = [v5 superview];
-  if (v4)
+  isDoubleRowLayoutEnabled = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
+  customContentTransitioningInfoPanel2 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+  superview = [customContentTransitioningInfoPanel2 superview];
+  if (isDoubleRowLayoutEnabled)
   {
-    v7 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+    embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
 
-    if (v6 != v7)
+    if (superview != embeddedExtraContentContainer)
     {
-      v8 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-      v9 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-      [v8 addSubview:v9];
+      embeddedExtraContentContainer2 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+      customContentTransitioningInfoPanel3 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+      [embeddedExtraContentContainer2 addSubview:customContentTransitioningInfoPanel3];
     }
 
-    v10 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-    v11 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-    [v11 bounds];
-    [v10 setFrame:?];
+    customContentTransitioningInfoPanel4 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+    embeddedExtraContentContainer3 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+    [embeddedExtraContentContainer3 bounds];
+    [customContentTransitioningInfoPanel4 setFrame:?];
     goto LABEL_9;
   }
 
-  v12 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+  detachedExtraContentLayoutView = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
 
-  if (v6 != v12)
+  if (superview != detachedExtraContentLayoutView)
   {
-    v10 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
-    v11 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-    [v10 addSubview:v11];
+    customContentTransitioningInfoPanel4 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+    embeddedExtraContentContainer3 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+    [customContentTransitioningInfoPanel4 addSubview:embeddedExtraContentContainer3];
 LABEL_9:
   }
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
-  [v13 setHidden:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
+  detachedExtraContentLayoutView2 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+  [detachedExtraContentLayoutView2 setHidden:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
 
-  v14 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+  detachedExtraContentLayoutView3 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
   if ([(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
     v15 = 0.0;
@@ -233,15 +233,15 @@ LABEL_9:
     v15 = 1.0;
   }
 
-  [v14 setAlpha:v15];
+  [detachedExtraContentLayoutView3 setAlpha:v15];
 
-  v16 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-  [v16 setCollapsed:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
+  embeddedExtraContentContainer4 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer4 setCollapsed:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
 
-  v17 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-  [v17 setIncluded:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
+  embeddedExtraContentContainer5 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer5 setIncluded:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
 
-  v19 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  embeddedExtraContentContainer6 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
   if ([(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
     v18 = 1.0;
@@ -252,73 +252,73 @@ LABEL_9:
     v18 = 0.0;
   }
 
-  [v19 setAlpha:v18];
+  [embeddedExtraContentContainer6 setAlpha:v18];
 }
 
 - (void)_updateScrubInstructionsFrame
 {
   [(AVCatalystGlassTransportControlsView *)self frame];
   v3 = CGRectGetMinY(v38) + -8.0;
-  v4 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v4 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel intrinsicContentSize];
   v6 = v3 - v5 + -20.0;
 
-  v7 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v7 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel2 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel2 intrinsicContentSize];
   v9 = v8 + 20.0;
 
-  v10 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v10 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel3 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel3 intrinsicContentSize];
   v12 = v11 + 20.0;
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
-  [v13 setFrame:{0.0, v6, v9, v12}];
+  detachedExtraContentLayoutView = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+  [detachedExtraContentLayoutView setFrame:{0.0, v6, v9, v12}];
 
-  v14 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  v15 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v15 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel4 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  detachedScrubInstructionsBackdropLabel5 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel5 intrinsicContentSize];
   v17 = v16;
-  v18 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v18 intrinsicContentSize];
-  [v14 setFrame:{10.0, 10.0, v17, v19}];
+  detachedScrubInstructionsBackdropLabel6 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel6 intrinsicContentSize];
+  [detachedScrubInstructionsBackdropLabel4 setFrame:{10.0, 10.0, v17, v19}];
 
-  v20 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+  detachedExtraContentLayoutView2 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
   [(AVCatalystGlassTransportControlsView *)self center];
   v22 = v21;
-  v23 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
-  [v23 center];
-  [v20 setCenter:v22];
+  detachedExtraContentLayoutView3 = [(AVCatalystGlassTransportControlsView *)self detachedExtraContentLayoutView];
+  [detachedExtraContentLayoutView3 center];
+  [detachedExtraContentLayoutView2 setCenter:v22];
 
-  v24 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
-  v25 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-  [v25 bounds];
-  [v24 sizeThatFits:{v26, v27}];
+  scrubInstructionsLabel = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
+  embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer bounds];
+  [scrubInstructionsLabel sizeThatFits:{v26, v27}];
   v29 = v28;
   v31 = v30;
 
-  v32 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
-  [v32 setFrame:{0.0, 0.0, v29, v31}];
+  scrubInstructionsLabel2 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
+  [scrubInstructionsLabel2 setFrame:{0.0, 0.0, v29, v31}];
 
-  v36 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
-  v33 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-  [v33 frame];
+  scrubInstructionsLabel3 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
+  embeddedExtraContentContainer2 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer2 frame];
   v34 = CGRectGetWidth(v39) * 0.5;
-  v35 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
-  [v35 center];
-  [v36 setCenter:v34];
+  scrubInstructionsLabel4 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
+  [scrubInstructionsLabel4 center];
+  [scrubInstructionsLabel3 setCenter:v34];
 }
 
 - (void)_updateScrubInstructionsLabelsText
 {
-  v3 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+  customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
 
-  if (v3)
+  if (customContentTransitioningInfoPanel)
   {
-    v4 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-    [v4 setAttributedText:0];
+    detachedScrubInstructionsBackdropLabel = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+    [detachedScrubInstructionsBackdropLabel setAttributedText:0];
 
-    v5 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
-    [v5 setAttributedText:0];
+    scrubInstructionsLabel = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
+    [scrubInstructionsLabel setAttributedText:0];
   }
 }
 
@@ -336,17 +336,17 @@ LABEL_9:
 
   [(AVCatalystGlassTransportControlsView *)self bounds];
   Width = CGRectGetWidth(v12);
-  v5 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  [v5 doubleRowLayoutMargins];
+  styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  [styleSheet doubleRowLayoutMargins];
   if (Width <= v6)
   {
   }
 
   else
   {
-    v7 = [(AVCatalystGlassTransportControlsView *)self isShowingScrubInstructions];
+    isShowingScrubInstructions = [(AVCatalystGlassTransportControlsView *)self isShowingScrubInstructions];
 
-    if (!v7)
+    if (!isShowingScrubInstructions)
     {
       [(AVCatalystGlassTransportControlsView *)self setShowingScrubInstructions:1];
       v10[0] = MEMORY[0x1E69E9820];
@@ -441,155 +441,155 @@ LABEL_6:
 
 - (void)_updateFontSizes
 {
-  v3 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  v4 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  v5 = [v4 scrubberTimeLabelFont];
-  [v3 setFont:v5];
+  elapsedTimeLabel = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  scrubberTimeLabelFont = [styleSheet scrubberTimeLabelFont];
+  [elapsedTimeLabel setFont:scrubberTimeLabelFont];
 
-  v6 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-  v7 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  v8 = [v7 scrubberTimeLabelFont];
-  [v6 setFont:v8];
+  timeRemainingLabel = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+  styleSheet2 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  scrubberTimeLabelFont2 = [styleSheet2 scrubberTimeLabelFont];
+  [timeRemainingLabel setFont:scrubberTimeLabelFont2];
 
-  v9 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  v10 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  v11 = [v10 infoLabelFont];
-  [v9 setFont:v11];
+  liveBroadcastLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  styleSheet3 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  infoLabelFont = [styleSheet3 infoLabelFont];
+  [liveBroadcastLabel setFont:infoLabelFont];
 
-  v12 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
-  v13 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  v14 = [v13 scrubberInfoLabelFont];
-  [v12 setFont:v14];
+  liveBroadcastScrubberLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
+  styleSheet4 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  scrubberInfoLabelFont = [styleSheet4 scrubberInfoLabelFont];
+  [liveBroadcastScrubberLabel setFont:scrubberInfoLabelFont];
 
   [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
 
   [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
 }
 
-- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)a3
+- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)subview
 {
-  v4 = a3;
-  [(AVCatalystGlassTransportControlsView *)self _subviewIsCustomMenuItemView:v4];
-  v5 = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
-  v6 = v5;
-  if (v5 == v4)
+  subviewCopy = subview;
+  [(AVCatalystGlassTransportControlsView *)self _subviewIsCustomMenuItemView:subviewCopy];
+  standardPlayPauseButton = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
+  v6 = standardPlayPauseButton;
+  if (standardPlayPauseButton == subviewCopy)
   {
 
     goto LABEL_15;
   }
 
-  v7 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
 
-  if (v7 == v4)
+  if (embeddedExtraContentContainer == subviewCopy)
   {
 LABEL_15:
     v21 = 4;
     goto LABEL_26;
   }
 
-  v8 = [(AVCatalystGlassTransportControlsView *)self scrubber];
-  v9 = v8;
-  if (v8 == v4)
+  scrubber = [(AVCatalystGlassTransportControlsView *)self scrubber];
+  v9 = scrubber;
+  if (scrubber == subviewCopy)
   {
 
     goto LABEL_17;
   }
 
-  v10 = [(AVCatalystGlassTransportControlsView *)self controlOverflowButton];
+  controlOverflowButton = [(AVCatalystGlassTransportControlsView *)self controlOverflowButton];
 
-  if (v10 == v4)
+  if (controlOverflowButton == subviewCopy)
   {
 LABEL_17:
     v21 = 3;
     goto LABEL_26;
   }
 
-  v11 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  if (v11 == v4)
+  elapsedTimeLabel = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  if (elapsedTimeLabel == subviewCopy)
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v12 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-  v13 = v12;
-  if (v12 == v4)
+  timeRemainingLabel = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+  v13 = timeRemainingLabel;
+  if (timeRemainingLabel == subviewCopy)
   {
 
     goto LABEL_19;
   }
 
-  v14 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  liveBroadcastLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
 
-  if (v14 == v4)
+  if (liveBroadcastLabel == subviewCopy)
   {
 LABEL_20:
     v21 = 2;
     goto LABEL_26;
   }
 
-  v15 = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
-  if (v15 == v4)
+  skipBackButton = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
+  if (skipBackButton == subviewCopy)
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v16 = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
-  if (v16 == v4)
+  skipForwardButton = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
+  if (skipForwardButton == subviewCopy)
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v17 = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
-  if (v17 == v4)
+  startLeftwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
+  if (startLeftwardContentTransitionButton == subviewCopy)
   {
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v18 = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
-  v19 = v18;
-  if (v18 == v4)
+  startRightwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
+  v19 = startRightwardContentTransitionButton;
+  if (startRightwardContentTransitionButton == subviewCopy)
   {
 
     goto LABEL_22;
   }
 
-  v20 = [(AVCatalystGlassTransportControlsView *)self mediaSelectionButton];
+  mediaSelectionButton = [(AVCatalystGlassTransportControlsView *)self mediaSelectionButton];
 
-  if (v20 == v4)
+  if (mediaSelectionButton == subviewCopy)
   {
 LABEL_25:
     v21 = 1;
     goto LABEL_26;
   }
 
-  v21 = 2 * (self->_playbackSpeedButton == v4);
+  v21 = 2 * (self->_playbackSpeedButton == subviewCopy);
 LABEL_26:
 
   return v21;
 }
 
-- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)a3
+- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)row
 {
-  v5 = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
+  isDoubleRowLayoutEnabled = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
   v6 = 0.0;
-  if (!a3 && v5)
+  if (!row && isDoubleRowLayoutEnabled)
   {
-    v7 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-    if (v7)
+    customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+    if (customContentTransitioningInfoPanel)
     {
-      v8 = v7;
-      v9 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-      v10 = [v9 isHiddenOrHasHiddenAncestor];
+      v8 = customContentTransitioningInfoPanel;
+      embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+      isHiddenOrHasHiddenAncestor = [embeddedExtraContentContainer isHiddenOrHasHiddenAncestor];
 
-      if (v10)
+      if (isHiddenOrHasHiddenAncestor)
       {
         v6 = 0.0;
       }
@@ -601,16 +601,16 @@ LABEL_26:
     }
   }
 
-  if (((a3 == 1) & [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled]) != 0)
+  if (((row == 1) & [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled]) != 0)
   {
     v6 = 4.5;
   }
 
-  v11 = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
-  if (!a3 && v11)
+  isDoubleRowLayoutEnabled2 = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
+  if (!row && isDoubleRowLayoutEnabled2)
   {
-    v12 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-    [v12 spacingBetweenScrubInstructionsAndScrubber];
+    styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+    [styleSheet spacingBetweenScrubInstructionsAndScrubber];
     v6 = v13;
   }
 
@@ -620,14 +620,14 @@ LABEL_26:
 - (void)_layoutSingleRowViews
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  [v3 setLoadingIndicatorAlignment:1];
+  liveBroadcastLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel setLoadingIndicatorAlignment:1];
 
-  v4 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  v5 = [(AVCatalystGlassTransportControlsView *)self singleRowViews];
-  v37[0] = v5;
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  singleRowViews = [(AVCatalystGlassTransportControlsView *)self singleRowViews];
+  v37[0] = singleRowViews;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-  [v4 setArrangedSubviews:v6];
+  [controlsLayoutView setArrangedSubviews:v6];
 
   v7 = 0.0;
   if (![(AVCatalystGlassTransportControlsView *)self isCollapsedOrExcluded])
@@ -643,33 +643,33 @@ LABEL_26:
     }
   }
 
-  v8 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  [v8 setContentLayoutMargins:{0.0, v7, 0.0, v7}];
+  controlsLayoutView2 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView2 setContentLayoutMargins:{0.0, v7, 0.0, v7}];
 
-  v9 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  v10 = [v9 layoutAttributes];
-  v11 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-  v12 = [v11 layoutAttributes];
-  [v10 setDisplayPartnerAttributes:v12];
+  elapsedTimeLabel = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  layoutAttributes = [elapsedTimeLabel layoutAttributes];
+  timeRemainingLabel = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+  layoutAttributes2 = [timeRemainingLabel layoutAttributes];
+  [layoutAttributes setDisplayPartnerAttributes:layoutAttributes2];
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-  v14 = [v13 layoutAttributes];
-  v15 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  v16 = [v15 layoutAttributes];
-  [v14 setDisplayPartnerAttributes:v16];
+  timeRemainingLabel2 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+  layoutAttributes3 = [timeRemainingLabel2 layoutAttributes];
+  elapsedTimeLabel2 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  layoutAttributes4 = [elapsedTimeLabel2 layoutAttributes];
+  [layoutAttributes3 setDisplayPartnerAttributes:layoutAttributes4];
 
-  v17 = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
-  v18 = [v17 layoutAttributes];
-  v19 = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
-  v20 = [v19 layoutAttributes];
-  [v18 setDisplayPartnerAttributes:v20];
+  skipBackButton = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
+  layoutAttributes5 = [skipBackButton layoutAttributes];
+  skipForwardButton = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
+  layoutAttributes6 = [skipForwardButton layoutAttributes];
+  [layoutAttributes5 setDisplayPartnerAttributes:layoutAttributes6];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v21 = [(AVCatalystGlassTransportControlsView *)self singleRowViews];
-  v22 = [v21 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  singleRowViews2 = [(AVCatalystGlassTransportControlsView *)self singleRowViews];
+  v22 = [singleRowViews2 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v22)
   {
     v23 = v22;
@@ -680,32 +680,32 @@ LABEL_26:
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(singleRowViews2);
         }
 
         v26 = *(*(&v32 + 1) + 8 * i);
-        v27 = [v26 layoutAttributes];
+        layoutAttributes7 = [v26 layoutAttributes];
         [(AVCatalystGlassTransportControlsView *)self _singeRowLayoutSpacingAfterSubview:v26];
-        [v27 setTrailingInterItemSpace:?];
+        [layoutAttributes7 setTrailingInterItemSpace:?];
 
-        v28 = [v26 layoutAttributes];
-        [v28 setDisplayPriority:{-[AVCatalystGlassTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v26)}];
+        layoutAttributes8 = [v26 layoutAttributes];
+        [layoutAttributes8 setDisplayPriority:{-[AVCatalystGlassTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v26)}];
 
-        v29 = [v26 layoutAttributes];
-        v30 = [(AVCatalystGlassTransportControlsView *)self scrubber];
-        if (v26 == v30)
+        layoutAttributes9 = [v26 layoutAttributes];
+        scrubber = [(AVCatalystGlassTransportControlsView *)self scrubber];
+        if (v26 == scrubber)
         {
-          [v29 setHasFlexibleContentSize:1];
+          [layoutAttributes9 setHasFlexibleContentSize:1];
         }
 
         else
         {
-          v31 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-          [v29 setHasFlexibleContentSize:v26 == v31];
+          liveBroadcastLabel2 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+          [layoutAttributes9 setHasFlexibleContentSize:v26 == liveBroadcastLabel2];
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v23 = [singleRowViews2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v23);
@@ -715,90 +715,90 @@ LABEL_26:
 - (void)_layoutDoubleRowViews
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  v4 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  [v4 doubleRowLayoutMargins];
-  [v3 setContentLayoutMargins:?];
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  [styleSheet doubleRowLayoutMargins];
+  [controlsLayoutView setContentLayoutMargins:?];
 
-  v5 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-  if (v5)
+  customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+  if (customContentTransitioningInfoPanel)
   {
-    v6 = v5;
-    v7 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-    v8 = [v7 isHidden];
+    v6 = customContentTransitioningInfoPanel;
+    customContentTransitioningInfoPanel2 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+    isHidden = [customContentTransitioningInfoPanel2 isHidden];
 
-    if ((v8 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v9 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-      v10 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-      [v10 doublerowLayoutMarginsWhenShowingCustomContentInfo];
-      [v9 setContentLayoutMargins:?];
+      controlsLayoutView2 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+      styleSheet2 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+      [styleSheet2 doublerowLayoutMarginsWhenShowingCustomContentInfo];
+      [controlsLayoutView2 setContentLayoutMargins:?];
     }
   }
 
-  v11 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  [v11 setLoadingIndicatorAlignment:2];
+  liveBroadcastLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel setLoadingIndicatorAlignment:2];
 
-  v73 = [(AVCatalystGlassTransportControlsView *)self doubleRowViews];
-  v12 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-  v84[0] = v12;
+  doubleRowViews = [(AVCatalystGlassTransportControlsView *)self doubleRowViews];
+  embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  v84[0] = embeddedExtraContentContainer;
   v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:1];
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self scrubber];
-  v83[0] = v13;
-  v14 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  v83[1] = v14;
+  scrubber = [(AVCatalystGlassTransportControlsView *)self scrubber];
+  v83[0] = scrubber;
+  liveBroadcastLabel2 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  v83[1] = liveBroadcastLabel2;
   v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
 
-  v15 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  v82[0] = v15;
-  v16 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-  v82[1] = v16;
-  v17 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
-  v82[2] = v17;
+  elapsedTimeLabel = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  v82[0] = elapsedTimeLabel;
+  timeRemainingLabel = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+  v82[1] = timeRemainingLabel;
+  liveBroadcastScrubberLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
+  v82[2] = liveBroadcastScrubberLabel;
   v72 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:3];
 
-  v18 = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
-  v81[0] = v18;
-  v19 = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
-  v81[1] = v19;
-  v20 = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
-  v81[2] = v20;
-  v21 = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
-  v81[3] = v21;
-  v22 = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
-  v81[4] = v22;
-  v23 = [(AVCatalystGlassTransportControlsView *)self mediaSelectionButton];
-  v81[5] = v23;
-  v24 = [(AVCatalystGlassTransportControlsView *)self playbackSpeedButton];
-  v81[6] = v24;
-  v25 = [(AVCatalystGlassTransportControlsView *)self controlOverflowButton];
-  v81[7] = v25;
+  startLeftwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
+  v81[0] = startLeftwardContentTransitionButton;
+  skipBackButton = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
+  v81[1] = skipBackButton;
+  standardPlayPauseButton = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
+  v81[2] = standardPlayPauseButton;
+  skipForwardButton = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
+  v81[3] = skipForwardButton;
+  startRightwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
+  v81[4] = startRightwardContentTransitionButton;
+  mediaSelectionButton = [(AVCatalystGlassTransportControlsView *)self mediaSelectionButton];
+  v81[5] = mediaSelectionButton;
+  playbackSpeedButton = [(AVCatalystGlassTransportControlsView *)self playbackSpeedButton];
+  v81[6] = playbackSpeedButton;
+  controlOverflowButton = [(AVCatalystGlassTransportControlsView *)self controlOverflowButton];
+  v81[7] = controlOverflowButton;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:8];
 
-  v27 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+  customMenuItemsViews = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
 
-  if (v27)
+  if (customMenuItemsViews)
   {
-    v28 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
-    v29 = [v26 arrayByAddingObjectsFromArray:v28];
+    customMenuItemsViews2 = [(AVCatalystGlassTransportControlsView *)self customMenuItemsViews];
+    v29 = [v26 arrayByAddingObjectsFromArray:customMenuItemsViews2];
 
     v26 = v29;
   }
 
-  v30 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  controlsLayoutView3 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
   v80[0] = v71;
   v80[1] = v70;
   v80[2] = v72;
   v80[3] = v26;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:4];
-  [v30 setArrangedSubviews:v31];
+  [controlsLayoutView3 setArrangedSubviews:v31];
 
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v32 = v73;
+  v32 = doubleRowViews;
   v33 = [v32 countByEnumeratingWithState:&v75 objects:v79 count:16];
   if (v33)
   {
@@ -814,20 +814,20 @@ LABEL_26:
         }
 
         v37 = *(*(&v75 + 1) + 8 * i);
-        v38 = [v37 layoutAttributes];
+        layoutAttributes = [v37 layoutAttributes];
         [(AVCatalystGlassTransportControlsView *)self _doubleRowLayoutSpacingAfterSubview:v37];
-        [v38 setTrailingInterItemSpace:?];
+        [layoutAttributes setTrailingInterItemSpace:?];
 
-        v39 = [v37 layoutAttributes];
-        [v39 setDisplayPriority:{-[AVCatalystGlassTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v37)}];
+        layoutAttributes2 = [v37 layoutAttributes];
+        [layoutAttributes2 setDisplayPriority:{-[AVCatalystGlassTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v37)}];
 
-        v40 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+        embeddedExtraContentContainer2 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
 
-        if (v37 == v40)
+        if (v37 == embeddedExtraContentContainer2)
         {
-          v41 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+          customContentTransitioningInfoPanel3 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
           [(AVCatalystGlassTransportControlsView *)self frame];
-          [v41 systemLayoutSizeFittingSize:{v42, v43}];
+          [customContentTransitioningInfoPanel3 systemLayoutSizeFittingSize:{v42, v43}];
           v74 = v44;
 
           [(AVCatalystGlassTransportControlsView *)self bounds];
@@ -835,8 +835,8 @@ LABEL_26:
           v48 = v47;
           v50 = v49;
           v52 = v51;
-          v53 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-          [v53 contentLayoutMargins];
+          controlsLayoutView4 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+          [controlsLayoutView4 contentLayoutMargins];
           v55 = v54;
           v57 = v56;
           v59 = v58;
@@ -857,8 +857,8 @@ LABEL_26:
           v85.size.height = v52 - (v55 + v59);
           Width = CGRectGetWidth(v85);
 
-          v64 = [v37 layoutAttributes];
-          [v64 setMinimumSize:{Width, v74}];
+          layoutAttributes3 = [v37 layoutAttributes];
+          [layoutAttributes3 setMinimumSize:{Width, v74}];
         }
       }
 
@@ -872,39 +872,39 @@ LABEL_26:
   {
     [(AVCatalystGlassTransportControlsView *)self _rowSpacingForDoubleRowLayoutAfterRow:j];
     v67 = v66;
-    v68 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-    [v68 setRowSpacing:j afterRow:v67];
+    controlsLayoutView5 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+    [controlsLayoutView5 setRowSpacing:j afterRow:v67];
   }
 }
 
-- (double)_doubleRowLayoutSpacingAfterSubview:(id)a3
+- (double)_doubleRowLayoutSpacingAfterSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   [(AVCatalystGlassTransportControlsView *)self bounds];
   Width = CGRectGetWidth(v34);
-  v6 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  v7 = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
-  if ([v7 isIncluded])
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  skipForwardButton = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
+  if ([skipForwardButton isIncluded])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
-    v10 = [v9 isIncluded];
+    startRightwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
+    isIncluded = [startRightwardContentTransitionButton isIncluded];
 
-    v8 = v10 ^ 1;
+    v8 = isIncluded ^ 1;
   }
 
-  v11 = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
-  if (v11 == v4)
+  skipBackButton = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
+  if (skipBackButton == subviewCopy)
   {
     goto LABEL_19;
   }
 
-  v12 = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
-  if (v12 == v4)
+  startLeftwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
+  if (startLeftwardContentTransitionButton == subviewCopy)
   {
 LABEL_18:
 
@@ -913,84 +913,84 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self mediaSelectionButton];
-  if (v13 == v4)
+  mediaSelectionButton = [(AVCatalystGlassTransportControlsView *)self mediaSelectionButton];
+  if (mediaSelectionButton == subviewCopy)
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v14 = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
-  if (!((v14 != v4) | v8 & 1))
+  standardPlayPauseButton = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
+  if (!((standardPlayPauseButton != subviewCopy) | v8 & 1))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v15 = [(AVCatalystGlassTransportControlsView *)self playbackSpeedButton];
-  v16 = v15;
-  if (v15 == v4)
+  playbackSpeedButton = [(AVCatalystGlassTransportControlsView *)self playbackSpeedButton];
+  v16 = playbackSpeedButton;
+  if (playbackSpeedButton == subviewCopy)
   {
 
     goto LABEL_16;
   }
 
-  v17 = [(AVCatalystGlassTransportControlsView *)self controlOverflowButton];
+  controlOverflowButton = [(AVCatalystGlassTransportControlsView *)self controlOverflowButton];
 
-  if (v17 == v4)
+  if (controlOverflowButton == subviewCopy)
   {
     v19 = 32.0;
     goto LABEL_21;
   }
 
-  v18 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  elapsedTimeLabel = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
 
-  if (v18 == v4)
+  if (elapsedTimeLabel == subviewCopy)
   {
-    v22 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-    [v22 intrinsicContentSize];
+    elapsedTimeLabel2 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+    [elapsedTimeLabel2 intrinsicContentSize];
     v24 = Width - v23;
-    [v6 contentLayoutMargins];
+    [controlsLayoutView contentLayoutMargins];
     v26 = v24 - v25;
-    [v6 contentLayoutMargins];
+    [controlsLayoutView contentLayoutMargins];
     v19 = v26 - v27;
 
-    v28 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-    v29 = [v28 isIncluded];
+    timeRemainingLabel = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+    isIncluded2 = [timeRemainingLabel isIncluded];
 
-    if (v29)
+    if (isIncluded2)
     {
-      v30 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+      timeRemainingLabel2 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
     }
 
     else
     {
-      v31 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
-      v32 = [v31 isIncluded];
+      liveBroadcastScrubberLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
+      isIncluded3 = [liveBroadcastScrubberLabel isIncluded];
 
-      if (!v32)
+      if (!isIncluded3)
       {
         goto LABEL_21;
       }
 
-      v30 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
+      timeRemainingLabel2 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
     }
 
-    v11 = v30;
-    [v30 intrinsicContentSize];
+    skipBackButton = timeRemainingLabel2;
+    [timeRemainingLabel2 intrinsicContentSize];
     v19 = v19 - v33;
   }
 
   else
   {
-    v11 = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
+    skipBackButton = [(AVCatalystGlassTransportControlsView *)self skipForwardButton];
     v19 = 0.0;
-    if (v11 != v4)
+    if (skipBackButton != subviewCopy)
     {
-      v20 = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
-      if (v20 != v4)
+      startRightwardContentTransitionButton2 = [(AVCatalystGlassTransportControlsView *)self startRightwardContentTransitionButton];
+      if (startRightwardContentTransitionButton2 != subviewCopy)
       {
         [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
       }
@@ -1003,16 +1003,16 @@ LABEL_21:
   return v19;
 }
 
-- (double)_singeRowLayoutSpacingAfterSubview:(id)a3
+- (double)_singeRowLayoutSpacingAfterSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [(AVCatalystGlassTransportControlsView *)self _subviewIsCustomMenuItemView:v4];
+  subviewCopy = subview;
+  v5 = [(AVCatalystGlassTransportControlsView *)self _subviewIsCustomMenuItemView:subviewCopy];
   if (![(AVCatalystGlassTransportControlsView *)self hasFullScreenAppearance])
   {
-    if (self->_skipBackButton != v4 && self->_startLeftwardContentTransitionButton != v4 && self->_standardPlayPauseButton != v4 && self->_skipForwardButton != v4 && self->_startRightwardContentTransitionButton != v4 && self->_timeRemainingLabel != v4 && self->_liveBroadcastScrubberLabel != v4 && self->_mediaSelectionButton != v4 && self->_controlOverflowButton != v4)
+    if (self->_skipBackButton != subviewCopy && self->_startLeftwardContentTransitionButton != subviewCopy && self->_standardPlayPauseButton != subviewCopy && self->_skipForwardButton != subviewCopy && self->_startRightwardContentTransitionButton != subviewCopy && self->_timeRemainingLabel != subviewCopy && self->_liveBroadcastScrubberLabel != subviewCopy && self->_mediaSelectionButton != subviewCopy && self->_controlOverflowButton != subviewCopy)
     {
       v7 = 0.0;
-      if (self->_playbackSpeedButton != v4 && !v5)
+      if (self->_playbackSpeedButton != subviewCopy && !v5)
       {
         goto LABEL_59;
       }
@@ -1035,32 +1035,32 @@ LABEL_58:
     v6 = 0;
   }
 
-  v8 = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
-  if ([v8 isIncluded])
+  skipBackButton = [(AVCatalystGlassTransportControlsView *)self skipBackButton];
+  if ([skipBackButton isIncluded])
   {
   }
 
   else
   {
-    v9 = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
-    v10 = [v9 isIncluded];
+    startLeftwardContentTransitionButton = [(AVCatalystGlassTransportControlsView *)self startLeftwardContentTransitionButton];
+    isIncluded = [startLeftwardContentTransitionButton isIncluded];
 
-    if ((v10 & 1) == 0)
+    if ((isIncluded & 1) == 0)
     {
       v7 = 0.0;
-      if (self->_skipBackButton == v4 || self->_startLeftwardContentTransitionButton == v4 || self->_skipForwardButton == v4 || self->_startRightwardContentTransitionButton == v4)
+      if (self->_skipBackButton == subviewCopy || self->_startLeftwardContentTransitionButton == subviewCopy || self->_skipForwardButton == subviewCopy || self->_startRightwardContentTransitionButton == subviewCopy)
       {
         goto LABEL_52;
       }
 
-      if (self->_standardPlayPauseButton == v4 || self->_timeRemainingLabel == v4 || self->_liveBroadcastScrubberLabel == v4 || self->_liveBroadcastLabel == v4 || self->_controlOverflowButton == v4)
+      if (self->_standardPlayPauseButton == subviewCopy || self->_timeRemainingLabel == subviewCopy || self->_liveBroadcastScrubberLabel == subviewCopy || self->_liveBroadcastLabel == subviewCopy || self->_controlOverflowButton == subviewCopy)
       {
         goto LABEL_51;
       }
 
       v11 = 616;
 LABEL_50:
-      if (*(&self->super.super.super.super.isa + v11) != v4 && !v5)
+      if (*(&self->super.super.super.super.isa + v11) != subviewCopy && !v5)
       {
         goto LABEL_52;
       }
@@ -1077,7 +1077,7 @@ LABEL_50:
       goto LABEL_52;
     }
 
-    if (self->_skipForwardButton == v4 || self->_startRightwardContentTransitionButton == v4 || self->_timeRemainingLabel == v4 || self->_liveBroadcastScrubberLabel == v4 || self->_controlOverflowButton == v4 || self->_playbackSpeedButton == v4 || self->_skipBackButton == v4 || self->_startLeftwardContentTransitionButton == v4)
+    if (self->_skipForwardButton == subviewCopy || self->_startRightwardContentTransitionButton == subviewCopy || self->_timeRemainingLabel == subviewCopy || self->_liveBroadcastScrubberLabel == subviewCopy || self->_controlOverflowButton == subviewCopy || self->_playbackSpeedButton == subviewCopy || self->_skipBackButton == subviewCopy || self->_startLeftwardContentTransitionButton == subviewCopy)
     {
       goto LABEL_51;
     }
@@ -1086,7 +1086,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (self->_skipBackButton == v4 || self->_startLeftwardContentTransitionButton == v4 || self->_standardPlayPauseButton == v4 || self->_controlOverflowButton == v4 || self->_playbackSpeedButton == v4 || v5 || self->_skipForwardButton == v4 || self->_startRightwardContentTransitionButton == v4 || self->_timeRemainingLabel == v4 || (v7 = 0.0, self->_liveBroadcastScrubberLabel == v4))
+  if (self->_skipBackButton == subviewCopy || self->_startLeftwardContentTransitionButton == subviewCopy || self->_standardPlayPauseButton == subviewCopy || self->_controlOverflowButton == subviewCopy || self->_playbackSpeedButton == subviewCopy || v5 || self->_skipForwardButton == subviewCopy || self->_startRightwardContentTransitionButton == subviewCopy || self->_timeRemainingLabel == subviewCopy || (v7 = 0.0, self->_liveBroadcastScrubberLabel == subviewCopy))
   {
 LABEL_51:
     [(AVCatalystGlassStyleSheet *)self->_styleSheet defaultInterItemSpacing];
@@ -1094,23 +1094,23 @@ LABEL_51:
   }
 
 LABEL_52:
-  v13 = [(AVCatalystGlassTransportControlsView *)self customItems];
+  customItems = [(AVCatalystGlassTransportControlsView *)self customItems];
 
-  if (!v13)
+  if (!customItems)
   {
     goto LABEL_59;
   }
 
-  if (self->_mediaSelectionButton == v4)
+  if (self->_mediaSelectionButton == subviewCopy)
   {
     goto LABEL_58;
   }
 
-  if ([(AVControlOverflowButton *)v4 conformsToProtocol:&unk_1EFF1F478])
+  if ([(AVControlOverflowButton *)subviewCopy conformsToProtocol:&unk_1EFF1F478])
   {
-    v14 = v4;
-    v15 = [(AVCatalystGlassTransportControlsView *)self customItems];
-    v16 = [v15 containsObject:v14];
+    v14 = subviewCopy;
+    customItems2 = [(AVCatalystGlassTransportControlsView *)self customItems];
+    v16 = [customItems2 containsObject:v14];
 
     if (v16)
     {
@@ -1120,12 +1120,12 @@ LABEL_52:
   }
 
 LABEL_59:
-  if (self->_liveBroadcastLabel == v4)
+  if (self->_liveBroadcastLabel == subviewCopy)
   {
     v7 = 0.0;
   }
 
-  else if (self->_elapsedTimeLabel == v4 || self->_scrubber == v4)
+  else if (self->_elapsedTimeLabel == subviewCopy || self->_scrubber == subviewCopy)
   {
     [(AVCatalystGlassStyleSheet *)self->_styleSheet defaultInterItemSpacing];
     v7 = v19;
@@ -1134,15 +1134,15 @@ LABEL_59:
   return v7;
 }
 
-- (void)endScrubbing:(id)a3
+- (void)endScrubbing:(id)scrubbing
 {
-  v4 = a3;
+  scrubbingCopy = scrubbing;
   [(AVCatalystGlassTransportControlsView *)self setScrubberValueWhenScrubInstructionsTimerBegan:0.0];
-  v5 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsTimer];
-  [v5 invalidate];
+  scrubInstructionsTimer = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsTimer];
+  [scrubInstructionsTimer invalidate];
 
-  v6 = [(AVCatalystGlassTransportControlsView *)self delegate];
-  [v6 transportControls:self scrubberDidEndScrubbing:v4];
+  delegate = [(AVCatalystGlassTransportControlsView *)self delegate];
+  [delegate transportControls:self scrubberDidEndScrubbing:scrubbingCopy];
 
   if ([(AVCatalystGlassTransportControlsView *)self canShowScrubInstructions])
   {
@@ -1197,57 +1197,57 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
   }
 }
 
-- (void)scrubberValueChanged:(id)a3
+- (void)scrubberValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(AVCatalystGlassTransportControlsView *)self delegate];
-  [v5 transportControls:self scrubberDidScrub:v4];
+  changedCopy = changed;
+  delegate = [(AVCatalystGlassTransportControlsView *)self delegate];
+  [delegate transportControls:self scrubberDidScrub:changedCopy];
 }
 
-- (void)beginScrubbing:(id)a3
+- (void)beginScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  v5 = [(AVCatalystGlassTransportControlsView *)self delegate];
-  [v5 transportControls:self scrubberDidBeginScrubbing:v4];
+  scrubbingCopy = scrubbing;
+  delegate = [(AVCatalystGlassTransportControlsView *)self delegate];
+  [delegate transportControls:self scrubberDidBeginScrubbing:scrubbingCopy];
 
-  v6 = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v6 setHidden:1];
+  detachedScrubInstructionsBackdropLabel = [(AVCatalystGlassTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel setHidden:1];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setHasFullScreenAppearance:(BOOL)a3
+- (void)setHasFullScreenAppearance:(BOOL)appearance
 {
-  if (self->_hasFullScreenAppearance != a3)
+  if (self->_hasFullScreenAppearance != appearance)
   {
-    self->_hasFullScreenAppearance = a3;
-    [(AVGlassBackedView *)self->_controlsLayoutView setSubdued:!a3];
+    self->_hasFullScreenAppearance = appearance;
+    [(AVGlassBackedView *)self->_controlsLayoutView setSubdued:!appearance];
     [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
 
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    v3 = a3;
-    self->_collapsed = a3;
+    collapsedCopy = collapsed;
+    self->_collapsed = collapsed;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AVCatalystGlassTransportControlsView *)self singleRowViews];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    singleRowViews = [(AVCatalystGlassTransportControlsView *)self singleRowViews];
+    v6 = [singleRowViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1258,13 +1258,13 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(singleRowViews);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setCollapsed:v3];
+          [*(*(&v10 + 1) + 8 * i) setCollapsed:collapsedCopy];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [singleRowViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -1275,11 +1275,11 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
 
     [(AVCatalystGlassTransportControlsView *)self avkit_reevaluateHiddenStateOfItem:self];
@@ -1296,34 +1296,34 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
   return [(AVCatalystGlassTransportControlsView *)self isRemoved];
 }
 
-- (void)avkit_reevaluateHiddenStateOfItem:(id)a3
+- (void)avkit_reevaluateHiddenStateOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+  itemCopy = item;
+  embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
 
-  if (v5 == v4)
+  if (embeddedExtraContentContainer == itemCopy)
   {
-    v6 = [v4 isCollapsedOrExcluded];
+    isCollapsedOrExcluded = [itemCopy isCollapsedOrExcluded];
     v7 = 1.0;
-    if (v6)
+    if (isCollapsedOrExcluded)
     {
       v7 = 0.0;
     }
 
-    [v4 setAlpha:v7];
-    v8 = [(AVCatalystGlassTransportControlsView *)self isAnimatingScrubInstructions];
-    if ((v6 & 1) != 0 || !v8)
+    [itemCopy setAlpha:v7];
+    isAnimatingScrubInstructions = [(AVCatalystGlassTransportControlsView *)self isAnimatingScrubInstructions];
+    if ((isCollapsedOrExcluded & 1) != 0 || !isAnimatingScrubInstructions)
     {
       if (![(AVCatalystGlassTransportControlsView *)self isAnimatingScrubInstructions])
       {
-        [v4 setHidden:v6];
-        [v4 setAlpha:1.0];
+        [itemCopy setHidden:isCollapsedOrExcluded];
+        [itemCopy setAlpha:1.0];
       }
     }
 
     else
     {
-      [v4 setHidden:0];
+      [itemCopy setHidden:0];
     }
   }
 
@@ -1331,7 +1331,7 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
   {
     v9.receiver = self;
     v9.super_class = AVCatalystGlassTransportControlsView;
-    [(UIView *)&v9 avkit_reevaluateHiddenStateOfItem:v4];
+    [(UIView *)&v9 avkit_reevaluateHiddenStateOfItem:itemCopy];
   }
 }
 
@@ -1342,10 +1342,10 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
   v58.receiver = self;
   v58.super_class = AVCatalystGlassTransportControlsView;
   [(AVView *)&v58 layoutSubviews];
-  v3 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
-  [v3 setIncluded:{-[AVCatalystGlassTransportControlsView liveStreamingControlsIncludeScrubber](self, "liveStreamingControlsIncludeScrubber")}];
+  liveBroadcastScrubberLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastScrubberLabel];
+  [liveBroadcastScrubberLabel setIncluded:{-[AVCatalystGlassTransportControlsView liveStreamingControlsIncludeScrubber](self, "liveStreamingControlsIncludeScrubber")}];
 
-  v4 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  liveBroadcastLabel = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
   if ([(AVCatalystGlassTransportControlsView *)self showsLiveStreamingControls])
   {
     v5 = [(AVCatalystGlassTransportControlsView *)self liveStreamingControlsIncludeScrubber]^ 1;
@@ -1356,26 +1356,26 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [liveBroadcastLabel setIncluded:v5];
 
   if ([(AVCatalystGlassTransportControlsView *)self showsLiveStreamingControls])
   {
-    v6 = [(AVCatalystGlassTransportControlsView *)self liveStreamingControlsIncludeScrubber];
+    liveStreamingControlsIncludeScrubber = [(AVCatalystGlassTransportControlsView *)self liveStreamingControlsIncludeScrubber];
   }
 
   else
   {
-    v6 = 1;
+    liveStreamingControlsIncludeScrubber = 1;
   }
 
-  v7 = [(AVCatalystGlassTransportControlsView *)self scrubber];
-  [v7 setIncluded:v6];
+  scrubber = [(AVCatalystGlassTransportControlsView *)self scrubber];
+  [scrubber setIncluded:liveStreamingControlsIncludeScrubber];
 
-  v8 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  [v8 setIncluded:v6];
+  elapsedTimeLabel = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  [elapsedTimeLabel setIncluded:liveStreamingControlsIncludeScrubber];
 
-  v9 = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
-  if (v6)
+  timeRemainingLabel = [(AVCatalystGlassTransportControlsView *)self timeRemainingLabel];
+  if (liveStreamingControlsIncludeScrubber)
   {
     v10 = [(AVCatalystGlassTransportControlsView *)self liveStreamingControlsIncludeScrubber]^ 1;
   }
@@ -1385,20 +1385,20 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
     v10 = 0;
   }
 
-  [v9 setIncluded:v10];
+  [timeRemainingLabel setIncluded:v10];
 
-  v11 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  [v11 setShowsLoadingIndicator:{-[AVCatalystGlassTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
+  elapsedTimeLabel2 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  [elapsedTimeLabel2 setShowsLoadingIndicator:{-[AVCatalystGlassTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
 
-  v12 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  [v12 setShowsLoadingIndicator:{-[AVCatalystGlassTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
+  liveBroadcastLabel2 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel2 setShowsLoadingIndicator:{-[AVCatalystGlassTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
 
-  v13 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  [v13 setLoadingIndicatorAlignment:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
+  elapsedTimeLabel3 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  [elapsedTimeLabel3 setLoadingIndicatorAlignment:{-[AVCatalystGlassTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
 
-  v14 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
   [(AVCatalystGlassTransportControlsView *)self bounds];
-  [v14 setFrame:?];
+  [controlsLayoutView setFrame:?];
 
   [(AVCatalystGlassTransportControlsView *)self _updateCustomContentTransitioningInfoPanelLayout];
   if ([(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled])
@@ -1423,8 +1423,8 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v15 = [(AVCatalystGlassTransportControlsView *)self customItems];
-    v16 = [v15 countByEnumeratingWithState:&v50 objects:v59 count:16];
+    customItems = [(AVCatalystGlassTransportControlsView *)self customItems];
+    v16 = [customItems countByEnumeratingWithState:&v50 objects:v59 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1435,20 +1435,20 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
         {
           if (*v51 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(customItems);
           }
 
           v20 = *(*(&v50 + 1) + 8 * i);
-          v21 = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
-          if (v21)
+          isDoubleRowLayoutEnabled = [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled];
+          if (isDoubleRowLayoutEnabled)
           {
             [v20 setCollapsed:1];
           }
 
-          [v20 setIncluded:!v21];
+          [v20 setIncluded:!isDoubleRowLayoutEnabled];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        v17 = [customItems countByEnumeratingWithState:&v50 objects:v59 count:16];
       }
 
       while (v17);
@@ -1461,8 +1461,8 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v15 = [(AVCatalystGlassTransportControlsView *)self customItems];
-    v22 = [v15 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    customItems = [(AVCatalystGlassTransportControlsView *)self customItems];
+    v22 = [customItems countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (v22)
     {
       v23 = v22;
@@ -1473,7 +1473,7 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
         {
           if (*v55 != v24)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(customItems);
           }
 
           v26 = *(*(&v54 + 1) + 8 * j);
@@ -1493,7 +1493,7 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
           [v26 setCollapsed:v27];
         }
 
-        v23 = [v15 countByEnumeratingWithState:&v54 objects:v60 count:16];
+        v23 = [customItems countByEnumeratingWithState:&v54 objects:v60 count:16];
       }
 
       while (v23);
@@ -1501,10 +1501,10 @@ void __53__AVCatalystGlassTransportControlsView_endScrubbing___block_invoke_2(ui
   }
 
 LABEL_37:
-  v30 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
-  v31 = [v30 isCollapsedOrExcluded];
+  elapsedTimeLabel4 = [(AVCatalystGlassTransportControlsView *)self elapsedTimeLabel];
+  isCollapsedOrExcluded = [elapsedTimeLabel4 isCollapsedOrExcluded];
 
-  if (v31)
+  if (isCollapsedOrExcluded)
   {
     v32 = -16.0;
   }
@@ -1514,59 +1514,59 @@ LABEL_37:
     v32 = -22.0;
   }
 
-  v33 = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
-  [v33 setHitRectInsets:{-16.0, -22.0, -16.0, v32}];
+  standardPlayPauseButton = [(AVCatalystGlassTransportControlsView *)self standardPlayPauseButton];
+  [standardPlayPauseButton setHitRectInsets:{-16.0, -22.0, -16.0, v32}];
 
-  v34 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-  if (!v34 || ![(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled])
+  customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+  if (!customContentTransitioningInfoPanel || ![(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
 
     goto LABEL_45;
   }
 
-  v35 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  v36 = [v35 isCollapsedOrExcluded];
+  liveBroadcastLabel3 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  isCollapsedOrExcluded2 = [liveBroadcastLabel3 isCollapsedOrExcluded];
 
-  if (v36)
+  if (isCollapsedOrExcluded2)
   {
 LABEL_45:
-    v43 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+    liveBroadcastLabel4 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
     v46 = *(MEMORY[0x1E695EFD0] + 16);
     *&v49.a = *MEMORY[0x1E695EFD0];
     *&v49.c = v46;
     *&v49.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v43 setTransform:&v49];
+    [liveBroadcastLabel4 setTransform:&v49];
     goto LABEL_46;
   }
 
-  v37 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  [v37 liveBroadcastLabelTopToBackdropTopDistance];
+  styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  [styleSheet liveBroadcastLabelTopToBackdropTopDistance];
   v39 = v38;
 
-  v40 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  [v40 intrinsicContentSize];
+  liveBroadcastLabel5 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel5 intrinsicContentSize];
   v42 = v41;
 
-  v43 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
-  v44 = [(AVCatalystGlassTransportControlsView *)self scrubber];
-  [v44 frame];
+  liveBroadcastLabel4 = [(AVCatalystGlassTransportControlsView *)self liveBroadcastLabel];
+  scrubber2 = [(AVCatalystGlassTransportControlsView *)self scrubber];
+  [scrubber2 frame];
   MaxY = CGRectGetMaxY(v63);
   CGAffineTransformMakeTranslation(&v49, 0.0, MaxY - (v39 + v42 * 0.5));
-  [v43 setTransform:&v49];
+  [liveBroadcastLabel4 setTransform:&v49];
 
 LABEL_46:
-  v47 = [(AVCatalystGlassTransportControlsView *)self scrubber];
+  scrubber3 = [(AVCatalystGlassTransportControlsView *)self scrubber];
   [(AVCatalystGlassTransportControlsView *)self extrinsicContentSize];
-  [v47 setScrubberParentHeight:v48];
+  [scrubber3 setScrubberParentHeight:v48];
 
   kdebug_trace();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = AVCatalystGlassTransportControlsView;
-  [(AVCatalystGlassTransportControlsView *)&v4 traitCollectionDidChange:a3];
+  [(AVCatalystGlassTransportControlsView *)&v4 traitCollectionDidChange:change];
   [(AVCatalystGlassTransportControlsView *)self _updateFontSizes];
 }
 
@@ -1584,28 +1584,28 @@ LABEL_46:
     v6 = v9;
   }
 
-  v10 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  v11 = [v10 prioritizedSizeThatFitsSize:{v5, v6}];
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  v11 = [controlsLayoutView prioritizedSizeThatFitsSize:{v5, v6}];
 
   [v11 currentTotalSize];
   v13 = v12;
-  v14 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  [v14 contentLayoutMargins];
+  controlsLayoutView2 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView2 contentLayoutMargins];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-  if (v19)
+  customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+  if (customContentTransitioningInfoPanel)
   {
-    v20 = v19;
-    v21 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
-    v22 = [v21 isHidden];
+    v20 = customContentTransitioningInfoPanel;
+    customContentTransitioningInfoPanel2 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+    isHidden = [customContentTransitioningInfoPanel2 isHidden];
 
-    if ((v22 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v34 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
+      customContentTransitioningInfoPanel3 = [(AVCatalystGlassTransportControlsView *)self customContentTransitioningInfoPanel];
       [(AVCatalystGlassTransportControlsView *)self frame];
-      [v34 systemLayoutSizeFittingSize:{v39, v40}];
+      [customContentTransitioningInfoPanel3 systemLayoutSizeFittingSize:{v39, v40}];
       v23 = v41;
 LABEL_16:
 
@@ -1616,11 +1616,11 @@ LABEL_16:
   v23 = 0.01;
   if ([(AVCatalystGlassTransportControlsView *)self isShowingScrubInstructions]&& [(AVCatalystGlassTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
-    v24 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-    [v24 doubleRowLayoutMargins];
+    styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+    [styleSheet doubleRowLayoutMargins];
     v26 = v25;
-    v27 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-    [v27 doubleRowLayoutMarginsWhenShowingScrubInstructions];
+    styleSheet2 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+    [styleSheet2 doubleRowLayoutMarginsWhenShowingScrubInstructions];
     v29 = v26 - v28;
 
     if (v29 >= 0.0)
@@ -1633,14 +1633,14 @@ LABEL_16:
       v30 = -v29;
     }
 
-    v31 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-    [v31 spacingBetweenScrubInstructionsAndScrubber];
+    styleSheet3 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+    [styleSheet3 spacingBetweenScrubInstructionsAndScrubber];
     v33 = v32;
 
-    v34 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
-    v35 = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
-    [v35 bounds];
-    [v34 sizeThatFits:{v36, v37}];
+    customContentTransitioningInfoPanel3 = [(AVCatalystGlassTransportControlsView *)self scrubInstructionsLabel];
+    embeddedExtraContentContainer = [(AVCatalystGlassTransportControlsView *)self embeddedExtraContentContainer];
+    [embeddedExtraContentContainer bounds];
+    [customContentTransitioningInfoPanel3 sizeThatFits:{v36, v37}];
     v23 = v38 - (v30 + v33);
 
     goto LABEL_16;
@@ -1648,8 +1648,8 @@ LABEL_16:
 
 LABEL_17:
   v42 = v13 + v16 + v18;
-  v43 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  [v43 defaultPlatterHeight];
+  styleSheet4 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  [styleSheet4 defaultPlatterHeight];
   v45 = v23 + v44;
 
   v46 = v42;
@@ -1664,22 +1664,22 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = AVCatalystGlassTransportControlsView;
   [(AVCatalystGlassTransportControlsView *)&v4 didMoveToWindow];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVCatalystGlassTransportControlsView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVCatalystGlassTransportControlsView *)self setBackgroundColor:clearColor];
 }
 
-- (void)setPrefersFlexibleWidthScrubber:(BOOL)a3
+- (void)setPrefersFlexibleWidthScrubber:(BOOL)scrubber
 {
-  if (self->_prefersFlexibleWidthScrubber != a3)
+  if (self->_prefersFlexibleWidthScrubber != scrubber)
   {
-    self->_prefersFlexibleWidthScrubber = a3;
+    self->_prefersFlexibleWidthScrubber = scrubber;
     if (self->_scrubber)
     {
-      v4 = [(AVCatalystGlassTransportControlsView *)self prefersFlexibleWidthScrubber];
-      v5 = [(AVCatalystScrubber *)self->_scrubber layoutAttributes];
-      [v5 setHasFlexibleContentSize:v4];
+      prefersFlexibleWidthScrubber = [(AVCatalystGlassTransportControlsView *)self prefersFlexibleWidthScrubber];
+      layoutAttributes = [(AVCatalystScrubber *)self->_scrubber layoutAttributes];
+      [layoutAttributes setHasFlexibleContentSize:prefersFlexibleWidthScrubber];
 
-      if (v4)
+      if (prefersFlexibleWidthScrubber)
       {
         v6 = *(MEMORY[0x1E695F060] + 8);
       }
@@ -1689,7 +1689,7 @@ LABEL_17:
         v6 = 0.0;
       }
 
-      if (v4)
+      if (prefersFlexibleWidthScrubber)
       {
         v7 = *MEMORY[0x1E695F060];
       }
@@ -1699,7 +1699,7 @@ LABEL_17:
         v7 = 168.0;
       }
 
-      if (v4)
+      if (prefersFlexibleWidthScrubber)
       {
         v8 = *MEMORY[0x1E695F060];
       }
@@ -1709,23 +1709,23 @@ LABEL_17:
         v8 = 336.0;
       }
 
-      v9 = [(AVCatalystScrubber *)self->_scrubber layoutAttributes];
-      [v9 setMaximumSize:{v8, v6}];
+      layoutAttributes2 = [(AVCatalystScrubber *)self->_scrubber layoutAttributes];
+      [layoutAttributes2 setMaximumSize:{v8, v6}];
 
-      v10 = [(AVCatalystScrubber *)self->_scrubber layoutAttributes];
-      [v10 setMinimumSize:{v7, v6}];
+      layoutAttributes3 = [(AVCatalystScrubber *)self->_scrubber layoutAttributes];
+      [layoutAttributes3 setMinimumSize:{v7, v6}];
 
       [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
-      v11 = [(AVCatalystGlassTransportControlsView *)self superview];
-      [v11 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+      superview = [(AVCatalystGlassTransportControlsView *)self superview];
+      [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
     }
   }
 }
 
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row
 {
-  v4 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  [v4 layoutHeightThatFitsRowsStartingWithRow:a3];
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView layoutHeightThatFitsRowsStartingWithRow:row];
   v6 = v5;
 
   return v6;
@@ -1733,52 +1733,52 @@ LABEL_17:
 
 - (void)reevaluateHiddenStateOfAllItems
 {
-  v2 = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
-  [v2 reevaluateHiddenStateOfAllItems];
+  controlsLayoutView = [(AVCatalystGlassTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView reevaluateHiddenStateOfAllItems];
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v7 = a3;
-  v5 = [(AVCatalystGlassTransportControlsView *)self styleSheet];
-  v6 = [v5 isEqual:v7];
+  sheetCopy = sheet;
+  styleSheet = [(AVCatalystGlassTransportControlsView *)self styleSheet];
+  v6 = [styleSheet isEqual:sheetCopy];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_styleSheet, a3);
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVCatalystGlassTransportControlsView *)self _updateFontSizes];
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomContentTransitioningInfoPanel:(id)a3
+- (void)setCustomContentTransitioningInfoPanel:(id)panel
 {
-  v5 = a3;
+  panelCopy = panel;
   customContentTransitioningInfoPanel = self->_customContentTransitioningInfoPanel;
-  if (customContentTransitioningInfoPanel != v5)
+  if (customContentTransitioningInfoPanel != panelCopy)
   {
-    v7 = v5;
+    v7 = panelCopy;
     [customContentTransitioningInfoPanel removeFromSuperview];
-    objc_storeStrong(&self->_customContentTransitioningInfoPanel, a3);
+    objc_storeStrong(&self->_customContentTransitioningInfoPanel, panel);
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
     customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self isHiddenOrHasHiddenAncestor];
-    v5 = v7;
+    panelCopy = v7;
     if ((customContentTransitioningInfoPanel & 1) == 0)
     {
       customContentTransitioningInfoPanel = [(AVCatalystGlassTransportControlsView *)self layoutIfNeeded];
-      v5 = v7;
+      panelCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](customContentTransitioningInfoPanel, v5);
+  MEMORY[0x1EEE66BB8](customContentTransitioningInfoPanel, panelCopy);
 }
 
-- (void)setCustomItems:(id)a3
+- (void)setCustomItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (![(NSArray *)self->_customItems isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     customItems = self->_customItems;
     self->_customItems = v4;
 
@@ -1787,53 +1787,53 @@ LABEL_17:
   }
 }
 
-- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)a3
+- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)scrubber
 {
-  if (self->_liveStreamingControlsIncludeScrubber != a3)
+  if (self->_liveStreamingControlsIncludeScrubber != scrubber)
   {
-    self->_liveStreamingControlsIncludeScrubber = a3;
+    self->_liveStreamingControlsIncludeScrubber = scrubber;
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsLiveStreamingControls:(BOOL)a3
+- (void)setShowsLiveStreamingControls:(BOOL)controls
 {
-  if (self->_showsLiveStreamingControls != a3)
+  if (self->_showsLiveStreamingControls != controls)
   {
-    self->_showsLiveStreamingControls = a3;
+    self->_showsLiveStreamingControls = controls;
     [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
 
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsLoadingIndicator:(BOOL)a3
+- (void)setShowsLoadingIndicator:(BOOL)indicator
 {
-  if (self->_showsLoadingIndicator != a3)
+  if (self->_showsLoadingIndicator != indicator)
   {
-    self->_showsLoadingIndicator = a3;
+    self->_showsLoadingIndicator = indicator;
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setDoubleRowLayoutEnabled:(BOOL)a3
+- (void)setDoubleRowLayoutEnabled:(BOOL)enabled
 {
-  if (self->_doubleRowLayoutEnabled != a3)
+  if (self->_doubleRowLayoutEnabled != enabled)
   {
-    self->_doubleRowLayoutEnabled = a3;
+    self->_doubleRowLayoutEnabled = enabled;
     [(AVCatalystGlassTransportControlsView *)self invalidateIntrinsicContentSize];
 
     [(AVCatalystGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomMenuItemsViews:(id)a3
+- (void)setCustomMenuItemsViews:(id)views
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_customMenuItemsViews != v5)
+  viewsCopy = views;
+  if (self->_customMenuItemsViews != viewsCopy)
   {
-    objc_storeStrong(&self->_customMenuItemsViews, a3);
+    objc_storeStrong(&self->_customMenuItemsViews, views);
     if ([(NSArray *)self->_customMenuItemsViews count])
     {
       v16 = 0u;
@@ -1856,11 +1856,11 @@ LABEL_17:
             }
 
             v11 = *(*(&v14 + 1) + 8 * i);
-            v12 = [v11 layoutAttributes];
-            [v12 setCanOverflowToAuxiliaryMenu:1];
+            layoutAttributes = [v11 layoutAttributes];
+            [layoutAttributes setCanOverflowToAuxiliaryMenu:1];
 
-            v13 = [v11 layoutAttributes];
-            [v13 setCanOnlyAppearInControlOverflowMenu:1];
+            layoutAttributes2 = [v11 layoutAttributes];
+            [layoutAttributes2 setCanOnlyAppearInControlOverflowMenu:1];
 
             [v11 setNeedsLayout];
           }
@@ -1876,14 +1876,14 @@ LABEL_17:
   }
 }
 
-- (AVCatalystGlassTransportControlsView)initWithFrame:(CGRect)a3 styleSheet:(id)a4
+- (AVCatalystGlassTransportControlsView)initWithFrame:(CGRect)frame styleSheet:(id)sheet
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v90 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  sheetCopy = sheet;
   v11 = _AVLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1896,32 +1896,32 @@ LABEL_17:
 
   v83.receiver = self;
   v83.super_class = AVCatalystGlassTransportControlsView;
-  v12 = [(AVView *)&v83 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(AVView *)&v83 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    v12->_included = 1;
-    objc_storeStrong(&v12->_styleSheet, a4);
+    height->_included = 1;
+    objc_storeStrong(&height->_styleSheet, sheet);
     v14 = objc_alloc_init(AVCatalystScrubber);
     scrubber = v13->_scrubber;
     v13->_scrubber = v14;
 
-    v16 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
-    [v16 setAccessibilityIdentifier:@"Scrubber"];
+    layoutAttributes = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
+    [layoutAttributes setAccessibilityIdentifier:@"Scrubber"];
 
-    v17 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
-    [v17 setHasFlexibleContentSize:1];
+    layoutAttributes2 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
+    [layoutAttributes2 setHasFlexibleContentSize:1];
 
-    v18 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
-    [v18 setMaximumSize:{336.0, 30.0}];
+    layoutAttributes3 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
+    [layoutAttributes3 setMaximumSize:{336.0, 30.0}];
 
-    v19 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
-    [v19 setMinimumSize:{168.0, 30.0}];
+    layoutAttributes4 = [(AVCatalystScrubber *)v13->_scrubber layoutAttributes];
+    [layoutAttributes4 setMinimumSize:{168.0, 30.0}];
 
     [(AVCatalystScrubber *)v13->_scrubber setDelegate:v13];
     v20 = v13->_scrubber;
-    v21 = [(AVCatalystGlassStyleSheet *)v13->_styleSheet sliderMinValueTrackColor];
-    [(AVCatalystScrubber *)v20 setTintColor:v21];
+    sliderMinValueTrackColor = [(AVCatalystGlassStyleSheet *)v13->_styleSheet sliderMinValueTrackColor];
+    [(AVCatalystScrubber *)v20 setTintColor:sliderMinValueTrackColor];
 
     [(AVCatalystScrubber *)v13->_scrubber addTarget:v13 action:sel_beginScrubbing_ forControlEvents:1];
     [(AVCatalystScrubber *)v13->_scrubber addTarget:v13 action:sel_endScrubbing_ forControlEvents:448];
@@ -1931,8 +1931,8 @@ LABEL_17:
     v13->_elapsedTimeLabel = v22;
 
     v24 = v13->_elapsedTimeLabel;
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(AVCatalystGlassLabel *)v24 setTintColor:v25];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(AVCatalystGlassLabel *)v24 setTintColor:secondaryLabelColor];
 
     [(AVCatalystGlassLabel *)v13->_elapsedTimeLabel setPreferredVibrancy:1];
     v26 = __65__AVCatalystGlassTransportControlsView_initWithFrame_styleSheet___block_invoke(0, @"Time Remaining");
@@ -1940,8 +1940,8 @@ LABEL_17:
     v13->_timeRemainingLabel = v26;
 
     v28 = v13->_timeRemainingLabel;
-    v29 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(AVCatalystGlassLabel *)v28 setTintColor:v29];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(AVCatalystGlassLabel *)v28 setTintColor:secondaryLabelColor2];
 
     [(AVCatalystGlassLabel *)v13->_timeRemainingLabel setPreferredVibrancy:1];
     v30 = __65__AVCatalystGlassTransportControlsView_initWithFrame_styleSheet___block_invoke(@"PLAYBACK_CONTROLS_VIEW_CONTROLLER_LIVE_BROADCAST_LABEL_TEXT", @"Live Broadcast");
@@ -1949,8 +1949,8 @@ LABEL_17:
     v13->_liveBroadcastLabel = v30;
 
     [(AVCatalystGlassLabel *)v13->_liveBroadcastLabel setLoadingIndicatorAlignment:1];
-    v32 = [(AVCatalystGlassLabel *)v13->_liveBroadcastLabel layoutAttributes];
-    [v32 setHasFlexibleContentSize:1];
+    layoutAttributes5 = [(AVCatalystGlassLabel *)v13->_liveBroadcastLabel layoutAttributes];
+    [layoutAttributes5 setHasFlexibleContentSize:1];
 
     v33 = __65__AVCatalystGlassTransportControlsView_initWithFrame_styleSheet___block_invoke(@"PLAYBACK_CONTROLS_VIEW_CONTROLLER_LIVE_LABEL_TEXT", @"Live");
     liveBroadcastScrubberLabel = v13->_liveBroadcastScrubberLabel;
@@ -1963,8 +1963,8 @@ LABEL_17:
     [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer setClipsToBounds:1];
     [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer setCollapsed:1];
     [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer setIncluded:0];
-    v37 = [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer layoutAttributes];
-    [v37 setHasFlexibleContentSize:1];
+    layoutAttributes6 = [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer layoutAttributes];
+    [layoutAttributes6 setHasFlexibleContentSize:1];
 
     v38 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     scrubInstructionsLabel = v13->_scrubInstructionsLabel;
@@ -2001,25 +2001,25 @@ LABEL_17:
     controlOverflowButton = v13->_controlOverflowButton;
     v13->_controlOverflowButton = v52;
 
-    v54 = [(AVButton *)v13->_controlOverflowButton layoutAttributes];
-    [v54 setCanSubstituteOtherAttributes:1];
+    layoutAttributes7 = [(AVButton *)v13->_controlOverflowButton layoutAttributes];
+    [layoutAttributes7 setCanSubstituteOtherAttributes:1];
 
     v55 = [AVButton buttonWithAccessibilityIdentifier:@"Media Selection" isFirstGeneration:1];
     mediaSelectionButton = v13->_mediaSelectionButton;
     v13->_mediaSelectionButton = v55;
 
-    v57 = [(AVButton *)v13->_mediaSelectionButton layoutAttributes];
-    [v57 setCanOverflowToAuxiliaryMenu:1];
+    layoutAttributes8 = [(AVButton *)v13->_mediaSelectionButton layoutAttributes];
+    [layoutAttributes8 setCanOverflowToAuxiliaryMenu:1];
 
     v58 = [AVButton buttonWithAccessibilityIdentifier:@"Playback Speed" isFirstGeneration:1];
     playbackSpeedButton = v13->_playbackSpeedButton;
     v13->_playbackSpeedButton = v58;
 
-    v60 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
-    [v60 setCanOverflowToAuxiliaryMenu:1];
+    layoutAttributes9 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
+    [layoutAttributes9 setCanOverflowToAuxiliaryMenu:1];
 
-    v61 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
-    [v61 setCanOnlyAppearInControlOverflowMenu:1];
+    layoutAttributes10 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
+    [layoutAttributes10 setCanOnlyAppearInControlOverflowMenu:1];
 
     v62 = [AVButton buttonWithAccessibilityIdentifier:@"Play/Pause" isFirstGeneration:1];
     standardPlayPauseButton = v13->_standardPlayPauseButton;
@@ -2033,8 +2033,8 @@ LABEL_17:
     skipBackButton = v13->_skipBackButton;
     v13->_skipBackButton = v66;
 
-    v68 = [(AVCatalystGlassTransportControlsView *)v13 effectiveUserInterfaceLayoutDirection];
-    if (v68)
+    effectiveUserInterfaceLayoutDirection = [(AVCatalystGlassTransportControlsView *)v13 effectiveUserInterfaceLayoutDirection];
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v69 = @"Skip To Next";
     }
@@ -2044,7 +2044,7 @@ LABEL_17:
       v69 = @"Skip To Previous";
     }
 
-    if (v68)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v70 = @"Skip To Previous";
     }
@@ -2078,11 +2078,11 @@ LABEL_17:
     [(AVCatalystGlassTransportControlsView *)v13 setContentCompressionResistancePriority:1 forAxis:v78];
     LODWORD(v79) = 1148846080;
     [(AVCatalystGlassTransportControlsView *)v13 setContentHuggingPriority:0 forAxis:v79];
-    v80 = [(AVCatalystGlassTransportControlsView *)v13 detachedExtraContentLayoutView];
-    [v80 setHidden:1];
+    detachedExtraContentLayoutView = [(AVCatalystGlassTransportControlsView *)v13 detachedExtraContentLayoutView];
+    [detachedExtraContentLayoutView setHidden:1];
 
-    v81 = [(AVCatalystGlassTransportControlsView *)v13 detachedScrubInstructionsBackdropLabel];
-    [v81 setHidden:1];
+    detachedScrubInstructionsBackdropLabel = [(AVCatalystGlassTransportControlsView *)v13 detachedScrubInstructionsBackdropLabel];
+    [detachedScrubInstructionsBackdropLabel setHidden:1];
 
     [(AVCatalystGlassTransportControlsView *)v13 _updateFontSizes];
   }

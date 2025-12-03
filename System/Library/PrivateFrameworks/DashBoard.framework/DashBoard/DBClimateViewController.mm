@@ -1,24 +1,24 @@
 @interface DBClimateViewController
 - (CGRect)sceneFrame;
-- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5;
-- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6;
-- (void)clientSceneSettingsDidUpdate:(id)a3;
+- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)scene application:(id)application environment:(id)environment;
+- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment;
+- (void)clientSceneSettingsDidUpdate:(id)update;
 - (void)loadView;
-- (void)performCancelTapGesture:(id)a3;
-- (void)updateDockStyle:(int64_t)a3;
+- (void)performCancelTapGesture:(id)gesture;
+- (void)updateDockStyle:(int64_t)style;
 - (void)updateForViewAreaChange;
-- (void)updateWithDeactivationReasons:(unint64_t)a3;
+- (void)updateWithDeactivationReasons:(unint64_t)reasons;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation DBClimateViewController
 
-- (void)performCancelTapGesture:(id)a3
+- (void)performCancelTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_24828266C(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_24828266C(gestureCopy);
 }
 
 - (void)viewDidLoad
@@ -32,26 +32,26 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DBClimateViewController.viewDidLayoutSubviews()();
 }
 
 - (void)loadView
 {
   v3 = objc_allocWithZone(type metadata accessor for DBClimateView());
-  v5 = self;
-  v4 = [v3 initWithFrame_];
-  [(DBClimateViewController *)v5 setView:v4];
+  selfCopy = self;
+  initWithFrame_ = [v3 initWithFrame_];
+  [(DBClimateViewController *)selfCopy setView:initWithFrame_];
 }
 
-- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5
+- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)scene application:(id)application environment:(id)environment
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6
+- (_TtC9DashBoard23DBClimateViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -71,38 +71,38 @@
   return result;
 }
 
-- (void)clientSceneSettingsDidUpdate:(id)a3
+- (void)clientSceneSettingsDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  DBClimateViewController.clientSceneSettingsDidUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  DBClimateViewController.clientSceneSettingsDidUpdate(_:)(updateCopy);
 }
 
-- (void)updateDockStyle:(int64_t)a3
+- (void)updateDockStyle:(int64_t)style
 {
-  v4 = self;
-  v6 = v4;
-  if (!a3)
+  selfCopy = self;
+  v6 = selfCopy;
+  if (!style)
   {
-    v5 = [(DBClimateViewController *)v4 traitCollection];
-    a3 = [v5 userInterfaceStyle];
+    traitCollection = [(DBClimateViewController *)selfCopy traitCollection];
+    style = [traitCollection userInterfaceStyle];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
-  *(&v4->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard23DBClimateViewController_currentInterfaceStyle) = a3;
+  *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard23DBClimateViewController_currentInterfaceStyle) = style;
   sub_248282B00();
 }
 
-- (void)updateWithDeactivationReasons:(unint64_t)a3
+- (void)updateWithDeactivationReasons:(unint64_t)reasons
 {
-  v4 = self;
-  DBClimateViewController.update(deactivationReasons:)(a3);
+  selfCopy = self;
+  DBClimateViewController.update(deactivationReasons:)(reasons);
 }
 
 - (void)updateForViewAreaChange
 {
-  v2 = self;
+  selfCopy = self;
   DBClimateViewController.updateForViewAreaChange()();
 }
 

@@ -1,5 +1,5 @@
 @interface AADependentAuthenticationUIRequest
-- (AADependentAuthenticationUIRequest)initWithAltDSID:(id)a3;
+- (AADependentAuthenticationUIRequest)initWithAltDSID:(id)d;
 - (id)urlString;
 @end
 
@@ -8,16 +8,16 @@
 - (id)urlString
 {
   v2 = [MEMORY[0x1E698DDF8] bagForAltDSID:self->_altDSID];
-  v3 = [v2 changePasswordURL];
-  v4 = [v3 absoluteString];
+  changePasswordURL = [v2 changePasswordURL];
+  absoluteString = [changePasswordURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (AADependentAuthenticationUIRequest)initWithAltDSID:(id)a3
+- (AADependentAuthenticationUIRequest)initWithAltDSID:(id)d
 {
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     [(AADependentAuthenticationUIRequest *)a2 initWithAltDSID:?];
   }
@@ -28,7 +28,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_altDSID, a3);
+    objc_storeStrong(&v7->_altDSID, d);
   }
 
   return v8;

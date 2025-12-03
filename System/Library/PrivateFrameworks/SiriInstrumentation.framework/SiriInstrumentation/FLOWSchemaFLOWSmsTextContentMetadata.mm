@@ -1,43 +1,43 @@
 @interface FLOWSchemaFLOWSmsTextContentMetadata
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWSmsTextContentMetadata)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWSmsTextContentMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWSmsTextContentMetadata)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWSmsTextContentMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsPayloadMultilingual:(BOOL)a3;
-- (void)setHasIsPunctuationUsed:(BOOL)a3;
-- (void)setHasMessageWordLength:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsPayloadMultilingual:(BOOL)multilingual;
+- (void)setHasIsPunctuationUsed:(BOOL)used;
+- (void)setHasMessageWordLength:(BOOL)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWSmsTextContentMetadata
 
-- (FLOWSchemaFLOWSmsTextContentMetadata)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWSmsTextContentMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FLOWSchemaFLOWSmsTextContentMetadata;
   v5 = [(FLOWSchemaFLOWSmsTextContentMetadata *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"messageCharLength"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"messageCharLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsTextContentMetadata setMessageCharLength:](v5, "setMessageCharLength:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"messageWordLength"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"messageWordLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsTextContentMetadata setMessageWordLength:](v5, "setMessageWordLength:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"flowKeyboardUsageMetadata"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"flowKeyboardUsageMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,14 +45,14 @@
       [(FLOWSchemaFLOWSmsTextContentMetadata *)v5 setFlowKeyboardUsageMetadata:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isPunctuationUsed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isPunctuationUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsTextContentMetadata setIsPunctuationUsed:](v5, "setIsPunctuationUsed:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isPayloadMultilingual"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isPayloadMultilingual"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWSmsTextContentMetadata)initWithJSON:(id)a3
+- (FLOWSchemaFLOWSmsTextContentMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWSmsTextContentMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWSmsTextContentMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,20 +101,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_flowKeyboardUsageMetadata)
   {
-    v4 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    flowKeyboardUsageMetadata = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
+    dictionaryRepresentation = [flowKeyboardUsageMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"flowKeyboardUsageMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"flowKeyboardUsageMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"flowKeyboardUsageMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"flowKeyboardUsageMetadata"];
     }
   }
 
@@ -122,7 +122,7 @@
   if ((v7 & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsTextContentMetadata isPayloadMultilingual](self, "isPayloadMultilingual")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isPayloadMultilingual"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isPayloadMultilingual"];
 
     v7 = *(&self->_isPayloadMultilingual + 1);
     if ((v7 & 4) == 0)
@@ -143,7 +143,7 @@ LABEL_8:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsTextContentMetadata isPunctuationUsed](self, "isPunctuationUsed")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isPunctuationUsed"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isPunctuationUsed"];
 
   v7 = *(&self->_isPayloadMultilingual + 1);
   if ((v7 & 1) == 0)
@@ -159,19 +159,19 @@ LABEL_9:
 
 LABEL_16:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWSmsTextContentMetadata messageCharLength](self, "messageCharLength")}];
-  [v3 setObject:v12 forKeyedSubscript:@"messageCharLength"];
+  [dictionary setObject:v12 forKeyedSubscript:@"messageCharLength"];
 
   if ((*(&self->_isPayloadMultilingual + 1) & 2) != 0)
   {
 LABEL_10:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWSmsTextContentMetadata messageWordLength](self, "messageWordLength")}];
-    [v3 setObject:v8 forKeyedSubscript:@"messageWordLength"];
+    [dictionary setObject:v8 forKeyedSubscript:@"messageWordLength"];
   }
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -223,16 +223,16 @@ LABEL_8:
   return v4 ^ v3 ^ v6 ^ v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   v5 = *(&self->_isPayloadMultilingual + 1);
-  v6 = v4[26];
+  v6 = equalCopy[26];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_23;
@@ -241,13 +241,13 @@ LABEL_8:
   if (v5)
   {
     messageCharLength = self->_messageCharLength;
-    if (messageCharLength != [v4 messageCharLength])
+    if (messageCharLength != [equalCopy messageCharLength])
     {
       goto LABEL_23;
     }
 
     v5 = *(&self->_isPayloadMultilingual + 1);
-    v6 = v4[26];
+    v6 = equalCopy[26];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -259,28 +259,28 @@ LABEL_8:
   if (v8)
   {
     messageWordLength = self->_messageWordLength;
-    if (messageWordLength != [v4 messageWordLength])
+    if (messageWordLength != [equalCopy messageWordLength])
     {
       goto LABEL_23;
     }
   }
 
-  v10 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
-  v11 = [v4 flowKeyboardUsageMetadata];
-  v12 = v11;
-  if ((v10 != 0) == (v11 == 0))
+  flowKeyboardUsageMetadata = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
+  flowKeyboardUsageMetadata2 = [equalCopy flowKeyboardUsageMetadata];
+  v12 = flowKeyboardUsageMetadata2;
+  if ((flowKeyboardUsageMetadata != 0) == (flowKeyboardUsageMetadata2 == 0))
   {
 
     goto LABEL_23;
   }
 
-  v13 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
-  if (v13)
+  flowKeyboardUsageMetadata3 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
+  if (flowKeyboardUsageMetadata3)
   {
-    v14 = v13;
-    v15 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
-    v16 = [v4 flowKeyboardUsageMetadata];
-    v17 = [v15 isEqual:v16];
+    v14 = flowKeyboardUsageMetadata3;
+    flowKeyboardUsageMetadata4 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
+    flowKeyboardUsageMetadata5 = [equalCopy flowKeyboardUsageMetadata];
+    v17 = [flowKeyboardUsageMetadata4 isEqual:flowKeyboardUsageMetadata5];
 
     if (!v17)
     {
@@ -294,7 +294,7 @@ LABEL_8:
 
   v18 = *(&self->_isPayloadMultilingual + 1);
   v19 = (v18 >> 2) & 1;
-  v20 = v4[26];
+  v20 = equalCopy[26];
   if (v19 != ((v20 >> 2) & 1))
   {
 LABEL_23:
@@ -305,10 +305,10 @@ LABEL_23:
   if (v19)
   {
     isPunctuationUsed = self->_isPunctuationUsed;
-    if (isPunctuationUsed == [v4 isPunctuationUsed])
+    if (isPunctuationUsed == [equalCopy isPunctuationUsed])
     {
       v18 = *(&self->_isPayloadMultilingual + 1);
-      v20 = v4[26];
+      v20 = equalCopy[26];
       goto LABEL_19;
     }
 
@@ -325,7 +325,7 @@ LABEL_19:
   if (v22)
   {
     isPayloadMultilingual = self->_isPayloadMultilingual;
-    if (isPayloadMultilingual != [v4 isPayloadMultilingual])
+    if (isPayloadMultilingual != [equalCopy isPayloadMultilingual])
     {
       goto LABEL_23;
     }
@@ -337,9 +337,9 @@ LABEL_24:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   v4 = *(&self->_isPayloadMultilingual + 1);
   if (v4)
   {
@@ -352,11 +352,11 @@ LABEL_24:
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
+  flowKeyboardUsageMetadata = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
 
-  if (v5)
+  if (flowKeyboardUsageMetadata)
   {
-    v6 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
+    flowKeyboardUsageMetadata2 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -373,9 +373,9 @@ LABEL_24:
   }
 }
 
-- (void)setHasIsPayloadMultilingual:(BOOL)a3
+- (void)setHasIsPayloadMultilingual:(BOOL)multilingual
 {
-  if (a3)
+  if (multilingual)
   {
     v3 = 8;
   }
@@ -388,9 +388,9 @@ LABEL_24:
   *(&self->_isPayloadMultilingual + 1) = *(&self->_isPayloadMultilingual + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsPunctuationUsed:(BOOL)a3
+- (void)setHasIsPunctuationUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 4;
   }
@@ -403,9 +403,9 @@ LABEL_24:
   *(&self->_isPayloadMultilingual + 1) = *(&self->_isPayloadMultilingual + 1) & 0xFB | v3;
 }
 
-- (void)setHasMessageWordLength:(BOOL)a3
+- (void)setHasMessageWordLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -418,17 +418,17 @@ LABEL_24:
   *(&self->_isPayloadMultilingual + 1) = *(&self->_isPayloadMultilingual + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLOWSchemaFLOWSmsTextContentMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLOWSchemaFLOWSmsTextContentMetadata *)self flowKeyboardUsageMetadata:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(FLOWSchemaFLOWSmsTextContentMetadata *)self deleteFlowKeyboardUsageMetadata];
   }

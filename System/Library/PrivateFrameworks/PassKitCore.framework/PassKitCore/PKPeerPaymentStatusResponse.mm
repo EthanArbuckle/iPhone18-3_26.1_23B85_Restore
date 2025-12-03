@@ -1,24 +1,24 @@
 @interface PKPeerPaymentStatusResponse
-- (BOOL)amountHashIsValidForAmount:(id)a3 andCurrency:(id)a4;
-- (PKPeerPaymentStatusResponse)initWithData:(id)a3;
+- (BOOL)amountHashIsValidForAmount:(id)amount andCurrency:(id)currency;
+- (PKPeerPaymentStatusResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentStatusResponse
 
-- (PKPeerPaymentStatusResponse)initWithData:(id)a3
+- (PKPeerPaymentStatusResponse)initWithData:(id)data
 {
   v33 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = PKPeerPaymentStatusResponse;
-  v3 = [(PKWebServiceResponse *)&v28 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v28 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKStringForKey:@"status"];
       v8 = PKPaymentTransactionStatusFromString(v7);
       if ((v8 & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -50,9 +50,9 @@
       v4->_actions = v16;
 
       v18 = [v6 PKStringForKey:@"amountHash"];
-      v19 = [v18 pk_decodeHexadecimal];
+      pk_decodeHexadecimal = [v18 pk_decodeHexadecimal];
       amountHash = v4->_amountHash;
-      v4->_amountHash = v19;
+      v4->_amountHash = pk_decodeHexadecimal;
 
       v21 = [v6 PKStringForKey:@"signature"];
 
@@ -81,29 +81,29 @@
   return v4;
 }
 
-- (BOOL)amountHashIsValidForAmount:(id)a3 andCurrency:(id)a4
+- (BOOL)amountHashIsValidForAmount:(id)amount andCurrency:(id)currency
 {
   if (!self->_amountHash)
   {
     return 1;
   }
 
-  v6 = a4;
-  v7 = a3;
-  v8 = PKMutableNumberFormatterForCurrencyCodeExcludingCurrencySymbols(v6);
+  currencyCopy = currency;
+  amountCopy = amount;
+  v8 = PKMutableNumberFormatterForCurrencyCodeExcludingCurrencySymbols(currencyCopy);
   v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v8 setLocale:v9];
 
-  v10 = [v8 stringFromNumber:v7];
+  v10 = [v8 stringFromNumber:amountCopy];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", self->_transactionIdentifier, v10, v6];
+  currencyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", self->_transactionIdentifier, v10, currencyCopy];
 
-  v12 = [v11 dataUsingEncoding:4];
-  v13 = [v12 SHA256Hash];
+  v12 = [currencyCopy dataUsingEncoding:4];
+  sHA256Hash = [v12 SHA256Hash];
 
-  if (v13)
+  if (sHA256Hash)
   {
-    v14 = [(NSData *)self->_amountHash isEqualToData:v13];
+    v14 = [(NSData *)self->_amountHash isEqualToData:sHA256Hash];
   }
 
   else

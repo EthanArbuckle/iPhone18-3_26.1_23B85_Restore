@@ -1,14 +1,14 @@
 @interface PUUserTransformViewAccessibility
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation PUUserTransformViewAccessibility
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = PUUserTransformViewAccessibility;
-  [(PUUserTransformViewAccessibility *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PUUserTransformViewAccessibility *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

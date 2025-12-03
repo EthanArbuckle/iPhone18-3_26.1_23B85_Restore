@@ -3,9 +3,9 @@
 - (int)_start;
 - (int)start;
 - (int)stop;
-- (void)_dispatchNotification:(id)a3 value:(id)a4;
+- (void)_dispatchNotification:(id)notification value:(id)value;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation FigNeroLayer
@@ -101,11 +101,11 @@ void __20__FigNeroLayer_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v6.receiver = self;
   v6.super_class = FigNeroLayer;
-  [(FigNeroLayer *)&v6 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(FigNeroLayer *)&v6 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   neroQueue = self->_neroQueue;
   if (neroQueue)
   {
@@ -143,9 +143,9 @@ void __26__FigNeroLayer_setBounds___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_dispatchNotification:(id)a3 value:(id)a4
+- (void)_dispatchNotification:(id)notification value:(id)value
 {
-  if ([a3 isEqualToString:{0x1F0B47BD8, a4}])
+  if ([notification isEqualToString:{0x1F0B47BD8, value}])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -155,7 +155,7 @@ void __26__FigNeroLayer_setBounds___block_invoke(uint64_t a1)
     }
   }
 
-  else if (([a3 isEqualToString:0x1F0B47BF8] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", 0x1F0B4A0B8))
+  else if (([notification isEqualToString:0x1F0B47BF8] & 1) != 0 || objc_msgSend(notification, "isEqualToString:", 0x1F0B4A0B8))
   {
     if (objc_opt_respondsToSelector())
     {
@@ -165,7 +165,7 @@ void __26__FigNeroLayer_setBounds___block_invoke(uint64_t a1)
     }
   }
 
-  else if ([a3 isEqualToString:0x1F0B47BB8] && (objc_opt_respondsToSelector() & 1) != 0)
+  else if ([notification isEqualToString:0x1F0B47BB8] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v8 = self->_neroDelegate;
 

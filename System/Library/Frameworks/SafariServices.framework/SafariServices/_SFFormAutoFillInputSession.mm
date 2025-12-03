@@ -1,18 +1,18 @@
 @interface _SFFormAutoFillInputSession
-- (id)_initWithFormInputSession:(id)a3 focusedElement:(id)a4;
-- (id)autoFillInputSessionByReplacingInputSessionUserObject:(id)a3;
-- (id)initForStreamlinedLoginWithControlMetadata:(id)a3 formMetadata:(id)a4 frameHandle:(id)a5;
-- (void)_updateAutoFillInputSessionUserObject:(id)a3;
-- (void)updateWithAdditionalInputSession:(id)a3;
+- (id)_initWithFormInputSession:(id)session focusedElement:(id)element;
+- (id)autoFillInputSessionByReplacingInputSessionUserObject:(id)object;
+- (id)initForStreamlinedLoginWithControlMetadata:(id)metadata formMetadata:(id)formMetadata frameHandle:(id)handle;
+- (void)_updateAutoFillInputSessionUserObject:(id)object;
+- (void)updateWithAdditionalInputSession:(id)session;
 @end
 
 @implementation _SFFormAutoFillInputSession
 
-- (id)initForStreamlinedLoginWithControlMetadata:(id)a3 formMetadata:(id)a4 frameHandle:(id)a5
+- (id)initForStreamlinedLoginWithControlMetadata:(id)metadata formMetadata:(id)formMetadata frameHandle:(id)handle
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  formMetadataCopy = formMetadata;
+  handleCopy = handle;
   v16.receiver = self;
   v16.super_class = _SFFormAutoFillInputSession;
   v12 = [(_SFFormAutoFillInputSession *)&v16 init];
@@ -20,49 +20,49 @@
   if (v12)
   {
     v12->_isForStreamlinedLogin = 1;
-    objc_storeStrong(&v12->_focusedControlMetadata, a3);
-    objc_storeStrong(p_isa + 6, a4);
-    objc_storeStrong(p_isa + 5, a5);
+    objc_storeStrong(&v12->_focusedControlMetadata, metadata);
+    objc_storeStrong(p_isa + 6, formMetadata);
+    objc_storeStrong(p_isa + 5, handle);
     v14 = p_isa;
   }
 
   return p_isa;
 }
 
-- (id)_initWithFormInputSession:(id)a3 focusedElement:(id)a4
+- (id)_initWithFormInputSession:(id)session focusedElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = _SFFormAutoFillInputSession;
   v9 = [(_SFFormAutoFillInputSession *)&v16 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_formInputSession, a3);
-    if (v8)
+    objc_storeStrong(&v9->_formInputSession, session);
+    if (elementCopy)
     {
-      v11 = v8;
+      focusedElementInfo = elementCopy;
     }
 
     else
     {
-      v11 = [p_isa[4] focusedElementInfo];
+      focusedElementInfo = [p_isa[4] focusedElementInfo];
     }
 
     v12 = p_isa[2];
-    p_isa[2] = v11;
+    p_isa[2] = focusedElementInfo;
 
-    v13 = [p_isa[4] userObject];
-    if (!v13)
+    userObject = [p_isa[4] userObject];
+    if (!userObject)
     {
-      v13 = [p_isa[2] userObject];
+      userObject = [p_isa[2] userObject];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [p_isa _updateAutoFillInputSessionUserObject:v13];
+      [p_isa _updateAutoFillInputSessionUserObject:userObject];
     }
 
     v14 = p_isa;
@@ -71,23 +71,23 @@
   return p_isa;
 }
 
-- (void)updateWithAdditionalInputSession:(id)a3
+- (void)updateWithAdditionalInputSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 formInputSession];
+  sessionCopy = session;
+  formInputSession = [sessionCopy formInputSession];
   formInputSession = self->_formInputSession;
-  self->_formInputSession = v5;
+  self->_formInputSession = formInputSession;
 
-  v7 = [v4 focusedElementInfo];
+  focusedElementInfo = [sessionCopy focusedElementInfo];
 
   focusedElementInfo = self->_focusedElementInfo;
-  self->_focusedElementInfo = v7;
+  self->_focusedElementInfo = focusedElementInfo;
 }
 
-- (void)_updateAutoFillInputSessionUserObject:(id)a3
+- (void)_updateAutoFillInputSessionUserObject:(id)object
 {
-  objc_storeStrong(&self->_autoFillInputSessionUserObject, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_autoFillInputSessionUserObject, object);
+  objectCopy = object;
   v6 = [(NSDictionary *)self->_autoFillInputSessionUserObject objectForKeyedSubscript:@"frame"];
   v7 = [SFFormAutoFillFrameHandle frameHandleFromSerializedData:v6];
   frameHandle = self->_frameHandle;
@@ -106,15 +106,15 @@
   self->_focusedControlMetadata = v14;
 }
 
-- (id)autoFillInputSessionByReplacingInputSessionUserObject:(id)a3
+- (id)autoFillInputSessionByReplacingInputSessionUserObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [_SFFormAutoFillInputSession alloc];
-  v6 = [(_SFFormAutoFillInputSession *)self formInputSession];
-  v7 = [(_SFFormAutoFillInputSession *)self focusedElementInfo];
-  v8 = [(_SFFormAutoFillInputSession *)v5 _initWithFormInputSession:v6 focusedElement:v7];
+  formInputSession = [(_SFFormAutoFillInputSession *)self formInputSession];
+  focusedElementInfo = [(_SFFormAutoFillInputSession *)self focusedElementInfo];
+  v8 = [(_SFFormAutoFillInputSession *)v5 _initWithFormInputSession:formInputSession focusedElement:focusedElementInfo];
 
-  [v8 _updateAutoFillInputSessionUserObject:v4];
+  [v8 _updateAutoFillInputSessionUserObject:objectCopy];
 
   return v8;
 }

@@ -1,12 +1,12 @@
 @interface TSDDaemonService
 + (id)daemonService;
 + (id)sharedDaemonService;
-- (BOOL)callMethodForDaemonClient:(unsigned int)a3 clientMethodSelector:(unsigned int)a4 scalarInputs:(const unint64_t *)a5 scalarInputCount:(unsigned int)a6 structInput:(const void *)a7 structInputSize:(unint64_t)a8 scalarOutputs:(unint64_t *)a9 scalarOutputCount:(unsigned int *)a10 error:(id *)a11;
-- (BOOL)closeDaemonClient:(int)a3 daemonClientID:(unsigned int)a4 error:(id *)a5;
+- (BOOL)callMethodForDaemonClient:(unsigned int)client clientMethodSelector:(unsigned int)selector scalarInputs:(const unint64_t *)inputs scalarInputCount:(unsigned int)count structInput:(const void *)input structInputSize:(unint64_t)size scalarOutputs:(unint64_t *)outputs scalarOutputCount:(unsigned int *)self0 error:(id *)self1;
+- (BOOL)closeDaemonClient:(int)client daemonClientID:(unsigned int)d error:(id *)error;
 - (BOOL)deregisterAsyncCallback;
 - (BOOL)registerAsyncCallback;
 - (TSDDaemonService)init;
-- (unsigned)openDaemonClient:(int)a3 withRegistryEntryID:(unint64_t)a4 clientType:(unsigned int)a5 error:(id *)a6;
+- (unsigned)openDaemonClient:(int)client withRegistryEntryID:(unint64_t)d clientType:(unsigned int)type error:(id *)error;
 - (void)dealloc;
 - (void)finalizeNotifications;
 @end
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_100016E60;
   block[3] = &unk_10004CAB0;
-  block[4] = a1;
+  block[4] = self;
   dispatch_sync(qword_100058880, block);
   v3 = qword_100058878;
 
@@ -162,17 +162,17 @@ LABEL_19:
   self->_notificationPort = 0;
 }
 
-- (unsigned)openDaemonClient:(int)a3 withRegistryEntryID:(unint64_t)a4 clientType:(unsigned int)a5 error:(id *)a6
+- (unsigned)openDaemonClient:(int)client withRegistryEntryID:(unint64_t)d clientType:(unsigned int)type error:(id *)error
 {
   v15[0] = 4;
-  v15[1] = a3;
-  v16 = a4;
-  v17 = a5;
+  v15[1] = client;
+  dCopy = d;
+  typeCopy = type;
   v14 = 0;
   v13[0] = 1;
   if (!self->_supportsRegistryEntryIDDaemonClientMatching)
   {
-    v8 = [IOKService entryIDMatching:a4];
+    v8 = [IOKService entryIDMatching:d];
     v9 = [IOKService matchingService:v8];
 
     if (!v9)
@@ -189,10 +189,10 @@ LABEL_19:
     }
 
     v11 = v10;
-    v16 = [v10 unsignedIntValue];
+    dCopy = [v10 unsignedIntValue];
   }
 
-  if (([(IOKConnection *)self->_connection callMethodWithSelector:0 scalarInputs:v15 scalarInputCount:4 structInput:0 structInputSize:0 scalarOutputs:&v14 scalarOutputCount:v13 structOutput:0 structOutputSize:0 error:a6]& 1) == 0)
+  if (([(IOKConnection *)self->_connection callMethodWithSelector:0 scalarInputs:v15 scalarInputCount:4 structInput:0 structInputSize:0 scalarOutputs:&v14 scalarOutputCount:v13 structOutput:0 structOutputSize:0 error:error]& 1) == 0)
   {
     sub_10002B484();
     return v13[1];
@@ -207,13 +207,13 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)closeDaemonClient:(int)a3 daemonClientID:(unsigned int)a4 error:(id *)a5
+- (BOOL)closeDaemonClient:(int)client daemonClientID:(unsigned int)d error:(id *)error
 {
   v8[0] = 5;
-  v8[1] = a3;
-  v8[2] = a4;
+  v8[1] = client;
+  v8[2] = d;
   v7 = 0;
-  v5 = [(IOKConnection *)self->_connection callMethodWithSelector:0 scalarInputs:v8 scalarInputCount:3 scalarOutputs:0 scalarOutputCount:&v7 error:a5];
+  v5 = [(IOKConnection *)self->_connection callMethodWithSelector:0 scalarInputs:v8 scalarInputCount:3 scalarOutputs:0 scalarOutputCount:&v7 error:error];
   if ((v5 & 1) == 0)
   {
     sub_10002B5FC();
@@ -222,28 +222,28 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)callMethodForDaemonClient:(unsigned int)a3 clientMethodSelector:(unsigned int)a4 scalarInputs:(const unint64_t *)a5 scalarInputCount:(unsigned int)a6 structInput:(const void *)a7 structInputSize:(unint64_t)a8 scalarOutputs:(unint64_t *)a9 scalarOutputCount:(unsigned int *)a10 error:(id *)a11
+- (BOOL)callMethodForDaemonClient:(unsigned int)client clientMethodSelector:(unsigned int)selector scalarInputs:(const unint64_t *)inputs scalarInputCount:(unsigned int)count structInput:(const void *)input structInputSize:(unint64_t)size scalarOutputs:(unint64_t *)outputs scalarOutputCount:(unsigned int *)self0 error:(id *)self1
 {
-  if (a6 > 0xE)
+  if (count > 0xE)
   {
     return 0;
   }
 
   memset(v24, 0, sizeof(v24));
-  v23[0] = a3;
-  v23[1] = a4;
-  if (a6)
+  v23[0] = client;
+  v23[1] = selector;
+  if (count)
   {
-    memcpy(v24, a5, 8 * a6);
+    memcpy(v24, inputs, 8 * count);
   }
 
-  v17 = [(IOKConnection *)self->_connection callMethodWithSelector:1 scalarInputs:v23 scalarInputCount:a6 + 2 structInput:a7 structInputSize:a8 scalarOutputs:a9 scalarOutputCount:a10 structOutput:0 structOutputSize:0 error:a11];
+  v17 = [(IOKConnection *)self->_connection callMethodWithSelector:1 scalarInputs:v23 scalarInputCount:count + 2 structInput:input structInputSize:size scalarOutputs:outputs scalarOutputCount:outputCount structOutput:0 structOutputSize:0 error:error];
   if ((v17 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v20 = a3;
+    clientCopy = client;
     v21 = 1024;
-    v22 = a4;
+    selectorCopy = selector;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "TSDDaemonService callMethodForDaemonClient failed clientID %u, clientMethodSelector %u\n", buf, 0xEu);
   }
 

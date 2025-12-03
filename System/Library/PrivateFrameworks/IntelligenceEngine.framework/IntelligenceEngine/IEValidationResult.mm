@@ -1,22 +1,22 @@
 @interface IEValidationResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation IEValidationResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(IEValidationResult *)self type];
-      v8 = [v6 type];
-      if (v7 != v8)
+      v6 = equalCopy;
+      type = [(IEValidationResult *)self type];
+      type2 = [v6 type];
+      if (type != type2)
       {
         v9 = 0;
 LABEL_22:
@@ -24,33 +24,33 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v23 = [(IEValidationResult *)self text];
-      v10 = [v6 text];
-      if (v23 != v10)
+      text = [(IEValidationResult *)self text];
+      text2 = [v6 text];
+      if (text != text2)
       {
-        v21 = [(IEValidationResult *)self text];
-        v19 = [v6 text];
-        if (![v21 isEqualToString:?])
+        text3 = [(IEValidationResult *)self text];
+        text4 = [v6 text];
+        if (![text3 isEqualToString:?])
         {
           v9 = 0;
           goto LABEL_20;
         }
       }
 
-      v22 = [(IEValidationResult *)self filename];
-      v11 = [v6 filename];
-      if (v22 != v11)
+      filename = [(IEValidationResult *)self filename];
+      filename2 = [v6 filename];
+      if (filename != filename2)
       {
-        v20 = [(IEValidationResult *)self filename];
-        v17 = [v6 filename];
-        if (![v20 isEqualToString:?])
+        filename3 = [(IEValidationResult *)self filename];
+        filename4 = [v6 filename];
+        if (![filename3 isEqualToString:?])
         {
           v9 = 0;
-          v12 = v22;
+          v12 = filename;
 LABEL_18:
 
 LABEL_19:
-          if (v23 == v10)
+          if (text == text2)
           {
 LABEL_21:
 
@@ -63,13 +63,13 @@ LABEL_20:
         }
       }
 
-      v13 = [(IEValidationResult *)self code];
-      v14 = [v6 code];
-      if (v13 == v14 || (-[IEValidationResult code](self, "code"), v18 = objc_claimAutoreleasedReturnValue(), [v6 code], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "isEqualToString:", v3)))
+      code = [(IEValidationResult *)self code];
+      code2 = [v6 code];
+      if (code == code2 || (-[IEValidationResult code](self, "code"), v18 = objc_claimAutoreleasedReturnValue(), [v6 code], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "isEqualToString:", v3)))
       {
-        v15 = [(IEValidationResult *)self lineNumber];
-        v9 = v15 == [v6 lineNumber];
-        if (v13 == v14)
+        lineNumber = [(IEValidationResult *)self lineNumber];
+        v9 = lineNumber == [v6 lineNumber];
+        if (code == code2)
         {
           goto LABEL_17;
         }
@@ -81,8 +81,8 @@ LABEL_20:
       }
 
 LABEL_17:
-      v12 = v22;
-      if (v22 == v11)
+      v12 = filename;
+      if (filename == filename2)
       {
         goto LABEL_19;
       }
@@ -99,17 +99,17 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(IEValidationResult *)self type];
-  v4 = [v3 hash];
+  type = [(IEValidationResult *)self type];
+  v4 = [type hash];
 
-  v5 = [(IEValidationResult *)self text];
-  v6 = [v5 hash];
+  text = [(IEValidationResult *)self text];
+  v6 = [text hash];
 
-  v7 = [(IEValidationResult *)self filename];
-  v8 = [v7 hash];
+  filename = [(IEValidationResult *)self filename];
+  v8 = [filename hash];
 
-  v9 = [(IEValidationResult *)self code];
-  v10 = [v9 hash];
+  code = [(IEValidationResult *)self code];
+  v10 = [code hash];
   v11 = v8 - (v6 - v4 + 32 * v4) + 32 * (v6 - v4 + 32 * v4);
   v12 = 31 * (v10 - v11 + 32 * v11);
 

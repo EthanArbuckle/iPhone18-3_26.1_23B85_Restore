@@ -1,20 +1,20 @@
 @interface _PASLazyPlist
-+ (BOOL)isLazyPlistLikelyContainedInData:(id)a3 format:(unint64_t *)a4;
-+ (BOOL)isLazyPlistLikelyContainedInFileAtPath:(id)a3 format:(unint64_t *)a4;
-+ (id)arrayWithData:(id)a3 error:(id *)a4;
-+ (id)arrayWithPath:(id)a3 error:(id *)a4;
-+ (id)dataWithPropertyList:(id)a3 format:(unint64_t)a4 error:(id *)a5;
++ (BOOL)isLazyPlistLikelyContainedInData:(id)data format:(unint64_t *)format;
++ (BOOL)isLazyPlistLikelyContainedInFileAtPath:(id)path format:(unint64_t *)format;
++ (id)arrayWithData:(id)data error:(id *)error;
++ (id)arrayWithPath:(id)path error:(id *)error;
++ (id)dataWithPropertyList:(id)list format:(unint64_t)format error:(id *)error;
 + (id)deserializationStatsHandler;
-+ (id)dictionaryWithData:(id)a3 error:(id *)a4;
-+ (id)dictionaryWithPath:(id)a3 error:(id *)a4;
-+ (id)fileBackedDataWithPropertyList:(id)a3 writtenToPath:(id)a4 format:(unint64_t)a5 error:(id *)a6;
-+ (id)lazyPlistWithPlist:(id)a3;
-+ (id)propertyListWithData:(uint64_t)a3 needsValidation:(void *)a4 error:;
-+ (id)propertyListWithPath:(id)a3 error:(id *)a4;
-+ (id)propertyListWithPath:(id)a3 fileRange:(_NSRange)a4 error:(id *)a5;
++ (id)dictionaryWithData:(id)data error:(id *)error;
++ (id)dictionaryWithPath:(id)path error:(id *)error;
++ (id)fileBackedDataWithPropertyList:(id)list writtenToPath:(id)path format:(unint64_t)format error:(id *)error;
++ (id)lazyPlistWithPlist:(id)plist;
++ (id)propertyListWithData:(uint64_t)data needsValidation:(void *)validation error:;
++ (id)propertyListWithPath:(id)path error:(id *)error;
++ (id)propertyListWithPath:(id)path fileRange:(_NSRange)range error:(id *)error;
 + (id)serializationStatsHandler;
-+ (void)setDeserializationStatsHandler:(id)a3;
-+ (void)setSerializationStatsHandler:(id)a3;
++ (void)setDeserializationStatsHandler:(id)handler;
++ (void)setSerializationStatsHandler:(id)handler;
 @end
 
 @implementation _PASLazyPlist
@@ -29,11 +29,11 @@
   return v3;
 }
 
-+ (void)setDeserializationStatsHandler:(id)a3
++ (void)setDeserializationStatsHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&_statsHandlerLock);
-  v4 = MEMORY[0x1AC566DD0](v3);
+  v4 = MEMORY[0x1AC566DD0](handlerCopy);
 
   v5 = _deserializationStatsHandler;
   _deserializationStatsHandler = v4;
@@ -41,11 +41,11 @@
   pthread_mutex_unlock(&_statsHandlerLock);
 }
 
-+ (void)setSerializationStatsHandler:(id)a3
++ (void)setSerializationStatsHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&_statsHandlerLock);
-  v4 = MEMORY[0x1AC566DD0](v3);
+  v4 = MEMORY[0x1AC566DD0](handlerCopy);
 
   v5 = _serializationStatsHandler;
   _serializationStatsHandler = v4;
@@ -63,14 +63,14 @@
   return v3;
 }
 
-+ (id)lazyPlistWithPlist:(id)a3
++ (id)lazyPlistWithPlist:(id)plist
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  plistCopy = plist;
+  if (!plistCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"_PASLazyPlist.m" lineNumber:486 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLazyPlist.m" lineNumber:486 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
   }
 
   v6 = objc_autoreleasePoolPush();
@@ -82,14 +82,14 @@
   v10 = v20;
   if (v9)
   {
-    v11 = [v9 path];
-    unlink([v11 fileSystemRepresentation]);
+    path = [v9 path];
+    unlink([path fileSystemRepresentation]);
 
-    v12 = [a1 fileBackedDataWithPropertyList:v5 appendedToFd:objc_msgSend(v9 startOfs:"fd") error:{0, 0}];
+    v12 = [self fileBackedDataWithPropertyList:plistCopy appendedToFd:objc_msgSend(v9 startOfs:"fd") error:{0, 0}];
     close([v9 fd]);
     if (v12)
     {
-      v13 = [(_PASLazyPlist *)a1 propertyListWithData:v12 needsValidation:0 error:0];
+      v13 = [(_PASLazyPlist *)self propertyListWithData:v12 needsValidation:0 error:0];
       v14 = v13;
       if (v13)
       {
@@ -98,7 +98,7 @@
 
       else
       {
-        v15 = v5;
+        v15 = plistCopy;
       }
 
       v16 = v15;
@@ -106,7 +106,7 @@
 
     else
     {
-      v16 = v5;
+      v16 = plistCopy;
     }
   }
 
@@ -119,7 +119,7 @@
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "_PASLazyPlist: Unable to create tempfile for temporary _PASLazyPlist backing storage: %@", buf, 0xCu);
     }
 
-    v16 = v5;
+    v16 = plistCopy;
   }
 
   objc_autoreleasePoolPop(v6);
@@ -128,15 +128,15 @@
   return v16;
 }
 
-+ (id)propertyListWithData:(uint64_t)a3 needsValidation:(void *)a4 error:
++ (id)propertyListWithData:(uint64_t)data needsValidation:(void *)validation error:
 {
   v36 = *MEMORY[0x1E69E9840];
   v6 = a2;
   v7 = objc_opt_self();
   if (!v6)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:sel_propertyListWithData_needsValidation_error_ object:v7 file:@"_PASLazyPlist.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_propertyListWithData_needsValidation_error_ object:v7 file:@"_PASLazyPlist.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   v8 = objc_autoreleasePoolPush();
@@ -205,7 +205,7 @@ LABEL_24:
   v11 = &v31;
   v12 = &v31;
 LABEL_11:
-  v20 = [(_PASLPReaderV1 *)v10 initWithData:v6 sourcedFromPath:v9 needsValidation:a3 error:v12];
+  v20 = [(_PASLPReaderV1 *)v10 initWithData:v6 sourcedFromPath:v9 needsValidation:data error:v12];
   v21 = *v11;
   v17 = v21;
   if (!v20)
@@ -231,10 +231,10 @@ LABEL_17:
 
 LABEL_18:
   objc_autoreleasePoolPop(v8);
-  if (a4)
+  if (validation)
   {
     v26 = v17;
-    *a4 = v17;
+    *validation = v17;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -242,23 +242,23 @@ LABEL_18:
   return v22;
 }
 
-+ (BOOL)isLazyPlistLikelyContainedInFileAtPath:(id)a3 format:(unint64_t *)a4
++ (BOOL)isLazyPlistLikelyContainedInFileAtPath:(id)path format:(unint64_t *)format
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"_PASLazyPlist.m" lineNumber:458 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLazyPlist.m" lineNumber:458 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v8 = objc_autoreleasePoolPush();
   v15 = 0;
-  v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v7 options:1 error:&v15];
+  v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy options:1 error:&v15];
   v10 = v15;
   if (v9)
   {
-    v11 = [a1 isLazyPlistLikelyContainedInData:v9 format:a4];
+    v11 = [self isLazyPlistLikelyContainedInData:v9 format:format];
   }
 
   else
@@ -266,7 +266,7 @@ LABEL_18:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v7;
+      v17 = pathCopy;
       v18 = 2112;
       v19 = v10;
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "_PASLazyPlist: Unable to load file %@: %@", buf, 0x16u);
@@ -280,34 +280,34 @@ LABEL_18:
   return v11;
 }
 
-+ (BOOL)isLazyPlistLikelyContainedInData:(id)a3 format:(unint64_t *)a4
++ (BOOL)isLazyPlistLikelyContainedInData:(id)data format:(unint64_t *)format
 {
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"_PASLazyPlist.m" lineNumber:427 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLazyPlist.m" lineNumber:427 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   v8 = objc_autoreleasePoolPush();
   v9 = objc_opt_self();
-  if ([v9 isSubclassOfClass:objc_opt_class()] && objc_msgSend(v7, "length") >= 6 && ((v10 = objc_msgSend(v7, "bytes"), *v10 == 1768714338) ? (v11 = *(v10 + 4) == 29811) : (v11 = 0), v11))
+  if ([v9 isSubclassOfClass:objc_opt_class()] && objc_msgSend(dataCopy, "length") >= 6 && ((v10 = objc_msgSend(dataCopy, "bytes"), *v10 == 1768714338) ? (v11 = *(v10 + 4) == 29811) : (v11 = 0), v11))
   {
-    if (a4)
+    if (format)
     {
-      *a4 = 2;
+      *format = 2;
     }
 
     v12 = 1;
   }
 
-  else if ([v7 length] >= 0x10)
+  else if ([dataCopy length] >= 0x10)
   {
-    v15 = *[v7 bytes];
+    v15 = *[dataCopy bytes];
     v12 = (v15 ^ 0x4C50 | BYTE2(v15) ^ 0x50) == 0;
-    if (a4 && !(v15 ^ 0x4C50 | BYTE2(v15) ^ 0x50))
+    if (format && !(v15 ^ 0x4C50 | BYTE2(v15) ^ 0x50))
     {
-      *a4 = BYTE3(v15);
+      *format = BYTE3(v15);
     }
   }
 
@@ -321,34 +321,34 @@ LABEL_18:
   return v12;
 }
 
-+ (id)fileBackedDataWithPropertyList:(id)a3 writtenToPath:(id)a4 format:(unint64_t)a5 error:(id *)a6
++ (id)fileBackedDataWithPropertyList:(id)list writtenToPath:(id)path format:(unint64_t)format error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5 == 1)
+  listCopy = list;
+  pathCopy = path;
+  if (format == 1)
   {
-    a6 = [_PASLPWriterV1 fileBackedDataWithPropertyList:v9 writtenToPath:v10 error:a6];
+    error = [_PASLPWriterV1 fileBackedDataWithPropertyList:listCopy writtenToPath:pathCopy error:error];
   }
 
-  else if (a6)
+  else if (error)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"version code %tu is unsupported", a5];
-    *a6 = wrongVersionError(v11);
+    format = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"version code %tu is unsupported", format];
+    *error = wrongVersionError(format);
 
-    a6 = 0;
+    error = 0;
   }
 
-  return a6;
+  return error;
 }
 
-+ (id)dataWithPropertyList:(id)a3 format:(unint64_t)a4 error:(id *)a5
++ (id)dataWithPropertyList:(id)list format:(unint64_t)format error:(id *)error
 {
-  v8 = a3;
-  if (a4 != 2)
+  listCopy = list;
+  if (format != 2)
   {
-    if (a4 == 1)
+    if (format == 1)
     {
-      v9 = [_PASLPWriterV1 dataWithPropertyList:v8 error:a5];
+      v9 = [_PASLPWriterV1 dataWithPropertyList:listCopy error:error];
       goto LABEL_24;
     }
 
@@ -359,10 +359,10 @@ LABEL_18:
   if (![v10 isSubclassOfClass:objc_opt_class()])
   {
 LABEL_11:
-    if (a5)
+    if (error)
     {
-      v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"version code %tu is unsupported", a4];
-      *a5 = wrongVersionError(v16);
+      format = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"version code %tu is unsupported", format];
+      *error = wrongVersionError(format);
     }
 
     v9 = 0;
@@ -370,13 +370,13 @@ LABEL_11:
   }
 
   v24 = 0;
-  v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:v8 format:200 options:0 error:&v24];
+  v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:listCopy format:200 options:0 error:&v24];
   v12 = v24;
   v13 = v12;
   if (v11 && !v12)
   {
     v23 = 0;
-    v14 = [(_PASLazyPlist *)a1 propertyListWithData:v11 needsValidation:1 error:&v23];
+    v14 = [(_PASLazyPlist *)self propertyListWithData:v11 needsValidation:1 error:&v23];
     v13 = v23;
   }
 
@@ -388,7 +388,7 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    DeepCopy = [v8 _pas_unlazyArray];
+    DeepCopy = [listCopy _pas_unlazyArray];
   }
 
   else
@@ -396,12 +396,12 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      DeepCopy = [v8 _pas_unlazyDictionary];
+      DeepCopy = [listCopy _pas_unlazyDictionary];
     }
 
     else
     {
-      DeepCopy = CFPropertyListCreateDeepCopy(0, v8, 0);
+      DeepCopy = CFPropertyListCreateDeepCopy(0, listCopy, 0);
     }
   }
 
@@ -420,11 +420,11 @@ LABEL_11:
   if (v19)
   {
 LABEL_19:
-    if (a5)
+    if (error)
     {
       v20 = v13;
       v9 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -446,10 +446,10 @@ LABEL_24:
   return v9;
 }
 
-+ (id)arrayWithData:(id)a3 error:(id *)a4
++ (id)arrayWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 propertyListWithData:v6 error:a4];
+  dataCopy = data;
+  v7 = [self propertyListWithData:dataCopy error:error];
   if (!v7)
   {
     goto LABEL_6;
@@ -458,13 +458,13 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = v7;
+    error = v7;
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<NSData buffer %p>", objc_msgSend(v6, "bytes")];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<NSData buffer %p>", objc_msgSend(dataCopy, "bytes")];
     v9 = objc_opt_new();
     [v9 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A578]];
     [v9 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -475,21 +475,21 @@ LABEL_24:
     v12 = [v10 initWithDomain:@"_PASLazyPlistErrorDomain" code:5 userInfo:v11];
 
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
 
 LABEL_6:
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-+ (id)arrayWithPath:(id)a3 error:(id *)a4
++ (id)arrayWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 propertyListWithPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [self propertyListWithPath:pathCopy error:error];
   if (!v7)
   {
     goto LABEL_6;
@@ -502,9 +502,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = v6;
+    v9 = pathCopy;
     v10 = objc_opt_new();
     [v10 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A578]];
     [v10 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -516,7 +516,7 @@ LABEL_7:
 
     v14 = v13;
     v8 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -530,10 +530,10 @@ LABEL_7:
   return v8;
 }
 
-+ (id)dictionaryWithData:(id)a3 error:(id *)a4
++ (id)dictionaryWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 propertyListWithData:v6 error:a4];
+  dataCopy = data;
+  v7 = [self propertyListWithData:dataCopy error:error];
   if (!v7)
   {
     goto LABEL_6;
@@ -542,13 +542,13 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = v7;
+    error = v7;
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<NSData buffer %p>", objc_msgSend(v6, "bytes")];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<NSData buffer %p>", objc_msgSend(dataCopy, "bytes")];
     v9 = objc_opt_new();
     [v9 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A578]];
     [v9 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -559,21 +559,21 @@ LABEL_7:
     v12 = [v10 initWithDomain:@"_PASLazyPlistErrorDomain" code:5 userInfo:v11];
 
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
 
 LABEL_6:
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-+ (id)dictionaryWithPath:(id)a3 error:(id *)a4
++ (id)dictionaryWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 propertyListWithPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [self propertyListWithPath:pathCopy error:error];
   if (!v7)
   {
     goto LABEL_6;
@@ -586,9 +586,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = v6;
+    v9 = pathCopy;
     v10 = objc_opt_new();
     [v10 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A578]];
     [v10 setObject:@"The lazy plist archive root object has unexpected type." forKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -600,7 +600,7 @@ LABEL_7:
 
     v14 = v13;
     v8 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -614,36 +614,36 @@ LABEL_7:
   return v8;
 }
 
-+ (id)propertyListWithPath:(id)a3 fileRange:(_NSRange)a4 error:(id *)a5
++ (id)propertyListWithPath:(id)path fileRange:(_NSRange)range error:(id *)error
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"_PASLazyPlist.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLazyPlist.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v11 = objc_autoreleasePoolPush();
   v40 = 0;
-  v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v10 options:1 error:&v40];
+  v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:1 error:&v40];
   v13 = v40;
   v14 = v13;
   if (!v12)
   {
     if (v13)
     {
-      v16 = [v13 localizedDescription];
+      localizedDescription = [v13 localizedDescription];
     }
 
     else
     {
-      v16 = @"Unable to open the file.";
+      localizedDescription = @"Unable to open the file.";
     }
 
-    v15 = fileAccessError(v10, v16);
+    v15 = fileAccessError(pathCopy, localizedDescription);
 
     if (v14)
     {
@@ -661,7 +661,7 @@ LABEL_7:
 
   if (location + length > [v12 length])
   {
-    v15 = fileAccessError(v10, @"Specified file range exceeds actual file length.");
+    v15 = fileAccessError(pathCopy, @"Specified file range exceeds actual file length.");
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -678,9 +678,9 @@ LABEL_22:
   v17 = [v12 subdataWithRange:{location, length}];
 
   v39 = 0;
-  if (([a1 isLazyPlistLikelyContainedInData:v17 format:&v39] & 1) == 0)
+  if (([self isLazyPlistLikelyContainedInData:v17 format:&v39] & 1) == 0)
   {
-    v21 = v10;
+    v21 = pathCopy;
     v22 = objc_opt_new();
     [v22 setObject:@"The file is not a lazy plist archive." forKeyedSubscript:*MEMORY[0x1E696A578]];
     [v22 setObject:0 forKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -727,7 +727,7 @@ LABEL_22:
     v20 = &v38;
   }
 
-  v30 = [(_PASLPReaderBinaryPlist *)v18 initWithData:v17 sourcedFromPath:v10 needsValidation:1 error:v20];
+  v30 = [(_PASLPReaderBinaryPlist *)v18 initWithData:v17 sourcedFromPath:pathCopy needsValidation:1 error:v20];
   v31 = *v19;
 
   if (!v30)
@@ -756,7 +756,7 @@ LABEL_35:
   v25 = [(_PASLPReaderBinaryPlist *)v30 rootObjectWithErrMsg:&v36];
   if (!v25)
   {
-    v32 = corruptionError(v10, v36);
+    v32 = corruptionError(pathCopy, v36);
 
     v31 = v32;
   }
@@ -767,10 +767,10 @@ LABEL_39:
   v15 = v14;
 LABEL_23:
   objc_autoreleasePoolPop(v11);
-  if (a5)
+  if (error)
   {
     v26 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -778,34 +778,34 @@ LABEL_23:
   return v25;
 }
 
-+ (id)propertyListWithPath:(id)a3 error:(id *)a4
++ (id)propertyListWithPath:(id)path error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"_PASLazyPlist.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLazyPlist.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v8 = objc_autoreleasePoolPush();
   v36 = 0;
-  v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v7 options:1 error:&v36];
+  v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:1 error:&v36];
   v10 = v36;
   v11 = v10;
   if (!v9)
   {
     if (v10)
     {
-      v15 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
     }
 
     else
     {
-      v15 = @"Unable to open the file.";
+      localizedDescription = @"Unable to open the file.";
     }
 
-    v20 = fileAccessError(v7, v15);
+    v20 = fileAccessError(pathCopy, localizedDescription);
 
     if (v11)
     {
@@ -823,9 +823,9 @@ LABEL_23:
   }
 
   v35 = 0;
-  if (([a1 isLazyPlistLikelyContainedInData:v9 format:&v35] & 1) == 0)
+  if (([self isLazyPlistLikelyContainedInData:v9 format:&v35] & 1) == 0)
   {
-    v16 = v7;
+    v16 = pathCopy;
     v17 = objc_opt_new();
     [v17 setObject:@"The file is not a lazy plist archive." forKeyedSubscript:*MEMORY[0x1E696A578]];
     [v17 setObject:0 forKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -895,7 +895,7 @@ LABEL_25:
   v13 = &v33;
   v14 = &v33;
 LABEL_20:
-  v23 = [(_PASLPReaderV1 *)v12 initWithData:v9 sourcedFromPath:v7 needsValidation:1 error:v14];
+  v23 = [(_PASLPReaderV1 *)v12 initWithData:v9 sourcedFromPath:pathCopy needsValidation:1 error:v14];
   v20 = *v13;
 
   if (!v23)
@@ -907,17 +907,17 @@ LABEL_20:
   v24 = [(_PASLPReaderV1 *)v23 rootObjectWithErrMsg:&v32];
   if (!v24)
   {
-    v25 = corruptionError(v7, v32);
+    v25 = corruptionError(pathCopy, v32);
 
     v20 = v25;
   }
 
 LABEL_28:
   objc_autoreleasePoolPop(v8);
-  if (a4)
+  if (error)
   {
     v28 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v29 = *MEMORY[0x1E69E9840];

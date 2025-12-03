@@ -1,27 +1,27 @@
 @interface CalDAVRecurrenceSplitTaskGroup
-- (CalDAVRecurrenceSplitTaskGroup)initWithCalendar:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5;
+- (CalDAVRecurrenceSplitTaskGroup)initWithCalendar:(id)calendar accountInfoProvider:(id)provider taskManager:(id)manager;
 - (void)startTaskGroup;
 @end
 
 @implementation CalDAVRecurrenceSplitTaskGroup
 
-- (CalDAVRecurrenceSplitTaskGroup)initWithCalendar:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5
+- (CalDAVRecurrenceSplitTaskGroup)initWithCalendar:(id)calendar accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v8 = a3;
+  calendarCopy = calendar;
   v15.receiver = self;
   v15.super_class = CalDAVRecurrenceSplitTaskGroup;
-  v9 = [(CoreDAVTaskGroup *)&v15 initWithAccountInfoProvider:a4 taskManager:a5];
+  v9 = [(CoreDAVTaskGroup *)&v15 initWithAccountInfoProvider:provider taskManager:manager];
   if (v9)
   {
-    v10 = [v8 calendarURL];
+    calendarURL = [calendarCopy calendarURL];
     folderURL = v9->_folderURL;
-    v9->_folderURL = v10;
+    v9->_folderURL = calendarURL;
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v8 recurrenceSplitActions];
+      recurrenceSplitActions = [calendarCopy recurrenceSplitActions];
       actions = v9->_actions;
-      v9->_actions = v12;
+      v9->_actions = recurrenceSplitActions;
     }
   }
 
@@ -59,12 +59,12 @@
 
         v6 = *(*(&v29 + 1) + 8 * v5);
         v7 = [CalDAVPostCalendarItemRecurrenceSplitTask alloc];
-        v8 = [v6 resourceURL];
-        v9 = [v6 recurrenceDate];
-        v10 = -[CalDAVPostCalendarItemRecurrenceSplitTask initWithResourceURL:recurrenceDate:floating:allday:](v7, "initWithResourceURL:recurrenceDate:floating:allday:", v8, v9, [v6 isFloating], objc_msgSend(v6, "isAllDay"));
+        resourceURL = [v6 resourceURL];
+        recurrenceDate = [v6 recurrenceDate];
+        v10 = -[CalDAVPostCalendarItemRecurrenceSplitTask initWithResourceURL:recurrenceDate:floating:allday:](v7, "initWithResourceURL:recurrenceDate:floating:allday:", resourceURL, recurrenceDate, [v6 isFloating], objc_msgSend(v6, "isAllDay"));
 
-        v11 = [v6 uidForCreatedSeries];
-        [(CalDAVPostCalendarItemRecurrenceSplitTask *)v10 setUidForCreatedSeries:v11];
+        uidForCreatedSeries = [v6 uidForCreatedSeries];
+        [(CalDAVPostCalendarItemRecurrenceSplitTask *)v10 setUidForCreatedSeries:uidForCreatedSeries];
 
         WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277CFDD48]));
         [(CalDAVPostCalendarItemRecurrenceSplitTask *)v10 setAccountInfoProvider:WeakRetained];
@@ -84,12 +84,12 @@
         v13 = group;
         v21 = v13;
         [(CalDAVPostCalendarItemRecurrenceSplitTask *)v10 setCompletionBlock:v20];
-        v14 = [(CoreDAVTaskGroup *)self outstandingTasks];
-        [v14 addObject:v10];
+        outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+        [outstandingTasks addObject:v10];
 
         dispatch_group_enter(v13);
-        v15 = [(CoreDAVTaskGroup *)self taskManager];
-        [v15 submitQueuedCoreDAVTask:v10];
+        taskManager = [(CoreDAVTaskGroup *)self taskManager];
+        [taskManager submitQueuedCoreDAVTask:v10];
 
         objc_destroyWeak(&v25);
         objc_destroyWeak(&v24);

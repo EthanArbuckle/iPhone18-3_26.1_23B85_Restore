@@ -1,20 +1,20 @@
 @interface CNVCardXACTIVITYALERTParser
-+ (id)valueWithParser:(id)a3;
++ (id)valueWithParser:(id)parser;
 @end
 
 @implementation CNVCardXACTIVITYALERTParser
 
-+ (id)valueWithParser:(id)a3
++ (id)valueWithParser:(id)parser
 {
-  v3 = [a3 parseRemainingLine];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  parseRemainingLine = [parser parseRemainingLine];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__CNVCardXACTIVITYALERTParser_valueWithParser___block_invoke;
   v9[3] = &unk_27A710DD0;
-  v10 = v4;
-  v5 = v4;
-  [CNVCardActivityAlertSerialization parseString:v3 intoTypeAndInfo:v9];
+  v10 = dictionary;
+  v5 = dictionary;
+  [CNVCardActivityAlertSerialization parseString:parseRemainingLine intoTypeAndInfo:v9];
   if ([v5 count])
   {
     v6 = v5;

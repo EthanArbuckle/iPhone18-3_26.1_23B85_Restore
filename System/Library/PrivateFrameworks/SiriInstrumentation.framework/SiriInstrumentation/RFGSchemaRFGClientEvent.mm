@@ -1,13 +1,13 @@
 @interface RFGSchemaRFGClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFGSchemaRFGClientEvent)initWithDictionary:(id)a3;
-- (RFGSchemaRFGClientEvent)initWithJSON:(id)a3;
+- (RFGSchemaRFGClientEvent)initWithDictionary:(id)dictionary;
+- (RFGSchemaRFGClientEvent)initWithJSON:(id)n;
 - (RFSchemaRFGVisualResponseShownLink)visualResponseShownLink;
 - (RFSchemaRFGVisualResponseShownTier1)visualResponseShownTier1;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,23 +16,23 @@
 - (unint64_t)hash;
 - (void)deleteVisualResponseShownLink;
 - (void)deleteVisualResponseShownTier1;
-- (void)setVisualResponseShownLink:(id)a3;
-- (void)setVisualResponseShownTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setVisualResponseShownLink:(id)link;
+- (void)setVisualResponseShownTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFGSchemaRFGClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(RFGSchemaRFGClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(RFGSchemaRFGClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.rf.RFGClientEvent";
-  if (v2 == 102)
+  if (whichEvent_Type == 102)
   {
     v3 = @"com.apple.aiml.siri.rf.RFGClientEvent.RFGVisualResponseShownLink";
   }
 
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     return @"com.apple.aiml.siri.rf.RFGClientEvent.RFGVisualResponseShownTier1";
   }
@@ -73,15 +73,15 @@
   return v3;
 }
 
-- (RFGSchemaRFGClientEvent)initWithDictionary:(id)a3
+- (RFGSchemaRFGClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = RFGSchemaRFGClientEvent;
   v5 = [(RFGSchemaRFGClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(RFGSchemaRFGClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"visualResponseShownTier1"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"visualResponseShownTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(RFGSchemaRFGClientEvent *)v5 setVisualResponseShownTier1:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"visualResponseShownLink"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"visualResponseShownLink"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,30 +111,30 @@
   return v5;
 }
 
-- (RFGSchemaRFGClientEvent)initWithJSON:(id)a3
+- (RFGSchemaRFGClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFGSchemaRFGClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFGSchemaRFGClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFGSchemaRFGClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -147,58 +147,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_visualResponseShownLink)
   {
-    v7 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    visualResponseShownLink = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+    dictionaryRepresentation2 = [visualResponseShownLink dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"visualResponseShownLink"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"visualResponseShownLink"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"visualResponseShownLink"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"visualResponseShownLink"];
     }
   }
 
   if (self->_visualResponseShownTier1)
   {
-    v10 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    visualResponseShownTier1 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+    dictionaryRepresentation3 = [visualResponseShownTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"visualResponseShownTier1"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"visualResponseShownTier1"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"visualResponseShownTier1"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"visualResponseShownTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -208,34 +208,34 @@
   return v4 ^ [(RFSchemaRFGVisualResponseShownLink *)self->_visualResponseShownLink hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -247,20 +247,20 @@
   {
   }
 
-  v6 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
-  v7 = [v4 visualResponseShownTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+  eventMetadata2 = [equalCopy visualResponseShownTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
-  if (v13)
+  visualResponseShownTier1 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+  if (visualResponseShownTier1)
   {
-    v14 = v13;
-    v15 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
-    v16 = [v4 visualResponseShownTier1];
-    v17 = [v15 isEqual:v16];
+    v14 = visualResponseShownTier1;
+    visualResponseShownTier12 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+    visualResponseShownTier13 = [equalCopy visualResponseShownTier1];
+    v17 = [visualResponseShownTier12 isEqual:visualResponseShownTier13];
 
     if (!v17)
     {
@@ -272,12 +272,12 @@
   {
   }
 
-  v6 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
-  v7 = [v4 visualResponseShownLink];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+  eventMetadata2 = [equalCopy visualResponseShownLink];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
-    if (!v18)
+    visualResponseShownLink = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+    if (!visualResponseShownLink)
     {
 
 LABEL_21:
@@ -285,10 +285,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
-    v21 = [v4 visualResponseShownLink];
-    v22 = [v20 isEqual:v21];
+    v19 = visualResponseShownLink;
+    visualResponseShownLink2 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+    visualResponseShownLink3 = [equalCopy visualResponseShownLink];
+    v22 = [visualResponseShownLink2 isEqual:visualResponseShownLink3];
 
     if (v22)
     {
@@ -308,34 +308,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+    eventMetadata2 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+  visualResponseShownTier1 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
 
-  if (v6)
+  if (visualResponseShownTier1)
   {
-    v7 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+    visualResponseShownTier12 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+  visualResponseShownLink = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (visualResponseShownLink)
   {
-    v10 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+    visualResponseShownLink2 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -349,21 +349,21 @@ LABEL_19:
   }
 }
 
-- (void)setVisualResponseShownLink:(id)a3
+- (void)setVisualResponseShownLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   visualResponseShownTier1 = self->_visualResponseShownTier1;
   self->_visualResponseShownTier1 = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!linkCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   visualResponseShownLink = self->_visualResponseShownLink;
-  self->_visualResponseShownLink = v4;
+  self->_visualResponseShownLink = linkCopy;
 }
 
 - (void)deleteVisualResponseShownTier1
@@ -376,82 +376,82 @@ LABEL_19:
   }
 }
 
-- (void)setVisualResponseShownTier1:(id)a3
+- (void)setVisualResponseShownTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   visualResponseShownLink = self->_visualResponseShownLink;
   self->_visualResponseShownLink = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!tier1Copy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   visualResponseShownTier1 = self->_visualResponseShownTier1;
-  self->_visualResponseShownTier1 = v4;
+  self->_visualResponseShownTier1 = tier1Copy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = RFGSchemaRFGClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  if ([v4 isConditionSet:11])
+  if ([policyCopy isConditionSet:11])
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  v6 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RFGSchemaRFGClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  visualResponseShownTier1 = [(RFGSchemaRFGClientEvent *)self visualResponseShownTier1];
+  v10 = [visualResponseShownTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownTier1];
   }
 
-  v12 = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  visualResponseShownLink = [(RFGSchemaRFGClientEvent *)self visualResponseShownLink];
+  v13 = [visualResponseShownLink applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(RFGSchemaRFGClientEvent *)self deleteVisualResponseShownLink];
   }
@@ -469,82 +469,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-  v3 = [v2 rfId];
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+  rfId = [eventMetadata rfId];
 
-  if (v3)
+  if (rfId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [rfId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [rfId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 28;
+        LODWORD(value) = 28;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(RFGSchemaRFGClientEvent *)self eventMetadata];
-  v3 = [v2 rfId];
+  eventMetadata = [(RFGSchemaRFGClientEvent *)self eventMetadata];
+  rfId = [eventMetadata rfId];
 
-  if (!v3)
+  if (!rfId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [rfId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [rfId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = rfId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(RFGSchemaRFGClientEvent *)self whichEvent_Type];
-  if (v3 == 101)
+  whichEvent_Type = [(RFGSchemaRFGClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___RFGSchemaRFGClientEvent__visualResponseShownTier1;
     goto LABEL_5;
   }
 
-  if (v3 == 102)
+  if (whichEvent_Type == 102)
   {
     v4 = &OBJC_IVAR___RFGSchemaRFGClientEvent__visualResponseShownLink;
 LABEL_5:
@@ -558,15 +558,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"visualResponseShownLink";
-  if (a3 != 102)
+  if (tag != 102)
   {
     v3 = 0;
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"visualResponseShownTier1";
   }

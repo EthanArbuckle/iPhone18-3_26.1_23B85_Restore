@@ -1,11 +1,11 @@
 @interface PFPosterArchiveManifest
-+ (BOOL)isManifestDictionaryValid:(id)a3;
++ (BOOL)isManifestDictionaryValid:(id)valid;
 - (NSString)role;
 - (NSUUID)configurationUUID;
-- (PFPosterArchiveManifest)initWithDataRepresentation:(id)a3;
-- (PFPosterArchiveManifest)initWithDictionaryRepresentation:(id)a3;
-- (PFPosterArchiveManifest)initWithExtensionIdentifier:(id)a3 configurationUUID:(id)a4 role:(id)a5;
-- (PFPosterArchiveManifest)initWithServerPath:(id)a3;
+- (PFPosterArchiveManifest)initWithDataRepresentation:(id)representation;
+- (PFPosterArchiveManifest)initWithDictionaryRepresentation:(id)representation;
+- (PFPosterArchiveManifest)initWithExtensionIdentifier:(id)identifier configurationUUID:(id)d role:(id)role;
+- (PFPosterArchiveManifest)initWithServerPath:(id)path;
 - (int64_t)archiveVersion;
 - (int64_t)dataStoreVersion;
 - (unint64_t)latestConfigurationSupplement;
@@ -14,13 +14,13 @@
 
 @implementation PFPosterArchiveManifest
 
-+ (BOOL)isManifestDictionaryValid:(id)a3
++ (BOOL)isManifestDictionaryValid:(id)valid
 {
-  v4 = [a3 objectForKeyedSubscript:@"archiveVersion"];
+  v4 = [valid objectForKeyedSubscript:@"archiveVersion"];
   if (v4)
   {
-    v5 = [a1 unsupportedVersions];
-    v6 = [v5 containsObject:v4] ^ 1;
+    unsupportedVersions = [self unsupportedVersions];
+    v6 = [unsupportedVersions containsObject:v4] ^ 1;
   }
 
   else
@@ -31,43 +31,43 @@
   return v6;
 }
 
-- (PFPosterArchiveManifest)initWithServerPath:(id)a3
+- (PFPosterArchiveManifest)initWithServerPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 serverIdentity];
-  v6 = [v5 provider];
+  pathCopy = path;
+  serverIdentity = [pathCopy serverIdentity];
+  provider = [serverIdentity provider];
 
-  v7 = [v4 serverIdentity];
-  v8 = [v7 posterUUID];
+  serverIdentity2 = [pathCopy serverIdentity];
+  posterUUID = [serverIdentity2 posterUUID];
 
-  v9 = [v4 role];
+  role = [pathCopy role];
 
-  v10 = [(PFPosterArchiveManifest *)self initWithExtensionIdentifier:v6 configurationUUID:v8 role:v9];
+  v10 = [(PFPosterArchiveManifest *)self initWithExtensionIdentifier:provider configurationUUID:posterUUID role:role];
   return v10;
 }
 
-- (PFPosterArchiveManifest)initWithExtensionIdentifier:(id)a3 configurationUUID:(id)a4 role:(id)a5
+- (PFPosterArchiveManifest)initWithExtensionIdentifier:(id)identifier configurationUUID:(id)d role:(id)role
 {
   v19[6] = *MEMORY[0x1E69E9840];
   v18[0] = @"archiveVersion";
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  roleCopy = role;
+  dCopy = d;
+  identifierCopy = identifier;
   v12 = [v8 numberWithInteger:{objc_msgSend(objc_opt_class(), "manifestVersion")}];
   v19[0] = v12;
-  v19[1] = v11;
+  v19[1] = identifierCopy;
   v18[1] = @"extensionIdentifier";
   v18[2] = @"configurationUUID";
-  v13 = [v10 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v19[2] = v13;
+  v19[2] = uUIDString;
   v19[3] = &unk_1F42668D0;
   v18[3] = @"latestConfigurationVersion";
   v18[4] = @"latestConfigurationSupplement";
   v18[5] = @"role";
   v19[4] = &unk_1F42668D0;
-  v19[5] = v9;
+  v19[5] = roleCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:6];
 
   v15 = [(PFPosterArchiveManifest *)self initWithDictionaryRepresentation:v14];
@@ -75,55 +75,55 @@
   return v15;
 }
 
-- (PFPosterArchiveManifest)initWithDataRepresentation:(id)a3
+- (PFPosterArchiveManifest)initWithDataRepresentation:(id)representation
 {
-  v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x1E696AE40] propertyListWithData:representation options:0 format:0 error:0];
   v5 = [(PFPosterArchiveManifest *)self initWithDictionaryRepresentation:v4];
 
   return v5;
 }
 
-- (PFPosterArchiveManifest)initWithDictionaryRepresentation:(id)a3
+- (PFPosterArchiveManifest)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([objc_opt_class() isManifestDictionaryValid:v4])
+  representationCopy = representation;
+  if ([objc_opt_class() isManifestDictionaryValid:representationCopy])
   {
     v10.receiver = self;
     v10.super_class = PFPosterArchiveManifest;
     v5 = [(PFPosterArchiveManifest *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [representationCopy copy];
       dictionaryRepresentation = v5->_dictionaryRepresentation;
       v5->_dictionaryRepresentation = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (int64_t)archiveVersion
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"archiveVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)dataStoreVersion
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"dataStoreVersion"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSUUID)configurationUUID
@@ -138,17 +138,17 @@
 - (unint64_t)latestConfigurationVersion
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"latestConfigurationVersion"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)latestConfigurationSupplement
 {
   v2 = [(NSDictionary *)self->_dictionaryRepresentation objectForKeyedSubscript:@"latestConfigurationSupplement"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (NSString)role

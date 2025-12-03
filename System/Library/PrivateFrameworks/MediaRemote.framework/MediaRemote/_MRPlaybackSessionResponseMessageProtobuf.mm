@@ -1,11 +1,11 @@
 @interface _MRPlaybackSessionResponseMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPlaybackSessionResponseMessageProtobuf
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = _MRPlaybackSessionResponseMessageProtobuf;
   v4 = [(_MRPlaybackSessionResponseMessageProtobuf *)&v8 description];
-  v5 = [(_MRPlaybackSessionResponseMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPlaybackSessionResponseMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   playbackSession = self->_playbackSession;
   if (playbackSession)
   {
-    v5 = [(_MRPlaybackSessionProtobuf *)playbackSession dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"playbackSession"];
+    dictionaryRepresentation = [(_MRPlaybackSessionProtobuf *)playbackSession dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"playbackSession"];
   }
 
   request = self->_request;
   if (request)
   {
-    v7 = [(_MRPlaybackSessionMigrateRequestProtobuf *)request dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"request"];
+    dictionaryRepresentation2 = [(_MRPlaybackSessionMigrateRequestProtobuf *)request dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"request"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_playbackSession)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_playbackSession)
   {
-    [v4 setPlaybackSession:?];
-    v4 = v5;
+    [toCopy setPlaybackSession:?];
+    toCopy = v5;
   }
 
   if (self->_request)
   {
     [v5 setRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRPlaybackSessionProtobuf *)self->_playbackSession copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRPlaybackSessionProtobuf *)self->_playbackSession copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(_MRPlaybackSessionMigrateRequestProtobuf *)self->_request copyWithZone:a3];
+  v8 = [(_MRPlaybackSessionMigrateRequestProtobuf *)self->_request copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((playbackSession = self->_playbackSession, !(playbackSession | v4[1])) || -[_MRPlaybackSessionProtobuf isEqual:](playbackSession, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((playbackSession = self->_playbackSession, !(playbackSession | equalCopy[1])) || -[_MRPlaybackSessionProtobuf isEqual:](playbackSession, "isEqual:")))
   {
     request = self->_request;
-    if (request | v4[2])
+    if (request | equalCopy[2])
     {
       v7 = [(_MRPlaybackSessionMigrateRequestProtobuf *)request isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   playbackSession = self->_playbackSession;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (playbackSession)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(_MRPlaybackSessionResponseMessageProtobuf *)self setPlaybackSession:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   request = self->_request;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (request)
   {
     if (!v8)
@@ -165,7 +165,7 @@ LABEL_7:
     [(_MRPlaybackSessionResponseMessageProtobuf *)self setRequest:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 

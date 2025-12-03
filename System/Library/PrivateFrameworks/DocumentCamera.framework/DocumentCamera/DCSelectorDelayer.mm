@@ -1,6 +1,6 @@
 @interface DCSelectorDelayer
 - (BOOL)isScheduledToFire;
-- (DCSelectorDelayer)initWithTarget:(id)a3 selector:(SEL)a4 delay:(double)a5 waitToFireUntilRequestsStop:(BOOL)a6 callOnMainThread:(BOOL)a7;
+- (DCSelectorDelayer)initWithTarget:(id)target selector:(SEL)selector delay:(double)delay waitToFireUntilRequestsStop:(BOOL)stop callOnMainThread:(BOOL)thread;
 - (SEL)selector;
 - (id)target;
 - (void)_cancelFireRequests;
@@ -9,27 +9,27 @@
 - (void)dealloc;
 - (void)fireImmediately;
 - (void)requestFire;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation DCSelectorDelayer
 
-- (DCSelectorDelayer)initWithTarget:(id)a3 selector:(SEL)a4 delay:(double)a5 waitToFireUntilRequestsStop:(BOOL)a6 callOnMainThread:(BOOL)a7
+- (DCSelectorDelayer)initWithTarget:(id)target selector:(SEL)selector delay:(double)delay waitToFireUntilRequestsStop:(BOOL)stop callOnMainThread:(BOOL)thread
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a3;
+  threadCopy = thread;
+  stopCopy = stop;
+  targetCopy = target;
   v18.receiver = self;
   v18.super_class = DCSelectorDelayer;
   v13 = [(DCSelectorDelayer *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    [(DCSelectorDelayer *)v13 setTarget:v12];
-    [(DCSelectorDelayer *)v14 setSelector:a4];
-    [(DCSelectorDelayer *)v14 setDelay:a5];
-    [(DCSelectorDelayer *)v14 setWaitToFireUntilRequestsStop:v8];
-    [(DCSelectorDelayer *)v14 setCallOnMainThread:v7];
+    [(DCSelectorDelayer *)v13 setTarget:targetCopy];
+    [(DCSelectorDelayer *)v14 setSelector:selector];
+    [(DCSelectorDelayer *)v14 setDelay:delay];
+    [(DCSelectorDelayer *)v14 setWaitToFireUntilRequestsStop:stopCopy];
+    [(DCSelectorDelayer *)v14 setCallOnMainThread:threadCopy];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("com.apple.notes.coalescer.requests", v15);
     [(DCSelectorDelayer *)v14 setRequestQueue:v16];
@@ -40,13 +40,13 @@
 
 - (void)dealloc
 {
-  v3 = [(DCSelectorDelayer *)self requestQueue];
+  requestQueue = [(DCSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__DCSelectorDelayer_dealloc__block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 
   v4.receiver = self;
   v4.super_class = DCSelectorDelayer;
@@ -55,13 +55,13 @@
 
 - (void)requestFire
 {
-  v3 = [(DCSelectorDelayer *)self requestQueue];
+  requestQueue = [(DCSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__DCSelectorDelayer_requestFire__block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 }
 
 void __32__DCSelectorDelayer_requestFire__block_invoke(uint64_t a1)
@@ -137,13 +137,13 @@ void __32__DCSelectorDelayer_requestFire__block_invoke_2(uint64_t a1)
 
 - (void)fireImmediately
 {
-  v3 = [(DCSelectorDelayer *)self requestQueue];
+  requestQueue = [(DCSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__DCSelectorDelayer_fireImmediately__block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 
   if ([(DCSelectorDelayer *)self callOnMainThread])
   {
@@ -171,23 +171,23 @@ void __32__DCSelectorDelayer_requestFire__block_invoke_2(uint64_t a1)
 
 - (BOOL)isScheduledToFire
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(DCSelectorDelayer *)self requestQueue];
+  requestQueue = [(DCSelectorDelayer *)self requestQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__DCSelectorDelayer_isScheduledToFire__block_invoke;
   v5[3] = &unk_278F930D8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(requestQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __38__DCSelectorDelayer_isScheduledToFire__block_invoke(uint64_t a1)
@@ -198,23 +198,23 @@ void __38__DCSelectorDelayer_isScheduledToFire__block_invoke(uint64_t a1)
 
 - (void)cancelPreviousFireRequests
 {
-  v3 = [(DCSelectorDelayer *)self requestQueue];
+  requestQueue = [(DCSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__DCSelectorDelayer_cancelPreviousFireRequests__block_invoke;
   block[3] = &unk_278F92C70;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 }
 
 - (void)_cancelFireRequests
 {
-  v3 = [(DCSelectorDelayer *)self fireBlock];
+  fireBlock = [(DCSelectorDelayer *)self fireBlock];
 
-  if (v3)
+  if (fireBlock)
   {
-    v4 = [(DCSelectorDelayer *)self fireBlock];
-    dispatch_block_cancel(v4);
+    fireBlock2 = [(DCSelectorDelayer *)self fireBlock];
+    dispatch_block_cancel(fireBlock2);
 
     [(DCSelectorDelayer *)self setFireBlock:0];
   }
@@ -240,19 +240,19 @@ void __38__DCSelectorDelayer_isScheduledToFire__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

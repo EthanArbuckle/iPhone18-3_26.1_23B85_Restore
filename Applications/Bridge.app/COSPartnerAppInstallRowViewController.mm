@@ -92,12 +92,12 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  v5 = [(COSPartnerAppInstallRowViewController *)self installRowIdentifier];
-  [v4 setIdentifier:v5];
+  installRowIdentifier = [(COSPartnerAppInstallRowViewController *)self installRowIdentifier];
+  [v4 setIdentifier:installRowIdentifier];
 
   v6 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:1 edit:0];
-  v7 = [(COSPartnerAppInstallRowViewController *)self installRowClass];
-  [v6 setProperty:v7 forKey:PSCellClassKey];
+  installRowClass = [(COSPartnerAppInstallRowViewController *)self installRowClass];
+  [v6 setProperty:installRowClass forKey:PSCellClassKey];
   [v6 setProperty:&off_100281B28 forKey:PSTableCellHeightKey];
   [v3 insertObject:v6 atIndex:0];
   [v3 insertObject:v4 atIndex:0];
@@ -108,28 +108,28 @@
 - (BOOL)showsOnGizmoEnabled
 {
   v3 = [COSAppInstallationController alloc];
-  v4 = [(COSPartnerAppInstallRowViewController *)self partnerAppBundleIdentifier];
-  v5 = [(COSPartnerAppInstallRowViewController *)self partnerAppStoreIdentifier];
-  v6 = [(COSAppInstallationController *)v3 initWithBundleID:v4 andStoreIdentifier:v5];
+  partnerAppBundleIdentifier = [(COSPartnerAppInstallRowViewController *)self partnerAppBundleIdentifier];
+  partnerAppStoreIdentifier = [(COSPartnerAppInstallRowViewController *)self partnerAppStoreIdentifier];
+  v6 = [(COSAppInstallationController *)v3 initWithBundleID:partnerAppBundleIdentifier andStoreIdentifier:partnerAppStoreIdentifier];
 
   v7 = OBJC_IVAR___PSViewController__specifier;
   v8 = [*&self->super.PSAppListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSSockPuppetInstallationState"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
   v10 = [*&self->super.PSAppListController_opaque[v7] propertyForKey:@"applicationMode"];
-  v11 = [v10 integerValue];
+  integerValue2 = [v10 integerValue];
 
-  if (v9 == 2 && v11 == 2)
+  if (integerValue == 2 && integerValue2 == 2)
   {
-    v13 = 1;
+    isInstalled = 1;
   }
 
   else
   {
-    v13 = [(COSAppInstallationController *)v6 isInstalled];
+    isInstalled = [(COSAppInstallationController *)v6 isInstalled];
   }
 
-  return v13;
+  return isInstalled;
 }
 
 @end

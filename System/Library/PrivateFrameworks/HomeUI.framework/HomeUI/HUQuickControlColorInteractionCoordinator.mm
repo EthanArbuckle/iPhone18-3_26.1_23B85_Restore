@@ -1,27 +1,27 @@
 @interface HUQuickControlColorInteractionCoordinator
-- (HUQuickControlColorInteractionCoordinator)initWithControlView:(id)a3 colorPalette:(id)a4 delegate:(id)a5;
+- (HUQuickControlColorInteractionCoordinator)initWithControlView:(id)view colorPalette:(id)palette delegate:(id)delegate;
 - (void)_notifyDelegateOfColorPaletteChangeIfNecessary;
 - (void)cancelButtonTappedToDismissColorViewController;
-- (void)controlView:(id)a3 colorPaletteDidChange:(id)a4;
-- (void)controlView:(id)a3 didSelectColorAtIndexPath:(id)a4;
-- (void)controlView:(id)a3 interactionStateDidChange:(BOOL)a4 forFirstTouch:(BOOL)a5;
-- (void)controlView:(id)a3 showAuxiliaryView:(id)a4;
-- (void)hideAuxiliaryViewForControlView:(id)a3;
-- (void)presentFullColorViewForControlView:(id)a3 selectedColorIndexPath:(id)a4;
+- (void)controlView:(id)view colorPaletteDidChange:(id)change;
+- (void)controlView:(id)view didSelectColorAtIndexPath:(id)path;
+- (void)controlView:(id)view interactionStateDidChange:(BOOL)change forFirstTouch:(BOOL)touch;
+- (void)controlView:(id)view showAuxiliaryView:(id)auxiliaryView;
+- (void)hideAuxiliaryViewForControlView:(id)view;
+- (void)presentFullColorViewForControlView:(id)view selectedColorIndexPath:(id)path;
 @end
 
 @implementation HUQuickControlColorInteractionCoordinator
 
-- (HUQuickControlColorInteractionCoordinator)initWithControlView:(id)a3 colorPalette:(id)a4 delegate:(id)a5
+- (HUQuickControlColorInteractionCoordinator)initWithControlView:(id)view colorPalette:(id)palette delegate:(id)delegate
 {
-  v8 = a4;
+  paletteCopy = palette;
   v12.receiver = self;
   v12.super_class = HUQuickControlColorInteractionCoordinator;
-  v9 = [(HUQuickControlSimpleInteractionCoordinator *)&v12 initWithControlView:a3 delegate:a5];
+  v9 = [(HUQuickControlSimpleInteractionCoordinator *)&v12 initWithControlView:view delegate:delegate];
   v10 = v9;
   if (v9)
   {
-    [(HUQuickControlColorInteractionCoordinator *)v9 setColorPalette:v8];
+    [(HUQuickControlColorInteractionCoordinator *)v9 setColorPalette:paletteCopy];
   }
 
   return v10;
@@ -31,58 +31,58 @@
 {
   if ([(HUQuickControlColorInteractionCoordinator *)self hasPendingColorPaletteChangeDelegateNotification]&& ![(HUQuickControlSimpleInteractionCoordinator *)self isUserInteractionActive])
   {
-    v3 = [(HUQuickControlInteractionCoordinator *)self delegate];
-    v4 = [(HUQuickControlColorInteractionCoordinator *)self colorPalette];
-    [v3 interactionCoordinator:self colorPaletteDidChange:v4];
+    delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+    colorPalette = [(HUQuickControlColorInteractionCoordinator *)self colorPalette];
+    [delegate interactionCoordinator:self colorPaletteDidChange:colorPalette];
 
     [(HUQuickControlColorInteractionCoordinator *)self setHasPendingColorPaletteChangeDelegateNotification:0];
   }
 }
 
-- (void)controlView:(id)a3 interactionStateDidChange:(BOOL)a4 forFirstTouch:(BOOL)a5
+- (void)controlView:(id)view interactionStateDidChange:(BOOL)change forFirstTouch:(BOOL)touch
 {
   v7.receiver = self;
   v7.super_class = HUQuickControlColorInteractionCoordinator;
-  [(HUQuickControlSimpleInteractionCoordinator *)&v7 controlView:a3 interactionStateDidChange:a4 forFirstTouch:a5];
-  if (!a4)
+  [(HUQuickControlSimpleInteractionCoordinator *)&v7 controlView:view interactionStateDidChange:change forFirstTouch:touch];
+  if (!change)
   {
     [(HUQuickControlColorInteractionCoordinator *)self _notifyDelegateOfColorPaletteChangeIfNecessary];
   }
 }
 
-- (void)controlView:(id)a3 colorPaletteDidChange:(id)a4
+- (void)controlView:(id)view colorPaletteDidChange:(id)change
 {
-  [(HUQuickControlColorInteractionCoordinator *)self setColorPalette:a4];
+  [(HUQuickControlColorInteractionCoordinator *)self setColorPalette:change];
   [(HUQuickControlColorInteractionCoordinator *)self setHasPendingColorPaletteChangeDelegateNotification:1];
 
   [(HUQuickControlColorInteractionCoordinator *)self _notifyDelegateOfColorPaletteChangeIfNecessary];
 }
 
-- (void)controlView:(id)a3 showAuxiliaryView:(id)a4
+- (void)controlView:(id)view showAuxiliaryView:(id)auxiliaryView
 {
-  v5 = a4;
-  v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v6 interactionCoordinator:self showAuxiliaryView:v5];
+  auxiliaryViewCopy = auxiliaryView;
+  delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate interactionCoordinator:self showAuxiliaryView:auxiliaryViewCopy];
 }
 
-- (void)hideAuxiliaryViewForControlView:(id)a3
+- (void)hideAuxiliaryViewForControlView:(id)view
 {
-  v4 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v4 hideAuxiliaryViewForInteractionCoordinator:self];
+  delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate hideAuxiliaryViewForInteractionCoordinator:self];
 }
 
-- (void)presentFullColorViewForControlView:(id)a3 selectedColorIndexPath:(id)a4
+- (void)presentFullColorViewForControlView:(id)view selectedColorIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v6 presentFullColorViewForInteractionCoordinator:self selectedColorIndexPath:v5];
+  pathCopy = path;
+  delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate presentFullColorViewForInteractionCoordinator:self selectedColorIndexPath:pathCopy];
 }
 
-- (void)controlView:(id)a3 didSelectColorAtIndexPath:(id)a4
+- (void)controlView:(id)view didSelectColorAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUQuickControlInteractionCoordinator *)self delegate];
-  [v6 interactionCoordinator:self didSelectColorAtIndexPath:v5];
+  pathCopy = path;
+  delegate = [(HUQuickControlInteractionCoordinator *)self delegate];
+  [delegate interactionCoordinator:self didSelectColorAtIndexPath:pathCopy];
 }
 
 - (void)cancelButtonTappedToDismissColorViewController
@@ -92,14 +92,14 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412546;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[HUQuickControlColorInteractionCoordinator cancelButtonTappedToDismissColorViewController]";
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped cancel button", &v5, 0x16u);
   }
 
-  v4 = [(HUQuickControlInteractionCoordinator *)self controlView];
-  [v4 cancelColorPicking];
+  controlView = [(HUQuickControlInteractionCoordinator *)self controlView];
+  [controlView cancelColorPicking];
 }
 
 @end

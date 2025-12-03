@@ -7,7 +7,7 @@
 
 - (void)boostUUID
 {
-  std::string::basic_string[abi:ne200100]<0>(__p, [a1 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [self UTF8String]);
   CLMicroLocationProtobufHelper::uuidFromStdString(__p, a2);
   if (v4 < 0)
   {
@@ -17,7 +17,7 @@
 
 - (double)stdString
 {
-  std::string::basic_string[abi:ne200100]<0>(&v4, [a1 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&v4, [self UTF8String]);
   result = *&v4;
   *a2 = v4;
   *(a2 + 16) = v5;

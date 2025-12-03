@@ -1,14 +1,14 @@
 @interface PMCredentialProviderExtensionManager
-- (void)credentialProviderExtensionManagerExtensionListDidChange:(id)a3;
+- (void)credentialProviderExtensionManagerExtensionListDidChange:(id)change;
 @end
 
 @implementation PMCredentialProviderExtensionManager
 
-- (void)credentialProviderExtensionManagerExtensionListDidChange:(id)a3
+- (void)credentialProviderExtensionManagerExtensionListDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_21C954AFC(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_21C954AFC(changeCopy);
 }
 
 @end

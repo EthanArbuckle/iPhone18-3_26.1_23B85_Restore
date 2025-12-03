@@ -1,6 +1,6 @@
 @interface BKLibraryAsset
-+ (BOOL)hasBookReachedReadThreshold:(id)a3;
-+ (id)actualAuthorFromMetedata:(id)a3;
++ (BOOL)hasBookReachedReadThreshold:(id)threshold;
++ (id)actualAuthorFromMetedata:(id)metedata;
 + (id)multipleAuthors;
 + (id)unknownAuthor;
 + (id)unknownTitle;
@@ -40,25 +40,25 @@
 - (NSString)finishedCollectionSectionName;
 - (NSString)permanentOrTemporaryAssetID;
 - (NSString)shortBookTitle;
-- (id)_dateFinishedForYearOnly:(id)a3;
+- (id)_dateFinishedForYearOnly:(id)only;
 - (id)assetDetailRepresentation;
 - (id)managedObjectContext;
 - (id)readingNowDetailRepresentation;
 - (id)seriesStackAssetIDs;
 - (signed)seriesType;
-- (void)_setFinishedStates:(BOOL)a3;
+- (void)_setFinishedStates:(BOOL)states;
 - (void)cleanupDateFinished;
-- (void)configureFromAssetDetail:(id)a3;
-- (void)configureFromReadingNowDetail:(id)a3;
-- (void)didChangeValueForKey:(id)a3;
-- (void)nonUserUpdateLastOpenDateTo:(id)a3;
+- (void)configureFromAssetDetail:(id)detail;
+- (void)configureFromReadingNowDetail:(id)detail;
+- (void)didChangeValueForKey:(id)key;
+- (void)nonUserUpdateLastOpenDateTo:(id)to;
 - (void)setCreationDateToNow;
 - (void)setFinishedStateAddToFinishedCollection;
 - (void)setFinishedStateAssetRead;
 - (void)setFinishedStateRemoveFromFinishedCollection;
-- (void)setFinishedStateUserSetsFinished:(BOOL)a3 userInfo:(id)a4;
+- (void)setFinishedStateUserSetsFinished:(BOOL)finished userInfo:(id)info;
 - (void)setFinishedStateUserSetsUnfinished;
-- (void)setLastOpenDate:(id)a3;
+- (void)setLastOpenDate:(id)date;
 - (void)unsetFinishedDate;
 - (void)willSave;
 @end
@@ -69,12 +69,12 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(BKLibraryAsset *)self dateFinished];
-    if (v3)
+    dateFinished = [(BKLibraryAsset *)self dateFinished];
+    if (dateFinished)
     {
-      v4 = [(BKLibraryAsset *)self dateFinished];
+      dateFinished2 = [(BKLibraryAsset *)self dateFinished];
       v5 = +[NSDate distantPast];
-      v6 = [v4 isEqualToDate:v5] ^ 1;
+      v6 = [dateFinished2 isEqualToDate:v5] ^ 1;
     }
 
     else
@@ -132,34 +132,34 @@
 
 - (BOOL)_validateIsState3
 {
-  v3 = [(BKLibraryAsset *)self isFinished];
-  if (v3)
+  isFinished = [(BKLibraryAsset *)self isFinished];
+  if (isFinished)
   {
-    LOBYTE(v3) = [(BKLibraryAsset *)self notFinished]^ 1;
+    LOBYTE(isFinished) = [(BKLibraryAsset *)self notFinished]^ 1;
   }
 
-  return v3;
+  return isFinished;
 }
 
-- (void)_setFinishedStates:(BOOL)a3
+- (void)_setFinishedStates:(BOOL)states
 {
-  v3 = a3;
+  statesCopy = states;
   [(BKLibraryAsset *)self setIsFinished:?];
 
-  [(BKLibraryAsset *)self setNotFinished:!v3];
+  [(BKLibraryAsset *)self setNotFinished:!statesCopy];
 }
 
-- (id)_dateFinishedForYearOnly:(id)a3
+- (id)_dateFinishedForYearOnly:(id)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v4 = +[NSCalendar currentCalendar];
   v5 = objc_alloc_init(NSDateComponents);
   [v5 setCalendar:v4];
   v6 = [NSTimeZone timeZoneForSecondsFromGMT:0];
   [v5 setTimeZone:v6];
 
-  [v5 setEra:{objc_msgSend(v4, "component:fromDate:", 2, v3)}];
-  [v5 setYear:{objc_msgSend(v4, "component:fromDate:", 4, v3)}];
+  [v5 setEra:{objc_msgSend(v4, "component:fromDate:", 2, onlyCopy)}];
+  [v5 setYear:{objc_msgSend(v4, "component:fromDate:", 4, onlyCopy)}];
   v7 = [v4 dateFromComponents:v5];
   v8 = v7;
   if (v7)
@@ -169,7 +169,7 @@
 
   else
   {
-    v9 = v3;
+    v9 = onlyCopy;
   }
 
   v10 = v9;
@@ -179,71 +179,71 @@
 
 - (void)cleanupDateFinished
 {
-  v3 = [(BKLibraryAsset *)self dateFinished];
-  if (v3)
+  dateFinished = [(BKLibraryAsset *)self dateFinished];
+  if (dateFinished)
   {
-    v4 = v3;
-    v5 = [(BKLibraryAsset *)self finishedDateKind];
+    v4 = dateFinished;
+    finishedDateKind = [(BKLibraryAsset *)self finishedDateKind];
 
-    if (v5 == 2)
+    if (finishedDateKind == 2)
     {
       return;
     }
   }
 
   v24 = +[NSDate date];
-  v6 = [(BKLibraryAsset *)self lastEngagedDate];
-  if (v6)
+  lastEngagedDate = [(BKLibraryAsset *)self lastEngagedDate];
+  if (lastEngagedDate)
   {
-    v7 = v6;
-    v8 = [(BKLibraryAsset *)self lastEngagedDate];
+    v7 = lastEngagedDate;
+    lastEngagedDate2 = [(BKLibraryAsset *)self lastEngagedDate];
     v9 = +[NSDate distantPast];
-    v10 = [v8 isEqual:v9];
+    v10 = [lastEngagedDate2 isEqual:v9];
 
     if ((v10 & 1) == 0)
     {
-      v21 = [(BKLibraryAsset *)self lastEngagedDate];
+      lastEngagedDate3 = [(BKLibraryAsset *)self lastEngagedDate];
       goto LABEL_12;
     }
   }
 
-  v11 = [(BKLibraryAsset *)self lastOpenDate];
-  if (v11)
+  lastOpenDate = [(BKLibraryAsset *)self lastOpenDate];
+  if (lastOpenDate)
   {
-    v12 = v11;
-    v13 = [(BKLibraryAsset *)self lastOpenDate];
+    v12 = lastOpenDate;
+    lastOpenDate2 = [(BKLibraryAsset *)self lastOpenDate];
     v14 = +[NSDate distantPast];
-    v15 = [v13 isEqual:v14];
+    v15 = [lastOpenDate2 isEqual:v14];
 
     if ((v15 & 1) == 0)
     {
-      v21 = [(BKLibraryAsset *)self lastOpenDate];
+      lastEngagedDate3 = [(BKLibraryAsset *)self lastOpenDate];
       goto LABEL_12;
     }
   }
 
-  v16 = [(BKLibraryAsset *)self purchaseDate];
-  if (v16)
+  purchaseDate = [(BKLibraryAsset *)self purchaseDate];
+  if (purchaseDate)
   {
-    v17 = v16;
-    v18 = [(BKLibraryAsset *)self purchaseDate];
+    v17 = purchaseDate;
+    purchaseDate2 = [(BKLibraryAsset *)self purchaseDate];
     v19 = +[NSDate distantPast];
-    v20 = [v18 isEqual:v19];
+    v20 = [purchaseDate2 isEqual:v19];
 
     if ((v20 & 1) == 0)
     {
-      v21 = [(BKLibraryAsset *)self purchaseDate];
+      lastEngagedDate3 = [(BKLibraryAsset *)self purchaseDate];
 LABEL_12:
-      v22 = v21;
+      v22 = lastEngagedDate3;
 
       v24 = v22;
     }
   }
 
-  v23 = [(BKLibraryAsset *)self assetDetailsModificationDate];
+  assetDetailsModificationDate = [(BKLibraryAsset *)self assetDetailsModificationDate];
   [(BKLibraryAsset *)self setDifferentDate:v24 forKey:@"dateFinished"];
   [(BKLibraryAsset *)self setFinishedDateKind:1];
-  [(BKLibraryAsset *)self setAssetDetailsModificationDate:v23];
+  [(BKLibraryAsset *)self setAssetDetailsModificationDate:assetDetailsModificationDate];
 }
 
 - (void)unsetFinishedDate
@@ -252,9 +252,9 @@ LABEL_12:
   [(BKLibraryAsset *)self userUpdateDateFinished:v3 ofKind:0];
 }
 
-- (void)setFinishedStateUserSetsFinished:(BOOL)a3 userInfo:(id)a4
+- (void)setFinishedStateUserSetsFinished:(BOOL)finished userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if ([(BKLibraryAsset *)self isContainer])
   {
     v7 = BKLibraryUILog();
@@ -280,7 +280,7 @@ LABEL_7:
   }
 
   [(BKLibraryAsset *)self _setFinishedStates:1];
-  if (a3 || ([(BKLibraryAsset *)self dateFinished], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
+  if (finished || ([(BKLibraryAsset *)self dateFinished], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
   {
     [(BKLibraryAsset *)self userUpdateDateFinished:0 ofKind:1];
   }
@@ -288,11 +288,11 @@ LABEL_7:
   v19 = BKLibraryUILog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [(BKLibraryAsset *)self dateFinished];
+    dateFinished = [(BKLibraryAsset *)self dateFinished];
     v22 = 138412546;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v20;
+    v25 = dateFinished;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "setFinishedStateUserSetsFinished: for asset %@ with date %@", &v22, 0x16u);
   }
 
@@ -312,11 +312,11 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (v6 && [(BKLibraryAsset *)self isFinished])
+  if (infoCopy && [(BKLibraryAsset *)self isFinished])
   {
-    v15 = [v6 mutableCopy];
-    v16 = [(BKLibraryAsset *)self permanentOrTemporaryAssetID];
-    [v15 setObject:v16 forKeyedSubscript:@"BKLibraryAssetIDKey"];
+    v15 = [infoCopy mutableCopy];
+    permanentOrTemporaryAssetID = [(BKLibraryAsset *)self permanentOrTemporaryAssetID];
+    [v15 setObject:permanentOrTemporaryAssetID forKeyedSubscript:@"BKLibraryAssetIDKey"];
 
     v17 = +[NSNotificationCenter defaultCenter];
     [v17 postNotificationName:@"BKLibraryAssetMarkedAsFinishedNotification" object:self userInfo:v15];
@@ -343,7 +343,7 @@ LABEL_8:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "setFinishedStateUserSetsUnfinished for asset %@", &v11, 0xCu);
     }
   }
@@ -369,7 +369,7 @@ LABEL_8:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "setFinishedStateRemoveFromFinishedCollection for asset %@", &v11, 0xCu);
     }
   }
@@ -385,7 +385,7 @@ LABEL_8:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "setFinishedStateAssetRead for asset %@", &v4, 0xCu);
     }
   }
@@ -411,12 +411,12 @@ LABEL_8:
 
     [(BKLibraryAsset *)self _setFinishedStates:1];
     [(BKLibraryAsset *)self userUpdateDateFinished:0 ofKind:1];
-    v4 = [(BKLibraryAsset *)self permanentOrTemporaryAssetID];
-    if (v4)
+    permanentOrTemporaryAssetID = [(BKLibraryAsset *)self permanentOrTemporaryAssetID];
+    if (permanentOrTemporaryAssetID)
     {
       v14 = @"BKLibraryAssetIDKey";
-      v5 = [(BKLibraryAsset *)self permanentOrTemporaryAssetID];
-      v15 = v5;
+      permanentOrTemporaryAssetID2 = [(BKLibraryAsset *)self permanentOrTemporaryAssetID];
+      v15 = permanentOrTemporaryAssetID2;
       v6 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
       v3 = [v6 mutableCopy];
     }
@@ -433,28 +433,28 @@ LABEL_8:
     v8 = BKLibraryUILog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(BKLibraryAsset *)self dateFinished];
+      dateFinished = [(BKLibraryAsset *)self dateFinished];
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v9;
+      v13 = dateFinished;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "setFinishedStateAddToFinishedCollection for asset %@ with date %@", &v10, 0x16u);
     }
   }
 }
 
-+ (BOOL)hasBookReachedReadThreshold:(id)a3
++ (BOOL)hasBookReachedReadThreshold:(id)threshold
 {
-  v3 = a3;
+  thresholdCopy = threshold;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:BCAssetReadingProgressKey];
+  v4 = [thresholdCopy objectForKeyedSubscript:BCAssetReadingProgressKey];
 
   v5 = BUDynamicCast();
 
   [v5 floatValue];
-  LOBYTE(v3) = v6 > kAEAnnotationReadingLocationSignificantHighwaterMark;
+  LOBYTE(thresholdCopy) = v6 > kAEAnnotationReadingLocationSignificantHighwaterMark;
 
-  return v3;
+  return thresholdCopy;
 }
 
 + (id)unknownAuthor
@@ -500,73 +500,73 @@ LABEL_8:
     return;
   }
 
-  v3 = [(BKLibraryAsset *)self sortAuthor];
-  v4 = [v3 length];
+  sortAuthor = [(BKLibraryAsset *)self sortAuthor];
+  v4 = [sortAuthor length];
 
   if (!v4)
   {
-    v5 = [(BKLibraryAsset *)self author];
-    v6 = [v5 length];
+    author = [(BKLibraryAsset *)self author];
+    v6 = [author length];
 
     if (v6)
     {
-      v7 = [(BKLibraryAsset *)self author];
-      [(BKLibraryAsset *)self setSortAuthor:v7];
+      author2 = [(BKLibraryAsset *)self author];
+      [(BKLibraryAsset *)self setSortAuthor:author2];
     }
   }
 
-  v8 = [(BKLibraryAsset *)self sortAuthor];
-  if ([v8 isEqualToString:@"UnknownAuthor"])
+  sortAuthor2 = [(BKLibraryAsset *)self sortAuthor];
+  if ([sortAuthor2 isEqualToString:@"UnknownAuthor"])
   {
-    v9 = [(BKLibraryAsset *)self author];
-    v10 = [v9 isEqualToString:@"UnknownAuthor"];
+    author3 = [(BKLibraryAsset *)self author];
+    v10 = [author3 isEqualToString:@"UnknownAuthor"];
 
     if (v10)
     {
       goto LABEL_11;
     }
 
-    v8 = [(BKLibraryAsset *)self author];
-    [(BKLibraryAsset *)self setSortAuthor:v8];
+    sortAuthor2 = [(BKLibraryAsset *)self author];
+    [(BKLibraryAsset *)self setSortAuthor:sortAuthor2];
   }
 
 LABEL_11:
-  v11 = [(BKLibraryAsset *)self sortTitle];
-  v12 = [v11 length];
+  sortTitle = [(BKLibraryAsset *)self sortTitle];
+  v12 = [sortTitle length];
 
   if (!v12)
   {
-    v13 = [(BKLibraryAsset *)self title];
-    v14 = [v13 length];
+    title = [(BKLibraryAsset *)self title];
+    v14 = [title length];
 
     if (v14)
     {
-      v15 = [(BKLibraryAsset *)self title];
-      [(BKLibraryAsset *)self setSortTitle:v15];
+      title2 = [(BKLibraryAsset *)self title];
+      [(BKLibraryAsset *)self setSortTitle:title2];
     }
   }
 
-  v21 = [(BKLibraryAsset *)self lastOpenDate];
+  lastOpenDate = [(BKLibraryAsset *)self lastOpenDate];
   v16 = +[NSDate distantPast];
-  v17 = [(BKLibraryAsset *)self lastOpenDate];
-  v18 = [v16 laterDate:v17];
+  lastOpenDate2 = [(BKLibraryAsset *)self lastOpenDate];
+  v18 = [v16 laterDate:lastOpenDate2];
 
-  v19 = [(BKLibraryAsset *)self purchaseDate];
-  v20 = [v18 laterDate:v19];
+  purchaseDate = [(BKLibraryAsset *)self purchaseDate];
+  v20 = [v18 laterDate:purchaseDate];
 
-  if (([v21 isEqualToDate:v20] & 1) == 0)
+  if (([lastOpenDate isEqualToDate:v20] & 1) == 0)
   {
     [(BKLibraryAsset *)self nonUserUpdateLastOpenDateTo:v20];
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6.receiver = self;
   v6.super_class = BKLibraryAsset;
-  [(BKLibraryAsset *)&v6 didChangeValueForKey:v4];
-  if (([v4 isEqualToString:@"assetDetailsModificationDate"] & 1) == 0 && ((objc_msgSend(v4, "isEqualToString:", @"isFinished") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"notFinished") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"lastOpenDate") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"dateFinished") & 1) != 0 || -[BKLibraryAsset isAudiobook](self, "isAudiobook") && ((objc_msgSend(v4, "isEqualToString:", @"readingProgress") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"bookHighWaterMarkProgress"))))
+  [(BKLibraryAsset *)&v6 didChangeValueForKey:keyCopy];
+  if (([keyCopy isEqualToString:@"assetDetailsModificationDate"] & 1) == 0 && ((objc_msgSend(keyCopy, "isEqualToString:", @"isFinished") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"notFinished") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"lastOpenDate") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"dateFinished") & 1) != 0 || -[BKLibraryAsset isAudiobook](self, "isAudiobook") && ((objc_msgSend(keyCopy, "isEqualToString:", @"readingProgress") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"bookHighWaterMarkProgress"))))
   {
     v5 = +[NSDate date];
     [(BKLibraryAsset *)self setAssetDetailsModificationDate:v5];
@@ -575,26 +575,26 @@ LABEL_11:
 
 - (NSString)permanentOrTemporaryAssetID
 {
-  v3 = [(BKLibraryAsset *)self assetID];
-  if (!v3)
+  assetID = [(BKLibraryAsset *)self assetID];
+  if (!assetID)
   {
-    v3 = [(BKLibraryAsset *)self temporaryAssetID];
+    assetID = [(BKLibraryAsset *)self temporaryAssetID];
   }
 
-  return v3;
+  return assetID;
 }
 
-+ (id)actualAuthorFromMetedata:(id)a3
++ (id)actualAuthorFromMetedata:(id)metedata
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownAuthor"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MultipleAuthors"))
+  metedataCopy = metedata;
+  if ([metedataCopy isEqualToString:@"UnknownAuthor"] & 1) != 0 || (objc_msgSend(metedataCopy, "isEqualToString:", @"MultipleAuthors"))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = metedataCopy;
   }
 
   return v4;
@@ -602,71 +602,71 @@ LABEL_11:
 
 - (NSString)actualAuthor
 {
-  v2 = [(BKLibraryAsset *)self author];
-  v3 = [BKLibraryAsset actualAuthorFromMetedata:v2];
+  author = [(BKLibraryAsset *)self author];
+  v3 = [BKLibraryAsset actualAuthorFromMetedata:author];
 
   return v3;
 }
 
 - (NSString)displayAuthor
 {
-  v3 = [(BKLibraryAsset *)self hasTooManyAuthors];
-  v4 = [v3 BOOLValue];
+  hasTooManyAuthors = [(BKLibraryAsset *)self hasTooManyAuthors];
+  bOOLValue = [hasTooManyAuthors BOOLValue];
 
-  v5 = [(BKLibraryAsset *)self authorNames];
-  v6 = [(BKLibraryAsset *)self authorCount];
-  v7 = v6;
-  if (!v4)
+  authorNames = [(BKLibraryAsset *)self authorNames];
+  authorCount = [(BKLibraryAsset *)self authorCount];
+  v7 = authorCount;
+  if (!bOOLValue)
   {
-    if ([v6 intValue] == 1 && objc_msgSend(v5, "count"))
+    if ([authorCount intValue] == 1 && objc_msgSend(authorNames, "count"))
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
+      author3 = [authorNames objectAtIndexedSubscript:0];
       goto LABEL_21;
     }
 
-    if ([v7 intValue] == 2 && objc_msgSend(v5, "count") >= 2)
+    if ([v7 intValue] == 2 && objc_msgSend(authorNames, "count") >= 2)
     {
       v9 = BKLibraryFrameworkBundle();
       v10 = [v9 localizedStringForKey:@"Library.Item.TwoArtists" value:@"%@ & %@" table:&stru_D8298];
 
-      v11 = [v5 objectAtIndexedSubscript:0];
-      v12 = [v5 objectAtIndexedSubscript:1];
+      v11 = [authorNames objectAtIndexedSubscript:0];
+      v12 = [authorNames objectAtIndexedSubscript:1];
       v13 = v12;
     }
 
     else
     {
-      if ([v7 intValue] == 3 && objc_msgSend(v5, "count") >= 3)
+      if ([v7 intValue] == 3 && objc_msgSend(authorNames, "count") >= 3)
       {
         v14 = BKLibraryFrameworkBundle();
         v10 = [v14 localizedStringForKey:@"Library.Item.ThreeArtists" value:@"%@ table:{%@, & %@", &stru_D8298}];
 
-        v11 = [v5 objectAtIndexedSubscript:0];
-        v13 = [v5 objectAtIndexedSubscript:1];
-        v15 = [v5 objectAtIndexedSubscript:2];
+        v11 = [authorNames objectAtIndexedSubscript:0];
+        v13 = [authorNames objectAtIndexedSubscript:1];
+        v15 = [authorNames objectAtIndexedSubscript:2];
         v16 = [NSString stringWithFormat:v10, v11, v13, v15];
 
 LABEL_16:
         goto LABEL_22;
       }
 
-      if ([v7 intValue] < 4 || objc_msgSend(v5, "count") < 2)
+      if ([v7 intValue] < 4 || objc_msgSend(authorNames, "count") < 2)
       {
-        v19 = [(BKLibraryAsset *)self author];
-        v20 = [v19 isEqualToString:@"UnknownAuthor"];
+        author = [(BKLibraryAsset *)self author];
+        v20 = [author isEqualToString:@"UnknownAuthor"];
 
         if (v20)
         {
-          v8 = +[BKLibraryAsset unknownAuthor];
+          author3 = +[BKLibraryAsset unknownAuthor];
           goto LABEL_21;
         }
 
-        v21 = [(BKLibraryAsset *)self author];
-        v22 = [v21 isEqualToString:@"MultipleAuthors"];
+        author2 = [(BKLibraryAsset *)self author];
+        v22 = [author2 isEqualToString:@"MultipleAuthors"];
 
         if (!v22)
         {
-          v8 = [(BKLibraryAsset *)self author];
+          author3 = [(BKLibraryAsset *)self author];
           goto LABEL_21;
         }
 
@@ -677,8 +677,8 @@ LABEL_16:
       v18 = BKLibraryFrameworkBundle();
       v10 = [v18 localizedStringForKey:@"Library.Item.TwoAndOtherArtists" value:@"%@ table:{%@, & %d others", &stru_D8298}];
 
-      v11 = [v5 objectAtIndexedSubscript:0];
-      v12 = [v5 objectAtIndexedSubscript:1];
+      v11 = [authorNames objectAtIndexedSubscript:0];
+      v12 = [authorNames objectAtIndexedSubscript:1];
       v13 = v12;
       v24 = v17;
     }
@@ -688,9 +688,9 @@ LABEL_16:
   }
 
 LABEL_2:
-  v8 = +[BKLibraryAsset multipleAuthors];
+  author3 = +[BKLibraryAsset multipleAuthors];
 LABEL_21:
-  v16 = v8;
+  v16 = author3;
 LABEL_22:
 
   return v16;
@@ -698,8 +698,8 @@ LABEL_22:
 
 - (BOOL)isStore
 {
-  v2 = [(BKLibraryAsset *)self storeID];
-  v3 = v2 != 0;
+  storeID = [(BKLibraryAsset *)self storeID];
+  v3 = storeID != 0;
 
   return v3;
 }
@@ -723,8 +723,8 @@ LABEL_22:
 
   else
   {
-    v4 = [(BKLibraryAsset *)self isStoreAudiobook];
-    if ([v4 BOOLValue])
+    isStoreAudiobook = [(BKLibraryAsset *)self isStoreAudiobook];
+    if ([isStoreAudiobook BOOLValue])
     {
       v3 = ![(BKLibraryAsset *)self isOwned];
     }
@@ -740,24 +740,24 @@ LABEL_22:
 
 - (BOOL)iTunesU
 {
-  v3 = [(BKLibraryAsset *)self permlink];
-  if (v3)
+  permlink = [(BKLibraryAsset *)self permlink];
+  if (permlink)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BKLibraryAsset *)self dataSourceIdentifier];
-    if ([v5 isEqualToString:@"com.apple.ibooks.datasource.itunesu"])
+    dataSourceIdentifier = [(BKLibraryAsset *)self dataSourceIdentifier];
+    if ([dataSourceIdentifier isEqualToString:@"com.apple.ibooks.datasource.itunesu"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(BKLibraryAsset *)self dataSourceIdentifier];
-      v4 = [v6 isEqualToString:@"com.apple.ibooks.plugin.Bookshelf.platformDataSource.iTunesU"];
+      dataSourceIdentifier2 = [(BKLibraryAsset *)self dataSourceIdentifier];
+      v4 = [dataSourceIdentifier2 isEqualToString:@"com.apple.ibooks.plugin.Bookshelf.platformDataSource.iTunesU"];
     }
   }
 
@@ -771,15 +771,15 @@ LABEL_22:
     return 0;
   }
 
-  v4 = [(BKLibraryAsset *)self seriesID];
+  seriesID = [(BKLibraryAsset *)self seriesID];
 
-  if (!v4)
+  if (!seriesID)
   {
     return 1;
   }
 
-  v5 = [(BKLibraryAsset *)self sequenceDisplayName];
-  if ([v5 length])
+  sequenceDisplayName = [(BKLibraryAsset *)self sequenceDisplayName];
+  if ([sequenceDisplayName length])
   {
     v3 = 2;
   }
@@ -834,8 +834,8 @@ LABEL_22:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(BKLibraryAsset *)self collectionMembers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  collectionMembers = [(BKLibraryAsset *)self collectionMembers];
+  v3 = [collectionMembers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -845,12 +845,12 @@ LABEL_22:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(collectionMembers);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) collection];
-        v7 = v6;
-        if (v6 && ([v6 isDefaultCollection] & 1) == 0)
+        collection = [*(*(&v9 + 1) + 8 * i) collection];
+        v7 = collection;
+        if (collection && ([collection isDefaultCollection] & 1) == 0)
         {
 
           LOBYTE(v3) = 1;
@@ -858,7 +858,7 @@ LABEL_22:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [collectionMembers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -875,8 +875,8 @@ LABEL_12:
 
 - (BOOL)isInSamples
 {
-  v2 = [(BKLibraryAsset *)self collectionMembers];
-  v3 = [v2 valueForKey:@"collectionID"];
+  collectionMembers = [(BKLibraryAsset *)self collectionMembers];
+  v3 = [collectionMembers valueForKey:@"collectionID"];
   v4 = [v3 containsObject:kBKCollectionDefaultIDSamples];
 
   return v4;
@@ -884,51 +884,51 @@ LABEL_12:
 
 - (BOOL)canEditMetadata
 {
-  v3 = [(BKLibraryAsset *)self isLocal];
-  if (v3)
+  isLocal = [(BKLibraryAsset *)self isLocal];
+  if (isLocal)
   {
     if ([(BKLibraryAsset *)self isAudiobook]|| ([(BKLibraryAsset *)self isProof]& 1) != 0 || ([(BKLibraryAsset *)self isSample]& 1) != 0 || ([(BKLibraryAsset *)self isHidden]& 1) != 0)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isLocal) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = [(BKLibraryAsset *)self isLocked]^ 1;
+      LOBYTE(isLocal) = [(BKLibraryAsset *)self isLocked]^ 1;
     }
   }
 
-  return v3;
+  return isLocal;
 }
 
 - (void)setCreationDateToNow
 {
   v5 = +[NSDate date];
   [(BKLibraryAsset *)self setCreationDate:v5];
-  v3 = [(BKLibraryAsset *)self purchasedAndLocalParent];
-  [v3 setCreationDate:v5];
+  purchasedAndLocalParent = [(BKLibraryAsset *)self purchasedAndLocalParent];
+  [purchasedAndLocalParent setCreationDate:v5];
 
   [(BKLibraryAsset *)self setModificationDate:v5];
-  v4 = [(BKLibraryAsset *)self purchasedAndLocalParent];
-  [v4 setModificationDate:v5];
+  purchasedAndLocalParent2 = [(BKLibraryAsset *)self purchasedAndLocalParent];
+  [purchasedAndLocalParent2 setModificationDate:v5];
 }
 
-- (void)nonUserUpdateLastOpenDateTo:(id)a3
+- (void)nonUserUpdateLastOpenDateTo:(id)to
 {
-  v4 = a3;
-  v5 = [(BKLibraryAsset *)self assetDetailsModificationDate];
-  [(BKLibraryAsset *)self setLastOpenDate:v4];
+  toCopy = to;
+  assetDetailsModificationDate = [(BKLibraryAsset *)self assetDetailsModificationDate];
+  [(BKLibraryAsset *)self setLastOpenDate:toCopy];
 
-  [(BKLibraryAsset *)self setAssetDetailsModificationDate:v5];
+  [(BKLibraryAsset *)self setAssetDetailsModificationDate:assetDetailsModificationDate];
 }
 
 - (id)seriesStackAssetIDs
 {
-  v3 = [(BKLibraryAsset *)self seriesStackIDs];
-  if (v3)
+  seriesStackIDs = [(BKLibraryAsset *)self seriesStackIDs];
+  if (seriesStackIDs)
   {
-    v4 = [(BKLibraryAsset *)self seriesStackIDs];
-    v5 = [v4 componentsSeparatedByString:{@", "}];
+    seriesStackIDs2 = [(BKLibraryAsset *)self seriesStackIDs];
+    v5 = [seriesStackIDs2 componentsSeparatedByString:{@", "}];
   }
 
   else
@@ -941,8 +941,8 @@ LABEL_12:
 
 - (NSString)assetLogID
 {
-  v3 = [(BKLibraryAsset *)self assetGUID];
-  v4 = [v3 length];
+  assetGUID = [(BKLibraryAsset *)self assetGUID];
+  v4 = [assetGUID length];
 
   if (!v4)
   {
@@ -960,32 +960,32 @@ LABEL_12:
 {
   v4.receiver = self;
   v4.super_class = BKLibraryAsset;
-  v2 = [(BKLibraryAsset *)&v4 managedObjectContext];
+  managedObjectContext = [(BKLibraryAsset *)&v4 managedObjectContext];
 
-  return v2;
+  return managedObjectContext;
 }
 
 - (BOOL)isRightToLeft
 {
-  v3 = [(BKLibraryAsset *)self pageProgressionDirection];
-  v4 = [v3 lowercaseString];
+  pageProgressionDirection = [(BKLibraryAsset *)self pageProgressionDirection];
+  lowercaseString = [pageProgressionDirection lowercaseString];
 
-  if ([v4 isEqualToString:@"rtl"])
+  if ([lowercaseString isEqualToString:@"rtl"])
   {
     v5 = 1;
   }
 
-  else if (([v4 isEqualToString:@"default"] & 1) != 0 || !v4 || objc_msgSend(v4, "isEqualToString:", &stru_D8298))
+  else if (([lowercaseString isEqualToString:@"default"] & 1) != 0 || !lowercaseString || objc_msgSend(lowercaseString, "isEqualToString:", &stru_D8298))
   {
-    v6 = [(BKLibraryAsset *)self language];
-    if (([IMLanguageUtilities languageIsHebrew:v6]& 1) != 0)
+    language = [(BKLibraryAsset *)self language];
+    if (([IMLanguageUtilities languageIsHebrew:language]& 1) != 0)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [IMLanguageUtilities languageIsArabic:v6];
+      v5 = [IMLanguageUtilities languageIsArabic:language];
     }
   }
 
@@ -999,20 +999,20 @@ LABEL_12:
 
 - (BOOL)streamable
 {
-  v3 = BLAudiobookStreamingEnabled();
-  if (v3)
+  isAudiobook = BLAudiobookStreamingEnabled();
+  if (isAudiobook)
   {
-    if ([(BKLibraryAsset *)self isCloud]|| (v3 = [(BKLibraryAsset *)self isDownloading]) != 0)
+    if ([(BKLibraryAsset *)self isCloud]|| (isAudiobook = [(BKLibraryAsset *)self isDownloading]) != 0)
     {
-      v3 = [(BKLibraryAsset *)self isAudiobook];
-      if (v3)
+      isAudiobook = [(BKLibraryAsset *)self isAudiobook];
+      if (isAudiobook)
       {
-        LOBYTE(v3) = ![(BKLibraryAsset *)self isPreorderBook];
+        LOBYTE(isAudiobook) = ![(BKLibraryAsset *)self isPreorderBook];
       }
     }
   }
 
-  return v3;
+  return isAudiobook;
 }
 
 - (BOOL)canOpen
@@ -1027,16 +1027,16 @@ LABEL_12:
 
 - (BOOL)isUbiquitousBook
 {
-  v3 = [(BKLibraryAsset *)self path];
-  if (v3)
+  path = [(BKLibraryAsset *)self path];
+  if (path)
   {
-    if (![(NSString *)self->_cachedAssetPath isEqualToString:v3])
+    if (![(NSString *)self->_cachedAssetPath isEqualToString:path])
     {
       v5 = +[NSFileManager defaultManager];
-      v6 = [NSURL fileURLWithPath:v3];
+      v6 = [NSURL fileURLWithPath:path];
       self->_cachedUbiquitousState = [v5 isUbiquitousItemAtURL:v6];
 
-      objc_storeStrong(&self->_cachedAssetPath, v3);
+      objc_storeStrong(&self->_cachedAssetPath, path);
     }
 
     cachedUbiquitousState = self->_cachedUbiquitousState;
@@ -1053,22 +1053,22 @@ LABEL_12:
 - (id)assetDetailRepresentation
 {
   v3 = [BCMutableAssetDetail alloc];
-  v4 = [(BKLibraryAsset *)self assetID];
-  v5 = [v3 initWithAssetID:v4];
+  assetID = [(BKLibraryAsset *)self assetID];
+  v5 = [v3 initWithAssetID:assetID];
 
   [v5 setIsFinished:{-[BKLibraryAsset isFinished](self, "isFinished")}];
   [v5 setNotFinished:{-[BKLibraryAsset notFinished](self, "notFinished")}];
-  v6 = [(BKLibraryAsset *)self lastOpenDate];
-  [v5 setLastOpenDate:v6];
+  lastOpenDate = [(BKLibraryAsset *)self lastOpenDate];
+  [v5 setLastOpenDate:lastOpenDate];
 
-  v7 = [(BKLibraryAsset *)self dateFinished];
-  [v5 setDateFinished:v7];
+  dateFinished = [(BKLibraryAsset *)self dateFinished];
+  [v5 setDateFinished:dateFinished];
 
   [v5 setFinishedDateKind:{-[BKLibraryAsset finishedDateKind](self, "finishedDateKind")}];
   [v5 setTaste:{-[BKLibraryAsset taste](self, "taste")}];
   [v5 setTasteSyncedToStore:{-[BKLibraryAsset tasteSyncedToStore](self, "tasteSyncedToStore")}];
-  v8 = [(BKLibraryAsset *)self assetDetailsModificationDate];
-  [v5 setModificationDate:v8];
+  assetDetailsModificationDate = [(BKLibraryAsset *)self assetDetailsModificationDate];
+  [v5 setModificationDate:assetDetailsModificationDate];
 
   if ([(BKLibraryAsset *)self isAudiobook])
   {
@@ -1076,12 +1076,12 @@ LABEL_12:
     v9 = +[NSDate distantPast];
     [v5 setDatePlaybackTimeUpdated:v9];
 
-    v10 = [(BKLibraryAsset *)self readingProgress];
-    [v10 floatValue];
+    readingProgress = [(BKLibraryAsset *)self readingProgress];
+    [readingProgress floatValue];
     [v5 setReadingProgress:?];
 
-    v11 = [(BKLibraryAsset *)self bookHighWaterMarkProgress];
-    [v11 floatValue];
+    bookHighWaterMarkProgress = [(BKLibraryAsset *)self bookHighWaterMarkProgress];
+    [bookHighWaterMarkProgress floatValue];
     [v5 setReadingProgressHighWaterMark:?];
   }
 
@@ -1098,18 +1098,18 @@ LABEL_12:
       return v5;
     }
 
-    v7 = [(BKLibraryAsset *)self lastOpenDate];
-    if (!v7 || (+[NSDate distantPast](NSDate, "distantPast"), v2 = objc_claimAutoreleasedReturnValue(), -[BKLibraryAsset lastOpenDate](self, "lastOpenDate"), v3 = objc_claimAutoreleasedReturnValue(), [v2 isEqualToDate:v3]))
+    lastOpenDate = [(BKLibraryAsset *)self lastOpenDate];
+    if (!lastOpenDate || (+[NSDate distantPast](NSDate, "distantPast"), v2 = objc_claimAutoreleasedReturnValue(), -[BKLibraryAsset lastOpenDate](self, "lastOpenDate"), v3 = objc_claimAutoreleasedReturnValue(), [v2 isEqualToDate:v3]))
     {
-      v8 = [(BKLibraryAsset *)self dateFinished];
-      if (v8)
+      dateFinished = [(BKLibraryAsset *)self dateFinished];
+      if (dateFinished)
       {
-        v9 = v8;
+        v9 = dateFinished;
         v10 = +[NSDate distantPast];
-        v11 = [(BKLibraryAsset *)self dateFinished];
-        v5 = [v10 isEqualToDate:v11] ^ 1;
+        dateFinished2 = [(BKLibraryAsset *)self dateFinished];
+        v5 = [v10 isEqualToDate:dateFinished2] ^ 1;
 
-        if (!v7)
+        if (!lastOpenDate)
         {
 LABEL_17:
 
@@ -1120,7 +1120,7 @@ LABEL_17:
       else
       {
         LOBYTE(v5) = 0;
-        if (!v7)
+        if (!lastOpenDate)
         {
           goto LABEL_17;
         }
@@ -1139,18 +1139,18 @@ LABEL_17:
   return v5;
 }
 
-- (void)configureFromAssetDetail:(id)a3
+- (void)configureFromAssetDetail:(id)detail
 {
-  v4 = a3;
-  v5 = [(BKLibraryAsset *)self assetDetailsModificationDate];
-  v6 = [v4 modificationDate];
-  v7 = v6;
-  if (!(v5 | v6))
+  detailCopy = detail;
+  assetDetailsModificationDate = [(BKLibraryAsset *)self assetDetailsModificationDate];
+  modificationDate = [detailCopy modificationDate];
+  v7 = modificationDate;
+  if (!(assetDetailsModificationDate | modificationDate))
   {
     v12 = +[BULogUtilities shared];
-    v13 = [v12 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v12 verboseLoggingEnabled];
 
-    if (!v13)
+    if (!verboseLoggingEnabled)
     {
       goto LABEL_40;
     }
@@ -1161,9 +1161,9 @@ LABEL_17:
       goto LABEL_39;
     }
 
-    v15 = [(BKLibraryAsset *)self title];
+    title = [(BKLibraryAsset *)self title];
     *v54 = 138412290;
-    *&v54[4] = v15;
+    *&v54[4] = title;
     v16 = "\\configureFromAssetDetail No local modDate, No assetDetail modDate for assetDetail %@\\"";
 LABEL_11:
     v17 = v14;
@@ -1174,21 +1174,21 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (!v5 && v6)
+  if (!assetDetailsModificationDate && modificationDate)
   {
     v8 = +[BULogUtilities shared];
-    v9 = [v8 verboseLoggingEnabled];
+    verboseLoggingEnabled2 = [v8 verboseLoggingEnabled];
 
-    if (v9)
+    if (verboseLoggingEnabled2)
     {
       v10 = BKLibraryAssetDetailsDevelopmentLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(BKLibraryAsset *)self title];
+        title2 = [(BKLibraryAsset *)self title];
         *v54 = 138412546;
         *&v54[4] = v7;
         *&v54[12] = 2112;
-        *&v54[14] = v11;
+        *&v54[14] = title2;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "\\No local modDate, assetDetail has modDate:%@  for assetDetail %@ \\"", v54, 0x16u);
       }
     }
@@ -1196,23 +1196,23 @@ LABEL_38:
     goto LABEL_21;
   }
 
-  if (v5 && v6)
+  if (assetDetailsModificationDate && modificationDate)
   {
     v19 = +[BULogUtilities shared];
-    v20 = [v19 verboseLoggingEnabled];
+    verboseLoggingEnabled3 = [v19 verboseLoggingEnabled];
 
-    if (v20)
+    if (verboseLoggingEnabled3)
     {
       v21 = BKLibraryAssetDetailsDevelopmentLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(BKLibraryAsset *)self title];
+        title3 = [(BKLibraryAsset *)self title];
         *v54 = 138412802;
-        *&v54[4] = v5;
+        *&v54[4] = assetDetailsModificationDate;
         *&v54[12] = 2112;
         *&v54[14] = v7;
         *&v54[22] = 2112;
-        v55 = v22;
+        v55 = title3;
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "\\local has modDate:%@, assetDetail has modDate:%@ for assetDetail %@\\"", v54, 0x20u);
       }
     }
@@ -1220,12 +1220,12 @@ LABEL_38:
 
   else
   {
-    if (!v6)
+    if (!modificationDate)
     {
       goto LABEL_40;
     }
 
-    if (!v5)
+    if (!assetDetailsModificationDate)
     {
       goto LABEL_21;
     }
@@ -1233,12 +1233,12 @@ LABEL_38:
 
   [v7 timeIntervalSinceReferenceDate];
   v24 = v23;
-  [v5 timeIntervalSinceReferenceDate];
+  [assetDetailsModificationDate timeIntervalSinceReferenceDate];
   if (v24 <= v25)
   {
     [v7 timeIntervalSinceReferenceDate];
     v52 = v51;
-    [v5 timeIntervalSinceReferenceDate];
+    [assetDetailsModificationDate timeIntervalSinceReferenceDate];
     if (v52 >= v53)
     {
       goto LABEL_40;
@@ -1250,48 +1250,48 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v15 = [(BKLibraryAsset *)self assetID];
+    title = [(BKLibraryAsset *)self assetID];
     *v54 = 138412290;
-    *&v54[4] = v15;
+    *&v54[4] = title;
     v16 = "BKLibraryAsset Not Taking changes from asset detail as my mod date is > detail mod date for asset: %@";
     goto LABEL_11;
   }
 
 LABEL_21:
-  v26 = [(BKLibraryAsset *)self isFinished];
-  if (v26 != [v4 isFinished])
+  isFinished = [(BKLibraryAsset *)self isFinished];
+  if (isFinished != [detailCopy isFinished])
   {
-    -[BKLibraryAsset setIsFinished:](self, "setIsFinished:", [v4 isFinished]);
+    -[BKLibraryAsset setIsFinished:](self, "setIsFinished:", [detailCopy isFinished]);
   }
 
-  v27 = [(BKLibraryAsset *)self notFinished];
-  if (v27 != [v4 notFinished])
+  notFinished = [(BKLibraryAsset *)self notFinished];
+  if (notFinished != [detailCopy notFinished])
   {
-    -[BKLibraryAsset setNotFinished:](self, "setNotFinished:", [v4 notFinished]);
+    -[BKLibraryAsset setNotFinished:](self, "setNotFinished:", [detailCopy notFinished]);
   }
 
-  v28 = [v4 dateFinished];
-  [(BKLibraryAsset *)self setDifferentDate:v28 forKey:@"dateFinished"];
+  dateFinished = [detailCopy dateFinished];
+  [(BKLibraryAsset *)self setDifferentDate:dateFinished forKey:@"dateFinished"];
 
-  LODWORD(v28) = [(BKLibraryAsset *)self finishedDateKind];
-  if (v28 != [v4 finishedDateKind])
+  LODWORD(dateFinished) = [(BKLibraryAsset *)self finishedDateKind];
+  if (dateFinished != [detailCopy finishedDateKind])
   {
-    -[BKLibraryAsset setFinishedDateKind:](self, "setFinishedDateKind:", [v4 finishedDateKind]);
+    -[BKLibraryAsset setFinishedDateKind:](self, "setFinishedDateKind:", [detailCopy finishedDateKind]);
   }
 
-  v29 = [v4 lastOpenDate];
-  [(BKLibraryAsset *)self setDifferentDate:v29 forKey:@"lastOpenDate"];
+  lastOpenDate = [detailCopy lastOpenDate];
+  [(BKLibraryAsset *)self setDifferentDate:lastOpenDate forKey:@"lastOpenDate"];
 
-  LODWORD(v29) = [(BKLibraryAsset *)self taste];
-  if (v29 != [v4 taste])
+  LODWORD(lastOpenDate) = [(BKLibraryAsset *)self taste];
+  if (lastOpenDate != [detailCopy taste])
   {
-    -[BKLibraryAsset setTaste:](self, "setTaste:", [v4 taste]);
+    -[BKLibraryAsset setTaste:](self, "setTaste:", [detailCopy taste]);
   }
 
-  v30 = [(BKLibraryAsset *)self tasteSyncedToStore];
-  if (v30 != [v4 tasteSyncedToStore])
+  tasteSyncedToStore = [(BKLibraryAsset *)self tasteSyncedToStore];
+  if (tasteSyncedToStore != [detailCopy tasteSyncedToStore])
   {
-    -[BKLibraryAsset setTasteSyncedToStore:](self, "setTasteSyncedToStore:", [v4 tasteSyncedToStore]);
+    -[BKLibraryAsset setTasteSyncedToStore:](self, "setTasteSyncedToStore:", [detailCopy tasteSyncedToStore]);
   }
 
   if ([(BKLibraryAsset *)self hasChanges])
@@ -1300,11 +1300,11 @@ LABEL_21:
     v14 = BKLibraryAssetDetailsLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(BKLibraryAsset *)self assetID];
+      title = [(BKLibraryAsset *)self assetID];
       *v54 = 138412546;
-      *&v54[4] = v15;
+      *&v54[4] = title;
       *&v54[12] = 2112;
-      *&v54[14] = v4;
+      *&v54[14] = detailCopy;
       v16 = "BKLibraryAsset %@ Configured with changes: %@";
 LABEL_37:
       v17 = v14;
@@ -1316,18 +1316,18 @@ LABEL_37:
   }
 
   v31 = +[BULogUtilities shared];
-  v32 = [v31 verboseLoggingEnabled];
+  verboseLoggingEnabled4 = [v31 verboseLoggingEnabled];
 
-  if (v32)
+  if (verboseLoggingEnabled4)
   {
     v14 = BKLibraryAssetDetailsDevelopmentLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(BKLibraryAsset *)self assetID];
+      title = [(BKLibraryAsset *)self assetID];
       *v54 = 138412546;
-      *&v54[4] = v15;
+      *&v54[4] = title;
       *&v54[12] = 2112;
-      *&v54[14] = v4;
+      *&v54[14] = detailCopy;
       v16 = "\\BKLibraryAsset %@ Configure - No changes for libraryAsset from assetDetail %@\\"";
       goto LABEL_37;
     }
@@ -1341,35 +1341,35 @@ LABEL_40:
     goto LABEL_54;
   }
 
-  v33 = [v4 readingPositionLocationUpdateDate];
+  readingPositionLocationUpdateDate = [detailCopy readingPositionLocationUpdateDate];
 
-  if (!v33)
+  if (!readingPositionLocationUpdateDate)
   {
     goto LABEL_54;
   }
 
-  v34 = [(BKLibraryAsset *)self readingProgress];
-  [v34 doubleValue];
+  readingProgress = [(BKLibraryAsset *)self readingProgress];
+  [readingProgress doubleValue];
   v36 = v35;
-  [v4 readingProgress];
+  [detailCopy readingProgress];
   v38 = vabdd_f64(v36, v37);
 
   if (v38 >= 0.00001)
   {
-    [v4 readingProgress];
+    [detailCopy readingProgress];
     v39 = [NSNumber numberWithFloat:?];
     [(BKLibraryAsset *)self setReadingProgress:v39];
   }
 
-  v40 = [(BKLibraryAsset *)self bookHighWaterMarkProgress];
-  [v40 doubleValue];
+  bookHighWaterMarkProgress = [(BKLibraryAsset *)self bookHighWaterMarkProgress];
+  [bookHighWaterMarkProgress doubleValue];
   v42 = v41;
-  [v4 readingProgressHighWaterMark];
+  [detailCopy readingProgressHighWaterMark];
   v44 = vabdd_f64(v42, v43);
 
   if (v44 >= 0.00001)
   {
-    [v4 readingProgressHighWaterMark];
+    [detailCopy readingProgressHighWaterMark];
     v50 = [NSNumber numberWithFloat:?];
     [(BKLibraryAsset *)self setBookHighWaterMarkProgress:v50];
 
@@ -1377,11 +1377,11 @@ LABEL_50:
     v47 = BKLibraryAssetDetailsLog();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [(BKLibraryAsset *)self assetID];
+      assetID = [(BKLibraryAsset *)self assetID];
       *v54 = 138412546;
-      *&v54[4] = v48;
+      *&v54[4] = assetID;
       *&v54[12] = 2112;
-      *&v54[14] = v4;
+      *&v54[14] = detailCopy;
       v49 = "BKLibraryAsset %@ Configured with reading progress changes: %@";
       goto LABEL_52;
     }
@@ -1397,18 +1397,18 @@ LABEL_53:
   }
 
   v45 = +[BULogUtilities shared];
-  v46 = [v45 verboseLoggingEnabled];
+  verboseLoggingEnabled5 = [v45 verboseLoggingEnabled];
 
-  if (v46)
+  if (verboseLoggingEnabled5)
   {
     v47 = BKLibraryAssetDetailsDevelopmentLog();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [(BKLibraryAsset *)self assetID];
+      assetID = [(BKLibraryAsset *)self assetID];
       *v54 = 138412546;
-      *&v54[4] = v48;
+      *&v54[4] = assetID;
       *&v54[12] = 2112;
-      *&v54[14] = v4;
+      *&v54[14] = detailCopy;
       v49 = "\\BKLibraryAsset %@ Configure - No reading progress changes for libraryAsset from assetDetail %@\\"";
 LABEL_52:
       _os_log_impl(&dword_0, v47, OS_LOG_TYPE_DEFAULT, v49, v54, 0x16u);
@@ -1425,15 +1425,15 @@ LABEL_54:
 - (id)readingNowDetailRepresentation
 {
   v3 = [BCMutableReadingNowDetail alloc];
-  v4 = [(BKLibraryAsset *)self assetID];
-  v5 = [v3 initWithAssetID:v4];
+  assetID = [(BKLibraryAsset *)self assetID];
+  v5 = [v3 initWithAssetID:assetID];
 
   [v5 setIsTrackedAsRecent:{-[BKLibraryAsset isTrackedAsRecent](self, "isTrackedAsRecent")}];
-  v6 = [(BKLibraryAsset *)self lastEngagedDate];
-  [v5 setLastEngagedDate:v6];
+  lastEngagedDate = [(BKLibraryAsset *)self lastEngagedDate];
+  [v5 setLastEngagedDate:lastEngagedDate];
 
-  v7 = [(BKLibraryAsset *)self cloudAssetType];
-  [v5 setCloudAssetType:v7];
+  cloudAssetType = [(BKLibraryAsset *)self cloudAssetType];
+  [v5 setCloudAssetType:cloudAssetType];
 
   v8 = BKLibraryAssetDetailsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1451,49 +1451,49 @@ LABEL_54:
     return 1;
   }
 
-  v4 = [(BKLibraryAsset *)self lastEngagedDate];
-  v3 = v4 != 0;
+  lastEngagedDate = [(BKLibraryAsset *)self lastEngagedDate];
+  v3 = lastEngagedDate != 0;
 
   return v3;
 }
 
-- (void)configureFromReadingNowDetail:(id)a3
+- (void)configureFromReadingNowDetail:(id)detail
 {
-  v4 = a3;
-  v5 = [(BKLibraryAsset *)self lastEngagedDate];
-  v6 = [v4 lastEngagedDate];
-  v7 = [v5 compare:v6];
+  detailCopy = detail;
+  lastEngagedDate = [(BKLibraryAsset *)self lastEngagedDate];
+  lastEngagedDate2 = [detailCopy lastEngagedDate];
+  v7 = [lastEngagedDate compare:lastEngagedDate2];
 
   if (v7 == &dword_0 + 1)
   {
     v8 = BKLibraryAssetDetailsLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(BKLibraryAsset *)self assetID];
+      assetID = [(BKLibraryAsset *)self assetID];
       v19 = 138412546;
-      v20 = v9;
+      v20 = assetID;
       v21 = 2112;
-      v22 = v4;
+      v22 = detailCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "BKLibraryAsset %@ received unexpected Reading Now changes: %@", &v19, 0x16u);
     }
   }
 
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isTrackedAsRecent]);
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [detailCopy isTrackedAsRecent]);
   [(BKLibraryAsset *)self setDifferentNumber:v10 forKey:@"isTrackedAsRecent"];
 
-  v11 = [v4 lastEngagedDate];
-  [(BKLibraryAsset *)self setDifferentDate:v11 forKey:@"lastEngagedDate"];
+  lastEngagedDate3 = [detailCopy lastEngagedDate];
+  [(BKLibraryAsset *)self setDifferentDate:lastEngagedDate3 forKey:@"lastEngagedDate"];
 
   if ([(BKLibraryAsset *)self hasChanges])
   {
     v12 = BKLibraryAssetDetailsLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(BKLibraryAsset *)self assetID];
+      assetID2 = [(BKLibraryAsset *)self assetID];
       v19 = 138412546;
-      v20 = v13;
+      v20 = assetID2;
       v21 = 2112;
-      v22 = v4;
+      v22 = detailCopy;
       v14 = "BKLibraryAsset %@ Configured with Reading Now changes: %@";
       v15 = v12;
       v16 = OS_LOG_TYPE_INFO;
@@ -1507,18 +1507,18 @@ LABEL_11:
   }
 
   v17 = +[BULogUtilities shared];
-  v18 = [v17 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v17 verboseLoggingEnabled];
 
-  if (v18)
+  if (verboseLoggingEnabled)
   {
     v12 = BKLibraryAssetDetailsDevelopmentLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BKLibraryAsset *)self assetID];
+      assetID2 = [(BKLibraryAsset *)self assetID];
       v19 = 138412546;
-      v20 = v13;
+      v20 = assetID2;
       v21 = 2112;
-      v22 = v4;
+      v22 = detailCopy;
       v14 = "\\BKLibraryAsset %@ Configure - No changes for libraryAsset from Reading Now %@\\"";
       v15 = v12;
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -1533,19 +1533,19 @@ LABEL_12:
 {
   if ([(BKLibraryAsset *)self isStore])
   {
-    v3 = [(BKLibraryAsset *)self isAudiobook];
+    isAudiobook = [(BKLibraryAsset *)self isAudiobook];
     v4 = &BDSCloudAssetTypeStoreEbook;
     v5 = &BDSCloudAssetTypeStoreAudiobook;
   }
 
   else
   {
-    v3 = [(BKLibraryAsset *)self _isUbiquityItem];
+    isAudiobook = [(BKLibraryAsset *)self _isUbiquityItem];
     v4 = &BDSCloudAssetTypeSideloadedLocal;
     v5 = &BDSCloudAssetTypeSideloadedUbiquity;
   }
 
-  if (v3)
+  if (isAudiobook)
   {
     v4 = v5;
   }
@@ -1557,43 +1557,43 @@ LABEL_12:
 
 - (BOOL)_isUbiquityItem
 {
-  v2 = [(BKLibraryAsset *)self dataSourceIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.ibooks.datasource.ubiquity"];
+  dataSourceIdentifier = [(BKLibraryAsset *)self dataSourceIdentifier];
+  v3 = [dataSourceIdentifier isEqualToString:@"com.apple.ibooks.datasource.ubiquity"];
 
   return v3;
 }
 
 - (BOOL)isAudiobook
 {
-  v3 = [(BKLibraryAsset *)self dataSourceIdentifier];
-  v4 = ([v3 isEqualToString:@"com.apple.ibooks.datasource.audiobooks"] & 1) != 0 || -[BKLibraryAsset contentType](self, "contentType") == 6;
+  dataSourceIdentifier = [(BKLibraryAsset *)self dataSourceIdentifier];
+  v4 = ([dataSourceIdentifier isEqualToString:@"com.apple.ibooks.datasource.audiobooks"] & 1) != 0 || -[BKLibraryAsset contentType](self, "contentType") == 6;
 
   return v4;
 }
 
 - (BOOL)isBook
 {
-  v3 = [(BKLibraryAsset *)self contentType];
-  if (v3 != 1)
+  contentType = [(BKLibraryAsset *)self contentType];
+  if (contentType != 1)
   {
-    LOBYTE(v3) = [(BKLibraryAsset *)self contentType]== 3 || [(BKLibraryAsset *)self contentType]== 4;
+    LOBYTE(contentType) = [(BKLibraryAsset *)self contentType]== 3 || [(BKLibraryAsset *)self contentType]== 4;
   }
 
-  return v3;
+  return contentType;
 }
 
 - (BOOL)isPreorderBook
 {
-  v2 = [(BKLibraryAsset *)self expectedDate];
-  v3 = v2 != 0;
+  expectedDate = [(BKLibraryAsset *)self expectedDate];
+  v3 = expectedDate != 0;
 
   return v3;
 }
 
 - (BOOL)isManagedBook
 {
-  v2 = [(BKLibraryAsset *)self dataSourceIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.ibooks.plist.managed"];
+  dataSourceIdentifier = [(BKLibraryAsset *)self dataSourceIdentifier];
+  v3 = [dataSourceIdentifier isEqualToString:@"com.apple.ibooks.plist.managed"];
 
   return v3;
 }
@@ -1618,11 +1618,11 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(BKLibraryAsset *)self seriesID];
-  if (v4)
+  seriesID = [(BKLibraryAsset *)self seriesID];
+  if (seriesID)
   {
-    v5 = [(BKLibraryAsset *)self seriesID];
-    v3 = [v5 unsignedLongLongValue] != 0;
+    seriesID2 = [(BKLibraryAsset *)self seriesID];
+    v3 = [seriesID2 unsignedLongLongValue] != 0;
   }
 
   else
@@ -1635,16 +1635,16 @@ LABEL_12:
 
 - (NSString)shortBookTitle
 {
-  v2 = [(BKLibraryAsset *)self title];
-  v3 = [v2 rangeOfString:@": "];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL && (v3 = [v2 rangeOfString:@"; "], v3 == 0x7FFFFFFFFFFFFFFFLL) && (v3 = objc_msgSend(v2, "rangeOfString:", @" / "), v3 == 0x7FFFFFFFFFFFFFFFLL))
+  title = [(BKLibraryAsset *)self title];
+  v3 = [title rangeOfString:@": "];
+  if (v3 == 0x7FFFFFFFFFFFFFFFLL && (v3 = [title rangeOfString:@"; "], v3 == 0x7FFFFFFFFFFFFFFFLL) && (v3 = objc_msgSend(title, "rangeOfString:", @" / "), v3 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v4 = v2;
+    v4 = title;
   }
 
   else
   {
-    v4 = [v2 substringToIndex:v3];
+    v4 = [title substringToIndex:v3];
   }
 
   v5 = v4;
@@ -1652,38 +1652,38 @@ LABEL_12:
   return v5;
 }
 
-- (void)setLastOpenDate:(id)a3
+- (void)setLastOpenDate:(id)date
 {
-  v18 = a3;
-  v4 = [(BKLibraryAsset *)self lastOpenDate];
-  v5 = [v4 isEqual:v18];
+  dateCopy = date;
+  lastOpenDate = [(BKLibraryAsset *)self lastOpenDate];
+  v5 = [lastOpenDate isEqual:dateCopy];
 
   if ((v5 & 1) == 0)
   {
     [(BKLibraryAsset *)self willChangeValueForKey:@"lastOpenDate"];
-    [(BKLibraryAsset *)self setPrimitiveValue:v18 forKey:@"lastOpenDate"];
+    [(BKLibraryAsset *)self setPrimitiveValue:dateCopy forKey:@"lastOpenDate"];
     [(BKLibraryAsset *)self didChangeValueForKey:@"lastOpenDate"];
-    v6 = [(BKLibraryAsset *)self seriesContainer];
-    if (v6)
+    seriesContainer = [(BKLibraryAsset *)self seriesContainer];
+    if (seriesContainer)
     {
-      v7 = v6;
-      v8 = [(BKLibraryAsset *)self isOwned];
+      v7 = seriesContainer;
+      isOwned = [(BKLibraryAsset *)self isOwned];
 
-      if (v8)
+      if (isOwned)
       {
-        v9 = [(BKLibraryAsset *)self lastOpenDate];
-        [v9 timeIntervalSinceReferenceDate];
+        lastOpenDate2 = [(BKLibraryAsset *)self lastOpenDate];
+        [lastOpenDate2 timeIntervalSinceReferenceDate];
         v11 = v10;
-        v12 = [(BKLibraryAsset *)self seriesContainer];
-        v13 = [v12 lastOpenDate];
-        [v13 timeIntervalSinceReferenceDate];
+        seriesContainer2 = [(BKLibraryAsset *)self seriesContainer];
+        lastOpenDate3 = [seriesContainer2 lastOpenDate];
+        [lastOpenDate3 timeIntervalSinceReferenceDate];
         v15 = v14;
 
         if (v11 > v15)
         {
-          v16 = [(BKLibraryAsset *)self lastOpenDate];
-          v17 = [(BKLibraryAsset *)self seriesContainer];
-          [v17 setLastOpenDate:v16];
+          lastOpenDate4 = [(BKLibraryAsset *)self lastOpenDate];
+          seriesContainer3 = [(BKLibraryAsset *)self seriesContainer];
+          [seriesContainer3 setLastOpenDate:lastOpenDate4];
         }
       }
     }
@@ -1692,44 +1692,44 @@ LABEL_12:
 
 - (BOOL)shouldBeInDownloadedCollection
 {
-  v3 = [(BKLibraryAsset *)self isLocal];
-  if (v3)
+  isLocal = [(BKLibraryAsset *)self isLocal];
+  if (isLocal)
   {
     if (([(BKLibraryAsset *)self isEphemeral]& 1) != 0)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isLocal) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(BKLibraryAsset *)self isContainer];
+      LOBYTE(isLocal) = ![(BKLibraryAsset *)self isContainer];
     }
   }
 
-  return v3;
+  return isLocal;
 }
 
 - (BOOL)shouldBeInMySamplesCollection
 {
-  v3 = [(BKLibraryAsset *)self isSample];
-  if (v3)
+  isSample = [(BKLibraryAsset *)self isSample];
+  if (isSample)
   {
-    v3 = [(BKLibraryAsset *)self isLocal];
-    if (v3)
+    isSample = [(BKLibraryAsset *)self isLocal];
+    if (isSample)
     {
       if (([(BKLibraryAsset *)self isEphemeral]& 1) != 0)
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(isSample) = 0;
       }
 
       else
       {
-        LOBYTE(v3) = ![(BKLibraryAsset *)self isContainer];
+        LOBYTE(isSample) = ![(BKLibraryAsset *)self isContainer];
       }
     }
   }
 
-  return v3;
+  return isSample;
 }
 
 @end

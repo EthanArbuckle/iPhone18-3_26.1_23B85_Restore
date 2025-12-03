@@ -10,8 +10,8 @@
 - (id)photosPickerActionPerformer
 {
   v3 = [(PXActionPerformer *)[PXCMMPhotoKitPhotosPickerActionPerformer alloc] initWithActionType:@"PXCMMActionTypeShowPhotosPicker"];
-  v4 = [(PXCMMActionManager *)self performerDelegate];
-  [(PXActionPerformer *)v3 setDelegate:v4];
+  performerDelegate = [(PXCMMActionManager *)self performerDelegate];
+  [(PXActionPerformer *)v3 setDelegate:performerDelegate];
 
   return v3;
 }
@@ -19,8 +19,8 @@
 - (id)messageComposeActionPerformer
 {
   v3 = [(PXActionPerformer *)[PXCMMPhotoKitMessageComposeActionPerformer alloc] initWithActionType:@"PXCMMActionTypeMessageCompose"];
-  v4 = [(PXCMMActionManager *)self performerDelegate];
-  [(PXActionPerformer *)v3 setDelegate:v4];
+  performerDelegate = [(PXCMMActionManager *)self performerDelegate];
+  [(PXActionPerformer *)v3 setDelegate:performerDelegate];
 
   return v3;
 }
@@ -28,15 +28,15 @@
 - (id)publishActionPerformer
 {
   v3 = +[PXCompleteMyMomentSettings sharedInstance];
-  v4 = [v3 publishTransport];
+  publishTransport = [v3 publishTransport];
 
-  if (!v4)
+  if (!publishTransport)
   {
     v5 = off_1E771D378;
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (publishTransport == 1)
   {
     v5 = off_1E771D3D0;
 LABEL_5:
@@ -46,8 +46,8 @@ LABEL_5:
 
   v6 = 0;
 LABEL_7:
-  v7 = [(PXCMMActionManager *)self performerDelegate];
-  [v6 setDelegate:v7];
+  performerDelegate = [(PXCMMActionManager *)self performerDelegate];
+  [v6 setDelegate:performerDelegate];
 
   return v6;
 }
@@ -60,14 +60,14 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [(PXCMMActionManager *)v2 performerClassByType];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeAccept"];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeCleanup"];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeForceSync"];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeSaveToLibrary"];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeNotifyWhenReadyIfNeeded"];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeDelete"];
-    [v4 setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypePublish"];
+    performerClassByType = [(PXCMMActionManager *)v2 performerClassByType];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeAccept"];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeCleanup"];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeForceSync"];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeSaveToLibrary"];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeNotifyWhenReadyIfNeeded"];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypeDelete"];
+    [performerClassByType setObject:objc_opt_class() forKeyedSubscript:@"PXCMMActionTypePublish"];
   }
 
   return v3;

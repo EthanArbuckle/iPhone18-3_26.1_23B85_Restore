@@ -1,9 +1,9 @@
 @interface DPDPushManager
 + (id)sharedInstance;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connectionDidReconnect:(id)a3;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connectionDidReconnect:(id)reconnect;
 @end
 
 @implementation DPDPushManager
@@ -20,49 +20,49 @@
   return v3;
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v7 = a3;
-  v8 = self;
-  sub_10000242C(a3, a4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_10000242C(connection, status);
 }
 
-- (void)connectionDidReconnect:(id)a3
+- (void)connectionDidReconnect:(id)reconnect
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000025E4(a3);
+  reconnectCopy = reconnect;
+  selfCopy = self;
+  sub_1000025E4(reconnect);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a4;
-  if (a4)
+  tokenCopy = token;
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = v4;
-    v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    connectionCopy = connection;
+    selfCopy = self;
+    v8 = tokenCopy;
+    tokenCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
   else
   {
-    v11 = a3;
-    v12 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v10 = 0xF000000000000000;
   }
 
-  sub_100002780(a3, v4, v10);
-  sub_100003EA4(v4, v10);
+  sub_100002780(connection, tokenCopy, v10);
+  sub_100003EA4(tokenCopy, v10);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100002A0C(a4);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  sub_100002A0C(message);
 }
 
 @end

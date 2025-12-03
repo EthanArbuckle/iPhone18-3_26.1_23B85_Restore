@@ -113,9 +113,9 @@
 + (id)_contextStorePredicate
 {
   v2 = +[MCPOIBusynessLocationOfInterestManager sharedLocationOfInterestManagerInstance];
-  v3 = [v2 suppressedLocationsOfInterestUUIDs];
+  suppressedLocationsOfInterestUUIDs = [v2 suppressedLocationsOfInterestUUIDs];
 
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count] + 3);
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [suppressedLocationsOfInterestUUIDs count] + 3);
   v5 = +[_CDContextQueries keyPathForLowPowerModeStatus];
   v6 = [_CDContextualPredicate predicateForKeyPath:v5 withFormat:@"SELF.%@.value == NO", v5];
   [v4 addObject:v6];
@@ -146,7 +146,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v3;
+  v13 = suppressedLocationsOfInterestUUIDs;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {

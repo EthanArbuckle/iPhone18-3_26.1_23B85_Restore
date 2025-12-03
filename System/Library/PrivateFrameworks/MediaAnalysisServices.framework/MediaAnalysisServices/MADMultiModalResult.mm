@@ -1,11 +1,11 @@
 @interface MADMultiModalResult
-- (MADMultiModalResult)initWithCoder:(id)a3;
+- (MADMultiModalResult)initWithCoder:(id)coder;
 - (id)description;
 @end
 
 @implementation MADMultiModalResult
 
-- (MADMultiModalResult)initWithCoder:(id)a3
+- (MADMultiModalResult)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MADMultiModalResult;
@@ -14,12 +14,12 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p>", v5, self];
+  [string appendFormat:@"<%@ %p>", v5, self];
 
-  return v3;
+  return string;
 }
 
 @end

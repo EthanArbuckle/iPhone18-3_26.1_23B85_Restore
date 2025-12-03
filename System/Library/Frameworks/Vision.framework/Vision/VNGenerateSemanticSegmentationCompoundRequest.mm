@@ -1,26 +1,26 @@
 @interface VNGenerateSemanticSegmentationCompoundRequest
-+ (BOOL)warmUpSession:(id)a3 error:(id *)a4;
-+ (Class)detectorForPersonInstanceRequestAndReturnError:(id *)a3;
-+ (Class)detectorForSemanticSegmentationRequestAndReturnError:(id *)a3;
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5;
++ (BOOL)warmUpSession:(id)session error:(id *)error;
++ (Class)detectorForPersonInstanceRequestAndReturnError:(id *)error;
++ (Class)detectorForSemanticSegmentationRequestAndReturnError:(id *)error;
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error;
 + (id)detectorTypeForPersonInstanceRequest;
 + (id)detectorTypeForSemanticSegmentationRequest;
-+ (int64_t)compoundRequestRevisionForRequest:(id)a3;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (VNGenerateSemanticSegmentationCompoundRequest)initWithOriginalRequests:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
++ (int64_t)compoundRequestRevisionForRequest:(id)request;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (VNGenerateSemanticSegmentationCompoundRequest)initWithOriginalRequests:(id)requests;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 @end
 
 @implementation VNGenerateSemanticSegmentationCompoundRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v23 = a4;
-  v24 = [v23 session];
-  v8 = [v23 imageBufferAndReturnError:a5];
-  if (v8 && [(VNRequest *)self validateImageBuffer:v8 ofNonZeroWidth:0 andHeight:0 error:a5])
+  contextCopy = context;
+  session = [contextCopy session];
+  v8 = [contextCopy imageBufferAndReturnError:error];
+  if (v8 && [(VNRequest *)self validateImageBuffer:v8 ofNonZeroWidth:0 andHeight:0 error:error])
   {
     v33 = 0;
     v34 = &v33;
@@ -33,15 +33,15 @@
     aBlock[2] = __89__VNGenerateSemanticSegmentationCompoundRequest_internalPerformRevision_inContext_error___block_invoke;
     aBlock[3] = &unk_1E77B66D0;
     aBlock[4] = self;
-    v32 = a3;
-    v28 = v24;
+    revisionCopy = revision;
+    v28 = session;
     v20 = v8;
     v29 = v8;
     v31 = &v33;
-    v9 = v23;
+    v9 = contextCopy;
     v30 = v9;
     v21 = _Block_copy(aBlock);
-    v22 = VNExecuteBlock(v21, a5);
+    v22 = VNExecuteBlock(v21, error);
     if (v22)
     {
       [(VNCompoundRequest *)self recordWarningsInOriginalRequests];
@@ -53,9 +53,9 @@
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v12 = [(VNCompoundRequest *)self originalRequests];
-        obj = v12;
-        v13 = [v12 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        originalRequests = [(VNCompoundRequest *)self originalRequests];
+        obj = originalRequests;
+        v13 = [originalRequests countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (v13)
         {
           v14 = *v40;
@@ -82,7 +82,7 @@
               [v11 cacheObservationsOfRequest:v16];
             }
 
-            v12 = obj;
+            originalRequests = obj;
             v13 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
           }
 
@@ -133,9 +133,9 @@ BOOL __89__VNGenerateSemanticSegmentationCompoundRequest_internalPerformRevision
   return v11;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  switch(a3)
+  switch(revision)
   {
     case 3uLL:
       v5 = @"VNE5RTSegmentationMultiGeneratorType";
@@ -150,10 +150,10 @@ LABEL_6:
       v5 = v4;
       break;
     default:
-      if (a4)
+      if (error)
       {
         [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-        *a4 = v5 = 0;
+        *error = v5 = 0;
       }
 
       else
@@ -167,12 +167,12 @@ LABEL_6:
   return v5;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v112 = *MEMORY[0x1E69E9840];
   v108.receiver = self;
   v108.super_class = VNGenerateSemanticSegmentationCompoundRequest;
-  v72 = [(VNRequest *)&v108 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v72 = [(VNRequest *)&v108 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v6 = 0x1E695D000uLL;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -194,7 +194,7 @@ LABEL_6:
   v76 = __101__VNGenerateSemanticSegmentationCompoundRequest_newDefaultDetectorOptionsForRequestRevision_session___block_invoke(64, 2, v10);
   v73 = __101__VNGenerateSemanticSegmentationCompoundRequest_newDefaultDetectorOptionsForRequestRevision_session___block_invoke(128, 2, v10);
   v74 = __101__VNGenerateSemanticSegmentationCompoundRequest_newDefaultDetectorOptionsForRequestRevision_session___block_invoke(256, 2, v10);
-  if (a3 == 1)
+  if (revision == 1)
   {
     [v7 setObject:&unk_1F19C1BD0 forKey:v88];
     [v7 setObject:&unk_1F19C1BD0 forKey:v85];
@@ -215,9 +215,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 != 2)
+  if (revision != 2)
   {
-    if (a3 != 3)
+    if (revision != 3)
     {
       goto LABEL_15;
     }
@@ -299,13 +299,13 @@ LABEL_15:
         }
 
         v95 = *(*(&v100 + 1) + 8 * j);
-        v20 = [v95 resolvedRevision];
+        resolvedRevision = [v95 resolvedRevision];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v21 = v95;
           v22 = @"VNSegmentationGeneratorProcessOption_PersonSegmentationDetectorOriginatingRequestSpecifier";
-          switch(v20)
+          switch(resolvedRevision)
           {
             case 1:
               v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v21, "outputPixelFormat")}];
@@ -320,12 +320,12 @@ LABEL_42:
             case 3737841664:
               v34 = [VNGenerateSemanticSegmentationCompoundRequest detectorForPersonInstanceRequestAndReturnError:0];
               [VNError VNAssert:v34 != 0 log:@"Cannot determine segmentation detector type"];
-              v35 = [(objc_class *)v34 outputMaskBlobNames];
+              outputMaskBlobNames = [(objc_class *)v34 outputMaskBlobNames];
               v98 = 0u;
               v99 = 0u;
               v96 = 0u;
               v97 = 0u;
-              v36 = v35;
+              v36 = outputMaskBlobNames;
               v37 = [v36 countByEnumeratingWithState:&v96 objects:v109 count:16];
               if (v37)
               {
@@ -381,7 +381,7 @@ LABEL_44:
         if (objc_opt_isKindOfClass())
         {
           v25 = @"VNSegmentationGeneratorProcessOption_SkySegmentationDetectorOriginatingRequestSpecifier";
-          if (v20 == 3737841664)
+          if (resolvedRevision == 3737841664)
           {
             v51 = v95;
             v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v51, "outputPixelFormat")}];
@@ -391,7 +391,7 @@ LABEL_44:
 LABEL_50:
           }
 
-          else if (v20 == 1)
+          else if (resolvedRevision == 1)
           {
             v26 = v95;
             v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v26, "outputPixelFormat")}];
@@ -410,7 +410,7 @@ LABEL_50:
         if (objc_opt_isKindOfClass())
         {
           v28 = @"VNSegmentationGeneratorProcessOption_HumanAttributesSegmentationDetectorOriginatingRequestSpecifier";
-          if (v20 == 3737841664)
+          if (resolvedRevision == 3737841664)
           {
             v57 = v95;
             v58 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v57, "outputPixelFormat")}];
@@ -432,7 +432,7 @@ LABEL_50:
 LABEL_56:
           }
 
-          else if (v20 == 1)
+          else if (resolvedRevision == 1)
           {
             v29 = v95;
             v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v29, "outputPixelFormat")}];
@@ -463,7 +463,7 @@ LABEL_56:
         if (objc_opt_isKindOfClass())
         {
           v48 = @"VNSegmentationGeneratorProcessOption_GlassesSegmentationDetectorOriginatingRequestSpecifier";
-          if (v20 == 3737841664)
+          if (resolvedRevision == 3737841664)
           {
             v62 = v95;
             v63 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v62, "outputPixelFormat")}];
@@ -473,7 +473,7 @@ LABEL_56:
 LABEL_60:
           }
 
-          else if (v20 == 1)
+          else if (resolvedRevision == 1)
           {
             v49 = v95;
             v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v49, "outputPixelFormat")}];
@@ -493,7 +493,7 @@ LABEL_60:
         {
           v47 = @"VNSegmentationGeneratorProcessOption_AnimalSegmentationDetectorOriginatingRequestSpecifier";
           v53 = @"VNSegmentationGeneratorProcessOption_AnimalSegmentationDetectorOriginatingRequestSpecifier";
-          if (v20 == 1)
+          if (resolvedRevision == 1)
           {
             v54 = v95;
             v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v54, "outputPixelFormat")}];
@@ -515,8 +515,8 @@ LABEL_60:
         }
 
 LABEL_62:
-        v64 = [v95 originatingRequestSpecifier];
-        [v91 setObject:v64 forKey:v47];
+        originatingRequestSpecifier = [v95 originatingRequestSpecifier];
+        [v91 setObject:originatingRequestSpecifier forKey:v47];
       }
 
       v92 = [obj countByEnumeratingWithState:&v100 objects:v110 count:16];
@@ -560,15 +560,15 @@ id __101__VNGenerateSemanticSegmentationCompoundRequest_newDefaultDetectorOption
   return v6;
 }
 
-- (VNGenerateSemanticSegmentationCompoundRequest)initWithOriginalRequests:(id)a3
+- (VNGenerateSemanticSegmentationCompoundRequest)initWithOriginalRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v14.receiver = self;
   v14.super_class = VNGenerateSemanticSegmentationCompoundRequest;
-  v5 = [(VNCompoundRequest *)&v14 initWithOriginalRequests:v4];
+  v5 = [(VNCompoundRequest *)&v14 initWithOriginalRequests:requestsCopy];
   if (v5)
   {
-    v6 = [v4 objectAtIndexedSubscript:0];
+    v6 = [requestsCopy objectAtIndexedSubscript:0];
     v7 = [VNGenerateSemanticSegmentationCompoundRequest compoundRequestRevisionForRequest:v6];
 
     v13 = 0;
@@ -576,8 +576,8 @@ id __101__VNGenerateSemanticSegmentationCompoundRequest_newDefaultDetectorOption
     v9 = v13;
     if (v8)
     {
-      v10 = [(VNRequest *)v5 configuration];
-      [v10 setResolvedRevision:v7];
+      configuration = [(VNRequest *)v5 configuration];
+      [configuration setResolvedRevision:v7];
       v11 = v5;
     }
 
@@ -595,23 +595,23 @@ id __101__VNGenerateSemanticSegmentationCompoundRequest_newDefaultDetectorOption
   return v11;
 }
 
-+ (Class)detectorForSemanticSegmentationRequestAndReturnError:(id *)a3
++ (Class)detectorForSemanticSegmentationRequestAndReturnError:(id *)error
 {
-  v4 = [a1 detectorTypeForSemanticSegmentationRequest];
-  if (([v4 isEqualToString:@"VNE5RTSegmentationMultiGeneratorType"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"VNPersonSegmentationGeneratorSemanticsType"))
+  detectorTypeForSemanticSegmentationRequest = [self detectorTypeForSemanticSegmentationRequest];
+  if (([detectorTypeForSemanticSegmentationRequest isEqualToString:@"VNE5RTSegmentationMultiGeneratorType"] & 1) != 0 || objc_msgSend(detectorTypeForSemanticSegmentationRequest, "isEqualToString:", @"VNPersonSegmentationGeneratorSemanticsType"))
   {
-    a3 = objc_opt_class();
+    error = objc_opt_class();
   }
 
-  else if (a3)
+  else if (error)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot find detector class for detector type: %@", v4];
-    *a3 = [VNError errorForInternalErrorWithLocalizedDescription:v6];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot find detector class for detector type: %@", detectorTypeForSemanticSegmentationRequest];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v6];
 
-    a3 = 0;
+    error = 0;
   }
 
-  return a3;
+  return error;
 }
 
 + (id)detectorTypeForSemanticSegmentationRequest
@@ -641,23 +641,23 @@ void __91__VNGenerateSemanticSegmentationCompoundRequest_detectorTypeForSemantic
   objc_storeStrong(&+[VNGenerateSemanticSegmentationCompoundRequest detectorTypeForSemanticSegmentationRequest]::semanticSegmentationDetectorType, v0);
 }
 
-+ (Class)detectorForPersonInstanceRequestAndReturnError:(id *)a3
++ (Class)detectorForPersonInstanceRequestAndReturnError:(id *)error
 {
-  v4 = [a1 detectorTypeForPersonInstanceRequest];
-  if (([v4 isEqualToString:@"VNE5RTSegmentationMultiGeneratorType"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"VNPersonSegmentationGeneratorInstanceBased4PeopleType"))
+  detectorTypeForPersonInstanceRequest = [self detectorTypeForPersonInstanceRequest];
+  if (([detectorTypeForPersonInstanceRequest isEqualToString:@"VNE5RTSegmentationMultiGeneratorType"] & 1) != 0 || objc_msgSend(detectorTypeForPersonInstanceRequest, "isEqualToString:", @"VNPersonSegmentationGeneratorInstanceBased4PeopleType"))
   {
-    a3 = objc_opt_class();
+    error = objc_opt_class();
   }
 
-  else if (a3)
+  else if (error)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot find detector class for detector type: %@", v4];
-    *a3 = [VNError errorForInternalErrorWithLocalizedDescription:v6];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot find detector class for detector type: %@", detectorTypeForPersonInstanceRequest];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v6];
 
-    a3 = 0;
+    error = 0;
   }
 
-  return a3;
+  return error;
 }
 
 + (id)detectorTypeForPersonInstanceRequest
@@ -687,10 +687,10 @@ void __85__VNGenerateSemanticSegmentationCompoundRequest_detectorTypeForPersonIn
   objc_storeStrong(&+[VNGenerateSemanticSegmentationCompoundRequest detectorTypeForPersonInstanceRequest]::personInstanceDetectorType, v0);
 }
 
-+ (BOOL)warmUpSession:(id)a3 error:(id *)a4
++ (BOOL)warmUpSession:(id)session error:(id *)error
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sessionCopy = session;
   v6 = objc_alloc_init(VNGeneratePersonSegmentationRequest);
   v7 = objc_alloc_init(VNGenerateSkySegmentationRequest);
   v8 = objc_alloc_init(VNGenerateHumanAttributesSegmentationRequest);
@@ -703,9 +703,9 @@ void __85__VNGenerateSemanticSegmentationCompoundRequest_detectorTypeForPersonIn
   v31[4] = v25;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:5];
   v11 = objc_alloc_init(VNRequestPerformer);
-  v12 = [[VNRequestPerformingContext alloc] initWithSession:v5 requestPerformer:v11 imageBuffer:0 forensics:0 observationsCache:0];
+  v12 = [[VNRequestPerformingContext alloc] initWithSession:sessionCopy requestPerformer:v11 imageBuffer:0 forensics:0 observationsCache:0];
   [(VNRequestPerformingContext *)v12 qosClass];
-  v13 = [VNGenerateSemanticSegmentationCompoundRequest compoundRequestsForOriginalRequests:v10 withPerformingContext:v12 error:a4];
+  v13 = [VNGenerateSemanticSegmentationCompoundRequest compoundRequestsForOriginalRequests:v10 withPerformingContext:v12 error:error];
   v14 = v13;
   if (v13)
   {
@@ -731,7 +731,7 @@ void __85__VNGenerateSemanticSegmentationCompoundRequest_detectorTypeForPersonIn
             objc_enumerationMutation(v15);
           }
 
-          if (([*(*(&v26 + 1) + 8 * i) warmUpSession:v5 error:a4] & 1) == 0)
+          if (([*(*(&v26 + 1) + 8 * i) warmUpSession:sessionCopy error:error] & 1) == 0)
           {
             v19 = 0;
             goto LABEL_12;
@@ -770,16 +770,16 @@ LABEL_12:
   return v19;
 }
 
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  requestsCopy = requests;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v34;
+  obj = requestsCopy;
   v7 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v7)
   {
@@ -821,13 +821,13 @@ LABEL_12:
 
         if (v12)
         {
-          v13 = [a1 compoundRequestRevisionForRequest:v10];
+          v13 = [self compoundRequestRevisionForRequest:v10];
           if (!v13)
           {
-            if (a5)
+            if (error)
             {
               v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"VNGenerateSemanticSegmentationCompoundRequest unimplemented revision/options for %@", v10];
-              *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v32];
+              *error = [VNError errorForInternalErrorWithLocalizedDescription:v32];
             }
 
             v30 = 0;
@@ -918,38 +918,38 @@ void __113__VNGenerateSemanticSegmentationCompoundRequest_compoundRequestsForOri
   [*(a1 + 32) addObject:v4];
 }
 
-+ (int64_t)compoundRequestRevisionForRequest:(id)a3
++ (int64_t)compoundRequestRevisionForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (+[VNGenerateSemanticSegmentationCompoundRequest compoundRequestRevisionForRequest:]::onceToken != -1)
   {
     dispatch_once(&+[VNGenerateSemanticSegmentationCompoundRequest compoundRequestRevisionForRequest:]::onceToken, &__block_literal_global_34582);
   }
 
-  v4 = [+[VNGenerateSemanticSegmentationCompoundRequest compoundRequestRevisionForRequest:]::requestClassToDictionaryRequestRevisionToCompoundRequestRevision objectForKey:{objc_msgSend(v3, "frameworkClass")}];
+  v4 = [+[VNGenerateSemanticSegmentationCompoundRequest compoundRequestRevisionForRequest:]::requestClassToDictionaryRequestRevisionToCompoundRequestRevision objectForKey:{objc_msgSend(requestCopy, "frameworkClass")}];
   if (v4)
   {
-    v5 = [v3 resolvedRevision];
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+    resolvedRevision = [requestCopy resolvedRevision];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resolvedRevision];
     v7 = [v4 objectForKey:v6];
 
     if (v7)
     {
-      v8 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
     }
 
     else
     {
-      v8 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 void __83__VNGenerateSemanticSegmentationCompoundRequest_compoundRequestRevisionForRequest___block_invoke()

@@ -1,10 +1,10 @@
 @interface SeymourDaemonDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation SeymourDaemonDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = [DEAttachmentItem attachmentWithPath:@"/var/mobile/Library/Seymour/seymour_b.sqlite"];
   v4 = [DEAttachmentItem attachmentWithPath:@"/var/mobile/Library/Seymour/seymour_c.sqlite"];

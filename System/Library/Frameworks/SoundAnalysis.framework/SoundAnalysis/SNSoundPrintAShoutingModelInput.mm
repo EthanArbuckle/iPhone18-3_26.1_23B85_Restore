@@ -1,52 +1,52 @@
 @interface SNSoundPrintAShoutingModelInput
-- (SNSoundPrintAShoutingModelInput)initWithInput1:(id)a3 stateIn:(id)a4 detectedHistoryIn:(id)a5;
-- (id)featureValueForName:(id)a3;
+- (SNSoundPrintAShoutingModelInput)initWithInput1:(id)input1 stateIn:(id)in detectedHistoryIn:(id)historyIn;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SNSoundPrintAShoutingModelInput
 
-- (SNSoundPrintAShoutingModelInput)initWithInput1:(id)a3 stateIn:(id)a4 detectedHistoryIn:(id)a5
+- (SNSoundPrintAShoutingModelInput)initWithInput1:(id)input1 stateIn:(id)in detectedHistoryIn:(id)historyIn
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  input1Copy = input1;
+  inCopy = in;
+  historyInCopy = historyIn;
   v15.receiver = self;
   v15.super_class = SNSoundPrintAShoutingModelInput;
   v12 = [(SNSoundPrintAShoutingModelInput *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_input1, a3);
-    objc_storeStrong(&v13->_stateIn, a4);
-    objc_storeStrong(&v13->_detectedHistoryIn, a5);
+    objc_storeStrong(&v12->_input1, input1);
+    objc_storeStrong(&v13->_stateIn, in);
+    objc_storeStrong(&v13->_detectedHistoryIn, historyIn);
   }
 
   return v13;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"input1"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"input1"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNSoundPrintAShoutingModelInput *)self input1];
-    v7 = [v5 featureValueWithMultiArray:v6];
+    input1 = [(SNSoundPrintAShoutingModelInput *)self input1];
+    v7 = [v5 featureValueWithMultiArray:input1];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"stateIn"])
+  if ([nameCopy isEqualToString:@"stateIn"])
   {
-    v6 = [(SNSoundPrintAShoutingModelInput *)self stateIn];
-    if (v6)
+    input1 = [(SNSoundPrintAShoutingModelInput *)self stateIn];
+    if (input1)
     {
       v8 = MEMORY[0x1E695FE60];
-      v9 = [(SNSoundPrintAShoutingModelInput *)self stateIn];
+      stateIn = [(SNSoundPrintAShoutingModelInput *)self stateIn];
 LABEL_9:
-      v10 = v9;
-      v7 = [v8 featureValueWithMultiArray:v9];
+      v10 = stateIn;
+      v7 = [v8 featureValueWithMultiArray:stateIn];
 
       goto LABEL_11;
     }
@@ -54,13 +54,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"detectedHistoryIn"])
+  if ([nameCopy isEqualToString:@"detectedHistoryIn"])
   {
-    v6 = [(SNSoundPrintAShoutingModelInput *)self detectedHistoryIn];
-    if (v6)
+    input1 = [(SNSoundPrintAShoutingModelInput *)self detectedHistoryIn];
+    if (input1)
     {
       v8 = MEMORY[0x1E695FE60];
-      v9 = [(SNSoundPrintAShoutingModelInput *)self detectedHistoryIn];
+      stateIn = [(SNSoundPrintAShoutingModelInput *)self detectedHistoryIn];
       goto LABEL_9;
     }
 

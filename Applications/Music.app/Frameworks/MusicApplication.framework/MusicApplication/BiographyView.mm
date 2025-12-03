@@ -1,18 +1,18 @@
 @interface BiographyView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityListStrings;
 - (NSArray)accessibilityStackViews;
-- (_TtC16MusicApplication13BiographyView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication13BiographyView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BiographyView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_160360();
 }
 
@@ -32,11 +32,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1606B4(width, height);
   v7 = v6;
   v9 = v8;
@@ -48,13 +48,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for BiographyView();
   v4 = v7.receiver;
-  v5 = a3;
-  [(BiographyView *)&v7 traitCollectionDidChange:v5];
+  changeCopy = change;
+  [(BiographyView *)&v7 traitCollectionDidChange:changeCopy];
   [v4 setNeedsLayout];
   v6 = *&v4[OBJC_IVAR____TtC16MusicApplication13BiographyView_layoutInvalidationHandler];
   if (v6)
@@ -76,7 +76,7 @@
 
 - (NSArray)accessibilityListStrings
 {
-  v2 = self;
+  selfCopy = self;
   sub_16114C();
 
   v3.super.isa = sub_AB9740().super.isa;
@@ -84,7 +84,7 @@
   return v3.super.isa;
 }
 
-- (_TtC16MusicApplication13BiographyView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication13BiographyView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

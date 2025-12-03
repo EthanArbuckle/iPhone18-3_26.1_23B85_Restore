@@ -2,41 +2,41 @@
 + (PKMobileAssetManager)sharedInstance;
 - (BOOL)hasCashStickers;
 - (PKMobileAssetManager)init;
-- (id)_cachedAssetWithQuery:(id)a3;
-- (id)_cachedAssetsWithQuery:(id)a3;
-- (id)_compatibleVersionsWithMinimumVersion:(unint64_t)a3 maximumVersion:(unint64_t)a4;
-- (id)_downloadOptionsWithTimeout:(int64_t)a3 isDiscretionary:(BOOL)a4;
+- (id)_cachedAssetWithQuery:(id)query;
+- (id)_cachedAssetsWithQuery:(id)query;
+- (id)_compatibleVersionsWithMinimumVersion:(unint64_t)version maximumVersion:(unint64_t)maximumVersion;
+- (id)_downloadOptionsWithTimeout:(int64_t)timeout isDiscretionary:(BOOL)discretionary;
 - (id)_queryForCashStickers;
-- (id)_queryForCityCodeStationProvider:(id)a3;
-- (id)_queryForDynamicAssetsWithParameters:(id)a3;
-- (id)_queryForHowToUseWalletAssetType:(id)a3 identifier:(id)a4 lotIdentifier:(id)a5;
-- (id)_queryForMarketNotificationIdentifier:(id)a3;
-- (id)_queryForStationCodeData:(id)a3;
-- (id)_queryForStringsBundleWithIdentifier:(id)a3;
+- (id)_queryForCityCodeStationProvider:(id)provider;
+- (id)_queryForDynamicAssetsWithParameters:(id)parameters;
+- (id)_queryForHowToUseWalletAssetType:(id)type identifier:(id)identifier lotIdentifier:(id)lotIdentifier;
+- (id)_queryForMarketNotificationIdentifier:(id)identifier;
+- (id)_queryForStationCodeData:(id)data;
+- (id)_queryForStringsBundleWithIdentifier:(id)identifier;
 - (id)cachedCashStickerBundle;
-- (id)cachedDynamicAssetWithIdentifier:(id)a3 parameters:(id)a4;
+- (id)cachedDynamicAssetWithIdentifier:(id)identifier parameters:(id)parameters;
 - (id)cachedDynamicAssetsIndex;
-- (id)cachedHowToUseWalletCardAssetForIdentifier:(id)a3;
-- (id)cachedHowToUseWalletCardAssetsForLotIdentifier:(id)a3;
+- (id)cachedHowToUseWalletCardAssetForIdentifier:(id)identifier;
+- (id)cachedHowToUseWalletCardAssetsForLotIdentifier:(id)identifier;
 - (id)cachedHowToUseWalletModelAsset;
-- (id)cachedStringsBundleWithIdentifier:(id)a3;
+- (id)cachedStringsBundleWithIdentifier:(id)identifier;
 - (id)sortDescriptorsForLatestContentVersion;
 - (id)sortDescriptorsForMarkets;
-- (void)_downloadAsset:(id)a3 isDiscretionary:(BOOL)a4 timeout:(int64_t)a5 completion:(id)a6;
-- (void)_downloadAssetCatalogIfExpired:(unint64_t)a3 completion:(id)a4;
-- (void)_downloadPrefetchableAssetsForType:(int64_t)a3 completion:(id)a4;
-- (void)_purgeAssets:(id)a3 completion:(id)a4;
+- (void)_downloadAsset:(id)asset isDiscretionary:(BOOL)discretionary timeout:(int64_t)timeout completion:(id)completion;
+- (void)_downloadAssetCatalogIfExpired:(unint64_t)expired completion:(id)completion;
+- (void)_downloadPrefetchableAssetsForType:(int64_t)type completion:(id)completion;
+- (void)_purgeAssets:(id)assets completion:(id)completion;
 - (void)_purgeCashStickers;
-- (void)_retrieveAssetWithQuery:(id)a3 maxCompatibleVersion:(unint64_t)a4 isDiscretionary:(BOOL)a5 sortDescriptors:(id)a6 timeout:(unint64_t)a7 catalogExpirationDays:(unint64_t)a8 completion:(id)a9;
-- (void)dynamicAssetWithIdentifier:(id)a3 mappedIdentifierPrefix:(id)a4 parameters:(id)a5 timeout:(unint64_t)a6 completion:(id)a7;
-- (void)dynamicAssetsIndex:(id)a3;
-- (void)fetchCityStationProviderAssetForBaseProvider:(id)a3 completionHandler:(id)a4;
-- (void)fetchMarketNotificationAssetsForIdentifier:(id)a3 isDiscretionary:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchRPIdentifierMappingDiscretionary:(BOOL)a3 localOnly:(BOOL)a4 completionHandler:(id)a5;
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4;
-- (void)schedulePrefetchForType:(int64_t)a3 interval:(double)a4 queue:(id)a5;
-- (void)stationCodeDataForStationCodeProvider:(id)a3 completionHandler:(id)a4;
-- (void)stringsBundleWithIdentifier:(id)a3 timeout:(unint64_t)a4 completion:(id)a5;
+- (void)_retrieveAssetWithQuery:(id)query maxCompatibleVersion:(unint64_t)version isDiscretionary:(BOOL)discretionary sortDescriptors:(id)descriptors timeout:(unint64_t)timeout catalogExpirationDays:(unint64_t)days completion:(id)completion;
+- (void)dynamicAssetWithIdentifier:(id)identifier mappedIdentifierPrefix:(id)prefix parameters:(id)parameters timeout:(unint64_t)timeout completion:(id)completion;
+- (void)dynamicAssetsIndex:(id)index;
+- (void)fetchCityStationProviderAssetForBaseProvider:(id)provider completionHandler:(id)handler;
+- (void)fetchMarketNotificationAssetsForIdentifier:(id)identifier isDiscretionary:(BOOL)discretionary completionHandler:(id)handler;
+- (void)fetchRPIdentifierMappingDiscretionary:(BOOL)discretionary localOnly:(BOOL)only completionHandler:(id)handler;
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria;
+- (void)schedulePrefetchForType:(int64_t)type interval:(double)interval queue:(id)queue;
+- (void)stationCodeDataForStationCodeProvider:(id)provider completionHandler:(id)handler;
+- (void)stringsBundleWithIdentifier:(id)identifier timeout:(unint64_t)timeout completion:(id)completion;
 - (void)updateCashStickersIfNecessary;
 @end
 
@@ -84,8 +84,8 @@ void __38__PKMobileAssetManager_sharedInstance__block_invoke()
 
 - (id)cachedHowToUseWalletModelAsset
 {
-  v3 = [(PKMobileAssetManager *)self _queryForHowToUseWalletModel];
-  v4 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:v3];
+  _queryForHowToUseWalletModel = [(PKMobileAssetManager *)self _queryForHowToUseWalletModel];
+  v4 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:_queryForHowToUseWalletModel];
 
   return v4;
 }
@@ -100,11 +100,11 @@ void __38__PKMobileAssetManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)fetchMarketNotificationAssetsForIdentifier:(id)a3 isDiscretionary:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchMarketNotificationAssetsForIdentifier:(id)identifier isDiscretionary:(BOOL)discretionary completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  if (v5)
+  discretionaryCopy = discretionary;
+  handlerCopy = handler;
+  if (discretionaryCopy)
   {
     v9 = 120;
   }
@@ -114,15 +114,15 @@ void __38__PKMobileAssetManager_sharedInstance__block_invoke()
     v9 = 30;
   }
 
-  v10 = [(PKMobileAssetManager *)self _queryForMarketNotificationIdentifier:a3];
-  v11 = [(PKMobileAssetManager *)self sortDescriptorsForMarkets];
+  v10 = [(PKMobileAssetManager *)self _queryForMarketNotificationIdentifier:identifier];
+  sortDescriptorsForMarkets = [(PKMobileAssetManager *)self sortDescriptorsForMarkets];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__PKMobileAssetManager_fetchMarketNotificationAssetsForIdentifier_isDiscretionary_completionHandler___block_invoke;
   v13[3] = &unk_1E79D0188;
-  v14 = v8;
-  v12 = v8;
-  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v10 maxCompatibleVersion:2 isDiscretionary:v5 sortDescriptors:v11 timeout:v9 catalogExpirationDays:7 completion:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v10 maxCompatibleVersion:2 isDiscretionary:discretionaryCopy sortDescriptors:sortDescriptorsForMarkets timeout:v9 catalogExpirationDays:7 completion:v13];
 }
 
 void __101__PKMobileAssetManager_fetchMarketNotificationAssetsForIdentifier_isDiscretionary_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -145,18 +145,18 @@ void __101__PKMobileAssetManager_fetchMarketNotificationAssetsForIdentifier_isDi
   }
 }
 
-- (void)fetchCityStationProviderAssetForBaseProvider:(id)a3 completionHandler:(id)a4
+- (void)fetchCityStationProviderAssetForBaseProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PKMobileAssetManager *)self _queryForCityCodeStationProvider:a3];
-  v8 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+  handlerCopy = handler;
+  v7 = [(PKMobileAssetManager *)self _queryForCityCodeStationProvider:provider];
+  sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__PKMobileAssetManager_fetchCityStationProviderAssetForBaseProvider_completionHandler___block_invoke;
   v10[3] = &unk_1E79D0188;
-  v11 = v6;
-  v9 = v6;
-  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v7 maxCompatibleVersion:2 isDiscretionary:0 sortDescriptors:v8 timeout:120 catalogExpirationDays:1 completion:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v7 maxCompatibleVersion:2 isDiscretionary:0 sortDescriptors:sortDescriptorsForLatestContentVersion timeout:120 catalogExpirationDays:1 completion:v10];
 }
 
 void __87__PKMobileAssetManager_fetchCityStationProviderAssetForBaseProvider_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -179,18 +179,18 @@ void __87__PKMobileAssetManager_fetchCityStationProviderAssetForBaseProvider_com
   }
 }
 
-- (void)stationCodeDataForStationCodeProvider:(id)a3 completionHandler:(id)a4
+- (void)stationCodeDataForStationCodeProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PKMobileAssetManager *)self _queryForStationCodeData:a3];
-  v8 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+  handlerCopy = handler;
+  v7 = [(PKMobileAssetManager *)self _queryForStationCodeData:provider];
+  sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PKMobileAssetManager_stationCodeDataForStationCodeProvider_completionHandler___block_invoke;
   v10[3] = &unk_1E79D0188;
-  v11 = v6;
-  v9 = v6;
-  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v7 maxCompatibleVersion:1 isDiscretionary:0 sortDescriptors:v8 timeout:120 catalogExpirationDays:7 completion:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v7 maxCompatibleVersion:1 isDiscretionary:0 sortDescriptors:sortDescriptorsForLatestContentVersion timeout:120 catalogExpirationDays:7 completion:v10];
 }
 
 void __80__PKMobileAssetManager_stationCodeDataForStationCodeProvider_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -213,16 +213,16 @@ void __80__PKMobileAssetManager_stationCodeDataForStationCodeProvider_completion
   }
 }
 
-- (void)fetchRPIdentifierMappingDiscretionary:(BOOL)a3 localOnly:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchRPIdentifierMappingDiscretionary:(BOOL)discretionary localOnly:(BOOL)only completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  onlyCopy = only;
+  discretionaryCopy = discretionary;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __90__PKMobileAssetManager_fetchRPIdentifierMappingDiscretionary_localOnly_completionHandler___block_invoke;
   aBlock[3] = &unk_1E79D0188;
-  v9 = v8;
+  v9 = handlerCopy;
   v18 = v9;
   v10 = _Block_copy(aBlock);
   v11 = [(PKMobileAssetManager *)self _compatibleVersionsWithMinimumVersion:1 maximumVersion:1];
@@ -230,7 +230,7 @@ void __80__PKMobileAssetManager_stationCodeDataForStationCodeProvider_completion
   [v12 returnTypes:2];
   [v12 addKeyValuePair:@"Feature" with:@"RPIdentifierMapping"];
   [v12 addKeyValueArray:*MEMORY[0x1E69B1840] with:v11];
-  if (v5)
+  if (onlyCopy)
   {
     v13 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:v12];
     v10[2](v10, v13, 0);
@@ -238,13 +238,13 @@ void __80__PKMobileAssetManager_stationCodeDataForStationCodeProvider_completion
 
   else
   {
-    v14 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+    sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __90__PKMobileAssetManager_fetchRPIdentifierMappingDiscretionary_localOnly_completionHandler___block_invoke_2;
     v15[3] = &unk_1E79D0188;
     v16 = v10;
-    [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v12 maxCompatibleVersion:1 isDiscretionary:v6 sortDescriptors:v14 timeout:120 catalogExpirationDays:7 completion:v15];
+    [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v12 maxCompatibleVersion:1 isDiscretionary:discretionaryCopy sortDescriptors:sortDescriptorsForLatestContentVersion timeout:120 catalogExpirationDays:7 completion:v15];
 
     v13 = v16;
   }
@@ -303,15 +303,15 @@ uint64_t __49__PKMobileAssetManager_sortDescriptorsForMarkets__block_invoke(uint
   }
 }
 
-- (id)cachedDynamicAssetWithIdentifier:(id)a3 parameters:(id)a4
+- (id)cachedDynamicAssetWithIdentifier:(id)identifier parameters:(id)parameters
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithDictionary:v7];
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  v9 = [[v6 alloc] initWithDictionary:parametersCopy];
 
-  v10 = [(PKMobileAssetManager *)self cachedDynamicAssetsIndex];
-  v11 = [v10 mappedAssetIdentifier:v8];
+  cachedDynamicAssetsIndex = [(PKMobileAssetManager *)self cachedDynamicAssetsIndex];
+  v11 = [cachedDynamicAssetsIndex mappedAssetIdentifier:identifierCopy];
 
   [v9 setValue:v11 forKey:@"Identifier"];
   v12 = [(PKMobileAssetManager *)self _queryForDynamicAssetsWithParameters:v9];
@@ -320,12 +320,12 @@ uint64_t __49__PKMobileAssetManager_sortDescriptorsForMarkets__block_invoke(uint
   return v13;
 }
 
-- (void)dynamicAssetWithIdentifier:(id)a3 mappedIdentifierPrefix:(id)a4 parameters:(id)a5 timeout:(unint64_t)a6 completion:(id)a7
+- (void)dynamicAssetWithIdentifier:(id)identifier mappedIdentifierPrefix:(id)prefix parameters:(id)parameters timeout:(unint64_t)timeout completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  prefixCopy = prefix;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -333,7 +333,7 @@ uint64_t __49__PKMobileAssetManager_sortDescriptorsForMarkets__block_invoke(uint
   v42 = __Block_byref_object_dispose__84;
   v43 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
   v16 = v39[5];
-  v17 = dispatch_time(0, 1000000000 * a6);
+  v17 = dispatch_time(0, 1000000000 * timeout);
   dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
   v18 = v39[5];
   handler[0] = MEMORY[0x1E69E9820];
@@ -341,11 +341,11 @@ uint64_t __49__PKMobileAssetManager_sortDescriptorsForMarkets__block_invoke(uint
   handler[2] = __104__PKMobileAssetManager_dynamicAssetWithIdentifier_mappedIdentifierPrefix_parameters_timeout_completion___block_invoke;
   handler[3] = &unk_1E79E40B0;
   v36 = &v38;
-  v19 = v15;
+  v19 = completionCopy;
   v35 = v19;
-  v20 = v12;
+  v20 = identifierCopy;
   v34 = v20;
-  v37 = a6;
+  timeoutCopy = timeout;
   dispatch_source_set_event_handler(v18, handler);
   dispatch_resume(v39[5]);
   v25[0] = MEMORY[0x1E69E9820];
@@ -353,14 +353,14 @@ uint64_t __49__PKMobileAssetManager_sortDescriptorsForMarkets__block_invoke(uint
   v25[2] = __104__PKMobileAssetManager_dynamicAssetWithIdentifier_mappedIdentifierPrefix_parameters_timeout_completion___block_invoke_402;
   v25[3] = &unk_1E79E4128;
   v31 = &v38;
-  v21 = v14;
+  v21 = parametersCopy;
   v26 = v21;
   v22 = v20;
   v27 = v22;
-  v23 = v13;
+  v23 = prefixCopy;
   v28 = v23;
-  v29 = self;
-  v32 = a6;
+  selfCopy = self;
+  timeoutCopy2 = timeout;
   v24 = v19;
   v30 = v24;
   [(PKMobileAssetManager *)self dynamicAssetsIndex:v25];
@@ -507,10 +507,10 @@ NSObject *__104__PKMobileAssetManager_dynamicAssetWithIdentifier_mappedIdentifie
   return v4;
 }
 
-- (void)dynamicAssetsIndex:(id)a3
+- (void)dynamicAssetsIndex:(id)index
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indexCopy = index;
   v11 = @"Type";
   v12[0] = @"Index";
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
@@ -521,22 +521,22 @@ NSObject *__104__PKMobileAssetManager_dynamicAssetWithIdentifier_mappedIdentifie
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
-    if (v4)
+    if (indexCopy)
     {
-      v4[2](v4, v7, 0);
+      indexCopy[2](indexCopy, v7, 0);
     }
   }
 
   else
   {
-    v8 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+    sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __43__PKMobileAssetManager_dynamicAssetsIndex___block_invoke;
     v9[3] = &unk_1E79C84E0;
     v9[4] = self;
-    v10 = v4;
-    [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v6 maxCompatibleVersion:1 isDiscretionary:0 sortDescriptors:v8 timeout:30 catalogExpirationDays:7 completion:v9];
+    v10 = indexCopy;
+    [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v6 maxCompatibleVersion:1 isDiscretionary:0 sortDescriptors:sortDescriptorsForLatestContentVersion timeout:30 catalogExpirationDays:7 completion:v9];
   }
 }
 
@@ -568,15 +568,15 @@ void __43__PKMobileAssetManager_dynamicAssetsIndex___block_invoke(uint64_t a1, v
   }
 }
 
-- (id)cachedStringsBundleWithIdentifier:(id)a3
+- (id)cachedStringsBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_cachedStringsBundles objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_cachedStringsBundles objectForKeyedSubscript:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
     v8 = 0;
   }
@@ -585,18 +585,18 @@ void __43__PKMobileAssetManager_dynamicAssetsIndex___block_invoke(uint64_t a1, v
   {
     if (!v5)
     {
-      v7 = [(PKMobileAssetManager *)self _queryForStringsBundleWithIdentifier:v4];
+      v7 = [(PKMobileAssetManager *)self _queryForStringsBundleWithIdentifier:identifierCopy];
       v5 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:v7];
       os_unfair_lock_lock(&self->_lock);
       if (v5)
       {
-        [(NSMutableDictionary *)self->_cachedStringsBundles setObject:v5 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_cachedStringsBundles setObject:v5 forKeyedSubscript:identifierCopy];
       }
 
       else
       {
-        v9 = [MEMORY[0x1E695DFB0] null];
-        [(NSMutableDictionary *)self->_cachedStringsBundles setObject:v9 forKeyedSubscript:v4];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        [(NSMutableDictionary *)self->_cachedStringsBundles setObject:null2 forKeyedSubscript:identifierCopy];
       }
 
       os_unfair_lock_unlock(&self->_lock);
@@ -609,22 +609,22 @@ void __43__PKMobileAssetManager_dynamicAssetsIndex___block_invoke(uint64_t a1, v
   return v8;
 }
 
-- (void)stringsBundleWithIdentifier:(id)a3 timeout:(unint64_t)a4 completion:(id)a5
+- (void)stringsBundleWithIdentifier:(id)identifier timeout:(unint64_t)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PKMobileAssetManager *)self _queryForStringsBundleWithIdentifier:v8];
-  v11 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = [(PKMobileAssetManager *)self _queryForStringsBundleWithIdentifier:identifierCopy];
+  sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__PKMobileAssetManager_stringsBundleWithIdentifier_timeout_completion___block_invoke;
   v14[3] = &unk_1E79E4150;
-  v15 = v8;
-  v16 = v9;
+  v15 = identifierCopy;
+  v16 = completionCopy;
   v14[4] = self;
-  v12 = v8;
-  v13 = v9;
-  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v10 maxCompatibleVersion:1 isDiscretionary:0 sortDescriptors:v11 timeout:a4 catalogExpirationDays:7 completion:v14];
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  [(PKMobileAssetManager *)self _retrieveAssetWithQuery:v10 maxCompatibleVersion:1 isDiscretionary:0 sortDescriptors:sortDescriptorsForLatestContentVersion timeout:timeout catalogExpirationDays:7 completion:v14];
 }
 
 void __71__PKMobileAssetManager_stringsBundleWithIdentifier_timeout_completion___block_invoke(void *a1, void *a2, void *a3)
@@ -660,17 +660,17 @@ void __71__PKMobileAssetManager_stringsBundleWithIdentifier_timeout_completion__
 LABEL_7:
 }
 
-- (id)cachedHowToUseWalletCardAssetForIdentifier:(id)a3
+- (id)cachedHowToUseWalletCardAssetForIdentifier:(id)identifier
 {
-  v4 = [(PKMobileAssetManager *)self _queryForHowToUseWalletCardWithIdentifier:a3];
+  v4 = [(PKMobileAssetManager *)self _queryForHowToUseWalletCardWithIdentifier:identifier];
   v5 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:v4];
 
   return v5;
 }
 
-- (id)cachedHowToUseWalletCardAssetsForLotIdentifier:(id)a3
+- (id)cachedHowToUseWalletCardAssetsForLotIdentifier:(id)identifier
 {
-  v4 = [(PKMobileAssetManager *)self _queryForHowToUseWalletCardWithLotIdentifier:a3];
+  v4 = [(PKMobileAssetManager *)self _queryForHowToUseWalletCardWithLotIdentifier:identifier];
   v5 = [(PKMobileAssetManager *)self _cachedAssetsWithQuery:v4];
 
   return v5;
@@ -679,7 +679,7 @@ LABEL_7:
 - (BOOL)hasCashStickers
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(PKMobileAssetManager *)self cachedCashStickerBundle];
+  cachedCashStickerBundle = [(PKMobileAssetManager *)self cachedCashStickerBundle];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -698,7 +698,7 @@ LABEL_7:
           objc_enumerationMutation(&unk_1F23B48E0);
         }
 
-        v7 = [v2 URLsForResourcesWithExtension:*(*(&v11 + 1) + 8 * i) subdirectory:@"Stickers"];
+        v7 = [cachedCashStickerBundle URLsForResourcesWithExtension:*(*(&v11 + 1) + 8 * i) subdirectory:@"Stickers"];
         v8 = [v7 count];
 
         if (v8)
@@ -726,15 +726,15 @@ LABEL_11:
 
 - (id)cachedCashStickerBundle
 {
-  v3 = [(PKMobileAssetManager *)self _queryForCashStickers];
-  v4 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:v3];
+  _queryForCashStickers = [(PKMobileAssetManager *)self _queryForCashStickers];
+  v4 = [(PKMobileAssetManager *)self _cachedAssetWithQuery:_queryForCashStickers];
 
   return v4;
 }
 
 - (void)updateCashStickersIfNecessary
 {
-  v3 = [(PKMobileAssetManager *)self hasCashStickers];
+  hasCashStickers = [(PKMobileAssetManager *)self hasCashStickers];
   if (PKAppleCashStickerPackIsEligibleForDownload())
   {
     v7[0] = MEMORY[0x1E69E9820];
@@ -742,7 +742,7 @@ LABEL_11:
     v7[2] = __53__PKMobileAssetManager_updateCashStickersIfNecessary__block_invoke;
     v7[3] = &unk_1E79E4178;
     v7[4] = self;
-    v8 = v3;
+    v8 = hasCashStickers;
     [(PKMobileAssetManager *)self prefetchAssetsForType:3 completion:v7];
   }
 
@@ -750,7 +750,7 @@ LABEL_11:
   {
     v4 = PKLogFacilityTypeGetObject(0xBuLL);
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (hasCashStickers)
     {
       if (v5)
       {
@@ -795,11 +795,11 @@ void __53__PKMobileAssetManager_updateCashStickersIfNecessary__block_invoke(uint
 - (void)_purgeCashStickers
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PKMobileAssetManager *)self _queryForCashStickers];
-  v4 = [v3 queryMetaDataSync];
-  if (v4)
+  _queryForCashStickers = [(PKMobileAssetManager *)self _queryForCashStickers];
+  queryMetaDataSync = [_queryForCashStickers queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    v5 = v4;
+    v5 = queryMetaDataSync;
     v6 = PKLogFacilityTypeGetObject(0xBuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -809,24 +809,24 @@ void __53__PKMobileAssetManager_updateCashStickersIfNecessary__block_invoke(uint
     }
   }
 
-  v7 = [v3 results];
-  if ([v7 count])
+  results = [_queryForCashStickers results];
+  if ([results count])
   {
-    [(PKMobileAssetManager *)self _purgeAssets:v7 completion:&__block_literal_global_425_0];
+    [(PKMobileAssetManager *)self _purgeAssets:results completion:&__block_literal_global_425_0];
   }
 }
 
-- (void)_downloadPrefetchableAssetsForType:(int64_t)a3 completion:(id)a4
+- (void)_downloadPrefetchableAssetsForType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__PKMobileAssetManager__downloadPrefetchableAssetsForType_completion___block_invoke;
   v8[3] = &unk_1E79C8EB8;
-  v9 = v6;
-  v10 = a3;
+  v9 = completionCopy;
+  typeCopy = type;
   v8[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   [(PKMobileAssetManager *)self _downloadAssetCatalogIfExpired:0 completion:v8];
 }
 
@@ -993,19 +993,19 @@ uint64_t __70__PKMobileAssetManager__downloadPrefetchableAssetsForType_completio
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)schedulePrefetchForType:(int64_t)a3 interval:(double)a4 queue:(id)a5
+- (void)schedulePrefetchForType:(int64_t)type interval:(double)interval queue:(id)queue
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3 > 1)
+  queueCopy = queue;
+  if (type > 1)
   {
     v10 = @"PrefetchAppleCashStickersAssets";
-    if (a3 != 3)
+    if (type != 3)
     {
       v10 = 0;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v9 = @"PrefetchHowToUseWalletAssets";
     }
@@ -1026,12 +1026,12 @@ LABEL_11:
         v14 = v13;
         v15 = PKLogFacilityTypeGetObject(0xBuLL);
         v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-        if (v14 == a4)
+        if (v14 == interval)
         {
           if (v16)
           {
             *buf = 134217984;
-            v28 = a4;
+            intervalCopy2 = interval;
             _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Skipping scheduling prefetch. Activity already exists with interval %f.", buf, 0xCu);
           }
 
@@ -1043,7 +1043,7 @@ LABEL_31:
         if (v16)
         {
           *buf = 134217984;
-          v28 = a4;
+          intervalCopy2 = interval;
           _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Removing prefetch activity with interval %f.", buf, 0xCu);
         }
 
@@ -1056,13 +1056,13 @@ LABEL_31:
       [v20 setRequireScreenSleep:1];
       [v20 setRequireMainsPower:1];
       [v20 setRepeating:1];
-      v21 = 86400.0;
-      if (a4 > 0.0)
+      intervalCopy3 = 86400.0;
+      if (interval > 0.0)
       {
-        v21 = a4;
+        intervalCopy3 = interval;
       }
 
-      [v20 setRepeatInterval:v21];
+      [v20 setRepeatInterval:intervalCopy3];
       v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Prefetch mobile asset assets for %@", v9];
       [v20 setReason:v22];
 
@@ -1071,7 +1071,7 @@ LABEL_31:
       {
         v24 = [v20 debugDescription];
         *buf = 138412290;
-        v28 = *&v24;
+        intervalCopy2 = *&v24;
         _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "Scheduling prefetch mobile assets: %@", buf, 0xCu);
       }
 
@@ -1080,7 +1080,7 @@ LABEL_31:
       block[2] = __63__PKMobileAssetManager_schedulePrefetchForType_interval_queue___block_invoke;
       block[3] = &unk_1E79C4DD8;
       block[4] = self;
-      v26 = v8;
+      v26 = queueCopy;
       if (schedulePrefetchForType_interval_queue__onceToken != -1)
       {
         dispatch_once(&schedulePrefetchForType_interval_queue__onceToken, block);
@@ -1095,7 +1095,7 @@ LABEL_31:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v28 = *&a3;
+      intervalCopy2 = *&type;
       v17 = "Unknown prefetchable asset type %ld. Unable to schedule prefetch";
       v18 = v12;
       v19 = 12;
@@ -1107,9 +1107,9 @@ LABEL_20:
     goto LABEL_32;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = @"PrefetchDynamicAssets";
     }
@@ -1135,12 +1135,12 @@ LABEL_20:
 LABEL_32:
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3 activityCriteria:(id)a4
+- (void)performScheduledActivityWithIdentifier:(id)identifier activityCriteria:(id)criteria
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  v8 = identifierCopy;
   v9 = v8;
   if (v8 == @"PrefetchDynamicAssets")
   {
@@ -1155,10 +1155,10 @@ LABEL_32:
     {
 LABEL_4:
       v11 = &__block_literal_global_443;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1;
 LABEL_5:
-      [(PKMobileAssetManager *)v12 prefetchAssetsForType:v13 completion:v11];
+      [(PKMobileAssetManager *)selfCopy2 prefetchAssetsForType:v13 completion:v11];
       goto LABEL_15;
     }
 
@@ -1166,7 +1166,7 @@ LABEL_5:
     if (v14 == @"PrefetchHowToUseWalletAssets" || (v15 = v14, v16 = [(__CFString *)v14 isEqualToString:@"PrefetchHowToUseWalletAssets"], v15, v16))
     {
       v11 = &__block_literal_global_446_0;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2;
       goto LABEL_5;
     }
@@ -1210,56 +1210,56 @@ void __80__PKMobileAssetManager_performScheduledActivityWithIdentifier_activityC
   }
 }
 
-- (id)_queryForMarketNotificationIdentifier:(id)a3
+- (id)_queryForMarketNotificationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(PKMobileAssetManager *)self _compatibleVersionsWithMinimumVersion:2 maximumVersion:2];
   v6 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
   [v6 returnTypes:2];
-  [v6 addKeyValuePair:@"Market" with:v4];
+  [v6 addKeyValuePair:@"Market" with:identifierCopy];
 
   [v6 addKeyValueArray:*MEMORY[0x1E69B1840] with:v5];
 
   return v6;
 }
 
-- (id)_queryForCityCodeStationProvider:(id)a3
+- (id)_queryForCityCodeStationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [(PKMobileAssetManager *)self _compatibleVersionsWithMinimumVersion:2 maximumVersion:2];
   v6 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
   [v6 returnTypes:2];
-  [v6 addKeyValuePair:@"CityStationProvider" with:v4];
+  [v6 addKeyValuePair:@"CityStationProvider" with:providerCopy];
 
   [v6 addKeyValueArray:*MEMORY[0x1E69B1840] with:v5];
 
   return v6;
 }
 
-- (id)_queryForStationCodeData:(id)a3
+- (id)_queryForStationCodeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(PKMobileAssetManager *)self _compatibleVersionsWithMinimumVersion:1 maximumVersion:1];
   v6 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
   [v6 returnTypes:2];
-  [v6 addKeyValuePair:@"StationCodeDataKey" with:v4];
+  [v6 addKeyValuePair:@"StationCodeDataKey" with:dataCopy];
 
   [v6 addKeyValueArray:*MEMORY[0x1E69B1840] with:v5];
 
   return v6;
 }
 
-- (id)_queryForDynamicAssetsWithParameters:(id)a3
+- (id)_queryForDynamicAssetsWithParameters:(id)parameters
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
   [v4 returnTypes:2];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = parametersCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1290,39 +1290,39 @@ void __80__PKMobileAssetManager_performScheduledActivityWithIdentifier_activityC
   return v4;
 }
 
-- (id)_queryForStringsBundleWithIdentifier:(id)a3
+- (id)_queryForStringsBundleWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69B18E8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[v3 alloc] initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
   [v5 returnTypes:2];
-  [v5 addKeyValuePair:@"Identifier" with:v4];
+  [v5 addKeyValuePair:@"Identifier" with:identifierCopy];
 
   [v5 addKeyValuePair:@"Feature" with:@"Strings"];
 
   return v5;
 }
 
-- (id)_queryForHowToUseWalletAssetType:(id)a3 identifier:(id)a4 lotIdentifier:(id)a5
+- (id)_queryForHowToUseWalletAssetType:(id)type identifier:(id)identifier lotIdentifier:(id)lotIdentifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  lotIdentifierCopy = lotIdentifier;
+  typeCopy = type;
   v11 = [(PKMobileAssetManager *)self _compatibleVersionsWithMinimumVersion:1 maximumVersion:1];
   v12 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
   [v12 returnTypes:2];
   [v12 addKeyValueArray:*MEMORY[0x1E69B1840] with:v11];
   [v12 addKeyValuePair:@"Feature" with:@"HowToUseWallet"];
-  [v12 addKeyValuePair:@"Type" with:v10];
+  [v12 addKeyValuePair:@"Type" with:typeCopy];
 
-  if ([v8 length])
+  if ([identifierCopy length])
   {
-    [v12 addKeyValuePair:@"Identifier" with:v8];
+    [v12 addKeyValuePair:@"Identifier" with:identifierCopy];
   }
 
-  if ([v9 length])
+  if ([lotIdentifierCopy length])
   {
-    [v12 addKeyValuePair:@"LotIdentifier" with:v9];
+    [v12 addKeyValuePair:@"LotIdentifier" with:lotIdentifierCopy];
   }
 
   return v12;
@@ -1360,25 +1360,25 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   }
 }
 
-- (id)_compatibleVersionsWithMinimumVersion:(unint64_t)a3 maximumVersion:(unint64_t)a4
+- (id)_compatibleVersionsWithMinimumVersion:(unint64_t)version maximumVersion:(unint64_t)maximumVersion
 {
-  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); a3 <= a4; ++a3)
+  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); version <= maximumVersion; ++version)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a3];
-    [i addObject:v7];
+    version = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", version];
+    [i addObject:version];
   }
 
   return i;
 }
 
-- (id)_cachedAssetWithQuery:(id)a3
+- (id)_cachedAssetWithQuery:(id)query
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 queryMetaDataSync];
-  if (v5)
+  queryCopy = query;
+  queryMetaDataSync = [queryCopy queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    v6 = v5;
+    v6 = queryMetaDataSync;
     v7 = PKLogFacilityTypeGetObject(0xBuLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -1388,19 +1388,19 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
     }
   }
 
-  v8 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
-  v9 = [v4 results];
+  sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+  results = [queryCopy results];
 
-  v10 = [v9 sortedArrayUsingDescriptors:v8];
-  v11 = [v10 firstObject];
+  v10 = [results sortedArrayUsingDescriptors:sortDescriptorsForLatestContentVersion];
+  firstObject = [v10 firstObject];
 
-  v12 = [v11 getLocalFileUrl];
-  if (v12)
+  getLocalFileUrl = [firstObject getLocalFileUrl];
+  if (getLocalFileUrl)
   {
-    v13 = [v9 pk_arrayByRemovingObject:v11];
+    v13 = [results pk_arrayByRemovingObject:firstObject];
     [(PKMobileAssetManager *)self _purgeAssets:v13];
 
-    v14 = [MEMORY[0x1E696AAE8] bundleWithURL:v12];
+    v14 = [MEMORY[0x1E696AAE8] bundleWithURL:getLocalFileUrl];
   }
 
   else
@@ -1411,12 +1411,12 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   return v14;
 }
 
-- (id)_cachedAssetsWithQuery:(id)a3
+- (id)_cachedAssetsWithQuery:(id)query
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 queryMetaDataSync];
-  if (v4 && (v5 = v4, v4 != 14))
+  queryCopy = query;
+  queryMetaDataSync = [queryCopy queryMetaDataSync];
+  if (queryMetaDataSync && (v5 = queryMetaDataSync, queryMetaDataSync != 14))
   {
     v8 = PKLogFacilityTypeGetObject(0xBuLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1431,14 +1431,14 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
 
   else
   {
-    v33 = v3;
-    v6 = [v3 results];
+    v33 = queryCopy;
+    results = [queryCopy results];
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v8 = v6;
+    v8 = results;
     v9 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
     obj = v8;
     if (v9)
@@ -1455,8 +1455,8 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
           }
 
           v13 = *(*(&v42 + 1) + 8 * i);
-          v14 = [v13 attributes];
-          v15 = [v14 objectForKey:@"Identifier"];
+          attributes = [v13 attributes];
+          v15 = [attributes objectForKey:@"Identifier"];
 
           if ([v15 length])
           {
@@ -1486,14 +1486,14 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
       while (v10);
     }
 
-    v20 = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
+    sortDescriptorsForLatestContentVersion = [(PKMobileAssetManager *)self sortDescriptorsForLatestContentVersion];
     v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v34 = [v7 allKeys];
-    v21 = [v34 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    allKeys = [v7 allKeys];
+    v21 = [allKeys countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v21)
     {
       v22 = v21;
@@ -1504,21 +1504,21 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
         {
           if (*v39 != v23)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(allKeys);
           }
 
           v25 = *(*(&v38 + 1) + 8 * j);
           v26 = [v7 objectForKey:v25];
-          v27 = [v26 sortedArrayUsingDescriptors:v20];
-          v28 = [v27 firstObject];
+          v27 = [v26 sortedArrayUsingDescriptors:sortDescriptorsForLatestContentVersion];
+          firstObject = [v27 firstObject];
 
-          v29 = [v8 pk_arrayByRemovingObject:v28];
+          v29 = [v8 pk_arrayByRemovingObject:firstObject];
           [(PKMobileAssetManager *)self _purgeAssets:v29];
 
-          v30 = [v28 getLocalFileUrl];
-          if (v30)
+          getLocalFileUrl = [firstObject getLocalFileUrl];
+          if (getLocalFileUrl)
           {
-            v31 = [MEMORY[0x1E696AAE8] bundleWithURL:v30];
+            v31 = [MEMORY[0x1E696AAE8] bundleWithURL:getLocalFileUrl];
             [v35 addObject:v31];
           }
 
@@ -1536,23 +1536,23 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
           v8 = obj;
         }
 
-        v22 = [v34 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v22);
     }
 
-    v3 = v33;
+    queryCopy = v33;
   }
 
   return v35;
 }
 
-- (void)_retrieveAssetWithQuery:(id)a3 maxCompatibleVersion:(unint64_t)a4 isDiscretionary:(BOOL)a5 sortDescriptors:(id)a6 timeout:(unint64_t)a7 catalogExpirationDays:(unint64_t)a8 completion:(id)a9
+- (void)_retrieveAssetWithQuery:(id)query maxCompatibleVersion:(unint64_t)version isDiscretionary:(BOOL)discretionary sortDescriptors:(id)descriptors timeout:(unint64_t)timeout catalogExpirationDays:(unint64_t)days completion:(id)completion
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a9;
+  queryCopy = query;
+  descriptorsCopy = descriptors;
+  completionCopy = completion;
   v17 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v59[0] = 0;
   v59[1] = v59;
@@ -1565,7 +1565,7 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   v58[2] = __142__PKMobileAssetManager__retrieveAssetWithQuery_maxCompatibleVersion_isDiscretionary_sortDescriptors_timeout_catalogExpirationDays_completion___block_invoke;
   v58[3] = &unk_1E79E41C8;
   v58[4] = self;
-  v58[5] = a8;
+  v58[5] = days;
   [(PKAsyncUnaryOperationComposer *)v17 addOperation:v58];
   v56[0] = 0;
   v56[1] = v56;
@@ -1583,9 +1583,9 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   v48[1] = 3221225472;
   v48[2] = __142__PKMobileAssetManager__retrieveAssetWithQuery_maxCompatibleVersion_isDiscretionary_sortDescriptors_timeout_catalogExpirationDays_completion___block_invoke_454;
   v48[3] = &unk_1E79E4218;
-  v18 = v14;
+  v18 = queryCopy;
   v49 = v18;
-  v50 = self;
+  selfCopy = self;
   v51 = v59;
   v52 = v56;
   v53 = v54;
@@ -1610,12 +1610,12 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   v43[3] = &unk_1E79E4290;
   v43[4] = self;
   v43[5] = v54;
-  v44 = a5;
+  discretionaryCopy = discretionary;
   v43[6] = v59;
   v43[7] = v45;
   [(PKAsyncUnaryOperationComposer *)v17 addOperation:v43];
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v20 = [(PKAsyncUnaryOperationComposer *)v17 evaluatorWithInput:v19];
+  null = [MEMORY[0x1E695DFB0] null];
+  v20 = [(PKAsyncUnaryOperationComposer *)v17 evaluatorWithInput:null];
 
   v37 = 0;
   v38 = &v37;
@@ -1624,7 +1624,7 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   v41 = __Block_byref_object_dispose__84;
   v42 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
   v21 = v38[5];
-  v22 = dispatch_time(0, 1000000000 * a7);
+  v22 = dispatch_time(0, 1000000000 * timeout);
   dispatch_source_set_timer(v21, v22, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
   v23 = v38[5];
   handler[0] = MEMORY[0x1E69E9820];
@@ -1634,7 +1634,7 @@ uint64_t __62__PKMobileAssetManager_sortDescriptorsForLatestContentVersion__bloc
   v36 = &v37;
   v24 = v20;
   v34 = v24;
-  v25 = v16;
+  v25 = completionCopy;
   v35 = v25;
   dispatch_source_set_event_handler(v23, handler);
   dispatch_resume(v38[5]);
@@ -1883,17 +1883,17 @@ void __142__PKMobileAssetManager__retrieveAssetWithQuery_maxCompatibleVersion_is
   }
 }
 
-- (void)_purgeAssets:(id)a3 completion:(id)a4
+- (void)_purgeAssets:(id)assets completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v7 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1923,14 +1923,14 @@ void __142__PKMobileAssetManager__retrieveAssetWithQuery_maxCompatibleVersion_is
     while (v10);
   }
 
-  v14 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __48__PKMobileAssetManager__purgeAssets_completion___block_invoke_461;
   v17[3] = &unk_1E79E4308;
-  v18 = v6;
-  v15 = v6;
-  v16 = [(PKAsyncUnaryOperationComposer *)v7 evaluateWithInput:v14 completion:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  v16 = [(PKAsyncUnaryOperationComposer *)v7 evaluateWithInput:null completion:v17];
 }
 
 void __48__PKMobileAssetManager__purgeAssets_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -1985,15 +1985,15 @@ uint64_t __48__PKMobileAssetManager__purgeAssets_completion___block_invoke_461(u
   return result;
 }
 
-- (void)_downloadAssetCatalogIfExpired:(unint64_t)a3 completion:(id)a4
+- (void)_downloadAssetCatalogIfExpired:(unint64_t)expired completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:@"com.apple.MobileAsset.WalletMobileAssets"];
-  if ([v7 isCatalogFetchedWithinThePastFewDays:a3] && !PKMobileAssetEagerCatalogFetching())
+  if ([v7 isCatalogFetchedWithinThePastFewDays:expired] && !PKMobileAssetEagerCatalogFetching())
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -2005,7 +2005,7 @@ uint64_t __48__PKMobileAssetManager__purgeAssets_completion___block_invoke_461(u
     v10[1] = 3221225472;
     v10[2] = __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___block_invoke;
     v10[3] = &unk_1E79DBDA0;
-    v11 = v6;
+    v11 = completionCopy;
     [v8 startCatalogDownload:@"com.apple.MobileAsset.WalletMobileAssets" options:v9 then:v10];
   }
 }
@@ -2051,32 +2051,32 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
   return result;
 }
 
-- (void)_downloadAsset:(id)a3 isDiscretionary:(BOOL)a4 timeout:(int64_t)a5 completion:(id)a6
+- (void)_downloadAsset:(id)asset isDiscretionary:(BOOL)discretionary timeout:(int64_t)timeout completion:(id)completion
 {
-  v8 = a4;
+  discretionaryCopy = discretionary;
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 state];
-  if ([v10 wasLocal])
+  assetCopy = asset;
+  completionCopy = completion;
+  state = [assetCopy state];
+  if ([assetCopy wasLocal])
   {
     v13 = PKLogFacilityTypeGetObject(0xBuLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = v12;
+      *(&buf + 4) = state;
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Asset is already on device with an asset state (%ld)", &buf, 0xCu);
     }
 
-    if (v11)
+    if (completionCopy)
     {
       v14 = 14;
-      if (v12 == 6)
+      if (state == 6)
       {
         v14 = 29;
       }
 
-      if (v12 == 5)
+      if (state == 5)
       {
         v15 = 15;
       }
@@ -2086,13 +2086,13 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
         v15 = v14;
       }
 
-      v11[2](v11, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 
   else
   {
-    if (v12 == 4)
+    if (state == 4)
     {
       v16 = PKLogFacilityTypeGetObject(0xBuLL);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2109,7 +2109,7 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
     v35 = __Block_byref_object_dispose__84;
     v36 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
     v17 = *(*(&buf + 1) + 40);
-    v18 = dispatch_time(0, 1000000000 * a5);
+    v18 = dispatch_time(0, 1000000000 * timeout);
     dispatch_source_set_timer(v17, v18, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
     v19 = *(*(&buf + 1) + 40);
     handler[0] = MEMORY[0x1E69E9820];
@@ -2117,7 +2117,7 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
     handler[2] = __74__PKMobileAssetManager__downloadAsset_isDiscretionary_timeout_completion___block_invoke;
     handler[3] = &unk_1E79C8870;
     p_buf = &buf;
-    v20 = v11;
+    v20 = completionCopy;
     v28 = v20;
     dispatch_source_set_event_handler(v19, handler);
     dispatch_resume(*(*(&buf + 1) + 40));
@@ -2125,7 +2125,7 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v22 = @"NO";
-      if (v8)
+      if (discretionaryCopy)
       {
         v22 = @"YES";
       }
@@ -2135,7 +2135,7 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
       _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "Beginning download of asset, isDiscretionary: %@", v30, 0xCu);
     }
 
-    v23 = [(PKMobileAssetManager *)self _downloadOptionsWithTimeout:a5 isDiscretionary:v8];
+    v23 = [(PKMobileAssetManager *)self _downloadOptionsWithTimeout:timeout isDiscretionary:discretionaryCopy];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __74__PKMobileAssetManager__downloadAsset_isDiscretionary_timeout_completion___block_invoke_466;
@@ -2143,7 +2143,7 @@ uint64_t __66__PKMobileAssetManager__downloadAssetCatalogIfExpired_completion___
     v24[4] = self;
     v26 = &buf;
     v25 = v20;
-    [v10 startDownload:v23 then:v24];
+    [assetCopy startDownload:v23 then:v24];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -2195,16 +2195,16 @@ NSObject *__74__PKMobileAssetManager__downloadAsset_isDiscretionary_timeout_comp
   return result;
 }
 
-- (id)_downloadOptionsWithTimeout:(int64_t)a3 isDiscretionary:(BOOL)a4
+- (id)_downloadOptionsWithTimeout:(int64_t)timeout isDiscretionary:(BOOL)discretionary
 {
-  v4 = a4;
+  discretionaryCopy = discretionary;
   v6 = objc_alloc_init(MEMORY[0x1E69B1948]);
   [v6 setAllowsCellularAccess:1];
-  [v6 setDiscretionary:v4];
+  [v6 setDiscretionary:discretionaryCopy];
   [v6 setCanUseLocalCacheServer:1];
-  if (a3 >= 1)
+  if (timeout >= 1)
   {
-    [v6 setTimeoutIntervalForResource:a3];
+    [v6 setTimeoutIntervalForResource:timeout];
   }
 
   return v6;

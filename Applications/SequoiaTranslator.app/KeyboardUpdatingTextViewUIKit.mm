@@ -1,13 +1,13 @@
 @interface KeyboardUpdatingTextViewUIKit
 - (NSArray)_additionalTextInputLocales;
 - (UITextInputMode)textInputMode;
-- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation KeyboardUpdatingTextViewUIKit
 
-- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit_textTranslationLocaleSubscription) = 0;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit_allowKeyboardLocaleChange) = 1;
@@ -23,7 +23,7 @@
   *(swift_allocObject() + 16) = xmmword_1002D1370;
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   swift_getKeyPath();
@@ -37,13 +37,13 @@
 
 - (UITextInputMode)textInputMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10012E72C();
 
   return v3;
 }
 
-- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC17SequoiaTranslator29KeyboardUpdatingTextViewUIKit)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

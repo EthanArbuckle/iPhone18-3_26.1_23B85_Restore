@@ -1,56 +1,56 @@
 @interface AVTCoreModelColorsPicker
-- (AVTCoreModelColorsPicker)initWithTitle:(id)a3 primaryColors:(id)a4 extendedColors:(id)a5 alwaysShowExtended:(BOOL)a6 colorCategory:(int64_t)a7 destination:(int64_t)a8 pairing:(id)a9 options:(id)a10;
-- (AVTCoreModelColorsPicker)initWithTitle:(id)a3 primaryColors:(id)a4 extendedColors:(id)a5 identifier:(id)a6 alwaysShowExtended:(BOOL)a7 colorCategory:(int64_t)a8 destination:(int64_t)a9 pairing:(id)a10 options:(id)a11;
+- (AVTCoreModelColorsPicker)initWithTitle:(id)title primaryColors:(id)colors extendedColors:(id)extendedColors alwaysShowExtended:(BOOL)extended colorCategory:(int64_t)category destination:(int64_t)destination pairing:(id)pairing options:(id)self0;
+- (AVTCoreModelColorsPicker)initWithTitle:(id)title primaryColors:(id)colors extendedColors:(id)extendedColors identifier:(id)identifier alwaysShowExtended:(BOOL)extended colorCategory:(int64_t)category destination:(int64_t)destination pairing:(id)self0 options:(id)self1;
 - (BOOL)isEmpty;
 - (NSString)description;
 @end
 
 @implementation AVTCoreModelColorsPicker
 
-- (AVTCoreModelColorsPicker)initWithTitle:(id)a3 primaryColors:(id)a4 extendedColors:(id)a5 alwaysShowExtended:(BOOL)a6 colorCategory:(int64_t)a7 destination:(int64_t)a8 pairing:(id)a9 options:(id)a10
+- (AVTCoreModelColorsPicker)initWithTitle:(id)title primaryColors:(id)colors extendedColors:(id)extendedColors alwaysShowExtended:(BOOL)extended colorCategory:(int64_t)category destination:(int64_t)destination pairing:(id)pairing options:(id)self0
 {
-  v11 = a6;
+  extendedCopy = extended;
   v16 = MEMORY[0x1E696AFB0];
-  v17 = a10;
-  v18 = a9;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [v16 UUID];
-  v23 = [v22 UUIDString];
-  v24 = [(AVTCoreModelColorsPicker *)self initWithTitle:v21 primaryColors:v20 extendedColors:v19 identifier:v23 alwaysShowExtended:v11 colorCategory:a7 destination:a8 pairing:v18 options:v17];
+  optionsCopy = options;
+  pairingCopy = pairing;
+  extendedColorsCopy = extendedColors;
+  colorsCopy = colors;
+  titleCopy = title;
+  uUID = [v16 UUID];
+  uUIDString = [uUID UUIDString];
+  v24 = [(AVTCoreModelColorsPicker *)self initWithTitle:titleCopy primaryColors:colorsCopy extendedColors:extendedColorsCopy identifier:uUIDString alwaysShowExtended:extendedCopy colorCategory:category destination:destination pairing:pairingCopy options:optionsCopy];
 
   return v24;
 }
 
-- (AVTCoreModelColorsPicker)initWithTitle:(id)a3 primaryColors:(id)a4 extendedColors:(id)a5 identifier:(id)a6 alwaysShowExtended:(BOOL)a7 colorCategory:(int64_t)a8 destination:(int64_t)a9 pairing:(id)a10 options:(id)a11
+- (AVTCoreModelColorsPicker)initWithTitle:(id)title primaryColors:(id)colors extendedColors:(id)extendedColors identifier:(id)identifier alwaysShowExtended:(BOOL)extended colorCategory:(int64_t)category destination:(int64_t)destination pairing:(id)self0 options:(id)self1
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v28 = a10;
-  v19 = a11;
+  titleCopy = title;
+  colorsCopy = colors;
+  extendedColorsCopy = extendedColors;
+  identifierCopy = identifier;
+  pairingCopy = pairing;
+  optionsCopy = options;
   v29.receiver = self;
   v29.super_class = AVTCoreModelColorsPicker;
   v20 = [(AVTCoreModelColorsPicker *)&v29 init];
   if (v20)
   {
-    v21 = [v18 copy];
+    v21 = [identifierCopy copy];
     identifier = v20->_identifier;
     v20->_identifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v23;
 
-    objc_storeStrong(&v20->_primaryColors, a4);
-    objc_storeStrong(&v20->_extendedColors, a5);
-    v20->_alwaysShowExtended = a7;
-    v20->_destination = a9;
-    v20->_colorCategory = a8;
-    objc_storeStrong(&v20->_pairing, a10);
-    objc_storeStrong(&v20->_options, a11);
+    objc_storeStrong(&v20->_primaryColors, colors);
+    objc_storeStrong(&v20->_extendedColors, extendedColors);
+    v20->_alwaysShowExtended = extended;
+    v20->_destination = destination;
+    v20->_colorCategory = category;
+    objc_storeStrong(&v20->_pairing, pairing);
+    objc_storeStrong(&v20->_options, options);
   }
 
   return v20;
@@ -63,11 +63,11 @@
   v3 = [(AVTCoreModelColorsPicker *)&v17 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTCoreModelColorsPicker *)self identifier];
-  [v4 appendFormat:@" identifier: %@", v5];
+  identifier = [(AVTCoreModelColorsPicker *)self identifier];
+  [v4 appendFormat:@" identifier: %@", identifier];
 
-  v6 = [(AVTCoreModelColorsPicker *)self title];
-  [v4 appendFormat:@" title: %@", v6];
+  title = [(AVTCoreModelColorsPicker *)self title];
+  [v4 appendFormat:@" title: %@", title];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AVTCoreModelColorsPicker colorCategory](self, "colorCategory")}];
   [v4 appendFormat:@" category: %@", v7];
@@ -75,22 +75,22 @@
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AVTCoreModelColorsPicker destination](self, "destination")}];
   [v4 appendFormat:@" destination: %@", v8];
 
-  v9 = [(AVTCoreModelColorsPicker *)self primaryColors];
+  primaryColors = [(AVTCoreModelColorsPicker *)self primaryColors];
 
-  if (v9)
+  if (primaryColors)
   {
-    v10 = [(AVTCoreModelColorsPicker *)self primaryColors];
-    v11 = [v10 avt_description];
-    [v4 appendFormat:@" primary colors: %@", v11];
+    primaryColors2 = [(AVTCoreModelColorsPicker *)self primaryColors];
+    avt_description = [primaryColors2 avt_description];
+    [v4 appendFormat:@" primary colors: %@", avt_description];
   }
 
-  v12 = [(AVTCoreModelColorsPicker *)self extendedColors];
+  extendedColors = [(AVTCoreModelColorsPicker *)self extendedColors];
 
-  if (v12)
+  if (extendedColors)
   {
-    v13 = [(AVTCoreModelColorsPicker *)self extendedColors];
-    v14 = [v13 avt_description];
-    [v4 appendFormat:@" extended colors: %@", v14];
+    extendedColors2 = [(AVTCoreModelColorsPicker *)self extendedColors];
+    avt_description2 = [extendedColors2 avt_description];
+    [v4 appendFormat:@" extended colors: %@", avt_description2];
   }
 
   if ([(AVTCoreModelColorsPicker *)self alwaysShowExtended])
@@ -105,16 +105,16 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(AVTCoreModelColorsPicker *)self primaryColors];
-  if ([v3 count])
+  primaryColors = [(AVTCoreModelColorsPicker *)self primaryColors];
+  if ([primaryColors count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(AVTCoreModelColorsPicker *)self extendedColors];
-    v4 = [v5 count] == 0;
+    extendedColors = [(AVTCoreModelColorsPicker *)self extendedColors];
+    v4 = [extendedColors count] == 0;
   }
 
   return v4;

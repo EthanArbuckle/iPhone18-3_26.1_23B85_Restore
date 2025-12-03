@@ -1,51 +1,51 @@
 @interface MZUniversalPlaybackPositionSyncHandler
 - (BOOL)_shouldStop;
-- (BOOL)_synchronize:(id *)a3;
-- (BOOL)keyValueStoreController:(id)a3 transaction:(id)a4 didFailWithError:(id)a5;
-- (MZUniversalPlaybackPositionSyncHandler)initWithDataSource:(id)a3 bagContext:(id)a4 andTask:(id)a5;
-- (id)_synchronouslyRunKVSTransaction:(id)a3;
-- (id)newKVSGetAllTransactionSinceDomainVersion:(id)a3;
-- (id)newKVSGetAllTransactionWithMetadataItems:(id)a3;
-- (id)newKVSPutAllTransactionWithMetadataItems:(id)a3;
-- (id)newKVSTransactionWithType:(int)a3 keys:(id)a4;
+- (BOOL)_synchronize:(id *)_synchronize;
+- (BOOL)keyValueStoreController:(id)controller transaction:(id)transaction didFailWithError:(id)error;
+- (MZUniversalPlaybackPositionSyncHandler)initWithDataSource:(id)source bagContext:(id)context andTask:(id)task;
+- (id)_synchronouslyRunKVSTransaction:(id)transaction;
+- (id)newKVSGetAllTransactionSinceDomainVersion:(id)version;
+- (id)newKVSGetAllTransactionWithMetadataItems:(id)items;
+- (id)newKVSPutAllTransactionWithMetadataItems:(id)items;
+- (id)newKVSTransactionWithType:(int)type keys:(id)keys;
 - (void)_dataSourceCancelTransaction;
 - (void)_fillEmptyMetadataIdentifiersIfNeeded;
 - (void)_resetState;
-- (void)_signalKVSTransactionCompletion:(id)a3;
-- (void)_signalKVSTransactionCompletion:(id)a3 withError:(id)a4;
-- (void)cancelWithError:(id)a3;
-- (void)setCanRequestStoreSignIn:(BOOL)a3;
-- (void)setNumMetadataItemsFromKVSStorage:(int64_t)a3;
-- (void)setNumMetadataItemsToCommitToDataSource:(int64_t)a3;
-- (void)setNumMetadataItemsToCommitToKVSStorage:(int64_t)a3;
-- (void)synchronizeWithCompletionHandler:(id)a3;
+- (void)_signalKVSTransactionCompletion:(id)completion;
+- (void)_signalKVSTransactionCompletion:(id)completion withError:(id)error;
+- (void)cancelWithError:(id)error;
+- (void)setCanRequestStoreSignIn:(BOOL)in;
+- (void)setNumMetadataItemsFromKVSStorage:(int64_t)storage;
+- (void)setNumMetadataItemsToCommitToDataSource:(int64_t)source;
+- (void)setNumMetadataItemsToCommitToKVSStorage:(int64_t)storage;
+- (void)synchronizeWithCompletionHandler:(id)handler;
 - (void)timeout;
 @end
 
 @implementation MZUniversalPlaybackPositionSyncHandler
 
-- (MZUniversalPlaybackPositionSyncHandler)initWithDataSource:(id)a3 bagContext:(id)a4 andTask:(id)a5
+- (MZUniversalPlaybackPositionSyncHandler)initWithDataSource:(id)source bagContext:(id)context andTask:(id)task
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  contextCopy = context;
+  taskCopy = task;
   v26.receiver = self;
   v26.super_class = MZUniversalPlaybackPositionSyncHandler;
   v11 = [(MZUniversalPlaybackPositionSyncHandler *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    [(MZUniversalPlaybackPositionSyncHandler *)v11 setDataSource:v8];
-    [(MZUniversalPlaybackPositionSyncHandler *)v12 setBagContext:v9];
+    [(MZUniversalPlaybackPositionSyncHandler *)v11 setDataSource:sourceCopy];
+    [(MZUniversalPlaybackPositionSyncHandler *)v12 setBagContext:contextCopy];
     v13 = [[MZUppSyncProcessor alloc] initWithStorageProviderDelegate:v12];
     [(MZUniversalPlaybackPositionSyncHandler *)v12 setTransactionProcessor:v13];
 
-    [(MZUniversalPlaybackPositionSyncHandler *)v12 setTask:v10];
+    [(MZUniversalPlaybackPositionSyncHandler *)v12 setTask:taskCopy];
     v14 = [MZKeyValueStoreController alloc];
-    v15 = [v9 domain];
-    v16 = [v9 baseURLForGETAll];
-    v17 = [v9 baseURLForPUTAll];
-    v18 = [(MZKeyValueStoreController *)v14 initWithDomain:v15 baseURLForGETAll:v16 baseURLForPUTAll:v17];
+    domain = [contextCopy domain];
+    baseURLForGETAll = [contextCopy baseURLForGETAll];
+    baseURLForPUTAll = [contextCopy baseURLForPUTAll];
+    v18 = [(MZKeyValueStoreController *)v14 initWithDomain:domain baseURLForGETAll:baseURLForGETAll baseURLForPUTAll:baseURLForPUTAll];
 
     [(MZKeyValueStoreController *)v18 setDelegate:v12];
     [(MZUniversalPlaybackPositionSyncHandler *)v12 setKvsController:v18];
@@ -76,15 +76,15 @@
 - (void)_dataSourceCancelTransaction
 {
   [(MZUniversalPlaybackPositionSyncHandler *)self _resetState];
-  v4 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSource];
+  dataSource = [(MZUniversalPlaybackPositionSyncHandler *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
-    [v4 cancelUniversalPlaybackPositionTransaction:v3];
+    dataSourceTransactionContext = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
+    [dataSource cancelUniversalPlaybackPositionTransaction:dataSourceTransactionContext];
   }
 }
 
-- (BOOL)_synchronize:(id *)a3
+- (BOOL)_synchronize:(id *)_synchronize
 {
   v153 = 0;
   v154 = &v153;
@@ -103,7 +103,7 @@
     [(MZUniversalPlaybackPositionSyncHandler *)self _fillEmptyMetadataIdentifiersIfNeeded];
     kdebug_trace();
     v7 = _MTLogCategoryUPPSync();
-    v141 = a3;
+    _synchronizeCopy = _synchronize;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -128,31 +128,31 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_BEGIN, spid, "UPP.Sync.Step.0.Begin", "", buf, 2u);
     }
 
-    v12 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v13 = [v12 metrics];
-    [v13 setLatestUPPSubtask:1];
+    task = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics = [task metrics];
+    [metrics setLatestUPPSubtask:1];
 
     objc_initWeak(&location, self);
-    v14 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSource];
+    dataSource = [(MZUniversalPlaybackPositionSyncHandler *)self dataSource];
     v149[0] = _NSConcreteStackBlock;
     v149[1] = 3221225472;
     v149[2] = sub_100096454;
     v149[3] = &unk_1004DA1F8;
     objc_copyWeak(&v150, &location);
-    v15 = [v14 beginTransactionWithItemsToSyncEnumerationBlock:v149];
+    v15 = [dataSource beginTransactionWithItemsToSyncEnumerationBlock:v149];
     [(MZUniversalPlaybackPositionSyncHandler *)self setDataSourceTransactionContext:v15];
 
-    v16 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    v17 = [v16 metadataItemsFromDataSource];
-    v18 = [v17 count];
-    v19 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v20 = [v19 metrics];
-    [v20 setNumMetadataItemsFromDataSource:v18];
+    transactionProcessor = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    metadataItemsFromDataSource = [transactionProcessor metadataItemsFromDataSource];
+    v18 = [metadataItemsFromDataSource count];
+    task2 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics2 = [task2 metrics];
+    [metrics2 setNumMetadataItemsFromDataSource:v18];
 
-    v21 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
-    LOBYTE(v19) = v21 == 0;
+    dataSourceTransactionContext = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
+    LOBYTE(task2) = dataSourceTransactionContext == 0;
 
-    if (v19)
+    if (task2)
     {
       goto LABEL_13;
     }
@@ -171,26 +171,26 @@ LABEL_76:
     v22 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      v24 = [v23 metadataItemsFromDataSource];
-      v25 = [v24 allKeys];
-      v26 = [v25 count];
-      v27 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      v28 = [v27 metadataItemsFromDataSource];
-      v29 = [v28 allKeys];
+      transactionProcessor2 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      metadataItemsFromDataSource2 = [transactionProcessor2 metadataItemsFromDataSource];
+      allKeys = [metadataItemsFromDataSource2 allKeys];
+      v26 = [allKeys count];
+      transactionProcessor3 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      metadataItemsFromDataSource3 = [transactionProcessor3 metadataItemsFromDataSource];
+      allKeys2 = [metadataItemsFromDataSource3 allKeys];
       *buf = 67240450;
       *v158 = v26;
       *&v158[4] = 2114;
-      *&v158[6] = v29;
+      *&v158[6] = allKeys2;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Gathered local %{public}d items to sync from dataSource: %{public}@", buf, 0x12u);
     }
 
     v30 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
+      dataSourceTransactionContext2 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
       *buf = 138543362;
-      *v158 = v31;
+      *v158 = dataSourceTransactionContext2;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "dataSource transaction context = %{public}@", buf, 0xCu);
     }
 
@@ -229,20 +229,20 @@ LABEL_76:
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Begin STEP 1. Perform iTMS-kvs getAll to update new items.", buf, 2u);
     }
 
-    v40 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v41 = [v40 metrics];
-    [v41 setLatestUPPSubtask:2];
+    task3 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics3 = [task3 metrics];
+    [metrics3 setLatestUPPSubtask:2];
 
     v42 = +[NSMutableArray array];
     v147 = 0u;
     v148 = 0u;
     v145 = 0u;
     v146 = 0u;
-    v43 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    v44 = [v43 metadataItemsFromDataSource];
-    v45 = [v44 allValues];
+    transactionProcessor4 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    metadataItemsFromDataSource4 = [transactionProcessor4 metadataItemsFromDataSource];
+    allValues = [metadataItemsFromDataSource4 allValues];
 
-    v46 = [v45 countByEnumeratingWithState:&v145 objects:v159 count:16];
+    v46 = [allValues countByEnumeratingWithState:&v145 objects:v159 count:16];
     if (v46)
     {
       v47 = *v146;
@@ -252,7 +252,7 @@ LABEL_76:
         {
           if (*v146 != v47)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(allValues);
           }
 
           v49 = *(*(&v145 + 1) + 8 * i);
@@ -262,7 +262,7 @@ LABEL_76:
           }
         }
 
-        v46 = [v45 countByEnumeratingWithState:&v145 objects:v159 count:16];
+        v46 = [allValues countByEnumeratingWithState:&v145 objects:v159 count:16];
       }
 
       while (v46);
@@ -294,12 +294,12 @@ LABEL_75:
         _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Requesting remote items for %{public}d new Items: %{pubic}@", buf, 0x12u);
       }
 
-      v53 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-      v54 = [(MZUniversalPlaybackPositionSyncHandler *)self _synchronouslyRunKVSTransaction:v53];
+      currentKVSTransaction = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+      v54 = [(MZUniversalPlaybackPositionSyncHandler *)self _synchronouslyRunKVSTransaction:currentKVSTransaction];
 
       if (v54)
       {
-        if (!v141)
+        if (!_synchronizeCopy)
         {
           goto LABEL_73;
         }
@@ -312,8 +312,8 @@ LABEL_75:
         goto LABEL_73;
       }
 
-      v55 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      [v55 mergeMetadataItemsFromGetResponse];
+      transactionProcessor5 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      [transactionProcessor5 mergeMetadataItemsFromGetResponse];
     }
 
     kdebug_trace();
@@ -358,13 +358,13 @@ LABEL_75:
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "      Start newKVSGetAllTransactionSinceDomainVersion...", buf, 2u);
     }
 
-    v65 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v66 = [v65 metrics];
-    [v66 setLatestUPPSubtask:3];
+    task4 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics4 = [task4 metrics];
+    [metrics4 setLatestUPPSubtask:3];
 
-    v67 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
-    v68 = [v67 lastSyncedDomainVersion];
-    v69 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSGetAllTransactionSinceDomainVersion:v68];
+    dataSourceTransactionContext3 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
+    lastSyncedDomainVersion = [dataSourceTransactionContext3 lastSyncedDomainVersion];
+    v69 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSGetAllTransactionSinceDomainVersion:lastSyncedDomainVersion];
     [(MZUniversalPlaybackPositionSyncHandler *)self setCurrentKVSTransaction:v69];
 
     if ([(MZUniversalPlaybackPositionSyncHandler *)self _shouldStop])
@@ -382,10 +382,10 @@ LABEL_75:
     v71 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
     {
-      v72 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-      v73 = [v72 sinceDomainVersion];
+      currentKVSTransaction2 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+      sinceDomainVersion = [currentKVSTransaction2 sinceDomainVersion];
       *buf = 138543362;
-      *v158 = v73;
+      *v158 = sinceDomainVersion;
       _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "Requesting remote items from server -since domain-version = %{public}@", buf, 0xCu);
     }
 
@@ -396,8 +396,8 @@ LABEL_75:
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "      Start _synchronouslyRunKVSTransaction...", buf, 2u);
     }
 
-    v75 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-    v54 = [(MZUniversalPlaybackPositionSyncHandler *)self _synchronouslyRunKVSTransaction:v75];
+    currentKVSTransaction3 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+    v54 = [(MZUniversalPlaybackPositionSyncHandler *)self _synchronouslyRunKVSTransaction:currentKVSTransaction3];
 
     v76 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
@@ -408,7 +408,7 @@ LABEL_75:
 
     if (v54)
     {
-      if (!v141)
+      if (!_synchronizeCopy)
       {
 LABEL_73:
         [(MZUniversalPlaybackPositionSyncHandler *)self _dataSourceCancelTransaction];
@@ -420,7 +420,7 @@ LABEL_74:
 
 LABEL_71:
       v77 = v54;
-      *v141 = v54;
+      *_synchronizeCopy = v54;
       goto LABEL_73;
     }
 
@@ -443,12 +443,12 @@ LABEL_71:
       _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "Begin STEP 2.2. Merge local and remote deltas.", buf, 2u);
     }
 
-    v81 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v82 = [v81 metrics];
-    [v82 setLatestUPPSubtask:4];
+    task5 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics5 = [task5 metrics];
+    [metrics5 setLatestUPPSubtask:4];
 
-    v83 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    [v83 mergeMetadataItemsFromGetResponse];
+    transactionProcessor6 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    [transactionProcessor6 mergeMetadataItemsFromGetResponse];
 
     kdebug_trace();
     v84 = _MTLogCategoryUPPSync();
@@ -485,42 +485,42 @@ LABEL_71:
       _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "Begin STEP 3. Push changes to server.", buf, 2u);
     }
 
-    v92 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v93 = [v92 metrics];
-    [v93 setLatestUPPSubtask:5];
+    task6 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics6 = [task6 metrics];
+    [metrics6 setLatestUPPSubtask:5];
 
-    v94 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    v95 = [v94 metadataItemsToCommitToKVSStorage];
-    v96 = [v95 count];
+    transactionProcessor7 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    metadataItemsToCommitToKVSStorage = [transactionProcessor7 metadataItemsToCommitToKVSStorage];
+    v96 = [metadataItemsToCommitToKVSStorage count];
 
     if (v96)
     {
       v97 = _MTLogCategoryUPPSync();
       if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
       {
-        v98 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-        v99 = [v98 metadataItemsToCommitToKVSStorage];
-        v100 = [v99 allKeys];
+        transactionProcessor8 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+        metadataItemsToCommitToKVSStorage2 = [transactionProcessor8 metadataItemsToCommitToKVSStorage];
+        allKeys3 = [metadataItemsToCommitToKVSStorage2 allKeys];
         *buf = 138543362;
-        *v158 = v100;
+        *v158 = allKeys3;
         _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "Sending merged items to server: %{public}@", buf, 0xCu);
       }
 
-      v101 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      v102 = [v101 metadataItemsToCommitToKVSStorage];
-      v103 = [v102 allValues];
-      v104 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSPutAllTransactionWithMetadataItems:v103];
+      transactionProcessor9 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      metadataItemsToCommitToKVSStorage3 = [transactionProcessor9 metadataItemsToCommitToKVSStorage];
+      allValues2 = [metadataItemsToCommitToKVSStorage3 allValues];
+      v104 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSPutAllTransactionWithMetadataItems:allValues2];
       [(MZUniversalPlaybackPositionSyncHandler *)self setCurrentKVSTransaction:v104];
 
-      v105 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-      v106 = [(MZUniversalPlaybackPositionSyncHandler *)self _synchronouslyRunKVSTransaction:v105];
+      currentKVSTransaction4 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+      v106 = [(MZUniversalPlaybackPositionSyncHandler *)self _synchronouslyRunKVSTransaction:currentKVSTransaction4];
 
       if (v106)
       {
-        if (v141)
+        if (_synchronizeCopy)
         {
           v107 = v106;
-          *v141 = v106;
+          *_synchronizeCopy = v106;
         }
 
         goto LABEL_99;
@@ -537,9 +537,9 @@ LABEL_124:
       }
     }
 
-    v108 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    v109 = [v108 responseDomainVersion];
-    v110 = v109 == 0;
+    transactionProcessor10 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    responseDomainVersion = [transactionProcessor10 responseDomainVersion];
+    v110 = responseDomainVersion == 0;
 
     if (v110)
     {
@@ -550,10 +550,10 @@ LABEL_124:
         _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "[StoreBookkeeper] ERROR: expected to get a domainVersion in server response", buf, 2u);
       }
 
-      v112 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
-      v113 = [v112 lastSyncedDomainVersion];
-      v114 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      [v114 setResponseDomainVersion:v113];
+      dataSourceTransactionContext4 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
+      lastSyncedDomainVersion2 = [dataSourceTransactionContext4 lastSyncedDomainVersion];
+      transactionProcessor11 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      [transactionProcessor11 setResponseDomainVersion:lastSyncedDomainVersion2];
     }
 
     kdebug_trace();
@@ -594,36 +594,36 @@ LABEL_124:
     v123 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v123, OS_LOG_TYPE_DEFAULT))
     {
-      v124 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      v125 = [v124 responseDomainVersion];
-      v126 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-      v127 = [v126 metadataItemsToCommitToDataSource];
+      transactionProcessor12 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      responseDomainVersion2 = [transactionProcessor12 responseDomainVersion];
+      transactionProcessor13 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+      metadataItemsToCommitToDataSource = [transactionProcessor13 metadataItemsToCommitToDataSource];
       *buf = 138543618;
-      *v158 = v125;
+      *v158 = responseDomainVersion2;
       *&v158[8] = 2114;
-      *&v158[10] = v127;
+      *&v158[10] = metadataItemsToCommitToDataSource;
       _os_log_impl(&_mh_execute_header, v123, OS_LOG_TYPE_DEFAULT, "Committing merged items with domainRevision: %{public}@ to local database: %{public}@", buf, 0x16u);
     }
 
-    v128 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-    v129 = [v128 metrics];
-    [v129 setLatestUPPSubtask:6];
+    task7 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+    metrics7 = [task7 metrics];
+    [metrics7 setLatestUPPSubtask:6];
 
-    v130 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    v131 = [v130 metadataItemsToCommitToDataSource];
-    v132 = [v131 objectEnumerator];
+    transactionProcessor14 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    metadataItemsToCommitToDataSource2 = [transactionProcessor14 metadataItemsToCommitToDataSource];
+    objectEnumerator = [metadataItemsToCommitToDataSource2 objectEnumerator];
 
-    v133 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSource];
-    v134 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
-    v135 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-    v136 = [v135 responseDomainVersion];
+    dataSource2 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSource];
+    dataSourceTransactionContext5 = [(MZUniversalPlaybackPositionSyncHandler *)self dataSourceTransactionContext];
+    transactionProcessor15 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+    responseDomainVersion3 = [transactionProcessor15 responseDomainVersion];
     v143[0] = _NSConcreteStackBlock;
     v143[1] = 3221225472;
     v143[2] = sub_1000965A8;
     v143[3] = &unk_1004DA220;
-    v106 = v132;
+    v106 = objectEnumerator;
     v144 = v106;
-    [v133 commitUniversalPlaybackPositionTransaction:v134 domainVersion:v136 metadataEnumerationBlock:v143];
+    [dataSource2 commitUniversalPlaybackPositionTransaction:dataSourceTransactionContext5 domainVersion:responseDomainVersion3 metadataEnumerationBlock:v143];
 
     [(MZUniversalPlaybackPositionSyncHandler *)self _resetState];
     v137 = _MTLogCategoryUPPSync();
@@ -662,16 +662,16 @@ LABEL_77:
 - (void)_fillEmptyMetadataIdentifiersIfNeeded
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 importContext];
+  importContext = [v2 importContext];
 
   [NSPredicate predicateForNilValueOrEmptyStringForKey:kEpisodeMetadataIdentifier];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10009668C;
   v6[3] = &unk_1004D8798;
-  v8 = v7 = v3;
+  v8 = v7 = importContext;
   v4 = v8;
-  v5 = v3;
+  v5 = importContext;
   [v5 performBlockAndWaitWithSave:v6];
 }
 
@@ -694,61 +694,61 @@ LABEL_77:
   return v3;
 }
 
-- (void)setCanRequestStoreSignIn:(BOOL)a3
+- (void)setCanRequestStoreSignIn:(BOOL)in
 {
-  v3 = a3;
-  self->_canRequestStoreSignIn = a3;
-  v4 = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
-  [v4 setCanRequestStoreSignIn:v3];
+  inCopy = in;
+  self->_canRequestStoreSignIn = in;
+  kvsController = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
+  [kvsController setCanRequestStoreSignIn:inCopy];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   [(MZUniversalPlaybackPositionSyncHandler *)self setCanceled:1];
-  v4 = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
-  if ([v4 isIdle])
+  kvsController = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
+  if ([kvsController isIdle])
   {
-    v5 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+    currentKVSTransaction = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
 
-    if (!v5)
+    if (!currentKVSTransaction)
     {
       goto LABEL_7;
     }
 
-    if (!v8)
+    if (!errorCopy)
     {
-      v6 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-      v8 = [MZKeyValueStoreError transactionCancelledErrorWithTransaction:v6 underlyingError:0];
+      currentKVSTransaction2 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+      errorCopy = [MZKeyValueStoreError transactionCancelledErrorWithTransaction:currentKVSTransaction2 underlyingError:0];
     }
 
-    v4 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-    [(MZUniversalPlaybackPositionSyncHandler *)self _signalKVSTransactionCompletion:v4 withError:v8];
+    kvsController = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+    [(MZUniversalPlaybackPositionSyncHandler *)self _signalKVSTransactionCompletion:kvsController withError:errorCopy];
   }
 
 LABEL_7:
-  v7 = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
-  if (v8)
+  kvsController2 = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
+  if (errorCopy)
   {
-    [v7 cancelAllTransactionsCancelCode:{objc_msgSend(v8, "code")}];
+    [kvsController2 cancelAllTransactionsCancelCode:{objc_msgSend(errorCopy, "code")}];
   }
 
   else
   {
-    [v7 cancelAllTransactions];
+    [kvsController2 cancelAllTransactions];
   }
 }
 
 - (void)timeout
 {
-  v4 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-  v3 = [MZKeyValueStoreError transactionTimeoutErrorWithTransaction:v4 underlyingError:0];
+  currentKVSTransaction = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+  v3 = [MZKeyValueStoreError transactionTimeoutErrorWithTransaction:currentKVSTransaction underlyingError:0];
   [(MZUniversalPlaybackPositionSyncHandler *)self cancelWithError:v3];
 }
 
-- (void)synchronizeWithCompletionHandler:(id)a3
+- (void)synchronizeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
@@ -767,7 +767,7 @@ LABEL_7:
   v8[2] = sub_100096E54;
   v8[3] = &unk_1004D8520;
   v8[4] = self;
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
   dispatch_async(syncOperationQueue, v8);
   kdebug_trace();
@@ -775,12 +775,12 @@ LABEL_7:
   _Block_object_dispose(v11, 8);
 }
 
-- (id)newKVSTransactionWithType:(int)a3 keys:(id)a4
+- (id)newKVSTransactionWithType:(int)type keys:(id)keys
 {
-  v4 = *&a3;
+  v4 = *&type;
   kvsController = self->_kvsController;
-  v7 = a4;
-  v8 = [(MZKeyValueStoreController *)kvsController defaultDomain];
+  keysCopy = keys;
+  defaultDomain = [(MZKeyValueStoreController *)kvsController defaultDomain];
   v9 = self->_kvsController;
   if (v4 == 1)
   {
@@ -792,10 +792,10 @@ LABEL_7:
     [(MZKeyValueStoreController *)v9 defaultSetURL];
   }
   v10 = ;
-  v11 = [[MZKeyValueStoreTransaction alloc] initWithType:v4 domain:v8 URL:v10 keys:v7];
+  v11 = [[MZKeyValueStoreTransaction alloc] initWithType:v4 domain:defaultDomain URL:v10 keys:keysCopy];
 
-  v12 = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
-  [(MZKeyValueStoreTransaction *)v11 setProcessor:v12];
+  transactionProcessor = [(MZUniversalPlaybackPositionSyncHandler *)self transactionProcessor];
+  [(MZKeyValueStoreTransaction *)v11 setProcessor:transactionProcessor];
 
   v13 = [[NSConditionLock alloc] initWithCondition:0];
   [(MZKeyValueStoreTransaction *)v11 setUserInfoValue:v13 forKey:@"completionConditionLock"];
@@ -803,22 +803,22 @@ LABEL_7:
   return v11;
 }
 
-- (id)newKVSPutAllTransactionWithMetadataItems:(id)a3
+- (id)newKVSPutAllTransactionWithMetadataItems:(id)items
 {
-  v4 = a3;
-  if (![v4 count])
+  itemsCopy = items;
+  if (![itemsCopy count])
   {
     v5 = 0;
     goto LABEL_29;
   }
 
-  v23 = self;
+  selfCopy = self;
   v5 = objc_alloc_init(NSMutableArray);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (!v7)
   {
@@ -846,8 +846,8 @@ LABEL_7:
       [v11 bookmarkTime];
       if (v12 > 0.0 || ([v11 hasBeenPlayed] & 1) != 0 || objc_msgSend(v11, "playCount") || (objc_msgSend(v11, "lastDatePlayed"), v13 > 0.0) || (objc_msgSend(v11, "lastUserMarkedAsPlayedDate"), v14 > 0.0) || objc_msgSend(v11, "playStateManuallySet"))
       {
-        v15 = [v11 itemIdentifier];
-        [v5 addObject:v15];
+        itemIdentifier = [v11 itemIdentifier];
+        [v5 addObject:itemIdentifier];
 
         v16 = _MTLogCategoryUPPSync();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -902,43 +902,43 @@ LABEL_18:
   while (v20);
 LABEL_27:
 
-  self = v23;
+  self = selfCopy;
 LABEL_29:
   v21 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSTransactionWithType:2 keys:v5];
 
   return v21;
 }
 
-- (id)newKVSGetAllTransactionWithMetadataItems:(id)a3
+- (id)newKVSGetAllTransactionWithMetadataItems:(id)items
 {
-  v4 = [a3 valueForKey:@"itemIdentifier"];
+  v4 = [items valueForKey:@"itemIdentifier"];
   v5 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSTransactionWithType:1 keys:v4];
 
   return v5;
 }
 
-- (id)newKVSGetAllTransactionSinceDomainVersion:(id)a3
+- (id)newKVSGetAllTransactionSinceDomainVersion:(id)version
 {
-  v4 = @"0";
-  if (a3)
+  versionCopy = @"0";
+  if (version)
   {
-    v4 = a3;
+    versionCopy = version;
   }
 
-  v5 = v4;
+  v5 = versionCopy;
   v6 = [(MZUniversalPlaybackPositionSyncHandler *)self newKVSTransactionWithType:1 keys:0];
   [v6 setSinceDomainVersion:v5];
 
   return v6;
 }
 
-- (id)_synchronouslyRunKVSTransaction:(id)a3
+- (id)_synchronouslyRunKVSTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
-  [v5 scheduleTransaction:v4];
+  transactionCopy = transaction;
+  kvsController = [(MZUniversalPlaybackPositionSyncHandler *)self kvsController];
+  [kvsController scheduleTransaction:transactionCopy];
 
-  v6 = [v4 userInfoValueForKey:@"completionConditionLock"];
+  v6 = [transactionCopy userInfoValueForKey:@"completionConditionLock"];
 
   v7 = [NSDate dateWithTimeIntervalSinceNow:10.0];
   v8 = [v6 lockWhenCondition:1 beforeDate:v7];
@@ -950,87 +950,87 @@ LABEL_29:
 
   else
   {
-    v9 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-    v10 = [MZKeyValueStoreError transactionTimeoutErrorWithTransaction:v9 underlyingError:0];
+    currentKVSTransaction = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+    v10 = [MZKeyValueStoreError transactionTimeoutErrorWithTransaction:currentKVSTransaction underlyingError:0];
     [(MZUniversalPlaybackPositionSyncHandler *)self setFatalSyncError:v10];
   }
 
-  v11 = [(MZUniversalPlaybackPositionSyncHandler *)self fatalSyncError];
+  fatalSyncError = [(MZUniversalPlaybackPositionSyncHandler *)self fatalSyncError];
 
-  return v11;
+  return fatalSyncError;
 }
 
-- (void)_signalKVSTransactionCompletion:(id)a3
+- (void)_signalKVSTransactionCompletion:(id)completion
 {
-  v3 = [a3 userInfoValueForKey:@"completionConditionLock"];
+  v3 = [completion userInfoValueForKey:@"completionConditionLock"];
   [v3 lock];
   [v3 unlockWithCondition:1];
 }
 
-- (void)_signalKVSTransactionCompletion:(id)a3 withError:(id)a4
+- (void)_signalKVSTransactionCompletion:(id)completion withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-  v9 = [v7 isEqual:v8];
+  errorCopy = error;
+  completionCopy = completion;
+  currentKVSTransaction = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+  v9 = [completionCopy isEqual:currentKVSTransaction];
 
   if (v9)
   {
-    if (v6)
+    if (errorCopy)
     {
       v10 = _MTLogCategoryUPPSync();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v6;
+        v13 = errorCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "transaction is being canceled.  error = %{public}@", &v12, 0xCu);
       }
     }
 
-    [(MZUniversalPlaybackPositionSyncHandler *)self setFatalSyncError:v6];
-    v11 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
-    [(MZUniversalPlaybackPositionSyncHandler *)self _signalKVSTransactionCompletion:v11];
+    [(MZUniversalPlaybackPositionSyncHandler *)self setFatalSyncError:errorCopy];
+    currentKVSTransaction2 = [(MZUniversalPlaybackPositionSyncHandler *)self currentKVSTransaction];
+    [(MZUniversalPlaybackPositionSyncHandler *)self _signalKVSTransactionCompletion:currentKVSTransaction2];
   }
 }
 
-- (BOOL)keyValueStoreController:(id)a3 transaction:(id)a4 didFailWithError:(id)a5
+- (BOOL)keyValueStoreController:(id)controller transaction:(id)transaction didFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isAccountsChangedError])
+  controllerCopy = controller;
+  transactionCopy = transaction;
+  errorCopy = error;
+  if ([errorCopy isAccountsChangedError])
   {
     v11 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 sinceDomainVersion];
+      sinceDomainVersion = [transactionCopy sinceDomainVersion];
       v16 = 138543362;
-      v17 = v12;
+      v17 = sinceDomainVersion;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Detected account change.  Getting remote items since version 0 instead of %{public}@\n", &v16, 0xCu);
     }
 
-    [v9 setSinceDomainVersion:@"0"];
+    [transactionCopy setSinceDomainVersion:@"0"];
     goto LABEL_8;
   }
 
-  if ([v10 isAuthenticationError] && !-[MZUniversalPlaybackPositionSyncHandler canRequestStoreSignIn](self, "canRequestStoreSignIn"))
+  if ([errorCopy isAuthenticationError] && !-[MZUniversalPlaybackPositionSyncHandler canRequestStoreSignIn](self, "canRequestStoreSignIn"))
   {
     v14 = _MTLogCategoryUPPSync();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v10;
+      v17 = errorCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Detected authentication error (%{public}@) -- Bailing out", &v16, 0xCu);
     }
 
-    [v8 resolveError:v10 transaction:v9 resolution:2];
+    [controllerCopy resolveError:errorCopy transaction:transactionCopy resolution:2];
     goto LABEL_12;
   }
 
-  if (([v10 isRecoverableError] & 1) == 0)
+  if (([errorCopy isRecoverableError] & 1) == 0)
   {
 LABEL_12:
-    [(MZUniversalPlaybackPositionSyncHandler *)self _signalKVSTransactionCompletion:v9 withError:v10];
+    [(MZUniversalPlaybackPositionSyncHandler *)self _signalKVSTransactionCompletion:transactionCopy withError:errorCopy];
     v13 = 1;
     goto LABEL_13;
   }
@@ -1042,25 +1042,25 @@ LABEL_13:
   return v13;
 }
 
-- (void)setNumMetadataItemsFromKVSStorage:(int64_t)a3
+- (void)setNumMetadataItemsFromKVSStorage:(int64_t)storage
 {
-  v5 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-  v4 = [v5 metrics];
-  [v4 setNumMetadataItemsFromKVSStorage:a3];
+  task = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+  metrics = [task metrics];
+  [metrics setNumMetadataItemsFromKVSStorage:storage];
 }
 
-- (void)setNumMetadataItemsToCommitToDataSource:(int64_t)a3
+- (void)setNumMetadataItemsToCommitToDataSource:(int64_t)source
 {
-  v5 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-  v4 = [v5 metrics];
-  [v4 setNumMetadataItemsToCommitToDataSource:a3];
+  task = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+  metrics = [task metrics];
+  [metrics setNumMetadataItemsToCommitToDataSource:source];
 }
 
-- (void)setNumMetadataItemsToCommitToKVSStorage:(int64_t)a3
+- (void)setNumMetadataItemsToCommitToKVSStorage:(int64_t)storage
 {
-  v5 = [(MZUniversalPlaybackPositionSyncHandler *)self task];
-  v4 = [v5 metrics];
-  [v4 setNumMetadataItemsToCommitToKVSStorage:a3];
+  task = [(MZUniversalPlaybackPositionSyncHandler *)self task];
+  metrics = [task metrics];
+  [metrics setNumMetadataItemsToCommitToKVSStorage:storage];
 }
 
 @end

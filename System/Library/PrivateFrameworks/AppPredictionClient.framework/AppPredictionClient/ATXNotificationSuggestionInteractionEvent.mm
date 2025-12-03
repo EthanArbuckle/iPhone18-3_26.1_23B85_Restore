@@ -1,10 +1,10 @@
 @interface ATXNotificationSuggestionInteractionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXNotificationSuggestionInteractionEvent)initWithProto:(id)a3;
-- (ATXNotificationSuggestionInteractionEvent)initWithProtoData:(id)a3;
-- (ATXNotificationSuggestionInteractionEvent)initWithSuggestionType:(int64_t)a3 eventType:(int64_t)a4 suggestionUUID:(id)a5 eventDate:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXNotificationSuggestionInteractionEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXNotificationSuggestionInteractionEvent)initWithProto:(id)proto;
+- (ATXNotificationSuggestionInteractionEvent)initWithProtoData:(id)data;
+- (ATXNotificationSuggestionInteractionEvent)initWithSuggestionType:(int64_t)type eventType:(int64_t)eventType suggestionUUID:(id)d eventDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXNotificationSuggestionInteractionEvent:(id)event;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonRawData;
@@ -13,13 +13,13 @@
 
 @implementation ATXNotificationSuggestionInteractionEvent
 
-- (ATXNotificationSuggestionInteractionEvent)initWithSuggestionType:(int64_t)a3 eventType:(int64_t)a4 suggestionUUID:(id)a5 eventDate:(id)a6
+- (ATXNotificationSuggestionInteractionEvent)initWithSuggestionType:(int64_t)type eventType:(int64_t)eventType suggestionUUID:(id)d eventDate:(id)date
 {
-  v11 = a5;
-  v12 = a6;
-  if (a3)
+  dCopy = d;
+  dateCopy = date;
+  if (type)
   {
-    if (a4)
+    if (eventType)
     {
       goto LABEL_3;
     }
@@ -28,17 +28,17 @@
   else
   {
     [ATXNotificationSuggestionInteractionEvent initWithSuggestionType:eventType:suggestionUUID:eventDate:];
-    if (a4)
+    if (eventType)
     {
 LABEL_3:
-      if (v11)
+      if (dCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [ATXNotificationSuggestionInteractionEvent initWithSuggestionType:eventType:suggestionUUID:eventDate:];
-      if (v12)
+      if (dateCopy)
       {
         goto LABEL_5;
       }
@@ -48,13 +48,13 @@ LABEL_10:
   }
 
   [ATXNotificationSuggestionInteractionEvent initWithSuggestionType:eventType:suggestionUUID:eventDate:];
-  if (!v11)
+  if (!dCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v12)
+  if (dateCopy)
   {
     goto LABEL_5;
   }
@@ -68,43 +68,43 @@ LABEL_5:
   v14 = v13;
   if (v13)
   {
-    v13->_suggestionType = a3;
-    v13->_eventType = a4;
-    objc_storeStrong(&v13->_suggestionUUID, a5);
-    objc_storeStrong(&v14->_eventDate, a6);
+    v13->_suggestionType = type;
+    v13->_eventType = eventType;
+    objc_storeStrong(&v13->_suggestionUUID, d);
+    objc_storeStrong(&v14->_eventDate, date);
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXNotificationSuggestionInteractionEvent *)self isEqualToATXNotificationSuggestionInteractionEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXNotificationSuggestionInteractionEvent *)self isEqualToATXNotificationSuggestionInteractionEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXNotificationSuggestionInteractionEvent:(id)a3
+- (BOOL)isEqualToATXNotificationSuggestionInteractionEvent:(id)event
 {
-  v4 = a3;
-  if (__PAIR128__([v4 eventType], objc_msgSend(v4, "suggestionType")) != *&self->_suggestionType)
+  eventCopy = event;
+  if (__PAIR128__([eventCopy eventType], objc_msgSend(eventCopy, "suggestionType")) != *&self->_suggestionType)
   {
     goto LABEL_4;
   }
 
   v5 = self->_suggestionUUID;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == eventCopy[3])
   {
 
     goto LABEL_7;
@@ -117,8 +117,8 @@ LABEL_5:
 LABEL_7:
     [(NSDate *)self->_eventDate timeIntervalSinceReferenceDate];
     v11 = v10;
-    v12 = [v4 eventDate];
-    [v12 timeIntervalSinceReferenceDate];
+    eventDate = [eventCopy eventDate];
+    [eventDate timeIntervalSinceReferenceDate];
     v8 = vabdd_f64(v11, v13) <= 2.22044605e-16;
 
     goto LABEL_5;
@@ -131,10 +131,10 @@ LABEL_5:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -168,10 +168,10 @@ LABEL_5:
 
   v11[1] = v5;
   v10[2] = @"suggestionUUID";
-  v6 = [(NSUUID *)self->_suggestionUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_suggestionUUID UUIDString];
   v10[3] = @"eventDate";
   eventDate = self->_eventDate;
-  v11[2] = v6;
+  v11[2] = uUIDString;
   v11[3] = eventDate;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
@@ -181,46 +181,46 @@ LABEL_5:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXNotificationSuggestionInteractionEvent *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXNotificationSuggestionInteractionEvent *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }
 
-- (ATXNotificationSuggestionInteractionEvent)initWithProtoData:(id)a3
+- (ATXNotificationSuggestionInteractionEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBNotificationSuggestionInteractionEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBNotificationSuggestionInteractionEvent alloc] initWithData:dataCopy];
 
     self = [(ATXNotificationSuggestionInteractionEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXNotificationSuggestionInteractionEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXNotificationSuggestionInteractionEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXNotificationSuggestionInteractionEvent)initWithProto:(id)a3
+- (ATXNotificationSuggestionInteractionEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -236,23 +236,23 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBNotificationSuggestionInteractionEvent *)v5 suggestionType];
-  v7 = [(ATXPBNotificationSuggestionInteractionEvent *)v5 eventType];
+  v5 = protoCopy;
+  suggestionType = [(ATXPBNotificationSuggestionInteractionEvent *)v5 suggestionType];
+  eventType = [(ATXPBNotificationSuggestionInteractionEvent *)v5 eventType];
   v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v9 = [(ATXPBNotificationSuggestionInteractionEvent *)v5 suggestionUUID];
-  v10 = [v8 initWithUUIDString:v9];
+  suggestionUUID = [(ATXPBNotificationSuggestionInteractionEvent *)v5 suggestionUUID];
+  v10 = [v8 initWithUUIDString:suggestionUUID];
 
   v11 = objc_alloc(MEMORY[0x1E695DF00]);
-  v12 = [(ATXPBNotificationSuggestionInteractionEvent *)v5 secondsSinceReferenceDate];
+  secondsSinceReferenceDate = [(ATXPBNotificationSuggestionInteractionEvent *)v5 secondsSinceReferenceDate];
 
-  v13 = [v11 initWithTimeIntervalSinceReferenceDate:v12];
-  self = [(ATXNotificationSuggestionInteractionEvent *)self initWithSuggestionType:v6 eventType:v7 suggestionUUID:v10 eventDate:v13];
+  v13 = [v11 initWithTimeIntervalSinceReferenceDate:secondsSinceReferenceDate];
+  self = [(ATXNotificationSuggestionInteractionEvent *)self initWithSuggestionType:suggestionType eventType:eventType suggestionUUID:v10 eventDate:v13];
 
-  v14 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)proto
@@ -260,8 +260,8 @@ LABEL_8:
   v3 = objc_opt_new();
   [(ATXPBNotificationSuggestionInteractionEvent *)v3 setSuggestionType:?];
   [(ATXPBNotificationSuggestionInteractionEvent *)v3 setEventType:?];
-  v4 = [(NSUUID *)self->_suggestionUUID UUIDString];
-  [(ATXPBNotificationSuggestionInteractionEvent *)v3 setSuggestionUUID:v4];
+  uUIDString = [(NSUUID *)self->_suggestionUUID UUIDString];
+  [(ATXPBNotificationSuggestionInteractionEvent *)v3 setSuggestionUUID:uUIDString];
 
   [(NSDate *)self->_eventDate timeIntervalSinceReferenceDate];
   [(ATXPBNotificationSuggestionInteractionEvent *)v3 setSecondsSinceReferenceDate:v5];

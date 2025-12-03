@@ -1,21 +1,21 @@
 @interface HDSQLiteDatabaseTriggerSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation HDSQLiteDatabaseTriggerSchema
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   tableName = self->_tableName;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (tableName != v6 && (!v6 || ![(NSString *)tableName isEqual:?]))
   {
     goto LABEL_7;
   }
 
   sql = self->_sql;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (sql == v8)
   {
     v9 = 1;

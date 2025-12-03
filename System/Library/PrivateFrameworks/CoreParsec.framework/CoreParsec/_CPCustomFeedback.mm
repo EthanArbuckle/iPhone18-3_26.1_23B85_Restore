@@ -1,39 +1,39 @@
 @interface _CPCustomFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCustomFeedback)init;
-- (_CPCustomFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPCustomFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCustomFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPCustomFeedback *)self jsonFeedback];
-      v7 = [v4 jsonFeedback];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      jsonFeedback = [(_CPCustomFeedback *)self jsonFeedback];
+      jsonFeedback2 = [equalCopy jsonFeedback];
+      v8 = jsonFeedback2;
+      if ((jsonFeedback != 0) != (jsonFeedback2 == 0))
       {
-        v9 = [(_CPCustomFeedback *)self jsonFeedback];
-        if (!v9)
+        jsonFeedback3 = [(_CPCustomFeedback *)self jsonFeedback];
+        if (!jsonFeedback3)
         {
 
 LABEL_11:
           feedbackType = self->_feedbackType;
-          v14 = feedbackType == [v4 feedbackType];
+          v14 = feedbackType == [equalCopy feedbackType];
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPCustomFeedback *)self jsonFeedback];
-        v12 = [v4 jsonFeedback];
-        v13 = [v11 isEqual:v12];
+        v10 = jsonFeedback3;
+        jsonFeedback4 = [(_CPCustomFeedback *)self jsonFeedback];
+        jsonFeedback5 = [equalCopy jsonFeedback];
+        v13 = [jsonFeedback4 isEqual:jsonFeedback5];
 
         if (v13)
         {
@@ -53,18 +53,18 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPCustomFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPCustomFeedback *)self jsonFeedback];
+  jsonFeedback = [(_CPCustomFeedback *)self jsonFeedback];
 
-  if (v5)
+  if (jsonFeedback)
   {
     jsonFeedback = self->_jsonFeedback;
     PBDataWriterWriteDataField();
@@ -93,20 +93,20 @@ LABEL_9:
   return v2;
 }
 
-- (_CPCustomFeedback)initWithFacade:(id)a3
+- (_CPCustomFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v10.receiver = self;
   v10.super_class = _CPCustomFeedback;
   v5 = [(_CPCustomFeedback *)&v10 init];
   if (v5)
   {
-    -[_CPCustomFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 data];
-    v7 = [v6 copy];
+    -[_CPCustomFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    data = [facadeCopy data];
+    v7 = [data copy];
     [(_CPCustomFeedback *)v5 setJsonFeedback:v7];
 
-    -[_CPCustomFeedback setFeedbackType:](v5, "setFeedbackType:", [v4 feedbackType]);
+    -[_CPCustomFeedback setFeedbackType:](v5, "setFeedbackType:", [facadeCopy feedbackType]);
     v8 = v5;
   }
 

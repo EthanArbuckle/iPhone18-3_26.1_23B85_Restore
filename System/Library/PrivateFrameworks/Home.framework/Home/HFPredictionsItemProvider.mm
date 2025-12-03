@@ -1,48 +1,48 @@
 @interface HFPredictionsItemProvider
 - (HFPredictionsItemProvider)init;
-- (HFPredictionsItemProvider)initWithHome:(id)a3 predictionsManager:(id)a4 itemLimit:(unint64_t)a5;
-- (id)_backFillPredictions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFPredictionsItemProvider)initWithHome:(id)home predictionsManager:(id)manager itemLimit:(unint64_t)limit;
+- (id)_backFillPredictions:(id)predictions;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fetchPredictions;
 - (id)invalidationReasons;
-- (id)itemConfidence:(id)a3;
-- (id)itemPriority:(id)a3;
+- (id)itemConfidence:(id)confidence;
+- (id)itemPriority:(id)priority;
 - (id)reloadItems;
-- (void)setFreezePredictions:(BOOL)a3;
-- (void)setThawPredictionsForNextReload:(BOOL)a3;
+- (void)setFreezePredictions:(BOOL)predictions;
+- (void)setThawPredictionsForNextReload:(BOOL)reload;
 @end
 
 @implementation HFPredictionsItemProvider
 
 - (HFPredictionsItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_predictionsManager_itemLimit_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFPredictionsItemProvider.m" lineNumber:50 description:{@"%s is unavailable; use %@ instead", "-[HFPredictionsItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPredictionsItemProvider.m" lineNumber:50 description:{@"%s is unavailable; use %@ instead", "-[HFPredictionsItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFPredictionsItemProvider)initWithHome:(id)a3 predictionsManager:(id)a4 itemLimit:(unint64_t)a5
+- (HFPredictionsItemProvider)initWithHome:(id)home predictionsManager:(id)manager itemLimit:(unint64_t)limit
 {
-  v9 = a3;
-  v10 = a4;
+  homeCopy = home;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HFPredictionsItemProvider;
   v11 = [(HFItemProvider *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a3);
+    objc_storeStrong(&v11->_home, home);
     v13 = [MEMORY[0x277CBEB58] set];
     allItems = v12->_allItems;
     v12->_allItems = v13;
 
-    objc_storeStrong(&v12->_predictionsManager, a4);
-    v12->_itemLimit = a5;
-    v15 = [v9 hf_characteristicValueManager];
+    objc_storeStrong(&v12->_predictionsManager, manager);
+    v12->_itemLimit = limit;
+    hf_characteristicValueManager = [homeCopy hf_characteristicValueManager];
     valueSource = v12->_valueSource;
-    v12->_valueSource = v15;
+    v12->_valueSource = hf_characteristicValueManager;
 
     v12->_freezePredictions = 0;
     v12->_thawPredictionsForNextReload = 0;
@@ -53,42 +53,42 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFPredictionsItemProvider *)self home];
-  v6 = [(HFPredictionsItemProvider *)self predictionsManager];
-  v7 = [v4 initWithHome:v5 predictionsManager:v6 itemLimit:{-[HFPredictionsItemProvider itemLimit](self, "itemLimit")}];
+  home = [(HFPredictionsItemProvider *)self home];
+  predictionsManager = [(HFPredictionsItemProvider *)self predictionsManager];
+  v7 = [v4 initWithHome:home predictionsManager:predictionsManager itemLimit:{-[HFPredictionsItemProvider itemLimit](self, "itemLimit")}];
 
   return v7;
 }
 
-- (void)setFreezePredictions:(BOOL)a3
+- (void)setFreezePredictions:(BOOL)predictions
 {
-  self->_freezePredictions = a3;
-  if (!a3)
+  self->_freezePredictions = predictions;
+  if (!predictions)
   {
     lastPredictions = self->_lastPredictions;
     self->_lastPredictions = 0;
   }
 }
 
-- (void)setThawPredictionsForNextReload:(BOOL)a3
+- (void)setThawPredictionsForNextReload:(BOOL)reload
 {
   v9 = *MEMORY[0x277D85DE8];
-  self->_thawPredictionsForNextReload = a3;
-  if (a3)
+  self->_thawPredictionsForNextReload = reload;
+  if (reload)
   {
     v4 = HFLogForCategory(0x38uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "%@ set to thaw predictions for next reload", &v7, 0xCu);
     }
 
-    v5 = [(HFPredictionsItemProvider *)self predictionsManager];
-    [v5 moduleDidUnfreezeItems];
+    predictionsManager = [(HFPredictionsItemProvider *)self predictionsManager];
+    [predictionsManager moduleDidUnfreezeItems];
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -102,20 +102,20 @@
     v5 = HFLogForCategory(0x38uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(HFPredictionsItemProvider *)self home];
-      v7 = [(HFPredictionsItemProvider *)self lastPredictions];
+      home = [(HFPredictionsItemProvider *)self home];
+      lastPredictions = [(HFPredictionsItemProvider *)self lastPredictions];
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v6;
+      v23 = home;
       v24 = 2112;
-      v25 = v7;
+      v25 = lastPredictions;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%@ asked to fetch predictions for home %@, but is frozen. Returning %@", buf, 0x20u);
     }
 
     v8 = MEMORY[0x277D2C900];
-    v9 = [(HFPredictionsItemProvider *)self lastPredictions];
-    v10 = [v8 futureWithResult:v9];
+    lastPredictions2 = [(HFPredictionsItemProvider *)self lastPredictions];
+    v10 = [v8 futureWithResult:lastPredictions2];
   }
 
   else
@@ -126,23 +126,23 @@
       v11 = HFLogForCategory(0x38uLL);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(HFPredictionsItemProvider *)self home];
+        home2 = [(HFPredictionsItemProvider *)self home];
         *buf = 138412546;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2112;
-        v23 = v12;
+        v23 = home2;
         _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "%@ thawing predictions to be recomputed for home %@", buf, 0x16u);
       }
     }
 
-    v13 = [(HFPredictionsItemProvider *)self predictionsManager];
-    v14 = [v13 fetchUserActionPredictions];
+    predictionsManager = [(HFPredictionsItemProvider *)self predictionsManager];
+    fetchUserActionPredictions = [predictionsManager fetchUserActionPredictions];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __45__HFPredictionsItemProvider_fetchPredictions__block_invoke;
     v17[3] = &unk_277DF52E0;
     objc_copyWeak(&v18, &location);
-    v10 = [v14 flatMap:v17];
+    v10 = [fetchUserActionPredictions flatMap:v17];
     objc_destroyWeak(&v18);
 
     objc_destroyWeak(&location);
@@ -194,7 +194,7 @@ id __45__HFPredictionsItemProvider_fetchPredictions__block_invoke(uint64_t a1, v
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v12, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFPredictionsItemProvider *)self fetchPredictions];
+  fetchPredictions = [(HFPredictionsItemProvider *)self fetchPredictions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__HFPredictionsItemProvider_reloadItems__block_invoke_2;
@@ -202,7 +202,7 @@ id __45__HFPredictionsItemProvider_fetchPredictions__block_invoke(uint64_t a1, v
   objc_copyWeak(&v10, &location);
   v5 = v3;
   v9 = v5;
-  v6 = [v4 flatMap:v8];
+  v6 = [fetchPredictions flatMap:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -520,29 +520,29 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
   return v8;
 }
 
-- (id)_backFillPredictions:(id)a3
+- (id)_backFillPredictions:(id)predictions
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [(HFPredictionsItemProvider *)self setObjectPriorities:v5];
+  predictionsCopy = predictions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(HFPredictionsItemProvider *)self setObjectPriorities:dictionary];
 
-  v6 = [MEMORY[0x277CBEB40] orderedSetWithArray:v4];
+  v6 = [MEMORY[0x277CBEB40] orderedSetWithArray:predictionsCopy];
   v7 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v82 = v4;
+    v82 = predictionsCopy;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Initial predictions: %@", buf, 0xCu);
   }
 
-  v8 = [(HFPredictionsItemProvider *)self predictionsManager];
-  v9 = [v8 filterTypes];
-  if ([v9 count])
+  predictionsManager = [(HFPredictionsItemProvider *)self predictionsManager];
+  filterTypes = [predictionsManager filterTypes];
+  if ([filterTypes count])
   {
-    v10 = [(HFPredictionsItemProvider *)self predictionsManager];
-    v11 = [v10 filterTypes];
-    v12 = [v11 containsObject:&unk_282524978];
+    predictionsManager2 = [(HFPredictionsItemProvider *)self predictionsManager];
+    filterTypes2 = [predictionsManager2 filterTypes];
+    v12 = [filterTypes2 containsObject:&unk_282524978];
   }
 
   else
@@ -550,15 +550,15 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
     v12 = 1;
   }
 
-  v66 = v4;
+  v66 = predictionsCopy;
   if (_os_feature_enabled_impl())
   {
-    v13 = [(HFPredictionsItemProvider *)self predictionsManager];
-    v14 = [v13 filterTypes];
-    if ([v14 count])
+    predictionsManager3 = [(HFPredictionsItemProvider *)self predictionsManager];
+    filterTypes3 = [predictionsManager3 filterTypes];
+    if ([filterTypes3 count])
     {
-      v15 = [(HFPredictionsItemProvider *)self predictionsManager];
-      [v15 filterTypes];
+      predictionsManager4 = [(HFPredictionsItemProvider *)self predictionsManager];
+      [predictionsManager4 filterTypes];
       v17 = v16 = v6;
       v18 = [v17 containsObject:&unk_282524990];
 
@@ -576,56 +576,56 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
     v18 = 0;
   }
 
-  v19 = [MEMORY[0x277CBEB40] orderedSet];
-  v67 = v19;
-  v68 = self;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  v67 = orderedSet;
+  selfCopy = self;
   if (v12)
   {
-    v20 = [(HFPredictionsItemProvider *)self home];
-    v21 = [v20 hf_accessoryLikeObjects];
+    home = [(HFPredictionsItemProvider *)self home];
+    hf_accessoryLikeObjects = [home hf_accessoryLikeObjects];
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __50__HFPredictionsItemProvider__backFillPredictions___block_invoke_2;
     v78[3] = &unk_277DFEBF0;
     v79 = &__block_literal_global_42_2;
-    [v21 na_map:v78];
+    [hf_accessoryLikeObjects na_map:v78];
     v23 = v22 = v6;
-    v24 = [v23 allObjects];
-    v25 = [(HFPredictionsItemProvider *)v68 home];
-    v26 = [v25 hf_reorderableServicesList];
-    [v26 sortedHomeKitObjectComparator];
+    allObjects = [v23 allObjects];
+    home2 = [(HFPredictionsItemProvider *)selfCopy home];
+    hf_reorderableServicesList = [home2 hf_reorderableServicesList];
+    [hf_reorderableServicesList sortedHomeKitObjectComparator];
     v28 = v27 = v18;
-    v29 = [v24 sortedArrayUsingComparator:v28];
+    v29 = [allObjects sortedArrayUsingComparator:v28];
 
-    self = v68;
+    self = selfCopy;
     v6 = v22;
 
-    v19 = v67;
+    orderedSet = v67;
     [v67 addObjectsFromArray:v29];
-    v30 = [(HFPredictionsItemProvider *)v68 home];
-    v31 = [v30 hf_orderedRooms];
+    home3 = [(HFPredictionsItemProvider *)selfCopy home];
+    hf_orderedRooms = [home3 hf_orderedRooms];
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v76[2] = __50__HFPredictionsItemProvider__backFillPredictions___block_invoke_3;
     v76[3] = &unk_277DFEC40;
     v77 = &__block_literal_global_42_2;
-    v32 = [v31 na_flatMap:v76];
+    v32 = [hf_orderedRooms na_flatMap:v76];
 
     [v67 addObjectsFromArray:v32];
     v18 = v27;
   }
 
-  v33 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
   if (v18)
   {
-    v34 = [(HFPredictionsItemProvider *)self home];
-    v35 = [v34 hf_orderedActionSets];
-    v36 = [v35 na_filter:&__block_literal_global_48_4];
+    home4 = [(HFPredictionsItemProvider *)self home];
+    hf_orderedActionSets = [home4 hf_orderedActionSets];
+    v36 = [hf_orderedActionSets na_filter:&__block_literal_global_48_4];
 
     v37 = [v36 na_filter:&__block_literal_global_50_1];
-    [v33 addObjectsFromArray:v37];
+    [orderedSet2 addObjectsFromArray:v37];
     v38 = [v36 na_filter:&__block_literal_global_52_3];
-    [v33 addObjectsFromArray:v38];
+    [orderedSet2 addObjectsFromArray:v38];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -634,28 +634,28 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
   aBlock[3] = &unk_277DFEC68;
   v39 = v6;
   v74 = v39;
-  v75 = self;
+  selfCopy2 = self;
   v40 = _Block_copy(aBlock);
   v41 = [v39 count];
   if (v41 < [(HFPredictionsItemProvider *)self itemLimit])
   {
     do
     {
-      if (![v19 count] && !objc_msgSend(v33, "count"))
+      if (![orderedSet count] && !objc_msgSend(orderedSet2, "count"))
       {
         break;
       }
 
-      v40[2](v40, v19);
-      v40[2](v40, v19);
-      v40[2](v40, v33);
+      v40[2](v40, orderedSet);
+      v40[2](v40, orderedSet);
+      v40[2](v40, orderedSet2);
       v42 = [v39 count];
     }
 
     while (v42 < [(HFPredictionsItemProvider *)self itemLimit]);
   }
 
-  v65 = v33;
+  v65 = orderedSet2;
   +[HFAnalyticsCCPredictionEvent sendMetricsForPredictionEventAtStage:withCount:](HFAnalyticsCCPredictionEvent, "sendMetricsForPredictionEventAtStage:withCount:", 3, [v39 count]);
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
@@ -673,8 +673,8 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
       while (v43 < [(HFPredictionsItemProvider *)self itemLimit]);
     }
 
-    v45 = [(HFPredictionsItemProvider *)self home];
-    [v39 insertObject:v45 atIndex:0];
+    home5 = [(HFPredictionsItemProvider *)self home];
+    [v39 insertObject:home5 atIndex:0];
   }
 
   v64 = v40;
@@ -699,13 +699,13 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
         }
 
         v52 = *(*(&v69 + 1) + 8 * i);
-        v53 = [(HFPredictionsItemProvider *)self objectPriorities];
+        objectPriorities = [(HFPredictionsItemProvider *)self objectPriorities];
         v54 = [MEMORY[0x277CCABB0] numberWithInteger:v50];
-        v55 = [v52 uniqueIdentifier];
-        v56 = [v55 UUIDString];
-        [v53 setObject:v54 forKey:v56];
+        uniqueIdentifier = [v52 uniqueIdentifier];
+        uUIDString = [uniqueIdentifier UUIDString];
+        [objectPriorities setObject:v54 forKey:uUIDString];
 
-        self = v68;
+        self = selfCopy;
         ++v50;
       }
 
@@ -718,15 +718,15 @@ id __52__HFPredictionsItemProvider_transformedPredictions___block_invoke(uint64_
   v57 = HFLogForCategory(0x38uLL);
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
   {
-    v58 = [v46 array];
+    array = [v46 array];
     *buf = 138412290;
-    v82 = v58;
+    v82 = array;
     _os_log_impl(&dword_20D9BF000, v57, OS_LOG_TYPE_DEFAULT, "Backfilled predictions: %@", buf, 0xCu);
   }
 
   v59 = MEMORY[0x277D2C900];
-  v60 = [v46 array];
-  v61 = [v59 futureWithResult:v60];
+  array2 = [v46 array];
+  v61 = [v59 futureWithResult:array2];
 
   v62 = *MEMORY[0x277D85DE8];
 
@@ -858,27 +858,27 @@ void __50__HFPredictionsItemProvider__backFillPredictions___block_invoke_8(uint6
   v8[3] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFPredictionsItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"actionSet";
   v8[1] = @"home";
   v8[2] = @"user";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
   return v4;
 }
 
-- (id)itemPriority:(id)a3
+- (id)itemPriority:(id)priority
 {
-  v4 = a3;
-  v5 = [(HFPredictionsItemProvider *)self objectPriorities];
-  v6 = [v4 homeKitObject];
+  priorityCopy = priority;
+  objectPriorities = [(HFPredictionsItemProvider *)self objectPriorities];
+  homeKitObject = [priorityCopy homeKitObject];
 
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v7 UUIDString];
-  v9 = [v5 objectForKey:v8];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v9 = [objectPriorities objectForKey:uUIDString];
 
   if (v9)
   {
@@ -895,13 +895,13 @@ void __50__HFPredictionsItemProvider__backFillPredictions___block_invoke_8(uint6
   return v11;
 }
 
-- (id)itemConfidence:(id)a3
+- (id)itemConfidence:(id)confidence
 {
-  v4 = [a3 homeKitObject];
-  if (v4)
+  homeKitObject = [confidence homeKitObject];
+  if (homeKitObject)
   {
-    v5 = [(HFPredictionsItemProvider *)self predictionsManager];
-    v6 = [v5 predictionConfidenceForObject:v4];
+    predictionsManager = [(HFPredictionsItemProvider *)self predictionsManager];
+    v6 = [predictionsManager predictionConfidenceForObject:homeKitObject];
   }
 
   else

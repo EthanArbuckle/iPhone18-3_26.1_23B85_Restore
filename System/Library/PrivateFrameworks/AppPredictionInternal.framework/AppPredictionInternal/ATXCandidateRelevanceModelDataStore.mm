@@ -1,31 +1,31 @@
 @interface ATXCandidateRelevanceModelDataStore
 - (ATXCandidateRelevanceModelDataStore)init;
-- (ATXCandidateRelevanceModelDataStore)initWithDataStore:(id)a3;
-- (BOOL)isModelUUIDVerified:(id)a3;
-- (id)cachedCandidatesForModelId:(id)a3 earliestDate:(id)a4;
+- (ATXCandidateRelevanceModelDataStore)initWithDataStore:(id)store;
+- (BOOL)isModelUUIDVerified:(id)verified;
+- (id)cachedCandidatesForModelId:(id)id earliestDate:(id)date;
 - (id)clientModelNamesWithTrainedRelevanceModels;
-- (id)idsInTableWithName:(id)a3;
-- (id)modelUUIDToTrainDateForClientModelName:(id)a3;
-- (id)mostRecentVerifiedTrainDateForClientModelName:(id)a3;
-- (id)mostRecentVerifiedTrainingResultsForClientModelName:(id)a3;
-- (id)trainingResultsForClientModelName:(id)a3 modelUUID:(id)a4;
-- (int64_t)candidateIdForCandidate:(id)a3 error:(id *)a4;
-- (int64_t)datasetMetadataIdForDatasetMetadata:(id)a3 error:(id *)a4;
-- (int64_t)featurizationManagerIdForFeaturizationManager:(id)a3 error:(id *)a4;
+- (id)idsInTableWithName:(id)name;
+- (id)modelUUIDToTrainDateForClientModelName:(id)name;
+- (id)mostRecentVerifiedTrainDateForClientModelName:(id)name;
+- (id)mostRecentVerifiedTrainingResultsForClientModelName:(id)name;
+- (id)trainingResultsForClientModelName:(id)name modelUUID:(id)d;
+- (int64_t)candidateIdForCandidate:(id)candidate error:(id *)error;
+- (int64_t)datasetMetadataIdForDatasetMetadata:(id)metadata error:(id *)error;
+- (int64_t)featurizationManagerIdForFeaturizationManager:(id)manager error:(id *)error;
 - (unint64_t)numberOfCandidateIds;
 - (unint64_t)numberOfDatasetMetadataIds;
 - (unint64_t)numberOfFeaturizationManagerIds;
 - (unint64_t)numberOfTrainedModels;
-- (void)cacheSelectedCandidates:(id)a3 featurizationManager:(id)a4 modelId:(id)a5;
-- (void)deleteCachedCandidatesForModelId:(id)a3;
-- (void)deleteRowsWithIds:(id)a3 fromTableWithName:(id)a4;
-- (void)deleteTrainedModelsWithTrainDateOlderThanDate:(id)a3;
-- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)a3 clientModelName:(id)a4 completion:(id)a5;
-- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)a3 completion:(id)a4;
-- (void)receiveTrainingResult:(id)a3 completion:(id)a4 modelUUID:(id)a5 clientModelName:(id)a6;
-- (void)writeSuccessfulVerificationForModelUUID:(id)a3;
-- (void)writeTrainingResult:(id)a3;
-- (void)writeVerificationStatusForModelUUID:(id)a3 clientModelName:(id)a4 expectedNumberOfModels:(unint64_t)a5;
+- (void)cacheSelectedCandidates:(id)candidates featurizationManager:(id)manager modelId:(id)id;
+- (void)deleteCachedCandidatesForModelId:(id)id;
+- (void)deleteRowsWithIds:(id)ids fromTableWithName:(id)name;
+- (void)deleteTrainedModelsWithTrainDateOlderThanDate:(id)date;
+- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)results clientModelName:(id)name completion:(id)completion;
+- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)results completion:(id)completion;
+- (void)receiveTrainingResult:(id)result completion:(id)completion modelUUID:(id)d clientModelName:(id)name;
+- (void)writeSuccessfulVerificationForModelUUID:(id)d;
+- (void)writeTrainingResult:(id)result;
+- (void)writeVerificationStatusForModelUUID:(id)d clientModelName:(id)name expectedNumberOfModels:(unint64_t)models;
 @end
 
 @implementation ATXCandidateRelevanceModelDataStore
@@ -38,27 +38,27 @@
   return v4;
 }
 
-- (ATXCandidateRelevanceModelDataStore)initWithDataStore:(id)a3
+- (ATXCandidateRelevanceModelDataStore)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = ATXCandidateRelevanceModelDataStore;
   v6 = [(ATXCandidateRelevanceModelDataStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
   }
 
   return v7;
 }
 
-- (void)writeTrainingResult:(id)a3
+- (void)writeTrainingResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 featurizationManager];
+  resultCopy = result;
+  featurizationManager = [resultCopy featurizationManager];
   v27 = 0;
-  v6 = [(ATXCandidateRelevanceModelDataStore *)self featurizationManagerIdForFeaturizationManager:v5 error:&v27];
+  v6 = [(ATXCandidateRelevanceModelDataStore *)self featurizationManagerIdForFeaturizationManager:featurizationManager error:&v27];
   v7 = v27;
 
   if (v7)
@@ -72,9 +72,9 @@
 
   else
   {
-    v9 = [v4 candidate];
+    candidate = [resultCopy candidate];
     v26 = 0;
-    v10 = [(ATXCandidateRelevanceModelDataStore *)self candidateIdForCandidate:v9 error:&v26];
+    v10 = [(ATXCandidateRelevanceModelDataStore *)self candidateIdForCandidate:candidate error:&v26];
     v7 = v26;
 
     if (v7)
@@ -88,9 +88,9 @@
 
     else
     {
-      v11 = [v4 datasetMetadata];
+      datasetMetadata = [resultCopy datasetMetadata];
       v25 = 0;
-      v12 = [(ATXCandidateRelevanceModelDataStore *)self datasetMetadataIdForDatasetMetadata:v11 error:&v25];
+      v12 = [(ATXCandidateRelevanceModelDataStore *)self datasetMetadataIdForDatasetMetadata:datasetMetadata error:&v25];
       v7 = v25;
 
       if (v7)
@@ -106,9 +106,9 @@
       {
         v13 = objc_autoreleasePoolPush();
         v14 = MEMORY[0x277CCAAB0];
-        v15 = [v4 model];
+        model = [resultCopy model];
         v24 = 0;
-        v8 = [v14 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:&v24];
+        v8 = [v14 archivedDataWithRootObject:model requiringSecureCoding:1 error:&v24];
         v7 = v24;
 
         objc_autoreleasePoolPop(v13);
@@ -129,7 +129,7 @@
           v18[2] = __59__ATXCandidateRelevanceModelDataStore_writeTrainingResult___block_invoke;
           v18[3] = &unk_27859A340;
           v18[4] = self;
-          v19 = v4;
+          v19 = resultCopy;
           v21 = v10;
           v8 = v8;
           v20 = v8;
@@ -200,28 +200,28 @@ void __59__ATXCandidateRelevanceModelDataStore_writeTrainingResult___block_invok
   [v9 bindNamedParam:":isVerified" toInteger:{objc_msgSend(*(a1 + 32), "isVerified")}];
 }
 
-- (int64_t)featurizationManagerIdForFeaturizationManager:(id)a3 error:(id *)a4
+- (int64_t)featurizationManagerIdForFeaturizationManager:(id)manager error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
   v7 = objc_autoreleasePoolPush();
   v28 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v28];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:managerCopy requiringSecureCoding:1 error:&v28];
   v9 = v28;
   objc_autoreleasePoolPop(v7);
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x277CCA9B8];
       v35 = *MEMORY[0x277CCA068];
       v36[0] = @"Failed to serialize featurizationManager";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-      *a4 = [v10 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v11];
+      *error = [v10 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v11];
     }
 
     v12 = v30[3];
@@ -254,13 +254,13 @@ void __59__ATXCandidateRelevanceModelDataStore_writeTrainingResult___block_invok
         [ATXCandidateRelevanceModelDataStore featurizationManagerIdForFeaturizationManager:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v16 = MEMORY[0x277CCA9B8];
         v33 = *MEMORY[0x277CCA068];
         v34 = @"Failed to find corresponding featurizationManagerId for featurization manager";
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-        *a4 = [v16 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v17];
+        *error = [v16 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v17];
       }
     }
 
@@ -319,10 +319,10 @@ uint64_t __91__ATXCandidateRelevanceModelDataStore_featurizationManagerIdForFeat
   return *MEMORY[0x277D42698];
 }
 
-- (int64_t)datasetMetadataIdForDatasetMetadata:(id)a3 error:(id *)a4
+- (int64_t)datasetMetadataIdForDatasetMetadata:(id)metadata error:(id *)error
 {
   v33[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  metadataCopy = metadata;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -336,8 +336,8 @@ uint64_t __91__ATXCandidateRelevanceModelDataStore_featurizationManagerIdForFeat
   v17 = 3221225472;
   v18 = __81__ATXCandidateRelevanceModelDataStore_datasetMetadataIdForDatasetMetadata_error___block_invoke;
   v19 = &unk_27859A390;
-  v20 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = metadataCopy;
   v21 = v8;
   v22 = &v28;
   v23 = &v24;
@@ -353,13 +353,13 @@ uint64_t __91__ATXCandidateRelevanceModelDataStore_featurizationManagerIdForFeat
       [ATXCandidateRelevanceModelDataStore datasetMetadataIdForDatasetMetadata:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA068];
       v33[0] = @"Failed to find corresponding datasetMetadataId for datasetMetadata";
-      v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:{1, v16, v17, v18, v19, v20}];
-      *a4 = [v11 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v12];
+      v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:{1, v16, v17, v18, v19, selfCopy}];
+      *error = [v11 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v12];
     }
   }
 
@@ -451,16 +451,16 @@ uint64_t __81__ATXCandidateRelevanceModelDataStore_datasetMetadataIdForDatasetMe
   return *MEMORY[0x277D42698];
 }
 
-- (void)cacheSelectedCandidates:(id)a3 featurizationManager:(id)a4 modelId:(id)a5
+- (void)cacheSelectedCandidates:(id)candidates featurizationManager:(id)manager modelId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  candidatesCopy = candidates;
+  managerCopy = manager;
+  idCopy = id;
   v11 = objc_autoreleasePoolPush();
-  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:candidatesCopy requiringSecureCoding:1 error:0];
   objc_autoreleasePoolPop(v11);
   v13 = objc_autoreleasePoolPush();
-  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:managerCopy requiringSecureCoding:1 error:0];
   objc_autoreleasePoolPop(v13);
   dataStore = self->_dataStore;
   v19[0] = MEMORY[0x277D85DD0];
@@ -468,12 +468,12 @@ uint64_t __81__ATXCandidateRelevanceModelDataStore_datasetMetadataIdForDatasetMe
   v19[2] = __92__ATXCandidateRelevanceModelDataStore_cacheSelectedCandidates_featurizationManager_modelId___block_invoke;
   v19[3] = &unk_2785978C0;
   v19[4] = self;
-  v20 = v10;
+  v20 = idCopy;
   v21 = v12;
   v22 = v14;
   v16 = v14;
   v17 = v12;
-  v18 = v10;
+  v18 = idCopy;
   [(_ATXDataStore *)dataStore _doSync:v19];
 }
 
@@ -521,17 +521,17 @@ void __92__ATXCandidateRelevanceModelDataStore_cacheSelectedCandidates_featuriza
   [v6 bindNamedParam:":featurizationManager" toNSData:a1[6]];
 }
 
-- (void)deleteCachedCandidatesForModelId:(id)a3
+- (void)deleteCachedCandidatesForModelId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ATXCandidateRelevanceModelDataStore_deleteCachedCandidatesForModelId___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   [(_ATXDataStore *)dataStore _doSync:v7];
 }
 
@@ -559,11 +559,11 @@ void __72__ATXCandidateRelevanceModelDataStore_deleteCachedCandidatesForModelId_
   [v2 prepAndRunQuery:@"DELETE FROM relevanceCandidateCache WHERE modelId = :modelId" onPrep:v3 onRow:0 onError:0];
 }
 
-- (id)cachedCandidatesForModelId:(id)a3 earliestDate:(id)a4
+- (id)cachedCandidatesForModelId:(id)id earliestDate:(id)date
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  dateCopy = date;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
@@ -590,7 +590,7 @@ void __72__ATXCandidateRelevanceModelDataStore_deleteCachedCandidatesForModelId_
   v39[2] = __79__ATXCandidateRelevanceModelDataStore_cachedCandidatesForModelId_earliestDate___block_invoke;
   v39[3] = &unk_27859A3E0;
   v39[4] = self;
-  v9 = v6;
+  v9 = idCopy;
   v40 = v9;
   v41 = &v61;
   v42 = &v55;
@@ -605,8 +605,8 @@ void __72__ATXCandidateRelevanceModelDataStore_deleteCachedCandidatesForModelId_
 
   v10 = objc_alloc(MEMORY[0x277CBEAA8]);
   v11 = [v10 initWithTimeIntervalSinceReferenceDate:v62[3]];
-  v12 = [v11 laterDate:v7];
-  v13 = v12 == v7;
+  v12 = [v11 laterDate:dateCopy];
+  v13 = v12 == dateCopy;
 
   if (v13)
   {
@@ -618,7 +618,7 @@ void __72__ATXCandidateRelevanceModelDataStore_deleteCachedCandidatesForModelId_
       *buf = 138412802;
       v66 = v27;
       v67 = 2112;
-      v68 = v7;
+      v68 = dateCopy;
       v69 = 2112;
       v70 = v11;
       _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_DEFAULT, "%@ - Cached candidates are older than earliest date (%@), returning nil instead: %@", buf, 0x20u);
@@ -753,26 +753,26 @@ uint64_t __79__ATXCandidateRelevanceModelDataStore_cachedCandidatesForModelId_ea
   return *MEMORY[0x277D42698];
 }
 
-- (int64_t)candidateIdForCandidate:(id)a3 error:(id *)a4
+- (int64_t)candidateIdForCandidate:(id)candidate error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  candidateCopy = candidate;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
   v32 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v32];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:candidateCopy requiringSecureCoding:1 error:&v32];
   v8 = v32;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v39 = *MEMORY[0x277CCA068];
       v40[0] = @"Failed to serialize candidate when writing to database";
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-      *a4 = [v9 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v10];
+      *error = [v9 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v10];
     }
 
     v11 = v34[3];
@@ -789,8 +789,8 @@ uint64_t __79__ATXCandidateRelevanceModelDataStore_cachedCandidatesForModelId_ea
     v20 = 3221225472;
     v21 = __69__ATXCandidateRelevanceModelDataStore_candidateIdForCandidate_error___block_invoke;
     v22 = &unk_27859A408;
-    v23 = self;
-    v24 = v6;
+    selfCopy = self;
+    v24 = candidateCopy;
     v25 = v7;
     v26 = &v33;
     v27 = &v28;
@@ -806,13 +806,13 @@ uint64_t __79__ATXCandidateRelevanceModelDataStore_cachedCandidatesForModelId_ea
         [ATXCandidateRelevanceModelDataStore candidateIdForCandidate:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v15 = MEMORY[0x277CCA9B8];
         v37 = *MEMORY[0x277CCA068];
         v38 = @"Failed to find corresponding candidateId for candidate";
-        v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:{1, v19, v20, v21, v22, v23, v24}];
-        *a4 = [v15 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v16];
+        v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:{1, v19, v20, v21, v22, selfCopy, v24}];
+        *error = [v15 errorWithDomain:@"ATXCandidateRelevanceModelDataStore" code:1 userInfo:v16];
       }
     }
 
@@ -897,10 +897,10 @@ uint64_t __69__ATXCandidateRelevanceModelDataStore_candidateIdForCandidate_error
   return *MEMORY[0x277D42698];
 }
 
-- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)a3 completion:(id)a4
+- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)results completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -928,18 +928,18 @@ uint64_t __69__ATXCandidateRelevanceModelDataStore_candidateIdForCandidate_error
     v11[1] = 3221225472;
     v11[2] = __103__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTrainedModelTrainingResults_completion___block_invoke_4;
     v11[3] = &unk_27859A458;
-    v12 = v6;
+    v12 = resultsCopy;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __103__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTrainedModelTrainingResults_completion___block_invoke_5;
     v9[3] = &unk_27859A480;
-    v10 = v7;
+    v10 = completionCopy;
     [(ATXCandidateRelevanceModelDataStore *)self receiveTrainingResult:v11 completion:v9 modelUUID:v15[5] clientModelName:v21[5]];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -989,13 +989,13 @@ uint64_t __103__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTra
   return *MEMORY[0x277D42698];
 }
 
-- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)a3 clientModelName:(id)a4 completion:(id)a5
+- (void)receiveMostRecentVerifiedTrainedModelTrainingResults:(id)results clientModelName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  resultsCopy = results;
+  nameCopy = name;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (nameCopy)
   {
     v21 = 0;
     v22 = &v21;
@@ -1009,7 +1009,7 @@ uint64_t __103__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTra
     v18[2] = __119__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTrainedModelTrainingResults_clientModelName_completion___block_invoke;
     v18[3] = &unk_2785987E0;
     v18[4] = self;
-    v13 = v9;
+    v13 = nameCopy;
     v19 = v13;
     v20 = &v21;
     [(_ATXDataStore *)dataStore _doSync:v18];
@@ -1019,7 +1019,7 @@ uint64_t __103__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTra
       v16[1] = 3221225472;
       v16[2] = __119__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTrainedModelTrainingResults_clientModelName_completion___block_invoke_5;
       v16[3] = &unk_27859A458;
-      v17 = v8;
+      v17 = resultsCopy;
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __119__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTrainedModelTrainingResults_clientModelName_completion___block_invoke_6;
@@ -1038,7 +1038,7 @@ uint64_t __103__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTra
 
   else
   {
-    (*(v10 + 2))(v10, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -1089,12 +1089,12 @@ uint64_t __119__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTra
   return *MEMORY[0x277D42698];
 }
 
-- (void)receiveTrainingResult:(id)a3 completion:(id)a4 modelUUID:(id)a5 clientModelName:(id)a6
+- (void)receiveTrainingResult:(id)result completion:(id)completion modelUUID:(id)d clientModelName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultCopy = result;
+  completionCopy = completion;
+  dCopy = d;
+  nameCopy = name;
   v14 = objc_opt_new();
   v26 = 0;
   v27 = &v26;
@@ -1106,17 +1106,17 @@ uint64_t __119__ATXCandidateRelevanceModelDataStore_receiveMostRecentVerifiedTra
   v20[2] = __98__ATXCandidateRelevanceModelDataStore_receiveTrainingResult_completion_modelUUID_clientModelName___block_invoke;
   v20[3] = &unk_27859A4D0;
   v20[4] = self;
-  v16 = v12;
+  v16 = dCopy;
   v21 = v16;
-  v17 = v13;
+  v17 = nameCopy;
   v22 = v17;
   v25 = &v26;
   v18 = v14;
   v23 = v18;
-  v19 = v10;
+  v19 = resultCopy;
   v24 = v19;
   [(_ATXDataStore *)dataStore _doSync:v20];
-  v11[2](v11, *(v27 + 24));
+  completionCopy[2](completionCopy, *(v27 + 24));
 
   _Block_object_dispose(&v26, 8);
 }
@@ -1386,9 +1386,9 @@ uint64_t __81__ATXCandidateRelevanceModelDataStore_clientModelNamesWithTrainedRe
   return *v4;
 }
 
-- (id)modelUUIDToTrainDateForClientModelName:(id)a3
+- (id)modelUUIDToTrainDateForClientModelName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1401,7 +1401,7 @@ uint64_t __81__ATXCandidateRelevanceModelDataStore_clientModelNamesWithTrainedRe
   v9[2] = __78__ATXCandidateRelevanceModelDataStore_modelUUIDToTrainDateForClientModelName___block_invoke;
   v9[3] = &unk_2785987E0;
   v9[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   v11 = &v12;
   [(_ATXDataStore *)dataStore _doSync:v9];
@@ -1462,9 +1462,9 @@ uint64_t __78__ATXCandidateRelevanceModelDataStore_modelUUIDToTrainDateForClient
   return *v11;
 }
 
-- (id)mostRecentVerifiedTrainDateForClientModelName:(id)a3
+- (id)mostRecentVerifiedTrainDateForClientModelName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1477,7 +1477,7 @@ uint64_t __78__ATXCandidateRelevanceModelDataStore_modelUUIDToTrainDateForClient
   v9[2] = __85__ATXCandidateRelevanceModelDataStore_mostRecentVerifiedTrainDateForClientModelName___block_invoke;
   v9[3] = &unk_2785987E0;
   v9[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   v11 = &v12;
   [(_ATXDataStore *)dataStore _doSync:v9];
@@ -1653,10 +1653,10 @@ void __59__ATXCandidateRelevanceModelDataStore_numberOfCandidateIds__block_invok
   [v2 prepAndRunQuery:@"SELECT COUNT(*) FROM relevanceCandidates" onPrep:0 onRow:v3 onError:0];
 }
 
-- (id)trainingResultsForClientModelName:(id)a3 modelUUID:(id)a4
+- (id)trainingResultsForClientModelName:(id)name modelUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  nameCopy = name;
   v8 = objc_opt_new();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1664,7 +1664,7 @@ void __59__ATXCandidateRelevanceModelDataStore_numberOfCandidateIds__block_invok
   v12[3] = &unk_27859A4F8;
   v13 = v8;
   v9 = v8;
-  [(ATXCandidateRelevanceModelDataStore *)self receiveTrainingResult:v12 completion:&__block_literal_global_69 modelUUID:v6 clientModelName:v7];
+  [(ATXCandidateRelevanceModelDataStore *)self receiveTrainingResult:v12 completion:&__block_literal_global_69 modelUUID:dCopy clientModelName:nameCopy];
 
   v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_317];
 
@@ -1681,9 +1681,9 @@ uint64_t __83__ATXCandidateRelevanceModelDataStore_trainingResultsForClientModel
   return v7;
 }
 
-- (id)mostRecentVerifiedTrainingResultsForClientModelName:(id)a3
+- (id)mostRecentVerifiedTrainingResultsForClientModelName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1691,7 +1691,7 @@ uint64_t __83__ATXCandidateRelevanceModelDataStore_trainingResultsForClientModel
   v9[3] = &unk_27859A4F8;
   v10 = v5;
   v6 = v5;
-  [(ATXCandidateRelevanceModelDataStore *)self receiveMostRecentVerifiedTrainedModelTrainingResults:v9 clientModelName:v4 completion:&__block_literal_global_319];
+  [(ATXCandidateRelevanceModelDataStore *)self receiveMostRecentVerifiedTrainedModelTrainingResults:v9 clientModelName:nameCopy completion:&__block_literal_global_319];
 
   v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_321];
 
@@ -1708,9 +1708,9 @@ uint64_t __91__ATXCandidateRelevanceModelDataStore_mostRecentVerifiedTrainingRes
   return v7;
 }
 
-- (id)idsInTableWithName:(id)a3
+- (id)idsInTableWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1723,7 +1723,7 @@ uint64_t __91__ATXCandidateRelevanceModelDataStore_mostRecentVerifiedTrainingRes
   v9[2] = __58__ATXCandidateRelevanceModelDataStore_idsInTableWithName___block_invoke;
   v9[3] = &unk_2785987E0;
   v9[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   v11 = &v12;
   [(_ATXDataStore *)dataStore _doSync:v9];
@@ -1772,17 +1772,17 @@ uint64_t __58__ATXCandidateRelevanceModelDataStore_idsInTableWithName___block_in
   return *MEMORY[0x277D42690];
 }
 
-- (void)deleteRowsWithIds:(id)a3 fromTableWithName:(id)a4
+- (void)deleteRowsWithIds:(id)ids fromTableWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__ATXCandidateRelevanceModelDataStore_deleteRowsWithIds_fromTableWithName___block_invoke;
   v8[3] = &unk_27859A560;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 enumerateObjectsUsingBlock:v8];
+  v9 = nameCopy;
+  v7 = nameCopy;
+  [ids enumerateObjectsUsingBlock:v8];
 }
 
 void __75__ATXCandidateRelevanceModelDataStore_deleteRowsWithIds_fromTableWithName___block_invoke(uint64_t a1, void *a2)
@@ -1835,15 +1835,15 @@ void __75__ATXCandidateRelevanceModelDataStore_deleteRowsWithIds_fromTableWithNa
   [v3 bindNamedParam:":id" toInt64:{objc_msgSend(v2, "longLongValue")}];
 }
 
-- (void)deleteTrainedModelsWithTrainDateOlderThanDate:(id)a3
+- (void)deleteTrainedModelsWithTrainDateOlderThanDate:(id)date
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   dataStore = self->_dataStore;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -1864,7 +1864,7 @@ void __75__ATXCandidateRelevanceModelDataStore_deleteRowsWithIds_fromTableWithNa
     *&buf[12] = 2048;
     *&buf[14] = v10;
     *&buf[22] = 2112;
-    v38 = v4;
+    v38 = dateCopy;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%@ - Deleted %lu models that were older than %@.", buf, 0x20u);
   }
 
@@ -1992,11 +1992,11 @@ uint64_t __85__ATXCandidateRelevanceModelDataStore_deleteTrainedModelsWithTrainD
   return *MEMORY[0x277D42690];
 }
 
-- (void)writeVerificationStatusForModelUUID:(id)a3 clientModelName:(id)a4 expectedNumberOfModels:(unint64_t)a5
+- (void)writeVerificationStatusForModelUUID:(id)d clientModelName:(id)name expectedNumberOfModels:(unint64_t)models
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -2006,10 +2006,10 @@ uint64_t __85__ATXCandidateRelevanceModelDataStore_deleteTrainedModelsWithTrainD
   v15[2] = __114__ATXCandidateRelevanceModelDataStore_writeVerificationStatusForModelUUID_clientModelName_expectedNumberOfModels___block_invoke;
   v15[3] = &unk_27859A5D8;
   v15[4] = &v16;
-  [(ATXCandidateRelevanceModelDataStore *)self receiveTrainingResult:v15 completion:&__block_literal_global_351 modelUUID:v8 clientModelName:v9];
-  if (v17[3] == a5)
+  [(ATXCandidateRelevanceModelDataStore *)self receiveTrainingResult:v15 completion:&__block_literal_global_351 modelUUID:dCopy clientModelName:nameCopy];
+  if (v17[3] == models)
   {
-    [(ATXCandidateRelevanceModelDataStore *)self writeSuccessfulVerificationForModelUUID:v8];
+    [(ATXCandidateRelevanceModelDataStore *)self writeSuccessfulVerificationForModelUUID:dCopy];
   }
 
   else
@@ -2023,11 +2023,11 @@ uint64_t __85__ATXCandidateRelevanceModelDataStore_deleteTrainedModelsWithTrainD
       *buf = 138413314;
       v21 = v13;
       v22 = 2112;
-      v23 = v8;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v9;
+      v25 = nameCopy;
       v26 = 2048;
-      v27 = a5;
+      modelsCopy = models;
       v28 = 2048;
       v29 = v14;
       _os_log_error_impl(&dword_2263AA000, v10, OS_LOG_TYPE_ERROR, "%@ - Unable to verify modelUUID %@ for %@ because we expected %lu models, but only see %lu in the database.", buf, 0x34u);
@@ -2039,17 +2039,17 @@ uint64_t __85__ATXCandidateRelevanceModelDataStore_deleteTrainedModelsWithTrainD
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeSuccessfulVerificationForModelUUID:(id)a3
+- (void)writeSuccessfulVerificationForModelUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dataStore = self->_dataStore;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__ATXCandidateRelevanceModelDataStore_writeSuccessfulVerificationForModelUUID___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(_ATXDataStore *)dataStore _doSync:v7];
 }
 
@@ -2101,9 +2101,9 @@ uint64_t __79__ATXCandidateRelevanceModelDataStore_writeSuccessfulVerificationFo
   return *MEMORY[0x277D42698];
 }
 
-- (BOOL)isModelUUIDVerified:(id)a3
+- (BOOL)isModelUUIDVerified:(id)verified
 {
-  v4 = a3;
+  verifiedCopy = verified;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2114,7 +2114,7 @@ uint64_t __79__ATXCandidateRelevanceModelDataStore_writeSuccessfulVerificationFo
   v8[2] = __59__ATXCandidateRelevanceModelDataStore_isModelUUIDVerified___block_invoke;
   v8[3] = &unk_2785987E0;
   v8[4] = self;
-  v6 = v4;
+  v6 = verifiedCopy;
   v9 = v6;
   v10 = &v11;
   [(_ATXDataStore *)dataStore _doSync:v8];

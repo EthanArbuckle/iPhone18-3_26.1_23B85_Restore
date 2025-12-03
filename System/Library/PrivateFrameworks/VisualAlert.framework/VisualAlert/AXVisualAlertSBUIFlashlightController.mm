@@ -1,39 +1,39 @@
 @interface AXVisualAlertSBUIFlashlightController
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_turnPowerOff;
 - (void)_turnPowerOn;
-- (void)setLevel:(unint64_t)a3;
+- (void)setLevel:(unint64_t)level;
 @end
 
 @implementation AXVisualAlertSBUIFlashlightController
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIFlashlightController" hasInstanceMethod:@"_turnPowerOff" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUIFlashlightController" hasInstanceMethod:@"_turnPowerOn" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUIFlashlightController" hasInstanceMethod:@"setLevel:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIFlashlightController" hasInstanceMethod:@"_turnPowerOff" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUIFlashlightController" hasInstanceMethod:@"_turnPowerOn" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUIFlashlightController" hasInstanceMethod:@"setLevel:" withFullSignature:{"v", "Q", 0}];
 }
 
-- (void)setLevel:(unint64_t)a3
+- (void)setLevel:(unint64_t)level
 {
   v20 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = AXVisualAlertSBUIFlashlightController;
   [(AXVisualAlertSBUIFlashlightController *)&v17 setLevel:?];
-  v5 = [MEMORY[0x277CE6998] sharedInstance];
-  v6 = [v5 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v8 = AXLoggerForFacility();
 
     v9 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v16 = a3;
+      levelCopy = level;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -44,9 +44,9 @@
     }
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  v13 = v12;
-  if (a3)
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v13 = defaultCenter;
+  if (level)
   {
     v14 = @"AXVisualAlertManagerControlCenterTorchWasEnabledNotification";
   }
@@ -56,7 +56,7 @@
     v14 = @"AXVisualAlertManagerControlCenterTorchWasDisabledNotification";
   }
 
-  [v12 postNotificationName:v14 object:self];
+  [defaultCenter postNotificationName:v14 object:self];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -67,12 +67,12 @@
   v12.receiver = self;
   v12.super_class = AXVisualAlertSBUIFlashlightController;
   [(AXVisualAlertSBUIFlashlightController *)&v12 _turnPowerOff];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -89,8 +89,8 @@
     }
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"AXVisualAlertManagerControlCenterTorchWasDisabledNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVisualAlertManagerControlCenterTorchWasDisabledNotification" object:self];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -101,12 +101,12 @@
   v12.receiver = self;
   v12.super_class = AXVisualAlertSBUIFlashlightController;
   [(AXVisualAlertSBUIFlashlightController *)&v12 _turnPowerOn];
-  v3 = [MEMORY[0x277CE6998] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -123,8 +123,8 @@
     }
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"AXVisualAlertManagerControlCenterTorchWasEnabledNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVisualAlertManagerControlCenterTorchWasEnabledNotification" object:self];
 
   v11 = *MEMORY[0x277D85DE8];
 }

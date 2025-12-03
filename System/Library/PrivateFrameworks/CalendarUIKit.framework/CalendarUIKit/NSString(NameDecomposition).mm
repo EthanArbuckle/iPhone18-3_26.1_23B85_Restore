@@ -40,7 +40,7 @@
 
 - (uint64_t)CUIK_attendeeAppearsToBeAnInitial
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 == 1)
   {
     return 1;
@@ -52,10 +52,10 @@
   }
 
   v3 = 1;
-  if ([a1 characterAtIndex:1] != 46)
+  if ([self characterAtIndex:1] != 46)
   {
     v3 = 1;
-    if ([a1 characterAtIndex:1] != 93)
+    if ([self characterAtIndex:1] != 93)
     {
       return 0;
     }
@@ -66,20 +66,20 @@
 
 - (__CFString)CUIK_attendeeTrimCommasSpacesQuotes
 {
-  if ([&unk_1F4ABECF0 containsObject:a1])
+  if ([&unk_1F4ABECF0 containsObject:self])
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
     goto LABEL_27;
   }
 
-  v3 = [a1 length];
+  v3 = [self length];
   if (!v3)
   {
     goto LABEL_24;
   }
 
   v4 = v3;
-  v5 = [a1 characterAtIndex:0];
+  v5 = [self characterAtIndex:0];
   v6 = 0;
   v7 = v4 - 1;
   v8 = 1;
@@ -92,7 +92,7 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    v5 = [a1 characterAtIndex:v8++];
+    v5 = [self characterAtIndex:v8++];
   }
 
   if (v5 == 34)
@@ -106,7 +106,7 @@ LABEL_13:
   v10 = 0;
   for (i = v4 - v9; ; --i)
   {
-    v12 = [a1 characterAtIndex:v7];
+    v12 = [self characterAtIndex:v7];
     if (v12 != 32 && v12 != 44)
     {
       if (v12 != 34)
@@ -132,7 +132,7 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  v2 = [a1 substringWithRange:{v9, i}];
+  v2 = [self substringWithRange:{v9, i}];
   if (v10 & 1 | ((v6 & 1) == 0))
   {
     if (!(v6 & 1 | ((v10 & 1) == 0)))
@@ -158,8 +158,8 @@ LABEL_27:
 
 - (void)CUIK_attendeeFirstName:()NameDecomposition middleName:lastName:extension:
 {
-  v60 = a1;
-  if (![v60 length])
+  selfCopy = self;
+  if (![selfCopy length])
   {
     v14 = 0;
     v15 = 0;
@@ -172,7 +172,7 @@ LABEL_27:
     goto LABEL_50;
   }
 
-  v10 = [v60 componentsSeparatedByString:{@", "}];
+  v10 = [selfCopy componentsSeparatedByString:{@", "}];
   if ([v10 count] > 2 || objc_msgSend(v10, "count") == 2 && (objc_msgSend(MEMORY[0x1E696AEC0], "CUIK_attendeeNameExtensions"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "lastObject"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "CUIK_attendeeTrimCommasSpacesQuotes"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "lowercaseString"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v17, "containsObject:", v20), v20, v19, v18, v17, (v21 & 1) == 0))
   {
     if ([v10 count] < 3)
@@ -200,12 +200,12 @@ LABEL_27:
 
   else
   {
-    v22 = v60;
+    v22 = selfCopy;
   }
 
   v58 = a4;
   v59 = a3;
-  v60 = v22;
+  selfCopy = v22;
   v15 = [v22 componentsSeparatedByString:@" "];
   v25 = [v15 count];
   v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:v25];
@@ -219,10 +219,10 @@ LABEL_27:
 
       if (([v16 isEqualToString:&stru_1F4AA8958] & 1) == 0)
       {
-        v28 = [v16 CUIK_attendeeTrimCommasSpacesQuotes];
-        if ([v28 length])
+        cUIK_attendeeTrimCommasSpacesQuotes = [v16 CUIK_attendeeTrimCommasSpacesQuotes];
+        if ([cUIK_attendeeTrimCommasSpacesQuotes length])
         {
-          [v14 addObject:v28];
+          [v14 addObject:cUIK_attendeeTrimCommasSpacesQuotes];
         }
       }
     }
@@ -244,15 +244,15 @@ LABEL_27:
     {
       if (v29)
       {
-        v31 = [v14 lastObject];
-        v32 = [MEMORY[0x1E696AEC0] CUIK_attendeeNameExtensions];
-        v33 = [v31 lowercaseString];
-        v34 = [v32 containsObject:v33];
+        lastObject = [v14 lastObject];
+        cUIK_attendeeNameExtensions = [MEMORY[0x1E696AEC0] CUIK_attendeeNameExtensions];
+        lowercaseString = [lastObject lowercaseString];
+        v34 = [cUIK_attendeeNameExtensions containsObject:lowercaseString];
 
         if (v34)
         {
-          v35 = v31;
-          *a6 = v31;
+          v35 = lastObject;
+          *a6 = lastObject;
           [v14 removeLastObject];
         }
 
@@ -261,7 +261,7 @@ LABEL_27:
           *a6 = 0;
         }
 
-        v57 = v31;
+        v57 = lastObject;
         if (([v14 count] - 3) > 0xFFFFFFFFFFFFFFFDLL)
         {
           v36 = 0;
@@ -276,9 +276,9 @@ LABEL_27:
             v38 = v16;
             v16 = [v14 objectAtIndex:v37];
 
-            v39 = [MEMORY[0x1E696AEC0] CUIK_attendeePartialSurnames];
-            v40 = [v16 lowercaseString];
-            v41 = [v39 containsObject:v40];
+            cUIK_attendeePartialSurnames = [MEMORY[0x1E696AEC0] CUIK_attendeePartialSurnames];
+            lowercaseString2 = [v16 lowercaseString];
+            v41 = [cUIK_attendeePartialSurnames containsObject:lowercaseString2];
 
             if (v41)
             {
@@ -312,13 +312,13 @@ LABEL_27:
         {
           v46 = [v14 objectAtIndex:v45 - 2];
 
-          v47 = [v46 CUIK_attendeeAppearsToBeAnInitial];
-          v48 = [v14 lastObject];
-          v49 = v48;
+          cUIK_attendeeAppearsToBeAnInitial = [v46 CUIK_attendeeAppearsToBeAnInitial];
+          lastObject2 = [v14 lastObject];
+          v49 = lastObject2;
           v30 = v59;
-          if (v47)
+          if (cUIK_attendeeAppearsToBeAnInitial)
           {
-            v50 = v48;
+            v50 = lastObject2;
             *a5 = v49;
             v49 = v57;
           }
@@ -367,7 +367,7 @@ LABEL_27:
       *a6 = 0;
     }
 
-    *v59 = v60;
+    *v59 = selfCopy;
     *v58 = 0;
     *a5 = 0;
   }

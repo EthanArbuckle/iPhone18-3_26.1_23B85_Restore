@@ -1,5 +1,5 @@
 @interface HDQuantitySampleStatisticsEntity
-+ (BOOL)setDiscreteQuantitySampleStatistics:(id)a3 persistentID:(id)a4 database:(id)a5 error:(id *)a6;
++ (BOOL)setDiscreteQuantitySampleStatistics:(id)statistics persistentID:(id)d database:(id)database error:(id *)error;
 + (id)foreignKeys;
 @end
 
@@ -18,11 +18,11 @@
   return v3;
 }
 
-+ (BOOL)setDiscreteQuantitySampleStatistics:(id)a3 persistentID:(id)a4 database:(id)a5 error:(id *)a6
++ (BOOL)setDiscreteQuantitySampleStatistics:(id)statistics persistentID:(id)d database:(id)database error:(id *)error
 {
   v23[6] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  statisticsCopy = statistics;
+  dCopy = d;
   v23[0] = @"owner_id";
   v23[1] = @"min";
   v23[2] = @"max";
@@ -30,17 +30,17 @@
   v23[4] = @"most_recent_date";
   v23[5] = @"most_recent_duration";
   v12 = MEMORY[0x277CBEA60];
-  v13 = a5;
+  databaseCopy = database;
   v14 = [v12 arrayWithObjects:v23 count:6];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __100__HDQuantitySampleStatisticsEntity_setDiscreteQuantitySampleStatistics_persistentID_database_error___block_invoke;
   v20[3] = &unk_278613DE8;
-  v21 = v11;
-  v22 = v10;
-  v15 = v10;
-  v16 = v11;
-  v17 = [a1 insertOrReplaceEntity:1 database:v13 properties:v14 error:a6 bindingHandler:v20];
+  v21 = dCopy;
+  v22 = statisticsCopy;
+  v15 = statisticsCopy;
+  v16 = dCopy;
+  v17 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v14 error:error bindingHandler:v20];
 
   v18 = *MEMORY[0x277D85DE8];
   return v17 != 0;

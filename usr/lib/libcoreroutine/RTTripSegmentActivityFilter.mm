@@ -1,31 +1,31 @@
 @interface RTTripSegmentActivityFilter
-- (BOOL)isRealModeOfTransportationExisted:(id)a3;
-- (double)findTotalDurationForActivity:(unint64_t)a3 activities:(id)a4 dateInterval:(id)a5;
-- (id)discardFalseTransitionsFromActivities:(id)a3 whileInTransportMode:(unint64_t)a4 dateInterval:(id)a5 withTimeCushion:(double)a6;
-- (id)discardTrivialActivitiesBetweenIdenticalRealActivities:(id)a3;
-- (id)findGapMergeOrderFromActivities:(id)a3 dateInterval:(id)a4;
-- (id)findIndicesAndDurationForMode:(unint64_t)a3 activities:(id)a4 dateInterval:(id)a5;
-- (id)forceActivities:(id)a3 toTransportationMode:(unint64_t)a4 dateInterval:(id)a5;
-- (id)forceActivities:(id)a3 withinTransitionInterval:(id)a4 toAutoByConnection:(id)a5;
-- (id)mergeRepeatedActivities:(id)a3;
-- (id)populatePredominantActivity:(id)a3 dateInterval:(id)a4 predominantActivityType:(unint64_t)a5;
-- (id)preventDirectModeSwitchingInActivities:(id)a3 dateInterval:(id)a4;
-- (id)removeFalseTransitionsFromActivities:(id)a3 dateInterval:(id)a4 predominantActivityType:(unint64_t)a5;
-- (id)removeNonTransportationModeActivities:(id)a3 dateInterval:(id)a4 vehicleIntervals:(id)a5 predominantActivityType:(unint64_t)a6;
+- (BOOL)isRealModeOfTransportationExisted:(id)existed;
+- (double)findTotalDurationForActivity:(unint64_t)activity activities:(id)activities dateInterval:(id)interval;
+- (id)discardFalseTransitionsFromActivities:(id)activities whileInTransportMode:(unint64_t)mode dateInterval:(id)interval withTimeCushion:(double)cushion;
+- (id)discardTrivialActivitiesBetweenIdenticalRealActivities:(id)activities;
+- (id)findGapMergeOrderFromActivities:(id)activities dateInterval:(id)interval;
+- (id)findIndicesAndDurationForMode:(unint64_t)mode activities:(id)activities dateInterval:(id)interval;
+- (id)forceActivities:(id)activities toTransportationMode:(unint64_t)mode dateInterval:(id)interval;
+- (id)forceActivities:(id)activities withinTransitionInterval:(id)interval toAutoByConnection:(id)connection;
+- (id)mergeRepeatedActivities:(id)activities;
+- (id)populatePredominantActivity:(id)activity dateInterval:(id)interval predominantActivityType:(unint64_t)type;
+- (id)preventDirectModeSwitchingInActivities:(id)activities dateInterval:(id)interval;
+- (id)removeFalseTransitionsFromActivities:(id)activities dateInterval:(id)interval predominantActivityType:(unint64_t)type;
+- (id)removeNonTransportationModeActivities:(id)activities dateInterval:(id)interval vehicleIntervals:(id)intervals predominantActivityType:(unint64_t)type;
 @end
 
 @implementation RTTripSegmentActivityFilter
 
-- (id)mergeRepeatedActivities:(id)a3
+- (id)mergeRepeatedActivities:(id)activities
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activitiesCopy = activities;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = activitiesCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -44,17 +44,17 @@
         v10 = objc_alloc(MEMORY[0x277D011B8]);
         if ([v9 type] == 3)
         {
-          v11 = 2;
+          type = 2;
         }
 
         else
         {
-          v11 = [v9 type];
+          type = [v9 type];
         }
 
-        v12 = [v9 confidence];
-        v13 = [v9 startDate];
-        v14 = [v10 initWithType:v11 confidence:v12 startDate:v13];
+        confidence = [v9 confidence];
+        startDate = [v9 startDate];
+        v14 = [v10 initWithType:type confidence:confidence startDate:startDate];
 
         if (![v4 count] || (objc_msgSend(v4, "lastObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "type"), v17 = objc_msgSend(v14, "type"), v15, v16 != v17))
         {
@@ -71,72 +71,72 @@
   return v4;
 }
 
-- (id)findIndicesAndDurationForMode:(unint64_t)a3 activities:(id)a4 dateInterval:(id)a5
+- (id)findIndicesAndDurationForMode:(unint64_t)mode activities:(id)activities dateInterval:(id)interval
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
-  if ([v7 count])
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([activitiesCopy count])
   {
     v10 = 1;
     p_vtable = RTPersistenceStoreImporter.vtable;
-    v27 = a3;
+    modeCopy = mode;
     do
     {
-      v12 = [v7 objectAtIndexedSubscript:v10 - 1];
-      if ([v12 type] == a3)
+      v12 = [activitiesCopy objectAtIndexedSubscript:v10 - 1];
+      if ([v12 type] == mode)
       {
-        v13 = [v8 endDate];
-        v14 = [v12 startDate];
-        [v13 timeIntervalSinceDate:v14];
+        endDate = [intervalCopy endDate];
+        startDate = [v12 startDate];
+        [endDate timeIntervalSinceDate:startDate];
         v16 = v15;
 
-        if (v10 - 1 < [v7 count] - 1)
+        if (v10 - 1 < [activitiesCopy count] - 1)
         {
-          v17 = [v7 objectAtIndexedSubscript:v10];
-          v18 = [v17 startDate];
+          v17 = [activitiesCopy objectAtIndexedSubscript:v10];
+          startDate2 = [v17 startDate];
           [v12 startDate];
-          v19 = v9;
-          v20 = v8;
+          v19 = array;
+          v20 = intervalCopy;
           v22 = v21 = p_vtable;
-          [v18 timeIntervalSinceDate:v22];
+          [startDate2 timeIntervalSinceDate:v22];
           v16 = v23;
 
           p_vtable = v21;
-          v8 = v20;
-          v9 = v19;
-          a3 = v27;
+          intervalCopy = v20;
+          array = v19;
+          mode = modeCopy;
         }
 
-        v24 = [objc_alloc((p_vtable + 47)) initWithType:a3 index:v10 - 1 duration:v16];
-        [v9 addObject:v24];
+        v24 = [objc_alloc((p_vtable + 47)) initWithType:mode index:v10 - 1 duration:v16];
+        [array addObject:v24];
       }
     }
 
-    while (v10++ < [v7 count]);
+    while (v10++ < [activitiesCopy count]);
   }
 
-  return v9;
+  return array;
 }
 
-- (id)forceActivities:(id)a3 toTransportationMode:(unint64_t)a4 dateInterval:(id)a5
+- (id)forceActivities:(id)activities toTransportationMode:(unint64_t)mode dateInterval:(id)interval
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 count])
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  if ([activitiesCopy count])
   {
-    for (i = 0; i < [v7 count]; ++i)
+    for (i = 0; i < [activitiesCopy count]; ++i)
     {
-      v10 = [v7 objectAtIndexedSubscript:i];
-      v11 = [v10 startDate];
-      v12 = [v8 startDate];
-      v13 = [v11 isBeforeDate:v12];
+      v10 = [activitiesCopy objectAtIndexedSubscript:i];
+      startDate = [v10 startDate];
+      startDate2 = [intervalCopy startDate];
+      v13 = [startDate isBeforeDate:startDate2];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [v10 startDate];
-        v15 = [v8 endDate];
-        v16 = [v14 isAfterDate:v15];
+        startDate3 = [v10 startDate];
+        endDate = [intervalCopy endDate];
+        v16 = [startDate3 isAfterDate:endDate];
 
         if (v16)
         {
@@ -144,93 +144,93 @@
           break;
         }
 
-        if ([v10 type] != a4)
+        if ([v10 type] != mode)
         {
           v17 = objc_alloc(MEMORY[0x277D011B8]);
-          v18 = [v10 confidence];
-          v19 = [v10 startDate];
-          v20 = [v17 initWithType:a4 confidence:v18 startDate:v19];
+          confidence = [v10 confidence];
+          startDate4 = [v10 startDate];
+          v20 = [v17 initWithType:mode confidence:confidence startDate:startDate4];
 
-          [v7 replaceObjectAtIndex:i withObject:v20];
+          [activitiesCopy replaceObjectAtIndex:i withObject:v20];
         }
       }
     }
   }
 
-  return v7;
+  return activitiesCopy;
 }
 
-- (id)preventDirectModeSwitchingInActivities:(id)a3 dateInterval:(id)a4
+- (id)preventDirectModeSwitchingInActivities:(id)activities dateInterval:(id)interval
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  if ([activitiesCopy count])
   {
-    v7 = 0;
+    type = 0;
     v8 = 1;
     do
     {
-      v9 = [v5 objectAtIndex:v8 - 1];
-      if (v8 == [v5 count])
+      v9 = [activitiesCopy objectAtIndex:v8 - 1];
+      if (v8 == [activitiesCopy count])
       {
         v10 = v9;
       }
 
       else
       {
-        v10 = [v5 objectAtIndex:v8];
+        v10 = [activitiesCopy objectAtIndex:v8];
       }
 
       v11 = v10;
-      v12 = [v10 startDate];
-      v13 = [v9 startDate];
-      [v12 timeIntervalSinceDate:v13];
+      startDate = [v10 startDate];
+      startDate2 = [v9 startDate];
+      [startDate timeIntervalSinceDate:startDate2];
       v15 = v14;
 
-      if (v8 - 1 == [v5 count] - 1)
+      if (v8 - 1 == [activitiesCopy count] - 1)
       {
-        v16 = [v6 endDate];
-        v17 = [v9 startDate];
-        [v16 timeIntervalSinceDate:v17];
+        endDate = [intervalCopy endDate];
+        startDate3 = [v9 startDate];
+        [endDate timeIntervalSinceDate:startDate3];
         v15 = v18;
       }
 
-      if (v7 <= 6)
+      if (type <= 6)
       {
-        if (((1 << v7) & 0x4F) == 0 && ((v19 = [v9 type], v15 < 10.0) ? (v20 = v19 == 6) : (v20 = 0), !v20 ? (v21 = 0) : (v21 = 1), (v22 = objc_msgSend(v9, "type"), v23 = v22 == 5, v15 < 60.0) ? (v24 = v22 == 4) : (v24 = 0), !v24 ? (v25 = 0) : (v25 = 1), v7 == 5 ? (v23 = 0) : (v25 = 0), ((v21 | v25) & 1) != 0 || v23))
+        if (((1 << type) & 0x4F) == 0 && ((v19 = [v9 type], v15 < 10.0) ? (v20 = v19 == 6) : (v20 = 0), !v20 ? (v21 = 0) : (v21 = 1), (v22 = objc_msgSend(v9, "type"), v23 = v22 == 5, v15 < 60.0) ? (v24 = v22 == 4) : (v24 = 0), !v24 ? (v25 = 0) : (v25 = 1), type == 5 ? (v23 = 0) : (v25 = 0), ((v21 | v25) & 1) != 0 || v23))
         {
           v26 = objc_alloc(MEMORY[0x277D011B8]);
-          v27 = [v9 confidence];
-          v28 = [v9 startDate];
-          v29 = [v26 initWithType:v7 confidence:v27 startDate:v28];
+          confidence = [v9 confidence];
+          startDate4 = [v9 startDate];
+          v29 = [v26 initWithType:type confidence:confidence startDate:startDate4];
 
-          [v5 replaceObjectAtIndex:v8 - 1 withObject:v29];
+          [activitiesCopy replaceObjectAtIndex:v8 - 1 withObject:v29];
         }
 
         else
         {
-          v7 = [v9 type];
+          type = [v9 type];
         }
       }
     }
 
-    while (v8++ < [v5 count]);
+    while (v8++ < [activitiesCopy count]);
   }
 
-  v31 = [(RTTripSegmentActivityFilter *)self mergeRepeatedActivities:v5];
+  v31 = [(RTTripSegmentActivityFilter *)self mergeRepeatedActivities:activitiesCopy];
 
   return v31;
 }
 
-- (id)discardFalseTransitionsFromActivities:(id)a3 whileInTransportMode:(unint64_t)a4 dateInterval:(id)a5 withTimeCushion:(double)a6
+- (id)discardFalseTransitionsFromActivities:(id)activities whileInTransportMode:(unint64_t)mode dateInterval:(id)interval withTimeCushion:(double)cushion
 {
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v65 = self;
-  v12 = self;
-  v13 = v10;
-  [(RTTripSegmentActivityFilter *)v12 findIndicesAndDurationForMode:a4 activities:v10 dateInterval:v11];
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  selfCopy = self;
+  selfCopy2 = self;
+  v13 = activitiesCopy;
+  [(RTTripSegmentActivityFilter *)selfCopy2 findIndicesAndDurationForMode:mode activities:activitiesCopy dateInterval:intervalCopy];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
@@ -243,8 +243,8 @@
 
   v15 = 0;
   v69 = *v73;
-  v64 = a4;
-  if (a4 == 4)
+  modeCopy = mode;
+  if (mode == 4)
   {
     v16 = 0.0;
   }
@@ -254,7 +254,7 @@
     v16 = 60.0;
   }
 
-  v66 = v11;
+  v66 = intervalCopy;
   v67 = v14;
   while (2)
   {
@@ -266,29 +266,29 @@
       }
 
       v18 = *(*(&v72 + 1) + 8 * i);
-      v19 = [v18 index];
-      if (v19 == [v13 count] - 1)
+      index = [v18 index];
+      if (index == [v13 count] - 1)
       {
         goto LABEL_32;
       }
 
-      v20 = [v18 index];
-      if (v20 >= [v13 count])
+      index2 = [v18 index];
+      if (index2 >= [v13 count])
       {
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
 LABEL_32:
-          v11 = v66;
+          intervalCopy = v66;
           goto LABEL_51;
         }
 
         v21 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v53 = [v18 index];
+          index3 = [v18 index];
           v54 = [v13 count];
           *buf = 134218240;
-          v77 = v53;
+          v77 = index3;
           v78 = 2048;
           v79 = v54;
           _os_log_debug_impl(&dword_2304B3000, v21, OS_LOG_TYPE_DEBUG, "RTTripSegmentActivityFilter: current activity index beyond valid scope,index,%tu,activityCount,%tu", buf, 0x16u);
@@ -304,9 +304,9 @@ LABEL_32:
       v71 = v21;
       if (v15 < [v14 count] - 1)
       {
-        v24 = [v14 objectAtIndexedSubscript:v15 + 1];
-        v25 = [v24 index];
-        if (v25 >= [v13 count])
+        startDate9 = [v14 objectAtIndexedSubscript:v15 + 1];
+        index4 = [startDate9 index];
+        if (index4 >= [v13 count])
         {
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
@@ -317,10 +317,10 @@ LABEL_32:
           v57 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
           {
-            v60 = [v18 index];
+            index5 = [v18 index];
             v61 = [v13 count];
             *buf = 134218240;
-            v77 = v60;
+            v77 = index5;
             v78 = 2048;
             v79 = v61;
             _os_log_debug_impl(&dword_2304B3000, v57, OS_LOG_TYPE_DEBUG, "RTTripSegmentActivityFilter: next activity index beyond valid scope,index,%tu,activityCount,%tu", buf, 0x16u);
@@ -331,23 +331,23 @@ LABEL_32:
 
         else
         {
-          [v24 duration];
+          [startDate9 duration];
           v27 = v26;
-          v28 = [v13 objectAtIndexedSubscript:{objc_msgSend(v24, "index")}];
-          v29 = [v24 index];
+          v28 = [v13 objectAtIndexedSubscript:{objc_msgSend(startDate9, "index")}];
+          index6 = [startDate9 index];
           v30 = [v13 count];
-          v31 = [v21 startDate];
-          v32 = [v28 startDate];
-          v33 = [v31 isBeforeDate:v32];
+          startDate = [v21 startDate];
+          startDate2 = [v28 startDate];
+          v33 = [startDate isBeforeDate:startDate2];
 
           if (v33)
           {
-            v34 = v29 == v30 - 1;
+            v34 = index6 == v30 - 1;
             v35 = objc_alloc(MEMORY[0x277CCA970]);
-            v36 = [v21 startDate];
+            startDate3 = [v21 startDate];
             v37 = v28;
-            v38 = [v28 startDate];
-            v39 = [v35 initWithStartDate:v36 endDate:v38];
+            startDate4 = [v28 startDate];
+            v39 = [v35 initWithStartDate:startDate3 endDate:startDate4];
 
             goto LABEL_17;
           }
@@ -363,12 +363,12 @@ LABEL_32:
           v13 = v70;
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
           {
-            v62 = [v21 startDate];
-            v63 = [v28 startDate];
+            startDate5 = [v21 startDate];
+            startDate6 = [v28 startDate];
             *buf = 138412546;
-            v77 = v62;
+            v77 = startDate5;
             v78 = 2112;
-            v79 = v63;
+            v79 = startDate6;
             _os_log_debug_impl(&dword_2304B3000, v57, OS_LOG_TYPE_DEBUG, "RTTripSegmentActivityFilter: current activity date, %@, after next activity date, %@", buf, 0x16u);
 
             v13 = v70;
@@ -380,16 +380,16 @@ LABEL_47:
 
 LABEL_48:
 LABEL_49:
-        v11 = v66;
+        intervalCopy = v66;
         goto LABEL_50;
       }
 
-      v11 = v66;
+      intervalCopy = v66;
       [v66 duration];
       v27 = v40;
-      v41 = [v21 startDate];
-      v42 = [v66 endDate];
-      v43 = [v41 isBeforeDate:v42];
+      startDate7 = [v21 startDate];
+      endDate = [v66 endDate];
+      v43 = [startDate7 isBeforeDate:endDate];
 
       if (!v43)
       {
@@ -407,12 +407,12 @@ LABEL_50:
         v13 = v70;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
-          v55 = [v21 startDate];
-          v56 = [v66 endDate];
+          startDate8 = [v21 startDate];
+          endDate2 = [v66 endDate];
           *buf = 138412546;
-          v77 = v55;
+          v77 = startDate8;
           v78 = 2112;
-          v79 = v56;
+          v79 = endDate2;
           _os_log_debug_impl(&dword_2304B3000, v28, OS_LOG_TYPE_DEBUG, "RTTripSegmentActivityFilter: current activity date, %@, after transition end date, %@", buf, 0x16u);
 
           v13 = v70;
@@ -422,9 +422,9 @@ LABEL_50:
       }
 
       v44 = objc_alloc(MEMORY[0x277CCA970]);
-      v24 = [v21 startDate];
-      v36 = [v66 endDate];
-      v39 = [v44 initWithStartDate:v24 endDate:v36];
+      startDate9 = [v21 startDate];
+      startDate3 = [v66 endDate];
+      v39 = [v44 initWithStartDate:startDate9 endDate:startDate3];
       v34 = 0;
       v37 = 0;
 LABEL_17:
@@ -435,15 +435,15 @@ LABEL_17:
       if (v45 == 1 && v23 > v16)
       {
         [v39 duration];
-        if (v46 - v23 < a6)
+        if (v46 - v23 < cushion)
         {
-          v47 = [(RTTripSegmentActivityFilter *)v65 forceActivities:v70 toTransportationMode:v64 dateInterval:v39];
+          v47 = [(RTTripSegmentActivityFilter *)selfCopy forceActivities:v70 toTransportationMode:modeCopy dateInterval:v39];
 
           if (v15 < [v67 count] - 1)
           {
-            v48 = [v37 startDate];
-            v49 = [v71 startDate];
-            [v48 timeIntervalSinceDate:v49];
+            startDate10 = [v37 startDate];
+            startDate11 = [v71 startDate];
+            [startDate10 timeIntervalSinceDate:startDate11];
             v51 = v27 + v50;
 
             v52 = [v67 objectAtIndexedSubscript:v15 + 1];
@@ -457,7 +457,7 @@ LABEL_17:
       ++v15;
     }
 
-    v11 = v66;
+    intervalCopy = v66;
     v68 = [v67 countByEnumeratingWithState:&v72 objects:v80 count:16];
     if (v68)
     {
@@ -469,21 +469,21 @@ LABEL_17:
 
 LABEL_51:
 
-  v58 = [(RTTripSegmentActivityFilter *)v65 mergeRepeatedActivities:v13];
+  v58 = [(RTTripSegmentActivityFilter *)selfCopy mergeRepeatedActivities:v13];
 
   return v58;
 }
 
-- (id)discardTrivialActivitiesBetweenIdenticalRealActivities:(id)a3
+- (id)discardTrivialActivitiesBetweenIdenticalRealActivities:(id)activities
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activitiesCopy = activities;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v3;
+  v5 = activitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -524,25 +524,25 @@ LABEL_51:
       v16 = j;
       j = v14;
       v17 = [v4 objectAtIndexedSubscript:v14];
-      v18 = [v17 unsignedIntValue];
+      unsignedIntValue = [v17 unsignedIntValue];
 
       v19 = [v4 objectAtIndexedSubscript:v16 - 2];
-      v20 = [v19 unsignedIntValue];
+      unsignedIntValue2 = [v19 unsignedIntValue];
 
-      v21 = [v12 objectAtIndexedSubscript:v20];
-      v22 = [v21 type];
-      v23 = [v12 objectAtIndexedSubscript:v18];
-      v24 = [v23 type];
+      v21 = [v12 objectAtIndexedSubscript:unsignedIntValue2];
+      type = [v21 type];
+      v23 = [v12 objectAtIndexedSubscript:unsignedIntValue];
+      type2 = [v23 type];
 
-      v25 = v18 - 1;
-      if (v22 == v24 && v25 > v20)
+      v25 = unsignedIntValue - 1;
+      if (type == type2 && v25 > unsignedIntValue2)
       {
         do
         {
           [v12 removeObjectAtIndex:v25--];
         }
 
-        while (v25 > v20);
+        while (v25 > unsignedIntValue2);
       }
     }
   }
@@ -552,10 +552,10 @@ LABEL_51:
   return v27;
 }
 
-- (double)findTotalDurationForActivity:(unint64_t)a3 activities:(id)a4 dateInterval:(id)a5
+- (double)findTotalDurationForActivity:(unint64_t)activity activities:(id)activities dateInterval:(id)interval
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(RTTripSegmentActivityFilter *)self findIndicesAndDurationForMode:a3 activities:a4 dateInterval:a5];
+  v5 = [(RTTripSegmentActivityFilter *)self findIndicesAndDurationForMode:activity activities:activities dateInterval:interval];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -593,12 +593,12 @@ LABEL_51:
   return v9;
 }
 
-- (id)findGapMergeOrderFromActivities:(id)a3 dateInterval:(id)a4
+- (id)findGapMergeOrderFromActivities:(id)activities dateInterval:(id)interval
 {
   v33 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v23 = a4;
-  v22 = [MEMORY[0x277CBEB18] array];
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -619,7 +619,7 @@ LABEL_51:
 
         v10 = *(*(&v25 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"type"];
-        -[RTTripSegmentActivityFilter findTotalDurationForActivity:activities:dateInterval:](self, "findTotalDurationForActivity:activities:dateInterval:", [v11 intValue], v24, v23);
+        -[RTTripSegmentActivityFilter findTotalDurationForActivity:activities:dateInterval:](self, "findTotalDurationForActivity:activities:dateInterval:", [v11 intValue], activitiesCopy, intervalCopy);
         v13 = v12;
 
         v30[0] = @"type";
@@ -633,7 +633,7 @@ LABEL_51:
         v31[2] = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
 
-        [v22 addObject:v17];
+        [array addObject:v17];
       }
 
       v7 = [&unk_2845A1868 countByEnumeratingWithState:&v25 objects:v32 count:16];
@@ -645,21 +645,21 @@ LABEL_51:
   v18 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"duration" ascending:0];
   v29 = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-  v20 = [v22 sortedArrayUsingDescriptors:v19];
+  v20 = [array sortedArrayUsingDescriptors:v19];
 
   return v20;
 }
 
-- (id)removeFalseTransitionsFromActivities:(id)a3 dateInterval:(id)a4 predominantActivityType:(unint64_t)a5
+- (id)removeFalseTransitionsFromActivities:(id)activities dateInterval:(id)interval predominantActivityType:(unint64_t)type
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(RTTripSegmentActivityFilter *)self mergeRepeatedActivities:a3];
-  v9 = [(RTTripSegmentActivityFilter *)self preventDirectModeSwitchingInActivities:v8 dateInterval:v7];
+  intervalCopy = interval;
+  v8 = [(RTTripSegmentActivityFilter *)self mergeRepeatedActivities:activities];
+  v9 = [(RTTripSegmentActivityFilter *)self preventDirectModeSwitchingInActivities:v8 dateInterval:intervalCopy];
 
   v10 = [(RTTripSegmentActivityFilter *)self discardTrivialActivitiesBetweenIdenticalRealActivities:v9];
 
-  [(RTTripSegmentActivityFilter *)self findGapMergeOrderFromActivities:v10 dateInterval:v7];
+  [(RTTripSegmentActivityFilter *)self findGapMergeOrderFromActivities:v10 dateInterval:intervalCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -682,10 +682,10 @@ LABEL_51:
 
         v16 = *(*(&v23 + 1) + 8 * v14);
         v17 = [v16 objectForKeyedSubscript:@"type"];
-        v18 = [v17 intValue];
+        intValue = [v17 intValue];
         v19 = [v16 objectForKeyedSubscript:@"maxGap"];
         [v19 floatValue];
-        v10 = [(RTTripSegmentActivityFilter *)self discardFalseTransitionsFromActivities:v15 whileInTransportMode:v18 dateInterval:v7 withTimeCushion:v20];
+        v10 = [(RTTripSegmentActivityFilter *)self discardFalseTransitionsFromActivities:v15 whileInTransportMode:intValue dateInterval:intervalCopy withTimeCushion:v20];
 
         ++v14;
         v15 = v10;
@@ -701,45 +701,45 @@ LABEL_51:
   return v10;
 }
 
-- (id)forceActivities:(id)a3 withinTransitionInterval:(id)a4 toAutoByConnection:(id)a5
+- (id)forceActivities:(id)activities withinTransitionInterval:(id)interval toAutoByConnection:(id)connection
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v36 = a4;
-  v8 = a5;
-  v33 = v7;
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v7];
-  if ([v8 count] && objc_msgSend(v9, "count"))
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  connectionCopy = connection;
+  v33 = activitiesCopy;
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:activitiesCopy];
+  if ([connectionCopy count] && objc_msgSend(v9, "count"))
   {
     v10 = 0;
     v34 = v9;
-    v35 = v8;
+    v35 = connectionCopy;
     do
     {
       v11 = [v9 objectAtIndexedSubscript:v10];
-      v12 = [v11 type];
+      type = [v11 type];
 
-      if (v12 != 4)
+      if (type != 4)
       {
         v13 = [v9 objectAtIndexedSubscript:v10];
-        v14 = [v13 startDate];
+        startDate = [v13 startDate];
 
         if (v10 == [v9 count] - 1)
         {
-          v15 = [v36 endDate];
+          endDate = [intervalCopy endDate];
         }
 
         else
         {
           v16 = [v9 objectAtIndexedSubscript:v10 + 1];
-          v15 = [v16 startDate];
+          endDate = [v16 startDate];
         }
 
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v17 = v8;
+        v17 = connectionCopy;
         v18 = [v17 countByEnumeratingWithState:&v37 objects:v41 count:16];
         if (v18)
         {
@@ -755,11 +755,11 @@ LABEL_51:
               }
 
               v22 = *(*(&v37 + 1) + 8 * i);
-              v23 = [v22 endDate];
-              if ([v14 isBeforeDate:v23])
+              endDate2 = [v22 endDate];
+              if ([startDate isBeforeDate:endDate2])
               {
-                v24 = [v22 startDate];
-                v25 = [v15 isAfterDate:v24];
+                startDate2 = [v22 startDate];
+                v25 = [endDate isAfterDate:startDate2];
 
                 if (v25)
                 {
@@ -767,12 +767,12 @@ LABEL_51:
                   v9 = v34;
                   v17 = [v34 objectAtIndexedSubscript:v10];
                   v26 = objc_alloc(MEMORY[0x277D011B8]);
-                  v27 = [v17 confidence];
-                  v28 = [v17 startDate];
-                  v29 = [v26 initWithType:4 confidence:v27 startDate:v28];
+                  confidence = [v17 confidence];
+                  startDate3 = [v17 startDate];
+                  v29 = [v26 initWithType:4 confidence:confidence startDate:startDate3];
 
                   [v34 replaceObjectAtIndex:v10 withObject:v29];
-                  v8 = v35;
+                  connectionCopy = v35;
                   goto LABEL_20;
                 }
               }
@@ -787,7 +787,7 @@ LABEL_51:
 
           while (v19);
           v9 = v34;
-          v8 = v35;
+          connectionCopy = v35;
         }
 
 LABEL_20:
@@ -804,17 +804,17 @@ LABEL_20:
   return v30;
 }
 
-- (BOOL)isRealModeOfTransportationExisted:(id)a3
+- (BOOL)isRealModeOfTransportationExisted:(id)existed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  existedCopy = existed;
+  if ([existedCopy count])
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = v3;
+    v4 = existedCopy;
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
@@ -856,24 +856,24 @@ LABEL_12:
   return v5;
 }
 
-- (id)populatePredominantActivity:(id)a3 dateInterval:(id)a4 predominantActivityType:(unint64_t)a5
+- (id)populatePredominantActivity:(id)activity dateInterval:(id)interval predominantActivityType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  activityCopy = activity;
+  intervalCopy = interval;
+  if (activityCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v8];
+    array = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:activityCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  for (i = v10; [i count]; objc_msgSend(i, "removeObjectAtIndex:", 0))
+  for (i = array; [i count]; objc_msgSend(i, "removeObjectAtIndex:", 0))
   {
-    v12 = [i firstObject];
-    v13 = +[RTTripSegmentActivityFilter isRealModeOfTransportation:](RTTripSegmentActivityFilter, "isRealModeOfTransportation:", [v12 type]);
+    firstObject = [i firstObject];
+    v13 = +[RTTripSegmentActivityFilter isRealModeOfTransportation:](RTTripSegmentActivityFilter, "isRealModeOfTransportation:", [firstObject type]);
 
     if (v13)
     {
@@ -883,8 +883,8 @@ LABEL_12:
 
   while ([i count])
   {
-    v14 = [i lastObject];
-    v15 = +[RTTripSegmentActivityFilter isRealModeOfTransportation:](RTTripSegmentActivityFilter, "isRealModeOfTransportation:", [v14 type]);
+    lastObject = [i lastObject];
+    v15 = +[RTTripSegmentActivityFilter isRealModeOfTransportation:](RTTripSegmentActivityFilter, "isRealModeOfTransportation:", [lastObject type]);
 
     if (v15)
     {
@@ -896,7 +896,7 @@ LABEL_12:
 
   if (![(RTTripSegmentActivityFilter *)self isRealModeOfTransportationExisted:i])
   {
-    if (![RTTripSegmentActivityFilter isRealModeOfTransportation:a5])
+    if (![RTTripSegmentActivityFilter isRealModeOfTransportation:type])
     {
       v16 = 0;
       goto LABEL_19;
@@ -913,8 +913,8 @@ LABEL_12:
     }
 
     v17 = objc_alloc(MEMORY[0x277D011B8]);
-    v18 = [v9 startDate];
-    v19 = [v17 initWithType:a5 confidence:3 startDate:v18];
+    startDate = [intervalCopy startDate];
+    v19 = [v17 initWithType:type confidence:3 startDate:startDate];
 
     [i addObject:v19];
   }
@@ -926,41 +926,41 @@ LABEL_19:
   return v16;
 }
 
-- (id)removeNonTransportationModeActivities:(id)a3 dateInterval:(id)a4 vehicleIntervals:(id)a5 predominantActivityType:(unint64_t)a6
+- (id)removeNonTransportationModeActivities:(id)activities dateInterval:(id)interval vehicleIntervals:(id)intervals predominantActivityType:(unint64_t)type
 {
   v102 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  activitiesCopy = activities;
+  intervalCopy = interval;
+  intervalsCopy = intervals;
+  if (activitiesCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v10 copyItems:1];
+    array = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:activitiesCopy copyItems:1];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v14 = v13;
-  if ([v13 count])
+  v14 = array;
+  if ([array count])
   {
-    v15 = [(RTTripSegmentActivityFilter *)self forceActivities:v14 withinTransitionInterval:v11 toAutoByConnection:v12];
+    v15 = [(RTTripSegmentActivityFilter *)self forceActivities:v14 withinTransitionInterval:intervalCopy toAutoByConnection:intervalsCopy];
 
     v14 = v15;
   }
 
-  v16 = [(RTTripSegmentActivityFilter *)self populatePredominantActivity:v14 dateInterval:v11 predominantActivityType:a6];
+  v16 = [(RTTripSegmentActivityFilter *)self populatePredominantActivity:v14 dateInterval:intervalCopy predominantActivityType:type];
 
   if ([v16 count])
   {
-    v84 = v11;
-    v85 = v10;
-    v83 = v12;
-    v86 = self;
+    v84 = intervalCopy;
+    v85 = activitiesCopy;
+    v83 = intervalsCopy;
+    selfCopy = self;
     if ([v16 count])
     {
-      v17 = [(RTTripSegmentActivityFilter *)self removeFalseTransitionsFromActivities:v16 dateInterval:v11 predominantActivityType:a6];
+      v17 = [(RTTripSegmentActivityFilter *)self removeFalseTransitionsFromActivities:v16 dateInterval:intervalCopy predominantActivityType:type];
 
       v16 = v17;
     }
@@ -971,8 +971,8 @@ LABEL_19:
     v98 = 0u;
     v99 = 0u;
     v82 = v16;
-    v19 = [v16 reverseObjectEnumerator];
-    v20 = [v19 countByEnumeratingWithState:&v96 objects:v101 count:16];
+    reverseObjectEnumerator = [v16 reverseObjectEnumerator];
+    v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v96 objects:v101 count:16];
     if (v20)
     {
       v21 = v20;
@@ -983,16 +983,16 @@ LABEL_19:
         {
           if (*v97 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v24 = *(*(&v96 + 1) + 8 * i);
           if ([v18 count] && ((objc_msgSend(v18, "firstObject"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "type"), v25, !objc_msgSend(v24, "type")) || objc_msgSend(v24, "type") == 6) && +[RTTripSegmentActivityFilter isRealModeOfTransportation:](RTTripSegmentActivityFilter, "isRealModeOfTransportation:", v26))
           {
             v27 = objc_alloc(MEMORY[0x277D011B8]);
-            v28 = [v24 confidence];
-            v29 = [v24 startDate];
-            v30 = [v27 initWithType:v26 confidence:v28 startDate:v29];
+            confidence = [v24 confidence];
+            startDate = [v24 startDate];
+            v30 = [v27 initWithType:v26 confidence:confidence startDate:startDate];
 
             [v18 insertObject:v30 atIndex:0];
           }
@@ -1003,13 +1003,13 @@ LABEL_19:
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v96 objects:v101 count:16];
+        v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v96 objects:v101 count:16];
       }
 
       while (v21);
     }
 
-    v31 = [(RTTripSegmentActivityFilter *)v86 mergeRepeatedActivities:v18];
+    v31 = [(RTTripSegmentActivityFilter *)selfCopy mergeRepeatedActivities:v18];
     v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v94[0] = MEMORY[0x277D85DD0];
     v94[1] = 3221225472;
@@ -1025,47 +1025,47 @@ LABEL_19:
       do
       {
         v35 = [v33 objectAtIndexedSubscript:v34];
-        v36 = [v35 unsignedIntValue];
+        unsignedIntValue = [v35 unsignedIntValue];
 
         v37 = [v33 objectAtIndexedSubscript:++v34];
-        v38 = [v37 unsignedIntValue];
+        unsignedIntValue2 = [v37 unsignedIntValue];
 
-        v39 = [v31 objectAtIndexedSubscript:v36];
+        v39 = [v31 objectAtIndexedSubscript:unsignedIntValue];
         [v87 addObject:v39];
 
-        if (v36 + 1 != v38)
+        if (unsignedIntValue + 1 != unsignedIntValue2)
         {
-          v40 = [v31 objectAtIndexedSubscript:v36];
-          v41 = [v40 type];
-          v42 = [v31 objectAtIndexedSubscript:v38];
-          v43 = [v42 type];
+          v40 = [v31 objectAtIndexedSubscript:unsignedIntValue];
+          type = [v40 type];
+          v42 = [v31 objectAtIndexedSubscript:unsignedIntValue2];
+          type2 = [v42 type];
 
-          if (v41 != v43 && v36 <= v38)
+          if (type != type2 && unsignedIntValue <= unsignedIntValue2)
           {
             while (1)
             {
-              v44 = [v31 objectAtIndexedSubscript:v36];
-              v45 = [v44 type];
+              v44 = [v31 objectAtIndexedSubscript:unsignedIntValue];
+              type3 = [v44 type];
 
-              if (v45 == 1)
+              if (type3 == 1)
               {
                 break;
               }
 
-              if (v38 + 1 == ++v36)
+              if (unsignedIntValue2 + 1 == ++unsignedIntValue)
               {
                 goto LABEL_31;
               }
             }
 
             obja = objc_alloc(MEMORY[0x277D011B8]);
-            v46 = [v31 objectAtIndexedSubscript:v38];
-            v47 = [v46 type];
-            v48 = [v31 objectAtIndexedSubscript:v38];
-            v49 = [v48 confidence];
-            v50 = [v31 objectAtIndexedSubscript:v36];
-            v51 = [v50 startDate];
-            v52 = [obja initWithType:v47 confidence:v49 startDate:v51];
+            v46 = [v31 objectAtIndexedSubscript:unsignedIntValue2];
+            type4 = [v46 type];
+            v48 = [v31 objectAtIndexedSubscript:unsignedIntValue2];
+            confidence2 = [v48 confidence];
+            v50 = [v31 objectAtIndexedSubscript:unsignedIntValue];
+            startDate2 = [v50 startDate];
+            v52 = [obja initWithType:type4 confidence:confidence2 startDate:startDate2];
 
             [v87 addObject:v52];
           }
@@ -1080,10 +1080,10 @@ LABEL_31:
 
     v80 = v33;
     v81 = v31;
-    v53 = [v31 lastObject];
-    [v87 addObject:v53];
+    lastObject = [v31 lastObject];
+    [v87 addObject:lastObject];
 
-    v54 = [(RTTripSegmentActivityFilter *)v86 mergeRepeatedActivities:v87];
+    v54 = [(RTTripSegmentActivityFilter *)selfCopy mergeRepeatedActivities:v87];
     v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v90 = 0u;
     v91 = 0u;
@@ -1108,11 +1108,11 @@ LABEL_31:
           if ([v55 count] && (objc_msgSend(v60, "startDate"), v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "lastObject"), v62 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v62, "startDate"), v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "timeIntervalSinceDate:", v63), v65 = v64, v63, v62, v61, v65 < 30.0))
           {
             v66 = objc_alloc(MEMORY[0x277D011B8]);
-            v67 = [v60 type];
-            v68 = [v60 confidence];
-            v69 = [v55 lastObject];
-            v70 = [v69 startDate];
-            v71 = [v66 initWithType:v67 confidence:v68 startDate:v70];
+            type5 = [v60 type];
+            confidence3 = [v60 confidence];
+            lastObject2 = [v55 lastObject];
+            startDate3 = [lastObject2 startDate];
+            v71 = [v66 initWithType:type5 confidence:confidence3 startDate:startDate3];
 
             [v55 removeLastObject];
             [v55 addObject:v71];
@@ -1130,20 +1130,20 @@ LABEL_31:
       while (v57);
     }
 
-    v72 = [v55 firstObject];
+    firstObject = [v55 firstObject];
     v73 = objc_alloc(MEMORY[0x277D011B8]);
-    v74 = [v72 type];
-    v75 = [v72 confidence];
-    v11 = v84;
-    v76 = [v84 startDate];
-    v77 = [v73 initWithType:v74 confidence:v75 startDate:v76];
+    type6 = [firstObject type];
+    confidence4 = [firstObject confidence];
+    intervalCopy = v84;
+    startDate4 = [v84 startDate];
+    v77 = [v73 initWithType:type6 confidence:confidence4 startDate:startDate4];
 
     [v55 removeObjectAtIndex:0];
     [v55 insertObject:v77 atIndex:0];
 
-    v10 = v85;
+    activitiesCopy = v85;
     v78 = v82;
-    v12 = v83;
+    intervalsCopy = v83;
   }
 
   else

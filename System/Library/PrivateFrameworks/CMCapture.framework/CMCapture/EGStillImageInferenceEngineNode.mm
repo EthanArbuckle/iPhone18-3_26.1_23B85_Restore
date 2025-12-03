@@ -1,21 +1,21 @@
 @interface EGStillImageInferenceEngineNode
-- (EGStillImageInferenceEngineNode)initWithName:(id)a3 stillImageSettings:(id)a4 portType:(id)a5 nodeConfiguration:(id)a6 resourceCoordinator:(id)a7 inferenceInputBufferType:(unint64_t)a8 delegate:(id)a9;
+- (EGStillImageInferenceEngineNode)initWithName:(id)name stillImageSettings:(id)settings portType:(id)type nodeConfiguration:(id)configuration resourceCoordinator:(id)coordinator inferenceInputBufferType:(unint64_t)bufferType delegate:(id)delegate;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageInferenceEngineNode
 
-- (EGStillImageInferenceEngineNode)initWithName:(id)a3 stillImageSettings:(id)a4 portType:(id)a5 nodeConfiguration:(id)a6 resourceCoordinator:(id)a7 inferenceInputBufferType:(unint64_t)a8 delegate:(id)a9
+- (EGStillImageInferenceEngineNode)initWithName:(id)name stillImageSettings:(id)settings portType:(id)type nodeConfiguration:(id)configuration resourceCoordinator:(id)coordinator inferenceInputBufferType:(unint64_t)bufferType delegate:(id)delegate
 {
   v20.receiver = self;
   v20.super_class = EGStillImageInferenceEngineNode;
-  v14 = [(EGStillImageProcessorControllerDelegateNode *)&v20 initWithName:a3 delegate:a9];
+  v14 = [(EGStillImageProcessorControllerDelegateNode *)&v20 initWithName:name delegate:delegate];
   if (v14)
   {
-    v14->_stillImageSettings = a4;
-    v14->_portType = a5;
+    v14->_stillImageSettings = settings;
+    v14->_portType = type;
     v15 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v16 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v14->_processorInput = v16;
@@ -27,9 +27,9 @@
     v18 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"inferencesDelivered"];
     v14->_inferencesDeliveredOutput = v18;
     [(EGNode *)v14 installOutput:v18];
-    v14->_nodeConfiguration = a6;
-    v14->_resourceCoordinator = a7;
-    v14->_inferenceInputBufferType = a8;
+    v14->_nodeConfiguration = configuration;
+    v14->_resourceCoordinator = coordinator;
+    v14->_inferenceInputBufferType = bufferType;
   }
 
   return v14;
@@ -42,10 +42,10 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
-  if (v6 && (v7 = v6, (v8 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](-[EGStillImageInferenceEngineNode processorInput](self, "processorInput"), "name")), "processorController"}]) != 0))
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
+  if (v6 && (v7 = v6, (v8 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](-[EGStillImageInferenceEngineNode processorInput](self, "processorInput"), "name")), "processorController"}]) != 0))
   {
     v9 = v8;
     v10 = [[BWInferenceEngineControllerInput alloc] initWithSettings:self->_stillImageSettings portType:self->_portType inferenceInputBufferType:self->_inferenceInputBufferType];
@@ -71,32 +71,32 @@
   [v12 didEncounterError:v11 description:v13 element:self];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!buffer)
   {
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_9:
-    [EGStillImageInferenceEngineNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageInferenceEngineNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue:a3];
+  [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator inferenceControllerQueue:controller];
   if (!_FigIsCurrentDispatchQueue())
   {
     [EGStillImageInferenceEngineNode processorController:didFinishProcessingSampleBuffer:type:processorInput:err:];
   }
 
-  -[BWPhotonicEngineNodeResourceCoordinator unsafeSetInferences:forInferenceInputBufferType:](self->_resourceCoordinator, "unsafeSetInferences:forInferenceInputBufferType:", -[BWPhotonicEngineNodeConfiguration harvestStillImageInferencesFromSampleBuffer:stillImageSettings:enabledInferenceMasks:](self->_nodeConfiguration, "harvestStillImageInferencesFromSampleBuffer:stillImageSettings:enabledInferenceMasks:", a4, self->_stillImageSettings, [a6 enabledInferenceMasks]), self->_inferenceInputBufferType);
+  -[BWPhotonicEngineNodeResourceCoordinator unsafeSetInferences:forInferenceInputBufferType:](self->_resourceCoordinator, "unsafeSetInferences:forInferenceInputBufferType:", -[BWPhotonicEngineNodeConfiguration harvestStillImageInferencesFromSampleBuffer:stillImageSettings:enabledInferenceMasks:](self->_nodeConfiguration, "harvestStillImageInferencesFromSampleBuffer:stillImageSettings:enabledInferenceMasks:", buffer, self->_stillImageSettings, [input enabledInferenceMasks]), self->_inferenceInputBufferType);
   inferencesDeliveredOutput = self->_inferencesDeliveredOutput;
-  v11 = [[EGStillImageGraphPayload alloc] initWithEmptyPayload];
+  initWithEmptyPayload = [[EGStillImageGraphPayload alloc] initWithEmptyPayload];
 
-  [(EGStillImageOutput *)inferencesDeliveredOutput emitPayload:v11];
+  [(EGStillImageOutput *)inferencesDeliveredOutput emitPayload:initWithEmptyPayload];
 }
 
 - (uint64_t)processorController:(void *)a1 didFinishProcessingSampleBuffer:(uint64_t)a2 type:processorInput:err:.cold.2(void *a1, uint64_t a2)

@@ -1,7 +1,7 @@
 @interface ATXEventTravelTimeDataSourceInternal
 + (id)sharedInstance;
 - (ATXEventTravelTimeDataSourceInternal)init;
-- (void)travelTimeInfoForEventID:(id)a3 location:(id)a4 expectedArrivalDate:(id)a5 transportType:(id)a6 localOnlyAfterFirstUpdate:(BOOL)a7 heuristicDevice:(id)a8 callback:(id)a9;
+- (void)travelTimeInfoForEventID:(id)d location:(id)location expectedArrivalDate:(id)date transportType:(id)type localOnlyAfterFirstUpdate:(BOOL)update heuristicDevice:(id)device callback:(id)callback;
 @end
 
 @implementation ATXEventTravelTimeDataSourceInternal
@@ -48,43 +48,43 @@ void __54__ATXEventTravelTimeDataSourceInternal_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)travelTimeInfoForEventID:(id)a3 location:(id)a4 expectedArrivalDate:(id)a5 transportType:(id)a6 localOnlyAfterFirstUpdate:(BOOL)a7 heuristicDevice:(id)a8 callback:(id)a9
+- (void)travelTimeInfoForEventID:(id)d location:(id)location expectedArrivalDate:(id)date transportType:(id)type localOnlyAfterFirstUpdate:(BOOL)update heuristicDevice:(id)device callback:(id)callback
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v58 = a6;
-  v60 = a8;
-  v18 = a9;
+  dCopy = d;
+  locationCopy = location;
+  dateCopy = date;
+  typeCopy = type;
+  deviceCopy = device;
+  callbackCopy = callback;
   v78 = 0;
   v79 = &v78;
   v80 = 0x3032000000;
   v81 = __Block_byref_object_copy__7;
   v82 = __Block_byref_object_dispose__7;
   v83 = 0;
-  v61 = [v17 dateByAddingTimeInterval:1200.0];
-  v59 = v15;
-  if (v15)
+  v61 = [dateCopy dateByAddingTimeInterval:1200.0];
+  v59 = dCopy;
+  if (dCopy)
   {
-    v19 = [v60 eventStore];
-    v20 = [v19 eventWithIdentifier:v59];
+    eventStore = [deviceCopy eventStore];
+    v20 = [eventStore eventWithIdentifier:v59];
 
-    v21 = [v20 structuredLocation];
-    if (v21 && ([v20 structuredLocation], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "geoLocation"), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v21, v23))
+    structuredLocation = [v20 structuredLocation];
+    if (structuredLocation && ([v20 structuredLocation], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "geoLocation"), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, structuredLocation, v23))
     {
-      v24 = [v20 endDate];
+      endDate = [v20 endDate];
 
-      v25 = [v20 structuredLocation];
-      v26 = [v25 geoLocation];
+      structuredLocation2 = [v20 structuredLocation];
+      geoLocation = [structuredLocation2 geoLocation];
 
-      v61 = v24;
-      v16 = v26;
+      v61 = endDate;
+      locationCopy = geoLocation;
     }
 
     else
     {
-      v25 = __atxlog_handle_heuristic();
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+      structuredLocation2 = __atxlog_handle_heuristic();
+      if (os_log_type_enabled(structuredLocation2, OS_LOG_TYPE_DEBUG))
       {
         [ATXEventTravelTimeDataSourceInternal travelTimeInfoForEventID:location:expectedArrivalDate:transportType:localOnlyAfterFirstUpdate:heuristicDevice:callback:];
       }
@@ -95,19 +95,19 @@ void __54__ATXEventTravelTimeDataSourceInternal_sharedInstance__block_invoke()
   v75 = &v74;
   v76 = 0x2020000000;
   v77 = 0;
-  if (v16)
+  if (locationCopy)
   {
     v27 = objc_opt_new();
     v28 = MEMORY[0x277CCACA8];
-    [v16 coordinate];
+    [locationCopy coordinate];
     v30 = v29;
-    [v16 coordinate];
+    [locationCopy coordinate];
     v32 = [v28 stringWithFormat:@"%f, %f", v30, v31];
     v33 = *(v27 + 8);
     *(v27 + 8) = v32;
 
-    objc_storeStrong((v27 + 16), a6);
-    *(v27 + 24) = a7;
+    objc_storeStrong((v27 + 16), type);
+    *(v27 + 24) = update;
     hypothesizerCacheLock = self->_hypothesizerCacheLock;
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
@@ -116,13 +116,13 @@ void __54__ATXEventTravelTimeDataSourceInternal_sharedInstance__block_invoke()
     v71 = &v78;
     v35 = v27;
     v65 = v35;
-    v66 = v16;
-    v67 = v17;
+    v66 = locationCopy;
+    v67 = dateCopy;
     v68 = v61;
-    v73 = a7;
+    updateCopy = update;
     v72 = &v74;
-    v69 = v58;
-    v70 = self;
+    v69 = typeCopy;
+    selfCopy = self;
     [(_PASLock *)hypothesizerCacheLock runWithLockAcquired:v64];
   }
 
@@ -137,37 +137,37 @@ void __54__ATXEventTravelTimeDataSourceInternal_sharedInstance__block_invoke()
         [ATXEventTravelTimeDataSourceInternal travelTimeInfoForEventID:location:expectedArrivalDate:transportType:localOnlyAfterFirstUpdate:heuristicDevice:callback:];
       }
 
-      if (v16)
+      if (locationCopy)
       {
         v48 = objc_opt_new();
         v49 = MEMORY[0x277CCACA8];
-        [v16 coordinate];
+        [locationCopy coordinate];
         v51 = v50;
-        [v16 coordinate];
+        [locationCopy coordinate];
         v53 = [v49 stringWithFormat:@"%f, %f", v51, v52];
         v54 = *(v48 + 8);
         *(v48 + 8) = v53;
 
-        objc_storeStrong((v48 + 16), a6);
-        *(v48 + 24) = a7;
+        objc_storeStrong((v48 + 16), type);
+        *(v48 + 24) = update;
         v55 = self->_hypothesizerCacheLock;
         v62[0] = MEMORY[0x277D85DD0];
         v62[1] = 3221225472;
         v62[2] = __159__ATXEventTravelTimeDataSourceInternal_travelTimeInfoForEventID_location_expectedArrivalDate_transportType_localOnlyAfterFirstUpdate_heuristicDevice_callback___block_invoke_41;
         v62[3] = &unk_278C3D128;
-        v44 = v48;
-        v63 = v44;
+        currentHypothesis3 = v48;
+        v63 = currentHypothesis3;
         [(_PASLock *)v55 runWithLockAcquired:v62];
 
         v46 = 0;
-        v40 = 0;
+        generationDate = 0;
         v43 = 0.0;
         goto LABEL_27;
       }
 
-      v44 = __atxlog_handle_heuristic();
+      currentHypothesis3 = __atxlog_handle_heuristic();
       v43 = 0.0;
-      if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(currentHypothesis3, OS_LOG_TYPE_ERROR))
       {
         [ATXEventTravelTimeDataSourceInternal travelTimeInfoForEventID:location:expectedArrivalDate:transportType:localOnlyAfterFirstUpdate:heuristicDevice:callback:];
       }
@@ -175,16 +175,16 @@ void __54__ATXEventTravelTimeDataSourceInternal_sharedInstance__block_invoke()
 
     else
     {
-      v44 = __atxlog_handle_heuristic();
+      currentHypothesis3 = __atxlog_handle_heuristic();
       v43 = 0.0;
-      if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(currentHypothesis3, OS_LOG_TYPE_DEBUG))
       {
         [ATXEventTravelTimeDataSourceInternal travelTimeInfoForEventID:location:expectedArrivalDate:transportType:localOnlyAfterFirstUpdate:heuristicDevice:callback:];
       }
     }
 
     v46 = 0;
-    v40 = 0;
+    generationDate = 0;
     goto LABEL_27;
   }
 
@@ -194,34 +194,34 @@ void __54__ATXEventTravelTimeDataSourceInternal_sharedInstance__block_invoke()
     [ATXEventTravelTimeDataSourceInternal travelTimeInfoForEventID:location:expectedArrivalDate:transportType:localOnlyAfterFirstUpdate:heuristicDevice:callback:];
   }
 
-  v39 = [v79[5] currentHypothesis];
-  v40 = [v39 generationDate];
+  currentHypothesis = [v79[5] currentHypothesis];
+  generationDate = [currentHypothesis generationDate];
 
-  v41 = [v79[5] currentHypothesis];
-  [v41 estimatedTravelTime];
+  currentHypothesis2 = [v79[5] currentHypothesis];
+  [currentHypothesis2 estimatedTravelTime];
   v43 = v42;
 
-  v44 = [v79[5] currentHypothesis];
-  v45 = [v44 travelState];
-  if (v45 >= 6)
+  currentHypothesis3 = [v79[5] currentHypothesis];
+  travelState = [currentHypothesis3 travelState];
+  if (travelState >= 6)
   {
-    v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %lu)", v45];
+    v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %lu)", travelState];
   }
 
   else
   {
-    v46 = off_278C3D148[v45];
+    v46 = off_278C3D148[travelState];
   }
 
 LABEL_27:
 
   v56 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
-  [v56 setObject:v40 forKeyedSubscript:@"generationDate"];
+  [v56 setObject:generationDate forKeyedSubscript:@"generationDate"];
   v57 = [MEMORY[0x277CCABB0] numberWithDouble:v43];
   [v56 setObject:v57 forKeyedSubscript:@"estimatedTravelTime"];
 
   [v56 setObject:v46 forKeyedSubscript:@"travelState"];
-  v18[2](v18, v56, 0);
+  callbackCopy[2](callbackCopy, v56, 0);
 
   _Block_object_dispose(&v74, 8);
   _Block_object_dispose(&v78, 8);

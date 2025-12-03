@@ -1,29 +1,29 @@
 @interface ICMediaRedownloadRequest
 - (ICMediaRedownloadRequest)init;
-- (ICMediaRedownloadRequest)initWithRequestContext:(id)a3 redownloadParameters:(id)a4;
-- (ICMediaRedownloadRequest)initWithRequestContext:(id)a3 redownloadParametersString:(id)a4;
-- (void)_executeWithActiveICloudAccountProperties:(id)a3;
+- (ICMediaRedownloadRequest)initWithRequestContext:(id)context redownloadParameters:(id)parameters;
+- (ICMediaRedownloadRequest)initWithRequestContext:(id)context redownloadParametersString:(id)string;
+- (void)_executeWithActiveICloudAccountProperties:(id)properties;
 - (void)cancel;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICMediaRedownloadRequest
 
-- (void)_executeWithActiveICloudAccountProperties:(id)a3
+- (void)_executeWithActiveICloudAccountProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = +[ICURLBagProvider sharedBagProvider];
   requestContext = self->_requestContext;
-  v7 = [(ICMediaRedownloadRequest *)self qualityOfService];
+  qualityOfService = [(ICMediaRedownloadRequest *)self qualityOfService];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__ICMediaRedownloadRequest__executeWithActiveICloudAccountProperties___block_invoke;
   v9[3] = &unk_1E7BF7AF8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v5 getBagForRequestContext:requestContext qualityOfService:v7 forceRefetch:0 withCompletionHandler:v9];
+  v10 = propertiesCopy;
+  v8 = propertiesCopy;
+  [v5 getBagForRequestContext:requestContext qualityOfService:qualityOfService forceRefetch:0 withCompletionHandler:v9];
 }
 
 void __70__ICMediaRedownloadRequest__executeWithActiveICloudAccountProperties___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -523,23 +523,23 @@ void __34__ICMediaRedownloadRequest_cancel__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting", buf, 0xCu);
   }
 
-  v4 = [(ICRequestContext *)self->_requestContext deviceInfo];
-  v5 = [v4 isAppleTV];
+  deviceInfo = [(ICRequestContext *)self->_requestContext deviceInfo];
+  isAppleTV = [deviceInfo isAppleTV];
 
-  if (v5)
+  if (isAppleTV)
   {
     [(ICMediaRedownloadRequest *)self _executeWithActiveICloudAccountProperties:0];
   }
 
   else
   {
-    v6 = [(ICStoreRequestContext *)self->_requestContext identityStore];
+    identityStore = [(ICStoreRequestContext *)self->_requestContext identityStore];
     v10 = 0;
-    v7 = [v6 getPropertiesForActiveICloudAccountReturningError:&v10];
+    v7 = [identityStore getPropertiesForActiveICloudAccountReturningError:&v10];
     v8 = v10;
 
     if (v8)
@@ -548,7 +548,7 @@ void __34__ICMediaRedownloadRequest_cancel__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2114;
         v14 = v8;
         _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load icloud account properties. err=%{public}@", buf, 0x16u);
@@ -559,9 +559,9 @@ void __34__ICMediaRedownloadRequest_cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_usePrioritizedURLSession)
   {
     v5 = 25;
@@ -578,8 +578,8 @@ void __34__ICMediaRedownloadRequest_cancel__block_invoke(uint64_t a1)
   v8[2] = __62__ICMediaRedownloadRequest_performRequestWithResponseHandler___block_invoke;
   v8[3] = &unk_1E7BFA490;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(ICRequestOperation *)self performRequestOnOperationQueue:v6 withCompletionHandler:v8];
 }
 
@@ -595,26 +595,26 @@ void __62__ICMediaRedownloadRequest_performRequestWithResponseHandler___block_in
   *(v4 + 336) = 0;
 }
 
-- (ICMediaRedownloadRequest)initWithRequestContext:(id)a3 redownloadParametersString:(id)a4
+- (ICMediaRedownloadRequest)initWithRequestContext:(id)context redownloadParametersString:(id)string
 {
   v6 = MEMORY[0x1E695DFF8];
-  v7 = a3;
-  v8 = [v6 ic_queryParametersDictionaryFromString:a4];
-  v9 = [(ICMediaRedownloadRequest *)self initWithRequestContext:v7 redownloadParameters:v8];
+  contextCopy = context;
+  v8 = [v6 ic_queryParametersDictionaryFromString:string];
+  v9 = [(ICMediaRedownloadRequest *)self initWithRequestContext:contextCopy redownloadParameters:v8];
 
   return v9;
 }
 
-- (ICMediaRedownloadRequest)initWithRequestContext:(id)a3 redownloadParameters:(id)a4
+- (ICMediaRedownloadRequest)initWithRequestContext:(id)context redownloadParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  parametersCopy = parameters;
   v9 = [(ICMediaRedownloadRequest *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestContext, a3);
-    objc_storeStrong(&v10->_redownloadParameters, a4);
+    objc_storeStrong(&v9->_requestContext, context);
+    objc_storeStrong(&v10->_redownloadParameters, parameters);
   }
 
   return v10;

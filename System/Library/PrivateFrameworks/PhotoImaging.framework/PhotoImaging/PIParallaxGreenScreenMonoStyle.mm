@@ -1,25 +1,25 @@
 @interface PIParallaxGreenScreenMonoStyle
-+ (id)styleWithColorAnalysis:(id)a3;
++ (id)styleWithColorAnalysis:(id)analysis;
 @end
 
 @implementation PIParallaxGreenScreenMonoStyle
 
-+ (id)styleWithColorAnalysis:(id)a3
++ (id)styleWithColorAnalysis:(id)analysis
 {
-  v4 = a3;
-  v5 = [[PIParallaxColorSuggester alloc] initWithColorAnalysis:v4];
-  v6 = [v4 backgroundColors];
+  analysisCopy = analysis;
+  v5 = [[PIParallaxColorSuggester alloc] initWithColorAnalysis:analysisCopy];
+  backgroundColors = [analysisCopy backgroundColors];
 
   v7 = +[PIParallaxColorPalette greenScreenVibrantPalette];
-  v8 = [(PIParallaxColorSuggester *)v5 suggestedColorsForColors:v6 fromColorPalette:v7];
+  v8 = [(PIParallaxColorSuggester *)v5 suggestedColorsForColors:backgroundColors fromColorPalette:v7];
 
   v9 = PFMap();
-  v10 = [v9 firstObject];
-  v11 = [v10 primaryColor];
+  firstObject = [v9 firstObject];
+  primaryColor = [firstObject primaryColor];
 
-  v12 = [a1 alloc];
-  v13 = [MEMORY[0x1E69C0750] whiteColor];
-  v14 = [v12 initWithColor:v11 clockColor:v13 colorSuggestions:v9];
+  v12 = [self alloc];
+  whiteColor = [MEMORY[0x1E69C0750] whiteColor];
+  v14 = [v12 initWithColor:primaryColor clockColor:whiteColor colorSuggestions:v9];
 
   return v14;
 }

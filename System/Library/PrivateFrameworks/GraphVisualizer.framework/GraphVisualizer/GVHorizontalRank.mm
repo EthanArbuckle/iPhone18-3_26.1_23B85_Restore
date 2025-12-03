@@ -1,20 +1,20 @@
 @interface GVHorizontalRank
 - (CGSize)sizeForDummy;
-- (GVHorizontalRank)initWithRank:(int64_t)a3 separation:(CGSize)a4 graph:(id)a5;
+- (GVHorizontalRank)initWithRank:(int64_t)rank separation:(CGSize)separation graph:(id)graph;
 - (double)breadth;
 - (double)length;
-- (void)centerNode:(id)a3 at:(CGPoint)a4;
-- (void)centerNodesWithRespectoTo:(id)a3;
+- (void)centerNode:(id)node at:(CGPoint)at;
+- (void)centerNodesWithRespectoTo:(id)to;
 @end
 
 @implementation GVHorizontalRank
 
-- (GVHorizontalRank)initWithRank:(int64_t)a3 separation:(CGSize)a4 graph:(id)a5
+- (GVHorizontalRank)initWithRank:(int64_t)rank separation:(CGSize)separation graph:(id)graph
 {
-  width = a4.width;
+  width = separation.width;
   v7.receiver = self;
   v7.super_class = GVHorizontalRank;
-  result = [(GVRank *)&v7 initWithRank:a3 separation:a5 graph:a4.width, a4.height];
+  result = [(GVRank *)&v7 initWithRank:rank separation:graph graph:separation.width, separation.height];
   if (result)
   {
     result->super.separation = width;
@@ -154,18 +154,18 @@
   return result;
 }
 
-- (void)centerNodesWithRespectoTo:(id)a3
+- (void)centerNodesWithRespectoTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   v70 = *MEMORY[0x277D85DE8];
-  if (self->super.prevRank == a3)
+  if (self->super.prevRank == to)
   {
     v5 = &__block_literal_global_72;
   }
 
   else
   {
-    if (self->super.nextRank != a3)
+    if (self->super.nextRank != to)
     {
       [GVHorizontalRank centerNodesWithRespectoTo:];
     }
@@ -201,7 +201,7 @@
         }
 
         v10 = *(*(&v64 + 1) + 8 * i);
-        v11 = [v3 neighborsOfNode:v10];
+        v11 = [toCopy neighborsOfNode:v10];
         if ([v11 count])
         {
           v12 = *(v5 + 2);
@@ -209,7 +209,7 @@
           v14 = [v11 count];
           if (v14)
           {
-            v15 = v3;
+            v15 = toCopy;
             v16 = v14 >> 1;
             if (v14)
             {
@@ -225,7 +225,7 @@
               v20 = (v18 + v19) * 0.5;
             }
 
-            v3 = v15;
+            toCopy = v15;
             v8 = v61;
           }
 
@@ -238,30 +238,30 @@
           v23 = v20 - v22;
           if (v20 - v22 >= 0.0)
           {
-            v26 = [v10 next];
-            if (v26)
+            next = [v10 next];
+            if (next)
             {
-              v27 = v26;
-              while (v12(v5, v27) < v13)
+              next2 = next;
+              while (v12(v5, next2) < v13)
               {
-                v27 = [v27 next];
-                if (!v27)
+                next2 = [next2 next];
+                if (!next2)
                 {
                   goto LABEL_41;
                 }
               }
 
-              [v27 x];
+              [next2 x];
               v44 = v43;
-              for (j = v27; ; j = v46)
+              for (j = next2; ; j = prev)
               {
-                v46 = [j prev];
-                if (v46 == [v10 prev])
+                prev = [j prev];
+                if (prev == [v10 prev])
                 {
                   break;
                 }
 
-                [v46 w];
+                [prev w];
                 v44 = v44 - (v47 + self->super.separation);
               }
 
@@ -280,8 +280,8 @@ LABEL_41:
             {
               do
               {
-                v51 = [v10 next];
-                [v51 x];
+                next3 = [v10 next];
+                [next3 x];
                 v53 = v52;
                 [v10 x];
                 v55 = v54;
@@ -294,33 +294,33 @@ LABEL_41:
                 [v10 x];
                 v58 = v57;
                 [v10 w];
-                [v51 setX:v58 + v59 + self->super.separation];
-                v10 = v51;
+                [next3 setX:v58 + v59 + self->super.separation];
+                v10 = next3;
               }
 
-              while ([v51 next]);
+              while ([next3 next]);
             }
           }
 
           else
           {
-            v24 = [v10 prev];
-            if (v24)
+            prev2 = [v10 prev];
+            if (prev2)
             {
-              v25 = v24;
-              while (v12(v5, v25) < v13)
+              prev3 = prev2;
+              while (v12(v5, prev3) < v13)
               {
-                v25 = [v25 prev];
-                if (!v25)
+                prev3 = [prev3 prev];
+                if (!prev3)
                 {
                   goto LABEL_32;
                 }
               }
 
-              [v25 x];
-              for (k = v28; v25 != v10; v25 = [v25 next])
+              [prev3 x];
+              for (k = v28; prev3 != v10; prev3 = [prev3 next])
               {
-                [v25 w];
+                [prev3 w];
                 k = k + v30 + self->super.separation;
               }
 
@@ -339,12 +339,12 @@ LABEL_32:
             {
               do
               {
-                v34 = [v10 prev];
-                [v34 x];
+                prev4 = [v10 prev];
+                [prev4 x];
                 v36 = v35;
                 [v10 x];
                 v38 = v37 - self->super.separation;
-                [v34 w];
+                [prev4 w];
                 if (v36 <= v38 - v39)
                 {
                   break;
@@ -352,12 +352,12 @@ LABEL_32:
 
                 [v10 x];
                 v41 = v40 - self->super.separation;
-                [v34 w];
-                [v34 setX:v41 - v42];
-                v10 = v34;
+                [prev4 w];
+                [prev4 setX:v41 - v42];
+                v10 = prev4;
               }
 
-              while ([v34 prev]);
+              while ([prev4 prev]);
             }
           }
         }
@@ -387,21 +387,21 @@ uint64_t __46__GVHorizontalRank_centerNodesWithRespectoTo___block_invoke_3(uint6
   }
 }
 
-- (void)centerNode:(id)a3 at:(CGPoint)a4
+- (void)centerNode:(id)node at:(CGPoint)at
 {
-  x = a4.x;
-  [a3 cx];
+  x = at.x;
+  [node cx];
   v8 = x - v7;
   if (x - v7 >= 0.0)
   {
-    v18 = [a3 next];
-    if (v18)
+    next = [node next];
+    if (next)
     {
-      [v18 x];
+      [next x];
       v20 = v19;
-      [a3 w];
+      [node w];
       v22 = v20 - v21 - self->super.separation;
-      [a3 x];
+      [node x];
       v24 = v22 - v23;
       if (v8 >= v24)
       {
@@ -414,25 +414,25 @@ uint64_t __46__GVHorizontalRank_centerNodesWithRespectoTo___block_invoke_3(uint6
       }
 
 LABEL_10:
-      [a3 x];
+      [node x];
       v26 = v25 + v17;
 
-      [a3 setX:v26];
+      [node setX:v26];
       return;
     }
   }
 
   else
   {
-    v9 = [a3 prev];
-    if (v9)
+    prev = [node prev];
+    if (prev)
     {
-      v10 = v9;
-      [v9 x];
+      v10 = prev;
+      [prev x];
       v12 = v11;
       [v10 w];
       v14 = v12 + v13 + self->super.separation;
-      [a3 x];
+      [node x];
       v16 = v14 - v15;
       if (v8 >= v16)
       {
@@ -448,7 +448,7 @@ LABEL_10:
     }
   }
 
-  [a3 setCx:x];
+  [node setCx:x];
 }
 
 @end

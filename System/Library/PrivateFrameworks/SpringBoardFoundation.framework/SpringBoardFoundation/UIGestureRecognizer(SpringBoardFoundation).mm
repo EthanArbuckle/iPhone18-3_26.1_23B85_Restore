@@ -8,11 +8,11 @@
 
 - (uint64_t)sbf_setPencilTouchesAllowed:()SpringBoardFoundation
 {
-  v5 = [a1 allowedTouchTypes];
-  v10 = v5;
+  allowedTouchTypes = [self allowedTouchTypes];
+  v10 = allowedTouchTypes;
   if (a3)
   {
-    v6 = [v5 containsObject:&unk_1F3D3E898];
+    v6 = [allowedTouchTypes containsObject:&unk_1F3D3E898];
     v7 = v10;
     if (v6)
     {
@@ -25,11 +25,11 @@
 
   else
   {
-    v8 = [v5 mutableCopy];
+    v8 = [allowedTouchTypes mutableCopy];
     [v8 removeObject:&unk_1F3D3E898];
   }
 
-  [a1 setAllowedTouchTypes:v8];
+  [self setAllowedTouchTypes:v8];
 
   v7 = v10;
 LABEL_6:
@@ -39,8 +39,8 @@ LABEL_6:
 
 - (id)sbf_activeTouches
 {
-  v2 = [a1 _activeEventOfType:0];
-  v3 = [v2 touchesForGestureRecognizer:a1];
+  v2 = [self _activeEventOfType:0];
+  v3 = [v2 touchesForGestureRecognizer:self];
   v4 = v3;
   if (v3)
   {
@@ -64,8 +64,8 @@ LABEL_6:
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 sbf_activeTouches];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  sbf_activeTouches = [self sbf_activeTouches];
+  v2 = [sbf_activeTouches countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -75,7 +75,7 @@ LABEL_6:
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(sbf_activeTouches);
         }
 
         if ([*(*(&v6 + 1) + 8 * i) _isPointerTouch])
@@ -85,7 +85,7 @@ LABEL_6:
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [sbf_activeTouches countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;

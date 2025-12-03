@@ -1,7 +1,7 @@
 @interface ANSTTensorSurface
 + (ANSTTensorSurface)new;
 - (ANSTTensorSurface)init;
-- (ANSTTensorSurface)initWithDescriptor:(id)a3 ioSurface:(__IOSurface *)a4 error:(id *)p_isa;
+- (ANSTTensorSurface)initWithDescriptor:(id)descriptor ioSurface:(__IOSurface *)surface error:(id *)p_isa;
 - (void)dealloc;
 @end
 
@@ -16,29 +16,29 @@
 
 + (ANSTTensorSurface)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTTensorSurface)initWithDescriptor:(id)a3 ioSurface:(__IOSurface *)a4 error:(id *)p_isa
+- (ANSTTensorSurface)initWithDescriptor:(id)descriptor ioSurface:(__IOSurface *)surface error:(id *)p_isa
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  AllocSize = IOSurfaceGetAllocSize(a4);
-  if (AllocSize >= objc_msgSend_sizeInBytes(v8, v10, v11))
+  descriptorCopy = descriptor;
+  AllocSize = IOSurfaceGetAllocSize(surface);
+  if (AllocSize >= objc_msgSend_sizeInBytes(descriptorCopy, v10, v11))
   {
     v26.receiver = self;
     v26.super_class = ANSTTensorSurface;
     v21 = [(ANSTTensorSurface *)&v26 init];
     if (v21)
     {
-      v22 = objc_msgSend_copy(v8, v19, v20);
+      v22 = objc_msgSend_copy(descriptorCopy, v19, v20);
       tensorDescriptor = v21->_tensorDescriptor;
       v21->_tensorDescriptor = v22;
 
-      v21->_surfaceRef = a4;
-      CFRetain(a4);
+      v21->_surfaceRef = surface;
+      CFRetain(surface);
     }
 
     self = v21;

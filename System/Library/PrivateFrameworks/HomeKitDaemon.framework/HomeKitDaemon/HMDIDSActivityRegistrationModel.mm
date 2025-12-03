@@ -9,8 +9,8 @@
 + (id)hmbQueries
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 registeredDevicesQuery];
-  v6[0] = v2;
+  registeredDevicesQuery = [self registeredDevicesQuery];
+  v6[0] = registeredDevicesQuery;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];

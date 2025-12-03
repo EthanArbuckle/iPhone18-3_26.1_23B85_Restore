@@ -7,8 +7,8 @@
 
 - (CGRect)applicationFrame
 {
-  v3 = [(SRApplication *)self dataSource];
-  [v3 frameForApplication:self];
+  dataSource = [(SRApplication *)self dataSource];
+  [dataSource frameForApplication:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;

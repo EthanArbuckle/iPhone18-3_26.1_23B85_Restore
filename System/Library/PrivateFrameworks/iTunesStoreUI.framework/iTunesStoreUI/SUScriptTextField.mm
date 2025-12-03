@@ -1,8 +1,8 @@
 @interface SUScriptTextField
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (BOOL)_styleIsValid:(id)a3;
+- (BOOL)_styleIsValid:(id)valid;
 - (BOOL)blur;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)focus;
@@ -12,7 +12,7 @@
 - (NSString)keyboardType;
 - (NSString)placeholder;
 - (NSString)value;
-- (SUScriptTextField)initWithTextFieldStyle:(id)a3;
+- (SUScriptTextField)initWithTextFieldStyle:(id)style;
 - (WebScriptObject)shouldFocusFunction;
 - (id)_autocapitalizationType;
 - (id)_autocorrectionType;
@@ -24,26 +24,26 @@
 - (id)buttonItem;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setAutocapitalizationType:(id)a3;
-- (void)setAutocorrectionType:(id)a3;
-- (void)setKeyboardType:(id)a3;
-- (void)setNativeObjectWithBarButtonItem:(id)a3;
-- (void)setNativeObjectWithSearchBar:(id)a3;
-- (void)setNativeObjectWithTextField:(id)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setShouldFocusFunction:(id)a3;
-- (void)setValue:(id)a3;
-- (void)setWidth:(id)a3;
+- (void)setAutocapitalizationType:(id)type;
+- (void)setAutocorrectionType:(id)type;
+- (void)setKeyboardType:(id)type;
+- (void)setNativeObjectWithBarButtonItem:(id)item;
+- (void)setNativeObjectWithSearchBar:(id)bar;
+- (void)setNativeObjectWithTextField:(id)field;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setShouldFocusFunction:(id)function;
+- (void)setValue:(id)value;
+- (void)setWidth:(id)width;
 @end
 
 @implementation SUScriptTextField
 
-- (SUScriptTextField)initWithTextFieldStyle:(id)a3
+- (SUScriptTextField)initWithTextFieldStyle:(id)style
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    style = 0;
   }
 
   v9.receiver = self;
@@ -52,23 +52,23 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (style)
     {
-      if (![(SUScriptTextField *)v5 _styleIsValid:a3])
+      if (![(SUScriptTextField *)v5 _styleIsValid:style])
       {
 
         return 0;
       }
 
-      v7 = a3;
+      styleCopy = style;
     }
 
     else
     {
-      v7 = @"default";
+      styleCopy = @"default";
     }
 
-    v6->_style = &v7->isa;
+    v6->_style = &styleCopy->isa;
   }
 
   return v6;
@@ -107,34 +107,34 @@
   return [v4 BOOLValue];
 }
 
-- (void)setNativeObjectWithBarButtonItem:(id)a3
+- (void)setNativeObjectWithBarButtonItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    a3 = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUIBarButtonItem objectWithNativeObject:?];
+    item = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUIBarButtonItem objectWithNativeObject:?];
   }
 
-  [(SUScriptObject *)self setNativeObject:a3];
+  [(SUScriptObject *)self setNativeObject:item];
 }
 
-- (void)setNativeObjectWithSearchBar:(id)a3
+- (void)setNativeObjectWithSearchBar:(id)bar
 {
-  if (a3)
+  if (bar)
   {
-    a3 = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUISearchBar objectWithNativeObject:?];
+    bar = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUISearchBar objectWithNativeObject:?];
   }
 
-  [(SUScriptObject *)self setNativeObject:a3];
+  [(SUScriptObject *)self setNativeObject:bar];
 }
 
-- (void)setNativeObjectWithTextField:(id)a3
+- (void)setNativeObjectWithTextField:(id)field
 {
-  if (a3)
+  if (field)
   {
-    a3 = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUITextField objectWithNativeObject:?];
+    field = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUITextField objectWithNativeObject:?];
   }
 
-  [(SUScriptObject *)self setNativeObject:a3];
+  [(SUScriptObject *)self setNativeObject:field];
 }
 
 - (id)buttonItem
@@ -204,15 +204,15 @@ uint64_t __26__SUScriptTextField_focus__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -237,15 +237,15 @@ id __43__SUScriptTextField_autocapitalizationType__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -270,15 +270,15 @@ id __39__SUScriptTextField_autocorrectionType__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -303,15 +303,15 @@ id __33__SUScriptTextField_keyboardType__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -323,10 +323,10 @@ uint64_t __32__SUScriptTextField_placeholder__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setAutocapitalizationType:(id)a3
+- (void)setAutocapitalizationType:(id)type
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && __SUAutocapitalizationTypeForString(a3) != -1)
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !type) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && __SUAutocapitalizationTypeForString(type) != -1)
   {
     WebThreadRunOnMainThread();
   }
@@ -347,10 +347,10 @@ uint64_t __47__SUScriptTextField_setAutocapitalizationType___block_invoke(uint64
   return [v2 setAutocapitalizationType:v3];
 }
 
-- (void)setAutocorrectionType:(id)a3
+- (void)setAutocorrectionType:(id)type
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (([a3 isEqualToString:@"default"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"no") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"yes")))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !type) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (([type isEqualToString:@"default"] & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"no") & 1) != 0 || (objc_msgSend(type, "isEqualToString:", @"yes")))
   {
     WebThreadRunOnMainThread();
   }
@@ -371,10 +371,10 @@ uint64_t __43__SUScriptTextField_setAutocorrectionType___block_invoke(uint64_t a
   return [v2 setAutocorrectionType:v3];
 }
 
-- (void)setKeyboardType:(id)a3
+- (void)setKeyboardType:(id)type
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && __SUKeyboardTypeForString(a3) != -1)
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !type) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && __SUKeyboardTypeForString(type) != -1)
   {
     WebThreadRunOnMainThread();
   }
@@ -395,10 +395,10 @@ uint64_t __37__SUScriptTextField_setKeyboardType___block_invoke(uint64_t a1)
   return [v2 setKeyboardType:v3];
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !placeholder) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -419,10 +419,10 @@ uint64_t __36__SUScriptTextField_setPlaceholder___block_invoke(uint64_t a1)
   return [v2 setPlaceholder:v3];
 }
 
-- (void)setShouldFocusFunction:(id)a3
+- (void)setShouldFocusFunction:(id)function
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !function) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -450,10 +450,10 @@ uint64_t __44__SUScriptTextField_setShouldFocusFunction___block_invoke(uint64_t 
   return [v2 setScriptObject:v3];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !value) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -474,7 +474,7 @@ uint64_t __30__SUScriptTextField_setValue___block_invoke(uint64_t a1)
   return [v2 setValue:v3];
 }
 
-- (void)setWidth:(id)a3
+- (void)setWidth:(id)width
 {
   if (objc_opt_respondsToSelector())
   {
@@ -511,15 +511,15 @@ uint64_t __30__SUScriptTextField_setWidth___block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -544,15 +544,15 @@ id __40__SUScriptTextField_shouldFocusFunction__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -650,16 +650,16 @@ uint64_t __26__SUScriptTextField_width__block_invoke(uint64_t a1)
 
 - (id)_boxedNativeTextField
 {
-  v3 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = [(SUScriptTextField *)self _newTextField];
-    v3 = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUITextField objectWithNativeObject:v4];
-    [(SUScriptObject *)self setNativeObject:v3];
+    _newTextField = [(SUScriptTextField *)self _newTextField];
+    nativeObject = [(SUScriptNativeObject *)SUScriptTextFieldNativeObjectUITextField objectWithNativeObject:_newTextField];
+    [(SUScriptObject *)self setNativeObject:nativeObject];
   }
 
-  return v3;
+  return nativeObject;
 }
 
 - (id)_newTextField
@@ -696,37 +696,37 @@ uint64_t __26__SUScriptTextField_width__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)_styleIsValid:(id)a3
+- (BOOL)_styleIsValid:(id)valid
 {
-  if ([a3 isEqualToString:@"default"])
+  if ([valid isEqualToString:@"default"])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"search"];
+  return [valid isEqualToString:@"search"];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_11 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptTextField;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_8, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_8, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptTextField;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -736,14 +736,14 @@ uint64_t __26__SUScriptTextField_width__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptTextField;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_11 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_11 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_8 = sel_blur;
     unk_1EBF3A960 = @"blur";

@@ -1,10 +1,10 @@
 @interface QueueActionsView
-- (_TtC9SeymourUI16QueueActionsView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI16QueueActionsView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation QueueActionsView
 
-- (_TtC9SeymourUI16QueueActionsView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI16QueueActionsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

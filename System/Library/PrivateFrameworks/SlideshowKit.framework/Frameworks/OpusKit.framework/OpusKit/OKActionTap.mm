@@ -1,17 +1,17 @@
 @interface OKActionTap
-+ (id)tapActionWithLocation:(CGPoint)a3 tapCount:(unint64_t)a4 touchCount:(unint64_t)a5 context:(id)a6;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)tapActionWithLocation:(CGPoint)location tapCount:(unint64_t)count touchCount:(unint64_t)touchCount context:(id)context;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionTap)init;
-- (OKActionTap)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OKActionTap)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionTap
 
-+ (id)tapActionWithLocation:(CGPoint)a3 tapCount:(unint64_t)a4 touchCount:(unint64_t)a5 context:(id)a6
++ (id)tapActionWithLocation:(CGPoint)location tapCount:(unint64_t)count touchCount:(unint64_t)touchCount context:(id)context
 {
-  v7 = [[OKActionTap alloc] initWithLocation:a5 touchCount:a6 context:a3.x, a3.y];
-  v7->_tapCount = a4;
+  v7 = [[OKActionTap alloc] initWithLocation:touchCount touchCount:context context:location.x, location.y];
+  v7->_tapCount = count;
 
   return v7;
 }
@@ -31,32 +31,32 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = OKActionTap;
   [(OKAction *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:LODWORD(self->_tapCount) forKey:@"tapCount"];
+  [coder encodeInt32:LODWORD(self->_tapCount) forKey:@"tapCount"];
 }
 
-- (OKActionTap)initWithCoder:(id)a3
+- (OKActionTap)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OKActionTap;
   v4 = [(OKAction *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_tapCount = [a3 decodeInt32ForKey:@"tapCount"];
+    v4->_tapCount = [coder decodeInt32ForKey:@"tapCount"];
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionTap"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionTap"];
 }
 
 @end

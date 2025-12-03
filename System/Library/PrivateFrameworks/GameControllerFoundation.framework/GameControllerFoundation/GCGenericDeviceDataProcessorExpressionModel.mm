@@ -1,10 +1,10 @@
 @interface GCGenericDeviceDataProcessorExpressionModel
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceDataProcessorExpressionModel)init;
-- (GCGenericDeviceDataProcessorExpressionModel)initWithCoder:(id)a3;
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4;
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5;
+- (GCGenericDeviceDataProcessorExpressionModel)initWithCoder:(id)coder;
+- (id)buildExpressionWithContext:(id)context error:(id *)error;
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error;
 - (unint64_t)hash;
 @end
 
@@ -17,7 +17,7 @@
   return 0;
 }
 
-- (GCGenericDeviceDataProcessorExpressionModel)initWithCoder:(id)a3
+- (GCGenericDeviceDataProcessorExpressionModel)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = GCGenericDeviceDataProcessorExpressionModel;
@@ -31,9 +31,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -60,12 +60,12 @@ LABEL_8:
   return v5;
 }
 
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   v19[0] = 0;
-  v6 = [v5 gc_requiredObjectForKey:@"Type" ofClass:objc_opt_class() error:v19];
+  v6 = [representationCopy gc_requiredObjectForKey:@"Type" ofClass:objc_opt_class() error:v19];
   v7 = v19[0];
   if (v6)
   {
@@ -73,11 +73,11 @@ LABEL_8:
     v9 = NSClassFromString(v8);
     if (v9 && v9 != objc_opt_class() && ([(objc_class *)v9 isSubclassOfClass:objc_opt_class()]& 1) != 0)
     {
-      v10 = [[v9 alloc] initWithDictionaryRepresentation:v5 error:a4];
+      v10 = [[v9 alloc] initWithDictionaryRepresentation:representationCopy error:error];
 
       if (v10)
       {
-        v11 = [v10 build];
+        build = [v10 build];
 
         goto LABEL_12;
       }
@@ -85,7 +85,7 @@ LABEL_8:
 
     else
     {
-      if (a4)
+      if (error)
       {
         v12 = MEMORY[0x1E696ABC0];
         v13 = *MEMORY[0x1E696A578];
@@ -96,28 +96,28 @@ LABEL_8:
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' is not a valid expression type.", v6];
         v21[1] = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-        *a4 = [(NSError *)v12 gc_modelError:v16 userInfo:?];
+        *error = [(NSError *)v12 gc_modelError:v16 userInfo:?];
       }
     }
   }
 
   else
   {
-    [(GCGenericDeviceDataProcessorExpressionModel(Serialization) *)a4 modelWithDictionaryRepresentation:v7 error:&v22, v23];
+    [(GCGenericDeviceDataProcessorExpressionModel(Serialization) *)error modelWithDictionaryRepresentation:v7 error:&v22, v23];
   }
 
-  v11 = 0;
+  build = 0;
 LABEL_12:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return build;
 }
 
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4
+- (id)buildExpressionWithContext:(id)context error:(id *)error
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v5 = MEMORY[0x1E696ABC0];
     v6 = *MEMORY[0x1E696A588];
@@ -129,17 +129,17 @@ LABEL_12:
     v10 = [v7 stringWithFormat:@"Unsupported expression class: %@.", v9, v14, v15, @"Invalid expression."];
     v16[1] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v14 count:2];
-    *a4 = [v5 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v11];
+    *error = [v5 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v11];
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (error)
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = *MEMORY[0x1E696A588];
@@ -151,7 +151,7 @@ LABEL_12:
     v11 = [v8 stringWithFormat:@"Unsupported expression class: %@.", v10, v15, v16, @"Invalid expression."];
     v17[1] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v15 count:2];
-    *a5 = [v6 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v12];
+    *error = [v6 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v12];
   }
 
   v13 = *MEMORY[0x1E69E9840];

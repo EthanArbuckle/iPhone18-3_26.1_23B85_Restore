@@ -1,39 +1,39 @@
 @interface CADStatsReminders
 - (id)reminderDictionaries;
-- (void)prepareWithContext:(id)a3;
-- (void)processReminders:(id)a3;
+- (void)prepareWithContext:(id)context;
+- (void)processReminders:(id)reminders;
 @end
 
 @implementation CADStatsReminders
 
-- (void)prepareWithContext:(id)a3
+- (void)prepareWithContext:(id)context
 {
   v4 = objc_opt_new();
   reminderInfos = self->_reminderInfos;
   self->_reminderInfos = v4;
 
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v6 = objc_opt_new();
   now = self->_now;
   self->_now = v6;
 
   v8 = objc_alloc(MEMORY[0x277CF77A0]);
-  v9 = [v13 dateByAddingUnit:16 value:-1 toDate:self->_now options:1024];
-  v10 = [v13 dateByAddingUnit:16 value:14 toDate:self->_now options:1024];
+  v9 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:self->_now options:1024];
+  v10 = [currentCalendar dateByAddingUnit:16 value:14 toDate:self->_now options:1024];
   v11 = [v8 initWithStartDate:v9 endDate:v10];
   desiredReminderRange = self->_desiredReminderRange;
   self->_desiredReminderRange = v11;
 }
 
-- (void)processReminders:(id)a3
+- (void)processReminders:(id)reminders
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  remindersCopy = reminders;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [remindersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -45,7 +45,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(remindersCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -57,7 +57,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [remindersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

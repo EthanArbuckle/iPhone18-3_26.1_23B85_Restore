@@ -1,25 +1,25 @@
 @interface LCFFeatureSet
-- (LCFFeatureSet)initWithIdentifier:(id)a3 featureVersion:(id)a4 timestamp:(id)a5 featureValues:(id)a6;
+- (LCFFeatureSet)initWithIdentifier:(id)identifier featureVersion:(id)version timestamp:(id)timestamp featureValues:(id)values;
 @end
 
 @implementation LCFFeatureSet
 
-- (LCFFeatureSet)initWithIdentifier:(id)a3 featureVersion:(id)a4 timestamp:(id)a5 featureValues:(id)a6
+- (LCFFeatureSet)initWithIdentifier:(id)identifier featureVersion:(id)version timestamp:(id)timestamp featureValues:(id)values
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  timestampCopy = timestamp;
+  valuesCopy = values;
   v18.receiver = self;
   v18.super_class = LCFFeatureSet;
   v15 = [(LCFFeatureSet *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_itemIdentifier, a3);
-    objc_storeStrong(&v16->_featureVersion, a4);
-    objc_storeStrong(&v16->_timestamp, a5);
-    objc_storeStrong(&v16->_featureValues, a6);
+    objc_storeStrong(&v15->_itemIdentifier, identifier);
+    objc_storeStrong(&v16->_featureVersion, version);
+    objc_storeStrong(&v16->_timestamp, timestamp);
+    objc_storeStrong(&v16->_featureValues, values);
   }
 
   return v16;

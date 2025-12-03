@@ -1,13 +1,13 @@
 @interface TSUDurationLocaleSpecificStorage
-+ (id)localeSpecificStorageForLocale:(id)a3;
-- (TSUDurationLocaleSpecificStorage)initWithLocale:(id)a3;
-- (void)addDurationUnit:(id)a3;
++ (id)localeSpecificStorageForLocale:(id)locale;
+- (TSUDurationLocaleSpecificStorage)initWithLocale:(id)locale;
+- (void)addDurationUnit:(id)unit;
 - (void)dealloc;
 @end
 
 @implementation TSUDurationLocaleSpecificStorage
 
-- (TSUDurationLocaleSpecificStorage)initWithLocale:(id)a3
+- (TSUDurationLocaleSpecificStorage)initWithLocale:(id)locale
 {
   v9.receiver = self;
   v9.super_class = TSUDurationLocaleSpecificStorage;
@@ -21,7 +21,7 @@
     v4->_whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     v4->_whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
     v4->_specialDurationFormatCharacters = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"wdhmsf"];
-    if ([objc_msgSend(a3 "languageCode")])
+    if ([objc_msgSend(locale "languageCode")])
     {
       v5 = [(NSCharacterSet *)v4->_alphabeticCharacterSet mutableCopy];
       [(NSCharacterSet *)v5 addCharactersInString:@"׳״"];
@@ -30,40 +30,40 @@
     }
 
     v6 = [MEMORY[0x277CCAB50] characterSetWithCharactersInString:@":."];
-    [v6 addCharactersInString:{objc_msgSend(a3, "decimalSeparator")}];
+    [v6 addCharactersInString:{objc_msgSend(locale, "decimalSeparator")}];
     v4->_separatorPunctuationCharacterSet = [v6 copy];
-    v7 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-    [v7 addCharactersInString:{objc_msgSend(a3, "decimalSeparator")}];
-    [v7 addCharactersInString:{objc_msgSend(a3, "groupingSeparator")}];
-    v4->_decimalDigitAndSeperatorsCharacterSet = [v7 copy];
-    v4->_weekLongSingularString = [a3 localizedStringForKey:@"week" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_weekLongPluralString = [a3 localizedStringForKey:@"weeks" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_weekMediumSingularString = [a3 localizedStringForKey:@"wk" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_weekMediumPluralString = [a3 localizedStringForKey:@"wks" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_weekShortString = [a3 localizedStringForKey:@"w" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_dayLongSingularString = [a3 localizedStringForKey:@"day" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_dayLongPluralString = [a3 localizedStringForKey:@"days" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_dayMediumSingularString = [a3 localizedStringForKey:@"day" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_dayMediumPluralString = [a3 localizedStringForKey:@"days" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_dayShortString = [a3 localizedStringForKey:@"d" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_hourLongSingularString = [a3 localizedStringForKey:@"hour" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_hourLongPluralString = [a3 localizedStringForKey:@"hours" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_hourMediumSingularString = [a3 localizedStringForKey:@"hr" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_hourMediumPluralString = [a3 localizedStringForKey:@"hrs" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_hourShortString = [a3 localizedStringForKey:@"h" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_minuteLongSingularString = [a3 localizedStringForKey:@"minute" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_minuteLongPluralString = [a3 localizedStringForKey:@"minutes" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_minuteMediumSingularString = [a3 localizedStringForKey:@"min" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_minuteMediumPluralString = [a3 localizedStringForKey:@"mins" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_minuteShortString = [a3 localizedStringForKey:@"m" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_secondLongSingularString = [a3 localizedStringForKey:@"second" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_secondLongPluralString = [a3 localizedStringForKey:@"seconds" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_secondMediumSingularString = [a3 localizedStringForKey:@"sec" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_secondMediumPluralString = [a3 localizedStringForKey:@"secs" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_secondShortString = [a3 localizedStringForKey:@"s" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_millisecondLongSingularString = [a3 localizedStringForKey:@"millisecond" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_millisecondLongPluralString = [a3 localizedStringForKey:@"milliseconds" value:&stru_28862C2A0 table:@"TSUtility"];
-    v4->_millisecondShortString = [a3 localizedStringForKey:@"ms" value:&stru_28862C2A0 table:@"TSUtility"];
+    decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+    [decimalDigitCharacterSet addCharactersInString:{objc_msgSend(locale, "decimalSeparator")}];
+    [decimalDigitCharacterSet addCharactersInString:{objc_msgSend(locale, "groupingSeparator")}];
+    v4->_decimalDigitAndSeperatorsCharacterSet = [decimalDigitCharacterSet copy];
+    v4->_weekLongSingularString = [locale localizedStringForKey:@"week" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_weekLongPluralString = [locale localizedStringForKey:@"weeks" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_weekMediumSingularString = [locale localizedStringForKey:@"wk" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_weekMediumPluralString = [locale localizedStringForKey:@"wks" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_weekShortString = [locale localizedStringForKey:@"w" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_dayLongSingularString = [locale localizedStringForKey:@"day" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_dayLongPluralString = [locale localizedStringForKey:@"days" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_dayMediumSingularString = [locale localizedStringForKey:@"day" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_dayMediumPluralString = [locale localizedStringForKey:@"days" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_dayShortString = [locale localizedStringForKey:@"d" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_hourLongSingularString = [locale localizedStringForKey:@"hour" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_hourLongPluralString = [locale localizedStringForKey:@"hours" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_hourMediumSingularString = [locale localizedStringForKey:@"hr" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_hourMediumPluralString = [locale localizedStringForKey:@"hrs" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_hourShortString = [locale localizedStringForKey:@"h" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_minuteLongSingularString = [locale localizedStringForKey:@"minute" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_minuteLongPluralString = [locale localizedStringForKey:@"minutes" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_minuteMediumSingularString = [locale localizedStringForKey:@"min" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_minuteMediumPluralString = [locale localizedStringForKey:@"mins" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_minuteShortString = [locale localizedStringForKey:@"m" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_secondLongSingularString = [locale localizedStringForKey:@"second" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_secondLongPluralString = [locale localizedStringForKey:@"seconds" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_secondMediumSingularString = [locale localizedStringForKey:@"sec" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_secondMediumPluralString = [locale localizedStringForKey:@"secs" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_secondShortString = [locale localizedStringForKey:@"s" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_millisecondLongSingularString = [locale localizedStringForKey:@"millisecond" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_millisecondLongPluralString = [locale localizedStringForKey:@"milliseconds" value:&stru_28862C2A0 table:@"TSUtility"];
+    v4->_millisecondShortString = [locale localizedStringForKey:@"ms" value:&stru_28862C2A0 table:@"TSUtility"];
     [(TSUDurationLocaleSpecificStorage *)v4 addDurationUnit:v4->_weekLongSingularString];
     [(TSUDurationLocaleSpecificStorage *)v4 addDurationUnit:v4->_weekLongPluralString];
     [(TSUDurationLocaleSpecificStorage *)v4 addDurationUnit:v4->_weekMediumSingularString];
@@ -104,9 +104,9 @@
   [(TSUDurationLocaleSpecificStorage *)&v3 dealloc];
 }
 
-- (void)addDurationUnit:(id)a3
+- (void)addDurationUnit:(id)unit
 {
-  v4 = [a3 stringByTrimmingCharactersInSet:self->_whitespaceCharacterSet];
+  v4 = [unit stringByTrimmingCharactersInSet:self->_whitespaceCharacterSet];
   if ([v4 rangeOfString:@" "] != 0x7FFFFFFFFFFFFFFFLL)
   {
     multiWordDurationUnitStrings = self->_multiWordDurationUnitStrings;
@@ -132,29 +132,29 @@
   }
 }
 
-+ (id)localeSpecificStorageForLocale:(id)a3
++ (id)localeSpecificStorageForLocale:(id)locale
 {
-  v3 = a3;
-  if (!a3)
+  localeCopy = locale;
+  if (!locale)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUDurationLocaleSpecificStorage localeSpecificStorageForLocale:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v5, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUDurationFormatter.m"], 356, 0, "No locale passed in, falling to back current locale.");
     +[TSUAssertionHandler logBacktraceThrottled];
-    v3 = +[TSULocale currentLocale];
+    localeCopy = +[TSULocale currentLocale];
   }
 
-  v6 = [(TSULocale *)v3 localeSpecificStorageForKey:@"durationFormatterLocaleStorageKey"];
+  v6 = [(TSULocale *)localeCopy localeSpecificStorageForKey:@"durationFormatterLocaleStorageKey"];
   if (!v6)
   {
-    objc_sync_enter(a1);
-    v6 = [(TSULocale *)v3 localeSpecificStorageForKey:@"durationFormatterLocaleStorageKey"];
+    objc_sync_enter(self);
+    v6 = [(TSULocale *)localeCopy localeSpecificStorageForKey:@"durationFormatterLocaleStorageKey"];
     if (!v6)
     {
-      v6 = [[TSUDurationLocaleSpecificStorage alloc] initWithLocale:v3];
-      [(TSULocale *)v3 setLocaleSpecificStorage:v6 forKey:@"durationFormatterLocaleStorageKey"];
+      v6 = [[TSUDurationLocaleSpecificStorage alloc] initWithLocale:localeCopy];
+      [(TSULocale *)localeCopy setLocaleSpecificStorage:v6 forKey:@"durationFormatterLocaleStorageKey"];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 
   return v6;

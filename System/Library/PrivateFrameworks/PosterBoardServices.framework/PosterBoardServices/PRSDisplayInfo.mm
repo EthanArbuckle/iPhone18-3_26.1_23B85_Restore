@@ -1,30 +1,30 @@
 @interface PRSDisplayInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
 - (NSString)description;
-- (PRSDisplayInfo)initWithBSXPCCoder:(id)a3;
-- (PRSDisplayInfo)initWithCoder:(id)a3;
-- (PRSDisplayInfo)initWithHardwareIdentifier:(id)a3 interfaceOrientation:(int64_t)a4 bounds:(CGRect)a5 pointScale:(double)a6 isMainDisplay:(BOOL)a7;
+- (PRSDisplayInfo)initWithBSXPCCoder:(id)coder;
+- (PRSDisplayInfo)initWithCoder:(id)coder;
+- (PRSDisplayInfo)initWithHardwareIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation bounds:(CGRect)bounds pointScale:(double)scale isMainDisplay:(BOOL)display;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSDisplayInfo
 
-- (PRSDisplayInfo)initWithHardwareIdentifier:(id)a3 interfaceOrientation:(int64_t)a4 bounds:(CGRect)a5 pointScale:(double)a6 isMainDisplay:(BOOL)a7
+- (PRSDisplayInfo)initWithHardwareIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation bounds:(CGRect)bounds pointScale:(double)scale isMainDisplay:(BOOL)display
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a3;
-  if (!v16)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [PRSDisplayInfo initWithHardwareIdentifier:a2 interfaceOrientation:self bounds:? pointScale:? isMainDisplay:?];
   }
 
-  v17 = v16;
+  v17 = identifierCopy;
   v22.receiver = self;
   v22.super_class = PRSDisplayInfo;
   v18 = [(PRSDisplayInfo *)&v22 init];
@@ -34,13 +34,13 @@
     hardwareIdentifier = v18->_hardwareIdentifier;
     v18->_hardwareIdentifier = v19;
 
-    v18->_interfaceOrientation = a4;
+    v18->_interfaceOrientation = orientation;
     v18->_bounds.origin.y = y;
     v18->_bounds.size.width = width;
     v18->_bounds.size.height = height;
-    v18->_pointScale = a6;
+    v18->_pointScale = scale;
     v18->_bounds.origin.x = x;
-    v18->_isMainDisplay = a7;
+    v18->_isMainDisplay = display;
   }
 
   return v18;
@@ -61,10 +61,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -72,7 +72,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -118,71 +118,71 @@
   v8 = [v3 appendRect:@"_bounds" withName:{self->_bounds.origin.x, self->_bounds.origin.y, self->_bounds.size.width, self->_bounds.size.height}];
   v9 = [v3 appendFloat:@"_pointScale" withName:self->_pointScale];
   v10 = [v3 appendBool:self->_isMainDisplay withName:@"_isMainDisplay" ifEqualTo:1];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hardwareIdentifier = self->_hardwareIdentifier;
-  v10 = a3;
-  [v10 encodeObject:hardwareIdentifier forKey:@"_hardwareIdentifier"];
-  [v10 encodeInteger:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hardwareIdentifier forKey:@"_hardwareIdentifier"];
+  [coderCopy encodeInteger:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
   x = self->_bounds.origin.x;
   y = self->_bounds.origin.y;
   width = self->_bounds.size.width;
   height = self->_bounds.size.height;
   v9 = BSValueWithRect();
-  [v10 encodeObject:v9 forKey:@"_bounds"];
+  [coderCopy encodeObject:v9 forKey:@"_bounds"];
 
-  [v10 encodeDouble:@"_pointScale" forKey:self->_pointScale];
-  [v10 encodeBool:self->_isMainDisplay forKey:@"_isMainDisplay"];
+  [coderCopy encodeDouble:@"_pointScale" forKey:self->_pointScale];
+  [coderCopy encodeBool:self->_isMainDisplay forKey:@"_isMainDisplay"];
 }
 
-- (PRSDisplayInfo)initWithCoder:(id)a3
+- (PRSDisplayInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hardwareIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"_interfaceOrientation"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bounds"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hardwareIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"_interfaceOrientation"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bounds"];
   v8 = MEMORY[0x1C691CB90]();
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v4 decodeDoubleForKey:@"_pointScale"];
+  [coderCopy decodeDoubleForKey:@"_pointScale"];
   v16 = v15;
-  v17 = [v4 decodeBoolForKey:@"_isMainDisplay"];
+  v17 = [coderCopy decodeBoolForKey:@"_isMainDisplay"];
 
   v18 = [(PRSDisplayInfo *)self initWithHardwareIdentifier:v5 interfaceOrientation:v6 bounds:v17 pointScale:v8 isMainDisplay:v10, v12, v14, v16];
   return v18;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   hardwareIdentifier = self->_hardwareIdentifier;
-  v5 = a3;
-  [v5 encodeObject:hardwareIdentifier forKey:@"_hardwareIdentifier"];
-  [v5 encodeInt64:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
-  [v5 encodeCGRect:@"_bounds" forKey:{self->_bounds.origin.x, self->_bounds.origin.y, self->_bounds.size.width, self->_bounds.size.height}];
-  [v5 encodeDouble:@"_pointScale" forKey:self->_pointScale];
-  [v5 encodeBool:self->_isMainDisplay forKey:@"_isMainDisplay"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hardwareIdentifier forKey:@"_hardwareIdentifier"];
+  [coderCopy encodeInt64:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
+  [coderCopy encodeCGRect:@"_bounds" forKey:{self->_bounds.origin.x, self->_bounds.origin.y, self->_bounds.size.width, self->_bounds.size.height}];
+  [coderCopy encodeDouble:@"_pointScale" forKey:self->_pointScale];
+  [coderCopy encodeBool:self->_isMainDisplay forKey:@"_isMainDisplay"];
 }
 
-- (PRSDisplayInfo)initWithBSXPCCoder:(id)a3
+- (PRSDisplayInfo)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hardwareIdentifier"];
-  v6 = [v4 decodeInt64ForKey:@"_interfaceOrientation"];
-  [v4 decodeCGRectForKey:@"_bounds"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hardwareIdentifier"];
+  v6 = [coderCopy decodeInt64ForKey:@"_interfaceOrientation"];
+  [coderCopy decodeCGRectForKey:@"_bounds"];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v4 decodeDoubleForKey:@"_pointScale"];
+  [coderCopy decodeDoubleForKey:@"_pointScale"];
   v16 = v15;
-  v17 = [v4 decodeBoolForKey:@"_isMainDisplay"];
+  v17 = [coderCopy decodeBoolForKey:@"_isMainDisplay"];
 
   v18 = [(PRSDisplayInfo *)self initWithHardwareIdentifier:v5 interfaceOrientation:v6 bounds:v17 pointScale:v8 isMainDisplay:v10, v12, v14, v16];
   return v18;

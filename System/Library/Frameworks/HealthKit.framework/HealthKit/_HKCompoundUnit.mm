@@ -1,39 +1,39 @@
 @interface _HKCompoundUnit
-+ (id)unitWithBaseUnits:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_HKCompoundUnit)initWithCoder:(id)a3;
-- (id)_computeBaseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4;
-- (id)_initWithBaseUnits:(id)a3;
++ (id)unitWithBaseUnits:(id)units;
+- (BOOL)isEqual:(id)equal;
+- (_HKCompoundUnit)initWithCoder:(id)coder;
+- (id)_computeBaseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set;
+- (id)_initWithBaseUnits:(id)units;
 - (id)dimension;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKCompoundUnit
 
-+ (id)unitWithBaseUnits:(id)a3
++ (id)unitWithBaseUnits:(id)units
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithBaseUnits:v4];
+  unitsCopy = units;
+  v5 = [[self alloc] _initWithBaseUnits:unitsCopy];
 
   return v5;
 }
 
-- (id)_initWithBaseUnits:(id)a3
+- (id)_initWithBaseUnits:(id)units
 {
-  v4 = a3;
+  unitsCopy = units;
   v9.receiver = self;
   v9.super_class = _HKCompoundUnit;
-  v5 = [(HKUnit *)&v9 _init];
-  if (v5)
+  _init = [(HKUnit *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[6];
-    v5[6] = v6;
+    v6 = [unitsCopy copy];
+    v7 = _init[6];
+    _init[6] = v6;
 
-    *(v5 + 16) = 0;
+    *(_init + 16) = 0;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)dimension
@@ -65,9 +65,9 @@
   return dimension;
 }
 
-- (id)_computeBaseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4
+- (id)_computeBaseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set
 {
-  v6 = a4;
+  setCopy = set;
   v7 = +[(_HKFactorization *)_HKMutableFactorization];
   v18 = 0;
   v19 = &v18;
@@ -78,15 +78,15 @@
   v14[1] = 3221225472;
   v14[2] = __77___HKCompoundUnit__computeBaseUnitReductionAndProportionalSize_withCycleSet___block_invoke;
   v14[3] = &unk_1E7382078;
-  v9 = v6;
+  v9 = setCopy;
   v15 = v9;
   v17 = &v18;
   v10 = v7;
   v16 = v10;
   [(_HKFactorization *)baseUnits enumerateFactorsWithHandler:v14];
-  if (a3)
+  if (size)
   {
-    *a3 = v19[3];
+    *size = v19[3];
   }
 
   v11 = v16;
@@ -97,18 +97,18 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if ([(_HKCompoundUnit *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(_HKCompoundUnit *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_HKCompoundUnit *)v4 _baseUnits];
-    v6 = [v5 isEqual:self->_baseUnits];
+    _baseUnits = [(_HKCompoundUnit *)equalCopy _baseUnits];
+    v6 = [_baseUnits isEqual:self->_baseUnits];
   }
 
   else
@@ -119,25 +119,25 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = _HKCompoundUnit;
-  [(HKUnit *)&v3 encodeWithCoder:a3];
+  [(HKUnit *)&v3 encodeWithCoder:coder];
 }
 
-- (_HKCompoundUnit)initWithCoder:(id)a3
+- (_HKCompoundUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _HKCompoundUnit;
-  v5 = [(HKUnit *)&v12 initWithCoder:v4];
-  if (v5 && ([v4 containsValueForKey:@"HKUnitStringKey"] & 1) == 0)
+  v5 = [(HKUnit *)&v12 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy containsValueForKey:@"HKUnitStringKey"] & 1) == 0)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HKCompoundUnitBaseUnitsKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HKCompoundUnitBaseUnitsKey"];
     baseUnits = v5->_baseUnits;
     v5->_baseUnits = v9;
   }

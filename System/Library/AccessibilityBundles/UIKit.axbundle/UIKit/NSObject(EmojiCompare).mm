@@ -6,11 +6,11 @@
 
 - (uint64_t)_emojiCompare:()EmojiCompare
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v13 frame];
+  [selfCopy frame];
   v10 = v3;
   v11 = v4;
   [location[0] frame];

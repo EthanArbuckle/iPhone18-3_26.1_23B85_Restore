@@ -27,19 +27,19 @@
 - (UIStackView)receiverInfoStackView;
 - (UIView)dividerView;
 - (UIView)mainContainer;
-- (_TtC26GameCenterMessageExtension31FriendRequestCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26GameCenterMessageExtension31FriendRequestCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)acceptButtonPressed;
 - (void)avatarContentIsReady;
-- (void)avatarPressed:(id)a3;
+- (void)avatarPressed:(id)pressed;
 - (void)dealloc;
-- (void)friendAvatarPressed:(id)a3;
+- (void)friendAvatarPressed:(id)pressed;
 - (void)ignoreButtonPressed;
-- (void)setCenterStackView:(id)a3;
-- (void)setTopMostConstriant:(id)a3;
-- (void)tryAgainPressed:(id)a3;
-- (void)updateCard:(id)a3;
+- (void)setCenterStackView:(id)view;
+- (void)setTopMostConstriant:(id)constriant;
+- (void)tryAgainPressed:(id)pressed;
+- (void)updateCard:(id)card;
 - (void)viewDidLoad;
-- (void)viewGameCenterFriendsTapped:(id)a3;
+- (void)viewGameCenterFriendsTapped:(id)tapped;
 @end
 
 @implementation FriendRequestCardViewController
@@ -240,35 +240,35 @@
   return Strong;
 }
 
-- (void)setTopMostConstriant:(id)a3
+- (void)setTopMostConstriant:(id)constriant
 {
   v4 = *(self + OBJC_IVAR____TtC26GameCenterMessageExtension31FriendRequestCardViewController_topMostConstriant);
-  *(self + OBJC_IVAR____TtC26GameCenterMessageExtension31FriendRequestCardViewController_topMostConstriant) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC26GameCenterMessageExtension31FriendRequestCardViewController_topMostConstriant) = constriant;
+  constriantCopy = constriant;
 }
 
-- (void)setCenterStackView:(id)a3
+- (void)setCenterStackView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC26GameCenterMessageExtension31FriendRequestCardViewController_centerStackView);
-  *(self + OBJC_IVAR____TtC26GameCenterMessageExtension31FriendRequestCardViewController_centerStackView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC26GameCenterMessageExtension31FriendRequestCardViewController_centerStackView) = view;
+  viewCopy = view;
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for FriendRequestCardViewController();
   [(FriendRequestCardViewController *)&v6 dealloc];
 }
 
 - (void)avatarContentIsReady
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_100039914();
   if (v2)
   {
@@ -279,47 +279,47 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007534();
 }
 
-- (void)updateCard:(id)a3
+- (void)updateCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
+  cardCopy = card;
+  selfCopy = self;
   sub_10000EAC0();
 }
 
 - (void)acceptButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008854();
 }
 
 - (void)ignoreButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100009C80();
 }
 
-- (void)avatarPressed:(id)a3
+- (void)avatarPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_10000EE6C();
 }
 
-- (void)friendAvatarPressed:(id)a3
+- (void)friendAvatarPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_10000EFBC();
 }
 
-- (void)viewGameCenterFriendsTapped:(id)a3
+- (void)viewGameCenterFriendsTapped:(id)tapped
 {
-  v8 = self;
-  v4 = a3;
+  selfCopy = self;
+  tappedCopy = tapped;
   v5 = sub_100039914();
   if (v5)
   {
@@ -328,21 +328,21 @@
     [v7 reportEvent:GKReporterDomainImprovedFriendingUIInteractions type:GKViewFriendListButtonTapped];
 
     sub_1000292E4();
-    v4 = v8;
-    v8 = v6;
+    tappedCopy = selfCopy;
+    selfCopy = v6;
   }
 }
 
-- (void)tryAgainPressed:(id)a3
+- (void)tryAgainPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_10000F264();
 }
 
-- (_TtC26GameCenterMessageExtension31FriendRequestCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26GameCenterMessageExtension31FriendRequestCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100041B20();
     v7 = v6;
@@ -354,8 +354,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000DCD8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000DCD8(v5, v7, bundle);
 }
 
 @end

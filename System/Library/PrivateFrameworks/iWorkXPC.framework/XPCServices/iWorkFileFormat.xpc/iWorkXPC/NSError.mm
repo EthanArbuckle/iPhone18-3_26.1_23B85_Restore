@@ -1,32 +1,32 @@
 @interface NSError
-+ (id)tsp_ensureCorruptedDocumentErrorWithError:(id)a3;
-+ (id)tsp_ensureReadErrorWithError:(id)a3;
-+ (id)tsp_ensureSaveErrorWithError:(id)a3;
-+ (id)tsp_errorWithCode:(int64_t)a3 userInfo:(id)a4;
-+ (id)tsp_errorWithCode:(int64_t)a3 userInfo:(id)a4 isRecoverable:(BOOL)a5;
-+ (id)tsp_errorWithError:(id)a3 hints:(id)a4;
-+ (id)tsp_readCorruptZipOfPackageErrorWithUserInfo:(id)a3;
-+ (id)tsp_readCorruptedDocumentErrorWithUserInfo:(id)a3;
-+ (id)tsp_recoverableErrorWithError:(id)a3;
-+ (id)tsp_saveDocumentErrorWithUserInfo:(id)a3;
-+ (id)tsp_storageSpaceErrorWithUserInfo:(id)a3;
-+ (id)tsp_unknownReadErrorWithUserInfo:(id)a3;
-+ (id)tsp_unknownWriteErrorWithUserInfo:(id)a3;
-+ (id)tsp_unsupportedVersionErrorWithUserInfo:(id)a3;
-+ (id)tsp_userInfoWithUserInfo:(id)a3 additionalUserInfo:(id)a4;
-+ (id)tsu_errorWithCode:(int64_t)a3 userInfo:(id)a4;
-+ (id)tsu_errorWithDomain:(id)a3 code:(int64_t)a4 alertTitle:(id)a5 alertMessage:(id)a6 userInfo:(id)a7;
-+ (id)tsu_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 recoverySuggestion:(id)a6;
-+ (id)tsu_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 underlyingError:(id)a6;
-+ (id)tsu_errorWithError:(id)a3 alertTitle:(id)a4 alertMessage:(id)a5 additionalUserInfo:(id)a6;
-+ (id)tsu_errorWithWarning:(id)a3;
-+ (id)tsu_fileReadCorruptedFileErrorWithUserInfo:(id)a3;
-+ (id)tsu_fileReadPOSIXErrorWithNumber:(int)a3 userInfo:(id)a4;
-+ (id)tsu_fileReadUnknownErrorWithUserInfo:(id)a3;
-+ (id)tsu_fileWritePOSIXErrorWithNumber:(int)a3 userInfo:(id)a4;
-+ (id)tsu_fileWriteUnknownErrorWithUserInfo:(id)a3;
-+ (id)tsu_userInfoWithErrorType:(int64_t)a3 userInfo:(id)a4;
-- (BOOL)tsu_isErrorPassingTest:(id)a3;
++ (id)tsp_ensureCorruptedDocumentErrorWithError:(id)error;
++ (id)tsp_ensureReadErrorWithError:(id)error;
++ (id)tsp_ensureSaveErrorWithError:(id)error;
++ (id)tsp_errorWithCode:(int64_t)code userInfo:(id)info;
++ (id)tsp_errorWithCode:(int64_t)code userInfo:(id)info isRecoverable:(BOOL)recoverable;
++ (id)tsp_errorWithError:(id)error hints:(id)hints;
++ (id)tsp_readCorruptZipOfPackageErrorWithUserInfo:(id)info;
++ (id)tsp_readCorruptedDocumentErrorWithUserInfo:(id)info;
++ (id)tsp_recoverableErrorWithError:(id)error;
++ (id)tsp_saveDocumentErrorWithUserInfo:(id)info;
++ (id)tsp_storageSpaceErrorWithUserInfo:(id)info;
++ (id)tsp_unknownReadErrorWithUserInfo:(id)info;
++ (id)tsp_unknownWriteErrorWithUserInfo:(id)info;
++ (id)tsp_unsupportedVersionErrorWithUserInfo:(id)info;
++ (id)tsp_userInfoWithUserInfo:(id)info additionalUserInfo:(id)userInfo;
++ (id)tsu_errorWithCode:(int64_t)code userInfo:(id)info;
++ (id)tsu_errorWithDomain:(id)domain code:(int64_t)code alertTitle:(id)title alertMessage:(id)message userInfo:(id)info;
++ (id)tsu_errorWithDomain:(id)domain code:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion;
++ (id)tsu_errorWithDomain:(id)domain code:(int64_t)code description:(id)description underlyingError:(id)error;
++ (id)tsu_errorWithError:(id)error alertTitle:(id)title alertMessage:(id)message additionalUserInfo:(id)info;
++ (id)tsu_errorWithWarning:(id)warning;
++ (id)tsu_fileReadCorruptedFileErrorWithUserInfo:(id)info;
++ (id)tsu_fileReadPOSIXErrorWithNumber:(int)number userInfo:(id)info;
++ (id)tsu_fileReadUnknownErrorWithUserInfo:(id)info;
++ (id)tsu_fileWritePOSIXErrorWithNumber:(int)number userInfo:(id)info;
++ (id)tsu_fileWriteUnknownErrorWithUserInfo:(id)info;
++ (id)tsu_userInfoWithErrorType:(int64_t)type userInfo:(id)info;
+- (BOOL)tsu_isErrorPassingTest:(id)test;
 - (NSDate)tsp_dataCreationTime;
 - (NSSet)tsp_hints;
 - (NSString)tsp_actualDataDigest;
@@ -43,28 +43,28 @@
 - (id)tsu_localizedAlertTitle;
 - (int64_t)tsp_dataIdentifier;
 - (unint64_t)tsp_dataLength;
-- (void)tsu_enumerateErrorUsingBlock:(id)a3;
+- (void)tsu_enumerateErrorUsingBlock:(id)block;
 @end
 
 @implementation NSError
 
-+ (id)tsp_errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)tsp_errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v4 = [a1 tsp_errorWithCode:a3 userInfo:a4 isRecoverable:0];
+  v4 = [self tsp_errorWithCode:code userInfo:info isRecoverable:0];
 
   return v4;
 }
 
-+ (id)tsp_errorWithCode:(int64_t)a3 userInfo:(id)a4 isRecoverable:(BOOL)a5
++ (id)tsp_errorWithCode:(int64_t)code userInfo:(id)info isRecoverable:(BOOL)recoverable
 {
-  v5 = a5;
-  v8 = a4;
+  recoverableCopy = recoverable;
+  infoCopy = info;
   v9 = 0;
-  if (a3 > 4)
+  if (code > 4)
   {
-    if (a3 != 5 && a3 != 6)
+    if (code != 5 && code != 6)
     {
-      if (a3 != 7)
+      if (code != 7)
       {
         goto LABEL_17;
       }
@@ -83,9 +83,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if ((a3 - 2) >= 2)
+  if ((code - 2) >= 2)
   {
-    if (a3 != 4)
+    if (code != 4)
     {
       goto LABEL_17;
     }
@@ -97,7 +97,7 @@ LABEL_11:
   v11 = [v10 localizedStringForKey:@"The document could not be autosaved." value:&stru_1001D3878 table:@"TSPersistence"];
 
   v12 = UnsafePointer();
-  if (a3 == 2)
+  if (code == 2)
   {
     [v12 localizedStringForKey:@"Your most recent changes might be lost." value:&stru_1001D3878 table:@"TSPersistence"];
   }
@@ -115,7 +115,7 @@ LABEL_17:
     v15 = UnsafePointer();
     v11 = [v15 localizedStringForKey:@"An error occurred while reading the document." value:&stru_1001D3878 table:@"TSPersistence"];
 
-    if (v5)
+    if (recoverableCopy)
     {
       goto LABEL_16;
     }
@@ -123,7 +123,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v5)
+  if (recoverableCopy)
   {
 LABEL_16:
     v19 = @"TSPErrorIsRecoverable";
@@ -135,30 +135,30 @@ LABEL_16:
 LABEL_18:
   v14 = 0;
 LABEL_19:
-  v16 = [a1 tsp_userInfoWithUserInfo:v8 additionalUserInfo:v14];
-  v17 = [a1 tsu_errorWithDomain:@"com.apple.iWork.TSPersistence" code:a3 alertTitle:v11 alertMessage:v9 userInfo:v16];
+  v16 = [self tsp_userInfoWithUserInfo:infoCopy additionalUserInfo:v14];
+  v17 = [self tsu_errorWithDomain:@"com.apple.iWork.TSPersistence" code:code alertTitle:v11 alertMessage:v9 userInfo:v16];
 
-  if (v5)
+  if (recoverableCopy)
   {
   }
 
   return v17;
 }
 
-+ (id)tsp_userInfoWithUserInfo:(id)a3 additionalUserInfo:(id)a4
++ (id)tsp_userInfoWithUserInfo:(id)info additionalUserInfo:(id)userInfo
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count") + objc_msgSend(v5, "count") + 1}];
+  infoCopy = info;
+  userInfoCopy = userInfo;
+  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(userInfoCopy, "count") + objc_msgSend(infoCopy, "count") + 1}];
   v8 = v7;
-  if (v5)
+  if (infoCopy)
   {
-    [v7 addEntriesFromDictionary:v5];
+    [v7 addEntriesFromDictionary:infoCopy];
   }
 
-  if (v6)
+  if (userInfoCopy)
   {
-    [v8 addEntriesFromDictionary:v6];
+    [v8 addEntriesFromDictionary:userInfoCopy];
   }
 
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"TSPErrorIsTSPError"];
@@ -166,20 +166,20 @@ LABEL_19:
   return v8;
 }
 
-+ (id)tsp_recoverableErrorWithError:(id)a3
++ (id)tsp_recoverableErrorWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 domain];
-    v7 = [v5 code];
-    v8 = [v5 userInfo];
+    domain = [errorCopy domain];
+    code = [v5 code];
+    userInfo = [v5 userInfo];
     v13 = @"TSPErrorIsRecoverable";
     v14 = &__kCFBooleanTrue;
     v9 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-    v10 = [a1 tsp_userInfoWithUserInfo:v8 additionalUserInfo:v9];
-    v11 = [a1 errorWithDomain:v6 code:v7 userInfo:v10];
+    v10 = [self tsp_userInfoWithUserInfo:userInfo additionalUserInfo:v9];
+    v11 = [self errorWithDomain:domain code:code userInfo:v10];
   }
 
   else
@@ -190,40 +190,40 @@ LABEL_19:
   return v11;
 }
 
-+ (id)tsp_errorWithError:(id)a3 hints:(id)a4
++ (id)tsp_errorWithError:(id)error hints:(id)hints
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  errorCopy = error;
+  hintsCopy = hints;
+  v8 = hintsCopy;
+  if (!errorCopy)
   {
     v15 = 0;
     goto LABEL_12;
   }
 
-  v9 = [v7 count];
+  v9 = [hintsCopy count];
   if (!v9)
   {
-    v15 = v6;
+    v15 = errorCopy;
     goto LABEL_12;
   }
 
-  v10 = [v6 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"TSPErrorHints"];
+  userInfo = [errorCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"TSPErrorHints"];
 
   v12 = [v11 count];
   if (!v12)
   {
     v14 = [NSSet setWithArray:v8];
 LABEL_10:
-    v16 = [v6 domain];
-    v17 = [v6 code];
-    v18 = [v6 userInfo];
+    domain = [errorCopy domain];
+    code = [errorCopy code];
+    userInfo2 = [errorCopy userInfo];
     v22 = @"TSPErrorHints";
     v23 = v14;
     v19 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v20 = [a1 tsp_userInfoWithUserInfo:v18 additionalUserInfo:v19];
-    v15 = [a1 errorWithDomain:v16 code:v17 userInfo:v20];
+    v20 = [self tsp_userInfoWithUserInfo:userInfo2 additionalUserInfo:v19];
+    v15 = [self errorWithDomain:domain code:code userInfo:v20];
 
     goto LABEL_11;
   }
@@ -238,7 +238,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v15 = v6;
+  v15 = errorCopy;
 
 LABEL_11:
 LABEL_12:
@@ -246,92 +246,92 @@ LABEL_12:
   return v15;
 }
 
-+ (id)tsp_unknownReadErrorWithUserInfo:(id)a3
++ (id)tsp_unknownReadErrorWithUserInfo:(id)info
 {
-  v4 = [a1 tsp_userInfoWithUserInfo:a3 additionalUserInfo:0];
-  v5 = [a1 tsu_fileReadUnknownErrorWithUserInfo:v4];
+  v4 = [self tsp_userInfoWithUserInfo:info additionalUserInfo:0];
+  v5 = [self tsu_fileReadUnknownErrorWithUserInfo:v4];
 
   return v5;
 }
 
-+ (id)tsp_readCorruptedDocumentErrorWithUserInfo:(id)a3
++ (id)tsp_readCorruptedDocumentErrorWithUserInfo:(id)info
 {
-  v4 = [a1 tsp_userInfoWithUserInfo:a3 additionalUserInfo:0];
-  v5 = [a1 tsu_fileReadCorruptedFileErrorWithUserInfo:v4];
+  v4 = [self tsp_userInfoWithUserInfo:info additionalUserInfo:0];
+  v5 = [self tsu_fileReadCorruptedFileErrorWithUserInfo:v4];
 
   return v5;
 }
 
-+ (id)tsp_unsupportedVersionErrorWithUserInfo:(id)a3
++ (id)tsp_unsupportedVersionErrorWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count") + 1}];
+  infoCopy = info;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + 1}];
   v6 = v5;
-  if (v4)
+  if (infoCopy)
   {
-    [v5 addEntriesFromDictionary:v4];
+    [v5 addEntriesFromDictionary:infoCopy];
   }
 
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"TSPIsUnsupportedVersionError"];
-  v7 = [a1 tsp_unknownReadErrorWithUserInfo:v6];
+  v7 = [self tsp_unknownReadErrorWithUserInfo:v6];
 
   return v7;
 }
 
-+ (id)tsp_unknownWriteErrorWithUserInfo:(id)a3
++ (id)tsp_unknownWriteErrorWithUserInfo:(id)info
 {
-  v4 = [a1 tsp_userInfoWithUserInfo:a3 additionalUserInfo:0];
-  v5 = [a1 tsu_fileWriteUnknownErrorWithUserInfo:v4];
+  v4 = [self tsp_userInfoWithUserInfo:info additionalUserInfo:0];
+  v5 = [self tsu_fileWriteUnknownErrorWithUserInfo:v4];
 
   return v5;
 }
 
-+ (id)tsp_saveDocumentErrorWithUserInfo:(id)a3
++ (id)tsp_saveDocumentErrorWithUserInfo:(id)info
 {
-  v3 = [a1 tsp_errorWithCode:2 userInfo:a3];
+  v3 = [self tsp_errorWithCode:2 userInfo:info];
 
   return v3;
 }
 
-+ (id)tsp_storageSpaceErrorWithUserInfo:(id)a3
++ (id)tsp_storageSpaceErrorWithUserInfo:(id)info
 {
-  v3 = [a1 tsp_errorWithCode:3 userInfo:a3];
+  v3 = [self tsp_errorWithCode:3 userInfo:info];
 
   return v3;
 }
 
-+ (id)tsp_readCorruptZipOfPackageErrorWithUserInfo:(id)a3
++ (id)tsp_readCorruptZipOfPackageErrorWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count") + 1}];
+  infoCopy = info;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + 1}];
   v6 = v5;
-  if (v4)
+  if (infoCopy)
   {
-    [v5 addEntriesFromDictionary:v4];
+    [v5 addEntriesFromDictionary:infoCopy];
   }
 
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"TSPIsCorruptZipOfPackageError"];
-  v7 = [a1 tsp_readCorruptedDocumentErrorWithUserInfo:v6];
+  v7 = [self tsp_readCorruptedDocumentErrorWithUserInfo:v6];
 
   return v7;
 }
 
-+ (id)tsp_ensureReadErrorWithError:(id)a3
++ (id)tsp_ensureReadErrorWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
-    v11 = [a1 tsp_unknownReadErrorWithUserInfo:0];
+    v11 = [self tsp_unknownReadErrorWithUserInfo:0];
 LABEL_13:
     v12 = v11;
     goto LABEL_17;
   }
 
-  if ([v4 code] != 2 && objc_msgSend(v5, "code") != 3)
+  if ([errorCopy code] != 2 && objc_msgSend(v5, "code") != 3)
   {
-    v6 = [v5 domain];
-    v7 = [v6 isEqualToString:@"com.apple.iWork.TSPersistence"];
+    domain = [v5 domain];
+    v7 = [domain isEqualToString:@"com.apple.iWork.TSPersistence"];
 
     if (v7)
     {
@@ -353,9 +353,9 @@ LABEL_15:
       goto LABEL_17;
     }
 
-    v8 = [v5 domain];
+    domain2 = [v5 domain];
     v9 = NSCocoaErrorDomain;
-    v10 = [v8 isEqualToString:NSCocoaErrorDomain];
+    v10 = [domain2 isEqualToString:NSCocoaErrorDomain];
 
     if ((v10 & 1) == 0)
     {
@@ -375,24 +375,24 @@ LABEL_12:
   v16 = NSUnderlyingErrorKey;
   v17 = v5;
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  v12 = [a1 tsp_unknownReadErrorWithUserInfo:v14];
+  v12 = [self tsp_unknownReadErrorWithUserInfo:v14];
 
 LABEL_17:
 
   return v12;
 }
 
-+ (id)tsp_ensureCorruptedDocumentErrorWithError:(id)a3
++ (id)tsp_ensureCorruptedDocumentErrorWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
-    v6 = [a1 tsp_readCorruptedDocumentErrorWithUserInfo:0];
+    v6 = [self tsp_readCorruptedDocumentErrorWithUserInfo:0];
     goto LABEL_5;
   }
 
-  if ([v4 tsp_isCorruptedError])
+  if ([errorCopy tsp_isCorruptedError])
   {
     v6 = v5;
 LABEL_5:
@@ -403,47 +403,47 @@ LABEL_5:
   v10 = NSUnderlyingErrorKey;
   v11 = v5;
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  v7 = [a1 tsp_readCorruptedDocumentErrorWithUserInfo:v8];
+  v7 = [self tsp_readCorruptedDocumentErrorWithUserInfo:v8];
 
 LABEL_7:
 
   return v7;
 }
 
-+ (id)tsp_ensureSaveErrorWithError:(id)a3
++ (id)tsp_ensureSaveErrorWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"com.apple.iWork.TSPersistence"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"com.apple.iWork.TSPersistence"];
 
-  if (!v4)
+  if (!errorCopy)
   {
-    v9 = [a1 tsp_saveDocumentErrorWithUserInfo:0];
+    v9 = [self tsp_saveDocumentErrorWithUserInfo:0];
     goto LABEL_9;
   }
 
-  if ((v6 & 1) == 0 && [v4 tsu_isOutOfSpaceError])
+  if ((v6 & 1) == 0 && [errorCopy tsu_isOutOfSpaceError])
   {
     v14 = NSUnderlyingErrorKey;
-    v15 = v4;
+    v15 = errorCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    v8 = [a1 tsp_storageSpaceErrorWithUserInfo:v7];
+    v8 = [self tsp_storageSpaceErrorWithUserInfo:v7];
 
     goto LABEL_10;
   }
 
-  if ((([v4 code] == 3) & v6) == 1 || ((objc_msgSend(v4, "code") == 2) & v6) != 0)
+  if ((([errorCopy code] == 3) & v6) == 1 || ((objc_msgSend(errorCopy, "code") == 2) & v6) != 0)
   {
-    v9 = v4;
+    v9 = errorCopy;
 LABEL_9:
     v8 = v9;
     goto LABEL_10;
   }
 
   v12 = NSUnderlyingErrorKey;
-  v13 = v4;
+  v13 = errorCopy;
   v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  v8 = [a1 tsp_saveDocumentErrorWithUserInfo:v11];
+  v8 = [self tsp_saveDocumentErrorWithUserInfo:v11];
 
 LABEL_10:
 
@@ -498,8 +498,8 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSError *)self tsp_hints];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tsp_hints = [(NSError *)self tsp_hints];
+  v5 = [tsp_hints countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -510,7 +510,7 @@ LABEL_10:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tsp_hints);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -523,7 +523,7 @@ LABEL_10:
         v7 = 0;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [tsp_hints countByEnumeratingWithState:&v11 objects:v15 count:16];
       v7 = 0;
     }
 
@@ -569,10 +569,10 @@ LABEL_10:
   v4[3] = &unk_1001C5BB8;
   v4[4] = &v5;
   [(NSError *)self tsu_enumerateErrorUsingBlock:v4];
-  v2 = [v6[5] longLongValue];
+  longLongValue = [v6[5] longLongValue];
   _Block_object_dispose(&v5, 8);
 
-  return v2;
+  return longLongValue;
 }
 
 - (NSString)tsp_expectedDataDigest
@@ -669,10 +669,10 @@ LABEL_10:
   v4[3] = &unk_1001C5BB8;
   v4[4] = &v5;
   [(NSError *)self tsu_enumerateErrorUsingBlock:v4];
-  v2 = [v6[5] unsignedLongLongValue];
+  unsignedLongLongValue = [v6[5] unsignedLongLongValue];
   _Block_object_dispose(&v5, 8);
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 - (NSString)tsp_dataType
@@ -735,32 +735,32 @@ LABEL_10:
   return v2;
 }
 
-+ (id)tsu_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 recoverySuggestion:(id)a6
++ (id)tsu_errorWithDomain:(id)domain code:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  domainCopy = domain;
+  descriptionCopy = description;
+  suggestionCopy = suggestion;
   v13 = [[NSMutableDictionary alloc] initWithCapacity:2];
   v14 = v13;
-  if (v11)
+  if (descriptionCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:NSLocalizedDescriptionKey];
+    [v13 setObject:descriptionCopy forKeyedSubscript:NSLocalizedDescriptionKey];
   }
 
-  if (v12)
+  if (suggestionCopy)
   {
-    [v14 setObject:v12 forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    [v14 setObject:suggestionCopy forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
   }
 
-  v15 = [a1 errorWithDomain:v10 code:a4 userInfo:v14];
+  v15 = [self errorWithDomain:domainCopy code:code userInfo:v14];
 
   return v15;
 }
 
-+ (id)tsu_errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)tsu_errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v6 = a4;
-  if (a3 >= 3)
+  infoCopy = info;
+  if (code >= 3)
   {
     v7 = +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -781,86 +781,86 @@ LABEL_10:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v11 = [a1 errorWithDomain:@"com.apple.iWork.TSUtility" code:a3 userInfo:v6];
+  v11 = [self errorWithDomain:@"com.apple.iWork.TSUtility" code:code userInfo:infoCopy];
 
   return v11;
 }
 
-+ (id)tsu_errorWithDomain:(id)a3 code:(int64_t)a4 alertTitle:(id)a5 alertMessage:(id)a6 userInfo:(id)a7
++ (id)tsu_errorWithDomain:(id)domain code:(int64_t)code alertTitle:(id)title alertMessage:(id)message userInfo:(id)info
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v15, "count") + 4}];
+  domainCopy = domain;
+  titleCopy = title;
+  messageCopy = message;
+  infoCopy = info;
+  v16 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + 4}];
   v17 = v16;
-  if (v15)
+  if (infoCopy)
   {
-    [v16 addEntriesFromDictionary:v15];
+    [v16 addEntriesFromDictionary:infoCopy];
   }
 
-  if (v13)
+  if (titleCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:NSLocalizedDescriptionKey];
-    [v17 setObject:v13 forKeyedSubscript:@"TSULocalizedErrorAlertTitle"];
+    [v17 setObject:titleCopy forKeyedSubscript:NSLocalizedDescriptionKey];
+    [v17 setObject:titleCopy forKeyedSubscript:@"TSULocalizedErrorAlertTitle"];
   }
 
-  if (v14)
+  if (messageCopy)
   {
-    [v17 setObject:v14 forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
-    [v17 setObject:v14 forKeyedSubscript:@"TSULocalizedErrorAlertMessage"];
-    [v17 setObject:v14 forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
+    [v17 setObject:messageCopy forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    [v17 setObject:messageCopy forKeyedSubscript:@"TSULocalizedErrorAlertMessage"];
+    [v17 setObject:messageCopy forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
   }
 
-  v18 = [a1 errorWithDomain:v12 code:a4 userInfo:v17];
+  v18 = [self errorWithDomain:domainCopy code:code userInfo:v17];
 
   return v18;
 }
 
-+ (id)tsu_errorWithDomain:(id)a3 code:(int64_t)a4 description:(id)a5 underlyingError:(id)a6
++ (id)tsu_errorWithDomain:(id)domain code:(int64_t)code description:(id)description underlyingError:(id)error
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  domainCopy = domain;
+  errorCopy = error;
+  descriptionCopy = description;
   v13 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  [v13 setObject:v12 forKeyedSubscript:NSLocalizedDescriptionKey];
+  [v13 setObject:descriptionCopy forKeyedSubscript:NSLocalizedDescriptionKey];
 
-  if (v11)
+  if (errorCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
+    [v13 setObject:errorCopy forKeyedSubscript:NSUnderlyingErrorKey];
   }
 
-  v14 = [a1 errorWithDomain:v10 code:a4 userInfo:v13];
+  v14 = [self errorWithDomain:domainCopy code:code userInfo:v13];
 
   return v14;
 }
 
-+ (id)tsu_errorWithError:(id)a3 alertTitle:(id)a4 alertMessage:(id)a5 additionalUserInfo:(id)a6
++ (id)tsu_errorWithError:(id)error alertTitle:(id)title alertMessage:(id)message additionalUserInfo:(id)info
 {
-  v10 = a6;
-  if (a3)
+  infoCopy = info;
+  if (error)
   {
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v14 = [v13 userInfo];
-    v15 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v10, "count") + objc_msgSend(v14, "count") + 1}];
+    messageCopy = message;
+    titleCopy = title;
+    errorCopy = error;
+    userInfo = [errorCopy userInfo];
+    v15 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + objc_msgSend(userInfo, "count") + 1}];
     v16 = v15;
-    if (v14)
+    if (userInfo)
     {
-      [v15 addEntriesFromDictionary:v14];
+      [v15 addEntriesFromDictionary:userInfo];
     }
 
-    if (v10)
+    if (infoCopy)
     {
-      [v16 addEntriesFromDictionary:v10];
+      [v16 addEntriesFromDictionary:infoCopy];
     }
 
-    [v16 setObject:v13 forKeyedSubscript:NSUnderlyingErrorKey];
-    v17 = [v13 domain];
-    v18 = [v13 code];
+    [v16 setObject:errorCopy forKeyedSubscript:NSUnderlyingErrorKey];
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
-    v19 = [a1 tsu_errorWithDomain:v17 code:v18 alertTitle:v12 alertMessage:v11 userInfo:v16];
+    v19 = [self tsu_errorWithDomain:domain code:code alertTitle:titleCopy alertMessage:messageCopy userInfo:v16];
   }
 
   else
@@ -873,44 +873,44 @@ LABEL_10:
 
 - (id)tsu_errorPreservingAlertTitle
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
   if (!v4)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"TSULocalizedErrorAlertTitle"];
+  v5 = [userInfo objectForKeyedSubscript:@"TSULocalizedErrorAlertTitle"];
   v6 = v5;
   if (!v5 || [v5 isEqualToString:v4])
   {
 
 LABEL_5:
-    v7 = self;
+    selfCopy = self;
     goto LABEL_6;
   }
 
-  v9 = [v3 mutableCopy];
+  v9 = [userInfo mutableCopy];
   [v9 setObject:v6 forKeyedSubscript:NSLocalizedDescriptionKey];
   v10 = objc_opt_class();
-  v11 = [(NSError *)self domain];
-  v7 = [v10 errorWithDomain:v11 code:-[NSError code](self userInfo:{"code"), v9}];
+  domain = [(NSError *)self domain];
+  selfCopy = [v10 errorWithDomain:domain code:-[NSError code](self userInfo:{"code"), v9}];
 
 LABEL_6:
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)tsu_errorPreservingCancel
 {
-  v2 = self;
-  if ([(NSError *)v2 tsu_isCancelError])
+  selfCopy = self;
+  if ([(NSError *)selfCopy tsu_isCancelError])
   {
-    if ([(NSError *)v2 code]== 3072)
+    if ([(NSError *)selfCopy code]== 3072)
     {
-      v3 = [(NSError *)v2 domain];
+      domain = [(NSError *)selfCopy domain];
       v4 = NSCocoaErrorDomain;
-      v5 = [v3 isEqualToString:NSCocoaErrorDomain];
+      v5 = [domain isEqualToString:NSCocoaErrorDomain];
 
       if (v5)
       {
@@ -925,22 +925,22 @@ LABEL_6:
 
     v6 = objc_opt_class();
     v10 = NSUnderlyingErrorKey;
-    v11 = v2;
+    v11 = selfCopy;
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v8 = [v6 errorWithDomain:v4 code:3072 userInfo:v7];
 
-    v2 = v8;
+    selfCopy = v8;
   }
 
 LABEL_7:
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)tsu_localizedAlertTitle
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"TSULocalizedErrorAlertTitle"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"TSULocalizedErrorAlertTitle"];
   v4 = v3;
   if (v3)
   {
@@ -949,7 +949,7 @@ LABEL_7:
 
   else
   {
-    v5 = [v2 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+    v5 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
   }
 
   v6 = v5;
@@ -959,8 +959,8 @@ LABEL_7:
 
 - (id)tsu_localizedAlertMessage
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"TSULocalizedErrorAlertMessage"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"TSULocalizedErrorAlertMessage"];
   v4 = v3;
   if (v3)
   {
@@ -969,7 +969,7 @@ LABEL_7:
 
   else
   {
-    v5 = [v2 objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    v5 = [userInfo objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
   }
 
   v6 = v5;
@@ -977,23 +977,23 @@ LABEL_7:
   return v6;
 }
 
-- (void)tsu_enumerateErrorUsingBlock:(id)a3
+- (void)tsu_enumerateErrorUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = self;
+    selfCopy = self;
     v12 = 0;
-    if (v5)
+    if (selfCopy)
     {
-      v6 = v5;
+      v6 = selfCopy;
       do
       {
-        v7 = [(NSError *)v6 userInfo];
-        v8 = [(NSError *)v6 domain];
-        v4[2](v4, v8, [(NSError *)v6 code], v7, &v12);
+        userInfo = [(NSError *)v6 userInfo];
+        domain = [(NSError *)v6 domain];
+        blockCopy[2](blockCopy, domain, [(NSError *)v6 code], userInfo, &v12);
 
-        v9 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+        v9 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
         v10 = v9;
         if (v9 != v6)
         {
@@ -1008,21 +1008,21 @@ LABEL_7:
   }
 }
 
-- (BOOL)tsu_isErrorPassingTest:(id)a3
+- (BOOL)tsu_isErrorPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = v4;
+  testCopy = test;
+  v5 = testCopy;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (testCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000882A4;
     v8[3] = &unk_1001CCF58;
-    v9 = v4;
+    v9 = testCopy;
     v10 = &v11;
     [(NSError *)self tsu_enumerateErrorUsingBlock:v8];
 
@@ -1039,73 +1039,73 @@ LABEL_7:
   return v6 & 1;
 }
 
-+ (id)tsu_errorWithWarning:(id)a3
++ (id)tsu_errorWithWarning:(id)warning
 {
   v7 = NSLocalizedDescriptionKey;
-  v3 = [a3 message];
-  v8 = v3;
+  message = [warning message];
+  v8 = message;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v5 = [NSError errorWithDomain:@"com.apple.tangier.TSUWarningErrorDomain" code:0 userInfo:v4];
 
   return v5;
 }
 
-+ (id)tsu_userInfoWithErrorType:(int64_t)a3 userInfo:(id)a4
++ (id)tsu_userInfoWithErrorType:(int64_t)type userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v5, "count") + 1}];
+  infoCopy = info;
+  v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(infoCopy, "count") + 1}];
   v7 = v6;
-  if (v5)
+  if (infoCopy)
   {
-    [v6 addEntriesFromDictionary:v5];
+    [v6 addEntriesFromDictionary:infoCopy];
   }
 
-  v8 = [NSNumber numberWithInteger:a3];
+  v8 = [NSNumber numberWithInteger:type];
   [v7 setObject:v8 forKeyedSubscript:@"TSUIOErrorType"];
 
   return v7;
 }
 
-+ (id)tsu_fileReadUnknownErrorWithUserInfo:(id)a3
++ (id)tsu_fileReadUnknownErrorWithUserInfo:(id)info
 {
-  v3 = [a1 tsu_userInfoWithErrorType:1 userInfo:a3];
+  v3 = [self tsu_userInfoWithErrorType:1 userInfo:info];
   v4 = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:v3];
 
   return v4;
 }
 
-+ (id)tsu_fileReadCorruptedFileErrorWithUserInfo:(id)a3
++ (id)tsu_fileReadCorruptedFileErrorWithUserInfo:(id)info
 {
-  v3 = [a1 tsu_userInfoWithErrorType:1 userInfo:a3];
+  v3 = [self tsu_userInfoWithErrorType:1 userInfo:info];
   v4 = [NSError errorWithDomain:NSCocoaErrorDomain code:259 userInfo:v3];
 
   return v4;
 }
 
-+ (id)tsu_fileReadPOSIXErrorWithNumber:(int)a3 userInfo:(id)a4
++ (id)tsu_fileReadPOSIXErrorWithNumber:(int)number userInfo:(id)info
 {
-  v4 = a3;
-  v5 = [a1 tsu_userInfoWithErrorType:1 userInfo:a4];
-  v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v4 userInfo:v5];
+  numberCopy = number;
+  v5 = [self tsu_userInfoWithErrorType:1 userInfo:info];
+  v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:numberCopy userInfo:v5];
 
   return v6;
 }
 
-+ (id)tsu_fileWriteUnknownErrorWithUserInfo:(id)a3
++ (id)tsu_fileWriteUnknownErrorWithUserInfo:(id)info
 {
-  v3 = [a1 tsu_userInfoWithErrorType:2 userInfo:a3];
+  v3 = [self tsu_userInfoWithErrorType:2 userInfo:info];
   v4 = [NSError errorWithDomain:NSCocoaErrorDomain code:512 userInfo:v3];
 
   return v4;
 }
 
-+ (id)tsu_fileWritePOSIXErrorWithNumber:(int)a3 userInfo:(id)a4
++ (id)tsu_fileWritePOSIXErrorWithNumber:(int)number userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = [NSError alloc];
-  v8 = [a1 tsu_userInfoWithErrorType:2 userInfo:v6];
+  v8 = [self tsu_userInfoWithErrorType:2 userInfo:infoCopy];
 
-  v9 = [v7 initWithDomain:NSPOSIXErrorDomain code:a3 userInfo:v8];
+  v9 = [v7 initWithDomain:NSPOSIXErrorDomain code:number userInfo:v8];
 
   return v9;
 }

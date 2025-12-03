@@ -1,6 +1,6 @@
 @interface MNCoreMotionContextProvider
 - (GEOMotionContextProviderDelegate)motionDelegate;
-- (MNCoreMotionContextProvider)initWithTraceRecorder:(id)a3;
+- (MNCoreMotionContextProvider)initWithTraceRecorder:(id)recorder;
 - (void)dealloc;
 - (void)startMotionUpdates;
 - (void)stopMotionUpdates;
@@ -96,16 +96,16 @@ void __49__MNCoreMotionContextProvider_startMotionUpdates__block_invoke(uint64_t
   [(MNCoreMotionContextProvider *)&v3 dealloc];
 }
 
-- (MNCoreMotionContextProvider)initWithTraceRecorder:(id)a3
+- (MNCoreMotionContextProvider)initWithTraceRecorder:(id)recorder
 {
-  v5 = a3;
+  recorderCopy = recorder;
   v10.receiver = self;
   v10.super_class = MNCoreMotionContextProvider;
   v6 = [(MNCoreMotionContextProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traceRecorder, a3);
+    objc_storeStrong(&v6->_traceRecorder, recorder);
     v8 = v7;
   }
 

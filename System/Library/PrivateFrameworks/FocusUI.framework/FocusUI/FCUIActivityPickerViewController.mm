@@ -6,39 +6,39 @@
 + (void)initialize;
 - (BOOL)_isConfiguringEducationCard;
 - (BOOL)_updateHeaderOrFooterIfNecessary;
-- (CGRect)setContractedFrame:(CGRect)a3 representedActivity:(id)a4 presentationStyle:(int64_t)a5 transitionCoordinator:(id)a6;
-- (CGRect)setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 representedActivity:(id)a5 presentationStyle:(int64_t)a6 transitionCoordinator:(id)a7;
-- (FCUIActivityPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGRect)setContractedFrame:(CGRect)frame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (CGRect)setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (FCUIActivityPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_activityListView;
-- (void)_configureActivityListViewWithAvailableActivities:(id)a3;
-- (void)_configureActivityView:(id)a3 withLifetimesDescriptionsForActivity:(id)a4;
+- (void)_configureActivityListViewWithAvailableActivities:(id)activities;
+- (void)_configureActivityView:(id)view withLifetimesDescriptionsForActivity:(id)activity;
 - (void)_configureEducationCardIfNecessary;
 - (void)_dismissHeader;
-- (void)_openEditUI:(id)a3;
-- (void)_openSetupUI:(id)a3;
-- (void)_openURL:(id)a3;
-- (void)_presentActivityEditUI:(id)a3;
-- (void)_setConfiguringEducationCard:(BOOL)a3;
+- (void)_openEditUI:(id)i;
+- (void)_openSetupUI:(id)i;
+- (void)_openURL:(id)l;
+- (void)_presentActivityEditUI:(id)i;
+- (void)_setConfiguringEducationCard:(BOOL)card;
 - (void)_updatePreferredContentSize;
-- (void)_updateSelectedStateOfActivityControl:(id)a3 activeActivity:(id)a4 lifetimeOfActiveActivity:(id)a5;
+- (void)_updateSelectedStateOfActivityControl:(id)control activeActivity:(id)activity lifetimeOfActiveActivity:(id)activeActivity;
 - (void)_updateSelectedStateOfActivityViews;
-- (void)activityManager:(id)a3 lifetimeDescriptionsDidChangeForActivity:(id)a4;
-- (void)availableActivitiesDidChangeForManager:(id)a3;
+- (void)activityManager:(id)manager lifetimeDescriptionsDidChangeForActivity:(id)activity;
+- (void)availableActivitiesDidChangeForManager:(id)manager;
 - (void)dealloc;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetScrollForStaticPresentation;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FCUIActivityPickerViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     FCUIRegisterLogging();
@@ -47,47 +47,47 @@
 
 + (BOOL)isOnboardingEncountered
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"FCUIActivityPickerViewControllerOnboardingEncountered"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"FCUIActivityPickerViewControllerOnboardingEncountered"];
 
   return v3;
 }
 
 + (BOOL)isOnboardingComplete
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"FCUIActivityPickerViewControllerOnboardingComplete"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"FCUIActivityPickerViewControllerOnboardingComplete"];
 
   return v3;
 }
 
-- (CGRect)setExpandedFrame:(CGRect)a3 initialFrame:(CGRect)a4 representedActivity:(id)a5 presentationStyle:(int64_t)a6 transitionCoordinator:(id)a7
+- (CGRect)setExpandedFrame:(CGRect)frame initialFrame:(CGRect)initialFrame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
-  v18 = a5;
-  v19 = a7;
+  height = initialFrame.size.height;
+  width = initialFrame.size.width;
+  y = initialFrame.origin.y;
+  x = initialFrame.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
+  activityCopy = activity;
+  coordinatorCopy = coordinator;
   [(FCUIActivityPickerViewController *)self loadViewIfNeeded];
-  if (v18)
+  if (activityCopy)
   {
-    v20 = v18;
+    lastObject = activityCopy;
   }
 
   else
   {
-    v21 = [(FCUIActivityPickerViewController *)self _activityListView];
-    v22 = [v21 activityViews];
-    v20 = [v22 lastObject];
+    _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+    activityViews = [_activityListView activityViews];
+    lastObject = [activityViews lastObject];
   }
 
-  v23 = [(FCUIActivityPickerViewController *)self _activityListView];
-  [v23 setExpandedFrame:v20 initialFrame:a6 representedActivity:v19 presentationStyle:v16 transitionCoordinator:{v15, v14, v13, x, y, width, height}];
+  _activityListView2 = [(FCUIActivityPickerViewController *)self _activityListView];
+  [_activityListView2 setExpandedFrame:lastObject initialFrame:style representedActivity:coordinatorCopy presentationStyle:v16 transitionCoordinator:{v15, v14, v13, x, y, width, height}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -104,28 +104,28 @@
   return result;
 }
 
-- (CGRect)setContractedFrame:(CGRect)a3 representedActivity:(id)a4 presentationStyle:(int64_t)a5 transitionCoordinator:(id)a6
+- (CGRect)setContractedFrame:(CGRect)frame representedActivity:(id)activity presentationStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a6;
-  if (v13)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  activityCopy = activity;
+  coordinatorCopy = coordinator;
+  if (activityCopy)
   {
-    v15 = v13;
+    lastObject = activityCopy;
   }
 
   else
   {
-    v16 = [(FCUIActivityPickerViewController *)self _activityListView];
-    v17 = [v16 activityViews];
-    v15 = [v17 lastObject];
+    _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+    activityViews = [_activityListView activityViews];
+    lastObject = [activityViews lastObject];
   }
 
-  v18 = [(FCUIActivityPickerViewController *)self _activityListView];
-  [v18 setContractedFrame:v15 representedActivity:a5 presentationStyle:v14 transitionCoordinator:{x, y, width, height}];
+  _activityListView2 = [(FCUIActivityPickerViewController *)self _activityListView];
+  [_activityListView2 setContractedFrame:lastObject representedActivity:style presentationStyle:coordinatorCopy transitionCoordinator:{x, y, width, height}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -144,25 +144,25 @@
 
 - (void)resetScrollForStaticPresentation
 {
-  v2 = [(FCUIActivityPickerViewController *)self _activityListView];
-  [v2 resetScrollForStaticPresentation];
+  _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+  [_activityListView resetScrollForStaticPresentation];
 }
 
-- (FCUIActivityPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FCUIActivityPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = FCUIActivityPickerViewController;
-  v4 = [(FCUIActivityPickerViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(FCUIActivityPickerViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x277D0A9E8] sharedActivityManager];
+    mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
     activityManager = v4->_activityManager;
-    v4->_activityManager = v5;
+    v4->_activityManager = mEMORY[0x277D0A9E8];
 
     [(FCActivityManager *)v4->_activityManager addObserver:v4];
     v4->_footerPinnedToBottom = 1;
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v7 addObserver:v4 forKeyPath:@"FCUIActivityPickerViewControllerOnboardingComplete" options:1 context:0];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addObserver:v4 forKeyPath:@"FCUIActivityPickerViewControllerOnboardingComplete" options:1 context:0];
   }
 
   return v4;
@@ -170,8 +170,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 removeObserver:self forKeyPath:@"FCUIActivityPickerViewControllerOnboardingComplete"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:@"FCUIActivityPickerViewControllerOnboardingComplete"];
 
   v4.receiver = self;
   v4.super_class = FCUIActivityPickerViewController;
@@ -190,8 +190,8 @@
   v11.receiver = self;
   v11.super_class = FCUIActivityPickerViewController;
   [(FCUIActivityPickerViewController *)&v11 viewDidLoad];
-  v3 = [(FCUIActivityPickerViewController *)self _activityListView];
-  [v3 setFooterPinnedToBottom:self->_footerPinnedToBottom];
+  _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+  [_activityListView setFooterPinnedToBottom:self->_footerPinnedToBottom];
 
   v4 = objc_opt_self();
   v12[0] = v4;
@@ -243,55 +243,55 @@ void __47__FCUIActivityPickerViewController_viewDidLoad__block_invoke_2(uint64_t
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = FCUIActivityPickerViewController;
-  [(FCUIActivityPickerViewController *)&v4 viewWillAppear:a3];
+  [(FCUIActivityPickerViewController *)&v4 viewWillAppear:appear];
   [(FCActivityManager *)self->_activityManager setLifetimeDescriptionsUpdatingEnabled:1];
   [(FCUIActivityPickerViewController *)self activeActivityDidChangeForManager:self->_activityManager];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = FCUIActivityPickerViewController;
-  [(FCUIActivityPickerViewController *)&v3 viewDidAppear:a3];
+  [(FCUIActivityPickerViewController *)&v3 viewDidAppear:appear];
   [objc_opt_class() _markOnboardingEncountered];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = FCUIActivityPickerViewController;
   [(FCUIActivityPickerViewController *)&v6 viewWillDisappear:?];
   [(FCActivityManager *)self->_activityManager setLifetimeDescriptionsUpdatingEnabled:0];
-  [(ActivityEditViewController *)self->_editViewController dismissViewControllerAnimated:v3 completion:0];
+  [(ActivityEditViewController *)self->_editViewController dismissViewControllerAnimated:disappearCopy completion:0];
   editViewController = self->_editViewController;
   self->_editViewController = 0;
 }
 
-- (void)availableActivitiesDidChangeForManager:(id)a3
+- (void)availableActivitiesDidChangeForManager:(id)manager
 {
-  v4 = [a3 availableActivities];
-  [(FCUIActivityPickerViewController *)self _configureActivityListViewWithAvailableActivities:v4];
+  availableActivities = [manager availableActivities];
+  [(FCUIActivityPickerViewController *)self _configureActivityListViewWithAvailableActivities:availableActivities];
 }
 
-- (void)activityManager:(id)a3 lifetimeDescriptionsDidChangeForActivity:(id)a4
+- (void)activityManager:(id)manager lifetimeDescriptionsDidChangeForActivity:(id)activity
 {
-  v5 = a4;
-  if (([v5 isPlaceholder] & 1) == 0)
+  activityCopy = activity;
+  if (([activityCopy isPlaceholder] & 1) == 0)
   {
-    v6 = [(FCUIActivityPickerViewController *)self _activityListView];
-    v7 = [v6 activityViews];
+    _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+    activityViews = [_activityListView activityViews];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __93__FCUIActivityPickerViewController_activityManager_lifetimeDescriptionsDidChangeForActivity___block_invoke;
     v10[3] = &unk_27901A3D0;
-    v8 = v5;
+    v8 = activityCopy;
     v11 = v8;
-    v9 = [v7 bs_firstObjectPassingTest:v10];
+    v9 = [activityViews bs_firstObjectPassingTest:v10];
 
     [(FCUIActivityPickerViewController *)self _configureActivityView:v9 withLifetimesDescriptionsForActivity:v8];
   }
@@ -306,13 +306,13 @@ uint64_t __93__FCUIActivityPickerViewController_activityManager_lifetimeDescript
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   if (BSEqualStrings() && [(FCUIActivityPickerViewController *)self _updateHeaderOrFooterIfNecessary])
   {
     [(FCUIActivityPickerViewController *)self _updatePreferredContentSize];
-    v7 = [(FCUIActivityPickerViewController *)self viewIfLoaded];
-    [v7 setNeedsLayout];
+    viewIfLoaded = [(FCUIActivityPickerViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
     [(UIViewController *)self fcui_layoutViewIfNeededAndAppearingOrAppearedWithSelectionAnimation];
   }
@@ -320,21 +320,21 @@ uint64_t __93__FCUIActivityPickerViewController_activityManager_lifetimeDescript
 
 + (void)_markOnboardingEncountered
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setBool:1 forKey:@"FCUIActivityPickerViewControllerOnboardingEncountered"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"FCUIActivityPickerViewControllerOnboardingEncountered"];
 }
 
 + (void)_markOnboardingComplete
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setBool:1 forKey:@"FCUIActivityPickerViewControllerOnboardingComplete"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"FCUIActivityPickerViewControllerOnboardingComplete"];
 }
 
 - (id)_activityListView
 {
-  v2 = [(FCUIActivityPickerViewController *)self view];
+  view = [(FCUIActivityPickerViewController *)self view];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = view;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -357,34 +357,34 @@ uint64_t __93__FCUIActivityPickerViewController_activityManager_lifetimeDescript
 {
   if ([(FCUIActivityPickerViewController *)self isViewLoaded])
   {
-    v6 = [(FCUIActivityPickerViewController *)self _activityListView];
-    v3 = [(FCUIActivityPickerViewController *)self view];
-    [v3 bounds];
-    [v6 sizeThatFits:{v4, v5}];
+    _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+    view = [(FCUIActivityPickerViewController *)self view];
+    [view bounds];
+    [_activityListView sizeThatFits:{v4, v5}];
     [(FCUIActivityPickerViewController *)self setPreferredContentSize:?];
   }
 }
 
-- (void)_updateSelectedStateOfActivityControl:(id)a3 activeActivity:(id)a4 lifetimeOfActiveActivity:(id)a5
+- (void)_updateSelectedStateOfActivityControl:(id)control activeActivity:(id)activity lifetimeOfActiveActivity:(id)activeActivity
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  controlCopy = control;
+  activityCopy = activity;
+  activeActivityCopy = activeActivity;
+  if (controlCopy)
   {
-    v10 = [v7 activityUniqueIdentifier];
-    v24 = v8;
-    v11 = [v8 activityUniqueIdentifier];
-    v12 = [v10 isEqual:v11];
+    activityUniqueIdentifier = [controlCopy activityUniqueIdentifier];
+    v24 = activityCopy;
+    activityUniqueIdentifier2 = [activityCopy activityUniqueIdentifier];
+    v12 = [activityUniqueIdentifier isEqual:activityUniqueIdentifier2];
 
-    [v7 setSelected:v12];
+    [controlCopy setSelected:v12];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [v7 menuItemElements];
-    v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    menuItemElements = [controlCopy menuItemElements];
+    v14 = [menuItemElements countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v14)
     {
       v15 = v14;
@@ -395,15 +395,15 @@ uint64_t __93__FCUIActivityPickerViewController_activityManager_lifetimeDescript
         {
           if (*v26 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(menuItemElements);
           }
 
           v18 = *(*(&v25 + 1) + 8 * i);
           if (v12)
           {
-            v19 = [*(*(&v25 + 1) + 8 * i) representedObjectIdentifier];
-            v20 = [v9 lifetimeIdentifier];
-            [v18 setSelected:{objc_msgSend(v19, "isEqualToString:", v20)}];
+            representedObjectIdentifier = [*(*(&v25 + 1) + 8 * i) representedObjectIdentifier];
+            lifetimeIdentifier = [activeActivityCopy lifetimeIdentifier];
+            [v18 setSelected:{objc_msgSend(representedObjectIdentifier, "isEqualToString:", lifetimeIdentifier)}];
           }
 
           else
@@ -412,33 +412,33 @@ uint64_t __93__FCUIActivityPickerViewController_activityManager_lifetimeDescript
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v15 = [menuItemElements countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v15);
     }
 
-    v8 = v24;
-    if (([v7 isPlaceholder] & 1) == 0)
+    activityCopy = v24;
+    if (([controlCopy isPlaceholder] & 1) == 0)
     {
-      if (v12 & 1 | (([v7 showsPersistentDetailText] & 1) == 0))
+      if (v12 & 1 | (([controlCopy showsPersistentDetailText] & 1) == 0))
       {
         if (!v12)
         {
-          [v7 setDetailText:0];
+          [controlCopy setDetailText:0];
           goto LABEL_19;
         }
 
-        v21 = [(FCActivityManager *)self->_activityManager localizedTerminationDescriptionForActiveActivity];
+        localizedTerminationDescriptionForActiveActivity = [(FCActivityManager *)self->_activityManager localizedTerminationDescriptionForActiveActivity];
       }
 
       else
       {
-        v21 = [v7 activityDetailText];
+        localizedTerminationDescriptionForActiveActivity = [controlCopy activityDetailText];
       }
 
-      v22 = v21;
-      [v7 setDetailText:{v21, self}];
+      v22 = localizedTerminationDescriptionForActiveActivity;
+      [controlCopy setDetailText:{localizedTerminationDescriptionForActiveActivity, self}];
     }
   }
 
@@ -448,16 +448,16 @@ LABEL_19:
 - (void)_updateSelectedStateOfActivityViews
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(FCActivityManager *)self->_activityManager activeActivity];
-  v4 = [(FCActivityManager *)self->_activityManager lifetimeOfActivity:v3];
+  activeActivity = [(FCActivityManager *)self->_activityManager activeActivity];
+  v4 = [(FCActivityManager *)self->_activityManager lifetimeOfActivity:activeActivity];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(FCUIActivityPickerViewController *)self _activityListView];
-  v6 = [v5 activityViews];
+  _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+  activityViews = [_activityListView activityViews];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [activityViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -469,7 +469,7 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activityViews);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
@@ -495,12 +495,12 @@ LABEL_19:
 
         v15 = v14;
 
-        [(FCUIActivityPickerViewController *)self _updateSelectedStateOfActivityControl:v15 activeActivity:v3 lifetimeOfActiveActivity:v4];
+        [(FCUIActivityPickerViewController *)self _updateSelectedStateOfActivityControl:v15 activeActivity:activeActivity lifetimeOfActiveActivity:v4];
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [activityViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -509,12 +509,12 @@ LABEL_19:
   [(UIViewController *)self fcui_layoutViewIfNeededAndAppearingOrAppearedWithSelectionAnimation];
 }
 
-- (void)_presentActivityEditUI:(id)a3
+- (void)_presentActivityEditUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = [_TtC7FocusUI26ActivityEditViewController alloc];
-  v6 = [v4 activityDescription];
-  v7 = [(ActivityEditViewController *)v5 initWithActivityDescription:v6];
+  activityDescription = [iCopy activityDescription];
+  v7 = [(ActivityEditViewController *)v5 initWithActivityDescription:activityDescription];
 
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
@@ -524,7 +524,7 @@ LABEL_19:
   objc_copyWeak(&v18, &location);
   [(ActivityEditViewController *)v7 setWillDisappearBlock:v17];
   [(FCUIActivityPickerViewController *)self presentViewController:v7 animated:1 completion:0];
-  v8 = [(FCUIActivityPickerViewController *)self transitionCoordinator];
+  transitionCoordinator = [(FCUIActivityPickerViewController *)self transitionCoordinator];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__FCUIActivityPickerViewController__presentActivityEditUI___block_invoke_3;
@@ -532,9 +532,9 @@ LABEL_19:
   objc_copyWeak(&v16, &location);
   v9 = v7;
   v14 = v9;
-  v10 = v4;
+  v10 = iCopy;
   v15 = v10;
-  [v8 animateAlongsideTransition:v13 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v13 completion:0];
 
   editViewController = self->_editViewController;
   self->_editViewController = v9;
@@ -579,16 +579,16 @@ void __59__FCUIActivityPickerViewController__presentActivityEditUI___block_invok
   [v5 isolateActivityView:*(a1 + 40) withInset:{0.0, 0.0, v7, 0.0}];
 }
 
-- (void)_openURL:(id)a3
+- (void)_openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__FCUIActivityPickerViewController__openURL___block_invoke;
   block[3] = &unk_27901A470;
-  v7 = v3;
-  v5 = v3;
+  v7 = lCopy;
+  v5 = lCopy;
   dispatch_async(v4, block);
 }
 
@@ -628,11 +628,11 @@ void __45__FCUIActivityPickerViewController__openURL___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_openEditUI:(id)a3
+- (void)_openEditUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = objc_opt_class();
-  v9 = v4;
+  v9 = iCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -653,16 +653,16 @@ void __45__FCUIActivityPickerViewController__openURL___block_invoke(uint64_t a1)
 
   v7 = v6;
 
-  v8 = [v7 activitySettingsURL];
+  activitySettingsURL = [v7 activitySettingsURL];
 
-  [(FCUIActivityPickerViewController *)self _openURL:v8];
+  [(FCUIActivityPickerViewController *)self _openURL:activitySettingsURL];
 }
 
-- (void)_openSetupUI:(id)a3
+- (void)_openSetupUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = objc_opt_class();
-  v9 = v4;
+  v9 = iCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -705,27 +705,27 @@ void __45__FCUIActivityPickerViewController__openURL___block_invoke(uint64_t a1)
 
 - (BOOL)_isConfiguringEducationCard
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isConfiguringEducationCard = v2->_isConfiguringEducationCard;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isConfiguringEducationCard = selfCopy->_isConfiguringEducationCard;
+  objc_sync_exit(selfCopy);
 
   return isConfiguringEducationCard;
 }
 
-- (void)_setConfiguringEducationCard:(BOOL)a3
+- (void)_setConfiguringEducationCard:(BOOL)card
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isConfiguringEducationCard = a3;
+  obj->_isConfiguringEducationCard = card;
   objc_sync_exit(obj);
 }
 
 - (void)_configureEducationCardIfNecessary
 {
-  v3 = [(FCUIActivityPickerViewController *)self _activityListView];
-  v4 = [v3 headerView];
-  if (v4)
+  _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+  headerView = [_activityListView headerView];
+  if (headerView)
   {
   }
 
@@ -741,10 +741,10 @@ void __45__FCUIActivityPickerViewController__openURL___block_invoke(uint64_t a1)
     v22[4] = __Block_byref_object_dispose_;
     v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v8 stringByAppendingFormat:@"%@.educationCardBaubleDescriptions", v10];
+    v11 = [bundleIdentifier stringByAppendingFormat:@"%@.educationCardBaubleDescriptions", v10];
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
 
     objc_initWeak(&location, self);
@@ -756,7 +756,7 @@ void __45__FCUIActivityPickerViewController__openURL___block_invoke(uint64_t a1)
     v16 = v5;
     v17 = v6;
     v19 = v22;
-    v18 = v3;
+    v18 = _activityListView;
     v13 = v6;
     v14 = v5;
     dispatch_async(SerialWithQoS, block);
@@ -870,29 +870,29 @@ void __70__FCUIActivityPickerViewController__configureEducationCardIfNecessary__
 {
   if (![(FCUIActivityPickerViewController *)self isViewLoaded])
   {
-    v3 = 0;
+    _activityListView = 0;
     goto LABEL_8;
   }
 
-  v3 = [(FCUIActivityPickerViewController *)self _activityListView];
-  if (v3)
+  _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+  if (_activityListView)
   {
     if ([objc_opt_class() isOnboardingComplete])
     {
-      [v3 setHeaderView:0];
-      v4 = [v3 activityViews];
-      v5 = [v4 count];
-      v6 = [(FCActivityManager *)self->_activityManager maximumActivityCountForUserInterface];
+      [_activityListView setHeaderView:0];
+      activityViews = [_activityListView activityViews];
+      v5 = [activityViews count];
+      maximumActivityCountForUserInterface = [(FCActivityManager *)self->_activityManager maximumActivityCountForUserInterface];
 
-      v7 = [v3 footerView];
-      v8 = v7;
-      if (v5 < v6)
+      footerView = [_activityListView footerView];
+      v8 = footerView;
+      if (v5 < maximumActivityCountForUserInterface)
       {
 
         if (!v8)
         {
           objc_initWeak(&location, self);
-          objc_initWeak(&from, v3);
+          objc_initWeak(&from, _activityListView);
           v9 = [FCUIAddActivityFooterView alloc];
           v10 = MEMORY[0x277D750C8];
           v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -905,7 +905,7 @@ void __70__FCUIActivityPickerViewController__configureEducationCardIfNecessary__
           objc_copyWeak(&v19, &from);
           v13 = [v10 actionWithTitle:v12 image:0 identifier:@"newFocus" handler:v17];
           v14 = [(FCUIAddActivityFooterView *)v9 initWithAction:v13];
-          [v3 setFooterView:v14];
+          [_activityListView setFooterView:v14];
 
           objc_destroyWeak(&v19);
           objc_destroyWeak(&v18);
@@ -941,7 +941,7 @@ LABEL_14:
       [(FCUIActivityPickerViewController *)self _configureEducationCardIfNecessary];
     }
 
-    [v3 setFooterView:0];
+    [_activityListView setFooterView:0];
     goto LABEL_14;
   }
 
@@ -970,16 +970,16 @@ void __68__FCUIActivityPickerViewController__updateHeaderOrFooterIfNecessary__bl
   }
 }
 
-- (void)_configureActivityView:(id)a3 withLifetimesDescriptionsForActivity:(id)a4
+- (void)_configureActivityView:(id)view withLifetimesDescriptionsForActivity:(id)activity
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isPlaceholder] & 1) == 0)
+  viewCopy = view;
+  activityCopy = activity;
+  if (([activityCopy isPlaceholder] & 1) == 0)
   {
-    v7 = [v5 activityUniqueIdentifier];
-    v8 = [v6 activityUniqueIdentifier];
-    v9 = [v7 isEqual:v8];
+    activityUniqueIdentifier = [viewCopy activityUniqueIdentifier];
+    activityUniqueIdentifier2 = [activityCopy activityUniqueIdentifier];
+    v9 = [activityUniqueIdentifier isEqual:activityUniqueIdentifier2];
 
     if (v9)
     {
@@ -990,8 +990,8 @@ void __68__FCUIActivityPickerViewController__updateHeaderOrFooterIfNecessary__bl
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v26 = v6;
-        obj = [v6 activityLifetimeDescriptions];
+        v26 = activityCopy;
+        obj = [activityCopy activityLifetimeDescriptions];
         v11 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v11)
         {
@@ -1007,17 +1007,17 @@ void __68__FCUIActivityPickerViewController__updateHeaderOrFooterIfNecessary__bl
               }
 
               v15 = *(*(&v33 + 1) + 8 * i);
-              v16 = [v15 lifetimeIdentifier];
+              lifetimeIdentifier = [v15 lifetimeIdentifier];
               v17 = MEMORY[0x277D750C8];
-              v18 = [v15 lifetimeName];
+              lifetimeName = [v15 lifetimeName];
               v29[0] = MEMORY[0x277D85DD0];
               v29[1] = 3221225472;
               v29[2] = __96__FCUIActivityPickerViewController__configureActivityView_withLifetimesDescriptionsForActivity___block_invoke;
               v29[3] = &unk_27901A558;
-              v30 = v5;
-              v31 = self;
+              v30 = viewCopy;
+              selfCopy = self;
               v32 = v15;
-              v19 = [v17 actionWithTitle:v18 image:0 identifier:v16 handler:v29];
+              v19 = [v17 actionWithTitle:lifetimeName image:0 identifier:lifetimeIdentifier handler:v29];
 
               if (+[FCUILockStateProvider isDeviceLocked])
               {
@@ -1026,8 +1026,8 @@ void __68__FCUIActivityPickerViewController__updateHeaderOrFooterIfNecessary__bl
 
               else
               {
-                v20 = [v15 lifetimeMetadata];
-                [v19 setDiscoverabilityTitle:v20];
+                lifetimeMetadata = [v15 lifetimeMetadata];
+                [v19 setDiscoverabilityTitle:lifetimeMetadata];
               }
 
               [v10 addObject:v19];
@@ -1041,32 +1041,32 @@ void __68__FCUIActivityPickerViewController__updateHeaderOrFooterIfNecessary__bl
 
         if ([v10 count])
         {
-          [v5 setMenuItemActions:v10];
-          v21 = [(FCActivityManager *)self->_activityManager activeActivity];
-          v22 = [(FCActivityManager *)self->_activityManager lifetimeOfActivity:v21];
-          [(FCUIActivityPickerViewController *)self _updateSelectedStateOfActivityControl:v5 activeActivity:v21 lifetimeOfActiveActivity:v22];
+          [viewCopy setMenuItemActions:v10];
+          activeActivity = [(FCActivityManager *)self->_activityManager activeActivity];
+          v22 = [(FCActivityManager *)self->_activityManager lifetimeOfActivity:activeActivity];
+          [(FCUIActivityPickerViewController *)self _updateSelectedStateOfActivityControl:viewCopy activeActivity:activeActivity lifetimeOfActiveActivity:v22];
 
-          v6 = v26;
+          activityCopy = v26;
         }
 
         else
         {
-          v6 = v26;
-          v23 = [v26 activityLifetimesAlternativeDescription];
-          v24 = [v23 length];
+          activityCopy = v26;
+          activityLifetimesAlternativeDescription = [v26 activityLifetimesAlternativeDescription];
+          v24 = [activityLifetimesAlternativeDescription length];
 
           if (!v24)
           {
 LABEL_20:
-            v25 = [(FCUIActivityPickerViewController *)self view];
-            [v25 setNeedsLayout];
+            view = [(FCUIActivityPickerViewController *)self view];
+            [view setNeedsLayout];
 
             [(UIViewController *)self fcui_layoutViewIfNeededAndAppearingOrAppearedWithSelectionAnimation];
             goto LABEL_21;
           }
 
-          v21 = [v26 activityLifetimesAlternativeDescription];
-          [v5 setMenuAlternativeDescription:v21];
+          activeActivity = [v26 activityLifetimesAlternativeDescription];
+          [viewCopy setMenuAlternativeDescription:activeActivity];
         }
 
         goto LABEL_20;
@@ -1132,22 +1132,22 @@ void __96__FCUIActivityPickerViewController__configureActivityView_withLifetimes
   [a1[5] fcui_layoutViewIfNeededAndAppearingOrAppearedWithSelectionAnimation];
 }
 
-- (void)_configureActivityListViewWithAvailableActivities:(id)a3
+- (void)_configureActivityListViewWithAvailableActivities:(id)activities
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v22 = [(FCUIActivityPickerViewController *)self _activityListView];
-  [v22 setAdjustsFontForContentSizeCategory:1];
+  activitiesCopy = activities;
+  _activityListView = [(FCUIActivityPickerViewController *)self _activityListView];
+  [_activityListView setAdjustsFontForContentSizeCategory:1];
   objc_initWeak(&location, self);
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v22 activityViews];
-  v27 = [v5 mutableCopy];
+  activityViews = [_activityListView activityViews];
+  v27 = [activityViews mutableCopy];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v4;
+  obj = activitiesCopy;
   v6 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v6)
   {
@@ -1270,7 +1270,7 @@ void __96__FCUIActivityPickerViewController__configureActivityView_withLifetimes
     while (v6);
   }
 
-  [v22 setActivityViews:v25];
+  [_activityListView setActivityViews:v25];
   [(FCUIActivityPickerViewController *)self _updateHeaderOrFooterIfNecessary];
   [(FCUIActivityPickerViewController *)self _updateSelectedStateOfActivityViews];
   [(FCUIActivityPickerViewController *)self _updatePreferredContentSize];

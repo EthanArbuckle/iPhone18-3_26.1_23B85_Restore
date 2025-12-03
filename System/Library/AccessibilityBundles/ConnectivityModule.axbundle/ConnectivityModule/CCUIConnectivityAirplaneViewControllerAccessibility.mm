@@ -1,24 +1,24 @@
 @interface CCUIConnectivityAirplaneViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)buttonTapped:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)buttonTapped:(id)tapped;
 @end
 
 @implementation CCUIConnectivityAirplaneViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIConnectivityAirplaneViewController" hasInstanceMethod:@"buttonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CCUIConnectivityAirplaneViewController" hasInstanceMethod:@"_isAirplaneModeEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIConnectivityAirplaneViewController" hasInstanceMethod:@"buttonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CCUIConnectivityAirplaneViewController" hasInstanceMethod:@"_isAirplaneModeEnabled" withFullSignature:{"B", 0}];
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
-    v5 = [MEMORY[0x29EDBDF48] bluetoothKeyboardDevices];
-    v6 = [v5 count] != 0;
+    bluetoothKeyboardDevices = [MEMORY[0x29EDBDF48] bluetoothKeyboardDevices];
+    v6 = [bluetoothKeyboardDevices count] != 0;
   }
 
   else
@@ -28,21 +28,21 @@
 
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v7 = [MEMORY[0x29EDBDFC8] server];
-    v8 = [v7 isBluetoothBrailleDisplayConnected];
+    server = [MEMORY[0x29EDBDFC8] server];
+    isBluetoothBrailleDisplayConnected = [server isBluetoothBrailleDisplayConnected];
   }
 
   else
   {
-    v8 = 0;
+    isBluetoothBrailleDisplayConnected = 0;
   }
 
   v9 = [(CCUIConnectivityAirplaneViewControllerAccessibility *)self safeBoolForKey:@"_isAirplaneModeEnabled"];
-  if ((UIAccessibilityIsSwitchControlRunning() | v6 | v8) & 1) == 0 || (v9)
+  if ((UIAccessibilityIsSwitchControlRunning() | v6 | isBluetoothBrailleDisplayConnected) & 1) == 0 || (v9)
   {
     v22.receiver = self;
     v22.super_class = CCUIConnectivityAirplaneViewControllerAccessibility;
-    [(CCUIConnectivityAirplaneViewControllerAccessibility *)&v22 buttonTapped:v4];
+    [(CCUIConnectivityAirplaneViewControllerAccessibility *)&v22 buttonTapped:tappedCopy];
   }
 
   else
@@ -71,8 +71,8 @@
     v23[1] = 3221225472;
     v23[2] = __68__CCUIConnectivityAirplaneViewControllerAccessibility_buttonTapped___block_invoke_2;
     v23[3] = &unk_29F2B4F88;
-    v24 = v4;
-    v25 = self;
+    v24 = tappedCopy;
+    selfCopy = self;
     v21 = [v19 actionWithTitle:v20 style:0 handler:v23];
 
     [v14 addAction:v18];

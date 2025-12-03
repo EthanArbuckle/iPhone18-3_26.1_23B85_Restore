@@ -1,22 +1,22 @@
 @interface CKSettingsMeCardSharingNameProvider
-+ (id)nameProviderForNickname:(id)a3;
++ (id)nameProviderForNickname:(id)nickname;
 @end
 
 @implementation CKSettingsMeCardSharingNameProvider
 
-+ (id)nameProviderForNickname:(id)a3
++ (id)nameProviderForNickname:(id)nickname
 {
-  v3 = a3;
-  if (v3)
+  nicknameCopy = nickname;
+  if (nicknameCopy)
   {
     v4 = objc_alloc_init(CKSettingsMeCardSharingNameProvider);
     if (v4)
     {
-      v5 = [v3 firstName];
-      [(CKSettingsMeCardSharingNameProvider *)v4 setGivenName:v5];
+      firstName = [nicknameCopy firstName];
+      [(CKSettingsMeCardSharingNameProvider *)v4 setGivenName:firstName];
 
-      v6 = [v3 lastName];
-      [(CKSettingsMeCardSharingNameProvider *)v4 setFamilyName:v6];
+      lastName = [nicknameCopy lastName];
+      [(CKSettingsMeCardSharingNameProvider *)v4 setFamilyName:lastName];
     }
   }
 

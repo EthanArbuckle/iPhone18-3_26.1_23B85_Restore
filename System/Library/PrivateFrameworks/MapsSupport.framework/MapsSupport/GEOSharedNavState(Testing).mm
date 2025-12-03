@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __43__GEOSharedNavState_Testing___msp_testTrip__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_msp_testTrip_onceToken != -1)
   {
     dispatch_once(&_msp_testTrip_onceToken, block);
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __60__GEOSharedNavState_Testing___msp_testTripWithMultipleStops__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_msp_testTripWithMultipleStops_onceToken != -1)
   {
     dispatch_once(&_msp_testTripWithMultipleStops_onceToken, block);
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __72__GEOSharedNavState_Testing___msp_testTripWithMultipleStopsMiddleOfTrip__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_msp_testTripWithMultipleStopsMiddleOfTrip_onceToken != -1)
   {
     dispatch_once(&_msp_testTripWithMultipleStopsMiddleOfTrip_onceToken, block);
@@ -73,7 +73,7 @@
   block[1] = 3221225472;
   block[2] = __46__GEOSharedNavState_Testing___msp_testTripSky__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_msp_testTripSky_onceToken != -1)
   {
     dispatch_once(&_msp_testTripSky_onceToken, block);
@@ -90,7 +90,7 @@
   block[1] = 3221225472;
   block[2] = __59__GEOSharedNavState_Testing___msp_testTripClosedTripInPast__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_msp_testTripClosedTripInPast_onceToken != -1)
   {
     dispatch_once(&_msp_testTripClosedTripInPast_onceToken, block);
@@ -104,16 +104,16 @@
 + (void)_msp_registerTestTrip:()Testing
 {
   v4 = a3;
-  v6 = [a1 _msp_testTripsByIdentifier];
-  v5 = [v4 groupIdentifier];
-  [v6 setObject:v4 forKey:v5];
+  _msp_testTripsByIdentifier = [self _msp_testTripsByIdentifier];
+  groupIdentifier = [v4 groupIdentifier];
+  [_msp_testTripsByIdentifier setObject:v4 forKey:groupIdentifier];
 }
 
 + (id)_msp_testTripForIdentifier:()Testing
 {
   v4 = a3;
-  v5 = [a1 _msp_testTripsByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  _msp_testTripsByIdentifier = [self _msp_testTripsByIdentifier];
+  v6 = [_msp_testTripsByIdentifier objectForKeyedSubscript:v4];
 
   return v6;
 }
@@ -121,14 +121,14 @@
 + (uint64_t)_msp_blockTestTripWithIdentifier:()Testing
 {
   v4 = a3;
-  v5 = [a1 _msp_testTripsByIdentifier];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:v4];
+  _msp_testTripsByIdentifier = [self _msp_testTripsByIdentifier];
+  allKeys = [_msp_testTripsByIdentifier allKeys];
+  v7 = [allKeys containsObject:v4];
 
   if (v7)
   {
-    v8 = [a1 _msp_blockedTestTripIdentifiers];
-    [v8 addObject:v4];
+    _msp_blockedTestTripIdentifiers = [self _msp_blockedTestTripIdentifiers];
+    [_msp_blockedTestTripIdentifiers addObject:v4];
   }
 
   return v7;
@@ -137,8 +137,8 @@
 + (uint64_t)_msp_isTestTripBlockedWithIdentifier:()Testing
 {
   v4 = a3;
-  v5 = [a1 _msp_blockedTestTripIdentifiers];
-  v6 = [v5 containsObject:v4];
+  _msp_blockedTestTripIdentifiers = [self _msp_blockedTestTripIdentifiers];
+  v6 = [_msp_blockedTestTripIdentifiers containsObject:v4];
 
   return v6;
 }

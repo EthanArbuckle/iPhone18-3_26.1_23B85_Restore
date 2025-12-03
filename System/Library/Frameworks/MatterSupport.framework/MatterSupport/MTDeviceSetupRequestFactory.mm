@@ -1,16 +1,16 @@
 @interface MTDeviceSetupRequestFactory
-+ (id)makeRequestFrom:(id)a3;
-+ (id)makeRequestWithEcosystemName:(id)a3 homes:(id)a4 blockedDevicePairings:(id)a5;
++ (id)makeRequestFrom:(id)from;
++ (id)makeRequestWithEcosystemName:(id)name homes:(id)homes blockedDevicePairings:(id)pairings;
 - (MTDeviceSetupRequestFactory)init;
 @end
 
 @implementation MTDeviceSetupRequestFactory
 
-+ (id)makeRequestFrom:(id)a3
++ (id)makeRequestFrom:(id)from
 {
-  if (a3)
+  if (from)
   {
-    v3 = a3;
+    fromCopy = from;
     v4 = sub_239856AB4();
     v6 = v5;
   }
@@ -27,7 +27,7 @@
   return v7;
 }
 
-+ (id)makeRequestWithEcosystemName:(id)a3 homes:(id)a4 blockedDevicePairings:(id)a5
++ (id)makeRequestWithEcosystemName:(id)name homes:(id)homes blockedDevicePairings:(id)pairings
 {
   v5 = sub_239856C34();
   v7 = v6;

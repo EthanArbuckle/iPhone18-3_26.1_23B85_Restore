@@ -1,25 +1,25 @@
 @interface TrafficAlertBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TrafficAlertBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TrafficAlertBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation;
 - (void)updateFromBannerItem;
 @end
 
 @implementation TrafficAlertBannerView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   cachedHeight = self->_cachedHeight;
-  if (cachedHeight == -1.0 || self->_calculatedWidth != a3.width)
+  if (cachedHeight == -1.0 || self->_calculatedWidth != fits.width)
   {
     if ([(MapsBannerView *)self aperturePresentation])
     {
-      v7 = [(TrafficAlertBannerView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
-      [v7 layoutFrame];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [(TrafficAlertBannerView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
+      [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
       MaxY = CGRectGetMaxY(v25);
-      v9 = [(MapsBannerView *)self contentView];
-      [v9 _maps_compressedSizeForWidth:0 withBlock:width];
+      contentView = [(MapsBannerView *)self contentView];
+      [contentView _maps_compressedSizeForWidth:0 withBlock:width];
       v11 = v10 + 17.0 + MaxY;
     }
 
@@ -41,12 +41,12 @@
       v13 = sub_100032C3C();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        v14 = [(MapsBannerView *)self item];
+        item = [(MapsBannerView *)self item];
         v23.width = width;
         v23.height = height;
         v15 = NSStringFromCGSize(v23);
         v17 = 138412802;
-        v18 = v14;
+        v18 = item;
         v19 = 2112;
         v20 = v15;
         v21 = 2048;
@@ -66,15 +66,15 @@
 
 - (void)updateFromBannerItem
 {
-  v28 = [(MapsBannerView *)self item];
-  v3 = [(UILabel *)self->_titleLabel text];
-  v4 = [v28 title];
-  v5 = v3;
-  v6 = v4;
+  item = [(MapsBannerView *)self item];
+  text = [(UILabel *)self->_titleLabel text];
+  title = [item title];
+  icon3 = text;
+  v6 = title;
   v7 = &OBJC_IVAR___RidesharingConfirmedRideViewController__feedbackHeaderView;
-  if (v5 | v6)
+  if (icon3 | v6)
   {
-    v8 = [v5 isEqual:v6];
+    v8 = [icon3 isEqual:v6];
 
     if (!v8)
     {
@@ -82,10 +82,10 @@
     }
   }
 
-  v9 = [(UILabel *)self->_descriptionLabel text];
-  v10 = [v28 subtitle];
-  v11 = v9;
-  v12 = v10;
+  text2 = [(UILabel *)self->_descriptionLabel text];
+  subtitle = [item subtitle];
+  v11 = text2;
+  v12 = subtitle;
   if (v11 | v12)
   {
     v13 = [v11 isEqual:v12];
@@ -98,10 +98,10 @@ LABEL_10:
     }
   }
 
-  v14 = [(MKArtworkImageView *)self->_artworkImageView image];
-  v15 = [v28 icon];
-  v16 = v14;
-  v17 = v15;
+  image = [(MKArtworkImageView *)self->_artworkImageView image];
+  icon = [item icon];
+  v16 = image;
+  v17 = icon;
   if (!(v16 | v17))
   {
 
@@ -116,14 +116,14 @@ LABEL_18:
   if ((v19 & 1) == 0)
   {
 LABEL_11:
-    v20 = [v28 title];
-    [(UILabel *)self->_titleLabel setText:v20];
+    title2 = [item title];
+    [(UILabel *)self->_titleLabel setText:title2];
 
-    v21 = [v28 title];
-    if (v21)
+    title3 = [item title];
+    if (title3)
     {
-      v22 = [v28 title];
-      -[UILabel setHidden:](self->_titleLabel, "setHidden:", [v22 length] == 0);
+      title4 = [item title];
+      -[UILabel setHidden:](self->_titleLabel, "setHidden:", [title4 length] == 0);
     }
 
     else
@@ -131,14 +131,14 @@ LABEL_11:
       [(UILabel *)self->_titleLabel setHidden:1];
     }
 
-    v23 = [v28 subtitle];
-    [(UILabel *)self->_descriptionLabel setText:v23];
+    subtitle2 = [item subtitle];
+    [(UILabel *)self->_descriptionLabel setText:subtitle2];
 
-    v24 = [v28 subtitle];
-    if (v24)
+    subtitle3 = [item subtitle];
+    if (subtitle3)
     {
-      v25 = [v28 subtitle];
-      -[UILabel setHidden:](self->_descriptionLabel, "setHidden:", [v25 length] == 0);
+      subtitle4 = [item subtitle];
+      -[UILabel setHidden:](self->_descriptionLabel, "setHidden:", [subtitle4 length] == 0);
     }
 
     else
@@ -147,24 +147,24 @@ LABEL_11:
     }
 
     self->_cachedHeight = -1.0;
-    v26 = [v28 icon];
+    icon2 = [item icon];
     v27 = v7[876];
-    [*(&self->super.super.super.super.isa + v27) setImageSource:v26];
+    [*(&self->super.super.super.super.isa + v27) setImageSource:icon2];
 
-    v5 = [v28 icon];
-    [*(&self->super.super.super.super.isa + v27) setHidden:v5 == 0];
+    icon3 = [item icon];
+    [*(&self->super.super.super.super.isa + v27) setHidden:icon3 == 0];
     goto LABEL_18;
   }
 
 LABEL_19:
 }
 
-- (TrafficAlertBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5
+- (TrafficAlertBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation
 {
-  v5 = a5;
+  presentationCopy = presentation;
   v37.receiver = self;
   v37.super_class = TrafficAlertBannerView;
-  v6 = [(MapsBannerView *)&v37 initWithTarget:a3 item:a4 aperturePresentation:?];
+  v6 = [(MapsBannerView *)&v37 initWithTarget:target item:item aperturePresentation:?];
   if (v6)
   {
     v7 = objc_opt_class();
@@ -208,26 +208,26 @@ LABEL_19:
     v22 = [UIFont systemFontOfSize:26.0 weight:UIFontWeightMedium];
     [(UILabel *)v6->_descriptionLabel setFont:v22];
 
-    v23 = [(MKArtworkImageView *)v6->_artworkImageView widthAnchor];
-    v24 = [v23 constraintEqualToConstant:46.0];
+    widthAnchor = [(MKArtworkImageView *)v6->_artworkImageView widthAnchor];
+    v24 = [widthAnchor constraintEqualToConstant:46.0];
     v38[0] = v24;
-    v25 = [(MKArtworkImageView *)v6->_artworkImageView heightAnchor];
-    v26 = [v25 constraintEqualToConstant:46.0];
+    heightAnchor = [(MKArtworkImageView *)v6->_artworkImageView heightAnchor];
+    v26 = [heightAnchor constraintEqualToConstant:46.0];
     v38[1] = v26;
     v27 = [NSArray arrayWithObjects:v38 count:2];
     [NSLayoutConstraint activateConstraints:v27];
 
     v28 = [[MapsBannerContent alloc] initWithHeaderView:0 iconView:v6->_artworkImageView leadingTopView:v6->_titleLabel trailingTopView:0 bottomView:v6->_descriptionLabel footerView:0];
-    v29 = [(MapsBannerView *)v6 contentView];
-    [v29 setContent:v28];
+    contentView = [(MapsBannerView *)v6 contentView];
+    [contentView setContent:v28];
 
-    if (v5)
+    if (presentationCopy)
     {
-      v30 = [(UILabel *)v6->_titleLabel _tightBoundingBoxLayoutGuide];
-      v31 = [v30 topAnchor];
-      v32 = [(TrafficAlertBannerView *)v6 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v33 = [v32 bottomAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33];
+      _tightBoundingBoxLayoutGuide = [(UILabel *)v6->_titleLabel _tightBoundingBoxLayoutGuide];
+      topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [(TrafficAlertBannerView *)v6 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide bottomAnchor];
+      v34 = [topAnchor constraintEqualToAnchor:bottomAnchor];
 
       LODWORD(v35) = 1144750080;
       [v34 setPriority:v35];

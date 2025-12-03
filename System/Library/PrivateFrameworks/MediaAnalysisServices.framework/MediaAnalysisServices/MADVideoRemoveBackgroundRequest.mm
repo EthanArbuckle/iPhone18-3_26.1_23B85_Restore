@@ -1,10 +1,10 @@
 @interface MADVideoRemoveBackgroundRequest
 - (MADVideoRemoveBackgroundRequest)init;
-- (MADVideoRemoveBackgroundRequest)initWithCoder:(id)a3;
+- (MADVideoRemoveBackgroundRequest)initWithCoder:(id)coder;
 - (MADVideoRemoveBackgroundResult)result;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMaskTime:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMaskTime:(id *)time;
 @end
 
 @implementation MADVideoRemoveBackgroundRequest
@@ -28,36 +28,36 @@
   return v3;
 }
 
-- (MADVideoRemoveBackgroundRequest)initWithCoder:(id)a3
+- (MADVideoRemoveBackgroundRequest)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = MADVideoRemoveBackgroundRequest;
-  v5 = [(MADVideoRequest *)&v22 initWithCoder:v4];
+  v5 = [(MADVideoRequest *)&v22 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MaxDimension"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MaxDimension"];
     maxDimension = v5->_maxDimension;
     v5->_maxDimension = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinDimension"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinDimension"];
     minDimension = v5->_minDimension;
     v5->_minDimension = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MaxFileSize"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MaxFileSize"];
     maxFileSize = v5->_maxFileSize;
     v5->_maxFileSize = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InstancePoint"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InstancePoint"];
     instancePoint = v5->_instancePoint;
     v5->_instancePoint = v12;
 
-    v5->_maskTime.value = [v4 decodeInt64ForKey:@"MaskTimeValue"];
-    v5->_maskTime.timescale = [v4 decodeInt32ForKey:@"MaskTimeScale"];
-    v5->_maskTime.flags = [v4 decodeInt32ForKey:@"MaskTimeFlags"];
-    v5->_maskTime.epoch = [v4 decodeInt64ForKey:@"MaskTimeEpoch"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OutputType"];
+    v5->_maskTime.value = [coderCopy decodeInt64ForKey:@"MaskTimeValue"];
+    v5->_maskTime.timescale = [coderCopy decodeInt32ForKey:@"MaskTimeScale"];
+    v5->_maskTime.flags = [coderCopy decodeInt32ForKey:@"MaskTimeFlags"];
+    v5->_maskTime.epoch = [coderCopy decodeInt64ForKey:@"MaskTimeEpoch"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OutputType"];
     outputType = v5->_outputType;
     v5->_outputType = v14;
 
@@ -67,7 +67,7 @@
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v18 = [v16 setWithArray:v17];
 
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"StickerIdentifiers"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"StickerIdentifiers"];
     stickerIdentifiers = v5->_stickerIdentifiers;
     v5->_stickerIdentifiers = v19;
   }
@@ -75,90 +75,90 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVideoRemoveBackgroundRequest;
-  v4 = a3;
-  [(MADVideoRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_maxDimension forKey:{@"MaxDimension", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_minDimension forKey:@"MinDimension"];
-  [v4 encodeObject:self->_maxFileSize forKey:@"MaxFileSize"];
-  [v4 encodeObject:self->_instancePoint forKey:@"InstancePoint"];
-  [v4 encodeInt64:self->_maskTime.value forKey:@"MaskTimeValue"];
-  [v4 encodeInt32:self->_maskTime.timescale forKey:@"MaskTimeScale"];
-  [v4 encodeInt32:self->_maskTime.flags forKey:@"MaskTimeFlags"];
-  [v4 encodeInt64:self->_maskTime.epoch forKey:@"MaskTimeEpoch"];
-  [v4 encodeObject:self->_outputType forKey:@"OutputType"];
-  [v4 encodeObject:self->_stickerIdentifiers forKey:@"StickerIdentifiers"];
+  coderCopy = coder;
+  [(MADVideoRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_maxDimension forKey:{@"MaxDimension", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_minDimension forKey:@"MinDimension"];
+  [coderCopy encodeObject:self->_maxFileSize forKey:@"MaxFileSize"];
+  [coderCopy encodeObject:self->_instancePoint forKey:@"InstancePoint"];
+  [coderCopy encodeInt64:self->_maskTime.value forKey:@"MaskTimeValue"];
+  [coderCopy encodeInt32:self->_maskTime.timescale forKey:@"MaskTimeScale"];
+  [coderCopy encodeInt32:self->_maskTime.flags forKey:@"MaskTimeFlags"];
+  [coderCopy encodeInt64:self->_maskTime.epoch forKey:@"MaskTimeEpoch"];
+  [coderCopy encodeObject:self->_outputType forKey:@"OutputType"];
+  [coderCopy encodeObject:self->_stickerIdentifiers forKey:@"StickerIdentifiers"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p", v5, self];
+  [string appendFormat:@"<%@ %p", v5, self];
 
   maxDimension = self->_maxDimension;
   if (maxDimension)
   {
-    [v3 appendFormat:@", maxDimension: %d", -[NSNumber unsignedIntegerValue](maxDimension, "unsignedIntegerValue")];
+    [string appendFormat:@", maxDimension: %d", -[NSNumber unsignedIntegerValue](maxDimension, "unsignedIntegerValue")];
   }
 
   minDimension = self->_minDimension;
   if (minDimension)
   {
-    [v3 appendFormat:@", minDimension: %d", -[NSNumber unsignedIntegerValue](minDimension, "unsignedIntegerValue")];
+    [string appendFormat:@", minDimension: %d", -[NSNumber unsignedIntegerValue](minDimension, "unsignedIntegerValue")];
   }
 
   maxFileSize = self->_maxFileSize;
   if (maxFileSize)
   {
-    [v3 appendFormat:@", maxFileSize: %d", -[NSNumber unsignedIntegerValue](maxFileSize, "unsignedIntegerValue")];
+    [string appendFormat:@", maxFileSize: %d", -[NSNumber unsignedIntegerValue](maxFileSize, "unsignedIntegerValue")];
   }
 
   instancePoint = self->_instancePoint;
   if (instancePoint)
   {
     [(NSValue *)instancePoint pointValue];
-    [v3 appendFormat:@", instancePoint: (%0.3f, %0.3f)", v10, v11];
+    [string appendFormat:@", instancePoint: (%0.3f, %0.3f)", v10, v11];
   }
 
   if (self->_maskTime.flags)
   {
     timescale = self->_maskTime.timescale;
     time = self->_maskTime;
-    [v3 appendFormat:@", maskTime: %lld/%d (%0.3fs)", time.value, timescale, CMTimeGetSeconds(&time)];
+    [string appendFormat:@", maskTime: %lld/%d (%0.3fs)", time.value, timescale, CMTimeGetSeconds(&time)];
   }
 
-  [v3 appendFormat:@", outputType: %@", self->_outputType];
+  [string appendFormat:@", outputType: %@", self->_outputType];
   if ([(NSArray *)self->_stickerIdentifiers count])
   {
-    [v3 appendFormat:@", stickerIdentifiers: %@", self->_stickerIdentifiers];
+    [string appendFormat:@", stickerIdentifiers: %@", self->_stickerIdentifiers];
   }
 
-  v13 = [(MADVideoRequest *)self results];
-  [v3 appendFormat:@", results: %@", v13];
+  results = [(MADVideoRequest *)self results];
+  [string appendFormat:@", results: %@", results];
 
-  v14 = [(MADVideoRequest *)self error];
-  [v3 appendFormat:@", error: %@>", v14];
+  error = [(MADVideoRequest *)self error];
+  [string appendFormat:@", error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 - (MADVideoRemoveBackgroundResult)result
 {
-  v2 = [(MADVideoRequest *)self results];
-  v3 = [v2 firstObject];
+  results = [(MADVideoRequest *)self results];
+  firstObject = [results firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setMaskTime:(id *)a3
+- (void)setMaskTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_maskTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_maskTime.value = *&time->var0;
   self->_maskTime.epoch = var3;
 }
 

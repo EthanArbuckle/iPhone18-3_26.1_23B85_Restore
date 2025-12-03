@@ -1,29 +1,29 @@
 @interface TSCERemoteDataValueMap
-+ (TSCERemoteDataValueMap)valueMapWithSpecifier:(id)a3 value:(id)a4;
++ (TSCERemoteDataValueMap)valueMapWithSpecifier:(id)specifier value:(id)value;
 + (id)valueMap;
-- (BOOL)containsValueForAllSpecifiersInSet:(id)a3;
-- (BOOL)containsValueForSpecifier:(id)a3;
+- (BOOL)containsValueForAllSpecifiersInSet:(id)set;
+- (BOOL)containsValueForSpecifier:(id)specifier;
 - (TSCERemoteDataValueMap)init;
-- (TSCERemoteDataValueMap)initWithData:(id)a3;
+- (TSCERemoteDataValueMap)initWithData:(id)data;
 - (id).cxx_construct;
 - (id)allSpecifiers;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromArchive:(const void *)a3;
-- (id)mapForSingleSpecifier:(id)a3;
-- (id)mapForSpecifiersInSet:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)updateWithValuesFromMap:(id)a3 overwriteValues:(BOOL)a4;
-- (id)valueForSpecifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromArchive:(const void *)archive;
+- (id)mapForSingleSpecifier:(id)specifier;
+- (id)mapForSpecifiersInSet:(id)set;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)updateWithValuesFromMap:(id)map overwriteValues:(BOOL)values;
+- (id)valueForSpecifier:(id)specifier;
 - (int64_t)count;
-- (void)addValuesFromMap:(id)a3;
-- (void)enumerateSpecifiersAndValuesWithBlock:(id)a3;
-- (void)p_enumerateYearMapsWithBlock:(id)a3;
-- (void)p_saveMap:(id)a3 toArchive:(void *)a4;
+- (void)addValuesFromMap:(id)map;
+- (void)enumerateSpecifiersAndValuesWithBlock:(id)block;
+- (void)p_enumerateYearMapsWithBlock:(id)block;
+- (void)p_saveMap:(id)map toArchive:(void *)archive;
 - (void)removeAllValues;
-- (void)removeValueForSpecifier:(id)a3;
-- (void)removeValuesForSpecifierSet:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setValue:(id)a3 forSpecifier:(id)a4;
+- (void)removeValueForSpecifier:(id)specifier;
+- (void)removeValuesForSpecifierSet:(id)set;
+- (void)saveToArchive:(void *)archive;
+- (void)setValue:(id)value forSpecifier:(id)specifier;
 @end
 
 @implementation TSCERemoteDataValueMap
@@ -35,19 +35,19 @@
   return v2;
 }
 
-+ (TSCERemoteDataValueMap)valueMapWithSpecifier:(id)a3 value:(id)a4
++ (TSCERemoteDataValueMap)valueMapWithSpecifier:(id)specifier value:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  valueCopy = value;
   v7 = objc_alloc_init(objc_opt_class());
-  objc_msgSend_setObject_forKeyedSubscript_(v7, v8, v6, v5, v9);
+  objc_msgSend_setObject_forKeyedSubscript_(v7, v8, valueCopy, specifierCopy, v9);
 
   return v7;
 }
 
-- (void)p_enumerateYearMapsWithBlock:(id)a3
+- (void)p_enumerateYearMapsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   p_first_node = &self->_coldDataByYear.__table_.__first_node_;
   do
   {
@@ -58,7 +58,7 @@
     }
 
     v6 = 0;
-    v4[2](v4, p_first_node[2].__next_, p_first_node[3].__next_, &v6);
+    blockCopy[2](blockCopy, p_first_node[2].__next_, p_first_node[3].__next_, &v6);
   }
 
   while ((v6 & 1) == 0);
@@ -79,9 +79,9 @@
   return v2;
 }
 
-- (TSCERemoteDataValueMap)initWithData:(id)a3
+- (TSCERemoteDataValueMap)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9 = objc_msgSend_init(self, v5, v6, v7, v8);
   v10 = v9;
   if (v9)
@@ -91,13 +91,13 @@
     v15[2] = sub_2215A2D64;
     v15[3] = &unk_278467220;
     v16 = v9;
-    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v4, v11, v15, v12, v13);
+    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(dataCopy, v11, v15, v12, v13);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSCERemoteDataValueMap);
   v8 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v5, self->_data, v6, v7);
@@ -132,26 +132,26 @@
   return v9;
 }
 
-- (void)setValue:(id)a3 forSpecifier:(id)a4
+- (void)setValue:(id)value forSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = sub_2215A2DF4(self, v6, 1);
-  objc_msgSend_setObject_forKey_(v7, v8, v10, v6, v9);
+  valueCopy = value;
+  specifierCopy = specifier;
+  v7 = sub_2215A2DF4(self, specifierCopy, 1);
+  objc_msgSend_setObject_forKey_(v7, v8, valueCopy, specifierCopy, v9);
 }
 
-- (void)removeValueForSpecifier:(id)a3
+- (void)removeValueForSpecifier:(id)specifier
 {
-  v8 = a3;
-  v4 = sub_2215A2DF4(self, v8, 0);
-  objc_msgSend_removeObjectForKey_(v4, v5, v8, v6, v7);
+  specifierCopy = specifier;
+  v4 = sub_2215A2DF4(self, specifierCopy, 0);
+  objc_msgSend_removeObjectForKey_(v4, v5, specifierCopy, v6, v7);
 }
 
-- (void)addValuesFromMap:(id)a3
+- (void)addValuesFromMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   data = self->_data;
-  v10 = objc_msgSend_data(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_data(mapCopy, v6, v7, v8, v9);
   objc_msgSend_addEntriesFromDictionary_(data, v11, v10, v12, v13);
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -159,12 +159,12 @@
   v17[2] = sub_2215A3320;
   v17[3] = &unk_278467248;
   v17[4] = self;
-  objc_msgSend_p_enumerateYearMapsWithBlock_(v4, v14, v17, v15, v16);
+  objc_msgSend_p_enumerateYearMapsWithBlock_(mapCopy, v14, v17, v15, v16);
 }
 
-- (id)updateWithValuesFromMap:(id)a3 overwriteValues:(BOOL)a4
+- (id)updateWithValuesFromMap:(id)map overwriteValues:(BOOL)values
 {
-  v6 = a3;
+  mapCopy = map;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -175,22 +175,22 @@
   v16[1] = 3221225472;
   v16[2] = sub_2215A35BC;
   v16[3] = &unk_278467298;
-  v17 = a4;
+  valuesCopy = values;
   v16[4] = self;
   v16[5] = &v18;
-  objc_msgSend_enumerateSpecifiersAndValuesWithBlock_(v6, v11, v16, v12, v13);
+  objc_msgSend_enumerateSpecifiersAndValuesWithBlock_(mapCopy, v11, v16, v12, v13);
   v14 = v19[5];
   _Block_object_dispose(&v18, 8);
 
   return v14;
 }
 
-- (void)removeValuesForSpecifierSet:(id)a3
+- (void)removeValuesForSpecifierSet:(id)set
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   data = self->_data;
-  v10 = objc_msgSend_hotSpecifiers(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_hotSpecifiers(setCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_allObjects(v10, v11, v12, v13, v14);
   objc_msgSend_removeObjectsForKeys_(data, v16, v15, v17, v18);
 
@@ -198,7 +198,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v23 = objc_msgSend_coldSpecifiers(v4, v19, v20, v21, v22, 0);
+  v23 = objc_msgSend_coldSpecifiers(setCopy, v19, v20, v21, v22, 0);
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v33, v37, 16);
   if (v25)
   {
@@ -234,13 +234,13 @@
   sub_2211A89A4(&self->_coldDataByYear);
 }
 
-- (BOOL)containsValueForSpecifier:(id)a3
+- (BOOL)containsValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = sub_2215A2DF4(self, v4, 0);
+  specifierCopy = specifier;
+  v5 = sub_2215A2DF4(self, specifierCopy, 0);
   if (v5)
   {
-    v9 = objc_msgSend_objectForKey_(v5, v6, v4, v7, v8);
+    v9 = objc_msgSend_objectForKey_(v5, v6, specifierCopy, v7, v8);
     v10 = v9 != 0;
   }
 
@@ -252,13 +252,13 @@
   return v10;
 }
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = sub_2215A2DF4(self, v4, 0);
+  specifierCopy = specifier;
+  v5 = sub_2215A2DF4(self, specifierCopy, 0);
   if (v5)
   {
-    v9 = objc_msgSend_objectForKey_(v5, v6, v4, v7, v8);
+    v9 = objc_msgSend_objectForKey_(v5, v6, specifierCopy, v7, v8);
   }
 
   else
@@ -269,7 +269,7 @@
   return v9;
 }
 
-- (BOOL)containsValueForAllSpecifiersInSet:(id)a3
+- (BOOL)containsValueForAllSpecifiersInSet:(id)set
 {
   v8 = 0;
   v9 = &v8;
@@ -281,23 +281,23 @@
   v7[3] = &unk_2784672C0;
   v7[4] = self;
   v7[5] = &v8;
-  objc_msgSend_enumerateSpecifiersWithBlock_(a3, a2, v7, v3, v4);
+  objc_msgSend_enumerateSpecifiersWithBlock_(set, a2, v7, v3, v4);
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (id)mapForSpecifiersInSet:(id)a3
+- (id)mapForSpecifiersInSet:(id)set
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_opt_class();
   v10 = objc_msgSend_valueMap(v5, v6, v7, v8, v9);
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
-  v55 = objc_msgSend_count(v4, v11, v12, v13, v14);
-  objc_msgSend_hotSpecifierArray(v4, v15, v16, v17, v18);
+  v55 = objc_msgSend_count(setCopy, v11, v12, v13, v14);
+  objc_msgSend_hotSpecifierArray(setCopy, v15, v16, v17, v18);
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -341,7 +341,7 @@ LABEL_3:
     }
   }
 
-  v34 = objc_msgSend_yearsReferenced(v4, v30, v31, v32, v33);
+  v34 = objc_msgSend_yearsReferenced(setCopy, v30, v31, v32, v33);
   if (objc_msgSend_count(v34, v35, v36, v37, v38))
   {
     v43[0] = MEMORY[0x277D85DD0];
@@ -349,7 +349,7 @@ LABEL_3:
     v43[2] = sub_2215A3E24;
     v43[3] = &unk_2784672E8;
     v44 = v34;
-    v45 = v4;
+    v45 = setCopy;
     v47 = &v52;
     v46 = v10;
     objc_msgSend_p_enumerateYearMapsWithBlock_(self, v39, v43, v40, v41);
@@ -360,15 +360,15 @@ LABEL_3:
   return v10;
 }
 
-- (id)mapForSingleSpecifier:(id)a3
+- (id)mapForSingleSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_opt_class();
   v10 = objc_msgSend_valueMap(v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_objectForKeyedSubscript_(self, v11, v4, v12, v13);
+  v16 = objc_msgSend_objectForKeyedSubscript_(self, v11, specifierCopy, v12, v13);
   if (v16)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v10, v14, v16, v4, v15);
+    objc_msgSend_setObject_forKeyedSubscript_(v10, v14, v16, specifierCopy, v15);
   }
 
   return v10;
@@ -396,34 +396,34 @@ LABEL_3:
   return v13;
 }
 
-- (void)enumerateSpecifiersAndValuesWithBlock:(id)a3
+- (void)enumerateSpecifiersAndValuesWithBlock:(id)block
 {
-  v4 = a3;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(self->_data, v5, v4, v6, v7);
+  blockCopy = block;
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(self->_data, v5, blockCopy, v6, v7);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2215A4394;
   v12[3] = &unk_278467310;
-  v8 = v4;
+  v8 = blockCopy;
   v13 = v8;
   objc_msgSend_p_enumerateYearMapsWithBlock_(self, v9, v12, v10, v11);
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v5 = objc_msgSend_valueForSpecifier_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_valueForSpecifier_(self, a2, subscript, v3, v4);
 
   return v5;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v51 = objc_msgSend_init(self, a2, a3, v3, v4);
+  v51 = objc_msgSend_init(self, a2, archive, v3, v4);
   if (v51)
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
     v10 = v9 ? v9 + 8 : 0;
-    v11 = *(a3 + 6);
+    v11 = *(archive + 6);
     if (v11)
     {
       v12 = 8 * v11;
@@ -490,25 +490,25 @@ LABEL_3:
   return v51;
 }
 
-- (void)p_saveMap:(id)a3 toArchive:(void *)a4
+- (void)p_saveMap:(id)map toArchive:(void *)archive
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2215A4650;
   v5[3] = &unk_278467330;
-  v5[4] = a4;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(a3, a2, v5, a4, v4);
+  v5[4] = archive;
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(map, a2, v5, archive, v4);
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  objc_msgSend_p_saveMap_toArchive_(self, a2, self->_data, a3, v3);
+  objc_msgSend_p_saveMap_toArchive_(self, a2, self->_data, archive, v3);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2215A485C;
   v9[3] = &unk_278467358;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = archive;
   objc_msgSend_p_enumerateYearMapsWithBlock_(self, v6, v9, v7, v8);
 }
 

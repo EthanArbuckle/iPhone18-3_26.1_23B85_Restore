@@ -1,33 +1,33 @@
 @interface _HKSPDarwinNotificationHeartbeatListener
 - (HKSPXPCHeartbeatListenerDelegate)delegate;
-- (_HKSPDarwinNotificationHeartbeatListener)initWithLifecycleNotification:(id)a3;
+- (_HKSPDarwinNotificationHeartbeatListener)initWithLifecycleNotification:(id)notification;
 - (void)didReceiveLifecycleNotification;
-- (void)setHeartbeatDelegate:(id)a3;
+- (void)setHeartbeatDelegate:(id)delegate;
 @end
 
 @implementation _HKSPDarwinNotificationHeartbeatListener
 
-- (_HKSPDarwinNotificationHeartbeatListener)initWithLifecycleNotification:(id)a3
+- (_HKSPDarwinNotificationHeartbeatListener)initWithLifecycleNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v9.receiver = self;
   v9.super_class = _HKSPDarwinNotificationHeartbeatListener;
   v6 = [(_HKSPDarwinNotificationHeartbeatListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lifecycleNotification, a3);
+    objc_storeStrong(&v6->_lifecycleNotification, notification);
   }
 
   return v7;
 }
 
-- (void)setHeartbeatDelegate:(id)a3
+- (void)setHeartbeatDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   lifecycleNotification = self->_lifecycleNotification;
-  if (a3)
+  if (delegate)
   {
 
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _handleLifeCycleNotification, lifecycleNotification, self, 1028);

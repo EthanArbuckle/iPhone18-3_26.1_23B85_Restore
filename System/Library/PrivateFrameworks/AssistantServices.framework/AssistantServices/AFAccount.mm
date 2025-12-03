@@ -1,122 +1,122 @@
 @interface AFAccount
-- (AFAccount)initWithCoder:(id)a3;
-- (AFAccount)initWithMessageDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AFAccount)initWithCoder:(id)coder;
+- (AFAccount)initWithMessageDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messageDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAccount
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    v7 = [(AFAccount *)self identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    identifier2 = [(AFAccount *)self identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [v5 label];
-      v9 = [(AFAccount *)self label];
-      if ([v8 isEqualToString:v9])
+      label = [v5 label];
+      label2 = [(AFAccount *)self label];
+      if ([label isEqualToString:label2])
       {
-        v10 = [v5 assistantIdentifier];
-        v11 = [(AFAccount *)self assistantIdentifier];
-        if ([v10 isEqualToString:v11])
+        assistantIdentifier = [v5 assistantIdentifier];
+        assistantIdentifier2 = [(AFAccount *)self assistantIdentifier];
+        if ([assistantIdentifier isEqualToString:assistantIdentifier2])
         {
-          v12 = [v5 loggingAssistantIdentifier];
-          v13 = [(AFAccount *)self loggingAssistantIdentifier];
-          v72 = v12;
-          v14 = v12;
-          v15 = v13;
-          if ([v14 isEqualToString:v13])
+          loggingAssistantIdentifier = [v5 loggingAssistantIdentifier];
+          loggingAssistantIdentifier2 = [(AFAccount *)self loggingAssistantIdentifier];
+          v72 = loggingAssistantIdentifier;
+          v14 = loggingAssistantIdentifier;
+          v15 = loggingAssistantIdentifier2;
+          if ([v14 isEqualToString:loggingAssistantIdentifier2])
           {
             v69 = v15;
-            v16 = [v5 speechIdentifier];
-            v70 = [(AFAccount *)self speechIdentifier];
-            v71 = v16;
-            if ([v16 isEqualToString:v70])
+            speechIdentifier = [v5 speechIdentifier];
+            speechIdentifier2 = [(AFAccount *)self speechIdentifier];
+            v71 = speechIdentifier;
+            if ([speechIdentifier isEqualToString:speechIdentifier2])
             {
-              v17 = [v5 hostname];
-              v67 = [(AFAccount *)self hostname];
-              v68 = v17;
-              if ([v17 isEqualToString:v67])
+              hostname = [v5 hostname];
+              hostname2 = [(AFAccount *)self hostname];
+              v68 = hostname;
+              if ([hostname isEqualToString:hostname2])
               {
-                v18 = [v5 peerAssistantIdentifier];
-                v19 = [(AFAccount *)self peerAssistantIdentifier];
-                v66 = v18;
-                v20 = v18;
-                v21 = v19;
-                if ([v20 isEqualToString:v19])
+                peerAssistantIdentifier = [v5 peerAssistantIdentifier];
+                peerAssistantIdentifier2 = [(AFAccount *)self peerAssistantIdentifier];
+                v66 = peerAssistantIdentifier;
+                v20 = peerAssistantIdentifier;
+                v21 = peerAssistantIdentifier2;
+                if ([v20 isEqualToString:peerAssistantIdentifier2])
                 {
                   v65 = v21;
-                  v22 = [v5 peerLoggingAssistantIdentifier];
-                  v63 = [(AFAccount *)self peerLoggingAssistantIdentifier];
-                  v64 = v22;
-                  if ([v22 isEqualToString:v63])
+                  peerLoggingAssistantIdentifier = [v5 peerLoggingAssistantIdentifier];
+                  peerLoggingAssistantIdentifier2 = [(AFAccount *)self peerLoggingAssistantIdentifier];
+                  v64 = peerLoggingAssistantIdentifier;
+                  if ([peerLoggingAssistantIdentifier isEqualToString:peerLoggingAssistantIdentifier2])
                   {
-                    v23 = [v5 peerSpeechIdentifier];
-                    v61 = [(AFAccount *)self peerSpeechIdentifier];
-                    v62 = v23;
-                    if ([v23 isEqualToString:v61])
+                    peerSpeechIdentifier = [v5 peerSpeechIdentifier];
+                    peerSpeechIdentifier2 = [(AFAccount *)self peerSpeechIdentifier];
+                    v62 = peerSpeechIdentifier;
+                    if ([peerSpeechIdentifier isEqualToString:peerSpeechIdentifier2])
                     {
-                      v24 = [v5 peerUserAgentString];
-                      v25 = [(AFAccount *)self peerUserAgentString];
-                      v60 = v24;
-                      v26 = v24;
-                      v27 = v25;
-                      if ([v26 isEqualToString:v25])
+                      peerUserAgentString = [v5 peerUserAgentString];
+                      peerUserAgentString2 = [(AFAccount *)self peerUserAgentString];
+                      v60 = peerUserAgentString;
+                      v26 = peerUserAgentString;
+                      v27 = peerUserAgentString2;
+                      if ([v26 isEqualToString:peerUserAgentString2])
                       {
                         v59 = v27;
-                        v28 = [v5 predefinedServer];
-                        v29 = [(AFAccount *)self predefinedServer];
-                        v58 = v28;
-                        v30 = v28;
-                        v31 = v29;
-                        if ([v30 isEqualToString:v29])
+                        predefinedServer = [v5 predefinedServer];
+                        predefinedServer2 = [(AFAccount *)self predefinedServer];
+                        v58 = predefinedServer;
+                        v30 = predefinedServer;
+                        v31 = predefinedServer2;
+                        if ([v30 isEqualToString:predefinedServer2])
                         {
                           v57 = v31;
-                          v32 = [v5 aceHost];
-                          v33 = [(AFAccount *)self aceHost];
-                          v56 = v32;
-                          v34 = v32;
-                          v35 = v33;
-                          if ([v34 isEqualToString:v33])
+                          aceHost = [v5 aceHost];
+                          aceHost2 = [(AFAccount *)self aceHost];
+                          v56 = aceHost;
+                          v34 = aceHost;
+                          v35 = aceHost2;
+                          if ([v34 isEqualToString:aceHost2])
                           {
-                            v55 = [v5 connectionPolicy];
-                            v54 = [(AFAccount *)self connectionPolicy];
-                            if ([v55 isEqual:?])
+                            connectionPolicy = [v5 connectionPolicy];
+                            connectionPolicy2 = [(AFAccount *)self connectionPolicy];
+                            if ([connectionPolicy isEqual:?])
                             {
                               v53 = v35;
-                              v36 = [v5 connectionPolicyDate];
+                              connectionPolicyDate = [v5 connectionPolicyDate];
                               [(AFAccount *)self connectionPolicyDate];
-                              v52 = v51 = v36;
-                              if ([v36 isEqual:?])
+                              v52 = v51 = connectionPolicyDate;
+                              if ([connectionPolicyDate isEqual:?])
                               {
-                                v37 = [v5 connectionPolicyHostname];
-                                v49 = [(AFAccount *)self connectionPolicyHostname];
-                                v50 = v37;
-                                if ([v37 isEqualToString:?])
+                                connectionPolicyHostname = [v5 connectionPolicyHostname];
+                                connectionPolicyHostname2 = [(AFAccount *)self connectionPolicyHostname];
+                                v50 = connectionPolicyHostname;
+                                if ([connectionPolicyHostname isEqualToString:?])
                                 {
-                                  v38 = [v5 group];
-                                  v47 = [(AFAccount *)self group];
-                                  v48 = v38;
-                                  if ([v38 isEqualToString:?])
+                                  group = [v5 group];
+                                  group2 = [(AFAccount *)self group];
+                                  v48 = group;
+                                  if ([group isEqualToString:?])
                                   {
-                                    v39 = [v5 lastSyncDates];
-                                    v40 = [(AFAccount *)self lastSyncDates];
-                                    v46 = v39;
-                                    v41 = v39;
-                                    v42 = v40;
+                                    lastSyncDates = [v5 lastSyncDates];
+                                    lastSyncDates2 = [(AFAccount *)self lastSyncDates];
+                                    v46 = lastSyncDates;
+                                    v41 = lastSyncDates;
+                                    v42 = lastSyncDates2;
                                     if ([v41 isEqual:?])
                                     {
-                                      v45 = [v5 isActive];
-                                      v43 = v45 ^ [(AFAccount *)self isActive]^ 1;
+                                      isActive = [v5 isActive];
+                                      v43 = isActive ^ [(AFAccount *)self isActive]^ 1;
                                     }
 
                                     else
@@ -241,124 +241,124 @@
   return v43;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(AFAccount *)self identifier];
-  [v4 setIdentifier:v5];
+  identifier = [(AFAccount *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v6 = [(AFAccount *)self label];
-  [v4 setLabel:v6];
+  label = [(AFAccount *)self label];
+  [v4 setLabel:label];
 
-  v7 = [(AFAccount *)self assistantIdentifier];
-  [v4 setAssistantIdentifier:v7];
+  assistantIdentifier = [(AFAccount *)self assistantIdentifier];
+  [v4 setAssistantIdentifier:assistantIdentifier];
 
-  v8 = [(AFAccount *)self loggingAssistantIdentifier];
-  [v4 setLoggingAssistantIdentifier:v8];
+  loggingAssistantIdentifier = [(AFAccount *)self loggingAssistantIdentifier];
+  [v4 setLoggingAssistantIdentifier:loggingAssistantIdentifier];
 
-  v9 = [(AFAccount *)self speechIdentifier];
-  [v4 setSpeechIdentifier:v9];
+  speechIdentifier = [(AFAccount *)self speechIdentifier];
+  [v4 setSpeechIdentifier:speechIdentifier];
 
-  v10 = [(AFAccount *)self hostname];
-  [v4 setHostname:v10];
+  hostname = [(AFAccount *)self hostname];
+  [v4 setHostname:hostname];
 
-  v11 = [(AFAccount *)self peerAssistantIdentifier];
-  [v4 setPeerAssistantIdentifier:v11];
+  peerAssistantIdentifier = [(AFAccount *)self peerAssistantIdentifier];
+  [v4 setPeerAssistantIdentifier:peerAssistantIdentifier];
 
-  v12 = [(AFAccount *)self peerLoggingAssistantIdentifier];
-  [v4 setPeerLoggingAssistantIdentifier:v12];
+  peerLoggingAssistantIdentifier = [(AFAccount *)self peerLoggingAssistantIdentifier];
+  [v4 setPeerLoggingAssistantIdentifier:peerLoggingAssistantIdentifier];
 
-  v13 = [(AFAccount *)self peerSpeechIdentifier];
-  [v4 setPeerSpeechIdentifier:v13];
+  peerSpeechIdentifier = [(AFAccount *)self peerSpeechIdentifier];
+  [v4 setPeerSpeechIdentifier:peerSpeechIdentifier];
 
-  v14 = [(AFAccount *)self peerUserAgentString];
-  [v4 setPeerUserAgentString:v14];
+  peerUserAgentString = [(AFAccount *)self peerUserAgentString];
+  [v4 setPeerUserAgentString:peerUserAgentString];
 
-  v15 = [(AFAccount *)self predefinedServer];
-  [v4 setPredefinedServer:v15];
+  predefinedServer = [(AFAccount *)self predefinedServer];
+  [v4 setPredefinedServer:predefinedServer];
 
-  v16 = [(AFAccount *)self aceHost];
-  [v4 setAceHost:v16];
+  aceHost = [(AFAccount *)self aceHost];
+  [v4 setAceHost:aceHost];
 
-  v17 = [(AFAccount *)self connectionPolicy];
-  [v4 setConnectionPolicy:v17];
+  connectionPolicy = [(AFAccount *)self connectionPolicy];
+  [v4 setConnectionPolicy:connectionPolicy];
 
-  v18 = [(AFAccount *)self connectionPolicyDate];
-  [v4 setConnectionPolicyDate:v18];
+  connectionPolicyDate = [(AFAccount *)self connectionPolicyDate];
+  [v4 setConnectionPolicyDate:connectionPolicyDate];
 
-  v19 = [(AFAccount *)self connectionPolicyHostname];
-  [v4 setConnectionPolicyHostname:v19];
+  connectionPolicyHostname = [(AFAccount *)self connectionPolicyHostname];
+  [v4 setConnectionPolicyHostname:connectionPolicyHostname];
 
-  v20 = [(AFAccount *)self connectionPolicyFirstFailureDate];
-  [v4 setConnectionPolicyFirstFailureDate:v20];
+  connectionPolicyFirstFailureDate = [(AFAccount *)self connectionPolicyFirstFailureDate];
+  [v4 setConnectionPolicyFirstFailureDate:connectionPolicyFirstFailureDate];
 
-  v21 = [(AFAccount *)self group];
-  [v4 setGroup:v21];
+  group = [(AFAccount *)self group];
+  [v4 setGroup:group];
 
-  v22 = [(AFAccount *)self lastSyncDates];
-  [v4 setLastSyncDates:v22];
+  lastSyncDates = [(AFAccount *)self lastSyncDates];
+  [v4 setLastSyncDates:lastSyncDates];
 
-  v23 = [(AFAccount *)self localeIdentifier];
-  [v4 setLocaleIdentifier:v23];
+  localeIdentifier = [(AFAccount *)self localeIdentifier];
+  [v4 setLocaleIdentifier:localeIdentifier];
 
   [v4 setIsActive:{-[AFAccount isActive](self, "isActive")}];
   return v4;
 }
 
-- (AFAccount)initWithCoder:(id)a3
+- (AFAccount)initWithCoder:(id)coder
 {
   v50[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = AFAccount;
   v5 = [(AFAccount *)&v49 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
     label = v5->_label;
     v5->_label = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_assistantIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_assistantIdentifier"];
     assistantIdentifier = v5->_assistantIdentifier;
     v5->_assistantIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_loggingAssistantIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_loggingAssistantIdentifier"];
     loggingAssistantIdentifier = v5->_loggingAssistantIdentifier;
     v5->_loggingAssistantIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_speechIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_speechIdentifier"];
     speechIdentifier = v5->_speechIdentifier;
     v5->_speechIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hostname"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hostname"];
     hostname = v5->_hostname;
     v5->_hostname = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerAssistantIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerAssistantIdentifier"];
     peerAssistantIdentifier = v5->_peerAssistantIdentifier;
     v5->_peerAssistantIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerLoggingAssistantIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerLoggingAssistantIdentifier"];
     peerLoggingAssistantIdentifier = v5->_peerLoggingAssistantIdentifier;
     v5->_peerLoggingAssistantIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerSpeechIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerSpeechIdentifier"];
     peerSpeechIdentifier = v5->_peerSpeechIdentifier;
     v5->_peerSpeechIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerUserAgentString"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerUserAgentString"];
     peerUserAgentString = v5->_peerUserAgentString;
     v5->_peerUserAgentString = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_predefinedServer"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_predefinedServer"];
     predefinedServer = v5->_predefinedServer;
     v5->_predefinedServer = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_aceHost"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_aceHost"];
     aceHost = v5->_aceHost;
     v5->_aceHost = v28;
 
@@ -370,65 +370,65 @@
     v50[4] = objc_opt_class();
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:5];
     v32 = [v30 setWithArray:v31];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"kAFAccountInfoConnectionPolicyKey"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"kAFAccountInfoConnectionPolicyKey"];
     connectionPolicy = v5->_connectionPolicy;
     v5->_connectionPolicy = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_connectionPolicyDate"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_connectionPolicyDate"];
     connectionPolicyDate = v5->_connectionPolicyDate;
     v5->_connectionPolicyDate = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_connectionPolicyHostname"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_connectionPolicyHostname"];
     connectionPolicyHostname = v5->_connectionPolicyHostname;
     v5->_connectionPolicyHostname = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_connectionPolicyFirstFailureDate"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_connectionPolicyFirstFailureDate"];
     connectionPolicyFirstFailureDate = v5->_connectionPolicyFirstFailureDate;
     v5->_connectionPolicyFirstFailureDate = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_group"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_group"];
     group = v5->_group;
     v5->_group = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastSyncDates"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastSyncDates"];
     lastSyncDates = v5->_lastSyncDates;
     v5->_lastSyncDates = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localeIdentifier"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localeIdentifier"];
     localeIdentifier = v5->_localeIdentifier;
     v5->_localeIdentifier = v45;
 
-    v5->_isActive = [v4 decodeBoolForKey:@"_isActive"];
+    v5->_isActive = [coderCopy decodeBoolForKey:@"_isActive"];
   }
 
   v47 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_label forKey:@"_label"];
-  [v5 encodeObject:self->_assistantIdentifier forKey:@"_assistantIdentifier"];
-  [v5 encodeObject:self->_loggingAssistantIdentifier forKey:@"_loggingAssistantIdentifier"];
-  [v5 encodeObject:self->_speechIdentifier forKey:@"_speechIdentifier"];
-  [v5 encodeObject:self->_hostname forKey:@"_hostname"];
-  [v5 encodeObject:self->_peerAssistantIdentifier forKey:@"_peerAssistantIdentifier"];
-  [v5 encodeObject:self->_peerLoggingAssistantIdentifier forKey:@"_peerLoggingAssistantIdentifier"];
-  [v5 encodeObject:self->_peerSpeechIdentifier forKey:@"_peerSpeechIdentifier"];
-  [v5 encodeObject:self->_peerUserAgentString forKey:@"_peerUserAgentString"];
-  [v5 encodeObject:self->_predefinedServer forKey:@"_predefinedServer"];
-  [v5 encodeObject:self->_aceHost forKey:@"_aceHost"];
-  [v5 encodeObject:self->_connectionPolicy forKey:@"_connectionPolicy"];
-  [v5 encodeObject:self->_connectionPolicyDate forKey:@"_connectionPolicyDate"];
-  [v5 encodeObject:self->_connectionPolicyHostname forKey:@"_connectionPolicyHostname"];
-  [v5 encodeObject:self->_connectionPolicyFirstFailureDate forKey:@"_connectionPolicyFirstFailureDate"];
-  [v5 encodeObject:self->_group forKey:@"_group"];
-  [v5 encodeObject:self->_lastSyncDates forKey:@"_lastSyncDates"];
-  [v5 encodeObject:self->_localeIdentifier forKey:@"_localeIdentifier"];
-  [v5 encodeBool:self->_isActive forKey:@"_isActive"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_label forKey:@"_label"];
+  [coderCopy encodeObject:self->_assistantIdentifier forKey:@"_assistantIdentifier"];
+  [coderCopy encodeObject:self->_loggingAssistantIdentifier forKey:@"_loggingAssistantIdentifier"];
+  [coderCopy encodeObject:self->_speechIdentifier forKey:@"_speechIdentifier"];
+  [coderCopy encodeObject:self->_hostname forKey:@"_hostname"];
+  [coderCopy encodeObject:self->_peerAssistantIdentifier forKey:@"_peerAssistantIdentifier"];
+  [coderCopy encodeObject:self->_peerLoggingAssistantIdentifier forKey:@"_peerLoggingAssistantIdentifier"];
+  [coderCopy encodeObject:self->_peerSpeechIdentifier forKey:@"_peerSpeechIdentifier"];
+  [coderCopy encodeObject:self->_peerUserAgentString forKey:@"_peerUserAgentString"];
+  [coderCopy encodeObject:self->_predefinedServer forKey:@"_predefinedServer"];
+  [coderCopy encodeObject:self->_aceHost forKey:@"_aceHost"];
+  [coderCopy encodeObject:self->_connectionPolicy forKey:@"_connectionPolicy"];
+  [coderCopy encodeObject:self->_connectionPolicyDate forKey:@"_connectionPolicyDate"];
+  [coderCopy encodeObject:self->_connectionPolicyHostname forKey:@"_connectionPolicyHostname"];
+  [coderCopy encodeObject:self->_connectionPolicyFirstFailureDate forKey:@"_connectionPolicyFirstFailureDate"];
+  [coderCopy encodeObject:self->_group forKey:@"_group"];
+  [coderCopy encodeObject:self->_lastSyncDates forKey:@"_lastSyncDates"];
+  [coderCopy encodeObject:self->_localeIdentifier forKey:@"_localeIdentifier"];
+  [coderCopy encodeBool:self->_isActive forKey:@"_isActive"];
 }
 
 - (id)messageDictionary
@@ -561,76 +561,76 @@
   return v4;
 }
 
-- (AFAccount)initWithMessageDictionary:(id)a3
+- (AFAccount)initWithMessageDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(AFAccount *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"kAFAccountInfoIdentifierKey"];
+    v6 = [dictionaryCopy objectForKey:@"kAFAccountInfoIdentifierKey"];
     [(AFAccount *)v5 setIdentifier:v6];
 
-    v7 = [v4 objectForKey:@"kAFAccountInfoLabelKey"];
+    v7 = [dictionaryCopy objectForKey:@"kAFAccountInfoLabelKey"];
     [(AFAccount *)v5 setLabel:v7];
 
-    v8 = [v4 objectForKey:@"kAFAccountInfoAssistantIdentifierKey"];
+    v8 = [dictionaryCopy objectForKey:@"kAFAccountInfoAssistantIdentifierKey"];
     [(AFAccount *)v5 setAssistantIdentifier:v8];
 
-    v9 = [v4 objectForKey:@"kAFAccountInfoLoggingAssistantIdentifierKey"];
+    v9 = [dictionaryCopy objectForKey:@"kAFAccountInfoLoggingAssistantIdentifierKey"];
     [(AFAccount *)v5 setLoggingAssistantIdentifier:v9];
 
-    v10 = [v4 objectForKey:@"kAFAccountInfoSpeechIdentifierKey"];
+    v10 = [dictionaryCopy objectForKey:@"kAFAccountInfoSpeechIdentifierKey"];
     [(AFAccount *)v5 setSpeechIdentifier:v10];
 
-    v11 = [v4 objectForKey:@"kAFAccountInfoHostnameKey"];
+    v11 = [dictionaryCopy objectForKey:@"kAFAccountInfoHostnameKey"];
     [(AFAccount *)v5 setHostname:v11];
 
-    v12 = [v4 objectForKey:@"kAFAccountInfoPeerAssistantIdentifierKey"];
+    v12 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerAssistantIdentifierKey"];
     [(AFAccount *)v5 setPeerAssistantIdentifier:v12];
 
-    v13 = [v4 objectForKey:@"kAFAccountInfoPeerLoggingAssistantIdentifierKey"];
+    v13 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerLoggingAssistantIdentifierKey"];
     [(AFAccount *)v5 setPeerLoggingAssistantIdentifier:v13];
 
-    v14 = [v4 objectForKey:@"kAFAccountInfoPeerSpeechIdentifierKey"];
+    v14 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerSpeechIdentifierKey"];
     [(AFAccount *)v5 setPeerSpeechIdentifier:v14];
 
-    v15 = [v4 objectForKey:@"kAFAccountInfoPeerUserAgentStringKey"];
+    v15 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerUserAgentStringKey"];
     [(AFAccount *)v5 setPeerUserAgentString:v15];
 
-    v16 = [v4 objectForKey:@"kAFAccountInfoPeerLanguageCodeKey"];
+    v16 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerLanguageCodeKey"];
     [(AFAccount *)v5 setPeerLanguageCode:v16];
 
-    v17 = [v4 objectForKey:@"kAFAccountInfoPeerSiriEnabledKey"];
+    v17 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerSiriEnabledKey"];
     -[AFAccount setPeerSiriEnabled:](v5, "setPeerSiriEnabled:", [v17 BOOLValue]);
 
-    v18 = [v4 objectForKey:@"kAFAccountInfoPeerHostnameKey"];
+    v18 = [dictionaryCopy objectForKey:@"kAFAccountInfoPeerHostnameKey"];
     [(AFAccount *)v5 setPeerHostname:v18];
 
-    v19 = [v4 objectForKey:@"kAFAccountInfoPredefinedServerKey"];
+    v19 = [dictionaryCopy objectForKey:@"kAFAccountInfoPredefinedServerKey"];
     [(AFAccount *)v5 setPredefinedServer:v19];
 
-    v20 = [v4 objectForKey:@"kAFAccountInfoAceHostKey"];
+    v20 = [dictionaryCopy objectForKey:@"kAFAccountInfoAceHostKey"];
     [(AFAccount *)v5 setAceHost:v20];
 
-    v21 = [v4 objectForKey:@"kAFAccountInfoConnectionPolicyKey"];
+    v21 = [dictionaryCopy objectForKey:@"kAFAccountInfoConnectionPolicyKey"];
     [(AFAccount *)v5 setConnectionPolicy:v21];
 
-    v22 = [v4 objectForKey:@"kAFAccountInfoConnectionPolicyDateKey"];
+    v22 = [dictionaryCopy objectForKey:@"kAFAccountInfoConnectionPolicyDateKey"];
     [(AFAccount *)v5 setConnectionPolicyDate:v22];
 
-    v23 = [v4 objectForKey:@"kAFAccountConnectionPolicyFirstFailureDate"];
+    v23 = [dictionaryCopy objectForKey:@"kAFAccountConnectionPolicyFirstFailureDate"];
     [(AFAccount *)v5 setConnectionPolicyFirstFailureDate:v23];
 
-    v24 = [v4 objectForKey:@"kAFAccountInfoConnectionPolicyHostnameKey"];
+    v24 = [dictionaryCopy objectForKey:@"kAFAccountInfoConnectionPolicyHostnameKey"];
     [(AFAccount *)v5 setConnectionPolicyHostname:v24];
 
-    v25 = [v4 objectForKey:@"kAFAccountInfoGroupKey"];
+    v25 = [dictionaryCopy objectForKey:@"kAFAccountInfoGroupKey"];
     [(AFAccount *)v5 setGroup:v25];
 
-    v26 = [v4 objectForKey:@"kAFAccountInfoLocaleIdentifierKey"];
+    v26 = [dictionaryCopy objectForKey:@"kAFAccountInfoLocaleIdentifierKey"];
     [(AFAccount *)v5 setLocaleIdentifier:v26];
 
-    v27 = [v4 objectForKey:@"kAFAccountInfoIsActiveKey"];
+    v27 = [dictionaryCopy objectForKey:@"kAFAccountInfoIsActiveKey"];
     v5->_isActive = [v27 BOOLValue];
   }
 

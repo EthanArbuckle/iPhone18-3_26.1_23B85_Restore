@@ -7,18 +7,18 @@
 
 - (id)_sbWindowScene
 {
-  v1 = [a1 window];
-  v2 = [v1 _sbWindowScene];
+  window = [self window];
+  _sbWindowScene = [window _sbWindowScene];
 
-  return v2;
+  return _sbWindowScene;
 }
 
 - (id)_sbDisplayConfiguration
 {
-  v1 = [a1 _sbWindowScene];
-  v2 = [v1 _sbDisplayConfiguration];
+  _sbWindowScene = [self _sbWindowScene];
+  _sbDisplayConfiguration = [_sbWindowScene _sbDisplayConfiguration];
 
-  return v2;
+  return _sbDisplayConfiguration;
 }
 
 @end

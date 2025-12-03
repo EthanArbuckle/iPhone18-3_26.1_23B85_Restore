@@ -1,26 +1,26 @@
 @interface HUMediaServiceErrorBannerItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUMediaServiceErrorBannerItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HUMediaServiceErrorBannerItem;
-  v4 = [(HUBannerItem *)&v6 copyWithZone:a3];
+  v4 = [(HUBannerItem *)&v6 copyWithZone:zone];
   [v4 copyLatestResultsFromItem:self];
   return v4;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v5 = [v4 BOOLValue];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = MEMORY[0x277D2C900];
     v7 = objc_alloc(MEMORY[0x277D14780]);
@@ -33,9 +33,9 @@
 
   else
   {
-    v11 = [MEMORY[0x277D14820] sharedManager];
-    v12 = [(HUBannerItem *)self home];
-    v8 = [v11 mediaServicesForHome:v12];
+    mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+    home = [(HUBannerItem *)self home];
+    v8 = [mEMORY[0x277D14820] mediaServicesForHome:home];
 
     v13 = [v8 na_firstObjectPassingTest:&__block_literal_global_233];
     if (v13 || [(HUBannerItem *)self forceShowBanner])
@@ -54,7 +54,7 @@
       v19[3] = &unk_277DC2588;
       v9 = v15;
       v20 = v9;
-      v21 = self;
+      selfCopy = self;
       v10 = [v16 flatMap:v19];
     }
 

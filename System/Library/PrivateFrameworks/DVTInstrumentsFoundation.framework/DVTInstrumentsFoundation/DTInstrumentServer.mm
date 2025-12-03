@@ -1,26 +1,26 @@
 @interface DTInstrumentServer
-+ (void)_tfpPortReceived:(unsigned int)a3;
-+ (void)takeOwnershipOfSharedAuthorization:(void *)a3;
-- (DTInstrumentServer)initWithTransport:(id)a3;
-- (id)_blessSimulatorHub:(int)a3;
-- (void)loadServicesAtPath:(id)a3;
++ (void)_tfpPortReceived:(unsigned int)received;
++ (void)takeOwnershipOfSharedAuthorization:(void *)authorization;
+- (DTInstrumentServer)initWithTransport:(id)transport;
+- (id)_blessSimulatorHub:(int)hub;
+- (void)loadServicesAtPath:(id)path;
 @end
 
 @implementation DTInstrumentServer
 
-- (DTInstrumentServer)initWithTransport:(id)a3
+- (DTInstrumentServer)initWithTransport:(id)transport
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transportCopy = transport;
   v34.receiver = self;
   v34.super_class = DTInstrumentServer;
   v5 = [(DTInstrumentServer *)&v34 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (transportCopy)
     {
-      v7 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:v4];
+      v7 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:transportCopy];
       [v7 setMaximumEnqueueSize:0x800000];
       [v7 setDispatchTarget:v6];
       v32[0] = 0;
@@ -52,31 +52,31 @@
         v28 = 0;
       }
 
-      v12 = [MEMORY[0x277CCA8D8] mainBundle];
-      v13 = [v12 executablePath];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      executablePath = [mainBundle executablePath];
 
-      if (v13 && [v13 length])
+      if (executablePath && [executablePath length])
       {
-        [v8 addObject:v13];
+        [v8 addObject:executablePath];
       }
 
       if (v10)
       {
-        v14 = [MEMORY[0x277CCA8D8] mainBundle];
-        v15 = [v14 bundlePath];
-        v16 = [v10 bundlePath];
-        v17 = [v15 isEqualToString:v16];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        bundlePath = [mainBundle2 bundlePath];
+        bundlePath2 = [v10 bundlePath];
+        v17 = [bundlePath isEqualToString:bundlePath2];
 
         if (v17)
         {
-          v18 = [v10 bundleURL];
-          v19 = [v18 URLByDeletingPathExtension];
-          v20 = [v19 lastPathComponent];
+          bundleURL = [v10 bundleURL];
+          uRLByDeletingPathExtension = [bundleURL URLByDeletingPathExtension];
+          lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-          if (v20)
+          if (lastPathComponent)
           {
-            v21 = [v10 bundlePath];
-            v22 = [v21 stringByAppendingPathComponent:v20];
+            bundlePath3 = [v10 bundlePath];
+            v22 = [bundlePath3 stringByAppendingPathComponent:lastPathComponent];
 
             if (v22 && [v22 length])
             {
@@ -125,12 +125,12 @@
   return v6;
 }
 
-- (void)loadServicesAtPath:(id)a3
+- (void)loadServicesAtPath:(id)path
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v4 = DVTIUCurrentDylibRootPath();
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:pathCopy];
 
   [MEMORY[0x277CCAA00] defaultManager];
   v26 = v35 = 0;
@@ -157,8 +157,8 @@
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        v14 = [v13 isEqualToString:@"bundle"];
+        pathExtension = [v12 pathExtension];
+        v14 = [pathExtension isEqualToString:@"bundle"];
 
         if (v14)
         {
@@ -176,21 +176,21 @@
             v17 = v30;
             if ((v18 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
-              v21 = [v16 bundlePath];
-              v27 = [v21 UTF8String];
-              v22 = [v17 localizedDescription];
-              v23 = [v22 UTF8String];
+              bundlePath = [v16 bundlePath];
+              uTF8String = [bundlePath UTF8String];
+              localizedDescription = [v17 localizedDescription];
+              uTF8String2 = [localizedDescription UTF8String];
               *buf = 136446466;
-              v37 = v27;
+              v37 = uTF8String;
               v38 = 2082;
-              v39 = v23;
+              v39 = uTF8String2;
               _os_log_error_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to register services in bundle %{public}s - bundle could not be loaded: %{public}s", buf, 0x16u);
             }
           }
 
           connection = self->_connection;
-          v20 = [v16 executablePath];
-          [(DTXConnection *)connection publishServicesInImagePath:v20];
+          executablePath = [v16 executablePath];
+          [(DTXConnection *)connection publishServicesInImagePath:executablePath];
         }
       }
 
@@ -203,31 +203,31 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)takeOwnershipOfSharedAuthorization:(void *)a3
++ (void)takeOwnershipOfSharedAuthorization:(void *)authorization
 {
-  if (a3)
+  if (authorization)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
-    qword_27EE84318 = a3;
+    qword_27EE84318 = authorization;
     objc_sync_exit(obj);
   }
 }
 
-+ (void)_tfpPortReceived:(unsigned int)a3
++ (void)_tfpPortReceived:(unsigned int)received
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   if ((dword_27EE84338 - 1) <= 0xFFFFFFFD)
   {
     mach_port_deallocate(*MEMORY[0x277D85F48], dword_27EE84338);
   }
 
-  dword_27EE84338 = a3;
+  dword_27EE84338 = received;
   objc_sync_exit(obj);
 }
 
-- (id)_blessSimulatorHub:(int)a3
+- (id)_blessSimulatorHub:(int)hub
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();

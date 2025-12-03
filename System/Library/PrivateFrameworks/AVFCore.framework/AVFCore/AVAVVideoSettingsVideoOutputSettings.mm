@@ -1,10 +1,10 @@
 @interface AVAVVideoSettingsVideoOutputSettings
-+ (BOOL)_validateVideoCompressionProperties:(id)a3 againstSupportedPropertyDictionary:(id)a4 forCodecType:(id)a5 exceptionReason:(id *)a6;
-+ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
-- (AVAVVideoSettingsVideoOutputSettings)initWithAVVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
-- (AVAVVideoSettingsVideoOutputSettings)initWithTrustedAVVideoSettingsDictionary:(id)a3;
-- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)a3;
-- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)a3;
++ (BOOL)_validateVideoCompressionProperties:(id)properties againstSupportedPropertyDictionary:(id)dictionary forCodecType:(id)type exceptionReason:(id *)reason;
++ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
+- (AVAVVideoSettingsVideoOutputSettings)initWithAVVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
+- (AVAVVideoSettingsVideoOutputSettings)initWithTrustedAVVideoSettingsDictionary:(id)dictionary;
+- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)reason;
+- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)error;
 - (NSDictionary)videoCompressionProperties;
 - (int)height;
 - (int)width;
@@ -14,21 +14,21 @@
 
 @implementation AVAVVideoSettingsVideoOutputSettings
 
-+ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4
++ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithAVVideoSettingsDictionary:a3 exceptionReason:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithAVVideoSettingsDictionary:dictionary exceptionReason:reason];
 
   return v4;
 }
 
-+ (BOOL)_validateVideoCompressionProperties:(id)a3 againstSupportedPropertyDictionary:(id)a4 forCodecType:(id)a5 exceptionReason:(id *)a6
++ (BOOL)_validateVideoCompressionProperties:(id)properties againstSupportedPropertyDictionary:(id)dictionary forCodecType:(id)type exceptionReason:(id *)reason
 {
   v41 = *MEMORY[0x1E69E9840];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = [a3 allKeys];
+  obj = [properties allKeys];
   v8 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v8)
   {
@@ -39,7 +39,7 @@
     v31 = *MEMORY[0x1E6983FD0];
     v30 = *MEMORY[0x1E6983FB8];
     v28 = *MEMORY[0x1E6983FC0];
-    v27 = a6;
+    reasonCopy = reason;
 LABEL_3:
     v11 = 0;
     while (1)
@@ -50,13 +50,13 @@ LABEL_3:
       }
 
       v12 = *(*(&v36 + 1) + 8 * v11);
-      if (![a5 isEqualToString:@"jpeg"] || (objc_msgSend(v12, "isEqualToString:", @"AverageBitRate") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"MaxKeyFrameInterval") & 1) == 0)
+      if (![type isEqualToString:@"jpeg"] || (objc_msgSend(v12, "isEqualToString:", @"AverageBitRate") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"MaxKeyFrameInterval") & 1) == 0)
       {
-        v13 = [a4 objectForKey:v12];
-        v14 = [a3 objectForKey:v12];
+        v13 = [dictionary objectForKey:v12];
+        v14 = [properties objectForKey:v12];
         if (!v13)
         {
-          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Compression property %@ is not supported for video codec type %@", v12, a5, v26];
+          v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Compression property %@ is not supported for video codec type %@", v12, type, v26];
           goto LABEL_35;
         }
 
@@ -69,19 +69,19 @@ LABEL_3:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video codec type %@ expects a value for compression property %@ in a particular numeric range, but property value %@ is not numeric", a5, v12, v15];
+            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video codec type %@ expects a value for compression property %@ in a particular numeric range, but property value %@ is not numeric", type, v12, v15];
             goto LABEL_35;
           }
 
           if (v16 && [v16 compare:v15] == 1)
           {
-            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video codec type %@ does not allow values for %@ that are numerically less than %@", a5, v12, v16];
+            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video codec type %@ does not allow values for %@ that are numerically less than %@", type, v12, v16];
             goto LABEL_35;
           }
 
           if (v18 && [v18 compare:v15] == -1)
           {
-            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video codec type %@ does not allow values for %@ that are numerically greater than %@", a5, v12, v18];
+            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video codec type %@ does not allow values for %@ that are numerically greater than %@", type, v12, v18];
             goto LABEL_35;
           }
         }
@@ -92,7 +92,7 @@ LABEL_3:
           v20 = v19;
           if (([v19 containsObject:v15] & 1) == 0)
           {
-            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"For compression property %@, video codec type %@ only allows the following values: %@", v12, a5, objc_msgSend(v20, "componentsJoinedByString:", @", ")];
+            v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"For compression property %@, video codec type %@ only allows the following values: %@", v12, type, objc_msgSend(v20, "componentsJoinedByString:", @", ")];
             goto LABEL_35;
           }
         }
@@ -120,7 +120,7 @@ LABEL_3:
         v9 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
         v8 = 0;
         v24 = 1;
-        a6 = v27;
+        reason = reasonCopy;
         if (v9)
         {
           goto LABEL_3;
@@ -130,11 +130,11 @@ LABEL_3:
       }
     }
 
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"For compression property %@, video codec type %@ only allows the value %@", v12, a5, v23];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"For compression property %@, video codec type %@ only allows the value %@", v12, type, v23];
 LABEL_35:
     v24 = 0;
-    a6 = v27;
-    if (v27)
+    reason = reasonCopy;
+    if (reasonCopy)
     {
       goto LABEL_27;
     }
@@ -144,22 +144,22 @@ LABEL_35:
   {
     v24 = 1;
 LABEL_26:
-    if (a6)
+    if (reason)
     {
 LABEL_27:
-      *a6 = v8;
+      *reason = v8;
     }
   }
 
   return v24;
 }
 
-- (AVAVVideoSettingsVideoOutputSettings)initWithAVVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4
+- (AVAVVideoSettingsVideoOutputSettings)initWithAVVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
   v59 = 0;
-  v7 = [(AVVideoOutputSettings *)self initWithVideoSettingsDictionary:a3 exceptionReason:&v59];
+  v7 = [(AVVideoOutputSettings *)self initWithVideoSettingsDictionary:dictionary exceptionReason:&v59];
   v8 = v7;
-  if (!a3)
+  if (!dictionary)
   {
     v51 = v7;
     v57 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v8 userInfo:{a2, @"invalid parameter not satisfying: %s", v52, v53, v54, v55, v56, "avVideoSettingsDictionary != nil"), 0}];
@@ -171,7 +171,7 @@ LABEL_27:
     goto LABEL_121;
   }
 
-  v9 = [a3 objectForKey:@"AVVideoCodecKey"];
+  v9 = [dictionary objectForKey:@"AVVideoCodecKey"];
   v10 = v9;
   if (!v9)
   {
@@ -179,8 +179,8 @@ LABEL_27:
   }
 
   v11 = v9 == 0;
-  v12 = [a3 objectForKey:@"AVVideoWidthKey"];
-  v13 = [a3 objectForKey:@"AVVideoHeightKey"];
+  v12 = [dictionary objectForKey:@"AVVideoWidthKey"];
+  v13 = [dictionary objectForKey:@"AVVideoHeightKey"];
   v14 = v13;
   if (v12)
   {
@@ -277,7 +277,7 @@ LABEL_40:
   {
     v60 = 0;
     v58 = 0;
-    v22 = AVVideoOutputSettingsExtractPixelAspectRatioAndCleanApertureFromAVVideoSettingsDictionary(a3, v12, v14, &v60, &v58, &v59);
+    v22 = AVVideoOutputSettingsExtractPixelAspectRatioAndCleanApertureFromAVVideoSettingsDictionary(dictionary, v12, v14, &v60, &v58, &v59);
     v8->_VTPixelAspectRatioDictionary = [v60 copy];
     v8->_VTCleanApertureDictionary = [v58 copy];
     [MEMORY[0x1E695DF90] dictionary];
@@ -301,12 +301,12 @@ LABEL_41:
   v22 = 0;
   v23 = 0;
 LABEL_42:
-  v25 = [a3 objectForKey:@"AVVideoScalingModeKey"];
-  v26 = [objc_opt_class() _validValuesForScalingMode];
+  v25 = [dictionary objectForKey:@"AVVideoScalingModeKey"];
+  _validValuesForScalingMode = [objc_opt_class() _validValuesForScalingMode];
   if (v22 && v25)
   {
-    v27 = v26;
-    if ([v26 containsObject:v25])
+    v27 = _validValuesForScalingMode;
+    if ([_validValuesForScalingMode containsObject:v25])
     {
       v22 = 1;
     }
@@ -318,7 +318,7 @@ LABEL_42:
     }
   }
 
-  v28 = [a3 objectForKey:@"AVVideoColorPropertiesKey"];
+  v28 = [dictionary objectForKey:@"AVVideoColorPropertiesKey"];
   v29 = v28;
   if (v22)
   {
@@ -335,7 +335,7 @@ LABEL_42:
     }
   }
 
-  v30 = [a3 objectForKey:@"AVVideoAllowWideColorKey"];
+  v30 = [dictionary objectForKey:@"AVVideoAllowWideColorKey"];
   if (v22 && v30)
   {
     objc_opt_class();
@@ -351,31 +351,31 @@ LABEL_42:
     }
   }
 
-  v31 = [a3 objectForKey:@"AVVideoMinimumFrameDuration"];
+  v31 = [dictionary objectForKey:@"AVVideoMinimumFrameDuration"];
   if (v22 && v31)
   {
     v22 = AVVideoOutputSettingsValidateMinimumFrameDuration(v31, &v59);
   }
 
-  v32 = [a3 objectForKey:@"AVVideoFrameRateConversionAlgorithm"];
+  v32 = [dictionary objectForKey:@"AVVideoFrameRateConversionAlgorithm"];
   if (v22 && v32)
   {
     v22 = AVVideoOutputSettingsValidateFrameRateConversionAlgorithm(v32, &v59);
   }
 
-  v33 = [a3 objectForKey:@"AVVideoEmitSequencesAtSyncFramesOnly"];
+  v33 = [dictionary objectForKey:@"AVVideoEmitSequencesAtSyncFramesOnly"];
   if (v22 && v33)
   {
     v22 = AVVideoOutputSettingsValidateEmitSequencesAtSyncFramesOnly(v33, &v59);
   }
 
-  v34 = [a3 objectForKey:@"AVVideoMinimumIntervalForSyncFrames"];
+  v34 = [dictionary objectForKey:@"AVVideoMinimumIntervalForSyncFrames"];
   if (v22 && v34)
   {
     v22 = AVVideoOutputSettingsValidateMinimumFrameDuration(v34, &v59);
   }
 
-  v35 = [a3 objectForKey:@"AVVideoCompressionPropertiesKey"];
+  v35 = [dictionary objectForKey:@"AVVideoCompressionPropertiesKey"];
   if (!v22 || !v35)
   {
     if (v22)
@@ -543,25 +543,25 @@ LABEL_120:
   }
 
 LABEL_121:
-  if (a4)
+  if (reason)
   {
-    *a4 = v59;
+    *reason = v59;
   }
 
   return v8;
 }
 
-- (AVAVVideoSettingsVideoOutputSettings)initWithTrustedAVVideoSettingsDictionary:(id)a3
+- (AVAVVideoSettingsVideoOutputSettings)initWithTrustedAVVideoSettingsDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = AVAVVideoSettingsVideoOutputSettings;
-  v4 = [(AVVideoOutputSettings *)&v10 initWithVideoSettingsDictionary:a3 exceptionReason:0];
+  v4 = [(AVVideoOutputSettings *)&v10 initWithVideoSettingsDictionary:dictionary exceptionReason:0];
   v8 = 0;
   v9 = 0;
-  AVVideoOutputSettingsExtractPixelAspectRatioAndCleanApertureFromAVVideoSettingsDictionary(a3, 0, 0, &v9, &v8, 0);
+  AVVideoOutputSettingsExtractPixelAspectRatioAndCleanApertureFromAVVideoSettingsDictionary(dictionary, 0, 0, &v9, &v8, 0);
   v4->_VTPixelAspectRatioDictionary = [v9 copy];
   v4->_VTCleanApertureDictionary = [v8 copy];
-  v5 = [a3 objectForKey:@"AVVideoCompressionPropertiesKey"];
+  v5 = [dictionary objectForKey:@"AVVideoCompressionPropertiesKey"];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v5];
@@ -580,10 +580,10 @@ LABEL_121:
   [(AVOutputSettings *)&v3 dealloc];
 }
 
-- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)a3
+- (BOOL)encoderIsAvailableOnCurrentSystemReturningError:(id *)error
 {
   listOfVideoEncodersOut = 0;
-  v4 = [(AVAVVideoSettingsVideoOutputSettings *)self videoCodecType];
+  videoCodecType = [(AVAVVideoSettingsVideoOutputSettings *)self videoCodecType];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   v6 = *MEMORY[0x1E695E4D0];
   CFDictionarySetValue(Mutable, *MEMORY[0x1E6984250], *MEMORY[0x1E695E4D0]);
@@ -607,8 +607,8 @@ LABEL_6:
     {
       ValueAtIndex = CFArrayGetValueAtIndex(listOfVideoEncodersOut, v7);
       v10 = [CFDictionaryGetValue(ValueAtIndex v8)];
-      v11 = v10 == v4;
-      if (v10 == v4)
+      v11 = v10 == videoCodecType;
+      if (v10 == videoCodecType)
       {
         break;
       }
@@ -630,20 +630,20 @@ LABEL_6:
 
   if (!v11)
   {
-    v12 = AVLocalizedError(@"AVFoundationErrorDomain", -11834, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"vide", @"AVErrorMediaTypeKey", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v4), 0), @"AVErrorMediaSubTypeKey", 0}]);
-    if (a3)
+    v12 = AVLocalizedError(@"AVFoundationErrorDomain", -11834, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"vide", @"AVErrorMediaTypeKey", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", videoCodecType), 0), @"AVErrorMediaSubTypeKey", 0}]);
+    if (error)
     {
-      *a3 = v12;
+      *error = v12;
     }
   }
 
   return v11;
 }
 
-- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)a3
+- (BOOL)canFullySpecifyOutputFormatReturningReason:(id *)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(AVVideoOutputSettings *)self videoSettingsDictionary];
+  videoSettingsDictionary = [(AVVideoOutputSettings *)self videoSettingsDictionary];
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{@"AVVideoCodecKey", @"AVVideoWidthKey", @"AVVideoHeightKey", 0}];
   v14 = 0u;
   v15 = 0u;
@@ -664,17 +664,17 @@ LABEL_6:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if (![(NSDictionary *)v4 objectForKey:v10])
+        if (![(NSDictionary *)videoSettingsDictionary objectForKey:v10])
         {
           v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing required key %@", v10];
-          if (!a3)
+          if (!reason)
           {
             return 0;
           }
 
           v13 = v12;
           result = 0;
-          *a3 = v13;
+          *reason = v13;
           return result;
         }
       }
@@ -728,16 +728,16 @@ LABEL_6:
 
 - (NSDictionary)videoCompressionProperties
 {
-  v3 = [(AVOutputSettings *)self outputSettingsDictionary];
+  outputSettingsDictionary = [(AVOutputSettings *)self outputSettingsDictionary];
   v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self->_adaptedVideoCompressionProperties];
-  if ([-[NSDictionary objectForKey:](v3 objectForKey:{@"AVVideoCodecKey", "isEqualToString:", @"jpeg"}] && !-[NSDictionary objectForKey:](v4, "objectForKey:", @"Quality"))
+  if ([-[NSDictionary objectForKey:](outputSettingsDictionary objectForKey:{@"AVVideoCodecKey", "isEqualToString:", @"jpeg"}] && !-[NSDictionary objectForKey:](v4, "objectForKey:", @"Quality"))
   {
     LODWORD(v5) = 1053609165;
     v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
     [(NSDictionary *)v4 setObject:v6 forKey:*MEMORY[0x1E69837E0]];
   }
 
-  v7 = [(NSDictionary *)v3 objectForKey:@"AVVideoColorPropertiesKey"];
+  v7 = [(NSDictionary *)outputSettingsDictionary objectForKey:@"AVVideoColorPropertiesKey"];
   if (v7)
   {
     [(NSDictionary *)v4 addEntriesFromDictionary:v7];

@@ -1,10 +1,10 @@
 @interface GTConnectionMap
-- (BOOL)retrieveConnection:(id *)a3 forId:(unint64_t)a4;
-- (BOOL)retrieveId:(unint64_t *)a3 forConnection:(id)a4;
+- (BOOL)retrieveConnection:(id *)connection forId:(unint64_t)id;
+- (BOOL)retrieveId:(unint64_t *)id forConnection:(id)connection;
 - (GTConnectionMap)init;
-- (unint64_t)remove:(id)a3;
+- (unint64_t)remove:(id)remove;
 - (void)clear;
-- (void)insert:(id)a3;
+- (void)insert:(id)insert;
 @end
 
 @implementation GTConnectionMap
@@ -47,29 +47,29 @@
   [(NSMutableDictionary *)self->_idToConnection removeAllObjects];
 }
 
-- (BOOL)retrieveConnection:(id *)a3 forId:(unint64_t)a4
+- (BOOL)retrieveConnection:(id *)connection forId:(unint64_t)id
 {
   idToConnection = self->_idToConnection;
-  v6 = [NSNumber numberWithUnsignedInteger:a4];
-  *a3 = [(NSMutableDictionary *)idToConnection objectForKeyedSubscript:v6];
+  v6 = [NSNumber numberWithUnsignedInteger:id];
+  *connection = [(NSMutableDictionary *)idToConnection objectForKeyedSubscript:v6];
 
-  return *a3 != 0;
+  return *connection != 0;
 }
 
-- (BOOL)retrieveId:(unint64_t *)a3 forConnection:(id)a4
+- (BOOL)retrieveId:(unint64_t *)id forConnection:(id)connection
 {
-  v5 = [(NSMutableDictionary *)self->_idToConnection allKeysForObject:a4];
-  v6 = [v5 firstObject];
-  *a3 = [v6 unsignedIntegerValue];
+  v5 = [(NSMutableDictionary *)self->_idToConnection allKeysForObject:connection];
+  firstObject = [v5 firstObject];
+  *id = [firstObject unsignedIntegerValue];
 
-  LOBYTE(a3) = [v5 count] != 0;
-  return a3;
+  LOBYTE(id) = [v5 count] != 0;
+  return id;
 }
 
-- (unint64_t)remove:(id)a3
+- (unint64_t)remove:(id)remove
 {
   v7 = 0;
-  [(GTConnectionMap *)self retrieveId:&v7 forConnection:a3];
+  [(GTConnectionMap *)self retrieveId:&v7 forConnection:remove];
   idToConnection = self->_idToConnection;
   v5 = [NSNumber numberWithUnsignedInteger:v7];
   [(NSMutableDictionary *)idToConnection removeObjectForKey:v5];
@@ -77,13 +77,13 @@
   return v7;
 }
 
-- (void)insert:(id)a3
+- (void)insert:(id)insert
 {
   idToConnection = self->_idToConnection;
   nextConnectionId = self->_nextConnectionId;
-  v6 = a3;
+  insertCopy = insert;
   v7 = [NSNumber numberWithUnsignedInteger:nextConnectionId];
-  [(NSMutableDictionary *)idToConnection setObject:v6 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)idToConnection setObject:insertCopy forKeyedSubscript:v7];
 
   ++self->_nextConnectionId;
 }

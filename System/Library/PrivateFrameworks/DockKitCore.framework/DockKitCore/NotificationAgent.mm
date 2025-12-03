@@ -1,19 +1,19 @@
 @interface NotificationAgent
 - (BOOL)isTracking;
-- (BOOL)registerWithCallback:(id)a3;
+- (BOOL)registerWithCallback:(id)callback;
 - (void)dealloc;
 - (void)deregister;
-- (void)stateEventWithInfo:(id)a3 connectedState:(int64_t)a4 dockState:(int64_t)a5 trackingButtonState:(int64_t)a6;
+- (void)stateEventWithInfo:(id)info connectedState:(int64_t)state dockState:(int64_t)dockState trackingButtonState:(int64_t)buttonState;
 @end
 
 @implementation NotificationAgent
 
-- (BOOL)registerWithCallback:(id)a3
+- (BOOL)registerWithCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_224610308(sub_224611614, v5);
 
   return self & 1;
@@ -21,7 +21,7 @@
 
 - (BOOL)isTracking
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2246106D4();
 
   return v3 & 1;
@@ -29,7 +29,7 @@
 
 - (void)deregister
 {
-  v2 = self;
+  selfCopy = self;
   sub_2246108CC();
 }
 
@@ -37,7 +37,7 @@
 {
   v3 = OBJC_IVAR___NotificationAgent_manager;
   v4 = *(&self->super.isa + OBJC_IVAR___NotificationAgent_manager);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     v6 = v4;
@@ -63,11 +63,11 @@
   [(NotificationAgent *)&v10 dealloc];
 }
 
-- (void)stateEventWithInfo:(id)a3 connectedState:(int64_t)a4 dockState:(int64_t)a5 trackingButtonState:(int64_t)a6
+- (void)stateEventWithInfo:(id)info connectedState:(int64_t)state dockState:(int64_t)dockState trackingButtonState:(int64_t)buttonState
 {
-  v10 = a3;
-  v11 = self;
-  sub_224610B88(v10, a4, a5, a6);
+  infoCopy = info;
+  selfCopy = self;
+  sub_224610B88(infoCopy, state, dockState, buttonState);
 }
 
 @end

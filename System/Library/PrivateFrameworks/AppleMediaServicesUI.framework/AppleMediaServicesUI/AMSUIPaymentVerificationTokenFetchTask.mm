@@ -2,53 +2,53 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_tokenFromDictionary:(id)a3;
++ (id)_tokenFromDictionary:(id)dictionary;
 + (id)createBagForSubProfile;
-+ (id)performRemoteDisabledFeatureWithBag:(id)a3 featureKey:(id)a4 featureBlock:(id)a5;
-- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)a3 account:(id)a4 viewController:(id)a5 bag:(id)a6 displayName:(id)a7;
-- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)a3 accountParameters:(id)a4 viewController:(id)a5 bag:(id)a6 displayName:(id)a7;
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5;
-- (id)_contextCombining:(id)a3 with:(id)a4 accountParameters:(id)a5 account:(id)a6;
-- (id)_promiseToTryNextFlowWithResult:(id)a3 error:(id)a4 continuationBlock:(id)a5;
-- (id)performApplePayTaskWithFeatureFlag:(BOOL)a3;
-- (id)performCardOnFileTaskWithFeatureFlag:(BOOL)a3;
-- (id)performIDCardTaskWithFeatureFlag:(BOOL)a3;
++ (id)performRemoteDisabledFeatureWithBag:(id)bag featureKey:(id)key featureBlock:(id)block;
+- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)mode account:(id)account viewController:(id)controller bag:(id)bag displayName:(id)name;
+- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)mode accountParameters:(id)parameters viewController:(id)controller bag:(id)bag displayName:(id)name;
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion;
+- (id)_contextCombining:(id)combining with:(id)with accountParameters:(id)parameters account:(id)account;
+- (id)_promiseToTryNextFlowWithResult:(id)result error:(id)error continuationBlock:(id)block;
+- (id)performApplePayTaskWithFeatureFlag:(BOOL)flag;
+- (id)performCardOnFileTaskWithFeatureFlag:(BOOL)flag;
+- (id)performIDCardTaskWithFeatureFlag:(BOOL)flag;
 - (id)performTask;
 - (id)performWebFlowTask;
-- (void)_finishPromiseWithResult:(id)a3 error:(id)a4;
-- (void)setHeader:(id)a3 withValueIn:(id)a4 forKey:(id)a5 onRequest:(id)a6;
-- (void)webViewController:(id)a3 didEncodeNetworkRequest:(id)a4;
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
+- (void)_finishPromiseWithResult:(id)result error:(id)error;
+- (void)setHeader:(id)header withValueIn:(id)in forKey:(id)key onRequest:(id)request;
+- (void)webViewController:(id)controller didEncodeNetworkRequest:(id)request;
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIPaymentVerificationTokenFetchTask
 
-- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)a3 account:(id)a4 viewController:(id)a5 bag:(id)a6 displayName:(id)a7
+- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)mode account:(id)account viewController:(id)controller bag:(id)bag displayName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  accountCopy = account;
+  controllerCopy = controller;
+  bagCopy = bag;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = AMSUIPaymentVerificationTokenFetchTask;
   v16 = [(AMSTask *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_account, a4);
-    objc_storeStrong(&v17->_bag, a6);
+    objc_storeStrong(&v16->_account, account);
+    objc_storeStrong(&v17->_bag, bag);
     v17->_biometricsDenied = 0;
-    objc_storeStrong(&v17->_displayName, a7);
-    objc_storeStrong(&v17->_viewController, a5);
-    v18 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-    if (!v18)
+    objc_storeStrong(&v17->_displayName, name);
+    objc_storeStrong(&v17->_viewController, controller);
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v18 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 = objc_opt_class();
       v21 = AMSLogKey();
@@ -56,7 +56,7 @@
       v26 = v20;
       v27 = 2114;
       v28 = v21;
-      _os_log_impl(&dword_1BB036000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating task with ACAccount", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating task with ACAccount", buf, 0x16u);
     }
   }
 
@@ -64,32 +64,32 @@
   return v17;
 }
 
-- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)a3 accountParameters:(id)a4 viewController:(id)a5 bag:(id)a6 displayName:(id)a7
+- (AMSUIPaymentVerificationTokenFetchTask)initWithMode:(unint64_t)mode accountParameters:(id)parameters viewController:(id)controller bag:(id)bag displayName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  parametersCopy = parameters;
+  controllerCopy = controller;
+  bagCopy = bag;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = AMSUIPaymentVerificationTokenFetchTask;
   v16 = [(AMSTask *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_accountParameters, a4);
-    objc_storeStrong(&v17->_bag, a6);
+    objc_storeStrong(&v16->_accountParameters, parameters);
+    objc_storeStrong(&v17->_bag, bag);
     v17->_biometricsDenied = 0;
-    objc_storeStrong(&v17->_displayName, a7);
-    objc_storeStrong(&v17->_viewController, a5);
-    v18 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-    if (!v18)
+    objc_storeStrong(&v17->_displayName, name);
+    objc_storeStrong(&v17->_viewController, controller);
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v18 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 = objc_opt_class();
       v21 = AMSLogKey();
@@ -97,7 +97,7 @@
       v26 = v20;
       v27 = 2114;
       v28 = v21;
-      _os_log_impl(&dword_1BB036000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating task with accountParameters", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating task with accountParameters", buf, 0x16u);
     }
   }
 
@@ -108,14 +108,14 @@
 - (id)performTask
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSSetLogKey();
@@ -123,33 +123,33 @@
     v35 = v5;
     v36 = 2114;
     v37 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting task", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting task", buf, 0x16u);
   }
 
   v7 = [AMSUIPaymentVerificationMetrics alloc];
   v8 = [(AMSUIPaymentVerificationTokenFetchTask *)self bag];
-  v9 = [MEMORY[0x1E698CAC8] currentProcess];
-  v10 = [v9 bundleIdentifier];
-  v11 = [(AMSUIPaymentVerificationMetrics *)v7 initWithBag:v8 appID:v10];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  bundleIdentifier = [currentProcess bundleIdentifier];
+  v11 = [(AMSUIPaymentVerificationMetrics *)v7 initWithBag:v8 appID:bundleIdentifier];
   [(AMSUIPaymentVerificationTokenFetchTask *)self setMetrics:v11];
 
-  v12 = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
-  [v12 enqueueEventWithPageId:@"ParentVerifyRequest" displayReason:0];
+  metrics = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
+  [metrics enqueueEventWithPageId:@"ParentVerifyRequest" displayReason:0];
 
-  v13 = [(AMSUIPaymentVerificationTokenFetchTask *)self viewController];
-  LODWORD(v12) = v13 == 0;
+  viewController = [(AMSUIPaymentVerificationTokenFetchTask *)self viewController];
+  LODWORD(metrics) = viewController == 0;
 
-  if (v12)
+  if (metrics)
   {
     v14 = AMSError();
-    v21 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v21)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v21 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
@@ -159,10 +159,10 @@
       v37 = v24;
       v38 = 2114;
       v39 = v14;
-      _os_log_impl(&dword_1BB036000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
 
-    v20 = [MEMORY[0x1E698CAD0] promiseWithError:v14];
+    resultPromise3 = [MEMORY[0x1E698CAD0] promiseWithError:v14];
   }
 
   else
@@ -188,23 +188,23 @@
     v17 = [v16 continueWithBlock:v31];
     [(AMSUIPaymentVerificationTokenFetchTask *)self setResultPromise:v17];
     objc_initWeak(buf, self);
-    v18 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
+    resultPromise = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __53__AMSUIPaymentVerificationTokenFetchTask_performTask__block_invoke_7;
     v29[3] = &unk_1E7F24D00;
     objc_copyWeak(&v30, buf);
-    [v18 addErrorBlock:v29];
+    [resultPromise addErrorBlock:v29];
 
-    v19 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
+    resultPromise2 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __53__AMSUIPaymentVerificationTokenFetchTask_performTask__block_invoke_8;
     v27[3] = &unk_1E7F257C0;
     objc_copyWeak(&v28, buf);
-    [v19 addFinishBlock:v27];
+    [resultPromise2 addFinishBlock:v27];
 
-    v20 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
+    resultPromise3 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v30);
     objc_destroyWeak(buf);
@@ -212,7 +212,7 @@
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return resultPromise3;
 }
 
 id __53__AMSUIPaymentVerificationTokenFetchTask_performTask__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -353,31 +353,31 @@ LABEL_16:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_promiseToTryNextFlowWithResult:(id)a3 error:(id)a4 continuationBlock:(id)a5
+- (id)_promiseToTryNextFlowWithResult:(id)result error:(id)error continuationBlock:(id)block
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  errorCopy = error;
+  blockCopy = block;
+  if (result)
   {
-    v10 = [MEMORY[0x1E698CAD0] promiseWithResult:a3];
+    v10 = [MEMORY[0x1E698CAD0] promiseWithResult:result];
     goto LABEL_18;
   }
 
-  v11 = [v8 domain];
-  v12 = v11;
-  if (v11 != *MEMORY[0x1E698C548])
+  domain = [errorCopy domain];
+  v12 = domain;
+  if (domain != *MEMORY[0x1E698C548])
   {
 
 LABEL_12:
-    v21 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-    if (!v21)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v21 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
@@ -386,30 +386,30 @@ LABEL_12:
       v35 = 2114;
       v36 = v24;
       v37 = 2114;
-      v38 = v8;
-      _os_log_impl(&dword_1BB036000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Moving to next flow due to: %{public}@", &v33, 0x20u);
+      v38 = errorCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Moving to next flow due to: %{public}@", &v33, 0x20u);
     }
 
 LABEL_17:
-    v10 = v9[2](v9);
+    v10 = blockCopy[2](blockCopy);
     goto LABEL_18;
   }
 
-  v13 = [v8 code];
+  code = [errorCopy code];
 
-  if (v13 != 6)
+  if (code != 6)
   {
     goto LABEL_12;
   }
 
-  v14 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v14)
+  mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968]2)
   {
-    v14 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_opt_class();
     v17 = AMSLogKey();
@@ -418,12 +418,12 @@ LABEL_17:
     v35 = 2114;
     v36 = v17;
     v37 = 2114;
-    v38 = v8;
-    _os_log_impl(&dword_1BB036000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] User cancelled previous flow: %{public}@", &v33, 0x20u);
+    v38 = errorCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] User cancelled previous flow: %{public}@", &v33, 0x20u);
   }
 
-  v18 = [v8 userInfo];
-  v19 = [v18 objectForKeyedSubscript:@"really_cancelled"];
+  userInfo = [errorCopy userInfo];
+  v19 = [userInfo objectForKeyedSubscript:@"really_cancelled"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -436,11 +436,11 @@ LABEL_17:
     v20 = 0;
   }
 
-  v28 = [v20 BOOLValue];
-  if (!v28)
+  bOOLValue = [v20 BOOLValue];
+  if (!bOOLValue)
   {
-    v29 = [v8 userInfo];
-    v30 = [v29 objectForKeyedSubscript:@"biometricsDenied"];
+    userInfo2 = [errorCopy userInfo];
+    v30 = [userInfo2 objectForKeyedSubscript:@"biometricsDenied"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -453,8 +453,8 @@ LABEL_17:
       v31 = 0;
     }
 
-    v32 = [v31 BOOLValue];
-    if (v32)
+    bOOLValue2 = [v31 BOOLValue];
+    if (bOOLValue2)
     {
       [(AMSUIPaymentVerificationTokenFetchTask *)self setBiometricsDenied:1];
     }
@@ -462,7 +462,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v10 = [MEMORY[0x1E698CAD0] promiseWithError:v8];
+  v10 = [MEMORY[0x1E698CAD0] promiseWithError:errorCopy];
 LABEL_18:
   v25 = v10;
 
@@ -471,22 +471,22 @@ LABEL_18:
   return v25;
 }
 
-+ (id)performRemoteDisabledFeatureWithBag:(id)a3 featureKey:(id)a4 featureBlock:(id)a5
++ (id)performRemoteDisabledFeatureWithBag:(id)bag featureKey:(id)key featureBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 BOOLForKey:v7];
-  v10 = [v9 valuePromise];
+  keyCopy = key;
+  blockCopy = block;
+  v9 = [bag BOOLForKey:keyCopy];
+  valuePromise = [v9 valuePromise];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __102__AMSUIPaymentVerificationTokenFetchTask_performRemoteDisabledFeatureWithBag_featureKey_featureBlock___block_invoke;
   v15[3] = &unk_1E7F257E8;
-  v16 = v7;
-  v17 = v8;
-  v11 = v8;
-  v12 = v7;
-  v13 = [v10 continueWithBlock:v15];
+  v16 = keyCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = keyCopy;
+  v13 = [valuePromise continueWithBlock:v15];
 
   return v13;
 }
@@ -521,9 +521,9 @@ id __102__AMSUIPaymentVerificationTokenFetchTask_performRemoteDisabledFeatureWit
   return v8;
 }
 
-- (id)performIDCardTaskWithFeatureFlag:(BOOL)a3
+- (id)performIDCardTaskWithFeatureFlag:(BOOL)flag
 {
-  if (a3)
+  if (flag)
   {
     v4 = objc_opt_class();
     v5 = [(AMSUIPaymentVerificationTokenFetchTask *)self bag];
@@ -561,9 +561,9 @@ id __75__AMSUIPaymentVerificationTokenFetchTask_performIDCardTaskWithFeatureFlag
   return v10;
 }
 
-- (id)performApplePayTaskWithFeatureFlag:(BOOL)a3
+- (id)performApplePayTaskWithFeatureFlag:(BOOL)flag
 {
-  if (a3)
+  if (flag)
   {
     v4 = objc_opt_class();
     v5 = [(AMSUIPaymentVerificationTokenFetchTask *)self bag];
@@ -601,18 +601,18 @@ id __77__AMSUIPaymentVerificationTokenFetchTask_performApplePayTaskWithFeatureFl
   return v10;
 }
 
-- (id)performCardOnFileTaskWithFeatureFlag:(BOOL)a3
+- (id)performCardOnFileTaskWithFeatureFlag:(BOOL)flag
 {
-  if (a3)
+  if (flag)
   {
     v4 = [AMSUICardOnFilePVTFetchTask alloc];
-    v5 = [(AMSUIPaymentVerificationTokenFetchTask *)self account];
-    v6 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+    account = [(AMSUIPaymentVerificationTokenFetchTask *)self account];
+    accountParameters = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
     v7 = [(AMSUIPaymentVerificationTokenFetchTask *)self bag];
-    v8 = [(AMSUIPaymentVerificationTokenFetchTask *)self displayName];
-    v9 = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
-    v10 = [(AMSUIPaymentVerificationTokenFetchTask *)self viewController];
-    v11 = [(AMSUICardOnFilePVTFetchTask *)v4 initWithAccount:v5 accountParameters:v6 bag:v7 displayName:v8 metrics:v9 viewController:v10];
+    displayName = [(AMSUIPaymentVerificationTokenFetchTask *)self displayName];
+    metrics = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
+    viewController = [(AMSUIPaymentVerificationTokenFetchTask *)self viewController];
+    v11 = [(AMSUICardOnFilePVTFetchTask *)v4 initWithAccount:account accountParameters:accountParameters bag:v7 displayName:displayName metrics:metrics viewController:viewController];
 
     [(AMSUICardOnFilePVTFetchTask *)v11 performTask];
   }
@@ -631,9 +631,9 @@ id __77__AMSUIPaymentVerificationTokenFetchTask_performApplePayTaskWithFeatureFl
 {
   v3 = objc_alloc_init(MEMORY[0x1E698CAD0]);
   v4 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:*MEMORY[0x1E698C4C0]];
-  v5 = [(AMSUIPaymentVerificationTokenFetchTask *)self account];
-  v6 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-  v7 = [AMSUIPaymentVerificationProtocolHandler _accountToUseFromGivenAccount:v5 accountParameters:v6 accountStore:v4];
+  account = [(AMSUIPaymentVerificationTokenFetchTask *)self account];
+  accountParameters = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+  v7 = [AMSUIPaymentVerificationProtocolHandler _accountToUseFromGivenAccount:account accountParameters:accountParameters accountStore:v4];
 
   if (!v7)
   {
@@ -641,24 +641,24 @@ id __77__AMSUIPaymentVerificationTokenFetchTask_performApplePayTaskWithFeatureFl
     v9 = [v4 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959930]];
     v7 = [v8 initWithAccountType:v9];
 
-    v10 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-    v11 = [v10 objectForKeyedSubscript:@"accountNameApprover"];
+    accountParameters2 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+    v11 = [accountParameters2 objectForKeyedSubscript:@"accountNameApprover"];
     [v7 setUsername:v11];
 
-    v12 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-    v13 = [v12 objectForKeyedSubscript:@"altDsId"];
+    accountParameters3 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+    v13 = [accountParameters3 objectForKeyedSubscript:@"altDsId"];
     [v7 ams_setAltDSID:v13];
 
-    v14 = [v4 ams_localiTunesAccount];
-    v15 = [v14 ams_storefront];
-    [v7 ams_setStorefront:v15];
+    ams_localiTunesAccount = [v4 ams_localiTunesAccount];
+    ams_storefront = [ams_localiTunesAccount ams_storefront];
+    [v7 ams_setStorefront:ams_storefront];
   }
 
-  v16 = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
-  v17 = [v16 displayReason];
-  v18 = [(AMSUIPaymentVerificationTokenFetchTask *)self userInfo];
-  v19 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-  v20 = [(AMSUIPaymentVerificationTokenFetchTask *)self _contextCombining:v17 with:v18 accountParameters:v19 account:v7];
+  metrics = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
+  displayReason = [metrics displayReason];
+  userInfo = [(AMSUIPaymentVerificationTokenFetchTask *)self userInfo];
+  accountParameters4 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+  v20 = [(AMSUIPaymentVerificationTokenFetchTask *)self _contextCombining:displayReason with:userInfo accountParameters:accountParameters4 account:v7];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __60__AMSUIPaymentVerificationTokenFetchTask_performWebFlowTask__block_invoke;
@@ -790,28 +790,28 @@ void __60__AMSUIPaymentVerificationTokenFetchTask_performWebFlowTask__block_invo
   [v4 presentViewController:v5 animated:1 completion:0];
 }
 
-- (id)_contextCombining:(id)a3 with:(id)a4 accountParameters:(id)a5 account:(id)a6
+- (id)_contextCombining:(id)combining with:(id)with accountParameters:(id)parameters account:(id)account
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_alloc(MEMORY[0x1E698C800]) initWithAccount:v13 forSignaturePurpose:1];
-  v15 = [v14 perform];
+  combiningCopy = combining;
+  withCopy = with;
+  parametersCopy = parameters;
+  accountCopy = account;
+  v14 = [objc_alloc(MEMORY[0x1E698C800]) initWithAccount:accountCopy forSignaturePurpose:1];
+  perform = [v14 perform];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __91__AMSUIPaymentVerificationTokenFetchTask__contextCombining_with_accountParameters_account___block_invoke;
   v22[3] = &unk_1E7F25838;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
-  v26 = v13;
-  v27 = self;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  v20 = [v15 continueWithPromiseBlock:v22];
+  v23 = combiningCopy;
+  v24 = withCopy;
+  v25 = parametersCopy;
+  v26 = accountCopy;
+  selfCopy = self;
+  v16 = accountCopy;
+  v17 = parametersCopy;
+  v18 = withCopy;
+  v19 = combiningCopy;
+  v20 = [perform continueWithPromiseBlock:v22];
 
   return v20;
 }
@@ -881,19 +881,19 @@ id __91__AMSUIPaymentVerificationTokenFetchTask__contextCombining_with_accountPa
   return v23;
 }
 
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v9)
+  actionCopy = action;
+  completionCopy = completion;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = AMSLogKey();
@@ -902,11 +902,11 @@ id __91__AMSUIPaymentVerificationTokenFetchTask__contextCombining_with_accountPa
     v24 = 2114;
     v25 = v12;
     v26 = 2114;
-    v27 = v7;
-    _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Web flow finished by returning: %{public}@", &v22, 0x20u);
+    v27 = actionCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Web flow finished by returning: %{public}@", &v22, 0x20u);
   }
 
-  v13 = [objc_opt_class() _tokenFromDictionary:v7];
+  v13 = [objc_opt_class() _tokenFromDictionary:actionCopy];
   if (v13)
   {
     v14 = 0;
@@ -917,16 +917,16 @@ id __91__AMSUIPaymentVerificationTokenFetchTask__contextCombining_with_accountPa
     v14 = AMSError();
   }
 
-  v15 = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
-  [v15 enqueueEventWithPageId:@"ParentVerified" displayReason:@"WebFlow"];
+  metrics = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
+  [metrics enqueueEventWithPageId:@"ParentVerified" displayReason:@"WebFlow"];
 
-  v16 = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
-  [v16 flushEvents];
+  metrics2 = [(AMSUIPaymentVerificationTokenFetchTask *)self metrics];
+  [metrics2 flushEvents];
 
   [(AMSUIPaymentVerificationTokenFetchTask *)self _finishPromiseWithResult:v13 error:v14];
   if (v14)
   {
-    v17 = v8;
+    v17 = completionCopy;
     v18 = 0;
     v19 = v14;
   }
@@ -934,41 +934,41 @@ id __91__AMSUIPaymentVerificationTokenFetchTask__contextCombining_with_accountPa
   else
   {
     v18 = MEMORY[0x1E695E118];
-    v17 = v8;
+    v17 = completionCopy;
     v19 = 0;
   }
 
-  (*(v8 + 2))(v17, v18, v19);
+  (*(completionCopy + 2))(v17, v18, v19);
 
   v20 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 options];
-  v12 = [v11 copy];
+  controllerCopy = controller;
+  requestCopy = request;
+  completionCopy = completion;
+  options = [requestCopy options];
+  v12 = [options copy];
 
   [v12 setEphemeral:1];
   [v12 setServiceIdentifier:@"com.apple.gs.ams.pvkit"];
   v13 = [AMSUIAuthKitUpdateTask alloc];
-  v14 = [v9 account];
-  v15 = [(AMSUIPaymentVerificationTokenFetchTask *)self webVC];
-  v16 = [(AMSUIAuthKitUpdateTask *)v13 initWithAccount:v14 presentingViewController:v15 options:v12];
+  account = [requestCopy account];
+  webVC = [(AMSUIPaymentVerificationTokenFetchTask *)self webVC];
+  v16 = [(AMSUIAuthKitUpdateTask *)v13 initWithAccount:account presentingViewController:webVC options:v12];
 
   objc_initWeak(&location, self);
-  v17 = [(AMSAuthKitUpdateTask *)v16 performAuthKitUpdate];
+  performAuthKitUpdate = [(AMSAuthKitUpdateTask *)v16 performAuthKitUpdate];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __97__AMSUIPaymentVerificationTokenFetchTask_webViewController_handleAuthenticateRequest_completion___block_invoke;
   v19[3] = &unk_1E7F25860;
   objc_copyWeak(&v21, &location);
-  v18 = v10;
+  v18 = completionCopy;
   v20 = v18;
-  [v17 addFinishBlock:v19];
+  [performAuthKitUpdate addFinishBlock:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1048,47 +1048,47 @@ void __97__AMSUIPaymentVerificationTokenFetchTask_webViewController_handleAuthen
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)webViewController:(id)a3 didEncodeNetworkRequest:(id)a4
+- (void)webViewController:(id)controller didEncodeNetworkRequest:(id)request
 {
-  v12 = a4;
-  v5 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+  requestCopy = request;
+  accountParameters = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
 
-  if (v5)
+  if (accountParameters)
   {
     v6 = *MEMORY[0x1E698C588];
-    v7 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-    [(AMSUIPaymentVerificationTokenFetchTask *)self setHeader:v6 withValueIn:v7 forKey:@"gsToken" onRequest:v12];
+    accountParameters2 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+    [(AMSUIPaymentVerificationTokenFetchTask *)self setHeader:v6 withValueIn:accountParameters2 forKey:@"gsToken" onRequest:requestCopy];
 
     v8 = *MEMORY[0x1E698C598];
-    v9 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-    [(AMSUIPaymentVerificationTokenFetchTask *)self setHeader:v8 withValueIn:v9 forKey:@"mmeClientInfo" onRequest:v12];
+    accountParameters3 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+    [(AMSUIPaymentVerificationTokenFetchTask *)self setHeader:v8 withValueIn:accountParameters3 forKey:@"mmeClientInfo" onRequest:requestCopy];
 
     v10 = *MEMORY[0x1E698C5A0];
-    v11 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
-    [(AMSUIPaymentVerificationTokenFetchTask *)self setHeader:v10 withValueIn:v11 forKey:@"deviceId" onRequest:v12];
+    accountParameters4 = [(AMSUIPaymentVerificationTokenFetchTask *)self accountParameters];
+    [(AMSUIPaymentVerificationTokenFetchTask *)self setHeader:v10 withValueIn:accountParameters4 forKey:@"deviceId" onRequest:requestCopy];
 
-    [v12 setValue:@"1" forHTTPHeaderField:@"X-Apple-Payment-Verification"];
+    [requestCopy setValue:@"1" forHTTPHeaderField:@"X-Apple-Payment-Verification"];
   }
 }
 
-- (void)setHeader:(id)a3 withValueIn:(id)a4 forKey:(id)a5 onRequest:(id)a6
+- (void)setHeader:(id)header withValueIn:(id)in forKey:(id)key onRequest:(id)request
 {
-  v11 = a3;
-  v9 = a6;
-  v10 = [a4 objectForKeyedSubscript:a5];
+  headerCopy = header;
+  requestCopy = request;
+  v10 = [in objectForKeyedSubscript:key];
   if (v10)
   {
-    [v9 setValue:v10 forHTTPHeaderField:v11];
+    [requestCopy setValue:v10 forHTTPHeaderField:headerCopy];
   }
 }
 
-+ (id)_tokenFromDictionary:(id)a3
++ (id)_tokenFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"actionName"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"actionName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1187,8 +1187,8 @@ void __97__AMSUIPaymentVerificationTokenFetchTask_webViewController_handleAuthen
   [v2 addBagKey:@"verifyPaymentApplePayAurumOnStackPVT" valueType:5 defaultValue:@"https://buy.itunes.apple.com/account/verifyPayment/applePay/aurumOnStackPVT"];
   [v2 addBagKey:@"verifyPaymentApplePayCardOnDevice" valueType:5 defaultValue:@"https://buy.itunes.apple.com/account/verifyPayment/applePay/cardOnDevice"];
   [v2 addBagKey:@"verifyPaymentCommerceURL" valueType:5 defaultValue:@"https://apps.mzstatic.com/content/54a1317a0ad442d3965d64ef6bfaae1c/verify-billing"];
-  v3 = [MEMORY[0x1E698CB88] bagKeySet];
-  [v2 unionBagKeySet:v3];
+  bagKeySet = [MEMORY[0x1E698CB88] bagKeySet];
+  [v2 unionBagKeySet:bagKeySet];
 
   return v2;
 }
@@ -1232,42 +1232,42 @@ void __62__AMSUIPaymentVerificationTokenFetchTask_bagSubProfileVersion__block_in
 + (id)createBagForSubProfile
 {
   v2 = MEMORY[0x1E698C7E0];
-  v3 = [objc_opt_class() bagKeySet];
-  v4 = [objc_opt_class() bagSubProfile];
-  v5 = [objc_opt_class() bagSubProfileVersion];
-  [v2 registerBagKeySet:v3 forProfile:v4 profileVersion:v5];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  [v2 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v6 = MEMORY[0x1E698C7D8];
-  v7 = [objc_opt_class() bagSubProfile];
-  v8 = [objc_opt_class() bagSubProfileVersion];
-  v9 = [v6 bagForProfile:v7 profileVersion:v8];
+  bagSubProfile2 = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion2 = [objc_opt_class() bagSubProfileVersion];
+  v9 = [v6 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v9;
 }
 
-- (void)_finishPromiseWithResult:(id)a3 error:(id)a4
+- (void)_finishPromiseWithResult:(id)result error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
-    v7 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
-    [v7 finishWithResult:v10];
+    resultPromise = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
+    [resultPromise finishWithResult:resultCopy];
   }
 
   else
   {
-    v8 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
-    v7 = v8;
-    if (v6)
+    resultPromise2 = [(AMSUIPaymentVerificationTokenFetchTask *)self resultPromise];
+    resultPromise = resultPromise2;
+    if (errorCopy)
     {
-      [v8 finishWithError:v6];
+      [resultPromise2 finishWithError:errorCopy];
     }
 
     else
     {
       v9 = AMSError();
-      [v7 finishWithError:v9];
+      [resultPromise finishWithError:v9];
     }
   }
 

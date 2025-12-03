@@ -29,19 +29,19 @@
     {
       if (objc_opt_respondsToSelector())
       {
-        v3 = [MEMORY[0x1E69DEBE0] __bootstrappingDeviceContext];
-        if (v3)
+        __bootstrappingDeviceContext = [MEMORY[0x1E69DEBE0] __bootstrappingDeviceContext];
+        if (__bootstrappingDeviceContext)
         {
-          objc_storeStrong(&self->_context, v3);
+          objc_storeStrong(&self->_context, __bootstrappingDeviceContext);
         }
       }
 
       if (!self->_context)
       {
-        v4 = [v7 applicationInitializationContext];
-        v5 = [v4 deviceContext];
+        applicationInitializationContext = [v7 applicationInitializationContext];
+        deviceContext = [applicationInitializationContext deviceContext];
         context = self->_context;
-        self->_context = v5;
+        self->_context = deviceContext;
       }
     }
   }
@@ -58,8 +58,8 @@
   v4 = v3;
   if (!self->_context && ([v3 isFrontBoard] & 1) == 0)
   {
-    v5 = [v4 applicationInitializationContext];
-    if (!v5)
+    applicationInitializationContext = [v4 applicationInitializationContext];
+    if (!applicationInitializationContext)
     {
       v6 = *(__UILogGetCategoryCachedImpl("DeviceConfigurationFetch", &initialDeviceContext___s_category) + 8);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -69,9 +69,9 @@
       }
     }
 
-    v7 = [v5 deviceContext];
+    deviceContext = [applicationInitializationContext deviceContext];
     context = self->_context;
-    self->_context = v7;
+    self->_context = deviceContext;
   }
 
   v9 = self->_context;

@@ -13,28 +13,28 @@
 + (id)signInServiceViewControllerInterface;
 + (id)turnBasedHostViewControllerInterface;
 + (id)turnBasedServiceViewControllerInterface;
-+ (void)_configureKVOTypes:(id)a3;
-+ (void)setClassesForExtensionInterface:(id)a3;
-+ (void)setClassesForHostInterface:(id)a3;
++ (void)_configureKVOTypes:(id)types;
++ (void)setClassesForExtensionInterface:(id)interface;
++ (void)setClassesForHostInterface:(id)interface;
 @end
 
 @implementation GKViewServiceInterface
 
-+ (void)setClassesForHostInterface:(id)a3
++ (void)setClassesForHostInterface:(id)interface
 {
   v3 = MEMORY[0x277D0C210];
-  v4 = a3;
-  v5 = [v3 plistClasses];
-  [v4 setClasses:v5 forSelector:sel_messageFromExtension_ argumentIndex:0 ofReply:0];
+  interfaceCopy = interface;
+  plistClasses = [v3 plistClasses];
+  [interfaceCopy setClasses:plistClasses forSelector:sel_messageFromExtension_ argumentIndex:0 ofReply:0];
 }
 
-+ (void)setClassesForExtensionInterface:(id)a3
++ (void)setClassesForExtensionInterface:(id)interface
 {
   v4 = MEMORY[0x277D0C210];
-  v5 = a3;
-  v6 = [v4 plistClasses];
-  [v5 setClasses:v6 forSelector:sel_messageFromClient_ argumentIndex:0 ofReply:0];
-  [a1 _configureKVOTypes:v5];
+  interfaceCopy = interface;
+  plistClasses = [v4 plistClasses];
+  [interfaceCopy setClasses:plistClasses forSelector:sel_messageFromClient_ argumentIndex:0 ofReply:0];
+  [self _configureKVOTypes:interfaceCopy];
 }
 
 + (id)extensionHostInterface
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __48__GKViewServiceInterface_extensionHostInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extensionHostInterface_onceToken != -1)
   {
     dispatch_once(&extensionHostInterface_onceToken, block);
@@ -72,7 +72,7 @@ uint64_t __48__GKViewServiceInterface_extensionHostInterface__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __44__GKViewServiceInterface_extensionInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extensionInterface_onceToken != -1)
   {
     dispatch_once(&extensionInterface_onceToken, block);
@@ -101,7 +101,7 @@ uint64_t __44__GKViewServiceInterface_extensionInterface__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __63__GKViewServiceInterface_gameCenterHostViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (gameCenterHostViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&gameCenterHostViewControllerInterface_onceToken, block);
@@ -130,7 +130,7 @@ uint64_t __63__GKViewServiceInterface_gameCenterHostViewControllerInterface__blo
   block[1] = 3221225472;
   block[2] = __66__GKViewServiceInterface_gameCenterServiceViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (gameCenterServiceViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&gameCenterServiceViewControllerInterface_onceToken, block);
@@ -159,7 +159,7 @@ uint64_t __66__GKViewServiceInterface_gameCenterServiceViewControllerInterface__
   block[1] = 3221225472;
   block[2] = __61__GKViewServiceInterface_remoteSignInViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (remoteSignInViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&remoteSignInViewControllerInterface_onceToken, block);
@@ -188,7 +188,7 @@ uint64_t __61__GKViewServiceInterface_remoteSignInViewControllerInterface__block
   block[1] = 3221225472;
   block[2] = __62__GKViewServiceInterface_signInServiceViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signInServiceViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&signInServiceViewControllerInterface_onceToken, block);
@@ -217,7 +217,7 @@ uint64_t __62__GKViewServiceInterface_signInServiceViewControllerInterface__bloc
   block[1] = 3221225472;
   block[2] = __68__GKViewServiceInterface_remoteFriendRequestViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (remoteFriendRequestViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&remoteFriendRequestViewControllerInterface_onceToken, block);
@@ -248,7 +248,7 @@ void __68__GKViewServiceInterface_remoteFriendRequestViewControllerInterface__bl
   block[1] = 3221225472;
   block[2] = __69__GKViewServiceInterface_serviceFriendRequestViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (serviceFriendRequestViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&serviceFriendRequestViewControllerInterface_onceToken, block);
@@ -279,7 +279,7 @@ void __69__GKViewServiceInterface_serviceFriendRequestViewControllerInterface__b
   block[1] = 3221225472;
   block[2] = __67__GKViewServiceInterface_challengeIssueHostViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (challengeIssueHostViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&challengeIssueHostViewControllerInterface_onceToken, block);
@@ -307,7 +307,7 @@ void __67__GKViewServiceInterface_challengeIssueHostViewControllerInterface__blo
   block[1] = 3221225472;
   block[2] = __70__GKViewServiceInterface_challengeIssueServiceViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (challengeIssueServiceViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&challengeIssueServiceViewControllerInterface_onceToken, block);
@@ -343,7 +343,7 @@ void __70__GKViewServiceInterface_challengeIssueServiceViewControllerInterface__
   block[1] = 3221225472;
   block[2] = __63__GKViewServiceInterface_matchmakerHostViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (matchmakerHostViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&matchmakerHostViewControllerInterface_onceToken, block);
@@ -386,7 +386,7 @@ void __63__GKViewServiceInterface_matchmakerHostViewControllerInterface__block_i
   block[1] = 3221225472;
   block[2] = __66__GKViewServiceInterface_matchmakerServiceViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (matchmakerServiceViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&matchmakerServiceViewControllerInterface_onceToken, block);
@@ -421,7 +421,7 @@ void __66__GKViewServiceInterface_matchmakerServiceViewControllerInterface__bloc
   block[1] = 3221225472;
   block[2] = __62__GKViewServiceInterface_turnBasedHostViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (turnBasedHostViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&turnBasedHostViewControllerInterface_onceToken, block);
@@ -456,7 +456,7 @@ void __62__GKViewServiceInterface_turnBasedHostViewControllerInterface__block_in
   block[1] = 3221225472;
   block[2] = __65__GKViewServiceInterface_turnBasedServiceViewControllerInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (turnBasedServiceViewControllerInterface_onceToken != -1)
   {
     dispatch_once(&turnBasedServiceViewControllerInterface_onceToken, block);
@@ -480,12 +480,12 @@ void __65__GKViewServiceInterface_turnBasedServiceViewControllerInterface__block
   [v4 setClasses:v5 forSelector:sel_setValue_forKeyPath_withReply_ argumentIndex:0 ofReply:0];
 }
 
-+ (void)_configureKVOTypes:(id)a3
++ (void)_configureKVOTypes:(id)types
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D0C210];
-  v4 = a3;
-  v5 = [v3 plistClasses];
+  typesCopy = types;
+  plistClasses = [v3 plistClasses];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
@@ -494,10 +494,10 @@ void __65__GKViewServiceInterface_turnBasedServiceViewControllerInterface__block
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:7];
-  v7 = [v5 setByAddingObjectsFromArray:{v6, v8, v9, v10, v11, v12, v13}];
+  v7 = [plistClasses setByAddingObjectsFromArray:{v6, v8, v9, v10, v11, v12, v13}];
 
-  [v4 setClasses:v7 forSelector:sel_setValue_forKeyPath_withReply_ argumentIndex:0 ofReply:0];
-  [v4 setClasses:v7 forSelector:sel_setInitialState_withReply_ argumentIndex:0 ofReply:0];
+  [typesCopy setClasses:v7 forSelector:sel_setValue_forKeyPath_withReply_ argumentIndex:0 ofReply:0];
+  [typesCopy setClasses:v7 forSelector:sel_setInitialState_withReply_ argumentIndex:0 ofReply:0];
 }
 
 @end

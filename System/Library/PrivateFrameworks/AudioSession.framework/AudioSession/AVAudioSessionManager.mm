@@ -1,7 +1,7 @@
 @interface AVAudioSessionManager
 + (id)defaultManager;
 - (AVAudioSessionManager)init;
-- (BOOL)trackDaemonPID:(int)a3;
+- (BOOL)trackDaemonPID:(int)d;
 - (id).cxx_construct;
 @end
 
@@ -34,13 +34,13 @@
   return v2;
 }
 
-- (BOOL)trackDaemonPID:(int)a3
+- (BOOL)trackDaemonPID:(int)d
 {
-  v8 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_state.mMutex.m_lock);
   if (self->_state.mObject.mServerPIDs.m_size && (m_buff = self->_state.mObject.mServerPIDs.m_first) != 0)
   {
-    while (*m_buff != a3)
+    while (*m_buff != d)
     {
       if (++m_buff == self->_state.mObject.mServerPIDs.m_end)
       {
@@ -59,7 +59,7 @@
   else
   {
 LABEL_8:
-    boost::circular_buffer<int,std::allocator<int>>::push_back_impl<int const&>(&self->_state.mObject.mServerPIDs.m_buff, &v8);
+    boost::circular_buffer<int,std::allocator<int>>::push_back_impl<int const&>(&self->_state.mObject.mServerPIDs.m_buff, &dCopy);
     v6 = 1;
   }
 

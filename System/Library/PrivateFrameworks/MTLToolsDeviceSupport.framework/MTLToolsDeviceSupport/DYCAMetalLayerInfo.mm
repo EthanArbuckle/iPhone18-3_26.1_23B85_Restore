@@ -1,28 +1,28 @@
 @interface DYCAMetalLayerInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frame;
-- (DYCAMetalLayerInfo)initWithCoder:(id)a3;
+- (DYCAMetalLayerInfo)initWithCoder:(id)coder;
 @end
 
 @implementation DYCAMetalLayerInfo
 
-- (DYCAMetalLayerInfo)initWithCoder:(id)a3
+- (DYCAMetalLayerInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DYCAMetalLayerInfo;
   v5 = [(DYCAMetalLayerInfo *)&v15 init];
   if (v5)
   {
-    v5->_deviceAddress = [v4 decodeInt64ForKey:@"deviceAddress"];
-    v5->_layerAddress = [v4 decodeInt64ForKey:@"layerAddress"];
-    v5->_layerStreamRef = [v4 decodeInt64ForKey:@"layerStreamRef"];
-    [v4 decodeCGRectForKey:@"frame"];
+    v5->_deviceAddress = [coderCopy decodeInt64ForKey:@"deviceAddress"];
+    v5->_layerAddress = [coderCopy decodeInt64ForKey:@"layerAddress"];
+    v5->_layerStreamRef = [coderCopy decodeInt64ForKey:@"layerStreamRef"];
+    [coderCopy decodeCGRectForKey:@"frame"];
     v5->_frame.origin.x = v6;
     v5->_frame.origin.y = v7;
     v5->_frame.size.width = v8;
     v5->_frame.size.height = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v10;
 
@@ -43,11 +43,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->_layerAddress == v4[3];
+  v6 = v5 == objc_opt_class() && self->_layerAddress == equalCopy[3];
 
   return v6;
 }

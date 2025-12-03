@@ -1,5 +1,5 @@
 @interface ParkedCarFooterActionsSectionController
-- (ParkedCarFooterActionsSectionController)initWithParkedCar:(id)a3;
+- (ParkedCarFooterActionsSectionController)initWithParkedCar:(id)car;
 - (ParkedCarFooterActionsSectionControllerDelegate)actionDelegate;
 - (void)_commonInit;
 @end
@@ -45,11 +45,11 @@
   objc_destroyWeak(&location);
 }
 
-- (ParkedCarFooterActionsSectionController)initWithParkedCar:(id)a3
+- (ParkedCarFooterActionsSectionController)initWithParkedCar:(id)car
 {
   v6.receiver = self;
   v6.super_class = ParkedCarFooterActionsSectionController;
-  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:a3];
+  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:car];
   v4 = v3;
   if (v3)
   {

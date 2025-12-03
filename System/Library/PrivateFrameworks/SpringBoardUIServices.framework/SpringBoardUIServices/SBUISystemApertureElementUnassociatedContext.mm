@@ -1,6 +1,6 @@
 @interface SBUISystemApertureElementUnassociatedContext
 + (id)unassociatedContext;
-- (void)_logErrorForSelectorIfNeeded:(SEL)a3;
+- (void)_logErrorForSelectorIfNeeded:(SEL)needed;
 @end
 
 @implementation SBUISystemApertureElementUnassociatedContext
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __67__SBUISystemApertureElementUnassociatedContext_unassociatedContext__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (unassociatedContext_onceToken != -1)
   {
     dispatch_once(&unassociatedContext_onceToken, block);
@@ -31,11 +31,11 @@ uint64_t __67__SBUISystemApertureElementUnassociatedContext_unassociatedContext_
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (void)_logErrorForSelectorIfNeeded:(SEL)a3
+- (void)_logErrorForSelectorIfNeeded:(SEL)needed
 {
   if (SBUIIsSystemApertureEnabled())
   {
-    v4 = NSStringFromSelector(a3);
+    v4 = NSStringFromSelector(needed);
     NSLog(&cfstr_CallingSbuisys.isa, v4);
   }
 }

@@ -2,12 +2,12 @@
 + (AAUploadBatchEventConfig)default;
 - (AAUploadBatchEventConfig)init;
 - (NSURL)directory;
-- (id)withDebuggingEnabled:(BOOL)a3;
-- (id)withDirectory:(id)a3;
-- (id)withMaxByteSizePerSessionBatch:(int64_t)a3;
-- (id)withMaxEventsPerSessionBatch:(int64_t)a3;
-- (id)withMaxUploadTries:(int64_t)a3;
-- (id)withTransparencyLoggingEnabled:(BOOL)a3;
+- (id)withDebuggingEnabled:(BOOL)enabled;
+- (id)withDirectory:(id)directory;
+- (id)withMaxByteSizePerSessionBatch:(int64_t)batch;
+- (id)withMaxEventsPerSessionBatch:(int64_t)batch;
+- (id)withMaxUploadTries:(int64_t)tries;
+- (id)withTransparencyLoggingEnabled:(BOOL)enabled;
 @end
 
 @implementation AAUploadBatchEventConfig
@@ -38,49 +38,49 @@
   return v8;
 }
 
-- (id)withMaxEventsPerSessionBatch:(int64_t)a3
+- (id)withMaxEventsPerSessionBatch:(int64_t)batch
 {
-  v4 = self;
-  v5 = UploadBatchEventConfig.with(maxEventsPerSessionBatch:)(a3);
+  selfCopy = self;
+  v5 = UploadBatchEventConfig.with(maxEventsPerSessionBatch:)(batch);
 
   return v5;
 }
 
-- (id)withMaxByteSizePerSessionBatch:(int64_t)a3
+- (id)withMaxByteSizePerSessionBatch:(int64_t)batch
 {
-  v4 = self;
-  v5 = UploadBatchEventConfig.with(maxByteSizePerSessionBatch:)(a3);
+  selfCopy = self;
+  v5 = UploadBatchEventConfig.with(maxByteSizePerSessionBatch:)(batch);
 
   return v5;
 }
 
-- (id)withTransparencyLoggingEnabled:(BOOL)a3
+- (id)withTransparencyLoggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = self;
-  v5 = UploadBatchEventConfig.with(transparencyLoggingEnabled:)(v3);
+  enabledCopy = enabled;
+  selfCopy = self;
+  v5 = UploadBatchEventConfig.with(transparencyLoggingEnabled:)(enabledCopy);
 
   return v5;
 }
 
-- (id)withDebuggingEnabled:(BOOL)a3
+- (id)withDebuggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = self;
-  v5 = UploadBatchEventConfig.with(debuggingEnabled:)(v3);
+  enabledCopy = enabled;
+  selfCopy = self;
+  v5 = UploadBatchEventConfig.with(debuggingEnabled:)(enabledCopy);
 
   return v5;
 }
 
-- (id)withMaxUploadTries:(int64_t)a3
+- (id)withMaxUploadTries:(int64_t)tries
 {
-  v4 = self;
-  v5 = UploadBatchEventConfig.with(maxUploadTries:)(a3);
+  selfCopy = self;
+  v5 = UploadBatchEventConfig.with(maxUploadTries:)(tries);
 
   return v5;
 }
 
-- (id)withDirectory:(id)a3
+- (id)withDirectory:(id)directory
 {
   v4 = sub_1B6AB8BB0();
   v5 = *(v4 - 8);
@@ -88,7 +88,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B6AB8B60();
-  v9 = self;
+  selfCopy = self;
   v10 = UploadBatchEventConfig.with(directory:)(v8);
 
   (*(v5 + 8))(v8, v4);

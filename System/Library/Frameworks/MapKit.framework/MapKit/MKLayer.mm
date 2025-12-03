@@ -1,11 +1,11 @@
 @interface MKLayer
-- (BOOL)containsPoint:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point;
 - (CGPoint)hitOffset;
 - (CGPoint)hitOutset;
 - (CGRect)hitBounds;
-- (void)setBounds:(CGRect)a3;
-- (void)setHitOffset:(CGPoint)a3;
-- (void)setHitOutset:(CGPoint)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setHitOffset:(CGPoint)offset;
+- (void)setHitOutset:(CGPoint)outset;
 @end
 
 @implementation MKLayer
@@ -41,10 +41,10 @@
   return result;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(MKLayer *)self hitBounds];
   v9 = x;
   v10 = y;
@@ -52,30 +52,30 @@
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = MKLayer;
-  [(MKLayer *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MKLayer *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(MKLayer *)self bounds];
   v6 = CGRectOffset(v5, self->_hitOffset.x, self->_hitOffset.y);
   self->_hitBounds = CGRectInset(v6, -self->_hitOutset.x, -self->_hitOutset.y);
 }
 
-- (void)setHitOffset:(CGPoint)a3
+- (void)setHitOffset:(CGPoint)offset
 {
   p_hitOffset = &self->_hitOffset;
-  self->_hitOffset = a3;
+  self->_hitOffset = offset;
   p_hitBounds = &self->_hitBounds;
   [(MKLayer *)self bounds];
   v7 = CGRectOffset(v6, p_hitOffset->x, p_hitOffset->y);
   *p_hitBounds = CGRectInset(v7, -self->_hitOutset.x, -self->_hitOutset.y);
 }
 
-- (void)setHitOutset:(CGPoint)a3
+- (void)setHitOutset:(CGPoint)outset
 {
   p_hitOutset = &self->_hitOutset;
-  self->_hitOutset = a3;
+  self->_hitOutset = outset;
   p_hitBounds = &self->_hitBounds;
   [(MKLayer *)self bounds];
   v7 = CGRectOffset(v6, self->_hitOffset.x, self->_hitOffset.y);

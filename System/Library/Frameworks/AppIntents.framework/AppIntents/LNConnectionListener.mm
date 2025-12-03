@@ -1,11 +1,11 @@
 @interface LNConnectionListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (LNConnectionListener)initWithListener:(id)a3 clientConnectionQueue:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (LNConnectionListener)initWithListener:(id)listener clientConnectionQueue:(id)queue;
 - (NSMutableSet)clientConnections;
-- (void)addClientConnection:(id)a3;
-- (void)cleanUp:(void *)a1;
+- (void)addClientConnection:(id)connection;
+- (void)cleanUp:(void *)up;
 - (void)dealloc;
-- (void)removeClientConnection:(id)a3;
+- (void)removeClientConnection:(id)connection;
 @end
 
 @implementation LNConnectionListener
@@ -18,23 +18,23 @@
   return clientConnections;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = getLNLogCategoryExecution();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v22 = v7;
+    v22 = connectionCopy;
     _os_log_impl(&dword_18F0E9000, v8, OS_LOG_TYPE_INFO, "Resuming new XPC connection: %{public}@", buf, 0xCu);
   }
 
   v9 = [LNClientConnection alloc];
-  v10 = [v7 _queue];
-  v11 = [(LNConnectionListener *)self appContext];
-  v12 = [(LNClientConnection *)v9 initWithConnection:v7 connectionListener:self queue:v10 appContext:v11];
+  _queue = [connectionCopy _queue];
+  appContext = [(LNConnectionListener *)self appContext];
+  v12 = [(LNClientConnection *)v9 initWithConnection:connectionCopy connectionListener:self queue:_queue appContext:appContext];
 
   [(LNConnectionListener *)self addClientConnection:v12];
   objc_initWeak(buf, v12);
@@ -45,14 +45,14 @@
   v17[3] = &unk_1E72B7628;
   objc_copyWeak(&v18, &location);
   objc_copyWeak(&v19, buf);
-  [v7 setInterruptionHandler:v17];
+  [connectionCopy setInterruptionHandler:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__LNConnectionListener_listener_shouldAcceptNewConnection___block_invoke_15;
   v14[3] = &unk_1E72B7628;
   objc_copyWeak(&v15, &location);
   objc_copyWeak(&v16, buf);
-  [v7 setInvalidationHandler:v14];
+  [connectionCopy setInvalidationHandler:v14];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v19);
@@ -97,26 +97,26 @@ void __59__LNConnectionListener_listener_shouldAcceptNewConnection___block_invok
   [(LNConnectionListener *)WeakRetained cleanUp:v3];
 }
 
-- (void)cleanUp:(void *)a1
+- (void)cleanUp:(void *)up
 {
-  if (a1 && a2)
+  if (up && a2)
   {
     v3 = a2;
-    [a1 removeClientConnection:v3];
-    v4 = [a1 appContext];
-    v5 = [v3 xpcConnection];
-    [v4 removeAllDeferredOutputsFor:v5];
+    [up removeClientConnection:v3];
+    appContext = [up appContext];
+    xpcConnection = [v3 xpcConnection];
+    [appContext removeAllDeferredOutputsFor:xpcConnection];
 
-    v7 = [a1 appContext];
-    v6 = [v3 xpcConnection];
+    appContext2 = [up appContext];
+    xpcConnection2 = [v3 xpcConnection];
 
-    [v7 removeContextForConnection:v6];
+    [appContext2 removeContextForConnection:xpcConnection2];
   }
 }
 
-- (void)removeClientConnection:(id)a3
+- (void)removeClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -124,15 +124,15 @@ void __59__LNConnectionListener_listener_shouldAcceptNewConnection___block_invok
   aBlock[3] = &unk_1E72B7600;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(LNConnectionListener *)self clientConnections];
-  [v6 removeObject:v4];
+  clientConnections = [(LNConnectionListener *)self clientConnections];
+  [clientConnections removeObject:connectionCopy];
 
   v5[2](v5);
 }
 
-- (void)addClientConnection:(id)a3
+- (void)addClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -140,8 +140,8 @@ void __59__LNConnectionListener_listener_shouldAcceptNewConnection___block_invok
   aBlock[3] = &unk_1E72B7600;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(LNConnectionListener *)self clientConnections];
-  [v6 addObject:v4];
+  clientConnections = [(LNConnectionListener *)self clientConnections];
+  [clientConnections addObject:connectionCopy];
 
   v5[2](v5);
 }
@@ -164,11 +164,11 @@ void __59__LNConnectionListener_listener_shouldAcceptNewConnection___block_invok
   [(LNConnectionListener *)&v6 dealloc];
 }
 
-- (LNConnectionListener)initWithListener:(id)a3 clientConnectionQueue:(id)a4
+- (LNConnectionListener)initWithListener:(id)listener clientConnectionQueue:(id)queue
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = LNConnectionListener;
   v9 = [(LNConnectionListener *)&v21 init];
@@ -183,8 +183,8 @@ void __59__LNConnectionListener_listener_shouldAcceptNewConnection___block_invok
     v9->_clientConnections = v12;
 
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_clientConnectionQueue, a4);
-    objc_storeStrong(&v9->_xpcListener, a3);
+    objc_storeStrong(&v9->_clientConnectionQueue, queue);
+    objc_storeStrong(&v9->_xpcListener, listener);
     [(NSXPCListener *)v9->_xpcListener setDelegate:v9];
     [(NSXPCListener *)v9->_xpcListener resume];
     if (NSClassFromString(&cfstr_Uiview.isa))

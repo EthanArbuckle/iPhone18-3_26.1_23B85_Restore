@@ -1,43 +1,43 @@
 @interface JSAStoreHTTPResponse
-- (JSAStoreHTTPResponse)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (JSAStoreHTTPResponse)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toDictionary;
 @end
 
 @implementation JSAStoreHTTPResponse
 
-- (JSAStoreHTTPResponse)initWithDictionary:(id)a3
+- (JSAStoreHTTPResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = JSAStoreHTTPResponse;
   v5 = [(JSAStoreHTTPResponse *)&v20 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKeyedSubscript:@"statusCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"statusCode"];
     v7 = BUDynamicCast();
     v5->_statusCode = [v7 integerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"output"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"output"];
     output = v5->_output;
     v5->_output = v8;
 
     objc_opt_class();
-    v10 = [v4 objectForKeyedSubscript:@"_error"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"_error"];
     v11 = BUDynamicCast();
     error = v5->__error;
     v5->__error = v11;
 
     objc_opt_class();
-    v13 = [v4 objectForKeyedSubscript:@"headers"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"headers"];
     v14 = BUDynamicCast();
     headers = v5->_headers;
     v5->_headers = v14;
 
     objc_opt_class();
-    v16 = [v4 objectForKeyedSubscript:@"performance"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"performance"];
     v17 = BUDynamicCast();
     performanceMetrics = v5->_performanceMetrics;
     v5->_performanceMetrics = v17;
@@ -84,19 +84,19 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [NSNumber numberWithInteger:[(JSAStoreHTTPResponse *)self statusCode]];
-  v6 = [(JSAStoreHTTPResponse *)self headers];
-  v21 = [v6 objectForKeyedSubscript:@"x-apple-jingle-correlation-key"];
-  v19 = [(JSAStoreHTTPResponse *)self headers];
-  v20 = [v19 objectForKeyedSubscript:@"x-apple-request-uuid"];
-  v7 = [(JSAStoreHTTPResponse *)self headers];
-  v8 = [v7 objectForKeyedSubscript:@"x-apple-application-site"];
-  v9 = [(JSAStoreHTTPResponse *)self headers];
-  v10 = [v9 objectForKeyedSubscript:@"x-apple-application-instance"];
-  v11 = [(JSAStoreHTTPResponse *)self _error];
-  if (v11)
+  headers = [(JSAStoreHTTPResponse *)self headers];
+  v21 = [headers objectForKeyedSubscript:@"x-apple-jingle-correlation-key"];
+  headers2 = [(JSAStoreHTTPResponse *)self headers];
+  v20 = [headers2 objectForKeyedSubscript:@"x-apple-request-uuid"];
+  headers3 = [(JSAStoreHTTPResponse *)self headers];
+  v8 = [headers3 objectForKeyedSubscript:@"x-apple-application-site"];
+  headers4 = [(JSAStoreHTTPResponse *)self headers];
+  v10 = [headers4 objectForKeyedSubscript:@"x-apple-application-instance"];
+  _error = [(JSAStoreHTTPResponse *)self _error];
+  if (_error)
   {
     [(JSAStoreHTTPResponse *)self _error];
-    v18 = v6;
+    v18 = headers;
     v12 = v5;
     v14 = v13 = v4;
     v15 = [NSString stringWithFormat:@", error=%@", v14];
@@ -104,7 +104,7 @@
 
     v4 = v13;
     v5 = v12;
-    v6 = v18;
+    headers = v18;
   }
 
   else
@@ -115,11 +115,11 @@
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [JSAStoreHTTPResponse allocWithZone:a3];
-  v5 = [(JSAStoreHTTPResponse *)self toDictionary];
-  v6 = [(JSAStoreHTTPResponse *)v4 initWithDictionary:v5];
+  v4 = [JSAStoreHTTPResponse allocWithZone:zone];
+  toDictionary = [(JSAStoreHTTPResponse *)self toDictionary];
+  v6 = [(JSAStoreHTTPResponse *)v4 initWithDictionary:toDictionary];
 
   return v6;
 }

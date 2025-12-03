@@ -1,47 +1,47 @@
 @interface CRKCatalystIDSPrimitives
-+ (id)crkOptionsFromOptions:(id)a3;
-- (CRKCatalystIDSPrimitives)initWithPrimitives:(id)a3 addressTranslator:(id)a4;
-- (id)addressForAppleID:(id)a3;
-- (void)addMessageHandler:(id)a3 completion:(id)a4;
-- (void)sendMessage:(id)a3 toAddress:(id)a4 fromID:(id)a5 options:(id)a6 completion:(id)a7;
++ (id)crkOptionsFromOptions:(id)options;
+- (CRKCatalystIDSPrimitives)initWithPrimitives:(id)primitives addressTranslator:(id)translator;
+- (id)addressForAppleID:(id)d;
+- (void)addMessageHandler:(id)handler completion:(id)completion;
+- (void)sendMessage:(id)message toAddress:(id)address fromID:(id)d options:(id)options completion:(id)completion;
 @end
 
 @implementation CRKCatalystIDSPrimitives
 
-- (CRKCatalystIDSPrimitives)initWithPrimitives:(id)a3 addressTranslator:(id)a4
+- (CRKCatalystIDSPrimitives)initWithPrimitives:(id)primitives addressTranslator:(id)translator
 {
-  v7 = a3;
-  v8 = a4;
+  primitivesCopy = primitives;
+  translatorCopy = translator;
   v12.receiver = self;
   v12.super_class = CRKCatalystIDSPrimitives;
   v9 = [(CRKCatalystIDSPrimitives *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_primitives, a3);
-    objc_storeStrong(&v10->_addressTranslator, a4);
+    objc_storeStrong(&v9->_primitives, primitives);
+    objc_storeStrong(&v10->_addressTranslator, translator);
   }
 
   return v10;
 }
 
-- (void)addMessageHandler:(id)a3 completion:(id)a4
+- (void)addMessageHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionCopy = completion;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __57__CRKCatalystIDSPrimitives_addMessageHandler_completion___block_invoke;
   v19[3] = &unk_278DC3628;
-  v20 = v6;
-  v8 = v6;
+  v20 = handlerCopy;
+  v8 = handlerCopy;
   v9 = MEMORY[0x245D3AAD0](v19);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__CRKCatalystIDSPrimitives_addMessageHandler_completion___block_invoke_2;
   v17[3] = &unk_278DC3650;
-  v18 = v7;
-  v10 = v7;
+  v18 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x245D3AAD0](v17);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -76,36 +76,36 @@ void __57__CRKCatalystIDSPrimitives_addMessageHandler_completion___block_invoke_
   [v2 subscribeToMessagesWithHandler:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (id)addressForAppleID:(id)a3
+- (id)addressForAppleID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKCatalystIDSPrimitives *)self addressTranslator];
-  v6 = [v5 destinationAddressForAppleID:v4];
+  dCopy = d;
+  addressTranslator = [(CRKCatalystIDSPrimitives *)self addressTranslator];
+  v6 = [addressTranslator destinationAddressForAppleID:dCopy];
 
   return v6;
 }
 
-- (void)sendMessage:(id)a3 toAddress:(id)a4 fromID:(id)a5 options:(id)a6 completion:(id)a7
+- (void)sendMessage:(id)message toAddress:(id)address fromID:(id)d options:(id)options completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v18 = [objc_opt_class() crkOptionsFromOptions:v13];
+  completionCopy = completion;
+  optionsCopy = options;
+  dCopy = d;
+  addressCopy = address;
+  messageCopy = message;
+  v18 = [objc_opt_class() crkOptionsFromOptions:optionsCopy];
 
-  v17 = [(CRKCatalystIDSPrimitives *)self primitives];
-  [v17 sendMessage:v16 destinationAddress:v15 sourceAppleID:v14 options:v18 completion:v12];
+  primitives = [(CRKCatalystIDSPrimitives *)self primitives];
+  [primitives sendMessage:messageCopy destinationAddress:addressCopy sourceAppleID:dCopy options:v18 completion:completionCopy];
 }
 
-+ (id)crkOptionsFromOptions:(id)a3
++ (id)crkOptionsFromOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_opt_new();
-  [v4 setFireAndForget:{objc_msgSend(v3, "shouldFireAndForget")}];
-  v5 = [v3 deliveryTimeout];
+  [v4 setFireAndForget:{objc_msgSend(optionsCopy, "shouldFireAndForget")}];
+  deliveryTimeout = [optionsCopy deliveryTimeout];
 
-  [v4 setDeliveryTimeout:v5];
+  [v4 setDeliveryTimeout:deliveryTimeout];
 
   return v4;
 }

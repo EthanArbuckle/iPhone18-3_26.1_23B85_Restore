@@ -1,36 +1,36 @@
 @interface _UIViewControllerTransitionCoordinator
-- (BOOL)_animateAlongsideTransitionInView:(id)a3 systemAnimation:(BOOL)a4 systemCompletion:(BOOL)a5 animation:(id)a6 completion:(id)a7;
+- (BOOL)_animateAlongsideTransitionInView:(id)view systemAnimation:(BOOL)animation systemCompletion:(BOOL)completion animation:(id)a6 completion:(id)a7;
 - (CGAffineTransform)affineTransform;
 - (CGAffineTransform)targetTransform;
-- (_UIViewControllerTransitionCoordinator)initWithMainContext:(id)a3;
-- (id)_alongsideAnimations:(BOOL)a3;
-- (id)_alongsideCompletions:(BOOL)a3;
-- (id)_interactiveChangeHandlers:(BOOL)a3;
-- (id)_invalidationHandlers:(BOOL)a3;
-- (id)_systemAlongsideAnimations:(BOOL)a3;
-- (void)_addInvalidationHandler:(id)a3;
-- (void)_applyBlocks:(id)a3 releaseBlocks:(id)a4;
-- (void)_applyVoidBlocks:(id)a3 releaseBlocks:(id)a4;
-- (void)notifyWhenInteractionChangesUsingBlock:(id)a3;
+- (_UIViewControllerTransitionCoordinator)initWithMainContext:(id)context;
+- (id)_alongsideAnimations:(BOOL)animations;
+- (id)_alongsideCompletions:(BOOL)completions;
+- (id)_interactiveChangeHandlers:(BOOL)handlers;
+- (id)_invalidationHandlers:(BOOL)handlers;
+- (id)_systemAlongsideAnimations:(BOOL)animations;
+- (void)_addInvalidationHandler:(id)handler;
+- (void)_applyBlocks:(id)blocks releaseBlocks:(id)releaseBlocks;
+- (void)_applyVoidBlocks:(id)blocks releaseBlocks:(id)releaseBlocks;
+- (void)notifyWhenInteractionChangesUsingBlock:(id)block;
 @end
 
 @implementation _UIViewControllerTransitionCoordinator
 
-- (_UIViewControllerTransitionCoordinator)initWithMainContext:(id)a3
+- (_UIViewControllerTransitionCoordinator)initWithMainContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = _UIViewControllerTransitionCoordinator;
   v5 = [(_UIViewControllerTransitionCoordinator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v5->__mainContext = v4;
-    v7 = [(_UIViewControllerTransitionContext *)v4 _auxContext];
+    v5->__mainContext = contextCopy;
+    _auxContext = [(_UIViewControllerTransitionContext *)contextCopy _auxContext];
 
-    if (!v7)
+    if (!_auxContext)
     {
-      [(_UIViewControllerTransitionContext *)v4 _setAuxContext:v6];
+      [(_UIViewControllerTransitionContext *)contextCopy _setAuxContext:v6];
     }
   }
 
@@ -65,7 +65,7 @@
   return result;
 }
 
-- (id)_interactiveChangeHandlers:(BOOL)a3
+- (id)_interactiveChangeHandlers:(BOOL)handlers
 {
   interactiveChangeHandlers = self->__interactiveChangeHandlers;
   if (interactiveChangeHandlers)
@@ -75,7 +75,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !handlers;
   }
 
   if (!v5)
@@ -90,7 +90,7 @@
   return interactiveChangeHandlers;
 }
 
-- (id)_systemAlongsideAnimations:(BOOL)a3
+- (id)_systemAlongsideAnimations:(BOOL)animations
 {
   systemAlongsideAnimations = self->__systemAlongsideAnimations;
   if (systemAlongsideAnimations)
@@ -100,7 +100,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !animations;
   }
 
   if (!v5)
@@ -115,7 +115,7 @@
   return systemAlongsideAnimations;
 }
 
-- (id)_alongsideAnimations:(BOOL)a3
+- (id)_alongsideAnimations:(BOOL)animations
 {
   alongsideAnimations = self->__alongsideAnimations;
   if (alongsideAnimations)
@@ -125,7 +125,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !animations;
   }
 
   if (!v5)
@@ -140,7 +140,7 @@
   return alongsideAnimations;
 }
 
-- (id)_alongsideCompletions:(BOOL)a3
+- (id)_alongsideCompletions:(BOOL)completions
 {
   alongsideCompletions = self->__alongsideCompletions;
   if (alongsideCompletions)
@@ -150,7 +150,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !completions;
   }
 
   if (!v5)
@@ -165,7 +165,7 @@
   return alongsideCompletions;
 }
 
-- (id)_invalidationHandlers:(BOOL)a3
+- (id)_invalidationHandlers:(BOOL)handlers
 {
   invalidationHandlers = self->__invalidationHandlers;
   if (invalidationHandlers)
@@ -175,7 +175,7 @@
 
   else
   {
-    v5 = !a3;
+    v5 = !handlers;
   }
 
   if (!v5)
@@ -190,60 +190,60 @@
   return invalidationHandlers;
 }
 
-- (void)_applyBlocks:(id)a3 releaseBlocks:(id)a4
+- (void)_applyBlocks:(id)blocks releaseBlocks:(id)releaseBlocks
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 count])
+  blocksCopy = blocks;
+  releaseBlocksCopy = releaseBlocks;
+  if ([blocksCopy count])
   {
-    v6[2](v6);
-    if ([v9 count])
+    releaseBlocksCopy[2](releaseBlocksCopy);
+    if ([blocksCopy count])
     {
       v7 = 0;
       do
       {
-        v8 = [v9 objectAtIndexedSubscript:v7];
+        v8 = [blocksCopy objectAtIndexedSubscript:v7];
         __UIVIEWCONTROLLERTRANSITIONCOORDINATOR_IS_EXECUTING_ALONGSIDE_ANIMATION_BLOCK__(self, v8);
 
         ++v7;
       }
 
-      while (v7 < [v9 count]);
+      while (v7 < [blocksCopy count]);
     }
   }
 }
 
-- (void)_applyVoidBlocks:(id)a3 releaseBlocks:(id)a4
+- (void)_applyVoidBlocks:(id)blocks releaseBlocks:(id)releaseBlocks
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v8 count])
+  blocksCopy = blocks;
+  releaseBlocksCopy = releaseBlocks;
+  if ([blocksCopy count])
   {
-    v5[2](v5);
-    if ([v8 count])
+    releaseBlocksCopy[2](releaseBlocksCopy);
+    if ([blocksCopy count])
     {
       v6 = 0;
       do
       {
-        v7 = [v8 objectAtIndexedSubscript:v6];
+        v7 = [blocksCopy objectAtIndexedSubscript:v6];
         v7[2]();
 
         ++v6;
       }
 
-      while (v6 < [v8 count]);
+      while (v6 < [blocksCopy count]);
     }
   }
 }
 
-- (BOOL)_animateAlongsideTransitionInView:(id)a3 systemAnimation:(BOOL)a4 systemCompletion:(BOOL)a5 animation:(id)a6 completion:(id)a7
+- (BOOL)_animateAlongsideTransitionInView:(id)view systemAnimation:(BOOL)animation systemCompletion:(BOOL)completion animation:(id)a6 completion:(id)a7
 {
-  v9 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  viewCopy = view;
   v13 = a6;
   v14 = a7;
-  v15 = [(_UIViewControllerTransitionCoordinator *)self _mainContext];
-  if ([v15 isInterruptible])
+  _mainContext = [(_UIViewControllerTransitionCoordinator *)self _mainContext];
+  if ([_mainContext isInterruptible])
   {
     v16 = 1;
     if (!v13)
@@ -254,7 +254,7 @@
 
   else
   {
-    v16 = [v15 _transitionIsInFlight] ^ 1;
+    v16 = [_mainContext _transitionIsInFlight] ^ 1;
     if (!v13)
     {
       goto LABEL_31;
@@ -263,22 +263,22 @@
 
   if (v16)
   {
-    v36 = v12;
+    v36 = viewCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __130___UIViewControllerTransitionCoordinator__animateAlongsideTransitionInView_systemAnimation_systemCompletion_animation_completion___block_invoke;
     aBlock[3] = &unk_1E70FD0C8;
-    v48 = a4;
+    animationCopy = animation;
     aBlock[4] = self;
     v17 = v13;
     v47 = v17;
     v18 = _Block_copy(aBlock);
-    if ([v15 _ranAlongsideAnimations] && !objc_msgSend(v15, "_transitionHasCompleted"))
+    if ([_mainContext _ranAlongsideAnimations] && !objc_msgSend(_mainContext, "_transitionHasCompleted"))
     {
-      v19 = [v15 _animator];
+      _animator = [_mainContext _animator];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v19 interruptibleAnimatorForTransition:v15];
+        v20 = [_animator interruptibleAnimatorForTransition:_mainContext];
       }
 
       else
@@ -286,18 +286,18 @@
         v20 = 0;
       }
 
-      v35 = v19;
+      v35 = _animator;
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v20 _canAddAnimations];
+        _canAddAnimations = [v20 _canAddAnimations];
       }
 
       else
       {
-        v21 = 1;
+        _canAddAnimations = 1;
       }
 
-      if ((objc_opt_respondsToSelector() & 1) != 0 && v21)
+      if ((objc_opt_respondsToSelector() & 1) != 0 && _canAddAnimations)
       {
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
@@ -312,17 +312,17 @@
 
       else if (+[UIViewPropertyAnimator _trackingAnimationsCurrentlyEnabled])
       {
-        [v15 _duration];
+        [_mainContext _duration];
         v24 = v23;
         v22 = v35;
-        if ([v15 isInteractive])
+        if ([_mainContext isInteractive])
         {
           v25 = 196608;
         }
 
         else
         {
-          v25 = [v15 _completionCurve] << 16;
+          v25 = [_mainContext _completionCurve] << 16;
         }
 
         v34 = v25;
@@ -347,22 +347,22 @@
       v18[2](v18);
     }
 
-    v12 = v36;
+    viewCopy = v36;
     if (v36)
     {
-      v26 = [v15 containerView];
-      v27 = [v36 isDescendantOfView:v26];
+      containerView = [_mainContext containerView];
+      v27 = [v36 isDescendantOfView:containerView];
 
       if ((v27 & 1) == 0)
       {
-        v28 = [(_UIViewControllerTransitionCoordinator *)self _alongsideAnimationViews];
-        if (!v28)
+        _alongsideAnimationViews = [(_UIViewControllerTransitionCoordinator *)self _alongsideAnimationViews];
+        if (!_alongsideAnimationViews)
         {
-          v28 = objc_opt_new();
-          [(_UIViewControllerTransitionCoordinator *)self _setAlongsideAnimationViews:v28];
+          _alongsideAnimationViews = objc_opt_new();
+          [(_UIViewControllerTransitionCoordinator *)self _setAlongsideAnimationViews:_alongsideAnimationViews];
         }
 
-        [v28 addObject:{v36, v34}];
+        [_alongsideAnimationViews addObject:{v36, v34}];
       }
     }
   }
@@ -370,19 +370,19 @@
 LABEL_31:
   if (v14)
   {
-    if (v9)
+    if (completionCopy)
     {
       objc_initWeak(&location, self);
-      v29 = [v15 _willCompleteHandler];
+      _willCompleteHandler = [_mainContext _willCompleteHandler];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __130___UIViewControllerTransitionCoordinator__animateAlongsideTransitionInView_systemAnimation_systemCompletion_animation_completion___block_invoke_4;
       v37[3] = &unk_1E7104720;
-      v30 = v29;
+      v30 = _willCompleteHandler;
       v38 = v30;
       v39 = v14;
       objc_copyWeak(&v40, &location);
-      [v15 _setWillCompleteHandler:v37];
+      [_mainContext _setWillCompleteHandler:v37];
       objc_destroyWeak(&v40);
 
       objc_destroyWeak(&location);
@@ -399,24 +399,24 @@ LABEL_31:
   return (v13 == 0) | v16 & 1;
 }
 
-- (void)notifyWhenInteractionChangesUsingBlock:(id)a3
+- (void)notifyWhenInteractionChangesUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    aBlock = [a3 copy];
+    aBlock = [block copy];
     v4 = [(_UIViewControllerTransitionCoordinator *)self _interactiveChangeHandlers:1];
     v5 = _Block_copy(aBlock);
     [v4 addObject:v5];
   }
 }
 
-- (void)_addInvalidationHandler:(id)a3
+- (void)_addInvalidationHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
+    handlerCopy = handler;
     v6 = [(_UIViewControllerTransitionCoordinator *)self _invalidationHandlers:1];
-    v5 = _Block_copy(v4);
+    v5 = _Block_copy(handlerCopy);
 
     [v6 addObject:v5];
   }

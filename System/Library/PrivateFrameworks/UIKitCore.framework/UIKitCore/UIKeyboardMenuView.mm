@@ -1,70 +1,70 @@
 @interface UIKeyboardMenuView
 - (BOOL)isVisible;
 - (BOOL)launchedFromKeyboard;
-- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)a3;
+- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)path;
 - (BOOL)usesShadowView;
 - (CGRect)interactiveBounds;
 - (CGRect)popupRect;
 - (CGSize)preferredSize;
-- (UIKeyboardMenuView)initWithFrame:(CGRect)a3;
+- (UIKeyboardMenuView)initWithFrame:(CGRect)frame;
 - (double)minYOfLastTableCellForSelectionExtraView;
 - (id)_renderConfig;
 - (id)containerView;
 - (id)dimmingView;
 - (id)font;
-- (id)indexPathForInputSwitcherCellIncludingInteractiveInsetsAtPoint:(CGPoint)a3;
+- (id)indexPathForInputSwitcherCellIncludingInteractiveInsetsAtPoint:(CGPoint)point;
 - (id)maskForShadowViewBlurredBackground;
 - (id)subtitleFont;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)getRowFromPoint:(CGPoint)a3;
-- (unint64_t)_internationalKeyRoundedCornerInLayout:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)getRowFromPoint:(CGPoint)point;
+- (unint64_t)_internationalKeyRoundedCornerInLayout:(id)layout;
 - (void)_delayedFade;
-- (void)autoscrollTimerFired:(id)a3;
+- (void)autoscrollTimerFired:(id)fired;
 - (void)clear;
-- (void)customizeCell:(id)a3 forItemAtIndex:(unint64_t)a4;
+- (void)customizeCell:(id)cell forItemAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)dimmingViewWasTapped:(id)a3;
-- (void)endScrolling:(id)a3;
+- (void)dimmingViewWasTapped:(id)tapped;
+- (void)endScrolling:(id)scrolling;
 - (void)fade;
-- (void)fadeWithDelay:(double)a3 forSelectionAtIndex:(unint64_t)a4;
+- (void)fadeWithDelay:(double)delay forSelectionAtIndex:(unint64_t)index;
 - (void)hide;
-- (void)highlightRow:(unint64_t)a3;
+- (void)highlightRow:(unint64_t)row;
 - (void)insertSelExtraView;
 - (void)performShowAnimation;
 - (void)removeFromSuperview;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectItemAtPoint:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightForRowAtIndexPath:(id)a3 highlight:(BOOL)a4;
-- (void)setKeyboardDimmed:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectItemAtPoint:(CGPoint)point;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightForRowAtIndexPath:(id)path highlight:(BOOL)highlight;
+- (void)setKeyboardDimmed:(BOOL)dimmed;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayForCell:(id)a3;
+- (void)setNeedsDisplayForCell:(id)cell;
 - (void)setNeedsDisplayForTopBottomCells;
-- (void)setRenderConfig:(id)a3;
-- (void)setupBackgroundKeyViewWithSize:(CGSize)a3;
-- (void)setupShadowViewWithSize:(CGSize)a3;
+- (void)setRenderConfig:(id)config;
+- (void)setupBackgroundKeyViewWithSize:(CGSize)size;
+- (void)setupShadowViewWithSize:(CGSize)size;
 - (void)show;
-- (void)showAsHUDFromLocation:(CGPoint)a3 withInputView:(id)a4 touchBegan:(double)a5;
-- (void)showAsPopupForKey:(id)a3 inLayout:(id)a4;
+- (void)showAsHUDFromLocation:(CGPoint)location withInputView:(id)view touchBegan:(double)began;
+- (void)showAsPopupForKey:(id)key inLayout:(id)layout;
 - (void)stopAnyAutoscrolling;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateSelectionWithPoint:(CGPoint)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateSelectionWithPoint:(CGPoint)point;
 - (void)willShow;
 @end
 
 @implementation UIKeyboardMenuView
 
-- (UIKeyboardMenuView)initWithFrame:(CGRect)a3
+- (UIKeyboardMenuView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = UIKeyboardMenuView;
-  v3 = [(UIView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -99,25 +99,25 @@
       [(UITableView *)v15 registerClass:v16 forCellReuseIdentifier:v17];
     }
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v4 selector:sel_applicationWillSuspend_ name:@"UIApplicationSuspendedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_applicationWillSuspend_ name:@"UIApplicationSuspendedNotification" object:0];
 
     [(UIView *)v4 setOpaque:0];
     v4->m_shouldFade = 1;
     v4->m_initialIndexInteracted = -1;
     v4->m_menuDrag = 0;
-    v19 = [(UIView *)v4 _inheritedRenderConfig];
-    v20 = [v19 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)v4 _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v20)
+    if (colorAdaptiveBackground)
     {
       v21 = [[_UIViewGlass alloc] initWithVariant:0];
       [(_UIViewGlass *)v21 setBackdropGroupName:@"UIKBBackdropGroupName"];
       [(UIView *)v4 _setBackground:v21];
-      v22 = [(UIView *)v4 _inheritedRenderConfig];
-      v23 = [v22 colorAdaptiveBackground];
+      _inheritedRenderConfig2 = [(UIView *)v4 _inheritedRenderConfig];
+      colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
       v24 = 8.0;
-      if (v23)
+      if (colorAdaptiveBackground2)
       {
         v24 = 24.0;
       }
@@ -134,8 +134,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationSuspendedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationSuspendedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UIKeyboardMenuView;
@@ -144,23 +144,23 @@
 
 - (id)subtitleFont
 {
-  v2 = [(UIView *)self maximumContentSizeCategory];
-  v3 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCaption1" maximumContentSizeCategory:v2];
+  maximumContentSizeCategory = [(UIView *)self maximumContentSizeCategory];
+  v3 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCaption1" maximumContentSizeCategory:maximumContentSizeCategory];
 
   return v3;
 }
 
 - (id)font
 {
-  v2 = [(UIView *)self maximumContentSizeCategory];
-  v3 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:v2];
+  maximumContentSizeCategory = [(UIView *)self maximumContentSizeCategory];
+  v3 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:maximumContentSizeCategory];
 
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v14 = CGRectIntegral(a3);
+  v14 = CGRectIntegral(frame);
   x = v14.origin.x;
   y = v14.origin.y;
   width = v14.size.width;
@@ -190,8 +190,8 @@
 
 - (BOOL)isVisible
 {
-  v2 = [(UIView *)self window];
-  v3 = v2 != 0;
+  window = [(UIView *)self window];
+  v3 = window != 0;
 
   return v3;
 }
@@ -206,27 +206,27 @@
   [UIView animateWithDuration:117440512 delay:v2 options:0 animations:0.0 completion:0.0];
 }
 
-- (void)setKeyboardDimmed:(BOOL)a3
+- (void)setKeyboardDimmed:(BOOL)dimmed
 {
-  v3 = a3;
+  dimmedCopy = dimmed;
   v5 = +[UIKeyboardImpl activeInstance];
-  v8 = [v5 _layout];
+  _layout = [v5 _layout];
 
-  if (!v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (!dimmedCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 deactivateActiveKeysClearingTouchInfo:1 clearingDimming:0];
+    [_layout deactivateActiveKeysClearingTouchInfo:1 clearingDimming:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UIKeyboardMenuView *)self usesDarkTheme];
+    usesDarkTheme = [(UIKeyboardMenuView *)self usesDarkTheme];
     v7 = 0.1;
-    if (v6)
+    if (usesDarkTheme)
     {
       v7 = 0.4;
     }
 
-    [v8 setKeyboardDim:v3 amount:v7 withDuration:0.3];
+    [_layout setKeyboardDim:dimmedCopy amount:v7 withDuration:0.3];
   }
 }
 
@@ -242,11 +242,11 @@
     [(UIDimmingView *)self->m_dimmingView setDelegate:self];
   }
 
-  v6 = [(UIKeyboardMenuView *)self containerView];
-  v7 = v6;
-  if (v6)
+  containerView = [(UIKeyboardMenuView *)self containerView];
+  v7 = containerView;
+  if (containerView)
   {
-    [v6 frame];
+    [containerView frame];
     v9 = v8;
     v11 = v10;
   }
@@ -266,10 +266,10 @@
   return v15;
 }
 
-- (void)dimmingViewWasTapped:(id)a3
+- (void)dimmingViewWasTapped:(id)tapped
 {
-  v4 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-  [v4 setKBMenuDismissSource:3];
+  glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+  [glomojiAnalyticsInstance setKBMenuDismissSource:3];
 
   [(UIKeyboardMenuView *)self hide];
 
@@ -278,20 +278,20 @@
 
 - (BOOL)usesShadowView
 {
-  v3 = [(UIView *)self _inheritedRenderConfig];
-  v4 = [v3 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  return (v4 & 1) == 0 && [(UIKeyboardMenuView *)self mode]== 0;
+  return (colorAdaptiveBackground & 1) == 0 && [(UIKeyboardMenuView *)self mode]== 0;
 }
 
 - (void)insertSelExtraView
 {
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v3 = [(UIKeyboardMenuView *)self usesShadowView];
+    usesShadowView = [(UIKeyboardMenuView *)self usesShadowView];
     m_selExtraView = self->m_selExtraView;
     v5 = &OBJC_IVAR___UIKeyboardMenuView_m_table;
-    if (v3)
+    if (usesShadowView)
     {
       v5 = &OBJC_IVAR___UIKeyboardMenuView_m_shadowView;
     }
@@ -321,16 +321,16 @@
   [(UIInputSwitcherShadowView *)self->m_shadowView setMode:LODWORD(self->m_mode)];
   [(UIView *)self->m_shadowView setNeedsDisplay];
   [(UIView *)self->m_selExtraView setNeedsDisplay];
-  v3 = [(UIKeyboardMenuView *)self containerView];
+  containerView = [(UIKeyboardMenuView *)self containerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [(UIKeyboardMenuView *)self containerView];
-  v6 = v5;
+  containerView2 = [(UIKeyboardMenuView *)self containerView];
+  v6 = containerView2;
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [v5 window];
+    window = [containerView2 window];
 
-    v6 = v7;
+    v6 = window;
   }
 
   if (([v6 _isHostedInAnotherProcess] & 1) != 0 || (objc_msgSend(v6, "windowScene"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "_effectiveSettings"), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
@@ -353,30 +353,30 @@
   v17 = v15;
   if (CGRectIsEmpty(*&v10))
   {
-    v18 = [objc_opt_self() mainScreen];
-    [v18 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v20 = v19;
     v22 = v21;
   }
 
   else
   {
-    v23 = [v9 interfaceOrientation];
+    interfaceOrientation = [v9 interfaceOrientation];
     if ([UIApp _isSpringBoard])
     {
       v24 = +[UIKeyboardSceneDelegate interfaceOrientation];
       if ((v24 - 1) >= 4)
       {
-        v23 = 0;
+        interfaceOrientation = 0;
       }
 
       else
       {
-        v23 = v24;
+        interfaceOrientation = v24;
       }
     }
 
-    if ((v23 - 3) >= 2)
+    if ((interfaceOrientation - 3) >= 2)
     {
       v22 = v15;
     }
@@ -386,7 +386,7 @@
       v22 = v13;
     }
 
-    if ((v23 - 3) >= 2)
+    if ((interfaceOrientation - 3) >= 2)
     {
       v20 = v13;
     }
@@ -411,12 +411,12 @@
   if ([(UIKeyboardMenuView *)self usesTable])
   {
     y = self->m_referenceRect.origin.y;
-    v89 = [(UIKeyboardMenuView *)self containerView];
-    [v89 frame];
+    containerView3 = [(UIKeyboardMenuView *)self containerView];
+    [containerView3 frame];
     v32 = y + v31 + -6.0;
-    v33 = [(UIKeyboardMenuView *)self containerView];
-    v34 = [v33 window];
-    v35 = __UIStatusBarManagerForWindow(v34);
+    containerView4 = [(UIKeyboardMenuView *)self containerView];
+    window2 = [containerView4 window];
+    v35 = __UIStatusBarManagerForWindow(window2);
     [v35 statusBarHeight];
     v37 = v36;
 
@@ -429,8 +429,8 @@ LABEL_76:
     if (self->m_inputView)
     {
       v38 = self->m_referenceLocation.y;
-      v39 = [(UIKeyboardMenuView *)self containerView];
-      [v39 safeAreaInsets];
+      containerView5 = [(UIKeyboardMenuView *)self containerView];
+      [containerView5 safeAreaInsets];
       v29 = v38 - v40 + -6.0;
     }
   }
@@ -440,10 +440,10 @@ LABEL_76:
     v26 = v20 + -10.0;
   }
 
-  v41 = [(UIView *)self _inheritedRenderConfig];
-  v42 = [v41 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v42)
+  if (colorAdaptiveBackground)
   {
     v43 = [UIView alloc];
     [(UIView *)self->m_table bounds];
@@ -456,12 +456,12 @@ LABEL_76:
     [(UITableView *)self->m_table setTableFooterView:v46];
   }
 
-  v47 = [(UITableView *)self->m_table tableHeaderView];
-  [v47 frame];
+  tableHeaderView = [(UITableView *)self->m_table tableHeaderView];
+  [tableHeaderView frame];
   v49 = v48;
 
-  v50 = [(UITableView *)self->m_table tableFooterView];
-  [v50 frame];
+  tableFooterView = [(UITableView *)self->m_table tableFooterView];
+  [tableFooterView frame];
   v52 = v51;
 
   v53 = 0;
@@ -495,10 +495,10 @@ LABEL_76:
   }
 
   [(UITableView *)self->m_table setFrame:0.0, 0.0, v26, v54];
-  v57 = [(UIView *)self _inheritedRenderConfig];
-  v58 = [v57 colorAdaptiveBackground];
+  _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
-  if (v58)
+  if (colorAdaptiveBackground2)
   {
     [(UIScrollView *)self->m_table setScrollIndicatorInsets:12.0, 0.0, 12.0, 0.0];
   }
@@ -534,8 +534,8 @@ LABEL_76:
     }
 
     v72 = v64 + -6.0;
-    v74 = [(UIView *)self _inheritedRenderConfig];
-    if ([v74 colorAdaptiveBackground])
+    _inheritedRenderConfig3 = [(UIView *)self _inheritedRenderConfig];
+    if ([_inheritedRenderConfig3 colorAdaptiveBackground])
     {
       v70 = 24.0;
     }
@@ -589,8 +589,8 @@ LABEL_58:
     goto LABEL_61;
   }
 
-  v66 = [(UIKeyboardMenuView *)self containerView];
-  [v66 safeAreaInsets];
+  containerView6 = [(UIKeyboardMenuView *)self containerView];
+  [containerView6 safeAreaInsets];
   v68 = v67;
   v70 = v69;
 
@@ -621,34 +621,34 @@ LABEL_61:
   [(UIKeyboardMenuView *)self setFrame:v65, v72, v26, v55];
   if ([(UIKeyboardMenuView *)self usesDimmingView])
   {
-    v76 = [(UIKeyboardMenuView *)self dimmingView];
-    v77 = [(UIKeyboardMenuView *)self containerView];
-    [v77 addSubview:v76];
+    dimmingView = [(UIKeyboardMenuView *)self dimmingView];
+    containerView7 = [(UIKeyboardMenuView *)self containerView];
+    [containerView7 addSubview:dimmingView];
   }
 
-  v78 = [(UIKeyboardMenuView *)self containerView];
-  [v78 addSubview:self];
+  containerView8 = [(UIKeyboardMenuView *)self containerView];
+  [containerView8 addSubview:self];
 
   if (self->m_scrollable)
   {
     [(UITableView *)self->m_table flashScrollIndicators];
   }
 
-  v79 = [(UIKeyboardMenuView *)self defaultSelectedIndex];
-  if (v79 != 0x7FFFFFFFFFFFFFFFLL)
+  defaultSelectedIndex = [(UIKeyboardMenuView *)self defaultSelectedIndex];
+  if (defaultSelectedIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(UIKeyboardMenuView *)self highlightRow:v79];
+    [(UIKeyboardMenuView *)self highlightRow:defaultSelectedIndex];
   }
 
   [(UIView *)self->m_selExtraView removeFromSuperview];
   if (self->m_mode == 1)
   {
-    v80 = [(UITableView *)self->m_table indexPathForSelectedRow];
-    if (v80)
+    indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
+    if (indexPathForSelectedRow)
     {
-      v81 = v80;
-      v82 = [(UITableView *)self->m_table indexPathForSelectedRow];
-      v83 = [(UIKeyboardMenuView *)self shouldShowSelectionExtraViewForIndexPath:v82];
+      v81 = indexPathForSelectedRow;
+      indexPathForSelectedRow2 = [(UITableView *)self->m_table indexPathForSelectedRow];
+      v83 = [(UIKeyboardMenuView *)self shouldShowSelectionExtraViewForIndexPath:indexPathForSelectedRow2];
 
       if (v83)
       {
@@ -684,10 +684,10 @@ void __26__UIKeyboardMenuView_show__block_invoke(uint64_t a1)
   [v1 dismissCurrentMenu];
 }
 
-- (void)setupBackgroundKeyViewWithSize:(CGSize)a3
+- (void)setupBackgroundKeyViewWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(UIKeyboardMenuView *)self mode])
   {
     m_backgroundKeyView = self->m_backgroundKeyView;
@@ -698,15 +698,15 @@ void __26__UIKeyboardMenuView_show__block_invoke(uint64_t a1)
 
   if (!setupBackgroundKeyViewWithSize____keyplane)
   {
-    v7 = [objc_opt_self() mainScreen];
-    v8 = [UIKBScreenTraits traitsWithScreen:v7 orientation:1];
+    mainScreen = [objc_opt_self() mainScreen];
+    v8 = [UIKBScreenTraits traitsWithScreen:mainScreen orientation:1];
 
     v9 = UIKeyboardGetKBStarName(@"en_US", v8, 0, 0);
     v10 = UIKeyboardGetKBStarKeyboardWithName(v9);
-    v11 = [v10 subtrees];
-    v12 = [v11 firstObject];
+    subtrees = [v10 subtrees];
+    firstObject = [subtrees firstObject];
     v13 = setupBackgroundKeyViewWithSize____keyplane;
-    setupBackgroundKeyViewWithSize____keyplane = v12;
+    setupBackgroundKeyViewWithSize____keyplane = firstObject;
 
     if ([v8 idiom] == 1)
     {
@@ -721,7 +721,7 @@ void __26__UIKeyboardMenuView_show__block_invoke(uint64_t a1)
     [setupBackgroundKeyViewWithSize____keyplane setVisualStyle:v14];
   }
 
-  v34 = [(UIKeyboardMenuView *)self _renderConfig];
+  _renderConfig = [(UIKeyboardMenuView *)self _renderConfig];
   v36.origin.x = *MEMORY[0x1E695EFF8];
   v36.origin.y = *(MEMORY[0x1E695EFF8] + 8);
   v36.size.width = width;
@@ -737,9 +737,9 @@ void __26__UIKeyboardMenuView_show__block_invoke(uint64_t a1)
     goto LABEL_14;
   }
 
-  v20 = [(UIKBKeyView *)v19 renderConfig];
-  v21 = [v20 lightKeyboard];
-  if (v21 != [v34 lightKeyboard])
+  renderConfig = [(UIKBKeyView *)v19 renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
+  if (lightKeyboard != [_renderConfig lightKeyboard])
   {
 
 LABEL_14:
@@ -751,7 +751,7 @@ LABEL_14:
     [(UIKBTree *)v23 setState:16];
     [(UIKBTree *)v23 setDisplayTypeHint:12];
     [(UIKBTree *)v23 setInteractionType:9];
-    v25 = [UIKBRenderingContext renderingContextForRenderConfig:v34];
+    v25 = [UIKBRenderingContext renderingContextForRenderConfig:_renderConfig];
     [v25 setIsFloating:{+[UIKeyboardImpl isFloating](UIKeyboardImpl, "isFloating")}];
     v26 = +[UIKBRenderFactory factoryForVisualStyle:renderingContext:](UIKBRenderFactory, "factoryForVisualStyle:renderingContext:", [setupBackgroundKeyViewWithSize____keyplane visualStyling], v25);
     v27 = [v26 traitsForKey:v23 onKeyplane:setupBackgroundKeyViewWithSize____keyplane];
@@ -779,22 +779,22 @@ LABEL_14:
   }
 
 LABEL_15:
-  v32 = [(UIView *)self _inheritedRenderConfig];
-  v33 = [v32 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if ((v33 & 1) == 0)
+  if ((colorAdaptiveBackground & 1) == 0)
   {
     [(UIView *)self insertSubview:self->m_backgroundKeyView atIndex:0];
-    [(UIKBKeyView *)self->m_backgroundKeyView setRenderConfig:v34];
+    [(UIKBKeyView *)self->m_backgroundKeyView setRenderConfig:_renderConfig];
     [(UIKBKeyView *)self->m_backgroundKeyView prepareForDisplay];
     [(UIView *)self->m_backgroundKeyView setNeedsDisplay];
   }
 }
 
-- (void)setupShadowViewWithSize:(CGSize)a3
+- (void)setupShadowViewWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(UIKeyboardMenuView *)self usesShadowView])
   {
     m_shadowView = self->m_shadowView;
@@ -805,9 +805,9 @@ LABEL_15:
       self->m_shadowView = 0;
     }
 
-    v8 = [[UIInputSwitcherShadowView alloc] initWithFrame:0.0, 0.0, width, height];
+    height = [[UIInputSwitcherShadowView alloc] initWithFrame:0.0, 0.0, width, height];
     v9 = self->m_shadowView;
-    self->m_shadowView = v8;
+    self->m_shadowView = height;
 
     [(UIInputSwitcherShadowView *)self->m_shadowView setMode:LODWORD(self->m_mode)];
     [(UIInputSwitcherShadowView *)self->m_shadowView setKeyRect:self->m_referenceRect.origin.x, self->m_referenceRect.origin.y, self->m_referenceRect.size.width, self->m_referenceRect.size.height];
@@ -822,54 +822,54 @@ LABEL_15:
 - (id)_renderConfig
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 inputViews];
-  v4 = [v3 inputView];
+  inputViews = [v2 inputViews];
+  inputView = [inputViews inputView];
 
-  if (v4)
+  if (inputView)
   {
-    v5 = [v4 _inheritedRenderConfig];
+    _inheritedRenderConfig = [inputView _inheritedRenderConfig];
   }
 
   else
   {
-    v6 = [v2 containerView];
-    v5 = [v6 _inheritedRenderConfig];
+    containerView = [v2 containerView];
+    _inheritedRenderConfig = [containerView _inheritedRenderConfig];
   }
 
-  return v5;
+  return _inheritedRenderConfig;
 }
 
-- (void)showAsHUDFromLocation:(CGPoint)a3 withInputView:(id)a4 touchBegan:(double)a5
+- (void)showAsHUDFromLocation:(CGPoint)location withInputView:(id)view touchBegan:(double)began
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a4;
-  if (self->m_timeDismissed <= a5)
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  if (self->m_timeDismissed <= began)
   {
-    v15 = v10;
+    v15 = viewCopy;
     self->m_referenceLocation.x = x;
     self->m_referenceLocation.y = y;
-    objc_storeStrong(&self->m_inputView, a4);
+    objc_storeStrong(&self->m_inputView, view);
     self->m_mode = 0;
     v11 = *(MEMORY[0x1E695F058] + 16);
     self->m_referenceRect.origin = *MEMORY[0x1E695F058];
     self->m_referenceRect.size = v11;
     if ([(UIKeyboardMenuView *)self isVisible])
     {
-      v12 = [(UIKeyboardMenuView *)self layout];
-      [v12 deactivateActiveKeys];
+      layout = [(UIKeyboardMenuView *)self layout];
+      [layout deactivateActiveKeys];
     }
 
-    v13 = [(UIKeyboardMenuView *)self _renderConfig];
-    [(UIKeyboardMenuView *)self setRenderConfig:v13];
+    _renderConfig = [(UIKeyboardMenuView *)self _renderConfig];
+    [(UIKeyboardMenuView *)self setRenderConfig:_renderConfig];
 
-    v14 = [(UIKeyboardMenuView *)self containerView];
+    containerView = [(UIKeyboardMenuView *)self containerView];
 
-    v10 = v15;
-    if (v14)
+    viewCopy = v15;
+    if (containerView)
     {
       [(UIKeyboardMenuView *)self show];
-      v10 = v15;
+      viewCopy = v15;
     }
   }
 }
@@ -877,46 +877,46 @@ LABEL_15:
 - (id)containerView
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [(UIView *)self->m_inputView window];
-  if (v4)
+  window = [(UIView *)self->m_inputView window];
+  if (window)
   {
-    v5 = self->m_inputView;
+    inputView = self->m_inputView;
   }
 
   else
   {
     v6 = +[UIKeyboard activeKeyboard];
-    v7 = [v6 window];
-    if (v7)
+    window2 = [v6 window];
+    if (window2)
     {
-      v5 = +[UIKeyboard activeKeyboard];
+      inputView = +[UIKeyboard activeKeyboard];
     }
 
     else
     {
-      v8 = [v3 inputViews];
-      v5 = [v8 inputView];
+      inputViews = [v3 inputViews];
+      inputView = [inputViews inputView];
     }
   }
 
-  v9 = [(UIView *)v5 window];
-  v10 = [v9 rootViewController];
-  v11 = [v10 view];
-  v12 = v11;
-  if (v11)
+  window3 = [(UIView *)inputView window];
+  rootViewController = [window3 rootViewController];
+  view = [rootViewController view];
+  v12 = view;
+  if (view)
   {
-    v13 = v11;
+    containerView = view;
   }
 
   else
   {
-    v13 = [v3 containerView];
+    containerView = [v3 containerView];
   }
 
-  v14 = v13;
+  v14 = containerView;
 
-  v15 = [(UIView *)v5 window];
-  if (v15 && ![(UIView *)v5 isDescendantOfView:v14])
+  window4 = [(UIView *)inputView window];
+  if (window4 && ![(UIView *)inputView isDescendantOfView:v14])
   {
     v17 = 0;
   }
@@ -930,33 +930,33 @@ LABEL_15:
   v18 = +[UIKeyboardImpl activeInstance];
   if ([v18 isEmojiPopoverPresented])
   {
-    v19 = [v18 emojiPopoverController];
-    v20 = [v19 view];
-    v21 = [v20 window];
+    emojiPopoverController = [v18 emojiPopoverController];
+    view2 = [emojiPopoverController view];
+    window5 = [view2 window];
   }
 
   else
   {
     if (v17)
     {
-      v22 = v14;
+      window6 = v14;
     }
 
     else
     {
-      v22 = [(UIView *)v5 window];
+      window6 = [(UIView *)inputView window];
     }
 
-    v21 = v22;
+    window5 = window6;
   }
 
-  return v21;
+  return window5;
 }
 
 - (id)maskForShadowViewBlurredBackground
 {
-  v3 = [objc_opt_self() mainScreen];
-  [v3 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   [(UIScrollView *)self->m_table contentSize];
@@ -968,8 +968,8 @@ LABEL_15:
 
   v11 = *MEMORY[0x1E695EFF8];
   v12 = *(MEMORY[0x1E695EFF8] + 8);
-  v13 = [(UIView *)self _inheritedRenderConfig];
-  if ([v13 colorAdaptiveBackground])
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  if ([_inheritedRenderConfig colorAdaptiveBackground])
   {
     v14 = 24.0;
   }
@@ -985,8 +985,8 @@ LABEL_15:
   v16 = +[UIColor clearColor];
   [v16 set];
 
-  v17 = [(UITableView *)self->m_table visibleCells];
-  if ([v17 count])
+  visibleCells = [(UITableView *)self->m_table visibleCells];
+  if ([visibleCells count])
   {
     if (v5 <= 1.0)
     {
@@ -998,7 +998,7 @@ LABEL_15:
       v18 = 0.5;
     }
 
-    v19 = [v17 objectAtIndex:0];
+    v19 = [visibleCells objectAtIndex:0];
     [v19 frame];
     v21 = v20;
 
@@ -1025,11 +1025,11 @@ LABEL_15:
 
 - (double)minYOfLastTableCellForSelectionExtraView
 {
-  v3 = [(UITableView *)self->m_table visibleCells];
-  v4 = [v3 lastObject];
-  v5 = [v4 superview];
-  [v4 frame];
-  [v5 convertRect:self->m_selExtraView toView:?];
+  visibleCells = [(UITableView *)self->m_table visibleCells];
+  lastObject = [visibleCells lastObject];
+  superview = [lastObject superview];
+  [lastObject frame];
+  [superview convertRect:self->m_selExtraView toView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1044,9 +1044,9 @@ LABEL_15:
   return MinY;
 }
 
-- (unint64_t)_internationalKeyRoundedCornerInLayout:(id)a3
+- (unint64_t)_internationalKeyRoundedCornerInLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v4 = -1;
@@ -1054,8 +1054,8 @@ LABEL_15:
 
   else
   {
-    v5 = [v3 keyboardName];
-    v6 = [v5 rangeOfString:@"Emoji"];
+    keyboardName = [layoutCopy keyboardName];
+    v6 = [keyboardName rangeOfString:@"Emoji"];
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1071,54 +1071,54 @@ LABEL_15:
   return v4;
 }
 
-- (void)showAsPopupForKey:(id)a3 inLayout:(id)a4
+- (void)showAsPopupForKey:(id)key inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 paddedFrame];
+  layoutCopy = layout;
+  keyCopy = key;
+  [keyCopy paddedFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   self->m_mode = 1;
-  v16 = [(UIKeyboardMenuView *)self containerView];
-  [v6 convertRect:v16 toView:{v9, v11, v13, v15}];
+  containerView = [(UIKeyboardMenuView *)self containerView];
+  [layoutCopy convertRect:containerView toView:{v9, v11, v13, v15}];
   self->m_referenceRect.origin.x = v17;
   self->m_referenceRect.origin.y = v18;
   self->m_referenceRect.size.width = v19;
   self->m_referenceRect.size.height = v20;
 
-  [(UIInputSwitcherSelectionExtraView *)self->m_selExtraView setRoundedCorners:[(UIKeyboardMenuView *)self _internationalKeyRoundedCornerInLayout:v6]];
+  [(UIInputSwitcherSelectionExtraView *)self->m_selExtraView setRoundedCorners:[(UIKeyboardMenuView *)self _internationalKeyRoundedCornerInLayout:layoutCopy]];
   [(UIInputSwitcherSelectionExtraView *)self->m_selExtraView setKeyRect:self->m_referenceRect.origin.x, self->m_referenceRect.origin.y, self->m_referenceRect.size.width, self->m_referenceRect.size.height];
-  [(UIKeyboardMenuView *)self setReferenceKey:v7];
+  [(UIKeyboardMenuView *)self setReferenceKey:keyCopy];
 
-  [(UIKeyboardMenuView *)self setLayout:v6];
+  [(UIKeyboardMenuView *)self setLayout:layoutCopy];
   [(UIKeyboardMenuView *)self show];
-  v21 = [(UIKeyboardMenuView *)self layout];
-  v22 = [(UIKeyboardMenuView *)self referenceKey];
-  [v21 setState:16 forKey:v22];
+  layout = [(UIKeyboardMenuView *)self layout];
+  referenceKey = [(UIKeyboardMenuView *)self referenceKey];
+  [layout setState:16 forKey:referenceKey];
 
-  v23 = [(UIKeyboardMenuView *)self layout];
-  v24 = [v23 currentKeyplaneView];
-  v25 = [(UIKeyboardMenuView *)self referenceKey];
-  v38 = [v24 viewForKey:v25];
+  layout2 = [(UIKeyboardMenuView *)self layout];
+  currentKeyplaneView = [layout2 currentKeyplaneView];
+  referenceKey2 = [(UIKeyboardMenuView *)self referenceKey];
+  v38 = [currentKeyplaneView viewForKey:referenceKey2];
 
-  v26 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   [v38 frame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v35 = [v38 superview];
-  [v26 convertRect:v35 fromView:{v28, v30, v32, v34}];
+  superview2 = [v38 superview];
+  [superview convertRect:superview2 fromView:{v28, v30, v32, v34}];
   [v38 setFrame:?];
 
-  v36 = [(UIView *)self superview];
-  [v36 addSubview:v38];
+  superview3 = [(UIView *)self superview];
+  [superview3 addSubview:v38];
 
-  v37 = [(UIView *)self superview];
+  superview4 = [(UIView *)self superview];
   [(UIView *)self frame];
-  [v37 convertRect:v38 toView:?];
+  [superview4 convertRect:v38 toView:?];
   [(UIKeyboardMenuView *)self setFrame:?];
 
   [v38 setUserInteractionEnabled:1];
@@ -1133,30 +1133,30 @@ LABEL_15:
   }
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(UIView *)self superview];
-  if (v3 && (m_shouldFade = self->m_shouldFade, v3, m_shouldFade))
+  superview = [(UIView *)self superview];
+  if (superview && (m_shouldFade = self->m_shouldFade, superview, m_shouldFade))
   {
-    v5 = [(UIKeyboardMenuView *)self layout];
-    v6 = [v5 currentKeyplaneView];
-    v7 = [(UIKeyboardMenuView *)self referenceKey];
-    v8 = [v6 viewForKey:v7];
+    layout = [(UIKeyboardMenuView *)self layout];
+    currentKeyplaneView = [layout currentKeyplaneView];
+    referenceKey = [(UIKeyboardMenuView *)self referenceKey];
+    v8 = [currentKeyplaneView viewForKey:referenceKey];
 
-    v9 = [(UIKeyboardMenuView *)self layout];
-    v10 = [(UIKeyboardMenuView *)self referenceKey];
-    [v9 setState:2 forKey:v10];
+    layout2 = [(UIKeyboardMenuView *)self layout];
+    referenceKey2 = [(UIKeyboardMenuView *)self referenceKey];
+    [layout2 setState:2 forKey:referenceKey2];
 
-    v11 = [(UIView *)self superview];
+    superview2 = [(UIView *)self superview];
 
-    if (v11 == v8)
+    if (superview2 == v8)
     {
       [(UIKeyboardMenuView *)self clear];
     }
 
     else
     {
-      v12 = [(UIKeyboardMenuView *)self showingCapsLockSwitcher];
+      showingCapsLockSwitcher = [(UIKeyboardMenuView *)self showingCapsLockSwitcher];
       v13 = 0.5;
-      if (v12)
+      if (showingCapsLockSwitcher)
       {
         v13 = 0.25;
       }
@@ -1199,24 +1199,24 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
   }
 }
 
-- (void)fadeWithDelay:(double)a3 forSelectionAtIndex:(unint64_t)a4
+- (void)fadeWithDelay:(double)delay forSelectionAtIndex:(unint64_t)index
 {
-  [(UIKeyboardMenuView *)self willFadeForSelectionAtIndex:a4];
+  [(UIKeyboardMenuView *)self willFadeForSelectionAtIndex:index];
   if (self->m_mode || self->m_inputView)
   {
-    v6 = [(UIView *)self superview];
-    if (v6)
+    superview = [(UIView *)self superview];
+    if (superview)
     {
-      v7 = v6;
-      v8 = [(UIKeyboardMenuView *)self referenceKey];
-      v9 = [v8 state];
+      v7 = superview;
+      referenceKey = [(UIKeyboardMenuView *)self referenceKey];
+      state = [referenceKey state];
 
-      if (v9 == 16)
+      if (state == 16)
       {
-        v10 = [(UIKeyboardMenuView *)self layout];
-        v11 = [v10 currentKeyplaneView];
-        v12 = [(UIKeyboardMenuView *)self referenceKey];
-        v13 = [v11 viewForKey:v12];
+        layout = [(UIKeyboardMenuView *)self layout];
+        currentKeyplaneView = [layout currentKeyplaneView];
+        referenceKey2 = [(UIKeyboardMenuView *)self referenceKey];
+        v13 = [currentKeyplaneView viewForKey:referenceKey2];
 
         if (v13)
         {
@@ -1225,8 +1225,8 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
           v17 = v16;
           v19 = v18;
           v21 = v20;
-          v22 = [(UIView *)self superview];
-          [v13 convertRect:v22 fromView:{v15, v17, v19, v21}];
+          superview2 = [(UIView *)self superview];
+          [v13 convertRect:superview2 fromView:{v15, v17, v19, v21}];
           [(UIKeyboardMenuView *)self setFrame:?];
 
           [v13 addSubview:self];
@@ -1234,14 +1234,14 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
       }
     }
 
-    [(UIKeyboardMenuView *)self performSelector:sel__delayedFade withObject:0 afterDelay:a3];
+    [(UIKeyboardMenuView *)self performSelector:sel__delayedFade withObject:0 afterDelay:delay];
   }
 }
 
 - (void)clear
 {
-  v3 = [(UIKeyboardMenuView *)self dimmingView];
-  [v3 removeFromSuperview];
+  dimmingView = [(UIKeyboardMenuView *)self dimmingView];
+  [dimmingView removeFromSuperview];
 
   m_inputView = self->m_inputView;
   self->m_inputView = 0;
@@ -1257,13 +1257,13 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
 
 - (BOOL)launchedFromKeyboard
 {
-  v3 = [(UIKeyboardMenuView *)self isVisible];
-  if (v3)
+  isVisible = [(UIKeyboardMenuView *)self isVisible];
+  if (isVisible)
   {
-    LOBYTE(v3) = self->m_mode == 1 || self->m_inputView != 0;
+    LOBYTE(isVisible) = self->m_mode == 1 || self->m_inputView != 0;
   }
 
-  return v3;
+  return isVisible;
 }
 
 - (void)removeFromSuperview
@@ -1283,54 +1283,54 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
       [(UIKeyboardMenuView *)self setKeyboardDimmed:0];
     }
 
-    v3 = [(UIKeyboardMenuView *)self layout];
-    v4 = [(UIKeyboardMenuView *)self referenceKey];
-    [v3 setState:2 forKey:v4];
+    layout = [(UIKeyboardMenuView *)self layout];
+    referenceKey = [(UIKeyboardMenuView *)self referenceKey];
+    [layout setState:2 forKey:referenceKey];
 
     [(UIView *)self setAlpha:0.0];
     self->m_shouldFade = 1;
     [(UIKeyboardMenuView *)self removeFromSuperview];
   }
 
-  v5 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-  [v5 didKBMenuAction];
+  glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+  [glomojiAnalyticsInstance didKBMenuAction];
 
   self->m_initialIndexInteracted = -1;
   self->m_menuDrag = 0;
 }
 
-- (void)setNeedsDisplayForCell:(id)a3
+- (void)setNeedsDisplayForCell:(id)cell
 {
-  v3 = [a3 backgroundView];
-  [v3 setNeedsDisplay];
+  backgroundView = [cell backgroundView];
+  [backgroundView setNeedsDisplay];
 }
 
 - (void)setNeedsDisplayForTopBottomCells
 {
-  v5 = [(UITableView *)self->m_table visibleCells];
-  if ([v5 count])
+  visibleCells = [(UITableView *)self->m_table visibleCells];
+  if ([visibleCells count])
   {
-    v3 = [v5 objectAtIndex:0];
+    v3 = [visibleCells objectAtIndex:0];
     [(UIKeyboardMenuView *)self setNeedsDisplayForCell:v3];
 
-    v4 = [v5 lastObject];
-    [(UIKeyboardMenuView *)self setNeedsDisplayForCell:v4];
+    lastObject = [visibleCells lastObject];
+    [(UIKeyboardMenuView *)self setNeedsDisplayForCell:lastObject];
   }
 }
 
 - (void)setNeedsDisplay
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(UITableView *)self->m_table visibleCells];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    visibleCells = [(UITableView *)self->m_table visibleCells];
+    v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1342,14 +1342,14 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(visibleCells);
           }
 
           [(UIKeyboardMenuView *)self setNeedsDisplayForCell:*(*(&v10 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -1361,7 +1361,7 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
   [(UIView *)&v9 setNeedsDisplay];
 }
 
-- (void)endScrolling:(id)a3
+- (void)endScrolling:(id)scrolling
 {
   if (self->m_scrolling)
   {
@@ -1397,8 +1397,8 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
     [(UITableView *)self->m_table scrollToNearestSelectedRowAtScrollPosition:v5 animated:1];
     if (self->m_scrollDirection == 8 && self->m_mode == 1)
     {
-      v6 = [(UITableView *)self->m_table indexPathForSelectedRow];
-      v7 = [(UIKeyboardMenuView *)self shouldShowSelectionExtraViewForIndexPath:v6];
+      indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
+      v7 = [(UIKeyboardMenuView *)self shouldShowSelectionExtraViewForIndexPath:indexPathForSelectedRow];
 
       if (v7)
       {
@@ -1410,7 +1410,7 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
   }
 }
 
-- (void)autoscrollTimerFired:(id)a3
+- (void)autoscrollTimerFired:(id)fired
 {
   Current = CFAbsoluteTimeGetCurrent();
   v5 = Current - self->m_scrollStartTime + Current - self->m_scrollStartTime;
@@ -1446,15 +1446,15 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
     v22 = v13 + v21;
     [(UIView *)self->m_selExtraView removeFromSuperview];
     v30 = [(UITableView *)self->m_table indexPathForRowAtPoint:v11, v22];
-    v23 = [(UITableView *)self->m_table indexPathForSelectedRow];
-    if (([v30 isEqual:v23] & 1) == 0)
+    indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
+    if (([v30 isEqual:indexPathForSelectedRow] & 1) == 0)
     {
       m_table = self->m_table;
-      v25 = [(UITableView *)m_table indexPathForSelectedRow];
-      [(UIInputSwitcherTableView *)m_table deselectRowAtIndexPath:v25 animated:1];
+      indexPathForSelectedRow2 = [(UITableView *)m_table indexPathForSelectedRow];
+      [(UIInputSwitcherTableView *)m_table deselectRowAtIndexPath:indexPathForSelectedRow2 animated:1];
 
       [(UIInputSwitcherTableView *)self->m_table selectRowAtIndexPath:v30 animated:0 scrollPosition:0];
-      v26 = [(UITableView *)self->m_table cellForRowAtIndexPath:v23];
+      v26 = [(UITableView *)self->m_table cellForRowAtIndexPath:indexPathForSelectedRow];
       [(UIKeyboardMenuView *)self setNeedsDisplayForCell:v26];
 
       [(UIKeyboardMenuView *)self setNeedsDisplayForTopBottomCells];
@@ -1478,17 +1478,17 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
   }
 }
 
-- (id)indexPathForInputSwitcherCellIncludingInteractiveInsetsAtPoint:(CGPoint)a3
+- (id)indexPathForInputSwitcherCellIncludingInteractiveInsetsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v33 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(UITableView *)self->m_table visibleCells];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  visibleCells = [(UITableView *)self->m_table visibleCells];
+  v7 = [visibleCells countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1499,7 +1499,7 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
@@ -1524,7 +1524,7 @@ uint64_t __34__UIKeyboardMenuView__delayedFade__block_invoke_2(uint64_t result, 
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v8)
       {
         continue;
@@ -1552,8 +1552,8 @@ LABEL_11:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = [(UITableView *)self->m_table visibleCells];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  visibleCells = [(UITableView *)self->m_table visibleCells];
+  v12 = [visibleCells countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1564,7 +1564,7 @@ LABEL_11:
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(visibleCells);
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
@@ -1589,7 +1589,7 @@ LABEL_11:
         height = v40.size.height;
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v13 = [visibleCells countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v13);
@@ -1606,14 +1606,14 @@ LABEL_11:
   return result;
 }
 
-- (void)updateSelectionWithPoint:(CGPoint)a3
+- (void)updateSelectionWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   m_table = self->m_table;
   [(UIView *)self convertPoint:m_table toView:?];
   v24 = [(UITableView *)m_table indexPathForRowAtPoint:?];
-  v7 = [(UITableView *)self->m_table indexPathForSelectedRow];
+  indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
   if (!self->m_menuDrag)
   {
     m_initialIndexInteracted = self->m_initialIndexInteracted;
@@ -1630,9 +1630,9 @@ LABEL_11:
 
   if (v24)
   {
-    v9 = [(UITableView *)self->m_table visibleCells];
+    visibleCells = [(UITableView *)self->m_table visibleCells];
     v10 = [(UITableView *)self->m_table cellForRowAtIndexPath:v24];
-    v11 = [v9 containsObject:v10];
+    v11 = [visibleCells containsObject:v10];
 
     if (v11)
     {
@@ -1715,11 +1715,11 @@ LABEL_15:
   }
 
   v24 = v13;
-  if (!v7 || (v16 = [v13 row], v16 != objc_msgSend(v7, "row")))
+  if (!indexPathForSelectedRow || (v16 = [v13 row], v16 != objc_msgSend(indexPathForSelectedRow, "row")))
   {
     v17 = self->m_table;
-    v18 = [(UITableView *)v17 indexPathForSelectedRow];
-    [(UIInputSwitcherTableView *)v17 deselectRowAtIndexPath:v18 animated:1];
+    indexPathForSelectedRow2 = [(UITableView *)v17 indexPathForSelectedRow];
+    [(UIInputSwitcherTableView *)v17 deselectRowAtIndexPath:indexPathForSelectedRow2 animated:1];
 
     if ([v24 row] != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1732,35 +1732,35 @@ LABEL_15:
       [(UIKeyboardMenuView *)self insertSelExtraView];
     }
 
-    v19 = [(UITableView *)self->m_table indexPathForSelectedRow];
+    indexPathForSelectedRow3 = [(UITableView *)self->m_table indexPathForSelectedRow];
 
-    if (v19)
+    if (indexPathForSelectedRow3)
     {
       [(UISelectionFeedbackGenerator *)self->m_slideBehavior selectionChanged];
-      v7 = v19;
+      indexPathForSelectedRow = indexPathForSelectedRow3;
     }
 
     else
     {
-      v7 = 0;
+      indexPathForSelectedRow = 0;
     }
   }
 
 LABEL_39:
 }
 
-- (void)highlightRow:(unint64_t)a3
+- (void)highlightRow:(unint64_t)row
 {
-  v12 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
-  v4 = [(UIKeyboardMenuView *)self showingCapsLockSwitcher];
+  v12 = [MEMORY[0x1E696AC88] indexPathForRow:row inSection:0];
+  showingCapsLockSwitcher = [(UIKeyboardMenuView *)self showingCapsLockSwitcher];
   m_table = self->m_table;
-  if (v4)
+  if (showingCapsLockSwitcher)
   {
     v6 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
     [(UITableView *)m_table reloadSections:v6 withRowAnimation:5];
 
-    v7 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
-    v8 = v7 > [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
+    indexForSelectedFastSwitchMode = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
+    v8 = indexForSelectedFastSwitchMode > [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
     v9 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:0];
 
     [(UIInputSwitcherTableView *)self->m_table selectRowAtIndexPath:v9 animated:0 scrollPosition:3];
@@ -1769,8 +1769,8 @@ LABEL_39:
 
   else
   {
-    v10 = [(UITableView *)self->m_table indexPathForSelectedRow];
-    [(UIInputSwitcherTableView *)m_table deselectRowAtIndexPath:v10 animated:1];
+    indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
+    [(UIInputSwitcherTableView *)m_table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
     if (self->m_mode == 1)
     {
@@ -1805,20 +1805,20 @@ LABEL_39:
   [(UIView *)self->m_table setNeedsDisplay];
 }
 
-- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)a3
+- (BOOL)shouldShowSelectionExtraViewForIndexPath:(id)path
 {
   m_table = self->m_table;
-  v4 = a3;
-  v5 = [(UITableView *)m_table indexPathsForVisibleRows];
-  v6 = [v5 lastObject];
+  pathCopy = path;
+  indexPathsForVisibleRows = [(UITableView *)m_table indexPathsForVisibleRows];
+  lastObject = [indexPathsForVisibleRows lastObject];
 
-  return v6 == v4;
+  return lastObject == pathCopy;
 }
 
-- (void)selectItemAtPoint:(CGPoint)a3
+- (void)selectItemAtPoint:(CGPoint)point
 {
   self->m_shouldFade = 1;
-  [(UIView *)self convertPoint:self->m_table toView:a3.x, a3.y];
+  [(UIView *)self convertPoint:self->m_table toView:point.x, point.y];
   v4 = [(UIKeyboardMenuView *)self indexPathForInputSwitcherCellIncludingInteractiveInsetsAtPoint:?];
   v5 = v4;
   if (v4)
@@ -1832,32 +1832,32 @@ LABEL_39:
   }
 }
 
-- (void)setHighlightForRowAtIndexPath:(id)a3 highlight:(BOOL)a4
+- (void)setHighlightForRowAtIndexPath:(id)path highlight:(BOOL)highlight
 {
-  v22 = a3;
+  pathCopy = path;
   v6 = [(UITableView *)self->m_table cellForRowAtIndexPath:?];
-  v7 = [(UIView *)self _inheritedRenderConfig];
-  v8 = [v7 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if ((v8 & 1) == 0)
+  if ((colorAdaptiveBackground & 1) == 0)
   {
-    if (a4)
+    if (highlight)
     {
       v9 = +[UIColor whiteColor];
-      v10 = [v6 textLabel];
-      [v10 setTextColor:v9];
+      textLabel = [v6 textLabel];
+      [textLabel setTextColor:v9];
 
       v11 = +[UIColor whiteColor];
-      v12 = [v6 detailTextLabel];
-      [v12 setTextColor:v11];
+      detailTextLabel = [v6 detailTextLabel];
+      [detailTextLabel setTextColor:v11];
 
       [(UIView *)self->m_selExtraView removeFromSuperview];
       if (self->m_mode == 1)
       {
-        v13 = [(UITableView *)self->m_table indexPathsForVisibleRows];
-        v14 = [v13 lastObject];
+        indexPathsForVisibleRows = [(UITableView *)self->m_table indexPathsForVisibleRows];
+        lastObject = [indexPathsForVisibleRows lastObject];
 
-        if (v14 == v22)
+        if (lastObject == pathCopy)
         {
           [(UIView *)self insertSubview:self->m_selExtraView aboveSubview:self->m_shadowView];
         }
@@ -1866,8 +1866,8 @@ LABEL_39:
 
     else
     {
-      v15 = [(UIKeyboardMenuView *)self _renderConfig];
-      if ([v15 colorAdaptiveBackground])
+      _renderConfig = [(UIKeyboardMenuView *)self _renderConfig];
+      if ([_renderConfig colorAdaptiveBackground])
       {
         [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBColorBlack_Alpha65")];
       }
@@ -1877,11 +1877,11 @@ LABEL_39:
         +[UIColor blackColor];
       }
       v16 = ;
-      v17 = [v6 textLabel];
-      [v17 setTextColor:v16];
+      textLabel2 = [v6 textLabel];
+      [textLabel2 setTextColor:v16];
 
-      v18 = [(UIKeyboardMenuView *)self _renderConfig];
-      if ([v18 colorAdaptiveBackground])
+      _renderConfig2 = [(UIKeyboardMenuView *)self _renderConfig];
+      if ([_renderConfig2 colorAdaptiveBackground])
       {
         [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBColorBlack_Alpha65")];
       }
@@ -1891,18 +1891,18 @@ LABEL_39:
         +[UIColor blackColor];
       }
       v19 = ;
-      v20 = [v6 detailTextLabel];
-      [v20 setTextColor:v19];
+      detailTextLabel2 = [v6 detailTextLabel];
+      [detailTextLabel2 setTextColor:v19];
     }
   }
 
-  v21 = [v6 backgroundView];
-  [v21 setNeedsDisplay];
+  backgroundView = [v6 backgroundView];
+  [backgroundView setNeedsDisplay];
 }
 
-- (int64_t)getRowFromPoint:(CGPoint)a3
+- (int64_t)getRowFromPoint:(CGPoint)point
 {
-  [(UIView *)self convertPoint:self->m_table toView:a3.x, a3.y];
+  [(UIView *)self convertPoint:self->m_table toView:point.x, point.y];
   v4 = [(UIKeyboardMenuView *)self indexPathForInputSwitcherCellIncludingInteractiveInsetsAtPoint:?];
   v5 = v4;
   if (v4)
@@ -1918,69 +1918,69 @@ LABEL_39:
   return v6;
 }
 
-- (void)customizeCell:(id)a3 forItemAtIndex:(unint64_t)a4
+- (void)customizeCell:(id)cell forItemAtIndex:(unint64_t)index
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  indexCopy2 = index;
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
-    v8 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
-    v9 = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
-    if (a4 == 1)
+    indexForSelectedFastSwitchMode = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
+    indexForUnselectedFastSwitchMode = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
+    if (index == 1)
     {
-      if (v8 >= v9)
+      if (indexForSelectedFastSwitchMode >= indexForUnselectedFastSwitchMode)
       {
 LABEL_5:
-        v10 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
+        indexForSelectedFastSwitchMode2 = [(UIKeyboardMenuView *)self indexForSelectedFastSwitchMode];
 LABEL_8:
-        v7 = v10;
+        indexCopy2 = indexForSelectedFastSwitchMode2;
         goto LABEL_9;
       }
     }
 
     else
     {
-      v7 = a4;
-      if (a4)
+      indexCopy2 = index;
+      if (index)
       {
         goto LABEL_9;
       }
 
-      if (v8 < v9)
+      if (indexForSelectedFastSwitchMode < indexForUnselectedFastSwitchMode)
       {
         goto LABEL_5;
       }
     }
 
-    v10 = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
+    indexForSelectedFastSwitchMode2 = [(UIKeyboardMenuView *)self indexForUnselectedFastSwitchMode];
     goto LABEL_8;
   }
 
 LABEL_9:
   v11 = +[UIColor clearColor];
-  [v6 setBackgroundColor:v11];
+  [cellCopy setBackgroundColor:v11];
 
-  [v6 setSelectionFadeDuration:0.0];
-  [v6 setSelectionStyle:0];
-  [v6 setFirst:a4 == 0];
-  [v6 setLast:{-[UIKeyboardMenuView numberOfItems](self, "numberOfItems") - 1 == a4}];
+  [cellCopy setSelectionFadeDuration:0.0];
+  [cellCopy setSelectionStyle:0];
+  [cellCopy setFirst:index == 0];
+  [cellCopy setLast:{-[UIKeyboardMenuView numberOfItems](self, "numberOfItems") - 1 == index}];
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
-    [v6 setFirst:a4 == 0];
-    [v6 setLast:a4 == 1];
+    [cellCopy setFirst:index == 0];
+    [cellCopy setLast:index == 1];
   }
 
-  [v6 setUsesDarkTheme:{-[UIKeyboardMenuView usesDarkTheme](self, "usesDarkTheme")}];
-  [v6 setUsesStraightLeftEdge:{-[UIKeyboardMenuView usesStraightLeftEdge](self, "usesStraightLeftEdge")}];
-  v12 = [(UIView *)self _inheritedRenderConfig];
-  v13 = [v12 colorAdaptiveBackground];
+  [cellCopy setUsesDarkTheme:{-[UIKeyboardMenuView usesDarkTheme](self, "usesDarkTheme")}];
+  [cellCopy setUsesStraightLeftEdge:{-[UIKeyboardMenuView usesStraightLeftEdge](self, "usesStraightLeftEdge")}];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v13)
+  if (colorAdaptiveBackground)
   {
     v14 = MEMORY[0x1E695DF58];
-    v15 = [MEMORY[0x1E695DF58] _deviceLanguage];
-    v16 = 2 * ([v14 characterDirectionForLanguage:v15] == 2);
+    _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+    v16 = 2 * ([v14 characterDirectionForLanguage:_deviceLanguage] == 2);
   }
 
   else
@@ -1988,25 +1988,25 @@ LABEL_9:
     v16 = 1;
   }
 
-  v17 = [v6 textLabel];
-  [v17 setTextAlignment:v16];
-  v18 = [(UIKeyboardMenuView *)self localizedTitleForItemAtIndex:v7];
-  [v17 setText:v18];
+  textLabel = [cellCopy textLabel];
+  [textLabel setTextAlignment:v16];
+  v18 = [(UIKeyboardMenuView *)self localizedTitleForItemAtIndex:indexCopy2];
+  [textLabel setText:v18];
 
-  if ([(UIKeyboardMenuView *)self usesDeviceLanguageForItemAtIndex:v7])
+  if ([(UIKeyboardMenuView *)self usesDeviceLanguageForItemAtIndex:indexCopy2])
   {
-    v19 = [v17 text];
+    text = [textLabel text];
 
-    if (v19)
+    if (text)
     {
       v20 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v21 = [v17 text];
+      text2 = [textLabel text];
       v49 = *MEMORY[0x1E6965A20];
-      v22 = [MEMORY[0x1E695DF58] _deviceLanguage];
-      v50[0] = v22;
+      _deviceLanguage2 = [MEMORY[0x1E695DF58] _deviceLanguage];
+      v50[0] = _deviceLanguage2;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
-      v24 = [v20 initWithString:v21 attributes:v23];
-      [v17 setAttributedText:v24];
+      v24 = [v20 initWithString:text2 attributes:v23];
+      [textLabel setAttributedText:v24];
     }
   }
 
@@ -2020,28 +2020,28 @@ LABEL_9:
     +[UIColor blackColor];
   }
   v25 = ;
-  [v17 setTextColor:v25];
+  [textLabel setTextColor:v25];
 
-  v26 = [(UIView *)self _inheritedRenderConfig];
-  v27 = [v26 colorAdaptiveBackground];
+  _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
-  if (v27)
+  if (colorAdaptiveBackground2)
   {
     v28 = +[UIColor labelColor];
-    [v17 setTextColor:v28];
+    [textLabel setTextColor:v28];
   }
 
-  v29 = [v17 textColor];
-  [v17 setHighlightedTextColor:v29];
+  textColor = [textLabel textColor];
+  [textLabel setHighlightedTextColor:textColor];
 
-  v30 = [(UIKeyboardMenuView *)self fontForItemAtIndex:v7];
-  [v17 setFont:v30];
+  v30 = [(UIKeyboardMenuView *)self fontForItemAtIndex:indexCopy2];
+  [textLabel setFont:v30];
 
-  v31 = [(UIKeyboardMenuView *)self subtitleForItemAtIndex:v7];
+  v31 = [(UIKeyboardMenuView *)self subtitleForItemAtIndex:indexCopy2];
   if ([v31 length])
   {
-    v32 = [v6 detailTextLabel];
-    [v32 setTextAlignment:v16];
+    detailTextLabel = [cellCopy detailTextLabel];
+    [detailTextLabel setTextAlignment:v16];
     if ([(UIKeyboardMenuView *)self usesDarkTheme])
     {
       +[UIColor whiteColor];
@@ -2052,71 +2052,71 @@ LABEL_9:
       +[UIColor blackColor];
     }
     v33 = ;
-    [v32 setTextColor:v33];
+    [detailTextLabel setTextColor:v33];
 
-    v34 = [(UIView *)self _inheritedRenderConfig];
-    v35 = [v34 colorAdaptiveBackground];
+    _inheritedRenderConfig3 = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground3 = [_inheritedRenderConfig3 colorAdaptiveBackground];
 
-    if (v35)
+    if (colorAdaptiveBackground3)
     {
       v36 = +[UIColor secondaryLabelColor];
-      [v32 setTextColor:v36];
+      [detailTextLabel setTextColor:v36];
     }
 
-    v37 = [v32 textColor];
-    [v32 setHighlightedTextColor:v37];
+    textColor2 = [detailTextLabel textColor];
+    [detailTextLabel setHighlightedTextColor:textColor2];
 
-    v38 = [(UIKeyboardMenuView *)self subtitleFontForItemAtIndex:v7];
-    [v32 setFont:v38];
+    v38 = [(UIKeyboardMenuView *)self subtitleFontForItemAtIndex:indexCopy2];
+    [detailTextLabel setFont:v38];
   }
 
-  v39 = [v6 _detailTextLabel:0];
+  v39 = [cellCopy _detailTextLabel:0];
   [v39 setText:v31];
 
-  v40 = [(UIKeyboardMenuView *)self usesDeviceLanguageForItemAtIndex:v7];
+  v40 = [(UIKeyboardMenuView *)self usesDeviceLanguageForItemAtIndex:indexCopy2];
   if (v31 && v40)
   {
     v41 = objc_alloc(MEMORY[0x1E696AAB0]);
     v47 = *MEMORY[0x1E6965A20];
-    v42 = [MEMORY[0x1E695DF58] _deviceLanguage];
-    v48 = v42;
+    _deviceLanguage3 = [MEMORY[0x1E695DF58] _deviceLanguage];
+    v48 = _deviceLanguage3;
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v44 = [v41 initWithString:v31 attributes:v43];
-    v45 = [v6 _detailTextLabel:0];
+    v45 = [cellCopy _detailTextLabel:0];
     [v45 setAttributedText:v44];
   }
 
   if (!self->m_mode)
   {
-    v46 = [v6 textLabel];
-    [v46 setShadowColor:0];
+    textLabel2 = [cellCopy textLabel];
+    [textLabel2 setShadowColor:0];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [cellCopy setBackgroundColor:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[UIInputSwitcherTableCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   [(UIKeyboardMenuView *)self customizeCell:v9 forItemAtIndex:v10];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
     v8 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
@@ -2124,17 +2124,17 @@ LABEL_9:
 
   else
   {
-    v9 = [v6 cellForRowAtIndexPath:v7];
-    [(UIKeyboardMenuView *)self setHighlightForRowAtIndexPath:v7 highlight:0];
-    v8 = v7;
+    v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    [(UIKeyboardMenuView *)self setHighlightForRowAtIndexPath:pathCopy highlight:0];
+    v8 = pathCopy;
   }
 
   return v8;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
     v6 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
@@ -2142,8 +2142,8 @@ LABEL_9:
 
   else
   {
-    [(UIKeyboardMenuView *)self setHighlightForRowAtIndexPath:v5 highlight:1];
-    v6 = v5;
+    [(UIKeyboardMenuView *)self setHighlightForRowAtIndexPath:pathCopy highlight:1];
+    v6 = pathCopy;
   }
 
   v7 = v6;
@@ -2151,15 +2151,15 @@ LABEL_9:
   return v7;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(UITableView *)self->m_table indexPathForSelectedRow];
-  [(UIKeyboardMenuView *)self setHighlightForRowAtIndexPath:v4 highlight:1];
+  indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
+  [(UIKeyboardMenuView *)self setHighlightForRowAtIndexPath:indexPathForSelectedRow highlight:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   if ([(UIKeyboardMenuView *)self showingCapsLockSwitcher])
   {
     v5 = 0;
@@ -2167,50 +2167,50 @@ LABEL_9:
 
   else
   {
-    v5 = [v6 row];
+    v5 = [pathCopy row];
   }
 
   [(UIKeyboardMenuView *)self didSelectItemAtIndex:v5];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->m_shouldFade = 0;
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [began anyObject];
+  [anyObject locationInView:self];
   v7 = v6;
   v9 = v8;
 
   self->m_initialIndexInteracted = [(UIKeyboardMenuView *)self getRowFromPoint:v7, v9];
   v10 = +[UIKeyboardInputModeController sharedInputModeController];
-  v11 = [v10 currentInputMode];
-  v12 = [v11 identifierWithLayouts];
-  v13 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-  [v13 setOriginalInputMode:v12];
+  currentInputMode = [v10 currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
+  glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+  [glomojiAnalyticsInstance setOriginalInputMode:identifierWithLayouts];
 
   [(UIKeyboardMenuView *)self updateSelectionWithPoint:v7, v9];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   self->m_shouldFade = 0;
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   [(UIKeyboardMenuView *)self updateSelectionWithPoint:?];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   self->m_shouldFade = 1;
-  v10 = [a3 anyObject];
-  [v10 locationInView:self];
+  anyObject = [ended anyObject];
+  [anyObject locationInView:self];
   [(UIKeyboardMenuView *)self updateSelectionWithPoint:?];
-  v5 = [(UITableView *)self->m_table indexPathForSelectedRow];
-  if (v5)
+  indexPathForSelectedRow = [(UITableView *)self->m_table indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
     m_menuDrag = self->m_menuDrag;
-    v7 = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
-    v8 = v7;
+    glomojiAnalyticsInstance = [(UIKeyboardMenuView *)self glomojiAnalyticsInstance];
+    v8 = glomojiAnalyticsInstance;
     if (m_menuDrag)
     {
       v9 = 4;
@@ -2221,9 +2221,9 @@ LABEL_9:
       v9 = 3;
     }
 
-    [v7 setKBMenuInteractionSource:v9];
+    [glomojiAnalyticsInstance setKBMenuInteractionSource:v9];
 
-    [v10 locationInView:self];
+    [anyObject locationInView:self];
     [(UIKeyboardMenuView *)self selectItemAtPoint:?];
   }
 
@@ -2233,28 +2233,28 @@ LABEL_9:
   }
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v12 = a3;
-  v4 = [(UIKeyboardMenuView *)self usesDarkTheme];
-  v5 = v4 == [v12 whiteText];
-  v6 = v12;
+  configCopy = config;
+  usesDarkTheme = [(UIKeyboardMenuView *)self usesDarkTheme];
+  v5 = usesDarkTheme == [configCopy whiteText];
+  v6 = configCopy;
   if (!v5)
   {
-    -[UIKeyboardMenuView setUsesDarkTheme:](self, "setUsesDarkTheme:", [v12 whiteText]);
+    -[UIKeyboardMenuView setUsesDarkTheme:](self, "setUsesDarkTheme:", [configCopy whiteText]);
     [(UITableView *)self->m_table reloadData];
-    v7 = [(UIKBKeyView *)self->m_backgroundKeyView renderConfig];
-    v8 = [v7 lightKeyboard];
-    v9 = [v12 lightKeyboard];
+    renderConfig = [(UIKBKeyView *)self->m_backgroundKeyView renderConfig];
+    lightKeyboard = [renderConfig lightKeyboard];
+    lightKeyboard2 = [configCopy lightKeyboard];
 
-    if (v8 != v9)
+    if (lightKeyboard != lightKeyboard2)
     {
       [(UIView *)self frame];
       [(UIKeyboardMenuView *)self setupBackgroundKeyViewWithSize:v10, v11];
     }
 
     [(UIKeyboardMenuView *)self setNeedsDisplay];
-    v6 = v12;
+    v6 = configCopy;
   }
 }
 
@@ -2270,8 +2270,8 @@ LABEL_9:
 
 - (void)willShow
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:0x1EFB791F0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:0x1EFB791F0 object:0];
 }
 
 - (CGSize)preferredSize

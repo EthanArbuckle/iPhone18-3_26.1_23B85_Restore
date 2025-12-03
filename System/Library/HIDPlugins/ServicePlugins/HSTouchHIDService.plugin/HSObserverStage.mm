@@ -1,15 +1,15 @@
 @interface HSObserverStage
-- (HSObserverStage)initWithName:(id)a3 handler:(id)a4;
-- (void)handleConsume:(id)a3;
+- (HSObserverStage)initWithName:(id)name handler:(id)handler;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSObserverStage
 
-- (HSObserverStage)initWithName:(id)a3 handler:(id)a4
+- (HSObserverStage)initWithName:(id)name handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  nameCopy = name;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"HSObserverStage.mm" lineNumber:9 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
@@ -21,8 +21,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    v12 = objc_retainBlock(v9);
+    objc_storeStrong(&v10->_name, name);
+    v12 = objc_retainBlock(handlerCopy);
     handler = v11->_handler;
     v11->_handler = v12;
 
@@ -32,13 +32,13 @@
   return v11;
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   (*(self->_handler + 2))();
   v5.receiver = self;
   v5.super_class = HSObserverStage;
-  [(HSStage *)&v5 handleConsume:v4];
+  [(HSStage *)&v5 handleConsume:consumeCopy];
 }
 
 @end

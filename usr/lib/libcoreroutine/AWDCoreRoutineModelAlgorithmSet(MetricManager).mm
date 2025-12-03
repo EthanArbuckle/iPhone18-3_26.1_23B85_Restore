@@ -7,7 +7,7 @@
 
 - (id)_init
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_2846250E8;
   return objc_msgSendSuper2(&v2, sel_init);
 }
@@ -15,11 +15,11 @@
 - (BOOL)valid:()MetricManager
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
-      if ([a1 instancesCount])
+      if ([self instancesCount])
       {
         v5 = 0;
         goto LABEL_12;

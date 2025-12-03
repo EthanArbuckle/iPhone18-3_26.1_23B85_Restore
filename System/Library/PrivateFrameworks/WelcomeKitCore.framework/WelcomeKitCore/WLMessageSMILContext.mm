@@ -1,8 +1,8 @@
 @interface WLMessageSMILContext
 - (WLMessageSMILContext)init;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation WLMessageSMILContext
@@ -27,40 +27,40 @@
   return v3;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v11 = a7;
-  v12 = a4;
+  attributesCopy = attributes;
+  elementCopy = element;
   _WLLog();
-  v16 = [v12 lowercaseString];
+  lowercaseString = [elementCopy lowercaseString];
 
   if (self->_inBody)
   {
     if (self->_inPar)
     {
-      v13 = [[WLMessageSMILPart alloc] initWithElementName:v16 attributes:v11];
+      v13 = [[WLMessageSMILPart alloc] initWithElementName:lowercaseString attributes:attributesCopy];
       v14 = [(NSArray *)self->_parts arrayByAddingObject:v13];
       parts = self->_parts;
       self->_parts = v14;
     }
 
-    else if ([v16 isEqualToString:@"par"])
+    else if ([lowercaseString isEqualToString:@"par"])
     {
       self->_inPar = 1;
     }
   }
 
-  else if ([v16 isEqualToString:@"body"])
+  else if ([lowercaseString isEqualToString:@"body"])
   {
     self->_inBody = 1;
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v9 = a4;
+  elementCopy = element;
   _WLLog();
-  v13 = [v9 lowercaseString];
+  lowercaseString = [elementCopy lowercaseString];
 
   p_inBody = &self->_inBody;
   if (self->_inBody)
@@ -69,7 +69,7 @@
     p_inPar = &self->_inPar;
     if (inPar)
     {
-      if (([v13 isEqualToString:@"par"] & 1) == 0)
+      if (([lowercaseString isEqualToString:@"par"] & 1) == 0)
       {
         goto LABEL_7;
       }
@@ -78,7 +78,7 @@
     else
     {
       p_inPar = p_inBody;
-      if (![v13 isEqualToString:@"body"])
+      if (![lowercaseString isEqualToString:@"body"])
       {
         goto LABEL_7;
       }
@@ -90,14 +90,14 @@
 LABEL_7:
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
+  charactersCopy = characters;
   _WLLog();
-  v6 = [(NSString *)self->_characters stringByAppendingString:v5, self, v5];
+  charactersCopy = [(NSString *)self->_characters stringByAppendingString:charactersCopy, self, charactersCopy];
 
   characters = self->_characters;
-  self->_characters = v6;
+  self->_characters = charactersCopy;
 }
 
 @end

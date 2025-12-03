@@ -1,55 +1,55 @@
 @interface PFAIStackEntry
-+ (id)makeLayoutModeStateWithStackEntry:(id)a3 parentEntryOrientationState:(id)a4 documentOrientationState:(id)a5;
++ (id)makeLayoutModeStateWithStackEntry:(id)entry parentEntryOrientationState:(id)state documentOrientationState:(id)orientationState;
 - (PFAIEntryOrientationState)currentEntryOrientationState;
-- (PFAIStackEntry)initWithParentEntry:(id)a3 reader:(id)a4 elementName:(const char *)a5 elementNamespace:(const char *)a6 cfiPath:(id)a7 readerState:(id)a8;
+- (PFAIStackEntry)initWithParentEntry:(id)entry reader:(id)reader elementName:(const char *)name elementNamespace:(const char *)namespace cfiPath:(id)path readerState:(id)state;
 - (id)currentPresentationType;
-- (void)addAttributeName:(const char *)a3 withValue:(id)a4;
-- (void)addChildAttributesToParentForResult:(id)a3;
-- (void)addResultFromChildEntry:(id)a3;
+- (void)addAttributeName:(const char *)name withValue:(id)value;
+- (void)addChildAttributesToParentForResult:(id)result;
+- (void)addResultFromChildEntry:(id)entry;
 - (void)dealloc;
 @end
 
 @implementation PFAIStackEntry
 
-+ (id)makeLayoutModeStateWithStackEntry:(id)a3 parentEntryOrientationState:(id)a4 documentOrientationState:(id)a5
++ (id)makeLayoutModeStateWithStackEntry:(id)entry parentEntryOrientationState:(id)state documentOrientationState:(id)orientationState
 {
-  v7 = [[PFAIEntryOrientationState alloc] initWithStackEntry:a3 parentEntryOrientationState:a4];
+  v7 = [[PFAIEntryOrientationState alloc] initWithStackEntry:entry parentEntryOrientationState:state];
   if (v7)
   {
-    if (a4)
+    if (state)
     {
-      -[PFXHtmlEntryMediaState setStartCharIndex:](v7, "setStartCharIndex:", [objc_msgSend(a4 "storage")]);
-      [a4 blockWidth];
+      -[PFXHtmlEntryMediaState setStartCharIndex:](v7, "setStartCharIndex:", [objc_msgSend(state "storage")]);
+      [state blockWidth];
       [(PFXHtmlEntryMediaState *)v7 setBlockWidth:?];
-      v8 = [a4 processOrientation];
+      processOrientation = [state processOrientation];
     }
 
     else
     {
-      v9 = [a5 bodyStorage];
-      [(PFXHtmlEntryMediaState *)v7 setOverriddenStorage:v9];
-      -[PFXHtmlEntryMediaState setStartCharIndex:](v7, "setStartCharIndex:", [v9 length]);
-      [objc_msgSend(a5 "readerState")];
+      bodyStorage = [orientationState bodyStorage];
+      [(PFXHtmlEntryMediaState *)v7 setOverriddenStorage:bodyStorage];
+      -[PFXHtmlEntryMediaState setStartCharIndex:](v7, "setStartCharIndex:", [bodyStorage length]);
+      [objc_msgSend(orientationState "readerState")];
       [(PFXHtmlEntryMediaState *)v7 setBlockWidth:?];
-      v8 = &dword_0 + 1;
+      processOrientation = &dword_0 + 1;
     }
 
-    [(PFXHtmlEntryMediaState *)v7 setProcessOrientation:v8];
-    -[PFXHtmlEntryMediaState setStylesheet:](v7, "setStylesheet:", [a5 stylesheet]);
+    [(PFXHtmlEntryMediaState *)v7 setProcessOrientation:processOrientation];
+    -[PFXHtmlEntryMediaState setStylesheet:](v7, "setStylesheet:", [orientationState stylesheet]);
   }
 
   return v7;
 }
 
-- (PFAIStackEntry)initWithParentEntry:(id)a3 reader:(id)a4 elementName:(const char *)a5 elementNamespace:(const char *)a6 cfiPath:(id)a7 readerState:(id)a8
+- (PFAIStackEntry)initWithParentEntry:(id)entry reader:(id)reader elementName:(const char *)name elementNamespace:(const char *)namespace cfiPath:(id)path readerState:(id)state
 {
   v12.receiver = self;
   v12.super_class = PFAIStackEntry;
-  v10 = [(PFXHtmlStackEntry *)&v12 initWithParentEntry:a3 reader:a4 elementName:a5 elementNamespace:a6 cfiPath:a7 readerState:?];
+  v10 = [(PFXHtmlStackEntry *)&v12 initWithParentEntry:entry reader:reader elementName:name elementNamespace:namespace cfiPath:path readerState:?];
   if (v10)
   {
-    v10->mFlowState = [objc_opt_class() makeLayoutModeStateWithStackEntry:v10 parentEntryOrientationState:objc_msgSend(a3 documentOrientationState:{"flowState"), objc_msgSend(a8, "flowState")}];
-    v10->mPaginatedState = [objc_opt_class() makeLayoutModeStateWithStackEntry:v10 parentEntryOrientationState:objc_msgSend(a3 documentOrientationState:{"paginatedState"), objc_msgSend(a8, "paginatedState")}];
+    v10->mFlowState = [objc_opt_class() makeLayoutModeStateWithStackEntry:v10 parentEntryOrientationState:objc_msgSend(entry documentOrientationState:{"flowState"), objc_msgSend(state, "flowState")}];
+    v10->mPaginatedState = [objc_opt_class() makeLayoutModeStateWithStackEntry:v10 parentEntryOrientationState:objc_msgSend(entry documentOrientationState:{"paginatedState"), objc_msgSend(state, "paginatedState")}];
   }
 
   return v10;
@@ -62,34 +62,34 @@
   [(PFXHtmlStackEntry *)&v3 dealloc];
 }
 
-- (void)addAttributeName:(const char *)a3 withValue:(id)a4
+- (void)addAttributeName:(const char *)name withValue:(id)value
 {
-  if ([(PFXXmlStackEntry *)self xmlElementId]|| !xmlStrEqual("data-original-id", a3))
+  if ([(PFXXmlStackEntry *)self xmlElementId]|| !xmlStrEqual("data-original-id", name))
   {
     v8.receiver = self;
     v8.super_class = PFAIStackEntry;
-    [(PFXHtmlStackEntry *)&v8 addAttributeName:a3 withValue:a4];
+    [(PFXHtmlStackEntry *)&v8 addAttributeName:name withValue:value];
   }
 
   else
   {
-    v7 = [a4 xmlString];
+    xmlString = [value xmlString];
 
-    [(PFXXmlStackEntry *)self setElementId:v7];
+    [(PFXXmlStackEntry *)self setElementId:xmlString];
   }
 }
 
-- (void)addResultFromChildEntry:(id)a3
+- (void)addResultFromChildEntry:(id)entry
 {
   v8.receiver = self;
   v8.super_class = PFAIStackEntry;
   [(PFXXmlStackEntry *)&v8 addResultFromChildEntry:?];
   objc_opt_class();
-  v5 = [a3 xmlElementName];
-  v6 = [a3 flowState];
-  v7 = [a3 paginatedState];
-  -[PFXHtmlEntryMediaState addElementName:result:](self->mFlowState, "addElementName:result:", v5, [v6 result]);
-  -[PFXHtmlEntryMediaState addElementName:result:](self->mPaginatedState, "addElementName:result:", v5, [v7 result]);
+  xmlElementName = [entry xmlElementName];
+  flowState = [entry flowState];
+  paginatedState = [entry paginatedState];
+  -[PFXHtmlEntryMediaState addElementName:result:](self->mFlowState, "addElementName:result:", xmlElementName, [flowState result]);
+  -[PFXHtmlEntryMediaState addElementName:result:](self->mPaginatedState, "addElementName:result:", xmlElementName, [paginatedState result]);
 }
 
 - (PFAIEntryOrientationState)currentEntryOrientationState
@@ -112,29 +112,29 @@
 
 - (id)currentPresentationType
 {
-  v2 = [(PFXXmlStreamReaderState *)self->super.super.mReaderState currentDocOrientationState];
+  currentDocOrientationState = [(PFXXmlStreamReaderState *)self->super.super.mReaderState currentDocOrientationState];
 
-  return [v2 presentationType];
+  return [currentDocOrientationState presentationType];
 }
 
-- (void)addChildAttributesToParentForResult:(id)a3
+- (void)addChildAttributesToParentForResult:(id)result
 {
-  v5 = [(PFXXmlStreamReaderState *)self->super.super.mReaderState paginatedIsCurrent];
+  paginatedIsCurrent = [(PFXXmlStreamReaderState *)self->super.super.mReaderState paginatedIsCurrent];
   mParentEntry = self->super.super.mParentEntry;
-  if (v5)
+  if (paginatedIsCurrent)
   {
-    v7 = [(PFXXmlStackEntry *)mParentEntry paginatedState];
+    paginatedState = [(PFXXmlStackEntry *)mParentEntry paginatedState];
   }
 
   else
   {
-    v7 = [(PFXXmlStackEntry *)mParentEntry flowState];
+    paginatedState = [(PFXXmlStackEntry *)mParentEntry flowState];
   }
 
-  v8 = v7;
-  v9 = [(PFXXmlStackEntry *)self xmlAttributes];
+  v8 = paginatedState;
+  xmlAttributes = [(PFXXmlStackEntry *)self xmlAttributes];
 
-  [v8 addAttributes:v9 forResult:a3];
+  [v8 addAttributes:xmlAttributes forResult:result];
 }
 
 @end

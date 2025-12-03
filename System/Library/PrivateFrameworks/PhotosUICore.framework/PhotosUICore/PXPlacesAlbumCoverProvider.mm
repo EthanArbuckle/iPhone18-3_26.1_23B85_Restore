@@ -1,17 +1,17 @@
 @interface PXPlacesAlbumCoverProvider
 + (id)_cachedSnapshotPathDark;
-+ (id)_cachedSnapshotPathForFilename:(id)a3;
++ (id)_cachedSnapshotPathForFilename:(id)filename;
 + (id)_cachedSnapshotPathLight;
-- (BOOL)_fetchCachedSnapshotImage:(id *)a3 andIdentifier:(id *)a4 forUserInterfaceStyle:(int64_t)a5;
-- (BOOL)_imageExistsWithLocalIdentifier:(id)a3;
-- (PXPlacesAlbumCoverProvider)initWithDelegate:(id)a3 andPlacesCollection:(id)a4;
+- (BOOL)_fetchCachedSnapshotImage:(id *)image andIdentifier:(id *)identifier forUserInterfaceStyle:(int64_t)style;
+- (BOOL)_imageExistsWithLocalIdentifier:(id)identifier;
+- (PXPlacesAlbumCoverProvider)initWithDelegate:(id)delegate andPlacesCollection:(id)collection;
 - (PXPlacesSnapshotFactory)factory;
-- (id)_placeHolderImageForExtendedTraitCollection:(id)a3;
+- (id)_placeHolderImageForExtendedTraitCollection:(id)collection;
 - (id)placesAlbumCoverProviderLog;
 - (int64_t)cachedCount;
-- (void)requestAssetCountWithForcedRefresh:(BOOL)a3 completion:(id)a4;
-- (void)requestPlacesAlbumCover:(id)a3 snapshotTraitCollection:(id)a4 completion:(id)a5;
-- (void)setCachedCount:(int64_t)a3;
+- (void)requestAssetCountWithForcedRefresh:(BOOL)refresh completion:(id)completion;
+- (void)requestPlacesAlbumCover:(id)cover snapshotTraitCollection:(id)collection completion:(id)completion;
+- (void)setCachedCount:(int64_t)count;
 @end
 
 @implementation PXPlacesAlbumCoverProvider
@@ -35,17 +35,17 @@ void __57__PXPlacesAlbumCoverProvider_placesAlbumCoverProviderLog__block_invoke(
   placesAlbumCoverProviderLog_placesAlbumCoverProviderLog = v0;
 }
 
-- (BOOL)_imageExistsWithLocalIdentifier:(id)a3
+- (BOOL)_imageExistsWithLocalIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E6978630];
-  v13 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a3;
-  v7 = [v5 arrayWithObjects:&v13 count:1];
-  v8 = [(PHAssetCollection *)self->_placesCollection photoLibrary:v13];
-  v9 = [v8 librarySpecificFetchOptions];
-  v10 = [v4 fetchAssetsWithLocalIdentifiers:v7 options:v9];
+  identifierCopy2 = identifier;
+  v7 = [v5 arrayWithObjects:&identifierCopy count:1];
+  v8 = [(PHAssetCollection *)self->_placesCollection photoLibrary:identifierCopy];
+  librarySpecificFetchOptions = [v8 librarySpecificFetchOptions];
+  v10 = [v4 fetchAssetsWithLocalIdentifiers:v7 options:librarySpecificFetchOptions];
 
   if (v10)
   {
@@ -60,9 +60,9 @@ void __57__PXPlacesAlbumCoverProvider_placesAlbumCoverProviderLog__block_invoke(
   return v11;
 }
 
-- (BOOL)_fetchCachedSnapshotImage:(id *)a3 andIdentifier:(id *)a4 forUserInterfaceStyle:(int64_t)a5
+- (BOOL)_fetchCachedSnapshotImage:(id *)image andIdentifier:(id *)identifier forUserInterfaceStyle:(int64_t)style
 {
-  switch(a5)
+  switch(style)
   {
     case 2:
       v7 = +[PXPlacesAlbumCoverProvider _cachedSnapshotPathDark];
@@ -107,16 +107,16 @@ LABEL_9:
   v16 = [objc_alloc(MEMORY[0x1E69BE438]) initWithImagePath:v8 format:10000 imageType:1 optimalSourcePixelSize:0 options:{0.0, 0.0}];
   v17 = [v16 cachedImage:0];
   v18 = v17;
-  if (a3)
+  if (image)
   {
     v19 = v17;
-    *a3 = v18;
+    *image = v18;
   }
 
-  if (a4)
+  if (identifier)
   {
     v20 = v15;
-    *a4 = v15;
+    *identifier = v15;
   }
 
   if (v18)
@@ -134,13 +134,13 @@ LABEL_9:
   return v22;
 }
 
-- (id)_placeHolderImageForExtendedTraitCollection:(id)a3
+- (id)_placeHolderImageForExtendedTraitCollection:(id)collection
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [MEMORY[0x1E69DC888] systemGray4Color];
-  v13[0] = v5;
+  systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+  v13[0] = systemGray4Color;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v7 = [v4 configurationWithPaletteColors:v6];
   v8 = [v3 configurationByApplyingConfiguration:v7];
@@ -155,36 +155,36 @@ LABEL_9:
 
 - (PXPlacesSnapshotFactory)factory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  factory = v2->_factory;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  factory = selfCopy->_factory;
   if (!factory)
   {
-    v4 = [(PHAssetCollection *)v2->_placesCollection photoLibrary];
-    v5 = [[PXPlacesSnapshotFactory alloc] initWithPhotoLibrary:v4];
-    v6 = v2->_factory;
-    v2->_factory = v5;
+    photoLibrary = [(PHAssetCollection *)selfCopy->_placesCollection photoLibrary];
+    v5 = [[PXPlacesSnapshotFactory alloc] initWithPhotoLibrary:photoLibrary];
+    v6 = selfCopy->_factory;
+    selfCopy->_factory = v5;
 
-    v7 = v2->_factory;
-    v8 = [(PXPlacesAlbumCoverProvider *)v2 factoryDelegate];
-    [(PXPlacesSnapshotFactory *)v7 setDelegate:v8];
+    v7 = selfCopy->_factory;
+    factoryDelegate = [(PXPlacesAlbumCoverProvider *)selfCopy factoryDelegate];
+    [(PXPlacesSnapshotFactory *)v7 setDelegate:factoryDelegate];
 
-    v9 = v2->_factory;
-    v10 = [(PXPlacesAlbumCoverProvider *)v2 placesCollection];
-    [(PXPlacesSnapshotFactory *)v9 setPlacesCollection:v10];
+    v9 = selfCopy->_factory;
+    placesCollection = [(PXPlacesAlbumCoverProvider *)selfCopy placesCollection];
+    [(PXPlacesSnapshotFactory *)v9 setPlacesCollection:placesCollection];
 
-    factory = v2->_factory;
+    factory = selfCopy->_factory;
   }
 
   v11 = factory;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (void)requestAssetCountWithForcedRefresh:(BOOL)a3 completion:(id)a4
+- (void)requestAssetCountWithForcedRefresh:(BOOL)refresh completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   backgroundQueue = self->_backgroundQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -192,9 +192,9 @@ LABEL_9:
   v9[2] = __76__PXPlacesAlbumCoverProvider_requestAssetCountWithForcedRefresh_completion___block_invoke;
   v9[3] = &unk_1E7730330;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  refreshCopy = refresh;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(backgroundQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -208,14 +208,14 @@ void __76__PXPlacesAlbumCoverProvider_requestAssetCountWithForcedRefresh_complet
   [v2 requestAssetCountWithForcedRefresh:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)requestPlacesAlbumCover:(id)a3 snapshotTraitCollection:(id)a4 completion:(id)a5
+- (void)requestPlacesAlbumCover:(id)cover snapshotTraitCollection:(id)collection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PXPlacesAlbumCoverProvider *)self placesAlbumCoverProviderLog];
-  v12 = os_signpost_id_generate(v11);
-  v13 = v11;
+  coverCopy = cover;
+  collectionCopy = collection;
+  completionCopy = completion;
+  placesAlbumCoverProviderLog = [(PXPlacesAlbumCoverProvider *)self placesAlbumCoverProviderLog];
+  v12 = os_signpost_id_generate(placesAlbumCoverProviderLog);
+  v13 = placesAlbumCoverProviderLog;
   v14 = v13;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
@@ -223,14 +223,14 @@ void __76__PXPlacesAlbumCoverProvider_requestAssetCountWithForcedRefresh_complet
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "FetchCachedPlacesCover", "", buf, 2u);
   }
 
-  v15 = [(PXPlacesAlbumCoverProvider *)self cachedCount];
+  cachedCount = [(PXPlacesAlbumCoverProvider *)self cachedCount];
   if (!self->_cachedSnapshotImage)
   {
     if (self->_cachedSnapshotImageIdentifier)
     {
       if ([(PXPlacesAlbumCoverProvider *)self _imageExistsWithLocalIdentifier:?])
       {
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_15;
         }
@@ -245,21 +245,21 @@ void __76__PXPlacesAlbumCoverProvider_requestAssetCountWithForcedRefresh_complet
       self->_cachedSnapshotImageIdentifier = 0;
     }
 
-    else if (!v10)
+    else if (!completionCopy)
     {
       goto LABEL_15;
     }
 
-    v18 = [(PXPlacesAlbumCoverProvider *)self _placeHolderImageForExtendedTraitCollection:v8];
-    v10[2](v10, v18, 1, v15, 0);
+    v18 = [(PXPlacesAlbumCoverProvider *)self _placeHolderImageForExtendedTraitCollection:coverCopy];
+    completionCopy[2](completionCopy, v18, 1, cachedCount, 0);
 
     goto LABEL_15;
   }
 
-  if (v10)
+  if (completionCopy)
   {
 LABEL_6:
-    (v10[2])(v10);
+    (completionCopy[2])(completionCopy);
   }
 
 LABEL_15:
@@ -278,12 +278,12 @@ LABEL_15:
   v25[2] = __89__PXPlacesAlbumCoverProvider_requestPlacesAlbumCover_snapshotTraitCollection_completion___block_invoke;
   v25[3] = &unk_1E774B1F8;
   objc_copyWeak(&v29, buf);
-  v26 = v8;
-  v27 = v9;
-  v28 = v10;
-  v22 = v10;
-  v23 = v9;
-  v24 = v8;
+  v26 = coverCopy;
+  v27 = collectionCopy;
+  v28 = completionCopy;
+  v22 = completionCopy;
+  v23 = collectionCopy;
+  v24 = coverCopy;
   dispatch_async(backgroundQueue, v25);
 
   objc_destroyWeak(&v29);
@@ -359,36 +359,36 @@ void __89__PXPlacesAlbumCoverProvider_requestPlacesAlbumCover_snapshotTraitColle
   }
 }
 
-- (void)setCachedCount:(int64_t)a3
+- (void)setCachedCount:(int64_t)count
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_cachedCount = a3;
+  obj->_cachedCount = count;
   objc_sync_exit(obj);
 }
 
 - (int64_t)cachedCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedCount = v2->_cachedCount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedCount = selfCopy->_cachedCount;
+  objc_sync_exit(selfCopy);
 
   return cachedCount;
 }
 
-- (PXPlacesAlbumCoverProvider)initWithDelegate:(id)a3 andPlacesCollection:(id)a4
+- (PXPlacesAlbumCoverProvider)initWithDelegate:(id)delegate andPlacesCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  collectionCopy = collection;
   v22.receiver = self;
   v22.super_class = PXPlacesAlbumCoverProvider;
   v9 = [(PXPlacesAlbumCoverProvider *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_factoryDelegate, a3);
-    objc_storeStrong(&v10->_placesCollection, a4);
+    objc_storeStrong(&v9->_factoryDelegate, delegate);
+    objc_storeStrong(&v10->_placesCollection, collection);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_BACKGROUND, 0);
 
@@ -403,24 +403,24 @@ void __89__PXPlacesAlbumCoverProvider_requestPlacesAlbumCover_snapshotTraitColle
     requestsQueue = v10->_requestsQueue;
     v10->_requestsQueue = v17;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cachedPlaceholders = v10->_cachedPlaceholders;
-    v10->_cachedPlaceholders = v19;
+    v10->_cachedPlaceholders = dictionary;
   }
 
   return v10;
 }
 
-+ (id)_cachedSnapshotPathForFilename:(id)a3
++ (id)_cachedSnapshotPathForFilename:(id)filename
 {
   v3 = _cachedSnapshotPathForFilename__onceToken;
-  v4 = a3;
+  filenameCopy = filename;
   if (v3 != -1)
   {
     dispatch_once(&_cachedSnapshotPathForFilename__onceToken, &__block_literal_global_200);
   }
 
-  v5 = [_cachedSnapshotPathForFilename__systemLibraryPathManager photoDirectoryWithType:29 additionalPathComponents:v4];
+  v5 = [_cachedSnapshotPathForFilename__systemLibraryPathManager photoDirectoryWithType:29 additionalPathComponents:filenameCopy];
 
   return v5;
 }

@@ -1,26 +1,26 @@
 @interface MFStream
 + (id)theOnlyNetworkThread;
 + (void)createTheOnlyNetworkThread;
-- (BOOL)__setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)__setProperty:(id)property forKey:(id)key;
 - (BOOL)isOpen;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (MFStream)initWithMambaID:(const char *)a3 rumba:(id)a4 callBack:(id)a5 onDispatchQueue:(id)a6;
-- (id)__propertyForKey:(id)a3;
-- (id)propertyForKey:(id)a3;
-- (int64_t)__read:(char *)a3 maxLength:(unint64_t)a4;
-- (int64_t)__write:(const char *)a3 maxLength:(unint64_t)a4;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (MFStream)initWithMambaID:(const char *)d rumba:(id)rumba callBack:(id)back onDispatchQueue:(id)queue;
+- (id)__propertyForKey:(id)key;
+- (id)propertyForKey:(id)key;
+- (int64_t)__read:(char *)__read maxLength:(unint64_t)length;
+- (int64_t)__write:(const char *)__write maxLength:(unint64_t)length;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)__close;
-- (void)__openToHostName:(id)a3 port:(int64_t)a4;
-- (void)_closeAndReleaseStream:(id)a3 logMessage:(id)a4;
-- (void)_createPairWithSocketToHostName:(id)a3 port:(int64_t)a4;
+- (void)__openToHostName:(id)name port:(int64_t)port;
+- (void)_closeAndReleaseStream:(id)stream logMessage:(id)message;
+- (void)_createPairWithSocketToHostName:(id)name port:(int64_t)port;
 - (void)_readBytesFromStream;
 - (void)close;
 - (void)dealloc;
 - (void)indicateEnd;
-- (void)openToHostName:(id)a3 port:(int64_t)a4;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)openToHostName:(id)name port:(int64_t)port;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation MFStream
@@ -55,29 +55,29 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (MFStream)initWithMambaID:(const char *)a3 rumba:(id)a4 callBack:(id)a5 onDispatchQueue:(id)a6
+- (MFStream)initWithMambaID:(const char *)d rumba:(id)rumba callBack:(id)back onDispatchQueue:(id)queue
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  rumbaCopy = rumba;
+  backCopy = back;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = MFStream;
   v12 = [(MFStream *)&v19 init];
   if (v12)
   {
-    if (!v10)
+    if (!backCopy)
     {
-      v10 = &__block_literal_global_9;
+      backCopy = &__block_literal_global_9;
     }
 
-    v13 = [v10 copy];
+    v13 = [backCopy copy];
     callback = v12->_callback;
     v12->_callback = v13;
 
-    if (v11)
+    if (queueCopy)
     {
-      v15 = v11;
+      v15 = queueCopy;
     }
 
     else
@@ -158,22 +158,22 @@
   return 0;
 }
 
-- (id)__propertyForKey:(id)a3
+- (id)__propertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   properties = self->_properties;
   if (properties)
   {
-    v6 = [(NSMutableDictionary *)properties objectForKey:v4];
+    v6 = [(NSMutableDictionary *)properties objectForKey:keyCopy];
 LABEL_3:
     v7 = v6;
     goto LABEL_5;
   }
 
-  v7 = [(NSInputStream *)self->_rStream propertyForKey:v4];
+  v7 = [(NSInputStream *)self->_rStream propertyForKey:keyCopy];
   if (!v7)
   {
-    v6 = [(NSOutputStream *)self->_wStream propertyForKey:v4];
+    v6 = [(NSOutputStream *)self->_wStream propertyForKey:keyCopy];
     goto LABEL_3;
   }
 
@@ -182,9 +182,9 @@ LABEL_5:
   return v7;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -195,10 +195,10 @@ LABEL_5:
   v8[1] = 3221225472;
   v8[2] = __27__MFStream_propertyForKey___block_invoke;
   v8[3] = &unk_279E34488;
-  v9 = v4;
+  v9 = keyCopy;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   execute_on_networkthread_sync(v8);
   v6 = v12[5];
 
@@ -217,16 +217,16 @@ uint64_t __27__MFStream_propertyForKey___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)__setProperty:(id)a3 forKey:(id)a4
+- (BOOL)__setProperty:(id)property forKey:(id)key
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   rStream = self->_rStream;
   if (rStream || (rStream = self->_wStream) != 0)
   {
     v9 = rStream;
-    v10 = [v9 setProperty:v6 forKey:v7];
+    v10 = [v9 setProperty:propertyCopy forKey:keyCopy];
     v11 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -247,7 +247,7 @@ uint64_t __27__MFStream_propertyForKey___block_invoke(uint64_t a1)
       v28 = 2080;
       v29 = " ";
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       v32 = 2080;
       v33 = v12;
       _os_log_impl(&dword_2720B1000, v11, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sset property %@ with%s success", &v22, 0x3Eu);
@@ -266,7 +266,7 @@ uint64_t __27__MFStream_propertyForKey___block_invoke(uint64_t a1)
       properties = self->_properties;
     }
 
-    [(NSMutableDictionary *)properties setValue:v6 forKey:v7];
+    [(NSMutableDictionary *)properties setValue:propertyCopy forKey:keyCopy];
     v9 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -281,7 +281,7 @@ uint64_t __27__MFStream_propertyForKey___block_invoke(uint64_t a1)
       v28 = 2080;
       v29 = " ";
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       _os_log_impl(&dword_2720B1000, v9, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sset property %@", &v22, 0x34u);
     }
 
@@ -292,10 +292,10 @@ uint64_t __27__MFStream_propertyForKey___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -305,16 +305,16 @@ uint64_t __27__MFStream_propertyForKey___block_invoke(uint64_t a1)
   v11[2] = __31__MFStream_setProperty_forKey___block_invoke;
   v11[3] = &unk_279E344B0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = propertyCopy;
+  v13 = keyCopy;
   v14 = &v15;
-  v8 = v7;
-  v9 = v6;
+  v8 = keyCopy;
+  v9 = propertyCopy;
   execute_on_networkthread_sync(v11);
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(propertyCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return propertyCopy;
 }
 
 uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
@@ -324,10 +324,10 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)__openToHostName:(id)a3 port:(int64_t)a4
+- (void)__openToHostName:(id)name port:(int64_t)port
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   if (*&self->_rStream != 0)
   {
     __assert_rtn("[MFStream __openToHostName:port:]", "_NSSocket.mm", 540, "(nil == _rStream) && (nil == _wStream)");
@@ -347,9 +347,9 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
     v45 = 2080;
     v46 = " ";
     v47 = 2112;
-    v48 = v6;
+    v48 = nameCopy;
     v49 = 2048;
-    v50 = a4;
+    portCopy = port;
     _os_log_impl(&dword_2720B1000, v7, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sOpening stream to %@:%ld", buf, 0x3Eu);
   }
 
@@ -357,16 +357,16 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", self];
   v11 = v10;
   v12 = &stru_288159858;
-  if (v6)
+  if (nameCopy)
   {
-    v12 = v6;
+    v12 = nameCopy;
   }
 
   v38[0] = v10;
   v38[1] = v12;
   v37[1] = @"host";
   v37[2] = @"port";
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:port];
   v38[2] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
   [MFPowerController powerlog:@"StreamOpen" eventData:v14];
@@ -374,7 +374,7 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
   error = self->_error;
   self->_error = 0;
 
-  [(MFStream *)self _createPairWithSocketToHostName:v6 port:a4];
+  [(MFStream *)self _createPairWithSocketToHostName:nameCopy port:port];
   [(NSInputStream *)self->_rStream setDelegate:self];
   [(NSOutputStream *)self->_wStream setDelegate:self];
   v34 = 0u;
@@ -410,10 +410,10 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
   properties = self->_properties;
   self->_properties = 0;
 
-  v24 = [MEMORY[0x277CBEB88] currentRunLoop];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
   v25 = *MEMORY[0x277CBE640];
-  [(NSInputStream *)self->_rStream scheduleInRunLoop:v24 forMode:*MEMORY[0x277CBE640]];
-  [(NSOutputStream *)self->_wStream scheduleInRunLoop:v24 forMode:v25];
+  [(NSInputStream *)self->_rStream scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
+  [(NSOutputStream *)self->_wStream scheduleInRunLoop:currentRunLoop forMode:v25];
   [(NSInputStream *)self->_rStream open];
   [(NSOutputStream *)self->_wStream open];
   v26 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
@@ -434,32 +434,32 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
     v47 = 2048;
     v48 = v29;
     v49 = 2048;
-    v50 = wStream;
+    portCopy = wStream;
     _os_log_impl(&dword_2720B1000, v26, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sopened read stream (%p), write stream (%p)", buf, 0x3Eu);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openToHostName:(id)a3 port:(int64_t)a4
+- (void)openToHostName:(id)name port:(int64_t)port
 {
-  v6 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__MFStream_openToHostName_port___block_invoke;
   v8[3] = &unk_279E344D8;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = nameCopy;
+  portCopy = port;
+  v7 = nameCopy;
   execute_on_networkthread(v8);
 }
 
-- (void)_createPairWithSocketToHostName:(id)a3 port:(int64_t)a4
+- (void)_createPairWithSocketToHostName:(id)name port:(int64_t)port
 {
   v7 = 0;
   readStream = 0;
-  CFStreamCreatePairWithSocketToHost(*MEMORY[0x277CBECE8], a3, a4, &readStream, &v7);
+  CFStreamCreatePairWithSocketToHost(*MEMORY[0x277CBECE8], name, port, &readStream, &v7);
   rStream = self->_rStream;
   self->_rStream = readStream;
 
@@ -469,26 +469,26 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
   self->_treatAsDead = 0;
 }
 
-- (void)_closeAndReleaseStream:(id)a3 logMessage:(id)a4
+- (void)_closeAndReleaseStream:(id)stream logMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  messageCopy = message;
   v8 = __theOnlyNetworkThread;
-  v9 = [MEMORY[0x277CCACC8] currentThread];
-  if (([v8 isEqual:v9] & 1) == 0)
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (([v8 isEqual:currentThread] & 1) == 0)
   {
     __assert_rtn("[MFStream _closeAndReleaseStream:logMessage:]", "_NSSocket.mm", 591, "[__theOnlyNetworkThread isEqual:[NSThread currentThread]]");
   }
 
-  if (v6)
+  if (streamCopy)
   {
-    [v6 setDelegate:0];
-    v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v6 removeFromRunLoop:v10 forMode:*MEMORY[0x277CBE640]];
+    [streamCopy setDelegate:0];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [streamCopy removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    [v6 close];
-    if (v7)
+    [streamCopy close];
+    if (messageCopy)
     {
       v11 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -504,7 +504,7 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
         v30 = 2080;
         v31 = " ";
         v32 = 2112;
-        v33 = v7;
+        v33 = messageCopy;
         _os_log_impl(&dword_2720B1000, v11, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%s%@", buf, 0x34u);
       }
     }
@@ -564,8 +564,8 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
     mambaID = self->mambaID;
     rumbaID = self->rumbaID;
     error = self->_error;
-    v9 = [(NSError *)error vf_publicDescription];
-    v10 = v9;
+    vf_publicDescription = [(NSError *)error vf_publicDescription];
+    v10 = vf_publicDescription;
     v11 = @" error: ";
     *buf = 136316674;
     v12 = &stru_288159858;
@@ -578,9 +578,9 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
     }
 
     v22 = 2114;
-    if (v9)
+    if (vf_publicDescription)
     {
-      v12 = v9;
+      v12 = vf_publicDescription;
     }
 
     v23 = rumbaID;
@@ -608,35 +608,35 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)__read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)__read:(char *)__read maxLength:(unint64_t)length
 {
   v44 = *MEMORY[0x277D85DE8];
   p_length = &self->_length;
   length = self->_length;
   if (length)
   {
-    if (length >= a4)
+    if (length >= length)
     {
-      v7 = a4;
+      lengthCopy = length;
     }
 
     else
     {
-      v7 = self->_length;
+      lengthCopy = self->_length;
     }
 
-    memmove(a3, self->_buffer, v7);
+    memmove(__read, self->_buffer, lengthCopy);
     buffer = self->_buffer;
-    v9 = self->_length - v7;
+    v9 = self->_length - lengthCopy;
     self->_length = v9;
-    memmove(buffer, &buffer[v7], v9);
+    memmove(buffer, &buffer[lengthCopy], v9);
     v10 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       [MFStream __read:? maxLength:?];
     }
 
-    self->_bytesRead += v7;
+    self->_bytesRead += lengthCopy;
     self->_dispatchedBytesAvailable = 0;
     if (self->_streamCanRead)
     {
@@ -680,8 +680,8 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
         mambaID = self->mambaID;
         rumbaID = self->rumbaID;
         error = self->_error;
-        v19 = [(NSError *)error vf_publicDescription];
-        v20 = v19;
+        vf_publicDescription = [(NSError *)error vf_publicDescription];
+        v20 = vf_publicDescription;
         v21 = @" error: ";
         v22 = &stru_288159858;
         *buf = 136316674;
@@ -695,9 +695,9 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
         }
 
         v35 = rumbaID;
-        if (v19)
+        if (vf_publicDescription)
         {
-          v22 = v19;
+          v22 = vf_publicDescription;
         }
 
         v36 = 2080;
@@ -725,27 +725,27 @@ uint64_t __31__MFStream_setProperty_forKey___block_invoke(uint64_t a1)
 
   else
   {
-    v7 = -1;
+    lengthCopy = -1;
   }
 
   v25 = *MEMORY[0x277D85DE8];
-  return v7;
+  return lengthCopy;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
-  v10 = a4;
+  lengthCopy = length;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__MFStream_read_maxLength___block_invoke;
   v6[3] = &unk_279E34550;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
-  v6[7] = a4;
+  v6[6] = read;
+  v6[7] = length;
   execute_on_networkthread_sync(v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -759,7 +759,7 @@ uint64_t __27__MFStream_read_maxLength___block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)__write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)__write:(const char *)__write maxLength:(unint64_t)length
 {
   v45 = *MEMORY[0x277D85DE8];
   wStream = self->_wStream;
@@ -779,7 +779,7 @@ uint64_t __27__MFStream_read_maxLength___block_invoke(uint64_t a1)
       v37 = 2080;
       v38 = " ";
       v39 = 2048;
-      v40 = a4;
+      lengthCopy = length;
       _os_log_impl(&dword_2720B1000, &v7->super.super, OS_LOG_TYPE_DEFAULT, "#W %s%s%{public}@%sno longer has an open write stream, aborting write of %lu bytes", buf, 0x34u);
     }
 
@@ -795,7 +795,7 @@ LABEL_6:
   }
 
   self->_streamCanWrite = 0;
-  v10 = [(NSOutputStream *)wStream write:a3 maxLength:a4];
+  v10 = [(NSOutputStream *)wStream write:__write maxLength:length];
   v13 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -811,9 +811,9 @@ LABEL_6:
 
     if (!self->_error)
     {
-      v15 = [(NSOutputStream *)v7 streamError];
+      streamError = [(NSOutputStream *)v7 streamError];
       error = self->_error;
-      self->_error = v15;
+      self->_error = streamError;
     }
 
     [(MFStream *)self _closeAndReleaseStream:v7 logMessage:@"closed the write half"];
@@ -836,8 +836,8 @@ LABEL_6:
         v21 = self->mambaID;
         v20 = self->rumbaID;
         v22 = self->_error;
-        v23 = [(NSError *)v22 vf_publicDescription];
-        v24 = v23;
+        vf_publicDescription = [(NSError *)v22 vf_publicDescription];
+        v24 = vf_publicDescription;
         v25 = @" error: ";
         *buf = 136316674;
         v26 = &stru_288159858;
@@ -850,16 +850,16 @@ LABEL_6:
         }
 
         v35 = 2114;
-        if (v23)
+        if (vf_publicDescription)
         {
-          v26 = v23;
+          v26 = vf_publicDescription;
         }
 
         v36 = v20;
         v37 = 2080;
         v38 = " ";
         v39 = 2112;
-        v40 = v18;
+        lengthCopy = v18;
         v41 = 2112;
         v42 = v25;
         v43 = 2114;
@@ -886,7 +886,7 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   v7 = 0;
   v8 = &v7;
@@ -898,8 +898,8 @@ LABEL_7:
   v6[3] = &unk_279E34550;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
-  v6[7] = a4;
+  v6[6] = write;
+  v6[7] = length;
   execute_on_networkthread_sync(v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -924,9 +924,9 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
   v4 = v11;
   if (!self->_error)
   {
-    v5 = [(NSInputStream *)v11 streamError];
+    streamError = [(NSInputStream *)v11 streamError];
     error = self->_error;
-    self->_error = v5;
+    self->_error = streamError;
 
     v4 = v11;
   }
@@ -938,9 +938,9 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
 
   if (!self->_error)
   {
-    v9 = [(NSOutputStream *)v7 streamError];
+    streamError2 = [(NSOutputStream *)v7 streamError];
     v10 = self->_error;
-    self->_error = v9;
+    self->_error = streamError2;
   }
 
   [(MFStream *)self _closeAndReleaseStream:v7 logMessage:@"closed write part on 'close'"];
@@ -962,7 +962,7 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
 
 - (void)_readBytesFromStream
 {
-  OUTLINED_FUNCTION_4(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_4(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_2();
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_5();
@@ -970,10 +970,10 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   v7 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -988,25 +988,25 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
     v31 = 2080;
     v32 = " ";
     v33 = 2112;
-    v34 = v6;
+    v34 = streamCopy;
     v35 = 2048;
-    v36 = a4;
+    eventCopy = event;
     _os_log_debug_impl(&dword_2720B1000, v7, OS_LOG_TYPE_DEBUG, "#D %s%s%{public}@%s%@ handleEvent:%lu", buf, 0x3Eu);
   }
 
   rStream = self->_rStream;
-  if (rStream == v6 || self->_wStream == v6)
+  if (rStream == streamCopy || self->_wStream == streamCopy)
   {
-    v9 = __ROR8__(a4 - 2, 1);
+    v9 = __ROR8__(event - 2, 1);
     if (v9 > 2)
     {
       if (v9 == 3)
       {
         if (!self->_error)
         {
-          v12 = [(NSOutputStream *)v6 streamError];
+          streamError = [(NSOutputStream *)streamCopy streamError];
           error = self->_error;
-          self->_error = v12;
+          self->_error = streamError;
         }
       }
 
@@ -1034,7 +1034,7 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
         v33 = 2112;
         v34 = v17;
         v35 = 2080;
-        v36 = v18;
+        eventCopy = v18;
         _os_log_impl(&dword_2720B1000, v14, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%send encountered, err:%@, missed data? > '%s'", buf, 0x3Eu);
         if (v23 < 0)
         {
@@ -1070,7 +1070,7 @@ uint64_t __28__MFStream_write_maxLength___block_invoke(uint64_t a1)
 
     else
     {
-      if (rStream != v6)
+      if (rStream != streamCopy)
       {
         __assert_rtn("[MFStream stream:handleEvent:]", "_NSSocket.mm", 865, "isReadStream");
       }

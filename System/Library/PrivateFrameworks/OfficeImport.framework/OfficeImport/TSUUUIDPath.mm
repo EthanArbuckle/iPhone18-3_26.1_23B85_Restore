@@ -1,25 +1,25 @@
 @interface TSUUUIDPath
-+ (id)lastUUIDFromUUIDPathString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)lastUUIDFromUUIDPathString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (NSString)UUIDPathString;
-- (TSUUUIDPath)initWithArray:(id)a3;
-- (TSUUUIDPath)initWithUUIDPathString:(id)a3;
-- (id)UUIDPathByAppendingUUID:(id)a3;
+- (TSUUUIDPath)initWithArray:(id)array;
+- (TSUUUIDPath)initWithUUIDPathString:(id)string;
+- (id)UUIDPathByAppendingUUID:(id)d;
 - (id)description;
 @end
 
 @implementation TSUUUIDPath
 
-- (TSUUUIDPath)initWithArray:(id)a3
+- (TSUUUIDPath)initWithArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   objc_opt_class();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -43,7 +43,7 @@
           [OITSUAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:25 isFatal:0 description:"Invalid entry for TSUUUIDPath array: %{public}@", v10];
 
           +[OITSUAssertionHandler logBacktraceThrottled];
-          v15 = 0;
+          selfCopy = 0;
           goto LABEL_16;
         }
 
@@ -81,17 +81,17 @@
   }
 
   self = v11;
-  v15 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v15;
+  return selfCopy;
 }
 
-- (TSUUUIDPath)initWithUUIDPathString:(id)a3
+- (TSUUUIDPath)initWithUUIDPathString:(id)string
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  stringCopy = string;
+  v5 = [stringCopy componentsSeparatedByString:@"/"];
   v6 = [v5 count];
   if (v6)
   {
@@ -121,10 +121,10 @@ LABEL_16:
           {
             v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUUUIDPath initWithUUIDPathString:]"];
             v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUUUIDPath.m"];
-            [OITSUAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:49 isFatal:0 description:"Invalid UUID path string: %{public}@", v4];
+            [OITSUAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:49 isFatal:0 description:"Invalid UUID path string: %{public}@", stringCopy];
 
             +[OITSUAssertionHandler logBacktraceThrottled];
-            v14 = 0;
+            selfCopy = 0;
             goto LABEL_13;
           }
 
@@ -147,15 +147,15 @@ LABEL_16:
   }
 
   self = [(TSUUUIDPath *)self initWithArray:v6];
-  v14 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)UUIDPathByAppendingUUID:(id)a3
+- (id)UUIDPathByAppendingUUID:(id)d
 {
-  v3 = [(NSArray *)self->_uuids arrayByAddingObject:a3];
+  v3 = [(NSArray *)self->_uuids arrayByAddingObject:d];
   v4 = [[TSUUUIDPath alloc] initWithArray:v3];
 
   return v4;
@@ -195,8 +195,8 @@ LABEL_13:
             [v3 appendString:{@"/", v15}];
           }
 
-          v11 = [v10 UUIDString];
-          [v3 appendString:v11];
+          uUIDString = [v10 UUIDString];
+          [v3 appendString:uUIDString];
 
           v8 = 0;
           ++v9;
@@ -226,10 +226,10 @@ LABEL_13:
   return v12;
 }
 
-+ (id)lastUUIDFromUUIDPathString:(id)a3
++ (id)lastUUIDFromUUIDPathString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   v5 = [@"/" length];
   if (v4 < 0x25)
   {
@@ -238,7 +238,7 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
+    v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:stringCopy];
     if (!v11)
     {
       goto LABEL_7;
@@ -248,15 +248,15 @@ LABEL_13:
   else
   {
     v6 = v4 - 36;
-    v7 = [v3 substringWithRange:{v6 - v5, v5}];
+    v7 = [stringCopy substringWithRange:{v6 - v5, v5}];
     v8 = [@"/" isEqualToString:v7];
 
-    if (!v8 || (v9 = objc_alloc(MEMORY[0x277CCAD78]), [v3 substringFromIndex:v6], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "initWithUUIDString:", v10), v10, !v11))
+    if (!v8 || (v9 = objc_alloc(MEMORY[0x277CCAD78]), [stringCopy substringFromIndex:v6], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "initWithUUIDString:", v10), v10, !v11))
     {
 LABEL_7:
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUUUIDPath lastUUIDFromUUIDPathString:]"];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUUUIDPath.m"];
-      [OITSUAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:100 isFatal:0 description:"Invalid UUID path string: %{public}@", v3];
+      [OITSUAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:100 isFatal:0 description:"Invalid UUID path string: %{public}@", stringCopy];
 
       +[OITSUAssertionHandler logBacktraceThrottled];
       v11 = 0;
@@ -266,14 +266,14 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     uuids = self->_uuids;
-    v6 = v4[1];
+    v6 = equalCopy[1];
 
     return [(NSArray *)uuids isEqual:v6];
   }
@@ -282,7 +282,7 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = TSUUUIDPath;
-    v8 = [(TSUUUIDPath *)&v9 isEqual:v4];
+    v8 = [(TSUUUIDPath *)&v9 isEqual:equalCopy];
 
     return v8;
   }
@@ -293,8 +293,8 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSUUUIDPath *)self UUIDPathString];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, v6];
+  uUIDPathString = [(TSUUUIDPath *)self UUIDPathString];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, uUIDPathString];
 
   return v7;
 }

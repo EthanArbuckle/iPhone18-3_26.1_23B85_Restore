@@ -1,23 +1,23 @@
 @interface MOConnectionManager
-- (MOConnectionManager)initWithName:(id)a3 usingDelegate:(id)a4;
+- (MOConnectionManager)initWithName:(id)name usingDelegate:(id)delegate;
 - (MOConnectionManagerDelegate)delegate;
 - (id)_getActiveConnection;
-- (id)_getSingleCallHandler:(id)a3;
-- (id)_makeConnectionErrorWithReason:(id)a3;
+- (id)_getSingleCallHandler:(id)handler;
+- (id)_makeConnectionErrorWithReason:(id)reason;
 - (id)getAsyncProxyProvider;
 - (id)getSyncProxyProvider;
-- (void)_callProxy:(id)a3 usingBlock:(id)a4 onError:(id)a5;
-- (void)_callProxyProvider:(id)a3 usingBlock:(id)a4 onError:(id)a5;
+- (void)_callProxy:(id)proxy usingBlock:(id)block onError:(id)error;
+- (void)_callProxyProvider:(id)provider usingBlock:(id)block onError:(id)error;
 - (void)_getActiveConnection;
-- (void)_postProxy:(id)a3 usingBlock:(id)a4 onError:(id)a5;
-- (void)_postProxyProvider:(id)a3 usingBlock:(id)a4 onError:(id)a5;
-- (void)callAsyncProxyUsingBlock:(id)a3 onError:(id)a4;
-- (void)callSyncProxyUsingBlock:(id)a3 onError:(id)a4;
+- (void)_postProxy:(id)proxy usingBlock:(id)block onError:(id)error;
+- (void)_postProxyProvider:(id)provider usingBlock:(id)block onError:(id)error;
+- (void)callAsyncProxyUsingBlock:(id)block onError:(id)error;
+- (void)callSyncProxyUsingBlock:(id)block onError:(id)error;
 - (void)dealloc;
 - (void)invalidate;
-- (void)postAsyncProxyUsingBlock:(id)a3 onError:(id)a4;
-- (void)postSyncProxyUsingBlock:(id)a3 onError:(id)a4;
-- (void)withProxyProvider:(id)a3 proxyHandler:(id)a4 onError:(id)a5;
+- (void)postAsyncProxyUsingBlock:(id)block onError:(id)error;
+- (void)postSyncProxyUsingBlock:(id)block onError:(id)error;
+- (void)withProxyProvider:(id)provider proxyHandler:(id)handler onError:(id)error;
 @end
 
 @implementation MOConnectionManager
@@ -58,10 +58,10 @@ id __43__MOConnectionManager_getSyncProxyProvider__block_invoke(uint64_t a1, voi
 
 - (id)_getActiveConnection
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  p_xpc_connection = &v3->_xpc_connection;
-  xpc_connection = v3->_xpc_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_xpc_connection = &selfCopy->_xpc_connection;
+  xpc_connection = selfCopy->_xpc_connection;
   if (xpc_connection)
   {
     v6 = xpc_connection;
@@ -69,28 +69,28 @@ id __43__MOConnectionManager_getSyncProxyProvider__block_invoke(uint64_t a1, voi
 
   else
   {
-    v7 = [(MOConnectionManager *)v3 delegate];
+    delegate = [(MOConnectionManager *)selfCopy delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(MOConnectionManager *)v3 delegate];
-      v9 = [v8 makeNewConnectionWithInterfaceFor:v3];
+      delegate2 = [(MOConnectionManager *)selfCopy delegate];
+      v9 = [delegate2 makeNewConnectionWithInterfaceFor:selfCopy];
 
-      v10 = [v9 remoteObjectInterface];
+      remoteObjectInterface = [v9 remoteObjectInterface];
 
-      if (!v10)
+      if (!remoteObjectInterface)
       {
         v11 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          [(MOConnectionManager *)v3 _getActiveConnection];
+          [(MOConnectionManager *)selfCopy _getActiveConnection];
         }
 
-        v12 = [MEMORY[0x277CCA890] currentHandler];
-        [v12 handleFailureInMethod:a2 object:v3 file:@"MOConnectionManager.m" lineNumber:48 description:{@"Invalid '%@' connection .remoteObjectInterface (in %s:%d)", v3->_connectionName, "-[MOConnectionManager _getActiveConnection]", 48}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MOConnectionManager.m" lineNumber:48 description:{@"Invalid '%@' connection .remoteObjectInterface (in %s:%d)", selfCopy->_connectionName, "-[MOConnectionManager _getActiveConnection]", 48}];
       }
 
-      objc_initWeak(&location, v3);
+      objc_initWeak(&location, selfCopy);
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __43__MOConnectionManager__getActiveConnection__block_invoke;
@@ -103,11 +103,11 @@ id __43__MOConnectionManager_getSyncProxyProvider__block_invoke(uint64_t a1, voi
       v16[3] = &unk_2787739A8;
       objc_copyWeak(&v17, &location);
       [v9 setInterruptionHandler:v16];
-      objc_storeStrong(&v3->_xpc_connection, v9);
+      objc_storeStrong(&selfCopy->_xpc_connection, v9);
       v13 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        [(MOConnectionManager *)v3 _getActiveConnection];
+        [(MOConnectionManager *)selfCopy _getActiveConnection];
       }
 
       [*p_xpc_connection activate];
@@ -122,14 +122,14 @@ id __43__MOConnectionManager_getSyncProxyProvider__block_invoke(uint64_t a1, voi
       v14 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(MOConnectionManager *)v3 _getActiveConnection];
+        [(MOConnectionManager *)selfCopy _getActiveConnection];
       }
 
       v6 = 0;
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -141,10 +141,10 @@ id __43__MOConnectionManager_getSyncProxyProvider__block_invoke(uint64_t a1, voi
   return WeakRetained;
 }
 
-- (MOConnectionManager)initWithName:(id)a3 usingDelegate:(id)a4
+- (MOConnectionManager)initWithName:(id)name usingDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = MOConnectionManager;
   v9 = [(MOConnectionManager *)&v15 init];
@@ -158,8 +158,8 @@ id __43__MOConnectionManager_getSyncProxyProvider__block_invoke(uint64_t a1, voi
     mo_connection = v10->_mo_connection;
     v10->_mo_connection = v12;
 
-    objc_storeStrong(&v10->_connectionName, a3);
-    [(MOConnectionManager *)v10 setDelegate:v8];
+    objc_storeStrong(&v10->_connectionName, name);
+    [(MOConnectionManager *)v10 setDelegate:delegateCopy];
   }
 
   return v10;
@@ -207,10 +207,10 @@ void __43__MOConnectionManager__getActiveConnection__block_invoke_8(uint64_t a1)
   }
 }
 
-- (id)_getSingleCallHandler:(id)a3
+- (id)_getSingleCallHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v12[0] = 0;
     v12[1] = v12;
@@ -223,7 +223,7 @@ void __43__MOConnectionManager__getActiveConnection__block_invoke_8(uint64_t a1)
     v7[3] = &unk_278774AB8;
     objc_copyWeak(&v10, &location);
     v9 = v12;
-    v8 = v4;
+    v8 = handlerCopy;
     v5 = MEMORY[0x2318D5790](v7);
 
     objc_destroyWeak(&v10);
@@ -254,16 +254,16 @@ void __45__MOConnectionManager__getSingleCallHandler___block_invoke_2(uint64_t a
   objc_sync_exit(v3);
 }
 
-- (id)_makeConnectionErrorWithReason:(id)a3
+- (id)_makeConnectionErrorWithReason:(id)reason
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v12 = *MEMORY[0x277CCA450];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(MOConnectionManager *)self getConnectionName];
-  v7 = [v4 stringWithFormat:@"%@:%@", v6, v5];
+  reasonCopy = reason;
+  getConnectionName = [(MOConnectionManager *)self getConnectionName];
+  reasonCopy = [v4 stringWithFormat:@"%@:%@", getConnectionName, reasonCopy];
 
-  v13[0] = v7;
+  v13[0] = reasonCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:13 userInfo:v8];
@@ -273,13 +273,13 @@ void __45__MOConnectionManager__getSingleCallHandler___block_invoke_2(uint64_t a
   return v9;
 }
 
-- (void)_callProxy:(id)a3 usingBlock:(id)a4 onError:(id)a5
+- (void)_callProxy:(id)proxy usingBlock:(id)block onError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  proxyCopy = proxy;
+  blockCopy = block;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (proxyCopy)
   {
     objc_initWeak(&location, self);
     mo_connection = self->_mo_connection;
@@ -287,9 +287,9 @@ void __45__MOConnectionManager__getSingleCallHandler___block_invoke_2(uint64_t a
     v21[1] = 3221225472;
     v21[2] = __53__MOConnectionManager__callProxy_usingBlock_onError___block_invoke;
     v21[3] = &unk_278774AE0;
-    v13 = v9;
+    v13 = blockCopy;
     v23 = v13;
-    v14 = v8;
+    v14 = proxyCopy;
     v22 = v14;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -305,7 +305,7 @@ void __45__MOConnectionManager__getSingleCallHandler___block_invoke_2(uint64_t a
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (errorCopy)
   {
     v15 = [(MOConnectionManager *)self _makeConnectionErrorWithReason:@"nil proxy"];
     (v11)[2](v11, v15);
@@ -360,21 +360,21 @@ uint64_t __53__MOConnectionManager__callProxy_usingBlock_onError___block_invoke_
   return result;
 }
 
-- (void)_postProxy:(id)a3 usingBlock:(id)a4 onError:(id)a5
+- (void)_postProxy:(id)proxy usingBlock:(id)block onError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  proxyCopy = proxy;
+  blockCopy = block;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (proxyCopy)
   {
     mo_connection = self->_mo_connection;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __53__MOConnectionManager__postProxy_usingBlock_onError___block_invoke;
     v16[3] = &unk_278774AE0;
-    v18 = v9;
-    v17 = v8;
+    v18 = blockCopy;
+    v17 = proxyCopy;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __53__MOConnectionManager__postProxy_usingBlock_onError___block_invoke_2;
@@ -383,7 +383,7 @@ uint64_t __53__MOConnectionManager__callProxy_usingBlock_onError___block_invoke_
     [(MOConnection *)mo_connection callBlock:v16 onInterruption:v14];
   }
 
-  else if (v10)
+  else if (errorCopy)
   {
     v13 = [(MOConnectionManager *)self _makeConnectionErrorWithReason:@"nil proxy"];
     (v11)[2](v11, v13);
@@ -401,21 +401,21 @@ uint64_t __53__MOConnectionManager__postProxy_usingBlock_onError___block_invoke_
   return result;
 }
 
-- (void)_postProxyProvider:(id)a3 usingBlock:(id)a4 onError:(id)a5
+- (void)_postProxyProvider:(id)provider usingBlock:(id)block onError:(id)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MOConnectionManager *)self _getSingleCallHandler:a5];
+  blockCopy = block;
+  providerCopy = provider;
+  v10 = [(MOConnectionManager *)self _getSingleCallHandler:error];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__MOConnectionManager__postProxyProvider_usingBlock_onError___block_invoke;
   v13[3] = &unk_278774B58;
   v13[4] = self;
-  v14 = v8;
+  v14 = blockCopy;
   v15 = v10;
   v11 = v10;
-  v12 = v8;
-  [(MOConnectionManager *)self withProxyProvider:v9 proxyHandler:v13 onError:v11];
+  v12 = blockCopy;
+  [(MOConnectionManager *)self withProxyProvider:providerCopy proxyHandler:v13 onError:v11];
 }
 
 void __61__MOConnectionManager__postProxyProvider_usingBlock_onError___block_invoke(uint64_t a1, void *a2)
@@ -444,61 +444,61 @@ void __61__MOConnectionManager__postProxyProvider_usingBlock_onError___block_inv
   v6[2]();
 }
 
-- (void)_callProxyProvider:(id)a3 usingBlock:(id)a4 onError:(id)a5
+- (void)_callProxyProvider:(id)provider usingBlock:(id)block onError:(id)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MOConnectionManager *)self _getSingleCallHandler:a5];
+  blockCopy = block;
+  providerCopy = provider;
+  v10 = [(MOConnectionManager *)self _getSingleCallHandler:error];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__MOConnectionManager__callProxyProvider_usingBlock_onError___block_invoke;
   v13[3] = &unk_278774B58;
   v13[4] = self;
-  v14 = v8;
+  v14 = blockCopy;
   v15 = v10;
   v11 = v10;
-  v12 = v8;
-  [(MOConnectionManager *)self withProxyProvider:v9 proxyHandler:v13 onError:v11];
+  v12 = blockCopy;
+  [(MOConnectionManager *)self withProxyProvider:providerCopy proxyHandler:v13 onError:v11];
 }
 
-- (void)postSyncProxyUsingBlock:(id)a3 onError:(id)a4
+- (void)postSyncProxyUsingBlock:(id)block onError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOConnectionManager *)self getSyncProxyProvider];
-  [(MOConnectionManager *)self _postProxyProvider:v8 usingBlock:v7 onError:v6];
+  errorCopy = error;
+  blockCopy = block;
+  getSyncProxyProvider = [(MOConnectionManager *)self getSyncProxyProvider];
+  [(MOConnectionManager *)self _postProxyProvider:getSyncProxyProvider usingBlock:blockCopy onError:errorCopy];
 }
 
-- (void)postAsyncProxyUsingBlock:(id)a3 onError:(id)a4
+- (void)postAsyncProxyUsingBlock:(id)block onError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOConnectionManager *)self getAsyncProxyProvider];
-  [(MOConnectionManager *)self _postProxyProvider:v8 usingBlock:v7 onError:v6];
+  errorCopy = error;
+  blockCopy = block;
+  getAsyncProxyProvider = [(MOConnectionManager *)self getAsyncProxyProvider];
+  [(MOConnectionManager *)self _postProxyProvider:getAsyncProxyProvider usingBlock:blockCopy onError:errorCopy];
 }
 
-- (void)callSyncProxyUsingBlock:(id)a3 onError:(id)a4
+- (void)callSyncProxyUsingBlock:(id)block onError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOConnectionManager *)self getSyncProxyProvider];
-  [(MOConnectionManager *)self _callProxyProvider:v8 usingBlock:v7 onError:v6];
+  errorCopy = error;
+  blockCopy = block;
+  getSyncProxyProvider = [(MOConnectionManager *)self getSyncProxyProvider];
+  [(MOConnectionManager *)self _callProxyProvider:getSyncProxyProvider usingBlock:blockCopy onError:errorCopy];
 }
 
-- (void)callAsyncProxyUsingBlock:(id)a3 onError:(id)a4
+- (void)callAsyncProxyUsingBlock:(id)block onError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOConnectionManager *)self getAsyncProxyProvider];
-  [(MOConnectionManager *)self _callProxyProvider:v8 usingBlock:v7 onError:v6];
+  errorCopy = error;
+  blockCopy = block;
+  getAsyncProxyProvider = [(MOConnectionManager *)self getAsyncProxyProvider];
+  [(MOConnectionManager *)self _callProxyProvider:getAsyncProxyProvider usingBlock:blockCopy onError:errorCopy];
 }
 
-- (void)withProxyProvider:(id)a3 proxyHandler:(id)a4 onError:(id)a5
+- (void)withProxyProvider:(id)provider proxyHandler:(id)handler onError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  providerCopy = provider;
+  handlerCopy = handler;
+  errorCopy = error;
+  if (!handlerCopy)
   {
     v12 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -506,15 +506,15 @@ void __61__MOConnectionManager__postProxyProvider_usingBlock_onError___block_inv
       [MOConnectionManager withProxyProvider:proxyHandler:onError:];
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MOConnectionManager.m" lineNumber:210 description:{@"Should use valid sync proxy block handler (in %s:%d)", "-[MOConnectionManager withProxyProvider:proxyHandler:onError:]", 210}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MOConnectionManager.m" lineNumber:210 description:{@"Should use valid sync proxy block handler (in %s:%d)", "-[MOConnectionManager withProxyProvider:proxyHandler:onError:]", 210}];
   }
 
-  [(MOConnectionManager *)self _getSingleCallHandler:v11];
-  v14 = v20 = v9;
-  v15 = v10;
-  v16 = v9[2];
-  v17 = v9;
+  [(MOConnectionManager *)self _getSingleCallHandler:errorCopy];
+  v14 = v20 = providerCopy;
+  v15 = handlerCopy;
+  v16 = providerCopy[2];
+  v17 = providerCopy;
   v18 = v16();
   if (v18)
   {
@@ -615,7 +615,7 @@ id __44__MOConnectionManager_getAsyncProxyProvider__block_invoke(uint64_t a1, vo
 - (void)_getActiveConnection
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   OUTLINED_FUNCTION_2_2();
   _os_log_error_impl(&dword_22D8C5000, v2, OS_LOG_TYPE_ERROR, "Can't activate connection '%@': nil delegate", v4, 0xCu);
   v3 = *MEMORY[0x277D85DE8];

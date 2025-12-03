@@ -1,23 +1,23 @@
 @interface FFCFiltersMetal
-- (FFCFiltersMetal)initWithMetalContext:(id)a3;
-- (int)_compileShadersWithLibrary:(id)a3;
-- (int)boxFilter11x11From:(id)a3 To:(id)a4;
-- (int)boxFilterFrom:(id)a3 To:(id)a4;
-- (int)erosionFilterFrom:(id)a3 To:(id)a4;
+- (FFCFiltersMetal)initWithMetalContext:(id)context;
+- (int)_compileShadersWithLibrary:(id)library;
+- (int)boxFilter11x11From:(id)from To:(id)to;
+- (int)boxFilterFrom:(id)from To:(id)to;
+- (int)erosionFilterFrom:(id)from To:(id)to;
 @end
 
 @implementation FFCFiltersMetal
 
-- (FFCFiltersMetal)initWithMetalContext:(id)a3
+- (FFCFiltersMetal)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v34.receiver = self;
   v34.super_class = FFCFiltersMetal;
   v6 = [(FFCFiltersMetal *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mtlContext, a3);
+    objc_storeStrong(&v6->_mtlContext, context);
     v13 = objc_msgSend_device(v7->_mtlContext, v8, v9, v10, v11, v12);
     mtlDevice = v7->_mtlDevice;
     v7->_mtlDevice = v13;
@@ -39,12 +39,12 @@
   return v7;
 }
 
-- (int)erosionFilterFrom:(id)a3 To:(id)a4
+- (int)erosionFilterFrom:(id)from To:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v13 = self->_FFCFiltersComputePipelinesStates[1];
-  if (!v6)
+  if (!fromCopy)
   {
     sub_29572DF14(v96);
 LABEL_13:
@@ -52,7 +52,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (!v7)
+  if (!toCopy)
   {
     sub_29572DE68(v96);
     goto LABEL_13;
@@ -78,12 +78,12 @@ LABEL_13:
 
   v27 = v22;
   objc_msgSend_setComputePipelineState_(v22, v23, v13, v24, v25, v26);
-  objc_msgSend_setTexture_atIndex_(v27, v28, v6, 0, v29, v30);
-  objc_msgSend_setTexture_atIndex_(v27, v31, v7, 1, v32, v33);
+  objc_msgSend_setTexture_atIndex_(v27, v28, fromCopy, 0, v29, v30);
+  objc_msgSend_setTexture_atIndex_(v27, v31, toCopy, 1, v32, v33);
   v39 = objc_msgSend_threadExecutionWidth(v13, v34, v35, v36, v37, v38);
   v45 = objc_msgSend_maxTotalThreadsPerThreadgroup(v13, v40, v41, v42, v43, v44) / v39;
-  v96[0] = objc_msgSend_width(v7, v46, v47, v48, v49, v50);
-  v96[1] = objc_msgSend_height(v7, v51, v52, v53, v54, v55);
+  v96[0] = objc_msgSend_width(toCopy, v46, v47, v48, v49, v50);
+  v96[1] = objc_msgSend_height(toCopy, v51, v52, v53, v54, v55);
   v96[2] = 1;
   v95[0] = v39;
   v95[1] = v45;
@@ -109,7 +109,7 @@ LABEL_8:
   return v93;
 }
 
-- (int)_compileShadersWithLibrary:(id)a3
+- (int)_compileShadersWithLibrary:(id)library
 {
   v6 = objc_msgSend_computePipelineStateFor_constants_(self->_mtlContext, a2, @"boxFilter3x3", 0, v3, v4);
   v7 = self->_FFCFiltersComputePipelinesStates[0];
@@ -144,12 +144,12 @@ LABEL_8:
   }
 }
 
-- (int)boxFilter11x11From:(id)a3 To:(id)a4
+- (int)boxFilter11x11From:(id)from To:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v13 = self->_FFCFiltersComputePipelinesStates[2];
-  if (v6 && v7)
+  if (fromCopy && toCopy)
   {
     v14 = objc_msgSend_commandBuffer(self->_mtlContext, v8, v9, v10, v11, v12);
     mtlCommandBuffer = self->_mtlCommandBuffer;
@@ -160,12 +160,12 @@ LABEL_8:
     {
       v27 = v22;
       objc_msgSend_setComputePipelineState_(v22, v23, v13, v24, v25, v26);
-      v31 = objc_msgSend_setTexture_atIndex_(v27, v28, v6, 0, v29, v30);
+      v31 = objc_msgSend_setTexture_atIndex_(v27, v28, fromCopy, 0, v29, v30);
       sub_29571B224(v31, v32, v33, v34, v35, v36);
       objc_msgSend_threadExecutionWidth(v13, v37, v38, v39, v40, v41);
       objc_msgSend_maxTotalThreadsPerThreadgroup(v13, v42, v43, v44, v45, v46);
-      objc_msgSend_width(v7, v47, v48, v49, v50, v51);
-      v57 = objc_msgSend_height(v7, v52, v53, v54, v55, v56);
+      objc_msgSend_width(toCopy, v47, v48, v49, v50, v51);
+      v57 = objc_msgSend_height(toCopy, v52, v53, v54, v55, v56);
       sub_29571B1C8(v57, v58, v59, v60, v61, v62, v63, v64, v101, v102, v103, v104, v105, v106, v107, v108);
       objc_msgSend_endEncoding(v27, v65, v66, v67, v68, v69);
       if (*MEMORY[0x29EDB9270])
@@ -203,24 +203,24 @@ LABEL_8:
   return v99;
 }
 
-- (int)boxFilterFrom:(id)a3 To:(id)a4
+- (int)boxFilterFrom:(id)from To:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v13 = self->_FFCFiltersComputePipelinesStates[0];
-  if (v6 && v7 && (objc_msgSend_commandBuffer(self->_mtlContext, v8, v9, v10, v11, v12), v14 = objc_claimAutoreleasedReturnValue(), mtlCommandBuffer = self->_mtlCommandBuffer, self->_mtlCommandBuffer = v14, mtlCommandBuffer, (v21 = self->_mtlCommandBuffer) != 0))
+  if (fromCopy && toCopy && (objc_msgSend_commandBuffer(self->_mtlContext, v8, v9, v10, v11, v12), v14 = objc_claimAutoreleasedReturnValue(), mtlCommandBuffer = self->_mtlCommandBuffer, self->_mtlCommandBuffer = v14, mtlCommandBuffer, (v21 = self->_mtlCommandBuffer) != 0))
   {
     v22 = objc_msgSend_computeCommandEncoder(v21, v16, v17, v18, v19, v20);
     if (v22)
     {
       v27 = v22;
       objc_msgSend_setComputePipelineState_(v22, v23, v13, v24, v25, v26);
-      v31 = objc_msgSend_setTexture_atIndex_(v27, v28, v6, 0, v29, v30);
+      v31 = objc_msgSend_setTexture_atIndex_(v27, v28, fromCopy, 0, v29, v30);
       sub_29571B224(v31, v32, v33, v34, v35, v36);
       objc_msgSend_threadExecutionWidth(v13, v37, v38, v39, v40, v41);
       objc_msgSend_maxTotalThreadsPerThreadgroup(v13, v42, v43, v44, v45, v46);
-      objc_msgSend_width(v7, v47, v48, v49, v50, v51);
-      v57 = objc_msgSend_height(v7, v52, v53, v54, v55, v56);
+      objc_msgSend_width(toCopy, v47, v48, v49, v50, v51);
+      v57 = objc_msgSend_height(toCopy, v52, v53, v54, v55, v56);
       sub_29571B1C8(v57, v58, v59, v60, v61, v62, v63, v64, v101, v102, v103, v104, v105, v106, v107, v108);
       objc_msgSend_endEncoding(v27, v65, v66, v67, v68, v69);
       if (*MEMORY[0x29EDB9270])

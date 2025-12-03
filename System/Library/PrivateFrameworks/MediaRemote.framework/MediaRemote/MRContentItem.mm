@@ -1,42 +1,42 @@
 @interface MRContentItem
-+ (id)extractedIdentifierFromNowPlayingInfo:(id)a3;
-+ (id)mergeContentItems:(id)a3;
-- (BOOL)isEffectivelyEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRContentItem)initWithData:(id)a3;
-- (MRContentItem)initWithIdentifier:(id)a3;
-- (MRContentItem)initWithNowPlayingInfo:(id)a3;
-- (MRContentItem)initWithProtobuf:(id)a3;
++ (id)extractedIdentifierFromNowPlayingInfo:(id)info;
++ (id)mergeContentItems:(id)items;
+- (BOOL)isEffectivelyEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (MRContentItem)initWithData:(id)data;
+- (MRContentItem)initWithIdentifier:(id)identifier;
+- (MRContentItem)initWithNowPlayingInfo:(id)info;
+- (MRContentItem)initWithProtobuf:(id)protobuf;
 - (MRContentItem)skeleton;
 - (MRContentItemMetadata)metadata;
 - (NSData)data;
 - (NSDictionary)dictionaryRepresentation;
 - (NSDictionary)nowPlayingInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)protobufWithEncoding:(int64_t)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setNowPlayingInfo:(id)a3 policy:(unsigned __int8)a4 request:(id)a5;
+- (id)protobufWithEncoding:(int64_t)encoding;
+- (void)mergeFrom:(id)from;
+- (void)setNowPlayingInfo:(id)info policy:(unsigned __int8)policy request:(id)request;
 @end
 
 @implementation MRContentItem
 
 - (MRContentItemMetadata)metadata
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  metadata = v2->_metadata;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metadata = selfCopy->_metadata;
   if (!metadata)
   {
     v4 = objc_alloc_init(MRContentItemMetadata);
-    v5 = v2->_metadata;
-    v2->_metadata = v4;
+    v5 = selfCopy->_metadata;
+    selfCopy->_metadata = v4;
 
-    metadata = v2->_metadata;
+    metadata = selfCopy->_metadata;
   }
 
   v6 = metadata;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -44,178 +44,178 @@
 - (NSDictionary)nowPlayingInfo
 {
   v305[4] = *MEMORY[0x1E69E9840];
-  v3 = [(MRContentItem *)self metadata];
-  v4 = [v3 nowPlayingInfo];
-  v5 = [v4 mutableCopy];
+  metadata = [(MRContentItem *)self metadata];
+  nowPlayingInfo = [metadata nowPlayingInfo];
+  v5 = [nowPlayingInfo mutableCopy];
 
   if (!v5)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v6 = [(MRContentItem *)self identifier];
+  identifier = [(MRContentItem *)self identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [(MRContentItem *)self identifier];
-    [(NSDictionary *)v5 setObject:v7 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoContentItemIdentifier"];
+    identifier2 = [(MRContentItem *)self identifier];
+    [(NSDictionary *)v5 setObject:identifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoContentItemIdentifier"];
   }
 
-  v8 = [(MRContentItem *)self metadata];
-  v9 = [v8 albumName];
+  metadata2 = [(MRContentItem *)self metadata];
+  albumName = [metadata2 albumName];
 
-  if (v9)
+  if (albumName)
   {
-    v10 = [(MRContentItem *)self metadata];
-    v11 = [v10 albumName];
-    [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAlbum"];
+    metadata3 = [(MRContentItem *)self metadata];
+    albumName2 = [metadata3 albumName];
+    [(NSDictionary *)v5 setObject:albumName2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAlbum"];
   }
 
-  v12 = [(MRContentItem *)self metadata];
-  v13 = [v12 trackArtistName];
+  metadata4 = [(MRContentItem *)self metadata];
+  trackArtistName = [metadata4 trackArtistName];
 
-  if (v13)
+  if (trackArtistName)
   {
-    v14 = [(MRContentItem *)self metadata];
-    v15 = [v14 trackArtistName];
-    [(NSDictionary *)v5 setObject:v15 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtist"];
+    metadata5 = [(MRContentItem *)self metadata];
+    trackArtistName2 = [metadata5 trackArtistName];
+    [(NSDictionary *)v5 setObject:trackArtistName2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtist"];
   }
 
-  v16 = [(MRContentItem *)self metadata];
-  v17 = [v16 assetURL];
+  metadata6 = [(MRContentItem *)self metadata];
+  assetURL = [metadata6 assetURL];
 
-  if (v17)
+  if (assetURL)
   {
-    v18 = [(MRContentItem *)self metadata];
-    v19 = [v18 assetURL];
-    [(NSDictionary *)v5 setObject:v19 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAssetURL"];
+    metadata7 = [(MRContentItem *)self metadata];
+    assetURL2 = [metadata7 assetURL];
+    [(NSDictionary *)v5 setObject:assetURL2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAssetURL"];
   }
 
-  v20 = [(MRContentItem *)self metadata];
-  v21 = [v20 composer];
+  metadata8 = [(MRContentItem *)self metadata];
+  composer = [metadata8 composer];
 
-  if (v21)
+  if (composer)
   {
-    v22 = [(MRContentItem *)self metadata];
-    v23 = [v22 composer];
-    [(NSDictionary *)v5 setObject:v23 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoComposer"];
+    metadata9 = [(MRContentItem *)self metadata];
+    composer2 = [metadata9 composer];
+    [(NSDictionary *)v5 setObject:composer2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoComposer"];
   }
 
-  v24 = [(MRContentItem *)self metadata];
-  v25 = [v24 hasDiscNumber];
+  metadata10 = [(MRContentItem *)self metadata];
+  hasDiscNumber = [metadata10 hasDiscNumber];
 
-  if (v25)
+  if (hasDiscNumber)
   {
     v26 = MEMORY[0x1E696AD98];
-    v27 = [(MRContentItem *)self metadata];
-    v28 = [v26 numberWithInteger:{objc_msgSend(v27, "discNumber")}];
+    metadata11 = [(MRContentItem *)self metadata];
+    v28 = [v26 numberWithInteger:{objc_msgSend(metadata11, "discNumber")}];
     [(NSDictionary *)v5 setObject:v28 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDiscNumber"];
   }
 
-  v29 = [(MRContentItem *)self metadata];
-  v30 = [v29 genre];
+  metadata12 = [(MRContentItem *)self metadata];
+  genre = [metadata12 genre];
 
-  if (v30)
+  if (genre)
   {
-    v31 = [(MRContentItem *)self metadata];
-    v32 = [v31 genre];
-    [(NSDictionary *)v5 setObject:v32 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoGenre"];
+    metadata13 = [(MRContentItem *)self metadata];
+    genre2 = [metadata13 genre];
+    [(NSDictionary *)v5 setObject:genre2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoGenre"];
   }
 
-  v33 = [(MRContentItem *)self metadata];
-  v34 = [v33 hasPlaybackRate];
+  metadata14 = [(MRContentItem *)self metadata];
+  hasPlaybackRate = [metadata14 hasPlaybackRate];
 
-  if (v34)
+  if (hasPlaybackRate)
   {
     v35 = MEMORY[0x1E696AD98];
-    v36 = [(MRContentItem *)self metadata];
-    [v36 playbackRate];
+    metadata15 = [(MRContentItem *)self metadata];
+    [metadata15 playbackRate];
     v37 = [v35 numberWithFloat:?];
     [(NSDictionary *)v5 setObject:v37 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPlaybackRate"];
   }
 
-  v38 = [(MRContentItem *)self metadata];
-  v39 = [v38 currentPlaybackDate];
+  metadata16 = [(MRContentItem *)self metadata];
+  currentPlaybackDate = [metadata16 currentPlaybackDate];
 
-  if (v39)
+  if (currentPlaybackDate)
   {
-    v40 = [(MRContentItem *)self metadata];
-    v41 = [v40 currentPlaybackDate];
-    [(NSDictionary *)v5 setObject:v41 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCurrentPlaybackDate"];
+    metadata17 = [(MRContentItem *)self metadata];
+    currentPlaybackDate2 = [metadata17 currentPlaybackDate];
+    [(NSDictionary *)v5 setObject:currentPlaybackDate2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCurrentPlaybackDate"];
   }
 
-  v42 = [(MRContentItem *)self metadata];
-  v43 = [v42 hasAlwaysLive];
+  metadata18 = [(MRContentItem *)self metadata];
+  hasAlwaysLive = [metadata18 hasAlwaysLive];
 
-  if (v43)
+  if (hasAlwaysLive)
   {
     v44 = MEMORY[0x1E696AD98];
-    v45 = [(MRContentItem *)self metadata];
-    v46 = [v44 numberWithBool:{objc_msgSend(v45, "isAlwaysLive")}];
+    metadata19 = [(MRContentItem *)self metadata];
+    v46 = [v44 numberWithBool:{objc_msgSend(metadata19, "isAlwaysLive")}];
     [(NSDictionary *)v5 setObject:v46 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsAlwaysLive"];
   }
 
-  v47 = [(MRContentItem *)self metadata];
-  v48 = [v47 isAlwaysLive];
+  metadata20 = [(MRContentItem *)self metadata];
+  isAlwaysLive = [metadata20 isAlwaysLive];
 
-  if ((v48 & 1) == 0)
+  if ((isAlwaysLive & 1) == 0)
   {
-    v49 = [(MRContentItem *)self metadata];
-    v50 = [v49 hasDuration];
+    metadata21 = [(MRContentItem *)self metadata];
+    hasDuration = [metadata21 hasDuration];
 
-    if (v50)
+    if (hasDuration)
     {
       v51 = MEMORY[0x1E696AD98];
-      v52 = [(MRContentItem *)self metadata];
-      [v52 duration];
+      metadata22 = [(MRContentItem *)self metadata];
+      [metadata22 duration];
       v53 = [v51 numberWithDouble:?];
       [(NSDictionary *)v5 setObject:v53 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDuration"];
     }
 
-    v54 = [(MRContentItem *)self metadata];
-    v55 = [v54 hasElapsedTime];
+    metadata23 = [(MRContentItem *)self metadata];
+    hasElapsedTime = [metadata23 hasElapsedTime];
 
-    if (v55)
+    if (hasElapsedTime)
     {
       v56 = MEMORY[0x1E696AD98];
-      v57 = [(MRContentItem *)self metadata];
-      [v57 elapsedTime];
+      metadata24 = [(MRContentItem *)self metadata];
+      [metadata24 elapsedTime];
       v58 = [v56 numberWithDouble:?];
       [(NSDictionary *)v5 setObject:v58 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoElapsedTime"];
     }
   }
 
-  v59 = [(MRContentItem *)self metadata];
-  v60 = [v59 hasInTransition];
+  metadata25 = [(MRContentItem *)self metadata];
+  hasInTransition = [metadata25 hasInTransition];
 
-  if (v60)
+  if (hasInTransition)
   {
     v61 = MEMORY[0x1E696AD98];
-    v62 = [(MRContentItem *)self metadata];
-    v63 = [v61 numberWithBool:{objc_msgSend(v62, "isInTransition")}];
+    metadata26 = [(MRContentItem *)self metadata];
+    v63 = [v61 numberWithBool:{objc_msgSend(metadata26, "isInTransition")}];
     [(NSDictionary *)v5 setObject:v63 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsInTransition"];
   }
 
-  v64 = [(MRContentItem *)self metadata];
-  v65 = [v64 hasInferredTimestamp];
+  metadata27 = [(MRContentItem *)self metadata];
+  hasInferredTimestamp = [metadata27 hasInferredTimestamp];
 
-  if (v65)
+  if (hasInferredTimestamp)
   {
     v66 = MEMORY[0x1E696AD98];
-    v67 = [(MRContentItem *)self metadata];
-    [v67 inferredTimestamp];
+    metadata28 = [(MRContentItem *)self metadata];
+    [metadata28 inferredTimestamp];
     v68 = [v66 numberWithDouble:?];
     [(NSDictionary *)v5 setObject:v68 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTimestamp"];
   }
 
-  v69 = [(MRContentItem *)self metadata];
-  v70 = [v69 hasElapsedTimeTimestamp];
+  metadata29 = [(MRContentItem *)self metadata];
+  hasElapsedTimeTimestamp = [metadata29 hasElapsedTimeTimestamp];
 
-  if (v70)
+  if (hasElapsedTimeTimestamp)
   {
     v71 = MEMORY[0x1E696AD98];
-    v72 = [(MRContentItem *)self metadata];
-    [v72 elapsedTimeTimestamp];
+    metadata30 = [(MRContentItem *)self metadata];
+    [metadata30 elapsedTimeTimestamp];
     v73 = [v71 numberWithDouble:?];
     [(NSDictionary *)v5 setObject:v73 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTimestamp"];
   }
@@ -230,404 +230,404 @@
     [(NSDictionary *)v5 setObject:v77 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTimestamp"];
   }
 
-  v78 = [(MRContentItem *)self metadata];
-  v79 = [v78 hasStartTime];
+  metadata31 = [(MRContentItem *)self metadata];
+  hasStartTime = [metadata31 hasStartTime];
 
-  if (v79)
+  if (hasStartTime)
   {
     v80 = MEMORY[0x1E695DF00];
-    v81 = [(MRContentItem *)self metadata];
-    [v81 startTime];
+    metadata32 = [(MRContentItem *)self metadata];
+    [metadata32 startTime];
     v82 = [v80 dateWithTimeIntervalSinceReferenceDate:?];
 
     [(NSDictionary *)v5 setObject:v82 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoStartTime"];
   }
 
-  v83 = [(MRContentItem *)self metadata];
-  v84 = [v83 title];
+  metadata33 = [(MRContentItem *)self metadata];
+  title = [metadata33 title];
 
-  if (v84)
+  if (title)
   {
-    v85 = [(MRContentItem *)self metadata];
-    v86 = [v85 title];
-    [(NSDictionary *)v5 setObject:v86 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTitle"];
+    metadata34 = [(MRContentItem *)self metadata];
+    title2 = [metadata34 title];
+    [(NSDictionary *)v5 setObject:title2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTitle"];
   }
 
-  v87 = [(MRContentItem *)self metadata];
-  v88 = [v87 hasTotalDiscCount];
+  metadata35 = [(MRContentItem *)self metadata];
+  hasTotalDiscCount = [metadata35 hasTotalDiscCount];
 
-  if (v88)
+  if (hasTotalDiscCount)
   {
     v89 = MEMORY[0x1E696AD98];
-    v90 = [(MRContentItem *)self metadata];
-    v91 = [v89 numberWithInteger:{objc_msgSend(v90, "totalDiscCount")}];
+    metadata36 = [(MRContentItem *)self metadata];
+    v91 = [v89 numberWithInteger:{objc_msgSend(metadata36, "totalDiscCount")}];
     [(NSDictionary *)v5 setObject:v91 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTotalDiscCount"];
   }
 
-  v92 = [(MRContentItem *)self metadata];
-  v93 = [v92 hasTotalTrackCount];
+  metadata37 = [(MRContentItem *)self metadata];
+  hasTotalTrackCount = [metadata37 hasTotalTrackCount];
 
-  if (v93)
+  if (hasTotalTrackCount)
   {
     v94 = MEMORY[0x1E696AD98];
-    v95 = [(MRContentItem *)self metadata];
-    v96 = [v94 numberWithInteger:{objc_msgSend(v95, "totalTrackCount")}];
+    metadata38 = [(MRContentItem *)self metadata];
+    v96 = [v94 numberWithInteger:{objc_msgSend(metadata38, "totalTrackCount")}];
     [(NSDictionary *)v5 setObject:v96 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTotalTrackCount"];
   }
 
-  v97 = [(MRContentItem *)self metadata];
-  v98 = [v97 hasTrackNumber];
+  metadata39 = [(MRContentItem *)self metadata];
+  hasTrackNumber = [metadata39 hasTrackNumber];
 
-  if (v98)
+  if (hasTrackNumber)
   {
     v99 = MEMORY[0x1E696AD98];
-    v100 = [(MRContentItem *)self metadata];
-    v101 = [v99 numberWithInteger:{objc_msgSend(v100, "trackNumber")}];
+    metadata40 = [(MRContentItem *)self metadata];
+    v101 = [v99 numberWithInteger:{objc_msgSend(metadata40, "trackNumber")}];
     [(NSDictionary *)v5 setObject:v101 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTrackNumber"];
   }
 
-  v102 = [(MRContentItem *)self metadata];
-  v103 = [v102 collectionIdentifier];
+  metadata41 = [(MRContentItem *)self metadata];
+  collectionIdentifier = [metadata41 collectionIdentifier];
 
-  if (v103)
+  if (collectionIdentifier)
   {
-    v104 = [(MRContentItem *)self metadata];
-    v105 = [v104 collectionIdentifier];
-    [(NSDictionary *)v5 setObject:v105 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCollectionIdentifier"];
+    metadata42 = [(MRContentItem *)self metadata];
+    collectionIdentifier2 = [metadata42 collectionIdentifier];
+    [(NSDictionary *)v5 setObject:collectionIdentifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCollectionIdentifier"];
   }
 
-  v106 = [(MRContentItem *)self metadata];
-  v107 = [v106 contentIdentifier];
+  metadata43 = [(MRContentItem *)self metadata];
+  contentIdentifier = [metadata43 contentIdentifier];
 
-  if (v107)
+  if (contentIdentifier)
   {
-    v108 = [(MRContentItem *)self metadata];
-    v109 = [v108 contentIdentifier];
-    [(NSDictionary *)v5 setObject:v109 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoExternalContentIdentifier"];
+    metadata44 = [(MRContentItem *)self metadata];
+    contentIdentifier2 = [metadata44 contentIdentifier];
+    [(NSDictionary *)v5 setObject:contentIdentifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoExternalContentIdentifier"];
   }
 
-  v110 = [(MRContentItem *)self metadata];
-  v111 = [v110 profileIdentifier];
+  metadata45 = [(MRContentItem *)self metadata];
+  profileIdentifier = [metadata45 profileIdentifier];
 
-  if (v111)
+  if (profileIdentifier)
   {
-    v112 = [(MRContentItem *)self metadata];
-    v113 = [v112 profileIdentifier];
-    [(NSDictionary *)v5 setObject:v113 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoExternalProfileIdentifier"];
+    metadata46 = [(MRContentItem *)self metadata];
+    profileIdentifier2 = [metadata46 profileIdentifier];
+    [(NSDictionary *)v5 setObject:profileIdentifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoExternalProfileIdentifier"];
   }
 
-  v114 = [(MRContentItem *)self metadata];
-  v115 = [v114 serviceIdentifier];
+  metadata47 = [(MRContentItem *)self metadata];
+  serviceIdentifier = [metadata47 serviceIdentifier];
 
-  if (v115)
+  if (serviceIdentifier)
   {
-    v116 = [(MRContentItem *)self metadata];
-    v117 = [v116 serviceIdentifier];
-    [(NSDictionary *)v5 setObject:v117 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoServiceIdentifier"];
+    metadata48 = [(MRContentItem *)self metadata];
+    serviceIdentifier2 = [metadata48 serviceIdentifier];
+    [(NSDictionary *)v5 setObject:serviceIdentifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoServiceIdentifier"];
   }
 
-  v118 = [(MRContentItem *)self metadata];
-  v119 = [v118 brandIdentifier];
+  metadata49 = [(MRContentItem *)self metadata];
+  brandIdentifier = [metadata49 brandIdentifier];
 
-  if (v119)
+  if (brandIdentifier)
   {
-    v120 = [(MRContentItem *)self metadata];
-    v121 = [v120 brandIdentifier];
-    [(NSDictionary *)v5 setObject:v121 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoBrandIdentifier"];
+    metadata50 = [(MRContentItem *)self metadata];
+    brandIdentifier2 = [metadata50 brandIdentifier];
+    [(NSDictionary *)v5 setObject:brandIdentifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoBrandIdentifier"];
   }
 
-  v122 = [(MRContentItem *)self metadata];
-  v123 = [v122 hasPlaybackProgress];
+  metadata51 = [(MRContentItem *)self metadata];
+  hasPlaybackProgress = [metadata51 hasPlaybackProgress];
 
-  if (v123)
+  if (hasPlaybackProgress)
   {
     v124 = MEMORY[0x1E696AD98];
-    v125 = [(MRContentItem *)self metadata];
-    [v125 playbackProgress];
+    metadata52 = [(MRContentItem *)self metadata];
+    [metadata52 playbackProgress];
     v126 = [v124 numberWithFloat:?];
     [(NSDictionary *)v5 setObject:v126 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPlaybackProgress"];
   }
 
-  v127 = [(MRContentItem *)self metadata];
-  v128 = [v127 hasExplicitItem];
+  metadata53 = [(MRContentItem *)self metadata];
+  hasExplicitItem = [metadata53 hasExplicitItem];
 
-  if (v128)
+  if (hasExplicitItem)
   {
     v129 = MEMORY[0x1E696AD98];
-    v130 = [(MRContentItem *)self metadata];
-    v131 = [v129 numberWithBool:{objc_msgSend(v130, "isExplicitItem")}];
+    metadata54 = [(MRContentItem *)self metadata];
+    v131 = [v129 numberWithBool:{objc_msgSend(metadata54, "isExplicitItem")}];
     [(NSDictionary *)v5 setObject:v131 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsExplicitTrack"];
   }
 
-  v132 = [(MRContentItem *)self metadata];
-  v133 = [v132 hasSharable];
+  metadata55 = [(MRContentItem *)self metadata];
+  hasSharable = [metadata55 hasSharable];
 
-  if (v133)
+  if (hasSharable)
   {
     v134 = MEMORY[0x1E696AD98];
-    v135 = [(MRContentItem *)self metadata];
-    v136 = [v134 numberWithBool:{objc_msgSend(v135, "isSharable")}];
+    metadata56 = [(MRContentItem *)self metadata];
+    v136 = [v134 numberWithBool:{objc_msgSend(metadata56, "isSharable")}];
     [(NSDictionary *)v5 setObject:v136 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsSharable"];
   }
 
-  v137 = [(MRContentItem *)self metadata];
-  v138 = [v137 hasLiked];
+  metadata57 = [(MRContentItem *)self metadata];
+  hasLiked = [metadata57 hasLiked];
 
-  if (v138)
+  if (hasLiked)
   {
     v139 = MEMORY[0x1E696AD98];
-    v140 = [(MRContentItem *)self metadata];
-    v141 = [v139 numberWithBool:{objc_msgSend(v140, "isLiked")}];
+    metadata58 = [(MRContentItem *)self metadata];
+    v141 = [v139 numberWithBool:{objc_msgSend(metadata58, "isLiked")}];
     [(NSDictionary *)v5 setObject:v141 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsLiked"];
   }
 
-  v142 = [(MRContentItem *)self metadata];
-  v143 = [v142 hasInWishList];
+  metadata59 = [(MRContentItem *)self metadata];
+  hasInWishList = [metadata59 hasInWishList];
 
-  if (v143)
+  if (hasInWishList)
   {
     v144 = MEMORY[0x1E696AD98];
-    v145 = [(MRContentItem *)self metadata];
-    v146 = [v144 numberWithBool:{objc_msgSend(v145, "isInWishList")}];
+    metadata60 = [(MRContentItem *)self metadata];
+    v146 = [v144 numberWithBool:{objc_msgSend(metadata60, "isInWishList")}];
     [(NSDictionary *)v5 setObject:v146 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsInWishList"];
   }
 
-  v147 = [(MRContentItem *)self metadata];
-  v148 = [v147 hasRadioStationIdentifier];
+  metadata61 = [(MRContentItem *)self metadata];
+  hasRadioStationIdentifier = [metadata61 hasRadioStationIdentifier];
 
-  if (v148)
+  if (hasRadioStationIdentifier)
   {
     v149 = MEMORY[0x1E696AD98];
-    v150 = [(MRContentItem *)self metadata];
-    v151 = [v149 numberWithLongLong:{objc_msgSend(v150, "radioStationIdentifier")}];
+    metadata62 = [(MRContentItem *)self metadata];
+    v151 = [v149 numberWithLongLong:{objc_msgSend(metadata62, "radioStationIdentifier")}];
     [(NSDictionary *)v5 setObject:v151 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoRadioStationIdentifier"];
   }
 
-  v152 = [(MRContentItem *)self metadata];
-  v153 = [v152 radioStationName];
+  metadata63 = [(MRContentItem *)self metadata];
+  radioStationName = [metadata63 radioStationName];
 
-  if (v153)
+  if (radioStationName)
   {
-    v154 = [(MRContentItem *)self metadata];
-    v155 = [v154 radioStationName];
-    [(NSDictionary *)v5 setObject:v155 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoRadioStationName"];
+    metadata64 = [(MRContentItem *)self metadata];
+    radioStationName2 = [metadata64 radioStationName];
+    [(NSDictionary *)v5 setObject:radioStationName2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoRadioStationName"];
   }
 
-  v156 = [(MRContentItem *)self metadata];
-  v157 = [v156 hasRadioStationIdentifier];
+  metadata65 = [(MRContentItem *)self metadata];
+  hasRadioStationIdentifier2 = [metadata65 hasRadioStationIdentifier];
 
-  if (v157)
+  if (hasRadioStationIdentifier2)
   {
     v158 = MEMORY[0x1E696AD98];
-    v159 = [(MRContentItem *)self metadata];
-    v160 = [v158 numberWithLongLong:{objc_msgSend(v159, "radioStationIdentifier")}];
+    metadata66 = [(MRContentItem *)self metadata];
+    v160 = [v158 numberWithLongLong:{objc_msgSend(metadata66, "radioStationIdentifier")}];
     [(NSDictionary *)v5 setObject:v160 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoRadioStationStringIdentifier"];
   }
 
-  v161 = [(MRContentItem *)self metadata];
-  v162 = [v161 hasITunesStoreIdentifier];
+  metadata67 = [(MRContentItem *)self metadata];
+  hasITunesStoreIdentifier = [metadata67 hasITunesStoreIdentifier];
 
-  if (v162)
+  if (hasITunesStoreIdentifier)
   {
     v163 = MEMORY[0x1E696AD98];
-    v164 = [(MRContentItem *)self metadata];
-    v165 = [v163 numberWithLongLong:{objc_msgSend(v164, "iTunesStoreIdentifier")}];
+    metadata68 = [(MRContentItem *)self metadata];
+    v165 = [v163 numberWithLongLong:{objc_msgSend(metadata68, "iTunesStoreIdentifier")}];
     [(NSDictionary *)v5 setObject:v165 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoiTunesStoreIdentifier"];
   }
 
-  v166 = [(MRContentItem *)self metadata];
-  v167 = [v166 hasITunesStoreSubscriptionIdentifier];
+  metadata69 = [(MRContentItem *)self metadata];
+  hasITunesStoreSubscriptionIdentifier = [metadata69 hasITunesStoreSubscriptionIdentifier];
 
-  if (v167)
+  if (hasITunesStoreSubscriptionIdentifier)
   {
     v168 = MEMORY[0x1E696AD98];
-    v169 = [(MRContentItem *)self metadata];
-    v170 = [v168 numberWithLongLong:{objc_msgSend(v169, "iTunesStoreSubscriptionIdentifier")}];
+    metadata70 = [(MRContentItem *)self metadata];
+    v170 = [v168 numberWithLongLong:{objc_msgSend(metadata70, "iTunesStoreSubscriptionIdentifier")}];
     [(NSDictionary *)v5 setObject:v170 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoiTunesStoreSubscriptionAdamIdentifier"];
   }
 
-  v171 = [(MRContentItem *)self metadata];
-  v172 = [v171 hasITunesStoreArtistIdentifier];
+  metadata71 = [(MRContentItem *)self metadata];
+  hasITunesStoreArtistIdentifier = [metadata71 hasITunesStoreArtistIdentifier];
 
-  if (v172)
+  if (hasITunesStoreArtistIdentifier)
   {
     v173 = MEMORY[0x1E696AD98];
-    v174 = [(MRContentItem *)self metadata];
-    v175 = [v173 numberWithLongLong:{objc_msgSend(v174, "iTunesStoreArtistIdentifier")}];
+    metadata72 = [(MRContentItem *)self metadata];
+    v175 = [v173 numberWithLongLong:{objc_msgSend(metadata72, "iTunesStoreArtistIdentifier")}];
     [(NSDictionary *)v5 setObject:v175 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtistiTunesStoreAdamIdentifier"];
   }
 
-  v176 = [(MRContentItem *)self metadata];
-  v177 = [v176 hasITunesStoreAlbumIdentifier];
+  metadata73 = [(MRContentItem *)self metadata];
+  hasITunesStoreAlbumIdentifier = [metadata73 hasITunesStoreAlbumIdentifier];
 
-  if (v177)
+  if (hasITunesStoreAlbumIdentifier)
   {
     v178 = MEMORY[0x1E696AD98];
-    v179 = [(MRContentItem *)self metadata];
-    v180 = [v178 numberWithLongLong:{objc_msgSend(v179, "iTunesStoreAlbumIdentifier")}];
+    metadata74 = [(MRContentItem *)self metadata];
+    v180 = [v178 numberWithLongLong:{objc_msgSend(metadata74, "iTunesStoreAlbumIdentifier")}];
     [(NSDictionary *)v5 setObject:v180 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAlbumiTunesStoreAdamIdentifier"];
   }
 
-  v181 = [(MRContentItem *)self metadata];
-  v182 = [v181 purchaseInfoData];
+  metadata75 = [(MRContentItem *)self metadata];
+  purchaseInfoData = [metadata75 purchaseInfoData];
 
-  if (v182)
+  if (purchaseInfoData)
   {
-    v183 = [(MRContentItem *)self metadata];
-    v184 = [v183 purchaseInfoData];
-    [(NSDictionary *)v5 setObject:v184 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPurchaseInfoData"];
+    metadata76 = [(MRContentItem *)self metadata];
+    purchaseInfoData2 = [metadata76 purchaseInfoData];
+    [(NSDictionary *)v5 setObject:purchaseInfoData2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPurchaseInfoData"];
   }
 
-  v185 = [(MRContentItem *)self metadata];
-  v186 = [v185 hasDefaultPlaybackRate];
+  metadata77 = [(MRContentItem *)self metadata];
+  hasDefaultPlaybackRate = [metadata77 hasDefaultPlaybackRate];
 
-  if (v186)
+  if (hasDefaultPlaybackRate)
   {
     v187 = MEMORY[0x1E696AD98];
-    v188 = [(MRContentItem *)self metadata];
-    [v188 defaultPlaybackRate];
+    metadata78 = [(MRContentItem *)self metadata];
+    [metadata78 defaultPlaybackRate];
     v189 = [v187 numberWithFloat:?];
     [(NSDictionary *)v5 setObject:v189 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDefaultPlaybackRate"];
   }
 
-  v190 = [(MRContentItem *)self metadata];
-  v191 = [v190 hasDownloadState];
+  metadata79 = [(MRContentItem *)self metadata];
+  hasDownloadState = [metadata79 hasDownloadState];
 
-  if (v191)
+  if (hasDownloadState)
   {
     v192 = MEMORY[0x1E696AD98];
-    v193 = [(MRContentItem *)self metadata];
-    v194 = [v192 numberWithInteger:{objc_msgSend(v193, "downloadState")}];
+    metadata80 = [(MRContentItem *)self metadata];
+    v194 = [v192 numberWithInteger:{objc_msgSend(metadata80, "downloadState")}];
     [(NSDictionary *)v5 setObject:v194 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDownloadState"];
   }
 
-  v195 = [(MRContentItem *)self metadata];
-  v196 = [v195 hasDownloadProgress];
+  metadata81 = [(MRContentItem *)self metadata];
+  hasDownloadProgress = [metadata81 hasDownloadProgress];
 
-  if (v196)
+  if (hasDownloadProgress)
   {
     v197 = MEMORY[0x1E696AD98];
-    v198 = [(MRContentItem *)self metadata];
-    [v198 downloadProgress];
+    metadata82 = [(MRContentItem *)self metadata];
+    [metadata82 downloadProgress];
     v199 = [v197 numberWithFloat:?];
     [(NSDictionary *)v5 setObject:v199 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDownloadProgress"];
   }
 
-  v200 = [(MRContentItem *)self metadata];
-  v201 = [v200 hasAdvertisement];
+  metadata83 = [(MRContentItem *)self metadata];
+  hasAdvertisement = [metadata83 hasAdvertisement];
 
-  if (v201)
+  if (hasAdvertisement)
   {
     v202 = MEMORY[0x1E696AD98];
-    v203 = [(MRContentItem *)self metadata];
-    v204 = [v202 numberWithBool:{objc_msgSend(v203, "isAdvertisement")}];
+    metadata84 = [(MRContentItem *)self metadata];
+    v204 = [v202 numberWithBool:{objc_msgSend(metadata84, "isAdvertisement")}];
     [(NSDictionary *)v5 setObject:v204 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsAdvertisement"];
   }
 
-  v205 = [(MRContentItem *)self metadata];
-  v206 = [v205 hasSteerable];
+  metadata85 = [(MRContentItem *)self metadata];
+  hasSteerable = [metadata85 hasSteerable];
 
-  if (v206)
+  if (hasSteerable)
   {
     v207 = MEMORY[0x1E696AD98];
-    v208 = [(MRContentItem *)self metadata];
-    v209 = [v207 numberWithBool:{objc_msgSend(v208, "isSteerable")}];
+    metadata86 = [(MRContentItem *)self metadata];
+    v209 = [v207 numberWithBool:{objc_msgSend(metadata86, "isSteerable")}];
     [(NSDictionary *)v5 setObject:v209 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsSteerable"];
   }
 
-  v210 = [(MRContentItem *)self metadata];
-  v211 = [v210 artworkIdentifier];
+  metadata87 = [(MRContentItem *)self metadata];
+  artworkIdentifier = [metadata87 artworkIdentifier];
 
-  if (v211)
+  if (artworkIdentifier)
   {
-    v212 = [(MRContentItem *)self metadata];
-    v213 = [v212 artworkIdentifier];
-    [(NSDictionary *)v5 setObject:v213 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkIdentifier"];
+    metadata88 = [(MRContentItem *)self metadata];
+    artworkIdentifier2 = [metadata88 artworkIdentifier];
+    [(NSDictionary *)v5 setObject:artworkIdentifier2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkIdentifier"];
   }
 
-  v214 = [(MRContentItem *)self metadata];
-  v215 = [v214 artworkURL];
+  metadata89 = [(MRContentItem *)self metadata];
+  artworkURL = [metadata89 artworkURL];
 
-  if (v215)
+  if (artworkURL)
   {
-    v216 = [(MRContentItem *)self metadata];
-    v217 = [v216 artworkURL];
-    v218 = [v217 absoluteString];
-    [(NSDictionary *)v5 setObject:v218 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkURL"];
+    metadata90 = [(MRContentItem *)self metadata];
+    artworkURL2 = [metadata90 artworkURL];
+    absoluteString = [artworkURL2 absoluteString];
+    [(NSDictionary *)v5 setObject:absoluteString forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkURL"];
   }
 
-  v219 = [(MRContentItem *)self metadata];
-  v220 = [v219 hasLegacyUniqueIdentifier];
+  metadata91 = [(MRContentItem *)self metadata];
+  hasLegacyUniqueIdentifier = [metadata91 hasLegacyUniqueIdentifier];
 
-  if (v220)
+  if (hasLegacyUniqueIdentifier)
   {
     v221 = MEMORY[0x1E696AD98];
-    v222 = [(MRContentItem *)self metadata];
-    v223 = [v221 numberWithLongLong:{objc_msgSend(v222, "legacyUniqueIdentifier")}];
+    metadata92 = [(MRContentItem *)self metadata];
+    v223 = [v221 numberWithLongLong:{objc_msgSend(metadata92, "legacyUniqueIdentifier")}];
     [(NSDictionary *)v5 setObject:v223 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoUniqueIdentifier"];
   }
 
-  v224 = [(MRContentItem *)self metadata];
-  v225 = [v224 appMetrics];
+  metadata93 = [(MRContentItem *)self metadata];
+  appMetrics = [metadata93 appMetrics];
 
-  if (v225)
+  if (appMetrics)
   {
-    v226 = [(MRContentItem *)self metadata];
-    v227 = [v226 appMetrics];
-    v228 = [v227 copy];
+    metadata94 = [(MRContentItem *)self metadata];
+    appMetrics2 = [metadata94 appMetrics];
+    v228 = [appMetrics2 copy];
     [(NSDictionary *)v5 setObject:v228 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAppMetrics"];
   }
 
-  v229 = [(MRContentItem *)self metadata];
-  v230 = [v229 collectionInfo];
+  metadata95 = [(MRContentItem *)self metadata];
+  collectionInfo = [metadata95 collectionInfo];
 
-  if (v230)
+  if (collectionInfo)
   {
-    v231 = [(MRContentItem *)self metadata];
-    v232 = [v231 collectionInfo];
-    v233 = [v232 copy];
+    metadata96 = [(MRContentItem *)self metadata];
+    collectionInfo2 = [metadata96 collectionInfo];
+    v233 = [collectionInfo2 copy];
     [(NSDictionary *)v5 setObject:v233 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCollectionInfo"];
   }
 
-  v234 = [(MRContentItem *)self metadata];
-  v235 = [v234 userInfo];
+  metadata97 = [(MRContentItem *)self metadata];
+  userInfo = [metadata97 userInfo];
 
-  if (v235)
+  if (userInfo)
   {
-    v236 = [(MRContentItem *)self metadata];
-    v237 = [v236 userInfo];
-    v238 = [v237 copy];
+    metadata98 = [(MRContentItem *)self metadata];
+    userInfo2 = [metadata98 userInfo];
+    v238 = [userInfo2 copy];
     [(NSDictionary *)v5 setObject:v238 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoUserInfo"];
   }
 
-  v239 = [(MRContentItem *)self metadata];
-  v240 = [v239 internationalStandardRecordingCode];
+  metadata99 = [(MRContentItem *)self metadata];
+  internationalStandardRecordingCode = [metadata99 internationalStandardRecordingCode];
 
-  if (v240)
+  if (internationalStandardRecordingCode)
   {
-    v241 = [(MRContentItem *)self metadata];
-    v242 = [v241 internationalStandardRecordingCode];
-    v243 = [v242 copy];
+    metadata100 = [(MRContentItem *)self metadata];
+    internationalStandardRecordingCode2 = [metadata100 internationalStandardRecordingCode];
+    v243 = [internationalStandardRecordingCode2 copy];
     [(NSDictionary *)v5 setObject:v243 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoInternationalStandardRecordingCode"];
   }
 
-  v244 = [(MRContentItem *)self metadata];
-  v245 = [v244 hasExcludeFromSuggestions];
+  metadata101 = [(MRContentItem *)self metadata];
+  hasExcludeFromSuggestions = [metadata101 hasExcludeFromSuggestions];
 
-  if (v245)
+  if (hasExcludeFromSuggestions)
   {
     v246 = MEMORY[0x1E696AD98];
-    v247 = [(MRContentItem *)self metadata];
-    v248 = [v246 numberWithBool:{objc_msgSend(v247, "excludeFromSuggestions")}];
+    metadata102 = [(MRContentItem *)self metadata];
+    v248 = [v246 numberWithBool:{objc_msgSend(metadata102, "excludeFromSuggestions")}];
     [(NSDictionary *)v5 setObject:v248 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoExcludeFromSuggestions"];
   }
 
-  v249 = [(MRContentItem *)self metadata];
-  v250 = [v249 collectionInfo];
+  metadata103 = [(MRContentItem *)self metadata];
+  collectionInfo3 = [metadata103 collectionInfo];
 
-  if (v250)
+  if (collectionInfo3)
   {
-    v251 = [v250 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingCollectionInfoKeyIdentifiers"];
+    v251 = [collectionInfo3 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingCollectionInfoKeyIdentifiers"];
 
     if (v251)
     {
@@ -673,39 +673,39 @@
     }
   }
 
-  v259 = [(MRContentItem *)self metadata];
-  v260 = [v259 hasMediaType];
+  metadata104 = [(MRContentItem *)self metadata];
+  hasMediaType = [metadata104 hasMediaType];
 
-  if (v260)
+  if (hasMediaType)
   {
-    v261 = [(MRContentItem *)self metadata];
-    v262 = [v261 mediaType];
+    metadata105 = [(MRContentItem *)self metadata];
+    mediaType = [metadata105 mediaType];
 
-    v263 = [(MRContentItem *)self metadata];
-    v264 = [v263 mediaSubType];
+    metadata106 = [(MRContentItem *)self metadata];
+    mediaSubType = [metadata106 mediaSubType];
 
-    if (v262 == 1)
+    if (mediaType == 1)
     {
       v265 = kMRMediaRemoteNowPlayingInfoTypeAudio;
     }
 
     else
     {
-      if (v262 != 2)
+      if (mediaType != 2)
       {
         v266 = 0;
 LABEL_127:
-        v267 = [(MRContentItem *)self metadata];
-        v268 = [v267 hasMediaSubType];
+        metadata107 = [(MRContentItem *)self metadata];
+        hasMediaSubType = [metadata107 hasMediaSubType];
 
-        if (!v268)
+        if (!hasMediaSubType)
         {
           goto LABEL_145;
         }
 
-        if (v264 > 3)
+        if (mediaSubType > 3)
         {
-          switch(v264)
+          switch(mediaSubType)
           {
             case 4:
               v269 = kMRMediaRemoteMediaTypePodcast;
@@ -721,13 +721,13 @@ LABEL_127:
 
         else
         {
-          if ((v264 - 2) < 2)
+          if ((mediaSubType - 2) < 2)
           {
             v269 = kMRMediaRemoteNowPlayingInfoTypeVideo;
             goto LABEL_143;
           }
 
-          if (!v264)
+          if (!mediaSubType)
           {
             if (v266)
             {
@@ -747,7 +747,7 @@ LABEL_145:
             goto LABEL_146;
           }
 
-          if (v264 == 1)
+          if (mediaSubType == 1)
           {
             v269 = kMRMediaRemoteMediaTypeMusic;
 LABEL_143:
@@ -772,12 +772,12 @@ LABEL_144:
   }
 
 LABEL_147:
-  v272 = [(MRContentItem *)self availableLanguageOptions];
+  availableLanguageOptions = [(MRContentItem *)self availableLanguageOptions];
 
-  if (v272)
+  if (availableLanguageOptions)
   {
-    v273 = [(MRContentItem *)self availableLanguageOptions];
-    ExternalRepresentation = MRLanguageOptionGroupsCreateExternalRepresentation(v273);
+    availableLanguageOptions2 = [(MRContentItem *)self availableLanguageOptions];
+    ExternalRepresentation = MRLanguageOptionGroupsCreateExternalRepresentation(availableLanguageOptions2);
 
     if (ExternalRepresentation)
     {
@@ -785,12 +785,12 @@ LABEL_147:
     }
   }
 
-  v275 = [(MRContentItem *)self currentLanguageOptions];
+  currentLanguageOptions = [(MRContentItem *)self currentLanguageOptions];
 
-  if (v275)
+  if (currentLanguageOptions)
   {
-    v276 = [(MRContentItem *)self currentLanguageOptions];
-    v277 = MRLanguageOptionsCreateExternalRepresentation(v276);
+    currentLanguageOptions2 = [(MRContentItem *)self currentLanguageOptions];
+    v277 = MRLanguageOptionsCreateExternalRepresentation(currentLanguageOptions2);
 
     if (v277)
     {
@@ -798,45 +798,45 @@ LABEL_147:
     }
   }
 
-  v278 = [(MRContentItem *)self metadata];
-  v279 = [v278 artworkMIMEType];
+  metadata108 = [(MRContentItem *)self metadata];
+  artworkMIMEType = [metadata108 artworkMIMEType];
 
-  if (v279)
+  if (artworkMIMEType)
   {
-    v280 = [(MRContentItem *)self metadata];
-    v281 = [v280 artworkMIMEType];
-    [(NSDictionary *)v5 setObject:v281 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkMIMEType"];
+    metadata109 = [(MRContentItem *)self metadata];
+    artworkMIMEType2 = [metadata109 artworkMIMEType];
+    [(NSDictionary *)v5 setObject:artworkMIMEType2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkMIMEType"];
   }
 
-  v282 = [(MRContentItem *)self artwork];
-  v283 = [v282 imageData];
+  artwork = [(MRContentItem *)self artwork];
+  imageData = [artwork imageData];
 
-  if (v283)
+  if (imageData)
   {
-    v284 = [(MRContentItem *)self artwork];
-    v285 = [v284 imageData];
-    [(NSDictionary *)v5 setObject:v285 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkData"];
+    artwork2 = [(MRContentItem *)self artwork];
+    imageData2 = [artwork2 imageData];
+    [(NSDictionary *)v5 setObject:imageData2 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkData"];
   }
 
-  v286 = [(MRContentItem *)self artwork];
-  v287 = [v286 width];
+  artwork3 = [(MRContentItem *)self artwork];
+  width = [artwork3 width];
 
-  if (v287 >= 1)
+  if (width >= 1)
   {
     v288 = MEMORY[0x1E696AD98];
-    v289 = [(MRContentItem *)self artwork];
-    v290 = [v288 numberWithInteger:{objc_msgSend(v289, "width")}];
+    artwork4 = [(MRContentItem *)self artwork];
+    v290 = [v288 numberWithInteger:{objc_msgSend(artwork4, "width")}];
     [(NSDictionary *)v5 setObject:v290 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkDataWidth"];
   }
 
-  v291 = [(MRContentItem *)self artwork];
-  v292 = [v291 height];
+  artwork5 = [(MRContentItem *)self artwork];
+  height = [artwork5 height];
 
-  if (v292 >= 1)
+  if (height >= 1)
   {
     v293 = MEMORY[0x1E696AD98];
-    v294 = [(MRContentItem *)self artwork];
-    v295 = [v293 numberWithInteger:{objc_msgSend(v294, "height")}];
+    artwork6 = [(MRContentItem *)self artwork];
+    v295 = [v293 numberWithInteger:{objc_msgSend(artwork6, "height")}];
     [(NSDictionary *)v5 setObject:v295 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkDataHeight"];
   }
 
@@ -849,17 +849,17 @@ LABEL_147:
 - (MRContentItem)skeleton
 {
   v3 = [MRContentItem alloc];
-  v4 = [(MRContentItem *)self identifier];
-  v5 = [(MRContentItem *)v3 initWithIdentifier:v4];
+  identifier = [(MRContentItem *)self identifier];
+  v5 = [(MRContentItem *)v3 initWithIdentifier:identifier];
 
-  v6 = [(MRContentItem *)self parentIdentifier];
-  [(MRContentItem *)v5 setParentIdentifier:v6];
+  parentIdentifier = [(MRContentItem *)self parentIdentifier];
+  [(MRContentItem *)v5 setParentIdentifier:parentIdentifier];
 
-  v7 = [(MRContentItem *)self ancestorIdentifier];
-  [(MRContentItem *)v5 setAncestorIdentifier:v7];
+  ancestorIdentifier = [(MRContentItem *)self ancestorIdentifier];
+  [(MRContentItem *)v5 setAncestorIdentifier:ancestorIdentifier];
 
-  v8 = [(MRContentItem *)self associatedParticipantIdentifier];
-  [(MRContentItem *)v5 setAssociatedParticipantIdentifier:v8];
+  associatedParticipantIdentifier = [(MRContentItem *)self associatedParticipantIdentifier];
+  [(MRContentItem *)v5 setAssociatedParticipantIdentifier:associatedParticipantIdentifier];
 
   return v5;
 }
@@ -868,8 +868,8 @@ LABEL_147:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRContentItem *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRContentItem *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }
@@ -877,79 +877,79 @@ LABEL_147:
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRContentItem *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"identifier"];
+  identifier = [(MRContentItem *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v5 = [(MRContentItem *)self info];
-  [v3 setObject:v5 forKeyedSubscript:@"info"];
+  info = [(MRContentItem *)self info];
+  [v3 setObject:info forKeyedSubscript:@"info"];
 
-  v6 = [(MRContentItem *)self parentIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"parentIdentifier"];
+  parentIdentifier = [(MRContentItem *)self parentIdentifier];
+  [v3 setObject:parentIdentifier forKeyedSubscript:@"parentIdentifier"];
 
-  v7 = [(MRContentItem *)self ancestorIdentifier];
-  [v3 setObject:v7 forKeyedSubscript:@"ancestorIdentifier"];
+  ancestorIdentifier = [(MRContentItem *)self ancestorIdentifier];
+  [v3 setObject:ancestorIdentifier forKeyedSubscript:@"ancestorIdentifier"];
 
-  v8 = [(MRContentItem *)self associatedParticipantIdentifier];
-  [v3 setObject:v8 forKeyedSubscript:@"associatedParticipantIdentifier"];
+  associatedParticipantIdentifier = [(MRContentItem *)self associatedParticipantIdentifier];
+  [v3 setObject:associatedParticipantIdentifier forKeyedSubscript:@"associatedParticipantIdentifier"];
 
-  v9 = [(MRContentItem *)self queueIdentifier];
-  [v3 setObject:v9 forKeyedSubscript:@"queueIdentifier"];
+  queueIdentifier = [(MRContentItem *)self queueIdentifier];
+  [v3 setObject:queueIdentifier forKeyedSubscript:@"queueIdentifier"];
 
-  v10 = [(MRContentItem *)self requestIdentifier];
-  [v3 setObject:v10 forKeyedSubscript:@"requestIdentifier"];
+  requestIdentifier = [(MRContentItem *)self requestIdentifier];
+  [v3 setObject:requestIdentifier forKeyedSubscript:@"requestIdentifier"];
 
-  v11 = [(MRContentItem *)self metadata];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"metadata"];
+  metadata = [(MRContentItem *)self metadata];
+  dictionaryRepresentation = [metadata dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"metadata"];
 
-  v13 = [(MRContentItem *)self artwork];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"artwork"];
+  artwork = [(MRContentItem *)self artwork];
+  dictionaryRepresentation2 = [artwork dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"artwork"];
 
-  v15 = [(MRContentItem *)self transcriptAlignments];
-  v16 = [v15 mr_map:&__block_literal_global_67_0];
+  transcriptAlignments = [(MRContentItem *)self transcriptAlignments];
+  v16 = [transcriptAlignments mr_map:&__block_literal_global_67_0];
   [v3 setObject:v16 forKeyedSubscript:@"transcriptAlignments"];
 
-  v17 = [(MRContentItem *)self availableLanguageOptions];
-  v18 = [v17 mr_map:&__block_literal_global_72_0];
+  availableLanguageOptions = [(MRContentItem *)self availableLanguageOptions];
+  v18 = [availableLanguageOptions mr_map:&__block_literal_global_72_0];
   [v3 setObject:v18 forKeyedSubscript:@"availableLanguageOptions"];
 
-  v19 = [(MRContentItem *)self currentLanguageOptions];
-  v20 = [v19 mr_map:&__block_literal_global_77_1];
+  currentLanguageOptions = [(MRContentItem *)self currentLanguageOptions];
+  v20 = [currentLanguageOptions mr_map:&__block_literal_global_77_1];
   [v3 setObject:v20 forKeyedSubscript:@"currentLanguageOptions"];
 
-  v21 = [(MRContentItem *)self sections];
-  v22 = [v21 mr_map:&__block_literal_global_82_0];
+  sections = [(MRContentItem *)self sections];
+  v22 = [sections mr_map:&__block_literal_global_82_0];
   [v3 setObject:v22 forKeyedSubscript:@"sections"];
 
-  v23 = [(MRContentItem *)self availableArtworkFormats];
-  [v3 setObject:v23 forKeyedSubscript:@"availableArtworkFormats"];
+  availableArtworkFormats = [(MRContentItem *)self availableArtworkFormats];
+  [v3 setObject:availableArtworkFormats forKeyedSubscript:@"availableArtworkFormats"];
 
-  v24 = [(MRContentItem *)self availableRemoteArtworkFormats];
-  [v3 setObject:v24 forKeyedSubscript:@"availableRemoteArtworkFormats"];
+  availableRemoteArtworkFormats = [(MRContentItem *)self availableRemoteArtworkFormats];
+  [v3 setObject:availableRemoteArtworkFormats forKeyedSubscript:@"availableRemoteArtworkFormats"];
 
-  v25 = [(MRContentItem *)self availableAnimatedArtworkFormats];
-  [v3 setObject:v25 forKeyedSubscript:@"availableAnimatedArtworkFormats"];
+  availableAnimatedArtworkFormats = [(MRContentItem *)self availableAnimatedArtworkFormats];
+  [v3 setObject:availableAnimatedArtworkFormats forKeyedSubscript:@"availableAnimatedArtworkFormats"];
 
-  v26 = [(MRContentItem *)self artworks];
-  [v3 setObject:v26 forKeyedSubscript:@"artworks"];
+  artworks = [(MRContentItem *)self artworks];
+  [v3 setObject:artworks forKeyedSubscript:@"artworks"];
 
-  v27 = [(MRContentItem *)self remoteArtworks];
-  [v3 setObject:v27 forKeyedSubscript:@"remoteArtworks"];
+  remoteArtworks = [(MRContentItem *)self remoteArtworks];
+  [v3 setObject:remoteArtworks forKeyedSubscript:@"remoteArtworks"];
 
-  v28 = [(MRContentItem *)self animatedArtworkPreviewFrames];
-  [v3 setObject:v28 forKeyedSubscript:@"animatedArtworkPreviewFrames"];
+  animatedArtworkPreviewFrames = [(MRContentItem *)self animatedArtworkPreviewFrames];
+  [v3 setObject:animatedArtworkPreviewFrames forKeyedSubscript:@"animatedArtworkPreviewFrames"];
 
-  v29 = [(MRContentItem *)self animatedArtworks];
-  [v3 setObject:v29 forKeyedSubscript:@"animatedArtworks"];
+  animatedArtworks = [(MRContentItem *)self animatedArtworks];
+  [v3 setObject:animatedArtworks forKeyedSubscript:@"animatedArtworks"];
 
   return v3;
 }
 
-- (MRContentItem)initWithIdentifier:(id)a3
+- (MRContentItem)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v9.receiver = self;
     v9.super_class = MRContentItem;
@@ -957,92 +957,92 @@ LABEL_147:
     v6 = v5;
     if (v5)
     {
-      [(MRContentItem *)v5 setIdentifier:v4];
+      [(MRContentItem *)v5 setIdentifier:identifierCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (MRContentItem)initWithNowPlayingInfo:(id)a3
+- (MRContentItem)initWithNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = [objc_opt_class() extractedIdentifierFromNowPlayingInfo:v4];
-    if (!v5)
+    uUIDString = [objc_opt_class() extractedIdentifierFromNowPlayingInfo:infoCopy];
+    if (!uUIDString)
     {
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v5 = [v6 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    v7 = [(MRContentItem *)self initWithIdentifier:v5];
+    v7 = [(MRContentItem *)self initWithIdentifier:uUIDString];
     v8 = v7;
     if (v7)
     {
-      [(MRContentItem *)v7 setNowPlayingInfo:v4 policy:1 request:0];
+      [(MRContentItem *)v7 setNowPlayingInfo:infoCopy policy:1 request:0];
     }
 
     self = v8;
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (MRContentItem)initWithProtobuf:(id)a3
+- (MRContentItem)initWithProtobuf:(id)protobuf
 {
   v131 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  protobufCopy = protobuf;
+  v5 = protobufCopy;
+  if (protobufCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [(MRContentItem *)self initWithIdentifier:v6];
+    identifier = [protobufCopy identifier];
+    v7 = [(MRContentItem *)self initWithIdentifier:identifier];
 
     if (v7)
     {
-      v8 = [v5 info];
-      v9 = [v8 copy];
+      info = [v5 info];
+      v9 = [info copy];
       info = v7->_info;
       v7->_info = v9;
 
-      v11 = [v5 parentIdentifier];
-      v12 = [v11 copy];
+      parentIdentifier = [v5 parentIdentifier];
+      v12 = [parentIdentifier copy];
       parentIdentifier = v7->_parentIdentifier;
       v7->_parentIdentifier = v12;
 
-      v14 = [v5 ancestorIdentifier];
-      v15 = [v14 copy];
+      ancestorIdentifier = [v5 ancestorIdentifier];
+      v15 = [ancestorIdentifier copy];
       ancestorIdentifier = v7->_ancestorIdentifier;
       v7->_ancestorIdentifier = v15;
 
-      v17 = [v5 associatedParticipantIdentifier];
-      v18 = [v17 copy];
+      associatedParticipantIdentifier = [v5 associatedParticipantIdentifier];
+      v18 = [associatedParticipantIdentifier copy];
       associatedParticipantIdentifier = v7->_associatedParticipantIdentifier;
       v7->_associatedParticipantIdentifier = v18;
 
-      v20 = [v5 queueIdentifier];
-      v21 = [v20 copy];
+      queueIdentifier = [v5 queueIdentifier];
+      v21 = [queueIdentifier copy];
       queueIdentifier = v7->_queueIdentifier;
       v7->_queueIdentifier = v21;
 
-      v23 = [v5 requestIdentifier];
-      v24 = [v23 copy];
+      requestIdentifier = [v5 requestIdentifier];
+      v24 = [requestIdentifier copy];
       requestIdentifier = v7->_requestIdentifier;
       v7->_requestIdentifier = v24;
 
@@ -1053,57 +1053,57 @@ LABEL_147:
       if ([v5 hasMetadata])
       {
         v28 = [MRContentItemMetadata alloc];
-        v29 = [v5 metadata];
-        v30 = [(MRContentItemMetadata *)v28 initWithProtobuf:v29];
+        metadata = [v5 metadata];
+        v30 = [(MRContentItemMetadata *)v28 initWithProtobuf:metadata];
         metadata = v7->_metadata;
         v7->_metadata = v30;
       }
 
-      v32 = [v5 transcriptAlignments];
-      v33 = [v32 mr_map:&__block_literal_global_70];
+      transcriptAlignments = [v5 transcriptAlignments];
+      v33 = [transcriptAlignments mr_map:&__block_literal_global_70];
       transcriptAlignments = v7->_transcriptAlignments;
       v7->_transcriptAlignments = v33;
 
-      v35 = [v5 availableLanguageOptions];
-      v36 = [v35 mr_map:&__block_literal_global_10_3];
+      availableLanguageOptions = [v5 availableLanguageOptions];
+      v36 = [availableLanguageOptions mr_map:&__block_literal_global_10_3];
       availableLanguageOptions = v7->_availableLanguageOptions;
       v7->_availableLanguageOptions = v36;
 
-      v38 = [v5 currentLanguageOptions];
-      v39 = [v38 mr_map:&__block_literal_global_14_1];
+      currentLanguageOptions = [v5 currentLanguageOptions];
+      v39 = [currentLanguageOptions mr_map:&__block_literal_global_14_1];
       currentLanguageOptions = v7->_currentLanguageOptions;
       v7->_currentLanguageOptions = v39;
 
-      v41 = [v5 sections];
-      v42 = [v41 mr_map:&__block_literal_global_18_0];
+      sections = [v5 sections];
+      v42 = [sections mr_map:&__block_literal_global_18_0];
       sections = v7->_sections;
       v7->_sections = v42;
 
-      v44 = [v5 availableArtworkFormats];
+      availableArtworkFormats = [v5 availableArtworkFormats];
       availableArtworkFormats = v7->_availableArtworkFormats;
-      v7->_availableArtworkFormats = v44;
+      v7->_availableArtworkFormats = availableArtworkFormats;
 
-      v46 = [v5 availableRemoteArtworkFormats];
+      availableRemoteArtworkFormats = [v5 availableRemoteArtworkFormats];
       availableRemoteArtworkFormats = v7->_availableRemoteArtworkFormats;
-      v7->_availableRemoteArtworkFormats = v46;
+      v7->_availableRemoteArtworkFormats = availableRemoteArtworkFormats;
 
       if (_os_feature_enabled_impl())
       {
-        v48 = [v5 availableAnimatedArtworkFormats];
+        availableAnimatedArtworkFormats = [v5 availableAnimatedArtworkFormats];
         availableAnimatedArtworkFormats = v7->_availableAnimatedArtworkFormats;
-        v7->_availableAnimatedArtworkFormats = v48;
+        v7->_availableAnimatedArtworkFormats = availableAnimatedArtworkFormats;
       }
 
       v106 = v5;
       if ([v5 dataArtworksCount])
       {
-        v50 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v119 = 0u;
         v120 = 0u;
         v121 = 0u;
         v122 = 0u;
-        v51 = [v5 dataArtworks];
-        v52 = [v51 countByEnumeratingWithState:&v119 objects:v130 count:16];
+        dataArtworks = [v5 dataArtworks];
+        v52 = [dataArtworks countByEnumeratingWithState:&v119 objects:v130 count:16];
         if (v52)
         {
           v53 = v52;
@@ -1114,41 +1114,41 @@ LABEL_147:
             {
               if (*v120 != v54)
               {
-                objc_enumerationMutation(v51);
+                objc_enumerationMutation(dataArtworks);
               }
 
               v56 = *(*(&v119 + 1) + 8 * i);
               if ([v56 hasType])
               {
                 v57 = [MRDataArtwork alloc];
-                v58 = [v56 imageData];
-                v59 = [(MRDataArtwork *)v57 initWithImageData:v58];
-                v60 = [v56 type];
-                [v50 setObject:v59 forKeyedSubscript:v60];
+                imageData = [v56 imageData];
+                v59 = [(MRDataArtwork *)v57 initWithImageData:imageData];
+                type = [v56 type];
+                [dictionary setObject:v59 forKeyedSubscript:type];
               }
 
               else
               {
-                v58 = _MRLogForCategory(0);
-                if (os_log_type_enabled(v58, OS_LOG_TYPE_FAULT))
+                imageData = _MRLogForCategory(0);
+                if (os_log_type_enabled(imageData, OS_LOG_TYPE_FAULT))
                 {
                   identifier = v7->_identifier;
                   *buf = 138412546;
                   v127 = v56;
                   v128 = 2112;
                   v129 = identifier;
-                  _os_log_fault_impl(&dword_1A2860000, v58, OS_LOG_TYPE_FAULT, "FAULT: No type for artwork protobuf %@ in content item %@", buf, 0x16u);
+                  _os_log_fault_impl(&dword_1A2860000, imageData, OS_LOG_TYPE_FAULT, "FAULT: No type for artwork protobuf %@ in content item %@", buf, 0x16u);
                 }
               }
             }
 
-            v53 = [v51 countByEnumeratingWithState:&v119 objects:v130 count:16];
+            v53 = [dataArtworks countByEnumeratingWithState:&v119 objects:v130 count:16];
           }
 
           while (v53);
         }
 
-        v62 = [v50 copy];
+        v62 = [dictionary copy];
         artworks = v7->_artworks;
         v7->_artworks = v62;
 
@@ -1157,13 +1157,13 @@ LABEL_147:
 
       if ([v5 remoteArtworksCount])
       {
-        v64 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v115 = 0u;
         v116 = 0u;
         v117 = 0u;
         v118 = 0u;
-        v65 = [v5 remoteArtworks];
-        v66 = [v65 countByEnumeratingWithState:&v115 objects:v125 count:16];
+        remoteArtworks = [v5 remoteArtworks];
+        v66 = [remoteArtworks countByEnumeratingWithState:&v115 objects:v125 count:16];
         if (v66)
         {
           v67 = v66;
@@ -1174,15 +1174,15 @@ LABEL_147:
             {
               if (*v116 != v68)
               {
-                objc_enumerationMutation(v65);
+                objc_enumerationMutation(remoteArtworks);
               }
 
               v70 = *(*(&v115 + 1) + 8 * j);
               if ([v70 hasType])
               {
                 v71 = [[MRRemoteArtwork alloc] initWithProtobuf:v70];
-                v72 = [v70 type];
-                [v64 setObject:v71 forKeyedSubscript:v72];
+                type2 = [v70 type];
+                [dictionary2 setObject:v71 forKeyedSubscript:type2];
               }
 
               else
@@ -1200,13 +1200,13 @@ LABEL_147:
               }
             }
 
-            v67 = [v65 countByEnumeratingWithState:&v115 objects:v125 count:16];
+            v67 = [remoteArtworks countByEnumeratingWithState:&v115 objects:v125 count:16];
           }
 
           while (v67);
         }
 
-        v74 = [v64 copy];
+        v74 = [dictionary2 copy];
         remoteArtworks = v7->_remoteArtworks;
         v7->_remoteArtworks = v74;
 
@@ -1217,13 +1217,13 @@ LABEL_147:
       {
         if ([v5 animatedArtworkPreviewFramesCount])
         {
-          v76 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary3 = [MEMORY[0x1E695DF90] dictionary];
           v111 = 0u;
           v112 = 0u;
           v113 = 0u;
           v114 = 0u;
-          v77 = [v5 animatedArtworkPreviewFrames];
-          v78 = [v77 countByEnumeratingWithState:&v111 objects:v124 count:16];
+          animatedArtworkPreviewFrames = [v5 animatedArtworkPreviewFrames];
+          v78 = [animatedArtworkPreviewFrames countByEnumeratingWithState:&v111 objects:v124 count:16];
           if (v78)
           {
             v79 = v78;
@@ -1234,41 +1234,41 @@ LABEL_147:
               {
                 if (*v112 != v80)
                 {
-                  objc_enumerationMutation(v77);
+                  objc_enumerationMutation(animatedArtworkPreviewFrames);
                 }
 
                 v82 = *(*(&v111 + 1) + 8 * k);
                 if ([v82 hasType])
                 {
                   v83 = [MRDataArtwork alloc];
-                  v84 = [v82 imageData];
-                  v85 = [(MRDataArtwork *)v83 initWithImageData:v84];
-                  v86 = [v82 type];
-                  [v76 setObject:v85 forKeyedSubscript:v86];
+                  imageData2 = [v82 imageData];
+                  v85 = [(MRDataArtwork *)v83 initWithImageData:imageData2];
+                  type3 = [v82 type];
+                  [dictionary3 setObject:v85 forKeyedSubscript:type3];
                 }
 
                 else
                 {
-                  v84 = _MRLogForCategory(0);
-                  if (os_log_type_enabled(v84, OS_LOG_TYPE_FAULT))
+                  imageData2 = _MRLogForCategory(0);
+                  if (os_log_type_enabled(imageData2, OS_LOG_TYPE_FAULT))
                   {
                     v87 = v7->_identifier;
                     *buf = 138412546;
                     v127 = v82;
                     v128 = 2112;
                     v129 = v87;
-                    _os_log_fault_impl(&dword_1A2860000, v84, OS_LOG_TYPE_FAULT, "FAULT: No type for animated artwork preview frame protobuf %@ in content item %@", buf, 0x16u);
+                    _os_log_fault_impl(&dword_1A2860000, imageData2, OS_LOG_TYPE_FAULT, "FAULT: No type for animated artwork preview frame protobuf %@ in content item %@", buf, 0x16u);
                   }
                 }
               }
 
-              v79 = [v77 countByEnumeratingWithState:&v111 objects:v124 count:16];
+              v79 = [animatedArtworkPreviewFrames countByEnumeratingWithState:&v111 objects:v124 count:16];
             }
 
             while (v79);
           }
 
-          v88 = [v76 copy];
+          v88 = [dictionary3 copy];
           animatedArtworkPreviewFrames = v7->_animatedArtworkPreviewFrames;
           v7->_animatedArtworkPreviewFrames = v88;
 
@@ -1277,13 +1277,13 @@ LABEL_147:
 
         if ([v5 animatedArtworksCount])
         {
-          v90 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary4 = [MEMORY[0x1E695DF90] dictionary];
           v107 = 0u;
           v108 = 0u;
           v109 = 0u;
           v110 = 0u;
-          v91 = [v5 animatedArtworks];
-          v92 = [v91 countByEnumeratingWithState:&v107 objects:v123 count:16];
+          animatedArtworks = [v5 animatedArtworks];
+          v92 = [animatedArtworks countByEnumeratingWithState:&v107 objects:v123 count:16];
           if (v92)
           {
             v93 = v92;
@@ -1294,7 +1294,7 @@ LABEL_147:
               {
                 if (*v108 != v94)
                 {
-                  objc_enumerationMutation(v91);
+                  objc_enumerationMutation(animatedArtworks);
                 }
 
                 v96 = *(*(&v107 + 1) + 8 * m);
@@ -1303,21 +1303,21 @@ LABEL_147:
                   v97 = [[MRAnimatedArtwork alloc] initWithProtobuf:v96];
                   if (v97)
                   {
-                    v98 = [v96 type];
-                    [v90 setObject:v97 forKeyedSubscript:v98];
+                    type4 = [v96 type];
+                    [dictionary4 setObject:v97 forKeyedSubscript:type4];
                   }
 
                   else
                   {
-                    v98 = _MRLogForCategory(0);
-                    if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
+                    type4 = _MRLogForCategory(0);
+                    if (os_log_type_enabled(type4, OS_LOG_TYPE_ERROR))
                     {
                       v100 = v7->_identifier;
                       *buf = 138412546;
                       v127 = v96;
                       v128 = 2112;
                       v129 = v100;
-                      _os_log_error_impl(&dword_1A2860000, v98, OS_LOG_TYPE_ERROR, "Could not build animated artwork from protobuf %@ in content item %@", buf, 0x16u);
+                      _os_log_error_impl(&dword_1A2860000, type4, OS_LOG_TYPE_ERROR, "Could not build animated artwork from protobuf %@ in content item %@", buf, 0x16u);
                     }
                   }
                 }
@@ -1337,13 +1337,13 @@ LABEL_147:
                 }
               }
 
-              v93 = [v91 countByEnumeratingWithState:&v107 objects:v123 count:16];
+              v93 = [animatedArtworks countByEnumeratingWithState:&v107 objects:v123 count:16];
             }
 
             while (v93);
           }
 
-          v101 = [v90 copy];
+          v101 = [dictionary4 copy];
           animatedArtworks = v7->_animatedArtworks;
           v7->_animatedArtworks = v101;
 
@@ -1353,16 +1353,16 @@ LABEL_147:
     }
 
     self = v7;
-    v103 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v103 = 0;
+    selfCopy = 0;
   }
 
   v104 = *MEMORY[0x1E69E9840];
-  return v103;
+  return selfCopy;
 }
 
 MRTranscriptAlignment *__34__MRContentItem_initWithProtobuf___block_invoke(uint64_t a1, void *a2)
@@ -1397,108 +1397,108 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
   return v3;
 }
 
-- (MRContentItem)initWithData:(id)a3
+- (MRContentItem)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRContentItemProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRContentItemProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRContentItem *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)protobufWithEncoding:(int64_t)a3
+- (id)protobufWithEncoding:(int64_t)encoding
 {
   v107 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(_MRContentItemProtobuf);
-  v6 = [(MRContentItem *)self artwork];
-  -[_MRContentItemProtobuf setArtworkDataWidth:](v5, "setArtworkDataWidth:", [v6 width]);
+  artwork = [(MRContentItem *)self artwork];
+  -[_MRContentItemProtobuf setArtworkDataWidth:](v5, "setArtworkDataWidth:", [artwork width]);
 
-  v7 = [(MRContentItem *)self artwork];
-  -[_MRContentItemProtobuf setHasArtworkDataWidth:](v5, "setHasArtworkDataWidth:", [v7 width] > 0);
+  artwork2 = [(MRContentItem *)self artwork];
+  -[_MRContentItemProtobuf setHasArtworkDataWidth:](v5, "setHasArtworkDataWidth:", [artwork2 width] > 0);
 
-  v8 = [(MRContentItem *)self artwork];
-  -[_MRContentItemProtobuf setArtworkDataHeight:](v5, "setArtworkDataHeight:", [v8 height]);
+  artwork3 = [(MRContentItem *)self artwork];
+  -[_MRContentItemProtobuf setArtworkDataHeight:](v5, "setArtworkDataHeight:", [artwork3 height]);
 
-  v9 = [(MRContentItem *)self artwork];
-  -[_MRContentItemProtobuf setHasArtworkDataHeight:](v5, "setHasArtworkDataHeight:", [v9 height] > 0);
+  artwork4 = [(MRContentItem *)self artwork];
+  -[_MRContentItemProtobuf setHasArtworkDataHeight:](v5, "setHasArtworkDataHeight:", [artwork4 height] > 0);
 
-  v10 = [(MRContentItem *)self identifier];
-  [(_MRContentItemProtobuf *)v5 setIdentifier:v10];
+  identifier = [(MRContentItem *)self identifier];
+  [(_MRContentItemProtobuf *)v5 setIdentifier:identifier];
 
-  v11 = [(MRContentItem *)self artwork];
-  v12 = [v11 imageData];
-  [(_MRContentItemProtobuf *)v5 setArtworkData:v12];
+  artwork5 = [(MRContentItem *)self artwork];
+  imageData = [artwork5 imageData];
+  [(_MRContentItemProtobuf *)v5 setArtworkData:imageData];
 
-  v13 = [(MRContentItem *)self info];
-  [(_MRContentItemProtobuf *)v5 setInfo:v13];
+  info = [(MRContentItem *)self info];
+  [(_MRContentItemProtobuf *)v5 setInfo:info];
 
-  v14 = [(MRContentItem *)self parentIdentifier];
-  [(_MRContentItemProtobuf *)v5 setParentIdentifier:v14];
+  parentIdentifier = [(MRContentItem *)self parentIdentifier];
+  [(_MRContentItemProtobuf *)v5 setParentIdentifier:parentIdentifier];
 
-  v15 = [(MRContentItem *)self ancestorIdentifier];
-  [(_MRContentItemProtobuf *)v5 setAncestorIdentifier:v15];
+  ancestorIdentifier = [(MRContentItem *)self ancestorIdentifier];
+  [(_MRContentItemProtobuf *)v5 setAncestorIdentifier:ancestorIdentifier];
 
-  v16 = [(MRContentItem *)self associatedParticipantIdentifier];
-  [(_MRContentItemProtobuf *)v5 setAssociatedParticipantIdentifier:v16];
+  associatedParticipantIdentifier = [(MRContentItem *)self associatedParticipantIdentifier];
+  [(_MRContentItemProtobuf *)v5 setAssociatedParticipantIdentifier:associatedParticipantIdentifier];
 
-  v17 = [(MRContentItem *)self queueIdentifier];
-  [(_MRContentItemProtobuf *)v5 setQueueIdentifier:v17];
+  queueIdentifier = [(MRContentItem *)self queueIdentifier];
+  [(_MRContentItemProtobuf *)v5 setQueueIdentifier:queueIdentifier];
 
-  v18 = [(MRContentItem *)self requestIdentifier];
-  [(_MRContentItemProtobuf *)v5 setRequestIdentifier:v18];
+  requestIdentifier = [(MRContentItem *)self requestIdentifier];
+  [(_MRContentItemProtobuf *)v5 setRequestIdentifier:requestIdentifier];
 
-  v19 = [(MRContentItem *)self metadata];
-  v20 = [v19 protobufWithEncoding:a3];
+  metadata = [(MRContentItem *)self metadata];
+  v20 = [metadata protobufWithEncoding:encoding];
   [(_MRContentItemProtobuf *)v5 setMetadata:v20];
 
-  v21 = [(MRContentItem *)self transcriptAlignments];
-  v22 = [v21 mr_map:&__block_literal_global_29_1];
+  transcriptAlignments = [(MRContentItem *)self transcriptAlignments];
+  v22 = [transcriptAlignments mr_map:&__block_literal_global_29_1];
   v23 = [v22 mutableCopy];
   [(_MRContentItemProtobuf *)v5 setTranscriptAlignments:v23];
 
-  v24 = [(MRContentItem *)self availableLanguageOptions];
-  v25 = [v24 mr_map:&__block_literal_global_32_1];
+  availableLanguageOptions = [(MRContentItem *)self availableLanguageOptions];
+  v25 = [availableLanguageOptions mr_map:&__block_literal_global_32_1];
   v26 = [v25 mutableCopy];
   [(_MRContentItemProtobuf *)v5 setAvailableLanguageOptions:v26];
 
-  v27 = [(MRContentItem *)self currentLanguageOptions];
-  v28 = [v27 mr_map:&__block_literal_global_35];
+  currentLanguageOptions = [(MRContentItem *)self currentLanguageOptions];
+  v28 = [currentLanguageOptions mr_map:&__block_literal_global_35];
   v29 = [v28 mutableCopy];
   [(_MRContentItemProtobuf *)v5 setCurrentLanguageOptions:v29];
 
-  v30 = [(MRContentItem *)self sections];
+  sections = [(MRContentItem *)self sections];
   v102[0] = MEMORY[0x1E69E9820];
   v102[1] = 3221225472;
   v102[2] = __38__MRContentItem_protobufWithEncoding___block_invoke_4;
   v102[3] = &__block_descriptor_40_e23__16__0__MRContentItem_8l;
-  v102[4] = a3;
-  v31 = [v30 mr_map:v102];
+  v102[4] = encoding;
+  v31 = [sections mr_map:v102];
   v32 = [v31 mutableCopy];
   [(_MRContentItemProtobuf *)v5 setSections:v32];
 
-  v33 = [(MRContentItem *)self availableArtworkFormats];
-  v34 = [v33 mutableCopy];
+  availableArtworkFormats = [(MRContentItem *)self availableArtworkFormats];
+  v34 = [availableArtworkFormats mutableCopy];
   [(_MRContentItemProtobuf *)v5 setAvailableArtworkFormats:v34];
 
-  v35 = [(MRContentItem *)self availableRemoteArtworkFormats];
-  v36 = [v35 mutableCopy];
+  availableRemoteArtworkFormats = [(MRContentItem *)self availableRemoteArtworkFormats];
+  v36 = [availableRemoteArtworkFormats mutableCopy];
   v85 = v5;
   [(_MRContentItemProtobuf *)v5 setAvailableRemoteArtworkFormats:v36];
 
   if (_os_feature_enabled_impl())
   {
-    v37 = [(MRContentItem *)self availableAnimatedArtworkFormats];
-    v38 = [v37 mutableCopy];
+    availableAnimatedArtworkFormats = [(MRContentItem *)self availableAnimatedArtworkFormats];
+    v38 = [availableAnimatedArtworkFormats mutableCopy];
     [(_MRContentItemProtobuf *)v5 setAvailableAnimatedArtworkFormats:v38];
   }
 
@@ -1506,9 +1506,9 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v39 = self;
-  v40 = [(MRContentItem *)self artworks];
-  v41 = [v40 countByEnumeratingWithState:&v98 objects:v106 count:16];
+  selfCopy = self;
+  artworks = [(MRContentItem *)self artworks];
+  v41 = [artworks countByEnumeratingWithState:&v98 objects:v106 count:16];
   if (v41)
   {
     v42 = v41;
@@ -1519,21 +1519,21 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
       {
         if (*v99 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(artworks);
         }
 
         v45 = *(*(&v98 + 1) + 8 * i);
         v46 = objc_alloc_init(_MRDataArtworkProtobuf);
         [(_MRDataArtworkProtobuf *)v46 setType:v45];
-        v47 = [(MRContentItem *)v39 artworks];
-        v48 = [v47 objectForKeyedSubscript:v45];
-        v49 = [v48 imageData];
-        [(_MRDataArtworkProtobuf *)v46 setImageData:v49];
+        artworks2 = [(MRContentItem *)selfCopy artworks];
+        v48 = [artworks2 objectForKeyedSubscript:v45];
+        imageData2 = [v48 imageData];
+        [(_MRDataArtworkProtobuf *)v46 setImageData:imageData2];
 
         [(_MRContentItemProtobuf *)v85 addDataArtworks:v46];
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v98 objects:v106 count:16];
+      v42 = [artworks countByEnumeratingWithState:&v98 objects:v106 count:16];
     }
 
     while (v42);
@@ -1543,8 +1543,8 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v50 = v39;
-  obj = [(MRContentItem *)v39 remoteArtworks];
+  v50 = selfCopy;
+  obj = [(MRContentItem *)selfCopy remoteArtworks];
   v51 = [obj countByEnumeratingWithState:&v94 objects:v105 count:16];
   if (v51)
   {
@@ -1562,16 +1562,16 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
         v55 = *(*(&v94 + 1) + 8 * j);
         v56 = objc_alloc_init(_MRRemoteArtworkProtobuf);
         [(_MRRemoteArtworkProtobuf *)v56 setType:v55];
-        v57 = [(MRContentItem *)v50 remoteArtworks];
-        v58 = [v57 objectForKeyedSubscript:v55];
-        v59 = [v58 artworkURLString];
-        [(_MRRemoteArtworkProtobuf *)v56 setArtworkURLString:v59];
+        remoteArtworks = [(MRContentItem *)v50 remoteArtworks];
+        v58 = [remoteArtworks objectForKeyedSubscript:v55];
+        artworkURLString = [v58 artworkURLString];
+        [(_MRRemoteArtworkProtobuf *)v56 setArtworkURLString:artworkURLString];
 
-        v50 = v39;
-        v60 = [(MRContentItem *)v39 remoteArtworks];
-        v61 = [v60 objectForKeyedSubscript:v55];
-        v62 = [v61 artworkURLTemplateData];
-        [(_MRRemoteArtworkProtobuf *)v56 setArtworkURLTemplateData:v62];
+        v50 = selfCopy;
+        remoteArtworks2 = [(MRContentItem *)selfCopy remoteArtworks];
+        v61 = [remoteArtworks2 objectForKeyedSubscript:v55];
+        artworkURLTemplateData = [v61 artworkURLTemplateData];
+        [(_MRRemoteArtworkProtobuf *)v56 setArtworkURLTemplateData:artworkURLTemplateData];
 
         [(_MRContentItemProtobuf *)v85 addRemoteArtworks:v56];
       }
@@ -1588,8 +1588,8 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v63 = [(MRContentItem *)v50 animatedArtworkPreviewFrames];
-    v64 = [v63 countByEnumeratingWithState:&v90 objects:v104 count:16];
+    animatedArtworkPreviewFrames = [(MRContentItem *)v50 animatedArtworkPreviewFrames];
+    v64 = [animatedArtworkPreviewFrames countByEnumeratingWithState:&v90 objects:v104 count:16];
     if (v64)
     {
       v65 = v64;
@@ -1600,21 +1600,21 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
         {
           if (*v91 != v66)
           {
-            objc_enumerationMutation(v63);
+            objc_enumerationMutation(animatedArtworkPreviewFrames);
           }
 
           v68 = *(*(&v90 + 1) + 8 * k);
           v69 = objc_alloc_init(_MRDataArtworkProtobuf);
           [(_MRDataArtworkProtobuf *)v69 setType:v68];
-          v70 = [(MRContentItem *)v39 animatedArtworkPreviewFrames];
-          v71 = [v70 objectForKeyedSubscript:v68];
-          v72 = [v71 imageData];
-          [(_MRDataArtworkProtobuf *)v69 setImageData:v72];
+          animatedArtworkPreviewFrames2 = [(MRContentItem *)selfCopy animatedArtworkPreviewFrames];
+          v71 = [animatedArtworkPreviewFrames2 objectForKeyedSubscript:v68];
+          imageData3 = [v71 imageData];
+          [(_MRDataArtworkProtobuf *)v69 setImageData:imageData3];
 
           [(_MRContentItemProtobuf *)v85 addAnimatedArtworkPreviewFrames:v69];
         }
 
-        v65 = [v63 countByEnumeratingWithState:&v90 objects:v104 count:16];
+        v65 = [animatedArtworkPreviewFrames countByEnumeratingWithState:&v90 objects:v104 count:16];
       }
 
       while (v65);
@@ -1624,8 +1624,8 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v73 = [(MRContentItem *)v39 animatedArtworks];
-    v74 = [v73 countByEnumeratingWithState:&v86 objects:v103 count:16];
+    animatedArtworks = [(MRContentItem *)selfCopy animatedArtworks];
+    v74 = [animatedArtworks countByEnumeratingWithState:&v86 objects:v103 count:16];
     if (v74)
     {
       v75 = v74;
@@ -1636,12 +1636,12 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
         {
           if (*v87 != v76)
           {
-            objc_enumerationMutation(v73);
+            objc_enumerationMutation(animatedArtworks);
           }
 
           v78 = *(*(&v86 + 1) + 8 * m);
-          v79 = [(MRContentItem *)v39 animatedArtworks];
-          v80 = [v79 objectForKeyedSubscript:v78];
+          animatedArtworks2 = [(MRContentItem *)selfCopy animatedArtworks];
+          v80 = [animatedArtworks2 objectForKeyedSubscript:v78];
           v81 = [v80 protobufWithFormat:v78];
 
           if (v81)
@@ -1650,7 +1650,7 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
           }
         }
 
-        v75 = [v73 countByEnumeratingWithState:&v86 objects:v103 count:16];
+        v75 = [animatedArtworks countByEnumeratingWithState:&v86 objects:v103 count:16];
       }
 
       while (v75);
@@ -1665,34 +1665,34 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
 - (NSData)data
 {
   v2 = [(MRContentItem *)self protobufWithEncoding:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
-- (void)setNowPlayingInfo:(id)a3 policy:(unsigned __int8)a4 request:(id)a5
+- (void)setNowPlayingInfo:(id)info policy:(unsigned __int8)policy request:(id)request
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 mutableCopy];
+  policyCopy = policy;
+  infoCopy = info;
+  requestCopy = request;
+  v10 = [infoCopy mutableCopy];
   if (v10)
   {
-    v198 = v8;
-    v11 = [(MRContentItem *)self metadata];
+    v198 = infoCopy;
+    metadata = [(MRContentItem *)self metadata];
 
-    if (!v11)
+    if (!metadata)
     {
       v12 = objc_alloc_init(MRContentItemMetadata);
       [(MRContentItem *)self setMetadata:v12];
     }
 
-    v195 = v6;
-    if (!v6)
+    v195 = policyCopy;
+    if (!policyCopy)
     {
-      v13 = [(MRContentItem *)self metadata];
-      v14 = [v13 nowPlayingInfo];
-      v15 = [v14 copy];
+      metadata2 = [(MRContentItem *)self metadata];
+      nowPlayingInfo = [metadata2 nowPlayingInfo];
+      v15 = [nowPlayingInfo copy];
 
       v214[0] = MEMORY[0x1E69E9820];
       v214[1] = 3221225472;
@@ -1702,7 +1702,7 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
       [v15 enumerateKeysAndObjectsUsingBlock:v214];
     }
 
-    if ((!v9 || [v9 includeMetadata]) && (v213[0] = MEMORY[0x1E69E9820], v213[1] = 3221225472, v213[2] = __50__MRContentItem_setNowPlayingInfo_policy_request___block_invoke_2, v213[3] = &unk_1E76A0C78, v213[4] = self, _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoAlbum", v213), !v9) || objc_msgSend(v9, "includeMetadata"))
+    if ((!requestCopy || [requestCopy includeMetadata]) && (v213[0] = MEMORY[0x1E69E9820], v213[1] = 3221225472, v213[2] = __50__MRContentItem_setNowPlayingInfo_policy_request___block_invoke_2, v213[3] = &unk_1E76A0C78, v213[4] = self, _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoAlbum", v213), !requestCopy) || objc_msgSend(requestCopy, "includeMetadata"))
     {
       v212[0] = MEMORY[0x1E69E9820];
       v212[1] = 3221225472;
@@ -1710,13 +1710,13 @@ MRContentItem *__34__MRContentItem_initWithProtobuf___block_invoke_4(uint64_t a1
       v212[3] = &unk_1E76A0C78;
       v212[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoArtist", v212);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_261;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_261:
       v16 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAssetURL"];
@@ -1730,21 +1730,21 @@ LABEL_261:
           v18 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v16];
         }
 
-        v19 = [(MRContentItem *)self metadata];
-        [v19 setAssetURL:v18];
+        metadata3 = [(MRContentItem *)self metadata];
+        [metadata3 setAssetURL:v18];
 
         if ((isKindOfClass & 1) == 0)
         {
         }
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_259;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_259:
       v211[0] = MEMORY[0x1E69E9820];
@@ -1753,31 +1753,31 @@ LABEL_259:
       v211[3] = &unk_1E76A0C78;
       v211[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoComposer", v211);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_257;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_257:
       v20 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDiscNumber"];
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 longValue];
-        v23 = [(MRContentItem *)self metadata];
-        [v23 setDiscNumber:v22];
+        longValue = [v20 longValue];
+        metadata4 = [(MRContentItem *)self metadata];
+        [metadata4 setDiscNumber:longValue];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_255;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_255:
       v210[0] = MEMORY[0x1E69E9820];
@@ -1786,13 +1786,13 @@ LABEL_255:
       v210[3] = &unk_1E76A0C78;
       v210[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoGenre", v210);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_253;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_253:
       v24 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPlaybackRate"];
@@ -1801,70 +1801,70 @@ LABEL_253:
       {
         [v24 floatValue];
         v27 = v26;
-        v28 = [(MRContentItem *)self metadata];
+        metadata5 = [(MRContentItem *)self metadata];
         LODWORD(v29) = v27;
-        [v28 setPlaybackRate:v29];
+        [metadata5 setPlaybackRate:v29];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_251;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_251:
       v30 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCurrentPlaybackDate"];
       if (v30)
       {
-        v31 = [(MRContentItem *)self metadata];
-        [v31 setCurrentPlaybackDate:v30];
+        metadata6 = [(MRContentItem *)self metadata];
+        [metadata6 setCurrentPlaybackDate:v30];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_249;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_249:
       v32 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsAlwaysLive"];
       v33 = v32;
       if (v32)
       {
-        v34 = [v32 BOOLValue];
-        v35 = [(MRContentItem *)self metadata];
-        [v35 setAlwaysLive:v34];
+        bOOLValue = [v32 BOOLValue];
+        metadata7 = [(MRContentItem *)self metadata];
+        [metadata7 setAlwaysLive:bOOLValue];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_39;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_39:
       v36 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsInTransition"];
       v37 = v36;
       if (v36)
       {
-        v38 = [v36 BOOLValue];
-        v39 = [(MRContentItem *)self metadata];
-        [v39 setInTransition:v38];
+        bOOLValue2 = [v36 BOOLValue];
+        metadata8 = [(MRContentItem *)self metadata];
+        [metadata8 setInTransition:bOOLValue2];
       }
     }
 
-    v40 = [(MRContentItem *)self metadata];
-    v41 = [v40 isAlwaysLive];
+    metadata9 = [(MRContentItem *)self metadata];
+    isAlwaysLive = [metadata9 isAlwaysLive];
 
-    if ((v41 & 1) == 0)
+    if ((isAlwaysLive & 1) == 0)
     {
-      if (!v9 || [v9 includeMetadata])
+      if (!requestCopy || [requestCopy includeMetadata])
       {
         v42 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDuration"];
         v43 = v42;
@@ -1872,17 +1872,17 @@ LABEL_39:
         {
           [v42 doubleValue];
           v45 = v44;
-          v46 = [(MRContentItem *)self metadata];
-          [v46 setDuration:v45];
+          metadata10 = [(MRContentItem *)self metadata];
+          [metadata10 setDuration:v45];
         }
 
-        if (!v9)
+        if (!requestCopy)
         {
           goto LABEL_49;
         }
       }
 
-      if ([v9 includeMetadata])
+      if ([requestCopy includeMetadata])
       {
 LABEL_49:
         v47 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoElapsedTime"];
@@ -1891,8 +1891,8 @@ LABEL_49:
         {
           [v47 doubleValue];
           v50 = v49;
-          v51 = [(MRContentItem *)self metadata];
-          [v51 setElapsedTime:v50];
+          metadata11 = [(MRContentItem *)self metadata];
+          [metadata11 setElapsedTime:v50];
         }
       }
     }
@@ -1907,7 +1907,7 @@ LABEL_49:
       [v10 setObject:v55 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTimestamp"];
     }
 
-    if (!v9 || [v9 includeMetadata])
+    if (!requestCopy || [requestCopy includeMetadata])
     {
       v56 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTimestamp"];
       v57 = v56;
@@ -1915,8 +1915,8 @@ LABEL_49:
       {
         [v56 doubleValue];
         v59 = v58;
-        v60 = [(MRContentItem *)self metadata];
-        [v60 setElapsedTimeTimestamp:v59];
+        metadata12 = [(MRContentItem *)self metadata];
+        [metadata12 setElapsedTimeTimestamp:v59];
       }
     }
 
@@ -1930,7 +1930,7 @@ LABEL_49:
       [v10 setObject:v64 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoStartTime"];
     }
 
-    if (!v9 || [v9 includeMetadata])
+    if (!requestCopy || [requestCopy includeMetadata])
     {
       v65 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoStartTime"];
       v66 = v65;
@@ -1938,17 +1938,17 @@ LABEL_49:
       {
         [v65 doubleValue];
         v68 = v67;
-        v69 = [(MRContentItem *)self metadata];
-        [v69 setStartTime:v68];
+        metadata13 = [(MRContentItem *)self metadata];
+        [metadata13 setStartTime:v68];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_290;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_290:
       v209[0] = MEMORY[0x1E69E9820];
@@ -1957,67 +1957,67 @@ LABEL_290:
       v209[3] = &unk_1E76A0C78;
       v209[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoTitle", v209);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_289;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_289:
       v70 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTotalDiscCount"];
       v71 = v70;
       if (v70)
       {
-        v72 = [v70 longValue];
-        v73 = [(MRContentItem *)self metadata];
-        [v73 setTotalDiscCount:v72];
+        longValue2 = [v70 longValue];
+        metadata14 = [(MRContentItem *)self metadata];
+        [metadata14 setTotalDiscCount:longValue2];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_288;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_288:
       v74 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTotalTrackCount"];
       v75 = v74;
       if (v74)
       {
-        v76 = [v74 longValue];
-        v77 = [(MRContentItem *)self metadata];
-        [v77 setTotalTrackCount:v76];
+        longValue3 = [v74 longValue];
+        metadata15 = [(MRContentItem *)self metadata];
+        [metadata15 setTotalTrackCount:longValue3];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_287;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_287:
       v78 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTrackNumber"];
       v79 = v78;
       if (v78)
       {
-        v80 = [v78 longValue];
-        v81 = [(MRContentItem *)self metadata];
-        [v81 setTrackNumber:v80];
+        longValue4 = [v78 longValue];
+        metadata16 = [(MRContentItem *)self metadata];
+        [metadata16 setTrackNumber:longValue4];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_286;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_286:
       v208[0] = MEMORY[0x1E69E9820];
@@ -2026,13 +2026,13 @@ LABEL_286:
       v208[3] = &unk_1E76A0C78;
       v208[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoCollectionIdentifier", v208);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_285;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_285:
       v207[0] = MEMORY[0x1E69E9820];
@@ -2041,13 +2041,13 @@ LABEL_285:
       v207[3] = &unk_1E76A0C78;
       v207[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoExternalContentIdentifier", v207);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_284;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_284:
       v206[0] = MEMORY[0x1E69E9820];
@@ -2056,31 +2056,31 @@ LABEL_284:
       v206[3] = &unk_1E76A0C78;
       v206[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoInternationalStandardRecordingCode", v206);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_283;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_283:
       v82 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoExcludeFromSuggestions"];
       v83 = v82;
       if (v82)
       {
-        v84 = [v82 BOOLValue];
-        v85 = [(MRContentItem *)self metadata];
-        [v85 setExcludeFromSuggestions:v84];
+        bOOLValue3 = [v82 BOOLValue];
+        metadata17 = [(MRContentItem *)self metadata];
+        [metadata17 setExcludeFromSuggestions:bOOLValue3];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_282;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_282:
       v205[0] = MEMORY[0x1E69E9820];
@@ -2089,13 +2089,13 @@ LABEL_282:
       v205[3] = &unk_1E76A0C78;
       v205[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoExternalProfileIdentifier", v205);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_281;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_281:
       v204[0] = MEMORY[0x1E69E9820];
@@ -2104,13 +2104,13 @@ LABEL_281:
       v204[3] = &unk_1E76A0C78;
       v204[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoServiceIdentifier", v204);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_280;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_280:
       v203[0] = MEMORY[0x1E69E9820];
@@ -2119,13 +2119,13 @@ LABEL_280:
       v203[3] = &unk_1E76A0C78;
       v203[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoBrandIdentifier", v203);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_279;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_279:
       v86 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPlaybackProgress"];
@@ -2134,108 +2134,108 @@ LABEL_279:
       {
         [v86 floatValue];
         v89 = v88;
-        v90 = [(MRContentItem *)self metadata];
+        metadata18 = [(MRContentItem *)self metadata];
         LODWORD(v91) = v89;
-        [v90 setPlaybackProgress:v91];
+        [metadata18 setPlaybackProgress:v91];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_278;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_278:
       v92 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsExplicitTrack"];
       v93 = v92;
       if (v92)
       {
-        v94 = [v92 BOOLValue];
-        v95 = [(MRContentItem *)self metadata];
-        [v95 setExplicitItem:v94];
+        bOOLValue4 = [v92 BOOLValue];
+        metadata19 = [(MRContentItem *)self metadata];
+        [metadata19 setExplicitItem:bOOLValue4];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_277;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_277:
       v96 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsSharable"];
       v97 = v96;
       if (v96)
       {
-        v98 = [v96 BOOLValue];
-        v99 = [(MRContentItem *)self metadata];
-        [v99 setSharable:v98];
+        bOOLValue5 = [v96 BOOLValue];
+        metadata20 = [(MRContentItem *)self metadata];
+        [metadata20 setSharable:bOOLValue5];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_276;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_276:
       v100 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsLiked"];
       v101 = v100;
       if (v100)
       {
-        v102 = [v100 BOOLValue];
-        v103 = [(MRContentItem *)self metadata];
-        [v103 setLiked:v102];
+        bOOLValue6 = [v100 BOOLValue];
+        metadata21 = [(MRContentItem *)self metadata];
+        [metadata21 setLiked:bOOLValue6];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_275;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_275:
       v104 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsInWishList"];
       v105 = v104;
       if (v104)
       {
-        v106 = [v104 BOOLValue];
-        v107 = [(MRContentItem *)self metadata];
-        [v107 setInWishList:v106];
+        bOOLValue7 = [v104 BOOLValue];
+        metadata22 = [(MRContentItem *)self metadata];
+        [metadata22 setInWishList:bOOLValue7];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_274;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_274:
       v108 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoRadioStationIdentifier"];
       v109 = v108;
       if (v108)
       {
-        v110 = [v108 longLongValue];
-        v111 = [(MRContentItem *)self metadata];
-        [v111 setRadioStationIdentifier:v110];
+        longLongValue = [v108 longLongValue];
+        metadata23 = [(MRContentItem *)self metadata];
+        [metadata23 setRadioStationIdentifier:longLongValue];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_273;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_273:
       v202[0] = MEMORY[0x1E69E9820];
@@ -2244,13 +2244,13 @@ LABEL_273:
       v202[3] = &unk_1E76A0C78;
       v202[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoRadioStationName", v202);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_272;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_272:
       v201[0] = MEMORY[0x1E69E9820];
@@ -2259,101 +2259,101 @@ LABEL_272:
       v201[3] = &unk_1E76A0C78;
       v201[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoRadioStationStringIdentifier", v201);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_271;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_271:
       v112 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoiTunesStoreIdentifier"];
       v113 = v112;
       if (v112)
       {
-        v114 = [v112 longLongValue];
-        v115 = [(MRContentItem *)self metadata];
-        [v115 setITunesStoreIdentifier:v114];
+        longLongValue2 = [v112 longLongValue];
+        metadata24 = [(MRContentItem *)self metadata];
+        [metadata24 setITunesStoreIdentifier:longLongValue2];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_270;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_270:
       v116 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoiTunesStoreSubscriptionAdamIdentifier"];
       v117 = v116;
       if (v116)
       {
-        v118 = [v116 longLongValue];
-        v119 = [(MRContentItem *)self metadata];
-        [v119 setITunesStoreSubscriptionIdentifier:v118];
+        longLongValue3 = [v116 longLongValue];
+        metadata25 = [(MRContentItem *)self metadata];
+        [metadata25 setITunesStoreSubscriptionIdentifier:longLongValue3];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_269;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_269:
       v120 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtistiTunesStoreAdamIdentifier"];
       v121 = v120;
       if (v120)
       {
-        v122 = [v120 longLongValue];
-        v123 = [(MRContentItem *)self metadata];
-        [v123 setITunesStoreArtistIdentifier:v122];
+        longLongValue4 = [v120 longLongValue];
+        metadata26 = [(MRContentItem *)self metadata];
+        [metadata26 setITunesStoreArtistIdentifier:longLongValue4];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_268;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_268:
       v124 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAlbumiTunesStoreAdamIdentifier"];
       v125 = v124;
       if (v124)
       {
-        v126 = [v124 longLongValue];
-        v127 = [(MRContentItem *)self metadata];
-        [v127 setITunesStoreAlbumIdentifier:v126];
+        longLongValue5 = [v124 longLongValue];
+        metadata27 = [(MRContentItem *)self metadata];
+        [metadata27 setITunesStoreAlbumIdentifier:longLongValue5];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_267;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_267:
       v128 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoPurchaseInfoData"];
       if (v128)
       {
-        v129 = [(MRContentItem *)self metadata];
-        [v129 setPurchaseInfoData:v128];
+        metadata28 = [(MRContentItem *)self metadata];
+        [metadata28 setPurchaseInfoData:v128];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_266;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_266:
       v130 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDefaultPlaybackRate"];
@@ -2362,36 +2362,36 @@ LABEL_266:
       {
         [v130 floatValue];
         v133 = v132;
-        v134 = [(MRContentItem *)self metadata];
+        metadata29 = [(MRContentItem *)self metadata];
         LODWORD(v135) = v133;
-        [v134 setDefaultPlaybackRate:v135];
+        [metadata29 setDefaultPlaybackRate:v135];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_265;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_265:
       v136 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDownloadState"];
       v137 = v136;
       if (v136)
       {
-        v138 = [v136 intValue];
-        v139 = [(MRContentItem *)self metadata];
-        [v139 setDownloadState:v138];
+        intValue = [v136 intValue];
+        metadata30 = [(MRContentItem *)self metadata];
+        [metadata30 setDownloadState:intValue];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_264;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_264:
       v140 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoDownloadProgress"];
@@ -2400,50 +2400,50 @@ LABEL_264:
       {
         [v140 floatValue];
         v143 = v142;
-        v144 = [(MRContentItem *)self metadata];
+        metadata31 = [(MRContentItem *)self metadata];
         LODWORD(v145) = v143;
-        [v144 setDownloadProgress:v145];
+        [metadata31 setDownloadProgress:v145];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_263;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_263:
       v146 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAppMetrics"];
       if (v146)
       {
-        v147 = [(MRContentItem *)self metadata];
-        [v147 setAppMetrics:v146];
+        metadata32 = [(MRContentItem *)self metadata];
+        [metadata32 setAppMetrics:v146];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_262;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_262:
       v148 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoCollectionInfo"];
       if (v148)
       {
-        v149 = [(MRContentItem *)self metadata];
-        [v149 setCollectionInfo:v148];
+        metadata33 = [(MRContentItem *)self metadata];
+        [metadata33 setCollectionInfo:v148];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_260;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_260:
       v200[0] = MEMORY[0x1E69E9820];
@@ -2452,49 +2452,49 @@ LABEL_260:
       v200[3] = &unk_1E76A0C78;
       v200[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoArtworkMIMEType", v200);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_258;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_258:
       v150 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsAdvertisement"];
       v151 = v150;
       if (v150)
       {
-        v152 = [v150 BOOLValue];
-        v153 = [(MRContentItem *)self metadata];
-        [v153 setAdvertisement:v152];
+        bOOLValue8 = [v150 BOOLValue];
+        metadata34 = [(MRContentItem *)self metadata];
+        [metadata34 setAdvertisement:bOOLValue8];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_256;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_256:
       v154 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoIsSteerable"];
       v155 = v154;
       if (v154)
       {
-        v156 = [v154 BOOLValue];
-        v157 = [(MRContentItem *)self metadata];
-        [v157 setSteerable:v156];
+        bOOLValue9 = [v154 BOOLValue];
+        metadata35 = [(MRContentItem *)self metadata];
+        [metadata35 setSteerable:bOOLValue9];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_254;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_254:
       v199[0] = MEMORY[0x1E69E9820];
@@ -2503,55 +2503,55 @@ LABEL_254:
       v199[3] = &unk_1E76A0C78;
       v199[4] = self;
       _MRReadNowPlayingInfoString(v10, @"kMRMediaRemoteNowPlayingInfoArtworkIdentifier", v199);
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_252;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_252:
       v158 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkURL"];
       if (v158)
       {
         v159 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v158];
-        v160 = [(MRContentItem *)self metadata];
-        [v160 setArtworkURL:v159];
+        metadata36 = [(MRContentItem *)self metadata];
+        [metadata36 setArtworkURL:v159];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_250;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_250:
       v161 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoUniqueIdentifier"];
       v162 = v161;
       if (v161)
       {
-        v163 = [v161 longLongValue];
-        v164 = [(MRContentItem *)self metadata];
-        [v164 setLegacyUniqueIdentifier:v163];
+        longLongValue6 = [v161 longLongValue];
+        metadata37 = [(MRContentItem *)self metadata];
+        [metadata37 setLegacyUniqueIdentifier:longLongValue6];
       }
 
-      if (!v9)
+      if (!requestCopy)
       {
         goto LABEL_185;
       }
     }
 
-    if ([v9 includeMetadata])
+    if ([requestCopy includeMetadata])
     {
 LABEL_185:
       v165 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoUserInfo"];
       if (v165)
       {
-        v166 = [(MRContentItem *)self metadata];
-        [v166 setUserInfo:v165];
+        metadata38 = [(MRContentItem *)self metadata];
+        [metadata38 setUserInfo:v165];
       }
     }
 
@@ -2563,22 +2563,22 @@ LABEL_185:
     {
 LABEL_199:
       v177 = [v10 objectForKeyedSubscript:?];
-      if ((!v9 || [v9 includeLanguageOptions]) && v177)
+      if ((!requestCopy || [requestCopy includeLanguageOptions]) && v177)
       {
         v178 = MRLanguageOptionsCreateFromExternalRepresentation(v177);
         if (v178)
         {
           [(MRContentItem *)self setCurrentLanguageOptions:v178];
-          v179 = [(MRContentItem *)self metadata];
-          [v179 setLanguageOptionsAvailable:1];
+          metadata39 = [(MRContentItem *)self metadata];
+          [metadata39 setLanguageOptionsAvailable:1];
         }
       }
 
       v180 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoAvailableLanguageOptionsData"];
       v181 = v180;
-      if (v9)
+      if (requestCopy)
       {
-        if (![v9 includeLanguageOptions] || !v181)
+        if (![requestCopy includeLanguageOptions] || !v181)
         {
 
           goto LABEL_213;
@@ -2594,14 +2594,14 @@ LABEL_199:
       if (v182)
       {
         [(MRContentItem *)self setAvailableLanguageOptions:v182];
-        v183 = [(MRContentItem *)self metadata];
-        [v183 setLanguageOptionsAvailable:1];
+        metadata40 = [(MRContentItem *)self metadata];
+        [metadata40 setLanguageOptionsAvailable:1];
       }
 
-      if (v9)
+      if (requestCopy)
       {
 LABEL_213:
-        if (![v9 includeArtwork])
+        if (![requestCopy includeArtwork])
         {
           goto LABEL_230;
         }
@@ -2610,48 +2610,48 @@ LABEL_213:
 LABEL_214:
       if (v195)
       {
-        v184 = 0;
+        artwork = 0;
       }
 
       else
       {
-        v184 = [(MRContentItem *)self artwork];
+        artwork = [(MRContentItem *)self artwork];
       }
 
       v185 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkData"];
       if (v185)
       {
-        if (!v184)
+        if (!artwork)
         {
-          v184 = objc_alloc_init(MRArtwork);
+          artwork = objc_alloc_init(MRArtwork);
         }
 
-        [(MRArtwork *)v184 setImageData:v185];
+        [(MRArtwork *)artwork setImageData:v185];
       }
 
       v186 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkDataHeight"];
       if (v186)
       {
-        if (!v184)
+        if (!artwork)
         {
-          v184 = objc_alloc_init(MRArtwork);
+          artwork = objc_alloc_init(MRArtwork);
         }
 
-        -[MRArtwork setHeight:](v184, "setHeight:", [v186 longValue]);
+        -[MRArtwork setHeight:](artwork, "setHeight:", [v186 longValue]);
       }
 
       v187 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoArtworkDataWidth"];
       if (v187)
       {
-        if (!v184)
+        if (!artwork)
         {
-          v184 = objc_alloc_init(MRArtwork);
+          artwork = objc_alloc_init(MRArtwork);
         }
 
-        -[MRArtwork setWidth:](v184, "setWidth:", [v187 longValue]);
+        -[MRArtwork setWidth:](artwork, "setWidth:", [v187 longValue]);
       }
 
-      [(MRContentItem *)self setArtwork:v184];
+      [(MRContentItem *)self setArtwork:artwork];
 
 LABEL_230:
       [v10 setObject:0 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoContentItemIdentifier"];
@@ -2712,29 +2712,29 @@ LABEL_230:
       [v10 setObject:0 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoSquareAnimatedArtworkIdentifier"];
       [v10 setObject:0 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTallAnimatedArtwork"];
       [v10 setObject:0 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoTallAnimatedArtworkIdentifier"];
-      v188 = [(MRContentItem *)self metadata];
-      v189 = [v188 nowPlayingInfo];
-      v190 = v189;
-      if (v189 == v10)
+      metadata41 = [(MRContentItem *)self metadata];
+      nowPlayingInfo2 = [metadata41 nowPlayingInfo];
+      v190 = nowPlayingInfo2;
+      if (nowPlayingInfo2 == v10)
       {
       }
 
       else
       {
-        v191 = [(MRContentItem *)self metadata];
-        v192 = [v191 nowPlayingInfo];
-        v193 = [v192 isEqualToDictionary:v10];
+        metadata42 = [(MRContentItem *)self metadata];
+        nowPlayingInfo3 = [metadata42 nowPlayingInfo];
+        v193 = [nowPlayingInfo3 isEqualToDictionary:v10];
 
         if (v193)
         {
 LABEL_235:
 
-          v8 = v198;
+          infoCopy = v198;
           goto LABEL_236;
         }
 
-        v188 = [(MRContentItem *)self metadata];
-        [v188 setNowPlayingInfo:v10];
+        metadata41 = [(MRContentItem *)self metadata];
+        [metadata41 setNowPlayingInfo:v10];
       }
 
       goto LABEL_235;
@@ -2792,22 +2792,22 @@ LABEL_235:
 
     v170 = 1;
 LABEL_194:
-    v171 = [(MRContentItem *)self metadata];
-    v172 = [v171 hasMediaType];
+    metadata43 = [(MRContentItem *)self metadata];
+    hasMediaType = [metadata43 hasMediaType];
 
-    if ((v172 & 1) == 0)
+    if ((hasMediaType & 1) == 0)
     {
-      v173 = [(MRContentItem *)self metadata];
-      [v173 setMediaType:v170];
+      metadata44 = [(MRContentItem *)self metadata];
+      [metadata44 setMediaType:v170];
     }
 
-    v174 = [(MRContentItem *)self metadata];
-    v175 = [v174 hasMediaSubType];
+    metadata45 = [(MRContentItem *)self metadata];
+    hasMediaSubType = [metadata45 hasMediaSubType];
 
-    if ((v175 & 1) == 0)
+    if ((hasMediaSubType & 1) == 0)
     {
-      v176 = [(MRContentItem *)self metadata];
-      [v176 setMediaSubType:v169];
+      metadata46 = [(MRContentItem *)self metadata];
+      [metadata46 setMediaSubType:v169];
     }
 
     [v10 setObject:0 forKeyedSubscript:@"kMRMediaRemoteNowPlayingInfoMediaType"];
@@ -2949,176 +2949,176 @@ void __50__MRContentItem_setNowPlayingInfo_policy_request___block_invoke_16(uint
   [v4 setArtworkIdentifier:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v123 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
+  fromCopy = from;
+  identifier = [fromCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [v4 identifier];
-    [(MRContentItem *)self setIdentifier:v6];
+    identifier2 = [fromCopy identifier];
+    [(MRContentItem *)self setIdentifier:identifier2];
   }
 
-  v7 = [(MRContentItem *)self metadata];
+  metadata = [(MRContentItem *)self metadata];
 
-  v8 = [v4 metadata];
-  v9 = v8;
-  if (v7)
+  metadata2 = [fromCopy metadata];
+  metadata3 = metadata2;
+  if (metadata)
   {
 
-    if (!v9)
+    if (!metadata3)
     {
       goto LABEL_8;
     }
 
-    v9 = [(MRContentItem *)self metadata];
-    v10 = [v4 metadata];
-    [v9 mergeFrom:v10];
+    metadata3 = [(MRContentItem *)self metadata];
+    metadata4 = [fromCopy metadata];
+    [metadata3 mergeFrom:metadata4];
   }
 
   else
   {
-    [(MRContentItem *)self setMetadata:v8];
+    [(MRContentItem *)self setMetadata:metadata2];
   }
 
 LABEL_8:
-  v11 = [v4 info];
+  info = [fromCopy info];
 
-  if (v11)
+  if (info)
   {
-    v12 = [v4 info];
-    [(MRContentItem *)self setInfo:v12];
+    info2 = [fromCopy info];
+    [(MRContentItem *)self setInfo:info2];
   }
 
-  v13 = [v4 transcriptAlignments];
+  transcriptAlignments = [fromCopy transcriptAlignments];
 
-  if (v13)
+  if (transcriptAlignments)
   {
-    v14 = [v4 transcriptAlignments];
-    [(MRContentItem *)self setTranscriptAlignments:v14];
+    transcriptAlignments2 = [fromCopy transcriptAlignments];
+    [(MRContentItem *)self setTranscriptAlignments:transcriptAlignments2];
   }
 
-  v15 = [v4 parentIdentifier];
+  parentIdentifier = [fromCopy parentIdentifier];
 
-  if (v15)
+  if (parentIdentifier)
   {
-    v16 = [v4 parentIdentifier];
-    [(MRContentItem *)self setParentIdentifier:v16];
+    parentIdentifier2 = [fromCopy parentIdentifier];
+    [(MRContentItem *)self setParentIdentifier:parentIdentifier2];
   }
 
-  v17 = [v4 ancestorIdentifier];
+  ancestorIdentifier = [fromCopy ancestorIdentifier];
 
-  if (v17)
+  if (ancestorIdentifier)
   {
-    v18 = [v4 ancestorIdentifier];
-    [(MRContentItem *)self setAncestorIdentifier:v18];
+    ancestorIdentifier2 = [fromCopy ancestorIdentifier];
+    [(MRContentItem *)self setAncestorIdentifier:ancestorIdentifier2];
   }
 
-  v19 = [v4 associatedParticipantIdentifier];
+  associatedParticipantIdentifier = [fromCopy associatedParticipantIdentifier];
 
-  if (v19)
+  if (associatedParticipantIdentifier)
   {
-    v20 = [v4 associatedParticipantIdentifier];
-    [(MRContentItem *)self setAssociatedParticipantIdentifier:v20];
+    associatedParticipantIdentifier2 = [fromCopy associatedParticipantIdentifier];
+    [(MRContentItem *)self setAssociatedParticipantIdentifier:associatedParticipantIdentifier2];
   }
 
-  v21 = [v4 queueIdentifier];
+  queueIdentifier = [fromCopy queueIdentifier];
 
-  if (v21)
+  if (queueIdentifier)
   {
-    v22 = [v4 queueIdentifier];
-    [(MRContentItem *)self setQueueIdentifier:v22];
+    queueIdentifier2 = [fromCopy queueIdentifier];
+    [(MRContentItem *)self setQueueIdentifier:queueIdentifier2];
   }
 
-  v23 = [v4 requestIdentifier];
+  requestIdentifier = [fromCopy requestIdentifier];
 
-  if (v23)
+  if (requestIdentifier)
   {
-    v24 = [v4 requestIdentifier];
-    [(MRContentItem *)self setRequestIdentifier:v24];
+    requestIdentifier2 = [fromCopy requestIdentifier];
+    [(MRContentItem *)self setRequestIdentifier:requestIdentifier2];
   }
 
-  v25 = [v4 artwork];
+  artwork = [fromCopy artwork];
 
-  if (v25)
+  if (artwork)
   {
-    v26 = [v4 artwork];
-    [(MRContentItem *)self setArtwork:v26];
+    artwork2 = [fromCopy artwork];
+    [(MRContentItem *)self setArtwork:artwork2];
   }
 
-  v27 = [v4 availableLanguageOptions];
-  v28 = [v27 count];
+  availableLanguageOptions = [fromCopy availableLanguageOptions];
+  v28 = [availableLanguageOptions count];
 
   if (v28)
   {
-    v29 = [v4 availableLanguageOptions];
-    [(MRContentItem *)self setAvailableLanguageOptions:v29];
+    availableLanguageOptions2 = [fromCopy availableLanguageOptions];
+    [(MRContentItem *)self setAvailableLanguageOptions:availableLanguageOptions2];
   }
 
-  v30 = [v4 currentLanguageOptions];
-  v31 = [v30 count];
+  currentLanguageOptions = [fromCopy currentLanguageOptions];
+  v31 = [currentLanguageOptions count];
 
   if (v31)
   {
-    v32 = [v4 currentLanguageOptions];
-    [(MRContentItem *)self setCurrentLanguageOptions:v32];
+    currentLanguageOptions2 = [fromCopy currentLanguageOptions];
+    [(MRContentItem *)self setCurrentLanguageOptions:currentLanguageOptions2];
   }
 
-  v33 = [v4 sections];
-  v34 = [v33 count];
+  sections = [fromCopy sections];
+  v34 = [sections count];
 
   if (v34)
   {
-    v35 = [v4 sections];
-    [(MRContentItem *)self setSections:v35];
+    sections2 = [fromCopy sections];
+    [(MRContentItem *)self setSections:sections2];
   }
 
-  v36 = [v4 availableArtworkFormats];
+  availableArtworkFormats = [fromCopy availableArtworkFormats];
 
-  if (v36)
+  if (availableArtworkFormats)
   {
-    v37 = [v4 availableArtworkFormats];
-    [(MRContentItem *)self setAvailableArtworkFormats:v37];
+    availableArtworkFormats2 = [fromCopy availableArtworkFormats];
+    [(MRContentItem *)self setAvailableArtworkFormats:availableArtworkFormats2];
   }
 
-  v38 = [v4 availableRemoteArtworkFormats];
+  availableRemoteArtworkFormats = [fromCopy availableRemoteArtworkFormats];
 
-  if (v38)
+  if (availableRemoteArtworkFormats)
   {
-    v39 = [v4 availableRemoteArtworkFormats];
-    [(MRContentItem *)self setAvailableRemoteArtworkFormats:v39];
+    availableRemoteArtworkFormats2 = [fromCopy availableRemoteArtworkFormats];
+    [(MRContentItem *)self setAvailableRemoteArtworkFormats:availableRemoteArtworkFormats2];
   }
 
-  v40 = [v4 availableAnimatedArtworkFormats];
+  availableAnimatedArtworkFormats = [fromCopy availableAnimatedArtworkFormats];
 
-  if (v40)
+  if (availableAnimatedArtworkFormats)
   {
-    v41 = [v4 availableAnimatedArtworkFormats];
-    [(MRContentItem *)self setAvailableAnimatedArtworkFormats:v41];
+    availableAnimatedArtworkFormats2 = [fromCopy availableAnimatedArtworkFormats];
+    [(MRContentItem *)self setAvailableAnimatedArtworkFormats:availableAnimatedArtworkFormats2];
   }
 
-  v42 = [v4 artworks];
-  v43 = [v42 count];
+  artworks = [fromCopy artworks];
+  v43 = [artworks count];
 
   if (v43)
   {
-    v44 = [(MRContentItem *)self artworks];
+    artworks2 = [(MRContentItem *)self artworks];
 
-    if (v44)
+    if (artworks2)
     {
-      v45 = [(MRContentItem *)self artworks];
-      v46 = [v45 mutableCopy];
+      artworks3 = [(MRContentItem *)self artworks];
+      artworks6 = [artworks3 mutableCopy];
 
       v117 = 0u;
       v118 = 0u;
       v115 = 0u;
       v116 = 0u;
-      v47 = [v4 artworks];
-      v48 = [v47 allKeys];
+      artworks4 = [fromCopy artworks];
+      allKeys = [artworks4 allKeys];
 
-      v49 = [v48 countByEnumeratingWithState:&v115 objects:v122 count:16];
+      v49 = [allKeys countByEnumeratingWithState:&v115 objects:v122 count:16];
       if (v49)
       {
         v50 = v49;
@@ -3129,52 +3129,52 @@ LABEL_8:
           {
             if (*v116 != v51)
             {
-              objc_enumerationMutation(v48);
+              objc_enumerationMutation(allKeys);
             }
 
             v53 = *(*(&v115 + 1) + 8 * i);
-            v54 = [v4 artworks];
-            v55 = [v54 objectForKeyedSubscript:v53];
-            [v46 setObject:v55 forKeyedSubscript:v53];
+            artworks5 = [fromCopy artworks];
+            v55 = [artworks5 objectForKeyedSubscript:v53];
+            [artworks6 setObject:v55 forKeyedSubscript:v53];
           }
 
-          v50 = [v48 countByEnumeratingWithState:&v115 objects:v122 count:16];
+          v50 = [allKeys countByEnumeratingWithState:&v115 objects:v122 count:16];
         }
 
         while (v50);
       }
 
-      v56 = [v46 copy];
+      v56 = [artworks6 copy];
       [(MRContentItem *)self setArtworks:v56];
     }
 
     else
     {
-      v46 = [v4 artworks];
-      [(MRContentItem *)self setArtworks:v46];
+      artworks6 = [fromCopy artworks];
+      [(MRContentItem *)self setArtworks:artworks6];
     }
   }
 
-  v57 = [v4 remoteArtworks];
-  v58 = [v57 count];
+  remoteArtworks = [fromCopy remoteArtworks];
+  v58 = [remoteArtworks count];
 
   if (v58)
   {
-    v59 = [(MRContentItem *)self remoteArtworks];
+    remoteArtworks2 = [(MRContentItem *)self remoteArtworks];
 
-    if (v59)
+    if (remoteArtworks2)
     {
-      v60 = [(MRContentItem *)self remoteArtworks];
-      v61 = [v60 mutableCopy];
+      remoteArtworks3 = [(MRContentItem *)self remoteArtworks];
+      remoteArtworks6 = [remoteArtworks3 mutableCopy];
 
       v113 = 0u;
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v62 = [v4 remoteArtworks];
-      v63 = [v62 allKeys];
+      remoteArtworks4 = [fromCopy remoteArtworks];
+      allKeys2 = [remoteArtworks4 allKeys];
 
-      v64 = [v63 countByEnumeratingWithState:&v111 objects:v121 count:16];
+      v64 = [allKeys2 countByEnumeratingWithState:&v111 objects:v121 count:16];
       if (v64)
       {
         v65 = v64;
@@ -3185,54 +3185,54 @@ LABEL_8:
           {
             if (*v112 != v66)
             {
-              objc_enumerationMutation(v63);
+              objc_enumerationMutation(allKeys2);
             }
 
             v68 = *(*(&v111 + 1) + 8 * j);
-            v69 = [v4 remoteArtworks];
-            v70 = [v69 objectForKeyedSubscript:v68];
-            [v61 setObject:v70 forKeyedSubscript:v68];
+            remoteArtworks5 = [fromCopy remoteArtworks];
+            v70 = [remoteArtworks5 objectForKeyedSubscript:v68];
+            [remoteArtworks6 setObject:v70 forKeyedSubscript:v68];
           }
 
-          v65 = [v63 countByEnumeratingWithState:&v111 objects:v121 count:16];
+          v65 = [allKeys2 countByEnumeratingWithState:&v111 objects:v121 count:16];
         }
 
         while (v65);
       }
 
-      v71 = [v61 copy];
+      v71 = [remoteArtworks6 copy];
       [(MRContentItem *)self setRemoteArtworks:v71];
     }
 
     else
     {
-      v61 = [v4 remoteArtworks];
-      [(MRContentItem *)self setRemoteArtworks:v61];
+      remoteArtworks6 = [fromCopy remoteArtworks];
+      [(MRContentItem *)self setRemoteArtworks:remoteArtworks6];
     }
   }
 
   if (_os_feature_enabled_impl())
   {
-    v72 = [v4 animatedArtworkPreviewFrames];
-    v73 = [v72 count];
+    animatedArtworkPreviewFrames = [fromCopy animatedArtworkPreviewFrames];
+    v73 = [animatedArtworkPreviewFrames count];
 
     if (v73)
     {
-      v74 = [(MRContentItem *)self animatedArtworkPreviewFrames];
+      animatedArtworkPreviewFrames2 = [(MRContentItem *)self animatedArtworkPreviewFrames];
 
-      if (v74)
+      if (animatedArtworkPreviewFrames2)
       {
-        v75 = [(MRContentItem *)self animatedArtworkPreviewFrames];
-        v76 = [v75 mutableCopy];
+        animatedArtworkPreviewFrames3 = [(MRContentItem *)self animatedArtworkPreviewFrames];
+        animatedArtworkPreviewFrames6 = [animatedArtworkPreviewFrames3 mutableCopy];
 
         v109 = 0u;
         v110 = 0u;
         v107 = 0u;
         v108 = 0u;
-        v77 = [v4 animatedArtworkPreviewFrames];
-        v78 = [v77 allKeys];
+        animatedArtworkPreviewFrames4 = [fromCopy animatedArtworkPreviewFrames];
+        allKeys3 = [animatedArtworkPreviewFrames4 allKeys];
 
-        v79 = [v78 countByEnumeratingWithState:&v107 objects:v120 count:16];
+        v79 = [allKeys3 countByEnumeratingWithState:&v107 objects:v120 count:16];
         if (v79)
         {
           v80 = v79;
@@ -3243,52 +3243,52 @@ LABEL_8:
             {
               if (*v108 != v81)
               {
-                objc_enumerationMutation(v78);
+                objc_enumerationMutation(allKeys3);
               }
 
               v83 = *(*(&v107 + 1) + 8 * k);
-              v84 = [v4 animatedArtworkPreviewFrames];
-              v85 = [v84 objectForKeyedSubscript:v83];
-              [v76 setObject:v85 forKeyedSubscript:v83];
+              animatedArtworkPreviewFrames5 = [fromCopy animatedArtworkPreviewFrames];
+              v85 = [animatedArtworkPreviewFrames5 objectForKeyedSubscript:v83];
+              [animatedArtworkPreviewFrames6 setObject:v85 forKeyedSubscript:v83];
             }
 
-            v80 = [v78 countByEnumeratingWithState:&v107 objects:v120 count:16];
+            v80 = [allKeys3 countByEnumeratingWithState:&v107 objects:v120 count:16];
           }
 
           while (v80);
         }
 
-        v86 = [v76 copy];
+        v86 = [animatedArtworkPreviewFrames6 copy];
         [(MRContentItem *)self setAnimatedArtworkPreviewFrames:v86];
       }
 
       else
       {
-        v76 = [v4 animatedArtworkPreviewFrames];
-        [(MRContentItem *)self setAnimatedArtworkPreviewFrames:v76];
+        animatedArtworkPreviewFrames6 = [fromCopy animatedArtworkPreviewFrames];
+        [(MRContentItem *)self setAnimatedArtworkPreviewFrames:animatedArtworkPreviewFrames6];
       }
     }
 
-    v87 = [v4 animatedArtworks];
-    v88 = [v87 count];
+    animatedArtworks = [fromCopy animatedArtworks];
+    v88 = [animatedArtworks count];
 
     if (v88)
     {
-      v89 = [(MRContentItem *)self animatedArtworks];
+      animatedArtworks2 = [(MRContentItem *)self animatedArtworks];
 
-      if (v89)
+      if (animatedArtworks2)
       {
-        v90 = [(MRContentItem *)self animatedArtworks];
-        v91 = [v90 mutableCopy];
+        animatedArtworks3 = [(MRContentItem *)self animatedArtworks];
+        animatedArtworks6 = [animatedArtworks3 mutableCopy];
 
         v105 = 0u;
         v106 = 0u;
         v103 = 0u;
         v104 = 0u;
-        v92 = [v4 animatedArtworks];
-        v93 = [v92 allKeys];
+        animatedArtworks4 = [fromCopy animatedArtworks];
+        allKeys4 = [animatedArtworks4 allKeys];
 
-        v94 = [v93 countByEnumeratingWithState:&v103 objects:v119 count:16];
+        v94 = [allKeys4 countByEnumeratingWithState:&v103 objects:v119 count:16];
         if (v94)
         {
           v95 = v94;
@@ -3299,29 +3299,29 @@ LABEL_8:
             {
               if (*v104 != v96)
               {
-                objc_enumerationMutation(v93);
+                objc_enumerationMutation(allKeys4);
               }
 
               v98 = *(*(&v103 + 1) + 8 * m);
-              v99 = [v4 animatedArtworks];
-              v100 = [v99 objectForKeyedSubscript:v98];
-              [v91 setObject:v100 forKeyedSubscript:v98];
+              animatedArtworks5 = [fromCopy animatedArtworks];
+              v100 = [animatedArtworks5 objectForKeyedSubscript:v98];
+              [animatedArtworks6 setObject:v100 forKeyedSubscript:v98];
             }
 
-            v95 = [v93 countByEnumeratingWithState:&v103 objects:v119 count:16];
+            v95 = [allKeys4 countByEnumeratingWithState:&v103 objects:v119 count:16];
           }
 
           while (v95);
         }
 
-        v101 = [v91 copy];
+        v101 = [animatedArtworks6 copy];
         [(MRContentItem *)self setAnimatedArtworks:v101];
       }
 
       else
       {
-        v91 = [v4 animatedArtworks];
-        [(MRContentItem *)self setAnimatedArtworks:v91];
+        animatedArtworks6 = [fromCopy animatedArtworks];
+        [(MRContentItem *)self setAnimatedArtworks:animatedArtworks6];
       }
     }
   }
@@ -3329,19 +3329,19 @@ LABEL_8:
   v102 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)extractedIdentifierFromNowPlayingInfo:(id)a3
++ (id)extractedIdentifierFromNowPlayingInfo:(id)info
 {
-  if (!a3)
+  if (!info)
   {
     v9 = 0;
     goto LABEL_12;
   }
 
-  v3 = a3;
-  v4 = [v3 objectForKey:@"kMRMediaRemoteNowPlayingInfoContentItemIdentifier"];
-  v5 = [v3 objectForKey:@"kMRMediaRemoteNowPlayingInfoiTunesStoreIdentifier"];
-  v6 = [v3 objectForKey:@"kMRMediaRemoteNowPlayingInfoExternalContentIdentifier"];
-  v7 = [v3 objectForKey:@"kMRMediaRemoteNowPlayingInfoUniqueIdentifier"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"kMRMediaRemoteNowPlayingInfoContentItemIdentifier"];
+  v5 = [infoCopy objectForKey:@"kMRMediaRemoteNowPlayingInfoiTunesStoreIdentifier"];
+  v6 = [infoCopy objectForKey:@"kMRMediaRemoteNowPlayingInfoExternalContentIdentifier"];
+  v7 = [infoCopy objectForKey:@"kMRMediaRemoteNowPlayingInfoUniqueIdentifier"];
 
   if (!v4)
   {
@@ -3349,13 +3349,13 @@ LABEL_8:
     {
       v10 = v5;
 LABEL_7:
-      v8 = [v10 stringValue];
+      stringValue = [v10 stringValue];
       goto LABEL_10;
     }
 
     if (v6)
     {
-      v8 = v6;
+      stringValue = v6;
       goto LABEL_10;
     }
 
@@ -3370,7 +3370,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        stringValue = v7;
         goto LABEL_10;
       }
     }
@@ -3379,9 +3379,9 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v8 = v4;
+  stringValue = v4;
 LABEL_10:
-  v9 = v8;
+  v9 = stringValue;
 LABEL_11:
 
 LABEL_12:
@@ -3389,16 +3389,16 @@ LABEL_12:
   return v9;
 }
 
-+ (id)mergeContentItems:(id)a3
++ (id)mergeContentItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -3414,8 +3414,8 @@ LABEL_12:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        identifier = [v10 identifier];
+        v12 = [v4 objectForKeyedSubscript:identifier];
 
         if (v12)
         {
@@ -3425,8 +3425,8 @@ LABEL_12:
         else
         {
           v13 = [v10 copy];
-          v14 = [v10 identifier];
-          [v4 setObject:v13 forKeyedSubscript:v14];
+          identifier2 = [v10 identifier];
+          [v4 setObject:v13 forKeyedSubscript:identifier2];
         }
       }
 
@@ -3436,17 +3436,17 @@ LABEL_12:
     while (v7);
   }
 
-  v15 = [v4 allValues];
+  allValues = [v4 allValues];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return allValues;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -3461,18 +3461,18 @@ LABEL_78:
       goto LABEL_79;
     }
 
-    v5 = [(MRContentItem *)v4 identifier];
-    v6 = [(MRContentItem *)self identifier];
-    v7 = v6;
-    if (v5 == v6)
+    identifier = [(MRContentItem *)equalCopy identifier];
+    identifier2 = [(MRContentItem *)self identifier];
+    v7 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v8 = [(MRContentItem *)v4 identifier];
-      v9 = [(MRContentItem *)self identifier];
-      v10 = [v8 isEqualToString:v9];
+      identifier3 = [(MRContentItem *)equalCopy identifier];
+      identifier4 = [(MRContentItem *)self identifier];
+      v10 = [identifier3 isEqualToString:identifier4];
 
       if (!v10)
       {
@@ -3480,18 +3480,18 @@ LABEL_78:
       }
     }
 
-    v12 = [(MRContentItem *)v4 metadata];
-    v13 = [(MRContentItem *)self metadata];
-    v14 = v13;
-    if (v12 == v13)
+    metadata = [(MRContentItem *)equalCopy metadata];
+    metadata2 = [(MRContentItem *)self metadata];
+    v14 = metadata2;
+    if (metadata == metadata2)
     {
     }
 
     else
     {
-      v15 = [(MRContentItem *)v4 metadata];
-      v16 = [(MRContentItem *)self metadata];
-      v17 = [v15 isEqual:v16];
+      metadata3 = [(MRContentItem *)equalCopy metadata];
+      metadata4 = [(MRContentItem *)self metadata];
+      v17 = [metadata3 isEqual:metadata4];
 
       if (!v17)
       {
@@ -3499,18 +3499,18 @@ LABEL_78:
       }
     }
 
-    v18 = [(MRContentItem *)v4 info];
-    v19 = [(MRContentItem *)self info];
-    v20 = v19;
-    if (v18 == v19)
+    info = [(MRContentItem *)equalCopy info];
+    info2 = [(MRContentItem *)self info];
+    v20 = info2;
+    if (info == info2)
     {
     }
 
     else
     {
-      v21 = [(MRContentItem *)v4 info];
-      v22 = [(MRContentItem *)self info];
-      v23 = [v21 isEqualToString:v22];
+      info3 = [(MRContentItem *)equalCopy info];
+      info4 = [(MRContentItem *)self info];
+      v23 = [info3 isEqualToString:info4];
 
       if (!v23)
       {
@@ -3518,18 +3518,18 @@ LABEL_78:
       }
     }
 
-    v24 = [(MRContentItem *)v4 transcriptAlignments];
-    v25 = [(MRContentItem *)self transcriptAlignments];
-    v26 = v25;
-    if (v24 == v25)
+    transcriptAlignments = [(MRContentItem *)equalCopy transcriptAlignments];
+    transcriptAlignments2 = [(MRContentItem *)self transcriptAlignments];
+    v26 = transcriptAlignments2;
+    if (transcriptAlignments == transcriptAlignments2)
     {
     }
 
     else
     {
-      v27 = [(MRContentItem *)v4 transcriptAlignments];
-      v28 = [(MRContentItem *)self transcriptAlignments];
-      v29 = [v27 isEqualToArray:v28];
+      transcriptAlignments3 = [(MRContentItem *)equalCopy transcriptAlignments];
+      transcriptAlignments4 = [(MRContentItem *)self transcriptAlignments];
+      v29 = [transcriptAlignments3 isEqualToArray:transcriptAlignments4];
 
       if (!v29)
       {
@@ -3537,18 +3537,18 @@ LABEL_78:
       }
     }
 
-    v30 = [(MRContentItem *)v4 availableLanguageOptions];
-    v31 = [(MRContentItem *)self availableLanguageOptions];
-    v32 = v31;
-    if (v30 == v31)
+    availableLanguageOptions = [(MRContentItem *)equalCopy availableLanguageOptions];
+    availableLanguageOptions2 = [(MRContentItem *)self availableLanguageOptions];
+    v32 = availableLanguageOptions2;
+    if (availableLanguageOptions == availableLanguageOptions2)
     {
     }
 
     else
     {
-      v33 = [(MRContentItem *)v4 availableLanguageOptions];
-      v34 = [(MRContentItem *)self availableLanguageOptions];
-      v35 = [v33 isEqualToArray:v34];
+      availableLanguageOptions3 = [(MRContentItem *)equalCopy availableLanguageOptions];
+      availableLanguageOptions4 = [(MRContentItem *)self availableLanguageOptions];
+      v35 = [availableLanguageOptions3 isEqualToArray:availableLanguageOptions4];
 
       if (!v35)
       {
@@ -3556,18 +3556,18 @@ LABEL_78:
       }
     }
 
-    v36 = [(MRContentItem *)v4 currentLanguageOptions];
-    v37 = [(MRContentItem *)self currentLanguageOptions];
-    v38 = v37;
-    if (v36 == v37)
+    currentLanguageOptions = [(MRContentItem *)equalCopy currentLanguageOptions];
+    currentLanguageOptions2 = [(MRContentItem *)self currentLanguageOptions];
+    v38 = currentLanguageOptions2;
+    if (currentLanguageOptions == currentLanguageOptions2)
     {
     }
 
     else
     {
-      v39 = [(MRContentItem *)v4 currentLanguageOptions];
-      v40 = [(MRContentItem *)self currentLanguageOptions];
-      v41 = [v39 isEqualToArray:v40];
+      currentLanguageOptions3 = [(MRContentItem *)equalCopy currentLanguageOptions];
+      currentLanguageOptions4 = [(MRContentItem *)self currentLanguageOptions];
+      v41 = [currentLanguageOptions3 isEqualToArray:currentLanguageOptions4];
 
       if (!v41)
       {
@@ -3575,18 +3575,18 @@ LABEL_78:
       }
     }
 
-    v42 = [(MRContentItem *)v4 sections];
-    v43 = [(MRContentItem *)self sections];
-    v44 = v43;
-    if (v42 == v43)
+    sections = [(MRContentItem *)equalCopy sections];
+    sections2 = [(MRContentItem *)self sections];
+    v44 = sections2;
+    if (sections == sections2)
     {
     }
 
     else
     {
-      v45 = [(MRContentItem *)v4 sections];
-      v46 = [(MRContentItem *)self sections];
-      v47 = [v45 isEqualToArray:v46];
+      sections3 = [(MRContentItem *)equalCopy sections];
+      sections4 = [(MRContentItem *)self sections];
+      v47 = [sections3 isEqualToArray:sections4];
 
       if (!v47)
       {
@@ -3594,18 +3594,18 @@ LABEL_78:
       }
     }
 
-    v48 = [(MRContentItem *)v4 parentIdentifier];
-    v49 = [(MRContentItem *)self parentIdentifier];
-    v50 = v49;
-    if (v48 == v49)
+    parentIdentifier = [(MRContentItem *)equalCopy parentIdentifier];
+    parentIdentifier2 = [(MRContentItem *)self parentIdentifier];
+    v50 = parentIdentifier2;
+    if (parentIdentifier == parentIdentifier2)
     {
     }
 
     else
     {
-      v51 = [(MRContentItem *)v4 parentIdentifier];
-      v52 = [(MRContentItem *)self parentIdentifier];
-      v53 = [v51 isEqualToString:v52];
+      parentIdentifier3 = [(MRContentItem *)equalCopy parentIdentifier];
+      parentIdentifier4 = [(MRContentItem *)self parentIdentifier];
+      v53 = [parentIdentifier3 isEqualToString:parentIdentifier4];
 
       if (!v53)
       {
@@ -3613,18 +3613,18 @@ LABEL_78:
       }
     }
 
-    v54 = [(MRContentItem *)v4 ancestorIdentifier];
-    v55 = [(MRContentItem *)self ancestorIdentifier];
-    v56 = v55;
-    if (v54 == v55)
+    ancestorIdentifier = [(MRContentItem *)equalCopy ancestorIdentifier];
+    ancestorIdentifier2 = [(MRContentItem *)self ancestorIdentifier];
+    v56 = ancestorIdentifier2;
+    if (ancestorIdentifier == ancestorIdentifier2)
     {
     }
 
     else
     {
-      v57 = [(MRContentItem *)v4 ancestorIdentifier];
-      v58 = [(MRContentItem *)self ancestorIdentifier];
-      v59 = [v57 isEqualToString:v58];
+      ancestorIdentifier3 = [(MRContentItem *)equalCopy ancestorIdentifier];
+      ancestorIdentifier4 = [(MRContentItem *)self ancestorIdentifier];
+      v59 = [ancestorIdentifier3 isEqualToString:ancestorIdentifier4];
 
       if (!v59)
       {
@@ -3632,18 +3632,18 @@ LABEL_78:
       }
     }
 
-    v60 = [(MRContentItem *)v4 associatedParticipantIdentifier];
-    v61 = [(MRContentItem *)self associatedParticipantIdentifier];
-    v62 = v61;
-    if (v60 == v61)
+    associatedParticipantIdentifier = [(MRContentItem *)equalCopy associatedParticipantIdentifier];
+    associatedParticipantIdentifier2 = [(MRContentItem *)self associatedParticipantIdentifier];
+    v62 = associatedParticipantIdentifier2;
+    if (associatedParticipantIdentifier == associatedParticipantIdentifier2)
     {
     }
 
     else
     {
-      v63 = [(MRContentItem *)v4 associatedParticipantIdentifier];
-      v64 = [(MRContentItem *)self associatedParticipantIdentifier];
-      v65 = [v63 isEqualToString:v64];
+      associatedParticipantIdentifier3 = [(MRContentItem *)equalCopy associatedParticipantIdentifier];
+      associatedParticipantIdentifier4 = [(MRContentItem *)self associatedParticipantIdentifier];
+      v65 = [associatedParticipantIdentifier3 isEqualToString:associatedParticipantIdentifier4];
 
       if (!v65)
       {
@@ -3651,18 +3651,18 @@ LABEL_78:
       }
     }
 
-    v66 = [(MRContentItem *)v4 queueIdentifier];
-    v67 = [(MRContentItem *)self queueIdentifier];
-    v68 = v67;
-    if (v66 == v67)
+    queueIdentifier = [(MRContentItem *)equalCopy queueIdentifier];
+    queueIdentifier2 = [(MRContentItem *)self queueIdentifier];
+    v68 = queueIdentifier2;
+    if (queueIdentifier == queueIdentifier2)
     {
     }
 
     else
     {
-      v69 = [(MRContentItem *)v4 queueIdentifier];
-      v70 = [(MRContentItem *)self queueIdentifier];
-      v71 = [v69 isEqualToString:v70];
+      queueIdentifier3 = [(MRContentItem *)equalCopy queueIdentifier];
+      queueIdentifier4 = [(MRContentItem *)self queueIdentifier];
+      v71 = [queueIdentifier3 isEqualToString:queueIdentifier4];
 
       if (!v71)
       {
@@ -3670,18 +3670,18 @@ LABEL_78:
       }
     }
 
-    v72 = [(MRContentItem *)v4 requestIdentifier];
-    v73 = [(MRContentItem *)self requestIdentifier];
-    v74 = v73;
-    if (v72 == v73)
+    requestIdentifier = [(MRContentItem *)equalCopy requestIdentifier];
+    requestIdentifier2 = [(MRContentItem *)self requestIdentifier];
+    v74 = requestIdentifier2;
+    if (requestIdentifier == requestIdentifier2)
     {
     }
 
     else
     {
-      v75 = [(MRContentItem *)v4 requestIdentifier];
-      v76 = [(MRContentItem *)self requestIdentifier];
-      v77 = [v75 isEqualToString:v76];
+      requestIdentifier3 = [(MRContentItem *)equalCopy requestIdentifier];
+      requestIdentifier4 = [(MRContentItem *)self requestIdentifier];
+      v77 = [requestIdentifier3 isEqualToString:requestIdentifier4];
 
       if (!v77)
       {
@@ -3689,16 +3689,16 @@ LABEL_78:
       }
     }
 
-    v78 = [(MRContentItem *)v4 availableArtworkFormats];
-    v79 = [(MRContentItem *)self availableArtworkFormats];
-    v80 = v79;
-    if (v78 == v79)
+    availableArtworkFormats = [(MRContentItem *)equalCopy availableArtworkFormats];
+    availableArtworkFormats2 = [(MRContentItem *)self availableArtworkFormats];
+    v80 = availableArtworkFormats2;
+    if (availableArtworkFormats == availableArtworkFormats2)
     {
     }
 
     else
     {
-      v81 = [v78 isEqual:v79];
+      v81 = [availableArtworkFormats isEqual:availableArtworkFormats2];
 
       if ((v81 & 1) == 0)
       {
@@ -3706,16 +3706,16 @@ LABEL_78:
       }
     }
 
-    v82 = [(MRContentItem *)v4 availableRemoteArtworkFormats];
-    v83 = [(MRContentItem *)self availableRemoteArtworkFormats];
-    v84 = v83;
-    if (v82 == v83)
+    availableRemoteArtworkFormats = [(MRContentItem *)equalCopy availableRemoteArtworkFormats];
+    availableRemoteArtworkFormats2 = [(MRContentItem *)self availableRemoteArtworkFormats];
+    v84 = availableRemoteArtworkFormats2;
+    if (availableRemoteArtworkFormats == availableRemoteArtworkFormats2)
     {
     }
 
     else
     {
-      v85 = [v82 isEqual:v83];
+      v85 = [availableRemoteArtworkFormats isEqual:availableRemoteArtworkFormats2];
 
       if ((v85 & 1) == 0)
       {
@@ -3723,16 +3723,16 @@ LABEL_78:
       }
     }
 
-    v86 = [(MRContentItem *)v4 availableAnimatedArtworkFormats];
-    v87 = [(MRContentItem *)self availableAnimatedArtworkFormats];
-    v88 = v87;
-    if (v86 == v87)
+    availableAnimatedArtworkFormats = [(MRContentItem *)equalCopy availableAnimatedArtworkFormats];
+    availableAnimatedArtworkFormats2 = [(MRContentItem *)self availableAnimatedArtworkFormats];
+    v88 = availableAnimatedArtworkFormats2;
+    if (availableAnimatedArtworkFormats == availableAnimatedArtworkFormats2)
     {
     }
 
     else
     {
-      v89 = [v86 isEqual:v87];
+      v89 = [availableAnimatedArtworkFormats isEqual:availableAnimatedArtworkFormats2];
 
       if ((v89 & 1) == 0)
       {
@@ -3740,18 +3740,18 @@ LABEL_78:
       }
     }
 
-    v90 = [(MRContentItem *)v4 artwork];
-    v91 = [(MRContentItem *)self artwork];
-    v92 = v91;
-    if (v90 == v91)
+    artwork = [(MRContentItem *)equalCopy artwork];
+    artwork2 = [(MRContentItem *)self artwork];
+    v92 = artwork2;
+    if (artwork == artwork2)
     {
     }
 
     else
     {
-      v93 = [(MRContentItem *)v4 artwork];
-      v94 = [(MRContentItem *)self artwork];
-      v95 = [v93 isEqual:v94];
+      artwork3 = [(MRContentItem *)equalCopy artwork];
+      artwork4 = [(MRContentItem *)self artwork];
+      v95 = [artwork3 isEqual:artwork4];
 
       if (!v95)
       {
@@ -3759,16 +3759,16 @@ LABEL_78:
       }
     }
 
-    v96 = [(MRContentItem *)v4 artworks];
-    v97 = [(MRContentItem *)self artworks];
-    v98 = v97;
-    if (v96 == v97)
+    artworks = [(MRContentItem *)equalCopy artworks];
+    artworks2 = [(MRContentItem *)self artworks];
+    v98 = artworks2;
+    if (artworks == artworks2)
     {
     }
 
     else
     {
-      v99 = [v96 isEqual:v97];
+      v99 = [artworks isEqual:artworks2];
 
       if ((v99 & 1) == 0)
       {
@@ -3776,16 +3776,16 @@ LABEL_78:
       }
     }
 
-    v100 = [(MRContentItem *)v4 remoteArtworks];
-    v101 = [(MRContentItem *)self remoteArtworks];
-    v102 = v101;
-    if (v100 == v101)
+    remoteArtworks = [(MRContentItem *)equalCopy remoteArtworks];
+    remoteArtworks2 = [(MRContentItem *)self remoteArtworks];
+    v102 = remoteArtworks2;
+    if (remoteArtworks == remoteArtworks2)
     {
     }
 
     else
     {
-      v103 = [v100 isEqual:v101];
+      v103 = [remoteArtworks isEqual:remoteArtworks2];
 
       if ((v103 & 1) == 0)
       {
@@ -3793,16 +3793,16 @@ LABEL_78:
       }
     }
 
-    v104 = [(MRContentItem *)v4 animatedArtworkPreviewFrames];
-    v105 = [(MRContentItem *)self animatedArtworkPreviewFrames];
-    v106 = v105;
-    if (v104 == v105)
+    animatedArtworkPreviewFrames = [(MRContentItem *)equalCopy animatedArtworkPreviewFrames];
+    animatedArtworkPreviewFrames2 = [(MRContentItem *)self animatedArtworkPreviewFrames];
+    v106 = animatedArtworkPreviewFrames2;
+    if (animatedArtworkPreviewFrames == animatedArtworkPreviewFrames2)
     {
     }
 
     else
     {
-      v107 = [v104 isEqual:v105];
+      v107 = [animatedArtworkPreviewFrames isEqual:animatedArtworkPreviewFrames2];
 
       if ((v107 & 1) == 0)
       {
@@ -3810,16 +3810,16 @@ LABEL_78:
       }
     }
 
-    v109 = [(MRContentItem *)v4 animatedArtworks];
-    v110 = [(MRContentItem *)self animatedArtworks];
-    if (v109 == v110)
+    animatedArtworks = [(MRContentItem *)equalCopy animatedArtworks];
+    animatedArtworks2 = [(MRContentItem *)self animatedArtworks];
+    if (animatedArtworks == animatedArtworks2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v109 isEqual:v110];
+      v11 = [animatedArtworks isEqual:animatedArtworks2];
     }
   }
 
@@ -3828,146 +3828,146 @@ LABEL_79:
   return v11;
 }
 
-- (BOOL)isEffectivelyEqual:(id)a3
+- (BOOL)isEffectivelyEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = _AXSHapticMusicEnabled();
   v6 = [(MRContentItem *)self copy];
-  v7 = [v4 copy];
-  v8 = [v6 metadata];
-  [v8 setHasElapsedTime:0];
+  v7 = [equalCopy copy];
+  metadata = [v6 metadata];
+  [metadata setHasElapsedTime:0];
 
-  v9 = [v6 metadata];
-  [v9 setHasElapsedTimeTimestamp:0];
+  metadata2 = [v6 metadata];
+  [metadata2 setHasElapsedTimeTimestamp:0];
 
-  v10 = [v6 metadata];
-  [v10 setHasInferredTimestamp:0];
+  metadata3 = [v6 metadata];
+  [metadata3 setHasInferredTimestamp:0];
 
-  v11 = [v7 metadata];
-  [v11 setHasElapsedTime:0];
+  metadata4 = [v7 metadata];
+  [metadata4 setHasElapsedTime:0];
 
-  v12 = [v7 metadata];
-  [v12 setHasElapsedTimeTimestamp:0];
+  metadata5 = [v7 metadata];
+  [metadata5 setHasElapsedTimeTimestamp:0];
 
-  v13 = [v7 metadata];
-  [v13 setHasInferredTimestamp:0];
+  metadata6 = [v7 metadata];
+  [metadata6 setHasInferredTimestamp:0];
 
   v14 = 0;
   if ([v6 isEqual:v7])
   {
     v15 = v5 == 0;
-    v16 = [(MRContentItem *)self metadata];
-    [v16 calculatedPlaybackPosition];
+    metadata7 = [(MRContentItem *)self metadata];
+    [metadata7 calculatedPlaybackPosition];
     v18 = v17;
-    v19 = [v4 metadata];
-    [v19 calculatedPlaybackPosition];
+    metadata8 = [equalCopy metadata];
+    [metadata8 calculatedPlaybackPosition];
     v14 = vabdd_f64(v18, v20) < dbl_1A2B81000[v15];
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MRContentItem *)self identifier];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(MRContentItem *)self identifier];
+  v7 = [identifier copyWithZone:zone];
   [v5 setIdentifier:v7];
 
-  v8 = [(MRContentItem *)self metadata];
-  v9 = [v8 copyWithZone:a3];
+  metadata = [(MRContentItem *)self metadata];
+  v9 = [metadata copyWithZone:zone];
   [v5 setMetadata:v9];
 
-  v10 = [(MRContentItem *)self info];
-  v11 = [v10 copyWithZone:a3];
+  info = [(MRContentItem *)self info];
+  v11 = [info copyWithZone:zone];
   [v5 setInfo:v11];
 
-  v12 = [(MRContentItem *)self parentIdentifier];
-  v13 = [v12 copyWithZone:a3];
+  parentIdentifier = [(MRContentItem *)self parentIdentifier];
+  v13 = [parentIdentifier copyWithZone:zone];
   [v5 setParentIdentifier:v13];
 
-  v14 = [(MRContentItem *)self ancestorIdentifier];
-  v15 = [v14 copyWithZone:a3];
+  ancestorIdentifier = [(MRContentItem *)self ancestorIdentifier];
+  v15 = [ancestorIdentifier copyWithZone:zone];
   [v5 setAncestorIdentifier:v15];
 
-  v16 = [(MRContentItem *)self associatedParticipantIdentifier];
-  v17 = [v16 copyWithZone:a3];
+  associatedParticipantIdentifier = [(MRContentItem *)self associatedParticipantIdentifier];
+  v17 = [associatedParticipantIdentifier copyWithZone:zone];
   [v5 setAssociatedParticipantIdentifier:v17];
 
-  v18 = [(MRContentItem *)self queueIdentifier];
-  v19 = [v18 copyWithZone:a3];
+  queueIdentifier = [(MRContentItem *)self queueIdentifier];
+  v19 = [queueIdentifier copyWithZone:zone];
   [v5 setQueueIdentifier:v19];
 
-  v20 = [(MRContentItem *)self requestIdentifier];
-  v21 = [v20 copyWithZone:a3];
+  requestIdentifier = [(MRContentItem *)self requestIdentifier];
+  v21 = [requestIdentifier copyWithZone:zone];
   [v5 setRequestIdentifier:v21];
 
-  v22 = [(MRContentItem *)self artwork];
-  v23 = [v22 copyWithZone:a3];
+  artwork = [(MRContentItem *)self artwork];
+  v23 = [artwork copyWithZone:zone];
   [v5 setArtwork:v23];
 
-  v24 = [(MRContentItem *)self transcriptAlignments];
+  transcriptAlignments = [(MRContentItem *)self transcriptAlignments];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __30__MRContentItem_copyWithZone___block_invoke;
   v50[3] = &__block_descriptor_40_e31__16__0__MRTranscriptAlignment_8l;
-  v50[4] = a3;
-  v25 = [v24 mr_map:v50];
+  v50[4] = zone;
+  v25 = [transcriptAlignments mr_map:v50];
   [v5 setTranscriptAlignments:v25];
 
-  v26 = [(MRContentItem *)self availableLanguageOptions];
+  availableLanguageOptions = [(MRContentItem *)self availableLanguageOptions];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __30__MRContentItem_copyWithZone___block_invoke_2;
   v49[3] = &__block_descriptor_40_e31__16__0__MRLanguageOptionGroup_8l;
-  v49[4] = a3;
-  v27 = [v26 mr_map:v49];
+  v49[4] = zone;
+  v27 = [availableLanguageOptions mr_map:v49];
   [v5 setAvailableLanguageOptions:v27];
 
-  v28 = [(MRContentItem *)self currentLanguageOptions];
+  currentLanguageOptions = [(MRContentItem *)self currentLanguageOptions];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __30__MRContentItem_copyWithZone___block_invoke_3;
   v48[3] = &__block_descriptor_40_e26__16__0__MRLanguageOption_8l;
-  v48[4] = a3;
-  v29 = [v28 mr_map:v48];
+  v48[4] = zone;
+  v29 = [currentLanguageOptions mr_map:v48];
   [v5 setCurrentLanguageOptions:v29];
 
-  v30 = [(MRContentItem *)self sections];
+  sections = [(MRContentItem *)self sections];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __30__MRContentItem_copyWithZone___block_invoke_4;
   v47[3] = &__block_descriptor_40_e23__16__0__MRContentItem_8l;
-  v47[4] = a3;
-  v31 = [v30 mr_map:v47];
+  v47[4] = zone;
+  v31 = [sections mr_map:v47];
   [v5 setSections:v31];
 
-  v32 = [(MRContentItem *)self availableArtworkFormats];
-  v33 = [v32 copyWithZone:a3];
+  availableArtworkFormats = [(MRContentItem *)self availableArtworkFormats];
+  v33 = [availableArtworkFormats copyWithZone:zone];
   [v5 setAvailableArtworkFormats:v33];
 
-  v34 = [(MRContentItem *)self availableRemoteArtworkFormats];
-  v35 = [v34 copyWithZone:a3];
+  availableRemoteArtworkFormats = [(MRContentItem *)self availableRemoteArtworkFormats];
+  v35 = [availableRemoteArtworkFormats copyWithZone:zone];
   [v5 setAvailableRemoteArtworkFormats:v35];
 
-  v36 = [(MRContentItem *)self availableAnimatedArtworkFormats];
-  v37 = [v36 copyWithZone:a3];
+  availableAnimatedArtworkFormats = [(MRContentItem *)self availableAnimatedArtworkFormats];
+  v37 = [availableAnimatedArtworkFormats copyWithZone:zone];
   [v5 setAvailableAnimatedArtworkFormats:v37];
 
-  v38 = [(MRContentItem *)self artworks];
-  v39 = [v38 copyWithZone:a3];
+  artworks = [(MRContentItem *)self artworks];
+  v39 = [artworks copyWithZone:zone];
   [v5 setArtworks:v39];
 
-  v40 = [(MRContentItem *)self remoteArtworks];
-  v41 = [v40 copyWithZone:a3];
+  remoteArtworks = [(MRContentItem *)self remoteArtworks];
+  v41 = [remoteArtworks copyWithZone:zone];
   [v5 setRemoteArtworks:v41];
 
-  v42 = [(MRContentItem *)self animatedArtworkPreviewFrames];
-  v43 = [v42 copyWithZone:a3];
+  animatedArtworkPreviewFrames = [(MRContentItem *)self animatedArtworkPreviewFrames];
+  v43 = [animatedArtworkPreviewFrames copyWithZone:zone];
   [v5 setAnimatedArtworkPreviewFrames:v43];
 
-  v44 = [(MRContentItem *)self animatedArtworks];
-  v45 = [v44 copyWithZone:a3];
+  animatedArtworks = [(MRContentItem *)self animatedArtworks];
+  v45 = [animatedArtworks copyWithZone:zone];
   [v5 setAnimatedArtworks:v45];
 
   return v5;

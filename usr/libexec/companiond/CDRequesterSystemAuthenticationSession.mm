@@ -2,43 +2,43 @@
 - (BOOL)_requireOwnerDevice;
 - (id)_idsMessageRecipientUsernames;
 - (unint64_t)_authFlags;
-- (void)_configureRapportClient:(id)a3;
+- (void)_configureRapportClient:(id)client;
 - (void)_invalidated;
-- (void)_notifyDeviceAcceptedNotification:(id)a3;
-- (void)_notifyDeviceStartedAuthentication:(id)a3;
+- (void)_notifyDeviceAcceptedNotification:(id)notification;
+- (void)_notifyDeviceStartedAuthentication:(id)authentication;
 @end
 
 @implementation CDRequesterSystemAuthenticationSession
 
-- (void)_configureRapportClient:(id)a3
+- (void)_configureRapportClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001E098;
   v6[3] = &unk_10008A780;
   v6[4] = self;
-  [v4 cad_registerRequestID:@"com.apple.CompanionAuthentication.GetAuthInfo" options:0 requireOwnerDevice:-[CDRequesterSystemAuthenticationSession _requireOwnerDevice](self handler:{"_requireOwnerDevice"), v6}];
+  [clientCopy cad_registerRequestID:@"com.apple.CompanionAuthentication.GetAuthInfo" options:0 requireOwnerDevice:-[CDRequesterSystemAuthenticationSession _requireOwnerDevice](self handler:{"_requireOwnerDevice"), v6}];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001E374;
   v5[3] = &unk_10008A780;
   v5[4] = self;
-  [v4 cad_registerRequestID:@"com.apple.CompanionAuthentication.DidFinishAuth" options:0 requireOwnerDevice:-[CDRequesterSystemAuthenticationSession _requireOwnerDevice](self handler:{"_requireOwnerDevice"), v5}];
+  [clientCopy cad_registerRequestID:@"com.apple.CompanionAuthentication.DidFinishAuth" options:0 requireOwnerDevice:-[CDRequesterSystemAuthenticationSession _requireOwnerDevice](self handler:{"_requireOwnerDevice"), v5}];
 }
 
-- (void)_notifyDeviceAcceptedNotification:(id)a3
+- (void)_notifyDeviceAcceptedNotification:(id)notification
 {
   v3.receiver = self;
   v3.super_class = CDRequesterSystemAuthenticationSession;
-  [(CDRequesterSession *)&v3 _notifyDeviceAcceptedNotification:a3];
+  [(CDRequesterSession *)&v3 _notifyDeviceAcceptedNotification:notification];
 }
 
-- (void)_notifyDeviceStartedAuthentication:(id)a3
+- (void)_notifyDeviceStartedAuthentication:(id)authentication
 {
   v3.receiver = self;
   v3.super_class = CDRequesterSystemAuthenticationSession;
-  [(CDRequesterSession *)&v3 _notifyDeviceStartedAuthentication:a3];
+  [(CDRequesterSession *)&v3 _notifyDeviceStartedAuthentication:authentication];
 }
 
 - (void)_invalidated
@@ -50,26 +50,26 @@
 
 - (BOOL)_requireOwnerDevice
 {
-  v2 = [(CDRequesterSession *)self request];
-  v3 = [v2 appleAccountAltDSID];
-  v4 = v3 == 0;
+  request = [(CDRequesterSession *)self request];
+  appleAccountAltDSID = [request appleAccountAltDSID];
+  v4 = appleAccountAltDSID == 0;
 
   return v4;
 }
 
 - (id)_idsMessageRecipientUsernames
 {
-  v2 = [(CDRequesterSession *)self request];
-  v3 = [v2 appleAccountAltDSID];
+  request = [(CDRequesterSession *)self request];
+  appleAccountAltDSID = [request appleAccountAltDSID];
 
-  if (v3)
+  if (appleAccountAltDSID)
   {
-    v4 = v3;
+    v4 = appleAccountAltDSID;
     v5 = +[ACAccountStore defaultStore];
     v6 = [v5 aa_appleAccountWithAltDSID:v4];
 
-    v7 = [v6 username];
-    v10 = v7;
+    username = [v6 username];
+    v10 = username;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -83,10 +83,10 @@
 
 - (unint64_t)_authFlags
 {
-  v2 = [(CDRequesterSession *)self request];
-  v3 = [v2 options];
+  request = [(CDRequesterSession *)self request];
+  options = [request options];
 
-  return v3;
+  return options;
 }
 
 @end

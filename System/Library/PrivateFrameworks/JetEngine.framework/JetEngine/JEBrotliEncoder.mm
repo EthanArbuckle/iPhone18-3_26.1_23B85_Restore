@@ -1,8 +1,8 @@
 @interface JEBrotliEncoder
 - (JEBrotliEncoder)init;
 - (void)dealloc;
-- (void)setQuality:(unsigned int)a3;
-- (void)setSizeHint:(unsigned int)a3;
+- (void)setQuality:(unsigned int)quality;
+- (void)setSizeHint:(unsigned int)hint;
 @end
 
 @implementation JEBrotliEncoder
@@ -33,19 +33,19 @@
   [(JEBrotliEncoder *)&v3 dealloc];
 }
 
-- (void)setQuality:(unsigned int)a3
+- (void)setQuality:(unsigned int)quality
 {
-  self->_quality = a3;
-  if (BrotliEncoderSetParameter([(JEBrotliEncoder *)self encoder], 1, a3) != 1)
+  self->_quality = quality;
+  if (BrotliEncoderSetParameter([(JEBrotliEncoder *)self encoder], 1, quality) != 1)
   {
     NSLog(&cfstr_FailedToSetQua.isa);
   }
 }
 
-- (void)setSizeHint:(unsigned int)a3
+- (void)setSizeHint:(unsigned int)hint
 {
-  self->_sizeHint = a3;
-  if (BrotliEncoderSetParameter([(JEBrotliEncoder *)self encoder], 5, a3) != 1)
+  self->_sizeHint = hint;
+  if (BrotliEncoderSetParameter([(JEBrotliEncoder *)self encoder], 5, hint) != 1)
   {
     NSLog(&cfstr_FailedToSetSiz.isa);
   }

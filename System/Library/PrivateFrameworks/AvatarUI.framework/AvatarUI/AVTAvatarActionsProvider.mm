@@ -1,10 +1,10 @@
 @interface AVTAvatarActionsProvider
-+ (id)localizedTitleForActionType:(int64_t)a3;
++ (id)localizedTitleForActionType:(int64_t)type;
 - (AVTAvatarActionsModelDelegate)delegate;
-- (AVTAvatarActionsProvider)initWithAvatarRecord:(id)a3 dataSource:(id)a4 allowCreate:(BOOL)a5;
-- (BOOL)canPerformActionType:(int64_t)a3;
+- (AVTAvatarActionsProvider)initWithAvatarRecord:(id)record dataSource:(id)source allowCreate:(BOOL)create;
+- (BOOL)canPerformActionType:(int64_t)type;
 - (void)didTapCreateNew;
-- (void)didTapDelete:(id)a3;
+- (void)didTapDelete:(id)delete;
 - (void)didTapDuplicate;
 - (void)didTapEdit;
 - (void)generateActions;
@@ -12,16 +12,16 @@
 
 @implementation AVTAvatarActionsProvider
 
-+ (id)localizedTitleForActionType:(int64_t)a3
++ (id)localizedTitleForActionType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E7F3C0E8[a3];
+    v3 = off_1E7F3C0E8[type];
     v4 = AVTAvatarUIBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F39618F0 table:@"Localized"];
   }
@@ -29,39 +29,39 @@
   return v5;
 }
 
-- (AVTAvatarActionsProvider)initWithAvatarRecord:(id)a3 dataSource:(id)a4 allowCreate:(BOOL)a5
+- (AVTAvatarActionsProvider)initWithAvatarRecord:(id)record dataSource:(id)source allowCreate:(BOOL)create
 {
-  v9 = a3;
-  v10 = a4;
+  recordCopy = record;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = AVTAvatarActionsProvider;
   v11 = [(AVTAvatarActionsProvider *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_avatarRecord, a3);
-    objc_storeStrong(&v12->_dataSource, a4);
-    v12->_allowCreate = a5;
+    objc_storeStrong(&v11->_avatarRecord, record);
+    objc_storeStrong(&v12->_dataSource, source);
+    v12->_allowCreate = create;
     [(AVTAvatarActionsProvider *)v12 generateActions];
   }
 
   return v12;
 }
 
-- (BOOL)canPerformActionType:(int64_t)a3
+- (BOOL)canPerformActionType:(int64_t)type
 {
-  v5 = [(AVTAvatarActionsProvider *)self avatarRecord];
-  v6 = [v5 isEditable];
+  avatarRecord = [(AVTAvatarActionsProvider *)self avatarRecord];
+  isEditable = [avatarRecord isEditable];
 
-  if (v6)
+  if (isEditable)
   {
-    v7 = [(AVTAvatarActionsProvider *)self dataSource];
-    v8 = [v7 internalRecordStore];
-    v9 = [v8 canCreateAvatarWithError:0];
+    dataSource = [(AVTAvatarActionsProvider *)self dataSource];
+    internalRecordStore = [dataSource internalRecordStore];
+    v9 = [internalRecordStore canCreateAvatarWithError:0];
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         return [(AVTAvatarActionsProvider *)self allowCreate]& v9;
       }
@@ -141,8 +141,8 @@
     v14 = [v12 actionWithTitle:v13 image:0 identifier:@"delete" handler:v16];
     [(AVTAvatarActionsProvider *)self setDeleteAction:v14];
 
-    v15 = [(AVTAvatarActionsProvider *)self deleteAction];
-    [v15 setAttributes:2];
+    deleteAction = [(AVTAvatarActionsProvider *)self deleteAction];
+    [deleteAction setAttributes:2];
 
     objc_destroyWeak(&v17);
   }
@@ -176,26 +176,26 @@ void __43__AVTAvatarActionsProvider_generateActions__block_invoke_4(uint64_t a1)
 
 - (void)didTapCreateNew
 {
-  v3 = [(AVTAvatarActionsProvider *)self delegate];
-  [v3 performCreateForActionsModel:self];
+  delegate = [(AVTAvatarActionsProvider *)self delegate];
+  [delegate performCreateForActionsModel:self];
 }
 
 - (void)didTapEdit
 {
-  v3 = [(AVTAvatarActionsProvider *)self delegate];
-  [v3 performEditForActionsModel:self];
+  delegate = [(AVTAvatarActionsProvider *)self delegate];
+  [delegate performEditForActionsModel:self];
 }
 
 - (void)didTapDuplicate
 {
-  v3 = [(AVTAvatarActionsProvider *)self delegate];
-  [v3 performDuplicateForActionsModel:self];
+  delegate = [(AVTAvatarActionsProvider *)self delegate];
+  [delegate performDuplicateForActionsModel:self];
 }
 
-- (void)didTapDelete:(id)a3
+- (void)didTapDelete:(id)delete
 {
-  v4 = [(AVTAvatarActionsProvider *)self delegate];
-  [v4 performDeleteForActionsModel:self];
+  delegate = [(AVTAvatarActionsProvider *)self delegate];
+  [delegate performDeleteForActionsModel:self];
 }
 
 - (AVTAvatarActionsModelDelegate)delegate

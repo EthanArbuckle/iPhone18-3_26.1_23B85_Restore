@@ -1,9 +1,9 @@
 @interface PKTableHeaderView
 - (BOOL)_hasAccessibilityLargeText;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3 imageHeightAdjustment:(double)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTableHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)_layoutWithBounds:(CGRect)bounds imageHeightAdjustment:(double)adjustment;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTableHeaderView)initWithFrame:(CGRect)frame;
 - (UIColor)subtitleTextColor;
 - (UIColor)titleTextColor;
 - (UIFont)subtitleFont;
@@ -15,30 +15,30 @@
 - (void)_updateImageView;
 - (void)configureActionButton;
 - (void)layoutSubviews;
-- (void)setAccessoryViewsDisabled:(BOOL)a3;
-- (void)setActionButtonAction:(id)a3;
-- (void)setActionButtonUsesLearnMoreStyle:(BOOL)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setAlignment:(int64_t)a3;
-- (void)setButtonsEnabled:(BOOL)a3;
-- (void)setImageView:(id)a3;
-- (void)setImageViewImage:(id)a3 withSize:(CGSize)a4 animated:(BOOL)a5;
-- (void)setPassSnapshot:(id)a3 withSize:(CGSize)a4 animated:(BOOL)a5 needsCorners:(BOOL)a6;
-- (void)setStyle:(unint64_t)a3;
-- (void)setSubtitleFont:(id)a3;
-- (void)setSubtitleTextColor:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessoryViewsDisabled:(BOOL)disabled;
+- (void)setActionButtonAction:(id)action;
+- (void)setActionButtonUsesLearnMoreStyle:(BOOL)style;
+- (void)setActionTitle:(id)title;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setButtonsEnabled:(BOOL)enabled;
+- (void)setImageView:(id)view;
+- (void)setImageViewImage:(id)image withSize:(CGSize)size animated:(BOOL)animated;
+- (void)setPassSnapshot:(id)snapshot withSize:(CGSize)size animated:(BOOL)animated needsCorners:(BOOL)corners;
+- (void)setStyle:(unint64_t)style;
+- (void)setSubtitleFont:(id)font;
+- (void)setSubtitleTextColor:(id)color;
+- (void)setTitleFont:(id)font;
+- (void)setTitleTextColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKTableHeaderView
 
-- (PKTableHeaderView)initWithFrame:(CGRect)a3
+- (PKTableHeaderView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PKTableHeaderView;
-  v3 = [(PKTableHeaderView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKTableHeaderView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -59,19 +59,19 @@
   return v4;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style == a3)
+  if (self->_style == style)
   {
     return;
   }
 
-  self->_style = a3;
-  if (a3 > 1)
+  self->_style = style;
+  if (style > 1)
   {
-    if (a3 != 2)
+    if (style != 2)
     {
-      if (a3 != 3)
+      if (style != 3)
       {
         return;
       }
@@ -93,9 +93,9 @@
     }
   }
 
-  else if (a3)
+  else if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       return;
     }
@@ -120,11 +120,11 @@ LABEL_13:
   [(PKTableHeaderView *)self setAlignment:v10];
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = self->_actionTitle;
-  v7 = v5;
+  v7 = titleCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -143,34 +143,34 @@ LABEL_13:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_actionTitle, a3);
+    objc_storeStrong(&self->_actionTitle, title);
     [(PKTableHeaderView *)self configureActionButton];
   }
 
 LABEL_9:
 }
 
-- (void)setActionButtonAction:(id)a3
+- (void)setActionButtonAction:(id)action
 {
-  objc_storeStrong(&self->_actionButtonAction, a3);
+  objc_storeStrong(&self->_actionButtonAction, action);
 
   [(PKTableHeaderView *)self configureActionButton];
 }
 
-- (void)setActionButtonUsesLearnMoreStyle:(BOOL)a3
+- (void)setActionButtonUsesLearnMoreStyle:(BOOL)style
 {
-  if (self->_actionButtonUsesLearnMoreStyle != a3)
+  if (self->_actionButtonUsesLearnMoreStyle != style)
   {
-    self->_actionButtonUsesLearnMoreStyle = a3;
+    self->_actionButtonUsesLearnMoreStyle = style;
     [(PKTableHeaderView *)self configureActionButton];
   }
 }
 
-- (void)setButtonsEnabled:(BOOL)a3
+- (void)setButtonsEnabled:(BOOL)enabled
 {
-  if (self->_buttonsEnabled == !a3)
+  if (self->_buttonsEnabled == !enabled)
   {
-    self->_buttonsEnabled = a3;
+    self->_buttonsEnabled = enabled;
     [(UIButton *)self->_actionButton setEnabled:?];
   }
 }
@@ -233,16 +233,16 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   [v4 setContentHorizontalAlignment:1];
 }
 
-- (void)setPassSnapshot:(id)a3 withSize:(CGSize)a4 animated:(BOOL)a5 needsCorners:(BOOL)a6
+- (void)setPassSnapshot:(id)snapshot withSize:(CGSize)size animated:(BOOL)animated needsCorners:(BOOL)corners
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v16 = a3;
+  cornersCopy = corners;
+  animatedCopy = animated;
+  height = size.height;
+  width = size.width;
+  snapshotCopy = snapshot;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    [v16 size];
+    [snapshotCopy size];
     PKFloatRoundToPixel();
     width = v12;
     PKFloatRoundToPixel();
@@ -251,22 +251,22 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
 
   [(UIImageView *)self->_imageView setContentMode:1];
   [(UIImageView *)self->_imageView setAccessibilityIgnoresInvertColors:1];
-  [(PKTableHeaderView *)self setImageViewImage:v16 withSize:v7 animated:width, height];
-  if (v6)
+  [(PKTableHeaderView *)self setImageViewImage:snapshotCopy withSize:animatedCopy animated:width, height];
+  if (cornersCopy)
   {
-    v14 = [(UIImageView *)self->_imageView layer];
+    layer = [(UIImageView *)self->_imageView layer];
     v15 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
     [v15 CGColor];
     PKPaymentStyleApplyCorners();
   }
 }
 
-- (void)setImageViewImage:(id)a3 withSize:(CGSize)a4 animated:(BOOL)a5
+- (void)setImageViewImage:(id)image withSize:(CGSize)size animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  animatedCopy = animated;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   imageView = self->_imageView;
   if (!imageView)
   {
@@ -279,7 +279,7 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   }
 
   [(UIImageView *)imageView setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
-  if (v5)
+  if (animatedCopy)
   {
     v13 = MEMORY[0x1E69DD250];
     v14 = self->_imageView;
@@ -287,32 +287,32 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     v16 = 3221225472;
     v17 = __57__PKTableHeaderView_setImageViewImage_withSize_animated___block_invoke;
     v18 = &unk_1E8010A10;
-    v19 = self;
-    v20 = v9;
+    selfCopy = self;
+    v20 = imageCopy;
     [v13 transitionWithView:v14 duration:5242880 options:&v15 animations:0 completion:0.300000012];
   }
 
   else
   {
-    [(UIImageView *)self->_imageView setImage:v9];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
   }
 
   [(PKTableHeaderView *)self _updateImageView:v15];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   imageView = self->_imageView;
-  if (imageView != v5)
+  if (imageView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIImageView *)imageView removeFromSuperview];
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
     [(UIImageView *)self->_imageView setContentMode:1];
     [(PKTableHeaderView *)self addSubview:self->_imageView];
     [(PKTableHeaderView *)self _updateImageView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -326,9 +326,9 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   [(PKTableHeaderView *)self setNeedsLayout];
 }
 
-- (void)setAccessoryViewsDisabled:(BOOL)a3
+- (void)setAccessoryViewsDisabled:(BOOL)disabled
 {
-  self->_accessoryViewsDisabled = a3;
+  self->_accessoryViewsDisabled = disabled;
   [(PKTableHeaderView *)self _updateAccessoryViews];
 
   [(PKTableHeaderView *)self setNeedsLayout];
@@ -355,31 +355,31 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   titleTextColor = self->_titleTextColor;
   if (titleTextColor)
   {
-    v3 = titleTextColor;
+    labelColor = titleTextColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return labelColor;
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  objc_storeStrong(&self->_titleTextColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_titleTextColor, color);
+  colorCopy = color;
   [(UILabel *)self->_titleLabel setTextColor:self->_titleTextColor];
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  self->_alignment = a3;
+  self->_alignment = alignment;
   [(UILabel *)self->_titleLabel setTextAlignment:?];
   subtitleLabel = self->_subtitleLabel;
 
-  [(UILabel *)subtitleLabel setTextAlignment:a3];
+  [(UILabel *)subtitleLabel setTextAlignment:alignment];
 }
 
 - (UIFont)subtitleFont
@@ -403,34 +403,34 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   subtitleTextColor = self->_subtitleTextColor;
   if (subtitleTextColor)
   {
-    v3 = subtitleTextColor;
+    labelColor = subtitleTextColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return labelColor;
 }
 
-- (void)setSubtitleTextColor:(id)a3
+- (void)setSubtitleTextColor:(id)color
 {
-  objc_storeStrong(&self->_subtitleTextColor, a3);
-  v5 = a3;
-  [(UILabel *)self->_subtitleLabel setTextColor:v5];
+  objc_storeStrong(&self->_subtitleTextColor, color);
+  colorCopy = color;
+  [(UILabel *)self->_subtitleLabel setTextColor:colorCopy];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  objc_storeStrong(&self->_titleFont, a3);
+  objc_storeStrong(&self->_titleFont, font);
 
   [(PKTableHeaderView *)self _updateFonts];
 }
 
-- (void)setSubtitleFont:(id)a3
+- (void)setSubtitleFont:(id)font
 {
-  objc_storeStrong(&self->_subtitleFont, a3);
+  objc_storeStrong(&self->_subtitleFont, font);
 
   [(PKTableHeaderView *)self _updateFonts];
 }
@@ -446,8 +446,8 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     v6 = self->_titleLabel;
     self->_titleLabel = v5;
 
-    v7 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v8 = [v7 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v8 = [defaultParagraphStyle mutableCopy];
 
     LODWORD(v9) = 1036831949;
     [v8 setHyphenationFactor:v9];
@@ -459,11 +459,11 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     v12 = *MEMORY[0x1E69DB648];
     v17[0] = v11;
     v17[1] = v12;
-    v13 = [(PKTableHeaderView *)self titleFont];
-    v18[1] = v13;
+    titleFont = [(PKTableHeaderView *)self titleFont];
+    v18[1] = titleFont;
     v17[2] = *MEMORY[0x1E69DB650];
-    v14 = [(PKTableHeaderView *)self titleTextColor];
-    v18[2] = v14;
+    titleTextColor = [(PKTableHeaderView *)self titleTextColor];
+    v18[2] = titleTextColor;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
     [(UILabel *)v10 _setDefaultAttributes:v15];
 
@@ -491,12 +491,12 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     self->_subtitleLabel = v5;
 
     v7 = self->_subtitleLabel;
-    v8 = [(PKTableHeaderView *)self subtitleFont];
-    [(UILabel *)v7 setFont:v8];
+    subtitleFont = [(PKTableHeaderView *)self subtitleFont];
+    [(UILabel *)v7 setFont:subtitleFont];
 
     v9 = self->_subtitleLabel;
-    v10 = [(PKTableHeaderView *)self subtitleTextColor];
-    [(UILabel *)v9 setTextColor:v10];
+    subtitleTextColor = [(PKTableHeaderView *)self subtitleTextColor];
+    [(UILabel *)v9 setTextColor:subtitleTextColor];
 
     [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)self->_subtitleLabel setTextAlignment:self->_alignment];
@@ -508,10 +508,10 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   return subtitleLabel;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKTableHeaderView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKTableHeaderView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   maximumHeight = self->_maximumHeight;
   v6.n128_f64[0] = fmax(v6.n128_f64[0], self->_minimumHeight);
@@ -527,13 +527,13 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(PKTableHeaderView *)self _layoutWithBounds:a3.origin.x imageHeightAdjustment:a3.origin.y, a3.size.width, a3.size.height, 0.0];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(PKTableHeaderView *)self _layoutWithBounds:bounds.origin.x imageHeightAdjustment:bounds.origin.y, bounds.size.width, bounds.size.height, 0.0];
   maximumHeight = self->_maximumHeight;
   if (v9 > maximumHeight)
   {
@@ -545,14 +545,14 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 imageHeightAdjustment:(double)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds imageHeightAdjustment:(double)adjustment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v98 = a3.origin.x;
-  v10 = [(PKTableHeaderView *)self _shouldReverseLayoutDirection];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v98 = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(PKTableHeaderView *)self _shouldReverseLayoutDirection];
   v11 = PKSetupViewConstantsViewMargin();
   v12 = 0.0;
   v104.origin.x = x;
@@ -575,15 +575,15 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     MaxY = y + topPadding;
   }
 
-  v15 = [(UIImageView *)self->_imageView image];
-  v16 = v15;
+  image = [(UIImageView *)self->_imageView image];
+  v16 = image;
   v17 = self->_originalImageViewSize.width;
   v18 = self->_originalImageViewSize.height;
   v101 = height;
   v102 = width;
-  if (v15)
+  if (image)
   {
-    [v15 size];
+    [image size];
     v21 = fmin(self->_originalImageViewSize.width / v19, self->_originalImageViewSize.height / v20);
     [v16 scale];
     [v16 alignmentRectInsets];
@@ -596,7 +596,7 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     v29 = v21 * v23;
     v94 = v28;
     v95 = v30;
-    if (a4 == 0.0)
+    if (adjustment == 0.0)
     {
       width = v102;
     }
@@ -692,7 +692,7 @@ void __42__PKTableHeaderView_configureActionButton__block_invoke(uint64_t a1, vo
     v52 = v99;
     v54 = v101;
     v53 = v102;
-    if (v10)
+    if (_shouldReverseLayoutDirection)
     {
       v50 = CGRectGetMaxX(*&v51) - v49 - v96;
     }
@@ -782,8 +782,8 @@ LABEL_41:
   v112.size.height = v47;
   v71 = CGRectGetMaxY(v112);
   [(UILabel *)self->_subtitleLabel frame];
-  v72 = [(UILabel *)self->_subtitleLabel text];
-  if ([v72 length])
+  text = [(UILabel *)self->_subtitleLabel text];
+  if ([text length])
   {
     v73 = v101;
 
@@ -872,18 +872,18 @@ LABEL_46:
   [(PKTableHeaderView *)self _layoutWithBounds:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PKTableHeaderView;
-  [(PKTableHeaderView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(PKTableHeaderView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(PKTableHeaderView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(PKTableHeaderView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -894,8 +894,8 @@ LABEL_46:
 
 - (BOOL)_hasAccessibilityLargeText
 {
-  v2 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -903,12 +903,12 @@ LABEL_46:
 - (void)_updateFonts
 {
   titleLabel = self->_titleLabel;
-  v4 = [(PKTableHeaderView *)self titleFont];
-  [(UILabel *)titleLabel setFont:v4];
+  titleFont = [(PKTableHeaderView *)self titleFont];
+  [(UILabel *)titleLabel setFont:titleFont];
 
   subtitleLabel = self->_subtitleLabel;
-  v6 = [(PKTableHeaderView *)self subtitleFont];
-  [(UILabel *)subtitleLabel setFont:v6];
+  subtitleFont = [(PKTableHeaderView *)self subtitleFont];
+  [(UILabel *)subtitleLabel setFont:subtitleFont];
 }
 
 - (void)_updateAccessoryViews

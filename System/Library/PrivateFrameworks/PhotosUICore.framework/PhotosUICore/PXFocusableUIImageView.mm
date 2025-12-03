@@ -1,7 +1,7 @@
 @interface PXFocusableUIImageView
 - (BOOL)_isEligibleForFocusInteraction;
-- (PXFocusableUIImageView)initWithCoder:(id)a3;
-- (PXFocusableUIImageView)initWithFrame:(CGRect)a3;
+- (PXFocusableUIImageView)initWithCoder:(id)coder;
+- (PXFocusableUIImageView)initWithFrame:(CGRect)frame;
 - (id)focusEffect;
 @end
 
@@ -29,8 +29,8 @@
 {
   if ([(PXFocusableUIImageView *)self isUserInteractionEnabled])
   {
-    v3 = [(PXFocusableUIImageView *)self window];
-    if (v3)
+    window = [(PXFocusableUIImageView *)self window];
+    if (window)
     {
       v4 = ![(PXFocusableUIImageView *)self reusable];
     }
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (PXFocusableUIImageView)initWithCoder:(id)a3
+- (PXFocusableUIImageView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXFocusableUIImageView;
-  v3 = [(PXFocusableUIImageView *)&v6 initWithCoder:a3];
+  v3 = [(PXFocusableUIImageView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (PXFocusableUIImageView)initWithFrame:(CGRect)a3
+- (PXFocusableUIImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXFocusableUIImageView;
-  v3 = [(PXFocusableUIImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXFocusableUIImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

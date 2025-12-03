@@ -1,14 +1,14 @@
 @interface VCMockIDSDataChannelLinkContext
-- (VCMockIDSDataChannelLinkContext)initWithSourcePort:(signed __int16)a3;
+- (VCMockIDSDataChannelLinkContext)initWithSourcePort:(signed __int16)port;
 - (unsigned)RATType;
 - (unsigned)remoteRATType;
 @end
 
 @implementation VCMockIDSDataChannelLinkContext
 
-- (VCMockIDSDataChannelLinkContext)initWithSourcePort:(signed __int16)a3
+- (VCMockIDSDataChannelLinkContext)initWithSourcePort:(signed __int16)port
 {
-  v3 = a3;
+  portCopy = port;
   v32 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = VCMockIDSDataChannelLinkContext;
@@ -42,7 +42,7 @@
   v4->_estimatedPerPacketConstantOverhead = 82;
   if (VCDefaults_GetBoolValueForKey(@"enableTestNetworkRouter", 0))
   {
-    v4->_linkID = v3 - 127 * (((v3 + ((-32509 * v3) >> 16)) >> 6) + (((v3 + ((-32509 * v3) >> 16)) & 0x8000) >> 15));
+    v4->_linkID = portCopy - 127 * (((portCopy + ((-32509 * portCopy) >> 16)) >> 6) + (((portCopy + ((-32509 * portCopy) >> 16)) & 0x8000) >> 15));
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -70,7 +70,7 @@
       v28 = 1024;
       v29 = linkID;
       v30 = 1024;
-      v31 = v3;
+      v31 = portCopy;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Mock IDS channel context forced _networkType=%u _remoteNetworkType=%u _localLinkFlags=%u _linkID=%u [sourcePort=%u]", buf, 0x3Au);
     }
   }

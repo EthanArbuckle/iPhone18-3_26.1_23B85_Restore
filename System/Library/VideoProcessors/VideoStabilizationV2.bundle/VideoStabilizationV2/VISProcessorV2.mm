@@ -1,17 +1,17 @@
 @interface VISProcessorV2
 - (VISProcessorDelegate)delegate;
 - (VISProcessorV2)init;
-- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)a3;
+- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)processing;
 - (int)finishProcessing;
-- (int)prepareToProcess:(unsigned int)a3;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)prewarm;
 - (int)purgeResources;
 - (uint64_t)finishProcessing;
 - (uint64_t)purgeResources;
 - (void)dealloc;
-- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4;
-- (void)setDelegate:(id)a3;
-- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4;
+- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status;
+- (void)setDelegate:(id)delegate;
+- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status;
 @end
 
 @implementation VISProcessorV2
@@ -27,8 +27,8 @@
 
 - (int)finishProcessing
 {
-  v3 = [(VISWrapper *)self->_visWrapper finishProcessing];
-  if (v3)
+  finishProcessing = [(VISWrapper *)self->_visWrapper finishProcessing];
+  if (finishProcessing)
   {
     [VISProcessorV2 finishProcessing];
   }
@@ -38,18 +38,18 @@
     self->_buffersEnqueued = 0;
   }
 
-  return v3;
+  return finishProcessing;
 }
 
 - (int)purgeResources
 {
-  v2 = [(VISWrapper *)self->_visWrapper purgeResources];
-  if (v2)
+  purgeResources = [(VISWrapper *)self->_visWrapper purgeResources];
+  if (purgeResources)
   {
     [VISProcessorV2 purgeResources];
   }
 
-  return v2;
+  return purgeResources;
 }
 
 - (int)prewarm
@@ -93,27 +93,27 @@
   return 0;
 }
 
-- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4
+- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status
 {
   if (self->_shouldCallStartProcessingBufferDelegate)
   {
-    v5 = *&a4;
+    v5 = *&status;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained willStartProcessingBuffer:a3 withStatus:v5];
+    [WeakRetained willStartProcessingBuffer:buffer withStatus:v5];
   }
 }
 
-- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4
+- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status
 {
-  v4 = *&a4;
+  v4 = *&status;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didCompleteProcessingOfBuffer:a3 withStatus:v4];
+  [WeakRetained didCompleteProcessingOfBuffer:buffer withStatus:v4];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v6 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v6);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_shouldCallStartProcessingBufferDelegate = v5 & 1;
@@ -144,7 +144,7 @@
   return v5;
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
   if (self->_buffersEnqueued)
   {
@@ -158,17 +158,17 @@
 
   [(VISWrapper *)self->_visWrapper setConfiguration:?];
   [(VISWrapper *)self->_visWrapper setDelegate:self];
-  v4 = [(VISWrapper *)self->_visWrapper prepareToProcess];
-  if (v4)
+  prepareToProcess = [(VISWrapper *)self->_visWrapper prepareToProcess];
+  if (prepareToProcess)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
   }
 
-  return v4;
+  return prepareToProcess;
 }
 
-- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)a3
+- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)processing
 {
   if (!self->_visWrapper)
   {
@@ -178,12 +178,12 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v6 = -12780;
-  if (a3 && WeakRetained)
+  if (processing && WeakRetained)
   {
     [(VISWrapper *)self->_visWrapper setLongPressModeEnabled:self->_longPressModeEnabled];
     [(VISWrapper *)self->_visWrapper setFlipHorizontalOrientationEnabled:self->_flipHorizontalOrientationEnabled];
     [(VISWrapper *)self->_visWrapper setSmartStyleReversibilityProcessingEnabled:self->_smartStyleReversibilityProcessingEnabled];
-    v6 = [(VISWrapper *)self->_visWrapper enqueueBufferForProcessing:a3];
+    v6 = [(VISWrapper *)self->_visWrapper enqueueBufferForProcessing:processing];
     if (v6)
     {
       fig_log_get_emitter();

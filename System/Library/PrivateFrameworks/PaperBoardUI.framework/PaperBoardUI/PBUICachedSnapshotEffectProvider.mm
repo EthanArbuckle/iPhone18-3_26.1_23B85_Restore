@@ -1,34 +1,34 @@
 @interface PBUICachedSnapshotEffectProvider
-- (PBUIBakedEffectSnapshotSource)makeBakedEffectSourceFrom:(uint64_t)a1;
-- (id)_effectConfigurationForObserver:(uint64_t)a1;
-- (id)cacheKeyForConfiguration:(uint64_t)a1;
-- (id)compositeImage:(void *)a3 effectConfiguration:;
-- (id)imageForConfiguration:(id *)a1;
-- (id)initForSnapshotProvider:(id)a3 cacheIdentifier:(id)a4;
-- (id)snapshotSourceForObserver:(id)a3;
+- (PBUIBakedEffectSnapshotSource)makeBakedEffectSourceFrom:(uint64_t)from;
+- (id)_effectConfigurationForObserver:(uint64_t)observer;
+- (id)cacheKeyForConfiguration:(uint64_t)configuration;
+- (id)compositeImage:(void *)image effectConfiguration:;
+- (id)imageForConfiguration:(id *)configuration;
+- (id)initForSnapshotProvider:(id)provider cacheIdentifier:(id)identifier;
+- (id)snapshotSourceForObserver:(id)observer;
 - (uint64_t)cache;
 - (uint64_t)cacheIdentifier;
-- (uint64_t)setCacheIdentifier:(void *)a1;
+- (uint64_t)setCacheIdentifier:(void *)identifier;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setCache:(uint64_t)a1;
+- (void)setCache:(uint64_t)cache;
 - (void)setNeedsSourceUpdate;
-- (void)setSnapshotProvider:(id)a3;
+- (void)setSnapshotProvider:(id)provider;
 @end
 
 @implementation PBUICachedSnapshotEffectProvider
 
-- (id)initForSnapshotProvider:(id)a3 cacheIdentifier:(id)a4
+- (id)initForSnapshotProvider:(id)provider cacheIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = PBUICachedSnapshotEffectProvider;
   v9 = [(PBUICachedSnapshotEffectProvider *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_snapshotProvider, a3);
+    objc_storeStrong(&v9->_snapshotProvider, provider);
     v11 = objc_alloc_init(PBUIBackdropCompositor);
     backdropCompositor = v10->_backdropCompositor;
     v10->_backdropCompositor = v11;
@@ -37,12 +37,12 @@
     materialCompositor = v10->_materialCompositor;
     v10->_materialCompositor = v13;
 
-    v15 = [getPUIMappedImageCacheManagerClass() defaultCacheManager];
-    v16 = [v15 checkoutImageCache:v8];
+    defaultCacheManager = [getPUIMappedImageCacheManagerClass() defaultCacheManager];
+    v16 = [defaultCacheManager checkoutImageCache:identifierCopy];
     cache = v10->_cache;
     v10->_cache = v16;
 
-    v18 = [v8 copy];
+    v18 = [identifierCopy copy];
     cacheIdentifier = v10->_cacheIdentifier;
     v10->_cacheIdentifier = v18;
 
@@ -90,19 +90,19 @@ void __76__PBUICachedSnapshotEffectProvider_initForSnapshotProvider_cacheIdentif
   }
 }
 
-- (void)setSnapshotProvider:(id)a3
+- (void)setSnapshotProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   p_snapshotProvider = &self->_snapshotProvider;
-  if (self->_snapshotProvider != v5)
+  if (self->_snapshotProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_snapshotProvider, a3);
+    v7 = providerCopy;
+    objc_storeStrong(p_snapshotProvider, provider);
     p_snapshotProvider = [(PBUICachedSnapshotEffectProvider *)self setNeedsSourceUpdate];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_snapshotProvider, v5);
+  MEMORY[0x2821F96F8](p_snapshotProvider, providerCopy);
 }
 
 - (void)dealloc
@@ -126,13 +126,13 @@ void __76__PBUICachedSnapshotEffectProvider_initForSnapshotProvider_cacheIdentif
 
 - (void)setNeedsSourceUpdate
 {
-  v3 = [a1 cacheIdentifier];
-  [(PBUICachedSnapshotEffectProvider *)a2 setCacheIdentifier:v3];
+  cacheIdentifier = [self cacheIdentifier];
+  [(PBUICachedSnapshotEffectProvider *)a2 setCacheIdentifier:cacheIdentifier];
 }
 
-- (id)snapshotSourceForObserver:(id)a3
+- (id)snapshotSourceForObserver:(id)observer
 {
-  v4 = [(PBUICachedSnapshotEffectProvider *)self _effectConfigurationForObserver:a3];
+  v4 = [(PBUICachedSnapshotEffectProvider *)self _effectConfigurationForObserver:observer];
   v5 = [(PBUIBakedEffectSnapshotSource *)self->_currentSource copy];
   [v5 setEffectConfiguration:v4];
   v6 = [(PBUICachedSnapshotEffectProvider *)&self->super.isa imageForConfiguration:v4];
@@ -141,24 +141,24 @@ void __76__PBUICachedSnapshotEffectProvider_initForSnapshotProvider_cacheIdentif
   return v5;
 }
 
-- (id)imageForConfiguration:(id *)a1
+- (id)imageForConfiguration:(id *)configuration
 {
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
-    v4 = [a1[6] snapshot];
-    if ([(PBUIFakeBlurAsset *)v3 imageURL]&& v4)
+    snapshot = [configuration[6] snapshot];
+    if ([(PBUIFakeBlurAsset *)v3 imageURL]&& snapshot)
     {
-      v6 = [(PBUICachedSnapshotEffectProvider *)a1 cacheKeyForConfiguration:v3];
-      objc_initWeak(&location, a1);
-      v7 = a1[8];
+      v6 = [(PBUICachedSnapshotEffectProvider *)configuration cacheKeyForConfiguration:v3];
+      objc_initWeak(&location, configuration);
+      v7 = configuration[8];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke;
       v8[3] = &unk_278362FD0;
       objc_copyWeak(&v10, &location);
       v9 = v3;
-      a1 = [v7 imageForKey:v6 generatingIfNecessaryWithBlock:v8];
+      configuration = [v7 imageForKey:v6 generatingIfNecessaryWithBlock:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -166,11 +166,11 @@ void __76__PBUICachedSnapshotEffectProvider_initForSnapshotProvider_cacheIdentif
 
     else
     {
-      a1 = v4;
+      configuration = snapshot;
     }
   }
 
-  return a1;
+  return configuration;
 }
 
 id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(uint64_t a1, void *a2)
@@ -195,24 +195,24 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
   return v8;
 }
 
-- (id)compositeImage:(void *)a3 effectConfiguration:
+- (id)compositeImage:(void *)image effectConfiguration:
 {
   v5 = a2;
   v6 = v5;
   v7 = 0;
-  if (a1 && v5)
+  if (self && v5)
   {
-    v8 = a3;
-    v9 = [(PBUIWallpaperEffectConfiguration *)v8 requiresMaterialKitRendering];
+    imageCopy = image;
+    requiresMaterialKitRendering = [(PBUIWallpaperEffectConfiguration *)imageCopy requiresMaterialKitRendering];
     v10 = 32;
-    if (v9)
+    if (requiresMaterialKitRendering)
     {
       v10 = 40;
     }
 
-    v11 = *(a1 + v10);
+    v11 = *(self + v10);
     v15 = 0;
-    v7 = [v11 applyEffect:v8 toImage:v6 error:&v15];
+    v7 = [v11 applyEffect:imageCopy toImage:v6 error:&v15];
 
     v12 = v15;
     if (v12)
@@ -228,40 +228,40 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
   return v7;
 }
 
-- (uint64_t)setCacheIdentifier:(void *)a1
+- (uint64_t)setCacheIdentifier:(void *)identifier
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
     v13 = v3;
     v3 = BSEqualStrings();
     v4 = v13;
     if ((v3 & 1) == 0)
     {
-      v5 = [getPUIMappedImageCacheManagerClass() defaultCacheManager];
-      v6 = v5;
+      defaultCacheManager = [getPUIMappedImageCacheManagerClass() defaultCacheManager];
+      v6 = defaultCacheManager;
       if (v13)
       {
-        v7 = [v5 checkoutImageCache:?];
-        v8 = a1[8];
-        a1[8] = v7;
+        v7 = [defaultCacheManager checkoutImageCache:?];
+        v8 = identifier[8];
+        identifier[8] = v7;
 
         v9 = [v13 copy];
       }
 
       else
       {
-        v10 = a1[8];
-        a1[8] = 0;
+        v10 = identifier[8];
+        identifier[8] = 0;
 
         v9 = 0;
       }
 
-      v11 = a1[7];
-      a1[7] = v9;
+      v11 = identifier[7];
+      identifier[7] = v9;
 
-      [a1 setNeedsSourceUpdate];
+      [identifier setNeedsSourceUpdate];
       v4 = v13;
     }
   }
@@ -269,9 +269,9 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (PBUIBakedEffectSnapshotSource)makeBakedEffectSourceFrom:(uint64_t)a1
+- (PBUIBakedEffectSnapshotSource)makeBakedEffectSourceFrom:(uint64_t)from
 {
-  if (a1)
+  if (from)
   {
     v2 = a2;
     v3 = [[PBUIBakedEffectSnapshotSource alloc] initWithSnapshotSource:v2];
@@ -285,22 +285,22 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
   return v3;
 }
 
-- (id)_effectConfigurationForObserver:(uint64_t)a1
+- (id)_effectConfigurationForObserver:(uint64_t)observer
 {
   v3 = a2;
-  if (a1)
+  if (observer)
   {
-    v4 = [*(a1 + 48) legibilitySettings];
-    v5 = [v4 contentColor];
+    legibilitySettings = [*(observer + 48) legibilitySettings];
+    contentColor = [legibilitySettings contentColor];
 
-    v6 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v7 = [v6 userInterfaceStyle];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v3 traitCollection];
+      traitCollection = [v3 traitCollection];
       v9 = objc_opt_class();
-      v10 = v8;
+      v10 = traitCollection;
       if (v9)
       {
         if (objc_opt_isKindOfClass())
@@ -323,11 +323,11 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
 
       if (v12)
       {
-        v7 = [v12 userInterfaceStyle];
+        userInterfaceStyle = [v12 userInterfaceStyle];
       }
     }
 
-    v13 = -[PBUIWallpaperEffectConfiguration initWithStyle:contentColor:userInterfaceStyle:]([PBUIWallpaperEffectConfiguration alloc], [v3 effectiveStyle], v5, v7);
+    v13 = -[PBUIWallpaperEffectConfiguration initWithStyle:contentColor:userInterfaceStyle:]([PBUIWallpaperEffectConfiguration alloc], [v3 effectiveStyle], contentColor, userInterfaceStyle);
   }
 
   else
@@ -338,13 +338,13 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
   return v13;
 }
 
-- (id)cacheKeyForConfiguration:(uint64_t)a1
+- (id)cacheKeyForConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
     v2 = MEMORY[0x277CCACA8];
-    v3 = [(PBUIWallpaperEffectConfiguration *)a2 uniqueIdentifier];
-    v4 = [v2 stringWithFormat:@"CachedSnapshot-%@", v3];
+    uniqueIdentifier = [(PBUIWallpaperEffectConfiguration *)a2 uniqueIdentifier];
+    v4 = [v2 stringWithFormat:@"CachedSnapshot-%@", uniqueIdentifier];
   }
 
   else
@@ -375,11 +375,11 @@ id __58__PBUICachedSnapshotEffectProvider_imageForConfiguration___block_invoke(u
   return result;
 }
 
-- (void)setCache:(uint64_t)a1
+- (void)setCache:(uint64_t)cache
 {
-  if (a1)
+  if (cache)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((cache + 64), a2);
   }
 }
 

@@ -3,7 +3,7 @@
 - (BOOL)isPlayingTone;
 - (MTAToneManager)init;
 - (void)loadAvailableTones;
-- (void)previewTone:(id)a3 forType:(int64_t)a4;
+- (void)previewTone:(id)tone forType:(int64_t)type;
 - (void)stopPreviewingTone;
 @end
 
@@ -139,18 +139,18 @@
 
 - (BOOL)isPlayingTone
 {
-  v2 = [(MTAToneManager *)self alert];
-  v3 = v2 != 0;
+  alert = [(MTAToneManager *)self alert];
+  v3 = alert != 0;
 
   return v3;
 }
 
-- (void)previewTone:(id)a3 forType:(int64_t)a4
+- (void)previewTone:(id)tone forType:(int64_t)type
 {
-  v6 = [a3 identifier];
-  v7 = [(MTAToneManager *)self alert];
-  v8 = [v7 toneIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  identifier = [tone identifier];
+  alert = [(MTAToneManager *)self alert];
+  toneIdentifier = [alert toneIdentifier];
+  v9 = [toneIdentifier isEqualToString:identifier];
 
   if (v9)
   {
@@ -159,32 +159,32 @@
 
   else
   {
-    v10 = [[TLAlertConfiguration alloc] initWithType:a4];
-    [v10 setToneIdentifier:v6];
+    v10 = [[TLAlertConfiguration alloc] initWithType:type];
+    [v10 setToneIdentifier:identifier];
     [(MTAToneManager *)self previewAudioVolume];
     [v10 setAudioVolume:?];
     [v10 setForPreview:1];
     [v10 setShouldRepeat:0];
-    v11 = [(MTAToneManager *)self alert];
-    [v11 stop];
+    alert2 = [(MTAToneManager *)self alert];
+    [alert2 stop];
 
     v12 = [TLAlert alertWithConfiguration:v10];
     [(MTAToneManager *)self setAlert:v12];
 
-    v13 = [(MTAToneManager *)self alert];
+    alert3 = [(MTAToneManager *)self alert];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10000F3BC;
     v14[3] = &unk_1000ADB80;
     v14[4] = self;
-    [v13 playWithCompletionHandler:v14];
+    [alert3 playWithCompletionHandler:v14];
   }
 }
 
 - (void)stopPreviewingTone
 {
-  v3 = [(MTAToneManager *)self alert];
-  [v3 stop];
+  alert = [(MTAToneManager *)self alert];
+  [alert stop];
 
   [(MTAToneManager *)self setAlert:0];
 }

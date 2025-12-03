@@ -1,18 +1,18 @@
 @interface COSSOSTriggerAnimationCell
 - (BOOL)isCrownOrientationOnRightSide;
 - (BOOL)isLayoutLeftToRight;
-- (COSSOSTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (COSSOSTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)loadTriggerImageView;
 - (void)setupConstraints;
 @end
 
 @implementation COSSOSTriggerAnimationCell
 
-- (COSSOSTriggerAnimationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSSOSTriggerAnimationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = COSSOSTriggerAnimationCell;
-  v5 = [(COSSOSTriggerAnimationCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(COSSOSTriggerAnimationCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -61,16 +61,16 @@
 
   v4 = v3;
   _Block_object_dispose(&v12, 8);
-  v5 = [(COSSOSTriggerAnimationCell *)self isCrownOrientationOnRightSide];
-  v6 = [(COSSOSTriggerAnimationCell *)self isLayoutLeftToRight];
+  isCrownOrientationOnRightSide = [(COSSOSTriggerAnimationCell *)self isCrownOrientationOnRightSide];
+  isLayoutLeftToRight = [(COSSOSTriggerAnimationCell *)self isLayoutLeftToRight];
   v7 = BPSBridgeTintColor();
-  v8 = [v3 getAssetViewForWatchWithCrownOrientationOnRightSide:v5 layoutLeftToRight:v6 tintColor:v7];
+  v8 = [v3 getAssetViewForWatchWithCrownOrientationOnRightSide:isCrownOrientationOnRightSide layoutLeftToRight:isLayoutLeftToRight tintColor:v7];
   triggerImageView = self->_triggerImageView;
   self->_triggerImageView = v8;
 
   [(UIView *)self->_triggerImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(COSSOSTriggerAnimationCell *)self contentView];
-  [v10 addSubview:self->_triggerImageView];
+  contentView = [(COSSOSTriggerAnimationCell *)self contentView];
+  [contentView addSubview:self->_triggerImageView];
 
   [(COSSOSTriggerAnimationCell *)self setupConstraints];
 }
@@ -80,29 +80,29 @@
   triggerImageView = self->_triggerImageView;
   if (triggerImageView)
   {
-    v23 = [(UIView *)triggerImageView centerYAnchor];
-    v24 = [(COSSOSTriggerAnimationCell *)self contentView];
-    v22 = [v24 centerYAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UIView *)triggerImageView centerYAnchor];
+    contentView = [(COSSOSTriggerAnimationCell *)self contentView];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[0] = v21;
-    v20 = [(UIView *)self->_triggerImageView centerXAnchor];
-    v4 = [(COSSOSTriggerAnimationCell *)self contentView];
-    v5 = [v4 centerXAnchor];
-    v6 = [v20 constraintEqualToAnchor:v5];
+    centerXAnchor = [(UIView *)self->_triggerImageView centerXAnchor];
+    contentView2 = [(COSSOSTriggerAnimationCell *)self contentView];
+    centerXAnchor2 = [contentView2 centerXAnchor];
+    v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v25[1] = v6;
-    v7 = [(UIView *)self->_triggerImageView heightAnchor];
+    heightAnchor = [(UIView *)self->_triggerImageView heightAnchor];
     [(UIView *)self->_triggerImageView frame];
     v9 = v8;
     v10 = +[UIScreen mainScreen];
     [v10 scale];
-    v12 = [v7 constraintEqualToConstant:v9 * v11];
+    v12 = [heightAnchor constraintEqualToConstant:v9 * v11];
     v25[2] = v12;
-    v13 = [(UIView *)self->_triggerImageView widthAnchor];
+    widthAnchor = [(UIView *)self->_triggerImageView widthAnchor];
     [(UIView *)self->_triggerImageView frame];
     v15 = v14;
     v16 = +[UIScreen mainScreen];
     [v16 scale];
-    v18 = [v13 constraintEqualToConstant:v15 * v17];
+    v18 = [widthAnchor constraintEqualToConstant:v15 * v17];
     v25[3] = v18;
     v19 = [NSArray arrayWithObjects:v25 count:4];
     [NSLayoutConstraint activateConstraints:v19];

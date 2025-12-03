@@ -1,8 +1,8 @@
 @interface MRCriticalSectionCoordinator
 + (id)enterCriticalSection;
 + (void)enterCriticalSection;
-+ (void)exitCriticalSection:(id)a3;
-+ (void)exitCriticalSectionUsingRequestID:(id)a3;
++ (void)exitCriticalSection:(id)section;
++ (void)exitCriticalSectionUsingRequestID:(id)d;
 @end
 
 @implementation MRCriticalSectionCoordinator
@@ -10,22 +10,22 @@
 + (id)enterCriticalSection
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 supportCriticalSectionManagement];
+  supportCriticalSectionManagement = [v2 supportCriticalSectionManagement];
 
-  if (v3)
+  if (supportCriticalSectionManagement)
   {
     v4 = objc_alloc_init(MRCriticalSectionToken);
     v5 = MRCreateXPCMessage(0x10000000000001BuLL);
     xpc_dictionary_set_int64(v5, "MRXPC_CRITICAL_SECTION_TRANSITION_KEY", 0);
-    v6 = [(MRCriticalSectionToken *)v4 requestID];
-    v7 = [v6 UUIDString];
-    xpc_dictionary_set_string(v5, "MRXPC_CRITICAL_SECTION_IDENTIFIER_KEY", [v7 UTF8String]);
+    requestID = [(MRCriticalSectionToken *)v4 requestID];
+    uUIDString = [requestID UUIDString];
+    xpc_dictionary_set_string(v5, "MRXPC_CRITICAL_SECTION_IDENTIFIER_KEY", [uUIDString UTF8String]);
 
     v8 = +[MRMediaRemoteServiceClient sharedServiceClient];
-    v9 = [v8 service];
-    v10 = [v9 mrXPCConnection];
+    service = [v8 service];
+    mrXPCConnection = [service mrXPCConnection];
     v23 = 0;
-    v11 = [v10 sendSyncMessage:v5 error:&v23];
+    v11 = [mrXPCConnection sendSyncMessage:v5 error:&v23];
     v12 = v23;
 
     if (v12)
@@ -59,17 +59,17 @@
   return v14;
 }
 
-+ (void)exitCriticalSection:(id)a3
++ (void)exitCriticalSection:(id)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 supportCriticalSectionManagement];
+  supportCriticalSectionManagement = [v4 supportCriticalSectionManagement];
 
-  if (v5)
+  if (supportCriticalSectionManagement)
   {
-    [v3 setInvalidated:1];
-    v6 = [v3 requestID];
-    v7 = [v6 copy];
+    [sectionCopy setInvalidated:1];
+    requestID = [sectionCopy requestID];
+    v7 = [requestID copy];
 
     [MRCriticalSectionCoordinator exitCriticalSectionUsingRequestID:v7];
   }
@@ -84,13 +84,13 @@
   }
 }
 
-+ (void)exitCriticalSectionUsingRequestID:(id)a3
++ (void)exitCriticalSectionUsingRequestID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 supportCriticalSectionManagement];
+  supportCriticalSectionManagement = [v4 supportCriticalSectionManagement];
 
-  if ((v5 & 1) == 0)
+  if ((supportCriticalSectionManagement & 1) == 0)
   {
     v6 = _MRLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -101,18 +101,18 @@
     goto LABEL_10;
   }
 
-  if (v3)
+  if (dCopy)
   {
     v6 = MRCreateXPCMessage(0x10000000000001BuLL);
     xpc_dictionary_set_int64(v6, "MRXPC_CRITICAL_SECTION_TRANSITION_KEY", 1);
-    v7 = [v3 UUIDString];
-    xpc_dictionary_set_string(v6, "MRXPC_CRITICAL_SECTION_IDENTIFIER_KEY", [v7 UTF8String]);
+    uUIDString = [dCopy UUIDString];
+    xpc_dictionary_set_string(v6, "MRXPC_CRITICAL_SECTION_IDENTIFIER_KEY", [uUIDString UTF8String]);
 
     v8 = +[MRMediaRemoteServiceClient sharedServiceClient];
-    v9 = [v8 service];
-    v10 = [v9 mrXPCConnection];
+    service = [v8 service];
+    mrXPCConnection = [service mrXPCConnection];
     v21 = 0;
-    v11 = [v10 sendSyncMessage:v6 error:&v21];
+    v11 = [mrXPCConnection sendSyncMessage:v6 error:&v21];
     v12 = v21;
 
     if (v12)
@@ -120,7 +120,7 @@
       v13 = _MRLogForCategory(0);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(MRCriticalSectionCoordinator *)v3 exitCriticalSectionUsingRequestID:v12, v13];
+        [(MRCriticalSectionCoordinator *)dCopy exitCriticalSectionUsingRequestID:v12, v13];
       }
     }
 
@@ -131,9 +131,9 @@ LABEL_10:
 + (void)enterCriticalSection
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v5 = 138412290;
-  v6 = v3;
+  v6 = localizedDescription;
   _os_log_error_impl(&dword_1A2860000, a2, OS_LOG_TYPE_ERROR, "failed to enter critical section. error: %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

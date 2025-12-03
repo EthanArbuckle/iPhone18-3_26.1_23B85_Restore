@@ -4,32 +4,32 @@
 + (NSDateFormatter)timeFormatter;
 + (NSSet)entryKeys;
 + (STStatusBarData)staticDisplayData;
-+ (void)dateFormatterForDate:(id *)a3 time:(id *)a4 shortTime:(id *)a5;
++ (void)dateFormatterForDate:(id *)date time:(id *)time shortTime:(id *)shortTime;
 - (BOOL)dateFromEntriesIncludesDate;
 - (BOOL)dateFromEntriesIncludesTime;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)dateFromEntries;
 - (NSSet)existingEntryKeys;
-- (STStatusBarData)initWithCoder:(id)a3;
-- (STStatusBarData)initWithDate:(id)a3;
-- (STStatusBarData)initWithEntry:(id)a3 forKey:(id)a4;
-- (STStatusBarData)initWithKeysAndEntries:(id)a3;
+- (STStatusBarData)initWithCoder:(id)coder;
+- (STStatusBarData)initWithDate:(id)date;
+- (STStatusBarData)initWithEntry:(id)entry forKey:(id)key;
+- (STStatusBarData)initWithKeysAndEntries:(id)entries;
 - (STStatusBarDataPersonNameEntry)avatarEntry;
-- (id)dataByApplyingOverlay:(id)a3;
-- (id)dataByApplyingUpdate:(id)a3 keys:(id)a4;
-- (id)dataByRemovingEntriesForKeys:(id)a3;
-- (id)dataByReplacingEntry:(id)a3 forKey:(id)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)entryForKey:(id)a3;
+- (id)dataByApplyingOverlay:(id)overlay;
+- (id)dataByApplyingUpdate:(id)update keys:(id)keys;
+- (id)dataByRemovingEntriesForKeys:(id)keys;
+- (id)dataByReplacingEntry:(id)entry forKey:(id)key;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)entryForKey:(id)key;
 - (id)mutableCopy;
 - (id)succinctDescription;
-- (id)updateFromData:(id)a3;
+- (id)updateFromData:(id)data;
 - (unint64_t)hash;
-- (void)_internal_setValue:(id)a3 forKey:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)_internal_setValue:(id)value forKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation STStatusBarData
@@ -61,8 +61,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [objc_opt_class() entryKeys];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v5 = [entryKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -73,7 +73,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entryKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -84,7 +84,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [entryKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -102,8 +102,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [objc_opt_class() entryKeys];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v4 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -114,7 +114,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(entryKeys);
         }
 
         v8 = [(STStatusBarData *)self valueForKey:*(*(&v12 + 1) + 8 * i)];
@@ -126,7 +126,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [entryKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -143,11 +143,11 @@ LABEL_11:
   return v9;
 }
 
-+ (void)dateFormatterForDate:(id *)a3 time:(id *)a4 shortTime:(id *)a5
++ (void)dateFormatterForDate:(id *)date time:(id *)time shortTime:(id *)shortTime
 {
   if (_MergedGlobals_9 == -1)
   {
-    if (!a3)
+    if (!date)
     {
       goto LABEL_4;
     }
@@ -156,21 +156,21 @@ LABEL_11:
   }
 
   dispatch_once(&_MergedGlobals_9, &__block_literal_global_10);
-  if (a3)
+  if (date)
   {
 LABEL_3:
-    *a3 = qword_1ED7F5CE8;
+    *date = qword_1ED7F5CE8;
   }
 
 LABEL_4:
-  if (a4)
+  if (time)
   {
-    *a4 = qword_1ED7F5CF0;
+    *time = qword_1ED7F5CF0;
   }
 
-  if (a5)
+  if (shortTime)
   {
-    *a5 = qword_1ED7F5CF8;
+    *shortTime = qword_1ED7F5CF8;
   }
 }
 
@@ -258,13 +258,13 @@ void __63__STStatusBarData_NSDate__dateFormatterForDate_time_shortTime___block_i
   [qword_1ED7F5CF8 setPMSymbol:&stru_1F5665198];
 }
 
-- (STStatusBarData)initWithDate:(id)a3
+- (STStatusBarData)initWithDate:(id)date
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [STStatusBarDataDateTimeEntry entryForDateWithDateValue:v4];
-  v6 = [STStatusBarDataDateTimeEntry entryForTimeWithDateValue:v4];
-  v7 = [STStatusBarDataDateTimeEntry entryForShortTimeWithDateValue:v4];
+  dateCopy = date;
+  v5 = [STStatusBarDataDateTimeEntry entryForDateWithDateValue:dateCopy];
+  v6 = [STStatusBarDataDateTimeEntry entryForTimeWithDateValue:dateCopy];
+  v7 = [STStatusBarDataDateTimeEntry entryForShortTimeWithDateValue:dateCopy];
 
   v12[0] = @"dateEntry";
   v12[1] = @"timeEntry";
@@ -281,29 +281,29 @@ void __63__STStatusBarData_NSDate__dateFormatterForDate_time_shortTime___block_i
 
 - (NSDate)dateFromEntries
 {
-  v3 = [(STStatusBarData *)self dateEntry];
-  v4 = [(STStatusBarData *)self timeEntry];
-  v5 = [(STStatusBarData *)self shortTimeEntry];
+  dateEntry = [(STStatusBarData *)self dateEntry];
+  timeEntry = [(STStatusBarData *)self timeEntry];
+  shortTimeEntry = [(STStatusBarData *)self shortTimeEntry];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    v6 = dateEntry;
 LABEL_7:
-    v7 = [v6 dateValue];
+    dateValue = [v6 dateValue];
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = timeEntry;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = shortTimeEntry;
     goto LABEL_7;
   }
 
@@ -314,47 +314,47 @@ LABEL_7:
   v26 = v29;
   v25 = v28;
   v24 = v27;
-  v9 = [v3 stringValue];
-  v10 = [v4 stringValue];
-  v11 = [v5 stringValue];
-  v12 = [v9 length];
-  v13 = [v10 length];
-  v14 = [v11 length];
+  stringValue = [dateEntry stringValue];
+  stringValue2 = [timeEntry stringValue];
+  stringValue3 = [shortTimeEntry stringValue];
+  v12 = [stringValue length];
+  v13 = [stringValue2 length];
+  v14 = [stringValue3 length];
   v15 = v14;
-  if (v12 || v13 || (v7 = 0, v14))
+  if (v12 || v13 || (dateValue = 0, v14))
   {
     if (v12)
     {
-      v12 = [v26 dateFromString:v9];
+      v12 = [v26 dateFromString:stringValue];
     }
 
     if (v13)
     {
       v16 = v25;
-      v17 = v10;
+      v17 = stringValue2;
     }
 
     else
     {
       if (!v15)
       {
-        v7 = 0;
+        dateValue = 0;
         goto LABEL_24;
       }
 
       v16 = v24;
-      v17 = v11;
+      v17 = stringValue3;
     }
 
     v18 = [v16 dateFromString:v17];
-    v7 = v18;
+    dateValue = v18;
     if (v12 && v18)
     {
-      v23 = [MEMORY[0x1E695DEE8] currentCalendar];
-      [v23 startOfDayForDate:v12];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      [currentCalendar startOfDayForDate:v12];
       v19 = v22 = v12;
-      v20 = [v23 startOfDayForDate:v7];
-      [v7 timeIntervalSinceDate:v20];
+      v20 = [currentCalendar startOfDayForDate:dateValue];
+      [dateValue timeIntervalSinceDate:v20];
       v21 = [v19 dateByAddingTimeInterval:?];
 
       v12 = v22;
@@ -372,7 +372,7 @@ LABEL_27:
     v21 = v12;
 LABEL_26:
 
-    v7 = v21;
+    dateValue = v21;
     goto LABEL_27;
   }
 
@@ -380,28 +380,28 @@ LABEL_28:
 
 LABEL_8:
 
-  return v7;
+  return dateValue;
 }
 
 - (BOOL)dateFromEntriesIncludesDate
 {
-  v2 = [(STStatusBarData *)self dateEntry];
-  v3 = [v2 stringValue];
+  dateEntry = [(STStatusBarData *)self dateEntry];
+  stringValue = [dateEntry stringValue];
 
-  LOBYTE(v2) = [v3 length] != 0;
-  return v2;
+  LOBYTE(dateEntry) = [stringValue length] != 0;
+  return dateEntry;
 }
 
 - (BOOL)dateFromEntriesIncludesTime
 {
-  v3 = [(STStatusBarData *)self timeEntry];
-  v4 = [v3 stringValue];
+  timeEntry = [(STStatusBarData *)self timeEntry];
+  stringValue = [timeEntry stringValue];
 
-  v5 = [(STStatusBarData *)self shortTimeEntry];
-  v6 = [v5 stringValue];
+  shortTimeEntry = [(STStatusBarData *)self shortTimeEntry];
+  stringValue2 = [shortTimeEntry stringValue];
 
-  v7 = [v4 length];
-  LOBYTE(v7) = (v7 | [v6 length]) != 0;
+  v7 = [stringValue length];
+  LOBYTE(v7) = (v7 | [stringValue2 length]) != 0;
 
   return v7;
 }
@@ -409,7 +409,7 @@ LABEL_8:
 + (NSDateFormatter)timeFormatter
 {
   v4 = 0;
-  [a1 dateFormatterForDate:0 time:&v4 shortTime:0];
+  [self dateFormatterForDate:0 time:&v4 shortTime:0];
   v2 = v4;
 
   return v2;
@@ -418,7 +418,7 @@ LABEL_8:
 + (NSDateFormatter)shortTimeFormatter
 {
   v4 = 0;
-  [a1 dateFormatterForDate:0 time:0 shortTime:&v4];
+  [self dateFormatterForDate:0 time:0 shortTime:&v4];
   v2 = v4;
 
   return v2;
@@ -427,7 +427,7 @@ LABEL_8:
 + (NSDateFormatter)dateFormatter
 {
   v4 = 0;
-  [a1 dateFormatterForDate:&v4 time:0 shortTime:0];
+  [self dateFormatterForDate:&v4 time:0 shortTime:0];
   v2 = v4;
 
   return v2;
@@ -488,13 +488,13 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
 - (unint64_t)hash
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [objc_opt_class() entryKeys];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v5 = [entryKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -506,40 +506,40 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entryKeys);
         }
 
         v9 = [(STStatusBarData *)self valueForKey:*(*(&v14 + 1) + 8 * v8)];
         if (v9)
         {
-          v10 = [v3 appendObject:v9];
+          v10 = [builder appendObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [entryKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v3 hash];
+  v11 = [builder hash];
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [objc_opt_class() entryKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entryKeys = [objc_opt_class() entryKeys];
+  v6 = [entryKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -550,18 +550,18 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entryKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(STStatusBarData *)self valueForKey:v10];
         if (v11)
         {
-          [v4 encodeObject:v11 forKey:v10];
+          [coderCopy encodeObject:v11 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [entryKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -570,10 +570,10 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (STStatusBarData)initWithCoder:(id)a3
+- (STStatusBarData)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = STStatusBarData;
   v5 = [(STStatusBarData *)&v27 init];
@@ -590,7 +590,7 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
     v9 = *v24;
     v10 = 0x1E85DD000uLL;
     v11 = @"satelliteEntry";
-    v21 = v4;
+    v21 = coderCopy;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -602,7 +602,7 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = *(v10 + 2552);
-        v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v13];
+        v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v13];
         if (v15)
         {
           v16 = v15;
@@ -626,7 +626,7 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
               v16 = v18;
               v11 = v17;
               v10 = 0x1E85DD000;
-              v4 = v21;
+              coderCopy = v21;
             }
           }
 
@@ -645,10 +645,10 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
@@ -659,13 +659,13 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
 
   else
   {
-    v7 = v4;
+    v7 = equalCopy;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [objc_opt_class() entryKeys];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    entryKeys = [objc_opt_class() entryKeys];
+    v9 = [entryKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -676,7 +676,7 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(entryKeys);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
@@ -695,7 +695,7 @@ uint64_t __28__STStatusBarData_entryKeys__block_invoke()
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [entryKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v10)
         {
           continue;
@@ -713,24 +713,24 @@ LABEL_20:
   return v6;
 }
 
-- (STStatusBarData)initWithEntry:(id)a3 forKey:(id)a4
+- (STStatusBarData)initWithEntry:(id)entry forKey:(id)key
 {
   v10.receiver = self;
   v10.super_class = STStatusBarData;
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  entryCopy = entry;
   v7 = [(STStatusBarData *)&v10 init];
   v8 = objc_alloc_init(STMutableStatusBarData);
-  [(STMutableStatusBarData *)v8 setEntry:v6 forKey:v5, v10.receiver, v10.super_class];
+  [(STMutableStatusBarData *)v8 setEntry:entryCopy forKey:keyCopy, v10.receiver, v10.super_class];
 
   _copyValuesFromDataToData(&v8->super.super.isa, &v7->super.isa);
   return v7;
 }
 
-- (STStatusBarData)initWithKeysAndEntries:(id)a3
+- (STStatusBarData)initWithKeysAndEntries:(id)entries
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v20.receiver = self;
   v20.super_class = STStatusBarData;
   v5 = [(STStatusBarData *)&v20 init];
@@ -739,7 +739,7 @@ LABEL_20:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = entriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
   {
@@ -773,19 +773,19 @@ LABEL_20:
   return v5;
 }
 
-- (id)dataByApplyingOverlay:(id)a3
+- (id)dataByApplyingOverlay:(id)overlay
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && v4 != self)
+  overlayCopy = overlay;
+  v5 = overlayCopy;
+  if (overlayCopy && overlayCopy != self)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(STStatusBarData *)v4 existingEntryKeys];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    existingEntryKeys = [(STStatusBarData *)overlayCopy existingEntryKeys];
+    v7 = [existingEntryKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -797,7 +797,7 @@ LABEL_20:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(existingEntryKeys);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
@@ -815,14 +815,14 @@ LABEL_20:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [existingEntryKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
 
       if (v9)
       {
-        v15 = _STStatusBarDataMatchingMutabilityOfData(v9, self);
+        selfCopy = _STStatusBarDataMatchingMutabilityOfData(v9, self);
 
         goto LABEL_18;
       }
@@ -833,25 +833,25 @@ LABEL_20:
     }
   }
 
-  v15 = self;
+  selfCopy = self;
 LABEL_18:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return selfCopy;
 }
 
-- (id)dataByApplyingUpdate:(id)a3 keys:(id)a4
+- (id)dataByApplyingUpdate:(id)update keys:(id)keys
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  keysCopy = keys;
   v8 = objc_alloc_init(STMutableStatusBarData);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -867,7 +867,7 @@ LABEL_18:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v6 valueForKey:{v14, v20}];
+        v15 = [updateCopy valueForKey:{v14, v20}];
         if (!v15)
         {
           v15 = [(STStatusBarData *)self valueForKey:v14];
@@ -894,27 +894,27 @@ LABEL_18:
   return v17;
 }
 
-- (id)updateFromData:(id)a3
+- (id)updateFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(STStatusBarData *)self mutableCopy];
-  [v5 makeUpdateFromData:v4];
+  [v5 makeUpdateFromData:dataCopy];
 
   v6 = _STStatusBarDataMatchingMutabilityOfData(v5, self);
 
   return v6;
 }
 
-- (id)dataByRemovingEntriesForKeys:(id)a3
+- (id)dataByRemovingEntriesForKeys:(id)keys
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v5 = [(STStatusBarData *)self mutableCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -945,12 +945,12 @@ LABEL_18:
   return v11;
 }
 
-- (id)dataByReplacingEntry:(id)a3 forKey:(id)a4
+- (id)dataByReplacingEntry:(id)entry forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  entryCopy = entry;
   v8 = [(STStatusBarData *)self mutableCopy];
-  [v8 setEntry:v7 forKey:v6];
+  [v8 setEntry:entryCopy forKey:keyCopy];
 
   v9 = _STStatusBarDataMatchingMutabilityOfData(v8, self);
 
@@ -959,26 +959,26 @@ LABEL_18:
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusBarData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusBarData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusBarData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusBarData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 void __67__STStatusBarData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -1021,25 +1021,25 @@ void __67__STStatusBarData__descriptionBuilderWithMultilinePrefix_forDebug___blo
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_internal_setValue:(id)a3 forKey:(id)a4
+- (void)_internal_setValue:(id)value forKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = STStatusBarData;
-  [(STStatusBarData *)&v4 setValue:a3 forKey:a4];
+  [(STStatusBarData *)&v4 setValue:value forKey:key];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = STStatusBarData;
-  [(STStatusBarData *)&v4 setValue:a3 forKey:a4];
+  [(STStatusBarData *)&v4 setValue:value forKey:key];
 }
 
-- (id)entryForKey:(id)a3
+- (id)entryForKey:(id)key
 {
   v5.receiver = self;
   v5.super_class = STStatusBarData;
-  v3 = [(STStatusBarData *)&v5 valueForKey:a3];
+  v3 = [(STStatusBarData *)&v5 valueForKey:key];
 
   return v3;
 }

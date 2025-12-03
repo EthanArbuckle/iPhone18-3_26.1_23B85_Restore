@@ -1,46 +1,46 @@
 @interface SBRotationDodgingModifier
-- (SBRotationDodgingModifier)initWithIdentifier:(id)a3 fromOrientation:(int64_t)a4 toOrientation:(int64_t)a5;
-- (id)handleRotationEvent:(id)a3;
+- (SBRotationDodgingModifier)initWithIdentifier:(id)identifier fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
+- (id)handleRotationEvent:(id)event;
 @end
 
 @implementation SBRotationDodgingModifier
 
-- (SBRotationDodgingModifier)initWithIdentifier:(id)a3 fromOrientation:(int64_t)a4 toOrientation:(int64_t)a5
+- (SBRotationDodgingModifier)initWithIdentifier:(id)identifier fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBRotationDodgingModifier;
   v10 = [(SBChainableModifier *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identifier, a3);
-    v11->_fromOrientation = a4;
-    v11->_toOrientation = a5;
+    objc_storeStrong(&v10->_identifier, identifier);
+    v11->_fromOrientation = orientation;
+    v11->_toOrientation = toOrientation;
   }
 
   return v11;
 }
 
-- (id)handleRotationEvent:(id)a3
+- (id)handleRotationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBRotationDodgingModifier;
-  v5 = [(SBDodgingModifier *)&v12 handleRotationEvent:v4];
-  v6 = [v4 identifier];
-  v7 = [v6 isEqual:self->_identifier];
+  v5 = [(SBDodgingModifier *)&v12 handleRotationEvent:eventCopy];
+  identifier = [eventCopy identifier];
+  v7 = [identifier isEqual:self->_identifier];
 
   if (v7)
   {
-    v8 = [v4 phase];
-    self->_phase = v8;
-    if (v8 == 2)
+    phase = [eventCopy phase];
+    self->_phase = phase;
+    if (phase == 2)
     {
       [(SBChainableModifier *)self setState:1];
     }
 
-    else if (v8 == 1)
+    else if (phase == 1)
     {
       v9 = [[SBInvalidationDodgingModifierEventResponse alloc] initWithOptions:3];
       v10 = [(SBChainableModifierEventResponse *)SBDodgingModifierEventResponse responseByAppendingResponse:v9 toResponse:v5];

@@ -1,15 +1,15 @@
 @interface WFTemperatureUnitObserver
 + (id)sharedObserver;
-- (BOOL)removeBlockObserverWithHandle:(id)a3;
-- (BOOL)removeObserver:(id)a3;
+- (BOOL)removeBlockObserverWithHandle:(id)handle;
+- (BOOL)removeObserver:(id)observer;
 - (OS_dispatch_queue)callbackQueue;
 - (id)_init;
-- (id)addBlockObserver:(id)a3;
+- (id)addBlockObserver:(id)observer;
 - (int)temperatureUnit;
 - (void)_updateTemperatureUnit;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)q_notifyObserversOfUpdatedTemperatureUnit:(int)a3;
+- (void)q_notifyObserversOfUpdatedTemperatureUnit:(int)unit;
 - (void)q_updateTemperatureUnit;
 - (void)removeAllObservers;
 @end
@@ -58,8 +58,8 @@ uint64_t __43__WFTemperatureUnitObserver_sharedObserver__block_invoke()
     [(WFTemperatureUnitObserver *)v3 _updateTemperatureUnit];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, __WFTemperatureUnitObserverTrampoline, @"com.apple.weather.temperatureUnitsChangedNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v3 selector:sel__updateTemperatureUnit name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__updateTemperatureUnit name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v3;
@@ -91,37 +91,37 @@ uint64_t __43__WFTemperatureUnitObserver_sharedObserver__block_invoke()
 - (int)temperatureUnit
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(WFTemperatureUnitObserver *)self userTemperatureUnit];
+  userTemperatureUnit = [(WFTemperatureUnitObserver *)self userTemperatureUnit];
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
-  return v3;
+  return userTemperatureUnit;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock_with_options();
-    v5 = [(WFTemperatureUnitObserver *)self observerObjects];
-    [v5 addObject:v4];
+    observerObjects = [(WFTemperatureUnitObserver *)self observerObjects];
+    [observerObjects addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   }
 }
 
-- (BOOL)removeObserver:(id)a3
+- (BOOL)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(WFTemperatureUnitObserver *)self observerObjects];
-    v6 = [v5 containsObject:v4];
+    observerObjects = [(WFTemperatureUnitObserver *)self observerObjects];
+    v6 = [observerObjects containsObject:observerCopy];
 
     if (v6)
     {
-      v7 = [(WFTemperatureUnitObserver *)self observerObjects];
-      [v7 removeObject:v4];
+      observerObjects2 = [(WFTemperatureUnitObserver *)self observerObjects];
+      [observerObjects2 removeObject:observerCopy];
     }
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
@@ -135,45 +135,45 @@ uint64_t __43__WFTemperatureUnitObserver_sharedObserver__block_invoke()
   return v6;
 }
 
-- (id)addBlockObserver:(id)a3
+- (id)addBlockObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v4 = MEMORY[0x277CCAD78];
-    v5 = a3;
-    v6 = [v4 UUID];
+    observerCopy = observer;
+    uUID = [v4 UUID];
     os_unfair_lock_lock_with_options();
-    v7 = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
-    v8 = [v5 copy];
+    blockObserversForUUID = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
+    v8 = [observerCopy copy];
 
     v9 = MEMORY[0x2743D5580](v8);
-    [v7 setObject:v9 forKey:v6];
+    [blockObserversForUUID setObject:v9 forKey:uUID];
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   }
 
   else
   {
-    v6 = 0;
+    uUID = 0;
   }
 
-  return v6;
+  return uUID;
 }
 
-- (BOOL)removeBlockObserverWithHandle:(id)a3
+- (BOOL)removeBlockObserverWithHandle:(id)handle
 {
-  v4 = a3;
-  if (v4)
+  handleCopy = handle;
+  if (handleCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
-    v6 = CFDictionaryContainsKey(v5, v4);
+    blockObserversForUUID = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
+    v6 = CFDictionaryContainsKey(blockObserversForUUID, handleCopy);
     v7 = v6 != 0;
 
     if (v6)
     {
-      v8 = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
-      [v8 removeObjectForKey:v4];
+      blockObserversForUUID2 = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
+      [blockObserversForUUID2 removeObjectForKey:handleCopy];
     }
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
@@ -189,19 +189,19 @@ uint64_t __43__WFTemperatureUnitObserver_sharedObserver__block_invoke()
 
 - (void)_updateTemperatureUnit
 {
-  v3 = [(WFTemperatureUnitObserver *)self temperatureUnitUpdateQueue];
+  temperatureUnitUpdateQueue = [(WFTemperatureUnitObserver *)self temperatureUnitUpdateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__WFTemperatureUnitObserver__updateTemperatureUnit__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(temperatureUnitUpdateQueue, block);
 }
 
 - (void)q_updateTemperatureUnit
 {
-  v3 = [(WFTemperatureUnitObserver *)self temperatureUnitUpdateQueue];
-  dispatch_assert_queue_V2(v3);
+  temperatureUnitUpdateQueue = [(WFTemperatureUnitObserver *)self temperatureUnitUpdateQueue];
+  dispatch_assert_queue_V2(temperatureUnitUpdateQueue);
 
   objc_initWeak(&location, self);
   v4 = [WFTemperatureUnitRequest alloc];
@@ -264,42 +264,42 @@ void __52__WFTemperatureUnitObserver_q_updateTemperatureUnit__block_invoke_2(uin
   }
 }
 
-- (void)q_notifyObserversOfUpdatedTemperatureUnit:(int)a3
+- (void)q_notifyObserversOfUpdatedTemperatureUnit:(int)unit
 {
-  v5 = [(WFTemperatureUnitObserver *)self temperatureUnitUpdateQueue];
-  dispatch_assert_queue_V2(v5);
+  temperatureUnitUpdateQueue = [(WFTemperatureUnitObserver *)self temperatureUnitUpdateQueue];
+  dispatch_assert_queue_V2(temperatureUnitUpdateQueue);
 
   os_unfair_lock_lock_with_options();
-  v6 = [(WFTemperatureUnitObserver *)self observerObjects];
-  v7 = [v6 objectEnumerator];
-  v8 = [v7 allObjects];
+  observerObjects = [(WFTemperatureUnitObserver *)self observerObjects];
+  objectEnumerator = [observerObjects objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  v9 = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
-  v10 = [v9 allValues];
+  blockObserversForUUID = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
+  allValues = [blockObserversForUUID allValues];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
-  v11 = [v10 count];
-  v12 = [(WFTemperatureUnitObserver *)self callbackQueue];
+  v11 = [allValues count];
+  callbackQueue = [(WFTemperatureUnitObserver *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__WFTemperatureUnitObserver_q_notifyObserversOfUpdatedTemperatureUnit___block_invoke;
   block[3] = &unk_279E6E098;
-  v22 = v10;
-  v23 = a3;
-  v13 = v10;
-  dispatch_apply(v11, v12, block);
+  v22 = allValues;
+  unitCopy = unit;
+  v13 = allValues;
+  dispatch_apply(v11, callbackQueue, block);
 
-  v14 = [v8 count];
-  v15 = [(WFTemperatureUnitObserver *)self callbackQueue];
+  v14 = [allObjects count];
+  callbackQueue2 = [(WFTemperatureUnitObserver *)self callbackQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__WFTemperatureUnitObserver_q_notifyObserversOfUpdatedTemperatureUnit___block_invoke_2;
   v17[3] = &unk_279E6E0C0;
-  v18 = v8;
-  v19 = self;
-  v20 = a3;
-  v16 = v8;
-  dispatch_apply(v14, v15, v17);
+  v18 = allObjects;
+  selfCopy = self;
+  unitCopy2 = unit;
+  v16 = allObjects;
+  dispatch_apply(v14, callbackQueue2, v17);
 }
 
 void __71__WFTemperatureUnitObserver_q_notifyObserversOfUpdatedTemperatureUnit___block_invoke(uint64_t a1, uint64_t a2)
@@ -317,11 +317,11 @@ void __71__WFTemperatureUnitObserver_q_notifyObserversOfUpdatedTemperatureUnit__
 - (void)removeAllObservers
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
-  [v3 removeAllObjects];
+  blockObserversForUUID = [(WFTemperatureUnitObserver *)self blockObserversForUUID];
+  [blockObserversForUUID removeAllObjects];
 
-  v4 = [(WFTemperatureUnitObserver *)self observerObjects];
-  [v4 removeAllObjects];
+  observerObjects = [(WFTemperatureUnitObserver *)self observerObjects];
+  [observerObjects removeAllObjects];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
 }

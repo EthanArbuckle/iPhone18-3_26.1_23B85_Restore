@@ -1,20 +1,20 @@
 @interface CKDropZoneCircleView
-- (CKDropZoneCircleView)initWithFrame:(CGRect)a3;
+- (CKDropZoneCircleView)initWithFrame:(CGRect)frame;
 - (id)spinAnimation;
 - (void)_updateShapeLayerStrokeColor;
 - (void)layoutSubviews;
 - (void)startAnimating;
 - (void)stopAnimating;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKDropZoneCircleView
 
-- (CKDropZoneCircleView)initWithFrame:(CGRect)a3
+- (CKDropZoneCircleView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CKDropZoneCircleView;
-  v3 = [(CKDropZoneCircleView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKDropZoneCircleView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69794A0]);
@@ -26,8 +26,8 @@
     [(CAShapeLayer *)v3->_dropZoneShapeLayer setLineCap:*MEMORY[0x1E6979E78]];
     [(CKDropZoneCircleView *)v3 _updateShapeLayerStrokeColor];
     [(CAShapeLayer *)v3->_dropZoneShapeLayer setLineDashPattern:&unk_1F04E7548];
-    v6 = [(CKDropZoneCircleView *)v3 layer];
-    [v6 addSublayer:v3->_dropZoneShapeLayer];
+    layer = [(CKDropZoneCircleView *)v3 layer];
+    [layer addSublayer:v3->_dropZoneShapeLayer];
 
     [(CKDropZoneCircleView *)v3 startAnimating];
     [(CKDropZoneCircleView *)v3 setNeedsLayout];
@@ -96,27 +96,27 @@
   {
     self->_isAnimating = 1;
     dropZoneShapeLayer = self->_dropZoneShapeLayer;
-    v4 = [(CKDropZoneCircleView *)self spinAnimation];
-    [(CAShapeLayer *)dropZoneShapeLayer addAnimation:v4 forKey:@"CKSpinAnimation"];
+    spinAnimation = [(CKDropZoneCircleView *)self spinAnimation];
+    [(CAShapeLayer *)dropZoneShapeLayer addAnimation:spinAnimation forKey:@"CKSpinAnimation"];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKDropZoneCircleView;
-  [(CKDropZoneCircleView *)&v4 traitCollectionDidChange:a3];
+  [(CKDropZoneCircleView *)&v4 traitCollectionDidChange:change];
   [(CKDropZoneCircleView *)self _updateShapeLayerStrokeColor];
 }
 
 - (void)_updateShapeLayerStrokeColor
 {
-  v3 = [(CKDropZoneCircleView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CKDropZoneCircleView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 >= 2)
+  if (userInterfaceStyle >= 2)
   {
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.22];
     }
@@ -134,9 +134,9 @@
 
   v9 = v5;
   v6 = v5;
-  v7 = [v9 CGColor];
-  v8 = [(CKDropZoneCircleView *)self dropZoneShapeLayer];
-  [v8 setStrokeColor:v7];
+  cGColor = [v9 CGColor];
+  dropZoneShapeLayer = [(CKDropZoneCircleView *)self dropZoneShapeLayer];
+  [dropZoneShapeLayer setStrokeColor:cGColor];
 }
 
 @end

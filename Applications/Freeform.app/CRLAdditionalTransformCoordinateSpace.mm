@@ -1,24 +1,24 @@
 @interface CRLAdditionalTransformCoordinateSpace
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (CRLAdditionalTransformCoordinateSpace)initWithCoordinateSpace:(id)a3 identifier:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (CRLAdditionalTransformCoordinateSpace)initWithCoordinateSpace:(id)space identifier:(id)identifier;
 @end
 
 @implementation CRLAdditionalTransformCoordinateSpace
 
-- (CRLAdditionalTransformCoordinateSpace)initWithCoordinateSpace:(id)a3 identifier:(id)a4
+- (CRLAdditionalTransformCoordinateSpace)initWithCoordinateSpace:(id)space identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  spaceCopy = space;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CRLAdditionalTransformCoordinateSpace;
   v9 = [(CRLAdditionalTransformCoordinateSpace *)&v19 init];
   if (v9)
   {
-    if (!v7)
+    if (!spaceCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -47,8 +47,8 @@
       [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:23 isFatal:0 description:"invalid nil value for '%{public}s'", "coordinateSpace"];
     }
 
-    objc_storeStrong(&v9->_originalCoordinateSpace, a3);
-    if (!v8)
+    objc_storeStrong(&v9->_originalCoordinateSpace, space);
+    if (!identifierCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -77,7 +77,7 @@
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:25 isFatal:0 description:"invalid nil value for '%{public}s'", "identifier"];
     }
 
-    v16 = [v8 copy];
+    v16 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v16;
   }
@@ -85,34 +85,34 @@
   return v9;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
   SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(self, *&a2);
 
-  [(CRLAdditionalTransformCoordinateSpace *)self convertRect:a4 toCoordinateSpace:?];
+  [(CRLAdditionalTransformCoordinateSpace *)self convertRect:space toCoordinateSpace:?];
   result.y = v7;
   result.x = v6;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
   SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(self, *&a2);
 
-  [(CRLAdditionalTransformCoordinateSpace *)self convertRect:a4 fromCoordinateSpace:?];
+  [(CRLAdditionalTransformCoordinateSpace *)self convertRect:space fromCoordinateSpace:?];
   result.y = v7;
   result.x = v6;
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (v9 != self)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
+  if (spaceCopy != self)
   {
     memset(&v22, 0, sizeof(v22));
     originalCoordinateSpace = self->_originalCoordinateSpace;
@@ -134,7 +134,7 @@
     v23.size.width = width;
     v23.size.height = height;
     v24 = CGRectApplyAffineTransform(v23, &v21);
-    [(CRLAdditionallyTransformedCoordinateSpace *)v11 convertRect:v9 toCoordinateSpace:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
+    [(CRLAdditionallyTransformedCoordinateSpace *)v11 convertRect:spaceCopy toCoordinateSpace:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
     x = v12;
     y = v13;
     width = v14;
@@ -152,14 +152,14 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (v9 != self)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
+  if (spaceCopy != self)
   {
     memset(&v15[1], 0, sizeof(CGAffineTransform));
     originalCoordinateSpace = self->_originalCoordinateSpace;
@@ -169,7 +169,7 @@
       originalCoordinateSpace = self->_originalCoordinateSpace;
     }
 
-    [(CRLAdditionallyTransformedCoordinateSpace *)originalCoordinateSpace convertRect:v9 fromCoordinateSpace:x, y, width, height];
+    [(CRLAdditionallyTransformedCoordinateSpace *)originalCoordinateSpace convertRect:spaceCopy fromCoordinateSpace:x, y, width, height];
     v15[0] = v15[1];
     v17 = CGRectApplyAffineTransform(v16, v15);
     x = v17.origin.x;

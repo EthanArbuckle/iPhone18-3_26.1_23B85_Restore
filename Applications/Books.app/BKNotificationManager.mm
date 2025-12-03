@@ -1,17 +1,17 @@
 @interface BKNotificationManager
 + (id)sharedInstance;
 - (BKNotificationManager)init;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_emitNotificationEngagementEventForResponse:(id)a3;
-- (void)getAuthorizationStatusWithCompletion:(id)a3;
-- (void)getAuthorizationStatusWithCompletionValue:(id)a3;
-- (void)handleNotificationResponse:(id)a3;
-- (void)handlePriceTrackingNotificationResponse:(id)a3 content:(id)a4;
-- (void)requestAuthorizationWithCompletion:(id)a3;
-- (void)requestAuthorizationWithCompletionValue:(id)a3;
-- (void)requestReauthorizationWithCompletion:(id)a3;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_emitNotificationEngagementEventForResponse:(id)response;
+- (void)getAuthorizationStatusWithCompletion:(id)completion;
+- (void)getAuthorizationStatusWithCompletionValue:(id)value;
+- (void)handleNotificationResponse:(id)response;
+- (void)handlePriceTrackingNotificationResponse:(id)response content:(id)content;
+- (void)requestAuthorizationWithCompletion:(id)completion;
+- (void)requestAuthorizationWithCompletionValue:(id)value;
+- (void)requestReauthorizationWithCompletion:(id)completion;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation BKNotificationManager
@@ -57,13 +57,13 @@
   return v2;
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v4 = [(BKNotificationManager *)self statusController];
-  [v4 checkAndReportOptInStatus];
+  statusController = [(BKNotificationManager *)self statusController];
+  [statusController checkAndReportOptInStatus];
 
-  v5 = [(BKNotificationManager *)self reauthorizationCompletions];
-  if ([v5 count])
+  reauthorizationCompletions = [(BKNotificationManager *)self reauthorizationCompletions];
+  if ([reauthorizationCompletions count])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -78,32 +78,32 @@
     v7[1] = 3221225472;
     v7[2] = sub_1001677E8;
     v7[3] = &unk_100A059D8;
-    v7[4] = v5;
+    v7[4] = reauthorizationCompletions;
     [(BKNotificationManager *)self getAuthorizationStatusWithCompletion:v7];
   }
 }
 
-- (void)getAuthorizationStatusWithCompletionValue:(id)a3
+- (void)getAuthorizationStatusWithCompletionValue:(id)value
 {
-  v4 = a3;
-  v5 = [(BKNotificationManager *)self center];
+  valueCopy = value;
+  center = [(BKNotificationManager *)self center];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100167A20;
   v7[3] = &unk_100A09158;
-  v8 = v4;
-  v6 = v4;
-  [v5 getNotificationSettingsWithCompletionHandler:v7];
+  v8 = valueCopy;
+  v6 = valueCopy;
+  [center getNotificationSettingsWithCompletionHandler:v7];
 }
 
-- (void)requestAuthorizationWithCompletionValue:(id)a3
+- (void)requestAuthorizationWithCompletionValue:(id)value
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100167BB0;
   v5[3] = &unk_100A038D0;
-  v6 = a3;
-  v4 = v6;
+  valueCopy = value;
+  v4 = valueCopy;
   [(BKNotificationManager *)self requestAuthorizationWithCompletion:v5];
 }
 
@@ -113,7 +113,7 @@
   block[1] = 3221225472;
   block[2] = sub_100167D2C;
   block[3] = &unk_100A03560;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100AF7768 != -1)
   {
     dispatch_once(&qword_100AF7768, block);
@@ -124,86 +124,86 @@
   return v2;
 }
 
-- (void)requestAuthorizationWithCompletion:(id)a3
+- (void)requestAuthorizationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKNotificationManager *)self center];
+  completionCopy = completion;
+  center = [(BKNotificationManager *)self center];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100167E14;
   v7[3] = &unk_100A063F0;
-  v8 = v4;
-  v6 = v4;
-  [v5 requestAuthorizationWithOptions:38 completionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [center requestAuthorizationWithOptions:38 completionHandler:v7];
 }
 
-- (void)requestReauthorizationWithCompletion:(id)a3
+- (void)requestReauthorizationWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100167F2C;
   v4[3] = &unk_100A09180;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BKNotificationManager *)v5 getAuthorizationStatusWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(BKNotificationManager *)selfCopy getAuthorizationStatusWithCompletion:v4];
 }
 
-- (void)getAuthorizationStatusWithCompletion:(id)a3
+- (void)getAuthorizationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKNotificationManager *)self center];
+  completionCopy = completion;
+  center = [(BKNotificationManager *)self center];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001682EC;
   v7[3] = &unk_100A091A8;
-  v8 = v4;
-  v6 = v4;
-  [v5 getNotificationSettingsWithCompletionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [center getNotificationSettingsWithCompletionHandler:v7];
 }
 
-- (void)handleNotificationResponse:(id)a3
+- (void)handleNotificationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 notification];
-  v6 = [v5 request];
-  v7 = [v6 content];
+  responseCopy = response;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
 
-  v8 = [v7 categoryIdentifier];
+  categoryIdentifier = [content categoryIdentifier];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v7;
+    v22 = content;
     v23 = 2112;
-    v24 = v8;
+    v24 = categoryIdentifier;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Processing incoming notification: %@, category ID: %@", buf, 0x16u);
   }
 
   v9 = +[BKAchievementsNotificationController categoryIdentifier];
-  v10 = [v8 isEqualToString:v9];
+  v10 = [categoryIdentifier isEqualToString:v9];
 
   if (v10)
   {
-    v11 = [v4 actionIdentifier];
-    v12 = [v11 isEqualToString:UNNotificationDefaultActionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
+    v12 = [actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier];
 
     if (v12)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v7 userInfo];
+        userInfo = [content userInfo];
         *buf = 138412290;
-        v22 = v13;
+        v22 = userInfo;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Requested to open achievement sheet: %@", buf, 0xCu);
       }
 
-      [(BKNotificationManager *)self _emitNotificationEngagementEventForResponse:v4];
+      [(BKNotificationManager *)self _emitNotificationEngagementEventForResponse:responseCopy];
       v14 = +[BKAppDelegate sceneManager];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100168620;
       v19[3] = &unk_100A091D0;
-      v20 = v7;
+      v20 = content;
       [v14 requestPrimaryOrBookScene:v19];
     }
   }
@@ -211,12 +211,12 @@
   else
   {
     v15 = +[UNNotificationCategory YearInReviewNotificationCategoryIdentifier];
-    v16 = [v8 isEqualToString:v15];
+    v16 = [categoryIdentifier isEqualToString:v15];
 
     if (v16)
     {
-      v17 = [v4 actionIdentifier];
-      v18 = [v17 isEqualToString:UNNotificationDefaultActionIdentifier];
+      actionIdentifier2 = [responseCopy actionIdentifier];
+      v18 = [actionIdentifier2 isEqualToString:UNNotificationDefaultActionIdentifier];
 
       if (v18)
       {
@@ -224,25 +224,25 @@
       }
     }
 
-    else if ([v8 isEqualToString:BDSPriceTrackerNotificationCategoryIdentifier])
+    else if ([categoryIdentifier isEqualToString:BDSPriceTrackerNotificationCategoryIdentifier])
     {
-      [(BKNotificationManager *)self handlePriceTrackingNotificationResponse:v4 content:v7];
+      [(BKNotificationManager *)self handlePriceTrackingNotificationResponse:responseCopy content:content];
     }
   }
 }
 
-- (void)handlePriceTrackingNotificationResponse:(id)a3 content:(id)a4
+- (void)handlePriceTrackingNotificationResponse:(id)response content:(id)content
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 actionIdentifier];
-  v8 = [v7 isEqualToString:UNNotificationDefaultActionIdentifier];
+  responseCopy = response;
+  contentCopy = content;
+  actionIdentifier = [responseCopy actionIdentifier];
+  v8 = [actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier];
 
   if (v8)
   {
     objc_opt_class();
-    v9 = [v6 userInfo];
-    v10 = [v9 objectForKeyedSubscript:BDSPriceTrackerNotificationDeepLinkURLKey];
+    userInfo = [contentCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:BDSPriceTrackerNotificationDeepLinkURLKey];
     v11 = BUDynamicCast();
 
     if (v11)
@@ -257,8 +257,8 @@
 
       v13 = objc_opt_new();
       v14 = +[NSBundle mainBundle];
-      v15 = [v14 bundleIdentifier];
-      [v13 setObject:v15 forKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
+      bundleIdentifier = [v14 bundleIdentifier];
+      [v13 setObject:bundleIdentifier forKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
 
       v16 = +[BKAppDelegate delegate];
       v17 = [v13 copy];
@@ -273,49 +273,49 @@
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_1007919D8(v5);
+    sub_1007919D8(responseCopy);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  [(BKNotificationManager *)self handleNotificationResponse:a4];
-  v7[2]();
+  handlerCopy = handler;
+  [(BKNotificationManager *)self handleNotificationResponse:response];
+  handlerCopy[2]();
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v5 = a4;
-  v6 = a3;
+  settingsCopy = settings;
+  centerCopy = center;
   v7 = +[NSNotificationCenter defaultCenter];
   v9 = @"settings";
-  v10 = v5;
+  v10 = settingsCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
 
-  [v7 postNotificationName:@"UNUserNotificationCenterDidChangeSettings" object:v6 userInfo:v8];
+  [v7 postNotificationName:@"UNUserNotificationCenterDidChangeSettings" object:centerCopy userInfo:v8];
 }
 
-- (void)_emitNotificationEngagementEventForResponse:(id)a3
+- (void)_emitNotificationEngagementEventForResponse:(id)response
 {
-  v3 = [a3 notification];
-  v17 = [v3 request];
+  notification = [response notification];
+  request = [notification request];
 
-  v4 = [v17 content];
-  v5 = [v4 userInfo];
-  v15 = [v17 identifier];
-  v16 = [v4 title];
-  v6 = [BKAchievementsNotificationController titleKeyFromNotificationUserInfo:v5];
-  v7 = [v4 body];
-  v8 = [BKAchievementsNotificationController messageKeyFromNotificationUserInfo:v5];
-  v9 = [[BANotificationData alloc] initWithNotificationContentID:0 notificationID:v15 notificationType:2 recoType:0 goalType:+[BKAchievementsNotificationController goalTypeFromNotificationUserInfo:](BKAchievementsNotificationController titleCode:"goalTypeFromNotificationUserInfo:" title:v5) messageCode:v6 message:{v16, v8, v7}];
+  content = [request content];
+  userInfo = [content userInfo];
+  identifier = [request identifier];
+  title = [content title];
+  v6 = [BKAchievementsNotificationController titleKeyFromNotificationUserInfo:userInfo];
+  body = [content body];
+  v8 = [BKAchievementsNotificationController messageKeyFromNotificationUserInfo:userInfo];
+  v9 = [[BANotificationData alloc] initWithNotificationContentID:0 notificationID:identifier notificationType:2 recoType:0 goalType:+[BKAchievementsNotificationController goalTypeFromNotificationUserInfo:](BKAchievementsNotificationController titleCode:"goalTypeFromNotificationUserInfo:" title:userInfo) messageCode:v6 message:{title, v8, body}];
   v10 = [[BANotificationEngagementData alloc] initWithActionType:1 actionUrl:&stru_100A30A68 targetID:&__NSArray0__struct targetType:0];
   v11 = +[BKAppDelegate delegate];
-  v12 = [v11 primaryAnalyticsController];
+  primaryAnalyticsController = [v11 primaryAnalyticsController];
 
   v13 = +[BAEventReporter sharedReporter];
-  v14 = [v12 applicationTracker];
-  [v13 emitNotificationEngagementEventWithTracker:v14 engagementData:v10 notificationData:v9];
+  applicationTracker = [primaryAnalyticsController applicationTracker];
+  [v13 emitNotificationEngagementEventWithTracker:applicationTracker engagementData:v10 notificationData:v9];
 }
 
 @end

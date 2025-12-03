@@ -7,18 +7,18 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(AllRefinementsMultiSelectElementCellAccessibility *)self _axRefinementMultiSelectButton];
-  v3 = [v2 accessibilityLabel];
+  _axRefinementMultiSelectButton = [(AllRefinementsMultiSelectElementCellAccessibility *)self _axRefinementMultiSelectButton];
+  accessibilityLabel = [_axRefinementMultiSelectButton accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(AllRefinementsMultiSelectElementCellAccessibility *)self _axRefinementMultiSelectButton];
-  v3 = [v2 accessibilityTraits];
+  _axRefinementMultiSelectButton = [(AllRefinementsMultiSelectElementCellAccessibility *)self _axRefinementMultiSelectButton];
+  accessibilityTraits = [_axRefinementMultiSelectButton accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 uint64_t __83__AllRefinementsMultiSelectElementCellAccessibility__axRefinementMultiSelectButton__block_invoke(uint64_t a1, void *a2)

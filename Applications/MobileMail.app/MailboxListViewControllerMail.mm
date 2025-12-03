@@ -1,56 +1,56 @@
 @interface MailboxListViewControllerMail
 - (BOOL)isRefreshing;
 - (BOOL)shouldAutorotate;
-- (CGRect)rectOfMailbox:(id)a3;
+- (CGRect)rectOfMailbox:(id)mailbox;
 - (MailScene)scene;
-- (MailboxListViewControllerMail)initWithScene:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_ntsMailboxesForAccount:(id)a3;
-- (id)cellForMailbox:(id)a3;
-- (id)displayPathForMailbox:(id)a3;
-- (id)indexPathForMailbox:(id)a3;
+- (MailboxListViewControllerMail)initWithScene:(id)scene;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_ntsMailboxesForAccount:(id)account;
+- (id)cellForMailbox:(id)mailbox;
+- (id)displayPathForMailbox:(id)mailbox;
+- (id)indexPathForMailbox:(id)mailbox;
 - (id)indexPathForSelection;
-- (id)mailboxForIndexPath:(id)a3;
+- (id)mailboxForIndexPath:(id)path;
 - (id)mailboxes;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_getRotationContentSettings:(id *)a3;
-- (void)_loadOutbox:(id)a3;
-- (void)_queueReloadIfOutboxChanged:(id)a3;
-- (void)_reloadIfOutboxChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_getRotationContentSettings:(id *)settings;
+- (void)_loadOutbox:(id)outbox;
+- (void)_queueReloadIfOutboxChanged:(id)changed;
+- (void)_reloadIfOutboxChanged:(id)changed;
 - (void)applicationWillSuspend;
-- (void)contentSizeCategoryChanged:(id)a3;
+- (void)contentSizeCategoryChanged:(id)changed;
 - (void)dealloc;
-- (void)didSelectMailbox:(id)a3 changed:(BOOL)a4 animated:(BOOL)a5;
-- (void)disableMailboxTypes:(id)a3;
-- (void)disableMailboxes:(id)a3;
-- (void)enableMailboxTypes:(id)a3;
-- (void)filterMailboxesContainingText:(id)a3;
-- (void)mailAccountsChanged:(id)a3;
-- (void)mailboxEditingControllerDidFinish:(id)a3;
-- (void)messageStoreChanged:(id)a3;
-- (void)pulledToRefresh:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHideInbox:(BOOL)a3;
-- (void)setIsRefreshing:(BOOL)a3;
-- (void)shouldReloadMailboxesWithOutbox:(id)a3;
-- (void)showMailboxEditingControllerWithMailbox:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didSelectMailbox:(id)mailbox changed:(BOOL)changed animated:(BOOL)animated;
+- (void)disableMailboxTypes:(id)types;
+- (void)disableMailboxes:(id)mailboxes;
+- (void)enableMailboxTypes:(id)types;
+- (void)filterMailboxesContainingText:(id)text;
+- (void)mailAccountsChanged:(id)changed;
+- (void)mailboxEditingControllerDidFinish:(id)finish;
+- (void)messageStoreChanged:(id)changed;
+- (void)pulledToRefresh:(id)refresh;
+- (void)setAccount:(id)account;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHideInbox:(BOOL)inbox;
+- (void)setIsRefreshing:(BOOL)refreshing;
+- (void)shouldReloadMailboxesWithOutbox:(id)outbox;
+- (void)showMailboxEditingControllerWithMailbox:(id)mailbox;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateTitle;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillReappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillReappear:(BOOL)reappear;
 @end
 
 @implementation MailboxListViewControllerMail
 
-- (MailboxListViewControllerMail)initWithScene:(id)a3
+- (MailboxListViewControllerMail)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v16.receiver = self;
   v16.super_class = MailboxListViewControllerMail;
   v5 = [(MailboxListViewControllerMail *)&v16 initWithStyle:0];
@@ -66,7 +66,7 @@
     *(v5 + 87) = 0;
     v5[48] |= 1u;
     v5[113] = 1;
-    objc_storeWeak((v5 + 127), v4);
+    objc_storeWeak((v5 + 127), sceneCopy);
     v7 = [EFLocked alloc];
     v8 = objc_opt_new();
     v9 = [v7 initWithObject:v8];
@@ -96,11 +96,11 @@
   [(MailboxListViewControllerBase *)&v4 dealloc];
 }
 
-- (void)_getRotationContentSettings:(id *)a3
+- (void)_getRotationContentSettings:(id *)settings
 {
-  *&a3->var0 = 257;
+  *&settings->var0 = 257;
   +[MFTableViewCell defaultAccessoryWidth];
-  a3->var5 = v4;
+  settings->var5 = v4;
 }
 
 - (BOOL)shouldAutorotate
@@ -125,50 +125,50 @@
   v5 = [v4 localizedStringForKey:@"MAILBOXES_BACK_BUTTON" value:&stru_100662A88 table:@"Main"];
 
   WeakRetained = objc_loadWeakRetained((&self->_queuedOutboxCheck + 7));
-  v7 = [WeakRetained containsMultipleAccounts];
+  containsMultipleAccounts = [WeakRetained containsMultipleAccounts];
 
-  if (v7)
+  if (containsMultipleAccounts)
   {
-    v8 = [(MailboxListViewControllerBase *)self account];
-    v9 = [v8 displayName];
+    account = [(MailboxListViewControllerBase *)self account];
+    displayName = [account displayName];
 
-    if ([v9 length])
+    if ([displayName length])
     {
-      v10 = v9;
+      v10 = displayName;
 
       v5 = 0;
       v15 = v10;
     }
   }
 
-  v11 = [(MailboxListViewControllerMail *)self title];
-  v12 = [v15 isEqualToString:v11];
+  title = [(MailboxListViewControllerMail *)self title];
+  v12 = [v15 isEqualToString:title];
 
   if ((v12 & 1) == 0)
   {
     [(MailboxListViewControllerMail *)self setTitle:v15];
-    v13 = [(MailboxListViewControllerMail *)self navigationItem];
-    [v13 setBackButtonTitle:v5];
+    navigationItem = [(MailboxListViewControllerMail *)self navigationItem];
+    [navigationItem setBackButtonTitle:v5];
 
-    v14 = [(MailboxListViewControllerMail *)self navigationItem];
-    [v14 setBackButtonDisplayMode:0];
+    navigationItem2 = [(MailboxListViewControllerMail *)self navigationItem];
+    [navigationItem2 setBackButtonDisplayMode:0];
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerBase *)self account];
+  accountCopy = account;
+  account = [(MailboxListViewControllerBase *)self account];
 
-  if (v5 != v4)
+  if (account != accountCopy)
   {
     v7.receiver = self;
     v7.super_class = MailboxListViewControllerMail;
-    [(MailboxListViewControllerBase *)&v7 setAccount:v4];
+    [(MailboxListViewControllerBase *)&v7 setAccount:accountCopy];
     if ([(MailboxListViewControllerMail *)self isViewLoaded])
     {
-      v6 = [(MailboxListViewControllerMail *)self tableView];
-      [v6 setContentOffset:0 animated:{CGPointZero.x, CGPointZero.y}];
+      tableView = [(MailboxListViewControllerMail *)self tableView];
+      [tableView setContentOffset:0 animated:{CGPointZero.x, CGPointZero.y}];
     }
 
     [(MailboxListViewControllerMail *)self updateTitle];
@@ -186,25 +186,25 @@
   return self->_showRefreshControl;
 }
 
-- (void)setIsRefreshing:(BOOL)a3
+- (void)setIsRefreshing:(BOOL)refreshing
 {
-  v3 = a3;
+  refreshingCopy = refreshing;
   if (pthread_main_np() != 1)
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"MailboxListViewControllerMail.m" lineNumber:147 description:@"Current thread must be main"];
   }
 
-  if (self->_showRefreshControl != v3 && !v3)
+  if (self->_showRefreshControl != refreshingCopy && !refreshingCopy)
   {
-    self->_showRefreshControl = v3;
+    self->_showRefreshControl = refreshingCopy;
     mlvcmDelegate_high = HIBYTE(self->_mlvcmDelegate);
-    v7 = [(MailboxListViewControllerMail *)self tableView];
-    [v7 _endRefreshingAnimated:mlvcmDelegate_high];
+    tableView = [(MailboxListViewControllerMail *)self tableView];
+    [tableView _endRefreshingAnimated:mlvcmDelegate_high];
   }
 }
 
-- (void)pulledToRefresh:(id)a3
+- (void)pulledToRefresh:(id)refresh
 {
   if (pthread_main_np() != 1)
   {
@@ -214,34 +214,34 @@
 
   self->_showRefreshControl = 1;
   [(MailboxListViewControllerMail *)self performSelector:"updateIsRefreshing" withObject:0 afterDelay:0.0];
-  v5 = [(MailboxListViewControllerMail *)self scene];
-  v6 = [v5 daemonInterface];
-  v8 = [v6 mailboxRepository];
+  scene = [(MailboxListViewControllerMail *)self scene];
+  daemonInterface = [scene daemonInterface];
+  mailboxRepository = [daemonInterface mailboxRepository];
 
-  [v8 refreshMailboxList:1];
+  [mailboxRepository refreshMailboxList:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v23.receiver = self;
   v23.super_class = MailboxListViewControllerMail;
-  [(MailboxListViewControllerBase *)&v23 viewWillAppear:a3];
+  [(MailboxListViewControllerBase *)&v23 viewWillAppear:appear];
   [(MailboxListViewControllerMail *)self updateTitle];
   [(MailboxListViewControllerMail *)self updateIsRefreshing];
-  v4 = [(MailboxListViewControllerMail *)self toolbarItems];
-  v5 = v4 == 0;
+  toolbarItems = [(MailboxListViewControllerMail *)self toolbarItems];
+  v5 = toolbarItems == 0;
 
   if (v5)
   {
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
-    v8 = [(MailboxListViewControllerMail *)self scene];
-    if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") & 1) == 0 && [v8 conformsToProtocol:&OBJC_PROTOCOL___ComposeCapable] && (objc_opt_respondsToSelector())
+    scene = [(MailboxListViewControllerMail *)self scene];
+    if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") & 1) == 0 && [scene conformsToProtocol:&OBJC_PROTOCOL___ComposeCapable] && (objc_opt_respondsToSelector())
     {
-      v9 = [v8 newComposeButtonItem];
+      newComposeButtonItem = [scene newComposeButtonItem];
       v25[0] = v6;
       v25[1] = v7;
-      v25[2] = v9;
+      v25[2] = newComposeButtonItem;
       v10 = [NSArray arrayWithObjects:v25 count:3];
       [(MailboxListViewControllerMail *)self setToolbarItems:v10];
     }
@@ -250,63 +250,63 @@
     {
       v24[0] = v6;
       v24[1] = v7;
-      v9 = [NSArray arrayWithObjects:v24 count:2];
-      [(MailboxListViewControllerMail *)self setToolbarItems:v9];
+      newComposeButtonItem = [NSArray arrayWithObjects:v24 count:2];
+      [(MailboxListViewControllerMail *)self setToolbarItems:newComposeButtonItem];
     }
   }
 
   v11 = objc_alloc_init(NSMutableSet);
-  v12 = [(MailboxListViewControllerBase *)self account];
-  if (v12)
+  account = [(MailboxListViewControllerBase *)self account];
+  if (account)
   {
-    v13 = [(MailboxListViewControllerBase *)self account];
+    account2 = [(MailboxListViewControllerBase *)self account];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v15 = [(MailboxListViewControllerBase *)self account];
-      v16 = [v15 primaryMailboxUid];
-      [v11 addObject:v16];
+      account3 = [(MailboxListViewControllerBase *)self account];
+      primaryMailboxUid = [account3 primaryMailboxUid];
+      [v11 addObject:primaryMailboxUid];
     }
   }
 
-  v17 = [(MailboxListViewControllerBase *)self account];
-  v18 = [v17 supportsMailboxEditing];
+  account4 = [(MailboxListViewControllerBase *)self account];
+  supportsMailboxEditing = [account4 supportsMailboxEditing];
 
-  if (v18)
+  if (supportsMailboxEditing)
   {
-    v19 = [(MailboxListViewControllerMail *)self editButtonItem];
-    v20 = [(MailboxListViewControllerMail *)self navigationItem];
-    [v20 setRightBarButtonItem:v19];
+    editButtonItem = [(MailboxListViewControllerMail *)self editButtonItem];
+    navigationItem = [(MailboxListViewControllerMail *)self navigationItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
   }
 
   else
   {
-    v19 = [(MailboxListViewControllerMail *)self navigationItem];
-    [v19 setRightBarButtonItem:0];
+    editButtonItem = [(MailboxListViewControllerMail *)self navigationItem];
+    [editButtonItem setRightBarButtonItem:0];
   }
 
-  v21 = [(MailboxListViewControllerMail *)self tableView];
+  tableView = [(MailboxListViewControllerMail *)self tableView];
   +[MailboxTableCell defaultRowHeight];
-  [v21 setEstimatedRowHeight:?];
+  [tableView setEstimatedRowHeight:?];
 
-  v22 = [(MailboxListViewControllerMail *)self mf_updatePreferredContentSizeBasedOnTableView];
-  [(MailboxListViewControllerMail *)self setTableViewObserver:v22];
+  mf_updatePreferredContentSizeBasedOnTableView = [(MailboxListViewControllerMail *)self mf_updatePreferredContentSizeBasedOnTableView];
+  [(MailboxListViewControllerMail *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
 }
 
-- (void)viewWillReappear:(BOOL)a3
+- (void)viewWillReappear:(BOOL)reappear
 {
-  v3 = a3;
-  v5 = [(MailboxListViewControllerBase *)self account];
+  reappearCopy = reappear;
+  account = [(MailboxListViewControllerBase *)self account];
 
-  if (!v5)
+  if (!account)
   {
     v6 = objc_alloc_init(MailboxListViewingContext);
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 selectedAccounts];
+    selectedAccounts = [v7 selectedAccounts];
 
-    if ([v8 count] >= 2)
+    if ([selectedAccounts count] >= 2)
     {
       v9 = MFLogGeneral();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -315,47 +315,47 @@
       }
     }
 
-    v10 = [v8 anyObject];
-    [(MailboxListViewingContext *)v6 setAccount:v10];
+    anyObject = [selectedAccounts anyObject];
+    [(MailboxListViewingContext *)v6 setAccount:anyObject];
 
     [(MailboxListViewControllerBase *)self setViewingContext:v6];
-    [(MailboxListViewControllerBase *)self viewWillFirstAppear:v3];
+    [(MailboxListViewControllerBase *)self viewWillFirstAppear:reappearCopy];
   }
 
   v11.receiver = self;
   v11.super_class = MailboxListViewControllerMail;
-  [(MailboxListViewControllerBase *)&v11 viewWillReappear:v3];
+  [(MailboxListViewControllerBase *)&v11 viewWillReappear:reappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MailboxListViewControllerMail;
-  [(MailboxListViewControllerBase *)&v4 viewDidAppear:a3];
+  [(MailboxListViewControllerBase *)&v4 viewDidAppear:appear];
   [(MailboxListViewControllerMail *)self mf_updateAlertSuppressionContextsForReason:@"mailbox list appeared"];
   HIBYTE(self->_mlvcmDelegate) = 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MailboxListViewControllerMail;
-  [(MailboxListViewControllerBase *)&v6 viewWillDisappear:a3];
+  [(MailboxListViewControllerBase *)&v6 viewWillDisappear:disappear];
   HIBYTE(self->_mlvcmDelegate) = 0;
-  v4 = [(MailboxListViewControllerMail *)self tableView];
-  v5 = [v4 refreshControl];
-  [v5 endRefreshing];
+  tableView = [(MailboxListViewControllerMail *)self tableView];
+  refreshControl = [tableView refreshControl];
+  [refreshControl endRefreshing];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MailboxListViewControllerMail;
   [(MailboxListViewControllerMail *)&v5 viewDidDisappear:0];
   [(MailboxListViewControllerMail *)self setIsRefreshing:0];
-  v4 = [(MailboxListViewControllerMail *)self parentViewController];
+  parentViewController = [(MailboxListViewControllerMail *)self parentViewController];
 
-  if (!v4)
+  if (!parentViewController)
   {
     [(MailboxListViewControllerMail *)self unloadViewIfReloadable];
   }
@@ -366,20 +366,20 @@
   v6.receiver = self;
   v6.super_class = MailboxListViewControllerMail;
   [(MailboxListViewControllerBase *)&v6 viewDidLoad];
-  v3 = [(MailboxListViewControllerMail *)self tableView];
+  tableView = [(MailboxListViewControllerMail *)self tableView];
   if (self->_alignAccessories)
   {
     v4 = objc_alloc_init(UIRefreshControl);
     [v4 addTarget:self action:"pulledToRefresh:" forControlEvents:4096];
-    [v3 _setRefreshControl:v4];
+    [tableView _setRefreshControl:v4];
   }
 
-  [v3 setSeparatorStyle:1];
+  [tableView setSeparatorStyle:1];
   v5 = +[UIColor tableBackgroundColor];
-  [v3 setBackgroundColor:v5];
+  [tableView setBackgroundColor:v5];
 
-  [v3 setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
-  [v3 setSelectionFollowsFocus:0];
+  [tableView setContentInset:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  [tableView setSelectionFollowsFocus:0];
 }
 
 - (void)applicationWillSuspend
@@ -387,24 +387,24 @@
   v5.receiver = self;
   v5.super_class = MailboxListViewControllerMail;
   [(MailboxListViewControllerMail *)&v5 applicationWillSuspend];
-  v3 = [(MailboxListViewControllerMail *)self navigationController];
-  v4 = [v3 visibleViewController];
+  navigationController = [(MailboxListViewControllerMail *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
-  if (v4 == self)
+  if (visibleViewController == self)
   {
     [(MailboxListViewControllerMail *)self setEditing:0 animated:0];
   }
 }
 
-- (id)mailboxForIndexPath:(id)a3
+- (id)mailboxForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 row] != 0x7FFFFFFFFFFFFFFFLL)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && [pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [v5 row];
-    v8 = [(MailboxListViewControllerMail *)self mailboxes];
-    v9 = [v8 objectAtIndex:v7];
+    mailboxes = [(MailboxListViewControllerMail *)self mailboxes];
+    v9 = [mailboxes objectAtIndex:v7];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -426,11 +426,11 @@
   return v6;
 }
 
-- (id)indexPathForMailbox:(id)a3
+- (id)indexPathForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerMail *)self mailboxes];
-  v6 = [v5 indexOfObject:v4];
+  mailboxCopy = mailbox;
+  mailboxes = [(MailboxListViewControllerMail *)self mailboxes];
+  v6 = [mailboxes indexOfObject:mailboxCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -445,43 +445,43 @@
   return v7;
 }
 
-- (void)didSelectMailbox:(id)a3 changed:(BOOL)a4 animated:(BOOL)a5
+- (void)didSelectMailbox:(id)mailbox changed:(BOOL)changed animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (([*(self + 55) containsObject:v8] & 1) == 0)
+  animatedCopy = animated;
+  changedCopy = changed;
+  mailboxCopy = mailbox;
+  if (([*(self + 55) containsObject:mailboxCopy] & 1) == 0)
   {
-    if (![*(&self->_disabledMailboxes + 7) count] || (+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(v8, "mailboxType")), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(*(&self->_disabledMailboxes + 7), "containsObject:", v9), v9, (v10 & 1) == 0))
+    if (![*(&self->_disabledMailboxes + 7) count] || (+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", objc_msgSend(mailboxCopy, "mailboxType")), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(*(&self->_disabledMailboxes + 7), "containsObject:", v9), v9, (v10 & 1) == 0))
     {
       if ([(MailboxListViewControllerMail *)self isEditing])
       {
-        if ([v8 mv_isEditable])
+        if ([mailboxCopy mv_isEditable])
         {
-          [(MailboxListViewControllerMail *)self showMailboxEditingControllerWithMailbox:v8];
+          [(MailboxListViewControllerMail *)self showMailboxEditingControllerWithMailbox:mailboxCopy];
         }
       }
 
       else
       {
-        v11 = [(MailboxListViewControllerBase *)self mailboxSelectionTarget];
+        mailboxSelectionTarget = [(MailboxListViewControllerBase *)self mailboxSelectionTarget];
 
-        if (v11)
+        if (mailboxSelectionTarget)
         {
           v12.receiver = self;
           v12.super_class = MailboxListViewControllerMail;
-          [(MailboxListViewControllerBase *)&v12 didSelectMailbox:v8 changed:v6 animated:v5];
+          [(MailboxListViewControllerBase *)&v12 didSelectMailbox:mailboxCopy changed:changedCopy animated:animatedCopy];
         }
       }
     }
   }
 }
 
-- (void)mailboxEditingControllerDidFinish:(id)a3
+- (void)mailboxEditingControllerDidFinish:(id)finish
 {
-  v4 = [(MailboxListViewControllerMail *)self presentedViewController];
+  presentedViewController = [(MailboxListViewControllerMail *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
 
     [(MailboxListViewControllerMail *)self dismissViewControllerAnimated:1 completion:0];
@@ -489,18 +489,18 @@
 
   else
   {
-    v6 = [(MailboxListViewControllerMail *)self navigationController];
-    v5 = [v6 popViewControllerAnimated:1];
+    navigationController = [(MailboxListViewControllerMail *)self navigationController];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)showMailboxEditingControllerWithMailbox:(id)a3
+- (void)showMailboxEditingControllerWithMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  mailboxCopy = mailbox;
+  v5 = mailboxCopy;
+  if (mailboxCopy)
   {
-    [v4 account];
+    [mailboxCopy account];
   }
 
   else
@@ -512,30 +512,30 @@
   if (v6)
   {
     v13 = v6;
-    v8 = [NSArray arrayWithObjects:&v13 count:1];
+    allObjects = [NSArray arrayWithObjects:&v13 count:1];
   }
 
   else
   {
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 accountsProvider];
-    v11 = [v10 displayedAccounts];
-    v8 = [v11 allObjects];
+    accountsProvider = [v9 accountsProvider];
+    displayedAccounts = [accountsProvider displayedAccounts];
+    allObjects = [displayedAccounts allObjects];
   }
 
-  v12 = [[MailboxEditingController alloc] initWithMailbox:v5 account:v7 validAccounts:v8];
+  v12 = [[MailboxEditingController alloc] initWithMailbox:v5 account:v7 validAccounts:allObjects];
   [(MailboxEditingController *)v12 setDelegate:self];
   [(MailboxListViewControllerMail *)self showViewController:v12 sender:self];
 }
 
 - (id)indexPathForSelection
 {
-  v3 = [(MailboxListViewControllerBase *)self selectedMailbox];
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
 
-  if (v3)
+  if (selectedMailbox)
   {
-    v4 = [(MailboxListViewControllerBase *)self selectedMailbox];
-    v5 = [(MailboxListViewControllerMail *)self indexPathForMailbox:v4];
+    selectedMailbox2 = [(MailboxListViewControllerBase *)self selectedMailbox];
+    v5 = [(MailboxListViewControllerMail *)self indexPathForMailbox:selectedMailbox2];
   }
 
   else
@@ -546,21 +546,21 @@
   return v5;
 }
 
-- (CGRect)rectOfMailbox:(id)a3
+- (CGRect)rectOfMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerMail *)self tableView];
-  [v5 contentOffset];
-  [v5 setContentOffset:0 animated:?];
-  v6 = [(MailboxListViewControllerMail *)self indexPathForMailbox:v4];
+  mailboxCopy = mailbox;
+  tableView = [(MailboxListViewControllerMail *)self tableView];
+  [tableView contentOffset];
+  [tableView setContentOffset:0 animated:?];
+  v6 = [(MailboxListViewControllerMail *)self indexPathForMailbox:mailboxCopy];
   if (v6)
   {
-    [v5 rectForRowAtIndexPath:v6];
+    [tableView rectForRowAtIndexPath:v6];
     v8 = v7;
     y = v9;
     v12 = v11;
     height = v13;
-    v15 = sub_10024BD78([v4 level]);
+    v15 = sub_10024BD78([mailboxCopy level]);
     v16 = v15;
     x = v8 + v16;
     width = v12 - v16;
@@ -585,13 +585,13 @@
   return result;
 }
 
-- (id)cellForMailbox:(id)a3
+- (id)cellForMailbox:(id)mailbox
 {
-  v4 = [(MailboxListViewControllerMail *)self indexPathForMailbox:a3];
+  v4 = [(MailboxListViewControllerMail *)self indexPathForMailbox:mailbox];
   if (v4)
   {
-    v5 = [(MailboxListViewControllerMail *)self tableView];
-    v6 = [v5 cellForRowAtIndexPath:v4];
+    tableView = [(MailboxListViewControllerMail *)self tableView];
+    v6 = [tableView cellForRowAtIndexPath:v4];
   }
 
   else
@@ -602,11 +602,11 @@
   return v6;
 }
 
-- (void)disableMailboxes:(id)a3
+- (void)disableMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   v5 = *(self + 55);
-  v8 = v4;
+  v8 = mailboxesCopy;
   if (!v5)
   {
     v6 = objc_alloc_init(NSMutableSet);
@@ -614,17 +614,17 @@
     *(self + 55) = v6;
 
     v5 = *(self + 55);
-    v4 = v8;
+    mailboxesCopy = v8;
   }
 
-  [v5 unionSet:v4];
+  [v5 unionSet:mailboxesCopy];
 }
 
-- (void)disableMailboxTypes:(id)a3
+- (void)disableMailboxTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = *(&self->_disabledMailboxes + 7);
-  v8 = v4;
+  v8 = typesCopy;
   if (!v5)
   {
     v6 = objc_alloc_init(NSMutableSet);
@@ -632,29 +632,29 @@
     *(&self->_disabledMailboxes + 7) = v6;
 
     v5 = *(&self->_disabledMailboxes + 7);
-    v4 = v8;
+    typesCopy = v8;
   }
 
-  [v5 unionSet:v4];
+  [v5 unionSet:typesCopy];
 }
 
-- (void)enableMailboxTypes:(id)a3
+- (void)enableMailboxTypes:(id)types
 {
-  v5 = a3;
+  typesCopy = types;
   v4 = *(&self->_disabledMailboxes + 7);
   if (v4)
   {
-    [v4 minusSet:v5];
+    [v4 minusSet:typesCopy];
   }
 }
 
-- (void)setHideInbox:(BOOL)a3
+- (void)setHideInbox:(BOOL)inbox
 {
   v3 = *(self + 48);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ inbox) & 1) == 0)
   {
-    v4 = a3;
-    if (a3)
+    inboxCopy = inbox;
+    if (inbox)
     {
       v6 = 2;
     }
@@ -667,7 +667,7 @@
     *(self + 48) = v3 & 0xFD | v6;
     v8 = [NSNumber numberWithInt:7];
     [NSSet setWithObject:v8];
-    if (v4)
+    if (inboxCopy)
       v7 = {;
       [(MailboxListViewControllerMail *)self disableMailboxTypes:v7];
     }
@@ -679,13 +679,13 @@
   }
 }
 
-- (void)_reloadIfOutboxChanged:(id)a3
+- (void)_reloadIfOutboxChanged:(id)changed
 {
-  v8 = a3;
+  changedCopy = changed;
   v4 = +[MailAccount outboxMailboxUid];
   if (v4 && (*(&self->super + 8) & 1) == 0)
   {
-    v5 = [v8 objectForKey:MailMessageStoreChangedMailboxesKey];
+    v5 = [changedCopy objectForKey:MailMessageStoreChangedMailboxesKey];
     if ([v5 containsObject:v4])
     {
       [(MailboxListViewControllerBase *)self _loadMailboxes:1];
@@ -693,7 +693,7 @@
       goto LABEL_9;
     }
 
-    v6 = [v8 objectForKey:MailMessageStoreMessageKey];
+    v6 = [changedCopy objectForKey:MailMessageStoreMessageKey];
     v7 = [v6 valueForKey:@"mailbox"];
 
     if ([v7 containsObject:v4])
@@ -706,54 +706,54 @@
 LABEL_9:
 }
 
-- (void)_queueReloadIfOutboxChanged:(id)a3
+- (void)_queueReloadIfOutboxChanged:(id)changed
 {
-  v6 = a3;
+  changedCopy = changed;
   Current = CFAbsoluteTimeGetCurrent();
   v5 = *(&self->_editingToolbarItems + 7);
   if (Current - v5 <= 1.0)
   {
     if ((HIBYTE(self->_lastCheckedOutbox) & 1) == 0)
     {
-      [(MailboxListViewControllerMail *)self performSelector:"_reloadIfOutboxChanged:" withObject:v6 afterDelay:v5 + 1.0 - Current];
+      [(MailboxListViewControllerMail *)self performSelector:"_reloadIfOutboxChanged:" withObject:changedCopy afterDelay:v5 + 1.0 - Current];
       HIBYTE(self->_lastCheckedOutbox) = 1;
     }
   }
 
   else
   {
-    [(MailboxListViewControllerMail *)self _reloadIfOutboxChanged:v6];
+    [(MailboxListViewControllerMail *)self _reloadIfOutboxChanged:changedCopy];
     HIBYTE(self->_lastCheckedOutbox) = 0;
   }
 }
 
-- (void)messageStoreChanged:(id)a3
+- (void)messageStoreChanged:(id)changed
 {
-  v4 = [a3 userInfo];
+  userInfo = [changed userInfo];
   [MailboxListViewControllerMail performSelectorOnMainThread:"performSelectorOnMainThread:withObject:waitUntilDone:" withObject:"_queueReloadIfOutboxChanged:" waitUntilDone:?];
 }
 
-- (void)mailAccountsChanged:(id)a3
+- (void)mailAccountsChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   if (+[NSThread isMainThread])
   {
-    v6 = [(MailboxListViewControllerBase *)self account];
+    account = [(MailboxListViewControllerBase *)self account];
 
-    if (v6)
+    if (account)
     {
-      v7 = [(MailboxListViewControllerBase *)self account];
-      v8 = [v7 uniqueID];
+      account2 = [(MailboxListViewControllerBase *)self account];
+      uniqueID = [account2 uniqueID];
 
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
       v9 = +[UIApplication sharedApplication];
-      v10 = [v9 accountsProvider];
-      v11 = [v10 displayedAccounts];
+      accountsProvider = [v9 accountsProvider];
+      displayedAccounts = [accountsProvider displayedAccounts];
 
-      v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [displayedAccounts countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
         v13 = *v19;
@@ -763,14 +763,14 @@ LABEL_9:
           {
             if (*v19 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(displayedAccounts);
             }
 
             v15 = *(*(&v18 + 1) + 8 * i);
             if ([v15 isActive])
             {
-              v16 = [v15 uniqueID];
-              v17 = [v8 isEqualToString:v16];
+              uniqueID2 = [v15 uniqueID];
+              v17 = [uniqueID isEqualToString:uniqueID2];
 
               if (v17)
               {
@@ -780,7 +780,7 @@ LABEL_9:
             }
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v12 = [displayedAccounts countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v12)
           {
             continue;
@@ -799,34 +799,34 @@ LABEL_15:
 
   else
   {
-    [(MailboxListViewControllerMail *)self performSelectorOnMainThread:a2 withObject:v5 waitUntilDone:0];
+    [(MailboxListViewControllerMail *)self performSelectorOnMainThread:a2 withObject:changedCopy waitUntilDone:0];
   }
 }
 
-- (void)contentSizeCategoryChanged:(id)a3
+- (void)contentSizeCategoryChanged:(id)changed
 {
   +[MailboxTableCell invalidateCachedLayoutInformation];
-  v4 = [(MailboxListViewControllerMail *)self tableView];
+  tableView = [(MailboxListViewControllerMail *)self tableView];
   +[MailboxTableCell defaultRowHeight];
-  [v4 setRowHeight:?];
+  [tableView setRowHeight:?];
 
-  v5 = [(MailboxListViewControllerMail *)self tableView];
-  [v5 reloadData];
+  tableView2 = [(MailboxListViewControllerMail *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MailboxListViewControllerMail *)self mailboxes:a3];
+  v4 = [(MailboxListViewControllerMail *)self mailboxes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(MailboxListViewControllerMail *)self mailboxForIndexPath:a4];
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"MailboxCellReuse"];
+  viewCopy = view;
+  v7 = [(MailboxListViewControllerMail *)self mailboxForIndexPath:path];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"MailboxCellReuse"];
   if (!v8)
   {
     v8 = [[MailboxTableCell alloc] initWithStyle:3 reuseIdentifier:@"MailboxCellReuse"];
@@ -848,9 +848,9 @@ LABEL_15:
 
   [(MailboxTableCell *)v8 setLegacyMailboxes:v10 showUnreadCount:1];
   -[MailboxTableCell setDisabledForEditing:](v8, "setDisabledForEditing:", [v7 mv_isEditable] ^ 1);
-  v11 = [(MailboxListViewControllerMail *)self filteredMailboxes];
-  v12 = [v11 getObject];
-  v13 = [v12 count];
+  filteredMailboxes = [(MailboxListViewControllerMail *)self filteredMailboxes];
+  getObject = [filteredMailboxes getObject];
+  v13 = [getObject count];
 
   if (v13)
   {
@@ -865,9 +865,9 @@ LABEL_15:
     v15 = 0;
   }
 
-  v16 = [(MailboxListViewControllerBase *)self selectedMailbox];
-  v17 = v16;
-  if (v16 == v7)
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+  v17 = selectedMailbox;
+  if (selectedMailbox == v7)
   {
   }
 
@@ -892,23 +892,23 @@ LABEL_13:
   }
 
 LABEL_16:
-  v20 = [v7 isStore];
-  v21 = [v7 mv_isEditable];
+  isStore = [v7 isStore];
+  mv_isEditable = [v7 mv_isEditable];
   v22 = v8;
   v23 = v22;
   if (*(self + 48))
   {
-    [(MailboxTableCell *)v22 setAccessoryType:v20];
-    [(MailboxTableCell *)v23 setEditingAccessoryType:v21];
+    [(MailboxTableCell *)v22 setAccessoryType:isStore];
+    [(MailboxTableCell *)v23 setEditingAccessoryType:mv_isEditable];
   }
 
   return v23;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -919,31 +919,31 @@ LABEL_16:
   return result;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v23.receiver = self;
   v23.super_class = MailboxListViewControllerMail;
   [MailboxListViewControllerMail setEditing:"setEditing:animated:" animated:?];
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 accountsProvider];
-  v9 = [v8 isDisplayingMultipleAccounts];
+  accountsProvider = [v7 accountsProvider];
+  isDisplayingMultipleAccounts = [accountsProvider isDisplayingMultipleAccounts];
 
-  if (v9)
+  if (isDisplayingMultipleAccounts)
   {
-    v10 = [(MailboxListViewControllerMail *)self navigationItem];
-    [v10 setHidesBackButton:v5 animated:v4];
+    navigationItem = [(MailboxListViewControllerMail *)self navigationItem];
+    [navigationItem setHidesBackButton:editingCopy animated:animatedCopy];
   }
 
-  if (v5)
+  if (editingCopy)
   {
-    [(MailboxListViewControllerMail *)self focus:v4];
+    [(MailboxListViewControllerMail *)self focus:animatedCopy];
   }
 
   else
   {
-    [(MailboxListViewControllerMail *)self unfocus:v4];
+    [(MailboxListViewControllerMail *)self unfocus:animatedCopy];
   }
 
   if (([(MailboxListViewControllerMail *)self isEditing]& 1) != 0)
@@ -961,7 +961,7 @@ LABEL_16:
       v24[0] = v13;
       v24[1] = v17;
       v18 = [NSArray arrayWithObjects:v24 count:2];
-      v19 = *v11;
+      scene = *v11;
       *v11 = v18;
 LABEL_16:
 
@@ -977,13 +977,13 @@ LABEL_16:
     {
       v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
       v17 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
-      v19 = [(MailboxListViewControllerMail *)self scene];
-      if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") & 1) == 0 && [v19 conformsToProtocol:&OBJC_PROTOCOL___ComposeCapable] && (objc_opt_respondsToSelector())
+      scene = [(MailboxListViewControllerMail *)self scene];
+      if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") & 1) == 0 && [scene conformsToProtocol:&OBJC_PROTOCOL___ComposeCapable] && (objc_opt_respondsToSelector())
       {
-        v20 = [v19 newComposeButtonItem];
+        newComposeButtonItem = [scene newComposeButtonItem];
         v26[0] = v13;
         v26[1] = v17;
-        v26[2] = v20;
+        v26[2] = newComposeButtonItem;
         v21 = [NSArray arrayWithObjects:v26 count:3];
         [(MailboxListViewControllerMail *)self setToolbarItems:v21];
       }
@@ -992,8 +992,8 @@ LABEL_16:
       {
         v25[0] = v13;
         v25[1] = v17;
-        v20 = [NSArray arrayWithObjects:v25 count:2];
-        [(MailboxListViewControllerMail *)self setToolbarItems:v20];
+        newComposeButtonItem = [NSArray arrayWithObjects:v25 count:2];
+        [(MailboxListViewControllerMail *)self setToolbarItems:newComposeButtonItem];
       }
 
       goto LABEL_16;
@@ -1001,144 +1001,144 @@ LABEL_16:
   }
 
   v22 = v12;
-  [(MailboxListViewControllerMail *)self setToolbarItems:v22 animated:v4];
+  [(MailboxListViewControllerMail *)self setToolbarItems:v22 animated:animatedCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   [(MailboxListViewControllerMail *)self setSelectedSourceType:0];
-  v5 = [(MailboxListViewControllerMail *)self mailboxForIndexPath:v6];
+  v5 = [(MailboxListViewControllerMail *)self mailboxForIndexPath:pathCopy];
   if (v5)
   {
     [(MailboxListViewControllerBase *)self setSelectedMailbox:v5 animated:1];
   }
 }
 
-- (id)_ntsMailboxesForAccount:(id)a3
+- (id)_ntsMailboxesForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [MFMonitoredInvocation invocationWithSelector:"_loadOutbox:" target:self object:v4 taskName:@"LoadOutboxTask" priority:12 canBeCancelled:1];
+  accountCopy = account;
+  v5 = [MFMonitoredInvocation invocationWithSelector:"_loadOutbox:" target:self object:accountCopy taskName:@"LoadOutboxTask" priority:12 canBeCancelled:1];
   v6 = +[MFInvocationQueue sharedInvocationQueue];
   [v6 addInvocation:v5];
 
   v7 = +[MailChangeManager sharedChangeManager];
-  v8 = [v7 allMailboxUidsSortedWithSpecialsAtTopForAccount:v4 includingLocals:1 client:self outbox:0];
+  v8 = [v7 allMailboxUidsSortedWithSpecialsAtTopForAccount:accountCopy includingLocals:1 client:self outbox:0];
 
   return v8;
 }
 
-- (void)_loadOutbox:(id)a3
+- (void)_loadOutbox:(id)outbox
 {
-  v13 = a3;
+  outboxCopy = outbox;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 daemonInterface];
-  v6 = [v5 accountRepository];
+  daemonInterface = [v4 daemonInterface];
+  accountRepository = [daemonInterface accountRepository];
 
-  v7 = [v13 identifier];
-  v8 = [v6 accountForAccountIdentifier:v7];
+  identifier = [outboxCopy identifier];
+  v8 = [accountRepository accountForAccountIdentifier:identifier];
 
   v9 = +[UIApplication sharedApplication];
-  v10 = [v9 daemonInterface];
-  v11 = [v10 outgoingMessageRepository];
+  daemonInterface2 = [v9 daemonInterface];
+  outgoingMessageRepository = [daemonInterface2 outgoingMessageRepository];
 
-  if ([v11 outboxContainsMessageFromAccount:v8])
+  if ([outgoingMessageRepository outboxContainsMessageFromAccount:v8])
   {
     v12 = +[MailAccount outboxMailboxUid];
     [(MailboxListViewControllerMail *)self shouldReloadMailboxesWithOutbox:v12];
   }
 }
 
-- (void)shouldReloadMailboxesWithOutbox:(id)a3
+- (void)shouldReloadMailboxesWithOutbox:(id)outbox
 {
-  v9 = a3;
+  outboxCopy = outbox;
   if (+[NSThread isMainThread])
   {
     *(&self->super + 8) |= 1u;
     v5 = +[MailChangeManager sharedChangeManager];
-    v6 = [(MailboxListViewControllerBase *)self account];
-    v7 = [v5 allMailboxUidsSortedWithSpecialsAtTopForAccount:v6 includingLocals:1 client:self outbox:v9];
+    account = [(MailboxListViewControllerBase *)self account];
+    v7 = [v5 allMailboxUidsSortedWithSpecialsAtTopForAccount:account includingLocals:1 client:self outbox:outboxCopy];
     [(MailboxListViewControllerBase *)self setSortedMailboxes:v7];
 
     *(&self->super + 8) &= ~1u;
-    v8 = [(MailboxListViewControllerMail *)self tableView];
-    [v8 reloadData];
+    tableView = [(MailboxListViewControllerMail *)self tableView];
+    [tableView reloadData];
   }
 
   else
   {
-    [(MailboxListViewControllerMail *)self performSelectorOnMainThread:a2 withObject:v9 waitUntilDone:0];
+    [(MailboxListViewControllerMail *)self performSelectorOnMainThread:a2 withObject:outboxCopy waitUntilDone:0];
   }
 }
 
 - (id)mailboxes
 {
-  v3 = [(MailboxListViewControllerMail *)self filteredMailboxes];
-  v4 = [v3 getObject];
+  filteredMailboxes = [(MailboxListViewControllerMail *)self filteredMailboxes];
+  getObject = [filteredMailboxes getObject];
 
-  if ([v4 count])
+  if ([getObject count])
   {
-    v5 = v4;
+    sortedMailboxes = getObject;
   }
 
   else
   {
-    v5 = [(MailboxListViewControllerBase *)self sortedMailboxes];
+    sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
   }
 
-  v6 = v5;
+  v6 = sortedMailboxes;
 
   return v6;
 }
 
-- (void)filterMailboxesContainingText:(id)a3
+- (void)filterMailboxesContainingText:(id)text
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v6 = [v5 copy];
+  textCopy = text;
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  v6 = [sortedMailboxes copy];
 
   v7 = [(MailboxListViewControllerMail *)self currentMailboxFilterID]+ 1;
   [(MailboxListViewControllerMail *)self setCurrentMailboxFilterID:v7];
   objc_initWeak(&location, self);
-  v8 = [(MailboxListViewControllerMail *)self mailboxFilterScheduler];
+  mailboxFilterScheduler = [(MailboxListViewControllerMail *)self mailboxFilterScheduler];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000EC0FC;
   v11[3] = &unk_10064FDA8;
   objc_copyWeak(v14, &location);
-  v9 = v4;
+  v9 = textCopy;
   v12 = v9;
   v10 = v6;
   v13 = v10;
   v14[1] = v7;
-  [v8 performBlock:v11];
+  [mailboxFilterScheduler performBlock:v11];
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
 }
 
-- (id)displayPathForMailbox:(id)a3
+- (id)displayPathForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [v4 parent];
-  v6 = [v5 isRootMailbox];
+  mailboxCopy = mailbox;
+  parent = [mailboxCopy parent];
+  isRootMailbox = [parent isRootMailbox];
 
-  if (v6)
+  if (isRootMailbox)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(MailboxListViewControllerMail *)self mailboxDisplayPathCache];
-    v9 = [v4 uniqueId];
+    mailboxDisplayPathCache = [(MailboxListViewControllerMail *)self mailboxDisplayPathCache];
+    uniqueId = [mailboxCopy uniqueId];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000EC61C;
     v11[3] = &unk_10064FDD0;
-    v12 = v4;
-    v13 = self;
-    v7 = [v8 objectForKey:v9 generator:v11];
+    v12 = mailboxCopy;
+    selfCopy = self;
+    v7 = [mailboxDisplayPathCache objectForKey:uniqueId generator:v11];
   }
 
   return v7;

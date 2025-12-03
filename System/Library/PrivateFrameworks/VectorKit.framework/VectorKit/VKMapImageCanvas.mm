@@ -1,18 +1,18 @@
 @interface VKMapImageCanvas
 - (BOOL)_supportsDeferredCamera;
 - (NSArray)overlays;
-- (VKMapImageCanvas)initWithMapEngine:(void *)a3;
+- (VKMapImageCanvas)initWithMapEngine:(void *)engine;
 - (id).cxx_construct;
-- (void)addOverlay:(id)a3;
+- (void)addOverlay:(id)overlay;
 - (void)clearScene;
 - (void)dealloc;
 - (void)initWithMapEngine:;
 - (void)resetCameraController;
-- (void)setForceRasterizationForGlobe:(BOOL)a3;
-- (void)setMapType:(int)a3;
+- (void)setForceRasterizationForGlobe:(BOOL)globe;
+- (void)setMapType:(int)type;
 - (void)tileGroupDidChange;
 - (void)updateOverlays;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
 @end
 
 @implementation VKMapImageCanvas
@@ -26,11 +26,11 @@
   return self;
 }
 
-- (void)setForceRasterizationForGlobe:(BOOL)a3
+- (void)setForceRasterizationForGlobe:(BOOL)globe
 {
-  if (self->_forceRasterizationForGlobe != a3)
+  if (self->_forceRasterizationForGlobe != globe)
   {
-    self->_forceRasterizationForGlobe = a3;
+    self->_forceRasterizationForGlobe = globe;
     md::OverlayContainer::belowOverlays(&v12, self->_overlayContainer.__ptr_);
     v4 = v12;
     v5 = v13;
@@ -82,10 +82,10 @@
   md::MapEngine::clearScene(mapEngine);
 }
 
-- (void)addOverlay:(id)a3
+- (void)addOverlay:(id)overlay
 {
-  v4 = a3;
-  md::OverlayContainer::addOverlay(self->_overlayContainer.__ptr_, v4);
+  overlayCopy = overlay;
+  md::OverlayContainer::addOverlay(self->_overlayContainer.__ptr_, overlayCopy);
   cntrl = self->_overlayContainer.__cntrl_;
   ptr = self->_overlayContainer.__ptr_;
   v7 = cntrl;
@@ -94,14 +94,14 @@
     atomic_fetch_add_explicit(cntrl + 2, 1uLL, memory_order_relaxed);
   }
 
-  [(VKOverlay *)v4 setStandardContainer:&ptr];
+  [(VKOverlay *)overlayCopy setStandardContainer:&ptr];
   if (v7)
   {
     std::__shared_weak_count::__release_weak(v7);
   }
 
-  [(VKOverlay *)v4 setRunLoopController:self->super._runLoopController, ptr];
-  [(VKOverlay *)v4 setForceRasterizationForGlobe:self->_forceRasterizationForGlobe];
+  [(VKOverlay *)overlayCopy setRunLoopController:self->super._runLoopController, ptr];
+  [(VKOverlay *)overlayCopy setForceRasterizationForGlobe:self->_forceRasterizationForGlobe];
   [(VKMapImageCanvas *)self updateOverlays];
 }
 
@@ -122,11 +122,11 @@
   }
 }
 
-- (void)setMapType:(int)a3
+- (void)setMapType:(int)type
 {
-  self->super._mapType = a3;
+  self->super._mapType = type;
   [(VKMapImageCanvas *)self resetCameraController];
-  self->_forceRasterizationForGlobe = (a3 - 3) < 2;
+  self->_forceRasterizationForGlobe = (type - 3) < 2;
 }
 
 - (void)resetCameraController
@@ -277,13 +277,13 @@
   return 0;
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v19 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VKMapImageCanvas;
   [VKImageCanvas updateWithTimestamp:sel_updateWithTimestamp_withContext_ withContext:?];
-  [(VKCameraController *)self->super._cameraController._obj updateWithTimestamp:a4 withContext:a3];
+  [(VKCameraController *)self->super._cameraController._obj updateWithTimestamp:context withContext:timestamp];
   if ([(VKCameraController *)self->super._cameraController._obj shouldUpdateCameraWithVKCamera])
   {
     v7 = self->super._vkCamera._obj;
@@ -379,7 +379,7 @@
   return v6;
 }
 
-- (VKMapImageCanvas)initWithMapEngine:(void *)a3
+- (VKMapImageCanvas)initWithMapEngine:(void *)engine
 {
   v31 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -389,8 +389,8 @@
   v6 = v4;
   if (v4)
   {
-    v4->_mapEngine = a3;
-    v7 = *(a3 + 5213);
+    v4->_mapEngine = engine;
+    v7 = *(engine + 5213);
     p_overlayContainer = &v4->_overlayContainer;
     v10 = *(v7 + 272);
     v9 = *(v7 + 280);
@@ -456,7 +456,7 @@
 
 - (void)initWithMapEngine:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }

@@ -1,11 +1,11 @@
 @interface FMEmptyListButton
 - (NSString)accessibilityLabel;
-- (_TtC6FindMy17FMEmptyListButton)initWithCoder:(id)a3;
+- (_TtC6FindMy17FMEmptyListButton)initWithCoder:(id)coder;
 @end
 
 @implementation FMEmptyListButton
 
-- (_TtC6FindMy17FMEmptyListButton)initWithCoder:(id)a3
+- (_TtC6FindMy17FMEmptyListButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy17FMEmptyListButton_textColor;
   *(&self->super.super.super.super.super.isa + v4) = [objc_opt_self() systemBlueColor];
@@ -17,7 +17,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10028383C();
   v4 = v3;
 

@@ -1,10 +1,10 @@
 @interface DOCAnalyticsManager
-- (void)tagsDidChangeWithNotification:(id)a3;
+- (void)tagsDidChangeWithNotification:(id)notification;
 @end
 
 @implementation DOCAnalyticsManager
 
-- (void)tagsDidChangeWithNotification:(id)a3
+- (void)tagsDidChangeWithNotification:(id)notification
 {
   v3[0] = 0xD00000000000002ELL;
   v3[1] = 0x8000000249BCBFF0;

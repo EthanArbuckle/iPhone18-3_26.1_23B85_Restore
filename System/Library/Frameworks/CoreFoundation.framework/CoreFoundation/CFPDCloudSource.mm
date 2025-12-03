@@ -1,11 +1,11 @@
 @interface CFPDCloudSource
-- (id)copyConfigurationFromPath:(uint64_t)a1;
-- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(uint64_t)a1;
-- (uint64_t)enqueueNewKey:(id *)a1 value:(uint64_t)a2 encoding:(xpc_object_t)xdict inBatch:(int)a4;
+- (id)copyConfigurationFromPath:(uint64_t)path;
+- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(uint64_t)plist;
+- (uint64_t)enqueueNewKey:(id *)key value:(uint64_t)value encoding:(xpc_object_t)xdict inBatch:(int)batch;
 - (void)_writeToDisk:(void *)result;
-- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)a3 replacingWithTombstone:(id *)a4;
+- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)source replacingWithTombstone:(id *)tombstone;
 - (void)registerForChangeNotifications;
-- (void)synchronizeWithCloud:(id)a3 replyHandler:(id)a4;
+- (void)synchronizeWithCloud:(id)cloud replyHandler:(id)handler;
 @end
 
 @implementation CFPDCloudSource
@@ -18,16 +18,16 @@ void __49__CFPDCloudSource_registerForChangeNotifications__block_invoke()
   os_unfair_lock_unlock(&_MergedGlobals_0);
 }
 
-- (uint64_t)enqueueNewKey:(id *)a1 value:(uint64_t)a2 encoding:(xpc_object_t)xdict inBatch:(int)a4
+- (uint64_t)enqueueNewKey:(id *)key value:(uint64_t)value encoding:(xpc_object_t)xdict inBatch:(int)batch
 {
-  v4 = a1;
+  keyCopy = key;
   v23 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!key)
   {
     goto LABEL_20;
   }
 
-  if (a4 == 1)
+  if (batch == 1)
   {
     v19 = 0;
     v20 = &v19;
@@ -37,15 +37,15 @@ void __49__CFPDCloudSource_registerForChangeNotifications__block_invoke()
     v18[1] = 3221225472;
     v18[2] = __56__CFPDCloudSource_enqueueNewKey_value_encoding_inBatch___block_invoke;
     v18[3] = &unk_1E6D81E70;
-    v18[4] = a1;
+    v18[4] = key;
     v18[5] = &v19;
     xpc_dictionary_apply(xdict, v18);
-    LOBYTE(v4) = *(v20 + 24);
+    LOBYTE(keyCopy) = *(v20 + 24);
     _Block_object_dispose(&v19, 8);
     goto LABEL_20;
   }
 
-  v7 = _CFXPCCreateCFObjectFromXPCObject(a2);
+  v7 = _CFXPCCreateCFObjectFromXPCObject(value);
   if (object_getClass(xdict) == MEMORY[0x1E69E9E70])
   {
     length = xpc_data_get_length(xdict);
@@ -72,7 +72,7 @@ void __49__CFPDCloudSource_registerForChangeNotifications__block_invoke()
   {
     v12 = CFGetTypeID(v8);
     TypeID = CFNullGetTypeID();
-    v14 = v4[19];
+    v14 = keyCopy[19];
     if (v12 == TypeID)
     {
       [v14 setValue:0 forKey:v7];
@@ -83,20 +83,20 @@ void __49__CFPDCloudSource_registerForChangeNotifications__block_invoke()
       [v14 setValue:v8 forKey:v7];
     }
 
-    [v4[19] synchronizeForced:0];
-    [v4 updateShmemEntry];
+    [keyCopy[19] synchronizeForced:0];
+    [keyCopy updateShmemEntry];
     v15 = _CFPrefsDaemonLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [CFPDCloudSource enqueueNewKey:a2 value:v4 encoding:v15 inBatch:?];
+      [CFPDCloudSource enqueueNewKey:value value:keyCopy encoding:v15 inBatch:?];
     }
 
-    LOBYTE(v4) = 1;
+    LOBYTE(keyCopy) = 1;
     goto LABEL_17;
   }
 
 LABEL_11:
-  LOBYTE(v4) = 0;
+  LOBYTE(keyCopy) = 0;
   if (v7)
   {
 LABEL_17:
@@ -110,7 +110,7 @@ LABEL_17:
 
 LABEL_20:
   v16 = *MEMORY[0x1E69E9840];
-  return v4 & 1;
+  return keyCopy & 1;
 }
 
 uint64_t __56__CFPDCloudSource_enqueueNewKey_value_encoding_inBatch___block_invoke(uint64_t a1, char *string, void *a3)
@@ -133,10 +133,10 @@ uint64_t __56__CFPDCloudSource_enqueueNewKey_value_encoding_inBatch___block_invo
   return 1;
 }
 
-- (void)synchronizeWithCloud:(id)a3 replyHandler:(id)a4
+- (void)synchronizeWithCloud:(id)cloud replyHandler:(id)handler
 {
   v9[6] = *MEMORY[0x1E69E9840];
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(cloud);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
@@ -148,7 +148,7 @@ uint64_t __56__CFPDCloudSource_enqueueNewKey_value_encoding_inBatch___block_invo
   v9[2] = __53__CFPDCloudSource_synchronizeWithCloud_replyHandler___block_invoke;
   v9[3] = &unk_1E6D81E98;
   v9[4] = reply;
-  v9[5] = a4;
+  v9[5] = handler;
   [(SYDRemotePreferencesSource *)cloudSource synchronizationWithCompletionHandler:v9];
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -162,20 +162,20 @@ void __53__CFPDCloudSource_synchronizeWithCloud_replyHandler___block_invoke(uint
   xpc_release(v3);
 }
 
-- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)a3 replacingWithTombstone:(id *)a4
+- (void)processEndOfMessageIntendingToRemoveSource:(BOOL *)source replacingWithTombstone:(id *)tombstone
 {
   v6 = *MEMORY[0x1E69E9840];
-  *a3 = 0;
+  *source = 0;
   v5.receiver = self;
   v5.super_class = CFPDCloudSource;
   [CFPDSource processEndOfMessageIntendingToRemoveSource:sel_processEndOfMessageIntendingToRemoveSource_replacingWithTombstone_ replacingWithTombstone:?];
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyConfigurationFromPath:(uint64_t)a1
+- (id)copyConfigurationFromPath:(uint64_t)path
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1 && (bzero(buffer, 0x402uLL), CFStringGetFileSystemRepresentation(a2, buffer, 1026)) && (v3 = open(buffer, 256), (v3 & 0x80000000) == 0))
+  if (path && (bzero(buffer, 0x402uLL), CFStringGetFileSystemRepresentation(a2, buffer, 1026)) && (v3 = open(buffer, 256), (v3 & 0x80000000) == 0))
   {
     v4 = v3;
     v5 = [CFPDDataBuffer newBufferFromFile:v3 allowMappingIfSafe:0];
@@ -194,7 +194,7 @@ void __53__CFPDCloudSource_synchronizeWithCloud_replyHandler___block_invoke(uint
 - (void)registerForChangeNotifications
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock(&_MergedGlobals_0);
     v2 = qword_1ED40BDC8;
@@ -207,28 +207,28 @@ void __53__CFPDCloudSource_synchronizeWithCloud_replyHandler___block_invoke(uint
       v2 = qword_1ED40BDC8;
     }
 
-    CFSetAddValue(v2, a1);
+    CFSetAddValue(v2, self);
     os_unfair_lock_unlock(&_MergedGlobals_0);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(uint64_t)a1
+- (id)copyPropertyListWithoutDrainingPendingChangesValidatingPlist:(uint64_t)plist
 {
-  if (!a1)
+  if (!plist)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 152) copyDictionary];
-  if (!v1)
+  copyDictionary = [*(plist + 152) copyDictionary];
+  if (!copyDictionary)
   {
     return 0;
   }
 
-  v2 = v1;
-  v3 = [CFPDDataBuffer newBufferFromPropertyList:v1];
+  v2 = copyDictionary;
+  v3 = [CFPDDataBuffer newBufferFromPropertyList:copyDictionary];
   CFRelease(v2);
   return v3;
 }

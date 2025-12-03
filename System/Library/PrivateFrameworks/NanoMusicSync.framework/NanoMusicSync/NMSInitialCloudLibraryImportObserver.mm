@@ -2,7 +2,7 @@
 - (NMSInitialCloudLibraryImportObserver)init;
 - (void)_handleInitialCloudLibraryImportCompleted;
 - (void)_performInitialImportBlocks;
-- (void)performBlockWhenLibraryIsReady:(id)a3;
+- (void)performBlockWhenLibraryIsReady:(id)ready;
 @end
 
 @implementation NMSInitialCloudLibraryImportObserver
@@ -24,8 +24,8 @@
     v2->_initialImportBlocks = v6;
 
     v8 = objc_alloc(MEMORY[0x277D7FA50]);
-    v9 = [MEMORY[0x277D7FCA0] autoupdatingActiveAccount];
-    v10 = [v8 initWithUserIdentity:v9];
+    autoupdatingActiveAccount = [MEMORY[0x277D7FCA0] autoupdatingActiveAccount];
+    v10 = [v8 initWithUserIdentity:autoupdatingActiveAccount];
     cloudClient = v2->_cloudClient;
     v2->_cloudClient = v10;
   }
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (void)performBlockWhenLibraryIsReady:(id)a3
+- (void)performBlockWhenLibraryIsReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__NMSInitialCloudLibraryImportObserver_performBlockWhenLibraryIsReady___block_invoke;
   v7[3] = &unk_27993DD88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = readyCopy;
+  v6 = readyCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -121,8 +121,8 @@ uint64_t __81__NMSInitialCloudLibraryImportObserver__handleInitialCloudLibraryIm
 {
   v15 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_internalQueue);
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7F8D8] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7F8D8] object:0];
 
   self->_isObserving = 0;
   v10 = 0u;

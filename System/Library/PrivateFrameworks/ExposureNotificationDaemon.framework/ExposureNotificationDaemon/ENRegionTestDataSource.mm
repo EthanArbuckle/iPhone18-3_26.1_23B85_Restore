@@ -1,6 +1,6 @@
 @interface ENRegionTestDataSource
 - (ENRegionMonitorSourceDelegate)delegate;
-- (ENRegionTestDataSource)initWithDelegate:(id)a3;
+- (ENRegionTestDataSource)initWithDelegate:(id)delegate;
 - (NSString)description;
 - (id)currentRegionVisit;
 - (uint64_t)currentRegionVisit;
@@ -12,16 +12,16 @@
 
 @implementation ENRegionTestDataSource
 
-- (ENRegionTestDataSource)initWithDelegate:(id)a3
+- (ENRegionTestDataSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ENRegionTestDataSource;
   v5 = [(ENRegionTestDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ENRegionTestDataSource *)v5 setDelegate:v4];
+    [(ENRegionTestDataSource *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -30,8 +30,8 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA0];
-  v3 = [(ENRegionTestDataSource *)self currentRegionVisit];
-  v4 = [v2 stringWithFormat:@"ENRegionTestDataSource: %@", v3];
+  currentRegionVisit = [(ENRegionTestDataSource *)self currentRegionVisit];
+  v4 = [v2 stringWithFormat:@"ENRegionTestDataSource: %@", currentRegionVisit];
 
   return v4;
 }
@@ -82,22 +82,22 @@
 
 - (void)regionChanged
 {
-  v3 = [(ENRegionTestDataSource *)self currentRegionVisit];
-  if (v3)
+  currentRegionVisit = [(ENRegionTestDataSource *)self currentRegionVisit];
+  if (currentRegionVisit)
   {
-    v7 = v3;
+    v7 = currentRegionVisit;
     v4 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v5 = [v4 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v4 isSensitiveLoggingAllowed];
 
-    if ((v5 & 1) != 0 && gLogCategory_ENRegionTestDataSource <= 30 && (gLogCategory_ENRegionTestDataSource != -1 || _LogCategory_Initialize()))
+    if ((isSensitiveLoggingAllowed & 1) != 0 && gLogCategory_ENRegionTestDataSource <= 30 && (gLogCategory_ENRegionTestDataSource != -1 || _LogCategory_Initialize()))
     {
       [ENRegionTestDataSource regionChanged];
     }
 
-    v6 = [(ENRegionTestDataSource *)self delegate];
-    [v6 regionDataSource:self updatedWithVisit:v7];
+    delegate = [(ENRegionTestDataSource *)self delegate];
+    [delegate regionDataSource:self updatedWithVisit:v7];
 
-    v3 = v7;
+    currentRegionVisit = v7;
   }
 }
 

@@ -1,8 +1,8 @@
 @interface _ACTUserActionStream
-+ (BOOL)isPathableWord:(id)a3;
-+ (_NSRange)segmentAnchorRangeForCursor:(id)a3 withDocumentBefore:(id)a4;
-+ (id)userActionStreamWithParameters:(id)a3 delegate:(id)a4;
-- (BOOL)advancePositionByAcceptingCandidate:(id)a3;
++ (BOOL)isPathableWord:(id)word;
++ (_NSRange)segmentAnchorRangeForCursor:(id)cursor withDocumentBefore:(id)before;
++ (id)userActionStreamWithParameters:(id)parameters delegate:(id)delegate;
+- (BOOL)advancePositionByAcceptingCandidate:(id)candidate;
 - (BOOL)advanceSegmentCursor;
 - (BOOL)canBeginBackspacing;
 - (BOOL)canContinueBackspacing;
@@ -23,8 +23,8 @@
 - (BOOL)shouldRejectBadAutocorrection;
 - (BOOL)shouldTypeInternalString;
 - (NSString)intendedText;
-- (_ACTUserActionStream)initWithParameters:(id)a3 delegate:(id)a4;
-- (_NSRange)documentEditRangeWithSegmentRangePtr:(_NSRange *)a3;
+- (_ACTUserActionStream)initWithParameters:(id)parameters delegate:(id)delegate;
+- (_NSRange)documentEditRangeWithSegmentRangePtr:(_NSRange *)ptr;
 - (double)averageActionInterval;
 - (double)randomActionInterval;
 - (float)probabilityOfDoubledKey;
@@ -32,15 +32,15 @@
 - (float)probabilityOfSkippedKey;
 - (float)probabilityOfSubstituteKey;
 - (float)probabilityOfTransposition;
-- (id)anyKeyForString:(id)a3 keyplane:(id)a4 wantSecondaryString:(BOOL)a5 substituteUpperCaseForLowerCase:(BOOL)a6;
-- (id)candidateToSelectFromCandidates:(id)a3;
-- (id)externalStringToInternal:(id)a3;
+- (id)anyKeyForString:(id)string keyplane:(id)keyplane wantSecondaryString:(BOOL)secondaryString substituteUpperCaseForLowerCase:(BOOL)case;
+- (id)candidateToSelectFromCandidates:(id)candidates;
+- (id)externalStringToInternal:(id)internal;
 - (id)findPartialCandidate;
-- (id)matchTransliterationCandidateToSegment:(id)a3 withCursorAt:(int)a4;
+- (id)matchTransliterationCandidateToSegment:(id)segment withCursorAt:(int)at;
 - (id)nextUserAction;
-- (id)transliterationCandidate:(id)a3;
+- (id)transliterationCandidate:(id)candidate;
 - (id)tryAcceptCandidate;
-- (id)tryAcceptingCandidate:(id)a3;
+- (id)tryAcceptingCandidate:(id)candidate;
 - (id)tryBackspacing;
 - (id)tryChangeKeyplane;
 - (id)tryContinuousPath;
@@ -53,36 +53,36 @@
 - (id)trySkipKeyTap;
 - (id)trySubstituteKeyTap;
 - (id)tryTransposedKeyTaps;
-- (id)tryTypingWillSuppressError:(BOOL *)a3;
-- (void)advancePositionByString:(id)a3;
-- (void)configureWithParameters:(id)a3;
-- (void)resetForIntendedSegments:(id)a3 expectedSegments:(id)a4;
-- (void)resetForIntendedText:(id)a3;
-- (void)rewindPositionByString:(id)a3;
-- (void)setRandomNumberSeed:(unsigned int)a3;
+- (id)tryTypingWillSuppressError:(BOOL *)error;
+- (void)advancePositionByString:(id)string;
+- (void)configureWithParameters:(id)parameters;
+- (void)resetForIntendedSegments:(id)segments expectedSegments:(id)expectedSegments;
+- (void)resetForIntendedText:(id)text;
+- (void)rewindPositionByString:(id)string;
+- (void)setRandomNumberSeed:(unsigned int)seed;
 @end
 
 @implementation _ACTUserActionStream
 
 - (id)trySelectPopupVariant
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentComposedCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentComposedCharacter = [cursor currentComposedCharacter];
 
-  if (v4 || (-[_ACTUserActionStream cursor](self, "cursor"), v5 = objc_claimAutoreleasedReturnValue(), [v5 currentLongCharacter], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
+  if (currentComposedCharacter || (-[_ACTUserActionStream cursor](self, "cursor"), v5 = objc_claimAutoreleasedReturnValue(), [v5 currentLongCharacter], currentComposedCharacter = objc_claimAutoreleasedReturnValue(), v5, currentComposedCharacter))
   {
     [(_ACTUserActionStream *)self lastTimestamp];
     v7 = v6;
     [(_ACTUserActionStream *)self randomActionInterval];
     v9 = v7 + v8;
     [(_ACTUserActionStream *)self setLastTimestamp:v9];
-    v10 = [[ACTSelectPopupVariant alloc] initWithIntendedKey:v4 timestamp:v9];
+    v10 = [[ACTSelectPopupVariant alloc] initWithIntendedKey:currentComposedCharacter timestamp:v9];
     if (v10)
     {
-      v11 = [(_ACTUserActionStream *)self cursor];
-      -[ACTUserAction setInputSegment:](v10, "setInputSegment:", [v11 segmentCursor]);
+      cursor2 = [(_ACTUserActionStream *)self cursor];
+      -[ACTUserAction setInputSegment:](v10, "setInputSegment:", [cursor2 segmentCursor]);
 
-      [(_ACTUserActionStream *)self advancePositionByString:v4];
+      [(_ACTUserActionStream *)self advancePositionByString:currentComposedCharacter];
     }
   }
 
@@ -96,11 +96,11 @@
 
 - (id)tryChangeKeyplane
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 shiftKeyToAccessKeyplaneCloserToKeyString:v4];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  v6 = [delegate shiftKeyToAccessKeyplaneCloserToKeyString:currentLongCharacter];
 
   if (v6)
   {
@@ -109,20 +109,20 @@
 
   else
   {
-    v7 = [(_ACTUserActionStream *)self delegate];
-    v6 = [v7 keyToAccessKeyplaneCloserToKeyString:v4];
+    delegate2 = [(_ACTUserActionStream *)self delegate];
+    v6 = [delegate2 keyToAccessKeyplaneCloserToKeyString:currentLongCharacter];
 
     if (!v6)
     {
-      v28 = [(_ACTUserActionStream *)self delegate];
-      v29 = [v28 keyboardController];
-      v30 = [v29 layoutUtils];
-      v31 = [v30 baseKeyForString:v4];
+      delegate3 = [(_ACTUserActionStream *)self delegate];
+      keyboardController = [delegate3 keyboardController];
+      layoutUtils = [keyboardController layoutUtils];
+      v31 = [layoutUtils baseKeyForString:currentLongCharacter];
 
       if (v31)
       {
-        v32 = [(_ACTUserActionStream *)self delegate];
-        v6 = [v32 keyToAccessKeyplaneCloserToKeyString:v31];
+        delegate4 = [(_ACTUserActionStream *)self delegate];
+        v6 = [delegate4 keyToAccessKeyplaneCloserToKeyString:v31];
 
         if (v6)
         {
@@ -145,20 +145,20 @@ LABEL_4:
   v9 = v8;
   [(_ACTUserActionStream *)self randomActionInterval];
   v11 = v9 + v10;
-  v12 = [(_ACTUserActionStream *)self errorGenerator];
-  v13 = [v6 representedString];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  representedString = [v6 representedString];
   [v6 paddedFrame];
-  v14 = [v12 errorForKeyString:v13 rect:?];
+  v14 = [errorGenerator errorForKeyString:representedString rect:?];
 
-  v15 = [(_ACTUserActionStream *)self delegate];
-  [v15 pointForAttemptedTapOnKey:v6 withError:v14];
+  delegate5 = [(_ACTUserActionStream *)self delegate];
+  [delegate5 pointForAttemptedTapOnKey:v6 withError:v14];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(_ACTUserActionStream *)self delegate];
-  v21 = [(_ACTUserActionStream *)self delegate];
-  v22 = [v21 keyplane];
-  v23 = [v20 keyContainingPoint:v22 inKeyplane:{v17, v19}];
+  delegate6 = [(_ACTUserActionStream *)self delegate];
+  delegate7 = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate7 keyplane];
+  v23 = [delegate6 keyContainingPoint:keyplane inKeyplane:{v17, v19}];
 
   if (v23)
   {
@@ -173,8 +173,8 @@ LABEL_4:
   v25 = v24;
   if (v24)
   {
-    v26 = [(_ACTUserActionStream *)self cursor];
-    -[ACTUserAction setInputSegment:](v25, "setInputSegment:", [v26 segmentCursor]);
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    -[ACTUserAction setInputSegment:](v25, "setInputSegment:", [cursor2 segmentCursor]);
 
     [(_ACTUserActionStream *)self setLastTimestamp:v11];
   }
@@ -187,30 +187,30 @@ LABEL_10:
 - (id)tryContinuousPath
 {
   v73 = *MEMORY[0x277D85DE8];
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentInternalSegment];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentInternalSegment = [cursor currentInternalSegment];
 
-  v5 = [(_ACTUserActionStream *)self userModel];
-  v6 = [v5 expectsAppendedSpaceToContinuousPath];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  expectsAppendedSpaceToContinuousPath = [userModel expectsAppendedSpaceToContinuousPath];
 
-  if ((v6 & 1) != 0 || ![v4 isEqualToString:@" "] || (-[_ACTUserActionStream cursor](self, "cursor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "positionInCurrentInternalSegment"), v7, v8))
+  if ((expectsAppendedSpaceToContinuousPath & 1) != 0 || ![currentInternalSegment isEqualToString:@" "] || (-[_ACTUserActionStream cursor](self, "cursor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "positionInCurrentInternalSegment"), v7, v8))
   {
     v9 = 0;
   }
 
   else
   {
-    v29 = [(_ACTUserActionStream *)self cursor];
-    [v29 advanceSegmentCursor];
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    [cursor2 advanceSegmentCursor];
 
-    v30 = [(_ACTUserActionStream *)self cursor];
-    v31 = [v30 currentInternalSegment];
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    currentInternalSegment2 = [cursor3 currentInternalSegment];
 
     v9 = 1;
-    v4 = v31;
+    currentInternalSegment = currentInternalSegment2;
   }
 
-  if ([objc_opt_class() isPathableWord:v4])
+  if ([objc_opt_class() isPathableWord:currentInternalSegment])
   {
     v70[0] = 0;
     v70[1] = v70;
@@ -226,20 +226,20 @@ LABEL_10:
     v63 = &v62;
     v64 = 0x2020000000;
     v65 = 0;
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(_ACTUserActionStream *)self cursor];
+    array = [MEMORY[0x277CBEB18] array];
+    cursor4 = [(_ACTUserActionStream *)self cursor];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __41___ACTUserActionStream_tryContinuousPath__block_invoke;
     v55[3] = &unk_279DA0E70;
     v56 = @"'’׳״-";
-    v57 = self;
-    v12 = v10;
+    selfCopy = self;
+    v12 = array;
     v58 = v12;
     v59 = v70;
     v60 = &v66;
     v61 = &v62;
-    [v11 enumerateRemainingLongCharactersForCurrentSegment:v55];
+    [cursor4 enumerateRemainingLongCharactersForCurrentSegment:v55];
 
     if ((v63[3] & 1) != 0 || (v67[3] & 1) == 0)
     {
@@ -252,23 +252,23 @@ LABEL_10:
       v14 = v13;
       [(_ACTUserActionStream *)self randomActionInterval];
       v16 = v15;
-      v17 = [(_ACTUserActionStream *)self delegate];
-      v50 = [v17 keyboardController];
+      delegate = [(_ACTUserActionStream *)self delegate];
+      keyboardController = [delegate keyboardController];
 
-      v18 = [v50 layoutUtils];
-      v19 = [(_ACTUserActionStream *)self delegate];
-      v20 = [v19 keyplane];
-      v21 = [v18 createTTKPlane:v20];
+      layoutUtils = [keyboardController layoutUtils];
+      delegate2 = [(_ACTUserActionStream *)self delegate];
+      keyplane = [delegate2 keyplane];
+      v21 = [layoutUtils createTTKPlane:keyplane];
 
-      v22 = [(_ACTUserActionStream *)self userPathManager];
-      if (v22 && (-[_ACTUserActionStream userPathManager](self, "userPathManager"), v23 = objc_claimAutoreleasedReturnValue(), -[_ACTUserActionStream delegate](self, "delegate"), v24 = objc_claimAutoreleasedReturnValue(), [v24 keyboardController], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "lookup:keyboardController:", v4, v25), v26 = objc_claimAutoreleasedReturnValue(), v25, v24, v23, v22, v26))
+      userPathManager = [(_ACTUserActionStream *)self userPathManager];
+      if (userPathManager && (-[_ACTUserActionStream userPathManager](self, "userPathManager"), v23 = objc_claimAutoreleasedReturnValue(), -[_ACTUserActionStream delegate](self, "delegate"), v24 = objc_claimAutoreleasedReturnValue(), [v24 keyboardController], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "lookup:keyboardController:", currentInternalSegment, v25), v26 = objc_claimAutoreleasedReturnValue(), v25, v24, v23, userPathManager, v26))
       {
         v27 = 1;
       }
 
       else
       {
-        v32 = [MEMORY[0x277CCAB68] string];
+        string = [MEMORY[0x277CCAB68] string];
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
@@ -287,8 +287,8 @@ LABEL_10:
                 objc_enumerationMutation(v33);
               }
 
-              v37 = [*(*(&v51 + 1) + 8 * i) representedString];
-              [v32 appendString:v37];
+              representedString = [*(*(&v51 + 1) + 8 * i) representedString];
+              [string appendString:representedString];
             }
 
             v34 = [v33 countByEnumeratingWithState:&v51 objects:v72 count:16];
@@ -297,32 +297,32 @@ LABEL_10:
           while (v34);
         }
 
-        v38 = [(_ACTUserActionStream *)self pathGenerator];
-        v26 = [v38 generatePathFromString:v32 layout:v21];
+        pathGenerator = [(_ACTUserActionStream *)self pathGenerator];
+        v26 = [pathGenerator generatePathFromString:string layout:v21];
 
         v27 = 0;
       }
 
-      v39 = [[ACTPathWord alloc] initWithPath:v26 intendedString:v4 keyplane:v21 fromUserData:v27];
-      v40 = [(_ACTUserActionStream *)self cursor];
-      -[ACTUserAction setInputSegment:](v39, "setInputSegment:", [v40 segmentCursor]);
+      v39 = [[ACTPathWord alloc] initWithPath:v26 intendedString:currentInternalSegment keyplane:v21 fromUserData:v27];
+      cursor5 = [(_ACTUserActionStream *)self cursor];
+      -[ACTUserAction setInputSegment:](v39, "setInputSegment:", [cursor5 segmentCursor]);
 
       [(_ACTUserActionStream *)self setLastTimestamp:v14 + v16];
       [(_ACTUserActionStream *)self setLastActionUseSecondaryString:0];
-      v41 = [(_ACTUserActionStream *)self cursor];
-      v42 = [v41 currentInternalSegment];
-      v43 = [(_ACTUserActionStream *)self cursor];
-      v44 = [v42 substringFromIndex:{objc_msgSend(v43, "positionInCurrentInternalSegment")}];
+      cursor6 = [(_ACTUserActionStream *)self cursor];
+      currentInternalSegment3 = [cursor6 currentInternalSegment];
+      cursor7 = [(_ACTUserActionStream *)self cursor];
+      v44 = [currentInternalSegment3 substringFromIndex:{objc_msgSend(cursor7, "positionInCurrentInternalSegment")}];
 
       [(_ACTUserActionStream *)self advancePositionByString:v44];
-      v45 = [(_ACTUserActionStream *)self userModel];
-      LODWORD(v41) = [v45 expectsAppendedSpaceToContinuousPath];
+      userModel2 = [(_ACTUserActionStream *)self userModel];
+      LODWORD(cursor6) = [userModel2 expectsAppendedSpaceToContinuousPath];
 
-      if (v41)
+      if (cursor6)
       {
-        v46 = [(_ACTUserActionStream *)self cursor];
-        v47 = [v46 currentInternalSegment];
-        v48 = [v47 isEqualToString:@" "];
+        cursor8 = [(_ACTUserActionStream *)self cursor];
+        currentInternalSegment4 = [cursor8 currentInternalSegment];
+        v48 = [currentInternalSegment4 isEqualToString:@" "];
 
         if (v48)
         {
@@ -353,59 +353,59 @@ LABEL_10:
 
 - (id)tryKeyTap
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyplane];
-  v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v6 wantSecondaryString:[(_ACTUserActionStream *)self lastActionUseSecondaryString] substituteUpperCaseForLowerCase:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate keyplane];
+  v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane wantSecondaryString:[(_ACTUserActionStream *)self lastActionUseSecondaryString] substituteUpperCaseForLowerCase:0];
 
-  v8 = [(_ACTUserActionStream *)self delegate];
-  v9 = [v8 keyboardController];
-  v10 = [v9 keyboard];
-  v11 = [v10 name];
-  v12 = [v11 containsString:@"-With-"];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  keyboardController = [delegate2 keyboardController];
+  keyboard = [keyboardController keyboard];
+  name = [keyboard name];
+  v12 = [name containsString:@"-With-"];
 
   if (!v7 && v12)
   {
-    v13 = [(_ACTUserActionStream *)self delegate];
-    v14 = [v13 keyplane];
-    v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v14 wantSecondaryString:1 substituteUpperCaseForLowerCase:0];
+    delegate3 = [(_ACTUserActionStream *)self delegate];
+    keyplane2 = [delegate3 keyplane];
+    v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane2 wantSecondaryString:1 substituteUpperCaseForLowerCase:0];
   }
 
   if (!v7)
   {
-    if (-[_ACTUserActionStream isRetyping](self, "isRetyping") || !_isLetterKey(v4) || (-[_ACTUserActionStream cursor](self, "cursor"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 atBeginningOfText], v21, (v22 & 1) != 0))
+    if (-[_ACTUserActionStream isRetyping](self, "isRetyping") || !_isLetterKey(currentLongCharacter) || (-[_ACTUserActionStream cursor](self, "cursor"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 atBeginningOfText], v21, (v22 & 1) != 0))
     {
       v7 = 0;
       v15 = 0;
       goto LABEL_18;
     }
 
-    v37 = [(_ACTUserActionStream *)self delegate];
-    v38 = [v37 locale];
-    v39 = [v4 lowercaseStringWithLocale:v38];
+    delegate4 = [(_ACTUserActionStream *)self delegate];
+    locale = [delegate4 locale];
+    v39 = [currentLongCharacter lowercaseStringWithLocale:locale];
 
-    v40 = [v39 isEqualToString:v4];
-    v41 = [(_ACTUserActionStream *)self delegate];
-    v42 = [v41 keyplane];
-    v43 = [v42 isShiftKeyplane];
+    v40 = [v39 isEqualToString:currentLongCharacter];
+    delegate5 = [(_ACTUserActionStream *)self delegate];
+    keyplane3 = [delegate5 keyplane];
+    isShiftKeyplane = [keyplane3 isShiftKeyplane];
 
     v7 = 0;
-    if (v40 && v43)
+    if (v40 && isShiftKeyplane)
     {
-      v44 = [(_ACTUserActionStream *)self delegate];
-      v45 = [v44 locale];
-      v46 = [v4 capitalizedStringWithLocale:v45];
+      delegate6 = [(_ACTUserActionStream *)self delegate];
+      locale2 = [delegate6 locale];
+      v46 = [currentLongCharacter capitalizedStringWithLocale:locale2];
 
-      v47 = [(_ACTUserActionStream *)self delegate];
-      v48 = [v47 keyplane];
-      v7 = [(_ACTUserActionStream *)self anyKeyForString:v46 keyplane:v48 wantSecondaryString:[(_ACTUserActionStream *)self lastActionUseSecondaryString] substituteUpperCaseForLowerCase:0];
+      delegate7 = [(_ACTUserActionStream *)self delegate];
+      keyplane4 = [delegate7 keyplane];
+      v7 = [(_ACTUserActionStream *)self anyKeyForString:v46 keyplane:keyplane4 wantSecondaryString:[(_ACTUserActionStream *)self lastActionUseSecondaryString] substituteUpperCaseForLowerCase:0];
     }
   }
 
   v15 = 0;
-  if (v7 && v4)
+  if (v7 && currentLongCharacter)
   {
     [(_ACTUserActionStream *)self lastTimestamp];
     v17 = v16;
@@ -418,22 +418,22 @@ LABEL_10:
 
     else
     {
-      v23 = [(_ACTUserActionStream *)self errorGenerator];
-      v24 = [v7 representedString];
+      errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+      representedString = [v7 representedString];
       [v7 paddedFrame];
-      v20 = [v23 errorForKeyString:v24 rect:?];
+      v20 = [errorGenerator errorForKeyString:representedString rect:?];
     }
 
     v25 = v17 + v19;
-    v26 = [(_ACTUserActionStream *)self delegate];
-    [v26 pointForAttemptedTapOnKey:v7 withError:v20];
+    delegate8 = [(_ACTUserActionStream *)self delegate];
+    [delegate8 pointForAttemptedTapOnKey:v7 withError:v20];
     v28 = v27;
     v30 = v29;
 
-    v31 = [(_ACTUserActionStream *)self delegate];
-    v32 = [(_ACTUserActionStream *)self delegate];
-    v33 = [v32 keyplane];
-    v34 = [v31 keyContainingPoint:v33 inKeyplane:{v28, v30}];
+    delegate9 = [(_ACTUserActionStream *)self delegate];
+    delegate10 = [(_ACTUserActionStream *)self delegate];
+    keyplane5 = [delegate10 keyplane];
+    v34 = [delegate9 keyContainingPoint:keyplane5 inKeyplane:{v28, v30}];
 
     if (v34)
     {
@@ -456,10 +456,10 @@ LABEL_17:
       }
     }
 
-    v35 = [(_ACTUserActionStream *)self cursor];
-    -[ACTUserAction setInputSegment:](v15, "setInputSegment:", [v35 segmentCursor]);
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    -[ACTUserAction setInputSegment:](v15, "setInputSegment:", [cursor2 segmentCursor]);
 
-    [(_ACTUserActionStream *)self advancePositionByString:v4];
+    [(_ACTUserActionStream *)self advancePositionByString:currentLongCharacter];
     [(_ACTUserActionStream *)self setLastTimestamp:v25];
     [(_ACTUserActionStream *)self setLastActionUseSecondaryString:0];
     goto LABEL_17;
@@ -472,33 +472,33 @@ LABEL_18:
 
 - (id)tryDoubleKeyTap
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyplane];
-  v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v6 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate keyplane];
+  v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
 
   v8 = 0;
-  if (v7 && v4)
+  if (v7 && currentLongCharacter)
   {
     [(_ACTUserActionStream *)self lastTimestamp];
     v10 = v9;
     [(_ACTUserActionStream *)self randomActionInterval];
     v12 = v10 + v11;
-    v13 = [(_ACTUserActionStream *)self errorGenerator];
+    errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
     [v7 paddedFrame];
-    v14 = [v13 errorForKeyString:v4 rect:?];
+    v14 = [errorGenerator errorForKeyString:currentLongCharacter rect:?];
 
-    v15 = [(_ACTUserActionStream *)self delegate];
-    [v15 pointForAttemptedTapOnKey:v7 withError:v14];
+    delegate2 = [(_ACTUserActionStream *)self delegate];
+    [delegate2 pointForAttemptedTapOnKey:v7 withError:v14];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(_ACTUserActionStream *)self delegate];
-    v21 = [(_ACTUserActionStream *)self delegate];
-    v22 = [v21 keyplane];
-    v23 = [v20 keyContainingPoint:v22 inKeyplane:{v17, v19}];
+    delegate3 = [(_ACTUserActionStream *)self delegate];
+    delegate4 = [(_ACTUserActionStream *)self delegate];
+    keyplane2 = [delegate4 keyplane];
+    v23 = [delegate3 keyContainingPoint:keyplane2 inKeyplane:{v17, v19}];
 
     v43 = v14;
     if (v23)
@@ -513,19 +513,19 @@ LABEL_18:
 
     [(_ACTUserActionStream *)self randomActionInterval];
     v26 = v25;
-    v27 = [(_ACTUserActionStream *)self errorGenerator];
+    errorGenerator2 = [(_ACTUserActionStream *)self errorGenerator];
     [v7 paddedFrame];
-    v28 = [v27 errorForKeyString:v4 rect:?];
+    v28 = [errorGenerator2 errorForKeyString:currentLongCharacter rect:?];
 
-    v29 = [(_ACTUserActionStream *)self delegate];
-    [v29 pointForAttemptedTapOnKey:v7 withError:v28];
+    delegate5 = [(_ACTUserActionStream *)self delegate];
+    [delegate5 pointForAttemptedTapOnKey:v7 withError:v28];
     v31 = v30;
     v33 = v32;
 
-    v34 = [(_ACTUserActionStream *)self delegate];
-    v35 = [(_ACTUserActionStream *)self delegate];
-    v36 = [v35 keyplane];
-    v37 = [v34 keyContainingPoint:v36 inKeyplane:{v31, v33}];
+    delegate6 = [(_ACTUserActionStream *)self delegate];
+    delegate7 = [(_ACTUserActionStream *)self delegate];
+    keyplane3 = [delegate7 keyplane];
+    v37 = [delegate6 keyContainingPoint:keyplane3 inKeyplane:{v31, v33}];
 
     if (v37)
     {
@@ -540,10 +540,10 @@ LABEL_18:
           v8 = [[ACTDoubleKeyTap alloc] initWithFirstTap:v24 secondTap:v39];
           if (v8)
           {
-            v41 = [(_ACTUserActionStream *)self cursor];
-            -[ACTUserAction setInputSegment:](v8, "setInputSegment:", [v41 segmentCursor]);
+            cursor2 = [(_ACTUserActionStream *)self cursor];
+            -[ACTUserAction setInputSegment:](v8, "setInputSegment:", [cursor2 segmentCursor]);
 
-            [(_ACTUserActionStream *)self advancePositionByString:v4];
+            [(_ACTUserActionStream *)self advancePositionByString:currentLongCharacter];
             [(_ACTUserActionStream *)self setLastTimestamp:v38];
           }
         }
@@ -566,51 +566,51 @@ LABEL_18:
   v4 = v3;
   [(_ACTUserActionStream *)self randomActionInterval];
   v6 = v4 + v5;
-  v7 = [(_ACTUserActionStream *)self delegate];
-  v8 = [v7 keyboard];
-  [v8 frame];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyboard = [delegate keyboard];
+  [keyboard frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(_ACTUserActionStream *)self errorGenerator];
-  [v17 uniformRandomPointInRect:{v10, v12, v14, v16}];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator uniformRandomPointInRect:{v10, v12, v14, v16}];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(_ACTUserActionStream *)self delegate];
-  v23 = [(_ACTUserActionStream *)self delegate];
-  v24 = [v23 keyplane];
-  v25 = [v22 keyContainingPoint:v24 inKeyplane:{v19, v21}];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  delegate3 = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate3 keyplane];
+  v25 = [delegate2 keyContainingPoint:keyplane inKeyplane:{v19, v21}];
 
   v26 = [[ACTExtraKeyTap alloc] initWithTouchedKey:v25 location:v19 timestamp:v21, v6];
   if (v26)
   {
-    v27 = [(_ACTUserActionStream *)self cursor];
-    if (![v27 positionInCurrentInternalSegment])
+    cursor = [(_ACTUserActionStream *)self cursor];
+    if (![cursor positionInCurrentInternalSegment])
     {
-      v31 = [(_ACTUserActionStream *)self cursor];
-      v32 = [v31 currentExternalSegment];
-      if (v32)
+      cursor2 = [(_ACTUserActionStream *)self cursor];
+      currentExternalSegment = [cursor2 currentExternalSegment];
+      if (currentExternalSegment)
       {
-        v33 = v32;
-        v34 = [(_ACTUserActionStream *)self cursor];
-        v35 = [v34 currentExternalSegment];
-        v36 = [v35 isEqualToString:@" "];
+        v33 = currentExternalSegment;
+        cursor3 = [(_ACTUserActionStream *)self cursor];
+        currentExternalSegment2 = [cursor3 currentExternalSegment];
+        v36 = [currentExternalSegment2 isEqualToString:@" "];
 
         if (v36)
         {
-          v28 = [(_ACTUserActionStream *)self cursor];
-          v29 = [v28 segmentCursor] - 1;
+          cursor4 = [(_ACTUserActionStream *)self cursor];
+          segmentCursor = [cursor4 segmentCursor] - 1;
           goto LABEL_5;
         }
 
 LABEL_4:
-        v28 = [(_ACTUserActionStream *)self cursor];
-        v29 = [v28 segmentCursor];
+        cursor4 = [(_ACTUserActionStream *)self cursor];
+        segmentCursor = [cursor4 segmentCursor];
 LABEL_5:
-        [(ACTUserAction *)v26 setInputSegment:v29];
+        [(ACTUserAction *)v26 setInputSegment:segmentCursor];
 
         [(_ACTUserActionStream *)self setLastTimestamp:v6];
         goto LABEL_6;
@@ -627,93 +627,93 @@ LABEL_6:
 
 - (id)trySubstituteKeyTap
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyplane];
-  v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v6 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate keyplane];
+  v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
 
   [(_ACTUserActionStream *)self lastTimestamp];
   v9 = v8;
   [(_ACTUserActionStream *)self randomActionInterval];
   v11 = v10;
-  v12 = [(_ACTUserActionStream *)self delegate];
-  v13 = [v12 keyboard];
-  [v13 frame];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  keyboard = [delegate2 keyboard];
+  [keyboard frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(_ACTUserActionStream *)self errorGenerator];
-  [v22 uniformRandomPointInRect:{v15, v17, v19, v21}];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator uniformRandomPointInRect:{v15, v17, v19, v21}];
   v24 = v23;
   v26 = v25;
 
-  v27 = [(_ACTUserActionStream *)self delegate];
-  v28 = [(_ACTUserActionStream *)self delegate];
-  v29 = [v28 keyplane];
-  v30 = [v27 keyContainingPoint:v29 inKeyplane:{v24, v26}];
+  delegate3 = [(_ACTUserActionStream *)self delegate];
+  delegate4 = [(_ACTUserActionStream *)self delegate];
+  keyplane2 = [delegate4 keyplane];
+  v30 = [delegate3 keyContainingPoint:keyplane2 inKeyplane:{v24, v26}];
 
-  v31 = [(_ACTUserActionStream *)self userModel];
-  if (![v31 prefersTransliteration])
+  userModel = [(_ACTUserActionStream *)self userModel];
+  if (![userModel prefersTransliteration])
   {
     goto LABEL_6;
   }
 
-  v32 = [v30 representedString];
-  if (([v32 isEqualToString:@" "] & 1) == 0)
+  representedString = [v30 representedString];
+  if (([representedString isEqualToString:@" "] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v33 = [(_ACTUserActionStream *)self userModel];
-  v34 = [v33 spacesBetweenTransliterations];
+  userModel2 = [(_ACTUserActionStream *)self userModel];
+  spacesBetweenTransliterations = [userModel2 spacesBetweenTransliterations];
 
-  if (v34)
+  if (spacesBetweenTransliterations)
   {
-    v35 = [(_ACTUserActionStream *)self tryAcceptCandidate];
+    tryAcceptCandidate = [(_ACTUserActionStream *)self tryAcceptCandidate];
     goto LABEL_9;
   }
 
 LABEL_7:
   v36 = v9 + v11;
-  v35 = [[ACTSubstituteKeyTap alloc] initWithIntendedKey:v7 touchedKey:v30 error:0 location:v24 timestamp:v26, v36];
-  if (v35)
+  tryAcceptCandidate = [[ACTSubstituteKeyTap alloc] initWithIntendedKey:v7 touchedKey:v30 error:0 location:v24 timestamp:v26, v36];
+  if (tryAcceptCandidate)
   {
-    v37 = [(_ACTUserActionStream *)self cursor];
-    -[ACTUserAction setInputSegment:](v35, "setInputSegment:", [v37 segmentCursor]);
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    -[ACTUserAction setInputSegment:](tryAcceptCandidate, "setInputSegment:", [cursor2 segmentCursor]);
 
-    [(_ACTUserActionStream *)self advancePositionByString:v4];
+    [(_ACTUserActionStream *)self advancePositionByString:currentLongCharacter];
     [(_ACTUserActionStream *)self setLastTimestamp:v36];
   }
 
 LABEL_9:
 
-  return v35;
+  return tryAcceptCandidate;
 }
 
 - (id)trySkipKeyTap
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyplane];
-  v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v6 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate keyplane];
+  v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
 
   [(_ACTUserActionStream *)self lastTimestamp];
   v9 = v8;
   v10 = [[ACTSkipKeyTap alloc] initWithIntendedKey:v7 timestamp:v8];
   if (v10)
   {
-    v11 = [(_ACTUserActionStream *)self cursor];
-    -[ACTUserAction setInputSegment:](v10, "setInputSegment:", [v11 segmentCursor]);
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    -[ACTUserAction setInputSegment:](v10, "setInputSegment:", [cursor2 segmentCursor]);
 
-    [(_ACTUserActionStream *)self advancePositionByString:v4];
+    [(_ACTUserActionStream *)self advancePositionByString:currentLongCharacter];
     [(_ACTUserActionStream *)self setLastTimestamp:v9];
   }
 
@@ -722,40 +722,40 @@ LABEL_9:
 
 - (id)tryTransposedKeyTaps
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyplane];
-  v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v6 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate keyplane];
+  v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
 
-  v8 = [(_ACTUserActionStream *)self cursor];
-  v9 = [v8 nextLongCharacter];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  nextLongCharacter = [cursor2 nextLongCharacter];
 
-  v10 = [(_ACTUserActionStream *)self delegate];
-  v11 = [v10 keyplane];
-  v12 = [(_ACTUserActionStream *)self anyKeyForString:v9 keyplane:v11 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  keyplane2 = [delegate2 keyplane];
+  v12 = [(_ACTUserActionStream *)self anyKeyForString:nextLongCharacter keyplane:keyplane2 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
 
   v13 = 0;
-  if (v4 && v7 && v9 && v12)
+  if (currentLongCharacter && v7 && nextLongCharacter && v12)
   {
     [(_ACTUserActionStream *)self lastTimestamp];
     v15 = v14;
     [(_ACTUserActionStream *)self randomActionInterval];
     v17 = v15 + v16;
-    v18 = [(_ACTUserActionStream *)self errorGenerator];
+    errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
     [v12 paddedFrame];
-    v19 = [v18 errorForKeyString:v9 rect:?];
+    v19 = [errorGenerator errorForKeyString:nextLongCharacter rect:?];
 
-    v20 = [(_ACTUserActionStream *)self delegate];
-    [v20 pointForAttemptedTapOnKey:v12 withError:v19];
+    delegate3 = [(_ACTUserActionStream *)self delegate];
+    [delegate3 pointForAttemptedTapOnKey:v12 withError:v19];
     v22 = v21;
     v24 = v23;
 
-    v25 = [(_ACTUserActionStream *)self delegate];
-    v26 = [(_ACTUserActionStream *)self delegate];
-    v27 = [v26 keyplane];
-    v28 = [v25 keyContainingPoint:v27 inKeyplane:{v22, v24}];
+    delegate4 = [(_ACTUserActionStream *)self delegate];
+    delegate5 = [(_ACTUserActionStream *)self delegate];
+    keyplane3 = [delegate5 keyplane];
+    v28 = [delegate4 keyContainingPoint:keyplane3 inKeyplane:{v22, v24}];
 
     v48 = v28;
     v49 = v19;
@@ -771,19 +771,19 @@ LABEL_9:
 
     [(_ACTUserActionStream *)self randomActionInterval];
     v30 = v29;
-    v31 = [(_ACTUserActionStream *)self errorGenerator];
+    errorGenerator2 = [(_ACTUserActionStream *)self errorGenerator];
     [v7 paddedFrame];
-    v32 = [v31 errorForKeyString:v4 rect:?];
+    v32 = [errorGenerator2 errorForKeyString:currentLongCharacter rect:?];
 
-    v33 = [(_ACTUserActionStream *)self delegate];
-    [v33 pointForAttemptedTapOnKey:v7 withError:v32];
+    delegate6 = [(_ACTUserActionStream *)self delegate];
+    [delegate6 pointForAttemptedTapOnKey:v7 withError:v32];
     v35 = v34;
     v37 = v36;
 
-    v38 = [(_ACTUserActionStream *)self delegate];
-    v39 = [(_ACTUserActionStream *)self delegate];
-    v40 = [v39 keyplane];
-    v41 = [v38 keyContainingPoint:v40 inKeyplane:{v35, v37}];
+    delegate7 = [(_ACTUserActionStream *)self delegate];
+    delegate8 = [(_ACTUserActionStream *)self delegate];
+    keyplane4 = [delegate8 keyplane];
+    v41 = [delegate7 keyContainingPoint:keyplane4 inKeyplane:{v35, v37}];
 
     if (v41)
     {
@@ -800,12 +800,12 @@ LABEL_9:
           if (v13)
           {
             [(_ACTUserActionStream *)self setLastTimestamp:v42];
-            v46 = [(_ACTUserActionStream *)self cursor];
-            -[ACTUserAction setInputSegment:](v13, "setInputSegment:", [v46 segmentCursor]);
+            cursor3 = [(_ACTUserActionStream *)self cursor];
+            -[ACTUserAction setInputSegment:](v13, "setInputSegment:", [cursor3 segmentCursor]);
 
             v45 = v50;
-            [(_ACTUserActionStream *)self advancePositionByString:v4];
-            [(_ACTUserActionStream *)self advancePositionByString:v9];
+            [(_ACTUserActionStream *)self advancePositionByString:currentLongCharacter];
+            [(_ACTUserActionStream *)self advancePositionByString:nextLongCharacter];
           }
         }
       }
@@ -822,40 +822,40 @@ LABEL_9:
   return v13;
 }
 
-- (id)tryTypingWillSuppressError:(BOOL *)a3
+- (id)tryTypingWillSuppressError:(BOOL *)error
 {
-  *a3 = 0;
+  *error = 0;
   if ([(_ACTUserActionStream *)self shouldIgnoreCurrentCharacter])
   {
     do
     {
-      v5 = [(_ACTUserActionStream *)self cursor];
-      v6 = [v5 currentLongCharacter];
+      cursor = [(_ACTUserActionStream *)self cursor];
+      currentLongCharacter = [cursor currentLongCharacter];
 
-      [(_ACTUserActionStream *)self advancePositionByString:v6];
+      [(_ACTUserActionStream *)self advancePositionByString:currentLongCharacter];
     }
 
     while ([(_ACTUserActionStream *)self shouldIgnoreCurrentCharacter]);
   }
 
-  v7 = [(_ACTUserActionStream *)self cursor];
-  v8 = [v7 atEndOfText];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  atEndOfText = [cursor2 atEndOfText];
 
-  if (v8)
+  if (atEndOfText)
   {
-    v9 = 0;
+    tryContinuousPath = 0;
     goto LABEL_55;
   }
 
-  v10 = [(_ACTUserActionStream *)self userModel];
-  if ([v10 prefersContinuousPath])
+  userModel = [(_ACTUserActionStream *)self userModel];
+  if ([userModel prefersContinuousPath])
   {
-    v11 = [(_ACTUserActionStream *)self cursor];
-    v12 = [v11 positionInCurrentInternalSegment];
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    positionInCurrentInternalSegment = [cursor3 positionInCurrentInternalSegment];
 
-    if (!v12)
+    if (!positionInCurrentInternalSegment)
     {
-      v9 = [(_ACTUserActionStream *)self tryContinuousPath];
+      tryContinuousPath = [(_ACTUserActionStream *)self tryContinuousPath];
       goto LABEL_10;
     }
   }
@@ -864,13 +864,13 @@ LABEL_9:
   {
   }
 
-  v9 = 0;
+  tryContinuousPath = 0;
 LABEL_10:
-  v13 = [(_ACTUserActionStream *)self errorGenerator];
-  [v13 uniformRandomNumber];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator uniformRandomNumber];
   v15 = v14;
 
-  if (v9)
+  if (tryContinuousPath)
   {
     goto LABEL_55;
   }
@@ -879,13 +879,13 @@ LABEL_10:
   v17 = 0.0;
   if (![(_ACTUserActionStream *)self isRetyping]&& ![(_ACTUserActionStream *)self lastActionSuppressesError]&& ![(_ACTUserActionStream *)self lastActionUseSecondaryString])
   {
-    v18 = [(_ACTUserActionStream *)self userModel];
-    if ([v18 prefersTransliteration])
+    userModel2 = [(_ACTUserActionStream *)self userModel];
+    if ([userModel2 prefersTransliteration])
     {
-      v19 = [(_ACTUserActionStream *)self cursor];
-      v20 = [v19 nextLongCharacterEndsSegment];
+      cursor4 = [(_ACTUserActionStream *)self cursor];
+      nextLongCharacterEndsSegment = [cursor4 nextLongCharacterEndsSegment];
 
-      if (v20)
+      if (nextLongCharacterEndsSegment)
       {
         goto LABEL_22;
       }
@@ -899,8 +899,8 @@ LABEL_10:
     v22 = v21;
     if (v16 >= 0.0 && v21 > v16)
     {
-      v23 = [(_ACTUserActionStream *)self tryTransposedKeyTaps];
-      if (v23)
+      tryTransposedKeyTaps = [(_ACTUserActionStream *)self tryTransposedKeyTaps];
+      if (tryTransposedKeyTaps)
       {
         goto LABEL_54;
       }
@@ -921,8 +921,8 @@ LABEL_22:
     v24 = v17 + v28;
     if (v17 <= v16 && v24 > v16)
     {
-      v23 = [(_ACTUserActionStream *)self trySkipKeyTap];
-      if (v23)
+      tryTransposedKeyTaps = [(_ACTUserActionStream *)self trySkipKeyTap];
+      if (tryTransposedKeyTaps)
       {
         goto LABEL_54;
       }
@@ -940,8 +940,8 @@ LABEL_22:
     v25 = v24 + v27;
     if (v24 <= v16 && v25 > v16)
     {
-      v23 = [(_ACTUserActionStream *)self trySubstituteKeyTap];
-      if (v23)
+      tryTransposedKeyTaps = [(_ACTUserActionStream *)self trySubstituteKeyTap];
+      if (tryTransposedKeyTaps)
       {
         goto LABEL_54;
       }
@@ -959,59 +959,59 @@ LABEL_22:
     v26 = v25 + v29;
     if (v25 <= v16 && v26 > v16)
     {
-      v23 = [(_ACTUserActionStream *)self tryExtraKeyTap];
-      if (v23)
+      tryTransposedKeyTaps = [(_ACTUserActionStream *)self tryExtraKeyTap];
+      if (tryTransposedKeyTaps)
       {
         goto LABEL_54;
       }
     }
   }
 
-  if ([(_ACTUserActionStream *)self isRetyping]|| [(_ACTUserActionStream *)self lastActionSuppressesError]|| [(_ACTUserActionStream *)self lastActionUseSecondaryString]|| ([(_ACTUserActionStream *)self probabilityOfDoubledKey], v26 > v16) || (v26 + v30) <= v16 || ([(_ACTUserActionStream *)self tryDoubleKeyTap], (v23 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([(_ACTUserActionStream *)self isRetyping]|| [(_ACTUserActionStream *)self lastActionSuppressesError]|| [(_ACTUserActionStream *)self lastActionUseSecondaryString]|| ([(_ACTUserActionStream *)self probabilityOfDoubledKey], v26 > v16) || (v26 + v30) <= v16 || ([(_ACTUserActionStream *)self tryDoubleKeyTap], (tryTransposedKeyTaps = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [(_ACTUserActionStream *)self tryKeyTap];
-    if (v9)
+    tryContinuousPath = [(_ACTUserActionStream *)self tryKeyTap];
+    if (tryContinuousPath)
     {
       goto LABEL_55;
     }
 
-    v23 = [(_ACTUserActionStream *)self tryChangeKeyplane];
-    if (!v23)
+    tryTransposedKeyTaps = [(_ACTUserActionStream *)self tryChangeKeyplane];
+    if (!tryTransposedKeyTaps)
     {
-      v9 = [(_ACTUserActionStream *)self trySelectPopupVariant];
+      tryContinuousPath = [(_ACTUserActionStream *)self trySelectPopupVariant];
       goto LABEL_55;
     }
   }
 
 LABEL_54:
-  v9 = v23;
-  *a3 = 1;
+  tryContinuousPath = tryTransposedKeyTaps;
+  *error = 1;
 LABEL_55:
 
-  return v9;
+  return tryContinuousPath;
 }
 
 - (id)tryPeriodShortcut
 {
-  v3 = [(_ACTUserActionStream *)self userModel];
-  v4 = [v3 prefersSpaceBarDoubleTap];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersSpaceBarDoubleTap = [userModel prefersSpaceBarDoubleTap];
 
-  if (!v4)
+  if (!prefersSpaceBarDoubleTap)
   {
     v9 = 0;
     goto LABEL_27;
   }
 
-  v5 = [(_ACTUserActionStream *)self cursor];
-  v6 = [v5 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v7 = [(_ACTUserActionStream *)self cursor];
-  v8 = [v7 nextLongCharacter];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  nextLongCharacter = [cursor2 nextLongCharacter];
 
   v9 = 0;
-  if (v6 && v8)
+  if (currentLongCharacter && nextLongCharacter)
   {
-    v10 = [v6 stringByAppendingString:v8];
+    v10 = [currentLongCharacter stringByAppendingString:nextLongCharacter];
     if (![v10 isEqualToString:@". "])
     {
       v9 = 0;
@@ -1020,12 +1020,12 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v11 = [(_ACTUserActionStream *)self delegate];
-    v12 = [v11 keyboardController];
-    v13 = [v12 layoutUtils];
-    v14 = [(_ACTUserActionStream *)self delegate];
-    v15 = [v14 keyplane];
-    v16 = [v13 exactKeyForString:@" " keyplane:v15];
+    delegate = [(_ACTUserActionStream *)self delegate];
+    keyboardController = [delegate keyboardController];
+    layoutUtils = [keyboardController layoutUtils];
+    delegate2 = [(_ACTUserActionStream *)self delegate];
+    keyplane = [delegate2 keyplane];
+    v16 = [layoutUtils exactKeyForString:@" " keyplane:keyplane];
 
     if (!v16)
     {
@@ -1039,19 +1039,19 @@ LABEL_24:
     v18 = v17;
     [(_ACTUserActionStream *)self randomActionInterval];
     v20 = v18 + v19;
-    v21 = [(_ACTUserActionStream *)self errorGenerator];
+    errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
     [v16 paddedFrame];
-    v22 = [v21 errorForKeyString:@" " rect:?];
+    v22 = [errorGenerator errorForKeyString:@" " rect:?];
 
-    v23 = [(_ACTUserActionStream *)self delegate];
-    [v23 pointForAttemptedTapOnKey:v16 withError:v22];
+    delegate3 = [(_ACTUserActionStream *)self delegate];
+    [delegate3 pointForAttemptedTapOnKey:v16 withError:v22];
     v25 = v24;
     v27 = v26;
 
-    v28 = [(_ACTUserActionStream *)self delegate];
-    v29 = [(_ACTUserActionStream *)self delegate];
-    v30 = [v29 keyplane];
-    v31 = [v28 keyContainingPoint:v30 inKeyplane:{v25, v27}];
+    delegate4 = [(_ACTUserActionStream *)self delegate];
+    delegate5 = [(_ACTUserActionStream *)self delegate];
+    keyplane2 = [delegate5 keyplane];
+    v31 = [delegate4 keyContainingPoint:keyplane2 inKeyplane:{v25, v27}];
 
     v53 = v31;
     v54 = v22;
@@ -1067,19 +1067,19 @@ LABEL_24:
 
     [(_ACTUserActionStream *)self randomActionInterval];
     v33 = v20 + v32 * 0.5;
-    v34 = [(_ACTUserActionStream *)self errorGenerator];
+    errorGenerator2 = [(_ACTUserActionStream *)self errorGenerator];
     [v16 paddedFrame];
-    v35 = [v34 errorForKeyString:@" " rect:?];
+    v35 = [errorGenerator2 errorForKeyString:@" " rect:?];
 
-    v36 = [(_ACTUserActionStream *)self delegate];
-    [v36 pointForAttemptedTapOnKey:v16 withError:v35];
+    delegate6 = [(_ACTUserActionStream *)self delegate];
+    [delegate6 pointForAttemptedTapOnKey:v16 withError:v35];
     v38 = v37;
     v40 = v39;
 
-    v41 = [(_ACTUserActionStream *)self delegate];
-    v42 = [(_ACTUserActionStream *)self delegate];
-    v43 = [v42 keyplane];
-    v44 = [v41 keyContainingPoint:v43 inKeyplane:{v38, v40}];
+    delegate7 = [(_ACTUserActionStream *)self delegate];
+    delegate8 = [(_ACTUserActionStream *)self delegate];
+    keyplane3 = [delegate8 keyplane];
+    v44 = [delegate7 keyContainingPoint:keyplane3 inKeyplane:{v38, v40}];
 
     if (v44)
     {
@@ -1094,8 +1094,8 @@ LABEL_21:
         v9 = v49;
         if (v49)
         {
-          v51 = [(_ACTUserActionStream *)self cursor];
-          -[ACTUserAction setInputSegment:](v9, "setInputSegment:", [v51 segmentCursor]);
+          cursor3 = [(_ACTUserActionStream *)self cursor];
+          -[ACTUserAction setInputSegment:](v9, "setInputSegment:", [cursor3 segmentCursor]);
 
           v47 = v55;
           [(_ACTUserActionStream *)self advancePositionByString:v10];
@@ -1136,40 +1136,40 @@ LABEL_27:
 
 - (id)tryBackspacing
 {
-  v3 = [(_ACTUserActionStream *)self canBeginBackspacing];
-  v4 = [(_ACTUserActionStream *)self canContinueBackspacing];
-  v5 = v4;
-  if (v3 || v4)
+  canBeginBackspacing = [(_ACTUserActionStream *)self canBeginBackspacing];
+  canContinueBackspacing = [(_ACTUserActionStream *)self canContinueBackspacing];
+  v5 = canContinueBackspacing;
+  if (canBeginBackspacing || canContinueBackspacing)
   {
-    if (v3)
+    if (canBeginBackspacing)
     {
-      v13 = [(_ACTUserActionStream *)self cursor];
-      v14 = [v13 segmentCursor];
-      v15 = [(_ACTUserActionStream *)self userModel];
-      v16 = [v15 maxPriorSegmentsCheckedForErrors];
+      cursor = [(_ACTUserActionStream *)self cursor];
+      segmentCursor = [cursor segmentCursor];
+      userModel = [(_ACTUserActionStream *)self userModel];
+      maxPriorSegmentsCheckedForErrors = [userModel maxPriorSegmentsCheckedForErrors];
 
-      if (v14 <= v16)
+      if (segmentCursor <= maxPriorSegmentsCheckedForErrors)
       {
         v20 = 0;
       }
 
       else
       {
-        v17 = [(_ACTUserActionStream *)self cursor];
-        v18 = [v17 segmentCursor];
-        v19 = [(_ACTUserActionStream *)self userModel];
-        v20 = v18 - [v19 maxPriorSegmentsCheckedForErrors];
+        cursor2 = [(_ACTUserActionStream *)self cursor];
+        segmentCursor2 = [cursor2 segmentCursor];
+        userModel2 = [(_ACTUserActionStream *)self userModel];
+        v20 = segmentCursor2 - [userModel2 maxPriorSegmentsCheckedForErrors];
       }
 
-      v36 = [(_ACTUserActionStream *)self segmentEditHorizon];
-      if (v36 <= v20)
+      segmentEditHorizon = [(_ACTUserActionStream *)self segmentEditHorizon];
+      if (segmentEditHorizon <= v20)
       {
         v37 = v20;
       }
 
       else
       {
-        v37 = v36;
+        v37 = segmentEditHorizon;
       }
 
       [(_ACTUserActionStream *)self setSegmentEditHorizon:v37];
@@ -1195,21 +1195,21 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    v43 = [(_ACTUserActionStream *)self cursor];
-    if ([v43 segmentCursor])
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    if ([cursor3 segmentCursor])
     {
-      v44 = [(_ACTUserActionStream *)self cursor];
-      if ([v44 positionInCurrentInternalSegment])
+      cursor4 = [(_ACTUserActionStream *)self cursor];
+      if ([cursor4 positionInCurrentInternalSegment])
       {
         v111 = 0;
       }
 
       else
       {
-        v109 = [(_ACTUserActionStream *)self cursor];
-        v48 = [v109 externalSegments];
-        v49 = [(_ACTUserActionStream *)self cursor];
-        v50 = [v48 objectAtIndex:{objc_msgSend(v49, "segmentCursor") - 1}];
+        cursor5 = [(_ACTUserActionStream *)self cursor];
+        externalSegments = [cursor5 externalSegments];
+        cursor6 = [(_ACTUserActionStream *)self cursor];
+        v50 = [externalSegments objectAtIndex:{objc_msgSend(cursor6, "segmentCursor") - 1}];
         v111 = !_isWordEndingKey(v50);
       }
     }
@@ -1219,28 +1219,28 @@ LABEL_27:
       v111 = 0;
     }
 
-    v51 = [(_ACTUserActionStream *)self cursor];
-    if ([v51 segmentCursor])
+    cursor7 = [(_ACTUserActionStream *)self cursor];
+    if ([cursor7 segmentCursor])
     {
-      v52 = [(_ACTUserActionStream *)self cursor];
-      v53 = [v52 externalSegments];
-      v54 = [(_ACTUserActionStream *)self cursor];
-      v55 = [v53 objectAtIndex:{objc_msgSend(v54, "segmentCursor") - 1}];
-      LODWORD(v109) = _isWordEndingKey(v55);
+      cursor8 = [(_ACTUserActionStream *)self cursor];
+      externalSegments2 = [cursor8 externalSegments];
+      cursor9 = [(_ACTUserActionStream *)self cursor];
+      v55 = [externalSegments2 objectAtIndex:{objc_msgSend(cursor9, "segmentCursor") - 1}];
+      LODWORD(cursor5) = _isWordEndingKey(v55);
     }
 
     else
     {
-      LODWORD(v109) = 0;
+      LODWORD(cursor5) = 0;
     }
 
-    v56 = [(_ACTUserActionStream *)self cursor];
-    if ([v56 atEndOfText])
+    cursor10 = [(_ACTUserActionStream *)self cursor];
+    if ([cursor10 atEndOfText])
     {
-      v57 = [(_ACTUserActionStream *)self cursor];
-      v58 = [v57 externalSegments];
-      v59 = [v58 lastObject];
-      v60 = !_isWordEndingKey(v59);
+      cursor11 = [(_ACTUserActionStream *)self cursor];
+      externalSegments3 = [cursor11 externalSegments];
+      lastObject = [externalSegments3 lastObject];
+      v60 = !_isWordEndingKey(lastObject);
     }
 
     else
@@ -1252,7 +1252,7 @@ LABEL_27:
     {
       if (*(&v113 + 1))
       {
-        v69 = v3;
+        v69 = canBeginBackspacing;
       }
 
       else
@@ -1263,22 +1263,22 @@ LABEL_27:
       if (v69)
       {
         v70 = v113;
-        v71 = [(_ACTUserActionStream *)self cursor];
-        v72 = [v71 segmentCursor];
+        cursor12 = [(_ACTUserActionStream *)self cursor];
+        segmentCursor3 = [cursor12 segmentCursor];
 
-        if (v70 < v72 && ((v111 || v60) && [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWord]|| ((v109 | v60) & 1) != 0 && [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWordTerminator]))
+        if (v70 < segmentCursor3 && ((v111 || v60) && [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWord]|| ((cursor5 | v60) & 1) != 0 && [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWordTerminator]))
         {
           v6 = objc_alloc_init(ACTBackspaceMentalCursor);
-          v73 = [(_ACTUserActionStream *)self cursor];
-          -[_ACTUserActionStream setSegmentCursorBeforeBackspacing:](self, "setSegmentCursorBeforeBackspacing:", [v73 segmentCursor]);
+          cursor13 = [(_ACTUserActionStream *)self cursor];
+          -[_ACTUserActionStream setSegmentCursorBeforeBackspacing:](self, "setSegmentCursorBeforeBackspacing:", [cursor13 segmentCursor]);
 
           while (1)
           {
-            v74 = [(_ACTUserActionStream *)self cursor];
-            v75 = [v74 segmentCursor];
+            cursor14 = [(_ACTUserActionStream *)self cursor];
+            segmentCursor4 = [cursor14 segmentCursor];
             v76 = v113;
 
-            if (v75 <= v76)
+            if (segmentCursor4 <= v76)
             {
               break;
             }
@@ -1286,8 +1286,8 @@ LABEL_27:
             [(_ACTUserActionStream *)self rewindSegmentCursor];
           }
 
-          v105 = [(_ACTUserActionStream *)self cursor];
-          -[ACTUserAction setInputSegment:](v6, "setInputSegment:", [v105 segmentCursor]);
+          cursor15 = [(_ACTUserActionStream *)self cursor];
+          -[ACTUserAction setInputSegment:](v6, "setInputSegment:", [cursor15 segmentCursor]);
 
           [(_ACTUserActionStream *)self lastTimestamp];
           v107 = v106;
@@ -1300,52 +1300,52 @@ LABEL_27:
       goto LABEL_3;
     }
 
-    v61 = [(_ACTUserActionStream *)self delegate];
-    v62 = [v61 document];
-    v63 = [v62 substringWithRange:{v41, v42}];
+    delegate = [(_ACTUserActionStream *)self delegate];
+    document = [delegate document];
+    v63 = [document substringWithRange:{v41, v42}];
 
-    v64 = [(_ACTUserActionStream *)self cursor];
-    v65 = [v64 externalSegments];
-    v66 = [v65 subarrayWithRange:v113];
+    cursor16 = [(_ACTUserActionStream *)self cursor];
+    externalSegments4 = [cursor16 externalSegments];
+    v66 = [externalSegments4 subarrayWithRange:v113];
     v67 = [v66 componentsJoinedByString:&stru_287EC4808];
 
     if ([v63 length] && (objc_msgSend(v67, "hasPrefix:", v63) & 1) == 0)
     {
-      if (!v3)
+      if (!canBeginBackspacing)
       {
         goto LABEL_61;
       }
 
       if ((v111 || v60) && [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWord])
       {
-        v68 = 1;
+        shouldBeginCorrectingAfterWordTerminator = 1;
 LABEL_63:
-        LODWORD(v109) = v68;
-        v77 = [(_ACTUserActionStream *)self delegate];
-        v78 = [v77 keyboardController];
-        v79 = [v78 layoutUtils];
-        v80 = [(_ACTUserActionStream *)self delegate];
-        v81 = [v80 keyplane];
-        v82 = [v79 exactKeyForString:@"Delete" keyplane:v81 includeSecondaryStrings:0];
+        LODWORD(cursor5) = shouldBeginCorrectingAfterWordTerminator;
+        delegate2 = [(_ACTUserActionStream *)self delegate];
+        keyboardController = [delegate2 keyboardController];
+        layoutUtils = [keyboardController layoutUtils];
+        delegate3 = [(_ACTUserActionStream *)self delegate];
+        keyplane = [delegate3 keyplane];
+        v82 = [layoutUtils exactKeyForString:@"Delete" keyplane:keyplane includeSecondaryStrings:0];
 
         v83 = v82;
         [(_ACTUserActionStream *)self lastTimestamp];
         v85 = v84;
         [(_ACTUserActionStream *)self randomActionInterval];
         v87 = v85 + v86;
-        v88 = [(_ACTUserActionStream *)self errorGenerator];
+        errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
         [v82 paddedFrame];
-        v89 = [v88 errorForKeyString:@"Delete" rect:?];
+        v89 = [errorGenerator errorForKeyString:@"Delete" rect:?];
 
-        v90 = [(_ACTUserActionStream *)self delegate];
-        [v90 pointForAttemptedTapOnKey:v82 withError:v89];
+        delegate4 = [(_ACTUserActionStream *)self delegate];
+        [delegate4 pointForAttemptedTapOnKey:v82 withError:v89];
         v92 = v91;
         v94 = v93;
 
-        v95 = [(_ACTUserActionStream *)self delegate];
-        v96 = [(_ACTUserActionStream *)self delegate];
-        v97 = [v96 keyplane];
-        v98 = [v95 keyContainingPoint:v97 inKeyplane:{v92, v94}];
+        delegate5 = [(_ACTUserActionStream *)self delegate];
+        delegate6 = [(_ACTUserActionStream *)self delegate];
+        keyplane2 = [delegate6 keyplane];
+        v98 = [delegate5 keyContainingPoint:keyplane2 inKeyplane:{v92, v94}];
 
         if (v98)
         {
@@ -1361,17 +1361,17 @@ LABEL_63:
         v112 = v83;
         if (v110)
         {
-          v100 = [(_ACTUserActionStream *)self cursor];
-          -[_ACTUserActionStream setSegmentCursorBeforeBackspacing:](self, "setSegmentCursorBeforeBackspacing:", [v100 segmentCursor]);
+          cursor17 = [(_ACTUserActionStream *)self cursor];
+          -[_ACTUserActionStream setSegmentCursorBeforeBackspacing:](self, "setSegmentCursorBeforeBackspacing:", [cursor17 segmentCursor]);
         }
 
         while (1)
         {
-          v101 = [(_ACTUserActionStream *)self cursor];
-          v102 = [v101 segmentCursor];
+          cursor18 = [(_ACTUserActionStream *)self cursor];
+          segmentCursor5 = [cursor18 segmentCursor];
           v103 = v113;
 
-          if (v102 <= v103)
+          if (segmentCursor5 <= v103)
           {
             break;
           }
@@ -1379,25 +1379,25 @@ LABEL_63:
           [(_ACTUserActionStream *)self rewindSegmentCursor];
         }
 
-        v104 = [(_ACTUserActionStream *)self cursor];
-        -[ACTUserAction setInputSegment:](v6, "setInputSegment:", [v104 segmentCursor]);
+        cursor19 = [(_ACTUserActionStream *)self cursor];
+        -[ACTUserAction setInputSegment:](v6, "setInputSegment:", [cursor19 segmentCursor]);
 
         [(_ACTUserActionStream *)self setLastTimestamp:v87];
         goto LABEL_66;
       }
 
-      if ((v109 | v60))
+      if ((cursor5 | v60))
       {
-        v68 = [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWordTerminator];
+        shouldBeginCorrectingAfterWordTerminator = [(_ACTUserActionStream *)self shouldBeginCorrectingAfterWordTerminator];
       }
 
       else
       {
 LABEL_61:
-        v68 = 0;
+        shouldBeginCorrectingAfterWordTerminator = 0;
       }
 
-      if (v5 || v68)
+      if (v5 || shouldBeginCorrectingAfterWordTerminator)
       {
         goto LABEL_63;
       }
@@ -1421,10 +1421,10 @@ LABEL_4:
   v7 = [(_ACTUserActionStream *)self documentEditRangeWithSegmentRangePtr:&v113];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(_ACTUserActionStream *)self cursor];
-    v10 = [v9 currentInternalSegment];
-    v11 = [(_ACTUserActionStream *)self cursor];
-    v12 = [v10 substringToIndex:{objc_msgSend(v11, "positionInCurrentInternalSegment")}];
+    cursor20 = [(_ACTUserActionStream *)self cursor];
+    currentInternalSegment = [cursor20 currentInternalSegment];
+    cursor21 = [(_ACTUserActionStream *)self cursor];
+    v12 = [currentInternalSegment substringToIndex:{objc_msgSend(cursor21, "positionInCurrentInternalSegment")}];
 
     [(_ACTUserActionStream *)self rewindPositionByString:v12];
   }
@@ -1433,33 +1433,33 @@ LABEL_4:
   {
     v21 = v7;
     v22 = v8;
-    v23 = [(_ACTUserActionStream *)self delegate];
-    v24 = [v23 document];
-    v12 = [v24 substringWithRange:{v21, v22}];
+    delegate7 = [(_ACTUserActionStream *)self delegate];
+    document2 = [delegate7 document];
+    v12 = [document2 substringWithRange:{v21, v22}];
 
     v25 = [(_ACTUserActionStream *)self externalStringToInternal:v12];
     v26 = [v25 length];
-    v27 = [(_ACTUserActionStream *)self cursor];
-    v28 = [v27 positionInCurrentInternalSegment];
+    cursor22 = [(_ACTUserActionStream *)self cursor];
+    positionInCurrentInternalSegment = [cursor22 positionInCurrentInternalSegment];
 
-    v29 = [(_ACTUserActionStream *)self cursor];
-    v30 = [v29 currentInternalSegment];
-    if (v26 <= v28)
+    cursor23 = [(_ACTUserActionStream *)self cursor];
+    currentInternalSegment2 = [cursor23 currentInternalSegment];
+    if (v26 <= positionInCurrentInternalSegment)
     {
       v45 = [v25 length];
-      v46 = [(_ACTUserActionStream *)self cursor];
-      v35 = [v30 substringWithRange:{v45, objc_msgSend(v46, "positionInCurrentInternalSegment") - objc_msgSend(v25, "length")}];
+      cursor24 = [(_ACTUserActionStream *)self cursor];
+      v35 = [currentInternalSegment2 substringWithRange:{v45, objc_msgSend(cursor24, "positionInCurrentInternalSegment") - objc_msgSend(v25, "length")}];
 
       [(_ACTUserActionStream *)self rewindPositionByString:v35];
     }
 
     else
     {
-      v31 = [(_ACTUserActionStream *)self cursor];
-      v32 = [v31 positionInCurrentInternalSegment];
+      cursor25 = [(_ACTUserActionStream *)self cursor];
+      positionInCurrentInternalSegment2 = [cursor25 positionInCurrentInternalSegment];
       v33 = [v25 length];
-      v34 = [(_ACTUserActionStream *)self cursor];
-      v35 = [v30 substringWithRange:{v32, v33 - objc_msgSend(v34, "positionInCurrentInternalSegment")}];
+      cursor26 = [(_ACTUserActionStream *)self cursor];
+      v35 = [currentInternalSegment2 substringWithRange:{positionInCurrentInternalSegment2, v33 - objc_msgSend(cursor26, "positionInCurrentInternalSegment")}];
 
       [(_ACTUserActionStream *)self advancePositionByString:v35];
     }
@@ -1476,37 +1476,37 @@ LABEL_28:
 {
   if ([(_ACTUserActionStream *)self preferPredictionSelection])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(preferManualCorrection) = 1;
   }
 
   else
   {
-    v3 = [(_ACTUserActionStream *)self preferManualCorrection];
-    if (v3)
+    preferManualCorrection = [(_ACTUserActionStream *)self preferManualCorrection];
+    if (preferManualCorrection)
     {
-      v4 = [(_ACTUserActionStream *)self userModel];
-      [v4 probRejectBadAutocorrection];
+      userModel = [(_ACTUserActionStream *)self userModel];
+      [userModel probRejectBadAutocorrection];
       v6 = v5;
 
-      v7 = [(_ACTUserActionStream *)self errorGenerator];
-      [v7 uniformRandomNumber];
+      errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+      [errorGenerator uniformRandomNumber];
       v9 = v8;
 
-      LOBYTE(v3) = v6 > v9;
+      LOBYTE(preferManualCorrection) = v6 > v9;
     }
   }
 
-  return v3;
+  return preferManualCorrection;
 }
 
 - (BOOL)shouldBeginCorrectingAfterWordTerminator
 {
-  v3 = [(_ACTUserActionStream *)self userModel];
-  [v3 probBeginCorrectingAfterWordTerminator];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  [userModel probBeginCorrectingAfterWordTerminator];
   v5 = v4;
 
-  v6 = [(_ACTUserActionStream *)self errorGenerator];
-  [v6 uniformRandomNumber];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator uniformRandomNumber];
   v8 = v7;
 
   return v5 > v8;
@@ -1514,12 +1514,12 @@ LABEL_28:
 
 - (BOOL)shouldBeginCorrectingAfterWord
 {
-  v3 = [(_ACTUserActionStream *)self userModel];
-  [v3 probBeginCorrectingAfterWord];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  [userModel probBeginCorrectingAfterWord];
   v5 = v4;
 
-  v6 = [(_ACTUserActionStream *)self errorGenerator];
-  [v6 uniformRandomNumber];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator uniformRandomNumber];
   v8 = v7;
 
   return v5 > v8;
@@ -1527,14 +1527,14 @@ LABEL_28:
 
 - (BOOL)canContinueBackspacing
 {
-  v3 = [(_ACTUserActionStream *)self isBackspacing];
-  if (v3)
+  isBackspacing = [(_ACTUserActionStream *)self isBackspacing];
+  if (isBackspacing)
   {
 
-    LOBYTE(v3) = [(_ACTUserActionStream *)self preferManualCorrection];
+    LOBYTE(isBackspacing) = [(_ACTUserActionStream *)self preferManualCorrection];
   }
 
-  return v3;
+  return isBackspacing;
 }
 
 - (BOOL)canBeginBackspacing
@@ -1544,18 +1544,18 @@ LABEL_28:
     return 0;
   }
 
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 segmentCursor];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  segmentCursor = [cursor segmentCursor];
 
-  if (!v4)
+  if (!segmentCursor)
   {
     return 0;
   }
 
-  v5 = [(_ACTUserActionStream *)self cursor];
-  v6 = [v5 positionInCurrentInternalSegment];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  positionInCurrentInternalSegment = [cursor2 positionInCurrentInternalSegment];
 
-  if (v6)
+  if (positionInCurrentInternalSegment)
   {
     return 0;
   }
@@ -1563,33 +1563,33 @@ LABEL_28:
   return [(_ACTUserActionStream *)self preferManualCorrection];
 }
 
-- (_NSRange)documentEditRangeWithSegmentRangePtr:(_NSRange *)a3
+- (_NSRange)documentEditRangeWithSegmentRangePtr:(_NSRange *)ptr
 {
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 document];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  document = [delegate document];
 
   v7 = objc_opt_class();
-  v8 = [(_ACTUserActionStream *)self cursor];
-  v9 = [v7 segmentAnchorRangeForCursor:v8 withDocumentBefore:v6];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  v9 = [v7 segmentAnchorRangeForCursor:cursor withDocumentBefore:document];
   v11 = v10;
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
-    *a3 = xmmword_26D4EC000;
+    *ptr = xmmword_26D4EC000;
     v13 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v33 = a3;
-    v14 = [(_ACTUserActionStream *)self cursor];
-    v15 = [v14 externalSegments];
-    v16 = [v15 subarrayWithRange:{v9, v11}];
+    ptrCopy = ptr;
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    externalSegments = [cursor2 externalSegments];
+    v16 = [externalSegments subarrayWithRange:{v9, v11}];
     v17 = [v16 componentsJoinedByString:&stru_287EC4808];
 
     v32 = v17;
-    v18 = [v6 rangeOfString:v17 options:4];
+    v18 = [document rangeOfString:v17 options:4];
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
@@ -1600,28 +1600,28 @@ LABEL_28:
       v13 = v18 + v19;
     }
 
-    v12 = [v6 length] - v13;
+    v12 = [document length] - v13;
     v20 = v9 + v11;
-    v21 = [(_ACTUserActionStream *)self cursor];
-    v22 = [v21 segmentCursor];
-    v23 = [(_ACTUserActionStream *)self cursor];
-    v24 = [v23 externalSegments];
-    v25 = [v24 count];
-    v26 = [(_ACTUserActionStream *)self cursor];
-    v27 = v26;
-    if (v22 >= v25)
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    segmentCursor = [cursor3 segmentCursor];
+    cursor4 = [(_ACTUserActionStream *)self cursor];
+    externalSegments2 = [cursor4 externalSegments];
+    v25 = [externalSegments2 count];
+    cursor5 = [(_ACTUserActionStream *)self cursor];
+    v27 = cursor5;
+    if (segmentCursor >= v25)
     {
-      v29 = [v26 externalSegments];
-      v28 = [v29 count];
+      externalSegments3 = [cursor5 externalSegments];
+      v28 = [externalSegments3 count];
     }
 
     else
     {
-      v28 = [v26 segmentCursor] + 1;
+      v28 = [cursor5 segmentCursor] + 1;
     }
 
-    v33->location = v20;
-    v33->length = v28 - v20;
+    ptrCopy->location = v20;
+    ptrCopy->length = v28 - v20;
   }
 
   v30 = v13;
@@ -1638,25 +1638,25 @@ LABEL_28:
     return 0;
   }
 
-  v4 = [(_ACTUserActionStream *)self cursor];
-  v5 = [v4 segmentCursor];
-  v3 = v5 < [(_ACTUserActionStream *)self segmentCursorBeforeBackspacing];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  segmentCursor = [cursor segmentCursor];
+  v3 = segmentCursor < [(_ACTUserActionStream *)self segmentCursorBeforeBackspacing];
 
   return v3;
 }
 
 - (id)tryRejectCandidate
 {
-  v3 = [(_ACTUserActionStream *)self delegate];
-  v4 = [v3 autocorrection];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  autocorrection = [delegate autocorrection];
 
-  if (!v4)
+  if (!autocorrection)
   {
     goto LABEL_14;
   }
 
-  v5 = [(_ACTUserActionStream *)self cursor];
-  if ([v5 positionInCurrentInternalSegment])
+  cursor = [(_ACTUserActionStream *)self cursor];
+  if ([cursor positionInCurrentInternalSegment])
   {
     goto LABEL_3;
   }
@@ -1667,25 +1667,25 @@ LABEL_28:
 
   else
   {
-    v7 = [(_ACTUserActionStream *)self preferManualCorrection];
+    preferManualCorrection = [(_ACTUserActionStream *)self preferManualCorrection];
 
-    if (!v7)
+    if (!preferManualCorrection)
     {
       goto LABEL_14;
     }
   }
 
-  v8 = [(_ACTUserActionStream *)self cursor];
-  v9 = [v8 rangeOfInputSegmentsForCandidate:v4];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  v9 = [cursor2 rangeOfInputSegmentsForCandidate:autocorrection];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = MEMORY[0x277D6F3D8];
-    v11 = [v4 input];
-    v5 = [v10 candidateWithUnchangedInput:v11];
+    input = [autocorrection input];
+    cursor = [v10 candidateWithUnchangedInput:input];
 
-    v12 = [(_ACTUserActionStream *)self cursor];
-    v13 = [v12 rangeOfInputSegmentsForCandidate:v5];
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    v13 = [cursor3 rangeOfInputSegmentsForCandidate:cursor];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL && [(_ACTUserActionStream *)self shouldRejectBadAutocorrection])
     {
@@ -1693,14 +1693,14 @@ LABEL_28:
       v15 = v14;
       [(_ACTUserActionStream *)self randomActionInterval];
       v17 = v15 + v16;
-      v6 = [[ACTRejectCandidate alloc] initWithCandidate:v4 timestamp:v17];
+      v6 = [[ACTRejectCandidate alloc] initWithCandidate:autocorrection timestamp:v17];
       if (v6)
       {
-        v18 = [(_ACTUserActionStream *)self cursor];
-        if ([v18 segmentCursor])
+        cursor4 = [(_ACTUserActionStream *)self cursor];
+        if ([cursor4 segmentCursor])
         {
-          v19 = [(_ACTUserActionStream *)self cursor];
-          -[ACTUserAction setInputSegment:](v6, "setInputSegment:", [v19 segmentCursor] - 1);
+          cursor5 = [(_ACTUserActionStream *)self cursor];
+          -[ACTUserAction setInputSegment:](v6, "setInputSegment:", [cursor5 segmentCursor] - 1);
         }
 
         else
@@ -1728,19 +1728,19 @@ LABEL_15:
   return v6;
 }
 
-- (id)tryAcceptingCandidate:(id)a3
+- (id)tryAcceptingCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   [(_ACTUserActionStream *)self lastTimestamp];
   v6 = v5;
   [(_ACTUserActionStream *)self randomActionInterval];
   v8 = v6 + v7;
-  v9 = [(_ACTUserActionStream *)self userModel];
-  v10 = [v9 prefersTransliteration];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersTransliteration = [userModel prefersTransliteration];
 
-  if (!v10)
+  if (!prefersTransliteration)
   {
-    v18 = [[ACTAcceptCandidate alloc] initWithCandidate:v4 timestamp:v8];
+    v18 = [[ACTAcceptCandidate alloc] initWithCandidate:candidateCopy timestamp:v8];
     if (!v18)
     {
       goto LABEL_10;
@@ -1749,10 +1749,10 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  v11 = [(_ACTUserActionStream *)self cursor];
-  v12 = [v11 externalSegments];
-  v13 = [(_ACTUserActionStream *)self cursor];
-  v14 = [v12 objectAtIndexedSubscript:{objc_msgSend(v13, "segmentCursor")}];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  externalSegments = [cursor externalSegments];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  v14 = [externalSegments objectAtIndexedSubscript:{objc_msgSend(cursor2, "segmentCursor")}];
 
   partialCandidateIntendedChunk = self->_partialCandidateIntendedChunk;
   if (partialCandidateIntendedChunk)
@@ -1765,15 +1765,15 @@ LABEL_15:
     v14 = v16;
   }
 
-  v18 = [[ACTAcceptCandidate alloc] initWithCandidate:v4 timestamp:v14 intendedCandidate:v8];
+  v18 = [[ACTAcceptCandidate alloc] initWithCandidate:candidateCopy timestamp:v14 intendedCandidate:v8];
 
   if (v18)
   {
 LABEL_7:
-    v19 = [(_ACTUserActionStream *)self cursor];
-    -[ACTUserAction setInputSegment:](v18, "setInputSegment:", [v19 segmentCursor]);
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    -[ACTUserAction setInputSegment:](v18, "setInputSegment:", [cursor3 segmentCursor]);
 
-    if ([(_ACTUserActionStream *)self advancePositionByAcceptingCandidate:v4])
+    if ([(_ACTUserActionStream *)self advancePositionByAcceptingCandidate:candidateCopy])
     {
       [(_ACTUserActionStream *)self setLastTimestamp:v8];
     }
@@ -1790,49 +1790,49 @@ LABEL_10:
   return v18;
 }
 
-- (id)candidateToSelectFromCandidates:(id)a3
+- (id)candidateToSelectFromCandidates:(id)candidates
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56___ACTUserActionStream_candidateToSelectFromCandidates___block_invoke;
   v9[3] = &unk_279DA0E28;
   v9[4] = self;
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:v9];
-  v5 = [v3 objectsAtIndexes:v4];
+  candidatesCopy = candidates;
+  v4 = [candidatesCopy indexesOfObjectsPassingTest:v9];
+  v5 = [candidatesCopy objectsAtIndexes:v4];
 
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_5489];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)transliterationCandidate:(id)a3
+- (id)transliterationCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(_ACTUserActionStream *)self cursor];
-  v6 = [v5 segmentCursor];
+  candidateCopy = candidate;
+  cursor = [(_ACTUserActionStream *)self cursor];
+  segmentCursor = [cursor segmentCursor];
 
-  v7 = [(_ACTUserActionStream *)self cursor];
-  if ([v7 positionInCurrentInternalSegment])
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  if ([cursor2 positionInCurrentInternalSegment])
   {
     goto LABEL_2;
   }
 
-  v12 = [(_ACTUserActionStream *)self cursor];
-  if (![v12 segmentCursor])
+  cursor3 = [(_ACTUserActionStream *)self cursor];
+  if (![cursor3 segmentCursor])
   {
 
 LABEL_2:
     goto LABEL_3;
   }
 
-  v13 = v6 - 1;
-  v14 = [(_ACTUserActionStream *)self lastCursorPositionForTransliteratedCandidate];
+  v13 = segmentCursor - 1;
+  lastCursorPositionForTransliteratedCandidate = [(_ACTUserActionStream *)self lastCursorPositionForTransliteratedCandidate];
 
-  if (v14 < v13)
+  if (lastCursorPositionForTransliteratedCandidate < v13)
   {
-    v9 = [(_ACTUserActionStream *)self matchTransliterationCandidateToSegment:v4 withCursorAt:v13];
+    v9 = [(_ACTUserActionStream *)self matchTransliterationCandidateToSegment:candidateCopy withCursorAt:v13];
     if (v9)
     {
 LABEL_36:
@@ -1841,53 +1841,53 @@ LABEL_36:
       goto LABEL_5;
     }
 
-    v15 = [(_ACTUserActionStream *)self cursor];
-    v16 = [v15 internalSegments];
-    v17 = [v16 objectAtIndex:v13];
-    v18 = [(_ACTUserActionStream *)self cursor];
-    v19 = [v18 externalSegments];
-    v20 = [v19 objectAtIndex:v13];
+    cursor4 = [(_ACTUserActionStream *)self cursor];
+    internalSegments = [cursor4 internalSegments];
+    v17 = [internalSegments objectAtIndex:v13];
+    cursor5 = [(_ACTUserActionStream *)self cursor];
+    externalSegments = [cursor5 externalSegments];
+    v20 = [externalSegments objectAtIndex:v13];
     v21 = [v17 caseInsensitiveCompare:v20];
 
     if ([(TIKeyboardTyperUserModel *)self->_userModel usePartialCandidates]&& v21)
     {
-      v22 = [(_ACTUserActionStream *)self cursor];
-      v23 = [v22 externalSegments];
-      v24 = [v23 objectAtIndexedSubscript:v13];
+      cursor6 = [(_ACTUserActionStream *)self cursor];
+      externalSegments2 = [cursor6 externalSegments];
+      v24 = [externalSegments2 objectAtIndexedSubscript:v13];
       v25 = [v24 copy];
       partialCandidateSuffix = self->_partialCandidateSuffix;
       self->_partialCandidateSuffix = v25;
 
-      v27 = [(_ACTUserActionStream *)self findPartialCandidate];
+      findPartialCandidate = [(_ACTUserActionStream *)self findPartialCandidate];
 LABEL_35:
-      v9 = v27;
+      v9 = findPartialCandidate;
       goto LABEL_36;
     }
 
     if (v21)
     {
-      v28 = [(_ACTUserActionStream *)self delegate];
-      v29 = [v28 keyboardController];
-      v30 = [v29 inputMode];
-      v31 = [v30 normalizedIdentifier];
-      if ([v31 hasSuffix:@"-Translit"] && objc_msgSend(v4, "count") >= 2)
+      delegate = [(_ACTUserActionStream *)self delegate];
+      keyboardController = [delegate keyboardController];
+      inputMode = [keyboardController inputMode];
+      normalizedIdentifier = [inputMode normalizedIdentifier];
+      if ([normalizedIdentifier hasSuffix:@"-Translit"] && objc_msgSend(candidateCopy, "count") >= 2)
       {
-        v32 = [v4 objectAtIndexedSubscript:0];
+        v32 = [candidateCopy objectAtIndexedSubscript:0];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = [v4 objectAtIndexedSubscript:1];
+          v33 = [candidateCopy objectAtIndexedSubscript:1];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v27 = [v4 objectAtIndexedSubscript:1];
+            findPartialCandidate = [candidateCopy objectAtIndexedSubscript:1];
             goto LABEL_35;
           }
 
 LABEL_34:
-          v27 = [v4 firstObject];
+          findPartialCandidate = [candidateCopy firstObject];
           goto LABEL_35;
         }
       }
@@ -1895,31 +1895,31 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v35 = [v4 firstObject];
-    v36 = [(_ACTUserActionStream *)self cursor];
-    v37 = [v36 internalSegments];
-    v38 = [v37 objectAtIndex:v13];
+    firstObject = [candidateCopy firstObject];
+    cursor7 = [(_ACTUserActionStream *)self cursor];
+    internalSegments2 = [cursor7 internalSegments];
+    v38 = [internalSegments2 objectAtIndex:v13];
 
-    v39 = [v35 input];
-    if ([v39 length])
+    input = [firstObject input];
+    if ([input length])
     {
       v40 = [v38 length];
-      v41 = [v35 input];
-      if (v40 > [v41 length])
+      input2 = [firstObject input];
+      if (v40 > [input2 length])
       {
-        v42 = [v38 lowercaseString];
-        v43 = [v35 input];
-        v44 = [v43 lowercaseString];
-        v52 = [v42 hasSuffix:v44];
+        lowercaseString = [v38 lowercaseString];
+        input3 = [firstObject input];
+        lowercaseString2 = [input3 lowercaseString];
+        v52 = [lowercaseString hasSuffix:lowercaseString2];
 
         if (v52)
         {
-          v45 = [v35 input];
+          input4 = [firstObject input];
           v46 = 0;
 LABEL_28:
-          v47 = [(_ACTUserActionStream *)self cursor];
-          v48 = [v47 externalSegments];
-          v49 = [v48 objectAtIndex:v13];
+          cursor8 = [(_ACTUserActionStream *)self cursor];
+          externalSegments3 = [cursor8 externalSegments];
+          v49 = [externalSegments3 objectAtIndex:v13];
 
           if (v46)
           {
@@ -1928,17 +1928,17 @@ LABEL_28:
 
           else
           {
-            v50 = [v49 substringFromIndex:{objc_msgSend(v49, "length") - objc_msgSend(v45, "length")}];
+            v50 = [v49 substringFromIndex:{objc_msgSend(v49, "length") - objc_msgSend(input4, "length")}];
           }
 
           v51 = v50;
-          v9 = [MEMORY[0x277D6F3D8] candidateWithCandidate:v50 forInput:v45];
+          v9 = [MEMORY[0x277D6F3D8] candidateWithCandidate:v50 forInput:input4];
 
           goto LABEL_36;
         }
 
 LABEL_27:
-        v45 = v38;
+        input4 = v38;
         v46 = 1;
         goto LABEL_28;
       }
@@ -1948,13 +1948,13 @@ LABEL_27:
   }
 
 LABEL_3:
-  v8 = [(_ACTUserActionStream *)self cursor];
-  v9 = -[_ACTUserActionStream matchTransliterationCandidateToSegment:withCursorAt:](self, "matchTransliterationCandidateToSegment:withCursorAt:", v4, [v8 segmentCursor]);
+  cursor9 = [(_ACTUserActionStream *)self cursor];
+  v9 = -[_ACTUserActionStream matchTransliterationCandidateToSegment:withCursorAt:](self, "matchTransliterationCandidateToSegment:withCursorAt:", candidateCopy, [cursor9 segmentCursor]);
 
   if (v9)
   {
-    v10 = [(_ACTUserActionStream *)self cursor];
-    -[_ACTUserActionStream setLastCursorPositionForTransliteratedCandidate:](self, "setLastCursorPositionForTransliteratedCandidate:", [v10 segmentCursor]);
+    cursor10 = [(_ACTUserActionStream *)self cursor];
+    -[_ACTUserActionStream setLastCursorPositionForTransliteratedCandidate:](self, "setLastCursorPositionForTransliteratedCandidate:", [cursor10 segmentCursor]);
   }
 
 LABEL_5:
@@ -1965,14 +1965,14 @@ LABEL_5:
 - (id)findPartialCandidate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(_ACTUserActionStream *)self delegate];
-  v4 = [v3 predictionBarCandidates];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  predictionBarCandidates = [delegate predictionBarCandidates];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v4;
+  v5 = predictionBarCandidates;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -1990,10 +1990,10 @@ LABEL_5:
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 candidate];
-        if (-[NSString hasPrefix:](self->_partialCandidateSuffix, "hasPrefix:", v13) && [v13 length] > v9)
+        candidate = [v12 candidate];
+        if (-[NSString hasPrefix:](self->_partialCandidateSuffix, "hasPrefix:", candidate) && [candidate length] > v9)
         {
-          v9 = [v13 length];
+          v9 = [candidate length];
           v14 = v12;
 
           v8 = v14;
@@ -2022,9 +2022,9 @@ LABEL_5:
 
       self->_partialCandidateSuffix = v17;
 
-      v21 = [v8 candidate];
+      candidate2 = [v8 candidate];
       partialCandidateIntendedChunk = self->_partialCandidateIntendedChunk;
-      self->_partialCandidateIntendedChunk = v21;
+      self->_partialCandidateIntendedChunk = candidate2;
       goto LABEL_18;
     }
   }
@@ -2038,42 +2038,42 @@ LABEL_5:
   self->_partialCandidateSuffix = 0;
 
   partialCandidateIntendedChunk = [v5 firstObject];
-  v20 = [partialCandidateIntendedChunk input];
-  v8 = [MEMORY[0x277D6F3D8] candidateWithCandidate:@"NO_PARTIAL_CANDIDATE" forInput:v20];
+  input = [partialCandidateIntendedChunk input];
+  v8 = [MEMORY[0x277D6F3D8] candidateWithCandidate:@"NO_PARTIAL_CANDIDATE" forInput:input];
 
 LABEL_18:
 
   return v8;
 }
 
-- (id)matchTransliterationCandidateToSegment:(id)a3 withCursorAt:(int)a4
+- (id)matchTransliterationCandidateToSegment:(id)segment withCursorAt:(int)at
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 < 0 || (-[_ACTUserActionStream cursor](self, "cursor"), v7 = objc_claimAutoreleasedReturnValue(), [v7 externalSegments], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, v9 <= a4))
+  segmentCopy = segment;
+  if (at < 0 || (-[_ACTUserActionStream cursor](self, "cursor"), v7 = objc_claimAutoreleasedReturnValue(), [v7 externalSegments], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, v9 <= at))
   {
     v16 = 0;
   }
 
   else
   {
-    v10 = [(_ACTUserActionStream *)self cursor];
-    v11 = [v10 externalSegments];
-    v12 = [v11 objectAtIndexedSubscript:a4];
+    cursor = [(_ACTUserActionStream *)self cursor];
+    externalSegments = [cursor externalSegments];
+    v12 = [externalSegments objectAtIndexedSubscript:at];
 
-    v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v14 = [v12 stringByTrimmingCharactersInSet:v13];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v14 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v6;
+    v15 = segmentCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v16)
     {
       v24 = v12;
-      v25 = v6;
+      v25 = segmentCopy;
       v17 = *v27;
       while (2)
       {
@@ -2085,9 +2085,9 @@ LABEL_18:
           }
 
           v19 = *(*(&v26 + 1) + 8 * i);
-          v20 = [v19 candidate];
-          v21 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-          v22 = [v20 stringByTrimmingCharactersInSet:v21];
+          candidate = [v19 candidate];
+          whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+          v22 = [candidate stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
           if ([v22 isEqualToString:v14])
           {
@@ -2108,7 +2108,7 @@ LABEL_18:
 
 LABEL_14:
       v12 = v24;
-      v6 = v25;
+      segmentCopy = v25;
     }
   }
 
@@ -2123,16 +2123,16 @@ LABEL_14:
     goto LABEL_29;
   }
 
-  v3 = [(_ACTUserActionStream *)self delegate];
-  v4 = [v3 predictionBarCandidates];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  predictionBarCandidates = [delegate predictionBarCandidates];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 inlineCompletionCandidates];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  inlineCompletionCandidates = [delegate2 inlineCompletionCandidates];
 
-  v7 = [(_ACTUserActionStream *)self userModel];
-  v8 = [v7 prefersTransliteration];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersTransliteration = [userModel prefersTransliteration];
 
-  if (v8)
+  if (prefersTransliteration)
   {
     if (self->_partialCandidateSuffix)
     {
@@ -2141,13 +2141,13 @@ LABEL_14:
 
     else
     {
-      [(_ACTUserActionStream *)self transliterationCandidate:v4];
+      [(_ACTUserActionStream *)self transliterationCandidate:predictionBarCandidates];
     }
     v9 = ;
     goto LABEL_21;
   }
 
-  if (![v6 count])
+  if (![inlineCompletionCandidates count])
   {
 LABEL_17:
     if ([(_ACTUserActionStream *)self preferInlineSelection])
@@ -2156,7 +2156,7 @@ LABEL_17:
       goto LABEL_27;
     }
 
-    v9 = [(_ACTUserActionStream *)self candidateToSelectFromCandidates:v4];
+    v9 = [(_ACTUserActionStream *)self candidateToSelectFromCandidates:predictionBarCandidates];
 LABEL_21:
     v26 = v9;
     if (v9)
@@ -2167,18 +2167,18 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  v31 = v4;
-  v10 = [v6 firstObject];
-  v11 = [(_ACTUserActionStream *)self delegate];
-  v12 = [v10 candidate];
-  v13 = [v11 inputSegmentsForString:v12];
+  v31 = predictionBarCandidates;
+  firstObject = [inlineCompletionCandidates firstObject];
+  delegate3 = [(_ACTUserActionStream *)self delegate];
+  candidate = [firstObject candidate];
+  v13 = [delegate3 inputSegmentsForString:candidate];
 
   v14 = [v13 count];
   if (!v14)
   {
 LABEL_16:
 
-    v4 = v31;
+    predictionBarCandidates = v31;
     goto LABEL_17;
   }
 
@@ -2192,7 +2192,7 @@ LABEL_16:
       goto LABEL_13;
     }
 
-    v18 = [v10 copy];
+    v18 = [firstObject copy];
     v19 = [v13 subarrayWithRange:{0, i + 1}];
     v20 = [v19 componentsJoinedByString:&stru_287EC4808];
     v21 = [v18 candidateByReplacingWithCandidate:v20];
@@ -2205,9 +2205,9 @@ LABEL_16:
       break;
     }
 
-    v24 = [(_ACTUserActionStream *)self preferInlineSelection];
+    preferInlineSelection = [(_ACTUserActionStream *)self preferInlineSelection];
 
-    if (v24)
+    if (preferInlineSelection)
     {
       goto LABEL_16;
     }
@@ -2221,24 +2221,24 @@ LABEL_13:
 
   v26 = v23;
 
-  v4 = v31;
+  predictionBarCandidates = v31;
 LABEL_22:
   if ([v26 isAutocorrection])
   {
     goto LABEL_26;
   }
 
-  v27 = [(_ACTUserActionStream *)self userModel];
-  if ([v27 prefersTransliteration])
+  userModel2 = [(_ACTUserActionStream *)self userModel];
+  if ([userModel2 prefersTransliteration])
   {
 
     goto LABEL_26;
   }
 
-  v28 = [(_ACTUserActionStream *)self userModel];
-  v29 = [v28 prefersContinuousPath];
+  userModel3 = [(_ACTUserActionStream *)self userModel];
+  prefersContinuousPath = [userModel3 prefersContinuousPath];
 
-  if (v29)
+  if (prefersContinuousPath)
   {
 LABEL_26:
     v25 = [(_ACTUserActionStream *)self tryAcceptingCandidate:v26];
@@ -2256,30 +2256,30 @@ LABEL_29:
 
 - (BOOL)isFinished
 {
-  v2 = [(_ACTUserActionStream *)self cursor];
-  v3 = [v2 atEndOfText];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  atEndOfText = [cursor atEndOfText];
 
-  return v3;
+  return atEndOfText;
 }
 
 - (id)nextUserAction
 {
   [(_ACTUserActionStream *)self advancePositionForAutospace];
   v9 = 0;
-  v3 = [(_ACTUserActionStream *)self tryAcceptCandidate];
-  if (v3 || ([(_ACTUserActionStream *)self tryRejectCandidate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  tryAcceptCandidate = [(_ACTUserActionStream *)self tryAcceptCandidate];
+  if (tryAcceptCandidate || ([(_ACTUserActionStream *)self tryRejectCandidate], (tryAcceptCandidate = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
+    v4 = tryAcceptCandidate;
     [(_ACTUserActionStream *)self setIsBackspacing:0];
 LABEL_4:
     v5 = 0;
     goto LABEL_5;
   }
 
-  v7 = [(_ACTUserActionStream *)self tryBackspacing];
-  if (v7)
+  tryBackspacing = [(_ACTUserActionStream *)self tryBackspacing];
+  if (tryBackspacing)
   {
-    v4 = v7;
+    v4 = tryBackspacing;
     v5 = 1;
     [(_ACTUserActionStream *)self setIsBackspacing:1];
     v9 = 1;
@@ -2288,10 +2288,10 @@ LABEL_4:
   else
   {
     [(_ACTUserActionStream *)self setIsBackspacing:0];
-    v8 = [(_ACTUserActionStream *)self tryPeriodShortcut];
-    if (v8)
+    tryPeriodShortcut = [(_ACTUserActionStream *)self tryPeriodShortcut];
+    if (tryPeriodShortcut)
     {
-      v4 = v8;
+      v4 = tryPeriodShortcut;
       goto LABEL_4;
     }
 
@@ -2307,42 +2307,42 @@ LABEL_5:
 
 - (float)probabilityOfExtraneousKey
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  isLetterKey = _isLetterKey(v4);
-  v6 = [(_ACTUserActionStream *)self cursor];
-  v7 = [v6 positionInCurrentInternalSegment];
+  isLetterKey = _isLetterKey(currentLongCharacter);
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  positionInCurrentInternalSegment = [cursor2 positionInCurrentInternalSegment];
 
-  v8 = [(_ACTUserActionStream *)self cursor];
-  v9 = [v8 previousLongCharacter];
+  cursor3 = [(_ACTUserActionStream *)self cursor];
+  previousLongCharacter = [cursor3 previousLongCharacter];
 
-  v10 = _isLetterKey(v9);
-  v11 = [(_ACTUserActionStream *)self cursor];
-  v12 = [v11 positionInCurrentInternalSegment];
+  v10 = _isLetterKey(previousLongCharacter);
+  cursor4 = [(_ACTUserActionStream *)self cursor];
+  positionInCurrentInternalSegment2 = [cursor4 positionInCurrentInternalSegment];
 
   if (isLetterKey)
   {
-    v13 = [(_ACTUserActionStream *)self userModel];
-    v14 = v13;
-    if (v7)
+    userModel = [(_ACTUserActionStream *)self userModel];
+    userModel2 = userModel;
+    if (positionInCurrentInternalSegment)
     {
-      [v13 probExtraneousKey];
+      [userModel probExtraneousKey];
     }
 
     else
     {
-      [v13 probExtraneousInitialKey];
+      [userModel probExtraneousInitialKey];
     }
 
     goto LABEL_7;
   }
 
   v16 = 0.0;
-  if (((v12 == 0) & v10) == 1)
+  if (((positionInCurrentInternalSegment2 == 0) & v10) == 1)
   {
-    v14 = [(_ACTUserActionStream *)self userModel];
-    [v14 probExtraneousFinalKey];
+    userModel2 = [(_ACTUserActionStream *)self userModel];
+    [userModel2 probExtraneousFinalKey];
 LABEL_7:
     v16 = v15;
   }
@@ -2352,40 +2352,40 @@ LABEL_7:
 
 - (float)probabilityOfSubstituteKey
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyplane];
-  v7 = [(_ACTUserActionStream *)self anyKeyForString:v4 keyplane:v6 wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate keyplane];
+  v7 = [(_ACTUserActionStream *)self anyKeyForString:currentLongCharacter keyplane:keyplane wantSecondaryString:0 substituteUpperCaseForLowerCase:0];
 
   v8 = 0.0;
   if (v7)
   {
-    if (_isLetterKey(v4))
+    if (_isLetterKey(currentLongCharacter))
     {
-      v9 = [(_ACTUserActionStream *)self cursor];
-      v10 = [v9 positionInCurrentInternalSegment];
+      cursor2 = [(_ACTUserActionStream *)self cursor];
+      positionInCurrentInternalSegment = [cursor2 positionInCurrentInternalSegment];
 
-      v11 = [(_ACTUserActionStream *)self userModel];
-      v12 = v11;
-      if (v10)
+      userModel = [(_ACTUserActionStream *)self userModel];
+      userModel2 = userModel;
+      if (positionInCurrentInternalSegment)
       {
-        [v11 probSubstituteLetter];
+        [userModel probSubstituteLetter];
       }
 
       else
       {
-        [v11 probSubstituteInitialLetter];
+        [userModel probSubstituteInitialLetter];
       }
 
       goto LABEL_8;
     }
 
-    if (_isSpaceKey(v4))
+    if (_isSpaceKey(currentLongCharacter))
     {
-      v12 = [(_ACTUserActionStream *)self userModel];
-      [v12 probSubstituteSpace];
+      userModel2 = [(_ACTUserActionStream *)self userModel];
+      [userModel2 probSubstituteSpace];
 LABEL_8:
       v8 = v13;
     }
@@ -2396,9 +2396,9 @@ LABEL_8:
 
 - (float)probabilityOfDoubledKey
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
-  if (!_isLetterKey(v4))
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
+  if (!_isLetterKey(currentLongCharacter))
   {
 
     v6 = 0.0;
@@ -2407,24 +2407,24 @@ LABEL_8:
     return v6;
   }
 
-  v5 = [(_ACTUserActionStream *)self lastAndCurrentKeysAreSame];
+  lastAndCurrentKeysAreSame = [(_ACTUserActionStream *)self lastAndCurrentKeysAreSame];
 
   v6 = 0.0;
-  if (!v5)
+  if (!lastAndCurrentKeysAreSame)
   {
-    v7 = [(_ACTUserActionStream *)self cursor];
-    v8 = [v7 positionInCurrentInternalSegment];
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    positionInCurrentInternalSegment = [cursor2 positionInCurrentInternalSegment];
 
-    v9 = [(_ACTUserActionStream *)self userModel];
-    v3 = v9;
-    if (v8)
+    userModel = [(_ACTUserActionStream *)self userModel];
+    cursor = userModel;
+    if (positionInCurrentInternalSegment)
     {
-      [v9 probDoubleTapLetter];
+      [userModel probDoubleTapLetter];
     }
 
     else
     {
-      [v9 probDoubleTapInitialLetter];
+      [userModel probDoubleTapInitialLetter];
     }
 
     v6 = v10;
@@ -2436,32 +2436,32 @@ LABEL_8:
 
 - (float)probabilityOfSkippedKey
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  if (_isLetterKey(v4))
+  if (_isLetterKey(currentLongCharacter))
   {
     if ([(_ACTUserActionStream *)self lastAndCurrentKeysAreSame])
     {
-      v5 = [(_ACTUserActionStream *)self userModel];
-      [v5 probSkipRepeatLetter];
+      userModel = [(_ACTUserActionStream *)self userModel];
+      [userModel probSkipRepeatLetter];
     }
 
     else
     {
-      v8 = [(_ACTUserActionStream *)self cursor];
-      v9 = [v8 positionInCurrentInternalSegment];
+      cursor2 = [(_ACTUserActionStream *)self cursor];
+      positionInCurrentInternalSegment = [cursor2 positionInCurrentInternalSegment];
 
-      v10 = [(_ACTUserActionStream *)self userModel];
-      v5 = v10;
-      if (v9)
+      userModel2 = [(_ACTUserActionStream *)self userModel];
+      userModel = userModel2;
+      if (positionInCurrentInternalSegment)
       {
-        [v10 probSkipLetter];
+        [userModel2 probSkipLetter];
       }
 
       else
       {
-        [v10 probSkipInitialLetter];
+        [userModel2 probSkipInitialLetter];
       }
     }
 
@@ -2469,10 +2469,10 @@ LABEL_8:
   }
 
   v7 = 0.0;
-  if (_isSpaceKey(v4))
+  if (_isSpaceKey(currentLongCharacter))
   {
-    v5 = [(_ACTUserActionStream *)self userModel];
-    [v5 probSkipSpace];
+    userModel = [(_ACTUserActionStream *)self userModel];
+    [userModel probSkipSpace];
 LABEL_9:
     v7 = v6;
   }
@@ -2485,27 +2485,27 @@ LABEL_9:
   v3 = 0.0;
   if ([(_ACTUserActionStream *)self currentAndNextKeysAreTransposable])
   {
-    v4 = [(_ACTUserActionStream *)self cursor];
-    v5 = [v4 currentLongCharacter];
+    cursor = [(_ACTUserActionStream *)self cursor];
+    currentLongCharacter = [cursor currentLongCharacter];
 
-    v6 = [(_ACTUserActionStream *)self cursor];
-    v7 = [v6 nextLongCharacter];
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    nextLongCharacter = [cursor2 nextLongCharacter];
 
-    if (_isLetterKey(v5) && _isLetterKey(v7))
+    if (_isLetterKey(currentLongCharacter) && _isLetterKey(nextLongCharacter))
     {
-      v8 = [(_ACTUserActionStream *)self userModel];
-      [v8 probTransposeLetters];
+      userModel = [(_ACTUserActionStream *)self userModel];
+      [userModel probTransposeLetters];
     }
 
     else
     {
-      if ((!_isLetterKey(v5) || !_isSpaceKey(v7)) && (!_isSpaceKey(v5) || !_isLetterKey(v7)))
+      if ((!_isLetterKey(currentLongCharacter) || !_isSpaceKey(nextLongCharacter)) && (!_isSpaceKey(currentLongCharacter) || !_isLetterKey(nextLongCharacter)))
       {
         goto LABEL_11;
       }
 
-      v8 = [(_ACTUserActionStream *)self userModel];
-      [v8 probTransposeLetterAndSpace];
+      userModel = [(_ACTUserActionStream *)self userModel];
+      [userModel probTransposeLetterAndSpace];
     }
 
     v3 = v9;
@@ -2518,8 +2518,8 @@ LABEL_11:
 
 - (double)randomActionInterval
 {
-  v3 = [(_ACTUserActionStream *)self errorGenerator];
-  [v3 uniformRandomNumber];
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator uniformRandomNumber];
   v5 = v4;
 
   [(_ACTUserActionStream *)self averageActionInterval];
@@ -2528,34 +2528,34 @@ LABEL_11:
   return *&v6;
 }
 
-- (id)anyKeyForString:(id)a3 keyplane:(id)a4 wantSecondaryString:(BOOL)a5 substituteUpperCaseForLowerCase:(BOOL)a6
+- (id)anyKeyForString:(id)string keyplane:(id)keyplane wantSecondaryString:(BOOL)secondaryString substituteUpperCaseForLowerCase:(BOOL)case
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(_ACTUserActionStream *)self delegate];
-  v13 = [v12 keyboardController];
-  v14 = [v13 layoutUtils];
-  LOBYTE(v17) = a6;
-  v15 = [v14 anyKeyForString:v11 keyplane:v10 wantSecondaryString:v7 isRetyping:-[_ACTUserActionStream isRetyping](self preferBaseKeyVariants:"isRetyping") preferManualShift:-[_ACTUserActionStream preferBaseKeyForVariants](self substituteUpperCaseForLowerCase:{"preferBaseKeyForVariants"), -[_ACTUserActionStream preferManualShift](self, "preferManualShift"), v17}];
+  secondaryStringCopy = secondaryString;
+  keyplaneCopy = keyplane;
+  stringCopy = string;
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyboardController = [delegate keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  LOBYTE(v17) = case;
+  v15 = [layoutUtils anyKeyForString:stringCopy keyplane:keyplaneCopy wantSecondaryString:secondaryStringCopy isRetyping:-[_ACTUserActionStream isRetyping](self preferBaseKeyVariants:"isRetyping") preferManualShift:-[_ACTUserActionStream preferBaseKeyForVariants](self substituteUpperCaseForLowerCase:{"preferBaseKeyForVariants"), -[_ACTUserActionStream preferManualShift](self, "preferManualShift"), v17}];
 
   return v15;
 }
 
 - (BOOL)shouldIgnoreCurrentCharacter
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self cursor];
-  if ([v5 positionInCurrentInternalSegment])
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  if ([cursor2 positionInCurrentInternalSegment])
   {
-    v6 = [(_ACTUserActionStream *)self cursor];
-    v7 = [v6 positionInCurrentInternalSegment];
-    v8 = [v4 length] + v7;
-    v9 = [(_ACTUserActionStream *)self cursor];
-    v10 = [v9 currentInternalSegment];
-    v11 = v8 >= [v10 length];
+    cursor3 = [(_ACTUserActionStream *)self cursor];
+    positionInCurrentInternalSegment = [cursor3 positionInCurrentInternalSegment];
+    v8 = [currentLongCharacter length] + positionInCurrentInternalSegment;
+    cursor4 = [(_ACTUserActionStream *)self cursor];
+    currentInternalSegment = [cursor4 currentInternalSegment];
+    v11 = v8 >= [currentInternalSegment length];
   }
 
   else
@@ -2563,20 +2563,20 @@ LABEL_11:
     v11 = 1;
   }
 
-  if ([v4 isEqualToString:@"'"])
+  if ([currentLongCharacter isEqualToString:@"'"])
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    v12 = [v4 isEqualToString:@"’"] ^ 1;
+    v12 = [currentLongCharacter isEqualToString:@"’"] ^ 1;
   }
 
-  v13 = [(_ACTUserActionStream *)self userModel];
-  v14 = [v13 prefersAutocorrectForApostrophes];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersAutocorrectForApostrophes = [userModel prefersAutocorrectForApostrophes];
 
-  v15 = v14 & ![(_ACTUserActionStream *)self isRetyping];
+  v15 = prefersAutocorrectForApostrophes & ![(_ACTUserActionStream *)self isRetyping];
   if ((v11 | v12))
   {
     v16 = 0;
@@ -2592,48 +2592,48 @@ LABEL_11:
 
 - (BOOL)preferManualCorrection
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  v3 = [v2 prefersToCorrectErrors];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersToCorrectErrors = [userModel prefersToCorrectErrors];
 
-  return v3;
+  return prefersToCorrectErrors;
 }
 
 - (BOOL)preferInlineSelection
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  v3 = [v2 prefersInlineSelection];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersInlineSelection = [userModel prefersInlineSelection];
 
-  return v3;
+  return prefersInlineSelection;
 }
 
 - (BOOL)preferPredictionSelection
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  v3 = [v2 prefersPredictionSelection];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersPredictionSelection = [userModel prefersPredictionSelection];
 
-  return v3;
+  return prefersPredictionSelection;
 }
 
 - (BOOL)preferBaseKeyForVariants
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  v3 = [v2 baseKeyForVariants];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  baseKeyForVariants = [userModel baseKeyForVariants];
 
-  return v3;
+  return baseKeyForVariants;
 }
 
 - (BOOL)preferManualShift
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  v3 = [v2 prefersAutocorrectForCaps];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersAutocorrectForCaps = [userModel prefersAutocorrectForCaps];
 
-  return v3 ^ 1;
+  return prefersAutocorrectForCaps ^ 1;
 }
 
 - (double)averageActionInterval
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  [v2 averageKeyTapsPerSecond];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  [userModel averageKeyTapsPerSecond];
   v4 = v3;
 
   return (1.0 / v4);
@@ -2641,33 +2641,33 @@ LABEL_11:
 
 - (BOOL)shouldTypeInternalString
 {
-  v2 = [(_ACTUserActionStream *)self userModel];
-  v3 = [v2 decomposeInputString];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  decomposeInputString = [userModel decomposeInputString];
 
-  return v3;
+  return decomposeInputString;
 }
 
 - (BOOL)lastAndCurrentKeysAreSame
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 previousLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  previousLongCharacter = [cursor previousLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyboardController];
-  v7 = [v6 layoutUtils];
-  v8 = [(_ACTUserActionStream *)self delegate];
-  v9 = [v8 keyplane];
-  v10 = [v7 exactKeyForString:v4 keyplane:v9 includeSecondaryStrings:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyboardController = [delegate keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate2 keyplane];
+  v10 = [layoutUtils exactKeyForString:previousLongCharacter keyplane:keyplane includeSecondaryStrings:0];
 
-  v11 = [(_ACTUserActionStream *)self cursor];
-  v12 = [v11 currentLongCharacter];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor2 currentLongCharacter];
 
-  v13 = [(_ACTUserActionStream *)self delegate];
-  v14 = [v13 keyboardController];
-  v15 = [v14 layoutUtils];
-  v16 = [(_ACTUserActionStream *)self delegate];
-  v17 = [v16 keyplane];
-  v18 = [v15 exactKeyForString:v12 keyplane:v17 includeSecondaryStrings:0];
+  delegate3 = [(_ACTUserActionStream *)self delegate];
+  keyboardController2 = [delegate3 keyboardController];
+  layoutUtils2 = [keyboardController2 layoutUtils];
+  delegate4 = [(_ACTUserActionStream *)self delegate];
+  keyplane2 = [delegate4 keyplane];
+  v18 = [layoutUtils2 exactKeyForString:currentLongCharacter keyplane:keyplane2 includeSecondaryStrings:0];
 
   if (v10)
   {
@@ -2686,25 +2686,25 @@ LABEL_11:
 
 - (BOOL)currentAndNextKeysAreTransposable
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 currentLongCharacter];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  currentLongCharacter = [cursor currentLongCharacter];
 
-  v5 = [(_ACTUserActionStream *)self delegate];
-  v6 = [v5 keyboardController];
-  v7 = [v6 layoutUtils];
-  v8 = [(_ACTUserActionStream *)self delegate];
-  v9 = [v8 keyplane];
-  v10 = [v7 exactKeyForString:v4 keyplane:v9 includeSecondaryStrings:0];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  keyboardController = [delegate keyboardController];
+  layoutUtils = [keyboardController layoutUtils];
+  delegate2 = [(_ACTUserActionStream *)self delegate];
+  keyplane = [delegate2 keyplane];
+  v10 = [layoutUtils exactKeyForString:currentLongCharacter keyplane:keyplane includeSecondaryStrings:0];
 
-  v11 = [(_ACTUserActionStream *)self cursor];
-  v12 = [v11 nextLongCharacter];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  nextLongCharacter = [cursor2 nextLongCharacter];
 
-  v13 = [(_ACTUserActionStream *)self delegate];
-  v14 = [v13 keyboardController];
-  v15 = [v14 layoutUtils];
-  v16 = [(_ACTUserActionStream *)self delegate];
-  v17 = [v16 keyplane];
-  v18 = [v15 exactKeyForString:v12 keyplane:v17 includeSecondaryStrings:0];
+  delegate3 = [(_ACTUserActionStream *)self delegate];
+  keyboardController2 = [delegate3 keyboardController];
+  layoutUtils2 = [keyboardController2 layoutUtils];
+  delegate4 = [(_ACTUserActionStream *)self delegate];
+  keyplane2 = [delegate4 keyplane];
+  v18 = [layoutUtils2 exactKeyForString:nextLongCharacter keyplane:keyplane2 includeSecondaryStrings:0];
 
   if (v10)
   {
@@ -2723,13 +2723,13 @@ LABEL_11:
 
 - (BOOL)hasDesiredAutocorrection
 {
-  v3 = [(_ACTUserActionStream *)self delegate];
-  v4 = [v3 autocorrection];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  autocorrection = [delegate autocorrection];
 
-  if ([v4 isAutocorrection])
+  if ([autocorrection isAutocorrection])
   {
-    v5 = [(_ACTUserActionStream *)self cursor];
-    v6 = [v5 rangeOfInputSegmentsForCandidate:v4];
+    cursor = [(_ACTUserActionStream *)self cursor];
+    v6 = [cursor rangeOfInputSegmentsForCandidate:autocorrection];
 
     v7 = v6 != 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -2742,13 +2742,13 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)advancePositionByAcceptingCandidate:(id)a3
+- (BOOL)advancePositionByAcceptingCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(_ACTUserActionStream *)self userModel];
-  v6 = [v5 prefersTransliteration];
+  candidateCopy = candidate;
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersTransliteration = [userModel prefersTransliteration];
 
-  if (v6)
+  if (prefersTransliteration)
   {
     if (!self->_partialCandidateSuffix)
     {
@@ -2758,23 +2758,23 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v7 = [(_ACTUserActionStream *)self cursor];
-  v8 = [v7 rangeOfInputSegmentsForCandidate:v4];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  v8 = [cursor rangeOfInputSegmentsForCandidate:candidateCopy];
   v10 = v9;
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v8 + v10;
-    v12 = [(_ACTUserActionStream *)self cursor];
-    if (v11 >= [v12 segmentCursor])
+    cursor2 = [(_ACTUserActionStream *)self cursor];
+    if (v11 >= [cursor2 segmentCursor])
     {
-      v13 = [(_ACTUserActionStream *)self cursor];
-      if (v11 == [v13 segmentCursor])
+      cursor3 = [(_ACTUserActionStream *)self cursor];
+      if (v11 == [cursor3 segmentCursor])
       {
-        v14 = [(_ACTUserActionStream *)self cursor];
-        v15 = [v14 positionInCurrentInternalSegment];
+        cursor4 = [(_ACTUserActionStream *)self cursor];
+        positionInCurrentInternalSegment = [cursor4 positionInCurrentInternalSegment];
 
-        if (v15)
+        if (positionInCurrentInternalSegment)
         {
           goto LABEL_9;
         }
@@ -2786,10 +2786,10 @@ LABEL_11:
 
       while (1)
       {
-        v17 = [(_ACTUserActionStream *)self cursor];
-        v18 = [v17 segmentCursor];
+        cursor5 = [(_ACTUserActionStream *)self cursor];
+        segmentCursor = [cursor5 segmentCursor];
 
-        if (v18 >= v11)
+        if (segmentCursor >= v11)
         {
           break;
         }
@@ -2810,24 +2810,24 @@ LABEL_14:
   return v16;
 }
 
-- (void)rewindPositionByString:(id)a3
+- (void)rewindPositionByString:(id)string
 {
-  v4 = a3;
-  v5 = [(_ACTUserActionStream *)self cursor];
-  [v5 rewindPositionByString:v4];
+  stringCopy = string;
+  cursor = [(_ACTUserActionStream *)self cursor];
+  [cursor rewindPositionByString:stringCopy];
 }
 
-- (void)advancePositionByString:(id)a3
+- (void)advancePositionByString:(id)string
 {
-  v4 = a3;
-  v5 = [(_ACTUserActionStream *)self cursor];
-  [v5 advancePositionByString:v4];
+  stringCopy = string;
+  cursor = [(_ACTUserActionStream *)self cursor];
+  [cursor advancePositionByString:stringCopy];
 
-  v6 = [(_ACTUserActionStream *)self cursor];
-  v7 = [v6 segmentCursor];
-  v8 = [(_ACTUserActionStream *)self segmentCursorBeforeBackspacing];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  segmentCursor = [cursor2 segmentCursor];
+  segmentCursorBeforeBackspacing = [(_ACTUserActionStream *)self segmentCursorBeforeBackspacing];
 
-  if (v7 >= v8)
+  if (segmentCursor >= segmentCursorBeforeBackspacing)
   {
 
     [(_ACTUserActionStream *)self setSegmentCursorBeforeBackspacing:0x7FFFFFFFFFFFFFFFLL];
@@ -2836,58 +2836,58 @@ LABEL_14:
 
 - (BOOL)rewindSegmentCursor
 {
-  v2 = [(_ACTUserActionStream *)self cursor];
-  v3 = [v2 rewindSegmentCursor];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  rewindSegmentCursor = [cursor rewindSegmentCursor];
 
-  return v3;
+  return rewindSegmentCursor;
 }
 
 - (BOOL)advanceSegmentCursor
 {
-  v3 = [(_ACTUserActionStream *)self cursor];
-  v4 = [v3 advanceSegmentCursor];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  advanceSegmentCursor = [cursor advanceSegmentCursor];
 
-  v5 = [(_ACTUserActionStream *)self cursor];
-  v6 = [v5 segmentCursor];
-  v7 = [(_ACTUserActionStream *)self segmentCursorBeforeBackspacing];
+  cursor2 = [(_ACTUserActionStream *)self cursor];
+  segmentCursor = [cursor2 segmentCursor];
+  segmentCursorBeforeBackspacing = [(_ACTUserActionStream *)self segmentCursorBeforeBackspacing];
 
-  if (v6 >= v7)
+  if (segmentCursor >= segmentCursorBeforeBackspacing)
   {
     [(_ACTUserActionStream *)self setSegmentCursorBeforeBackspacing:0x7FFFFFFFFFFFFFFFLL];
   }
 
-  return v4;
+  return advanceSegmentCursor;
 }
 
-- (void)resetForIntendedSegments:(id)a3 expectedSegments:(id)a4
+- (void)resetForIntendedSegments:(id)segments expectedSegments:(id)expectedSegments
 {
-  v6 = a4;
-  v7 = a3;
+  expectedSegmentsCopy = expectedSegments;
+  segmentsCopy = segments;
   [(_ACTUserActionStream *)self setLastTimestamp:0.0];
   [(_ACTUserActionStream *)self setLastActionSuppressesError:0];
   [(_ACTUserActionStream *)self setSegmentEditHorizon:0];
   [(_ACTUserActionStream *)self setLastCursorPositionForTransliteratedCandidate:-1];
-  v8 = [[ACTUserMentalCursor alloc] initWithInternalSegments:v7 externalSegments:v6];
+  v8 = [[ACTUserMentalCursor alloc] initWithInternalSegments:segmentsCopy externalSegments:expectedSegmentsCopy];
 
   [(_ACTUserActionStream *)self setCursor:v8];
 }
 
-- (void)resetForIntendedText:(id)a3
+- (void)resetForIntendedText:(id)text
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_ACTUserActionStream *)self userModel];
-  v6 = [v5 prefersContinuousPath];
-  v7 = [(_ACTUserActionStream *)self delegate];
-  v8 = v7;
-  if (v6)
+  textCopy = text;
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersContinuousPath = [userModel prefersContinuousPath];
+  delegate = [(_ACTUserActionStream *)self delegate];
+  v8 = delegate;
+  if (prefersContinuousPath)
   {
-    [v7 inputSegmentsForContinuousPathString:v4];
+    [delegate inputSegmentsForContinuousPathString:textCopy];
   }
 
   else
   {
-    [v7 inputSegmentsForString:v4];
+    [delegate inputSegmentsForString:textCopy];
   }
   v9 = ;
 
@@ -2925,20 +2925,20 @@ LABEL_14:
   [(_ACTUserActionStream *)self resetForIntendedSegments:v17 expectedSegments:v11];
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
-  v4 = a3;
-  v5 = v4;
+  internalCopy = internal;
+  v5 = internalCopy;
   if ([(_ACTUserActionStream *)self shouldTypeInternalString])
   {
-    v6 = [(_ACTUserActionStream *)self delegate];
-    v5 = [v6 externalStringToInternal:v4];
+    delegate = [(_ACTUserActionStream *)self delegate];
+    v5 = [delegate externalStringToInternal:internalCopy];
   }
 
   if ([(_ACTUserActionStream *)self preferBaseKeyForVariants])
   {
-    v7 = [(_ACTUserActionStream *)self delegate];
-    v8 = [v7 splitDigraphsInString:v5];
+    delegate2 = [(_ACTUserActionStream *)self delegate];
+    v8 = [delegate2 splitDigraphsInString:v5];
 
     v5 = v8;
   }
@@ -2946,47 +2946,47 @@ LABEL_14:
   return v5;
 }
 
-- (void)setRandomNumberSeed:(unsigned int)a3
+- (void)setRandomNumberSeed:(unsigned int)seed
 {
-  v3 = *&a3;
-  self->_randomNumberSeed = a3;
-  v5 = [(_ACTUserActionStream *)self errorGenerator];
-  [v5 setRandomNumberSeed:v3];
+  v3 = *&seed;
+  self->_randomNumberSeed = seed;
+  errorGenerator = [(_ACTUserActionStream *)self errorGenerator];
+  [errorGenerator setRandomNumberSeed:v3];
 
-  v6 = [(_ACTUserActionStream *)self pathGenerator];
-  [v6 setRandomNumberSeed:v3];
+  pathGenerator = [(_ACTUserActionStream *)self pathGenerator];
+  [pathGenerator setRandomNumberSeed:v3];
 
-  v7 = [(_ACTUserActionStream *)self userPathManager];
-  [v7 setRandomNumberSeed:v3];
+  userPathManager = [(_ACTUserActionStream *)self userPathManager];
+  [userPathManager setRandomNumberSeed:v3];
 }
 
 - (NSString)intendedText
 {
-  v2 = [(_ACTUserActionStream *)self cursor];
-  v3 = [v2 intendedText];
+  cursor = [(_ACTUserActionStream *)self cursor];
+  intendedText = [cursor intendedText];
 
-  return v3;
+  return intendedText;
 }
 
-- (void)configureWithParameters:(id)a3
+- (void)configureWithParameters:(id)parameters
 {
-  v11 = a3;
-  v4 = [[TIKeyboardTyperUserModel alloc] initWithModel:v11];
+  parametersCopy = parameters;
+  v4 = [[TIKeyboardTyperUserModel alloc] initWithModel:parametersCopy];
   [(_ACTUserActionStream *)self setUserModel:v4];
 
-  v5 = [TIErrorGenerator errorGeneratorWithAttributes:v11];
+  v5 = [TIErrorGenerator errorGeneratorWithAttributes:parametersCopy];
   [(_ACTUserActionStream *)self setErrorGenerator:v5];
 
-  v6 = [(_ACTUserActionStream *)self userModel];
-  v7 = [v6 prefersContinuousPath];
+  userModel = [(_ACTUserActionStream *)self userModel];
+  prefersContinuousPath = [userModel prefersContinuousPath];
 
-  if (v7)
+  if (prefersContinuousPath)
   {
-    v8 = [TTKDefaultContinuousPathGenerator pathGeneratorWithAttributes:v11];
+    v8 = [TTKDefaultContinuousPathGenerator pathGeneratorWithAttributes:parametersCopy];
     [(_ACTUserActionStream *)self setPathGenerator:v8];
   }
 
-  v9 = [v11 objectForKey:@"USER_PATH_FILE"];
+  v9 = [parametersCopy objectForKey:@"USER_PATH_FILE"];
   if ([v9 length])
   {
     v10 = [[UserPathManager alloc] initWithPathFile:v9];
@@ -2994,10 +2994,10 @@ LABEL_14:
   }
 }
 
-- (_ACTUserActionStream)initWithParameters:(id)a3 delegate:(id)a4
+- (_ACTUserActionStream)initWithParameters:(id)parameters delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = _ACTUserActionStream;
   v8 = [(_ACTUserActionStream *)&v14 init];
@@ -3014,50 +3014,50 @@ LABEL_14:
     partialCandidateIntendedChunk = v8->_partialCandidateIntendedChunk;
     v8->_partialCandidateIntendedChunk = 0;
 
-    v8->_delegate = v7;
+    v8->_delegate = delegateCopy;
   }
 
-  [(_ACTUserActionStream *)v8 configureWithParameters:v6];
+  [(_ACTUserActionStream *)v8 configureWithParameters:parametersCopy];
 
   return v8;
 }
 
-+ (BOOL)isPathableWord:(id)a3
++ (BOOL)isPathableWord:(id)word
 {
   v3 = MEMORY[0x277CCAB50];
-  v4 = a3;
-  v5 = [v3 letterCharacterSet];
-  [v5 addCharactersInString:@"'’׳״-"];
-  [v5 removeCharactersInString:@"œŒß"];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
-  v7 = [v4 length];
+  wordCopy = word;
+  letterCharacterSet = [v3 letterCharacterSet];
+  [letterCharacterSet addCharactersInString:@"'’׳״-"];
+  [letterCharacterSet removeCharactersInString:@"œŒß"];
+  v6 = [wordCopy stringByTrimmingCharactersInSet:letterCharacterSet];
+  v7 = [wordCopy length];
 
   v8 = v7 >= 2 && [v6 length] == 0;
   return v8;
 }
 
-+ (_NSRange)segmentAnchorRangeForCursor:(id)a3 withDocumentBefore:(id)a4
++ (_NSRange)segmentAnchorRangeForCursor:(id)cursor withDocumentBefore:(id)before
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 segmentCursor];
-  if (v7 < 0)
+  cursorCopy = cursor;
+  beforeCopy = before;
+  segmentCursor = [cursorCopy segmentCursor];
+  if (segmentCursor < 0)
   {
     goto LABEL_27;
   }
 
-  v8 = v7;
+  v8 = segmentCursor;
   while (2)
   {
     v9 = 0;
     v26 = v8;
     while (1)
     {
-      v10 = [v5 externalSegments];
-      v11 = [v10 subarrayWithRange:{v8, v9}];
+      externalSegments = [cursorCopy externalSegments];
+      v11 = [externalSegments subarrayWithRange:{v8, v9}];
       v12 = [v11 componentsJoinedByString:&stru_287EC4808];
 
-      v13 = [v6 rangeOfString:v12 options:4];
+      v13 = [beforeCopy rangeOfString:v12 options:4];
       v15 = v14;
       v16 = [v12 length];
       v17 = !v8 || v16 >= 6;
@@ -3090,7 +3090,7 @@ LABEL_19:
       goto LABEL_26;
     }
 
-    v20 = [v6 length] - (v13 + v15);
+    v20 = [beforeCopy length] - (v13 + v15);
     v21 = v20 >= 0x15;
     v19 = v20 < 0x15;
     if (v8 || !v21)
@@ -3108,7 +3108,7 @@ LABEL_18:
 LABEL_16:
     if (![v12 length])
     {
-      v19 = [v6 length] < 0x15;
+      v19 = [beforeCopy length] < 0x15;
       goto LABEL_18;
     }
 
@@ -3134,11 +3134,11 @@ LABEL_29:
   return result;
 }
 
-+ (id)userActionStreamWithParameters:(id)a3 delegate:(id)a4
++ (id)userActionStreamWithParameters:(id)parameters delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_ACTUserActionStream alloc] initWithParameters:v6 delegate:v5];
+  delegateCopy = delegate;
+  parametersCopy = parameters;
+  v7 = [[_ACTUserActionStream alloc] initWithParameters:parametersCopy delegate:delegateCopy];
 
   return v7;
 }

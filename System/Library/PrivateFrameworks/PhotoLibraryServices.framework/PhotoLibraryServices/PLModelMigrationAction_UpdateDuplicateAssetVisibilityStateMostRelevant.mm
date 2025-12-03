@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_UpdateDuplicateAssetVisibilityStateMostRelevant
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)updateKeyAssetVisibilityStateWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)updateLegacyHiddenValueWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)updateKeyAssetVisibilityStateWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)updateLegacyHiddenValueWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateDuplicateAssetVisibilityStateMostRelevant
 
-- (int64_t)updateKeyAssetVisibilityStateWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)updateKeyAssetVisibilityStateWithManagedObjectContext:(id)context error:(id *)error
 {
   v94[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
@@ -20,7 +20,7 @@
   v52 = __Block_byref_object_copy__23792;
   v53 = __Block_byref_object_dispose__23793;
   v54 = 0;
-  [v6 refreshAllObjects];
+  [contextCopy refreshAllObjects];
   v7 = +[PLDuplicateAlbum fetchRequest];
   v94[0] = @"assets";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:1];
@@ -30,7 +30,7 @@
   [v7 setFetchBatchSize:100];
   v9 = v50 + 5;
   obj = v50[5];
-  v10 = [v6 executeFetchRequest:v7 error:&obj];
+  v10 = [contextCopy executeFetchRequest:v7 error:&obj];
   objc_storeStrong(v9, obj);
   if ([v10 count])
   {
@@ -44,7 +44,7 @@
     v47 = &v55;
     v12 = v11;
     v45 = v12;
-    v13 = [v6 enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v44];
+    v13 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v44];
     if (v13 && !v50[5])
     {
       objc_storeStrong(v50 + 5, v13);
@@ -58,8 +58,8 @@
 
       if (v15)
       {
-        v16 = [(PLModelMigrationActionCore *)self logger];
-        v17 = v16 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v17 = logger == 0;
 
         if (v17)
         {
@@ -128,8 +128,8 @@
 
       if (v24)
       {
-        v25 = [(PLModelMigrationActionCore *)self logger];
-        v26 = v25 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v26 = logger2 == 0;
 
         if (v26)
         {
@@ -149,7 +149,7 @@
           goto LABEL_22;
         }
 
-        v43 = a4;
+        errorCopy = error;
         v92 = 0u;
         v93 = 0u;
         v90 = 0u;
@@ -193,7 +193,7 @@
         LODWORD(v42) = 22;
         v20 = _os_log_send_and_compose_impl();
 
-        a4 = v43;
+        error = errorCopy;
         v31 = [(PLModelMigrationActionCore *)self logger:&v59];
         [v31 logWithMessage:v20 fromCodeLocation:"PLModelMigrationActions_16000.m" type:{580, 16}];
 
@@ -220,10 +220,10 @@ LABEL_22:
 LABEL_23:
   v38 = v22[3];
   v39 = v50[5];
-  if (v38 != 1 && a4)
+  if (v38 != 1 && error)
   {
     v39 = v39;
-    *a4 = v39;
+    *error = v39;
   }
 
   v40 = v56[3];
@@ -233,12 +233,12 @@ LABEL_23:
   return v40;
 }
 
-- (int64_t)updateLegacyHiddenValueWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)updateLegacyHiddenValueWithManagedObjectContext:(id)context error:(id *)error
 {
   v69[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AB28];
   v7 = MEMORY[0x1E696AE18];
-  v8 = a3;
+  contextCopy = context;
   v9 = [v7 predicateWithFormat:@"%K == %d", @"duplicateAssetVisibilityState", 2];
   v69[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:1];
@@ -249,7 +249,7 @@ LABEL_23:
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
   v13 = +[PLManagedAsset entityName];
   v31 = 0;
-  LOBYTE(v10) = [PLModelMigrator executeBatchUpdateWithEntityName:v13 predicate:v11 propertiesToUpdate:v12 managedObjectContext:v8 error:&v31];
+  LOBYTE(v10) = [PLModelMigrator executeBatchUpdateWithEntityName:v13 predicate:v11 propertiesToUpdate:v12 managedObjectContext:contextCopy error:&v31];
 
   v14 = v31;
   if (v10)
@@ -265,9 +265,9 @@ LABEL_23:
 
     if (v18)
     {
-      v19 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v19)
+      if (logger)
       {
         v65 = 0u;
         v66 = 0u;
@@ -337,9 +337,9 @@ LABEL_23:
     }
 
     v28 = v14;
-    if (a4)
+    if (error)
     {
-      *a4 = v28;
+      *error = v28;
     }
 
     v16 = 3;
@@ -348,13 +348,13 @@ LABEL_23:
   return v16;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLModelMigrationAction_UpdateDuplicateAssetVisibilityStateMostRelevant *)self updateLegacyHiddenValueWithManagedObjectContext:v6 error:a4];
+  contextCopy = context;
+  v7 = [(PLModelMigrationAction_UpdateDuplicateAssetVisibilityStateMostRelevant *)self updateLegacyHiddenValueWithManagedObjectContext:contextCopy error:error];
   if (v7 == 1)
   {
-    v7 = [(PLModelMigrationAction_UpdateDuplicateAssetVisibilityStateMostRelevant *)self updateKeyAssetVisibilityStateWithManagedObjectContext:v6 error:a4];
+    v7 = [(PLModelMigrationAction_UpdateDuplicateAssetVisibilityStateMostRelevant *)self updateKeyAssetVisibilityStateWithManagedObjectContext:contextCopy error:error];
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

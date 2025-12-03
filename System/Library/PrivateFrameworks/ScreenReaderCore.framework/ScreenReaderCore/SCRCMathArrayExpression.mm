@@ -1,27 +1,27 @@
 @interface SCRCMathArrayExpression
-- (SCRCMathArrayExpression)initWithDictionary:(id)a3;
-- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 parentTreePosition:(id)a5 childIndex:(unint64_t *)a6;
+- (SCRCMathArrayExpression)initWithDictionary:(id)dictionary;
+- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth parentTreePosition:(id)position childIndex:(unint64_t *)index;
 - (id)children;
 - (id)description;
 - (id)mathMLString;
-- (id)prefixForChildAtIndex:(unint64_t)a3;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5;
-- (id)suffixForChildAtIndex:(unint64_t)a3;
+- (id)prefixForChildAtIndex:(unint64_t)index;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position;
+- (id)suffixForChildAtIndex:(unint64_t)index;
 @end
 
 @implementation SCRCMathArrayExpression
 
-- (SCRCMathArrayExpression)initWithDictionary:(id)a3
+- (SCRCMathArrayExpression)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = SCRCMathArrayExpression;
-  v5 = [(SCRCMathExpression *)&v21 initWithDictionary:v4];
+  v5 = [(SCRCMathExpression *)&v21 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMChildren"];
+    v6 = [dictionaryCopy objectForKey:@"AXMChildren"];
     v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
     v17 = 0u;
     v18 = 0u;
@@ -73,8 +73,8 @@
   v7.receiver = self;
   v7.super_class = SCRCMathArrayExpression;
   v3 = [(SCRCMathArrayExpression *)&v7 description];
-  v4 = [(SCRCMathArrayExpression *)self children];
-  v5 = [v3 stringByAppendingFormat:@" - children %@", v4];
+  children = [(SCRCMathArrayExpression *)self children];
+  v5 = [v3 stringByAppendingFormat:@" - children %@", children];
 
   return v5;
 }
@@ -86,17 +86,17 @@
   return v2;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v23 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCAB48] scrcString];
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(SCRCMathArrayExpression *)self children];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  children = [(SCRCMathArrayExpression *)self children];
+  v9 = [children countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -108,13 +108,13 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
         if ((v12 & 1) == 0)
         {
-          if (v4)
+          if (allowedCopy)
           {
             [MEMORY[0x277CCA898] scrcPauseString];
           }
@@ -124,78 +124,78 @@
             [MEMORY[0x277CCA898] scrcSpaceString];
           }
           v15 = ;
-          [v7 appendAttributedString:v15];
+          [scrcString appendAttributedString:v15];
         }
 
-        v16 = [v14 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4];
-        [v7 appendAttributedString:v16];
+        v16 = [v14 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
+        [scrcString appendAttributedString:v16];
 
         v12 = 0;
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [children countByEnumeratingWithState:&v18 objects:v22 count:16];
       v12 = 0;
     }
 
     while (v10);
   }
 
-  return v7;
+  return scrcString;
 }
 
-- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 parentTreePosition:(id)a5 childIndex:(unint64_t *)a6
+- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth parentTreePosition:(id)position childIndex:(unint64_t *)index
 {
-  v9 = *a6;
-  v10 = a5;
-  v11 = [(SCRCMathArrayExpression *)self children];
-  v12 = [v11 objectAtIndex:v9];
+  v9 = *index;
+  positionCopy = position;
+  children = [(SCRCMathArrayExpression *)self children];
+  v12 = [children objectAtIndex:v9];
 
-  v13 = [v10 indexPathByAddingIndex:v9];
+  v13 = [positionCopy indexPathByAddingIndex:v9];
 
   v14 = [(SCRCMathArrayExpression *)self prefixForChildAtIndex:v9];
   v15 = [(SCRCMathArrayExpression *)self suffixForChildAtIndex:v9];
-  v16 = [v12 speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 treePosition:v13 prefix:v14 suffix:v15];
+  v16 = [v12 speakableSegmentsWithSpeakingStyle:style upToDepth:depth treePosition:v13 prefix:v14 suffix:v15];
 
   return v16;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position
 {
-  v8 = a5;
-  if (a4)
+  positionCopy = position;
+  if (depth)
   {
-    v9 = a4 - 1;
-    if (a4 == 1)
+    v9 = depth - 1;
+    if (depth == 1)
     {
       v19.receiver = self;
       v19.super_class = SCRCMathArrayExpression;
-      a4 = [(SCRCMathExpression *)&v19 speakableSegmentsWithSpeakingStyle:a3 upToDepth:1 treePosition:v8];
+      depth = [(SCRCMathExpression *)&v19 speakableSegmentsWithSpeakingStyle:style upToDepth:1 treePosition:positionCopy];
     }
 
     else
     {
-      a4 = [MEMORY[0x277CBEB18] array];
-      v10 = [(SCRCMathArrayExpression *)self children];
-      v11 = [v10 count];
+      depth = [MEMORY[0x277CBEB18] array];
+      children = [(SCRCMathArrayExpression *)self children];
+      v11 = [children count];
 
       for (i = 0; i < v11; ++i)
       {
-        v12 = [(SCRCMathArrayExpression *)self childSpeakableSegmentsWithSpeakingStyle:a3 upToDepth:v9 parentTreePosition:v8 childIndex:&i];
-        [a4 addObjectsFromArray:v12];
+        v12 = [(SCRCMathArrayExpression *)self childSpeakableSegmentsWithSpeakingStyle:style upToDepth:v9 parentTreePosition:positionCopy childIndex:&i];
+        [depth addObjectsFromArray:v12];
       }
 
-      v13 = [a4 count];
+      v13 = [depth count];
       if (v13 - 1 >= 0)
       {
         v14 = v13;
         do
         {
-          v15 = [a4 objectAtIndex:--v14];
+          v15 = [depth objectAtIndex:--v14];
           v16 = [v15 length];
 
           if (!v16)
           {
-            [a4 removeObjectAtIndex:v14];
+            [depth removeObjectAtIndex:v14];
           }
         }
 
@@ -204,19 +204,19 @@
     }
   }
 
-  return a4;
+  return depth;
 }
 
 - (id)mathMLString
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SCRCMathArrayExpression *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [(SCRCMathArrayExpression *)self children];
+  v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -227,37 +227,37 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) mathMLString];
-        [v3 appendString:v9];
+        mathMLString = [*(*(&v14 + 1) + 8 * i) mathMLString];
+        [string appendString:mathMLString];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(SCRCMathArrayExpression *)self mathMLTag];
-  v11 = [(SCRCMathArrayExpression *)self mathMLAttributes];
-  v12 = [v3 stringWrappedInMathMLTag:v10 withAttributes:v11];
+  mathMLTag = [(SCRCMathArrayExpression *)self mathMLTag];
+  mathMLAttributes = [(SCRCMathArrayExpression *)self mathMLAttributes];
+  v12 = [string stringWrappedInMathMLTag:mathMLTag withAttributes:mathMLAttributes];
 
   return v12;
 }
 
-- (id)prefixForChildAtIndex:(unint64_t)a3
+- (id)prefixForChildAtIndex:(unint64_t)index
 {
-  v4 = [(SCRCMathArrayExpression *)self localizablePrefixForChildAtIndex:a3];
+  v4 = [(SCRCMathArrayExpression *)self localizablePrefixForChildAtIndex:index];
   v5 = [(SCRCMathExpression *)self localizedAttributedStringForKey:v4];
 
   return v5;
 }
 
-- (id)suffixForChildAtIndex:(unint64_t)a3
+- (id)suffixForChildAtIndex:(unint64_t)index
 {
-  v4 = [(SCRCMathArrayExpression *)self localizableSuffixForChildAtIndex:a3];
+  v4 = [(SCRCMathArrayExpression *)self localizableSuffixForChildAtIndex:index];
   v5 = [(SCRCMathExpression *)self localizedAttributedStringForKey:v4];
 
   return v5;

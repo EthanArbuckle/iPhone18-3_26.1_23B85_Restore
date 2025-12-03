@@ -1,26 +1,26 @@
 @interface ORCHSchemaORCHIntelligenceFlowQuerySent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHIntelligenceFlowQuerySent
 
-- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithDictionary:(id)a3
+- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = ORCHSchemaORCHIntelligenceFlowQuerySent;
   v5 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"plannerQueryId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"plannerQueryId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ORCHSchemaORCHIntelligenceFlowQuerySent *)v5 setPlannerQueryId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"trpId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ORCHSchemaORCHIntelligenceFlowQuerySent *)v5 setTrpId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(ORCHSchemaORCHIntelligenceFlowQuerySent *)v5 setSubRequestId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"traceId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"traceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithJSON:(id)a3
+- (ORCHSchemaORCHIntelligenceFlowQuerySent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,74 +94,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_plannerQueryId)
   {
-    v4 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+    dictionaryRepresentation = [plannerQueryId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"plannerQueryId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"plannerQueryId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"plannerQueryId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"plannerQueryId"];
     }
   }
 
   if (self->_subRequestId)
   {
-    v7 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    subRequestId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+    dictionaryRepresentation2 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"subRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_traceId)
   {
-    v10 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    traceId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+    dictionaryRepresentation3 = [traceId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"traceId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"traceId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"traceId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"traceId"];
     }
   }
 
   if (self->_trpId)
   {
-    v13 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    trpId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+    dictionaryRepresentation4 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"trpId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -172,28 +172,28 @@
   return v4 ^ v5 ^ [(SISchemaUUID *)self->_traceId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
-  v6 = [v4 plannerQueryId];
-  if ((v5 != 0) == (v6 == 0))
+  plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+  plannerQueryId2 = [equalCopy plannerQueryId];
+  if ((plannerQueryId != 0) == (plannerQueryId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
-  if (v7)
+  plannerQueryId3 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+  if (plannerQueryId3)
   {
-    v8 = v7;
-    v9 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
-    v10 = [v4 plannerQueryId];
-    v11 = [v9 isEqual:v10];
+    v8 = plannerQueryId3;
+    plannerQueryId4 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+    plannerQueryId5 = [equalCopy plannerQueryId];
+    v11 = [plannerQueryId4 isEqual:plannerQueryId5];
 
     if (!v11)
     {
@@ -205,20 +205,20 @@
   {
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+  plannerQueryId2 = [equalCopy trpId];
+  if ((plannerQueryId != 0) == (plannerQueryId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
-  if (v12)
+  trpId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+  if (trpId)
   {
-    v13 = v12;
-    v14 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
-    v15 = [v4 trpId];
-    v16 = [v14 isEqual:v15];
+    v13 = trpId;
+    trpId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v16 = [trpId2 isEqual:trpId3];
 
     if (!v16)
     {
@@ -230,20 +230,20 @@
   {
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+  plannerQueryId2 = [equalCopy subRequestId];
+  if ((plannerQueryId != 0) == (plannerQueryId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
-  if (v17)
+  subRequestId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+  if (subRequestId)
   {
-    v18 = v17;
-    v19 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
-    v20 = [v4 subRequestId];
-    v21 = [v19 isEqual:v20];
+    v18 = subRequestId;
+    subRequestId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v21 = [subRequestId2 isEqual:subRequestId3];
 
     if (!v21)
     {
@@ -255,12 +255,12 @@
   {
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
-  v6 = [v4 traceId];
-  if ((v5 != 0) != (v6 == 0))
+  plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+  plannerQueryId2 = [equalCopy traceId];
+  if ((plannerQueryId != 0) != (plannerQueryId2 == 0))
   {
-    v22 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
-    if (!v22)
+    traceId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+    if (!traceId)
     {
 
 LABEL_25:
@@ -268,10 +268,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
-    v25 = [v4 traceId];
-    v26 = [v24 isEqual:v25];
+    v23 = traceId;
+    traceId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+    traceId3 = [equalCopy traceId];
+    v26 = [traceId2 isEqual:traceId3];
 
     if (v26)
     {
@@ -291,83 +291,83 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+  toCopy = to;
+  plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
 
-  if (v4)
+  if (plannerQueryId)
   {
-    v5 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+    plannerQueryId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+  trpId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
 
-  if (v6)
+  if (trpId)
   {
-    v7 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+    trpId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+  subRequestId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
 
-  if (v8)
+  if (subRequestId)
   {
-    v9 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+    subRequestId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+  traceId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (traceId)
   {
-    v12 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+    traceId2 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = ORCHSchemaORCHIntelligenceFlowQuerySent;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  plannerQueryId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self plannerQueryId];
+  v7 = [plannerQueryId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self deletePlannerQueryId];
   }
 
-  v9 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  trpId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self trpId];
+  v10 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self deleteTrpId];
   }
 
-  v12 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  subRequestId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self subRequestId];
+  v13 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self deleteSubRequestId];
   }
 
-  v15 = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  traceId = [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self traceId];
+  v16 = [traceId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ORCHSchemaORCHIntelligenceFlowQuerySent *)self deleteTraceId];
   }

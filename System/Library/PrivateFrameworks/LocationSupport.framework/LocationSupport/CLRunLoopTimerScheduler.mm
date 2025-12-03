@@ -1,27 +1,27 @@
 @interface CLRunLoopTimerScheduler
-- (CLRunLoopTimerScheduler)initWithRunLoopSilo:(id)a3;
+- (CLRunLoopTimerScheduler)initWithRunLoopSilo:(id)silo;
 - (CLTimer)timer;
 - (void)dealloc;
-- (void)reflectNextFireDelay:(double)a3 fireInterval:(double)a4;
+- (void)reflectNextFireDelay:(double)delay fireInterval:(double)interval;
 @end
 
 @implementation CLRunLoopTimerScheduler
 
-- (CLRunLoopTimerScheduler)initWithRunLoopSilo:(id)a3
+- (CLRunLoopTimerScheduler)initWithRunLoopSilo:(id)silo
 {
-  v4 = a3;
-  [v4 inPermissiveMode];
+  siloCopy = silo;
+  [siloCopy inPermissiveMode];
   v17.receiver = self;
   v17.super_class = CLRunLoopTimerScheduler;
   v5 = [(CLRunLoopTimerScheduler *)&v17 init];
   if (v5)
   {
-    v6 = [v4 runloop];
+    runloop = [siloCopy runloop];
     runloop = v5->_runloop;
-    v5->_runloop = v6;
+    v5->_runloop = runloop;
 
     objc_initWeak(&location, v5);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, siloCopy);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1DF80F910;
@@ -50,7 +50,7 @@
   [(CLRunLoopTimerScheduler *)&v3 dealloc];
 }
 
-- (void)reflectNextFireDelay:(double)a3 fireInterval:(double)a4
+- (void)reflectNextFireDelay:(double)delay fireInterval:(double)interval
 {
   underlyingTimer = self->_underlyingTimer;
   if (underlyingTimer)
@@ -58,12 +58,12 @@
     [(NSTimer *)underlyingTimer invalidate];
   }
 
-  v8 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:1 repeats:self->_fireBlock block:a4];
+  v8 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:1 repeats:self->_fireBlock block:interval];
   v9 = self->_underlyingTimer;
   self->_underlyingTimer = v8;
 
   v10 = self->_underlyingTimer;
-  v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
+  v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:delay];
   [(NSTimer *)v10 setFireDate:v11];
 
   runloop = self->_runloop;

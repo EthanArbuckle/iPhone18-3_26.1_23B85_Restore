@@ -1,40 +1,40 @@
 @interface BSSqliteDatabaseConnection
-- (BOOL)truncateDatabaseAndReturnError:(id *)a3;
+- (BOOL)truncateDatabaseAndReturnError:(id *)error;
 - (BSSqliteDatabaseConnection)init;
-- (BSSqliteDatabaseConnection)initWithFileURL:(id)a3 dataProtectionClass:(unint64_t)a4;
-- (id)_initWithSqlitePath:(uint64_t)a3 dataProtectionClass:;
+- (BSSqliteDatabaseConnection)initWithFileURL:(id)l dataProtectionClass:(unint64_t)class;
+- (id)_initWithSqlitePath:(uint64_t)path dataProtectionClass:;
 - (id)lastErrorMessage;
-- (id)prepareStatement:(id)a3;
+- (id)prepareStatement:(id)statement;
 - (void)_closeConnection;
-- (void)addObserver:(uint64_t)a1;
+- (void)addObserver:(uint64_t)observer;
 - (void)close;
 - (void)dealloc;
-- (void)performSyncWithDatabase:(uint64_t)a1;
-- (void)performWithDatabase:(uint64_t)a1;
+- (void)performSyncWithDatabase:(uint64_t)database;
+- (void)performWithDatabase:(uint64_t)database;
 @end
 
 @implementation BSSqliteDatabaseConnection
 
 - (BSSqliteDatabaseConnection)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:32 description:@"init is not allowed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:32 description:@"init is not allowed"];
 
   return [(BSSqliteDatabaseConnection *)self _initWithSqlitePath:2 dataProtectionClass:?];
 }
 
-- (id)_initWithSqlitePath:(uint64_t)a3 dataProtectionClass:
+- (id)_initWithSqlitePath:(uint64_t)path dataProtectionClass:
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (!a2)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:sel__initWithSqlitePath_dataProtectionClass_ object:a1 file:@"BSSqliteDatabaseConnection.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithSqlitePath_dataProtectionClass_ object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"path"}];
     }
 
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = BSSqliteDatabaseConnection;
     v6 = objc_msgSendSuper2(&v19, sel_init);
     if (v6)
@@ -45,18 +45,18 @@
 
       objc_opt_self();
       v9 = a2;
-      v10 = [a2 UTF8String];
-      if ((a3 - 1) >= 3)
+      uTF8String = [a2 UTF8String];
+      if ((path - 1) >= 3)
       {
         v11 = 1048582;
       }
 
       else
       {
-        v11 = 4194310 - ((a3 - 1) << 20);
+        v11 = 4194310 - ((path - 1) << 20);
       }
 
-      v12 = sqlite3_open_v2(v10, v6 + 2, v11, 0);
+      v12 = sqlite3_open_v2(uTF8String, v6 + 2, v11, 0);
       if (v12)
       {
         v13 = BSLogCommon();
@@ -91,16 +91,16 @@ LABEL_15:
   return v14;
 }
 
-- (BSSqliteDatabaseConnection)initWithFileURL:(id)a3 dataProtectionClass:(unint64_t)a4
+- (BSSqliteDatabaseConnection)initWithFileURL:(id)l dataProtectionClass:(unint64_t)class
 {
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:41 description:{@"url must be a fileURL : url=%@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:41 description:{@"url must be a fileURL : url=%@", l}];
   }
 
-  v8 = [a3 path];
-  v9 = [(BSSqliteDatabaseConnection *)self _initWithSqlitePath:v8 dataProtectionClass:a4];
+  path = [l path];
+  v9 = [(BSSqliteDatabaseConnection *)self _initWithSqlitePath:path dataProtectionClass:class];
 
   return v9;
 }
@@ -108,7 +108,7 @@ LABEL_15:
 - (void)_closeConnection
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   if (v2)
   {
     v3 = sqlite3_close_v2(v2);
@@ -119,7 +119,7 @@ LABEL_15:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         v6 = sqlite3_errstr(v4);
-        v7 = *(a1 + 16);
+        v7 = *(self + 16);
         v8 = 136315906;
         v9 = "[BSSqliteDatabaseConnection _closeConnection]";
         v10 = 1024;
@@ -132,7 +132,7 @@ LABEL_15:
       }
     }
 
-    *(a1 + 16) = 0;
+    *(self + 16) = 0;
   }
 }
 
@@ -140,14 +140,14 @@ LABEL_15:
 {
   if (self->_queue_dbConnection)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:65 description:@"database must be closed before dealloc"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:65 description:@"database must be closed before dealloc"];
   }
 
   if (self->_queue_queryCache)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:66 description:@"database must be closed before dealloc"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:66 description:@"database must be closed before dealloc"];
   }
 
   v6.receiver = self;
@@ -155,21 +155,21 @@ LABEL_15:
   [(BSSqliteDatabaseConnection *)&v6 dealloc];
 }
 
-- (id)prepareStatement:(id)a3
+- (id)prepareStatement:(id)statement
 {
-  if (!a3)
+  if (!statement)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSSqliteDatabaseConnection.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"query"}];
   }
 
-  v5 = [(NSCache *)self->_queue_queryCache objectForKey:a3];
+  v5 = [(NSCache *)self->_queue_queryCache objectForKey:statement];
   if (!v5)
   {
-    v5 = [BSSqlitePreparedStatement _newPreparedStatementForDatabaseConnection:a3 withSQLQuery:?];
+    v5 = [BSSqlitePreparedStatement _newPreparedStatementForDatabaseConnection:statement withSQLQuery:?];
     if (v5)
     {
-      v6 = [a3 copy];
+      v6 = [statement copy];
       [(NSCache *)self->_queue_queryCache setObject:v5 forKey:v6];
     }
   }
@@ -177,7 +177,7 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)truncateDatabaseAndReturnError:(id *)a3
+- (BOOL)truncateDatabaseAndReturnError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -197,9 +197,9 @@ LABEL_15:
   v6[5] = &v11;
   v6[6] = &v7;
   [(BSSqliteDatabaseConnection *)self performSyncWithDatabase:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v4 = *(v8 + 24);
@@ -244,31 +244,31 @@ void __61__BSSqliteDatabaseConnection_truncateDatabaseAndReturnError___block_inv
   }
 }
 
-- (void)performSyncWithDatabase:(uint64_t)a1
+- (void)performSyncWithDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    v2 = *(a1 + 8);
+    v2 = *(database + 8);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __54__BSSqliteDatabaseConnection_performSyncWithDatabase___block_invoke;
     v3[3] = &unk_1E72CB2B0;
-    v3[4] = a1;
+    v3[4] = database;
     v3[5] = a2;
     dispatch_sync(v2, v3);
   }
 }
 
-- (void)performWithDatabase:(uint64_t)a1
+- (void)performWithDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    v2 = *(a1 + 8);
+    v2 = *(database + 8);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __50__BSSqliteDatabaseConnection_performWithDatabase___block_invoke;
     v3[3] = &unk_1E72CB2B0;
-    v3[4] = a1;
+    v3[4] = database;
     v3[5] = a2;
     dispatch_async(v2, v3);
   }
@@ -276,7 +276,7 @@ void __61__BSSqliteDatabaseConnection_truncateDatabaseAndReturnError___block_inv
 
 - (id)lastErrorMessage
 {
-  if (a1)
+  if (self)
   {
     v4 = 0;
     v5 = &v4;
@@ -289,7 +289,7 @@ void __61__BSSqliteDatabaseConnection_truncateDatabaseAndReturnError___block_inv
     v3[2] = __46__BSSqliteDatabaseConnection_lastErrorMessage__block_invoke;
     v3[3] = &unk_1E72CB2D8;
     v3[4] = &v4;
-    [(BSSqliteDatabaseConnection *)a1 performSyncWithDatabase:v3];
+    [(BSSqliteDatabaseConnection *)self performSyncWithDatabase:v3];
     v1 = v5[5];
     _Block_object_dispose(&v4, 8);
   }
@@ -374,16 +374,16 @@ void __35__BSSqliteDatabaseConnection_close__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(uint64_t)a1
+- (void)addObserver:(uint64_t)observer
 {
-  if (a1)
+  if (observer)
   {
-    v2 = *(a1 + 8);
+    v2 = *(observer + 8);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __42__BSSqliteDatabaseConnection_addObserver___block_invoke;
     v3[3] = &unk_1E72CACC0;
-    v3[4] = a1;
+    v3[4] = observer;
     v3[5] = a2;
     dispatch_async(v2, v3);
   }

@@ -1,12 +1,12 @@
 @interface BuddyCloudConfigInstallationController_new
-- (BOOL)presentErrorIfDesired:(id)a3;
+- (BOOL)presentErrorIfDesired:(id)desired;
 - (BuddyCloudConfigInstallationController_new)init;
 - (MDMCloudConfiguration)cloudConfiguration;
 - (id)_clearImage;
 - (void)loadView;
-- (void)setCloudConfiguration:(id)a3;
+- (void)setCloudConfiguration:(id)configuration;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyCloudConfigInstallationController_new
@@ -18,11 +18,11 @@
   v3 = +[NSBundle mainBundle];
   v4 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"CLOUD_CONFIG_CONFIGURING"];
   v5 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"Localizable"];
-  v6 = [location _clearImage];
+  _clearImage = [location _clearImage];
   location = 0;
   v9.receiver = self;
   v9.super_class = BuddyCloudConfigInstallationController_new;
-  location = [(BuddyCloudConfigInstallationController_new *)&v9 initWithTitle:v5 detailText:0 icon:v6];
+  location = [(BuddyCloudConfigInstallationController_new *)&v9 initWithTitle:v5 detailText:0 icon:_clearImage];
   objc_storeStrong(&location, location);
 
   v7 = location;
@@ -32,28 +32,28 @@
 
 - (void)loadView
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14.receiver = self;
   v14.super_class = BuddyCloudConfigInstallationController_new;
   [(BuddyCloudConfigInstallationController_new *)&v14 loadView];
   v2 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
-  spinnerView = v16->_spinnerView;
-  v16->_spinnerView = v2;
+  spinnerView = selfCopy->_spinnerView;
+  selfCopy->_spinnerView = v2;
 
-  [(UIActivityIndicatorView *)v16->_spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(BuddyCloudConfigInstallationController_new *)v16 view];
-  [v4 addSubview:v16->_spinnerView];
+  [(UIActivityIndicatorView *)selfCopy->_spinnerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(BuddyCloudConfigInstallationController_new *)selfCopy view];
+  [view addSubview:selfCopy->_spinnerView];
 
-  v5 = [(BuddyCloudConfigInstallationController_new *)v16 view];
-  v6 = [v5 centerXAnchor];
-  v7 = [(UIActivityIndicatorView *)v16->_spinnerView centerXAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  view2 = [(BuddyCloudConfigInstallationController_new *)selfCopy view];
+  centerXAnchor = [view2 centerXAnchor];
+  centerXAnchor2 = [(UIActivityIndicatorView *)selfCopy->_spinnerView centerXAnchor];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17[0] = v8;
-  v9 = [(BuddyCloudConfigInstallationController_new *)v16 view];
-  v10 = [v9 centerYAnchor];
-  v11 = [(UIActivityIndicatorView *)v16->_spinnerView centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  view3 = [(BuddyCloudConfigInstallationController_new *)selfCopy view];
+  centerYAnchor = [view3 centerYAnchor];
+  centerYAnchor2 = [(UIActivityIndicatorView *)selfCopy->_spinnerView centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v17[1] = v12;
   v13 = [NSArray arrayWithObjects:v17 count:2];
   [NSLayoutConstraint activateConstraints:v13];
@@ -61,15 +61,15 @@
 
 - (void)viewDidLoad
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20.receiver = self;
   v20.super_class = BuddyCloudConfigInstallationController_new;
   [(BuddyCloudConfigInstallationController_new *)&v20 viewDidLoad];
-  v2 = [(BuddyCloudConfigInstallationController_new *)v22 cloudConfiguration];
-  v19 = [(MDMCloudConfiguration *)v2 details];
+  cloudConfiguration = [(BuddyCloudConfigInstallationController_new *)selfCopy cloudConfiguration];
+  details = [(MDMCloudConfiguration *)cloudConfiguration details];
 
-  v18 = [v19 objectForKeyedSubscript:kCCOrganizationNameKey];
+  v18 = [details objectForKeyedSubscript:kCCOrganizationNameKey];
   v15 = 0;
   v13 = 0;
   v11 = 0;
@@ -116,35 +116,35 @@
   {
   }
 
-  v4 = [(BuddyCloudConfigInstallationController_new *)v22 headerView];
-  [v4 setDetailText:location];
+  headerView = [(BuddyCloudConfigInstallationController_new *)selfCopy headerView];
+  [headerView setDetailText:location];
 
-  v5 = [(BuddyCloudConfigInstallationController_new *)v22 spinnerView];
-  [(UIActivityIndicatorView *)v5 startAnimating];
+  spinnerView = [(BuddyCloudConfigInstallationController_new *)selfCopy spinnerView];
+  [(UIActivityIndicatorView *)spinnerView startAnimating];
 
-  v6 = [(BuddyCloudConfigInstallationController_new *)v22 navigationItem];
-  [v6 setHidesBackButton:1];
+  navigationItem = [(BuddyCloudConfigInstallationController_new *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&details, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = BuddyCloudConfigInstallationController_new;
-  [(BuddyCloudConfigInstallationController_new *)&v4 viewWillAppear:a3];
-  v3 = [(BuddyCloudConfigInstallationController_new *)v7 view];
-  [v3 setNeedsLayout];
+  [(BuddyCloudConfigInstallationController_new *)&v4 viewWillAppear:appear];
+  view = [(BuddyCloudConfigInstallationController_new *)selfCopy view];
+  [view setNeedsLayout];
 }
 
 - (id)_clearImage
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v10.width = sub_1001BD90C();
   size = v10;
@@ -162,40 +162,40 @@
   return v3;
 }
 
-- (BOOL)presentErrorIfDesired:(id)a3
+- (BOOL)presentErrorIfDesired:(id)desired
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCloudConfigInstallationController_new *)v15 spinnerView];
-  [(UIActivityIndicatorView *)v3 stopAnimating];
+  objc_storeStrong(location, desired);
+  spinnerView = [(BuddyCloudConfigInstallationController_new *)selfCopy spinnerView];
+  [(UIActivityIndicatorView *)spinnerView stopAnimating];
 
   oslog = _BYLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [location[0] localizedDescription];
-    sub_10006AE18(buf, v11);
+    localizedDescription = [location[0] localizedDescription];
+    sub_10006AE18(buf, localizedDescription);
     _os_log_impl(&_mh_execute_header, oslog, v12, "Last error description: %@", buf, 0xCu);
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&localizedDescription, 0);
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(BuddyCloudConfigInstallationController_new *)v15 headerView];
-  v5 = [location[0] localizedDescription];
-  [v4 setDetailText:v5];
+  headerView = [(BuddyCloudConfigInstallationController_new *)selfCopy headerView];
+  localizedDescription2 = [location[0] localizedDescription];
+  [headerView setDetailText:localizedDescription2];
 
-  v6 = [(BuddyCloudConfigInstallationController_new *)v15 navigationItem];
-  [v6 setHidesBackButton:0];
+  navigationItem = [(BuddyCloudConfigInstallationController_new *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:0];
 
-  v7 = [(BuddyCloudConfigInstallationController_new *)v15 navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:0];
+  navigationItem2 = [(BuddyCloudConfigInstallationController_new *)selfCopy navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
-  v9 = [(BuddyCloudConfigInstallationController_new *)v15 view];
-  [v9 setNeedsLayout];
+  view = [(BuddyCloudConfigInstallationController_new *)selfCopy view];
+  [view setNeedsLayout];
 
   objc_storeStrong(location, 0);
   return 1;
@@ -216,13 +216,13 @@
   return v3;
 }
 
-- (void)setCloudConfiguration:(id)a3
+- (void)setCloudConfiguration:(id)configuration
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_cloudConfiguration, location[0]);
+  objc_storeStrong(location, configuration);
+  objc_storeStrong(&selfCopy->_cloudConfiguration, location[0]);
   objc_storeStrong(location, 0);
 }
 

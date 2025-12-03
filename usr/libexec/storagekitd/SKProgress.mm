@@ -1,19 +1,19 @@
 @interface SKProgress
-+ (SKProgress)progressWithTotalUnitCount:(int64_t)a3;
++ (SKProgress)progressWithTotalUnitCount:(int64_t)count;
 - (SKProgress)init;
-- (void)chainChildProgress:(id)a3 withPendingUnitCount:(int64_t)a4;
+- (void)chainChildProgress:(id)progress withPendingUnitCount:(int64_t)count;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setLocalizedAdditionalDescription:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setLocalizedAdditionalDescription:(id)description;
 @end
 
 @implementation SKProgress
 
-- (void)setLocalizedAdditionalDescription:(id)a3
+- (void)setLocalizedAdditionalDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = +[NSCharacterSet newlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v6 = [descriptionCopy stringByTrimmingCharactersInSet:v5];
 
   [(SKProgress *)self setUserInfoObject:v6 forKey:_NSProgressRemoteLocalizedAdditionalDescriptionKey];
   v7.receiver = self;
@@ -21,10 +21,10 @@
   [(SKProgress *)&v7 setLocalizedAdditionalDescription:v6];
 }
 
-+ (SKProgress)progressWithTotalUnitCount:(int64_t)a3
++ (SKProgress)progressWithTotalUnitCount:(int64_t)count
 {
   v4 = objc_opt_new();
-  [v4 setTotalUnitCount:a3];
+  [v4 setTotalUnitCount:count];
 
   return v4;
 }
@@ -47,38 +47,38 @@
   return v3;
 }
 
-- (void)chainChildProgress:(id)a3 withPendingUnitCount:(int64_t)a4
+- (void)chainChildProgress:(id)progress withPendingUnitCount:(int64_t)count
 {
-  v6 = a3;
-  [(SKProgress *)self addChild:v6 withPendingUnitCount:a4];
-  v7 = [(SKProgress *)self children];
-  [v7 addObject:v6];
+  progressCopy = progress;
+  [(SKProgress *)self addChild:progressCopy withPendingUnitCount:count];
+  children = [(SKProgress *)self children];
+  [children addObject:progressCopy];
 
-  v8 = [v6 userInfo];
+  userInfo = [progressCopy userInfo];
 
-  [v8 addObserver:self forKeyPath:_NSProgressRemoteLocalizedAdditionalDescriptionKey options:0 context:0];
+  [userInfo addObserver:self forKeyPath:_NSProgressRemoteLocalizedAdditionalDescriptionKey options:0 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = _NSProgressRemoteLocalizedAdditionalDescriptionKey;
-  if ([a3 isEqualToString:{_NSProgressRemoteLocalizedAdditionalDescriptionKey, a4, a5, a6}])
+  if ([path isEqualToString:{_NSProgressRemoteLocalizedAdditionalDescriptionKey, object, change, context}])
   {
-    v9 = [(SKProgress *)self userInfo];
-    v8 = [v9 objectForKeyedSubscript:v7];
+    userInfo = [(SKProgress *)self userInfo];
+    v8 = [userInfo objectForKeyedSubscript:v7];
     [(SKProgress *)self setLocalizedAdditionalDescription:v8];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(SKProgress *)self children];
+  children = [(SKProgress *)self children];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002C684;
   v5[3] = &unk_1000499C8;
   v5[4] = self;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [children enumerateObjectsUsingBlock:v5];
 
   v4.receiver = self;
   v4.super_class = SKProgress;

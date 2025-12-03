@@ -6,9 +6,9 @@
 
 - (id)_maps_diffableDataSourceIdentifier
 {
-  v2 = [(MKMapItemIdentifier *)self geoMapItemIdentifier];
-  v3 = [v2 comparableRepresentation];
-  v4 = [v3 base64EncodedStringWithOptions:0];
+  geoMapItemIdentifier = [(MKMapItemIdentifier *)self geoMapItemIdentifier];
+  comparableRepresentation = [geoMapItemIdentifier comparableRepresentation];
+  v4 = [comparableRepresentation base64EncodedStringWithOptions:0];
 
   return v4;
 }

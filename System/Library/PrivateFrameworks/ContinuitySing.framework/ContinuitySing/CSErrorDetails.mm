@@ -1,7 +1,7 @@
 @interface CSErrorDetails
 - (BOOL)isInternalBuild;
 - (BOOL)shouldShowInternalErrorDetails;
-- (CSErrorDetails)initWithCode:(int64_t)a3 subsystem:(int64_t)a4 description:(id)a5 error:(id)a6 exitSession:(BOOL)a7;
+- (CSErrorDetails)initWithCode:(int64_t)code subsystem:(int64_t)subsystem description:(id)description error:(id)error exitSession:(BOOL)session;
 - (id)_friendlyDescriptionForError;
 - (void)_generateTechnicalDescription;
 - (void)_setupCommonProperties;
@@ -9,37 +9,37 @@
 
 @implementation CSErrorDetails
 
-- (CSErrorDetails)initWithCode:(int64_t)a3 subsystem:(int64_t)a4 description:(id)a5 error:(id)a6 exitSession:(BOOL)a7
+- (CSErrorDetails)initWithCode:(int64_t)code subsystem:(int64_t)subsystem description:(id)description error:(id)error exitSession:(BOOL)session
 {
-  v12 = a5;
-  v13 = a6;
+  descriptionCopy = description;
+  errorCopy = error;
   v23.receiver = self;
   v23.super_class = CSErrorDetails;
   v14 = [(CSErrorDetails *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_originalError, a6);
-    v15->_errorCode = a3;
-    v15->_subsystem = a4;
-    v16 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v14->_originalError, error);
+    v15->_errorCode = code;
+    v15->_subsystem = subsystem;
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v15->_timestamp;
-    v15->_timestamp = v16;
+    v15->_timestamp = date;
 
-    if (v12)
+    if (descriptionCopy)
     {
-      v18 = v12;
+      v18 = descriptionCopy;
       errorDescription = v15->_errorDescription;
       v15->_errorDescription = v18;
     }
 
     else
     {
-      v20 = [v13 localizedDescription];
-      errorDescription = v20;
-      if (v20)
+      localizedDescription = [errorCopy localizedDescription];
+      errorDescription = localizedDescription;
+      if (localizedDescription)
       {
-        v21 = v20;
+        v21 = localizedDescription;
       }
 
       else
@@ -50,7 +50,7 @@
       objc_storeStrong(&v15->_errorDescription, v21);
     }
 
-    v15->_exitSession = a7;
+    v15->_exitSession = session;
     [(CSErrorDetails *)v15 _setupCommonProperties];
   }
 
@@ -125,36 +125,36 @@ uint64_t __33__CSErrorDetails_isInternalBuild__block_invoke()
 
 - (void)_generateTechnicalDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(CSErrorDetails *)self _friendlyDescriptionForError];
-  v5 = v4;
-  if (v4)
+  string = [MEMORY[0x277CCAB68] string];
+  _friendlyDescriptionForError = [(CSErrorDetails *)self _friendlyDescriptionForError];
+  v5 = _friendlyDescriptionForError;
+  if (_friendlyDescriptionForError)
   {
-    [v3 appendFormat:@"%@\n\n", v4];
+    [string appendFormat:@"%@\n\n", _friendlyDescriptionForError];
   }
 
-  [v3 appendFormat:@"Technical Details:\n"];
-  [v3 appendFormat:@"Subsystem: %@\n", self->_subsystemName];
-  [v3 appendFormat:@"Error Code: %ld\n", self->_errorCode];
-  [v3 appendFormat:@"Description: %@\n", self->_errorDescription];
-  [v3 appendFormat:@"Build: %@\n", self->_buildVersion];
-  [v3 appendFormat:@"Timestamp: %@\n", self->_timestamp];
+  [string appendFormat:@"Technical Details:\n"];
+  [string appendFormat:@"Subsystem: %@\n", self->_subsystemName];
+  [string appendFormat:@"Error Code: %ld\n", self->_errorCode];
+  [string appendFormat:@"Description: %@\n", self->_errorDescription];
+  [string appendFormat:@"Build: %@\n", self->_buildVersion];
+  [string appendFormat:@"Timestamp: %@\n", self->_timestamp];
   if (self->_originalError)
   {
-    [v3 appendFormat:@"Original Error: %@\n", self->_originalError];
-    v6 = [(NSError *)self->_originalError userInfo];
-    v7 = [v6 count];
+    [string appendFormat:@"Original Error: %@\n", self->_originalError];
+    userInfo = [(NSError *)self->_originalError userInfo];
+    v7 = [userInfo count];
 
     if (v7)
     {
       v18 = v5;
-      [v3 appendString:@"Error UserInfo:\n"];
+      [string appendString:@"Error UserInfo:\n"];
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v8 = [(NSError *)self->_originalError userInfo];
-      v9 = [v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      userInfo2 = [(NSError *)self->_originalError userInfo];
+      v9 = [userInfo2 countByEnumeratingWithState:&v20 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -166,19 +166,19 @@ uint64_t __33__CSErrorDetails_isInternalBuild__block_invoke()
           {
             if (*v21 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(userInfo2);
             }
 
             v13 = *(*(&v20 + 1) + 8 * v12);
-            v14 = [(NSError *)self->_originalError userInfo];
-            v15 = [v14 objectForKeyedSubscript:v13];
-            [v3 appendFormat:@"  %@: %@\n", v13, v15];
+            userInfo3 = [(NSError *)self->_originalError userInfo];
+            v15 = [userInfo3 objectForKeyedSubscript:v13];
+            [string appendFormat:@"  %@: %@\n", v13, v15];
 
             ++v12;
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+          v10 = [userInfo2 countByEnumeratingWithState:&v20 objects:v19 count:16];
         }
 
         while (v10);
@@ -188,7 +188,7 @@ uint64_t __33__CSErrorDetails_isInternalBuild__block_invoke()
     }
   }
 
-  v16 = [v3 copy];
+  v16 = [string copy];
   technicalDescription = self->_technicalDescription;
   self->_technicalDescription = v16;
 }

@@ -1,18 +1,18 @@
 @interface HMWidgetManagerFetchStateResponse
-- (HMWidgetManagerFetchStateResponse)initWithValueByCharacteristicUniqueIdentifier:(id)a3;
+- (HMWidgetManagerFetchStateResponse)initWithValueByCharacteristicUniqueIdentifier:(id)identifier;
 @end
 
 @implementation HMWidgetManagerFetchStateResponse
 
-- (HMWidgetManagerFetchStateResponse)initWithValueByCharacteristicUniqueIdentifier:(id)a3
+- (HMWidgetManagerFetchStateResponse)initWithValueByCharacteristicUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HMWidgetManagerFetchStateResponse;
   v5 = [(HMWidgetManagerFetchStateResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     valueByCharacteristicUniqueIdentifier = v5->_valueByCharacteristicUniqueIdentifier;
     v5->_valueByCharacteristicUniqueIdentifier = v6;
   }

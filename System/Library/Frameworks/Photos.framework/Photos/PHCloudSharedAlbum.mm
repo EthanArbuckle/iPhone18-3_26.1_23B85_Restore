@@ -1,16 +1,16 @@
 @interface PHCloudSharedAlbum
 + (id)entityKeyMap;
-+ (id)fetchCloudSharedAlbumsWithGUIDs:(id)a3 options:(id)a4;
-+ (id)fetchCloudSharedAlbumsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-- (BOOL)canPerformEditOperation:(int64_t)a3;
++ (id)fetchCloudSharedAlbumsWithGUIDs:(id)ds options:(id)options;
++ (id)fetchCloudSharedAlbumsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
+- (BOOL)canPerformEditOperation:(int64_t)operation;
 - (NSArray)invitationRecords;
 - (NSString)cloudOwnerEmail;
 - (NSString)cloudOwnerPhone;
-- (PHCloudSharedAlbum)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHCloudSharedAlbum)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
-- (id)localizedSharedByLabelAllowsEmail:(BOOL)a3;
+- (id)localizedSharedByLabelAllowsEmail:(BOOL)email;
 @end
 
 @implementation PHCloudSharedAlbum
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (BOOL)canPerformEditOperation:(int64_t)a3
+- (BOOL)canPerformEditOperation:(int64_t)operation
 {
   if (![MEMORY[0x1E69BF2F0] isEntitledForPhotoKit] || -[PHCollection isDeleted](self, "isDeleted"))
   {
@@ -35,46 +35,46 @@ LABEL_3:
 
   if ([(PHAssetCollection *)self assetCollectionType]!= PHAssetCollectionTypeAlbum)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAlbum.m" lineNumber:228 description:{@"Wrong type %lu", -[PHAssetCollection assetCollectionType](self, "assetCollectionType")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHCloudSharedAlbum.m" lineNumber:228 description:{@"Wrong type %lu", -[PHAssetCollection assetCollectionType](self, "assetCollectionType")}];
   }
 
   if ([(PHAssetCollection *)self assetCollectionSubtype]!= PHAssetCollectionSubtypeAlbumCloudShared)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAlbum.m" lineNumber:229 description:{@"Wrong subtype %lu", -[PHAssetCollection assetCollectionSubtype](self, "assetCollectionSubtype")}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHCloudSharedAlbum.m" lineNumber:229 description:{@"Wrong subtype %lu", -[PHAssetCollection assetCollectionSubtype](self, "assetCollectionSubtype")}];
   }
 
   cloudAlbumSubtype = self->_cloudAlbumSubtype;
-  v9 = [(PHCloudSharedAlbum *)self isOwned];
+  isOwned = [(PHCloudSharedAlbum *)self isOwned];
   if (cloudAlbumSubtype == 1)
   {
-    LOBYTE(v6) = a3 == 6 && v9;
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    LOBYTE(v6) = operation == 6 && isOwned;
+    if ((operation & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       LOBYTE(v6) = 1;
     }
   }
 
-  else if (v9)
+  else if (isOwned)
   {
-    LOBYTE(v6) = a3 != 5 && a3 != 2;
+    LOBYTE(v6) = operation != 5 && operation != 2;
   }
 
   else
   {
     if ([(PHCloudSharedAlbum *)self isCloudMultipleContributorsEnabled])
     {
-      if (a3 < 7)
+      if (operation < 7)
       {
-        v6 = 0x4Au >> a3;
+        v6 = 0x4Au >> operation;
         return v6 & 1;
       }
 
       goto LABEL_3;
     }
 
-    LOBYTE(v6) = a3 == 6 || a3 == 1;
+    LOBYTE(v6) = operation == 6 || operation == 1;
   }
 
   return v6 & 1;
@@ -83,36 +83,36 @@ LABEL_3:
 - (NSArray)invitationRecords
 {
   v2 = [PHCloudSharedAlbumInvitationRecord fetchInvitationRecordsForSharedAlbum:self];
-  v3 = [v2 fetchedObjects];
+  fetchedObjects = [v2 fetchedObjects];
 
-  return v3;
+  return fetchedObjects;
 }
 
 - (NSString)cloudOwnerPhone
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibrary];
-  v5 = [v4 personInfoManager];
-  v6 = [v5 phonesForInvitationRecordGUID:self->_cloudOwnerPersonID];
-  v7 = [v6 firstObject];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
+  personInfoManager = [v3PhotoLibrary personInfoManager];
+  v6 = [personInfoManager phonesForInvitationRecordGUID:self->_cloudOwnerPersonID];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (NSString)cloudOwnerEmail
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibraryBundle];
-  v5 = [v4 emailAddressManager];
-  v6 = [(PHCloudSharedAlbum *)self cloudOwnerEmailKey];
-  v7 = [v5 emailAddressForKey:v6];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  photoLibraryBundle = [photoLibrary photoLibraryBundle];
+  emailAddressManager = [photoLibraryBundle emailAddressManager];
+  cloudOwnerEmailKey = [(PHCloudSharedAlbum *)self cloudOwnerEmailKey];
+  v7 = [emailAddressManager emailAddressForKey:cloudOwnerEmailKey];
 
   if (!v7)
   {
-    v8 = [v3 photoLibrary];
-    v9 = [v8 personInfoManager];
-    v10 = [(PHCloudSharedAlbum *)self cloudOwnerHashedPersonID];
-    v7 = [v9 emailForPersonID:v10];
+    v3PhotoLibrary = [photoLibrary photoLibrary];
+    personInfoManager = [v3PhotoLibrary personInfoManager];
+    cloudOwnerHashedPersonID = [(PHCloudSharedAlbum *)self cloudOwnerHashedPersonID];
+    v7 = [personInfoManager emailForPersonID:cloudOwnerHashedPersonID];
 
     if (!v7)
     {
@@ -128,72 +128,72 @@ LABEL_3:
   return v7;
 }
 
-- (id)localizedSharedByLabelAllowsEmail:(BOOL)a3
+- (id)localizedSharedByLabelAllowsEmail:(BOOL)email
 {
-  v3 = a3;
-  v5 = [(PHCloudSharedAlbum *)self cloudOwnerFirstName];
-  v6 = [(PHCloudSharedAlbum *)self cloudOwnerLastName];
-  v7 = [(PHCloudSharedAlbum *)self cloudOwnerFullName];
-  v8 = [(PHCloudSharedAlbum *)self cloudOwnerEmailKey];
+  emailCopy = email;
+  cloudOwnerFirstName = [(PHCloudSharedAlbum *)self cloudOwnerFirstName];
+  cloudOwnerLastName = [(PHCloudSharedAlbum *)self cloudOwnerLastName];
+  cloudOwnerFullName = [(PHCloudSharedAlbum *)self cloudOwnerFullName];
+  cloudOwnerEmailKey = [(PHCloudSharedAlbum *)self cloudOwnerEmailKey];
   v9 = MEMORY[0x1E69BE330];
-  v10 = [(PHCloudSharedAlbum *)self isOwned];
-  v11 = [(PHObject *)self photoLibrary];
-  v12 = [v11 photoLibraryBundle];
-  v13 = [v12 emailAddressManager];
-  v14 = [v9 localizedSharedByLabelWithFirstName:v5 lastName:v6 fullName:v7 emailKey:v8 isOwned:v10 allowsEmail:v3 emailAddressManager:v13];
+  isOwned = [(PHCloudSharedAlbum *)self isOwned];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  photoLibraryBundle = [photoLibrary photoLibraryBundle];
+  emailAddressManager = [photoLibraryBundle emailAddressManager];
+  v14 = [v9 localizedSharedByLabelWithFirstName:cloudOwnerFirstName lastName:cloudOwnerLastName fullName:cloudOwnerFullName emailKey:cloudOwnerEmailKey isOwned:isOwned allowsEmail:emailCopy emailAddressManager:emailAddressManager];
 
   return v14;
 }
 
-- (PHCloudSharedAlbum)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHCloudSharedAlbum)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PHCloudSharedAlbum;
-  v9 = [(PHAssetCollection *)&v37 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHAssetCollection *)&v37 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"cloudMultipleContributorsEnabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cloudMultipleContributorsEnabled"];
     v9->_cloudMultipleContributorsEnabled = [v10 BOOLValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"isOwned"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isOwned"];
     v9->_owned = [v11 BOOLValue];
 
-    v12 = [v8 objectForKeyedSubscript:@"cloudNotificationsEnabled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cloudNotificationsEnabled"];
     v9->_cloudNotificationsEnabled = [v12 BOOLValue];
 
-    v13 = [v8 objectForKeyedSubscript:@"cloudAlbumSubtype"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"cloudAlbumSubtype"];
     v9->_cloudAlbumSubtype = [v13 shortValue];
 
-    v14 = [v8 objectForKeyedSubscript:@"cloudOwnerFirstName"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cloudOwnerFirstName"];
     cloudOwnerFirstName = v9->_cloudOwnerFirstName;
     v9->_cloudOwnerFirstName = v14;
 
-    v16 = [v8 objectForKeyedSubscript:@"cloudOwnerLastName"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"cloudOwnerLastName"];
     cloudOwnerLastName = v9->_cloudOwnerLastName;
     v9->_cloudOwnerLastName = v16;
 
-    v18 = [v8 objectForKeyedSubscript:@"cloudOwnerFullName"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"cloudOwnerFullName"];
     cloudOwnerFullName = v9->_cloudOwnerFullName;
     v9->_cloudOwnerFullName = v18;
 
-    v20 = [v8 objectForKeyedSubscript:@"cloudOwnerEmailKey"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"cloudOwnerEmailKey"];
     cloudOwnerEmailKey = v9->_cloudOwnerEmailKey;
     v9->_cloudOwnerEmailKey = v20;
 
-    v22 = [v8 objectForKeyedSubscript:@"cloudOwnerHashedPersonID"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"cloudOwnerHashedPersonID"];
     cloudOwnerHashedPersonID = v9->_cloudOwnerHashedPersonID;
     v9->_cloudOwnerHashedPersonID = v22;
 
-    v24 = [v8 objectForKeyedSubscript:@"publicURL"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"publicURL"];
     publicURL = v9->_publicURL;
     v9->_publicURL = v24;
 
-    v26 = [v8 objectForKeyedSubscript:@"cloudPublicURLEnabled"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"cloudPublicURLEnabled"];
     if ([v26 BOOLValue])
     {
-      v27 = [v8 objectForKeyedSubscript:@"cloudPublicURLEnabledLocal"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"cloudPublicURLEnabledLocal"];
       v9->_publicURLEnabled = [v27 BOOLValue];
     }
 
@@ -202,11 +202,11 @@ LABEL_3:
       v9->_publicURLEnabled = 0;
     }
 
-    v28 = [v8 objectForKeyedSubscript:@"cloudPersonID"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cloudPersonID"];
     cloudOwnerPersonID = v9->_cloudOwnerPersonID;
     v9->_cloudOwnerPersonID = v28;
 
-    v30 = [v8 objectForKeyedSubscript:@"cloudRelationshipState"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"cloudRelationshipState"];
     cloudRelationshipState = v9->_cloudRelationshipState;
     v9->_cloudRelationshipState = v30;
 
@@ -215,17 +215,17 @@ LABEL_3:
       v32 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
       {
-        v33 = [(PHAssetCollection *)v9 assetCollectionType];
-        v34 = [(PHAssetCollection *)v9 assetCollectionSubtype];
-        v35 = [(PHAssetCollection *)v9 plAlbumKind];
+        assetCollectionType = [(PHAssetCollection *)v9 assetCollectionType];
+        assetCollectionSubtype = [(PHAssetCollection *)v9 assetCollectionSubtype];
+        plAlbumKind = [(PHAssetCollection *)v9 plAlbumKind];
         *buf = 134218754;
-        v39 = v33;
+        v39 = assetCollectionType;
         v40 = 2048;
-        v41 = v34;
+        v41 = assetCollectionSubtype;
         v42 = 1024;
-        v43 = v35;
+        v43 = plAlbumKind;
         v44 = 2112;
-        v45 = v8;
+        v45 = dictionaryCopy;
         _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_FAULT, "PHCloudSharedAlbum: rdar://problem/18103586 Invalid asset collection type (%lu) or subtype (%lu) with album kind: %d, dict: %@", buf, 0x26u);
       }
     }
@@ -234,23 +234,23 @@ LABEL_3:
   return v9;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__PHCloudSharedAlbum_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_51113 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_51113, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_51114 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_51114 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -380,13 +380,13 @@ void __34__PHCloudSharedAlbum_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_51136 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__PHCloudSharedAlbum_propertiesToFetchWithHint___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = hint;
   if (propertiesToFetchWithHint__onceToken_51163 != -1)
   {
     dispatch_once(&propertiesToFetchWithHint__onceToken_51163, block);
@@ -421,16 +421,16 @@ void __48__PHCloudSharedAlbum_propertiesToFetchWithHint___block_invoke(uint64_t 
   propertiesToFetchWithHint__array_51164 = v3;
 }
 
-+ (id)fetchCloudSharedAlbumsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchCloudSharedAlbumsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__PHCloudSharedAlbum_fetchCloudSharedAlbumsWithLocalIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -443,14 +443,14 @@ id __73__PHCloudSharedAlbum_fetchCloudSharedAlbumsWithLocalIdentifiers_options__
   return v3;
 }
 
-+ (id)fetchCloudSharedAlbumsWithGUIDs:(id)a3 options:(id)a4
++ (id)fetchCloudSharedAlbumsWithGUIDs:(id)ds options:(id)options
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"%K in %@", @"cloudGUID", a3];
-  [v6 setPredicate:v7];
+  optionsCopy = options;
+  v7 = [v5 predicateWithFormat:@"%K in %@", @"cloudGUID", ds];
+  [optionsCopy setPredicate:v7];
 
-  v8 = [PHAssetCollection fetchAssetCollectionsWithType:1 subtype:101 options:v6];
+  v8 = [PHAssetCollection fetchAssetCollectionsWithType:1 subtype:101 options:optionsCopy];
 
   return v8;
 }

@@ -1,17 +1,17 @@
 @interface SKUIDeferredActivityItemProvider
-- (SKUIDeferredActivityItemProvider)initWithProductPageItem:(id)a3 clientContext:(id)a4;
-- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)a3 clientContext:(id)a4;
-- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)a3 clientContext:(id)a4 placeholderItem:(id)a5;
+- (SKUIDeferredActivityItemProvider)initWithProductPageItem:(id)item clientContext:(id)context;
+- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)provider clientContext:(id)context;
+- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)provider clientContext:(id)context placeholderItem:(id)item;
 - (SKUIProductPageItem)productPageItem;
 @end
 
 @implementation SKUIDeferredActivityItemProvider
 
-- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)a3 clientContext:(id)a4 placeholderItem:(id)a5
+- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)provider clientContext:(id)context placeholderItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  contextCopy = context;
+  itemCopy = item;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIDeferredActivityItemProvider initWithProductPageItemProvider:clientContext:placeholderItem:];
@@ -19,41 +19,41 @@
 
   v15.receiver = self;
   v15.super_class = SKUIDeferredActivityItemProvider;
-  v11 = [(UIActivityItemProvider *)&v15 initWithPlaceholderItem:v10];
+  v11 = [(UIActivityItemProvider *)&v15 initWithPlaceholderItem:itemCopy];
   if (v11)
   {
-    v12 = _Block_copy(v8);
+    v12 = _Block_copy(providerCopy);
     itemProvider = v11->_itemProvider;
     v11->_itemProvider = v12;
 
-    objc_storeStrong(&v11->_clientContext, a4);
+    objc_storeStrong(&v11->_clientContext, context);
   }
 
   return v11;
 }
 
-- (SKUIDeferredActivityItemProvider)initWithProductPageItem:(id)a3 clientContext:(id)a4
+- (SKUIDeferredActivityItemProvider)initWithProductPageItem:(id)item clientContext:(id)context
 {
-  v6 = a3;
+  itemCopy = item;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__SKUIDeferredActivityItemProvider_initWithProductPageItem_clientContext___block_invoke;
   v12[3] = &unk_2781FDE50;
-  v13 = v6;
-  v7 = v6;
-  v8 = a4;
-  v9 = [objc_opt_class() placeholderItem];
-  v10 = [(SKUIDeferredActivityItemProvider *)self initWithProductPageItemProvider:v12 clientContext:v8 placeholderItem:v9];
+  v13 = itemCopy;
+  v7 = itemCopy;
+  contextCopy = context;
+  placeholderItem = [objc_opt_class() placeholderItem];
+  v10 = [(SKUIDeferredActivityItemProvider *)self initWithProductPageItemProvider:v12 clientContext:contextCopy placeholderItem:placeholderItem];
 
   return v10;
 }
 
-- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)a3 clientContext:(id)a4
+- (SKUIDeferredActivityItemProvider)initWithProductPageItemProvider:(id)provider clientContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() placeholderItem];
-  v9 = [(SKUIDeferredActivityItemProvider *)self initWithProductPageItemProvider:v7 clientContext:v6 placeholderItem:v8];
+  contextCopy = context;
+  providerCopy = provider;
+  placeholderItem = [objc_opt_class() placeholderItem];
+  v9 = [(SKUIDeferredActivityItemProvider *)self initWithProductPageItemProvider:providerCopy clientContext:contextCopy placeholderItem:placeholderItem];
 
   return v9;
 }

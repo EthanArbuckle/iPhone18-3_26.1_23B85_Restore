@@ -8,9 +8,9 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 count];
+  v8 = [self count];
   v9 = [v6 count];
-  v10 = a1;
+  selfCopy = self;
   v11 = v8 >= v9;
   if (v8 >= v9)
   {
@@ -19,7 +19,7 @@
 
   else
   {
-    v12 = v10;
+    v12 = selfCopy;
   }
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -28,7 +28,7 @@
   v17[3] = &unk_1E75A3518;
   if (v11)
   {
-    v13 = v10;
+    v13 = selfCopy;
   }
 
   else

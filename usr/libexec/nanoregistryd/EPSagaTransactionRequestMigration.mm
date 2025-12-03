@@ -1,21 +1,21 @@
 @interface EPSagaTransactionRequestMigration
 - (EPTransactionDelegate)delegate;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionRequestMigration
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"idsDeviceIdentifier"];
-  v9 = [v6 objectForKeyedSubscript:@"destinationIsAltAccount"];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [entryCopy objectForKeyedSubscript:@"idsDeviceIdentifier"];
+  v9 = [entryCopy objectForKeyedSubscript:@"destinationIsAltAccount"];
   v10 = v9;
   if (v9 && [v9 BOOLValue])
   {
-    v11 = [v7 serviceFromClass:objc_opt_class()];
+    v11 = [registryCopy serviceFromClass:objc_opt_class()];
     v59 = 0;
     v60 = &v59;
     v61 = 0x2020000000;
@@ -25,18 +25,18 @@
     v55[2] = sub_1000B4F70;
     v55[3] = &unk_100179100;
     v58 = &v59;
-    v12 = v6;
+    v12 = entryCopy;
     v56 = v12;
-    v57 = self;
+    selfCopy = self;
     v13 = objc_retainBlock(v55);
-    v14 = [v12 queue];
+    queue = [v12 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000B525C;
     block[3] = &unk_100175D58;
     v15 = v13;
     v54 = v15;
-    dispatch_async(v14, block);
+    dispatch_async(queue, block);
 
     v16 = nr_daemon_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -68,7 +68,7 @@ LABEL_14:
 
   if (v8)
   {
-    v11 = [v7 serviceFromClass:objc_opt_class()];
+    v11 = [registryCopy serviceFromClass:objc_opt_class()];
     v59 = 0;
     v60 = &v59;
     v61 = 0x2020000000;
@@ -78,18 +78,18 @@ LABEL_14:
     v47[2] = sub_1000B5324;
     v47[3] = &unk_100179100;
     v50 = &v59;
-    v21 = v6;
+    v21 = entryCopy;
     v48 = v21;
-    v49 = self;
+    selfCopy2 = self;
     v22 = objc_retainBlock(v47);
-    v23 = [v21 queue];
+    queue2 = [v21 queue];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_1000B5610;
     v45[3] = &unk_100175D58;
     v24 = v22;
     v46 = v24;
-    dispatch_async(v23, v45);
+    dispatch_async(queue2, v45);
 
     v25 = nr_daemon_log();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
@@ -124,10 +124,10 @@ LABEL_14:
 
   if (v11)
   {
-    v31 = [v6 errors];
-    [v31 addObject:v11];
+    errors = [entryCopy errors];
+    [errors addObject:v11];
 
-    [v6 persist];
+    [entryCopy persist];
     v32 = nr_daemon_log();
     v33 = os_log_type_enabled(v32, OS_LOG_TYPE_ERROR);
 
@@ -141,26 +141,26 @@ LABEL_14:
     }
   }
 
-  v41 = [v6 queue];
+  queue3 = [entryCopy queue];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1000B56D8;
   v42[3] = &unk_100175660;
   v42[4] = self;
-  dispatch_async(v41, v42);
+  dispatch_async(queue3, v42);
 
 LABEL_21:
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = [a3 queue];
+  queue = [entry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B57B8;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (EPTransactionDelegate)delegate

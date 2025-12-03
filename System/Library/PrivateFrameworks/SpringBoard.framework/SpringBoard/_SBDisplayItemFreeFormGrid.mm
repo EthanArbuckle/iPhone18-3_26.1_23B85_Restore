@@ -1,6 +1,6 @@
 @interface _SBDisplayItemFreeFormGrid
 - (CGSize)minSize;
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4;
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage;
 @end
 
 @implementation _SBDisplayItemFreeFormGrid
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBSwitcherWindowingConfiguration *)self->super._windowingConfiguration minimumWindowWidth];
   if (v7 >= width)
   {

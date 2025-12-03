@@ -1,15 +1,15 @@
 @interface INIntentResponseCodableDescription
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
 - (INCodableAttribute)outputAttribute;
-- (INIntentResponseCodableDescription)initWithCoder:(id)a3;
+- (INIntentResponseCodableDescription)initWithCoder:(id)coder;
 - (id)_attributeKey;
 - (id)_attributesKey;
 - (id)attributes;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)intentResponseCodeWithCode:(int64_t)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)intentResponseCodeWithCode:(int64_t)code;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INIntentResponseCodableDescription
@@ -32,12 +32,12 @@
 {
   v9.receiver = self;
   v9.super_class = INIntentResponseCodableDescription;
-  v3 = [(INCodableDescription *)&v9 attributes];
-  v4 = [v3 objectForKeyedSubscript:&unk_1F02D7F18];
+  attributes = [(INCodableDescription *)&v9 attributes];
+  v4 = [attributes objectForKeyedSubscript:&unk_1F02D7F18];
 
   if (!v4)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [attributes mutableCopy];
     v6 = objc_alloc_init(INCodableScalarAttribute);
     [(INCodableAttribute *)v6 setModifier:1];
     [(INCodableAttribute *)v6 setPropertyName:@"_code"];
@@ -47,76 +47,76 @@
     v7 = [v5 copy];
     [(INCodableDescription *)self setAttributes:v7];
 
-    v3 = v7;
+    attributes = v7;
   }
 
-  return v3;
+  return attributes;
 }
 
-- (INIntentResponseCodableDescription)initWithCoder:(id)a3
+- (INIntentResponseCodableDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = INIntentResponseCodableDescription;
-  v5 = [(INRootCodableDescription *)&v12 initWithCoder:v4];
+  v5 = [(INRootCodableDescription *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"responseCodes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"responseCodes"];
     [(INIntentResponseCodableDescription *)v5 setResponseCodes:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_outputAttributeName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_outputAttributeName"];
     [(INIntentResponseCodableDescription *)v5 _setOutputAttributeName:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = INIntentResponseCodableDescription;
-  v4 = a3;
-  [(INRootCodableDescription *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(INRootCodableDescription *)&v7 encodeWithCoder:coderCopy];
   v5 = [(INIntentResponseCodableDescription *)self responseCodes:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"responseCodes"];
+  [coderCopy encodeObject:v5 forKey:@"responseCodes"];
 
-  v6 = [(INIntentResponseCodableDescription *)self _outputAttributeName];
-  [v4 encodeObject:v6 forKey:@"_outputAttributeName"];
+  _outputAttributeName = [(INIntentResponseCodableDescription *)self _outputAttributeName];
+  [coderCopy encodeObject:_outputAttributeName forKey:@"_outputAttributeName"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v15.receiver = self;
   v15.super_class = INIntentResponseCodableDescription;
   v16 = 0;
-  v6 = [(INRootCodableDescription *)&v15 widgetPlistableRepresentationWithParameters:a3 error:&v16];
+  v6 = [(INRootCodableDescription *)&v15 widgetPlistableRepresentationWithParameters:parameters error:&v16];
   v7 = v16;
   if (v7)
   {
     v8 = v7;
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v9 = v8;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  v11 = [(INIntentResponseCodableDescription *)self responseCodes];
+  responseCodes = [(INIntentResponseCodableDescription *)self responseCodes];
   v14 = 0;
-  [v6 intents_setArrayOfWidgetPlistRepresentable:v11 forKey:@"responseCodes" error:&v14];
+  [v6 intents_setArrayOfWidgetPlistRepresentable:responseCodes forKey:@"responseCodes" error:&v14];
   v8 = v14;
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -126,8 +126,8 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v12 = [(INIntentResponseCodableDescription *)self _outputAttributeName];
-  [v6 intents_setPlistSafeObject:v12 forKey:@"_outputAttributeName"];
+  _outputAttributeName = [(INIntentResponseCodableDescription *)self _outputAttributeName];
+  [v6 intents_setPlistSafeObject:_outputAttributeName forKey:@"_outputAttributeName"];
 
   v10 = v6;
 LABEL_8:
@@ -135,20 +135,20 @@ LABEL_8:
   return v10;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localizerCopy = localizer;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [(INIntentResponseCodableDescription *)self responseCodes];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  responseCodes = [(INIntentResponseCodableDescription *)self responseCodes];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(responseCodes, "count")}];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [(INIntentResponseCodableDescription *)self responseCodes];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  responseCodes2 = [(INIntentResponseCodableDescription *)self responseCodes];
+  v9 = [responseCodes2 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -159,14 +159,14 @@ LABEL_8:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(responseCodes2);
         }
 
-        v13 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:v4];
+        v13 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:localizerCopy];
         [v7 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v10 = [responseCodes2 countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v10);
@@ -174,43 +174,43 @@ LABEL_8:
 
   v24.receiver = self;
   v24.super_class = INIntentResponseCodableDescription;
-  v14 = [(INCodableDescription *)&v24 dictionaryRepresentationWithLocalizer:v4];
-  v15 = [objc_opt_class() __OutputKey];
-  v29[0] = v15;
-  v16 = [(INIntentResponseCodableDescription *)self _outputAttributeName];
-  v17 = v16;
-  if (!v16)
+  v14 = [(INCodableDescription *)&v24 dictionaryRepresentationWithLocalizer:localizerCopy];
+  __OutputKey = [objc_opt_class() __OutputKey];
+  v29[0] = __OutputKey;
+  _outputAttributeName = [(INIntentResponseCodableDescription *)self _outputAttributeName];
+  null = _outputAttributeName;
+  if (!_outputAttributeName)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[0] = v17;
-  v18 = [objc_opt_class() __CodesKey];
-  v29[1] = v18;
+  v30[0] = null;
+  __CodesKey = [objc_opt_class() __CodesKey];
+  v29[1] = __CodesKey;
   v30[1] = v7;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
   v20 = [v14 if_dictionaryByAddingEntriesFromDictionary:v19];
 
-  if (!v16)
+  if (!_outputAttributeName)
   {
   }
 
-  v21 = [v20 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v20 if_dictionaryWithNonEmptyValues];
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = INIntentResponseCodableDescription;
-  [(INCodableDescription *)&v30 updateWithDictionary:v4];
-  v5 = [objc_opt_class() __OutputKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableDescription *)&v30 updateWithDictionary:dictionaryCopy];
+  __OutputKey = [objc_opt_class() __OutputKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__OutputKey];
   [(INIntentResponseCodableDescription *)self _setOutputAttributeName:v6];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -218,9 +218,9 @@ LABEL_8:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [objc_opt_class() __CodesKey];
-  v24 = v4;
-  v9 = [v4 objectForKeyedSubscript:v8];
+  __CodesKey = [objc_opt_class() __CodesKey];
+  v24 = dictionaryCopy;
+  v9 = [dictionaryCopy objectForKeyedSubscript:__CodesKey];
 
   obj = v9;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -242,8 +242,8 @@ LABEL_8:
         v16 = objc_alloc_init(INIntentResponseCodableCode);
         [(INIntentResponseCodableCode *)v16 _setCodableDescription:self];
         [(INIntentResponseCodableCode *)v16 updateWithDictionary:v15];
-        v17 = [(INIntentResponseCodableCode *)v16 name];
-        v18 = [v17 isEqualToString:@"failure"];
+        name = [(INIntentResponseCodableCode *)v16 name];
+        v18 = [name isEqualToString:@"failure"];
 
         v19 = v16;
         if (v18)
@@ -254,8 +254,8 @@ LABEL_10:
           goto LABEL_12;
         }
 
-        v21 = [(INIntentResponseCodableCode *)v16 name];
-        v22 = [v21 isEqualToString:@"success"];
+        name2 = [(INIntentResponseCodableCode *)v16 name];
+        v22 = [name2 isEqualToString:@"success"];
 
         v19 = v16;
         if (v22)
@@ -281,12 +281,12 @@ LABEL_12:
 
 - (INCodableAttribute)outputAttribute
 {
-  v3 = [(INIntentResponseCodableDescription *)self _outputAttributeName];
+  _outputAttributeName = [(INIntentResponseCodableDescription *)self _outputAttributeName];
 
-  if (v3)
+  if (_outputAttributeName)
   {
-    v4 = [(INIntentResponseCodableDescription *)self _outputAttributeName];
-    v5 = [(INCodableDescription *)self attributeByName:v4];
+    _outputAttributeName2 = [(INIntentResponseCodableDescription *)self _outputAttributeName];
+    v5 = [(INCodableDescription *)self attributeByName:_outputAttributeName2];
   }
 
   else
@@ -297,13 +297,13 @@ LABEL_12:
   return v5;
 }
 
-- (id)intentResponseCodeWithCode:(int64_t)a3
+- (id)intentResponseCodeWithCode:(int64_t)code
 {
   v25 = *MEMORY[0x1E69E9840];
   intentResponseCodableCodes = self->_intentResponseCodableCodes;
   if (!intentResponseCodableCodes)
   {
-    v19 = a3;
+    codeCopy = code;
     v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](self->_responseCodes, "count")}];
     v6 = self->_intentResponseCodableCodes;
     self->_intentResponseCodableCodes = v5;
@@ -340,10 +340,10 @@ LABEL_12:
     }
 
     intentResponseCodableCodes = self->_intentResponseCodableCodes;
-    a3 = v19;
+    code = codeCopy;
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   v16 = [(NSMutableDictionary *)intentResponseCodableCodes objectForKeyedSubscript:v15];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -351,23 +351,23 @@ LABEL_12:
   return v16;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v16.receiver = a1;
+  representationCopy = representation;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___INIntentResponseCodableDescription;
   v17 = 0;
-  v7 = objc_msgSendSuper2(&v16, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v17);
+  v7 = objc_msgSendSuper2(&v16, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v17);
   v8 = v17;
   if (v8)
   {
     v9 = v8;
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_8;
     }
 
@@ -375,13 +375,13 @@ LABEL_3:
   }
 
   v15 = 0;
-  v12 = [INIntentResponseCodableCode intents_arrayOfWidgetPlistRepresentableInDict:v6 key:@"responseCodes" error:&v15 resultTransformer:0];
+  v12 = [INIntentResponseCodableCode intents_arrayOfWidgetPlistRepresentableInDict:representationCopy key:@"responseCodes" error:&v15 resultTransformer:0];
   v9 = v15;
   [v7 setResponseCodes:v12];
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -391,7 +391,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v13 = [v6 intents_stringForKey:@"_outputAttributeName"];
+  v13 = [representationCopy intents_stringForKey:@"_outputAttributeName"];
   [v7 _setOutputAttributeName:v13];
 
   v11 = v7;

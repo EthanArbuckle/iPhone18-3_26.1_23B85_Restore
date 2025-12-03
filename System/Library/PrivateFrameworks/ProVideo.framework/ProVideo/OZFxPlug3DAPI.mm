@@ -1,129 +1,129 @@
 @interface OZFxPlug3DAPI
-- (id)cameraMatrixAtTime:(double)a3;
-- (id)layerMatrixAtTime:(double)a3;
+- (id)cameraMatrixAtTime:(double)time;
+- (id)layerMatrixAtTime:(double)time;
 - (id)worldToEyeMatrix;
 - (id)worldToFilmMatrix;
 - (id)worldToLayerMatrix;
 - (id)worldToObjectMatrix;
-- (void)_setCameraMatrix:(PCMatrix44Tmpl<double> *)a3;
-- (void)_setLayerMatrix:(PCMatrix44Tmpl<double> *)a3;
-- (void)_setWorldToEyeMatrix:(PCMatrix44Tmpl<double> *)a3;
-- (void)_setWorldToFilmMatrix:(PCMatrix44Tmpl<double> *)a3;
-- (void)_setWorldToLayerMatrix:(PCMatrix44Tmpl<double> *)a3;
-- (void)_setWorldToObjectMatrix:(PCMatrix44Tmpl<double> *)a3;
+- (void)_setCameraMatrix:(PCMatrix44Tmpl<double> *)matrix;
+- (void)_setLayerMatrix:(PCMatrix44Tmpl<double> *)matrix;
+- (void)_setWorldToEyeMatrix:(PCMatrix44Tmpl<double> *)matrix;
+- (void)_setWorldToFilmMatrix:(PCMatrix44Tmpl<double> *)matrix;
+- (void)_setWorldToLayerMatrix:(PCMatrix44Tmpl<double> *)matrix;
+- (void)_setWorldToObjectMatrix:(PCMatrix44Tmpl<double> *)matrix;
 @end
 
 @implementation OZFxPlug3DAPI
 
-- (void)_setCameraMatrix:(PCMatrix44Tmpl<double> *)a3
+- (void)_setCameraMatrix:(PCMatrix44Tmpl<double> *)matrix
 {
   v4 = get3DAPIData();
-  if (v4 != a3)
+  if (v4 != matrix)
   {
     for (i = 0; i != 4; ++i)
     {
       for (j = 0; j != 4; ++j)
       {
-        v4->var0[0][j] = a3->var0[0][j];
+        v4->var0[0][j] = matrix->var0[0][j];
       }
 
       v4 = (v4 + 32);
-      a3 = (a3 + 32);
+      matrix = (matrix + 32);
     }
   }
 }
 
-- (void)_setWorldToFilmMatrix:(PCMatrix44Tmpl<double> *)a3
+- (void)_setWorldToFilmMatrix:(PCMatrix44Tmpl<double> *)matrix
 {
   v4 = (get3DAPIData() + 128);
-  if (v4 != a3)
+  if (v4 != matrix)
   {
     for (i = 0; i != 4; ++i)
     {
       for (j = 0; j != 4; ++j)
       {
-        v4->var0[0][j] = a3->var0[0][j];
+        v4->var0[0][j] = matrix->var0[0][j];
       }
 
       v4 = (v4 + 32);
-      a3 = (a3 + 32);
+      matrix = (matrix + 32);
     }
   }
 }
 
-- (void)_setLayerMatrix:(PCMatrix44Tmpl<double> *)a3
+- (void)_setLayerMatrix:(PCMatrix44Tmpl<double> *)matrix
 {
   v4 = (get3DAPIData() + 256);
-  if (v4 != a3)
+  if (v4 != matrix)
   {
     for (i = 0; i != 4; ++i)
     {
       for (j = 0; j != 4; ++j)
       {
-        v4->var0[0][j] = a3->var0[0][j];
+        v4->var0[0][j] = matrix->var0[0][j];
       }
 
       v4 = (v4 + 32);
-      a3 = (a3 + 32);
+      matrix = (matrix + 32);
     }
   }
 }
 
-- (void)_setWorldToLayerMatrix:(PCMatrix44Tmpl<double> *)a3
+- (void)_setWorldToLayerMatrix:(PCMatrix44Tmpl<double> *)matrix
 {
   v4 = (get3DAPIData() + 384);
-  if (v4 != a3)
+  if (v4 != matrix)
   {
     for (i = 0; i != 4; ++i)
     {
       for (j = 0; j != 4; ++j)
       {
-        v4->var0[0][j] = a3->var0[0][j];
+        v4->var0[0][j] = matrix->var0[0][j];
       }
 
       v4 = (v4 + 32);
-      a3 = (a3 + 32);
+      matrix = (matrix + 32);
     }
   }
 }
 
-- (void)_setWorldToObjectMatrix:(PCMatrix44Tmpl<double> *)a3
+- (void)_setWorldToObjectMatrix:(PCMatrix44Tmpl<double> *)matrix
 {
   v4 = (get3DAPIData() + 512);
-  if (v4 != a3)
+  if (v4 != matrix)
   {
     for (i = 0; i != 4; ++i)
     {
       for (j = 0; j != 4; ++j)
       {
-        v4->var0[0][j] = a3->var0[0][j];
+        v4->var0[0][j] = matrix->var0[0][j];
       }
 
       v4 = (v4 + 32);
-      a3 = (a3 + 32);
+      matrix = (matrix + 32);
     }
   }
 }
 
-- (void)_setWorldToEyeMatrix:(PCMatrix44Tmpl<double> *)a3
+- (void)_setWorldToEyeMatrix:(PCMatrix44Tmpl<double> *)matrix
 {
   v4 = (get3DAPIData() + 640);
-  if (v4 != a3)
+  if (v4 != matrix)
   {
     for (i = 0; i != 4; ++i)
     {
       for (j = 0; j != 4; ++j)
       {
-        v4->var0[0][j] = a3->var0[0][j];
+        v4->var0[0][j] = matrix->var0[0][j];
       }
 
       v4 = (v4 + 32);
-      a3 = (a3 + 32);
+      matrix = (matrix + 32);
     }
   }
 }
 
-- (id)cameraMatrixAtTime:(double)a3
+- (id)cameraMatrixAtTime:(double)time
 {
   v3 = get3DAPIData();
   v4 = MEMORY[0x277CBEA90];
@@ -139,7 +139,7 @@
   return [v3 dataWithBytes:v2 length:128];
 }
 
-- (id)layerMatrixAtTime:(double)a3
+- (id)layerMatrixAtTime:(double)time
 {
   v3 = get3DAPIData() + 256;
   v4 = MEMORY[0x277CBEA90];

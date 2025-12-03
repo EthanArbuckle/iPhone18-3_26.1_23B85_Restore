@@ -1,12 +1,12 @@
 @interface SceneMetricsRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC15SiriInteractive23SceneItemMetricsRequest)lockScreenMetrics;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setLockScreenMetrics:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setLockScreenMetrics:(id)metrics;
 @end
 
 @implementation SceneMetricsRequest
@@ -18,26 +18,26 @@
   return v2;
 }
 
-- (void)setLockScreenMetrics:(id)a3
+- (void)setLockScreenMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = self;
-  sub_26750CC98(v4);
+  metricsCopy = metrics;
+  selfCopy = self;
+  sub_26750CC98(metricsCopy);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26750CF24();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_267533C74();
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_26750CF70(v8);
@@ -57,7 +57,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_26750D164();
 
   v3 = sub_2675339C4();
@@ -65,17 +65,17 @@
   return v3;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_26750D370(a3);
+  selfCopy = self;
+  sub_26750D370(dictionary);
   swift_unknownObjectRelease();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_26750D3FC(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -84,11 +84,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26750D4E0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26750D4E0(coderCopy);
 }
 
 @end

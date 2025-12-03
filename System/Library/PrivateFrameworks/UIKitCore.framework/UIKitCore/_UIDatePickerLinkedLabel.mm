@@ -1,35 +1,35 @@
 @interface _UIDatePickerLinkedLabel
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (_UIDatePickerLinkedLabel)initWithFrame:(CGRect)a3;
-- (id)_longestPossibleTitleForPriority:(unint64_t)a3 width:(double *)a4;
-- (int64_t)_renderPriorityForContainerWidth:(double)a3 initialPriority:(int64_t)a4;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (_UIDatePickerLinkedLabel)initWithFrame:(CGRect)frame;
+- (id)_longestPossibleTitleForPriority:(unint64_t)priority width:(double *)width;
+- (int64_t)_renderPriorityForContainerWidth:(double)width initialPriority:(int64_t)priority;
 - (void)_invalidatePossibleTitleCaches;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_storageSyncIfNecessaryWithContainerSize:(CGSize)a3;
-- (void)_storageSyncWithContainerSize:(CGSize)a3;
+- (void)_storageSyncIfNecessaryWithContainerSize:(CGSize)size;
+- (void)_storageSyncWithContainerSize:(CGSize)size;
 - (void)_updateAlignmentConstraint;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentCompressionResistancePriority:(float)a3 forAxis:(int64_t)a4;
-- (void)setContentHuggingPriority:(float)a3 forAxis:(int64_t)a4;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setOverrideAttributes:(id)a3;
-- (void)setPossibleTitles:(id)a3;
-- (void)setStorage:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTitles:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentCompressionResistancePriority:(float)priority forAxis:(int64_t)axis;
+- (void)setContentHuggingPriority:(float)priority forAxis:(int64_t)axis;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setOverrideAttributes:(id)attributes;
+- (void)setPossibleTitles:(id)titles;
+- (void)setStorage:(id)storage;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTitles:(id)titles;
 @end
 
 @implementation _UIDatePickerLinkedLabel
 
-- (_UIDatePickerLinkedLabel)initWithFrame:(CGRect)a3
+- (_UIDatePickerLinkedLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v54[9] = *MEMORY[0x1E69E9840];
   v52.receiver = self;
   v52.super_class = _UIDatePickerLinkedLabel;
@@ -40,9 +40,9 @@
     titles = v7->_titles;
     v7->_titles = MEMORY[0x1E695E0F0];
 
-    v10 = [[UILabel alloc] initWithFrame:x, y, width, height];
+    height = [[UILabel alloc] initWithFrame:x, y, width, height];
     renderingLabel = v8->_renderingLabel;
-    v8->_renderingLabel = v10;
+    v8->_renderingLabel = height;
 
     [(UIView *)v8->_renderingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v8 addSubview:v8->_renderingLabel];
@@ -54,13 +54,13 @@
     v14 = objc_opt_new();
     [(_UIDatePickerLinkedLabel *)v8 setStorage:v14];
 
-    v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     longestPossibleTitle = v8->_longestPossibleTitle;
-    v8->_longestPossibleTitle = v15;
+    v8->_longestPossibleTitle = strongToStrongObjectsMapTable;
 
-    v17 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     longestPossibleWidth = v8->_longestPossibleWidth;
-    v8->_longestPossibleWidth = v17;
+    v8->_longestPossibleWidth = strongToStrongObjectsMapTable2;
 
     v19 = [(_UIDatePickerLinkedLabel *)v8 textAlignment]- 1;
     if (v19 > 3)
@@ -78,38 +78,38 @@
     v8->_renderLabelXConstraint = v21;
 
     v42 = MEMORY[0x1E69977A0];
-    v51 = [(UIView *)v8->_renderingLabel topAnchor];
-    v50 = [(UIView *)v8 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    topAnchor = [(UIView *)v8->_renderingLabel topAnchor];
+    topAnchor2 = [(UIView *)v8 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v54[0] = v49;
-    v48 = [(UIView *)v8->_renderingLabel bottomAnchor];
-    v47 = [(UIView *)v8 bottomAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    bottomAnchor = [(UIView *)v8->_renderingLabel bottomAnchor];
+    bottomAnchor2 = [(UIView *)v8 bottomAnchor];
+    v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v54[1] = v46;
-    v45 = [(UIView *)v8->_renderingLabel leadingAnchor];
-    v44 = [(UIView *)v8 leadingAnchor];
-    v43 = [v45 constraintGreaterThanOrEqualToAnchor:v44];
+    leadingAnchor = [(UIView *)v8->_renderingLabel leadingAnchor];
+    leadingAnchor2 = [(UIView *)v8 leadingAnchor];
+    v43 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v54[2] = v43;
-    v41 = [(UIView *)v8->_renderingLabel trailingAnchor];
-    v40 = [(UIView *)v8 trailingAnchor];
-    v39 = [v41 constraintLessThanOrEqualToAnchor:v40];
+    trailingAnchor = [(UIView *)v8->_renderingLabel trailingAnchor];
+    trailingAnchor2 = [(UIView *)v8 trailingAnchor];
+    v39 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v54[3] = v39;
     v54[4] = v8->_renderLabelXConstraint;
-    v38 = [(UILayoutGuide *)v8->_contentLayoutGuide topAnchor];
-    v37 = [(UIView *)v8->_renderingLabel topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    topAnchor3 = [(UILayoutGuide *)v8->_contentLayoutGuide topAnchor];
+    topAnchor4 = [(UIView *)v8->_renderingLabel topAnchor];
+    v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v54[5] = v36;
-    v35 = [(UILayoutGuide *)v8->_contentLayoutGuide leadingAnchor];
-    v23 = [(UIView *)v8->_renderingLabel leadingAnchor];
-    v24 = [v35 constraintEqualToAnchor:v23];
+    leadingAnchor3 = [(UILayoutGuide *)v8->_contentLayoutGuide leadingAnchor];
+    leadingAnchor4 = [(UIView *)v8->_renderingLabel leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v54[6] = v24;
-    v25 = [(UILayoutGuide *)v8->_contentLayoutGuide bottomAnchor];
-    v26 = [(UIView *)v8->_renderingLabel bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    bottomAnchor3 = [(UILayoutGuide *)v8->_contentLayoutGuide bottomAnchor];
+    bottomAnchor4 = [(UIView *)v8->_renderingLabel bottomAnchor];
+    v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v54[7] = v27;
-    v28 = [(UILayoutGuide *)v8->_contentLayoutGuide trailingAnchor];
-    v29 = [(UIView *)v8->_renderingLabel trailingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    trailingAnchor3 = [(UILayoutGuide *)v8->_contentLayoutGuide trailingAnchor];
+    trailingAnchor4 = [(UIView *)v8->_renderingLabel trailingAnchor];
+    v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v54[8] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:9];
     [v42 activateConstraints:v31];
@@ -123,13 +123,13 @@
   return v8;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  v4 = [(_UIDatePickerLinkedLabel *)self _longestPossibleTitleForPriority:[(_UIDatePickerLinkedLabel *)self _renderPriorityForContainerWidth:0 initialPriority:a3.width width:a3.height], 0];
+  v4 = [(_UIDatePickerLinkedLabel *)self _longestPossibleTitleForPriority:[(_UIDatePickerLinkedLabel *)self _renderPriorityForContainerWidth:0 initialPriority:size.width width:size.height], 0];
   storage = self->_storage;
-  v6 = [(UILabel *)self->_renderingLabel font];
-  v7 = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
-  [(_UIDatePickerLinkedLabelStorage *)storage _sizeForText:v4 font:v6 height:v7 overrideAttributes:INFINITY];
+  font = [(UILabel *)self->_renderingLabel font];
+  overrideAttributes = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
+  [(_UIDatePickerLinkedLabelStorage *)storage _sizeForText:v4 font:font height:overrideAttributes overrideAttributes:INFINITY];
   v9 = v8;
   v11 = v10;
 
@@ -149,13 +149,13 @@
   [(_UIDatePickerLinkedLabel *)self _storageSyncIfNecessaryWithContainerSize:v3, v4];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v7.receiver = self;
   v7.super_class = _UIDatePickerLinkedLabel;
-  [(UIView *)&v7 setFrame:a3.origin.x, a3.origin.y];
+  [(UIView *)&v7 setFrame:frame.origin.x, frame.origin.y];
   if (self->_lastSize.width == width && self->_lastSize.height == height)
   {
     if (*&self->_flags)
@@ -172,13 +172,13 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v7.receiver = self;
   v7.super_class = _UIDatePickerLinkedLabel;
-  [(UIView *)&v7 setBounds:a3.origin.x, a3.origin.y];
+  [(UIView *)&v7 setBounds:bounds.origin.x, bounds.origin.y];
   if (self->_lastSize.width == width && self->_lastSize.height == height)
   {
     if (*&self->_flags)
@@ -206,23 +206,23 @@
 
 - (void)_updateAlignmentConstraint
 {
-  v3 = [(_UIDatePickerLinkedLabel *)self textAlignment];
-  if ((v3 - 1) > 3)
+  textAlignment = [(_UIDatePickerLinkedLabel *)self textAlignment];
+  if ((textAlignment - 1) > 3)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = qword_18A67B4C8[v3 - 1];
+    v4 = qword_18A67B4C8[textAlignment - 1];
   }
 
   v5 = MEMORY[0x1E69977A0];
   v11 = self->_renderLabelXConstraint;
-  v6 = [(NSLayoutConstraint *)v11 firstItem];
-  v7 = [(NSLayoutConstraint *)v11 relation];
-  v8 = [(NSLayoutConstraint *)v11 secondItem];
-  v9 = [v5 constraintWithItem:v6 attribute:v4 relatedBy:v7 toItem:v8 attribute:v4 multiplier:1.0 constant:0.0];
+  firstItem = [(NSLayoutConstraint *)v11 firstItem];
+  relation = [(NSLayoutConstraint *)v11 relation];
+  secondItem = [(NSLayoutConstraint *)v11 secondItem];
+  v9 = [v5 constraintWithItem:firstItem attribute:v4 relatedBy:relation toItem:secondItem attribute:v4 multiplier:1.0 constant:0.0];
   renderLabelXConstraint = self->_renderLabelXConstraint;
   self->_renderLabelXConstraint = v9;
 
@@ -230,33 +230,33 @@
   [(NSLayoutConstraint *)self->_renderLabelXConstraint setActive:1];
 }
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
-  v6 = a3;
-  if (!v6)
+  storageCopy = storage;
+  if (!storageCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIDatePickerLinkedLabel.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerLinkedLabel.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
 
-    v6 = 0;
+    storageCopy = 0;
   }
 
   storage = self->_storage;
-  if (storage != v6)
+  if (storage != storageCopy)
   {
-    v9 = v6;
+    v9 = storageCopy;
     [(_UIDatePickerLinkedLabelStorage *)storage _detachLabel:self];
-    objc_storeStrong(&self->_storage, a3);
+    objc_storeStrong(&self->_storage, storage);
     [(_UIDatePickerLinkedLabelStorage *)v9 _attachLabel:self];
-    v6 = v9;
+    storageCopy = v9;
   }
 }
 
-- (void)_storageSyncIfNecessaryWithContainerSize:(CGSize)a3
+- (void)_storageSyncIfNecessaryWithContainerSize:(CGSize)size
 {
   if (*&self->_flags)
   {
-    [(_UIDatePickerLinkedLabel *)self _storageSyncWithContainerSize:a3.width, a3.height];
+    [(_UIDatePickerLinkedLabel *)self _storageSyncWithContainerSize:size.width, size.height];
   }
 }
 
@@ -265,20 +265,20 @@
   v4.receiver = self;
   v4.super_class = _UIDatePickerLinkedLabel;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(_UIDatePickerLinkedLabel *)self _setNeedsStorageSync];
   }
 }
 
-- (void)_storageSyncWithContainerSize:(CGSize)a3
+- (void)_storageSyncWithContainerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIView *)self window];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  window = [(UIView *)self window];
+  if (window)
   {
 
     goto LABEL_7;
@@ -301,16 +301,16 @@ LABEL_7:
       v17 = [(NSArray *)self->_titles objectAtIndex:v10];
     }
 
-    v11 = [(_UIDatePickerLinkedLabel *)self font];
-    v12 = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
-    v13 = _UIAttributedTitleForTitle(v17, v11, v12);
+    font = [(_UIDatePickerLinkedLabel *)self font];
+    overrideAttributes = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
+    v13 = _UIAttributedTitleForTitle(v17, font, overrideAttributes);
     [(UILabel *)self->_renderingLabel setAttributedText:v13];
 
-    v14 = [(UIView *)self traitCollection];
-    if ([v14 userInterfaceIdiom] == 6)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 6)
     {
-      v15 = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
-      v16 = [v15 objectForKey:*off_1E70EC920];
+      overrideAttributes2 = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
+      v16 = [overrideAttributes2 objectForKey:*off_1E70EC920];
 
       if (v16)
       {
@@ -321,30 +321,30 @@ LABEL_14:
         return;
       }
 
-      v14 = [(UILabel *)self->_renderingLabel textColor];
-      [(UILabel *)self->_renderingLabel setTextColor:v14];
+      traitCollection = [(UILabel *)self->_renderingLabel textColor];
+      [(UILabel *)self->_renderingLabel setTextColor:traitCollection];
     }
 
     goto LABEL_14;
   }
 }
 
-- (int64_t)_renderPriorityForContainerWidth:(double)a3 initialPriority:(int64_t)a4
+- (int64_t)_renderPriorityForContainerWidth:(double)width initialPriority:(int64_t)priority
 {
   v7 = [(NSArray *)self->_titles count];
   v8 = v7 - 1;
-  if (v7 - 1 < a4)
+  if (v7 - 1 < priority)
   {
-    a4 = v7 - 1;
+    priority = v7 - 1;
   }
 
-  while (v8 != a4)
+  while (v8 != priority)
   {
     v11 = 0.0;
-    v9 = [(_UIDatePickerLinkedLabel *)self _longestPossibleTitleForPriority:a4++ width:&v11];
-    if (v11 <= a3)
+    v9 = [(_UIDatePickerLinkedLabel *)self _longestPossibleTitleForPriority:priority++ width:&v11];
+    if (v11 <= width)
     {
-      return a4 - 1;
+      return priority - 1;
     }
   }
 
@@ -359,9 +359,9 @@ LABEL_14:
   [(NSMapTable *)longestPossibleWidth removeAllObjects];
 }
 
-- (void)setTitles:(id)a3
+- (void)setTitles:(id)titles
 {
-  v4 = [a3 copy];
+  v4 = [titles copy];
   titles = self->_titles;
   self->_titles = v4;
 
@@ -371,15 +371,15 @@ LABEL_14:
   [(_UIDatePickerLinkedLabelStorage *)storage _resetPriority];
 }
 
-- (void)setPossibleTitles:(id)a3
+- (void)setPossibleTitles:(id)titles
 {
-  objc_storeStrong(&self->_possibleTitles, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_possibleTitles, titles);
+  titlesCopy = titles;
   [(_UIDatePickerLinkedLabel *)self _invalidatePossibleTitleCaches];
   [(_UIDatePickerLinkedLabelStorage *)self->_storage _resetPriority];
 }
 
-- (id)_longestPossibleTitleForPriority:(unint64_t)a3 width:(double *)a4
+- (id)_longestPossibleTitleForPriority:(unint64_t)priority width:(double *)width
 {
   v47 = *MEMORY[0x1E69E9840];
   longestPossibleTitle = self->_longestPossibleTitle;
@@ -388,13 +388,13 @@ LABEL_14:
 
   if (v9)
   {
-    if (a4)
+    if (width)
     {
       longestPossibleWidth = self->_longestPossibleWidth;
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
       v12 = [(NSMapTable *)longestPossibleWidth objectForKey:v11];
       [v12 doubleValue];
-      *a4 = v13;
+      *width = v13;
     }
 
     v14 = v9;
@@ -403,16 +403,16 @@ LABEL_14:
   else
   {
     v15 = objc_opt_new();
-    if ([(NSArray *)self->_possibleTitles count]> a3)
+    if ([(NSArray *)self->_possibleTitles count]> priority)
     {
-      v16 = [(NSArray *)self->_possibleTitles objectAtIndexedSubscript:a3];
-      v17 = [v16 allObjects];
-      [v15 addObjectsFromArray:v17];
+      v16 = [(NSArray *)self->_possibleTitles objectAtIndexedSubscript:priority];
+      allObjects = [v16 allObjects];
+      [v15 addObjectsFromArray:allObjects];
     }
 
-    if ([(NSArray *)self->_titles count]> a3)
+    if ([(NSArray *)self->_titles count]> priority)
     {
-      v18 = [(NSArray *)self->_titles objectAtIndexedSubscript:a3];
+      v18 = [(NSArray *)self->_titles objectAtIndexedSubscript:priority];
       [v15 addObject:v18];
     }
 
@@ -422,7 +422,7 @@ LABEL_14:
     v43 = 0u;
     obj = v15;
     v19 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
-    v40 = a4;
+    widthCopy = width;
     if (v19)
     {
       v20 = v19;
@@ -440,11 +440,11 @@ LABEL_14:
 
           v25 = *(*(&v42 + 1) + 8 * i);
           storage = self->_storage;
-          v27 = [(UILabel *)self->_renderingLabel font];
+          font = [(UILabel *)self->_renderingLabel font];
           [(UIView *)self bounds];
           Height = CGRectGetHeight(v49);
-          v29 = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
-          [(_UIDatePickerLinkedLabelStorage *)storage _sizeForText:v25 font:v27 height:v29 overrideAttributes:Height];
+          overrideAttributes = [(_UIDatePickerLinkedLabel *)self overrideAttributes];
+          [(_UIDatePickerLinkedLabelStorage *)storage _sizeForText:v25 font:font height:overrideAttributes overrideAttributes:Height];
           v31 = v30;
 
           if (v31 > v23)
@@ -469,17 +469,17 @@ LABEL_14:
     }
 
     v33 = self->_longestPossibleTitle;
-    v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
     [(NSMapTable *)v33 setObject:v21 forKey:v34];
 
     v35 = self->_longestPossibleWidth;
     v36 = [MEMORY[0x1E696AD98] numberWithDouble:v23];
-    v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
     [(NSMapTable *)v35 setObject:v36 forKey:v37];
 
-    if (v40)
+    if (widthCopy)
     {
-      *v40 = v23;
+      *widthCopy = v23;
     }
 
     v38 = &stru_1EFB14550;
@@ -496,41 +496,41 @@ LABEL_14:
   return v14;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  [(UILabel *)self->_renderingLabel setFont:a3];
+  [(UILabel *)self->_renderingLabel setFont:font];
 
   [(_UIDatePickerLinkedLabel *)self _invalidatePossibleTitleCaches];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  [(UILabel *)self->_renderingLabel setTextAlignment:a3];
+  [(UILabel *)self->_renderingLabel setTextAlignment:alignment];
 
   [(_UIDatePickerLinkedLabel *)self _updateAlignmentConstraint];
 }
 
-- (void)setContentCompressionResistancePriority:(float)a3 forAxis:(int64_t)a4
+- (void)setContentCompressionResistancePriority:(float)priority forAxis:(int64_t)axis
 {
   v8.receiver = self;
   v8.super_class = _UIDatePickerLinkedLabel;
   [UIView setContentCompressionResistancePriority:sel_setContentCompressionResistancePriority_forAxis_ forAxis:?];
-  *&v7 = a3;
-  [(UIView *)self->_renderingLabel setContentCompressionResistancePriority:a4 forAxis:v7];
+  *&v7 = priority;
+  [(UIView *)self->_renderingLabel setContentCompressionResistancePriority:axis forAxis:v7];
 }
 
-- (void)setContentHuggingPriority:(float)a3 forAxis:(int64_t)a4
+- (void)setContentHuggingPriority:(float)priority forAxis:(int64_t)axis
 {
   v8.receiver = self;
   v8.super_class = _UIDatePickerLinkedLabel;
   [UIView setContentHuggingPriority:sel_setContentHuggingPriority_forAxis_ forAxis:?];
-  *&v7 = a3;
-  [(UIView *)self->_renderingLabel setContentHuggingPriority:a4 forAxis:v7];
+  *&v7 = priority;
+  [(UIView *)self->_renderingLabel setContentHuggingPriority:axis forAxis:v7];
 }
 
-- (void)setOverrideAttributes:(id)a3
+- (void)setOverrideAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_overrideAttributes, a3);
+  objc_storeStrong(&self->_overrideAttributes, attributes);
   [(UIView *)self bounds];
 
   [(_UIDatePickerLinkedLabel *)self _storageSyncWithContainerSize:v4, v5];

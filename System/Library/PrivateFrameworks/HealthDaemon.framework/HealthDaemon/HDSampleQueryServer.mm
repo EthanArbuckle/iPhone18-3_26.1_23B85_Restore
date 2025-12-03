@@ -1,6 +1,6 @@
 @interface HDSampleQueryServer
-- (BOOL)validateConfiguration:(id *)a3;
-- (HDSampleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (BOOL)validateConfiguration:(id *)configuration;
+- (HDSampleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)diagnosticDescription;
 - (id)objectTypes;
 - (void)_queue_start;
@@ -60,38 +60,38 @@
   }
 
   v5 = v4;
-  v6 = [(HDQueryServer *)self newDataEntityEnumerator];
-  v7 = [(HDQueryServer *)self filter];
-  [v6 setFilter:v7];
+  newDataEntityEnumerator = [(HDQueryServer *)self newDataEntityEnumerator];
+  filter = [(HDQueryServer *)self filter];
+  [newDataEntityEnumerator setFilter:filter];
 
-  v8 = [(HDQueryServer *)self sampleAuthorizationFilter];
-  [v6 setAuthorizationFilter:v8];
+  sampleAuthorizationFilter = [(HDQueryServer *)self sampleAuthorizationFilter];
+  [newDataEntityEnumerator setAuthorizationFilter:sampleAuthorizationFilter];
 
-  v9 = [(HDQueryServer *)self sampleType];
-  v10 = [v9 requiresPerObjectAuthorization];
+  sampleType = [(HDQueryServer *)self sampleType];
+  requiresPerObjectAuthorization = [sampleType requiresPerObjectAuthorization];
 
-  if ((v10 & 1) == 0)
+  if ((requiresPerObjectAuthorization & 1) == 0)
   {
-    [v6 setLimitCount:self->_limit];
+    [newDataEntityEnumerator setLimitCount:self->_limit];
   }
 
-  [v6 setSortDescriptors:self->_sortDescriptors];
+  [newDataEntityEnumerator setSortDescriptors:self->_sortDescriptors];
   if (self->_includeContributorInformation)
   {
-    v11 = [(HDQueryServer *)self client];
-    v12 = [v11 hasEntitlement:*MEMORY[0x277CCBB98]];
+    client = [(HDQueryServer *)self client];
+    v12 = [client hasEntitlement:*MEMORY[0x277CCBB98]];
 
     if (v12)
     {
-      [v6 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeContributorInformation"];
+      [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeContributorInformation"];
     }
   }
 
-  v13 = [(HDQueryServer *)self client];
-  v14 = [v13 authorizationOracle];
-  v15 = [(HDQueryServer *)self sampleType];
+  client2 = [(HDQueryServer *)self client];
+  authorizationOracle = [client2 authorizationOracle];
+  sampleType2 = [(HDQueryServer *)self sampleType];
   *buf = 0;
-  v16 = [v14 additionalAuthorizationPredicateForObjectType:v15 error:buf];
+  v16 = [authorizationOracle additionalAuthorizationPredicateForObjectType:sampleType2 error:buf];
   v17 = *buf;
 
   if (!v16)
@@ -109,30 +109,30 @@
     goto LABEL_30;
   }
 
-  [v6 setPredicate:v16];
+  [newDataEntityEnumerator setPredicate:v16];
   if (self->_includeAutomaticTimeZones)
   {
-    [v6 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeAutomaticTimeZone"];
+    [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeAutomaticTimeZone"];
   }
 
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
-    v18 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if ([v18 performsWorkoutCondensation])
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    if ([mEMORY[0x277CCDD30] performsWorkoutCondensation])
     {
-      v19 = [(HDQueryServer *)self objectType];
-      if ([v19 code] == 79)
+      objectType = [(HDQueryServer *)self objectType];
+      if ([objectType code] == 79)
       {
-        v20 = [(HDQueryServer *)self client];
+        client3 = [(HDQueryServer *)self client];
         v21 = *MEMORY[0x277CCC8B0];
         v53 = v17;
-        v46 = [v20 hasRequiredEntitlement:v21 error:&v53];
-        v47 = v20;
+        v46 = [client3 hasRequiredEntitlement:v21 error:&v53];
+        v47 = client3;
         v22 = v53;
 
         if (v46)
         {
-          [v6 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeCondenserInfo"];
+          [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeCondenserInfo"];
         }
 
         goto LABEL_25;
@@ -142,15 +142,15 @@
 
   v22 = v17;
 LABEL_25:
-  v32 = [(HDQueryServer *)self objectType];
-  if ([v32 code] == 273)
+  objectType2 = [(HDQueryServer *)self objectType];
+  if ([objectType2 code] == 273)
   {
-    v33 = [(HDQueryServer *)self client];
-    v34 = [v33 hasRequiredEntitlement:*MEMORY[0x277CCC8B0] error:0];
+    client4 = [(HDQueryServer *)self client];
+    v34 = [client4 hasRequiredEntitlement:*MEMORY[0x277CCC8B0] error:0];
 
     if ((v34 & 1) == 0)
     {
-      [v6 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"HDMedicationDoseEventEntityEncodingOptionExcludePrivateMedicationInfo"];
+      [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"HDMedicationDoseEventEntityEncodingOptionExcludePrivateMedicationInfo"];
     }
   }
 
@@ -158,7 +158,7 @@ LABEL_25:
   {
   }
 
-  v28 = v6;
+  v28 = newDataEntityEnumerator;
 LABEL_30:
 
   if (v28)
@@ -194,9 +194,9 @@ LABEL_33:
       v37 = [MEMORY[0x277CCA9B8] hk_error:122 format:@"Sample enumeration failed without reporting an error."];
     }
 
-    v43 = [(HDQueryServer *)self clientProxy];
-    v44 = [(HDQueryServer *)self queryUUID];
-    [v43 client_deliverError:v37 forQuery:v44];
+    clientProxy = [(HDQueryServer *)self clientProxy];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v37 forQuery:queryUUID];
   }
 
   else
@@ -212,9 +212,9 @@ LABEL_33:
         _os_log_impl(&dword_228986000, v39, OS_LOG_TYPE_INFO, "%{public}@: Client no longer authorized.", buf, 0xCu);
       }
 
-      v40 = [(HDQueryServer *)self clientProxy];
-      v41 = [(HDQueryServer *)self queryUUID];
-      [v40 client_deliverSamples:MEMORY[0x277CBEBF8] clearPendingSamples:1 isFinalBatch:1 queryUUID:v41];
+      clientProxy2 = [(HDQueryServer *)self clientProxy];
+      queryUUID2 = [(HDQueryServer *)self queryUUID];
+      [clientProxy2 client_deliverSamples:MEMORY[0x277CBEBF8] clearPendingSamples:1 isFinalBatch:1 queryUUID:queryUUID2];
 
       goto LABEL_42;
     }
@@ -324,24 +324,24 @@ void __35__HDSampleQueryServer__queue_start__block_invoke(uint64_t a1, uint64_t 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (HDSampleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSampleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDSampleQueryServer;
-  v11 = [(HDQueryServer *)&v17 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v11->_limit = [v10 limit];
-    v12 = [v10 sortDescriptors];
+    v11->_limit = [configurationCopy limit];
+    sortDescriptors = [configurationCopy sortDescriptors];
     sortDescriptors = v11->_sortDescriptors;
-    v11->_sortDescriptors = v12;
+    v11->_sortDescriptors = sortDescriptors;
 
-    v11->_includeAutomaticTimeZones = [v10 includeAutomaticTimeZones];
-    v11->_includeContributorInformation = [v10 includeContributorInformation];
-    v14 = [v10 queryDescriptors];
+    v11->_includeAutomaticTimeZones = [configurationCopy includeAutomaticTimeZones];
+    v11->_includeContributorInformation = [configurationCopy includeContributorInformation];
+    queryDescriptors = [configurationCopy queryDescriptors];
     queryDescriptors = v11->_queryDescriptors;
-    v11->_queryDescriptors = v14;
+    v11->_queryDescriptors = queryDescriptors;
   }
 
   return v11;
@@ -357,7 +357,7 @@ void __35__HDSampleQueryServer__queue_start__block_invoke(uint64_t a1, uint64_t 
   return [(HDSampleQueryServer *)self hk_mapToSet:&__block_literal_global_242];
 }
 
-- (BOOL)validateConfiguration:(id *)a3
+- (BOOL)validateConfiguration:(id *)configuration
 {
   v13.receiver = self;
   v13.super_class = HDSampleQueryServer;
@@ -368,7 +368,7 @@ void __35__HDSampleQueryServer__queue_start__block_invoke(uint64_t a1, uint64_t 
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = @"Unauthorized use of includeAutomaticTimeZones";
-      v10 = a3;
+      configurationCopy2 = configuration;
       v11 = 4;
     }
 
@@ -382,11 +382,11 @@ void __35__HDSampleQueryServer__queue_start__block_invoke(uint64_t a1, uint64_t 
 
       v8 = MEMORY[0x277CCA9B8];
       v9 = @"Missing sample type for query";
-      v10 = a3;
+      configurationCopy2 = configuration;
       v11 = 3;
     }
 
-    [v8 hk_assignError:v10 code:v11 description:v9];
+    [v8 hk_assignError:configurationCopy2 code:v11 description:v9];
     LOBYTE(v5) = 0;
   }
 
@@ -418,8 +418,8 @@ void __35__HDSampleQueryServer__queue_start__block_invoke(uint64_t a1, uint64_t 
 
   v9.receiver = self;
   v9.super_class = HDSampleQueryServer;
-  v6 = [(HDQueryServer *)&v9 diagnosticDescription];
-  v7 = [v6 stringByAppendingFormat:@"\n\tlimit: %@ - sort: %@", v3, v5];
+  diagnosticDescription = [(HDQueryServer *)&v9 diagnosticDescription];
+  v7 = [diagnosticDescription stringByAppendingFormat:@"\n\tlimit: %@ - sort: %@", v3, v5];
 
   return v7;
 }

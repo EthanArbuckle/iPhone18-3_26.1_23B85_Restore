@@ -1,14 +1,14 @@
 @interface BSServiceDomainSpecification
 - (BSServiceDomainSpecification)init;
-- (id)_domainWithAdditionalServices:(id *)a1;
-- (id)_initWithIdentifier:(void *)a3 machName:(void *)a4 multiplexingType:(void *)a5 xpcSubserviceName:(void *)a6 start:(void *)a7 launchIdentifiers:(void *)a8 servicesByIdentifier:(void *)a9 derivedServiceRestrictions:(void *)a10 enableIfFeatureFlags:(void *)a11 disableIfFeatureFlags:;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)serviceForIdentifier:(id)a3;
+- (id)_domainWithAdditionalServices:(id *)services;
+- (id)_initWithIdentifier:(void *)identifier machName:(void *)name multiplexingType:(void *)type xpcSubserviceName:(void *)subserviceName start:(void *)start launchIdentifiers:(void *)identifiers servicesByIdentifier:(void *)byIdentifier derivedServiceRestrictions:(void *)self0 enableIfFeatureFlags:(void *)self1 disableIfFeatureFlags:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)serviceForIdentifier:(id)identifier;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_appendBodySectionToBuilder:(void *)a3 withName:(void *)a4 multilinePrefix:(char)a5 includeServices:;
-- (void)_appendManagerDumpBodyToBuilder:(void *)a3 withMultilinePrefix:;
+- (void)_appendBodySectionToBuilder:(void *)builder withName:(void *)name multilinePrefix:(char)prefix includeServices:;
+- (void)_appendManagerDumpBodyToBuilder:(void *)builder withMultilinePrefix:;
 @end
 
 @implementation BSServiceDomainSpecification
@@ -27,7 +27,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceDomainSpecification.m";
     v18 = 1024;
@@ -44,74 +44,74 @@
   return result;
 }
 
-- (id)serviceForIdentifier:(id)a3
+- (id)serviceForIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_servicesByIdentifier objectForKey:a3];
+  v3 = [(NSDictionary *)self->_servicesByIdentifier objectForKey:identifier];
 
   return v3;
 }
 
-- (id)_initWithIdentifier:(void *)a3 machName:(void *)a4 multiplexingType:(void *)a5 xpcSubserviceName:(void *)a6 start:(void *)a7 launchIdentifiers:(void *)a8 servicesByIdentifier:(void *)a9 derivedServiceRestrictions:(void *)a10 enableIfFeatureFlags:(void *)a11 disableIfFeatureFlags:
+- (id)_initWithIdentifier:(void *)identifier machName:(void *)name multiplexingType:(void *)type xpcSubserviceName:(void *)subserviceName start:(void *)start launchIdentifiers:(void *)identifiers servicesByIdentifier:(void *)byIdentifier derivedServiceRestrictions:(void *)self0 enableIfFeatureFlags:(void *)self1 disableIfFeatureFlags:
 {
   v47 = a2;
-  v46 = a3;
-  v45 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  if (a1)
+  identifierCopy = identifier;
+  typeCopy = type;
+  startCopy = start;
+  identifiersCopy = identifiers;
+  byIdentifierCopy = byIdentifier;
+  restrictionsCopy = restrictions;
+  flagsCopy = flags;
+  if (self)
   {
-    v48.receiver = a1;
+    v48.receiver = self;
     v48.super_class = BSServiceDomainSpecification;
-    a1 = objc_msgSendSuper2(&v48, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v48, sel_init);
+    if (self)
     {
       v23 = [v47 copy];
-      v24 = a1[5];
-      a1[5] = v23;
+      v24 = self[5];
+      self[5] = v23;
 
-      v25 = [v46 copy];
-      v26 = a1[6];
-      a1[6] = v25;
+      v25 = [identifierCopy copy];
+      v26 = self[6];
+      self[6] = v25;
 
-      a1[7] = a4;
-      v27 = [v45 copy];
-      v28 = a1[10];
-      a1[10] = v27;
+      self[7] = name;
+      v27 = [typeCopy copy];
+      v28 = self[10];
+      self[10] = v27;
 
-      a1[9] = a6;
-      v29 = [v18 copy];
-      v30 = a1[4];
-      a1[4] = v29;
+      self[9] = subserviceName;
+      v29 = [startCopy copy];
+      v30 = self[4];
+      self[4] = v29;
 
-      v31 = [v19 copy];
-      v32 = a1[1];
-      a1[1] = v31;
+      v31 = [identifiersCopy copy];
+      v32 = self[1];
+      self[1] = v31;
 
-      v33 = [v21 copy];
-      v34 = a1[2];
-      a1[2] = v33;
+      v33 = [restrictionsCopy copy];
+      v34 = self[2];
+      self[2] = v33;
 
-      v35 = [v22 copy];
-      v36 = a1[3];
-      a1[3] = v35;
+      v35 = [flagsCopy copy];
+      v36 = self[3];
+      self[3] = v35;
 
       v37 = MEMORY[0x1E695DFB8];
-      v38 = [a1[1] allValues];
-      v39 = [v38 sortedArrayUsingComparator:&__block_literal_global_3];
+      allValues = [self[1] allValues];
+      v39 = [allValues sortedArrayUsingComparator:&__block_literal_global_3];
       v40 = [v37 orderedSetWithArray:v39];
-      v41 = a1[8];
-      a1[8] = v40;
+      v41 = self[8];
+      self[8] = v40;
 
-      v42 = [v20 copy];
-      v43 = a1[11];
-      a1[11] = v42;
+      v42 = [byIdentifierCopy copy];
+      v43 = self[11];
+      self[11] = v42;
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __211__BSServiceDomainSpecification__initWithIdentifier_machName_multiplexingType_xpcSubserviceName_start_launchIdentifiers_servicesByIdentifier_derivedServiceRestrictions_enableIfFeatureFlags_disableIfFeatureFlags___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -124,21 +124,21 @@ uint64_t __211__BSServiceDomainSpecification__initWithIdentifier_machName_multip
   return v7;
 }
 
-- (id)_domainWithAdditionalServices:(id *)a1
+- (id)_domainWithAdditionalServices:(id *)services
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (services)
   {
     if (![v3 count])
     {
 LABEL_14:
-      a1 = a1;
+      services = services;
       goto LABEL_16;
     }
 
-    v5 = [a1[1] mutableCopy];
+    v5 = [services[1] mutableCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -158,14 +158,14 @@ LABEL_14:
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v5 objectForKey:v11];
+          identifier = [v10 identifier];
+          v12 = [v5 objectForKey:identifier];
           v13 = v12 == 0;
 
           if (v13)
           {
-            v14 = [v10 identifier];
-            [v5 setObject:v10 forKey:v14];
+            identifier2 = [v10 identifier];
+            [v5 setObject:v10 forKey:identifier2];
           }
         }
 
@@ -175,56 +175,56 @@ LABEL_14:
       while (v7);
     }
 
-    if ([a1[1] isEqualToDictionary:v5])
+    if ([services[1] isEqualToDictionary:v5])
     {
 
       goto LABEL_14;
     }
 
-    a1 = [[BSServiceDomainSpecification alloc] _initWithIdentifier:a1[6] machName:a1[7] multiplexingType:a1[10] xpcSubserviceName:a1[9] start:a1[4] launchIdentifiers:v5 servicesByIdentifier:a1[11] derivedServiceRestrictions:a1[2] enableIfFeatureFlags:a1[3] disableIfFeatureFlags:?];
+    services = [[BSServiceDomainSpecification alloc] _initWithIdentifier:services[6] machName:services[7] multiplexingType:services[10] xpcSubserviceName:services[9] start:services[4] launchIdentifiers:v5 servicesByIdentifier:services[11] derivedServiceRestrictions:services[2] enableIfFeatureFlags:services[3] disableIfFeatureFlags:?];
   }
 
 LABEL_16:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return services;
 }
 
-- (void)_appendManagerDumpBodyToBuilder:(void *)a3 withMultilinePrefix:
+- (void)_appendManagerDumpBodyToBuilder:(void *)builder withMultilinePrefix:
 {
   v6 = a2;
-  v5 = a3;
-  if (a1)
+  builderCopy = builder;
+  if (self)
   {
-    [(BSServiceDomainSpecification *)a1 _appendBodySectionToBuilder:v6 withName:@"specification" multilinePrefix:v5 includeServices:0];
+    [(BSServiceDomainSpecification *)self _appendBodySectionToBuilder:v6 withName:@"specification" multilinePrefix:builderCopy includeServices:0];
   }
 }
 
-- (void)_appendBodySectionToBuilder:(void *)a3 withName:(void *)a4 multilinePrefix:(char)a5 includeServices:
+- (void)_appendBodySectionToBuilder:(void *)builder withName:(void *)name multilinePrefix:(char)prefix includeServices:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  builderCopy = builder;
+  nameCopy = name;
+  if (self)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __101__BSServiceDomainSpecification__appendBodySectionToBuilder_withName_multilinePrefix_includeServices___block_invoke;
     v12[3] = &unk_1E7520920;
     v13 = v9;
-    v14 = a1;
-    v15 = a5;
-    [v13 appendBodySectionWithName:v10 multilinePrefix:v11 block:v12];
+    selfCopy = self;
+    prefixCopy = prefix;
+    [v13 appendBodySectionWithName:builderCopy multilinePrefix:nameCopy block:v12];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BSServiceDomainSpecification *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSServiceDomainSpecification *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -235,21 +235,21 @@ LABEL_16:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSServiceDomainSpecification *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSServiceDomainSpecification *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSServiceDomainSpecification *)self succinctDescriptionBuilder];
-  [(BSServiceDomainSpecification *)self _appendBodySectionToBuilder:v5 withName:0 multilinePrefix:v4 includeServices:1];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSServiceDomainSpecification *)self succinctDescriptionBuilder];
+  [(BSServiceDomainSpecification *)self _appendBodySectionToBuilder:succinctDescriptionBuilder withName:0 multilinePrefix:prefixCopy includeServices:1];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __101__BSServiceDomainSpecification__appendBodySectionToBuilder_withName_multilinePrefix_includeServices___block_invoke(uint64_t a1)

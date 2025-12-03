@@ -1,21 +1,21 @@
 @interface MKMarkerBalloonView
-- (MKMarkerBalloonView)initWithMarkerStyle:(id)a3;
-- (void)_setupContentViewWithMarkerStyle:(id)a3;
-- (void)updateWithMarkerStyle:(id)a3;
+- (MKMarkerBalloonView)initWithMarkerStyle:(id)style;
+- (void)_setupContentViewWithMarkerStyle:(id)style;
+- (void)updateWithMarkerStyle:(id)style;
 @end
 
 @implementation MKMarkerBalloonView
 
-- (void)updateWithMarkerStyle:(id)a3
+- (void)updateWithMarkerStyle:(id)style
 {
   v14.receiver = self;
   v14.super_class = MKMarkerBalloonView;
-  v4 = a3;
-  [(MKMarkerView *)&v14 updateWithMarkerStyle:v4];
-  v5 = [v4 balloonImage];
-  [(MKMarkerView *)self _updateWithImage:v5];
+  styleCopy = style;
+  [(MKMarkerView *)&v14 updateWithMarkerStyle:styleCopy];
+  balloonImage = [styleCopy balloonImage];
+  [(MKMarkerView *)self _updateWithImage:balloonImage];
 
-  [v4 contentRect];
+  [styleCopy contentRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -24,20 +24,20 @@
   [(MKMarkerContentView *)self->_contentView setFrame:v7, v9, v11, v13];
 }
 
-- (void)_setupContentViewWithMarkerStyle:(id)a3
+- (void)_setupContentViewWithMarkerStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [MKMarkerContentView alloc];
-  [v4 contentRect];
+  [styleCopy contentRect];
   v6 = [(MKMarkerContentView *)v5 initWithFrame:?];
   contentView = self->_contentView;
   self->_contentView = v6;
 
-  v8 = [v4 configuration];
+  configuration = [styleCopy configuration];
 
-  v9 = [v8 selected];
+  selected = [configuration selected];
   v10 = 32.0;
-  if (!v9)
+  if (!selected)
   {
     v10 = 16.0;
   }
@@ -49,18 +49,18 @@
   [(MKMarkerBalloonView *)self addSubview:v11];
 }
 
-- (MKMarkerBalloonView)initWithMarkerStyle:(id)a3
+- (MKMarkerBalloonView)initWithMarkerStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 balloonImage];
+  styleCopy = style;
+  balloonImage = [styleCopy balloonImage];
   v8.receiver = self;
   v8.super_class = MKMarkerBalloonView;
-  v6 = [(MKMarkerView *)&v8 initWithImage:v5];
+  v6 = [(MKMarkerView *)&v8 initWithImage:balloonImage];
 
   if (v6)
   {
-    [(MKMarkerBalloonView *)v6 updateWithMarkerStyle:v4];
-    [(MKMarkerBalloonView *)v6 _setupContentViewWithMarkerStyle:v4];
+    [(MKMarkerBalloonView *)v6 updateWithMarkerStyle:styleCopy];
+    [(MKMarkerBalloonView *)v6 _setupContentViewWithMarkerStyle:styleCopy];
   }
 
   return v6;

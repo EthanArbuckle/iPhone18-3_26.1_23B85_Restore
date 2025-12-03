@@ -1,22 +1,22 @@
 @interface MRUViewServiceRoutingHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUViewServiceRoutingHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUViewServiceRoutingHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setStylingProvider:(id)provider;
+- (void)setTitle:(id)title;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUViewServiceRoutingHeaderView
 
-- (MRUViewServiceRoutingHeaderView)initWithFrame:(CGRect)a3
+- (MRUViewServiceRoutingHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v27[1] = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = MRUViewServiceRoutingHeaderView;
@@ -45,8 +45,8 @@
     separatorView = v7->_separatorView;
     v7->_separatorView = v17;
 
-    v19 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v7->_separatorView setBackgroundColor:v19];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v7->_separatorView setBackgroundColor:whiteColor];
 
     [(MRUViewServiceRoutingHeaderView *)v7 addSubview:v7->_separatorView];
     v27[0] = objc_opt_class();
@@ -74,8 +74,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = 1.0 / v12;
 
   v44.origin.x = v4;
@@ -107,8 +107,8 @@
   {
     v24 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:3 scale:17.0];
     v25 = MEMORY[0x1E69DCAD8];
-    v26 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    v43[0] = v26;
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    v43[0] = systemWhiteColor;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
     v28 = [v25 configurationWithPaletteColors:v27];
     v29 = [v24 configurationByApplyingConfiguration:v28];
@@ -148,12 +148,12 @@
   [(UILabel *)self->_titleLabel setFrame:v40, MinY, CGRectGetWidth(v50), v39];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
-  [v6 displayScale];
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = 1.0 / v7;
 
   v9 = v8 + 18.0 + 9.0 + 13.0;
@@ -170,36 +170,36 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   title = self->_title;
   self->_title = v5;
 
-  [(UILabel *)self->_titleLabel setText:v4];
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   [(MRUViewServiceRoutingHeaderView *)self setNeedsLayout];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
-  v5 = a3;
-  [(UIImageView *)self->_imageView setImage:v5];
+  objc_storeStrong(&self->_image, image);
+  imageCopy = image;
+  [(UIImageView *)self->_imageView setImage:imageCopy];
 
   [(MRUViewServiceRoutingHeaderView *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUViewServiceRoutingHeaderView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -207,24 +207,24 @@
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v5 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:v5];
+  traitCollection = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   imageView = self->_imageView;
-  v8 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:imageView traitCollection:v8];
+  traitCollection2 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:imageView traitCollection:traitCollection2];
 
   v9 = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v11 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v9 applyStyle:4 toView:separatorView traitCollection:v11];
+  traitCollection3 = [(MRUViewServiceRoutingHeaderView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v9 applyStyle:4 toView:separatorView traitCollection:traitCollection3];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_titleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  mru_titleFont = [MEMORY[0x1E69DB878] mru_titleFont];
+  [(UILabel *)self->_titleLabel setFont:mru_titleFont];
 }
 
 @end

@@ -9,24 +9,24 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 source];
-  v12 = [v11 resolveWithExpectedRemoteDeviceIdentifier:v10 localDeviceIdentifier:v9 remoteDeviceIdentifier:v8];
+  source = [self source];
+  v12 = [source resolveWithExpectedRemoteDeviceIdentifier:v10 localDeviceIdentifier:v9 remoteDeviceIdentifier:v8];
 
-  if (v11 == v12 || v11 && v12 && [v11 isEqual:v12])
+  if (source == v12 || source && v12 && [source isEqual:v12])
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v14 = objc_alloc(MEMORY[0x277D05938]);
-    v15 = [a1 UUID];
-    v16 = [a1 startDate];
-    v17 = [a1 details];
-    v13 = [v14 initWithUUID:v15 startDate:v16 details:v17 source:v12];
+    uUID = [self UUID];
+    startDate = [self startDate];
+    details = [self details];
+    selfCopy = [v14 initWithUUID:uUID startDate:startDate details:details source:v12];
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

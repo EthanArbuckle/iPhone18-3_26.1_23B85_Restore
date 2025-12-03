@@ -1,21 +1,21 @@
 @interface PHAPrivateFederatedLearningLayerParameters
-- (PHAPrivateFederatedLearningLayerParameters)initWithWeights:(id)a3 bias:(id)a4;
+- (PHAPrivateFederatedLearningLayerParameters)initWithWeights:(id)weights bias:(id)bias;
 @end
 
 @implementation PHAPrivateFederatedLearningLayerParameters
 
-- (PHAPrivateFederatedLearningLayerParameters)initWithWeights:(id)a3 bias:(id)a4
+- (PHAPrivateFederatedLearningLayerParameters)initWithWeights:(id)weights bias:(id)bias
 {
-  v7 = a3;
-  v8 = a4;
+  weightsCopy = weights;
+  biasCopy = bias;
   v12.receiver = self;
   v12.super_class = PHAPrivateFederatedLearningLayerParameters;
   v9 = [(PHAPrivateFederatedLearningLayerParameters *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_weights, a3);
-    objc_storeStrong(&v10->_bias, a4);
+    objc_storeStrong(&v9->_weights, weights);
+    objc_storeStrong(&v10->_bias, bias);
   }
 
   return v10;

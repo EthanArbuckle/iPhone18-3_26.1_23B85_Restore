@@ -1,5 +1,5 @@
 @interface BMPathEnumerator
-- (BMPathEnumerator)initWithPath:(id)a3;
+- (BMPathEnumerator)initWithPath:(id)path;
 - (id)navigateDown;
 - (id)navigateUp;
 - (id)peekPath;
@@ -68,24 +68,24 @@ LABEL_11:
   return v5;
 }
 
-- (BMPathEnumerator)initWithPath:(id)a3
+- (BMPathEnumerator)initWithPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
     v11.receiver = self;
     v11.super_class = BMPathEnumerator;
     v5 = [(BMPathEnumerator *)&v11 init];
     if (v5)
     {
-      if ([v4 hasSuffix:@"/"])
+      if ([pathCopy hasSuffix:@"/"])
       {
-        v6 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 1}];
+        v6 = [pathCopy substringToIndex:{objc_msgSend(pathCopy, "length") - 1}];
       }
 
       else
       {
-        v6 = [v4 copy];
+        v6 = [pathCopy copy];
       }
 
       path = v5->_path;
@@ -97,15 +97,15 @@ LABEL_11:
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)navigateUp
@@ -114,7 +114,7 @@ LABEL_11:
   v4 = [(NSString *)self->_path rangeOfString:@"/" options:6 range:self->_range.location, self->_range.length];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    lastPathComponent = 0;
     p_range->location = 0;
     p_range->length = 0;
   }
@@ -124,10 +124,10 @@ LABEL_11:
     self->_range.location = 0;
     self->_range.length = v4;
     v6 = [(NSString *)self->_path substringWithRange:0, v4];
-    v5 = [v6 lastPathComponent];
+    lastPathComponent = [v6 lastPathComponent];
   }
 
-  return v5;
+  return lastPathComponent;
 }
 
 @end

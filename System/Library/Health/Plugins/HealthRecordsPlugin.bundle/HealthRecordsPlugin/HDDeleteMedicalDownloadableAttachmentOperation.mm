@@ -1,19 +1,19 @@
 @interface HDDeleteMedicalDownloadableAttachmentOperation
-- (HDDeleteMedicalDownloadableAttachmentOperation)initWithAttachmentIdentifier:(id)a3;
-- (HDDeleteMedicalDownloadableAttachmentOperation)initWithCoder:(id)a3;
+- (HDDeleteMedicalDownloadableAttachmentOperation)initWithAttachmentIdentifier:(id)identifier;
+- (HDDeleteMedicalDownloadableAttachmentOperation)initWithCoder:(id)coder;
 @end
 
 @implementation HDDeleteMedicalDownloadableAttachmentOperation
 
-- (HDDeleteMedicalDownloadableAttachmentOperation)initWithAttachmentIdentifier:(id)a3
+- (HDDeleteMedicalDownloadableAttachmentOperation)initWithAttachmentIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HDDeleteMedicalDownloadableAttachmentOperation;
   v5 = [(HDDeleteMedicalDownloadableAttachmentOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -21,23 +21,23 @@
   return v5;
 }
 
-- (HDDeleteMedicalDownloadableAttachmentOperation)initWithCoder:(id)a3
+- (HDDeleteMedicalDownloadableAttachmentOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
   if (v5)
   {
     self = [(HDDeleteMedicalDownloadableAttachmentOperation *)self initWithAttachmentIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v6 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

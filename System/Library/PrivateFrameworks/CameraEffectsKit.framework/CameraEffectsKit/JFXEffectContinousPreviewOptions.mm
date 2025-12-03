@@ -1,7 +1,7 @@
 @interface JFXEffectContinousPreviewOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initContinousPreviewOptions;
-- (void)setEffectAnimationDuration:(id *)a3;
+- (void)setEffectAnimationDuration:(id *)duration;
 @end
 
 @implementation JFXEffectContinousPreviewOptions
@@ -10,26 +10,26 @@
 {
   v6.receiver = self;
   v6.super_class = JFXEffectContinousPreviewOptions;
-  v2 = [(JFXEffectPreviewOptions *)&v6 initPreviewOptions];
-  if (v2)
+  initPreviewOptions = [(JFXEffectPreviewOptions *)&v6 initPreviewOptions];
+  if (initPreviewOptions)
   {
     CMTimeMakeWithSeconds(&v5, 1.0, 30);
     v3 = *&v5.value;
-    v2[10] = v5.epoch;
-    *(v2 + 4) = v3;
-    *(v2 + 32) = 1;
-    v2[5] = 0;
-    *(v2 + 9) = 2;
+    initPreviewOptions[10] = v5.epoch;
+    *(initPreviewOptions + 4) = v3;
+    *(initPreviewOptions + 32) = 1;
+    initPreviewOptions[5] = 0;
+    *(initPreviewOptions + 9) = 2;
   }
 
-  return v2;
+  return initPreviewOptions;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = JFXEffectContinousPreviewOptions;
-  v4 = [(JFXEffectPreviewOptions *)&v11 copyWithZone:a3];
+  v4 = [(JFXEffectPreviewOptions *)&v11 copyWithZone:zone];
   epoch = self->_effectAnimationDuration.epoch;
   v4[4] = *&self->_effectAnimationDuration.value;
   *(v4 + 10) = epoch;
@@ -46,10 +46,10 @@
   return v4;
 }
 
-- (void)setEffectAnimationDuration:(id *)a3
+- (void)setEffectAnimationDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_effectAnimationDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_effectAnimationDuration.value = *&duration->var0;
   self->_effectAnimationDuration.epoch = var3;
 }
 

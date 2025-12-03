@@ -1,25 +1,25 @@
 @interface RUITableViewRowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)loadImage;
 @end
 
 @implementation RUITableViewRowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RUITableViewRow" isKindOfClass:@"RUIElement"];
-  [v3 validateClass:@"RUIElement" hasInstanceMethod:@"loadImage" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"RUIElement" hasInstanceMethod:@"URLAttributeForImageName: getScale:" withFullSignature:{"@", "@", "^d", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_imageView:" withFullSignature:{"@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RUITableViewRow" isKindOfClass:@"RUIElement"];
+  [validationsCopy validateClass:@"RUIElement" hasInstanceMethod:@"loadImage" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"RUIElement" hasInstanceMethod:@"URLAttributeForImageName: getScale:" withFullSignature:{"@", "@", "^d", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_imageView:" withFullSignature:{"@", "B", 0}];
 }
 
 - (BOOL)loadImage
 {
   v24.receiver = self;
   v24.super_class = RUITableViewRowAccessibility;
-  v3 = [(RUITableViewRowAccessibility *)&v24 loadImage];
-  if (v3)
+  loadImage = [(RUITableViewRowAccessibility *)&v24 loadImage];
+  if (loadImage)
   {
     v23[0] = 0;
     v23[1] = v23;
@@ -35,8 +35,8 @@
     v4 = v18[5];
     _Block_object_dispose(&v17, 8);
 
-    v5 = [v4 absoluteString];
-    v6 = [v5 lastPathComponent];
+    absoluteString = [v4 absoluteString];
+    lastPathComponent = [absoluteString lastPathComponent];
 
     LOBYTE(v17) = 0;
     v7 = [(RUITableViewRowAccessibility *)self safeValueForKey:@"tableCell"];
@@ -62,17 +62,17 @@
     _Block_object_dispose(&v17, 8);
     v11 = __UIAccessibilityCastAsClass();
 
-    if (v6)
+    if (lastPathComponent)
     {
-      v12 = [v11 accessibilityIdentifier];
+      accessibilityIdentifier = [v11 accessibilityIdentifier];
 
-      if (!v12)
+      if (!accessibilityIdentifier)
       {
-        v13 = [v6 componentsSeparatedByString:@"@"];
+        v13 = [lastPathComponent componentsSeparatedByString:@"@"];
         if ([v13 count])
         {
-          v14 = [v13 firstObject];
-          [v11 setAccessibilityIdentifier:v14];
+          firstObject = [v13 firstObject];
+          [v11 setAccessibilityIdentifier:firstObject];
         }
       }
     }
@@ -80,7 +80,7 @@
     _Block_object_dispose(v23, 8);
   }
 
-  return v3;
+  return loadImage;
 }
 
 uint64_t __41__RUITableViewRowAccessibility_loadImage__block_invoke(uint64_t a1)

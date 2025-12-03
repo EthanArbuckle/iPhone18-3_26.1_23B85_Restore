@@ -1,13 +1,13 @@
 @interface TIHardwareKeyboardLayout
 + (void)flushLayoutCaches;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)_frameForKeyCode:(unint64_t)a3;
-- (TIHardwareKeyboardLayout)initWithCoder:(id)a3;
-- (TIHardwareKeyboardLayout)initWithKeyboardType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)_frameForKeyCode:(unint64_t)code;
+- (TIHardwareKeyboardLayout)initWithCoder:(id)coder;
+- (TIHardwareKeyboardLayout)initWithKeyboardType:(int64_t)type;
 - (id)_ANSIFrames;
-- (void)addExactString:(id)a3 forKeyCode:(unint64_t)a4;
-- (void)addString:(id)a3 forKeyCode:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addExactString:(id)string forKeyCode:(unint64_t)code;
+- (void)addString:(id)string forKeyCode:(unint64_t)code;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIHardwareKeyboardLayout
@@ -92,12 +92,12 @@
   return v2;
 }
 
-- (CGRect)_frameForKeyCode:(unint64_t)a3
+- (CGRect)_frameForKeyCode:(unint64_t)code
 {
   keyboardType = self->_keyboardType;
   if (keyboardType == 2)
   {
-    v5 = [(TIHardwareKeyboardLayout *)self _JISFrames];
+    _JISFrames = [(TIHardwareKeyboardLayout *)self _JISFrames];
   }
 
   else
@@ -111,11 +111,11 @@
     {
       [(TIHardwareKeyboardLayout *)self _ANSIFrames];
     }
-    v5 = ;
+    _JISFrames = ;
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = _JISFrames;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:code];
   v8 = [v6 objectForKey:v7];
 
   if (v8)
@@ -148,38 +148,38 @@
   return result;
 }
 
-- (void)addExactString:(id)a3 forKeyCode:(unint64_t)a4
+- (void)addExactString:(id)string forKeyCode:(unint64_t)code
 {
-  v10 = a3;
-  [(TIHardwareKeyboardLayout *)self _frameForKeyCode:a4];
+  stringCopy = string;
+  [(TIHardwareKeyboardLayout *)self _frameForKeyCode:code];
   x = v12.origin.x;
   y = v12.origin.y;
   width = v12.size.width;
   height = v12.size.height;
   if (!CGRectIsNull(v12))
   {
-    [(TIKeyboardLayout *)self addKeyWithExactString:v10 frame:x, y, width, height];
+    [(TIKeyboardLayout *)self addKeyWithExactString:stringCopy frame:x, y, width, height];
   }
 }
 
-- (void)addString:(id)a3 forKeyCode:(unint64_t)a4
+- (void)addString:(id)string forKeyCode:(unint64_t)code
 {
-  v10 = a3;
-  [(TIHardwareKeyboardLayout *)self _frameForKeyCode:a4];
+  stringCopy = string;
+  [(TIHardwareKeyboardLayout *)self _frameForKeyCode:code];
   x = v12.origin.x;
   y = v12.origin.y;
   width = v12.size.width;
   height = v12.size.height;
   if (!CGRectIsNull(v12))
   {
-    [(TIKeyboardLayout *)self addKeyWithString:v10 frame:x, y, width, height];
+    [(TIKeyboardLayout *)self addKeyWithString:stringCopy frame:x, y, width, height];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -187,11 +187,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v4->_keyboardType == self->_keyboardType)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_keyboardType == self->_keyboardType)
     {
       v7.receiver = self;
       v7.super_class = TIHardwareKeyboardLayout;
-      v5 = [(TIKeyboardLayout *)&v7 isEqual:v4];
+      v5 = [(TIKeyboardLayout *)&v7 isEqual:equalCopy];
     }
 
     else
@@ -203,37 +203,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TIHardwareKeyboardLayout;
-  v4 = a3;
-  [(TIKeyboardLayout *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_keyboardType forKey:{@"keyboardType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TIKeyboardLayout *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_keyboardType forKey:{@"keyboardType", v5.receiver, v5.super_class}];
 }
 
-- (TIHardwareKeyboardLayout)initWithCoder:(id)a3
+- (TIHardwareKeyboardLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TIHardwareKeyboardLayout;
-  v5 = [(TIKeyboardLayout *)&v7 initWithCoder:v4];
+  v5 = [(TIKeyboardLayout *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_keyboardType = [v4 decodeIntegerForKey:@"keyboardType"];
+    v5->_keyboardType = [coderCopy decodeIntegerForKey:@"keyboardType"];
   }
 
   return v5;
 }
 
-- (TIHardwareKeyboardLayout)initWithKeyboardType:(int64_t)a3
+- (TIHardwareKeyboardLayout)initWithKeyboardType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = TIHardwareKeyboardLayout;
   result = [(TIKeyboardLayout *)&v5 initWithCapacity:60];
   if (result)
   {
-    result->_keyboardType = a3;
+    result->_keyboardType = type;
   }
 
   return result;

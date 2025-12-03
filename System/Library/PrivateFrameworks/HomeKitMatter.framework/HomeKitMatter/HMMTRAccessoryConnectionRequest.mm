@@ -1,8 +1,8 @@
 @interface HMMTRAccessoryConnectionRequest
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMMTRAccessoryConnectionRequest)initWithQueue:(id)a3 server:(id)a4 priority:(unint64_t)a5 completion:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMMTRAccessoryConnectionRequest)initWithQueue:(id)queue server:(id)server priority:(unint64_t)priority completion:(id)completion;
 - (HMMTRAccessoryServer)server;
 - (HMMTRFabricConnectionRequest)parentFabricRequest;
 - (double)_getIdleAccessoryConnectionTimeoutWEDShort;
@@ -14,14 +14,14 @@
 - (id)privateDescription;
 - (unint64_t)_numPendingOperations;
 - (unint64_t)hash;
-- (void)_handleReadWriteTimerDidFire:(id)a3 altTimer:(id)a4;
-- (void)_restartConnectionIdleTimer:(double)a3;
-- (void)_restartReadWriteIdleTimersWithReadInterval:(double)a3 writeInterval:(double)a4;
-- (void)abortAllPendingOperations:(id)a3;
+- (void)_handleReadWriteTimerDidFire:(id)fire altTimer:(id)timer;
+- (void)_restartConnectionIdleTimer:(double)timer;
+- (void)_restartReadWriteIdleTimersWithReadInterval:(double)interval writeInterval:(double)writeInterval;
+- (void)abortAllPendingOperations:(id)operations;
 - (void)executeAllPendingOperations;
 - (void)kickIdleTimer;
-- (void)mergeAccessoryConnectionRequest:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)mergeAccessoryConnectionRequest:(id)request;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMMTRAccessoryConnectionRequest
@@ -42,25 +42,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMMTRAccessoryConnectionRequest *)self nodeID];
-  v4 = [v3 hash];
+  nodeID = [(HMMTRAccessoryConnectionRequest *)self nodeID];
+  v4 = [nodeID hash];
 
-  v5 = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
-  v6 = [v5 hash];
+  fabricUUID = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
+  v6 = [fabricUUID hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_10;
@@ -70,15 +70,15 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(HMMTRAccessoryConnectionRequest *)v6 nodeID];
-    v8 = [(HMMTRAccessoryConnectionRequest *)self nodeID];
-    v9 = [v7 isEqual:v8];
+    nodeID = [(HMMTRAccessoryConnectionRequest *)v6 nodeID];
+    nodeID2 = [(HMMTRAccessoryConnectionRequest *)self nodeID];
+    v9 = [nodeID isEqual:nodeID2];
 
     if (v9)
     {
-      v10 = [(HMMTRAccessoryConnectionRequest *)v6 fabricUUID];
-      v11 = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
-      v12 = [v10 isEqual:v11];
+      fabricUUID = [(HMMTRAccessoryConnectionRequest *)v6 fabricUUID];
+      fabricUUID2 = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
+      v12 = [fabricUUID isEqual:fabricUUID2];
     }
 
     else
@@ -102,12 +102,12 @@ LABEL_10:
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMMTRAccessoryConnectionRequest *)self nodeID];
-  v5 = [v3 initWithName:@"NodeID" value:v4];
+  nodeID = [(HMMTRAccessoryConnectionRequest *)self nodeID];
+  v5 = [v3 initWithName:@"NodeID" value:nodeID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
-  v8 = [v6 initWithName:@"FabricUUID" value:v7];
+  fabricUUID = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
+  v8 = [v6 initWithName:@"FabricUUID" value:fabricUUID];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -119,10 +119,10 @@ LABEL_10:
 - (id)privateDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMMTRAccessoryConnectionRequest *)self nodeID];
-  v6 = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
-  v7 = [v3 stringWithFormat:@"%@ %@ [%@]", v4, v5, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  nodeID = [(HMMTRAccessoryConnectionRequest *)self nodeID];
+  fabricUUID = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
+  v7 = [v3 stringWithFormat:@"%@ %@ [%@]", shortDescription, nodeID, fabricUUID];
 
   return v7;
 }
@@ -130,23 +130,23 @@ LABEL_10:
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMMTRAccessoryConnectionRequest *)self nodeID];
-  v5 = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  nodeID = [(HMMTRAccessoryConnectionRequest *)self nodeID];
+  fabricUUID = [(HMMTRAccessoryConnectionRequest *)self fabricUUID];
+  v6 = [v3 stringWithFormat:@"%@/%@", nodeID, fabricUUID];
 
   return v6;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRAccessoryConnectionRequest *)self idleTimer];
+  fireCopy = fire;
+  idleTimer = [(HMMTRAccessoryConnectionRequest *)self idleTimer];
 
-  if (v5 == v4)
+  if (idleTimer == fireCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy4 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -157,23 +157,23 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v14);
-    v17 = [(HMMTRAccessoryConnectionRequest *)v10 idleWriteTimer];
-    [v17 suspend];
+    idleWriteTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy4 idleWriteTimer];
+    [idleWriteTimer suspend];
 
-    v18 = [(HMMTRAccessoryConnectionRequest *)v10 idleReadTimer];
-    [v18 suspend];
+    idleReadTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy4 idleReadTimer];
+    [idleReadTimer suspend];
 
-    v13 = [(HMMTRAccessoryConnectionRequest *)v10 lifeTimer];
-    [v13 suspend];
+    lifeTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy4 lifeTimer];
+    [lifeTimer suspend];
     goto LABEL_11;
   }
 
-  v6 = [(HMMTRAccessoryConnectionRequest *)self idleWriteTimer];
+  idleWriteTimer2 = [(HMMTRAccessoryConnectionRequest *)self idleWriteTimer];
 
-  if (v6 == v4)
+  if (idleWriteTimer2 == fireCopy)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy3 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -184,17 +184,17 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v20);
-    v19 = [(HMMTRAccessoryConnectionRequest *)v21 idleWriteTimer];
-    v24 = [(HMMTRAccessoryConnectionRequest *)v21 idleReadTimer];
+    idleWriteTimer3 = [(HMMTRAccessoryConnectionRequest *)selfCopy3 idleWriteTimer];
+    idleReadTimer2 = [(HMMTRAccessoryConnectionRequest *)selfCopy3 idleReadTimer];
     goto LABEL_18;
   }
 
-  v7 = [(HMMTRAccessoryConnectionRequest *)self idleReadTimer];
+  idleReadTimer3 = [(HMMTRAccessoryConnectionRequest *)self idleReadTimer];
 
-  if (v7 == v4)
+  if (idleReadTimer3 == fireCopy)
   {
     v25 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy3 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
@@ -205,21 +205,21 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v25);
-    v19 = [(HMMTRAccessoryConnectionRequest *)v21 idleReadTimer];
-    v24 = [(HMMTRAccessoryConnectionRequest *)v21 idleWriteTimer];
+    idleWriteTimer3 = [(HMMTRAccessoryConnectionRequest *)selfCopy3 idleReadTimer];
+    idleReadTimer2 = [(HMMTRAccessoryConnectionRequest *)selfCopy3 idleWriteTimer];
 LABEL_18:
-    v28 = v24;
-    [(HMMTRAccessoryConnectionRequest *)v21 _handleReadWriteTimerDidFire:v19 altTimer:v24];
+    v28 = idleReadTimer2;
+    [(HMMTRAccessoryConnectionRequest *)selfCopy3 _handleReadWriteTimerDidFire:idleWriteTimer3 altTimer:idleReadTimer2];
 
     goto LABEL_19;
   }
 
-  v8 = [(HMMTRAccessoryConnectionRequest *)self lifeTimer];
+  lifeTimer2 = [(HMMTRAccessoryConnectionRequest *)self lifeTimer];
 
-  if (v8 == v4)
+  if (lifeTimer2 == fireCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy4 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -230,34 +230,34 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13];
-    [(HMMTRAccessoryConnectionRequest *)v10 abortAllPendingOperations:v13];
+    lifeTimer = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13];
+    [(HMMTRAccessoryConnectionRequest *)selfCopy4 abortAllPendingOperations:lifeTimer];
 LABEL_11:
 
-    v19 = [(HMMTRAccessoryConnectionRequest *)v10 parentFabricRequest];
-    [v19 operationsCompletedForAccessoryConnectionRequest:v10];
+    idleWriteTimer3 = [(HMMTRAccessoryConnectionRequest *)selfCopy4 parentFabricRequest];
+    [idleWriteTimer3 operationsCompletedForAccessoryConnectionRequest:selfCopy4];
 LABEL_19:
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleReadWriteTimerDidFire:(id)a3 altTimer:(id)a4
+- (void)_handleReadWriteTimerDidFire:(id)fire altTimer:(id)timer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRAccessoryConnectionRequest *)self server];
-  v9 = [v8 isReadyToReadFromMTRDevice];
+  fireCopy = fire;
+  timerCopy = timer;
+  server = [(HMMTRAccessoryConnectionRequest *)self server];
+  isReadyToReadFromMTRDevice = [server isReadyToReadFromMTRDevice];
 
-  if (v9)
+  if (isReadyToReadFromMTRDevice)
   {
-    v10 = [v7 isRunning];
+    isRunning = [timerCopy isRunning];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     v14 = v13;
-    if (v10)
+    if (isRunning)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -281,15 +281,15 @@ LABEL_19:
       }
 
       objc_autoreleasePoolPop(v11);
-      v21 = [(HMMTRAccessoryConnectionRequest *)v12 idleTimer];
-      [v21 fire];
+      idleTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+      [idleTimer fire];
     }
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -300,7 +300,7 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v16);
-    [v6 resume];
+    [fireCopy resume];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -310,7 +310,7 @@ LABEL_19:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -321,18 +321,18 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRAccessoryConnectionRequest *)v4 idleTimer];
-  [v7 resume];
+  idleTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+  [idleTimer resume];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)abortAllPendingOperations:(id)a3
+- (void)abortAllPendingOperations:(id)operations
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationsCopy = operations;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -343,24 +343,24 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMMTRAccessoryConnectionRequest *)v6 _getAllPendingOperations];
-  v10 = [(HMMTRAccessoryConnectionRequest *)v6 idleTimer];
-  [v10 suspend];
+  _getAllPendingOperations = [(HMMTRAccessoryConnectionRequest *)selfCopy _getAllPendingOperations];
+  idleTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+  [idleTimer suspend];
 
-  v11 = [(HMMTRAccessoryConnectionRequest *)v6 idleWriteTimer];
-  [v11 suspend];
+  idleWriteTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleWriteTimer];
+  [idleWriteTimer suspend];
 
-  v12 = [(HMMTRAccessoryConnectionRequest *)v6 idleReadTimer];
-  [v12 suspend];
+  idleReadTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleReadTimer];
+  [idleReadTimer suspend];
 
-  v13 = [(HMMTRAccessoryConnectionRequest *)v6 lifeTimer];
-  [v13 suspend];
+  lifeTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy lifeTimer];
+  [lifeTimer suspend];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = v9;
+  v14 = _getAllPendingOperations;
   v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
@@ -387,8 +387,8 @@ LABEL_19:
     while (v16);
   }
 
-  v19 = [(HMMTRAccessoryConnectionRequest *)v6 parentFabricRequest];
-  [v19 operationsCompletedForAccessoryConnectionRequest:v6];
+  parentFabricRequest = [(HMMTRAccessoryConnectionRequest *)selfCopy parentFabricRequest];
+  [parentFabricRequest operationsCompletedForAccessoryConnectionRequest:selfCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -397,7 +397,7 @@ LABEL_19:
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -408,27 +408,27 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRAccessoryConnectionRequest *)v4 connectionPriority];
-  v8 = [(HMMTRAccessoryConnectionRequest *)v4 _getAllPendingOperations];
-  if ([v8 count])
+  connectionPriority = [(HMMTRAccessoryConnectionRequest *)selfCopy connectionPriority];
+  _getAllPendingOperations = [(HMMTRAccessoryConnectionRequest *)selfCopy _getAllPendingOperations];
+  if ([_getAllPendingOperations count])
   {
-    v9 = [(HMMTRAccessoryConnectionRequest *)v4 idleTimer];
-    [v9 suspend];
+    idleTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+    [idleTimer suspend];
 
-    if (v7 == 1)
+    if (connectionPriority == 1)
     {
-      v10 = [(HMMTRAccessoryConnectionRequest *)v4 idleWriteTimer];
-      [v10 suspend];
+      idleWriteTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleWriteTimer];
+      [idleWriteTimer suspend];
     }
 
-    v11 = [(HMMTRAccessoryConnectionRequest *)v4 idleReadTimer];
-    [v11 suspend];
+    idleReadTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy idleReadTimer];
+    [idleReadTimer suspend];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = v8;
+    v12 = _getAllPendingOperations;
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
@@ -455,26 +455,26 @@ LABEL_19:
       while (v14);
     }
 
-    [(HMMTRAccessoryConnectionRequest *)v4 kickIdleTimer];
-    if (v7 == 1)
+    [(HMMTRAccessoryConnectionRequest *)selfCopy kickIdleTimer];
+    if (connectionPriority == 1)
     {
-      v17 = [(HMMTRAccessoryConnectionRequest *)v4 idleWriteTimer];
-      [v17 resume];
+      idleWriteTimer2 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleWriteTimer];
+      [idleWriteTimer2 resume];
     }
 
-    v18 = [(HMMTRAccessoryConnectionRequest *)v4 idleReadTimer];
-    [v18 resume];
+    idleReadTimer2 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleReadTimer];
+    [idleReadTimer2 resume];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mergeAccessoryConnectionRequest:(id)a3
+- (void)mergeAccessoryConnectionRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -486,30 +486,30 @@ LABEL_19:
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if ([(HMMTRAccessoryConnectionRequest *)v6 hasPendingLowPriorityConnectionRequest])
+  if ([(HMMTRAccessoryConnectionRequest *)selfCopy hasPendingLowPriorityConnectionRequest])
   {
-    if (([v4 hasPendingLowPriorityConnectionRequest] & 1) == 0)
+    if (([requestCopy hasPendingLowPriorityConnectionRequest] & 1) == 0)
     {
-      -[HMMTRAccessoryConnectionRequest setConnectionPriority:](v6, "setConnectionPriority:", [v4 connectionPriority]);
-      if ([(HMMTRAccessoryConnectionRequest *)v6 connectionIdleTime]== 2)
+      -[HMMTRAccessoryConnectionRequest setConnectionPriority:](selfCopy, "setConnectionPriority:", [requestCopy connectionPriority]);
+      if ([(HMMTRAccessoryConnectionRequest *)selfCopy connectionIdleTime]== 2)
       {
-        [(HMMTRAccessoryConnectionRequest *)v6 updateConnectionIdleTime:2 force:1];
+        [(HMMTRAccessoryConnectionRequest *)selfCopy updateConnectionIdleTime:2 force:1];
       }
     }
   }
 
-  if ([v4 connectionPriority] == 1)
+  if ([requestCopy connectionPriority] == 1)
   {
-    [(HMMTRAccessoryConnectionRequest *)v6 setConnectionPriority:1];
+    [(HMMTRAccessoryConnectionRequest *)selfCopy setConnectionPriority:1];
   }
 
-  pendingOperations = v6->_pendingOperations;
-  v10 = [v4 _getAllPendingOperations];
-  [(NSMutableArray *)pendingOperations addObjectsFromArray:v10];
+  pendingOperations = selfCopy->_pendingOperations;
+  _getAllPendingOperations = [requestCopy _getAllPendingOperations];
+  [(NSMutableArray *)pendingOperations addObjectsFromArray:_getAllPendingOperations];
 
-  os_unfair_lock_unlock(&v6->_lock);
-  v11 = [(HMMTRAccessoryConnectionRequest *)v6 lifeTimer];
-  [v11 resume];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  lifeTimer = [(HMMTRAccessoryConnectionRequest *)selfCopy lifeTimer];
+  [lifeTimer resume];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -537,23 +537,23 @@ LABEL_19:
   return v3;
 }
 
-- (void)_restartReadWriteIdleTimersWithReadInterval:(double)a3 writeInterval:(double)a4
+- (void)_restartReadWriteIdleTimersWithReadInterval:(double)interval writeInterval:(double)writeInterval
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = [(HMMTRAccessoryConnectionRequest *)self idleReadTimer];
-  v8 = [v7 isRunning];
+  idleReadTimer = [(HMMTRAccessoryConnectionRequest *)self idleReadTimer];
+  isRunning = [idleReadTimer isRunning];
 
-  v9 = [(HMMTRAccessoryConnectionRequest *)self idleWriteTimer];
-  v10 = [v9 isRunning];
+  idleWriteTimer = [(HMMTRAccessoryConnectionRequest *)self idleWriteTimer];
+  isRunning2 = [idleWriteTimer isRunning];
 
-  v11 = [(HMMTRAccessoryConnectionRequest *)self idleReadTimer];
-  [v11 cancel];
+  idleReadTimer2 = [(HMMTRAccessoryConnectionRequest *)self idleReadTimer];
+  [idleReadTimer2 cancel];
 
-  v12 = [(HMMTRAccessoryConnectionRequest *)self idleWriteTimer];
-  [v12 cancel];
+  idleWriteTimer2 = [(HMMTRAccessoryConnectionRequest *)self idleWriteTimer];
+  [idleWriteTimer2 cancel];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -561,59 +561,59 @@ LABEL_19:
     v28 = 138543874;
     v29 = v16;
     v30 = 2048;
-    v31 = a3;
+    intervalCopy = interval;
     v32 = 2048;
-    v33 = a4;
+    writeIntervalCopy = writeInterval;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_DEBUG, "%{public}@Updating AccessoryConnectionRequest read/write idle time to: read: %f, write: %f", &v28, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a3];
-  [(HMMTRAccessoryConnectionRequest *)v14 setIdleReadTimer:v17];
+  v17 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:interval];
+  [(HMMTRAccessoryConnectionRequest *)selfCopy setIdleReadTimer:v17];
 
-  v18 = [(HMMTRAccessoryConnectionRequest *)v14 workQueue];
-  v19 = [(HMMTRAccessoryConnectionRequest *)v14 idleReadTimer];
-  [v19 setDelegateQueue:v18];
+  workQueue = [(HMMTRAccessoryConnectionRequest *)selfCopy workQueue];
+  idleReadTimer3 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleReadTimer];
+  [idleReadTimer3 setDelegateQueue:workQueue];
 
-  v20 = [(HMMTRAccessoryConnectionRequest *)v14 idleReadTimer];
-  [v20 setDelegate:v14];
+  idleReadTimer4 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleReadTimer];
+  [idleReadTimer4 setDelegate:selfCopy];
 
-  if (v8)
+  if (isRunning)
   {
-    v21 = [(HMMTRAccessoryConnectionRequest *)v14 idleReadTimer];
-    [v21 resume];
+    idleReadTimer5 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleReadTimer];
+    [idleReadTimer5 resume];
   }
 
-  v22 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a4];
-  [(HMMTRAccessoryConnectionRequest *)v14 setIdleWriteTimer:v22];
+  v22 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:writeInterval];
+  [(HMMTRAccessoryConnectionRequest *)selfCopy setIdleWriteTimer:v22];
 
-  v23 = [(HMMTRAccessoryConnectionRequest *)v14 workQueue];
-  v24 = [(HMMTRAccessoryConnectionRequest *)v14 idleWriteTimer];
-  [v24 setDelegateQueue:v23];
+  workQueue2 = [(HMMTRAccessoryConnectionRequest *)selfCopy workQueue];
+  idleWriteTimer3 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleWriteTimer];
+  [idleWriteTimer3 setDelegateQueue:workQueue2];
 
-  v25 = [(HMMTRAccessoryConnectionRequest *)v14 idleWriteTimer];
-  [v25 setDelegate:v14];
+  idleWriteTimer4 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleWriteTimer];
+  [idleWriteTimer4 setDelegate:selfCopy];
 
-  if (v10)
+  if (isRunning2)
   {
-    v26 = [(HMMTRAccessoryConnectionRequest *)v14 idleWriteTimer];
-    [v26 resume];
+    idleWriteTimer5 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleWriteTimer];
+    [idleWriteTimer5 resume];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_restartConnectionIdleTimer:(double)a3
+- (void)_restartConnectionIdleTimer:(double)timer
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(HMMTRAccessoryConnectionRequest *)self idleTimer];
-  v6 = [v5 isRunning];
+  idleTimer = [(HMMTRAccessoryConnectionRequest *)self idleTimer];
+  isRunning = [idleTimer isRunning];
 
-  v7 = [(HMMTRAccessoryConnectionRequest *)self idleTimer];
-  [v7 cancel];
+  idleTimer2 = [(HMMTRAccessoryConnectionRequest *)self idleTimer];
+  [idleTimer2 cancel];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -621,25 +621,25 @@ LABEL_19:
     v18 = 138543618;
     v19 = v11;
     v20 = 2048;
-    v21 = a3;
+    timerCopy = timer;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Updating AccessoryConnectionRequest Idle time to: %f", &v18, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a3];
-  [(HMMTRAccessoryConnectionRequest *)v9 setIdleTimer:v12];
+  v12 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:timer];
+  [(HMMTRAccessoryConnectionRequest *)selfCopy setIdleTimer:v12];
 
-  v13 = [(HMMTRAccessoryConnectionRequest *)v9 workQueue];
-  v14 = [(HMMTRAccessoryConnectionRequest *)v9 idleTimer];
-  [v14 setDelegateQueue:v13];
+  workQueue = [(HMMTRAccessoryConnectionRequest *)selfCopy workQueue];
+  idleTimer3 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+  [idleTimer3 setDelegateQueue:workQueue];
 
-  v15 = [(HMMTRAccessoryConnectionRequest *)v9 idleTimer];
-  [v15 setDelegate:v9];
+  idleTimer4 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+  [idleTimer4 setDelegate:selfCopy];
 
-  if (v6)
+  if (isRunning)
   {
-    v16 = [(HMMTRAccessoryConnectionRequest *)v9 idleTimer];
-    [v16 resume];
+    idleTimer5 = [(HMMTRAccessoryConnectionRequest *)selfCopy idleTimer];
+    [idleTimer5 resume];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -699,50 +699,50 @@ LABEL_19:
   return v5;
 }
 
-- (HMMTRAccessoryConnectionRequest)initWithQueue:(id)a3 server:(id)a4 priority:(unint64_t)a5 completion:(id)a6
+- (HMMTRAccessoryConnectionRequest)initWithQueue:(id)queue server:(id)server priority:(unint64_t)priority completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  queueCopy = queue;
+  serverCopy = server;
+  completionCopy = completion;
   v34.receiver = self;
   v34.super_class = HMMTRAccessoryConnectionRequest;
   v15 = [(HMMTRAccessoryConnectionRequest *)&v34 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_server, v13);
-    v17 = [v13 nodeID];
+    objc_storeWeak(&v15->_server, serverCopy);
+    nodeID = [serverCopy nodeID];
     nodeID = v16->_nodeID;
-    v16->_nodeID = v17;
+    v16->_nodeID = nodeID;
 
-    v19 = [v13 knownToSystemCommissioner];
-    if (v19)
+    knownToSystemCommissioner = [serverCopy knownToSystemCommissioner];
+    if (knownToSystemCommissioner)
     {
-      v6 = [v13 browser];
-      [v6 systemCommissionerFabricUUID];
+      browser = [serverCopy browser];
+      [browser systemCommissionerFabricUUID];
     }
 
     else
     {
-      [v13 fabricUUID];
+      [serverCopy fabricUUID];
     }
     v20 = ;
     objc_storeStrong(&v16->_fabricUUID, v20);
-    if (v19)
+    if (knownToSystemCommissioner)
     {
 
-      v20 = v6;
+      v20 = browser;
     }
 
-    objc_storeStrong(&v16->_workQueue, a3);
+    objc_storeStrong(&v16->_workQueue, queue);
     objc_storeWeak(&v16->_parentFabricRequest, 0);
-    v16->_connectionPriority = a5;
+    v16->_connectionPriority = priority;
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingOperations = v16->_pendingOperations;
     v16->_pendingOperations = v21;
 
     v23 = v16->_pendingOperations;
-    v24 = MEMORY[0x2318887D0](v14);
+    v24 = MEMORY[0x2318887D0](completionCopy);
     [(NSMutableArray *)v23 addObject:v24];
 
     v16->_connectionIdleTime = 0;
@@ -750,25 +750,25 @@ LABEL_19:
     idleTimer = v16->_idleTimer;
     v16->_idleTimer = v25;
 
-    [(HMFTimer *)v16->_idleTimer setDelegateQueue:v12];
+    [(HMFTimer *)v16->_idleTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v16->_idleTimer setDelegate:v16];
     v27 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:60.0];
     idleReadTimer = v16->_idleReadTimer;
     v16->_idleReadTimer = v27;
 
-    [(HMFTimer *)v16->_idleReadTimer setDelegateQueue:v12];
+    [(HMFTimer *)v16->_idleReadTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v16->_idleReadTimer setDelegate:v16];
     v29 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:60.0];
     idleWriteTimer = v16->_idleWriteTimer;
     v16->_idleWriteTimer = v29;
 
-    [(HMFTimer *)v16->_idleWriteTimer setDelegateQueue:v12];
+    [(HMFTimer *)v16->_idleWriteTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v16->_idleWriteTimer setDelegate:v16];
     v31 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:60.0];
     lifeTimer = v16->_lifeTimer;
     v16->_lifeTimer = v31;
 
-    [(HMFTimer *)v16->_lifeTimer setDelegateQueue:v12];
+    [(HMFTimer *)v16->_lifeTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v16->_lifeTimer setDelegate:v16];
     [(HMFTimer *)v16->_lifeTimer resume];
   }

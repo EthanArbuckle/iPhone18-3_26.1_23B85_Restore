@@ -1,29 +1,29 @@
 @interface BKSHIDEventDeliveryRuleChangeTransaction
-- (BKSHIDEventDeliveryRuleChangeTransaction)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBufferingPredicates:(id)a3;
-- (void)setConstraintAssertions:(id)a3;
-- (void)setDiscreteDispatchingRules:(id)a3;
-- (void)setKeyCommandDispatchingRules:(id)a3;
-- (void)setKeyCommandsRegistrations:(id)a3;
-- (void)setModalityAssertions:(id)a3;
-- (void)setSelectionRequests:(id)a3;
+- (BKSHIDEventDeliveryRuleChangeTransaction)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBufferingPredicates:(id)predicates;
+- (void)setConstraintAssertions:(id)assertions;
+- (void)setDiscreteDispatchingRules:(id)rules;
+- (void)setKeyCommandDispatchingRules:(id)rules;
+- (void)setKeyCommandsRegistrations:(id)registrations;
+- (void)setModalityAssertions:(id)assertions;
+- (void)setSelectionRequests:(id)requests;
 @end
 
 @implementation BKSHIDEventDeliveryRuleChangeTransaction
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__BKSHIDEventDeliveryRuleChangeTransaction_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendBodySectionWithName:0 block:v6];
 }
 
@@ -131,110 +131,110 @@ void __70__BKSHIDEventDeliveryRuleChangeTransaction_appendDescriptionToStream___
   v2 = [v1 appendObject:v3 withName:@"deferringRules"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeInteger:self->_contentsMask forKey:@"contentsMask"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_contentsMask forKey:@"contentsMask"];
   discreteDispatchingRules = self->_discreteDispatchingRules;
   if (discreteDispatchingRules)
   {
-    [v13 encodeObject:discreteDispatchingRules forKey:@"discreteDispatchingRules"];
+    [coderCopy encodeObject:discreteDispatchingRules forKey:@"discreteDispatchingRules"];
   }
 
   deferringRules = self->_deferringRules;
   if (deferringRules)
   {
-    [v13 encodeObject:deferringRules forKey:@"deferringRules"];
+    [coderCopy encodeObject:deferringRules forKey:@"deferringRules"];
   }
 
   keyCommandDispatchingRules = self->_keyCommandDispatchingRules;
-  v7 = v13;
+  v7 = coderCopy;
   if (keyCommandDispatchingRules)
   {
-    [v13 encodeObject:keyCommandDispatchingRules forKey:@"keyCommandDispatchingRules"];
-    v7 = v13;
+    [coderCopy encodeObject:keyCommandDispatchingRules forKey:@"keyCommandDispatchingRules"];
+    v7 = coderCopy;
   }
 
   keyCommandsRegistrations = self->_keyCommandsRegistrations;
   if (keyCommandsRegistrations)
   {
-    [v13 encodeObject:keyCommandsRegistrations forKey:@"keyCommandsRegistrations"];
-    v7 = v13;
+    [coderCopy encodeObject:keyCommandsRegistrations forKey:@"keyCommandsRegistrations"];
+    v7 = coderCopy;
   }
 
   bufferingPredicates = self->_bufferingPredicates;
   if (bufferingPredicates)
   {
-    [v13 encodeObject:bufferingPredicates forKey:@"bufferingPredicates"];
-    v7 = v13;
+    [coderCopy encodeObject:bufferingPredicates forKey:@"bufferingPredicates"];
+    v7 = coderCopy;
   }
 
   modalityAssertions = self->_modalityAssertions;
   if (modalityAssertions)
   {
-    [v13 encodeObject:modalityAssertions forKey:@"modalityAssertions"];
-    v7 = v13;
+    [coderCopy encodeObject:modalityAssertions forKey:@"modalityAssertions"];
+    v7 = coderCopy;
   }
 
   constraintAssertions = self->_constraintAssertions;
   if (constraintAssertions)
   {
-    [v13 encodeObject:constraintAssertions forKey:@"constraintAssertions"];
-    v7 = v13;
+    [coderCopy encodeObject:constraintAssertions forKey:@"constraintAssertions"];
+    v7 = coderCopy;
   }
 
   selectionRequests = self->_selectionRequests;
   if (selectionRequests)
   {
-    [v13 encodeObject:selectionRequests forKey:@"selectionRequests"];
-    v7 = v13;
+    [coderCopy encodeObject:selectionRequests forKey:@"selectionRequests"];
+    v7 = coderCopy;
   }
 }
 
-- (BKSHIDEventDeliveryRuleChangeTransaction)initWithCoder:(id)a3
+- (BKSHIDEventDeliveryRuleChangeTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BKSHIDEventDeliveryRuleChangeTransaction *)self init];
   if (v5)
   {
-    v5->_contentsMask = [v4 decodeIntegerForKey:@"contentsMask"];
+    v5->_contentsMask = [coderCopy decodeIntegerForKey:@"contentsMask"];
     v6 = objc_opt_class();
-    v7 = _BKDecodeArrayOfClass(v4, v6, @"discreteDispatchingRules");
+    v7 = _BKDecodeArrayOfClass(coderCopy, v6, @"discreteDispatchingRules");
     discreteDispatchingRules = v5->_discreteDispatchingRules;
     v5->_discreteDispatchingRules = v7;
 
     v9 = objc_opt_class();
-    v10 = _BKDecodeArrayOfClass(v4, v9, @"deferringRules");
+    v10 = _BKDecodeArrayOfClass(coderCopy, v9, @"deferringRules");
     deferringRules = v5->_deferringRules;
     v5->_deferringRules = v10;
 
     v12 = objc_opt_class();
-    v13 = _BKDecodeArrayOfClass(v4, v12, @"keyCommandDispatchingRules");
+    v13 = _BKDecodeArrayOfClass(coderCopy, v12, @"keyCommandDispatchingRules");
     keyCommandDispatchingRules = v5->_keyCommandDispatchingRules;
     v5->_keyCommandDispatchingRules = v13;
 
     v15 = objc_opt_class();
-    v16 = _BKDecodeArrayOfClass(v4, v15, @"keyCommandsRegistrations");
+    v16 = _BKDecodeArrayOfClass(coderCopy, v15, @"keyCommandsRegistrations");
     keyCommandsRegistrations = v5->_keyCommandsRegistrations;
     v5->_keyCommandsRegistrations = v16;
 
     v18 = objc_opt_class();
-    v19 = _BKDecodeArrayOfClass(v4, v18, @"bufferingPredicates");
+    v19 = _BKDecodeArrayOfClass(coderCopy, v18, @"bufferingPredicates");
     bufferingPredicates = v5->_bufferingPredicates;
     v5->_bufferingPredicates = v19;
 
     v21 = objc_opt_class();
-    v22 = _BKDecodeArrayOfClass(v4, v21, @"constraintAssertions");
+    v22 = _BKDecodeArrayOfClass(coderCopy, v21, @"constraintAssertions");
     constraintAssertions = v5->_constraintAssertions;
     v5->_constraintAssertions = v22;
 
     v24 = objc_opt_class();
-    v25 = _BKDecodeArrayOfClass(v4, v24, @"modalityAssertions");
+    v25 = _BKDecodeArrayOfClass(coderCopy, v24, @"modalityAssertions");
     modalityAssertions = v5->_modalityAssertions;
     v5->_modalityAssertions = v25;
 
     v27 = objc_opt_class();
-    v28 = _BKDecodeArrayOfClass(v4, v27, @"selectionRequests");
+    v28 = _BKDecodeArrayOfClass(coderCopy, v27, @"selectionRequests");
     selectionRequests = v5->_selectionRequests;
     v5->_selectionRequests = v28;
   }
@@ -242,73 +242,73 @@ void __70__BKSHIDEventDeliveryRuleChangeTransaction_appendDescriptionToStream___
   return v5;
 }
 
-- (void)setSelectionRequests:(id)a3
+- (void)setSelectionRequests:(id)requests
 {
-  v4 = [a3 copy];
+  v4 = [requests copy];
   selectionRequests = self->_selectionRequests;
   self->_selectionRequests = v4;
 
   self->_contentsMask |= 0x80uLL;
 }
 
-- (void)setModalityAssertions:(id)a3
+- (void)setModalityAssertions:(id)assertions
 {
-  v4 = [a3 copy];
+  v4 = [assertions copy];
   modalityAssertions = self->_modalityAssertions;
   self->_modalityAssertions = v4;
 
   self->_contentsMask |= 0x40uLL;
 }
 
-- (void)setConstraintAssertions:(id)a3
+- (void)setConstraintAssertions:(id)assertions
 {
-  v4 = [a3 copy];
+  v4 = [assertions copy];
   constraintAssertions = self->_constraintAssertions;
   self->_constraintAssertions = v4;
 
   self->_contentsMask |= 0x20uLL;
 }
 
-- (void)setKeyCommandDispatchingRules:(id)a3
+- (void)setKeyCommandDispatchingRules:(id)rules
 {
-  v4 = [a3 copy];
+  v4 = [rules copy];
   keyCommandDispatchingRules = self->_keyCommandDispatchingRules;
   self->_keyCommandDispatchingRules = v4;
 
   self->_contentsMask |= 4uLL;
 }
 
-- (void)setKeyCommandsRegistrations:(id)a3
+- (void)setKeyCommandsRegistrations:(id)registrations
 {
-  v4 = [a3 copy];
+  v4 = [registrations copy];
   keyCommandsRegistrations = self->_keyCommandsRegistrations;
   self->_keyCommandsRegistrations = v4;
 
   self->_contentsMask |= 8uLL;
 }
 
-- (void)setBufferingPredicates:(id)a3
+- (void)setBufferingPredicates:(id)predicates
 {
-  v4 = [a3 copy];
+  v4 = [predicates copy];
   bufferingPredicates = self->_bufferingPredicates;
   self->_bufferingPredicates = v4;
 
   self->_contentsMask |= 0x10uLL;
 }
 
-- (void)setDiscreteDispatchingRules:(id)a3
+- (void)setDiscreteDispatchingRules:(id)rules
 {
-  v4 = [a3 copy];
+  v4 = [rules copy];
   discreteDispatchingRules = self->_discreteDispatchingRules;
   self->_discreteDispatchingRules = v4;
 
   self->_contentsMask |= 1uLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -316,7 +316,7 @@ void __70__BKSHIDEventDeliveryRuleChangeTransaction_appendDescriptionToStream___
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())

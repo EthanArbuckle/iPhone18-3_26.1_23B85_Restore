@@ -1,17 +1,17 @@
 @interface CNCardGroup
-+ (id)groupForContact:(id)a3;
-- (CNCardGroup)initWithContact:(id)a3;
++ (id)groupForContact:(id)contact;
+- (CNCardGroup)initWithContact:(id)contact;
 - (NSArray)actionItems;
-- (SEL)unwrappedSelectorForAction:(id)a3;
+- (SEL)unwrappedSelectorForAction:(id)action;
 - (id)_loadActionItems;
-- (id)addActionWithTitle:(id)a3 menuProvider:(id)a4 destructive:(BOOL)a5;
-- (id)addActionWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 destructive:(BOOL)a6;
+- (id)addActionWithTitle:(id)title menuProvider:(id)provider destructive:(BOOL)destructive;
+- (id)addActionWithTitle:(id)title target:(id)target selector:(SEL)selector destructive:(BOOL)destructive;
 - (id)description;
-- (id)unwrappedTargetForAction:(id)a3;
-- (void)addAction:(id)a3 withTitle:(id)a4 color:(id)a5 glyphColor:(id)a6 transportType:(int64_t)a7 wrapTitle:(BOOL)a8;
-- (void)addAction:(id)a3 withTitle:(id)a4 wrapTitle:(BOOL)a5;
-- (void)removeActionWithTarget:(id)a3 selector:(SEL)a4;
-- (void)removeActionWithTitle:(id)a3;
+- (id)unwrappedTargetForAction:(id)action;
+- (void)addAction:(id)action withTitle:(id)title color:(id)color glyphColor:(id)glyphColor transportType:(int64_t)type wrapTitle:(BOOL)wrapTitle;
+- (void)addAction:(id)action withTitle:(id)title wrapTitle:(BOOL)wrapTitle;
+- (void)removeActionWithTarget:(id)target selector:(SEL)selector;
+- (void)removeActionWithTitle:(id)title;
 - (void)removeAllActions;
 @end
 
@@ -20,22 +20,22 @@
 - (id)_loadActionItems
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CNCardGroup *)self useSplitActions])
   {
-    v4 = [(CNCardGroup *)self actions];
-    v5 = [v4 count];
+    actions = [(CNCardGroup *)self actions];
+    v5 = [actions count];
 
     if (v5)
     {
       v6 = 0;
       do
       {
-        v7 = [(CNCardGroup *)self actions];
-        v8 = [v7 count];
+        actions2 = [(CNCardGroup *)self actions];
+        v8 = [actions2 count];
 
-        v9 = [(CNCardGroup *)self actions];
-        v10 = [v9 objectAtIndexedSubscript:v6];
+        actions3 = [(CNCardGroup *)self actions];
+        v10 = [actions3 objectAtIndexedSubscript:v6];
         v11 = v10;
         if (v6 + 1 >= v8)
         {
@@ -46,18 +46,18 @@
         else
         {
           v31[0] = v10;
-          v12 = [(CNCardGroup *)self actions];
-          v13 = [v12 objectAtIndexedSubscript:v6 + 1];
+          actions4 = [(CNCardGroup *)self actions];
+          v13 = [actions4 objectAtIndexedSubscript:v6 + 1];
           v31[1] = v13;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
         }
 
         v15 = [CNCardActionGroupItem actionGroupItemWithActions:v14];
-        [v3 addObject:v15];
+        [array addObject:v15];
 
         v6 += 2;
-        v16 = [(CNCardGroup *)self actions];
-        v17 = [v16 count];
+        actions5 = [(CNCardGroup *)self actions];
+        v17 = [actions5 count];
       }
 
       while (v6 < v17);
@@ -70,8 +70,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v18 = [(CNCardGroup *)self actions];
-    v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    actions6 = [(CNCardGroup *)self actions];
+    v19 = [actions6 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v19)
     {
       v20 = v19;
@@ -82,29 +82,29 @@
         {
           if (*v26 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(actions6);
           }
 
           v23 = [CNCardActionGroupItem actionGroupItemWithAction:*(*(&v25 + 1) + 8 * i)];
-          [v3 addObject:v23];
+          [array addObject:v23];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v20 = [actions6 countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v20);
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CNCardGroup *)self actions];
-  v6 = [v3 stringWithFormat:@"<%@ %p> %d actions", v4, self, objc_msgSend(v5, "count")];
+  actions = [(CNCardGroup *)self actions];
+  v6 = [v3 stringWithFormat:@"<%@ %p> %d actions", v4, self, objc_msgSend(actions, "count")];
 
   return v6;
 }
@@ -116,10 +116,10 @@
   self->_actionItems = 0;
 }
 
-- (void)removeActionWithTitle:(id)a3
+- (void)removeActionWithTitle:(id)title
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  titleCopy = title;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -140,8 +140,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 title];
-        v12 = [v11 isEqualToString:v4];
+        title = [v10 title];
+        v12 = [title isEqualToString:titleCopy];
 
         if (v12)
         {
@@ -166,52 +166,52 @@
 LABEL_11:
 }
 
-- (SEL)unwrappedSelectorForAction:(id)a3
+- (SEL)unwrappedSelectorForAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 target];
+  actionCopy = action;
+  target = [actionCopy target];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 target];
+    target2 = [actionCopy target];
 
-    v7 = [v6 action];
-    v3 = v6;
+    action = [target2 action];
+    actionCopy = target2;
   }
 
   else
   {
-    v7 = [v3 selector];
+    action = [actionCopy selector];
   }
 
-  return v7;
+  return action;
 }
 
-- (id)unwrappedTargetForAction:(id)a3
+- (id)unwrappedTargetForAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 target];
+  actionCopy = action;
+  target = [actionCopy target];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [v3 target];
+  target2 = [actionCopy target];
 
   if (isKindOfClass)
   {
-    v7 = [v6 target];
+    v6Target = [target2 target];
 
-    v6 = v7;
+    target2 = v6Target;
   }
 
-  return v6;
+  return target2;
 }
 
-- (void)removeActionWithTarget:(id)a3 selector:(SEL)a4
+- (void)removeActionWithTarget:(id)target selector:(SEL)selector
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  targetCopy = target;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -223,7 +223,7 @@ LABEL_11:
     v8 = v7;
     v9 = *v31;
     v10 = 0x1E74DE000uLL;
-    v28 = self;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v8; ++i)
@@ -234,42 +234,42 @@ LABEL_11:
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 target];
+        target = [v12 target];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
-        v15 = v12;
+        target2 = v12;
         if (isKindOfClass)
         {
           v16 = v8;
           v17 = v9;
-          v18 = a4;
-          v19 = v6;
-          v15 = [v12 target];
+          selectorCopy = selector;
+          v19 = targetCopy;
+          target2 = [v12 target];
 
-          v20 = [v15 target];
+          v15Target = [target2 target];
           v21 = v10;
           objc_opt_class();
           v22 = objc_opt_isKindOfClass();
 
           if (v22)
           {
-            v23 = [v15 target];
+            v15Target2 = [target2 target];
 
-            v15 = v23;
+            target2 = v15Target2;
           }
 
           v10 = v21;
-          v6 = v19;
-          a4 = v18;
+          targetCopy = v19;
+          selector = selectorCopy;
           v9 = v17;
           v8 = v16;
-          self = v28;
+          self = selfCopy;
         }
 
-        v24 = [(CNCardGroup *)self unwrappedTargetForAction:v15, v28];
-        v25 = [(CNCardGroup *)self unwrappedSelectorForAction:v15];
-        if (v24 == v6 && v25 == a4)
+        selfCopy = [(CNCardGroup *)self unwrappedTargetForAction:target2, selfCopy];
+        v25 = [(CNCardGroup *)self unwrappedSelectorForAction:target2];
+        if (selfCopy == targetCopy && v25 == selector)
         {
           [(NSMutableArray *)self->_actions removeObject:v12];
           actionItems = self->_actionItems;
@@ -292,57 +292,57 @@ LABEL_11:
 LABEL_18:
 }
 
-- (void)addAction:(id)a3 withTitle:(id)a4 color:(id)a5 glyphColor:(id)a6 transportType:(int64_t)a7 wrapTitle:(BOOL)a8
+- (void)addAction:(id)action withTitle:(id)title color:(id)color glyphColor:(id)glyphColor transportType:(int64_t)type wrapTitle:(BOOL)wrapTitle
 {
-  v8 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  [(CNCardGroup *)self removeActionWithTitle:v16];
-  v20 = +[CNContactAction contactActionWithTitle:target:selector:destructive:](CNContactAction, "contactActionWithTitle:target:selector:destructive:", v16, v17, sel_performActionWithSender_, [v17 isDestructive]);
+  wrapTitleCopy = wrapTitle;
+  glyphColorCopy = glyphColor;
+  colorCopy = color;
+  titleCopy = title;
+  actionCopy = action;
+  [(CNCardGroup *)self removeActionWithTitle:titleCopy];
+  v20 = +[CNContactAction contactActionWithTitle:target:selector:destructive:](CNContactAction, "contactActionWithTitle:target:selector:destructive:", titleCopy, actionCopy, sel_performActionWithSender_, [actionCopy isDestructive]);
 
-  [v20 setColor:v15];
-  [v20 setGlyphColor:v14];
+  [v20 setColor:colorCopy];
+  [v20 setGlyphColor:glyphColorCopy];
 
-  [v20 setTransportType:a7];
-  v18 = [v17 showBackgroundPlatter];
+  [v20 setTransportType:type];
+  showBackgroundPlatter = [actionCopy showBackgroundPlatter];
 
-  [v20 setShowBackgroundPlatter:v18];
-  [v20 setWrapTitle:v8];
+  [v20 setShowBackgroundPlatter:showBackgroundPlatter];
+  [v20 setWrapTitle:wrapTitleCopy];
   [(NSMutableArray *)self->_actions addObject:v20];
   actionItems = self->_actionItems;
   self->_actionItems = 0;
 }
 
-- (id)addActionWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 destructive:(BOOL)a6
+- (id)addActionWithTitle:(id)title target:(id)target selector:(SEL)selector destructive:(BOOL)destructive
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [CNContactAction contactActionWithTitle:v10 target:a4 selector:a5 destructive:v6];
-  [(CNCardGroup *)self addAction:v11 withTitle:v10];
+  destructiveCopy = destructive;
+  titleCopy = title;
+  v11 = [CNContactAction contactActionWithTitle:titleCopy target:target selector:selector destructive:destructiveCopy];
+  [(CNCardGroup *)self addAction:v11 withTitle:titleCopy];
 
   return v11;
 }
 
-- (id)addActionWithTitle:(id)a3 menuProvider:(id)a4 destructive:(BOOL)a5
+- (id)addActionWithTitle:(id)title menuProvider:(id)provider destructive:(BOOL)destructive
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [CNContactMenuDisplayingAction contactActionWithTitle:v8 menuProvider:a4 destructive:v5];
-  [(CNCardGroup *)self addAction:v9 withTitle:v8];
+  destructiveCopy = destructive;
+  titleCopy = title;
+  v9 = [CNContactMenuDisplayingAction contactActionWithTitle:titleCopy menuProvider:provider destructive:destructiveCopy];
+  [(CNCardGroup *)self addAction:v9 withTitle:titleCopy];
 
   return v9;
 }
 
-- (void)addAction:(id)a3 withTitle:(id)a4 wrapTitle:(BOOL)a5
+- (void)addAction:(id)action withTitle:(id)title wrapTitle:(BOOL)wrapTitle
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(CNCardGroup *)self removeActionWithTitle:v9];
+  wrapTitleCopy = wrapTitle;
+  actionCopy = action;
+  titleCopy = title;
+  [(CNCardGroup *)self removeActionWithTitle:titleCopy];
   objc_opt_class();
-  v15 = v8;
+  v15 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v15;
@@ -357,18 +357,18 @@ LABEL_18:
 
   if (v11)
   {
-    v12 = [v11 menuProvider];
-    v13 = +[CNContactMenuDisplayingAction contactActionWithTitle:menuProvider:destructive:](CNContactMenuDisplayingAction, "contactActionWithTitle:menuProvider:destructive:", v9, v12, [v11 isDestructive]);
+    menuProvider = [v11 menuProvider];
+    v13 = +[CNContactMenuDisplayingAction contactActionWithTitle:menuProvider:destructive:](CNContactMenuDisplayingAction, "contactActionWithTitle:menuProvider:destructive:", titleCopy, menuProvider, [v11 isDestructive]);
 
-    v9 = v12;
+    titleCopy = menuProvider;
   }
 
   else
   {
-    v13 = +[CNContactAction contactActionWithTitle:target:selector:destructive:](CNContactAction, "contactActionWithTitle:target:selector:destructive:", v9, v15, sel_performActionWithSender_, [v15 isDestructive]);
+    v13 = +[CNContactAction contactActionWithTitle:target:selector:destructive:](CNContactAction, "contactActionWithTitle:target:selector:destructive:", titleCopy, v15, sel_performActionWithSender_, [v15 isDestructive]);
   }
 
-  [v13 setWrapTitle:v5];
+  [v13 setWrapTitle:wrapTitleCopy];
   [(NSMutableArray *)self->_actions addObject:v13];
   actionItems = self->_actionItems;
   self->_actionItems = 0;
@@ -379,9 +379,9 @@ LABEL_18:
   actionItems = self->_actionItems;
   if (!actionItems)
   {
-    v4 = [(CNCardGroup *)self _loadActionItems];
+    _loadActionItems = [(CNCardGroup *)self _loadActionItems];
     v5 = self->_actionItems;
-    self->_actionItems = v4;
+    self->_actionItems = _loadActionItems;
 
     actionItems = self->_actionItems;
   }
@@ -389,16 +389,16 @@ LABEL_18:
   return actionItems;
 }
 
-- (CNCardGroup)initWithContact:(id)a3
+- (CNCardGroup)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v11.receiver = self;
   v11.super_class = CNCardGroup;
   v6 = [(CNCardGroup *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     actions = v7->_actions;
     v7->_actions = v8;
@@ -407,10 +407,10 @@ LABEL_18:
   return v7;
 }
 
-+ (id)groupForContact:(id)a3
++ (id)groupForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [[CNCardGroup alloc] initWithContact:v3];
+  contactCopy = contact;
+  v4 = [[CNCardGroup alloc] initWithContact:contactCopy];
 
   return v4;
 }

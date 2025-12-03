@@ -1,5 +1,5 @@
 @interface AVAudioTimeObserverImpl
-- (AVAudioTimeObserverImpl)initWithDeviceTimeClient:(shared_ptr<avas::client::DeviceTimeClient>)a3;
+- (AVAudioTimeObserverImpl)initWithDeviceTimeClient:(shared_ptr<avas::client::DeviceTimeClient>)client;
 - (id).cxx_construct;
 - (shared_ptr<avas::client::DeviceTimeClient>)deviceTimeClient;
 @end
@@ -13,12 +13,12 @@
   return self;
 }
 
-- (AVAudioTimeObserverImpl)initWithDeviceTimeClient:(shared_ptr<avas::client::DeviceTimeClient>)a3
+- (AVAudioTimeObserverImpl)initWithDeviceTimeClient:(shared_ptr<avas::client::DeviceTimeClient>)client
 {
-  ptr = a3.__ptr_;
+  ptr = client.__ptr_;
   v10.receiver = self;
   v10.super_class = AVAudioTimeObserverImpl;
-  v4 = [(AVAudioTimeObserverImpl *)&v10 init:a3.__ptr_];
+  v4 = [(AVAudioTimeObserverImpl *)&v10 init:client.__ptr_];
   v5 = v4;
   if (v4)
   {

@@ -1,8 +1,8 @@
 @interface SFAppAutoFillPasskeyProvider
 - (SFAppAutoFillPasskeyProvider)init;
-- (void)getAvailablePasskeysForApplicationIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getAvailablePasskeysForWebPageIdentifier:(id)a3 frameID:(id)a4 completionHandler:(id)a5;
-- (void)userSelectedPasskey:(id)a3 authenticatedLAContext:(id)a4;
+- (void)getAvailablePasskeysForApplicationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getAvailablePasskeysForWebPageIdentifier:(id)identifier frameID:(id)d completionHandler:(id)handler;
+- (void)userSelectedPasskey:(id)passkey authenticatedLAContext:(id)context;
 @end
 
 @implementation SFAppAutoFillPasskeyProvider
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)getAvailablePasskeysForApplicationIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getAvailablePasskeysForApplicationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxy = self->_proxy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __95__SFAppAutoFillPasskeyProvider_getAvailablePasskeysForApplicationIdentifier_completionHandler___block_invoke;
   v9[3] = &unk_279B616B8;
-  v10 = v6;
-  v8 = v6;
-  [(WBSAuthenticationServicesAgentProxy *)proxy getPasskeysForRunningAssertionWithApplicationIdentifier:a3 withCompletionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(WBSAuthenticationServicesAgentProxy *)proxy getPasskeysForRunningAssertionWithApplicationIdentifier:identifier withCompletionHandler:v9];
 }
 
 void __95__SFAppAutoFillPasskeyProvider_getAvailablePasskeysForApplicationIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -44,21 +44,21 @@ void __95__SFAppAutoFillPasskeyProvider_getAvailablePasskeysForApplicationIdenti
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)getAvailablePasskeysForWebPageIdentifier:(id)a3 frameID:(id)a4 completionHandler:(id)a5
+- (void)getAvailablePasskeysForWebPageIdentifier:(id)identifier frameID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277D49A48];
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithPageID:v11 frameID:v10];
+  dCopy = d;
+  identifierCopy = identifier;
+  v12 = [[v9 alloc] initWithPageID:identifierCopy frameID:dCopy];
 
   proxy = self->_proxy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __99__SFAppAutoFillPasskeyProvider_getAvailablePasskeysForWebPageIdentifier_frameID_completionHandler___block_invoke;
   v15[3] = &unk_279B616B8;
-  v16 = v8;
-  v14 = v8;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WBSAuthenticationServicesAgentProxy *)proxy getPasskeysForRunningAssertionWithWebFrameIdentifier:v12 completionHandler:v15];
 }
 
@@ -69,31 +69,31 @@ void __99__SFAppAutoFillPasskeyProvider_getAvailablePasskeysForWebPageIdentifier
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)userSelectedPasskey:(id)a3 authenticatedLAContext:(id)a4
+- (void)userSelectedPasskey:(id)passkey authenticatedLAContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  passkeyCopy = passkey;
+  contextCopy = context;
   v8 = WBS_LOG_CHANNEL_PREFIXAutoFill();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 identifier];
-    v11 = [v6 corePasskey];
-    v12 = [v11 operationUUID];
+    identifier = [passkeyCopy identifier];
+    corePasskey = [passkeyCopy corePasskey];
+    operationUUID = [corePasskey operationUUID];
     v17 = 138478339;
-    v18 = v10;
+    v18 = identifier;
     v19 = 2114;
-    v20 = v12;
+    v20 = operationUUID;
     v21 = 2113;
-    v22 = v7;
+    v22 = contextCopy;
     _os_log_impl(&dword_26450F000, v9, OS_LOG_TYPE_DEFAULT, "User completed passkey AutoFill with identifier %{private}@ for operation %{public}@, didAuthenticate: %{private}@", &v17, 0x20u);
   }
 
   proxy = self->_proxy;
-  v14 = [v6 corePasskey];
-  v15 = [MEMORY[0x277D49B30] defaultContext];
-  [(WBSAuthenticationServicesAgentProxy *)proxy userSelectedAutoFillPasskey:v14 authenticatedLAContext:v7 savedAccountContext:v15 completionHandler:&__block_literal_global_1];
+  corePasskey2 = [passkeyCopy corePasskey];
+  defaultContext = [MEMORY[0x277D49B30] defaultContext];
+  [(WBSAuthenticationServicesAgentProxy *)proxy userSelectedAutoFillPasskey:corePasskey2 authenticatedLAContext:contextCopy savedAccountContext:defaultContext completionHandler:&__block_literal_global_1];
 
   v16 = *MEMORY[0x277D85DE8];
 }

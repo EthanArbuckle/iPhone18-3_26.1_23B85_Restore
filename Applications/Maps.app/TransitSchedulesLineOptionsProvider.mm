@@ -1,7 +1,7 @@
 @interface TransitSchedulesLineOptionsProvider
 - (NSArray)identifiers;
 - (TransitSchedulesLineOptionsProviderDelegate)delegate;
-- (void)configureCell:(id)a3 forIndexPath:(id)a4 withIdentifier:(id)a5;
+- (void)configureCell:(id)cell forIndexPath:(id)path withIdentifier:(id)identifier;
 @end
 
 @implementation TransitSchedulesLineOptionsProvider
@@ -13,15 +13,15 @@
   return WeakRetained;
 }
 
-- (void)configureCell:(id)a3 forIndexPath:(id)a4 withIdentifier:(id)a5
+- (void)configureCell:(id)cell forIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cellCopy = cell;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = identifierCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,11 +43,11 @@
     objc_initWeak(&location, self);
     if ([v13 isEqualToString:@"LineOptionsSectionCellPinIdentifier"])
     {
-      v14 = [(TransitSchedulesLineOptionsProvider *)self delegate];
-      v15 = [v14 isPinnedTransitLine];
+      delegate = [(TransitSchedulesLineOptionsProvider *)self delegate];
+      isPinnedTransitLine = [delegate isPinnedTransitLine];
 
       v16 = +[NSBundle mainBundle];
-      if (v15)
+      if (isPinnedTransitLine)
       {
         v17 = [v16 localizedStringForKey:@"[Transit Schedules] Unpin Line" value:@"localized string not found" table:0];
         v18 = &v37;
@@ -131,7 +131,7 @@
     v25 = objc_retainBlock(v19);
     objc_destroyWeak(v18);
 LABEL_15:
-    v26 = v8;
+    v26 = cellCopy;
     [v26 setTitle:v17 symbolName:v20 action:v25 axIdentifierForAction:v21];
 
     objc_destroyWeak(&location);
@@ -144,9 +144,9 @@ LABEL_16:
   v2 = +[NSMutableArray array];
   [v2 addObject:@"LineOptionsSectionCellPinIdentifier"];
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-  if ((v4 & 1) == 0)
+  if ((isUsingOfflineMaps & 1) == 0)
   {
     [v2 addObject:@"LineOptionsSectionCellViewOnMapIdentifier"];
   }

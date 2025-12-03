@@ -2,13 +2,13 @@
 + (EFScheduler)globalAsyncScheduler;
 + (EFScheduler)immediateScheduler;
 + (EFScheduler)mainThreadScheduler;
-+ (id)_globalAsyncSchedulerWithQualityOfService:(int64_t)a3;
-+ (id)dispatchQueueSchedulerWithQueue:(id)a3;
-+ (id)globalAsyncSchedulerWithQualityOfService:(int64_t)a3;
-+ (id)onScheduler:(id)a3 performWithObject:(id)a4;
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3;
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3;
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3 qualityOfService:(int64_t)a4;
++ (id)_globalAsyncSchedulerWithQualityOfService:(int64_t)service;
++ (id)dispatchQueueSchedulerWithQueue:(id)queue;
++ (id)globalAsyncSchedulerWithQualityOfService:(int64_t)service;
++ (id)onScheduler:(id)scheduler performWithObject:(id)object;
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count;
++ (id)serialDispatchQueueSchedulerWithName:(id)name;
++ (id)serialDispatchQueueSchedulerWithName:(id)name qualityOfService:(int64_t)service;
 @end
 
 @implementation EFScheduler
@@ -64,7 +64,7 @@ void __33__EFScheduler_immediateScheduler__block_invoke()
   block[1] = 3221225472;
   block[2] = __35__EFScheduler_globalAsyncScheduler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (globalAsyncScheduler_onceToken != -1)
   {
     dispatch_once(&globalAsyncScheduler_onceToken, block);
@@ -75,11 +75,11 @@ void __33__EFScheduler_immediateScheduler__block_invoke()
   return v2;
 }
 
-+ (id)_globalAsyncSchedulerWithQualityOfService:(int64_t)a3
++ (id)_globalAsyncSchedulerWithQualityOfService:(int64_t)service
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = v5;
-  v7 = __ROR8__(a3 - 9, 3);
+  v7 = __ROR8__(service - 9, 3);
   v8 = 8 * v7 + 9;
   if (v7 >= 4)
   {
@@ -94,25 +94,25 @@ void __33__EFScheduler_immediateScheduler__block_invoke()
   v10 = dispatch_queue_attr_make_with_qos_class(v5, v9, 0);
 
   v11 = dispatch_queue_create(0, v10);
-  v12 = [a1 dispatchQueueSchedulerWithQueue:v11];
+  v12 = [self dispatchQueueSchedulerWithQueue:v11];
 
   return v12;
 }
 
-+ (id)globalAsyncSchedulerWithQualityOfService:(int64_t)a3
++ (id)globalAsyncSchedulerWithQualityOfService:(int64_t)service
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__EFScheduler_globalAsyncSchedulerWithQualityOfService___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (globalAsyncSchedulerWithQualityOfService__onceToken != -1)
   {
     dispatch_once(&globalAsyncSchedulerWithQualityOfService__onceToken, block);
   }
 
   v4 = globalAsyncSchedulerWithQualityOfService__qosSchedulers;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:service];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -144,19 +144,19 @@ void __56__EFScheduler_globalAsyncSchedulerWithQualityOfService___block_invoke(u
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3
++ (id)serialDispatchQueueSchedulerWithName:(id)name
 {
-  v3 = [a1 serialDispatchQueueSchedulerWithName:a3 qualityOfService:-1];
+  v3 = [self serialDispatchQueueSchedulerWithName:name qualityOfService:-1];
 
   return v3;
 }
 
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3 qualityOfService:(int64_t)a4
++ (id)serialDispatchQueueSchedulerWithName:(id)name qualityOfService:(int64_t)service
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = v7;
-  v9 = __ROR8__(a4 - 9, 3);
+  v9 = __ROR8__(service - 9, 3);
   v10 = 8 * v9 + 9;
   if (v9 >= 4)
   {
@@ -170,30 +170,30 @@ void __56__EFScheduler_globalAsyncSchedulerWithQualityOfService___block_invoke(u
 
   v12 = dispatch_queue_attr_make_with_qos_class(v7, v11, 0);
 
-  v13 = dispatch_queue_create([v6 UTF8String], v12);
-  v14 = [a1 dispatchQueueSchedulerWithQueue:v13];
+  v13 = dispatch_queue_create([nameCopy UTF8String], v12);
+  v14 = [self dispatchQueueSchedulerWithQueue:v13];
 
   return v14;
 }
 
-+ (id)dispatchQueueSchedulerWithQueue:(id)a3
++ (id)dispatchQueueSchedulerWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[EFQueueScheduler alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[EFQueueScheduler alloc] initWithQueue:queueCopy];
 
   return v4;
 }
 
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count
 {
-  v3 = [[EFOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:a3];
+  v3 = [[EFOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:count];
 
   return v3;
 }
 
-+ (id)onScheduler:(id)a3 performWithObject:(id)a4
++ (id)onScheduler:(id)scheduler performWithObject:(id)object
 {
-  v4 = [EFSchedulerTrampoline trampolineWithScheduler:a3 object:a4];
+  v4 = [EFSchedulerTrampoline trampolineWithScheduler:scheduler object:object];
 
   return v4;
 }

@@ -14,29 +14,29 @@
 - (void)handleSeparation;
 - (void)handleStopSound;
 - (void)removeOrRepairDevice;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)showMismatchLearnMore;
 - (void)showSoundPending;
 - (void)showSoundPendingLearnMore;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMDeviceDetailContentViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
-  v3 = [(FMDeviceDetailContentViewController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(FMDeviceDetailContentViewController *)selfCopy view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setFrame:{0.0, 0.0, 100.0, 100.0}];
+    v4 = view;
+    [view setFrame:{0.0, 0.0, 100.0, 100.0}];
 
-    v5.receiver = v2;
+    v5.receiver = selfCopy;
     v5.super_class = type metadata accessor for FMDeviceDetailContentViewController(0);
     [(FMBaseContentViewController *)&v5 viewDidLoad];
   }
@@ -47,19 +47,19 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1001DBC88(a3);
+  selfCopy = self;
+  sub_1001DBC88(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMDeviceDetailContentViewController(0);
   v4 = v5.receiver;
-  [(FMDeviceDetailContentViewController *)&v5 viewDidAppear:v3];
+  [(FMDeviceDetailContentViewController *)&v5 viewDidAppear:appearCopy];
   sub_1001E655C();
   if (*&v4[OBJC_IVAR____TtC6FindMy35FMDeviceDetailContentViewController_lostModeViewModel])
   {
@@ -74,124 +74,124 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001DC9A0(a3);
+  selfCopy = self;
+  sub_1001DC9A0(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001DD91C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001E644C(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1001E644C(scrollCopy);
 }
 
 - (void)handlePlaySound
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001ED070();
 }
 
 - (void)handleStopSound
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001EFE58();
 }
 
 - (void)handleMuteLeft
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F194C();
 }
 
 - (void)handleMuteRight
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F1E00();
 }
 
 - (void)showSoundPending
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F973C();
 }
 
 - (void)handleDirections
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FB570();
 }
 
 - (void)handleFind
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001FBB04();
 }
 
 - (void)handleLostMode
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002021D0();
 }
 
 - (void)handleLock
 {
-  v2 = self;
+  selfCopy = self;
   sub_100202644();
 }
 
 - (void)showSoundPendingLearnMore
 {
-  v2 = self;
+  selfCopy = self;
   sub_100202A78();
 }
 
 - (void)showMismatchLearnMore
 {
-  v2 = self;
+  selfCopy = self;
   sub_100203020();
 }
 
 - (void)handleErase
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002037D8();
 }
 
 - (void)handleCancelErase
 {
-  v2 = self;
+  selfCopy = self;
   sub_100203B10();
 }
 
 - (void)handleInnaccurateLocationAttentionTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100203F0C();
 }
 
 - (void)handleSeparation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10020A5C4();
 }
 
 - (void)removeOrRepairDevice
 {
-  v2 = self;
+  selfCopy = self;
   sub_10020BCFC();
 }
 
 - (void)handleNotificationsOffAttentionTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021E228();
 }
 
@@ -230,7 +230,7 @@
   else
   {
     (*(v4 + 32))(v6, v2, v3);
-    v12 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     URL._bridgeToObjectiveC()(v13);
     v15 = v14;
     sub_10015391C(_swiftEmptyArrayStorage);
@@ -238,7 +238,7 @@
     sub_10021E650(&qword_1006AF360, type metadata accessor for OpenExternalURLOptionsKey);
     isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
-    [v12 openURL:v15 options:isa completionHandler:0];
+    [sharedApplication openURL:v15 options:isa completionHandler:0];
 
     return (*(v4 + 8))(v6, v3);
   }

@@ -1,22 +1,22 @@
 @interface MTLIndexedConstantValue
-- (MTLIndexedConstantValue)initWithValue:(const void *)a3 type:(unint64_t)a4 index:(unint64_t)a5;
+- (MTLIndexedConstantValue)initWithValue:(const void *)value type:(unint64_t)type index:(unint64_t)index;
 - (id)describe;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation MTLIndexedConstantValue
 
-- (MTLIndexedConstantValue)initWithValue:(const void *)a3 type:(unint64_t)a4 index:(unint64_t)a5
+- (MTLIndexedConstantValue)initWithValue:(const void *)value type:(unint64_t)type index:(unint64_t)index
 {
   v9.receiver = self;
   v9.super_class = MTLIndexedConstantValue;
   v7 = [(MTLIndexedConstantValue *)&v9 init];
   if (v7)
   {
-    v7->_index = a5;
-    v7->_dataType = a4;
-    _MTLConstantDataSize(a4);
+    v7->_index = index;
+    v7->_dataType = type;
+    _MTLConstantDataSize(type);
     operator new[]();
   }
 
@@ -45,10 +45,10 @@
   return v4;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v12[9] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = newStringFromConstantValue(self->_data, self->_dataType);
   v6 = MEMORY[0x1E696AEC0];
   v11.receiver = self;

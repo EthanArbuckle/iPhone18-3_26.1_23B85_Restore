@@ -14,7 +14,7 @@
 - (id)cps_sha256
 {
   v2 = malloc_type_calloc(0x20uLL, 1uLL, 0x100004077774924uLL);
-  v3 = [a1 dataUsingEncoding:4];
+  v3 = [self dataUsingEncoding:4];
   CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), v2);
   v4 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v2 length:32];
 
@@ -23,13 +23,13 @@
 
 - (id)cps_sha256String
 {
-  v1 = [a1 cps_sha256];
-  v2 = [v1 bytes];
+  cps_sha256 = [self cps_sha256];
+  bytes = [cps_sha256 bytes];
 
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {
-    [v3 appendFormat:@"%02x", *(v2 + i)];
+    [v3 appendFormat:@"%02x", *(bytes + i)];
   }
 
   return v3;
@@ -37,7 +37,7 @@
 
 - (__CFString)cps_privacyPreservingDescription
 {
-  v1 = [a1 length];
+  v1 = [self length];
   if (v1)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"about %lu characters", 5 * (v1 / 5.0)];
@@ -54,17 +54,17 @@
 - (id)cps_stringByRemovingPrefix:()ClipServicesExtras
 {
   v4 = a3;
-  if ([a1 hasPrefix:v4])
+  if ([self hasPrefix:v4])
   {
-    v5 = [a1 substringFromIndex:{objc_msgSend(v4, "length")}];
+    selfCopy = [self substringFromIndex:{objc_msgSend(v4, "length")}];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
@@ -72,7 +72,7 @@
 - (uint64_t)cps_looksLikeParentAppOfAppClipBundleIdentifier:()ClipServicesExtras
 {
   v4 = [a3 componentsSeparatedByString:@"."];
-  v5 = [a1 componentsSeparatedByString:@"."];
+  v5 = [self componentsSeparatedByString:@"."];
   if ([v4 count] && objc_msgSend(v5, "count") && (v6 = objc_msgSend(v4, "count"), v6 > objc_msgSend(v5, "count")))
   {
     if ([v5 count])
@@ -111,20 +111,20 @@
 
 - (BOOL)cps_isAlphaNumeric
 {
-  v2 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v3 = [v2 invertedSet];
-  v4 = [a1 rangeOfCharacterFromSet:v3] == 0x7FFFFFFFFFFFFFFFLL;
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
+  v4 = [self rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
 - (uint64_t)cps_looksLikeUUIDOrWebClipIdentifier
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v3 = result;
-    return ([a1 hasPrefix:@"com.apple.appclip-"] & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"com.apple.webapp-") & 1) != 0 || v3 == 32 && (objc_msgSend(a1, "cps_isAlphaNumeric") & 1) != 0;
+    return ([self hasPrefix:@"com.apple.appclip-"] & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"com.apple.webapp-") & 1) != 0 || v3 == 32 && (objc_msgSend(self, "cps_isAlphaNumeric") & 1) != 0;
   }
 
   return result;
@@ -132,15 +132,15 @@
 
 - (BOOL)cps_looksLikeStoreItemIdentifier
 {
-  if ([a1 length] < 5)
+  if ([self length] < 5)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v4 = [v3 invertedSet];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v2 = [a1 rangeOfCharacterFromSet:v4] == 0x7FFFFFFFFFFFFFFFLL;
+  v2 = [self rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
   return v2;
 }
 

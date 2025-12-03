@@ -1,24 +1,24 @@
 @interface NTKGreenfieldSystemAppDeprecatedMappings
-+ (BOOL)isSystemAppDeprecatedBundleId:(id)a3 itemId:(id)a4;
++ (BOOL)isSystemAppDeprecatedBundleId:(id)id itemId:(id)itemId;
 @end
 
 @implementation NTKGreenfieldSystemAppDeprecatedMappings
 
-+ (BOOL)isSystemAppDeprecatedBundleId:(id)a3 itemId:(id)a4
++ (BOOL)isSystemAppDeprecatedBundleId:(id)id itemId:(id)itemId
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  itemIdCopy = itemId;
   if (isSystemAppDeprecatedBundleId_itemId__onceToken != -1)
   {
     +[NTKGreenfieldSystemAppDeprecatedMappings isSystemAppDeprecatedBundleId:itemId:];
   }
 
-  v7 = [isSystemAppDeprecatedBundleId_itemId___deperecatedSysytemAppsBundleIdsToItemIdsMapping objectForKey:v5];
+  v7 = [isSystemAppDeprecatedBundleId_itemId___deperecatedSysytemAppsBundleIdsToItemIdsMapping objectForKey:idCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 longValue];
-    v10 = v9 == [v6 longValue];
+    longValue = [v7 longValue];
+    v10 = longValue == [itemIdCopy longValue];
   }
 
   else

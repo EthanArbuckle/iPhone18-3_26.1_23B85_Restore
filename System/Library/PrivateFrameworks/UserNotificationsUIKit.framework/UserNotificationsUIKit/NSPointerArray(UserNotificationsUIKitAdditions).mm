@@ -6,16 +6,16 @@
 
 - (uint64_t)unui_compact
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
     v3 = result - 1;
     do
     {
-      result = [a1 pointerAtIndex:v3];
+      result = [self pointerAtIndex:v3];
       if (!result)
       {
-        result = [a1 removePointerAtIndex:v3];
+        result = [self removePointerAtIndex:v3];
       }
 
       --v3;

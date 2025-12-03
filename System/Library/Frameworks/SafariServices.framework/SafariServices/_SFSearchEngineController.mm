@@ -8,24 +8,24 @@
 - (NSArray)searchEngineNames;
 - (NSString)description;
 - (_SFSearchEngineController)init;
-- (id)_existingEngineInfoFor:(id)a3;
+- (id)_existingEngineInfoFor:(id)for;
 - (id)_specialSearchEngines;
-- (id)defaultSearchEngineForPrivateBrowsing:(BOOL)a3;
-- (id)defaultSearchEngineIfPopulatedForPrivateBrowsing:(BOOL)a3;
-- (id)defaultSearchEngineNameForPrivateBrowsing:(BOOL)a3;
-- (id)engineInfoFor:(id)a3;
-- (id)engineInfoForScriptName:(id)a3;
-- (id)safeSearchRequestForSearchRequest:(id)a3;
-- (id)userVisibleQueryFromSearchURL:(id)a3 allowQueryThatLooksLikeURL:(BOOL)a4;
-- (void)_addAllWebSearchEngineInfosToArray:(id)a3 andAddUserVisibleWebSearchEngineInfosToArray:(id)a4;
-- (void)_getEngines:(id *)a3 defaultSearchEngineIndex:(unint64_t *)a4 forPrivateBrowsing:(BOOL)a5;
-- (void)_loadSystemPropertiesForSearchEngine:(id)a3;
+- (id)defaultSearchEngineForPrivateBrowsing:(BOOL)browsing;
+- (id)defaultSearchEngineIfPopulatedForPrivateBrowsing:(BOOL)browsing;
+- (id)defaultSearchEngineNameForPrivateBrowsing:(BOOL)browsing;
+- (id)engineInfoFor:(id)for;
+- (id)engineInfoForScriptName:(id)name;
+- (id)safeSearchRequestForSearchRequest:(id)request;
+- (id)userVisibleQueryFromSearchURL:(id)l allowQueryThatLooksLikeURL:(BOOL)rL;
+- (void)_addAllWebSearchEngineInfosToArray:(id)array andAddUserVisibleWebSearchEngineInfosToArray:(id)toArray;
+- (void)_getEngines:(id *)engines defaultSearchEngineIndex:(unint64_t *)index forPrivateBrowsing:(BOOL)browsing;
+- (void)_loadSystemPropertiesForSearchEngine:(id)engine;
 - (void)_populateSearchEngines;
 - (void)_postDefaultSearchEngineDidChange;
-- (void)_setDefaultSearchEngine:(id)a3 forPrivateBrowsing:(BOOL)a4;
-- (void)_setEngines:(id)a3 defaultSearchEngineIndex:(unint64_t)a4 forPrivateBrowsing:(BOOL)a5;
+- (void)_setDefaultSearchEngine:(id)engine forPrivateBrowsing:(BOOL)browsing;
+- (void)_setEngines:(id)engines defaultSearchEngineIndex:(unint64_t)index forPrivateBrowsing:(BOOL)browsing;
 - (void)reloadSearchEngines;
-- (void)setDefaultSearchEngine:(id)a3 forPrivateBrowsing:(BOOL)a4;
+- (void)setDefaultSearchEngine:(id)engine forPrivateBrowsing:(BOOL)browsing;
 @end
 
 @implementation _SFSearchEngineController
@@ -35,7 +35,7 @@
   v2 = searchEngineController;
   if (!searchEngineController)
   {
-    [a1 _initializeSharedInstance];
+    [self _initializeSharedInstance];
     v2 = searchEngineController;
   }
 
@@ -46,7 +46,7 @@
 
 + (void)_initializeSharedInstance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   if (!searchEngineController)
   {
@@ -148,7 +148,7 @@
     block[1] = 3221225472;
     block[2] = __54___SFSearchEngineController_sharedInstanceIfAvailable__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v5, block);
   }
 
@@ -170,11 +170,11 @@
   [(_SFSearchEngineController *)self _populateSearchEngines];
 }
 
-- (void)_addAllWebSearchEngineInfosToArray:(id)a3 andAddUserVisibleWebSearchEngineInfosToArray:(id)a4
+- (void)_addAllWebSearchEngineInfosToArray:(id)array andAddUserVisibleWebSearchEngineInfosToArray:(id)toArray
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  toArrayCopy = toArray;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -200,7 +200,7 @@
         v15 = [(WBSSearchProvider *)v14 initWithDictionary:v13 usingContext:self, v19];
         if (v15)
         {
-          [v6 addObject:v15];
+          [arrayCopy addObject:v15];
         }
 
         ++v12;
@@ -213,23 +213,23 @@
     while (v10);
   }
 
-  v16 = [(_SFSearchEngineController *)self _specialSearchEngines];
-  v17 = [v6 arrayByAddingObjectsFromArray:v16];
+  _specialSearchEngines = [(_SFSearchEngineController *)self _specialSearchEngines];
+  v17 = [arrayCopy arrayByAddingObjectsFromArray:_specialSearchEngines];
   v18 = [(WBSSearchProvider *)_SFSearchEngineInfo userVisibleProvidersInAllProviders:v17 usingContext:self];
-  [v7 addObjectsFromArray:v18];
+  [toArrayCopy addObjectsFromArray:v18];
 }
 
 - (NSString)description
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(_SFSearchEngineController *)self engines];
-  [v3 appendFormat:@"SearchEngineController with %lu engines.", objc_msgSend(v4, "count")];
+  engines = [(_SFSearchEngineController *)self engines];
+  [v3 appendFormat:@"SearchEngineController with %lu engines.", objc_msgSend(engines, "count")];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = engines;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -256,13 +256,13 @@
   return v3;
 }
 
-- (void)setDefaultSearchEngine:(id)a3 forPrivateBrowsing:(BOOL)a4
+- (void)setDefaultSearchEngine:(id)engine forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
-  v6 = a3;
+  browsingCopy = browsing;
+  engineCopy = engine;
   os_unfair_lock_lock(&defaultSearchEngineLock);
   v7 = 32;
-  if (v4)
+  if (browsingCopy)
   {
     v7 = 48;
   }
@@ -277,33 +277,33 @@
   block[2] = __71___SFSearchEngineController_setDefaultSearchEngine_forPrivateBrowsing___block_invoke;
   block[3] = &unk_1E848FC98;
   block[4] = self;
-  v12 = v6;
-  v13 = v4;
-  v10 = v6;
+  v12 = engineCopy;
+  v13 = browsingCopy;
+  v10 = engineCopy;
   dispatch_async(searchEnginesQueue, block);
 }
 
-- (void)_setDefaultSearchEngine:(id)a3 forPrivateBrowsing:(BOOL)a4
+- (void)_setDefaultSearchEngine:(id)engine forPrivateBrowsing:(BOOL)browsing
 {
-  v6 = a3;
+  engineCopy = engine;
   searchEngines = self->_searchEngines;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72___SFSearchEngineController__setDefaultSearchEngine_forPrivateBrowsing___block_invoke;
   v9[3] = &unk_1E8493600;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  browsingCopy = browsing;
+  v10 = engineCopy;
+  selfCopy = self;
+  v8 = engineCopy;
   [(NSArray *)searchEngines enumerateObjectsUsingBlock:v9];
 }
 
-- (id)defaultSearchEngineForPrivateBrowsing:(BOOL)a3
+- (id)defaultSearchEngineForPrivateBrowsing:(BOOL)browsing
 {
-  v3 = a3;
+  browsingCopy = browsing;
   os_unfair_lock_lock(&defaultSearchEngineLock);
   v5 = 32;
-  if (v3)
+  if (browsingCopy)
   {
     v5 = 48;
   }
@@ -319,7 +319,7 @@
   {
     v11 = 0;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
-    [(_SFSearchEngineController *)self _getEngines:&v11 defaultSearchEngineIndex:&v12 forPrivateBrowsing:v3];
+    [(_SFSearchEngineController *)self _getEngines:&v11 defaultSearchEngineIndex:&v12 forPrivateBrowsing:browsingCopy];
     v8 = v11;
     v9 = v8;
     v7 = 0;
@@ -332,12 +332,12 @@
   return v7;
 }
 
-- (id)defaultSearchEngineIfPopulatedForPrivateBrowsing:(BOOL)a3
+- (id)defaultSearchEngineIfPopulatedForPrivateBrowsing:(BOOL)browsing
 {
-  v3 = a3;
+  browsingCopy = browsing;
   os_unfair_lock_lock(&defaultSearchEngineLock);
   v5 = 32;
-  if (v3)
+  if (browsingCopy)
   {
     v5 = 48;
   }
@@ -348,10 +348,10 @@
   return v6;
 }
 
-- (id)_existingEngineInfoFor:(id)a3
+- (id)_existingEngineInfoFor:(id)for
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  forCopy = for;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -371,8 +371,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 shortName];
-        v11 = [v10 caseInsensitiveCompare:v4];
+        shortName = [v9 shortName];
+        v11 = [shortName caseInsensitiveCompare:forCopy];
 
         if (!v11)
         {
@@ -396,11 +396,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)engineInfoFor:(id)a3
+- (id)engineInfoFor:(id)for
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  forCopy = for;
+  v5 = forCopy;
+  if (forCopy && [forCopy length])
   {
     v14 = 0;
     v15 = &v14;
@@ -441,18 +441,18 @@ LABEL_11:
   return v9;
 }
 
-- (id)engineInfoForScriptName:(id)a3
+- (id)engineInfoForScriptName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(_SFSearchEngineController *)self engines];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    engines = [(_SFSearchEngineController *)self engines];
+    v6 = [engines countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -462,12 +462,12 @@ LABEL_11:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(engines);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 scriptName];
-          v11 = [v10 caseInsensitiveCompare:v4];
+          scriptName = [v9 scriptName];
+          v11 = [scriptName caseInsensitiveCompare:nameCopy];
 
           if (!v11)
           {
@@ -476,7 +476,7 @@ LABEL_11:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [engines countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -497,24 +497,24 @@ LABEL_12:
   return v6;
 }
 
-- (void)_loadSystemPropertiesForSearchEngine:(id)a3
+- (void)_loadSystemPropertiesForSearchEngine:(id)engine
 {
   v41[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF58];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  v7 = [v6 countryCode];
-  v8 = [v7 copy];
+  engineCopy = engine;
+  currentLocale = [v4 currentLocale];
+  countryCode = [currentLocale countryCode];
+  v8 = [countryCode copy];
   countryCode = self->_countryCode;
   self->_countryCode = v8;
 
-  v10 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v11 = [v10 firstObject];
-  v12 = [v11 lowercaseString];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
+  lowercaseString = [firstObject lowercaseString];
 
-  if (v12)
+  if (lowercaseString)
   {
-    v13 = v12;
+    v13 = lowercaseString;
   }
 
   else
@@ -537,7 +537,7 @@ LABEL_12:
   templateParameterValues = self->_templateParameterValues;
   self->_templateParameterValues = v18;
 
-  LODWORD(v16) = [v5 isEqualToString:*MEMORY[0x1E69C99C8]];
+  LODWORD(v16) = [engineCopy isEqualToString:*MEMORY[0x1E69C99C8]];
   if (v16 && ![(_SFSearchEngineController *)self isChinaDevice]&& !self->_carrierTemplateParameterValues)
   {
     v20 = [objc_alloc(MEMORY[0x1E6965090]) initWithSlot:1];
@@ -623,17 +623,17 @@ LABEL_12:
   }
 }
 
-- (id)safeSearchRequestForSearchRequest:(id)a3
+- (id)safeSearchRequestForSearchRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(_SFSearchEngineController *)self engines];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  engines = [(_SFSearchEngineController *)self engines];
+  v7 = [engines countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -643,7 +643,7 @@ LABEL_12:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(engines);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -652,7 +652,7 @@ LABEL_12:
           v11 = [v10 safeSearchURLForSearchURL:v5];
           if (v11 && ([v5 isEqual:v11] & 1) == 0)
           {
-            v7 = [v4 mutableCopy];
+            v7 = [requestCopy mutableCopy];
             [v7 setURL:v11];
             [v7 setAttribution:1];
           }
@@ -666,7 +666,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [engines countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -681,17 +681,17 @@ LABEL_15:
   return v7;
 }
 
-- (id)userVisibleQueryFromSearchURL:(id)a3 allowQueryThatLooksLikeURL:(BOOL)a4
+- (id)userVisibleQueryFromSearchURL:(id)l allowQueryThatLooksLikeURL:(BOOL)rL
 {
-  v4 = a4;
+  rLCopy = rL;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(_SFSearchEngineController *)self engines];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  engines = [(_SFSearchEngineController *)self engines];
+  v8 = [engines countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -702,10 +702,10 @@ LABEL_15:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(engines);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) userVisibleQueryFromSearchURL:v6 allowQueryThatLooksLikeURL:v4];
+        v12 = [*(*(&v15 + 1) + 8 * i) userVisibleQueryFromSearchURL:lCopy allowQueryThatLooksLikeURL:rLCopy];
         if (v12)
         {
           v13 = v12;
@@ -713,7 +713,7 @@ LABEL_15:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [engines countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -729,11 +729,11 @@ LABEL_11:
   return v13;
 }
 
-- (void)_setEngines:(id)a3 defaultSearchEngineIndex:(unint64_t)a4 forPrivateBrowsing:(BOOL)a5
+- (void)_setEngines:(id)engines defaultSearchEngineIndex:(unint64_t)index forPrivateBrowsing:(BOOL)browsing
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  browsingCopy = browsing;
+  enginesCopy = engines;
+  if (browsingCopy)
   {
     v9 = 40;
   }
@@ -743,7 +743,7 @@ LABEL_11:
     v9 = 16;
   }
 
-  v18 = v8;
+  v18 = enginesCopy;
   if (*(&self->super.isa + v9) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
@@ -752,31 +752,31 @@ LABEL_11:
   else
   {
     v10 = [(NSArray *)self->_searchEngines objectAtIndexedSubscript:?];
-    v8 = v18;
+    enginesCopy = v18;
   }
 
-  if (self->_searchEngines != v8)
+  if (self->_searchEngines != enginesCopy)
   {
     v11 = [(NSArray *)v18 copy];
     searchEngines = self->_searchEngines;
     self->_searchEngines = v11;
   }
 
-  if (*(&self->super.isa + v9) != a4)
+  if (*(&self->super.isa + v9) != index)
   {
-    *(&self->super.isa + v9) = a4;
+    *(&self->super.isa + v9) = index;
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [(NSArray *)self->_searchEngines objectAtIndexedSubscript:a4];
+    v14 = [(NSArray *)self->_searchEngines objectAtIndexedSubscript:index];
     os_unfair_lock_lock(&defaultSearchEngineLock);
-    if (v5)
+    if (browsingCopy)
     {
       v15 = 48;
     }
@@ -799,7 +799,7 @@ LABEL_11:
   }
 }
 
-- (void)_getEngines:(id *)a3 defaultSearchEngineIndex:(unint64_t *)a4 forPrivateBrowsing:(BOOL)a5
+- (void)_getEngines:(id *)engines defaultSearchEngineIndex:(unint64_t *)index forPrivateBrowsing:(BOOL)browsing
 {
   v9 = 0;
   v10 = &v9;
@@ -814,12 +814,12 @@ LABEL_11:
   v7[3] = &unk_1E8493650;
   v7[4] = self;
   v7[5] = &v9;
-  v7[6] = a4;
-  v8 = a5;
+  v7[6] = index;
+  browsingCopy = browsing;
   dispatch_sync(searchEnginesQueue, v7);
-  if (a3)
+  if (engines)
   {
-    *a3 = v10[5];
+    *engines = v10[5];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -836,8 +836,8 @@ LABEL_11:
 
 - (NSArray)enginesAvailableForUnifiedFieldSearching
 {
-  v2 = [(_SFSearchEngineController *)self engines];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_33];
+  engines = [(_SFSearchEngineController *)self engines];
+  v3 = [engines safari_filterObjectsUsingBlock:&__block_literal_global_33];
 
   return v3;
 }
@@ -845,13 +845,13 @@ LABEL_11:
 - (NSArray)searchEngineNames
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(_SFSearchEngineController *)self engines];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  engines = [(_SFSearchEngineController *)self engines];
+  v5 = [engines countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -862,37 +862,37 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(engines);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 shortName];
-        v11 = [v10 isEqualToString:@"Wikipedia"];
+        shortName = [v9 shortName];
+        v11 = [shortName isEqualToString:@"Wikipedia"];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v9 shortName];
-          [v3 addObject:v12];
+          shortName2 = [v9 shortName];
+          [array addObject:shortName2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [engines countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [v3 copy];
+  v13 = [array copy];
 
   return v13;
 }
 
-- (id)defaultSearchEngineNameForPrivateBrowsing:(BOOL)a3
+- (id)defaultSearchEngineNameForPrivateBrowsing:(BOOL)browsing
 {
-  v3 = [(_SFSearchEngineController *)self defaultSearchEngineForPrivateBrowsing:a3];
-  v4 = [v3 shortName];
+  v3 = [(_SFSearchEngineController *)self defaultSearchEngineForPrivateBrowsing:browsing];
+  shortName = [v3 shortName];
 
-  return v4;
+  return shortName;
 }
 
 - (void)_loadSystemPropertiesForSearchEngine:(void *)a1 .cold.1(void *a1, void *a2)

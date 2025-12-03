@@ -1,45 +1,45 @@
 @interface HUUserTableViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HFUserHandle)userHandle;
-- (HUUserTableViewController)initWithUserItemManager:(id)a3 home:(id)a4;
-- (id)_fetchAccountsForHome:(id)a3 forceCloudKitFetch:(BOOL)a4;
+- (HUUserTableViewController)initWithUserItemManager:(id)manager home:(id)home;
+- (id)_fetchAccountsForHome:(id)home forceCloudKitFetch:(BOOL)fetch;
 - (id)itemTableHeaderView;
 - (id)user;
-- (void)_presentMediaAccountErrorsIfNeeded:(BOOL)a3;
-- (void)_presentMultiUserTokenFixUIForAccount:(id)a3;
-- (void)_refreshSplitAccountsHeaderViewIfNeeded:(BOOL)a3;
+- (void)_presentMediaAccountErrorsIfNeeded:(BOOL)needed;
+- (void)_presentMultiUserTokenFixUIForAccount:(id)account;
+- (void)_refreshSplitAccountsHeaderViewIfNeeded:(BOOL)needed;
 - (void)applicationDidEnterBackground;
 - (void)dealloc;
-- (void)performRemovalAction:(id)a3;
-- (void)setAMSiTunesAccount:(id)a3 forHome:(id)a4;
-- (void)setHeaderMessage:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)signIniTunesAccount:(id)a3 forHome:(id)a4;
-- (void)user:(id)a3 didUpdateNeedsiTunesMultiUserRepair:(BOOL)a4;
+- (void)performRemovalAction:(id)action;
+- (void)setAMSiTunesAccount:(id)account forHome:(id)home;
+- (void)setHeaderMessage:(id)message;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)signIniTunesAccount:(id)account forHome:(id)home;
+- (void)user:(id)user didUpdateNeedsiTunesMultiUserRepair:(BOOL)repair;
 @end
 
 @implementation HUUserTableViewController
 
-- (HUUserTableViewController)initWithUserItemManager:(id)a3 home:(id)a4
+- (HUUserTableViewController)initWithUserItemManager:(id)manager home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HUUserTableViewController;
-  v9 = [(HUItemTableViewController *)&v15 initWithItemManager:v7 tableViewStyle:1];
+  v9 = [(HUItemTableViewController *)&v15 initWithItemManager:managerCopy tableViewStyle:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userItemManager, a3);
-    objc_storeStrong(&v10->_home, a4);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v10 selector:sel_applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
+    objc_storeStrong(&v9->_userItemManager, manager);
+    objc_storeStrong(&v10->_home, home);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v10 selector:sel_applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel_applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
 
-    v13 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v13 addUserObserver:v10];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addUserObserver:v10];
   }
 
   return v10;
@@ -47,11 +47,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(HUUserTableViewController *)self mediaAccountFuture];
-  [v4 cancel];
+  mediaAccountFuture = [(HUUserTableViewController *)self mediaAccountFuture];
+  [mediaAccountFuture cancel];
 
   v5.receiver = self;
   v5.super_class = HUUserTableViewController;
@@ -60,43 +60,43 @@
 
 - (void)applicationDidEnterBackground
 {
-  v3 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v3 layoutIfNeeded];
+  userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView layoutIfNeeded];
 
-  v4 = [(HUUserTableViewController *)self tableView];
-  [v4 layoutIfNeeded];
+  tableView = [(HUUserTableViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v5 = [(HUUserTableViewController *)self tableView];
-  [v5 beginUpdates];
+  tableView2 = [(HUUserTableViewController *)self tableView];
+  [tableView2 beginUpdates];
 
-  v6 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v6 dismissMultiUserTokenFixUI];
+  userAvatarHeaderView2 = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView2 dismissMultiUserTokenFixUI];
 
-  v7 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v7 dismissSplitAccountView];
+  userAvatarHeaderView3 = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView3 dismissSplitAccountView];
 
-  v8 = [(HUUserTableViewController *)self tableView];
-  [v8 layoutIfNeeded];
+  tableView3 = [(HUUserTableViewController *)self tableView];
+  [tableView3 layoutIfNeeded];
 
-  v9 = [(HUUserTableViewController *)self tableView];
-  [v9 endUpdates];
+  tableView4 = [(HUUserTableViewController *)self tableView];
+  [tableView4 endUpdates];
 }
 
 - (id)itemTableHeaderView
 {
-  v3 = [(HUUserTableViewController *)self userAvatarHeaderView];
+  userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
 
-  if (!v3)
+  if (!userAvatarHeaderView)
   {
     v4 = [_HUUserAvatarHeaderView alloc];
-    v5 = [(HUUserTableViewController *)self user];
-    v6 = [(HUUserTableViewController *)self home];
-    v7 = [(_HUUserAvatarHeaderView *)v4 initWithUser:v5 home:v6 delegate:self];
+    user = [(HUUserTableViewController *)self user];
+    home = [(HUUserTableViewController *)self home];
+    v7 = [(_HUUserAvatarHeaderView *)v4 initWithUser:user home:home delegate:self];
     [(HUUserTableViewController *)self setUserAvatarHeaderView:v7];
 
-    v8 = [(HUUserTableViewController *)self headerMessage];
-    v9 = [(HUUserTableViewController *)self userAvatarHeaderView];
-    [v9 setMessage:v8];
+    headerMessage = [(HUUserTableViewController *)self headerMessage];
+    userAvatarHeaderView2 = [(HUUserTableViewController *)self userAvatarHeaderView];
+    [userAvatarHeaderView2 setMessage:headerMessage];
 
     [(HUUserTableViewController *)self _presentMediaAccountErrorsIfNeeded:1];
   }
@@ -106,45 +106,45 @@
 
 - (id)user
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUUserTableViewController.m" lineNumber:123 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUUserTableViewController user]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUUserTableViewController.m" lineNumber:123 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUUserTableViewController user]", objc_opt_class()}];
 
   return 0;
 }
 
 - (HFUserHandle)userHandle
 {
-  v3 = [(HUUserTableViewController *)self home];
-  v4 = [(HUUserTableViewController *)self user];
-  v5 = [v3 hf_handleForUser:v4];
+  home = [(HUUserTableViewController *)self home];
+  user = [(HUUserTableViewController *)self user];
+  v5 = [home hf_handleForUser:user];
 
   return v5;
 }
 
-- (void)setHeaderMessage:(id)a3
+- (void)setHeaderMessage:(id)message
 {
-  v5 = a3;
-  if (self->_headerMessage != v5)
+  messageCopy = message;
+  if (self->_headerMessage != messageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_headerMessage, a3);
-    v6 = [(HUUserTableViewController *)self userAvatarHeaderView];
-    [v6 setMessage:v7];
+    v7 = messageCopy;
+    objc_storeStrong(&self->_headerMessage, message);
+    userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
+    [userAvatarHeaderView setMessage:v7];
 
-    v5 = v7;
+    messageCopy = v7;
   }
 }
 
-- (void)performRemovalAction:(id)a3
+- (void)performRemovalAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [(HUUserTableViewController *)self userItemManager];
-  v7 = [v6 removeItem];
-  v8 = [v5 indexPathForItem:v7];
+  actionCopy = action;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  userItemManager = [(HUUserTableViewController *)self userItemManager];
+  removeItem = [userItemManager removeItem];
+  v8 = [itemManager indexPathForItem:removeItem];
 
-  v9 = [(HUUserTableViewController *)self tableView];
-  v10 = [v9 cellForRowAtIndexPath:v8];
+  tableView = [(HUUserTableViewController *)self tableView];
+  v10 = [tableView cellForRowAtIndexPath:v8];
 
   [v10 setShowSpinner:1];
   v16[0] = MEMORY[0x277D85DD0];
@@ -152,14 +152,14 @@
   v16[2] = __50__HUUserTableViewController_performRemovalAction___block_invoke;
   v16[3] = &unk_277DB8BD8;
   v16[4] = self;
-  v11 = [v4 addSuccessBlock:v16];
+  v11 = [actionCopy addSuccessBlock:v16];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__HUUserTableViewController_performRemovalAction___block_invoke_2;
   v14[3] = &unk_277DB8C00;
   v15 = v10;
   v12 = v10;
-  v13 = [v4 addFailureBlock:v14];
+  v13 = [actionCopy addFailureBlock:v14];
 }
 
 void __50__HUUserTableViewController_performRemovalAction___block_invoke(uint64_t a1)
@@ -177,41 +177,41 @@ void __50__HUUserTableViewController_performRemovalAction___block_invoke_2(uint6
   [v4 handleError:v3 operationType:*MEMORY[0x277D13C70] options:0 retryBlock:0 cancelBlock:0];
 }
 
-- (void)user:(id)a3 didUpdateNeedsiTunesMultiUserRepair:(BOOL)a4
+- (void)user:(id)user didUpdateNeedsiTunesMultiUserRepair:(BOOL)repair
 {
-  v4 = a4;
-  v6 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v6 dismissSplitAccountView];
+  repairCopy = repair;
+  userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView dismissSplitAccountView];
 
-  if (v4)
+  if (repairCopy)
   {
 
     [(HUUserTableViewController *)self _presentMediaAccountErrorsIfNeeded:0];
   }
 }
 
-- (void)_presentMediaAccountErrorsIfNeeded:(BOOL)a3
+- (void)_presentMediaAccountErrorsIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v12 = [(HUUserTableViewController *)self userHandle];
-  if ([v12 type])
+  neededCopy = needed;
+  userHandle = [(HUUserTableViewController *)self userHandle];
+  if ([userHandle type])
   {
   }
 
   else
   {
-    v5 = [MEMORY[0x277D14CE8] isAMac];
+    isAMac = [MEMORY[0x277D14CE8] isAMac];
 
-    if ((v5 & 1) == 0)
+    if ((isAMac & 1) == 0)
     {
-      v6 = [(HUUserTableViewController *)self home];
-      v7 = [v6 currentUser];
-      v8 = [v7 needsiTunesMultiUserRepair];
+      home = [(HUUserTableViewController *)self home];
+      currentUser = [home currentUser];
+      needsiTunesMultiUserRepair = [currentUser needsiTunesMultiUserRepair];
 
-      if (v8)
+      if (needsiTunesMultiUserRepair)
       {
-        v9 = [(HUUserTableViewController *)self home];
-        v10 = [(HUUserTableViewController *)self _fetchAccountsForHome:v9 forceCloudKitFetch:v3];
+        home2 = [(HUUserTableViewController *)self home];
+        v10 = [(HUUserTableViewController *)self _fetchAccountsForHome:home2 forceCloudKitFetch:neededCopy];
 
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
@@ -224,7 +224,7 @@ void __50__HUUserTableViewController_performRemovalAction___block_invoke_2(uint6
       else
       {
 
-        [(HUUserTableViewController *)self _refreshSplitAccountsHeaderViewIfNeeded:v3];
+        [(HUUserTableViewController *)self _refreshSplitAccountsHeaderViewIfNeeded:neededCopy];
       }
     }
   }
@@ -274,24 +274,24 @@ void __64__HUUserTableViewController__presentMediaAccountErrorsIfNeeded___block_
   [v11 finishWithNoResult];
 }
 
-- (void)_presentMultiUserTokenFixUIForAccount:(id)a3
+- (void)_presentMultiUserTokenFixUIForAccount:(id)account
 {
-  v4 = a3;
-  v6 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  v5 = [(HUUserTableViewController *)self home];
-  [v6 presentMultiUserTokenFixUIForMediaAccount:v4 inHome:v5];
+  accountCopy = account;
+  userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
+  home = [(HUUserTableViewController *)self home];
+  [userAvatarHeaderView presentMultiUserTokenFixUIForMediaAccount:accountCopy inHome:home];
 }
 
-- (void)_refreshSplitAccountsHeaderViewIfNeeded:(BOOL)a3
+- (void)_refreshSplitAccountsHeaderViewIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(HUUserTableViewController *)self userHandle];
-  v6 = [v5 type];
+  neededCopy = needed;
+  userHandle = [(HUUserTableViewController *)self userHandle];
+  type = [userHandle type];
 
-  if (!v6)
+  if (!type)
   {
-    v7 = [(HUUserTableViewController *)self home];
-    v8 = [(HUUserTableViewController *)self _fetchAccountsForHome:v7 forceCloudKitFetch:v3];
+    home = [(HUUserTableViewController *)self home];
+    v8 = [(HUUserTableViewController *)self _fetchAccountsForHome:home forceCloudKitFetch:neededCopy];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -350,18 +350,18 @@ void __69__HUUserTableViewController__refreshSplitAccountsHeaderViewIfNeeded___b
   [v13 finishWithNoResult];
 }
 
-- (id)_fetchAccountsForHome:(id)a3 forceCloudKitFetch:(BOOL)a4
+- (id)_fetchAccountsForHome:(id)home forceCloudKitFetch:(BOOL)fetch
 {
-  v7 = a3;
+  homeCopy = home;
   v8 = MEMORY[0x277D2C900];
   v14 = MEMORY[0x277D85DD0];
-  v15 = v7;
-  v17 = a4;
+  v15 = homeCopy;
+  fetchCopy = fetch;
   v16 = a2;
   v9 = MEMORY[0x277D2C938];
-  v10 = v7;
-  v11 = [v9 globalAsyncScheduler];
-  v12 = [v8 futureWithBlock:&v14 scheduler:v11];
+  v10 = homeCopy;
+  globalAsyncScheduler = [v9 globalAsyncScheduler];
+  v12 = [v8 futureWithBlock:&v14 scheduler:globalAsyncScheduler];
 
   return v12;
 }
@@ -566,44 +566,44 @@ LABEL_12:
   }
 }
 
-- (void)setAMSiTunesAccount:(id)a3 forHome:(id)a4
+- (void)setAMSiTunesAccount:(id)account forHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D14400] sharedInstance];
+  accountCopy = account;
+  homeCopy = home;
+  mEMORY[0x277D14400] = [MEMORY[0x277D14400] sharedInstance];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __57__HUUserTableViewController_setAMSiTunesAccount_forHome___block_invoke;
   v21[3] = &unk_277DBE710;
   v21[4] = self;
-  v22 = v6;
-  v23 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 setAMSiTunesAccount:v10 forHome:v9 completion:v21];
+  v22 = accountCopy;
+  v23 = homeCopy;
+  v9 = homeCopy;
+  v10 = accountCopy;
+  [mEMORY[0x277D14400] setAMSiTunesAccount:v10 forHome:v9 completion:v21];
 
   v11 = objc_alloc(MEMORY[0x277D14C98]);
-  v12 = [v9 currentUser];
-  v13 = [v11 initWithHome:v9 user:v12 nameStyle:0];
+  currentUser = [v9 currentUser];
+  v13 = [v11 initWithHome:v9 user:currentUser nameStyle:0];
 
   v14 = [v13 setDismissUserSplitMediaAccountWarning:1];
-  v15 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v15 layoutIfNeeded];
+  userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView layoutIfNeeded];
 
-  v16 = [(HUUserTableViewController *)self tableView];
-  [v16 layoutIfNeeded];
+  tableView = [(HUUserTableViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v17 = [(HUUserTableViewController *)self tableView];
-  [v17 beginUpdates];
+  tableView2 = [(HUUserTableViewController *)self tableView];
+  [tableView2 beginUpdates];
 
-  v18 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v18 dismissSplitAccountView];
+  userAvatarHeaderView2 = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView2 dismissSplitAccountView];
 
-  v19 = [(HUUserTableViewController *)self tableView];
-  [v19 layoutIfNeeded];
+  tableView3 = [(HUUserTableViewController *)self tableView];
+  [tableView3 layoutIfNeeded];
 
-  v20 = [(HUUserTableViewController *)self tableView];
-  [v20 endUpdates];
+  tableView4 = [(HUUserTableViewController *)self tableView];
+  [tableView4 endUpdates];
 }
 
 void __57__HUUserTableViewController_setAMSiTunesAccount_forHome___block_invoke(uint64_t a1, void *a2)
@@ -633,45 +633,45 @@ void __57__HUUserTableViewController_setAMSiTunesAccount_forHome___block_invoke(
   }
 }
 
-- (void)signIniTunesAccount:(id)a3 forHome:(id)a4
+- (void)signIniTunesAccount:(id)account forHome:(id)home
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v9 layoutIfNeeded];
+  homeCopy = home;
+  accountCopy = account;
+  userAvatarHeaderView = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView layoutIfNeeded];
 
-  v10 = [(HUUserTableViewController *)self tableView];
-  [v10 layoutIfNeeded];
+  tableView = [(HUUserTableViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v11 = [(HUUserTableViewController *)self tableView];
-  [v11 beginUpdates];
+  tableView2 = [(HUUserTableViewController *)self tableView];
+  [tableView2 beginUpdates];
 
-  v12 = [(HUUserTableViewController *)self userAvatarHeaderView];
-  [v12 dismissMultiUserTokenFixUI];
+  userAvatarHeaderView2 = [(HUUserTableViewController *)self userAvatarHeaderView];
+  [userAvatarHeaderView2 dismissMultiUserTokenFixUI];
 
-  v13 = [(HUUserTableViewController *)self tableView];
-  [v13 layoutIfNeeded];
+  tableView3 = [(HUUserTableViewController *)self tableView];
+  [tableView3 layoutIfNeeded];
 
-  v14 = [(HUUserTableViewController *)self tableView];
-  [v14 endUpdates];
+  tableView4 = [(HUUserTableViewController *)self tableView];
+  [tableView4 endUpdates];
 
   v15 = objc_alloc(MEMORY[0x277CEE938]);
-  v16 = [v7 uniqueIdentifier];
-  v17 = [v15 initWithAccount:v8 homeIdentifier:v16 viewController:self];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  v17 = [v15 initWithAccount:accountCopy homeIdentifier:uniqueIdentifier viewController:self];
 
   [(HUUserTableViewController *)self setMultiUserTokenFixTask:v17];
-  v18 = [(HUUserTableViewController *)self multiUserTokenFixTask];
-  v19 = [v18 performTask];
+  multiUserTokenFixTask = [(HUUserTableViewController *)self multiUserTokenFixTask];
+  performTask = [multiUserTokenFixTask performTask];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __57__HUUserTableViewController_signIniTunesAccount_forHome___block_invoke;
   v21[3] = &unk_277DBAFB0;
-  v23 = self;
+  selfCopy = self;
   v24 = a2;
-  v22 = v7;
-  v20 = v7;
-  [v19 addFinishBlock:v21];
+  v22 = homeCopy;
+  v20 = homeCopy;
+  [performTask addFinishBlock:v21];
 }
 
 void __57__HUUserTableViewController_signIniTunesAccount_forHome___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -728,12 +728,12 @@ void __57__HUUserTableViewController_signIniTunesAccount_forHome___block_invoke(
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(HUUserTableViewController *)self userItemManager];
-  v8 = [v7 removeItem];
-  v9 = [v6 isEqual:v8];
+  itemCopy = item;
+  userItemManager = [(HUUserTableViewController *)self userItemManager];
+  removeItem = [userItemManager removeItem];
+  v9 = [itemCopy isEqual:removeItem];
 
   if (v9)
   {
@@ -742,8 +742,8 @@ void __57__HUUserTableViewController_signIniTunesAccount_forHome___block_invoke(
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUUserTableViewController.m" lineNumber:391 description:{@"Couldn't find a cell class for item: %@", v6}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUUserTableViewController.m" lineNumber:391 description:{@"Couldn't find a cell class for item: %@", itemCopy}];
 
     v10 = 0;
   }
@@ -751,17 +751,17 @@ void __57__HUUserTableViewController_signIniTunesAccount_forHome___block_invoke(
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = [(HUUserTableViewController *)self userItemManager];
-  v9 = [v8 removeItem];
-  v10 = [v7 isEqual:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  userItemManager = [(HUUserTableViewController *)self userItemManager];
+  removeItem = [userItemManager removeItem];
+  v10 = [itemCopy isEqual:removeItem];
 
   if (v10)
   {
-    v11 = v12;
+    v11 = cellCopy;
     [v11 setDestructive:1];
     [v11 setUseFullWidthSeparator:0];
     [v11 setAccessibilityIdentifier:@"Home.Users.RemovePerson"];

@@ -1,12 +1,12 @@
 @interface SSRVoiceProfileLoader
 + (id)getActivePersonaIds;
 + (id)getActiveSiriSharedUserIds;
-+ (id)getVoiceProfileWithLocale:(id)a3;
-+ (id)getVoiceProfileWithLocale:(id)a3 userSiriProfileId:(id)a4;
-+ (id)getVoiceProfileWithVoiceProfileId:(id)a3;
-- (SSRVoiceProfileLoader)initWithLocale:(id)a3;
-- (SSRVoiceProfileLoader)initWithLocale:(id)a3 personaId:(id)a4;
-- (SSRVoiceProfileLoader)initWithLocale:(id)a3 siriSharedUserId:(id)a4;
++ (id)getVoiceProfileWithLocale:(id)locale;
++ (id)getVoiceProfileWithLocale:(id)locale userSiriProfileId:(id)id;
++ (id)getVoiceProfileWithVoiceProfileId:(id)id;
+- (SSRVoiceProfileLoader)initWithLocale:(id)locale;
+- (SSRVoiceProfileLoader)initWithLocale:(id)locale personaId:(id)id;
+- (SSRVoiceProfileLoader)initWithLocale:(id)locale siriSharedUserId:(id)id;
 - (id)getVoiceProfile;
 @end
 
@@ -16,13 +16,13 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = +[SSRVoiceProfileStore sharedInstance];
-  v4 = [v3 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v3 loadCurrentVoiceProfiles];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4;
+  v5 = loadCurrentVoiceProfiles;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -38,13 +38,13 @@
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 locale];
-        v12 = [v11 isEqualToString:self->_locale];
+        locale = [v10 locale];
+        v12 = [locale isEqualToString:self->_locale];
 
         if (v12)
         {
-          v13 = [v10 appDomain];
-          v14 = [v13 isEqualToString:@"com.apple.siri"];
+          appDomain = [v10 appDomain];
+          v14 = [appDomain isEqualToString:@"com.apple.siri"];
 
           if (v14)
           {
@@ -72,50 +72,50 @@ LABEL_12:
   return v15;
 }
 
-- (SSRVoiceProfileLoader)initWithLocale:(id)a3 siriSharedUserId:(id)a4
+- (SSRVoiceProfileLoader)initWithLocale:(id)locale siriSharedUserId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = SSRVoiceProfileLoader;
   v9 = [(SSRVoiceProfileLoader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locale, a3);
-    objc_storeStrong(&v10->_siriSharedUserId, a4);
+    objc_storeStrong(&v9->_locale, locale);
+    objc_storeStrong(&v10->_siriSharedUserId, id);
   }
 
   return v10;
 }
 
-- (SSRVoiceProfileLoader)initWithLocale:(id)a3 personaId:(id)a4
+- (SSRVoiceProfileLoader)initWithLocale:(id)locale personaId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = SSRVoiceProfileLoader;
   v9 = [(SSRVoiceProfileLoader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locale, a3);
-    objc_storeStrong(&v10->_personaId, a4);
+    objc_storeStrong(&v9->_locale, locale);
+    objc_storeStrong(&v10->_personaId, id);
   }
 
   return v10;
 }
 
-- (SSRVoiceProfileLoader)initWithLocale:(id)a3
+- (SSRVoiceProfileLoader)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = SSRVoiceProfileLoader;
   v6 = [(SSRVoiceProfileLoader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
   }
 
   return v7;
@@ -125,7 +125,7 @@ LABEL_12:
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = +[SSRVoiceProfileStore sharedInstance];
-  v3 = [v2 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v2 loadCurrentVoiceProfiles];
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   if (CSIsCommunalDevice())
@@ -134,7 +134,7 @@ LABEL_12:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = loadCurrentVoiceProfiles;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -150,12 +150,12 @@ LABEL_12:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 personaID];
+          personaID = [v10 personaID];
 
-          if (v11)
+          if (personaID)
           {
-            v12 = [v10 personaID];
-            [v4 addObject:v12];
+            personaID2 = [v10 personaID];
+            [v4 addObject:personaID2];
           }
         }
 
@@ -166,18 +166,18 @@ LABEL_12:
     }
   }
 
-  v13 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allObjects;
 }
 
 + (id)getActiveSiriSharedUserIds
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = +[SSRVoiceProfileStore sharedInstance];
-  v3 = [v2 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v2 loadCurrentVoiceProfiles];
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   if (CSIsCommunalDevice())
@@ -186,7 +186,7 @@ LABEL_12:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = loadCurrentVoiceProfiles;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -202,12 +202,12 @@ LABEL_12:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 siriProfileId];
+          siriProfileId = [v10 siriProfileId];
 
-          if (v11)
+          if (siriProfileId)
           {
-            v12 = [v10 siriProfileId];
-            [v4 addObject:v12];
+            siriProfileId2 = [v10 siriProfileId];
+            [v4 addObject:siriProfileId2];
           }
         }
 
@@ -218,25 +218,25 @@ LABEL_12:
     }
   }
 
-  v13 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allObjects;
 }
 
-+ (id)getVoiceProfileWithLocale:(id)a3 userSiriProfileId:(id)a4
++ (id)getVoiceProfileWithLocale:(id)locale userSiriProfileId:(id)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localeCopy = locale;
   v5 = +[SSRVoiceProfileStore sharedInstance];
-  v6 = [v5 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v5 loadCurrentVoiceProfiles];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = loadCurrentVoiceProfiles;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -252,11 +252,11 @@ LABEL_12:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 locale];
-        if ([v13 isEqualToString:v4])
+        locale = [v12 locale];
+        if ([locale isEqualToString:localeCopy])
         {
-          v14 = [v12 appDomain];
-          v15 = [v14 isEqualToString:@"com.apple.siri"];
+          appDomain = [v12 appDomain];
+          v15 = [appDomain isEqualToString:@"com.apple.siri"];
 
           if (v15)
           {
@@ -284,18 +284,18 @@ LABEL_13:
   return v16;
 }
 
-+ (id)getVoiceProfileWithLocale:(id)a3
++ (id)getVoiceProfileWithLocale:(id)locale
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  localeCopy = locale;
   v4 = +[SSRVoiceProfileStore sharedInstance];
-  v5 = [v4 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v4 loadCurrentVoiceProfiles];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = loadCurrentVoiceProfiles;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -311,11 +311,11 @@ LABEL_13:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 locale];
-        if ([v12 isEqualToString:v3])
+        locale = [v11 locale];
+        if ([locale isEqualToString:localeCopy])
         {
-          v13 = [v11 appDomain];
-          v14 = [v13 isEqualToString:@"com.apple.siri"];
+          appDomain = [v11 appDomain];
+          v14 = [appDomain isEqualToString:@"com.apple.siri"];
 
           if (v14)
           {
@@ -343,20 +343,20 @@ LABEL_13:
   return v15;
 }
 
-+ (id)getVoiceProfileWithVoiceProfileId:(id)a3
++ (id)getVoiceProfileWithVoiceProfileId:(id)id
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  idCopy = id;
+  if (idCopy)
   {
     v4 = +[SSRVoiceProfileStore sharedInstance];
-    v5 = [v4 loadCurrentVoiceProfiles];
+    loadCurrentVoiceProfiles = [v4 loadCurrentVoiceProfiles];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v5;
+    v6 = loadCurrentVoiceProfiles;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -371,8 +371,8 @@ LABEL_13:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 profileID];
-          v12 = [v11 isEqualToString:v3];
+          profileID = [v10 profileID];
+          v12 = [profileID isEqualToString:idCopy];
 
           if (v12)
           {

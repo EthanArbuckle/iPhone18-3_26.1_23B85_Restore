@@ -1,12 +1,12 @@
 @interface HUDView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_TtC8Freeform7HUDView)initWithCoder:(id)a3;
+- (_TtC8Freeform7HUDView)initWithCoder:(id)coder;
 @end
 
 @implementation HUDView
 
-- (_TtC8Freeform7HUDView)initWithCoder:(id)a3
+- (_TtC8Freeform7HUDView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform7HUDView_contentView) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();

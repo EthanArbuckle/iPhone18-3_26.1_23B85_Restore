@@ -1,20 +1,20 @@
 @interface VCEffectsManager
 + (id)sharedManager;
 - (BOOL)createAllocators;
-- (BOOL)initializeReceiveQueue:(id)a3 error:(id *)a4;
+- (BOOL)initializeReceiveQueue:(id)queue error:(id *)error;
 - (BOOL)isFaceMeshTrackingEnabled;
 - (VCEffectsManager)init;
 - (void)dealloc;
-- (void)effectsRegistered:(BOOL)a3;
-- (void)encodeProcessedPixelBuffer:(__CVBuffer *)a3 time:(id *)a4 imageData:(id)a5 processTime:(id)a6;
+- (void)effectsRegistered:(BOOL)registered;
+- (void)encodeProcessedPixelBuffer:(__CVBuffer *)buffer time:(id *)time imageData:(id)data processTime:(id)processTime;
 - (void)flushRemoteQueue;
 - (void)registerBlocksForService;
 - (void)releaseAllocators;
-- (void)remoteQueueOperationHandlerWithError:(int)a3 operation:(FigRemoteOperation *)a4;
+- (void)remoteQueueOperationHandlerWithError:(int)error operation:(FigRemoteOperation *)operation;
 - (void)resetEffectsLogging;
-- (void)setLastEffectsType:(int)a3 shouldReport:(BOOL)a4;
+- (void)setLastEffectsType:(int)type shouldReport:(BOOL)report;
 - (void)tearDownRemoteQueues;
-- (void)updateThermalLevel:(int)a3;
+- (void)updateThermalLevel:(int)level;
 @end
 
 @implementation VCEffectsManager
@@ -64,7 +64,7 @@
   [(VCEffectsManager *)&v4 dealloc];
 }
 
-- (BOOL)initializeReceiveQueue:(id)a3 error:(id *)a4
+- (BOOL)initializeReceiveQueue:(id)queue error:(id *)error
 {
   v11[5] = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
@@ -73,11 +73,11 @@
   v11[2] = __49__VCEffectsManager_initializeReceiveQueue_error___block_invoke;
   v11[3] = &unk_1E85F5340;
   v11[4] = v7;
-  ReceiverQueue = VCRemoteImageQueue_CreateReceiverQueue(a3, v11, self->_xpcCommandQueue, &self->_receiverQueue);
+  ReceiverQueue = VCRemoteImageQueue_CreateReceiverQueue(queue, v11, self->_xpcCommandQueue, &self->_receiverQueue);
   v9 = ReceiverQueue;
-  if (a4 && !ReceiverQueue)
+  if (error && !ReceiverQueue)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCEffectsManager" code:-2143682558 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCEffectsManager" code:-2143682558 userInfo:0];
   }
 
   return v9;
@@ -132,16 +132,16 @@ void *__49__VCEffectsManager_initializeReceiveQueue_error___block_invoke(uint64_
   }
 }
 
-- (void)setLastEffectsType:(int)a3 shouldReport:(BOOL)a4
+- (void)setLastEffectsType:(int)type shouldReport:(BOOL)report
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if (self->_lastEffectsType != a3)
+  if (self->_lastEffectsType != type)
   {
-    self->_lastEffectsType = a3;
+    self->_lastEffectsType = type;
     goto LABEL_5;
   }
 
-  if (a4)
+  if (report)
   {
 LABEL_5:
     v5 = @"VCEMEffectsType";
@@ -555,7 +555,7 @@ uint64_t __45__VCEffectsManager_isFaceMeshTrackingEnabled__block_invoke(uint64_t
   return result;
 }
 
-- (void)updateThermalLevel:(int)a3
+- (void)updateThermalLevel:(int)level
 {
   v6 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -563,7 +563,7 @@ uint64_t __45__VCEffectsManager_isFaceMeshTrackingEnabled__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __39__VCEffectsManager_updateThermalLevel___block_invoke;
   block[3] = &unk_1E85F38B8;
-  v5 = a3;
+  levelCopy = level;
   block[4] = self;
   dispatch_async(xpcCommandQueue, block);
 }
@@ -802,7 +802,7 @@ CFIndex __VCEffectsManager_CapturedPixelBuffer_block_invoke(void *a1)
   pthread_mutex_unlock(&self->_loggingLock);
 }
 
-- (void)encodeProcessedPixelBuffer:(__CVBuffer *)a3 time:(id *)a4 imageData:(id)a5 processTime:(id)a6
+- (void)encodeProcessedPixelBuffer:(__CVBuffer *)buffer time:(id *)time imageData:(id)data processTime:(id)processTime
 {
   v14 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -812,15 +812,15 @@ CFIndex __VCEffectsManager_CapturedPixelBuffer_block_invoke(void *a1)
   CMClockGetTime(&v13, HostTimeClock);
   self->_lastReceivedTimestamp = v13;
   pthread_mutex_unlock(&self->_loggingLock);
-  v12 = [(VCEffectsManager *)self delegate];
-  v13 = *a4;
-  [(VCEffectsManagerDelegate *)v12 encodeProcessedPixelBuffer:a3 time:&v13 imageData:a5 processTime:a6];
+  delegate = [(VCEffectsManager *)self delegate];
+  v13 = *time;
+  [(VCEffectsManagerDelegate *)delegate encodeProcessedPixelBuffer:buffer time:&v13 imageData:data processTime:processTime];
 }
 
-- (void)remoteQueueOperationHandlerWithError:(int)a3 operation:(FigRemoteOperation *)a4
+- (void)remoteQueueOperationHandlerWithError:(int)error operation:(FigRemoteOperation *)operation
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -832,10 +832,10 @@ CFIndex __VCEffectsManager_CapturedPixelBuffer_block_invoke(void *a1)
     }
   }
 
-  else if (a4->var0 == 1)
+  else if (operation->var0 == 1)
   {
     memset(v20, 170, sizeof(v20));
-    var0 = a4->var4.var0.var0;
+    var0 = operation->var4.var0.var0;
     FigCFDictionaryGetCMTimeIfPresent();
     FigCFDictionaryGetFloatIfPresent();
     Value = CFDictionaryGetValue(var0, @"vcEffectsImageData");
@@ -896,7 +896,7 @@ CFIndex __VCEffectsManager_CapturedPixelBuffer_block_invoke(void *a1)
     }
   }
 
-  else if (a4->var0 == 3)
+  else if (operation->var0 == 3)
   {
     if (self->_lastReceivedPixelBuffer)
     {
@@ -919,20 +919,20 @@ CFIndex __VCEffectsManager_CapturedPixelBuffer_block_invoke(void *a1)
       CVPixelBufferRelease(self->_lastReceivedPixelBuffer);
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4->var4.var0.var0);
+    ImageBuffer = CMSampleBufferGetImageBuffer(operation->var4.var0.var0);
     self->_lastReceivedPixelBuffer = ImageBuffer;
     CVPixelBufferRetain(ImageBuffer);
   }
 }
 
-- (void)effectsRegistered:(BOOL)a3
+- (void)effectsRegistered:(BOOL)registered
 {
-  if (a3)
+  if (registered)
   {
     self->_effectsRegistered = 1;
-    v3 = [(VCEffectsManager *)self delegate];
+    delegate = [(VCEffectsManager *)self delegate];
 
-    [(VCEffectsManagerDelegate *)v3 setFaceMeshTrackingEnabled:1];
+    [(VCEffectsManagerDelegate *)delegate setFaceMeshTrackingEnabled:1];
   }
 }
 

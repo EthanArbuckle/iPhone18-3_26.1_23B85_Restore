@@ -1,16 +1,16 @@
 @interface NFStorageControllerApplet
 - (id)_deleteAllAppletEntities;
-- (id)fetchAppletEntitiesWithError:(id *)a3;
-- (id)updateAppletEntitiesWithConfig:(id)a3;
+- (id)fetchAppletEntitiesWithError:(id *)error;
+- (id)updateAppletEntitiesWithConfig:(id)config;
 - (void)deleteAllAppletEntities;
 @end
 
 @implementation NFStorageControllerApplet
 
-- (id)fetchAppletEntitiesWithError:(id *)a3
+- (id)fetchAppletEntitiesWithError:(id *)error
 {
   v79[5] = *MEMORY[0x29EDCA608];
-  v6 = sub_2994CFB70(&self->super.super.isa, a2, a3);
+  v6 = sub_2994CFB70(&self->super.super.isa, a2, error);
 
   if (v6)
   {
@@ -37,9 +37,9 @@
     v58[7] = a2;
     objc_msgSend_performBlockAndWait_(v9, v10, v58);
 
-    if (a3)
+    if (error)
     {
-      *a3 = v60[5];
+      *error = v60[5];
     }
 
     v11 = MEMORY[0x29EDC9730];
@@ -145,7 +145,7 @@
       _os_log_impl(&dword_2994CA000, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i managedObjectContext is NULL", v75, 0x22u);
     }
 
-    if (a3)
+    if (error)
     {
       v36 = objc_alloc(MEMORY[0x29EDB9FA0]);
       v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x29EDBA0F8], v37, "nfcd");
@@ -169,7 +169,7 @@
       v51 = objc_msgSend_initWithFormat_(v49, v50, @"managedObjectContext is NULL");
       v79[4] = v51;
       v53 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v52, v79, v78, 5);
-      *a3 = objc_msgSend_initWithDomain_code_userInfo_(v36, v54, v38, 6, v53);
+      *error = objc_msgSend_initWithDomain_code_userInfo_(v36, v54, v38, 6, v53);
     }
 
     v25 = 0;
@@ -248,10 +248,10 @@
   return v14;
 }
 
-- (id)updateAppletEntitiesWithConfig:(id)a3
+- (id)updateAppletEntitiesWithConfig:(id)config
 {
   v65[4] = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  configCopy = config;
   v8 = sub_2994CFB70(&self->super.super.isa, v6, v7);
 
   v9 = MEMORY[0x29EDC9730];
@@ -272,7 +272,7 @@
         v14 = 43;
       }
 
-      v11(6, "%c[%{public}s %{public}s]:%i new Applet Config=%{public}@", v14, ClassName, Name, 122, v5);
+      v11(6, "%c[%{public}s %{public}s]:%i new Applet Config=%{public}@", v14, ClassName, Name, 122, configCopy);
     }
 
     dispatch_get_specific(*v9);
@@ -299,7 +299,7 @@
       v60 = 1024;
       v61 = 122;
       v62 = 2114;
-      v63 = v5;
+      v63 = configCopy;
       _os_log_impl(&dword_2994CA000, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i new Applet Config=%{public}@", buf, 0x2Cu);
     }
 
@@ -310,7 +310,7 @@
     v51[3] = &unk_29EF265A8;
     v51[4] = self;
     v53 = a2;
-    v52 = v5;
+    v52 = configCopy;
     objc_msgSend_performBlock_(v20, v21, v51);
 
     v22 = 0;

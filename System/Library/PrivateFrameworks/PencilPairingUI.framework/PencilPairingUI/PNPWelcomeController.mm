@@ -1,27 +1,27 @@
 @interface PNPWelcomeController
-+ (id)bundleImageNamed:(id)a3;
-+ (id)bundleImageNamed:(id)a3 renderingMode:(int64_t)a4;
-+ (id)controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 features:(unint64_t)a6 delegate:(id)a7;
++ (id)bundleImageNamed:(id)named;
++ (id)bundleImageNamed:(id)named renderingMode:(int64_t)mode;
++ (id)controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType features:(unint64_t)features delegate:(id)delegate;
 - (BOOL)isRTL;
-- (PNPWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
+- (PNPWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
 - (PNPWelcomeControllerDelegate)delegate;
 - (UIEdgeInsets)additionalSafeAreaInsets;
-- (id)bundleImageNamed:(id)a3;
-- (id)bundleImageNamed:(id)a3 renderingMode:(int64_t)a4;
-- (void)addButtonWithType:(int64_t)a3;
-- (void)buttonPressed:(id)a3;
-- (void)setControllerType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6;
+- (id)bundleImageNamed:(id)named;
+- (id)bundleImageNamed:(id)named renderingMode:(int64_t)mode;
+- (void)addButtonWithType:(int64_t)type;
+- (void)buttonPressed:(id)pressed;
+- (void)setControllerType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate;
 @end
 
 @implementation PNPWelcomeController
 
-+ (id)controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 features:(unint64_t)a6 delegate:(id)a7
++ (id)controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType features:(unint64_t)features delegate:(id)delegate
 {
-  v11 = a7;
+  delegateCopy = delegate;
   v12 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 < 0)
+    if (type < 0)
     {
       goto LABEL_14;
     }
@@ -29,9 +29,9 @@
     goto LABEL_13;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 == 4 || a3 == 6)
+    if (type == 4 || type == 6)
     {
       goto LABEL_13;
     }
@@ -39,7 +39,7 @@
 
   else
   {
-    if (a3 == 7)
+    if (type == 7)
     {
       objc_opt_class();
 LABEL_13:
@@ -47,15 +47,15 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (a3 == 8 || a3 == 9)
+    if (type == 8 || type == 9)
     {
       goto LABEL_13;
     }
   }
 
 LABEL_14:
-  v13 = [v12 _controllerWithType:a3 buttonType:a4 deviceType:a5 delegate:v11];
-  [v13 setFeatures:a6];
+  v13 = [v12 _controllerWithType:type buttonType:buttonType deviceType:deviceType delegate:delegateCopy];
+  [v13 setFeatures:features];
 
   return v13;
 }
@@ -73,35 +73,35 @@ LABEL_14:
   return result;
 }
 
-- (PNPWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (PNPWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v8 = a3;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = PNPWelcomeController;
-  v9 = [(PNPWelcomeController *)&v14 initWithTitle:v8 detailText:a4 icon:a5];
+  v9 = [(PNPWelcomeController *)&v14 initWithTitle:titleCopy detailText:text icon:icon];
   v10 = v9;
   if (v9)
   {
-    v11 = [(OBBaseWelcomeController *)v9 navigationItem];
-    [v11 setBackButtonTitle:v8];
+    navigationItem = [(OBBaseWelcomeController *)v9 navigationItem];
+    [navigationItem setBackButtonTitle:titleCopy];
 
-    v12 = [(OBBaseWelcomeController *)v10 navigationItem];
-    [v12 setBackButtonDisplayMode:2];
+    navigationItem2 = [(OBBaseWelcomeController *)v10 navigationItem];
+    [navigationItem2 setBackButtonDisplayMode:2];
   }
 
   return v10;
 }
 
-- (void)addButtonWithType:(int64_t)a3
+- (void)addButtonWithType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = @"DONE_BUTTON";
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       return;
     }
@@ -114,83 +114,83 @@ LABEL_14:
 
   if (v9)
   {
-    v6 = [MEMORY[0x277D37618] boldButton];
-    [v6 setTitle:v9 forState:0];
-    [v6 addTarget:self action:sel_buttonPressed_ forControlEvents:64];
-    v7 = [(PNPWelcomeController *)self buttonTray];
-    [v7 addButton:v6];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [boldButton setTitle:v9 forState:0];
+    [boldButton addTarget:self action:sel_buttonPressed_ forControlEvents:64];
+    buttonTray = [(PNPWelcomeController *)self buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v8 = [(PNPWelcomeController *)self buttonTray];
-    [v8 setHidden:0];
+    buttonTray2 = [(PNPWelcomeController *)self buttonTray];
+    [buttonTray2 setHidden:0];
 
-    [(PNPWelcomeController *)self setTrayButton:v6];
+    [(PNPWelcomeController *)self setTrayButton:boldButton];
   }
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = [(PNPWelcomeController *)self delegate];
-  [v4 welcomeControllerButtonDidPress:self];
+  delegate = [(PNPWelcomeController *)self delegate];
+  [delegate welcomeControllerButtonDidPress:self];
 }
 
-- (void)setControllerType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6
+- (void)setControllerType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate
 {
-  v10 = a6;
-  [(PNPWelcomeController *)self setControllerType:a3];
-  [(PNPWelcomeController *)self setButtonType:a4];
-  [(PNPWelcomeController *)self setDelegate:v10];
+  delegateCopy = delegate;
+  [(PNPWelcomeController *)self setControllerType:type];
+  [(PNPWelcomeController *)self setButtonType:buttonType];
+  [(PNPWelcomeController *)self setDelegate:delegateCopy];
 
-  [(PNPWelcomeController *)self setDeviceType:a5];
+  [(PNPWelcomeController *)self setDeviceType:deviceType];
 
-  [(PNPWelcomeController *)self addButtonWithType:a4];
+  [(PNPWelcomeController *)self addButtonWithType:buttonType];
 }
 
-- (id)bundleImageNamed:(id)a3
+- (id)bundleImageNamed:(id)named
 {
-  v3 = a3;
-  v4 = [objc_opt_class() bundleImageNamed:v3];
+  namedCopy = named;
+  v4 = [objc_opt_class() bundleImageNamed:namedCopy];
 
   return v4;
 }
 
-- (id)bundleImageNamed:(id)a3 renderingMode:(int64_t)a4
+- (id)bundleImageNamed:(id)named renderingMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [objc_opt_class() bundleImageNamed:v5 renderingMode:a4];
+  namedCopy = named;
+  v6 = [objc_opt_class() bundleImageNamed:namedCopy renderingMode:mode];
 
   return v6;
 }
 
-+ (id)bundleImageNamed:(id)a3
++ (id)bundleImageNamed:(id)named
 {
   v3 = MEMORY[0x277D755B8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  namedCopy = named;
   v6 = [v4 bundleForClass:objc_opt_class()];
-  v7 = [v3 imageNamed:v5 inBundle:v6 compatibleWithTraitCollection:0];
+  v7 = [v3 imageNamed:namedCopy inBundle:v6 compatibleWithTraitCollection:0];
 
   v8 = [v7 imageWithRenderingMode:2];
 
   return v8;
 }
 
-+ (id)bundleImageNamed:(id)a3 renderingMode:(int64_t)a4
++ (id)bundleImageNamed:(id)named renderingMode:(int64_t)mode
 {
   v5 = MEMORY[0x277D755B8];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a3;
+  namedCopy = named;
   v8 = [v6 bundleForClass:objc_opt_class()];
-  v9 = [v5 imageNamed:v7 inBundle:v8 compatibleWithTraitCollection:0];
+  v9 = [v5 imageNamed:namedCopy inBundle:v8 compatibleWithTraitCollection:0];
 
-  v10 = [v9 imageWithRenderingMode:a4];
+  v10 = [v9 imageWithRenderingMode:mode];
 
   return v10;
 }
 
 - (BOOL)isRTL
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
   return v3;
 }

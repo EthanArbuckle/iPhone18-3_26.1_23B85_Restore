@@ -40,7 +40,7 @@
     v21 = *MEMORY[0x277D47048];
     v22[0] = v20;
     v22[1] = v21;
-    v11 = [a1 description];
+    v11 = [self description];
     v23[1] = v11;
     v12 = MEMORY[0x277CBEAC0];
     v13 = v23;
@@ -57,7 +57,7 @@
     v10 = *MEMORY[0x277D47048];
     v24[0] = v9;
     v24[1] = v10;
-    v11 = [a1 description];
+    v11 = [self description];
     v25[1] = v11;
     v12 = MEMORY[0x277CBEAC0];
     v13 = v25;

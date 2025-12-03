@@ -9,13 +9,13 @@
 - (NSString)title;
 - (NSUUID)uuid;
 - (NSUserActivity)appClipUserActivity;
-- (id)_bundleResourceWithName:(id)a3;
+- (id)_bundleResourceWithName:(id)name;
 - (id)_init;
-- (id)_initWithIdentifier:(id)a3 webClipDictionary:(id)a4;
+- (id)_initWithIdentifier:(id)identifier webClipDictionary:(id)dictionary;
 - (id)description;
-- (void)_updateWithClipMetadata:(id)a3;
-- (void)setPageURL:(id)a3;
-- (void)setRegisteredURL:(id)a3;
+- (void)_updateWithClipMetadata:(id)metadata;
+- (void)setPageURL:(id)l;
+- (void)setRegisteredURL:(id)l;
 @end
 
 @implementation CPSWebClip
@@ -27,9 +27,9 @@
   v2 = [(CPSWebClip *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:&stru_28567C2A8];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v5 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_28567C2A8];
     identifier = v2->_identifier;
     v2->_identifier = v5;
 
@@ -41,35 +41,35 @@
   return v2;
 }
 
-- (id)_initWithIdentifier:(id)a3 webClipDictionary:(id)a4
+- (id)_initWithIdentifier:(id)identifier webClipDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = CPSWebClip;
   v9 = [(CPSWebClip *)&v36 init];
   if (v9)
   {
     v10 = MEMORY[0x277CBEBC0];
-    v11 = [v8 safari_stringForKey:@"URL"];
+    v11 = [dictionaryCopy safari_stringForKey:@"URL"];
     v12 = [v10 URLWithString:v11];
     [(CPSWebClip *)v9 setPageURL:v12];
 
     v13 = MEMORY[0x277CBEBC0];
-    v14 = [v8 safari_stringForKey:@"RegisteredURL"];
+    v14 = [dictionaryCopy safari_stringForKey:@"RegisteredURL"];
     v15 = [v13 URLWithString:v14];
     [(CPSWebClip *)v9 setRegisteredURL:v15];
 
-    objc_storeStrong(&v9->_identifier, a3);
-    v16 = [v8 safari_stringForKey:@"Title"];
+    objc_storeStrong(&v9->_identifier, identifier);
+    v16 = [dictionaryCopy safari_stringForKey:@"Title"];
     title = v9->_title;
     v9->_title = v16;
 
-    v18 = [v8 safari_stringForKey:@"ApplicationBundleIdentifier"];
+    v18 = [dictionaryCopy safari_stringForKey:@"ApplicationBundleIdentifier"];
     applicationBundleIdentifier = v9->_applicationBundleIdentifier;
     v9->_applicationBundleIdentifier = v18;
 
-    v20 = [v8 safari_arrayForKey:@"TrustedClientBundleIdentifiers"];
+    v20 = [dictionaryCopy safari_arrayForKey:@"TrustedClientBundleIdentifiers"];
     if ([v20 count])
     {
       v21 = [MEMORY[0x277CBEB98] setWithArray:v20];
@@ -77,29 +77,29 @@
       v9->_trustedClientBundleIdentifiers = v21;
     }
 
-    v9->_bundleVersion = [v8 _web_intForKey:@"ApplicationBundleVersion"];
-    v9->_scenelessBackgroundLaunch = [v8 safari_BOOLForKey:@"ScenelessBackgroundLaunch"];
-    v9->_poweredBy = [v8 safari_BOOLForKey:@"PoweredBy"];
-    v9->_supportsArcade = [v8 safari_BOOLForKey:@"SupportsArcade"];
-    v23 = [v8 safari_stringForKey:@"FullAppName"];
+    v9->_bundleVersion = [dictionaryCopy _web_intForKey:@"ApplicationBundleVersion"];
+    v9->_scenelessBackgroundLaunch = [dictionaryCopy safari_BOOLForKey:@"ScenelessBackgroundLaunch"];
+    v9->_poweredBy = [dictionaryCopy safari_BOOLForKey:@"PoweredBy"];
+    v9->_supportsArcade = [dictionaryCopy safari_BOOLForKey:@"SupportsArcade"];
+    v23 = [dictionaryCopy safari_stringForKey:@"FullAppName"];
     fullAppName = v9->_fullAppName;
     v9->_fullAppName = v23;
 
-    v25 = [v8 safari_stringForKey:@"FullAppCaption"];
+    v25 = [dictionaryCopy safari_stringForKey:@"FullAppCaption"];
     fullAppCaption = v9->_fullAppCaption;
     v9->_fullAppCaption = v25;
 
     v27 = MEMORY[0x277CBEBC0];
-    v28 = [v8 safari_stringForKey:@"FullAppStoreURL"];
+    v28 = [dictionaryCopy safari_stringForKey:@"FullAppStoreURL"];
     v29 = [v27 URLWithString:v28];
     fullAppStoreURL = v9->_fullAppStoreURL;
     v9->_fullAppStoreURL = v29;
 
-    v31 = [v8 safari_dateForKey:@"LastActivatedTime"];
+    v31 = [dictionaryCopy safari_dateForKey:@"LastActivatedTime"];
     lastActivatedTime = v9->_lastActivatedTime;
     v9->_lastActivatedTime = v31;
 
-    if ([v8 safari_BOOLForKey:@"IsAppClip"])
+    if ([dictionaryCopy safari_BOOLForKey:@"IsAppClip"])
     {
       v33 = 1;
     }
@@ -109,7 +109,7 @@
       v33 = 4;
     }
 
-    else if ([v8 safari_BOOLForKey:@"FullScreen"])
+    else if ([dictionaryCopy safari_BOOLForKey:@"FullScreen"])
     {
       v33 = 3;
     }
@@ -137,58 +137,58 @@ LABEL_15:
   return v9;
 }
 
-- (void)_updateWithClipMetadata:(id)a3
+- (void)_updateWithClipMetadata:(id)metadata
 {
-  v22 = a3;
-  self->_poweredBy = [v22 isPoweredByThirdParty];
-  self->_supportsArcade = [v22 supportsArcade];
-  v4 = [v22 bundleDisplayName];
-  v5 = v4;
-  if (self->_poweredBy || ![v4 length])
+  metadataCopy = metadata;
+  self->_poweredBy = [metadataCopy isPoweredByThirdParty];
+  self->_supportsArcade = [metadataCopy supportsArcade];
+  bundleDisplayName = [metadataCopy bundleDisplayName];
+  v5 = bundleDisplayName;
+  if (self->_poweredBy || ![bundleDisplayName length])
   {
-    v6 = [v22 clipName];
+    clipName = [metadataCopy clipName];
   }
 
   else
   {
-    v6 = [v22 bundleDisplayName];
+    clipName = [metadataCopy bundleDisplayName];
   }
 
   title = self->_title;
-  self->_title = v6;
+  self->_title = clipName;
 
-  v8 = [v22 clipBundleID];
+  clipBundleID = [metadataCopy clipBundleID];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
-  self->_applicationBundleIdentifier = v8;
+  self->_applicationBundleIdentifier = clipBundleID;
 
-  if ([v22 hasFullAppInstalledOnSystem])
+  if ([metadataCopy hasFullAppInstalledOnSystem])
   {
-    v10 = [v22 fullAppBundleID];
+    fullAppBundleID = [metadataCopy fullAppBundleID];
     v11 = self->_applicationBundleIdentifier;
-    self->_applicationBundleIdentifier = v10;
+    self->_applicationBundleIdentifier = fullAppBundleID;
   }
 
-  v12 = [v22 fullAppCachedIconFilePath];
+  fullAppCachedIconFilePath = [metadataCopy fullAppCachedIconFilePath];
   temporaryIconPath = self->_temporaryIconPath;
-  self->_temporaryIconPath = v12;
+  self->_temporaryIconPath = fullAppCachedIconFilePath;
 
-  v14 = [v22 fullAppName];
+  fullAppName = [metadataCopy fullAppName];
   fullAppName = self->_fullAppName;
-  self->_fullAppName = v14;
+  self->_fullAppName = fullAppName;
 
-  v16 = [v22 fullAppCaption];
+  fullAppCaption = [metadataCopy fullAppCaption];
   fullAppCaption = self->_fullAppCaption;
-  self->_fullAppCaption = v16;
+  self->_fullAppCaption = fullAppCaption;
 
-  v18 = [v22 fullAppStoreURL];
+  fullAppStoreURL = [metadataCopy fullAppStoreURL];
   fullAppStoreURL = self->_fullAppStoreURL;
-  self->_fullAppStoreURL = v18;
+  self->_fullAppStoreURL = fullAppStoreURL;
 
-  v20 = [v22 clipLaunchURL];
-  [(CPSWebClip *)self setPageURL:v20];
+  clipLaunchURL = [metadataCopy clipLaunchURL];
+  [(CPSWebClip *)self setPageURL:clipLaunchURL];
 
-  v21 = [v22 clipURL];
-  [(CPSWebClip *)self setRegisteredURL:v21];
+  clipURL = [metadataCopy clipURL];
+  [(CPSWebClip *)self setRegisteredURL:clipURL];
 }
 
 - (NSDictionary)_dictionaryRepresentation
@@ -197,20 +197,20 @@ LABEL_15:
   pageURL = self->_pageURL;
   if (pageURL)
   {
-    v5 = [(NSURL *)pageURL absoluteString];
-    if (v5)
+    absoluteString = [(NSURL *)pageURL absoluteString];
+    if (absoluteString)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"URL"];
+      [v3 setObject:absoluteString forKeyedSubscript:@"URL"];
     }
   }
 
   registeredURL = self->_registeredURL;
   if (registeredURL)
   {
-    v7 = [(NSURL *)registeredURL absoluteString];
-    if (v7)
+    absoluteString2 = [(NSURL *)registeredURL absoluteString];
+    if (absoluteString2)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"RegisteredURL"];
+      [v3 setObject:absoluteString2 forKeyedSubscript:@"RegisteredURL"];
     }
   }
 
@@ -247,10 +247,10 @@ LABEL_15:
   fullAppStoreURL = self->_fullAppStoreURL;
   if (fullAppStoreURL)
   {
-    v14 = [(NSURL *)fullAppStoreURL absoluteString];
-    if (v14)
+    absoluteString3 = [(NSURL *)fullAppStoreURL absoluteString];
+    if (absoluteString3)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"FullAppStoreURL"];
+      [v3 setObject:absoluteString3 forKeyedSubscript:@"FullAppStoreURL"];
     }
   }
 
@@ -276,32 +276,32 @@ LABEL_15:
   return v3;
 }
 
-- (id)_bundleResourceWithName:(id)a3
+- (id)_bundleResourceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [CPSWebClipStore _urlForWebClipWithIdentifier:self->_identifier];
   if (v5)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleWithURL:v5];
-    v7 = [v6 URLForResource:v4 withExtension:@"png" subdirectory:0];
+    v7 = [v6 URLForResource:nameCopy withExtension:@"png" subdirectory:0];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 path];
+      path = [v7 path];
     }
 
     else
     {
-      v9 = 0;
+      path = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    path = 0;
   }
 
-  return v9;
+  return path;
 }
 
 - (NSUUID)uuid
@@ -373,29 +373,29 @@ LABEL_7:
   return v4;
 }
 
-- (void)setPageURL:(id)a3
+- (void)setPageURL:(id)l
 {
-  v5 = a3;
-  if ([v5 cps_isHTTPFamilyURL])
+  lCopy = l;
+  if ([lCopy cps_isHTTPFamilyURL])
   {
-    objc_storeStrong(&self->_pageURL, a3);
+    objc_storeStrong(&self->_pageURL, l);
   }
 }
 
-- (void)setRegisteredURL:(id)a3
+- (void)setRegisteredURL:(id)l
 {
-  v5 = a3;
-  if ([v5 cps_isHTTPFamilyURL])
+  lCopy = l;
+  if ([lCopy cps_isHTTPFamilyURL])
   {
-    objc_storeStrong(&self->_registeredURL, a3);
+    objc_storeStrong(&self->_registeredURL, l);
   }
 }
 
 - (NSString)iconImagePath
 {
   v2 = [(CPSWebClip *)self _bundleResourceWithName:@"icon"];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v3 fileExistsAtPath:v2])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:v2])
   {
     v4 = v2;
   }
@@ -431,9 +431,9 @@ LABEL_7:
 + (NSArray)appClips
 {
   v2 = +[CPSWebClipStore sharedStore];
-  v3 = [v2 _fetchInstalledAppClips];
+  _fetchInstalledAppClips = [v2 _fetchInstalledAppClips];
 
-  return v3;
+  return _fetchInstalledAppClips;
 }
 
 - (NSString)localizedSubtitle
@@ -455,7 +455,7 @@ LABEL_7:
     v17[2] = __31__CPSWebClip_localizedSubtitle__block_invoke;
     v17[3] = &unk_278DCE558;
     v6 = v3;
-    v19 = self;
+    selfCopy = self;
     v20 = &v21;
     v18 = v6;
     [v4 getAppClipRecordWithBundleID:applicationBundleIdentifier completion:v17];
@@ -474,9 +474,9 @@ LABEL_7:
       v16 = 0;
       v11 = [v9 initWithBundleIdentifier:v10 allowPlaceholder:1 error:&v16];
       v12 = v16;
-      v13 = [v11 localizedName];
-      v14 = v13;
-      if (v12 || ![v13 length])
+      localizedName = [v11 localizedName];
+      v14 = localizedName;
+      if (v12 || ![localizedName length])
       {
         v8 = 0;
       }
@@ -530,25 +530,25 @@ void __31__CPSWebClip_localizedSubtitle__block_invoke(uint64_t a1, void *a2)
 {
   identifier = self->_identifier;
   v26 = MEMORY[0x277CCACA8];
-  v28 = [(CPSWebClip *)self uuid];
-  v23 = [v28 UUIDString];
-  v21 = [(CPSWebClip *)self webClipType];
-  v31 = [(CPSWebClip *)self title];
-  v20 = [(CPSWebClip *)self bundleVersion];
-  v19 = [(CPSWebClip *)self bundleIdentifier];
-  v18 = [(CPSWebClip *)self scenelessBackgroundLaunch];
-  v30 = [(CPSWebClip *)self applicationBundleIdentifier];
-  v16 = [(CPSWebClip *)self trustedClientBundleIdentifiers];
-  v29 = [(CPSWebClip *)self pageURL];
-  v15 = [(CPSWebClip *)self registeredURL];
-  v24 = [(CPSWebClip *)self registeredURL];
-  v22 = [v24 absoluteString];
-  v3 = [v22 cps_sha256String];
-  v4 = [(CPSWebClip *)self appClipUserActivity];
+  uuid = [(CPSWebClip *)self uuid];
+  uUIDString = [uuid UUIDString];
+  webClipType = [(CPSWebClip *)self webClipType];
+  title = [(CPSWebClip *)self title];
+  bundleVersion = [(CPSWebClip *)self bundleVersion];
+  bundleIdentifier = [(CPSWebClip *)self bundleIdentifier];
+  scenelessBackgroundLaunch = [(CPSWebClip *)self scenelessBackgroundLaunch];
+  applicationBundleIdentifier = [(CPSWebClip *)self applicationBundleIdentifier];
+  trustedClientBundleIdentifiers = [(CPSWebClip *)self trustedClientBundleIdentifiers];
+  pageURL = [(CPSWebClip *)self pageURL];
+  registeredURL = [(CPSWebClip *)self registeredURL];
+  registeredURL2 = [(CPSWebClip *)self registeredURL];
+  absoluteString = [registeredURL2 absoluteString];
+  cps_sha256String = [absoluteString cps_sha256String];
+  appClipUserActivity = [(CPSWebClip *)self appClipUserActivity];
   v17 = [CPSWebClipStore _urlForWebClipWithIdentifier:self->_identifier];
-  v5 = [v17 path];
-  v6 = [(CPSWebClip *)self iconImagePath];
-  v14 = [(CPSWebClip *)self localizedSubtitle];
+  path = [v17 path];
+  iconImagePath = [(CPSWebClip *)self iconImagePath];
+  localizedSubtitle = [(CPSWebClip *)self localizedSubtitle];
   if ([(CPSWebClip *)self supportsArcade])
   {
     v7 = @"YES";
@@ -559,12 +559,12 @@ void __31__CPSWebClip_localizedSubtitle__block_invoke(uint64_t a1, void *a2)
     v7 = @"NO";
   }
 
-  v8 = [(CPSWebClip *)self fullAppName];
-  v9 = [(CPSWebClip *)self fullAppCaption];
-  v10 = [(CPSWebClip *)self fullAppStoreURL];
-  v11 = [(CPSWebClip *)self isApplicationInstalled];
-  v12 = [(CPSWebClip *)self _dictionaryRepresentation];
-  v27 = [v26 stringWithFormat:@"%@: \n  uuid = %@, \n  webClipType = %ld, \n  title = %@, \n  bundleVersion = %lu, \n  bundleIdentifier = %@, \n  scenelessBackgroundLaunch = %d, \n  applicationBundleIdentifier = %@, \n  trustedClientBundleIdentifiers = %@, \n  pageURL = %@, \n  registeredURL = %@, \n  registeredURLHash = %@, \n  appClipUserActivity = %@, \n  path = %@, \n  iconImagePath = %@, \n  localizedSubtitle = %@, \n  supportsArcade = %@, \n  fullAppName = %@, \n  fullAppCaption = %@, \n  fullAppStoreURL = %@, \n  applicationInstalled = %d, \n  dictionaryRepresentation = %@", identifier, v23, v21, v31, v20, v19, v18, v30, v16, v29, v15, v3, v4, v5, v6, v14, v7, v8, v9, v10, v11, v12];
+  fullAppName = [(CPSWebClip *)self fullAppName];
+  fullAppCaption = [(CPSWebClip *)self fullAppCaption];
+  fullAppStoreURL = [(CPSWebClip *)self fullAppStoreURL];
+  isApplicationInstalled = [(CPSWebClip *)self isApplicationInstalled];
+  _dictionaryRepresentation = [(CPSWebClip *)self _dictionaryRepresentation];
+  v27 = [v26 stringWithFormat:@"%@: \n  uuid = %@, \n  webClipType = %ld, \n  title = %@, \n  bundleVersion = %lu, \n  bundleIdentifier = %@, \n  scenelessBackgroundLaunch = %d, \n  applicationBundleIdentifier = %@, \n  trustedClientBundleIdentifiers = %@, \n  pageURL = %@, \n  registeredURL = %@, \n  registeredURLHash = %@, \n  appClipUserActivity = %@, \n  path = %@, \n  iconImagePath = %@, \n  localizedSubtitle = %@, \n  supportsArcade = %@, \n  fullAppName = %@, \n  fullAppCaption = %@, \n  fullAppStoreURL = %@, \n  applicationInstalled = %d, \n  dictionaryRepresentation = %@", identifier, uUIDString, webClipType, title, bundleVersion, bundleIdentifier, scenelessBackgroundLaunch, applicationBundleIdentifier, trustedClientBundleIdentifiers, pageURL, registeredURL, cps_sha256String, appClipUserActivity, path, iconImagePath, localizedSubtitle, v7, fullAppName, fullAppCaption, fullAppStoreURL, isApplicationInstalled, _dictionaryRepresentation];
 
   return v27;
 }

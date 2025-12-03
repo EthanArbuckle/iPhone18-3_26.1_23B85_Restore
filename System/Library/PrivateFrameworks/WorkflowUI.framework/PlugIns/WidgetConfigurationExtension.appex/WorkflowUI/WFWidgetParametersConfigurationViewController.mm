@@ -4,12 +4,12 @@
 - (WFAction)action;
 - (WFWidgetConfigurationRequest)request;
 - (_TtC28WidgetConfigurationExtension38WidgetConfigurationParameterDataSource)dataSource;
-- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithRequest:(id)a3 action:(id)a4 intentIdentifier:(id)a5 dismiss:(id)a6 cancel:(id)a7;
+- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithRequest:(id)request action:(id)action intentIdentifier:(id)identifier dismiss:(id)dismiss cancel:(id)cancel;
 - (id)cancel;
 - (id)dismiss;
-- (void)populateConfiguredIntentWithCompletion:(id)a3;
-- (void)setHostingVC:(id)a3;
+- (void)populateConfiguredIntentWithCompletion:(id)completion;
+- (void)setHostingVC:(id)c;
 - (void)viewDidLoad;
 @end
 
@@ -86,17 +86,17 @@
   return v2;
 }
 
-- (void)setHostingVC:(id)a3
+- (void)setHostingVC:(id)c
 {
-  v5 = a3;
-  v6 = self;
-  sub_100002934(a3);
+  cCopy = c;
+  selfCopy = self;
+  sub_100002934(c);
 }
 
-- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithRequest:(id)a3 action:(id)a4 intentIdentifier:(id)a5 dismiss:(id)a6 cancel:(id)a7
+- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithRequest:(id)request action:(id)action intentIdentifier:(id)identifier dismiss:(id)dismiss cancel:(id)cancel
 {
-  v10 = _Block_copy(a6);
-  v11 = _Block_copy(a7);
+  v10 = _Block_copy(dismiss);
+  v11 = _Block_copy(cancel);
   v12 = sub_10001B8E4();
   v14 = v13;
   v15 = swift_allocObject();
@@ -113,34 +113,34 @@
     v16 = 0;
   }
 
-  return sub_10000297C(a3, a4, v12, v14, sub_100004A10, v15, v11, v16);
+  return sub_10000297C(request, action, v12, v14, sub_100004A10, v15, v11, v16);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002C4C();
 }
 
-- (void)populateConfiguredIntentWithCompletion:(id)a3
+- (void)populateConfiguredIntentWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_100003814(&unk_100028090, v5);
 }
 
-- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC28WidgetConfigurationExtension45WFWidgetParametersConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_10001B8E4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10000392C();
 }
 

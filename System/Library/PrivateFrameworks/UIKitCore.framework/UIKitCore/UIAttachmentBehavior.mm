@@ -18,7 +18,7 @@
 - (void)_changedParameter;
 - (void)_dissociate;
 - (void)_reevaluateJoint;
-- (void)_updateJointWithRange:(id)a3;
+- (void)_updateJointWithRange:(id)range;
 - (void)setAnchorPoint:(CGPoint)anchorPoint;
 - (void)setAttachmentRange:(UIFloatRange)attachmentRange;
 - (void)setDamping:(CGFloat)damping;
@@ -37,7 +37,7 @@
   x = point.x;
   v12 = item2;
   v13 = item1;
-  v14 = [[a1 alloc] initWithItem:v13 attachedToItem:v12];
+  v14 = [[self alloc] initWithItem:v13 attachedToItem:v12];
 
   *(v14 + 48) = x;
   *(v14 + 56) = y;
@@ -56,7 +56,7 @@
   y = point.y;
   x = point.x;
   v10 = item;
-  v11 = [[a1 alloc] initWithItem:v10 attachedToAnchor:{x, y}];
+  v11 = [[self alloc] initWithItem:v10 attachedToAnchor:{x, y}];
 
   *(v11 + 48) = x;
   *(v11 + 56) = y;
@@ -85,12 +85,12 @@
   }
 }
 
-- (void)_updateJointWithRange:(id)a3
+- (void)_updateJointWithRange:(id)range
 {
   if (self->_joint && self->_attachmentType - 1 <= 1)
   {
-    var1 = a3.var1;
-    var0 = a3.var0;
+    var1 = range.var1;
+    var0 = range.var0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,7 +154,7 @@ LABEL_22:
   v9 = offset1.horizontal;
   v12 = item2;
   v13 = item1;
-  v14 = [[a1 alloc] initWithItem:v13 offsetFromCenter:v12 attachedToItem:v9 offsetFromCenter:{v8, horizontal, vertical}];
+  v14 = [[self alloc] initWithItem:v13 offsetFromCenter:v12 attachedToItem:v9 offsetFromCenter:{v8, horizontal, vertical}];
   [v13 center];
   v16 = v15;
   v18 = v17;
@@ -175,7 +175,7 @@ LABEL_22:
   x = point.x;
   v9 = item2;
   v10 = item1;
-  v11 = [[a1 alloc] initWithItem:v10 attachedToItem:v9];
+  v11 = [[self alloc] initWithItem:v10 attachedToItem:v9];
 
   v11[6] = x;
   v11[7] = y;
@@ -190,7 +190,7 @@ LABEL_22:
   x = point.x;
   v9 = item2;
   v10 = item1;
-  v11 = [[a1 alloc] initWithItem:v10 attachedToItem:v9];
+  v11 = [[self alloc] initWithItem:v10 attachedToItem:v9];
 
   *(v11 + 48) = x;
   *(v11 + 56) = y;
@@ -280,8 +280,8 @@ LABEL_22:
 - (NSArray)items
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v2 arrayWithArray:v3];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [v2 arrayWithArray:_items];
 
   return v4;
 }
@@ -451,10 +451,10 @@ LABEL_22:
 - (void)_changedParameter
 {
   type = self->_type;
-  v4 = [(UIDynamicBehavior *)self _context];
-  v5 = [(UIDynamicBehavior *)self _items];
-  v6 = [v5 objectAtIndex:0];
-  v7 = [v4 _bodyForItem:v6];
+  _context = [(UIDynamicBehavior *)self _context];
+  _items = [(UIDynamicBehavior *)self _items];
+  v6 = [_items objectAtIndex:0];
+  v7 = [_context _bodyForItem:v6];
 
   if (type)
   {
@@ -464,58 +464,58 @@ LABEL_22:
 
   else
   {
-    v8 = [(UIDynamicBehavior *)self _context];
-    v9 = [(UIDynamicBehavior *)self _items];
-    v10 = [v9 objectAtIndex:1];
-    v11 = [v8 _bodyForItem:v10];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    _items2 = [(UIDynamicBehavior *)self _items];
+    v10 = [_items2 objectAtIndex:1];
+    v11 = [_context2 _bodyForItem:v10];
 
     [v7 setResting:0];
     [v11 setResting:0];
   }
 
-  v12 = [(UIDynamicBehavior *)self _context];
-  [v12 _tickle];
+  _context3 = [(UIDynamicBehavior *)self _context];
+  [_context3 _tickle];
 }
 
 - (void)_reevaluateJoint
 {
-  v3 = [(UIDynamicBehavior *)self _context];
-  v4 = [v3 _world];
+  _context = [(UIDynamicBehavior *)self _context];
+  _world = [_context _world];
 
-  if (!v4)
+  if (!_world)
   {
     return;
   }
 
   type = self->_type;
-  v6 = [(UIDynamicBehavior *)self _items];
-  v7 = [v6 objectAtIndex:0];
+  _items = [(UIDynamicBehavior *)self _items];
+  v7 = [_items objectAtIndex:0];
 
   if (type)
   {
-    v8 = [(UIDynamicBehavior *)self _context];
-    v48 = [v8 _bodyForItem:v7];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    v48 = [_context2 _bodyForItem:v7];
 
     v9 = self->_anchorBody;
   }
 
   else
   {
-    v10 = [(UIDynamicBehavior *)self _items];
-    v11 = [v10 objectAtIndex:1];
+    _items2 = [(UIDynamicBehavior *)self _items];
+    v11 = [_items2 objectAtIndex:1];
 
-    v12 = [(UIDynamicBehavior *)self _context];
-    v48 = [v12 _bodyForItem:v7];
+    _context3 = [(UIDynamicBehavior *)self _context];
+    v48 = [_context3 _bodyForItem:v7];
 
-    v13 = [(UIDynamicBehavior *)self _context];
-    v9 = [v13 _bodyForItem:v11];
+    _context4 = [(UIDynamicBehavior *)self _context];
+    v9 = [_context4 _bodyForItem:v11];
   }
 
   if (self->_joint)
   {
-    v14 = [(UIDynamicBehavior *)self _context];
-    v15 = [v14 _world];
-    [v15 removeJoint:self->_joint];
+    _context5 = [(UIDynamicBehavior *)self _context];
+    _world2 = [_context5 _world];
+    [_world2 removeJoint:self->_joint];
 
     joint = self->_joint;
     self->_joint = 0;
@@ -555,9 +555,9 @@ LABEL_22:
         [(PKPhysicsJoint *)self->_joint setCollideConnected:1];
       }
 
-      v40 = [(UIDynamicBehavior *)self _context];
-      v41 = [v40 _world];
-      [v41 addJoint:self->_joint];
+      _context6 = [(UIDynamicBehavior *)self _context];
+      _world3 = [_context6 _world];
+      [_world3 addJoint:self->_joint];
 
       if ((*&self->_stateFlags & 4) != 0)
       {
@@ -570,9 +570,9 @@ LABEL_22:
         goto LABEL_26;
       }
 
-      v43 = [(UIDynamicBehavior *)self _context];
-      v44 = [v43 _world];
-      [v44 removeJoint:self->_joint];
+      _context7 = [(UIDynamicBehavior *)self _context];
+      _world4 = [_context7 _world];
+      [_world4 removeJoint:self->_joint];
 
       v45 = self->_joint;
       self->_joint = 0;
@@ -588,13 +588,13 @@ LABEL_22:
 
     if (attachmentType == 1)
     {
-      v27 = [MEMORY[0x1E69C4A40] jointWithBodyA:v48 bodyB:v9 anchor:{self->_anchorPoint.x, self->_anchorPoint.y}];
+      _context9 = [MEMORY[0x1E69C4A40] jointWithBodyA:v48 bodyB:v9 anchor:{self->_anchorPoint.x, self->_anchorPoint.y}];
       *&self->_stateFlags |= 0x20u;
-      objc_storeStrong(&self->_joint, v27);
+      objc_storeStrong(&self->_joint, _context9);
       v28 = self->_stateFlags;
       if ((v28 & 0x10) != 0)
       {
-        [v27 setFrictionTorque:self->_frictionTorque];
+        [_context9 setFrictionTorque:self->_frictionTorque];
         v28 = self->_stateFlags;
       }
 
@@ -603,9 +603,9 @@ LABEL_22:
         [(UIAttachmentBehavior *)self _updateJointWithRange:self->_attachmentRange.minimum, self->_attachmentRange.maximum];
       }
 
-      v29 = [(UIDynamicBehavior *)self _context];
-      v30 = [v29 _world];
-      [v30 addJoint:self->_joint];
+      _context8 = [(UIDynamicBehavior *)self _context];
+      _world5 = [_context8 _world];
+      [_world5 addJoint:self->_joint];
 
       goto LABEL_25;
     }
@@ -635,9 +635,9 @@ LABEL_22:
 
         *&self->_stateFlags &= ~0x20u;
 LABEL_24:
-        v27 = [(UIDynamicBehavior *)self _context];
-        v29 = [v27 _world];
-        [v29 addJoint:self->_joint];
+        _context9 = [(UIDynamicBehavior *)self _context];
+        _context8 = [_context9 _world];
+        [_context8 addJoint:self->_joint];
 LABEL_25:
 
         break;
@@ -667,13 +667,13 @@ LABEL_26:
 - (void)_associate
 {
   type = self->_type;
-  v4 = [(UIDynamicBehavior *)self _items];
-  v5 = [v4 objectAtIndex:0];
+  _items = [(UIDynamicBehavior *)self _items];
+  v5 = [_items objectAtIndex:0];
 
   if (type)
   {
-    v6 = [(UIDynamicBehavior *)self _context];
-    v7 = [v6 _registerBodyForItem:v5];
+    _context = [(UIDynamicBehavior *)self _context];
+    v7 = [_context _registerBodyForItem:v5];
 
     v8 = [PKExtendedPhysicsBody bodyWithRectangleOfSize:1.0, 1.0];
     [(PKExtendedPhysicsBody *)v8 setPosition:self->_anchorPoint.x, self->_anchorPoint.y];
@@ -682,21 +682,21 @@ LABEL_26:
     self->_anchorBody = v8;
     v10 = v8;
 
-    v11 = [(UIDynamicBehavior *)self _context];
-    v12 = [v11 _world];
-    [v12 addBody:v10];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    _world = [_context2 _world];
+    [_world addBody:v10];
   }
 
   else
   {
-    v13 = [(UIDynamicBehavior *)self _items];
-    v11 = [v13 objectAtIndex:1];
+    _items2 = [(UIDynamicBehavior *)self _items];
+    _context2 = [_items2 objectAtIndex:1];
 
-    v14 = [(UIDynamicBehavior *)self _context];
-    v15 = [v14 _registerBodyForItem:v5];
+    _context3 = [(UIDynamicBehavior *)self _context];
+    v15 = [_context3 _registerBodyForItem:v5];
 
-    v12 = [(UIDynamicBehavior *)self _context];
-    v16 = [v12 _registerBodyForItem:v11];
+    _world = [(UIDynamicBehavior *)self _context];
+    v16 = [_world _registerBodyForItem:_context2];
   }
 
   [(UIAttachmentBehavior *)self _reevaluateJoint];
@@ -704,15 +704,15 @@ LABEL_26:
 
 - (void)_dissociate
 {
-  v3 = [(UIDynamicBehavior *)self _context];
-  v4 = [v3 _world];
-  [v4 removeJoint:self->_joint];
+  _context = [(UIDynamicBehavior *)self _context];
+  _world = [_context _world];
+  [_world removeJoint:self->_joint];
 
   if (self->_type == 1)
   {
-    v5 = [(UIDynamicBehavior *)self _context];
-    v6 = [v5 _world];
-    [v6 removeBody:self->_anchorBody];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    _world2 = [_context2 _world];
+    [_world2 removeBody:self->_anchorBody];
 
     anchorBody = self->_anchorBody;
     self->_anchorBody = 0;
@@ -722,25 +722,25 @@ LABEL_26:
   self->_joint = 0;
 
   type = self->_type;
-  v10 = [(UIDynamicBehavior *)self _items];
-  v15 = [v10 objectAtIndex:0];
+  _items = [(UIDynamicBehavior *)self _items];
+  v15 = [_items objectAtIndex:0];
 
   if (type)
   {
-    v11 = [(UIDynamicBehavior *)self _context];
-    [v11 _unregisterBodyForItem:v15 action:0];
+    _context3 = [(UIDynamicBehavior *)self _context];
+    [_context3 _unregisterBodyForItem:v15 action:0];
   }
 
   else
   {
-    v12 = [(UIDynamicBehavior *)self _items];
-    v11 = [v12 objectAtIndex:1];
+    _items2 = [(UIDynamicBehavior *)self _items];
+    _context3 = [_items2 objectAtIndex:1];
 
-    v13 = [(UIDynamicBehavior *)self _context];
-    [v13 _unregisterBodyForItem:v15 action:0];
+    _context4 = [(UIDynamicBehavior *)self _context];
+    [_context4 _unregisterBodyForItem:v15 action:0];
 
-    v14 = [(UIDynamicBehavior *)self _context];
-    [v14 _unregisterBodyForItem:v11 action:0];
+    _context5 = [(UIDynamicBehavior *)self _context];
+    [_context5 _unregisterBodyForItem:_context3 action:0];
   }
 }
 
@@ -752,8 +752,8 @@ LABEL_26:
   v4 = [(UIDynamicBehavior *)&v15 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(UIDynamicBehavior *)self _items];
-  v7 = [v6 objectAtIndex:0];
+  _items = [(UIDynamicBehavior *)self _items];
+  v7 = [_items objectAtIndex:0];
 
   [v5 appendFormat:@" %@ <-", v7];
   stateFlags = self->_stateFlags;
@@ -824,8 +824,8 @@ LABEL_12:
 
   else
   {
-    v13 = [(UIDynamicBehavior *)self _items];
-    v12 = [v13 objectAtIndex:1];
+    _items2 = [(UIDynamicBehavior *)self _items];
+    v12 = [_items2 objectAtIndex:1];
   }
 
   [v5 appendFormat:@"-> %@", v12];

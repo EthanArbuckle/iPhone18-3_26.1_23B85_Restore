@@ -1,13 +1,13 @@
 @interface _GCSyntheticXbox360Controller
-+ (id)devicePropertiesWithDescription:(id)a3;
++ (id)devicePropertiesWithDescription:(id)description;
 @end
 
 @implementation _GCSyntheticXbox360Controller
 
-+ (id)devicePropertiesWithDescription:(id)a3
++ (id)devicePropertiesWithDescription:(id)description
 {
   v13[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   if (!devicePropertiesWithDescription__BaseProperties)
   {
     v12[0] = @"ReportDescriptor";
@@ -31,8 +31,8 @@
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v7 addEntriesFromDictionary:devicePropertiesWithDescription__BaseProperties];
   [v7 setObject:@"Xbox360Controller" forKey:@"_GCSyntheticDeviceType"];
-  v8 = [v3 controllerIdentifier];
-  v9 = [v8 description];
+  controllerIdentifier = [descriptionCopy controllerIdentifier];
+  v9 = [controllerIdentifier description];
   [v7 setObject:v9 forKey:@"_GCSyntheticDeviceControllerIdentifier"];
 
   v10 = *MEMORY[0x1E69E9840];

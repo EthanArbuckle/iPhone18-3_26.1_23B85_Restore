@@ -1,17 +1,17 @@
 @interface BCDDParsecCollectionViewController
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation BCDDParsecCollectionViewController
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(BCDDParsecCollectionViewController *)self dismissCompletionHandler];
+  dismissCompletionHandler = [(BCDDParsecCollectionViewController *)self dismissCompletionHandler];
 
-  if (v4)
+  if (dismissCompletionHandler)
   {
-    v5 = [(BCDDParsecCollectionViewController *)self dismissCompletionHandler];
-    v5[2]();
+    dismissCompletionHandler2 = [(BCDDParsecCollectionViewController *)self dismissCompletionHandler];
+    dismissCompletionHandler2[2]();
 
     [(BCDDParsecCollectionViewController *)self setDismissCompletionHandler:0];
   }

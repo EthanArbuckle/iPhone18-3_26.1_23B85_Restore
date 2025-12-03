@@ -1,11 +1,11 @@
 @interface ReactionPickerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_TtC22_GroupActivities_UIKit18ReactionPickerView)init;
-- (_TtC22_GroupActivities_UIKit18ReactionPickerView)initWithFrame:(CGRect)a3;
+- (_TtC22_GroupActivities_UIKit18ReactionPickerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)presentReactionPicker;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation ReactionPickerView
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ReactionPickerView();
-  [(ReactionPickerView *)&v4 willMoveToWindow:a3];
+  [(ReactionPickerView *)&v4 willMoveToWindow:window];
 }
 
 - (CGSize)intrinsicContentSize
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit18ReactionPickerView_emojiButton) sizeThatFits_];
   result.height = v4;
@@ -45,20 +45,20 @@
 {
   v3 = OBJC_IVAR____TtC22_GroupActivities_UIKit18ReactionPickerView_emojiButton;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit18ReactionPickerView_emojiButton);
-  v9 = self;
-  [(ReactionPickerView *)v9 bounds];
+  selfCopy = self;
+  [(ReactionPickerView *)selfCopy bounds];
   [v4 sizeThatFits_];
   [*(&self->super.super.super.isa + v3) setFrame_];
 }
 
 - (void)presentReactionPicker
 {
-  v4 = self;
-  v2 = [(ReactionPickerView *)v4 window];
-  if (v2)
+  selfCopy = self;
+  window = [(ReactionPickerView *)selfCopy window];
+  if (window)
   {
-    v3 = v2;
-    (*((*MEMORY[0x277D85000] & v4->super.super.super.isa) + 0x120))();
+    v3 = window;
+    (*((*MEMORY[0x277D85000] & selfCopy->super.super.super.isa) + 0x120))();
   }
 
   else
@@ -67,7 +67,7 @@
   }
 }
 
-- (_TtC22_GroupActivities_UIKit18ReactionPickerView)initWithFrame:(CGRect)a3
+- (_TtC22_GroupActivities_UIKit18ReactionPickerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

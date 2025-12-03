@@ -1,10 +1,10 @@
 @interface SHSheetContentDataSourceManager
 + (id)contentCustomViewUniqueIdentifier;
-- (SHSheetContentDataSourceManager)initWithApplicationActivityTypes:(id)a3 heroActionActivityTypes:(id)a4;
+- (SHSheetContentDataSourceManager)initWithApplicationActivityTypes:(id)types heroActionActivityTypes:(id)activityTypes;
 - (SHSheetContentDataSourceManagerDelegate)delegate;
-- (id)_updateCurrentStateWithChangeRequest:(id)a3;
-- (void)suggestLessPeopleProxyForIdentifier:(id)a3;
-- (void)updateWithChangeRequest:(id)a3;
+- (id)_updateCurrentStateWithChangeRequest:(id)request;
+- (void)suggestLessPeopleProxyForIdentifier:(id)identifier;
+- (void)updateWithChangeRequest:(id)request;
 @end
 
 @implementation SHSheetContentDataSourceManager
@@ -28,20 +28,20 @@ void __68__SHSheetContentDataSourceManager_contentCustomViewUniqueIdentifier__bl
   contentCustomViewUniqueIdentifier_contentCustomViewUniqueIdentifier = v0;
 }
 
-- (SHSheetContentDataSourceManager)initWithApplicationActivityTypes:(id)a3 heroActionActivityTypes:(id)a4
+- (SHSheetContentDataSourceManager)initWithApplicationActivityTypes:(id)types heroActionActivityTypes:(id)activityTypes
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  activityTypesCopy = activityTypes;
   v18.receiver = self;
   v18.super_class = SHSheetContentDataSourceManager;
   v8 = [(SHSheetContentDataSourceManager *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typesCopy copy];
     applicationActivityTypes = v8->_applicationActivityTypes;
     v8->_applicationActivityTypes = v9;
 
-    v11 = [v7 copy];
+    v11 = [activityTypesCopy copy];
     heroActionActivityTypes = v8->_heroActionActivityTypes;
     v8->_heroActionActivityTypes = v11;
 
@@ -49,44 +49,44 @@ void __68__SHSheetContentDataSourceManager_contentCustomViewUniqueIdentifier__bl
     suggestLessIdentifiers = v8->_suggestLessIdentifiers;
     v8->_suggestLessIdentifiers = v13;
 
-    v15 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     moreActionIdentifier = v8->_moreActionIdentifier;
-    v8->_moreActionIdentifier = v15;
+    v8->_moreActionIdentifier = uUID;
   }
 
   return v8;
 }
 
-- (id)_updateCurrentStateWithChangeRequest:(id)a3
+- (id)_updateCurrentStateWithChangeRequest:(id)request
 {
   v125 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v104 = [(SHSheetContentDataSourceManager *)self currentState];
+  requestCopy = request;
+  currentState = [(SHSheetContentDataSourceManager *)self currentState];
   v90 = objc_alloc_init(SHSheetContentDataSourceState);
-  v92 = [MEMORY[0x1E695DF90] dictionary];
-  v96 = [MEMORY[0x1E695DF90] dictionary];
-  v100 = [MEMORY[0x1E695DF90] dictionary];
-  v91 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v102 = [MEMORY[0x1E695DF70] array];
-  v89 = [MEMORY[0x1E695DF70] array];
-  v83 = [MEMORY[0x1E695DF70] array];
-  v88 = [MEMORY[0x1E695DF70] array];
-  v86 = [MEMORY[0x1E695DF90] dictionary];
-  v85 = [MEMORY[0x1E695DFA0] orderedSet];
-  v84 = [MEMORY[0x1E695DF70] array];
-  v81 = [MEMORY[0x1E695DF70] array];
-  v94 = [MEMORY[0x1E695DF70] array];
-  v6 = [v4 excludeSectionTypes];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  array7 = [MEMORY[0x1E695DF70] array];
+  array8 = [MEMORY[0x1E695DF70] array];
+  array9 = [MEMORY[0x1E695DF70] array];
+  excludeSectionTypes = [requestCopy excludeSectionTypes];
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v82 = v4;
-  v7 = [v4 peopleProxies];
-  v8 = [v7 countByEnumeratingWithState:&v117 objects:v124 count:16];
-  v103 = self;
-  v101 = v5;
+  v82 = requestCopy;
+  peopleProxies = [requestCopy peopleProxies];
+  v8 = [peopleProxies countByEnumeratingWithState:&v117 objects:v124 count:16];
+  selfCopy = self;
+  v101 = array2;
   if (v8)
   {
     v9 = v8;
@@ -97,7 +97,7 @@ void __68__SHSheetContentDataSourceManager_contentCustomViewUniqueIdentifier__bl
       {
         if (*v118 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(peopleProxies);
         }
 
         v12 = *(*(&v117 + 1) + 8 * i);
@@ -106,31 +106,31 @@ void __68__SHSheetContentDataSourceManager_contentCustomViewUniqueIdentifier__bl
           [(SHSheetContentDataSourceState *)v90 setAirDropProxy:v12];
         }
 
-        v13 = [v12 identifier];
-        v14 = [(SHSheetContentDataSourceManager *)self suggestLessIdentifiers];
-        v15 = [v14 containsObject:v13];
+        identifier = [v12 identifier];
+        suggestLessIdentifiers = [(SHSheetContentDataSourceManager *)self suggestLessIdentifiers];
+        v15 = [suggestLessIdentifiers containsObject:identifier];
 
         if ((v15 & 1) == 0)
         {
-          v16 = [v104 peopleProxyByUUID];
-          v17 = [v16 objectForKeyedSubscript:v13];
+          peopleProxyByUUID = [currentState peopleProxyByUUID];
+          v17 = [peopleProxyByUUID objectForKeyedSubscript:identifier];
 
-          if ((v6 & 2) != 0 || !v17)
+          if ((excludeSectionTypes & 2) != 0 || !v17)
           {
             goto LABEL_18;
           }
 
           v18 = v10;
-          v19 = v6;
-          v20 = v7;
+          v19 = excludeSectionTypes;
+          v20 = peopleProxies;
           v21 = v12;
           v22 = v17;
           v23 = v22;
           if (v21 == v22)
           {
 
-            v7 = v20;
-            v6 = v19;
+            peopleProxies = v20;
+            excludeSectionTypes = v19;
             v10 = v18;
           }
 
@@ -140,8 +140,8 @@ void __68__SHSheetContentDataSourceManager_contentCustomViewUniqueIdentifier__bl
             {
               objb = [v21 isEqual:v22];
 
-              v7 = v20;
-              v6 = v19;
+              peopleProxies = v20;
+              excludeSectionTypes = v19;
               v10 = v18;
               if (objb)
               {
@@ -152,24 +152,24 @@ void __68__SHSheetContentDataSourceManager_contentCustomViewUniqueIdentifier__bl
             else
             {
 
-              v7 = v20;
-              v6 = v19;
+              peopleProxies = v20;
+              excludeSectionTypes = v19;
               v10 = v18;
             }
 
-            [v94 addObject:v13];
+            [array9 addObject:identifier];
           }
 
 LABEL_18:
-          [v92 setObject:v12 forKeyedSubscript:v13];
-          [v91 addObject:v13];
+          [dictionary setObject:v12 forKeyedSubscript:identifier];
+          [array addObject:identifier];
         }
 
-        self = v103;
-        v5 = v101;
+        self = selfCopy;
+        array2 = v101;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v117 objects:v124 count:16];
+      v9 = [peopleProxies countByEnumeratingWithState:&v117 objects:v124 count:16];
     }
 
     while (v9);
@@ -198,11 +198,11 @@ LABEL_18:
       }
 
       v28 = *(*(&v113 + 1) + 8 * j);
-      v29 = [v28 identifier];
-      v30 = [v104 shareProxyByUUID];
-      v31 = [v30 objectForKeyedSubscript:v29];
+      identifier2 = [v28 identifier];
+      shareProxyByUUID = [currentState shareProxyByUUID];
+      v31 = [shareProxyByUUID objectForKeyedSubscript:identifier2];
 
-      if ((v6 & 4) == 0 && v31)
+      if ((excludeSectionTypes & 4) == 0 && v31)
       {
         v32 = v28;
         v33 = v31;
@@ -210,22 +210,22 @@ LABEL_18:
         if (v32 == v33)
         {
 
-          v5 = v101;
+          array2 = v101;
           goto LABEL_35;
         }
 
         if (!v32)
         {
 
-          v5 = v101;
+          array2 = v101;
 LABEL_34:
-          [v94 addObject:v29];
+          [array9 addObject:identifier2];
           goto LABEL_35;
         }
 
         v35 = [v32 isEqual:v33];
 
-        v5 = v101;
+        array2 = v101;
         if ((v35 & 1) == 0)
         {
           goto LABEL_34;
@@ -233,8 +233,8 @@ LABEL_34:
       }
 
 LABEL_35:
-      [v96 setObject:v28 forKeyedSubscript:v29];
-      [v5 addObject:v29];
+      [dictionary2 setObject:v28 forKeyedSubscript:identifier2];
+      [array2 addObject:identifier2];
     }
 
     v25 = [obj countByEnumeratingWithState:&v113 objects:v123 count:16];
@@ -243,16 +243,16 @@ LABEL_35:
   while (v25);
 LABEL_37:
 
-  v87 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
   v36 = v82;
-  v93 = [v82 actionProxies];
-  v37 = v100;
-  v38 = v102;
-  obja = [v93 countByEnumeratingWithState:&v109 objects:v122 count:16];
+  actionProxies = [v82 actionProxies];
+  v37 = dictionary3;
+  v38 = array3;
+  obja = [actionProxies countByEnumeratingWithState:&v109 objects:v122 count:16];
   if (!obja)
   {
     goto LABEL_74;
@@ -266,15 +266,15 @@ LABEL_37:
     {
       if (*v110 != v95)
       {
-        objc_enumerationMutation(v93);
+        objc_enumerationMutation(actionProxies);
       }
 
       v40 = *(*(&v109 + 1) + 8 * v39);
-      v41 = [v40 identifier];
-      v42 = [v104 actionProxyByUUID];
-      v43 = [v42 objectForKeyedSubscript:v41];
+      identifier3 = [v40 identifier];
+      actionProxyByUUID = [currentState actionProxyByUUID];
+      v43 = [actionProxyByUUID objectForKeyedSubscript:identifier3];
 
-      if ((v6 & 8) == 0 && v43)
+      if ((excludeSectionTypes & 8) == 0 && v43)
       {
         v44 = v40;
         v45 = v43;
@@ -282,8 +282,8 @@ LABEL_37:
         if (v44 == v45)
         {
 
-          v37 = v100;
-          v38 = v102;
+          v37 = dictionary3;
+          v38 = array3;
         }
 
         else
@@ -292,8 +292,8 @@ LABEL_37:
           {
             v47 = [v44 isEqual:v45];
 
-            v37 = v100;
-            v38 = v102;
+            v37 = dictionary3;
+            v38 = array3;
             if (v47)
             {
               goto LABEL_51;
@@ -303,61 +303,61 @@ LABEL_37:
           else
           {
 
-            v37 = v100;
-            v38 = v102;
+            v37 = dictionary3;
+            v38 = array3;
           }
 
-          [v94 addObject:v41];
+          [array9 addObject:identifier3];
         }
       }
 
 LABEL_51:
-      [v37 setObject:v40 forKeyedSubscript:v41];
-      [v38 addObject:v41];
-      v48 = [v36 activitiesByUUID];
-      v49 = [v48 objectForKeyedSubscript:v41];
+      [v37 setObject:v40 forKeyedSubscript:identifier3];
+      [v38 addObject:identifier3];
+      activitiesByUUID = [v36 activitiesByUUID];
+      v49 = [activitiesByUUID objectForKeyedSubscript:identifier3];
 
-      if (v49 && (-[SHSheetContentDataSourceManager heroActionActivityTypes](v103, "heroActionActivityTypes"), v50 = objc_claimAutoreleasedReturnValue(), [v49 activityType], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v50, "containsObject:", v51), v51, v37 = v100, v50, v52))
+      if (v49 && (-[SHSheetContentDataSourceManager heroActionActivityTypes](selfCopy, "heroActionActivityTypes"), v50 = objc_claimAutoreleasedReturnValue(), [v49 activityType], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v50, "containsObject:", v51), v51, v37 = dictionary3, v50, v52))
       {
-        v53 = [v49 activityType];
-        [v87 setObject:v41 forKeyedSubscript:v53];
+        activityType = [v49 activityType];
+        [dictionary5 setObject:identifier3 forKeyedSubscript:activityType];
       }
 
       else if ([v40 isFavorite])
       {
-        [v88 addObject:v41];
+        [array6 addObject:identifier3];
       }
 
       else
       {
-        v54 = [v49 activitySectionIdentifier];
+        activitySectionIdentifier = [v49 activitySectionIdentifier];
 
-        if (v54)
+        if (activitySectionIdentifier)
         {
-          v55 = [v49 activitySectionIdentifier];
-          v56 = [(SHSheetContentDataSourceManager *)v103 _uniqueIdentifierForSectionIdentifier:v55];
+          activitySectionIdentifier2 = [v49 activitySectionIdentifier];
+          v56 = [(SHSheetContentDataSourceManager *)selfCopy _uniqueIdentifierForSectionIdentifier:activitySectionIdentifier2];
 
-          v57 = [v86 objectForKeyedSubscript:v56];
-          if (!v57)
+          array10 = [dictionary4 objectForKeyedSubscript:v56];
+          if (!array10)
           {
-            v57 = [MEMORY[0x1E695DF70] array];
-            [v86 setObject:v57 forKeyedSubscript:v56];
+            array10 = [MEMORY[0x1E695DF70] array];
+            [dictionary4 setObject:array10 forKeyedSubscript:v56];
           }
 
-          [v57 addObject:v41];
-          [v85 addObject:v56];
+          [array10 addObject:identifier3];
+          [orderedSet addObject:v56];
         }
 
         else
         {
-          v58 = [v49 _isBuiltinDerived];
-          v59 = [v49 _showsInSystemActionGroup];
+          _isBuiltinDerived = [v49 _isBuiltinDerived];
+          _showsInSystemActionGroup = [v49 _showsInSystemActionGroup];
           if (v49)
           {
-            v60 = v59;
-            v61 = [(SHSheetContentDataSourceManager *)v103 applicationActivityTypes];
-            v62 = [v49 activityType];
-            v63 = [v61 containsObject:v62] & (v58 ^ 1) | v60;
+            v60 = _showsInSystemActionGroup;
+            applicationActivityTypes = [(SHSheetContentDataSourceManager *)selfCopy applicationActivityTypes];
+            activityType2 = [v49 activityType];
+            v63 = [applicationActivityTypes containsObject:activityType2] & (_isBuiltinDerived ^ 1) | v60;
 
             v36 = v82;
           }
@@ -367,34 +367,34 @@ LABEL_51:
             v63 = 0;
           }
 
-          v64 = [v49 _activityFooterText];
-          if (v64 || ([v40 activityFooter], (v64 = objc_claimAutoreleasedReturnValue()) != 0))
+          _activityFooterText = [v49 _activityFooterText];
+          if (_activityFooterText || ([v40 activityFooter], (_activityFooterText = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v65 = v64;
-            [v83 addObject:v41];
+            v65 = _activityFooterText;
+            [array5 addObject:identifier3];
           }
 
           else
           {
             if (v63)
             {
-              v66 = v84;
+              v66 = array7;
             }
 
             else
             {
-              v66 = v81;
+              v66 = array8;
             }
 
-            [v66 addObject:v41];
+            [v66 addObject:identifier3];
           }
         }
 
-        v37 = v100;
+        v37 = dictionary3;
       }
 
       v39 = v39 + 1;
-      v38 = v102;
+      v38 = array3;
       if (obja != v39)
       {
         continue;
@@ -403,7 +403,7 @@ LABEL_51:
       break;
     }
 
-    v67 = [v93 countByEnumeratingWithState:&v109 objects:v122 count:16];
+    v67 = [actionProxies countByEnumeratingWithState:&v109 objects:v122 count:16];
     obja = v67;
     if (v67)
     {
@@ -415,14 +415,14 @@ LABEL_51:
 
 LABEL_74:
 
-  if ([v87 count])
+  if ([dictionary5 count])
   {
     v107 = 0u;
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v68 = [(SHSheetContentDataSourceManager *)v103 heroActionActivityTypes];
-    v69 = [v68 countByEnumeratingWithState:&v105 objects:v121 count:16];
+    heroActionActivityTypes = [(SHSheetContentDataSourceManager *)selfCopy heroActionActivityTypes];
+    v69 = [heroActionActivityTypes countByEnumeratingWithState:&v105 objects:v121 count:16];
     if (v69)
     {
       v70 = v69;
@@ -433,105 +433,105 @@ LABEL_74:
         {
           if (*v106 != v71)
           {
-            objc_enumerationMutation(v68);
+            objc_enumerationMutation(heroActionActivityTypes);
           }
 
-          v73 = [v87 objectForKeyedSubscript:*(*(&v105 + 1) + 8 * k)];
+          v73 = [dictionary5 objectForKeyedSubscript:*(*(&v105 + 1) + 8 * k)];
           if (v73)
           {
-            [v89 addObject:v73];
+            [array4 addObject:v73];
           }
         }
 
-        v70 = [v68 countByEnumeratingWithState:&v105 objects:v121 count:16];
+        v70 = [heroActionActivityTypes countByEnumeratingWithState:&v105 objects:v121 count:16];
       }
 
       while (v70);
     }
 
     v36 = v82;
-    v37 = v100;
+    v37 = dictionary3;
   }
 
-  v74 = [v36 peopleProxies];
-  [(SHSheetContentDataSourceState *)v90 setPeopleProxies:v74];
+  peopleProxies2 = [v36 peopleProxies];
+  [(SHSheetContentDataSourceState *)v90 setPeopleProxies:peopleProxies2];
 
-  v75 = [v36 shareProxies];
-  [(SHSheetContentDataSourceState *)v90 setShareProxies:v75];
+  shareProxies = [v36 shareProxies];
+  [(SHSheetContentDataSourceState *)v90 setShareProxies:shareProxies];
 
-  v76 = [v36 actionProxies];
-  [(SHSheetContentDataSourceState *)v90 setActionProxies:v76];
+  actionProxies2 = [v36 actionProxies];
+  [(SHSheetContentDataSourceState *)v90 setActionProxies:actionProxies2];
 
-  v77 = [v36 activitiesByUUID];
-  [(SHSheetContentDataSourceState *)v90 setActivitiesByUUID:v77];
+  activitiesByUUID2 = [v36 activitiesByUUID];
+  [(SHSheetContentDataSourceState *)v90 setActivitiesByUUID:activitiesByUUID2];
 
   -[SHSheetContentDataSourceState setNearbyCountSlotID:](v90, "setNearbyCountSlotID:", [v36 nearbyCountSlotID]);
-  [(SHSheetContentDataSourceState *)v90 setPeopleProxyByUUID:v92];
-  [(SHSheetContentDataSourceState *)v90 setShareProxyByUUID:v96];
+  [(SHSheetContentDataSourceState *)v90 setPeopleProxyByUUID:dictionary];
+  [(SHSheetContentDataSourceState *)v90 setShareProxyByUUID:dictionary2];
   [(SHSheetContentDataSourceState *)v90 setActionProxyByUUID:v37];
-  [(SHSheetContentDataSourceState *)v90 setPeopleIdentifiers:v91];
+  [(SHSheetContentDataSourceState *)v90 setPeopleIdentifiers:array];
   [(SHSheetContentDataSourceState *)v90 setShareIdentifiers:v101];
-  [(SHSheetContentDataSourceState *)v90 setActionIdentifiers:v102];
-  [(SHSheetContentDataSourceState *)v90 setHeroActionIdentifiers:v89];
-  [(SHSheetContentDataSourceState *)v90 setInformationalActionIdentifiers:v83];
-  [(SHSheetContentDataSourceState *)v90 setFavoriteActionIdentifiers:v88];
-  [(SHSheetContentDataSourceState *)v90 setCustomActionIdentifiersByCustomSectionIdentifier:v86];
-  [(SHSheetContentDataSourceState *)v90 setCustomSectionIdentifiers:v85];
-  [(SHSheetContentDataSourceState *)v90 setSystemActionIdentifiers:v84];
-  [(SHSheetContentDataSourceState *)v90 setExtensionActionIdentifiers:v81];
-  v78 = [(SHSheetContentDataSourceManager *)v103 moreActionIdentifier];
-  [(SHSheetContentDataSourceState *)v90 setMoreActionIdentifier:v78];
+  [(SHSheetContentDataSourceState *)v90 setActionIdentifiers:array3];
+  [(SHSheetContentDataSourceState *)v90 setHeroActionIdentifiers:array4];
+  [(SHSheetContentDataSourceState *)v90 setInformationalActionIdentifiers:array5];
+  [(SHSheetContentDataSourceState *)v90 setFavoriteActionIdentifiers:array6];
+  [(SHSheetContentDataSourceState *)v90 setCustomActionIdentifiersByCustomSectionIdentifier:dictionary4];
+  [(SHSheetContentDataSourceState *)v90 setCustomSectionIdentifiers:orderedSet];
+  [(SHSheetContentDataSourceState *)v90 setSystemActionIdentifiers:array7];
+  [(SHSheetContentDataSourceState *)v90 setExtensionActionIdentifiers:array8];
+  moreActionIdentifier = [(SHSheetContentDataSourceManager *)selfCopy moreActionIdentifier];
+  [(SHSheetContentDataSourceState *)v90 setMoreActionIdentifier:moreActionIdentifier];
 
   v79 = share_sheet_log();
   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
   {
-    [(SHSheetContentDataSourceManager *)v103 _updateCurrentStateWithChangeRequest:v90, v79];
+    [(SHSheetContentDataSourceManager *)selfCopy _updateCurrentStateWithChangeRequest:v90, v79];
   }
 
-  [(SHSheetContentDataSourceManager *)v103 setCurrentState:v90];
+  [(SHSheetContentDataSourceManager *)selfCopy setCurrentState:v90];
 
-  return v94;
+  return array9;
 }
 
-- (void)updateWithChangeRequest:(id)a3
+- (void)updateWithChangeRequest:(id)request
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SHSheetContentDataSourceManager updateWithChangeRequest:];
   }
 
-  v6 = [v4 state];
-  v7 = [(SHSheetContentDataSourceManager *)self currentState];
-  v8 = [(SHSheetContentDataSourceManager *)self dataSource];
-  v36 = v6;
-  if (v6 && v6 == v7)
+  state = [requestCopy state];
+  currentState = [(SHSheetContentDataSourceManager *)self currentState];
+  dataSource = [(SHSheetContentDataSourceManager *)self dataSource];
+  v36 = state;
+  if (state && state == currentState)
   {
     v37 = 0;
   }
 
   else
   {
-    v37 = [(SHSheetContentDataSourceManager *)self _updateCurrentStateWithChangeRequest:v4];
+    v37 = [(SHSheetContentDataSourceManager *)self _updateCurrentStateWithChangeRequest:requestCopy];
   }
 
   v9 = [SHSheetContentDataSource alloc];
-  v10 = [(SHSheetContentDataSourceManager *)self currentState];
-  v11 = -[SHSheetContentDataSource initWithState:excludeSectionTypes:topActionsMaximumCount:](v9, "initWithState:excludeSectionTypes:topActionsMaximumCount:", v10, [v4 excludeSectionTypes], objc_msgSend(v4, "topActionsMaximumCount"));
+  currentState2 = [(SHSheetContentDataSourceManager *)self currentState];
+  v11 = -[SHSheetContentDataSource initWithState:excludeSectionTypes:topActionsMaximumCount:](v9, "initWithState:excludeSectionTypes:topActionsMaximumCount:", currentState2, [requestCopy excludeSectionTypes], objc_msgSend(requestCopy, "topActionsMaximumCount"));
 
-  v12 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
-  v13 = [v8 diffableSnapshot];
-  v33 = [v12 isEqual:v13];
+  diffableSnapshot = [(SHSheetContentDataSource *)v11 diffableSnapshot];
+  diffableSnapshot2 = [dataSource diffableSnapshot];
+  v33 = [diffableSnapshot isEqual:diffableSnapshot2];
 
-  v14 = [(SHSheetContentDataSourceManager *)self currentState];
-  v15 = [v14 nearbyCountSlotID];
-  v16 = [v7 nearbyCountSlotID];
+  currentState3 = [(SHSheetContentDataSourceManager *)self currentState];
+  nearbyCountSlotID = [currentState3 nearbyCountSlotID];
+  nearbyCountSlotID2 = [currentState nearbyCountSlotID];
 
   if ([(SHSheetContentDataSource *)v11 containsSectionForIdentifier:@"SHSheetContentPeopleSectionIdentifier"])
   {
-    v17 = [v8 containsSectionForIdentifier:@"SHSheetContentPeopleSectionIdentifier"];
+    v17 = [dataSource containsSectionForIdentifier:@"SHSheetContentPeopleSectionIdentifier"];
   }
 
   else
@@ -539,10 +539,10 @@ LABEL_74:
     v17 = 0;
   }
 
-  if ([v8 containsSectionForIdentifier:@"SHSheetContentTopActionsSectionIdentifier"])
+  if ([dataSource containsSectionForIdentifier:@"SHSheetContentTopActionsSectionIdentifier"])
   {
-    v18 = [v8 diffableSnapshot];
-    v19 = [v18 itemIdentifiersInSectionWithIdentifier:@"SHSheetContentTopActionsSectionIdentifier"];
+    diffableSnapshot3 = [dataSource diffableSnapshot];
+    v19 = [diffableSnapshot3 itemIdentifiersInSectionWithIdentifier:@"SHSheetContentTopActionsSectionIdentifier"];
   }
 
   else
@@ -550,11 +550,11 @@ LABEL_74:
     v19 = MEMORY[0x1E695E0F0];
   }
 
-  v35 = v7;
+  v35 = currentState;
   if ([(SHSheetContentDataSource *)v11 containsSectionForIdentifier:@"SHSheetContentTopActionsSectionIdentifier"])
   {
-    v20 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
-    v21 = [v20 itemIdentifiersInSectionWithIdentifier:@"SHSheetContentTopActionsSectionIdentifier"];
+    diffableSnapshot4 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
+    v21 = [diffableSnapshot4 itemIdentifiersInSectionWithIdentifier:@"SHSheetContentTopActionsSectionIdentifier"];
   }
 
   else
@@ -562,25 +562,25 @@ LABEL_74:
     v21 = MEMORY[0x1E695E0F0];
   }
 
-  v22 = v15 != v16;
+  v22 = nearbyCountSlotID != nearbyCountSlotID2;
   v34 = v19;
   v23 = [v19 isEqualToArray:v21];
   v24 = objc_alloc_init(SHSheetContentDataSourceChangeDetails);
   [(SHSheetContentDataSourceChangeDetails *)v24 setModifiedIdentifiers:v37];
   [(SHSheetContentDataSourceChangeDetails *)v24 setAirDropBadgeChanged:v22];
-  -[SHSheetContentDataSourceChangeDetails setForceReload:](v24, "setForceReload:", [v4 forceReload] & 1 | ((v23 & 1) == 0));
-  -[SHSheetContentDataSourceChangeDetails setAnimateDifferences:](v24, "setAnimateDifferences:", [v4 animated]);
-  v25 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
-  v26 = [v25 numberOfSections];
-  v27 = [v8 diffableSnapshot];
-  -[SHSheetContentDataSourceChangeDetails setSectionsChanged:](v24, "setSectionsChanged:", v26 != [v27 numberOfSections]);
+  -[SHSheetContentDataSourceChangeDetails setForceReload:](v24, "setForceReload:", [requestCopy forceReload] & 1 | ((v23 & 1) == 0));
+  -[SHSheetContentDataSourceChangeDetails setAnimateDifferences:](v24, "setAnimateDifferences:", [requestCopy animated]);
+  diffableSnapshot5 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
+  numberOfSections = [diffableSnapshot5 numberOfSections];
+  diffableSnapshot6 = [dataSource diffableSnapshot];
+  -[SHSheetContentDataSourceChangeDetails setSectionsChanged:](v24, "setSectionsChanged:", numberOfSections != [diffableSnapshot6 numberOfSections]);
 
   if (v17)
   {
-    v28 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
-    v29 = [v28 numberOfItemsInSection:@"SHSheetContentPeopleSectionIdentifier"];
-    v30 = [v8 diffableSnapshot];
-    -[SHSheetContentDataSourceChangeDetails setPeopleCountChanged:](v24, "setPeopleCountChanged:", v29 != [v30 numberOfItemsInSection:@"SHSheetContentPeopleSectionIdentifier"]);
+    diffableSnapshot7 = [(SHSheetContentDataSource *)v11 diffableSnapshot];
+    v29 = [diffableSnapshot7 numberOfItemsInSection:@"SHSheetContentPeopleSectionIdentifier"];
+    diffableSnapshot8 = [dataSource diffableSnapshot];
+    -[SHSheetContentDataSourceChangeDetails setPeopleCountChanged:](v24, "setPeopleCountChanged:", v29 != [diffableSnapshot8 numberOfItemsInSection:@"SHSheetContentPeopleSectionIdentifier"]);
   }
 
   else
@@ -600,48 +600,48 @@ LABEL_74:
   }
 
   [(SHSheetContentDataSourceManager *)self setDataSource:v11];
-  v32 = [(SHSheetContentDataSourceManager *)self delegate];
-  [v32 dataSourceManager:self didPublishDataSourceWithChangeDetails:v24];
+  delegate = [(SHSheetContentDataSourceManager *)self delegate];
+  [delegate dataSourceManager:self didPublishDataSourceWithChangeDetails:v24];
 }
 
-- (void)suggestLessPeopleProxyForIdentifier:(id)a3
+- (void)suggestLessPeopleProxyForIdentifier:(id)identifier
 {
-  v26 = a3;
-  v4 = [(SHSheetContentDataSourceManager *)self suggestLessIdentifiers];
-  v5 = [v4 containsObject:v26];
+  identifierCopy = identifier;
+  suggestLessIdentifiers = [(SHSheetContentDataSourceManager *)self suggestLessIdentifiers];
+  v5 = [suggestLessIdentifiers containsObject:identifierCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SHSheetContentDataSourceManager *)self suggestLessIdentifiers];
-    [v6 addObject:v26];
+    suggestLessIdentifiers2 = [(SHSheetContentDataSourceManager *)self suggestLessIdentifiers];
+    [suggestLessIdentifiers2 addObject:identifierCopy];
 
-    v7 = [(SHSheetContentDataSourceManager *)self dataSource];
-    v25 = [v7 peopleProxyForIdentifier:v26];
+    dataSource = [(SHSheetContentDataSourceManager *)self dataSource];
+    v25 = [dataSource peopleProxyForIdentifier:identifierCopy];
 
-    v8 = [(SHSheetContentDataSourceManager *)self dataSource];
-    v9 = [v8 peopleProxies];
-    v10 = [v9 mutableCopy];
+    dataSource2 = [(SHSheetContentDataSourceManager *)self dataSource];
+    peopleProxies = [dataSource2 peopleProxies];
+    v10 = [peopleProxies mutableCopy];
 
     v11 = v10;
     v24 = v10;
     [v10 removeObject:v25];
-    v23 = [(SHSheetContentDataSourceManager *)self dataSource];
-    v12 = [v23 shareProxies];
-    v13 = [(SHSheetContentDataSourceManager *)self dataSource];
-    v14 = [v13 actionProxies];
-    v15 = [(SHSheetContentDataSourceManager *)self dataSource];
-    v16 = [v15 nearbyCountSlotID];
-    v17 = [(SHSheetContentDataSourceManager *)self dataSource];
-    v18 = [v17 state];
-    v19 = [v18 activitiesByUUID];
-    v20 = [SHSheetContentDataSourceChangeRequest changeRequestForPeopleProxies:v11 shareProxies:v12 actionProxies:v14 nearbyCountSlotID:v16 activitiesByUUID:v19];
+    dataSource3 = [(SHSheetContentDataSourceManager *)self dataSource];
+    shareProxies = [dataSource3 shareProxies];
+    dataSource4 = [(SHSheetContentDataSourceManager *)self dataSource];
+    actionProxies = [dataSource4 actionProxies];
+    dataSource5 = [(SHSheetContentDataSourceManager *)self dataSource];
+    nearbyCountSlotID = [dataSource5 nearbyCountSlotID];
+    dataSource6 = [(SHSheetContentDataSourceManager *)self dataSource];
+    state = [dataSource6 state];
+    activitiesByUUID = [state activitiesByUUID];
+    v20 = [SHSheetContentDataSourceChangeRequest changeRequestForPeopleProxies:v11 shareProxies:shareProxies actionProxies:actionProxies nearbyCountSlotID:nearbyCountSlotID activitiesByUUID:activitiesByUUID];
 
-    v21 = [(SHSheetContentDataSourceManager *)self dataSource];
-    [v20 setExcludeSectionTypes:{objc_msgSend(v21, "excludeSectionTypes")}];
+    dataSource7 = [(SHSheetContentDataSourceManager *)self dataSource];
+    [v20 setExcludeSectionTypes:{objc_msgSend(dataSource7, "excludeSectionTypes")}];
 
     [v20 setAnimated:1];
-    v22 = [(SHSheetContentDataSourceManager *)self dataSource];
-    [v20 setTopActionsMaximumCount:{objc_msgSend(v22, "topActionsMaximumCount")}];
+    dataSource8 = [(SHSheetContentDataSourceManager *)self dataSource];
+    [v20 setTopActionsMaximumCount:{objc_msgSend(dataSource8, "topActionsMaximumCount")}];
 
     [(SHSheetContentDataSourceManager *)self updateWithChangeRequest:v20];
   }

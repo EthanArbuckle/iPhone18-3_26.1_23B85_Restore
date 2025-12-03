@@ -1,7 +1,7 @@
 @interface UPSpan
-+ (unint64_t)_getSpanTypeFromProtobufSpan:(id)a3;
-- (UPSpan)initWithProtobufSpan:(id)a3 nonWhitespaceTokenIndexes:(id)a4 error:(id *)a5;
-- (UPSpan)initWithRange:(_NSRange)a3 type:(unint64_t)a4 category:(id)a5 sharedEntityGraph:(id)a6;
++ (unint64_t)_getSpanTypeFromProtobufSpan:(id)span;
+- (UPSpan)initWithProtobufSpan:(id)span nonWhitespaceTokenIndexes:(id)indexes error:(id *)error;
+- (UPSpan)initWithRange:(_NSRange)range type:(unint64_t)type category:(id)category sharedEntityGraph:(id)graph;
 - (_NSRange)range;
 - (id)description;
 @end
@@ -23,60 +23,60 @@
   v3 = MEMORY[0x277CCACA8];
   v10.location = [(UPSpan *)self range];
   v4 = NSStringFromRange(v10);
-  v5 = [(UPSpan *)self type];
-  v6 = [(UPSpan *)self category];
-  v7 = [v3 stringWithFormat:@"{UPSpan range: %@  type: %lu ; category: %@}", v4, v5, v6];;
+  type = [(UPSpan *)self type];
+  category = [(UPSpan *)self category];
+  v7 = [v3 stringWithFormat:@"{UPSpan range: %@  type: %lu ; category: %@}", v4, type, category];;
 
   return v7;
 }
 
-- (UPSpan)initWithProtobufSpan:(id)a3 nonWhitespaceTokenIndexes:(id)a4 error:(id *)a5
+- (UPSpan)initWithProtobufSpan:(id)span nonWhitespaceTokenIndexes:(id)indexes error:(id *)error
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 hasStartTokenIndex] && (objc_msgSend(v8, "hasEndTokenIndex") & 1) != 0)
+  spanCopy = span;
+  indexesCopy = indexes;
+  if ([spanCopy hasStartTokenIndex] && (objc_msgSend(spanCopy, "hasEndTokenIndex") & 1) != 0)
   {
-    v10 = [v8 startTokenIndex];
-    if (v10 >= [v8 endTokenIndex])
+    startTokenIndex = [spanCopy startTokenIndex];
+    if (startTokenIndex >= [spanCopy endTokenIndex])
     {
-      if (a5)
+      if (error)
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid span: start token index (%u) >= end token index (%u)", objc_msgSend(v8, "startTokenIndex"), objc_msgSend(v8, "endTokenIndex")];
+        label = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid span: start token index (%u) >= end token index (%u)", objc_msgSend(spanCopy, "startTokenIndex"), objc_msgSend(spanCopy, "endTokenIndex")];
         v23 = MEMORY[0x277CCA9B8];
         v40 = *MEMORY[0x277CCA450];
-        v41 = v19;
+        v41 = label;
         v24 = MEMORY[0x277CBEAC0];
         v25 = &v41;
         v26 = &v40;
 LABEL_15:
         v27 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:1];
-        *a5 = [v23 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v27];
+        *error = [v23 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v27];
 
-        v21 = 0;
+        selfCopy = 0;
         goto LABEL_16;
       }
     }
 
     else
     {
-      v11 = [UPSpan _getSpanTypeFromProtobufSpan:v8];
-      v12 = [v8 startTokenIndex];
-      v13 = [v8 endTokenIndex];
-      if ([v9 containsIndex:v12])
+      v11 = [UPSpan _getSpanTypeFromProtobufSpan:spanCopy];
+      startTokenIndex2 = [spanCopy startTokenIndex];
+      endTokenIndex = [spanCopy endTokenIndex];
+      if ([indexesCopy containsIndex:startTokenIndex2])
       {
-        v14 = (v13 - 1);
-        if ([v9 containsIndex:v14])
+        v14 = (endTokenIndex - 1);
+        if ([indexesCopy containsIndex:v14])
         {
-          v15 = [v9 countOfIndexesInRange:{0, v12}];
-          v16 = [v9 countOfIndexesInRange:{0, v14 + 1}];
+          v15 = [indexesCopy countOfIndexesInRange:{0, startTokenIndex2}];
+          v16 = [indexesCopy countOfIndexesInRange:{0, v14 + 1}];
           v17 = SNLPOSLoggerForCategory(3);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
             *buf = 67109888;
-            v31 = [v8 startTokenIndex];
+            startTokenIndex3 = [spanCopy startTokenIndex];
             v32 = 1024;
-            v33 = [v8 endTokenIndex];
+            endTokenIndex2 = [spanCopy endTokenIndex];
             v34 = 2048;
             v35 = v15;
             v36 = 2048;
@@ -85,21 +85,21 @@ LABEL_15:
           }
 
           v18 = v16 - v15;
-          v19 = [v8 label];
-          v20 = [v8 usoGraph];
-          self = [(UPSpan *)self initWithRange:v15 type:v18 category:v11 sharedEntityGraph:v19, v20];
+          label = [spanCopy label];
+          usoGraph = [spanCopy usoGraph];
+          self = [(UPSpan *)self initWithRange:v15 type:v18 category:v11 sharedEntityGraph:label, usoGraph];
 
-          v21 = self;
+          selfCopy = self;
           goto LABEL_16;
         }
       }
 
-      if (a5)
+      if (error)
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Warning: discarding data detector matching span not aligned with non-whitespace tokens (%u -> %u)", objc_msgSend(v8, "startTokenIndex"), objc_msgSend(v8, "endTokenIndex")];
+        label = [MEMORY[0x277CCACA8] stringWithFormat:@"Warning: discarding data detector matching span not aligned with non-whitespace tokens (%u -> %u)", objc_msgSend(spanCopy, "startTokenIndex"), objc_msgSend(spanCopy, "endTokenIndex")];
         v23 = MEMORY[0x277CCA9B8];
         v38 = *MEMORY[0x277CCA450];
-        v39 = v19;
+        v39 = label;
         v24 = MEMORY[0x277CBEAC0];
         v25 = &v39;
         v26 = &v38;
@@ -108,11 +108,11 @@ LABEL_15:
     }
 
 LABEL_17:
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -120,22 +120,22 @@ LABEL_17:
   v22 = MEMORY[0x277CCA9B8];
   v42 = *MEMORY[0x277CCA450];
   v43[0] = @"protobuf message is missing a start/end index";
-  v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
-  [v22 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:v19];
-  *a5 = v21 = 0;
+  label = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
+  [v22 errorWithDomain:@"com.apple.uaapcustomluframework" code:10 userInfo:label];
+  *error = selfCopy = 0;
 LABEL_16:
 
 LABEL_18:
   v28 = *MEMORY[0x277D85DE8];
-  return v21;
+  return selfCopy;
 }
 
-- (UPSpan)initWithRange:(_NSRange)a3 type:(unint64_t)a4 category:(id)a5 sharedEntityGraph:(id)a6
+- (UPSpan)initWithRange:(_NSRange)range type:(unint64_t)type category:(id)category sharedEntityGraph:(id)graph
 {
-  length = a3.length;
-  location = a3.location;
-  v12 = a5;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  categoryCopy = category;
+  graphCopy = graph;
   v17.receiver = self;
   v17.super_class = UPSpan;
   v14 = [(UPSpan *)&v17 init];
@@ -144,18 +144,18 @@ LABEL_18:
   {
     v14->_range.location = location;
     v14->_range.length = length;
-    v14->_type = a4;
-    objc_storeStrong(&v14->_category, a5);
-    objc_storeStrong(&v15->_sharedEntityGraph, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_category, category);
+    objc_storeStrong(&v15->_sharedEntityGraph, graph);
   }
 
   return v15;
 }
 
-+ (unint64_t)_getSpanTypeFromProtobufSpan:(id)a3
++ (unint64_t)_getSpanTypeFromProtobufSpan:(id)span
 {
-  v3 = a3;
-  if (![v3 matcherNamesCount])
+  spanCopy = span;
+  if (![spanCopy matcherNamesCount])
   {
     v4 = SNLPOSLoggerForCategory(3);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -165,12 +165,12 @@ LABEL_18:
     }
   }
 
-  if ([v3 matcherNamesCount])
+  if ([spanCopy matcherNamesCount])
   {
     v5 = 1;
     do
     {
-      v6 = [v3 matcherNamesAtIndex:v5 - 1];
+      v6 = [spanCopy matcherNamesAtIndex:v5 - 1];
       if (v6)
       {
         if (v6 == 2)
@@ -199,14 +199,14 @@ LABEL_18:
         v8 = 2;
       }
 
-      v10 = [v3 matcherNamesCount];
+      matcherNamesCount = [spanCopy matcherNamesCount];
       if (!v7)
       {
         break;
       }
     }
 
-    while (v10 > v5++);
+    while (matcherNamesCount > v5++);
   }
 
   else

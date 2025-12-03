@@ -7,25 +7,25 @@
 - (double)convertedCurrentMediaTime;
 - (double)defaultBubbleOpacity;
 - (double)defaultThinkingDotOpacity;
-- (id)initHighlighted:(BOOL)a3;
-- (id)resolvedColor:(id)a3 forTraitCollection:(id)a4;
+- (id)initHighlighted:(BOOL)highlighted;
+- (id)resolvedColor:(id)color forTraitCollection:(id)collection;
 - (void)_buildIconImage;
 - (void)_buildThinkingDots;
 - (void)_setup;
 - (void)_updateBubbleOpacity;
 - (void)_updateForImage;
-- (void)resizeBackgroundSublayersForVisualConfiguration:(id)a3;
-- (void)setBubbleOpacity:(double)a3;
-- (void)setIconImage:(id)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)setTranscriptBackgroundLuminance:(double)a3;
-- (void)setUpMaterialLayersForVisualConfiguration:(id)a3;
-- (void)startGrowAnimationWithCompletionBlock:(id)a3;
+- (void)resizeBackgroundSublayersForVisualConfiguration:(id)configuration;
+- (void)setBubbleOpacity:(double)opacity;
+- (void)setIconImage:(id)image;
+- (void)setTraitCollection:(id)collection;
+- (void)setTranscriptBackgroundLuminance:(double)luminance;
+- (void)setUpMaterialLayersForVisualConfiguration:(id)configuration;
+- (void)startGrowAnimationWithCompletionBlock:(id)block;
 - (void)startPulseAnimation;
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3;
+- (void)startShrinkAnimationWithCompletionBlock:(id)block;
 - (void)stopAnimation;
 - (void)stopPulseAnimation;
-- (void)updateBackgroundOpacity:(double)a3;
+- (void)updateBackgroundOpacity:(double)opacity;
 - (void)updateMaterials;
 @end
 
@@ -45,7 +45,7 @@
   return v3;
 }
 
-- (id)initHighlighted:(BOOL)a3
+- (id)initHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = CKTypingIndicatorLayer;
@@ -53,7 +53,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_highlighted = a3;
+    v4->_highlighted = highlighted;
     [(CKTypingIndicatorLayer *)v4 _setup];
   }
 
@@ -68,27 +68,27 @@
   return result;
 }
 
-- (void)setBubbleOpacity:(double)a3
+- (void)setBubbleOpacity:(double)opacity
 {
-  if (vabdd_f64(self->_bubbleOpacity, a3) > 0.0001)
+  if (vabdd_f64(self->_bubbleOpacity, opacity) > 0.0001)
   {
-    self->_bubbleOpacity = a3;
+    self->_bubbleOpacity = opacity;
     [(CKTypingIndicatorLayer *)self _updateBubbleOpacity];
   }
 }
 
-- (id)resolvedColor:(id)a3 forTraitCollection:(id)a4
+- (id)resolvedColor:(id)color forTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (collection)
   {
-    v7 = [v5 resolvedColorWithTraitCollection:a4];
+    v7 = [colorCopy resolvedColorWithTraitCollection:collection];
   }
 
   else
   {
-    v7 = v5;
+    v7 = colorCopy;
   }
 
   v8 = v7;
@@ -96,40 +96,40 @@
   return v8;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if (([(UITraitCollection *)self->_traitCollection isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_traitCollection, a3);
+    objc_storeStrong(&self->_traitCollection, collection);
     [(CKTypingIndicatorLayer *)self updateMaterials];
     [(CKTypingIndicatorLayer *)self _updateBubbleOpacity];
   }
 }
 
-- (void)setTranscriptBackgroundLuminance:(double)a3
+- (void)setTranscriptBackgroundLuminance:(double)luminance
 {
-  if (vabdd_f64(self->_transcriptBackgroundLuminance, a3) > 0.0001)
+  if (vabdd_f64(self->_transcriptBackgroundLuminance, luminance) > 0.0001)
   {
-    self->_transcriptBackgroundLuminance = a3;
+    self->_transcriptBackgroundLuminance = luminance;
     [(CKTypingIndicatorLayer *)self updateMaterials];
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   iconImage = self->_iconImage;
-  if (iconImage != v5)
+  if (iconImage != imageCopy)
   {
-    v8 = v5;
-    v7 = [iconImage isEqual:v5];
-    v5 = v8;
+    v8 = imageCopy;
+    v7 = [iconImage isEqual:imageCopy];
+    imageCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_iconImage, a3);
+      objc_storeStrong(&self->_iconImage, image);
       [(CKTypingIndicatorLayer *)self _updateForImage];
-      v5 = v8;
+      imageCopy = v8;
     }
   }
 }
@@ -138,8 +138,8 @@
 {
   v45 = +[_TtC7ChatKit36CKTypingIndicatorVisualConfiguration platformConfiguration];
   [(CKTypingIndicatorLayer *)self setVisualConfiguration:v45];
-  v3 = [(CKTypingIndicatorLayer *)self defaultThinkingDotColor];
-  v4 = [(CKTypingIndicatorLayer *)self resolvedColor:v3 forTraitCollection:self->_traitCollection];
+  defaultThinkingDotColor = [(CKTypingIndicatorLayer *)self defaultThinkingDotColor];
+  v4 = [(CKTypingIndicatorLayer *)self resolvedColor:defaultThinkingDotColor forTraitCollection:self->_traitCollection];
   thinkingDotColor = self->_thinkingDotColor;
   self->_thinkingDotColor = v4;
 
@@ -163,27 +163,27 @@
   v20 = objc_alloc_init(CKTypingIndicatorPunchOutLayer);
   [(CKTypingIndicatorLayer *)self setPunchOutLayer:v20];
 
-  v21 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v21 setFrame:{v15, v15, v17, v19}];
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer setFrame:{v15, v15, v17, v19}];
 
-  v22 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  v23 = [(CKTypingIndicatorLayer *)self backgroundLayer];
-  [v23 setMask:v22];
+  punchOutLayer2 = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  backgroundLayer = [(CKTypingIndicatorLayer *)self backgroundLayer];
+  [backgroundLayer setMask:punchOutLayer2];
 
   v24 = +[_TtC7ChatKit36CKTypingIndicatorVisualConfiguration enlargedPunchOutConfiguration];
   v25 = [[CKTypingIndicatorPunchOutLayer alloc] initWithVisualConfiguration:v24];
   [(CKTypingIndicatorLayer *)self setVibrantStrokePunchOutLayer:v25];
 
-  v26 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v26 setFrame:{v15, v15, v17, v19}];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer setFrame:{v15, v15, v17, v19}];
 
-  v27 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  v28 = [(CKTypingIndicatorLayer *)self vibrancyLayer];
-  [v28 setMask:v27];
+  vibrantStrokePunchOutLayer2 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  vibrancyLayer = [(CKTypingIndicatorLayer *)self vibrancyLayer];
+  [vibrancyLayer setMask:vibrantStrokePunchOutLayer2];
 
   v29 = objc_alloc_init(MEMORY[0x1E6979398]);
-  v30 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-  [v30 largeBubbleAnchorPoint];
+  visualConfiguration = [(CKTypingIndicatorLayer *)self visualConfiguration];
+  [visualConfiguration largeBubbleAnchorPoint];
   v32 = v31;
   v34 = v33;
 
@@ -196,8 +196,8 @@
   [(CALayer *)v29 setPosition:v36, v38];
   [(CALayer *)v29 setBounds:0.0, 0.0, v40, v42];
   [(CKTypingIndicatorLayer *)self addSublayer:v29];
-  v43 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v43 setAlignedContentLayer:v29];
+  punchOutLayer3 = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer3 setAlignedContentLayer:v29];
 
   thinkingDotContainer = self->_thinkingDotContainer;
   self->_thinkingDotContainer = v29;
@@ -208,17 +208,17 @@
 
 - (void)_updateForImage
 {
-  v3 = [(CKTypingIndicatorLayer *)self iconImage];
-  v4 = v3 != 0;
+  iconImage = [(CKTypingIndicatorLayer *)self iconImage];
+  v4 = iconImage != 0;
 
-  v5 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v5 setIsWiderForImageIcon:v4];
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer setIsWiderForImageIcon:v4];
 
-  v6 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v6 setIsWiderForImageIcon:v4];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer setIsWiderForImageIcon:v4];
 
-  v7 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-  [(CKTypingIndicatorLayer *)self resizeBackgroundSublayersForVisualConfiguration:v7];
+  visualConfiguration = [(CKTypingIndicatorLayer *)self visualConfiguration];
+  [(CKTypingIndicatorLayer *)self resizeBackgroundSublayersForVisualConfiguration:visualConfiguration];
 
   [(CKTypingIndicatorLayer *)self _buildIconImage];
 
@@ -227,21 +227,21 @@
 
 - (void)_buildIconImage
 {
-  v3 = [(CKTypingIndicatorLayer *)self iconImageLayer];
+  iconImageLayer = [(CKTypingIndicatorLayer *)self iconImageLayer];
   if (self->_iconImage)
   {
-    if (v3)
+    if (iconImageLayer)
     {
-      v21 = v3;
-      [v3 setContents:?];
+      layer = iconImageLayer;
+      [iconImageLayer setContents:?];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E6979398] layer];
+      layer = [MEMORY[0x1E6979398] layer];
       iconImage = self->_iconImage;
-      v5 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-      [v5 iconImageFrame];
+      visualConfiguration = [(CKTypingIndicatorLayer *)self visualConfiguration];
+      [visualConfiguration iconImageFrame];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -250,30 +250,30 @@
       Width = CGImageGetWidth(iconImage);
       if (Width == CGImageGetHeight(iconImage))
       {
-        v15 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-        [v15 iconImageSquareFrame];
+        visualConfiguration2 = [(CKTypingIndicatorLayer *)self visualConfiguration];
+        [visualConfiguration2 iconImageSquareFrame];
         v7 = v16;
         v9 = v17;
         v11 = v18;
         v13 = v19;
       }
 
-      [v21 setFrame:{v7, v9, v11, v13}];
-      [v21 setMasksToBounds:1];
-      [v21 setCornerCurve:*MEMORY[0x1E69796E8]];
-      [v21 setCornerRadius:v13 * 0.5];
-      [v21 setContents:self->_iconImage];
-      [v21 setContentsGravity:*MEMORY[0x1E6979DF0]];
-      [(CKTypingIndicatorLayer *)self setIconImageLayer:v21];
-      v20 = [(CKTypingIndicatorLayer *)self thinkingDotContainer];
-      [v20 addSublayer:v21];
+      [layer setFrame:{v7, v9, v11, v13}];
+      [layer setMasksToBounds:1];
+      [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+      [layer setCornerRadius:v13 * 0.5];
+      [layer setContents:self->_iconImage];
+      [layer setContentsGravity:*MEMORY[0x1E6979DF0]];
+      [(CKTypingIndicatorLayer *)self setIconImageLayer:layer];
+      thinkingDotContainer = [(CKTypingIndicatorLayer *)self thinkingDotContainer];
+      [thinkingDotContainer addSublayer:layer];
     }
   }
 
   else
   {
-    v21 = v3;
-    [v3 removeFromSuperlayer];
+    layer = iconImageLayer;
+    [iconImageLayer removeFromSuperlayer];
     [(CKTypingIndicatorLayer *)self setIconImageLayer:0];
   }
 }
@@ -292,19 +292,19 @@
   thinkingDots = self->_thinkingDots;
   self->_thinkingDots = 0;
 
-  v5 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   v6 = self->_thinkingDot;
-  self->_thinkingDot = v5;
+  self->_thinkingDot = layer;
 
-  v7 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-  [v7 thinkingDotDiameter];
+  visualConfiguration = [(CKTypingIndicatorLayer *)self visualConfiguration];
+  [visualConfiguration thinkingDotDiameter];
   v9 = v8;
 
   [(CALayer *)self->_thinkingDot setFrame:0.0, 0.0, v9, v9];
   [(CALayer *)self->_thinkingDot setCornerRadius:v9 * 0.5];
   v10 = self->_thinkingDot;
-  v11 = [(CKTypingIndicatorLayer *)self thinkingDotColor];
-  -[CALayer setBackgroundColor:](v10, "setBackgroundColor:", [v11 CGColor]);
+  thinkingDotColor = [(CKTypingIndicatorLayer *)self thinkingDotColor];
+  -[CALayer setBackgroundColor:](v10, "setBackgroundColor:", [thinkingDotColor CGColor]);
 
   v12 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
   v38[0] = &unk_1F04E87A8;
@@ -330,31 +330,31 @@
   [v12 setAutoreverses:1];
   [v12 setFillMode:*MEMORY[0x1E69797E0]];
   [(CALayer *)self->_thinkingDot addAnimation:v12 forKey:@"Opacity"];
-  v22 = [MEMORY[0x1E6979430] layer];
+  layer2 = [MEMORY[0x1E6979430] layer];
   v23 = self->_thinkingDots;
-  self->_thinkingDots = v22;
+  self->_thinkingDots = layer2;
 
-  v24 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-  [v24 thinkingDotsOffset];
+  visualConfiguration2 = [(CKTypingIndicatorLayer *)self visualConfiguration];
+  [visualConfiguration2 thinkingDotsOffset];
   v26 = v25;
   v28 = v27;
 
-  v29 = [(CKTypingIndicatorLayer *)self iconImage];
-  if (v29)
+  iconImage = [(CKTypingIndicatorLayer *)self iconImage];
+  if (iconImage)
   {
-    v30 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-    [v30 iconImageFrame];
+    visualConfiguration3 = [(CKTypingIndicatorLayer *)self visualConfiguration];
+    [visualConfiguration3 iconImageFrame];
     MaxX = CGRectGetMaxX(v39);
-    v32 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-    [v32 iconImageTrailingSpace];
+    visualConfiguration4 = [(CKTypingIndicatorLayer *)self visualConfiguration];
+    [visualConfiguration4 iconImageTrailingSpace];
     v26 = MaxX + v33;
   }
 
   [(CAReplicatorLayer *)self->_thinkingDots setFrame:v26, v28, 0.0, 0.0];
   [(CAReplicatorLayer *)self->_thinkingDots setInstanceCount:3];
   v34 = self->_thinkingDots;
-  v35 = [(CKTypingIndicatorLayer *)self visualConfiguration];
-  [v35 thinkingDotSpace];
+  visualConfiguration5 = [(CKTypingIndicatorLayer *)self visualConfiguration];
+  [visualConfiguration5 thinkingDotSpace];
   CATransform3DMakeTranslation(&v37, v36, 0.0, 0.0);
   [(CAReplicatorLayer *)v34 setInstanceTransform:&v37];
 
@@ -371,24 +371,24 @@
   [(CKTypingIndicatorLayer *)self updateBackgroundOpacity:?];
 }
 
-- (void)startGrowAnimationWithCompletionBlock:(id)a3
+- (void)startGrowAnimationWithCompletionBlock:(id)block
 {
-  v4 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v4 startGrowAnimationWithCompletionBlock:0];
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer startGrowAnimationWithCompletionBlock:0];
 
-  v5 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v5 startGrowAnimationWithCompletionBlock:0];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer startGrowAnimationWithCompletionBlock:0];
 }
 
 - (void)startPulseAnimation
 {
   [(CKTypingIndicatorLayer *)self stopPulseAnimation];
   [MEMORY[0x1E6979518] begin];
-  v3 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v3 startPulseAnimation];
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer startPulseAnimation];
 
-  v4 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v4 startPulseAnimation];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer startPulseAnimation];
 
   [(CKTypingIndicatorLayer *)self _buildThinkingDots];
   v5 = MEMORY[0x1E6979518];
@@ -402,30 +402,30 @@
   *&v3 = v3;
   [(CALayer *)self->_thinkingDot setOpacity:v3];
   [(CALayer *)self->_thinkingDot removeAllAnimations];
-  v4 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v4 stopPulseAnimation];
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer stopPulseAnimation];
 
-  v5 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v5 stopPulseAnimation];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer stopPulseAnimation];
 }
 
-- (void)startShrinkAnimationWithCompletionBlock:(id)a3
+- (void)startShrinkAnimationWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v5 startShrinkAnimationWithCompletionBlock:v4];
+  blockCopy = block;
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer startShrinkAnimationWithCompletionBlock:blockCopy];
 
-  v6 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v6 startShrinkAnimationWithCompletionBlock:v4];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer startShrinkAnimationWithCompletionBlock:blockCopy];
 }
 
 - (void)stopAnimation
 {
-  v3 = [(CKTypingIndicatorLayer *)self punchOutLayer];
-  [v3 stopAnimation];
+  punchOutLayer = [(CKTypingIndicatorLayer *)self punchOutLayer];
+  [punchOutLayer stopAnimation];
 
-  v4 = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
-  [v4 stopAnimation];
+  vibrantStrokePunchOutLayer = [(CKTypingIndicatorLayer *)self vibrantStrokePunchOutLayer];
+  [vibrantStrokePunchOutLayer stopAnimation];
 }
 
 + (CGSize)defaultSize
@@ -445,17 +445,17 @@
 - (UIColor)defaultBubbleColor
 {
   v2 = +[_TtC7ChatKit36CKTypingIndicatorVisualConfiguration platformConfiguration];
-  v3 = [v2 defaultBubbleColor];
+  defaultBubbleColor = [v2 defaultBubbleColor];
 
-  return v3;
+  return defaultBubbleColor;
 }
 
 - (UIColor)defaultThinkingDotColor
 {
   v2 = +[_TtC7ChatKit36CKTypingIndicatorVisualConfiguration platformConfiguration];
-  v3 = [v2 defaultThinkingDotColor];
+  defaultThinkingDotColor = [v2 defaultThinkingDotColor];
 
-  return v3;
+  return defaultThinkingDotColor;
 }
 
 - (double)defaultThinkingDotOpacity
@@ -496,30 +496,30 @@
   return result;
 }
 
-- (void)setUpMaterialLayersForVisualConfiguration:(id)a3
+- (void)setUpMaterialLayersForVisualConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  CKTypingIndicatorLayer.setUpMaterialLayers(for:)(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  CKTypingIndicatorLayer.setUpMaterialLayers(for:)(configurationCopy);
 }
 
-- (void)resizeBackgroundSublayersForVisualConfiguration:(id)a3
+- (void)resizeBackgroundSublayersForVisualConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  CKTypingIndicatorLayer.resizeBackgroundSublayers(for:)(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  CKTypingIndicatorLayer.resizeBackgroundSublayers(for:)(configurationCopy);
 }
 
 - (void)updateMaterials
 {
-  v2 = self;
+  selfCopy = self;
   CKTypingIndicatorLayer.updateMaterials()();
 }
 
-- (void)updateBackgroundOpacity:(double)a3
+- (void)updateBackgroundOpacity:(double)opacity
 {
-  v4 = self;
-  CKTypingIndicatorLayer.updateBackgroundOpacity(_:)(a3);
+  selfCopy = self;
+  CKTypingIndicatorLayer.updateBackgroundOpacity(_:)(opacity);
 }
 
 @end

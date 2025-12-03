@@ -1,39 +1,39 @@
 @interface CRLBrushStrokeDirectMetalRenderingContext
 - (CGAffineTransform)transform;
 - (CGRect)frame;
-- (CRLBrushStrokeDirectMetalRenderingContext)initWithMetalDrawable:(id)a3 frame:(CGRect)a4 transform:(CGAffineTransform *)a5 contentsScale:(double)a6 destinationColorSpaceOverride:(CGColorSpace *)a7 metalDeviceOverride:(id)a8;
+- (CRLBrushStrokeDirectMetalRenderingContext)initWithMetalDrawable:(id)drawable frame:(CGRect)frame transform:(CGAffineTransform *)transform contentsScale:(double)scale destinationColorSpaceOverride:(CGColorSpace *)override metalDeviceOverride:(id)deviceOverride;
 - (void)dealloc;
 @end
 
 @implementation CRLBrushStrokeDirectMetalRenderingContext
 
-- (CRLBrushStrokeDirectMetalRenderingContext)initWithMetalDrawable:(id)a3 frame:(CGRect)a4 transform:(CGAffineTransform *)a5 contentsScale:(double)a6 destinationColorSpaceOverride:(CGColorSpace *)a7 metalDeviceOverride:(id)a8
+- (CRLBrushStrokeDirectMetalRenderingContext)initWithMetalDrawable:(id)drawable frame:(CGRect)frame transform:(CGAffineTransform *)transform contentsScale:(double)scale destinationColorSpaceOverride:(CGColorSpace *)override metalDeviceOverride:(id)deviceOverride
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
-  v19 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  drawableCopy = drawable;
+  deviceOverrideCopy = deviceOverride;
   v25.receiver = self;
   v25.super_class = CRLBrushStrokeDirectMetalRenderingContext;
   v20 = [(CRLBrushStrokeDirectMetalRenderingContext *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_metalDrawable, a3);
+    objc_storeStrong(&v20->_metalDrawable, drawable);
     v21->_frame.origin.x = x;
     v21->_frame.origin.y = y;
     v21->_frame.size.width = width;
     v21->_frame.size.height = height;
-    v22 = *&a5->a;
-    v23 = *&a5->c;
-    *&v21->_transform.tx = *&a5->tx;
+    v22 = *&transform->a;
+    v23 = *&transform->c;
+    *&v21->_transform.tx = *&transform->tx;
     *&v21->_transform.c = v23;
     *&v21->_transform.a = v22;
-    v21->_contentsScale = a6;
-    v21->_destinationColorSpaceOverride = CGColorSpaceRetain(a7);
-    objc_storeStrong(&v21->_metalDeviceOverride, a8);
+    v21->_contentsScale = scale;
+    v21->_destinationColorSpaceOverride = CGColorSpaceRetain(override);
+    objc_storeStrong(&v21->_metalDeviceOverride, deviceOverride);
   }
 
   return v21;

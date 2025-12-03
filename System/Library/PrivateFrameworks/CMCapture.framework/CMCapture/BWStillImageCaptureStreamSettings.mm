@@ -1,32 +1,32 @@
 @interface BWStillImageCaptureStreamSettings
 - ($08FEEAFA44411076A5953C2803702ABC)expectedFrameCaptureCounts;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)adaptiveBracketingLastFramePTS;
-- (BOOL)hasCaptureFrameInfoWithMainFlags:(unint64_t)a3 sifrFlags:(unint64_t)a4;
+- (BOOL)hasCaptureFrameInfoWithMainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags;
 - (BOOL)hasValidFrames;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFirstAdaptiveBracketingFrame:(opaqueCMSampleBuffer *)a3;
-- (BOOL)isFrameCapturedForProcessing:(opaqueCMSampleBuffer *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFirstAdaptiveBracketingFrame:(opaqueCMSampleBuffer *)frame;
+- (BOOL)isFrameCapturedForProcessing:(opaqueCMSampleBuffer *)processing;
 - (BOOL)isSensorRawCapture;
-- (BOOL)isUnifiedBracketingErrorRecoveryFrame:(opaqueCMSampleBuffer *)a3 isReferenceFrame:(BOOL)a4;
+- (BOOL)isUnifiedBracketingErrorRecoveryFrame:(opaqueCMSampleBuffer *)frame isReferenceFrame:(BOOL)referenceFrame;
 - (BOOL)isYUVCapture;
 - (BOOL)reachedEndOfAdaptiveBracketing;
 - (BOOL)sensorRawCapturedForFinalImageProcessing;
-- (BWStillImageCaptureStreamSettings)initWithCoder:(id)a3;
-- (BWStillImageCaptureStreamSettings)initWithPortType:(id)a3 captureType:(int)a4 captureFlags:(unint64_t)a5 referenceFrameIndex:(int)a6 adaptiveBracketingParameters:(id)a7 sphereOffsets:(id)a8;
-- (BWStillImageCaptureStreamSettings)initWithPortType:(id)a3 captureType:(int)a4 captureFlags:(unint64_t)a5 referenceFrameIndex:(int)a6 timeMachineBracketedCaptureParams:(id)a7 preBracketFrameCaptureParams:(id)a8 unifiedBracketedCaptureParams:(id)a9 frameInfos:(id)a10;
-- (BWStillImageCaptureStreamSettings)initWithPortType:(id)a3 captureType:(int)a4 captureFlags:(unint64_t)a5 timeMachineFrameCount:(int)a6 bracketSettings:(id)a7 validBracketedCaptureSequenceNumbers:(id)a8;
-- (id)adaptiveBracketingFrameParametersForFrame:(opaqueCMSampleBuffer *)a3;
-- (id)adaptiveBracketingSphereOffsetsForNextGroupWithFrameCount:(int)a3;
+- (BWStillImageCaptureStreamSettings)initWithCoder:(id)coder;
+- (BWStillImageCaptureStreamSettings)initWithPortType:(id)type captureType:(int)captureType captureFlags:(unint64_t)flags referenceFrameIndex:(int)index adaptiveBracketingParameters:(id)parameters sphereOffsets:(id)offsets;
+- (BWStillImageCaptureStreamSettings)initWithPortType:(id)type captureType:(int)captureType captureFlags:(unint64_t)flags referenceFrameIndex:(int)index timeMachineBracketedCaptureParams:(id)params preBracketFrameCaptureParams:(id)captureParams unifiedBracketedCaptureParams:(id)bracketedCaptureParams frameInfos:(id)self0;
+- (BWStillImageCaptureStreamSettings)initWithPortType:(id)type captureType:(int)captureType captureFlags:(unint64_t)flags timeMachineFrameCount:(int)count bracketSettings:(id)settings validBracketedCaptureSequenceNumbers:(id)numbers;
+- (id)adaptiveBracketingFrameParametersForFrame:(opaqueCMSampleBuffer *)frame;
+- (id)adaptiveBracketingSphereOffsetsForNextGroupWithFrameCount:(int)count;
 - (id)adaptivePreBracketFrameCaptureParams;
 - (id)adaptiveTimeMachineBracketedCaptureParams;
 - (id)adaptiveUnifiedBracketedCaptureParams;
-- (id)captureFrameInfoForFrame:(opaqueCMSampleBuffer *)a3;
+- (id)captureFrameInfoForFrame:(opaqueCMSampleBuffer *)frame;
 - (int)adaptiveBracketingGroupCaptureCount;
 - (int)currentExpectedAdaptiveBracketedFrameCaptureCount;
 - (int)currentExpectedAdaptiveBracketedFrameCount;
-- (int)expectedAdaptiveBracketedFrameCaptureCountUsingGroup:(int)a3;
-- (int)expectedAdaptiveBracketedTimeMachineFrameCaptureCountUsingGroup:(int)a3;
-- (int)expectedAdaptiveBracketedTimeMachineFrameCountUsingGroup:(int)a3;
+- (int)expectedAdaptiveBracketedFrameCaptureCountUsingGroup:(int)group;
+- (int)expectedAdaptiveBracketedTimeMachineFrameCaptureCountUsingGroup:(int)group;
+- (int)expectedAdaptiveBracketedTimeMachineFrameCountUsingGroup:(int)group;
 - (int)expectedEVZeroFrameCount;
 - (int)expectedFrameCaptureCount;
 - (int)expectedFrameCount;
@@ -36,33 +36,33 @@
 - (int)expectedUltraHighResFrameCaptureCount;
 - (int)resolutionFlavor;
 - (int)timeMachineReferenceFrameIndex;
-- (uint64_t)_expectedFrameCaptureCountForFrameParams:(uint64_t)a1;
-- (void)addAdaptiveBracketingFrameParameters:(id)a3 timeMachineBracketedCaptureParams:(id)a4 preBracketFrameCaptureParams:(id)a5 unifiedBracketedCaptureParams:(id)a6 captureFrameInfos:(id)a7;
-- (void)addAdaptiveBracketingMetadataIfNeededForFrame:(opaqueCMSampleBuffer *)a3;
+- (uint64_t)_expectedFrameCaptureCountForFrameParams:(uint64_t)params;
+- (void)addAdaptiveBracketingFrameParameters:(id)parameters timeMachineBracketedCaptureParams:(id)params preBracketFrameCaptureParams:(id)captureParams unifiedBracketedCaptureParams:(id)bracketedCaptureParams captureFrameInfos:(id)infos;
+- (void)addAdaptiveBracketingMetadataIfNeededForFrame:(opaqueCMSampleBuffer *)frame;
 - (void)cannotProcessDeepFusionEnhancedResolution;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAdaptiveBracketingLastFramePTS:(id *)a3;
-- (void)setPreferredTimeMachinePTS:(id *)a3;
-- (void)setReachedEndOfAdaptiveBracketing:(BOOL)a3;
-- (void)updateForLearnedFusionMissingEVMinus:(BOOL)a3 missingHDRErrorRecoveryEVZero:(BOOL)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAdaptiveBracketingLastFramePTS:(id *)s;
+- (void)setPreferredTimeMachinePTS:(id *)s;
+- (void)setReachedEndOfAdaptiveBracketing:(BOOL)bracketing;
+- (void)updateForLearnedFusionMissingEVMinus:(BOOL)minus missingHDRErrorRecoveryEVZero:(BOOL)zero;
 @end
 
 @implementation BWStillImageCaptureStreamSettings
 
-- (BWStillImageCaptureStreamSettings)initWithPortType:(id)a3 captureType:(int)a4 captureFlags:(unint64_t)a5 timeMachineFrameCount:(int)a6 bracketSettings:(id)a7 validBracketedCaptureSequenceNumbers:(id)a8
+- (BWStillImageCaptureStreamSettings)initWithPortType:(id)type captureType:(int)captureType captureFlags:(unint64_t)flags timeMachineFrameCount:(int)count bracketSettings:(id)settings validBracketedCaptureSequenceNumbers:(id)numbers
 {
   v16.receiver = self;
   v16.super_class = BWStillImageCaptureStreamSettings;
   v14 = [(BWStillImageCaptureStreamSettings *)&v16 init];
   if (v14)
   {
-    v14->_portType = a3;
-    v14->_captureType = a4;
-    v14->_captureFlags = a5;
-    v14->_timeMachineFrameCount = a6;
-    v14->_bracketSettings = a7;
-    v14->_validBracketedCaptureSequenceNumbers = a8;
+    v14->_portType = type;
+    v14->_captureType = captureType;
+    v14->_captureFlags = flags;
+    v14->_timeMachineFrameCount = count;
+    v14->_bracketSettings = settings;
+    v14->_validBracketedCaptureSequenceNumbers = numbers;
     v14->_referenceFrameIndex = -1;
   }
 
@@ -76,24 +76,24 @@
   [(BWStillImageCaptureStreamSettings *)&v3 dealloc];
 }
 
-- (BWStillImageCaptureStreamSettings)initWithCoder:(id)a3
+- (BWStillImageCaptureStreamSettings)initWithCoder:(id)coder
 {
   v4 = [(BWStillImageCaptureStreamSettings *)self init];
   if (v4)
   {
-    v4->_portType = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"portType"];
-    v4->_sensorIDString = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sensorIDString"];
-    v4->_captureType = [a3 decodeInt32ForKey:@"captureType"];
-    v4->_captureFlags = [a3 decodeInt64ForKey:@"captureFlags"];
-    v4->_timeMachineFrameCount = [a3 decodeInt32ForKey:@"timeMachineFrameCount"];
-    v4->_bracketSettings = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bracketSettings"];
+    v4->_portType = [coder decodeObjectOfClass:objc_opt_class() forKey:@"portType"];
+    v4->_sensorIDString = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sensorIDString"];
+    v4->_captureType = [coder decodeInt32ForKey:@"captureType"];
+    v4->_captureFlags = [coder decodeInt64ForKey:@"captureFlags"];
+    v4->_timeMachineFrameCount = [coder decodeInt32ForKey:@"timeMachineFrameCount"];
+    v4->_bracketSettings = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bracketSettings"];
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_validBracketedCaptureSequenceNumbers = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"validBracketedCaptureSequenceNumbers"}];
+    v4->_validBracketedCaptureSequenceNumbers = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"validBracketedCaptureSequenceNumbers"}];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
-    v10 = [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, v9, objc_opt_class(), 0), @"preferredTimeMachinePTS"}];
+    v10 = [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, v9, objc_opt_class(), 0), @"preferredTimeMachinePTS"}];
     CMTimeMakeFromDictionary(&v21, v10);
     v4->_preferredTimeMachinePTS = v21;
     v11 = MEMORY[0x1E695DFD8];
@@ -110,54 +110,54 @@
     v18[0] = objc_opt_class();
     v18[1] = objc_opt_class();
     v16 = [v15 setWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v18, 2)}];
-    v4->_referenceFrameIndex = [a3 decodeInt32ForKey:@"referenceFrameIndex"];
-    v4->_timeMachineBracketedCaptureParams = [a3 decodeObjectOfClasses:v12 forKey:@"timeMachineBracketedCaptureParams"];
-    v4->_preBracketFrameCaptureParams = [a3 decodeObjectOfClasses:v12 forKey:@"preBracketFrameCaptureParams"];
-    v4->_unifiedBracketedCaptureParams = [a3 decodeObjectOfClasses:v12 forKey:@"unifiedBracketedCaptureParams"];
-    v4->_captureFrameInfos = [a3 decodeObjectOfClasses:v16 forKey:@"captureFrameInfos"];
-    v4->_lensStabilizationEnabledForClientBracket = [a3 decodeBoolForKey:@"lensStabilizationEnabledForClientBracket"];
-    v4->_adaptiveBracketingSphereOffsets = [a3 decodeObjectOfClasses:v12 forKey:@"adaptiveBracketingSphereOffsets"];
-    v4->_adaptiveBracketingFrameParameters = [a3 decodeObjectOfClasses:v14 forKey:@"adaptiveBracketingFrameParameters"];
-    v4->_adaptiveTimeMachineBracketedCaptureParams = [a3 decodeObjectOfClasses:v12 forKey:@"adaptiveTimeMachineBracketedCaptureParams"];
-    v4->_adaptivePreBracketFrameCaptureParams = [a3 decodeObjectOfClasses:v12 forKey:@"adaptivePreBracketFrameCaptureParams"];
-    v4->_adaptiveUnifiedBracketedCaptureParams = [a3 decodeObjectOfClasses:v12 forKey:@"adaptiveUnifiedBracketedCaptureParams"];
-    v4->_adaptiveCaptureFrameInfos = [a3 decodeObjectOfClasses:v16 forKey:@"adaptiveCaptureFrameInfos"];
+    v4->_referenceFrameIndex = [coder decodeInt32ForKey:@"referenceFrameIndex"];
+    v4->_timeMachineBracketedCaptureParams = [coder decodeObjectOfClasses:v12 forKey:@"timeMachineBracketedCaptureParams"];
+    v4->_preBracketFrameCaptureParams = [coder decodeObjectOfClasses:v12 forKey:@"preBracketFrameCaptureParams"];
+    v4->_unifiedBracketedCaptureParams = [coder decodeObjectOfClasses:v12 forKey:@"unifiedBracketedCaptureParams"];
+    v4->_captureFrameInfos = [coder decodeObjectOfClasses:v16 forKey:@"captureFrameInfos"];
+    v4->_lensStabilizationEnabledForClientBracket = [coder decodeBoolForKey:@"lensStabilizationEnabledForClientBracket"];
+    v4->_adaptiveBracketingSphereOffsets = [coder decodeObjectOfClasses:v12 forKey:@"adaptiveBracketingSphereOffsets"];
+    v4->_adaptiveBracketingFrameParameters = [coder decodeObjectOfClasses:v14 forKey:@"adaptiveBracketingFrameParameters"];
+    v4->_adaptiveTimeMachineBracketedCaptureParams = [coder decodeObjectOfClasses:v12 forKey:@"adaptiveTimeMachineBracketedCaptureParams"];
+    v4->_adaptivePreBracketFrameCaptureParams = [coder decodeObjectOfClasses:v12 forKey:@"adaptivePreBracketFrameCaptureParams"];
+    v4->_adaptiveUnifiedBracketedCaptureParams = [coder decodeObjectOfClasses:v12 forKey:@"adaptiveUnifiedBracketedCaptureParams"];
+    v4->_adaptiveCaptureFrameInfos = [coder decodeObjectOfClasses:v16 forKey:@"adaptiveCaptureFrameInfos"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_portType forKey:@"portType"];
-  [a3 encodeObject:self->_sensorIDString forKey:@"sensorIDString"];
-  [a3 encodeInt32:self->_captureType forKey:@"captureType"];
-  [a3 encodeInt64:self->_captureFlags forKey:@"captureFlags"];
-  [a3 encodeInt32:self->_timeMachineFrameCount forKey:@"timeMachineFrameCount"];
-  [a3 encodeObject:self->_bracketSettings forKey:@"bracketSettings"];
-  [a3 encodeObject:self->_validBracketedCaptureSequenceNumbers forKey:@"validBracketedCaptureSequenceNumbers"];
+  [coder encodeObject:self->_portType forKey:@"portType"];
+  [coder encodeObject:self->_sensorIDString forKey:@"sensorIDString"];
+  [coder encodeInt32:self->_captureType forKey:@"captureType"];
+  [coder encodeInt64:self->_captureFlags forKey:@"captureFlags"];
+  [coder encodeInt32:self->_timeMachineFrameCount forKey:@"timeMachineFrameCount"];
+  [coder encodeObject:self->_bracketSettings forKey:@"bracketSettings"];
+  [coder encodeObject:self->_validBracketedCaptureSequenceNumbers forKey:@"validBracketedCaptureSequenceNumbers"];
   v5 = *MEMORY[0x1E695E480];
   preferredTimeMachinePTS = self->_preferredTimeMachinePTS;
   v6 = CMTimeCopyAsDictionary(&preferredTimeMachinePTS, v5);
-  [a3 encodeObject:v6 forKey:@"preferredTimeMachinePTS"];
+  [coder encodeObject:v6 forKey:@"preferredTimeMachinePTS"];
 
-  [a3 encodeInt32:self->_referenceFrameIndex forKey:@"referenceFrameIndex"];
-  [a3 encodeObject:self->_timeMachineBracketedCaptureParams forKey:@"timeMachineBracketedCaptureParams"];
-  [a3 encodeObject:self->_preBracketFrameCaptureParams forKey:@"preBracketFrameCaptureParams"];
-  [a3 encodeObject:self->_unifiedBracketedCaptureParams forKey:@"unifiedBracketedCaptureParams"];
-  [a3 encodeObject:self->_captureFrameInfos forKey:@"captureFrameInfos"];
-  [a3 encodeBool:self->_lensStabilizationEnabledForClientBracket forKey:@"lensStabilizationEnabledForClientBracket"];
-  [a3 encodeObject:self->_adaptiveBracketingSphereOffsets forKey:@"adaptiveBracketingSphereOffsets"];
-  [a3 encodeObject:self->_adaptiveBracketingFrameParameters forKey:@"adaptiveBracketingFrameParameters"];
-  [a3 encodeObject:self->_adaptiveTimeMachineBracketedCaptureParams forKey:@"adaptiveTimeMachineBracketedCaptureParams"];
-  [a3 encodeObject:self->_adaptivePreBracketFrameCaptureParams forKey:@"adaptivePreBracketFrameCaptureParams"];
-  [a3 encodeObject:self->_adaptiveUnifiedBracketedCaptureParams forKey:@"adaptiveUnifiedBracketedCaptureParams"];
-  [a3 encodeObject:self->_adaptiveCaptureFrameInfos forKey:@"adaptiveCaptureFrameInfos"];
+  [coder encodeInt32:self->_referenceFrameIndex forKey:@"referenceFrameIndex"];
+  [coder encodeObject:self->_timeMachineBracketedCaptureParams forKey:@"timeMachineBracketedCaptureParams"];
+  [coder encodeObject:self->_preBracketFrameCaptureParams forKey:@"preBracketFrameCaptureParams"];
+  [coder encodeObject:self->_unifiedBracketedCaptureParams forKey:@"unifiedBracketedCaptureParams"];
+  [coder encodeObject:self->_captureFrameInfos forKey:@"captureFrameInfos"];
+  [coder encodeBool:self->_lensStabilizationEnabledForClientBracket forKey:@"lensStabilizationEnabledForClientBracket"];
+  [coder encodeObject:self->_adaptiveBracketingSphereOffsets forKey:@"adaptiveBracketingSphereOffsets"];
+  [coder encodeObject:self->_adaptiveBracketingFrameParameters forKey:@"adaptiveBracketingFrameParameters"];
+  [coder encodeObject:self->_adaptiveTimeMachineBracketedCaptureParams forKey:@"adaptiveTimeMachineBracketedCaptureParams"];
+  [coder encodeObject:self->_adaptivePreBracketFrameCaptureParams forKey:@"adaptivePreBracketFrameCaptureParams"];
+  [coder encodeObject:self->_adaptiveUnifiedBracketedCaptureParams forKey:@"adaptiveUnifiedBracketedCaptureParams"];
+  [coder encodeObject:self->_adaptiveCaptureFrameInfos forKey:@"adaptiveCaptureFrameInfos"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -172,9 +172,9 @@
   }
 
   portType = self->_portType;
-  if (portType != [a3 portType])
+  if (portType != [equal portType])
   {
-    v8 = -[NSString isEqualToString:](self->_portType, "isEqualToString:", [a3 portType]);
+    v8 = -[NSString isEqualToString:](self->_portType, "isEqualToString:", [equal portType]);
     if (!v8)
     {
       return v8;
@@ -182,9 +182,9 @@
   }
 
   sensorIDString = self->_sensorIDString;
-  if (sensorIDString != [a3 sensorIDString])
+  if (sensorIDString != [equal sensorIDString])
   {
-    v8 = -[NSString isEqualToString:](self->_sensorIDString, "isEqualToString:", [a3 sensorIDString]);
+    v8 = -[NSString isEqualToString:](self->_sensorIDString, "isEqualToString:", [equal sensorIDString]);
     if (!v8)
     {
       return v8;
@@ -192,21 +192,21 @@
   }
 
   captureType = self->_captureType;
-  if (captureType != [a3 captureType])
+  if (captureType != [equal captureType])
   {
     goto LABEL_29;
   }
 
   captureFlags = self->_captureFlags;
-  if (captureFlags != [a3 captureFlags])
+  if (captureFlags != [equal captureFlags])
   {
     goto LABEL_29;
   }
 
   bracketSettings = self->_bracketSettings;
-  if (bracketSettings != [a3 bracketSettings])
+  if (bracketSettings != [equal bracketSettings])
   {
-    v8 = -[BWBracketSettings isEqual:](self->_bracketSettings, "isEqual:", [a3 bracketSettings]);
+    v8 = -[BWBracketSettings isEqual:](self->_bracketSettings, "isEqual:", [equal bracketSettings]);
     if (!v8)
     {
       return v8;
@@ -214,18 +214,18 @@
   }
 
   validBracketedCaptureSequenceNumbers = self->_validBracketedCaptureSequenceNumbers;
-  if (validBracketedCaptureSequenceNumbers != [a3 validBracketedCaptureSequenceNumbers])
+  if (validBracketedCaptureSequenceNumbers != [equal validBracketedCaptureSequenceNumbers])
   {
-    v8 = -[NSArray isEqual:](self->_validBracketedCaptureSequenceNumbers, "isEqual:", [a3 validBracketedCaptureSequenceNumbers]);
+    v8 = -[NSArray isEqual:](self->_validBracketedCaptureSequenceNumbers, "isEqual:", [equal validBracketedCaptureSequenceNumbers]);
     if (!v8)
     {
       return v8;
     }
   }
 
-  if (a3)
+  if (equal)
   {
-    [a3 preferredTimeMachinePTS];
+    [equal preferredTimeMachinePTS];
   }
 
   else
@@ -234,7 +234,7 @@
   }
 
   preferredTimeMachinePTS = self->_preferredTimeMachinePTS;
-  if (CMTimeCompare(&preferredTimeMachinePTS, &time2) || (timeMachineFrameCount = self->_timeMachineFrameCount, timeMachineFrameCount != [a3 timeMachineFrameCount]) || (referenceFrameIndex = self->_referenceFrameIndex, referenceFrameIndex != objc_msgSend(a3, "referenceFrameIndex")))
+  if (CMTimeCompare(&preferredTimeMachinePTS, &time2) || (timeMachineFrameCount = self->_timeMachineFrameCount, timeMachineFrameCount != [equal timeMachineFrameCount]) || (referenceFrameIndex = self->_referenceFrameIndex, referenceFrameIndex != objc_msgSend(equal, "referenceFrameIndex")))
   {
 LABEL_29:
     LOBYTE(v8) = 0;
@@ -242,19 +242,19 @@ LABEL_29:
   }
 
   timeMachineBracketedCaptureParams = self->_timeMachineBracketedCaptureParams;
-  if (timeMachineBracketedCaptureParams == [a3 timeMachineBracketedCaptureParams] || (v8 = -[NSArray isEqual:](self->_timeMachineBracketedCaptureParams, "isEqual:", objc_msgSend(a3, "timeMachineBracketedCaptureParams"))) != 0)
+  if (timeMachineBracketedCaptureParams == [equal timeMachineBracketedCaptureParams] || (v8 = -[NSArray isEqual:](self->_timeMachineBracketedCaptureParams, "isEqual:", objc_msgSend(equal, "timeMachineBracketedCaptureParams"))) != 0)
   {
     preBracketFrameCaptureParams = self->_preBracketFrameCaptureParams;
-    if (preBracketFrameCaptureParams == [a3 preBracketFrameCaptureParams] || (v8 = -[NSDictionary isEqual:](self->_preBracketFrameCaptureParams, "isEqual:", objc_msgSend(a3, "preBracketFrameCaptureParams"))) != 0)
+    if (preBracketFrameCaptureParams == [equal preBracketFrameCaptureParams] || (v8 = -[NSDictionary isEqual:](self->_preBracketFrameCaptureParams, "isEqual:", objc_msgSend(equal, "preBracketFrameCaptureParams"))) != 0)
     {
       unifiedBracketedCaptureParams = self->_unifiedBracketedCaptureParams;
-      if (unifiedBracketedCaptureParams == [a3 unifiedBracketedCaptureParams] || (v8 = -[NSArray isEqual:](self->_unifiedBracketedCaptureParams, "isEqual:", objc_msgSend(a3, "unifiedBracketedCaptureParams"))) != 0)
+      if (unifiedBracketedCaptureParams == [equal unifiedBracketedCaptureParams] || (v8 = -[NSArray isEqual:](self->_unifiedBracketedCaptureParams, "isEqual:", objc_msgSend(equal, "unifiedBracketedCaptureParams"))) != 0)
       {
         captureFrameInfos = self->_captureFrameInfos;
-        if (captureFrameInfos == *(a3 + 14) || (v8 = [(NSArray *)captureFrameInfos isEqual:?]) != 0)
+        if (captureFrameInfos == *(equal + 14) || (v8 = [(NSArray *)captureFrameInfos isEqual:?]) != 0)
         {
           lensStabilizationEnabledForClientBracket = self->_lensStabilizationEnabledForClientBracket;
-          LOBYTE(v8) = lensStabilizationEnabledForClientBracket == [a3 lensStabilizationEnabledForClientBracket];
+          LOBYTE(v8) = lensStabilizationEnabledForClientBracket == [equal lensStabilizationEnabledForClientBracket];
         }
       }
     }
@@ -326,8 +326,8 @@ LABEL_29:
   bracketSettings = self->_bracketSettings;
   if (bracketSettings)
   {
-    v14 = [(BWBracketSettings *)bracketSettings providePreBracketedEV0];
-    timeMachineFrameCount += v14 + [(BWBracketSettings *)self->_bracketSettings bracketFrameCount];
+    providePreBracketedEV0 = [(BWBracketSettings *)bracketSettings providePreBracketedEV0];
+    timeMachineFrameCount += providePreBracketedEV0 + [(BWBracketSettings *)self->_bracketSettings bracketFrameCount];
     return timeMachineFrameCount;
   }
 
@@ -417,17 +417,17 @@ LABEL_28:
 
 - (int)expectedFrameCaptureCount
 {
-  v3 = [(BWStillImageCaptureStreamSettings *)self expectedTimeMachineFrameCaptureCount];
+  expectedTimeMachineFrameCaptureCount = [(BWStillImageCaptureStreamSettings *)self expectedTimeMachineFrameCaptureCount];
   bracketSettings = self->_bracketSettings;
   if (bracketSettings)
   {
-    v5 = [(BWBracketSettings *)bracketSettings providePreBracketedEV0];
-    v6 = v3 + v5 + [(BWBracketSettings *)self->_bracketSettings bracketFrameCount];
+    providePreBracketedEV0 = [(BWBracketSettings *)bracketSettings providePreBracketedEV0];
+    v6 = expectedTimeMachineFrameCaptureCount + providePreBracketedEV0 + [(BWBracketSettings *)self->_bracketSettings bracketFrameCount];
   }
 
   else if (self->_unifiedBracketedCaptureParams)
   {
-    v6 = [(BWStillImageCaptureStreamSettings *)self _expectedFrameCaptureCountForFrameParams:?]+ v3;
+    v6 = [(BWStillImageCaptureStreamSettings *)self _expectedFrameCaptureCountForFrameParams:?]+ expectedTimeMachineFrameCaptureCount;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -457,14 +457,14 @@ LABEL_28:
     }
   }
 
-  else if (v3 <= 1)
+  else if (expectedTimeMachineFrameCaptureCount <= 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v3;
+    v6 = expectedTimeMachineFrameCaptureCount;
   }
 
   if (self->_captureType == 2 && (self->_captureFlags & 0x10004) == 0x10000)
@@ -540,7 +540,7 @@ LABEL_28:
     {
       v4 = v3;
       v5 = 0;
-      v6 = 0;
+      expectedFrameCaptureCount = 0;
       v21 = *v24;
       do
       {
@@ -555,19 +555,19 @@ LABEL_28:
           v9 = vcnt_s8(([v8 mainFlags] & 0x3000000000000000));
           v9.i16[0] = vaddlv_u8(v9);
           v10 = v9.i32[0];
-          v11 = [v8 sifrFlags];
-          v12 = [v8 mainFlags];
-          v13 = [v8 sifrFlags];
+          sifrFlags = [v8 sifrFlags];
+          mainFlags = [v8 mainFlags];
+          sifrFlags2 = [v8 sifrFlags];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v10 += [v8 isNoLongErrorRecoveryFrame];
           }
 
-          v14 = vcnt_s8((v12 & 0xC000000000000000));
+          v14 = vcnt_s8((mainFlags & 0xC000000000000000));
           v14.i16[0] = vaddlv_u8(v14);
           v15 = v14.i32[0];
-          v16 = vcnt_s8((v13 & 0xC000000000000000));
+          v16 = vcnt_s8((sifrFlags2 & 0xC000000000000000));
           v16.i16[0] = vaddlv_u8(v16);
           v5 += v15 + v16.i32[0];
           if (self->_captureType == 1)
@@ -575,9 +575,9 @@ LABEL_28:
             v5 += (LODWORD(self->_captureFlags) >> 11) & 1;
           }
 
-          v17 = vcnt_s8((v11 & 0x3000000000000000));
+          v17 = vcnt_s8((sifrFlags & 0x3000000000000000));
           v17.i16[0] = vaddlv_u8(v17);
-          v6 += v17.i32[0] + v10;
+          expectedFrameCaptureCount += v17.i32[0] + v10;
         }
 
         v4 = [(NSArray *)obj countByEnumeratingWithState:&v23 objects:v22 count:16];
@@ -589,21 +589,21 @@ LABEL_28:
     else
     {
       v5 = 0;
-      v6 = 0;
+      expectedFrameCaptureCount = 0;
     }
   }
 
   else
   {
-    v6 = [(BWStillImageCaptureStreamSettings *)self expectedFrameCaptureCount];
+    expectedFrameCaptureCount = [(BWStillImageCaptureStreamSettings *)self expectedFrameCaptureCount];
     v5 = 0;
   }
 
-  v18 = [(BWStillImageCaptureStreamSettings *)self expectedUltraHighResFrameCaptureCount];
-  v19 = v6 | ((v5 - v18) << 32);
+  expectedUltraHighResFrameCaptureCount = [(BWStillImageCaptureStreamSettings *)self expectedUltraHighResFrameCaptureCount];
+  v19 = expectedFrameCaptureCount | ((v5 - expectedUltraHighResFrameCaptureCount) << 32);
   result.var0 = v19;
   result.var1 = HIDWORD(v19);
-  result.var2 = v18;
+  result.var2 = expectedUltraHighResFrameCaptureCount;
   return result;
 }
 
@@ -647,14 +647,14 @@ LABEL_28:
   return v6;
 }
 
-- (BWStillImageCaptureStreamSettings)initWithPortType:(id)a3 captureType:(int)a4 captureFlags:(unint64_t)a5 referenceFrameIndex:(int)a6 timeMachineBracketedCaptureParams:(id)a7 preBracketFrameCaptureParams:(id)a8 unifiedBracketedCaptureParams:(id)a9 frameInfos:(id)a10
+- (BWStillImageCaptureStreamSettings)initWithPortType:(id)type captureType:(int)captureType captureFlags:(unint64_t)flags referenceFrameIndex:(int)index timeMachineBracketedCaptureParams:(id)params preBracketFrameCaptureParams:(id)captureParams unifiedBracketedCaptureParams:(id)bracketedCaptureParams frameInfos:(id)self0
 {
-  v13 = *&a4;
+  v13 = *&captureType;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = [a7 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  v16 = [params countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v16)
   {
     v17 = v16;
@@ -666,13 +666,13 @@ LABEL_28:
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(a7);
+          objc_enumerationMutation(params);
         }
 
         v18 = [(BWStillImageCaptureStreamSettings *)self _expectedFrameCaptureCountForFrameParams:?]+ v18;
       }
 
-      v17 = [a7 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v17 = [params countByEnumeratingWithState:&v26 objects:v25 count:16];
     }
 
     while (v17);
@@ -683,23 +683,23 @@ LABEL_28:
     v18 = 0;
   }
 
-  v21 = [(BWStillImageCaptureStreamSettings *)self initWithPortType:a3 captureType:v13 captureFlags:a5 timeMachineFrameCount:v18 bracketSettings:0 validBracketedCaptureSequenceNumbers:0];
+  v21 = [(BWStillImageCaptureStreamSettings *)self initWithPortType:type captureType:v13 captureFlags:flags timeMachineFrameCount:v18 bracketSettings:0 validBracketedCaptureSequenceNumbers:0];
   v22 = v21;
   if (v21)
   {
-    v21->_referenceFrameIndex = a6;
-    v21->_timeMachineBracketedCaptureParams = a7;
-    v22->_preBracketFrameCaptureParams = a8;
-    v22->_unifiedBracketedCaptureParams = a9;
-    v22->_captureFrameInfos = a10;
+    v21->_referenceFrameIndex = index;
+    v21->_timeMachineBracketedCaptureParams = params;
+    v22->_preBracketFrameCaptureParams = captureParams;
+    v22->_unifiedBracketedCaptureParams = bracketedCaptureParams;
+    v22->_captureFrameInfos = infos;
   }
 
   return v22;
 }
 
-- (id)captureFrameInfoForFrame:(opaqueCMSampleBuffer *)a3
+- (id)captureFrameInfoForFrame:(opaqueCMSampleBuffer *)frame
 {
-  v4 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v4 = CMGetAttachment(frame, *off_1E798A3C8, 0);
   v5 = *off_1E798B760;
   if ([v4 objectForKeyedSubscript:*off_1E798B760])
   {
@@ -799,16 +799,16 @@ LABEL_17:
   }
 }
 
-- (BOOL)isFrameCapturedForProcessing:(opaqueCMSampleBuffer *)a3
+- (BOOL)isFrameCapturedForProcessing:(opaqueCMSampleBuffer *)processing
 {
-  v5 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v5 = CMGetAttachment(processing, *off_1E798A3C8, 0);
   v6 = [objc_msgSend(v5 objectForKeyedSubscript:{*off_1E798B5E8), "BOOLValue"}];
   v7 = [v5 objectForKeyedSubscript:*off_1E798B760];
-  v8 = [(BWStillImageCaptureStreamSettings *)self captureFrameInfoForFrame:a3];
+  v8 = [(BWStillImageCaptureStreamSettings *)self captureFrameInfoForFrame:processing];
   if (v8)
   {
     v9 = v8;
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(processing);
     PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
     v12 = [objc_msgSend(v5 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0E8}];
     IsVersatileRaw = FigCapturePixelFormatIsVersatileRaw(PixelFormatType);
@@ -837,15 +837,15 @@ LABEL_17:
 
     if (v6)
     {
-      v15 = [v9 sifrFlags];
+      sifrFlags = [v9 sifrFlags];
     }
 
     else
     {
-      v15 = [v9 mainFlags];
+      sifrFlags = [v9 mainFlags];
     }
 
-    return (v15 & v14) == 0;
+    return (sifrFlags & v14) == 0;
   }
 
   else if (v7 || !self->_validBracketedCaptureSequenceNumbers)
@@ -879,8 +879,8 @@ LABEL_17:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(BWStillImageCaptureStreamSettings *)self captureFrameInfos];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  captureFrameInfos = [(BWStillImageCaptureStreamSettings *)self captureFrameInfos];
+  v4 = [captureFrameInfos countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v4)
   {
     v5 = v4;
@@ -891,7 +891,7 @@ LABEL_17:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(captureFrameInfos);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -902,7 +902,7 @@ LABEL_17:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v5 = [captureFrameInfos countByEnumeratingWithState:&v12 objects:v11 count:16];
       v9 = 1;
       if (v5)
       {
@@ -1230,7 +1230,7 @@ LABEL_4:
       v7 = 0;
     }
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -1254,7 +1254,7 @@ LABEL_4:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 || v7 != [v19 bracketedCaptureSequenceNumber])
           {
-            [v13 addObject:v19];
+            [array addObject:v19];
           }
         }
 
@@ -1264,15 +1264,15 @@ LABEL_4:
       while (v16);
     }
 
-    self->_captureFrameInfos = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v13];
+    self->_captureFrameInfos = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
   }
 }
 
-- (void)updateForLearnedFusionMissingEVMinus:(BOOL)a3 missingHDRErrorRecoveryEVZero:(BOOL)a4
+- (void)updateForLearnedFusionMissingEVMinus:(BOOL)minus missingHDRErrorRecoveryEVZero:(BOOL)zero
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  zeroCopy = zero;
+  minusCopy = minus;
+  if (minus)
   {
     captureFlags = self->_captureFlags;
     if ((captureFlags & 0x100000) != 0)
@@ -1281,7 +1281,7 @@ LABEL_4:
     }
   }
 
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -1302,32 +1302,32 @@ LABEL_4:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [(BWStillImageCaptureFrameInfo *)v12 mainFlags];
-        v14 = [(BWStillImageCaptureFrameInfo *)v12 sifrFlags];
-        if ((v14 & 4) != 0)
+        mainFlags = [(BWStillImageCaptureFrameInfo *)v12 mainFlags];
+        sifrFlags = [(BWStillImageCaptureFrameInfo *)v12 sifrFlags];
+        if ((sifrFlags & 4) != 0)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = v14;
+          v15 = sifrFlags;
         }
 
-        if (v5)
+        if (minusCopy)
         {
           v16 = v15;
         }
 
         else
         {
-          v16 = v14;
+          v16 = sifrFlags;
         }
 
-        v17 = v13 & 0xFFFFFFFFFFFFFDFFLL;
-        if (!v5)
+        v17 = mainFlags & 0xFFFFFFFFFFFFFDFFLL;
+        if (!minusCopy)
         {
-          v17 = v13;
+          v17 = mainFlags;
         }
 
         if ((v17 & 0x200) != 0)
@@ -1340,7 +1340,7 @@ LABEL_4:
           v18 = v17;
         }
 
-        if (v4)
+        if (zeroCopy)
         {
           v19 = v18;
         }
@@ -1366,7 +1366,7 @@ LABEL_27:
           }
 
 LABEL_28:
-          [v22 addObject:v12];
+          [array addObject:v12];
           continue;
         }
 
@@ -1389,12 +1389,12 @@ LABEL_28:
     while (v9);
   }
 
-  self->_captureFrameInfos = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v22];
+  self->_captureFrameInfos = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
 }
 
-- (BOOL)isUnifiedBracketingErrorRecoveryFrame:(opaqueCMSampleBuffer *)a3 isReferenceFrame:(BOOL)a4
+- (BOOL)isUnifiedBracketingErrorRecoveryFrame:(opaqueCMSampleBuffer *)frame isReferenceFrame:(BOOL)referenceFrame
 {
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(frame, *off_1E798A3C8, 0);
   if ((self->_captureFlags & 4) != 0)
   {
     p_adaptiveBracketingParameters = &self->_adaptiveBracketingParameters;
@@ -1426,7 +1426,7 @@ LABEL_28:
   {
     if (*p_adaptiveBracketingParameters)
     {
-      return a4;
+      return referenceFrame;
     }
 
 LABEL_8:
@@ -1436,7 +1436,7 @@ LABEL_8:
       return [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E798B788), "intValue"}] == 0;
     }
 
-    return a4;
+    return referenceFrame;
   }
 
 LABEL_12:
@@ -1445,15 +1445,15 @@ LABEL_12:
   return [v12 BOOLValue];
 }
 
-- (BWStillImageCaptureStreamSettings)initWithPortType:(id)a3 captureType:(int)a4 captureFlags:(unint64_t)a5 referenceFrameIndex:(int)a6 adaptiveBracketingParameters:(id)a7 sphereOffsets:(id)a8
+- (BWStillImageCaptureStreamSettings)initWithPortType:(id)type captureType:(int)captureType captureFlags:(unint64_t)flags referenceFrameIndex:(int)index adaptiveBracketingParameters:(id)parameters sphereOffsets:(id)offsets
 {
-  v10 = [(BWStillImageCaptureStreamSettings *)self initWithPortType:a3 captureType:*&a4 captureFlags:a5 referenceFrameIndex:*&a6 timeMachineBracketedCaptureParams:0 preBracketFrameCaptureParams:0 unifiedBracketedCaptureParams:0 frameInfos:0];
+  v10 = [(BWStillImageCaptureStreamSettings *)self initWithPortType:type captureType:*&captureType captureFlags:flags referenceFrameIndex:*&index timeMachineBracketedCaptureParams:0 preBracketFrameCaptureParams:0 unifiedBracketedCaptureParams:0 frameInfos:0];
   v11 = v10;
   if (v10)
   {
     v10->_adaptiveBracketingLock._os_unfair_lock_opaque = 0;
-    v10->_adaptiveBracketingParameters = a7;
-    v11->_adaptiveBracketingSphereOffsets = a8;
+    v10->_adaptiveBracketingParameters = parameters;
+    v11->_adaptiveBracketingSphereOffsets = offsets;
   }
 
   return v11;
@@ -1501,7 +1501,7 @@ LABEL_12:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v17 = self;
+  selfCopy = self;
   obj = self->_adaptiveCaptureFrameInfos;
   v3 = [(NSMutableArray *)obj countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v3)
@@ -1564,7 +1564,7 @@ LABEL_12:
     v5 = 0;
   }
 
-  os_unfair_lock_unlock(&v17->_adaptiveBracketingLock);
+  os_unfair_lock_unlock(&selfCopy->_adaptiveBracketingLock);
   return v5;
 }
 
@@ -1717,7 +1717,7 @@ LABEL_12:
   return v6;
 }
 
-- (id)adaptiveBracketingSphereOffsetsForNextGroupWithFrameCount:(int)a3
+- (id)adaptiveBracketingSphereOffsetsForNextGroupWithFrameCount:(int)count
 {
   os_unfair_lock_lock(&self->_adaptiveBracketingLock);
   if ([(NSMutableArray *)self->_adaptiveUnifiedBracketedCaptureParams count])
@@ -1768,7 +1768,7 @@ LABEL_12:
     v12 = 0;
   }
 
-  v13 = [(NSArray *)self->_adaptiveBracketingSphereOffsets subarrayWithRange:v12, a3];
+  v13 = [(NSArray *)self->_adaptiveBracketingSphereOffsets subarrayWithRange:v12, count];
   os_unfair_lock_unlock(&self->_adaptiveBracketingLock);
   return v13;
 }
@@ -1797,10 +1797,10 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   return reachedEndOfAdaptiveBracketing;
 }
 
-- (void)setReachedEndOfAdaptiveBracketing:(BOOL)a3
+- (void)setReachedEndOfAdaptiveBracketing:(BOOL)bracketing
 {
   os_unfair_lock_lock(&self->_adaptiveBracketingLock);
-  self->_reachedEndOfAdaptiveBracketing = a3;
+  self->_reachedEndOfAdaptiveBracketing = bracketing;
 
   os_unfair_lock_unlock(&self->_adaptiveBracketingLock);
 }
@@ -1815,27 +1815,27 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   return result;
 }
 
-- (void)setAdaptiveBracketingLastFramePTS:(id *)a3
+- (void)setAdaptiveBracketingLastFramePTS:(id *)s
 {
   os_unfair_lock_lock(&self->_adaptiveBracketingLock);
-  v5 = *&a3->var0;
-  *&self->_adaptiveBracketingLastFramePTS.flags = a3->var3;
+  v5 = *&s->var0;
+  *&self->_adaptiveBracketingLastFramePTS.flags = s->var3;
   *(&self->_reachedEndOfAdaptiveBracketing + 4) = v5;
 
   os_unfair_lock_unlock(&self->_adaptiveBracketingLock);
 }
 
-- (void)setPreferredTimeMachinePTS:(id *)a3
+- (void)setPreferredTimeMachinePTS:(id *)s
 {
-  v3 = *&a3->var0;
-  self->_preferredTimeMachinePTS.epoch = a3->var3;
+  v3 = *&s->var0;
+  self->_preferredTimeMachinePTS.epoch = s->var3;
   *&self->_preferredTimeMachinePTS.value = v3;
 }
 
-- (uint64_t)_expectedFrameCaptureCountForFrameParams:(uint64_t)a1
+- (uint64_t)_expectedFrameCaptureCountForFrameParams:(uint64_t)params
 {
   result = 0;
-  if (a1 && a2)
+  if (params && a2)
   {
     if ([a2 objectForKeyedSubscript:@"BWAdaptiveBracketingNoPreBracketFrameParams"])
     {
@@ -1863,7 +1863,7 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   return result;
 }
 
-- (BOOL)hasCaptureFrameInfoWithMainFlags:(unint64_t)a3 sifrFlags:(unint64_t)a4
+- (BOOL)hasCaptureFrameInfoWithMainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags
 {
   v7 = [(NSArray *)self->_captureFrameInfos count];
   if (v7)
@@ -1888,7 +1888,7 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
           }
 
           v13 = *(v15 + 8 * v11);
-          if ((a3 & ~[v13 mainFlags]) == 0 && (a4 & ~objc_msgSend(v13, "sifrFlags")) == 0)
+          if ((flags & ~[v13 mainFlags]) == 0 && (sifrFlags & ~objc_msgSend(v13, "sifrFlags")) == 0)
           {
             LOBYTE(v7) = 1;
             return v7;
@@ -1996,8 +1996,8 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
       }
 
       v17 = *(v61 + 8 * v15);
-      v18 = [v17 mainFlags];
-      if ((v18 & 8) != 0)
+      mainFlags = [v17 mainFlags];
+      if ((mainFlags & 8) != 0)
       {
         OUTLINED_FUNCTION_0_17([v17 mainFlags]);
       }
@@ -2006,7 +2006,7 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
     }
 
     while (v3 != v15);
-    v3 = OUTLINED_FUNCTION_2_0(v18, v19, v20, v21, v22, v23, v24, v25, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60);
+    v3 = OUTLINED_FUNCTION_2_0(mainFlags, v19, v20, v21, v22, v23, v24, v25, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60);
   }
 
   while (v3);
@@ -2045,8 +2045,8 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
         *&v18 = OUTLINED_FUNCTION_0_17([v17 mainFlags]);
       }
 
-      v19 = [v17 sifrFlags];
-      if ((v19 & 0x100) != 0)
+      sifrFlags = [v17 sifrFlags];
+      if ((sifrFlags & 0x100) != 0)
       {
         OUTLINED_FUNCTION_0_17([v17 sifrFlags]);
       }
@@ -2055,16 +2055,16 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
     }
 
     while (v3 != v15);
-    v3 = OUTLINED_FUNCTION_2_0(v19, v20, v21, v22, v23, v24, v25, v26, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61);
+    v3 = OUTLINED_FUNCTION_2_0(sifrFlags, v20, v21, v22, v23, v24, v25, v26, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61);
   }
 
   while (v3);
   return v2;
 }
 
-- (int)expectedAdaptiveBracketedFrameCaptureCountUsingGroup:(int)a3
+- (int)expectedAdaptiveBracketedFrameCaptureCountUsingGroup:(int)group
 {
-  if (a3 < 1)
+  if (group < 1)
   {
     return 0;
   }
@@ -2135,9 +2135,9 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   return v4;
 }
 
-- (int)expectedAdaptiveBracketedTimeMachineFrameCountUsingGroup:(int)a3
+- (int)expectedAdaptiveBracketedTimeMachineFrameCountUsingGroup:(int)group
 {
-  if (a3 < 1)
+  if (group < 1)
   {
     return 0;
   }
@@ -2161,9 +2161,9 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   return v4;
 }
 
-- (int)expectedAdaptiveBracketedTimeMachineFrameCaptureCountUsingGroup:(int)a3
+- (int)expectedAdaptiveBracketedTimeMachineFrameCaptureCountUsingGroup:(int)group
 {
-  if (a3 < 1)
+  if (group < 1)
   {
     return 0;
   }
@@ -2211,24 +2211,24 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   return v4;
 }
 
-- (void)addAdaptiveBracketingMetadataIfNeededForFrame:(opaqueCMSampleBuffer *)a3
+- (void)addAdaptiveBracketingMetadataIfNeededForFrame:(opaqueCMSampleBuffer *)frame
 {
   if (self->_adaptiveBracketingParameters)
   {
-    if ((BWStillImageCaptureFrameFlagsForSampleBuffer(a3) & 0x5000000000000000) != 0)
+    if ((BWStillImageCaptureFrameFlagsForSampleBuffer(frame) & 0x5000000000000000) != 0)
     {
-      v5 = [(BWStillImageCaptureStreamSettings *)self adaptiveBracketingGroupCaptureCount];
-      if (v5 >= 1)
+      adaptiveBracketingGroupCaptureCount = [(BWStillImageCaptureStreamSettings *)self adaptiveBracketingGroupCaptureCount];
+      if (adaptiveBracketingGroupCaptureCount >= 1)
       {
-        v6 = v5;
-        v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+        v6 = adaptiveBracketingGroupCaptureCount;
+        v7 = CMGetAttachment(frame, *off_1E798A3C8, 0);
         [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v6), *off_1E798A538}];
         v8 = *off_1E798B760;
         if ([v7 objectForKeyedSubscript:*off_1E798B760])
         {
           if (([objc_msgSend(v7 objectForKeyedSubscript:{v8), "intValue"}] & 0x80000000) == 0)
           {
-            if ([(BWStillImageCaptureStreamSettings *)self adaptiveBracketingFrameParametersForFrame:a3])
+            if ([(BWStillImageCaptureStreamSettings *)self adaptiveBracketingFrameParametersForFrame:frame])
             {
               [objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B2A8), "doubleValue"}];
               FigCaptureComputeImageGainFromMetadata();
@@ -2240,14 +2240,14 @@ BOOL __79__BWStillImageCaptureStreamSettings_adaptiveBracketingFrameParametersFo
   }
 }
 
-- (id)adaptiveBracketingFrameParametersForFrame:(opaqueCMSampleBuffer *)a3
+- (id)adaptiveBracketingFrameParametersForFrame:(opaqueCMSampleBuffer *)frame
 {
-  if ((BWStillImageCaptureFrameFlagsForSampleBuffer(a3) & 0x5000000000000000) == 0)
+  if ((BWStillImageCaptureFrameFlagsForSampleBuffer(frame) & 0x5000000000000000) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v5 = CMGetAttachment(frame, *off_1E798A3C8, 0);
   v6 = [objc_msgSend(v5 objectForKeyedSubscript:{*off_1E798A538), "intValue"}];
   v7 = (v6 - 1);
   if (v6 < 1)
@@ -2343,16 +2343,16 @@ LABEL_23:
   return v19;
 }
 
-- (BOOL)isFirstAdaptiveBracketingFrame:(opaqueCMSampleBuffer *)a3
+- (BOOL)isFirstAdaptiveBracketingFrame:(opaqueCMSampleBuffer *)frame
 {
-  v4 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v4 = CMGetAttachment(frame, *off_1E798A3C8, 0);
   if ([objc_msgSend(v4 objectForKeyedSubscript:{*off_1E798A538), "intValue"}] != 1)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_adaptiveBracketingLock);
-  v5 = [(NSMutableArray *)self->_adaptiveCaptureFrameInfos firstObject];
+  firstObject = [(NSMutableArray *)self->_adaptiveCaptureFrameInfos firstObject];
   OUTLINED_FUNCTION_43();
   v7 = [v6 countByEnumeratingWithState:? objects:? count:?];
   if (v7)
@@ -2366,7 +2366,7 @@ LABEL_23:
         OUTLINED_FUNCTION_4_10();
         if (v11 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(firstObject);
         }
 
         v12 = *(v17 + 8 * i);
@@ -2376,9 +2376,9 @@ LABEL_23:
           if (objc_opt_isKindOfClass())
           {
             v14 = [objc_msgSend(v4 objectForKeyedSubscript:{*off_1E798B760), "intValue"}];
-            v15 = [v12 timeMachineIndex];
+            timeMachineIndex = [v12 timeMachineIndex];
 LABEL_16:
-            v13 = v15 == v14;
+            v13 = timeMachineIndex == v14;
             goto LABEL_17;
           }
 
@@ -2386,14 +2386,14 @@ LABEL_16:
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 bracketedCaptureSequenceNumber] >= 1)
           {
             v14 = [objc_msgSend(v4 objectForKeyedSubscript:{*off_1E798B1B8), "intValue"}];
-            v15 = [v12 bracketedCaptureSequenceNumber];
+            timeMachineIndex = [v12 bracketedCaptureSequenceNumber];
             goto LABEL_16;
           }
         }
       }
 
       OUTLINED_FUNCTION_43();
-      v8 = [v5 countByEnumeratingWithState:? objects:? count:?];
+      v8 = [firstObject countByEnumeratingWithState:? objects:? count:?];
       if (v8)
       {
         continue;
@@ -2409,9 +2409,9 @@ LABEL_17:
   return v13;
 }
 
-- (void)addAdaptiveBracketingFrameParameters:(id)a3 timeMachineBracketedCaptureParams:(id)a4 preBracketFrameCaptureParams:(id)a5 unifiedBracketedCaptureParams:(id)a6 captureFrameInfos:(id)a7
+- (void)addAdaptiveBracketingFrameParameters:(id)parameters timeMachineBracketedCaptureParams:(id)params preBracketFrameCaptureParams:(id)captureParams unifiedBracketedCaptureParams:(id)bracketedCaptureParams captureFrameInfos:(id)infos
 {
-  if (a6)
+  if (bracketedCaptureParams)
   {
     os_unfair_lock_lock(&self->_adaptiveBracketingLock);
     adaptiveBracketingFrameParameters = self->_adaptiveBracketingFrameParameters;
@@ -2421,7 +2421,7 @@ LABEL_17:
       self->_adaptiveBracketingFrameParameters = adaptiveBracketingFrameParameters;
     }
 
-    [(NSMutableArray *)adaptiveBracketingFrameParameters addObject:a3];
+    [(NSMutableArray *)adaptiveBracketingFrameParameters addObject:parameters];
     adaptiveTimeMachineBracketedCaptureParams = self->_adaptiveTimeMachineBracketedCaptureParams;
     if (!adaptiveTimeMachineBracketedCaptureParams)
     {
@@ -2429,14 +2429,14 @@ LABEL_17:
       self->_adaptiveTimeMachineBracketedCaptureParams = adaptiveTimeMachineBracketedCaptureParams;
     }
 
-    if (!a4)
+    if (!params)
     {
-      a4 = MEMORY[0x1E695E0F0];
+      params = MEMORY[0x1E695E0F0];
     }
 
-    [(NSMutableArray *)adaptiveTimeMachineBracketedCaptureParams addObject:a4];
+    [(NSMutableArray *)adaptiveTimeMachineBracketedCaptureParams addObject:params];
 
-    self->_timeMachineBracketedCaptureParams = a4;
+    self->_timeMachineBracketedCaptureParams = params;
     adaptivePreBracketFrameCaptureParams = self->_adaptivePreBracketFrameCaptureParams;
     if (!adaptivePreBracketFrameCaptureParams)
     {
@@ -2444,17 +2444,17 @@ LABEL_17:
       self->_adaptivePreBracketFrameCaptureParams = adaptivePreBracketFrameCaptureParams;
     }
 
-    v16 = a5;
-    if (!a5)
+    captureParamsCopy = captureParams;
+    if (!captureParams)
     {
       v19 = @"BWAdaptiveBracketingNoPreBracketFrameParams";
       v20 = &stru_1F216A3D0;
-      v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
+      captureParamsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     }
 
-    [(NSMutableArray *)adaptivePreBracketFrameCaptureParams addObject:v16];
+    [(NSMutableArray *)adaptivePreBracketFrameCaptureParams addObject:captureParamsCopy];
 
-    self->_preBracketFrameCaptureParams = a5;
+    self->_preBracketFrameCaptureParams = captureParams;
     adaptiveUnifiedBracketedCaptureParams = self->_adaptiveUnifiedBracketedCaptureParams;
     if (!adaptiveUnifiedBracketedCaptureParams)
     {
@@ -2462,10 +2462,10 @@ LABEL_17:
       self->_adaptiveUnifiedBracketedCaptureParams = adaptiveUnifiedBracketedCaptureParams;
     }
 
-    [(NSMutableArray *)adaptiveUnifiedBracketedCaptureParams addObject:a6];
+    [(NSMutableArray *)adaptiveUnifiedBracketedCaptureParams addObject:bracketedCaptureParams];
 
-    self->_unifiedBracketedCaptureParams = a6;
-    if (a7)
+    self->_unifiedBracketedCaptureParams = bracketedCaptureParams;
+    if (infos)
     {
       adaptiveCaptureFrameInfos = self->_adaptiveCaptureFrameInfos;
       if (!adaptiveCaptureFrameInfos)
@@ -2474,9 +2474,9 @@ LABEL_17:
         self->_adaptiveCaptureFrameInfos = adaptiveCaptureFrameInfos;
       }
 
-      [(NSMutableArray *)adaptiveCaptureFrameInfos addObject:a7];
+      [(NSMutableArray *)adaptiveCaptureFrameInfos addObject:infos];
 
-      self->_captureFrameInfos = a7;
+      self->_captureFrameInfos = infos;
     }
 
     os_unfair_lock_unlock(&self->_adaptiveBracketingLock);

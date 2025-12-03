@@ -1,34 +1,34 @@
 @interface _SFPBRFFont_RFSystemFont
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFFont_RFSystemFont)initWithDictionary:(id)a3;
-- (_SFPBRFFont_RFSystemFont)initWithFacade:(id)a3;
-- (_SFPBRFFont_RFSystemFont)initWithJSON:(id)a3;
+- (_SFPBRFFont_RFSystemFont)initWithDictionary:(id)dictionary;
+- (_SFPBRFFont_RFSystemFont)initWithFacade:(id)facade;
+- (_SFPBRFFont_RFSystemFont)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFFont_RFSystemFont
 
-- (_SFPBRFFont_RFSystemFont)initWithFacade:(id)a3
+- (_SFPBRFFont_RFSystemFont)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFFont_RFSystemFont *)self init];
   if (v5)
   {
-    v6 = [v4 size];
+    v6 = [facadeCopy size];
 
     if (v6)
     {
-      v7 = [v4 size];
+      v7 = [facadeCopy size];
       [v7 floatValue];
       [(_SFPBRFFont_RFSystemFont *)v5 setSize:?];
     }
 
-    if ([v4 hasWeight])
+    if ([facadeCopy hasWeight])
     {
-      -[_SFPBRFFont_RFSystemFont setWeight:](v5, "setWeight:", [v4 weight]);
+      -[_SFPBRFFont_RFSystemFont setWeight:](v5, "setWeight:", [facadeCopy weight]);
     }
 
     v8 = v5;
@@ -37,15 +37,15 @@
   return v5;
 }
 
-- (_SFPBRFFont_RFSystemFont)initWithDictionary:(id)a3
+- (_SFPBRFFont_RFSystemFont)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFFont_RFSystemFont;
   v5 = [(_SFPBRFFont_RFSystemFont *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"size"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"size"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(_SFPBRFFont_RFSystemFont *)v5 setSize:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"weight"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"weight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (_SFPBRFFont_RFSystemFont)initWithJSON:(id)a3
+- (_SFPBRFFont_RFSystemFont)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFFont_RFSystemFont *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFFont_RFSystemFont *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFFont_RFSystemFont *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,32 +102,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_size != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBRFFont_RFSystemFont *)self size];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"size"];
+    [dictionary setObject:v5 forKeyedSubscript:@"size"];
   }
 
   if (self->_weight)
   {
-    v6 = [(_SFPBRFFont_RFSystemFont *)self weight];
-    if (v6 >= 0xA)
+    weight = [(_SFPBRFFont_RFSystemFont *)self weight];
+    if (weight >= 0xA)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", weight];
     }
 
     else
     {
-      v7 = off_1E7ACE220[v6];
+      v7 = off_1E7ACE220[weight];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"weight"];
+    [dictionary setObject:v7 forKeyedSubscript:@"weight"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -170,13 +170,13 @@
   return (2654435761 * self->_weight) ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (size = self->_size, objc_msgSend(v4, "size"), size == v6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (size = self->_size, objc_msgSend(equalCopy, "size"), size == v6))
   {
     weight = self->_weight;
-    v7 = weight == [v4 weight];
+    v7 = weight == [equalCopy weight];
   }
 
   else
@@ -187,9 +187,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   [(_SFPBRFFont_RFSystemFont *)self size];
   if (v4 != 0.0)
   {

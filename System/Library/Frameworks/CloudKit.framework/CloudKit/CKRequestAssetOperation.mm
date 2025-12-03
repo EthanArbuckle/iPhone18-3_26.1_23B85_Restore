@@ -1,24 +1,24 @@
 @interface CKRequestAssetOperation
-- (CKRequestAssetOperation)initWithAssetMetadata:(id)a3 requestCallback:(id)a4;
+- (CKRequestAssetOperation)initWithAssetMetadata:(id)metadata requestCallback:(id)callback;
 - (int64_t)state;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)start;
 @end
 
 @implementation CKRequestAssetOperation
 
-- (CKRequestAssetOperation)initWithAssetMetadata:(id)a3 requestCallback:(id)a4
+- (CKRequestAssetOperation)initWithAssetMetadata:(id)metadata requestCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  callbackCopy = callback;
   v16.receiver = self;
   v16.super_class = CKRequestAssetOperation;
   v9 = [(CKRequestAssetOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    v13 = objc_msgSend_copy(v8, v11, v12);
+    objc_storeStrong(&v9->_metadata, metadata);
+    v13 = objc_msgSend_copy(callbackCopy, v11, v12);
     requestCallback = v10->_requestCallback;
     v10->_requestCallback = v13;
   }
@@ -26,28 +26,28 @@
   return v10;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   obj = self;
   objc_sync_enter(obj);
   state = obj->_state;
-  if (state != a3)
+  if (state != state)
   {
-    v6 = a3 == 1 || state == 1;
+    v6 = state == 1 || state == 1;
     v7 = v6;
     if (v6)
     {
       objc_msgSend_willChangeValueForKey_(obj, v4, @"isExecuting");
     }
 
-    v8 = a3 == 2 || state == 2;
+    v8 = state == 2 || state == 2;
     v9 = v8;
     if (v8)
     {
       objc_msgSend_willChangeValueForKey_(obj, v4, @"isFinished");
     }
 
-    obj->_state = a3;
+    obj->_state = state;
     if (v7)
     {
       objc_msgSend_didChangeValueForKey_(obj, v4, @"isExecuting");
@@ -64,10 +64,10 @@
 
 - (int64_t)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   return state;
 }

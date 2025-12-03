@@ -1,18 +1,18 @@
 @interface ICDocCamExtractedDocumentNavigationController
-- (ICDocCamExtractedDocumentNavigationController)initWithDelegate:(id)a3 documentInfoCollection:(id)a4 imageCache:(id)a5 currentIndex:(int64_t)a6 mode:(int)a7;
+- (ICDocCamExtractedDocumentNavigationController)initWithDelegate:(id)delegate documentInfoCollection:(id)collection imageCache:(id)cache currentIndex:(int64_t)index mode:(int)mode;
 - (void)didReceiveMemoryWarning;
 - (void)prepareForDismissal;
 @end
 
 @implementation ICDocCamExtractedDocumentNavigationController
 
-- (ICDocCamExtractedDocumentNavigationController)initWithDelegate:(id)a3 documentInfoCollection:(id)a4 imageCache:(id)a5 currentIndex:(int64_t)a6 mode:(int)a7
+- (ICDocCamExtractedDocumentNavigationController)initWithDelegate:(id)delegate documentInfoCollection:(id)collection imageCache:(id)cache currentIndex:(int64_t)index mode:(int)mode
 {
-  v7 = *&a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[ICDocCamExtractedDocumentViewController alloc] initWithDelegate:v14 documentInfoCollection:v13 imageCache:v12 currentIndex:a6 mode:v7];
+  v7 = *&mode;
+  cacheCopy = cache;
+  collectionCopy = collection;
+  delegateCopy = delegate;
+  v15 = [[ICDocCamExtractedDocumentViewController alloc] initWithDelegate:delegateCopy documentInfoCollection:collectionCopy imageCache:cacheCopy currentIndex:index mode:v7];
 
   v19.receiver = self;
   v19.super_class = ICDocCamExtractedDocumentNavigationController;
@@ -35,13 +35,13 @@
 
 - (void)prepareForDismissal
 {
-  v3 = [(ICDocCamExtractedDocumentNavigationController *)self topViewController];
+  topViewController = [(ICDocCamExtractedDocumentNavigationController *)self topViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICDocCamExtractedDocumentNavigationController *)self topViewController];
-    [v5 prepareForDismissal];
+    topViewController2 = [(ICDocCamExtractedDocumentNavigationController *)self topViewController];
+    [topViewController2 prepareForDismissal];
   }
 }
 

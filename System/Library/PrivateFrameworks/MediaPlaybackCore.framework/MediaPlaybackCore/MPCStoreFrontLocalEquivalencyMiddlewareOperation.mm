@@ -1,5 +1,5 @@
 @interface MPCStoreFrontLocalEquivalencyMiddlewareOperation
-- (MPCStoreFrontLocalEquivalencyMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4;
+- (MPCStoreFrontLocalEquivalencyMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request;
 - (MPModelGenericObject)overridePlayingItem;
 - (NSArray)inputProtocols;
 - (NSArray)outputProtocols;
@@ -35,8 +35,8 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v3 = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self inputOperations];
-  v4 = [v3 objectForKey:&unk_1F45D1498];
+  inputOperations = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self inputOperations];
+  v4 = [inputOperations objectForKey:&unk_1F45D1498];
 
   v5 = [v4 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v5)
@@ -52,10 +52,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v47 + 1) + 8 * i) controller];
-        if (v9)
+        controller = [*(*(&v47 + 1) + 8 * i) controller];
+        if (controller)
         {
-          v10 = v9;
+          v10 = controller;
           goto LABEL_11;
         }
       }
@@ -73,17 +73,17 @@
   v10 = 0;
 LABEL_11:
 
-  v11 = [v10 resolvedPlayerPath];
-  v12 = [v11 isLocalDevice];
+  resolvedPlayerPath = [v10 resolvedPlayerPath];
+  isLocalDevice = [resolvedPlayerPath isLocalDevice];
 
-  if (!v12)
+  if (!isLocalDevice)
   {
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v13 = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self inputOperations];
-    v14 = [v13 objectForKey:&unk_1F45D15C8];
+    inputOperations2 = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self inputOperations];
+    v14 = [inputOperations2 objectForKey:&unk_1F45D15C8];
 
     v15 = [v14 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v15)
@@ -100,21 +100,21 @@ LABEL_11:
           }
 
           v19 = *(*(&v43 + 1) + 8 * j);
-          v20 = [v19 modelObjects];
-          if (v20)
+          modelObjects = [v19 modelObjects];
+          if (modelObjects)
           {
-            v21 = v20;
-            v22 = [v19 sourceContentItems];
-            v23 = [v19 playingIndexPath];
+            v21 = modelObjects;
+            sourceContentItems = [v19 sourceContentItems];
+            playingIndexPath = [v19 playingIndexPath];
 
-            if (v23 && ([v21 itemAtIndexPath:v23], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+            if (playingIndexPath && ([v21 itemAtIndexPath:playingIndexPath], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               v25 = v24;
-              v26 = [v24 identifiers];
-              v27 = [v26 universalStore];
-              v28 = [v27 subscriptionAdamID];
+              identifiers = [v24 identifiers];
+              universalStore = [identifiers universalStore];
+              subscriptionAdamID = [universalStore subscriptionAdamID];
 
-              if (!v28)
+              if (!subscriptionAdamID)
               {
                 goto LABEL_31;
               }
@@ -126,25 +126,25 @@ LABEL_11:
 
               if (execute_sSystemMediaApplicationBundleID && execute_sSystemMediaApplicationBundleVersion)
               {
-                v36 = [v22 itemAtIndexPath:v23];
-                v29 = [v36 userInfo];
-                v30 = [v29 objectForKeyedSubscript:*MEMORY[0x1E6970330]];
-                v31 = [v30 MPC_storeFrontIdentifierKey];
+                v36 = [sourceContentItems itemAtIndexPath:playingIndexPath];
+                userInfo = [v36 userInfo];
+                v30 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6970330]];
+                mPC_storeFrontIdentifierKey = [v30 MPC_storeFrontIdentifierKey];
 
-                v32 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-                v33 = [MEMORY[0x1E69E4680] activeAccount];
+                defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+                activeAccount = [MEMORY[0x1E69E4680] activeAccount];
                 v37[0] = MEMORY[0x1E69E9820];
                 v37[1] = 3221225472;
                 v37[2] = __59__MPCStoreFrontLocalEquivalencyMiddlewareOperation_execute__block_invoke_2;
                 v37[3] = &unk_1E8238960;
-                v38 = v31;
-                v39 = self;
-                v42 = v28;
+                v38 = mPC_storeFrontIdentifierKey;
+                selfCopy = self;
+                v42 = subscriptionAdamID;
                 v40 = v25;
-                v41 = v23;
+                v41 = playingIndexPath;
                 v34 = v25;
-                v35 = v31;
-                [v32 getPropertiesForUserIdentity:v33 completionHandler:v37];
+                v35 = mPC_storeFrontIdentifierKey;
+                [defaultIdentityStore getPropertiesForUserIdentity:activeAccount completionHandler:v37];
               }
 
               else
@@ -383,18 +383,18 @@ LABEL_13:
 LABEL_14:
 }
 
-- (MPCStoreFrontLocalEquivalencyMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4
+- (MPCStoreFrontLocalEquivalencyMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  middlewareCopy = middleware;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = MPCStoreFrontLocalEquivalencyMiddlewareOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_middleware, a3);
-    objc_storeStrong(&v10->_playerRequest, a4);
+    objc_storeStrong(&v9->_middleware, middleware);
+    objc_storeStrong(&v10->_playerRequest, request);
   }
 
   return v10;
@@ -402,18 +402,18 @@ LABEL_14:
 
 - (NSIndexPath)playingItemIndexPath
 {
-  v2 = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self middleware];
-  v3 = [v2 playingItemIndexPath];
+  middleware = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self middleware];
+  playingItemIndexPath = [middleware playingItemIndexPath];
 
-  return v3;
+  return playingItemIndexPath;
 }
 
 - (MPModelGenericObject)overridePlayingItem
 {
-  v2 = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self middleware];
-  v3 = [v2 overridePlayingItem];
+  middleware = [(MPCStoreFrontLocalEquivalencyMiddlewareOperation *)self middleware];
+  overridePlayingItem = [middleware overridePlayingItem];
 
-  return v3;
+  return overridePlayingItem;
 }
 
 @end

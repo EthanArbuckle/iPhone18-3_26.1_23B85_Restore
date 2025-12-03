@@ -1,57 +1,57 @@
 @interface CDPDRecoveryKeyValidatorImpl
-- (CDPDRecoveryKeyValidatorImpl)initWithContext:(id)a3 delegate:(id)a4 octagonTrustProxy:(id)a5;
-- (void)confirmRecoveryKey:(id)a3 completion:(id)a4;
-- (void)generateRecoveryKey:(id)a3;
-- (void)setRecoveryKey:(id)a3;
+- (CDPDRecoveryKeyValidatorImpl)initWithContext:(id)context delegate:(id)delegate octagonTrustProxy:(id)proxy;
+- (void)confirmRecoveryKey:(id)key completion:(id)completion;
+- (void)generateRecoveryKey:(id)key;
+- (void)setRecoveryKey:(id)key;
 @end
 
 @implementation CDPDRecoveryKeyValidatorImpl
 
-- (CDPDRecoveryKeyValidatorImpl)initWithContext:(id)a3 delegate:(id)a4 octagonTrustProxy:(id)a5
+- (CDPDRecoveryKeyValidatorImpl)initWithContext:(id)context delegate:(id)delegate octagonTrustProxy:(id)proxy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  delegateCopy = delegate;
+  proxyCopy = proxy;
   v12 = [(CDPDRecoveryKeyValidatorImpl *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeWeak(&v13->_delegate, v10);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v13->_recoveryKeyVerified = 0;
-    objc_storeStrong(&v13->_octagonTrustProxy, a5);
+    objc_storeStrong(&v13->_octagonTrustProxy, proxy);
   }
 
   return v13;
 }
 
-- (void)confirmRecoveryKey:(id)a3 completion:(id)a4
+- (void)confirmRecoveryKey:(id)key completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "%@ : Confirming recovery key", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [CDPDRecoveryKeyValidatorImpl confirmRecoveryKey:completion:];
   }
 
-  v9 = [(CDPDRecoveryKeyValidatorImpl *)self recoveryKey];
-  v10 = [v9 isEqualToString:v6];
+  recoveryKey = [(CDPDRecoveryKeyValidatorImpl *)self recoveryKey];
+  v10 = [recoveryKey isEqualToString:keyCopy];
 
   if (v10)
   {
     octagonTrustProxy = self->_octagonTrustProxy;
-    v12 = [(CDPContext *)self->_context altDSID];
+    altDSID = [(CDPContext *)self->_context altDSID];
     v25 = 0;
-    v13 = [(CDPDOctagonTrustProxy *)octagonTrustProxy cacheRecoveryKey:v6 forAltDSID:v12 error:&v25];
+    v13 = [(CDPDOctagonTrustProxy *)octagonTrustProxy cacheRecoveryKey:keyCopy forAltDSID:altDSID error:&v25];
     v14 = v25;
 
     v15 = _CDPLogSystem();
@@ -72,7 +72,7 @@
 
     v18 = self->_octagonTrustProxy;
     v24 = 0;
-    v19 = [(CDPDOctagonTrustProxy *)v18 registerRecoveryKey:v6 error:&v24];
+    v19 = [(CDPDOctagonTrustProxy *)v18 registerRecoveryKey:keyCopy error:&v24];
     v20 = v24;
     v21 = _CDPLogSystem();
     v22 = v21;
@@ -95,7 +95,7 @@
       }
     }
 
-    v7[2](v7, v19, v20);
+    completionCopy[2](completionCopy, v19, v20);
   }
 
   else
@@ -106,21 +106,21 @@
       [CDPDRecoveryKeyValidatorImpl confirmRecoveryKey:v17 completion:?];
     }
 
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateRecoveryKey:(id)a3
+- (void)generateRecoveryKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "%@ : Generating recovery key", buf, 0xCu);
   }
 
@@ -130,18 +130,18 @@
   v8 = v11;
   [(CDPDRecoveryKeyValidatorImpl *)self setRecoveryKey:v7];
 
-  v9 = [(CDPDRecoveryKeyValidatorImpl *)self recoveryKey];
-  v4[2](v4, v9, v8);
+  recoveryKey = [(CDPDRecoveryKeyValidatorImpl *)self recoveryKey];
+  keyCopy[2](keyCopy, recoveryKey, v8);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRecoveryKey:(id)a3
+- (void)setRecoveryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(CDPDRecoveryKeyValidatorImpl *)self setRecoveryKeyVerified:0];
   recoveryKey = self->_recoveryKey;
-  self->_recoveryKey = v4;
+  self->_recoveryKey = keyCopy;
 }
 
 - (void)confirmRecoveryKey:(uint64_t)a1 completion:(NSObject *)a2 .cold.3(uint64_t a1, NSObject *a2)

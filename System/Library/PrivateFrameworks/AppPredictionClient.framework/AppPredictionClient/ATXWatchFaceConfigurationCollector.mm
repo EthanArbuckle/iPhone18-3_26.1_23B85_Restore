@@ -1,11 +1,11 @@
 @interface ATXWatchFaceConfigurationCollector
-+ (id)_watchFaceFromJSONObject:(id)a3;
++ (id)_watchFaceFromJSONObject:(id)object;
 + (id)sharedInstance;
 - (ATXWatchFaceConfigurationCollector)init;
 - (NSArray)watchFaces;
 - (id)_queue_readWatchFacesFromDisk;
-- (void)_queue_writeWatchFacesToDisk:(id)a3;
-- (void)refreshWithCompletion:(id)a3;
+- (void)_queue_writeWatchFacesToDisk:(id)disk;
+- (void)refreshWithCompletion:(id)completion;
 @end
 
 @implementation ATXWatchFaceConfigurationCollector
@@ -53,9 +53,9 @@ uint64_t __52__ATXWatchFaceConfigurationCollector_sharedInstance__block_invoke()
     else
     {
       v4 = objc_alloc(MEMORY[0x1E698AFF0]);
-      v5 = [MEMORY[0x1E698B010] watchFaceConfigurationCacheFilePath];
+      watchFaceConfigurationCacheFilePath = [MEMORY[0x1E698B010] watchFaceConfigurationCacheFilePath];
       v6 = __atxlog_handle_lock_screen();
-      v7 = [v4 initWithCacheFilePath:v5 loggingHandle:v6 debugName:@"watch faces"];
+      v7 = [v4 initWithCacheFilePath:watchFaceConfigurationCacheFilePath loggingHandle:v6 debugName:@"watch faces"];
       fileCache = v2->_fileCache;
       v2->_fileCache = v7;
 
@@ -107,14 +107,14 @@ void __42__ATXWatchFaceConfigurationCollector_init__block_invoke_191()
   }
 }
 
-- (void)refreshWithCompletion:(id)a3
+- (void)refreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([MEMORY[0x1E69C5CF8] isiPad])
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -125,7 +125,7 @@ void __42__ATXWatchFaceConfigurationCollector_init__block_invoke_191()
     v10[1] = 3221225472;
     v10[2] = __60__ATXWatchFaceConfigurationCollector_refreshWithCompletion___block_invoke;
     v10[3] = &unk_1E80C08E0;
-    v6 = v4;
+    v6 = completionCopy;
     v11 = v6;
     v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
@@ -364,16 +364,16 @@ void __48__ATXWatchFaceConfigurationCollector_watchFaces__block_invoke(uint64_t 
   }
 }
 
-+ (id)_watchFaceFromJSONObject:(id)a3
++ (id)_watchFaceFromJSONObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
     v5 = [v4 objectForKeyedSubscript:@"faceJSON"];
     v6 = [v4 objectForKeyedSubscript:@"selected"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -388,13 +388,13 @@ void __48__ATXWatchFaceConfigurationCollector_watchFaces__block_invoke(uint64_t 
       goto LABEL_32;
     }
 
-    v28 = v7;
+    v28 = bOOLValue;
     v8 = v5;
     v9 = [v8 objectForKeyedSubscript:@"face type"];
-    v10 = [v9 stringValue];
+    stringValue = [v9 stringValue];
 
     v11 = [v8 objectForKeyedSubscript:@"bundle id"];
-    v29 = [v11 stringValue];
+    stringValue2 = [v11 stringValue];
 
     v12 = [v8 objectForKeyedSubscript:@"customization"];
     objc_opt_class();
@@ -432,54 +432,54 @@ void __48__ATXWatchFaceConfigurationCollector_watchFaces__block_invoke(uint64_t 
       v19 = 0;
     }
 
-    if ([v10 isEqualToString:@"astronomy"])
+    if ([stringValue isEqualToString:@"astronomy"])
     {
       v20 = 1;
     }
 
-    else if ([v10 isEqualToString:@"spectrum-analog"])
+    else if ([stringValue isEqualToString:@"spectrum-analog"])
     {
       v20 = 2;
     }
 
-    else if ([v10 isEqualToString:@"color"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"color-rich"))
+    else if ([stringValue isEqualToString:@"color"] & 1) != 0 || (objc_msgSend(stringValue, "isEqualToString:", @"color-rich"))
     {
       v20 = 10;
     }
 
-    else if ([v10 isEqualToString:@"photos"])
+    else if ([stringValue isEqualToString:@"photos"])
     {
       v20 = 3;
     }
 
-    else if ([v10 isEqualToString:@"pride"])
+    else if ([stringValue isEqualToString:@"pride"])
     {
       v20 = 4;
     }
 
-    else if ([v10 isEqualToString:@"pride analog"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"pride analog rich"))
+    else if ([stringValue isEqualToString:@"pride analog"] & 1) != 0 || (objc_msgSend(stringValue, "isEqualToString:", @"pride analog rich"))
     {
       v20 = 11;
     }
 
-    else if ([v10 isEqualToString:@"big-numerals-analog"] && (objc_msgSend(v19, "isEqualToString:", @"multicolor gradient 1") & 1) != 0)
+    else if ([stringValue isEqualToString:@"big-numerals-analog"] && (objc_msgSend(v19, "isEqualToString:", @"multicolor gradient 1") & 1) != 0)
     {
       v20 = 14;
     }
 
-    else if ([v10 isEqualToString:@"big-numerals-digital"] && (objc_msgSend(v19, "isEqualToString:", @"multicolor gradient 1") & 1) != 0)
+    else if ([stringValue isEqualToString:@"big-numerals-digital"] && (objc_msgSend(v19, "isEqualToString:", @"multicolor gradient 1") & 1) != 0)
     {
       v20 = 15;
     }
 
     else
     {
-      if (![v10 isEqualToString:@"california"] || (objc_msgSend(v19, "isEqualToString:", @"style 10") & 1) == 0)
+      if (![stringValue isEqualToString:@"california"] || (objc_msgSend(v19, "isEqualToString:", @"style 10") & 1) == 0)
       {
-        v27 = v29;
-        if ([v29 length])
+        v27 = stringValue2;
+        if ([stringValue2 length])
         {
-          if ([v29 isEqualToString:@"com.apple.NTKAegirFaceBundle"])
+          if ([stringValue2 isEqualToString:@"com.apple.NTKAegirFaceBundle"])
           {
             if ([v17 isEqualToString:@"earth"])
             {
@@ -499,7 +499,7 @@ void __48__ATXWatchFaceConfigurationCollector_watchFaces__block_invoke(uint64_t 
               goto LABEL_25;
             }
 
-            v27 = v29;
+            v27 = stringValue2;
             if ([v17 isEqualToString:@"random"])
             {
               v20 = 17;
@@ -519,13 +519,13 @@ void __48__ATXWatchFaceConfigurationCollector_watchFaces__block_invoke(uint64_t 
             goto LABEL_25;
           }
 
-          if ([v29 isEqualToString:@"com.apple.NTKRenegadeFaceBundle"])
+          if ([stringValue2 isEqualToString:@"com.apple.NTKRenegadeFaceBundle"])
           {
             v20 = 5;
             goto LABEL_25;
           }
 
-          if ([v29 isEqualToString:@"com.apple.NTKColtanFaceBundle"])
+          if ([stringValue2 isEqualToString:@"com.apple.NTKColtanFaceBundle"])
           {
             v20 = 6;
             goto LABEL_25;
@@ -545,8 +545,8 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v21 allValues];
-      v23 = [v22 _pas_mappedArrayWithTransform:&__block_literal_global_211];
+      allValues = [v21 allValues];
+      v23 = [allValues _pas_mappedArrayWithTransform:&__block_literal_global_211];
     }
 
     else
@@ -637,12 +637,12 @@ id __63__ATXWatchFaceConfigurationCollector__watchFaceFromJSONObject___block_inv
   return v8;
 }
 
-- (void)_queue_writeWatchFacesToDisk:(id)a3
+- (void)_queue_writeWatchFacesToDisk:(id)disk
 {
   queue = self->_queue;
-  v5 = a3;
+  diskCopy = disk;
   dispatch_assert_queue_V2(queue);
-  [(ATXGenericFileBasedCache *)self->_fileCache storeSecureCodedObject:v5 error:0];
+  [(ATXGenericFileBasedCache *)self->_fileCache storeSecureCodedObject:diskCopy error:0];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface RBCoalitionManager
 - (NSString)stateCaptureTitle;
-- (RBCoalitionManager)initWithAdapter:(id)a3;
+- (RBCoalitionManager)initWithAdapter:(id)adapter;
 - (id)captureState;
-- (void)addProcess:(id)a3 withState:(id)a4;
-- (void)didUpdateProcessStates:(id)a3;
-- (void)removeProcess:(id)a3;
+- (void)addProcess:(id)process withState:(id)state;
+- (void)didUpdateProcessStates:(id)states;
+- (void)removeProcess:(id)process;
 @end
 
 @implementation RBCoalitionManager
 
-- (RBCoalitionManager)initWithAdapter:(id)a3
+- (RBCoalitionManager)initWithAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v12.receiver = self;
   v12.super_class = RBCoalitionManager;
   v6 = [(RBCoalitionManager *)&v12 init];
@@ -25,26 +25,26 @@
     lock_processes = v6->_lock_processes;
     v6->_lock_processes = v9;
 
-    objc_storeStrong(&v6->_adapter, a3);
+    objc_storeStrong(&v6->_adapter, adapter);
     v6->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v6;
 }
 
-- (void)didUpdateProcessStates:(id)a3
+- (void)didUpdateProcessStates:(id)states
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasChanges])
+  statesCopy = states;
+  if ([statesCopy hasChanges])
   {
     os_unfair_lock_lock(&self->_lock);
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v24 = v4;
-    v5 = v4;
+    v24 = statesCopy;
+    v5 = statesCopy;
     v6 = [v5 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v6)
     {
@@ -59,14 +59,14 @@
           }
 
           v9 = *(*(&v42 + 1) + 8 * i);
-          v10 = [v9 identity];
-          v11 = [(RBProcessMap *)self->_lock_processes valueForIdentity:v10];
+          identity = [v9 identity];
+          v11 = [(RBProcessMap *)self->_lock_processes valueForIdentity:identity];
           if (v11)
           {
-            v12 = [v9 updatedState];
+            updatedState = [v9 updatedState];
             v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "jetsamCoalitionID")}];
             v14 = [(NSMutableDictionary *)self->_lock_coalitions objectForKey:v13];
-            [v14 setProcess:v11 withState:v12];
+            [v14 setProcess:v11 withState:updatedState];
           }
         }
 
@@ -118,8 +118,8 @@
             if (v20 != [v19 coalitionLevel])
             {
               adapter = self->_adapter;
-              v22 = [v19 coalitionID];
-              if (![(RBCoalitionKernelAdapting *)adapter applyCoalitionWithID:v22 coalitionLevel:v31[3]])
+              coalitionID = [v19 coalitionID];
+              if (![(RBCoalitionKernelAdapting *)adapter applyCoalitionWithID:coalitionID coalitionLevel:v31[3]])
               {
                 [v19 setCoalitionLevel:v31[3]];
               }
@@ -137,7 +137,7 @@
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v24;
+    statesCopy = v24;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -180,22 +180,22 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addProcess:(id)a3 withState:(id)a4
+- (void)addProcess:(id)process withState:(id)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identity];
+  processCopy = process;
+  stateCopy = state;
+  identity = [processCopy identity];
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(RBProcessMap *)self->_lock_processes containsIdentity:v8];
+  v9 = [(RBProcessMap *)self->_lock_processes containsIdentity:identity];
   os_unfair_lock_unlock(&self->_lock);
   if (!v9)
   {
     v20 = 0;
     v21 = 0;
     v22 = 0;
-    v10 = [v6 identifier];
-    v11 = [v10 pid];
+    identifier = [processCopy identifier];
+    v11 = [identifier pid];
 
     if ([(RBCoalitionKernelAdapting *)self->_adapter coalitionInfoForPID:v11 outCoalitionInfo:&v20]< 0)
     {
@@ -208,9 +208,9 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
 
     else
     {
-      [v6 setResourceCoalitionID:v20];
-      [v6 setJetsamCoalitionID:v21];
-      [v6 setJetsamCoalitionLeader:v22];
+      [processCopy setResourceCoalitionID:v20];
+      [processCopy setJetsamCoalitionID:v21];
+      [processCopy setJetsamCoalitionLeader:v22];
       v12 = v21;
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v21];
       os_unfair_lock_lock(&self->_lock);
@@ -234,20 +234,20 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
       v16 = rbs_process_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(RBCoalition *)v14 coalitionID];
+        coalitionID = [(RBCoalition *)v14 coalitionID];
         *buf = 138413058;
-        v24 = v6;
+        v24 = processCopy;
         v25 = 2112;
         v26 = v14;
         v27 = 2048;
-        v28 = v17;
+        v28 = coalitionID;
         v29 = 2112;
-        v30 = v7;
+        v30 = stateCopy;
         _os_log_impl(&dword_262485000, v16, OS_LOG_TYPE_DEFAULT, "Adding process: %@ to coalition: %@ with coalitionID: %llu with state: %@", buf, 0x2Au);
       }
 
-      [(RBCoalition *)v14 setProcess:v6 withState:v7];
-      v18 = [(RBProcessMap *)self->_lock_processes setValue:v6 forIdentity:v8];
+      [(RBCoalition *)v14 setProcess:processCopy withState:stateCopy];
+      v18 = [(RBProcessMap *)self->_lock_processes setValue:processCopy forIdentity:identity];
       os_unfair_lock_unlock(&self->_lock);
     }
   }
@@ -255,12 +255,12 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeProcess:(id)a3
+- (void)removeProcess:(id)process
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "jetsamCoalitionID")}];
+  processCopy = process;
+  identity = [processCopy identity];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(processCopy, "jetsamCoalitionID")}];
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableDictionary *)self->_lock_coalitions objectForKey:v6];
   if (v7)
@@ -269,25 +269,25 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412802;
-      v14 = v4;
+      v14 = processCopy;
       v15 = 2112;
       v16 = v7;
       v17 = 2048;
-      v18 = [v7 coalitionID];
+      coalitionID = [v7 coalitionID];
       _os_log_impl(&dword_262485000, v8, OS_LOG_TYPE_DEFAULT, "Removing process: %@ from coalition: %@ with coalitionID: %llu", &v13, 0x20u);
     }
 
-    [v7 removeProcess:v4];
+    [v7 removeProcess:processCopy];
     if ([v7 isEmpty])
     {
       v9 = rbs_process_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v7 coalitionID];
+        coalitionID2 = [v7 coalitionID];
         v13 = 138412546;
         v14 = v7;
         v15 = 2048;
-        v16 = v10;
+        v16 = coalitionID2;
         _os_log_impl(&dword_262485000, v9, OS_LOG_TYPE_DEFAULT, "Removing the coalition: %@ with coalitionID: %llu as all the processes in this coalition have been removed", &v13, 0x16u);
       }
 
@@ -295,7 +295,7 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
     }
   }
 
-  v11 = [(RBProcessMap *)self->_lock_processes removeValueForIdentity:v5];
+  v11 = [(RBProcessMap *)self->_lock_processes removeValueForIdentity:identity];
   os_unfair_lock_unlock(&self->_lock);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -311,8 +311,8 @@ void __45__RBCoalitionManager_didUpdateProcessStates___block_invoke(void *a1, vo
 - (id)captureState
 {
   v3 = objc_opt_new();
-  v4 = [(RBCoalitionManager *)self stateCaptureTitle];
-  [v3 appendFormat:@"<%@:\n", v4];
+  stateCaptureTitle = [(RBCoalitionManager *)self stateCaptureTitle];
+  [v3 appendFormat:@"<%@:\n", stateCaptureTitle];
 
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_opt_new();

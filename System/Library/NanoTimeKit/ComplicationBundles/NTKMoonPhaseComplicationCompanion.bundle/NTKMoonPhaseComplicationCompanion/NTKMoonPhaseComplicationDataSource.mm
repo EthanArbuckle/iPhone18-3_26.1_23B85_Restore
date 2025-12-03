@@ -1,12 +1,12 @@
 @interface NTKMoonPhaseComplicationDataSource
 + (id)appIdentifier;
-- (NTKMoonPhaseComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_animationGroupForDate:(id)a3 event:(int64_t)a4 haveLocation:(BOOL)a5;
-- (id)_currentTimelineEntry:(BOOL)a3;
-- (id)_entryModelsForDate:(id)a3 nextEvaluationDate:(id *)a4;
-- (id)_timelineEntryFromModel:(id)a3;
+- (NTKMoonPhaseComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_animationGroupForDate:(id)date event:(int64_t)event haveLocation:(BOOL)location;
+- (id)_currentTimelineEntry:(BOOL)entry;
+- (id)_entryModelsForDate:(id)date nextEvaluationDate:(id *)evaluationDate;
+- (id)_timelineEntryFromModel:(id)model;
 - (id)currentSwitcherTemplate;
-- (id)loadEntryModelsForDay:(id)a3;
+- (id)loadEntryModelsForDay:(id)day;
 - (unint64_t)timelineAnimationBehavior;
 - (void)_invalidate;
 - (void)_startObserving;
@@ -14,26 +14,26 @@
 - (void)becomeActive;
 - (void)becomeInactive;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
-- (void)getTimelineEndDateWithHandler:(id)a3;
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
+- (void)getTimelineEndDateWithHandler:(id)handler;
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
 @end
 
 @implementation NTKMoonPhaseComplicationDataSource
 
-- (NTKMoonPhaseComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKMoonPhaseComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v12.receiver = self;
   v12.super_class = NTKMoonPhaseComplicationDataSource;
-  v5 = [(NTKMoonPhaseComplicationDataSource *)&v12 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(NTKMoonPhaseComplicationDataSource *)&v12 initWithComplication:complication family:family forDevice:device];
   v6 = v5;
   if (v5)
   {
     [(NTKMoonPhaseComplicationDataSource *)v5 _startObserving];
     v7 = +[NTKLocationManager sharedLocationManager];
-    v8 = [v7 anyLocation];
-    [(NTKMoonPhaseComplicationDataSource *)v6 setLocation:v8];
+    anyLocation = [v7 anyLocation];
+    [(NTKMoonPhaseComplicationDataSource *)v6 setLocation:anyLocation];
 
     v9 = objc_opt_new();
     entryModelCache = v6->_entryModelCache;
@@ -97,11 +97,11 @@
   }
 }
 
-- (id)_currentTimelineEntry:(BOOL)a3
+- (id)_currentTimelineEntry:(BOOL)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v5 = +[NTKDate complicationDate];
-  if (v3 && ![(NTKTimelineEntryModelCache *)self->_entryModelCache hasEntryModelForDate:v5])
+  if (entryCopy && ![(NTKTimelineEntryModelCache *)self->_entryModelCache hasEntryModelForDate:v5])
   {
     v7 = [(NTKMoonPhaseComplicationDataSource *)self _entryModelsForDate:v5 nextEvaluationDate:0];
     v18 = 0u;
@@ -126,8 +126,8 @@
           v12 = *(*(&v18 + 1) + 8 * i);
           if (v6)
           {
-            v13 = [*(*(&v18 + 1) + 8 * i) entryDate];
-            v14 = [v13 compare:v5];
+            entryDate = [*(*(&v18 + 1) + 8 * i) entryDate];
+            v14 = [entryDate compare:v5];
 
             if (v14 != -1)
             {
@@ -165,22 +165,22 @@
 - (id)currentSwitcherTemplate
 {
   v2 = [(NTKMoonPhaseComplicationDataSource *)self _currentTimelineEntry:1];
-  v3 = [v2 complicationTemplate];
+  complicationTemplate = [v2 complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(NTKMoonPhaseComplicationDataSource *)self _currentTimelineEntry:0];
-  (*(a3 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(NTKTimelineEntryModelCache *)self->_entryModelCache entryModelsAfterDate:a3 limit:a4];
+  handlerCopy = handler;
+  v9 = [(NTKTimelineEntryModelCache *)self->_entryModelCache entryModelsAfterDate:date limit:limit];
   v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
   v17 = 0u;
   v18 = 0u;
@@ -215,29 +215,29 @@
     while (v13);
   }
 
-  v8[2](v8, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)getTimelineEndDateWithHandler:(id)a3
+- (void)getTimelineEndDateWithHandler:(id)handler
 {
   if (self->_location)
   {
-    v4 = a3;
-    v6 = +[NSDate distantFuture];
-    (*(a3 + 2))(v4);
+    handlerCopy = handler;
+    handlerCopy2 = +[NSDate distantFuture];
+    (*(handler + 2))(handlerCopy);
   }
 
   else
   {
-    v5 = *(a3 + 2);
-    v6 = a3;
+    v5 = *(handler + 2);
+    handlerCopy2 = handler;
     v5();
   }
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v6 = [NSURL nwcCurrentLocationURLForLocation:self->_location];
@@ -248,7 +248,7 @@
     v6 = 0;
   }
 
-  v7[2](v7, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
 + (id)appIdentifier
@@ -279,23 +279,23 @@
   return result;
 }
 
-- (id)_timelineEntryFromModel:(id)a3
+- (id)_timelineEntryFromModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 entryForComplicationFamily:{-[NTKMoonPhaseComplicationDataSource family](self, "family")}];
-  v6 = [v4 animationGroup];
+  modelCopy = model;
+  v5 = [modelCopy entryForComplicationFamily:{-[NTKMoonPhaseComplicationDataSource family](self, "family")}];
+  animationGroup = [modelCopy animationGroup];
 
-  [v5 setTimelineAnimationGroup:v6];
+  [v5 setTimelineAnimationGroup:animationGroup];
 
   return v5;
 }
 
-- (id)loadEntryModelsForDay:(id)a3
+- (id)loadEntryModelsForDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v5 = 3;
   v6 = [NSMutableArray arrayWithCapacity:3];
-  v7 = v4;
+  v7 = dayCopy;
   v8 = 0;
   v9 = v7;
   while (1)
@@ -331,27 +331,27 @@ LABEL_8:
 
 - (void)_invalidate
 {
-  v2 = [(NTKMoonPhaseComplicationDataSource *)self delegate];
-  [v2 invalidateEntries];
+  delegate = [(NTKMoonPhaseComplicationDataSource *)self delegate];
+  [delegate invalidateEntries];
 }
 
-- (id)_entryModelsForDate:(id)a3 nextEvaluationDate:(id *)a4
+- (id)_entryModelsForDate:(id)date nextEvaluationDate:(id *)evaluationDate
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_opt_new();
-  [v6 setEntryDate:v5];
-  v26 = v5;
-  v7 = [[NUNIMoonPhaseModel alloc] initWithDate:v5 location:self->_location];
-  v8 = [v7 phaseNumber];
-  v9 = [v7 hemisphere];
-  v10 = [v7 eventDate];
-  v11 = [v7 phaseName];
-  v12 = [v7 event];
-  [v6 setPhaseNumber:v8];
-  [v6 setHemisphere:v9];
-  [v6 setPhaseName:v11];
-  [v6 setEvent:v12];
-  [v6 setEventDate:v10];
+  [v6 setEntryDate:dateCopy];
+  v26 = dateCopy;
+  v7 = [[NUNIMoonPhaseModel alloc] initWithDate:dateCopy location:self->_location];
+  phaseNumber = [v7 phaseNumber];
+  hemisphere = [v7 hemisphere];
+  eventDate = [v7 eventDate];
+  phaseName = [v7 phaseName];
+  event = [v7 event];
+  [v6 setPhaseNumber:phaseNumber];
+  [v6 setHemisphere:hemisphere];
+  [v6 setPhaseName:phaseName];
+  [v6 setEvent:event];
+  [v6 setEventDate:eventDate];
   v13 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -359,32 +359,32 @@ LABEL_8:
     *buf = 138478851;
     v29 = location;
     v30 = 2048;
-    v31 = v9;
+    v31 = hemisphere;
     v32 = 2112;
-    v33 = v11;
+    v33 = phaseName;
     v34 = 2048;
-    v35 = v12;
+    v35 = event;
     v36 = 2112;
-    v37 = v10;
+    v37 = eventDate;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "NTKMoonPhaseComplicationDataSource creating timeline entry model with location: %{private}@ hemisphere:%ld phase:%@ event:%ld date:%@", buf, 0x34u);
   }
 
   if (self->_location)
   {
-    v15 = [(NTKMoonPhaseComplicationDataSource *)self _animationForDate:v10 event:v12];
-    [v6 setAnimationGroup:v15];
+    _animationGroupForNoLocation = [(NTKMoonPhaseComplicationDataSource *)self _animationForDate:eventDate event:event];
+    [v6 setAnimationGroup:_animationGroupForNoLocation];
     v16 = v26;
-    if (v10)
+    if (eventDate)
     {
       v17 = objc_opt_new();
-      [v17 setEntryDate:v10];
-      [v17 setEvent:v12];
-      [v17 setEventDate:v10];
-      [v17 setPhaseName:v11];
-      [v17 setPhaseNumber:v8];
-      [v17 setHemisphere:v9];
+      [v17 setEntryDate:eventDate];
+      [v17 setEvent:event];
+      [v17 setEventDate:eventDate];
+      [v17 setPhaseName:phaseName];
+      [v17 setPhaseNumber:phaseNumber];
+      [v17 setHemisphere:hemisphere];
       [v17 setCurrentEvent:1];
-      [v17 setAnimationGroup:v15];
+      [v17 setAnimationGroup:_animationGroupForNoLocation];
     }
 
     else
@@ -395,25 +395,25 @@ LABEL_8:
 
   else
   {
-    v15 = [(NTKMoonPhaseComplicationDataSource *)self _animationGroupForNoLocation];
-    [v6 setAnimationGroup:v15];
+    _animationGroupForNoLocation = [(NTKMoonPhaseComplicationDataSource *)self _animationGroupForNoLocation];
+    [v6 setAnimationGroup:_animationGroupForNoLocation];
     v17 = 0;
     v16 = v26;
   }
 
-  if (a4)
+  if (evaluationDate)
   {
     v18 = +[NSCalendar currentCalendar];
-    v19 = [v6 eventDate];
-    if (v19 && (v20 = v19, [v6 eventDate], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v18, "isDate:inSameDayAsDate:", v21, v16), v21, v20, v22))
+    eventDate2 = [v6 eventDate];
+    if (eventDate2 && (v20 = eventDate2, [v6 eventDate], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v18, "isDate:inSameDayAsDate:", v21, v16), v21, v20, v22))
     {
-      v23 = [v6 eventDate];
-      *a4 = [v18 dateByAddingUnit:64 value:1 toDate:v23 options:0];
+      eventDate3 = [v6 eventDate];
+      *evaluationDate = [v18 dateByAddingUnit:64 value:1 toDate:eventDate3 options:0];
     }
 
     else
     {
-      *a4 = 0;
+      *evaluationDate = 0;
     }
   }
 
@@ -427,40 +427,40 @@ LABEL_8:
   return v24;
 }
 
-- (id)_animationGroupForDate:(id)a3 event:(int64_t)a4 haveLocation:(BOOL)a5
+- (id)_animationGroupForDate:(id)date event:(int64_t)event haveLocation:(BOOL)location
 {
-  v5 = a5;
-  v7 = a3;
+  locationCopy = location;
+  dateCopy = date;
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v13 = v7;
+    v13 = dateCopy;
     v14 = 2048;
-    v15 = a4;
+    eventCopy = event;
     v16 = 2048;
-    v17 = v5;
+    v17 = locationCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "NTKMoonPhaseComplicationDataSource animationGroupForDate with date:%@ NTKMoonPhaseEvent:%ld haveLocation?%ld", buf, 0x20u);
   }
 
-  v9 = @"no.event";
-  if (a4 != -1 && v7 && v5)
+  dateCopy = @"no.event";
+  if (event != -1 && dateCopy && locationCopy)
   {
     v10 = @"set";
-    if (a4 != 2)
+    if (event != 2)
     {
       v10 = 0;
     }
 
-    if (!a4)
+    if (!event)
     {
       v10 = @"rise";
     }
 
-    v9 = [NSString stringWithFormat:@"%@.%@", v10, v7];
+    dateCopy = [NSString stringWithFormat:@"%@.%@", v10, dateCopy];
   }
 
-  return v9;
+  return dateCopy;
 }
 
 @end

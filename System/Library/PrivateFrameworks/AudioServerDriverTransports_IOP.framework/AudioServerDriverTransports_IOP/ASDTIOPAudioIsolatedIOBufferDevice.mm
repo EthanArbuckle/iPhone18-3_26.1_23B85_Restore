@@ -1,22 +1,22 @@
 @interface ASDTIOPAudioIsolatedIOBufferDevice
-- (BOOL)getStreamDescription:(AudioStreamBasicDescription *)a3;
+- (BOOL)getStreamDescription:(AudioStreamBasicDescription *)description;
 - (BOOL)open;
-- (BOOL)setStreamDescription:(const AudioStreamBasicDescription *)a3 withBufferFrameSize:(unsigned int)a4;
-- (BOOL)setupClientIO:(unint64_t)a3 withBufferFrameSize:(unsigned int)a4;
+- (BOOL)setStreamDescription:(const AudioStreamBasicDescription *)description withBufferFrameSize:(unsigned int)size;
+- (BOOL)setupClientIO:(unint64_t)o withBufferFrameSize:(unsigned int)size;
 - (BOOL)setupIO;
-- (BOOL)teardownClientIO:(unint64_t)a3;
+- (BOOL)teardownClientIO:(unint64_t)o;
 - (BOOL)teardownIO;
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4;
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value;
 - (void)close;
 - (void)open;
 @end
 
 @implementation ASDTIOPAudioIsolatedIOBufferDevice
 
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value
 {
   v5 = *MEMORY[0x277D85DE8];
-  [a4 clientType];
+  [value clientType];
   operator new();
 }
 
@@ -35,8 +35,8 @@
     v5 = ASDTIOPLogType();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(ASDTIOService *)self idValue];
-      [(ASDTIOPAudioIsolatedIOBufferDevice *)v6 open];
+      idValue = [(ASDTIOService *)self idValue];
+      [(ASDTIOPAudioIsolatedIOBufferDevice *)idValue open];
     }
   }
 
@@ -57,7 +57,7 @@
   v4();
 }
 
-- (BOOL)setStreamDescription:(const AudioStreamBasicDescription *)a3 withBufferFrameSize:(unsigned int)a4
+- (BOOL)setStreamDescription:(const AudioStreamBasicDescription *)description withBufferFrameSize:(unsigned int)size
 {
   ptr = self->_userClient.__ptr_;
   if (!ptr)
@@ -65,15 +65,15 @@
     [ASDTIOPAudioIsolatedIOBufferDevice setStreamDescription:withBufferFrameSize:];
   }
 
-  if (!a3)
+  if (!description)
   {
     [ASDTIOPAudioIsolatedIOBufferDevice setStreamDescription:withBufferFrameSize:];
   }
 
-  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::SetStreamDescription(ptr, a3, a4);
+  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::SetStreamDescription(ptr, description, size);
 }
 
-- (BOOL)getStreamDescription:(AudioStreamBasicDescription *)a3
+- (BOOL)getStreamDescription:(AudioStreamBasicDescription *)description
 {
   ptr = self->_userClient.__ptr_;
   if (!ptr)
@@ -81,12 +81,12 @@
     [ASDTIOPAudioIsolatedIOBufferDevice getStreamDescription:];
   }
 
-  if (!a3)
+  if (!description)
   {
     [ASDTIOPAudioIsolatedIOBufferDevice getStreamDescription:];
   }
 
-  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::GetStreamDescription(ptr, a3);
+  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::GetStreamDescription(ptr, description);
 }
 
 - (BOOL)setupIO
@@ -111,7 +111,7 @@
   return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::TeardownIO(ptr);
 }
 
-- (BOOL)setupClientIO:(unint64_t)a3 withBufferFrameSize:(unsigned int)a4
+- (BOOL)setupClientIO:(unint64_t)o withBufferFrameSize:(unsigned int)size
 {
   ptr = self->_userClient.__ptr_;
   if (!ptr)
@@ -119,10 +119,10 @@
     [ASDTIOPAudioIsolatedIOBufferDevice setupClientIO:withBufferFrameSize:];
   }
 
-  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::SetupClientIO(ptr, a3, a4);
+  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::SetupClientIO(ptr, o, size);
 }
 
-- (BOOL)teardownClientIO:(unint64_t)a3
+- (BOOL)teardownClientIO:(unint64_t)o
 {
   ptr = self->_userClient.__ptr_;
   if (!ptr)
@@ -130,7 +130,7 @@
     [ASDTIOPAudioIsolatedIOBufferDevice teardownClientIO:];
   }
 
-  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::TeardownClientIO(ptr, a3);
+  return ASDT::IOPAudio::IsolatedIOBuffer::UserClient::TeardownClientIO(ptr, o);
 }
 
 - (void)initForIOObject:(uint64_t)a1 andIDValue:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)
@@ -145,7 +145,7 @@
 - (void)open
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_2416E9000, log, OS_LOG_TYPE_ERROR, "%@: Failed to open connection to IsolatedIOBuffer user client", buf, 0xCu);
 }
 

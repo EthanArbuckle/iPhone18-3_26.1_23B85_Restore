@@ -1,17 +1,17 @@
 @interface _SWCPrefs
 + (_SWCPrefs)sharedPrefs;
-- (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)isAppleInternal;
 - (double)retryIntervalAfterFailure;
-- (double)retryIntervalAfterReachLimitWithFailure:(unint64_t)a3;
+- (double)retryIntervalAfterReachLimitWithFailure:(unint64_t)failure;
 - (double)retryIntervalAfterSuccess;
-- (double)retryIntervalAfterSuccess:(BOOL)a3;
+- (double)retryIntervalAfterSuccess:(BOOL)success;
 - (id)_init;
-- (id)_stringForKey:(id)a3 defaultValue:(id)a4;
-- (id)containerURLReturningError:(id *)a3;
+- (id)_stringForKey:(id)key defaultValue:(id)value;
+- (id)containerURLReturningError:(id *)error;
 - (id)descriptionOfAllPrefs;
-- (unint64_t)_recheckFuzzForSuccess:(BOOL)a3;
-- (unint64_t)_unsignedIntegerForKey:(id)a3 defaultValue:(unint64_t)a4 minimumValue:(unint64_t)a5 maximumValue:(unint64_t)a6;
+- (unint64_t)_recheckFuzzForSuccess:(BOOL)success;
+- (unint64_t)_unsignedIntegerForKey:(id)key defaultValue:(unint64_t)value minimumValue:(unint64_t)minimumValue maximumValue:(unint64_t)maximumValue;
 @end
 
 @implementation _SWCPrefs
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)containerURLReturningError:(id *)a3
+- (id)containerURLReturningError:(id *)error
 {
   if (qword_280B21758 && [(_SWCPrefs *)self isAppleInternal])
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [v4 temporaryDirectory];
-    v6 = [qword_280B21758 UUIDString];
-    v7 = [v5 URLByAppendingPathComponent:v6 isDirectory:1];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    temporaryDirectory = [defaultManager temporaryDirectory];
+    uUIDString = [qword_280B21758 UUIDString];
+    v7 = [temporaryDirectory URLByAppendingPathComponent:uUIDString isDirectory:1];
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   else
@@ -49,9 +49,9 @@
     }
 
     v9 = qword_280B21880;
-    if (a3 && !qword_280B21880)
+    if (error && !qword_280B21880)
     {
-      *a3 = qword_280B21888;
+      *error = qword_280B21888;
       v9 = qword_280B21880;
     }
 
@@ -61,9 +61,9 @@
   return v7;
 }
 
-- (double)retryIntervalAfterReachLimitWithFailure:(unint64_t)a3
+- (double)retryIntervalAfterReachLimitWithFailure:(unint64_t)failure
 {
-  v4 = fmax(exp2((a3 - [(_SWCPrefs *)self maximumRetryCount]+ 1)), 1.0);
+  v4 = fmax(exp2((failure - [(_SWCPrefs *)self maximumRetryCount]+ 1)), 1.0);
   [(_SWCPrefs *)self retryIntervalAfterFailure];
   return v5 * v4;
 }
@@ -88,9 +88,9 @@
   return [(_SWCPrefs *)self _unsignedIntegerForKey:@"recheckSuccessDelaySecs" defaultValue:qword_280B218A8 minimumValue:428400 maximumValue:432000];
 }
 
-- (double)retryIntervalAfterSuccess:(BOOL)a3
+- (double)retryIntervalAfterSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     [(_SWCPrefs *)self retryIntervalAfterSuccess];
   }
@@ -174,111 +174,111 @@
   return [(_SWCPrefs *)&v3 init];
 }
 
-- (unint64_t)_recheckFuzzForSuccess:(BOOL)a3
+- (unint64_t)_recheckFuzzForSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   if (qword_280B218C0 != -1)
   {
     dispatch_once(&qword_280B218C0, &__block_literal_global_81);
   }
 
-  return *&_MergedGlobals_2[8 * v3 + 112];
+  return *&_MergedGlobals_2[8 * successCopy + 112];
 }
 
-- (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = CFPreferencesCopyAppValue(a3, @"com.apple.SharedWebCredentials");
+  v5 = CFPreferencesCopyAppValue(key, @"com.apple.SharedWebCredentials");
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (unint64_t)_unsignedIntegerForKey:(id)a3 defaultValue:(unint64_t)a4 minimumValue:(unint64_t)a5 maximumValue:(unint64_t)a6
+- (unint64_t)_unsignedIntegerForKey:(id)key defaultValue:(unint64_t)value minimumValue:(unint64_t)minimumValue maximumValue:(unint64_t)maximumValue
 {
-  v9 = CFPreferencesCopyAppValue(a3, @"com.apple.SharedWebCredentials");
+  v9 = CFPreferencesCopyAppValue(key, @"com.apple.SharedWebCredentials");
   if (v9)
   {
     v10 = v9;
     if (objc_opt_respondsToSelector())
     {
-      a4 = [v10 unsignedIntegerValue];
+      value = [v10 unsignedIntegerValue];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v13 = [v10 integerValue];
-      a4 = v13 & ~(v13 >> 63);
+      integerValue = [v10 integerValue];
+      value = integerValue & ~(integerValue >> 63);
     }
 
     v14 = CFPreferencesCopyAppValue(@"skipClampingRetryDelaySecs", @"com.apple.SharedWebCredentials");
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
     }
 
     else
     {
-      v15 = 0;
+      bOOLValue = 0;
     }
 
-    if (a4 >= a6)
+    if (value >= maximumValue)
     {
-      v16 = a6;
-    }
-
-    else
-    {
-      v16 = a4;
-    }
-
-    if (v16 <= a5)
-    {
-      v16 = a5;
-    }
-
-    if (v15)
-    {
-      return a4;
+      minimumValueCopy = maximumValue;
     }
 
     else
     {
-      return v16;
+      minimumValueCopy = value;
+    }
+
+    if (minimumValueCopy <= minimumValue)
+    {
+      minimumValueCopy = minimumValue;
+    }
+
+    if (bOOLValue)
+    {
+      return value;
+    }
+
+    else
+    {
+      return minimumValueCopy;
     }
   }
 
   else
   {
-    if (a4 >= a6)
+    if (value >= maximumValue)
     {
-      v11 = a6;
+      valueCopy2 = maximumValue;
     }
 
     else
     {
-      v11 = a4;
+      valueCopy2 = value;
     }
 
-    if (v11 <= a5)
+    if (valueCopy2 <= minimumValue)
     {
-      return a5;
+      return minimumValue;
     }
 
     else
     {
-      return v11;
+      return valueCopy2;
     }
   }
 }
 
-- (id)_stringForKey:(id)a3 defaultValue:(id)a4
+- (id)_stringForKey:(id)key defaultValue:(id)value
 {
-  v5 = a4;
-  v6 = CFPreferencesCopyAppValue(a3, @"com.apple.SharedWebCredentials");
-  v7 = v5;
+  valueCopy = value;
+  v6 = CFPreferencesCopyAppValue(key, @"com.apple.SharedWebCredentials");
+  v7 = valueCopy;
   if (v6)
   {
     if (_NSIsNSString())

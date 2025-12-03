@@ -1,5 +1,5 @@
 @interface TFContainer
-- (TFContainer)initWithBundleAssemblies:(id)a3 assemblies:(id)a4;
+- (TFContainer)initWithBundleAssemblies:(id)assemblies assemblies:(id)a4;
 - (TFResolver)resolver;
 @end
 
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (TFContainer)initWithBundleAssemblies:(id)a3 assemblies:(id)a4
+- (TFContainer)initWithBundleAssemblies:(id)assemblies assemblies:(id)a4
 {
   v4 = sub_1BF17A4DC();
   v5 = sub_1BF17A4DC();

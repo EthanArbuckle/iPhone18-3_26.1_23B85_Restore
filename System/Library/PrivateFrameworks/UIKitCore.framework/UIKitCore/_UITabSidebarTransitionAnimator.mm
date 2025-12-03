@@ -1,8 +1,8 @@
 @interface _UITabSidebarTransitionAnimator
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
 - (CGAffineTransform)targetTransform;
 - (UIView)containerView;
-- (_UITabSidebarTransitionAnimator)initWithContainerView:(id)a3 duration:(double)a4;
+- (_UITabSidebarTransitionAnimator)initWithContainerView:(id)view duration:(double)duration;
 - (double)percentComplete;
 - (void)runAnimations;
 - (void)runCompletions;
@@ -10,28 +10,28 @@
 
 @implementation _UITabSidebarTransitionAnimator
 
-- (_UITabSidebarTransitionAnimator)initWithContainerView:(id)a3 duration:(double)a4
+- (_UITabSidebarTransitionAnimator)initWithContainerView:(id)view duration:(double)duration
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UITabSidebarTransitionAnimator;
   v7 = [(_UITabSidebarTransitionAnimator *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_containerView, v6);
-    v8->_transitionDuration = a4;
+    objc_storeWeak(&v7->_containerView, viewCopy);
+    v8->_transitionDuration = duration;
   }
 
   return v8;
 }
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  viewCopy = view;
+  animationCopy = animation;
+  completionCopy = completion;
+  if (animationCopy)
   {
     if (!self->_animationBlocks)
     {
@@ -42,13 +42,13 @@
 
     objc_initWeak(&location, self);
     v13 = self->_animationBlocks;
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(animationCopy);
     [(NSMutableArray *)v13 addObject:v14];
 
     objc_destroyWeak(&location);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     if (!self->_completionBlocks)
     {
@@ -59,7 +59,7 @@
 
     objc_initWeak(&location, self);
     v17 = self->_completionBlocks;
-    v18 = _Block_copy(v10);
+    v18 = _Block_copy(completionCopy);
     [(NSMutableArray *)v17 addObject:v18];
 
     objc_destroyWeak(&location);

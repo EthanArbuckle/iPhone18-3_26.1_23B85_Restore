@@ -1,14 +1,14 @@
 @interface _CNDonationAccountLogger
 - (_CNDonationAccountLogger)init;
-- (void)accountAdded:(id)a3;
-- (void)accountChanged:(id)a3;
-- (void)accountRemoved:(id)a3;
+- (void)accountAdded:(id)added;
+- (void)accountChanged:(id)changed;
+- (void)accountRemoved:(id)removed;
 - (void)accountsDidNotChange;
-- (void)donationFailedWithError:(id)a3;
+- (void)donationFailedWithError:(id)error;
 - (void)pluginLoaded;
 - (void)pluginUnloaded;
-- (void)removalFailedWithError:(id)a3;
-- (void)removing:(id)a3;
+- (void)removalFailedWithError:(id)error;
+- (void)removing:(id)removing;
 @end
 
 @implementation _CNDonationAccountLogger
@@ -36,114 +36,114 @@
 
 - (void)pluginLoaded
 {
-  v2 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_2258E5000, v2, OS_LOG_TYPE_DEFAULT, "Plugin loaded", v3, 2u);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Plugin loaded", v3, 2u);
   }
 }
 
 - (void)pluginUnloaded
 {
-  v2 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_2258E5000, v2, OS_LOG_TYPE_DEFAULT, "Plugin unloaded", v3, 2u);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Plugin unloaded", v3, 2u);
   }
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  addedCopy = added;
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [addedCopy identifier];
     v8 = 138543362;
-    v9 = v6;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Account added: %{public}@", &v8, 0xCu);
+    v9 = identifier;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Account added: %{public}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  changedCopy = changed;
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [changedCopy identifier];
     v8 = 138543362;
-    v9 = v6;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Account changed: %{public}@", &v8, 0xCu);
+    v9 = identifier;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Account changed: %{public}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  removedCopy = removed;
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [removedCopy identifier];
     v8 = 138543362;
-    v9 = v6;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Account removed: %{public}@", &v8, 0xCu);
+    v9 = identifier;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Account removed: %{public}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removing:(id)a3
+- (void)removing:(id)removing
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  removingCopy = removing;
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Removing donation with identifier: %{public}@", &v7, 0xCu);
+    v8 = removingCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Removing donation with identifier: %{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donationFailedWithError:(id)a3
+- (void)donationFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_ERROR))
   {
-    [(_CNDonationAccountLogger *)v4 donationFailedWithError:v5];
+    [(_CNDonationAccountLogger *)errorCopy donationFailedWithError:log_t];
   }
 }
 
-- (void)removalFailedWithError:(id)a3
+- (void)removalFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_ERROR))
   {
-    [(_CNDonationAccountLogger *)v4 removalFailedWithError:v5];
+    [(_CNDonationAccountLogger *)errorCopy removalFailedWithError:log_t];
   }
 }
 
 - (void)accountsDidNotChange
 {
-  v2 = [(_CNDonationAccountLogger *)self log_t];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  log_t = [(_CNDonationAccountLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_INFO))
   {
     *v3 = 0;
-    _os_log_impl(&dword_2258E5000, v2, OS_LOG_TYPE_INFO, "Ignoring account changes (no relevant changes)", v3, 2u);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_INFO, "Ignoring account changes (no relevant changes)", v3, 2u);
   }
 }
 

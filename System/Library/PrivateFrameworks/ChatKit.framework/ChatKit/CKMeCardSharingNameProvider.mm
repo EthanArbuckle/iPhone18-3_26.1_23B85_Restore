@@ -1,32 +1,32 @@
 @interface CKMeCardSharingNameProvider
 + (id)nameContactForPrimaryAccount;
-+ (id)nameProviderForAccount:(id)a3;
-+ (id)nameProviderForContact:(id)a3;
-+ (id)nameProviderForNickname:(id)a3;
++ (id)nameProviderForAccount:(id)account;
++ (id)nameProviderForContact:(id)contact;
++ (id)nameProviderForNickname:(id)nickname;
 + (id)nameProviderForPrimaryAccount;
 @end
 
 @implementation CKMeCardSharingNameProvider
 
-+ (id)nameProviderForContact:(id)a3
++ (id)nameProviderForContact:(id)contact
 {
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = objc_alloc_init(CKMeCardSharingNameProvider);
     if (v4)
     {
-      v5 = [v3 givenName];
-      [(CKMeCardSharingNameProvider *)v4 setGivenName:v5];
+      givenName = [contactCopy givenName];
+      [(CKMeCardSharingNameProvider *)v4 setGivenName:givenName];
 
-      v6 = [v3 middleName];
-      [(CKMeCardSharingNameProvider *)v4 setMiddleName:v6];
+      middleName = [contactCopy middleName];
+      [(CKMeCardSharingNameProvider *)v4 setMiddleName:middleName];
 
-      v7 = [v3 familyName];
-      [(CKMeCardSharingNameProvider *)v4 setFamilyName:v7];
+      familyName = [contactCopy familyName];
+      [(CKMeCardSharingNameProvider *)v4 setFamilyName:familyName];
 
-      v8 = [v3 nickname];
-      [(CKMeCardSharingNameProvider *)v4 setNickname:v8];
+      nickname = [contactCopy nickname];
+      [(CKMeCardSharingNameProvider *)v4 setNickname:nickname];
     }
   }
 
@@ -48,19 +48,19 @@
   return v4;
 }
 
-+ (id)nameProviderForNickname:(id)a3
++ (id)nameProviderForNickname:(id)nickname
 {
-  v3 = a3;
-  if (v3)
+  nicknameCopy = nickname;
+  if (nicknameCopy)
   {
     v4 = objc_alloc_init(CKMeCardSharingNameProvider);
     if (v4)
     {
-      v5 = [v3 firstName];
-      [(CKMeCardSharingNameProvider *)v4 setGivenName:v5];
+      firstName = [nicknameCopy firstName];
+      [(CKMeCardSharingNameProvider *)v4 setGivenName:firstName];
 
-      v6 = [v3 lastName];
-      [(CKMeCardSharingNameProvider *)v4 setFamilyName:v6];
+      lastName = [nicknameCopy lastName];
+      [(CKMeCardSharingNameProvider *)v4 setFamilyName:lastName];
     }
   }
 
@@ -82,22 +82,22 @@
   return v4;
 }
 
-+ (id)nameProviderForAccount:(id)a3
++ (id)nameProviderForAccount:(id)account
 {
-  v3 = a3;
-  if (v3)
+  accountCopy = account;
+  if (accountCopy)
   {
     v4 = objc_alloc_init(CKMeCardSharingNameProvider);
     if (v4)
     {
-      v5 = [v3 aa_firstName];
-      [(CKMeCardSharingNameProvider *)v4 setGivenName:v5];
+      aa_firstName = [accountCopy aa_firstName];
+      [(CKMeCardSharingNameProvider *)v4 setGivenName:aa_firstName];
 
-      v6 = [v3 aa_middleName];
-      [(CKMeCardSharingNameProvider *)v4 setMiddleName:v6];
+      aa_middleName = [accountCopy aa_middleName];
+      [(CKMeCardSharingNameProvider *)v4 setMiddleName:aa_middleName];
 
-      v7 = [v3 aa_lastName];
-      [(CKMeCardSharingNameProvider *)v4 setFamilyName:v7];
+      aa_lastName = [accountCopy aa_lastName];
+      [(CKMeCardSharingNameProvider *)v4 setFamilyName:aa_lastName];
     }
   }
 
@@ -125,8 +125,8 @@
   if (v3)
   {
     v4 = objc_alloc_init(v3);
-    v5 = [v4 aa_primaryAppleAccount];
-    v6 = [a1 nameProviderForAccount:v5];
+    aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
+    v6 = [self nameProviderForAccount:aa_primaryAppleAccount];
   }
 
   else
@@ -153,13 +153,13 @@
   if (v2)
   {
     v3 = objc_alloc_init(v2);
-    v4 = [v3 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
     v5 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v6 = [v4 aa_firstName];
-    [v5 setGivenName:v6];
+    aa_firstName = [aa_primaryAppleAccount aa_firstName];
+    [v5 setGivenName:aa_firstName];
 
-    v7 = [v4 aa_lastName];
-    [v5 setFamilyName:v7];
+    aa_lastName = [aa_primaryAppleAccount aa_lastName];
+    [v5 setFamilyName:aa_lastName];
   }
 
   else

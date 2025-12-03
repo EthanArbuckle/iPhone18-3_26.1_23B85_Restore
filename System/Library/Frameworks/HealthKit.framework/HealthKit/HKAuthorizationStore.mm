@@ -2,63 +2,63 @@
 + (id)readTaskIdentifier;
 + (id)resetTaskIdentifier;
 + (id)writeTaskIdentifier;
-- (BOOL)validateRecalibrateEstimatesRequestRecord:(id)a3 error:(id *)a4;
-- (HKAuthorizationStore)initWithHealthStore:(id)a3;
-- (id)fetchAuthorizationContextForPromptSession:(id)a3 error:(id *)a4;
-- (id)fetchConceptAuthorizationContextForPromptSession:(id)a3 error:(id *)a4;
-- (void)fetchAuthorizationRecordsForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchAuthorizationRecordsForType:(id)a3 completion:(id)a4;
-- (void)fetchAuthorizationStatusesForDocumentType:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchAuthorizationStatusesForSample:(id)a3 completion:(id)a4;
-- (void)fetchConceptAuthorizationRecordsForSource:(id)a3 completion:(id)a4;
-- (void)fetchSourcesRequestingAuthorizationForTypes:(id)a3 completion:(id)a4;
-- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 completion:(id)a4;
-- (void)recalibrateEstimatesForSampleType:(id)a3 effectiveDate:(id)a4 completion:(id)a5;
-- (void)resetAllObjectAuthorizationStatusForBundleIdentifier:(id)a3 objectType:(id)a4 completion:(id)a5;
-- (void)resetAuthorizationStatusForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)resetAuthorizationStatusesForObjects:(id)a3 completion:(id)a4;
-- (void)setAuthorizationStatuses:(id)a3 authorizationModes:(id)a4 forBundleIdentifier:(id)a5 options:(unint64_t)a6 completion:(id)a7;
-- (void)setObjectAuthorizationStatusContext:(id)a3 forObjectType:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
-- (void)setRequestedAuthorizationForBundleIdentifier:(id)a3 shareTypes:(id)a4 readTypes:(id)a5 completion:(id)a6;
+- (BOOL)validateRecalibrateEstimatesRequestRecord:(id)record error:(id *)error;
+- (HKAuthorizationStore)initWithHealthStore:(id)store;
+- (id)fetchAuthorizationContextForPromptSession:(id)session error:(id *)error;
+- (id)fetchConceptAuthorizationContextForPromptSession:(id)session error:(id *)error;
+- (void)fetchAuthorizationRecordsForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchAuthorizationRecordsForType:(id)type completion:(id)completion;
+- (void)fetchAuthorizationStatusesForDocumentType:(id)type bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchAuthorizationStatusesForSample:(id)sample completion:(id)completion;
+- (void)fetchConceptAuthorizationRecordsForSource:(id)source completion:(id)completion;
+- (void)fetchSourcesRequestingAuthorizationForTypes:(id)types completion:(id)completion;
+- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain completion:(id)completion;
+- (void)recalibrateEstimatesForSampleType:(id)type effectiveDate:(id)date completion:(id)completion;
+- (void)resetAllObjectAuthorizationStatusForBundleIdentifier:(id)identifier objectType:(id)type completion:(id)completion;
+- (void)resetAuthorizationStatusForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)resetAuthorizationStatusesForObjects:(id)objects completion:(id)completion;
+- (void)setAuthorizationStatuses:(id)statuses authorizationModes:(id)modes forBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion;
+- (void)setObjectAuthorizationStatusContext:(id)context forObjectType:(id)type bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setRequestedAuthorizationForBundleIdentifier:(id)identifier shareTypes:(id)types readTypes:(id)readTypes completion:(id)completion;
 @end
 
 @implementation HKAuthorizationStore
 
-- (HKAuthorizationStore)initWithHealthStore:(id)a3
+- (HKAuthorizationStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v28.receiver = self;
   v28.super_class = HKAuthorizationStore;
   v5 = [(HKAuthorizationStore *)&v28 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() readTaskIdentifier];
+    readTaskIdentifier = [objc_opt_class() readTaskIdentifier];
     v8 = HKAuthorizationStoreClientInterface();
     v9 = HKAuthorizationStoreReadServerInterface();
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 exportedInterface:v8 remoteInterface:v9 taskUUID:v10];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v11 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:readTaskIdentifier exportedObject:v5 exportedInterface:v8 remoteInterface:v9 taskUUID:uUID];
     readProxyProvider = v5->_readProxyProvider;
     v5->_readProxyProvider = v11;
 
     [(HKProxyProvider *)v5->_readProxyProvider setShouldRetryOnInterruption:0];
     v13 = [HKTaskServerProxyProvider alloc];
-    v14 = [objc_opt_class() writeTaskIdentifier];
+    writeTaskIdentifier = [objc_opt_class() writeTaskIdentifier];
     v15 = HKAuthorizationStoreClientInterface();
     v16 = HKAuthorizationStoreWriteServerInterface();
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [(HKTaskServerProxyProvider *)v13 initWithHealthStore:v4 taskIdentifier:v14 exportedObject:v5 exportedInterface:v15 remoteInterface:v16 taskUUID:v17];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    v18 = [(HKTaskServerProxyProvider *)v13 initWithHealthStore:storeCopy taskIdentifier:writeTaskIdentifier exportedObject:v5 exportedInterface:v15 remoteInterface:v16 taskUUID:uUID2];
     writeProxyProvider = v5->_writeProxyProvider;
     v5->_writeProxyProvider = v18;
 
     [(HKProxyProvider *)v5->_writeProxyProvider setShouldRetryOnInterruption:0];
     v20 = [HKTaskServerProxyProvider alloc];
-    v21 = [objc_opt_class() resetTaskIdentifier];
+    resetTaskIdentifier = [objc_opt_class() resetTaskIdentifier];
     v22 = HKAuthorizationStoreClientInterface();
     v23 = HKAuthorizationStoreResetServerInterface();
-    v24 = [MEMORY[0x1E696AFB0] UUID];
-    v25 = [(HKTaskServerProxyProvider *)v20 initWithHealthStore:v4 taskIdentifier:v21 exportedObject:v5 exportedInterface:v22 remoteInterface:v23 taskUUID:v24];
+    uUID3 = [MEMORY[0x1E696AFB0] UUID];
+    v25 = [(HKTaskServerProxyProvider *)v20 initWithHealthStore:storeCopy taskIdentifier:resetTaskIdentifier exportedObject:v5 exportedInterface:v22 remoteInterface:v23 taskUUID:uUID3];
     resetProxyProvider = v5->_resetProxyProvider;
     v5->_resetProxyProvider = v25;
 
@@ -98,12 +98,12 @@
   return v5;
 }
 
-- (void)fetchAuthorizationRecordsForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)fetchAuthorizationRecordsForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!identifierCopy)
   {
     [HKAuthorizationStore fetchAuthorizationRecordsForBundleIdentifier:completion:];
     if (v8)
@@ -116,7 +116,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -128,7 +128,7 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __80__HKAuthorizationStore_fetchAuthorizationRecordsForBundleIdentifier_completion___block_invoke;
   v14[3] = &unk_1E737AC38;
-  v15 = v6;
+  v15 = identifierCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -136,16 +136,16 @@ LABEL_3:
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = identifierCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)fetchAuthorizationRecordsForType:(id)a3 completion:(id)a4
+- (void)fetchAuthorizationRecordsForType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  typeCopy = type;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!typeCopy)
   {
     [HKAuthorizationStore fetchAuthorizationRecordsForType:completion:];
     if (v8)
@@ -158,7 +158,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -170,7 +170,7 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __68__HKAuthorizationStore_fetchAuthorizationRecordsForType_completion___block_invoke;
   v14[3] = &unk_1E737AC38;
-  v15 = v6;
+  v15 = typeCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -178,26 +178,26 @@ LABEL_3:
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = typeCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)fetchSourcesRequestingAuthorizationForTypes:(id)a3 completion:(id)a4
+- (void)fetchSourcesRequestingAuthorizationForTypes:(id)types completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  typesCopy = types;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKAuthorizationStore fetchSourcesRequestingAuthorizationForTypes:completion:];
   }
 
-  v8 = [(HKProxyProvider *)self->_readProxyProvider clientQueueObjectHandlerWithCompletion:v7];
+  v8 = [(HKProxyProvider *)self->_readProxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__HKAuthorizationStore_fetchSourcesRequestingAuthorizationForTypes_completion___block_invoke;
   v13[3] = &unk_1E737AC38;
-  v14 = v6;
+  v14 = typesCopy;
   v15 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -205,26 +205,26 @@ LABEL_3:
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = typesCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)setAuthorizationStatuses:(id)a3 authorizationModes:(id)a4 forBundleIdentifier:(id)a5 options:(unint64_t)a6 completion:(id)a7
+- (void)setAuthorizationStatuses:(id)statuses authorizationModes:(id)modes forBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([v12 count])
+  statusesCopy = statuses;
+  modesCopy = modes;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([statusesCopy count])
   {
-    if (v13)
+    if (modesCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [HKAuthorizationStore setAuthorizationStatuses:authorizationModes:forBundleIdentifier:options:completion:];
-    if (v14)
+    if (identifierCopy)
     {
       goto LABEL_4;
     }
@@ -235,28 +235,28 @@ LABEL_7:
   }
 
   [HKAuthorizationStore setAuthorizationStatuses:authorizationModes:forBundleIdentifier:options:completion:];
-  if (!v13)
+  if (!modesCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v14)
+  if (!identifierCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v16 = [(HKProxyProvider *)self->_writeProxyProvider clientQueueActionHandlerWithCompletion:v15];
+  v16 = [(HKProxyProvider *)self->_writeProxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __107__HKAuthorizationStore_setAuthorizationStatuses_authorizationModes_forBundleIdentifier_options_completion___block_invoke;
   v23[3] = &unk_1E737AC60;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v28 = a6;
+  v24 = statusesCopy;
+  v25 = modesCopy;
+  v26 = identifierCopy;
+  optionsCopy = options;
   v27 = v16;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -264,37 +264,37 @@ LABEL_4:
   v21[3] = &unk_1E7376960;
   v22 = v27;
   v17 = v27;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v18 = identifierCopy;
+  v19 = modesCopy;
+  v20 = statusesCopy;
   [(HKAuthorizationStore *)self _fetchWriteProxyWithHandler:v23 errorHandler:v21];
 }
 
-- (void)setRequestedAuthorizationForBundleIdentifier:(id)a3 shareTypes:(id)a4 readTypes:(id)a5 completion:(id)a6
+- (void)setRequestedAuthorizationForBundleIdentifier:(id)identifier shareTypes:(id)types readTypes:(id)readTypes completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  identifierCopy = identifier;
+  typesCopy = types;
+  readTypesCopy = readTypes;
+  completionCopy = completion;
+  if (!identifierCopy)
   {
     [HKAuthorizationStore setRequestedAuthorizationForBundleIdentifier:shareTypes:readTypes:completion:];
   }
 
-  if (![v11 count] && !objc_msgSend(v12, "count"))
+  if (![typesCopy count] && !objc_msgSend(readTypesCopy, "count"))
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must request authorization for at least one data type"];
   }
 
-  v14 = [(HKProxyProvider *)self->_writeProxyProvider clientQueueActionHandlerWithCompletion:v13];
+  v14 = [(HKProxyProvider *)self->_writeProxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __101__HKAuthorizationStore_setRequestedAuthorizationForBundleIdentifier_shareTypes_readTypes_completion___block_invoke;
   v21[3] = &unk_1E737AC88;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
+  v22 = identifierCopy;
+  v23 = typesCopy;
+  v24 = readTypesCopy;
   v25 = v14;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -302,21 +302,21 @@ LABEL_4:
   v19[3] = &unk_1E7376960;
   v20 = v25;
   v15 = v25;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = readTypesCopy;
+  v17 = typesCopy;
+  v18 = identifierCopy;
   [(HKAuthorizationStore *)self _fetchWriteProxyWithHandler:v21 errorHandler:v19];
 }
 
-- (void)resetAuthorizationStatusForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)resetAuthorizationStatusForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__HKAuthorizationStore_resetAuthorizationStatusForBundleIdentifier_completion___block_invoke;
   v12[3] = &unk_1E737ACB0;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -324,25 +324,25 @@ LABEL_4:
   v10[3] = &unk_1E7376960;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = identifierCopy;
   [(HKAuthorizationStore *)self _fetchResetProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)fetchAuthorizationStatusesForDocumentType:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)fetchAuthorizationStatusesForDocumentType:(id)type bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (typeCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [HKAuthorizationStore fetchAuthorizationStatusesForDocumentType:bundleIdentifier:completion:];
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -353,26 +353,26 @@ LABEL_7:
   }
 
   [HKAuthorizationStore fetchAuthorizationStatusesForDocumentType:bundleIdentifier:completion:];
-  if (!v9)
+  if (!identifierCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v11 = [(HKProxyProvider *)self->_readProxyProvider clientQueueObjectHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_readProxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __94__HKAuthorizationStore_fetchAuthorizationStatusesForDocumentType_bundleIdentifier_completion___block_invoke;
   v17[3] = &unk_1E737ACD8;
-  v18 = v8;
-  v19 = v9;
+  v18 = typeCopy;
+  v19 = identifierCopy;
   v20 = v11;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -380,17 +380,17 @@ LABEL_4:
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = identifierCopy;
+  v14 = typeCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)fetchAuthorizationStatusesForSample:(id)a3 completion:(id)a4
+- (void)fetchAuthorizationStatusesForSample:(id)sample completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  sampleCopy = sample;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!sampleCopy)
   {
     [HKAuthorizationStore fetchAuthorizationStatusesForSample:completion:];
     if (v8)
@@ -403,7 +403,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -415,7 +415,7 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __71__HKAuthorizationStore_fetchAuthorizationStatusesForSample_completion___block_invoke;
   v14[3] = &unk_1E737AC38;
-  v15 = v6;
+  v15 = sampleCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -423,7 +423,7 @@ LABEL_3:
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = sampleCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v14 errorHandler:v12];
 }
 
@@ -435,12 +435,12 @@ void __71__HKAuthorizationStore_fetchAuthorizationStatusesForSample_completion__
   [v4 remote_fetchAuthorizationStatusesForSampleUUID:v5 completion:*(a1 + 40)];
 }
 
-- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)a3 completion:(id)a4
+- (void)fetchAuthorizationStatusesForHealthConceptIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!identifierCopy)
   {
     [HKAuthorizationStore fetchAuthorizationStatusesForHealthConceptIdentifier:completion:];
     if (v8)
@@ -453,7 +453,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -465,7 +465,7 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __88__HKAuthorizationStore_fetchAuthorizationStatusesForHealthConceptIdentifier_completion___block_invoke;
   v14[3] = &unk_1E737AC38;
-  v15 = v6;
+  v15 = identifierCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -473,16 +473,16 @@ LABEL_3:
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = identifierCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 completion:(id)a4
+- (void)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  domainCopy = domain;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!domainCopy)
   {
     [HKAuthorizationStore fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:completion:];
     if (v8)
@@ -495,7 +495,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -507,7 +507,7 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __96__HKAuthorizationStore_fetchSourcesWithExistingAuthorizationsForHealthConceptDomain_completion___block_invoke;
   v14[3] = &unk_1E737AC38;
-  v15 = v6;
+  v15 = domainCopy;
   v16 = v9;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -515,13 +515,13 @@ LABEL_3:
   v12[3] = &unk_1E7376960;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
+  v11 = domainCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (id)fetchAuthorizationContextForPromptSession:(id)a3 error:(id *)a4
+- (id)fetchAuthorizationContextForPromptSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -538,7 +538,7 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __72__HKAuthorizationStore_fetchAuthorizationContextForPromptSession_error___block_invoke;
   v14[3] = &unk_1E737AD28;
-  v7 = v6;
+  v7 = sessionCopy;
   v15 = v7;
   v16 = &v24;
   v17 = &v18;
@@ -552,10 +552,10 @@ LABEL_3:
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -597,22 +597,22 @@ void __72__HKAuthorizationStore_fetchAuthorizationContextForPromptSession_error_
   *(v9 + 40) = v6;
 }
 
-- (void)fetchConceptAuthorizationRecordsForSource:(id)a3 completion:(id)a4
+- (void)fetchConceptAuthorizationRecordsForSource:(id)source completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  sourceCopy = source;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [HKAuthorizationStore fetchConceptAuthorizationRecordsForSource:completion:];
   }
 
-  v8 = [(HKProxyProvider *)self->_readProxyProvider clientQueueObjectHandlerWithCompletion:v7];
+  v8 = [(HKProxyProvider *)self->_readProxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__HKAuthorizationStore_fetchConceptAuthorizationRecordsForSource_completion___block_invoke;
   v13[3] = &unk_1E737AC38;
-  v14 = v6;
+  v14 = sourceCopy;
   v15 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -620,13 +620,13 @@ void __72__HKAuthorizationStore_fetchAuthorizationContextForPromptSession_error_
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = sourceCopy;
   [(HKAuthorizationStore *)self _fetchReadProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)fetchConceptAuthorizationContextForPromptSession:(id)a3 error:(id *)a4
+- (id)fetchConceptAuthorizationContextForPromptSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -643,7 +643,7 @@ void __72__HKAuthorizationStore_fetchAuthorizationContextForPromptSession_error_
   v14[1] = 3221225472;
   v14[2] = __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession_error___block_invoke;
   v14[3] = &unk_1E737AD28;
-  v7 = v6;
+  v7 = sessionCopy;
   v15 = v7;
   v16 = &v24;
   v17 = &v18;
@@ -657,10 +657,10 @@ void __72__HKAuthorizationStore_fetchAuthorizationContextForPromptSession_error_
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -702,19 +702,19 @@ void __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession
   *(v9 + 40) = v6;
 }
 
-- (void)setObjectAuthorizationStatusContext:(id)a3 forObjectType:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)setObjectAuthorizationStatusContext:(id)context forObjectType:(id)type bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HKProxyProvider *)self->_writeProxyProvider clientQueueActionHandlerWithCompletion:a6];
+  contextCopy = context;
+  typeCopy = type;
+  identifierCopy = identifier;
+  v13 = [(HKProxyProvider *)self->_writeProxyProvider clientQueueActionHandlerWithCompletion:completion];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __102__HKAuthorizationStore_setObjectAuthorizationStatusContext_forObjectType_bundleIdentifier_completion___block_invoke;
   v20[3] = &unk_1E737AC88;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
+  v21 = contextCopy;
+  v22 = typeCopy;
+  v23 = identifierCopy;
   v24 = v13;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -722,21 +722,21 @@ void __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession
   v18[3] = &unk_1E7376960;
   v19 = v24;
   v14 = v24;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v15 = identifierCopy;
+  v16 = typeCopy;
+  v17 = contextCopy;
   [(HKAuthorizationStore *)self _fetchWriteProxyWithHandler:v20 errorHandler:v18];
 }
 
-- (void)resetAuthorizationStatusesForObjects:(id)a3 completion:(id)a4
+- (void)resetAuthorizationStatusesForObjects:(id)objects completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:a4];
+  objectsCopy = objects;
+  v7 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__HKAuthorizationStore_resetAuthorizationStatusesForObjects_completion___block_invoke;
   v12[3] = &unk_1E737ACB0;
-  v13 = v6;
+  v13 = objectsCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -744,21 +744,21 @@ void __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession
   v10[3] = &unk_1E7376960;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = objectsCopy;
   [(HKAuthorizationStore *)self _fetchResetProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)resetAllObjectAuthorizationStatusForBundleIdentifier:(id)a3 objectType:(id)a4 completion:(id)a5
+- (void)resetAllObjectAuthorizationStatusForBundleIdentifier:(id)identifier objectType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:a5];
+  identifierCopy = identifier;
+  typeCopy = type;
+  v10 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __99__HKAuthorizationStore_resetAllObjectAuthorizationStatusForBundleIdentifier_objectType_completion___block_invoke;
   v16[3] = &unk_1E737AD78;
-  v17 = v8;
-  v18 = v9;
+  v17 = identifierCopy;
+  v18 = typeCopy;
   v19 = v10;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -766,14 +766,14 @@ void __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession
   v14[3] = &unk_1E7376960;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = typeCopy;
+  v13 = identifierCopy;
   [(HKAuthorizationStore *)self _fetchResetProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (BOOL)validateRecalibrateEstimatesRequestRecord:(id)a3 error:(id *)a4
+- (BOOL)validateRecalibrateEstimatesRequestRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -788,7 +788,7 @@ void __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession
   v14[1] = 3221225472;
   v14[2] = __72__HKAuthorizationStore_validateRecalibrateEstimatesRequestRecord_error___block_invoke;
   v14[3] = &unk_1E737AD28;
-  v7 = v6;
+  v7 = recordCopy;
   v15 = v7;
   v16 = &v24;
   v17 = &v18;
@@ -802,10 +802,10 @@ void __79__HKAuthorizationStore_fetchConceptAuthorizationContextForPromptSession
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -832,17 +832,17 @@ uint64_t __72__HKAuthorizationStore_validateRecalibrateEstimatesRequestRecord_er
   return [a2 remote_validateRecalibrateEstimatesRequestRecord:v2 completion:v4];
 }
 
-- (void)recalibrateEstimatesForSampleType:(id)a3 effectiveDate:(id)a4 completion:(id)a5
+- (void)recalibrateEstimatesForSampleType:(id)type effectiveDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:a5];
+  typeCopy = type;
+  dateCopy = date;
+  v10 = [(HKProxyProvider *)self->_resetProxyProvider clientQueueActionHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __83__HKAuthorizationStore_recalibrateEstimatesForSampleType_effectiveDate_completion___block_invoke;
   v16[3] = &unk_1E737AD78;
-  v17 = v8;
-  v18 = v9;
+  v17 = typeCopy;
+  v18 = dateCopy;
   v19 = v10;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -850,8 +850,8 @@ uint64_t __72__HKAuthorizationStore_validateRecalibrateEstimatesRequestRecord_er
   v14[3] = &unk_1E7376960;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = dateCopy;
+  v13 = typeCopy;
   [(HKAuthorizationStore *)self _fetchResetProxyWithHandler:v16 errorHandler:v14];
 }
 

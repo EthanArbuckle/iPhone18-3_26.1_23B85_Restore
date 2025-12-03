@@ -1,14 +1,14 @@
 @interface SBSwitcherModifierQuerySnapshot
-- (SBSwitcherModifierQuerySnapshot)initWithModifier:(id)a3;
-- (void)_buildFromModifier:(id)a3;
+- (SBSwitcherModifierQuerySnapshot)initWithModifier:(id)modifier;
+- (void)_buildFromModifier:(id)modifier;
 @end
 
 @implementation SBSwitcherModifierQuerySnapshot
 
-- (SBSwitcherModifierQuerySnapshot)initWithModifier:(id)a3
+- (SBSwitcherModifierQuerySnapshot)initWithModifier:(id)modifier
 {
-  v4 = a3;
-  if (!v4)
+  modifierCopy = modifier;
+  if (!modifierCopy)
   {
     [SBSwitcherModifierQuerySnapshot initWithModifier:];
   }
@@ -19,13 +19,13 @@
   v6 = v5;
   if (v5)
   {
-    [(SBSwitcherModifierQuerySnapshot *)v5 _buildFromModifier:v4];
+    [(SBSwitcherModifierQuerySnapshot *)v5 _buildFromModifier:modifierCopy];
   }
 
   return v6;
 }
 
-- (void)_buildFromModifier:(id)a3
+- (void)_buildFromModifier:(id)modifier
 {
   v3 = MEMORY[0x28223BE20](self);
   v506 = v4;
@@ -33,12 +33,12 @@
   v796[1] = *MEMORY[0x277D85DE8];
   v6 = v5;
   obj = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v507 = [v6 appLayouts];
+  appLayouts = [v6 appLayouts];
   v7 = NSStringFromSelector(sel_adjustedAppLayoutsForAppLayouts_);
   v795 = v7;
-  v8 = [v6 adjustedAppLayoutsForAppLayouts:v507];
-  v9 = [v8 sb_switcherModifierDebugTimelineDescription];
-  v796[0] = v9;
+  v8 = [v6 adjustedAppLayoutsForAppLayouts:appLayouts];
+  sb_switcherModifierDebugTimelineDescription = [v8 sb_switcherModifierDebugTimelineDescription];
+  v796[0] = sb_switcherModifierDebugTimelineDescription;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v796 forKeys:&v795 count:1];
   [obj addEntriesFromDictionary:v10];
 
@@ -275,8 +275,8 @@
   v80 = v77;
   p = NSStringFromSelector(sel_clippingFrameForIndex_withBounds_);
   v81 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v82 = [v80 visibleAppLayouts];
-  v83 = [v80 appLayouts];
+  visibleAppLayouts = [v80 visibleAppLayouts];
+  appLayouts2 = [v80 appLayouts];
   v84 = [v80 methodSignatureForSelector:sel_clippingFrameForIndex_withBounds_];
   if (v84)
   {
@@ -284,30 +284,30 @@
     v786 = 3221225472;
     v787 = ___SBCallDescriptionBlockForEachVisibleAppLayoutByIndexWithBounds_block_invoke;
     v788 = &unk_2783C2D40;
-    v789 = v82;
+    v789 = visibleAppLayouts;
     v790 = v80;
     v791 = v84;
     v793 = &__block_literal_global_192;
     v794 = sel_clippingFrameForIndex_withBounds_;
     v85 = v81;
     v792 = v85;
-    [v83 enumerateObjectsUsingBlock:outCount];
-    v86 = [v85 sb_switcherModifierDebugTimelineDescription];
+    [appLayouts2 enumerateObjectsUsingBlock:outCount];
+    sb_switcherModifierDebugTimelineDescription2 = [v85 sb_switcherModifierDebugTimelineDescription];
   }
 
   else
   {
-    v86 = [MEMORY[0x277CCACA8] stringWithFormat:@"No context method for %@", p];
+    sb_switcherModifierDebugTimelineDescription2 = [MEMORY[0x277CCACA8] stringWithFormat:@"No context method for %@", p];
   }
 
   v87 = NSStringFromSelector(sel_clippingFrameForIndex_withBounds_);
-  [obj setObject:v86 forKey:v87];
+  [obj setObject:sb_switcherModifierDebugTimelineDescription2 forKey:v87];
 
   v88 = v80;
   pa = NSStringFromSelector(sel_clippingFrameForLayoutRole_inAppLayout_atIndex_withBounds_);
   v89 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v90 = [v88 visibleAppLayouts];
-  v91 = [v88 appLayouts];
+  visibleAppLayouts2 = [v88 visibleAppLayouts];
+  appLayouts3 = [v88 appLayouts];
   v92 = [v88 methodSignatureForSelector:sel_clippingFrameForLayoutRole_inAppLayout_atIndex_withBounds_];
   if (v92)
   {
@@ -315,24 +315,24 @@
     v786 = 3221225472;
     v787 = ___SBCallDescriptionBlockForEachLayoutRoleInEachVisibleAppLayoutWithIndexAndBounds_block_invoke;
     v788 = &unk_2783C2D40;
-    v789 = v90;
+    v789 = visibleAppLayouts2;
     v790 = v88;
     v791 = v92;
     v793 = &__block_literal_global_196_1;
     v794 = sel_clippingFrameForLayoutRole_inAppLayout_atIndex_withBounds_;
     v93 = v89;
     v792 = v93;
-    [v91 enumerateObjectsUsingBlock:outCount];
-    v94 = [v93 sb_switcherModifierDebugTimelineDescription];
+    [appLayouts3 enumerateObjectsUsingBlock:outCount];
+    sb_switcherModifierDebugTimelineDescription3 = [v93 sb_switcherModifierDebugTimelineDescription];
   }
 
   else
   {
-    v94 = [MEMORY[0x277CCACA8] stringWithFormat:@"No context method for %@", pa];
+    sb_switcherModifierDebugTimelineDescription3 = [MEMORY[0x277CCACA8] stringWithFormat:@"No context method for %@", pa];
   }
 
   v95 = NSStringFromSelector(sel_clippingFrameForLayoutRole_inAppLayout_atIndex_withBounds_);
-  [obj setObject:v94 forKey:v95];
+  [obj setObject:sb_switcherModifierDebugTimelineDescription3 forKey:v95];
 
   v96 = _SBCallDescriptionBlockForEachLayoutRoleInEachVisibleAppLayout(v88, sel_snapshotScaleForLayoutRole_inAppLayout_, &__block_literal_global_200_1);
   v97 = NSStringFromSelector(sel_snapshotScaleForLayoutRole_inAppLayout_);
@@ -405,8 +405,8 @@
   v130 = v88;
   pb = NSStringFromSelector(sel_frameForLayoutRole_inAppLayout_withBounds_);
   v131 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v132 = [v130 visibleAppLayouts];
-  v133 = [v130 appLayouts];
+  visibleAppLayouts3 = [v130 visibleAppLayouts];
+  appLayouts4 = [v130 appLayouts];
   v134 = [v130 methodSignatureForSelector:sel_frameForLayoutRole_inAppLayout_withBounds_];
   if (v134)
   {
@@ -414,24 +414,24 @@
     v786 = 3221225472;
     v787 = ___SBCallDescriptionBlockForEachLayoutRoleInEachVisibleAppLayoutWithBounds_block_invoke;
     v788 = &unk_2783C2D40;
-    v789 = v132;
+    v789 = visibleAppLayouts3;
     v790 = v130;
     v791 = v134;
     v793 = &__block_literal_global_268_0;
     v794 = sel_frameForLayoutRole_inAppLayout_withBounds_;
     v135 = v131;
     v792 = v135;
-    [v133 enumerateObjectsUsingBlock:outCount];
-    v136 = [v135 sb_switcherModifierDebugTimelineDescription];
+    [appLayouts4 enumerateObjectsUsingBlock:outCount];
+    sb_switcherModifierDebugTimelineDescription4 = [v135 sb_switcherModifierDebugTimelineDescription];
   }
 
   else
   {
-    v136 = [MEMORY[0x277CCACA8] stringWithFormat:@"No context method for %@", pb];
+    sb_switcherModifierDebugTimelineDescription4 = [MEMORY[0x277CCACA8] stringWithFormat:@"No context method for %@", pb];
   }
 
   v137 = NSStringFromSelector(sel_frameForLayoutRole_inAppLayout_withBounds_);
-  [obj setObject:v136 forKey:v137];
+  [obj setObject:sb_switcherModifierDebugTimelineDescription4 forKey:v137];
 
   v737[0] = MEMORY[0x277D85DD0];
   v737[1] = 3221225472;
@@ -1226,7 +1226,7 @@
   objc_storeStrong((v508 + 24), obj);
   v375 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v376 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v377 = [objc_opt_class() baseClassForQueryProtocol];
+  baseClassForQueryProtocol = [objc_opt_class() baseClassForQueryProtocol];
   outCount[0] = 0;
   v378 = +[(SBSwitcherModifierBase *)SBSwitcherModifier];
   if (v378)
@@ -1251,7 +1251,7 @@
         {
           name = v384->name;
           v386 = [objc_opt_class() instanceMethodForSelector:v384->name];
-          v387 = [v377 instanceMethodForSelector:name];
+          v387 = [baseClassForQueryProtocol instanceMethodForSelector:name];
           v388 = NSStringFromSelector(name);
           if (v386 == v387 || v386 == 0)
           {
@@ -1284,8 +1284,8 @@
       v392 = v391;
       if (v580 != 1)
       {
-        v394 = [MEMORY[0x277CCA890] currentHandler];
-        [v394 handleFailureInMethod:v506 object:v508 file:@"SBSwitcherModifierTimelineEntry.m" lineNumber:843 description:@"Multiple sub protocols not currently supported"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:v506 object:v508 file:@"SBSwitcherModifierTimelineEntry.m" lineNumber:843 description:@"Multiple sub protocols not currently supported"];
       }
 
       v393 = *v392;
@@ -1655,8 +1655,8 @@ LABEL_28:
   *(v508 + 40) = v397;
   v500 = v397;
 
-  v501 = [v500 allKeys];
-  v502 = [v501 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v500 allKeys];
+  v502 = [allKeys sortedArrayUsingSelector:sel_compare_];
   v503 = *(v508 + 32);
   *(v508 + 32) = v502;
 }

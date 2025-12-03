@@ -1,21 +1,21 @@
 @interface MRDNowPlayingServerResult
 - (BOOL)isActivity;
 - (BOOL)isLocalOrigin;
-- (MRDNowPlayingServerResult)initWithUnresolvedPlayerPath:(id)a3;
+- (MRDNowPlayingServerResult)initWithUnresolvedPlayerPath:(id)path;
 - (id)description;
 @end
 
 @implementation MRDNowPlayingServerResult
 
-- (MRDNowPlayingServerResult)initWithUnresolvedPlayerPath:(id)a3
+- (MRDNowPlayingServerResult)initWithUnresolvedPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = MRDNowPlayingServerResult;
   v5 = [(MRDNowPlayingServerResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     unresolvedPlayerPath = v5->_unresolvedPlayerPath;
     v5->_unresolvedPlayerPath = v6;
   }
@@ -25,25 +25,25 @@
 
 - (BOOL)isLocalOrigin
 {
-  v2 = [(MRDNowPlayingServerResult *)self playerPath];
-  v3 = [v2 origin];
-  v4 = [v3 isLocal];
+  playerPath = [(MRDNowPlayingServerResult *)self playerPath];
+  origin = [playerPath origin];
+  isLocal = [origin isLocal];
 
-  return v4;
+  return isLocal;
 }
 
 - (BOOL)isActivity
 {
-  v3 = [(MRDNowPlayingServerResult *)self originClient];
-  v4 = [v3 activity];
-  if (v4)
+  originClient = [(MRDNowPlayingServerResult *)self originClient];
+  activity = [originClient activity];
+  if (activity)
   {
-    v5 = [(MRDNowPlayingServerResult *)self originClient];
-    v6 = [v5 activity];
-    v7 = [v6 creatorProcessID];
-    v8 = [(MRDNowPlayingServerResult *)self nowPlayingClient];
-    v9 = [v8 client];
-    v10 = v7 == [v9 processIdentifier];
+    originClient2 = [(MRDNowPlayingServerResult *)self originClient];
+    activity2 = [originClient2 activity];
+    creatorProcessID = [activity2 creatorProcessID];
+    nowPlayingClient = [(MRDNowPlayingServerResult *)self nowPlayingClient];
+    client = [nowPlayingClient client];
+    v10 = creatorProcessID == [client processIdentifier];
   }
 
   else

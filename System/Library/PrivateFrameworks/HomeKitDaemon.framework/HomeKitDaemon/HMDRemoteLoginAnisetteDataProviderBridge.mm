@@ -1,31 +1,31 @@
 @interface HMDRemoteLoginAnisetteDataProviderBridge
 + (id)logCategory;
-- (HMDRemoteLoginAnisetteDataProviderBridge)initWithCoder:(id)a3;
-- (HMDRemoteLoginAnisetteDataProviderBridge)initWithUUID:(id)a3;
+- (HMDRemoteLoginAnisetteDataProviderBridge)initWithCoder:(id)coder;
+- (HMDRemoteLoginAnisetteDataProviderBridge)initWithUUID:(id)d;
 - (id)logIdentifier;
-- (void)_handleMessage:(id)a3;
-- (void)_registerXPCRelayForMessageName:(id)a3;
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4 remoteMessageSender:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_handleMessage:(id)message;
+- (void)_registerXPCRelayForMessageName:(id)name;
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher remoteMessageSender:(id)sender;
+- (void)encodeWithCoder:(id)coder;
 - (void)registerForMessages;
 @end
 
 @implementation HMDRemoteLoginAnisetteDataProviderBridge
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDRemoteLoginAnisetteDataProviderBridge *)self uuid];
-  [v4 encodeObject:v5 forKey:@"kIdentifierKey"];
+  coderCopy = coder;
+  uuid = [(HMDRemoteLoginAnisetteDataProviderBridge *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"kIdentifierKey"];
 }
 
-- (HMDRemoteLoginAnisetteDataProviderBridge)initWithCoder:(id)a3
+- (HMDRemoteLoginAnisetteDataProviderBridge)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDRemoteLoginAnisetteDataProviderBridge *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIdentifierKey"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -33,76 +33,76 @@
   return v5;
 }
 
-- (void)_handleMessage:(id)a3
+- (void)_handleMessage:(id)message
 {
-  v4 = a3;
-  v8 = [(HMDRemoteLoginAnisetteDataProviderBridge *)self remoteMessageSender];
-  v5 = [v4 name];
-  v6 = [v4 messagePayload];
-  v7 = [v4 responseHandler];
+  messageCopy = message;
+  remoteMessageSender = [(HMDRemoteLoginAnisetteDataProviderBridge *)self remoteMessageSender];
+  name = [messageCopy name];
+  messagePayload = [messageCopy messagePayload];
+  responseHandler = [messageCopy responseHandler];
 
-  [v8 sendRemoteMessageWithName:v5 payload:v6 responseHandler:v7];
+  [remoteMessageSender sendRemoteMessageWithName:name payload:messagePayload responseHandler:responseHandler];
 }
 
-- (void)_registerXPCRelayForMessageName:(id)a3
+- (void)_registerXPCRelayForMessageName:(id)name
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDRemoteLoginAnisetteDataProviderBridge *)self msgDispatcher];
+  nameCopy = name;
+  msgDispatcher = [(HMDRemoteLoginAnisetteDataProviderBridge *)self msgDispatcher];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v9[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v5 registerForMessage:v4 receiver:self policies:v7 selector:sel__handleMessage_];
+  [msgDispatcher registerForMessage:nameCopy receiver:self policies:v7 selector:sel__handleMessage_];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)registerForMessages
 {
-  v3 = [MEMORY[0x277CD1D30] messageName];
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:v3];
+  messageName = [MEMORY[0x277CD1D30] messageName];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:messageName];
 
-  v4 = [MEMORY[0x277CD1E90] messageName];
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:v4];
+  messageName2 = [MEMORY[0x277CD1E90] messageName];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:messageName2];
 
-  v5 = [MEMORY[0x277CD19D8] messageName];
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:v5];
+  messageName3 = [MEMORY[0x277CD19D8] messageName];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:messageName3];
 
-  v6 = [MEMORY[0x277CD1A40] messageName];
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:v6];
+  messageName4 = [MEMORY[0x277CD1A40] messageName];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:messageName4];
 
-  v7 = [MEMORY[0x277CD1B08] messageName];
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:v7];
+  messageName5 = [MEMORY[0x277CD1B08] messageName];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self _registerXPCRelayForMessageName:messageName5];
 }
 
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4 remoteMessageSender:(id)a5
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher remoteMessageSender:(id)sender
 {
-  v9 = a5;
-  v8 = a4;
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self setWorkQueue:a3];
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self setMsgDispatcher:v8];
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self setWorkQueue:queue];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self setMsgDispatcher:dispatcherCopy];
 
-  [(HMDRemoteLoginAnisetteDataProviderBridge *)self setRemoteMessageSender:v9];
+  [(HMDRemoteLoginAnisetteDataProviderBridge *)self setRemoteMessageSender:senderCopy];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRemoteLoginAnisetteDataProviderBridge *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDRemoteLoginAnisetteDataProviderBridge *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMDRemoteLoginAnisetteDataProviderBridge)initWithUUID:(id)a3
+- (HMDRemoteLoginAnisetteDataProviderBridge)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HMDRemoteLoginAnisetteDataProviderBridge;
   v6 = [(HMDRemoteLoginAnisetteDataProviderBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
   }
 
   return v7;

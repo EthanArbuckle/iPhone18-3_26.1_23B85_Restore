@@ -1,13 +1,13 @@
 @interface SFStartPageSectionHeader
-- (SFStartPageSectionHeader)initWithCoder:(id)a3;
-- (SFStartPageSectionHeader)initWithFrame:(CGRect)a3;
+- (SFStartPageSectionHeader)initWithCoder:(id)coder;
+- (SFStartPageSectionHeader)initWithFrame:(CGRect)frame;
 - (id)_disclosureButtonForLayout;
 - (void)_createSeparatorViewIfNeeded;
-- (void)configureUsingSection:(id)a3 visualStyleProvider:(id)a4 resolvingActionsUsingBlock:(id)a5;
+- (void)configureUsingSection:(id)section visualStyleProvider:(id)provider resolvingActionsUsingBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setActions:(id)a3 expandsModally:(BOOL)a4 withSize:(int64_t)a5;
-- (void)setBanner:(id)a3;
-- (void)setBottomGap:(double)a3;
+- (void)setActions:(id)actions expandsModally:(BOOL)modally withSize:(int64_t)size;
+- (void)setBanner:(id)banner;
+- (void)setBottomGap:(double)gap;
 - (void)updateViewsDependingOnCustomTraits;
 @end
 
@@ -15,23 +15,23 @@
 
 - (void)updateViewsDependingOnCustomTraits
 {
-  v4 = [(SFStartPageSectionHeader *)self traitCollection];
-  -[UIStackView setOverrideUserInterfaceStyle:](self->_buttonStackView, "setOverrideUserInterfaceStyle:", [v4 sf_alternateUserInterfaceStyle]);
-  v3 = [v4 sf_alternateTintColor];
-  [(UIStackView *)self->_buttonStackView setTintColor:v3];
+  traitCollection = [(SFStartPageSectionHeader *)self traitCollection];
+  -[UIStackView setOverrideUserInterfaceStyle:](self->_buttonStackView, "setOverrideUserInterfaceStyle:", [traitCollection sf_alternateUserInterfaceStyle]);
+  sf_alternateTintColor = [traitCollection sf_alternateTintColor];
+  [(UIStackView *)self->_buttonStackView setTintColor:sf_alternateTintColor];
 
-  -[UIVisualEffectView setOverrideUserInterfaceStyle:](self->_separatorView, "setOverrideUserInterfaceStyle:", [v4 sf_alternateUserInterfaceStyle]);
+  -[UIVisualEffectView setOverrideUserInterfaceStyle:](self->_separatorView, "setOverrideUserInterfaceStyle:", [traitCollection sf_alternateUserInterfaceStyle]);
 }
 
 - (id)_disclosureButtonForLayout
 {
-  v2 = [(UIStackView *)self->_buttonStackView arrangedSubviews];
-  v3 = [v2 firstObject];
+  arrangedSubviews = [(UIStackView *)self->_buttonStackView arrangedSubviews];
+  firstObject = [arrangedSubviews firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = firstObject;
   }
 
   else
@@ -49,11 +49,11 @@
   v10.receiver = self;
   v10.super_class = SFStartPageSectionHeader;
   [(SFStartPageSectionHeader *)&v10 layoutSubviews];
-  v3 = [(SFStartPageSectionHeader *)self _disclosureButtonForLayout];
-  v4 = v3;
-  if (v3)
+  _disclosureButtonForLayout = [(SFStartPageSectionHeader *)self _disclosureButtonForLayout];
+  v4 = _disclosureButtonForLayout;
+  if (_disclosureButtonForLayout)
   {
-    [v3 layoutIfNeeded];
+    [_disclosureButtonForLayout layoutIfNeeded];
     [v4 sizeIncludingLabels];
     v6 = v5;
     v8 = v7;
@@ -64,12 +64,12 @@
   }
 }
 
-- (SFStartPageSectionHeader)initWithFrame:(CGRect)a3
+- (SFStartPageSectionHeader)initWithFrame:(CGRect)frame
 {
   v53[9] = *MEMORY[0x1E69E9840];
   v51.receiver = self;
   v51.super_class = SFStartPageSectionHeader;
-  v3 = [(SFStartPageSectionHeader *)&v51 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageSectionHeader *)&v51 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(SFStartPageSectionHeaderTitleView);
@@ -86,56 +86,56 @@
     [(UIStackView *)v3->_buttonStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFStartPageSectionHeader *)v3 addSubview:v3->_buttonStackView];
     [(SFStartPageSectionHeader *)v3 updateViewsDependingOnCustomTraits];
-    v8 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView bottomAnchor];
-    v9 = [(SFStartPageSectionHeader *)v3 bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:-10.0];
+    bottomAnchor = [(SFStartPageSectionHeaderTitleView *)v3->_titleView bottomAnchor];
+    bottomAnchor2 = [(SFStartPageSectionHeader *)v3 bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     LODWORD(v11) = 1144750080;
     v12 = [v10 sf_withPriority:v11];
     titleBottomConstraint = v3->_titleBottomConstraint;
     v3->_titleBottomConstraint = v12;
 
-    v14 = [(UIStackView *)v3->_buttonStackView leadingAnchor];
-    v15 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView trailingAnchor];
-    v16 = [v14 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v15 multiplier:1.0];
+    leadingAnchor = [(UIStackView *)v3->_buttonStackView leadingAnchor];
+    trailingAnchor = [(SFStartPageSectionHeaderTitleView *)v3->_titleView trailingAnchor];
+    v16 = [leadingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
     stackLeadingConstraint = v3->_stackLeadingConstraint;
     v3->_stackLeadingConstraint = v16;
 
-    v18 = [(UIStackView *)v3->_buttonStackView centerXAnchor];
-    v19 = [(SFStartPageSectionHeader *)v3 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UIStackView *)v3->_buttonStackView centerXAnchor];
+    centerXAnchor2 = [(SFStartPageSectionHeader *)v3 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     stackCenterXConstraint = v3->_stackCenterXConstraint;
     v3->_stackCenterXConstraint = v20;
 
     v41 = MEMORY[0x1E696ACD8];
-    v50 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView leadingAnchor];
-    v49 = [(SFStartPageSectionHeader *)v3 leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    leadingAnchor2 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView leadingAnchor];
+    leadingAnchor3 = [(SFStartPageSectionHeader *)v3 leadingAnchor];
+    v48 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v53[0] = v48;
-    v47 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView trailingAnchor];
-    v46 = [(SFStartPageSectionHeader *)v3 trailingAnchor];
-    v45 = [v47 constraintLessThanOrEqualToAnchor:v46];
+    trailingAnchor2 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView trailingAnchor];
+    trailingAnchor3 = [(SFStartPageSectionHeader *)v3 trailingAnchor];
+    v45 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
     v53[1] = v45;
-    v44 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView topAnchor];
-    v43 = [(SFStartPageSectionHeader *)v3 topAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    topAnchor = [(SFStartPageSectionHeaderTitleView *)v3->_titleView topAnchor];
+    topAnchor2 = [(SFStartPageSectionHeader *)v3 topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v53[2] = v42;
     v53[3] = v3->_titleBottomConstraint;
     v53[4] = v3->_stackLeadingConstraint;
-    v40 = [(UIStackView *)v3->_buttonStackView trailingAnchor];
-    v39 = [(SFStartPageSectionHeader *)v3 trailingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    trailingAnchor4 = [(UIStackView *)v3->_buttonStackView trailingAnchor];
+    trailingAnchor5 = [(SFStartPageSectionHeader *)v3 trailingAnchor];
+    v38 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v53[5] = v38;
-    v37 = [(UIStackView *)v3->_buttonStackView centerYAnchor];
-    v22 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView centerYAnchor];
-    v23 = [v37 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UIStackView *)v3->_buttonStackView centerYAnchor];
+    centerYAnchor2 = [(SFStartPageSectionHeaderTitleView *)v3->_titleView centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v53[6] = v23;
-    v24 = [(UIStackView *)v3->_buttonStackView heightAnchor];
-    v25 = [v24 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIStackView *)v3->_buttonStackView heightAnchor];
+    v25 = [heightAnchor constraintEqualToConstant:0.0];
     LODWORD(v26) = 1131413504;
     v27 = [v25 sf_withPriority:v26];
     v53[7] = v27;
-    v28 = [(UIStackView *)v3->_buttonStackView widthAnchor];
-    v29 = [v28 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIStackView *)v3->_buttonStackView widthAnchor];
+    v29 = [widthAnchor constraintEqualToConstant:0.0];
     LODWORD(v30) = 1131413504;
     v31 = [v29 sf_withPriority:v30];
     v53[8] = v31;
@@ -153,41 +153,41 @@
   return v3;
 }
 
-- (SFStartPageSectionHeader)initWithCoder:(id)a3
+- (SFStartPageSectionHeader)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFStartPageSectionHeader;
-  return [(SFStartPageSectionHeader *)&v4 initWithCoder:a3];
+  return [(SFStartPageSectionHeader *)&v4 initWithCoder:coder];
 }
 
-- (void)configureUsingSection:(id)a3 visualStyleProvider:(id)a4 resolvingActionsUsingBlock:(id)a5
+- (void)configureUsingSection:(id)section visualStyleProvider:(id)provider resolvingActionsUsingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 showsTopSeparator];
-  if (v11)
+  sectionCopy = section;
+  blockCopy = block;
+  providerCopy = provider;
+  showsTopSeparator = [sectionCopy showsTopSeparator];
+  if (showsTopSeparator)
   {
     [(SFStartPageSectionHeader *)self _createSeparatorViewIfNeeded];
   }
 
-  [(UIVisualEffectView *)self->_separatorView setHidden:v11 ^ 1u];
-  [(SFStartPageSectionHeaderTitleView *)self->_titleView configureUsingSection:v8 visualStyleProvider:v10];
+  [(UIVisualEffectView *)self->_separatorView setHidden:showsTopSeparator ^ 1u];
+  [(SFStartPageSectionHeaderTitleView *)self->_titleView configureUsingSection:sectionCopy visualStyleProvider:providerCopy];
 
-  v12 = [v8 actions];
+  actions = [sectionCopy actions];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_resolvingActionsUsingBlock___block_invoke;
   v30[3] = &unk_1E721DDC0;
-  v13 = v9;
+  v13 = blockCopy;
   v31 = v13;
-  v14 = [v12 safari_mapAndFilterObjectsUsingBlock:v30];
+  v14 = [actions safari_mapAndFilterObjectsUsingBlock:v30];
 
-  v15 = [v8 title];
-  if ([v15 length])
+  title = [sectionCopy title];
+  if ([title length])
   {
 
-    v16 = [v8 expandsModally];
+    expandsModally = [sectionCopy expandsModally];
     v17 = 0;
     v18 = 2;
   }
@@ -196,7 +196,7 @@
   {
     v19 = [v14 count];
 
-    v16 = [v8 expandsModally];
+    expandsModally = [sectionCopy expandsModally];
     v17 = v19 != 0;
     if (v19)
     {
@@ -209,33 +209,33 @@
     }
   }
 
-  [(SFStartPageSectionHeader *)self setActions:v14 expandsModally:v16 withSize:v18];
+  [(SFStartPageSectionHeader *)self setActions:v14 expandsModally:expandsModally withSize:v18];
   [(NSLayoutConstraint *)self->_stackCenterXConstraint setActive:v17];
-  v20 = [(SFStartPageSectionHeader *)self _disclosureButtonForLayout];
-  v21 = [v20 chevron];
-  v22 = [v21 leadingAnchor];
-  v23 = v22;
-  if (v22)
+  _disclosureButtonForLayout = [(SFStartPageSectionHeader *)self _disclosureButtonForLayout];
+  chevron = [_disclosureButtonForLayout chevron];
+  leadingAnchor = [chevron leadingAnchor];
+  v23 = leadingAnchor;
+  if (leadingAnchor)
   {
-    v24 = v22;
+    leadingAnchor2 = leadingAnchor;
   }
 
   else
   {
-    v24 = [(UIStackView *)self->_buttonStackView leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)self->_buttonStackView leadingAnchor];
   }
 
-  v25 = v24;
+  v25 = leadingAnchor2;
 
   [(NSLayoutConstraint *)self->_stackLeadingConstraint setActive:0];
-  v26 = [(SFStartPageSectionHeaderTitleView *)self->_titleView trailingAnchor];
-  v27 = [v25 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v26 multiplier:1.0];
+  trailingAnchor = [(SFStartPageSectionHeaderTitleView *)self->_titleView trailingAnchor];
+  v27 = [v25 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
   stackLeadingConstraint = self->_stackLeadingConstraint;
   self->_stackLeadingConstraint = v27;
 
   [(NSLayoutConstraint *)self->_stackLeadingConstraint setActive:v17 ^ 1];
-  v29 = [v8 banner];
-  [(SFStartPageSectionHeader *)self setBanner:v29];
+  banner = [sectionCopy banner];
+  [(SFStartPageSectionHeader *)self setBanner:banner];
 }
 
 id __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_resolvingActionsUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -247,18 +247,18 @@ id __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_reso
   return v4;
 }
 
-- (void)setActions:(id)a3 expandsModally:(BOOL)a4 withSize:(int64_t)a5
+- (void)setActions:(id)actions expandsModally:(BOOL)modally withSize:(int64_t)size
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![(NSArray *)self->_actions isEqualToArray:v7])
+  actionsCopy = actions;
+  if (![(NSArray *)self->_actions isEqualToArray:actionsCopy])
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [(UIStackView *)self->_buttonStackView arrangedSubviews];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    arrangedSubviews = [(UIStackView *)self->_buttonStackView arrangedSubviews];
+    v9 = [arrangedSubviews countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v9)
     {
       v10 = v9;
@@ -270,20 +270,20 @@ id __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_reso
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           [*(*(&v29 + 1) + 8 * v12++) removeFromSuperview];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v10 = [arrangedSubviews countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v10);
     }
 
-    v13 = [v7 copy];
+    v13 = [actionsCopy copy];
     actions = self->_actions;
     self->_actions = v13;
 
@@ -291,8 +291,8 @@ id __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_reso
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = v7;
-    v15 = v7;
+    v21 = actionsCopy;
+    v15 = actionsCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v16)
     {
@@ -313,9 +313,9 @@ id __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_reso
           v23[1] = 3221225472;
           v23[2] = __63__SFStartPageSectionHeader_setActions_expandsModally_withSize___block_invoke;
           v23[3] = &unk_1E721DE08;
-          v24 = a4;
+          modallyCopy = modally;
           v23[5] = self;
-          v23[6] = a5;
+          v23[6] = size;
           v23[4] = v20;
           [MEMORY[0x1E69DD250] performWithoutAnimation:{v23, v21}];
           ++v19;
@@ -328,7 +328,7 @@ id __97__SFStartPageSectionHeader_configureUsingSection_visualStyleProvider_reso
       while (v17);
     }
 
-    v7 = v21;
+    actionsCopy = v21;
   }
 }
 
@@ -401,15 +401,15 @@ id __63__SFStartPageSectionHeader_setActions_expandsModally_withSize___block_inv
   return v4;
 }
 
-- (void)setBanner:(id)a3
+- (void)setBanner:(id)banner
 {
   v44[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bannerCopy = banner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_banner, a3);
+    objc_storeStrong(&self->_banner, banner);
     bannerView = self->_bannerView;
-    if (v5)
+    if (bannerCopy)
     {
       if (!bannerView)
       {
@@ -423,46 +423,46 @@ id __63__SFStartPageSectionHeader_setActions_expandsModally_withSize___block_inv
         LODWORD(v10) = 1148846080;
         [(SFBannerCell *)self->_bannerView setContentCompressionResistancePriority:1 forAxis:v10];
         [(SFStartPageSectionHeader *)self addSubview:self->_bannerView];
-        v11 = [(SFBannerCell *)self->_bannerView contentView];
-        [(SFBannerCell *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v12 = [(SFBannerCell *)self->_bannerView bottomAnchor];
-        v13 = [(SFStartPageSectionHeader *)self bottomAnchor];
-        v14 = [v12 constraintEqualToAnchor:v13 constant:-10.0];
+        contentView = [(SFBannerCell *)self->_bannerView contentView];
+        [(SFBannerCell *)contentView setTranslatesAutoresizingMaskIntoConstraints:0];
+        bottomAnchor = [(SFBannerCell *)self->_bannerView bottomAnchor];
+        bottomAnchor2 = [(SFStartPageSectionHeader *)self bottomAnchor];
+        v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
         bannerViewBottomConstraint = self->_bannerViewBottomConstraint;
         self->_bannerViewBottomConstraint = v14;
 
         v35 = MEMORY[0x1E696ACD8];
-        v43 = [(SFBannerCell *)self->_bannerView topAnchor];
-        v42 = [(SFStartPageSectionHeaderTitleView *)self->_titleView bottomAnchor];
-        v41 = [v43 constraintEqualToSystemSpacingBelowAnchor:v42 multiplier:1.0];
+        topAnchor = [(SFBannerCell *)self->_bannerView topAnchor];
+        bottomAnchor3 = [(SFStartPageSectionHeaderTitleView *)self->_titleView bottomAnchor];
+        v41 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:1.0];
         v44[0] = v41;
-        v40 = [(SFBannerCell *)self->_bannerView leadingAnchor];
-        v39 = [(SFStartPageSectionHeader *)self leadingAnchor];
-        v38 = [v40 constraintEqualToAnchor:v39];
+        leadingAnchor = [(SFBannerCell *)self->_bannerView leadingAnchor];
+        leadingAnchor2 = [(SFStartPageSectionHeader *)self leadingAnchor];
+        v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v44[1] = v38;
-        v37 = [(SFBannerCell *)self->_bannerView trailingAnchor];
-        v36 = [(SFStartPageSectionHeader *)self trailingAnchor];
-        v34 = [v37 constraintEqualToAnchor:v36];
+        trailingAnchor = [(SFBannerCell *)self->_bannerView trailingAnchor];
+        trailingAnchor2 = [(SFStartPageSectionHeader *)self trailingAnchor];
+        v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v16 = self->_bannerViewBottomConstraint;
         v44[2] = v34;
         v44[3] = v16;
-        v33 = [(SFBannerCell *)v11 leadingAnchor];
-        v31 = [(SFBannerCell *)self->_bannerView leadingAnchor];
-        v30 = [v33 constraintEqualToAnchor:v31];
+        leadingAnchor3 = [(SFBannerCell *)contentView leadingAnchor];
+        leadingAnchor4 = [(SFBannerCell *)self->_bannerView leadingAnchor];
+        v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v44[4] = v30;
-        v29 = [(SFBannerCell *)v11 trailingAnchor];
-        v28 = [(SFBannerCell *)self->_bannerView trailingAnchor];
-        v27 = [v29 constraintEqualToAnchor:v28];
+        trailingAnchor3 = [(SFBannerCell *)contentView trailingAnchor];
+        trailingAnchor4 = [(SFBannerCell *)self->_bannerView trailingAnchor];
+        v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v44[5] = v27;
-        v17 = v11;
-        v32 = v11;
-        v18 = [(SFBannerCell *)v11 topAnchor];
-        v19 = [(SFBannerCell *)self->_bannerView topAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        v17 = contentView;
+        v32 = contentView;
+        topAnchor2 = [(SFBannerCell *)contentView topAnchor];
+        topAnchor3 = [(SFBannerCell *)self->_bannerView topAnchor];
+        v20 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
         v44[6] = v20;
-        v21 = [(SFBannerCell *)v17 bottomAnchor];
-        v22 = [(SFBannerCell *)self->_bannerView bottomAnchor];
-        v23 = [v21 constraintEqualToAnchor:v22];
+        bottomAnchor4 = [(SFBannerCell *)v17 bottomAnchor];
+        bottomAnchor5 = [(SFBannerCell *)self->_bannerView bottomAnchor];
+        v23 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
         v44[7] = v23;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:8];
         [v35 activateConstraints:v24];
@@ -483,13 +483,13 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    [(SFBannerCell *)self->_bannerView configureUsingBanner:v5];
+    [(SFBannerCell *)self->_bannerView configureUsingBanner:bannerCopy];
   }
 }
 
-- (void)setBottomGap:(double)a3
+- (void)setBottomGap:(double)gap
 {
-  v4 = -a3;
+  v4 = -gap;
   [(NSLayoutConstraint *)self->_titleBottomConstraint constant];
   if (v5 != v4)
   {
@@ -509,9 +509,9 @@ LABEL_7:
     separatorView = self->_separatorView;
     self->_separatorView = v3;
 
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    v6 = [(UIVisualEffectView *)self->_separatorView contentView];
-    [v6 setBackgroundColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    contentView = [(UIVisualEffectView *)self->_separatorView contentView];
+    [contentView setBackgroundColor:blackColor];
 
     v7 = MEMORY[0x1E69DD248];
     v8 = [MEMORY[0x1E69DC730] effectWithStyle:8];
@@ -521,20 +521,20 @@ LABEL_7:
     [(UIVisualEffectView *)self->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFStartPageSectionHeader *)self addSubview:self->_separatorView];
     v19 = MEMORY[0x1E696ACD8];
-    v22 = [(UIVisualEffectView *)self->_separatorView leadingAnchor];
-    v21 = [(SFStartPageSectionHeader *)self leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UIVisualEffectView *)self->_separatorView leadingAnchor];
+    leadingAnchor2 = [(SFStartPageSectionHeader *)self leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[0] = v20;
-    v10 = [(UIVisualEffectView *)self->_separatorView trailingAnchor];
-    v11 = [(SFStartPageSectionHeader *)self trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UIVisualEffectView *)self->_separatorView trailingAnchor];
+    trailingAnchor2 = [(SFStartPageSectionHeader *)self trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[1] = v12;
-    v13 = [(UIVisualEffectView *)self->_separatorView topAnchor];
-    v14 = [(SFStartPageSectionHeader *)self topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:3.0];
+    topAnchor = [(UIVisualEffectView *)self->_separatorView topAnchor];
+    topAnchor2 = [(SFStartPageSectionHeader *)self topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:3.0];
     v23[2] = v15;
-    v16 = [(UIVisualEffectView *)self->_separatorView heightAnchor];
-    v17 = [v16 constraintEqualToConstant:1.0];
+    heightAnchor = [(UIVisualEffectView *)self->_separatorView heightAnchor];
+    v17 = [heightAnchor constraintEqualToConstant:1.0];
     v23[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
     [v19 activateConstraints:v18];

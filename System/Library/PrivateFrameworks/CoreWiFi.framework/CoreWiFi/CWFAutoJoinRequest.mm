@@ -1,5 +1,5 @@
 @interface CWFAutoJoinRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -8,15 +8,15 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSUUID *)self->_UUID UUIDString];
-  v5 = [v4 substringToIndex:5];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v5 = [uUIDString substringToIndex:5];
   v6 = sub_1E0BCC248(self->_addedAt);
   v7 = [v3 stringWithFormat:@"uuid=%@, addedAt=%@, params=%@, autoHotspot=%d, throttled=%d", v5, v6, self->_parameters, self->_allowAutoHotspotFallback, self->_throttled];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFAutoJoinRequest allocWithZone:?]];
   [(CWFAutoJoinRequest *)v4 setUUID:self->_UUID];

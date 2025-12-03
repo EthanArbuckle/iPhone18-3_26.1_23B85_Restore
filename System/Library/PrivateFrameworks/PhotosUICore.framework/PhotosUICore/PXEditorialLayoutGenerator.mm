@@ -1,33 +1,33 @@
 @interface PXEditorialLayoutGenerator
 - (CGSize)estimatedSize;
 - (CGSize)size;
-- (PXEditorialLayoutGenerator)initWithMetrics:(id)a3;
-- (_PXLayoutGeometry)_geometryFromFrame:(SEL)a3 index:(CGRect)a4;
-- (unint64_t)numberOfGeometriesWithKind:(int64_t)a3;
-- (void)_getContentGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4;
-- (void)_getHeaderGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4;
-- (void)_prepareBuffersForCount:(unint64_t)a3;
+- (PXEditorialLayoutGenerator)initWithMetrics:(id)metrics;
+- (_PXLayoutGeometry)_geometryFromFrame:(SEL)frame index:(CGRect)index;
+- (unint64_t)numberOfGeometriesWithKind:(int64_t)kind;
+- (void)_getContentGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range;
+- (void)_getHeaderGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range;
+- (void)_prepareBuffersForCount:(unint64_t)count;
 - (void)_prepareIfNeeded;
 - (void)dealloc;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 - (void)invalidate;
 @end
 
 @implementation PXEditorialLayoutGenerator
 
-- (_PXLayoutGeometry)_geometryFromFrame:(SEL)a3 index:(CGRect)a4
+- (_PXLayoutGeometry)_geometryFromFrame:(SEL)frame index:(CGRect)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v12 padding];
+  height = index.size.height;
+  width = index.size.width;
+  y = index.origin.y;
+  x = index.origin.x;
+  metrics = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics padding];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v17 headerHeight];
+  metrics2 = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics2 headerHeight];
   v19 = v18;
 
   v21.origin.x = x;
@@ -44,60 +44,60 @@
   if (!self->_isPrepared)
   {
     self->_isPrepared = 1;
-    v4 = [(PXEditorialLayoutGenerator *)self itemCount];
-    v5 = [(PXEditorialLayoutGenerator *)self metrics];
-    v6 = [v5 useSaliency];
-    [v5 referenceSize];
+    itemCount = [(PXEditorialLayoutGenerator *)self itemCount];
+    metrics = [(PXEditorialLayoutGenerator *)self metrics];
+    useSaliency = [metrics useSaliency];
+    [metrics referenceSize];
     if (v7 <= 0.0)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v42 handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:201 description:@"The reference size.width must be > 0"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:201 description:@"The reference size.width must be > 0"];
     }
 
-    [(PXEditorialLayoutGenerator *)self _prepareBuffersForCount:v4];
+    [(PXEditorialLayoutGenerator *)self _prepareBuffersForCount:itemCount];
     v56 = 0;
     v57 = &v56;
     v58 = 0x2020000000;
     v59 = 0;
-    if (v4)
+    if (itemCount)
     {
-      if (v4 <= [v5 lowerItemCountThreshold])
+      if (itemCount <= [metrics lowerItemCountThreshold])
       {
-        v8 = objc_alloc_init(PXVerticalFeedLayoutGenerator);
-        [(PXFeedLayoutGenerator *)v8 setTileCount:v4];
-        [v5 interTileSpacing];
+        array = objc_alloc_init(PXVerticalFeedLayoutGenerator);
+        [(PXFeedLayoutGenerator *)array setTileCount:itemCount];
+        [metrics interTileSpacing];
         v32 = v31;
-        [v5 interTileSpacing];
-        [(PXFeedLayoutGenerator *)v8 setInterTileSpacing:v32, v33];
-        [v5 referenceSize];
-        [(PXVerticalFeedLayoutGenerator *)v8 setReferenceWidth:?];
+        [metrics interTileSpacing];
+        [(PXFeedLayoutGenerator *)array setInterTileSpacing:v32, v33];
+        [metrics referenceSize];
+        [(PXVerticalFeedLayoutGenerator *)array setReferenceWidth:?];
         v54[0] = MEMORY[0x1E69E9820];
         v54[1] = 3221225472;
         v54[2] = __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke;
         v54[3] = &unk_1E774AF10;
         v54[4] = self;
-        v55 = v6;
-        [(PXFeedLayoutGenerator *)v8 setTileImageSizeBlock:v54];
-        [(PXFeedLayoutGenerator *)v8 setNumberOfMagneticGuidelines:5];
+        v55 = useSaliency;
+        [(PXFeedLayoutGenerator *)array setTileImageSizeBlock:v54];
+        [(PXFeedLayoutGenerator *)array setNumberOfMagneticGuidelines:5];
         v53[0] = MEMORY[0x1E69E9820];
         v53[1] = 3221225472;
         v53[2] = __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2;
         v53[3] = &unk_1E774AF38;
         v53[4] = self;
         v53[5] = &v56;
-        [(PXFeedLayoutGenerator *)v8 enumerateFramesWithBlock:v53];
+        [(PXFeedLayoutGenerator *)array enumerateFramesWithBlock:v53];
       }
 
       else
       {
-        v8 = [MEMORY[0x1E695DF70] array];
-        for (i = 0; i != v4; ++i)
+        array = [MEMORY[0x1E695DF70] array];
+        for (i = 0; i != itemCount; ++i)
         {
-          v10 = [(PXEditorialLayoutGenerator *)self itemLayoutInfoBlock];
-          v11 = v10[2](v10, i);
+          itemLayoutInfoBlock = [(PXEditorialLayoutGenerator *)self itemLayoutInfoBlock];
+          v11 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, i);
 
           [v11 preferredCropRect];
-          if (v6 && (v16 = v14, v17 = v15, !CGRectIsNull(*&v12)))
+          if (useSaliency && (v16 = v14, v17 = v15, !CGRectIsNull(*&v12)))
           {
             [v11 size];
             v19 = v18;
@@ -106,19 +106,19 @@
             v22 = [off_1E7721790 alloc];
             [v11 weight];
             v24 = [v22 initWithSize:v16 * v19 weight:{v17 * v21, v23}];
-            [(PXVerticalFeedLayoutGenerator *)v8 addObject:v24];
+            [(PXVerticalFeedLayoutGenerator *)array addObject:v24];
           }
 
           else
           {
-            [(PXVerticalFeedLayoutGenerator *)v8 addObject:v11];
+            [(PXVerticalFeedLayoutGenerator *)array addObject:v11];
           }
         }
 
-        [(PXMagazineLayoutTileMaker *)self->_tileMaker getFrames:self->_rects withInputs:v8];
+        [(PXMagazineLayoutTileMaker *)self->_tileMaker getFrames:self->_rects withInputs:array];
         v25 = 0;
         v26 = 0;
-        for (j = 0; j != v4; ++j)
+        for (j = 0; j != itemCount; ++j)
         {
           geometries = self->_geometries;
           [(PXEditorialLayoutGenerator *)self _geometryFromFrame:j index:self->_rects[v25].origin.x, self->_rects[v25].origin.y, self->_rects[v25].size.width, self->_rects[v25].size.height];
@@ -142,12 +142,12 @@
       }
     }
 
-    [v5 padding];
+    [metrics padding];
     v35 = v34;
     v37 = v36;
-    [v5 headerHeight];
+    [metrics headerHeight];
     v39 = v38;
-    [v5 referenceSize];
+    [metrics referenceSize];
     v40 = v37 + v35 + v39 + v57[3];
     self->_actualSize.width = v41;
     self->_actualSize.height = v40;
@@ -209,13 +209,13 @@ void __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_t 
   }
 }
 
-- (void)_prepareBuffersForCount:(unint64_t)a3
+- (void)_prepareBuffersForCount:(unint64_t)count
 {
-  if (self->_geometriesCount < a3)
+  if (self->_geometriesCount < count)
   {
-    self->_geometries = malloc_type_realloc(self->_geometries, 152 * a3, 0x100004050011849uLL);
-    self->_rects = malloc_type_realloc(self->_rects, 32 * a3, 0x1000040E0EAB150uLL);
-    self->_geometriesCount = a3;
+    self->_geometries = malloc_type_realloc(self->_geometries, 152 * count, 0x100004050011849uLL);
+    self->_rects = malloc_type_realloc(self->_rects, 32 * count, 0x1000040E0EAB150uLL);
+    self->_geometriesCount = count;
   }
 }
 
@@ -233,71 +233,71 @@ void __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_t 
 {
   [(PXMagazineLayoutTileMaker *)self->_tileMaker defaultTileSize];
   v4 = v3;
-  v5 = [(PXMagazineLayoutTileMaker *)self->_tileMaker maxTilesInFrame];
+  maxTilesInFrame = [(PXMagazineLayoutTileMaker *)self->_tileMaker maxTilesInFrame];
   if ([(PXEditorialLayoutGenerator *)self itemCount])
   {
-    v6 = [(PXEditorialLayoutGenerator *)self itemCount];
+    itemCount = [(PXEditorialLayoutGenerator *)self itemCount];
   }
 
   else
   {
-    v6 = 10.0;
+    itemCount = 10.0;
   }
 
-  v7 = [(PXEditorialLayoutGenerator *)self metrics];
-  v8 = [v7 numberOfColumns];
+  metrics = [(PXEditorialLayoutGenerator *)self metrics];
+  numberOfColumns = [metrics numberOfColumns];
 
-  v9 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v9 referenceSize];
+  metrics2 = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics2 referenceSize];
   v11 = v10;
 
-  v12 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v12 headerHeight];
+  metrics3 = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics3 headerHeight];
   v14 = v13;
 
-  v15 = v14 + v6 * (v4 * (v5 / v8)) / v8;
+  v15 = v14 + itemCount * (v4 * (maxTilesInFrame / numberOfColumns)) / numberOfColumns;
   v16 = v11;
   result.height = v15;
   result.width = v16;
   return result;
 }
 
-- (void)_getHeaderGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4
+- (void)_getHeaderGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range
 {
-  if (a4.length != 1)
+  if (range.length != 1)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"range.length == 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"range.length == 1"}];
   }
 
-  v6 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v6 headerHeight];
+  metrics = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics headerHeight];
   v8 = v7;
 
-  v9 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v9 referenceSize];
+  metrics2 = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics2 referenceSize];
   v11 = v10;
 
-  v12 = [(PXEditorialLayoutGenerator *)self metrics];
-  [v12 padding];
+  metrics3 = [(PXEditorialLayoutGenerator *)self metrics];
+  [metrics3 padding];
   v14 = v13;
   v16 = v15;
 
-  a3->var2.width = v16 + v11 + v14;
-  a3->var2.height = v8;
-  a3->var0 = 0;
+  geometries->var2.width = v16 + v11 + v14;
+  geometries->var2.height = v8;
+  geometries->var0 = 0;
   PXRectGetCenter();
 }
 
-- (void)_getContentGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4
+- (void)_getContentGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a4.location + a4.length;
-  if (a4.location + a4.length > [(PXEditorialLayoutGenerator *)self itemCount])
+  length = range.length;
+  location = range.location;
+  v9 = range.location + range.length;
+  if (range.location + range.length > [(PXEditorialLayoutGenerator *)self itemCount])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:138 description:@"the range must be <= to the number of itemCount"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:138 description:@"the range must be <= to the number of itemCount"];
   }
 
   [(PXEditorialLayoutGenerator *)self _prepareIfNeeded];
@@ -306,7 +306,7 @@ void __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_t 
     v10 = location;
     do
     {
-      v11 = &a3[v10];
+      v11 = &geometries[v10];
       v12 = &self->_geometries[v10];
       v14 = *&v12->var6.origin.y;
       v13 = *&v12->var6.size.height;
@@ -334,27 +334,27 @@ void __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_t 
   }
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  if (a5 == 1)
+  if (kind == 1)
   {
 
-    [(PXEditorialLayoutGenerator *)self _getHeaderGeometries:a3 inRange:a4.location, a4.length];
+    [(PXEditorialLayoutGenerator *)self _getHeaderGeometries:geometries inRange:range.location, range.length];
   }
 
   else
   {
-    if (a5)
+    if (kind)
     {
       v14 = v6;
       v15 = v5;
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:131 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:131 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    [(PXEditorialLayoutGenerator *)self _getContentGeometries:a3 inRange:a4.location, a4.length];
+    [(PXEditorialLayoutGenerator *)self _getContentGeometries:geometries inRange:range.location, range.length];
   }
 }
 
@@ -366,21 +366,21 @@ void __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_t 
   self->_isPrepared = 0;
 }
 
-- (unint64_t)numberOfGeometriesWithKind:(int64_t)a3
+- (unint64_t)numberOfGeometriesWithKind:(int64_t)kind
 {
-  if (a3 == 1)
+  if (kind == 1)
   {
-    v4 = [(PXEditorialLayoutGenerator *)self metrics];
-    [v4 headerHeight];
+    metrics = [(PXEditorialLayoutGenerator *)self metrics];
+    [metrics headerHeight];
     v3 = v5 > 0.0;
   }
 
   else
   {
-    if (a3)
+    if (kind)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:107 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialLayoutGenerator.m" lineNumber:107 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -402,15 +402,15 @@ void __46__PXEditorialLayoutGenerator__prepareIfNeeded__block_invoke_2(uint64_t 
   [(PXEditorialLayoutGenerator *)&v3 dealloc];
 }
 
-- (PXEditorialLayoutGenerator)initWithMetrics:(id)a3
+- (PXEditorialLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v6.receiver = self;
   v6.super_class = PXEditorialLayoutGenerator;
-  if ([(PXEditorialLayoutGenerator *)&v6 initWithMetrics:v4])
+  if ([(PXEditorialLayoutGenerator *)&v6 initWithMetrics:metricsCopy])
   {
-    [v4 referenceSize];
-    [v4 padding];
+    [metricsCopy referenceSize];
+    [metricsCopy padding];
     PXEdgeInsetsInsetSize();
   }
 

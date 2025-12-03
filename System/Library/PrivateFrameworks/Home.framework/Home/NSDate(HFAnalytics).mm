@@ -6,7 +6,7 @@
 
 - (uint64_t)hf_analyticsTimestamp
 {
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
   v2 = MEMORY[0x277CCABB0];
 
   return [v2 numberWithUnsignedInteger:(v1 * 1000.0)];

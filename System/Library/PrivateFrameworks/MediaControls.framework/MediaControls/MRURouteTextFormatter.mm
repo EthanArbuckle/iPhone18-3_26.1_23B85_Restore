@@ -1,34 +1,34 @@
 @interface MRURouteTextFormatter
-- (BOOL)text:(id)a3 fitsInWidth:(double)a4;
-- (CGSize)sizeForText:(id)a3;
+- (BOOL)text:(id)text fitsInWidth:(double)width;
+- (CGSize)sizeForText:(id)text;
 - (MRURouteTextFormatter)init;
-- (MRURouteTextFormatter)initWithConfiguration:(id)a3;
-- (id)bestStringForRouteNames:(id)a3 designatedGroupLeaderName:(id)a4 thatFitsWidth:(double)a5;
-- (id)formattedRouteNameForDesignatedGroupLeaderName:(id)a3 truncatedDesignatedGroupLeaderName:(id)a4 routeNamesText:(id)a5;
+- (MRURouteTextFormatter)initWithConfiguration:(id)configuration;
+- (id)bestStringForRouteNames:(id)names designatedGroupLeaderName:(id)name thatFitsWidth:(double)width;
+- (id)formattedRouteNameForDesignatedGroupLeaderName:(id)name truncatedDesignatedGroupLeaderName:(id)leaderName routeNamesText:(id)text;
 - (id)marketingNames;
-- (id)plusSeparatedRouteNames:(id)a3;
-- (id)routeNamesSortedLength:(id)a3;
-- (id)text:(id)a3 displayAsSiriSuggestion:(BOOL)a4;
-- (id)textForRoute:(id)a3;
-- (id)textForRoute:(id)a3 textBoundingWidth:(double)a4;
-- (id)textForRouteNames:(id)a3;
-- (id)textForRouteNames:(id)a3 textBoundingWidth:(double)a4;
-- (id)truncateText:(id)a3 by:(int64_t)a4;
-- (int64_t)compareLength:(id)a3 with:(id)a4;
+- (id)plusSeparatedRouteNames:(id)names;
+- (id)routeNamesSortedLength:(id)length;
+- (id)text:(id)text displayAsSiriSuggestion:(BOOL)suggestion;
+- (id)textForRoute:(id)route;
+- (id)textForRoute:(id)route textBoundingWidth:(double)width;
+- (id)textForRouteNames:(id)names;
+- (id)textForRouteNames:(id)names textBoundingWidth:(double)width;
+- (id)truncateText:(id)text by:(int64_t)by;
+- (int64_t)compareLength:(id)length with:(id)with;
 @end
 
 @implementation MRURouteTextFormatter
 
-- (MRURouteTextFormatter)initWithConfiguration:(id)a3
+- (MRURouteTextFormatter)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MRURouteTextFormatter;
   v6 = [(MRURouteTextFormatter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -42,14 +42,14 @@
   return v4;
 }
 
-- (id)textForRoute:(id)a3 textBoundingWidth:(double)a4
+- (id)textForRoute:(id)route textBoundingWidth:(double)width
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isAppleTVRoute])
+  routeCopy = route;
+  if ([routeCopy isAppleTVRoute])
   {
-    v7 = [v6 designatedGroupLeaderName];
-    v8 = [v7 length] != 0;
+    designatedGroupLeaderName = [routeCopy designatedGroupLeaderName];
+    v8 = [designatedGroupLeaderName length] != 0;
   }
 
   else
@@ -57,68 +57,68 @@
     v8 = 0;
   }
 
-  if (![v6 isDeviceRoute] || v8)
+  if (![routeCopy isDeviceRoute] || v8)
   {
-    v9 = [v6 designatedGroupLeaderName];
+    designatedGroupLeaderName2 = [routeCopy designatedGroupLeaderName];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69B09A8] localDeviceLocalizedName];
+    designatedGroupLeaderName2 = [MEMORY[0x1E69B09A8] localDeviceLocalizedName];
   }
 
-  v10 = v9;
-  if (!-[__CFString length](v9, "length") || ![v6 isAirPlayingToDevice] || !objc_msgSend(v6, "isProxyGroupPlayer"))
+  v10 = designatedGroupLeaderName2;
+  if (!-[__CFString length](designatedGroupLeaderName2, "length") || ![routeCopy isAirPlayingToDevice] || !objc_msgSend(routeCopy, "isProxyGroupPlayer"))
   {
-    if ([v6 isDeviceRoute] && objc_msgSend(v6, "numberOfOutputDevices") <= 1)
+    if ([routeCopy isDeviceRoute] && objc_msgSend(routeCopy, "numberOfOutputDevices") <= 1)
     {
 
-      v10 = v6;
-      v15 = [(MRURouteTextFormatterConfiguration *)self->_configuration usesPredictedOutputDevice];
-      if (v10 && v15)
+      v10 = routeCopy;
+      usesPredictedOutputDevice = [(MRURouteTextFormatterConfiguration *)self->_configuration usesPredictedOutputDevice];
+      if (v10 && usesPredictedOutputDevice)
       {
-        v16 = [(__CFString *)v10 predictedOutputDevice];
-        v17 = v16;
-        if (v16)
+        predictedOutputDevice = [(__CFString *)v10 predictedOutputDevice];
+        routeName2 = predictedOutputDevice;
+        if (predictedOutputDevice)
         {
-          v18 = [v16 routeName];
-          v27[0] = v18;
+          routeName = [predictedOutputDevice routeName];
+          v27[0] = routeName;
           v19 = v27;
         }
 
         else
         {
-          v18 = [(__CFString *)v10 routeName];
-          v26 = v18;
+          routeName = [(__CFString *)v10 routeName];
+          v26 = routeName;
           v19 = &v26;
         }
 
-        v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
+        routeNames = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
       }
 
       else
       {
-        v17 = [(__CFString *)v10 routeName];
-        v25 = v17;
-        v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
+        routeName2 = [(__CFString *)v10 routeName];
+        v25 = routeName2;
+        routeNames = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
       }
     }
 
     else
     {
-      v20 = [v6 isSplitRoute];
+      isSplitRoute = [routeCopy isSplitRoute];
 
-      if (!v20)
+      if (!isSplitRoute)
       {
-        v13 = [v6 routeNames];
+        routeNames = [routeCopy routeNames];
 LABEL_29:
         v10 = &stru_1F1445548;
         goto LABEL_30;
       }
 
-      v10 = +[MRUStringsProvider routeNameHeadphonesCount:](MRUStringsProvider, "routeNameHeadphonesCount:", [v6 numberOfOutputDevices]);
+      v10 = +[MRUStringsProvider routeNameHeadphonesCount:](MRUStringsProvider, "routeNameHeadphonesCount:", [routeCopy numberOfOutputDevices]);
       v24 = v10;
-      v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
+      routeNames = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     }
 
 LABEL_28:
@@ -127,13 +127,13 @@ LABEL_28:
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DF70]);
-  v12 = [v6 routeNames];
-  v13 = [v11 initWithArray:v12];
+  routeNames2 = [routeCopy routeNames];
+  routeNames = [v11 initWithArray:routeNames2];
 
-  v14 = [v13 indexOfObject:v10];
+  v14 = [routeNames indexOfObject:v10];
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v13 removeObjectAtIndex:v14];
+    [routeNames removeObjectAtIndex:v14];
   }
 
   if ([(MRURouteTextFormatterConfiguration *)self->_configuration omitGroupLeaderName])
@@ -142,60 +142,60 @@ LABEL_28:
   }
 
 LABEL_30:
-  v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v13];
-  v22 = [(MRURouteTextFormatter *)self bestStringForRouteNames:v21 designatedGroupLeaderName:v10 thatFitsWidth:a4];
+  v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:routeNames];
+  v22 = [(MRURouteTextFormatter *)self bestStringForRouteNames:v21 designatedGroupLeaderName:v10 thatFitsWidth:width];
 
   return v22;
 }
 
-- (id)textForRoute:(id)a3
+- (id)textForRoute:(id)route
 {
   configuration = self->_configuration;
-  v5 = a3;
+  routeCopy = route;
   [(MRURouteTextFormatterConfiguration *)configuration textBoundingWidth];
-  v6 = [(MRURouteTextFormatter *)self textForRoute:v5 textBoundingWidth:?];
+  v6 = [(MRURouteTextFormatter *)self textForRoute:routeCopy textBoundingWidth:?];
 
   return v6;
 }
 
-- (id)textForRouteNames:(id)a3 textBoundingWidth:(double)a4
+- (id)textForRouteNames:(id)names textBoundingWidth:(double)width
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:a3];
-  v7 = [(MRURouteTextFormatter *)self bestStringForRouteNames:v6 designatedGroupLeaderName:&stru_1F1445548 thatFitsWidth:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:names];
+  v7 = [(MRURouteTextFormatter *)self bestStringForRouteNames:v6 designatedGroupLeaderName:&stru_1F1445548 thatFitsWidth:width];
 
   return v7;
 }
 
-- (id)textForRouteNames:(id)a3
+- (id)textForRouteNames:(id)names
 {
   configuration = self->_configuration;
-  v5 = a3;
+  namesCopy = names;
   [(MRURouteTextFormatterConfiguration *)configuration textBoundingWidth];
-  v6 = [(MRURouteTextFormatter *)self textForRouteNames:v5 textBoundingWidth:?];
+  v6 = [(MRURouteTextFormatter *)self textForRouteNames:namesCopy textBoundingWidth:?];
 
   return v6;
 }
 
-- (id)bestStringForRouteNames:(id)a3 designatedGroupLeaderName:(id)a4 thatFitsWidth:(double)a5
+- (id)bestStringForRouteNames:(id)names designatedGroupLeaderName:(id)name thatFitsWidth:(double)width
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 allObjects];
-  v11 = [(MRURouteTextFormatter *)self routeNamesSortedAlphanumeric:v10];
+  namesCopy = names;
+  nameCopy = name;
+  allObjects = [namesCopy allObjects];
+  v11 = [(MRURouteTextFormatter *)self routeNamesSortedAlphanumeric:allObjects];
 
-  v12 = [v8 allObjects];
-  v13 = [(MRURouteTextFormatter *)self routeNamesSortedLength:v12];
+  allObjects2 = [namesCopy allObjects];
+  v13 = [(MRURouteTextFormatter *)self routeNamesSortedLength:allObjects2];
 
-  v14 = [v9 copy];
+  v14 = [nameCopy copy];
   v15 = [(MRURouteTextFormatter *)self plusSeparatedRouteNames:v11];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderName_thatFitsWidth___block_invoke;
   aBlock[3] = &unk_1E7663BD0;
   aBlock[4] = self;
-  v16 = v9;
+  v16 = nameCopy;
   v91 = v16;
-  v92 = a5;
+  widthCopy = width;
   v17 = _Block_copy(aBlock);
   v18 = (v17 + 2);
   v71 = v15;
@@ -205,8 +205,8 @@ LABEL_30:
   {
     v19 = [(MRURouteTextFormatter *)self formattedRouteNameForDesignatedGroupLeaderName:v16 truncatedDesignatedGroupLeaderName:v14 routeNamesText:v15];
 LABEL_45:
-    v62 = [(MRURouteTextFormatter *)self configuration];
-    v64 = -[MRURouteTextFormatter text:displayAsSiriSuggestion:](self, "text:displayAsSiriSuggestion:", v19, [v62 displayAsSiriSuggestion]);
+    configuration = [(MRURouteTextFormatter *)self configuration];
+    v64 = -[MRURouteTextFormatter text:displayAsSiriSuggestion:](self, "text:displayAsSiriSuggestion:", v19, [configuration displayAsSiriSuggestion]);
     goto LABEL_46;
   }
 
@@ -264,18 +264,18 @@ LABEL_12:
   if ([(MRURouteTextFormatterConfiguration *)self->_configuration allowsMultitruncation])
   {
     v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v13];
-    v66 = v8;
-    v30 = [v29 firstObject];
-    v31 = [v30 length];
-    v32 = [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount];
+    v66 = namesCopy;
+    firstObject = [v29 firstObject];
+    v31 = [firstObject length];
+    minimumEndCharacterCount = [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount];
 
     *(v87 + 24) = 0;
     v33 = v81[5];
     v81[5] = &stru_1F1445548;
 
-    if (v31 - 2 * v32 >= 1)
+    if (v31 - 2 * minimumEndCharacterCount >= 1)
     {
-      v34 = 2 * v32;
+      v34 = 2 * minimumEndCharacterCount;
       v35 = MEMORY[0x1E69E9820];
       v36 = __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderName_thatFitsWidth___block_invoke_7;
       v37 = ~v34 + v31;
@@ -289,7 +289,7 @@ LABEL_12:
         v73[2] = v36;
         v73[3] = v38;
         v74 = v29;
-        v75 = self;
+        selfCopy = self;
         v78 = &v80;
         v77 = v17;
         v76 = v14;
@@ -298,7 +298,7 @@ LABEL_12:
         v40 = *(v87 + 24);
         if (v40 == 1)
         {
-          v41 = self;
+          selfCopy2 = self;
           v42 = v17;
           v43 = v36;
           v44 = v35;
@@ -314,7 +314,7 @@ LABEL_12:
           v35 = v44;
           v36 = v43;
           v17 = v42;
-          self = v41;
+          self = selfCopy2;
           v14 = v68;
         }
 
@@ -329,7 +329,7 @@ LABEL_12:
       while (v39);
     }
 
-    v8 = v66;
+    namesCopy = v66;
     v11 = v69;
   }
 
@@ -341,15 +341,15 @@ LABEL_22:
 
   else
   {
-    v50 = [v11 firstObject];
+    firstObject2 = [v11 firstObject];
     if ([v11 count] < 2)
     {
-      v51 = v50;
+      v51 = firstObject2;
     }
 
     else
     {
-      v51 = +[MRUStringsProvider routeName:plusCount:](MRUStringsProvider, "routeName:plusCount:", v50, [v11 count] - 1);
+      v51 = +[MRUStringsProvider routeName:plusCount:](MRUStringsProvider, "routeName:plusCount:", firstObject2, [v11 count] - 1);
     }
 
     v67 = v51;
@@ -358,26 +358,26 @@ LABEL_22:
       v52 = v67;
       v53 = v67;
       v49 = 0;
-      v54 = v50;
+      firstObject3 = firstObject2;
       v55 = v71;
     }
 
     else
     {
-      v54 = [v11 firstObject];
+      firstObject3 = [v11 firstObject];
 
       v55 = &stru_1F1445548;
       v56 = 1;
       while (1)
       {
-        v57 = [v54 length];
+        v57 = [firstObject3 length];
         v49 = v56 > v57;
         if (v56 > v57)
         {
           break;
         }
 
-        v58 = [(MRURouteTextFormatter *)self truncateText:v54 by:v56];
+        v58 = [(MRURouteTextFormatter *)self truncateText:firstObject3 by:v56];
 
         if ([v69 count] < 2)
         {
@@ -392,15 +392,15 @@ LABEL_22:
         ++v56;
         if (v17[2](v17, v14, v55))
         {
-          v59 = v55;
-          v55 = v59;
+          firstObject4 = v55;
+          v55 = firstObject4;
           goto LABEL_36;
         }
       }
 
-      v59 = [v69 firstObject];
+      firstObject4 = [v69 firstObject];
 LABEL_36:
-      v53 = v59;
+      v53 = firstObject4;
 
       v52 = v67;
     }
@@ -423,11 +423,11 @@ LABEL_36:
   v11 = v69;
   while (1)
   {
-    v62 = [(MRURouteTextFormatter *)self truncateText:v19 by:++v61];
-    v63 = [(MRURouteTextFormatter *)self configuration];
-    v64 = -[MRURouteTextFormatter text:displayAsSiriSuggestion:](self, "text:displayAsSiriSuggestion:", v62, [v63 displayAsSiriSuggestion]);
+    configuration = [(MRURouteTextFormatter *)self truncateText:v19 by:++v61];
+    configuration2 = [(MRURouteTextFormatter *)self configuration];
+    v64 = -[MRURouteTextFormatter text:displayAsSiriSuggestion:](self, "text:displayAsSiriSuggestion:", configuration, [configuration2 displayAsSiriSuggestion]);
 
-    if ([(MRURouteTextFormatter *)self text:v64 fitsInWidth:a5])
+    if ([(MRURouteTextFormatter *)self text:v64 fitsInWidth:width])
     {
       break;
     }
@@ -482,18 +482,18 @@ void __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderNa
   }
 }
 
-- (id)text:(id)a3 displayAsSiriSuggestion:(BOOL)a4
+- (id)text:(id)text displayAsSiriSuggestion:(BOOL)suggestion
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  textCopy = text;
+  v6 = textCopy;
+  if (suggestion)
   {
-    v7 = [MRUStringsProvider nowPlayingSiriSuggestion:v5];
+    v7 = [MRUStringsProvider nowPlayingSiriSuggestion:textCopy];
   }
 
   else
   {
-    v7 = v5;
+    v7 = textCopy;
   }
 
   v8 = v7;
@@ -501,15 +501,15 @@ void __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderNa
   return v8;
 }
 
-- (int64_t)compareLength:(id)a3 with:(id)a4
+- (int64_t)compareLength:(id)length with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  if (v7 <= [v6 length])
+  lengthCopy = length;
+  withCopy = with;
+  v7 = [lengthCopy length];
+  if (v7 <= [withCopy length])
   {
-    v9 = [v5 length];
-    v8 = v9 < [v6 length];
+    v9 = [lengthCopy length];
+    v8 = v9 < [withCopy length];
   }
 
   else
@@ -520,45 +520,45 @@ void __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderNa
   return v8;
 }
 
-- (id)routeNamesSortedLength:(id)a3
+- (id)routeNamesSortedLength:(id)length
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__MRURouteTextFormatter_routeNamesSortedLength___block_invoke;
   v5[3] = &unk_1E7663C40;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [length sortedArrayUsingComparator:v5];
 
   return v3;
 }
 
-- (id)plusSeparatedRouteNames:(id)a3
+- (id)plusSeparatedRouteNames:(id)names
 {
-  v3 = [(MRURouteTextFormatter *)self routeNamesSortedAlphanumeric:a3];
+  v3 = [(MRURouteTextFormatter *)self routeNamesSortedAlphanumeric:names];
   v4 = +[MRUStringsProvider routeNamePlusSeparator];
   v5 = [v3 componentsJoinedByString:v4];
 
   return v5;
 }
 
-- (id)formattedRouteNameForDesignatedGroupLeaderName:(id)a3 truncatedDesignatedGroupLeaderName:(id)a4 routeNamesText:(id)a5
+- (id)formattedRouteNameForDesignatedGroupLeaderName:(id)name truncatedDesignatedGroupLeaderName:(id)leaderName routeNamesText:(id)text
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 copy];
-  v12 = [(MRURouteTextFormatter *)self marketingNames];
-  v13 = [v12 containsObject:v8];
+  nameCopy = name;
+  leaderNameCopy = leaderName;
+  textCopy = text;
+  v11 = [textCopy copy];
+  marketingNames = [(MRURouteTextFormatter *)self marketingNames];
+  v13 = [marketingNames containsObject:nameCopy];
 
   if (v13)
   {
-    v14 = v8;
+    v14 = nameCopy;
   }
 
   else
   {
-    v14 = v9;
+    v14 = leaderNameCopy;
   }
 
   v15 = v14;
@@ -576,7 +576,7 @@ void __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderNa
 
     else
     {
-      v17 = v10;
+      v17 = textCopy;
     }
 
     v16 = v17;
@@ -584,12 +584,12 @@ void __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderNa
 
   else
   {
-    if (![v10 length])
+    if (![textCopy length])
     {
       goto LABEL_15;
     }
 
-    v16 = v10;
+    v16 = textCopy;
   }
 
   v18 = v16;
@@ -598,16 +598,16 @@ void __89__MRURouteTextFormatter_bestStringForRouteNames_designatedGroupLeaderNa
 LABEL_15:
   if ([(MRURouteTextFormatterConfiguration *)self->_configuration forcesUppercaseText])
   {
-    v31 = v10;
-    v19 = [v11 localizedUppercaseString];
-    v20 = [v19 mutableCopy];
+    v31 = textCopy;
+    localizedUppercaseString = [v11 localizedUppercaseString];
+    v20 = [localizedUppercaseString mutableCopy];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v21 = [(MRURouteTextFormatter *)self marketingNames];
-    v22 = [v21 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    marketingNames2 = [(MRURouteTextFormatter *)self marketingNames];
+    v22 = [marketingNames2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v22)
     {
       v23 = v22;
@@ -618,7 +618,7 @@ LABEL_15:
         {
           if (*v33 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(marketingNames2);
           }
 
           v26 = *(*(&v32 + 1) + 8 * i);
@@ -629,7 +629,7 @@ LABEL_15:
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v23 = [marketingNames2 countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v23);
@@ -637,21 +637,21 @@ LABEL_15:
 
     v29 = [v20 copy];
     v11 = v29;
-    v10 = v31;
+    textCopy = v31;
   }
 
   return v11;
 }
 
-- (CGSize)sizeForText:(id)a3
+- (CGSize)sizeForText:(id)text
 {
-  v4 = a3;
-  v5 = [(MRURouteTextFormatterConfiguration *)self->_configuration font];
+  textCopy = text;
+  font = [(MRURouteTextFormatterConfiguration *)self->_configuration font];
 
-  if (v5)
+  if (font)
   {
-    v6 = [(MRURouteTextFormatterConfiguration *)self->_configuration font];
-    [v4 mru_textSizeForFont:v6 boundingSize:{1.79769313e308, 1.79769313e308}];
+    font2 = [(MRURouteTextFormatterConfiguration *)self->_configuration font];
+    [textCopy mru_textSizeForFont:font2 boundingSize:{1.79769313e308, 1.79769313e308}];
     v8 = v7;
     v10 = v9;
   }
@@ -669,15 +669,15 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)text:(id)a3 fitsInWidth:(double)a4
+- (BOOL)text:(id)text fitsInWidth:(double)width
 {
-  [(MRURouteTextFormatter *)self sizeForText:a3];
-  if (v5 < a4)
+  [(MRURouteTextFormatter *)self sizeForText:text];
+  if (v5 < width)
   {
     return 1;
   }
 
-  v7 = v5 - a4;
+  v7 = v5 - width;
   if (v7 < 0.0)
   {
     v7 = -v7;
@@ -704,20 +704,20 @@ void __39__MRURouteTextFormatter_marketingNames__block_invoke()
   marketingNames_marketingNames = &unk_1F148B2F8;
 }
 
-- (id)truncateText:(id)a3 by:(int64_t)a4
+- (id)truncateText:(id)text by:(int64_t)by
 {
-  v6 = a3;
-  v7 = [(MRURouteTextFormatterConfiguration *)self->_configuration truncationMode];
-  if (!v7)
+  textCopy = text;
+  truncationMode = [(MRURouteTextFormatterConfiguration *)self->_configuration truncationMode];
+  if (!truncationMode)
   {
-    v18 = [v6 length];
-    v19 = v18 - a4;
+    v18 = [textCopy length];
+    v19 = v18 - by;
     if (v19 < [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount])
     {
-      v20 = [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount];
-      if (v18 >= v20)
+      minimumEndCharacterCount = [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount];
+      if (v18 >= minimumEndCharacterCount)
       {
-        v19 = v20;
+        v19 = minimumEndCharacterCount;
       }
 
       else
@@ -726,27 +726,27 @@ void __39__MRURouteTextFormatter_marketingNames__block_invoke()
       }
     }
 
-    v13 = [v6 substringWithRange:{0, v19 & ~(v19 >> 63)}];
+    v13 = [textCopy substringWithRange:{0, v19 & ~(v19 >> 63)}];
     v21 = MEMORY[0x1E696AEC0];
     v14 = +[MRUStringsProvider routeNameEllipsisString];
     v17 = [v21 stringWithFormat:@"%@%@", v13, v14];
     goto LABEL_11;
   }
 
-  if (v7 == 1)
+  if (truncationMode == 1)
   {
-    v8 = [v6 length];
-    if (v8 - (a4 + 2 * [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount]) <= 0)
+    v8 = [textCopy length];
+    if (v8 - (by + 2 * [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount]) <= 0)
     {
-      v9 = [v6 length];
-      a4 = v9 - 2 * [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount];
+      v9 = [textCopy length];
+      by = v9 - 2 * [(MRURouteTextFormatterConfiguration *)self->_configuration minimumEndCharacterCount];
     }
 
-    v10 = vcvtpd_s64_f64(vcvtd_n_f64_u64([v6 length], 1uLL));
-    v11 = vcvtd_n_f64_s64(a4, 1uLL);
+    v10 = vcvtpd_s64_f64(vcvtd_n_f64_u64([textCopy length], 1uLL));
+    v11 = vcvtd_n_f64_s64(by, 1uLL);
     v12 = (v11 + v10);
-    v13 = [v6 substringWithRange:{0, (v10 - v11)}];
-    v14 = [v6 substringWithRange:{v12, objc_msgSend(v6, "length") - v12}];
+    v13 = [textCopy substringWithRange:{0, (v10 - v11)}];
+    v14 = [textCopy substringWithRange:{v12, objc_msgSend(textCopy, "length") - v12}];
     v15 = MEMORY[0x1E696AEC0];
     v16 = +[MRUStringsProvider routeNameEllipsisString];
     v17 = [v15 stringWithFormat:@"%@%@%@", v13, v16, v14];

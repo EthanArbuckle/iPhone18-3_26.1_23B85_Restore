@@ -1,16 +1,16 @@
 @interface MUIMessageListUnbundledSectionDataSource
-- (MUIMessageListUnbundledSectionDataSource)initWithConfiguration:(id)a3;
-- (MUIMessageListUnbundledSectionDataSource)initWithSection:(id)a3 collectionView:(id)a4 messageList:(id)a5 initialLoadCompletedPromise:(id)a6 layoutValuesHelper:(id)a7 state:(id)a8 headerType:(unint64_t)a9;
+- (MUIMessageListUnbundledSectionDataSource)initWithConfiguration:(id)configuration;
+- (MUIMessageListUnbundledSectionDataSource)initWithSection:(id)section collectionView:(id)view messageList:(id)list initialLoadCompletedPromise:(id)promise layoutValuesHelper:(id)helper state:(id)state headerType:(unint64_t)type;
 - (UICollectionViewCellRegistration)cellRegistration;
 - (id)_allowedSections;
 - (id)_indexPathsForSelectedItems;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
-- (id)createCellRegistrationForCellClass:(Class)a3;
-- (id)sectionForCollection:(id)a3;
-- (uint64_t)_isExpandedItemID:(void *)a1;
-- (uint64_t)_needsFlushSeparatorForItemID:(void *)a3 snapshot:(char)a4 useSplitViewStyling:;
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5;
-- (void)collection:(id)a3 shouldHighlightSnippetHints:(id)a4;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
+- (id)createCellRegistrationForCellClass:(Class)class;
+- (id)sectionForCollection:(id)collection;
+- (uint64_t)_isExpandedItemID:(void *)d;
+- (uint64_t)_needsFlushSeparatorForItemID:(void *)d snapshot:(char)snapshot useSplitViewStyling:;
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d;
+- (void)collection:(id)collection shouldHighlightSnippetHints:(id)hints;
 @end
 
 @implementation MUIMessageListUnbundledSectionDataSource
@@ -20,8 +20,8 @@
   cellRegistration = self->_cellRegistration;
   if (!cellRegistration)
   {
-    v4 = [(MessageListSectionDataSource *)self delegate];
-    v5 = [v4 sectionListCellClassForMessageListSectionDataSource:self];
+    delegate = [(MessageListSectionDataSource *)self delegate];
+    v5 = [delegate sectionListCellClassForMessageListSectionDataSource:self];
 
     v6 = [(MUIMessageListUnbundledSectionDataSource *)self createCellRegistrationForCellClass:v5];
     v7 = self->_cellRegistration;
@@ -57,43 +57,43 @@
   return v2;
 }
 
-- (MUIMessageListUnbundledSectionDataSource)initWithSection:(id)a3 collectionView:(id)a4 messageList:(id)a5 initialLoadCompletedPromise:(id)a6 layoutValuesHelper:(id)a7 state:(id)a8 headerType:(unint64_t)a9
+- (MUIMessageListUnbundledSectionDataSource)initWithSection:(id)section collectionView:(id)view messageList:(id)list initialLoadCompletedPromise:(id)promise layoutValuesHelper:(id)helper state:(id)state headerType:(unint64_t)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  sectionCopy = section;
+  viewCopy = view;
+  listCopy = list;
+  promiseCopy = promise;
+  helperCopy = helper;
+  stateCopy = state;
   v40.receiver = self;
   v40.super_class = MUIMessageListUnbundledSectionDataSource;
-  v21 = [(MessageListSectionDataSource *)&v40 initWithSection:v15 collectionView:v16 messageList:v17 initialLoadCompletedPromise:v18 layoutValuesHelper:v19 state:v20 headerType:a9];
+  v21 = [(MessageListSectionDataSource *)&v40 initWithSection:sectionCopy collectionView:viewCopy messageList:listCopy initialLoadCompletedPromise:promiseCopy layoutValuesHelper:helperCopy state:stateCopy headerType:type];
   if (v21)
   {
-    v32 = v15;
-    v22 = [MEMORY[0x277CBEBD0] em_userDefaults];
+    v32 = sectionCopy;
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
     v23 = *MEMORY[0x277D06C70];
-    -[MUIMessageListUnbundledSectionDataSource setHideFollowUp:](v21, "setHideFollowUp:", [v22 BOOLForKey:*MEMORY[0x277D06C70]]);
+    -[MUIMessageListUnbundledSectionDataSource setHideFollowUp:](v21, "setHideFollowUp:", [em_userDefaults BOOLForKey:*MEMORY[0x277D06C70]]);
     objc_initWeak(&location, v21);
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __151__MUIMessageListUnbundledSectionDataSource_initWithSection_collectionView_messageList_initialLoadCompletedPromise_layoutValuesHelper_state_headerType___block_invoke;
     v36[3] = &unk_278188C80;
     objc_copyWeak(&v38, &location);
-    v24 = v22;
+    v24 = em_userDefaults;
     v37 = v24;
     v25 = [v24 ef_observeKeyPath:v23 options:1 autoCancelToken:1 usingBlock:v36];
     hideFollowUpUserDefaultsObserver = v21->_hideFollowUpUserDefaultsObserver;
     v21->_hideFollowUpUserDefaultsObserver = v25;
 
-    v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    -[MUIMessageListUnbundledSectionDataSource setLocalMailboxSearchScope:](v21, "setLocalMailboxSearchScope:", [v27 BOOLForKey:@"LocalMailboxSearchOnly"]);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    -[MUIMessageListUnbundledSectionDataSource setLocalMailboxSearchScope:](v21, "setLocalMailboxSearchScope:", [standardUserDefaults BOOLForKey:@"LocalMailboxSearchOnly"]);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __151__MUIMessageListUnbundledSectionDataSource_initWithSection_collectionView_messageList_initialLoadCompletedPromise_layoutValuesHelper_state_headerType___block_invoke_2;
     v33[3] = &unk_278188C80;
     objc_copyWeak(&v35, &location);
-    v28 = v27;
+    v28 = standardUserDefaults;
     v34 = v28;
     v29 = [v28 ef_observeKeyPath:@"LocalMailboxSearchOnly" options:1 autoCancelToken:1 usingBlock:v33];
     localMailboxSearchScopeUserDefaultsObserver = v21->_localMailboxSearchScopeUserDefaultsObserver;
@@ -103,7 +103,7 @@
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
 
-    v15 = v32;
+    sectionCopy = v32;
   }
 
   return v21;
@@ -131,11 +131,11 @@ void __151__MUIMessageListUnbundledSectionDataSource_initWithSection_collectionV
   }
 }
 
-- (MUIMessageListUnbundledSectionDataSource)initWithConfiguration:(id)a3
+- (MUIMessageListUnbundledSectionDataSource)initWithConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = MUIMessageListUnbundledSectionDataSource;
-  v3 = [(MessageListSectionDataSource *)&v6 initWithConfiguration:a3];
+  v3 = [(MessageListSectionDataSource *)&v6 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
@@ -145,7 +145,7 @@ void __151__MUIMessageListUnbundledSectionDataSource_initWithSection_collectionV
   return v4;
 }
 
-- (id)createCellRegistrationForCellClass:(Class)a3
+- (id)createCellRegistrationForCellClass:(Class)class
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x277D752B0];
@@ -154,7 +154,7 @@ void __151__MUIMessageListUnbundledSectionDataSource_initWithSection_collectionV
   v7[2] = __79__MUIMessageListUnbundledSectionDataSource_createCellRegistrationForCellClass___block_invoke;
   v7[3] = &unk_27818AA00;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 registrationWithCellClass:a3 configurationHandler:v7];
+  v5 = [v4 registrationWithCellClass:class configurationHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 
@@ -170,99 +170,99 @@ void __79__MUIMessageListUnbundledSectionDataSource_createCellRegistrationForCel
   [WeakRetained _configureCell:v9 atIndexPath:v8 itemID:v7];
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MUIMessageListUnbundledSectionDataSource *)self cellRegistration];
-  v13 = [v11 dequeueConfiguredReusableCellWithRegistration:v12 forIndexPath:v10 item:v9];
+  dCopy = d;
+  pathCopy = path;
+  viewCopy = view;
+  cellRegistration = [(MUIMessageListUnbundledSectionDataSource *)self cellRegistration];
+  v13 = [viewCopy dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:pathCopy item:dCopy];
 
   return v13;
 }
 
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cellCopy = cell;
+  pathCopy = path;
+  dCopy = d;
   v11 = CACurrentMediaTime();
-  v12 = [(MessageListSectionDataSource *)self state];
-  v13 = [v8 cellHelper];
-  v14 = [(MessageListSectionDataSource *)self layoutValuesHelper];
-  v15 = [v13 cellView];
-  [v15 setLayoutValuesHelper:v14];
+  state = [(MessageListSectionDataSource *)self state];
+  cellHelper = [cellCopy cellHelper];
+  layoutValuesHelper = [(MessageListSectionDataSource *)self layoutValuesHelper];
+  cellView = [cellHelper cellView];
+  [cellView setLayoutValuesHelper:layoutValuesHelper];
 
-  [v13 setCompact:{objc_msgSend(v12, "isCompact")}];
-  [v13 setExpanded:{-[MUIMessageListUnbundledSectionDataSource _isExpandedItemID:](self, v10)}];
-  [v13 setHideFollowUp:{-[MUIMessageListUnbundledSectionDataSource shouldHideFollowUp](self, "shouldHideFollowUp")}];
-  [v13 setLocalMailboxSearchScope:{-[MUIMessageListUnbundledSectionDataSource isLocalMailboxSearchScope](self, "isLocalMailboxSearchScope")}];
-  v16 = [(MessageListSectionDataSource *)self state];
-  LODWORD(v15) = [v16 isSearch];
+  [cellHelper setCompact:{objc_msgSend(state, "isCompact")}];
+  [cellHelper setExpanded:{-[MUIMessageListUnbundledSectionDataSource _isExpandedItemID:](self, dCopy)}];
+  [cellHelper setHideFollowUp:{-[MUIMessageListUnbundledSectionDataSource shouldHideFollowUp](self, "shouldHideFollowUp")}];
+  [cellHelper setLocalMailboxSearchScope:{-[MUIMessageListUnbundledSectionDataSource isLocalMailboxSearchScope](self, "isLocalMailboxSearchScope")}];
+  state2 = [(MessageListSectionDataSource *)self state];
+  LODWORD(cellView) = [state2 isSearch];
 
-  if (v15)
+  if (cellView)
   {
-    [v13 setSenderSpecificCell:0];
+    [cellHelper setSenderSpecificCell:0];
   }
 
   else
   {
-    v17 = [(MessageListSectionDataSource *)self state];
-    [v13 setSenderSpecificCell:{objc_msgSend(v17, "isSenderSpecificMailbox")}];
+    state3 = [(MessageListSectionDataSource *)self state];
+    [cellHelper setSenderSpecificCell:{objc_msgSend(state3, "isSenderSpecificMailbox")}];
   }
 
-  v42 = [(MessageListSectionDataSource *)self messageList];
-  v41 = [(MessageListSectionDataSource *)self itemHelper];
-  v18 = [(MessageListSectionDataSource *)self provider];
-  v43 = [v18 snapshotForMessageListSectionDataSource:self];
+  messageList = [(MessageListSectionDataSource *)self messageList];
+  itemHelper = [(MessageListSectionDataSource *)self itemHelper];
+  provider = [(MessageListSectionDataSource *)self provider];
+  v43 = [provider snapshotForMessageListSectionDataSource:self];
 
-  v19 = [(MessageListSectionDataSource *)self messageList];
-  v20 = [v41 cellGroupingForItemID:v10 snapshot:v43 isThreaded:{objc_msgSend(v19, "isThreaded")}];
+  messageList2 = [(MessageListSectionDataSource *)self messageList];
+  v20 = [itemHelper cellGroupingForItemID:dCopy snapshot:v43 isThreaded:{objc_msgSend(messageList2, "isThreaded")}];
 
-  [v8 setBackgroundViewConfigurationGrouping:v20];
-  if (([v12 useSplitViewStyling] & 1) == 0)
+  [cellCopy setBackgroundViewConfigurationGrouping:v20];
+  if (([state useSplitViewStyling] & 1) == 0)
   {
-    [v8 setNeedsFlushSeparator:{-[MUIMessageListUnbundledSectionDataSource _needsFlushSeparatorForItemID:snapshot:useSplitViewStyling:](self, v10, v43, objc_msgSend(v12, "useSplitViewStyling"))}];
+    [cellCopy setNeedsFlushSeparator:{-[MUIMessageListUnbundledSectionDataSource _needsFlushSeparatorForItemID:snapshot:useSplitViewStyling:](self, dCopy, v43, objc_msgSend(state, "useSplitViewStyling"))}];
   }
 
-  v21 = [v8 messageListItemFuture];
+  messageListItemFuture = [cellCopy messageListItemFuture];
 
-  if (v21)
+  if (messageListItemFuture)
   {
     v22 = [(MessageListSectionDataSource *)self log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [v8 messageListItemFuture];
+      messageListItemFuture2 = [cellCopy messageListItemFuture];
       *buf = 134218498;
-      v66 = self;
+      selfCopy = self;
       v67 = 2114;
       v68 = v24;
       v69 = 2112;
-      v70 = v25;
+      v70 = messageListItemFuture2;
       _os_log_impl(&dword_214A5E000, v22, OS_LOG_TYPE_DEFAULT, "<%p: %{public}@> Canceling messageListItemFuture to prepare for re-use: %@", buf, 0x20u);
     }
 
-    v26 = [v8 messageListItemFuture];
-    [v26 cancel];
+    messageListItemFuture3 = [cellCopy messageListItemFuture];
+    [messageListItemFuture3 cancel];
 
-    [v8 setMessageListItemFuture:0];
+    [cellCopy setMessageListItemFuture:0];
   }
 
-  v27 = [(MessageListSectionDataSource *)self delegate];
+  delegate = [(MessageListSectionDataSource *)self delegate];
   objc_initWeak(buf, self);
-  objc_initWeak(&location, v8);
+  objc_initWeak(&location, cellCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__MUIMessageListUnbundledSectionDataSource__configureCell_atIndexPath_itemID___block_invoke;
   aBlock[3] = &unk_27818ACC0;
   objc_copyWeak(&v62, buf);
   objc_copyWeak(&v63, &location);
-  v28 = v12;
+  v28 = state;
   v60 = v28;
-  v29 = v10;
+  v29 = dCopy;
   v61 = v29;
   v30 = _Block_copy(aBlock);
   v50[0] = MEMORY[0x277D85DD0];
@@ -271,26 +271,26 @@ void __79__MUIMessageListUnbundledSectionDataSource_createCellRegistrationForCel
   v50[3] = &unk_27818ACE8;
   objc_copyWeak(&v57, buf);
   objc_copyWeak(v58, &location);
-  v40 = v13;
+  v40 = cellHelper;
   v51 = v40;
   v31 = v28;
   v52 = v31;
-  v32 = v9;
+  v32 = pathCopy;
   v53 = v32;
   v33 = v29;
   v54 = v33;
-  v34 = v27;
+  v34 = delegate;
   v55 = v34;
   v35 = v30;
   v56 = v35;
   v58[1] = *&v11;
   v36 = _Block_copy(v50);
-  v37 = [v42 messageListItemForItemID:v33];
-  v38 = [v37 resultIfAvailable];
+  v37 = [messageList messageListItemForItemID:v33];
+  resultIfAvailable = [v37 resultIfAvailable];
 
-  if (v38)
+  if (resultIfAvailable)
   {
-    v36[2](v36, v38, 1);
+    v36[2](v36, resultIfAvailable, 1);
   }
 
   else
@@ -304,9 +304,9 @@ void __79__MUIMessageListUnbundledSectionDataSource_createCellRegistrationForCel
     v44[4] = self;
     v45 = v33;
     v46 = v32;
-    v47 = v42;
+    v47 = messageList;
     v48 = v34;
-    v39 = [(MessageListSectionDataSource *)self messageListItemForItemID:v45 indexPath:v46 receiver:v8 completion:v44];
+    v39 = [(MessageListSectionDataSource *)self messageListItemForItemID:v45 indexPath:v46 receiver:cellCopy completion:v44];
   }
 
   objc_destroyWeak(v58);
@@ -318,15 +318,15 @@ void __79__MUIMessageListUnbundledSectionDataSource_createCellRegistrationForCel
   objc_destroyWeak(buf);
 }
 
-- (uint64_t)_needsFlushSeparatorForItemID:(void *)a3 snapshot:(char)a4 useSplitViewStyling:
+- (uint64_t)_needsFlushSeparatorForItemID:(void *)d snapshot:(char)snapshot useSplitViewStyling:
 {
   v7 = a2;
-  v8 = a3;
+  dCopy = d;
   v9 = 0;
-  if (a1 && (a4 & 1) == 0)
+  if (self && (snapshot & 1) == 0)
   {
-    v10 = [a1 threadHelper];
-    v9 = [v10 needsFlushSeparatorForItemID:v7 snapshot:v8];
+    threadHelper = [self threadHelper];
+    v9 = [threadHelper needsFlushSeparatorForItemID:v7 snapshot:dCopy];
   }
 
   return v9;
@@ -561,19 +561,19 @@ void __78__MUIMessageListUnbundledSectionDataSource__configureCell_atIndexPath_i
 
 - (id)_indexPathsForSelectedItems
 {
-  v2 = [(MessageListSectionDataSource *)self collectionView];
-  v3 = [v2 indexPathsForSelectedItems];
+  collectionView = [(MessageListSectionDataSource *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  return v3;
+  return indexPathsForSelectedItems;
 }
 
-- (id)sectionForCollection:(id)a3
+- (id)sectionForCollection:(id)collection
 {
-  v4 = [(MessageListSectionDataSource *)self section];
-  v5 = [(MUIMessageListUnbundledSectionDataSource *)self _allowedSections];
-  if ([v5 containsObject:v4])
+  section = [(MessageListSectionDataSource *)self section];
+  _allowedSections = [(MUIMessageListUnbundledSectionDataSource *)self _allowedSections];
+  if ([_allowedSections containsObject:section])
   {
-    v6 = v4;
+    v6 = section;
   }
 
   else
@@ -586,24 +586,24 @@ void __78__MUIMessageListUnbundledSectionDataSource__configureCell_atIndexPath_i
   return v6;
 }
 
-- (void)collection:(id)a3 shouldHighlightSnippetHints:(id)a4
+- (void)collection:(id)collection shouldHighlightSnippetHints:(id)hints
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  hintsCopy = hints;
+  if (hintsCopy)
   {
     v6 = [(MessageListSectionDataSource *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v5 count];
+      v9 = [hintsCopy count];
       v10 = MEMORY[0x277D07198];
-      v11 = [v5 allValues];
-      v12 = [v11 firstObject];
-      v13 = [v10 partiallyRedactedDictionary:v12];
+      allValues = [hintsCopy allValues];
+      firstObject = [allValues firstObject];
+      v13 = [v10 partiallyRedactedDictionary:firstObject];
       v19 = 134218754;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v8;
       v23 = 2048;
@@ -613,11 +613,11 @@ void __78__MUIMessageListUnbundledSectionDataSource__configureCell_atIndexPath_i
       _os_log_impl(&dword_214A5E000, v6, OS_LOG_TYPE_DEFAULT, "<%p: %{public}@> [Snippet Hints] [Committed Search] Received (%ld) items: %@", &v19, 0x2Au);
     }
 
-    v14 = [(MUIMessageListUnbundledSectionDataSource *)self snippetHintsByGlobalMessageID];
-    v15 = v14;
-    if (v14)
+    snippetHintsByGlobalMessageID = [(MUIMessageListUnbundledSectionDataSource *)self snippetHintsByGlobalMessageID];
+    v15 = snippetHintsByGlobalMessageID;
+    if (snippetHintsByGlobalMessageID)
     {
-      v16 = v14;
+      v16 = snippetHintsByGlobalMessageID;
     }
 
     else
@@ -628,20 +628,20 @@ void __78__MUIMessageListUnbundledSectionDataSource__configureCell_atIndexPath_i
     v17 = v16;
 
     v18 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v17];
-    [v18 addEntriesFromDictionary:v5];
+    [v18 addEntriesFromDictionary:hintsCopy];
     [(MUIMessageListUnbundledSectionDataSource *)self setSnippetHintsByGlobalMessageID:v18];
   }
 }
 
-- (uint64_t)_isExpandedItemID:(void *)a1
+- (uint64_t)_isExpandedItemID:(void *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = [a1 messageList];
-    if ([v4 isThreaded])
+    messageList = [d messageList];
+    if ([messageList isThreaded])
     {
-      v5 = [v4 anyExpandedThreadContainsItemID:v3];
+      v5 = [messageList anyExpandedThreadContainsItemID:v3];
     }
 
     else

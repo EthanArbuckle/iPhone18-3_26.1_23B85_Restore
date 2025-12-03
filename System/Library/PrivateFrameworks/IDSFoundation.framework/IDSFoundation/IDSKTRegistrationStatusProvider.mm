@@ -1,7 +1,7 @@
 @interface IDSKTRegistrationStatusProvider
 - (IDSKTRegistrationStatusProvider)init;
-- (IDSKTRegistrationStatusProvider)initWithCoder:(id)a3;
-- (id)statusForKTApplication:(id)a3;
+- (IDSKTRegistrationStatusProvider)initWithCoder:(id)coder;
+- (id)statusForKTApplication:(id)application;
 @end
 
 @implementation IDSKTRegistrationStatusProvider
@@ -21,10 +21,10 @@
   return v3;
 }
 
-- (IDSKTRegistrationStatusProvider)initWithCoder:(id)a3
+- (IDSKTRegistrationStatusProvider)initWithCoder:(id)coder
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = IDSKTRegistrationStatusProvider;
   v5 = [(IDSKTRegistrationStatusProvider *)&v12 init];
@@ -36,7 +36,7 @@
     v13[2] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kIDSKTAppToStatusKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kIDSKTAppToStatusKey"];
     ktApplicationToKTRegStatus = v5->_ktApplicationToKTRegStatus;
     v5->_ktApplicationToKTRegStatus = v9;
   }
@@ -44,9 +44,9 @@
   return v5;
 }
 
-- (id)statusForKTApplication:(id)a3
+- (id)statusForKTApplication:(id)application
 {
-  v3 = [(NSDictionary *)self->_ktApplicationToKTRegStatus objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_ktApplicationToKTRegStatus objectForKeyedSubscript:application];
   if (v3)
   {
     v4 = v3;

@@ -10,15 +10,15 @@
   {
     v5.receiver = self;
     v5.super_class = PSPearlPINController;
-    v3 = [(DevicePINController *)&v5 pinInstructionsPrompt];
+    pinInstructionsPrompt = [(DevicePINController *)&v5 pinInstructionsPrompt];
   }
 
   else
   {
-    v3 = PABS_LocalizedStringForPasscodeLock(@"ENTER_PASSCODE_SUBTITLE_PEARL");
+    pinInstructionsPrompt = PABS_LocalizedStringForPasscodeLock(@"ENTER_PASSCODE_SUBTITLE_PEARL");
   }
 
-  return v3;
+  return pinInstructionsPrompt;
 }
 
 @end

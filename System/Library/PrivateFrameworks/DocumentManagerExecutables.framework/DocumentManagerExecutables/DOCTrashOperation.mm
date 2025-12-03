@@ -1,6 +1,6 @@
 @interface DOCTrashOperation
 - (NSString)actionNameForUndoing;
-- (_TtC26DocumentManagerExecutables17DOCTrashOperation)initWithItems:(id)a3;
+- (_TtC26DocumentManagerExecutables17DOCTrashOperation)initWithItems:(id)items;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 - (void)actionMain;
@@ -10,13 +10,13 @@
 
 - (void)actionMain
 {
-  v2 = self;
+  selfCopy = self;
   DOCTrashOperation.actionMain()();
 }
 
 - (NSString)actionNameForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   DOCTrashOperation.actionNameForUndoing.getter();
   v4 = v3;
   v6 = v5;
@@ -36,7 +36,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCTrashOperation.operationForRedoing()();
 
   return v3;
@@ -44,13 +44,13 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCTrashOperation.operationForUndoing()();
 
   return v3;
 }
 
-- (_TtC26DocumentManagerExecutables17DOCTrashOperation)initWithItems:(id)a3
+- (_TtC26DocumentManagerExecutables17DOCTrashOperation)initWithItems:(id)items
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

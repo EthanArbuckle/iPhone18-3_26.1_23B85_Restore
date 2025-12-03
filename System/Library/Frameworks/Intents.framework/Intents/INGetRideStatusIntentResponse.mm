@@ -1,17 +1,17 @@
 @interface INGetRideStatusIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INGetRideStatusIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INGetRideStatusIntentResponse)initWithBackingStore:(id)store;
 - (INGetRideStatusIntentResponse)initWithCode:(INGetRideStatusIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INGetRideStatusIntentResponse)initWithCoder:(id)a3;
+- (INGetRideStatusIntentResponse)initWithCoder:(id)coder;
 - (INGetRideStatusIntentResponseCode)code;
 - (INRideStatus)rideStatus;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRideStatus:(INRideStatus *)rideStatus;
 @end
 
@@ -21,32 +21,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INGetRideStatusIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < 8)
+  code = [(INGetRideStatusIntentResponse *)self code];
+  v4 = code;
+  if (code < 8)
   {
-    v5 = off_1E7280248[v3];
-    v6 = v5;
+    null = off_1E7280248[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"rideStatus";
-  v13[0] = v5;
-  v7 = [(INGetRideStatusIntentResponse *)self rideStatus];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  rideStatus = [(INGetRideStatusIntentResponse *)self rideStatus];
+  null2 = rideStatus;
+  if (!rideStatus)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!rideStatus)
   {
   }
 
@@ -62,50 +62,50 @@
 - (void)setRideStatus:(INRideStatus *)rideStatus
 {
   v4 = rideStatus;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToRideStatus(v4);
 
-  [v5 setRideStatus:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setRideStatus:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (INRideStatus)rideStatus
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 rideStatus];
-  v4 = INIntentSlotValueTransformFromRideStatus(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  rideStatus = [_responseMessagePBRepresentation rideStatus];
+  v4 = INIntentSlotValueTransformFromRideStatus(rideStatus);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INGetRideStatusIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INGetRideStatusIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INGetRideStatusIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INGetRideStatusIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INGetRideStatusIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INGetRideStatusIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INGetRideStatusIntentResponseCodeFailureRequiringAppLaunchMustVerifyCredentials"])
+  if ([nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeFailureRequiringAppLaunchMustVerifyCredentials"])
   {
     v5 = 6;
   }
@@ -115,7 +115,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INGetRideStatusIntentResponseCodeFailureRequiringAppLaunchServiceTemporarilyUnavailable"];
+  v6 = [nameCopy isEqualToString:@"INGetRideStatusIntentResponseCodeFailureRequiringAppLaunchServiceTemporarilyUnavailable"];
 
   if (v6)
   {
@@ -130,30 +130,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INGetRideStatusIntentResponse *)self code];
-  if ((v2 - 1) > 6)
+  code = [(INGetRideStatusIntentResponse *)self code];
+  if ((code - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5E950[v2 - 1];
+    return qword_18EE5E950[code - 1];
   }
 }
 
-- (INGetRideStatusIntentResponse)initWithCoder:(id)a3
+- (INGetRideStatusIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INGetRideStatusIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INGetRideStatusIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INGetRideStatusIntentResponseCode)code
@@ -163,18 +163,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INGetRideStatusIntentResponse)initWithBackingStore:(id)a3
+- (INGetRideStatusIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INGetRideStatusIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INGetRideStatusIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INGetRideStatusIntentResponse)initWithCode:(INGetRideStatusIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -215,9 +215,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 7)
+  if (code == 7)
   {
     v3 = 2;
   }
@@ -227,7 +227,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 6)
+  if (code == 6)
   {
     return 1;
   }
@@ -238,56 +238,56 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FA28[a3 - 1];
+    return dword_18EE5FA28[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 6;
   v8 = 4;
-  if (a5)
+  if (requested)
   {
     v8 = 5;
   }
 
-  if (a4 == 2)
+  if (code == 2)
   {
     v8 = 7;
   }
 
-  if (a4 != 1)
+  if (code != 1)
   {
     v7 = v8;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

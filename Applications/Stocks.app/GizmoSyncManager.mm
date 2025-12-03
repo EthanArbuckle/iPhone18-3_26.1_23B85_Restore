@@ -1,10 +1,10 @@
 @interface GizmoSyncManager
 - (_TtC9StocksApp16GizmoSyncManager)init;
 - (void)dealloc;
-- (void)session:(id)a3 activationDidCompleteWithState:(int64_t)a4 error:(id)a5;
-- (void)session:(id)a3 didReceiveMessage:(id)a4;
+- (void)session:(id)session activationDidCompleteWithState:(int64_t)state error:(id)error;
+- (void)session:(id)session didReceiveMessage:(id)message;
 - (void)sessionDidBecomeInactive:;
-- (void)sessionDidDeactivate:(id)a3;
+- (void)sessionDidDeactivate:(id)deactivate;
 @end
 
 @implementation GizmoSyncManager
@@ -12,14 +12,14 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = CFNotificationCenterGetDarwinNotifyCenter();
   if (qword_10004EA78 != -1)
   {
     swift_once();
   }
 
-  CFNotificationCenterRemoveObserver(v5, v4, qword_100051C10, 0);
+  CFNotificationCenterRemoveObserver(v5, selfCopy, qword_100051C10, 0);
 
   v6 = CFNotificationCenterGetDarwinNotifyCenter();
   if (qword_10004EA80 != -1)
@@ -27,9 +27,9 @@
     swift_once();
   }
 
-  CFNotificationCenterRemoveObserver(v6, v4, qword_100051C18, 0);
+  CFNotificationCenterRemoveObserver(v6, selfCopy, qword_100051C18, 0);
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(GizmoSyncManager *)&v7 dealloc];
 }
@@ -41,26 +41,26 @@
   return result;
 }
 
-- (void)sessionDidDeactivate:(id)a3
+- (void)sessionDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002A9EC(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_10002A9EC(deactivateCopy);
 }
 
-- (void)session:(id)a3 activationDidCompleteWithState:(int64_t)a4 error:(id)a5
+- (void)session:(id)session activationDidCompleteWithState:(int64_t)state error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_10002AAE4(a4, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10002AAE4(state, error);
 }
 
-- (void)session:(id)a3 didReceiveMessage:(id)a4
+- (void)session:(id)session didReceiveMessage:(id)message
 {
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_10002ADA8(v6);
 }
 

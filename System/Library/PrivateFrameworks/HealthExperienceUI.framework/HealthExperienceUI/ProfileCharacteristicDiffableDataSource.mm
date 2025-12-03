@@ -1,20 +1,20 @@
 @interface ProfileCharacteristicDiffableDataSource
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 @end
 
 @implementation ProfileCharacteristicDiffableDataSource
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(UITableViewDiffableDataSource *)self snapshot];
-  v8 = [v7 sectionIdentifiers];
-  v9 = [v8 objectAtIndex:a4];
+  viewCopy = view;
+  snapshot = [(UITableViewDiffableDataSource *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v9 = [sectionIdentifiers objectAtIndex:section];
 
   footerTitleProvider = self->_footerTitleProvider;
   if (footerTitleProvider)
   {
-    v11 = footerTitleProvider[2](footerTitleProvider, v6, a4, v9);
+    v11 = footerTitleProvider[2](footerTitleProvider, viewCopy, section, v9);
   }
 
   else

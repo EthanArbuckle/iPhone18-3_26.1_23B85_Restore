@@ -1,58 +1,58 @@
 @interface TUISmartGridGridLayoutManager
-+ (void)configureContentLayout:(id)a3 configuration:(id)a4;
-+ (void)configureScrollLayout:(id)a3 configuration:(id)a4;
++ (void)configureContentLayout:(id)layout configuration:(id)configuration;
++ (void)configureScrollLayout:(id)layout configuration:(id)configuration;
 - (CGSize)contentLayoutSize;
 - (CGSize)layoutSize;
-- (TUISmartGridGridLayoutManager)initWithContent:(id)a3;
-- (double)widthForColumnSpan:(unint64_t)a3;
+- (TUISmartGridGridLayoutManager)initWithContent:(id)content;
+- (double)widthForColumnSpan:(unint64_t)span;
 - (id).cxx_construct;
 - (unint64_t)ruleLayoutAxis;
-- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)a3 transform:(CGAffineTransform *)a4 context:(id)a5 box:(id)a6 toModels:(id)a7;
-- (void)appendAnchorsToSet:(id)a3 forLayout:(id)a4 inRoot:(id)a5;
-- (void)appendHoverRegions:(id)a3 transform:(CGAffineTransform *)a4;
-- (void)layoutContent:(id)a3;
+- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)kind transform:(CGAffineTransform *)transform context:(id)context box:(id)box toModels:(id)models;
+- (void)appendAnchorsToSet:(id)set forLayout:(id)layout inRoot:(id)root;
+- (void)appendHoverRegions:(id)regions transform:(CGAffineTransform *)transform;
+- (void)layoutContent:(id)content;
 @end
 
 @implementation TUISmartGridGridLayoutManager
 
-- (TUISmartGridGridLayoutManager)initWithContent:(id)a3
+- (TUISmartGridGridLayoutManager)initWithContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = TUISmartGridGridLayoutManager;
   v6 = [(TUISmartGridGridLayoutManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_content, a3);
+    objc_storeStrong(&v6->_content, content);
   }
 
   return v7;
 }
 
-+ (void)configureScrollLayout:(id)a3 configuration:(id)a4
++ (void)configureScrollLayout:(id)layout configuration:(id)configuration
 {
-  v6 = a3;
-  v5 = a4;
-  [v5 width];
-  [v6 setContainingWidth:?];
-  [v5 height];
-  [v6 setContainingHeight:?];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [configurationCopy width];
+  [layoutCopy setContainingWidth:?];
+  [configurationCopy height];
+  [layoutCopy setContainingHeight:?];
 }
 
-+ (void)configureContentLayout:(id)a3 configuration:(id)a4
++ (void)configureContentLayout:(id)layout configuration:(id)configuration
 {
-  v6 = a3;
-  v5 = a4;
-  [v5 width];
-  [v6 setContainingWidth:?];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [configurationCopy width];
+  [layoutCopy setContainingWidth:?];
 }
 
-- (double)widthForColumnSpan:(unint64_t)a3
+- (double)widthForColumnSpan:(unint64_t)span
 {
-  if (a3)
+  if (span)
   {
-    return -(self->_computedColumnSpacing - (self->_computedColumnWidth + self->_computedColumnSpacing) * a3);
+    return -(self->_computedColumnSpacing - (self->_computedColumnWidth + self->_computedColumnSpacing) * span);
   }
 
   else
@@ -74,10 +74,10 @@
   }
 }
 
-- (void)layoutContent:(id)a3
+- (void)layoutContent:(id)content
 {
-  v114 = a3;
-  v4 = [v114 computedLayoutDirection];
+  contentCopy = content;
+  computedLayoutDirection = [contentCopy computedLayoutDirection];
   [(TUISmartGridLayoutConfiguration *)self->_configuration width];
   v6 = v5;
   [(TUISmartGridLayoutConfiguration *)self->_configuration contentInsets];
@@ -86,14 +86,14 @@
   v12 = v11;
   v14 = v13;
   self->_computedColumns = [TUISmartGridBox columnsWithConfiguration:self->_configuration];
-  v15 = [(TUISmartGridLayoutConfiguration *)self->_configuration columnSpacing];
-  self->_computedColumnSpacing = TUILengthValueWithDefault(v15, v16, 0.0);
+  columnSpacing = [(TUISmartGridLayoutConfiguration *)self->_configuration columnSpacing];
+  self->_computedColumnSpacing = TUILengthValueWithDefault(columnSpacing, v16, 0.0);
   [TUISmartGridBox columnWidthWithConfiguration:self->_configuration columns:self->_computedColumns spacing:?];
   self->_computedColumnWidth = v17;
-  v18 = [(TUISmartGridLayoutConfiguration *)self->_configuration rowSpacing];
-  self->_computedRowSpacing = TUILengthValueWithDefault(v18, v19, 0.0);
-  v20 = [v114 children];
-  sub_63EE4(&v135, v20, self->_content, 1);
+  rowSpacing = [(TUISmartGridLayoutConfiguration *)self->_configuration rowSpacing];
+  self->_computedRowSpacing = TUILengthValueWithDefault(rowSpacing, v19, 0.0);
+  children = [contentCopy children];
+  sub_63EE4(&v135, children, self->_content, 1);
 
   computedColumns = self->_computedColumns;
   v139 = 1;
@@ -110,8 +110,8 @@
   computedColumnWidth = self->_computedColumnWidth;
   computedColumnSpacing = self->_computedColumnSpacing;
   computedRowSpacing = self->_computedRowSpacing;
-  v27 = [v114 controller];
-  [v27 contentsScale];
+  controller = [contentCopy controller];
+  [controller contentsScale];
   v29 = computedColumnWidth;
   v30 = computedColumnSpacing;
   if (computedColumnSpacing != 0.0)
@@ -142,19 +142,19 @@
   self->_columnSystem._computedColumnWidth = v29;
   self->_columnSystem._computedColumnSpacing = v30;
   self->_columnSystem._rowSpacing = computedRowSpacing;
-  self->_columnSystem._layoutDirection = v4;
+  self->_columnSystem._layoutDirection = computedLayoutDirection;
   self->_columnSystem._contentsScale = v28;
   self->_columnSystem._columnsPerPage = 0;
 
-  v31 = [(TUISmartGridLayoutConfiguration *)self->_configuration verticalPlacement];
-  if (v31 >= 7)
+  verticalPlacement = [(TUISmartGridLayoutConfiguration *)self->_configuration verticalPlacement];
+  if (verticalPlacement >= 7)
   {
     v32 = 5;
   }
 
   else
   {
-    v32 = dword_24CD10[v31];
+    v32 = dword_24CD10[verticalPlacement];
   }
 
   v119 = v32;
@@ -225,9 +225,9 @@
         else
         {
           v52 = *(v49 + 32);
-          v53 = [v52 role];
+          role = [v52 role];
 
-          if (v53 != &dword_4)
+          if (role != &dword_4)
           {
             goto LABEL_25;
           }
@@ -646,18 +646,18 @@ LABEL_25:
   sub_63C64(&v125);
 }
 
-- (void)appendAnchorsToSet:(id)a3 forLayout:(id)a4 inRoot:(id)a5
+- (void)appendAnchorsToSet:(id)set forLayout:(id)layout inRoot:(id)root
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 axis] == &dword_0 + 2)
+  setCopy = set;
+  layoutCopy = layout;
+  rootCopy = root;
+  if ([setCopy axis] == &dword_0 + 2)
   {
     width = self->_contentLayoutSize.width;
     v15 = 0;
-    if (v9)
+    if (layoutCopy)
     {
-      [v9 computedTransformInAncestorLayout:{v10, 0}];
+      [layoutCopy computedTransformInAncestorLayout:{rootCopy, 0}];
     }
 
     begin = self->_scrollAnchors.__begin_;
@@ -667,7 +667,7 @@ LABEL_25:
       v14 = width * 0.5;
       do
       {
-        [v8 appendScrollAnchor:{*begin++ * 0.0 + 0.0 * v14 + 0.0, v15}];
+        [setCopy appendScrollAnchor:{*begin++ * 0.0 + 0.0 * v14 + 0.0, v15}];
       }
 
       while (begin != end);
@@ -675,34 +675,34 @@ LABEL_25:
   }
 }
 
-- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)a3 transform:(CGAffineTransform *)a4 context:(id)a5 box:(id)a6 toModels:(id)a7
+- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)kind transform:(CGAffineTransform *)transform context:(id)context box:(id)box toModels:(id)models
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = *&a4->c;
-  v21 = *&a4->a;
+  contextCopy = context;
+  boxCopy = box;
+  modelsCopy = models;
+  v15 = *&transform->c;
+  v21 = *&transform->a;
   v22 = v15;
-  v23 = *&a4->tx;
-  sub_6320C(&self->_cellDividers, a3, &v21, v12, v14);
-  if (a3 >= 4 && [v12 debugVisualLayout])
+  v23 = *&transform->tx;
+  sub_6320C(&self->_cellDividers, kind, &v21, contextCopy, modelsCopy);
+  if (kind >= 4 && [contextCopy debugVisualLayout])
   {
     width = self->_contentLayoutSize.width;
     height = self->_contentLayoutSize.height;
-    v18 = [v13 identifier];
-    v19 = *&a4->c;
-    v21 = *&a4->a;
+    identifier = [boxCopy identifier];
+    v19 = *&transform->c;
+    v21 = *&transform->a;
     v22 = v19;
-    v23 = *&a4->tx;
-    v20 = [TUISmartGridDebugRenderModel renderModelWithSize:&self->_columnSystem columnSystem:v18 identifier:&v21 transform:width, height];
+    v23 = *&transform->tx;
+    height = [TUISmartGridDebugRenderModel renderModelWithSize:&self->_columnSystem columnSystem:identifier identifier:&v21 transform:width, height];
 
-    [v14 addObject:v20];
+    [modelsCopy addObject:height];
   }
 }
 
-- (void)appendHoverRegions:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendHoverRegions:(id)regions transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  regionsCopy = regions;
   begin = self->_cellBounds.__begin_;
   for (i = self->_cellBounds.__end_; begin != i; begin += 5)
   {
@@ -712,10 +712,10 @@ LABEL_25:
     v12 = begin[3];
     v13 = begin[4];
     v14 = v9;
-    v15 = *&a4->c;
-    *&v27.a = *&a4->a;
+    v15 = *&transform->c;
+    *&v27.a = *&transform->a;
     *&v27.c = v15;
-    *&v27.tx = *&a4->tx;
+    *&v27.tx = *&transform->tx;
     v16 = v10;
     *&v15 = v11;
     v17 = v12;
@@ -726,11 +726,11 @@ LABEL_25:
     width = v28.size.width;
     height = v28.size.height;
     v23 = [TUIHoverIdentifier alloc];
-    v24 = [v14 identifier];
-    v25 = [(TUIHoverIdentifier *)v23 initWithName:@"cell" identifier:v24];
+    identifier = [v14 identifier];
+    v25 = [(TUIHoverIdentifier *)v23 initWithName:@"cell" identifier:identifier];
 
-    v26 = [[TUIHoverRegion alloc] initWithBounds:x, y, width, height];
-    [v6 setObject:v26 forKeyedSubscript:v25];
+    height = [[TUIHoverRegion alloc] initWithBounds:x, y, width, height];
+    [regionsCopy setObject:height forKeyedSubscript:v25];
   }
 }
 

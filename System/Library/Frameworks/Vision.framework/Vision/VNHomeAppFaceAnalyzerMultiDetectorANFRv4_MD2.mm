@@ -1,41 +1,41 @@
 @interface VNHomeAppFaceAnalyzerMultiDetectorANFRv4_MD2
-+ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)a3 error:(id *)a4;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)a3;
++ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)options error:(id *)error;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error;
++ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)options;
 @end
 
 @implementation VNHomeAppFaceAnalyzerMultiDetectorANFRv4_MD2
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
-  v3 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:a3 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 name];
+  v3 = [self _inferenceDescriptorForModelConfiguredWithOptions:options error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  name = [onlyInputImage name];
 
-  return v5;
+  return name;
 }
 
-+ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)a3
++ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)options
 {
-  v3 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:a3 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 pixelFormatType];
+  v3 = [self _inferenceDescriptorForModelConfiguredWithOptions:options error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  pixelFormatType = [onlyInputImage pixelFormatType];
 
-  return v5;
+  return pixelFormatType;
 }
 
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:optionsCopy error:error];
   if (v7)
   {
-    v8 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:v6 error:a4];
+    v8 = [self _inferenceDescriptorForModelConfiguredWithOptions:optionsCopy error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 modelPathForComputeDevice:v7 error:a4];
+      v10 = [v8 modelPathForComputeDevice:v7 error:error];
     }
 
     else
@@ -52,9 +52,9 @@
   return v10;
 }
 
-+ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)a3 error:(id *)a4
++ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)options error:(id *)error
 {
-  v4 = [MEMORY[0x1E69DF910] FPrev4_0FArev1_4_MD2AndReturnError:a4];
+  v4 = [MEMORY[0x1E69DF910] FPrev4_0FArev1_4_MD2AndReturnError:error];
 
   return v4;
 }

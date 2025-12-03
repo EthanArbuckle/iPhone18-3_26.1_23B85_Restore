@@ -1,15 +1,15 @@
 @interface PKTransactionSessionWrapper
-- (PKTransactionSessionWrapper)initWithNFSession:(id)a3;
-- (PKTransactionSessionWrapper)initWithSTSSession:(id)a3;
-- (void)endSessionWithCompletion:(id)a3;
+- (PKTransactionSessionWrapper)initWithNFSession:(id)session;
+- (PKTransactionSessionWrapper)initWithSTSSession:(id)session;
+- (void)endSessionWithCompletion:(id)completion;
 @end
 
 @implementation PKTransactionSessionWrapper
 
-- (PKTransactionSessionWrapper)initWithNFSession:(id)a3
+- (PKTransactionSessionWrapper)initWithNFSession:(id)session
 {
-  v5 = a3;
-  if (v5)
+  sessionCopy = session;
+  if (sessionCopy)
   {
     v10.receiver = self;
     v10.super_class = PKTransactionSessionWrapper;
@@ -17,25 +17,25 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_nfSession, a3);
+      objc_storeStrong(&v6->_nfSession, session);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKTransactionSessionWrapper)initWithSTSSession:(id)a3
+- (PKTransactionSessionWrapper)initWithSTSSession:(id)session
 {
-  v5 = a3;
-  if (v5)
+  sessionCopy = session;
+  if (sessionCopy)
   {
     v10.receiver = self;
     v10.super_class = PKTransactionSessionWrapper;
@@ -43,29 +43,29 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_stsSession, a3);
+      objc_storeStrong(&v6->_stsSession, session);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)endSessionWithCompletion:(id)a3
+- (void)endSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   nfSession = self->_nfSession;
   if (nfSession)
   {
-    v7 = v4;
-    [(NFSession *)nfSession endSessionWithCompletion:v4];
+    v7 = completionCopy;
+    [(NFSession *)nfSession endSessionWithCompletion:completionCopy];
 
     stsSession = self->_stsSession;
     if (!stsSession)
@@ -73,7 +73,7 @@
       return;
     }
 
-    v4 = 0;
+    completionCopy = 0;
     goto LABEL_5;
   }
 
@@ -81,18 +81,18 @@
   if (stsSession)
   {
 LABEL_5:
-    v8 = v4;
-    [(STSSession *)stsSession endSessionWithCompletion:v4];
+    v8 = completionCopy;
+    [(STSSession *)stsSession endSessionWithCompletion:completionCopy];
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!completionCopy)
   {
     return;
   }
 
-  v8 = v4;
-  (*(v4 + 2))(v4);
+  v8 = completionCopy;
+  (*(completionCopy + 2))(completionCopy);
 LABEL_6:
 }
 

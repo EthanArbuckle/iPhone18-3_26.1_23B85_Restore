@@ -1,9 +1,9 @@
 @interface ECAuthenticationScheme
-+ (id)authenticationSchemesForAccount:(id)a3 connection:(id)a4;
-+ (id)schemeWithName:(id)a3;
++ (id)authenticationSchemesForAccount:(id)account connection:(id)connection;
++ (id)schemeWithName:(id)name;
 + (void)initialize;
-+ (void)registerSchemeClass:(Class)a3;
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4;
++ (void)registerSchemeClass:(Class)class;
+- (id)authenticatorForAccount:(id)account connection:(id)connection;
 @end
 
 @implementation ECAuthenticationScheme
@@ -38,7 +38,7 @@
           v8 = NSClassFromString(*(*(&v10 + 1) + 8 * v7));
           if (v8)
           {
-            [a1 registerSchemeClass:v8];
+            [self registerSchemeClass:v8];
           }
 
           ++v7;
@@ -55,38 +55,38 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerSchemeClass:(Class)a3
++ (void)registerSchemeClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v4 = objc_alloc_init(a3);
-    v3 = [v4 name];
-    if (v3)
+    v4 = objc_alloc_init(class);
+    name = [v4 name];
+    if (name)
     {
-      [_schemesByName setObject:v4 forKeyedSubscript:v3];
+      [_schemesByName setObject:v4 forKeyedSubscript:name];
     }
   }
 }
 
-+ (id)schemeWithName:(id)a3
++ (id)schemeWithName:(id)name
 {
-  v3 = [_schemesByName objectForKeyedSubscript:a3];
+  v3 = [_schemesByName objectForKeyedSubscript:name];
 
   return v3;
 }
 
-+ (id)authenticationSchemesForAccount:(id)a3 connection:(id)a4
++ (id)authenticationSchemesForAccount:(id)account connection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v15 = [v6 authenticationMechanisms];
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  accountCopy = account;
+  connectionCopy = connection;
+  authenticationMechanisms = [connectionCopy authenticationMechanisms];
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(authenticationMechanisms, "count")}];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v15;
+  v8 = authenticationMechanisms;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -101,7 +101,7 @@
         }
 
         v12 = [ECAuthenticationScheme schemeWithName:*(*(&v16 + 1) + 8 * i)];
-        if (v12 && [v12 canAuthenticateAccountClass:objc_opt_class() connection:v6] && objc_msgSend(v7, "indexOfObject:", v12) == 0x7FFFFFFFFFFFFFFFLL)
+        if (v12 && [v12 canAuthenticateAccountClass:objc_opt_class() connection:connectionCopy] && objc_msgSend(v7, "indexOfObject:", v12) == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v7 addObject:v12];
         }
@@ -118,14 +118,14 @@
   return v7;
 }
 
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4
+- (id)authenticatorForAccount:(id)account connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ECAuthenticationScheme *)self authenticatorClass];
-  if (v8)
+  accountCopy = account;
+  connectionCopy = connection;
+  authenticatorClass = [(ECAuthenticationScheme *)self authenticatorClass];
+  if (authenticatorClass)
   {
-    v9 = [[v8 alloc] initWithAuthenticationScheme:self account:v6 connection:v7];
+    v9 = [[authenticatorClass alloc] initWithAuthenticationScheme:self account:accountCopy connection:connectionCopy];
   }
 
   else

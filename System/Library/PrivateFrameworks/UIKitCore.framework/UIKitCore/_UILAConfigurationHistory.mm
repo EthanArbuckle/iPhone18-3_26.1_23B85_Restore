@@ -1,7 +1,7 @@
 @interface _UILAConfigurationHistory
 - (_UILAConfigurationHistory)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_invalidateBaselineConstraint:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_invalidateBaselineConstraint:(id)constraint;
 @end
 
 @implementation _UILAConfigurationHistory
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setHasEstablishedBaseValues:self->_hasEstablishedBaseValues];
@@ -48,22 +48,22 @@
   return v4;
 }
 
-- (void)_invalidateBaselineConstraint:(id)a3
+- (void)_invalidateBaselineConstraint:(id)constraint
 {
-  v4 = a3;
+  constraintCopy = constraint;
   invalidBaselineConstraints = self->_invalidBaselineConstraints;
-  v8 = v4;
+  v8 = constraintCopy;
   if (!invalidBaselineConstraints)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_invalidBaselineConstraints;
     self->_invalidBaselineConstraints = v6;
 
-    v4 = v8;
+    constraintCopy = v8;
     invalidBaselineConstraints = self->_invalidBaselineConstraints;
   }
 
-  [(NSMutableSet *)invalidBaselineConstraints addObject:v4];
+  [(NSMutableSet *)invalidBaselineConstraints addObject:constraintCopy];
 }
 
 @end

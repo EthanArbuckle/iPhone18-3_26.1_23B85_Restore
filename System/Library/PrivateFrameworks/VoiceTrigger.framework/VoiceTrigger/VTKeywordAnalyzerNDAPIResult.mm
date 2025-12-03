@@ -1,12 +1,12 @@
 @interface VTKeywordAnalyzerNDAPIResult
 - (NSDictionary)dictionary;
 - (VTKeywordAnalyzerNDAPIResult)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VTKeywordAnalyzerNDAPIResult
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VTKeywordAnalyzerNDAPIResult);
   [(VTKeywordAnalyzerNDAPIResult *)v4 setPhId:self->_phId];

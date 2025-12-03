@@ -1,15 +1,15 @@
 @interface AXAuditDocumentationManager
-+ (id)_appleDocViewerURLForWebDocURL:(id)a3;
++ (id)_appleDocViewerURLForWebDocURL:(id)l;
 + (id)_docTypeCatalystDictionary;
 + (id)_docTypeDictionary;
-+ (id)_getOriginaliOSTitle:(id)a3;
++ (id)_getOriginaliOSTitle:(id)title;
 + (id)_macOSToiOSTitleDictionary;
-+ (id)appleDocURLForType:(int64_t)a3;
++ (id)appleDocURLForType:(int64_t)type;
 + (id)appleDocViewerURLs;
 + (id)sharedManager;
-+ (id)webDocURLForType:(int64_t)a3;
++ (id)webDocURLForType:(int64_t)type;
 + (id)webpageURLs;
-+ (int64_t)getAXDocumentationType:(id)a3 isCatalyst:(BOOL)a4;
++ (int64_t)getAXDocumentationType:(id)type isCatalyst:(BOOL)catalyst;
 @end
 
 @implementation AXAuditDocumentationManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __44__AXAuditDocumentationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_5 != -1)
   {
     dispatch_once(&sharedManager_onceToken_5, block);
@@ -211,7 +211,7 @@ void __42__AXAuditDocumentationManager_webpageURLs__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __49__AXAuditDocumentationManager_appleDocViewerURLs__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (appleDocViewerURLs_once != -1)
   {
     dispatch_once(&appleDocViewerURLs_once, block);
@@ -271,9 +271,9 @@ void __49__AXAuditDocumentationManager_appleDocViewerURLs__block_invoke(uint64_t
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)appleDocURLForType:(int64_t)a3
++ (id)appleDocURLForType:(int64_t)type
 {
-  v3 = [objc_opt_class() webDocURLForType:a3];
+  v3 = [objc_opt_class() webDocURLForType:type];
   if (v3)
   {
     v4 = [objc_opt_class() _appleDocViewerURLForWebDocURL:v3];
@@ -287,12 +287,12 @@ void __49__AXAuditDocumentationManager_appleDocViewerURLs__block_invoke(uint64_t
   return v4;
 }
 
-+ (id)_appleDocViewerURLForWebDocURL:(id)a3
++ (id)_appleDocViewerURLForWebDocURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = [a3 absoluteString];
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"/" withString:@"%252F"];
+    absoluteString = [l absoluteString];
+    v4 = [absoluteString stringByReplacingOccurrencesOfString:@"/" withString:@"%252F"];
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@"https:%252F%252Fdeveloper.apple.com" withString:@"x-xcode-documentation:/apple-built-in/doc%253A%252F%252Fcom.apple.documentation"];
 
@@ -307,31 +307,31 @@ void __49__AXAuditDocumentationManager_appleDocViewerURLs__block_invoke(uint64_t
   return v6;
 }
 
-+ (id)webDocURLForType:(int64_t)a3
++ (id)webDocURLForType:(int64_t)type
 {
-  v4 = [a1 webpageURLs];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  webpageURLs = [self webpageURLs];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v6 = [webpageURLs objectForKey:v5];
 
   v7 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v6];
 
   return v7;
 }
 
-+ (id)_getOriginaliOSTitle:(id)a3
++ (id)_getOriginaliOSTitle:(id)title
 {
-  v4 = a3;
-  v5 = [a1 _macOSToiOSTitleDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  titleCopy = title;
+  _macOSToiOSTitleDictionary = [self _macOSToiOSTitleDictionary];
+  v6 = [_macOSToiOSTitleDictionary objectForKeyedSubscript:titleCopy];
 
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [_macOSToiOSTitleDictionary objectForKeyedSubscript:titleCopy];
   }
 
   else
   {
-    v7 = v4;
+    v7 = titleCopy;
   }
 
   v8 = v7;
@@ -339,37 +339,37 @@ void __49__AXAuditDocumentationManager_appleDocViewerURLs__block_invoke(uint64_t
   return v8;
 }
 
-+ (int64_t)getAXDocumentationType:(id)a3 isCatalyst:(BOOL)a4
++ (int64_t)getAXDocumentationType:(id)type isCatalyst:(BOOL)catalyst
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  catalystCopy = catalyst;
+  typeCopy = type;
+  if (catalystCopy)
   {
-    v7 = [objc_opt_class() _getOriginaliOSTitle:v6];
+    v7 = [objc_opt_class() _getOriginaliOSTitle:typeCopy];
 
-    v8 = [a1 _docTypeCatalystDictionary];
-    v9 = [v8 objectForKeyedSubscript:v7];
-    v6 = v7;
+    _docTypeCatalystDictionary = [self _docTypeCatalystDictionary];
+    v9 = [_docTypeCatalystDictionary objectForKeyedSubscript:v7];
+    typeCopy = v7;
   }
 
   else
   {
-    v8 = [a1 _docTypeDictionary];
-    v10 = [v8 objectForKeyedSubscript:v6];
+    _docTypeCatalystDictionary = [self _docTypeDictionary];
+    v10 = [_docTypeCatalystDictionary objectForKeyedSubscript:typeCopy];
 
     if (!v10)
     {
-      v11 = 0;
+      intValue = 0;
       goto LABEL_6;
     }
 
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v9 = [_docTypeCatalystDictionary objectForKeyedSubscript:typeCopy];
   }
 
-  v11 = [v9 intValue];
+  intValue = [v9 intValue];
 
 LABEL_6:
-  return v11;
+  return intValue;
 }
 
 + (id)_macOSToiOSTitleDictionary

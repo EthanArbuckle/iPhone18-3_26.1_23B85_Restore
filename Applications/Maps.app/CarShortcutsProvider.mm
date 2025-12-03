@@ -2,11 +2,11 @@
 - (CarShortcutsProvider)init;
 - (CarShortcutsProviderDelegate)delegate;
 - (NSString)uniqueName;
-- (void)_createMapsSuggestionEngineWithCallBack:(id)a3;
+- (void)_createMapsSuggestionEngineWithCallBack:(id)back;
 - (void)_fetchSuggestions;
-- (void)_processTopSuggestions:(id)a3 error:(id)a4;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
-- (void)setSinkAttached:(BOOL)a3;
+- (void)_processTopSuggestions:(id)suggestions error:(id)error;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
+- (void)setSinkAttached:(BOOL)attached;
 - (void)start;
 - (void)stop;
 @end
@@ -20,7 +20,7 @@
   return WeakRetained;
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
   objc_initWeak(&location, self);
   msgQueue = self->_msgQueue;
@@ -41,10 +41,10 @@
   return [v2 description];
 }
 
-- (void)_processTopSuggestions:(id)a3 error:(id)a4
+- (void)_processTopSuggestions:(id)suggestions error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  errorCopy = error;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -87,18 +87,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_createMapsSuggestionEngineWithCallBack:(id)a3
+- (void)_createMapsSuggestionEngineWithCallBack:(id)back
 {
-  v3 = a3;
+  backCopy = back;
   v8 = MapsSuggestionsEngineForMapsProcess();
   [v8 setMapType:1];
   v4 = [DrivePreferences alloc];
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [(DrivePreferences *)v4 initWithDefaults:v5];
-  v7 = [(DrivePreferences *)v6 automobileOptions];
+  automobileOptions = [(DrivePreferences *)v6 automobileOptions];
 
-  [v8 setAutomobileOptions:v7];
-  v3[2](v3, v8);
+  [v8 setAutomobileOptions:automobileOptions];
+  backCopy[2](backCopy, v8);
 }
 
 - (void)stop
@@ -129,13 +129,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setSinkAttached:(BOOL)a3
+- (void)setSinkAttached:(BOOL)attached
 {
-  if (self->_sinkAttached != a3)
+  if (self->_sinkAttached != attached)
   {
-    self->_sinkAttached = a3;
+    self->_sinkAttached = attached;
     mapsSuggestionsEngine = self->_mapsSuggestionsEngine;
-    if (a3)
+    if (attached)
     {
       [(MapsSuggestionsEngine *)mapsSuggestionsEngine addAdditionalFilter:self->_myAdditionalFilter forSink:self];
       [(MapsSuggestionsEngine *)self->_mapsSuggestionsEngine addAdditionalFilter:self->_offlineFilter forSink:self];

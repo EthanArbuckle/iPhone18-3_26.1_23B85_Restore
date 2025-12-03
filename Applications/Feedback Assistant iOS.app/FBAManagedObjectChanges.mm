@@ -8,7 +8,7 @@
 
 - (BOOL)invalidatedAllObjects
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000873C8();
 
   return v3 & 1;
@@ -16,7 +16,7 @@
 
 - (NSManagedObjectContext)managedObjectContext
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10008752C();
 
   return v3;

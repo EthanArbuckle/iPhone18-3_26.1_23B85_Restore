@@ -1,26 +1,26 @@
 @interface RoutePlanningOverviewViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)didTapGoButtonForRouteOverviewCell:(id)a3;
+- (void)didTapGoButtonForRouteOverviewCell:(id)cell;
 @end
 
 @implementation RoutePlanningOverviewViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RoutePlanningOverviewViewController" hasInstanceMethod:@"didTapGoButtonForRouteOverviewCell:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"RoutePlanningOverviewViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ContaineeViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RoutePlanningOverviewViewController" isKindOfClass:@"ContaineeViewController"];
-  [v3 validateClass:@"CardView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RoutePlanningOverviewViewController" hasInstanceMethod:@"didTapGoButtonForRouteOverviewCell:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"RoutePlanningOverviewViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ContaineeViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RoutePlanningOverviewViewController" isKindOfClass:@"ContaineeViewController"];
+  [validationsCopy validateClass:@"CardView"];
 }
 
-- (void)didTapGoButtonForRouteOverviewCell:(id)a3
+- (void)didTapGoButtonForRouteOverviewCell:(id)cell
 {
   v3.receiver = self;
   v3.super_class = RoutePlanningOverviewViewControllerAccessibility;
-  [(RoutePlanningOverviewViewControllerAccessibility *)&v3 didTapGoButtonForRouteOverviewCell:a3];
+  [(RoutePlanningOverviewViewControllerAccessibility *)&v3 didTapGoButtonForRouteOverviewCell:cell];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

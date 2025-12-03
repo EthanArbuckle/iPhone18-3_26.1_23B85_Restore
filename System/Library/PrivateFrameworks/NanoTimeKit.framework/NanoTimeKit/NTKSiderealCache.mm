@@ -1,11 +1,11 @@
 @interface NTKSiderealCache
 + (id)sharedCache;
-- (float)aplForDate:(id)a3 generationBlock:(id)a4;
+- (float)aplForDate:(id)date generationBlock:(id)block;
 - (id)_init;
-- (id)imageDataForKey:(id)a3 generationBlock:(id)a4;
+- (id)imageDataForKey:(id)key generationBlock:(id)block;
 - (void)_purgeEverything;
 - (void)purgeAPLCache;
-- (void)purgeCachedKey:(id)a3;
+- (void)purgeCachedKey:(id)key;
 @end
 
 @implementation NTKSiderealCache
@@ -74,17 +74,17 @@ uint64_t __36__NTKSiderealCache__purgeEverything__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (void)purgeCachedKey:(id)a3
+- (void)purgeCachedKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   readerWriterQueue = self->_readerWriterQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__NTKSiderealCache_purgeCachedKey___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_barrier_async(readerWriterQueue, v7);
 }
 
@@ -99,10 +99,10 @@ uint64_t __36__NTKSiderealCache__purgeEverything__block_invoke(uint64_t a1)
   dispatch_barrier_async(readerWriterQueue, block);
 }
 
-- (id)imageDataForKey:(id)a3 generationBlock:(id)a4
+- (id)imageDataForKey:(id)key generationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -116,12 +116,12 @@ uint64_t __36__NTKSiderealCache__purgeEverything__block_invoke(uint64_t a1)
   block[3] = &unk_278780498;
   v21 = &v22;
   block[4] = self;
-  v9 = v6;
+  v9 = keyCopy;
   v20 = v9;
   dispatch_sync(readerWriterQueue, block);
   if (!v23[5])
   {
-    v10 = v7[2](v7);
+    v10 = blockCopy[2](blockCopy);
     v11 = v23[5];
     v23[5] = v10;
 
@@ -163,10 +163,10 @@ void __52__NTKSiderealCache_imageDataForKey_generationBlock___block_invoke(void 
   *(v3 + 40) = v2;
 }
 
-- (float)aplForDate:(id)a3 generationBlock:(id)a4
+- (float)aplForDate:(id)date generationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  blockCopy = block;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -180,14 +180,14 @@ void __52__NTKSiderealCache_imageDataForKey_generationBlock___block_invoke(void 
   block[3] = &unk_278780498;
   v27 = &v28;
   block[4] = self;
-  v9 = v6;
+  v9 = dateCopy;
   v26 = v9;
   dispatch_sync(readerWriterQueue, block);
   v10 = v29[5];
   if (!v10)
   {
     v11 = MEMORY[0x277CCABB0];
-    v7[2](v7);
+    blockCopy[2](blockCopy);
     v12 = [v11 numberWithFloat:?];
     v13 = v29[5];
     v29[5] = v12;
@@ -199,7 +199,7 @@ void __52__NTKSiderealCache_imageDataForKey_generationBlock___block_invoke(void 
       v19 = 3221225472;
       v20 = __47__NTKSiderealCache_aplForDate_generationBlock___block_invoke_2;
       v21 = &unk_2787804C0;
-      v22 = self;
+      selfCopy = self;
       v24 = &v28;
       v23 = v9;
       dispatch_barrier_async(v14, &v18);

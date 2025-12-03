@@ -1,35 +1,35 @@
 @interface DESNumericStatsRecorder
-+ (id)constructErrorWith:(id)a3;
-- (BOOL)donateData:(id)a3 toKey:(id)a4 withMetadata:(id)a5 recorder:(id)a6;
-- (BOOL)record:(id)a3 data:(id)a4 dataTypeContent:(id)a5 metadata:(id)a6 errorOut:(id *)a7;
-- (BOOL)record:(id)a3 data:(id)a4 encodingSchema:(id)a5 metadata:(id)a6 errorOut:(id *)a7;
++ (id)constructErrorWith:(id)with;
+- (BOOL)donateData:(id)data toKey:(id)key withMetadata:(id)metadata recorder:(id)recorder;
+- (BOOL)record:(id)record data:(id)data dataTypeContent:(id)content metadata:(id)metadata errorOut:(id *)out;
+- (BOOL)record:(id)record data:(id)data encodingSchema:(id)schema metadata:(id)metadata errorOut:(id *)out;
 @end
 
 @implementation DESNumericStatsRecorder
 
-- (BOOL)record:(id)a3 data:(id)a4 dataTypeContent:(id)a5 metadata:(id)a6 errorOut:(id *)a7
+- (BOOL)record:(id)record data:(id)data dataTypeContent:(id)content metadata:(id)metadata errorOut:(id *)out
 {
   v51 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v12 count] && (objc_msgSend(v12, "objectAtIndexedSubscript:", 0), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) != 0))
+  recordCopy = record;
+  dataCopy = data;
+  contentCopy = content;
+  metadataCopy = metadata;
+  if ([dataCopy count] && (objc_msgSend(dataCopy, "objectAtIndexedSubscript:", 0), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) != 0))
   {
-    v17 = objc_alloc_init(DESDecimalEncoder);
+    recordCopy2 = objc_alloc_init(DESDecimalEncoder);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v12;
+    obj = dataCopy;
     v38 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v38)
     {
-      v34 = v12;
+      v34 = dataCopy;
       v37 = *v43;
-      v35 = v14;
-      v36 = v17;
-      v40 = a7;
+      v35 = metadataCopy;
+      v36 = recordCopy2;
+      outCopy = out;
 LABEL_5:
       v18 = 0;
       while (1)
@@ -40,7 +40,7 @@ LABEL_5:
         }
 
         v19 = *(*(&v42 + 1) + 8 * v18);
-        v20 = [(DESDecimalEncoder *)v17 encodeDecimalData:v19 forKey:v11 withSchemas:v13 errorOut:a7];
+        v20 = [(DESDecimalEncoder *)recordCopy2 encodeDecimalData:v19 forKey:recordCopy withSchemas:contentCopy errorOut:out];
         v21 = +[DESLogging coreChannel];
         v22 = v21;
         if (!v20)
@@ -52,7 +52,7 @@ LABEL_5:
         {
           v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
           *buf = 138412546;
-          v47 = v11;
+          v47 = recordCopy;
           v48 = 2112;
           v49 = v30;
           _os_log_debug_impl(&dword_248FF7000, v22, OS_LOG_TYPE_DEBUG, "key=%@, encoded data length %@ successfully", buf, 0x16u);
@@ -61,50 +61,50 @@ LABEL_5:
         v23 = objc_alloc_init(DESNumericMetadataEncoder);
         v24 = -[DESNumericMetadataEncoder encodeNumberVector:toLength:](v23, "encodeNumberVector:toLength:", v20, [v20 count]);
         v25 = objc_alloc_init(DESDPFloatValueRecorder);
-        v26 = [(DESNumericStatsRecorder *)self donateData:v24 toKey:v11 withMetadata:v14 recorder:v25];
+        v26 = [(DESNumericStatsRecorder *)self donateData:v24 toKey:recordCopy withMetadata:metadataCopy recorder:v25];
         if (v26)
         {
-          v27 = +[DESLogging coreChannel];
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+          recordCopy = +[DESLogging coreChannel];
+          if (os_log_type_enabled(recordCopy, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v47 = v11;
-            _os_log_debug_impl(&dword_248FF7000, v27, OS_LOG_TYPE_DEBUG, "key=%@, successfully recorded data", buf, 0xCu);
+            v47 = recordCopy;
+            _os_log_debug_impl(&dword_248FF7000, recordCopy, OS_LOG_TYPE_DEBUG, "key=%@, successfully recorded data", buf, 0xCu);
           }
         }
 
         else
         {
-          v28 = v13;
-          v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"key=%@, failed to record data", v11];
+          v28 = contentCopy;
+          recordCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"key=%@, failed to record data", recordCopy];
           v29 = +[DESLogging coreChannel];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v47 = v27;
+            v47 = recordCopy;
             _os_log_error_impl(&dword_248FF7000, v29, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
 
-          if (v40)
+          if (outCopy)
           {
-            *v40 = [objc_opt_class() constructErrorWith:v27];
+            *outCopy = [objc_opt_class() constructErrorWith:recordCopy];
           }
 
-          v13 = v28;
-          v14 = v35;
+          contentCopy = v28;
+          metadataCopy = v35;
         }
 
         if (!v26)
         {
           v31 = 0;
-          v12 = v34;
-          v17 = v36;
+          dataCopy = v34;
+          recordCopy2 = v36;
           goto LABEL_28;
         }
 
         ++v18;
-        v17 = v36;
-        a7 = v40;
+        recordCopy2 = v36;
+        out = outCopy;
         if (v38 == v18)
         {
           v31 = 1;
@@ -120,12 +120,12 @@ LABEL_5:
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [DESNumericStatsRecorder record:v19 data:v11 dataTypeContent:v22 metadata:? errorOut:?];
+        [DESNumericStatsRecorder record:v19 data:recordCopy dataTypeContent:v22 metadata:? errorOut:?];
       }
 
       v31 = 0;
 LABEL_33:
-      v12 = v34;
+      dataCopy = v34;
       goto LABEL_28;
     }
 
@@ -134,10 +134,10 @@ LABEL_33:
 
   else
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"key=%@, data to be encoded is malformed, should be a non-empty array of dictionaries", v11];
-    if (a7)
+    recordCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"key=%@, data to be encoded is malformed, should be a non-empty array of dictionaries", recordCopy];
+    if (out)
     {
-      *a7 = [objc_opt_class() constructErrorWith:v17];
+      *out = [objc_opt_class() constructErrorWith:recordCopy2];
     }
 
     obj = +[DESLogging coreChannel];
@@ -155,24 +155,24 @@ LABEL_28:
   return v31;
 }
 
-- (BOOL)record:(id)a3 data:(id)a4 encodingSchema:(id)a5 metadata:(id)a6 errorOut:(id *)a7
+- (BOOL)record:(id)record data:(id)data encodingSchema:(id)schema metadata:(id)metadata errorOut:(id *)out
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v14 objectForKeyedSubscript:@"dataContentTypes"];
+  recordCopy = record;
+  dataCopy = data;
+  schemaCopy = schema;
+  metadataCopy = metadata;
+  v16 = [schemaCopy objectForKeyedSubscript:@"dataContentTypes"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [v14 objectForKeyedSubscript:@"dataTypeContent"];
+    v17 = [schemaCopy objectForKeyedSubscript:@"dataTypeContent"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v20 = MEMORY[0x277CBEAD8];
       v21 = *MEMORY[0x277CBE660];
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"key=%@, '%@' or '%@' has wrong type, value=%@", v12, @"dataContentTypes", @"dataTypeContent", v17];
+      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"key=%@, '%@' or '%@' has wrong type, value=%@", recordCopy, @"dataContentTypes", @"dataTypeContent", v17];
       v23 = [v20 exceptionWithName:v21 reason:v22 userInfo:0];
       v24 = v23;
 
@@ -182,19 +182,19 @@ LABEL_28:
     v16 = v17;
   }
 
-  v18 = [(DESNumericStatsRecorder *)self record:v12 data:v13 dataTypeContent:v16 metadata:v15 errorOut:a7];
+  v18 = [(DESNumericStatsRecorder *)self record:recordCopy data:dataCopy dataTypeContent:v16 metadata:metadataCopy errorOut:out];
 
   return v18;
 }
 
-+ (id)constructErrorWith:(id)a3
++ (id)constructErrorWith:(id)with
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v10 = *MEMORY[0x277CCA450];
-  v11[0] = a3;
+  v11[0] = with;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  withCopy = with;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v3 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2013 userInfo:v6];
 
@@ -203,22 +203,22 @@ LABEL_28:
   return v7;
 }
 
-- (BOOL)donateData:(id)a3 toKey:(id)a4 withMetadata:(id)a5 recorder:(id)a6
+- (BOOL)donateData:(id)data toKey:(id)key withMetadata:(id)metadata recorder:(id)recorder
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 length] > 0xE7EF0)
+  dataCopy = data;
+  keyCopy = key;
+  metadataCopy = metadata;
+  recorderCopy = recorder;
+  if ([dataCopy length] > 0xE7EF0)
   {
     v13 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = v10;
+      v38 = keyCopy;
       v39 = 2048;
-      v40 = [v9 length];
+      v40 = [dataCopy length];
       v41 = 1024;
       v42 = 950000;
       _os_log_error_impl(&dword_248FF7000, v13, OS_LOG_TYPE_ERROR, "key=%@, data length %lu bytes is larger than limit %u", buf, 0x1Cu);
@@ -229,7 +229,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v14 = [v11 objectForKeyedSubscript:@"epsilon"];
+  v14 = [metadataCopy objectForKeyedSubscript:@"epsilon"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -244,7 +244,7 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v15 = [v11 objectForKeyedSubscript:@"delta"];
+  v15 = [metadataCopy objectForKeyedSubscript:@"delta"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -253,11 +253,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [v11 objectForKeyedSubscript:@"MomentsAccountantParameters"];
+  v13 = [metadataCopy objectForKeyedSubscript:@"MomentsAccountantParameters"];
 
   if (v13)
   {
-    v17 = [v11 objectForKeyedSubscript:@"MomentsAccountantParameters"];
+    v17 = [metadataCopy objectForKeyedSubscript:@"MomentsAccountantParameters"];
     objc_opt_class();
     v18 = objc_opt_isKindOfClass();
 
@@ -272,18 +272,18 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v13 = [v11 objectForKeyedSubscript:@"MomentsAccountantParameters"];
+    v13 = [metadataCopy objectForKeyedSubscript:@"MomentsAccountantParameters"];
   }
 
-  v19 = [v11 objectForKeyedSubscript:@"epsilon"];
+  v19 = [metadataCopy objectForKeyedSubscript:@"epsilon"];
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = [v11 objectForKeyedSubscript:@"delta"];
+  v22 = [metadataCopy objectForKeyedSubscript:@"delta"];
   [v22 doubleValue];
   v24 = v23;
 
-  v25 = [[DESGaussianAlgorithmParameters alloc] initWith:v10 epsilon:v13 delta:v21 clippingBound:v24 momentsAccountantParameters:1.0];
+  v25 = [[DESGaussianAlgorithmParameters alloc] initWith:keyCopy epsilon:v13 delta:v21 clippingBound:v24 momentsAccountantParameters:1.0];
   v26 = v25;
   if (v25)
   {
@@ -294,13 +294,13 @@ LABEL_14:
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:2];
     v30 = [v27 dictionaryWithDictionary:v29];
 
-    v31 = [v11 objectForKeyedSubscript:@"DediscoTaskConfig"];
+    v31 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
     if (v31)
     {
       [v30 setObject:v31 forKeyedSubscript:@"DediscoTaskConfig"];
     }
 
-    v32 = [v12 record:v10 data:v9 metadata:v30];
+    v32 = [recorderCopy record:keyCopy data:dataCopy metadata:v30];
   }
 
   else

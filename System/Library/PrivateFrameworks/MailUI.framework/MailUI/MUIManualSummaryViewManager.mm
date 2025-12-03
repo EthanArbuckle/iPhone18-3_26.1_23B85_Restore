@@ -1,24 +1,24 @@
 @interface MUIManualSummaryViewManager
 - (BOOL)didCancelSummarization;
-- (BOOL)needsToUseExternalIntelligenceErrorFrom:(id)a3;
+- (BOOL)needsToUseExternalIntelligenceErrorFrom:(id)from;
 - (MUIManualSummaryView)summaryView;
-- (MUIManualSummaryViewManager)initWithViewModel:(id)a3 delegate:(id)a4 summaryView:(id)a5;
+- (MUIManualSummaryViewManager)initWithViewModel:(id)model delegate:(id)delegate summaryView:(id)view;
 - (MUIManualSummaryViewManagerDelegate)delegate;
 - (MUIManualSummaryViewModel)viewModel;
 - (UIView)view;
 - (UIViewController)onboardingController;
-- (void)beginSummarizingUsingExternalIntelligence:(BOOL)a3;
+- (void)beginSummarizingUsingExternalIntelligence:(BOOL)intelligence;
 - (void)configureManualSummaryView;
-- (void)didSelectShowSummaryButtonForSummaryView:(id)a3;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 confirmTitle:(id)a5 confirmActionHandler:(id)a6 cancelTitle:(id)a7 cancelActionHandler:(id)a8;
+- (void)didSelectShowSummaryButtonForSummaryView:(id)view;
+- (void)presentAlertWithTitle:(id)title message:(id)message confirmTitle:(id)confirmTitle confirmActionHandler:(id)handler cancelTitle:(id)cancelTitle cancelActionHandler:(id)actionHandler;
 - (void)refreshSummaryViewModel;
 - (void)requestConfirmationToDisplaySummary;
 - (void)resetToInitialStateIfLoading;
-- (void)setDelegate:(id)a3;
-- (void)setDidCancelSummarization:(BOOL)a3;
-- (void)setOnboardingController:(id)a3;
-- (void)setSummaryView:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDidCancelSummarization:(BOOL)summarization;
+- (void)setOnboardingController:(id)controller;
+- (void)setSummaryView:(id)view;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUIManualSummaryViewManager
@@ -42,7 +42,7 @@
   return sub_214CCD384() & 1;
 }
 
-- (void)setDidCancelSummarization:(BOOL)a3
+- (void)setDidCancelSummarization:(BOOL)summarization
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
@@ -61,12 +61,12 @@
   return v5;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](model);
   MEMORY[0x277D82BE0](self);
-  sub_214C58F64(a3);
+  sub_214C58F64(model);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -80,12 +80,12 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  sub_214C59144(a3);
+  sub_214C59144(delegate);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -99,12 +99,12 @@
   return v5;
 }
 
-- (void)setSummaryView:(id)a3
+- (void)setSummaryView:(id)view
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](view);
   MEMORY[0x277D82BE0](self);
-  sub_214C59318(a3);
+  sub_214C59318(view);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -118,22 +118,22 @@
   return v5;
 }
 
-- (void)setOnboardingController:(id)a3
+- (void)setOnboardingController:(id)controller
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](controller);
   MEMORY[0x277D82BE0](self);
-  sub_214C59508(a3);
+  sub_214C59508(controller);
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUIManualSummaryViewManager)initWithViewModel:(id)a3 delegate:(id)a4 summaryView:(id)a5
+- (MUIManualSummaryViewManager)initWithViewModel:(id)model delegate:(id)delegate summaryView:(id)view
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](model);
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a5);
-  return sub_214C59620(a3, a4, a5);
+  MEMORY[0x277D82BE0](view);
+  return sub_214C59620(model, delegate, view);
 }
 
 - (void)configureManualSummaryView
@@ -152,7 +152,7 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)beginSummarizingUsingExternalIntelligence:(BOOL)a3
+- (void)beginSummarizingUsingExternalIntelligence:(BOOL)intelligence
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
@@ -169,14 +169,14 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (BOOL)needsToUseExternalIntelligenceErrorFrom:(id)a3
+- (BOOL)needsToUseExternalIntelligenceErrorFrom:(id)from
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](from);
   MEMORY[0x277D82BE0](self);
   sub_214C5CA00();
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](from);
   return sub_214CCD384() & 1;
 }
 
@@ -188,15 +188,15 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 confirmTitle:(id)a5 confirmActionHandler:(id)a6 cancelTitle:(id)a7 cancelActionHandler:(id)a8
+- (void)presentAlertWithTitle:(id)title message:(id)message confirmTitle:(id)confirmTitle confirmActionHandler:(id)handler cancelTitle:(id)cancelTitle cancelActionHandler:(id)actionHandler
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
-  v34 = _Block_copy(a6);
-  MEMORY[0x277D82BE0](a7);
-  v26 = _Block_copy(a8);
+  MEMORY[0x277D82BE0](title);
+  MEMORY[0x277D82BE0](message);
+  MEMORY[0x277D82BE0](confirmTitle);
+  v34 = _Block_copy(handler);
+  MEMORY[0x277D82BE0](cancelTitle);
+  v26 = _Block_copy(actionHandler);
   MEMORY[0x277D82BE0](self);
   v29 = sub_214CCF564();
   v30 = v8;
@@ -218,11 +218,11 @@
     v21 = 0;
   }
 
-  if (a7)
+  if (cancelTitle)
   {
     v16 = sub_214CCF564();
     v17 = v12;
-    MEMORY[0x277D82BD8](a7);
+    MEMORY[0x277D82BD8](cancelTitle);
     v18 = v16;
     v19 = v17;
   }
@@ -252,22 +252,22 @@
 
   sub_214A6B584(v20);
 
-  MEMORY[0x277D82BD8](a5);
+  MEMORY[0x277D82BD8](confirmTitle);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](message);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](title);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)didSelectShowSummaryButtonForSummaryView:(id)a3
+- (void)didSelectShowSummaryButtonForSummaryView:(id)view
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](view);
   MEMORY[0x277D82BE0](self);
-  MUIManualSummaryViewManager.didSelectShowSummaryButton(for:)(a3);
+  MUIManualSummaryViewManager.didSelectShowSummaryButton(for:)(view);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](view);
 }
 
 @end

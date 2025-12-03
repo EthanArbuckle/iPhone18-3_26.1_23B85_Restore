@@ -1,15 +1,15 @@
 @interface SoundActionsPracticeAudioManager
 + (id)sharedInstance;
-- (BOOL)_handleAccessibilityEvent:(id)a3;
-- (BOOL)_handleSoundEvent:(int64_t)a3;
+- (BOOL)_handleAccessibilityEvent:(id)event;
+- (BOOL)_handleSoundEvent:(int64_t)event;
 - (SoundActionsPracticeAudioManager)init;
 - (void)_startAccessibilityEventProcessor;
 - (void)_stopAccessibilityEventProcessor;
-- (void)deregisterListener:(id)a3;
+- (void)deregisterListener:(id)listener;
 - (void)pause;
-- (void)playURL:(id)a3;
+- (void)playURL:(id)l;
 - (void)playerDidEnd;
-- (void)registerListener:(id)a3 forAudioLevelUpdates:(id)a4 forDetection:(id)a5 withBucketCount:(int)a6;
+- (void)registerListener:(id)listener forAudioLevelUpdates:(id)updates forDetection:(id)detection withBucketCount:(int)count;
 - (void)resume;
 - (void)start;
 - (void)stop;
@@ -154,27 +154,27 @@ id __69__SoundActionsPracticeAudioManager__startAccessibilityEventProcessor__blo
   self->_eventProcessor = 0;
 }
 
-- (BOOL)_handleAccessibilityEvent:(id)a3
+- (BOOL)_handleAccessibilityEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = AXLogSoundActions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SoundActionsPracticeAudioManager *)v4 _handleAccessibilityEvent:v5];
+    [(SoundActionsPracticeAudioManager *)eventCopy _handleAccessibilityEvent:v5];
   }
 
-  v6 = [v4 accessibilityData];
-  if ([v6 page] != &dword_0 + 3)
+  accessibilityData = [eventCopy accessibilityData];
+  if ([accessibilityData page] != &dword_0 + 3)
   {
     goto LABEL_9;
   }
 
-  if ([v6 usage] - 1 > &dword_C + 1)
+  if ([accessibilityData usage] - 1 > &dword_C + 1)
   {
     v8 = AXLogSoundActions();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SoundActionsPracticeAudioManager *)v6 _handleAccessibilityEvent:v8];
+      [(SoundActionsPracticeAudioManager *)accessibilityData _handleAccessibilityEvent:v8];
     }
 
 LABEL_9:
@@ -182,13 +182,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = -[SoundActionsPracticeAudioManager _handleSoundEvent:](self, "_handleSoundEvent:", [v6 usage]);
+  v7 = -[SoundActionsPracticeAudioManager _handleSoundEvent:](self, "_handleSoundEvent:", [accessibilityData usage]);
 LABEL_10:
 
   return v7;
 }
 
-- (BOOL)_handleSoundEvent:(int64_t)a3
+- (BOOL)_handleSoundEvent:(int64_t)event
 {
   handlerQueue = self->_handlerQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -196,7 +196,7 @@ LABEL_10:
   v5[2] = __54__SoundActionsPracticeAudioManager__handleSoundEvent___block_invoke;
   v5[3] = &unk_255B80;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = event;
   dispatch_async(handlerQueue, v5);
   return 1;
 }
@@ -246,9 +246,9 @@ void __54__SoundActionsPracticeAudioManager__handleSoundEvent___block_invoke(uin
   }
 }
 
-- (void)playURL:(id)a3
+- (void)playURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[AVAudioSession sharedInstance];
   v9 = 0;
   [v5 setCategory:AVAudioSessionCategoryPlayback mode:AVAudioSessionModeDefault options:0 error:&v9];
@@ -265,7 +265,7 @@ void __54__SoundActionsPracticeAudioManager__handleSoundEvent___block_invoke(uin
 
   [(SoundActionsPracticeAudioManager *)self _handleSoundEvent:-1];
   [(SoundActionsPracticeAudioManager *)self pause];
-  v8 = [AVPlayerItem playerItemWithURL:v4];
+  v8 = [AVPlayerItem playerItemWithURL:lCopy];
 
   [(AVPlayer *)self->_player replaceCurrentItemWithPlayerItem:v8];
   [(AVPlayer *)self->_player play];
@@ -278,34 +278,34 @@ void __54__SoundActionsPracticeAudioManager__handleSoundEvent___block_invoke(uin
   [(SoundActionsPracticeAudioManager *)self _handleSoundEvent:-2];
 }
 
-- (void)registerListener:(id)a3 forAudioLevelUpdates:(id)a4 forDetection:(id)a5 withBucketCount:(int)a6
+- (void)registerListener:(id)listener forAudioLevelUpdates:(id)updates forDetection:(id)detection withBucketCount:(int)count
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  v6 = *&count;
+  listenerCopy = listener;
+  detectionCopy = detection;
+  updatesCopy = updates;
   v13 = AXLogSoundActions();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v23 = v10;
+    v23 = listenerCopy;
     _os_log_debug_impl(&dword_0, v13, OS_LOG_TYPE_DEBUG, "Register audio listener: %@", buf, 0xCu);
   }
 
   v14 = +[AXSDAudioLevelsHelper sharedInstance];
-  [v14 registerListener:self forAudioLevelUpdates:v12 withBucketCount:v6];
+  [v14 registerListener:self forAudioLevelUpdates:updatesCopy withBucketCount:v6];
 
-  v15 = [NSNumber numberWithUnsignedLongLong:v10];
+  v15 = [NSNumber numberWithUnsignedLongLong:listenerCopy];
   handlerQueue = self->_handlerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __103__SoundActionsPracticeAudioManager_registerListener_forAudioLevelUpdates_forDetection_withBucketCount___block_invoke;
   block[3] = &unk_255BA8;
   v20 = v15;
-  v21 = v11;
+  v21 = detectionCopy;
   block[4] = self;
   v17 = v15;
-  v18 = v11;
+  v18 = detectionCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -316,21 +316,21 @@ void __103__SoundActionsPracticeAudioManager_registerListener_forAudioLevelUpdat
   [v2 setObject:v3 forKey:*(a1 + 40)];
 }
 
-- (void)deregisterListener:(id)a3
+- (void)deregisterListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v5 = AXLogSoundActions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = listenerCopy;
     _os_log_debug_impl(&dword_0, v5, OS_LOG_TYPE_DEBUG, "Deregister audio listener: %@", buf, 0xCu);
   }
 
   v6 = +[AXSDAudioLevelsHelper sharedInstance];
-  [v6 deregisterListener:v4];
+  [v6 deregisterListener:listenerCopy];
 
-  v7 = [NSNumber numberWithUnsignedLongLong:v4];
+  v7 = [NSNumber numberWithUnsignedLongLong:listenerCopy];
   handlerQueue = self->_handlerQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;

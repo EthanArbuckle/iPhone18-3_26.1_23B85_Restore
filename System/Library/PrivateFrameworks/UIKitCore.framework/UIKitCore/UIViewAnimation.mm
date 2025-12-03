@@ -1,47 +1,47 @@
 @interface UIViewAnimation
 - (id)description;
-- (id)initWithView:(void *)a3 indexPath:(int)a4 viewType:(int)a5 endRect:(char)a6 endAlpha:(char)a7 startFraction:(char)a8 endFraction:(double)a9 curve:(double)a10 animateFromCurrentPosition:(double)a11 shouldDeleteAfterAnimation:(double)a12 editing:(double)a13;
+- (id)initWithView:(void *)view indexPath:(int)path viewType:(int)type endRect:(char)rect endAlpha:(char)alpha startFraction:(char)fraction endFraction:(double)endFraction curve:(double)self0 animateFromCurrentPosition:(double)self1 shouldDeleteAfterAnimation:(double)self2 editing:(double)self3;
 @end
 
 @implementation UIViewAnimation
 
-- (id)initWithView:(void *)a3 indexPath:(int)a4 viewType:(int)a5 endRect:(char)a6 endAlpha:(char)a7 startFraction:(char)a8 endFraction:(double)a9 curve:(double)a10 animateFromCurrentPosition:(double)a11 shouldDeleteAfterAnimation:(double)a12 editing:(double)a13
+- (id)initWithView:(void *)view indexPath:(int)path viewType:(int)type endRect:(char)rect endAlpha:(char)alpha startFraction:(char)fraction endFraction:(double)endFraction curve:(double)self0 animateFromCurrentPosition:(double)self1 shouldDeleteAfterAnimation:(double)self2 editing:(double)self3
 {
   v30 = a2;
-  v31 = a3;
-  if (a1)
+  viewCopy = view;
+  if (self)
   {
-    v35.receiver = a1;
+    v35.receiver = self;
     v35.super_class = UIViewAnimation;
     v32 = objc_msgSendSuper2(&v35, sel_init);
-    a1 = v32;
+    self = v32;
     if (v32)
     {
       objc_storeStrong(v32 + 3, a2);
-      objc_storeStrong(a1 + 4, a3);
-      *(a1 + 4) = a4;
-      *(a1 + 9) = a10;
-      *(a1 + 10) = a11;
-      *(a1 + 11) = a12;
-      *(a1 + 5) = a13;
-      *(a1 + 6) = a14;
-      *(a1 + 7) = a15;
-      *(a1 + 8) = a9;
+      objc_storeStrong(self + 4, view);
+      *(self + 4) = path;
+      *(self + 9) = curve;
+      *(self + 10) = position;
+      *(self + 11) = animation;
+      *(self + 5) = editing;
+      *(self + 6) = a14;
+      *(self + 7) = a15;
+      *(self + 8) = endFraction;
       if (a15 < a14)
       {
-        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v34 handleFailureInMethod:sel_initWithView_indexPath_viewType_endRect_endAlpha_startFraction_endFraction_curve_animateFromCurrentPosition_shouldDeleteAfterAnimation_editing_ object:a1 file:@"UITableViewSupport.m" lineNumber:2900 description:@"Cell animation stop fraction must be greater than start fraction"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_initWithView_indexPath_viewType_endRect_endAlpha_startFraction_endFraction_curve_animateFromCurrentPosition_shouldDeleteAfterAnimation_editing_ object:self file:@"UITableViewSupport.m" lineNumber:2900 description:@"Cell animation stop fraction must be greater than start fraction"];
       }
 
-      *(a1 + 5) = a5;
-      *(a1 + 8) = a6;
-      *(a1 + 9) = a7;
-      *(a1 + 10) = a8;
-      *(a1 + 11) = 1;
+      *(self + 5) = type;
+      *(self + 8) = rect;
+      *(self + 9) = alpha;
+      *(self + 10) = fraction;
+      *(self + 11) = 1;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description

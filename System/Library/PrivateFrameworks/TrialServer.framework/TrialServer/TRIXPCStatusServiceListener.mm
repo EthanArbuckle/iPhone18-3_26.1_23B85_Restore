@@ -1,18 +1,18 @@
 @interface TRIXPCStatusServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (TRIXPCStatusServiceListener)initWithPromise:(id)a3 forSystem:(BOOL)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (TRIXPCStatusServiceListener)initWithPromise:(id)promise forSystem:(BOOL)system;
 @end
 
 @implementation TRIXPCStatusServiceListener
 
-- (TRIXPCStatusServiceListener)initWithPromise:(id)a3 forSystem:(BOOL)a4
+- (TRIXPCStatusServiceListener)initWithPromise:(id)promise forSystem:(BOOL)system
 {
-  v4 = a4;
-  v8 = a3;
-  if (!v8)
+  systemCopy = system;
+  promiseCopy = promise;
+  if (!promiseCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIXPCStatusService.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCStatusService.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
   }
 
   v21.receiver = self;
@@ -21,7 +21,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_promise, a3);
+    objc_storeStrong(&v9->_promise, promise);
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287FCD738];
     interface = v10->_interface;
     v10->_interface = v11;
@@ -34,7 +34,7 @@
     objc_autoreleasePoolPop(v14);
     [(NSXPCInterface *)v13 setClasses:v17 forSelector:sel_experimentRecordsWithDeploymentEnvironments_completion_ argumentIndex:0 ofReply:0];
 
-    if (v4)
+    if (systemCopy)
     {
       v18 = @"com.apple.trial.system.status";
     }
@@ -50,14 +50,14 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [TRIXPCStatusRequestHandler alloc];
   promise = self->_promise;
-  if (v5)
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -72,7 +72,7 @@
   serviceName = self->_serviceName;
   interface = self->_interface;
   v13 = TRILogCategory_Server();
-  LOBYTE(interface) = [v10 shouldAcceptConnection:v5 serviceName:serviceName whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:v9 validateConnection:&__block_literal_global_13 setupClientProxy:0 interruptionHandler:&__block_literal_global_151 invalidationHandler:&__block_literal_global_153 logHandle:v13];
+  LOBYTE(interface) = [v10 shouldAcceptConnection:connectionCopy serviceName:serviceName whitelistedServerInterface:interface whitelistedClientInterface:0 requestHandler:v9 validateConnection:&__block_literal_global_13 setupClientProxy:0 interruptionHandler:&__block_literal_global_151 invalidationHandler:&__block_literal_global_153 logHandle:v13];
 
   return interface;
 }

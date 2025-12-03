@@ -1,19 +1,19 @@
 @interface MetadataRibbonView
 - (BOOL)hasContent;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC8AppStore18MetadataRibbonView)initWithCoder:(id)a3;
-- (_TtC8AppStore18MetadataRibbonView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC8AppStore18MetadataRibbonView)initWithCoder:(id)coder;
+- (_TtC8AppStore18MetadataRibbonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MetadataRibbonView
 
-- (_TtC8AppStore18MetadataRibbonView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore18MetadataRibbonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore18MetadataRibbonView_metadataRibbonItemViews) = _swiftEmptyArrayStorage;
   static MetadataRibbonViewLayout.Metrics.standard.getter();
@@ -21,12 +21,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore18MetadataRibbonView_isInsideSearchAd) = 0;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(MetadataRibbonView *)&v11 initWithFrame:x, y, width, height];
-  [(MetadataRibbonView *)v9 setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-  return v9;
+  height = [(MetadataRibbonView *)&v11 initWithFrame:x, y, width, height];
+  [(MetadataRibbonView *)height setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
+  return height;
 }
 
-- (_TtC8AppStore18MetadataRibbonView)initWithCoder:(id)a3
+- (_TtC8AppStore18MetadataRibbonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore18MetadataRibbonView_metadataRibbonItemViews) = _swiftEmptyArrayStorage;
   static MetadataRibbonViewLayout.Metrics.standard.getter();
@@ -39,15 +39,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MetadataRibbonView.layoutSubviews()();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  MetadataRibbonView.measurements(fitting:in:)(a4);
+  selfCopy = self;
+  MetadataRibbonView.measurements(fitting:in:)(in);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -72,7 +72,7 @@
   swift_beginAccess();
   v4 = *(&self->super.super.super.isa + v3);
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1004849E0(0, v4);
 
   return v6 & 1;

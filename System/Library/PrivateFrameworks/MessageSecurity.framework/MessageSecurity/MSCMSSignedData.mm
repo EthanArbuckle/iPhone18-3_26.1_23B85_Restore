@@ -1,86 +1,86 @@
 @interface MSCMSSignedData
-+ (id)decodeMessageSecurityObject:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)addCertificatesForSigner:(id)a3 mode:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addSigner:(id)a3 withChainMode:(unint64_t)a4 error:(id *)a5;
-- (BOOL)checkSignedPerRFC5652:(id *)a3;
-- (BOOL)verifySignatures:(id *)a3;
-- (BOOL)verifySignaturesAndSignersWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6;
-- (BOOL)verifySignaturesAndSignersWithPolicies:(id)a3 verifyTime:(id)a4 error:(id *)a5;
-- (MSCMSSignedData)initWithDataContent:(id)a3 isDetached:(BOOL)a4 signer:(id)a5 error:(id *)a6;
-- (MSCMSSignedData)initWithEmbeddedContent:(id)a3 signer:(id)a4 additionalCertificates:(id)a5 error:(id *)a6;
-- (MSCMSSignedData)initWithEmbeddedContent:(id)a3 signer:(id)a4 error:(id *)a5;
-- (MSCMSSignedData)initWithEmbeddedContent:(id)a3 signer:(id)a4 signerChainMode:(unint64_t)a5 error:(id *)a6;
-- (__SecCertificate)getSignerCertificate:(unint64_t)a3 error:(id *)a4;
-- (id)calculateContentDigestWithAlgorithm:(id)a3 error:(id *)a4;
-- (id)encodeMessageSecurityObject:(id *)a3;
-- (id)initCertsOnlyWithCertificates:(id)a3 error:(id *)a4;
-- (void)addCounterSignerCertificates:(id)a3 mode:(unint64_t)a4 error:(id *)a5;
-- (void)addDigestAlgorithmFromSigner:(id)a3;
-- (void)addSigner:(id)a3;
-- (void)addSigner:(id)a3 withCertificates:(id)a4;
-- (void)removeSignerCertificatesWithIndexes:(id)a3;
-- (void)removeSignersWithCertificate:(__SecCertificate *)a3 error:(id *)a4;
-- (void)removeSignersWithEmailAddress:(id)a3 error:(id *)a4;
-- (void)removeSignersWithIdentity:(__SecIdentity *)a3 error:(id *)a4;
-- (void)removeSignersWithIndexes:(id)a3 error:(id *)a4;
-- (void)setContentType:(id)a3;
-- (void)setDataContent:(id)a3;
-- (void)setEmbeddedContent:(id)a3;
++ (id)decodeMessageSecurityObject:(id)object options:(id)options error:(id *)error;
+- (BOOL)addCertificatesForSigner:(id)signer mode:(unint64_t)mode error:(id *)error;
+- (BOOL)addSigner:(id)signer withChainMode:(unint64_t)mode error:(id *)error;
+- (BOOL)checkSignedPerRFC5652:(id *)c5652;
+- (BOOL)verifySignatures:(id *)signatures;
+- (BOOL)verifySignaturesAndSignersWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error;
+- (BOOL)verifySignaturesAndSignersWithPolicies:(id)policies verifyTime:(id)time error:(id *)error;
+- (MSCMSSignedData)initWithDataContent:(id)content isDetached:(BOOL)detached signer:(id)signer error:(id *)error;
+- (MSCMSSignedData)initWithEmbeddedContent:(id)content signer:(id)signer additionalCertificates:(id)certificates error:(id *)error;
+- (MSCMSSignedData)initWithEmbeddedContent:(id)content signer:(id)signer error:(id *)error;
+- (MSCMSSignedData)initWithEmbeddedContent:(id)content signer:(id)signer signerChainMode:(unint64_t)mode error:(id *)error;
+- (__SecCertificate)getSignerCertificate:(unint64_t)certificate error:(id *)error;
+- (id)calculateContentDigestWithAlgorithm:(id)algorithm error:(id *)error;
+- (id)encodeMessageSecurityObject:(id *)object;
+- (id)initCertsOnlyWithCertificates:(id)certificates error:(id *)error;
+- (void)addCounterSignerCertificates:(id)certificates mode:(unint64_t)mode error:(id *)error;
+- (void)addDigestAlgorithmFromSigner:(id)signer;
+- (void)addSigner:(id)signer;
+- (void)addSigner:(id)signer withCertificates:(id)certificates;
+- (void)removeSignerCertificatesWithIndexes:(id)indexes;
+- (void)removeSignersWithCertificate:(__SecCertificate *)certificate error:(id *)error;
+- (void)removeSignersWithEmailAddress:(id)address error:(id *)error;
+- (void)removeSignersWithIdentity:(__SecIdentity *)identity error:(id *)error;
+- (void)removeSignersWithIndexes:(id)indexes error:(id *)error;
+- (void)setContentType:(id)type;
+- (void)setDataContent:(id)content;
+- (void)setEmbeddedContent:(id)content;
 @end
 
 @implementation MSCMSSignedData
 
-- (void)setDataContent:(id)a3
+- (void)setDataContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   dataContent = self->_dataContent;
-  if (dataContent != v5)
+  if (dataContent != contentCopy)
   {
     self->_dataContent = 0;
-    v7 = v5;
+    v7 = contentCopy;
 
-    objc_storeStrong(&self->_dataContent, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_dataContent, content);
+    contentCopy = v7;
     self->_contentChanged = 1;
   }
 }
 
-- (void)setEmbeddedContent:(id)a3
+- (void)setEmbeddedContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   embeddedContent = self->_embeddedContent;
-  if (embeddedContent != v5)
+  if (embeddedContent != contentCopy)
   {
     self->_embeddedContent = 0;
-    v7 = v5;
+    v7 = contentCopy;
 
-    objc_storeStrong(&self->_embeddedContent, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_embeddedContent, content);
+    contentCopy = v7;
     self->_contentChanged = 1;
   }
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   contentType = self->_contentType;
-  if (contentType != v5)
+  if (contentType != typeCopy)
   {
     self->_contentType = 0;
-    v7 = v5;
+    v7 = typeCopy;
 
-    objc_storeStrong(&self->_contentType, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_contentType, type);
+    typeCopy = v7;
     self->_contentChanged = 1;
   }
 }
 
-- (void)addCounterSignerCertificates:(id)a3 mode:(unint64_t)a4 error:(id *)a5
+- (void)addCounterSignerCertificates:(id)certificates mode:(unint64_t)mode error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = [a3 unprotectedAttributes];
+  unprotectedAttributes = [certificates unprotectedAttributes];
   v9 = [MSOID OIDWithString:@"1.2.840.113549.1.9.6" error:0];
-  v10 = [v8 getAttributesWithType:v9];
+  v10 = [unprotectedAttributes getAttributesWithType:v9];
 
   if (v10)
   {
@@ -138,8 +138,8 @@
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v21 = [v19 signers];
-          v22 = [v21 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          signers = [v19 signers];
+          v22 = [signers countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v22)
           {
             v23 = v22;
@@ -150,25 +150,25 @@
               {
                 if (*v35 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(signers);
                 }
 
                 v26 = *(*(&v34 + 1) + 8 * i);
-                v27 = [v20 chainMode];
-                if (v27 <= a4)
+                chainMode = [v20 chainMode];
+                if (chainMode <= mode)
                 {
-                  v28 = a4;
+                  modeCopy = mode;
                 }
 
                 else
                 {
-                  v28 = v27;
+                  modeCopy = chainMode;
                 }
 
-                [(MSCMSSignedData *)self addCertificatesForSigner:v26 mode:v28 error:a5];
+                [(MSCMSSignedData *)self addCertificatesForSigner:v26 mode:modeCopy error:error];
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v34 objects:v42 count:16];
+              v23 = [signers countByEnumeratingWithState:&v34 objects:v42 count:16];
             }
 
             while (v23);
@@ -199,13 +199,13 @@ LABEL_25:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addCertificatesForSigner:(id)a3 mode:(unint64_t)a4 error:(id *)a5
+- (BOOL)addCertificatesForSigner:(id)signer mode:(unint64_t)mode error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5 && *a5)
+  signerCopy = signer;
+  if (error && *error)
   {
-    v9 = [*a5 copy];
+    v9 = [*error copy];
   }
 
   else
@@ -213,12 +213,12 @@ LABEL_25:
     v9 = 0;
   }
 
-  if (a4 - 2 < 2)
+  if (mode - 2 < 2)
   {
-    if (v8 && [v8 signerCertificate])
+    if (signerCopy && [signerCopy signerCertificate])
     {
       v26 = v9;
-      v10 = MSSecTrustCreateWithError([v8 signerCertificate], 0, 0, 0, &v26);
+      v10 = MSSecTrustCreateWithError([signerCopy signerCertificate], 0, 0, 0, &v26);
       v12 = v26;
 
       if (v10)
@@ -278,7 +278,7 @@ LABEL_25:
           }
         }
 
-        if (a4 == 2)
+        if (mode == 2)
         {
           [v18 objectAtIndexedSubscript:v20];
 
@@ -295,7 +295,7 @@ LABEL_25:
         [(NSMutableSet *)self->_certificates addObjectsFromArray:v18];
 
         v11 = 1;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_40;
         }
@@ -313,7 +313,7 @@ LABEL_46:
 LABEL_48:
     v11 = 0;
     v12 = *buf;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_40;
     }
@@ -322,23 +322,23 @@ LABEL_38:
     if (v12)
     {
       v22 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     goto LABEL_40;
   }
 
-  if (!a4)
+  if (!mode)
   {
     v11 = 1;
     goto LABEL_43;
   }
 
-  if (a4 == 1)
+  if (mode == 1)
   {
-    if (v8 && [v8 signerCertificate])
+    if (signerCopy && [signerCopy signerCertificate])
     {
-      -[NSMutableSet addObject:](self->_certificates, "addObject:", [v8 signerCertificate]);
+      -[NSMutableSet addObject:](self->_certificates, "addObject:", [signerCopy signerCertificate]);
       v10 = 0;
       v11 = 1;
       goto LABEL_19;
@@ -352,7 +352,7 @@ LABEL_38:
   v11 = 0;
 LABEL_19:
   v12 = v9;
-  if (a5)
+  if (error)
   {
     goto LABEL_38;
   }
@@ -384,18 +384,18 @@ uint64_t __55__MSCMSSignedData_addCertificatesForSigner_mode_error___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (MSCMSSignedData)initWithDataContent:(id)a3 isDetached:(BOOL)a4 signer:(id)a5 error:(id *)a6
+- (MSCMSSignedData)initWithDataContent:(id)content isDetached:(BOOL)detached signer:(id)signer error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
+  contentCopy = content;
+  signerCopy = signer;
   v30.receiver = self;
   v30.super_class = MSCMSSignedData;
   v13 = [(MSCMSSignedData *)&v30 init];
   if (v13)
   {
-    v14 = [v12 signatureAlgorithm];
-    v15 = [v14 algorithm];
-    v16 = [MSOID digestOIDWithSignatureAlgorithm:v15 error:a6];
+    signatureAlgorithm = [signerCopy signatureAlgorithm];
+    algorithm = [signatureAlgorithm algorithm];
+    v16 = [MSOID digestOIDWithSignatureAlgorithm:algorithm error:error];
 
     if (!v16)
     {
@@ -408,22 +408,22 @@ uint64_t __55__MSCMSSignedData_addCertificatesForSigner_mode_error___block_invok
     digestAlgorithms = v13->_digestAlgorithms;
     v13->_digestAlgorithms = v19;
 
-    objc_storeStrong(&v13->_dataContent, a3);
+    objc_storeStrong(&v13->_dataContent, content);
     v13->_contentChanged = 1;
     embeddedContent = v13->_embeddedContent;
     v13->_embeddedContent = 0;
 
-    v13->_detached = a4;
-    v22 = [MEMORY[0x277CBEA60] arrayWithObject:v12];
+    v13->_detached = detached;
+    v22 = [MEMORY[0x277CBEA60] arrayWithObject:signerCopy];
     signers = v13->_signers;
     v13->_signers = v22;
 
-    [v12 setContainingSignedData:v13];
-    v24 = [MSOID OIDWithString:@"1.2.840.113549.1.7.1" error:a6];
+    [signerCopy setContainingSignedData:v13];
+    v24 = [MSOID OIDWithString:@"1.2.840.113549.1.7.1" error:error];
     contentType = v13->_contentType;
     v13->_contentType = v24;
 
-    if (![v12 signerCertificate])
+    if (![signerCopy signerCertificate])
     {
 LABEL_6:
 
@@ -431,11 +431,11 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v26 = [MEMORY[0x277CBEB58] setWithObject:{objc_msgSend(v12, "signerCertificate")}];
+    v26 = [MEMORY[0x277CBEB58] setWithObject:{objc_msgSend(signerCopy, "signerCertificate")}];
     certificates = v13->_certificates;
     v13->_certificates = v26;
 
-    [(MSCMSSignedData *)v13 addCounterSignerCertificates:v12 mode:1 error:0];
+    [(MSCMSSignedData *)v13 addCounterSignerCertificates:signerCopy mode:1 error:0];
   }
 
   v28 = v13;
@@ -444,10 +444,10 @@ LABEL_7:
   return v28;
 }
 
-- (MSCMSSignedData)initWithEmbeddedContent:(id)a3 signer:(id)a4 error:(id *)a5
+- (MSCMSSignedData)initWithEmbeddedContent:(id)content signer:(id)signer error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  signerCopy = signer;
   v27.receiver = self;
   v27.super_class = MSCMSSignedData;
   v11 = [(MSCMSSignedData *)&v27 init];
@@ -456,9 +456,9 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v12 = [v10 signatureAlgorithm];
-  v13 = [v12 algorithm];
-  v14 = [MSOID digestOIDWithSignatureAlgorithm:v13 error:a5];
+  signatureAlgorithm = [signerCopy signatureAlgorithm];
+  algorithm = [signatureAlgorithm algorithm];
+  v14 = [MSOID digestOIDWithSignatureAlgorithm:algorithm error:error];
 
   if (v14)
   {
@@ -471,22 +471,22 @@ LABEL_7:
     dataContent = v11->_dataContent;
     v11->_dataContent = 0;
 
-    objc_storeStrong(&v11->_embeddedContent, a3);
+    objc_storeStrong(&v11->_embeddedContent, content);
     v11->_detached = 0;
-    v20 = [MEMORY[0x277CBEA60] arrayWithObject:v10];
+    v20 = [MEMORY[0x277CBEA60] arrayWithObject:signerCopy];
     signers = v11->_signers;
     v11->_signers = v20;
 
-    [v10 setContainingSignedData:v11];
-    v22 = [v9 type];
+    [signerCopy setContainingSignedData:v11];
+    type = [contentCopy type];
     contentType = v11->_contentType;
-    v11->_contentType = v22;
+    v11->_contentType = type;
 
-    v24 = [MEMORY[0x277CBEB58] setWithObject:{objc_msgSend(v10, "signerCertificate")}];
+    v24 = [MEMORY[0x277CBEB58] setWithObject:{objc_msgSend(signerCopy, "signerCertificate")}];
     certificates = v11->_certificates;
     v11->_certificates = v24;
 
-    [(MSCMSSignedData *)v11 addCounterSignerCertificates:v10 mode:1 error:0];
+    [(MSCMSSignedData *)v11 addCounterSignerCertificates:signerCopy mode:1 error:0];
 LABEL_4:
     v14 = v11;
   }
@@ -494,39 +494,39 @@ LABEL_4:
   return v14;
 }
 
-- (MSCMSSignedData)initWithEmbeddedContent:(id)a3 signer:(id)a4 additionalCertificates:(id)a5 error:(id *)a6
+- (MSCMSSignedData)initWithEmbeddedContent:(id)content signer:(id)signer additionalCertificates:(id)certificates error:(id *)error
 {
-  v10 = a5;
-  v11 = [(MSCMSSignedData *)self initWithEmbeddedContent:a3 signer:a4 error:a6];
+  certificatesCopy = certificates;
+  v11 = [(MSCMSSignedData *)self initWithEmbeddedContent:content signer:signer error:error];
   v12 = v11;
-  if (v10 && v11)
+  if (certificatesCopy && v11)
   {
-    [(NSMutableSet *)v11->_certificates addObjectsFromArray:v10];
+    [(NSMutableSet *)v11->_certificates addObjectsFromArray:certificatesCopy];
   }
 
   return v12;
 }
 
-- (MSCMSSignedData)initWithEmbeddedContent:(id)a3 signer:(id)a4 signerChainMode:(unint64_t)a5 error:(id *)a6
+- (MSCMSSignedData)initWithEmbeddedContent:(id)content signer:(id)signer signerChainMode:(unint64_t)mode error:(id *)error
 {
-  v10 = a4;
-  v11 = [(MSCMSSignedData *)self initWithEmbeddedContent:a3 signer:v10 error:a6];
+  signerCopy = signer;
+  v11 = [(MSCMSSignedData *)self initWithEmbeddedContent:content signer:signerCopy error:error];
   v12 = v11;
   if (!v11)
   {
     goto LABEL_7;
   }
 
-  if (!a5)
+  if (!mode)
   {
     [(NSMutableSet *)v11->_certificates removeAllObjects];
     goto LABEL_6;
   }
 
-  if ([(MSCMSSignedData *)v11 addCertificatesForSigner:v10 mode:a5 error:a6])
+  if ([(MSCMSSignedData *)v11 addCertificatesForSigner:signerCopy mode:mode error:error])
   {
 LABEL_6:
-    [(MSCMSSignedData *)v12 addCounterSignerCertificates:v10 mode:a5 error:0];
+    [(MSCMSSignedData *)v12 addCounterSignerCertificates:signerCopy mode:mode error:0];
 LABEL_7:
     v13 = v12;
     goto LABEL_8;
@@ -538,9 +538,9 @@ LABEL_8:
   return v13;
 }
 
-- (id)initCertsOnlyWithCertificates:(id)a3 error:(id *)a4
+- (id)initCertsOnlyWithCertificates:(id)certificates error:(id *)error
 {
-  v6 = a3;
+  certificatesCopy = certificates;
   v20.receiver = self;
   v20.super_class = MSCMSSignedData;
   v7 = [(MSCMSSignedData *)&v20 init];
@@ -557,11 +557,11 @@ LABEL_8:
     v7->_embeddedContent = 0;
 
     v7->_detached = 1;
-    v12 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     signers = v7->_signers;
-    v7->_signers = v12;
+    v7->_signers = array;
 
-    v14 = [MSOID OIDWithString:@"1.2.840.113549.1.7.1" error:a4];
+    v14 = [MSOID OIDWithString:@"1.2.840.113549.1.7.1" error:error];
     contentType = v7->_contentType;
     v7->_contentType = v14;
 
@@ -571,7 +571,7 @@ LABEL_8:
       goto LABEL_6;
     }
 
-    v16 = [MEMORY[0x277CBEB58] setWithArray:v6];
+    v16 = [MEMORY[0x277CBEB58] setWithArray:certificatesCopy];
     certificates = v7->_certificates;
     v7->_certificates = v16;
   }
@@ -582,55 +582,55 @@ LABEL_6:
   return v18;
 }
 
-- (void)addSigner:(id)a3
+- (void)addSigner:(id)signer
 {
-  if (a3)
+  if (signer)
   {
     v4 = MEMORY[0x277CBEB18];
     signers = self->_signers;
-    v8 = a3;
+    signerCopy = signer;
     v6 = [v4 arrayWithArray:signers];
-    [(NSArray *)v6 addObject:v8];
-    [(MSCMSSignedData *)self addDigestAlgorithmFromSigner:v8];
-    -[NSMutableSet addObject:](self->_certificates, "addObject:", [v8 signerCertificate]);
+    [(NSArray *)v6 addObject:signerCopy];
+    [(MSCMSSignedData *)self addDigestAlgorithmFromSigner:signerCopy];
+    -[NSMutableSet addObject:](self->_certificates, "addObject:", [signerCopy signerCertificate]);
     v7 = self->_signers;
     self->_signers = v6;
 
-    [v8 setContainingSignedData:self];
-    [(MSCMSSignedData *)self addCounterSignerCertificates:v8 mode:1 error:0];
+    [signerCopy setContainingSignedData:self];
+    [(MSCMSSignedData *)self addCounterSignerCertificates:signerCopy mode:1 error:0];
   }
 }
 
-- (void)addSigner:(id)a3 withCertificates:(id)a4
+- (void)addSigner:(id)signer withCertificates:(id)certificates
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  signerCopy = signer;
+  certificatesCopy = certificates;
+  if (signerCopy)
   {
-    [(MSCMSSignedData *)self addSigner:v7];
-    if (v6)
+    [(MSCMSSignedData *)self addSigner:signerCopy];
+    if (certificatesCopy)
     {
-      [(NSMutableSet *)self->_certificates addObjectsFromArray:v6];
+      [(NSMutableSet *)self->_certificates addObjectsFromArray:certificatesCopy];
     }
 
-    [(MSCMSSignedData *)self addCounterSignerCertificates:v7 mode:1 error:0];
+    [(MSCMSSignedData *)self addCounterSignerCertificates:signerCopy mode:1 error:0];
   }
 }
 
-- (BOOL)addSigner:(id)a3 withChainMode:(unint64_t)a4 error:(id *)a5
+- (BOOL)addSigner:(id)signer withChainMode:(unint64_t)mode error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  signerCopy = signer;
+  if (signerCopy)
   {
     v9 = [MEMORY[0x277CBEB18] arrayWithArray:self->_signers];
-    [v9 addObject:v8];
-    [(MSCMSSignedData *)self addDigestAlgorithmFromSigner:v8];
-    v10 = [(MSCMSSignedData *)self addCertificatesForSigner:v8 mode:a4 error:a5];
+    [v9 addObject:signerCopy];
+    [(MSCMSSignedData *)self addDigestAlgorithmFromSigner:signerCopy];
+    v10 = [(MSCMSSignedData *)self addCertificatesForSigner:signerCopy mode:mode error:error];
     if (v10)
     {
-      [(MSCMSSignedData *)self addCounterSignerCertificates:v8 mode:a4 error:0];
+      [(MSCMSSignedData *)self addCounterSignerCertificates:signerCopy mode:mode error:0];
       objc_storeStrong(&self->_signers, v9);
-      [v8 setContainingSignedData:self];
+      [signerCopy setContainingSignedData:self];
     }
   }
 
@@ -642,7 +642,7 @@ LABEL_6:
   return v10;
 }
 
-- (void)removeSignerCertificatesWithIndexes:(id)a3
+- (void)removeSignerCertificatesWithIndexes:(id)indexes
 {
   signers = self->_signers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -650,7 +650,7 @@ LABEL_6:
   v4[2] = __55__MSCMSSignedData_removeSignerCertificatesWithIndexes___block_invoke;
   v4[3] = &unk_2798BE1F8;
   v4[4] = self;
-  [(NSArray *)signers enumerateObjectsAtIndexes:a3 options:0 usingBlock:v4];
+  [(NSArray *)signers enumerateObjectsAtIndexes:indexes options:0 usingBlock:v4];
 }
 
 uint64_t __55__MSCMSSignedData_removeSignerCertificatesWithIndexes___block_invoke(uint64_t a1, void *a2)
@@ -663,14 +663,14 @@ uint64_t __55__MSCMSSignedData_removeSignerCertificatesWithIndexes___block_invok
   return [v4 removeObject:v5];
 }
 
-- (void)removeSignersWithIndexes:(id)a3 error:(id *)a4
+- (void)removeSignersWithIndexes:(id)indexes error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
     v7 = [MEMORY[0x277CBEB18] arrayWithArray:self->_signers];
-    [v7 removeObjectsAtIndexes:v6];
-    [(MSCMSSignedData *)self removeSignerCertificatesWithIndexes:v6];
+    [v7 removeObjectsAtIndexes:indexesCopy];
+    [(MSCMSSignedData *)self removeSignerCertificatesWithIndexes:indexesCopy];
     objc_storeStrong(&self->_signers, v7);
     v13 = 0;
     v14 = &v13;
@@ -691,9 +691,9 @@ uint64_t __55__MSCMSSignedData_removeSignerCertificatesWithIndexes___block_invok
 
   else
   {
-    if (a4 && *a4)
+    if (error && *error)
     {
-      v9 = [*a4 copy];
+      v9 = [*error copy];
     }
 
     else
@@ -703,10 +703,10 @@ uint64_t __55__MSCMSSignedData_removeSignerCertificatesWithIndexes___block_invok
 
     v10 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-50 underlyingError:v9 description:@"no signer with input certificate hash"];
 
-    if (a4 && v10)
+    if (error && v10)
     {
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 }
@@ -722,23 +722,23 @@ uint64_t __50__MSCMSSignedData_removeSignersWithIndexes_error___block_invoke(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeSignersWithCertificate:(__SecCertificate *)a3 error:(id *)a4
+- (void)removeSignersWithCertificate:(__SecCertificate *)certificate error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
-  v14 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   signers = self->_signers;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__MSCMSSignedData_removeSignersWithCertificate_error___block_invoke;
   v8[3] = &unk_2798BE248;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = certificate;
   [(NSArray *)signers enumerateObjectsUsingBlock:v8];
-  [(MSCMSSignedData *)self removeSignersWithIndexes:v10[5] error:a4];
+  [(MSCMSSignedData *)self removeSignersWithIndexes:v10[5] error:error];
   _Block_object_dispose(&v9, 8);
 }
 
@@ -755,25 +755,25 @@ uint64_t __54__MSCMSSignedData_removeSignersWithCertificate_error___block_invoke
   return result;
 }
 
-- (void)removeSignersWithEmailAddress:(id)a3 error:(id *)a4
+- (void)removeSignersWithEmailAddress:(id)address error:(id *)error
 {
-  v6 = a3;
+  addressCopy = address;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__0;
   v19 = __Block_byref_object_dispose__0;
-  v20 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   signers = self->_signers;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__MSCMSSignedData_removeSignersWithEmailAddress_error___block_invoke;
   v12 = &unk_2798BE298;
-  v8 = v6;
+  v8 = addressCopy;
   v13 = v8;
   v14 = &v15;
   [(NSArray *)signers enumerateObjectsUsingBlock:&v9];
-  [(MSCMSSignedData *)self removeSignersWithIndexes:v16[5] error:a4, v9, v10, v11, v12];
+  [(MSCMSSignedData *)self removeSignersWithIndexes:v16[5] error:error, v9, v10, v11, v12];
 
   _Block_object_dispose(&v15, 8);
 }
@@ -808,28 +808,28 @@ uint64_t __55__MSCMSSignedData_removeSignersWithEmailAddress_error___block_invok
   return result;
 }
 
-- (__SecCertificate)getSignerCertificate:(unint64_t)a3 error:(id *)a4
+- (__SecCertificate)getSignerCertificate:(unint64_t)certificate error:(id *)error
 {
-  if ([(NSArray *)self->_signers count]- 1 >= a3)
+  if ([(NSArray *)self->_signers count]- 1 >= certificate)
   {
-    v8 = [(NSArray *)self->_signers objectAtIndex:a3];
-    v9 = [v8 signerCertificate];
+    v8 = [(NSArray *)self->_signers objectAtIndex:certificate];
+    signerCertificate = [v8 signerCertificate];
 
-    return v9;
+    return signerCertificate;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-50 underlyingError:*a4 description:@"signer index, %lu, out of range of signer count, %lu", a3, [(NSArray *)self->_signers count]];
+      *error = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-50 underlyingError:*error description:@"signer index, %lu, out of range of signer count, %lu", certificate, [(NSArray *)self->_signers count]];
     }
 
     return 0;
   }
 }
 
-- (BOOL)verifySignatures:(id *)a3
+- (BOOL)verifySignatures:(id *)signatures
 {
   v19 = 0;
   v20 = &v19;
@@ -840,10 +840,10 @@ uint64_t __55__MSCMSSignedData_removeSignersWithEmailAddress_error___block_invok
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
-  if (a3)
+  if (signatures)
   {
-    v5 = *a3;
-    if (*a3)
+    v5 = *signatures;
+    if (*signatures)
     {
       v5 = [v5 copy];
     }
@@ -869,14 +869,14 @@ uint64_t __55__MSCMSSignedData_removeSignersWithEmailAddress_error___block_invok
   v11[3] = &unk_2798BE2E8;
   v11[4] = &v13;
   v11[5] = &v19;
-  v11[6] = a3;
+  v11[6] = signatures;
   [(NSArray *)v7 enumerateObjectsUsingBlock:v11];
-  if (a3)
+  if (signatures)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a3 = v8;
+      *signatures = v8;
     }
   }
 
@@ -974,11 +974,11 @@ void __36__MSCMSSignedData_verifySignatures___block_invoke_3(void *a1, void *a2,
   }
 }
 
-- (BOOL)verifySignaturesAndSignersWithPolicies:(id)a3 verifyTime:(id)a4 anchorCertificates:(id)a5 error:(id *)a6
+- (BOOL)verifySignaturesAndSignersWithPolicies:(id)policies verifyTime:(id)time anchorCertificates:(id)certificates error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  policiesCopy = policies;
+  timeCopy = time;
+  certificatesCopy = certificates;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -988,10 +988,10 @@ void __36__MSCMSSignedData_verifySignatures___block_invoke_3(void *a1, void *a2,
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__0;
   v32 = __Block_byref_object_dispose__0;
-  if (a6)
+  if (error)
   {
-    v13 = *a6;
-    if (*a6)
+    v13 = *error;
+    if (*error)
     {
       v13 = [v13 copy];
     }
@@ -1008,22 +1008,22 @@ void __36__MSCMSSignedData_verifySignatures___block_invoke_3(void *a1, void *a2,
   v21[1] = 3221225472;
   v21[2] = __94__MSCMSSignedData_verifySignaturesAndSignersWithPolicies_verifyTime_anchorCertificates_error___block_invoke;
   v21[3] = &unk_2798BE310;
-  v15 = v10;
+  v15 = policiesCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = timeCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = certificatesCopy;
   v24 = v17;
   v25 = &v28;
   v26 = &v34;
-  v27 = a6;
+  errorCopy = error;
   [(NSArray *)signers enumerateObjectsUsingBlock:v21];
-  if (a6)
+  if (error)
   {
     v18 = v29[5];
     if (v18)
     {
-      *a6 = v18;
+      *error = v18;
     }
   }
 
@@ -1075,34 +1075,34 @@ void __94__MSCMSSignedData_verifySignaturesAndSignersWithPolicies_verifyTime_anc
   }
 }
 
-- (BOOL)verifySignaturesAndSignersWithPolicies:(id)a3 verifyTime:(id)a4 error:(id *)a5
+- (BOOL)verifySignaturesAndSignersWithPolicies:(id)policies verifyTime:(id)time error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  policiesCopy = policies;
+  timeCopy = time;
+  v10 = timeCopy;
+  if (timeCopy)
   {
-    v11 = v9;
+    verifyTime = timeCopy;
   }
 
   else
   {
-    v12 = [(MSCMSSignedData *)self options];
-    v11 = [v12 verifyTime];
+    options = [(MSCMSSignedData *)self options];
+    verifyTime = [options verifyTime];
   }
 
-  v13 = [(MSCMSSignedData *)self options];
-  v14 = [v13 anchorCertificates];
-  v15 = [(MSCMSSignedData *)self verifySignaturesAndSignersWithPolicies:v8 verifyTime:v11 anchorCertificates:v14 error:a5];
+  options2 = [(MSCMSSignedData *)self options];
+  anchorCertificates = [options2 anchorCertificates];
+  v15 = [(MSCMSSignedData *)self verifySignaturesAndSignersWithPolicies:policiesCopy verifyTime:verifyTime anchorCertificates:anchorCertificates error:error];
 
   return v15;
 }
 
-- (BOOL)checkSignedPerRFC5652:(id *)a3
+- (BOOL)checkSignedPerRFC5652:(id *)c5652
 {
-  if (a3 && *a3)
+  if (c5652 && *c5652)
   {
-    v5 = [*a3 copy];
+    v5 = [*c5652 copy];
   }
 
   else
@@ -1115,7 +1115,7 @@ void __94__MSCMSSignedData_verifySignaturesAndSignersWithPolicies_verifyTime_anc
     [MSCMSSignedData checkSignedPerRFC5652:];
     v7 = 0;
     v5 = v10;
-    if (!a3)
+    if (!c5652)
     {
       goto LABEL_14;
     }
@@ -1129,13 +1129,13 @@ void __94__MSCMSSignedData_verifySignaturesAndSignersWithPolicies_verifyTime_anc
   }
 
   v7 = 1;
-  if (a3)
+  if (c5652)
   {
 LABEL_12:
     if (v5)
     {
       v8 = v5;
-      *a3 = v5;
+      *c5652 = v5;
     }
   }
 
@@ -1176,50 +1176,50 @@ uint64_t __41__MSCMSSignedData_checkSignedPerRFC5652___block_invoke_2()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addDigestAlgorithmFromSigner:(id)a3
+- (void)addDigestAlgorithmFromSigner:(id)signer
 {
-  v4 = [a3 digestAlgorithm];
-  if (v4)
+  digestAlgorithm = [signer digestAlgorithm];
+  if (digestAlgorithm)
   {
     v5 = MEMORY[0x277CBEB58];
-    v8 = v4;
-    v6 = [(MSCMSSignedData *)self digestAlgorithms];
-    v7 = [v5 setWithSet:v6];
+    v8 = digestAlgorithm;
+    digestAlgorithms = [(MSCMSSignedData *)self digestAlgorithms];
+    v7 = [v5 setWithSet:digestAlgorithms];
 
     [v7 addObject:v8];
     [(MSCMSSignedData *)self setDigestAlgorithms:v7];
 
-    v4 = v8;
+    digestAlgorithm = v8;
   }
 }
 
-- (id)calculateContentDigestWithAlgorithm:(id)a3 error:(id *)a4
+- (id)calculateContentDigestWithAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 ccdigest];
-  if (v7)
+  algorithmCopy = algorithm;
+  ccdigest = [algorithmCopy ccdigest];
+  if (ccdigest)
   {
-    a4 = [MEMORY[0x277CBEB28] dataWithLength:*v7];
+    error = [MEMORY[0x277CBEB28] dataWithLength:*ccdigest];
     [(NSData *)self->_dataContent length];
     [(NSData *)self->_dataContent bytes];
-    [a4 mutableBytes];
+    [error mutableBytes];
     ccdigest();
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MSErrorCryptoDomain[0];
-    v9 = *a4;
-    v10 = [v6 OIDString];
-    *a4 = [MSError MSErrorWithDomain:v8 code:-4 underlyingError:v9 description:@"%@ is not a supported digest algorithm", v10];
+    v9 = *error;
+    oIDString = [algorithmCopy OIDString];
+    *error = [MSError MSErrorWithDomain:v8 code:-4 underlyingError:v9 description:@"%@ is not a supported digest algorithm", oIDString];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (id)encodeMessageSecurityObject:(id *)a3
+- (id)encodeMessageSecurityObject:(id *)object
 {
   v98[1] = *MEMORY[0x277D85DE8];
   v91 = 0;
@@ -1227,11 +1227,11 @@ uint64_t __41__MSCMSSignedData_checkSignedPerRFC5652___block_invoke_2()
   v93 = 0x3032000000;
   v94 = __Block_byref_object_copy__0;
   v95 = __Block_byref_object_dispose__0;
-  v70 = a3;
-  if (a3)
+  objectCopy = object;
+  if (object)
   {
-    v4 = *a3;
-    if (*a3)
+    v4 = *object;
+    if (*object)
     {
       v4 = [v4 copy];
     }
@@ -1249,7 +1249,7 @@ uint64_t __41__MSCMSSignedData_checkSignedPerRFC5652___block_invoke_2()
   v88 = 0u;
   v86 = 0u;
   v84 = 0;
-  v85 = 0;
+  bytes = 0;
   v82 = 0;
   v83 = 0;
   v78 = 0;
@@ -1298,9 +1298,9 @@ LABEL_76:
 
   if ([(NSArray *)self->_signers count]|| self->_dataContent || self->_embeddedContent)
   {
-    v50 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-50 underlyingError:v92[5] description:@"Unable to encode signedData: missing digest algorithm and not certs-only message", v70];
+    objectCopy = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-50 underlyingError:v92[5] description:@"Unable to encode signedData: missing digest algorithm and not certs-only message", objectCopy];
     v51 = v92[5];
-    v92[5] = v50;
+    v92[5] = objectCopy;
 
     goto LABEL_76;
   }
@@ -1327,7 +1327,7 @@ LABEL_13:
     goto LABEL_77;
   }
 
-  v10 = [(MSOID *)contentType Asn1OID];
+  asn1OID = [(MSOID *)contentType Asn1OID];
   v12 = v11;
   if (self->_detached)
   {
@@ -1381,7 +1381,7 @@ LABEL_13:
       dataContent = self->_dataContent;
     }
 
-    v85 = [(NSData *)dataContent bytes];
+    bytes = [(NSData *)dataContent bytes];
     v84 = [(NSData *)self->_dataContent length];
     v13 = &v84;
   }
@@ -1395,13 +1395,13 @@ LABEL_13:
       v22 = malloc_type_malloc(24 * [(NSMutableSet *)self->_certificates count], 0x10800404ACF7207uLL);
       if (v22)
       {
-        v23 = [(NSMutableSet *)self->_certificates allObjects];
+        allObjects = [(NSMutableSet *)self->_certificates allObjects];
         v74[0] = MEMORY[0x277D85DD0];
         v74[1] = 3221225472;
         v74[2] = __47__MSCMSSignedData_encodeMessageSecurityObject___block_invoke_2;
         v74[3] = &__block_descriptor_40_e15_v32__0_8Q16_B24l;
         v74[4] = v22;
-        [v23 enumerateObjectsUsingBlock:v74];
+        [allObjects enumerateObjectsUsingBlock:v74];
 
         LODWORD(certificates) = [(NSMutableSet *)self->_certificates count];
         goto LABEL_33;
@@ -1472,7 +1472,7 @@ LABEL_41:
 
       *(&v86 + 1) = v6;
       *&v87 = v7;
-      *(&v87 + 1) = v10;
+      *(&v87 + 1) = asn1OID;
       *&v88 = v12;
       *(&v88 + 1) = v13;
       *&v89 = &v82;
@@ -1566,12 +1566,12 @@ LABEL_55:
 LABEL_79:
   v35 = 0;
 LABEL_56:
-  if (v70)
+  if (objectCopy)
   {
     v43 = v92[5];
     if (v43)
     {
-      *v70 = v43;
+      *objectCopy = v43;
     }
   }
 
@@ -1590,8 +1590,8 @@ LABEL_56:
     v44 = 0;
     for (i = v24; ; i += 104)
     {
-      v46 = [(MSCMSSignedData *)self signers];
-      v47 = v44 < [v46 count];
+      signers = [(MSCMSSignedData *)self signers];
+      v47 = v44 < [signers count];
 
       if (!v47)
       {
@@ -1705,15 +1705,15 @@ BOOL __47__MSCMSSignedData_encodeMessageSecurityObject___block_invoke_6(uint64_t
   return v3;
 }
 
-+ (id)decodeMessageSecurityObject:(id)a3 options:(id)a4 error:(id *)a5
++ (id)decodeMessageSecurityObject:(id)object options:(id)options error:(id *)error
 {
   v87 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v68 = a4;
-  v63 = a5;
-  if (a5 && *a5)
+  objectCopy = object;
+  optionsCopy = options;
+  errorCopy = error;
+  if (error && *error)
   {
-    v8 = [*a5 copy];
+    v8 = [*error copy];
   }
 
   else
@@ -1727,14 +1727,14 @@ BOOL __47__MSCMSSignedData_encodeMessageSecurityObject___block_invoke_6(uint64_t
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v65 = v7;
-  v10 = nsheim_decode_CMSSignedData(v7);
+  v65 = objectCopy;
+  v10 = nsheim_decode_CMSSignedData(objectCopy);
   if (v10)
   {
     v11 = MSErrorASN1Domain[0];
-    if (v7)
+    if (objectCopy)
     {
-      v12 = [v7 length];
+      v12 = [objectCopy length];
     }
 
     else
@@ -1744,7 +1744,7 @@ BOOL __47__MSCMSSignedData_encodeMessageSecurityObject___block_invoke_6(uint64_t
 
     v19 = [MSError MSErrorWithDomain:v11 code:v10 underlyingError:v8 description:@"unable to decode signedData (%ld bytes)", v12];
 
-    dumpNSData("CMSSignedData", v7);
+    dumpNSData("CMSSignedData", objectCopy);
     v20 = 0;
     v66 = 0;
     v67 = 0;
@@ -1825,9 +1825,9 @@ LABEL_78:
 
   else
   {
-    v28 = [(MSCMSSignedData *)v9 dataContent];
+    dataContent = [(MSCMSSignedData *)v9 dataContent];
     v74 = v25;
-    v62 = decodeEmbeddedCMSContent(v64, v28, v68, &v74);
+    v62 = decodeEmbeddedCMSContent(v64, dataContent, optionsCopy, &v74);
     v29 = v74;
 
     if (v62)
@@ -1935,12 +1935,12 @@ LABEL_46:
   }
 
 LABEL_54:
-  v43 = [v68 additionalCertificates];
+  additionalCertificates = [optionsCopy additionalCertificates];
 
-  if (v43)
+  if (additionalCertificates)
   {
-    v44 = [v68 additionalCertificates];
-    [v20 addObjectsFromArray:v44];
+    additionalCertificates2 = [optionsCopy additionalCertificates];
+    [v20 addObjectsFromArray:additionalCertificates2];
   }
 
   [(MSCMSSignedData *)v9 setCertificates:v20];
@@ -1952,10 +1952,10 @@ LABEL_54:
     do
     {
       v47 = *(&v81 + 1);
-      v48 = [v20 allObjects];
-      v49 = [v68 LAContext];
+      allObjects = [v20 allObjects];
+      lAContext = [optionsCopy LAContext];
       v73 = v25;
-      v50 = [MSCMSSignerInfo decodeSignerInfo:v47 + v45 certificates:v48 LAContext:v49 error:&v73];
+      v50 = [MSCMSSignerInfo decodeSignerInfo:v47 + v45 certificates:allObjects LAContext:lAContext error:&v73];
       v51 = v73;
 
       if (v50)
@@ -1989,14 +1989,14 @@ LABEL_54:
     goto LABEL_78;
   }
 
-  [(MSCMSSignedData *)v9 setOptions:v68];
-  if ([v68 verifySigners])
+  [(MSCMSSignedData *)v9 setOptions:optionsCopy];
+  if ([optionsCopy verifySigners])
   {
-    v54 = [v68 signerPolicies];
-    v55 = [v68 verifyTime];
-    v56 = [v68 anchorCertificates];
+    signerPolicies = [optionsCopy signerPolicies];
+    verifyTime = [optionsCopy verifyTime];
+    anchorCertificates = [optionsCopy anchorCertificates];
     v71 = v53;
-    v57 = [(MSCMSSignedData *)v9 verifySignaturesAndSignersWithPolicies:v54 verifyTime:v55 anchorCertificates:v56 error:&v71];
+    v57 = [(MSCMSSignedData *)v9 verifySignaturesAndSignersWithPolicies:signerPolicies verifyTime:verifyTime anchorCertificates:anchorCertificates error:&v71];
     v19 = v71;
 
     if (!v57)
@@ -2008,7 +2008,7 @@ LABEL_54:
     }
   }
 
-  else if (([v68 verifySignatures] & 1) != 0 || objc_msgSend(v68, "verifyTimestamps"))
+  else if (([optionsCopy verifySignatures] & 1) != 0 || objc_msgSend(optionsCopy, "verifyTimestamps"))
   {
     v70 = v53;
     v59 = [(MSCMSSignedData *)v9 verifySignatures:&v70];
@@ -2022,7 +2022,7 @@ LABEL_54:
       v19 = v60;
     }
 
-    if ([v68 verifyTimestamps])
+    if ([optionsCopy verifyTimestamps])
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -2054,10 +2054,10 @@ LABEL_54:
   }
 
 LABEL_16:
-  if (v63 && v19)
+  if (errorCopy && v19)
   {
     v21 = v19;
-    *v63 = v19;
+    *errorCopy = v19;
   }
 
   free_CMSSignedData();
@@ -2101,11 +2101,11 @@ void __61__MSCMSSignedData_decodeMessageSecurityObject_options_error___block_inv
   }
 }
 
-- (void)removeSignersWithIdentity:(__SecIdentity *)a3 error:(id *)a4
+- (void)removeSignersWithIdentity:(__SecIdentity *)identity error:(id *)error
 {
-  if (a4 && *a4)
+  if (error && *error)
   {
-    v7 = [*a4 copy];
+    v7 = [*error copy];
   }
 
   else
@@ -2114,7 +2114,7 @@ void __61__MSCMSSignedData_decodeMessageSecurityObject_options_error___block_inv
   }
 
   v13 = v7;
-  v8 = MSSecIdentityCopyCertificateWithError(a3, &v13);
+  v8 = MSSecIdentityCopyCertificateWithError(identity, &v13);
   v9 = v13;
 
   if (v8)
@@ -2126,10 +2126,10 @@ void __61__MSCMSSignedData_decodeMessageSecurityObject_options_error___block_inv
     v9 = v10;
   }
 
-  if (a4 && v9)
+  if (error && v9)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   if (v8)

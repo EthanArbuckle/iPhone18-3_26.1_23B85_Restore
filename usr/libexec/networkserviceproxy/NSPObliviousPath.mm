@@ -1,55 +1,55 @@
 @interface NSPObliviousPath
 - (BOOL)allowFallback;
-- (BOOL)matchIngress:(id)a3;
+- (BOOL)matchIngress:(id)ingress;
 - (BOOL)pathReady;
 - (BOOL)shouldBePenalized;
-- (BOOL)validateTransparencyIfNecessaryWithCompletion:(id)a3;
-- (NSPObliviousPath)initWithCoder:(id)a3;
-- (NSPObliviousPath)initWithDelegate:(id)a3 obliviousConfig:(id)a4 obliviousHTTPType:(int)a5 transparencyKeyBundle:(id)a6 transparencyProof:(id)a7 obliviousTarget:(id)a8 proxyInfo:(id)a9 allowFailOpen:(BOOL)a10 networkCharacteristics:(id)a11;
+- (BOOL)validateTransparencyIfNecessaryWithCompletion:(id)completion;
+- (NSPObliviousPath)initWithCoder:(id)coder;
+- (NSPObliviousPath)initWithDelegate:(id)delegate obliviousConfig:(id)config obliviousHTTPType:(int)type transparencyKeyBundle:(id)bundle transparencyProof:(id)proof obliviousTarget:(id)target proxyInfo:(id)info allowFailOpen:(BOOL)self0 networkCharacteristics:(id)self1;
 - (NSPObliviousPathDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options;
 - (id)shortName;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleNetworkCharacteristicsChange:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleNetworkCharacteristicsChange:(id)change;
 - (void)removeProxyAgents;
 - (void)resetError;
 - (void)resetFallbackProxyAgent;
-- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)a3;
+- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)delegate;
 - (void)resetStats;
 @end
 
 @implementation NSPObliviousPath
 
-- (NSPObliviousPath)initWithDelegate:(id)a3 obliviousConfig:(id)a4 obliviousHTTPType:(int)a5 transparencyKeyBundle:(id)a6 transparencyProof:(id)a7 obliviousTarget:(id)a8 proxyInfo:(id)a9 allowFailOpen:(BOOL)a10 networkCharacteristics:(id)a11
+- (NSPObliviousPath)initWithDelegate:(id)delegate obliviousConfig:(id)config obliviousHTTPType:(int)type transparencyKeyBundle:(id)bundle transparencyProof:(id)proof obliviousTarget:(id)target proxyInfo:(id)info allowFailOpen:(BOOL)self0 networkCharacteristics:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
-  v31 = a9;
-  v19 = a11;
+  delegateCopy = delegate;
+  configCopy = config;
+  bundleCopy = bundle;
+  proofCopy = proof;
+  targetCopy = target;
+  infoCopy = info;
+  characteristicsCopy = characteristics;
   v36.receiver = self;
   v36.super_class = NSPObliviousPath;
   v20 = [(NSPObliviousPath *)&v36 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_delegate, v17);
-    objc_storeStrong(&v21->_obliviousConfig, a4);
-    v21->_obliviousHTTPType = a5;
-    objc_storeStrong(&v21->_obliviousTarget, a8);
-    objc_storeStrong(&v21->_transparencyKeyBundle, a6);
-    objc_storeStrong(&v21->_transparencyProof, a7);
-    objc_storeStrong(&v21->_proxyInfo, a9);
-    v21->_allowFailOpen = a10;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeStrong(&v21->_obliviousConfig, config);
+    v21->_obliviousHTTPType = type;
+    objc_storeStrong(&v21->_obliviousTarget, target);
+    objc_storeStrong(&v21->_transparencyKeyBundle, bundle);
+    objc_storeStrong(&v21->_transparencyProof, proof);
+    objc_storeStrong(&v21->_proxyInfo, info);
+    v21->_allowFailOpen = open;
     v22 = objc_alloc_init(NSPProxyAgentNetworkStatistics);
     statistics = v21->_statistics;
     v21->_statistics = v22;
 
-    sub_10000A4F0(v21->_statistics, v19);
+    sub_10000A4F0(v21->_statistics, characteristicsCopy);
     v21->_transparencyState = 0;
     v24 = +[NSUUID UUID];
     quicAgentUUID = v21->_quicAgentUUID;
@@ -78,78 +78,78 @@
   return v21;
 }
 
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options
 {
   v7 = [[NSMutableString alloc] initWithCapacity:0];
-  v8 = [(NSPObliviousPath *)self obliviousTarget];
-  sub_1000417D0(v7, v8, @"Oblivious target", a3, a4);
+  obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
+  sub_1000417D0(v7, obliviousTarget, @"Oblivious target", indent, options);
 
-  v9 = [(NSPObliviousPath *)self proxyInfo];
-  sub_1000417D0(v7, v9, @"Proxy", a3, a4);
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  sub_1000417D0(v7, proxyInfo, @"Proxy", indent, options);
 
-  v10 = [(NSPObliviousPath *)self quicAgentUUID];
-  sub_1000417D0(v7, v10, @"QUIC Agent UUID", a3, a4);
+  quicAgentUUID = [(NSPObliviousPath *)self quicAgentUUID];
+  sub_1000417D0(v7, quicAgentUUID, @"QUIC Agent UUID", indent, options);
 
-  v11 = [(NSPObliviousPath *)self fallbackAgentUUID];
-  sub_1000417D0(v7, v11, @"Fallback Agent UUID", a3, a4);
+  fallbackAgentUUID = [(NSPObliviousPath *)self fallbackAgentUUID];
+  sub_1000417D0(v7, fallbackAgentUUID, @"Fallback Agent UUID", indent, options);
 
-  sub_100042020(v7, [(NSPObliviousPath *)self allowFailOpen], @"Allow fail open", a3, a4);
-  sub_10004208C(v7, [(NSPObliviousPath *)self transparencyState], @"Transparency state", a3, a4);
-  v12 = [(NSPObliviousPath *)self obliviousHTTPType];
-  if (v12 >= 3)
+  sub_100042020(v7, [(NSPObliviousPath *)self allowFailOpen], @"Allow fail open", indent, options);
+  sub_10004208C(v7, [(NSPObliviousPath *)self transparencyState], @"Transparency state", indent, options);
+  obliviousHTTPType = [(NSPObliviousPath *)self obliviousHTTPType];
+  if (obliviousHTTPType >= 3)
   {
-    v13 = [NSString stringWithFormat:@"(unknown: %i)", v12];
+    v13 = [NSString stringWithFormat:@"(unknown: %i)", obliviousHTTPType];
   }
 
   else
   {
-    v13 = *(&off_100109A40 + v12);
+    v13 = *(&off_100109A40 + obliviousHTTPType);
   }
 
-  sub_1000417D0(v7, v13, @"Oblivious HTTP type", a3, a4);
+  sub_1000417D0(v7, v13, @"Oblivious HTTP type", indent, options);
 
   return v7;
 }
 
-- (NSPObliviousPath)initWithCoder:(id)a3
+- (NSPObliviousPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = NSPObliviousPath;
   v5 = [(NSPObliviousPath *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathProxy"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathProxy"];
     proxyInfo = v5->_proxyInfo;
     v5->_proxyInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathQUICAgentUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathQUICAgentUUID"];
     quicAgentUUID = v5->_quicAgentUUID;
     v5->_quicAgentUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathFallbackAgentUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathFallbackAgentUUID"];
     fallbackAgentUUID = v5->_fallbackAgentUUID;
     v5->_fallbackAgentUUID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathConfig"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathConfig"];
     obliviousConfig = v5->_obliviousConfig;
     v5->_obliviousConfig = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathTarget"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathTarget"];
     obliviousTarget = v5->_obliviousTarget;
     v5->_obliviousTarget = v14;
 
-    v5->_allowFailOpen = [v4 decodeBoolForKey:@"obliviousPathAllowFailOpen"];
-    v5->_obliviousHTTPType = [v4 decodeIntegerForKey:@"obliviousPathType"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathTransparencyKeyBundle"];
+    v5->_allowFailOpen = [coderCopy decodeBoolForKey:@"obliviousPathAllowFailOpen"];
+    v5->_obliviousHTTPType = [coderCopy decodeIntegerForKey:@"obliviousPathType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathTransparencyKeyBundle"];
     transparencyKeyBundle = v5->_transparencyKeyBundle;
     v5->_transparencyKeyBundle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathTransparencyProof"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obliviousPathTransparencyProof"];
     transparencyProof = v5->_transparencyProof;
     v5->_transparencyProof = v18;
 
-    v20 = [v4 decodeIntegerForKey:@"obliviousPathTransparencyState"];
+    v20 = [coderCopy decodeIntegerForKey:@"obliviousPathTransparencyState"];
     if (v20 == 1)
     {
       v21 = 0;
@@ -166,73 +166,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(NSPObliviousPath *)self proxyInfo];
-  [v11 encodeObject:v4 forKey:@"obliviousPathProxy"];
+  coderCopy = coder;
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  [coderCopy encodeObject:proxyInfo forKey:@"obliviousPathProxy"];
 
-  v5 = [(NSPObliviousPath *)self quicAgentUUID];
-  [v11 encodeObject:v5 forKey:@"obliviousPathQUICAgentUUID"];
+  quicAgentUUID = [(NSPObliviousPath *)self quicAgentUUID];
+  [coderCopy encodeObject:quicAgentUUID forKey:@"obliviousPathQUICAgentUUID"];
 
-  v6 = [(NSPObliviousPath *)self fallbackAgentUUID];
-  [v11 encodeObject:v6 forKey:@"obliviousPathFallbackAgentUUID"];
+  fallbackAgentUUID = [(NSPObliviousPath *)self fallbackAgentUUID];
+  [coderCopy encodeObject:fallbackAgentUUID forKey:@"obliviousPathFallbackAgentUUID"];
 
-  v7 = [(NSPObliviousPath *)self obliviousConfig];
-  [v11 encodeObject:v7 forKey:@"obliviousPathConfig"];
+  obliviousConfig = [(NSPObliviousPath *)self obliviousConfig];
+  [coderCopy encodeObject:obliviousConfig forKey:@"obliviousPathConfig"];
 
-  v8 = [(NSPObliviousPath *)self obliviousTarget];
-  [v11 encodeObject:v8 forKey:@"obliviousPathTarget"];
+  obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
+  [coderCopy encodeObject:obliviousTarget forKey:@"obliviousPathTarget"];
 
-  [v11 encodeBool:-[NSPObliviousPath allowFailOpen](self forKey:{"allowFailOpen"), @"obliviousPathAllowFailOpen"}];
-  [v11 encodeInteger:-[NSPObliviousPath obliviousHTTPType](self forKey:{"obliviousHTTPType"), @"obliviousPathType"}];
-  v9 = [(NSPObliviousPath *)self transparencyKeyBundle];
-  [v11 encodeObject:v9 forKey:@"obliviousPathTransparencyKeyBundle"];
+  [coderCopy encodeBool:-[NSPObliviousPath allowFailOpen](self forKey:{"allowFailOpen"), @"obliviousPathAllowFailOpen"}];
+  [coderCopy encodeInteger:-[NSPObliviousPath obliviousHTTPType](self forKey:{"obliviousHTTPType"), @"obliviousPathType"}];
+  transparencyKeyBundle = [(NSPObliviousPath *)self transparencyKeyBundle];
+  [coderCopy encodeObject:transparencyKeyBundle forKey:@"obliviousPathTransparencyKeyBundle"];
 
-  v10 = [(NSPObliviousPath *)self transparencyProof];
-  [v11 encodeObject:v10 forKey:@"obliviousPathTransparencyProof"];
+  transparencyProof = [(NSPObliviousPath *)self transparencyProof];
+  [coderCopy encodeObject:transparencyProof forKey:@"obliviousPathTransparencyProof"];
 
   if ([(NSPObliviousPath *)self transparencyState]!= 1)
   {
-    [v11 encodeInteger:-[NSPObliviousPath transparencyState](self forKey:{"transparencyState"), @"obliviousPathTransparencyState"}];
+    [coderCopy encodeInteger:-[NSPObliviousPath transparencyState](self forKey:{"transparencyState"), @"obliviousPathTransparencyState"}];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPObliviousPath allocWithZone:?]];
-  v5 = [(NSPObliviousPath *)self obliviousConfig];
-  [(NSPObliviousPath *)v4 setObliviousConfig:v5];
+  obliviousConfig = [(NSPObliviousPath *)self obliviousConfig];
+  [(NSPObliviousPath *)v4 setObliviousConfig:obliviousConfig];
 
-  v6 = [(NSPObliviousPath *)self obliviousTarget];
-  [(NSPObliviousPath *)v4 setObliviousTarget:v6];
+  obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
+  [(NSPObliviousPath *)v4 setObliviousTarget:obliviousTarget];
 
-  v7 = [(NSPObliviousPath *)self proxyInfo];
-  [(NSPObliviousPath *)v4 setProxyInfo:v7];
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  [(NSPObliviousPath *)v4 setProxyInfo:proxyInfo];
 
-  v8 = [(NSPObliviousPath *)self quicAgentUUID];
-  [(NSPObliviousPath *)v4 setQuicAgentUUID:v8];
+  quicAgentUUID = [(NSPObliviousPath *)self quicAgentUUID];
+  [(NSPObliviousPath *)v4 setQuicAgentUUID:quicAgentUUID];
 
-  v9 = [(NSPObliviousPath *)self fallbackAgentUUID];
-  [(NSPObliviousPath *)v4 setFallbackAgentUUID:v9];
+  fallbackAgentUUID = [(NSPObliviousPath *)self fallbackAgentUUID];
+  [(NSPObliviousPath *)v4 setFallbackAgentUUID:fallbackAgentUUID];
 
-  v10 = [(NSPObliviousPath *)self quicRegistration];
-  [(NSPObliviousPath *)v4 setQuicRegistration:v10];
+  quicRegistration = [(NSPObliviousPath *)self quicRegistration];
+  [(NSPObliviousPath *)v4 setQuicRegistration:quicRegistration];
 
-  v11 = [(NSPObliviousPath *)self fallbackRegistration];
-  [(NSPObliviousPath *)v4 setFallbackRegistration:v11];
+  fallbackRegistration = [(NSPObliviousPath *)self fallbackRegistration];
+  [(NSPObliviousPath *)v4 setFallbackRegistration:fallbackRegistration];
 
   [(NSPObliviousPath *)v4 setObliviousAgentRegistered:[(NSPObliviousPath *)self obliviousAgentRegistered]];
   [(NSPObliviousPath *)v4 setAllowFailOpen:[(NSPObliviousPath *)self allowFailOpen]];
   [(NSPObliviousPath *)v4 setObliviousHTTPType:[(NSPObliviousPath *)self obliviousHTTPType]];
-  v12 = [(NSPObliviousPath *)self statistics];
-  [(NSPObliviousPath *)v4 setStatistics:v12];
+  statistics = [(NSPObliviousPath *)self statistics];
+  [(NSPObliviousPath *)v4 setStatistics:statistics];
 
-  v13 = [(NSPObliviousPath *)self transparencyKeyBundle];
-  [(NSPObliviousPath *)v4 setTransparencyKeyBundle:v13];
+  transparencyKeyBundle = [(NSPObliviousPath *)self transparencyKeyBundle];
+  [(NSPObliviousPath *)v4 setTransparencyKeyBundle:transparencyKeyBundle];
 
-  v14 = [(NSPObliviousPath *)self transparencyProof];
-  [(NSPObliviousPath *)v4 setTransparencyProof:v14];
+  transparencyProof = [(NSPObliviousPath *)self transparencyProof];
+  [(NSPObliviousPath *)v4 setTransparencyProof:transparencyProof];
 
   [(NSPObliviousPath *)v4 setTransparencyState:[(NSPObliviousPath *)self transparencyState]];
   return v4;
@@ -240,26 +240,26 @@
 
 - (id)shortName
 {
-  v2 = [(NSPObliviousPath *)self obliviousTarget];
-  v3 = [v2 targetHost];
+  obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
+  targetHost = [obliviousTarget targetHost];
 
-  return v3;
+  return targetHost;
 }
 
-- (BOOL)matchIngress:(id)a3
+- (BOOL)matchIngress:(id)ingress
 {
-  v4 = a3;
-  if (v4)
+  ingressCopy = ingress;
+  if (ingressCopy)
   {
-    v5 = [(NSPObliviousPath *)self proxyInfo];
+    proxyInfo = [(NSPObliviousPath *)self proxyInfo];
 
-    if (v5)
+    if (proxyInfo)
     {
-      v6 = [(NSPObliviousPath *)self proxyInfo];
-      v7 = v6;
-      if (v6)
+      proxyInfo2 = [(NSPObliviousPath *)self proxyInfo];
+      v7 = proxyInfo2;
+      if (proxyInfo2)
       {
-        v8 = *(v6 + 24);
+        v8 = *(proxyInfo2 + 24);
       }
 
       else
@@ -268,9 +268,9 @@
       }
 
       v9 = v8;
-      v10 = [v9 proxyURL];
-      v11 = [v4[3] proxyURL];
-      LOBYTE(v5) = [v10 isEqualToString:v11];
+      proxyURL = [v9 proxyURL];
+      proxyURL2 = [ingressCopy[3] proxyURL];
+      LOBYTE(proxyInfo) = [proxyURL isEqualToString:proxyURL2];
     }
   }
 
@@ -284,115 +284,115 @@
       _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "%s called with null proxyTokenInfo", &v14, 0xCu);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(proxyInfo) = 0;
   }
 
-  return v5;
+  return proxyInfo;
 }
 
-- (void)handleNetworkCharacteristicsChange:(id)a3
+- (void)handleNetworkCharacteristicsChange:(id)change
 {
-  v4 = a3;
-  v5 = [(NSPObliviousPath *)self statistics];
-  sub_10000A4F0(v5, v4);
+  changeCopy = change;
+  statistics = [(NSPObliviousPath *)self statistics];
+  sub_10000A4F0(statistics, changeCopy);
 
-  v6 = [(NSPObliviousPath *)self statistics];
-  if (v6)
+  statistics2 = [(NSPObliviousPath *)self statistics];
+  if (statistics2)
   {
-    v6[6] = 0u;
-    v6[7] = 0u;
-    v6[4] = 0u;
-    v6[5] = 0u;
-    v6[2] = 0u;
-    v6[3] = 0u;
-    v6[1] = 0u;
+    statistics2[6] = 0u;
+    statistics2[7] = 0u;
+    statistics2[4] = 0u;
+    statistics2[5] = 0u;
+    statistics2[2] = 0u;
+    statistics2[3] = 0u;
+    statistics2[1] = 0u;
   }
 }
 
 - (void)resetStats
 {
-  v2 = [(NSPObliviousPath *)self statistics];
-  if (v2)
+  statistics = [(NSPObliviousPath *)self statistics];
+  if (statistics)
   {
-    v2[6] = 0u;
-    v2[7] = 0u;
-    v2[4] = 0u;
-    v2[5] = 0u;
-    v2[2] = 0u;
-    v2[3] = 0u;
-    v2[1] = 0u;
+    statistics[6] = 0u;
+    statistics[7] = 0u;
+    statistics[4] = 0u;
+    statistics[5] = 0u;
+    statistics[2] = 0u;
+    statistics[3] = 0u;
+    statistics[1] = 0u;
   }
 }
 
 - (void)resetError
 {
-  v3 = [(NSPObliviousPath *)self quicRegistration];
-  v4 = v3;
-  if (v3)
+  quicRegistration = [(NSPObliviousPath *)self quicRegistration];
+  v4 = quicRegistration;
+  if (quicRegistration)
   {
-    [*(v3 + 24) resetError];
+    [*(quicRegistration + 24) resetError];
   }
 
-  v5 = [(NSPObliviousPath *)self fallbackRegistration];
-  if (v5)
+  fallbackRegistration = [(NSPObliviousPath *)self fallbackRegistration];
+  if (fallbackRegistration)
   {
-    v6 = v5;
-    [v5[3] resetError];
-    v5 = v6;
+    v6 = fallbackRegistration;
+    [fallbackRegistration[3] resetError];
+    fallbackRegistration = v6;
   }
 }
 
 - (BOOL)shouldBePenalized
 {
-  v3 = [(NSPObliviousPath *)self statistics];
-  v4 = v3;
-  if (v3 && *(v3 + 80) > 2uLL)
+  statistics = [(NSPObliviousPath *)self statistics];
+  v4 = statistics;
+  if (statistics && *(statistics + 80) > 2uLL)
   {
     v7 = 1;
   }
 
   else
   {
-    v5 = [(NSPObliviousPath *)self statistics];
-    v6 = v5;
-    if (v5 && *(v5 + 72) > 2uLL)
+    statistics2 = [(NSPObliviousPath *)self statistics];
+    v6 = statistics2;
+    if (statistics2 && *(statistics2 + 72) > 2uLL)
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(NSPObliviousPath *)self statistics];
-      v9 = v8;
-      if (v8 && *(v8 + 24) > 9uLL)
+      statistics3 = [(NSPObliviousPath *)self statistics];
+      v9 = statistics3;
+      if (statistics3 && *(statistics3 + 24) > 9uLL)
       {
         v7 = 1;
       }
 
       else
       {
-        v10 = [(NSPObliviousPath *)self statistics];
-        v11 = v10;
-        if (v10 && *(v10 + 64) > 2uLL)
+        statistics4 = [(NSPObliviousPath *)self statistics];
+        v11 = statistics4;
+        if (statistics4 && *(statistics4 + 64) > 2uLL)
         {
           v7 = 1;
         }
 
         else
         {
-          v12 = [(NSPObliviousPath *)self statistics];
-          v13 = v12;
-          if (v12 && *(v12 + 56) > 9uLL)
+          statistics5 = [(NSPObliviousPath *)self statistics];
+          v13 = statistics5;
+          if (statistics5 && *(statistics5 + 56) > 9uLL)
           {
             v7 = 1;
           }
 
           else
           {
-            v14 = [(NSPObliviousPath *)self statistics];
-            if (v14)
+            statistics6 = [(NSPObliviousPath *)self statistics];
+            if (statistics6)
             {
-              v7 = v14[4] > 2uLL;
+              v7 = statistics6[4] > 2uLL;
             }
 
             else
@@ -408,22 +408,22 @@
   return v7;
 }
 
-- (BOOL)validateTransparencyIfNecessaryWithCompletion:(id)a3
+- (BOOL)validateTransparencyIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NSPObliviousPath *)self transparencyKeyBundle];
+  completionCopy = completion;
+  transparencyKeyBundle = [(NSPObliviousPath *)self transparencyKeyBundle];
 
-  if (v5)
+  if (transparencyKeyBundle)
   {
     v6 = [NSPPrivacyProxyTransparencyOHTTPEntry alloc];
-    v7 = [(NSPObliviousPath *)self transparencyKeyBundle];
-    v8 = [v6 initWithData:v7];
+    transparencyKeyBundle2 = [(NSPObliviousPath *)self transparencyKeyBundle];
+    v8 = [v6 initWithData:transparencyKeyBundle2];
 
     if (v8)
     {
-      v9 = [v8 keyConfiguration];
-      v10 = [(NSPObliviousPath *)self obliviousConfig];
-      v11 = [v9 isEqualToData:v10];
+      keyConfiguration = [v8 keyConfiguration];
+      obliviousConfig = [(NSPObliviousPath *)self obliviousConfig];
+      v11 = [keyConfiguration isEqualToData:obliviousConfig];
 
       if (v11)
       {
@@ -431,13 +431,13 @@
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v12 = [v8 targetInformations];
-        v13 = [v12 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        targetInformations = [v8 targetInformations];
+        v13 = [targetInformations countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v13)
         {
           v14 = v13;
           v34 = v8;
-          v35 = v4;
+          v35 = completionCopy;
           v15 = 0;
           v16 = *v39;
           do
@@ -446,30 +446,30 @@
             {
               if (*v39 != v16)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(targetInformations);
               }
 
-              v18 = [*(*(&v38 + 1) + 8 * i) targetHost];
-              v19 = [(NSPObliviousPath *)self obliviousTarget];
-              v20 = [v19 targetHost];
-              v21 = [v18 isEqualToString:v20];
+              targetHost = [*(*(&v38 + 1) + 8 * i) targetHost];
+              obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
+              targetHost2 = [obliviousTarget targetHost];
+              v21 = [targetHost isEqualToString:targetHost2];
 
               v15 |= v21;
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v14 = [targetInformations countByEnumeratingWithState:&v38 objects:v46 count:16];
           }
 
           while (v14);
 
           v8 = v34;
-          v4 = v35;
+          completionCopy = v35;
           if (v15)
           {
             v22 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v34 configurationDeliveryStart]);
             v23 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v34 configurationDeliveryEnd]);
-            v24 = [(NSPObliviousPath *)self delegate];
-            v25 = [v24 configurationFetchDateIsWithinStart:v22 end:v23];
+            delegate = [(NSPObliviousPath *)self delegate];
+            v25 = [delegate configurationFetchDateIsWithinStart:v22 end:v23];
 
             if (v25)
             {
@@ -477,14 +477,14 @@
               v27 = v26 == 0;
               if (v26)
               {
-                v28 = [(NSPObliviousPath *)self transparencyProof];
-                v29 = [(NSPObliviousPath *)self transparencyKeyBundle];
+                transparencyProof = [(NSPObliviousPath *)self transparencyProof];
+                transparencyKeyBundle3 = [(NSPObliviousPath *)self transparencyKeyBundle];
                 v36[0] = _NSConcreteStackBlock;
                 v36[1] = 3221225472;
                 v36[2] = sub_10000BA88;
                 v36[3] = &unk_100109600;
                 v37 = v35;
-                [v26 verifyExpiringProofs:v28 for:v29 completion:v36];
+                [v26 verifyExpiringProofs:transparencyProof for:transparencyKeyBundle3 completion:v36];
               }
 
               else
@@ -527,7 +527,7 @@
 
 LABEL_24:
 
-        (*(v4 + 2))(v4, 3);
+        (*(completionCopy + 2))(completionCopy, 3);
         v27 = 1;
 LABEL_25:
 
@@ -562,7 +562,7 @@ LABEL_23:
   }
 
   v27 = 1;
-  (*(v4 + 2))(v4, 1);
+  (*(completionCopy + 2))(completionCopy, 1);
 LABEL_26:
 
   return v27;
@@ -570,31 +570,31 @@ LABEL_26:
 
 - (BOOL)pathReady
 {
-  v3 = [(NSPObliviousPath *)self proxyInfo];
-  if (sub_100004F70(v3))
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  if (sub_100004F70(proxyInfo))
   {
-    v4 = [(NSPObliviousPath *)self proxyInfo];
-    v5 = sub_1000071A0(v4);
-    v6 = [(NSPObliviousPath *)self proxyInfo];
-    v7 = sub_100006674(v6);
+    proxyInfo2 = [(NSPObliviousPath *)self proxyInfo];
+    v5 = sub_1000071A0(proxyInfo2);
+    proxyInfo3 = [(NSPObliviousPath *)self proxyInfo];
+    v7 = sub_100006674(proxyInfo3);
 
     if (v5 <= v7)
     {
       v8 = nplog_obj();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(NSPObliviousPath *)self shortName];
-        v10 = [(NSPObliviousPath *)self proxyInfo];
-        v11 = sub_1000071A0(v10);
-        v12 = [(NSPObliviousPath *)self proxyInfo];
+        shortName = [(NSPObliviousPath *)self shortName];
+        proxyInfo4 = [(NSPObliviousPath *)self proxyInfo];
+        v11 = sub_1000071A0(proxyInfo4);
+        proxyInfo5 = [(NSPObliviousPath *)self proxyInfo];
         *buf = 134218754;
         *&buf[4] = self;
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = shortName;
         *&buf[22] = 2048;
         v28 = v11;
         v29 = 2048;
-        v30 = sub_100006674(v12);
+        v30 = sub_100006674(proxyInfo5);
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%p oblivious path [%@] is not ready due to insufficient ingress proxy tokens (cache+agent: %lu), (ingress proxy low-water mark: %lu)", buf, 0x2Au);
       }
 
@@ -606,12 +606,12 @@ LABEL_26:
   {
   }
 
-  v13 = [(NSPObliviousPath *)self transparencyKeyBundle];
-  if (v13)
+  transparencyKeyBundle = [(NSPObliviousPath *)self transparencyKeyBundle];
+  if (transparencyKeyBundle)
   {
-    v14 = [(NSPObliviousPath *)self transparencyState];
+    transparencyState = [(NSPObliviousPath *)self transparencyState];
 
-    if (v14 != 2)
+    if (transparencyState != 2)
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -624,11 +624,11 @@ LABEL_26:
           v18 = nplog_obj();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v21 = [(NSPObliviousPath *)self shortName];
+            shortName2 = [(NSPObliviousPath *)self shortName];
             *v23 = 134218242;
-            v24 = self;
+            selfCopy3 = self;
             v25 = 2112;
-            v26 = v21;
+            v26 = shortName2;
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%p oblivious path [%@] is not ready due to invalid transparency status", v23, 0x16u);
           }
         }
@@ -644,11 +644,11 @@ LABEL_26:
           v18 = nplog_obj();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [(NSPObliviousPath *)self shortName];
+            shortName3 = [(NSPObliviousPath *)self shortName];
             *v23 = 134218242;
-            v24 = self;
+            selfCopy3 = self;
             v25 = 2112;
-            v26 = v19;
+            v26 = shortName3;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%p oblivious path [%@] is not ready due to pending transparency status", v23, 0x16u);
           }
         }
@@ -660,11 +660,11 @@ LABEL_26:
         v18 = nplog_obj();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v20 = [(NSPObliviousPath *)self shortName];
+          shortName4 = [(NSPObliviousPath *)self shortName];
           *v23 = 134218242;
-          v24 = self;
+          selfCopy3 = self;
           v25 = 2112;
-          v26 = v20;
+          v26 = shortName4;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%p oblivious path [%@] is not ready due to unknown transparency status", v23, 0x16u);
         }
       }
@@ -678,11 +678,11 @@ LABEL_9:
   v15 = nplog_obj();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(NSPObliviousPath *)self shortName];
+    shortName5 = [(NSPObliviousPath *)self shortName];
     *buf = 134218242;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = shortName5;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%p oblivious path [%@] is ready", buf, 0x16u);
   }
 
@@ -691,29 +691,29 @@ LABEL_9:
 
 - (BOOL)allowFallback
 {
-  v2 = [(NSPObliviousPath *)self proxyInfo];
-  v3 = v2;
-  if (v2)
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  v3 = proxyInfo;
+  if (proxyInfo)
   {
-    v2 = v2[3];
+    proxyInfo = proxyInfo[3];
   }
 
-  v4 = [v2 supportsFallback];
+  supportsFallback = [proxyInfo supportsFallback];
 
-  return v4;
+  return supportsFallback;
 }
 
-- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)a3
+- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)delegate
 {
-  v5 = [(NSPObliviousPath *)self proxyInfo];
-  if (!v5)
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  if (!proxyInfo)
   {
     return;
   }
 
-  v90 = v5;
-  v6 = [(NSPObliviousPath *)self obliviousConfig];
-  if (!v6)
+  v90 = proxyInfo;
+  obliviousConfig = [(NSPObliviousPath *)self obliviousConfig];
+  if (!obliviousConfig)
   {
     v23 = v90;
 LABEL_42:
@@ -721,70 +721,70 @@ LABEL_42:
     return;
   }
 
-  v7 = v6;
-  v8 = [(NSPObliviousPath *)self obliviousTarget];
+  v7 = obliviousConfig;
+  obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
 
-  if (!v8)
+  if (!obliviousTarget)
   {
     return;
   }
 
-  v9 = [(NSPObliviousPath *)self quicAgentUUID];
+  quicAgentUUID = [(NSPObliviousPath *)self quicAgentUUID];
 
-  if (!v9)
+  if (!quicAgentUUID)
   {
     v10 = +[NSUUID UUID];
     [(NSPObliviousPath *)self setQuicAgentUUID:v10];
   }
 
-  v11 = [(NSPObliviousPath *)self quicRegistration];
+  quicRegistration = [(NSPObliviousPath *)self quicRegistration];
 
-  if (v11)
+  if (quicRegistration)
   {
     goto LABEL_8;
   }
 
   v12 = [NSPPrivacyProxyObliviousHopsNetworkRegistration alloc];
-  v13 = [(NSPObliviousPath *)self quicAgentUUID];
-  v14 = [(NSPObliviousPath *)self obliviousTarget];
-  v15 = [v14 targetHost];
-  v16 = sub_100044458(&v12->super.super, v13, v15, self);
+  quicAgentUUID2 = [(NSPObliviousPath *)self quicAgentUUID];
+  obliviousTarget2 = [(NSPObliviousPath *)self obliviousTarget];
+  targetHost = [obliviousTarget2 targetHost];
+  v16 = sub_100044458(&v12->super.super, quicAgentUUID2, targetHost, self);
   [(NSPObliviousPath *)self setQuicRegistration:v16];
 
-  v17 = [(NSPObliviousPath *)self quicRegistration];
+  quicRegistration2 = [(NSPObliviousPath *)self quicRegistration];
 
-  if (v17)
+  if (quicRegistration2)
   {
 LABEL_8:
-    v18 = [(NSPObliviousPath *)self fallbackAgentUUID];
-    if (v18)
+    fallbackAgentUUID = [(NSPObliviousPath *)self fallbackAgentUUID];
+    if (fallbackAgentUUID)
     {
-      v19 = v18;
-      v20 = [(NSPObliviousPath *)self fallbackRegistration];
-      if (!v20)
+      fallbackRegistration2 = fallbackAgentUUID;
+      fallbackRegistration = [(NSPObliviousPath *)self fallbackRegistration];
+      if (!fallbackRegistration)
       {
-        v88 = 0;
+        fallbackAgentUUID2 = 0;
         v91 = 0;
         goto LABEL_12;
       }
 
-      v21 = v20;
-      v22 = [*(v20 + 24) isRegistered];
+      v21 = fallbackRegistration;
+      isRegistered = [*(fallbackRegistration + 24) isRegistered];
 
-      if (v22)
+      if (isRegistered)
       {
-        v88 = [(NSPObliviousPath *)self fallbackAgentUUID];
-        v19 = [(NSPObliviousPath *)self fallbackRegistration];
-        v91 = sub_100042F70(v19);
+        fallbackAgentUUID2 = [(NSPObliviousPath *)self fallbackAgentUUID];
+        fallbackRegistration2 = [(NSPObliviousPath *)self fallbackRegistration];
+        v91 = sub_100042F70(fallbackRegistration2);
 LABEL_12:
 
 LABEL_15:
-        v24 = [(NSPObliviousPath *)self quicRegistration];
-        v25 = [(NSPObliviousPath *)self proxyInfo];
-        v86 = v25;
-        if (v25)
+        quicRegistration3 = [(NSPObliviousPath *)self quicRegistration];
+        proxyInfo2 = [(NSPObliviousPath *)self proxyInfo];
+        v86 = proxyInfo2;
+        if (proxyInfo2)
         {
-          v26 = *(v25 + 24);
+          v26 = *(proxyInfo2 + 24);
         }
 
         else
@@ -793,12 +793,12 @@ LABEL_15:
         }
 
         v27 = v26;
-        v84 = [v27 proxyURL];
-        v28 = [(NSPObliviousPath *)self proxyInfo];
-        v83 = v28;
-        if (v28)
+        proxyURL = [v27 proxyURL];
+        proxyInfo3 = [(NSPObliviousPath *)self proxyInfo];
+        v83 = proxyInfo3;
+        if (proxyInfo3)
         {
-          v29 = *(v28 + 24);
+          v29 = *(proxyInfo3 + 24);
         }
 
         else
@@ -807,12 +807,12 @@ LABEL_15:
         }
 
         v30 = v29;
-        v81 = [v30 proxyKeyInfos];
-        v31 = [(NSPObliviousPath *)self proxyInfo];
-        v80 = v31;
-        if (v31)
+        proxyKeyInfos = [v30 proxyKeyInfos];
+        proxyInfo4 = [(NSPObliviousPath *)self proxyInfo];
+        v80 = proxyInfo4;
+        if (proxyInfo4)
         {
-          v32 = *(v31 + 24);
+          v32 = *(proxyInfo4 + 24);
         }
 
         else
@@ -821,12 +821,12 @@ LABEL_15:
         }
 
         v33 = v32;
-        v89 = [v33 proxyVersion];
-        v34 = [(NSPObliviousPath *)self proxyInfo];
-        v78 = v34;
-        if (v34)
+        proxyVersion = [v33 proxyVersion];
+        proxyInfo5 = [(NSPObliviousPath *)self proxyInfo];
+        v78 = proxyInfo5;
+        if (proxyInfo5)
         {
-          v35 = *(v34 + 24);
+          v35 = *(proxyInfo5 + 24);
         }
 
         else
@@ -835,13 +835,13 @@ LABEL_15:
         }
 
         v36 = v35;
-        v37 = [v36 supportsResumption];
-        v38 = [(NSPObliviousPath *)self proxyInfo];
-        v76 = v38;
-        v74 = v37;
-        if (v38)
+        supportsResumption = [v36 supportsResumption];
+        proxyInfo6 = [(NSPObliviousPath *)self proxyInfo];
+        v76 = proxyInfo6;
+        v74 = supportsResumption;
+        if (proxyInfo6)
         {
-          v39 = *(v38 + 24);
+          v39 = *(proxyInfo6 + 24);
         }
 
         else
@@ -850,13 +850,13 @@ LABEL_15:
         }
 
         v40 = v39;
-        v41 = [v40 usesX25519];
-        v42 = [(NSPObliviousPath *)self proxyInfo];
-        v75 = v42;
-        v71 = v41;
-        if (v42)
+        usesX25519 = [v40 usesX25519];
+        proxyInfo7 = [(NSPObliviousPath *)self proxyInfo];
+        v75 = proxyInfo7;
+        v71 = usesX25519;
+        if (proxyInfo7)
         {
-          v43 = *(v42 + 24);
+          v43 = *(proxyInfo7 + 24);
         }
 
         else
@@ -865,16 +865,16 @@ LABEL_15:
         }
 
         v44 = v43;
-        v69 = [v44 usesPQTLS];
-        v72 = [(NSPObliviousPath *)self proxyInfo];
-        v70 = sub_100004F70(v72);
+        usesPQTLS = [v44 usesPQTLS];
+        proxyInfo8 = [(NSPObliviousPath *)self proxyInfo];
+        v70 = sub_100004F70(proxyInfo8);
         if (v70)
         {
-          v45 = [(NSPObliviousPath *)self proxyInfo];
-          v66 = v45;
-          if (v45)
+          proxyInfo9 = [(NSPObliviousPath *)self proxyInfo];
+          v66 = proxyInfo9;
+          if (proxyInfo9)
           {
-            v46 = *(v45 + 48);
+            v46 = *(proxyInfo9 + 48);
           }
 
           else
@@ -890,18 +890,18 @@ LABEL_15:
           v68 = 0;
         }
 
-        v47 = [(NSPObliviousPath *)self proxyInfo];
-        v48 = v47;
-        v87 = a3;
+        proxyInfo10 = [(NSPObliviousPath *)self proxyInfo];
+        v48 = proxyInfo10;
+        delegateCopy = delegate;
         v85 = v27;
         v82 = v30;
         v79 = v33;
         v77 = v36;
         v73 = v44;
-        v49 = v24;
-        if (v47)
+        v49 = quicRegistration3;
+        if (proxyInfo10)
         {
-          v50 = *(v47 + 24);
+          v50 = *(proxyInfo10 + 24);
         }
 
         else
@@ -910,38 +910,38 @@ LABEL_15:
         }
 
         v51 = v50;
-        v52 = [v51 tokenChallenge];
-        v53 = [(NSPObliviousPath *)self allowFailOpen];
-        v54 = [(NSPObliviousPath *)self obliviousConfig];
-        v55 = [(NSPObliviousPath *)self obliviousTarget];
-        v56 = [v55 proxyURLPath];
-        LOBYTE(v65) = v53;
-        LOBYTE(v64) = v52 != 0;
+        tokenChallenge = [v51 tokenChallenge];
+        allowFailOpen = [(NSPObliviousPath *)self allowFailOpen];
+        obliviousConfig2 = [(NSPObliviousPath *)self obliviousConfig];
+        obliviousTarget3 = [(NSPObliviousPath *)self obliviousTarget];
+        proxyURLPath = [obliviousTarget3 proxyURLPath];
+        LOBYTE(v65) = allowFailOpen;
+        LOBYTE(v64) = tokenChallenge != 0;
         v67 = v49;
-        sub_100044518(v49, v84, v81, v89, v74, v71, v69, v68, v64, v88, v65, v54, v56, [(NSPObliviousPath *)self obliviousHTTPType], v91);
+        sub_100044518(v49, proxyURL, proxyKeyInfos, proxyVersion, v74, v71, usesPQTLS, v68, v64, fallbackAgentUUID2, v65, obliviousConfig2, proxyURLPath, [(NSPObliviousPath *)self obliviousHTTPType], v91);
 
         if (v70)
         {
         }
 
-        if (v49 && [*(v49 + 24) isRegistered] && (v87 || !-[NSPObliviousPath obliviousAgentRegistered](self, "obliviousAgentRegistered")))
+        if (v49 && [*(v49 + 24) isRegistered] && (delegateCopy || !-[NSPObliviousPath obliviousAgentRegistered](self, "obliviousAgentRegistered")))
         {
           [(NSPObliviousPath *)self setObliviousAgentRegistered:1];
-          v57 = [(NSPObliviousPath *)self delegate];
-          v58 = [(NSPObliviousPath *)self obliviousTarget];
-          v59 = [v58 targetHost];
-          v60 = [(NSPObliviousPath *)self obliviousTarget];
-          v61 = [v60 processes];
-          v62 = [(NSPObliviousPath *)self quicAgentUUID];
-          [v57 obliviousHopAgentRegistered:self hostname:v59 processes:v61 agentUUID:v62];
+          delegate = [(NSPObliviousPath *)self delegate];
+          obliviousTarget4 = [(NSPObliviousPath *)self obliviousTarget];
+          targetHost2 = [obliviousTarget4 targetHost];
+          obliviousTarget5 = [(NSPObliviousPath *)self obliviousTarget];
+          processes = [obliviousTarget5 processes];
+          quicAgentUUID3 = [(NSPObliviousPath *)self quicAgentUUID];
+          [delegate obliviousHopAgentRegistered:self hostname:targetHost2 processes:processes agentUUID:quicAgentUUID3];
         }
 
-        v23 = v88;
+        v23 = fallbackAgentUUID2;
         goto LABEL_42;
       }
     }
 
-    v88 = 0;
+    fallbackAgentUUID2 = 0;
     v91 = 0;
     goto LABEL_15;
   }
@@ -957,60 +957,60 @@ LABEL_15:
 
 - (void)resetFallbackProxyAgent
 {
-  v3 = [(NSPObliviousPath *)self proxyInfo];
-  if (!v3)
+  proxyInfo = [(NSPObliviousPath *)self proxyInfo];
+  if (!proxyInfo)
   {
     return;
   }
 
-  v72 = v3;
-  v4 = [(NSPObliviousPath *)self obliviousConfig];
-  if (!v4)
+  fallbackRegistration3 = proxyInfo;
+  obliviousConfig = [(NSPObliviousPath *)self obliviousConfig];
+  if (!obliviousConfig)
   {
     goto LABEL_31;
   }
 
-  v5 = v4;
-  v6 = [(NSPObliviousPath *)self obliviousTarget];
+  v5 = obliviousConfig;
+  obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
 
-  if (!v6 || ![(NSPObliviousPath *)self allowFallback])
+  if (!obliviousTarget || ![(NSPObliviousPath *)self allowFallback])
   {
     return;
   }
 
-  v7 = [(NSPObliviousPath *)self fallbackAgentUUID];
+  fallbackAgentUUID = [(NSPObliviousPath *)self fallbackAgentUUID];
 
-  if (!v7)
+  if (!fallbackAgentUUID)
   {
     v8 = +[NSUUID UUID];
     [(NSPObliviousPath *)self setFallbackAgentUUID:v8];
   }
 
-  v9 = [(NSPObliviousPath *)self fallbackRegistration];
+  fallbackRegistration = [(NSPObliviousPath *)self fallbackRegistration];
 
-  if (v9)
+  if (fallbackRegistration)
   {
     goto LABEL_9;
   }
 
   v10 = [NSPPrivacyProxyObliviousHopsFallbackNetworkRegistration alloc];
-  v11 = [(NSPObliviousPath *)self fallbackAgentUUID];
-  v12 = [(NSPObliviousPath *)self obliviousTarget];
-  v13 = [v12 targetHost];
-  v14 = sub_100045C5C(&v10->super.super, v11, v13, self);
+  fallbackAgentUUID2 = [(NSPObliviousPath *)self fallbackAgentUUID];
+  obliviousTarget2 = [(NSPObliviousPath *)self obliviousTarget];
+  targetHost = [obliviousTarget2 targetHost];
+  v14 = sub_100045C5C(&v10->super.super, fallbackAgentUUID2, targetHost, self);
   [(NSPObliviousPath *)self setFallbackRegistration:v14];
 
-  v15 = [(NSPObliviousPath *)self fallbackRegistration];
+  fallbackRegistration2 = [(NSPObliviousPath *)self fallbackRegistration];
 
-  if (v15)
+  if (fallbackRegistration2)
   {
 LABEL_9:
-    v72 = [(NSPObliviousPath *)self fallbackRegistration];
-    v16 = [(NSPObliviousPath *)self proxyInfo];
-    v71 = v16;
-    if (v16)
+    fallbackRegistration3 = [(NSPObliviousPath *)self fallbackRegistration];
+    proxyInfo2 = [(NSPObliviousPath *)self proxyInfo];
+    v71 = proxyInfo2;
+    if (proxyInfo2)
     {
-      v17 = *(v16 + 24);
+      v17 = *(proxyInfo2 + 24);
     }
 
     else
@@ -1019,12 +1019,12 @@ LABEL_9:
     }
 
     v18 = v17;
-    v19 = [v18 tcpProxyFqdn];
-    v20 = [(NSPObliviousPath *)self proxyInfo];
-    v69 = v20;
-    if (v20)
+    tcpProxyFqdn = [v18 tcpProxyFqdn];
+    proxyInfo3 = [(NSPObliviousPath *)self proxyInfo];
+    v69 = proxyInfo3;
+    if (proxyInfo3)
     {
-      v21 = *(v20 + 24);
+      v21 = *(proxyInfo3 + 24);
     }
 
     else
@@ -1033,12 +1033,12 @@ LABEL_9:
     }
 
     v22 = v21;
-    v68 = [v22 proxyKeyInfos];
-    v23 = [(NSPObliviousPath *)self proxyInfo];
-    v67 = v23;
-    if (v23)
+    proxyKeyInfos = [v22 proxyKeyInfos];
+    proxyInfo4 = [(NSPObliviousPath *)self proxyInfo];
+    v67 = proxyInfo4;
+    if (proxyInfo4)
     {
-      v24 = *(v23 + 24);
+      v24 = *(proxyInfo4 + 24);
     }
 
     else
@@ -1047,12 +1047,12 @@ LABEL_9:
     }
 
     v25 = v24;
-    v65 = [v25 proxyVersion];
-    v26 = [(NSPObliviousPath *)self proxyInfo];
-    v64 = v26;
-    if (v26)
+    proxyVersion = [v25 proxyVersion];
+    proxyInfo5 = [(NSPObliviousPath *)self proxyInfo];
+    v64 = proxyInfo5;
+    if (proxyInfo5)
     {
-      v27 = *(v26 + 24);
+      v27 = *(proxyInfo5 + 24);
     }
 
     else
@@ -1061,13 +1061,13 @@ LABEL_9:
     }
 
     v28 = v27;
-    v29 = [v28 supportsResumption];
-    v30 = [(NSPObliviousPath *)self proxyInfo];
-    v62 = v30;
-    v59 = v29;
-    if (v30)
+    supportsResumption = [v28 supportsResumption];
+    proxyInfo6 = [(NSPObliviousPath *)self proxyInfo];
+    v62 = proxyInfo6;
+    v59 = supportsResumption;
+    if (proxyInfo6)
     {
-      v31 = *(v30 + 24);
+      v31 = *(proxyInfo6 + 24);
     }
 
     else
@@ -1076,13 +1076,13 @@ LABEL_9:
     }
 
     v32 = v31;
-    v33 = [v32 usesX25519];
-    v34 = [(NSPObliviousPath *)self proxyInfo];
-    v60 = v34;
-    v56 = v33;
-    if (v34)
+    usesX25519 = [v32 usesX25519];
+    proxyInfo7 = [(NSPObliviousPath *)self proxyInfo];
+    v60 = proxyInfo7;
+    v56 = usesX25519;
+    if (proxyInfo7)
     {
-      v35 = *(v34 + 24);
+      v35 = *(proxyInfo7 + 24);
     }
 
     else
@@ -1091,16 +1091,16 @@ LABEL_9:
     }
 
     v36 = v35;
-    v54 = [v36 usesPQTLS];
-    v37 = [(NSPObliviousPath *)self proxyInfo];
-    v55 = sub_100004F70(v37);
+    usesPQTLS = [v36 usesPQTLS];
+    proxyInfo8 = [(NSPObliviousPath *)self proxyInfo];
+    v55 = sub_100004F70(proxyInfo8);
     if (v55)
     {
-      v38 = [(NSPObliviousPath *)self proxyInfo];
-      v52 = v38;
-      if (v38)
+      proxyInfo9 = [(NSPObliviousPath *)self proxyInfo];
+      v52 = proxyInfo9;
+      if (proxyInfo9)
       {
-        v39 = *(v38 + 48);
+        v39 = *(proxyInfo9 + 48);
       }
 
       else
@@ -1116,18 +1116,18 @@ LABEL_9:
       v53 = 0;
     }
 
-    v40 = [(NSPObliviousPath *)self proxyInfo];
-    v41 = v40;
+    proxyInfo10 = [(NSPObliviousPath *)self proxyInfo];
+    v41 = proxyInfo10;
     v70 = v18;
     v66 = v25;
     v63 = v28;
     v61 = v32;
-    v57 = v37;
+    v57 = proxyInfo8;
     v58 = v36;
-    v42 = v19;
-    if (v40)
+    v42 = tcpProxyFqdn;
+    if (proxyInfo10)
     {
-      v43 = *(v40 + 24);
+      v43 = *(proxyInfo10 + 24);
     }
 
     else
@@ -1136,14 +1136,14 @@ LABEL_9:
     }
 
     v44 = v43;
-    v45 = [v44 tokenChallenge];
-    v46 = [(NSPObliviousPath *)self allowFailOpen];
-    v47 = [(NSPObliviousPath *)self obliviousConfig];
-    v48 = [(NSPObliviousPath *)self obliviousTarget];
-    v49 = [v48 proxyURLPath];
-    BYTE1(v51) = v46;
-    LOBYTE(v51) = v45 != 0;
-    sub_100045D1C(v72, v42, v68, v65, v59, v56, v54, v53, v51, v47, v49, [(NSPObliviousPath *)self obliviousHTTPType]);
+    tokenChallenge = [v44 tokenChallenge];
+    allowFailOpen = [(NSPObliviousPath *)self allowFailOpen];
+    obliviousConfig2 = [(NSPObliviousPath *)self obliviousConfig];
+    obliviousTarget3 = [(NSPObliviousPath *)self obliviousTarget];
+    proxyURLPath = [obliviousTarget3 proxyURLPath];
+    BYTE1(v51) = allowFailOpen;
+    LOBYTE(v51) = tokenChallenge != 0;
+    sub_100045D1C(fallbackRegistration3, v42, proxyKeyInfos, proxyVersion, v59, v56, usesPQTLS, v53, v51, obliviousConfig2, proxyURLPath, [(NSPObliviousPath *)self obliviousHTTPType]);
 
     if (v55)
     {
@@ -1165,20 +1165,20 @@ LABEL_31:
 
 - (void)removeProxyAgents
 {
-  v8 = [(NSPObliviousPath *)self quicAgentUUID];
-  v3 = [(NSPObliviousPath *)self quicRegistration];
-  sub_100042E8C(v3);
+  quicAgentUUID = [(NSPObliviousPath *)self quicAgentUUID];
+  quicRegistration = [(NSPObliviousPath *)self quicRegistration];
+  sub_100042E8C(quicRegistration);
 
-  v4 = [(NSPObliviousPath *)self fallbackRegistration];
-  sub_100042E8C(v4);
+  fallbackRegistration = [(NSPObliviousPath *)self fallbackRegistration];
+  sub_100042E8C(fallbackRegistration);
 
   if ([(NSPObliviousPath *)self obliviousAgentRegistered])
   {
     [(NSPObliviousPath *)self setObliviousAgentRegistered:0];
-    v5 = [(NSPObliviousPath *)self delegate];
-    v6 = [(NSPObliviousPath *)self obliviousTarget];
-    v7 = [v6 targetHost];
-    [v5 obliviousHopAgentUnregistered:self hostname:v7 agentUUID:v8];
+    delegate = [(NSPObliviousPath *)self delegate];
+    obliviousTarget = [(NSPObliviousPath *)self obliviousTarget];
+    targetHost = [obliviousTarget targetHost];
+    [delegate obliviousHopAgentUnregistered:self hostname:targetHost agentUUID:quicAgentUUID];
   }
 
   [(NSPObliviousPath *)self setQuicAgentUUID:0];

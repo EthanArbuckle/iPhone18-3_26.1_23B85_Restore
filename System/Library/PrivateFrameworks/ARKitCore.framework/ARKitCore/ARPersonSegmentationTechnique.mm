@@ -1,11 +1,11 @@
 @interface ARPersonSegmentationTechnique
 - (ARPersonSegmentationTechnique)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLoadedModelVersionCorrect:(id)a3;
-- (__CVBuffer)_createCopyWithCVPixelBufferPoolForBuffer:(__CVBuffer *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLoadedModelVersionCorrect:(id)correct;
+- (__CVBuffer)_createCopyWithCVPixelBufferPoolForBuffer:(__CVBuffer *)buffer;
 - (id)resultDataClasses;
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (void)_prepareOnce:(BOOL)a3;
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (void)_prepareOnce:(BOOL)once;
 - (void)dealloc;
 @end
 
@@ -40,7 +40,7 @@
   return v4;
 }
 
-- (void)_prepareOnce:(BOOL)a3
+- (void)_prepareOnce:(BOOL)once
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E69C9CD0]);
@@ -76,7 +76,7 @@
       *buf = 138543618;
       v22 = v13;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v14 = "%{public}@ <%p>: SIPeopleSegmentationAlgorithm could not be initialized!";
       v15 = v11;
       v16 = OS_LOG_TYPE_ERROR;
@@ -92,7 +92,7 @@ LABEL_9:
     *buf = 138543618;
     v22 = v13;
     v23 = 2048;
-    v24 = self;
+    selfCopy2 = self;
     v14 = "Error: %{public}@ <%p>: SIPeopleSegmentationAlgorithm could not be initialized!";
     v15 = v11;
     v16 = OS_LOG_TYPE_INFO;
@@ -143,14 +143,14 @@ LABEL_15:
   return [v2 setWithObject:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = ARPersonSegmentationTechnique;
-  if ([(ARTechnique *)&v7 isEqual:v4])
+  if ([(ARTechnique *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_disableTemporalSegmentation == v4[376];
+    v5 = self->_disableTemporalSegmentation == equalCopy[376];
   }
 
   else
@@ -161,23 +161,23 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isLoadedModelVersionCorrect:(id)a3
+- (BOOL)isLoadedModelVersionCorrect:(id)correct
 {
   v4.receiver = self;
   v4.super_class = ARPersonSegmentationTechnique;
-  return [(ARMLImageProcessingTechnique *)&v4 ARMLVerifyLoadedModelVersion:a3 deviceName:@"D" major:1 minor:4];
+  return [(ARMLImageProcessingTechnique *)&v4 ARMLVerifyLoadedModelVersion:correct deviceName:@"D" major:1 minor:4];
 }
 
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
-  height = a5.height;
-  width = a5.width;
+  height = interest.height;
+  width = interest.width;
   v106 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  dataCopy = data;
+  imageDataCopy = imageData;
   if (self->_algorithm)
   {
-    v13 = v11 == 0;
+    v13 = dataCopy == 0;
   }
 
   else
@@ -191,27 +191,27 @@ LABEL_15:
     goto LABEL_50;
   }
 
-  [v11 imageResolution];
+  [dataCopy imageResolution];
   IsLandscape = CGSizeAspectRatioIsLandscape(v15, v16);
-  v18 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:v12];
+  v18 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:imageDataCopy];
   v19 = _ARLogTechnique_10();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    [v12 timestamp];
+    [imageDataCopy timestamp];
     v24 = v23;
-    [v11 imageResolution];
+    [dataCopy imageResolution];
     v26 = v25;
-    [v11 imageResolution];
+    [dataCopy imageResolution];
     v28 = v27;
-    [v12 imageResolution];
+    [imageDataCopy imageResolution];
     v30 = v29;
-    [v12 imageResolution];
+    [imageDataCopy imageResolution];
     *buf = 138545410;
     v89 = v22;
     v90 = 2048;
-    v91 = self;
+    selfCopy5 = self;
     v92 = 2048;
     v93 = v24;
     v94 = 2048;
@@ -246,8 +246,8 @@ LABEL_15:
   if (!v35)
   {
     v36 = objc_alloc(MEMORY[0x1E69C9CC8]);
-    v37 = [(SIPeopleSegmentationAlgorithm *)self->_algorithm networkConfiguration];
-    v38 = [v36 initWithConfig:v37];
+    networkConfiguration = [(SIPeopleSegmentationAlgorithm *)self->_algorithm networkConfiguration];
+    v38 = [v36 initWithConfig:networkConfiguration];
     v39 = *v34;
     *v34 = v38;
 
@@ -255,19 +255,19 @@ LABEL_15:
   }
 
   v40 = v35;
-  [v11 timestamp];
+  [dataCopy timestamp];
   [(ARPersonSegmentationTechnique *)self _startMLRunNetworkSignpostWithTimestamp:?];
-  -[SIImageInputData setInputImageBuffer:](self->_imageInputData, "setInputImageBuffer:", [v11 pixelBuffer]);
+  -[SIImageInputData setInputImageBuffer:](self->_imageInputData, "setInputImageBuffer:", [dataCopy pixelBuffer]);
   [(SIPeopleSegmentationAlgorithm *)self->_algorithm runWithInput:self->_imageInputData output:v40 resolutionConfiguration:v32];
-  [v11 timestamp];
+  [dataCopy timestamp];
   [(ARPersonSegmentationTechnique *)self _endMLRunNetworkSignpostWithTimestamp:?];
-  [v11 timestamp];
+  [dataCopy timestamp];
   v42 = v41;
-  v43 = [(SIImageInputData *)self->_imageInputData inputImageBuffer];
-  v44 = v43;
-  if (v43)
+  inputImageBuffer = [(SIImageInputData *)self->_imageInputData inputImageBuffer];
+  v44 = inputImageBuffer;
+  if (inputImageBuffer)
   {
-    v45 = CVPixelBufferGetWidth(v43);
+    v45 = CVPixelBufferGetWidth(inputImageBuffer);
     v46 = CVPixelBufferGetHeight(v44);
     v47 = v45;
     v48 = v46;
@@ -306,25 +306,25 @@ LABEL_15:
       v84(v83);
 LABEL_20:
       segmentationRotationTechnique = self->_segmentationRotationTechnique;
-      if (!segmentationRotationTechnique || [(ARImageRotationTechnique *)segmentationRotationTechnique rotationAngle]!= a6 || [(ARImageRotationTechnique *)self->_segmentationRotationTechnique mirrorMode])
+      if (!segmentationRotationTechnique || [(ARImageRotationTechnique *)segmentationRotationTechnique rotationAngle]!= tensor || [(ARImageRotationTechnique *)self->_segmentationRotationTechnique mirrorMode])
       {
-        v55 = [[ARImageRotationTechnique alloc] initWithRotation:a6 mirror:0];
+        v55 = [[ARImageRotationTechnique alloc] initWithRotation:tensor mirror:0];
         v56 = self->_segmentationRotationTechnique;
         self->_segmentationRotationTechnique = v55;
       }
 
       v57 = [(ARImageRotationTechnique *)self->_segmentationRotationTechnique processData:v53];
-      v58 = [v57 pixelBuffer];
-      LODWORD(v58) = v58 == [v40 segmentation];
-      v59 = [v57 pixelBuffer];
-      if (v58)
+      pixelBuffer = [v57 pixelBuffer];
+      LODWORD(pixelBuffer) = pixelBuffer == [v40 segmentation];
+      pixelBuffer2 = [v57 pixelBuffer];
+      if (pixelBuffer)
       {
-        v60 = [(ARPersonSegmentationTechnique *)self _createCopyWithCVPixelBufferPoolForBuffer:v59];
+        v60 = [(ARPersonSegmentationTechnique *)self _createCopyWithCVPixelBufferPoolForBuffer:pixelBuffer2];
       }
 
       else
       {
-        v60 = CVPixelBufferRetain(v59);
+        v60 = CVPixelBufferRetain(pixelBuffer2);
       }
 
       v69 = v60;
@@ -334,11 +334,11 @@ LABEL_20:
       v82[3] = &__block_descriptor_40_e5_v8__0l;
       v82[4] = v60;
       v70 = [ARSegmentationData alloc];
-      [v12 timestamp];
+      [imageDataCopy timestamp];
       v71 = [(ARSegmentationData *)v70 initWithTimestamp:v69 segmentationBuffer:?];
       v87 = v71;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
-      [v11 timestamp];
+      [dataCopy timestamp];
       [(ARPersonSegmentationTechnique *)self _endMLCreateResultSignpostWithTimestamp:?];
 
       __121__ARPersonSegmentationTechnique_runNeuralNetworkWithImageData_originalImageData_regionOfInterest_rotationOfResultTensor___block_invoke_26(v82);
@@ -362,7 +362,7 @@ LABEL_20:
         *buf = 138543874;
         v89 = v68;
         v90 = 2048;
-        v91 = self;
+        selfCopy5 = self;
         v92 = 1024;
         LODWORD(v93) = v63;
         _os_log_impl(&dword_1C241C000, v66, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to resample pixel buffer: %i", buf, 0x1Cu);
@@ -376,7 +376,7 @@ LABEL_20:
       *buf = 138543874;
       v89 = v78;
       v90 = 2048;
-      v91 = self;
+      selfCopy5 = self;
       v92 = 1024;
       LODWORD(v93) = v63;
       _os_log_impl(&dword_1C241C000, v66, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to resample pixel buffer: %i", buf, 0x1Cu);
@@ -404,7 +404,7 @@ LABEL_20:
         *buf = 138543618;
         v89 = v76;
         v90 = 2048;
-        v91 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_1C241C000, v74, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to create scaled person segmentation buffer", buf, 0x16u);
       }
     }
@@ -416,7 +416,7 @@ LABEL_20:
       *buf = 138543618;
       v89 = v80;
       v90 = 2048;
-      v91 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1C241C000, v74, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to create scaled person segmentation buffer", buf, 0x16u);
     }
   }
@@ -429,12 +429,12 @@ LABEL_50:
   return v14;
 }
 
-- (__CVBuffer)_createCopyWithCVPixelBufferPoolForBuffer:(__CVBuffer *)a3
+- (__CVBuffer)_createCopyWithCVPixelBufferPoolForBuffer:(__CVBuffer *)buffer
 {
   v33 = *MEMORY[0x1E69E9840];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v8 = ARCreateCVPixelBufferFromPool(&self->_outputSegmentationCopyPixelBufferPool, PixelFormatType, self, @"Copied person segmentation output", Width, Height);
   if (!v8)
   {
@@ -455,7 +455,7 @@ LABEL_50:
         v29 = 138543618;
         v30 = v22;
         v31 = 2048;
-        v32 = self;
+        selfCopy4 = self;
         v23 = "%{public}@ <%p>: Failed to create a copied buffer for person segmentation result";
         v24 = v20;
         v25 = OS_LOG_TYPE_ERROR;
@@ -471,7 +471,7 @@ LABEL_15:
       v29 = 138543618;
       v30 = v22;
       v31 = 2048;
-      v32 = self;
+      selfCopy4 = self;
       v23 = "Error: %{public}@ <%p>: Failed to create a copied buffer for person segmentation result";
       v24 = v20;
       v25 = OS_LOG_TYPE_INFO;
@@ -482,7 +482,7 @@ LABEL_15:
   }
 
   v9 = v8;
-  if ((ARPixelBufferCopy(a3, v8) & 1) == 0)
+  if ((ARPixelBufferCopy(buffer, v8) & 1) == 0)
   {
     if (ARShouldUseLogTypeError_onceToken_14 != -1)
     {
@@ -501,7 +501,7 @@ LABEL_15:
         v29 = 138543618;
         v30 = v14;
         v31 = 2048;
-        v32 = self;
+        selfCopy4 = self;
         v15 = "%{public}@ <%p>: Failed to copy for person segmentation result";
         v16 = v12;
         v17 = OS_LOG_TYPE_ERROR;
@@ -517,7 +517,7 @@ LABEL_19:
       v29 = 138543618;
       v30 = v14;
       v31 = 2048;
-      v32 = self;
+      selfCopy4 = self;
       v15 = "Error: %{public}@ <%p>: Failed to copy for person segmentation result";
       v16 = v12;
       v17 = OS_LOG_TYPE_INFO;

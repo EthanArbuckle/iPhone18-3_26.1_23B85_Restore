@@ -1,33 +1,33 @@
 @interface STPasscodeGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 listController:(id)a4 isRootView:(BOOL)a5;
++ (id)providerWithCoordinator:(id)coordinator listController:(id)controller isRootView:(BOOL)view;
 - (BOOL)isHidden;
 - (PSListController)listController;
 - (STPasscodeGroupSpecifierProvider)init;
-- (id)_authenticationContextWithReasonKey:(id)a3 presentingViewController:(id)a4;
-- (id)_removePasscodeActionWithPINOptionsTitle:(id)a3 pinOptionsHandler:(id)a4 pinValidationHandler:(id)a5;
-- (void)_promptForRecoveryAppleIDWithPINController:(id)a3 passcode:(id)a4;
+- (id)_authenticationContextWithReasonKey:(id)key presentingViewController:(id)controller;
+- (id)_removePasscodeActionWithPINOptionsTitle:(id)title pinOptionsHandler:(id)handler pinValidationHandler:(id)validationHandler;
+- (void)_promptForRecoveryAppleIDWithPINController:(id)controller passcode:(id)passcode;
 - (void)_promptMisconfiguredAdultIfNeeded;
 - (void)_removeManagedPasscode;
 - (void)_setManagedPasscode;
 - (void)_updateHiddenState;
-- (void)changeOrRemovePasscode:(id)a3;
+- (void)changeOrRemovePasscode:(id)passcode;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reloadTogglePasscodeSpecifier;
-- (void)setCoordinator:(id)a3;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STPasscodeGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 listController:(id)a4 isRootView:(BOOL)a5
++ (id)providerWithCoordinator:(id)coordinator listController:(id)controller isRootView:(BOOL)view
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___STPasscodeGroupSpecifierProvider;
-  v7 = a4;
-  v8 = objc_msgSendSuper2(&v10, sel_providerWithCoordinator_, a3);
-  objc_storeWeak((v8 + 64), v7);
+  controllerCopy = controller;
+  v8 = objc_msgSendSuper2(&v10, sel_providerWithCoordinator_, coordinator);
+  objc_storeWeak((v8 + 64), controllerCopy);
 
-  *(v8 + 48) = a5;
+  *(v8 + 48) = view;
   [v8 _updateHiddenState];
 
   return v8;
@@ -52,12 +52,12 @@
 
     [v6 setObject:&unk_28769D2F8 forKeyedSubscript:*MEMORY[0x277D401C0]];
     [(STPasscodeGroupSpecifierProvider *)v3 setTogglePasscodeSpecifier:v6];
-    v9 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    v10 = [(STPasscodeGroupSpecifierProvider *)v3 togglePasscodeSpecifier];
-    [v9 addObject:v10];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    togglePasscodeSpecifier = [(STPasscodeGroupSpecifierProvider *)v3 togglePasscodeSpecifier];
+    [mutableSpecifiers addObject:togglePasscodeSpecifier];
 
-    v11 = [MEMORY[0x277D262A0] sharedConnection];
-    [v11 registerObserver:v3];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v3];
   }
 
   return v3;
@@ -68,35 +68,35 @@
   v5.receiver = self;
   v5.super_class = STPasscodeGroupSpecifierProvider;
   [(STRootGroupSpecifierProvider *)&v5 invalidate];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STPasscodeGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"passcodeEnabled" context:"STPasscodeGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canEditScreenTimePasscode" context:"STPasscodeGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"passcodeEnabled" context:"STPasscodeGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canEditScreenTimePasscode" context:"STPasscodeGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STPasscodeGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.canEditScreenTimePasscode" options:4 context:"STPasscodeGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"passcodeEnabled" options:4 context:"STPasscodeGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canEditScreenTimePasscode" options:4 context:"STPasscodeGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"passcodeEnabled" options:4 context:"STPasscodeGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == "STPasscodeGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  if (context == "STPasscodeGroupSpecifierProviderObservationContext")
   {
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"viewModel.canEditScreenTimePasscode"])
+    if ([pathCopy isEqualToString:@"viewModel.canEditScreenTimePasscode"])
     {
       [(STPasscodeGroupSpecifierProvider *)self _updateHiddenState];
     }
@@ -105,7 +105,7 @@
     {
       [(STRootGroupSpecifierProvider *)self coordinator];
 
-      if ([v10 isEqualToString:@"passcodeEnabled"])
+      if ([pathCopy isEqualToString:@"passcodeEnabled"])
       {
         [(STPasscodeGroupSpecifierProvider *)self reloadTogglePasscodeSpecifier];
       }
@@ -116,20 +116,20 @@
   {
     v11.receiver = self;
     v11.super_class = STPasscodeGroupSpecifierProvider;
-    [(STPasscodeGroupSpecifierProvider *)&v11 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(STPasscodeGroupSpecifierProvider *)&v11 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
 - (void)_updateHiddenState
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v10 = [v3 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v4 = [v10 canEditScreenTimePasscode];
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  canEditScreenTimePasscode = [viewModel canEditScreenTimePasscode];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  if (_os_feature_enabled_impl() && ([v10 me], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isRemoteUser"), v7, v8) && -[STPasscodeGroupSpecifierProvider isRootView](self, "isRootView"))
+  if (_os_feature_enabled_impl() && ([viewModel me], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isRemoteUser"), v7, v8) && -[STPasscodeGroupSpecifierProvider isRootView](self, "isRootView"))
   {
     v9 = 1;
   }
@@ -141,7 +141,7 @@
 
   else
   {
-    v9 = v4 ^ 1u;
+    v9 = canEditScreenTimePasscode ^ 1u;
   }
 
   [(STGroupSpecifierProvider *)self setIsHidden:v9];
@@ -149,84 +149,84 @@
 
 - (void)reloadTogglePasscodeSpecifier
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 isPasscodeEnabled];
-  v5 = [(STPasscodeGroupSpecifierProvider *)self togglePasscodeSpecifier];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  isPasscodeEnabled = [coordinator isPasscodeEnabled];
+  togglePasscodeSpecifier = [(STPasscodeGroupSpecifierProvider *)self togglePasscodeSpecifier];
   v6 = +[STScreenTimeSettingsUIBundle bundle];
   v7 = v6;
-  if (v4)
+  if (isPasscodeEnabled)
   {
     v8 = [v6 localizedStringForKey:@"ChangeScreenTimePasscodeButtonName" value:&stru_28766E5A8 table:0];
-    [v5 setName:v8];
+    [togglePasscodeSpecifier setName:v8];
 
-    [v5 removePropertyForKey:*MEMORY[0x277D400B8]];
-    [v5 removePropertyForKey:*MEMORY[0x277D401C0]];
-    [v5 setEditPaneClass:0];
-    [v5 setTarget:self];
-    [v5 setButtonAction:sel_changeOrRemovePasscode_];
+    [togglePasscodeSpecifier removePropertyForKey:*MEMORY[0x277D400B8]];
+    [togglePasscodeSpecifier removePropertyForKey:*MEMORY[0x277D401C0]];
+    [togglePasscodeSpecifier setEditPaneClass:0];
+    [togglePasscodeSpecifier setTarget:self];
+    [togglePasscodeSpecifier setButtonAction:sel_changeOrRemovePasscode_];
   }
 
   else
   {
     v9 = [v6 localizedStringForKey:@"LockScreenTimeSettingsButtonName" value:&stru_28766E5A8 table:0];
-    [v5 setName:v9];
+    [togglePasscodeSpecifier setName:v9];
 
-    [v5 setEditPaneClass:{+[STDevicePINFactory devicePINPaneForPlatform](STDevicePINFactory, "devicePINPaneForPlatform")}];
+    [togglePasscodeSpecifier setEditPaneClass:{+[STDevicePINFactory devicePINPaneForPlatform](STDevicePINFactory, "devicePINPaneForPlatform")}];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x277D400B8]];
+    [togglePasscodeSpecifier setObject:v11 forKeyedSubscript:*MEMORY[0x277D400B8]];
 
-    [v5 setObject:&unk_28769D2F8 forKeyedSubscript:*MEMORY[0x277D401C0]];
+    [togglePasscodeSpecifier setObject:&unk_28769D2F8 forKeyedSubscript:*MEMORY[0x277D401C0]];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __65__STPasscodeGroupSpecifierProvider_reloadTogglePasscodeSpecifier__block_invoke;
     aBlock[3] = &unk_279B7CC68;
     aBlock[4] = self;
     v12 = _Block_copy(aBlock);
-    [v5 setObject:v12 forKeyedSubscript:0x287675888];
+    [togglePasscodeSpecifier setObject:v12 forKeyedSubscript:0x287675888];
   }
 
-  v13 = [v3 viewModel];
-  v14 = [v13 me];
-  v15 = [v14 needsRecoveryAppleID];
+  viewModel = [coordinator viewModel];
+  v14 = [viewModel me];
+  needsRecoveryAppleID = [v14 needsRecoveryAppleID];
 
-  if (!v15)
+  if (!needsRecoveryAppleID)
   {
-    [v5 removePropertyForKey:0x287675A68];
-    [v5 removePropertyForKey:0x287675828];
-    if (!v4)
+    [togglePasscodeSpecifier removePropertyForKey:0x287675A68];
+    [togglePasscodeSpecifier removePropertyForKey:0x287675828];
+    if (!isPasscodeEnabled)
     {
       goto LABEL_6;
     }
 
 LABEL_8:
-    v17 = [(STGroupSpecifierProvider *)self groupSpecifier];
-    [v17 removePropertyForKey:*MEMORY[0x277D3FF88]];
+    groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+    [groupSpecifier removePropertyForKey:*MEMORY[0x277D3FF88]];
     goto LABEL_9;
   }
 
-  [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A68];
+  [togglePasscodeSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A68];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __65__STPasscodeGroupSpecifierProvider_reloadTogglePasscodeSpecifier__block_invoke_2;
   v20[3] = &unk_279B7DB78;
   v20[4] = self;
   v16 = _Block_copy(v20);
-  [v5 setObject:v16 forKeyedSubscript:0x287675828];
+  [togglePasscodeSpecifier setObject:v16 forKeyedSubscript:0x287675828];
 
-  if (v4)
+  if (isPasscodeEnabled)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v17 = [v7 localizedStringForKey:@"EnableScreenTimePasscodeFooterText" value:&stru_28766E5A8 table:0];
-  v18 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  [v18 setObject:v17 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  groupSpecifier = [v7 localizedStringForKey:@"EnableScreenTimePasscodeFooterText" value:&stru_28766E5A8 table:0];
+  groupSpecifier2 = [(STGroupSpecifierProvider *)self groupSpecifier];
+  [groupSpecifier2 setObject:groupSpecifier forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
 LABEL_9:
-  v19 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  [(STGroupSpecifierProvider *)self reloadSpecifier:v19 animated:1];
+  groupSpecifier3 = [(STGroupSpecifierProvider *)self groupSpecifier];
+  [(STGroupSpecifierProvider *)self reloadSpecifier:groupSpecifier3 animated:1];
 }
 
 uint64_t __65__STPasscodeGroupSpecifierProvider_reloadTogglePasscodeSpecifier__block_invoke(uint64_t result, int a2)
@@ -241,11 +241,11 @@ uint64_t __65__STPasscodeGroupSpecifierProvider_reloadTogglePasscodeSpecifier__b
 
 - (void)_promptMisconfiguredAdultIfNeeded
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 shouldShowMisconfiguredAdultPrompt];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  shouldShowMisconfiguredAdultPrompt = [viewModel shouldShowMisconfiguredAdultPrompt];
 
-  if (v4)
+  if (shouldShowMisconfiguredAdultPrompt)
   {
     v5 = +[STUILog ageMigrationTip];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -255,11 +255,11 @@ uint64_t __65__STPasscodeGroupSpecifierProvider_reloadTogglePasscodeSpecifier__b
     }
 
     v6 = objc_opt_new();
-    v7 = [v2 viewModel];
-    v8 = [v7 me];
-    v9 = [v8 altDSID];
+    viewModel2 = [coordinator viewModel];
+    v8 = [viewModel2 me];
+    altDSID = [v8 altDSID];
 
-    v10 = [objc_alloc(MEMORY[0x277CEC770]) initWithAltDSID:v9 bundleID:@"com.apple.ScreenTimeSettingsUI"];
+    v10 = [objc_alloc(MEMORY[0x277CEC770]) initWithAltDSID:altDSID bundleID:@"com.apple.ScreenTimeSettingsUI"];
     [v6 displayMisconfiguredAgePromptWithContext:v10 completion:&__block_literal_global_14];
   }
 }
@@ -276,20 +276,20 @@ void __69__STPasscodeGroupSpecifierProvider__promptMisconfiguredAdultIfNeeded__b
   }
 }
 
-- (void)changeOrRemovePasscode:(id)a3
+- (void)changeOrRemovePasscode:(id)passcode
 {
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v6 = [v5 isRemotelyManagedUserWithPasscode];
+  isRemotelyManagedUserWithPasscode = [viewModel isRemotelyManagedUserWithPasscode];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  v51 = v9;
-  if (v6)
+  v51 = sf_isiPad;
+  if (isRemotelyManagedUserWithPasscode)
   {
-    if (v9)
+    if (sf_isiPad)
     {
       v10 = [v7 localizedStringForKey:@"ChangePasscodeAlertTitle" value:&stru_28766E5A8 table:0];
     }
@@ -300,19 +300,19 @@ void __69__STPasscodeGroupSpecifierProvider__promptMisconfiguredAdultIfNeeded__b
     }
 
     v12 = [v7 localizedStringForKey:@"ChangeScreenTimePasscodeConfirmPrompt" value:&stru_28766E5A8 table:0];
-    v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v12 preferredStyle:v9];
+    v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v12 preferredStyle:sf_isiPad];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:v9];
+    v11 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:sf_isiPad];
   }
 
   v13 = MEMORY[0x277D3FAD8];
   v14 = [v7 localizedStringForKey:@"LockScreenTimeSettingsButtonName" value:&stru_28766E5A8 table:0];
   v15 = [v13 preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:13 edit:{+[STDevicePINFactory devicePINPaneForPlatform](STDevicePINFactory, "devicePINPaneForPlatform")}];
 
-  v16 = [v5 me];
+  v16 = [viewModel me];
   if ([v16 needsRecoveryAppleID])
   {
     v17 = objc_opt_class();
@@ -330,16 +330,16 @@ void __69__STPasscodeGroupSpecifierProvider__promptMisconfiguredAdultIfNeeded__b
   }
 
   v58 = v16;
-  v52 = v9;
+  v52 = sf_isiPad;
   if ([v16 canRecoveryAuthenticate])
   {
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __59__STPasscodeGroupSpecifierProvider_changeOrRemovePasscode___block_invoke_2;
     v73[3] = &unk_279B7DC10;
-    v76 = v9;
+    v76 = sf_isiPad;
     v74 = v16;
-    v75 = self;
+    selfCopy = self;
     v20 = _Block_copy(v73);
 
     if (v20)
@@ -378,10 +378,10 @@ LABEL_14:
   v28 = [v7 localizedStringForKey:@"ChangeScreenTimePasscodeButtonName" value:&stru_28766E5A8 table:0];
   v54 = v7;
   v55 = v20;
-  if (v6)
+  if (isRemotelyManagedUserWithPasscode)
   {
     v50 = v26;
-    v53 = v5;
+    v53 = viewModel;
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __59__STPasscodeGroupSpecifierProvider_changeOrRemovePasscode___block_invoke_2_108;
@@ -389,28 +389,28 @@ LABEL_14:
     v29 = v7;
     v69 = v29;
     v70 = v15;
-    v71 = self;
+    selfCopy2 = self;
     v30 = [v27 actionWithTitle:v28 style:0 handler:v68];
     [v11 addAction:v30];
 
-    v31 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v32 = [v31 viewModel];
-    v33 = [v32 me];
+    coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    v33 = [viewModel2 me];
 
-    v34 = [v33 name];
+    name = [v33 name];
 
-    if (v34)
+    if (name)
     {
       v35 = objc_opt_new();
-      v36 = [v33 name];
-      v37 = [v35 personNameComponentsFromString:v36];
+      name2 = [v33 name];
+      v37 = [v35 personNameComponentsFromString:name2];
 
-      v38 = [v37 givenName];
+      givenName = [v37 givenName];
     }
 
     else
     {
-      v38 = 0;
+      givenName = 0;
     }
 
     v42 = 0x277D75000uLL;
@@ -420,18 +420,18 @@ LABEL_14:
     v61[1] = 3221225472;
     v61[2] = __59__STPasscodeGroupSpecifierProvider_changeOrRemovePasscode___block_invoke_130;
     v61[3] = &unk_279B7DC60;
-    v62 = v38;
+    v62 = givenName;
     v67 = v52;
     v63 = v29;
     v66 = v51;
     v64 = v50;
-    v65 = self;
-    v45 = v38;
+    selfCopy3 = self;
+    v45 = givenName;
     v46 = [v43 actionWithTitle:v44 style:2 handler:v61];
     [v11 addAction:v46];
 
     v26 = v50;
-    v5 = v53;
+    viewModel = v53;
     v39 = v15;
     v40 = &v69;
   }
@@ -798,11 +798,11 @@ uint64_t __59__STPasscodeGroupSpecifierProvider_changeOrRemovePasscode___block_i
   return [v4 showPINSheet:v5 completion:0];
 }
 
-- (void)_promptForRecoveryAppleIDWithPINController:(id)a3 passcode:(id)a4
+- (void)_promptForRecoveryAppleIDWithPINController:(id)controller passcode:(id)passcode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STPasscodeGroupSpecifierProvider *)self _authenticationContextWithReasonKey:@"RecoveryAppleIDAlertReason" presentingViewController:v6];
+  controllerCopy = controller;
+  passcodeCopy = passcode;
+  v8 = [(STPasscodeGroupSpecifierProvider *)self _authenticationContextWithReasonKey:@"RecoveryAppleIDAlertReason" presentingViewController:controllerCopy];
   [v8 setAppProvidedContext:@"setup"];
   v9 = +[STScreenTimeSettingsUIBundle bundle];
   v10 = [v9 localizedStringForKey:@"RecoveryAppleIDAlertSkipButton" value:&stru_28766E5A8 table:0];
@@ -814,12 +814,12 @@ uint64_t __59__STPasscodeGroupSpecifierProvider_changeOrRemovePasscode___block_i
   v15[2] = __88__STPasscodeGroupSpecifierProvider__promptForRecoveryAppleIDWithPINController_passcode___block_invoke;
   v15[3] = &unk_279B7DD28;
   v15[4] = self;
-  v16 = v7;
+  v16 = passcodeCopy;
   v17 = v9;
-  v18 = v6;
-  v12 = v6;
+  v18 = controllerCopy;
+  v12 = controllerCopy;
   v13 = v9;
-  v14 = v7;
+  v14 = passcodeCopy;
   [v11 authenticateWithContext:v8 completion:v15];
 }
 
@@ -1017,22 +1017,22 @@ void __88__STPasscodeGroupSpecifierProvider__promptForRecoveryAppleIDWithPINCont
   [WeakRetained _promptMisconfiguredAdultIfNeeded];
 }
 
-- (id)_authenticationContextWithReasonKey:(id)a3 presentingViewController:(id)a4
+- (id)_authenticationContextWithReasonKey:(id)key presentingViewController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
+  controllerCopy = controller;
+  keyCopy = key;
   v7 = objc_opt_new();
   [v7 setIsEphemeral:1];
   [v7 setAuthenticationType:2];
   [v7 setShouldPromptForPasswordOnly:1];
   [v7 _setProxiedAppName:@"ScreenTime"];
-  [v7 setPresentingViewController:v5];
+  [v7 setPresentingViewController:controllerCopy];
 
   v8 = +[STScreenTimeSettingsUIBundle bundle];
   v9 = [v8 localizedStringForKey:@"RecoveryAppleIDAlertTitle" value:&stru_28766E5A8 table:0];
   [v7 setTitle:v9];
 
-  v10 = [v8 localizedStringForKey:v6 value:&stru_28766E5A8 table:0];
+  v10 = [v8 localizedStringForKey:keyCopy value:&stru_28766E5A8 table:0];
 
   [v7 setReason:v10];
   v11 = [v8 localizedStringForKey:@"ConfirmationButtonOK" value:&stru_28766E5A8 table:0];
@@ -1041,16 +1041,16 @@ void __88__STPasscodeGroupSpecifierProvider__promptForRecoveryAppleIDWithPINCont
   return v7;
 }
 
-- (id)_removePasscodeActionWithPINOptionsTitle:(id)a3 pinOptionsHandler:(id)a4 pinValidationHandler:(id)a5
+- (id)_removePasscodeActionWithPINOptionsTitle:(id)title pinOptionsHandler:(id)handler pinValidationHandler:(id)validationHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  handlerCopy = handler;
+  validationHandlerCopy = validationHandler;
   v11 = +[STScreenTimeSettingsUIBundle bundle];
   v12 = objc_opt_new();
-  v13 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v14 = [v13 viewModel];
-  if ([v14 isRemotelyManagedUserWithPasscode])
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  if ([viewModel isRemotelyManagedUserWithPasscode])
   {
     v33 = 0;
     v15 = [v12 canEvaluatePolicy:2 error:&v33];
@@ -1066,7 +1066,7 @@ void __88__STPasscodeGroupSpecifierProvider__promptForRecoveryAppleIDWithPINCont
       v29[3] = &unk_279B7CD58;
       v30 = v12;
       v31 = v11;
-      v32 = self;
+      selfCopy = self;
       v19 = [v17 actionWithTitle:v18 style:2 handler:v29];
 
       v20 = v30;
@@ -1088,9 +1088,9 @@ void __88__STPasscodeGroupSpecifierProvider__promptForRecoveryAppleIDWithPINCont
   v24[3] = &unk_279B7DD50;
   v24[4] = self;
   v25 = v11;
-  v26 = v8;
-  v27 = v9;
-  v28 = v10;
+  v26 = titleCopy;
+  v27 = handlerCopy;
+  v28 = validationHandlerCopy;
   v19 = [v21 actionWithTitle:v22 style:2 handler:v24];
 
   v20 = v25;
@@ -1269,15 +1269,15 @@ void __116__STPasscodeGroupSpecifierProvider__removePasscodeActionWithPINOptions
 
 - (void)_removeManagedPasscode
 {
-  v2 = self;
-  v3 = [(STRootGroupSpecifierProvider *)v2 coordinator];
+  selfCopy = self;
+  coordinator = [(STRootGroupSpecifierProvider *)selfCopy coordinator];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__STPasscodeGroupSpecifierProvider__removeManagedPasscode__block_invoke;
   v5[3] = &unk_279B7CC18;
-  v6 = v2;
-  v4 = v2;
-  [v3 setPIN:0 recoveryAltDSID:0 completionHandler:v5];
+  v6 = selfCopy;
+  v4 = selfCopy;
+  [coordinator setPIN:0 recoveryAltDSID:0 completionHandler:v5];
 }
 
 void __58__STPasscodeGroupSpecifierProvider__removeManagedPasscode__block_invoke(uint64_t a1, void *a2)

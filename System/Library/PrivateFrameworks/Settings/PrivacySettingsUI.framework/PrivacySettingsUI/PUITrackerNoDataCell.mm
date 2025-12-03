@@ -1,60 +1,60 @@
 @interface PUITrackerNoDataCell
-- (PUITrackerNoDataCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PUITrackerNoDataCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PUITrackerNoDataCell
 
-- (PUITrackerNoDataCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PUITrackerNoDataCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31.receiver = self;
   v31.super_class = PUITrackerNoDataCell;
-  v4 = [(PSTableCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PSTableCell *)v4 titleLabel];
-    [v6 setHidden:1];
+    titleLabel = [(PSTableCell *)v4 titleLabel];
+    [titleLabel setHidden:1];
 
-    v7 = [(PUITrackerNoDataCell *)v5 detailTextLabel];
-    [v7 setHidden:1];
+    detailTextLabel = [(PUITrackerNoDataCell *)v5 detailTextLabel];
+    [detailTextLabel setHidden:1];
 
-    v8 = [(PUITrackerNoDataCell *)v5 contentView];
-    v9 = [v8 layoutMarginsGuide];
+    contentView = [(PUITrackerNoDataCell *)v5 contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
 
     v10 = objc_opt_new();
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v10 setAxis:1];
-    v11 = [(PUITrackerNoDataCell *)v5 contentView];
-    [v11 addSubview:v10];
+    contentView2 = [(PUITrackerNoDataCell *)v5 contentView];
+    [contentView2 addSubview:v10];
 
-    v12 = [v10 topAnchor];
-    v13 = [(PUITrackerNoDataCell *)v5 contentView];
-    v14 = [v13 topAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14 constant:45.0];
+    topAnchor = [v10 topAnchor];
+    contentView3 = [(PUITrackerNoDataCell *)v5 contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:45.0];
     [v15 setActive:1];
 
-    v16 = [v10 leadingAnchor];
-    v17 = [v9 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [v10 leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v18 setActive:1];
 
-    v19 = [v10 trailingAnchor];
-    v20 = [v9 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [v10 trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v21 setActive:1];
 
-    v22 = [v10 bottomAnchor];
-    v23 = [(PUITrackerNoDataCell *)v5 contentView];
-    v24 = [v23 bottomAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:-45.0];
+    bottomAnchor = [v10 bottomAnchor];
+    contentView4 = [(PUITrackerNoDataCell *)v5 contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-45.0];
     [v25 setActive:1];
 
     v26 = objc_opt_new();
     v27 = PUI_LocalizedStringForAppReport(@"TRACKER_ACTIVITY_WILL_APPEAR_HERE");
     [v26 setText:v27];
 
-    v28 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v26 setTextColor:v28];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v26 setTextColor:secondaryLabelColor];
 
     v29 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [v26 setFont:v29];

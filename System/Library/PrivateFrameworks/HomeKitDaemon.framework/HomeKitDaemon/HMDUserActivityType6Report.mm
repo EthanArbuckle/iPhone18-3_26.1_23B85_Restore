@@ -1,10 +1,10 @@
 @interface HMDUserActivityType6Report
-- (BOOL)isEqual:(id)a3;
-- (HMDUserActivityType6Report)initWithUser:(id)a3 state:(unint64_t)a4 stateEnd:(id)a5 withReason:(unint64_t)a6 changedTimestamp:(id)a7 lastUpdateTimestamp:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HMDUserActivityType6Report)initWithUser:(id)user state:(unint64_t)state stateEnd:(id)end withReason:(unint64_t)reason changedTimestamp:(id)timestamp lastUpdateTimestamp:(id)updateTimestamp;
 - (id)attributeDescriptions;
-- (id)copyReportWithChangedTimestamp:(id)a3;
-- (id)copyReportWithLastUpdateTimestamp:(id)a3 reason:(unint64_t)a4;
-- (id)initFromMessagePayload:(id)a3 withUser:(id)a4;
+- (id)copyReportWithChangedTimestamp:(id)timestamp;
+- (id)copyReportWithLastUpdateTimestamp:(id)timestamp reason:(unint64_t)reason;
+- (id)initFromMessagePayload:(id)payload withUser:(id)user;
 - (id)serializedRemoteMessagePayload;
 @end
 
@@ -15,17 +15,17 @@
   v17[2] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = HMDUserActivityType6Report;
-  v3 = [(HMDUserActivityReport *)&v16 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMDUserActivityReport *)&v16 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v6 = HMDUserComingHomeStateAsString([(HMDUserActivityType6Report *)self state]);
   v7 = [v5 initWithName:@"State" value:v6];
   v17[0] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDUserActivityType6Report *)self stateEnd];
-  v10 = [v9 hmf_localTimeDescription];
-  v11 = [v8 initWithName:@"State End" value:v10];
+  stateEnd = [(HMDUserActivityType6Report *)self stateEnd];
+  hmf_localTimeDescription = [stateEnd hmf_localTimeDescription];
+  v11 = [v8 initWithName:@"State End" value:hmf_localTimeDescription];
   v17[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   [v4 addObjectsFromArray:v12];
@@ -36,40 +36,40 @@
   return v13;
 }
 
-- (id)copyReportWithLastUpdateTimestamp:(id)a3 reason:(unint64_t)a4
+- (id)copyReportWithLastUpdateTimestamp:(id)timestamp reason:(unint64_t)reason
 {
-  v6 = a3;
+  timestampCopy = timestamp;
   v7 = [HMDUserActivityType6Report alloc];
-  v8 = [(HMDUserActivityReport *)self user];
-  v9 = [(HMDUserActivityType6Report *)self state];
-  v10 = [(HMDUserActivityType6Report *)self stateEnd];
-  v11 = [(HMDUserActivityReport *)self changedTimestamp];
-  v12 = [(HMDUserActivityType6Report *)v7 initWithUser:v8 state:v9 stateEnd:v10 withReason:a4 changedTimestamp:v11 lastUpdateTimestamp:v6];
+  user = [(HMDUserActivityReport *)self user];
+  state = [(HMDUserActivityType6Report *)self state];
+  stateEnd = [(HMDUserActivityType6Report *)self stateEnd];
+  changedTimestamp = [(HMDUserActivityReport *)self changedTimestamp];
+  v12 = [(HMDUserActivityType6Report *)v7 initWithUser:user state:state stateEnd:stateEnd withReason:reason changedTimestamp:changedTimestamp lastUpdateTimestamp:timestampCopy];
 
   return v12;
 }
 
-- (id)copyReportWithChangedTimestamp:(id)a3
+- (id)copyReportWithChangedTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = [HMDUserActivityType6Report alloc];
-  v6 = [(HMDUserActivityReport *)self user];
-  v7 = [(HMDUserActivityType6Report *)self state];
-  v8 = [(HMDUserActivityType6Report *)self stateEnd];
-  v9 = [(HMDUserActivityReport *)self reason];
-  v10 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
-  v11 = [(HMDUserActivityType6Report *)v5 initWithUser:v6 state:v7 stateEnd:v8 withReason:v9 changedTimestamp:v4 lastUpdateTimestamp:v10];
+  user = [(HMDUserActivityReport *)self user];
+  state = [(HMDUserActivityType6Report *)self state];
+  stateEnd = [(HMDUserActivityType6Report *)self stateEnd];
+  reason = [(HMDUserActivityReport *)self reason];
+  lastUpdateTimestamp = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+  v11 = [(HMDUserActivityType6Report *)v5 initWithUser:user state:state stateEnd:stateEnd withReason:reason changedTimestamp:timestampCopy lastUpdateTimestamp:lastUpdateTimestamp];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -78,10 +78,10 @@
   }
 
   v6 = v5;
-  if (v6 && (v12.receiver = self, v12.super_class = HMDUserActivityType6Report, -[HMDUserActivityReport isEqual:](&v12, sel_isEqual_, v4)) && (v7 = -[HMDUserActivityType6Report state](self, "state"), v7 == [v6 state]))
+  if (v6 && (v12.receiver = self, v12.super_class = HMDUserActivityType6Report, -[HMDUserActivityReport isEqual:](&v12, sel_isEqual_, equalCopy)) && (v7 = -[HMDUserActivityType6Report state](self, "state"), v7 == [v6 state]))
   {
-    v8 = [(HMDUserActivityType6Report *)self stateEnd];
-    v9 = [v6 stateEnd];
+    stateEnd = [(HMDUserActivityType6Report *)self stateEnd];
+    stateEnd2 = [v6 stateEnd];
     v10 = HMFEqualObjects();
   }
 
@@ -97,47 +97,47 @@
 {
   v9.receiver = self;
   v9.super_class = HMDUserActivityType6Report;
-  v3 = [(HMDUserActivityReport *)&v9 serializedRemoteMessagePayload];
-  v4 = [v3 mutableCopy];
+  serializedRemoteMessagePayload = [(HMDUserActivityReport *)&v9 serializedRemoteMessagePayload];
+  v4 = [serializedRemoteMessagePayload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserActivityType6Report state](self, "state")}];
   [v4 setObject:v5 forKeyedSubscript:@"HAS.T6.S"];
 
-  v6 = [(HMDUserActivityType6Report *)self stateEnd];
-  [v4 setObject:v6 forKeyedSubscript:@"HAS.T6.SE"];
+  stateEnd = [(HMDUserActivityType6Report *)self stateEnd];
+  [v4 setObject:stateEnd forKeyedSubscript:@"HAS.T6.SE"];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)initFromMessagePayload:(id)a3 withUser:(id)a4
+- (id)initFromMessagePayload:(id)payload withUser:(id)user
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_numberForKey:@"HAS.T6.S"];
+  payloadCopy = payload;
+  userCopy = user;
+  v8 = [payloadCopy hmf_numberForKey:@"HAS.T6.S"];
   if (v8)
   {
-    v9 = [v6 hmf_dateForKey:@"HAS.T6.SE"];
+    v9 = [payloadCopy hmf_dateForKey:@"HAS.T6.SE"];
     v18.receiver = self;
     v18.super_class = HMDUserActivityType6Report;
-    v10 = [(HMDUserActivityReport *)&v18 initFromMessagePayload:v6 withUser:v7];
+    v10 = [(HMDUserActivityReport *)&v18 initFromMessagePayload:payloadCopy withUser:userCopy];
     if (v10)
     {
       *(v10 + 5) = [v8 unsignedIntValue];
       objc_storeStrong(v10 + 6, v9);
     }
 
-    v11 = v10;
+    selfCopy = v10;
 
-    v12 = v11;
+    v12 = selfCopy;
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -155,17 +155,17 @@
   return v12;
 }
 
-- (HMDUserActivityType6Report)initWithUser:(id)a3 state:(unint64_t)a4 stateEnd:(id)a5 withReason:(unint64_t)a6 changedTimestamp:(id)a7 lastUpdateTimestamp:(id)a8
+- (HMDUserActivityType6Report)initWithUser:(id)user state:(unint64_t)state stateEnd:(id)end withReason:(unint64_t)reason changedTimestamp:(id)timestamp lastUpdateTimestamp:(id)updateTimestamp
 {
-  v15 = a5;
+  endCopy = end;
   v19.receiver = self;
   v19.super_class = HMDUserActivityType6Report;
-  v16 = [(HMDUserActivityReport *)&v19 initWithUser:a3 withReason:a6 changedTimestamp:a7 lastUpdateTimestamp:a8];
+  v16 = [(HMDUserActivityReport *)&v19 initWithUser:user withReason:reason changedTimestamp:timestamp lastUpdateTimestamp:updateTimestamp];
   v17 = v16;
   if (v16)
   {
-    v16->_state = a4;
-    objc_storeStrong(&v16->_stateEnd, a5);
+    v16->_state = state;
+    objc_storeStrong(&v16->_stateEnd, end);
   }
 
   return v17;

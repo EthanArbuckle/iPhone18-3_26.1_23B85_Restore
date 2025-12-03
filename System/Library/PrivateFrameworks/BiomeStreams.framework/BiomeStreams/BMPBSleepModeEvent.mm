@@ -1,18 +1,18 @@
 @interface BMPBSleepModeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSleepModeChangeReason:(id)a3;
-- (int)StringAsSleepModeState:(id)a3;
+- (int)StringAsSleepModeChangeReason:(id)reason;
+- (int)StringAsSleepModeState:(id)state;
 - (int)sleepModeChangeReason;
 - (int)sleepModeState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSleepModeChangeReason:(BOOL)a3;
-- (void)setHasSleepModeState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSleepModeChangeReason:(BOOL)reason;
+- (void)setHasSleepModeState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSleepModeEvent
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasSleepModeState:(BOOL)a3
+- (void)setHasSleepModeState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -45,20 +45,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSleepModeState:(id)a3
+- (int)StringAsSleepModeState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WindDown"])
+  else if ([stateCopy isEqualToString:@"WindDown"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Bedtime"])
+  else if ([stateCopy isEqualToString:@"Bedtime"])
   {
     v4 = 2;
   }
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)setHasSleepModeChangeReason:(BOOL)a3
+- (void)setHasSleepModeChangeReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -99,55 +99,55 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsSleepModeChangeReason:(id)a3
+- (int)StringAsSleepModeChangeReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UserRequested"])
+  else if ([reasonCopy isEqualToString:@"UserRequested"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Expected"])
+  else if ([reasonCopy isEqualToString:@"Expected"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CloudSynced"])
+  else if ([reasonCopy isEqualToString:@"CloudSynced"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CloudSyncedUserRequested"])
+  else if ([reasonCopy isEqualToString:@"CloudSyncedUserRequested"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NanoSynced"])
+  else if ([reasonCopy isEqualToString:@"NanoSynced"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TurnedOffDND"])
+  else if ([reasonCopy isEqualToString:@"TurnedOffDND"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([reasonCopy isEqualToString:@"Other"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Automation"])
+  else if ([reasonCopy isEqualToString:@"Automation"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CloudSyncedAutomation"])
+  else if ([reasonCopy isEqualToString:@"CloudSyncedAutomation"])
   {
     v4 = 9;
   }
@@ -166,15 +166,15 @@
   v8.receiver = self;
   v8.super_class = BMPBSleepModeEvent;
   v4 = [(BMPBSleepModeEvent *)&v8 description];
-  v5 = [(BMPBSleepModeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSleepModeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -189,7 +189,7 @@
       v8 = *(&off_1E6E53670 + sleepModeState);
     }
 
-    [v3 setObject:v8 forKey:@"sleepModeState"];
+    [dictionary setObject:v8 forKey:@"sleepModeState"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -220,7 +220,7 @@ LABEL_3:
     v10 = *(&off_1E6E53688 + sleepModeChangeReason);
   }
 
-  [v3 setObject:v10 forKey:@"sleepModeChangeReason"];
+  [dictionary setObject:v10 forKey:@"sleepModeChangeReason"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -229,23 +229,23 @@ LABEL_3:
 
 LABEL_4:
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_expectedEndDate];
-  [v3 setObject:v5 forKey:@"expectedEndDate"];
+  [dictionary setObject:v5 forKey:@"expectedEndDate"];
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     sleepModeState = self->_sleepModeState;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -266,26 +266,26 @@ LABEL_3:
 
   sleepModeChangeReason = self->_sleepModeChangeReason;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     expectedEndDate = self->_expectedEndDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[5] = self->_sleepModeState;
-    *(v4 + 24) |= 4u;
+    toCopy[5] = self->_sleepModeState;
+    *(toCopy + 24) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -304,21 +304,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_sleepModeChangeReason;
-  *(v4 + 24) |= 2u;
+  toCopy[4] = self->_sleepModeChangeReason;
+  *(toCopy + 24) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = *&self->_expectedEndDate;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = *&self->_expectedEndDate;
+    *(toCopy + 24) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -355,23 +355,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_sleepModeState != *(v4 + 5))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_sleepModeState != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -380,21 +380,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_sleepModeChangeReason != *(v4 + 4))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_sleepModeChangeReason != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 24) & 1) == 0;
+  v5 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_expectedEndDate != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_expectedEndDate != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -471,15 +471,15 @@ LABEL_4:
   return v5 ^ v4 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) != 0)
   {
-    self->_sleepModeState = *(v4 + 5);
+    self->_sleepModeState = *(fromCopy + 5);
     *&self->_has |= 4u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -492,17 +492,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 2) == 0)
+  else if ((*(fromCopy + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sleepModeChangeReason = *(v4 + 4);
+  self->_sleepModeChangeReason = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
 LABEL_4:
-    self->_expectedEndDate = *(v4 + 1);
+    self->_expectedEndDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

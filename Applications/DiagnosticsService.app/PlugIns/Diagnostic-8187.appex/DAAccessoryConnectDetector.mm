@@ -1,22 +1,22 @@
 @interface DAAccessoryConnectDetector
-- (DAAccessoryConnectDetector)initWithModelNumbers:(id)a3;
-- (void)accessoryDidConnect:(id)a3;
+- (DAAccessoryConnectDetector)initWithModelNumbers:(id)numbers;
+- (void)accessoryDidConnect:(id)connect;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation DAAccessoryConnectDetector
 
-- (DAAccessoryConnectDetector)initWithModelNumbers:(id)a3
+- (DAAccessoryConnectDetector)initWithModelNumbers:(id)numbers
 {
-  v5 = a3;
+  numbersCopy = numbers;
   v9.receiver = self;
   v9.super_class = DAAccessoryConnectDetector;
   v6 = [(DAAccessoryConnectDetector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modelNumbers, a3);
+    objc_storeStrong(&v6->_modelNumbers, numbers);
   }
 
   return v7;
@@ -31,20 +31,20 @@
   [v4 registerForLocalNotifications];
 }
 
-- (void)accessoryDidConnect:(id)a3
+- (void)accessoryDidConnect:(id)connect
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:EAAccessoryKey];
-  v6 = [v5 modelNumber];
+  userInfo = [connect userInfo];
+  v5 = [userInfo objectForKeyedSubscript:EAAccessoryKey];
+  modelNumber = [v5 modelNumber];
 
   v7 = [NSNumber alloc];
-  v8 = [(DAAccessoryConnectDetector *)self modelNumbers];
-  v9 = [v7 initWithBool:{objc_msgSend(v8, "containsObject:", v6)}];
+  modelNumbers = [(DAAccessoryConnectDetector *)self modelNumbers];
+  v9 = [v7 initWithBool:{objc_msgSend(modelNumbers, "containsObject:", modelNumber)}];
 
   v10 = +[NSNotificationCenter defaultCenter];
   v12[0] = @"accessoryModelNumber";
   v12[1] = @"accessoryModelNumberInList";
-  v13[0] = v6;
+  v13[0] = modelNumber;
   v13[1] = v9;
   v11 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
   [v10 postNotificationName:@"AccessoryConnectedNotification" object:0 userInfo:v11];

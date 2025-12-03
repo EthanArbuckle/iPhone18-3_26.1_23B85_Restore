@@ -1,23 +1,23 @@
 @interface ML3MatchImportOperation
-- (BOOL)_performMatchImportWithTransaction:(id)a3;
+- (BOOL)_performMatchImportWithTransaction:(id)transaction;
 - (void)main;
 @end
 
 @implementation ML3MatchImportOperation
 
-- (BOOL)_performMatchImportWithTransaction:(id)a3
+- (BOOL)_performMatchImportWithTransaction:(id)transaction
 {
-  v4 = [a3 connection];
+  connection = [transaction connection];
   if (([(ML3MatchImportOperation *)self isCancelled]& 1) != 0)
   {
     goto LABEL_4;
   }
 
-  if ([(ML3DAAPImportOperation *)self performImportOfSourceType:2 usingConnection:v4])
+  if ([(ML3DAAPImportOperation *)self performImportOfSourceType:2 usingConnection:connection])
   {
-    v5 = [(ML3ImportOperation *)self import];
-    v6 = [v5 library];
-    [v6 notifyKeepLocalStateDidChange];
+    import = [(ML3ImportOperation *)self import];
+    library = [import library];
+    [library notifyKeepLocalStateDidChange];
 
 LABEL_4:
     v7 = 1;
@@ -40,16 +40,16 @@ LABEL_8:
 - (void)main
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [(ML3ImportOperation *)self import];
-  v5 = [v4 trackData];
-  if (v5)
+  import = [(ML3ImportOperation *)self import];
+  trackData = [import trackData];
+  if (trackData)
   {
     goto LABEL_6;
   }
 
-  v5 = [(ML3ImportOperation *)self import];
-  v6 = [v5 playlistData];
-  if (v6)
+  trackData = [(ML3ImportOperation *)self import];
+  playlistData = [trackData playlistData];
+  if (playlistData)
   {
 LABEL_5:
 
@@ -57,24 +57,24 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(ML3ImportOperation *)self import];
-  v7 = [v6 albumArtistData];
-  if (v7)
+  playlistData = [(ML3ImportOperation *)self import];
+  albumArtistData = [playlistData albumArtistData];
+  if (albumArtistData)
   {
 
     goto LABEL_5;
   }
 
-  v15 = [(ML3ImportOperation *)self import];
-  v16 = [v15 albumData];
+  import2 = [(ML3ImportOperation *)self import];
+  albumData = [import2 albumData];
 
-  if (v16)
+  if (albumData)
   {
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ML3MatchImportOperation.mm" lineNumber:39 description:@"Attempted to start match import operation without DAAP payload data."];
+  import = [MEMORY[0x277CCA890] currentHandler];
+  [import handleFailureInMethod:a2 object:self file:@"ML3MatchImportOperation.mm" lineNumber:39 description:@"Attempted to start match import operation without DAAP payload data."];
 LABEL_7:
 
 LABEL_8:
@@ -98,11 +98,11 @@ LABEL_8:
   v10 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ML3MatchImportOperation *)self isCancelled];
+    isCancelled = [(ML3MatchImportOperation *)self isCancelled];
     v12 = *(v19 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v23 = v11;
+    v23 = isCancelled;
     v24 = 1024;
     v25 = v12;
     v26 = 2048;

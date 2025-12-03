@@ -1,9 +1,9 @@
 @interface ADRemoteRequestHelper
-+ (id)requestWithActivityInfo:(id)a3;
-+ (void)getInfoForHandoffPayload:(id)a3 userInfo:(id *)a4 wepageURL:(id *)a5;
-- (ADRemoteRequestHelper)initWithQueue:(id)a3;
++ (id)requestWithActivityInfo:(id)info;
++ (void)getInfoForHandoffPayload:(id)payload userInfo:(id *)info wepageURL:(id *)l;
+- (ADRemoteRequestHelper)initWithQueue:(id)queue;
 - (id)userNotificationRequestForRemoteRequest;
-- (void)setRemoteRequestInfo:(id)a3;
+- (void)setRemoteRequestInfo:(id)info;
 @end
 
 @implementation ADRemoteRequestHelper
@@ -27,14 +27,14 @@
 
     if (sub_10021619C())
     {
-      v6 = [v4 localizations];
+      localizations = [v4 localizations];
       v7 = +[NSUserDefaults standardUserDefaults];
       v8 = [v7 objectForKey:@"AppleLanguages"];
-      v9 = [NSBundle preferredLocalizationsFromArray:v6 forPreferences:v8];
-      v10 = [v9 firstObject];
+      v9 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v8];
+      firstObject = [v9 firstObject];
 
       v11 = +[NSBundle mainBundle];
-      v12 = [v11 localizedStringForKey:v5 value:0 table:0 localization:v10];
+      v12 = [v11 localizedStringForKey:v5 value:0 table:0 localization:firstObject];
     }
 
     else
@@ -42,12 +42,12 @@
       v12 = [v4 localizedStringForKey:v5 value:0 table:0];
     }
 
-    v14 = [(AFRequestInfo *)self->_remoteRequestInfo handoffOriginDeviceName];
-    v15 = [NSString stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v14];
+    handoffOriginDeviceName = [(AFRequestInfo *)self->_remoteRequestInfo handoffOriginDeviceName];
+    v15 = [NSString stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, handoffOriginDeviceName];
 
     [v3 setTitle:v15];
-    v16 = [(AFRequestInfo *)self->_remoteRequestInfo handoffNotification];
-    [v3 setBody:v16];
+    handoffNotification = [(AFRequestInfo *)self->_remoteRequestInfo handoffNotification];
+    [v3 setBody:handoffNotification];
 
     v13 = [UNNotificationRequest requestWithIdentifier:self->_handoffNotificationID content:v3 trigger:0];
   }
@@ -60,10 +60,10 @@
   return v13;
 }
 
-- (void)setRemoteRequestInfo:(id)a3
+- (void)setRemoteRequestInfo:(id)info
 {
-  v9 = a3;
-  objc_storeStrong(&self->_remoteRequestInfo, a3);
+  infoCopy = info;
+  objc_storeStrong(&self->_remoteRequestInfo, info);
   if (self->_handoffNotificationID)
   {
     v5 = +[ADUserNotificationServiceProvider personalDomainNotificationProvider];
@@ -71,34 +71,34 @@
   }
 
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
   handoffNotificationID = self->_handoffNotificationID;
-  self->_handoffNotificationID = v7;
+  self->_handoffNotificationID = uUIDString;
 }
 
-- (ADRemoteRequestHelper)initWithQueue:(id)a3
+- (ADRemoteRequestHelper)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADRemoteRequestHelper;
   v6 = [(ADRemoteRequestHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-+ (void)getInfoForHandoffPayload:(id)a3 userInfo:(id *)a4 wepageURL:(id *)a5
++ (void)getInfoForHandoffPayload:(id)payload userInfo:(id *)info wepageURL:(id *)l
 {
-  v7 = [a3 handoffPayload];
+  handoffPayload = [payload handoffPayload];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 sessionHandoffData];
-    v9 = [v8 copy];
+    sessionHandoffData = [handoffPayload sessionHandoffData];
+    v9 = [sessionHandoffData copy];
 
     if (v9)
     {
@@ -122,7 +122,7 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v12 = 0;
-    if (!a4)
+    if (!info)
     {
       goto LABEL_12;
     }
@@ -130,29 +130,29 @@
     goto LABEL_11;
   }
 
-  v11 = [v7 link];
-  v12 = [v11 copy];
+  link = [handoffPayload link];
+  v12 = [link copy];
 
-  if (a4)
+  if (info)
   {
 LABEL_11:
     v13 = v10;
-    *a4 = v10;
+    *info = v10;
   }
 
 LABEL_12:
-  if (a5)
+  if (l)
   {
     v14 = v12;
-    *a5 = v12;
+    *l = v12;
   }
 }
 
-+ (id)requestWithActivityInfo:(id)a3
++ (id)requestWithActivityInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(SAStartHandoffRequest);
-  v5 = [v3 objectForKey:@"Data"];
+  v5 = [infoCopy objectForKey:@"Data"];
 
   [v4 setHandoffData:v5];
 

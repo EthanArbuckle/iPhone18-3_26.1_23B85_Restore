@@ -1,8 +1,8 @@
 @interface BWMotionSampleRingBuffer
 - (double)duration;
-- (uint64_t)addMotionDataToRingBuffer:(int)a3 withSampleCount:;
+- (uint64_t)addMotionDataToRingBuffer:(int)buffer withSampleCount:;
 - (void)dealloc;
-- (void)initWithMaxDuration:(void *)a1;
+- (void)initWithMaxDuration:(void *)duration;
 @end
 
 @implementation BWMotionSampleRingBuffer
@@ -10,15 +10,15 @@
 - (double)duration
 {
   result = 0.0;
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (v2)
     {
       v3 = *(v2 + 16);
       if ((*(v2 + 20) + *(v2 + 24) - v3) % *(v2 + 24) >= 1)
       {
-        return *([(BWRingBuffer *)*(a1 + 8) lastElement]+ 8) - *(*(v2 + 8) + *(v2 + 32) * v3 + 8);
+        return *([(BWRingBuffer *)*(self + 8) lastElement]+ 8) - *(*(v2 + 8) + *(v2 + 32) * v3 + 8);
       }
     }
   }
@@ -33,14 +33,14 @@
   [(BWMotionSampleRingBuffer *)&v3 dealloc];
 }
 
-- (void)initWithMaxDuration:(void *)a1
+- (void)initWithMaxDuration:(void *)duration
 {
-  if (!a1)
+  if (!duration)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = duration;
   v7.super_class = BWMotionSampleRingBuffer;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   v4 = v3;
@@ -60,14 +60,14 @@
   return v4;
 }
 
-- (uint64_t)addMotionDataToRingBuffer:(int)a3 withSampleCount:
+- (uint64_t)addMotionDataToRingBuffer:(int)buffer withSampleCount:
 {
   if (result)
   {
     v5 = result;
     mach_absolute_time();
     v6 = FigHostTimeToNanoseconds();
-    if (a3 >= 1)
+    if (buffer >= 1)
     {
       v14 = 0;
       v15 = (v6 / 1000) / 1000000.0;
@@ -83,7 +83,7 @@
         v14 += 3;
       }
 
-      while (v14 < a3);
+      while (v14 < buffer);
     }
 
     v18 = *(v5 + 8);

@@ -3,39 +3,39 @@
 - (BOOL)isAnyServiceSupported;
 - (BOOL)isMessagingServiceAvailable;
 - (BOOL)isSupported;
-- (CCUISatelliteMonitor)initWithQueue:(id)a3;
+- (CCUISatelliteMonitor)initWithQueue:(id)queue;
 - (CCUISatelliteMonitorDelegate)delegate;
 - (unint64_t)_calculateState;
-- (void)_disconnectFromSatelliteWithCompletion:(id)a3;
-- (void)_manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6;
+- (void)_disconnectFromSatelliteWithCompletion:(id)completion;
+- (void)_manager:(id)_manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context;
 - (void)_reevaluateState;
 - (void)disconnectFromSatellite;
-- (void)notifyDelegateOfStateChange:(unint64_t)a3;
+- (void)notifyDelegateOfStateChange:(unint64_t)change;
 - (void)start;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 - (void)turnOff;
 @end
 
 @implementation CCUISatelliteMonitor
 
-- (CCUISatelliteMonitor)initWithQueue:(id)a3
+- (CCUISatelliteMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CCUISatelliteMonitor;
   v6 = [(CCUISatelliteMonitor *)&v14 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:v5];
+    v7 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:queueCopy];
     client = v6->_client;
     v6->_client = v7;
 
-    objc_storeStrong(&v6->_queue, a3);
-    v9 = [objc_alloc(MEMORY[0x277CC3768]) initWithDelegate:v6 queue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v9 = [objc_alloc(MEMORY[0x277CC3768]) initWithDelegate:v6 queue:queueCopy];
     stewieStateMonitor = v6->_stewieStateMonitor;
     v6->_stewieStateMonitor = v9;
 
-    v11 = [objc_alloc(MEMORY[0x277D18740]) initWithQueue:v5 error:0];
+    v11 = [objc_alloc(MEMORY[0x277D18740]) initWithQueue:queueCopy error:0];
     offGridStateManager = v6->_offGridStateManager;
     v6->_offGridStateManager = v11;
 
@@ -49,7 +49,7 @@
 - (BOOL)canShowDemo
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
+  getState = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
   [(CCUISatelliteMonitor *)self _satelliteServices];
   v9 = 0u;
   v10 = 0u;
@@ -68,7 +68,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 isDemoAllowedForService:{objc_msgSend(*(*(&v9 + 1) + 8 * i), "integerValue", v9)}])
+        if ([getState isDemoAllowedForService:{objc_msgSend(*(*(&v9 + 1) + 8 * i), "integerValue", v9)}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -178,19 +178,19 @@ void __47__CCUISatelliteMonitor_disconnectFromSatellite__block_invoke_2(uint64_t
   }
 }
 
-- (void)_disconnectFromSatelliteWithCompletion:(id)a3
+- (void)_disconnectFromSatelliteWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CC3748]);
   [v5 setReason:1];
-  v6 = [(CCUISatelliteMonitor *)self client];
+  client = [(CCUISatelliteMonitor *)self client];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__CCUISatelliteMonitor__disconnectFromSatelliteWithCompletion___block_invoke;
   v8[3] = &unk_278382C50;
-  v9 = v4;
-  v7 = v4;
-  [v6 exitStewieWithContext:v5 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [client exitStewieWithContext:v5 completion:v8];
 }
 
 - (BOOL)isSupported
@@ -201,21 +201,21 @@ void __47__CCUISatelliteMonitor_disconnectFromSatellite__block_invoke_2(uint64_t
   v4 = v3;
   if (v7)
   {
-    v5 = 0;
+    hwSupport = 0;
   }
 
   else
   {
-    v5 = [v3 hwSupport];
+    hwSupport = [v3 hwSupport];
   }
 
-  return v5;
+  return hwSupport;
 }
 
 - (BOOL)isAnyServiceSupported
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
+  getState = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
   [(CCUISatelliteMonitor *)self _satelliteServices];
   v12 = 0u;
   v13 = 0u;
@@ -236,7 +236,7 @@ void __47__CCUISatelliteMonitor_disconnectFromSatellite__block_invoke_2(uint64_t
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v3 isAllowedService:{objc_msgSend(v9, "integerValue", v12)}] & 1) != 0 || (objc_msgSend(v3, "isDemoAllowedForService:", objc_msgSend(v9, "integerValue")))
+        if ([getState isAllowedService:{objc_msgSend(v9, "integerValue", v12)}] & 1) != 0 || (objc_msgSend(getState, "isDemoAllowedForService:", objc_msgSend(v9, "integerValue")))
         {
           v10 = 1;
           goto LABEL_13;
@@ -264,13 +264,13 @@ LABEL_13:
   return v10;
 }
 
-- (void)notifyDelegateOfStateChange:(unint64_t)a3
+- (void)notifyDelegateOfStateChange:(unint64_t)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained satelliteMonitor:self didChangeState:a3];
+  [WeakRetained satelliteMonitor:self didChangeState:change];
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -283,10 +283,10 @@ LABEL_13:
 - (void)_reevaluateState
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CCUISatelliteMonitor *)self _calculateState];
-  if (v3 != self->_state)
+  _calculateState = [(CCUISatelliteMonitor *)self _calculateState];
+  if (_calculateState != self->_state)
   {
-    v4 = v3;
+    v4 = _calculateState;
     v5 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
     {
@@ -310,13 +310,13 @@ LABEL_13:
 {
   if ([(CCUISatelliteMonitor *)self isAnyServiceSupported])
   {
-    v3 = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
-    if ([v3 displayStewieInStatusBar])
+    getState = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
+    if ([getState displayStewieInStatusBar])
     {
-      v4 = [(CCUISatelliteMonitor *)self isMessagingServiceAvailable];
-      if (([v3 isStewieActiveOverBB] & 1) == 0)
+      isMessagingServiceAvailable = [(CCUISatelliteMonitor *)self isMessagingServiceAvailable];
+      if (([getState isStewieActiveOverBB] & 1) == 0)
       {
-        if (self->_offGridMode == 2 && v4)
+        if (self->_offGridMode == 2 && isMessagingServiceAvailable)
         {
           v5 = 3;
         }
@@ -332,13 +332,13 @@ LABEL_13:
       if (!self->_offGridModePublishStatus)
       {
         offGridMode = self->_offGridMode;
-        if (offGridMode == 2 && v4)
+        if (offGridMode == 2 && isMessagingServiceAvailable)
         {
           v5 = 4;
           goto LABEL_11;
         }
 
-        if (offGridMode == 1 && v4)
+        if (offGridMode == 1 && isMessagingServiceAvailable)
         {
           v5 = 6;
           goto LABEL_11;
@@ -363,32 +363,32 @@ LABEL_11:
 
 - (BOOL)isMessagingServiceAvailable
 {
-  v2 = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
-  if ([v2 isAllowedService:16] & 1) != 0 || (objc_msgSend(v2, "isAllowedService:", 32) & 1) != 0 || (objc_msgSend(v2, "isActiveService:", 16))
+  getState = [(CTStewieStateMonitor *)self->_stewieStateMonitor getState];
+  if ([getState isAllowedService:16] & 1) != 0 || (objc_msgSend(getState, "isAllowedService:", 32) & 1) != 0 || (objc_msgSend(getState, "isActiveService:", 16))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isActiveService:32];
+    v3 = [getState isActiveService:32];
   }
 
   return v3;
 }
 
-- (void)_manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6
+- (void)_manager:(id)_manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__CCUISatelliteMonitor__manager_offGridModeUpdated_publishStatus_context___block_invoke;
   block[3] = &unk_278382C78;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = updated;
+  block[6] = status;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v8 = [(CCUISatelliteMonitor *)self waitingForOffGridModeToDisableBeforeDisconnecting];
-  if (a5 == 1 && v8)
+  waitingForOffGridModeToDisableBeforeDisconnecting = [(CCUISatelliteMonitor *)self waitingForOffGridModeToDisableBeforeDisconnecting];
+  if (status == 1 && waitingForOffGridModeToDisableBeforeDisconnecting)
   {
     [(CCUISatelliteMonitor *)self disconnectFromSatellite];
   }

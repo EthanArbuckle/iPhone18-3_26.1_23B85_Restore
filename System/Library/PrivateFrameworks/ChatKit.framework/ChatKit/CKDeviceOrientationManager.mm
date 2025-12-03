@@ -5,12 +5,12 @@
 - (CKDeviceOrientationManagerDelegate)delegate;
 - (int64_t)_springboardDeviceLockOrientation;
 - (int64_t)currentDeviceOrientation;
-- (void)_broadcastOrientation:(int64_t)a3;
+- (void)_broadcastOrientation:(int64_t)orientation;
 - (void)_updateListeningState;
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4;
-- (void)beginListeningForOrientationEventsWithKey:(id)a3;
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation;
+- (void)beginListeningForOrientationEventsWithKey:(id)key;
 - (void)dealloc;
-- (void)endListeningForOrientationEventsWithKey:(id)a3;
+- (void)endListeningForOrientationEventsWithKey:(id)key;
 - (void)invalidate;
 @end
 
@@ -18,17 +18,17 @@
 
 - (void)_updateListeningState
 {
-  v3 = [(CKDeviceOrientationManager *)self accelerometer];
-  v4 = [v3 passiveOrientationEvents];
+  accelerometer = [(CKDeviceOrientationManager *)self accelerometer];
+  passiveOrientationEvents = [accelerometer passiveOrientationEvents];
 
-  v5 = [(CKDeviceOrientationManager *)self _wantsOrientationEvents];
-  v6 = [(CKDeviceOrientationManager *)self accelerometer];
-  [v6 setPassiveOrientationEvents:!v5];
+  _wantsOrientationEvents = [(CKDeviceOrientationManager *)self _wantsOrientationEvents];
+  accelerometer2 = [(CKDeviceOrientationManager *)self accelerometer];
+  [accelerometer2 setPassiveOrientationEvents:!_wantsOrientationEvents];
 
-  if (v4 && v5)
+  if (passiveOrientationEvents && _wantsOrientationEvents)
   {
-    v7 = [(CKDeviceOrientationManager *)self accelerometer];
-    -[CKDeviceOrientationManager _broadcastOrientation:](self, "_broadcastOrientation:", [v7 currentDeviceOrientation]);
+    accelerometer3 = [(CKDeviceOrientationManager *)self accelerometer];
+    -[CKDeviceOrientationManager _broadcastOrientation:](self, "_broadcastOrientation:", [accelerometer3 currentDeviceOrientation]);
   }
 }
 
@@ -44,8 +44,8 @@
 
 - (BOOL)isListeningForOrientationEvents
 {
-  v2 = [(CKDeviceOrientationManager *)self listenerKeys];
-  v3 = [v2 count] != 0;
+  listenerKeys = [(CKDeviceOrientationManager *)self listenerKeys];
+  v3 = [listenerKeys count] != 0;
 
   return v3;
 }
@@ -57,9 +57,9 @@
   v2 = [(CKDeviceOrientationManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
-    [v3 addObserver:v2 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
     v4 = objc_alloc_init(MEMORY[0x1E698E380]);
     accelerometer = v2->_accelerometer;
     v2->_accelerometer = v4;
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(BKSAccelerometer *)self->_accelerometer setDelegate:0];
   [(BKSAccelerometer *)self->_accelerometer setPassiveOrientationEvents:1];
@@ -89,20 +89,20 @@
   [(CKDeviceOrientationManager *)&v4 dealloc];
 }
 
-- (void)beginListeningForOrientationEventsWithKey:(id)a3
+- (void)beginListeningForOrientationEventsWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKDeviceOrientationManager *)self listenerKeys];
-  [v5 addObject:v4];
+  keyCopy = key;
+  listenerKeys = [(CKDeviceOrientationManager *)self listenerKeys];
+  [listenerKeys addObject:keyCopy];
 
   [(CKDeviceOrientationManager *)self _updateListeningState];
 }
 
-- (void)endListeningForOrientationEventsWithKey:(id)a3
+- (void)endListeningForOrientationEventsWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKDeviceOrientationManager *)self listenerKeys];
-  [v5 removeObject:v4];
+  keyCopy = key;
+  listenerKeys = [(CKDeviceOrientationManager *)self listenerKeys];
+  [listenerKeys removeObject:keyCopy];
 
   [(CKDeviceOrientationManager *)self _updateListeningState];
 }
@@ -112,10 +112,10 @@
   result = [(CKDeviceOrientationManager *)self _springboardDeviceLockOrientation];
   if (!result)
   {
-    v4 = [(CKDeviceOrientationManager *)self accelerometer];
-    v5 = [v4 currentDeviceOrientation];
+    accelerometer = [(CKDeviceOrientationManager *)self accelerometer];
+    currentDeviceOrientation = [accelerometer currentDeviceOrientation];
 
-    return v5;
+    return currentDeviceOrientation;
   }
 
   return result;
@@ -123,34 +123,34 @@
 
 - (void)invalidate
 {
-  v3 = [(CKDeviceOrientationManager *)self listenerKeys];
-  [v3 removeAllObjects];
+  listenerKeys = [(CKDeviceOrientationManager *)self listenerKeys];
+  [listenerKeys removeAllObjects];
 
   [(CKDeviceOrientationManager *)self _updateListeningState];
 }
 
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation
 {
   if ([(CKDeviceOrientationManager *)self _wantsOrientationEvents])
   {
 
-    [(CKDeviceOrientationManager *)self _broadcastOrientation:a4];
+    [(CKDeviceOrientationManager *)self _broadcastOrientation:orientation];
   }
 }
 
 - (int64_t)_springboardDeviceLockOrientation
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v4 = @"SBLastRotationLockedOrientationiPad";
   }
 
   else
   {
-    if (v3)
+    if (userInterfaceIdiom)
     {
       return 0;
     }
@@ -168,22 +168,22 @@
   return 0;
 }
 
-- (void)_broadcastOrientation:(int64_t)a3
+- (void)_broadcastOrientation:(int64_t)orientation
 {
-  v5 = [(CKDeviceOrientationManager *)self _springboardDeviceLockOrientation];
-  v6 = [(CKDeviceOrientationManager *)self delegate];
-  v8 = v6;
-  if (v5)
+  _springboardDeviceLockOrientation = [(CKDeviceOrientationManager *)self _springboardDeviceLockOrientation];
+  delegate = [(CKDeviceOrientationManager *)self delegate];
+  v8 = delegate;
+  if (_springboardDeviceLockOrientation)
   {
-    v7 = v5;
+    orientationCopy = _springboardDeviceLockOrientation;
   }
 
   else
   {
-    v7 = a3;
+    orientationCopy = orientation;
   }
 
-  [v6 deviceOrientationManager:self orientationDidChange:v7];
+  [delegate deviceOrientationManager:self orientationDidChange:orientationCopy];
 }
 
 - (CKDeviceOrientationManagerDelegate)delegate

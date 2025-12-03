@@ -1,20 +1,20 @@
 @interface RBOriginatorPropertyDomainRestriction
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
 @end
 
 @implementation RBOriginatorPropertyDomainRestriction
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 originatorProperties];
-  if (!v7)
+  contextCopy = context;
+  originatorProperties = [contextCopy originatorProperties];
+  if (!originatorProperties)
   {
-    v8 = [v6 originatorProcess];
-    v7 = [v8 bundleProperties];
+    originatorProcess = [contextCopy originatorProcess];
+    originatorProperties = [originatorProcess bundleProperties];
   }
 
-  v9 = [(RBPropertyDomainRestriction *)self allowsWithProperties:v7 error:a4];
+  v9 = [(RBPropertyDomainRestriction *)self allowsWithProperties:originatorProperties error:error];
 
   return v9;
 }

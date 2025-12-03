@@ -1,37 +1,37 @@
 @interface _ISImageIcon
-- (_ISImageIcon)initWithCoder:(id)a3;
-- (id)initImage:(id)a3;
+- (_ISImageIcon)initWithCoder:(id)coder;
+- (id)initImage:(id)image;
 - (id)makeResourceProvider;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ISImageIcon
 
-- (id)initImage:(id)a3
+- (id)initImage:(id)image
 {
-  v4 = [a3 data];
-  v5 = [MEMORY[0x1E696AFB0] _IF_UUIDWithData:v4];
+  data = [image data];
+  v5 = [MEMORY[0x1E696AFB0] _IF_UUIDWithData:data];
   v9.receiver = self;
   v9.super_class = _ISImageIcon;
   v6 = [(ISConcreteIcon *)&v9 initWithDigest:v5];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageData, v4);
+    objc_storeStrong(&v6->_imageData, data);
   }
 
   return v7;
 }
 
-- (_ISImageIcon)initWithCoder:(id)a3
+- (_ISImageIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _ISImageIcon;
-  v5 = [(ISConcreteIcon *)&v9 initWithCoder:v4];
+  v5 = [(ISConcreteIcon *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v6;
   }
@@ -39,21 +39,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _ISImageIcon;
-  v4 = a3;
-  [(ISConcreteIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_imageData forKey:{@"imageData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ISConcreteIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_imageData forKey:{@"imageData", v5.receiver, v5.super_class}];
 }
 
 - (id)makeResourceProvider
 {
   v3 = objc_alloc(MEMORY[0x1E69A8988]);
   imageData = self->_imageData;
-  v5 = [(ISConcreteIcon *)self digest];
-  v6 = [v3 initWithData:imageData uuid:v5];
+  digest = [(ISConcreteIcon *)self digest];
+  v6 = [v3 initWithData:imageData uuid:digest];
 
   v7 = [[ISResourceProvider alloc] initWithResource:v6 templateResource:0];
 

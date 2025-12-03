@@ -1,18 +1,18 @@
 @interface _CPStartNetworkSearchFeedback
 + (id)startSearchFeedbackWithUUID;
-- (BOOL)getHeaders:(id *)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getHeaders:(id *)headers forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (_CPStartNetworkSearchFeedback)init;
-- (_CPStartNetworkSearchFeedback)initWithFacade:(id)a3;
+- (_CPStartNetworkSearchFeedback)initWithFacade:(id)facade;
 - (int)lookupSelectionType;
 - (int)triggerEvent;
 - (unint64_t)hash;
 - (void)clearTrigger;
-- (void)setHeaders:(id)a3;
-- (void)setHeaders:(id)a3 forKey:(id)a4;
-- (void)setLookupSelectionType:(int)a3;
-- (void)setTriggerEvent:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)setHeaders:(id)headers;
+- (void)setHeaders:(id)headers forKey:(id)key;
+- (void)setLookupSelectionType:(int)type;
+- (void)setTriggerEvent:(int)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPStartNetworkSearchFeedback
@@ -31,34 +31,34 @@
   return v8 ^ v11 ^ [(NSString *)self->_treatmentId hash]^ (2654435761 * self->_searchType) ^ (2654435761u * self->_rawRequestSize) ^ (2654435761u * self->_compressedRequestSize);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_42;
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self input];
-  v7 = [v4 input];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_41;
   }
 
-  v8 = [(_CPStartNetworkSearchFeedback *)self input];
-  if (v8)
+  input3 = [(_CPStartNetworkSearchFeedback *)self input];
+  if (input3)
   {
-    v9 = v8;
-    v10 = [(_CPStartNetworkSearchFeedback *)self input];
-    v11 = [v4 input];
-    v12 = [v10 isEqual:v11];
+    v9 = input3;
+    input4 = [(_CPStartNetworkSearchFeedback *)self input];
+    input5 = [equalCopy input];
+    v12 = [input4 isEqual:input5];
 
     if (!v12)
     {
@@ -70,20 +70,20 @@
   {
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self uuid];
-  v7 = [v4 uuid];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self uuid];
+  input2 = [equalCopy uuid];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_41;
   }
 
-  v13 = [(_CPStartNetworkSearchFeedback *)self uuid];
-  if (v13)
+  uuid = [(_CPStartNetworkSearchFeedback *)self uuid];
+  if (uuid)
   {
-    v14 = v13;
-    v15 = [(_CPStartNetworkSearchFeedback *)self uuid];
-    v16 = [v4 uuid];
-    v17 = [v15 isEqual:v16];
+    v14 = uuid;
+    uuid2 = [(_CPStartNetworkSearchFeedback *)self uuid];
+    uuid3 = [equalCopy uuid];
+    v17 = [uuid2 isEqual:uuid3];
 
     if (!v17)
     {
@@ -96,14 +96,14 @@
   }
 
   queryId = self->_queryId;
-  if (queryId != [v4 queryId])
+  if (queryId != [equalCopy queryId])
   {
     goto LABEL_42;
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self url];
-  v7 = [v4 url];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self url];
+  input2 = [equalCopy url];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_41;
   }
@@ -113,7 +113,7 @@
   {
     v20 = v19;
     v21 = [(_CPStartNetworkSearchFeedback *)self url];
-    v22 = [v4 url];
+    v22 = [equalCopy url];
     v23 = [v21 isEqual:v22];
 
     if (!v23)
@@ -126,20 +126,20 @@
   {
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self headers];
-  v7 = [v4 headers];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self headers];
+  input2 = [equalCopy headers];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_41;
   }
 
-  v24 = [(_CPStartNetworkSearchFeedback *)self headers];
-  if (v24)
+  headers = [(_CPStartNetworkSearchFeedback *)self headers];
+  if (headers)
   {
-    v25 = v24;
-    v26 = [(_CPStartNetworkSearchFeedback *)self headers];
-    v27 = [v4 headers];
-    v28 = [v26 isEqual:v27];
+    v25 = headers;
+    headers2 = [(_CPStartNetworkSearchFeedback *)self headers];
+    headers3 = [equalCopy headers];
+    v28 = [headers2 isEqual:headers3];
 
     if (!v28)
     {
@@ -152,37 +152,37 @@
   }
 
   endpoint = self->_endpoint;
-  if (endpoint != [v4 endpoint])
+  if (endpoint != [equalCopy endpoint])
   {
     goto LABEL_42;
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_42;
   }
 
   lookupSelectionType = self->_lookupSelectionType;
-  if (lookupSelectionType != [v4 lookupSelectionType])
+  if (lookupSelectionType != [equalCopy lookupSelectionType])
   {
     goto LABEL_42;
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self bodyData];
-  v7 = [v4 bodyData];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self bodyData];
+  input2 = [equalCopy bodyData];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_41;
   }
 
-  v32 = [(_CPStartNetworkSearchFeedback *)self bodyData];
-  if (v32)
+  bodyData = [(_CPStartNetworkSearchFeedback *)self bodyData];
+  if (bodyData)
   {
-    v33 = v32;
-    v34 = [(_CPStartNetworkSearchFeedback *)self bodyData];
-    v35 = [v4 bodyData];
-    v36 = [v34 isEqual:v35];
+    v33 = bodyData;
+    bodyData2 = [(_CPStartNetworkSearchFeedback *)self bodyData];
+    bodyData3 = [equalCopy bodyData];
+    v36 = [bodyData2 isEqual:bodyData3];
 
     if (!v36)
     {
@@ -194,20 +194,20 @@
   {
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self experimentId];
-  v7 = [v4 experimentId];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self experimentId];
+  input2 = [equalCopy experimentId];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_41;
   }
 
-  v37 = [(_CPStartNetworkSearchFeedback *)self experimentId];
-  if (v37)
+  experimentId = [(_CPStartNetworkSearchFeedback *)self experimentId];
+  if (experimentId)
   {
-    v38 = v37;
-    v39 = [(_CPStartNetworkSearchFeedback *)self experimentId];
-    v40 = [v4 experimentId];
-    v41 = [v39 isEqual:v40];
+    v38 = experimentId;
+    experimentId2 = [(_CPStartNetworkSearchFeedback *)self experimentId];
+    experimentId3 = [equalCopy experimentId];
+    v41 = [experimentId2 isEqual:experimentId3];
 
     if (!v41)
     {
@@ -219,22 +219,22 @@
   {
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self treatmentId];
-  v7 = [v4 treatmentId];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartNetworkSearchFeedback *)self treatmentId];
+  input2 = [equalCopy treatmentId];
+  if ((input != 0) == (input2 == 0))
   {
 LABEL_41:
 
     goto LABEL_42;
   }
 
-  v42 = [(_CPStartNetworkSearchFeedback *)self treatmentId];
-  if (v42)
+  treatmentId = [(_CPStartNetworkSearchFeedback *)self treatmentId];
+  if (treatmentId)
   {
-    v43 = v42;
-    v44 = [(_CPStartNetworkSearchFeedback *)self treatmentId];
-    v45 = [v4 treatmentId];
-    v46 = [v44 isEqual:v45];
+    v43 = treatmentId;
+    treatmentId2 = [(_CPStartNetworkSearchFeedback *)self treatmentId];
+    treatmentId3 = [equalCopy treatmentId];
+    v46 = [treatmentId2 isEqual:treatmentId3];
 
     if (!v46)
     {
@@ -247,13 +247,13 @@ LABEL_41:
   }
 
   searchType = self->_searchType;
-  if (searchType == [v4 searchType])
+  if (searchType == [equalCopy searchType])
   {
     rawRequestSize = self->_rawRequestSize;
-    if (rawRequestSize == [v4 rawRequestSize])
+    if (rawRequestSize == [equalCopy rawRequestSize])
     {
       compressedRequestSize = self->_compressedRequestSize;
-      v47 = compressedRequestSize == [v4 compressedRequestSize];
+      v47 = compressedRequestSize == [equalCopy compressedRequestSize];
       goto LABEL_43;
     }
   }
@@ -265,27 +265,27 @@ LABEL_43:
   return v47;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPStartNetworkSearchFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v6 = [(_CPStartNetworkSearchFeedback *)self input];
+  input = [(_CPStartNetworkSearchFeedback *)self input];
 
-  if (v6)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_CPStartNetworkSearchFeedback *)self uuid];
+  uuid = [(_CPStartNetworkSearchFeedback *)self uuid];
 
-  if (v8)
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
@@ -357,25 +357,25 @@ LABEL_43:
     PBDataWriterWriteInt32Field();
   }
 
-  v23 = [(_CPStartNetworkSearchFeedback *)self bodyData];
+  bodyData = [(_CPStartNetworkSearchFeedback *)self bodyData];
 
-  if (v23)
+  if (bodyData)
   {
     bodyData = self->_bodyData;
     PBDataWriterWriteDataField();
   }
 
-  v25 = [(_CPStartNetworkSearchFeedback *)self experimentId];
+  experimentId = [(_CPStartNetworkSearchFeedback *)self experimentId];
 
-  if (v25)
+  if (experimentId)
   {
     experimentId = self->_experimentId;
     PBDataWriterWriteStringField();
   }
 
-  v27 = [(_CPStartNetworkSearchFeedback *)self treatmentId];
+  treatmentId = [(_CPStartNetworkSearchFeedback *)self treatmentId];
 
-  if (v27)
+  if (treatmentId)
   {
     treatmentId = self->_treatmentId;
     PBDataWriterWriteStringField();
@@ -415,11 +415,11 @@ LABEL_43:
   }
 }
 
-- (void)setLookupSelectionType:(int)a3
+- (void)setLookupSelectionType:(int)type
 {
   [(_CPStartNetworkSearchFeedback *)self clearTrigger];
   self->_whichTrigger = 2;
-  self->_lookupSelectionType = a3;
+  self->_lookupSelectionType = type;
 }
 
 - (int)triggerEvent
@@ -435,26 +435,26 @@ LABEL_43:
   }
 }
 
-- (void)setTriggerEvent:(int)a3
+- (void)setTriggerEvent:(int)event
 {
   [(_CPStartNetworkSearchFeedback *)self clearTrigger];
   self->_whichTrigger = 1;
-  self->_triggerEvent = a3;
+  self->_triggerEvent = event;
 }
 
-- (void)setHeaders:(id)a3 forKey:(id)a4
+- (void)setHeaders:(id)headers forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  headersCopy = headers;
+  keyCopy = key;
   if (!self->_headers)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     headers = self->_headers;
-    self->_headers = v8;
+    self->_headers = dictionary;
   }
 
-  v10 = v7;
-  v11 = v6;
+  v10 = keyCopy;
+  v11 = headersCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -466,13 +466,13 @@ LABEL_43:
   }
 }
 
-- (BOOL)getHeaders:(id *)a3 forKey:(id)a4
+- (BOOL)getHeaders:(id *)headers forKey:(id)key
 {
-  v5 = [(NSDictionary *)self->_headers objectForKeyedSubscript:a4];
-  if (a3 && v5)
+  v5 = [(NSDictionary *)self->_headers objectForKeyedSubscript:key];
+  if (headers && v5)
   {
     v5 = v5;
-    *a3 = v5;
+    *headers = v5;
   }
 
   v6 = v5 != 0;
@@ -480,9 +480,9 @@ LABEL_43:
   return v6;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [headers mutableCopy];
   headers = self->_headers;
   self->_headers = v4;
 
@@ -510,46 +510,46 @@ LABEL_43:
   return v2;
 }
 
-- (_CPStartNetworkSearchFeedback)initWithFacade:(id)a3
+- (_CPStartNetworkSearchFeedback)initWithFacade:(id)facade
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v33.receiver = self;
   v33.super_class = _CPStartNetworkSearchFeedback;
   v5 = [(_CPStartNetworkSearchFeedback *)&v33 init];
   if (v5)
   {
-    -[_CPStartNetworkSearchFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 input];
+    -[_CPStartNetworkSearchFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    input = [facadeCopy input];
 
-    if (v6)
+    if (input)
     {
-      v7 = [v4 input];
-      [(_CPStartNetworkSearchFeedback *)v5 setInput:v7];
+      input2 = [facadeCopy input];
+      [(_CPStartNetworkSearchFeedback *)v5 setInput:input2];
     }
 
-    v8 = [v4 uuid];
+    uuid = [facadeCopy uuid];
 
-    if (v8)
+    if (uuid)
     {
-      v9 = [v4 uuid];
-      [(_CPStartNetworkSearchFeedback *)v5 setUuid:v9];
+      uuid2 = [facadeCopy uuid];
+      [(_CPStartNetworkSearchFeedback *)v5 setUuid:uuid2];
     }
 
-    -[_CPStartNetworkSearchFeedback setQueryId:](v5, "setQueryId:", [v4 queryId]);
-    v10 = [v4 url];
+    -[_CPStartNetworkSearchFeedback setQueryId:](v5, "setQueryId:", [facadeCopy queryId]);
+    v10 = [facadeCopy url];
 
     if (v10)
     {
-      v11 = [v4 url];
+      v11 = [facadeCopy url];
       [(_CPStartNetworkSearchFeedback *)v5 setUrl:v11];
     }
 
-    v12 = [v4 headers];
-    v13 = v12;
-    if (v12)
+    headers = [facadeCopy headers];
+    v13 = headers;
+    if (headers)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+      v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(headers, "count")}];
     }
 
     else
@@ -591,27 +591,27 @@ LABEL_43:
     }
 
     [(_CPStartNetworkSearchFeedback *)v5 setHeaders:v14];
-    -[_CPStartNetworkSearchFeedback setEndpoint:](v5, "setEndpoint:", [v4 endpoint]);
-    -[_CPStartNetworkSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    v22 = [v4 experimentId];
+    -[_CPStartNetworkSearchFeedback setEndpoint:](v5, "setEndpoint:", [facadeCopy endpoint]);
+    -[_CPStartNetworkSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    experimentId = [facadeCopy experimentId];
 
-    if (v22)
+    if (experimentId)
     {
-      v23 = [v4 experimentId];
-      [(_CPStartNetworkSearchFeedback *)v5 setExperimentId:v23];
+      experimentId2 = [facadeCopy experimentId];
+      [(_CPStartNetworkSearchFeedback *)v5 setExperimentId:experimentId2];
     }
 
-    v24 = [v4 treatmentId];
+    treatmentId = [facadeCopy treatmentId];
 
-    if (v24)
+    if (treatmentId)
     {
-      v25 = [v4 treatmentId];
-      [(_CPStartNetworkSearchFeedback *)v5 setTreatmentId:v25];
+      treatmentId2 = [facadeCopy treatmentId];
+      [(_CPStartNetworkSearchFeedback *)v5 setTreatmentId:treatmentId2];
     }
 
-    -[_CPStartNetworkSearchFeedback setSearchType:](v5, "setSearchType:", [v4 searchType]);
-    -[_CPStartNetworkSearchFeedback setRawRequestSize:](v5, "setRawRequestSize:", [v4 rawRequestSize]);
-    -[_CPStartNetworkSearchFeedback setCompressedRequestSize:](v5, "setCompressedRequestSize:", [v4 compressedRequestSize]);
+    -[_CPStartNetworkSearchFeedback setSearchType:](v5, "setSearchType:", [facadeCopy searchType]);
+    -[_CPStartNetworkSearchFeedback setRawRequestSize:](v5, "setRawRequestSize:", [facadeCopy rawRequestSize]);
+    -[_CPStartNetworkSearchFeedback setCompressedRequestSize:](v5, "setCompressedRequestSize:", [facadeCopy compressedRequestSize]);
     v26 = v5;
   }
 
@@ -621,10 +621,10 @@ LABEL_43:
 
 + (id)startSearchFeedbackWithUUID
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  [v2 setUuid:v4];
+  v2 = objc_alloc_init(self);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v2 setUuid:uUIDString];
 
   return v2;
 }

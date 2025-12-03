@@ -1,9 +1,9 @@
 @interface EMState
 - (EDSheet)currentSheet;
 - (EMState)init;
-- (id)cellStyleWrapperForIndex:(unint64_t)a3;
-- (id)hyperlinkForRow:(unint64_t)a3 column:(unint64_t)a4;
-- (void)setHyperlink:(id)a3 forRow:(unint64_t)a4 column:(unint64_t)a5;
+- (id)cellStyleWrapperForIndex:(unint64_t)index;
+- (id)hyperlinkForRow:(unint64_t)row column:(unint64_t)column;
+- (void)setHyperlink:(id)hyperlink forRow:(unint64_t)row column:(unint64_t)column;
 @end
 
 @implementation EMState
@@ -34,24 +34,24 @@
   return v2;
 }
 
-- (id)hyperlinkForRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)hyperlinkForRow:(unint64_t)row column:(unint64_t)column
 {
   hyperlinks = self->_hyperlinks;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4 | (a3 << 16)];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:column | (row << 16)];
   v6 = [(NSMutableDictionary *)hyperlinks objectForKey:v5];
 
   return v6;
 }
 
-- (void)setHyperlink:(id)a3 forRow:(unint64_t)a4 column:(unint64_t)a5
+- (void)setHyperlink:(id)hyperlink forRow:(unint64_t)row column:(unint64_t)column
 {
-  v10 = a3;
+  hyperlinkCopy = hyperlink;
   hyperlinks = self->_hyperlinks;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5 | (a4 << 16)];
-  [(NSMutableDictionary *)hyperlinks setObject:v10 forKey:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:column | (row << 16)];
+  [(NSMutableDictionary *)hyperlinks setObject:hyperlinkCopy forKey:v9];
 }
 
-- (id)cellStyleWrapperForIndex:(unint64_t)a3
+- (id)cellStyleWrapperForIndex:(unint64_t)index
 {
   styleWrappers = self->_styleWrappers;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -59,14 +59,14 @@
 
   if (!v7)
   {
-    v8 = [(CMState *)self document];
-    v9 = [v8 resources];
-    v10 = [v9 styles];
-    v11 = [v10 objectAtIndex:a3];
+    document = [(CMState *)self document];
+    resources = [document resources];
+    styles = [resources styles];
+    v11 = [styles objectAtIndex:index];
 
     v7 = [[EMCellStyleWrapper alloc] initWithStyle:v11];
     v12 = self->_styleWrappers;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     [(NSMutableDictionary *)v12 setObject:v7 forKeyedSubscript:v13];
   }
 

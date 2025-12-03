@@ -1,14 +1,14 @@
 @interface PPTextUnderstandingServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPTextUnderstandingServerDelegate)init;
 @end
 
 @implementation PPTextUnderstandingServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2847904D0];
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -18,7 +18,7 @@
   [v7 setClasses:v11 forSelector:sel_spotlightAttributesForBundleId_spotlightIdentifier_extractions_completion_ argumentIndex:2 ofReply:0];
 
   v12 = objc_opt_new();
-  LOBYTE(v8) = [PPXPCServerHelper shouldAcceptConnection:v6 serviceName:@"com.apple.proactive.PersonalizationPortrait.TextUnderstanding" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v12 validateConnection:&__block_literal_global_4932 setupClientProxy:0 interruptionHandler:&__block_literal_global_75 invalidationHandler:&__block_literal_global_77];
+  LOBYTE(v8) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.TextUnderstanding" allowedServerInterface:v7 allowedClientInterface:0 requestHandler:v12 validateConnection:&__block_literal_global_4932 setupClientProxy:0 interruptionHandler:&__block_literal_global_75 invalidationHandler:&__block_literal_global_77];
 
   return v8;
 }

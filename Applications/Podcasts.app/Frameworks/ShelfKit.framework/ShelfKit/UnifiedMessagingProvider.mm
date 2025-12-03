@@ -1,6 +1,6 @@
 @interface UnifiedMessagingProvider
 - (_TtC8ShelfKit24UnifiedMessagingProvider)init;
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6;
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type;
 @end
 
 @implementation UnifiedMessagingProvider
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_3D70D8(a4);
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
+  sub_3D70D8(request);
 }
 
 @end

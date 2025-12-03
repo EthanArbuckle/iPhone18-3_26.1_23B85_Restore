@@ -1,12 +1,12 @@
 @interface AppShowcaseCollectionViewCell
-- (_TtC8AppStore29AppShowcaseCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore29AppShowcaseCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppShowcaseCollectionViewCell
 
-- (_TtC8AppStore29AppShowcaseCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore29AppShowcaseCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore29AppShowcaseCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -25,13 +25,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010343C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001035A4();
 }
 

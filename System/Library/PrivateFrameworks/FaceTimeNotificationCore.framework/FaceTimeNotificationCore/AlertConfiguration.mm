@@ -1,7 +1,7 @@
 @interface AlertConfiguration
 - (_TtC24FaceTimeNotificationCore18AlertConfiguration)init;
-- (_TtC24FaceTimeNotificationCore18AlertConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC24FaceTimeNotificationCore18AlertConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AlertConfiguration
@@ -21,17 +21,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AlertConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AlertConfiguration.encode(with:)(coderCopy);
 }
 
-- (_TtC24FaceTimeNotificationCore18AlertConfiguration)initWithCoder:(id)a3
+- (_TtC24FaceTimeNotificationCore18AlertConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_24A9CE158(v3);
+  coderCopy = coder;
+  v4 = sub_24A9CE158(coderCopy);
 
   return v4;
 }

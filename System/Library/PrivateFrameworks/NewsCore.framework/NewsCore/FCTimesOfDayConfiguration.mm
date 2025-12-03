@@ -1,23 +1,23 @@
 @interface FCTimesOfDayConfiguration
 + (id)defaultConfiguration;
-- (FCTimesOfDayConfiguration)initWithDictionary:(id)a3;
+- (FCTimesOfDayConfiguration)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCTimesOfDayConfiguration
 
-- (FCTimesOfDayConfiguration)initWithDictionary:(id)a3
+- (FCTimesOfDayConfiguration)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = FCTimesOfDayConfiguration;
   v5 = [(FCTimesOfDayConfiguration *)&v25 init];
   if (v5)
   {
-    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"morning", 0);
-    v7 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"afternoon", 0);
-    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"evening", 0);
-    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"night", 0);
+    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"morning", 0);
+    v7 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"afternoon", 0);
+    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"evening", 0);
+    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"night", 0);
     v10 = v6;
     v11 = [[FCTimeOfDayConfiguration alloc] initWithDictionary:v6];
     v12 = v7;

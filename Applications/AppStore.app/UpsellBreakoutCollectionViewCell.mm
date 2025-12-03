@@ -1,14 +1,14 @@
 @interface UpsellBreakoutCollectionViewCell
 - (UIEdgeInsets)layoutMargins;
-- (_TtC8AppStore32UpsellBreakoutCollectionViewCell)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC8AppStore32UpsellBreakoutCollectionViewCell)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation UpsellBreakoutCollectionViewCell
 
-- (_TtC8AppStore32UpsellBreakoutCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore32UpsellBreakoutCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore32UpsellBreakoutCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -36,7 +36,7 @@
   v2 = v13.receiver;
   [(UpsellBreakoutCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8AppStore32UpsellBreakoutCollectionViewCell_upsellBreakoutView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100028004();
   LayoutMarginsAware<>.layoutFrame.getter();
   v6 = v5;
@@ -54,11 +54,11 @@
   [(UpsellBreakoutCollectionViewCell *)&v2 prepareForReuse];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006BFE74(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1006BFE74(attributesCopy);
 }
 
 @end

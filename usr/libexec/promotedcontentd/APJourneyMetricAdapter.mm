@@ -1,28 +1,28 @@
 @interface APJourneyMetricAdapter
-+ (id)translateWithPromotedContent:(int64_t)a3 placement:(unint64_t)a4;
++ (id)translateWithPromotedContent:(int64_t)content placement:(unint64_t)placement;
 @end
 
 @implementation APJourneyMetricAdapter
 
-+ (id)translateWithPromotedContent:(int64_t)a3 placement:(unint64_t)a4
++ (id)translateWithPromotedContent:(int64_t)content placement:(unint64_t)placement
 {
   v6 = +[NSMutableDictionary dictionary];
-  if (a3 == 5)
+  if (content == 5)
   {
-    if (a4 - 7005 >= 4)
+    if (placement - 7005 >= 4)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = qword_1003F0968[a4 - 7005];
+      v7 = qword_1003F0968[placement - 7005];
     }
   }
 
   else
   {
-    v7 = typeTranslation(a3);
+    v7 = typeTranslation(content);
   }
 
   v8 = [NSNumber numberWithInteger:v7];

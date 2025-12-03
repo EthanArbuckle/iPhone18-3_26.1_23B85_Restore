@@ -1,28 +1,28 @@
 @interface NavbarConversationTitle
 - (CGSize)intrinsicContentSize;
-- (_TtC7ChatKit23NavbarConversationTitle)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit23NavbarConversationTitle)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)preferredContentSizeCategoryDidChangeWithView:(id)a3 previousTraitCollection:(id)a4;
+- (void)preferredContentSizeCategoryDidChangeWithView:(id)view previousTraitCollection:(id)collection;
 @end
 
 @implementation NavbarConversationTitle
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908FA8C8(type metadata accessor for NavbarConversationTitle);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908FAA40();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1908FACEC();
   v5 = v4;
 
@@ -33,15 +33,15 @@
   return result;
 }
 
-- (void)preferredContentSizeCategoryDidChangeWithView:(id)a3 previousTraitCollection:(id)a4
+- (void)preferredContentSizeCategoryDidChangeWithView:(id)view previousTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  viewCopy = view;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1908FB448();
 }
 
-- (_TtC7ChatKit23NavbarConversationTitle)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit23NavbarConversationTitle)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

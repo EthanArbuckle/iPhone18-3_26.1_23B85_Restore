@@ -1,26 +1,26 @@
 @interface SBUIPasscodeEntryFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)shouldInsertPasscodeText:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)shouldInsertPasscodeText:(id)text;
 - (void)deleteLastCharacter;
 @end
 
 @implementation SBUIPasscodeEntryFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceVariable:@"_textField" withType:"SBUIPasscodeTextField"];
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"deleteLastCharacter" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"shouldInsertPasscodeText:" withFullSignature:{"B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceVariable:@"_textField" withType:"SBUIPasscodeTextField"];
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"deleteLastCharacter" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"shouldInsertPasscodeText:" withFullSignature:{"B", "@", 0}];
 }
 
-- (BOOL)shouldInsertPasscodeText:(id)a3
+- (BOOL)shouldInsertPasscodeText:(id)text
 {
-  v4 = a3;
-  [(SBUIPasscodeEntryFieldAccessibility *)self _accessibilityPostValueChangedNotificationWithInsertedText:v4];
+  textCopy = text;
+  [(SBUIPasscodeEntryFieldAccessibility *)self _accessibilityPostValueChangedNotificationWithInsertedText:textCopy];
   v6.receiver = self;
   v6.super_class = SBUIPasscodeEntryFieldAccessibility;
-  LOBYTE(self) = [(SBUIPasscodeEntryFieldAccessibility *)&v6 shouldInsertPasscodeText:v4];
+  LOBYTE(self) = [(SBUIPasscodeEntryFieldAccessibility *)&v6 shouldInsertPasscodeText:textCopy];
 
   return self;
 }

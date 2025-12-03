@@ -1,9 +1,9 @@
 @interface AppMetricsService
 - (AppMetricsService)init;
-- (void)getMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
-- (void)postMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
-- (void)recordMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
-- (void)resetMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4;
+- (void)getMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
+- (void)postMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
+- (void)recordMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
+- (void)resetMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler;
 @end
 
 @implementation AppMetricsService
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (void)getMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)getMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_1002338F0(self);
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
@@ -45,17 +45,17 @@
   v14[2] = sub_100274A8C;
   v14[3] = &unk_10051F550;
   v16 = v7;
-  v17 = v6;
+  v17 = handlerCopy;
   v15 = v8;
   v11 = v7;
   v12 = v8;
-  v13 = v6;
-  sub_1002B5A20(v10, a3, 7, v14);
+  v13 = handlerCopy;
+  sub_1002B5A20(v10, type, 7, v14);
 }
 
-- (void)postMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)postMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_1002338F0(self);
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
@@ -73,14 +73,14 @@
   v12[1] = 3221225472;
   v12[2] = sub_100274D04;
   v12[3] = &unk_10051D1B0;
-  v13 = v6;
-  v11 = v6;
-  sub_1002B7090(v10, a3, 7, v12);
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  sub_1002B7090(v10, type, 7, v12);
 }
 
-- (void)recordMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)recordMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_1002338F0(self);
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
@@ -98,14 +98,14 @@
   v12[1] = 3221225472;
   v12[2] = sub_100274E9C;
   v12[3] = &unk_10051D1B0;
-  v13 = v6;
-  v11 = v6;
-  sub_1002B844C(v10, a3, 7, v12);
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  sub_1002B844C(v10, type, 7, v12);
 }
 
-- (void)resetMetricsEventsForType:(int64_t)a3 withReplyHandler:(id)a4
+- (void)resetMetricsEventsForType:(int64_t)type withReplyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sub_1002338F0(self);
   v8 = objc_alloc_init(_TtC9appstored6LogKey);
   v9 = ASDLogHandleForCategory();
@@ -123,9 +123,9 @@
   v12[1] = 3221225472;
   v12[2] = sub_100275034;
   v12[3] = &unk_10051D1B0;
-  v13 = v6;
-  v11 = v6;
-  sub_1002B860C(v10, a3, 7, v12);
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  sub_1002B860C(v10, type, 7, v12);
 }
 
 @end

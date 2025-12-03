@@ -1,29 +1,29 @@
 @interface CNContactsAutocompleteSearchOperation
-+ (id)operationWithOwner:(id)a3 text:(id)a4 taskID:(id)a5 autocompleteStore:(id)a6;
-- (BOOL)autocompleteFetch:(id)a3 shouldExpectSupplementalResultsForRequest:(id)a4 completionHandler:(id)a5;
++ (id)operationWithOwner:(id)owner text:(id)text taskID:(id)d autocompleteStore:(id)store;
+- (BOOL)autocompleteFetch:(id)fetch shouldExpectSupplementalResultsForRequest:(id)request completionHandler:(id)handler;
 - (CNContactsAutocompleteSearchOperation)init;
 - (id)_simulatedRecipientResults;
-- (id)defaultChildForUnifiedEmailRecipients:(id)a3;
-- (id)originContextForResult:(id)a3;
-- (id)unifyRecipientsIfNeccesary:(id)a3;
-- (id)unifyingIdentifierForRecipient:(id)a3;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (id)defaultChildForUnifiedEmailRecipients:(id)recipients;
+- (id)originContextForResult:(id)result;
+- (id)unifyRecipientsIfNeccesary:(id)neccesary;
+- (id)unifyingIdentifierForRecipient:(id)recipient;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetchDidFinish:(id)finish;
 - (void)cancel;
-- (void)configureForSearchTypes:(unint64_t)a3;
+- (void)configureForSearchTypes:(unint64_t)types;
 - (void)dealloc;
 - (void)main;
 @end
 
 @implementation CNContactsAutocompleteSearchOperation
 
-+ (id)operationWithOwner:(id)a3 text:(id)a4 taskID:(id)a5 autocompleteStore:(id)a6
++ (id)operationWithOwner:(id)owner text:(id)text taskID:(id)d autocompleteStore:(id)store
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___CNContactsAutocompleteSearchOperation;
-  v9 = a6;
-  v10 = objc_msgSendSuper2(&v12, sel_operationWithOwner_text_taskID_, a3, a4, a5);
-  [v10 setAutocompleteStore:{v9, v12.receiver, v12.super_class}];
+  storeCopy = store;
+  v10 = objc_msgSendSuper2(&v12, sel_operationWithOwner_text_taskID_, owner, text, d);
+  [v10 setAutocompleteStore:{storeCopy, v12.receiver, v12.super_class}];
 
   return v10;
 }
@@ -36,8 +36,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x1E69967D0]);
-    v4 = [MEMORY[0x1E6996820] defaultProvider];
-    v5 = [v3 initWithSchedulerProvider:v4];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+    v5 = [v3 initWithSchedulerProvider:defaultProvider];
     fetchRequestPromise = v2->_fetchRequestPromise;
     v2->_fetchRequestPromise = v5;
 
@@ -76,8 +76,8 @@ void __45__CNContactsAutocompleteSearchOperation_init__block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v3 = [(CNContactsAutocompleteSearchOperation *)self fetchRequestToken];
-  [v3 cancel];
+  fetchRequestToken = [(CNContactsAutocompleteSearchOperation *)self fetchRequestToken];
+  [fetchRequestToken cancel];
 
   v4.receiver = self;
   v4.super_class = CNContactsAutocompleteSearchOperation;
@@ -86,29 +86,29 @@ void __45__CNContactsAutocompleteSearchOperation_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(CNContactsAutocompleteSearchOperation *)self fetchRequestToken];
-  [v3 cancel];
+  fetchRequestToken = [(CNContactsAutocompleteSearchOperation *)self fetchRequestToken];
+  [fetchRequestToken cancel];
 
   v4.receiver = self;
   v4.super_class = CNContactsAutocompleteSearchOperation;
   [(CNContactsAutocompleteSearchOperation *)&v4 dealloc];
 }
 
-- (void)configureForSearchTypes:(unint64_t)a3
+- (void)configureForSearchTypes:(unint64_t)types
 {
-  [(CNContactsAutocompleteSearchOperation *)self setIncludeContacts:(a3 >> 1) & 1];
-  [(CNContactsAutocompleteSearchOperation *)self setIncludeRecents:(a3 & 5) != 0];
-  [(CNContactsAutocompleteSearchOperation *)self setIncludeStewie:(a3 >> 5) & 1];
-  [(CNContactsAutocompleteSearchOperation *)self setIncludeServers:(a3 >> 3) & 1];
+  [(CNContactsAutocompleteSearchOperation *)self setIncludeContacts:(types >> 1) & 1];
+  [(CNContactsAutocompleteSearchOperation *)self setIncludeRecents:(types & 5) != 0];
+  [(CNContactsAutocompleteSearchOperation *)self setIncludeStewie:(types >> 5) & 1];
+  [(CNContactsAutocompleteSearchOperation *)self setIncludeServers:(types >> 3) & 1];
 
-  [(CNContactsAutocompleteSearchOperation *)self setIncludeSuggestions:(a3 >> 4) & 1];
+  [(CNContactsAutocompleteSearchOperation *)self setIncludeSuggestions:(types >> 4) & 1];
 }
 
 - (void)main
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_error_impl(&dword_1B8106000, log, OS_LOG_TYPE_ERROR, "CNAutocompleteFetch Error for task %{public}@: %@", &v3, 0x16u);
@@ -163,22 +163,22 @@ void __45__CNContactsAutocompleteSearchOperation_main__block_invoke_2_89(uint64_
   [v2 _handleContactsAutocompleteSearchFinished:*(a1 + 32) taskID:*(a1 + 40)];
 }
 
-- (BOOL)autocompleteFetch:(id)a3 shouldExpectSupplementalResultsForRequest:(id)a4 completionHandler:(id)a5
+- (BOOL)autocompleteFetch:(id)fetch shouldExpectSupplementalResultsForRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CNAutocompleteSearchOperation *)self owner];
-  v10 = [v9 fetchDelegate];
+  requestCopy = request;
+  handlerCopy = handler;
+  owner = [(CNAutocompleteSearchOperation *)self owner];
+  fetchDelegate = [owner fetchDelegate];
 
-  if (v10)
+  if (fetchDelegate)
   {
-    v11 = [v7 searchString];
+    searchString = [requestCopy searchString];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __119__CNContactsAutocompleteSearchOperation_autocompleteFetch_shouldExpectSupplementalResultsForRequest_completionHandler___block_invoke;
     v14[3] = &unk_1E7CD2628;
-    v15 = v8;
-    v12 = [v10 getSupplementalGroupsForSearchQuery:v11 completionHandler:v14];
+    v15 = handlerCopy;
+    v12 = [fetchDelegate getSupplementalGroupsForSearchQuery:searchString completionHandler:v14];
   }
 
   else
@@ -309,10 +309,10 @@ id __119__CNContactsAutocompleteSearchOperation_autocompleteFetch_shouldExpectSu
 
 - (id)_simulatedRecipientResults
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc_init(CNComposeRecipientOriginContext);
-  v5 = [(CNAutocompleteSearchOperation *)self text];
-  [(CNComposeRecipientOriginContext *)v4 setSearchTerm:v5];
+  text = [(CNAutocompleteSearchOperation *)self text];
+  [(CNComposeRecipientOriginContext *)v4 setSearchTerm:text];
 
   [(CNComposeRecipientOriginContext *)v4 setResultType:16];
   v11[0] = MEMORY[0x1E69E9820];
@@ -320,7 +320,7 @@ id __119__CNContactsAutocompleteSearchOperation_autocompleteFetch_shouldExpectSu
   v11[2] = __67__CNContactsAutocompleteSearchOperation__simulatedRecipientResults__block_invoke;
   v11[3] = &unk_1E7CD2908;
   v12 = v4;
-  v6 = v3;
+  v6 = array;
   v13 = v6;
   v7 = v4;
   v8 = MEMORY[0x1B8CB9350](v11);
@@ -342,10 +342,10 @@ void __67__CNContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
   [*(a1 + 40) addObject:v4];
 }
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  resultsCopy = results;
   if (([(CNContactsAutocompleteSearchOperation *)self isCancelled]& 1) == 0)
   {
     v42 = objc_opt_new();
@@ -353,8 +353,8 @@ void __67__CNContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v38 = v5;
-    obj = v5;
+    v38 = resultsCopy;
+    obj = resultsCopy;
     v6 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (!v6)
     {
@@ -442,7 +442,7 @@ void __67__CNContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
 
           v24 = [(CNContactsAutocompleteSearchOperation *)self unifyRecipientsIfNeccesary:v14];
 
-          v25 = [v10 displayName];
+          displayName = [v10 displayName];
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
@@ -462,13 +462,13 @@ void __67__CNContactsAutocompleteSearchOperation__simulatedRecipientResults__blo
                   objc_enumerationMutation(v26);
                 }
 
-                v31 = [*(*(&v48 + 1) + 8 * j) compositeName];
-                v32 = [v25 isEqualToString:v31];
+                compositeName = [*(*(&v48 + 1) + 8 * j) compositeName];
+                v32 = [displayName isEqualToString:compositeName];
 
                 if (v32)
                 {
 
-                  v25 = 0;
+                  displayName = 0;
                   goto LABEL_36;
                 }
               }
@@ -486,7 +486,7 @@ LABEL_36:
             v10 = v45;
           }
 
-          v23 = [[CNComposeRecipientGroup alloc] initWithChildren:v26 displayString:v25];
+          v23 = [[CNComposeRecipientGroup alloc] initWithChildren:v26 displayString:displayName];
           [(CNComposeRecipient *)v23 setAutocompleteResult:v10];
 
           v8 = v39;
@@ -519,8 +519,8 @@ LABEL_38:
       {
 LABEL_41:
 
-        v34 = [MEMORY[0x1E6996820] defaultProvider];
-        v35 = [v34 mainThreadScheduler];
+        defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+        mainThreadScheduler = [defaultProvider mainThreadScheduler];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveResults___block_invoke;
@@ -528,9 +528,9 @@ LABEL_41:
         v46[4] = self;
         v47 = v42;
         v36 = v42;
-        v37 = [v35 afterDelay:v46 performBlock:0.0];
+        v37 = [mainThreadScheduler afterDelay:v46 performBlock:0.0];
 
-        v5 = v38;
+        resultsCopy = v38;
         break;
       }
     }
@@ -546,12 +546,12 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
   [v5 _handleContactsAutocompleteSearch:v2 returnedResults:v3 taskID:v4];
 }
 
-- (id)originContextForResult:(id)a3
+- (id)originContextForResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 sourceType] & 2;
-  v6 = v5 & 0xFFFFFFFFFFFFFFFELL | [v4 sourceType] & 1;
-  if (([v4 sourceType] & 0x48) != 0)
+  resultCopy = result;
+  v5 = [resultCopy sourceType] & 2;
+  v6 = v5 & 0xFFFFFFFFFFFFFFFELL | [resultCopy sourceType] & 1;
+  if (([resultCopy sourceType] & 0x48) != 0)
   {
     v7 = v6 | 8;
   }
@@ -561,10 +561,10 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
     v7 = v6;
   }
 
-  v8 = v7 & 0xFFFFFFFFFFFFFFEFLL | (16 * (([v4 sourceType] >> 2) & 1));
-  v9 = [v4 sourceType];
+  v8 = v7 & 0xFFFFFFFFFFFFFFEFLL | (16 * (([resultCopy sourceType] >> 2) & 1));
+  sourceType = [resultCopy sourceType];
 
-  if (v9)
+  if (sourceType)
   {
     v10 = v8;
   }
@@ -575,27 +575,27 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
   }
 
   v11 = objc_alloc_init(CNComposeRecipientOriginContext);
-  v12 = [(CNAutocompleteSearchOperation *)self text];
-  [(CNComposeRecipientOriginContext *)v11 setSearchTerm:v12];
+  text = [(CNAutocompleteSearchOperation *)self text];
+  [(CNComposeRecipientOriginContext *)v11 setSearchTerm:text];
 
   [(CNComposeRecipientOriginContext *)v11 setResultType:v10];
 
   return v11;
 }
 
-- (id)unifyRecipientsIfNeccesary:(id)a3
+- (id)unifyRecipientsIfNeccesary:(id)neccesary
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neccesaryCopy = neccesary;
   if ([(CNContactsAutocompleteSearchOperation *)self shouldUnifyResults])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v33 = v4;
-    v6 = v4;
+    v33 = neccesaryCopy;
+    v6 = neccesaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v39 objects:v46 count:16];
     if (v7)
     {
@@ -614,7 +614,7 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
           v12 = [(CNContactsAutocompleteSearchOperation *)self unifyingIdentifierForRecipient:v11, v33];
           if (([v11 isGroup] & 1) == 0 && v12)
           {
-            v13 = [v5 objectForKeyedSubscript:v12];
+            v13 = [dictionary objectForKeyedSubscript:v12];
             v14 = v13;
             if (v13)
             {
@@ -627,7 +627,7 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
               [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
             }
             v15 = ;
-            [v5 setObject:v15 forKeyedSubscript:v12];
+            [dictionary setObject:v15 forKeyedSubscript:v12];
           }
         }
 
@@ -666,7 +666,7 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
           else
           {
             v22 = [(CNContactsAutocompleteSearchOperation *)self unifyingIdentifierForRecipient:v21];
-            v23 = [v5 objectForKeyedSubscript:v22];
+            v23 = [dictionary objectForKeyedSubscript:v22];
             v24 = v23;
             if (v23)
             {
@@ -681,14 +681,14 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
 
             v26 = v25;
 
-            v27 = [v26 firstObject];
+            firstObject = [v26 firstObject];
 
-            if (v21 == v27)
+            if (v21 == firstObject)
             {
-              v28 = [(CNAutocompleteSearchOperation *)self owner];
-              v29 = [v28 autocompleteSearchType];
+              owner = [(CNAutocompleteSearchOperation *)self owner];
+              autocompleteSearchType = [owner autocompleteSearchType];
 
-              if (v29)
+              if (autocompleteSearchType)
               {
                 [v26 firstObject];
               }
@@ -710,39 +710,39 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
       while (v18);
     }
 
-    v4 = v33;
+    neccesaryCopy = v33;
   }
 
   else
   {
-    v16 = v4;
+    v16 = neccesaryCopy;
   }
 
   return v16;
 }
 
-- (id)defaultChildForUnifiedEmailRecipients:(id)a3
+- (id)defaultChildForUnifiedEmailRecipients:(id)recipients
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNAutocompleteSearchOperation *)self owner];
-  v6 = [v5 autocompleteSearchType];
+  recipientsCopy = recipients;
+  owner = [(CNAutocompleteSearchOperation *)self owner];
+  autocompleteSearchType = [owner autocompleteSearchType];
 
-  if (v6 || [v4 count] <= 1)
+  if (autocompleteSearchType || [recipientsCopy count] <= 1)
   {
-    v23 = [v4 firstObject];
+    firstObject = [recipientsCopy firstObject];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v31 = v4;
-    v9 = v4;
+    v31 = recipientsCopy;
+    v9 = recipientsCopy;
     v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v10)
     {
@@ -758,16 +758,16 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
           }
 
           v14 = *(*(&v32 + 1) + 8 * i);
-          v15 = [v14 address];
-          [v7 addObject:v15];
+          address = [v14 address];
+          [array addObject:address];
 
-          v16 = [v14 address];
-          v17 = [v8 objectForKeyedSubscript:v16];
+          address2 = [v14 address];
+          v17 = [v8 objectForKeyedSubscript:address2];
 
           if (!v17)
           {
-            v18 = [v14 address];
-            [v8 setObject:v14 forKeyedSubscript:v18];
+            address3 = [v14 address];
+            [v8 setObject:v14 forKeyedSubscript:address3];
           }
         }
 
@@ -777,25 +777,25 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
       while (v11);
     }
 
-    v19 = [(CNContactsAutocompleteSearchOperation *)self fetchContext];
-    v20 = [v19 sendingAddress];
-    v21 = v20;
-    if (v20)
+    fetchContext = [(CNContactsAutocompleteSearchOperation *)self fetchContext];
+    sendingAddress = [fetchContext sendingAddress];
+    v21 = sendingAddress;
+    if (sendingAddress)
     {
-      v22 = v20;
+      firstObject2 = sendingAddress;
     }
 
     else
     {
-      v25 = [(CNContactsAutocompleteSearchOperation *)self fetchContext];
-      v26 = [v25 otherAddressesAlreadyChosen];
-      v22 = [v26 firstObject];
+      fetchContext2 = [(CNContactsAutocompleteSearchOperation *)self fetchContext];
+      otherAddressesAlreadyChosen = [fetchContext2 otherAddressesAlreadyChosen];
+      firstObject2 = [otherAddressesAlreadyChosen firstObject];
     }
 
-    v4 = v31;
-    if ((*(*MEMORY[0x1E6996570] + 16))() && (v27 = [MEMORY[0x1E699AFD0] rangeOfAddressDomainFromAddress:v22], v27 != 0x7FFFFFFFFFFFFFFFLL))
+    recipientsCopy = v31;
+    if ((*(*MEMORY[0x1E6996570] + 16))() && (v27 = [MEMORY[0x1E699AFD0] rangeOfAddressDomainFromAddress:firstObject2], v27 != 0x7FFFFFFFFFFFFFFFLL))
     {
-      v29 = [v22 substringWithRange:{v27, v28}];
+      v29 = [firstObject2 substringWithRange:{v27, v28}];
     }
 
     else
@@ -803,30 +803,30 @@ void __77__CNContactsAutocompleteSearchOperation_autocompleteFetch_didReceiveRes
       v29 = 0;
     }
 
-    v30 = [MEMORY[0x1E695CEF0] bestGuessEmailAddressForAddresses:v7 sendingAddressDomain:v29 alreadyDuetRanked:1];
-    v23 = [v8 objectForKeyedSubscript:v30];
-    if (!v23)
+    v30 = [MEMORY[0x1E695CEF0] bestGuessEmailAddressForAddresses:array sendingAddressDomain:v29 alreadyDuetRanked:1];
+    firstObject = [v8 objectForKeyedSubscript:v30];
+    if (!firstObject)
     {
-      v23 = [v9 firstObject];
+      firstObject = [v9 firstObject];
     }
   }
 
-  return v23;
+  return firstObject;
 }
 
-- (id)unifyingIdentifierForRecipient:(id)a3
+- (id)unifyingIdentifierForRecipient:(id)recipient
 {
-  v3 = [a3 autocompleteResult];
-  v4 = [v3 identifier];
+  autocompleteResult = [recipient autocompleteResult];
+  identifier = [autocompleteResult identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
   fetchRequestPromise = self->_fetchRequestPromise;
-  v4 = [MEMORY[0x1E695DFB0] null];
-  [(CNPromise *)fetchRequestPromise finishWithResult:v4];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(CNPromise *)fetchRequestPromise finishWithResult:null];
 }
 
 - (void)autocompleteFetch:(void *)a3 didReceiveResults:(NSObject *)a4 .cold.1(uint8_t *a1, void *a2, void *a3, NSObject *a4)

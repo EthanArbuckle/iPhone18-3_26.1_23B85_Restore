@@ -2,54 +2,54 @@
 - (REMReminderCreationPublicViewController)publicViewController;
 - (void)viewHostDidDismiss;
 - (void)viewServiceDidCancel;
-- (void)viewServiceDidFailWithError:(id)a3;
+- (void)viewServiceDidFailWithError:(id)error;
 - (void)viewServiceDidFinish;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewServicePreferredSizeDidChange:(CGSize)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewServicePreferredSizeDidChange:(CGSize)change;
 @end
 
 @implementation REMReminderCreationRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = REMReminderCreationRemoteViewController;
-  v4 = a3;
-  [(_UIRemoteViewController *)&v5 viewServiceDidTerminateWithError:v4];
-  [(REMReminderCreationRemoteViewController *)self viewServiceDidFailWithError:v4, v5.receiver, v5.super_class];
+  errorCopy = error;
+  [(_UIRemoteViewController *)&v5 viewServiceDidTerminateWithError:errorCopy];
+  [(REMReminderCreationRemoteViewController *)self viewServiceDidFailWithError:errorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)viewServicePreferredSizeDidChange:(CGSize)a3
+- (void)viewServicePreferredSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(REMReminderCreationRemoteViewController *)self publicViewController];
-  [v5 viewServicePreferredSizeDidChange:{width, height}];
+  height = change.height;
+  width = change.width;
+  publicViewController = [(REMReminderCreationRemoteViewController *)self publicViewController];
+  [publicViewController viewServicePreferredSizeDidChange:{width, height}];
 }
 
 - (void)viewServiceDidCancel
 {
-  v2 = [(REMReminderCreationRemoteViewController *)self publicViewController];
-  [v2 viewServiceDidCancel];
+  publicViewController = [(REMReminderCreationRemoteViewController *)self publicViewController];
+  [publicViewController viewServiceDidCancel];
 }
 
-- (void)viewServiceDidFailWithError:(id)a3
+- (void)viewServiceDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(REMReminderCreationRemoteViewController *)self publicViewController];
-  [v5 viewServiceDidFailWithError:v4];
+  errorCopy = error;
+  publicViewController = [(REMReminderCreationRemoteViewController *)self publicViewController];
+  [publicViewController viewServiceDidFailWithError:errorCopy];
 }
 
 - (void)viewServiceDidFinish
 {
-  v2 = [(REMReminderCreationRemoteViewController *)self publicViewController];
-  [v2 viewServiceDidFinish];
+  publicViewController = [(REMReminderCreationRemoteViewController *)self publicViewController];
+  [publicViewController viewServiceDidFinish];
 }
 
 - (void)viewHostDidDismiss
 {
-  v3 = [(REMReminderCreationRemoteViewController *)self viewServiceViewController];
-  [v3 viewHostDidDismiss];
+  viewServiceViewController = [(REMReminderCreationRemoteViewController *)self viewServiceViewController];
+  [viewServiceViewController viewHostDidDismiss];
 
   [(REMReminderCreationRemoteViewController *)self setPublicViewController:0];
 }

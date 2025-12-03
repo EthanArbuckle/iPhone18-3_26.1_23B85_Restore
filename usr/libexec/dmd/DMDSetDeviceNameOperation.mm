@@ -1,7 +1,7 @@
 @interface DMDSetDeviceNameOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,20 +21,20 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v13.receiver = a1;
+  requestCopy = request;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___DMDSetDeviceNameOperation;
-  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_7;
   }
 
-  v7 = [v6 name];
-  if (!v7 || (v8 = v7, [v6 name], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, !v10))
+  name = [requestCopy name];
+  if (!name || (v8 = name, [requestCopy name], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v8, !v10))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -42,24 +42,24 @@
     v14 = DMFInvalidParameterErrorKey;
     v15 = @"request.name";
     v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_7:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_8;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_8:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = [a3 name];
+  name = [request name];
   v7 = 0;
-  v5 = [DMDLockdownUtilities setDeviceName:v4 outError:&v7];
+  v5 = [DMDLockdownUtilities setDeviceName:name outError:&v7];
   v6 = v7;
 
   if (v5)

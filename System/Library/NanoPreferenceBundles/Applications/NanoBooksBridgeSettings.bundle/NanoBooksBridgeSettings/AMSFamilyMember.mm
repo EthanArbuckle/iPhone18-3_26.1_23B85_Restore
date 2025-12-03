@@ -7,20 +7,20 @@
 - (NSSet)nb_dsids
 {
   v3 = objc_opt_new();
-  v4 = [(AMSFamilyMember *)self iTunesDSID];
+  iTunesDSID = [(AMSFamilyMember *)self iTunesDSID];
 
-  if (v4)
+  if (iTunesDSID)
   {
-    v5 = [(AMSFamilyMember *)self iTunesDSID];
-    [v3 addObject:v5];
+    iTunesDSID2 = [(AMSFamilyMember *)self iTunesDSID];
+    [v3 addObject:iTunesDSID2];
   }
 
-  v6 = [(AMSFamilyMember *)self iCloudDSID];
+  iCloudDSID = [(AMSFamilyMember *)self iCloudDSID];
 
-  if (v6)
+  if (iCloudDSID)
   {
-    v7 = [(AMSFamilyMember *)self iCloudDSID];
-    [v3 addObject:v7];
+    iCloudDSID2 = [(AMSFamilyMember *)self iCloudDSID];
+    [v3 addObject:iCloudDSID2];
   }
 
   v8 = [v3 copy];

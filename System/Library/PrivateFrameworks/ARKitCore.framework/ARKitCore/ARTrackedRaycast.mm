@@ -1,5 +1,5 @@
 @interface ARTrackedRaycast
-- (ARTrackedRaycast)initWithIdentifier:(id)a3 ray:(id)a4 worldTrackingTechnique:(id)a5 updateHandler:(id)a6;
+- (ARTrackedRaycast)initWithIdentifier:(id)identifier ray:(id)ray worldTrackingTechnique:(id)technique updateHandler:(id)handler;
 - (ARWorldTrackingTechnique)attachedWorldTrackingTechnique;
 - (id)description;
 - (void)stopTracking;
@@ -7,25 +7,25 @@
 
 @implementation ARTrackedRaycast
 
-- (ARTrackedRaycast)initWithIdentifier:(id)a3 ray:(id)a4 worldTrackingTechnique:(id)a5 updateHandler:(id)a6
+- (ARTrackedRaycast)initWithIdentifier:(id)identifier ray:(id)ray worldTrackingTechnique:(id)technique updateHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  rayCopy = ray;
+  techniqueCopy = technique;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = ARTrackedRaycast;
   v15 = [(ARTrackedRaycast *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_trackedQuery, a4);
-    v17 = MEMORY[0x1C691B4C0](v14);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_trackedQuery, ray);
+    v17 = MEMORY[0x1C691B4C0](handlerCopy);
     updateHandler = v16->_updateHandler;
     v16->_updateHandler = v17;
 
-    objc_storeWeak(&v16->_attachedWorldTrackingTechnique, v13);
+    objc_storeWeak(&v16->_attachedWorldTrackingTechnique, techniqueCopy);
   }
 
   return v16;
@@ -33,12 +33,12 @@
 
 - (void)stopTracking
 {
-  v3 = [(ARTrackedRaycast *)self attachedWorldTrackingTechnique];
+  attachedWorldTrackingTechnique = [(ARTrackedRaycast *)self attachedWorldTrackingTechnique];
 
-  if (v3)
+  if (attachedWorldTrackingTechnique)
   {
-    v4 = [(ARTrackedRaycast *)self attachedWorldTrackingTechnique];
-    [v4 stopRaycast:self];
+    attachedWorldTrackingTechnique2 = [(ARTrackedRaycast *)self attachedWorldTrackingTechnique];
+    [attachedWorldTrackingTechnique2 stopRaycast:self];
 
     [(ARTrackedRaycast *)self setAttachedWorldTrackingTechnique:0];
   }
@@ -49,8 +49,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ARTrackedRaycast *)self query];
-  v7 = [v6 description];
+  query = [(ARTrackedRaycast *)self query];
+  v7 = [query description];
   v8 = [v3 stringWithFormat:@"<%@: %p ray=%@>", v5, self, v7];
 
   return v8;

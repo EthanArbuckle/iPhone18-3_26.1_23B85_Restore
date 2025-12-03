@@ -1,6 +1,6 @@
 @interface ARFrameLuminanceManager
 - (ARFrameLuminanceManager)init;
-- (double)computeLuminanceFromPixelBuffer:(__CVBuffer *)a3;
+- (double)computeLuminanceFromPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ARFrameLuminanceManager
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (double)computeLuminanceFromPixelBuffer:(__CVBuffer *)a3
+- (double)computeLuminanceFromPixelBuffer:(__CVBuffer *)buffer
 {
   v4 = self->_currentFrameId + 1;
   self->_currentFrameId = v4;
@@ -30,11 +30,11 @@
     return self->_lastComputedLuminance;
   }
 
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-  CVPixelBufferLockBaseAddress(a3, 0);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
   if (HeightOfPlane)
   {
     v10 = 0;
@@ -67,7 +67,7 @@
     v14 = 0.0;
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
   result = v14 / v15;
   self->_lastComputedLuminance = v14 / v15;
   return result;

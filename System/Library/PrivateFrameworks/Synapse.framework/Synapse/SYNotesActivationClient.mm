@@ -1,7 +1,7 @@
 @interface SYNotesActivationClient
 - (SYNotesActivationClient)init;
 - (void)_ensureConnection;
-- (void)activateNotesWithUserActivity:(id)a3 completion:(id)a4;
+- (void)activateNotesWithUserActivity:(id)activity completion:(id)completion;
 @end
 
 @implementation SYNotesActivationClient
@@ -22,21 +22,21 @@
   return v2;
 }
 
-- (void)activateNotesWithUserActivity:(id)a3 completion:(id)a4
+- (void)activateNotesWithUserActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = SYActivationContextForUserActivity(a3);
-  v8 = [(SYNotesActivationClient *)self _clientQueue];
+  completionCopy = completion;
+  v7 = SYActivationContextForUserActivity(activity);
+  _clientQueue = [(SYNotesActivationClient *)self _clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SYNotesActivationClient_activateNotesWithUserActivity_completion___block_invoke;
   block[3] = &unk_27856BAB8;
   v12 = v7;
-  v13 = v6;
+  v13 = completionCopy;
   block[4] = self;
   v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v10 = completionCopy;
+  dispatch_async(_clientQueue, block);
 }
 
 void __68__SYNotesActivationClient_activateNotesWithUserActivity_completion___block_invoke(uint64_t a1)
@@ -74,23 +74,23 @@ uint64_t __68__SYNotesActivationClient_activateNotesWithUserActivity_completion_
 
 - (void)_ensureConnection
 {
-  v3 = [(SYNotesActivationClient *)self _connection];
+  _connection = [(SYNotesActivationClient *)self _connection];
 
-  if (!v3)
+  if (!_connection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.synapse.notes-activation-service" options:0];
     [(SYNotesActivationClient *)self _setConnection:v4];
 
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2838F4608];
-    v6 = [(SYNotesActivationClient *)self _connection];
-    [v6 setRemoteObjectInterface:v5];
+    _connection2 = [(SYNotesActivationClient *)self _connection];
+    [_connection2 setRemoteObjectInterface:v5];
 
-    v7 = [(SYNotesActivationClient *)self _connection];
-    v8 = [(SYNotesActivationClient *)self _clientQueue];
-    [v7 _setQueue:v8];
+    _connection3 = [(SYNotesActivationClient *)self _connection];
+    _clientQueue = [(SYNotesActivationClient *)self _clientQueue];
+    [_connection3 _setQueue:_clientQueue];
 
-    v9 = [(SYNotesActivationClient *)self _connection];
-    [v9 resume];
+    _connection4 = [(SYNotesActivationClient *)self _connection];
+    [_connection4 resume];
   }
 }
 

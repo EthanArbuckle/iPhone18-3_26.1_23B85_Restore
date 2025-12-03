@@ -2,31 +2,31 @@
 - (BOOL)updateIsSubModule;
 - (CGPoint)accessibilityActivationPoint;
 - (HACCContentModuleDelegate)delegate;
-- (HUICCTextView)initWithModule:(unint64_t)a3 andDelegate:(id)a4;
+- (HUICCTextView)initWithModule:(unint64_t)module andDelegate:(id)delegate;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_setupTitleView;
-- (void)setIsLargeText:(BOOL)a3;
-- (void)setIsSubModule:(BOOL)a3;
+- (void)setIsLargeText:(BOOL)text;
+- (void)setIsSubModule:(BOOL)module;
 - (void)updateValue;
 @end
 
 @implementation HUICCTextView
 
-- (HUICCTextView)initWithModule:(unint64_t)a3 andDelegate:(id)a4
+- (HUICCTextView)initWithModule:(unint64_t)module andDelegate:(id)delegate
 {
   v38[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  delegateCopy = delegate;
   v37.receiver = self;
   v37.super_class = HUICCTextView;
   v7 = [(HUICCTextView *)&v37 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v8 = v7;
   if (v7)
   {
-    [(HUICCTextView *)v7 setModule:a3];
-    [(HUICCTextView *)v8 setDelegate:v6];
+    [(HUICCTextView *)v7 setModule:module];
+    [(HUICCTextView *)v8 setDelegate:delegateCopy];
     v9 = objc_alloc_init(HACCStackView);
-    v36 = v6;
+    v36 = delegateCopy;
     stackView = v8->_stackView;
     v8->_stackView = v9;
 
@@ -47,32 +47,32 @@
     v8->_isSubModule = [(HUICCTextView *)v8 updateIsSubModule];
     [(HUICCTextView *)v8 _setupTitleView];
     v29 = MEMORY[0x277CCAAD0];
-    v35 = [(HACCStackView *)v8->_stackView leadingAnchor];
-    v34 = [(HUICCTextView *)v8 leadingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    leadingAnchor = [(HACCStackView *)v8->_stackView leadingAnchor];
+    leadingAnchor2 = [(HUICCTextView *)v8 leadingAnchor];
+    v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v38[0] = v33;
-    v32 = [(HACCStackView *)v8->_stackView trailingAnchor];
-    v31 = [(HUICCTextView *)v8 trailingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    trailingAnchor = [(HACCStackView *)v8->_stackView trailingAnchor];
+    trailingAnchor2 = [(HUICCTextView *)v8 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v38[1] = v30;
-    v28 = [(HACCStackView *)v8->_stackView topAnchor];
-    v15 = [(HUICCTextView *)v8 topAnchor];
-    v16 = [v28 constraintEqualToAnchor:v15];
+    topAnchor = [(HACCStackView *)v8->_stackView topAnchor];
+    topAnchor2 = [(HUICCTextView *)v8 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v38[2] = v16;
-    v17 = [(HACCStackView *)v8->_stackView bottomAnchor];
-    v18 = [(HUICCTextView *)v8 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(HACCStackView *)v8->_stackView bottomAnchor];
+    bottomAnchor2 = [(HUICCTextView *)v8 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v38[3] = v19;
-    v20 = [(HUICCTextView *)v8 textView];
-    v21 = [v20 heightAnchor];
-    v22 = [v21 constraintGreaterThanOrEqualToConstant:52.0];
+    textView = [(HUICCTextView *)v8 textView];
+    heightAnchor = [textView heightAnchor];
+    v22 = [heightAnchor constraintGreaterThanOrEqualToConstant:52.0];
     v38[4] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:5];
     [v29 activateConstraints:v23];
 
-    v6 = v36;
-    v24 = [(HACCCapsuleTitleView *)v8->_titleView heightAnchor];
-    v25 = [v24 constraintGreaterThanOrEqualToConstant:52.0];
+    delegateCopy = v36;
+    heightAnchor2 = [(HACCCapsuleTitleView *)v8->_titleView heightAnchor];
+    v25 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:52.0];
     titleViewHeightLayout = v8->_titleViewHeightLayout;
     v8->_titleViewHeightLayout = v25;
   }
@@ -82,85 +82,85 @@
 
 - (BOOL)updateIsSubModule
 {
-  v3 = [(HUICCTextView *)self providesOwnSeparator];
-  if (v3)
+  providesOwnSeparator = [(HUICCTextView *)self providesOwnSeparator];
+  if (providesOwnSeparator)
   {
     v4 = [(HUICCTextView *)self module]- 1;
-    v5 = [(HUICCTextView *)self delegate];
-    LOBYTE(v4) = [v5 shouldDisplayControlForModule:v4];
+    delegate = [(HUICCTextView *)self delegate];
+    LOBYTE(v4) = [delegate shouldDisplayControlForModule:v4];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(providesOwnSeparator) = v4;
   }
 
-  return v3;
+  return providesOwnSeparator;
 }
 
-- (void)setIsSubModule:(BOOL)a3
+- (void)setIsSubModule:(BOOL)module
 {
-  if (self->_isSubModule != a3)
+  if (self->_isSubModule != module)
   {
-    self->_isSubModule = a3;
+    self->_isSubModule = module;
     [(HUICCTextView *)self _setupTitleView];
   }
 }
 
 - (void)_setupTitleView
 {
-  v3 = [(HUICCTextView *)self stackView];
-  v4 = [(HUICCTextView *)self titleView];
-  [v3 removeArrangedSubview:v4];
+  stackView = [(HUICCTextView *)self stackView];
+  titleView = [(HUICCTextView *)self titleView];
+  [stackView removeArrangedSubview:titleView];
 
-  v5 = [(HUICCTextView *)self stackView];
-  v6 = [(HUICCTextView *)self textView];
-  [v5 removeArrangedSubview:v6];
+  stackView2 = [(HUICCTextView *)self stackView];
+  textView = [(HUICCTextView *)self textView];
+  [stackView2 removeArrangedSubview:textView];
 
-  LODWORD(v6) = [(HUICCTextView *)self isSubModule];
-  v7 = [(HUICCTextView *)self stackView];
-  if (v6)
+  LODWORD(textView) = [(HUICCTextView *)self isSubModule];
+  stackView3 = [(HUICCTextView *)self stackView];
+  if (textView)
   {
-    v8 = [(HUICCTextView *)self textView];
-    [v7 addArrangedSubview:v8 withPartialSeparator:1 withDarkBackground:1];
+    textView2 = [(HUICCTextView *)self textView];
+    [stackView3 addArrangedSubview:textView2 withPartialSeparator:1 withDarkBackground:1];
 
-    v9 = [(HUICCTextView *)self titleViewHeightLayout];
-    LODWORD(v8) = [v9 isActive];
+    titleViewHeightLayout = [(HUICCTextView *)self titleViewHeightLayout];
+    LODWORD(textView2) = [titleViewHeightLayout isActive];
 
-    if (!v8)
+    if (!textView2)
     {
       return;
     }
 
-    v14 = [(HUICCTextView *)self titleViewHeightLayout];
-    [v14 setActive:0];
+    titleViewHeightLayout2 = [(HUICCTextView *)self titleViewHeightLayout];
+    [titleViewHeightLayout2 setActive:0];
   }
 
   else
   {
-    v10 = [(HUICCTextView *)self titleView];
-    [v7 addArrangedSubview:v10 withSeparator:{-[HUICCTextView providesOwnSeparator](self, "providesOwnSeparator")}];
+    titleView2 = [(HUICCTextView *)self titleView];
+    [stackView3 addArrangedSubview:titleView2 withSeparator:{-[HUICCTextView providesOwnSeparator](self, "providesOwnSeparator")}];
 
-    v11 = [(HUICCTextView *)self titleViewHeightLayout];
-    LOBYTE(v10) = [v11 isActive];
+    titleViewHeightLayout3 = [(HUICCTextView *)self titleViewHeightLayout];
+    LOBYTE(titleView2) = [titleViewHeightLayout3 isActive];
 
-    if ((v10 & 1) == 0)
+    if ((titleView2 & 1) == 0)
     {
-      v12 = [(HUICCTextView *)self titleViewHeightLayout];
-      [v12 setActive:1];
+      titleViewHeightLayout4 = [(HUICCTextView *)self titleViewHeightLayout];
+      [titleViewHeightLayout4 setActive:1];
     }
 
-    v14 = [(HUICCTextView *)self stackView];
-    v13 = [(HUICCTextView *)self textView];
-    [v14 addArrangedSubview:v13 withSeparator:1];
+    titleViewHeightLayout2 = [(HUICCTextView *)self stackView];
+    textView3 = [(HUICCTextView *)self textView];
+    [titleViewHeightLayout2 addArrangedSubview:textView3 withSeparator:1];
   }
 }
 
-- (void)setIsLargeText:(BOOL)a3
+- (void)setIsLargeText:(BOOL)text
 {
-  if (self->_isLargeText != a3)
+  if (self->_isLargeText != text)
   {
-    v4 = a3;
-    self->_isLargeText = a3;
-    v5 = [(HUICCTextView *)self textView];
-    [v5 updateLayout:v4];
+    textCopy = text;
+    self->_isLargeText = text;
+    textView = [(HUICCTextView *)self textView];
+    [textView updateLayout:textCopy];
   }
 }
 
@@ -175,20 +175,20 @@
   }
 
   v19 = comfortSoundsLocString();
-  v3 = [MEMORY[0x277D12E18] sharedInstance];
-  v4 = [v3 timerOption];
+  mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+  timerOption = [mEMORY[0x277D12E18] timerOption];
 
-  if (v4 == 1)
+  if (timerOption == 1)
   {
     v5 = comfortSoundsLocString();
-    v6 = [MEMORY[0x277D12E18] sharedInstance];
-    [v6 timerDurationInSeconds];
+    mEMORY[0x277D12E18]2 = [MEMORY[0x277D12E18] sharedInstance];
+    [mEMORY[0x277D12E18]2 timerDurationInSeconds];
     v7 = comfortSoundsDurationString();
   }
 
   else
   {
-    if (v4)
+    if (timerOption)
     {
       v5 = 0;
       v9 = 0;
@@ -196,8 +196,8 @@
     }
 
     v5 = comfortSoundsLocString();
-    v6 = [MEMORY[0x277D12E18] sharedInstance];
-    [v6 timerEndInterval];
+    mEMORY[0x277D12E18]2 = [MEMORY[0x277D12E18] sharedInstance];
+    [mEMORY[0x277D12E18]2 timerEndInterval];
     v7 = comfortSoundsTimeString();
   }
 
@@ -208,21 +208,21 @@ LABEL_9:
 LABEL_10:
   v20 = v8;
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, v5];
-  v11 = [(HUICCTextView *)self titleView];
-  v12 = [v11 titleLabel];
-  [v12 setText:v20];
+  titleView = [(HUICCTextView *)self titleView];
+  titleLabel = [titleView titleLabel];
+  [titleLabel setText:v20];
 
-  v13 = [(HUICCTextView *)self textView];
-  v14 = [v13 nameLabel];
-  [v14 setText:v5];
+  textView = [(HUICCTextView *)self textView];
+  nameLabel = [textView nameLabel];
+  [nameLabel setText:v5];
 
-  v15 = [(HUICCTextView *)self textView];
-  v16 = [v15 nameLabel];
-  [v16 setAccessibilityLabel:v10];
+  textView2 = [(HUICCTextView *)self textView];
+  nameLabel2 = [textView2 nameLabel];
+  [nameLabel2 setAccessibilityLabel:v10];
 
-  v17 = [(HUICCTextView *)self textView];
-  v18 = [v17 valueLabel];
-  [v18 setText:v9];
+  textView3 = [(HUICCTextView *)self textView];
+  valueLabel = [textView3 valueLabel];
+  [valueLabel setText:v9];
 
   [(HUICCTextView *)self setIsSubModule:[(HUICCTextView *)self updateIsSubModule]];
   [(HUICCTextView *)self setIsLargeText:HUICCLargeTextEnabled()];
@@ -230,8 +230,8 @@ LABEL_10:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(HUICCTextView *)self textView];
-  [v2 accessibilityActivationPoint];
+  textView = [(HUICCTextView *)self textView];
+  [textView accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 
@@ -244,20 +244,20 @@ LABEL_10:
 
 - (id)accessibilityLabel
 {
-  v2 = [(HUICCTextView *)self textView];
-  v3 = [v2 nameLabel];
-  v4 = [v3 accessibilityLabel];
+  textView = [(HUICCTextView *)self textView];
+  nameLabel = [textView nameLabel];
+  accessibilityLabel = [nameLabel accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(HUICCTextView *)self textView];
-  v3 = [v2 valueLabel];
-  v4 = [v3 accessibilityLabel];
+  textView = [(HUICCTextView *)self textView];
+  valueLabel = [textView valueLabel];
+  accessibilityLabel = [valueLabel accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (HACCContentModuleDelegate)delegate

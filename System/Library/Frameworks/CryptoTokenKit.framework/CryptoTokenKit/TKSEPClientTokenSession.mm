@@ -1,9 +1,9 @@
 @interface TKSEPClientTokenSession
 - (BOOL)forceSystemSession;
-- (TKSEPClientTokenSession)initWithToken:(id)a3 LAContext:(id)a4 parameters:(id)a5 error:(id *)a6;
+- (TKSEPClientTokenSession)initWithToken:(id)token LAContext:(id)context parameters:(id)parameters error:(id *)error;
 - (TKTokenID)tokenID;
-- (id)createObjectWithAttributes:(id)a3 error:(id *)a4;
-- (id)objectForObjectID:(id)a3 error:(id *)a4;
+- (id)createObjectWithAttributes:(id)attributes error:(id *)error;
+- (id)objectForObjectID:(id)d error:(id *)error;
 @end
 
 @implementation TKSEPClientTokenSession
@@ -11,43 +11,43 @@
 - (TKTokenID)tokenID
 {
   v3 = [TKTokenID alloc];
-  v4 = [(TKClientTokenSession *)self token];
-  v5 = [v4 tokenID];
-  v6 = [(TKTokenID *)v3 initWithTokenID:v5];
+  token = [(TKClientTokenSession *)self token];
+  tokenID = [token tokenID];
+  v6 = [(TKTokenID *)v3 initWithTokenID:tokenID];
 
   return v6;
 }
 
 - (BOOL)forceSystemSession
 {
-  v2 = [(TKClientTokenSession *)self parameters];
-  v3 = [v2 objectForKeyedSubscript:@"forceSystemSession"];
-  v4 = [v3 BOOLValue];
+  parameters = [(TKClientTokenSession *)self parameters];
+  v3 = [parameters objectForKeyedSubscript:@"forceSystemSession"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (TKSEPClientTokenSession)initWithToken:(id)a3 LAContext:(id)a4 parameters:(id)a5 error:(id *)a6
+- (TKSEPClientTokenSession)initWithToken:(id)token LAContext:(id)context parameters:(id)parameters error:(id *)error
 {
   v14.receiver = self;
   v14.super_class = TKSEPClientTokenSession;
-  v7 = [(TKClientTokenSession *)&v14 _initWithToken:a3 LAContext:a4 parameters:a5 error:?];
+  v7 = [(TKClientTokenSession *)&v14 _initWithToken:token LAContext:context parameters:parameters error:?];
   if (!v7)
   {
     goto LABEL_3;
   }
 
   v8 = +[TKSEPClientToken builtinTokenIDs];
-  v9 = [v7 tokenID];
-  v10 = [v9 stringRepresentation];
-  v11 = [v8 containsObject:v10];
+  tokenID = [v7 tokenID];
+  stringRepresentation = [tokenID stringRepresentation];
+  v11 = [v8 containsObject:stringRepresentation];
 
   if ((v11 & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
-      *a6 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -65,29 +65,29 @@ LABEL_3:
   return v12;
 }
 
-- (id)createObjectWithAttributes:(id)a3 error:(id *)a4
+- (id)createObjectWithAttributes:(id)attributes error:(id *)error
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v7 = _os_activity_create(&dword_1DF413000, "SEPClientObject: createKey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
   v16 = 0;
-  v8 = [(TKClientTokenSession *)self processObjectCreationAttributes:v6 authContext:&v16 error:a4];
+  v8 = [(TKClientTokenSession *)self processObjectCreationAttributes:attributesCopy authContext:&v16 error:error];
   v9 = v16;
 
   if (v8)
   {
     v10 = [TKSEPKey alloc];
     v11 = [v8 mutableCopy];
-    v12 = [(TKSEPKey *)v10 initWithAttributes:v11 authContext:v9 forceSystemSession:[(TKSEPClientTokenSession *)self forceSystemSession] error:a4];
+    v12 = [(TKSEPKey *)v10 initWithAttributes:v11 authContext:v9 forceSystemSession:[(TKSEPClientTokenSession *)self forceSystemSession] error:error];
 
-    v13 = [(TKClientTokenSession *)self LAContext];
-    [(TKSEPKey *)v12 setAuthContext:v13];
+    lAContext = [(TKClientTokenSession *)self LAContext];
+    [(TKSEPKey *)v12 setAuthContext:lAContext];
 
     if (v12)
     {
-      v14 = [[TKSEPClientTokenObject alloc] initWithSession:self key:v12 error:a4];
+      v14 = [[TKSEPClientTokenObject alloc] initWithSession:self key:v12 error:error];
       goto LABEL_6;
     }
   }
@@ -105,25 +105,25 @@ LABEL_6:
   return v14;
 }
 
-- (id)objectForObjectID:(id)a3 error:(id *)a4
+- (id)objectForObjectID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = _os_activity_create(&dword_1DF413000, "SEPClientObject: getKey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(v7, &v15);
-  v8 = [(TKSEPClientTokenSession *)self tokenID];
-  v9 = [v8 decodedKeyID:v6 error:a4];
+  tokenID = [(TKSEPClientTokenSession *)self tokenID];
+  v9 = [tokenID decodedKeyID:dCopy error:error];
 
   if (v9)
   {
     v10 = [TKSEPKey alloc];
-    v11 = [(TKClientTokenSession *)self LAContext];
-    v12 = [(TKSEPKey *)v10 initWithObjectID:v9 authContext:v11 forceSystemSession:[(TKSEPClientTokenSession *)self forceSystemSession] error:a4];
+    lAContext = [(TKClientTokenSession *)self LAContext];
+    v12 = [(TKSEPKey *)v10 initWithObjectID:v9 authContext:lAContext forceSystemSession:[(TKSEPClientTokenSession *)self forceSystemSession] error:error];
 
     if (v12)
     {
-      v13 = [[TKSEPClientTokenObject alloc] initWithSession:self key:v12 error:a4];
+      v13 = [[TKSEPClientTokenObject alloc] initWithSession:self key:v12 error:error];
     }
 
     else

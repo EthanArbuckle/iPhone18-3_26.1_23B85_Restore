@@ -1,7 +1,7 @@
 @interface MPSNDArrayCostVolumeDescriptor
 - (MPSNDArrayCostVolumeDescriptor)init;
 - (MPSNDArrayCostVolumeWindowSizes)windowSizes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSNDArrayCostVolumeDescriptor
@@ -24,9 +24,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 8) = *&self->_samplingMode;

@@ -1,8 +1,8 @@
 @interface STUsageRequest
-+ (id)fetchOrCreateUsageRequestForLocalUserInContext:(id)a3 error:(id *)a4;
-+ (id)fetchOrCreateUsageRequestForRemoteUserWithDSID:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)fetchOrCreateUsageRequestForUser:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)fetchOrCreateUsageRequestForUserWithDSID:(id)a3 inContext:(id)a4 error:(id *)a5;
++ (id)fetchOrCreateUsageRequestForLocalUserInContext:(id)context error:(id *)error;
++ (id)fetchOrCreateUsageRequestForRemoteUserWithDSID:(id)d inContext:(id)context error:(id *)error;
++ (id)fetchOrCreateUsageRequestForUser:(id)user inContext:(id)context error:(id *)error;
++ (id)fetchOrCreateUsageRequestForUserWithDSID:(id)d inContext:(id)context error:(id *)error;
 + (id)fetchRequestForLocalUsageRequests;
 + (id)fetchRequestForUsageRequestsThatAreForRemoteUsers;
 @end
@@ -11,39 +11,39 @@
 
 + (id)fetchRequestForLocalUsageRequests
 {
-  v2 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NULL", @"forUserDSID"];
-  [v2 setPredicate:v3];
+  [fetchRequest setPredicate:v3];
 
-  return v2;
+  return fetchRequest;
 }
 
 + (id)fetchRequestForUsageRequestsThatAreForRemoteUsers
 {
-  v2 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", @"forUserDSID"];
-  [v2 setPredicate:v3];
+  [fetchRequest setPredicate:v3];
 
-  return v2;
+  return fetchRequest;
 }
 
-+ (id)fetchOrCreateUsageRequestForUserWithDSID:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateUsageRequestForUserWithDSID:(id)d inContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 longLongValue])
+  dCopy = d;
+  contextCopy = context;
+  if ([dCopy longLongValue])
   {
-    [STCoreUser fetchUserWithDSID:v8 inContext:v9 error:a5];
+    [STCoreUser fetchUserWithDSID:dCopy inContext:contextCopy error:error];
   }
 
   else
   {
-    [STCoreUser fetchLocalUserInContext:v9 error:a5];
+    [STCoreUser fetchLocalUserInContext:contextCopy error:error];
   }
   v10 = ;
   if (v10)
   {
-    v11 = [a1 fetchOrCreateUsageRequestForUser:v10 inContext:v9 error:a5];
+    v11 = [self fetchOrCreateUsageRequestForUser:v10 inContext:contextCopy error:error];
   }
 
   else
@@ -54,31 +54,31 @@
   return v11;
 }
 
-+ (id)fetchOrCreateUsageRequestForUser:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateUsageRequestForUser:(id)user inContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 localUserDeviceState];
+  userCopy = user;
+  contextCopy = context;
+  localUserDeviceState = [userCopy localUserDeviceState];
 
-  if (v10)
+  if (localUserDeviceState)
   {
-    v11 = [a1 fetchOrCreateUsageRequestForLocalUserInContext:v9 error:a5];
+    v11 = [self fetchOrCreateUsageRequestForLocalUserInContext:contextCopy error:error];
   }
 
   else
   {
-    v12 = [v8 dsid];
-    v11 = [a1 fetchOrCreateUsageRequestForRemoteUserWithDSID:v12 inContext:v9 error:a5];
+    dsid = [userCopy dsid];
+    v11 = [self fetchOrCreateUsageRequestForRemoteUserWithDSID:dsid inContext:contextCopy error:error];
   }
 
   return v11;
 }
 
-+ (id)fetchOrCreateUsageRequestForLocalUserInContext:(id)a3 error:(id *)a4
++ (id)fetchOrCreateUsageRequestForLocalUserInContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 fetchRequestForLocalUsageRequests];
-  v8 = [v7 execute:a4];
+  contextCopy = context;
+  fetchRequestForLocalUsageRequests = [self fetchRequestForLocalUsageRequests];
+  v8 = [fetchRequestForLocalUsageRequests execute:error];
   v9 = v8;
   if (v8)
   {
@@ -87,36 +87,36 @@
       v10 = +[STLog usage];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [STUsageRequest fetchOrCreateUsageRequestForLocalUserInContext:v7 error:?];
+        [STUsageRequest fetchOrCreateUsageRequestForLocalUserInContext:fetchRequestForLocalUsageRequests error:?];
       }
     }
 
-    v11 = [v9 firstObject];
-    if (!v11)
+    firstObject = [v9 firstObject];
+    if (!firstObject)
     {
-      v11 = [[STUsageRequest alloc] initWithContext:v6];
+      firstObject = [[STUsageRequest alloc] initWithContext:contextCopy];
       v12 = objc_opt_new();
-      [(STUsageRequest *)v11 setRequestedDate:v12];
+      [(STUsageRequest *)firstObject setRequestedDate:v12];
     }
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
-+ (id)fetchOrCreateUsageRequestForRemoteUserWithDSID:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateUsageRequestForRemoteUserWithDSID:(id)d inContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 fetchRequest];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"forUserDSID", v8];
-  [v10 setPredicate:v11];
+  dCopy = d;
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"forUserDSID", dCopy];
+  [fetchRequest setPredicate:dCopy];
 
-  v12 = [v10 execute:a5];
+  v12 = [fetchRequest execute:error];
   v13 = v12;
   if (v12)
   {
@@ -125,27 +125,27 @@
       v14 = +[STLog usage];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [STUsageRequest fetchOrCreateUsageRequestForLocalUserInContext:v10 error:?];
+        [STUsageRequest fetchOrCreateUsageRequestForLocalUserInContext:fetchRequest error:?];
       }
     }
 
-    v15 = [v13 firstObject];
-    if (!v15)
+    firstObject = [v13 firstObject];
+    if (!firstObject)
     {
-      v15 = [[STUsageRequest alloc] initWithContext:v9];
+      firstObject = [[STUsageRequest alloc] initWithContext:contextCopy];
       v16 = objc_opt_new();
-      [(STUsageRequest *)v15 setRequestedDate:v16];
+      [(STUsageRequest *)firstObject setRequestedDate:v16];
 
-      [(STUsageRequest *)v15 setForUserDSID:v8];
+      [(STUsageRequest *)firstObject setForUserDSID:dCopy];
     }
   }
 
   else
   {
-    v15 = 0;
+    firstObject = 0;
   }
 
-  return v15;
+  return firstObject;
 }
 
 + (void)fetchOrCreateUsageRequestForLocalUserInContext:(void *)a1 error:.cold.1(void *a1)

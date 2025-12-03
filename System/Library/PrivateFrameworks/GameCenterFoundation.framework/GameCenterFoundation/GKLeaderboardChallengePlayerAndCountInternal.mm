@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengePlayerAndCountInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -31,14 +31,14 @@ void __71__GKLeaderboardChallengePlayerAndCountInternal_secureCodedPropertyKeys_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengePlayerAndCountInternal);
-  v5 = [v3 objectForKeyedSubscript:@"player-id"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"player-id"];
   [(GKLeaderboardChallengePlayerAndCountInternal *)v4 setPlayerID:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"count"];
+  v6 = [fragmentCopy objectForKeyedSubscript:@"count"];
 
   [(GKLeaderboardChallengePlayerAndCountInternal *)v4 setCount:v6];
 

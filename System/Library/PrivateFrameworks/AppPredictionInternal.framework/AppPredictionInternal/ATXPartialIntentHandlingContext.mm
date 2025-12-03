@@ -1,22 +1,22 @@
 @interface ATXPartialIntentHandlingContext
 - (ATXPartialIntentHandlingContext)init;
-- (ATXPartialIntentHandlingContext)initWithCoder:(id)a3;
-- (ATXPartialIntentHandlingContext)initWithFeedbackResults:(id)a3 partiallyExecutedAction:(id)a4 partiallyExecutedActionStartDate:(id)a5 currentApp:(id)a6 currentAppSessionStartDate:(id)a7 shortcutsRuntimeDonatedAction:(id)a8 shortcutsRuntimeDonationDate:(id)a9 matchingAppSessionDonatedAction:(id)a10 matchingAppSessionDonationDate:(id)a11;
-- (BOOL)_isPartialEngagementForATXAction:(id)a3 withMatchingDonatedAction:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPartialIntentHandlingContext:(id)a3;
+- (ATXPartialIntentHandlingContext)initWithCoder:(id)coder;
+- (ATXPartialIntentHandlingContext)initWithFeedbackResults:(id)results partiallyExecutedAction:(id)action partiallyExecutedActionStartDate:(id)date currentApp:(id)app currentAppSessionStartDate:(id)startDate shortcutsRuntimeDonatedAction:(id)donatedAction shortcutsRuntimeDonationDate:(id)donationDate matchingAppSessionDonatedAction:(id)self0 matchingAppSessionDonationDate:(id)self1;
+- (BOOL)_isPartialEngagementForATXAction:(id)action withMatchingDonatedAction:(id)donatedAction;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPartialIntentHandlingContext:(id)context;
 - (NSArray)feedbackResults;
-- (id)_partiallyExecutedSuggestionFromFeedbackResult:(id)a3;
-- (id)atxActionFromIntentEvent:(id)a3;
-- (id)handleAppLaunchAndReturnCompletedResults:(id)a3;
-- (id)handleNewFeedbackResultAndReturnCompletedResults:(id)a3;
-- (id)handleNewIntentEventAndReturnCompletedResults:(id)a3;
+- (id)_partiallyExecutedSuggestionFromFeedbackResult:(id)result;
+- (id)atxActionFromIntentEvent:(id)event;
+- (id)handleAppLaunchAndReturnCompletedResults:(id)results;
+- (id)handleNewFeedbackResultAndReturnCompletedResults:(id)results;
+- (id)handleNewIntentEventAndReturnCompletedResults:(id)results;
 - (unint64_t)hash;
 - (void)_resetInternalState;
-- (void)_tryUpdateMatchingAppSessionDonatedAction:(id)a3 eventDate:(id)a4;
+- (void)_tryUpdateMatchingAppSessionDonatedAction:(id)action eventDate:(id)date;
 - (void)_tryUpdatePartialIntentSessionState;
-- (void)_tryUpdateShortcutsRuntimeDonatedAction:(id)a3 eventDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_tryUpdateShortcutsRuntimeDonatedAction:(id)action eventDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXPartialIntentHandlingContext
@@ -29,53 +29,53 @@
   return v4;
 }
 
-- (ATXPartialIntentHandlingContext)initWithFeedbackResults:(id)a3 partiallyExecutedAction:(id)a4 partiallyExecutedActionStartDate:(id)a5 currentApp:(id)a6 currentAppSessionStartDate:(id)a7 shortcutsRuntimeDonatedAction:(id)a8 shortcutsRuntimeDonationDate:(id)a9 matchingAppSessionDonatedAction:(id)a10 matchingAppSessionDonationDate:(id)a11
+- (ATXPartialIntentHandlingContext)initWithFeedbackResults:(id)results partiallyExecutedAction:(id)action partiallyExecutedActionStartDate:(id)date currentApp:(id)app currentAppSessionStartDate:(id)startDate shortcutsRuntimeDonatedAction:(id)donatedAction shortcutsRuntimeDonationDate:(id)donationDate matchingAppSessionDonatedAction:(id)self0 matchingAppSessionDonationDate:(id)self1
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  resultsCopy = results;
+  actionCopy = action;
+  dateCopy = date;
+  appCopy = app;
+  startDateCopy = startDate;
+  donatedActionCopy = donatedAction;
+  donationDateCopy = donationDate;
+  sessionDonatedActionCopy = sessionDonatedAction;
+  sessionDonationDateCopy = sessionDonationDate;
   v30.receiver = self;
   v30.super_class = ATXPartialIntentHandlingContext;
   v19 = [(ATXPartialIntentHandlingContext *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_feedbackResults, a3);
-    objc_storeStrong(&v20->_partiallyExecutedAction, a4);
-    objc_storeStrong(&v20->_partiallyExecutedActionStartDate, a5);
-    objc_storeStrong(&v20->_currentApp, a6);
-    objc_storeStrong(&v20->_currentAppSessionStartDate, a7);
-    objc_storeStrong(&v20->_shortcutsRuntimeDonatedAction, a8);
-    objc_storeStrong(&v20->_shortcutsRuntimeDonationDate, a9);
-    objc_storeStrong(&v20->_matchingAppSessionDonatedAction, a10);
-    objc_storeStrong(&v20->_matchingAppSessionDonationDate, a11);
+    objc_storeStrong(&v19->_feedbackResults, results);
+    objc_storeStrong(&v20->_partiallyExecutedAction, action);
+    objc_storeStrong(&v20->_partiallyExecutedActionStartDate, date);
+    objc_storeStrong(&v20->_currentApp, app);
+    objc_storeStrong(&v20->_currentAppSessionStartDate, startDate);
+    objc_storeStrong(&v20->_shortcutsRuntimeDonatedAction, donatedAction);
+    objc_storeStrong(&v20->_shortcutsRuntimeDonationDate, donationDate);
+    objc_storeStrong(&v20->_matchingAppSessionDonatedAction, sessionDonatedAction);
+    objc_storeStrong(&v20->_matchingAppSessionDonationDate, sessionDonationDate);
   }
 
   return v20;
 }
 
-- (id)handleNewFeedbackResultAndReturnCompletedResults:(id)a3
+- (id)handleNewFeedbackResultAndReturnCompletedResults:(id)results
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = __atxlog_handle_blending_ecosystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ATXPartialIntentHandlingContext handleNewFeedbackResultAndReturnCompletedResults:];
   }
 
-  v6 = [(ATXPartialIntentHandlingContext *)self _partiallyExecutedSuggestionFromFeedbackResult:v4];
-  v7 = [v6 atxActionExecutableObject];
-  v8 = v7;
+  v6 = [(ATXPartialIntentHandlingContext *)self _partiallyExecutedSuggestionFromFeedbackResult:resultsCopy];
+  atxActionExecutableObject = [v6 atxActionExecutableObject];
+  v8 = atxActionExecutableObject;
   if (v6)
   {
-    obj = v7;
+    obj = atxActionExecutableObject;
     v32 = v6;
     v9 = [(NSMutableArray *)self->_feedbackResults copy];
     v33 = 0u;
@@ -98,9 +98,9 @@
             objc_enumerationMutation(v10);
           }
 
-          v16 = [*(*(&v33 + 1) + 8 * i) session];
-          v17 = [v4 session];
-          v18 = [v16 isEqual:v17];
+          session = [*(*(&v33 + 1) + 8 * i) session];
+          session2 = [resultsCopy session];
+          v18 = [session isEqual:session2];
 
           if ((v18 & 1) == 0)
           {
@@ -129,16 +129,16 @@
       v13 = 0;
     }
 
-    v24 = [[ATXProactiveSuggestionPartialIntentResultWrapper alloc] initWithUIFeedbackResult:v4];
+    v24 = [[ATXProactiveSuggestionPartialIntentResultWrapper alloc] initWithUIFeedbackResult:resultsCopy];
     v6 = v32;
     [(ATXProactiveSuggestionPartialIntentResultWrapper *)v24 updatePartiallyExecutedActionWithProactiveSuggestion:v32];
     [(NSMutableArray *)self->_feedbackResults addObject:v24];
     v8 = obj;
     objc_storeStrong(&self->_partiallyExecutedAction, obj);
-    v25 = [v4 session];
-    v26 = [v25 sessionEndDate];
+    session3 = [resultsCopy session];
+    sessionEndDate = [session3 sessionEndDate];
     partiallyExecutedActionStartDate = self->_partiallyExecutedActionStartDate;
-    self->_partiallyExecutedActionStartDate = v26;
+    self->_partiallyExecutedActionStartDate = sessionEndDate;
 
     v28 = __atxlog_handle_blending_ecosystem();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -155,7 +155,7 @@
     [(ATXPartialIntentHandlingContext *)self _tryUpdatePartialIntentSessionState];
     v21 = [(NSMutableArray *)self->_feedbackResults mutableCopy];
     [(ATXPartialIntentHandlingContext *)self _resetInternalState];
-    [v21 addObject:v4];
+    [v21 addObject:resultsCopy];
     v22 = __atxlog_handle_blending_ecosystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -170,35 +170,35 @@
   return v23;
 }
 
-- (id)handleAppLaunchAndReturnCompletedResults:(id)a3
+- (id)handleAppLaunchAndReturnCompletedResults:(id)results
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = __atxlog_handle_blending_ecosystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXPartialIntentHandlingContext *)self handleAppLaunchAndReturnCompletedResults:v4, v5];
+    [(ATXPartialIntentHandlingContext *)self handleAppLaunchAndReturnCompletedResults:resultsCopy, v5];
   }
 
-  v6 = [v4 absoluteTimestamp];
-  v7 = [v4 bundleID];
-  v8 = [v7 isEqualToString:@"com.apple.springboard.today-view"];
+  absoluteTimestamp = [resultsCopy absoluteTimestamp];
+  bundleID = [resultsCopy bundleID];
+  v8 = [bundleID isEqualToString:@"com.apple.springboard.today-view"];
 
-  if (![v4 starting] || (v8 & 1) != 0)
+  if (![resultsCopy starting] || (v8 & 1) != 0)
   {
     currentApp = self->_currentApp;
     v14 = 0.0;
     if (currentApp && self->_currentAppSessionStartDate)
     {
-      v12 = [v4 bundleID];
-      [v6 timeIntervalSinceDate:self->_currentAppSessionStartDate];
+      bundleID2 = [resultsCopy bundleID];
+      [absoluteTimestamp timeIntervalSinceDate:self->_currentAppSessionStartDate];
       v14 = v16;
       currentApp = self->_currentApp;
     }
 
     else
     {
-      v12 = 0;
+      bundleID2 = 0;
     }
 
     self->_currentApp = 0;
@@ -209,12 +209,12 @@
 
   else
   {
-    v9 = [v4 bundleID];
+    bundleID3 = [resultsCopy bundleID];
     v10 = self->_currentApp;
-    self->_currentApp = v9;
+    self->_currentApp = bundleID3;
 
-    v11 = v6;
-    v12 = 0;
+    v11 = absoluteTimestamp;
+    bundleID2 = 0;
     currentAppSessionStartDate = self->_currentAppSessionStartDate;
     self->_currentAppSessionStartDate = v11;
     v14 = 0.0;
@@ -231,7 +231,7 @@
     goto LABEL_26;
   }
 
-  if (v12 && ([v12 isEqualToString:@"com.apple.shortcuts.runtime"] & 1) == 0 && v14 < 1.0)
+  if (bundleID2 && ([bundleID2 isEqualToString:@"com.apple.shortcuts.runtime"] & 1) == 0 && v14 < 1.0)
   {
     matchingAppSessionDonatedAction = self->_matchingAppSessionDonatedAction;
     self->_matchingAppSessionDonatedAction = 0;
@@ -247,21 +247,21 @@
       v31 = 138412802;
       v32 = v30;
       v33 = 2112;
-      v34 = v12;
+      v34 = bundleID2;
       v35 = 2048;
       v36 = v14;
       _os_log_debug_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEBUG, "%@ - clearing any existing matching donations for short app session with bundleId %@, length: %f", &v31, 0x20u);
     }
   }
 
-  [v6 timeIntervalSinceDate:self->_partiallyExecutedActionStartDate];
+  [absoluteTimestamp timeIntervalSinceDate:self->_partiallyExecutedActionStartDate];
   if (v21 > 300.0)
   {
     [(ATXPartialIntentHandlingContext *)self _tryUpdatePartialIntentSessionState];
     v22 = [(NSMutableArray *)self->_feedbackResults copy];
     [(ATXPartialIntentHandlingContext *)self _resetInternalState];
-    v23 = __atxlog_handle_blending_ecosystem();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+    bundleID4 = __atxlog_handle_blending_ecosystem();
+    if (os_log_type_enabled(bundleID4, OS_LOG_TYPE_DEBUG))
     {
       [ATXPartialIntentHandlingContext handleAppLaunchAndReturnCompletedResults:];
     }
@@ -269,20 +269,20 @@
     goto LABEL_29;
   }
 
-  v23 = [v4 bundleID];
-  if (([v23 isEqualToString:@"com.apple.shortcuts.runtime"]& 1) == 0)
+  bundleID4 = [resultsCopy bundleID];
+  if (([bundleID4 isEqualToString:@"com.apple.shortcuts.runtime"]& 1) == 0)
   {
-    v24 = [(ATXAction *)self->_partiallyExecutedAction bundleId];
-    v25 = [v4 bundleID];
-    v26 = [v24 isEqualToString:v25];
+    bundleId = [(ATXAction *)self->_partiallyExecutedAction bundleId];
+    bundleID5 = [resultsCopy bundleID];
+    v26 = [bundleId isEqualToString:bundleID5];
 
     if ((v26 & 1) == 0)
     {
       [(ATXPartialIntentHandlingContext *)self _tryUpdatePartialIntentSessionState];
       v22 = [(NSMutableArray *)self->_feedbackResults copy];
       [(ATXPartialIntentHandlingContext *)self _resetInternalState];
-      v23 = __atxlog_handle_blending_ecosystem();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+      bundleID4 = __atxlog_handle_blending_ecosystem();
+      if (os_log_type_enabled(bundleID4, OS_LOG_TYPE_DEBUG))
       {
         [ATXPartialIntentHandlingContext handleAppLaunchAndReturnCompletedResults:];
       }
@@ -304,49 +304,49 @@ LABEL_30:
   return v22;
 }
 
-- (id)handleNewIntentEventAndReturnCompletedResults:(id)a3
+- (id)handleNewIntentEventAndReturnCompletedResults:(id)results
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = __atxlog_handle_blending_ecosystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 bundleID];
-    v9 = [v4 intentClass];
-    v10 = [v4 absoluteTimestamp];
+    bundleID = [resultsCopy bundleID];
+    intentClass = [resultsCopy intentClass];
+    absoluteTimestamp = [resultsCopy absoluteTimestamp];
     v26 = 138413058;
     v27 = v7;
     v28 = 2112;
-    v29 = v8;
+    v29 = bundleID;
     v30 = 2112;
-    v31 = v9;
+    v31 = intentClass;
     v32 = 2112;
-    v33 = v10;
+    v33 = absoluteTimestamp;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "%@ - got intent event with bundleId: %@ class: %@ date: %@", &v26, 0x2Au);
   }
 
-  v11 = [v4 absoluteTimestamp];
-  v12 = v11;
+  absoluteTimestamp2 = [resultsCopy absoluteTimestamp];
+  v12 = absoluteTimestamp2;
   if (self->_partiallyExecutedAction)
   {
-    [v11 timeIntervalSinceDate:self->_partiallyExecutedActionStartDate];
+    [absoluteTimestamp2 timeIntervalSinceDate:self->_partiallyExecutedActionStartDate];
     if (v13 <= 18000.0)
     {
-      v16 = [(ATXAction *)self->_partiallyExecutedAction bundleId];
-      v17 = [v4 bundleID];
-      v18 = [v16 isEqualToString:v17];
+      bundleId = [(ATXAction *)self->_partiallyExecutedAction bundleId];
+      bundleID2 = [resultsCopy bundleID];
+      v18 = [bundleId isEqualToString:bundleID2];
 
       if (v18)
       {
         currentApp = self->_currentApp;
         v20 = [(NSString *)currentApp isEqualToString:@"com.apple.shortcuts.runtime"];
         v21 = self->_currentApp;
-        v22 = [(ATXAction *)self->_partiallyExecutedAction bundleId];
-        v23 = [(NSString *)v21 isEqualToString:v22];
+        bundleId2 = [(ATXAction *)self->_partiallyExecutedAction bundleId];
+        v23 = [(NSString *)v21 isEqualToString:bundleId2];
 
-        v15 = [(ATXPartialIntentHandlingContext *)self atxActionFromIntentEvent:v4];
+        v15 = [(ATXPartialIntentHandlingContext *)self atxActionFromIntentEvent:resultsCopy];
         if (currentApp)
         {
           if (v20)
@@ -433,15 +433,15 @@ LABEL_30:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tryUpdateShortcutsRuntimeDonatedAction:(id)a3 eventDate:(id)a4
+- (void)_tryUpdateShortcutsRuntimeDonatedAction:(id)action eventDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && !self->_shortcutsRuntimeDonatedAction)
+  actionCopy = action;
+  dateCopy = date;
+  if (actionCopy && !self->_shortcutsRuntimeDonatedAction)
   {
-    objc_storeStrong(&self->_shortcutsRuntimeDonatedAction, a3);
-    objc_storeStrong(&self->_shortcutsRuntimeDonationDate, a4);
+    objc_storeStrong(&self->_shortcutsRuntimeDonatedAction, action);
+    objc_storeStrong(&self->_shortcutsRuntimeDonationDate, date);
     v9 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -462,15 +462,15 @@ LABEL_30:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tryUpdateMatchingAppSessionDonatedAction:(id)a3 eventDate:(id)a4
+- (void)_tryUpdateMatchingAppSessionDonatedAction:(id)action eventDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && !self->_matchingAppSessionDonatedAction)
+  actionCopy = action;
+  dateCopy = date;
+  if (actionCopy && !self->_matchingAppSessionDonatedAction)
   {
-    objc_storeStrong(&self->_matchingAppSessionDonatedAction, a3);
-    objc_storeStrong(&self->_matchingAppSessionDonationDate, a4);
+    objc_storeStrong(&self->_matchingAppSessionDonatedAction, action);
+    objc_storeStrong(&self->_matchingAppSessionDonationDate, date);
     v9 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -491,25 +491,25 @@ LABEL_30:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isPartialEngagementForATXAction:(id)a3 withMatchingDonatedAction:(id)a4
+- (BOOL)_isPartialEngagementForATXAction:(id)action withMatchingDonatedAction:(id)donatedAction
 {
-  v5 = a3;
-  v6 = [a4 actionKey];
-  v7 = [v5 actionKey];
+  actionCopy = action;
+  actionKey = [donatedAction actionKey];
+  actionKey2 = [actionCopy actionKey];
 
-  LOBYTE(v5) = [v6 isEqualToString:v7];
-  return v5;
+  LOBYTE(actionCopy) = [actionKey isEqualToString:actionKey2];
+  return actionCopy;
 }
 
-- (id)_partiallyExecutedSuggestionFromFeedbackResult:(id)a3
+- (id)_partiallyExecutedSuggestionFromFeedbackResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a3 engagedSuggestions];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  engagedSuggestions = [result engagedSuggestions];
+  v4 = [engagedSuggestions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = *v17;
@@ -519,22 +519,22 @@ LABEL_30:
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(engagedSuggestions);
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
-        v8 = [v7 atxActionExecutableObject];
-        v9 = v8;
-        if (v8)
+        atxActionExecutableObject = [v7 atxActionExecutableObject];
+        v9 = atxActionExecutableObject;
+        if (atxActionExecutableObject)
         {
-          v10 = [v8 intent];
-          if (v10)
+          intent = [atxActionExecutableObject intent];
+          if (intent)
           {
-            v11 = v10;
-            v12 = [v9 intent];
-            v13 = [v12 atx_supportsBackgroundExecution];
+            v11 = intent;
+            intent2 = [v9 intent];
+            atx_supportsBackgroundExecution = [intent2 atx_supportsBackgroundExecution];
 
-            if (!v13)
+            if (!atx_supportsBackgroundExecution)
             {
               v4 = v7;
 
@@ -544,7 +544,7 @@ LABEL_30:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [engagedSuggestions countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v4)
       {
         continue;
@@ -561,34 +561,34 @@ LABEL_13:
   return v4;
 }
 
-- (id)atxActionFromIntentEvent:(id)a3
+- (id)atxActionFromIntentEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x277CCAAC8];
   v7 = objc_opt_class();
-  v8 = [v4 interaction];
+  interaction = [eventCopy interaction];
   v18 = 0;
-  v9 = [v6 unarchivedObjectOfClass:v7 fromData:v8 error:&v18];
+  v9 = [v6 unarchivedObjectOfClass:v7 fromData:interaction error:&v18];
   v10 = v18;
 
   objc_autoreleasePoolPop(v5);
   if (v9)
   {
     v11 = objc_alloc(MEMORY[0x277CEB2C8]);
-    v12 = [v9 intent];
+    intent = [v9 intent];
     v13 = objc_opt_new();
-    v14 = [v4 bundleID];
+    bundleID = [eventCopy bundleID];
     LOBYTE(v17) = 0;
-    v15 = [v11 initWithIntent:v12 actionUUID:v13 bundleId:v14 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v17 title:0 subtitle:0];
+    v15 = [v11 initWithIntent:intent actionUUID:v13 bundleId:bundleID heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v17 title:0 subtitle:0];
   }
 
   else
   {
-    v12 = __atxlog_handle_feedback();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    intent = __atxlog_handle_feedback();
+    if (os_log_type_enabled(intent, OS_LOG_TYPE_ERROR))
     {
-      [(ATXPartialIntentHandlingContext *)self atxActionFromIntentEvent:v10, v12];
+      [(ATXPartialIntentHandlingContext *)self atxActionFromIntentEvent:v10, intent];
     }
 
     v15 = 0;
@@ -604,24 +604,24 @@ LABEL_13:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   feedbackResults = self->_feedbackResults;
-  v5 = a3;
-  [v5 encodeObject:feedbackResults forKey:@"feedbackResults"];
-  [v5 encodeObject:self->_partiallyExecutedAction forKey:@"partialAction"];
-  [v5 encodeObject:self->_partiallyExecutedActionStartDate forKey:@"partialActionStartDate"];
-  [v5 encodeObject:self->_currentApp forKey:@"currentApp"];
-  [v5 encodeObject:self->_currentAppSessionStartDate forKey:@"currentAppStartDate"];
-  [v5 encodeObject:self->_shortcutsRuntimeDonatedAction forKey:@"shortcutsRuntimeDonatedAction"];
-  [v5 encodeObject:self->_shortcutsRuntimeDonationDate forKey:@"shortcutsRuntimeDonationDate"];
-  [v5 encodeObject:self->_matchingAppSessionDonatedAction forKey:@"matchingAppSessionAction"];
-  [v5 encodeObject:self->_matchingAppSessionDonationDate forKey:@"matchingAppSessionDonationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:feedbackResults forKey:@"feedbackResults"];
+  [coderCopy encodeObject:self->_partiallyExecutedAction forKey:@"partialAction"];
+  [coderCopy encodeObject:self->_partiallyExecutedActionStartDate forKey:@"partialActionStartDate"];
+  [coderCopy encodeObject:self->_currentApp forKey:@"currentApp"];
+  [coderCopy encodeObject:self->_currentAppSessionStartDate forKey:@"currentAppStartDate"];
+  [coderCopy encodeObject:self->_shortcutsRuntimeDonatedAction forKey:@"shortcutsRuntimeDonatedAction"];
+  [coderCopy encodeObject:self->_shortcutsRuntimeDonationDate forKey:@"shortcutsRuntimeDonationDate"];
+  [coderCopy encodeObject:self->_matchingAppSessionDonatedAction forKey:@"matchingAppSessionAction"];
+  [coderCopy encodeObject:self->_matchingAppSessionDonationDate forKey:@"matchingAppSessionDonationDate"];
 }
 
-- (ATXPartialIntentHandlingContext)initWithCoder:(id)a3
+- (ATXPartialIntentHandlingContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -629,20 +629,20 @@ LABEL_13:
   v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v6);
   v10 = __atxlog_handle_blending_ecosystem();
-  v11 = [v5 robustDecodeObjectOfClasses:v9 forKey:@"feedbackResults" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v10];
+  v11 = [v5 robustDecodeObjectOfClasses:v9 forKey:@"feedbackResults" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v10];
 
-  if (v11 && ([v4 error], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+  if (v11 && ([coderCopy error], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
     v14 = MEMORY[0x277D42620];
     v15 = objc_opt_class();
     v16 = __atxlog_handle_blending_ecosystem();
-    v17 = [v14 robustDecodeObjectOfClass:v15 forKey:@"partialAction" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v16];
+    v17 = [v14 robustDecodeObjectOfClass:v15 forKey:@"partialAction" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v16];
 
-    v18 = [v4 error];
+    error = [coderCopy error];
 
-    if (v18)
+    if (error)
     {
-      v13 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -650,13 +650,13 @@ LABEL_13:
       v19 = MEMORY[0x277D42620];
       v20 = objc_opt_class();
       v21 = __atxlog_handle_blending_ecosystem();
-      v22 = [v19 robustDecodeObjectOfClass:v20 forKey:@"partialActionStartDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v21];
+      v22 = [v19 robustDecodeObjectOfClass:v20 forKey:@"partialActionStartDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v21];
 
-      v23 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v23)
+      if (error2)
       {
-        v13 = 0;
+        selfCopy = 0;
       }
 
       else
@@ -664,13 +664,13 @@ LABEL_13:
         v24 = MEMORY[0x277D42620];
         v25 = objc_opt_class();
         v26 = __atxlog_handle_blending_ecosystem();
-        v27 = [v24 robustDecodeObjectOfClass:v25 forKey:@"currentApp" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v26];
+        v27 = [v24 robustDecodeObjectOfClass:v25 forKey:@"currentApp" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v26];
 
-        v28 = [v4 error];
+        error3 = [coderCopy error];
 
-        if (v28)
+        if (error3)
         {
-          v13 = 0;
+          selfCopy = 0;
         }
 
         else
@@ -678,13 +678,13 @@ LABEL_13:
           v29 = MEMORY[0x277D42620];
           v30 = objc_opt_class();
           v31 = __atxlog_handle_blending_ecosystem();
-          v32 = [v29 robustDecodeObjectOfClass:v30 forKey:@"currentAppStartDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v31];
+          v32 = [v29 robustDecodeObjectOfClass:v30 forKey:@"currentAppStartDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v31];
 
-          v33 = [v4 error];
+          error4 = [coderCopy error];
 
-          if (v33)
+          if (error4)
           {
-            v13 = 0;
+            selfCopy = 0;
           }
 
           else
@@ -693,13 +693,13 @@ LABEL_13:
             v34 = MEMORY[0x277D42620];
             v35 = objc_opt_class();
             v36 = __atxlog_handle_blending_ecosystem();
-            v37 = [v34 robustDecodeObjectOfClass:v35 forKey:@"shortcutsRuntimeDonatedAction" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v36];
+            v37 = [v34 robustDecodeObjectOfClass:v35 forKey:@"shortcutsRuntimeDonatedAction" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v36];
 
-            v38 = [v4 error];
+            error5 = [coderCopy error];
 
-            if (v38)
+            if (error5)
             {
-              v13 = 0;
+              selfCopy = 0;
               v32 = v59;
             }
 
@@ -709,13 +709,13 @@ LABEL_13:
               v39 = MEMORY[0x277D42620];
               v40 = objc_opt_class();
               v41 = __atxlog_handle_blending_ecosystem();
-              v57 = [v39 robustDecodeObjectOfClass:v40 forKey:@"shortcutsRuntimeDonationDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v41];
+              v57 = [v39 robustDecodeObjectOfClass:v40 forKey:@"shortcutsRuntimeDonationDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v41];
 
-              v42 = [v4 error];
+              error6 = [coderCopy error];
 
-              if (v42)
+              if (error6)
               {
-                v13 = 0;
+                selfCopy = 0;
                 v37 = v58;
                 v32 = v59;
                 v43 = v57;
@@ -726,13 +726,13 @@ LABEL_13:
                 v44 = MEMORY[0x277D42620];
                 v45 = objc_opt_class();
                 v46 = __atxlog_handle_blending_ecosystem();
-                v56 = [v44 robustDecodeObjectOfClass:v45 forKey:@"matchingAppSessionAction" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v46];
+                v56 = [v44 robustDecodeObjectOfClass:v45 forKey:@"matchingAppSessionAction" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v46];
 
-                v47 = [v4 error];
+                error7 = [coderCopy error];
 
-                if (v47)
+                if (error7)
                 {
-                  v13 = 0;
+                  selfCopy = 0;
                   v37 = v58;
                   v32 = v59;
                   v43 = v57;
@@ -743,14 +743,14 @@ LABEL_13:
                   v48 = MEMORY[0x277D42620];
                   v49 = objc_opt_class();
                   v50 = __atxlog_handle_blending_ecosystem();
-                  v51 = [v48 robustDecodeObjectOfClass:v49 forKey:@"matchingAppSessionDonationDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v50];
+                  v51 = [v48 robustDecodeObjectOfClass:v49 forKey:@"matchingAppSessionDonationDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXPartialIntentHandlingContext" errorCode:-1 logHandle:v50];
 
-                  v52 = [v4 error];
+                  error8 = [coderCopy error];
 
                   v55 = v51;
-                  if (v52)
+                  if (error8)
                   {
-                    v13 = 0;
+                    selfCopy = 0;
                     v37 = v58;
                     v32 = v59;
                     v43 = v57;
@@ -763,7 +763,7 @@ LABEL_13:
                     v37 = v58;
                     v32 = v59;
                     self = [(ATXPartialIntentHandlingContext *)self initWithFeedbackResults:v11 partiallyExecutedAction:v17 partiallyExecutedActionStartDate:v22 currentApp:v27 currentAppSessionStartDate:v59 shortcutsRuntimeDonatedAction:v58 shortcutsRuntimeDonationDate:v57 matchingAppSessionDonatedAction:v56 matchingAppSessionDonationDate:v54, v55];
-                    v13 = self;
+                    selfCopy = self;
                   }
                 }
               }
@@ -776,35 +776,35 @@ LABEL_13:
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPartialIntentHandlingContext *)self isEqualToATXPartialIntentHandlingContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPartialIntentHandlingContext *)self isEqualToATXPartialIntentHandlingContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPartialIntentHandlingContext:(id)a3
+- (BOOL)isEqualToATXPartialIntentHandlingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = self->_feedbackResults;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == contextCopy[1])
   {
   }
 
@@ -820,7 +820,7 @@ LABEL_13:
 
   v8 = self->_partiallyExecutedAction;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == contextCopy[2])
   {
   }
 
@@ -836,7 +836,7 @@ LABEL_13:
 
   v11 = self->_partiallyExecutedActionStartDate;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == contextCopy[3])
   {
   }
 
@@ -852,7 +852,7 @@ LABEL_13:
 
   v14 = self->_currentApp;
   v15 = v14;
-  if (v14 == v4[4])
+  if (v14 == contextCopy[4])
   {
   }
 
@@ -868,7 +868,7 @@ LABEL_13:
 
   v17 = self->_currentAppSessionStartDate;
   v18 = v17;
-  if (v17 == v4[5])
+  if (v17 == contextCopy[5])
   {
   }
 
@@ -884,7 +884,7 @@ LABEL_13:
 
   v20 = self->_shortcutsRuntimeDonatedAction;
   v21 = v20;
-  if (v20 == v4[6])
+  if (v20 == contextCopy[6])
   {
   }
 
@@ -900,7 +900,7 @@ LABEL_13:
 
   v23 = self->_shortcutsRuntimeDonationDate;
   v24 = v23;
-  if (v23 == v4[7])
+  if (v23 == contextCopy[7])
   {
   }
 
@@ -916,7 +916,7 @@ LABEL_13:
 
   v26 = self->_matchingAppSessionDonatedAction;
   v27 = v26;
-  if (v26 == v4[8])
+  if (v26 == contextCopy[8])
   {
   }
 
@@ -934,7 +934,7 @@ LABEL_31:
 
   v31 = self->_matchingAppSessionDonationDate;
   v32 = v31;
-  if (v31 == v4[9])
+  if (v31 == contextCopy[9])
   {
     v29 = 1;
   }

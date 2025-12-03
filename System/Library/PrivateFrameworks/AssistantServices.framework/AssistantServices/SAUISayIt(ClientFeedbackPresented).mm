@@ -9,14 +9,14 @@
   v4 = a3;
   if (v4)
   {
-    v7[0] = [a1 aceId];
-    v7[1] = [a1 encodedClassName];
+    v7[0] = [self aceId];
+    v7[1] = [self encodedClassName];
     v7[2] = 0;
-    v8 = [a1 dialogIdentifier];
-    v5 = [a1 listenAfterSpeaking];
-    v9 = [v5 BOOLValue];
+    dialogIdentifier = [self dialogIdentifier];
+    listenAfterSpeaking = [self listenAfterSpeaking];
+    bOOLValue = [listenAfterSpeaking BOOLValue];
 
-    if (v7[0] | v8)
+    if (v7[0] | dialogIdentifier)
     {
       __copy_constructor_8_8_s0_s8_s16_s24_t32w1(v6, v7);
       v4[2](v4, v6);

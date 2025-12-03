@@ -11,9 +11,9 @@
   model = self->_model;
   if (!model)
   {
-    v4 = [objc_opt_class() managedObjectModel];
+    managedObjectModel = [objc_opt_class() managedObjectModel];
     v5 = self->_model;
-    self->_model = v4;
+    self->_model = managedObjectModel;
 
     model = self->_model;
   }

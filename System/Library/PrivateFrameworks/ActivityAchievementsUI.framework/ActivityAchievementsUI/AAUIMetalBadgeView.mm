@@ -3,39 +3,39 @@
 - (AAUIBadgeViewDrawableDelegate)delegate;
 - (BOOL)isPaused;
 - (UIImage)backTextureImage;
-- (id)initUsingEarnedShader:(BOOL)a3 delegate:(id)a4;
+- (id)initUsingEarnedShader:(BOOL)shader delegate:(id)delegate;
 - (id)snapshot;
 - (void)cleanupAfterSnapshot;
 - (void)resizeBadgeForCurrentViewSize;
-- (void)setBackTextureImage:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)setBackTextureImage:(id)image;
+- (void)setConfiguration:(id)configuration;
+- (void)setFrame:(CGRect)frame;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation AAUIMetalBadgeView
 
 - (void)resizeBadgeForCurrentViewSize
 {
-  v2 = [(AAUIMetalBadgeView *)self renderer];
-  [v2 resizeBadgeForCurrentViewSize];
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  [renderer resizeBadgeForCurrentViewSize];
 }
 
-- (id)initUsingEarnedShader:(BOOL)a3 delegate:(id)a4
+- (id)initUsingEarnedShader:(BOOL)shader delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = AAUIMetalBadgeView;
   v7 = [(AAUIMetalBadgeView *)&v17 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v8 = v7;
   if (v7)
   {
-    v7->_useEarnedShader = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_useEarnedShader = shader;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     [(AAUIMetalBadgeView *)v8 setAutoresizingMask:18];
-    v9 = [(AAUIMetalBadgeView *)v8 layer];
+    layer = [(AAUIMetalBadgeView *)v8 layer];
     metalLayer = v8->_metalLayer;
-    v8->_metalLayer = v9;
+    v8->_metalLayer = layer;
 
     v11 = [[AAUIMetalBadgeRenderer alloc] initWithCAMetalLayer:v8->_metalLayer useEarnedShader:v8->_useEarnedShader];
     renderer = v8->_renderer;
@@ -64,71 +64,71 @@ id __53__AAUIMetalBadgeView_initUsingEarnedShader_delegate___block_invoke(uint64
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = AAUIMetalBadgeView;
-  [(AAUIMetalBadgeView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AAUIMetalBadgeView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AAUIMetalBadgeView *)self resizeBadgeForCurrentViewSize];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AAUIMetalBadgeView *)self renderer];
-  [v5 setConfiguration:v4];
+  configurationCopy = configuration;
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  [renderer setConfiguration:configurationCopy];
 }
 
 - (AAUIBadgeModelConfiguration)configuration
 {
-  v2 = [(AAUIMetalBadgeView *)self renderer];
-  v3 = [v2 configuration];
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  configuration = [renderer configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)setBackTextureImage:(id)a3
+- (void)setBackTextureImage:(id)image
 {
-  v4 = a3;
-  v5 = [(AAUIMetalBadgeView *)self renderer];
-  [v5 setBackTextureImage:v4];
+  imageCopy = image;
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  [renderer setBackTextureImage:imageCopy];
 }
 
 - (UIImage)backTextureImage
 {
-  v2 = [(AAUIMetalBadgeView *)self renderer];
-  v3 = [v2 backTextureImage];
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  backTextureImage = [renderer backTextureImage];
 
-  return v3;
+  return backTextureImage;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  v4 = [(AAUIMetalBadgeView *)self renderer];
-  [v4 setPaused:v3];
+  pausedCopy = paused;
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  [renderer setPaused:pausedCopy];
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(AAUIMetalBadgeView *)self renderer];
-  v3 = [v2 isPaused];
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  isPaused = [renderer isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (id)snapshot
 {
-  v2 = [(AAUIMetalBadgeView *)self renderer];
-  v3 = [v2 snapshot];
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  snapshot = [renderer snapshot];
 
-  return v3;
+  return snapshot;
 }
 
 - (void)cleanupAfterSnapshot
 {
-  v2 = [(AAUIMetalBadgeView *)self renderer];
-  [v2 cleanupAfterSnapshot];
+  renderer = [(AAUIMetalBadgeView *)self renderer];
+  [renderer cleanupAfterSnapshot];
 }
 
 - (AAUIBadgeViewDrawableDelegate)delegate

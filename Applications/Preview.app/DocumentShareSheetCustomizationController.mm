@@ -1,13 +1,13 @@
 @interface DocumentShareSheetCustomizationController
-- (BOOL)_customizationAvailableForActivityViewController:(id)a3;
+- (BOOL)_customizationAvailableForActivityViewController:(id)controller;
 - (_TtC7PreviewP33_A22D73F1BBD8537A10652A1CB219D69341DocumentShareSheetCustomizationController)init;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
-- (id)customActionViewControllerForActivityViewController:(id)a3;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
+- (id)customActionViewControllerForActivityViewController:(id)controller;
 @end
 
 @implementation DocumentShareSheetCustomizationController
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -23,7 +23,7 @@
   return v3.super.isa;
 }
 
-- (BOOL)_customizationAvailableForActivityViewController:(id)a3
+- (BOOL)_customizationAvailableForActivityViewController:(id)controller
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -36,7 +36,7 @@
   return 1;
 }
 
-- (id)customActionViewControllerForActivityViewController:(id)a3
+- (id)customActionViewControllerForActivityViewController:(id)controller
 {
   v4 = type metadata accessor for ExportSettingsView();
   __chkstk_darwin(v4);
@@ -53,7 +53,7 @@
   swift_unknownObjectWeakInit();
   type metadata accessor for ExportSheetViewModel(0);
   sub_10006BBB8(&qword_100208130, type metadata accessor for ExportSheetViewModel);
-  v8 = self;
+  selfCopy = self;
 
   Bindable<A>.init(wrappedValue:)();
   v6[*(v4 + 20)] = 1;

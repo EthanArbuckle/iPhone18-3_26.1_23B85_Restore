@@ -2,7 +2,7 @@
 - (NSString)description;
 - (id)redactedDescription;
 - (void)dealloc;
-- (void)initWithDescriptor:(void *)a3 connection:(void *)a4 parameters:;
+- (void)initWithDescriptor:(void *)descriptor connection:(void *)connection parameters:;
 @end
 
 @implementation NWConcrete_nw_connection_group
@@ -127,26 +127,26 @@ LABEL_7:
   [(NWConcrete_nw_connection_group *)&v16 dealloc:v14];
 }
 
-- (void)initWithDescriptor:(void *)a3 connection:(void *)a4 parameters:
+- (void)initWithDescriptor:(void *)descriptor connection:(void *)connection parameters:
 {
   v166 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  descriptorCopy = descriptor;
+  connectionCopy = connection;
+  if (!self)
   {
     goto LABEL_101;
   }
 
   if (v7)
   {
-    v159.receiver = a1;
+    v159.receiver = self;
     v159.super_class = NWConcrete_nw_connection_group;
     v10 = objc_msgSendSuper2(&v159, sel_init);
     v11 = v10;
     if (v10)
     {
-      a1 = v10;
+      self = v10;
       v10[44] = nw_connection_group_get_next_log_id();
       os_unfair_lock_lock(&nw_uuid_generate_insecure(unsigned char *)::uuid_lock);
       if (uuid_is_null(&nw_uuid_generate_insecure(unsigned char *)::last_used_uuid))
@@ -175,9 +175,9 @@ LABEL_9:
 LABEL_10:
       *(v11 + 8) = nw_uuid_generate_insecure(unsigned char *)::last_used_uuid;
       os_unfair_lock_unlock(&nw_uuid_generate_insecure(unsigned char *)::uuid_lock);
-      if (v9)
+      if (connectionCopy)
       {
-        v12 = _nw_parameters_copy_context(v9);
+        v12 = _nw_parameters_copy_context(connectionCopy);
         is_inline = nw_context_is_inline(v12);
 
         if (is_inline)
@@ -286,9 +286,9 @@ LABEL_25:
       v22 = *(v11 + 6);
       *(v11 + 6) = 0;
 
-      if (v8)
+      if (descriptorCopy)
       {
-        v23 = v8;
+        v23 = descriptorCopy;
         v24 = v23[2];
 
         v25 = _nw_parameters_copy(v24);
@@ -300,9 +300,9 @@ LABEL_25:
 
       else
       {
-        if (v9)
+        if (connectionCopy)
         {
-          v27 = _nw_parameters_copy(v9);
+          v27 = _nw_parameters_copy(connectionCopy);
         }
 
         else
@@ -434,7 +434,7 @@ LABEL_37:
           v138 = gconnection_groupLogObj;
           if (os_log_type_enabled(v138, OS_LOG_TYPE_DEBUG))
           {
-            v139 = *(a1 + 44);
+            v139 = *(self + 44);
             v140 = v152[3];
             if (!v140)
             {
@@ -451,7 +451,7 @@ LABEL_37:
           }
         }
 
-        v49 = _nw_parameters_copy(a1[7]);
+        v49 = _nw_parameters_copy(self[7]);
         v50 = v49;
         if (*(v156 + 12))
         {
@@ -460,12 +460,12 @@ LABEL_37:
 
         else
         {
-          *(v156 + 12) = *(a1 + 98);
+          *(v156 + 12) = *(self + 98);
         }
 
-        multicast = nw_listener_create_multicast(a1[8], v50, v152[3]);
-        v60 = a1[12];
-        a1[12] = multicast;
+        multicast = nw_listener_create_multicast(self[8], v50, v152[3]);
+        v60 = self[12];
+        self[12] = multicast;
 
         v61 = v152[3];
         if (v61)
@@ -474,10 +474,10 @@ LABEL_37:
           v152[3] = 0;
         }
 
-        v62 = a1[12];
+        v62 = self[12];
         if (v62)
         {
-          if (*(a1 + 98) == *(v156 + 12))
+          if (*(self + 98) == *(v156 + 12))
           {
             goto LABEL_77;
           }
@@ -490,10 +490,10 @@ LABEL_37:
           }
 
           v63 = nw_listener_create(v50);
-          v64 = a1[13];
-          a1[13] = v63;
+          v64 = self[13];
+          self[13] = v63;
 
-          if (nw_parameters_get_logging_disabled(a1[7]))
+          if (nw_parameters_get_logging_disabled(self[7]))
           {
 LABEL_77:
 
@@ -502,7 +502,7 @@ LABEL_77:
             if (!v62)
             {
 LABEL_78:
-              v75 = 0;
+              selfCopy = 0;
 LABEL_142:
 
               goto LABEL_143;
@@ -524,8 +524,8 @@ LABEL_76:
             goto LABEL_77;
           }
 
-          v66 = *(a1 + 44);
-          v67 = a1[13];
+          v66 = *(self + 44);
+          v67 = self[13];
           *buf = 136446722;
           v161 = "[NWConcrete_nw_connection_group initWithDescriptor:connection:parameters:]";
           v162 = 1024;
@@ -540,7 +540,7 @@ LABEL_76:
 
         else
         {
-          if (nw_parameters_get_logging_disabled(a1[7]))
+          if (nw_parameters_get_logging_disabled(self[7]))
           {
             goto LABEL_77;
           }
@@ -556,9 +556,9 @@ LABEL_76:
             goto LABEL_76;
           }
 
-          v72 = *(a1 + 44);
-          v74 = a1[7];
-          v73 = a1[8];
+          v72 = *(self + 44);
+          v74 = self[7];
+          v73 = self[8];
           *buf = 136446978;
           v161 = "[NWConcrete_nw_connection_group initWithDescriptor:connection:parameters:]";
           v162 = 1024;
@@ -591,7 +591,7 @@ LABEL_76:
       {
         v55 = nw_group_descriptor_copy_member(v54);
         v56 = *(v11 + 7);
-        if (v8)
+        if (descriptorCopy)
         {
           if (!nw_parameters_get_logging_disabled(v56) && gLogDatapath == 1)
           {
@@ -610,7 +610,7 @@ LABEL_76:
               v162 = 1024;
               *v163 = v142;
               *&v163[4] = 2112;
-              *&v163[6] = v8;
+              *&v163[6] = descriptorCopy;
               *&v163[14] = 2112;
               *&v163[16] = v55;
               v164 = 2112;
@@ -619,7 +619,7 @@ LABEL_76:
             }
           }
 
-          v57 = v8;
+          v57 = descriptorCopy;
         }
 
         else
@@ -680,7 +680,7 @@ LABEL_76:
         goto LABEL_128;
       }
 
-      v78 = a1[8];
+      v78 = self[8];
       if (!v78)
       {
         goto LABEL_109;
@@ -688,13 +688,13 @@ LABEL_76:
 
       if (nw_group_descriptor_get_type(v78) == 4)
       {
-        v79 = nw_listener_create(a1[7]);
-        v80 = a1[12];
-        a1[12] = v79;
+        v79 = nw_listener_create(self[7]);
+        v80 = self[12];
+        self[12] = v79;
 
-        if (!a1[12])
+        if (!self[12])
         {
-          if (!nw_parameters_get_logging_disabled(a1[7]))
+          if (!nw_parameters_get_logging_disabled(self[7]))
           {
             if (__nwlog_connection_group_log::onceToken != -1)
             {
@@ -704,8 +704,8 @@ LABEL_76:
             v81 = gconnection_groupLogObj;
             if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
             {
-              v82 = *(a1 + 44);
-              v83 = a1[7];
+              v82 = *(self + 44);
+              v83 = self[7];
               *buf = 136446722;
               v161 = "[NWConcrete_nw_connection_group initWithDescriptor:connection:parameters:]";
               v162 = 1024;
@@ -720,8 +720,8 @@ LABEL_76:
         }
 
 LABEL_128:
-        v99 = a1[7];
-        if (a1[12])
+        v99 = self[7];
+        if (self[12])
         {
           if (!nw_parameters_get_logging_disabled(v99))
           {
@@ -736,10 +736,10 @@ LABEL_128:
               goto LABEL_140;
             }
 
-            v101 = *(a1 + 44);
-            v103 = a1[7];
-            v102 = a1[8];
-            id_string = nw_listener_get_id_string(a1[12]);
+            v101 = *(self + 44);
+            v103 = self[7];
+            v102 = self[8];
+            id_string = nw_listener_get_id_string(self[12]);
             *buf = 136447234;
             v161 = "[NWConcrete_nw_connection_group initWithDescriptor:connection:parameters:]";
             v162 = 1024;
@@ -772,9 +772,9 @@ LABEL_140:
             goto LABEL_140;
           }
 
-          v108 = *(a1 + 44);
-          v110 = a1[7];
-          v109 = a1[8];
+          v108 = *(self + 44);
+          v110 = self[7];
+          v109 = self[8];
           *buf = 136446978;
           v161 = "[NWConcrete_nw_connection_group initWithDescriptor:connection:parameters:]";
           v162 = 1024;
@@ -789,11 +789,11 @@ LABEL_140:
           goto LABEL_139;
         }
 
-        v75 = a1;
+        selfCopy = self;
         goto LABEL_142;
       }
 
-      if (!a1[8])
+      if (!self[8])
       {
 LABEL_109:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -880,7 +880,7 @@ LABEL_127:
       }
 
       v88 = __nwlog_obj();
-      v89 = nw_group_descriptor_get_type(a1[8]);
+      v89 = nw_group_descriptor_get_type(self[8]);
       if (v89 > 4)
       {
         v90 = "unknown";
@@ -907,7 +907,7 @@ LABEL_127:
           v112 = type[0];
           if (os_log_type_enabled(v93, type[0]))
           {
-            v113 = nw_group_descriptor_get_type(a1[8]);
+            v113 = nw_group_descriptor_get_type(self[8]);
             if (v113 > 4)
             {
               v114 = "unknown";
@@ -936,7 +936,7 @@ LABEL_125:
           v120 = type[0];
           if (os_log_type_enabled(v93, type[0]))
           {
-            v121 = nw_group_descriptor_get_type(a1[8]);
+            v121 = nw_group_descriptor_get_type(self[8]);
             if (v121 > 4)
             {
               v122 = "unknown";
@@ -965,7 +965,7 @@ LABEL_125:
         {
           if (v117)
           {
-            v129 = nw_group_descriptor_get_type(a1[8]);
+            v129 = nw_group_descriptor_get_type(self[8]);
             if (v129 > 4)
             {
               v130 = "unknown";
@@ -988,7 +988,7 @@ LABEL_125:
 
         if (v117)
         {
-          v118 = nw_group_descriptor_get_type(a1[8]);
+          v118 = nw_group_descriptor_get_type(self[8]);
           if (v118 > 4)
           {
             v119 = "unknown";
@@ -1089,7 +1089,7 @@ LABEL_213:
       free(v126);
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_101;
   }
 
@@ -1166,10 +1166,10 @@ LABEL_100:
   }
 
 LABEL_101:
-  v75 = 0;
+  selfCopy = 0;
 LABEL_143:
 
-  return v75;
+  return selfCopy;
 }
 
 @end

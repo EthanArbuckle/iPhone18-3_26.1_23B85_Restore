@@ -1,6 +1,6 @@
 @interface MTRWaterHeaterManagementClusterBoostStartedEvent
 - (MTRWaterHeaterManagementClusterBoostStartedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWaterHeaterManagementClusterBoostStartedEvent);
-  v5 = [(MTRWaterHeaterManagementClusterBoostStartedEvent *)self boostInfo];
-  [(MTRWaterHeaterManagementClusterBoostStartedEvent *)v4 setBoostInfo:v5];
+  boostInfo = [(MTRWaterHeaterManagementClusterBoostStartedEvent *)self boostInfo];
+  [(MTRWaterHeaterManagementClusterBoostStartedEvent *)v4 setBoostInfo:boostInfo];
 
   return v4;
 }

@@ -1,8 +1,8 @@
 @interface _DASPredictionAccuracy
-+ (id)initFromDictionaryRepresentation:(id)a3;
++ (id)initFromDictionaryRepresentation:(id)representation;
 - (_DASPredictionAccuracy)init;
 - (id)accuracyRate;
-- (id)addPredictionAccuracy:(id)a3;
+- (id)addPredictionAccuracy:(id)accuracy;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -24,43 +24,43 @@
   return result;
 }
 
-- (id)addPredictionAccuracy:(id)a3
+- (id)addPredictionAccuracy:(id)accuracy
 {
   v5 = _DASPredictionAccuracy;
-  v6 = a3;
+  accuracyCopy = accuracy;
   v7 = [(__objc2_class *)v5 init];
-  -[__objc2_class setTop1Hits:](v7, "setTop1Hits:", [v6 top1Hits] + -[_DASPredictionAccuracy top1Hits](self, "top1Hits"));
-  -[__objc2_class setTop3Hits:](v7, "setTop3Hits:", [v6 top3Hits] + -[_DASPredictionAccuracy top3Hits](self, "top3Hits"));
-  -[__objc2_class setTop5Hits:](v7, "setTop5Hits:", [v6 top5Hits] + -[_DASPredictionAccuracy top5Hits](self, "top5Hits"));
-  -[__objc2_class setTop10Hits:](v7, "setTop10Hits:", [v6 top10Hits] + -[_DASPredictionAccuracy top10Hits](self, "top10Hits"));
+  -[__objc2_class setTop1Hits:](v7, "setTop1Hits:", [accuracyCopy top1Hits] + -[_DASPredictionAccuracy top1Hits](self, "top1Hits"));
+  -[__objc2_class setTop3Hits:](v7, "setTop3Hits:", [accuracyCopy top3Hits] + -[_DASPredictionAccuracy top3Hits](self, "top3Hits"));
+  -[__objc2_class setTop5Hits:](v7, "setTop5Hits:", [accuracyCopy top5Hits] + -[_DASPredictionAccuracy top5Hits](self, "top5Hits"));
+  -[__objc2_class setTop10Hits:](v7, "setTop10Hits:", [accuracyCopy top10Hits] + -[_DASPredictionAccuracy top10Hits](self, "top10Hits"));
   LODWORD(self) = [(_DASPredictionAccuracy *)self totalPredictionIntervals];
-  LODWORD(v5) = [v6 totalPredictionIntervals];
+  LODWORD(v5) = [accuracyCopy totalPredictionIntervals];
 
   [(__objc2_class *)v7 setTotalPredictionIntervals:(v5 + self)];
 
   return v7;
 }
 
-+ (id)initFromDictionaryRepresentation:(id)a3
++ (id)initFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = objc_alloc_init(_DASPredictionAccuracy);
   v5 = v4;
-  if (v3 && v4)
+  if (representationCopy && v4)
   {
-    v6 = [v3 objectForKeyedSubscript:@"1"];
+    v6 = [representationCopy objectForKeyedSubscript:@"1"];
     -[_DASPredictionAccuracy setTop1Hits:](v5, "setTop1Hits:", [v6 intValue]);
 
-    v7 = [v3 objectForKeyedSubscript:@"3"];
+    v7 = [representationCopy objectForKeyedSubscript:@"3"];
     -[_DASPredictionAccuracy setTop3Hits:](v5, "setTop3Hits:", [v7 intValue]);
 
-    v8 = [v3 objectForKeyedSubscript:@"5"];
+    v8 = [representationCopy objectForKeyedSubscript:@"5"];
     -[_DASPredictionAccuracy setTop5Hits:](v5, "setTop5Hits:", [v8 intValue]);
 
-    v9 = [v3 objectForKeyedSubscript:@"10"];
+    v9 = [representationCopy objectForKeyedSubscript:@"10"];
     -[_DASPredictionAccuracy setTop10Hits:](v5, "setTop10Hits:", [v9 intValue]);
 
-    v10 = [v3 objectForKeyedSubscript:@"predictionIntervals"];
+    v10 = [representationCopy objectForKeyedSubscript:@"predictionIntervals"];
     -[_DASPredictionAccuracy setTotalPredictionIntervals:](v5, "setTotalPredictionIntervals:", [v10 intValue]);
   }
 
@@ -118,8 +118,8 @@
 
 - (id)description
 {
-  v2 = [(_DASPredictionAccuracy *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(_DASPredictionAccuracy *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }

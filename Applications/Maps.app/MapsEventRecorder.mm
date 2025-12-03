@@ -1,21 +1,21 @@
 @interface MapsEventRecorder
 + (BOOL)isRecording;
-+ (id)initializeDefaultRecorderWithTapToRadar:(BOOL)a3 window:(id)a4;
-+ (unint64_t)numberOfTouchesInEvent:(id)a3;
-+ (unint64_t)phaseOfEvent:(id)a3;
++ (id)initializeDefaultRecorderWithTapToRadar:(BOOL)radar window:(id)window;
++ (unint64_t)numberOfTouchesInEvent:(id)event;
++ (unint64_t)phaseOfEvent:(id)event;
 - (CGRect)windowFrame;
 - (UIWindow)window;
-- (id)logMessageForEvent:(id)a3;
-- (unint64_t)elementTypeInEvent:(id)a3;
+- (id)logMessageForEvent:(id)event;
+- (unint64_t)elementTypeInEvent:(id)event;
 - (void)addNavigationBarView;
-- (void)attachTapToRadarWithPaths:(id)a3;
-- (void)beginRecordingWithCompletion:(id)a3;
+- (void)attachTapToRadarWithPaths:(id)paths;
+- (void)beginRecordingWithCompletion:(id)completion;
 - (void)clearDefaultRecorder;
-- (void)endRecordingWithCompletion:(id)a3;
+- (void)endRecordingWithCompletion:(id)completion;
 - (void)hideLoadingIndicator;
-- (void)recordEvent:(id)a3;
+- (void)recordEvent:(id)event;
 - (void)removeNavigationBarView;
-- (void)saveVideoFileToPhotoLibraryWithPaths:(id)a3;
+- (void)saveVideoFileToPhotoLibraryWithPaths:(id)paths;
 - (void)showLoadingIndicator;
 @end
 
@@ -81,20 +81,20 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (unint64_t)elementTypeInEvent:(id)a3
+- (unint64_t)elementTypeInEvent:(id)event
 {
-  v4 = [a3 allTouches];
-  v5 = [v4 allObjects];
-  v6 = [v5 firstObject];
-  if (![v5 count])
+  allTouches = [event allTouches];
+  allObjects = [allTouches allObjects];
+  firstObject = [allObjects firstObject];
+  if (![allObjects count])
   {
     v14 = 23;
     goto LABEL_7;
   }
 
-  v7 = [v6 view];
-  v8 = [v7 superview];
-  v9 = [v8 superview];
+  view = [firstObject view];
+  superview = [view superview];
+  v8Superview = [superview superview];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = objc_opt_class();
@@ -105,9 +105,9 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v82 = self;
+      selfCopy = self;
       v14 = 23;
-      if (!v7 || !v11)
+      if (!view || !v11)
       {
         goto LABEL_5;
       }
@@ -115,9 +115,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v7 text];
+        [view text];
         v17 = v16 = v13;
-        [(MapsEventRecorder *)v82 setInfo:v17];
+        [(MapsEventRecorder *)selfCopy setInfo:v17];
 
         v13 = v16;
         v14 = 6;
@@ -128,10 +128,10 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = v7;
+        v18 = view;
         v19 = [v18 titleForSegmentAtIndex:{objc_msgSend(v18, "selectedSegmentIndex")}];
 
-        [(MapsEventRecorder *)v82 setInfo:v19];
+        [(MapsEventRecorder *)selfCopy setInfo:v19];
         v14 = 3;
 LABEL_70:
         v13 = v76;
@@ -140,13 +140,13 @@ LABEL_70:
 
       if ([v11 isEqualToString:@"UINavigationButton"])
       {
-        v20 = v7;
-        v21 = [v20 title];
+        v20 = view;
+        title = [v20 title];
 
-        if (v21)
+        if (title)
         {
-          v22 = [v20 title];
-          [(MapsEventRecorder *)v82 setInfo:v22];
+          title2 = [v20 title];
+          [(MapsEventRecorder *)selfCopy setInfo:title2];
 
           v14 = 2;
           goto LABEL_70;
@@ -155,18 +155,18 @@ LABEL_70:
 
       objc_opt_class();
       v77 = v11;
-      v73 = v8;
+      v73 = superview;
       if (objc_opt_isKindOfClass())
       {
-        v23 = v7;
-        v24 = [v23 titleLabel];
-        v25 = [v24 text];
+        v23 = view;
+        titleLabel = [v23 titleLabel];
+        text = [titleLabel text];
 
-        if (v25)
+        if (text)
         {
-          v26 = [v23 titleLabel];
-          v27 = [v26 text];
-          [(MapsEventRecorder *)v82 setInfo:v27];
+          titleLabel2 = [v23 titleLabel];
+          text2 = [titleLabel2 text];
+          [(MapsEventRecorder *)selfCopy setInfo:text2];
 
           v14 = 1;
           v13 = v76;
@@ -199,29 +199,29 @@ LABEL_36:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v32 = v9;
+                v32 = v8Superview;
                 v33 = v28;
                 v34 = v29;
                 v35 = v31;
-                v36 = [v35 text];
+                text3 = [v35 text];
 
-                if (v36)
+                if (text3)
                 {
-                  v37 = [v35 text];
-                  [(MapsEventRecorder *)v82 setInfo:v37];
+                  text4 = [v35 text];
+                  [(MapsEventRecorder *)selfCopy setInfo:text4];
 
                   v14 = 1;
                   v13 = v76;
                   v11 = v77;
                   v23 = v72;
-                  v9 = v32;
+                  v8Superview = v32;
                   goto LABEL_35;
                 }
 
                 v29 = v34;
                 v28 = v33;
-                v9 = v32;
-                v8 = v73;
+                v8Superview = v32;
+                superview = v73;
               }
             }
 
@@ -264,7 +264,7 @@ LABEL_33:
           v23 = v72;
           [v72 frame];
           v39 = v38;
-          [(MapsEventRecorder *)v82 windowFrame];
+          [(MapsEventRecorder *)selfCopy windowFrame];
           if (v39 >= v40 * 0.5)
           {
             v14 = 8;
@@ -283,9 +283,9 @@ LABEL_33:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = v73;
-          v41 = [v73 text];
-          [(MapsEventRecorder *)v82 setInfo:v41];
+          superview = v73;
+          text5 = [v73 text];
+          [(MapsEventRecorder *)selfCopy setInfo:text5];
 
           v14 = 16;
           v11 = v77;
@@ -299,14 +299,14 @@ LABEL_33:
           v11 = v77;
           v23 = v72;
 LABEL_35:
-          v8 = v73;
+          superview = v73;
           goto LABEL_36;
         }
 
         v11 = v77;
         v42 = [v77 isEqualToString:@"CNTransportButton"];
 
-        v8 = v73;
+        superview = v73;
         if (v42)
         {
           v14 = 20;
@@ -321,7 +321,7 @@ LABEL_35:
         v94 = 0u;
         v91 = 0u;
         v92 = 0u;
-        obja = [v7 subviews];
+        obja = [view subviews];
         v43 = [obja countByEnumeratingWithState:&v91 objects:v101 count:16];
         if (v43)
         {
@@ -340,13 +340,13 @@ LABEL_35:
               if ([v46 isMemberOfClass:objc_opt_class()])
               {
                 v47 = v46;
-                v48 = [v47 text];
+                text6 = [v47 text];
 
-                if (v48)
+                if (text6)
                 {
-                  v50 = [v47 text];
-                  v51 = [v50 copy];
-                  [(MapsEventRecorder *)v82 setInfo:v51];
+                  text7 = [v47 text];
+                  v51 = [text7 copy];
+                  [(MapsEventRecorder *)selfCopy setInfo:v51];
 
                   v14 = 4;
                   v13 = v76;
@@ -401,8 +401,8 @@ LABEL_35:
             v90 = 0u;
             v87 = 0u;
             v88 = 0u;
-            v80 = [v7 subviews];
-            v52 = [v80 countByEnumeratingWithState:&v87 objects:v100 count:16];
+            subviews = [view subviews];
+            v52 = [subviews countByEnumeratingWithState:&v87 objects:v100 count:16];
             if (v52)
             {
               v53 = v52;
@@ -413,7 +413,7 @@ LABEL_35:
                 {
                   if (*v88 != v54)
                   {
-                    objc_enumerationMutation(v80);
+                    objc_enumerationMutation(subviews);
                   }
 
                   v56 = *(*(&v87 + 1) + 8 * k);
@@ -423,12 +423,12 @@ LABEL_35:
                     v57 = v53;
                     v58 = v54;
                     v59 = v56;
-                    v60 = [v59 text];
+                    text8 = [v59 text];
 
-                    if (v60)
+                    if (text8)
                     {
-                      v70 = [v59 text];
-                      [(MapsEventRecorder *)v82 setInfo:v70];
+                      text9 = [v59 text];
+                      [(MapsEventRecorder *)selfCopy setInfo:text9];
 
                       goto LABEL_106;
                     }
@@ -438,7 +438,7 @@ LABEL_35:
                   }
                 }
 
-                v53 = [v80 countByEnumeratingWithState:&v87 objects:v100 count:16];
+                v53 = [subviews countByEnumeratingWithState:&v87 objects:v100 count:16];
                 if (v53)
                 {
                   continue;
@@ -462,8 +462,8 @@ LABEL_106:
               v86 = 0u;
               v83 = 0u;
               v84 = 0u;
-              v81 = [v7 subviews];
-              v61 = [v81 countByEnumeratingWithState:&v83 objects:v99 count:16];
+              subviews2 = [view subviews];
+              v61 = [subviews2 countByEnumeratingWithState:&v83 objects:v99 count:16];
               if (v61)
               {
                 v62 = v61;
@@ -474,7 +474,7 @@ LABEL_106:
                   {
                     if (*v84 != v63)
                     {
-                      objc_enumerationMutation(v81);
+                      objc_enumerationMutation(subviews2);
                     }
 
                     v65 = *(*(&v83 + 1) + 8 * m);
@@ -484,12 +484,12 @@ LABEL_106:
                       v66 = v62;
                       v67 = v63;
                       v68 = v65;
-                      v69 = [v68 text];
+                      text10 = [v68 text];
 
-                      if (v69)
+                      if (text10)
                       {
-                        v71 = [v68 text];
-                        [(MapsEventRecorder *)v82 setInfo:v71];
+                        text11 = [v68 text];
+                        [(MapsEventRecorder *)selfCopy setInfo:text11];
 
                         v14 = 22;
                         goto LABEL_108;
@@ -500,7 +500,7 @@ LABEL_106:
                     }
                   }
 
-                  v62 = [v81 countByEnumeratingWithState:&v83 objects:v99 count:16];
+                  v62 = [subviews2 countByEnumeratingWithState:&v83 objects:v99 count:16];
                   if (v62)
                   {
                     continue;
@@ -517,13 +517,13 @@ LABEL_106:
 LABEL_108:
           v13 = v76;
           v11 = v77;
-          v8 = v73;
+          superview = v73;
         }
 
         goto LABEL_5;
       }
 
-      if ([v7 isOn])
+      if ([view isOn])
       {
         v49 = @"on";
       }
@@ -533,7 +533,7 @@ LABEL_108:
         v49 = @"off";
       }
 
-      [(MapsEventRecorder *)v82 setInfo:v49];
+      [(MapsEventRecorder *)selfCopy setInfo:v49];
       v14 = 5;
       goto LABEL_70;
     }
@@ -546,7 +546,7 @@ LABEL_7:
   return v14;
 }
 
-- (id)logMessageForEvent:(id)a3
+- (id)logMessageForEvent:(id)event
 {
   if ([(MapsEventRecorder *)self touchCount]== 2 && [(MapsEventRecorder *)self previousTouchCount]== 1)
   {
@@ -566,7 +566,7 @@ LABEL_7:
     {
       if ([(MapsEventRecorder *)self previousPhase]== 2 && [(MapsEventRecorder *)self previousElement]== 13)
       {
-        v5 = [(MapsEventRecorder *)self touchCount];
+        touchCount = [(MapsEventRecorder *)self touchCount];
         v6 = @"The user began panning";
         v7 = @"The user started zooming";
         goto LABEL_22;
@@ -580,12 +580,12 @@ LABEL_7:
       goto LABEL_52;
     }
 
-    v10 = [(MapsEventRecorder *)self currentElement];
-    if (v10 > 15)
+    currentElement = [(MapsEventRecorder *)self currentElement];
+    if (currentElement > 15)
     {
-      if (v10 != 16)
+      if (currentElement != 16)
       {
-        if (v10 == 18)
+        if (currentElement == 18)
         {
           v4 = @"The user tapped the compass";
           goto LABEL_59;
@@ -594,21 +594,21 @@ LABEL_7:
         goto LABEL_52;
       }
 
-      v12 = [(MapsEventRecorder *)self info];
-      [NSString stringWithFormat:@"The user cleared the text in the search bar that contained the text %@", v12];
+      info = [(MapsEventRecorder *)self info];
+      [NSString stringWithFormat:@"The user cleared the text in the search bar that contained the text %@", info];
     }
 
     else
     {
-      if (v10 != 6)
+      if (currentElement != 6)
       {
-        if (v10 == 13)
+        if (currentElement == 13)
         {
-          v5 = [(MapsEventRecorder *)self touchCount];
+          touchCount = [(MapsEventRecorder *)self touchCount];
           v6 = @"The user began touching the map";
           v7 = @"The user began zooming the map";
 LABEL_22:
-          if (v5 == 2)
+          if (touchCount == 2)
           {
             v4 = v7;
           }
@@ -626,8 +626,8 @@ LABEL_52:
         goto LABEL_59;
       }
 
-      v12 = [(MapsEventRecorder *)self info];
-      [NSString stringWithFormat:@"The user tapped the search bar that currently contains the text %@", v12];
+      info = [(MapsEventRecorder *)self info];
+      [NSString stringWithFormat:@"The user tapped the search bar that currently contains the text %@", info];
     }
 
     v4 = LABEL_58:;
@@ -644,48 +644,48 @@ LABEL_52:
         goto LABEL_59;
       case 1uLL:
       case 2uLL:
-        v11 = [(MapsEventRecorder *)self info];
+        info2 = [(MapsEventRecorder *)self info];
 
-        if (!v11)
+        if (!info2)
         {
           goto LABEL_52;
         }
 
-        v12 = [(MapsEventRecorder *)self info];
-        [NSString stringWithFormat:@"The user pressed a button called %@", v12];
+        info = [(MapsEventRecorder *)self info];
+        [NSString stringWithFormat:@"The user pressed a button called %@", info];
         goto LABEL_58;
       case 3uLL:
-        v19 = [(MapsEventRecorder *)self info];
+        info3 = [(MapsEventRecorder *)self info];
 
-        if (!v19)
+        if (!info3)
         {
           goto LABEL_52;
         }
 
-        v12 = [(MapsEventRecorder *)self info];
-        [NSString stringWithFormat:@"The user selected option %@ on the segmented control", v12];
+        info = [(MapsEventRecorder *)self info];
+        [NSString stringWithFormat:@"The user selected option %@ on the segmented control", info];
         goto LABEL_58;
       case 4uLL:
-        v20 = [(MapsEventRecorder *)self info];
+        info4 = [(MapsEventRecorder *)self info];
 
-        if (!v20)
+        if (!info4)
         {
           goto LABEL_52;
         }
 
-        v12 = [(MapsEventRecorder *)self info];
-        [NSString stringWithFormat:@"The user tapped a UITableViewCell titled %@", v12];
+        info = [(MapsEventRecorder *)self info];
+        [NSString stringWithFormat:@"The user tapped a UITableViewCell titled %@", info];
         goto LABEL_58;
       case 5uLL:
-        v14 = [(MapsEventRecorder *)self info];
+        info5 = [(MapsEventRecorder *)self info];
 
-        if (!v14)
+        if (!info5)
         {
           goto LABEL_52;
         }
 
-        v12 = [(MapsEventRecorder *)self info];
-        [NSString stringWithFormat:@"The user tapped a UISwitch to the %@ state", v12];
+        info = [(MapsEventRecorder *)self info];
+        [NSString stringWithFormat:@"The user tapped a UISwitch to the %@ state", info];
         goto LABEL_58;
       case 7uLL:
         v4 = @"The user pressed the settings button";
@@ -715,15 +715,15 @@ LABEL_52:
         v4 = @"The user pressed the cancel button in the share menu";
         goto LABEL_59;
       case 0x11uLL:
-        v15 = [(MapsEventRecorder *)self info];
-        if (!v15 || (v16 = v15, -[MapsEventRecorder info](self, "info"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqualToString:&stru_1016631F0], v17, v16, (v18 & 1) != 0))
+        info6 = [(MapsEventRecorder *)self info];
+        if (!info6 || (v16 = info6, -[MapsEventRecorder info](self, "info"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqualToString:&stru_1016631F0], v17, v16, (v18 & 1) != 0))
         {
           v4 = @"The user tapped one of the category buttons";
           goto LABEL_59;
         }
 
-        v12 = [(MapsEventRecorder *)self info];
-        [NSString stringWithFormat:@"The user tapped the %@ button", v12];
+        info = [(MapsEventRecorder *)self info];
+        [NSString stringWithFormat:@"The user tapped the %@ button", info];
         break;
       case 0x13uLL:
         v4 = @"The user pressed a route option";
@@ -735,15 +735,15 @@ LABEL_52:
         v4 = @"The user pressed the address cell";
         goto LABEL_59;
       case 0x16uLL:
-        v13 = [(MapsEventRecorder *)self info];
+        info7 = [(MapsEventRecorder *)self info];
 
-        if (!v13)
+        if (!info7)
         {
           goto LABEL_52;
         }
 
-        v12 = [(MapsEventRecorder *)self info];
-        [NSString stringWithFormat:@"The user tapped a view titled label %@", v12];
+        info = [(MapsEventRecorder *)self info];
+        [NSString stringWithFormat:@"The user tapped a view titled label %@", info];
         goto LABEL_58;
       default:
         goto LABEL_52;
@@ -752,9 +752,9 @@ LABEL_52:
     goto LABEL_58;
   }
 
-  v8 = [(MapsEventRecorder *)self touchCount];
+  touchCount2 = [(MapsEventRecorder *)self touchCount];
   v9 = @"The user finished panning";
-  if (v8 == 2)
+  if (touchCount2 == 2)
   {
     v9 = @"The user finished zooming";
   }
@@ -765,24 +765,24 @@ LABEL_59:
   return v4;
 }
 
-- (void)recordEvent:(id)a3
+- (void)recordEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   if ([(MapsEventRecorder *)self recording])
   {
     [(MapsEventRecorder *)self setInfo:0];
     [(MapsEventRecorder *)self setPreviousPhase:[(MapsEventRecorder *)self currentPhase]];
-    [(MapsEventRecorder *)self setCurrentPhase:[MapsEventRecorder phaseOfEvent:v8]];
+    [(MapsEventRecorder *)self setCurrentPhase:[MapsEventRecorder phaseOfEvent:eventCopy]];
     [(MapsEventRecorder *)self setPreviousTouchCount:[(MapsEventRecorder *)self touchCount]];
-    [(MapsEventRecorder *)self setTouchCount:[MapsEventRecorder numberOfTouchesInEvent:v8]];
+    [(MapsEventRecorder *)self setTouchCount:[MapsEventRecorder numberOfTouchesInEvent:eventCopy]];
     [(MapsEventRecorder *)self setPreviousElement:[(MapsEventRecorder *)self currentElement]];
-    v4 = [(MapsEventRecorder *)self elementTypeInEvent:v8];
+    v4 = [(MapsEventRecorder *)self elementTypeInEvent:eventCopy];
     if (v4 != 23)
     {
       [(MapsEventRecorder *)self setCurrentElement:v4];
     }
 
-    v5 = [(MapsEventRecorder *)self logMessageForEvent:v8];
+    v5 = [(MapsEventRecorder *)self logMessageForEvent:eventCopy];
     v6 = v5;
     if (v5 && ([v5 isEqualToString:&stru_1016631F0] & 1) == 0)
     {
@@ -792,14 +792,14 @@ LABEL_59:
   }
 }
 
-- (void)saveVideoFileToPhotoLibraryWithPaths:(id)a3
+- (void)saveVideoFileToPhotoLibraryWithPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [pathsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -810,7 +810,7 @@ LABEL_59:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -820,22 +820,22 @@ LABEL_59:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [pathsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)attachTapToRadarWithPaths:(id)a3
+- (void)attachTapToRadarWithPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = +[NSMutableArray array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = pathsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
@@ -851,9 +851,9 @@ LABEL_59:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [NSURL fileURLWithPath:v10];
-        v13 = [MapsRadarFileAttachment attachmentWithFileName:v11 fileURL:v12 deleteOnAttach:0];
+        v13 = [MapsRadarFileAttachment attachmentWithFileName:lastPathComponent fileURL:v12 deleteOnAttach:0];
         [v4 addObject:v13];
       }
 
@@ -868,10 +868,10 @@ LABEL_59:
   v15 = sub_1007984E4();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = self;
-    if (!v16)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v21 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_17;
     }
 
@@ -879,22 +879,22 @@ LABEL_59:
     v18 = NSStringFromClass(v17);
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(MapsEventRecorder *)v16 performSelector:"accessibilityIdentifier"];
+      v19 = [(MapsEventRecorder *)selfCopy performSelector:"accessibilityIdentifier"];
       v20 = v19;
       if (v19 && ![v19 isEqualToString:v18])
       {
-        v21 = [NSString stringWithFormat:@"%@<%p, %@>", v18, v16, v20];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v18, selfCopy, v20];
 
         goto LABEL_15;
       }
     }
 
-    v21 = [NSString stringWithFormat:@"%@<%p>", v18, v16];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v18, selfCopy];
 LABEL_15:
 
 LABEL_17:
     *buf = 138543362;
-    v29 = v21;
+    v29 = selfCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR from event recorder", buf, 0xCu);
   }
 
@@ -902,38 +902,38 @@ LABEL_17:
   [v22 launchTTRWithRadar:v14];
 }
 
-- (void)endRecordingWithCompletion:(id)a3
+- (void)endRecordingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MapsEventRecorder *)self showLoadingIndicator];
   v5 = +[GEOEventRecorderInstrumentation defaultInstrumentation];
   [v5 captureUIEvent:@"<<<<<<<< RECORDING END <<<<<<<<"];
 
   [(MapsEventRecorder *)self setRecording:0];
-  v6 = [sub_100AC8440() sharedRecorder];
+  sharedRecorder = [sub_100AC8440() sharedRecorder];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100AC8520;
   v8[3] = &unk_101637320;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 stopRecordingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [sharedRecorder stopRecordingWithHandler:v8];
 }
 
-- (void)beginRecordingWithCompletion:(id)a3
+- (void)beginRecordingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MapsEventRecorder *)self showLoadingIndicator];
-  v5 = [sub_100AC8440() sharedRecorder];
+  sharedRecorder = [sub_100AC8440() sharedRecorder];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100AC88C0;
   v7[3] = &unk_10165E240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 startRecordingWithHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [sharedRecorder startRecordingWithHandler:v7];
 }
 
 - (void)clearDefaultRecorder
@@ -942,29 +942,29 @@ LABEL_17:
   qword_10195E450 = 0;
 }
 
-+ (unint64_t)numberOfTouchesInEvent:(id)a3
++ (unint64_t)numberOfTouchesInEvent:(id)event
 {
-  v3 = [a3 allTouches];
-  v4 = [v3 allObjects];
-  v5 = [v4 count];
+  allTouches = [event allTouches];
+  allObjects = [allTouches allObjects];
+  v5 = [allObjects count];
 
   return v5;
 }
 
-+ (unint64_t)phaseOfEvent:(id)a3
++ (unint64_t)phaseOfEvent:(id)event
 {
-  v3 = [a3 allTouches];
-  v4 = [v3 allObjects];
-  v5 = [v4 firstObject];
-  v6 = [v5 phase];
-  if (v6 > 3)
+  allTouches = [event allTouches];
+  allObjects = [allTouches allObjects];
+  firstObject = [allObjects firstObject];
+  phase = [firstObject phase];
+  if (phase > 3)
   {
     v7 = 3;
   }
 
   else
   {
-    v7 = qword_1012153C8[v6];
+    v7 = qword_1012153C8[phase];
   }
 
   return v7;
@@ -981,13 +981,13 @@ LABEL_17:
   return result;
 }
 
-+ (id)initializeDefaultRecorderWithTapToRadar:(BOOL)a3 window:(id)a4
++ (id)initializeDefaultRecorderWithTapToRadar:(BOOL)radar window:(id)window
 {
   v4 = qword_10195E450;
   if (!qword_10195E450)
   {
-    v5 = a3;
-    v6 = a4;
+    radarCopy = radar;
+    windowCopy = window;
     v7 = objc_alloc_init(MapsEventRecorder);
     v8 = qword_10195E450;
     qword_10195E450 = v7;
@@ -995,9 +995,9 @@ LABEL_17:
     [qword_10195E450 setCurrentElement:24];
     [qword_10195E450 setCurrentPhase:3];
     [qword_10195E450 setPreviousPhase:3];
-    [v6 frame];
+    [windowCopy frame];
     [qword_10195E450 setWindowFrame:?];
-    [qword_10195E450 setWindow:v6];
+    [qword_10195E450 setWindow:windowCopy];
 
     v9 = objc_alloc_init(NSDate);
     [qword_10195E450 setStartDate:v9];
@@ -1005,7 +1005,7 @@ LABEL_17:
     [qword_10195E450 setRecording:0];
     [qword_10195E450 setPreviousTouchCount:0];
     [qword_10195E450 setTouchCount:0];
-    [qword_10195E450 setTapToRadarEnabled:v5];
+    [qword_10195E450 setTapToRadarEnabled:radarCopy];
     if (qword_10195E458 != -1)
     {
       dispatch_once(&qword_10195E458, &stru_1016372F8);

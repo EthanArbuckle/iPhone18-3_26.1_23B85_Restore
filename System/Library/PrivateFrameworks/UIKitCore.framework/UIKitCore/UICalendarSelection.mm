@@ -1,7 +1,7 @@
 @interface UICalendarSelection
 - (UICalendarView)view;
 - (id)_init;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation UICalendarSelection
@@ -13,11 +13,11 @@
   return [(UICalendarSelection *)&v3 init];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
-  [(UICalendarSelection *)self willMoveToCalendarView:v4];
-  objc_storeWeak(&self->_view, v4);
+  viewCopy = view;
+  [(UICalendarSelection *)self willMoveToCalendarView:viewCopy];
+  objc_storeWeak(&self->_view, viewCopy);
 
   [(UICalendarSelection *)self didMoveToCalendarView];
 }

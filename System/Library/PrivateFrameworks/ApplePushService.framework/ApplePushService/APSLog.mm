@@ -1,5 +1,5 @@
 @interface APSLog
-+ (BOOL)shouldPowerLogEvent:(id)a3;
++ (BOOL)shouldPowerLogEvent:(id)event;
 + (OS_os_log)PUSHTRACE;
 + (OS_os_log)activityTracking;
 + (OS_os_log)alert;
@@ -585,9 +585,9 @@ uint64_t __19__APSLog_offloader__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)shouldPowerLogEvent:(id)a3
++ (BOOL)shouldPowerLogEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (shouldPowerLogEvent___pred_PLShouldLogRegisteredEventPowerLog != -1)
   {
     +[APSLog shouldPowerLogEvent:];
@@ -595,7 +595,7 @@ uint64_t __19__APSLog_offloader__block_invoke()
 
   if (shouldPowerLogEvent___PLShouldLogRegisteredEvent)
   {
-    v4 = shouldPowerLogEvent___PLShouldLogRegisteredEvent(2, v3);
+    v4 = shouldPowerLogEvent___PLShouldLogRegisteredEvent(2, eventCopy);
   }
 
   else

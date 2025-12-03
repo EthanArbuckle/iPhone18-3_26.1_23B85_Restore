@@ -5,15 +5,15 @@
 - (CGPoint)stackOffset;
 - (CGRect)bounds;
 - (DRClientItemViewModel)currentClientItemViewModel;
-- (DRItemViewModel)initWithIndex:(unint64_t)a3;
+- (DRItemViewModel)initWithIndex:(unint64_t)index;
 - (_DUIImageComponent)imageComponent;
 - (_DUIPreview)preview;
-- (id)clientItemViewModelForClient:(id)a3;
+- (id)clientItemViewModelForClient:(id)client;
 @end
 
 @implementation DRItemViewModel
 
-- (DRItemViewModel)initWithIndex:(unint64_t)a3
+- (DRItemViewModel)initWithIndex:(unint64_t)index
 {
   v15.receiver = self;
   v15.super_class = DRItemViewModel;
@@ -21,9 +21,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_itemIndex = a3;
+    v4->_itemIndex = index;
     v4->_applyOriginalRotation = 1;
-    if (a3)
+    if (index)
     {
       if (qword_100063560 != -1)
       {
@@ -78,21 +78,21 @@
   return v5;
 }
 
-- (id)clientItemViewModelForClient:(id)a3
+- (id)clientItemViewModelForClient:(id)client
 {
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v5 = [(NSMapTable *)self->_clientItemViewModels objectForKey:v4];
+    v5 = [(NSMapTable *)self->_clientItemViewModels objectForKey:clientCopy];
     if (!v5)
     {
-      v5 = [[DRClientItemViewModel alloc] initWithClient:v4];
-      [(NSMapTable *)self->_clientItemViewModels setObject:v5 forKey:v4];
-      v6 = [(DRItemViewModel *)self currentClient];
+      v5 = [[DRClientItemViewModel alloc] initWithClient:clientCopy];
+      [(NSMapTable *)self->_clientItemViewModels setObject:v5 forKey:clientCopy];
+      currentClient = [(DRItemViewModel *)self currentClient];
 
-      if (!v6)
+      if (!currentClient)
       {
-        [(DRItemViewModel *)self setCurrentClient:v4];
+        [(DRItemViewModel *)self setCurrentClient:clientCopy];
       }
     }
   }
@@ -107,8 +107,8 @@
 
 - (DRClientItemViewModel)currentClientItemViewModel
 {
-  v3 = [(DRItemViewModel *)self currentClient];
-  v4 = [(DRItemViewModel *)self clientItemViewModelForClient:v3];
+  currentClient = [(DRItemViewModel *)self currentClient];
+  v4 = [(DRItemViewModel *)self clientItemViewModelForClient:currentClient];
 
   return v4;
 }
@@ -117,27 +117,27 @@
 {
   if ([(DRItemViewModel *)self isObjectManipulationActive])
   {
-    v3 = 0;
+    imageComponent = 0;
   }
 
   else
   {
-    v4 = [(DRItemViewModel *)self currentClientItemViewModel];
-    v3 = [v4 imageComponent];
+    currentClientItemViewModel = [(DRItemViewModel *)self currentClientItemViewModel];
+    imageComponent = [currentClientItemViewModel imageComponent];
   }
 
-  return v3;
+  return imageComponent;
 }
 
 - (_DUIPreview)preview
 {
-  v3 = [(DRItemViewModel *)self currentClientItemViewModel];
-  v4 = [v3 preview];
+  currentClientItemViewModel = [(DRItemViewModel *)self currentClientItemViewModel];
+  preview = [currentClientItemViewModel preview];
 
-  v5 = [(DRItemViewModel *)self currentClient];
-  v6 = [v5 isSource];
+  currentClient = [(DRItemViewModel *)self currentClient];
+  isSource = [currentClient isSource];
 
-  if (!v6)
+  if (!isSource)
   {
 LABEL_5:
     self->_everReturnedDifferentPreviewThanFirstSourcePreview = 1;
@@ -147,16 +147,16 @@ LABEL_5:
   firstSourcePreview = self->_firstSourcePreview;
   if (!firstSourcePreview)
   {
-    objc_storeStrong(&self->_firstSourcePreview, v4);
+    objc_storeStrong(&self->_firstSourcePreview, preview);
     goto LABEL_8;
   }
 
   if (!self->_everReturnedDifferentPreviewThanFirstSourcePreview)
   {
-    if (v4 == firstSourcePreview)
+    if (preview == firstSourcePreview)
     {
-      v8 = [(DRItemViewModel *)self imageComponent];
-      self->_everReturnedDifferentPreviewThanFirstSourcePreview = [v8 hidesImage];
+      imageComponent = [(DRItemViewModel *)self imageComponent];
+      self->_everReturnedDifferentPreviewThanFirstSourcePreview = [imageComponent hidesImage];
 
       goto LABEL_8;
     }
@@ -165,18 +165,18 @@ LABEL_5:
   }
 
 LABEL_8:
-  if (self->_everReturnedDifferentPreviewThanFirstSourcePreview && [(_DUIPreview *)v4 previewMode]!= 4)
+  if (self->_everReturnedDifferentPreviewThanFirstSourcePreview && [(_DUIPreview *)preview previewMode]!= 4)
   {
-    [(_DUIPreview *)v4 setLiftAnchorPoint:CGPointZero.x, CGPointZero.y];
+    [(_DUIPreview *)preview setLiftAnchorPoint:CGPointZero.x, CGPointZero.y];
   }
 
-  return v4;
+  return preview;
 }
 
 - (CGPoint)anchorPoint
 {
-  v2 = [(DRItemViewModel *)self currentClientItemViewModel];
-  [v2 anchorPoint];
+  currentClientItemViewModel = [(DRItemViewModel *)self currentClientItemViewModel];
+  [currentClientItemViewModel anchorPoint];
   v4 = v3;
   v6 = v5;
 
@@ -200,12 +200,12 @@ LABEL_8:
 
   else
   {
-    v9 = [(DRItemViewModel *)self imageComponent];
+    imageComponent = [(DRItemViewModel *)self imageComponent];
 
-    if (v9)
+    if (imageComponent)
     {
-      v10 = [(DRItemViewModel *)self imageComponent];
-      [v10 frame];
+      imageComponent2 = [(DRItemViewModel *)self imageComponent];
+      [imageComponent2 frame];
       x = v11;
       y = v12;
       width = v13;

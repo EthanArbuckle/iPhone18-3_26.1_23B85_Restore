@@ -1,7 +1,7 @@
 @interface LPCustomizationPickerViewController.TransitionAnimator
 - (_TtCE16LinkPresentationCSo35LPCustomizationPickerViewController18TransitionAnimator)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation LPCustomizationPickerViewController.TransitionAnimator
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -34,7 +34,7 @@
   return 0.8;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   sub_1AE988824();
   sub_1AE988814();
@@ -45,8 +45,8 @@
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1AE96D7C4(a3);
+  selfCopy = self;
+  sub_1AE96D7C4(transition);
 
   swift_unknownObjectRelease();
 }

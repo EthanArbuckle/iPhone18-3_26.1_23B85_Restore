@@ -1,22 +1,22 @@
 @interface VFXShadableHelper
 - (NSDictionary)shaderModifiers;
 - (VFXProgram)program;
-- (VFXShadableHelper)initWithCoder:(id)a3;
-- (VFXShadableHelper)initWithOwner:(id)a3;
+- (VFXShadableHelper)initWithCoder:(id)coder;
+- (VFXShadableHelper)initWithOwner:(id)owner;
 - (void)_commonInit;
-- (void)_customEncodingOfVFXShadableHelper:(id)a3;
-- (void)_parseAndSetShaderModifier:(id)a3;
-- (void)_programDidChange:(id)a3;
-- (void)_programDidCompile:(id)a3;
+- (void)_customEncodingOfVFXShadableHelper:(id)helper;
+- (void)_parseAndSetShaderModifier:(id)modifier;
+- (void)_programDidChange:(id)change;
+- (void)_programDidCompile:(id)compile;
 - (void)_setCFXProgram;
 - (void)_startObservingProgram;
 - (void)_stopObservingProgram;
-- (void)copyModifiersFrom:(id)a3;
+- (void)copyModifiersFrom:(id)from;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMinimumLanguageVersion:(id)a3;
-- (void)setProgram:(id)a3;
-- (void)setShaderModifiers:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMinimumLanguageVersion:(id)version;
+- (void)setProgram:(id)program;
+- (void)setShaderModifiers:(id)modifiers;
 @end
 
 @implementation VFXShadableHelper
@@ -28,7 +28,7 @@
   self->_arguments = objc_alloc_init(MEMORY[0x1E695DF90]);
 }
 
-- (VFXShadableHelper)initWithOwner:(id)a3
+- (VFXShadableHelper)initWithOwner:(id)owner
 {
   v10.receiver = self;
   v10.super_class = VFXShadableHelper;
@@ -37,7 +37,7 @@
   if (v4)
   {
     objc_msgSend__commonInit(v4, v5, v6, v7);
-    v8->_owner = a3;
+    v8->_owner = owner;
   }
 
   return v8;
@@ -82,11 +82,11 @@
   }
 }
 
-- (void)setProgram:(id)a3
+- (void)setProgram:(id)program
 {
-  if (a3)
+  if (program)
   {
-    if (objc_msgSend_count(self->_shaderModifiers, a2, a3, v3))
+    if (objc_msgSend_count(self->_shaderModifiers, a2, program, v3))
     {
       v6 = sub_1AF0D5194();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -97,11 +97,11 @@
     }
   }
 
-  if (self->_program != a3)
+  if (self->_program != program)
   {
-    objc_msgSend__stopObservingProgram(self, a2, a3, v3);
+    objc_msgSend__stopObservingProgram(self, a2, program, v3);
 
-    self->_program = a3;
+    self->_program = program;
     owner = self->_owner;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -119,15 +119,15 @@
   return v2;
 }
 
-- (void)_parseAndSetShaderModifier:(id)a3
+- (void)_parseAndSetShaderModifier:(id)modifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  objc_msgSend_removeAllObjects(self->_arguments, a2, a3, v3);
+  objc_msgSend_removeAllObjects(self->_arguments, a2, modifier, v3);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v6, &v33, v37, 16);
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(modifier, v6, &v33, v37, 16);
   if (v7)
   {
     v8 = v7;
@@ -138,7 +138,7 @@
       {
         if (*v34 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(modifier);
         }
 
         v11 = sub_1AF148894(*(*(&v33 + 1) + 8 * i));
@@ -150,7 +150,7 @@
         objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v11, v12, v32, v13);
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v14, &v33, v37, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(modifier, v14, &v33, v37, 16);
     }
 
     while (v8);
@@ -166,7 +166,7 @@
     v31[1] = 3221225472;
     v31[2] = sub_1AF32A30C;
     v31[3] = &unk_1E7A7E248;
-    v31[4] = a3;
+    v31[4] = modifier;
     v31[5] = v19;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v21, v20, v31);
   }
@@ -204,9 +204,9 @@
   return v2;
 }
 
-- (void)setShaderModifiers:(id)a3
+- (void)setShaderModifiers:(id)modifiers
 {
-  if (self->_program && objc_msgSend_count(a3, a2, a3, v3))
+  if (self->_program && objc_msgSend_count(modifiers, a2, modifiers, v3))
   {
     v6 = sub_1AF0D5194();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -218,16 +218,16 @@
   else
   {
     shaderModifiers = self->_shaderModifiers;
-    if (shaderModifiers != a3)
+    if (shaderModifiers != modifiers)
     {
 
-      if (objc_msgSend_count(a3, v8, v9, v10))
+      if (objc_msgSend_count(modifiers, v8, v9, v10))
       {
         v14 = objc_alloc(MEMORY[0x1E695DF20]);
-        v16 = objc_msgSend_initWithDictionary_copyItems_(v14, v15, a3, 1);
+        v16 = objc_msgSend_initWithDictionary_copyItems_(v14, v15, modifiers, 1);
       }
 
-      else if (a3)
+      else if (modifiers)
       {
         v16 = MEMORY[0x1E695E0F8];
       }
@@ -257,10 +257,10 @@
   }
 }
 
-- (void)copyModifiersFrom:(id)a3
+- (void)copyModifiersFrom:(id)from
 {
-  v5 = *(a3 + 4);
-  v8 = objc_msgSend_shaderModifiers(a3, a2, a3, v3);
+  v5 = *(from + 4);
+  v8 = objc_msgSend_shaderModifiers(from, a2, from, v3);
   if (v5 && !sub_1AF333168())
   {
     if (self->_program && objc_msgSend_count(v8, v6, v9, v7))
@@ -310,27 +310,27 @@
   }
 }
 
-- (void)setMinimumLanguageVersion:(id)a3
+- (void)setMinimumLanguageVersion:(id)version
 {
   minimumLanguageVersion = self->_minimumLanguageVersion;
-  if (minimumLanguageVersion != a3)
+  if (minimumLanguageVersion != version)
   {
     v10[8] = v3;
     v10[9] = v4;
 
-    self->_minimumLanguageVersion = a3;
+    self->_minimumLanguageVersion = version;
     owner = self->_owner;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF32A688;
     v10[3] = &unk_1E7A7E220;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = version;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v9, owner, v10);
   }
 }
 
-- (void)_programDidChange:(id)a3
+- (void)_programDidChange:(id)change
 {
   owner = self->_owner;
   v4[0] = MEMORY[0x1E69E9820];
@@ -341,10 +341,10 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, owner, v4);
 }
 
-- (void)_programDidCompile:(id)a3
+- (void)_programDidCompile:(id)compile
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_userInfo(a3, a2, a3, v3);
+  v5 = objc_msgSend_userInfo(compile, a2, compile, v3);
   v8 = objc_msgSend_valueForKey_(v5, v6, @"bindings", v7);
   objc_msgSend_removeAllObjects(self->_arguments, v9, v10, v11);
   v54 = 0u;
@@ -478,39 +478,39 @@
   }
 }
 
-- (void)_customEncodingOfVFXShadableHelper:(id)a3
+- (void)_customEncodingOfVFXShadableHelper:(id)helper
 {
   owner = self->_owner;
   if (owner)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, owner, @"owner");
+    objc_msgSend_encodeObject_forKey_(helper, a2, owner, @"owner");
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend__customEncodingOfVFXShadableHelper_(self, a2, a3, v3);
+  objc_msgSend__customEncodingOfVFXShadableHelper_(self, a2, coder, v3);
   program = self->_program;
   if (program)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v6, program, @"program");
+    objc_msgSend_encodeObject_forKey_(coder, v6, program, @"program");
   }
 
   shaderModifiers = self->_shaderModifiers;
   if (shaderModifiers)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v6, shaderModifiers, @"shaderModifiers");
+    objc_msgSend_encodeObject_forKey_(coder, v6, shaderModifiers, @"shaderModifiers");
   }
 
   minimumLanguageVersion = self->_minimumLanguageVersion;
   if (minimumLanguageVersion)
   {
 
-    objc_msgSend_encodeObject_forKey_(a3, v6, minimumLanguageVersion, @"minimumLanguageVersion");
+    objc_msgSend_encodeObject_forKey_(coder, v6, minimumLanguageVersion, @"minimumLanguageVersion");
   }
 }
 
-- (VFXShadableHelper)initWithCoder:(id)a3
+- (VFXShadableHelper)initWithCoder:(id)coder
 {
   v42[2] = *MEMORY[0x1E69E9840];
   v41.receiver = self;
@@ -523,22 +523,22 @@
     v12 = objc_msgSend_immediateMode(VFXTransaction, v9, v10, v11);
     objc_msgSend_setImmediateMode_(VFXTransaction, v13, 1, v14);
     v15 = sub_1AF37287C();
-    v17 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v16, v15, @"owner");
+    v17 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v16, v15, @"owner");
     v8->_owner = v17;
     if (v17)
     {
       v20 = objc_opt_class();
-      v22 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v21, v20, @"program");
+      v22 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v21, v20, @"program");
       objc_msgSend_setProgram_(v8, v23, v22, v24);
       v25 = MEMORY[0x1E695DFD8];
       v42[0] = objc_opt_class();
       v42[1] = objc_opt_class();
       v27 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v26, v42, 2);
       v30 = objc_msgSend_setWithArray_(v25, v28, v27, v29);
-      v32 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v31, v30, @"shaderModifiers");
+      v32 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v31, v30, @"shaderModifiers");
       objc_msgSend_setShaderModifiers_(v8, v33, v32, v34);
       v35 = objc_opt_class();
-      v37 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v36, v35, @"minimumLanguageVersion");
+      v37 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v36, v35, @"minimumLanguageVersion");
       objc_msgSend_setMinimumLanguageVersion_(v8, v38, v37, v39);
     }
 

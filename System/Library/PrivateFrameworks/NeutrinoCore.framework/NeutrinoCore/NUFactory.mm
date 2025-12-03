@@ -1,26 +1,26 @@
 @interface NUFactory
 + (BOOL)hasSharedFactory;
 + (id)sharedFactory;
-+ (void)freeAllResources:(BOOL)a3;
++ (void)freeAllResources:(BOOL)resources;
 + (void)reapAllStoragePools;
 + (void)reset;
-+ (void)setSharedFactory:(id)a3;
++ (void)setSharedFactory:(id)factory;
 + (void)shutdownSharedFactory;
 - (NUFactory)init;
 - (VNSession)visionSession;
-- (void)_applicationWillBecomeInactive:(id)a3;
-- (void)_evictVisionSession:(id)a3;
-- (void)_evictVisionSessionIfNotUsedSince:(id)a3;
+- (void)_applicationWillBecomeInactive:(id)inactive;
+- (void)_evictVisionSession:(id)session;
+- (void)_evictVisionSessionIfNotUsedSince:(id)since;
 - (void)_scheduleEvictionOfVisionSession;
 - (void)start;
 @end
 
 @implementation NUFactory
 
-- (void)_evictVisionSession:(id)a3
+- (void)_evictVisionSession:(id)session
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_168);
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = sessionCopy;
     _os_log_impl(&dword_1C0184000, v5, OS_LOG_TYPE_DEFAULT, "NUFactory: releasing cached VNSession resources (%{public}@)", &v7, 0xCu);
   }
 
@@ -39,16 +39,16 @@
   self->_visionSessionLastUseTime = 0;
 }
 
-- (void)_evictVisionSessionIfNotUsedSince:(id)a3
+- (void)_evictVisionSessionIfNotUsedSince:(id)since
 {
-  if ([(NSDate *)self->_visionSessionLastUseTime isEqualToDate:a3])
+  if ([(NSDate *)self->_visionSessionLastUseTime isEqualToDate:since])
   {
 
     [(NUFactory *)self _evictVisionSession:@"timer"];
   }
 }
 
-- (void)_applicationWillBecomeInactive:(id)a3
+- (void)_applicationWillBecomeInactive:(id)inactive
 {
   if (self->_visionSessionLastUseTime)
   {
@@ -138,24 +138,24 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
 
   if (!self->_defaultNamespace)
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (!v8)
+    if (!bundleIdentifier)
     {
       if (NSClassFromString(&cfstr_Xctestprobe.isa))
       {
-        v8 = @"com.apple.test";
+        bundleIdentifier = @"com.apple.test";
       }
 
       else
       {
-        v8 = @"com.apple.Photos";
+        bundleIdentifier = @"com.apple.Photos";
       }
     }
 
     defaultNamespace = self->_defaultNamespace;
-    self->_defaultNamespace = &v8->isa;
+    self->_defaultNamespace = &bundleIdentifier->isa;
   }
 
   if (!self->_scheduler)
@@ -249,8 +249,8 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
     visionSession = self->_visionSession;
     self->_visionSession = v32;
 
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:self selector:sel__applicationWillBecomeInactive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__applicationWillBecomeInactive_ name:@"UIApplicationWillResignActiveNotification" object:0];
   }
 
   if (!self->_renderResourcePool)
@@ -321,29 +321,29 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)freeAllResources:(BOOL)a3
++ (void)freeAllResources:(BOOL)resources
 {
-  v3 = a3;
-  if ([a1 hasSharedFactory])
+  resourcesCopy = resources;
+  if ([self hasSharedFactory])
   {
     [NUPurgeableStoragePool purge:0];
     v5 = +[NUPlatform currentPlatform];
     [v5 clearCaches];
 
-    if (v3)
+    if (resourcesCopy)
     {
 
-      [a1 shutdownSharedFactory];
+      [self shutdownSharedFactory];
     }
   }
 }
 
 + (BOOL)hasSharedFactory
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sCurrentFactory != 0;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -358,14 +358,14 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
 + (void)reset
 {
   v3 = objc_alloc_init(NUFactory);
-  [a1 setSharedFactory:v3];
+  [self setSharedFactory:v3];
 }
 
-+ (void)setSharedFactory:(id)a3
++ (void)setSharedFactory:(id)factory
 {
   v41 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  if (!v36)
+  factoryCopy = factory;
+  if (!factoryCopy)
   {
     v6 = NUAssertLogger_3063();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -386,8 +386,8 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v20;
         v39 = 2114;
@@ -398,8 +398,8 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -410,12 +410,12 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
 
   v5 = objc_opt_class();
   objc_sync_enter(v5);
-  if (sCurrentFactory == v36)
+  if (sCurrentFactory == factoryCopy)
   {
     v13 = NUAssertLogger_3063();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot call [NUFactory setSharedFactory:] with itself. self:%@", a1];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot call [NUFactory setSharedFactory:] with itself. self:%@", self];
       *buf = 138543362;
       v38 = v14;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -429,8 +429,8 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
       if (v17)
       {
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v31 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v29;
         v39 = 2114;
@@ -441,17 +441,17 @@ void __26__NUFactory_visionSession__block_invoke(uint64_t a1)
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    _NUAssertFailHandler("+[NUFactory setSharedFactory:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUFactory.m", 88, @"Cannot call [NUFactory setSharedFactory:] with itself. self:%@", v32, v33, v34, v35, a1);
+    _NUAssertFailHandler("+[NUFactory setSharedFactory:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUFactory.m", 88, @"Cannot call [NUFactory setSharedFactory:] with itself. self:%@", v32, v33, v34, v35, self);
   }
 
-  objc_storeStrong(&sCurrentFactory, a3);
+  objc_storeStrong(&sCurrentFactory, factory);
   [sCurrentFactory start];
   objc_sync_exit(v5);
 }

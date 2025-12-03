@@ -1,28 +1,28 @@
 @interface PGPublicEventDisambiguator
-- (PGPublicEventDisambiguator)initWithSceneTaxonomy:(id)a3 loggingConnection:(id)a4;
-- (id)_categoriesForCriteriaMatchingForPublicEvent:(id)a3;
-- (id)_frequentLocationNodesForMomentNode:(id)a3 largeFrequentLocationNodes:(id)a4;
-- (id)disambiguateEvents:(id)a3 forTimeLocationTuple:(id)a4 momentNode:(id)a5 graph:(id)a6 meaningfulEventProcessorCache:(id)a7 serviceManager:(id)a8;
-- (id)publicEventCriteriaByCategoryInGraph:(id)a3;
-- (void)collectConsolidatedAddressesForMomentNodes:(id)a3 largeFrequentLocationNodes:(id)a4 consolidatedAddresses:(id *)a5 consolidatedAddressesByMomentIdentifier:(id *)a6 momentNodesForConsolidatedAddresses:(id *)a7 progressBlock:(id)a8;
+- (PGPublicEventDisambiguator)initWithSceneTaxonomy:(id)taxonomy loggingConnection:(id)connection;
+- (id)_categoriesForCriteriaMatchingForPublicEvent:(id)event;
+- (id)_frequentLocationNodesForMomentNode:(id)node largeFrequentLocationNodes:(id)nodes;
+- (id)disambiguateEvents:(id)events forTimeLocationTuple:(id)tuple momentNode:(id)node graph:(id)graph meaningfulEventProcessorCache:(id)cache serviceManager:(id)manager;
+- (id)publicEventCriteriaByCategoryInGraph:(id)graph;
+- (void)collectConsolidatedAddressesForMomentNodes:(id)nodes largeFrequentLocationNodes:(id)locationNodes consolidatedAddresses:(id *)addresses consolidatedAddressesByMomentIdentifier:(id *)identifier momentNodesForConsolidatedAddresses:(id *)consolidatedAddresses progressBlock:(id)block;
 @end
 
 @implementation PGPublicEventDisambiguator
 
-- (id)_categoriesForCriteriaMatchingForPublicEvent:(id)a3
+- (id)_categoriesForCriteriaMatchingForPublicEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 categories];
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v5];
+  eventCopy = event;
+  categories = [eventCopy categories];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:categories];
   if (_os_feature_enabled_impl())
   {
-    if ([v5 count] == 1)
+    if ([categories count] == 1)
     {
-      v7 = [v5 objectAtIndexedSubscript:0];
-      v8 = [v7 category];
-      v9 = [MEMORY[0x277D27780] festivalsAndFairs];
-      v10 = [v8 isEqualToString:v9];
+      v7 = [categories objectAtIndexedSubscript:0];
+      category = [v7 category];
+      festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
+      v10 = [category isEqualToString:festivalsAndFairs];
 
       if (v10)
       {
@@ -30,15 +30,15 @@
         if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           v12 = loggingConnection;
-          v13 = [v4 name];
+          name = [eventCopy name];
           v19 = 138412290;
-          v20 = v13;
+          v20 = name;
           _os_log_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_DEFAULT, "Additionally evaluating against musicConcert category for event %@", &v19, 0xCu);
         }
 
         v14 = objc_alloc(MEMORY[0x277D27780]);
-        v15 = [MEMORY[0x277D27780] musicConcerts];
-        v16 = [v14 initWithCategory:v15];
+        musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+        v16 = [v14 initWithCategory:musicConcerts];
 
         [v6 addObject:v16];
       }
@@ -50,12 +50,12 @@
   return v6;
 }
 
-- (id)publicEventCriteriaByCategoryInGraph:(id)a3
+- (id)publicEventCriteriaByCategoryInGraph:(id)graph
 {
   publicEventCriteriaByCategory = self->_publicEventCriteriaByCategory;
   if (!publicEventCriteriaByCategory)
   {
-    v5 = [PGPublicEventCriteriaFactory publicEventCriteriaByCategoryForGraph:a3 sceneTaxonomy:self->_sceneTaxonomy loggingConnection:self->_loggingConnection];
+    v5 = [PGPublicEventCriteriaFactory publicEventCriteriaByCategoryForGraph:graph sceneTaxonomy:self->_sceneTaxonomy loggingConnection:self->_loggingConnection];
     v6 = self->_publicEventCriteriaByCategory;
     self->_publicEventCriteriaByCategory = v5;
 
@@ -65,13 +65,13 @@
   return publicEventCriteriaByCategory;
 }
 
-- (id)_frequentLocationNodesForMomentNode:(id)a3 largeFrequentLocationNodes:(id)a4
+- (id)_frequentLocationNodesForMomentNode:(id)node largeFrequentLocationNodes:(id)nodes
 {
-  v5 = a4;
-  v6 = [a3 frequentLocationNodes];
-  if ([v6 count] && objc_msgSend(v6, "intersectsSet:", v5))
+  nodesCopy = nodes;
+  frequentLocationNodes = [node frequentLocationNodes];
+  if ([frequentLocationNodes count] && objc_msgSend(frequentLocationNodes, "intersectsSet:", nodesCopy))
   {
-    v7 = v6;
+    v7 = frequentLocationNodes;
   }
 
   else
@@ -82,13 +82,13 @@
   return v7;
 }
 
-- (void)collectConsolidatedAddressesForMomentNodes:(id)a3 largeFrequentLocationNodes:(id)a4 consolidatedAddresses:(id *)a5 consolidatedAddressesByMomentIdentifier:(id *)a6 momentNodesForConsolidatedAddresses:(id *)a7 progressBlock:(id)a8
+- (void)collectConsolidatedAddressesForMomentNodes:(id)nodes largeFrequentLocationNodes:(id)locationNodes consolidatedAddresses:(id *)addresses consolidatedAddressesByMomentIdentifier:(id *)identifier momentNodesForConsolidatedAddresses:(id *)consolidatedAddresses progressBlock:(id)block
 {
   v61 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v36 = a4;
-  v14 = a8;
-  v15 = _Block_copy(v14);
+  nodesCopy = nodes;
+  locationNodesCopy = locationNodes;
+  blockCopy = block;
+  v15 = _Block_copy(blockCopy);
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -97,14 +97,14 @@
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  v35 = v14;
+  v35 = blockCopy;
   if (!v15 || (v16 = CFAbsoluteTimeGetCurrent(), v16 - v50[3] < 0.01) || (v50[3] = v16, v48 = 0, (*(v15 + 2))(v15, &v48, 0.0), v17 = *(v54 + 24) | v48, *(v54 + 24) = v17, (v17 & 1) == 0))
   {
-    v18 = a5;
+    addressesCopy = addresses;
     v19 = self->_loggingConnection;
     v20 = [MEMORY[0x277CBEB58] set];
     v21 = [MEMORY[0x277CBEB58] set];
-    v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v37, "count")}];
+    v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(nodesCopy, "count")}];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __212__PGPublicEventDisambiguator_collectConsolidatedAddressesForMomentNodes_largeFrequentLocationNodes_consolidatedAddresses_consolidatedAddressesByMomentIdentifier_momentNodesForConsolidatedAddresses_progressBlock___block_invoke;
@@ -115,7 +115,7 @@
     v46 = &v53;
     v44 = v23;
     v38[4] = self;
-    v39 = v36;
+    v39 = locationNodesCopy;
     v24 = v19;
     v40 = v24;
     v25 = v20;
@@ -124,7 +124,7 @@
     v42 = v26;
     v27 = v21;
     v43 = v27;
-    [v37 enumerateNodesUsingBlock:v38];
+    [nodesCopy enumerateNodesUsingBlock:v38];
     if (*(v54 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -144,11 +144,11 @@ LABEL_15:
     else
     {
       v29 = v25;
-      *a7 = v25;
+      *consolidatedAddresses = v25;
       v30 = v27;
-      *v18 = v27;
+      *addressesCopy = v27;
       v31 = v26;
-      *a6 = v26;
+      *identifier = v26;
       if (!v15)
       {
         goto LABEL_15;
@@ -343,35 +343,35 @@ LABEL_19:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)disambiguateEvents:(id)a3 forTimeLocationTuple:(id)a4 momentNode:(id)a5 graph:(id)a6 meaningfulEventProcessorCache:(id)a7 serviceManager:(id)a8
+- (id)disambiguateEvents:(id)events forTimeLocationTuple:(id)tuple momentNode:(id)node graph:(id)graph meaningfulEventProcessorCache:(id)cache serviceManager:(id)manager
 {
   v154 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  eventsCopy = events;
+  tupleCopy = tuple;
+  nodeCopy = node;
+  graphCopy = graph;
+  cacheCopy = cache;
+  managerCopy = manager;
   v107 = [MEMORY[0x277CBEB58] set];
-  v108 = [MEMORY[0x277CBEB38] dictionary];
-  v98 = v17;
-  v20 = [(PGPublicEventDisambiguator *)self publicEventCriteriaByCategoryInGraph:v17];
-  v99 = v16;
-  v100 = v15;
-  v96 = v19;
-  v97 = v18;
-  v21 = [[PGPublicEventMatchingOptions alloc] initWithTimeLocationTuple:v15 momentNode:v16 meaningfulEventProcessorCache:v18 serviceManager:v19];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v98 = graphCopy;
+  v20 = [(PGPublicEventDisambiguator *)self publicEventCriteriaByCategoryInGraph:graphCopy];
+  v99 = nodeCopy;
+  v100 = tupleCopy;
+  v96 = managerCopy;
+  v97 = cacheCopy;
+  v21 = [[PGPublicEventMatchingOptions alloc] initWithTimeLocationTuple:tupleCopy momentNode:nodeCopy meaningfulEventProcessorCache:cacheCopy serviceManager:managerCopy];
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
-  obj = v14;
+  obj = eventsCopy;
   v109 = v20;
   v104 = [obj countByEnumeratingWithState:&v131 objects:v144 count:16];
   if (v104)
   {
     v103 = *v132;
-    v102 = self;
+    selfCopy = self;
     do
     {
       v22 = 0;
@@ -383,7 +383,7 @@ LABEL_19:
         }
 
         v23 = *(*(&v131 + 1) + 8 * v22);
-        v24 = [v23 name];
+        name = [v23 name];
         v25 = [(PGPublicEventDisambiguator *)self _categoriesForCriteriaMatchingForPublicEvent:v23];
         v127 = 0u;
         v128 = 0u;
@@ -391,7 +391,7 @@ LABEL_19:
         v130 = 0u;
         v112 = v25;
         v26 = [v25 countByEnumeratingWithState:&v127 objects:v143 count:16];
-        v106 = v24;
+        v106 = name;
         if (!v26)
         {
 LABEL_39:
@@ -422,8 +422,8 @@ LABEL_39:
                     objc_enumerationMutation(v52);
                   }
 
-                  v57 = [*(*(&v119 + 1) + 8 * i) category];
-                  [v51 addObject:v57];
+                  category = [*(*(&v119 + 1) + 8 * i) category];
+                  [v51 addObject:category];
                 }
 
                 v54 = [v52 countByEnumeratingWithState:&v119 objects:v141 count:16];
@@ -433,7 +433,7 @@ LABEL_39:
             }
 
             loggingConnection = self->_loggingConnection;
-            v24 = v106;
+            name = v106;
             if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138478083;
@@ -463,8 +463,8 @@ LABEL_39:
               objc_enumerationMutation(v112);
             }
 
-            v31 = [*(*(&v127 + 1) + 8 * v30) category];
-            v32 = [v20 objectForKeyedSubscript:v31];
+            category2 = [*(*(&v127 + 1) + 8 * v30) category];
+            v32 = [v20 objectForKeyedSubscript:category2];
             v33 = [v32 count];
             v34 = v33 != 0;
             if (!v33)
@@ -482,7 +482,7 @@ LABEL_39:
             if (v36)
             {
               v37 = v36;
-              v113 = v31;
+              v113 = category2;
               v38 = 0;
               v39 = 0;
               v40 = *v124;
@@ -559,22 +559,22 @@ LABEL_26:
                   v20 = v109;
                   v28 = v110;
                   v29 = v111;
-                  v31 = v113;
+                  category2 = v113;
                   v32 = v116;
                   v34 = 1;
                   if (v46)
                   {
                     v47 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v23, "muid")}];
-                    v48 = [v108 objectForKeyedSubscript:v47];
+                    v48 = [dictionary objectForKeyedSubscript:v47];
 
                     v34 = 1;
                     v32 = v116;
                     if (!v48)
                     {
                       v49 = [MEMORY[0x277CCABB0] numberWithDouble:v41];
-                      v31 = v113;
+                      category2 = v113;
                       v50 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v23, "muid")}];
-                      [v108 setObject:v49 forKeyedSubscript:v50];
+                      [dictionary setObject:v49 forKeyedSubscript:v50];
 
                       v32 = v116;
                       [v107 addObject:v23];
@@ -601,9 +601,9 @@ LABEL_36:
         }
 
         while (v29);
-        self = v102;
+        self = selfCopy;
         v22 = v105;
-        v24 = v106;
+        name = v106;
         if ((v27 & 1) == 0)
         {
           goto LABEL_39;
@@ -623,7 +623,7 @@ LABEL_52:
 
   v59 = self->_loggingConnection;
   v60 = v107;
-  v61 = v108;
+  v61 = dictionary;
   v62 = v59;
   v63 = [v60 count];
   if (v63 == 1)
@@ -631,10 +631,10 @@ LABEL_52:
     v81 = v62;
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
     {
-      v94 = [v60 anyObject];
-      v95 = [v94 name];
+      anyObject = [v60 anyObject];
+      name2 = [anyObject name];
       *buf = 138477827;
-      *&buf[4] = v95;
+      *&buf[4] = name2;
       _os_log_debug_impl(&dword_22F0FC000, v81, OS_LOG_TYPE_DEBUG, "[PublicEvents] Disambiguating event: electing single matched event %{private}@", buf, 0xCu);
     }
 
@@ -650,7 +650,7 @@ LABEL_66:
 
   v117 = v62;
   v64 = [MEMORY[0x277CBEB58] set];
-  v65 = [v60 allObjects];
+  allObjects = [v60 allObjects];
   v139[0] = MEMORY[0x277D85DD0];
   v139[1] = 3221225472;
   v139[2] = ___PGFilterMatchingPublicEvents_block_invoke;
@@ -658,7 +658,7 @@ LABEL_66:
   v115 = v61;
   v66 = v61;
   v140 = v66;
-  v67 = [v65 sortedArrayUsingComparator:v139];
+  v67 = [allObjects sortedArrayUsingComparator:v139];
 
   v68 = [v67 objectAtIndexedSubscript:0];
   v69 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v68, "muid")}];
@@ -734,8 +734,8 @@ LABEL_69:
             objc_enumerationMutation(v83);
           }
 
-          v88 = [*(*(&v135 + 1) + 8 * j) name];
-          [v82 addObject:v88];
+          name3 = [*(*(&v135 + 1) + 8 * j) name];
+          [v82 addObject:name3];
         }
 
         v85 = [v83 countByEnumeratingWithState:&v135 objects:buf count:16];
@@ -767,18 +767,18 @@ LABEL_69:
   return v64;
 }
 
-- (PGPublicEventDisambiguator)initWithSceneTaxonomy:(id)a3 loggingConnection:(id)a4
+- (PGPublicEventDisambiguator)initWithSceneTaxonomy:(id)taxonomy loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  taxonomyCopy = taxonomy;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = PGPublicEventDisambiguator;
   v9 = [(PGPublicEventDisambiguator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sceneTaxonomy, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_sceneTaxonomy, taxonomy);
+    objc_storeStrong(&v10->_loggingConnection, connection);
   }
 
   return v10;

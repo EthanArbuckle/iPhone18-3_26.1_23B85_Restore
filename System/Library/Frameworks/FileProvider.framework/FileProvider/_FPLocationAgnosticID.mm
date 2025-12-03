@@ -1,58 +1,58 @@
 @interface _FPLocationAgnosticID
-- (BOOL)isEqual:(id)a3;
-- (_FPLocationAgnosticID)initWithItem:(id)a3;
-- (_FPLocationAgnosticID)initWithItemID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_FPLocationAgnosticID)initWithItem:(id)item;
+- (_FPLocationAgnosticID)initWithItemID:(id)d;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _FPLocationAgnosticID
 
-- (_FPLocationAgnosticID)initWithItemID:(id)a3
+- (_FPLocationAgnosticID)initWithItemID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = _FPLocationAgnosticID;
   v6 = [(_FPLocationAgnosticID *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemID, a3);
+    objc_storeStrong(&v6->_itemID, d);
   }
 
   return v7;
 }
 
-- (_FPLocationAgnosticID)initWithItem:(id)a3
+- (_FPLocationAgnosticID)initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = _FPLocationAgnosticID;
   v5 = [(_FPLocationAgnosticID *)&v11 init];
   if (v5)
   {
-    v6 = [v4 itemID];
+    itemID = [itemCopy itemID];
     itemID = v5->_itemID;
-    v5->_itemID = v6;
+    v5->_itemID = itemID;
 
-    v8 = [v4 formerItemID];
+    formerItemID = [itemCopy formerItemID];
     alternateID = v5->_alternateID;
-    v5->_alternateID = v8;
+    v5->_alternateID = formerItemID;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_12;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
 LABEL_5:
     v6 = 1;

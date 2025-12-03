@@ -1,20 +1,20 @@
 @interface NSFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6;
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error;
 - (BOOL)isPartialStringValid:(NSString *)partialStringPtr proposedSelectedRange:(NSRangePointer)proposedSelRangePtr originalString:(NSString *)origString originalSelectedRange:(NSRange)origSelRange errorDescription:(NSString *)error;
 @end
 
 @implementation NSFormatter
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
   v14 = 0;
-  if (a5)
+  if (range)
   {
-    a4 = [a4 substringWithRange:{a5->location, a5->length}];
+    string = [string substringWithRange:{range->location, range->length}];
   }
 
-  if (a6)
+  if (error)
   {
     v9 = &v14;
   }
@@ -24,9 +24,9 @@
     v9 = 0;
   }
 
-  v10 = [(NSFormatter *)self getObjectValue:a3 forString:a4 errorDescription:v9, v14, v15];
+  v10 = [(NSFormatter *)self getObjectValue:value forString:string errorDescription:v9, v14, v15];
   v11 = v10;
-  if (a6 && !v10)
+  if (error && !v10)
   {
     if (v14)
     {
@@ -38,7 +38,7 @@
       v12 = 0;
     }
 
-    *a6 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:2048 userInfo:v12];
+    *error = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:2048 userInfo:v12];
   }
 
   return v11;

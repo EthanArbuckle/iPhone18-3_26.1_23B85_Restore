@@ -1,11 +1,11 @@
 @interface HKClinicalDocumentDownloader
 - (HKClinicalDocumentDownloader)init;
-- (HKClinicalDocumentDownloader)initWithConnection:(id)a3;
+- (HKClinicalDocumentDownloader)initWithConnection:(id)connection;
 - (id)exportedInterface;
-- (void)beginOrResumeDownloadingAttachments:(id)a3 shouldRequestMore:(BOOL)a4 completion:(id)a5;
-- (void)downloadAttachment:(id)a3 completion:(id)a4;
-- (void)pingDownloaderWithCompletion:(id)a3;
-- (void)triggerDownloadForAttachment:(id)a3 completion:(id)a4;
+- (void)beginOrResumeDownloadingAttachments:(id)attachments shouldRequestMore:(BOOL)more completion:(id)completion;
+- (void)downloadAttachment:(id)attachment completion:(id)completion;
+- (void)pingDownloaderWithCompletion:(id)completion;
+- (void)triggerDownloadForAttachment:(id)attachment completion:(id)completion;
 @end
 
 @implementation HKClinicalDocumentDownloader
@@ -18,15 +18,15 @@
   return v4;
 }
 
-- (HKClinicalDocumentDownloader)initWithConnection:(id)a3
+- (HKClinicalDocumentDownloader)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = HKClinicalDocumentDownloader;
   v5 = [(HKClinicalDocumentDownloader *)&v9 init];
   if (v5)
   {
-    v6 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:v4 serviceIdentifier:@"ClinicalDocumentDownloader" exportedObject:v5];
+    v6 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:connectionCopy serviceIdentifier:@"ClinicalDocumentDownloader" exportedObject:v5];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = &v6->super;
 
@@ -36,16 +36,16 @@
   return v5;
 }
 
-- (void)beginOrResumeDownloadingAttachments:(id)a3 shouldRequestMore:(BOOL)a4 completion:(id)a5
+- (void)beginOrResumeDownloadingAttachments:(id)attachments shouldRequestMore:(BOOL)more completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  attachmentsCopy = attachments;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__HKClinicalDocumentDownloader_beginOrResumeDownloadingAttachments_shouldRequestMore_completion___block_invoke;
   v14[3] = &unk_2796DC888;
-  v15 = v8;
-  v17 = a4;
+  v15 = attachmentsCopy;
+  moreCopy = more;
   v16 = v9;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -53,19 +53,19 @@
   v12[3] = &unk_2796DBFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = attachmentsCopy;
   [(HKClinicalDocumentDownloader *)self _fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)downloadAttachment:(id)a3 completion:(id)a4
+- (void)downloadAttachment:(id)attachment completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  attachmentCopy = attachment;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__HKClinicalDocumentDownloader_downloadAttachment_completion___block_invoke;
   v12[3] = &unk_2796DC8B0;
-  v13 = v6;
+  v13 = attachmentCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -73,13 +73,13 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = attachmentCopy;
   [(HKClinicalDocumentDownloader *)self _fetchProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)pingDownloaderWithCompletion:(id)a3
+- (void)pingDownloaderWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__HKClinicalDocumentDownloader_pingDownloaderWithCompletion___block_invoke;
@@ -94,15 +94,15 @@
   [(HKClinicalDocumentDownloader *)self _fetchProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)triggerDownloadForAttachment:(id)a3 completion:(id)a4
+- (void)triggerDownloadForAttachment:(id)attachment completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  attachmentCopy = attachment;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __72__HKClinicalDocumentDownloader_triggerDownloadForAttachment_completion___block_invoke;
   v12[3] = &unk_2796DC8B0;
-  v13 = v6;
+  v13 = attachmentCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -110,7 +110,7 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = attachmentCopy;
   [(HKClinicalDocumentDownloader *)self _fetchProxyWithHandler:v12 errorHandler:v10];
 }
 

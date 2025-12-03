@@ -1,56 +1,56 @@
 @interface PXPhotosGridAssetDecorationSource
-- ($B01073AA55A67B413588F7AD9EFB6822)assetBackgroundCornerRadiusForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- (BOOL)hasTapbacksForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
+- ($B01073AA55A67B413588F7AD9EFB6822)assetBackgroundCornerRadiusForSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (BOOL)hasTapbacksForSpriteIndex:(unsigned int)index inLayout:(id)layout;
 - (BOOL)isSharedLibraryBadgeEnabled;
 - (BOOL)isStacksBadgeEnabled;
-- (BOOL)shouldShowSavedToLibraryBadgeForAsset:(id)a3 inLayout:(id)a4;
-- (BOOL)wantsCaptionDecorationsInLayout:(id)a3;
-- (BOOL)wantsTapbackDecorationInLayout:(id)a3;
-- (CGSize)expectedInsetsForItem:(int64_t)a3;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)a3 atSpriteIndex:(id)a4 inLayout:(unsigned int)a5;
+- (BOOL)shouldShowSavedToLibraryBadgeForAsset:(id)asset inLayout:(id)layout;
+- (BOOL)wantsCaptionDecorationsInLayout:(id)layout;
+- (BOOL)wantsTapbackDecorationInLayout:(id)layout;
+- (CGSize)expectedInsetsForItem:(int64_t)item;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)asset atSpriteIndex:(id)index inLayout:(unsigned int)layout;
 - (PXGItemsLayout)decoratedItemsLayout;
 - (PXGLayout)decoratedLayout;
 - (PXPhotosGridAssetDecorationSource)init;
-- (id)_displayAssetForItem:(int64_t)a3;
-- (id)_spriteIndexesForItems:(id)a3 inLayout:(id)a4;
-- (id)debugDecorationAtSpriteIndex:(unsigned int)a3 asset:(id)a4 inLayout:(id)a5;
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4;
-- (id)draggingSpriteIndexesInLayout:(id)a3;
-- (id)loadStatusForAsset:(id)a3 atSpriteIndex:(unsigned int)a4 inLayout:(id)a5;
-- (id)selectedSpriteIndexesInLayout:(id)a3;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (int64_t)focusRingTypeInLayout:(id)a3;
-- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- (int64_t)selectionDecorationStyleInLayout:(id)a3;
-- (unint64_t)desiredPlaceholderStyleInLayout:(id)a3;
-- (unint64_t)selectionDecorationAdditionsInLayout:(id)a3;
+- (id)_displayAssetForItem:(int64_t)item;
+- (id)_spriteIndexesForItems:(id)items inLayout:(id)layout;
+- (id)debugDecorationAtSpriteIndex:(unsigned int)index asset:(id)asset inLayout:(id)layout;
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout;
+- (id)draggingSpriteIndexesInLayout:(id)layout;
+- (id)loadStatusForAsset:(id)asset atSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (id)selectedSpriteIndexesInLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (int64_t)focusRingTypeInLayout:(id)layout;
+- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (int64_t)selectionDecorationStyleInLayout:(id)layout;
+- (unint64_t)desiredPlaceholderStyleInLayout:(id)layout;
+- (unint64_t)selectionDecorationAdditionsInLayout:(id)layout;
 - (void)_invalidateDragDecoration;
 - (void)_invalidateProgressDecoration;
 - (void)_invalidateSharedLibraryDecoration;
 - (void)_invalidateTapbackDecoration;
 - (void)_updateDragDecoration;
-- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5;
-- (void)observeIsInCloud:(BOOL)a3 forDisplayAsset:(id)a4;
-- (void)setAssetImportStatusManager:(id)a3;
-- (void)setDataSource:(id)a3 section:(int64_t)a4;
-- (void)setDecoratedLayout:(id)a3;
-- (void)setDraggedAssetReferences:(id)a3;
-- (void)setDurationAlwaysHidden:(BOOL)a3;
-- (void)setEnableDebugBadgeColors:(BOOL)a3;
-- (void)setEnableDebugDecoration:(BOOL)a3;
-- (void)setEnableSpatialBadges:(BOOL)a3;
-- (void)setForbiddenBadges:(unint64_t)a3;
-- (void)setHidesInteractiveFavoriteBadges:(BOOL)a3;
-- (void)setIsInSelectMode:(BOOL)a3;
-- (void)setItemsWithCoveredBottomTrailingCorner:(id)a3;
-- (void)setLoadingStatusManager:(id)a3;
-- (void)setSelectionSnapshot:(id)a3;
-- (void)setTapbackStatusManager:(id)a3;
-- (void)setWantsSensitiveWarningDecorations:(BOOL)a3;
-- (void)setWantsSharedLibraryDecorations:(BOOL)a3;
-- (void)setWantsStacksDecorations:(BOOL)a3;
+- (void)loadingStatusManager:(id)manager didUpdateLoadingStatus:(id)status forItemIdentifier:(id)identifier;
+- (void)observeIsInCloud:(BOOL)cloud forDisplayAsset:(id)asset;
+- (void)setAssetImportStatusManager:(id)manager;
+- (void)setDataSource:(id)source section:(int64_t)section;
+- (void)setDecoratedLayout:(id)layout;
+- (void)setDraggedAssetReferences:(id)references;
+- (void)setDurationAlwaysHidden:(BOOL)hidden;
+- (void)setEnableDebugBadgeColors:(BOOL)colors;
+- (void)setEnableDebugDecoration:(BOOL)decoration;
+- (void)setEnableSpatialBadges:(BOOL)badges;
+- (void)setForbiddenBadges:(unint64_t)badges;
+- (void)setHidesInteractiveFavoriteBadges:(BOOL)badges;
+- (void)setIsInSelectMode:(BOOL)mode;
+- (void)setItemsWithCoveredBottomTrailingCorner:(id)corner;
+- (void)setLoadingStatusManager:(id)manager;
+- (void)setSelectionSnapshot:(id)snapshot;
+- (void)setTapbackStatusManager:(id)manager;
+- (void)setWantsSensitiveWarningDecorations:(BOOL)decorations;
+- (void)setWantsSharedLibraryDecorations:(BOOL)decorations;
+- (void)setWantsStacksDecorations:(BOOL)decorations;
 - (void)update;
 @end
 
@@ -65,9 +65,9 @@
   if (v2)
   {
     v2->_section = 0x7FFFFFFFFFFFFFFFLL;
-    v4 = [MEMORY[0x277D3CCE0] defaultManager];
+    defaultManager = [MEMORY[0x277D3CCE0] defaultManager];
     badgeManager = v3->_badgeManager;
-    v3->_badgeManager = v4;
+    v3->_badgeManager = defaultManager;
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     assetUUIDsInCloud = v3->_assetUUIDsInCloud;
@@ -83,8 +83,8 @@
 
     [(NSShadow *)v3->_backgroundShadow setShadowOffset:0.0, 0.0];
     [(NSShadow *)v3->_backgroundShadow setShadowBlurRadius:20.0];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v3 selector:sel__gridPreferencesDidChange_ name:@"PXGridZeroSettingsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__gridPreferencesDidChange_ name:@"PXGridZeroSettingsChangedNotification" object:0];
   }
 
   return v3;
@@ -99,11 +99,11 @@
 
 - (PXGItemsLayout)decoratedItemsLayout
 {
-  v2 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+  decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = decoratedLayout;
   }
 
   else
@@ -122,9 +122,9 @@
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v4 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosGridAssetDecorationSource update]"];
-      [v4 handleFailureInFunction:v5 file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v5 file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = self->_updateFlags.needsUpdate;
     }
@@ -141,9 +141,9 @@
     self->_updateFlags.isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosGridAssetDecorationSource update]"];
-      [v7 handleFailureInFunction:v6 file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:309 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:309 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
     }
   }
 }
@@ -154,9 +154,9 @@
   if (!cachedSharedLibraryBadgeEnabledSettingValue)
   {
     v4 = +[PXGridZeroSettingsProvider sharedInstance];
-    v5 = [v4 isSharedLibraryBadgingEnabled];
+    isSharedLibraryBadgingEnabled = [v4 isSharedLibraryBadgingEnabled];
 
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:isSharedLibraryBadgingEnabled];
     v7 = self->_cachedSharedLibraryBadgeEnabledSettingValue;
     self->_cachedSharedLibraryBadgeEnabledSettingValue = v6;
 
@@ -177,19 +177,19 @@ uint64_t __63__PXPhotosGridAssetDecorationSource__gridPreferencesDidChange___blo
   return [v4 _invalidateSharedLibraryDecoration];
 }
 
-- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5
+- (void)loadingStatusManager:(id)manager didUpdateLoadingStatus:(id)status forItemIdentifier:(id)identifier
 {
   if (!self->_isGettingLoadStatus)
   {
-    [(PXPhotosGridAssetDecorationSource *)self _invalidateProgressDecoration:a3];
+    [(PXPhotosGridAssetDecorationSource *)self _invalidateProgressDecoration:manager];
   }
 }
 
-- (id)debugDecorationAtSpriteIndex:(unsigned int)a3 asset:(id)a4 inLayout:(id)a5
+- (id)debugDecorationAtSpriteIndex:(unsigned int)index asset:(id)asset inLayout:(id)layout
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  assetCopy = asset;
+  layoutCopy = layout;
   v25 = 0;
   v26 = &v25;
   v27 = 0x4010000000;
@@ -211,10 +211,10 @@ uint64_t __63__PXPhotosGridAssetDecorationSource__gridPreferencesDidChange___blo
   v20[3] = &unk_278298370;
   v20[4] = &v25;
   v20[5] = v21;
-  [v8 enumerateSpritesInRange:a3 | 0x100000000 usingBlock:v20];
-  [v7 preferredCropRect];
+  [layoutCopy enumerateSpritesInRange:index | 0x100000000 usingBlock:v20];
+  [assetCopy preferredCropRect];
   PXRectFlippedVertically();
-  [v8 displayScale];
+  [layoutCopy displayScale];
   PXRectDenormalize();
   PXRectArea();
   v12 = v11 / vmul_lane_f32(v26[7], v26[7], 1).f32[0];
@@ -229,17 +229,17 @@ uint64_t __63__PXPhotosGridAssetDecorationSource__gridPreferencesDidChange___blo
     {
       [MEMORY[0x277D75348] orangeColor];
     }
-    v13 = ;
+    greenColor = ;
   }
 
   else
   {
-    v13 = [MEMORY[0x277D75348] greenColor];
+    greenColor = [MEMORY[0x277D75348] greenColor];
   }
 
-  v15 = v13;
+  v15 = greenColor;
   v31[0] = *MEMORY[0x277D73D20];
-  v16 = [v13 colorWithAlphaComponent:0.150000006];
+  v16 = [greenColor colorWithAlphaComponent:0.150000006];
   v32[0] = v16;
   v31[1] = *MEMORY[0x277D73D28];
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"fit:%0.0f%%", v12 * 100.0];
@@ -267,17 +267,17 @@ __n128 __81__PXPhotosGridAssetDecorationSource_debugDecorationAtSpriteIndex_asse
   return result;
 }
 
-- (void)observeIsInCloud:(BOOL)a3 forDisplayAsset:(id)a4
+- (void)observeIsInCloud:(BOOL)cloud forDisplayAsset:(id)asset
 {
-  v6 = a4;
+  assetCopy = asset;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__PXPhotosGridAssetDecorationSource_observeIsInCloud_forDisplayAsset___block_invoke;
   block[3] = &unk_278298348;
-  v9 = v6;
-  v10 = self;
-  v11 = a3;
-  v7 = v6;
+  v9 = assetCopy;
+  selfCopy = self;
+  cloudCopy = cloud;
+  v7 = assetCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -302,16 +302,16 @@ void __70__PXPhotosGridAssetDecorationSource_observeIsInCloud_forDisplayAsset___
   }
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v7 = a4;
-  if (!v7)
+  v4 = *&index;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v32 = objc_opt_class();
     v33 = NSStringFromClass(v32);
-    [v31 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v33}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v33}];
 LABEL_25:
 
     goto LABEL_3;
@@ -320,53 +320,53 @@ LABEL_25:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v34 = objc_opt_class();
     v33 = NSStringFromClass(v34);
-    v35 = [v7 px_descriptionForAssertionMessage];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v33, v35}];
+    px_descriptionForAssertionMessage = [layoutCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:699 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v33, px_descriptionForAssertionMessage}];
 
     goto LABEL_25;
   }
 
 LABEL_3:
-  v8 = [v7 itemsLayout];
+  itemsLayout = [layoutCopy itemsLayout];
   v41 = -1;
   v9 = 0;
-  if ([v7 isSpriteIndex:v4 decoratingSpriteWithIndex:&v41] && v8)
+  if ([layoutCopy isSpriteIndex:v4 decoratingSpriteWithIndex:&v41] && itemsLayout)
   {
-    v36 = [v8 itemForSpriteIndex:{objc_msgSend(v7, "convertSpriteIndex:toDescendantLayout:", v41, v8)}];
+    v36 = [itemsLayout itemForSpriteIndex:{objc_msgSend(layoutCopy, "convertSpriteIndex:toDescendantLayout:", v41, itemsLayout)}];
     v10 = [(PXPhotosGridAssetDecorationSource *)self _displayAssetForItem:?];
-    v11 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-    v12 = [v7 currentDataSourceChange];
+    dataSource = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+    currentDataSourceChange = [layoutCopy currentDataSourceChange];
     v13 = v10;
-    if ([v7 appearState] == 1)
+    if ([layoutCopy appearState] == 1)
     {
       v13 = v10;
-      if (v12)
+      if (currentDataSourceChange)
       {
-        v14 = [v12 changeDetails];
-        v15 = [v14 lastObject];
-        v16 = v11;
-        v17 = [v15 toDataSourceIdentifier];
-        v18 = [v16 identifier];
+        changeDetails = [currentDataSourceChange changeDetails];
+        lastObject = [changeDetails lastObject];
+        v16 = dataSource;
+        toDataSourceIdentifier = [lastObject toDataSourceIdentifier];
+        identifier = [v16 identifier];
 
         v13 = v10;
-        v19 = v17 == v18;
-        v11 = v16;
+        v19 = toDataSourceIdentifier == identifier;
+        dataSource = v16;
         if (v19)
         {
-          v20 = [v16 identifier];
-          v21 = [(PXPhotosGridAssetDecorationSource *)self section];
+          identifier2 = [v16 identifier];
+          section = [(PXPhotosGridAssetDecorationSource *)self section];
           v39 = 0u;
           v40 = 0u;
           v22 = MEMORY[0x277D3CDD0];
-          v23 = [v12 changeDetails];
-          *&v37 = v20;
-          *(&v37 + 1) = v21;
+          changeDetails2 = [currentDataSourceChange changeDetails];
+          *&v37 = identifier2;
+          *(&v37 + 1) = section;
           *&v38 = v36;
           *(&v38 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-          [v22 indexPathAfterRevertingChanges:v23 fromIndexPath:&v37 hasIncrementalChanges:0 objectChanged:0];
+          [v22 indexPathAfterRevertingChanges:changeDetails2 fromIndexPath:&v37 hasIncrementalChanges:0 objectChanged:0];
 
           v13 = v10;
           if (v39 != *MEMORY[0x277D3CF78])
@@ -377,25 +377,25 @@ LABEL_3:
               v13 = v10;
               if (*(&v40 + 1) == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v24 = [v12 dataSourceBeforeChanges];
+                dataSourceBeforeChanges = [currentDataSourceChange dataSourceBeforeChanges];
                 v37 = v39;
                 v38 = v40;
-                v13 = [v24 objectAtIndexPath:&v37];
+                v13 = [dataSourceBeforeChanges objectAtIndexPath:&v37];
               }
             }
           }
 
-          v11 = v16;
+          dataSource = v16;
         }
       }
     }
 
-    v25 = [(PXPhotosGridAssetDecorationSource *)self decorationDataSource];
+    decorationDataSource = [(PXPhotosGridAssetDecorationSource *)self decorationDataSource];
 
-    if (v25)
+    if (decorationDataSource)
     {
-      v26 = [(PXPhotosGridAssetDecorationSource *)self decorationDataSource];
-      v9 = [v26 userDataForAsset:v10];
+      decorationDataSource2 = [(PXPhotosGridAssetDecorationSource *)self decorationDataSource];
+      v9 = [decorationDataSource2 userDataForAsset:v10];
     }
 
     else if (objc_opt_respondsToSelector())
@@ -405,25 +405,25 @@ LABEL_3:
 
     else
     {
-      v27 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-      v28 = [v27 identifier];
-      v29 = [(PXPhotosGridAssetDecorationSource *)self section];
-      *&v39 = v28;
-      *(&v39 + 1) = v29;
+      dataSource2 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+      identifier3 = [dataSource2 identifier];
+      section2 = [(PXPhotosGridAssetDecorationSource *)self section];
+      *&v39 = identifier3;
+      *(&v39 + 1) = section2;
       *&v40 = v36;
       *(&v40 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-      v9 = [v27 assetReferenceAtItemIndexPath:&v39];
+      v9 = [dataSource2 assetReferenceAtItemIndexPath:&v39];
     }
   }
 
   return v9;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v7 = a4;
-  if (v7)
+  v4 = *&index;
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -431,23 +431,23 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v7 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:679 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v16, v18}];
+    px_descriptionForAssertionMessage = [layoutCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:679 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v16, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:679 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:679 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v16}];
   }
 
 LABEL_3:
-  v8 = [v7 decoratingTypeForSpriteIndex:v4];
+  v8 = [layoutCopy decoratingTypeForSpriteIndex:v4];
   if (v8 == 3)
   {
     tapbackStatusManager = self;
@@ -465,7 +465,7 @@ LABEL_13:
   {
     if (NSClassFromString(&cfstr_Ckmediaobjectt.isa) && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v10 = NSClassFromString(&cfstr_Ckphotogridtap.isa);
+      decorationViewClass = NSClassFromString(&cfstr_Ckphotogridtap.isa);
       goto LABEL_9;
     }
 
@@ -474,23 +474,23 @@ LABEL_13:
 
   tapbackStatusManager = self->_tapbackStatusManager;
 LABEL_8:
-  v10 = [tapbackStatusManager decorationViewClass];
+  decorationViewClass = [tapbackStatusManager decorationViewClass];
 LABEL_9:
-  v11 = v10;
+  v11 = decorationViewClass;
 LABEL_14:
   v12 = v11;
 
   return v11;
 }
 
-- (BOOL)hasTapbacksForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- (BOOL)hasTapbacksForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&index;
+  layoutCopy = layout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = -[PXPhotosGridAssetDecorationSource _displayAssetForItem:](self, "_displayAssetForItem:", [v6 itemForSpriteIndex:v4]);
+    v7 = -[PXPhotosGridAssetDecorationSource _displayAssetForItem:](self, "_displayAssetForItem:", [layoutCopy itemForSpriteIndex:v4]);
     v8 = [(PXTapbackStatusManager *)self->_tapbackStatusManager hasTapbacksForAsset:v7];
   }
 
@@ -502,7 +502,7 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)wantsTapbackDecorationInLayout:(id)a3
+- (BOOL)wantsTapbackDecorationInLayout:(id)layout
 {
   if (self->_tapbackStatusManager)
   {
@@ -515,19 +515,19 @@ LABEL_14:
   }
 }
 
-- (unint64_t)desiredPlaceholderStyleInLayout:(id)a3
+- (unint64_t)desiredPlaceholderStyleInLayout:(id)layout
 {
-  v3 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-  v4 = [v3 contentSource];
-  v5 = [v4 desiredPlaceholderStyleInLayout:v3];
+  decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+  contentSource = [decoratedLayout contentSource];
+  v5 = [contentSource desiredPlaceholderStyleInLayout:decoratedLayout];
 
   return v5;
 }
 
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout
 {
-  v7 = a4;
-  if (v7)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -535,86 +535,86 @@ LABEL_14:
       goto LABEL_3;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v7 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:636 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v15, v17}];
+    px_descriptionForAssertionMessage = [layoutCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:636 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout", v15, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:636 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:636 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout", v15}];
   }
 
 LABEL_3:
-  v8 = [v7 decoratedLayout];
-  v9 = [v8 contentSource];
-  v10 = [v9 displayAssetFetchResultForSpritesInRange:objc_msgSend(v7 inLayout:{"decoratedIndexForDecoratingIndex:", a3) | 0x100000000, v8}];
-  [v7 numberOfDecoratingSpritesPerDecoratedSprite];
+  decoratedLayout = [layoutCopy decoratedLayout];
+  contentSource = [decoratedLayout contentSource];
+  v10 = [contentSource displayAssetFetchResultForSpritesInRange:objc_msgSend(layoutCopy inLayout:{"decoratedIndexForDecoratingIndex:", range) | 0x100000000, decoratedLayout}];
+  [layoutCopy numberOfDecoratingSpritesPerDecoratedSprite];
   v11 = PXDisplayAssetFetchResultScaledWithMultiplier();
 
   return v11;
 }
 
-- ($B01073AA55A67B413588F7AD9EFB6822)assetBackgroundCornerRadiusForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- ($B01073AA55A67B413588F7AD9EFB6822)assetBackgroundCornerRadiusForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
   *&result.var0.var1[2] = a2;
   *&result.var0.var0.var0 = self;
   return result;
 }
 
-- (id)loadStatusForAsset:(id)a3 atSpriteIndex:(unsigned int)a4 inLayout:(id)a5
+- (id)loadStatusForAsset:(id)asset atSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
   self->_isGettingLoadStatus = 1;
-  v6 = a3;
-  v7 = [(PXPhotosGridAssetDecorationSource *)self loadingStatusManager];
-  v8 = [v6 uuid];
+  assetCopy = asset;
+  loadingStatusManager = [(PXPhotosGridAssetDecorationSource *)self loadingStatusManager];
+  uuid = [assetCopy uuid];
 
-  v9 = [v7 loadingStatusForItemIdentifier:v8];
+  v9 = [loadingStatusManager loadingStatusForItemIdentifier:uuid];
 
   self->_isGettingLoadStatus = 0;
 
   return v9;
 }
 
-- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)a3 atSpriteIndex:(id)a4 inLayout:(unsigned int)a5
+- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)asset atSpriteIndex:(id)index inLayout:(unsigned int)layout
 {
-  v11 = a4;
+  indexCopy = index;
   v12 = a6;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atSpriteIndex_inLayout___block_invoke;
   aBlock[3] = &unk_278298320;
   v13 = v12;
-  v42 = self;
-  v43 = a3;
+  selfCopy = self;
+  assetCopy = asset;
   v41 = v13;
-  v44 = a5;
+  layoutCopy = layout;
   v14 = _Block_copy(aBlock);
-  v15 = [(PXPhotosGridAssetDecorationSource *)self wantsFileSizeBadge];
-  v16 = [(PXPhotosGridAssetDecorationSource *)self durationAlwaysHidden];
-  v17 = [(PXPhotosGridAssetDecorationSource *)self enableSpatialBadges];
+  wantsFileSizeBadge = [(PXPhotosGridAssetDecorationSource *)self wantsFileSizeBadge];
+  durationAlwaysHidden = [(PXPhotosGridAssetDecorationSource *)self durationAlwaysHidden];
+  enableSpatialBadges = [(PXPhotosGridAssetDecorationSource *)self enableSpatialBadges];
   v31 = 0u;
   v39 = 0u;
   badgeManager = self->_badgeManager;
   if (badgeManager)
   {
     v19 = 2;
-    if (!v15)
+    if (!wantsFileSizeBadge)
     {
       v19 = 0;
     }
 
-    if (v16)
+    if (durationAlwaysHidden)
     {
       v19 |= 4uLL;
     }
 
-    if (v17)
+    if (enableSpatialBadges)
     {
       v20 = v19 | 8;
     }
@@ -624,33 +624,33 @@ LABEL_3:
       v20 = v19;
     }
 
-    [(PXAssetBadgeManager *)badgeManager badgeInfoForAsset:v11 inCollection:0 options:v20, 0];
+    [(PXAssetBadgeManager *)badgeManager badgeInfoForAsset:indexCopy inCollection:0 options:v20, 0];
   }
 
   assetUUIDsInCloud = self->_assetUUIDsInCloud;
-  v22 = [v11 uuid];
-  LODWORD(assetUUIDsInCloud) = [(NSMutableSet *)assetUUIDsInCloud containsObject:v22];
+  uuid = [indexCopy uuid];
+  LODWORD(assetUUIDsInCloud) = [(NSMutableSet *)assetUUIDsInCloud containsObject:uuid];
 
   if (assetUUIDsInCloud)
   {
     v32 |= 0x20uLL;
   }
 
-  if ([(PXPhotosGridAssetDecorationSource *)self shouldShowSavedToLibraryBadgeForAsset:v11 inLayout:v13, v32])
+  if ([(PXPhotosGridAssetDecorationSource *)self shouldShowSavedToLibraryBadgeForAsset:indexCopy inLayout:v13, v32])
   {
     v33 |= 0x200000000uLL;
   }
 
-  if (-[PXPhotosGridAssetDecorationSource wantsSharedLibraryDecorations](self, "wantsSharedLibraryDecorations", v33) && (-[PXPhotosGridAssetDecorationSource isInSelectMode](self, "isInSelectMode") && !PFIsPhotosPicker() || -[PXPhotosGridAssetDecorationSource isSharedLibraryBadgeEnabled](self, "isSharedLibraryBadgeEnabled")) && [v11 isInSharedLibrary])
+  if (-[PXPhotosGridAssetDecorationSource wantsSharedLibraryDecorations](self, "wantsSharedLibraryDecorations", v33) && (-[PXPhotosGridAssetDecorationSource isInSelectMode](self, "isInSelectMode") && !PFIsPhotosPicker() || -[PXPhotosGridAssetDecorationSource isSharedLibraryBadgeEnabled](self, "isSharedLibraryBadgeEnabled")) && [indexCopy isInSharedLibrary])
   {
     v34 |= 0x2000000000uLL;
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PXPhotosGridAssetDecorationSource *)self wantsSensitiveWarningDecorations])
   {
-    if ([v11 isContentAnalyzedAsPreviewable])
+    if ([indexCopy isContentAnalyzedAsPreviewable])
     {
-      if (![v11 needsSensitivityProtection])
+      if (![indexCopy needsSensitivityProtection])
       {
         goto LABEL_27;
       }
@@ -707,12 +707,12 @@ LABEL_27:
     *(&v31 + 1) = 0;
   }
 
-  v26 = [(PXPhotosGridAssetDecorationSource *)self badgesModifier];
+  badgesModifier = [(PXPhotosGridAssetDecorationSource *)self badgesModifier];
 
-  if (v26)
+  if (badgesModifier)
   {
-    v27 = [(PXPhotosGridAssetDecorationSource *)self badgesModifier];
-    v28 = (v27)[2](v27, v11, v38);
+    badgesModifier2 = [(PXPhotosGridAssetDecorationSource *)self badgesModifier];
+    v28 = (badgesModifier2)[2](badgesModifier2, indexCopy, v38);
   }
 
   else
@@ -735,50 +735,50 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return v3;
 }
 
-- (BOOL)shouldShowSavedToLibraryBadgeForAsset:(id)a3 inLayout:(id)a4
+- (BOOL)shouldShowSavedToLibraryBadgeForAsset:(id)asset inLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self->_assetImportStatusManager && [(PXPhotosGridAssetDecorationSource *)self isInSelectMode]&& [(PXAssetImportStatusManager *)self->_assetImportStatusManager importStateForAsset:v6]== 2;
+  assetCopy = asset;
+  layoutCopy = layout;
+  v8 = self->_assetImportStatusManager && [(PXPhotosGridAssetDecorationSource *)self isInSelectMode]&& [(PXAssetImportStatusManager *)self->_assetImportStatusManager importStateForAsset:assetCopy]== 2;
 
   return v8;
 }
 
-- (id)draggingSpriteIndexesInLayout:(id)a3
+- (id)draggingSpriteIndexesInLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   [(PXPhotosGridAssetDecorationSource *)self update];
-  v5 = [(PXPhotosGridAssetDecorationSource *)self _spriteIndexesForItems:self->_draggedItems inLayout:v4];
+  v5 = [(PXPhotosGridAssetDecorationSource *)self _spriteIndexesForItems:self->_draggedItems inLayout:layoutCopy];
 
   return v5;
 }
 
-- (BOOL)wantsCaptionDecorationsInLayout:(id)a3
+- (BOOL)wantsCaptionDecorationsInLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 itemCaptionsVisible];
+    itemCaptionsVisible = [layoutCopy itemCaptionsVisible];
   }
 
   else
   {
-    v4 = 0;
+    itemCaptionsVisible = 0;
   }
 
-  return v4;
+  return itemCaptionsVisible;
 }
 
-- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- (int64_t)overallSelectionOrderAtSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&index;
+  layoutCopy = layout;
   if ([(PXPhotosGridAssetDecorationSource *)self wantsNumberedSelectionStyle])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v6 itemForSpriteIndex:v4];
+      v4 = [layoutCopy itemForSpriteIndex:v4];
     }
 
     else
@@ -786,16 +786,16 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
       v4 = v4;
     }
 
-    v8 = [(PXPhotosGridAssetDecorationSource *)self selectionSnapshot];
-    v9 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-    v10 = [v9 identifier];
-    v11 = [(PXPhotosGridAssetDecorationSource *)self section];
+    selectionSnapshot = [(PXPhotosGridAssetDecorationSource *)self selectionSnapshot];
+    dataSource = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+    identifier = [dataSource identifier];
+    section = [(PXPhotosGridAssetDecorationSource *)self section];
 
-    v13[0] = v10;
-    v13[1] = v11;
+    v13[0] = identifier;
+    v13[1] = section;
     v13[2] = v4;
     v13[3] = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [v8 overallSelectionOrderIndexForIndexPath:v13];
+    v7 = [selectionSnapshot overallSelectionOrderIndexForIndexPath:v13];
   }
 
   else
@@ -806,7 +806,7 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return v7;
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *MEMORY[0x277D73D30];
   v5 = *(MEMORY[0x277D73D30] + 4);
@@ -819,40 +819,40 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return result;
 }
 
-- (id)selectedSpriteIndexesInLayout:(id)a3
+- (id)selectedSpriteIndexesInLayout:(id)layout
 {
-  v5 = a3;
-  v6 = [(PXPhotosGridAssetDecorationSource *)self selectionSnapshot];
-  v7 = [v6 selectedIndexPaths];
-  if ([v7 count] < 1)
+  layoutCopy = layout;
+  selectionSnapshot = [(PXPhotosGridAssetDecorationSource *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  if ([selectedIndexPaths count] < 1)
   {
     v12 = 0;
   }
 
   else
   {
-    v8 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-    v9 = [v8 identifier];
-    v10 = [v6 dataSource];
-    if (v9 != [v10 identifier])
+    dataSource = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+    identifier = [dataSource identifier];
+    dataSource2 = [selectionSnapshot dataSource];
+    if (identifier != [dataSource2 identifier])
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:405 description:{@"identifier mismatch between dataSource of %@ (dataSource = %@) and selectionSnapshot %@ (dataSource = %@)", self, v8, v6, v10}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:405 description:{@"identifier mismatch between dataSource of %@ (dataSource = %@) and selectionSnapshot %@ (dataSource = %@)", self, dataSource, selectionSnapshot, dataSource2}];
     }
 
-    v11 = [v7 itemIndexSetForDataSourceIdentifier:v9 section:{-[PXPhotosGridAssetDecorationSource section](self, "section")}];
+    v11 = [selectedIndexPaths itemIndexSetForDataSourceIdentifier:identifier section:{-[PXPhotosGridAssetDecorationSource section](self, "section")}];
     if (v11)
     {
-      v12 = [(PXPhotosGridAssetDecorationSource *)self _spriteIndexesForItems:v11 inLayout:v5];
+      v12 = [(PXPhotosGridAssetDecorationSource *)self _spriteIndexesForItems:v11 inLayout:layoutCopy];
     }
 
     else
     {
-      v13 = [v7 sectionIndexSetForDataSourceIdentifier:v9];
-      if ([v13 containsIndex:{-[PXPhotosGridAssetDecorationSource section](self, "section")}] && (objc_msgSend(v6, "dataSource"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "numberOfItemsInSection:", -[PXPhotosGridAssetDecorationSource section](self, "section")), v14, v15 >= 1))
+      v13 = [selectedIndexPaths sectionIndexSetForDataSourceIdentifier:identifier];
+      if ([v13 containsIndex:{-[PXPhotosGridAssetDecorationSource section](self, "section")}] && (objc_msgSend(selectionSnapshot, "dataSource"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "numberOfItemsInSection:", -[PXPhotosGridAssetDecorationSource section](self, "section")), v14, v15 >= 1))
       {
         v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-        v12 = [(PXPhotosGridAssetDecorationSource *)self _spriteIndexesForItems:v16 inLayout:v5];
+        v12 = [(PXPhotosGridAssetDecorationSource *)self _spriteIndexesForItems:v16 inLayout:layoutCopy];
       }
 
       else
@@ -865,13 +865,13 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return v12;
 }
 
-- (unint64_t)selectionDecorationAdditionsInLayout:(id)a3
+- (unint64_t)selectionDecorationAdditionsInLayout:(id)layout
 {
-  v3 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-  v4 = [v3 containerCollection];
-  v5 = [v4 px_isRecentlyDeletedSmartAlbum];
+  dataSource = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+  containerCollection = [dataSource containerCollection];
+  px_isRecentlyDeletedSmartAlbum = [containerCollection px_isRecentlyDeletedSmartAlbum];
 
-  if (v5)
+  if (px_isRecentlyDeletedSmartAlbum)
   {
     return 2;
   }
@@ -882,23 +882,23 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   }
 }
 
-- (int64_t)selectionDecorationStyleInLayout:(id)a3
+- (int64_t)selectionDecorationStyleInLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 viewEnvironment];
-  v6 = [v5 wantsFocusRing];
+  layoutCopy = layout;
+  viewEnvironment = [layoutCopy viewEnvironment];
+  wantsFocusRing = [viewEnvironment wantsFocusRing];
 
-  LOBYTE(v5) = [(PXPhotosGridAssetDecorationSource *)self isSelectionLimitReached];
-  v7 = [(PXPhotosGridAssetDecorationSource *)self isInSelectMode];
-  if (v5)
+  LOBYTE(viewEnvironment) = [(PXPhotosGridAssetDecorationSource *)self isSelectionLimitReached];
+  isInSelectMode = [(PXPhotosGridAssetDecorationSource *)self isInSelectMode];
+  if (viewEnvironment)
   {
     v8 = 5;
   }
 
   else
   {
-    v9 = v7 | ~v6;
-    if (v7)
+    v9 = isInSelectMode | ~wantsFocusRing;
+    if (isInSelectMode)
     {
       v8 = 3;
     }
@@ -910,7 +910,7 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
 
     if ((v9 & 1) == 0)
     {
-      if ([(PXPhotosGridAssetDecorationSource *)self focusRingTypeInLayout:v4]== 1)
+      if ([(PXPhotosGridAssetDecorationSource *)self focusRingTypeInLayout:layoutCopy]== 1)
       {
         v8 = 2;
       }
@@ -925,12 +925,12 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return v8;
 }
 
-- (int64_t)focusRingTypeInLayout:(id)a3
+- (int64_t)focusRingTypeInLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 focusRingTypeInLayout:v4];
+    v5 = [layoutCopy focusRingTypeInLayout:layoutCopy];
   }
 
   else
@@ -938,7 +938,7 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = layoutCopy;
       [v6 interItemSpacing];
       v8 = v7;
       [v6 interItemSpacing];
@@ -969,32 +969,32 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
 
 - (void)_invalidateSharedLibraryDecoration
 {
-  v2 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-  [v2 invalidateDecoration];
+  decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+  [decoratedLayout invalidateDecoration];
 }
 
 - (void)_invalidateTapbackDecoration
 {
-  v2 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-  [v2 invalidateDecorationAndSprites];
+  decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+  [decoratedLayout invalidateDecorationAndSprites];
 }
 
 - (void)_invalidateProgressDecoration
 {
-  v2 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-  [v2 invalidateDecoration];
+  decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+  [decoratedLayout invalidateDecoration];
 }
 
 - (void)_updateDragDecoration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(PXPhotosGridAssetDecorationSource *)self draggedAssetReferences];
+  draggedAssetReferences = [(PXPhotosGridAssetDecorationSource *)self draggedAssetReferences];
   v4 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = draggedAssetReferences;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1012,11 +1012,11 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
 
         v11 = *(*(&v16 + 1) + 8 * i);
         *(&v15 + 1) = 0;
-        v12 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-        v13 = v12;
-        if (v12)
+        dataSource = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+        v13 = dataSource;
+        if (dataSource)
         {
-          [v12 indexPathForAssetReference:v11];
+          [dataSource indexPathForAssetReference:v11];
         }
 
         else
@@ -1053,54 +1053,54 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 1) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosGridAssetDecorationSource _invalidateDragDecoration]"];
-    [v2 handleFailureInFunction:v3 file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:313 description:{@"invalidating %lu after it already has been updated", 1}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXPhotosGridAssetDecorationSource.m" lineNumber:313 description:{@"invalidating %lu after it already has been updated", 1}];
 
     abort();
   }
 
   self->_updateFlags.needsUpdate |= 1uLL;
-  v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-  [v4 invalidateDecoration];
+  decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+  [decoratedLayout invalidateDecoration];
 }
 
 - (BOOL)isStacksBadgeEnabled
 {
   v2 = +[PXGridZeroSettingsProvider sharedInstance];
-  v3 = [v2 isStacksEnabled];
+  isStacksEnabled = [v2 isStacksEnabled];
 
-  return v3;
+  return isStacksEnabled;
 }
 
-- (id)_displayAssetForItem:(int64_t)a3
+- (id)_displayAssetForItem:(int64_t)item
 {
-  v5 = [(PXPhotosGridAssetDecorationSource *)self dataSource];
-  v6 = [(PXPhotosGridAssetDecorationSource *)self section];
-  v9[0] = [v5 identifier];
-  v9[1] = v6;
-  v9[2] = a3;
+  dataSource = [(PXPhotosGridAssetDecorationSource *)self dataSource];
+  section = [(PXPhotosGridAssetDecorationSource *)self section];
+  v9[0] = [dataSource identifier];
+  v9[1] = section;
+  v9[2] = item;
   v9[3] = 0x7FFFFFFFFFFFFFFFLL;
-  v7 = [v5 assetAtItemIndexPath:v9];
+  v7 = [dataSource assetAtItemIndexPath:v9];
 
   return v7;
 }
 
-- (id)_spriteIndexesForItems:(id)a3 inLayout:(id)a4
+- (id)_spriteIndexesForItems:(id)items inLayout:(id)layout
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  itemsCopy = items;
+  layoutCopy = layout;
+  if (itemsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 spriteIndexesForItems:v5];
+      v7 = [layoutCopy spriteIndexesForItems:itemsCopy];
     }
 
     else
     {
-      v7 = v5;
+      v7 = itemsCopy;
     }
 
     v8 = v7;
@@ -1114,7 +1114,7 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return v8;
 }
 
-- (CGSize)expectedInsetsForItem:(int64_t)a3
+- (CGSize)expectedInsetsForItem:(int64_t)item
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -1123,60 +1123,60 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   return result;
 }
 
-- (void)setAssetImportStatusManager:(id)a3
+- (void)setAssetImportStatusManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   p_assetImportStatusManager = &self->_assetImportStatusManager;
-  if (self->_assetImportStatusManager != v5)
+  if (self->_assetImportStatusManager != managerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_assetImportStatusManager, a3);
-    v7 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v7 invalidateDecoration];
+    v8 = managerCopy;
+    objc_storeStrong(p_assetImportStatusManager, manager);
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
-    v5 = v8;
+    managerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_assetImportStatusManager, v5);
+  MEMORY[0x2821F96F8](p_assetImportStatusManager, managerCopy);
 }
 
-- (void)setTapbackStatusManager:(id)a3
+- (void)setTapbackStatusManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   p_tapbackStatusManager = &self->_tapbackStatusManager;
-  if (self->_tapbackStatusManager != v5)
+  if (self->_tapbackStatusManager != managerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_tapbackStatusManager, a3);
+    v7 = managerCopy;
+    objc_storeStrong(p_tapbackStatusManager, manager);
     p_tapbackStatusManager = [(PXPhotosGridAssetDecorationSource *)self _invalidateTapbackDecoration];
-    v5 = v7;
+    managerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_tapbackStatusManager, v5);
+  MEMORY[0x2821F96F8](p_tapbackStatusManager, managerCopy);
 }
 
-- (void)setLoadingStatusManager:(id)a3
+- (void)setLoadingStatusManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   loadingStatusManager = self->_loadingStatusManager;
-  if (loadingStatusManager != v5)
+  if (loadingStatusManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXLoadingStatusManager *)loadingStatusManager unregisterObserver:self];
-    objc_storeStrong(&self->_loadingStatusManager, a3);
+    objc_storeStrong(&self->_loadingStatusManager, manager);
     [(PXLoadingStatusManager *)self->_loadingStatusManager registerObserver:self];
     loadingStatusManager = [(PXPhotosGridAssetDecorationSource *)self _invalidateProgressDecoration];
-    v5 = v7;
+    managerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](loadingStatusManager, v5);
+  MEMORY[0x2821F96F8](loadingStatusManager, managerCopy);
 }
 
-- (void)setDraggedAssetReferences:(id)a3
+- (void)setDraggedAssetReferences:(id)references
 {
-  if (self->_draggedAssetReferences != a3)
+  if (self->_draggedAssetReferences != references)
   {
-    v5 = [a3 copy];
+    v5 = [references copy];
     draggedAssetReferences = self->_draggedAssetReferences;
     self->_draggedAssetReferences = v5;
 
@@ -1184,172 +1184,172 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
   }
 }
 
-- (void)setItemsWithCoveredBottomTrailingCorner:(id)a3
+- (void)setItemsWithCoveredBottomTrailingCorner:(id)corner
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_itemsWithCoveredBottomTrailingCorner != v4)
+  cornerCopy = corner;
+  v5 = cornerCopy;
+  if (self->_itemsWithCoveredBottomTrailingCorner != cornerCopy)
   {
-    v9 = v4;
-    v4 = [(NSIndexSet *)v4 isEqual:?];
+    v9 = cornerCopy;
+    cornerCopy = [(NSIndexSet *)cornerCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((cornerCopy & 1) == 0)
     {
       v6 = [(NSIndexSet *)v9 copy];
       itemsWithCoveredBottomTrailingCorner = self->_itemsWithCoveredBottomTrailingCorner;
       self->_itemsWithCoveredBottomTrailingCorner = v6;
 
-      v8 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-      [v8 invalidateDecoration];
+      decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+      [decoratedLayout invalidateDecoration];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](cornerCopy, v5);
 }
 
-- (void)setHidesInteractiveFavoriteBadges:(BOOL)a3
+- (void)setHidesInteractiveFavoriteBadges:(BOOL)badges
 {
-  if (self->_hidesInteractiveFavoriteBadges != a3)
+  if (self->_hidesInteractiveFavoriteBadges != badges)
   {
-    self->_hidesInteractiveFavoriteBadges = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_hidesInteractiveFavoriteBadges = badges;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setDurationAlwaysHidden:(BOOL)a3
+- (void)setDurationAlwaysHidden:(BOOL)hidden
 {
-  if (self->_durationAlwaysHidden != a3)
+  if (self->_durationAlwaysHidden != hidden)
   {
-    self->_durationAlwaysHidden = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_durationAlwaysHidden = hidden;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setForbiddenBadges:(unint64_t)a3
+- (void)setForbiddenBadges:(unint64_t)badges
 {
-  if (self->_forbiddenBadges != a3)
+  if (self->_forbiddenBadges != badges)
   {
-    self->_forbiddenBadges = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_forbiddenBadges = badges;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setEnableSpatialBadges:(BOOL)a3
+- (void)setEnableSpatialBadges:(BOOL)badges
 {
-  if (self->_enableSpatialBadges != a3)
+  if (self->_enableSpatialBadges != badges)
   {
-    self->_enableSpatialBadges = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_enableSpatialBadges = badges;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setEnableDebugBadgeColors:(BOOL)a3
+- (void)setEnableDebugBadgeColors:(BOOL)colors
 {
-  if (self->_enableDebugBadgeColors != a3)
+  if (self->_enableDebugBadgeColors != colors)
   {
-    self->_enableDebugBadgeColors = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_enableDebugBadgeColors = colors;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setEnableDebugDecoration:(BOOL)a3
+- (void)setEnableDebugDecoration:(BOOL)decoration
 {
-  if (self->_enableDebugDecoration != a3)
+  if (self->_enableDebugDecoration != decoration)
   {
-    self->_enableDebugDecoration = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_enableDebugDecoration = decoration;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setWantsSensitiveWarningDecorations:(BOOL)a3
+- (void)setWantsSensitiveWarningDecorations:(BOOL)decorations
 {
-  if (self->_wantsSensitiveWarningDecorations != a3)
+  if (self->_wantsSensitiveWarningDecorations != decorations)
   {
-    self->_wantsSensitiveWarningDecorations = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_wantsSensitiveWarningDecorations = decorations;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setWantsStacksDecorations:(BOOL)a3
+- (void)setWantsStacksDecorations:(BOOL)decorations
 {
-  if (self->_wantsStacksDecorations != a3)
+  if (self->_wantsStacksDecorations != decorations)
   {
-    self->_wantsStacksDecorations = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_wantsStacksDecorations = decorations;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setWantsSharedLibraryDecorations:(BOOL)a3
+- (void)setWantsSharedLibraryDecorations:(BOOL)decorations
 {
-  if (self->_wantsSharedLibraryDecorations != a3)
+  if (self->_wantsSharedLibraryDecorations != decorations)
   {
-    self->_wantsSharedLibraryDecorations = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v4 invalidateDecoration];
+    self->_wantsSharedLibraryDecorations = decorations;
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
   }
 }
 
-- (void)setIsInSelectMode:(BOOL)a3
+- (void)setIsInSelectMode:(BOOL)mode
 {
-  if (self->_isInSelectMode != a3)
+  if (self->_isInSelectMode != mode)
   {
-    self->_isInSelectMode = a3;
-    v4 = [(PXPhotosGridAssetDecorationSource *)self tapbackStatusManager];
+    self->_isInSelectMode = mode;
+    tapbackStatusManager = [(PXPhotosGridAssetDecorationSource *)self tapbackStatusManager];
 
-    if (v4)
+    if (tapbackStatusManager)
     {
       [(PXPhotosGridAssetDecorationSource *)self _invalidateTapbackDecoration];
     }
 
-    v5 = [(PXPhotosGridAssetDecorationSource *)self assetImportStatusManager];
+    assetImportStatusManager = [(PXPhotosGridAssetDecorationSource *)self assetImportStatusManager];
 
-    if (v5)
+    if (assetImportStatusManager)
     {
-      v6 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-      [v6 invalidateDecoration];
+      decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+      [decoratedLayout invalidateDecoration];
     }
   }
 }
 
-- (void)setSelectionSnapshot:(id)a3
+- (void)setSelectionSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_selectionSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_selectionSnapshot != snapshotCopy)
   {
-    objc_storeStrong(&self->_selectionSnapshot, a3);
-    [(PXPhotosGridAssetDecorationSource *)self setSelectionLimitReached:[(PXSelectionSnapshot *)v5 isSelectionLimitReached]];
-    v6 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v6 invalidateDecoration];
+    objc_storeStrong(&self->_selectionSnapshot, snapshot);
+    [(PXPhotosGridAssetDecorationSource *)self setSelectionLimitReached:[(PXSelectionSnapshot *)snapshotCopy isSelectionLimitReached]];
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
-    v7 = [MEMORY[0x277D73D00] sharedInstance];
-    v8 = [v7 enableTungstenKeyboardNavigation];
+    mEMORY[0x277D73D00] = [MEMORY[0x277D73D00] sharedInstance];
+    enableTungstenKeyboardNavigation = [mEMORY[0x277D73D00] enableTungstenKeyboardNavigation];
 
-    if (v8)
+    if (enableTungstenKeyboardNavigation)
     {
-      v9 = [(PXPhotosGridAssetDecorationSource *)self decoratedItemsLayout];
-      v10 = v9;
-      if (v5)
+      decoratedItemsLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedItemsLayout];
+      v10 = decoratedItemsLayout;
+      if (snapshotCopy)
       {
-        [(PXSelectionSnapshot *)v5 pendingIndexPath];
+        [(PXSelectionSnapshot *)snapshotCopy pendingIndexPath];
         [v10 setItem:0x7FFFFFFFFFFFFFFFLL forStylableType:0 animated:1];
         v12 = 0u;
         v13 = 0u;
-        [(PXSelectionSnapshot *)v5 cursorIndexPath];
+        [(PXSelectionSnapshot *)snapshotCopy cursorIndexPath];
       }
 
       else
       {
-        [v9 setItem:0x7FFFFFFFFFFFFFFFLL forStylableType:0 animated:1];
+        [decoratedItemsLayout setItem:0x7FFFFFFFFFFFFFFFLL forStylableType:0 animated:1];
         v12 = 0u;
         v13 = 0u;
       }
@@ -1357,42 +1357,42 @@ uint64_t __88__PXPhotosGridAssetDecorationSource_assetDecorationInfoForAsset_atS
       [v10 setItem:0x7FFFFFFFFFFFFFFFLL forStylableType:1 animated:{1, v12, v13}];
     }
 
-    if (v5)
+    if (snapshotCopy)
     {
-      [(PXSelectionSnapshot *)v5 pressedIndexPath];
+      [(PXSelectionSnapshot *)snapshotCopy pressedIndexPath];
     }
 
-    v11 = [(PXPhotosGridAssetDecorationSource *)self decoratedItemsLayout];
-    [v11 setItem:0x7FFFFFFFFFFFFFFFLL forStylableType:2 animated:1];
+    decoratedItemsLayout2 = [(PXPhotosGridAssetDecorationSource *)self decoratedItemsLayout];
+    [decoratedItemsLayout2 setItem:0x7FFFFFFFFFFFFFFFLL forStylableType:2 animated:1];
   }
 }
 
-- (void)setDataSource:(id)a3 section:(int64_t)a4
+- (void)setDataSource:(id)source section:(int64_t)section
 {
-  v7 = a3;
-  if (*&self->_dataSource != __PAIR128__(a4, v7))
+  sourceCopy = source;
+  if (*&self->_dataSource != __PAIR128__(section, sourceCopy))
   {
-    self->_section = a4;
-    v9 = v7;
-    objc_storeStrong(&self->_dataSource, a3);
-    v8 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v8 invalidateDecoration];
+    self->_section = section;
+    v9 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
-    v7 = v9;
+    sourceCopy = v9;
   }
 }
 
-- (void)setDecoratedLayout:(id)a3
+- (void)setDecoratedLayout:(id)layout
 {
-  obj = a3;
+  obj = layout;
   WeakRetained = objc_loadWeakRetained(&self->_decoratedLayout);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_decoratedLayout, obj);
-    v6 = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
-    [v6 invalidateDecoration];
+    decoratedLayout = [(PXPhotosGridAssetDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
     v5 = obj;
   }

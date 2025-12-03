@@ -1,6 +1,6 @@
 @interface NPKUserNotificationExpressModeEnabled
 - (BOOL)wantsBadgedIcon;
-- (NPKUserNotificationExpressModeEnabled)initWithPass:(id)a3 expressNotificationType:(unint64_t)a4;
+- (NPKUserNotificationExpressModeEnabled)initWithPass:(id)pass expressNotificationType:(unint64_t)type;
 - (id)body;
 - (id)title;
 - (id)userInfo;
@@ -8,21 +8,21 @@
 
 @implementation NPKUserNotificationExpressModeEnabled
 
-- (NPKUserNotificationExpressModeEnabled)initWithPass:(id)a3 expressNotificationType:(unint64_t)a4
+- (NPKUserNotificationExpressModeEnabled)initWithPass:(id)pass expressNotificationType:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  passCopy = pass;
   v17.receiver = self;
   v17.super_class = NPKUserNotificationExpressModeEnabled;
-  v7 = [(NPKPassUserNotification *)&v17 initWithPass:v6];
+  v7 = [(NPKPassUserNotification *)&v17 initWithPass:passCopy];
   if (v7)
   {
-    v8 = [v6 paymentPass];
-    v9 = [v8 isHomeKeyPass];
+    paymentPass = [passCopy paymentPass];
+    isHomeKeyPass = [paymentPass isHomeKeyPass];
 
-    if (v9)
+    if (isHomeKeyPass)
     {
-      v7->_expressNotificationType = a4;
+      v7->_expressNotificationType = type;
     }
 
     else
@@ -36,11 +36,11 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = objc_opt_class();
-          v14 = [v6 uniqueID];
+          uniqueID = [passCopy uniqueID];
           *buf = 138412546;
           v19 = v13;
           v20 = 2112;
-          v21 = v14;
+          v21 = uniqueID;
           _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Warning: %@ only supports notifications for Home Key passes. Pass with uniqueID: %@", buf, 0x16u);
         }
       }
@@ -69,8 +69,8 @@
 - (id)body
 {
   p_isa = &self->super.super.super.isa;
-  v3 = [(NPKPassUserNotification *)self pass];
-  v4 = [v3 localizedDescription];
+  pass = [(NPKPassUserNotification *)self pass];
+  localizedDescription = [pass localizedDescription];
 
   v5 = p_isa[2];
   if (v5 <= 2)
@@ -79,7 +79,7 @@
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoPassKit"];
     v9 = [v8 localizedStringForKey:v6 value:&stru_286C934F8 table:@"NanoPassKit-HomeKey"];
-    p_isa = [v7 stringWithFormat:v9, v4];
+    p_isa = [v7 stringWithFormat:v9, localizedDescription];
   }
 
   return p_isa;
@@ -89,10 +89,10 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = *MEMORY[0x277D38848];
-  v2 = [(NPKPassUserNotification *)self pass];
-  v3 = [v2 uniqueID];
+  pass = [(NPKPassUserNotification *)self pass];
+  uniqueID = [pass uniqueID];
   v7[1] = *MEMORY[0x277D38AE0];
-  v8[0] = v3;
+  v8[0] = uniqueID;
   v8[1] = @"false";
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
@@ -103,16 +103,16 @@
 
 - (BOOL)wantsBadgedIcon
 {
-  v3 = [(NPKPassUserNotification *)self pass];
-  v4 = [v3 secureElementPass];
+  pass = [(NPKPassUserNotification *)self pass];
+  secureElementPass = [pass secureElementPass];
 
-  v5 = [(NPKPassUserNotification *)self pass];
-  v6 = [v5 rawIcon];
-  if (v6 && v4 && ([v4 isAppleCardPass] & 1) == 0)
+  pass2 = [(NPKPassUserNotification *)self pass];
+  rawIcon = [pass2 rawIcon];
+  if (rawIcon && secureElementPass && ([secureElementPass isAppleCardPass] & 1) == 0)
   {
-    v9 = [v4 isPeerPaymentPass];
+    isPeerPaymentPass = [secureElementPass isPeerPaymentPass];
 
-    if ((v9 & 1) == 0)
+    if ((isPeerPaymentPass & 1) == 0)
     {
       v7 = 1;
       goto LABEL_6;

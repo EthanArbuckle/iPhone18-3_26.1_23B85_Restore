@@ -1,20 +1,20 @@
 @interface AMSUNUserNotificationStrategy
-+ (BOOL)_badgeBundleId:(id)a3 increment:(BOOL)a4 error:(id *)a5;
-+ (id)_activeNotificationsWithCenterBundleId:(id)a3;
-+ (id)_centerForBundleId:(id)a3;
-+ (id)_postNotification:(id)a3 bag:(id)a4 centerBundleId:(id)a5;
-+ (id)_removeNotification:(id)a3 centerBundleId:(id)a4;
-+ (id)_removeNotificationWithIdentifier:(id)a3 centerBundleId:(id)a4 logKey:(id)a5 scheduledOnly:(BOOL)a6;
++ (BOOL)_badgeBundleId:(id)id increment:(BOOL)increment error:(id *)error;
++ (id)_activeNotificationsWithCenterBundleId:(id)id;
++ (id)_centerForBundleId:(id)id;
++ (id)_postNotification:(id)notification bag:(id)bag centerBundleId:(id)id;
++ (id)_removeNotification:(id)notification centerBundleId:(id)id;
++ (id)_removeNotificationWithIdentifier:(id)identifier centerBundleId:(id)id logKey:(id)key scheduledOnly:(BOOL)only;
 @end
 
 @implementation AMSUNUserNotificationStrategy
 
-+ (id)_activeNotificationsWithCenterBundleId:(id)a3
++ (id)_activeNotificationsWithCenterBundleId:(id)id
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a1 _centerForBundleId:v4];
+  v6 = [self _centerForBundleId:idCopy];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -74,22 +74,22 @@ void __72__AMSUNUserNotificationStrategy__activeNotificationsWithCenterBundleId_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)_badgeBundleId:(id)a3 increment:(BOOL)a4 error:(id *)a5
++ (BOOL)_badgeBundleId:(id)id increment:(BOOL)increment error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 _centerForBundleId:v8];
-  v10 = [v9 badgeNumber];
-  v11 = [v10 longLongValue];
+  incrementCopy = increment;
+  idCopy = id;
+  v9 = [self _centerForBundleId:idCopy];
+  badgeNumber = [v9 badgeNumber];
+  longLongValue = [badgeNumber longLongValue];
 
-  if (v6)
+  if (incrementCopy)
   {
-    v12 = v11 + 1;
+    v12 = longLongValue + 1;
   }
 
   else
   {
-    v12 = v11 - 1;
+    v12 = longLongValue - 1;
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithLongLong:v12];
@@ -103,7 +103,7 @@ void __72__AMSUNUserNotificationStrategy__activeNotificationsWithCenterBundleId_
   v19[2] = __64__AMSUNUserNotificationStrategy__badgeBundleId_increment_error___block_invoke;
   v19[3] = &unk_1E73BCE08;
   v21 = &v23;
-  v22 = a5;
+  errorCopy = error;
   v15 = v14;
   v20 = v15;
   [v9 setBadgeNumber:v13 withCompletionHandler:v19];
@@ -138,17 +138,17 @@ intptr_t __64__AMSUNUserNotificationStrategy__badgeBundleId_increment_error___bl
   return dispatch_semaphore_signal(v6);
 }
 
-+ (id)_postNotification:(id)a3 bag:(id)a4 centerBundleId:(id)a5
++ (id)_postNotification:(id)notification bag:(id)bag centerBundleId:(id)id
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  bagCopy = bag;
+  idCopy = id;
   v11 = objc_alloc_init(AMSMutableBinaryPromise);
-  v12 = [v8 logKey];
-  v13 = AMSSetLogKey(v12);
+  logKey = [notificationCopy logKey];
+  v13 = AMSSetLogKey(logKey);
 
-  v14 = [a1 _centerForBundleId:v10];
+  v14 = [self _centerForBundleId:idCopy];
 
   if (!v14)
   {
@@ -162,39 +162,39 @@ intptr_t __64__AMSUNUserNotificationStrategy__badgeBundleId_increment_error___bl
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v11;
     v19 = objc_opt_class();
     v31 = v19;
-    v20 = [v8 logKey];
-    v21 = [v8 identifier];
+    logKey2 = [notificationCopy logKey];
+    identifier = [notificationCopy identifier];
     *buf = 138543874;
     v39 = v19;
     v11 = v18;
     v40 = 2114;
-    v41 = v20;
+    v41 = logKey2;
     v42 = 2114;
-    v43 = v21;
-    _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification: %{public}@", buf, 0x20u);
+    v43 = identifier;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification: %{public}@", buf, 0x20u);
   }
 
-  v22 = [v8 createUNNotificationContent];
-  v23 = [v8 createUNNotificationRequestFromContent:v22];
+  createUNNotificationContent = [notificationCopy createUNNotificationContent];
+  v23 = [notificationCopy createUNNotificationRequestFromContent:createUNNotificationContent];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __70__AMSUNUserNotificationStrategy__postNotification_bag_centerBundleId___block_invoke;
   v32[3] = &unk_1E73BCE30;
-  v33 = v8;
+  v33 = notificationCopy;
   v34 = v14;
-  v37 = a1;
+  selfCopy = self;
   v24 = v11;
   v35 = v24;
-  v36 = v9;
-  v25 = v9;
+  v36 = bagCopy;
+  v25 = bagCopy;
   v26 = v14;
-  v27 = v8;
+  v27 = notificationCopy;
   [AMSUserNotification handleServiceExtensionNotificationRequest:v23 bag:v25 withContentHandler:v32];
   v28 = v36;
   v29 = v24;
@@ -287,41 +287,41 @@ void __70__AMSUNUserNotificationStrategy__postNotification_bag_centerBundleId___
   }
 }
 
-+ (id)_removeNotificationWithIdentifier:(id)a3 centerBundleId:(id)a4 logKey:(id)a5 scheduledOnly:(BOOL)a6
++ (id)_removeNotificationWithIdentifier:(id)identifier centerBundleId:(id)id logKey:(id)key scheduledOnly:(BOOL)only
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
+  idCopy = id;
   v13 = +[AMSLogConfig sharedConfig];
   if (!v13)
   {
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v24 = objc_opt_class();
     v25 = 2114;
-    v26 = v11;
+    v26 = keyCopy;
     v27 = 2114;
-    v28 = v10;
+    v28 = identifierCopy;
     v15 = v24;
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Removing notification: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Removing notification: %{public}@", buf, 0x20u);
   }
 
-  v16 = [a1 _centerForBundleId:v12];
+  v16 = [self _centerForBundleId:idCopy];
 
-  if (!a6)
+  if (!only)
   {
-    v22 = v10;
+    v22 = identifierCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     [v16 removeDeliveredNotificationsWithIdentifiers:v17];
   }
 
-  v21 = v10;
+  v21 = identifierCopy;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
   [v16 removePendingNotificationRequestsWithIdentifiers:v18];
 
@@ -330,7 +330,7 @@ void __70__AMSUNUserNotificationStrategy__postNotification_bag_centerBundleId___
   return v19;
 }
 
-+ (id)_removeNotification:(id)a3 centerBundleId:(id)a4
++ (id)_removeNotification:(id)notification centerBundleId:(id)id
 {
   v4 = AMSError(11, @"Remove Not Implemented", 0, 0);
   v5 = [AMSBinaryPromise promiseWithError:v4];
@@ -338,26 +338,26 @@ void __70__AMSUNUserNotificationStrategy__postNotification_bag_centerBundleId___
   return v5;
 }
 
-+ (id)_centerForBundleId:(id)a3
++ (id)_centerForBundleId:(id)id
 {
-  v3 = a3;
-  if (v3)
+  idCopy = id;
+  if (idCopy)
   {
     v4 = +[AMSProcessInfo currentProcess];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v3 isEqualToString:v5];
+    bundleIdentifier = [v4 bundleIdentifier];
+    v6 = [idCopy isEqualToString:bundleIdentifier];
 
     if (v6)
     {
-      v7 = [MEMORY[0x1E6983308] currentNotificationCenter];
+      currentNotificationCenter = [MEMORY[0x1E6983308] currentNotificationCenter];
     }
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:v3];
+      currentNotificationCenter = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:idCopy];
     }
 
-    v8 = v7;
+    v8 = currentNotificationCenter;
   }
 
   else

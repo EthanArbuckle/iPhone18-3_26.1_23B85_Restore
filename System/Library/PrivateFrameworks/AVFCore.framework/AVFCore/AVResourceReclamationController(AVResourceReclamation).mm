@@ -6,7 +6,7 @@
 
 - (void)permitReclamationWhileSuspended
 {
-  v4 = *a1;
+  v4 = *self;
   *a2 = MEMORY[0x1E69E9820];
   a2[1] = 3221225472;
   a2[2] = __89__AVResourceReclamationController_AVResourceReclamation__permitReclamationWhileSuspended__block_invoke_3;

@@ -1,19 +1,19 @@
 @interface FCCacheCoordinatorFlushPolicy
-- (FCCacheCoordinatorFlushPolicy)initWithLowWaterMark:(unint64_t)a3 highWaterMark:(unint64_t)a4 alwaysFlushKeysWithZeroInterest:(BOOL)a5;
+- (FCCacheCoordinatorFlushPolicy)initWithLowWaterMark:(unint64_t)mark highWaterMark:(unint64_t)waterMark alwaysFlushKeysWithZeroInterest:(BOOL)interest;
 @end
 
 @implementation FCCacheCoordinatorFlushPolicy
 
-- (FCCacheCoordinatorFlushPolicy)initWithLowWaterMark:(unint64_t)a3 highWaterMark:(unint64_t)a4 alwaysFlushKeysWithZeroInterest:(BOOL)a5
+- (FCCacheCoordinatorFlushPolicy)initWithLowWaterMark:(unint64_t)mark highWaterMark:(unint64_t)waterMark alwaysFlushKeysWithZeroInterest:(BOOL)interest
 {
   v9.receiver = self;
   v9.super_class = FCCacheCoordinatorFlushPolicy;
   result = [(FCCacheCoordinatorFlushPolicy *)&v9 init];
   if (result)
   {
-    result->_highWaterMark = a4;
-    result->_lowWaterMark = a3;
-    result->_alwaysFlushKeysWithZeroInterest = a5;
+    result->_highWaterMark = waterMark;
+    result->_lowWaterMark = mark;
+    result->_alwaysFlushKeysWithZeroInterest = interest;
   }
 
   return result;

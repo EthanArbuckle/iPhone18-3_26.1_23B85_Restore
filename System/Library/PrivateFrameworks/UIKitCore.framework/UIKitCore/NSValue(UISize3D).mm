@@ -10,7 +10,7 @@
   *v6 = a2;
   *&v6[1] = a3;
   *&v6[2] = a4;
-  v4 = [a1 valueWithBytes:v6 objCType:"{?=ddd}"];
+  v4 = [self valueWithBytes:v6 objCType:"{?=ddd}"];
 
   return v4;
 }
@@ -18,7 +18,7 @@
 - (double)UISize3DValue
 {
   memset(v2, 0, sizeof(v2));
-  [a1 getValue:v2 size:24];
+  [self getValue:v2 size:24];
   return *v2;
 }
 

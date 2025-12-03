@@ -1,10 +1,10 @@
 @interface MFTimeZonePickerViewController
 + (OS_os_log)log;
-- (MFTimeZonePickerViewController)initWithCity:(id)a3;
+- (MFTimeZonePickerViewController)initWithCity:(id)city;
 - (MFTimeZonePickerViewControllerDelegate)delegate;
 - (id)createCollectionViewLayout;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __37__MFTimeZonePickerViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_14 != -1)
   {
     dispatch_once(&log_onceToken_14, block);
@@ -35,16 +35,16 @@ void __37__MFTimeZonePickerViewController_log__block_invoke(uint64_t a1)
   log_log_14 = v1;
 }
 
-- (MFTimeZonePickerViewController)initWithCity:(id)a3
+- (MFTimeZonePickerViewController)initWithCity:(id)city
 {
-  v5 = a3;
+  cityCopy = city;
   v9.receiver = self;
   v9.super_class = MFTimeZonePickerViewController;
   v6 = [(MFTimeZonePickerViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentCity, a3);
+    objc_storeStrong(&v6->_currentCity, city);
   }
 
   return v7;
@@ -57,25 +57,25 @@ void __37__MFTimeZonePickerViewController_log__block_invoke(uint64_t a1)
   v28.super_class = MFTimeZonePickerViewController;
   [(MFTimeZonePickerViewController *)&v28 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x1E69DCF10]) initWithSearchResultsController:0];
-  v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v5 = [(MFTimeZonePickerViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  view = [(MFTimeZonePickerViewController *)self view];
+  [view setBackgroundColor:secondarySystemBackgroundColor];
 
   [v3 setSearchResultsUpdater:self];
   [v3 setObscuresBackgroundDuringPresentation:0];
   v6 = _EFLocalizedString();
-  v7 = [v3 searchBar];
-  [v7 setPlaceholder:v6];
+  searchBar = [v3 searchBar];
+  [searchBar setPlaceholder:v6];
 
-  v8 = [(MFTimeZonePickerViewController *)self navigationItem];
-  [v8 setSearchController:v3];
+  navigationItem = [(MFTimeZonePickerViewController *)self navigationItem];
+  [navigationItem setSearchController:v3];
   v9 = _EFLocalizedString();
-  [v8 setTitle:v9];
+  [navigationItem setTitle:v9];
 
   [(MFTimeZonePickerViewController *)self setDefinesPresentationContext:1];
   v10 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v11 = [(MFTimeZonePickerViewController *)self createCollectionViewLayout];
-  v12 = [v10 initWithFrame:v11 collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  createCollectionViewLayout = [(MFTimeZonePickerViewController *)self createCollectionViewLayout];
+  v12 = [v10 initWithFrame:createCollectionViewLayout collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   v13 = [MEMORY[0x1E69DC800] registrationWithCellClass:objc_opt_class() configurationHandler:&__block_literal_global_37];
@@ -101,11 +101,11 @@ void __37__MFTimeZonePickerViewController_log__block_invoke(uint64_t a1)
   [v16 applySnapshot:v19 animatingDifferences:0];
   [v12 setDataSource:v16];
   [v12 setDelegate:self];
-  v21 = [(MFTimeZonePickerViewController *)self view];
-  [v21 addSubview:v12];
+  view2 = [(MFTimeZonePickerViewController *)self view];
+  [view2 addSubview:v12];
 
-  v22 = [(MFTimeZonePickerViewController *)self view];
-  [v12 mf_pinToView:v22 usingLayoutMargins:0];
+  view3 = [(MFTimeZonePickerViewController *)self view];
+  [v12 mf_pinToView:view3 usingLayoutMargins:0];
 
   [(MFTimeZonePickerViewController *)self setCollectionView:v12];
   [(MFTimeZonePickerViewController *)self setDataSource:v16];
@@ -155,50 +155,50 @@ id __60__MFTimeZonePickerViewController_createCollectionViewLayout__block_invoke
   return v3;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MFTimeZonePickerViewController *)self dataSource];
-  v6 = [v5 snapshot];
-  v7 = [v6 itemIdentifiersInSectionWithIdentifier:&unk_1F3D161B8];
-  [v6 deleteItemsWithIdentifiers:v7];
-  v8 = [v4 searchBar];
-  v9 = [v8 text];
-  v10 = [v9 length];
+  controllerCopy = controller;
+  dataSource = [(MFTimeZonePickerViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
+  v7 = [snapshot itemIdentifiersInSectionWithIdentifier:&unk_1F3D161B8];
+  [snapshot deleteItemsWithIdentifiers:v7];
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
+  v10 = [text length];
 
   if (v10)
   {
-    v11 = [v4 searchBar];
-    v12 = [v11 text];
-    v13 = [MFTimezoneHelper citiesMatchingName:v12];
+    searchBar2 = [controllerCopy searchBar];
+    text2 = [searchBar2 text];
+    v13 = [MFTimezoneHelper citiesMatchingName:text2];
   }
 
   else
   {
-    v14 = [(MFTimeZonePickerViewController *)self currentCity];
-    v15[0] = v14;
+    currentCity = [(MFTimeZonePickerViewController *)self currentCity];
+    v15[0] = currentCity;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   }
 
   [(MFTimeZonePickerViewController *)self setCurrentFilteredCities:v13];
-  [v6 appendItemsWithIdentifiers:v13];
-  [v5 applySnapshot:v6 animatingDifferences:1 completion:0];
+  [snapshot appendItemsWithIdentifiers:v13];
+  [dataSource applySnapshot:snapshot animatingDifferences:1 completion:0];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MFTimeZonePickerViewController *)self currentFilteredCities];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v5, "item")}];
+  pathCopy = path;
+  currentFilteredCities = [(MFTimeZonePickerViewController *)self currentFilteredCities];
+  v7 = [currentFilteredCities objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  v8 = [v7 timeZone];
-  if (v8)
+  timeZone = [v7 timeZone];
+  if (timeZone)
   {
     [(MFTimeZonePickerViewController *)self setCurrentCity:v7];
-    v9 = [(MFTimeZonePickerViewController *)self delegate];
-    [v9 timeZonePickerViewController:self didSelectCity:v7];
+    delegate = [(MFTimeZonePickerViewController *)self delegate];
+    [delegate timeZonePickerViewController:self didSelectCity:v7];
   }
 
   else
@@ -206,13 +206,13 @@ id __60__MFTimeZonePickerViewController_createCollectionViewLayout__block_invoke
     v10 = +[MFTimeZonePickerViewController log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v7 displayName];
-      [(MFTimeZonePickerViewController *)v11 collectionView:v14 didSelectItemAtIndexPath:v10];
+      displayName = [v7 displayName];
+      [(MFTimeZonePickerViewController *)displayName collectionView:v14 didSelectItemAtIndexPath:v10];
     }
   }
 
-  v12 = [(MFTimeZonePickerViewController *)self navigationController];
-  v13 = [v12 popToRootViewControllerAnimated:1];
+  navigationController = [(MFTimeZonePickerViewController *)self navigationController];
+  v13 = [navigationController popToRootViewControllerAnimated:1];
 }
 
 - (MFTimeZonePickerViewControllerDelegate)delegate

@@ -1,25 +1,25 @@
 @interface W5RapportResponse
-+ (id)responseWithPayload:(id)a3 options:(id)a4 error:(id)a5;
-- (W5RapportResponse)initWithPayload:(id)a3 options:(id)a4 error:(id)a5;
++ (id)responseWithPayload:(id)payload options:(id)options error:(id)error;
+- (W5RapportResponse)initWithPayload:(id)payload options:(id)options error:(id)error;
 @end
 
 @implementation W5RapportResponse
 
-+ (id)responseWithPayload:(id)a3 options:(id)a4 error:(id)a5
++ (id)responseWithPayload:(id)payload options:(id)options error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithPayload:v9 options:v8 error:v7];
+  errorCopy = error;
+  optionsCopy = options;
+  payloadCopy = payload;
+  v10 = [objc_alloc(objc_opt_class()) initWithPayload:payloadCopy options:optionsCopy error:errorCopy];
 
   return v10;
 }
 
-- (W5RapportResponse)initWithPayload:(id)a3 options:(id)a4 error:(id)a5
+- (W5RapportResponse)initWithPayload:(id)payload options:(id)options error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  payloadCopy = payload;
+  optionsCopy = options;
+  errorCopy = error;
   v16.receiver = self;
   v16.super_class = W5RapportResponse;
   v12 = [(W5RapportResponse *)&v16 init];
@@ -41,9 +41,9 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v12->_error, a5);
-  objc_storeStrong(&v13->_payload, a3);
-  objc_storeStrong(&v13->_options, a4);
+  objc_storeStrong(&v12->_error, error);
+  objc_storeStrong(&v13->_payload, payload);
+  objc_storeStrong(&v13->_options, options);
   v14 = sub_100098A04();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -54,11 +54,11 @@
     v21 = 1024;
     v22 = 34;
     v23 = 2114;
-    v24 = v9;
+    v24 = payloadCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = optionsCopy;
     v27 = 2114;
-    v28 = v11;
+    v28 = errorCopy;
 LABEL_4:
     _os_log_send_and_compose_impl();
   }

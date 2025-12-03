@@ -1,17 +1,17 @@
 @interface BSUIMappedImageCacheOptions
-+ (id)optionsWithContainerPathProvider:(id)a3;
++ (id)optionsWithContainerPathProvider:(id)provider;
 @end
 
 @implementation BSUIMappedImageCacheOptions
 
-+ (id)optionsWithContainerPathProvider:(id)a3
++ (id)optionsWithContainerPathProvider:(id)provider
 {
-  v5 = a3;
-  v6 = objc_alloc_init(a1);
+  providerCopy = provider;
+  v6 = objc_alloc_init(self);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, provider);
   }
 
   return v7;

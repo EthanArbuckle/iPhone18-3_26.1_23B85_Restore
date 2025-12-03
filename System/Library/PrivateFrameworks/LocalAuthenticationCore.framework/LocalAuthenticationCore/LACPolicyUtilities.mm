@@ -1,25 +1,25 @@
 @interface LACPolicyUtilities
-+ (BOOL)isDTOPolicy:(int64_t)a3 options:(id)a4;
++ (BOOL)isDTOPolicy:(int64_t)policy options:(id)options;
 @end
 
 @implementation LACPolicyUtilities
 
-+ (BOOL)isDTOPolicy:(int64_t)a3 options:(id)a4
++ (BOOL)isDTOPolicy:(int64_t)policy options:(id)options
 {
-  v5 = a4;
-  if (a3 == 1025 || a3 == 1026 || a3 == 1028)
+  optionsCopy = options;
+  if (policy == 1025 || policy == 1026 || policy == 1028)
   {
-    LOBYTE(a3) = 1;
+    LOBYTE(policy) = 1;
   }
 
-  else if (a3)
+  else if (policy)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:1068];
-    v9 = [v5 objectForKeyedSubscript:v8];
-    LOBYTE(a3) = [v9 BOOLValue];
+    v9 = [optionsCopy objectForKeyedSubscript:v8];
+    LOBYTE(policy) = [v9 BOOLValue];
   }
 
-  return a3;
+  return policy;
 }
 
 @end

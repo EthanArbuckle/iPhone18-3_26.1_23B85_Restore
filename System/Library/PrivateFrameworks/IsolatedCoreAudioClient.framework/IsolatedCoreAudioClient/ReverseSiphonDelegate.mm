@@ -1,34 +1,34 @@
 @interface ReverseSiphonDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ReverseSiphonDelegate)init;
-- (void)AudioAvailabilityCallback:(unint64_t)a3 atSample:(unint64_t)a4 with:(id)a5;
+- (void)AudioAvailabilityCallback:(unint64_t)callback atSample:(unint64_t)sample with:(id)with;
 @end
 
 @implementation ReverseSiphonDelegate
 
-- (void)AudioAvailabilityCallback:(unint64_t)a3 atSample:(unint64_t)a4 with:(id)a5
+- (void)AudioAvailabilityCallback:(unint64_t)callback atSample:(unint64_t)sample with:(id)with
 {
   v11 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  withCopy = with;
   mAvailabilityCallback = self->mAvailabilityCallback;
   if (mAvailabilityCallback)
   {
-    mAvailabilityCallback(a3, a4, self->mAvailabilityData);
+    mAvailabilityCallback(callback, sample, self->mAvailabilityData);
   }
 
-  v8[2](v8, 0);
+  withCopy[2](withCopy, 0);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(ReverseSiphonDelegate *)self reverseInterface];
-  [v5 setExportedInterface:v6];
+  connectionCopy = connection;
+  reverseInterface = [(ReverseSiphonDelegate *)self reverseInterface];
+  [connectionCopy setExportedInterface:reverseInterface];
 
-  [v5 setExportedObject:self];
-  [v5 activate];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy activate];
 
   return 1;
 }
@@ -46,14 +46,14 @@
     v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28677A438];
     [(ReverseSiphonDelegate *)v3 setReverseInterface:v4];
 
-    v5 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(ReverseSiphonDelegate *)v3 setReverseListener:v5];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(ReverseSiphonDelegate *)v3 setReverseListener:anonymousListener];
 
-    v6 = [(ReverseSiphonDelegate *)v3 reverseListener];
-    [v6 setDelegate:v3];
+    reverseListener = [(ReverseSiphonDelegate *)v3 reverseListener];
+    [reverseListener setDelegate:v3];
 
-    v7 = [(ReverseSiphonDelegate *)v3 reverseListener];
-    [v7 activate];
+    reverseListener2 = [(ReverseSiphonDelegate *)v3 reverseListener];
+    [reverseListener2 activate];
   }
 
   return v3;

@@ -7,7 +7,7 @@
 
 - (uint64_t)isCloudKitShareRemovable
 {
-  if ([a1 publicPermission] != 1)
+  if ([self publicPermission] != 1)
   {
     result = IMOSLoggingEnabled();
     if (!result)
@@ -27,10 +27,10 @@
     goto LABEL_9;
   }
 
-  v2 = [a1 currentUserParticipant];
-  v3 = [a1 owner];
+  currentUserParticipant = [self currentUserParticipant];
+  owner = [self owner];
 
-  if (v2 != v3)
+  if (currentUserParticipant != owner)
   {
     result = IMOSLoggingEnabled();
     if (!result)
@@ -54,7 +54,7 @@ LABEL_10:
     return 0;
   }
 
-  return [a1 _nonOwnerInvitedParticipantsCount] == 0;
+  return [self _nonOwnerInvitedParticipantsCount] == 0;
 }
 
 - (uint64_t)_nonOwnerParticipantsCountWithAcceptanceStatus:()ChatKitAdditions
@@ -64,8 +64,8 @@ LABEL_10:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a1 participants];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  participants = [self participants];
+  v6 = [participants countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -77,27 +77,27 @@ LABEL_10:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(participants);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a1 owner];
-        if ([v11 isEqual:v12])
+        owner = [self owner];
+        if ([v11 isEqual:owner])
         {
         }
 
         else
         {
-          v13 = [v11 acceptanceStatus];
+          acceptanceStatus = [v11 acceptanceStatus];
 
-          if (v13 == a3)
+          if (acceptanceStatus == a3)
           {
             ++v8;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [participants countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

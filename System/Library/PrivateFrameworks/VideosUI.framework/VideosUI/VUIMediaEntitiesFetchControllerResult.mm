@@ -1,6 +1,6 @@
 @interface VUIMediaEntitiesFetchControllerResult
 - (VUIMediaEntitiesFetchControllerResult)init;
-- (VUIMediaEntitiesFetchControllerResult)initWithFetchReason:(int64_t)a3 fetchResponses:(id)a4;
+- (VUIMediaEntitiesFetchControllerResult)initWithFetchReason:(int64_t)reason fetchResponses:(id)responses;
 - (id)description;
 @end
 
@@ -16,17 +16,17 @@
   return 0;
 }
 
-- (VUIMediaEntitiesFetchControllerResult)initWithFetchReason:(int64_t)a3 fetchResponses:(id)a4
+- (VUIMediaEntitiesFetchControllerResult)initWithFetchReason:(int64_t)reason fetchResponses:(id)responses
 {
-  v6 = a4;
+  responsesCopy = responses;
   v12.receiver = self;
   v12.super_class = VUIMediaEntitiesFetchControllerResult;
   v7 = [(VUIMediaEntitiesFetchControllerResult *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_fetchReason = a3;
-    v9 = [v6 copy];
+    v7->_fetchReason = reason;
+    v9 = [responsesCopy copy];
     fetchResponses = v8->_fetchResponses;
     v8->_fetchResponses = v9;
   }
@@ -48,13 +48,13 @@
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaEntitiesFetchControllerResult *)self fetchResponses];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"fetchResponses", v9];
+  fetchResponses = [(VUIMediaEntitiesFetchControllerResult *)self fetchResponses];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"fetchResponses", fetchResponses];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIMediaEntitiesFetchControllerResult *)self fetchResponseChanges];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"fetchResponseChanges", v12];
+  fetchResponseChanges = [(VUIMediaEntitiesFetchControllerResult *)self fetchResponseChanges];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"fetchResponseChanges", fetchResponseChanges];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];

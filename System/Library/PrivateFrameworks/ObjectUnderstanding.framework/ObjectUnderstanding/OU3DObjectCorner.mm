@@ -1,6 +1,6 @@
 @interface OU3DObjectCorner
 - (OU3DObjectCorner)init;
-- (void)addCornerStatus:(id)a3 inView:(id)a4 timestamp:;
+- (void)addCornerStatus:(id)status inView:(id)view timestamp:;
 - (void)updateIsCompleted;
 @end
 
@@ -110,12 +110,12 @@
 LABEL_19:
 }
 
-- (void)addCornerStatus:(id)a3 inView:(id)a4 timestamp:
+- (void)addCornerStatus:(id)status inView:(id)view timestamp:
 {
   v15 = v4;
   v16[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  viewCopy = view;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:*&v15];
   v16[0] = v9;
   HIDWORD(v10) = DWORD1(v15);
@@ -127,8 +127,8 @@ LABEL_19:
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
   [(NSMutableArray *)self->_coordinate addObject:v13];
-  [(NSMutableArray *)self->_inView addObject:v7];
-  [(NSMutableArray *)self->_timer addObject:v8];
+  [(NSMutableArray *)self->_inView addObject:statusCopy];
+  [(NSMutableArray *)self->_timer addObject:viewCopy];
   [(OU3DObjectCorner *)self updateIsCompleted];
 
   v14 = *MEMORY[0x277D85DE8];

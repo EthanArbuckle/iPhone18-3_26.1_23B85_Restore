@@ -1,68 +1,68 @@
 @interface CCDeviceSite
-+ (id)deviceSiteForLocalDeviceUUID:(id)a3 resourceGeneration:(id)a4 idsDeviceId:(id)a5 platform:(int64_t)a6;
-+ (id)deviceSiteFromRecord:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceSite:(id)a3;
++ (id)deviceSiteForLocalDeviceUUID:(id)d resourceGeneration:(id)generation idsDeviceId:(id)id platform:(int64_t)platform;
++ (id)deviceSiteFromRecord:(id)record;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceSite:(id)site;
 - (CCDeviceSite)init;
-- (CCDeviceSite)initWithCoder:(id)a3;
-- (CCDeviceSite)initWithDevice:(id)a3 resourceGeneration:(id)a4 deltaGeneration:(id)a5 expirationDate:(id)a6;
-- (id)copyWithExpirationDate:(id)a3;
+- (CCDeviceSite)initWithCoder:(id)coder;
+- (CCDeviceSite)initWithDevice:(id)device resourceGeneration:(id)generation deltaGeneration:(id)deltaGeneration expirationDate:(id)date;
+- (id)copyWithExpirationDate:(id)date;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CCDeviceSite
 
-+ (id)deviceSiteForLocalDeviceUUID:(id)a3 resourceGeneration:(id)a4 idsDeviceId:(id)a5 platform:(int64_t)a6
++ (id)deviceSiteForLocalDeviceUUID:(id)d resourceGeneration:(id)generation idsDeviceId:(id)id platform:(int64_t)platform
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[CCDevice alloc] initWithDeviceUUID:v11 idsDeviceId:v9 platform:a6 options:1];
+  idCopy = id;
+  generationCopy = generation;
+  dCopy = d;
+  v12 = [[CCDevice alloc] initWithDeviceUUID:dCopy idsDeviceId:idCopy platform:platform options:1];
 
-  v13 = [objc_alloc(objc_opt_class()) initWithDevice:v12 resourceGeneration:v10 deltaGeneration:&unk_1F2EC93D8 expirationDate:0];
+  v13 = [objc_alloc(objc_opt_class()) initWithDevice:v12 resourceGeneration:generationCopy deltaGeneration:&unk_1F2EC93D8 expirationDate:0];
 
   return v13;
 }
 
-+ (id)deviceSiteFromRecord:(id)a3
++ (id)deviceSiteFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 recordOptions];
+  recordCopy = record;
+  recordOptions = [recordCopy recordOptions];
   v5 = [CCDevice alloc];
-  v6 = [v3 deviceUUID];
-  v7 = [v3 idsDeviceId];
-  v8 = -[CCDevice initWithDeviceUUID:idsDeviceId:platform:options:](v5, "initWithDeviceUUID:idsDeviceId:platform:options:", v6, v7, [v3 platform], v4 & 1);
+  deviceUUID = [recordCopy deviceUUID];
+  idsDeviceId = [recordCopy idsDeviceId];
+  v8 = -[CCDevice initWithDeviceUUID:idsDeviceId:platform:options:](v5, "initWithDeviceUUID:idsDeviceId:platform:options:", deviceUUID, idsDeviceId, [recordCopy platform], recordOptions & 1);
 
   v9 = [CCDeviceSite alloc];
-  v10 = [v3 resourceGeneration];
-  v11 = [v3 deltaGeneration];
-  v12 = [v3 expirationDate];
+  resourceGeneration = [recordCopy resourceGeneration];
+  deltaGeneration = [recordCopy deltaGeneration];
+  expirationDate = [recordCopy expirationDate];
 
-  v13 = [(CCDeviceSite *)v9 initWithDevice:v8 resourceGeneration:v10 deltaGeneration:v11 expirationDate:v12];
+  v13 = [(CCDeviceSite *)v9 initWithDevice:v8 resourceGeneration:resourceGeneration deltaGeneration:deltaGeneration expirationDate:expirationDate];
 
   return v13;
 }
 
-- (CCDeviceSite)initWithDevice:(id)a3 resourceGeneration:(id)a4 deltaGeneration:(id)a5 expirationDate:(id)a6
+- (CCDeviceSite)initWithDevice:(id)device resourceGeneration:(id)generation deltaGeneration:(id)deltaGeneration expirationDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  deviceCopy = device;
+  generationCopy = generation;
+  deltaGenerationCopy = deltaGeneration;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = CCDeviceSite;
   v15 = [(CCDeviceSite *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_device, a3);
-    objc_storeStrong(&v16->_resourceGeneration, a4);
-    objc_storeStrong(&v16->_deltaGeneration, a5);
-    objc_storeStrong(&v16->_expirationDate, a6);
+    objc_storeStrong(&v15->_device, device);
+    objc_storeStrong(&v16->_resourceGeneration, generation);
+    objc_storeStrong(&v16->_deltaGeneration, deltaGeneration);
+    objc_storeStrong(&v16->_expirationDate, date);
   }
 
   return v16;
@@ -97,33 +97,33 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDeviceSite *)self isEqualToDeviceSite:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDeviceSite *)self isEqualToDeviceSite:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDeviceSite:(id)a3
+- (BOOL)isEqualToDeviceSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   device = self->_device;
-  v6 = [v4 device];
-  if ([(CCDevice *)device isEqual:v6])
+  device = [siteCopy device];
+  if ([(CCDevice *)device isEqual:device])
   {
     resourceGeneration = self->_resourceGeneration;
-    v8 = [v4 resourceGeneration];
-    if (![(NSNumber *)resourceGeneration isEqual:v8])
+    resourceGeneration = [siteCopy resourceGeneration];
+    if (![(NSNumber *)resourceGeneration isEqual:resourceGeneration])
     {
       v14 = 0;
 LABEL_15:
@@ -132,14 +132,14 @@ LABEL_15:
     }
 
     deltaGeneration = self->_deltaGeneration;
-    v10 = [v4 deltaGeneration];
-    if ([deltaGeneration isEqual:v10])
+    deltaGeneration = [siteCopy deltaGeneration];
+    if ([deltaGeneration isEqual:deltaGeneration])
     {
       expirationDate = self->_expirationDate;
       v12 = expirationDate;
       if (!expirationDate)
       {
-        deltaGeneration = [v4 expirationDate];
+        deltaGeneration = [siteCopy expirationDate];
         if (!deltaGeneration)
         {
           v14 = 1;
@@ -151,8 +151,8 @@ LABEL_13:
         v12 = self->_expirationDate;
       }
 
-      v13 = [v4 expirationDate];
-      v14 = [(NSDate *)v12 isEqual:v13];
+      expirationDate = [siteCopy expirationDate];
+      v14 = [(NSDate *)v12 isEqual:expirationDate];
 
       if (!expirationDate)
       {
@@ -184,49 +184,49 @@ LABEL_16:
   return v4 ^ v5 ^ [(NSDate *)self->_expirationDate hash];
 }
 
-- (id)copyWithExpirationDate:(id)a3
+- (id)copyWithExpirationDate:(id)date
 {
-  v4 = a3;
-  v5 = [[CCDeviceSite alloc] initWithDevice:self->_device resourceGeneration:self->_resourceGeneration deltaGeneration:self->_deltaGeneration expirationDate:v4];
+  dateCopy = date;
+  v5 = [[CCDeviceSite alloc] initWithDevice:self->_device resourceGeneration:self->_resourceGeneration deltaGeneration:self->_deltaGeneration expirationDate:dateCopy];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   device = self->_device;
-  v5 = a3;
-  [v5 encodeObject:device forKey:@"device"];
-  [v5 encodeObject:self->_resourceGeneration forKey:@"resourceGeneration"];
-  [v5 encodeObject:self->_deltaGeneration forKey:@"deltaGeneration"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:device forKey:@"device"];
+  [coderCopy encodeObject:self->_resourceGeneration forKey:@"resourceGeneration"];
+  [coderCopy encodeObject:self->_deltaGeneration forKey:@"deltaGeneration"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
 }
 
-- (CCDeviceSite)initWithCoder:(id)a3
+- (CCDeviceSite)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceGeneration"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deltaGeneration"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceGeneration"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deltaGeneration"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
 
   v9 = [(CCDeviceSite *)self initWithDevice:v5 resourceGeneration:v6 deltaGeneration:v7 expirationDate:v8];
   return v9;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [CCDevice alloc];
-    v6 = [v4 objectForKeyedSubscript:@"device"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"device"];
     v7 = [(CCDevice *)v5 initFromDictionary:v6];
 
-    v8 = [v4 objectForKeyedSubscript:@"resourceGeneration"];
-    v9 = [v4 objectForKeyedSubscript:@"deltaGeneration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resourceGeneration"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deltaGeneration"];
     if (!v9)
     {
       v10 = __biome_log_for_category();
@@ -238,7 +238,7 @@ LABEL_16:
       v9 = &unk_1F2EC93F0;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"timeToLiveSeconds"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"timeToLiveSeconds"];
     v12 = v11;
     if (v11)
     {
@@ -261,35 +261,35 @@ LABEL_16:
         v20 = 2112;
         v21 = v12;
         v22 = 2112;
-        v23 = self;
+        selfCopy = self;
         _os_log_debug_impl(&dword_1B6DB2000, v15, OS_LOG_TYPE_DEBUG, "Resolved expiration date: %@ from TTL seconds: %@ during OPACK decoding for device site: %@", &v18, 0x20u);
       }
     }
 
-    v14 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy2 = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy2;
 }
 
 - (id)dictionaryRepresentation
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CCDeviceSite *)self device];
-  v4 = [v3 dictionaryRepresentation];
+  device = [(CCDeviceSite *)self device];
+  dictionaryRepresentation = [device dictionaryRepresentation];
 
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v21[0] = v4;
-  v6 = [(CCDeviceSite *)self resourceGeneration];
-  v21[1] = v6;
-  v7 = [(CCDeviceSite *)self deltaGeneration];
-  v21[2] = v7;
+  v21[0] = dictionaryRepresentation;
+  resourceGeneration = [(CCDeviceSite *)self resourceGeneration];
+  v21[1] = resourceGeneration;
+  deltaGeneration = [(CCDeviceSite *)self deltaGeneration];
+  v21[2] = deltaGeneration;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
   v9 = [v5 initWithObjects:v8 forKeys:&unk_1F2EC96C0];
 
@@ -306,7 +306,7 @@ LABEL_16:
       v17 = 2112;
       v18 = expirationDate;
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       _os_log_debug_impl(&dword_1B6DB2000, v11, OS_LOG_TYPE_DEBUG, "Resolved TTL seconds: %@ from expiration date: %@ during OPACK encoding for device site: %@", &v15, 0x20u);
     }
   }

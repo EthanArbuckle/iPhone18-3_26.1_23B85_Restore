@@ -1,25 +1,25 @@
 @interface VCPHomeKitAnalysisSessionClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
-- (VCPHomeKitAnalysisSessionClientHandler)initWithXPCConnection:(id)a3;
-- (void)analyzer:(id)a3 didAnalyzeFragment:(id)a4;
++ (id)clientHandlerWithXPCConnection:(id)connection;
+- (VCPHomeKitAnalysisSessionClientHandler)initWithXPCConnection:(id)connection;
+- (void)analyzer:(id)analyzer didAnalyzeFragment:(id)fragment;
 - (void)cancelAllRequests;
-- (void)processMessageWithOptions:(id)a3 andReply:(id)a4;
-- (void)processVideoFragmentAssetData:(id)a3 withOptions:(id)a4 andReply:(id)a5;
-- (void)startSessionWithProperties:(id)a3 andReply:(id)a4;
+- (void)processMessageWithOptions:(id)options andReply:(id)reply;
+- (void)processVideoFragmentAssetData:(id)data withOptions:(id)options andReply:(id)reply;
+- (void)startSessionWithProperties:(id)properties andReply:(id)reply;
 @end
 
 @implementation VCPHomeKitAnalysisSessionClientHandler
 
-- (VCPHomeKitAnalysisSessionClientHandler)initWithXPCConnection:(id)a3
+- (VCPHomeKitAnalysisSessionClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v36.receiver = self;
   v36.super_class = VCPHomeKitAnalysisSessionClientHandler;
   v6 = [(VCPHomeKitAnalysisSessionClientHandler *)&v36 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = VCPTransactionWithName(@"VCPMediaAnalysisClientHandler-requestAssetAnalysis");
     transaction = v7->_transaction;
     v7->_transaction = v8;
@@ -27,13 +27,13 @@
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VCPHomeKitAnalysisSessionServerProtocol];
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VCPHomeKitAnalysisSessionClientProtocol];
-    v12 = [sub_100026058() allowedClasses];
-    [v10 setClasses:v12 forSelector:"processVideoFragmentAssetData:withOptions:andReply:" argumentIndex:1 ofReply:0];
-    [v10 setClasses:v12 forSelector:"processVideoFragmentAssetData:withOptions:andReply:" argumentIndex:0 ofReply:1];
-    [v10 setClasses:v12 forSelector:"processMessageWithOptions:andReply:" argumentIndex:0 ofReply:0];
-    [v10 setClasses:v12 forSelector:"processMessageWithOptions:andReply:" argumentIndex:0 ofReply:1];
-    [v10 setClasses:v12 forSelector:"startSessionWithProperties:andReply:" argumentIndex:0 ofReply:0];
-    [v11 setClasses:v12 forSelector:"processResults:withReply:" argumentIndex:0 ofReply:0];
+    allowedClasses = [sub_100026058() allowedClasses];
+    [v10 setClasses:allowedClasses forSelector:"processVideoFragmentAssetData:withOptions:andReply:" argumentIndex:1 ofReply:0];
+    [v10 setClasses:allowedClasses forSelector:"processVideoFragmentAssetData:withOptions:andReply:" argumentIndex:0 ofReply:1];
+    [v10 setClasses:allowedClasses forSelector:"processMessageWithOptions:andReply:" argumentIndex:0 ofReply:0];
+    [v10 setClasses:allowedClasses forSelector:"processMessageWithOptions:andReply:" argumentIndex:0 ofReply:1];
+    [v10 setClasses:allowedClasses forSelector:"startSessionWithProperties:andReply:" argumentIndex:0 ofReply:0];
+    [v11 setClasses:allowedClasses forSelector:"processResults:withReply:" argumentIndex:0 ofReply:0];
     [(NSXPCConnection *)v7->_connection setExportedInterface:v10];
     [(NSXPCConnection *)v7->_connection setRemoteObjectInterface:v11];
     objc_initWeak(&location, v7);
@@ -51,9 +51,9 @@
     v31[3] = &unk_100282A30;
     objc_copyWeak(&v32, &location);
     [(NSXPCConnection *)v14 setInvalidationHandler:v31];
-    v15 = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
     clientProxy = v7->_clientProxy;
-    v7->_clientProxy = v15;
+    v7->_clientProxy = remoteObjectProxy;
 
     v17 = dispatch_queue_create("com.apple.mediaanalysisd.homekitclientmanagment", 0);
     managementQueue = v7->_managementQueue;
@@ -91,18 +91,18 @@
   return v7;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (void)startSessionWithProperties:(id)a3 andReply:(id)a4
+- (void)startSessionWithProperties:(id)properties andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  replyCopy = reply;
   if (self->_analyzer)
   {
     v19 = NSLocalizedDescriptionKey;
@@ -110,7 +110,7 @@
     v20 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v10 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v9];
-    v7[2](v7, v10);
+    replyCopy[2](replyCopy, v10);
 
     v11 = 0;
   }
@@ -118,7 +118,7 @@
   else
   {
     v16 = 0;
-    v12 = [sub_100026058() analyzerWithOptions:v6 error:&v16];
+    v12 = [sub_100026058() analyzerWithOptions:propertiesCopy error:&v16];
     v11 = v16;
     analyzer = self->_analyzer;
     self->_analyzer = v12;
@@ -140,33 +140,33 @@
       }
     }
 
-    v7[2](v7, v11);
+    replyCopy[2](replyCopy, v11);
   }
 }
 
-- (void)processMessageWithOptions:(id)a3 andReply:(id)a4
+- (void)processMessageWithOptions:(id)options andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   [(MADScopedWatchdog *)self->_scopedWatchdog pet];
   taskQueue = self->_taskQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000266F0;
   block[3] = &unk_1002835E0;
-  v12 = v6;
-  v13 = v7;
+  v12 = optionsCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = optionsCopy;
+  v10 = replyCopy;
   dispatch_async(taskQueue, block);
 }
 
-- (void)processVideoFragmentAssetData:(id)a3 withOptions:(id)a4 andReply:(id)a5
+- (void)processVideoFragmentAssetData:(id)data withOptions:(id)options andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v11 = VCPLogToOSLogType[6];
@@ -185,7 +185,7 @@
   v32[3] = &unk_100283670;
   v32[4] = self;
   v34 = nextTaskID;
-  v13 = v10;
+  v13 = replyCopy;
   v33 = v13;
   v14 = objc_retainBlock(v32);
   *buf = 0;
@@ -213,8 +213,8 @@
     v18[4] = self;
     v23 = nextTaskID;
     v21 = v16;
-    v19 = v8;
-    v20 = v9;
+    v19 = dataCopy;
+    v20 = optionsCopy;
     v22 = v14;
     dispatch_async(taskQueue, v18);
   }
@@ -222,7 +222,7 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)analyzer:(id)a3 didAnalyzeFragment:(id)a4
+- (void)analyzer:(id)analyzer didAnalyzeFragment:(id)fragment
 {
   if (MediaAnalysisLogLevel() >= 4)
   {

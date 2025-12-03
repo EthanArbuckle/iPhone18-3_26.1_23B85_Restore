@@ -2,50 +2,50 @@
 - (AVTUIControllerPresentation)currentControllerPresentation;
 - (BOOL)didOrientationChangeSemantically;
 - (BOOL)needsLandscapeOverlayUpdate;
-- (BaseMessagesViewController)initWithCoder:(id)a3;
-- (BaseMessagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BaseMessagesViewController)initWithCoder:(id)coder;
+- (BaseMessagesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CGSize)previousSize;
 - (NSString)landscapeOverlayMessage;
 - (UIImage)emptySnapshotImage;
-- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)a3;
-- (id)overrideTraitCollectionForChildViewController:(id)a3;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 effect:(int64_t)a5 completion:(id)a6;
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
+- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)context;
+- (id)overrideTraitCollectionForChildViewController:(id)controller;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds;
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion;
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect effect:(int64_t)effect completion:(id)completion;
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion;
 - (void)_configure;
-- (void)beginHidingInterfaceWithMessage:(id)a3;
-- (void)configureNewTrapOverlayView:(id *)a3 constraints:(id *)a4;
+- (void)beginHidingInterfaceWithMessage:(id)message;
+- (void)configureNewTrapOverlayView:(id *)view constraints:(id *)constraints;
 - (void)dealloc;
-- (void)didBecomeActiveWithConversation:(id)a3;
-- (void)didResignActiveWithConversation:(id)a3;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)layoutMonitorDidUpdateDisplayLayout:(id)a3 withContext:(id)a4;
-- (void)scheduleSnapshotEnabledUpdateAfter:(double)a3 currentValue:(id)a4 futureValue:(id)a5;
-- (void)setCustomOverlayMessage:(id)a3;
-- (void)setSnapshottingEnabled:(BOOL)a3;
+- (void)didBecomeActiveWithConversation:(id)conversation;
+- (void)didResignActiveWithConversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)layoutMonitorDidUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)scheduleSnapshotEnabledUpdateAfter:(double)after currentValue:(id)value futureValue:(id)futureValue;
+- (void)setCustomOverlayMessage:(id)message;
+- (void)setSnapshottingEnabled:(BOOL)enabled;
 - (void)setupDisplayLayoutMonitor;
 - (void)updateHiddenSubviewsForAnyOverlays;
-- (void)updateLandscapeOverlayIfNecessaryWithCoordinator:(id)a3;
+- (void)updateLandscapeOverlayIfNecessaryWithCoordinator:(id)coordinator;
 - (void)updateLandscapeOverlayImmediately;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willResignActiveWithConversation:(id)conversation;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation BaseMessagesViewController
 
-- (BaseMessagesViewController)initWithCoder:(id)a3
+- (BaseMessagesViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BaseMessagesViewController;
-  v3 = [(BaseMessagesViewController *)&v6 initWithCoder:a3];
+  v3 = [(BaseMessagesViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -55,11 +55,11 @@
   return v4;
 }
 
-- (BaseMessagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BaseMessagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = BaseMessagesViewController;
-  v4 = [(BaseMessagesViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(BaseMessagesViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -71,12 +71,12 @@
 
 - (void)dealloc
 {
-  v3 = [(BaseMessagesViewController *)self displayLayoutMonitor];
+  displayLayoutMonitor = [(BaseMessagesViewController *)self displayLayoutMonitor];
 
-  if (v3)
+  if (displayLayoutMonitor)
   {
-    v4 = [(BaseMessagesViewController *)self displayLayoutMonitor];
-    [v4 invalidate];
+    displayLayoutMonitor2 = [(BaseMessagesViewController *)self displayLayoutMonitor];
+    [displayLayoutMonitor2 invalidate];
   }
 
   v5.receiver = self;
@@ -96,67 +96,67 @@
   self->_automaticallyDisplaysLandscapeRotationOverlay = [v3 userInterfaceIdiom] == 0;
 }
 
-- (id)overrideTraitCollectionForChildViewController:(id)a3
+- (id)overrideTraitCollectionForChildViewController:(id)controller
 {
-  v3 = [(BaseMessagesViewController *)self traitCollection];
-  v4 = [AVTUITraitCollectionHelper overridenTraitFromTrait:v3];
+  traitCollection = [(BaseMessagesViewController *)self traitCollection];
+  v4 = [AVTUITraitCollectionHelper overridenTraitFromTrait:traitCollection];
 
   return v4;
 }
 
-- (void)configureNewTrapOverlayView:(id *)a3 constraints:(id *)a4
+- (void)configureNewTrapOverlayView:(id *)view constraints:(id *)constraints
 {
   v5 = [[TrapOverlayView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v6 = [(BaseMessagesViewController *)self overlayMessageBackgroundColor];
-  [(TrapOverlayView *)v5 setBackgroundColor:v6];
+  overlayMessageBackgroundColor = [(BaseMessagesViewController *)self overlayMessageBackgroundColor];
+  [(TrapOverlayView *)v5 setBackgroundColor:overlayMessageBackgroundColor];
 
-  v7 = [(BaseMessagesViewController *)self overlayMessageTextColor];
-  v8 = [(TrapOverlayView *)v5 label];
-  [v8 setTextColor:v7];
+  overlayMessageTextColor = [(BaseMessagesViewController *)self overlayMessageTextColor];
+  label = [(TrapOverlayView *)v5 label];
+  [label setTextColor:overlayMessageTextColor];
 
   [(TrapOverlayView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(BaseMessagesViewController *)self view];
-  [v9 addSubview:v5];
+  view = [(BaseMessagesViewController *)self view];
+  [view addSubview:v5];
 
-  v27 = [(TrapOverlayView *)v5 leadingAnchor];
-  v28 = [(BaseMessagesViewController *)self view];
-  v26 = [v28 leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor = [(TrapOverlayView *)v5 leadingAnchor];
+  view2 = [(BaseMessagesViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[0] = v25;
-  v23 = [(TrapOverlayView *)v5 trailingAnchor];
-  v24 = [(BaseMessagesViewController *)self view];
-  v22 = [v24 trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  trailingAnchor = [(TrapOverlayView *)v5 trailingAnchor];
+  view3 = [(BaseMessagesViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[1] = v21;
-  v10 = [(TrapOverlayView *)v5 topAnchor];
-  v11 = [(BaseMessagesViewController *)self view];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  topAnchor = [(TrapOverlayView *)v5 topAnchor];
+  view4 = [(BaseMessagesViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[2] = v13;
-  v14 = [(TrapOverlayView *)v5 bottomAnchor];
-  v15 = [(BaseMessagesViewController *)self view];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  bottomAnchor = [(TrapOverlayView *)v5 bottomAnchor];
+  view5 = [(BaseMessagesViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[3] = v17;
   v18 = [NSArray arrayWithObjects:v31 count:4];
 
   [NSLayoutConstraint activateConstraints:v18];
   v19 = v5;
-  *a3 = v5;
+  *view = v5;
   v20 = v18;
-  *a4 = v18;
+  *constraints = v18;
 }
 
-- (void)setCustomOverlayMessage:(id)a3
+- (void)setCustomOverlayMessage:(id)message
 {
-  v5 = a3;
-  objc_storeStrong(&self->_customOverlayMessage, a3);
-  if (v5)
+  messageCopy = message;
+  objc_storeStrong(&self->_customOverlayMessage, message);
+  if (messageCopy)
   {
     if (self->_customMessageTrapOverlay)
     {
-      v6 = [(BaseMessagesViewController *)self view];
-      [(TrapOverlayView *)v6 bringSubviewToFront:self->_landscapeTrapOverlay];
+      view = [(BaseMessagesViewController *)self view];
+      [(TrapOverlayView *)view bringSubviewToFront:self->_landscapeTrapOverlay];
     }
 
     else
@@ -168,14 +168,14 @@
       v11 = v15;
       customMessageTrapOverlay = self->_customMessageTrapOverlay;
       self->_customMessageTrapOverlay = v10;
-      v6 = v10;
+      view = v10;
 
       customMessageOverlayConstraints = self->_customMessageOverlayConstraints;
       self->_customMessageOverlayConstraints = v11;
     }
 
-    v14 = [(TrapOverlayView *)self->_customMessageTrapOverlay label];
-    [v14 setText:v5];
+    label = [(TrapOverlayView *)self->_customMessageTrapOverlay label];
+    [label setText:messageCopy];
 
     [(TrapOverlayView *)self->_customMessageTrapOverlay layoutIfNeeded];
   }
@@ -204,16 +204,16 @@
 - (BOOL)didOrientationChangeSemantically
 {
   previousOrientation = self->_previousOrientation;
-  v4 = [(BaseMessagesViewController *)self currentOrientation];
-  self->_previousOrientation = v4;
-  if (v4 == previousOrientation)
+  currentOrientation = [(BaseMessagesViewController *)self currentOrientation];
+  self->_previousOrientation = currentOrientation;
+  if (currentOrientation == previousOrientation)
   {
     return 0;
   }
 
   if (previousOrientation)
   {
-    return ((previousOrientation - 3) < 2) ^ ((v4 - 3) < 2);
+    return ((previousOrientation - 3) < 2) ^ ((currentOrientation - 3) < 2);
   }
 
   return 1;
@@ -221,14 +221,14 @@
 
 - (BOOL)needsLandscapeOverlayUpdate
 {
-  v3 = [(BaseMessagesViewController *)self automaticallyDisplaysLandscapeRotationOverlay];
-  if (v3)
+  automaticallyDisplaysLandscapeRotationOverlay = [(BaseMessagesViewController *)self automaticallyDisplaysLandscapeRotationOverlay];
+  if (automaticallyDisplaysLandscapeRotationOverlay)
   {
 
-    LOBYTE(v3) = [(BaseMessagesViewController *)self didOrientationChangeSemantically];
+    LOBYTE(automaticallyDisplaysLandscapeRotationOverlay) = [(BaseMessagesViewController *)self didOrientationChangeSemantically];
   }
 
-  return v3;
+  return automaticallyDisplaysLandscapeRotationOverlay;
 }
 
 - (void)updateLandscapeOverlayImmediately
@@ -237,18 +237,18 @@
   {
     if ([(BaseMessagesViewController *)self isLandscapeMode])
     {
-      v3 = [(BaseMessagesViewController *)self currentControllerPresentation];
+      currentControllerPresentation = [(BaseMessagesViewController *)self currentControllerPresentation];
 
-      if (v3)
+      if (currentControllerPresentation)
       {
-        v4 = [(BaseMessagesViewController *)self currentControllerPresentation];
-        [v4 viewWillBeObstructed];
+        currentControllerPresentation2 = [(BaseMessagesViewController *)self currentControllerPresentation];
+        [currentControllerPresentation2 viewWillBeObstructed];
       }
 
       if (self->_landscapeTrapOverlay)
       {
-        v5 = [(BaseMessagesViewController *)self view];
-        [(TrapOverlayView *)v5 bringSubviewToFront:self->_landscapeTrapOverlay];
+        view = [(BaseMessagesViewController *)self view];
+        [(TrapOverlayView *)view bringSubviewToFront:self->_landscapeTrapOverlay];
       }
 
       else
@@ -260,15 +260,15 @@
         v10 = v15;
         landscapeTrapOverlay = self->_landscapeTrapOverlay;
         self->_landscapeTrapOverlay = v9;
-        v5 = v9;
+        view = v9;
 
         landscapeOverlayConstraints = self->_landscapeOverlayConstraints;
         self->_landscapeOverlayConstraints = v10;
       }
 
-      v13 = [(BaseMessagesViewController *)self landscapeOverlayMessage];
-      v14 = [(TrapOverlayView *)self->_landscapeTrapOverlay label];
-      [v14 setText:v13];
+      landscapeOverlayMessage = [(BaseMessagesViewController *)self landscapeOverlayMessage];
+      label = [(TrapOverlayView *)self->_landscapeTrapOverlay label];
+      [label setText:landscapeOverlayMessage];
 
       [(TrapOverlayView *)self->_landscapeTrapOverlay layoutIfNeeded];
     }
@@ -295,9 +295,9 @@
   }
 }
 
-- (void)updateLandscapeOverlayIfNecessaryWithCoordinator:(id)a3
+- (void)updateLandscapeOverlayIfNecessaryWithCoordinator:(id)coordinator
 {
-  if (a3)
+  if (coordinator)
   {
     v4[4] = self;
     v5[0] = _NSConcreteStackBlock;
@@ -309,7 +309,7 @@
     v4[1] = 3221225472;
     v4[2] = sub_100003A84;
     v4[3] = &unk_1000A2730;
-    [a3 animateAlongsideTransition:v5 completion:v4];
+    [coordinator animateAlongsideTransition:v5 completion:v4];
   }
 
   else
@@ -332,10 +332,10 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(BaseMessagesViewController *)self view];
-  v6 = [v5 subviews];
+  view = [(BaseMessagesViewController *)self view];
+  subviews = [view subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -347,7 +347,7 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
@@ -367,7 +367,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v8);
@@ -414,49 +414,49 @@ LABEL_20:
   v5.super_class = BaseMessagesViewController;
   [(BaseMessagesViewController *)&v5 viewDidLoad];
   v3 = +[AVTUIColorRepository appBackgroundColor];
-  v4 = [(BaseMessagesViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BaseMessagesViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = BaseMessagesViewController;
-  [(BaseMessagesViewController *)&v5 viewDidAppear:a3];
+  [(BaseMessagesViewController *)&v5 viewDidAppear:appear];
   [(BaseMessagesViewController *)self scheduleSnapshotEnabledUpdateAfter:0 currentValue:&__kCFBooleanTrue futureValue:1.0];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"BaseMessagesViewControllerDidAppearNotification" object:self];
 }
 
-- (void)scheduleSnapshotEnabledUpdateAfter:(double)a3 currentValue:(id)a4 futureValue:(id)a5
+- (void)scheduleSnapshotEnabledUpdateAfter:(double)after currentValue:(id)value futureValue:(id)futureValue
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  valueCopy = value;
+  futureValueCopy = futureValue;
+  if (valueCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v8;
+      v16 = valueCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[BaseAnimoji] updating snapshottingEnabled applying currentValue: %@", buf, 0xCu);
     }
 
-    -[BaseMessagesViewController setSnapshottingEnabled:](self, "setSnapshottingEnabled:", [v8 BOOLValue]);
+    -[BaseMessagesViewController setSnapshottingEnabled:](self, "setSnapshottingEnabled:", [valueCopy BOOLValue]);
   }
 
-  if (v9)
+  if (futureValueCopy)
   {
     v10 = (self->_snapshottingEnabledUpdateIdentifier + 1);
     self->_snapshottingEnabledUpdateIdentifier = v10;
     objc_initWeak(buf, self);
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (after * 1000000000.0));
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003FDC;
     block[3] = &unk_1000A2758;
     objc_copyWeak(v14, buf);
     v14[1] = v10;
-    v13 = v9;
+    v13 = futureValueCopy;
     dispatch_after(v11, &_dispatch_main_q, block);
 
     objc_destroyWeak(v14);
@@ -464,29 +464,29 @@ LABEL_20:
   }
 }
 
-- (void)setSnapshottingEnabled:(BOOL)a3
+- (void)setSnapshottingEnabled:(BOOL)enabled
 {
-  if (self->_snapshottingEnabled != a3)
+  if (self->_snapshottingEnabled != enabled)
   {
     [(BaseMessagesViewController *)self willChangeValueForKey:@"snapshottingEnabled"];
-    self->_snapshottingEnabled = a3;
+    self->_snapshottingEnabled = enabled;
     [(BaseMessagesViewController *)self didChangeValueForKey:@"snapshottingEnabled"];
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 postNotificationName:@"BaseMessagesViewControllerSnapshottingEnabledChangedNotification" object:self userInfo:0];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = BaseMessagesViewController;
-  v7 = a4;
-  [(BaseMessagesViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BaseMessagesViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   self->_previousSize.width = width;
   self->_previousSize.height = height;
-  [(BaseMessagesViewController *)self updateLandscapeOverlayIfNecessaryWithCoordinator:v7, v8.receiver, v8.super_class];
+  [(BaseMessagesViewController *)self updateLandscapeOverlayIfNecessaryWithCoordinator:coordinatorCopy, v8.receiver, v8.super_class];
 }
 
 - (void)viewDidLayoutSubviews
@@ -494,8 +494,8 @@ LABEL_20:
   v9.receiver = self;
   v9.super_class = BaseMessagesViewController;
   [(BaseMessagesViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(BaseMessagesViewController *)self view];
-  [v3 frame];
+  view = [(BaseMessagesViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
@@ -507,7 +507,7 @@ LABEL_20:
   }
 }
 
-- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)a3
+- (id)defaultMessagesChildViewControllerForPresentationContext:(unint64_t)context
 {
   if ([MSMessagesAppViewController instancesRespondToSelector:"initWithShouldBeSheetPresentationControllerDelegate:"])
   {
@@ -522,12 +522,12 @@ LABEL_20:
   return v3;
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
   v42.receiver = self;
   v42.super_class = BaseMessagesViewController;
-  v4 = a3;
-  [(BaseMessagesViewController *)&v42 willBecomeActiveWithConversation:v4];
+  conversationCopy = conversation;
+  [(BaseMessagesViewController *)&v42 willBecomeActiveWithConversation:conversationCopy];
   if (![(BaseMessagesViewController *)self isLoaded])
   {
     [(BaseMessagesViewController *)self setIsLoaded:1];
@@ -537,13 +537,13 @@ LABEL_20:
     v7 = v6;
     if (v5)
     {
-      v8 = [v5 controller];
+      controller = [v5 controller];
       [v5 setModalMessagesController:self];
       v9 = +[AVTUIColorRepository modalBackgroundColor];
-      v10 = [(BaseMessagesViewController *)self view];
-      [v10 setBackgroundColor:v9];
+      view = [(BaseMessagesViewController *)self view];
+      [view setBackgroundColor:v9];
 
-      if (!v8)
+      if (!controller)
       {
 LABEL_12:
         [(BaseMessagesViewController *)self updateLandscapeOverlayImmediately];
@@ -554,146 +554,146 @@ LABEL_12:
 
     else if (v6)
     {
-      v8 = v6;
+      controller = v6;
       [BaseMessagesViewController setPendingChildViewController:0];
     }
 
     else
     {
-      v11 = [(BaseMessagesViewController *)self baseMessagesViewController];
+      baseMessagesViewController = [(BaseMessagesViewController *)self baseMessagesViewController];
 
-      if (!v11)
+      if (!baseMessagesViewController)
       {
         v12 = [(BaseMessagesViewController *)self defaultMessagesChildViewControllerForPresentationContext:[(BaseMessagesViewController *)self presentationContext]];
         [(BaseMessagesViewController *)self setBaseMessagesViewController:v12];
       }
 
-      v8 = [(BaseMessagesViewController *)self baseMessagesViewController];
-      if (!v8)
+      controller = [(BaseMessagesViewController *)self baseMessagesViewController];
+      if (!controller)
       {
         goto LABEL_12;
       }
     }
 
-    v13 = [v8 parentViewController];
+    parentViewController = [controller parentViewController];
 
-    if (!v13)
+    if (!parentViewController)
     {
-      v14 = [(BaseMessagesViewController *)self view];
-      v15 = [v8 view];
-      [v14 addSubview:v15];
+      view2 = [(BaseMessagesViewController *)self view];
+      view3 = [controller view];
+      [view2 addSubview:view3];
 
-      v16 = [v8 view];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view4 = [controller view];
+      [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v40 = [(BaseMessagesViewController *)self view];
-      v38 = [v40 leftAnchor];
-      v39 = [v8 view];
-      v37 = [v39 leftAnchor];
-      v36 = [v38 constraintEqualToAnchor:v37];
+      view5 = [(BaseMessagesViewController *)self view];
+      leftAnchor = [view5 leftAnchor];
+      view6 = [controller view];
+      leftAnchor2 = [view6 leftAnchor];
+      v36 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v43[0] = v36;
-      v35 = [(BaseMessagesViewController *)self view];
-      v33 = [v35 rightAnchor];
-      v34 = [v8 view];
-      v32 = [v34 rightAnchor];
-      v31 = [v33 constraintEqualToAnchor:v32];
+      view7 = [(BaseMessagesViewController *)self view];
+      rightAnchor = [view7 rightAnchor];
+      view8 = [controller view];
+      rightAnchor2 = [view8 rightAnchor];
+      v31 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v43[1] = v31;
-      v30 = [(BaseMessagesViewController *)self view];
-      v28 = [v30 topAnchor];
-      v29 = [v8 view];
-      v27 = [v29 topAnchor];
-      v26 = [v28 constraintEqualToAnchor:v27];
+      view9 = [(BaseMessagesViewController *)self view];
+      topAnchor = [view9 topAnchor];
+      view10 = [controller view];
+      topAnchor2 = [view10 topAnchor];
+      v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v43[2] = v26;
-      v17 = [(BaseMessagesViewController *)self view];
-      v18 = [v17 bottomAnchor];
-      [v8 view];
+      view11 = [(BaseMessagesViewController *)self view];
+      bottomAnchor = [view11 bottomAnchor];
+      [controller view];
       v19 = v41 = v7;
-      v20 = [v19 bottomAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20];
+      bottomAnchor2 = [v19 bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v43[3] = v21;
       v22 = [NSArray arrayWithObjects:v43 count:4];
       [(BaseMessagesViewController *)self setChildConstraints:v22];
 
       v7 = v41;
-      v23 = [(BaseMessagesViewController *)self view];
-      v24 = [(BaseMessagesViewController *)self childConstraints];
-      [v23 addConstraints:v24];
+      view12 = [(BaseMessagesViewController *)self view];
+      childConstraints = [(BaseMessagesViewController *)self childConstraints];
+      [view12 addConstraints:childConstraints];
 
-      [(BaseMessagesViewController *)self addChildViewController:v8];
-      [v8 didMoveToParentViewController:self];
+      [(BaseMessagesViewController *)self addChildViewController:controller];
+      [controller didMoveToParentViewController:self];
     }
 
     goto LABEL_12;
   }
 
 LABEL_13:
-  v25 = [(BaseMessagesViewController *)self baseMessagesViewController];
-  [v25 willBecomeActiveWithConversation:v4];
+  baseMessagesViewController2 = [(BaseMessagesViewController *)self baseMessagesViewController];
+  [baseMessagesViewController2 willBecomeActiveWithConversation:conversationCopy];
 }
 
-- (void)didBecomeActiveWithConversation:(id)a3
+- (void)didBecomeActiveWithConversation:(id)conversation
 {
   v6.receiver = self;
   v6.super_class = BaseMessagesViewController;
-  v4 = a3;
-  [(BaseMessagesViewController *)&v6 didBecomeActiveWithConversation:v4];
+  conversationCopy = conversation;
+  [(BaseMessagesViewController *)&v6 didBecomeActiveWithConversation:conversationCopy];
   v5 = [(BaseMessagesViewController *)self baseMessagesViewController:v6.receiver];
-  [v5 didBecomeActiveWithConversation:v4];
+  [v5 didBecomeActiveWithConversation:conversationCopy];
 
   [(BaseMessagesViewController *)self setupDisplayLayoutMonitor];
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
   v7.receiver = self;
   v7.super_class = BaseMessagesViewController;
-  v4 = a3;
-  [(BaseMessagesViewController *)&v7 willResignActiveWithConversation:v4];
+  conversationCopy = conversation;
+  [(BaseMessagesViewController *)&v7 willResignActiveWithConversation:conversationCopy];
   v5 = [(BaseMessagesViewController *)self baseMessagesViewController:v7.receiver];
-  [v5 willResignActiveWithConversation:v4];
+  [v5 willResignActiveWithConversation:conversationCopy];
 
-  v6 = [(BaseMessagesViewController *)self displayLayoutMonitor];
-  [v6 invalidate];
+  displayLayoutMonitor = [(BaseMessagesViewController *)self displayLayoutMonitor];
+  [displayLayoutMonitor invalidate];
 
   [(BaseMessagesViewController *)self setDisplayLayoutMonitor:0];
 }
 
-- (void)didResignActiveWithConversation:(id)a3
+- (void)didResignActiveWithConversation:(id)conversation
 {
   v6.receiver = self;
   v6.super_class = BaseMessagesViewController;
-  v4 = a3;
-  [(BaseMessagesViewController *)&v6 didResignActiveWithConversation:v4];
+  conversationCopy = conversation;
+  [(BaseMessagesViewController *)&v6 didResignActiveWithConversation:conversationCopy];
   v5 = [(BaseMessagesViewController *)self baseMessagesViewController:v6.receiver];
-  [v5 didResignActiveWithConversation:v4];
+  [v5 didResignActiveWithConversation:conversationCopy];
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = BaseMessagesViewController;
   [(BaseMessagesViewController *)&v6 willTransitionToPresentationStyle:?];
-  if (!a3)
+  if (!style)
   {
     [(BaseMessagesViewController *)self scheduleSnapshotEnabledUpdateAfter:&__kCFBooleanFalse currentValue:0 futureValue:0.0];
   }
 
-  v5 = [(BaseMessagesViewController *)self baseMessagesViewController];
-  [v5 willTransitionToPresentationStyle:a3];
+  baseMessagesViewController = [(BaseMessagesViewController *)self baseMessagesViewController];
+  [baseMessagesViewController willTransitionToPresentationStyle:style];
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = BaseMessagesViewController;
   [(BaseMessagesViewController *)&v6 didTransitionToPresentationStyle:?];
-  if (!a3)
+  if (!style)
   {
     [(BaseMessagesViewController *)self scheduleSnapshotEnabledUpdateAfter:&__kCFBooleanFalse currentValue:&__kCFBooleanTrue futureValue:0.1];
   }
 
-  v5 = [(BaseMessagesViewController *)self baseMessagesViewController];
-  [v5 didTransitionToPresentationStyle:a3];
+  baseMessagesViewController = [(BaseMessagesViewController *)self baseMessagesViewController];
+  [baseMessagesViewController didTransitionToPresentationStyle:style];
 }
 
 - (UIImage)emptySnapshotImage
@@ -701,13 +701,13 @@ LABEL_13:
   v12.width = 1.0;
   v12.height = 1.0;
   UIGraphicsBeginImageContextWithOptions(v12, 1, 0.0);
-  v3 = [(BaseMessagesViewController *)self childViewControllers];
-  v4 = [v3 lastObject];
+  childViewControllers = [(BaseMessagesViewController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  v5 = [(BaseMessagesViewController *)self view];
-  v6 = [v5 backgroundColor];
-  v7 = [v4 traitCollection];
-  v8 = [v6 resolvedColorWithTraitCollection:v7];
+  view = [(BaseMessagesViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  traitCollection = [lastObject traitCollection];
+  v8 = [backgroundColor resolvedColorWithTraitCollection:traitCollection];
   [v8 setFill];
 
   v13.origin.x = 0.0;
@@ -721,19 +721,19 @@ LABEL_13:
   return v9;
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(BaseMessagesViewController *)self baseMessagesViewController];
+    baseMessagesViewController = [(BaseMessagesViewController *)self baseMessagesViewController];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(BaseMessagesViewController *)self snapshottingEnabled];
+      snapshottingEnabled = [(BaseMessagesViewController *)self snapshottingEnabled];
       v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-      if (v7)
+      if (snapshottingEnabled)
       {
         if (v8)
         {
@@ -741,8 +741,8 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[BaseAnimoji] updateSnapshotWithCompletionBlock snapshots enabled", buf, 2u);
         }
 
-        v9 = [(BaseMessagesViewController *)self baseMessagesViewController];
-        [v9 updateSnapshotWithCompletionBlock:v4];
+        baseMessagesViewController2 = [(BaseMessagesViewController *)self baseMessagesViewController];
+        [baseMessagesViewController2 updateSnapshotWithCompletionBlock:blockCopy];
       }
 
       else
@@ -753,8 +753,8 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[BaseAnimoji] updateSnapshotWithCompletionBlock snapshots disabled, returning 1x1 empty snapshot", v11, 2u);
         }
 
-        v9 = [(BaseMessagesViewController *)self emptySnapshotImage];
-        v4[2](v4, v9);
+        baseMessagesViewController2 = [(BaseMessagesViewController *)self emptySnapshotImage];
+        blockCopy[2](blockCopy, baseMessagesViewController2);
       }
     }
 
@@ -766,44 +766,44 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[BaseAnimoji] updateSnapshotWithCompletionBlock snapshots disabled", v10, 2u);
       }
 
-      v4[2](v4, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  (*(a4 + 2))(v5, v6, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
+  (*(handler + 2))(handlerCopy, v6, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v6 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  (*(a4 + 2))(v5, 0, v6, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
+  (*(ds + 2))(dsCopy, 0, v6, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 effect:(int64_t)a5 completion:(id)a6
+- (void)_addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect effect:(int64_t)effect completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   v8 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  (*(a6 + 2))(v7, 0, v8);
+  (*(completion + 2))(completionCopy, 0, v8);
 }
 
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:0];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
 - (void)setupDisplayLayoutMonitor
@@ -823,13 +823,13 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)layoutMonitorDidUpdateDisplayLayout:(id)a3 withContext:(id)a4
+- (void)layoutMonitorDidUpdateDisplayLayout:(id)layout withContext:(id)context
 {
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [a3 elements];
+  obj = [layout elements];
   v5 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -839,7 +839,7 @@ LABEL_13:
     v8 = FBSDisplayLayoutElementLockScreenIdentifier;
     v9 = FBSDisplayLayoutElementSiriIdentifier;
     v21 = FBSDisplayLayoutElementNotificationCenterIdentifier;
-    v19 = self;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v6; i = i + 1)
@@ -850,20 +850,20 @@ LABEL_13:
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        if ([v12 isEqualToString:v7])
+        identifier = [v11 identifier];
+        if ([identifier isEqualToString:v7])
         {
           goto LABEL_16;
         }
 
-        v13 = [v11 identifier];
-        if ([v13 isEqualToString:v8])
+        identifier2 = [v11 identifier];
+        if ([identifier2 isEqualToString:v8])
         {
           goto LABEL_15;
         }
 
-        v14 = [v11 identifier];
-        if ([v14 isEqualToString:v9])
+        identifier3 = [v11 identifier];
+        if ([identifier3 isEqualToString:v9])
         {
 
 LABEL_15:
@@ -871,12 +871,12 @@ LABEL_16:
 
 LABEL_17:
           v17 = 1;
-          self = v19;
+          self = selfCopy;
           goto LABEL_18;
         }
 
-        v15 = [v11 identifier];
-        v16 = [v15 isEqualToString:v21];
+        identifier4 = [v11 identifier];
+        v16 = [identifier4 isEqualToString:v21];
 
         if (v16)
         {
@@ -886,7 +886,7 @@ LABEL_17:
 
       v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
       v17 = 0;
-      self = v19;
+      self = selfCopy;
       if (v6)
       {
         continue;
@@ -921,14 +921,14 @@ LABEL_18:
   }
 }
 
-- (void)beginHidingInterfaceWithMessage:(id)a3
+- (void)beginHidingInterfaceWithMessage:(id)message
 {
-  if (!a3)
+  if (!message)
   {
-    a3 = &stru_1000A66E8;
+    message = &stru_1000A66E8;
   }
 
-  [(BaseMessagesViewController *)self setCustomOverlayMessage:a3];
+  [(BaseMessagesViewController *)self setCustomOverlayMessage:message];
 }
 
 - (CGSize)previousSize

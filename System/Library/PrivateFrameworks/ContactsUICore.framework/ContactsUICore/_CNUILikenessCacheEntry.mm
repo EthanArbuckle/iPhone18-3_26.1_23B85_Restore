@@ -1,20 +1,20 @@
 @interface _CNUILikenessCacheEntry
-- (_CNUILikenessCacheEntry)initWithProvider:(id)a3 cancelationToken:(id)a4;
+- (_CNUILikenessCacheEntry)initWithProvider:(id)provider cancelationToken:(id)token;
 - (void)dealloc;
 @end
 
 @implementation _CNUILikenessCacheEntry
 
-- (_CNUILikenessCacheEntry)initWithProvider:(id)a3 cancelationToken:(id)a4
+- (_CNUILikenessCacheEntry)initWithProvider:(id)provider cancelationToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  tokenCopy = token;
   v9 = [(_CNUILikenessCacheEntry *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provider, a3);
-    objc_storeStrong(&v10->_cancelationToken, a4);
+    objc_storeStrong(&v9->_provider, provider);
+    objc_storeStrong(&v10->_cancelationToken, token);
     v11 = v10;
   }
 

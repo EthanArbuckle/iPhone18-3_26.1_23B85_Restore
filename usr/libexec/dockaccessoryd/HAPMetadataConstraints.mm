@@ -1,9 +1,9 @@
 @interface HAPMetadataConstraints
-- (BOOL)isEqualToMetadataConstraints:(id)a3;
-- (HAPMetadataConstraints)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToMetadataConstraints:(id)constraints;
+- (HAPMetadataConstraints)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAPMetadataConstraints
@@ -11,12 +11,12 @@
 - (id)description
 {
   v3 = [[NSMutableString alloc] initWithString:@"[ Constraints:"];
-  v4 = [(HAPMetadataConstraints *)self minimumValue];
+  minimumValue = [(HAPMetadataConstraints *)self minimumValue];
 
-  if (v4)
+  if (minimumValue)
   {
-    v5 = [(HAPMetadataConstraints *)self minimumValue];
-    [v5 doubleValue];
+    minimumValue2 = [(HAPMetadataConstraints *)self minimumValue];
+    [minimumValue2 doubleValue];
     [v3 appendFormat:@"%@%@%.2f", @" ", @"Min: ", v6];
 
     v7 = 1;
@@ -27,12 +27,12 @@
     v7 = 0;
   }
 
-  v8 = [(HAPMetadataConstraints *)self maximumValue];
+  maximumValue = [(HAPMetadataConstraints *)self maximumValue];
 
-  if (v8)
+  if (maximumValue)
   {
     ++v7;
-    if (v4)
+    if (minimumValue)
     {
       v9 = @", ";
     }
@@ -42,14 +42,14 @@
       v9 = @" ";
     }
 
-    v10 = [(HAPMetadataConstraints *)self maximumValue];
-    [v10 doubleValue];
+    maximumValue2 = [(HAPMetadataConstraints *)self maximumValue];
+    [maximumValue2 doubleValue];
     [v3 appendFormat:@"%@%@%.2f", v9, @"Max: ", v11];
   }
 
-  v12 = [(HAPMetadataConstraints *)self stepValue];
+  stepValue = [(HAPMetadataConstraints *)self stepValue];
 
-  if (v12)
+  if (stepValue)
   {
     v13 = v7 + 1;
     if (v7)
@@ -62,16 +62,16 @@
       v14 = @" ";
     }
 
-    v15 = [(HAPMetadataConstraints *)self stepValue];
-    [v15 doubleValue];
+    stepValue2 = [(HAPMetadataConstraints *)self stepValue];
+    [stepValue2 doubleValue];
     [v3 appendFormat:@"%@%@%.2f", v14, @"Step: ", v16];
 
     v7 = v13;
   }
 
-  v17 = [(HAPMetadataConstraints *)self minLength];
+  minLength = [(HAPMetadataConstraints *)self minLength];
 
-  if (v17)
+  if (minLength)
   {
     v18 = v7 + 1;
     if (v7)
@@ -84,15 +84,15 @@
       v19 = @" ";
     }
 
-    v20 = [(HAPMetadataConstraints *)self minLength];
-    [v3 appendFormat:@"%@%@%u", v19, @"Min length: ", objc_msgSend(v20, "unsignedIntValue")];
+    minLength2 = [(HAPMetadataConstraints *)self minLength];
+    [v3 appendFormat:@"%@%@%u", v19, @"Min length: ", objc_msgSend(minLength2, "unsignedIntValue")];
 
     v7 = v18;
   }
 
-  v21 = [(HAPMetadataConstraints *)self maxLength];
+  maxLength = [(HAPMetadataConstraints *)self maxLength];
 
-  if (v21)
+  if (maxLength)
   {
     if (v7)
     {
@@ -104,14 +104,14 @@
       v22 = @" ";
     }
 
-    v23 = [(HAPMetadataConstraints *)self maxLength];
-    [v3 appendFormat:@"%@%@%u", v22, @"Max length: ", objc_msgSend(v23, "unsignedIntValue")];
+    maxLength2 = [(HAPMetadataConstraints *)self maxLength];
+    [v3 appendFormat:@"%@%@%u", v22, @"Max length: ", objc_msgSend(maxLength2, "unsignedIntValue")];
 
     v7 = 1;
   }
 
-  v24 = [(HAPMetadataConstraints *)self validValues];
-  v25 = [v24 count];
+  validValues = [(HAPMetadataConstraints *)self validValues];
+  v25 = [validValues count];
 
   if (v25)
   {
@@ -130,8 +130,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v27 = [(HAPMetadataConstraints *)self validValues];
-    v28 = [v27 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    validValues2 = [(HAPMetadataConstraints *)self validValues];
+    v28 = [validValues2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v28)
     {
       v29 = v28;
@@ -142,13 +142,13 @@
         {
           if (*v34 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(validValues2);
           }
 
           [v3 appendFormat:@"%@, ", *(*(&v33 + 1) + 8 * i)];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v29 = [validValues2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v29);
@@ -160,10 +160,10 @@
   return v3;
 }
 
-- (BOOL)isEqualToMetadataConstraints:(id)a3
+- (BOOL)isEqualToMetadataConstraints:(id)constraints
 {
-  v4 = a3;
-  if (self == v4)
+  constraintsCopy = constraints;
+  if (self == constraintsCopy)
   {
     v20 = 1;
   }
@@ -176,38 +176,38 @@
       goto LABEL_8;
     }
 
-    v5 = [(HAPMetadataConstraints *)self minimumValue];
-    v6 = [(HAPMetadataConstraints *)v4 minimumValue];
-    v7 = sub_10007EC60(v5, v6);
+    minimumValue = [(HAPMetadataConstraints *)self minimumValue];
+    minimumValue2 = [(HAPMetadataConstraints *)constraintsCopy minimumValue];
+    v7 = sub_10007EC60(minimumValue, minimumValue2);
 
     if (v7)
     {
       goto LABEL_8;
     }
 
-    v8 = [(HAPMetadataConstraints *)self maximumValue];
-    v9 = [(HAPMetadataConstraints *)v4 maximumValue];
-    v10 = sub_10007EC60(v8, v9);
+    maximumValue = [(HAPMetadataConstraints *)self maximumValue];
+    maximumValue2 = [(HAPMetadataConstraints *)constraintsCopy maximumValue];
+    v10 = sub_10007EC60(maximumValue, maximumValue2);
 
     if (v10)
     {
       goto LABEL_8;
     }
 
-    v11 = [(HAPMetadataConstraints *)self stepValue];
-    v12 = [(HAPMetadataConstraints *)v4 stepValue];
-    v13 = sub_10007EC60(v11, v12);
+    stepValue = [(HAPMetadataConstraints *)self stepValue];
+    stepValue2 = [(HAPMetadataConstraints *)constraintsCopy stepValue];
+    v13 = sub_10007EC60(stepValue, stepValue2);
 
     if (v13)
     {
       goto LABEL_8;
     }
 
-    v14 = [(HAPMetadataConstraints *)self minLength];
-    v15 = [(HAPMetadataConstraints *)v4 minLength];
-    v16 = sub_10007EC60(v14, v15);
+    minLength = [(HAPMetadataConstraints *)self minLength];
+    minLength2 = [(HAPMetadataConstraints *)constraintsCopy minLength];
+    v16 = sub_10007EC60(minLength, minLength2);
 
-    if (v16 & 1) != 0 || ([(HAPMetadataConstraints *)self maxLength], v17 = objc_claimAutoreleasedReturnValue(), [(HAPMetadataConstraints *)v4 maxLength], v18 = objc_claimAutoreleasedReturnValue(), v19 = sub_10007EC60(v17, v18), v18, v17, (v19))
+    if (v16 & 1) != 0 || ([(HAPMetadataConstraints *)self maxLength], v17 = objc_claimAutoreleasedReturnValue(), [(HAPMetadataConstraints *)constraintsCopy maxLength], v18 = objc_claimAutoreleasedReturnValue(), v19 = sub_10007EC60(v17, v18), v18, v17, (v19))
     {
 LABEL_8:
       v20 = 0;
@@ -215,9 +215,9 @@ LABEL_8:
 
     else
     {
-      v22 = [(HAPMetadataConstraints *)self validValues];
-      v23 = [(HAPMetadataConstraints *)v4 validValues];
-      v24 = sub_10007ED18(v22, v23);
+      validValues = [(HAPMetadataConstraints *)self validValues];
+      validValues2 = [(HAPMetadataConstraints *)constraintsCopy validValues];
+      v24 = sub_10007ED18(validValues, validValues2);
 
       v20 = v24 ^ 1;
     }
@@ -226,38 +226,38 @@ LABEL_8:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(HAPMetadataConstraints *)self minimumValue];
-    v7 = [v6 copyWithZone:a3];
+    minimumValue = [(HAPMetadataConstraints *)self minimumValue];
+    v7 = [minimumValue copyWithZone:zone];
     v8 = v5[1];
     v5[1] = v7;
 
-    v9 = [(HAPMetadataConstraints *)self maximumValue];
-    v10 = [v9 copyWithZone:a3];
+    maximumValue = [(HAPMetadataConstraints *)self maximumValue];
+    v10 = [maximumValue copyWithZone:zone];
     v11 = v5[2];
     v5[2] = v10;
 
-    v12 = [(HAPMetadataConstraints *)self stepValue];
-    v13 = [v12 copyWithZone:a3];
+    stepValue = [(HAPMetadataConstraints *)self stepValue];
+    v13 = [stepValue copyWithZone:zone];
     v14 = v5[3];
     v5[3] = v13;
 
-    v15 = [(HAPMetadataConstraints *)self minLength];
-    v16 = [v15 copyWithZone:a3];
+    minLength = [(HAPMetadataConstraints *)self minLength];
+    v16 = [minLength copyWithZone:zone];
     v17 = v5[4];
     v5[4] = v16;
 
-    v18 = [(HAPMetadataConstraints *)self maxLength];
-    v19 = [v18 copyWithZone:a3];
+    maxLength = [(HAPMetadataConstraints *)self maxLength];
+    v19 = [maxLength copyWithZone:zone];
     v20 = v5[5];
     v5[5] = v19;
 
-    v21 = [(HAPMetadataConstraints *)self validValues];
-    v22 = [v21 copyWithZone:a3];
+    validValues = [(HAPMetadataConstraints *)self validValues];
+    v22 = [validValues copyWithZone:zone];
     v23 = v5[6];
     v5[6] = v22;
   }
@@ -265,57 +265,57 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HAPMetadataConstraints *)self minimumValue];
-  [v4 encodeObject:v5 forKey:@"CMinV"];
+  coderCopy = coder;
+  minimumValue = [(HAPMetadataConstraints *)self minimumValue];
+  [coderCopy encodeObject:minimumValue forKey:@"CMinV"];
 
-  v6 = [(HAPMetadataConstraints *)self maximumValue];
-  [v4 encodeObject:v6 forKey:@"CMaxV"];
+  maximumValue = [(HAPMetadataConstraints *)self maximumValue];
+  [coderCopy encodeObject:maximumValue forKey:@"CMaxV"];
 
-  v7 = [(HAPMetadataConstraints *)self stepValue];
-  [v4 encodeObject:v7 forKey:@"CSV"];
+  stepValue = [(HAPMetadataConstraints *)self stepValue];
+  [coderCopy encodeObject:stepValue forKey:@"CSV"];
 
-  v8 = [(HAPMetadataConstraints *)self minLength];
-  [v4 encodeObject:v8 forKey:@"CMinL"];
+  minLength = [(HAPMetadataConstraints *)self minLength];
+  [coderCopy encodeObject:minLength forKey:@"CMinL"];
 
-  v9 = [(HAPMetadataConstraints *)self maxLength];
-  [v4 encodeObject:v9 forKey:@"CMaxL"];
+  maxLength = [(HAPMetadataConstraints *)self maxLength];
+  [coderCopy encodeObject:maxLength forKey:@"CMaxL"];
 
-  v10 = [(HAPMetadataConstraints *)self validValues];
-  [v4 encodeObject:v10 forKey:@"CVV"];
+  validValues = [(HAPMetadataConstraints *)self validValues];
+  [coderCopy encodeObject:validValues forKey:@"CVV"];
 }
 
-- (HAPMetadataConstraints)initWithCoder:(id)a3
+- (HAPMetadataConstraints)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = HAPMetadataConstraints;
   v5 = [(HAPMetadataConstraints *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CMinV"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CMinV"];
     minimumValue = v5->_minimumValue;
     v5->_minimumValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CMaxV"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CMaxV"];
     maximumValue = v5->_maximumValue;
     v5->_maximumValue = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSV"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSV"];
     stepValue = v5->_stepValue;
     v5->_stepValue = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CMinL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CMinL"];
     minLength = v5->_minLength;
     v5->_minLength = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CMaxL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CMaxL"];
     maxLength = v5->_maxLength;
     v5->_maxLength = v14;
 
-    v16 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"CVV"];
+    v16 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"CVV"];
     validValues = v5->_validValues;
     v5->_validValues = v16;
   }

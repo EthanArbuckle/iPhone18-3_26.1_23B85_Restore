@@ -1,12 +1,12 @@
 @interface LNEntity
-- (BOOL)isEqual:(id)a3;
-- (LNEntity)initWithBSXPCCoder:(id)a3;
-- (LNEntity)initWithCoder:(id)a3;
-- (LNEntity)initWithTransient:(BOOL)a3 identifier:(id)a4 persistentFileIdentifiable:(BOOL)a5 properties:(id)a6 managedAccountIdentifier:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (LNEntity)initWithBSXPCCoder:(id)coder;
+- (LNEntity)initWithCoder:(id)coder;
+- (LNEntity)initWithTransient:(BOOL)transient identifier:(id)identifier persistentFileIdentifiable:(BOOL)identifiable properties:(id)properties managedAccountIdentifier:(id)accountIdentifier;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEntity
@@ -15,44 +15,44 @@
 {
   if ([(LNEntity *)self isTransient])
   {
-    v3 = [(LNEntity *)self properties];
-    v4 = [v3 hash];
+    properties = [(LNEntity *)self properties];
+    v4 = [properties hash];
   }
 
   else
   {
-    v3 = [(LNEntity *)self identifier];
-    v5 = [v3 hash];
-    v6 = [(LNEntity *)self properties];
-    v4 = [v6 hash] ^ v5;
+    properties = [(LNEntity *)self identifier];
+    v5 = [properties hash];
+    properties2 = [(LNEntity *)self properties];
+    v4 = [properties2 hash] ^ v5;
   }
 
   v7 = v4 ^ [(LNEntity *)self isTransient];
-  v8 = [(LNEntity *)self managedAccountIdentifier];
-  v9 = [v8 hash];
-  v10 = [(LNEntity *)self prototypeMangledTypeName];
-  v11 = v9 ^ [v10 hash];
+  managedAccountIdentifier = [(LNEntity *)self managedAccountIdentifier];
+  v9 = [managedAccountIdentifier hash];
+  prototypeMangledTypeName = [(LNEntity *)self prototypeMangledTypeName];
+  v11 = v9 ^ [prototypeMangledTypeName hash];
 
   return v7 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNEntity *)self isTransient];
-        if (v7 != [(LNEntity *)v6 isTransient])
+        isTransient = [(LNEntity *)self isTransient];
+        if (isTransient != [(LNEntity *)v6 isTransient])
         {
 LABEL_5:
-          LOBYTE(v8) = 0;
+          LOBYTE(properties9) = 0;
 LABEL_43:
 
           goto LABEL_44;
@@ -60,31 +60,31 @@ LABEL_43:
 
         if ([(LNEntity *)self isTransient])
         {
-          v10 = [(LNEntity *)self properties];
-          v11 = [(LNEntity *)v6 properties];
+          properties = [(LNEntity *)self properties];
+          properties2 = [(LNEntity *)v6 properties];
 
-          if (v10 != v11)
+          if (properties != properties2)
           {
-            v12 = [(LNEntity *)self properties];
-            if (!v12)
+            properties3 = [(LNEntity *)self properties];
+            if (!properties3)
             {
               goto LABEL_5;
             }
 
-            v13 = v12;
-            v14 = [(LNEntity *)v6 properties];
+            v13 = properties3;
+            properties4 = [(LNEntity *)v6 properties];
 
-            if (!v14)
+            if (!properties4)
             {
               goto LABEL_5;
             }
 
             v15 = MEMORY[0x1E695DFD8];
-            v16 = [(LNEntity *)self properties];
-            v17 = [v15 setWithArray:v16];
+            properties5 = [(LNEntity *)self properties];
+            v17 = [v15 setWithArray:properties5];
             v18 = MEMORY[0x1E695DFD8];
-            v19 = [(LNEntity *)v6 properties];
-            v20 = [v18 setWithArray:v19];
+            properties6 = [(LNEntity *)v6 properties];
+            v20 = [v18 setWithArray:properties6];
             v21 = [v17 isEqualToSet:v20];
 
             if (!v21)
@@ -96,10 +96,10 @@ LABEL_43:
 
         else
         {
-          v22 = [(LNEntity *)self identifier];
-          v23 = [(LNEntity *)v6 identifier];
-          v9 = v22;
-          v24 = v23;
+          identifier = [(LNEntity *)self identifier];
+          identifier2 = [(LNEntity *)v6 identifier];
+          v9 = identifier;
+          v24 = identifier2;
           v25 = v24;
           if (v9 == v24)
           {
@@ -107,51 +107,51 @@ LABEL_43:
 
           else
           {
-            LOBYTE(v8) = 0;
+            LOBYTE(properties9) = 0;
             if (!v9 || !v24)
             {
               goto LABEL_32;
             }
 
-            LODWORD(v8) = [(LNEntity *)v9 isEqual:v24];
+            LODWORD(properties9) = [(LNEntity *)v9 isEqual:v24];
 
-            if (!v8)
+            if (!properties9)
             {
               goto LABEL_41;
             }
           }
 
-          v26 = [(LNEntity *)self properties];
-          v27 = [(LNEntity *)v6 properties];
+          properties7 = [(LNEntity *)self properties];
+          properties8 = [(LNEntity *)v6 properties];
 
-          if (v26 == v27)
+          if (properties7 == properties8)
           {
           }
 
           else
           {
-            v8 = [(LNEntity *)self properties];
-            if (!v8)
+            properties9 = [(LNEntity *)self properties];
+            if (!properties9)
             {
 LABEL_41:
 
               goto LABEL_42;
             }
 
-            v28 = [(LNEntity *)v6 properties];
+            properties10 = [(LNEntity *)v6 properties];
 
-            if (!v28)
+            if (!properties10)
             {
-              LOBYTE(v8) = 0;
+              LOBYTE(properties9) = 0;
               goto LABEL_41;
             }
 
             v29 = MEMORY[0x1E695DFD8];
-            v30 = [(LNEntity *)self properties];
-            v31 = [v29 setWithArray:v30];
+            properties11 = [(LNEntity *)self properties];
+            v31 = [v29 setWithArray:properties11];
             v32 = MEMORY[0x1E695DFD8];
-            v33 = [(LNEntity *)v6 properties];
-            v34 = [v32 setWithArray:v33];
+            properties12 = [(LNEntity *)v6 properties];
+            v34 = [v32 setWithArray:properties12];
             v35 = [v31 isEqualToSet:v34];
 
             if ((v35 & 1) == 0)
@@ -161,43 +161,43 @@ LABEL_41:
           }
         }
 
-        v36 = [(LNEntity *)self managedAccountIdentifier];
-        v37 = [(LNEntity *)v6 managedAccountIdentifier];
-        v9 = v36;
-        v38 = v37;
+        managedAccountIdentifier = [(LNEntity *)self managedAccountIdentifier];
+        managedAccountIdentifier2 = [(LNEntity *)v6 managedAccountIdentifier];
+        v9 = managedAccountIdentifier;
+        v38 = managedAccountIdentifier2;
         v25 = v38;
         if (v9 == v38)
         {
 
 LABEL_34:
-          v41 = [(LNEntity *)self prototypeMangledTypeName];
-          v42 = [(LNEntity *)v6 prototypeMangledTypeName];
-          v40 = v41;
-          v43 = v42;
+          prototypeMangledTypeName = [(LNEntity *)self prototypeMangledTypeName];
+          prototypeMangledTypeName2 = [(LNEntity *)v6 prototypeMangledTypeName];
+          v40 = prototypeMangledTypeName;
+          v43 = prototypeMangledTypeName2;
           v39 = v43;
           if (v40 == v43)
           {
-            LOBYTE(v8) = 1;
+            LOBYTE(properties9) = 1;
           }
 
           else
           {
-            LOBYTE(v8) = 0;
+            LOBYTE(properties9) = 0;
             if (v40 && v43)
             {
-              LOBYTE(v8) = [(LNEntity *)v40 isEqualToString:v43];
+              LOBYTE(properties9) = [(LNEntity *)v40 isEqualToString:v43];
             }
           }
 
           goto LABEL_40;
         }
 
-        LOBYTE(v8) = 0;
+        LOBYTE(properties9) = 0;
         if (v9 && v38)
         {
-          LODWORD(v8) = [(LNEntity *)v9 isEqualToString:v38];
+          LODWORD(properties9) = [(LNEntity *)v9 isEqualToString:v38];
 
-          if (!v8)
+          if (!properties9)
           {
             goto LABEL_41;
           }
@@ -213,7 +213,7 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      LOBYTE(v8) = 0;
+      LOBYTE(properties9) = 0;
       v9 = v6;
       v6 = 0;
     }
@@ -221,7 +221,7 @@ LABEL_40:
     else
     {
       v9 = 0;
-      LOBYTE(v8) = 0;
+      LOBYTE(properties9) = 0;
     }
 
 LABEL_42:
@@ -229,10 +229,10 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  LOBYTE(v8) = 1;
+  LOBYTE(properties9) = 1;
 LABEL_44:
 
-  return v8;
+  return properties9;
 }
 
 - (NSString)description
@@ -251,8 +251,8 @@ LABEL_44:
     v5 = &stru_1F02ED148;
   }
 
-  v6 = [(LNEntity *)self identifier];
-  v7 = [(LNEntity *)self prototypeMangledTypeName];
+  identifier = [(LNEntity *)self identifier];
+  prototypeMangledTypeName = [(LNEntity *)self prototypeMangledTypeName];
   if ([(LNEntity *)self isPersistentFileIdentifiable])
   {
     v8 = @"YES";
@@ -263,52 +263,52 @@ LABEL_44:
     v8 = @"NO";
   }
 
-  v9 = [(LNEntity *)self managedAccountIdentifier];
-  if (v9)
+  managedAccountIdentifier = [(LNEntity *)self managedAccountIdentifier];
+  if (managedAccountIdentifier)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v16 = [(LNEntity *)self managedAccountIdentifier];
-    v4 = [v10 stringWithFormat:@"MAI: %@, ", v16];
+    managedAccountIdentifier2 = [(LNEntity *)self managedAccountIdentifier];
+    v4 = [v10 stringWithFormat:@"MAI: %@, ", managedAccountIdentifier2];
   }
 
-  v11 = [(LNEntity *)self properties];
-  v12 = [v11 valueForKeyPath:@"description"];
+  properties = [(LNEntity *)self properties];
+  v12 = [properties valueForKeyPath:@"description"];
   v13 = [v12 componentsJoinedByString:{@", "}];
-  v14 = [v17 stringWithFormat:@"<%@: %p, identifier: %@%@, prototypeMangledTypeName: %@, isFile: %@, %@ properties: [%@]>", v18, self, v5, v6, v7, v8, v4, v13];
+  v14 = [v17 stringWithFormat:@"<%@: %p, identifier: %@%@, prototypeMangledTypeName: %@, isFile: %@, %@ properties: [%@]>", v18, self, v5, identifier, prototypeMangledTypeName, v8, v4, v13];
 
-  if (v9)
+  if (managedAccountIdentifier)
   {
   }
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[LNEntity isTransient](self forKey:{"isTransient"), @"transient"}];
-  [v4 encodeBool:-[LNEntity isPersistentFileIdentifiable](self forKey:{"isPersistentFileIdentifiable"), @"persistentFileIdentifiable"}];
-  v5 = [(LNEntity *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[LNEntity isTransient](self forKey:{"isTransient"), @"transient"}];
+  [coderCopy encodeBool:-[LNEntity isPersistentFileIdentifiable](self forKey:{"isPersistentFileIdentifiable"), @"persistentFileIdentifiable"}];
+  identifier = [(LNEntity *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNEntity *)self properties];
-  [v4 encodeObject:v6 forKey:@"properties"];
+  properties = [(LNEntity *)self properties];
+  [coderCopy encodeObject:properties forKey:@"properties"];
 
-  v7 = [(LNEntity *)self managedAccountIdentifier];
-  [v4 encodeObject:v7 forKey:@"managedAccountIdentifier"];
+  managedAccountIdentifier = [(LNEntity *)self managedAccountIdentifier];
+  [coderCopy encodeObject:managedAccountIdentifier forKey:@"managedAccountIdentifier"];
 
-  v8 = [(LNEntity *)self prototypeMangledTypeName];
-  [v4 encodeObject:v8 forKey:@"prototypeMangledTypeName"];
+  prototypeMangledTypeName = [(LNEntity *)self prototypeMangledTypeName];
+  [coderCopy encodeObject:prototypeMangledTypeName forKey:@"prototypeMangledTypeName"];
 }
 
-- (LNEntity)initWithCoder:(id)a3
+- (LNEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"properties"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"properties"];
 
   if (v5)
   {
@@ -322,50 +322,50 @@ LABEL_44:
 
   if (v10)
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v11 = [v4 decodeBoolForKey:@"transient"];
-    v12 = [v4 decodeBoolForKey:@"persistentFileIdentifiable"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managedAccountIdentifier"];
+    v11 = [coderCopy decodeBoolForKey:@"transient"];
+    v12 = [coderCopy decodeBoolForKey:@"persistentFileIdentifiable"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managedAccountIdentifier"];
     v14 = [(LNEntity *)self initWithTransient:v11 identifier:v5 persistentFileIdentifiable:v12 properties:v9 managedAccountIdentifier:v13];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prototypeMangledTypeName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prototypeMangledTypeName"];
     prototypeMangledTypeName = v14->_prototypeMangledTypeName;
     v14->_prototypeMangledTypeName = v15;
 
     self = v14;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[LNEntity isTransient](self forKey:{"isTransient"), @"transient"}];
-  [v4 encodeBool:-[LNEntity isPersistentFileIdentifiable](self forKey:{"isPersistentFileIdentifiable"), @"persistentFileIdentifiable"}];
-  v5 = [(LNEntity *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[LNEntity isTransient](self forKey:{"isTransient"), @"transient"}];
+  [coderCopy encodeBool:-[LNEntity isPersistentFileIdentifiable](self forKey:{"isPersistentFileIdentifiable"), @"persistentFileIdentifiable"}];
+  identifier = [(LNEntity *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNEntity *)self properties];
-  [v4 encodeObject:v6 forKey:@"properties"];
+  properties = [(LNEntity *)self properties];
+  [coderCopy encodeObject:properties forKey:@"properties"];
 
-  v7 = [(LNEntity *)self managedAccountIdentifier];
-  [v4 encodeObject:v7 forKey:@"managedAccountIdentifier"];
+  managedAccountIdentifier = [(LNEntity *)self managedAccountIdentifier];
+  [coderCopy encodeObject:managedAccountIdentifier forKey:@"managedAccountIdentifier"];
 
-  v8 = [(LNEntity *)self prototypeMangledTypeName];
-  [v4 encodeObject:v8 forKey:@"prototypeMangledTypeName"];
+  prototypeMangledTypeName = [(LNEntity *)self prototypeMangledTypeName];
+  [coderCopy encodeObject:prototypeMangledTypeName forKey:@"prototypeMangledTypeName"];
 }
 
-- (LNEntity)initWithBSXPCCoder:(id)a3
+- (LNEntity)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = objc_opt_class();
-  v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"properties"];
+  v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"properties"];
   v8 = v7;
   if (v5)
   {
@@ -379,48 +379,48 @@ LABEL_44:
 
   if (v9)
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v10 = [v4 decodeBoolForKey:@"transient"];
-    v11 = [v4 decodeBoolForKey:@"persistentFileIdentifiable"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managedAccountIdentifier"];
+    v10 = [coderCopy decodeBoolForKey:@"transient"];
+    v11 = [coderCopy decodeBoolForKey:@"persistentFileIdentifiable"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managedAccountIdentifier"];
     v13 = [(LNEntity *)self initWithTransient:v10 identifier:v5 persistentFileIdentifiable:v11 properties:v8 managedAccountIdentifier:v12];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prototypeMangledTypeName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prototypeMangledTypeName"];
     prototypeMangledTypeName = v13->_prototypeMangledTypeName;
     v13->_prototypeMangledTypeName = v14;
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (LNEntity)initWithTransient:(BOOL)a3 identifier:(id)a4 persistentFileIdentifiable:(BOOL)a5 properties:(id)a6 managedAccountIdentifier:(id)a7
+- (LNEntity)initWithTransient:(BOOL)transient identifier:(id)identifier persistentFileIdentifiable:(BOOL)identifiable properties:(id)properties managedAccountIdentifier:(id)accountIdentifier
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  accountIdentifierCopy = accountIdentifier;
   v23.receiver = self;
   v23.super_class = LNEntity;
   v15 = [(LNEntity *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    v15->_transient = a3;
-    v15->_persistentFileIdentifiable = a5;
-    v17 = [v12 copy];
+    v15->_transient = transient;
+    v15->_persistentFileIdentifiable = identifiable;
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [propertiesCopy copy];
     properties = v16->_properties;
     v16->_properties = v19;
 
-    objc_storeStrong(&v16->_managedAccountIdentifier, a7);
+    objc_storeStrong(&v16->_managedAccountIdentifier, accountIdentifier);
     v21 = v16;
   }
 

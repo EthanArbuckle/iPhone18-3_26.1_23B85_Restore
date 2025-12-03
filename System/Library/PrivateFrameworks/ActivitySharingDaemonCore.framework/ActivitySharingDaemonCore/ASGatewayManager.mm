@@ -1,16 +1,16 @@
 @interface ASGatewayManager
 - (ASGatewayManager)init;
-- (BOOL)_shouldFilterBlacklistContactDestinations:(id)a3;
-- (BOOL)_shouldFilterWhitelistContactDestinations:(id)a3;
+- (BOOL)_shouldFilterBlacklistContactDestinations:(id)destinations;
+- (BOOL)_shouldFilterWhitelistContactDestinations:(id)destinations;
 - (BOOL)hasReachedMaximumNumberOfFriends;
-- (BOOL)shouldFilterIncomingMessageFromContact:(id)a3;
+- (BOOL)shouldFilterIncomingMessageFromContact:(id)contact;
 - (unsigned)inviteCompatibilityVersion;
 - (void)_queue_notifyObservers;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)cloudKitManager:(id)a3 didUpdateAccountStatus:(int64_t)a4;
-- (void)gatewayStatusWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)addObserver:(id)observer;
+- (void)cloudKitManager:(id)manager didUpdateAccountStatus:(int64_t)status;
+- (void)gatewayStatusWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)updateState;
 @end
 
@@ -32,26 +32,26 @@
     v2->_observerQueue = v5;
 
     v2->_currentlyPairedWatchMeetsMinimumVersion = 0;
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v7;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 friendListManager];
+  readyCopy = ready;
+  friendListManager = [readyCopy friendListManager];
   friendListManager = self->_friendListManager;
-  self->_friendListManager = v5;
+  self->_friendListManager = friendListManager;
 
-  v7 = [v4 cloudKitManager];
+  cloudKitManager = [readyCopy cloudKitManager];
 
   cloudKitManager = self->_cloudKitManager;
-  self->_cloudKitManager = v7;
+  self->_cloudKitManager = cloudKitManager;
 
   v9 = [objc_alloc(MEMORY[0x277D4B968]) initWithBundleIdentifier:@"com.apple.Fitness"];
   screenTimeConversation = self->_screenTimeConversation;
@@ -72,17 +72,17 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gatewayStatusWithCompletion:(id)a3
+- (void)gatewayStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ASGatewayManager_gatewayStatusWithCompletion___block_invoke;
   v7[3] = &unk_278C4B1B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -146,54 +146,54 @@ void __48__ASGatewayManager_gatewayStatusWithCompletion___block_invoke_2(uint64_
 
 - (BOOL)hasReachedMaximumNumberOfFriends
 {
-  v2 = [(ASFriendListManager *)self->_friendListManager friends];
+  friends = [(ASFriendListManager *)self->_friendListManager friends];
   v3 = ASNumberOfNewFriendsAllowedForFriends() < 1;
 
   return v3;
 }
 
-- (BOOL)shouldFilterIncomingMessageFromContact:(id)a3
+- (BOOL)shouldFilterIncomingMessageFromContact:(id)contact
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = contactCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "Checking whitelist and blacklist for contact %@", &v12, 0xCu);
   }
 
-  v6 = [v4 destinations];
-  v7 = [v6 allObjects];
-  if ([(ASGatewayManager *)self _shouldFilterWhitelistContactDestinations:v7])
+  destinations = [contactCopy destinations];
+  allObjects = [destinations allObjects];
+  if ([(ASGatewayManager *)self _shouldFilterWhitelistContactDestinations:allObjects])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v4 destinations];
-    v8 = [(ASGatewayManager *)self _shouldFilterBlacklistContactDestinations:v9];
+    destinations2 = [contactCopy destinations];
+    v8 = [(ASGatewayManager *)self _shouldFilterBlacklistContactDestinations:destinations2];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BOOL)_shouldFilterWhitelistContactDestinations:(id)a3
+- (BOOL)_shouldFilterWhitelistContactDestinations:(id)destinations
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STConversation *)self->_screenTimeConversation allowableByContactsHandles:v4];
+  destinationsCopy = destinations;
+  v5 = [(STConversation *)self->_screenTimeConversation allowableByContactsHandles:destinationsCopy];
   v6 = [v5 allowedByScreenTime] ^ 1;
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v4;
+    v11 = destinationsCopy;
     v12 = 1024;
     v13 = v6;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Should filter non-whitelisted incoming message from %@: %{BOOL}d", &v10, 0x12u);
@@ -203,17 +203,17 @@ void __48__ASGatewayManager_gatewayStatusWithCompletion___block_invoke_2(uint64_
   return v6;
 }
 
-- (BOOL)_shouldFilterBlacklistContactDestinations:(id)a3
+- (BOOL)_shouldFilterBlacklistContactDestinations:(id)destinations
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  destinationsCopy = destinations;
   ASLoggingInitialize();
   v4 = MEMORY[0x277CE9008];
   v5 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v3;
+    v24 = destinationsCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "Checking destinations: %@ against contacts blacklist for incoming message", buf, 0xCu);
   }
 
@@ -221,7 +221,7 @@ void __48__ASGatewayManager_gatewayStatusWithCompletion___block_invoke_2(uint64_
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = destinationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
@@ -237,7 +237,7 @@ void __48__ASGatewayManager_gatewayStatusWithCompletion___block_invoke_2(uint64_
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 _stripFZIDPrefix];
+        _stripFZIDPrefix = [v11 _stripFZIDPrefix];
         CMFItemFromString = CreateCMFItemFromString();
         IsItemBlocked = CMFBlockListIsItemBlocked();
         if (CMFItemFromString)
@@ -330,31 +330,31 @@ uint64_t __31__ASGatewayManager_updateState__block_invoke_306(uint64_t a1)
   return notify_post(v1);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__ASGatewayManager_addObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ASGatewayManager_removeObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
@@ -419,7 +419,7 @@ uint64_t __31__ASGatewayManager_updateState__block_invoke_306(uint64_t a1)
   return v4;
 }
 
-- (void)cloudKitManager:(id)a3 didUpdateAccountStatus:(int64_t)a4
+- (void)cloudKitManager:(id)manager didUpdateAccountStatus:(int64_t)status
 {
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];

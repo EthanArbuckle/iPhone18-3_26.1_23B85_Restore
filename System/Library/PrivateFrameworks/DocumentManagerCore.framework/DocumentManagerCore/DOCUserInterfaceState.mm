@@ -1,73 +1,73 @@
 @interface DOCUserInterfaceState
-+ (id)stateWithDefaultSettingsForConfiguration:(id)a3;
-+ (id)unarchivedFromData:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (DOCUserInterfaceState)initWithCoder:(id)a3;
-- (DOCUserInterfaceState)initWithDefaultSettingsForConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stateWithDefaultSettingsForConfiguration:(id)configuration;
++ (id)unarchivedFromData:(id)data configuration:(id)configuration error:(id *)error;
+- (DOCUserInterfaceState)initWithCoder:(id)coder;
+- (DOCUserInterfaceState)initWithDefaultSettingsForConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)bumpLastUpdatedDate;
-- (void)encodeWithCoder:(id)a3;
-- (void)upgradeDefaultSettingsIfNecessaryForConfiguration:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)upgradeDefaultSettingsIfNecessaryForConfiguration:(id)configuration;
 @end
 
 @implementation DOCUserInterfaceState
 
 - (void)bumpLastUpdatedDate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastUpdatedDate = self->_lastUpdatedDate;
-  self->_lastUpdatedDate = v3;
+  self->_lastUpdatedDate = date;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (DOCUserInterfaceState)initWithDefaultSettingsForConfiguration:(id)a3
+- (DOCUserInterfaceState)initWithDefaultSettingsForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = DOCUserInterfaceState;
   v5 = [(DOCUserInterfaceState *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastUpdatedDate = v5->_lastUpdatedDate;
-    v5->_lastUpdatedDate = v6;
+    v5->_lastUpdatedDate = date;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     groupingBehaviors = v5->_groupingBehaviors;
-    v5->_groupingBehaviors = v8;
+    v5->_groupingBehaviors = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     displayModes = v5->_displayModes;
-    v5->_displayModes = v10;
+    v5->_displayModes = dictionary2;
 
     v5->_configurationDefaultsVersion = 0;
-    [(DOCUserInterfaceState *)v5 upgradeDefaultSettingsIfNecessaryForConfiguration:v4];
+    [(DOCUserInterfaceState *)v5 upgradeDefaultSettingsIfNecessaryForConfiguration:configurationCopy];
   }
 
   return v5;
 }
 
-+ (id)stateWithDefaultSettingsForConfiguration:(id)a3
++ (id)stateWithDefaultSettingsForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDefaultSettingsForConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[self alloc] initWithDefaultSettingsForConfiguration:configurationCopy];
 
   return v5;
 }
 
-+ (id)unarchivedFromData:(id)a3 configuration:(id)a4 error:(id *)a5
++ (id)unarchivedFromData:(id)data configuration:(id)configuration error:(id *)error
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v8 = MEMORY[0x277CCAAC8];
-  v9 = a3;
+  dataCopy = data;
   v15 = 0;
-  v10 = [v8 unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v15];
+  v10 = [v8 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v15];
 
   v11 = v15;
   if (v10)
   {
-    [v10 upgradeDefaultSettingsIfNecessaryForConfiguration:v7];
+    [v10 upgradeDefaultSettingsIfNecessaryForConfiguration:configurationCopy];
     goto LABEL_8;
   }
 
@@ -80,7 +80,7 @@
 
   if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -89,11 +89,11 @@
   }
 
   [DOCUserInterfaceState unarchivedFromData:v11 configuration:v12 error:?];
-  if (a5)
+  if (error)
   {
 LABEL_7:
     v13 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
 LABEL_8:
@@ -101,9 +101,9 @@ LABEL_8:
   return v10;
 }
 
-- (void)upgradeDefaultSettingsIfNecessaryForConfiguration:(id)a3
+- (void)upgradeDefaultSettingsIfNecessaryForConfiguration:(id)configuration
 {
-  if (!self->_configurationDefaultsVersion && [a3 isInUIPDocumentLanding])
+  if (!self->_configurationDefaultsVersion && [configuration isInUIPDocumentLanding])
   {
     userPrefersTiledSidebarHidden = self->_userPrefersTiledSidebarHidden;
     self->_userPrefersTiledSidebarHidden = MEMORY[0x277CBEC38];
@@ -118,44 +118,44 @@ LABEL_8:
   v9.receiver = self;
   v9.super_class = DOCUserInterfaceState;
   v4 = [(DOCUserInterfaceState *)&v9 description];
-  v5 = [(DOCUserInterfaceState *)self lastUpdatedDate];
-  v6 = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
-  v7 = [v3 stringWithFormat:@"%@ lastUpdatedDate=%@, userPrefersTiledSidebarHidden=(%@)", v4, v5, v6];
+  lastUpdatedDate = [(DOCUserInterfaceState *)self lastUpdatedDate];
+  userPrefersTiledSidebarHidden = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
+  v7 = [v3 stringWithFormat:@"%@ lastUpdatedDate=%@, userPrefersTiledSidebarHidden=(%@)", v4, lastUpdatedDate, userPrefersTiledSidebarHidden];
 
   return v7;
 }
 
-- (DOCUserInterfaceState)initWithCoder:(id)a3
+- (DOCUserInterfaceState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = DOCUserInterfaceState;
   v5 = [(DOCUserInterfaceState *)&v40 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationDefaultsVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationDefaultsVersion"];
     -[DOCUserInterfaceState setConfigurationDefaultsVersion:](v5, "setConfigurationDefaultsVersion:", [v6 unsignedIntegerValue]);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedEffectiveTabIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedEffectiveTabIdentifier"];
     [(DOCUserInterfaceState *)v5 setMostRecentlyVisitedEffectiveTabIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedBrowsedState_Recents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedBrowsedState_Recents"];
     [(DOCUserInterfaceState *)v5 setMostRecentlyVisitedBrowsedState_Recents:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedBrowsedState_Shared"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedBrowsedState_Shared"];
     [(DOCUserInterfaceState *)v5 setMostRecentlyVisitedBrowsedState_Shared:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedBrowsedState_FullBrowser"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyVisitedBrowsedState_FullBrowser"];
     [(DOCUserInterfaceState *)v5 setMostRecentlyVisitedBrowsedState_FullBrowser:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedOpenSaveLocation"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedOpenSaveLocation"];
     [(DOCUserInterfaceState *)v5 setLastUsedOpenSaveLocation:v11];
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"displayModes"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"displayModes"];
     v17 = [v16 mutableCopy];
     displayModes = v5->_displayModes;
     v5->_displayModes = v17;
@@ -164,208 +164,208 @@ LABEL_8:
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v19 setWithObjects:{v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"sortingMode"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"sortingMode"];
     [(DOCUserInterfaceState *)v5 setSortingMode:v23];
 
     v24 = MEMORY[0x277CBEB98];
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v24 setWithObjects:{v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"groupingBehaviors"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"groupingBehaviors"];
     v29 = [v28 mutableCopy];
     groupingBehaviors = v5->_groupingBehaviors;
     v5->_groupingBehaviors = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userPrefersTiledSidebarHidden"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userPrefersTiledSidebarHidden"];
     [(DOCUserInterfaceState *)v5 setUserPrefersTiledSidebarHidden:v31];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     [(DOCUserInterfaceState *)v5 setLastUpdatedDate:v32];
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sizeSetting"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sizeSetting"];
     [(DOCUserInterfaceState *)v5 setSizeSetting:v33];
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sizeSliderValue"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sizeSliderValue"];
     [(DOCUserInterfaceState *)v5 setSizeSliderValue:v34];
 
     if (!v5->_groupingBehaviors)
     {
-      v35 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v36 = v5->_groupingBehaviors;
-      v5->_groupingBehaviors = v35;
+      v5->_groupingBehaviors = dictionary;
     }
 
     if (!v5->_displayModes)
     {
-      v37 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       v38 = v5->_displayModes;
-      v5->_displayModes = v37;
+      v5->_displayModes = dictionary2;
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v30 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DOCUserInterfaceState configurationDefaultsVersion](self, "configurationDefaultsVersion")}];
-  [v30 encodeObject:v4 forKey:@"configurationDefaultsVersion"];
+  [coderCopy encodeObject:v4 forKey:@"configurationDefaultsVersion"];
 
-  v5 = [(DOCUserInterfaceState *)self mostRecentlyVisitedEffectiveTabIdentifier];
+  mostRecentlyVisitedEffectiveTabIdentifier = [(DOCUserInterfaceState *)self mostRecentlyVisitedEffectiveTabIdentifier];
 
-  if (v5)
+  if (mostRecentlyVisitedEffectiveTabIdentifier)
   {
-    v6 = [(DOCUserInterfaceState *)self mostRecentlyVisitedEffectiveTabIdentifier];
-    [v30 encodeObject:v6 forKey:@"mostRecentlyVisitedEffectiveTabIdentifier"];
+    mostRecentlyVisitedEffectiveTabIdentifier2 = [(DOCUserInterfaceState *)self mostRecentlyVisitedEffectiveTabIdentifier];
+    [coderCopy encodeObject:mostRecentlyVisitedEffectiveTabIdentifier2 forKey:@"mostRecentlyVisitedEffectiveTabIdentifier"];
   }
 
-  v7 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Recents];
+  mostRecentlyVisitedBrowsedState_Recents = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Recents];
 
-  if (v7)
+  if (mostRecentlyVisitedBrowsedState_Recents)
   {
-    v8 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Recents];
-    [v30 encodeObject:v8 forKey:@"mostRecentlyVisitedBrowsedState_Recents"];
+    mostRecentlyVisitedBrowsedState_Recents2 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Recents];
+    [coderCopy encodeObject:mostRecentlyVisitedBrowsedState_Recents2 forKey:@"mostRecentlyVisitedBrowsedState_Recents"];
   }
 
-  v9 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Shared];
+  mostRecentlyVisitedBrowsedState_Shared = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Shared];
 
-  if (v9)
+  if (mostRecentlyVisitedBrowsedState_Shared)
   {
-    v10 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Shared];
-    [v30 encodeObject:v10 forKey:@"mostRecentlyVisitedBrowsedState_Shared"];
+    mostRecentlyVisitedBrowsedState_Shared2 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Shared];
+    [coderCopy encodeObject:mostRecentlyVisitedBrowsedState_Shared2 forKey:@"mostRecentlyVisitedBrowsedState_Shared"];
   }
 
-  v11 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_FullBrowser];
+  mostRecentlyVisitedBrowsedState_FullBrowser = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_FullBrowser];
 
-  if (v11)
+  if (mostRecentlyVisitedBrowsedState_FullBrowser)
   {
-    v12 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_FullBrowser];
-    [v30 encodeObject:v12 forKey:@"mostRecentlyVisitedBrowsedState_FullBrowser"];
+    mostRecentlyVisitedBrowsedState_FullBrowser2 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_FullBrowser];
+    [coderCopy encodeObject:mostRecentlyVisitedBrowsedState_FullBrowser2 forKey:@"mostRecentlyVisitedBrowsedState_FullBrowser"];
   }
 
-  v13 = [(DOCUserInterfaceState *)self lastUsedOpenSaveLocation];
+  lastUsedOpenSaveLocation = [(DOCUserInterfaceState *)self lastUsedOpenSaveLocation];
 
-  if (v13)
+  if (lastUsedOpenSaveLocation)
   {
-    v14 = [(DOCUserInterfaceState *)self lastUsedOpenSaveLocation];
-    [v30 encodeObject:v14 forKey:@"lastUsedOpenSaveLocation"];
+    lastUsedOpenSaveLocation2 = [(DOCUserInterfaceState *)self lastUsedOpenSaveLocation];
+    [coderCopy encodeObject:lastUsedOpenSaveLocation2 forKey:@"lastUsedOpenSaveLocation"];
   }
 
-  v15 = [(DOCUserInterfaceState *)self displayModes];
+  displayModes = [(DOCUserInterfaceState *)self displayModes];
 
-  if (v15)
+  if (displayModes)
   {
-    v16 = [(DOCUserInterfaceState *)self displayModes];
-    [v30 encodeObject:v16 forKey:@"displayModes"];
+    displayModes2 = [(DOCUserInterfaceState *)self displayModes];
+    [coderCopy encodeObject:displayModes2 forKey:@"displayModes"];
   }
 
-  v17 = [(DOCUserInterfaceState *)self sortingMode];
+  sortingMode = [(DOCUserInterfaceState *)self sortingMode];
 
-  if (v17)
+  if (sortingMode)
   {
-    v18 = [(DOCUserInterfaceState *)self sortingMode];
-    [v30 encodeObject:v18 forKey:@"sortingMode"];
+    sortingMode2 = [(DOCUserInterfaceState *)self sortingMode];
+    [coderCopy encodeObject:sortingMode2 forKey:@"sortingMode"];
   }
 
-  v19 = [(DOCUserInterfaceState *)self groupingBehaviors];
+  groupingBehaviors = [(DOCUserInterfaceState *)self groupingBehaviors];
 
-  if (v19)
+  if (groupingBehaviors)
   {
-    v20 = [(DOCUserInterfaceState *)self groupingBehaviors];
-    [v30 encodeObject:v20 forKey:@"groupingBehaviors"];
+    groupingBehaviors2 = [(DOCUserInterfaceState *)self groupingBehaviors];
+    [coderCopy encodeObject:groupingBehaviors2 forKey:@"groupingBehaviors"];
   }
 
-  v21 = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
+  userPrefersTiledSidebarHidden = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
 
-  if (v21)
+  if (userPrefersTiledSidebarHidden)
   {
-    v22 = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
-    [v30 encodeObject:v22 forKey:@"userPrefersTiledSidebarHidden"];
+    userPrefersTiledSidebarHidden2 = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
+    [coderCopy encodeObject:userPrefersTiledSidebarHidden2 forKey:@"userPrefersTiledSidebarHidden"];
   }
 
-  v23 = [(DOCUserInterfaceState *)self lastUpdatedDate];
+  lastUpdatedDate = [(DOCUserInterfaceState *)self lastUpdatedDate];
 
-  if (v23)
+  if (lastUpdatedDate)
   {
-    v24 = [(DOCUserInterfaceState *)self lastUpdatedDate];
-    [v30 encodeObject:v24 forKey:@"lastUpdatedDate"];
+    lastUpdatedDate2 = [(DOCUserInterfaceState *)self lastUpdatedDate];
+    [coderCopy encodeObject:lastUpdatedDate2 forKey:@"lastUpdatedDate"];
   }
 
-  v25 = [(DOCUserInterfaceState *)self sizeSetting];
+  sizeSetting = [(DOCUserInterfaceState *)self sizeSetting];
 
-  if (v25)
+  if (sizeSetting)
   {
-    v26 = [(DOCUserInterfaceState *)self sizeSetting];
-    [v30 encodeObject:v26 forKey:@"sizeSetting"];
+    sizeSetting2 = [(DOCUserInterfaceState *)self sizeSetting];
+    [coderCopy encodeObject:sizeSetting2 forKey:@"sizeSetting"];
   }
 
-  v27 = [(DOCUserInterfaceState *)self sizeSliderValue];
+  sizeSliderValue = [(DOCUserInterfaceState *)self sizeSliderValue];
 
-  v28 = v30;
-  if (v27)
+  v28 = coderCopy;
+  if (sizeSliderValue)
   {
-    v29 = [(DOCUserInterfaceState *)self sizeSliderValue];
-    [v30 encodeObject:v29 forKey:@"sizeSliderValue"];
+    sizeSliderValue2 = [(DOCUserInterfaceState *)self sizeSliderValue];
+    [coderCopy encodeObject:sizeSliderValue2 forKey:@"sizeSliderValue"];
 
-    v28 = v30;
+    v28 = coderCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[DOCUserInterfaceState allocWithZone:?]];
   if (v4)
   {
     [(DOCUserInterfaceState *)v4 setConfigurationDefaultsVersion:[(DOCUserInterfaceState *)self configurationDefaultsVersion]];
-    v5 = [(DOCUserInterfaceState *)self mostRecentlyVisitedEffectiveTabIdentifier];
-    v6 = [v5 copy];
+    mostRecentlyVisitedEffectiveTabIdentifier = [(DOCUserInterfaceState *)self mostRecentlyVisitedEffectiveTabIdentifier];
+    v6 = [mostRecentlyVisitedEffectiveTabIdentifier copy];
     [(DOCUserInterfaceState *)v4 setMostRecentlyVisitedEffectiveTabIdentifier:v6];
 
-    v7 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Recents];
-    v8 = [v7 copy];
+    mostRecentlyVisitedBrowsedState_Recents = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Recents];
+    v8 = [mostRecentlyVisitedBrowsedState_Recents copy];
     [(DOCUserInterfaceState *)v4 setMostRecentlyVisitedBrowsedState_Recents:v8];
 
-    v9 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Shared];
-    v10 = [v9 copy];
+    mostRecentlyVisitedBrowsedState_Shared = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_Shared];
+    v10 = [mostRecentlyVisitedBrowsedState_Shared copy];
     [(DOCUserInterfaceState *)v4 setMostRecentlyVisitedBrowsedState_Shared:v10];
 
-    v11 = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_FullBrowser];
-    v12 = [v11 copy];
+    mostRecentlyVisitedBrowsedState_FullBrowser = [(DOCUserInterfaceState *)self mostRecentlyVisitedBrowsedState_FullBrowser];
+    v12 = [mostRecentlyVisitedBrowsedState_FullBrowser copy];
     [(DOCUserInterfaceState *)v4 setMostRecentlyVisitedBrowsedState_FullBrowser:v12];
 
-    v13 = [(DOCUserInterfaceState *)self lastUsedOpenSaveLocation];
-    v14 = [v13 copy];
+    lastUsedOpenSaveLocation = [(DOCUserInterfaceState *)self lastUsedOpenSaveLocation];
+    v14 = [lastUsedOpenSaveLocation copy];
     [(DOCUserInterfaceState *)v4 setLastUsedOpenSaveLocation:v14];
 
-    v15 = [(DOCUserInterfaceState *)self displayModes];
-    v16 = [v15 mutableCopy];
+    displayModes = [(DOCUserInterfaceState *)self displayModes];
+    v16 = [displayModes mutableCopy];
     displayModes = v4->_displayModes;
     v4->_displayModes = v16;
 
-    v18 = [(DOCUserInterfaceState *)self sortingMode];
-    v19 = [v18 copy];
+    sortingMode = [(DOCUserInterfaceState *)self sortingMode];
+    v19 = [sortingMode copy];
     [(DOCUserInterfaceState *)v4 setSortingMode:v19];
 
-    v20 = [(DOCUserInterfaceState *)self groupingBehaviors];
-    v21 = [v20 mutableCopy];
+    groupingBehaviors = [(DOCUserInterfaceState *)self groupingBehaviors];
+    v21 = [groupingBehaviors mutableCopy];
     groupingBehaviors = v4->_groupingBehaviors;
     v4->_groupingBehaviors = v21;
 
-    v23 = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
-    v24 = [v23 copy];
+    userPrefersTiledSidebarHidden = [(DOCUserInterfaceState *)self userPrefersTiledSidebarHidden];
+    v24 = [userPrefersTiledSidebarHidden copy];
     [(DOCUserInterfaceState *)v4 setUserPrefersTiledSidebarHidden:v24];
 
-    v25 = [(DOCUserInterfaceState *)self lastUpdatedDate];
-    v26 = [v25 copy];
+    lastUpdatedDate = [(DOCUserInterfaceState *)self lastUpdatedDate];
+    v26 = [lastUpdatedDate copy];
     [(DOCUserInterfaceState *)v4 setLastUpdatedDate:v26];
 
-    v27 = [(DOCUserInterfaceState *)self sizeSetting];
-    v28 = [v27 copy];
+    sizeSetting = [(DOCUserInterfaceState *)self sizeSetting];
+    v28 = [sizeSetting copy];
     [(DOCUserInterfaceState *)v4 setSizeSetting:v28];
 
-    v29 = [(DOCUserInterfaceState *)self sizeSliderValue];
-    v30 = [v29 copy];
+    sizeSliderValue = [(DOCUserInterfaceState *)self sizeSliderValue];
+    v30 = [sizeSliderValue copy];
     [(DOCUserInterfaceState *)v4 setSizeSliderValue:v30];
   }
 

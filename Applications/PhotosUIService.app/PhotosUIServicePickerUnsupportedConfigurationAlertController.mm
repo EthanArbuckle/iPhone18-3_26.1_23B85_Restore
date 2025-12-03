@@ -2,8 +2,8 @@
 - (id)createAlertViewController;
 - (id)createInternalAlertViewController;
 - (void)_tearDownRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -86,11 +86,11 @@
 
 - (void)_tearDownRemoteViewController
 {
-  v3 = [(PhotosUIServicePickerUnsupportedConfigurationAlertController *)self _remoteViewControllerProxy];
-  [v3 deactivate];
+  _remoteViewControllerProxy = [(PhotosUIServicePickerUnsupportedConfigurationAlertController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy deactivate];
 
-  v4 = [(PhotosUIServicePickerUnsupportedConfigurationAlertController *)self _remoteViewControllerProxy];
-  [v4 invalidate];
+  _remoteViewControllerProxy2 = [(PhotosUIServicePickerUnsupportedConfigurationAlertController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 invalidate];
 }
 
 - (void)viewDidLoad
@@ -111,19 +111,19 @@
   [(PhotosUIServicePickerUnsupportedConfigurationAlertController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

@@ -1,33 +1,33 @@
 @interface CUIKAttendeeUtils
-+ (id)_contactForIdentity:(id)a3 keys:(id)a4;
-+ (id)_displayStringForIdentityWithDecomposedName:(id)a3 useAddressAsFallback:(BOOL)a4 contactIdentifier:(id *)a5 outFirstName:(id *)a6 outLastName:(id *)a7 outDepartment:(id *)a8 useShortName:(BOOL)a9;
-+ (id)_filteredAttendeeName:(id)a3 parenthesizedPart:(id *)a4;
-+ (id)attendeesWithoutSelfOrganizerAndLocationsWithEvent:(id)a3 outSelfOrganizer:(id *)a4;
-+ (id)contactForIdentity:(id)a3 keys:(id)a4 provider:(id)a5;
-+ (id)sortEKParticipantsIgnoringNonHumans:(id)a3 event:(id)a4 includeOrganizer:(BOOL)a5;
-+ (id)sortedEKParticipantsForSortingIgnoringNonHumans:(id)a3 event:(id)a4 includeOrganizer:(BOOL)a5;
++ (id)_contactForIdentity:(id)identity keys:(id)keys;
++ (id)_displayStringForIdentityWithDecomposedName:(id)name useAddressAsFallback:(BOOL)fallback contactIdentifier:(id *)identifier outFirstName:(id *)firstName outLastName:(id *)lastName outDepartment:(id *)department useShortName:(BOOL)shortName;
++ (id)_filteredAttendeeName:(id)name parenthesizedPart:(id *)part;
++ (id)attendeesWithoutSelfOrganizerAndLocationsWithEvent:(id)event outSelfOrganizer:(id *)organizer;
++ (id)contactForIdentity:(id)identity keys:(id)keys provider:(id)provider;
++ (id)sortEKParticipantsIgnoringNonHumans:(id)humans event:(id)event includeOrganizer:(BOOL)organizer;
++ (id)sortedEKParticipantsForSortingIgnoringNonHumans:(id)humans event:(id)event includeOrganizer:(BOOL)organizer;
 @end
 
 @implementation CUIKAttendeeUtils
 
-+ (id)contactForIdentity:(id)a3 keys:(id)a4 provider:(id)a5
++ (id)contactForIdentity:(id)identity keys:(id)keys provider:(id)provider
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 phoneNumber];
-  v11 = [v9 emailAddress];
+  keysCopy = keys;
+  providerCopy = provider;
+  identityCopy = identity;
+  phoneNumber = [identityCopy phoneNumber];
+  emailAddress = [identityCopy emailAddress];
 
-  if (!v10)
+  if (!phoneNumber)
   {
-    if (!v11)
+    if (!emailAddress)
     {
       v16 = 0;
       v14 = 0;
       goto LABEL_9;
     }
 
-    v14 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v11];
+    v14 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:emailAddress];
     if (v14)
     {
       goto LABEL_3;
@@ -39,7 +39,7 @@ LABEL_7:
   }
 
   v12 = MEMORY[0x1E695CD58];
-  v13 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v10];
+  v13 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:phoneNumber];
   v14 = [v12 predicateForContactsMatchingPhoneNumber:v13];
 
   if (!v14)
@@ -48,40 +48,40 @@ LABEL_7:
   }
 
 LABEL_3:
-  v15 = [v8 unifiedContactsMatchingPredicate:v14 keysToFetch:v7];
+  v15 = [providerCopy unifiedContactsMatchingPredicate:v14 keysToFetch:keysCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 firstObject];
+    firstObject = [v15 firstObject];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v17 = 0;
+  firstObject = 0;
 LABEL_10:
 
-  return v17;
+  return firstObject;
 }
 
-+ (id)_contactForIdentity:(id)a3 keys:(id)a4
++ (id)_contactForIdentity:(id)identity keys:(id)keys
 {
   v6 = MEMORY[0x1E6992F50];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultProvider];
-  v10 = [a1 contactForIdentity:v8 keys:v7 provider:v9];
+  keysCopy = keys;
+  identityCopy = identity;
+  defaultProvider = [v6 defaultProvider];
+  v10 = [self contactForIdentity:identityCopy keys:keysCopy provider:defaultProvider];
 
   return v10;
 }
 
-+ (id)_displayStringForIdentityWithDecomposedName:(id)a3 useAddressAsFallback:(BOOL)a4 contactIdentifier:(id *)a5 outFirstName:(id *)a6 outLastName:(id *)a7 outDepartment:(id *)a8 useShortName:(BOOL)a9
++ (id)_displayStringForIdentityWithDecomposedName:(id)name useAddressAsFallback:(BOOL)fallback contactIdentifier:(id *)identifier outFirstName:(id *)firstName outLastName:(id *)lastName outDepartment:(id *)department useShortName:(BOOL)shortName
 {
-  v44 = a4;
+  fallbackCopy = fallback;
   v50[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  nameCopy = name;
   v13 = EKWeakLinkClass();
   v14 = v13;
-  if (a9)
+  if (shortName)
   {
     v15 = 1000;
   }
@@ -98,35 +98,35 @@ LABEL_10:
   v18 = EKWeakLinkStringConstant();
   v50[2] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:3];
-  v20 = [a1 _contactForIdentity:v12 keys:v19];
+  v20 = [self _contactForIdentity:nameCopy keys:v19];
 
-  v21 = a6;
+  firstNameCopy3 = firstName;
   if (v20)
   {
-    v22 = [v14 stringFromContact:v20 style:v15];
-    if (a6)
+    name = [v14 stringFromContact:v20 style:v15];
+    if (firstName)
     {
-      *a6 = [v20 givenName];
+      *firstName = [v20 givenName];
     }
 
-    if (a7)
+    if (lastName)
     {
-      *a7 = [v20 familyName];
+      *lastName = [v20 familyName];
     }
 
-    if (a5)
+    if (identifier)
     {
-      *a5 = [v20 identifier];
+      *identifier = [v20 identifier];
     }
 
-    if (v22)
+    if (name)
     {
 LABEL_31:
-      v35 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v36 = [v22 stringByTrimmingCharactersInSet:v35];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v36 = [name stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       v37 = [v36 isEqual:&stru_1F4AA8958];
 
-      if (!v37 || !v44)
+      if (!v37 || !fallbackCopy)
       {
         goto LABEL_42;
       }
@@ -135,30 +135,30 @@ LABEL_31:
     }
   }
 
-  v22 = [v12 name];
-  v23 = [v12 firstName];
-  v24 = [v12 lastName];
-  if (![v22 length])
+  name = [nameCopy name];
+  firstName = [nameCopy firstName];
+  lastName = [nameCopy lastName];
+  if (![name length])
   {
 LABEL_17:
     v27 = 0;
     goto LABEL_19;
   }
 
-  if (![v23 length] || !objc_msgSend(v24, "length"))
+  if (![firstName length] || !objc_msgSend(lastName, "length"))
   {
-    if (([v22 cal_isPhoneNumber]& 1) == 0)
+    if (([name cal_isPhoneNumber]& 1) == 0)
     {
-      v46 = v24;
-      v47[0] = v23;
-      CUIKDecomposedAttendeeName(v22, v47, &v46);
+      v46 = lastName;
+      v47[0] = firstName;
+      CUIKDecomposedAttendeeName(name, v47, &v46);
       v28 = v47[0];
 
       v29 = v46;
       v27 = 0;
-      v24 = v29;
-      v21 = a6;
-      v23 = v28;
+      lastName = v29;
+      firstNameCopy3 = firstName;
+      firstName = v28;
       goto LABEL_19;
     }
 
@@ -168,18 +168,18 @@ LABEL_17:
   v48 = 0;
   v49 = 0;
   v47[1] = 0;
-  CUIKDecomposedAttendeeName(v22, &v49, &v48);
+  CUIKDecomposedAttendeeName(name, &v49, &v48);
   v25 = v49;
   v26 = v48;
 
   v27 = 0;
-  v21 = a6;
+  firstNameCopy3 = firstName;
 LABEL_19:
-  if ([v23 length] && objc_msgSend(v24, "length"))
+  if ([firstName length] && objc_msgSend(lastName, "length"))
   {
     v30 = objc_alloc_init(EKWeakLinkClass());
-    [v30 setGivenName:v23];
-    [v30 setFamilyName:v24];
+    [v30 setGivenName:firstName];
+    [v30 setFamilyName:lastName];
     if ([v27 length])
     {
       [v30 setDepartmentName:v27];
@@ -187,52 +187,52 @@ LABEL_19:
 
     v31 = [EKWeakLinkClass() stringFromContact:v30 style:v15];
 
-    if (v21)
+    if (firstNameCopy3)
     {
-      v32 = v23;
-      *v21 = v23;
+      v32 = firstName;
+      *firstNameCopy3 = firstName;
     }
 
-    if (a7)
+    if (lastName)
     {
-      v33 = v24;
-      *a7 = v24;
+      v33 = lastName;
+      *lastName = lastName;
     }
 
-    if (a8)
+    if (department)
     {
       v34 = v27;
-      *a8 = v27;
+      *department = v27;
     }
 
-    v22 = v31;
+    name = v31;
   }
 
-  if (v22)
+  if (name)
   {
     goto LABEL_31;
   }
 
-  if (!v44)
+  if (!fallbackCopy)
   {
     goto LABEL_42;
   }
 
 LABEL_35:
-  v38 = [v12 emailAddress];
-  v39 = [v12 phoneNumber];
-  if ([v38 length])
+  emailAddress = [nameCopy emailAddress];
+  phoneNumber = [nameCopy phoneNumber];
+  if ([emailAddress length])
   {
-    v40 = v22;
-    v22 = v38;
+    v40 = name;
+    name = emailAddress;
   }
 
-  else if ([v39 length])
+  else if ([phoneNumber length])
   {
     v40 = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
-    v41 = [v40 formattedStringForPhoneNumber:v39];
+    v41 = [v40 formattedStringForPhoneNumber:phoneNumber];
 
-    v22 = v41;
+    name = v41;
   }
 
   else
@@ -240,29 +240,29 @@ LABEL_35:
     v40 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      [CUIKAttendeeUtils _displayStringForIdentityWithDecomposedName:v12 useAddressAsFallback:v40 contactIdentifier:? outFirstName:? outLastName:? outDepartment:? useShortName:?];
+      [CUIKAttendeeUtils _displayStringForIdentityWithDecomposedName:nameCopy useAddressAsFallback:v40 contactIdentifier:? outFirstName:? outLastName:? outDepartment:? useShortName:?];
     }
   }
 
 LABEL_42:
 
-  return v22;
+  return name;
 }
 
-+ (id)_filteredAttendeeName:(id)a3 parenthesizedPart:(id *)a4
++ (id)_filteredAttendeeName:(id)name parenthesizedPart:(id *)part
 {
-  v5 = a3;
-  v6 = objc_msgSend(v5, "rangeOfString:", @"(");
+  nameCopy = name;
+  v6 = objc_msgSend(nameCopy, "rangeOfString:", @"(");
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v5;
+    v7 = nameCopy;
   }
 
   else
   {
     v8 = v6;
-    v9 = [v5 rangeOfString:@"" options:? range:?], 0, v8, objc_msgSend(v5, "length") - v8);
-    v10 = v5;
+    v9 = [nameCopy rangeOfString:@"" options:? range:?], 0, v8, objc_msgSend(nameCopy, "length") - v8);
+    v10 = nameCopy;
     v11 = v10;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -275,21 +275,21 @@ LABEL_42:
       v13 = [v11 substringToIndex:v8];
       if (v9 + 1 == v12)
       {
-        v14 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v7 = [v13 stringByTrimmingCharactersInSet:v14];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v7 = [v13 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
         v15 = v11;
       }
 
       else
       {
-        v14 = [v11 substringFromIndex:v9];
+        whitespaceCharacterSet = [v11 substringFromIndex:v9];
         v15 = [v13 stringByAppendingString:@" "];
-        v7 = [v15 stringByAppendingString:v14];
+        v7 = [v15 stringByAppendingString:whitespaceCharacterSet];
       }
 
-      if (a4 && v9 + ~v8)
+      if (part && v9 + ~v8)
       {
-        *a4 = [v11 substringWithRange:{v8 + 1, v9 + ~v8}];
+        *part = [v11 substringWithRange:{v8 + 1, v9 + ~v8}];
       }
     }
   }
@@ -297,20 +297,20 @@ LABEL_42:
   return v7;
 }
 
-+ (id)sortedEKParticipantsForSortingIgnoringNonHumans:(id)a3 event:(id)a4 includeOrganizer:(BOOL)a5
++ (id)sortedEKParticipantsForSortingIgnoringNonHumans:(id)humans event:(id)event includeOrganizer:(BOOL)organizer
 {
-  v7 = a4;
+  eventCopy = event;
   v8 = MEMORY[0x1E696AE18];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_event_includeOrganizer___block_invoke;
   v19 = &unk_1E839A900;
-  v21 = a5;
-  v9 = v7;
+  organizerCopy = organizer;
+  v9 = eventCopy;
   v20 = v9;
-  v10 = a3;
+  humansCopy = humans;
   v11 = [v8 predicateWithBlock:&v16];
-  v12 = [v10 filteredArrayUsingPredicate:{v11, v16, v17, v18, v19}];
+  v12 = [humansCopy filteredArrayUsingPredicate:{v11, v16, v17, v18, v19}];
 
   if ([v12 count])
   {
@@ -359,10 +359,10 @@ BOOL __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_eve
   return (v9 & 1) == 0;
 }
 
-+ (id)sortEKParticipantsIgnoringNonHumans:(id)a3 event:(id)a4 includeOrganizer:(BOOL)a5
++ (id)sortEKParticipantsIgnoringNonHumans:(id)humans event:(id)event includeOrganizer:(BOOL)organizer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a1 sortedEKParticipantsForSortingIgnoringNonHumans:a3 event:a4 includeOrganizer:a5];
+  v5 = [self sortedEKParticipantsForSortingIgnoringNonHumans:humans event:event includeOrganizer:organizer];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
@@ -383,8 +383,8 @@ BOOL __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_eve
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) participant];
-        [v6 addObject:v12];
+        participant = [*(*(&v14 + 1) + 8 * i) participant];
+        [v6 addObject:participant];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -396,24 +396,24 @@ BOOL __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_eve
   return v6;
 }
 
-+ (id)attendeesWithoutSelfOrganizerAndLocationsWithEvent:(id)a3 outSelfOrganizer:(id *)a4
++ (id)attendeesWithoutSelfOrganizerAndLocationsWithEvent:(id)event outSelfOrganizer:(id *)organizer
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 organizer];
-  v6 = [v4 calendar];
-  v7 = [v6 sharingStatus];
+  eventCopy = event;
+  organizer = [eventCopy organizer];
+  calendar = [eventCopy calendar];
+  sharingStatus = [calendar sharingStatus];
 
-  v8 = [v4 calendar];
-  v9 = [v8 sharingStatus];
+  calendar2 = [eventCopy calendar];
+  sharingStatus2 = [calendar2 sharingStatus];
 
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [v4 attendees];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  attendees = [eventCopy attendees];
+  v12 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v12)
   {
     v14 = 0;
@@ -423,9 +423,9 @@ BOOL __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_eve
   v13 = v12;
   v14 = 0;
   v15 = *v24;
-  if (v7)
+  if (sharingStatus)
   {
-    v16 = v9 == 2;
+    v16 = sharingStatus2 == 2;
   }
 
   else
@@ -440,7 +440,7 @@ BOOL __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_eve
     {
       if (*v24 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(attendees);
       }
 
       v19 = *(*(&v23 + 1) + 8 * i);
@@ -451,7 +451,7 @@ BOOL __92__CUIKAttendeeUtils_sortedEKParticipantsForSortingIgnoringNonHumans_eve
           goto LABEL_18;
         }
 
-        if (![v19 isEqualToParticipant:v5] || !objc_msgSend(v5, "isCurrentUser"))
+        if (![v19 isEqualToParticipant:organizer] || !objc_msgSend(organizer, "isCurrentUser"))
         {
           v14 = 0;
 LABEL_18:
@@ -467,16 +467,16 @@ LABEL_18:
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v13 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
   }
 
   while (v13);
 LABEL_23:
 
-  if (a4)
+  if (organizer)
   {
     v20 = v14;
-    *a4 = v14;
+    *organizer = v14;
   }
 
   return v10;

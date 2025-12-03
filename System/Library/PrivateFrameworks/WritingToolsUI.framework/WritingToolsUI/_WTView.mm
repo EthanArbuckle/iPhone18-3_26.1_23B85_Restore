@@ -1,9 +1,9 @@
 @interface _WTView
 - (CGRect)platformGetVisibleRect;
 - (_WTView)init;
-- (_WTView)initWithCoder:(id)a3;
-- (_WTView)initWithFrame:(CGRect)a3;
-- (id)platformInstalledDisplayLinkWithTarget:(id)a3 selector:(SEL)a4;
+- (_WTView)initWithCoder:(id)coder;
+- (_WTView)initWithFrame:(CGRect)frame;
+- (id)platformInstalledDisplayLinkWithTarget:(id)target selector:(SEL)selector;
 - (void)_commonLayoutSubviews;
 - (void)layoutSubviews;
 @end
@@ -18,53 +18,53 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(_WTView *)v2 _commonPlatformViewInit];
+    _commonPlatformViewInit = [(_WTView *)v2 _commonPlatformViewInit];
   }
 
   else
   {
-    v4 = 0;
+    _commonPlatformViewInit = 0;
   }
 
-  return v4;
+  return _commonPlatformViewInit;
 }
 
-- (_WTView)initWithCoder:(id)a3
+- (_WTView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _WTView;
-  v3 = [(_WTView *)&v7 initWithCoder:a3];
+  v3 = [(_WTView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_WTView *)v3 _commonPlatformViewInit];
+    _commonPlatformViewInit = [(_WTView *)v3 _commonPlatformViewInit];
   }
 
   else
   {
-    v5 = 0;
+    _commonPlatformViewInit = 0;
   }
 
-  return v5;
+  return _commonPlatformViewInit;
 }
 
-- (_WTView)initWithFrame:(CGRect)a3
+- (_WTView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _WTView;
-  v3 = [(_WTView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_WTView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_WTView *)v3 _commonPlatformViewInit];
+    _commonPlatformViewInit = [(_WTView *)v3 _commonPlatformViewInit];
   }
 
   else
   {
-    v5 = 0;
+    _commonPlatformViewInit = 0;
   }
 
-  return v5;
+  return _commonPlatformViewInit;
 }
 
 - (void)layoutSubviews
@@ -85,11 +85,11 @@
   [(_WTView *)self platformPerformWithoutAnimation:v2];
 }
 
-- (id)platformInstalledDisplayLinkWithTarget:(id)a3 selector:(SEL)a4
+- (id)platformInstalledDisplayLinkWithTarget:(id)target selector:(SEL)selector
 {
-  v4 = [MEMORY[0x1E6979330] displayLinkWithTarget:a3 selector:a4];
-  v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v4 addToRunLoop:v5 forMode:*MEMORY[0x1E695DA28]];
+  v4 = [MEMORY[0x1E6979330] displayLinkWithTarget:target selector:selector];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [v4 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   return v4;
 }
@@ -101,8 +101,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_WTView *)self superview];
-  [v11 bounds];
+  superview = [(_WTView *)self superview];
+  [superview bounds];
   v27.origin.x = v12;
   v27.origin.y = v13;
   v27.size.width = v14;

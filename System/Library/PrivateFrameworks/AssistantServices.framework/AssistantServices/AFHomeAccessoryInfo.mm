@@ -1,15 +1,15 @@
 @interface AFHomeAccessoryInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFHomeAccessoryInfo)initWithBuilder:(id)a3;
-- (AFHomeAccessoryInfo)initWithCoder:(id)a3;
-- (AFHomeAccessoryInfo)initWithDictionaryRepresentation:(id)a3;
-- (AFHomeAccessoryInfo)initWithUniqueIdentifier:(id)a3 loggingUniqueIdentifier:(id)a4 name:(id)a5 model:(id)a6 roomName:(id)a7 assistantIdentifier:(id)a8 isSpeaker:(BOOL)a9 hasActiveThirdPartyMusicSubscription:(BOOL)a10 manufacturer:(id)a11 categoryType:(id)a12 schemaCategoryType:(int64_t)a13;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFHomeAccessoryInfo)initWithBuilder:(id)builder;
+- (AFHomeAccessoryInfo)initWithCoder:(id)coder;
+- (AFHomeAccessoryInfo)initWithDictionaryRepresentation:(id)representation;
+- (AFHomeAccessoryInfo)initWithUniqueIdentifier:(id)identifier loggingUniqueIdentifier:(id)uniqueIdentifier name:(id)name model:(id)model roomName:(id)roomName assistantIdentifier:(id)assistantIdentifier isSpeaker:(BOOL)speaker hasActiveThirdPartyMusicSubscription:(BOOL)self0 manufacturer:(id)self1 categoryType:(id)self2 schemaCategoryType:(int64_t)self3;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFHomeAccessoryInfo
@@ -80,13 +80,13 @@
   return v16;
 }
 
-- (AFHomeAccessoryInfo)initWithDictionaryRepresentation:(id)a3
+- (AFHomeAccessoryInfo)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"uniqueIdentifier"];
+    v6 = [representationCopy objectForKey:@"uniqueIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,7 +170,7 @@
       v15 = 0;
     }
 
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
     v17 = [v5 objectForKey:@"hasActiveThirdPartyMusicSubscription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -183,7 +183,7 @@
       v18 = 0;
     }
 
-    v19 = [v18 BOOLValue];
+    bOOLValue2 = [v18 BOOLValue];
     v20 = [v5 objectForKey:@"manufacturer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -220,75 +220,75 @@
       v25 = 0;
     }
 
-    v26 = [v25 integerValue];
-    BYTE1(v28) = v19;
-    LOBYTE(v28) = v16;
-    self = [(AFHomeAccessoryInfo *)self initWithUniqueIdentifier:v33 loggingUniqueIdentifier:v32 name:v31 model:v30 roomName:v29 assistantIdentifier:v13 isSpeaker:v28 hasActiveThirdPartyMusicSubscription:v21 manufacturer:v23 categoryType:v26 schemaCategoryType:?];
+    integerValue = [v25 integerValue];
+    BYTE1(v28) = bOOLValue2;
+    LOBYTE(v28) = bOOLValue;
+    self = [(AFHomeAccessoryInfo *)self initWithUniqueIdentifier:v33 loggingUniqueIdentifier:v32 name:v31 model:v30 roomName:v29 assistantIdentifier:v13 isSpeaker:v28 hasActiveThirdPartyMusicSubscription:v21 manufacturer:v23 categoryType:integerValue schemaCategoryType:?];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueIdentifier forKey:@"AFHomeAccessoryInfo::uniqueIdentifier"];
-  [v5 encodeObject:self->_loggingUniqueIdentifier forKey:@"AFHomeAccessoryInfo::loggingUniqueIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"AFHomeAccessoryInfo::name"];
-  [v5 encodeObject:self->_model forKey:@"AFHomeAccessoryInfo::model"];
-  [v5 encodeObject:self->_roomName forKey:@"AFHomeAccessoryInfo::roomName"];
-  [v5 encodeObject:self->_assistantIdentifier forKey:@"AFHomeAccessoryInfo::assistantIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"AFHomeAccessoryInfo::uniqueIdentifier"];
+  [coderCopy encodeObject:self->_loggingUniqueIdentifier forKey:@"AFHomeAccessoryInfo::loggingUniqueIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"AFHomeAccessoryInfo::name"];
+  [coderCopy encodeObject:self->_model forKey:@"AFHomeAccessoryInfo::model"];
+  [coderCopy encodeObject:self->_roomName forKey:@"AFHomeAccessoryInfo::roomName"];
+  [coderCopy encodeObject:self->_assistantIdentifier forKey:@"AFHomeAccessoryInfo::assistantIdentifier"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSpeaker];
-  [v5 encodeObject:v6 forKey:@"AFHomeAccessoryInfo::isSpeaker"];
+  [coderCopy encodeObject:v6 forKey:@"AFHomeAccessoryInfo::isSpeaker"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasActiveThirdPartyMusicSubscription];
-  [v5 encodeObject:v7 forKey:@"AFHomeAccessoryInfo::hasActiveThirdPartyMusicSubscription"];
+  [coderCopy encodeObject:v7 forKey:@"AFHomeAccessoryInfo::hasActiveThirdPartyMusicSubscription"];
 
-  [v5 encodeObject:self->_manufacturer forKey:@"AFHomeAccessoryInfo::manufacturer"];
-  [v5 encodeObject:self->_categoryType forKey:@"AFHomeAccessoryInfo::categoryType"];
+  [coderCopy encodeObject:self->_manufacturer forKey:@"AFHomeAccessoryInfo::manufacturer"];
+  [coderCopy encodeObject:self->_categoryType forKey:@"AFHomeAccessoryInfo::categoryType"];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_schemaCategoryType];
-  [v5 encodeObject:v8 forKey:@"AFHomeAccessoryInfo::schemaCategoryType"];
+  [coderCopy encodeObject:v8 forKey:@"AFHomeAccessoryInfo::schemaCategoryType"];
 }
 
-- (AFHomeAccessoryInfo)initWithCoder:(id)a3
+- (AFHomeAccessoryInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::uniqueIdentifier"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::loggingUniqueIdentifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::name"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::model"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::roomName"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::assistantIdentifier"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::isSpeaker"];
-  v9 = [v8 BOOLValue];
+  coderCopy = coder;
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::uniqueIdentifier"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::loggingUniqueIdentifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::name"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::model"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::roomName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::assistantIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::isSpeaker"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::hasActiveThirdPartyMusicSubscription"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::hasActiveThirdPartyMusicSubscription"];
   LOBYTE(v8) = [v10 BOOLValue];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::manufacturer"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::categoryType"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::schemaCategoryType"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::manufacturer"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::categoryType"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessoryInfo::schemaCategoryType"];
 
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
   BYTE1(v17) = v8;
-  LOBYTE(v17) = v9;
-  v15 = [(AFHomeAccessoryInfo *)self initWithUniqueIdentifier:v19 loggingUniqueIdentifier:v18 name:v4 model:v5 roomName:v6 assistantIdentifier:v7 isSpeaker:v17 hasActiveThirdPartyMusicSubscription:v11 manufacturer:v12 categoryType:v14 schemaCategoryType:?];
+  LOBYTE(v17) = bOOLValue;
+  v15 = [(AFHomeAccessoryInfo *)self initWithUniqueIdentifier:v19 loggingUniqueIdentifier:v18 name:v4 model:v5 roomName:v6 assistantIdentifier:v7 isSpeaker:v17 hasActiveThirdPartyMusicSubscription:v11 manufacturer:v12 categoryType:integerValue schemaCategoryType:?];
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v25 = 1;
   }
@@ -298,44 +298,44 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isSpeaker = self->_isSpeaker;
       if (isSpeaker == [(AFHomeAccessoryInfo *)v5 isSpeaker]&& (hasActiveThirdPartyMusicSubscription = self->_hasActiveThirdPartyMusicSubscription, hasActiveThirdPartyMusicSubscription == [(AFHomeAccessoryInfo *)v5 hasActiveThirdPartyMusicSubscription]) && (schemaCategoryType = self->_schemaCategoryType, schemaCategoryType == [(AFHomeAccessoryInfo *)v5 schemaCategoryType]))
       {
-        v9 = [(AFHomeAccessoryInfo *)v5 uniqueIdentifier];
+        uniqueIdentifier = [(AFHomeAccessoryInfo *)v5 uniqueIdentifier];
         uniqueIdentifier = self->_uniqueIdentifier;
-        if (uniqueIdentifier == v9 || [(NSUUID *)uniqueIdentifier isEqual:v9])
+        if (uniqueIdentifier == uniqueIdentifier || [(NSUUID *)uniqueIdentifier isEqual:uniqueIdentifier])
         {
-          v11 = [(AFHomeAccessoryInfo *)v5 loggingUniqueIdentifier];
+          loggingUniqueIdentifier = [(AFHomeAccessoryInfo *)v5 loggingUniqueIdentifier];
           loggingUniqueIdentifier = self->_loggingUniqueIdentifier;
-          if (loggingUniqueIdentifier == v11 || [(NSUUID *)loggingUniqueIdentifier isEqual:v11])
+          if (loggingUniqueIdentifier == loggingUniqueIdentifier || [(NSUUID *)loggingUniqueIdentifier isEqual:loggingUniqueIdentifier])
           {
-            v13 = [(AFHomeAccessoryInfo *)v5 name];
+            name = [(AFHomeAccessoryInfo *)v5 name];
             name = self->_name;
-            if (name == v13 || [(NSString *)name isEqual:v13])
+            if (name == name || [(NSString *)name isEqual:name])
             {
-              v15 = [(AFHomeAccessoryInfo *)v5 model];
+              model = [(AFHomeAccessoryInfo *)v5 model];
               model = self->_model;
-              if (model == v15 || [(NSString *)model isEqual:v15])
+              if (model == model || [(NSString *)model isEqual:model])
               {
-                v17 = [(AFHomeAccessoryInfo *)v5 roomName];
+                roomName = [(AFHomeAccessoryInfo *)v5 roomName];
                 roomName = self->_roomName;
-                if (roomName == v17 || [(NSString *)roomName isEqual:v17])
+                if (roomName == roomName || [(NSString *)roomName isEqual:roomName])
                 {
-                  v19 = [(AFHomeAccessoryInfo *)v5 assistantIdentifier];
+                  assistantIdentifier = [(AFHomeAccessoryInfo *)v5 assistantIdentifier];
                   assistantIdentifier = self->_assistantIdentifier;
-                  if (assistantIdentifier == v19 || [(NSString *)assistantIdentifier isEqual:v19])
+                  if (assistantIdentifier == assistantIdentifier || [(NSString *)assistantIdentifier isEqual:assistantIdentifier])
                   {
-                    v21 = [(AFHomeAccessoryInfo *)v5 manufacturer];
+                    manufacturer = [(AFHomeAccessoryInfo *)v5 manufacturer];
                     manufacturer = self->_manufacturer;
-                    if (manufacturer == v21 || [(NSString *)manufacturer isEqual:v21])
+                    if (manufacturer == manufacturer || [(NSString *)manufacturer isEqual:manufacturer])
                     {
-                      v27 = v21;
-                      v23 = [(AFHomeAccessoryInfo *)v5 categoryType];
+                      v27 = manufacturer;
+                      categoryType = [(AFHomeAccessoryInfo *)v5 categoryType];
                       categoryType = self->_categoryType;
-                      v25 = categoryType == v23 || [(NSString *)categoryType isEqual:v23];
+                      v25 = categoryType == categoryType || [(NSString *)categoryType isEqual:categoryType];
 
-                      v21 = v27;
+                      manufacturer = v27;
                     }
 
                     else
@@ -415,7 +415,7 @@
   return v12 ^ v16;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -443,39 +443,39 @@
   return v9;
 }
 
-- (AFHomeAccessoryInfo)initWithUniqueIdentifier:(id)a3 loggingUniqueIdentifier:(id)a4 name:(id)a5 model:(id)a6 roomName:(id)a7 assistantIdentifier:(id)a8 isSpeaker:(BOOL)a9 hasActiveThirdPartyMusicSubscription:(BOOL)a10 manufacturer:(id)a11 categoryType:(id)a12 schemaCategoryType:(int64_t)a13
+- (AFHomeAccessoryInfo)initWithUniqueIdentifier:(id)identifier loggingUniqueIdentifier:(id)uniqueIdentifier name:(id)name model:(id)model roomName:(id)roomName assistantIdentifier:(id)assistantIdentifier isSpeaker:(BOOL)speaker hasActiveThirdPartyMusicSubscription:(BOOL)self0 manufacturer:(id)self1 categoryType:(id)self2 schemaCategoryType:(int64_t)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a11;
-  v25 = a12;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  nameCopy = name;
+  modelCopy = model;
+  roomNameCopy = roomName;
+  assistantIdentifierCopy = assistantIdentifier;
+  manufacturerCopy = manufacturer;
+  typeCopy = type;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __204__AFHomeAccessoryInfo_initWithUniqueIdentifier_loggingUniqueIdentifier_name_model_roomName_assistantIdentifier_isSpeaker_hasActiveThirdPartyMusicSubscription_manufacturer_categoryType_schemaCategoryType___block_invoke;
   v37[3] = &unk_1E7344810;
-  v38 = v18;
-  v39 = v19;
-  v40 = v20;
-  v41 = v21;
-  v42 = v22;
-  v43 = v23;
-  v47 = a9;
-  v48 = a10;
-  v44 = v24;
-  v45 = v25;
-  v46 = a13;
-  v26 = v25;
-  v27 = v24;
-  v28 = v23;
-  v29 = v22;
-  v30 = v21;
-  v31 = v20;
-  v32 = v19;
-  v33 = v18;
+  v38 = identifierCopy;
+  v39 = uniqueIdentifierCopy;
+  v40 = nameCopy;
+  v41 = modelCopy;
+  v42 = roomNameCopy;
+  v43 = assistantIdentifierCopy;
+  speakerCopy = speaker;
+  subscriptionCopy = subscription;
+  v44 = manufacturerCopy;
+  v45 = typeCopy;
+  categoryTypeCopy = categoryType;
+  v26 = typeCopy;
+  v27 = manufacturerCopy;
+  v28 = assistantIdentifierCopy;
+  v29 = roomNameCopy;
+  v30 = modelCopy;
+  v31 = nameCopy;
+  v32 = uniqueIdentifierCopy;
+  v33 = identifierCopy;
   v34 = [(AFHomeAccessoryInfo *)self initWithBuilder:v37];
 
   return v34;
@@ -498,58 +498,58 @@ void __204__AFHomeAccessoryInfo_initWithUniqueIdentifier_loggingUniqueIdentifier
   [v4 setSchemaCategoryType:*(a1 + 96)];
 }
 
-- (AFHomeAccessoryInfo)initWithBuilder:(id)a3
+- (AFHomeAccessoryInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v33.receiver = self;
   v33.super_class = AFHomeAccessoryInfo;
   v5 = [(AFHomeAccessoryInfo *)&v33 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFHomeAccessoryInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFHomeAccessoryInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFHomeAccessoryInfoMutation *)v7 getUniqueIdentifier];
-      v9 = [v8 copy];
+      getUniqueIdentifier = [(_AFHomeAccessoryInfoMutation *)v7 getUniqueIdentifier];
+      v9 = [getUniqueIdentifier copy];
       uniqueIdentifier = v6->_uniqueIdentifier;
       v6->_uniqueIdentifier = v9;
 
-      v11 = [(_AFHomeAccessoryInfoMutation *)v7 getLoggingUniqueIdentifier];
-      v12 = [v11 copy];
+      getLoggingUniqueIdentifier = [(_AFHomeAccessoryInfoMutation *)v7 getLoggingUniqueIdentifier];
+      v12 = [getLoggingUniqueIdentifier copy];
       loggingUniqueIdentifier = v6->_loggingUniqueIdentifier;
       v6->_loggingUniqueIdentifier = v12;
 
-      v14 = [(_AFHomeAccessoryInfoMutation *)v7 getName];
-      v15 = [v14 copy];
+      getName = [(_AFHomeAccessoryInfoMutation *)v7 getName];
+      v15 = [getName copy];
       name = v6->_name;
       v6->_name = v15;
 
-      v17 = [(_AFHomeAccessoryInfoMutation *)v7 getModel];
-      v18 = [v17 copy];
+      getModel = [(_AFHomeAccessoryInfoMutation *)v7 getModel];
+      v18 = [getModel copy];
       model = v6->_model;
       v6->_model = v18;
 
-      v20 = [(_AFHomeAccessoryInfoMutation *)v7 getRoomName];
-      v21 = [v20 copy];
+      getRoomName = [(_AFHomeAccessoryInfoMutation *)v7 getRoomName];
+      v21 = [getRoomName copy];
       roomName = v6->_roomName;
       v6->_roomName = v21;
 
-      v23 = [(_AFHomeAccessoryInfoMutation *)v7 getAssistantIdentifier];
-      v24 = [v23 copy];
+      getAssistantIdentifier = [(_AFHomeAccessoryInfoMutation *)v7 getAssistantIdentifier];
+      v24 = [getAssistantIdentifier copy];
       assistantIdentifier = v6->_assistantIdentifier;
       v6->_assistantIdentifier = v24;
 
       v6->_isSpeaker = [(_AFHomeAccessoryInfoMutation *)v7 getIsSpeaker];
       v6->_hasActiveThirdPartyMusicSubscription = [(_AFHomeAccessoryInfoMutation *)v7 getHasActiveThirdPartyMusicSubscription];
-      v26 = [(_AFHomeAccessoryInfoMutation *)v7 getManufacturer];
-      v27 = [v26 copy];
+      getManufacturer = [(_AFHomeAccessoryInfoMutation *)v7 getManufacturer];
+      v27 = [getManufacturer copy];
       manufacturer = v6->_manufacturer;
       v6->_manufacturer = v27;
 
-      v29 = [(_AFHomeAccessoryInfoMutation *)v7 getCategoryType];
-      v30 = [v29 copy];
+      getCategoryType = [(_AFHomeAccessoryInfoMutation *)v7 getCategoryType];
+      v30 = [getCategoryType copy];
       categoryType = v6->_categoryType;
       v6->_categoryType = v30;
 
@@ -560,63 +560,63 @@ void __204__AFHomeAccessoryInfo_initWithUniqueIdentifier_loggingUniqueIdentifier
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFHomeAccessoryInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFHomeAccessoryInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFHomeAccessoryInfo);
-      v7 = [(_AFHomeAccessoryInfoMutation *)v5 getUniqueIdentifier];
-      v8 = [v7 copy];
+      getUniqueIdentifier = [(_AFHomeAccessoryInfoMutation *)v5 getUniqueIdentifier];
+      v8 = [getUniqueIdentifier copy];
       uniqueIdentifier = v6->_uniqueIdentifier;
       v6->_uniqueIdentifier = v8;
 
-      v10 = [(_AFHomeAccessoryInfoMutation *)v5 getLoggingUniqueIdentifier];
-      v11 = [v10 copy];
+      getLoggingUniqueIdentifier = [(_AFHomeAccessoryInfoMutation *)v5 getLoggingUniqueIdentifier];
+      v11 = [getLoggingUniqueIdentifier copy];
       loggingUniqueIdentifier = v6->_loggingUniqueIdentifier;
       v6->_loggingUniqueIdentifier = v11;
 
-      v13 = [(_AFHomeAccessoryInfoMutation *)v5 getName];
-      v14 = [v13 copy];
+      getName = [(_AFHomeAccessoryInfoMutation *)v5 getName];
+      v14 = [getName copy];
       name = v6->_name;
       v6->_name = v14;
 
-      v16 = [(_AFHomeAccessoryInfoMutation *)v5 getModel];
-      v17 = [v16 copy];
+      getModel = [(_AFHomeAccessoryInfoMutation *)v5 getModel];
+      v17 = [getModel copy];
       model = v6->_model;
       v6->_model = v17;
 
-      v19 = [(_AFHomeAccessoryInfoMutation *)v5 getRoomName];
-      v20 = [v19 copy];
+      getRoomName = [(_AFHomeAccessoryInfoMutation *)v5 getRoomName];
+      v20 = [getRoomName copy];
       roomName = v6->_roomName;
       v6->_roomName = v20;
 
-      v22 = [(_AFHomeAccessoryInfoMutation *)v5 getAssistantIdentifier];
-      v23 = [v22 copy];
+      getAssistantIdentifier = [(_AFHomeAccessoryInfoMutation *)v5 getAssistantIdentifier];
+      v23 = [getAssistantIdentifier copy];
       assistantIdentifier = v6->_assistantIdentifier;
       v6->_assistantIdentifier = v23;
 
       v6->_isSpeaker = [(_AFHomeAccessoryInfoMutation *)v5 getIsSpeaker];
       v6->_hasActiveThirdPartyMusicSubscription = [(_AFHomeAccessoryInfoMutation *)v5 getHasActiveThirdPartyMusicSubscription];
-      v25 = [(_AFHomeAccessoryInfoMutation *)v5 getManufacturer];
-      v26 = [v25 copy];
+      getManufacturer = [(_AFHomeAccessoryInfoMutation *)v5 getManufacturer];
+      v26 = [getManufacturer copy];
       manufacturer = v6->_manufacturer;
       v6->_manufacturer = v26;
 
-      v28 = [(_AFHomeAccessoryInfoMutation *)v5 getCategoryType];
-      v29 = [v28 copy];
+      getCategoryType = [(_AFHomeAccessoryInfoMutation *)v5 getCategoryType];
+      v29 = [getCategoryType copy];
       categoryType = v6->_categoryType;
       v6->_categoryType = v29;
 

@@ -1,18 +1,18 @@
 @interface CNContactStoreContactsFetchResult
-- (CNContactStoreContactsFetchResult)initWithContacts:(id)a3;
+- (CNContactStoreContactsFetchResult)initWithContacts:(id)contacts;
 @end
 
 @implementation CNContactStoreContactsFetchResult
 
-- (CNContactStoreContactsFetchResult)initWithContacts:(id)a3
+- (CNContactStoreContactsFetchResult)initWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v10.receiver = self;
   v10.super_class = CNContactStoreContactsFetchResult;
   v5 = [(CNContactStoreContactsFetchResult *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contactsCopy copy];
     value = v5->_value;
     v5->_value = v6;
 

@@ -1,18 +1,18 @@
 @interface SUIAShockwaveIntelligenceSystemLightView
-- (SUIAShockwaveIntelligenceSystemLightView)initWithFrame:(CGRect)a3 preferringAudioReactivity:(BOOL)a4;
+- (SUIAShockwaveIntelligenceSystemLightView)initWithFrame:(CGRect)frame preferringAudioReactivity:(BOOL)reactivity;
 - (UIView)circleMaskView;
 - (UIView)sideLightMaskView;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
 @implementation SUIAShockwaveIntelligenceSystemLightView
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v4 = a3;
-  v5 = self;
-  sub_26C5D336C(v4);
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_26C5D336C(subviewCopy);
 }
 
 - (void)layoutSubviews
@@ -46,18 +46,18 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (SUIAShockwaveIntelligenceSystemLightView)initWithFrame:(CGRect)a3 preferringAudioReactivity:(BOOL)a4
+- (SUIAShockwaveIntelligenceSystemLightView)initWithFrame:(CGRect)frame preferringAudioReactivity:(BOOL)reactivity
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  reactivityCopy = reactivity;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___SUIAShockwaveIntelligenceSystemLightView_circleMaskView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR___SUIAShockwaveIntelligenceSystemLightView_sideLightMaskView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ShockwaveIntelligenceSystemLightView();
-  return [(_UIIntelligenceSystemLightView *)&v10 initWithFrame:v4 preferringAudioReactivity:x, y, width, height];
+  return [(_UIIntelligenceSystemLightView *)&v10 initWithFrame:reactivityCopy preferringAudioReactivity:x, y, width, height];
 }
 
 @end

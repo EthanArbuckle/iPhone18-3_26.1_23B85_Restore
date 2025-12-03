@@ -1,20 +1,20 @@
 @interface CNPreferredApplePersonaIdentifierDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPreferredApplePersonaIdentifierDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 preferredApplePersonaIdentifier];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  preferredApplePersonaIdentifier = [contactCopy preferredApplePersonaIdentifier];
+  if (!preferredApplePersonaIdentifier)
   {
-    v4 = [v7 preferredApplePersonaIdentifier];
-    if (!v4)
+    preferredApplePersonaIdentifier2 = [otherCopy preferredApplePersonaIdentifier];
+    if (!preferredApplePersonaIdentifier2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 preferredApplePersonaIdentifier];
-  v10 = [v7 preferredApplePersonaIdentifier];
-  v11 = [v9 isEqual:v10];
+  preferredApplePersonaIdentifier3 = [contactCopy preferredApplePersonaIdentifier];
+  preferredApplePersonaIdentifier4 = [otherCopy preferredApplePersonaIdentifier];
+  v11 = [preferredApplePersonaIdentifier3 isEqual:preferredApplePersonaIdentifier4];
 
-  if (!v8)
+  if (!preferredApplePersonaIdentifier)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredApplePersonaIdentifier"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredApplePersonaIdentifier"];
 
   v7 = [v9 copy];
-  v8 = v5[74];
-  v5[74] = v7;
+  v8 = contactCopy[74];
+  contactCopy[74] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A578];
+    *d = *MEMORY[0x1E698A578];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

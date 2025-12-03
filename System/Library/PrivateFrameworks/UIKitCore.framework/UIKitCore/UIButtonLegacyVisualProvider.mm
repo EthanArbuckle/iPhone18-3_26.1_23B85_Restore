@@ -1,57 +1,57 @@
 @interface UIButtonLegacyVisualProvider
 + (id)_selectedIndicatorImage;
-+ (id)visualProviderForButton:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)a3;
++ (id)visualProviderForButton:(id)button;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)size;
 - (BOOL)_imageNeedsCompositingModeWhenSelected;
 - (BOOL)_isExternalRoundedRectButtonWithPressednessState;
 - (BOOL)_shouldUpdatePressedness;
 - (BOOL)_textNeedsCompositingModeWhenSelected;
 - (BOOL)_wantsContentBackdropView;
 - (BOOL)useTitleForSelectedIndicatorBounds;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CGRect)_highlightBoundsForDrawingStyle;
-- (CGRect)_highlightRectForImageRect:(CGRect)a3;
-- (CGRect)_highlightRectForTextRect:(CGRect)a3;
+- (CGRect)_highlightRectForImageRect:(CGRect)rect;
+- (CGRect)_highlightRectForTextRect:(CGRect)rect;
 - (CGRect)_selectedIndicatorBounds;
-- (CGRect)_titleRectForContentRect:(CGRect)a3 calculatePositionForEmptyTitle:(BOOL)a4;
-- (CGRect)_visualBoundsWithCornerRadius:(double *)a3 hasProposal:(BOOL)a4 shouldUseProposal:(BOOL *)a5;
-- (CGRect)backgroundRectForBounds:(CGRect)a3;
-- (CGRect)contentRectForBounds:(CGRect)a3;
+- (CGRect)_titleRectForContentRect:(CGRect)rect calculatePositionForEmptyTitle:(BOOL)title;
+- (CGRect)_visualBoundsWithCornerRadius:(double *)radius hasProposal:(BOOL)proposal shouldUseProposal:(BOOL *)useProposal;
+- (CGRect)backgroundRectForBounds:(CGRect)bounds;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
 - (CGRect)highlightBounds;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGRect)visualBoundsWithCornerRadius:(double *)a3;
-- (CGSize)_intrinsicSizeForTitle:(id)a3 attributedTitle:(id)a4 image:(id)a5 backgroundImage:(id)a6 titlePaddingInsets:(UIEdgeInsets *)a7;
-- (CGSize)intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGRect)visualBoundsWithCornerRadius:(double *)radius;
+- (CGSize)_intrinsicSizeForTitle:(id)title attributedTitle:(id)attributedTitle image:(id)image backgroundImage:(id)backgroundImage titlePaddingInsets:(UIEdgeInsets *)insets;
+- (CGSize)intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGSize)titleShadowOffset;
 - (UIEdgeInsets)alignmentRectInsets;
-- (double)_borderWidthForState:(unint64_t)a3 bounds:(CGRect)a4;
-- (id)_createPreparedImageViewWithFrame:(CGRect)a3;
-- (id)_fadeOutAnimationWithKeyPath:(id)a3;
+- (double)_borderWidthForState:(unint64_t)state bounds:(CGRect)bounds;
+- (id)_createPreparedImageViewWithFrame:(CGRect)frame;
+- (id)_fadeOutAnimationWithKeyPath:(id)path;
 - (id)_floatingContentView;
-- (id)_newImageViewWithFrame:(CGRect)a3;
-- (id)_newLabelWithFrame:(CGRect)a3;
+- (id)_newImageViewWithFrame:(CGRect)frame;
+- (id)_newLabelWithFrame:(CGRect)frame;
 - (id)_setupBackgroundView;
 - (id)_titleOrImageViewForBaselineLayout;
-- (id)_transitionAnimationWithKeyPath:(id)a3;
+- (id)_transitionAnimationWithKeyPath:(id)path;
 - (id)_viewForBaselineLayout;
 - (id)contentBackdropView;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)effectiveContentView;
 - (id)encodableSubviews;
-- (id)imageViewCreateIfNeeded:(BOOL)a3;
+- (id)imageViewCreateIfNeeded:(BOOL)needed;
 - (id)pointerEffectPreviewParameters;
-- (id)pointerEffectWithPreview:(id)a3;
-- (id)pointerShapeInContainer:(id)a3 proposal:(id)a4;
-- (id)preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (id)pointerEffectWithPreview:(id)preview;
+- (id)pointerShapeInContainer:(id)container proposal:(id)proposal;
+- (id)preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (id)preferredHoverEffect;
 - (id)selectionIndicatorView;
-- (id)titleViewCreateIfNeeded:(BOOL)a3;
+- (id)titleViewCreateIfNeeded:(BOOL)needed;
 - (int64_t)lineBreakMode;
 - (void)_applyAppropriateTouchInsetsForButton;
 - (void)_beginTitleAnimation;
-- (void)_deriveTitleRect:(CGRect *)a3 imageRect:(CGRect *)a4 fromContentRect:(CGRect)a5 calculatePositionForEmptyTitle:(BOOL)a6;
+- (void)_deriveTitleRect:(CGRect *)rect imageRect:(CGRect *)imageRect fromContentRect:(CGRect)contentRect calculatePositionForEmptyTitle:(BOOL)title;
 - (void)_invalidateContentConstraints;
 - (void)_layoutBackgroundImageView;
 - (void)_layoutContentBackdropView;
@@ -59,39 +59,39 @@
 - (void)_layoutImageAndTitleViews;
 - (void)_prepareMaskAnimationViewIfNecessary;
 - (void)_removeContentBackdropView;
-- (void)_setupDrawingStyleForState:(unint64_t)a3;
+- (void)_setupDrawingStyleForState:(unint64_t)state;
 - (void)_setupImageView;
-- (void)_setupPressednessForState:(unint64_t)a3;
-- (void)_setupTitleViewRequestingLayout:(BOOL)a3;
+- (void)_setupPressednessForState:(unint64_t)state;
+- (void)_setupTitleViewRequestingLayout:(BOOL)layout;
 - (void)_updateBackgroundImageView;
-- (void)_updateEffectsForImageView:(id)a3 background:(BOOL)a4;
+- (void)_updateEffectsForImageView:(id)view background:(BOOL)background;
 - (void)_updateImageView;
 - (void)_updateMaskState;
-- (void)_updateSelectionViewForState:(unint64_t)a3;
+- (void)_updateSelectionViewForState:(unint64_t)state;
 - (void)_updateTitleView;
-- (void)cleanupForVisualProvider:(id)a3;
-- (void)contextMenuInteraction:(id)a3 updateStyleForMenuWithConfiguration:(id)a4 style:(id)a5;
+- (void)cleanupForVisualProvider:(id)provider;
+- (void)contextMenuInteraction:(id)interaction updateStyleForMenuWithConfiguration:(id)configuration style:(id)style;
 - (void)dealloc;
-- (void)didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5;
-- (void)intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy;
+- (void)intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)layoutSubviews;
-- (void)populateArchivedSubviews:(id)a3;
-- (void)setContentHorizontalAlignment:(int64_t)a3;
-- (void)setDrawingStroke:(double)a3 forState:(unint64_t)a4;
-- (void)setExternalFlatEdge:(unint64_t)a3;
-- (void)setFont:(id)a3 isDefaultForIdiom:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setReversesTitleShadowWhenHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setShowsTouchWhenHighlighted:(BOOL)a3;
-- (void)setTitleShadowOffset:(CGSize)a3;
-- (void)setVisualEffectViewEnabled:(BOOL)a3 backgroundColor:(id)a4;
+- (void)populateArchivedSubviews:(id)subviews;
+- (void)setContentHorizontalAlignment:(int64_t)alignment;
+- (void)setDrawingStroke:(double)stroke forState:(unint64_t)state;
+- (void)setExternalFlatEdge:(unint64_t)edge;
+- (void)setFont:(id)font isDefaultForIdiom:(BOOL)idiom;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setReversesTitleShadowWhenHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setShowsTouchWhenHighlighted:(BOOL)highlighted;
+- (void)setTitleShadowOffset:(CGSize)offset;
+- (void)setVisualEffectViewEnabled:(BOOL)enabled backgroundColor:(id)color;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIButtonLegacyVisualProvider
@@ -138,8 +138,8 @@
   {
     if ([(UIButton *)self->_button _shouldHaveFloatingAppearance])
     {
-      v4 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-      WeakRetained = [v4 contentView];
+      _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+      WeakRetained = [_floatingContentView contentView];
     }
 
     else
@@ -155,16 +155,16 @@
 
 - (void)_updateTitleView
 {
-  v3 = [(UIControl *)self->_button state];
-  v14 = [(UIButton *)self->_button _attributedTitleForState:v3];
-  v4 = [(UIButton *)self->_button _titleForState:v3];
+  state = [(UIControl *)self->_button state];
+  v14 = [(UIButton *)self->_button _attributedTitleForState:state];
+  v4 = [(UIButton *)self->_button _titleForState:state];
   if (v14 && [v14 length])
   {
-    v5 = [(UILabel *)self->_titleView _content];
-    if ([v5 length] >= 1)
+    _content = [(UILabel *)self->_titleView _content];
+    if ([_content length] >= 1)
     {
-      v6 = [v5 contentWithAttributedString:v14];
-      v7 = [v5 differenceVersusContent:v6];
+      v6 = [_content contentWithAttributedString:v14];
+      v7 = [_content differenceVersusContent:v6];
 
       if (v7)
       {
@@ -182,9 +182,9 @@
 
   else if (v4 && [v4 length])
   {
-    v8 = [(UILabel *)self->_titleView text];
-    v9 = v8;
-    if (v8 && [v8 length] && (objc_msgSend(v4, "isEqualToString:", v9) & 1) == 0)
+    text = [(UILabel *)self->_titleView text];
+    v9 = text;
+    if (text && [text length] && (objc_msgSend(v4, "isEqualToString:", v9) & 1) == 0)
     {
       [(UIButtonLegacyVisualProvider *)self _beginTitleAnimation];
     }
@@ -198,11 +198,11 @@
       }
 
       titleView = self->_titleView;
-      v11 = [(UIButton *)self->_button _titleColorForState:v3 suppressTintColorFollowing:0];
+      v11 = [(UIButton *)self->_button _titleColorForState:state suppressTintColorFollowing:0];
       [(UILabel *)titleView setTextColor:v11];
 
       v12 = self->_titleView;
-      v13 = [(UIButton *)self->_button _shadowColorForState:v3];
+      v13 = [(UIButton *)self->_button _shadowColorForState:state];
       [(UILabel *)v12 setShadowColor:v13];
 
       [(UIView *)self->_titleView setHidden:0];
@@ -232,52 +232,52 @@
 
   [(UIImageView *)self->_imageView setSemanticContentAttribute:[(UIView *)self->_button semanticContentAttribute]];
   [(UIImageView *)self->_imageView setContentMode:[(UIButton *)self->_button _imageContentMode]];
-  v17 = [(UIButton *)self->_button _backgroundView];
-  if (v17)
+  _backgroundView = [(UIButton *)self->_button _backgroundView];
+  if (_backgroundView)
   {
-    v7 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    v8 = v7;
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    v8 = effectiveContentView;
     v9 = self->_imageView;
-    selectionView = v17;
+    selectionView = _backgroundView;
   }
 
   else
   {
     if (!self->_selectionView)
     {
-      v13 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
+      contentBackdropView = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
 
-      v14 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-      v8 = v14;
+      effectiveContentView2 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+      v8 = effectiveContentView2;
       v15 = self->_imageView;
-      if (v13)
+      if (contentBackdropView)
       {
-        v16 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
-        [v8 insertSubview:v15 above:v16];
+        contentBackdropView2 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
+        [v8 insertSubview:v15 above:contentBackdropView2];
       }
 
       else
       {
-        [v14 insertSubview:self->_imageView atIndex:0];
+        [effectiveContentView2 insertSubview:self->_imageView atIndex:0];
       }
 
       goto LABEL_7;
     }
 
-    v7 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    v8 = v7;
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    v8 = effectiveContentView;
     v9 = self->_imageView;
     selectionView = self->_selectionView;
   }
 
-  [v7 insertSubview:v9 aboveSubview:selectionView];
+  [effectiveContentView insertSubview:v9 aboveSubview:selectionView];
 LABEL_7:
 
   v11 = [(UIView *)self->_button viewWithTag:1886548836];
   if (v11)
   {
-    v12 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    [v12 insertSubview:v11 belowSubview:self->_imageView];
+    effectiveContentView3 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    [effectiveContentView3 insertSubview:v11 belowSubview:self->_imageView];
   }
 }
 
@@ -298,18 +298,18 @@ LABEL_7:
       return;
     }
 
-    v8 = [(UIImageView *)self->_imageView _defaultRenderingMode];
+    _defaultRenderingMode = [(UIImageView *)self->_imageView _defaultRenderingMode];
 
-    if (v8 != 2)
+    if (_defaultRenderingMode != 2)
     {
       return;
     }
   }
 
   [(UIButton *)self->_button setNeedsLayout];
-  v9 = [(UIView *)self->_button window];
+  window = [(UIView *)self->_button window];
 
-  if (v9)
+  if (window)
   {
     [(UIButtonLegacyVisualProvider *)self _updateTitleView];
 
@@ -321,14 +321,14 @@ LABEL_7:
 {
   if ((_UISolariumMetricsEnabled() & 1) == 0)
   {
-    v3 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
-    v4 = v3;
-    if (v3)
+    contentBackdropView = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
+    v4 = contentBackdropView;
+    if (contentBackdropView)
     {
-      v7 = v3;
-      v5 = [v3 isHidden];
+      v7 = contentBackdropView;
+      isHidden = [contentBackdropView isHidden];
       v4 = v7;
-      if ((v5 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         button = self->_button;
         [(UIView *)button bounds];
@@ -342,14 +342,14 @@ LABEL_7:
 
 - (void)_updateImageView
 {
-  v3 = [(UIControl *)self->_button state];
+  state = [(UIControl *)self->_button state];
   v30 = 0;
-  v4 = [(UIButton *)self->_button _imageForState:v3 applyingConfiguration:0 usesImageForNormalState:&v30 + 1];
+  v4 = [(UIButton *)self->_button _imageForState:state applyingConfiguration:0 usesImageForNormalState:&v30 + 1];
   v5 = [(UIImageView *)self->_imageView _checkImageForAdaptation:v4 hasAdapted:&v30];
-  v6 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
   v7 = v4;
   v8 = v7;
-  if (v6 == v7)
+  if (image == v7)
   {
     v10 = 1;
   }
@@ -358,7 +358,7 @@ LABEL_7:
   {
     if (v7)
     {
-      v9 = v6 == 0;
+      v9 = image == 0;
     }
 
     else
@@ -373,14 +373,14 @@ LABEL_7:
 
     else
     {
-      v10 = [v6 isEqual:v7];
+      v10 = [image isEqual:v7];
     }
   }
 
   if (v8)
   {
     [(UIButtonLegacyVisualProvider *)self _setupImageView];
-    v11 = [(UIButton *)self->_button _preferredConfigurationForState:v3];
+    v11 = [(UIButton *)self->_button _preferredConfigurationForState:state];
     [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v11];
 
     if ((v30 & 1) == 0)
@@ -388,9 +388,9 @@ LABEL_7:
       [(UIImageView *)self->_imageView setImage:v8];
       if ((v30 & 0x100) == 0 && UIButtonTypeIsModernCircleButton([(UIButton *)self->_button buttonType]))
       {
-        v12 = [(UIView *)self->_button traitCollection];
-        v13 = [v8 traitCollection];
-        v14 = [v12 isEqual:v13];
+        traitCollection = [(UIView *)self->_button traitCollection];
+        traitCollection2 = [v8 traitCollection];
+        v14 = [traitCollection isEqual:traitCollection2];
 
         if ((v14 & 1) == 0)
         {
@@ -413,10 +413,10 @@ LABEL_7:
     [(UIImageView *)self->_imageView setDrawMode:v15];
     if ([(UIButton *)self->_button _isModernButton]|| [(UIButton *)self->_button _isCarPlaySystemTypeButton])
     {
-      v16 = [(UIButton *)self->_button _imageColorForState:v3];
-      v17 = [(UIView *)self->_imageView tintColor];
-      v18 = v17;
-      if (v17 != v16 && ([v17 isEqual:v16] & 1) == 0)
+      v16 = [(UIButton *)self->_button _imageColorForState:state];
+      tintColor = [(UIView *)self->_imageView tintColor];
+      v18 = tintColor;
+      if (tintColor != v16 && ([tintColor isEqual:v16] & 1) == 0)
       {
         [(UIView *)self->_imageView setTintColor:v16];
       }
@@ -428,9 +428,9 @@ LABEL_7:
       imageView = self->_imageView;
       if ((*&button->_buttonFlags & 0x10) != 0)
       {
-        v23 = [(UIControl *)button isEnabled];
+        isEnabled = [(UIControl *)button isEnabled];
         v22 = 0.25;
-        if (v23)
+        if (isEnabled)
         {
           v22 = 1.0;
         }
@@ -448,8 +448,8 @@ LABEL_7:
     if (*(&v24->_buttonFlags + 3))
     {
       backgroundView = self->_backgroundView;
-      v26 = [(UIView *)v24 traitCollection];
-      [(UIImageView *)backgroundView traitCollectionDidChange:v26];
+      traitCollection3 = [(UIView *)v24 traitCollection];
+      [(UIImageView *)backgroundView traitCollectionDidChange:traitCollection3];
 
       *&self->_button->_buttonFlags &= ~0x1000000uLL;
     }
@@ -457,7 +457,7 @@ LABEL_7:
 
   else if (self->_imageView)
   {
-    v19 = [(UIButton *)self->_button _preferredConfigurationForState:v3];
+    v19 = [(UIButton *)self->_button _preferredConfigurationForState:state];
     [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v19];
 
     [(UIImageView *)self->_imageView setHidden:1];
@@ -473,28 +473,28 @@ LABEL_7:
   if ([(UIControl *)v27 _allowsSymbolAnimations])
   {
     v28 = self->_imageView;
-    v29 = [MEMORY[0x1E6982290] scaleDownEffect];
-    if (v3)
+    scaleDownEffect = [MEMORY[0x1E6982290] scaleDownEffect];
+    if (state)
     {
-      [(UIImageView *)v28 addSymbolEffect:v29];
+      [(UIImageView *)v28 addSymbolEffect:scaleDownEffect];
     }
 
     else
     {
-      [(UIImageView *)v28 removeSymbolEffectOfType:v29];
+      [(UIImageView *)v28 removeSymbolEffectOfType:scaleDownEffect];
     }
   }
 }
 
 - (BOOL)_wantsContentBackdropView
 {
-  v3 = [(UIButton *)self->_button _shouldHaveFloatingAppearance];
-  if (v3)
+  _shouldHaveFloatingAppearance = [(UIButton *)self->_button _shouldHaveFloatingAppearance];
+  if (_shouldHaveFloatingAppearance)
   {
     return (*(&self->_button->_buttonFlags + 3) >> 4) & 1;
   }
 
-  return v3;
+  return _shouldHaveFloatingAppearance;
 }
 
 - (void)_layoutBackgroundImageView
@@ -550,20 +550,20 @@ LABEL_7:
     [(UIVisualEffectView *)self->_contentBackdropView setAllowsDithering:0];
     if (_UISolariumMetricsEnabled())
     {
-      v9 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-      [v9 setSecondaryBackdropView:self->_contentBackdropView];
+      _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+      [_floatingContentView setSecondaryBackdropView:self->_contentBackdropView];
     }
 
     else
     {
       v10 = self->_contentBackdropView;
-      v11 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-      [v11 cornerRadius];
+      _floatingContentView2 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+      [_floatingContentView2 cornerRadius];
       [(UIVisualEffectView *)v10 _setCornerRadius:?];
 
-      v9 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-      v12 = [v9 visualEffectContainerView];
-      [v12 addSubview:self->_contentBackdropView];
+      _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+      visualEffectContainerView = [_floatingContentView visualEffectContainerView];
+      [visualEffectContainerView addSubview:self->_contentBackdropView];
     }
   }
 
@@ -579,10 +579,10 @@ LABEL_7:
 
 - (void)layoutSubviews
 {
-  v3 = [(UIControl *)self->_button state];
-  v4 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+  state = [(UIControl *)self->_button state];
+  _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
   [(UIView *)self->_button bounds];
-  [v4 setFrame:?];
+  [_floatingContentView setFrame:?];
 
   [(UIButtonLegacyVisualProvider *)self _updateContentBackdropView];
   [(UIButtonLegacyVisualProvider *)self _layoutContentBackdropView];
@@ -600,12 +600,12 @@ LABEL_7:
   [(UIButton *)self->_button pressFeedbackPosition];
   [v5 setCenter:?];
   [v5 setHidden:(*&self->_button->_buttonFlags & 0x20) == 0];
-  v6 = [(UIButton *)self->_button _hasDrawingStyle];
+  _hasDrawingStyle = [(UIButton *)self->_button _hasDrawingStyle];
   maskAnimationView = self->_maskAnimationView;
-  if (v6)
+  if (_hasDrawingStyle)
   {
     [(UIView *)maskAnimationView setHidden:0];
-    [(UIButtonLegacyVisualProvider *)self _setupDrawingStyleForState:v3];
+    [(UIButtonLegacyVisualProvider *)self _setupDrawingStyleForState:state];
   }
 
   else if (maskAnimationView)
@@ -615,19 +615,19 @@ LABEL_7:
 
   if ([(UIButtonLegacyVisualProvider *)self _shouldUpdatePressedness])
   {
-    [(UIButtonLegacyVisualProvider *)self _updateSelectionViewForState:v3];
-    [(UIButtonLegacyVisualProvider *)self _setupPressednessForState:v3];
+    [(UIButtonLegacyVisualProvider *)self _updateSelectionViewForState:state];
+    [(UIButtonLegacyVisualProvider *)self _setupPressednessForState:state];
   }
 
-  self->_button->_lastDrawingControlState = v3;
+  self->_button->_lastDrawingControlState = state;
   *&self->_button->_buttonFlags &= ~0x40000000uLL;
-  v8 = [(UIControl *)self->_button _safeHoverStyle];
-  [v8 _invalidateAutomaticHoverShape];
+  _safeHoverStyle = [(UIControl *)self->_button _safeHoverStyle];
+  [_safeHoverStyle _invalidateAutomaticHoverShape];
 
   v9 = +[_UIButtonSettingsDomain rootSettings];
-  v10 = [v9 highlightMode];
+  highlightMode = [v9 highlightMode];
 
-  if (!v10)
+  if (!highlightMode)
   {
     goto LABEL_18;
   }
@@ -640,9 +640,9 @@ LABEL_7:
   if (isKindOfClass)
   {
     v14 = +[_UIButtonSettingsDomain rootSettings];
-    v15 = [v14 highlightIgnoresBars];
+    highlightIgnoresBars = [v14 highlightIgnoresBars];
 
-    if (v15)
+    if (highlightIgnoresBars)
     {
       goto LABEL_18;
     }
@@ -651,9 +651,9 @@ LABEL_7:
   else if (v12 != v13)
   {
     v16 = +[_UIButtonSettingsDomain rootSettings];
-    v17 = [v16 highlightSubclasses];
+    highlightSubclasses = [v16 highlightSubclasses];
 
-    if (!v17)
+    if (!highlightSubclasses)
     {
 LABEL_18:
       highlightLayer = self->_highlightLayer;
@@ -673,19 +673,19 @@ LABEL_18:
 
 - (void)_updateBackgroundImageView
 {
-  v3 = [(UIControl *)self->_button state];
+  state = [(UIControl *)self->_button state];
   v14 = 0;
-  v4 = [(UIButton *)self->_button _backgroundForState:v3 usesBackgroundForNormalState:&v14];
+  v4 = [(UIButton *)self->_button _backgroundForState:state usesBackgroundForNormalState:&v14];
   v5 = [(UIImageView *)self->_backgroundView _checkImageForAdaptation:v4 hasAdapted:0];
   if (v4)
   {
-    v6 = [(UIButtonLegacyVisualProvider *)self _setupBackgroundView];
+    _setupBackgroundView = [(UIButtonLegacyVisualProvider *)self _setupBackgroundView];
     [(UIImageView *)self->_backgroundView setImage:v4];
     if ((v14 & 1) == 0 && UIButtonTypeIsModernCircleButton([(UIButton *)self->_button buttonType]))
     {
-      v7 = [(UIView *)self->_button traitCollection];
-      v8 = [v4 traitCollection];
-      v9 = [v7 isEqual:v8];
+      traitCollection = [(UIView *)self->_button traitCollection];
+      traitCollection2 = [v4 traitCollection];
+      v9 = [traitCollection isEqual:traitCollection2];
 
       if ((v9 & 1) == 0)
       {
@@ -709,8 +709,8 @@ LABEL_18:
     if ((*(&button->_buttonFlags + 3) & 2) != 0)
     {
       backgroundView = self->_backgroundView;
-      v13 = [(UIView *)button traitCollection];
-      [(UIImageView *)backgroundView traitCollectionDidChange:v13];
+      traitCollection3 = [(UIView *)button traitCollection];
+      [(UIImageView *)backgroundView traitCollectionDidChange:traitCollection3];
 
       *&self->_button->_buttonFlags &= ~0x2000000uLL;
     }
@@ -840,8 +840,8 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v8 = [(UIView *)button traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  traitCollection = [(UIView *)button traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v10 = self->_button;
   v11 = (*&v10->_buttonFlags >> 6);
@@ -857,7 +857,7 @@ LABEL_18:
   {
     v6 = 3.0;
     v5 = 2.0;
-    if (v9 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v4 = 2.0;
       goto LABEL_10;
@@ -872,7 +872,7 @@ LABEL_15:
 
   if (v11 == 2)
   {
-    if (v9 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v4 = 2.0;
       v5 = 3.0;
@@ -918,61 +918,61 @@ LABEL_18:
 
 - (id)_viewForBaselineLayout
 {
-  v3 = [(UIButtonLegacyVisualProvider *)self _titleOrImageViewForBaselineLayout];
-  if (!v3)
+  _titleOrImageViewForBaselineLayout = [(UIButtonLegacyVisualProvider *)self _titleOrImageViewForBaselineLayout];
+  if (!_titleOrImageViewForBaselineLayout)
   {
     if ([(UIButton *)self->_button _likelyToHaveTitle])
     {
       [(UIButtonLegacyVisualProvider *)self _setupTitleViewRequestingLayout:0];
-      v3 = [(UIButton *)self->_button _titleView];
+      _titleOrImageViewForBaselineLayout = [(UIButton *)self->_button _titleView];
     }
 
     else
     {
-      v3 = 0;
+      _titleOrImageViewForBaselineLayout = 0;
     }
   }
 
-  return v3;
+  return _titleOrImageViewForBaselineLayout;
 }
 
 - (void)updateConstraints
 {
-  v3 = [(UIButtonLegacyVisualProvider *)self _titleOrImageViewForBaselineLayout];
-  v4 = v3;
-  if (v3 && ([v3 translatesAutoresizingMaskIntoConstraints] & 1) == 0 && !self->_contentConstraints)
+  _titleOrImageViewForBaselineLayout = [(UIButtonLegacyVisualProvider *)self _titleOrImageViewForBaselineLayout];
+  v4 = _titleOrImageViewForBaselineLayout;
+  if (_titleOrImageViewForBaselineLayout && ([_titleOrImageViewForBaselineLayout translatesAutoresizingMaskIntoConstraints] & 1) == 0 && !self->_contentConstraints)
   {
     v104 = [(UIButton *)self->_button _imageForState:[(UIControl *)self->_button state] applyingConfiguration:0 usesImageForNormalState:0];
     if (v104)
     {
-      v5 = [(UIButton *)self->_button _imageView];
+      _imageView = [(UIButton *)self->_button _imageView];
     }
 
     else
     {
-      v5 = 0;
+      _imageView = 0;
     }
 
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_button contentHuggingPriorityForAxis:0];
     *&v7 = v6 + -1.0;
-    [v5 setContentCompressionResistancePriority:0 forAxis:v7];
+    [_imageView setContentCompressionResistancePriority:0 forAxis:v7];
     [(UIView *)self->_button contentHuggingPriorityForAxis:1];
     *&v9 = v8 + -1.0;
-    [v5 setContentCompressionResistancePriority:1 forAxis:v9];
+    [_imageView setContentCompressionResistancePriority:1 forAxis:v9];
     [(UIView *)self->_button contentCompressionResistancePriorityForAxis:0];
     *&v11 = v10 + -1.0;
-    [v5 setContentHuggingPriority:0 forAxis:v11];
+    [_imageView setContentHuggingPriority:0 forAxis:v11];
     [(UIView *)self->_button contentCompressionResistancePriorityForAxis:1];
     *&v13 = v12 + -1.0;
-    [v5 setContentHuggingPriority:1 forAxis:v13];
+    [_imageView setContentHuggingPriority:1 forAxis:v13];
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15 = 0;
     v16 = 0;
-    v103 = v5;
-    if (v5)
+    v103 = _imageView;
+    if (_imageView)
     {
-      v17 = v4 == v5;
+      v17 = v4 == _imageView;
     }
 
     else
@@ -995,8 +995,8 @@ LABEL_18:
         v15 = 0;
       }
 
-      v19 = [(UIControl *)self->_button contentHorizontalAlignment];
-      if (v16 || v19)
+      contentHorizontalAlignment = [(UIControl *)self->_button contentHorizontalAlignment];
+      if (v16 || contentHorizontalAlignment)
       {
         if ([(UIControl *)self->_button contentHorizontalAlignment])
         {
@@ -1026,7 +1026,7 @@ LABEL_18:
     firstValue = v16;
     v101 = v15;
     v102 = v14;
-    v98 = [UIApp userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
     [(UIButton *)self->_button _combinedContentPaddingInsets];
     v23 = v22;
     v25 = v24;
@@ -1069,7 +1069,7 @@ LABEL_18:
     *&v56 = v95 + v41;
     v57 = [MEMORY[0x1E696AD98] numberWithFloat:v56];
     v58 = v32 + v41;
-    if (v98 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v58 = v36 + v96;
     }
@@ -1093,11 +1093,11 @@ LABEL_18:
       [v61 addEntriesFromDictionary:v63];
     }
 
-    v64 = [(UIControl *)self->_button effectiveContentHorizontalAlignment];
+    effectiveContentHorizontalAlignment = [(UIControl *)self->_button effectiveContentHorizontalAlignment];
     v65 = v106;
-    if (v64 > UIControlContentHorizontalAlignmentLeft)
+    if (effectiveContentHorizontalAlignment > UIControlContentHorizontalAlignmentLeft)
     {
-      if (v64 == UIControlContentHorizontalAlignmentRight)
+      if (effectiveContentHorizontalAlignment == UIControlContentHorizontalAlignmentRight)
       {
         v66 = @"|-(>=leftImageInset)-[imageView]-(interImageTitleSpace)-[layoutView]-(rightTitleInset)-|";
         if (v4 == v103)
@@ -1109,7 +1109,7 @@ LABEL_18:
         goto LABEL_48;
       }
 
-      if (v64 == UIControlContentHorizontalAlignmentFill)
+      if (effectiveContentHorizontalAlignment == UIControlContentHorizontalAlignmentFill)
       {
         if (v103)
         {
@@ -1147,9 +1147,9 @@ LABEL_18:
       }
     }
 
-    else if (v64)
+    else if (effectiveContentHorizontalAlignment)
     {
-      if (v64 == UIControlContentHorizontalAlignmentLeft)
+      if (effectiveContentHorizontalAlignment == UIControlContentHorizontalAlignmentLeft)
       {
         v66 = @"|-(leftImageInset)-[imageView]-(interImageTitleSpace)-[layoutView]-(>=rightTitleInset)-|";
         if (v4 == v103)
@@ -1184,12 +1184,12 @@ LABEL_51:
         [v102 addObjectsFromArray:v75];
 
 LABEL_59:
-        v82 = [(UIControl *)self->_button effectiveContentVerticalAlignment];
-        if (v82 > 2)
+        effectiveContentVerticalAlignment = [(UIControl *)self->_button effectiveContentVerticalAlignment];
+        if (effectiveContentVerticalAlignment > 2)
         {
-          if ((v82 - 4) >= 2)
+          if ((effectiveContentVerticalAlignment - 4) >= 2)
           {
-            if (v82 != 3)
+            if (effectiveContentVerticalAlignment != 3)
             {
               goto LABEL_76;
             }
@@ -1200,11 +1200,11 @@ LABEL_59:
           }
         }
 
-        else if (v82)
+        else if (effectiveContentVerticalAlignment)
         {
-          if (v82 != 1)
+          if (effectiveContentVerticalAlignment != 1)
           {
-            if (v82 == 2)
+            if (effectiveContentVerticalAlignment == 2)
             {
               v83 = @"V:|-(>=topTitleInset)-[layoutView]-(bottomTitleInset)-|";
               v84 = @"V:|-(>=topImageInset)-[imageView]-(bottomImageInset)-|";
@@ -1302,11 +1302,11 @@ LABEL_77:
 
 - (id)_titleOrImageViewForBaselineLayout
 {
-  v4 = [(UIControl *)self->_button state];
-  v5 = [(UIButton *)self->_button _imageForState:v4 applyingConfiguration:0 usesImageForNormalState:0];
+  state = [(UIControl *)self->_button state];
+  v5 = [(UIButton *)self->_button _imageForState:state applyingConfiguration:0 usesImageForNormalState:0];
   if (!-[UIButton _canHaveTitle](self->_button, "_canHaveTitle") && ![v5 hasBaseline])
   {
-    v7 = 0;
+    _imageView = 0;
     goto LABEL_13;
   }
 
@@ -1315,20 +1315,20 @@ LABEL_77:
     [(UIButtonLegacyVisualProvider *)self _setupImageView];
   }
 
-  v6 = [(UIButton *)self->_button titleForState:v4];
+  v6 = [(UIButton *)self->_button titleForState:state];
   if (!v6)
   {
-    v2 = [(UIButton *)self->_button _attributedTitleForState:v4];
+    v2 = [(UIButton *)self->_button _attributedTitleForState:state];
     if (!v2)
     {
-      v7 = [(UIButton *)self->_button _imageView];
+      _imageView = [(UIButton *)self->_button _imageView];
 LABEL_11:
 
       goto LABEL_12;
     }
   }
 
-  v7 = [(UIButton *)self->_button _titleView];
+  _imageView = [(UIButton *)self->_button _titleView];
   if (!v6)
   {
     goto LABEL_11;
@@ -1342,12 +1342,12 @@ LABEL_12:
   v11 = v10 + -0.5;
   v12 = fmax(v11, 0.5);
   *&v11 = v9;
-  [v7 setContentCompressionResistancePriority:0 forAxis:v11];
+  [_imageView setContentCompressionResistancePriority:0 forAxis:v11];
   *&v13 = v12;
-  [v7 setContentCompressionResistancePriority:1 forAxis:v13];
+  [_imageView setContentCompressionResistancePriority:1 forAxis:v13];
 LABEL_13:
 
-  return v7;
+  return _imageView;
 }
 
 - (int64_t)lineBreakMode
@@ -1400,17 +1400,17 @@ LABEL_13:
     [UIView performWithoutAnimation:v16];
     [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:self->_backgroundView background:1];
     selectionView = self->_selectionView;
-    v13 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    v14 = v13;
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    v14 = effectiveContentView;
     backgroundView = self->_backgroundView;
     if (selectionView)
     {
-      [v13 insertSubview:backgroundView aboveSubview:self->_selectionView];
+      [effectiveContentView insertSubview:backgroundView aboveSubview:self->_selectionView];
     }
 
     else
     {
-      [v13 insertSubview:backgroundView atIndex:0];
+      [effectiveContentView insertSubview:backgroundView atIndex:0];
     }
 
     v4 = self->_backgroundView;
@@ -1451,7 +1451,7 @@ void __52__UIButtonLegacyVisualProvider__setupBackgroundView__block_invoke(uint6
           v7[2] = __52__UIButtonLegacyVisualProvider__beginTitleAnimation__block_invoke_2;
           v7[3] = &unk_1E70F3C60;
           v8 = v5;
-          v9 = self;
+          selfCopy = self;
           v6 = v5;
           [UIView animateWithDuration:327684 delay:v10 options:v7 animations:0.17 completion:0.0];
         }
@@ -1471,8 +1471,8 @@ void __52__UIButtonLegacyVisualProvider__setupBackgroundView__block_invoke(uint6
     [(_UIButtonMaskAnimationView *)self->_maskAnimationView setDelegate:self];
     [(UIView *)self->_maskAnimationView setUserInteractionEnabled:0];
     [(_UIButtonMaskAnimationView *)self->_maskAnimationView setHardEdge:[(UIButton *)self->_button _externalFlatEdge]];
-    v6 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    [v6 insertSubview:self->_maskAnimationView atIndex:0];
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    [effectiveContentView insertSubview:self->_maskAnimationView atIndex:0];
   }
 }
 
@@ -1483,18 +1483,18 @@ void __52__UIButtonLegacyVisualProvider__setupBackgroundView__block_invoke(uint6
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIButton *)self->_button _externalFlatEdge];
+  _externalFlatEdge = [(UIButton *)self->_button _externalFlatEdge];
   [(UIButton *)self->_button _highlightCornerRadius];
-  if (v11 > 3)
+  if (_externalFlatEdge > 3)
   {
     v15 = v10 + v12;
     v16 = v8 + v12;
-    if (v11 != 8)
+    if (_externalFlatEdge != 8)
     {
       v16 = v8;
     }
 
-    if (v11 == 4)
+    if (_externalFlatEdge == 4)
     {
       v10 = v15;
     }
@@ -1505,7 +1505,7 @@ void __52__UIButtonLegacyVisualProvider__setupBackgroundView__block_invoke(uint6
     }
   }
 
-  else if (v11 == 1)
+  else if (_externalFlatEdge == 1)
   {
     v6 = v6 - v12;
     v10 = v10 + v12;
@@ -1515,7 +1515,7 @@ void __52__UIButtonLegacyVisualProvider__setupBackgroundView__block_invoke(uint6
   {
     v13 = v4 - v12;
     v14 = v8 + v12;
-    if (v11 == 2)
+    if (_externalFlatEdge == 2)
     {
       v8 = v14;
       v4 = v13;
@@ -1631,8 +1631,8 @@ void __52__UIButtonLegacyVisualProvider__setupBackgroundView__block_invoke(uint6
     goto LABEL_8;
   }
 
-  v3 = [(UIView *)self->_maskAnimationView layer];
-  v4 = [v3 animationForKey:@"borderWidth"];
+  layer = [(UIView *)self->_maskAnimationView layer];
+  v4 = [layer animationForKey:@"borderWidth"];
   if (!v4)
   {
     [(_UIButtonMaskAnimationView *)self->_maskAnimationView borderWidth];
@@ -1648,32 +1648,32 @@ LABEL_9:
     }
   }
 
-  v6 = [(UIButton *)self->_button _isCarPlaySystemTypeButton];
+  _isCarPlaySystemTypeButton = [(UIButton *)self->_button _isCarPlaySystemTypeButton];
 
-  [(UIImageView *)self->_imageView _setMasksTemplateImages:!v6];
-  [(UIImageView *)self->_backgroundView _setMasksTemplateImages:!v6];
-  if (v6 || [(UIButton *)self->_button _hasHighlightColor])
+  [(UIImageView *)self->_imageView _setMasksTemplateImages:!_isCarPlaySystemTypeButton];
+  [(UIImageView *)self->_backgroundView _setMasksTemplateImages:!_isCarPlaySystemTypeButton];
+  if (_isCarPlaySystemTypeButton || [(UIButton *)self->_button _hasHighlightColor])
   {
     goto LABEL_9;
   }
 
   v7 = ![(UIButton *)self->_button _isCarPlaySystemTypeButton];
 LABEL_10:
-  v8 = [(UIView *)self->_titleView layer];
-  v9 = [v8 compositingFilter];
+  layer2 = [(UIView *)self->_titleView layer];
+  compositingFilter = [layer2 compositingFilter];
 
-  if (v7 && !v9)
+  if (v7 && !compositingFilter)
   {
-    v12 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D98]];
-    v10 = [(UIView *)self->_titleView layer];
-    [v10 setCompositingFilter:v12];
+    layer4 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D98]];
+    layer3 = [(UIView *)self->_titleView layer];
+    [layer3 setCompositingFilter:layer4];
 
 LABEL_18:
 
     return;
   }
 
-  if (v9)
+  if (compositingFilter)
   {
     v11 = v7;
   }
@@ -1685,49 +1685,49 @@ LABEL_18:
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(UIView *)self->_titleView layer];
-    [v12 setCompositingFilter:0];
+    layer4 = [(UIView *)self->_titleView layer];
+    [layer4 setCompositingFilter:0];
     goto LABEL_18;
   }
 }
 
-+ (id)visualProviderForButton:(id)a3
++ (id)visualProviderForButton:(id)button
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (void)setReversesTitleShadowWhenHighlighted:(BOOL)a3
+- (void)setReversesTitleShadowWhenHighlighted:(BOOL)highlighted
 {
   titleView = self->_titleView;
-  if (a3)
+  if (highlighted)
   {
-    *&a3 = [(UIControl *)self->_button isHighlighted];
+    *&highlighted = [(UIControl *)self->_button isHighlighted];
   }
 
-  [(UILabel *)titleView setReverseShadow:a3];
+  [(UILabel *)titleView setReverseShadow:highlighted];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
-  v5 = [(UIButton *)self->_button _backgroundView];
-  [v5 setSemanticContentAttribute:a3];
+  _backgroundView = [(UIButton *)self->_button _backgroundView];
+  [_backgroundView setSemanticContentAttribute:attribute];
 
-  v6 = [(UIButton *)self->_button _imageView];
-  [v6 setSemanticContentAttribute:a3];
+  _imageView = [(UIButton *)self->_button _imageView];
+  [_imageView setSemanticContentAttribute:attribute];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-  [v4 setControlState:-[UIControl state](self->_button animated:{"state"), +[UIView _isInAnimationBlock](UIView, "_isInAnimationBlock")}];
+  _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+  [_floatingContentView setControlState:-[UIControl state](self->_button animated:{"state"), +[UIView _isInAnimationBlock](UIView, "_isInAnimationBlock")}];
 }
 
-- (void)populateArchivedSubviews:(id)a3
+- (void)populateArchivedSubviews:(id)subviews
 {
   v8[7] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subviewsCopy = subviews;
   v8[5] = [(UIView *)self->_button viewWithTag:1886548836, self->_titleView, self->_imageView, self->_backgroundView, self->_maskAnimationView, self->_selectionView];
   v5 = self->_contentBackdropView;
   v6 = 0;
@@ -1736,7 +1736,7 @@ LABEL_18:
   {
     if (v8[v6])
     {
-      [v4 removeObject:?];
+      [subviewsCopy removeObject:?];
     }
 
     ++v6;
@@ -1750,15 +1750,15 @@ LABEL_18:
 
 - (id)encodableSubviews
 {
-  v2 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-  v3 = [v2 subviews];
+  effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+  subviews = [effectiveContentView subviews];
 
-  return v3;
+  return subviews;
 }
 
-- (void)cleanupForVisualProvider:(id)a3
+- (void)cleanupForVisualProvider:(id)provider
 {
-  v17 = a3;
+  providerCopy = provider;
   [(UIView *)self->_backgroundView removeFromSuperview];
   if (_UISolariumMetricsEnabled())
   {
@@ -1777,7 +1777,7 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v17;
+    v4 = providerCopy;
     objc_storeStrong(v4 + 2, self->_backgroundView);
     objc_storeStrong(v4 + 3, self->_floatingContentView);
     objc_storeStrong(v4 + 4, self->_contentBackdropView);
@@ -1789,11 +1789,11 @@ LABEL_18:
     WeakRetained = objc_loadWeakRetained(&self->_effectiveContentView);
     objc_storeWeak(v4 + 10, WeakRetained);
 
-    v6 = [v4 effectiveContentView];
-    [v6 addSubview:self->_backgroundView];
+    effectiveContentView = [v4 effectiveContentView];
+    [effectiveContentView addSubview:self->_backgroundView];
 
-    v7 = [v4 effectiveContentView];
-    [v7 addSubview:self->_floatingContentView];
+    effectiveContentView2 = [v4 effectiveContentView];
+    [effectiveContentView2 addSubview:self->_floatingContentView];
 
     if (_UISolariumMetricsEnabled())
     {
@@ -1802,19 +1802,19 @@ LABEL_18:
 
     else
     {
-      v8 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-      v9 = [v8 visualEffectContainerView];
-      [v9 addSubview:self->_contentBackdropView];
+      _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+      visualEffectContainerView = [_floatingContentView visualEffectContainerView];
+      [visualEffectContainerView addSubview:self->_contentBackdropView];
     }
 
-    v10 = [v4 effectiveContentView];
-    [v10 addSubview:self->_titleView];
+    effectiveContentView3 = [v4 effectiveContentView];
+    [effectiveContentView3 addSubview:self->_titleView];
 
-    v11 = [v4 effectiveContentView];
-    [v11 addSubview:self->_imageView];
+    effectiveContentView4 = [v4 effectiveContentView];
+    [effectiveContentView4 addSubview:self->_imageView];
 
-    v12 = [v4 effectiveContentView];
-    [v12 addSubview:self->_selectionView];
+    effectiveContentView5 = [v4 effectiveContentView];
+    [effectiveContentView5 addSubview:self->_selectionView];
   }
 
   [(CALayer *)self->_highlightLayer removeFromSuperlayer];
@@ -1832,19 +1832,19 @@ LABEL_18:
   [v16 removeFromSuperview];
 }
 
-- (void)setFont:(id)a3 isDefaultForIdiom:(BOOL)a4
+- (void)setFont:(id)font isDefaultForIdiom:(BOOL)idiom
 {
-  v4 = a4;
-  v6 = a3;
+  idiomCopy = idiom;
+  fontCopy = font;
   titleView = self->_titleView;
   if (titleView)
   {
-    v16 = v6;
-    v8 = [(UILabel *)titleView font];
+    v16 = fontCopy;
+    font = [(UILabel *)titleView font];
     v9 = self->_titleView;
     if (v9)
     {
-      v10 = (v16 | v8) == 0;
+      v10 = (v16 | font) == 0;
     }
 
     else
@@ -1859,8 +1859,8 @@ LABEL_18:
 
     else
     {
-      v13 = [v8 isEqual:?];
-      [(UILabel *)self->_titleView _setFont:v16 isDefaultForIdiom:v4];
+      v13 = [font isEqual:?];
+      [(UILabel *)self->_titleView _setFont:v16 isDefaultForIdiom:idiomCopy];
       if ((v13 & 1) == 0)
       {
         [(UIView *)self->_button invalidateIntrinsicContentSize];
@@ -1870,15 +1870,15 @@ LABEL_18:
 
   else
   {
-    if (v6)
+    if (fontCopy)
     {
       goto LABEL_16;
     }
 
-    v11 = [(UIView *)self->_button traitCollection];
-    v12 = [v11 userInterfaceIdiom];
+    traitCollection = [(UIView *)self->_button traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v12 == 6)
+    if (userInterfaceIdiom == 6)
     {
       [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
     }
@@ -1887,39 +1887,39 @@ LABEL_18:
     {
       +[(UILabel *)UIButtonLabel];
     }
-    v6 = ;
-    if (v6)
+    fontCopy = ;
+    if (fontCopy)
     {
 LABEL_16:
-      v16 = v6;
-      [(UIButton *)self->_button _setLazyTitleViewFont:v6 isDefaultForIdiom:v4];
+      v16 = fontCopy;
+      [(UIButton *)self->_button _setLazyTitleViewFont:fontCopy isDefaultForIdiom:idiomCopy];
     }
 
     else
     {
       v16 = [(UIButton *)self->_button _lazyTitleViewFontIsDefaultForIdiom:0];
-      v14 = [v16 fontName];
+      fontName = [v16 fontName];
       [v16 pointSize];
-      NSLog(&cfstr_NilPassedToUib.isa, v14, v15);
+      NSLog(&cfstr_NilPassedToUib.isa, fontName, v15);
     }
   }
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
   titleView = self->_titleView;
-  if (a3 != 5 && !titleView)
+  if (mode != 5 && !titleView)
   {
     [(UIButtonLegacyVisualProvider *)self _setupTitleView];
     titleView = self->_titleView;
   }
 
-  v6 = [(UILabel *)titleView lineBreakMode];
+  lineBreakMode = [(UILabel *)titleView lineBreakMode];
   v7 = self->_titleView;
-  [(UILabel *)v7 setLineBreakMode:a3];
+  [(UILabel *)v7 setLineBreakMode:mode];
   if (v7)
   {
-    v8 = v6 == a3;
+    v8 = lineBreakMode == mode;
   }
 
   else
@@ -1954,14 +1954,14 @@ LABEL_16:
   return result;
 }
 
-- (void)setTitleShadowOffset:(CGSize)a3
+- (void)setTitleShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   titleView = self->_titleView;
   if (!titleView)
   {
-    if (a3.width == *MEMORY[0x1E695F060] && a3.height == *(MEMORY[0x1E695F060] + 8))
+    if (offset.width == *MEMORY[0x1E695F060] && offset.height == *(MEMORY[0x1E695F060] + 8))
     {
       titleView = 0;
     }
@@ -1995,18 +1995,18 @@ LABEL_16:
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   button = self->_button;
   buttonFlags = button->_buttonFlags;
   if ((*&buttonFlags & 0x20) != 0)
   {
-    v8 = [(UIView *)button viewWithTag:1886548836, a4];
-    v9 = v8;
-    if (v4)
+    animated = [(UIView *)button viewWithTag:1886548836, animated];
+    v9 = animated;
+    if (highlightedCopy)
     {
-      [v8 setAlpha:1.0];
+      [animated setAlpha:1.0];
     }
 
     else
@@ -2015,18 +2015,18 @@ LABEL_16:
       v10[1] = 3221225472;
       v10[2] = __56__UIButtonLegacyVisualProvider_setHighlighted_animated___block_invoke;
       v10[3] = &unk_1E70F3590;
-      v11 = v8;
+      v11 = animated;
       [UIView animateWithDuration:v10 animations:0 completion:0.25];
     }
 
     buttonFlags = self->_button->_buttonFlags;
   }
 
-  [(UILabel *)self->_titleView setReverseShadow:*&buttonFlags & v4, a4];
+  [(UILabel *)self->_titleView setReverseShadow:*&buttonFlags & highlightedCopy, animated];
   [(UIButton *)self->_button setNeedsLayout];
 }
 
-- (void)setShowsTouchWhenHighlighted:(BOOL)a3
+- (void)setShowsTouchWhenHighlighted:(BOOL)highlighted
 {
   v4 = [(UIView *)self->_button viewWithTag:1886548836];
   buttonFlags = self->_button->_buttonFlags;
@@ -2056,9 +2056,9 @@ LABEL_16:
     [(UIView *)v13 setUserInteractionEnabled:0];
     [(UIView *)v13 setOpaque:0];
     [(UIView *)v13 setTag:1886548836];
-    v8 = [(UIControl *)self->_button isHighlighted];
+    isHighlighted = [(UIControl *)self->_button isHighlighted];
     v9 = 0.0;
-    if (v8)
+    if (isHighlighted)
     {
       v9 = 1.0;
     }
@@ -2067,16 +2067,16 @@ LABEL_16:
     [(UIButton *)self->_button pressFeedbackPosition];
     [(UIImageView *)v13 setCenter:?];
     imageView = self->_imageView;
-    v11 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    v12 = v11;
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    v12 = effectiveContentView;
     if (imageView)
     {
-      [v11 insertSubview:v13 belowSubview:self->_imageView];
+      [effectiveContentView insertSubview:v13 belowSubview:self->_imageView];
     }
 
     else
     {
-      [v11 addSubview:v13];
+      [effectiveContentView addSubview:v13];
     }
 
     [(UIButton *)self->_button setNeedsLayout];
@@ -2086,7 +2086,7 @@ LABEL_16:
 LABEL_13:
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v5 = self->_button;
   v9[0] = MEMORY[0x1E69E9820];
@@ -2094,7 +2094,7 @@ LABEL_13:
   v9[2] = __86__UIButtonLegacyVisualProvider_contextMenuInteraction_configurationForMenuAtLocation___block_invoke;
   v9[3] = &unk_1E70F46B8;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v5;
   v7 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:v9];
 
@@ -2166,42 +2166,42 @@ id __86__UIButtonLegacyVisualProvider_contextMenuInteraction_configurationForMen
   return v4;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   button = self->_button;
   imageView = self->_imageView;
   titleView = self->_titleView;
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = _UIControlMenuSupportTargetedPreviewOverViews(button, titleView, imageView);
-  v8 = [v7 target];
-  v9 = [v8 container];
+  target = [v7 target];
+  container = [target container];
 
-  v10 = [v7 view];
-  [v10 bounds];
+  view = [v7 view];
+  [view bounds];
   v12 = v11;
   v14 = v13;
-  v15 = [v7 target];
-  [v15 center];
+  target2 = [v7 target];
+  [target2 center];
   v17 = round(v16 - v14 * 0.5);
   v19 = round(v18 - v12 * 0.5);
-  v20 = [v9 _window];
-  [v9 convertRect:v20 toView:{v19, v17, v12, v14}];
+  _window = [container _window];
+  [container convertRect:_window toView:{v19, v17, v12, v14}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  LODWORD(v10) = [v6 prefersHorizontalAttachment];
-  v29 = [v9 _window];
-  v30 = v29;
-  if (v10)
+  LODWORD(view) = [configurationCopy prefersHorizontalAttachment];
+  _window2 = [container _window];
+  v30 = _window2;
+  if (view)
   {
-    v31 = _UIControlMenuAttachmentPointForRectInContainerForHorizontalAttachment(v29, v22, v24, v26, v28);
+    v31 = _UIControlMenuAttachmentPointForRectInContainerForHorizontalAttachment(_window2, v22, v24, v26, v28);
   }
 
   else
   {
-    v31 = _UIControlMenuAttachmentPointForRectInContainer(v29, v22, v24, v26, v28);
+    v31 = _UIControlMenuAttachmentPointForRectInContainer(_window2, v22, v24, v26, v28);
   }
 
   v33 = v31;
@@ -2214,40 +2214,40 @@ id __86__UIButtonLegacyVisualProvider_contextMenuInteraction_configurationForMen
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 updateStyleForMenuWithConfiguration:(id)a4 style:(id)a5
+- (void)contextMenuInteraction:(id)interaction updateStyleForMenuWithConfiguration:(id)configuration style:(id)style
 {
-  v7 = a5;
-  if (v7)
+  styleCopy = style;
+  if (styleCopy)
   {
-    v18 = v7;
+    v18 = styleCopy;
     button = self->_button;
     imageView = self->_imageView;
     titleView = self->_titleView;
-    v11 = a4;
+    configurationCopy = configuration;
     v12 = _UIControlMenuSupportTargetedPreviewOverViews(button, titleView, imageView);
-    [(UIButton *)self->_button menuAttachmentPointForConfiguration:v11];
+    [(UIButton *)self->_button menuAttachmentPointForConfiguration:configurationCopy];
     v14 = v13;
     v16 = v15;
-    LODWORD(button) = [v11 prefersHorizontalAttachment];
+    LODWORD(button) = [configurationCopy prefersHorizontalAttachment];
 
-    v17 = [(UIButtonLegacyVisualProvider *)self button];
+    button = [(UIButtonLegacyVisualProvider *)self button];
     if (button)
     {
-      _UIControlMenuSupportUpdateStyleWithHorizontalPreference(v18, v17, v12, v14, v16);
+      _UIControlMenuSupportUpdateStyleWithHorizontalPreference(v18, button, v12, v14, v16);
     }
 
     else
     {
-      _UIControlMenuSupportUpdateStyle(v18, v17, v12, v14, v16);
+      _UIControlMenuSupportUpdateStyle(v18, button, v12, v14, v16);
     }
 
-    v7 = v18;
+    styleCopy = v18;
   }
 }
 
-- (id)titleViewCreateIfNeeded:(BOOL)a3
+- (id)titleViewCreateIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     if (![(UIButton *)self->_button _canHaveTitle])
     {
@@ -2273,9 +2273,9 @@ LABEL_8:
   return v4;
 }
 
-- (id)imageViewCreateIfNeeded:(BOOL)a3
+- (id)imageViewCreateIfNeeded:(BOOL)needed
 {
-  if (!a3)
+  if (!needed)
   {
     p_imageView = &self->_imageView;
 LABEL_9:
@@ -2308,7 +2308,7 @@ LABEL_10:
   return v7;
 }
 
-- (void)setContentHorizontalAlignment:(int64_t)a3
+- (void)setContentHorizontalAlignment:(int64_t)alignment
 {
   [(UILabel *)self->_titleView setTextAlignment:[UIButtonLegacyVisualProvider _NSTextAlignmentForUIControlContentHorizontalAlignment:[(UIControl *)self->_button effectiveContentHorizontalAlignment]]];
   [(UIButtonLegacyVisualProvider *)self _invalidateContentConstraints];
@@ -2333,8 +2333,8 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    v5 = [(UIView *)self->_button layer];
-    [v5 cornerRadius];
+    layer = [(UIView *)self->_button layer];
+    [layer cornerRadius];
 
     [(UIButton *)self->_button _selectedIndicatorBounds];
     v4 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
@@ -2348,44 +2348,44 @@ LABEL_6:
   return v3;
 }
 
-- (id)pointerEffectWithPreview:(id)a3
+- (id)pointerEffectWithPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(UIButton *)self->_button buttonType];
+  previewCopy = preview;
+  buttonType = [(UIButton *)self->_button buttonType];
   v6 = objc_opt_class();
-  if (v5 == UIButtonTypeClose || ((v7 = v6, [(UIButton *)self->_button _isiOSSystemProvidedButton]) || v5 == UIButtonTypeCustom) && ([(UIButton *)self->_button _hasVisibleDefaultSelectionIndicator]|| _buttonBackgroundColorIndicatesLiftEffect(self->_button)))
+  if (buttonType == UIButtonTypeClose || ((v7 = v6, [(UIButton *)self->_button _isiOSSystemProvidedButton]) || buttonType == UIButtonTypeCustom) && ([(UIButton *)self->_button _hasVisibleDefaultSelectionIndicator]|| _buttonBackgroundColorIndicatesLiftEffect(self->_button)))
   {
     v7 = objc_opt_class();
   }
 
-  v8 = [v7 effectWithPreview:v4];
+  v8 = [v7 effectWithPreview:previewCopy];
 
   return v8;
 }
 
-- (CGRect)_visualBoundsWithCornerRadius:(double *)a3 hasProposal:(BOOL)a4 shouldUseProposal:(BOOL *)a5
+- (CGRect)_visualBoundsWithCornerRadius:(double *)radius hasProposal:(BOOL)proposal shouldUseProposal:(BOOL *)useProposal
 {
-  v6 = a4;
+  proposalCopy = proposal;
   v111 = -1.0;
-  if (a5)
+  if (useProposal)
   {
-    *a5 = 0;
+    *useProposal = 0;
   }
 
   v10 = +[_UIPointerSettingsDomain rootSettings];
-  v11 = [v10 buttonSettings];
+  buttonSettings = [v10 buttonSettings];
 
-  v12 = [(UIButton *)self->_button buttonType];
-  if (v12 <= 117)
+  buttonType = [(UIButton *)self->_button buttonType];
+  if (buttonType <= 117)
   {
-    if ((v12 - 2) >= 4)
+    if ((buttonType - 2) >= 4)
     {
-      if (v12 < UIButtonTypeDetailDisclosure)
+      if (buttonType < UIButtonTypeDetailDisclosure)
       {
         goto LABEL_15;
       }
 
-      if (v12 != UIButtonTypeClose)
+      if (buttonType != UIButtonTypeClose)
       {
 LABEL_23:
         [(UIView *)self->_button bounds];
@@ -2393,9 +2393,9 @@ LABEL_23:
       }
 
       button = self->_button;
-      [v11 closeButtonOutset];
+      [buttonSettings closeButtonOutset];
       v15 = v38;
-      [v11 closeButtonMinSize];
+      [buttonSettings closeButtonMinSize];
 LABEL_9:
       __roundCursorForBounds(button, &v111, v15, v16);
 LABEL_10:
@@ -2408,18 +2408,18 @@ LABEL_10:
 
 LABEL_8:
     button = self->_button;
-    [v11 roundButtonOutset];
+    [buttonSettings roundButtonOutset];
     v15 = v14;
-    [v11 roundButtonMinSize];
+    [buttonSettings roundButtonMinSize];
     goto LABEL_9;
   }
 
-  if ((v12 - 118) < 6)
+  if ((buttonType - 118) < 6)
   {
     goto LABEL_8;
   }
 
-  if ((v12 - 124) >= 2)
+  if ((buttonType - 124) >= 2)
   {
     goto LABEL_23;
   }
@@ -2433,30 +2433,30 @@ LABEL_15:
     v22 = v31;
     v23 = v32;
     v24 = v33;
-    v34 = [(UIView *)v29 layer];
+    layer = [(UIView *)v29 layer];
 
-    [v34 cornerRadius];
+    [layer cornerRadius];
     v36 = v35;
 
     v111 = fmax(v36, 4.0);
     goto LABEL_11;
   }
 
-  if (v6)
+  if (proposalCopy)
   {
-    if (!a5)
+    if (!useProposal)
     {
-      v106 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v106 handleFailureInMethod:a2 object:self file:@"UIButtonLegacyVisualProvider.m" lineNumber:816 description:{@"When hasProposal is YES, shouldUseProposal has to be defined."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIButtonLegacyVisualProvider.m" lineNumber:816 description:{@"When hasProposal is YES, shouldUseProposal has to be defined."}];
     }
 
-    *a5 = 1;
+    *useProposal = 1;
     v37 = self->_button;
     goto LABEL_25;
   }
 
-  v39 = [(UIView *)self->_button backgroundColor];
-  [v39 alphaComponent];
+  backgroundColor = [(UIView *)self->_button backgroundColor];
+  [backgroundColor alphaComponent];
   v41 = v40;
 
   v37 = self->_button;
@@ -2468,7 +2468,7 @@ LABEL_25:
   }
 
   v42 = v37;
-  v43 = v11;
+  v43 = buttonSettings;
   [(UIView *)v42 bounds];
   [(UIButton *)v42 contentRectForBounds:?];
   v45 = v44;
@@ -2487,10 +2487,10 @@ LABEL_25:
   v59 = v113.size.width;
   v60 = v113.size.height;
   v61 = CGRectIsEmpty(v113);
-  v62 = [(UIView *)v42 effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(UIView *)v42 effectiveUserInterfaceLayoutDirection];
   if (!v61 && !IsEmpty)
   {
-    v63 = v62 == 1;
+    v63 = effectiveUserInterfaceLayoutDirection == 1;
     v114.origin.x = x;
     v114.origin.y = y;
     v114.size.width = width;
@@ -2533,7 +2533,7 @@ LABEL_34:
 
   if (!v61)
   {
-    v90 = v62 == 1;
+    v90 = effectiveUserInterfaceLayoutDirection == 1;
     [v43 imageButtonOutsetLeading];
     v109 = v91;
     [v43 imageButtonOutsetTrailing];
@@ -2560,7 +2560,7 @@ LABEL_34:
 
   if (!IsEmpty)
   {
-    v63 = v62 == 1;
+    v63 = effectiveUserInterfaceLayoutDirection == 1;
     [v43 textButtonOutsetLeading];
     v110 = v100;
     [v43 textButtonOutsetTrailing];
@@ -2589,9 +2589,9 @@ LABEL_35:
   v24 = v89;
 
 LABEL_11:
-  if (a3)
+  if (radius)
   {
-    *a3 = v111;
+    *radius = v111;
   }
 
   v25 = v21;
@@ -2605,9 +2605,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)visualBoundsWithCornerRadius:(double *)a3
+- (CGRect)visualBoundsWithCornerRadius:(double *)radius
 {
-  [(UIButtonLegacyVisualProvider *)self _visualBoundsWithCornerRadius:a3 hasProposal:0 shouldUseProposal:0];
+  [(UIButtonLegacyVisualProvider *)self _visualBoundsWithCornerRadius:radius hasProposal:0 shouldUseProposal:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2615,21 +2615,21 @@ LABEL_11:
   return result;
 }
 
-- (id)pointerShapeInContainer:(id)a3 proposal:(id)a4
+- (id)pointerShapeInContainer:(id)container proposal:(id)proposal
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  proposalCopy = proposal;
   v21 = 0;
   v20 = 0.0;
-  [(UIButtonLegacyVisualProvider *)self _visualBoundsWithCornerRadius:&v20 hasProposal:v7 != 0 shouldUseProposal:&v21];
+  [(UIButtonLegacyVisualProvider *)self _visualBoundsWithCornerRadius:&v20 hasProposal:proposalCopy != 0 shouldUseProposal:&v21];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  if (v21 != 1 || (v7[2](v7), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v21 != 1 || (proposalCopy[2](proposalCopy), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v17 = v20;
-    [(UIView *)self->_button convertRect:v6 toView:v9, v11, v13, v15, *&v20];
+    [(UIView *)self->_button convertRect:containerCopy toView:v9, v11, v13, v15, *&v20];
     if (v17 >= 0.0)
     {
       [UIPointerShape shapeWithRoundedRect:"shapeWithRoundedRect:cornerRadius:" cornerRadius:?];
@@ -2649,20 +2649,20 @@ LABEL_11:
 
 - (id)preferredHoverEffect
 {
-  v3 = [(UIButton *)self->_button buttonType];
-  if (v3 == UIButtonTypeClose)
+  buttonType = [(UIButton *)self->_button buttonType];
+  if (buttonType == UIButtonTypeClose)
   {
     goto LABEL_2;
   }
 
-  v5 = v3;
-  v6 = [(UIView *)self->_button traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  v5 = buttonType;
+  traitCollection = [(UIView *)self->_button traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v8 = [(UIButton *)self->_button _isiOSSystemProvidedButton];
-  if (v7 == 6)
+  _isiOSSystemProvidedButton = [(UIButton *)self->_button _isiOSSystemProvidedButton];
+  if (userInterfaceIdiom == 6)
   {
-    if (v8)
+    if (_isiOSSystemProvidedButton)
     {
 LABEL_2:
       v4 = +[UIHoverLiftEffect effect];
@@ -2672,7 +2672,7 @@ LABEL_2:
 
   else
   {
-    v9 = !v8;
+    v9 = !_isiOSSystemProvidedButton;
     if (v5 == UIButtonTypeCustom)
     {
       v9 = 0;
@@ -2690,12 +2690,12 @@ LABEL_12:
   return v4;
 }
 
-- (CGRect)backgroundRectForBounds:(CGRect)a3
+- (CGRect)backgroundRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   button = self->_button;
   if (UIButtonTypeIsModernCircleButton((*&button->_buttonFlags >> 6)))
   {
@@ -2717,12 +2717,12 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = [(UIButton *)self->_button backgroundImageForState:0];
   if (v8)
   {
@@ -2766,18 +2766,18 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_titleRectForContentRect:(CGRect)a3 calculatePositionForEmptyTitle:(BOOL)a4
+- (CGRect)_titleRectForContentRect:(CGRect)rect calculatePositionForEmptyTitle:(BOOL)title
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(UIControl *)self->_button state];
-  if (!v4)
+  titleCopy = title;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  state = [(UIControl *)self->_button state];
+  if (!titleCopy)
   {
-    v11 = v10;
-    v12 = [(UIButton *)self->_button _titleForState:v10];
+    v11 = state;
+    v12 = [(UIButton *)self->_button _titleForState:state];
     v13 = v12;
     if (!v12 || ![v12 length])
     {
@@ -2797,7 +2797,7 @@ LABEL_12:
   v16 = *(MEMORY[0x1E695F058] + 16);
   v22 = *MEMORY[0x1E695F058];
   v23 = v16;
-  [(UIButtonLegacyVisualProvider *)self _deriveTitleRect:&v22 imageRect:0 fromContentRect:v4 calculatePositionForEmptyTitle:x, y, width, height];
+  [(UIButtonLegacyVisualProvider *)self _deriveTitleRect:&v22 imageRect:0 fromContentRect:titleCopy calculatePositionForEmptyTitle:x, y, width, height];
 LABEL_9:
   v18 = *(&v22 + 1);
   v17 = *&v22;
@@ -2821,9 +2821,9 @@ LABEL_9:
   return titleView;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  [(UIButtonLegacyVisualProvider *)self _titleRectForContentRect:0 calculatePositionForEmptyTitle:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButtonLegacyVisualProvider *)self _titleRectForContentRect:0 calculatePositionForEmptyTitle:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2831,12 +2831,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
   v3 = *(MEMORY[0x1E695F058] + 16);
   v8 = *MEMORY[0x1E695F058];
   v9 = v3;
-  [(UIButtonLegacyVisualProvider *)self _deriveTitleRect:0 imageRect:&v8 fromContentRect:0 calculatePositionForEmptyTitle:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButtonLegacyVisualProvider *)self _deriveTitleRect:0 imageRect:&v8 fromContentRect:0 calculatePositionForEmptyTitle:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = *(&v8 + 1);
   v4 = *&v8;
   v7 = *(&v9 + 1);
@@ -2848,16 +2848,16 @@ LABEL_9:
   return result;
 }
 
-- (void)_deriveTitleRect:(CGRect *)a3 imageRect:(CGRect *)a4 fromContentRect:(CGRect)a5 calculatePositionForEmptyTitle:(BOOL)a6
+- (void)_deriveTitleRect:(CGRect *)rect imageRect:(CGRect *)imageRect fromContentRect:(CGRect)contentRect calculatePositionForEmptyTitle:(BOOL)title
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  titleCopy = title;
+  height = contentRect.size.height;
+  width = contentRect.size.width;
+  y = contentRect.origin.y;
+  x = contentRect.origin.x;
   v180[2] = *MEMORY[0x1E69E9840];
-  v14 = [(UIControl *)self->_button state];
-  v15 = [(UIControl *)self->_button effectiveContentVerticalAlignment];
+  state = [(UIControl *)self->_button state];
+  effectiveContentVerticalAlignment = [(UIControl *)self->_button effectiveContentVerticalAlignment];
   [(UIButton *)self->_button imageEdgeInsets];
   v17 = x + v16;
   v19 = y + v18;
@@ -2871,7 +2871,7 @@ LABEL_9:
   v175 = v28;
   v29 = *MEMORY[0x1E695F060];
   v30 = *(MEMORY[0x1E695F060] + 8);
-  v31 = [(UIButton *)self->_button _imageForState:v14 applyingConfiguration:1 usesImageForNormalState:0];
+  v31 = [(UIButton *)self->_button _imageForState:state applyingConfiguration:1 usesImageForNormalState:0];
   v32 = 0.0;
   v177 = v30;
   v33 = v29;
@@ -2883,11 +2883,11 @@ LABEL_9:
     if (self->_imageView && [v31 renderingMode] != 1)
     {
       v172 = v29;
-      v36 = a4;
-      v37 = [(UIImageView *)self->_imageView _currentImage];
-      v38 = [(UIImageView *)self->_imageView image];
-      v39 = [v31 _primitiveImageAsset];
-      if (([v31 isEqual:v38] & 1) != 0 || (objc_msgSend(v31, "isEqual:", v37) & 1) != 0 || v39 && (objc_msgSend(v38, "_primitiveImageAsset"), v170 = objc_claimAutoreleasedReturnValue(), v170, v39 == v170))
+      imageRectCopy = imageRect;
+      _currentImage = [(UIImageView *)self->_imageView _currentImage];
+      image = [(UIImageView *)self->_imageView image];
+      _primitiveImageAsset = [v31 _primitiveImageAsset];
+      if (([v31 isEqual:image] & 1) != 0 || (objc_msgSend(v31, "isEqual:", _currentImage) & 1) != 0 || _primitiveImageAsset && (objc_msgSend(image, "_primitiveImageAsset"), v170 = objc_claimAutoreleasedReturnValue(), v170, _primitiveImageAsset == v170))
       {
         [(UIImageView *)self->_imageView _edgeInsetsForEffects];
         v33 = v33 + v40 + v41;
@@ -2900,7 +2900,7 @@ LABEL_9:
 
       v32 = v46;
       v33 = v44;
-      a4 = v36;
+      imageRect = imageRectCopy;
       v29 = v172;
     }
 
@@ -2911,7 +2911,7 @@ LABEL_9:
   }
 
   v166 = v32;
-  v47 = v15 & 0xFFFFFFFFFFFFFFFELL;
+  v47 = effectiveContentVerticalAlignment & 0xFFFFFFFFFFFFFFFELL;
   v173 = v33;
   if (v33 >= v27)
   {
@@ -2948,12 +2948,12 @@ LABEL_9:
     v64 = 0.0;
   }
 
-  v65 = [(UIButton *)self->_button _attributedTitleForState:v14];
+  v65 = [(UIButton *)self->_button _attributedTitleForState:state];
   if (![v65 length])
   {
-    v75 = [(UIButton *)self->_button _titleForState:v14];
+    v75 = [(UIButton *)self->_button _titleForState:state];
     v76 = v75;
-    if (v6 && ![v75 length])
+    if (titleCopy && ![v75 length])
     {
       v99 = @"X";
 
@@ -2973,11 +2973,11 @@ LABEL_9:
 
     v164 = v77;
     titleView = self->_titleView;
-    v163 = a4;
+    imageRectCopy2 = imageRect;
     if (titleView)
     {
       buttonFlags = self->_button->_buttonFlags;
-      v162 = a3;
+      rectCopy = rect;
       if ((*&buttonFlags & 0x800000) != 0)
       {
         v80 = 0;
@@ -2986,8 +2986,8 @@ LABEL_9:
 
       else
       {
-        v165 = [(UILabel *)titleView text];
-        if ([v165 isEqualToString:v76])
+        text = [(UILabel *)titleView text];
+        if ([text isEqualToString:v76])
         {
           v80 = 0;
         }
@@ -3001,9 +3001,9 @@ LABEL_9:
       }
 
       v92 = v47 != 4;
-      v93 = v47 != 4 || v15 == 4;
-      v94 = v15 != 4 || v92;
-      v95 = [(UILabel *)v81 numberOfLines];
+      v93 = v47 != 4 || effectiveContentVerticalAlignment == 4;
+      v94 = effectiveContentVerticalAlignment != 4 || v92;
+      numberOfLines = [(UILabel *)v81 numberOfLines];
       if (v93)
       {
         v96 = 0;
@@ -3024,10 +3024,10 @@ LABEL_9:
         v97 = &v178;
       }
 
-      v29 = _UIComputedSizeForLabel(titleView, v80, 0, v95, 0, v96, v97, v64, 1.79769313e308);
+      v29 = _UIComputedSizeForLabel(titleView, v80, 0, numberOfLines, 0, v96, v97, v64, 1.79769313e308);
       v30 = v98;
-      a3 = v162;
-      a4 = v163;
+      rect = rectCopy;
+      imageRect = imageRectCopy2;
       v77 = v164;
       if ((*&buttonFlags & 0x800000) != 0)
       {
@@ -3039,20 +3039,20 @@ LABEL_9:
     {
       v90 = objc_opt_new();
       [v90 setMaximumNumberOfLines:0];
-      v165 = v90;
+      text = v90;
       [v90 setWrapsForTruncationMode:1];
       if (v47 == 4)
       {
-        v91 = [v31 hasBaseline];
+        hasBaseline = [v31 hasBaseline];
       }
 
       else
       {
-        v91 = 0;
+        hasBaseline = 0;
       }
 
       v77 = v164;
-      [v165 setWantsBaselineOffset:v91];
+      [text setWantsBaselineOffset:hasBaseline];
       if ((*(&self->_button->_buttonFlags + 2) & 0x80) != 0)
       {
         v104 = 0;
@@ -3080,9 +3080,9 @@ LABEL_9:
         [v105 setLineBreakMode:{-[UIButton lineBreakMode](self->_button, "lineBreakMode")}];
         v106 = objc_alloc(MEMORY[0x1E696AD40]);
         v179[0] = *off_1E70EC918;
-        v160 = [(UIButton *)self->_button _font];
+        _font = [(UIButton *)self->_button _font];
         v179[1] = v161;
-        v180[0] = v160;
+        v180[0] = _font;
         v180[1] = v105;
         v107 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v180 forKeys:v179 count:2];
         v104 = [v106 initWithString:v76 attributes:v107];
@@ -3090,25 +3090,25 @@ LABEL_9:
         v77 = v164;
       }
 
-      [v104 boundingRectWithSize:1 options:v165 context:{v64, 1.79769313e308}];
+      [v104 boundingRectWithSize:1 options:text context:{v64, 1.79769313e308}];
       v29 = v108;
       v30 = v109;
       if (v47 == 4)
       {
-        if (v15 == 4)
+        if (effectiveContentVerticalAlignment == 4)
         {
-          [v165 firstBaselineOffset];
+          [text firstBaselineOffset];
         }
 
         else
         {
-          [v165 baselineOffset];
+          [text baselineOffset];
         }
 
         v178 = v110;
       }
 
-      a4 = v163;
+      imageRect = imageRectCopy2;
     }
 
 LABEL_85:
@@ -3145,20 +3145,20 @@ LABEL_91:
     [v76 setWrapsForTruncationMode:1];
     if (v47 == 4)
     {
-      v82 = [v31 hasBaseline];
+      hasBaseline2 = [v31 hasBaseline];
     }
 
     else
     {
-      v82 = 0;
+      hasBaseline2 = 0;
     }
 
-    [v76 setWantsBaselineOffset:v82];
+    [v76 setWantsBaselineOffset:hasBaseline2];
     v83 = +[(UILabel *)UIButtonLabel];
     v84 = [v83 mutableCopy];
 
-    v85 = [(UIButton *)self->_button _font];
-    [v84 setObject:v85 forKey:*off_1E70EC918];
+    _font2 = [(UIButton *)self->_button _font];
+    [v84 setObject:_font2 forKey:*off_1E70EC918];
 
     v86 = -[NSAttributedString _ui_synthesizeAttributedSubstringFromRange:usingDefaultAttributes:](v65, 0, [v65 length], v84);
     [v86 boundingRectWithSize:65 options:v76 context:{v64, 1.79769313e308}];
@@ -3166,7 +3166,7 @@ LABEL_91:
     v30 = v88;
     if (v47 == 4)
     {
-      if (v15 == 4)
+      if (effectiveContentVerticalAlignment == 4)
       {
         [v76 firstBaselineOffset];
       }
@@ -3183,9 +3183,9 @@ LABEL_91:
   }
 
   v67 = v47 != 4;
-  v68 = v47 != 4 || v15 == 4;
-  v69 = v15 != 4 || v67;
-  v70 = [(UILabel *)self->_titleView numberOfLines];
+  v68 = v47 != 4 || effectiveContentVerticalAlignment == 4;
+  v69 = effectiveContentVerticalAlignment != 4 || v67;
+  numberOfLines2 = [(UILabel *)self->_titleView numberOfLines];
   if (v68)
   {
     v71 = 0;
@@ -3206,7 +3206,7 @@ LABEL_91:
     v72 = &v178;
   }
 
-  v73 = _UIComputedSizeForLabel(v66, 0, v65, v70, 0, v71, v72, v64, 1.79769313e308);
+  v73 = _UIComputedSizeForLabel(v66, 0, v65, numberOfLines2, 0, v71, v72, v64, 1.79769313e308);
   v30 = v74;
 LABEL_92:
   v112 = MEMORY[0x1E695F058];
@@ -3216,8 +3216,8 @@ LABEL_92:
   v174 = v115;
   v116 = MEMORY[0x1E695EFF8];
   v117 = *MEMORY[0x1E695EFF8];
-  v118 = [(UIControl *)self->_button effectiveContentHorizontalAlignment];
-  if (v118 == UIControlContentHorizontalAlignmentLeft)
+  effectiveContentHorizontalAlignment = [(UIControl *)self->_button effectiveContentHorizontalAlignment];
+  if (effectiveContentHorizontalAlignment == UIControlContentHorizontalAlignmentLeft)
   {
     v121 = v60;
     v129 = *(&self->_button->super.super._viewFlags + 2);
@@ -3243,7 +3243,7 @@ LABEL_92:
     goto LABEL_111;
   }
 
-  if (v118 == UIControlContentHorizontalAlignmentRight)
+  if (effectiveContentHorizontalAlignment == UIControlContentHorizontalAlignmentRight)
   {
     v126 = v176;
     v127 = v176 + v27;
@@ -3279,7 +3279,7 @@ LABEL_114:
   v119 = v33;
   v120 = v58;
   v121 = v60;
-  if (v118 != UIControlContentHorizontalAlignmentFill)
+  if (effectiveContentHorizontalAlignment != UIControlContentHorizontalAlignmentFill)
   {
     button = self->_button;
     v124 = v119;
@@ -3316,9 +3316,9 @@ LABEL_114:
 LABEL_115:
   v140 = v112[1];
   v141 = *(v116 + 8);
-  if (v15 > 3)
+  if (effectiveContentVerticalAlignment > 3)
   {
-    if ((v15 - 4) >= 2)
+    if ((effectiveContentVerticalAlignment - 4) >= 2)
     {
 LABEL_134:
       v142 = v169;
@@ -3371,16 +3371,16 @@ LABEL_134:
 
   else
   {
-    if (v15 == 1)
+    if (effectiveContentVerticalAlignment == 1)
     {
       v142 = v169;
       v143 = v171;
       goto LABEL_135;
     }
 
-    if (v15 != 2)
+    if (effectiveContentVerticalAlignment != 2)
     {
-      if (v15 == 3)
+      if (effectiveContentVerticalAlignment == 3)
       {
         v174 = v167;
         v142 = v175;
@@ -3407,20 +3407,20 @@ LABEL_135:
   v155 = v154;
   [(UIView *)self->_button _currentScreenScale];
   v157 = UIPointRoundToScale(v125, v121, v156);
-  if (a4)
+  if (imageRect)
   {
-    a4->origin.x = v153;
-    a4->origin.y = v155;
-    a4->size.width = v124;
-    a4->size.height = v142;
+    imageRect->origin.x = v153;
+    imageRect->origin.y = v155;
+    imageRect->size.width = v124;
+    imageRect->size.height = v142;
   }
 
-  if (a3)
+  if (rect)
   {
-    a3->origin.x = v157;
-    a3->origin.y = v158;
-    a3->size.width = v114;
-    a3->size.height = v174;
+    rect->origin.x = v157;
+    rect->origin.y = v158;
+    rect->size.width = v114;
+    rect->size.height = v174;
   }
 }
 
@@ -3442,16 +3442,16 @@ _UIButtonContentCenteringSpacer *__49__UIButtonLegacyVisualProvider_updateConstr
   return v4;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIButtonLegacyVisualProvider *)self _viewForBaselineLayout];
-  v7 = v6;
-  if (v6)
+  height = size.height;
+  width = size.width;
+  _viewForBaselineLayout = [(UIButtonLegacyVisualProvider *)self _viewForBaselineLayout];
+  v7 = _viewForBaselineLayout;
+  if (_viewForBaselineLayout)
   {
     v34 = width;
-    if (v6 == self->_titleView)
+    if (_viewForBaselineLayout == self->_titleView)
     {
       [(UIButtonLegacyVisualProvider *)self _updateTitleView];
       button = self->_button;
@@ -3461,7 +3461,7 @@ _UIButtonContentCenteringSpacer *__49__UIButtonLegacyVisualProvider_updateConstr
 
     else
     {
-      if (v6 != self->_imageView)
+      if (_viewForBaselineLayout != self->_imageView)
       {
         v35 = 0.0;
         v8 = 0.0;
@@ -3519,13 +3519,13 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)_highlightRectForTextRect:(CGRect)a3
+- (CGRect)_highlightRectForTextRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     v8 = *MEMORY[0x1E695F050];
     v9 = *(MEMORY[0x1E695F050] + 8);
@@ -3552,13 +3552,13 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)_highlightRectForImageRect:(CGRect)a3
+- (CGRect)_highlightRectForImageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     v8 = *MEMORY[0x1E695F050];
     v9 = *(MEMORY[0x1E695F050] + 8);
@@ -3595,24 +3595,24 @@ LABEL_10:
   return result;
 }
 
-- (void)intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   imageView = self->_imageView;
   titleView = self->_titleView;
   backgroundView = self->_backgroundView;
-  if (titleView != v4 && imageView != v4 && backgroundView != v4)
+  if (titleView != viewCopy && imageView != viewCopy && backgroundView != viewCopy)
   {
     goto LABEL_29;
   }
 
-  v13 = v4;
-  if (backgroundView == v4 || imageView == v4)
+  v13 = viewCopy;
+  if (backgroundView == viewCopy || imageView == viewCopy)
   {
     if (![(UIButton *)self->_button autosizesToFit])
     {
-      v11 = [(UIView *)self->_button traitCollection];
-      if ([v11 userInterfaceIdiom] != 3)
+      traitCollection = [(UIView *)self->_button traitCollection];
+      if ([traitCollection userInterfaceIdiom] != 3)
       {
 
         goto LABEL_20;
@@ -3637,13 +3637,13 @@ LABEL_20:
   }
 
   [(UIView *)self->_button invalidateIntrinsicContentSize];
-  v4 = v13;
+  viewCopy = v13;
 LABEL_29:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   if (!self->_imageView && [(UIButton *)self->_button _hasImageForProperty:@"image"])
   {
     *&self->_button->_buttonFlags |= 0x1000000uLL;
@@ -3654,54 +3654,54 @@ LABEL_29:
     *&self->_button->_buttonFlags |= 0x2000000uLL;
   }
 
-  v4 = [(UIView *)self->_button _focusSystem];
+  _focusSystem = [(UIView *)self->_button _focusSystem];
 
-  if (v4)
+  if (_focusSystem)
   {
-    v5 = [(UIView *)self->_button traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [(UIView *)self->_button traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v6 == 2 || v6 == 8)
+    if (userInterfaceIdiom == 2 || userInterfaceIdiom == 8)
     {
       [(UIButtonLegacyVisualProvider *)self _updateTitleView];
       [(UIButtonLegacyVisualProvider *)self _updateContentBackdropView];
     }
 
-    else if (v6 == 3)
+    else if (userInterfaceIdiom == 3)
     {
       [(UIButton *)self->_button setNeedsLayout];
     }
   }
 }
 
-- (void)didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5
+- (void)didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy
 {
-  [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:self->_imageView background:0, a5];
+  [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:self->_imageView background:0, hierarchy];
   backgroundView = self->_backgroundView;
 
   [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:backgroundView background:1];
 }
 
-- (CGSize)_intrinsicSizeForTitle:(id)a3 attributedTitle:(id)a4 image:(id)a5 backgroundImage:(id)a6 titlePaddingInsets:(UIEdgeInsets *)a7
+- (CGSize)_intrinsicSizeForTitle:(id)title attributedTitle:(id)attributedTitle image:(id)image backgroundImage:(id)backgroundImage titlePaddingInsets:(UIEdgeInsets *)insets
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a7)
+  titleCopy = title;
+  attributedTitleCopy = attributedTitle;
+  imageCopy = image;
+  backgroundImageCopy = backgroundImage;
+  if (insets)
   {
-    *&a7->top = 0u;
-    *&a7->bottom = 0u;
+    *&insets->top = 0u;
+    *&insets->bottom = 0u;
   }
 
-  v80 = a7;
+  insetsCopy = insets;
   v17 = *MEMORY[0x1E695F060];
   v16 = *(MEMORY[0x1E695F060] + 8);
   v18 = MEMORY[0x1E695EFF8];
-  if (v14)
+  if (imageCopy)
   {
-    [(UIButton *)self->_button _effectiveSizeForImage:v14];
+    [(UIButton *)self->_button _effectiveSizeForImage:imageCopy];
     v20 = v19;
     height = v21;
     if ([(UIButton *)self->_button _hasDrawingStyle])
@@ -3718,14 +3718,14 @@ LABEL_29:
       }
     }
 
-    if ([v14 hasBaseline])
+    if ([imageCopy hasBaseline])
     {
-      [v14 size];
-      [v14 baselineOffsetFromBottom];
+      [imageCopy size];
+      [imageCopy baselineOffsetFromBottom];
       v25 = objc_opt_new();
       v26 = 1;
       [v25 setWantsBaselineOffset:1];
-      if (!v13)
+      if (!attributedTitleCopy)
       {
         goto LABEL_23;
       }
@@ -3735,7 +3735,7 @@ LABEL_29:
     {
       v26 = 0;
       v25 = 0;
-      if (!v13)
+      if (!attributedTitleCopy)
       {
         goto LABEL_23;
       }
@@ -3748,18 +3748,18 @@ LABEL_29:
     v25 = 0;
     v20 = *MEMORY[0x1E695F060];
     height = *(MEMORY[0x1E695F060] + 8);
-    if (!v13)
+    if (!attributedTitleCopy)
     {
       goto LABEL_23;
     }
   }
 
-  if ([v13 length])
+  if ([attributedTitleCopy length])
   {
     if ([(UILabel *)self->_titleView adjustsFontForContentSizeCategory]&& [(UIButton *)self->_button _shouldAdjustToTraitCollection])
     {
-      v27 = [(UIView *)self->_button traitCollection];
-      v28 = [v13 _ui_attributedStringAdjustedToTraitCollection:v27];
+      traitCollection = [(UIView *)self->_button traitCollection];
+      v28 = [attributedTitleCopy _ui_attributedStringAdjustedToTraitCollection:traitCollection];
       v29 = v28;
       if (v28)
       {
@@ -3768,24 +3768,24 @@ LABEL_29:
 
       else
       {
-        v30 = v13;
+        v30 = attributedTitleCopy;
       }
 
-      v31 = v12;
+      v31 = titleCopy;
       v32 = v30;
 
-      v13 = v32;
-      v12 = v31;
+      attributedTitleCopy = v32;
+      titleCopy = v31;
       v18 = MEMORY[0x1E695EFF8];
     }
 
     v33 = +[(UILabel *)UIButtonLabel];
     v34 = [v33 mutableCopy];
 
-    v35 = [(UIButton *)self->_button _font];
-    [v34 setObject:v35 forKey:*off_1E70EC918];
+    _font = [(UIButton *)self->_button _font];
+    [v34 setObject:_font forKey:*off_1E70EC918];
 
-    v36 = -[NSAttributedString _ui_synthesizeAttributedSubstringFromRange:usingDefaultAttributes:](v13, 0, [v13 length], v34);
+    v36 = -[NSAttributedString _ui_synthesizeAttributedSubstringFromRange:usingDefaultAttributes:](attributedTitleCopy, 0, [attributedTitleCopy length], v34);
     [v36 boundingRectWithSize:65 options:v25 context:{3.40282347e38, 3.40282347e38}];
     v38 = v37;
     v16 = v39;
@@ -3797,13 +3797,13 @@ LABEL_29:
   }
 
 LABEL_23:
-  if (v12 && [v12 length])
+  if (titleCopy && [titleCopy length])
   {
     v83 = *off_1E70EC918;
-    v41 = [(UIButton *)self->_button _font];
-    v84[0] = v41;
+    _font2 = [(UIButton *)self->_button _font];
+    v84[0] = _font2;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:&v83 count:1];
-    v43 = v12;
+    v43 = titleCopy;
   }
 
   else
@@ -3817,8 +3817,8 @@ LABEL_23:
     }
 
     v81 = *off_1E70EC918;
-    v41 = [(UIButton *)self->_button _font];
-    v82 = v41;
+    _font2 = [(UIButton *)self->_button _font];
+    v82 = _font2;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
     v43 = &stru_1EFB14550;
   }
@@ -3832,10 +3832,10 @@ LABEL_23:
   v17 = v48;
   v16 = v49;
 LABEL_29:
-  v50 = [(UIButton *)self->_button _hasDrawingStyle];
+  _hasDrawingStyle = [(UIButton *)self->_button _hasDrawingStyle];
   x = *v18;
   y = v18[1];
-  if (v50)
+  if (_hasDrawingStyle)
   {
     [(UIButtonLegacyVisualProvider *)self _highlightRectForTextRect:*v18, v18[1], v17, v16];
     if (v17 < v53)
@@ -3892,27 +3892,27 @@ LABEL_42:
   v65 = v64;
   v67 = v66;
   v69 = v68;
-  if (v14 && (*&self->_button->super.super._viewFlags & 0x400000000000000) != 0 && v12 | v13)
+  if (imageCopy && (*&self->_button->super.super._viewFlags & 0x400000000000000) != 0 && titleCopy | attributedTitleCopy)
   {
     [UIApp userInterfaceLayoutDirection];
     [(UIButton *)self->_button imageEdgeInsets];
     [(UIButton *)self->_button titleEdgeInsets];
   }
 
-  if (v15)
+  if (backgroundImageCopy)
   {
-    if ([v15 _isResizable])
+    if ([backgroundImageCopy _isResizable])
     {
-      [v15 capInsets];
-      [v15 alignmentRectInsets];
+      [backgroundImageCopy capInsets];
+      [backgroundImageCopy alignmentRectInsets];
     }
 
-    [v15 size];
+    [backgroundImageCopy size];
   }
 
   else
   {
-    if (v14)
+    if (imageCopy)
     {
       v70 = 1;
     }
@@ -3924,21 +3924,21 @@ LABEL_42:
 
     if ((v70 & 1) == 0 && v65 == 0.0 && v63 == 0.0 && v69 == 0.0 && v67 == 0.0)
     {
-      v71 = [(UIView *)self->_button traitCollection];
-      v72 = [v71 userInterfaceIdiom];
+      traitCollection2 = [(UIView *)self->_button traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-      if (v80)
+      if (insetsCopy)
       {
         v73 = 6.0;
-        if (v72 == 5)
+        if (userInterfaceIdiom == 5)
         {
           v73 = 5.0;
         }
 
-        v80->top = v73;
-        v80->left = 0.0;
-        v80->bottom = v73;
-        v80->right = 0.0;
+        insetsCopy->top = v73;
+        insetsCopy->left = 0.0;
+        insetsCopy->bottom = v73;
+        insetsCopy->right = 0.0;
       }
     }
   }
@@ -3955,11 +3955,11 @@ LABEL_42:
   return result;
 }
 
-- (CGSize)intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)intrinsicSizeWithinSize:(CGSize)size
 {
   [(UIButton *)self->_button _setInternalTitlePaddingInsets:0.0, 0.0, 0.0, 0.0];
-  v4 = [(UIControl *)self->_button state];
-  v5 = [(UIButton *)self->_button _imageForState:v4 applyingConfiguration:1 usesImageForNormalState:0];
+  state = [(UIControl *)self->_button state];
+  v5 = [(UIButton *)self->_button _imageForState:state applyingConfiguration:1 usesImageForNormalState:0];
   if (v5)
   {
     v6 = v5;
@@ -3978,16 +3978,16 @@ LABEL_42:
     v8 = 0;
   }
 
-  v9 = [(UIButton *)self->_button _titleForState:v4];
-  v10 = [(UIButton *)self->_button _attributedTitleForState:v4];
-  v11 = [(UIButton *)self->_button _backgroundForState:v4 usesBackgroundForNormalState:0];
+  v9 = [(UIButton *)self->_button _titleForState:state];
+  v10 = [(UIButton *)self->_button _attributedTitleForState:state];
+  v11 = [(UIButton *)self->_button _backgroundForState:state usesBackgroundForNormalState:0];
   if (v11)
   {
     v12 = v11;
     backgroundView = self->_backgroundView;
     if (!backgroundView)
     {
-      v14 = [(UIButtonLegacyVisualProvider *)self _setupBackgroundView];
+      _setupBackgroundView = [(UIButtonLegacyVisualProvider *)self _setupBackgroundView];
       backgroundView = self->_backgroundView;
     }
 
@@ -4013,9 +4013,9 @@ LABEL_42:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIButton *)self->_button _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(UIButton *)self->_button _intrinsicSizeWithinSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -4025,8 +4025,8 @@ LABEL_42:
 {
   if (_UISolariumMetricsEnabled())
   {
-    v3 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-    [v3 removeSecondaryBackdropView];
+    _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+    [_floatingContentView removeSecondaryBackdropView];
   }
 
   else
@@ -4038,17 +4038,17 @@ LABEL_42:
   self->_contentBackdropView = 0;
 }
 
-- (void)setVisualEffectViewEnabled:(BOOL)a3 backgroundColor:(id)a4
+- (void)setVisualEffectViewEnabled:(BOOL)enabled backgroundColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__UIButtonLegacyVisualProvider_setVisualEffectViewEnabled_backgroundColor___block_invoke;
   v8[3] = &unk_1E70F5AF0;
-  v11 = a3;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  enabledCopy = enabled;
+  v9 = colorCopy;
+  selfCopy = self;
+  v7 = colorCopy;
   [UIView _performSystemAppearanceModifications:v8];
   [(UIButtonLegacyVisualProvider *)self _updateContentBackdropView];
 }
@@ -4104,13 +4104,13 @@ uint64_t __52__UIButtonLegacyVisualProvider__beginTitleAnimation__block_invoke_2
 {
   if (!self->_highlightLayer)
   {
-    v3 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     highlightLayer = self->_highlightLayer;
-    self->_highlightLayer = v3;
+    self->_highlightLayer = layer;
   }
 
-  v5 = [(UIView *)self->_button layer];
-  [v5 bounds];
+  layer2 = [(UIView *)self->_button layer];
+  [layer2 bounds];
   [(CALayer *)self->_highlightLayer setFrame:?];
 
   v6 = +[_UIButtonSettingsDomain rootSettings];
@@ -4129,29 +4129,29 @@ uint64_t __52__UIButtonLegacyVisualProvider__beginTitleAnimation__block_invoke_2
   v22 = [UIColor colorWithRed:v7 green:v8 blue:1.0 alpha:1.0];
 
   v9 = +[_UIButtonSettingsDomain rootSettings];
-  v10 = [v9 highlightBelow];
+  highlightBelow = [v9 highlightBelow];
 
-  if (v10)
+  if (highlightBelow)
   {
     -[CALayer setBackgroundColor:](self->_highlightLayer, "setBackgroundColor:", [v22 CGColor]);
     [(CALayer *)self->_highlightLayer setBorderColor:0];
     [(CALayer *)self->_highlightLayer setBorderWidth:0.0];
-    v11 = [(UIView *)self->_button subviews];
-    v12 = [v11 firstObject];
+    subviews = [(UIView *)self->_button subviews];
+    firstObject = [subviews firstObject];
 
     objc_opt_class();
     v20 = 0;
-    if ((objc_opt_isKindOfClass() & 1) != 0 || ([(UIView *)v12 _hasTransparentBackground]& 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 || ([(UIView *)firstObject _hasTransparentBackground]& 1) == 0)
     {
       [(UIView *)self->_button bounds];
       v15 = v14;
-      [v12 bounds];
+      [firstObject bounds];
       v13 = v15 - v16;
       if (v15 - v16 <= 0.0)
       {
         [(UIView *)self->_button bounds];
         v18 = v17;
-        [v12 bounds];
+        [firstObject bounds];
         v13 = v18 - v19;
         if (v18 - v19 <= 0.0)
         {
@@ -4160,8 +4160,8 @@ uint64_t __52__UIButtonLegacyVisualProvider__beginTitleAnimation__block_invoke_2
       }
     }
 
-    v21 = [(UIView *)self->_button layer];
-    [v21 insertSublayer:self->_highlightLayer atIndex:v20];
+    layer3 = [(UIView *)self->_button layer];
+    [layer3 insertSublayer:self->_highlightLayer atIndex:v20];
   }
 
   else
@@ -4170,8 +4170,8 @@ uint64_t __52__UIButtonLegacyVisualProvider__beginTitleAnimation__block_invoke_2
     v22 = v22;
     -[CALayer setBorderColor:](self->_highlightLayer, "setBorderColor:", [v22 CGColor]);
     [(CALayer *)self->_highlightLayer setBorderWidth:2.0];
-    v12 = [(UIView *)self->_button layer];
-    [v12 addSublayer:self->_highlightLayer];
+    firstObject = [(UIView *)self->_button layer];
+    [firstObject addSublayer:self->_highlightLayer];
   }
 }
 
@@ -4219,9 +4219,9 @@ void __55__UIButtonLegacyVisualProvider__selectedIndicatorImage__block_invoke()
 - (BOOL)_imageNeedsCompositingModeWhenSelected
 {
   v2 = [(UIButton *)self->_button imageForState:4];
-  v3 = [v2 renderingMode];
+  renderingMode = [v2 renderingMode];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+  return (renderingMode & 0xFFFFFFFFFFFFFFFDLL) == 0;
 }
 
 - (BOOL)_textNeedsCompositingModeWhenSelected
@@ -4242,18 +4242,18 @@ void __55__UIButtonLegacyVisualProvider__selectedIndicatorImage__block_invoke()
   return v4;
 }
 
-- (void)_setupPressednessForState:(unint64_t)a3
+- (void)_setupPressednessForState:(unint64_t)state
 {
   v12[1] = *MEMORY[0x1E69E9840];
   button = self->_button;
-  if (button->_lastDrawingControlState == a3)
+  if (button->_lastDrawingControlState == state)
   {
     return;
   }
 
-  v5 = a3;
-  v6 = [(UIControl *)button _touchHasHighlighted];
-  v7 = [MEMORY[0x1E695DF70] array];
+  stateCopy = state;
+  _touchHasHighlighted = [(UIControl *)button _touchHasHighlighted];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(UIButtonLegacyVisualProvider *)self _isExternalRoundedRectButtonWithPressednessState])
   {
     maskAnimationView = self->_maskAnimationView;
@@ -4265,9 +4265,9 @@ void __55__UIButtonLegacyVisualProvider__selectedIndicatorImage__block_invoke()
 
   else
   {
-    if (self->_titleView && (((v5 & 4) != 0) & v5) == 0 && (*&self->_button->_buttonFlags & 0x800000) == 0)
+    if (self->_titleView && (((stateCopy & 4) != 0) & stateCopy) == 0 && (*&self->_button->_buttonFlags & 0x800000) == 0)
     {
-      [v7 addObject:?];
+      [array addObject:?];
     }
 
     if (!self->_backgroundView || ![(UIButtonLegacyVisualProvider *)self _highlightsBackgroundImage])
@@ -4278,16 +4278,16 @@ void __55__UIButtonLegacyVisualProvider__selectedIndicatorImage__block_invoke()
     maskAnimationView = self->_backgroundView;
   }
 
-  [v7 addObject:maskAnimationView];
+  [array addObject:maskAnimationView];
 LABEL_13:
-  if ([v7 count])
+  if ([array count])
   {
-    [objc_opt_class() _setVisuallyHighlighted:v5 & 1 forViews:v7 initialPress:!v6];
+    [objc_opt_class() _setVisuallyHighlighted:stateCopy & 1 forViews:array initialPress:!_touchHasHighlighted];
   }
 
-  if ((((v5 & 4) != 0) & v5) == 0 && self->_imageView)
+  if ((((stateCopy & 4) != 0) & stateCopy) == 0 && self->_imageView)
   {
-    if (((*&self->_button->_buttonFlags >> 4) & 1 & (v5 >> 1)) != 0)
+    if (((*&self->_button->_buttonFlags >> 4) & 1 & (stateCopy >> 1)) != 0)
     {
       v9 = 0.25;
     }
@@ -4300,10 +4300,10 @@ LABEL_13:
     v10 = objc_opt_class();
     v12[0] = self->_imageView;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v10 _setVisuallyHighlighted:v5 & 1 forViews:v11 initialPress:!v6 baseAlpha:v9];
+    [v10 _setVisuallyHighlighted:stateCopy & 1 forViews:v11 initialPress:!_touchHasHighlighted baseAlpha:v9];
   }
 
-  if (v5)
+  if (stateCopy)
   {
     [(UIControl *)self->_button _setTouchHasHighlighted:1];
   }
@@ -4311,8 +4311,8 @@ LABEL_13:
 
 - (CGRect)_selectedIndicatorBounds
 {
-  v3 = [(UIView *)self->_button traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self->_button traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   button = self->_button;
   [(UIView *)button bounds];
@@ -4329,8 +4329,8 @@ LABEL_13:
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(UILabel *)self->_titleView font];
-    [v29 pointSize];
+    font = [(UILabel *)self->_titleView font];
+    [font pointSize];
 
     UIRoundToViewScale(self->_button);
     v31 = v30;
@@ -4346,7 +4346,7 @@ LABEL_13:
   else
   {
     [(UIButton *)self->_button imageRectForContentRect:v7, v9, v11, v13];
-    if (v4 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v19 = -4.0;
       v20 = -6.0;
@@ -4365,32 +4365,32 @@ LABEL_13:
   return result;
 }
 
-- (void)_updateSelectionViewForState:(unint64_t)a3
+- (void)_updateSelectionViewForState:(unint64_t)state
 {
-  v3 = a3;
-  if ((a3 & 4) != 0 && !self->_selectionView)
+  stateCopy = state;
+  if ((state & 4) != 0 && !self->_selectionView)
   {
-    v5 = [objc_opt_class() _selectedIndicatorImage];
-    v6 = [(UIButton *)self->_button _selectedIndicatorViewWithImage:v5];
+    _selectedIndicatorImage = [objc_opt_class() _selectedIndicatorImage];
+    v6 = [(UIButton *)self->_button _selectedIndicatorViewWithImage:_selectedIndicatorImage];
     selectionView = self->_selectionView;
     self->_selectionView = v6;
 
     [(UIView *)self->_selectionView setAlpha:0.0];
     [(UIView *)self->_selectionView setUserInteractionEnabled:0];
-    v8 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
+    contentBackdropView = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
 
-    v9 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    v10 = v9;
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    v10 = effectiveContentView;
     v11 = self->_selectionView;
-    if (v8)
+    if (contentBackdropView)
     {
-      v12 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
-      [v10 insertSubview:v11 above:v12];
+      contentBackdropView2 = [(UIButtonLegacyVisualProvider *)self contentBackdropView];
+      [v10 insertSubview:v11 above:contentBackdropView2];
     }
 
     else
     {
-      [v9 insertSubview:self->_selectionView atIndex:0];
+      [effectiveContentView insertSubview:self->_selectionView atIndex:0];
     }
   }
 
@@ -4406,12 +4406,12 @@ LABEL_13:
     v28 = v14;
     [UIView performWithoutAnimation:v27];
     v15 = 0.0;
-    if ((v3 & 4) != 0)
+    if ((stateCopy & 4) != 0)
     {
       [(UIButton *)self->_button _selectedIndicatorAlpha];
     }
 
-    if (v3)
+    if (stateCopy)
     {
       v16 = v15 * 0.8;
     }
@@ -4424,7 +4424,7 @@ LABEL_13:
     [(UIView *)self->_selectionView alpha];
     if (v17 != v16)
     {
-      v18 = dbl_18A67BCB0[(v3 & 4) == 0];
+      v18 = dbl_18A67BCB0[(stateCopy & 4) == 0];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block_invoke_2;
@@ -4435,11 +4435,11 @@ LABEL_13:
     }
   }
 
-  if ((v3 & 4) != 0)
+  if ((stateCopy & 4) != 0)
   {
-    v20 = [(UIButtonLegacyVisualProvider *)self _textNeedsCompositingModeWhenSelected];
-    v19 = [(UIButtonLegacyVisualProvider *)self _imageNeedsCompositingModeWhenSelected];
-    if (v20)
+    _textNeedsCompositingModeWhenSelected = [(UIButtonLegacyVisualProvider *)self _textNeedsCompositingModeWhenSelected];
+    _imageNeedsCompositingModeWhenSelected = [(UIButtonLegacyVisualProvider *)self _imageNeedsCompositingModeWhenSelected];
+    if (_textNeedsCompositingModeWhenSelected)
     {
       v21 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
       v22 = 1;
@@ -4449,20 +4449,20 @@ LABEL_13:
 
   else
   {
-    v19 = 0;
+    _imageNeedsCompositingModeWhenSelected = 0;
   }
 
   v22 = 0;
   v21 = 0;
 LABEL_21:
-  v23 = [(UIView *)self->_titleView layer];
-  [v23 setCompositingFilter:v21];
+  layer = [(UIView *)self->_titleView layer];
+  [layer setCompositingFilter:v21];
 
   if (v22)
   {
   }
 
-  if (v19)
+  if (_imageNeedsCompositingModeWhenSelected)
   {
     v24 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
   }
@@ -4472,15 +4472,15 @@ LABEL_21:
     v24 = 0;
   }
 
-  v25 = [(UIView *)self->_imageView layer];
-  [v25 setCompositingFilter:v24];
+  layer2 = [(UIView *)self->_imageView layer];
+  [layer2 setCompositingFilter:v24];
 
-  if (v19)
+  if (_imageNeedsCompositingModeWhenSelected)
   {
   }
 
   [(UIView *)self->_titleView _setOverrideUserInterfaceRenderingMode:v22];
-  [(UIView *)self->_imageView _setOverrideUserInterfaceRenderingMode:v19];
+  [(UIView *)self->_imageView _setOverrideUserInterfaceRenderingMode:_imageNeedsCompositingModeWhenSelected];
 }
 
 uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block_invoke(uint64_t a1)
@@ -4491,9 +4491,9 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
   return [v2 setFrame:?];
 }
 
-- (id)_transitionAnimationWithKeyPath:(id)a3
+- (id)_transitionAnimationWithKeyPath:(id)path
 {
-  v3 = [MEMORY[0x1E6979318] animationWithKeyPath:a3];
+  v3 = [MEMORY[0x1E6979318] animationWithKeyPath:path];
   LODWORD(v4) = 1041812769;
   LODWORD(v5) = 1043018044;
   LODWORD(v6) = 1044413908;
@@ -4510,9 +4510,9 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
   return v3;
 }
 
-- (id)_fadeOutAnimationWithKeyPath:(id)a3
+- (id)_fadeOutAnimationWithKeyPath:(id)path
 {
-  v3 = [MEMORY[0x1E6979318] animationWithKeyPath:a3];
+  v3 = [MEMORY[0x1E6979318] animationWithKeyPath:path];
   LODWORD(v4) = 1050136617;
   LODWORD(v5) = 988616002;
   LODWORD(v6) = 0.25;
@@ -4533,23 +4533,23 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
   return v3;
 }
 
-- (double)_borderWidthForState:(unint64_t)a3 bounds:(CGRect)a4
+- (double)_borderWidthForState:(unint64_t)state bounds:(CGRect)bounds
 {
-  [(UIButton *)self->_button _drawingStrokeForState:a3, a4.origin.x, a4.origin.y];
+  [(UIButton *)self->_button _drawingStrokeForState:state, bounds.origin.x, bounds.origin.y];
   button = self->_button;
 
   UIRoundToViewScale(button);
   return result;
 }
 
-- (void)_setupDrawingStyleForState:(unint64_t)a3
+- (void)_setupDrawingStyleForState:(unint64_t)state
 {
   [(UIButtonLegacyVisualProvider *)self _highlightBoundsForDrawingStyle];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIButton *)self->_button _borderColorForState:a3];
+  v13 = [(UIButton *)self->_button _borderColorForState:state];
   maskAnimationView = self->_maskAnimationView;
   if (maskAnimationView && ([(UIView *)maskAnimationView frame], !CGRectIsEmpty(v86)) && +[UIView areAnimationsEnabled])
   {
@@ -4563,8 +4563,8 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
 
   [(UIButtonLegacyVisualProvider *)self _prepareMaskAnimationViewIfNecessary];
   [(_UIButtonMaskAnimationView *)self->_maskAnimationView setBorderColor:v13];
-  v16 = [(UIView *)self->_maskAnimationView layer];
-  v17 = [v16 presentationLayer];
+  layer = [(UIView *)self->_maskAnimationView layer];
+  presentationLayer = [layer presentationLayer];
 
   [(UIView *)self->_maskAnimationView frame];
   v90.origin.x = v18;
@@ -4579,7 +4579,7 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
   {
     if (v15)
     {
-      [v17 bounds];
+      [presentationLayer bounds];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -4593,10 +4593,10 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
       v32 = [MEMORY[0x1E696B098] valueWithCGRect:{v83, v82, v10, v12}];
       [v30 setToValue:v32];
 
-      v33 = [(UIView *)self->_maskAnimationView layer];
-      [v33 addAnimation:v30 forKey:@"bounds"];
+      layer2 = [(UIView *)self->_maskAnimationView layer];
+      [layer2 addAnimation:v30 forKey:@"bounds"];
 
-      [v17 position];
+      [presentationLayer position];
       v35 = v34;
       v37 = v36;
       v88.origin.x = v6;
@@ -4617,8 +4617,8 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
       v42 = [MEMORY[0x1E696B098] valueWithCGPoint:{MidX, MidY}];
       [v40 setToValue:v42];
 
-      v43 = [(UIView *)self->_maskAnimationView layer];
-      [v43 addAnimation:v40 forKey:@"position"];
+      layer3 = [(UIView *)self->_maskAnimationView layer];
+      [layer3 addAnimation:v40 forKey:@"position"];
     }
 
     [(UIView *)self->_maskAnimationView setFrame:v6, v8, v10, v12];
@@ -4626,14 +4626,14 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
 
   [(UIButton *)self->_button _highlightCornerRadius];
   v45 = v44;
-  v46 = [(UIView *)self->_maskAnimationView layer];
-  [v46 setCornerRadius:v45];
+  layer4 = [(UIView *)self->_maskAnimationView layer];
+  [layer4 setCornerRadius:v45];
 
   [(_UIButtonMaskAnimationView *)self->_maskAnimationView borderWidth];
   v48 = v47;
-  [(UIButtonLegacyVisualProvider *)self _borderWidthForState:a3 bounds:v6, v8, v10, v12];
+  [(UIButtonLegacyVisualProvider *)self _borderWidthForState:state bounds:v6, v8, v10, v12];
   v50 = v49;
-  [v17 borderWidth];
+  [presentationLayer borderWidth];
   v52 = v51;
   [(_UIButtonMaskAnimationView *)self->_maskAnimationView setBorderWidth:v50];
   if (v15)
@@ -4643,8 +4643,8 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
       if (v50 < v48)
       {
         v53 = [(UIButtonLegacyVisualProvider *)self _transitionAnimationWithKeyPath:@"borderWidth"];
-        v62 = [(UIControl *)self->_button _wasLastHighlightSuccessful];
-        v63 = fabs(v50) < 2.22044605e-16 && v62;
+        _wasLastHighlightSuccessful = [(UIControl *)self->_button _wasLastHighlightSuccessful];
+        v63 = fabs(v50) < 2.22044605e-16 && _wasLastHighlightSuccessful;
         if (v63)
         {
           [v53 setRemovedOnCompletion:0];
@@ -4660,15 +4660,15 @@ uint64_t __61__UIButtonLegacyVisualProvider__updateSelectionViewForState___block
         [v53 setDuration:v64];
         v65 = 1;
 LABEL_25:
-        v66 = [(_UIButtonMaskAnimationView *)self->_maskAnimationView borderColor];
-        v67 = [v66 isEqual:v13];
+        borderColor = [(_UIButtonMaskAnimationView *)self->_maskAnimationView borderColor];
+        v67 = [borderColor isEqual:v13];
 
         if ((v67 & 1) == 0)
         {
           if (!v65)
           {
-            v81 = [(UIView *)self->_maskAnimationView layer];
-            [v81 removeAnimationForKey:@"borderColor"];
+            layer5 = [(UIView *)self->_maskAnimationView layer];
+            [layer5 removeAnimationForKey:@"borderColor"];
 
             v84[0] = MEMORY[0x1E69E9820];
             v84[1] = 3221225472;
@@ -4687,13 +4687,13 @@ LABEL_25:
           }
 
           v68 = [(UIButtonLegacyVisualProvider *)self _fadeOutAnimationWithKeyPath:@"borderColor"];
-          v69 = [(UIView *)self->_maskAnimationView layer];
-          v70 = [v69 presentationLayer];
-          [v68 setFromValue:{objc_msgSend(v70, "borderColor")}];
+          layer6 = [(UIView *)self->_maskAnimationView layer];
+          presentationLayer2 = [layer6 presentationLayer];
+          [v68 setFromValue:{objc_msgSend(presentationLayer2, "borderColor")}];
 
           [v68 setToValue:v13];
-          v71 = [(UIView *)self->_maskAnimationView layer];
-          [v71 addAnimation:v68 forKey:@"borderColor"];
+          layer7 = [(UIView *)self->_maskAnimationView layer];
+          [layer7 addAnimation:v68 forKey:@"borderColor"];
 
           [(_UIButtonMaskAnimationView *)self->_maskAnimationView setBorderColor:v13];
         }
@@ -4709,30 +4709,30 @@ LABEL_29:
 
           [v53 setFillMode:*MEMORY[0x1E69797E8]];
           [v53 setDelegate:self->_maskAnimationView];
-          v74 = [(UIView *)self->_maskAnimationView layer];
-          [v74 addAnimation:v53 forKey:@"borderWidth"];
+          layer8 = [(UIView *)self->_maskAnimationView layer];
+          [layer8 addAnimation:v53 forKey:@"borderWidth"];
 
           if (v63)
           {
-            v75 = [(UIButtonLegacyVisualProvider *)self _fadeOutAnimationWithKeyPath:@"opacity"];
-            v76 = [(UIView *)self->_maskAnimationView layer];
-            v77 = [v76 presentationLayer];
+            layer11 = [(UIButtonLegacyVisualProvider *)self _fadeOutAnimationWithKeyPath:@"opacity"];
+            layer9 = [(UIView *)self->_maskAnimationView layer];
+            presentationLayer3 = [layer9 presentationLayer];
 
             v78 = MEMORY[0x1E696AD98];
-            [v77 opacity];
+            [presentationLayer3 opacity];
             v79 = [v78 numberWithFloat:?];
-            [v75 setFromValue:v79];
+            [layer11 setFromValue:v79];
 
-            [v75 setToValue:&unk_1EFE2E518];
-            [v75 setDelegate:self->_maskAnimationView];
-            v80 = [(UIView *)self->_maskAnimationView layer];
-            [v80 addAnimation:v75 forKey:@"opacity"];
+            [layer11 setToValue:&unk_1EFE2E518];
+            [layer11 setDelegate:self->_maskAnimationView];
+            layer10 = [(UIView *)self->_maskAnimationView layer];
+            [layer10 addAnimation:layer11 forKey:@"opacity"];
           }
 
           else
           {
-            v75 = [(UIView *)self->_maskAnimationView layer];
-            [v75 removeAnimationForKey:@"opacity"];
+            layer11 = [(UIView *)self->_maskAnimationView layer];
+            [layer11 removeAnimationForKey:@"opacity"];
           }
         }
 
@@ -4763,17 +4763,17 @@ LABEL_33:
     goto LABEL_25;
   }
 
-  v57 = [(UIView *)self->_maskAnimationView layer];
-  [v57 removeAnimationForKey:@"borderWidth"];
+  layer12 = [(UIView *)self->_maskAnimationView layer];
+  [layer12 removeAnimationForKey:@"borderWidth"];
 
-  v58 = [(UIView *)self->_maskAnimationView layer];
-  [v58 removeAnimationForKey:@"borderColor"];
+  layer13 = [(UIView *)self->_maskAnimationView layer];
+  [layer13 removeAnimationForKey:@"borderColor"];
 
-  v59 = [(UIView *)self->_maskAnimationView layer];
-  [v59 removeAnimationForKey:@"opacity"];
+  layer14 = [(UIView *)self->_maskAnimationView layer];
+  [layer14 removeAnimationForKey:@"opacity"];
 
-  v60 = [(_UIButtonMaskAnimationView *)self->_maskAnimationView borderColor];
-  v61 = [v13 isEqual:v60];
+  borderColor2 = [(_UIButtonMaskAnimationView *)self->_maskAnimationView borderColor];
+  v61 = [v13 isEqual:borderColor2];
 
   if ((v61 & 1) == 0)
   {
@@ -4784,9 +4784,9 @@ LABEL_34:
   [(UIButtonLegacyVisualProvider *)self _updateMaskState];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (!a3)
+  if (!window)
   {
     [(_UIButtonMaskAnimationView *)self->_maskAnimationView setDelegate:?];
     [(UIView *)self->_maskAnimationView removeFromSuperview];
@@ -4795,9 +4795,9 @@ LABEL_34:
   }
 }
 
-- (id)_newLabelWithFrame:(CGRect)a3
+- (id)_newLabelWithFrame:(CGRect)frame
 {
-  v4 = [[UIButtonLabel alloc] _initWithFrame:self->_button button:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [[UIButtonLabel alloc] _initWithFrame:self->_button button:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [v4 setBackgroundColor:0];
   [v4 setBaselineAdjustment:1];
   [v4 setEnabled:1];
@@ -4816,11 +4816,11 @@ LABEL_34:
   return v4;
 }
 
-- (void)_setupTitleViewRequestingLayout:(BOOL)a3
+- (void)_setupTitleViewRequestingLayout:(BOOL)layout
 {
   if (!self->_titleView)
   {
-    v4 = a3;
+    layoutCopy = layout;
     button = self->_button;
     [(UIView *)button bounds];
     [(UIButton *)button contentRectForBounds:?];
@@ -4844,20 +4844,20 @@ LABEL_34:
     v10 = [(UIButton *)self->_button _lazyTitleViewFontIsDefaultForIdiom:&v18];
     [(UILabel *)self->_titleView _setFont:v10 isDefaultForIdiom:v18];
     [(UILabel *)self->_titleView setLineBreakMode:5];
-    v11 = 0;
+    isHighlighted = 0;
     titleView = self->_titleView;
     v13 = self->_button;
     if (*&v13->_buttonFlags)
     {
-      v11 = [(UIControl *)v13 isHighlighted];
+      isHighlighted = [(UIControl *)v13 isHighlighted];
     }
 
-    [(UILabel *)titleView setReverseShadow:v11];
+    [(UILabel *)titleView setReverseShadow:isHighlighted];
     [(UILabel *)self->_titleView setTextAlignment:2 * ([(UIControl *)self->_button effectiveContentHorizontalAlignment]== UIControlContentHorizontalAlignmentRight)];
-    v14 = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
-    [v14 addSubview:self->_titleView];
+    effectiveContentView = [(UIButtonLegacyVisualProvider *)self effectiveContentView];
+    [effectiveContentView addSubview:self->_titleView];
 
-    if (v4)
+    if (layoutCopy)
     {
       [(UIButton *)self->_button setNeedsLayout];
     }
@@ -4865,8 +4865,8 @@ LABEL_34:
 
   if ((*(&self->_button->_buttonFlags + 3) & 0x80) != 0)
   {
-    v15 = [(UILabel *)self->_titleView _defaultAttributes];
-    v16 = [v15 mutableCopy];
+    _defaultAttributes = [(UILabel *)self->_titleView _defaultAttributes];
+    v16 = [_defaultAttributes mutableCopy];
 
     v17 = [(UIButton *)self->_button _titleColorForState:[(UIControl *)self->_button state] suppressTintColorFollowing:0];
     [v16 setObject:v17 forKeyedSubscript:*off_1E70EC920];
@@ -4884,15 +4884,15 @@ void __64__UIButtonLegacyVisualProvider__setupTitleViewRequestingLayout___block_
   *(v3 + 48) = v2;
 }
 
-- (id)preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v6 = a4;
-  v7 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+  contextCopy = context;
+  _floatingContentView = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
 
-  if (v7)
+  if (_floatingContentView)
   {
-    v8 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
-    v9 = [v8 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    _floatingContentView2 = [(UIButtonLegacyVisualProvider *)self _floatingContentView];
+    v9 = [_floatingContentView2 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   else
@@ -4932,27 +4932,27 @@ uint64_t __52__UIButtonLegacyVisualProvider__floatingContentView__block_invoke(u
   return selectionView;
 }
 
-- (void)setExternalFlatEdge:(unint64_t)a3
+- (void)setExternalFlatEdge:(unint64_t)edge
 {
   [(UIButtonLegacyVisualProvider *)self _prepareMaskAnimationViewIfNecessary];
   maskAnimationView = self->_maskAnimationView;
 
-  [(_UIButtonMaskAnimationView *)maskAnimationView setHardEdge:a3];
+  [(_UIButtonMaskAnimationView *)maskAnimationView setHardEdge:edge];
 }
 
-- (void)setDrawingStroke:(double)a3 forState:(unint64_t)a4
+- (void)setDrawingStroke:(double)stroke forState:(unint64_t)state
 {
-  [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:self->_imageView background:0, a3];
+  [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:self->_imageView background:0, stroke];
   [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:self->_backgroundView background:1];
 
   [(UIButtonLegacyVisualProvider *)self _updateMaskState];
 }
 
-- (void)_updateEffectsForImageView:(id)a3 background:(BOOL)a4
+- (void)_updateEffectsForImageView:(id)view background:(BOOL)background
 {
-  v4 = a4;
-  v7 = a3;
-  if ([(UIButtonLegacyVisualProvider *)self _shouldDefaultToTemplatesForImageViewBackground:v4])
+  backgroundCopy = background;
+  viewCopy = view;
+  if ([(UIButtonLegacyVisualProvider *)self _shouldDefaultToTemplatesForImageViewBackground:backgroundCopy])
   {
     v6 = 2;
   }
@@ -4962,12 +4962,12 @@ uint64_t __52__UIButtonLegacyVisualProvider__floatingContentView__block_invoke(u
     v6 = 0;
   }
 
-  [v7 _setDefaultRenderingMode:v6];
+  [viewCopy _setDefaultRenderingMode:v6];
 }
 
-- (id)_newImageViewWithFrame:(CGRect)a3
+- (id)_newImageViewWithFrame:(CGRect)frame
 {
-  v4 = [[UIImageView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [[UIImageView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)v4 setUserInteractionEnabled:0];
   [(UIView *)v4 setOpaque:0];
   [(UIView *)v4 setClipsToBounds:1];
@@ -4975,7 +4975,7 @@ uint64_t __52__UIButtonLegacyVisualProvider__floatingContentView__block_invoke(u
   return v4;
 }
 
-- (id)_createPreparedImageViewWithFrame:(CGRect)a3
+- (id)_createPreparedImageViewWithFrame:(CGRect)frame
 {
   v8 = 0;
   v9 = &v8;
@@ -4989,7 +4989,7 @@ uint64_t __52__UIButtonLegacyVisualProvider__floatingContentView__block_invoke(u
   v6[3] = &unk_1E710B920;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  frameCopy = frame;
   [UIView performWithoutAnimation:v6];
   [(UIButtonLegacyVisualProvider *)self _updateEffectsForImageView:v9[5] background:0];
   v4 = v9[5];

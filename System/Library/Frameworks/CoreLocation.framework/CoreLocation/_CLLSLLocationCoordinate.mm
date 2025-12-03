@@ -1,57 +1,57 @@
 @interface _CLLSLLocationCoordinate
-- (_CLLSLLocationCoordinate)initWithCoder:(id)a3;
-- (_CLLSLLocationCoordinate)initWithLatitude:(double)a3 longitude:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CLLSLLocationCoordinate)initWithCoder:(id)coder;
+- (_CLLSLLocationCoordinate)initWithLatitude:(double)latitude longitude:(double)longitude;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CLLSLLocationCoordinate
 
-- (_CLLSLLocationCoordinate)initWithLatitude:(double)a3 longitude:(double)a4
+- (_CLLSLLocationCoordinate)initWithLatitude:(double)latitude longitude:(double)longitude
 {
   v7.receiver = self;
   v7.super_class = _CLLSLLocationCoordinate;
   result = [(_CLLSLLocationCoordinate *)&v7 init];
   if (result)
   {
-    result->_latitude = a3;
-    result->_longitude = a4;
+    result->_latitude = latitude;
+    result->_longitude = longitude;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_latitude;
   *(result + 2) = *&self->_longitude;
   return result;
 }
 
-- (_CLLSLLocationCoordinate)initWithCoder:(id)a3
+- (_CLLSLLocationCoordinate)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = _CLLSLLocationCoordinate;
   v4 = [(_CLLSLLocationCoordinate *)&v8 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"latitude"];
+    [coder decodeDoubleForKey:@"latitude"];
     v4->_latitude = v5;
-    [a3 decodeDoubleForKey:@"longitude"];
+    [coder decodeDoubleForKey:@"longitude"];
     v4->_longitude = v6;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"latitude" forKey:self->_latitude];
+  [coder encodeDouble:@"latitude" forKey:self->_latitude];
   longitude = self->_longitude;
 
-  [a3 encodeDouble:@"longitude" forKey:longitude];
+  [coder encodeDouble:@"longitude" forKey:longitude];
 }
 
 - (id)description

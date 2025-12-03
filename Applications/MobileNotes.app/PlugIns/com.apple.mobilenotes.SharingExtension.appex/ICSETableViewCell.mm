@@ -18,15 +18,15 @@
 - (id)defaultConstraintsForRegularTextSizes;
 - (unint64_t)accessibilityTraits;
 - (void)awakeFromNib;
-- (void)disableConstraintsBySettingPriority:(id)a3;
-- (void)enableConstraintsBySettingPriority:(id)a3;
-- (void)expandCollapseTapped:(id)a3;
+- (void)disableConstraintsBySettingPriority:(id)priority;
+- (void)enableConstraintsBySettingPriority:(id)priority;
+- (void)expandCollapseTapped:(id)tapped;
 - (void)prepareForReuse;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setCollapsible:(BOOL)a3;
-- (void)setTableViewItem:(id)a3;
-- (void)setUpForHeaderItem:(id)a3;
-- (void)setUpForTableViewItem:(id)a3;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setCollapsible:(BOOL)collapsible;
+- (void)setTableViewItem:(id)item;
+- (void)setUpForHeaderItem:(id)item;
+- (void)setUpForTableViewItem:(id)item;
 - (void)updateAccessoryView;
 - (void)updateCollapsedDisclosure;
 - (void)updateConstraints;
@@ -49,8 +49,8 @@
   v5 = v3 - v4;
   [(ICSETableViewCell *)self layoutMargins];
   v7 = v5 - v6;
-  v8 = [(ICSETableViewCell *)self iconViewContainerMinHeightConstraint];
-  [v8 setConstant:v7];
+  iconViewContainerMinHeightConstraint = [(ICSETableViewCell *)self iconViewContainerMinHeightConstraint];
+  [iconViewContainerMinHeightConstraint setConstant:v7];
 
   if (+[UIDevice ic_isVision])
   {
@@ -80,8 +80,8 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v14 = [(ICSETableViewCell *)self defaultConstraintsForRegularTextSizes];
-  v15 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  defaultConstraintsForRegularTextSizes = [(ICSETableViewCell *)self defaultConstraintsForRegularTextSizes];
+  v15 = [defaultConstraintsForRegularTextSizes countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v15)
   {
     v16 = v15;
@@ -92,18 +92,18 @@
       {
         if (*v48 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(defaultConstraintsForRegularTextSizes);
         }
 
         v19 = *(*(&v47 + 1) + 8 * i);
         [v19 priority];
         v20 = [NSNumber numberWithFloat:?];
-        v21 = [(ICSETableViewCell *)self storedConstraintPriorities];
-        v22 = [v19 identifier];
-        [v21 setObject:v20 forKeyedSubscript:v22];
+        storedConstraintPriorities = [(ICSETableViewCell *)self storedConstraintPriorities];
+        identifier = [v19 identifier];
+        [storedConstraintPriorities setObject:v20 forKeyedSubscript:identifier];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      v16 = [defaultConstraintsForRegularTextSizes countByEnumeratingWithState:&v47 objects:v52 count:16];
     }
 
     while (v16);
@@ -112,49 +112,49 @@
   v23 = objc_alloc_init(UIView);
   [(ICSETableViewCell *)self setExpandCollapseHitView:v23];
 
-  v24 = [(ICSETableViewCell *)self expandCollapseHitView];
-  [(ICSETableViewCell *)self addSubview:v24];
+  expandCollapseHitView = [(ICSETableViewCell *)self expandCollapseHitView];
+  [(ICSETableViewCell *)self addSubview:expandCollapseHitView];
 
-  v25 = [(ICSETableViewCell *)self expandCollapseHitView];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v25 setUserInteractionEnabled:0];
+  expandCollapseHitView2 = [(ICSETableViewCell *)self expandCollapseHitView];
+  [expandCollapseHitView2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [expandCollapseHitView2 setUserInteractionEnabled:0];
   v26 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"expandCollapseTapped:"];
-  [v25 addGestureRecognizer:v26];
+  [expandCollapseHitView2 addGestureRecognizer:v26];
 
   v27 = +[NSMutableArray array];
-  v28 = [v25 leadingAnchor];
-  v29 = [(ICSETableViewCell *)self secondaryLabel];
-  v30 = [v29 trailingAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  leadingAnchor = [expandCollapseHitView2 leadingAnchor];
+  secondaryLabel = [(ICSETableViewCell *)self secondaryLabel];
+  trailingAnchor = [secondaryLabel trailingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
   [v27 addObject:v31];
 
-  v32 = [v25 trailingAnchor];
-  v33 = [(ICSETableViewCell *)self trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  trailingAnchor2 = [expandCollapseHitView2 trailingAnchor];
+  trailingAnchor3 = [(ICSETableViewCell *)self trailingAnchor];
+  v34 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v27 addObject:v34];
 
-  v35 = [v25 topAnchor];
-  v36 = [(ICSETableViewCell *)self topAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  topAnchor = [expandCollapseHitView2 topAnchor];
+  topAnchor2 = [(ICSETableViewCell *)self topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v27 addObject:v37];
 
-  v38 = [v25 bottomAnchor];
-  v39 = [(ICSETableViewCell *)self bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  bottomAnchor = [expandCollapseHitView2 bottomAnchor];
+  bottomAnchor2 = [(ICSETableViewCell *)self bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v27 addObject:v40];
 
   [NSLayoutConstraint activateConstraints:v27];
   v41 = +[UIColor labelColor];
-  v42 = [(ICSETableViewCell *)self titleLabel];
-  [v42 setTextColor:v41];
+  titleLabel = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel setTextColor:v41];
 
   v43 = +[UIColor secondaryLabelColor];
-  v44 = [(ICSETableViewCell *)self secondaryLabel];
-  [v44 setTextColor:v43];
+  secondaryLabel2 = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel2 setTextColor:v43];
 
   v45 = +[UIColor labelColor];
-  v46 = [(ICSETableViewCell *)self iconView];
-  [v46 setTintColor:v45];
+  iconView = [(ICSETableViewCell *)self iconView];
+  [iconView setTintColor:v45];
 }
 
 - (void)prepareForReuse
@@ -162,32 +162,32 @@
   v15.receiver = self;
   v15.super_class = ICSETableViewCell;
   [(ICSETableViewCell *)&v15 prepareForReuse];
-  v3 = [(ICSETableViewCell *)self titleLabel];
-  [v3 setHidden:0];
+  titleLabel = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel setHidden:0];
 
-  v4 = [(ICSETableViewCell *)self secondaryLabel];
-  [v4 setHidden:0];
+  secondaryLabel = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel setHidden:0];
 
-  v5 = [(ICSETableViewCell *)self titleLabel];
-  [v5 setAlpha:1.0];
+  titleLabel2 = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel2 setAlpha:1.0];
 
-  v6 = [(ICSETableViewCell *)self secondaryLabel];
-  [v6 setAlpha:1.0];
+  secondaryLabel2 = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel2 setAlpha:1.0];
 
-  v7 = [(ICSETableViewCell *)self iconView];
-  [v7 setAlpha:1.0];
+  iconView = [(ICSETableViewCell *)self iconView];
+  [iconView setAlpha:1.0];
 
   v8 = +[UIColor labelColor];
-  v9 = [(ICSETableViewCell *)self titleLabel];
-  [v9 setTextColor:v8];
+  titleLabel3 = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel3 setTextColor:v8];
 
   v10 = +[UIColor secondaryLabelColor];
-  v11 = [(ICSETableViewCell *)self secondaryLabel];
-  [v11 setTextColor:v10];
+  secondaryLabel3 = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel3 setTextColor:v10];
 
   v12 = +[UIColor labelColor];
-  v13 = [(ICSETableViewCell *)self iconView];
-  [v13 setTintColor:v12];
+  iconView2 = [(ICSETableViewCell *)self iconView];
+  [iconView2 setTintColor:v12];
 
   if ((+[UIDevice ic_isVision]& 1) == 0)
   {
@@ -199,46 +199,46 @@
   [(ICSETableViewCell *)self setCollapsed:0];
 }
 
-- (void)setTableViewItem:(id)a3
+- (void)setTableViewItem:(id)item
 {
-  objc_storeStrong(&self->_tableViewItem, a3);
-  v5 = a3;
-  [(ICSETableViewCell *)self setUpForTableViewItem:v5];
+  objc_storeStrong(&self->_tableViewItem, item);
+  itemCopy = item;
+  [(ICSETableViewCell *)self setUpForTableViewItem:itemCopy];
 }
 
-- (void)setUpForTableViewItem:(id)a3
+- (void)setUpForTableViewItem:(id)item
 {
-  v36 = a3;
+  itemCopy = item;
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v5 = [v4 ic_fontWithSingleLineA];
-  v6 = [(ICSETableViewCell *)self titleLabel];
-  [v6 setFont:v5];
+  ic_fontWithSingleLineA = [v4 ic_fontWithSingleLineA];
+  titleLabel = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel setFont:ic_fontWithSingleLineA];
 
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-  v8 = [v7 ic_fontWithSingleLineA];
-  v9 = [(ICSETableViewCell *)self secondaryLabel];
-  [v9 setFont:v8];
+  ic_fontWithSingleLineA2 = [v7 ic_fontWithSingleLineA];
+  secondaryLabel = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel setFont:ic_fontWithSingleLineA2];
 
-  v10 = [v36 title];
-  v11 = [(ICSETableViewCell *)self titleLabel];
-  [v11 setText:v10];
+  title = [itemCopy title];
+  titleLabel2 = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel2 setText:title];
 
-  v12 = [v36 secondaryTitle];
-  v13 = [(ICSETableViewCell *)self secondaryLabel];
-  [v13 setText:v12];
+  secondaryTitle = [itemCopy secondaryTitle];
+  secondaryLabel2 = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel2 setText:secondaryTitle];
 
-  v14 = [v36 image];
-  v15 = [(ICSETableViewCell *)self iconView];
-  [v15 setImage:v14];
+  image = [itemCopy image];
+  iconView = [(ICSETableViewCell *)self iconView];
+  [iconView setImage:image];
 
-  if ((+[UIDevice ic_isVision](UIDevice, "ic_isVision") & 1) == 0 && [v36 isInFolderList])
+  if ((+[UIDevice ic_isVision](UIDevice, "ic_isVision") & 1) == 0 && [itemCopy isInFolderList])
   {
     v16 = +[UIColor ICTintColor];
-    v17 = [(ICSETableViewCell *)self iconView];
-    [v17 setTintColor:v16];
+    iconView2 = [(ICSETableViewCell *)self iconView];
+    [iconView2 setTintColor:v16];
   }
 
-  if (([v36 isInFolderList] & 1) != 0 || (objc_msgSend(v36, "folder"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
+  if (([itemCopy isInFolderList] & 1) != 0 || (objc_msgSend(itemCopy, "folder"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
   {
     v19 = 34.0;
   }
@@ -248,41 +248,41 @@
     v19 = 22.0;
   }
 
-  v20 = [(ICSETableViewCell *)self titleLeadingMargin];
-  [v20 setConstant:v19];
+  titleLeadingMargin = [(ICSETableViewCell *)self titleLeadingMargin];
+  [titleLeadingMargin setConstant:v19];
 
-  if (([v36 isAccountHeader] & 1) == 0)
+  if (([itemCopy isAccountHeader] & 1) == 0)
   {
-    v21 = [v36 folderListItem];
+    folderListItem = [itemCopy folderListItem];
 
-    if (v21)
+    if (folderListItem)
     {
-      v22 = [v36 folderListItem];
-      v23 = [v22 level] - 1;
+      folderListItem2 = [itemCopy folderListItem];
+      v23 = [folderListItem2 level] - 1;
 
-      v24 = [(ICSETableViewCell *)self titleLeadingMargin];
-      [v24 setConstant:v23 * 33.0 + 34.0];
+      titleLeadingMargin2 = [(ICSETableViewCell *)self titleLeadingMargin];
+      [titleLeadingMargin2 setConstant:v23 * 33.0 + 34.0];
 
-      v25 = [(ICSETableViewCell *)self iconViewLeadingConstraint];
-      [v25 setConstant:v23 * 33.0 + -5.0];
+      iconViewLeadingConstraint = [(ICSETableViewCell *)self iconViewLeadingConstraint];
+      [iconViewLeadingConstraint setConstant:v23 * 33.0 + -5.0];
     }
   }
 
-  if ([v36 isAccountPicker])
+  if ([itemCopy isAccountPicker])
   {
     goto LABEL_11;
   }
 
-  v26 = [v36 folder];
-  if (v26)
+  folder = [itemCopy folder];
+  if (folder)
   {
   }
 
   else
   {
-    v27 = [v36 account];
+    account = [itemCopy account];
 
-    if (!v27)
+    if (!account)
     {
 LABEL_11:
       [(ICSETableViewCell *)self setCollapsible:0];
@@ -290,21 +290,21 @@ LABEL_11:
     }
   }
 
-  v28 = [v36 folderListItem];
-  -[ICSETableViewCell setCollapsible:](self, "setCollapsible:", [v28 isCollapsible]);
+  folderListItem3 = [itemCopy folderListItem];
+  -[ICSETableViewCell setCollapsible:](self, "setCollapsible:", [folderListItem3 isCollapsible]);
 
-  v29 = [v36 folderListItem];
-  -[ICSETableViewCell setCollapsed:](self, "setCollapsed:", [v29 isCollapsed]);
+  folderListItem4 = [itemCopy folderListItem];
+  -[ICSETableViewCell setCollapsed:](self, "setCollapsed:", [folderListItem4 isCollapsed]);
 
 LABEL_17:
-  if ([v36 isHeader])
+  if ([itemCopy isHeader])
   {
-    [(ICSETableViewCell *)self setUpForHeaderItem:v36];
+    [(ICSETableViewCell *)self setUpForHeaderItem:itemCopy];
   }
 
   else
   {
-    if ([v36 isSelectable])
+    if ([itemCopy isSelectable])
     {
       v30 = 1.0;
     }
@@ -314,16 +314,16 @@ LABEL_17:
       v30 = 0.5;
     }
 
-    v31 = [(ICSETableViewCell *)self titleLabel];
-    [v31 setAlpha:v30];
+    titleLabel3 = [(ICSETableViewCell *)self titleLabel];
+    [titleLabel3 setAlpha:v30];
 
-    v32 = [(ICSETableViewCell *)self secondaryLabel];
-    [v32 setAlpha:v30];
+    secondaryLabel3 = [(ICSETableViewCell *)self secondaryLabel];
+    [secondaryLabel3 setAlpha:v30];
 
-    v33 = [(ICSETableViewCell *)self iconView];
-    [v33 setAlpha:v30];
+    iconView3 = [(ICSETableViewCell *)self iconView];
+    [iconView3 setAlpha:v30];
 
-    if ((+[UIDevice ic_isVision](UIDevice, "ic_isVision") & 1) == 0 && [v36 isChecked])
+    if ((+[UIDevice ic_isVision](UIDevice, "ic_isVision") & 1) == 0 && [itemCopy isChecked])
     {
       if (UIAccessibilityDarkerSystemColorsEnabled())
       {
@@ -335,8 +335,8 @@ LABEL_17:
         +[UIColor ICTintColor];
       }
       v34 = ;
-      v35 = [(ICSETableViewCell *)self iconView];
-      [v35 setTintColor:v34];
+      iconView4 = [(ICSETableViewCell *)self iconView];
+      [iconView4 setTintColor:v34];
     }
   }
 
@@ -450,20 +450,20 @@ LABEL_17:
 
 - (void)updateAccessoryView
 {
-  v3 = [(ICSETableViewCell *)self tableViewItem];
-  v4 = [v3 note];
+  tableViewItem = [(ICSETableViewCell *)self tableViewItem];
+  note = [tableViewItem note];
 
-  if (v4)
+  if (note)
   {
     [(ICSETableViewCell *)self setAccessoryView:0];
-    v8 = [(ICSETableViewCell *)self expandCollapseHitView];
-    [v8 setUserInteractionEnabled:0];
+    expandCollapseHitView = [(ICSETableViewCell *)self expandCollapseHitView];
+    [expandCollapseHitView setUserInteractionEnabled:0];
   }
 
   else
   {
-    v5 = [(ICSETableViewCell *)self tableViewItem];
-    if ([v5 isHeader])
+    tableViewItem2 = [(ICSETableViewCell *)self tableViewItem];
+    if ([tableViewItem2 isHeader])
     {
       [(ICSETableViewCell *)self accountAccessoryImageView];
     }
@@ -472,41 +472,41 @@ LABEL_17:
     {
       [(ICSETableViewCell *)self expansionAccessoryImageView];
     }
-    v8 = ;
+    expandCollapseHitView = ;
 
     if ([(ICSETableViewCell *)self isCollapsible])
     {
-      [(ICSETableViewCell *)self setAccessoryView:v8];
+      [(ICSETableViewCell *)self setAccessoryView:expandCollapseHitView];
     }
 
     else
     {
-      v6 = [(ICSETableViewCell *)self disclosureAccessoryImageView];
-      [(ICSETableViewCell *)self setAccessoryView:v6];
+      disclosureAccessoryImageView = [(ICSETableViewCell *)self disclosureAccessoryImageView];
+      [(ICSETableViewCell *)self setAccessoryView:disclosureAccessoryImageView];
     }
 
     [(ICSETableViewCell *)self updateCollapsedDisclosure];
-    v7 = [(ICSETableViewCell *)self expandCollapseHitView];
-    [v7 setUserInteractionEnabled:{-[ICSETableViewCell isCollapsible](self, "isCollapsible")}];
+    expandCollapseHitView2 = [(ICSETableViewCell *)self expandCollapseHitView];
+    [expandCollapseHitView2 setUserInteractionEnabled:{-[ICSETableViewCell isCollapsible](self, "isCollapsible")}];
   }
 }
 
-- (void)setCollapsible:(BOOL)a3
+- (void)setCollapsible:(BOOL)collapsible
 {
-  if (self->_collapsible != a3)
+  if (self->_collapsible != collapsible)
   {
-    self->_collapsible = a3;
+    self->_collapsible = collapsible;
     [(ICSETableViewCell *)self updateAccessoryView];
   }
 }
 
 - (void)updateCollapsedDisclosure
 {
-  v3 = [(ICSETableViewCell *)self accessoryView];
+  accessoryView = [(ICSETableViewCell *)self accessoryView];
 
-  if (v3)
+  if (accessoryView)
   {
-    v4 = [(ICSETableViewCell *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(ICSETableViewCell *)self _shouldReverseLayoutDirection];
     v5 = *&CGAffineTransformIdentity.c;
     *&v10.a = *&CGAffineTransformIdentity.a;
     *&v10.c = v5;
@@ -514,7 +514,7 @@ LABEL_17:
     if ([(ICSETableViewCell *)self isCollapsible]&& ![(ICSETableViewCell *)self isCollapsed])
     {
       v6 = 1.57079633;
-      if (v4)
+      if (_shouldReverseLayoutDirection)
       {
         v6 = -1.57079633;
       }
@@ -523,29 +523,29 @@ LABEL_17:
     }
 
     v9 = v10;
-    v7 = [(ICSETableViewCell *)self accessoryView];
+    accessoryView2 = [(ICSETableViewCell *)self accessoryView];
     v8 = v9;
-    [v7 setTransform:&v8];
+    [accessoryView2 setTransform:&v8];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(ICSETableViewCell *)self updateCollapsedDisclosure];
   }
 }
 
-- (void)expandCollapseTapped:(id)a3
+- (void)expandCollapseTapped:(id)tapped
 {
-  v4 = [(ICSETableViewCell *)self delegate];
+  delegate = [(ICSETableViewCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(ICSETableViewCell *)self delegate];
-    [v5 tableViewCell:self setCollapsed:{-[ICSETableViewCell isCollapsed](self, "isCollapsed") ^ 1}];
+    delegate2 = [(ICSETableViewCell *)self delegate];
+    [delegate2 tableViewCell:self setCollapsed:{-[ICSETableViewCell isCollapsed](self, "isCollapsed") ^ 1}];
   }
 
   v6 = [(ICSETableViewCell *)self isCollapsed]^ 1;
@@ -553,9 +553,9 @@ LABEL_17:
   [(ICSETableViewCell *)self setCollapsed:v6 animated:1];
 }
 
-- (void)setUpForHeaderItem:(id)a3
+- (void)setUpForHeaderItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   v28 = ICDynamicCast();
 
@@ -563,43 +563,43 @@ LABEL_17:
   v6 = +[UIFontMetrics defaultMetrics];
   v7 = [UIFont systemFontOfSize:13.0 weight:UIFontWeightRegular];
   v8 = [v6 scaledFontForFont:v7];
-  v9 = [v8 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v8 ic_fontWithSingleLineA];
 
-  v10 = [(ICSETableViewCell *)self titleLabel];
-  [v10 setFont:v9];
+  titleLabel = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel setFont:ic_fontWithSingleLineA];
 
-  v11 = [(ICSETableViewCell *)self titleLabel];
-  [v11 setTextColor:v5];
+  titleLabel2 = [(ICSETableViewCell *)self titleLabel];
+  [titleLabel2 setTextColor:v5];
 
-  v12 = [(ICSETableViewCell *)self titleLabel];
-  v13 = [v12 font];
-  v14 = [(ICSETableViewCell *)self secondaryLabel];
-  [v14 setFont:v13];
+  titleLabel3 = [(ICSETableViewCell *)self titleLabel];
+  font = [titleLabel3 font];
+  secondaryLabel = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel setFont:font];
 
-  v15 = [(ICSETableViewCell *)self secondaryLabel];
-  [v15 setTextColor:v5];
+  secondaryLabel2 = [(ICSETableViewCell *)self secondaryLabel];
+  [secondaryLabel2 setTextColor:v5];
 
-  v16 = [v28 image];
-  v17 = [(ICSETableViewCell *)self iconView];
-  [v17 setImage:v16];
+  image = [v28 image];
+  iconView = [(ICSETableViewCell *)self iconView];
+  [iconView setImage:image];
 
-  v18 = [(ICSETableViewCell *)self iconView];
-  [v18 setTintColor:v5];
+  iconView2 = [(ICSETableViewCell *)self iconView];
+  [iconView2 setTintColor:v5];
 
   if ([v28 headerType] == 2)
   {
-    v19 = [(ICSETableViewCell *)self titleLeadingMargin];
-    [v19 setConstant:7.0];
+    titleLeadingMargin = [(ICSETableViewCell *)self titleLeadingMargin];
+    [titleLeadingMargin setConstant:7.0];
 
     v20 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v21 = [v20 ic_fontWithSingleLineA];
-    v22 = [(ICSETableViewCell *)self titleLabel];
-    [v22 setFont:v21];
+    ic_fontWithSingleLineA2 = [v20 ic_fontWithSingleLineA];
+    titleLabel4 = [(ICSETableViewCell *)self titleLabel];
+    [titleLabel4 setFont:ic_fontWithSingleLineA2];
 
-    v23 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v24 = [v23 ic_fontWithSingleLineA];
-    v25 = [(ICSETableViewCell *)self secondaryLabel];
-    [v25 setFont:v24];
+    titleLeadingMargin2 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    ic_fontWithSingleLineA3 = [titleLeadingMargin2 ic_fontWithSingleLineA];
+    secondaryLabel3 = [(ICSETableViewCell *)self secondaryLabel];
+    [secondaryLabel3 setFont:ic_fontWithSingleLineA3];
 
 LABEL_5:
     goto LABEL_6;
@@ -607,20 +607,20 @@ LABEL_5:
 
   if ([v28 headerType] == 1)
   {
-    v23 = [(ICSETableViewCell *)self titleLeadingMargin];
-    [v23 setConstant:0.0];
+    titleLeadingMargin2 = [(ICSETableViewCell *)self titleLeadingMargin];
+    [titleLeadingMargin2 setConstant:0.0];
     goto LABEL_5;
   }
 
 LABEL_6:
   if ((+[UIDevice ic_isVision]& 1) == 0)
   {
-    v26 = [v28 backgroundColor];
+    backgroundColor = [v28 backgroundColor];
 
-    if (v26)
+    if (backgroundColor)
     {
-      v27 = [v28 backgroundColor];
-      [(ICSETableViewCell *)self setBackgroundColor:v27];
+      backgroundColor2 = [v28 backgroundColor];
+      [(ICSETableViewCell *)self setBackgroundColor:backgroundColor2];
     }
   }
 }
@@ -628,8 +628,8 @@ LABEL_6:
 + (id)newHeaderCell
 {
   v3 = +[NSBundle mainBundle];
-  v4 = NSStringFromClass(a1);
-  v5 = [v3 loadNibNamed:v4 owner:a1 options:0];
+  v4 = NSStringFromClass(self);
+  v5 = [v3 loadNibNamed:v4 owner:self options:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -695,38 +695,38 @@ LABEL_12:
 {
   if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
   {
-    v3 = [(ICSETableViewCell *)self defaultConstraintsForRegularTextSizes];
-    [(ICSETableViewCell *)self disableConstraintsBySettingPriority:v3];
+    defaultConstraintsForRegularTextSizes = [(ICSETableViewCell *)self defaultConstraintsForRegularTextSizes];
+    [(ICSETableViewCell *)self disableConstraintsBySettingPriority:defaultConstraintsForRegularTextSizes];
 
     [(ICSETableViewCell *)self alternateConstraintsForAXLargerTextSizes];
   }
 
   else
   {
-    v4 = [(ICSETableViewCell *)self alternateConstraintsForAXLargerTextSizes];
-    [(ICSETableViewCell *)self disableConstraintsBySettingPriority:v4];
+    alternateConstraintsForAXLargerTextSizes = [(ICSETableViewCell *)self alternateConstraintsForAXLargerTextSizes];
+    [(ICSETableViewCell *)self disableConstraintsBySettingPriority:alternateConstraintsForAXLargerTextSizes];
 
     [(ICSETableViewCell *)self defaultConstraintsForRegularTextSizes];
   }
   v5 = ;
   [(ICSETableViewCell *)self enableConstraintsBySettingPriority:v5];
 
-  v6 = [(ICSETableViewCell *)self iconView];
-  [v6 setHidden:ICAccessibilityAccessibilityLargerTextSizesEnabled()];
+  iconView = [(ICSETableViewCell *)self iconView];
+  [iconView setHidden:ICAccessibilityAccessibilityLargerTextSizesEnabled()];
 
   v7.receiver = self;
   v7.super_class = ICSETableViewCell;
   [(ICSETableViewCell *)&v7 updateConstraints];
 }
 
-- (void)disableConstraintsBySettingPriority:(id)a3
+- (void)disableConstraintsBySettingPriority:(id)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [priorityCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v6 = v4;
@@ -738,7 +738,7 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(priorityCopy);
         }
 
         LODWORD(v5) = 1.0;
@@ -747,21 +747,21 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [priorityCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)enableConstraintsBySettingPriority:(id)a3
+- (void)enableConstraintsBySettingPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [priorityCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -773,13 +773,13 @@ LABEL_12:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(priorityCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [(ICSETableViewCell *)self storedConstraintPriorities];
-        v11 = [v9 identifier];
-        v12 = [v10 objectForKeyedSubscript:v11];
+        storedConstraintPriorities = [(ICSETableViewCell *)self storedConstraintPriorities];
+        identifier = [v9 identifier];
+        v12 = [storedConstraintPriorities objectForKeyedSubscript:identifier];
 
         LODWORD(v13) = 1148829696;
         if (v12)
@@ -793,7 +793,7 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [priorityCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -802,18 +802,18 @@ LABEL_12:
 
 - (id)defaultConstraintsForRegularTextSizes
 {
-  v3 = [(ICSETableViewCell *)self iconViewBaselineConstraint];
-  v11[0] = v3;
-  v4 = [(ICSETableViewCell *)self titleLabelBaselineConstraint];
-  v11[1] = v4;
-  v5 = [(ICSETableViewCell *)self titleLabelCenterConstraint];
-  v11[2] = v5;
-  v6 = [(ICSETableViewCell *)self secondaryLabelBaselineConstraint];
-  v11[3] = v6;
-  v7 = [(ICSETableViewCell *)self secondaryLabelLeadingConstraint];
-  v11[4] = v7;
-  v8 = [(ICSETableViewCell *)self secondaryLabelCenterVerticallyConstraint];
-  v11[5] = v8;
+  iconViewBaselineConstraint = [(ICSETableViewCell *)self iconViewBaselineConstraint];
+  v11[0] = iconViewBaselineConstraint;
+  titleLabelBaselineConstraint = [(ICSETableViewCell *)self titleLabelBaselineConstraint];
+  v11[1] = titleLabelBaselineConstraint;
+  titleLabelCenterConstraint = [(ICSETableViewCell *)self titleLabelCenterConstraint];
+  v11[2] = titleLabelCenterConstraint;
+  secondaryLabelBaselineConstraint = [(ICSETableViewCell *)self secondaryLabelBaselineConstraint];
+  v11[3] = secondaryLabelBaselineConstraint;
+  secondaryLabelLeadingConstraint = [(ICSETableViewCell *)self secondaryLabelLeadingConstraint];
+  v11[4] = secondaryLabelLeadingConstraint;
+  secondaryLabelCenterVerticallyConstraint = [(ICSETableViewCell *)self secondaryLabelCenterVerticallyConstraint];
+  v11[5] = secondaryLabelCenterVerticallyConstraint;
   v9 = [NSArray arrayWithObjects:v11 count:6];
 
   return v9;
@@ -821,14 +821,14 @@ LABEL_12:
 
 - (id)alternateConstraintsForAXLargerTextSizes
 {
-  v3 = [(ICSETableViewCell *)self titleLabelTopConstraintForAXLargerTextSizes];
-  v9[0] = v3;
-  v4 = [(ICSETableViewCell *)self iconViewCenterYConstraintForAXLargerTextSizes];
-  v9[1] = v4;
-  v5 = [(ICSETableViewCell *)self secondaryLabelBelowTitleLabelConstraintForAXLargerTextSizes];
-  v9[2] = v5;
-  v6 = [(ICSETableViewCell *)self secondaryLabelLeadingConstraintForAXLargerTextSizes];
-  v9[3] = v6;
+  titleLabelTopConstraintForAXLargerTextSizes = [(ICSETableViewCell *)self titleLabelTopConstraintForAXLargerTextSizes];
+  v9[0] = titleLabelTopConstraintForAXLargerTextSizes;
+  iconViewCenterYConstraintForAXLargerTextSizes = [(ICSETableViewCell *)self iconViewCenterYConstraintForAXLargerTextSizes];
+  v9[1] = iconViewCenterYConstraintForAXLargerTextSizes;
+  secondaryLabelBelowTitleLabelConstraintForAXLargerTextSizes = [(ICSETableViewCell *)self secondaryLabelBelowTitleLabelConstraintForAXLargerTextSizes];
+  v9[2] = secondaryLabelBelowTitleLabelConstraintForAXLargerTextSizes;
+  secondaryLabelLeadingConstraintForAXLargerTextSizes = [(ICSETableViewCell *)self secondaryLabelLeadingConstraintForAXLargerTextSizes];
+  v9[3] = secondaryLabelLeadingConstraintForAXLargerTextSizes;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
@@ -836,115 +836,115 @@ LABEL_12:
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICSETableViewCell *)self tableViewItem];
-  v4 = [v3 isHeader];
+  tableViewItem = [(ICSETableViewCell *)self tableViewItem];
+  isHeader = [tableViewItem isHeader];
 
-  if (v4)
+  if (isHeader)
   {
-    v5 = [(ICSETableViewCell *)self titleLabel];
-    v6 = [v5 text];
-    v7 = [(ICSETableViewCell *)self secondaryLabel];
-    v8 = [v7 text];
+    titleLabel = [(ICSETableViewCell *)self titleLabel];
+    text = [titleLabel text];
+    secondaryLabel = [(ICSETableViewCell *)self secondaryLabel];
+    text2 = [secondaryLabel text];
     v9 = __ICAccessibilityStringForVariablesSentinel;
-    v50 = v8;
+    v50 = text2;
     v52 = __ICAccessibilityStringForVariablesSentinel;
     v10 = __ICAccessibilityStringForVariables();
     goto LABEL_16;
   }
 
-  v11 = [(ICSETableViewCell *)self tableViewItem];
-  v12 = [v11 note];
+  tableViewItem2 = [(ICSETableViewCell *)self tableViewItem];
+  note = [tableViewItem2 note];
 
-  v13 = [(ICSETableViewCell *)self tableViewItem];
-  v14 = v13;
-  if (v12)
+  tableViewItem3 = [(ICSETableViewCell *)self tableViewItem];
+  v14 = tableViewItem3;
+  if (note)
   {
-    v15 = [v13 note];
-    v5 = [(ICSETableViewCell *)self accessibilitySharedViaICloudStringForNote:v15];
+    note2 = [tableViewItem3 note];
+    titleLabel = [(ICSETableViewCell *)self accessibilitySharedViaICloudStringForNote:note2];
   }
 
   else
   {
-    v5 = [v13 folder];
-    if (v5)
+    titleLabel = [tableViewItem3 folder];
+    if (titleLabel)
     {
-      v25 = [(ICSETableViewCell *)self tableViewItem];
-      v26 = [v25 folder];
-      v27 = [v26 isSharedViaICloud];
+      tableViewItem4 = [(ICSETableViewCell *)self tableViewItem];
+      folder = [tableViewItem4 folder];
+      isSharedViaICloud = [folder isSharedViaICloud];
 
-      if (!v27)
+      if (!isSharedViaICloud)
       {
-        v5 = 0;
+        titleLabel = 0;
         goto LABEL_6;
       }
 
       v14 = +[NSBundle mainBundle];
-      v5 = [v14 localizedStringForKey:@"Shared folder" value:&stru_1000F6F48 table:0];
+      titleLabel = [v14 localizedStringForKey:@"Shared folder" value:&stru_1000F6F48 table:0];
     }
   }
 
 LABEL_6:
-  v16 = [(ICSETableViewCell *)self tableViewItem];
-  v17 = [v16 note];
-  v18 = [v17 isPasswordProtected];
+  tableViewItem5 = [(ICSETableViewCell *)self tableViewItem];
+  note3 = [tableViewItem5 note];
+  isPasswordProtected = [note3 isPasswordProtected];
 
-  if (v18)
+  if (isPasswordProtected)
   {
     v19 = +[NSBundle mainBundle];
-    v6 = [v19 localizedStringForKey:@"Locked" value:&stru_1000F6F48 table:0];
+    text = [v19 localizedStringForKey:@"Locked" value:&stru_1000F6F48 table:0];
   }
 
   else
   {
-    v6 = 0;
+    text = 0;
   }
 
-  v20 = [(ICSETableViewCell *)self tableViewItem];
-  v21 = [v20 note];
-  if (v21)
+  tableViewItem6 = [(ICSETableViewCell *)self tableViewItem];
+  note4 = [tableViewItem6 note];
+  if (note4)
   {
-    v22 = [(ICSETableViewCell *)self tableViewItem];
-    v23 = [v22 note];
-    v24 = [v23 modificationDate];
-    v7 = [v24 ic_briefFormattedDateForAccessibility];
+    tableViewItem7 = [(ICSETableViewCell *)self tableViewItem];
+    note5 = [tableViewItem7 note];
+    modificationDate = [note5 modificationDate];
+    secondaryLabel = [modificationDate ic_briefFormattedDateForAccessibility];
   }
 
   else
   {
-    v22 = [(ICSETableViewCell *)self secondaryLabel];
-    v7 = [v22 text];
+    tableViewItem7 = [(ICSETableViewCell *)self secondaryLabel];
+    secondaryLabel = [tableViewItem7 text];
   }
 
-  v8 = [(ICSETableViewCell *)self titleLabel];
-  v28 = [v8 text];
+  text2 = [(ICSETableViewCell *)self titleLabel];
+  v8Text = [text2 text];
   v9 = __ICAccessibilityStringForVariablesSentinel;
-  v54 = v7;
+  v54 = secondaryLabel;
   v55 = __ICAccessibilityStringForVariablesSentinel;
-  v50 = v5;
-  v52 = v6;
+  v50 = titleLabel;
+  v52 = text;
   v10 = __ICAccessibilityStringForVariables();
 
 LABEL_16:
   v29 = [(ICSETableViewCell *)self tableViewItem:v50];
-  v30 = [v29 folder];
+  folder2 = [v29 folder];
 
-  if (v30)
+  if (folder2)
   {
-    v31 = [(ICSETableViewCell *)self tableViewItem];
-    v32 = [v31 folder];
+    tableViewItem8 = [(ICSETableViewCell *)self tableViewItem];
+    folder3 = [tableViewItem8 folder];
 
-    v33 = [v32 parent];
-    v34 = [v33 title];
-    v35 = [v34 length];
+    parent = [folder3 parent];
+    title = [parent title];
+    v35 = [title length];
 
     if (v35)
     {
       v36 = +[NSBundle mainBundle];
       v37 = [v36 localizedStringForKey:@"subfolder of %@" value:&stru_1000F6F48 table:0];
 
-      v38 = [v32 parent];
-      v39 = [v38 title];
-      v40 = [NSString localizedStringWithFormat:v37, v39];
+      parent2 = [folder3 parent];
+      title2 = [parent2 title];
+      v40 = [NSString localizedStringWithFormat:v37, title2];
 
       v51 = v40;
       v53 = v9;
@@ -953,16 +953,16 @@ LABEL_16:
       v10 = v41;
     }
 
-    v42 = [v32 visibleNoteContainerChildren];
-    v43 = [v42 count];
+    visibleNoteContainerChildren = [folder3 visibleNoteContainerChildren];
+    v43 = [visibleNoteContainerChildren count];
 
     if (v43)
     {
       v44 = +[NSBundle mainBundle];
       v45 = [v44 localizedStringForKey:@"NUM_SUBFOLDERS_%lu" value:&stru_1000F6F48 table:0];
 
-      v46 = [v32 visibleNoteContainerChildren];
-      v47 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v45, [v46 count]);
+      visibleNoteContainerChildren2 = [folder3 visibleNoteContainerChildren];
+      v47 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v45, [visibleNoteContainerChildren2 count]);
 
       v48 = __ICAccessibilityStringForVariables();
 
@@ -975,11 +975,11 @@ LABEL_16:
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [(ICSETableViewCell *)self titleLabel];
-  v4 = [v3 text];
-  v8[0] = v4;
-  v5 = [(ICSETableViewCell *)self accessibilityLabel];
-  v8[1] = v5;
+  titleLabel = [(ICSETableViewCell *)self titleLabel];
+  text = [titleLabel text];
+  v8[0] = text;
+  accessibilityLabel = [(ICSETableViewCell *)self accessibilityLabel];
+  v8[1] = accessibilityLabel;
   v6 = [NSArray arrayWithObjects:v8 count:2];
 
   return v6;
@@ -989,30 +989,30 @@ LABEL_16:
 {
   v15.receiver = self;
   v15.super_class = ICSETableViewCell;
-  v3 = [(ICSETableViewCell *)&v15 accessibilityTraits];
-  v4 = [(ICSETableViewCell *)self tableViewItem];
-  if ([v4 isSelectable])
+  accessibilityTraits = [(ICSETableViewCell *)&v15 accessibilityTraits];
+  tableViewItem = [(ICSETableViewCell *)self tableViewItem];
+  if ([tableViewItem isSelectable])
   {
   }
 
   else
   {
-    v5 = [(ICSETableViewCell *)self tableViewItem];
-    v6 = [v5 isHeader];
+    tableViewItem2 = [(ICSETableViewCell *)self tableViewItem];
+    isHeader = [tableViewItem2 isHeader];
 
     v7 = UIAccessibilityTraitNotEnabled;
-    if (v6)
+    if (isHeader)
     {
       v7 = 0;
     }
 
-    v3 |= v7;
+    accessibilityTraits |= v7;
   }
 
-  v8 = [(ICSETableViewCell *)self tableViewItem];
-  v9 = [v8 isChecked];
+  tableViewItem3 = [(ICSETableViewCell *)self tableViewItem];
+  isChecked = [tableViewItem3 isChecked];
 
-  if (v9)
+  if (isChecked)
   {
     v10 = UIAccessibilityTraitSelected;
   }
@@ -1022,35 +1022,35 @@ LABEL_16:
     v10 = 0;
   }
 
-  v11 = [(ICSETableViewCell *)self tableViewItem];
-  v12 = [v11 isHeader];
+  tableViewItem4 = [(ICSETableViewCell *)self tableViewItem];
+  isHeader2 = [tableViewItem4 isHeader];
 
   v13 = UIAccessibilityTraitHeader;
-  if (!v12)
+  if (!isHeader2)
   {
     v13 = 0;
   }
 
-  return v10 | v13 | v3;
+  return v10 | v13 | accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
   v13.receiver = self;
   v13.super_class = ICSETableViewCell;
-  v3 = [(ICSETableViewCell *)&v13 accessibilityCustomActions];
+  accessibilityCustomActions = [(ICSETableViewCell *)&v13 accessibilityCustomActions];
   if ([(ICSETableViewCell *)self isCollapsible])
   {
-    v4 = [v3 mutableCopy];
+    v4 = [accessibilityCustomActions mutableCopy];
     if (!v4)
     {
       v4 = [[NSMutableArray alloc] initWithCapacity:1];
     }
 
-    v5 = [(ICSETableViewCell *)self isCollapsed];
+    isCollapsed = [(ICSETableViewCell *)self isCollapsed];
     v6 = +[NSBundle mainBundle];
     v7 = v6;
-    if (v5)
+    if (isCollapsed)
     {
       v8 = @"Expand";
     }
@@ -1069,7 +1069,7 @@ LABEL_16:
 
   else
   {
-    v11 = v3;
+    v11 = accessibilityCustomActions;
   }
 
   return v11;
@@ -1079,10 +1079,10 @@ LABEL_16:
 {
   if ([(ICSETableViewCell *)self isCollapsible])
   {
-    v3 = [(ICSETableViewCell *)self isCollapsed];
+    isCollapsed = [(ICSETableViewCell *)self isCollapsed];
     v4 = +[NSBundle mainBundle];
     v5 = v4;
-    if (v3)
+    if (isCollapsed)
     {
       v6 = @"Use the actions rotor to expand folder";
     }

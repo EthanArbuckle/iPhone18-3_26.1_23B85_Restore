@@ -2,9 +2,9 @@
 - (SKUIMoreNavigationControllerDelegate)storeKitDelegate;
 - (id)displayedViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setDisplayedViewController:(id)a3;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setDisplayedViewController:(id)controller;
 @end
 
 @implementation SKUIMoreNavigationController
@@ -26,22 +26,22 @@
   displayedViewController = self->_displayedViewController;
   if (displayedViewController)
   {
-    v12 = displayedViewController;
+    displayedViewController = displayedViewController;
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = SKUIMoreNavigationController;
-    v12 = [(UIMoreNavigationController *)&v14 displayedViewController];
+    displayedViewController = [(UIMoreNavigationController *)&v14 displayedViewController];
   }
 
-  return v12;
+  return displayedViewController;
 }
 
-- (void)setDisplayedViewController:(id)a3
+- (void)setDisplayedViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -54,52 +54,52 @@
     }
   }
 
-  v13 = [(SKUIMoreNavigationController *)self displayedViewController];
+  displayedViewController = [(SKUIMoreNavigationController *)self displayedViewController];
 
-  if (v13 != v4)
+  if (displayedViewController != controllerCopy)
   {
     displayedViewController = self->_displayedViewController;
     self->_displayedViewController = 0;
 
-    v4 = v4;
+    controllerCopy = controllerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [(UINavigationController *)v4 viewControllers];
-      v16 = [v15 count];
+      viewControllers = [(UINavigationController *)controllerCopy viewControllers];
+      v16 = [viewControllers count];
 
       if (v16)
       {
 LABEL_11:
         v19.receiver = self;
         v19.super_class = SKUIMoreNavigationController;
-        [(UIMoreNavigationController *)&v19 setDisplayedViewController:v4];
+        [(UIMoreNavigationController *)&v19 setDisplayedViewController:controllerCopy];
         goto LABEL_12;
       }
 
       v17 = 0;
       v18 = self->_displayedViewController;
-      self->_displayedViewController = v4;
-      v4 = v18;
+      self->_displayedViewController = controllerCopy;
+      controllerCopy = v18;
     }
 
     else
     {
-      v17 = v4;
+      v17 = controllerCopy;
     }
 
-    v4 = v17;
+    controllerCopy = v17;
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -112,9 +112,9 @@ LABEL_12:
     }
   }
 
-  v15 = [(UIMoreNavigationController *)self moreListController];
+  moreListController = [(UIMoreNavigationController *)self moreListController];
 
-  if (v15 == v6)
+  if (moreListController == controllerCopy)
   {
     if (self->_firstActualViewController)
     {
@@ -133,13 +133,13 @@ LABEL_12:
 
   v20.receiver = self;
   v20.super_class = SKUIMoreNavigationController;
-  [(UIMoreNavigationController *)&v20 didShowViewController:v6 animated:v4];
+  [(UIMoreNavigationController *)&v20 didShowViewController:controllerCopy animated:animatedCopy];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -152,12 +152,12 @@ LABEL_12:
     }
   }
 
-  v15 = v6;
+  v15 = controllerCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 viewControllers];
-    v17 = [v16 count];
+    viewControllers = [v15 viewControllers];
+    v17 = [viewControllers count];
 
     if (!v17)
     {
@@ -175,23 +175,23 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v15 viewControllers];
-      v19 = [v18 firstObject];
+      viewControllers2 = [v15 viewControllers];
+      firstObject = [viewControllers2 firstObject];
       firstActualViewController = self->_firstActualViewController;
-      self->_firstActualViewController = v19;
+      self->_firstActualViewController = firstObject;
     }
 
     else
     {
       v21 = v15;
-      v18 = self->_firstActualViewController;
+      viewControllers2 = self->_firstActualViewController;
       self->_firstActualViewController = v21;
     }
   }
 
   v22.receiver = self;
   v22.super_class = SKUIMoreNavigationController;
-  [(UIMoreNavigationController *)&v22 pushViewController:v15 animated:v4];
+  [(UIMoreNavigationController *)&v22 pushViewController:v15 animated:animatedCopy];
 LABEL_16:
 }
 
@@ -209,35 +209,35 @@ LABEL_16:
     }
   }
 
-  v11 = [(SKUIMoreNavigationController *)self topViewController];
-  v12 = v11;
-  if (v11)
+  topViewController = [(SKUIMoreNavigationController *)self topViewController];
+  v12 = topViewController;
+  if (topViewController)
   {
-    v13 = [v11 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    v15 = [v14 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v15 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v13 = 30;
+      supportedInterfaceOrientations = 30;
     }
 
     else if (SKUIAllowsLandscapePhone())
     {
-      v13 = 26;
+      supportedInterfaceOrientations = 26;
     }
 
     else
     {
-      v13 = 2;
+      supportedInterfaceOrientations = 2;
     }
   }
 
-  return v13;
+  return supportedInterfaceOrientations;
 }
 
 - (SKUIMoreNavigationControllerDelegate)storeKitDelegate

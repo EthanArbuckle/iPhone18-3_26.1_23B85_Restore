@@ -1,33 +1,33 @@
 @interface BSUIMappedImageCache
-- (BSUIMappedImageCache)initWithName:(id)a3 options:(unint64_t)a4;
-- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)a3;
-- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)a3 options:(id)a4;
-- (id)_imageForKey:(id)a3 withCPBitmapReadFlags:(int)a4 generatingIfNecessaryWithBlock:(id)a5;
-- (id)_imageForKey:(int)a3 withCPBitmapReadFlags:(void *)a4 generatingIfNecessaryWithBlock:(void *)a5 completion:;
+- (BSUIMappedImageCache)initWithName:(id)name options:(unint64_t)options;
+- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)identifier;
+- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)identifier options:(id)options;
+- (id)_imageForKey:(id)key withCPBitmapReadFlags:(int)flags generatingIfNecessaryWithBlock:(id)block;
+- (id)_imageForKey:(int)key withCPBitmapReadFlags:(void *)flags generatingIfNecessaryWithBlock:(void *)block completion:;
 - (id)allKeys;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)imageForKey:(id)a3;
-- (id)imageForKey:(id)a3 generatingIfNecessaryWithBlock:(id)a4;
-- (id)imageForKey:(id)a3 generatingIfNecessaryWithBlock:(id)a4 completion:(id)a5;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)imageForKey:(id)key;
+- (id)imageForKey:(id)key generatingIfNecessaryWithBlock:(id)block;
+- (id)imageForKey:(id)key generatingIfNecessaryWithBlock:(id)block completion:(id)completion;
 - (id)succinctDescription;
-- (void)_noteExternalChangeForKey:(id)a3;
-- (void)_setImage:(void *)a3 forKey:(uint64_t)a4 withPersistenceOptions:(int)a5 andCPBitmapReadFlags:(void *)a6 completion:;
-- (void)_warmupImageForKey:(id)a3;
+- (void)_noteExternalChangeForKey:(id)key;
+- (void)_setImage:(void *)image forKey:(uint64_t)key withPersistenceOptions:(int)options andCPBitmapReadFlags:(void *)flags completion:;
+- (void)_warmupImageForKey:(id)key;
 - (void)dealloc;
 - (void)releaseRecoverableResources;
-- (void)removeAllImagesWithCompletion:(id)a3;
-- (void)removeImageForKey:(id)a3 withCompletion:(id)a4;
+- (void)removeAllImagesWithCompletion:(id)completion;
+- (void)removeImageForKey:(id)key withCompletion:(id)completion;
 @end
 
 @implementation BSUIMappedImageCache
 
-- (BSUIMappedImageCache)initWithName:(id)a3 options:(unint64_t)a4
+- (BSUIMappedImageCache)initWithName:(id)name options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if ((v4 & 2) != 0)
+  optionsCopy = options;
+  nameCopy = name;
+  if ((optionsCopy & 2) != 0)
   {
     [MEMORY[0x1E698E728] pathProviderForSystemContainerForCurrentProcess];
   }
@@ -38,28 +38,28 @@
   }
   v7 = ;
   v8 = [BSUIMappedImageCacheOptions optionsWithContainerPathProvider:v7];
-  v9 = [(BSUIMappedImageCache *)self initWithUniqueIdentifier:v6 options:v8];
+  v9 = [(BSUIMappedImageCache *)self initWithUniqueIdentifier:nameCopy options:v8];
 
   return v9;
 }
 
-- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)a3
+- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E728] pathProviderForCurrentContainer];
-  v6 = [BSUIMappedImageCacheOptions optionsWithContainerPathProvider:v5];
+  identifierCopy = identifier;
+  pathProviderForCurrentContainer = [MEMORY[0x1E698E728] pathProviderForCurrentContainer];
+  v6 = [BSUIMappedImageCacheOptions optionsWithContainerPathProvider:pathProviderForCurrentContainer];
 
-  v7 = [(BSUIMappedImageCache *)self initWithUniqueIdentifier:v4 options:v6];
+  v7 = [(BSUIMappedImageCache *)self initWithUniqueIdentifier:identifierCopy options:v6];
   return v7;
 }
 
-- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)a3 options:(id)a4
+- (BSUIMappedImageCache)initWithUniqueIdentifier:(id)identifier options:(id)options
 {
   v93 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  optionsCopy = options;
+  v9 = optionsCopy;
+  if (!identifierCopy)
   {
     v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"uniqueIdentifier"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -89,7 +89,7 @@
     JUMPOUT(0x1A2D3F7ECLL);
   }
 
-  if (!v8)
+  if (!optionsCopy)
   {
     v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"options"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -124,7 +124,7 @@
   v10 = [(BSUIMappedImageCache *)&v82 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     uniqueIdentifier = v10->_uniqueIdentifier;
     v10->_uniqueIdentifier = v11;
 
@@ -155,10 +155,10 @@
       JUMPOUT(0x1A2D3F9C8);
     }
 
-    v15 = [v14 containerPathProvider];
-    v16 = [v15 cachesPath];
+    containerPathProvider = [v14 containerPathProvider];
+    cachesPath = [containerPathProvider cachesPath];
 
-    if (!v16)
+    if (!cachesPath)
     {
       v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid cachesPath for BSUIMappedImageCache %@", v13];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -185,13 +185,13 @@
     os_unfair_lock_lock(&_MergedGlobals_9);
     if (qword_1ED61C7B0)
     {
-      v17 = [qword_1ED61C7B0 objectForKey:v16];
+      v17 = [qword_1ED61C7B0 objectForKey:cachesPath];
       if (v17)
       {
         goto LABEL_15;
       }
 
-      v18 = [[BSUIMappedImageCacheRegistry alloc] _initWithCachesPath:v16];
+      v18 = [[BSUIMappedImageCacheRegistry alloc] _initWithCachesPath:cachesPath];
       if (v18)
       {
         v19 = v18[1];
@@ -207,7 +207,7 @@
 
     else
     {
-      v20 = [[BSUIMappedImageCacheRegistry alloc] _initWithCachesPath:v16];
+      v20 = [[BSUIMappedImageCacheRegistry alloc] _initWithCachesPath:cachesPath];
       v18 = v20;
       v21 = MEMORY[0x1E695DF90];
       if (v20)
@@ -230,8 +230,8 @@
     if (!v18)
     {
       v76 = MEMORY[0x1E696AEC0];
-      v77 = [v14 containerPathProvider];
-      v78 = [v76 stringWithFormat:@"must have a registry : uniqueIdentifier='%@' cachesPath='%@' (provider=%@)", v13, v16, v77];
+      containerPathProvider2 = [v14 containerPathProvider];
+      v78 = [v76 stringWithFormat:@"must have a registry : uniqueIdentifier='%@' cachesPath='%@' (provider=%@)", v13, cachesPath, containerPathProvider2];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -260,7 +260,7 @@ LABEL_15:
     {
       if ([v26 containsObject:v13])
       {
-        v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"a cache with uniqueIdentifier='%@' cachesPath='%@' already exists", v13, v16];
+        v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"a cache with uniqueIdentifier='%@' cachesPath='%@' already exists", v13, cachesPath];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[BSUIMappedImageCacheRegistry acquireUniqueIdentifier:withOptions:]"];
@@ -305,8 +305,8 @@ LABEL_15:
 
     v31 = v30;
     v32 = v10->_uniqueIdentifier;
-    v33 = [(BSUIMappedImageCacheRegistry *)v31 path];
-    v34 = [v33 stringByAppendingPathComponent:@"MappedImageCache"];
+    path = [(BSUIMappedImageCacheRegistry *)v31 path];
+    v34 = [path stringByAppendingPathComponent:@"MappedImageCache"];
     v35 = [v34 stringByAppendingPathComponent:v32];
 
     v36 = [v35 copy];
@@ -452,8 +452,8 @@ LABEL_24:
       {
         v17 = MEMORY[0x1E696AEC0];
         cachesPath = registry->_cachesPath;
-        v19 = [qword_1ED61C7B0 keyEnumerator];
-        v20 = [v17 stringWithFormat:@"cannot release an identifier we haven't acquired : uniqueIdentifier='%@' cachesPath='%@' : acquired_paths=%@", v5, cachesPath, v19];
+        keyEnumerator = [qword_1ED61C7B0 keyEnumerator];
+        v20 = [v17 stringWithFormat:@"cannot release an identifier we haven't acquired : uniqueIdentifier='%@' cachesPath='%@' : acquired_paths=%@", v5, cachesPath, keyEnumerator];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -502,12 +502,12 @@ LABEL_24:
   [(BSUIMappedImageCache *)&v23 dealloc];
 }
 
-- (id)_imageForKey:(int)a3 withCPBitmapReadFlags:(void *)a4 generatingIfNecessaryWithBlock:(void *)a5 completion:
+- (id)_imageForKey:(int)key withCPBitmapReadFlags:(void *)flags generatingIfNecessaryWithBlock:(void *)block completion:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  flagsCopy = flags;
+  blockCopy = block;
+  if (self)
   {
     BSDispatchQueueAssertNot();
     v50 = 0;
@@ -525,17 +525,17 @@ LABEL_24:
       v47 = __Block_byref_object_copy_;
       v48 = __Block_byref_object_dispose_;
       v49 = 0;
-      v13 = *(a1 + 32);
+      v13 = *(self + 32);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __101__BSUIMappedImageCache__imageForKey_withCPBitmapReadFlags_generatingIfNecessaryWithBlock_completion___block_invoke;
       block[3] = &unk_1E76B7A68;
-      block[4] = a1;
+      block[4] = self;
       v14 = v9;
       v39 = v14;
       v41 = &v50;
-      v43 = a3;
-      v15 = v10;
+      keyCopy = key;
+      v15 = flagsCopy;
       v40 = v15;
       v42 = &v44;
       dispatch_sync(v13, block);
@@ -548,8 +548,8 @@ LABEL_24:
         {
           v29 = v12;
           v18 = v37;
-          v19 = [(BSUIMappedImageCacheRegistry *)*(a1 + 16) tmpPath];
-          v20 = _workBlockGenerator(v17, v16, 1, v14, v18, a3, v19, *(a1 + 24), *(a1 + 32), *(a1 + 56), *(a1 + 40), v11);
+          tmpPath = [(BSUIMappedImageCacheRegistry *)*(self + 16) tmpPath];
+          v20 = _workBlockGenerator(v17, v16, 1, v14, v18, key, tmpPath, *(self + 24), *(self + 32), *(self + 56), *(self + 40), blockCopy);
           [(BSUIMappedImageCacheFuture *)v17 submitWorkBlock:v20];
 
           if (v37)
@@ -562,9 +562,9 @@ LABEL_24:
 
           else
           {
-            v21 = [(BSUIMappedImageCacheFuture *)v45[5] cacheImage];
+            cacheImage = [(BSUIMappedImageCacheFuture *)v45[5] cacheImage];
             v22 = v51[5];
-            v51[5] = v21;
+            v51[5] = cacheImage;
           }
 
           v12 = v29;
@@ -576,20 +576,20 @@ LABEL_24:
           v35[1] = 3221225472;
           v35[2] = __101__BSUIMappedImageCache__imageForKey_withCPBitmapReadFlags_generatingIfNecessaryWithBlock_completion___block_invoke_2;
           v35[3] = &unk_1E76B7A90;
-          v36 = v11;
+          v36 = blockCopy;
           [(BSUIMappedImageCacheFuture *)v17 submitWorkBlock:v35];
           v22 = v36;
         }
       }
 
-      else if (v11)
+      else if (blockCopy)
       {
-        v24 = *(a1 + 56);
+        v24 = *(self + 56);
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __101__BSUIMappedImageCache__imageForKey_withCPBitmapReadFlags_generatingIfNecessaryWithBlock_completion___block_invoke_3;
         v32[3] = &unk_1E76B7AB8;
-        v33 = v11;
+        v33 = blockCopy;
         v34 = &v50;
         dispatch_async(v24, v32);
       }
@@ -598,14 +598,14 @@ LABEL_24:
       objc_autoreleasePoolPop(v12);
     }
 
-    else if (v11)
+    else if (blockCopy)
     {
-      v23 = *(a1 + 56);
+      v23 = *(self + 56);
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __101__BSUIMappedImageCache__imageForKey_withCPBitmapReadFlags_generatingIfNecessaryWithBlock_completion___block_invoke_4;
       v30[3] = &unk_1E76B7AE0;
-      v31 = v11;
+      v31 = blockCopy;
       dispatch_async(v23, v30);
     }
 
@@ -698,27 +698,27 @@ void __101__BSUIMappedImageCache__imageForKey_withCPBitmapReadFlags_generatingIf
   }
 }
 
-- (void)_setImage:(void *)a3 forKey:(uint64_t)a4 withPersistenceOptions:(int)a5 andCPBitmapReadFlags:(void *)a6 completion:
+- (void)_setImage:(void *)image forKey:(uint64_t)key withPersistenceOptions:(int)options andCPBitmapReadFlags:(void *)flags completion:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a6;
-  if (a1)
+  imageCopy = image;
+  flagsCopy = flags;
+  if (self)
   {
     BSDispatchQueueAssertNot();
-    if (v11 && v12)
+    if (v11 && imageCopy)
     {
-      v14 = *(a1 + 32);
+      v14 = *(self + 32);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __96__BSUIMappedImageCache__setImage_forKey_withPersistenceOptions_andCPBitmapReadFlags_completion___block_invoke;
       block[3] = &unk_1E76B7B08;
-      block[4] = a1;
-      v20 = v12;
+      block[4] = self;
+      v20 = imageCopy;
       v21 = v11;
-      v23 = a4;
-      v24 = a5;
-      v22 = v13;
+      keyCopy = key;
+      optionsCopy = options;
+      v22 = flagsCopy;
       dispatch_async_and_wait(v14, block);
 
       v15 = v20;
@@ -727,14 +727,14 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    if (v13)
+    if (flagsCopy)
     {
-      v16 = *(a1 + 56);
+      v16 = *(self + 56);
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __96__BSUIMappedImageCache__setImage_forKey_withPersistenceOptions_andCPBitmapReadFlags_completion___block_invoke_2;
       v17[3] = &unk_1E76B7AE0;
-      v18 = v13;
+      v18 = flagsCopy;
       dispatch_async(v16, v17);
       v15 = v18;
       goto LABEL_7;
@@ -758,33 +758,33 @@ void __96__BSUIMappedImageCache__setImage_forKey_withPersistenceOptions_andCPBit
   [(BSUIMappedImageCacheFuture *)v8 submitWorkBlock:v7];
 }
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v3 = [(BSUIMappedImageCache *)self _imageForKey:a3 withCPBitmapReadFlags:0 generatingIfNecessaryWithBlock:0 completion:0];
+  v3 = [(BSUIMappedImageCache *)self _imageForKey:key withCPBitmapReadFlags:0 generatingIfNecessaryWithBlock:0 completion:0];
 
   return v3;
 }
 
-- (id)imageForKey:(id)a3 generatingIfNecessaryWithBlock:(id)a4
+- (id)imageForKey:(id)key generatingIfNecessaryWithBlock:(id)block
 {
-  v4 = [(BSUIMappedImageCache *)self _imageForKey:a3 withCPBitmapReadFlags:0 generatingIfNecessaryWithBlock:a4 completion:0];
+  v4 = [(BSUIMappedImageCache *)self _imageForKey:key withCPBitmapReadFlags:0 generatingIfNecessaryWithBlock:block completion:0];
 
   return v4;
 }
 
-- (id)imageForKey:(id)a3 generatingIfNecessaryWithBlock:(id)a4 completion:(id)a5
+- (id)imageForKey:(id)key generatingIfNecessaryWithBlock:(id)block completion:(id)completion
 {
-  v5 = [(BSUIMappedImageCache *)self _imageForKey:a3 withCPBitmapReadFlags:0 generatingIfNecessaryWithBlock:a4 completion:a5];
+  v5 = [(BSUIMappedImageCache *)self _imageForKey:key withCPBitmapReadFlags:0 generatingIfNecessaryWithBlock:block completion:completion];
 
   return v5;
 }
 
-- (void)removeImageForKey:(id)a3 withCompletion:(id)a4
+- (void)removeImageForKey:(id)key withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   BSDispatchQueueAssertNot();
-  if (v6)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -792,14 +792,14 @@ void __96__BSUIMappedImageCache__setImage_forKey_withPersistenceOptions_andCPBit
     block[2] = __57__BSUIMappedImageCache_removeImageForKey_withCompletion___block_invoke;
     block[3] = &unk_1E76B7B30;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = keyCopy;
+    v11 = completionCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    dispatch_async(self->_calloutQueue, v7);
+    dispatch_async(self->_calloutQueue, completionCopy);
   }
 }
 
@@ -916,9 +916,9 @@ void __51__BSUIMappedImageCache_releaseRecoverableResources__block_invoke(uint64
   *(v2 + 48) = 0;
 }
 
-- (void)removeAllImagesWithCompletion:(id)a3
+- (void)removeAllImagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   BSDispatchQueueAssertNot();
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -926,8 +926,8 @@ void __51__BSUIMappedImageCache_releaseRecoverableResources__block_invoke(uint64
   v7[2] = __54__BSUIMappedImageCache_removeAllImagesWithCompletion___block_invoke;
   v7[3] = &unk_1E76B7BD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -945,15 +945,15 @@ void __54__BSUIMappedImageCache_removeAllImagesWithCompletion___block_invoke(uin
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSUIMappedImageCache *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSUIMappedImageCache *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendObject:self->_uniqueIdentifier withName:@"uniqueIdentifier"];
@@ -964,16 +964,16 @@ void __54__BSUIMappedImageCache_removeAllImagesWithCompletion___block_invoke(uin
 
 - (id)succinctDescription
 {
-  v2 = [(BSUIMappedImageCache *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSUIMappedImageCache *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
   v22 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  prefixCopy = prefix;
   v16 = [(BSUIMappedImageCache *)self descriptionBuilderWithMultilinePrefix:?];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(BSUIMappedImageCache *)self allKeys];
@@ -999,8 +999,8 @@ void __54__BSUIMappedImageCache_removeAllImagesWithCompletion___block_invoke(uin
         v12 = v11;
         if (!v11)
         {
-          v3 = [MEMORY[0x1E695DFB0] null];
-          v12 = v3;
+          null = [MEMORY[0x1E695DFB0] null];
+          v12 = null;
         }
 
         [v5 setObject:v12 forKey:v10];
@@ -1016,23 +1016,23 @@ void __54__BSUIMappedImageCache_removeAllImagesWithCompletion___block_invoke(uin
   }
 
   [v16 appendDictionarySection:v5 withName:@"Contents" skipIfEmpty:0];
-  v13 = [v16 build];
+  build = [v16 build];
 
-  return v13;
+  return build;
 }
 
-- (id)_imageForKey:(id)a3 withCPBitmapReadFlags:(int)a4 generatingIfNecessaryWithBlock:(id)a5
+- (id)_imageForKey:(id)key withCPBitmapReadFlags:(int)flags generatingIfNecessaryWithBlock:(id)block
 {
-  v5 = [(BSUIMappedImageCache *)self _imageForKey:a3 withCPBitmapReadFlags:a4 generatingIfNecessaryWithBlock:a5 completion:0];
+  v5 = [(BSUIMappedImageCache *)self _imageForKey:key withCPBitmapReadFlags:flags generatingIfNecessaryWithBlock:block completion:0];
 
   return v5;
 }
 
-- (void)_warmupImageForKey:(id)a3
+- (void)_warmupImageForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   BSDispatchQueueAssertNot();
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -1040,7 +1040,7 @@ void __54__BSUIMappedImageCache_removeAllImagesWithCompletion___block_invoke(uin
     v6[2] = __43__BSUIMappedImageCache__warmupImageForKey___block_invoke;
     v6[3] = &unk_1E76B7BF8;
     v6[4] = self;
-    v7 = v4;
+    v7 = keyCopy;
     dispatch_async(queue, v6);
   }
 }
@@ -1115,11 +1115,11 @@ void __43__BSUIMappedImageCache__warmupImageForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_noteExternalChangeForKey:(id)a3
+- (void)_noteExternalChangeForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   BSDispatchQueueAssertNot();
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -1127,7 +1127,7 @@ void __43__BSUIMappedImageCache__warmupImageForKey___block_invoke(uint64_t a1)
     v6[2] = __50__BSUIMappedImageCache__noteExternalChangeForKey___block_invoke;
     v6[3] = &unk_1E76B7BF8;
     v6[4] = self;
-    v7 = v4;
+    v7 = keyCopy;
     dispatch_async(queue, v6);
   }
 }

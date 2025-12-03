@@ -1,11 +1,11 @@
 @interface PLFileSystemPersistenceAttributes
-- (BOOL)getInt32:(int *)a3 forKey:(id)a4;
-- (BOOL)getUInt16:(unsigned __int16 *)a3 forKey:(id)a4;
-- (BOOL)getUInt64:(unint64_t *)a3 forKey:(id)a4;
-- (PLFileSystemPersistenceAttributes)initWithAttributes:(id)a3 unknownAttributes:(id)a4;
-- (id)UUIDStringForKey:(id)a3;
+- (BOOL)getInt32:(int *)int32 forKey:(id)key;
+- (BOOL)getUInt16:(unsigned __int16 *)int16 forKey:(id)key;
+- (BOOL)getUInt64:(unint64_t *)int64 forKey:(id)key;
+- (PLFileSystemPersistenceAttributes)initWithAttributes:(id)attributes unknownAttributes:(id)unknownAttributes;
+- (id)UUIDStringForKey:(id)key;
 - (id)description;
-- (id)stringForKey:(id)a3;
+- (id)stringForKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -358,9 +358,9 @@ void __48__PLFileSystemPersistenceAttributes_description__block_invoke(uint64_t 
   [v4 appendFormat:@"\n %@ -> %lu bytes", v5, objc_msgSend(a3, "length")];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_attributes objectForKey:a3];
+  v3 = [(NSDictionary *)self->_attributes objectForKey:key];
   v4 = v3;
   if (v3 && [v3 length])
   {
@@ -385,15 +385,15 @@ void __48__PLFileSystemPersistenceAttributes_description__block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)getUInt64:(unint64_t *)a3 forKey:(id)a4
+- (BOOL)getUInt64:(unint64_t *)int64 forKey:(id)key
 {
   v9 = 0;
-  v5 = [(PLFileSystemPersistenceAttributes *)self dataForKey:a4];
+  v5 = [(PLFileSystemPersistenceAttributes *)self dataForKey:key];
   v6 = v5;
   if (v5 && [v5 length] == 8)
   {
     [v6 getBytes:&v9 length:8];
-    *a3 = v9;
+    *int64 = v9;
     v7 = 1;
   }
 
@@ -405,15 +405,15 @@ void __48__PLFileSystemPersistenceAttributes_description__block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)getInt32:(int *)a3 forKey:(id)a4
+- (BOOL)getInt32:(int *)int32 forKey:(id)key
 {
   v9 = 0;
-  v5 = [(PLFileSystemPersistenceAttributes *)self dataForKey:a4];
+  v5 = [(PLFileSystemPersistenceAttributes *)self dataForKey:key];
   v6 = v5;
   if (v5 && [v5 length] == 4)
   {
     [v6 getBytes:&v9 length:4];
-    *a3 = v9;
+    *int32 = v9;
     v7 = 1;
   }
 
@@ -425,15 +425,15 @@ void __48__PLFileSystemPersistenceAttributes_description__block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)getUInt16:(unsigned __int16 *)a3 forKey:(id)a4
+- (BOOL)getUInt16:(unsigned __int16 *)int16 forKey:(id)key
 {
   v9 = 0;
-  v5 = [(PLFileSystemPersistenceAttributes *)self dataForKey:a4];
+  v5 = [(PLFileSystemPersistenceAttributes *)self dataForKey:key];
   v6 = v5;
   if (v5 && [v5 length] == 2)
   {
     [v6 getBytes:&v9 length:2];
-    *a3 = v9;
+    *int16 = v9;
     v7 = 1;
   }
 
@@ -445,9 +445,9 @@ void __48__PLFileSystemPersistenceAttributes_description__block_invoke(uint64_t 
   return v7;
 }
 
-- (id)UUIDStringForKey:(id)a3
+- (id)UUIDStringForKey:(id)key
 {
-  v3 = [(PLFileSystemPersistenceAttributes *)self dataForKey:a3];
+  v3 = [(PLFileSystemPersistenceAttributes *)self dataForKey:key];
   v4 = PLStringFromUUIDData(v3);
 
   return v4;
@@ -463,18 +463,18 @@ void __48__PLFileSystemPersistenceAttributes_description__block_invoke(uint64_t 
   [(PLFileSystemPersistenceAttributes *)&v4 dealloc];
 }
 
-- (PLFileSystemPersistenceAttributes)initWithAttributes:(id)a3 unknownAttributes:(id)a4
+- (PLFileSystemPersistenceAttributes)initWithAttributes:(id)attributes unknownAttributes:(id)unknownAttributes
 {
-  v7 = a3;
-  v8 = a4;
+  attributesCopy = attributes;
+  unknownAttributesCopy = unknownAttributes;
   v12.receiver = self;
   v12.super_class = PLFileSystemPersistenceAttributes;
   v9 = [(PLFileSystemPersistenceAttributes *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributes, a3);
-    objc_storeStrong(&v10->_unknownAttributes, a4);
+    objc_storeStrong(&v9->_attributes, attributes);
+    objc_storeStrong(&v10->_unknownAttributes, unknownAttributes);
   }
 
   return v10;

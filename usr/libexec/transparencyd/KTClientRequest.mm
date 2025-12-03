@@ -1,35 +1,35 @@
 @interface KTClientRequest
-- (KTClientRequest)initWithType:(unint64_t)a3 application:(id)a4 uri:(id)a5 accountKey:(id)a6 serverLoggableDatas:(id)a7;
-- (id)addValidateRequest:(id)a3 dataStore:(id)a4 error:(id *)a5;
+- (KTClientRequest)initWithType:(unint64_t)type application:(id)application uri:(id)uri accountKey:(id)key serverLoggableDatas:(id)datas;
+- (id)addValidateRequest:(id)request dataStore:(id)store error:(id *)error;
 @end
 
 @implementation KTClientRequest
 
-- (KTClientRequest)initWithType:(unint64_t)a3 application:(id)a4 uri:(id)a5 accountKey:(id)a6 serverLoggableDatas:(id)a7
+- (KTClientRequest)initWithType:(unint64_t)type application:(id)application uri:(id)uri accountKey:(id)key serverLoggableDatas:(id)datas
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  applicationCopy = application;
+  uriCopy = uri;
+  keyCopy = key;
+  datasCopy = datas;
   v19.receiver = self;
   v19.super_class = KTClientRequest;
   v16 = [(KTClientRequest *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(KTClientRequest *)v16 setType:a3];
-    [(KTClientRequest *)v17 setApplication:v12];
-    [(KTClientRequest *)v17 setUri:v13];
-    [(KTClientRequest *)v17 setAccountKey:v14];
-    [(KTClientRequest *)v17 setServerLoggableDatas:v15];
+    [(KTClientRequest *)v16 setType:type];
+    [(KTClientRequest *)v17 setApplication:applicationCopy];
+    [(KTClientRequest *)v17 setUri:uriCopy];
+    [(KTClientRequest *)v17 setAccountKey:keyCopy];
+    [(KTClientRequest *)v17 setServerLoggableDatas:datasCopy];
   }
 
   return v17;
 }
 
-- (id)addValidateRequest:(id)a3 dataStore:(id)a4 error:(id *)a5
+- (id)addValidateRequest:(id)request dataStore:(id)store error:(id *)error
 {
-  v8 = a3;
+  requestCopy = request;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -48,18 +48,18 @@
   v14[3] = &unk_10032A828;
   v14[4] = self;
   v17 = &v25;
-  v9 = a4;
-  v15 = v9;
+  storeCopy = store;
+  v15 = storeCopy;
   v18 = &v19;
-  v10 = v8;
+  v10 = requestCopy;
   v16 = v10;
-  [v9 performBlockAndWait:v14];
-  if (a5)
+  [storeCopy performBlockAndWait:v14];
+  if (error)
   {
     v11 = v20[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 

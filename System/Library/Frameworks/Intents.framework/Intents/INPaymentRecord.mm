@@ -1,46 +1,46 @@
 @interface INPaymentRecord
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INPaymentRecord)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INPaymentRecord)initWithCoder:(id)coder;
 - (INPaymentRecord)initWithPayee:(INPerson *)payee payer:(INPerson *)payer currencyAmount:(INCurrencyAmount *)currencyAmount paymentMethod:(INPaymentMethod *)paymentMethod note:(NSString *)note status:(INPaymentStatus)status feeAmount:(INCurrencyAmount *)feeAmount;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INPaymentRecord
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(INPaymentRecord *)self payee];
-  [v5 _intents_updateContainerWithCache:v4];
+  cacheCopy = cache;
+  payee = [(INPaymentRecord *)self payee];
+  [payee _intents_updateContainerWithCache:cacheCopy];
 
-  v6 = [(INPaymentRecord *)self payer];
-  [v6 _intents_updateContainerWithCache:v4];
+  payer = [(INPaymentRecord *)self payer];
+  [payer _intents_updateContainerWithCache:cacheCopy];
 
-  v7 = [(INPaymentRecord *)self paymentMethod];
-  [v7 _intents_updateContainerWithCache:v4];
+  paymentMethod = [(INPaymentRecord *)self paymentMethod];
+  [paymentMethod _intents_updateContainerWithCache:cacheCopy];
 }
 
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INPaymentRecord *)self payee];
-  v5 = [v4 _intents_cacheableObjects];
-  [v3 unionSet:v5];
+  payee = [(INPaymentRecord *)self payee];
+  _intents_cacheableObjects = [payee _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects];
 
-  v6 = [(INPaymentRecord *)self payer];
-  v7 = [v6 _intents_cacheableObjects];
-  [v3 unionSet:v7];
+  payer = [(INPaymentRecord *)self payer];
+  _intents_cacheableObjects2 = [payer _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects2];
 
-  v8 = [(INPaymentRecord *)self paymentMethod];
-  v9 = [v8 _intents_cacheableObjects];
-  [v3 unionSet:v9];
+  paymentMethod = [(INPaymentRecord *)self paymentMethod];
+  _intents_cacheableObjects3 = [paymentMethod _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects3];
 
   if ([v3 count])
   {
@@ -72,54 +72,54 @@
   v24[0] = payee;
   v23[1] = @"payer";
   payer = self->_payer;
-  v5 = payer;
+  null = payer;
   if (!payer)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v5;
-  v24[1] = v5;
+  v20 = null;
+  v24[1] = null;
   v23[2] = @"currencyAmount";
   currencyAmount = self->_currencyAmount;
-  v7 = currencyAmount;
+  null2 = currencyAmount;
   if (!currencyAmount)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v7;
-  v24[2] = v7;
+  v18 = null2;
+  v24[2] = null2;
   v23[3] = @"note";
   note = self->_note;
-  v9 = note;
+  null3 = note;
   if (!note)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v9;
+  v24[3] = null3;
   v23[4] = @"status";
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{self->_status, v18}];
   v24[4] = v10;
   v23[5] = @"paymentMethod";
   paymentMethod = self->_paymentMethod;
-  v12 = paymentMethod;
+  null4 = paymentMethod;
   if (!paymentMethod)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[5] = v12;
+  v24[5] = null4;
   v23[6] = @"feeAmount";
   feeAmount = self->_feeAmount;
-  v14 = feeAmount;
+  null5 = feeAmount;
   if (!feeAmount)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[6] = v14;
+  v24[6] = null5;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:7];
   if (feeAmount)
   {
@@ -179,35 +179,35 @@ LABEL_18:
   return v15;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPaymentRecord;
   v6 = [(INPaymentRecord *)&v11 description];
-  v7 = [(INPaymentRecord *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPaymentRecord *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_payee];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"payee"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_payee];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"payee"];
 
-  v9 = [v6 encodeObject:self->_payer];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"payer"];
+  v9 = [encoderCopy encodeObject:self->_payer];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"payer"];
 
-  v10 = [v6 encodeObject:self->_currencyAmount];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"currencyAmount"];
+  v10 = [encoderCopy encodeObject:self->_currencyAmount];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"currencyAmount"];
 
-  v11 = [v6 encodeObject:self->_note];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"note"];
+  v11 = [encoderCopy encodeObject:self->_note];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"note"];
 
   v12 = self->_status - 1;
   if (v12 > 4)
@@ -221,50 +221,50 @@ LABEL_18:
   }
 
   v14 = v13;
-  [v7 if_setObjectIfNonNil:v14 forKey:@"status"];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"status"];
 
-  v15 = [v6 encodeObject:self->_paymentMethod];
-  [v7 if_setObjectIfNonNil:v15 forKey:@"paymentMethod"];
+  v15 = [encoderCopy encodeObject:self->_paymentMethod];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"paymentMethod"];
 
-  v16 = [v6 encodeObject:self->_feeAmount];
+  v16 = [encoderCopy encodeObject:self->_feeAmount];
 
-  [v7 if_setObjectIfNonNil:v16 forKey:@"feeAmount"];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"feeAmount"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payee = self->_payee;
-  v5 = a3;
-  [v5 encodeObject:payee forKey:@"payee"];
-  [v5 encodeObject:self->_payer forKey:@"payer"];
-  [v5 encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
-  [v5 encodeObject:self->_note forKey:@"note"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeObject:self->_paymentMethod forKey:@"paymentMethod"];
-  [v5 encodeObject:self->_feeAmount forKey:@"feeAmount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:payee forKey:@"payee"];
+  [coderCopy encodeObject:self->_payer forKey:@"payer"];
+  [coderCopy encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
+  [coderCopy encodeObject:self->_note forKey:@"note"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_paymentMethod forKey:@"paymentMethod"];
+  [coderCopy encodeObject:self->_feeAmount forKey:@"feeAmount"];
 }
 
-- (INPaymentRecord)initWithCoder:(id)a3
+- (INPaymentRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payee"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payer"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"note"];
-  v9 = [v4 decodeIntegerForKey:@"status"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethod"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feeAmount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payee"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payer"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"note"];
+  v9 = [coderCopy decodeIntegerForKey:@"status"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethod"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feeAmount"];
 
   v12 = [(INPaymentRecord *)self initWithPayee:v5 payer:v6 currencyAmount:v7 paymentMethod:v10 note:v8 status:v9 feeAmount:v11];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -274,7 +274,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       payee = self->_payee;
       v12 = 0;
       if (payee == v5->_payee || [(INPerson *)payee isEqual:?])
@@ -368,42 +368,42 @@ LABEL_18:
   return v21;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = a1;
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"payee"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"payee"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"payer"];
-    v14 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"payer"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"currencyAmount"];
-    v17 = [v7 decodeObjectOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"currencyAmount"];
+    v17 = [decoderCopy decodeObjectOfClass:v15 from:v16];
 
     v18 = objc_opt_class();
-    v19 = [v8 objectForKeyedSubscript:@"note"];
-    v20 = [v7 decodeObjectOfClass:v18 from:v19];
+    v19 = [fromCopy objectForKeyedSubscript:@"note"];
+    v20 = [decoderCopy decodeObjectOfClass:v18 from:v19];
 
-    v21 = [v8 objectForKeyedSubscript:@"status"];
+    v21 = [fromCopy objectForKeyedSubscript:@"status"];
     v22 = INPaymentStatusWithString(v21);
 
     v23 = objc_opt_class();
-    v24 = [v8 objectForKeyedSubscript:@"paymentMethod"];
-    v25 = [v7 decodeObjectOfClass:v23 from:v24];
+    v24 = [fromCopy objectForKeyedSubscript:@"paymentMethod"];
+    v25 = [decoderCopy decodeObjectOfClass:v23 from:v24];
 
     v26 = objc_opt_class();
-    v27 = [v8 objectForKeyedSubscript:@"feeAmount"];
-    v28 = [v7 decodeObjectOfClass:v26 from:v27];
+    v27 = [fromCopy objectForKeyedSubscript:@"feeAmount"];
+    v28 = [decoderCopy decodeObjectOfClass:v26 from:v27];
 
-    v29 = [[v31 alloc] initWithPayee:v11 payer:v14 currencyAmount:v17 paymentMethod:v25 note:v20 status:v22 feeAmount:v28];
+    v29 = [[selfCopy alloc] initWithPayee:v11 payer:v14 currencyAmount:v17 paymentMethod:v25 note:v20 status:v22 feeAmount:v28];
   }
 
   else

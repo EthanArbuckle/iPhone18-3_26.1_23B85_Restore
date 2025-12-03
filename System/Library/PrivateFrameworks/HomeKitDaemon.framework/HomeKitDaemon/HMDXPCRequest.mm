@@ -1,29 +1,29 @@
 @interface HMDXPCRequest
-- (HMDXPCRequest)initWithName:(id)a3 qualityOfService:(int64_t)a4 timeoutDate:(id)a5 responseHandler:(id)a6;
+- (HMDXPCRequest)initWithName:(id)name qualityOfService:(int64_t)service timeoutDate:(id)date responseHandler:(id)handler;
 @end
 
 @implementation HMDXPCRequest
 
-- (HMDXPCRequest)initWithName:(id)a3 qualityOfService:(int64_t)a4 timeoutDate:(id)a5 responseHandler:(id)a6
+- (HMDXPCRequest)initWithName:(id)name qualityOfService:(int64_t)service timeoutDate:(id)date responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  nameCopy = name;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!nameCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = handlerCopy;
+  if (!handlerCopy)
   {
 LABEL_9:
     v22 = _HMFPreconditionFailure();
@@ -35,12 +35,12 @@ LABEL_9:
   v14 = [(HMDXPCRequest *)&v26 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v15;
 
-    v14->_qualityOfService = a4;
-    v17 = [v11 copy];
+    v14->_qualityOfService = service;
+    v17 = [dateCopy copy];
     timeoutDate = v14->_timeoutDate;
     v14->_timeoutDate = v17;
 

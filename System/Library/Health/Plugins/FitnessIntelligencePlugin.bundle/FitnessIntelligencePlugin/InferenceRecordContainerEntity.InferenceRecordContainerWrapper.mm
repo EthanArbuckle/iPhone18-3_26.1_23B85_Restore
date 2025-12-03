@@ -1,19 +1,19 @@
 @interface InferenceRecordContainerEntity.InferenceRecordContainerWrapper
 - (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)init;
-- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)initWithData:(id)a3;
+- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)initWithData:(id)data;
 - (id)data;
 - (int64_t)encodedByteCount;
 @end
 
 @implementation InferenceRecordContainerEntity.InferenceRecordContainerWrapper
 
-- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)initWithData:(id)a3
+- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)initWithData:(id)data
 {
   v5 = sub_38F8(&unk_8FA00, &qword_7A740);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v17 - v7;
-  v9 = a3;
+  dataCopy = data;
   v10 = sub_748C8();
   v12 = v11;
 
@@ -66,7 +66,7 @@
 
 - (int64_t)encodedByteCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_44AEC();
 
   return v3;

@@ -1,6 +1,6 @@
 @interface PTCinematographyUserTap
 - (NSNumber)trackNumber;
-- (PTCinematographyUserTap)initWithTime:(id *)a3 tappedDetection:(id)a4 strong:(BOOL)a5 group:(BOOL)a6;
+- (PTCinematographyUserTap)initWithTime:(id *)time tappedDetection:(id)detection strong:(BOOL)strong group:(BOOL)group;
 - (id)focusIdentifier;
 - (int64_t)groupIdentifier;
 - (int64_t)trackIdentifier;
@@ -8,13 +8,13 @@
 
 @implementation PTCinematographyUserTap
 
-- (PTCinematographyUserTap)initWithTime:(id *)a3 tappedDetection:(id)a4 strong:(BOOL)a5 group:(BOOL)a6
+- (PTCinematographyUserTap)initWithTime:(id *)time tappedDetection:(id)detection strong:(BOOL)strong group:(BOOL)group
 {
-  v6 = a6;
-  v11 = a4;
-  v12 = [v11 trackNumber];
+  groupCopy = group;
+  detectionCopy = detection;
+  trackNumber = [detectionCopy trackNumber];
 
-  if (v12)
+  if (trackNumber)
   {
     v20.receiver = self;
     v20.super_class = PTCinematographyUserTap;
@@ -22,17 +22,17 @@
     v14 = v13;
     if (v13)
     {
-      v15 = *&a3->var0;
-      *(v13 + 5) = a3->var3;
+      v15 = *&time->var0;
+      *(v13 + 5) = time->var3;
       *(v13 + 24) = v15;
-      objc_storeStrong(v13 + 2, a4);
-      v14[8] = a5;
-      v16 = v6 && PTGroupIDIsValid([v11 groupIdentifier]);
+      objc_storeStrong(v13 + 2, detection);
+      v14[8] = strong;
+      v16 = groupCopy && PTGroupIDIsValid([detectionCopy groupIdentifier]);
       v14[9] = v16;
     }
 
     self = v14;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -43,42 +43,42 @@
       [PTCinematographyUserTap initWithTime:v17 tappedDetection:? strong:? group:?];
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)focusIdentifier
 {
-  v2 = [(PTCinematographyUserTap *)self detection];
-  v3 = [v2 focusIdentifier];
+  detection = [(PTCinematographyUserTap *)self detection];
+  focusIdentifier = [detection focusIdentifier];
 
-  return v3;
+  return focusIdentifier;
 }
 
 - (int64_t)trackIdentifier
 {
-  v2 = [(PTCinematographyUserTap *)self detection];
-  v3 = [v2 trackIdentifier];
+  detection = [(PTCinematographyUserTap *)self detection];
+  trackIdentifier = [detection trackIdentifier];
 
-  return v3;
+  return trackIdentifier;
 }
 
 - (NSNumber)trackNumber
 {
-  v2 = [(PTCinematographyUserTap *)self detection];
-  v3 = [v2 trackNumber];
+  detection = [(PTCinematographyUserTap *)self detection];
+  trackNumber = [detection trackNumber];
 
-  return v3;
+  return trackNumber;
 }
 
 - (int64_t)groupIdentifier
 {
-  v2 = [(PTCinematographyUserTap *)self detection];
-  v3 = [v2 groupIdentifier];
+  detection = [(PTCinematographyUserTap *)self detection];
+  groupIdentifier = [detection groupIdentifier];
 
-  return v3;
+  return groupIdentifier;
 }
 
 @end

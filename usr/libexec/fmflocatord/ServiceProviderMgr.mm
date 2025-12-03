@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (ServiceProviderMgr)init;
 - (id)initSingleton;
-- (id)serviceProviderForAccount:(id)a3;
+- (id)serviceProviderForAccount:(id)account;
 - (void)accountListDidChange;
 - (void)dealloc;
 - (void)start;
@@ -105,23 +105,23 @@
   [v4 loadExistingAccounts];
 
   v5 = +[AccountManager sharedInstance];
-  v6 = [v5 accounts];
+  accounts = [v5 accounts];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000082AC;
   v11[3] = &unk_10005D320;
   v11[4] = self;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [accounts enumerateObjectsUsingBlock:v11];
   [(ServiceProviderMgr *)self startGlobalManagers];
-  v7 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-  [v7 enumerateKeysAndObjectsUsingBlock:&stru_10005D360];
+  accountUUIDToServiceProvider = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+  [accountUUIDToServiceProvider enumerateKeysAndObjectsUsingBlock:&stru_10005D360];
 
   v8 = sub_100002830();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-    v10 = [v9 count];
+    accountUUIDToServiceProvider2 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+    v10 = [accountUUIDToServiceProvider2 count];
     *buf = 134217984;
     v13 = v10;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Total %ld service providers at startup", buf, 0xCu);
@@ -134,11 +134,11 @@
 {
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"AccountListDidChangeNotification" object:0];
-  v3 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-  [v3 enumerateKeysAndObjectsUsingBlock:&stru_10005D380];
+  accountUUIDToServiceProvider = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+  [accountUUIDToServiceProvider enumerateKeysAndObjectsUsingBlock:&stru_10005D380];
 
-  v4 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-  [v4 removeAllObjects];
+  accountUUIDToServiceProvider2 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+  [accountUUIDToServiceProvider2 removeAllObjects];
 
   [(ServiceProviderMgr *)self stopGlobalManagers];
 }
@@ -168,10 +168,10 @@
   }
 
   v4 = +[AccountManager sharedInstance];
-  v5 = [v4 accounts];
+  accounts = [v4 accounts];
 
-  v6 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-  v7 = [v6 mutableCopy];
+  accountUUIDToServiceProvider = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+  v7 = [accountUUIDToServiceProvider mutableCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -179,8 +179,8 @@
   v13[3] = &unk_10005D3A8;
   v8 = v7;
   v14 = v8;
-  v15 = self;
-  [v5 enumerateObjectsUsingBlock:v13];
+  selfCopy = self;
+  [accounts enumerateObjectsUsingBlock:v13];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100008930;
@@ -190,21 +190,21 @@
   v9 = sub_100002830();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-    v11 = [v10 count];
+    accountUUIDToServiceProvider2 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+    v11 = [accountUUIDToServiceProvider2 count];
     *buf = 134217984;
     v17 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Total %ld service providers now", buf, 0xCu);
   }
 }
 
-- (id)serviceProviderForAccount:(id)a3
+- (id)serviceProviderForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
-  v6 = [v4 uuid];
+  accountCopy = account;
+  accountUUIDToServiceProvider = [(ServiceProviderMgr *)self accountUUIDToServiceProvider];
+  uuid = [accountCopy uuid];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [accountUUIDToServiceProvider objectForKeyedSubscript:uuid];
 
   return v7;
 }

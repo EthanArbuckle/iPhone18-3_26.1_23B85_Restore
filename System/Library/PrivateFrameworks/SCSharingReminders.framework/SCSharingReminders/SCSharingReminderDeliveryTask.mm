@@ -1,15 +1,15 @@
 @interface SCSharingReminderDeliveryTask
-+ (id)taskRequestScheduledAfter:(double)a3;
++ (id)taskRequestScheduledAfter:(double)after;
 @end
 
 @implementation SCSharingReminderDeliveryTask
 
-+ (id)taskRequestScheduledAfter:(double)a3
++ (id)taskRequestScheduledAfter:(double)after
 {
   v4 = [objc_alloc(MEMORY[0x277CF07C8]) initWithIdentifier:@"com.apple.safetycheckd.reminder_delivery"];
   [v4 setRequiresNetworkConnectivity:1];
   [v4 setPriority:2];
-  [v4 setScheduleAfter:a3];
+  [v4 setScheduleAfter:after];
 
   return v4;
 }

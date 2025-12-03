@@ -1,65 +1,65 @@
 @interface BLPrepareDownloadResponse
-- (BLPrepareDownloadResponse)initWithDownload:(id)a3;
-- (BLPrepareDownloadResponse)initWithInstallInfo:(id)a3;
+- (BLPrepareDownloadResponse)initWithDownload:(id)download;
+- (BLPrepareDownloadResponse)initWithInstallInfo:(id)info;
 - (NSString)URLSessionIdentifier;
 - (id)sessionConfiguration;
-- (id)sessionTaskWithSession:(id)a3;
+- (id)sessionTaskWithSession:(id)session;
 @end
 
 @implementation BLPrepareDownloadResponse
 
-- (BLPrepareDownloadResponse)initWithDownload:(id)a3
+- (BLPrepareDownloadResponse)initWithDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v42.receiver = self;
   v42.super_class = BLPrepareDownloadResponse;
   v5 = [(BLPrepareDownloadResponse *)&v42 init];
   if (v5)
   {
-    v6 = [v4 downloadID];
+    downloadID = [downloadCopy downloadID];
     downloadIdentifier = v5->_downloadIdentifier;
-    v5->_downloadIdentifier = v6;
+    v5->_downloadIdentifier = downloadID;
 
-    v8 = [v4 storeIdentifier];
-    v5->_assetIdentifier = [v8 longLongValue];
+    storeIdentifier = [downloadCopy storeIdentifier];
+    v5->_assetIdentifier = [storeIdentifier longLongValue];
 
-    v9 = [v4 storePlaylistIdentifier];
+    storePlaylistIdentifier = [downloadCopy storePlaylistIdentifier];
     playlistIdentifier = v5->_playlistIdentifier;
-    v5->_playlistIdentifier = v9;
+    v5->_playlistIdentifier = storePlaylistIdentifier;
 
-    v11 = [v4 artistName];
+    artistName = [downloadCopy artistName];
     artistName = v5->_artistName;
-    v5->_artistName = v11;
+    v5->_artistName = artistName;
 
-    v13 = [v4 title];
+    title = [downloadCopy title];
     title = v5->_title;
-    v5->_title = v13;
+    v5->_title = title;
 
-    v15 = [v4 subtitle];
+    subtitle = [downloadCopy subtitle];
     subtitle = v5->_subtitle;
-    v5->_subtitle = v15;
+    v5->_subtitle = subtitle;
 
-    v17 = [v4 collectionArtistName];
+    collectionArtistName = [downloadCopy collectionArtistName];
     collectionArtistName = v5->_collectionArtistName;
-    v5->_collectionArtistName = v17;
+    v5->_collectionArtistName = collectionArtistName;
 
-    v19 = [v4 collectionTitle];
+    collectionTitle = [downloadCopy collectionTitle];
     collectionTitle = v5->_collectionTitle;
-    v5->_collectionTitle = v19;
+    v5->_collectionTitle = collectionTitle;
 
-    v21 = [v4 genre];
+    genre = [downloadCopy genre];
     genre = v5->_genre;
-    v5->_genre = v21;
+    v5->_genre = genre;
 
-    v23 = [v4 thumbnailImageURL];
+    thumbnailImageURL = [downloadCopy thumbnailImageURL];
     thumbnailImageURL = v5->_thumbnailImageURL;
-    v5->_thumbnailImageURL = v23;
+    v5->_thumbnailImageURL = thumbnailImageURL;
 
-    v25 = [v4 kind];
-    v26 = v25;
-    if (v25)
+    kind = [downloadCopy kind];
+    v26 = kind;
+    if (kind)
     {
-      v27 = v25;
+      v27 = kind;
     }
 
     else
@@ -68,93 +68,93 @@
     }
 
     objc_storeStrong(&v5->_kind, v27);
-    v28 = [v4 isRestore];
-    v5->_isRestore = [v28 BOOLValue];
+    isRestore = [downloadCopy isRestore];
+    v5->_isRestore = [isRestore BOOLValue];
 
-    v29 = [v4 isSample];
-    v5->_isSample = [v29 BOOLValue];
+    isSample = [downloadCopy isSample];
+    v5->_isSample = [isSample BOOLValue];
 
-    v30 = [v4 isPurchase];
-    v5->_isPurchase = [v30 BOOLValue];
+    isPurchase = [downloadCopy isPurchase];
+    v5->_isPurchase = [isPurchase BOOLValue];
 
-    v31 = [v4 persistentIdentifier];
-    v5->_persistentIdentifier = [v31 longLongValue];
+    persistentIdentifier = [downloadCopy persistentIdentifier];
+    v5->_persistentIdentifier = [persistentIdentifier longLongValue];
 
-    v32 = [v4 accountID];
+    accountID = [downloadCopy accountID];
     storeAccountIdentifier = v5->_storeAccountIdentifier;
-    v5->_storeAccountIdentifier = v32;
+    v5->_storeAccountIdentifier = accountID;
 
-    v34 = [v4 permlink];
+    permlink = [downloadCopy permlink];
     permLink = v5->_permLink;
-    v5->_permLink = v34;
+    v5->_permLink = permlink;
 
-    v36 = [v4 isLocalCacheServer];
-    v5->_isLocalCacheServer = [v36 BOOLValue];
+    isLocalCacheServer = [downloadCopy isLocalCacheServer];
+    v5->_isLocalCacheServer = [isLocalCacheServer BOOLValue];
 
-    v37 = [v4 transactionIdentifier];
+    transactionIdentifier = [downloadCopy transactionIdentifier];
     transactionIdentifier = v5->_transactionIdentifier;
-    v5->_transactionIdentifier = v37;
+    v5->_transactionIdentifier = transactionIdentifier;
 
-    v39 = [v4 cancelDownloadURL];
+    cancelDownloadURL = [downloadCopy cancelDownloadURL];
     cancelDownloadURL = v5->_cancelDownloadURL;
-    v5->_cancelDownloadURL = v39;
+    v5->_cancelDownloadURL = cancelDownloadURL;
   }
 
   return v5;
 }
 
-- (BLPrepareDownloadResponse)initWithInstallInfo:(id)a3
+- (BLPrepareDownloadResponse)initWithInstallInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v41.receiver = self;
   v41.super_class = BLPrepareDownloadResponse;
   v5 = [(BLPrepareDownloadResponse *)&v41 init];
   if (v5)
   {
-    v6 = [v4 downloadID];
+    downloadID = [infoCopy downloadID];
     downloadIdentifier = v5->_downloadIdentifier;
-    v5->_downloadIdentifier = v6;
+    v5->_downloadIdentifier = downloadID;
 
-    v8 = [v4 storeIdentifier];
-    v5->_assetIdentifier = [v8 longLongValue];
+    storeIdentifier = [infoCopy storeIdentifier];
+    v5->_assetIdentifier = [storeIdentifier longLongValue];
 
-    v9 = [v4 storePlaylistIdentifier];
+    storePlaylistIdentifier = [infoCopy storePlaylistIdentifier];
     playlistIdentifier = v5->_playlistIdentifier;
-    v5->_playlistIdentifier = v9;
+    v5->_playlistIdentifier = storePlaylistIdentifier;
 
-    v11 = [v4 artistName];
+    artistName = [infoCopy artistName];
     artistName = v5->_artistName;
-    v5->_artistName = v11;
+    v5->_artistName = artistName;
 
-    v13 = [v4 title];
+    title = [infoCopy title];
     title = v5->_title;
-    v5->_title = v13;
+    v5->_title = title;
 
-    v15 = [v4 subtitle];
+    subtitle = [infoCopy subtitle];
     subtitle = v5->_subtitle;
-    v5->_subtitle = v15;
+    v5->_subtitle = subtitle;
 
-    v17 = [v4 collectionArtistName];
+    collectionArtistName = [infoCopy collectionArtistName];
     collectionArtistName = v5->_collectionArtistName;
-    v5->_collectionArtistName = v17;
+    v5->_collectionArtistName = collectionArtistName;
 
-    v19 = [v4 collectionTitle];
+    collectionTitle = [infoCopy collectionTitle];
     collectionTitle = v5->_collectionTitle;
-    v5->_collectionTitle = v19;
+    v5->_collectionTitle = collectionTitle;
 
-    v21 = [v4 genre];
+    genre = [infoCopy genre];
     genre = v5->_genre;
-    v5->_genre = v21;
+    v5->_genre = genre;
 
-    v23 = [v4 thumbnailImageURL];
+    thumbnailImageURL = [infoCopy thumbnailImageURL];
     thumbnailImageURL = v5->_thumbnailImageURL;
-    v5->_thumbnailImageURL = v23;
+    v5->_thumbnailImageURL = thumbnailImageURL;
 
-    v25 = [v4 kind];
-    v26 = v25;
-    if (v25)
+    kind = [infoCopy kind];
+    v26 = kind;
+    if (kind)
     {
-      v27 = v25;
+      v27 = kind;
     }
 
     else
@@ -163,33 +163,33 @@
     }
 
     objc_storeStrong(&v5->_kind, v27);
-    v28 = [v4 isRestore];
-    v5->_isRestore = [v28 BOOLValue];
+    isRestore = [infoCopy isRestore];
+    v5->_isRestore = [isRestore BOOLValue];
 
-    v29 = [v4 isSample];
-    v5->_isSample = [v29 BOOLValue];
+    isSample = [infoCopy isSample];
+    v5->_isSample = [isSample BOOLValue];
 
-    v30 = [v4 isPurchase];
-    v5->_isPurchase = [v30 BOOLValue];
+    isPurchase = [infoCopy isPurchase];
+    v5->_isPurchase = [isPurchase BOOLValue];
 
-    v31 = [v4 persistentIdentifier];
-    v5->_persistentIdentifier = [v31 longLongValue];
+    persistentIdentifier = [infoCopy persistentIdentifier];
+    v5->_persistentIdentifier = [persistentIdentifier longLongValue];
 
-    v32 = [v4 accountIdentifier];
+    accountIdentifier = [infoCopy accountIdentifier];
     storeAccountIdentifier = v5->_storeAccountIdentifier;
-    v5->_storeAccountIdentifier = v32;
+    v5->_storeAccountIdentifier = accountIdentifier;
 
-    v34 = [v4 permlink];
+    permlink = [infoCopy permlink];
     permLink = v5->_permLink;
-    v5->_permLink = v34;
+    v5->_permLink = permlink;
 
-    v36 = [v4 transactionIdentifier];
+    transactionIdentifier = [infoCopy transactionIdentifier];
     transactionIdentifier = v5->_transactionIdentifier;
-    v5->_transactionIdentifier = v36;
+    v5->_transactionIdentifier = transactionIdentifier;
 
-    v38 = [v4 cancelDownloadURL];
+    cancelDownloadURL = [infoCopy cancelDownloadURL];
     cancelDownloadURL = v5->_cancelDownloadURL;
-    v5->_cancelDownloadURL = v38;
+    v5->_cancelDownloadURL = cancelDownloadURL;
   }
 
   return v5;
@@ -197,8 +197,8 @@
 
 - (id)sessionConfiguration
 {
-  v3 = [(BLPrepareDownloadResponse *)self URLSessionIdentifier];
-  v4 = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:v3];
+  uRLSessionIdentifier = [(BLPrepareDownloadResponse *)self URLSessionIdentifier];
+  v4 = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:uRLSessionIdentifier];
 
   [v4 setAllowsCellularAccess:{-[NSURLRequest allowsCellularAccess](self->_URLRequest, "allowsCellularAccess")}];
   [v4 setAllowsExpensiveNetworkAccess:{-[NSURLRequest allowsExpensiveNetworkAccess](self->_URLRequest, "allowsExpensiveNetworkAccess")}];
@@ -223,12 +223,12 @@
   return v4;
 }
 
-- (id)sessionTaskWithSession:(id)a3
+- (id)sessionTaskWithSession:(id)session
 {
   URLRequest = self->_URLRequest;
   if (URLRequest)
   {
-    v5 = [a3 dataTaskWithRequest:URLRequest];
+    v5 = [session dataTaskWithRequest:URLRequest];
     [v5 bl_setDataConsumer:self->_dataConsumer];
   }
 

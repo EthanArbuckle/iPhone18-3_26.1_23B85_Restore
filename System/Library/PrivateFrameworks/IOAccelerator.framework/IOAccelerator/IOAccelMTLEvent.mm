@@ -1,14 +1,14 @@
 @interface IOAccelMTLEvent
-- (IOAccelMTLEvent)initWithShared:(__IOAccelShared *)a3 options:(unint64_t)a4;
-- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4;
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4;
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5;
+- (IOAccelMTLEvent)initWithShared:(__IOAccelShared *)shared options:(unint64_t)options;
+- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value;
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value;
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout;
 - (void)dealloc;
 @end
 
 @implementation IOAccelMTLEvent
 
-- (IOAccelMTLEvent)initWithShared:(__IOAccelShared *)a3 options:(unint64_t)a4
+- (IOAccelMTLEvent)initWithShared:(__IOAccelShared *)shared options:(unint64_t)options
 {
   inputStruct[1] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
@@ -17,9 +17,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_sharedRef = a3;
-    CFRetain(a3);
-    inputStruct[0] = a4;
+    v6->_sharedRef = shared;
+    CFRetain(shared);
+    inputStruct[0] = options;
     outputStruct = 0;
     v12 = 0uLL;
     v10 = 24;
@@ -60,35 +60,35 @@
   [(IOAccelMTLEvent *)&v4 dealloc];
 }
 
-- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4
+- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value
 {
-  a3->var0 = self->_eventName;
-  a3->var3 = a4;
+  args->var0 = self->_eventName;
+  args->var3 = value;
   return 6;
 }
 
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value
 {
-  a3->var0 = self->_eventName;
-  a3->var3 = a4;
+  args->var0 = self->_eventName;
+  args->var3 = value;
   return 7;
 }
 
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout
 {
-  a3->var0 = self->_eventName;
-  a3->var3 = a4;
-  if (a5 >= 0xFFFF)
+  args->var0 = self->_eventName;
+  args->var3 = value;
+  if (timeout >= 0xFFFF)
   {
-    v5 = -1;
+    timeoutCopy = -1;
   }
 
   else
   {
-    v5 = a5;
+    timeoutCopy = timeout;
   }
 
-  a3->var2 = v5;
+  args->var2 = timeoutCopy;
   return 12;
 }
 

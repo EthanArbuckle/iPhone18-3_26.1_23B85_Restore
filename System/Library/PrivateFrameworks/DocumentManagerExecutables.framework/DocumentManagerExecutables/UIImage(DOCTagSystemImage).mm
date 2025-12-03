@@ -9,7 +9,7 @@
 
 + (id)_doc_imageFillNameForColorType:()DOCTagSystemImage differentiateWithShapes:
 {
-  v1 = [a1 _doc_imageOutlineNameForColorType:? differentiateWithShapes:?];
+  v1 = [self _doc_imageOutlineNameForColorType:? differentiateWithShapes:?];
   v2 = [v1 stringByAppendingString:@".fill"];
 
   return v2;
@@ -58,29 +58,29 @@
 + (id)_doc_tagImageForRenderingVariant:()DOCTagSystemImage differentiateWithShapes:tagColorType:
 {
   v9 = [MEMORY[0x277D06260] untitledTagForRendering:a5];
-  v10 = [v9 tagColorIfNotClear];
-  v11 = v10;
-  if (v10)
+  tagColorIfNotClear = [v9 tagColorIfNotClear];
+  v11 = tagColorIfNotClear;
+  if (tagColorIfNotClear)
   {
-    v12 = v10;
+    nonClearNoneTagColor = tagColorIfNotClear;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D06260] nonClearNoneTagColor];
+    nonClearNoneTagColor = [MEMORY[0x277D06260] nonClearNoneTagColor];
   }
 
-  v13 = v12;
+  v13 = nonClearNoneTagColor;
 
-  v14 = [a1 _doc_tagImageForRenderingVariant:a3 differentiateWithShapes:a4 tagColorType:a5 renderedColor:v13];
+  v14 = [self _doc_tagImageForRenderingVariant:a3 differentiateWithShapes:a4 tagColorType:a5 renderedColor:v13];
 
   return v14;
 }
 
 + (id)_doc_tagImageForRenderingVariant:()DOCTagSystemImage differentiateWithShapes:tagColorType:renderedColor:
 {
-  v9 = a6;
-  if (!v9)
+  tagColor = a6;
+  if (!tagColor)
   {
     v10 = MEMORY[0x277D062B8];
     v11 = *MEMORY[0x277D062B8];
@@ -96,31 +96,31 @@
     }
 
     v12 = [MEMORY[0x277D06260] untitledTagForRendering:a5];
-    v9 = [v12 tagColor];
+    tagColor = [v12 tagColor];
   }
 
   v13 = [MEMORY[0x277D06260] untitledTagForRendering:a5];
   v14 = v13;
-  if (v9)
+  if (tagColor)
   {
-    v15 = v9;
+    v15 = tagColor;
   }
 
   else
   {
-    v16 = [v13 tagColorIfNotClear];
-    v17 = v16;
-    if (v16)
+    tagColorIfNotClear = [v13 tagColorIfNotClear];
+    v17 = tagColorIfNotClear;
+    if (tagColorIfNotClear)
     {
-      v18 = v16;
+      nonClearNoneTagColor = tagColorIfNotClear;
     }
 
     else
     {
-      v18 = [MEMORY[0x277D06260] nonClearNoneTagColor];
+      nonClearNoneTagColor = [MEMORY[0x277D06260] nonClearNoneTagColor];
     }
 
-    v15 = v18;
+    v15 = nonClearNoneTagColor;
   }
 
   if (a3 == 1)

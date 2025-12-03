@@ -1,10 +1,10 @@
 @interface AVCaptureEvent
-+ (id)eventWithSource:(unint64_t)a3 phase:(unint64_t)a4;
-+ (id)eventWithSource:(unint64_t)a3 physicalButton:(unint64_t)a4 phase:(unint64_t)a5 interaction:(id)a6;
-- (BOOL)playSound:(id)a3;
++ (id)eventWithSource:(unint64_t)source phase:(unint64_t)phase;
++ (id)eventWithSource:(unint64_t)source physicalButton:(unint64_t)button phase:(unint64_t)phase interaction:(id)interaction;
+- (BOOL)playSound:(id)sound;
 - (BOOL)shouldPlaySound;
 - (id)description;
-- (void)_playSystemSoundForCaptureType:(int64_t)a3;
+- (void)_playSystemSoundForCaptureType:(int64_t)type;
 @end
 
 @implementation AVCaptureEvent
@@ -58,27 +58,27 @@
   return v9;
 }
 
-- (BOOL)playSound:(id)a3
+- (BOOL)playSound:(id)sound
 {
-  v4 = a3;
-  v5 = [(AVCaptureEvent *)self shouldPlaySound];
-  if (v5)
+  soundCopy = sound;
+  shouldPlaySound = [(AVCaptureEvent *)self shouldPlaySound];
+  if (shouldPlaySound)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interaction);
-    [WeakRetained _playSound:v4];
+    [WeakRetained _playSound:soundCopy];
 
     self->_didPlaySound = 1;
   }
 
-  return v5;
+  return shouldPlaySound;
 }
 
-- (void)_playSystemSoundForCaptureType:(int64_t)a3
+- (void)_playSystemSoundForCaptureType:(int64_t)type
 {
   if ((self->_physicalButton & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interaction);
-    [WeakRetained _playSystemSoundForCaptureType:a3];
+    [WeakRetained _playSystemSoundForCaptureType:type];
   }
 }
 
@@ -94,26 +94,26 @@
   return v3;
 }
 
-+ (id)eventWithSource:(unint64_t)a3 physicalButton:(unint64_t)a4 phase:(unint64_t)a5 interaction:(id)a6
++ (id)eventWithSource:(unint64_t)source physicalButton:(unint64_t)button phase:(unint64_t)phase interaction:(id)interaction
 {
-  v9 = a6;
-  v10 = [AVCaptureEvent eventWithSource:a3 phase:a5];
-  *(v10 + 16) = a4;
+  interactionCopy = interaction;
+  v10 = [AVCaptureEvent eventWithSource:source phase:phase];
+  *(v10 + 16) = button;
   *(v10 + 24) = 0;
-  objc_storeWeak((v10 + 32), v9);
+  objc_storeWeak((v10 + 32), interactionCopy);
 
-  v11 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v12 = *(v10 + 40);
-  *(v10 + 40) = v11;
+  *(v10 + 40) = date;
 
   return v10;
 }
 
-+ (id)eventWithSource:(unint64_t)a3 phase:(unint64_t)a4
++ (id)eventWithSource:(unint64_t)source phase:(unint64_t)phase
 {
   v6 = objc_alloc_init(AVCaptureEvent);
-  v6->_phase = a4;
-  v6->_source = a3;
+  v6->_phase = phase;
+  v6->_source = source;
   v6->_physicalButton = 0;
 
   return v6;

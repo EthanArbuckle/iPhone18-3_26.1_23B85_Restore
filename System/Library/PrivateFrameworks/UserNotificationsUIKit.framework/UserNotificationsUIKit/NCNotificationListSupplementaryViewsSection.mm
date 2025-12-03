@@ -1,12 +1,12 @@
 @interface NCNotificationListSupplementaryViewsSection
 + (NSSet)presentableTypes;
-- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)a3 toGrouped:(BOOL)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)component toGrouped:(BOOL)grouped;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CGSize)allowedSupplementaryViewSize;
 - (NCAnimator)animator;
 - (NCNotificationListBaseComponentDelegate)delegate;
 - (NCNotificationListSupplementaryViewsContainingDelegate)supplementaryContainerDelegate;
-- (NCNotificationListSupplementaryViewsSection)initWithPosition:(unint64_t)a3;
+- (NCNotificationListSupplementaryViewsSection)initWithPosition:(unint64_t)position;
 - (NCNotificationListViewProtocol)listView;
 - (NSArray)groupingIdentifiers;
 - (NSArray)supplementaryViewControllers;
@@ -14,34 +14,34 @@
 - (double)collapsedHeight;
 - (double)expandedHeight;
 - (double)expandedHeightIgnoringNotificationStacks;
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(unint64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7;
+- (double)notificationListView:(id)view heightForItemAtIndex:(unint64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack;
 - (id)_logDescription;
-- (id)hostingPlatterViewForSupplementaryViewController:(id)a3;
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(unint64_t)a4;
-- (unint64_t)_indexOfExistingSupplementaryViewsGroupForGroupingIdentifier:(id)a3;
-- (unint64_t)_indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:(id)a3;
-- (unint64_t)_sortedIndexForGroupingIdentifier:(id)a3;
+- (id)hostingPlatterViewForSupplementaryViewController:(id)controller;
+- (id)notificationListView:(id)view viewForItemAtIndex:(unint64_t)index;
+- (unint64_t)_indexOfExistingSupplementaryViewsGroupForGroupingIdentifier:(id)identifier;
+- (unint64_t)_indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:(id)controller;
+- (unint64_t)_sortedIndexForGroupingIdentifier:(id)identifier;
 - (unint64_t)supplementaryViewControllersCount;
-- (void)_removeNotificationViewsGroup:(id)a3 animated:(BOOL)a4;
-- (void)_updatePositionOfGroupAtIndex:(unint64_t)a3;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
-- (void)cancelTouchesOnHostedViews:(BOOL)a3;
+- (void)_removeNotificationViewsGroup:(id)group animated:(BOOL)animated;
+- (void)_updatePositionOfGroupAtIndex:(unint64_t)index;
+- (void)adjustForLegibilitySettingsChange:(id)change;
+- (void)cancelTouchesOnHostedViews:(BOOL)views;
 - (void)clearAll;
-- (void)forwardInvocation:(id)a3;
-- (void)insertSupplementaryViewController:(id)a3 withConfiguration:(id)a4;
-- (void)notificationListBaseComponent:(id)a3 didRemoveView:(id)a4;
-- (void)notificationListBaseComponent:(id)a3 willRemoveView:(id)a4;
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3;
-- (void)notificationListPresentableGroup:(id)a3 requestsScrollToTopOfCollectionWithCompletion:(id)a4;
-- (void)notificationListSupplementaryViewsGroup:(id)a3 cancelTouches:(BOOL)a4 onHostedViewController:(id)a5;
-- (void)notificationListSupplementaryViewsGroup:(id)a3 didSetGrouped:(BOOL)a4;
-- (void)notificationListSupplementaryViewsGroupDidChangePreferredContentSize:(id)a3;
-- (void)presentViewControllerModally:(id)a3 fromSupplementaryViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)recycleView:(id)a3;
-- (void)removeSupplementaryViewController:(id)a3;
-- (void)setViewControllerSortComparator:(id)a3;
-- (void)updatePositionIfNeededForSupplementaryViewController:(id)a3;
-- (void)updateSupplementaryViewController:(id)a3 withConfiguration:(id)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)insertSupplementaryViewController:(id)controller withConfiguration:(id)configuration;
+- (void)notificationListBaseComponent:(id)component didRemoveView:(id)view;
+- (void)notificationListBaseComponent:(id)component willRemoveView:(id)view;
+- (void)notificationListBaseComponentDidRemoveAll:(id)all;
+- (void)notificationListPresentableGroup:(id)group requestsScrollToTopOfCollectionWithCompletion:(id)completion;
+- (void)notificationListSupplementaryViewsGroup:(id)group cancelTouches:(BOOL)touches onHostedViewController:(id)controller;
+- (void)notificationListSupplementaryViewsGroup:(id)group didSetGrouped:(BOOL)grouped;
+- (void)notificationListSupplementaryViewsGroupDidChangePreferredContentSize:(id)size;
+- (void)presentViewControllerModally:(id)modally fromSupplementaryViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)recycleView:(id)view;
+- (void)removeSupplementaryViewController:(id)controller;
+- (void)setViewControllerSortComparator:(id)comparator;
+- (void)updatePositionIfNeededForSupplementaryViewController:(id)controller;
+- (void)updateSupplementaryViewController:(id)controller withConfiguration:(id)configuration;
 @end
 
 @implementation NCNotificationListSupplementaryViewsSection
@@ -89,10 +89,10 @@ void __75__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
 
 - (NCAnimator)animator
 {
-  v3 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 animator];
+    animator = [delegate animator];
   }
 
   else
@@ -100,13 +100,13 @@ void __75__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_FAULT))
     {
-      [(NCNotificationListSupplementaryViewsGroup *)v3 animator];
+      [(NCNotificationListSupplementaryViewsGroup *)delegate animator];
     }
 
-    v4 = NCDefaultAnimator();
+    animator = NCDefaultAnimator();
   }
 
-  v6 = v4;
+  v6 = animator;
 
   return v6;
 }
@@ -118,7 +118,7 @@ void __75__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
   return WeakRetained;
 }
 
-- (NCNotificationListSupplementaryViewsSection)initWithPosition:(unint64_t)a3
+- (NCNotificationListSupplementaryViewsSection)initWithPosition:(unint64_t)position
 {
   v9.receiver = self;
   v9.super_class = NCNotificationListSupplementaryViewsSection;
@@ -126,7 +126,7 @@ void __75__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
   v5 = v4;
   if (v4)
   {
-    v4->_position = a3;
+    v4->_position = position;
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     orderedSupplementaryViewsGroups = v5->_orderedSupplementaryViewsGroups;
     v5->_orderedSupplementaryViewsGroups = v6;
@@ -144,20 +144,20 @@ void __90__NCNotificationListSupplementaryViewsSection_collapseAllExpandedSupple
   }
 }
 
-- (void)cancelTouchesOnHostedViews:(BOOL)a3
+- (void)cancelTouchesOnHostedViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   WeakRetained = objc_loadWeakRetained(&self->_supplementaryContainerDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained supplementaryViewsContainer:self requestsCancelTouchesOnAllSupplementaryViewControllers:v3];
+    [WeakRetained supplementaryViewsContainer:self requestsCancelTouchesOnAllSupplementaryViewControllers:viewsCopy];
   }
 }
 
 - (double)expandedHeightIgnoringNotificationStacks
 {
-  v2 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-  [v2 calculateSizeForGrouped:0 ignoreFeaturedLeadingView:1 ignoreExpandedGroupStack:1 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:0];
+  listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+  [listView calculateSizeForGrouped:0 ignoreFeaturedLeadingView:1 ignoreExpandedGroupStack:1 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:0];
   v4 = v3;
 
   return v4;
@@ -165,8 +165,8 @@ void __90__NCNotificationListSupplementaryViewsSection_collapseAllExpandedSupple
 
 - (double)expandedHeight
 {
-  v2 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-  [v2 calculateSizeForGrouped:0 ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:0 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:0];
+  listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+  [listView calculateSizeForGrouped:0 ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:0 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:0];
   v4 = v3;
 
   return v4;
@@ -174,29 +174,29 @@ void __90__NCNotificationListSupplementaryViewsSection_collapseAllExpandedSupple
 
 - (double)collapsedHeight
 {
-  v2 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-  [v2 calculateSizeForGrouped:1 ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:1 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:0];
+  listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+  [listView calculateSizeForGrouped:1 ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:1 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:0];
   v4 = v3;
 
   return v4;
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   orderedSupplementaryViewsGroups = self->_orderedSupplementaryViewsGroups;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__NCNotificationListSupplementaryViewsSection_adjustForLegibilitySettingsChange___block_invoke;
   v7[3] = &unk_278373150;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [(NSMutableArray *)orderedSupplementaryViewsGroups enumerateObjectsUsingBlock:v7];
 }
 
-- (void)setViewControllerSortComparator:(id)a3
+- (void)setViewControllerSortComparator:(id)comparator
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(comparator);
   viewControllerSortComparator = self->_viewControllerSortComparator;
   self->_viewControllerSortComparator = v4;
 
@@ -287,42 +287,42 @@ void __96__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
   }
 }
 
-- (void)insertSupplementaryViewController:(id)a3 withConfiguration:(id)a4
+- (void)insertSupplementaryViewController:(id)controller withConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationListSupplementaryViewsSection *)self _logDescription];
+    _logDescription = [(NCNotificationListSupplementaryViewsSection *)self _logDescription];
     v19 = 138543874;
-    v20 = v10;
+    v20 = _logDescription;
     v21 = 2114;
-    v22 = v7;
+    v22 = configurationCopy;
     v23 = 2114;
-    v24 = v6;
+    v24 = controllerCopy;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting supplementary view controller with configuration = %{public}@ [viewController=%{public}@]", &v19, 0x20u);
   }
 
-  v11 = [v7 groupingIdentifier];
-  v12 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForGroupingIdentifier:v11];
+  groupingIdentifier = [configurationCopy groupingIdentifier];
+  v12 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForGroupingIdentifier:groupingIdentifier];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = objc_alloc_init(NCNotificationListSupplementaryViewsGroup);
     [(NCNotificationListPresentableGroup *)v13 setNotificationListCache:self->_notificationListCache];
     [(NCNotificationListSupplementaryViewsGroup *)v13 setSectionIdentifier:self->_identifier];
     [(NCNotificationListPresentableGroup *)v13 setDelegate:self];
-    [(NCNotificationListSupplementaryViewsGroup *)v13 setGroupingIdentifier:v11];
-    v14 = [v7 groupName];
-    [(NCNotificationListSupplementaryViewsGroup *)v13 setGroupName:v14];
+    [(NCNotificationListSupplementaryViewsGroup *)v13 setGroupingIdentifier:groupingIdentifier];
+    groupName = [configurationCopy groupName];
+    [(NCNotificationListSupplementaryViewsGroup *)v13 setGroupName:groupName];
 
     [(NCNotificationListSupplementaryViewsGroup *)v13 setViewControllerSortComparator:self->_viewControllerSortComparator];
-    v15 = [(NCNotificationListSupplementaryViewsSection *)self _sortedIndexForGroupingIdentifier:v11];
+    v15 = [(NCNotificationListSupplementaryViewsSection *)self _sortedIndexForGroupingIdentifier:groupingIdentifier];
     [(NSMutableArray *)self->_orderedSupplementaryViewsGroups insertObject:v13 atIndex:v15];
-    v16 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-    [v16 insertViewAtIndex:v15 animated:1];
+    listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+    [listView insertViewAtIndex:v15 animated:1];
   }
 
   else
@@ -332,101 +332,101 @@ void __96__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
     [(NCNotificationListSupplementaryViewsSection *)self _updatePositionOfGroupAtIndex:v17];
   }
 
-  [(NCNotificationListSupplementaryViewsGroup *)v13 insertSupplementaryViewController:v6 withConfiguration:v7];
-  v18 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  [(NCNotificationListSupplementaryViewsGroup *)v13 insertSupplementaryViewController:controllerCopy withConfiguration:configurationCopy];
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v18 supplementaryViewSectionDidChangeContent:self];
+    [delegate supplementaryViewSectionDidChangeContent:self];
   }
 }
 
-- (void)updateSupplementaryViewController:(id)a3 withConfiguration:(id)a4
+- (void)updateSupplementaryViewController:(id)controller withConfiguration:(id)configuration
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:v11];
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  v7 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:controllerCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
     v9 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:v7];
-    [v9 updateSupplementaryViewController:v11 withConfiguration:v6];
+    [v9 updateSupplementaryViewController:controllerCopy withConfiguration:configurationCopy];
     [(NCNotificationListSupplementaryViewsSection *)self _updatePositionOfGroupAtIndex:v8];
   }
 
-  v10 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 supplementaryViewSectionDidChangeContent:self];
+    [delegate supplementaryViewSectionDidChangeContent:self];
   }
 }
 
-- (void)updatePositionIfNeededForSupplementaryViewController:(id)a3
+- (void)updatePositionIfNeededForSupplementaryViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   v4 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
     v6 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:v4];
-    [v6 updatePositionIfNeededForSupplementaryViewController:v7];
+    [v6 updatePositionIfNeededForSupplementaryViewController:controllerCopy];
     [(NCNotificationListSupplementaryViewsSection *)self _updatePositionOfGroupAtIndex:v5];
   }
 }
 
-- (void)removeSupplementaryViewController:(id)a3
+- (void)removeSupplementaryViewController:(id)controller
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationListSupplementaryViewsSection *)self _logDescription];
+    _logDescription = [(NCNotificationListSupplementaryViewsSection *)self _logDescription];
     v13 = 138543618;
-    v14 = v7;
+    v14 = _logDescription;
     v15 = 2114;
-    v16 = v4;
+    v16 = controllerCopy;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ removing supplementary view controller [viewController=%{public}@]", &v13, 0x16u);
   }
 
-  v8 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:v4];
+  v8 = [(NCNotificationListSupplementaryViewsSection *)self _indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:controllerCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
     v10 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:v8];
-    [v10 removeSupplementaryViewController:v4];
+    [v10 removeSupplementaryViewController:controllerCopy];
     if (![v10 count])
     {
       [(NSMutableArray *)self->_orderedSupplementaryViewsGroups removeObjectAtIndex:v9];
-      v11 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-      [v11 removeViewAtIndex:v9 animated:1];
+      listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+      [listView removeViewAtIndex:v9 animated:1];
     }
   }
 
-  v12 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 supplementaryViewSectionDidChangeContent:self];
+    [delegate supplementaryViewSectionDidChangeContent:self];
   }
 }
 
-- (void)presentViewControllerModally:(id)a3 fromSupplementaryViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentViewControllerModally:(id)modally fromSupplementaryViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v14 = a3;
-  v10 = a4;
-  v11 = a6;
+  animatedCopy = animated;
+  modallyCopy = modally;
+  controllerCopy = controller;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v13 = [[NCModalNavigationController alloc] initWithRootViewController:v14];
-    [WeakRetained notificationListBaseComponent:self requestsModalPresentationOfNavigationController:v13 sender:v10 animated:v7 completion:v11];
+    v13 = [[NCModalNavigationController alloc] initWithRootViewController:modallyCopy];
+    [WeakRetained notificationListBaseComponent:self requestsModalPresentationOfNavigationController:v13 sender:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (id)hostingPlatterViewForSupplementaryViewController:(id)a3
+- (id)hostingPlatterViewForSupplementaryViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -439,7 +439,7 @@ void __96__NCNotificationListSupplementaryViewsSection_supplementaryViewControll
   v9[2] = __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupplementaryViewController___block_invoke;
   v9[3] = &unk_2783731A0;
   v11 = &v12;
-  v6 = v4;
+  v6 = controllerCopy;
   v10 = v6;
   [(NSMutableArray *)orderedSupplementaryViewsGroups enumerateObjectsUsingBlock:v9];
   v7 = v13[5];
@@ -461,8 +461,8 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
 
 - (CGSize)allowedSupplementaryViewSize
 {
-  v2 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-  [v2 frame];
+  listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+  [listView frame];
   Width = CGRectGetWidth(v7);
 
   v4 = 0.0;
@@ -472,21 +472,21 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
   return result;
 }
 
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(unint64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7
+- (double)notificationListView:(id)view heightForItemAtIndex:(unint64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack
 {
-  v7 = a7;
-  v8 = a6;
-  if ([(NSMutableArray *)self->_orderedSupplementaryViewsGroups count:a3]<= a4)
+  stackCopy = stack;
+  modeCopy = mode;
+  if ([(NSMutableArray *)self->_orderedSupplementaryViewsGroups count:view]<= index)
   {
     return 0.0;
   }
 
-  v11 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:a4];
-  v12 = [v11 listView];
-  v13 = [v12 isGrouped];
+  v11 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:index];
+  listView = [v11 listView];
+  isGrouped = [listView isGrouped];
 
   v14 = 1.0;
-  if (v8)
+  if (modeCopy)
   {
     if ([(NCNotificationListSupplementaryViewsSection *)self count]== 1)
     {
@@ -499,42 +499,42 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
     }
   }
 
-  v15 = [v11 listView];
+  listView2 = [v11 listView];
   *&v16 = v14;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
-  [v15 calculateSizeForGrouped:v13 | v7 ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:v7 inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:v17];
+  [listView2 calculateSizeForGrouped:isGrouped | stackCopy ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:stackCopy inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:v17];
   v19 = v18;
 
   return v19;
 }
 
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(unint64_t)a4
+- (id)notificationListView:(id)view viewForItemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_orderedSupplementaryViewsGroups count]<= a4)
+  if ([(NSMutableArray *)self->_orderedSupplementaryViewsGroups count]<= index)
   {
-    v7 = 0;
+    listView = 0;
   }
 
   else
   {
-    v6 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:a4];
-    v7 = [v6 listView];
+    v6 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:index];
+    listView = [v6 listView];
   }
 
-  return v7;
+  return listView;
 }
 
-- (void)recycleView:(id)a3
+- (void)recycleView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 recycleVisibleViews];
+    [viewCopy recycleVisibleViews];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = NCNotificationListSupplementaryViewsSection;
@@ -543,7 +543,7 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
     v5 = 1;
   }
 
-  else if ([NCNotificationStructuredListUtilities isNotificationListBaseComponentDelegateMethod:a3])
+  else if ([NCNotificationStructuredListUtilities isNotificationListBaseComponentDelegateMethod:selector])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -557,66 +557,66 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
   return v5 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (+[NCNotificationStructuredListUtilities isNotificationListBaseComponentDelegateMethod:](NCNotificationStructuredListUtilities, "isNotificationListBaseComponentDelegateMethod:", [v4 selector]))
+  invocationCopy = invocation;
+  if (+[NCNotificationStructuredListUtilities isNotificationListBaseComponentDelegateMethod:](NCNotificationStructuredListUtilities, "isNotificationListBaseComponentDelegateMethod:", [invocationCopy selector]))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v4 invokeWithTarget:WeakRetained];
+      [invocationCopy invokeWithTarget:WeakRetained];
     }
 
     else if ([WeakRetained conformsToProtocol:&unk_283021370] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v6 = [WeakRetained delegate];
-      [v4 invokeWithTarget:v6];
+      delegate = [WeakRetained delegate];
+      [invocationCopy invokeWithTarget:delegate];
     }
 
     else
     {
       v7.receiver = self;
       v7.super_class = NCNotificationListSupplementaryViewsSection;
-      [(NCNotificationListSupplementaryViewsSection *)&v7 forwardInvocation:v4];
+      [(NCNotificationListSupplementaryViewsSection *)&v7 forwardInvocation:invocationCopy];
     }
   }
 }
 
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3
+- (void)notificationListBaseComponentDidRemoveAll:(id)all
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  allCopy = all;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationListSupplementaryViewsSection *)self _logDescription];
-    v8 = [v4 groupingIdentifier];
-    v9 = [v8 un_logDigest];
+    _logDescription = [(NCNotificationListSupplementaryViewsSection *)self _logDescription];
+    groupingIdentifier = [allCopy groupingIdentifier];
+    un_logDigest = [groupingIdentifier un_logDigest];
     v11 = 138543618;
-    v12 = v7;
+    v12 = _logDescription;
     v13 = 2114;
-    v14 = v9;
+    v14 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ supplementary view groups %{public}@ did remove all cells; cleanup up the group", &v11, 0x16u);
   }
 
-  [(NCNotificationListSupplementaryViewsSection *)self _removeNotificationViewsGroup:v4 animated:1];
-  v10 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
-  [v10 notificationListBaseComponentDidRemoveAll:self];
+  [(NCNotificationListSupplementaryViewsSection *)self _removeNotificationViewsGroup:allCopy animated:1];
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  [delegate notificationListBaseComponentDidRemoveAll:self];
 }
 
-- (void)_removeNotificationViewsGroup:(id)a3 animated:(BOOL)a4
+- (void)_removeNotificationViewsGroup:(id)group animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  groupCopy = group;
   v6 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups indexOfObject:?];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
     [(NSMutableArray *)self->_orderedSupplementaryViewsGroups removeObjectAtIndex:v6];
-    v8 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-    [v8 removeViewAtIndex:v7 animated:v4 isHorizontallyDisplaced:{objc_msgSend(v9, "isClearingAllNotificationRequestsForCellHorizontalSwipe")}];
+    listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+    [listView removeViewAtIndex:v7 animated:animatedCopy isHorizontallyDisplaced:{objc_msgSend(groupCopy, "isClearingAllNotificationRequestsForCellHorizontalSwipe")}];
   }
 }
 
@@ -631,14 +631,14 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
 - (void)clearAll
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
+  orderedSupplementaryViewsGroups = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__NCNotificationListSupplementaryViewsSection_clearAll__block_invoke;
   v12[3] = &unk_278373150;
   v5 = v3;
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [orderedSupplementaryViewsGroups enumerateObjectsUsingBlock:v12];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -646,19 +646,19 @@ void __96__NCNotificationListSupplementaryViewsSection_hostingPlatterViewForSupp
     [WeakRetained notificationListBaseComponent:self requestsClearingPresentables:v5];
   }
 
-  v7 = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
-  v8 = [v7 count];
+  orderedSupplementaryViewsGroups2 = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
+  v8 = [orderedSupplementaryViewsGroups2 count];
 
   v9 = v8 - 1;
   if (v8 - 1 >= 0)
   {
     do
     {
-      v10 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-      [v10 removeViewAtIndex:v9 animated:1];
+      listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+      [listView removeViewAtIndex:v9 animated:1];
 
-      v11 = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
-      [v11 removeObjectAtIndex:v9];
+      orderedSupplementaryViewsGroups3 = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
+      [orderedSupplementaryViewsGroups3 removeObjectAtIndex:v9];
 
       --v9;
     }
@@ -674,91 +674,91 @@ void __55__NCNotificationListSupplementaryViewsSection_clearAll__block_invoke(ui
   [v2 addObjectsFromArray:v3];
 }
 
-- (void)notificationListBaseComponent:(id)a3 willRemoveView:(id)a4
+- (void)notificationListBaseComponent:(id)component willRemoveView:(id)view
 {
-  v6 = a4;
-  v5 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  viewCopy = view;
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 notificationListBaseComponent:self willRemoveView:v6];
+    [delegate notificationListBaseComponent:self willRemoveView:viewCopy];
   }
 }
 
-- (void)notificationListBaseComponent:(id)a3 didRemoveView:(id)a4
+- (void)notificationListBaseComponent:(id)component didRemoveView:(id)view
 {
-  v6 = a4;
-  v5 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  viewCopy = view;
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 notificationListBaseComponent:self didRemoveView:v6];
+    [delegate notificationListBaseComponent:self didRemoveView:viewCopy];
   }
 }
 
-- (void)notificationListPresentableGroup:(id)a3 requestsScrollToTopOfCollectionWithCompletion:(id)a4
+- (void)notificationListPresentableGroup:(id)group requestsScrollToTopOfCollectionWithCompletion:(id)completion
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
-  v8 = [v7 indexOfObject:v6];
+  completionCopy = completion;
+  groupCopy = group;
+  orderedSupplementaryViewsGroups = [(NCNotificationListSupplementaryViewsSection *)self orderedSupplementaryViewsGroups];
+  v8 = [orderedSupplementaryViewsGroups indexOfObject:groupCopy];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v13)
+    if (completionCopy)
     {
-      v13[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    v9 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-    [v9 layoutOffsetForViewAtIndex:v8];
+    listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+    [listView layoutOffsetForViewAtIndex:v8];
     v11 = v10;
 
-    v12 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
-    [v12 notificationListBaseComponent:self requestsScrollingToContentOffset:v13 withCompletion:v11];
+    delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+    [delegate notificationListBaseComponent:self requestsScrollingToContentOffset:completionCopy withCompletion:v11];
   }
 }
 
-- (void)notificationListSupplementaryViewsGroup:(id)a3 cancelTouches:(BOOL)a4 onHostedViewController:(id)a5
+- (void)notificationListSupplementaryViewsGroup:(id)group cancelTouches:(BOOL)touches onHostedViewController:(id)controller
 {
-  v5 = a4;
-  v8 = a5;
+  touchesCopy = touches;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_supplementaryContainerDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained supplementaryViewsContainer:self requestsCancelTouches:v5 onSupplementaryViewController:v8];
+    [WeakRetained supplementaryViewsContainer:self requestsCancelTouches:touchesCopy onSupplementaryViewController:controllerCopy];
   }
 }
 
-- (void)notificationListSupplementaryViewsGroup:(id)a3 didSetGrouped:(BOOL)a4
+- (void)notificationListSupplementaryViewsGroup:(id)group didSetGrouped:(BOOL)grouped
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  groupedCopy = grouped;
+  groupCopy = group;
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 notificationListBaseComponent:v7 didSetGrouped:v4];
+    [delegate notificationListBaseComponent:groupCopy didSetGrouped:groupedCopy];
   }
 }
 
-- (void)notificationListSupplementaryViewsGroupDidChangePreferredContentSize:(id)a3
+- (void)notificationListSupplementaryViewsGroupDidChangePreferredContentSize:(id)size
 {
-  v4 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 supplementaryViewSectionDidChangeHeight:self];
+    [delegate supplementaryViewSectionDidChangeHeight:self];
   }
 }
 
-- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)a3 toGrouped:(BOOL)a4
+- (BOOL)isEligibleToPerformGroupAnimationForNotificationListBaseComponent:(id)component toGrouped:(BOOL)grouped
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NCNotificationListSupplementaryViewsSection *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  groupedCopy = grouped;
+  componentCopy = component;
+  delegate = [(NCNotificationListSupplementaryViewsSection *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v7 isEligibleToPerformGroupAnimationForNotificationListBaseComponent:v6 toGrouped:v4];
+    v8 = [delegate isEligibleToPerformGroupAnimationForNotificationListBaseComponent:componentCopy toGrouped:groupedCopy];
   }
 
   else
@@ -769,52 +769,52 @@ void __55__NCNotificationListSupplementaryViewsSection_clearAll__block_invoke(ui
   return v8;
 }
 
-- (void)_updatePositionOfGroupAtIndex:(unint64_t)a3
+- (void)_updatePositionOfGroupAtIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && [(NSMutableArray *)self->_orderedSupplementaryViewsGroups count]> a3)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && [(NSMutableArray *)self->_orderedSupplementaryViewsGroups count]> index)
   {
-    v10 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:a3];
-    v5 = [v10 groupingIdentifier];
-    v6 = [(NCNotificationListSupplementaryViewsSection *)self _sortedIndexForGroupingIdentifier:v5];
-    v7 = (__PAIR128__(v6, a3) - v6) >> 64;
-    if (v7 != a3)
+    v10 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:index];
+    groupingIdentifier = [v10 groupingIdentifier];
+    v6 = [(NCNotificationListSupplementaryViewsSection *)self _sortedIndexForGroupingIdentifier:groupingIdentifier];
+    v7 = (__PAIR128__(v6, index) - v6) >> 64;
+    if (v7 != index)
     {
-      [(NSMutableArray *)self->_orderedSupplementaryViewsGroups removeObjectAtIndex:a3];
+      [(NSMutableArray *)self->_orderedSupplementaryViewsGroups removeObjectAtIndex:index];
       [(NSMutableArray *)self->_orderedSupplementaryViewsGroups insertObject:v10 atIndex:v7];
-      v8 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-      [v8 removeViewAtIndex:a3 animated:0];
+      listView = [(NCNotificationListSupplementaryViewsSection *)self listView];
+      [listView removeViewAtIndex:index animated:0];
 
-      v9 = [(NCNotificationListSupplementaryViewsSection *)self listView];
-      [v9 insertViewAtIndex:v7 animated:1];
+      listView2 = [(NCNotificationListSupplementaryViewsSection *)self listView];
+      [listView2 insertViewAtIndex:v7 animated:1];
     }
   }
 }
 
-- (unint64_t)_indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:(id)a3
+- (unint64_t)_indexOfExistingSupplementaryViewsGroupForSupplementaryViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   orderedSupplementaryViewsGroups = self->_orderedSupplementaryViewsGroups;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __117__NCNotificationListSupplementaryViewsSection__indexOfExistingSupplementaryViewsGroupForSupplementaryViewController___block_invoke;
   v9[3] = &unk_2783731C8;
-  v10 = v4;
-  v6 = v4;
+  v10 = controllerCopy;
+  v6 = controllerCopy;
   v7 = [(NSMutableArray *)orderedSupplementaryViewsGroups indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (unint64_t)_indexOfExistingSupplementaryViewsGroupForGroupingIdentifier:(id)a3
+- (unint64_t)_indexOfExistingSupplementaryViewsGroupForGroupingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   orderedSupplementaryViewsGroups = self->_orderedSupplementaryViewsGroups;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __108__NCNotificationListSupplementaryViewsSection__indexOfExistingSupplementaryViewsGroupForGroupingIdentifier___block_invoke;
   v9[3] = &unk_2783731C8;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [(NSMutableArray *)orderedSupplementaryViewsGroups indexOfObjectPassingTest:v9];
 
   return v7;
@@ -829,16 +829,16 @@ uint64_t __108__NCNotificationListSupplementaryViewsSection__indexOfExistingSupp
   return v4;
 }
 
-- (unint64_t)_sortedIndexForGroupingIdentifier:(id)a3
+- (unint64_t)_sortedIndexForGroupingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_groupSortComparator && [(NSMutableArray *)self->_orderedSupplementaryViewsGroups count])
   {
     v5 = 0;
     do
     {
       v6 = [(NSMutableArray *)self->_orderedSupplementaryViewsGroups objectAtIndex:v5];
-      v7 = [v6 groupingIdentifier];
+      groupingIdentifier = [v6 groupingIdentifier];
 
       v8 = (*(self->_groupSortComparator + 2))();
       if (v8 == 1)

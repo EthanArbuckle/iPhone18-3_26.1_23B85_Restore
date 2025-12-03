@@ -1,23 +1,23 @@
 @interface AXActionCoalescer
-+ (id)mainQueueCoalescerWithBlock:(id)a3;
-- (AXActionCoalescer)initWithQueue:(id)a3 block:(id)a4;
++ (id)mainQueueCoalescerWithBlock:(id)block;
+- (AXActionCoalescer)initWithQueue:(id)queue block:(id)block;
 - (void)performCoalescedAsynchronously;
 @end
 
 @implementation AXActionCoalescer
 
-- (AXActionCoalescer)initWithQueue:(id)a3 block:(id)a4
+- (AXActionCoalescer)initWithQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = AXActionCoalescer;
   v9 = [(AXActionCoalescer *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_targetQueue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_targetQueue, queue);
+    v11 = [blockCopy copy];
     block = v10->_block;
     v10->_block = v11;
 
@@ -31,11 +31,11 @@
   return v10;
 }
 
-+ (id)mainQueueCoalescerWithBlock:(id)a3
++ (id)mainQueueCoalescerWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v5 initWithQueue:MEMORY[0x1E69E96A0] block:v4];
+  blockCopy = block;
+  v5 = [self alloc];
+  v6 = [v5 initWithQueue:MEMORY[0x1E69E96A0] block:blockCopy];
 
   return v6;
 }

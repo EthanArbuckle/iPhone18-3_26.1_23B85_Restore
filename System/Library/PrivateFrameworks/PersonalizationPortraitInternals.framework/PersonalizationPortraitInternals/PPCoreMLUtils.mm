@@ -1,15 +1,15 @@
 @interface PPCoreMLUtils
-+ (id)_multiArrayForNumberArray:(uint64_t)a1;
-+ (id)flattenFeatureProviderArray:(id)a3;
-+ (id)flattenMultiArray:(id)a3;
-+ (id)multiArrayFeatureValueForNumber:(id)a3;
-+ (id)multiArrayForArray:(id)a3;
-+ (id)scoringContextWithError:(id *)a3;
++ (id)_multiArrayForNumberArray:(uint64_t)array;
++ (id)flattenFeatureProviderArray:(id)array;
++ (id)flattenMultiArray:(id)array;
++ (id)multiArrayFeatureValueForNumber:(id)number;
++ (id)multiArrayForArray:(id)array;
++ (id)scoringContextWithError:(id *)error;
 @end
 
 @implementation PPCoreMLUtils
 
-+ (id)scoringContextWithError:(id *)a3
++ (id)scoringContextWithError:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
@@ -31,22 +31,22 @@
     [v11 setObject:v12 forKeyedSubscript:@"scoringDate"];
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v11 error:a3];
+  v13 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v11 error:error];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-+ (id)multiArrayFeatureValueForNumber:(id)a3
++ (id)multiArrayFeatureValueForNumber:(id)number
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_autoreleasePoolPush();
-  v11[0] = v4;
+  v11[0] = numberCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   objc_autoreleasePoolPop(v5);
-  v7 = [a1 multiArrayForArray:v6];
+  v7 = [self multiArrayForArray:v6];
 
   if (v7)
   {
@@ -63,12 +63,12 @@
   return v8;
 }
 
-+ (id)multiArrayForArray:(id)a3
++ (id)multiArrayForArray:(id)array
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc(MEMORY[0x277CBFF48]);
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(arrayCopy, "count")}];
   v18[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v15 = 0;
@@ -77,18 +77,18 @@
 
   if (v7)
   {
-    if ([v3 count])
+    if ([arrayCopy count])
     {
       v9 = 0;
       do
       {
-        v10 = [v3 objectAtIndexedSubscript:v9];
+        v10 = [arrayCopy objectAtIndexedSubscript:v9];
         [v7 setObject:v10 atIndexedSubscript:v9];
 
         ++v9;
       }
 
-      while ([v3 count] > v9);
+      while ([arrayCopy count] > v9);
     }
 
     v11 = v7;
@@ -110,19 +110,19 @@
   return v7;
 }
 
-+ (id)flattenMultiArray:(id)a3
++ (id)flattenMultiArray:(id)array
 {
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
-    if ([v3 count])
+    v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
+    if ([arrayCopy count])
     {
       v5 = 0;
       do
       {
         v6 = MEMORY[0x277CCABB0];
-        v7 = [v3 objectAtIndexedSubscript:v5];
+        v7 = [arrayCopy objectAtIndexedSubscript:v5];
         [v7 floatValue];
         v8 = [v6 numberWithFloat:?];
         [v4 addObject:v8];
@@ -130,7 +130,7 @@
         ++v5;
       }
 
-      while (v5 < [v3 count]);
+      while (v5 < [arrayCopy count]);
     }
   }
 
@@ -142,22 +142,22 @@
   return v4;
 }
 
-+ (id)flattenFeatureProviderArray:(id)a3
++ (id)flattenFeatureProviderArray:(id)array
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v59 = a2;
-    v5 = [v4 firstObject];
-    v6 = [v5 featureNames];
+    firstObject = [arrayCopy firstObject];
+    featureNames = [firstObject featureNames];
 
     v7 = objc_opt_new();
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
-    obj = v6;
+    obj = featureNames;
     v8 = [obj countByEnumeratingWithState:&v76 objects:v87 count:16];
     if (!v8)
     {
@@ -179,33 +179,33 @@
         }
 
         v12 = *(*(&v76 + 1) + 8 * v11);
-        v13 = [v4 firstObject];
-        v14 = [v13 featureValueForName:v12];
-        v15 = [v14 type];
+        firstObject2 = [arrayCopy firstObject];
+        v14 = [firstObject2 featureValueForName:v12];
+        type = [v14 type];
 
-        if (v15 > 2)
+        if (type > 2)
         {
-          if (v15 == 3)
+          if (type == 3)
           {
             v74[0] = MEMORY[0x277D85DD0];
             v74[1] = 3221225472;
             v74[2] = __45__PPCoreMLUtils_flattenFeatureProviderArray___block_invoke_2;
             v74[3] = &unk_278979350;
             v74[4] = v12;
-            v42 = [v4 _pas_mappedArrayWithTransform:v74];
+            v42 = [arrayCopy _pas_mappedArrayWithTransform:v74];
             v46 = MEMORY[0x277CBFEF8];
             v44 = [MEMORY[0x277CBFF78] sequenceWithStringArray:v42];
             v45 = [v46 featureValueWithSequence:v44];
             goto LABEL_32;
           }
 
-          if (v15 == 7)
+          if (type == 7)
           {
-            v26 = [v4 firstObject];
-            v27 = [v26 featureValueForName:v12];
-            v28 = [v27 sequenceValue];
-            v29 = [v28 int64Values];
-            v30 = [v29 count];
+            firstObject3 = [arrayCopy firstObject];
+            v27 = [firstObject3 featureValueForName:v12];
+            sequenceValue = [v27 sequenceValue];
+            int64Values = [sequenceValue int64Values];
+            v30 = [int64Values count];
 
             if (v30)
             {
@@ -214,7 +214,7 @@
               v73[2] = __45__PPCoreMLUtils_flattenFeatureProviderArray___block_invoke_3;
               v73[3] = &unk_278979350;
               v73[4] = v12;
-              v31 = [v4 _pas_mappedArrayWithTransform:v73];
+              v31 = [arrayCopy _pas_mappedArrayWithTransform:v73];
               v32 = objc_opt_new();
               v69 = 0u;
               v70 = 0u;
@@ -256,7 +256,7 @@
               v68[2] = __45__PPCoreMLUtils_flattenFeatureProviderArray___block_invoke_4;
               v68[3] = &unk_278979350;
               v68[4] = v12;
-              v48 = [v4 _pas_mappedArrayWithTransform:v68];
+              v48 = [arrayCopy _pas_mappedArrayWithTransform:v68];
               v32 = objc_opt_new();
               v64 = 0u;
               v65 = 0u;
@@ -301,16 +301,16 @@
 
         else
         {
-          if (v15 == 1)
+          if (type == 1)
           {
             v75[0] = MEMORY[0x277D85DD0];
             v75[1] = 3221225472;
             v75[2] = __45__PPCoreMLUtils_flattenFeatureProviderArray___block_invoke;
             v75[3] = &unk_278979350;
             v75[4] = v12;
-            v42 = [v4 _pas_mappedArrayWithTransform:v75];
+            v42 = [arrayCopy _pas_mappedArrayWithTransform:v75];
             v43 = MEMORY[0x277CBFEF8];
-            v44 = [(PPCoreMLUtils *)a1 _multiArrayForNumberArray:v42];
+            v44 = [(PPCoreMLUtils *)self _multiArrayForNumberArray:v42];
             v45 = [v43 featureValueWithMultiArray:v44];
 LABEL_32:
             v47 = v45;
@@ -319,21 +319,21 @@ LABEL_32:
             goto LABEL_43;
           }
 
-          if (v15 == 2)
+          if (type == 2)
           {
             v16 = objc_alloc(MEMORY[0x277CBFF48]);
-            v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+            v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(arrayCopy, "count")}];
             v86 = v17;
             v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
             v19 = [v16 initWithShape:v18 dataType:65568 error:0];
 
-            if ([v4 count])
+            if ([arrayCopy count])
             {
               v20 = 0;
               do
               {
                 v21 = MEMORY[0x277CCABB0];
-                v22 = [v4 objectAtIndexedSubscript:v20];
+                v22 = [arrayCopy objectAtIndexedSubscript:v20];
                 v23 = [v22 featureValueForName:v12];
                 [v23 doubleValue];
                 v24 = [v21 numberWithDouble:?];
@@ -342,13 +342,13 @@ LABEL_32:
                 ++v20;
               }
 
-              while (v20 < [v4 count]);
+              while (v20 < [arrayCopy count]);
             }
 
             if (!v19)
             {
-              v55 = [MEMORY[0x277CCA890] currentHandler];
-              [v55 handleFailureInMethod:v59 object:a1 file:@"PPCoreMLUtils.m" lineNumber:85 description:@"PPCoreMLUtils: was unable to allocate feature array"];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:v59 object:self file:@"PPCoreMLUtils.m" lineNumber:85 description:@"PPCoreMLUtils: was unable to allocate feature array"];
             }
 
             v25 = [MEMORY[0x277CBFEF8] featureValueWithMultiArray:v19];
@@ -365,7 +365,7 @@ LABEL_42:
         if (os_log_type_enabled(v41, OS_LOG_TYPE_FAULT))
         {
           *buf = 134218242;
-          v81 = v15;
+          v81 = type;
           v82 = 2112;
           v83 = v12;
           _os_log_fault_impl(&dword_23224A000, v41, OS_LOG_TYPE_FAULT, "PPCoreMLUtilities: Tried to flatten a feature of type %ld, which is not supported. Feature: %@", buf, 0x16u);
@@ -404,7 +404,7 @@ id __45__PPCoreMLUtils_flattenFeatureProviderArray___block_invoke(uint64_t a1, v
   return v4;
 }
 
-+ (id)_multiArrayForNumberArray:(uint64_t)a1
++ (id)_multiArrayForNumberArray:(uint64_t)array
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -431,8 +431,8 @@ id __45__PPCoreMLUtils_flattenFeatureProviderArray___block_invoke(uint64_t a1, v
 
   if (!v7)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:sel__multiArrayForNumberArray_ object:v3 file:@"PPCoreMLUtils.m" lineNumber:53 description:@"PPCoreMLUtils: Unable to construct multiarray"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__multiArrayForNumberArray_ object:v3 file:@"PPCoreMLUtils.m" lineNumber:53 description:@"PPCoreMLUtils: Unable to construct multiarray"];
   }
 
   v10 = *MEMORY[0x277D85DE8];

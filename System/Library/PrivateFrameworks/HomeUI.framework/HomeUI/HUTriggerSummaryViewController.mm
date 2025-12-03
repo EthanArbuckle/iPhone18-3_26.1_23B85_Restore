@@ -1,89 +1,89 @@
 @interface HUTriggerSummaryViewController
-+ (id)createTriggerSummaryViewControllerForHome:(id)a3 withTriggerActionSetBuilder:(id)a4 andTriggerActionBuilderEditorDelegate:(id)a5;
++ (id)createTriggerSummaryViewControllerForHome:(id)home withTriggerActionSetBuilder:(id)builder andTriggerActionBuilderEditorDelegate:(id)delegate;
 - (BOOL)_canCommitTriggerBuilder;
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4;
-- (BOOL)shouldHideSeparatorsForSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path;
+- (BOOL)shouldHideSeparatorsForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUTriggerEditorDelegate)delegate;
-- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5;
-- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)a3 mode:(unint64_t)a4 isPresentedModally:(BOOL)a5 delegate:(id)a6;
+- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate;
+- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)builder mode:(unint64_t)mode isPresentedModally:(BOOL)modally delegate:(id)delegate;
 - (NSSet)prioritizedAccessories;
 - (NSString)savedName;
 - (id)_commitTriggerBuilder;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (id)childViewControllersToPreload;
 - (id)commitChanges;
-- (id)contentConfigurationForFooterViewAtSectionIndex:(unint64_t)a3;
-- (id)contentConfigurationForHeaderViewAtSectionIndex:(unint64_t)a3;
-- (id)defaultTextForTextField:(id)a3 item:(id)a4;
+- (id)contentConfigurationForFooterViewAtSectionIndex:(unint64_t)index;
+- (id)contentConfigurationForHeaderViewAtSectionIndex:(unint64_t)index;
+- (id)defaultTextForTextField:(id)field item:(id)item;
 - (id)itemTableHeaderMessage;
-- (id)placeholderTextForTextField:(id)a3 item:(id)a4;
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3;
-- (void)_addAction:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_deleteTrigger:(id)a3 indexPath:(id)a4;
-- (void)_removeActionsInServiceActionItem:(id)a3;
-- (void)_sendNameAssignedEvent:(id)a3 error:(id)a4;
-- (void)_setTriggerEnabled:(BOOL)a3;
-- (void)_showEditorForTriggerBuilderItem:(id)a3;
-- (void)_showShortcutEditorForTriggerBuilderItem:(id)a3;
+- (id)placeholderTextForTextField:(id)field item:(id)item;
+- (unint64_t)automaticDisablingReasonsForItem:(id)item;
+- (void)_addAction:(id)action;
+- (void)_cancel:(id)_cancel;
+- (void)_deleteTrigger:(id)trigger indexPath:(id)path;
+- (void)_removeActionsInServiceActionItem:(id)item;
+- (void)_sendNameAssignedEvent:(id)event error:(id)error;
+- (void)_setTriggerEnabled:(BOOL)enabled;
+- (void)_showEditorForTriggerBuilderItem:(id)item;
+- (void)_showShortcutEditorForTriggerBuilderItem:(id)item;
 - (void)_testTrigger;
 - (void)_updateDurationModuleDynamicFooterView;
 - (void)_updateTableHeaderConfiguration;
 - (void)_updateTriggerBuilderName;
-- (void)actionSetsModuleController:(id)a3 didUpdateTriggerBuilder:(id)a4;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)durationModuleController:(id)a3 requestsScrollToItem:(id)a4;
-- (void)eventsModuleController:(id)a3 pushViewController:(id)a4;
-- (void)eventsModuleControllerDidUpdateTriggerBuilder:(id)a3;
-- (void)home:(id)a3 didRemoveTrigger:(id)a4;
-- (void)homeWorkflowEditorViewController:(id)a3 didFinishWithHomeWorkflow:(id)a4 includesSecureAccessory:(BOOL)a5;
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)mediaModuleController:(id)a3 pushViewController:(id)a4;
-- (void)serviceGridViewController:(id)a3 didTapItem:(id)a4;
-- (void)setPrioritizedAccessories:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5;
-- (void)textFieldDidFinishEditing:(id)a3;
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)actionSetsModuleController:(id)controller didUpdateTriggerBuilder:(id)builder;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)durationModuleController:(id)controller requestsScrollToItem:(id)item;
+- (void)eventsModuleController:(id)controller pushViewController:(id)viewController;
+- (void)eventsModuleControllerDidUpdateTriggerBuilder:(id)builder;
+- (void)home:(id)home didRemoveTrigger:(id)trigger;
+- (void)homeWorkflowEditorViewController:(id)controller didFinishWithHomeWorkflow:(id)workflow includesSecureAccessory:(BOOL)accessory;
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)mediaModuleController:(id)controller pushViewController:(id)viewController;
+- (void)serviceGridViewController:(id)controller didTapItem:(id)item;
+- (void)setPrioritizedAccessories:(id)accessories;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item;
+- (void)textFieldDidFinishEditing:(id)editing;
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUTriggerSummaryViewController
 
-+ (id)createTriggerSummaryViewControllerForHome:(id)a3 withTriggerActionSetBuilder:(id)a4 andTriggerActionBuilderEditorDelegate:(id)a5
++ (id)createTriggerSummaryViewControllerForHome:(id)home withTriggerActionSetBuilder:(id)builder andTriggerActionBuilderEditorDelegate:(id)delegate
 {
   v7 = MEMORY[0x277D146E8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedDispatcher];
-  [v11 setOverrideHome:v10];
+  delegateCopy = delegate;
+  builderCopy = builder;
+  homeCopy = home;
+  sharedDispatcher = [v7 sharedDispatcher];
+  [sharedDispatcher setOverrideHome:homeCopy];
 
   v12 = objc_alloc(MEMORY[0x277D14C40]);
-  v13 = [v9 allActionSets];
+  allActionSets = [builderCopy allActionSets];
 
-  v14 = [v12 initWithActionSets:v13 inHome:v10 filterEmptyActionSets:1];
+  v14 = [v12 initWithActionSets:allActionSets inHome:homeCopy filterEmptyActionSets:1];
   v15 = MEMORY[0x277D14940];
   v16 = objc_opt_new();
-  v17 = [v15 createPlaceholderTriggerForHome:v10 withTriggerActionSetBuilder:v14 context:v16];
+  v17 = [v15 createPlaceholderTriggerForHome:homeCopy withTriggerActionSetBuilder:v14 context:v16];
 
-  v18 = [[HUForwardingTriggerActionBuilderDelegate alloc] initWithTriggerActionBuilderEditorDelegate:v8];
+  v18 = [[HUForwardingTriggerActionBuilderDelegate alloc] initWithTriggerActionBuilderEditorDelegate:delegateCopy];
   v19 = [[HUTriggerActionFlow alloc] initWithFlowState:7];
   v20 = [[HUTriggerSummaryViewController alloc] initWithTriggerBuilder:v17 flow:v19 delegate:0];
   [(HUTriggerSummaryViewController *)v20 setForwardingTriggerActionBuilderDelegate:v18];
-  v21 = [(HUTriggerSummaryViewController *)v20 forwardingTriggerActionBuilderDelegate];
-  if ([v21 conformsToProtocol:&unk_2824F8AF0])
+  forwardingTriggerActionBuilderDelegate = [(HUTriggerSummaryViewController *)v20 forwardingTriggerActionBuilderDelegate];
+  if ([forwardingTriggerActionBuilderDelegate conformsToProtocol:&unk_2824F8AF0])
   {
-    v22 = v21;
+    v22 = forwardingTriggerActionBuilderDelegate;
   }
 
   else
@@ -97,13 +97,13 @@
   return v20;
 }
 
-- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)a3 mode:(unint64_t)a4 isPresentedModally:(BOOL)a5 delegate:(id)a6
+- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)builder mode:(unint64_t)mode isPresentedModally:(BOOL)modally delegate:(id)delegate
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a3;
+  modallyCopy = modally;
+  delegateCopy = delegate;
+  builderCopy = builder;
   v11 = [HUTriggerActionFlow alloc];
-  if (v6)
+  if (modallyCopy)
   {
     v12 = 3;
   }
@@ -114,68 +114,68 @@
   }
 
   v13 = [(HUTriggerActionFlow *)v11 initWithFlowState:v12];
-  v14 = [(HUTriggerSummaryViewController *)self initWithTriggerBuilder:v10 flow:v13 delegate:v9];
+  v14 = [(HUTriggerSummaryViewController *)self initWithTriggerBuilder:builderCopy flow:v13 delegate:delegateCopy];
 
   return v14;
 }
 
-- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5
+- (HUTriggerSummaryViewController)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  builderCopy = builder;
+  flowCopy = flow;
+  delegateCopy = delegate;
   if ([MEMORY[0x277D14670] isShortcuts])
   {
-    v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v13 = [v9 home];
-    [v12 setOverrideHome:v13];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    home = [builderCopy home];
+    [mEMORY[0x277D146E8] setOverrideHome:home];
   }
 
-  v14 = [[HUTriggerSummaryItemManager alloc] initWithTriggerBuilder:v9 flow:v10 delegate:self];
+  v14 = [[HUTriggerSummaryItemManager alloc] initWithTriggerBuilder:builderCopy flow:flowCopy delegate:self];
   v33.receiver = self;
   v33.super_class = HUTriggerSummaryViewController;
   v15 = [(HUItemTableViewController *)&v33 initWithItemManager:v14 tableViewStyle:1];
   v16 = v15;
   if (v15)
   {
-    [(HUTriggerSummaryViewController *)v15 setTriggerBuilder:v9];
-    [(HUTriggerSummaryViewController *)v16 setDelegate:v11];
-    [(HUTriggerSummaryViewController *)v16 setFlow:v10];
-    v17 = [v9 name];
+    [(HUTriggerSummaryViewController *)v15 setTriggerBuilder:builderCopy];
+    [(HUTriggerSummaryViewController *)v16 setDelegate:delegateCopy];
+    [(HUTriggerSummaryViewController *)v16 setFlow:flowCopy];
+    name = [builderCopy name];
 
-    if (!v17)
+    if (!name)
     {
-      v18 = [v9 naturalLanguageNameOfType:0];
-      [v9 setName:v18];
+      v18 = [builderCopy naturalLanguageNameOfType:0];
+      [builderCopy setName:v18];
 
-      v19 = [v9 name];
+      name2 = [builderCopy name];
 
-      if (!v19)
+      if (!name2)
       {
-        v32 = [MEMORY[0x277CCA890] currentHandler];
-        [v32 handleFailureInMethod:a2 object:v16 file:@"HUTriggerSummaryViewController.m" lineNumber:117 description:{@"Could not generate name for triggerBuilder: %@", v9}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v16 file:@"HUTriggerSummaryViewController.m" lineNumber:117 description:{@"Could not generate name for triggerBuilder: %@", builderCopy}];
       }
     }
 
-    if ([v10 isSingleFlow])
+    if ([flowCopy isSingleFlow])
     {
       v20 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v16 action:sel__cancel_];
-      v21 = [(HUTriggerSummaryViewController *)v16 navigationItem];
-      [v21 setLeftBarButtonItem:v20];
+      navigationItem = [(HUTriggerSummaryViewController *)v16 navigationItem];
+      [navigationItem setLeftBarButtonItem:v20];
     }
 
-    if ([v10 isLastState])
+    if ([flowCopy isLastState])
     {
-      v22 = [v9 context];
-      v23 = [v22 doneButtonTitle];
+      context = [builderCopy context];
+      doneButtonTitle = [context doneButtonTitle];
 
       v24 = objc_alloc(MEMORY[0x277D751E0]);
       v25 = v24;
-      if (v23)
+      if (doneButtonTitle)
       {
-        v26 = [v9 context];
-        v27 = [v26 doneButtonTitle];
-        v28 = [v25 initWithTitle:v27 style:2 target:v16 action:sel__done_];
+        context2 = [builderCopy context];
+        doneButtonTitle2 = [context2 doneButtonTitle];
+        v28 = [v25 initWithTitle:doneButtonTitle2 style:2 target:v16 action:sel__done_];
       }
 
       else
@@ -183,15 +183,15 @@
         v28 = [v24 initWithBarButtonSystemItem:0 target:v16 action:sel__done_];
       }
 
-      v29 = [(HUTriggerSummaryViewController *)v16 navigationItem];
-      [v29 setRightBarButtonItem:v28];
+      navigationItem2 = [(HUTriggerSummaryViewController *)v16 navigationItem];
+      [navigationItem2 setRightBarButtonItem:v28];
     }
 
     [(HUTriggerSummaryViewController *)v16 setModalInPresentation:1];
-    -[HUTriggerSummaryViewController setIsEditingExistingTrigger:](v16, "setIsEditingExistingTrigger:", [v10 flowState] == 3);
+    -[HUTriggerSummaryViewController setIsEditingExistingTrigger:](v16, "setIsEditingExistingTrigger:", [flowCopy flowState] == 3);
     +[HUTriggerUtilities preloadShortcutHomeManager];
-    v30 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v30 addHomeObserver:v16];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8]2 addHomeObserver:v16];
   }
 
   return v16;
@@ -199,122 +199,122 @@
 
 - (NSSet)prioritizedAccessories
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 prioritizedAccessories];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  prioritizedAccessories = [itemManager prioritizedAccessories];
 
-  return v3;
+  return prioritizedAccessories;
 }
 
-- (void)setPrioritizedAccessories:(id)a3
+- (void)setPrioritizedAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [(HUItemTableViewController *)self itemManager];
-  [v5 setPrioritizedAccessories:v4];
+  accessoriesCopy = accessories;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager setPrioritizedAccessories:accessoriesCopy];
 }
 
 - (NSString)savedName
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 triggerBuilder];
-  v4 = [v3 name];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  triggerBuilder = [itemManager triggerBuilder];
+  name = [triggerBuilder name];
 
-  return v4;
+  return name;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = HUTriggerSummaryViewController;
-  [(HUItemTableViewController *)&v7 viewWillAppear:a3];
+  [(HUItemTableViewController *)&v7 viewWillAppear:appear];
   [(HUTriggerSummaryViewController *)self setViewHasAppeared:1];
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 triggerCurrentDisplayedName];
-  [(HUTriggerSummaryViewController *)self setTitle:v5];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  triggerCurrentDisplayedName = [itemManager triggerCurrentDisplayedName];
+  [(HUTriggerSummaryViewController *)self setTitle:triggerCurrentDisplayedName];
 
   if ([(HUTriggerSummaryViewController *)self detailEditorChangedTrigger])
   {
     [(HUTriggerSummaryViewController *)self setDetailEditorChangedTrigger:0];
-    v6 = [(HUItemTableViewController *)self itemManager];
-    [v6 triggerBuilderDidChange];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    [itemManager2 triggerBuilderDidChange];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(HUTriggerSummaryViewController *)self flow];
-  v6 = [v5 flowState];
+  disappearCopy = disappear;
+  flow = [(HUTriggerSummaryViewController *)self flow];
+  flowState = [flow flowState];
 
-  if (v6 == 5)
+  if (flowState == 5)
   {
-    v7 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-    v8 = [v7 triggerActionSets];
-    [v8 setHomeWorkflow:0];
+    triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+    triggerActionSets = [triggerBuilder triggerActionSets];
+    [triggerActionSets setHomeWorkflow:0];
   }
 
   v9.receiver = self;
   v9.super_class = HUTriggerSummaryViewController;
-  [(HUItemTableViewController *)&v9 viewWillDisappear:v3];
+  [(HUItemTableViewController *)&v9 viewWillDisappear:disappearCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = HUTriggerSummaryViewController;
-  [(HUTriggerSummaryViewController *)&v6 dismissViewControllerAnimated:a3 completion:a4];
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v5 removeHomeObserver:self];
+  [(HUTriggerSummaryViewController *)&v6 dismissViewControllerAnimated:animated completion:completion];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] removeHomeObserver:self];
 }
 
 - (id)commitChanges
 {
-  v3 = [(HUTriggerSummaryViewController *)self view];
-  [v3 endEditing:1];
+  view = [(HUTriggerSummaryViewController *)self view];
+  [view endEditing:1];
 
-  v4 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v5 = [v4 triggerActionSets];
-  [v5 convertToHomeWorkflowActionSetIfNeeded];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  triggerActionSets = [triggerBuilder triggerActionSets];
+  [triggerActionSets convertToHomeWorkflowActionSetIfNeeded];
 
   if ([(HUTriggerSummaryViewController *)self _canCommitTriggerBuilder])
   {
-    v6 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-    v7 = [v6 context];
-    v8 = [v7 showTriggerEnableSwitch];
+    triggerBuilder2 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+    context = [triggerBuilder2 context];
+    showTriggerEnableSwitch = [context showTriggerEnableSwitch];
 
-    if ((v8 & 1) == 0)
+    if ((showTriggerEnableSwitch & 1) == 0)
     {
-      v9 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-      [v9 setEnabled:1];
+      triggerBuilder3 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+      [triggerBuilder3 setEnabled:1];
     }
 
-    v10 = [(HUTriggerSummaryViewController *)self _commitTriggerBuilder];
+    _commitTriggerBuilder = [(HUTriggerSummaryViewController *)self _commitTriggerBuilder];
   }
 
   else
   {
-    v11 = [(HUTriggerSummaryViewController *)self delegate];
-    v12 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-    [v11 triggerEditor:self didFinishWithTriggerBuilder:v12];
+    delegate = [(HUTriggerSummaryViewController *)self delegate];
+    triggerBuilder4 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+    [delegate triggerEditor:self didFinishWithTriggerBuilder:triggerBuilder4];
 
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    _commitTriggerBuilder = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v10;
+  return _commitTriggerBuilder;
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUTriggerSummaryViewController *)self delegate];
-  [v4 triggerEditor:self didFinishWithTriggerBuilder:0];
+  delegate = [(HUTriggerSummaryViewController *)self delegate];
+  [delegate triggerEditor:self didFinishWithTriggerBuilder:0];
 }
 
-- (void)_showShortcutEditorForTriggerBuilderItem:(id)a3
+- (void)_showShortcutEditorForTriggerBuilderItem:(id)item
 {
-  v5 = [a3 triggerBuilder];
-  v16 = v5;
-  if (a3)
+  triggerBuilder = [item triggerBuilder];
+  v16 = triggerBuilder;
+  if (item)
   {
-    if (v5)
+    if (triggerBuilder)
     {
       goto LABEL_3;
     }
@@ -331,46 +331,46 @@
 
   NSLog(&cfstr_NoTriggerBuild.isa);
 LABEL_3:
-  v6 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v7 = [v6 triggerActionSets];
-  v8 = [v7 homeWorkflow];
+  triggerBuilder2 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  triggerActionSets = [triggerBuilder2 triggerActionSets];
+  homeWorkflow = [triggerActionSets homeWorkflow];
 
   v9 = objc_alloc(MEMORY[0x277D7D778]);
-  v10 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v11 = [v10 home];
-  v12 = [v9 initWithHomeWorkflow:v8 actionSetBuilder:0 home:v11];
+  triggerBuilder3 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  home = [triggerBuilder3 home];
+  v12 = [v9 initWithHomeWorkflow:homeWorkflow actionSetBuilder:0 home:home];
 
   [v12 setDelegate:self];
   v13 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v12];
   [v13 setModalInPresentation:1];
   [v13 setModalPresentationStyle:2];
   v14 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelShortcutEditor_];
-  v15 = [v12 navigationItem];
-  [v15 setLeftBarButtonItem:v14];
+  navigationItem = [v12 navigationItem];
+  [navigationItem setLeftBarButtonItem:v14];
 
   [(HUTriggerSummaryViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
 - (void)_testTrigger
 {
-  v3 = [(HUItemTableViewController *)self itemManager];
-  v4 = [v3 home];
-  v5 = [v4 hf_characteristicValueManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-  v6 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v7 = [v6 triggerActionSets];
-  v8 = [v7 allActionBuilders];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  triggerActionSets = [triggerBuilder triggerActionSets];
+  allActionBuilders = [triggerActionSets allActionBuilders];
 
-  v9 = [v8 na_map:&__block_literal_global_40];
+  v9 = [allActionBuilders na_map:&__block_literal_global_40];
   v10 = [MEMORY[0x277D2C900] combineAllFutures:v9];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__HUTriggerSummaryViewController__testTrigger__block_invoke_2;
   v16[3] = &unk_277DB98F8;
-  v17 = v8;
-  v18 = v5;
-  v11 = v5;
-  v12 = v8;
+  v17 = allActionBuilders;
+  v18 = hf_characteristicValueManager;
+  v11 = hf_characteristicValueManager;
+  v12 = allActionBuilders;
   v13 = [v10 addSuccessBlock:v16];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -409,47 +409,47 @@ void __46__HUTriggerSummaryViewController__testTrigger__block_invoke_5(uint64_t 
   [v9 handleError:v8];
 }
 
-- (void)_addAction:(id)a3
+- (void)_addAction:(id)action
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 currentFlow];
-  v11 = +[HUTriggerActionFlow selectFlowForState:](HUTriggerActionFlow, "selectFlowForState:", [v5 flowState]);
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  currentFlow = [itemManager currentFlow];
+  v11 = +[HUTriggerActionFlow selectFlowForState:](HUTriggerActionFlow, "selectFlowForState:", [currentFlow flowState]);
 
   v6 = [HUTriggerActionPickerViewController alloc];
-  v7 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v8 = [(HUTriggerActionPickerViewController *)v6 initWithTriggerBuilder:v7 flow:v11 delegate:self];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  v8 = [(HUTriggerActionPickerViewController *)v6 initWithTriggerBuilder:triggerBuilder flow:v11 delegate:self];
 
   v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
   [v9 setModalPresentationStyle:2];
   v10 = [(UIViewController *)self hu_presentPreloadableViewController:v9 animated:1];
 }
 
-- (void)_deleteTrigger:(id)a3 indexPath:(id)a4
+- (void)_deleteTrigger:(id)trigger indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v9 = [v8 trigger];
+  triggerCopy = trigger;
+  pathCopy = path;
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  trigger = [triggerBuilder trigger];
 
-  if (v9)
+  if (trigger)
   {
-    v10 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-    v11 = [v10 context];
+    triggerBuilder2 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+    context = [triggerBuilder2 context];
 
-    v12 = [v11 deleteConfirmationAlertTitle];
-    v13 = [v11 deleteConfirmationAlertMessage];
-    v14 = [(UITableViewController *)self hu_actionSheetWithTitle:v12 message:v13 indexPath:v7];
+    deleteConfirmationAlertTitle = [context deleteConfirmationAlertTitle];
+    deleteConfirmationAlertMessage = [context deleteConfirmationAlertMessage];
+    v14 = [(UITableViewController *)self hu_actionSheetWithTitle:deleteConfirmationAlertTitle message:deleteConfirmationAlertMessage indexPath:pathCopy];
 
     objc_initWeak(&location, self);
     v15 = MEMORY[0x277D750F8];
-    v16 = [v11 deleteInstructionDescription];
+    deleteInstructionDescription = [context deleteInstructionDescription];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __59__HUTriggerSummaryViewController__deleteTrigger_indexPath___block_invoke;
     v21[3] = &unk_277DB9948;
     objc_copyWeak(&v23, &location);
-    v22 = v9;
-    v17 = [v15 actionWithTitle:v16 style:2 handler:v21];
+    v22 = trigger;
+    v17 = [v15 actionWithTitle:deleteInstructionDescription style:2 handler:v21];
     [v14 addAction:v17];
 
     v18 = MEMORY[0x277D750F8];
@@ -510,30 +510,30 @@ void __59__HUTriggerSummaryViewController__deleteTrigger_indexPath___block_invok
   }
 }
 
-- (void)_setTriggerEnabled:(BOOL)a3
+- (void)_setTriggerEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  [triggerBuilder setEnabled:enabledCopy];
 
-  v6 = [(HUItemTableViewController *)self itemManager];
-  [v6 triggerBuilderDidChange];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager triggerBuilderDidChange];
 }
 
-- (void)_removeActionsInServiceActionItem:(id)a3
+- (void)_removeActionsInServiceActionItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 actionBuilders];
-  v6 = [v5 mutableCopy];
+  itemCopy = item;
+  actionBuilders = [itemCopy actionBuilders];
+  v6 = [actionBuilders mutableCopy];
 
-  v7 = [v4 actions];
+  actions = [itemCopy actions];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __68__HUTriggerSummaryViewController__removeActionsInServiceActionItem___block_invoke;
   v21[3] = &unk_277DB9990;
   v21[4] = self;
-  v8 = [v7 na_map:v21];
+  v8 = [actions na_map:v21];
   [v6 unionSet:v8];
 
   v19 = 0u;
@@ -560,9 +560,9 @@ void __59__HUTriggerSummaryViewController__deleteTrigger_indexPath___block_invok
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-          v16 = [v15 triggerActionSets];
-          [v16 removeAnonymousActionBuilder:v14];
+          triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+          triggerActionSets = [triggerBuilder triggerActionSets];
+          [triggerActionSets removeAnonymousActionBuilder:v14];
         }
 
         ++v13;
@@ -604,10 +604,10 @@ uint64_t __68__HUTriggerSummaryViewController__removeActionsInServiceActionItem_
 
 - (id)itemTableHeaderMessage
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 sourceItem];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13E40]];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  sourceItem = [itemManager sourceItem];
+  latestResults = [sourceItem latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E40]];
 
   v6 = HUPriorityMessageDefaultAttributedStringAttributes();
   v7 = [v5 stringWithAttributes:v6];
@@ -615,55 +615,55 @@ uint64_t __68__HUTriggerSummaryViewController__removeActionsInServiceActionItem_
   return v7;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 enableItem];
-  v8 = [v5 isEqual:v7];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  enableItem = [itemManager enableItem];
+  v8 = [itemCopy isEqual:enableItem];
 
   if (v8)
   {
     goto LABEL_10;
   }
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 testTriggerItem];
-  if (v10 == v5)
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  testTriggerItem = [itemManager2 testTriggerItem];
+  if (testTriggerItem == itemCopy)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v11 = [(HUItemTableViewController *)self itemManager];
-  v12 = [v11 createActionButtonItem];
-  v13 = v12;
-  if (v12 == v5)
+  itemManager3 = [(HUItemTableViewController *)self itemManager];
+  createActionButtonItem = [itemManager3 createActionButtonItem];
+  v13 = createActionButtonItem;
+  if (createActionButtonItem == itemCopy)
   {
 
     goto LABEL_9;
   }
 
-  v14 = [(HUItemTableViewController *)self itemManager];
-  v15 = [v14 deleteTriggerItem];
+  itemManager4 = [(HUItemTableViewController *)self itemManager];
+  deleteTriggerItem = [itemManager4 deleteTriggerItem];
 
-  if (v15 != v5)
+  if (deleteTriggerItem != itemCopy)
   {
-    v16 = [(HUItemTableViewController *)self itemManager];
-    v17 = [v16 durationModule];
-    v18 = [v17 durationSummaryItem];
+    itemManager5 = [(HUItemTableViewController *)self itemManager];
+    durationModule = [itemManager5 durationModule];
+    durationSummaryItem = [durationModule durationSummaryItem];
 
-    if (v18 != v5)
+    if (durationSummaryItem != itemCopy)
     {
-      v19 = [(HUItemTableViewController *)self itemManager];
-      v20 = [v19 durationModule];
-      v21 = [v20 durationPickerItem];
+      itemManager6 = [(HUItemTableViewController *)self itemManager];
+      durationModule2 = [itemManager6 durationModule];
+      durationPickerItem = [durationModule2 durationPickerItem];
 
-      if (v21 != v5)
+      if (durationPickerItem != itemCopy)
       {
-        v22 = [(HUItemTableViewController *)self itemManager];
-        [v22 namingRowItem];
+        itemManager7 = [(HUItemTableViewController *)self itemManager];
+        [itemManager7 namingRowItem];
       }
     }
   }
@@ -674,25 +674,25 @@ LABEL_10:
   return v23;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v15 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v15 setDelegate:self];
+    [cellCopy setDelegate:self];
     goto LABEL_11;
   }
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 namingRowItem];
-  v10 = [v7 isEqual:v9];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  namingRowItem = [itemManager namingRowItem];
+  v10 = [itemCopy isEqual:namingRowItem];
 
   if (v10)
   {
     objc_opt_class();
-    v11 = v15;
+    v11 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -707,9 +707,9 @@ LABEL_10:
 
     [v13 setDelegate:self];
     [v13 setDisabled:0];
-    v14 = [v13 textField];
+    textField = [v13 textField];
 
-    [v14 setClearButtonMode:3];
+    [textField setClearButtonMode:3];
   }
 
   else
@@ -720,19 +720,19 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v14 = [v15 textLabel];
-    [v14 setNumberOfLines:0];
+    textField = [cellCopy textLabel];
+    [textField setNumberOfLines:0];
   }
 
 LABEL_11:
 }
 
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3
+- (unint64_t)automaticDisablingReasonsForItem:(id)item
 {
   v7.receiver = self;
   v7.super_class = HUTriggerSummaryViewController;
-  v3 = a3;
-  v4 = [(HUItemTableViewController *)&v7 automaticDisablingReasonsForItem:v3];
+  itemCopy = item;
+  v4 = [(HUItemTableViewController *)&v7 automaticDisablingReasonsForItem:itemCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -747,39 +747,39 @@ LABEL_11:
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v36.receiver = self;
   v36.super_class = HUTriggerSummaryViewController;
-  [(HUItemTableViewController *)&v36 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUItemTableViewController *)self itemManager];
-  v13 = [v12 unsupportedItemProvider];
-  v14 = [v13 items];
-  v15 = [v14 containsObject:v11];
+  [(HUItemTableViewController *)&v36 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  unsupportedItemProvider = [itemManager unsupportedItemProvider];
+  items = [unsupportedItemProvider items];
+  v15 = [items containsObject:itemCopy];
 
   if (v15)
   {
-    v16 = v10;
-    [v16 setAccessoryType:0];
-    v17 = [MEMORY[0x277D755B8] hu_exclamationMarkImage];
-    [v16 setDescriptionIcon:v17];
+    latestResults = cellCopy;
+    [latestResults setAccessoryType:0];
+    hu_exclamationMarkImage = [MEMORY[0x277D755B8] hu_exclamationMarkImage];
+    [latestResults setDescriptionIcon:hu_exclamationMarkImage];
 
-    [v16 setHideDescriptionIcon:0];
-    [v16 setHideIcon:0];
-    [v16 setIconForegroundColorFollowsTintColor:1];
-    [v16 setIconDisplayStyle:3];
-    [v16 setDisabled:1];
+    [latestResults setHideDescriptionIcon:0];
+    [latestResults setHideIcon:0];
+    [latestResults setIconForegroundColorFollowsTintColor:1];
+    [latestResults setIconDisplayStyle:3];
+    [latestResults setDisabled:1];
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v18 = [(HUItemTableViewController *)self itemManager];
-  v19 = [v18 enableItem];
-  v20 = [v11 isEqual:v19];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  enableItem = [itemManager2 enableItem];
+  v20 = [itemCopy isEqual:enableItem];
 
   if (v20)
   {
@@ -792,10 +792,10 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v10;
+      v21 = cellCopy;
       [v21 setDelegate:self];
-      v16 = [v11 latestResults];
-      v22 = [v16 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+      latestResults = [itemCopy latestResults];
+      v22 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
       [v21 setOn:{objc_msgSend(v22, "integerValue") == 2}];
 
       goto LABEL_3;
@@ -804,51 +804,51 @@ LABEL_3:
 
   else
   {
-    v23 = [(HUItemTableViewController *)self itemManager];
-    v24 = [v23 deleteTriggerItem];
-    v25 = [v11 isEqual:v24];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    deleteTriggerItem = [itemManager3 deleteTriggerItem];
+    v25 = [itemCopy isEqual:deleteTriggerItem];
 
     if (!v25)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v10;
-        [v16 setAccessoryType:0];
-        [v16 setIconForegroundColorFollowsTintColor:0];
-        [v16 setIconForegroundColor:0];
-        [v16 setIconTintColorFollowsDisabledState:1];
+        latestResults = cellCopy;
+        [latestResults setAccessoryType:0];
+        [latestResults setIconForegroundColorFollowsTintColor:0];
+        [latestResults setIconForegroundColor:0];
+        [latestResults setIconTintColorFollowsDisabledState:1];
       }
 
       else
       {
-        v26 = [(HUItemTableViewController *)self itemManager];
-        v27 = [v26 namingRowItem];
+        itemManager4 = [(HUItemTableViewController *)self itemManager];
+        namingRowItem = [itemManager4 namingRowItem];
 
-        if (v27 != v11)
+        if (namingRowItem != itemCopy)
         {
           goto LABEL_4;
         }
 
-        v16 = v10;
-        [v16 setHideIconButton:1];
-        v28 = [v16 textField];
-        [v28 setClearButtonMode:3];
+        latestResults = cellCopy;
+        [latestResults setHideIconButton:1];
+        textField = [latestResults textField];
+        [textField setClearButtonMode:3];
 
-        v29 = [v11 latestResults];
-        v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D13F70]];
-        v31 = [v16 textField];
-        [v31 setPlaceholder:v30];
+        latestResults2 = [itemCopy latestResults];
+        v30 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F70]];
+        textField2 = [latestResults textField];
+        [textField2 setPlaceholder:v30];
 
-        v32 = [v16 textField];
-        LOBYTE(v30) = [v32 isFirstResponder];
+        textField3 = [latestResults textField];
+        LOBYTE(v30) = [textField3 isFirstResponder];
 
         if ((v30 & 1) == 0)
         {
-          v33 = [v11 latestResults];
-          v34 = [v33 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-          v35 = [v16 textField];
-          [v35 setText:v34];
+          latestResults3 = [itemCopy latestResults];
+          v34 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+          textField4 = [latestResults textField];
+          [textField4 setText:v34];
         }
       }
 
@@ -864,23 +864,23 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v10 setDestructive:1];
+      [cellCopy setDestructive:1];
     }
   }
 
 LABEL_4:
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 eventsModule];
-  v7 = [v4 isEqual:v6];
+  moduleCopy = module;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  eventsModule = [itemManager eventsModule];
+  v7 = [moduleCopy isEqual:eventsModule];
 
   if (v7)
   {
-    v8 = [[HUTriggerEventsModuleController alloc] initWithModule:v4];
+    v8 = [[HUTriggerEventsModuleController alloc] initWithModule:moduleCopy];
     [(HUTriggerEventsModuleController *)v8 setDelegate:self];
     [(HUTriggerEventsModuleController *)v8 setAllowsEditingEvents:[(HUTriggerSummaryViewController *)self isEditingExistingTrigger]];
     goto LABEL_8;
@@ -891,7 +891,7 @@ LABEL_4:
   {
     v9 = HUTriggerDurationModuleController;
 LABEL_5:
-    v8 = [[v9 alloc] initWithModule:v4];
+    v8 = [[v9 alloc] initWithModule:moduleCopy];
     [(HUTriggerEventsModuleController *)v8 setDelegate:self];
     goto LABEL_8;
   }
@@ -899,7 +899,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(HUItemModuleController *)[HUTriggerActionSetsModuleController alloc] initWithModule:v4];
+    v8 = [(HUItemModuleController *)[HUTriggerActionSetsModuleController alloc] initWithModule:moduleCopy];
     [(HUTriggerEventsModuleController *)v8 setDelegate:self];
     [(HUTriggerSummaryViewController *)self setActionSetsModuleController:v8];
   }
@@ -916,7 +916,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[HUTriggerConditionEditorItemModuleController alloc] initWithModule:v4 delegate:self];
+      v8 = [[HUTriggerConditionEditorItemModuleController alloc] initWithModule:moduleCopy delegate:self];
       [(HUTriggerSummaryViewController *)self setConditionEditorModuleController:v8];
     }
 
@@ -931,36 +931,36 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = HUTriggerSummaryViewController;
-  v7 = -[HUItemTableViewController shouldHideSeparatorsForCell:indexPath:](&v9, sel_shouldHideSeparatorsForCell_indexPath_, a3, v6) || -[HUTriggerSummaryViewController shouldHideSeparatorsForSection:](self, "shouldHideSeparatorsForSection:", [v6 section]);
+  v7 = -[HUItemTableViewController shouldHideSeparatorsForCell:indexPath:](&v9, sel_shouldHideSeparatorsForCell_indexPath_, cell, pathCopy) || -[HUTriggerSummaryViewController shouldHideSeparatorsForSection:](self, "shouldHideSeparatorsForSection:", [pathCopy section]);
 
   return v7;
 }
 
-- (BOOL)shouldHideSeparatorsForSection:(int64_t)a3
+- (BOOL)shouldHideSeparatorsForSection:(int64_t)section
 {
-  v5 = [(HUItemTableViewController *)self itemManager];
-  if ([v5 actionSetsSection] == a3)
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  if ([itemManager actionSetsSection] == section)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(HUItemTableViewController *)self itemManager];
-    if ([v7 serviceActionsSection] == a3)
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    if ([itemManager2 serviceActionsSection] == section)
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [(HUItemTableViewController *)self itemManager];
-      v9 = [v8 displayedItemsInSection:a3];
+      itemManager3 = [(HUItemTableViewController *)self itemManager];
+      v9 = [itemManager3 displayedItemsInSection:section];
       v6 = [v9 count] < 2;
     }
   }
@@ -970,30 +970,30 @@ LABEL_8:
 
 - (id)childViewControllersToPreload
 {
-  v2 = [(HUTriggerSummaryViewController *)self actionSetsModuleController];
-  v3 = [v2 childViewControllersToPreload];
+  actionSetsModuleController = [(HUTriggerSummaryViewController *)self actionSetsModuleController];
+  childViewControllersToPreload = [actionSetsModuleController childViewControllersToPreload];
 
-  return v3;
+  return childViewControllersToPreload;
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = HUTriggerSummaryViewController;
-  [(HUItemTableViewController *)&v4 itemManagerDidUpdate:a3];
+  [(HUItemTableViewController *)&v4 itemManagerDidUpdate:update];
   [(HUTriggerSummaryViewController *)self _updateTableHeaderConfiguration];
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = HUTriggerSummaryViewController;
-  v8 = a4;
-  [(HUItemTableViewController *)&v13 itemManager:a3 didUpdateResultsForItem:v8 atIndexPath:a5];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v13 itemManager:manager didUpdateResultsForItem:itemCopy atIndexPath:path];
   v9 = [(HUItemTableViewController *)self itemManager:v13.receiver];
-  v10 = [v9 durationModule];
-  v11 = [v10 durationSummaryItem];
-  v12 = [v8 isEqual:v11];
+  durationModule = [v9 durationModule];
+  durationSummaryItem = [durationModule durationSummaryItem];
+  v12 = [itemCopy isEqual:durationSummaryItem];
 
   if (v12)
   {
@@ -1001,16 +1001,16 @@ LABEL_8:
   }
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
   v15.receiver = self;
   v15.super_class = HUTriggerSummaryViewController;
-  v10 = a4;
-  [(HUItemTableViewController *)&v15 diffableDataItemManager:a3 didUpdateItems:v10 addItems:a5 removeItems:a6];
+  itemsCopy = items;
+  [(HUItemTableViewController *)&v15 diffableDataItemManager:manager didUpdateItems:itemsCopy addItems:addItems removeItems:removeItems];
   v11 = [(HUItemTableViewController *)self itemManager:v15.receiver];
-  v12 = [v11 durationModule];
-  v13 = [v12 durationSummaryItem];
-  v14 = [v10 containsObject:v13];
+  durationModule = [v11 durationModule];
+  durationSummaryItem = [durationModule durationSummaryItem];
+  v14 = [itemsCopy containsObject:durationSummaryItem];
 
   if (v14)
   {
@@ -1020,20 +1020,20 @@ LABEL_8:
 
 - (void)_updateDurationModuleDynamicFooterView
 {
-  v3 = [(HUItemTableViewController *)self itemManager];
-  v4 = [v3 sectionIndexForDisplayedSectionIdentifier:@"HUTriggerDurationItemModuleSection"];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v4 = [itemManager sectionIndexForDisplayedSectionIdentifier:@"HUTriggerDurationItemModuleSection"];
 
-  v5 = [(HUTriggerSummaryViewController *)self tableView];
-  v11 = [v5 footerViewForSection:v4];
+  tableView = [(HUTriggerSummaryViewController *)self tableView];
+  v11 = [tableView footerViewForSection:v4];
 
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 footerTitleForSection:v4];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager2 footerTitleForSection:v4];
 
   objc_opt_class();
-  v8 = [v11 contentConfiguration];
+  contentConfiguration = [v11 contentConfiguration];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = contentConfiguration;
   }
 
   else
@@ -1047,124 +1047,124 @@ LABEL_8:
   [v11 setContentConfiguration:v10];
 }
 
-- (id)defaultTextForTextField:(id)a3 item:(id)a4
+- (id)defaultTextForTextField:(id)field item:(id)item
 {
-  v4 = [(HUItemTableViewController *)self itemManager:a3];
-  v5 = [v4 namingRowItem];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  v4 = [(HUItemTableViewController *)self itemManager:field];
+  namingRowItem = [v4 namingRowItem];
+  latestResults = [namingRowItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
   return v7;
 }
 
-- (id)placeholderTextForTextField:(id)a3 item:(id)a4
+- (id)placeholderTextForTextField:(id)field item:(id)item
 {
-  v4 = [(HUItemTableViewController *)self itemManager:a3];
-  v5 = [v4 namingRowItem];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F70]];
+  v4 = [(HUItemTableViewController *)self itemManager:field];
+  namingRowItem = [v4 namingRowItem];
+  latestResults = [namingRowItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F70]];
 
   return v7;
 }
 
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item
 {
-  [(HUTriggerSummaryViewController *)self setEditingName:a3, a4, a5];
-  v9 = [(HUTriggerSummaryViewController *)self editingName];
-  if ([v9 length])
+  [(HUTriggerSummaryViewController *)self setEditingName:change, field, item];
+  editingName = [(HUTriggerSummaryViewController *)self editingName];
+  if ([editingName length])
   {
-    v6 = [(HUTriggerSummaryViewController *)self editingName];
-    [(HUTriggerSummaryViewController *)self setTitle:v6];
+    editingName2 = [(HUTriggerSummaryViewController *)self editingName];
+    [(HUTriggerSummaryViewController *)self setTitle:editingName2];
   }
 
   else
   {
-    v6 = [(HUItemTableViewController *)self itemManager];
-    v7 = [v6 triggerBuilder];
-    v8 = [v7 displayName];
-    [(HUTriggerSummaryViewController *)self setTitle:v8];
+    editingName2 = [(HUItemTableViewController *)self itemManager];
+    triggerBuilder = [editingName2 triggerBuilder];
+    displayName = [triggerBuilder displayName];
+    [(HUTriggerSummaryViewController *)self setTitle:displayName];
   }
 }
 
-- (id)contentConfigurationForHeaderViewAtSectionIndex:(unint64_t)a3
+- (id)contentConfigurationForHeaderViewAtSectionIndex:(unint64_t)index
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 itemSectionForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v5 = [itemManager itemSectionForSectionIndex:index];
 
-  v6 = [v5 headerTitle];
+  headerTitle = [v5 headerTitle];
 
-  if (v6)
+  if (headerTitle)
   {
-    v6 = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
-    v7 = [v5 headerTitle];
-    [v6 setText:v7];
+    headerTitle = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
+    headerTitle2 = [v5 headerTitle];
+    [headerTitle setText:headerTitle2];
 
-    v8 = [v5 headerSecondaryText];
-    [v6 setSecondaryText:v8];
+    headerSecondaryText = [v5 headerSecondaryText];
+    [headerTitle setSecondaryText:headerSecondaryText];
 
-    [v6 directionalLayoutMargins];
-    [v6 setDirectionalLayoutMargins:?];
+    [headerTitle directionalLayoutMargins];
+    [headerTitle setDirectionalLayoutMargins:?];
   }
 
-  return v6;
+  return headerTitle;
 }
 
-- (id)contentConfigurationForFooterViewAtSectionIndex:(unint64_t)a3
+- (id)contentConfigurationForFooterViewAtSectionIndex:(unint64_t)index
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 footerTitleForSection:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v5 = [itemManager footerTitleForSection:index];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277D756E0] groupedFooterConfiguration];
-    [v6 setText:v5];
+    groupedFooterConfiguration = [MEMORY[0x277D756E0] groupedFooterConfiguration];
+    [groupedFooterConfiguration setText:v5];
   }
 
   else
   {
-    v6 = 0;
+    groupedFooterConfiguration = 0;
   }
 
-  return v6;
+  return groupedFooterConfiguration;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v23.receiver = self;
   v23.super_class = HUTriggerSummaryViewController;
-  v6 = a4;
-  v7 = [(HUItemTableViewController *)&v23 tableView:a3 shouldHighlightRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(HUItemTableViewController *)&v23 tableView:view shouldHighlightRowAtIndexPath:pathCopy];
   v8 = [(HUItemTableViewController *)self itemManager:v23.receiver];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  v9 = [v8 displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 testTriggerItem];
-    if (v9 != v12)
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    testTriggerItem = [itemManager testTriggerItem];
+    if (v9 != testTriggerItem)
     {
-      v13 = [(HUItemTableViewController *)self itemManager];
-      v14 = [v13 createActionButtonItem];
-      v15 = v14;
-      if (v9 != v14)
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      createActionButtonItem = [itemManager2 createActionButtonItem];
+      v15 = createActionButtonItem;
+      if (v9 != createActionButtonItem)
       {
-        v16 = [(HUItemTableViewController *)self itemManager];
-        v17 = [v16 deleteTriggerItem];
+        itemManager3 = [(HUItemTableViewController *)self itemManager];
+        deleteTriggerItem = [itemManager3 deleteTriggerItem];
 
-        if (v9 != v17)
+        if (v9 != deleteTriggerItem)
         {
-          v18 = [(HUItemTableViewController *)self itemManager];
-          v19 = [v18 mediaModule];
-          v20 = [v19 mediaRowItem];
-          v21 = v9 == v20;
+          itemManager4 = [(HUItemTableViewController *)self itemManager];
+          mediaModule = [itemManager4 mediaModule];
+          mediaRowItem = [mediaModule mediaRowItem];
+          v21 = v9 == mediaRowItem;
 
-          v10 = v21 | v7;
+          isEditingExistingTrigger = v21 | v7;
           goto LABEL_10;
         }
 
 LABEL_9:
-        v10 = 1;
+        isEditingExistingTrigger = 1;
         goto LABEL_10;
       }
     }
@@ -1172,23 +1172,23 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(HUTriggerSummaryViewController *)self isEditingExistingTrigger];
+  isEditingExistingTrigger = [(HUTriggerSummaryViewController *)self isEditingExistingTrigger];
 LABEL_10:
 
-  return v10 & 1;
+  return isEditingExistingTrigger & 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = HUTriggerSummaryViewController;
-  v7 = a3;
-  [(HUItemTableViewController *)&v16 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:{1, v16.receiver, v16.super_class}];
+  viewCopy = view;
+  [(HUItemTableViewController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v16.receiver, v16.super_class}];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(HUTriggerSummaryViewController *)self isEditingExistingTrigger])
@@ -1198,127 +1198,127 @@ LABEL_10:
 
   else
   {
-    v10 = [(HUItemTableViewController *)self itemManager];
-    v11 = [v10 testTriggerItem];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    testTriggerItem = [itemManager2 testTriggerItem];
 
-    if (v9 == v11)
+    if (v9 == testTriggerItem)
     {
       [(HUTriggerSummaryViewController *)self _testTrigger];
     }
 
     else
     {
-      v12 = [(HUItemTableViewController *)self itemManager];
-      v13 = [v12 createActionButtonItem];
+      itemManager3 = [(HUItemTableViewController *)self itemManager];
+      createActionButtonItem = [itemManager3 createActionButtonItem];
 
-      if (v9 == v13)
+      if (v9 == createActionButtonItem)
       {
         [(HUTriggerSummaryViewController *)self _addAction:0];
       }
 
       else
       {
-        v14 = [(HUItemTableViewController *)self itemManager];
-        v15 = [v14 deleteTriggerItem];
+        itemManager4 = [(HUItemTableViewController *)self itemManager];
+        deleteTriggerItem = [itemManager4 deleteTriggerItem];
 
-        if (v9 == v15)
+        if (v9 == deleteTriggerItem)
         {
-          [(HUTriggerSummaryViewController *)self _deleteTrigger:v9 indexPath:v6];
+          [(HUTriggerSummaryViewController *)self _deleteTrigger:v9 indexPath:pathCopy];
         }
       }
     }
   }
 }
 
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder
 {
-  v5 = [(HUTriggerSummaryViewController *)self triggerBuilder:a3];
-  v6 = [v5 isShortcutOwned];
+  v5 = [(HUTriggerSummaryViewController *)self triggerBuilder:editor];
+  isShortcutOwned = [v5 isShortcutOwned];
 
-  if (v6)
+  if (isShortcutOwned)
   {
-    v11 = [(HUTriggerSummaryViewController *)self view];
-    v7 = [v11 window];
-    v8 = [v7 rootViewController];
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    view = [(HUTriggerSummaryViewController *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
+    [rootViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v9 = [(HUTriggerSummaryViewController *)self actionSetsModuleController];
-    [v9 reloadActions];
+    actionSetsModuleController = [(HUTriggerSummaryViewController *)self actionSetsModuleController];
+    [actionSetsModuleController reloadActions];
 
-    v10 = [(HUItemTableViewController *)self itemManager];
-    [v10 triggerBuilderDidChange];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    [itemManager triggerBuilderDidChange];
 
     [(HUTriggerSummaryViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUTriggerSummaryViewController *)self tableView];
-  v16 = [v7 indexPathForCell:v6];
+  onCopy = on;
+  cellCopy = cell;
+  tableView = [(HUTriggerSummaryViewController *)self tableView];
+  v16 = [tableView indexPathForCell:cellCopy];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v16];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:v16];
 
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 enableItem];
-  v12 = [v9 isEqual:v11];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  enableItem = [itemManager2 enableItem];
+  v12 = [v9 isEqual:enableItem];
 
   if (v12)
   {
-    [(HUTriggerSummaryViewController *)self _setTriggerEnabled:v4];
+    [(HUTriggerSummaryViewController *)self _setTriggerEnabled:onCopy];
   }
 
   v13 = MEMORY[0x277D143D8];
-  v14 = [v9 latestResults];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D13F68]];
-  [v13 sendSwitchCellToggleEventForItem:v9 isOn:v4 title:v15 fromSourceViewController:self];
+  latestResults = [v9 latestResults];
+  v15 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F68]];
+  [v13 sendSwitchCellToggleEventForItem:v9 isOn:onCopy title:v15 fromSourceViewController:self];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  lCopy = l;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v8;
+    v16 = lCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v13, 0x16u);
   }
 
-  if (!a6)
+  if (!interaction)
   {
-    v10 = [MEMORY[0x277D148E8] sharedInstance];
-    v11 = [v10 openURL:v8];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    v11 = [mEMORY[0x277D148E8] openURL:lCopy];
   }
 
   return 0;
 }
 
-- (void)actionSetsModuleController:(id)a3 didUpdateTriggerBuilder:(id)a4
+- (void)actionSetsModuleController:(id)controller didUpdateTriggerBuilder:(id)builder
 {
-  v4 = [(HUItemTableViewController *)self itemManager:a3];
+  v4 = [(HUItemTableViewController *)self itemManager:controller];
   [v4 triggerBuilderDidChange];
 }
 
-- (void)durationModuleController:(id)a3 requestsScrollToItem:(id)a4
+- (void)durationModuleController:(id)controller requestsScrollToItem:(id)item
 {
-  v5 = a4;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v6 indexPathForItem:v5];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager indexPathForItem:itemCopy];
 
   if (v8)
   {
-    v7 = [(HUTriggerSummaryViewController *)self tableView];
-    [v7 scrollToRowAtIndexPath:v8 atScrollPosition:3 animated:1];
+    tableView = [(HUTriggerSummaryViewController *)self tableView];
+    [tableView scrollToRowAtIndexPath:v8 atScrollPosition:3 animated:1];
   }
 
   else
@@ -1327,27 +1327,27 @@ LABEL_10:
   }
 }
 
-- (void)eventsModuleController:(id)a3 pushViewController:(id)a4
+- (void)eventsModuleController:(id)controller pushViewController:(id)viewController
 {
-  v7 = a4;
-  v5 = [(HUTriggerSummaryViewController *)self navigationController];
-  v6 = [v5 hu_pushPreloadableViewController:v7 animated:1];
+  viewControllerCopy = viewController;
+  navigationController = [(HUTriggerSummaryViewController *)self navigationController];
+  v6 = [navigationController hu_pushPreloadableViewController:viewControllerCopy animated:1];
 }
 
-- (void)eventsModuleControllerDidUpdateTriggerBuilder:(id)a3
+- (void)eventsModuleControllerDidUpdateTriggerBuilder:(id)builder
 {
-  v3 = [(HUItemTableViewController *)self itemManager];
-  [v3 triggerBuilderDidChange];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager triggerBuilderDidChange];
 }
 
-- (void)_showEditorForTriggerBuilderItem:(id)a3
+- (void)_showEditorForTriggerBuilderItem:(id)item
 {
-  v28 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = triggerBuilder;
   }
 
   else
@@ -1357,10 +1357,10 @@ LABEL_10:
 
   v6 = v5;
 
-  v7 = [v28 triggerBuilder];
-  if (v28)
+  triggerBuilder2 = [itemCopy triggerBuilder];
+  if (itemCopy)
   {
-    if (v7)
+    if (triggerBuilder2)
     {
       goto LABEL_6;
     }
@@ -1369,7 +1369,7 @@ LABEL_10:
   else
   {
     NSLog(&cfstr_NilParameter.isa);
-    if (v7)
+    if (triggerBuilder2)
     {
       goto LABEL_6;
     }
@@ -1381,8 +1381,8 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v8 = [HUTimerTriggerEditorViewController alloc];
-    v9 = [(HUTriggerSummaryViewController *)self delegate];
-    v10 = [(HUTimerTriggerEditorViewController *)v8 initWithTimerTriggerBuilder:v7 mode:1 delegate:v9];
+    delegate = [(HUTriggerSummaryViewController *)self delegate];
+    v10 = [(HUTimerTriggerEditorViewController *)v8 initWithTimerTriggerBuilder:triggerBuilder2 mode:1 delegate:delegate];
     goto LABEL_23;
   }
 
@@ -1392,11 +1392,11 @@ LABEL_6:
   }
 
   objc_opt_class();
-  v11 = [v6 eventBuilders];
-  v12 = [v11 firstObject];
+  eventBuilders = [v6 eventBuilders];
+  firstObject = [eventBuilders firstObject];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = firstObject;
   }
 
   else
@@ -1404,13 +1404,13 @@ LABEL_6:
     v13 = 0;
   }
 
-  v9 = v13;
+  delegate = v13;
 
-  v14 = [v6 eventBuilders];
-  v15 = [v14 firstObject];
-  if ([v15 conformsToProtocol:&unk_2825BD780])
+  eventBuilders2 = [v6 eventBuilders];
+  firstObject2 = [eventBuilders2 firstObject];
+  if ([firstObject2 conformsToProtocol:&unk_2825BD780])
   {
-    v16 = v15;
+    v16 = firstObject2;
   }
 
   else
@@ -1420,15 +1420,15 @@ LABEL_6:
 
   v17 = v16;
 
-  if (v9)
+  if (delegate)
   {
     v18 = objc_alloc(MEMORY[0x277D14530]);
-    v19 = [MEMORY[0x277CBEB98] setWithObject:v9];
+    v19 = [MEMORY[0x277CBEB98] setWithObject:delegate];
     v20 = [v18 initWithEventBuilders:v19];
 
     v21 = [HUCharacteristicTriggerEventViewController alloc];
-    v22 = [(HUTriggerSummaryViewController *)self delegate];
-    v23 = [(HUCharacteristicTriggerEventViewController *)v21 initWithCharacteristicEventBuilderItem:v20 triggerBuilder:v6 mode:1 delegate:v22];
+    delegate2 = [(HUTriggerSummaryViewController *)self delegate];
+    v23 = [(HUCharacteristicTriggerEventViewController *)v21 initWithCharacteristicEventBuilderItem:v20 triggerBuilder:v6 mode:1 delegate:delegate2];
   }
 
   else
@@ -1443,8 +1443,8 @@ LABEL_6:
     v25 = [MEMORY[0x277CBEB98] setWithObject:v17];
     v20 = [v24 initWithEventBuilders:v25];
 
-    v22 = [[HUEventUIFlow alloc] initWithTriggerBuilder:v6 eventBuilderItem:v20];
-    v23 = [[HULocationEventEditorSummaryViewController alloc] initWithFlow:v22 stepIdentifier:@"locationEventEditor"];
+    delegate2 = [[HUEventUIFlow alloc] initWithTriggerBuilder:v6 eventBuilderItem:v20];
+    v23 = [[HULocationEventEditorSummaryViewController alloc] initWithFlow:delegate2 stepIdentifier:@"locationEventEditor"];
   }
 
   v10 = v23;
@@ -1454,33 +1454,33 @@ LABEL_23:
 
   if (v10)
   {
-    v26 = [(HUTriggerSummaryViewController *)self navigationController];
-    v27 = [v26 hu_pushPreloadableViewController:v10 animated:1];
+    navigationController = [(HUTriggerSummaryViewController *)self navigationController];
+    v27 = [navigationController hu_pushPreloadableViewController:v10 animated:1];
 
     [(HUTriggerSummaryViewController *)self setDetailEditorChangedTrigger:1];
     goto LABEL_26;
   }
 
 LABEL_25:
-  NSLog(&cfstr_CouldNotCreate.isa, v28);
+  NSLog(&cfstr_CouldNotCreate.isa, itemCopy);
 LABEL_26:
 }
 
-- (void)mediaModuleController:(id)a3 pushViewController:(id)a4
+- (void)mediaModuleController:(id)controller pushViewController:(id)viewController
 {
-  v7 = a4;
-  v5 = [(HUTriggerSummaryViewController *)self navigationController];
-  v6 = [v5 hu_pushPreloadableViewController:v7 animated:1];
+  viewControllerCopy = viewController;
+  navigationController = [(HUTriggerSummaryViewController *)self navigationController];
+  v6 = [navigationController hu_pushPreloadableViewController:viewControllerCopy animated:1];
 }
 
-- (void)serviceGridViewController:(id)a3 didTapItem:(id)a4
+- (void)serviceGridViewController:(id)controller didTapItem:(id)item
 {
-  v18 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v6 = v18;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -1493,104 +1493,104 @@ LABEL_26:
 
     v8 = v7;
 
-    v9 = [v8 containingItem];
+    containingItem = [v8 containingItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(HUItemTableViewController *)self itemManager];
+      itemManager = [(HUItemTableViewController *)self itemManager];
       v12 = MEMORY[0x277CBEB98];
-      v13 = [(HUItemTableViewController *)self itemManager];
-      v14 = [v13 mediaModule];
-      v15 = [v14 mediaRowItem];
-      v16 = [v12 setWithObject:v15];
-      v17 = [v11 updateResultsForItems:v16 senderSelector:a2];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      mediaModule = [itemManager2 mediaModule];
+      mediaRowItem = [mediaModule mediaRowItem];
+      v16 = [v12 setWithObject:mediaRowItem];
+      v17 = [itemManager updateResultsForItems:v16 senderSelector:a2];
     }
   }
 }
 
-- (void)textFieldDidFinishEditing:(id)a3
+- (void)textFieldDidFinishEditing:(id)editing
 {
-  v5 = [a3 text];
-  [(HUTriggerSummaryViewController *)self setEditingName:v5];
+  text = [editing text];
+  [(HUTriggerSummaryViewController *)self setEditingName:text];
 
   [(HUTriggerSummaryViewController *)self _updateTriggerBuilderName];
-  v6 = [(HUItemTableViewController *)self itemManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 sourceItem];
-  v10 = [v7 setWithObjects:{v9, 0}];
-  v11 = [v6 updateResultsForItems:v10 senderSelector:a2];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  sourceItem = [itemManager2 sourceItem];
+  v10 = [v7 setWithObjects:{sourceItem, 0}];
+  v11 = [itemManager updateResultsForItems:v10 senderSelector:a2];
 
   [(HUTriggerSummaryViewController *)self setEditingName:0];
 }
 
-- (void)home:(id)a3 didRemoveTrigger:(id)a4
+- (void)home:(id)home didRemoveTrigger:(id)trigger
 {
-  v5 = a4;
-  v6 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v7 = [v6 trigger];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v5 uniqueIdentifier];
+  triggerCopy = trigger;
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  trigger = [triggerBuilder trigger];
+  uniqueIdentifier = [trigger uniqueIdentifier];
+  uniqueIdentifier2 = [triggerCopy uniqueIdentifier];
 
-  if (v8 == v9)
+  if (uniqueIdentifier == uniqueIdentifier2)
   {
-    v10 = [(HUTriggerSummaryViewController *)self delegate];
-    [v10 triggerEditor:self didFinishWithTriggerBuilder:0];
+    delegate = [(HUTriggerSummaryViewController *)self delegate];
+    [delegate triggerEditor:self didFinishWithTriggerBuilder:0];
   }
 }
 
 - (void)_updateTriggerBuilderName
 {
   v4 = MEMORY[0x277D14CE8];
-  v5 = [(HUTriggerSummaryViewController *)self editingName];
-  v6 = [v4 sanitizeUserEnteredHomeKitName:v5];
+  editingName = [(HUTriggerSummaryViewController *)self editingName];
+  v6 = [v4 sanitizeUserEnteredHomeKitName:editingName];
   [(HUTriggerSummaryViewController *)self setEditingName:v6];
 
-  v7 = [(HUTriggerSummaryViewController *)self editingName];
-  if (v7 && (v8 = v7, -[HUTriggerSummaryViewController editingName](self, "editingName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 length], v9, v8, v10))
+  editingName2 = [(HUTriggerSummaryViewController *)self editingName];
+  if (editingName2 && (v8 = editingName2, -[HUTriggerSummaryViewController editingName](self, "editingName"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 length], v9, v8, v10))
   {
-    v11 = [(HUTriggerSummaryViewController *)self editingName];
-    v12 = [v11 copy];
-    v13 = [(HUItemTableViewController *)self itemManager];
-    v14 = [v13 triggerBuilder];
-    [v14 setName:v12];
+    editingName3 = [(HUTriggerSummaryViewController *)self editingName];
+    v12 = [editingName3 copy];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    triggerBuilder = [itemManager triggerBuilder];
+    [triggerBuilder setName:v12];
 
-    v15 = [(HUItemTableViewController *)self itemManager];
-    v16 = [v15 triggerBuilder];
-    [v16 setNameIsConfigured:1];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    triggerBuilder2 = [itemManager2 triggerBuilder];
+    [triggerBuilder2 setNameIsConfigured:1];
 
-    v17 = [(HUItemTableViewController *)self itemManager];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
     v18 = MEMORY[0x277CBEB98];
-    v19 = [(HUItemTableViewController *)self itemManager];
-    v20 = [v19 namingRowItem];
-    v21 = [v18 setWithObject:v20];
-    v22 = [v17 updateResultsForItems:v21 senderSelector:a2];
+    itemManager4 = [(HUItemTableViewController *)self itemManager];
+    namingRowItem = [itemManager4 namingRowItem];
+    v21 = [v18 setWithObject:namingRowItem];
+    v22 = [itemManager3 updateResultsForItems:v21 senderSelector:a2];
   }
 
   else
   {
-    v23 = [(HUItemTableViewController *)self itemManager];
-    v24 = [v23 triggerBuilder];
-    [v24 setNameIsConfigured:0];
+    itemManager5 = [(HUItemTableViewController *)self itemManager];
+    triggerBuilder3 = [itemManager5 triggerBuilder];
+    [triggerBuilder3 setNameIsConfigured:0];
 
-    v17 = [(HUItemTableViewController *)self itemManager];
-    [v17 triggerBuilderDidChange];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    [itemManager3 triggerBuilderDidChange];
   }
 
-  v26 = [(HUItemTableViewController *)self itemManager];
-  v25 = [v26 triggerCurrentDisplayedName];
-  [(HUTriggerSummaryViewController *)self setTitle:v25];
+  itemManager6 = [(HUItemTableViewController *)self itemManager];
+  triggerCurrentDisplayedName = [itemManager6 triggerCurrentDisplayedName];
+  [(HUTriggerSummaryViewController *)self setTitle:triggerCurrentDisplayedName];
 }
 
 - (void)_updateTableHeaderConfiguration
 {
   objc_opt_class();
-  v3 = [(HUItemTableViewController *)self itemTableHeaderView];
+  itemTableHeaderView = [(HUItemTableViewController *)self itemTableHeaderView];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemTableHeaderView;
   }
 
   else
@@ -1602,36 +1602,36 @@ LABEL_26:
 
   if (v13)
   {
-    v5 = [v13 messageTextView];
-    [v5 setDelegate:self];
+    messageTextView = [v13 messageTextView];
+    [messageTextView setDelegate:self];
 
-    v6 = [(HUItemTableViewController *)self itemManager];
-    v7 = [v6 allDisplayedItems];
-    v8 = [(HUItemTableViewController *)self itemManager];
-    v9 = [v8 enableItem];
-    v10 = [v7 containsObject:v9];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    allDisplayedItems = [itemManager allDisplayedItems];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    enableItem = [itemManager2 enableItem];
+    v10 = [allDisplayedItems containsObject:enableItem];
 
     [v13 setIncludeBottomSpacing:v10];
-    v11 = [(HUTriggerSummaryViewController *)self tableView];
-    [v11 setNeedsLayout];
+    tableView = [(HUTriggerSummaryViewController *)self tableView];
+    [tableView setNeedsLayout];
 
-    v12 = [(HUTriggerSummaryViewController *)self tableView];
-    [v12 layoutIfNeeded];
+    tableView2 = [(HUTriggerSummaryViewController *)self tableView];
+    [tableView2 layoutIfNeeded];
   }
 }
 
 - (BOOL)_canCommitTriggerBuilder
 {
-  v3 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v4 = [v3 home];
-  v5 = [v4 hf_currentUserIsAdministrator];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  home = [triggerBuilder home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (!v5)
+  if (!hf_currentUserIsAdministrator)
   {
     return 0;
   }
 
-  v6 = [(HUTriggerSummaryViewController *)self delegate];
+  delegate = [(HUTriggerSummaryViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
@@ -1639,26 +1639,26 @@ LABEL_26:
     return 1;
   }
 
-  v8 = [(HUTriggerSummaryViewController *)self delegate];
-  v9 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v10 = [v8 triggerEditor:self shouldCommitTriggerBuilder:v9];
+  delegate2 = [(HUTriggerSummaryViewController *)self delegate];
+  triggerBuilder2 = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  v10 = [delegate2 triggerEditor:self shouldCommitTriggerBuilder:triggerBuilder2];
 
   return v10;
 }
 
 - (id)_commitTriggerBuilder
 {
-  v3 = [(HUTriggerSummaryViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
+  navigationItem = [(HUTriggerSummaryViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v7 = [(HUTriggerSummaryViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem2 = [(HUTriggerSummaryViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v6];
 
   [v5 startAnimating];
-  v8 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v9 = [v8 commitItem];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  commitItem = [triggerBuilder commitItem];
 
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
@@ -1666,28 +1666,28 @@ LABEL_26:
   v19[2] = __55__HUTriggerSummaryViewController__commitTriggerBuilder__block_invoke;
   v19[3] = &unk_277DB8620;
   objc_copyWeak(&v21, &location);
-  v10 = v4;
+  v10 = rightBarButtonItem;
   v20 = v10;
-  v11 = [v9 addCompletionBlock:v19];
+  v11 = [commitItem addCompletionBlock:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__HUTriggerSummaryViewController__commitTriggerBuilder__block_invoke_2;
   v17[3] = &unk_277DB94D0;
   objc_copyWeak(&v18, &location);
-  v12 = [v9 addFailureBlock:v17];
+  v12 = [commitItem addFailureBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__HUTriggerSummaryViewController__commitTriggerBuilder__block_invoke_4;
   v15[3] = &unk_277DB99B8;
   objc_copyWeak(&v16, &location);
-  v13 = [v9 addSuccessBlock:v15];
+  v13 = [commitItem addSuccessBlock:v15];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 
-  return v9;
+  return commitItem;
 }
 
 void __55__HUTriggerSummaryViewController__commitTriggerBuilder__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1769,44 +1769,44 @@ void __55__HUTriggerSummaryViewController__commitTriggerBuilder__block_invoke_4(
   }
 }
 
-- (void)_sendNameAssignedEvent:(id)a3 error:(id)a4
+- (void)_sendNameAssignedEvent:(id)event error:(id)error
 {
-  v13 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:a3 != 0];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277D134B0]];
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:event != 0];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277D134B0]];
 
-  if (v13)
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "code")}];
-    [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277D134B8]];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+    [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x277D134B8]];
   }
 
   else
   {
-    [v6 setObject:0 forKeyedSubscript:*MEMORY[0x277D134B8]];
+    [dictionary setObject:0 forKeyedSubscript:*MEMORY[0x277D134B8]];
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[HUTriggerSummaryViewController isEditingExistingTrigger](self, "isEditingExistingTrigger")}];
-  [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x277D134C0]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x277D134C0]];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v12 = [v10 numberWithBool:{objc_msgSend(v11, "nameIsConfigured")}];
-  [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277D134C8]];
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  v12 = [v10 numberWithBool:{objc_msgSend(triggerBuilder, "nameIsConfigured")}];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277D134C8]];
 
-  [MEMORY[0x277D143D8] sendEvent:24 withData:v6];
+  [MEMORY[0x277D143D8] sendEvent:24 withData:dictionary];
 }
 
-- (void)homeWorkflowEditorViewController:(id)a3 didFinishWithHomeWorkflow:(id)a4 includesSecureAccessory:(BOOL)a5
+- (void)homeWorkflowEditorViewController:(id)controller didFinishWithHomeWorkflow:(id)workflow includesSecureAccessory:(BOOL)accessory
 {
-  v6 = a4;
-  v7 = [(HUTriggerSummaryViewController *)self triggerBuilder];
-  v8 = [v7 triggerActionSets];
-  [v8 convertToHomeWorkflowActionSet:v6];
+  workflowCopy = workflow;
+  triggerBuilder = [(HUTriggerSummaryViewController *)self triggerBuilder];
+  triggerActionSets = [triggerBuilder triggerActionSets];
+  [triggerActionSets convertToHomeWorkflowActionSet:workflowCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  [v9 triggerBuilderDidChange];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager triggerBuilderDidChange];
 
   [(HUTriggerSummaryViewController *)self dismissViewControllerAnimated:1 completion:0];
 }

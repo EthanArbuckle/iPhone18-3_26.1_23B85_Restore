@@ -1,44 +1,44 @@
 @interface RPIdentitySyncSFClientHelper
-+ (id)formatPhoneNumber:(id)a3;
-+ (void)contactHandlesForShortHashes:(id)a3 completion:(id)a4;
-+ (void)myAccountWithCompletion:(id)a3;
++ (id)formatPhoneNumber:(id)number;
++ (void)contactHandlesForShortHashes:(id)hashes completion:(id)completion;
++ (void)myAccountWithCompletion:(id)completion;
 @end
 
 @implementation RPIdentitySyncSFClientHelper
 
-+ (void)contactHandlesForShortHashes:(id)a3 completion:(id)a4
++ (void)contactHandlesForShortHashes:(id)hashes completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = off_1001D46A8[0];
-  v7 = a3;
+  hashesCopy = hashes;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100088F5C;
   v10[3] = &unk_1001ADCD0;
   v11 = objc_alloc_init(v6());
-  v12 = v5;
+  v12 = completionCopy;
   v8 = v11;
-  v9 = v5;
-  [v8 contactHandlesForShortHashData:v7 completion:v10];
+  v9 = completionCopy;
+  [v8 contactHandlesForShortHashData:hashesCopy completion:v10];
 }
 
-+ (void)myAccountWithCompletion:(id)a3
++ (void)myAccountWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008905C;
   v6[3] = &unk_1001ADCF8;
   v7 = objc_alloc_init(off_1001D46B0());
-  v8 = v3;
+  v8 = completionCopy;
   v4 = v7;
-  v5 = v3;
+  v5 = completionCopy;
   [v4 myAccountWithCompletion:v6];
 }
 
-+ (id)formatPhoneNumber:(id)a3
++ (id)formatPhoneNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   active = CPPhoneNumberCopyActiveCountryCode();
   v5 = PNCopyBestGuessNormalizedNumberForCountry();
 

@@ -1,34 +1,34 @@
 @interface PSTimeRangeCell
 + (Class)alternativeCellClass;
-- (PSTimeRangeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)accessibilityConstraintsWithVariableBindings:(id)a3 metrics:(id)a4;
-- (id)regularConstraintsWithVariableBindings:(id)a3 metrics:(id)a4;
+- (PSTimeRangeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)accessibilityConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics;
+- (id)regularConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics;
 - (void)layoutSubviews;
 - (void)updateConstraints;
 @end
 
 @implementation PSTimeRangeCell
 
-- (PSTimeRangeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSTimeRangeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v28.receiver = self;
   v28.super_class = PSTimeRangeCell;
-  v9 = [(PSTableCell *)&v28 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(PSTableCell *)&v28 initWithStyle:style reuseIdentifier:identifier];
   v10 = v9;
   if (v9 && ![(PSTableCell *)v9 skipsPreferencesTableCellLayoutSubviews])
   {
-    v11 = [v8 target];
-    v12 = [v11 conformsToProtocol:&unk_1EFEC6670];
+    target = [specifierCopy target];
+    v12 = [target conformsToProtocol:&unk_1EFEC6670];
 
     if (v12)
     {
-      v13 = [v8 target];
-      objc_storeWeak(&v10->_delegate, v13);
+      target2 = [specifierCopy target];
+      objc_storeWeak(&v10->_delegate, target2);
     }
 
-    v14 = [(PSTableCell *)v10 titleLabel];
-    v15 = [v14 font];
+    titleLabel = [(PSTableCell *)v10 titleLabel];
+    font = [titleLabel font];
 
     v16 = CreateRangeTitleLabel();
     fromTitle = v10->_fromTitle;
@@ -37,7 +37,7 @@
     v18 = PS_LocalizedString(@"FROM");
     [(UILabel *)v10->_fromTitle setText:v18];
 
-    [(UILabel *)v10->_fromTitle setFont:v15];
+    [(UILabel *)v10->_fromTitle setFont:font];
     v19 = CreateRangeTitleLabel();
     toTitle = v10->_toTitle;
     v10->_toTitle = v19;
@@ -45,22 +45,22 @@
     v21 = PS_LocalizedString(@"TO");
     [(UILabel *)v10->_toTitle setText:v21];
 
-    [(UILabel *)v10->_toTitle setFont:v15];
+    [(UILabel *)v10->_toTitle setFont:font];
     v22 = CreateRangeTimeLabel();
     fromTime = v10->_fromTime;
     v10->_fromTime = v22;
 
-    [(UILabel *)v10->_fromTime setFont:v15];
+    [(UILabel *)v10->_fromTime setFont:font];
     v24 = CreateRangeTimeLabel();
     toTime = v10->_toTime;
     v10->_toTime = v24;
 
-    [(UILabel *)v10->_toTime setFont:v15];
-    v26 = [(PSTimeRangeCell *)v10 contentView];
-    [v26 addSubview:v10->_fromTitle];
-    [v26 addSubview:v10->_toTitle];
-    [v26 addSubview:v10->_fromTime];
-    [v26 addSubview:v10->_toTime];
+    [(UILabel *)v10->_toTime setFont:font];
+    contentView = [(PSTimeRangeCell *)v10 contentView];
+    [contentView addSubview:v10->_fromTitle];
+    [contentView addSubview:v10->_toTitle];
+    [contentView addSubview:v10->_fromTime];
+    [contentView addSubview:v10->_toTime];
     [(PSTimeRangeCell *)v10 layoutSubviews];
   }
 
@@ -105,16 +105,16 @@
   else
   {
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
-    v3 = [(PSTimeRangeCell *)self _shouldReverseLayoutDirection];
-    v4 = [(PSTimeRangeCell *)self textLabel];
-    [v4 frame];
+    _shouldReverseLayoutDirection = [(PSTimeRangeCell *)self _shouldReverseLayoutDirection];
+    textLabel = [(PSTimeRangeCell *)self textLabel];
+    [textLabel frame];
     v6 = v5;
 
     v7 = MEMORY[0x1E696AD98];
-    if (v3)
+    if (_shouldReverseLayoutDirection)
     {
-      v8 = [(PSTimeRangeCell *)self contentView];
-      [v8 bounds];
+      contentView = [(PSTimeRangeCell *)self contentView];
+      [contentView bounds];
       v10 = [v7 numberWithDouble:v9 - v6];
     }
 
@@ -125,9 +125,9 @@
 
     v11 = _NSDictionaryOfVariableBindings(&cfstr_FromtitleTotit.isa, self->_fromTitle, self->_toTitle, self->_fromTime, self->_toTime, 0);
     v12 = _NSDictionaryOfVariableBindings(&cfstr_Margin.isa, v10, 0);
-    v13 = [(PSTimeRangeCell *)self traitCollection];
-    v14 = [v13 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v14);
+    traitCollection = [(PSTimeRangeCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -149,15 +149,15 @@
   }
 }
 
-- (id)regularConstraintsWithVariableBindings:(id)a3 metrics:(id)a4
+- (id)regularConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics
 {
   v5 = MEMORY[0x1E696ACD8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 constraintsWithVisualFormat:@"H:|-margin-[_fromTitle]-(>=2.0)-[_fromTime]-|" options:0 metrics:v6 views:v7];
-  v9 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_toTitle]-(>=2.0)-[_toTime]-|" options:0 metrics:v6 views:v7];
-  v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-[_fromTitle]-(>=2.0)-[_toTitle]-|" options:0 metrics:v6 views:v7];
-  v11 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-[_fromTime]-(>=2.0)-[_toTime]-|" options:0 metrics:v6 views:v7];
+  metricsCopy = metrics;
+  bindingsCopy = bindings;
+  v8 = [v5 constraintsWithVisualFormat:@"H:|-margin-[_fromTitle]-(>=2.0)-[_fromTime]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v9 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_toTitle]-(>=2.0)-[_toTime]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-[_fromTitle]-(>=2.0)-[_toTitle]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v11 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-[_fromTime]-(>=2.0)-[_toTime]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
   v12 = [v8 arrayByAddingObjectsFromArray:v9];
   v13 = [v12 arrayByAddingObjectsFromArray:v10];
@@ -166,16 +166,16 @@
   return v14;
 }
 
-- (id)accessibilityConstraintsWithVariableBindings:(id)a3 metrics:(id)a4
+- (id)accessibilityConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics
 {
   v5 = MEMORY[0x1E696ACD8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 constraintsWithVisualFormat:@"H:|-margin-[_fromTitle]-|" options:0 metrics:v6 views:v7];
-  v9 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_fromTime]-|" options:0 metrics:v6 views:v7];
-  v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_toTitle]-|" options:0 metrics:v6 views:v7];
-  v11 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_toTime]-|" options:0 metrics:v6 views:v7];
-  v12 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-[_fromTitle]-[_fromTime]-[_toTitle]-[_toTime]-|" options:0 metrics:v6 views:v7];
+  metricsCopy = metrics;
+  bindingsCopy = bindings;
+  v8 = [v5 constraintsWithVisualFormat:@"H:|-margin-[_fromTitle]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v9 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_fromTime]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_toTitle]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v11 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-margin-[_toTime]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v12 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-[_fromTitle]-[_fromTime]-[_toTitle]-[_toTime]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
   v13 = [v8 arrayByAddingObjectsFromArray:v9];
   v14 = [v13 arrayByAddingObjectsFromArray:v10];
@@ -187,7 +187,7 @@
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

@@ -1,6 +1,6 @@
 @interface TSCHPropertyMutationTuple
-- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)a3 mutationMap:(id)a4;
-- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)a3 mutations:(id)a4;
+- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)owner mutationMap:(id)map;
+- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)owner mutations:(id)mutations;
 - (id)description;
 - (id)indirectTuple;
 - (id)styleOwnerRef;
@@ -8,14 +8,14 @@
 
 @implementation TSCHPropertyMutationTuple
 
-- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)a3 mutations:(id)a4
+- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)owner mutations:(id)mutations
 {
-  v7 = a3;
-  v8 = a4;
-  v13 = v8;
-  if (v7)
+  ownerCopy = owner;
+  mutationsCopy = mutations;
+  v13 = mutationsCopy;
+  if (ownerCopy)
   {
-    if (v8)
+    if (mutationsCopy)
     {
       goto LABEL_3;
     }
@@ -48,18 +48,18 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_styleOwner, a3);
-    objc_storeStrong(&v15->_mutations, a4);
+    objc_storeStrong(&v14->_styleOwner, owner);
+    objc_storeStrong(&v15->_mutations, mutations);
   }
 
   return v15;
 }
 
-- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)a3 mutationMap:(id)a4
+- (TSCHPropertyMutationTuple)initWithStyleOwner:(id)owner mutationMap:(id)map
 {
-  v6 = a3;
-  v7 = sub_2762F3E68(a4);
-  v12 = objc_msgSend_initWithStyleOwner_mutations_(self, v8, v9, v10, v11, v6, v7);
+  ownerCopy = owner;
+  v7 = sub_2762F3E68(map);
+  v12 = objc_msgSend_initWithStyleOwner_mutations_(self, v8, v9, v10, v11, ownerCopy, v7);
 
   return v12;
 }

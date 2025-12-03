@@ -1,18 +1,18 @@
 @interface IMMultiDict
 - (IMMultiDict)init;
 - (NSArray)allKeys;
-- (id)dequeueObjectForKey:(id)a3;
+- (id)dequeueObjectForKey:(id)key;
 - (id)description;
-- (id)headObjectForKey:(id)a3;
-- (id)objectsForKey:(id)a3;
-- (id)peekObjectForKey:(id)a3;
-- (id)popObjectForKey:(id)a3;
-- (unint64_t)countForKey:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)pushObject:(id)a3 forKey:(id)a4;
+- (id)headObjectForKey:(id)key;
+- (id)objectsForKey:(id)key;
+- (id)peekObjectForKey:(id)key;
+- (id)popObjectForKey:(id)key;
+- (unint64_t)countForKey:(id)key;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)pushObject:(id)object forKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3 forKey:(id)a4;
-- (void)removeObjectsForKey:(id)a3;
+- (void)removeObject:(id)object forKey:(id)key;
+- (void)removeObjectsForKey:(id)key;
 @end
 
 @implementation IMMultiDict
@@ -40,34 +40,34 @@
   return v6;
 }
 
-- (void)pushObject:(id)a3 forKey:(id)a4
+- (void)pushObject:(id)object forKey:(id)key
 {
-  v15 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   ++self->_count;
   v9 = objc_msgSend_dictionary(self, v7, v8);
-  v13 = objc_msgSend_objectForKey_(v9, v10, v6);
+  v13 = objc_msgSend_objectForKey_(v9, v10, keyCopy);
   if (!v13)
   {
     v13 = objc_msgSend_array(MEMORY[0x1E695DF70], v11, v12);
-    objc_msgSend_setObject_forKey_(v9, v14, v13, v6);
+    objc_msgSend_setObject_forKey_(v9, v14, v13, keyCopy);
   }
 
-  objc_msgSend_addObject_(v13, v11, v15);
+  objc_msgSend_addObject_(v13, v11, objectCopy);
 }
 
-- (id)peekObjectForKey:(id)a3
+- (id)peekObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_dictionary(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   v12 = objc_msgSend_lastObject(v9, v10, v11);
 
   return v12;
 }
 
-- (id)popObjectForKey:(id)a3
+- (id)popObjectForKey:(id)key
 {
   count = self->_count;
   if (count)
@@ -75,9 +75,9 @@
     self->_count = count - 1;
   }
 
-  v5 = a3;
+  keyCopy = key;
   v8 = objc_msgSend_dictionary(self, v6, v7);
-  v10 = objc_msgSend_objectForKey_(v8, v9, v5);
+  v10 = objc_msgSend_objectForKey_(v8, v9, keyCopy);
 
   v15 = objc_msgSend_lastObject(v10, v11, v12);
   if (v15)
@@ -88,11 +88,11 @@
   return v15;
 }
 
-- (id)headObjectForKey:(id)a3
+- (id)headObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_dictionary(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   if (objc_msgSend_count(v9, v10, v11))
   {
@@ -107,12 +107,12 @@
   return v13;
 }
 
-- (id)dequeueObjectForKey:(id)a3
+- (id)dequeueObjectForKey:(id)key
 {
   --self->_count;
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_dictionary(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   if (objc_msgSend_count(v9, v10, v11))
   {
@@ -128,23 +128,23 @@
   return v13;
 }
 
-- (id)objectsForKey:(id)a3
+- (id)objectsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_dictionary(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   return v9;
 }
 
-- (void)removeObjectsForKey:(id)a3
+- (void)removeObjectsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = objc_msgSend_dictionary(self, v5, v6);
-  v8 = objc_msgSend_objectForKey_(v12, v7, v4);
+  v8 = objc_msgSend_objectForKey_(v12, v7, keyCopy);
   self->_count -= objc_msgSend_count(v8, v9, v10);
 
-  objc_msgSend_removeObjectForKey_(v12, v11, v4);
+  objc_msgSend_removeObjectForKey_(v12, v11, keyCopy);
 }
 
 - (void)removeAllObjects
@@ -154,36 +154,36 @@
   objc_msgSend_removeAllObjects(v5, v3, v4);
 }
 
-- (void)removeObject:(id)a3 forKey:(id)a4
+- (void)removeObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v10 = objc_msgSend_dictionary(self, v8, v9);
-  v13 = objc_msgSend_objectForKey_(v10, v11, v6);
+  v13 = objc_msgSend_objectForKey_(v10, v11, keyCopy);
 
-  objc_msgSend_removeObject_(v13, v12, v7);
+  objc_msgSend_removeObject_(v13, v12, objectCopy);
 }
 
-- (unint64_t)countForKey:(id)a3
+- (unint64_t)countForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_dictionary(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   v12 = objc_msgSend_count(v9, v10, v11);
   return v12;
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_dictionary(self, v5, v6);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1959D3210;
   v10[3] = &unk_1E7439D80;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v7, v9, v10);
 }
 

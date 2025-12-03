@@ -1,28 +1,28 @@
 @interface ICSTimeZoneChange
-- (BOOL)isCloseTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICSTimeZoneChange)initWithTimeInterval:(double)a3 tzOffsetTo:(int64_t)a4;
+- (BOOL)isCloseTo:(id)to;
+- (BOOL)isEqual:(id)equal;
+- (ICSTimeZoneChange)initWithTimeInterval:(double)interval tzOffsetTo:(int64_t)to;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation ICSTimeZoneChange
 
-- (ICSTimeZoneChange)initWithTimeInterval:(double)a3 tzOffsetTo:(int64_t)a4
+- (ICSTimeZoneChange)initWithTimeInterval:(double)interval tzOffsetTo:(int64_t)to
 {
   v7.receiver = self;
   v7.super_class = ICSTimeZoneChange;
   result = [(ICSTimeZoneChange *)&v7 init];
-  result->_interval = a3;
-  result->_tzOffsetTo = a4;
+  result->_interval = interval;
+  result->_tzOffsetTo = to;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   interval = self->_interval;
-  [v4 interval];
+  [equalCopy interval];
   if (vabdd_f64(interval, v6) >= 2.22044605e-16)
   {
     v8 = 0;
@@ -31,17 +31,17 @@
   else
   {
     tzOffsetTo = self->_tzOffsetTo;
-    v8 = tzOffsetTo == [v4 tzOffsetTo];
+    v8 = tzOffsetTo == [equalCopy tzOffsetTo];
   }
 
   return v8;
 }
 
-- (BOOL)isCloseTo:(id)a3
+- (BOOL)isCloseTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   interval = self->_interval;
-  [v4 interval];
+  [toCopy interval];
   if (vabdd_f64(interval, v6) >= 86400.0)
   {
     v8 = 0;
@@ -50,7 +50,7 @@
   else
   {
     tzOffsetTo = self->_tzOffsetTo;
-    v8 = tzOffsetTo == [v4 tzOffsetTo];
+    v8 = tzOffsetTo == [toCopy tzOffsetTo];
   }
 
   return v8;
@@ -71,17 +71,17 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(ICSTimeZoneChange *)self interval];
   v6 = v5;
-  [v4 interval];
+  [compareCopy interval];
   if (v6 >= v7)
   {
     [(ICSTimeZoneChange *)self interval];
     v10 = v9;
-    [v4 interval];
+    [compareCopy interval];
     v8 = v10 > v11;
   }
 

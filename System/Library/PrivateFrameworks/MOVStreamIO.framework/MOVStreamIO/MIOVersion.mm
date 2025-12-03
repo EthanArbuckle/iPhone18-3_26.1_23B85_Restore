@@ -1,16 +1,16 @@
 @interface MIOVersion
-+ (id)allVersionedKeysForKey:(id)a3 modifier:(id)a4;
++ (id)allVersionedKeysForKey:(id)key modifier:(id)modifier;
 + (id)pre3_15_0_Mapping;
 + (id)versionZero;
-- (BOOL)isAllDigitsInString:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isAllDigitsInString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (MIOVersion)init;
-- (MIOVersion)initWithVersionString:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MIOVersion)initWithVersionString:(id)string error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getVersionAsString;
-- (id)versionedKey:(id)a3 modifier:(id)a4;
-- (int64_t)compareToVersion:(id)a3;
+- (id)versionedKey:(id)key modifier:(id)modifier;
+- (int64_t)compareToVersion:(id)version;
 - (unint64_t)hash;
 @end
 
@@ -32,9 +32,9 @@
   return v5;
 }
 
-- (MIOVersion)initWithVersionString:(id)a3 error:(id *)a4
+- (MIOVersion)initWithVersionString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   v28.receiver = self;
   v28.super_class = MIOVersion;
   v7 = [(MIOVersion *)&v28 init];
@@ -43,7 +43,7 @@
     goto LABEL_24;
   }
 
-  v8 = [v6 componentsSeparatedByString:@"."];
+  v8 = [stringCopy componentsSeparatedByString:@"."];
   if ([v8 count] >= 2 && objc_msgSend(v8, "count") < 4)
   {
     v11 = [v8 objectAtIndexedSubscript:0];
@@ -76,27 +76,27 @@
 
           else
           {
-            v19 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-            v20 = [v18 rangeOfCharacterFromSet:v19];
+            decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+            v20 = [v18 rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
             if (v20 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              if (a4)
+              if (error)
               {
-                *a4 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:0 code:-1];
+                *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:0 code:-1];
               }
 
               goto LABEL_7;
             }
 
-            v21 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-            v22 = [v18 stringByTrimmingCharactersInSet:v21];
+            decimalDigitCharacterSet2 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+            v22 = [v18 stringByTrimmingCharactersInSet:decimalDigitCharacterSet2];
             v23 = v7->_modifier;
             v7->_modifier = v22;
 
-            v24 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-            v25 = [v24 invertedSet];
-            v26 = [v18 stringByTrimmingCharactersInSet:v25];
+            decimalDigitCharacterSet3 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+            invertedSet = [decimalDigitCharacterSet3 invertedSet];
+            v26 = [v18 stringByTrimmingCharactersInSet:invertedSet];
             v7->_bugfix = [v26 intValue];
           }
         }
@@ -106,13 +106,13 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_7;
     }
@@ -121,11 +121,11 @@ LABEL_24:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v9 = [MEMORY[0x277CCA9B8] internalWarningWithMessage:0 code:-1];
 LABEL_6:
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -173,47 +173,47 @@ LABEL_6:
   return v9;
 }
 
-- (int64_t)compareToVersion:(id)a3
+- (int64_t)compareToVersion:(id)version
 {
-  v4 = a3;
-  if (!v4)
+  versionCopy = version;
+  if (!versionCopy)
   {
     v15 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Cannot compare with nil object." userInfo:0];
     objc_exception_throw(v15);
   }
 
-  v5 = [(MIOVersion *)self major];
-  if (v5 < [v4 major])
+  major = [(MIOVersion *)self major];
+  if (major < [versionCopy major])
   {
     goto LABEL_3;
   }
 
-  v7 = [(MIOVersion *)self major];
-  if (v7 > [v4 major])
+  major2 = [(MIOVersion *)self major];
+  if (major2 > [versionCopy major])
   {
 LABEL_5:
     v6 = 1;
     goto LABEL_6;
   }
 
-  v9 = [(MIOVersion *)self minor];
-  if (v9 >= [v4 minor])
+  minor = [(MIOVersion *)self minor];
+  if (minor >= [versionCopy minor])
   {
-    v10 = [(MIOVersion *)self minor];
-    if (v10 > [v4 minor])
+    minor2 = [(MIOVersion *)self minor];
+    if (minor2 > [versionCopy minor])
     {
       goto LABEL_5;
     }
 
-    v11 = [(MIOVersion *)self bugfix];
-    if (v11 >= [v4 bugfix])
+    bugfix = [(MIOVersion *)self bugfix];
+    if (bugfix >= [versionCopy bugfix])
     {
-      v12 = [(MIOVersion *)self bugfix];
-      if (v12 <= [v4 bugfix])
+      bugfix2 = [(MIOVersion *)self bugfix];
+      if (bugfix2 <= [versionCopy bugfix])
       {
-        v13 = [(MIOVersion *)self modifier];
-        v14 = [v4 modifier];
-        v6 = [v13 compare:v14];
+        modifier = [(MIOVersion *)self modifier];
+        modifier2 = [versionCopy modifier];
+        v6 = [modifier compare:modifier2];
 
         goto LABEL_6;
       }
@@ -232,28 +232,28 @@ LABEL_6:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(MIOVersion *)self getVersionAsString];
-  v4 = [v2 stringWithFormat:@"Version: %@", v3];
+  getVersionAsString = [(MIOVersion *)self getVersionAsString];
+  v4 = [v2 stringWithFormat:@"Version: %@", getVersionAsString];
 
   return v4;
 }
 
-- (BOOL)isAllDigitsInString:(id)a3
+- (BOOL)isAllDigitsInString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v5 = [v4 invertedSet];
+  stringCopy = string;
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v6 = [v3 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v3, "length") != 0;
+  v6 = [stringCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(stringCopy, "length") != 0;
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MIOVersion allocWithZone:a3];
-  v5 = [(MIOVersion *)self getVersionAsString];
+  v4 = [MIOVersion allocWithZone:zone];
+  getVersionAsString = [(MIOVersion *)self getVersionAsString];
   v10 = 0;
-  v6 = [(MIOVersion *)v4 initWithVersionString:v5 error:&v10];
+  v6 = [(MIOVersion *)v4 initWithVersionString:getVersionAsString error:&v10];
   v7 = v10;
 
   if (v7)
@@ -266,19 +266,19 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MIOVersion *)self isEqualToVersion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MIOVersion *)self isEqualToVersion:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MIOVersion *)self getVersionAsString];
-  v3 = [v2 hash];
+  getVersionAsString = [(MIOVersion *)self getVersionAsString];
+  v3 = [getVersionAsString hash];
 
   return v3;
 }
@@ -333,21 +333,21 @@ void __31__MIOVersion_pre3_15_0_Mapping__block_invoke()
   +[MIOVersion pre3_15_0_Mapping]::pre3_15_0_Mapping = v1;
 }
 
-+ (id)allVersionedKeysForKey:(id)a3 modifier:(id)a4
++ (id)allVersionedKeysForKey:(id)key modifier:(id)modifier
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  modifierCopy = modifier;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [v7 addObject:v5];
-  if (v6)
+  [v7 addObject:keyCopy];
+  if (modifierCopy)
   {
-    v8 = [v5 stringByAppendingFormat:@"_%@", v6];
+    modifierCopy = [keyCopy stringByAppendingFormat:@"_%@", modifierCopy];
 
-    v5 = v8;
+    keyCopy = modifierCopy;
   }
 
   v9 = +[MIOVersion pre3_15_0_Mapping];
-  v10 = [v9 objectForKey:v5];
+  v10 = [v9 objectForKey:keyCopy];
 
   if (v10)
   {
@@ -357,10 +357,10 @@ void __31__MIOVersion_pre3_15_0_Mapping__block_invoke()
   return v7;
 }
 
-- (id)versionedKey:(id)a3 modifier:(id)a4
+- (id)versionedKey:(id)key modifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  modifierCopy = modifier;
   if ([MIOVersion versionedKey:modifier:]::onceToken != -1)
   {
     [MIOVersion versionedKey:modifier:];
@@ -370,8 +370,8 @@ void __31__MIOVersion_pre3_15_0_Mapping__block_invoke()
   {
     v8 = 0;
 LABEL_5:
-    v9 = v6;
-    v6 = 0;
+    v9 = keyCopy;
+    keyCopy = 0;
     goto LABEL_6;
   }
 
@@ -381,14 +381,14 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([v7 length])
+  if ([modifierCopy length])
   {
-    v11 = [v6 stringByAppendingFormat:@"_%@", v7];
+    modifierCopy = [keyCopy stringByAppendingFormat:@"_%@", modifierCopy];
 
-    v6 = v11;
+    keyCopy = modifierCopy;
   }
 
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:keyCopy];
   if (!v9)
   {
     goto LABEL_5;

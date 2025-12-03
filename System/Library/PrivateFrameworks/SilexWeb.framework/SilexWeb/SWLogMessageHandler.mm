@@ -1,29 +1,29 @@
 @interface SWLogMessageHandler
-- (SWLogMessageHandler)initWithLogger:(id)a3;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (SWLogMessageHandler)initWithLogger:(id)logger;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation SWLogMessageHandler
 
-- (SWLogMessageHandler)initWithLogger:(id)a3
+- (SWLogMessageHandler)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v9.receiver = self;
   v9.super_class = SWLogMessageHandler;
   v6 = [(SWLogMessageHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
   }
 
   return v7;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v5 = [a3 body];
-  v10 = [v5 objectForKey:@"message"];
+  body = [message body];
+  v10 = [body objectForKey:@"message"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -35,10 +35,10 @@
     }
 
     v7 = v6;
-    v8 = [(SWLogMessageHandler *)self logger];
+    logger = [(SWLogMessageHandler *)self logger];
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Logging message for WebContent embed: %@", v7];
 
-    [v8 log:v9];
+    [logger log:v9];
   }
 }
 

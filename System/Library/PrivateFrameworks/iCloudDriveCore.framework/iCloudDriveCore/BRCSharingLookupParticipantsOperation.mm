@@ -1,31 +1,31 @@
 @interface BRCSharingLookupParticipantsOperation
-- (BRCSharingLookupParticipantsOperation)initWithUserIdentities:(id)a3 sessionContext:(id)a4;
+- (BRCSharingLookupParticipantsOperation)initWithUserIdentities:(id)identities sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingLookupParticipantsOperation
 
-- (BRCSharingLookupParticipantsOperation)initWithUserIdentities:(id)a3 sessionContext:(id)a4
+- (BRCSharingLookupParticipantsOperation)initWithUserIdentities:(id)identities sessionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 syncContextProvider];
-  v10 = [v9 defaultSyncContext];
+  identitiesCopy = identities;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v16.receiver = self;
   v16.super_class = BRCSharingLookupParticipantsOperation;
-  v11 = [(_BRCOperation *)&v16 initWithName:@"sharing/lookup-participants" syncContext:v10 sessionContext:v8];
+  v11 = [(_BRCOperation *)&v16 initWithName:@"sharing/lookup-participants" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v11)
   {
     [(_BRCOperation *)v11 setNonDiscretionary:1];
-    objc_storeStrong(&v11->_userIdentities, a3);
+    objc_storeStrong(&v11->_userIdentities, identities);
     v12 = objc_opt_new();
     shareParticipants = v11->_shareParticipants;
     v11->_shareParticipants = v12;
 
-    v14 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v11 setGroup:v14];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v11 setGroup:br_sharingMisc];
   }
 
   return v11;

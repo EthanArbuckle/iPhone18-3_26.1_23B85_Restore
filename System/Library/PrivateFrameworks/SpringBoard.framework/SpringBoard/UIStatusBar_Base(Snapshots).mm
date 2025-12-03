@@ -45,7 +45,7 @@
   v17 = 0u;
   v18 = 0u;
   memset(v16, 0, sizeof(v16));
-  if (([a1 sb_getLocalDataOverrides:v16] & 1) == 0)
+  if (([self sb_getLocalDataOverrides:v16] & 1) == 0)
   {
     bzero(&v16[2] + 8, 0xF40uLL);
   }
@@ -78,11 +78,11 @@
 
   BYTE4(v16[0]) = 0;
   *(&v16[2] + 14) |= 0x10u;
-  v11 = [SBApp telephonyStateProvider];
-  v12 = [v11 subscriptionInfoForSlot:2];
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  v12 = [telephonyStateProvider subscriptionInfoForSlot:2];
   if (([v12 isProvidingDataConnection] & 1) == 0)
   {
-    v13 = [v11 subscriptionInfoForSlot:1];
+    v13 = [telephonyStateProvider subscriptionInfoForSlot:1];
 
     v12 = v13;
   }
@@ -90,9 +90,9 @@
   DWORD2(v44) = [v12 maxSignalStrengthBars];
   *(&v16[2] + 14) |= 0x4000u;
   v45 = 3;
-  v14 = [v11 isCellularRadioCapabilityActive];
+  isCellularRadioCapabilityActive = [telephonyStateProvider isCellularRadioCapabilityActive];
   v15 = 6;
-  if (v14)
+  if (isCellularRadioCapabilityActive)
   {
     v15 = 70;
   }
@@ -101,7 +101,7 @@
   v46 = 100;
   BYTE12(v17) = 1;
   *(&v16[2] + 14) |= 0xC0000u;
-  [a1 sb_setLocalDataOverrides:v16];
+  [self sb_setLocalDataOverrides:v16];
 }
 
 - (void)sb_setEnabledStatusBarPartIdentifiersForStatusBarParts:()Snapshots
@@ -109,24 +109,24 @@
   if (a3 == 0xFFFF)
   {
 
-    [a1 setEnabledPartIdentifiers:0];
+    [self setEnabledPartIdentifiers:0];
   }
 
   else
   {
     v4 = a3;
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v4)
     {
-      [v5 addObject:*MEMORY[0x277D775D0]];
+      [array addObject:*MEMORY[0x277D775D0]];
     }
 
     if ((v4 & 2) != 0)
     {
-      [v5 addObject:*MEMORY[0x277D775E0]];
+      [array addObject:*MEMORY[0x277D775E0]];
     }
 
-    [a1 setEnabledPartIdentifiers:v5];
+    [self setEnabledPartIdentifiers:array];
   }
 }
 
@@ -134,13 +134,13 @@
 {
   v9 = *MEMORY[0x277D85DE8];
   memset(v8, 0, 512);
-  if ([a1 sb_getLocalDataOverrides:v8])
+  if ([self sb_getLocalDataOverrides:v8])
   {
     if (!a3)
     {
-      objc_setAssociatedObject(a1, _SBStatusBarAssociatedValueKeyLocalDataOverrides, 0, 1);
-      [a1 setLocalDataOverrides:0];
-      return [a1 forceUpdateData:0];
+      objc_setAssociatedObject(self, _SBStatusBarAssociatedValueKeyLocalDataOverrides, 0, 1);
+      [self setLocalDataOverrides:0];
+      return [self forceUpdateData:0];
     }
 
     v5 = memcmp(a3, v8, 0xF68uLL) != 0;
@@ -151,24 +151,24 @@
     v5 = a3 != 0;
     if (!a3)
     {
-      objc_setAssociatedObject(a1, _SBStatusBarAssociatedValueKeyLocalDataOverrides, 0, 1);
-      return [a1 setLocalDataOverrides:0];
+      objc_setAssociatedObject(self, _SBStatusBarAssociatedValueKeyLocalDataOverrides, 0, 1);
+      return [self setLocalDataOverrides:0];
     }
   }
 
-  v6 = objc_getAssociatedObject(a1, _SBStatusBarAssociatedValueKeyLocalDataOverrides);
+  v6 = objc_getAssociatedObject(self, _SBStatusBarAssociatedValueKeyLocalDataOverrides);
   if (!v6)
   {
     v6 = objc_alloc_init(_SBStatusBarLocalDataOverridesWrapper);
-    objc_setAssociatedObject(a1, _SBStatusBarAssociatedValueKeyLocalDataOverrides, v6, 1);
+    objc_setAssociatedObject(self, _SBStatusBarAssociatedValueKeyLocalDataOverrides, v6, 1);
   }
 
   [(_SBStatusBarLocalDataOverridesWrapper *)v6 setOverrides:a3];
 
-  result = [a1 setLocalDataOverrides:a3];
+  result = [self setLocalDataOverrides:a3];
   if (v5)
   {
-    return [a1 forceUpdateData:0];
+    return [self forceUpdateData:0];
   }
 
   return result;
@@ -176,13 +176,13 @@
 
 - (BOOL)sb_getLocalDataOverrides:()Snapshots
 {
-  v4 = objc_getAssociatedObject(a1, _SBStatusBarAssociatedValueKeyLocalDataOverrides);
-  v5 = [v4 overrides];
+  v4 = objc_getAssociatedObject(self, _SBStatusBarAssociatedValueKeyLocalDataOverrides);
+  overrides = [v4 overrides];
   if (a3)
   {
-    if (v5)
+    if (overrides)
     {
-      memcpy(a3, v5, 0xF68uLL);
+      memcpy(a3, overrides, 0xF68uLL);
     }
 
     else
@@ -191,7 +191,7 @@
     }
   }
 
-  return v5 != 0;
+  return overrides != 0;
 }
 
 @end

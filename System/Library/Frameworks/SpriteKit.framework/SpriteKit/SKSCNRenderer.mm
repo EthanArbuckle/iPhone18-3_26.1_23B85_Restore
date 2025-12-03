@@ -1,26 +1,26 @@
 @interface SKSCNRenderer
-+ (id)rendererWithContext:(id)a3 options:(id)a4;
-+ (id)rendererWithDevice:(id)a3 options:(id)a4;
-+ (int)getOpenGLFramebuffer:(id)a3;
-+ (void)restoreDefaultOpenGLState:(id)a3 frameBuffer:(int)a4;
++ (id)rendererWithContext:(id)context options:(id)options;
++ (id)rendererWithDevice:(id)device options:(id)options;
++ (int)getOpenGLFramebuffer:(id)framebuffer;
++ (void)restoreDefaultOpenGLState:(id)state frameBuffer:(int)buffer;
 - (CGRect)bounds;
-- (SKSCNRenderer)initWithSKCRenderer:(void *)a3;
+- (SKSCNRenderer)initWithSKCRenderer:(void *)renderer;
 - (double)_getDestBounds;
 - (double)_getViewport;
 - (id)_getOptions;
 - (void)_initialize;
 - (void)_showAllStats;
-- (void)_update:(double)a3;
+- (void)_update:(double)_update;
 - (void)dealloc;
-- (void)render:(BOOL)a3;
-- (void)renderToFramebuffer:(int)a3 shouldClear:(BOOL)a4;
-- (void)renderToTexture:(id)a3 commandQueue:(id)a4;
-- (void)renderTransition:(id)a3 toFramebuffer:(int)a4 withInputTexture:(unsigned int)a5 outputTexture:(unsigned int)a6 inputTextureSize:(CGSize)a7 outputTextureSize:(CGSize)a8 time:(float)a9;
-- (void)renderTransition:(id)a3 withInputTexture:(id)a4 outputTexture:(id)a5 time:(float)a6 encoder:(id)a7 pass:(id)a8 commandQueue:(id)a9;
-- (void)renderTransition:(id)a3 withInputTexture:(unsigned int)a4 outputTexture:(unsigned int)a5 inputTextureSize:(CGSize)a6 outputTextureSize:(CGSize)a7 time:(float)a8;
-- (void)renderWithEncoder:(id)a3 pass:(id)a4 commandQueue:(id)a5;
-- (void)settingsForTransition:(id)a3 atTime:(double)a4 renderIncomingToTexture:(BOOL *)a5 renderOutgoingToTexture:(BOOL *)a6 renderIncomingToScreen:(BOOL *)a7 renderOutgoingToScreen:(BOOL *)a8;
-- (void)updateAtTime:(double)a3;
+- (void)render:(BOOL)render;
+- (void)renderToFramebuffer:(int)framebuffer shouldClear:(BOOL)clear;
+- (void)renderToTexture:(id)texture commandQueue:(id)queue;
+- (void)renderTransition:(id)transition toFramebuffer:(int)framebuffer withInputTexture:(unsigned int)texture outputTexture:(unsigned int)outputTexture inputTextureSize:(CGSize)size outputTextureSize:(CGSize)textureSize time:(float)time;
+- (void)renderTransition:(id)transition withInputTexture:(id)texture outputTexture:(id)outputTexture time:(float)time encoder:(id)encoder pass:(id)pass commandQueue:(id)queue;
+- (void)renderTransition:(id)transition withInputTexture:(unsigned int)texture outputTexture:(unsigned int)outputTexture inputTextureSize:(CGSize)size outputTextureSize:(CGSize)textureSize time:(float)time;
+- (void)renderWithEncoder:(id)encoder pass:(id)pass commandQueue:(id)queue;
+- (void)settingsForTransition:(id)transition atTime:(double)time renderIncomingToTexture:(BOOL *)texture renderOutgoingToTexture:(BOOL *)toTexture renderIncomingToScreen:(BOOL *)screen renderOutgoingToScreen:(BOOL *)toScreen;
+- (void)updateAtTime:(double)time;
 @end
 
 @implementation SKSCNRenderer
@@ -40,7 +40,7 @@
   [(SKSCNRenderer *)&v4 dealloc];
 }
 
-- (SKSCNRenderer)initWithSKCRenderer:(void *)a3
+- (SKSCNRenderer)initWithSKCRenderer:(void *)renderer
 {
   v7.receiver = self;
   v7.super_class = SKSCNRenderer;
@@ -48,7 +48,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_skcRenderer = a3;
+    v4->_skcRenderer = renderer;
     [(SKSCNRenderer *)v4 _initialize];
   }
 
@@ -57,9 +57,9 @@
 
 - (void)_initialize
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   viewRenderOptions = self->_viewRenderOptions;
-  self->_viewRenderOptions = v3;
+  self->_viewRenderOptions = dictionary;
 
   self->_timePreviousUpdate = -1.0;
   *&self->_hasRenderedOnce = 0;
@@ -75,7 +75,7 @@
   self->_prevBackingScaleFactor = 0.0;
 }
 
-- (void)updateAtTime:(double)a3
+- (void)updateAtTime:(double)time
 {
   scene = self->_scene;
   if (scene)
@@ -102,31 +102,31 @@
   timePreviousUpdate = self->_timePreviousUpdate;
   if (timePreviousUpdate <= 0.0)
   {
-    self->_timePreviousUpdate = a3;
-    timePreviousUpdate = a3;
+    self->_timePreviousUpdate = time;
+    timePreviousUpdate = time;
   }
 
   v21 = CACurrentMediaTime();
-  if (a3 - v21 < -0.025)
+  if (time - v21 < -0.025)
   {
-    a3 = v21;
+    time = v21;
   }
 
-  self->_timePreviousUpdate = a3;
-  if (a3 - timePreviousUpdate >= 0.0)
+  self->_timePreviousUpdate = time;
+  if (time - timePreviousUpdate >= 0.0)
   {
-    if (a3 - timePreviousUpdate > 1.0 && (v22 = self->_scene) != 0)
+    if (time - timePreviousUpdate > 1.0 && (v22 = self->_scene) != 0)
     {
-      v23 = [(SKNode *)v22 isPaused];
+      isPaused = [(SKNode *)v22 isPaused];
       [(SKScene *)self->_scene setPaused:1];
-      skSetTime(a3);
+      skSetTime(time);
       [(SKScene *)self->_scene setPaused:0];
-      [(SKScene *)self->_scene setPaused:v23];
+      [(SKScene *)self->_scene setPaused:isPaused];
     }
 
     else
     {
-      skSetTime(a3);
+      skSetTime(time);
     }
 
     v24 = self->_scene;
@@ -142,16 +142,16 @@
         [(SKScene *)self->_scene set_needsUpdate:0];
       }
 
-      [(SKSCNRenderer *)self _update:a3];
+      [(SKSCNRenderer *)self _update:time];
     }
   }
 }
 
-- (void)renderWithEncoder:(id)a3 pass:(id)a4 commandQueue:(id)a5
+- (void)renderWithEncoder:(id)encoder pass:(id)pass commandQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  encoderCopy = encoder;
+  passCopy = pass;
+  queueCopy = queue;
   SKCRenderer::getBackingContext(self->_skcRenderer, &v15);
   if (!v15)
   {
@@ -182,7 +182,7 @@ LABEL_7:
   if (v11)
   {
     jet_context_Metal::override_Metal_render_state();
-    v13 = (*(*v11 + 400))(v11, v8, v9);
+    v13 = (*(*v11 + 400))(v11, encoderCopy, passCopy);
     std::shared_ptr<jet_framebuffer>::shared_ptr[abi:ne200100]<jet_framebuffer,0>(&v14, v13);
   }
 
@@ -192,14 +192,14 @@ LABEL_7:
   }
 }
 
-- (void)renderTransition:(id)a3 withInputTexture:(id)a4 outputTexture:(id)a5 time:(float)a6 encoder:(id)a7 pass:(id)a8 commandQueue:(id)a9
+- (void)renderTransition:(id)transition withInputTexture:(id)texture outputTexture:(id)outputTexture time:(float)time encoder:(id)encoder pass:(id)pass commandQueue:(id)queue
 {
-  v15 = a3;
-  v23 = a4;
-  v16 = a5;
-  v17 = a7;
-  v24 = a8;
-  v18 = a9;
+  transitionCopy = transition;
+  textureCopy = texture;
+  outputTextureCopy = outputTexture;
+  encoderCopy = encoder;
+  passCopy = pass;
+  queueCopy = queue;
   SKCRenderer::getBackingContext(self->_skcRenderer, &v26);
   if (!v26)
   {
@@ -231,9 +231,9 @@ LABEL_7:
   {
     jet_context_Metal::override_Metal_render_state();
     v26 = 0uLL;
-    if (v17)
+    if (encoderCopy)
     {
-      v21 = (*(*v19 + 400))(v19, v17, v24);
+      v21 = (*(*v19 + 400))(v19, encoderCopy, passCopy);
       std::shared_ptr<jet_framebuffer>::shared_ptr[abi:ne200100]<jet_framebuffer,0>(&v25, v21);
     }
 
@@ -247,10 +247,10 @@ LABEL_7:
   }
 }
 
-- (void)renderToTexture:(id)a3 commandQueue:(id)a4
+- (void)renderToTexture:(id)texture commandQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  textureCopy = texture;
+  queueCopy = queue;
   SKCRenderer::getBackingContext(self->_skcRenderer, &v11);
   if (!v11)
   {
@@ -281,7 +281,7 @@ LABEL_7:
   if (v8)
   {
     jet_context_Metal::override_Metal_render_state();
-    v10 = (*(*v8 + 408))(v8, v6);
+    v10 = (*(*v8 + 408))(v8, textureCopy);
     std::shared_ptr<jet_texture>::shared_ptr[abi:ne200100]<jet_texture,0>(&v11, v10);
   }
 
@@ -291,7 +291,7 @@ LABEL_7:
   }
 }
 
-- (void)renderToFramebuffer:(int)a3 shouldClear:(BOOL)a4
+- (void)renderToFramebuffer:(int)framebuffer shouldClear:(BOOL)clear
 {
   SKCRenderer::getBackingContext(self->_skcRenderer, &v8);
   if (!v8)
@@ -336,9 +336,9 @@ LABEL_7:
   }
 }
 
-- (void)render:(BOOL)a3
+- (void)render:(BOOL)render
 {
-  v3 = a3;
+  renderCopy = render;
   SKCRenderer::getBackingContext(self->_skcRenderer, &lpsrc);
   if (!lpsrc)
   {
@@ -374,7 +374,7 @@ LABEL_7:
 
     glGetIntegerv(0x8CA6u, &params);
     glContextUse::~glContextUse(&lpsrc);
-    [(SKSCNRenderer *)self renderToFramebuffer:params shouldClear:v3];
+    [(SKSCNRenderer *)self renderToFramebuffer:params shouldClear:renderCopy];
   }
 
   if (v6)
@@ -383,23 +383,23 @@ LABEL_7:
   }
 }
 
-- (void)settingsForTransition:(id)a3 atTime:(double)a4 renderIncomingToTexture:(BOOL *)a5 renderOutgoingToTexture:(BOOL *)a6 renderIncomingToScreen:(BOOL *)a7 renderOutgoingToScreen:(BOOL *)a8
+- (void)settingsForTransition:(id)transition atTime:(double)time renderIncomingToTexture:(BOOL *)texture renderOutgoingToTexture:(BOOL *)toTexture renderIncomingToScreen:(BOOL *)screen renderOutgoingToScreen:(BOOL *)toScreen
 {
-  *a5 = 1;
-  *a6 = 1;
-  *a7 = 0;
-  *a8 = 0;
+  *texture = 1;
+  *toTexture = 1;
+  *screen = 0;
+  *toScreen = 0;
 }
 
-- (void)renderTransition:(id)a3 withInputTexture:(unsigned int)a4 outputTexture:(unsigned int)a5 inputTextureSize:(CGSize)a6 outputTextureSize:(CGSize)a7 time:(float)a8
+- (void)renderTransition:(id)transition withInputTexture:(unsigned int)texture outputTexture:(unsigned int)outputTexture inputTextureSize:(CGSize)size outputTextureSize:(CGSize)textureSize time:(float)time
 {
-  height = a7.height;
-  width = a7.width;
-  v11 = a6.height;
-  v12 = a6.width;
-  v13 = *&a5;
-  v14 = *&a4;
-  v16 = a3;
+  height = textureSize.height;
+  width = textureSize.width;
+  v11 = size.height;
+  v12 = size.width;
+  v13 = *&outputTexture;
+  v14 = *&texture;
+  transitionCopy = transition;
   SKCRenderer::getBackingContext(self->_skcRenderer, &lpsrc);
   if (!lpsrc)
   {
@@ -435,8 +435,8 @@ LABEL_7:
 
     glGetIntegerv(0x8CA6u, &params);
     glContextUse::~glContextUse(&lpsrc);
-    *&v20 = a8;
-    [(SKSCNRenderer *)self renderTransition:v16 toFramebuffer:params withInputTexture:v14 outputTexture:v13 inputTextureSize:v12 outputTextureSize:v11 time:width, height, v20];
+    *&v20 = time;
+    [(SKSCNRenderer *)self renderTransition:transitionCopy toFramebuffer:params withInputTexture:v14 outputTexture:v13 inputTextureSize:v12 outputTextureSize:v11 time:width, height, v20];
   }
 
   if (v18)
@@ -445,9 +445,9 @@ LABEL_7:
   }
 }
 
-- (void)renderTransition:(id)a3 toFramebuffer:(int)a4 withInputTexture:(unsigned int)a5 outputTexture:(unsigned int)a6 inputTextureSize:(CGSize)a7 outputTextureSize:(CGSize)a8 time:(float)a9
+- (void)renderTransition:(id)transition toFramebuffer:(int)framebuffer withInputTexture:(unsigned int)texture outputTexture:(unsigned int)outputTexture inputTextureSize:(CGSize)size outputTextureSize:(CGSize)textureSize time:(float)time
 {
-  v10 = a3;
+  transitionCopy = transition;
   SKCRenderer::getBackingContext(self->_skcRenderer, lpsrc);
   if (!lpsrc[0])
   {
@@ -491,36 +491,36 @@ LABEL_7:
   }
 }
 
-+ (int)getOpenGLFramebuffer:(id)a3
++ (int)getOpenGLFramebuffer:(id)framebuffer
 {
   params = -1;
-  glContextUse::glContextUse(v5, a3);
+  glContextUse::glContextUse(v5, framebuffer);
   glGetIntegerv(0x8CA6u, &params);
   v3 = params;
   glContextUse::~glContextUse(v5);
   return v3;
 }
 
-+ (void)restoreDefaultOpenGLState:(id)a3 frameBuffer:(int)a4
++ (void)restoreDefaultOpenGLState:(id)state frameBuffer:(int)buffer
 {
-  glContextUse::glContextUse(v5, a3);
-  glBindFramebuffer(0x8D40u, a4);
+  glContextUse::glContextUse(v5, state);
+  glBindFramebuffer(0x8D40u, buffer);
   glDisable(0xC11u);
   glEnable(0xB71u);
   glDepthMask(1u);
   glContextUse::~glContextUse(v5);
 }
 
-+ (id)rendererWithDevice:(id)a3 options:(id)a4
++ (id)rendererWithDevice:(id)device options:(id)options
 {
-  v4 = a3;
+  deviceCopy = device;
   if (SKGetShouldEnableMetal())
   {
     v5 = SKGetGlobalMetalDevice();
 
     if (!v5)
     {
-      SKSetGlobalMetalDevice(v4);
+      SKSetGlobalMetalDevice(deviceCopy);
     }
 
     operator new();
@@ -529,13 +529,13 @@ LABEL_7:
   return 0;
 }
 
-+ (id)rendererWithContext:(id)a3 options:(id)a4
++ (id)rendererWithContext:(id)context options:(id)options
 {
-  v4 = a3;
+  contextCopy = context;
   SKSetPrefersOpenGL(1);
   if ((SKGetShouldEnableMetal() & 1) == 0)
   {
-    [SKSCNRenderer getOpenGLFramebuffer:v4];
+    [SKSCNRenderer getOpenGLFramebuffer:contextCopy];
     operator new();
   }
 
@@ -558,14 +558,14 @@ LABEL_7:
   [(SKSCNRenderer *)self setShowsFields:1];
 }
 
-- (void)_update:(double)a3
+- (void)_update:(double)_update
 {
   scene = self->_scene;
   if (scene)
   {
-    v6 = [(SKScene *)scene _usesExplicitUpdate];
+    _usesExplicitUpdate = [(SKScene *)scene _usesExplicitUpdate];
     v7 = self->_scene;
-    if (v6)
+    if (_usesExplicitUpdate)
     {
       if (![(SKScene *)v7 _needsUpdate])
       {
@@ -576,18 +576,18 @@ LABEL_7:
       v7 = self->_scene;
     }
 
-    [(SKScene *)v7 _update:a3];
+    [(SKScene *)v7 _update:_update];
     self->_hasRenderedForCurrentUpdate = 0;
   }
 }
 
 - (double)_getViewport
 {
-  [a1 _getDestBounds];
+  [self _getDestBounds];
   v8 = v2;
-  [a1 backingScaleFactor];
+  [self backingScaleFactor];
   v7 = v3;
-  [a1 backingScaleFactor];
+  [self backingScaleFactor];
   v4.f64[0] = v7;
   v4.f64[1] = v5;
   *&result = vmovn_hight_s64(0, vcvtq_u64_f64(vmulq_f64(v4, vcvt_hight_f64_f32(v8)))).u64[0];
@@ -596,9 +596,9 @@ LABEL_7:
 
 - (double)_getDestBounds
 {
-  [a1 bounds];
+  [self bounds];
   v6 = v2;
-  [a1 bounds];
+  [self bounds];
   v3.f64[0] = v6;
   v3.f64[1] = v4;
   *&result = vcvt_hight_f32_f64(0, v3).u64[0];

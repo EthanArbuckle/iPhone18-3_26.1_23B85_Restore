@@ -1,25 +1,25 @@
 @interface CSTeachableMomentsContainerViewController
-+ (id)_animationKeyForKeyPath:(id)a3 iteration:(unint64_t)a4 reset:(BOOL)a5;
-+ (void)_addRepeatedAnimationWithProvider:(id)a3 toLayer:(id)a4;
++ (id)_animationKeyForKeyPath:(id)path iteration:(unint64_t)iteration reset:(BOOL)reset;
++ (void)_addRepeatedAnimationWithProvider:(id)provider toLayer:(id)layer;
 - (BOOL)_animatesTextPositionWhenResetting;
 - (BOOL)_shouldTeachAboutControlCenter;
 - (BOOL)_suppressingHomeAffordanceAnimation;
-- (BOOL)handleEvent:(id)a3;
-- (CSTeachableMomentsContainerViewController)initWithCoverSheetContext:(id)a3;
+- (BOOL)handleEvent:(id)event;
+- (CSTeachableMomentsContainerViewController)initWithCoverSheetContext:(id)context;
 - (SBDashBoardHomeAffordanceAnimationViewProviding)viewProvider;
-- (id)_controlCenterGlyphAlphaAnimationWithDuration:(double)a3 beginTime:(double)a4;
-- (id)_controlCenterGrabberAlphaAnimationWithDuration:(double)a3 beginTime:(double)a4;
-- (id)_controlCenterGrabberPositionAnimationWithDuration:(double)a3 beginTime:(double)a4;
-- (id)_homeAffordancePositionAnimationWithDuration:(double)a3 beginTime:(double)a4;
-- (id)_textAlphaAnimationWithDuration:(double)a3 beginTime:(double)a4;
-- (id)_textPositionAnimationWithDuration:(double)a3 beginTime:(double)a4;
+- (id)_controlCenterGlyphAlphaAnimationWithDuration:(double)duration beginTime:(double)time;
+- (id)_controlCenterGrabberAlphaAnimationWithDuration:(double)duration beginTime:(double)time;
+- (id)_controlCenterGrabberPositionAnimationWithDuration:(double)duration beginTime:(double)time;
+- (id)_homeAffordancePositionAnimationWithDuration:(double)duration beginTime:(double)time;
+- (id)_textAlphaAnimationWithDuration:(double)duration beginTime:(double)time;
+- (id)_textPositionAnimationWithDuration:(double)duration beginTime:(double)time;
 - (void)_addControlCenterGlyphAnimation;
 - (void)_addControlCenterGlyphResetAnimation;
 - (void)_addControlCenterGrabberAnimation;
 - (void)_addControlCenterGrabberResetAnimation;
 - (void)_addHomeAffordanceAnimation;
 - (void)_addHomeAffordanceResetAnimation;
-- (void)_addResetAnimationForKeyPath:(id)a3 onLayer:(id)a4;
+- (void)_addResetAnimationForKeyPath:(id)path onLayer:(id)layer;
 - (void)_addTextAnimation;
 - (void)_addTextResetAnimation;
 - (void)_beginSuppressingHomeAffordanceAnimationForHomeAffordanceDoubleTap;
@@ -27,30 +27,30 @@
 - (void)_cancelTimerAndResetAnimation;
 - (void)_endSuppressingHomeAffordanceAnimationForHomeAffordanceDoubleTap;
 - (void)_endSuppressingHomeAffordanceAnimationForScreenOff;
-- (void)_moveUpTimerForFiringAfterDelay:(double)a3;
-- (void)_pauseNormalAnimationsForKeyPath:(id)a3 onLayer:(id)a4;
-- (void)_removeNormalAnimationsForKeyPath:(id)a3 onLayer:(id)a4;
-- (void)_removeResetAnimationForKeyPath:(id)a3 onLayer:(id)a4;
-- (void)_setControlCenterTutorsHidden:(BOOL)a3;
-- (void)_setupTimerWithDelay:(double)a3;
+- (void)_moveUpTimerForFiringAfterDelay:(double)delay;
+- (void)_pauseNormalAnimationsForKeyPath:(id)path onLayer:(id)layer;
+- (void)_removeNormalAnimationsForKeyPath:(id)path onLayer:(id)layer;
+- (void)_removeResetAnimationForKeyPath:(id)path onLayer:(id)layer;
+- (void)_setControlCenterTutorsHidden:(BOOL)hidden;
+- (void)_setupTimerWithDelay:(double)delay;
 - (void)_updateEffectiveAnimationState;
 - (void)_updateLegibilitySettings;
-- (void)_updateText:(id)a3;
+- (void)_updateText:(id)text;
 - (void)_updateTextLabel;
 - (void)_updateTextLabelIfNeeded;
-- (void)aggregateAppearance:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)aggregateAppearance:(id)appearance;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)homeAffordanceViewControllerDidRecognizeSingleClick:(id)a3;
+- (void)homeAffordanceViewControllerDidRecognizeSingleClick:(id)click;
 - (void)loadView;
-- (void)setAnimationState:(unint64_t)a3;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setEffectiveAnimationState:(unint64_t)a3;
-- (void)setFireOffAnimationTimer:(id)a3;
-- (void)setScreenOn:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setAnimationState:(unint64_t)state;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setEffectiveAnimationState:(unint64_t)state;
+- (void)setFireOffAnimationTimer:(id)timer;
+- (void)setScreenOn:(BOOL)on;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSTeachableMomentsContainerViewController
@@ -67,18 +67,18 @@
 
 - (void)_addHomeAffordanceAnimation
 {
-  v3 = [(CSHomeAffordanceViewController *)self->_homeAffordanceViewController view];
-  v4 = [v3 layer];
+  view = [(CSHomeAffordanceViewController *)self->_homeAffordanceViewController view];
+  layer = [view layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:v4];
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"position.y" onLayer:v4];
+  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"position.y" onLayer:layer];
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__CSTeachableMomentsContainerViewController__addHomeAffordanceAnimation__block_invoke;
   v6[3] = &unk_27838CCE0;
   v6[4] = self;
-  [v5 _addRepeatedAnimationWithProvider:v6 toLayer:v4];
+  [v5 _addRepeatedAnimationWithProvider:v6 toLayer:layer];
 }
 
 id __72__CSTeachableMomentsContainerViewController__addHomeAffordanceAnimation__block_invoke(uint64_t a1)
@@ -93,21 +93,21 @@ id __72__CSTeachableMomentsContainerViewController__addHomeAffordanceAnimation__
 
 - (void)_addTextAnimation
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v4 = [v3 callToActionLabelContainerView];
-  v5 = [v4 layer];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  callToActionLabelContainerView = [teachableMomentsContainerView callToActionLabelContainerView];
+  layer = [callToActionLabelContainerView layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"position.y" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"opacity" onLayer:v5];
+  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"position.y" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"opacity" onLayer:layer];
   v6 = objc_opt_class();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__CSTeachableMomentsContainerViewController__addTextAnimation__block_invoke;
   v7[3] = &unk_27838CCE0;
   v7[4] = self;
-  [v6 _addRepeatedAnimationWithProvider:v7 toLayer:v5];
+  [v6 _addRepeatedAnimationWithProvider:v7 toLayer:layer];
 }
 
 id __62__CSTeachableMomentsContainerViewController__addTextAnimation__block_invoke(uint64_t a1, double a2, double a3)
@@ -124,29 +124,29 @@ id __62__CSTeachableMomentsContainerViewController__addTextAnimation__block_invo
 
 - (BOOL)_shouldTeachAboutControlCenter
 {
-  v2 = [MEMORY[0x277CFC878] sharedInstance];
-  v3 = [v2 userInvocationCount] < 2;
+  mEMORY[0x277CFC878] = [MEMORY[0x277CFC878] sharedInstance];
+  v3 = [mEMORY[0x277CFC878] userInvocationCount] < 2;
 
   return v3;
 }
 
 - (void)_addControlCenterGrabberAnimation
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v4 = [v3 controlCenterGrabberContainerView];
-  v5 = [v4 layer];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  controlCenterGrabberContainerView = [teachableMomentsContainerView controlCenterGrabberContainerView];
+  layer = [controlCenterGrabberContainerView layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"position.y" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"opacity" onLayer:v5];
+  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"position.y" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"opacity" onLayer:layer];
   v6 = objc_opt_class();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__CSTeachableMomentsContainerViewController__addControlCenterGrabberAnimation__block_invoke;
   v7[3] = &unk_27838CCE0;
   v7[4] = self;
-  [v6 _addRepeatedAnimationWithProvider:v7 toLayer:v5];
+  [v6 _addRepeatedAnimationWithProvider:v7 toLayer:layer];
 }
 
 id __78__CSTeachableMomentsContainerViewController__addControlCenterGrabberAnimation__block_invoke(uint64_t a1, double a2, double a3)
@@ -163,19 +163,19 @@ id __78__CSTeachableMomentsContainerViewController__addControlCenterGrabberAnima
 
 - (void)_addControlCenterGlyphAnimation
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v4 = [v3 controlCenterGlyphContainerView];
-  v5 = [v4 layer];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  controlCenterGlyphContainerView = [teachableMomentsContainerView controlCenterGlyphContainerView];
+  layer = [controlCenterGlyphContainerView layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"opacity" onLayer:v5];
+  [(CSTeachableMomentsContainerViewController *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:@"opacity" onLayer:layer];
   v6 = objc_opt_class();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimation__block_invoke;
   v7[3] = &unk_27838CCE0;
   v7[4] = self;
-  [v6 _addRepeatedAnimationWithProvider:v7 toLayer:v5];
+  [v6 _addRepeatedAnimationWithProvider:v7 toLayer:layer];
 }
 
 id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimation__block_invoke(uint64_t a1)
@@ -190,18 +190,18 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
 
 - (void)_updateLegibilitySettings
 {
-  v3 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-  v5 = [v3 legibilitySettings];
+  activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+  legibilitySettings = [activeAppearance legibilitySettings];
 
-  v4 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  [v4 setLegibilitySettings:v5];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  [teachableMomentsContainerView setLegibilitySettings:legibilitySettings];
 
-  [(CSHomeAffordanceViewController *)self->_homeAffordanceViewController setLegibilitySettings:v5];
+  [(CSHomeAffordanceViewController *)self->_homeAffordanceViewController setLegibilitySettings:legibilitySettings];
 }
 
 - (void)_updateEffectiveAnimationState
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self animationState];
+  animationState = [(CSTeachableMomentsContainerViewController *)self animationState];
   if ([(CSTeachableMomentsContainerViewController *)self _suppressingHomeAffordanceAnimation])
   {
     v4 = 0;
@@ -209,7 +209,7 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
 
   else
   {
-    v4 = v3;
+    v4 = animationState;
   }
 
   [(CSTeachableMomentsContainerViewController *)self setEffectiveAnimationState:v4];
@@ -217,8 +217,8 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
 
 - (BOOL)_suppressingHomeAffordanceAnimation
 {
-  v2 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-  v3 = [v2 count] != 0;
+  homeAffordanceAnimationSuppressionReasons = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+  v3 = [homeAffordanceAnimationSuppressionReasons count] != 0;
 
   return v3;
 }
@@ -232,90 +232,90 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
 
 - (void)_addHomeAffordanceResetAnimation
 {
-  v3 = [(CSHomeAffordanceViewController *)self->_homeAffordanceViewController view];
-  v4 = [v3 layer];
+  view = [(CSHomeAffordanceViewController *)self->_homeAffordanceViewController view];
+  layer = [view layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"position.y" onLayer:v4];
+  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"position.y" onLayer:layer];
 }
 
 - (void)_addTextResetAnimation
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v4 = [v3 callToActionLabelContainerView];
-  v5 = [v4 layer];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  callToActionLabelContainerView = [teachableMomentsContainerView callToActionLabelContainerView];
+  layer = [callToActionLabelContainerView layer];
 
   if ([(CSTeachableMomentsContainerViewController *)self _animatesTextPositionWhenResetting])
   {
-    [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"position.y" onLayer:v5];
+    [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"position.y" onLayer:layer];
   }
 
   else
   {
-    [(CSTeachableMomentsContainerViewController *)self _pauseNormalAnimationsForKeyPath:@"position.y" onLayer:v5];
+    [(CSTeachableMomentsContainerViewController *)self _pauseNormalAnimationsForKeyPath:@"position.y" onLayer:layer];
   }
 
-  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"opacity" onLayer:v5];
+  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"opacity" onLayer:layer];
 }
 
 - (BOOL)_animatesTextPositionWhenResetting
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
-  v4 = [v3 isHomeAffordanceDoubleTapGestureEnabled];
+  assistantController = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
-  if (!v4)
+  if (!isHomeAffordanceDoubleTapGestureEnabled)
   {
     return 1;
   }
 
-  v5 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-  v6 = [v5 countForObject:@"HomeAffordanceDoubleTap"] == 0;
+  homeAffordanceAnimationSuppressionReasons = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+  v6 = [homeAffordanceAnimationSuppressionReasons countForObject:@"HomeAffordanceDoubleTap"] == 0;
 
   return v6;
 }
 
 - (void)_addControlCenterGrabberResetAnimation
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v4 = [v3 controlCenterGrabberContainerView];
-  v5 = [v4 layer];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  controlCenterGrabberContainerView = [teachableMomentsContainerView controlCenterGrabberContainerView];
+  layer = [controlCenterGrabberContainerView layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"position.y" onLayer:v5];
-  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"opacity" onLayer:v5];
+  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"position.y" onLayer:layer];
+  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"opacity" onLayer:layer];
 }
 
 - (void)_addControlCenterGlyphResetAnimation
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v4 = [v3 controlCenterGlyphContainerView];
-  v5 = [v4 layer];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  controlCenterGlyphContainerView = [teachableMomentsContainerView controlCenterGlyphContainerView];
+  layer = [controlCenterGlyphContainerView layer];
 
-  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"opacity" onLayer:v5];
+  [(CSTeachableMomentsContainerViewController *)self _addResetAnimationForKeyPath:@"opacity" onLayer:layer];
 }
 
 - (void)_endSuppressingHomeAffordanceAnimationForScreenOff
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-  v4 = [v3 containsObject:@"ScreenOff"];
+  homeAffordanceAnimationSuppressionReasons = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+  v4 = [homeAffordanceAnimationSuppressionReasons containsObject:@"ScreenOff"];
 
   if (v4)
   {
-    v5 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-    [v5 removeObject:@"ScreenOff"];
+    homeAffordanceAnimationSuppressionReasons2 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+    [homeAffordanceAnimationSuppressionReasons2 removeObject:@"ScreenOff"];
   }
 
   [(CSTeachableMomentsContainerViewController *)self _updateEffectiveAnimationState];
 }
 
-- (CSTeachableMomentsContainerViewController)initWithCoverSheetContext:(id)a3
+- (CSTeachableMomentsContainerViewController)initWithCoverSheetContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = CSTeachableMomentsContainerViewController;
   v6 = [(CSCoverSheetViewControllerBase *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetContext, a3);
+    objc_storeStrong(&v6->_coverSheetContext, context);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     cachedLegibilityLabels = v7->_cachedLegibilityLabels;
     v7->_cachedLegibilityLabels = v8;
@@ -324,8 +324,8 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
     homeAffordanceAnimationSuppressionReasons = v7->_homeAffordanceAnimationSuppressionReasons;
     v7->_homeAffordanceAnimationSuppressionReasons = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__contentSizeCategoryChanged name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__contentSizeCategoryChanged name:*MEMORY[0x277D76810] object:0];
   }
 
   return v7;
@@ -333,8 +333,8 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CSTeachableMomentsContainerViewController;
@@ -344,11 +344,11 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
 - (void)loadView
 {
   v3 = objc_alloc_init(CSTeachableMomentsContainerView);
-  v4 = [(CSTeachableMomentsContainerView *)v3 controlCenterGlyphContainerView];
-  [v4 setAlpha:0.0];
+  controlCenterGlyphContainerView = [(CSTeachableMomentsContainerView *)v3 controlCenterGlyphContainerView];
+  [controlCenterGlyphContainerView setAlpha:0.0];
 
-  v5 = [*MEMORY[0x277D76620] statusBar];
-  [(CSTeachableMomentsContainerView *)v3 setStatusBarToFollow:v5];
+  statusBar = [*MEMORY[0x277D76620] statusBar];
+  [(CSTeachableMomentsContainerView *)v3 setStatusBarToFollow:statusBar];
 
   [(CSTeachableMomentsContainerViewController *)self setView:v3];
   if (SBFEffectiveHomeButtonType() == 2)
@@ -364,7 +364,7 @@ id __76__CSTeachableMomentsContainerViewController__addControlCenterGlyphAnimati
     v11 = __53__CSTeachableMomentsContainerViewController_loadView__block_invoke;
     v12 = &unk_27838BA70;
     v13 = v3;
-    v14 = self;
+    selfCopy = self;
     [(CSTeachableMomentsContainerViewController *)self bs_addChildViewController:v8 animated:0 transitionBlock:&v9];
   }
 
@@ -386,47 +386,47 @@ void __53__CSTeachableMomentsContainerViewController_loadView__block_invoke(uint
   v8[2]();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSTeachableMomentsContainerViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewWillAppear:appear];
   [(CSTeachableMomentsContainerViewController *)self _updateTextLabel];
   [(CSTeachableMomentsContainerViewController *)self setAnimationState:1];
-  v4 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v5 = [v4 usesStatusBarRelativeLayoutForControlCenterTutors];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  usesStatusBarRelativeLayoutForControlCenterTutors = [teachableMomentsContainerView usesStatusBarRelativeLayoutForControlCenterTutors];
 
-  if (v5)
+  if (usesStatusBarRelativeLayoutForControlCenterTutors)
   {
     [(CSTeachableMomentsContainerViewController *)self _setControlCenterTutorsHidden:1];
     [(CSTeachableMomentsContainerViewController *)self _setControlCenterTutorsHidden:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSTeachableMomentsContainerViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:disappear];
   [(CSTeachableMomentsContainerViewController *)self setAnimationState:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = CSTeachableMomentsContainerViewController;
-  v7 = a4;
-  [(CSCoverSheetViewControllerBase *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  coordinatorCopy = coordinator;
+  [(CSCoverSheetViewControllerBase *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __96__CSTeachableMomentsContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v10[3] = &unk_27838C938;
-  v11 = v8;
-  v9 = v8;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  v11 = teachableMomentsContainerView;
+  v9 = teachableMomentsContainerView;
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
 }
 
 uint64_t __96__CSTeachableMomentsContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -437,42 +437,42 @@ uint64_t __96__CSTeachableMomentsContainerViewController_viewWillTransitionToSiz
   return [v2 layoutIfNeeded];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = CSTeachableMomentsContainerViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v14, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v14, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 <= 14)
+    type = [eventCopy type];
+    isConsumable = 0;
+    if (type <= 14)
     {
-      if (v6 == 1)
+      if (type == 1)
       {
         [(CSTeachableMomentsContainerViewController *)self _updateLegibilitySettings];
       }
 
       else
       {
-        if (v6 != 13)
+        if (type != 13)
         {
           goto LABEL_19;
         }
 
-        v9 = [v4 value];
-        v10 = [v9 BOOLValue];
+        value = [eventCopy value];
+        bOOLValue = [value BOOLValue];
 
-        [(CSTeachableMomentsContainerViewController *)self setAuthenticated:v10];
+        [(CSTeachableMomentsContainerViewController *)self setAuthenticated:bOOLValue];
       }
     }
 
-    else if (v6 == 15)
+    else if (type == 15)
     {
-      v11 = [v4 value];
-      v12 = [v11 unsignedIntegerValue];
+      value2 = [eventCopy value];
+      unsignedIntegerValue = [value2 unsignedIntegerValue];
 
-      if (v12 == 28 && ![(CSTeachableMomentsContainerViewController *)self currentState])
+      if (unsignedIntegerValue == 28 && ![(CSTeachableMomentsContainerViewController *)self currentState])
       {
         [(CSTeachableMomentsContainerViewController *)self _moveUpTimerForFiringAfterDelay:0.0];
       }
@@ -480,49 +480,49 @@ uint64_t __96__CSTeachableMomentsContainerViewController_viewWillTransitionToSiz
 
     else
     {
-      if (v6 == 24)
+      if (type == 24)
       {
-        v7 = self;
+        selfCopy2 = self;
         v8 = 1;
       }
 
       else
       {
-        if (v6 != 25)
+        if (type != 25)
         {
           goto LABEL_19;
         }
 
-        v7 = self;
+        selfCopy2 = self;
         v8 = 0;
       }
 
-      [(CSTeachableMomentsContainerViewController *)v7 setScreenOn:v8];
+      [(CSTeachableMomentsContainerViewController *)selfCopy2 setScreenOn:v8];
     }
 
-    v5 = 0;
+    isConsumable = 0;
     goto LABEL_19;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_19:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  if (self->_authenticated != a3)
+  if (self->_authenticated != authenticated)
   {
-    v3 = a3;
-    self->_authenticated = a3;
+    authenticatedCopy = authenticated;
+    self->_authenticated = authenticated;
     v5 = SBLogDashBoard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [CSTeachableMomentsContainerViewController setAuthenticated:];
     }
 
-    if (v3)
+    if (authenticatedCopy)
     {
       [(CSTeachableMomentsContainerViewController *)self setUpdateTextLabelOnNextAnimation:1];
     }
@@ -534,31 +534,31 @@ LABEL_19:
   }
 }
 
-- (void)homeAffordanceViewControllerDidRecognizeSingleClick:(id)a3
+- (void)homeAffordanceViewControllerDidRecognizeSingleClick:(id)click
 {
   v4 = [CSAction actionWithType:11];
   [(CSCoverSheetViewControllerBase *)self sendAction:v4];
 }
 
-- (void)_setControlCenterTutorsHidden:(BOOL)a3
+- (void)_setControlCenterTutorsHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v6 = v5;
-  if (v3 || ([v5 isStatusBarLayoutReady] & 1) != 0)
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  v6 = teachableMomentsContainerView;
+  if (hiddenCopy || ([teachableMomentsContainerView isStatusBarLayoutReady] & 1) != 0)
   {
     v7 = SBLogDashBoard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v13 = v3;
+      v13 = hiddenCopy;
       _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "CSTeachableMomentsContainerView needs layout for controlCenterTutorsHidden: %{BOOL}u", buf, 8u);
     }
 
     [v6 setNeedsLayout];
-    v8 = [v6 controlCenterTutorsContainerView];
-    [v8 setHidden:v3];
+    controlCenterTutorsContainerView = [v6 controlCenterTutorsContainerView];
+    [controlCenterTutorsContainerView setHidden:hiddenCopy];
   }
 
   else
@@ -569,26 +569,26 @@ LABEL_19:
     v10[2] = __75__CSTeachableMomentsContainerViewController__setControlCenterTutorsHidden___block_invoke;
     v10[3] = &unk_27838BC70;
     v10[4] = self;
-    v11 = v3;
+    v11 = hiddenCopy;
     dispatch_after(v9, MEMORY[0x277D85CD0], v10);
   }
 }
 
-- (void)setAnimationState:(unint64_t)a3
+- (void)setAnimationState:(unint64_t)state
 {
-  if (self->_animationState != a3)
+  if (self->_animationState != state)
   {
-    self->_animationState = a3;
+    self->_animationState = state;
     [(CSTeachableMomentsContainerViewController *)self _updateEffectiveAnimationState];
   }
 }
 
-- (void)setScreenOn:(BOOL)a3
+- (void)setScreenOn:(BOOL)on
 {
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    self->_screenOn = a3;
-    if (a3)
+    self->_screenOn = on;
+    if (on)
     {
       [(CSTeachableMomentsContainerViewController *)self _endSuppressingHomeAffordanceAnimationForScreenOff];
     }
@@ -600,14 +600,14 @@ LABEL_19:
   }
 }
 
-- (void)setEffectiveAnimationState:(unint64_t)a3
+- (void)setEffectiveAnimationState:(unint64_t)state
 {
-  if (self->_effectiveAnimationState != a3)
+  if (self->_effectiveAnimationState != state)
   {
-    self->_effectiveAnimationState = a3;
-    if (a3)
+    self->_effectiveAnimationState = state;
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         v4 = SBLogDashBoard();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -634,14 +634,14 @@ LABEL_19:
   }
 }
 
-- (void)_setupTimerWithDelay:(double)a3
+- (void)_setupTimerWithDelay:(double)delay
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___block_invoke;
   v5[3] = &unk_27838CCB8;
   v5[4] = self;
-  v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:0 repeats:v5 block:a3];
+  v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:0 repeats:v5 block:delay];
   [(CSTeachableMomentsContainerViewController *)self setFireOffAnimationTimer:v4];
 }
 
@@ -671,44 +671,44 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
   return [v4 setFireOffAnimationTimer:0];
 }
 
-- (void)_moveUpTimerForFiringAfterDelay:(double)a3
+- (void)_moveUpTimerForFiringAfterDelay:(double)delay
 {
-  v8 = [(CSTeachableMomentsContainerViewController *)self fireOffAnimationTimer];
-  v5 = [v8 fireDate];
-  [v5 timeIntervalSinceNow];
+  fireOffAnimationTimer = [(CSTeachableMomentsContainerViewController *)self fireOffAnimationTimer];
+  fireDate = [fireOffAnimationTimer fireDate];
+  [fireDate timeIntervalSinceNow];
   v7 = v6;
 
-  if (v7 > a3)
+  if (v7 > delay)
   {
     [(CSTeachableMomentsContainerViewController *)self setFireOffAnimationTimer:0];
-    [(CSTeachableMomentsContainerViewController *)self _setupTimerWithDelay:a3];
+    [(CSTeachableMomentsContainerViewController *)self _setupTimerWithDelay:delay];
   }
 }
 
-- (void)setFireOffAnimationTimer:(id)a3
+- (void)setFireOffAnimationTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   fireOffAnimationTimer = self->_fireOffAnimationTimer;
-  if (fireOffAnimationTimer != v5)
+  if (fireOffAnimationTimer != timerCopy)
   {
-    v7 = v5;
+    v7 = timerCopy;
     [(NSTimer *)fireOffAnimationTimer invalidate];
-    objc_storeStrong(&self->_fireOffAnimationTimer, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_fireOffAnimationTimer, timer);
+    timerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](fireOffAnimationTimer, v5);
+  MEMORY[0x2821F96F8](fireOffAnimationTimer, timerCopy);
 }
 
-+ (void)_addRepeatedAnimationWithProvider:(id)a3 toLayer:(id)a4
++ (void)_addRepeatedAnimationWithProvider:(id)provider toLayer:(id)layer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  layerCopy = layer;
   v8 = CACurrentMediaTime();
   v9 = 0;
-  v18 = (v6 + 2);
-  v19 = v6;
+  v18 = (providerCopy + 2);
+  v19 = providerCopy;
   do
   {
     v10 = v19[2](4.0, v8);
@@ -737,10 +737,10 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
             [*(*(&v20 + 1) + 8 * v14) setValue:MEMORY[0x277CBEC38] forKey:@"kCSTeachableMomentIsLastAnimationKey"];
           }
 
-          v16 = [v15 keyPath];
-          v17 = [a1 _animationKeyForKeyPath:v16 iteration:v9 reset:0];
+          keyPath = [v15 keyPath];
+          v17 = [self _animationKeyForKeyPath:keyPath iteration:v9 reset:0];
 
-          [v7 addAnimation:v15 forKey:v17];
+          [layerCopy addAnimation:v15 forKey:v17];
           ++v14;
         }
 
@@ -759,21 +759,21 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
   while (v9 != 3);
 }
 
-- (void)_addResetAnimationForKeyPath:(id)a3 onLayer:(id)a4
+- (void)_addResetAnimationForKeyPath:(id)path onLayer:(id)layer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 presentationLayer];
-  v9 = [v8 valueForKeyPath:v7];
+  layerCopy = layer;
+  pathCopy = path;
+  presentationLayer = [layerCopy presentationLayer];
+  v9 = [presentationLayer valueForKeyPath:pathCopy];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v6 valueForKeyPath:v7];
+  v12 = [layerCopy valueForKeyPath:pathCopy];
   [v12 doubleValue];
   v14 = v13;
 
-  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:v7 onLayer:v6];
-  v19 = [MEMORY[0x277CD9E10] animationWithKeyPath:v7];
+  [(CSTeachableMomentsContainerViewController *)self _removeNormalAnimationsForKeyPath:pathCopy onLayer:layerCopy];
+  v19 = [MEMORY[0x277CD9E10] animationWithKeyPath:pathCopy];
   [v19 setDuration:0.2];
   v15 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v19 setTimingFunction:v15];
@@ -784,52 +784,52 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
   [v19 setToValue:v17];
 
-  v18 = [objc_opt_class() _animationKeyForKeyPath:v7 iteration:0 reset:1];
+  v18 = [objc_opt_class() _animationKeyForKeyPath:pathCopy iteration:0 reset:1];
 
-  [v6 addAnimation:v19 forKey:v18];
+  [layerCopy addAnimation:v19 forKey:v18];
 }
 
-- (void)_removeResetAnimationForKeyPath:(id)a3 onLayer:(id)a4
+- (void)_removeResetAnimationForKeyPath:(id)path onLayer:(id)layer
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _animationKeyForKeyPath:v6 iteration:0 reset:1];
+  layerCopy = layer;
+  pathCopy = path;
+  v7 = [objc_opt_class() _animationKeyForKeyPath:pathCopy iteration:0 reset:1];
 
-  [v5 removeAnimationForKey:v7];
+  [layerCopy removeAnimationForKey:v7];
 }
 
-- (void)_removeNormalAnimationsForKeyPath:(id)a3 onLayer:(id)a4
+- (void)_removeNormalAnimationsForKeyPath:(id)path onLayer:(id)layer
 {
-  v8 = a3;
-  v5 = a4;
+  pathCopy = path;
+  layerCopy = layer;
   for (i = 0; i != 3; ++i)
   {
-    v7 = [objc_opt_class() _animationKeyForKeyPath:v8 iteration:i reset:0];
-    [v5 removeAnimationForKey:v7];
+    v7 = [objc_opt_class() _animationKeyForKeyPath:pathCopy iteration:i reset:0];
+    [layerCopy removeAnimationForKey:v7];
   }
 }
 
-- (void)_pauseNormalAnimationsForKeyPath:(id)a3 onLayer:(id)a4
+- (void)_pauseNormalAnimationsForKeyPath:(id)path onLayer:(id)layer
 {
-  v12 = a3;
-  v5 = a4;
+  pathCopy = path;
+  layerCopy = layer;
   v6 = CACurrentMediaTime();
   for (i = 0; i != 3; ++i)
   {
-    v8 = [objc_opt_class() _animationKeyForKeyPath:v12 iteration:i reset:0];
-    v9 = [v5 animationForKey:v8];
+    v8 = [objc_opt_class() _animationKeyForKeyPath:pathCopy iteration:i reset:0];
+    v9 = [layerCopy animationForKey:v8];
     v10 = [v9 copy];
     [v10 setSpeed:0.0];
     [v9 beginTime];
     [v10 setTimeOffset:v6 - v11];
-    [v5 removeAnimationForKey:v8];
-    [v5 addAnimation:v10 forKey:v8];
+    [layerCopy removeAnimationForKey:v8];
+    [layerCopy addAnimation:v10 forKey:v8];
   }
 }
 
-+ (id)_animationKeyForKeyPath:(id)a3 iteration:(unint64_t)a4 reset:(BOOL)a5
++ (id)_animationKeyForKeyPath:(id)path iteration:(unint64_t)iteration reset:(BOOL)reset
 {
-  if (a5)
+  if (reset)
   {
     v5 = @"kCSHomeAffordanceResetAnimation";
   }
@@ -839,10 +839,10 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
     v5 = @"kCSHomeAffordanceNormalAnimation";
   }
 
-  return [(__CFString *)v5 stringByAppendingFormat:@"-%@-%lu", a3, a4];
+  return [(__CFString *)v5 stringByAppendingFormat:@"-%@-%lu", path, iteration];
 }
 
-- (id)_homeAffordancePositionAnimationWithDuration:(double)a3 beginTime:(double)a4
+- (id)_homeAffordancePositionAnimationWithDuration:(double)duration beginTime:(double)time
 {
   v14[5] = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"position.y"];
@@ -860,14 +860,14 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
   [v6 setValues:v12];
 
   [v6 setCalculationMode:@"cubic"];
-  [v6 setDuration:a3];
-  [v6 setBeginTime:a4];
+  [v6 setDuration:duration];
+  [v6 setBeginTime:time];
   [v6 setAdditive:1];
 
   return v6;
 }
 
-- (id)_textPositionAnimationWithDuration:(double)a3 beginTime:(double)a4
+- (id)_textPositionAnimationWithDuration:(double)duration beginTime:(double)time
 {
   v14[5] = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"position.y"];
@@ -885,28 +885,28 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
   [v6 setValues:v12];
 
   [v6 setCalculationMode:@"cubic"];
-  [v6 setDuration:a3];
-  [v6 setBeginTime:a4];
+  [v6 setDuration:duration];
+  [v6 setBeginTime:time];
   [v6 setAdditive:1];
 
   return v6;
 }
 
-- (id)_textAlphaAnimationWithDuration:(double)a3 beginTime:(double)a4
+- (id)_textAlphaAnimationWithDuration:(double)duration beginTime:(double)time
 {
   v7 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v7 setKeyTimes:&unk_283079FB0];
   [v7 setValues:&unk_283079FC8];
   [v7 setCalculationMode:@"cubic"];
-  [v7 setDuration:a3];
-  [v7 setBeginTime:a4];
+  [v7 setDuration:duration];
+  [v7 setBeginTime:time];
   [v7 setAdditive:1];
   [v7 setDelegate:self];
 
   return v7;
 }
 
-- (id)_controlCenterGrabberPositionAnimationWithDuration:(double)a3 beginTime:(double)a4
+- (id)_controlCenterGrabberPositionAnimationWithDuration:(double)duration beginTime:(double)time
 {
   v171[5] = *MEMORY[0x277D85DE8];
   v8 = __sb__runningInSpringBoard();
@@ -922,8 +922,8 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
 
   else
   {
-    v138 = [MEMORY[0x277D75418] currentDevice];
-    if ([v138 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       v9 = 0;
       v10 = 1;
@@ -934,23 +934,23 @@ uint64_t __66__CSTeachableMomentsContainerViewController__setupTimerWithDelay___
   v10 = v8 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v129 = [MEMORY[0x277D759A0] mainScreen];
-      [v129 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    v9 = v11 ^ 1;
+    v9 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v32 == *(MEMORY[0x277D66E30] + 288) && v31 == *(MEMORY[0x277D66E30] + 296))
     {
-      v169 = v11 ^ 1;
+      v169 = currentDevice29 ^ 1;
       v170 = v10;
       v155 = 0;
       v156 = 0;
@@ -1014,8 +1014,8 @@ LABEL_10:
 
   else
   {
-    v137 = [MEMORY[0x277D75418] currentDevice];
-    if ([v137 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
       v13 = 0;
       v14 = 1;
@@ -1026,23 +1026,23 @@ LABEL_10:
   v14 = v12 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v128 = [MEMORY[0x277D759A0] mainScreen];
-      [v128 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
-    v13 = v11 ^ 1;
+    v13 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v34 >= *(MEMORY[0x277D66E30] + 440))
     {
-      v167 = v11 ^ 1;
+      v167 = currentDevice29 ^ 1;
       v168 = v14;
       v155 = 0;
       v156 = 0;
@@ -1104,8 +1104,8 @@ LABEL_19:
 
   else
   {
-    v136 = [MEMORY[0x277D75418] currentDevice];
-    if ([v136 userInterfaceIdiom] != 1)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom] != 1)
     {
       v16 = 0;
       v17 = 1;
@@ -1116,23 +1116,23 @@ LABEL_19:
   v17 = v15 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v127 = [MEMORY[0x277D759A0] mainScreen];
-      [v127 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
     }
 
-    v16 = v11 ^ 1;
+    v16 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v35 >= *(MEMORY[0x277D66E30] + 376))
     {
-      v165 = v11 ^ 1;
+      v165 = currentDevice29 ^ 1;
       v166 = v17;
       v155 = 0;
       v156 = 0;
@@ -1184,42 +1184,42 @@ LABEL_28:
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
-      v4 = 0;
-      v5 = 0;
+      currentDevice28 = 0;
+      mainScreen27 = 0;
       goto LABEL_37;
     }
   }
 
   else
   {
-    v135 = [MEMORY[0x277D75418] currentDevice];
-    if ([v135 userInterfaceIdiom] != 1)
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom] != 1)
     {
-      v4 = 0;
-      v5 = 1;
+      currentDevice28 = 0;
+      mainScreen27 = 1;
       goto LABEL_37;
     }
   }
 
-  v5 = v18 ^ 1u;
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  mainScreen27 = v18 ^ 1u;
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v132 = [MEMORY[0x277D759A0] mainScreen];
-    [v132 _referenceBounds];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 _referenceBounds];
   }
 
-  v4 = v11 ^ 1;
+  currentDevice28 = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v19 >= *(MEMORY[0x277D66E30] + 280))
   {
-    v163 = v11 ^ 1;
-    v164 = v5;
+    v163 = currentDevice29 ^ 1;
+    v164 = mainScreen27;
     v155 = 0;
     v156 = 0;
     v154 = 0;
@@ -1256,8 +1256,8 @@ LABEL_28:
 
 LABEL_37:
   v20 = __sb__runningInSpringBoard();
-  v163 = v4;
-  v164 = v5;
+  v163 = currentDevice28;
+  v164 = mainScreen27;
   if (v20)
   {
     if (SBFEffectiveDeviceClass() != 2)
@@ -1270,8 +1270,8 @@ LABEL_37:
 
   else
   {
-    v134 = [MEMORY[0x277D75418] currentDevice];
-    if ([v134 userInterfaceIdiom] != 1)
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom] != 1)
     {
       v161 = 0;
       v21 = 1;
@@ -1280,19 +1280,19 @@ LABEL_37:
   }
 
   v21 = v20 ^ 1;
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v130 = [MEMORY[0x277D759A0] mainScreen];
-    [v130 _referenceBounds];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 _referenceBounds];
   }
 
-  v161 = v11 ^ 1;
+  v161 = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v29 >= *(MEMORY[0x277D66E30] + 264))
   {
@@ -1343,8 +1343,8 @@ LABEL_47:
 
   else
   {
-    v133 = [MEMORY[0x277D75418] currentDevice];
-    if ([v133 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
       v160 = 0x100000000;
       goto LABEL_184;
@@ -1352,19 +1352,19 @@ LABEL_47:
   }
 
   HIDWORD(v160) = v30 ^ 1;
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v126 = [MEMORY[0x277D759A0] mainScreen];
-    [v126 _referenceBounds];
+    mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen6 _referenceBounds];
   }
 
-  LODWORD(v160) = v11 ^ 1;
+  LODWORD(v160) = currentDevice29 ^ 1;
   BSSizeRoundForScale();
   if (v45 >= *(MEMORY[0x277D66E30] + 248))
   {
@@ -1400,8 +1400,8 @@ LABEL_47:
   }
 
 LABEL_184:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -1436,18 +1436,18 @@ LABEL_192:
     v26 = 0;
     v28 = 36.0;
     v27 = 30.8;
-    v159 = v11 ^ 1;
+    v159 = currentDevice29 ^ 1;
     goto LABEL_67;
   }
 
-  v131 = [MEMORY[0x277D75418] currentDevice];
-  if ([v131 userInterfaceIdiom] == 1)
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice7 userInterfaceIdiom] == 1)
   {
     goto LABEL_192;
   }
 
 LABEL_186:
-  v159 = v11 ^ 1;
+  v159 = currentDevice29 ^ 1;
   if (!_SBF_Private_IsD94Like())
   {
 LABEL_190:
@@ -1466,8 +1466,8 @@ LABEL_190:
 
   else
   {
-    v124 = [MEMORY[0x277D75418] currentDevice];
-    if ([v124 userInterfaceIdiom])
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom])
     {
       v158 = 0x100000000;
       goto LABEL_200;
@@ -1477,19 +1477,19 @@ LABEL_190:
   HIDWORD(v158) = v46 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v117 = [MEMORY[0x277D759A0] mainScreen];
-      [v117 _referenceBounds];
+      mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen7 _referenceBounds];
     }
 
-    LODWORD(v158) = v11 ^ 1;
+    LODWORD(v158) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v49 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -1529,8 +1529,8 @@ LABEL_190:
   }
 
 LABEL_200:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1541,30 +1541,30 @@ LABEL_200:
 
   else
   {
-    v125 = [MEMORY[0x277D75418] currentDevice];
-    if ([v125 userInterfaceIdiom])
+    currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice9 userInterfaceIdiom])
     {
       v157 = 0x100000000;
       goto LABEL_210;
     }
   }
 
-  HIDWORD(v157) = v11 ^ 1;
+  HIDWORD(v157) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v120 = [MEMORY[0x277D759A0] mainScreen];
-      [v120 _referenceBounds];
+      mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen8 _referenceBounds];
     }
 
-    LODWORD(v157) = v11 ^ 1;
+    LODWORD(v157) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v47 >= *(MEMORY[0x277D66E30] + 200))
     {
@@ -1627,8 +1627,8 @@ LABEL_218:
 
   else
   {
-    v121 = [MEMORY[0x277D75418] currentDevice];
-    if ([v121 userInterfaceIdiom])
+    currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice10 userInterfaceIdiom])
     {
       v156 = 0x100000000;
       goto LABEL_228;
@@ -1638,19 +1638,19 @@ LABEL_218:
   HIDWORD(v156) = v48 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v112 = [MEMORY[0x277D759A0] mainScreen];
-      [v112 _referenceBounds];
+      mainScreen9 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen9 _referenceBounds];
     }
 
-    LODWORD(v156) = v11 ^ 1;
+    LODWORD(v156) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v54 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1688,8 +1688,8 @@ LABEL_218:
   }
 
 LABEL_228:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1700,30 +1700,30 @@ LABEL_228:
 
   else
   {
-    v123 = [MEMORY[0x277D75418] currentDevice];
-    if ([v123 userInterfaceIdiom])
+    currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice11 userInterfaceIdiom])
     {
       v155 = 0x100000000;
       goto LABEL_238;
     }
   }
 
-  HIDWORD(v155) = v11 ^ 1;
+  HIDWORD(v155) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v116 = [MEMORY[0x277D759A0] mainScreen];
-      [v116 _referenceBounds];
+      mainScreen10 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen10 _referenceBounds];
     }
 
-    LODWORD(v155) = v11 ^ 1;
+    LODWORD(v155) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v50 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1779,8 +1779,8 @@ LABEL_242:
 
   else
   {
-    v122 = [MEMORY[0x277D75418] currentDevice];
-    if ([v122 userInterfaceIdiom])
+    currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice12 userInterfaceIdiom])
     {
       HIDWORD(v153) = 0;
       v154 = 1;
@@ -1799,13 +1799,13 @@ LABEL_242:
 
     else
     {
-      v113 = [MEMORY[0x277D759A0] mainScreen];
-      [v113 _referenceBounds];
+      mainScreen11 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen11 _referenceBounds];
     }
 
-    v11 = v52 ^ 1u;
+    currentDevice29 = v52 ^ 1u;
     BSSizeRoundForScale();
-    HIDWORD(v153) = v11;
+    HIDWORD(v153) = currentDevice29;
     if (v53 >= *(MEMORY[0x277D66E30] + 136))
     {
       LODWORD(v153) = 0;
@@ -1840,8 +1840,8 @@ LABEL_242:
   }
 
 LABEL_252:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1853,8 +1853,8 @@ LABEL_252:
 
   else
   {
-    v119 = [MEMORY[0x277D75418] currentDevice];
-    if ([v119 userInterfaceIdiom])
+    currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice13 userInterfaceIdiom])
     {
       HIDWORD(v152) = 0;
       LODWORD(v153) = 1;
@@ -1862,22 +1862,22 @@ LABEL_252:
     }
   }
 
-  LODWORD(v153) = v11 ^ 1;
+  LODWORD(v153) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v111 = [MEMORY[0x277D759A0] mainScreen];
-      [v111 _referenceBounds];
+      mainScreen12 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen12 _referenceBounds];
     }
 
-    HIDWORD(v152) = v11 ^ 1;
+    HIDWORD(v152) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v55 >= *(MEMORY[0x277D66E30] + 136))
     {
@@ -1931,8 +1931,8 @@ LABEL_272:
 
   else
   {
-    v118 = [MEMORY[0x277D75418] currentDevice];
-    if ([v118 userInterfaceIdiom])
+    currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice14 userInterfaceIdiom])
     {
       HIDWORD(v151) = 0;
       LODWORD(v152) = 1;
@@ -1951,13 +1951,13 @@ LABEL_272:
 
     else
     {
-      v108 = [MEMORY[0x277D759A0] mainScreen];
-      [v108 _referenceBounds];
+      mainScreen13 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen13 _referenceBounds];
     }
 
-    v11 = v57 ^ 1u;
+    currentDevice29 = v57 ^ 1u;
     BSSizeRoundForScale();
-    HIDWORD(v151) = v11;
+    HIDWORD(v151) = currentDevice29;
     if (v58 >= *(MEMORY[0x277D66E30] + 120) && (_SBF_Private_IsN84OrSimilarDevice() & 1) != 0)
     {
       LODWORD(v151) = 0;
@@ -1990,8 +1990,8 @@ LABEL_272:
   }
 
 LABEL_282:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2003,8 +2003,8 @@ LABEL_282:
 
   else
   {
-    v115 = [MEMORY[0x277D75418] currentDevice];
-    if ([v115 userInterfaceIdiom])
+    currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice15 userInterfaceIdiom])
     {
       HIDWORD(v150) = 0;
       LODWORD(v151) = 1;
@@ -2012,22 +2012,22 @@ LABEL_282:
     }
   }
 
-  LODWORD(v151) = v11 ^ 1;
+  LODWORD(v151) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v107 = [MEMORY[0x277D759A0] mainScreen];
-      [v107 _referenceBounds];
+      mainScreen14 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen14 _referenceBounds];
     }
 
-    HIDWORD(v150) = v11 ^ 1;
+    HIDWORD(v150) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v59 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -2066,7 +2066,7 @@ LABEL_292:
   }
 
 LABEL_301:
-  v4 = &unk_21EC95000;
+  currentDevice28 = &unk_21EC95000;
   if (!_SBF_Private_IsD93Like())
   {
 LABEL_305:
@@ -2086,8 +2086,8 @@ LABEL_305:
 
   else
   {
-    v110 = [MEMORY[0x277D75418] currentDevice];
-    if ([v110 userInterfaceIdiom])
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice16 userInterfaceIdiom])
     {
       HIDWORD(v149) = 0;
       LODWORD(v150) = 1;
@@ -2098,19 +2098,19 @@ LABEL_305:
   LODWORD(v150) = v60 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v101 = [MEMORY[0x277D759A0] mainScreen];
-      [v101 _referenceBounds];
+      mainScreen15 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen15 _referenceBounds];
     }
 
-    HIDWORD(v149) = v11 ^ 1;
+    HIDWORD(v149) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v63 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -2142,8 +2142,8 @@ LABEL_305:
   }
 
 LABEL_312:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2155,8 +2155,8 @@ LABEL_312:
 
   else
   {
-    v114 = [MEMORY[0x277D75418] currentDevice];
-    if ([v114 userInterfaceIdiom])
+    currentDevice17 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice17 userInterfaceIdiom])
     {
       HIDWORD(v148) = 0;
       LODWORD(v149) = 1;
@@ -2164,22 +2164,22 @@ LABEL_312:
     }
   }
 
-  LODWORD(v149) = v11 ^ 1;
+  LODWORD(v149) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v104 = [MEMORY[0x277D759A0] mainScreen];
-      [v104 _referenceBounds];
+      mainScreen16 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen16 _referenceBounds];
     }
 
-    HIDWORD(v148) = v11 ^ 1;
+    HIDWORD(v148) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v61 >= *(MEMORY[0x277D66E30] + 184))
     {
@@ -2235,8 +2235,8 @@ LABEL_330:
 
   else
   {
-    v106 = [MEMORY[0x277D75418] currentDevice];
-    if ([v106 userInterfaceIdiom])
+    currentDevice18 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice18 userInterfaceIdiom])
     {
       HIDWORD(v147) = 0;
       LODWORD(v148) = 1;
@@ -2247,19 +2247,19 @@ LABEL_330:
   LODWORD(v148) = v62 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v97 = [MEMORY[0x277D759A0] mainScreen];
-      [v97 _referenceBounds];
+      mainScreen17 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen17 _referenceBounds];
     }
 
-    HIDWORD(v147) = v11 ^ 1;
+    HIDWORD(v147) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v68 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -2295,17 +2295,17 @@ LABEL_340:
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
       LODWORD(v147) = 0;
-      v11 = 0;
+      currentDevice29 = 0;
       goto LABEL_350;
     }
   }
 
   else
   {
-    v109 = [MEMORY[0x277D75418] currentDevice];
-    if ([v109 userInterfaceIdiom])
+    currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice19 userInterfaceIdiom])
     {
-      v11 = 0;
+      currentDevice29 = 0;
       LODWORD(v147) = 1;
       goto LABEL_350;
     }
@@ -2322,11 +2322,11 @@ LABEL_340:
 
     else
     {
-      v100 = [MEMORY[0x277D759A0] mainScreen];
-      [v100 _referenceBounds];
+      mainScreen18 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen18 _referenceBounds];
     }
 
-    v11 = v65 ^ 1u;
+    currentDevice29 = v65 ^ 1u;
     BSSizeRoundForScale();
     if (v66 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -2336,13 +2336,13 @@ LABEL_340:
 
   else
   {
-    v11 = 0;
+    currentDevice29 = 0;
   }
 
 LABEL_350:
   if (_SBF_Private_IsD63Like())
   {
-    HIDWORD(v146) = v11;
+    HIDWORD(v146) = currentDevice29;
     LODWORD(v146) = 0;
     v144 = 0;
     v145 = 0;
@@ -2362,7 +2362,7 @@ LABEL_350:
   }
 
 LABEL_354:
-  HIDWORD(v146) = v11;
+  HIDWORD(v146) = currentDevice29;
   if (!_SBF_Private_IsD23Like())
   {
 LABEL_358:
@@ -2382,8 +2382,8 @@ LABEL_358:
 
   else
   {
-    v102 = [MEMORY[0x277D75418] currentDevice];
-    if ([v102 userInterfaceIdiom])
+    currentDevice20 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice20 userInterfaceIdiom])
     {
       HIDWORD(v145) = 0;
       LODWORD(v146) = 1;
@@ -2394,19 +2394,19 @@ LABEL_358:
   LODWORD(v146) = v67 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v93 = [MEMORY[0x277D759A0] mainScreen];
-      [v93 _referenceBounds];
+      mainScreen19 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen19 _referenceBounds];
     }
 
-    HIDWORD(v145) = v11 ^ 1;
+    HIDWORD(v145) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v72 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -2434,8 +2434,8 @@ LABEL_358:
   }
 
 LABEL_368:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2447,8 +2447,8 @@ LABEL_368:
 
   else
   {
-    v105 = [MEMORY[0x277D75418] currentDevice];
-    if ([v105 userInterfaceIdiom])
+    currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice21 userInterfaceIdiom])
     {
       HIDWORD(v144) = 0;
       LODWORD(v145) = 1;
@@ -2456,22 +2456,22 @@ LABEL_368:
     }
   }
 
-  LODWORD(v145) = v11 ^ 1;
+  LODWORD(v145) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v96 = [MEMORY[0x277D759A0] mainScreen];
-      [v96 _referenceBounds];
+      mainScreen20 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen20 _referenceBounds];
     }
 
-    HIDWORD(v144) = v11 ^ 1;
+    HIDWORD(v144) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v69 >= *(MEMORY[0x277D66E30] + 216))
     {
@@ -2505,7 +2505,7 @@ LABEL_378:
 
 LABEL_382:
   v70 = __sb__runningInSpringBoard();
-  v5 = &unk_21EC95000;
+  mainScreen27 = &unk_21EC95000;
   if (v70)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
@@ -2518,8 +2518,8 @@ LABEL_382:
 
   else
   {
-    v103 = [MEMORY[0x277D75418] currentDevice];
-    if ([v103 userInterfaceIdiom])
+    currentDevice22 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice22 userInterfaceIdiom])
     {
       HIDWORD(v143) = 0;
       LODWORD(v144) = 1;
@@ -2530,19 +2530,19 @@ LABEL_382:
   LODWORD(v144) = v70 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v94 = [MEMORY[0x277D759A0] mainScreen];
-      [v94 _referenceBounds];
+      mainScreen21 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen21 _referenceBounds];
     }
 
-    HIDWORD(v143) = v11 ^ 1;
+    HIDWORD(v143) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v71 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -2568,8 +2568,8 @@ LABEL_382:
   }
 
 LABEL_392:
-  v11 = __sb__runningInSpringBoard();
-  if (v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (currentDevice29)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2581,8 +2581,8 @@ LABEL_392:
 
   else
   {
-    v99 = [MEMORY[0x277D75418] currentDevice];
-    if ([v99 userInterfaceIdiom])
+    currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice23 userInterfaceIdiom])
     {
       HIDWORD(v142) = 0;
       LODWORD(v143) = 1;
@@ -2590,22 +2590,22 @@ LABEL_392:
     }
   }
 
-  LODWORD(v143) = v11 ^ 1;
+  LODWORD(v143) = currentDevice29 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v92 = [MEMORY[0x277D759A0] mainScreen];
-      [v92 _referenceBounds];
+      mainScreen22 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen22 _referenceBounds];
     }
 
-    HIDWORD(v142) = v11 ^ 1;
+    HIDWORD(v142) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v73 >= *(MEMORY[0x277D66E30] + 120))
     {
@@ -2641,7 +2641,7 @@ LABEL_412:
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
-      v5 = 0;
+      mainScreen27 = 0;
       HIDWORD(v141) = 0;
       goto LABEL_422;
     }
@@ -2649,35 +2649,35 @@ LABEL_412:
 
   else
   {
-    v98 = [MEMORY[0x277D75418] currentDevice];
-    if ([v98 userInterfaceIdiom])
+    currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice24 userInterfaceIdiom])
     {
       HIDWORD(v141) = 0;
-      v5 = 1;
+      mainScreen27 = 1;
       goto LABEL_422;
     }
   }
 
-  v5 = v74 ^ 1u;
+  mainScreen27 = v74 ^ 1u;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v91 = [MEMORY[0x277D759A0] mainScreen];
-      [v91 _referenceBounds];
+      mainScreen23 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen23 _referenceBounds];
     }
 
-    HIDWORD(v141) = v11 ^ 1;
+    HIDWORD(v141) = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v77 >= *(MEMORY[0x277D66E30] + 104))
     {
-      LODWORD(v142) = v5;
+      LODWORD(v142) = mainScreen27;
       LODWORD(v141) = 0;
       v140 = 0;
       v139 = 0;
@@ -2699,23 +2699,23 @@ LABEL_412:
 
 LABEL_422:
   v75 = __sb__runningInSpringBoard();
-  LODWORD(v142) = v5;
+  LODWORD(v142) = mainScreen27;
   if (v75)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
       LODWORD(v141) = 0;
-      v11 = 0;
+      currentDevice29 = 0;
       goto LABEL_432;
     }
   }
 
   else
   {
-    v95 = [MEMORY[0x277D75418] currentDevice];
-    if ([v95 userInterfaceIdiom])
+    currentDevice25 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice25 userInterfaceIdiom])
     {
-      v11 = 0;
+      currentDevice29 = 0;
       LODWORD(v141) = 1;
       goto LABEL_432;
     }
@@ -2732,11 +2732,11 @@ LABEL_422:
 
     else
     {
-      v90 = [MEMORY[0x277D759A0] mainScreen];
-      [v90 _referenceBounds];
+      mainScreen24 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen24 _referenceBounds];
     }
 
-    v11 = v76 ^ 1u;
+    currentDevice29 = v76 ^ 1u;
     BSSizeRoundForScale();
     if (v78 >= *(MEMORY[0x277D66E30] + 104))
     {
@@ -2746,13 +2746,13 @@ LABEL_422:
 
   else
   {
-    v11 = 0;
+    currentDevice29 = 0;
   }
 
 LABEL_432:
   if (_SBF_Private_IsD53())
   {
-    HIDWORD(v140) = v11;
+    HIDWORD(v140) = currentDevice29;
 LABEL_443:
     LODWORD(v140) = 0;
     v139 = 0;
@@ -2767,7 +2767,7 @@ LABEL_443:
   }
 
 LABEL_439:
-  HIDWORD(v140) = v11;
+  HIDWORD(v140) = currentDevice29;
   if (_SBF_Private_IsD16() && (_SBF_Private_IsD52OrSimilarDevice() & 1) != 0 || _SBF_Private_IsD52ZoomedOrSimilarDevice() && (_SBF_Private_IsD16() & 1) != 0)
   {
     goto LABEL_443;
@@ -2800,8 +2800,8 @@ LABEL_439:
 
   else
   {
-    v89 = [MEMORY[0x277D75418] currentDevice];
-    if ([v89 userInterfaceIdiom])
+    currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice26 userInterfaceIdiom])
     {
       v139 = 0;
       LODWORD(v140) = 1;
@@ -2812,19 +2812,19 @@ LABEL_439:
   LODWORD(v140) = v79 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v87 = [MEMORY[0x277D759A0] mainScreen];
-      [v87 _referenceBounds];
+      mainScreen25 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen25 _referenceBounds];
     }
 
-    v139 = v11 ^ 1;
+    v139 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v83 >= *(MEMORY[0x277D66E30] + 88))
     {
@@ -2857,8 +2857,8 @@ LABEL_457:
 
   else
   {
-    v88 = [MEMORY[0x277D75418] currentDevice];
-    if ([v88 userInterfaceIdiom])
+    currentDevice27 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice27 userInterfaceIdiom])
     {
       v23 = 0;
       v22 = 1;
@@ -2869,19 +2869,19 @@ LABEL_457:
   v22 = v80 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v86 = [MEMORY[0x277D759A0] mainScreen];
-      [v86 _referenceBounds];
+      mainScreen26 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen26 _referenceBounds];
     }
 
-    v23 = v11 ^ 1;
+    v23 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v84 >= *(MEMORY[0x277D66E30] + 72))
     {
@@ -2900,11 +2900,11 @@ LABEL_457:
   }
 
 LABEL_467:
-  v11 = __sb__runningInSpringBoard();
-  if (!v11)
+  currentDevice29 = __sb__runningInSpringBoard();
+  if (!currentDevice29)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    if ([v4 userInterfaceIdiom])
+    currentDevice28 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice28 userInterfaceIdiom])
     {
       v25 = 0;
       v24 = 1;
@@ -2912,20 +2912,20 @@ LABEL_467:
     }
 
 LABEL_473:
-    v24 = v11 ^ 1;
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    v24 = currentDevice29 ^ 1;
+    currentDevice29 = __sb__runningInSpringBoard();
+    if (currentDevice29)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v5 = [MEMORY[0x277D759A0] mainScreen];
-      [v5 _referenceBounds];
+      mainScreen27 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen27 _referenceBounds];
     }
 
-    v25 = v11 ^ 1;
+    v25 = currentDevice29 ^ 1;
     BSSizeRoundForScale();
     if (v81 >= *(MEMORY[0x277D66E30] + 56))
     {
@@ -2943,8 +2943,8 @@ LABEL_473:
   v24 = 0;
   v25 = 0;
 LABEL_477:
-  v82 = __sb__runningInSpringBoard();
-  if (v82)
+  mainScreen28 = __sb__runningInSpringBoard();
+  if (mainScreen28)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2958,8 +2958,8 @@ LABEL_480:
 
   else
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    if ([v11 userInterfaceIdiom])
+    currentDevice29 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice29 userInterfaceIdiom])
     {
       v26 = 1;
       v27 = 0.0;
@@ -2968,7 +2968,7 @@ LABEL_480:
     }
   }
 
-  v26 = v82 ^ 1;
+  v26 = mainScreen28 ^ 1;
   v85 = __sb__runningInSpringBoard();
   if (v85)
   {
@@ -2977,8 +2977,8 @@ LABEL_480:
 
   else
   {
-    v82 = [MEMORY[0x277D759A0] mainScreen];
-    [v82 _referenceBounds];
+    mainScreen28 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen28 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -3288,47 +3288,47 @@ LABEL_180:
   [v36 setValues:v42];
 
   [v36 setCalculationMode:@"cubic"];
-  [v36 setDuration:a3];
-  [v36 setBeginTime:a4];
+  [v36 setDuration:duration];
+  [v36 setBeginTime:time];
   [v36 setAdditive:1];
   v43 = v36;
 
   return v36;
 }
 
-- (id)_controlCenterGrabberAlphaAnimationWithDuration:(double)a3 beginTime:(double)a4
+- (id)_controlCenterGrabberAlphaAnimationWithDuration:(double)duration beginTime:(double)time
 {
   v6 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v6 setKeyTimes:&unk_283079FF8];
   [v6 setValues:&unk_28307A010];
   [v6 setCalculationMode:@"cubic"];
-  [v6 setDuration:a3];
-  [v6 setBeginTime:a4];
+  [v6 setDuration:duration];
+  [v6 setBeginTime:time];
 
   return v6;
 }
 
-- (id)_controlCenterGlyphAlphaAnimationWithDuration:(double)a3 beginTime:(double)a4
+- (id)_controlCenterGlyphAlphaAnimationWithDuration:(double)duration beginTime:(double)time
 {
   v6 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
   [v6 setKeyTimes:&unk_28307A028];
   [v6 setValues:&unk_28307A040];
   [v6 setCalculationMode:@"cubic"];
-  [v6 setDuration:a3];
-  [v6 setBeginTime:a4];
+  [v6 setDuration:duration];
+  [v6 setBeginTime:time];
   [v6 setAdditive:1];
 
   return v6;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
-    v5 = [a3 valueForKey:@"kCSTeachableMomentIsLastAnimationKey"];
-    v6 = [v5 BOOLValue];
+    v5 = [stop valueForKey:@"kCSTeachableMomentIsLastAnimationKey"];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = SBLogDashBoard();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -3355,21 +3355,21 @@ LABEL_180:
   [(CSTeachableMomentsContainerViewController *)self _updateText:v3];
 }
 
-- (void)_updateText:(id)a3
+- (void)_updateText:(id)text
 {
-  v43 = a3;
-  v6 = [(CSTeachableMomentsContainerViewController *)self cachedLegibilityLabels];
-  v7 = [v6 valueForKey:v43];
-  if (v7)
+  textCopy = text;
+  cachedLegibilityLabels = [(CSTeachableMomentsContainerViewController *)self cachedLegibilityLabels];
+  createCallToActionLabel = [cachedLegibilityLabels valueForKey:textCopy];
+  if (createCallToActionLabel)
   {
     goto LABEL_77;
   }
 
-  v8 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v7 = [v8 createCallToActionLabel];
+  teachableMomentsContainerView = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  createCallToActionLabel = [teachableMomentsContainerView createCallToActionLabel];
 
-  [v7 setString:v43];
-  [v6 setObject:v7 forKey:v43];
+  [createCallToActionLabel setString:textCopy];
+  [cachedLegibilityLabels setObject:createCallToActionLabel forKey:textCopy];
   v9 = __sb__runningInSpringBoard();
   v10 = v9;
   if (v9)
@@ -3400,8 +3400,8 @@ LABEL_21:
 
     else
     {
-      v4 = [MEMORY[0x277D759A0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3436,8 +3436,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if (![v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
     goto LABEL_21;
   }
@@ -3449,9 +3449,9 @@ LABEL_31:
 LABEL_34:
     v20 = 0.820512821;
 LABEL_75:
-    v15 = [v7 font];
-    v33 = [v15 _fontScaledByScaleFactor:v20];
-    [v7 setFont:v33];
+    font = [createCallToActionLabel font];
+    v33 = [font _fontScaledByScaleFactor:v20];
+    [createCallToActionLabel setFont:v33];
 
     goto LABEL_76;
   }
@@ -3487,8 +3487,8 @@ LABEL_43:
 
     else
     {
-      v4 = [MEMORY[0x277D759A0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3523,8 +3523,8 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if (![v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
     goto LABEL_43;
   }
@@ -3539,8 +3539,8 @@ LABEL_56:
   }
 
 LABEL_16:
-  v15 = __sb__runningInSpringBoard();
-  if (v15)
+  font = __sb__runningInSpringBoard();
+  if (font)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -3568,8 +3568,8 @@ LABEL_61:
 
     else
     {
-      v4 = [MEMORY[0x277D759A0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3588,7 +3588,7 @@ LABEL_61:
       if (v30)
       {
 LABEL_71:
-        if ((v15 & 1) == 0)
+        if ((font & 1) == 0)
         {
         }
 
@@ -3604,15 +3604,15 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if (![v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
     goto LABEL_61;
   }
 
-  v15 = _SBF_Private_IsD33OrSimilarDevice();
+  font = _SBF_Private_IsD33OrSimilarDevice();
 
-  if (v15)
+  if (font)
   {
 LABEL_74:
     v20 = 0.905797101;
@@ -3624,8 +3624,8 @@ LABEL_37:
   v22 = v21;
   if (!v21)
   {
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    if ([v15 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    font = [MEMORY[0x277D75418] currentDevice];
+    if ([font userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
       goto LABEL_76;
     }
@@ -3650,8 +3650,8 @@ LABEL_59:
 
     else
     {
-      v4 = [MEMORY[0x277D759A0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3687,37 +3687,37 @@ LABEL_76:
   }
 
 LABEL_77:
-  v34 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  v35 = [v34 callToActionLabel];
+  teachableMomentsContainerView2 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  callToActionLabel = [teachableMomentsContainerView2 callToActionLabel];
 
-  if (v7 != v35)
+  if (createCallToActionLabel != callToActionLabel)
   {
-    v36 = [(CSCoverSheetViewControllerBase *)self activeAppearance];
-    v37 = [v36 componentForType:9 property:1];
-    v38 = [v37 isHidden];
+    activeAppearance = [(CSCoverSheetViewControllerBase *)self activeAppearance];
+    v37 = [activeAppearance componentForType:9 property:1];
+    isHidden = [v37 isHidden];
 
     v39 = 1.0;
-    if (v38)
+    if (isHidden)
     {
       v39 = 0.0;
     }
 
-    [v7 setAlpha:v39];
+    [createCallToActionLabel setAlpha:v39];
   }
 
-  v40 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
-  [v40 setCallToActionLabel:v7];
+  teachableMomentsContainerView3 = [(CSTeachableMomentsContainerViewController *)self teachableMomentsContainerView];
+  [teachableMomentsContainerView3 setCallToActionLabel:createCallToActionLabel];
 }
 
 - (void)_beginSuppressingHomeAffordanceAnimationForScreenOff
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-  v4 = [v3 containsObject:@"ScreenOff"];
+  homeAffordanceAnimationSuppressionReasons = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+  v4 = [homeAffordanceAnimationSuppressionReasons containsObject:@"ScreenOff"];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-    [v5 addObject:@"ScreenOff"];
+    homeAffordanceAnimationSuppressionReasons2 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+    [homeAffordanceAnimationSuppressionReasons2 addObject:@"ScreenOff"];
   }
 
   [(CSTeachableMomentsContainerViewController *)self _updateEffectiveAnimationState];
@@ -3725,27 +3725,27 @@ LABEL_77:
 
 - (void)_beginSuppressingHomeAffordanceAnimationForHomeAffordanceDoubleTap
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-  [v3 addObject:@"HomeAffordanceDoubleTap"];
+  homeAffordanceAnimationSuppressionReasons = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+  [homeAffordanceAnimationSuppressionReasons addObject:@"HomeAffordanceDoubleTap"];
 
   [(CSTeachableMomentsContainerViewController *)self _updateEffectiveAnimationState];
 }
 
 - (void)_endSuppressingHomeAffordanceAnimationForHomeAffordanceDoubleTap
 {
-  v3 = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
-  [v3 removeObject:@"HomeAffordanceDoubleTap"];
+  homeAffordanceAnimationSuppressionReasons = [(CSTeachableMomentsContainerViewController *)self homeAffordanceAnimationSuppressionReasons];
+  [homeAffordanceAnimationSuppressionReasons removeObject:@"HomeAffordanceDoubleTap"];
 
   [(CSTeachableMomentsContainerViewController *)self _updateEffectiveAnimationState];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v5.receiver = self;
   v5.super_class = CSTeachableMomentsContainerViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregateAppearance:v4];
-  [v4 unionAppearance:{self->_homeAffordanceViewController, v5.receiver, v5.super_class}];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v5 aggregateAppearance:appearanceCopy];
+  [appearanceCopy unionAppearance:{self->_homeAffordanceViewController, v5.receiver, v5.super_class}];
 }
 
 - (SBDashBoardHomeAffordanceAnimationViewProviding)viewProvider

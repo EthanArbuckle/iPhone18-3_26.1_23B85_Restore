@@ -1,22 +1,22 @@
 @interface APAPMescalSigningService
-- (APAPMescalSigningService)initWithInterval:(unint64_t)a3;
+- (APAPMescalSigningService)initWithInterval:(unint64_t)interval;
 - (APMescalSigningStateChangedDelegate)delegate;
 - (BOOL)initializeFairPlay;
-- (BOOL)signatureIsValid:(id)a3 data:(id)a4 error:(id *)a5;
-- (id)rawSignatureForData:(id)a3 error:(id *)a4;
-- (void)certificateRetrievalDidFinish:(id)a3 error:(id)a4;
+- (BOOL)signatureIsValid:(id)valid data:(id)data error:(id *)error;
+- (id)rawSignatureForData:(id)data error:(id *)error;
+- (void)certificateRetrievalDidFinish:(id)finish error:(id)error;
 - (void)dealloc;
-- (void)fairPlaySAPExchange:(id)a3 certificateIsCached:(BOOL)a4;
+- (void)fairPlaySAPExchange:(id)exchange certificateIsCached:(BOOL)cached;
 - (void)requestCertificate;
-- (void)setHwInfo:(FairPlayHWInfo_ *)a3;
-- (void)setState:(int64_t)a3;
-- (void)setupNegotiationStepDidFinish:(id)a3 certificateIsCached:(BOOL)a4 error:(id)a5;
-- (void)setupRequestSigningWithCachedCertificate:(BOOL)a3;
+- (void)setHwInfo:(FairPlayHWInfo_ *)info;
+- (void)setState:(int64_t)state;
+- (void)setupNegotiationStepDidFinish:(id)finish certificateIsCached:(BOOL)cached error:(id)error;
+- (void)setupRequestSigningWithCachedCertificate:(BOOL)certificate;
 @end
 
 @implementation APAPMescalSigningService
 
-- (APAPMescalSigningService)initWithInterval:(unint64_t)a3
+- (APAPMescalSigningService)initWithInterval:(unint64_t)interval
 {
   v9.receiver = self;
   v9.super_class = APAPMescalSigningService;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_intervalId = a3;
+    v4->_intervalId = interval;
     v4->_version = 200;
     v6 = +[APMescalSigningSettings settings];
     mescalSigningSettings = v5->_mescalSigningSettings;
@@ -34,30 +34,30 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(APAPMescalSigningService *)self delegate];
+  delegate = [(APAPMescalSigningService *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->delegate);
-    [WeakRetained mescalStateChanged:a3];
+    [WeakRetained mescalStateChanged:state];
   }
 }
 
-- (BOOL)signatureIsValid:(id)a3 data:(id)a4 error:(id *)a5
+- (BOOL)signatureIsValid:(id)valid data:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[NSData alloc] initWithBase64EncodedString:v8 options:0];
+  validCopy = valid;
+  dataCopy = data;
+  v10 = [[NSData alloc] initWithBase64EncodedString:validCopy options:0];
   if (!v10)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"reason";
       v31 = @"Unable to decode signature string.";
       v20 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      *a5 = [NSError errorWithDomain:@"com.apple.ap.MescalSigning" code:1102 userInfo:v20];
+      *error = [NSError errorWithDomain:@"com.apple.ap.MescalSigning" code:1102 userInfo:v20];
     }
 
     v15 = APLogForCategory();
@@ -66,14 +66,14 @@
       *buf = 136643075;
       v23 = "[APAPMescalSigningService signatureIsValid:data:error:]";
       v24 = 2117;
-      *v25 = v8;
+      *v25 = validCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Unable to decode signature string %{sensitive}@; cannot verify signature.", buf, 0x16u);
     }
 
     goto LABEL_12;
   }
 
-  v11 = [v9 mutableCopy];
+  v11 = [dataCopy mutableCopy];
   [(APAPMescalSigningService *)self session];
   [v10 bytes];
   [v10 length];
@@ -86,16 +86,16 @@
   if (v13)
   {
     v15 = [v10 base64EncodedStringWithOptions:32];
-    if (a5)
+    if (error)
     {
       v28 = @"reason";
       v16 = [NSString stringWithFormat:@"Signature validation failed with error %d.", v13];
       v29 = v16;
       [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-      v18 = v17 = v9;
-      *a5 = [NSError errorWithDomain:@"com.apple.ap.MescalSigning" code:1103 userInfo:v18];
+      v18 = v17 = dataCopy;
+      *error = [NSError errorWithDomain:@"com.apple.ap.MescalSigning" code:1103 userInfo:v18];
 
-      v9 = v17;
+      dataCopy = v17;
     }
 
     v19 = APLogForCategory();
@@ -106,7 +106,7 @@
       v24 = 1024;
       *v25 = v13;
       *&v25[4] = 2117;
-      *&v25[6] = v8;
+      *&v25[6] = validCopy;
       v26 = 2117;
       v27 = v15;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Signature validation failed with error %d\nBase64-encoded signature: %{sensitive}@\nBase64-encoded body: %{sensitive}@", buf, 0x26u);
@@ -119,16 +119,16 @@ LABEL_12:
   return v14;
 }
 
-- (id)rawSignatureForData:(id)a3 error:(id *)a4
+- (id)rawSignatureForData:(id)data error:(id *)error
 {
   v18 = 0;
   v17 = 0;
-  v6 = a3;
-  v7 = [(APAPMescalSigningService *)self session];
-  v8 = [v6 bytes];
-  v9 = [v6 length];
+  dataCopy = data;
+  session = [(APAPMescalSigningService *)self session];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
 
-  sub_10007071C(v7, v8, v9, &v18, &v17);
+  sub_10007071C(session, bytes, v9, &v18, &v17);
   if (v10)
   {
     v11 = v10;
@@ -137,13 +137,13 @@ LABEL_12:
       sub_100031C50(v18);
     }
 
-    if (a4)
+    if (error)
     {
       v23 = @"reason";
       v12 = [NSString stringWithFormat:@"failed with error code %d.", v11];
       v24 = v12;
       v13 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.ap.MescalSigning" code:1104 userInfo:v13];
+      *error = [NSError errorWithDomain:@"com.apple.ap.MescalSigning" code:1104 userInfo:v13];
     }
 
     v14 = APLogForCategory();
@@ -241,14 +241,14 @@ LABEL_10:
   [(APAPMescalSigningService *)&v3 dealloc];
 }
 
-- (void)setupRequestSigningWithCachedCertificate:(BOOL)a3
+- (void)setupRequestSigningWithCachedCertificate:(BOOL)certificate
 {
-  v3 = a3;
+  certificateCopy = certificate;
   v5 = APPerfLogForCategory();
-  v6 = [(APAPMescalSigningService *)self intervalId];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  intervalId = [(APAPMescalSigningService *)self intervalId];
+  if (intervalId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = intervalId;
     if (os_signpost_enabled(v5))
     {
       LOWORD(v18) = 0;
@@ -259,10 +259,10 @@ LABEL_10:
   if ([(APAPMescalSigningService *)self initializeFairPlay])
   {
     v8 = APPerfLogForCategory();
-    v9 = [(APAPMescalSigningService *)self intervalId];
-    if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    intervalId2 = [(APAPMescalSigningService *)self intervalId];
+    if (intervalId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v10 = v9;
+      v10 = intervalId2;
       if (os_signpost_enabled(v8))
       {
         LOWORD(v18) = 0;
@@ -270,18 +270,18 @@ LABEL_10:
       }
     }
 
-    if (!v3)
+    if (!certificateCopy)
     {
       [(APAPMescalSigningService *)self requestCertificate];
       return;
     }
 
-    v11 = [(APAPMescalSigningService *)self mescalSigningSettings];
-    v12 = [v11 cachedCertificate];
+    mescalSigningSettings = [(APAPMescalSigningService *)self mescalSigningSettings];
+    cachedCertificate = [mescalSigningSettings cachedCertificate];
 
     v13 = APLogForCategory();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (cachedCertificate)
     {
       if (v14)
       {
@@ -289,7 +289,7 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Beginning Mescal negotiation with a cached certificate.", &v18, 2u);
       }
 
-      [(APAPMescalSigningService *)self fairPlaySAPExchange:v12 certificateIsCached:1];
+      [(APAPMescalSigningService *)self fairPlaySAPExchange:cachedCertificate certificateIsCached:1];
     }
 
     else
@@ -315,15 +315,15 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Fairplay initialization failed.", &v18, 0xCu);
     }
 
-    v12 = APPerfLogForCategory();
-    v16 = [(APAPMescalSigningService *)self intervalId];
-    if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    cachedCertificate = APPerfLogForCategory();
+    intervalId3 = [(APAPMescalSigningService *)self intervalId];
+    if (intervalId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v17 = v16;
-      if (os_signpost_enabled(v12))
+      v17 = intervalId3;
+      if (os_signpost_enabled(cachedCertificate))
       {
         LOWORD(v18) = 0;
-        _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, v17, "Initialize Fairplay", "", &v18, 2u);
+        _os_signpost_emit_with_name_impl(&_mh_execute_header, cachedCertificate, OS_SIGNPOST_INTERVAL_END, v17, "Initialize Fairplay", "", &v18, 2u);
       }
     }
   }
@@ -340,10 +340,10 @@ LABEL_10:
   }
 
   v4 = APPerfLogForCategory();
-  v5 = [(APAPMescalSigningService *)self intervalId];
-  if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  intervalId = [(APAPMescalSigningService *)self intervalId];
+  if (intervalId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v6 = v5;
+    v6 = intervalId;
     if (os_signpost_enabled(v4))
     {
       *buf = 0;
@@ -359,15 +359,15 @@ LABEL_10:
   [APMescalSigningLegacyInterface requestCertificateWithCompletion:v7];
 }
 
-- (void)fairPlaySAPExchange:(id)a3 certificateIsCached:(BOOL)a4
+- (void)fairPlaySAPExchange:(id)exchange certificateIsCached:(BOOL)cached
 {
-  v4 = a4;
-  v6 = a3;
+  cachedCopy = cached;
+  exchangeCopy = exchange;
   v7 = APPerfLogForCategory();
-  v8 = [(APAPMescalSigningService *)self intervalId];
-  if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  intervalId = [(APAPMescalSigningService *)self intervalId];
+  if (intervalId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v9 = v8;
+    v9 = intervalId;
     if (os_signpost_enabled(v7))
     {
       *buf = 0;
@@ -382,22 +382,22 @@ LABEL_10:
   [v10 timeIntervalSince1970];
   v12 = v11;
 
-  v13 = [(APAPMescalSigningService *)self version];
-  v14 = [(APAPMescalSigningService *)self session];
-  v15 = [v6 bytes];
-  v16 = [v6 length];
+  version = [(APAPMescalSigningService *)self version];
+  session = [(APAPMescalSigningService *)self session];
+  bytes = [exchangeCopy bytes];
+  v16 = [exchangeCopy length];
 
-  sub_100064DF0(v13, &self->_hwInfo, v14, v15, v16, &v40, &v39, &v38);
+  sub_100064DF0(version, &self->_hwInfo, session, bytes, v16, &v40, &v39, &v38);
   v18 = v17;
   v19 = +[NSDate date];
   [v19 timeIntervalSince1970];
   v21 = v20;
 
   v22 = APPerfLogForCategory();
-  v23 = [(APAPMescalSigningService *)self intervalId];
-  if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  intervalId2 = [(APAPMescalSigningService *)self intervalId];
+  if (intervalId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v24 = v23;
+    v24 = intervalId2;
     if (os_signpost_enabled(v22))
     {
       *buf = 0;
@@ -429,10 +429,10 @@ LABEL_10:
   sub_100031C50(v40);
   if (!v38)
   {
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2;
 LABEL_28:
-    [(APAPMescalSigningService *)v33 setState:v34];
+    [(APAPMescalSigningService *)selfCopy2 setState:v34];
     goto LABEL_29;
   }
 
@@ -441,10 +441,10 @@ LABEL_28:
     if (v38 == 1)
     {
       v28 = APPerfLogForCategory();
-      v29 = [(APAPMescalSigningService *)self intervalId];
-      if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      intervalId3 = [(APAPMescalSigningService *)self intervalId];
+      if (intervalId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v30 = v29;
+        v30 = intervalId3;
         if (os_signpost_enabled(v28))
         {
           *buf = 0;
@@ -457,7 +457,7 @@ LABEL_28:
       v36[2] = sub_10032243C;
       v36[3] = &unk_10047E218;
       v36[4] = self;
-      v37 = v4;
+      v37 = cachedCopy;
       [APMescalSigningLegacyInterface requestMescalSetupForData:v27 completionHandler:v36];
     }
 
@@ -472,7 +472,7 @@ LABEL_28:
 
   v31 = APLogForCategory();
   v32 = os_log_type_enabled(v31, OS_LOG_TYPE_ERROR);
-  if (!v4)
+  if (!cachedCopy)
   {
     if (v32)
     {
@@ -483,7 +483,7 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Negotiation using a fresh certificate failed with error %{public}d; request signing will be disabled.", buf, 0x12u);
     }
 
-    v33 = self;
+    selfCopy2 = self;
     v34 = 3;
     goto LABEL_28;
   }
@@ -501,36 +501,36 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)certificateRetrievalDidFinish:(id)a3 error:(id)a4
+- (void)certificateRetrievalDidFinish:(id)finish error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  finishCopy = finish;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = APLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 code];
-      v10 = [v7 localizedDescription];
+      code = [errorCopy code];
+      localizedDescription = [errorCopy localizedDescription];
       v16 = 136643331;
       v17 = "[APAPMescalSigningService certificateRetrievalDidFinish:error:]";
       v18 = 2048;
-      v19 = v9;
+      v19 = code;
       v20 = 2114;
-      v21 = v10;
+      v21 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Error %ld retrieving Mescal certificate from AdServer - %{public}@. Requests will not be signed.", &v16, 0x20u);
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 3;
 LABEL_5:
-    [(APAPMescalSigningService *)v11 setState:v12];
+    [(APAPMescalSigningService *)selfCopy2 setState:v12];
     goto LABEL_10;
   }
 
   v13 = APLogForCategory();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!finishCopy)
   {
     if (v14)
     {
@@ -539,7 +539,7 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{sensitive}s]: Server returned an empty certificate for Mescal setup; requests will not be signed.", &v16, 0xCu);
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 4;
     goto LABEL_5;
   }
@@ -551,31 +551,31 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{sensitive}s]: Successfully retrieved certificate; continuing negotiation.", &v16, 0xCu);
   }
 
-  v15 = [(APAPMescalSigningService *)self mescalSigningSettings];
-  [v15 setCachedCertificate:v6];
+  mescalSigningSettings = [(APAPMescalSigningService *)self mescalSigningSettings];
+  [mescalSigningSettings setCachedCertificate:finishCopy];
 
-  [(APAPMescalSigningService *)self fairPlaySAPExchange:v6 certificateIsCached:0];
+  [(APAPMescalSigningService *)self fairPlaySAPExchange:finishCopy certificateIsCached:0];
 LABEL_10:
 }
 
-- (void)setupNegotiationStepDidFinish:(id)a3 certificateIsCached:(BOOL)a4 error:(id)a5
+- (void)setupNegotiationStepDidFinish:(id)finish certificateIsCached:(BOOL)cached error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  cachedCopy = cached;
+  finishCopy = finish;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = APLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v9 code];
-      v12 = [v9 localizedDescription];
+      code = [errorCopy code];
+      localizedDescription = [errorCopy localizedDescription];
       v14 = 136643331;
       v15 = "[APAPMescalSigningService setupNegotiationStepDidFinish:certificateIsCached:error:]";
       v16 = 2050;
-      v17 = v11;
+      v17 = code;
       v18 = 2114;
-      v19 = v12;
+      v19 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{sensitive}s]: Mescal negotiation failed with error code %{public}ld. %{public}@", &v14, 0x20u);
     }
 
@@ -587,7 +587,7 @@ LABEL_4:
 
   v13 = APLogForCategory();
   v10 = v13;
-  if (!v8)
+  if (!finishCopy)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -606,7 +606,7 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{sensitive}s]: Successfully retrieved setup buffer; continuing negotiation.", &v14, 0xCu);
   }
 
-  [(APAPMescalSigningService *)self fairPlaySAPExchange:v8 certificateIsCached:v6];
+  [(APAPMescalSigningService *)self fairPlaySAPExchange:finishCopy certificateIsCached:cachedCopy];
 LABEL_9:
 }
 
@@ -617,10 +617,10 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setHwInfo:(FairPlayHWInfo_ *)a3
+- (void)setHwInfo:(FairPlayHWInfo_ *)info
 {
-  v3 = *&a3->IDLength;
-  *&self->_hwInfo.ID[12] = *&a3->ID[12];
+  v3 = *&info->IDLength;
+  *&self->_hwInfo.ID[12] = *&info->ID[12];
   *&self->_hwInfo.IDLength = v3;
 }
 

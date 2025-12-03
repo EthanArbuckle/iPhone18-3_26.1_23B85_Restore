@@ -1,15 +1,15 @@
 @interface DDMatchPostalAddress
-- (DDMatchPostalAddress)initWithDDScannerResult:(id)a3;
+- (DDMatchPostalAddress)initWithDDScannerResult:(id)result;
 @end
 
 @implementation DDMatchPostalAddress
 
-- (DDMatchPostalAddress)initWithDDScannerResult:(id)a3
+- (DDMatchPostalAddress)initWithDDScannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v23.receiver = self;
   v23.super_class = DDMatchPostalAddress;
-  v5 = [(DDMatch *)&v23 initWithDDScannerResult:v4];
+  v5 = [(DDMatch *)&v23 initWithDDScannerResult:resultCopy];
   if (v5)
   {
     v21 = 0;
@@ -17,7 +17,7 @@
     v19 = 0;
     v20 = 0;
     v18 = 0;
-    v6 = [v4 getStreet:&v22 city:&v21 state:&v20 zip:&v19 country:&v18];
+    v6 = [resultCopy getStreet:&v22 city:&v21 state:&v20 zip:&v19 country:&v18];
     v7 = v22;
     v17 = v22;
     v8 = v21;

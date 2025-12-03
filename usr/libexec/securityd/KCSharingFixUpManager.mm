@@ -1,29 +1,29 @@
 @interface KCSharingFixUpManager
 + (KCSharingFixUpManager)sharedInstance;
 - (KCSharingFixUpManager)init;
-- (void)performFixUpOneWithStore:(id)a3 lockStateTracker:(id)a4 WithCompletion:(id)a5;
+- (void)performFixUpOneWithStore:(id)store lockStateTracker:(id)tracker WithCompletion:(id)completion;
 @end
 
 @implementation KCSharingFixUpManager
 
-- (void)performFixUpOneWithStore:(id)a3 lockStateTracker:(id)a4 WithCompletion:(id)a5
+- (void)performFixUpOneWithStore:(id)store lockStateTracker:(id)tracker WithCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  trackerCopy = tracker;
+  completionCopy = completion;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100080700;
   v19[3] = &unk_100344DC8;
-  v11 = v8;
+  v11 = storeCopy;
   v20 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v21 = v12;
   v13 = [NSBlockOperation blockOperationWithBlock:v19];
-  if (v9)
+  if (trackerCopy)
   {
-    v14 = [v9 unlockDependency];
-    [v13 addNullableDependency:v14];
+    unlockDependency = [trackerCopy unlockDependency];
+    [v13 addNullableDependency:unlockDependency];
 
     [(NSOperationQueue *)self->_fixUpOperationQueue addOperation:v13];
   }

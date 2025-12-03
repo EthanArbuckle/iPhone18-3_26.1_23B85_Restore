@@ -1,22 +1,22 @@
 @interface ULContextLayerUtilities
 + (id)_getContextLayerEnumToStringMapping;
-+ (id)contextLayerStringTypeFromEnum:(unint64_t)a3;
-+ (id)getDefaultContextLayerForService:(id)a3;
-+ (unint64_t)contextLayerEnumFromStringType:(id)a3;
++ (id)contextLayerStringTypeFromEnum:(unint64_t)enum;
++ (id)getDefaultContextLayerForService:(id)service;
++ (unint64_t)contextLayerEnumFromStringType:(id)type;
 @end
 
 @implementation ULContextLayerUtilities
 
-+ (id)getDefaultContextLayerForService:(id)a3
++ (id)getDefaultContextLayerForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = @"ULContextLayerTypeUnknown";
   if (getDefaultContextLayerForService__onceToken != -1)
   {
     +[ULContextLayerUtilities getDefaultContextLayerForService:];
   }
 
-  v5 = [getDefaultContextLayerForService__serviceToDefaultContextLayerMap objectForKeyedSubscript:v3];
+  v5 = [getDefaultContextLayerForService__serviceToDefaultContextLayerMap objectForKeyedSubscript:serviceCopy];
   v6 = v5;
   if (v5)
   {
@@ -98,31 +98,31 @@ void __60__ULContextLayerUtilities_getDefaultContextLayerForService___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)contextLayerEnumFromStringType:(id)a3
++ (unint64_t)contextLayerEnumFromStringType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 _getContextLayerEnumToStringMapping];
-  v6 = [v5 keyForObject:v4];
+  typeCopy = type;
+  _getContextLayerEnumToStringMapping = [self _getContextLayerEnumToStringMapping];
+  v6 = [_getContextLayerEnumToStringMapping keyForObject:typeCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v7;
+  return unsignedIntValue;
 }
 
-+ (id)contextLayerStringTypeFromEnum:(unint64_t)a3
++ (id)contextLayerStringTypeFromEnum:(unint64_t)enum
 {
   v5 = @"ULContextLayerTypeUnknown";
-  v6 = [a1 _getContextLayerEnumToStringMapping];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v8 = [v6 objectForKey:v7];
+  _getContextLayerEnumToStringMapping = [self _getContextLayerEnumToStringMapping];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:enum];
+  v8 = [_getContextLayerEnumToStringMapping objectForKey:v7];
 
   if (v8)
   {

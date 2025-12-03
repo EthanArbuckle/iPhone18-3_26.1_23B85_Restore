@@ -1,27 +1,27 @@
 @interface EKEventAvailabilityEditItem
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (id)_choices;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)refreshFromCalendarItemAndStore;
 @end
 
 @implementation EKEventAvailabilityEditItem
 
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints
 {
-  v3 = a3;
-  if ([v3 supportedEventAvailabilities])
+  constraintsCopy = constraints;
+  if ([constraintsCopy supportedEventAvailabilities])
   {
-    v4 = [v3 isAffectingAvailability];
+    isAffectingAvailability = [constraintsCopy isAffectingAvailability];
   }
 
   else
   {
-    v4 = 0;
+    isAffectingAvailability = 0;
   }
 
-  return v4;
+  return isAffectingAvailability;
 }
 
 - (void)refreshFromCalendarItemAndStore
@@ -29,26 +29,26 @@
   v4.receiver = self;
   v4.super_class = EKEventAvailabilityEditItem;
   [(EKCalendarItemEditItem *)&v4 refreshFromCalendarItemAndStore];
-  v3 = [(EKEventEditItem *)self event];
-  self->_availability = [v3 availability];
+  event = [(EKEventEditItem *)self event];
+  self->_availability = [event availability];
 }
 
 - (id)_choices
 {
-  v2 = [(EKEventEditItem *)self event];
-  v3 = [v2 calendar];
-  v4 = [v3 supportedEventAvailabilities];
+  event = [(EKEventEditItem *)self event];
+  calendar = [event calendar];
+  supportedEventAvailabilities = [calendar supportedEventAvailabilities];
 
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-  if (v4)
+  if (supportedEventAvailabilities)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:0];
     [v5 addObject:v8];
 
-    if ((v4 & 2) == 0)
+    if ((supportedEventAvailabilities & 2) == 0)
     {
 LABEL_3:
-      if ((v4 & 4) == 0)
+      if ((supportedEventAvailabilities & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -57,7 +57,7 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 2) == 0)
+  else if ((supportedEventAvailabilities & 2) == 0)
   {
     goto LABEL_3;
   }
@@ -65,10 +65,10 @@ LABEL_3:
   v9 = [MEMORY[0x1E696AD98] numberWithInt:1];
   [v5 addObject:v9];
 
-  if ((v4 & 4) == 0)
+  if ((supportedEventAvailabilities & 4) == 0)
   {
 LABEL_4:
-    if ((v4 & 8) == 0)
+    if ((supportedEventAvailabilities & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -80,7 +80,7 @@ LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithInt:2];
   [v5 addObject:v10];
 
-  if ((v4 & 8) != 0)
+  if ((supportedEventAvailabilities & 8) != 0)
   {
 LABEL_5:
     v6 = [MEMORY[0x1E696AD98] numberWithInt:3];
@@ -92,31 +92,31 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
   availability = self->_availability;
-  v5 = [(EKEventEditItem *)self event];
-  v6 = [v5 availability];
+  event = [(EKEventEditItem *)self event];
+  availability = [event availability];
 
-  if (availability != v6)
+  if (availability != availability)
   {
     v7 = self->_availability;
-    v8 = [(EKEventEditItem *)self event];
-    [v8 setAvailability:v7];
+    event2 = [(EKEventEditItem *)self event];
+    [event2 setAvailability:v7];
   }
 
-  return availability != v6;
+  return availability != availability;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v37 = *MEMORY[0x1E69E9840];
   EKUIUnscaledCatalyst();
   v27 = [objc_alloc(objc_opt_class()) initWithStyle:1 reuseIdentifier:0];
   v4 = EventKitUIBundle();
   v5 = [v4 localizedStringForKey:@"Show As" value:&stru_1F4EF6790 table:0];
-  v6 = [v27 textLabel];
-  [v6 setText:v5];
+  textLabel = [v27 textLabel];
+  [textLabel setText:v5];
 
   objc_initWeak(&location, self);
   v28 = objc_opt_new();
@@ -124,8 +124,8 @@ LABEL_6:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(EKEventAvailabilityEditItem *)self _choices];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  _choices = [(EKEventAvailabilityEditItem *)self _choices];
+  v8 = [_choices countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
     v9 = *v32;
@@ -135,7 +135,7 @@ LABEL_6:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_choices);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
@@ -161,7 +161,7 @@ LABEL_6:
         objc_destroyWeak(&v30);
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [_choices countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v8);
@@ -173,25 +173,25 @@ LABEL_6:
     v16 = [MEMORY[0x1E69DC738] buttonWithType:124];
     if (CalSolariumEnabled())
     {
-      v17 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-      [v16 setConfiguration:v17];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      [v16 setConfiguration:plainButtonConfiguration];
     }
 
     v18 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:{v28, v27}];
     [v16 setMenu:v18];
 
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v27 contentView];
-    [v19 addSubview:v16];
+    contentView = [v27 contentView];
+    [contentView addSubview:v16];
 
     v20 = MEMORY[0x1E696ACD8];
-    v21 = [v27 textLabel];
-    v22 = [v20 constraintWithItem:v16 attribute:11 relatedBy:0 toItem:v21 attribute:11 multiplier:1.0 constant:0.0];
+    textLabel2 = [v27 textLabel];
+    v22 = [v20 constraintWithItem:v16 attribute:11 relatedBy:0 toItem:textLabel2 attribute:11 multiplier:1.0 constant:0.0];
     [v22 setActive:1];
 
     v23 = MEMORY[0x1E696ACD8];
-    v24 = [v27 contentView];
-    v25 = [v23 constraintWithItem:v16 attribute:6 relatedBy:0 toItem:v24 attribute:6 multiplier:1.0 constant:-20.0];
+    contentView2 = [v27 contentView];
+    v25 = [v23 constraintWithItem:v16 attribute:6 relatedBy:0 toItem:contentView2 attribute:6 multiplier:1.0 constant:-20.0];
     [v25 setActive:1];
   }
 

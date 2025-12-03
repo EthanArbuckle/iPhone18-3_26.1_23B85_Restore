@@ -1,49 +1,49 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)applicationDidReceiveMemoryWarning:;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
-- (void)applicationWillTerminate:(id)a3;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)broadcastManualLockNotification;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)processAppBackgrounding;
 - (void)processAppForegrounding;
 - (void)processAppTermination;
 - (void)processAppUnlock;
 - (void)processManualLock;
-- (void)protectedDataWillBecomeUnavailable:(id)a3;
+- (void)protectedDataWillBecomeUnavailable:(id)unavailable;
 - (void)resetIdentifierClicked;
-- (void)showMacNotificationsSettings:(id)a3;
-- (void)showMacSettings:(id)a3;
-- (void)showNewWindow:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)showMacNotificationsSettings:(id)settings;
+- (void)showMacSettings:(id)settings;
+- (void)showNewWindow:(id)window;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1004B6488(&qword_100AD1B20, type metadata accessor for LaunchOptionsKey);
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100004484(v7, v4);
+  applicationCopy = application;
+  selfCopy = self;
+  sub_100004484(applicationCopy, optionsCopy);
 
   return 1;
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  if (a4 && (v4 = a4, v5 = [v4 traitCollection], v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v4, !v6))
+  if (window && (v4 = window, v5 = [v4 traitCollection], v6 = objc_msgSend(v5, "userInterfaceIdiom"), v5, v4, !v6))
   {
     return 2;
   }
@@ -56,42 +56,42 @@
 
 - (void)broadcastManualLockNotification
 {
-  v2 = [objc_opt_self() defaultCenter];
-  v3 = v2;
+  defaultCenter = [objc_opt_self() defaultCenter];
+  v3 = defaultCenter;
   if (qword_100ACF9F0 != -1)
   {
     swift_once();
-    v2 = v3;
+    defaultCenter = v3;
   }
 
-  [v2 postNotificationName:qword_100B2F490 object:0];
+  [defaultCenter postNotificationName:qword_100B2F490 object:0];
 }
 
 - (void)processAppBackgrounding
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004AD324();
 }
 
 - (void)processAppTermination
 {
   v2 = (self + OBJC_IVAR____TtC7Journal11AppDelegate_shouldEndSessionMutex);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
-  sub_1004ACCD8(&v2[1], v3);
+  sub_1004ACCD8(&v2[1], selfCopy);
   os_unfair_lock_unlock(v2);
 }
 
 - (void)processAppUnlock
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7Journal11AppDelegate_isAppLocked) = 0;
-  v2 = self;
+  selfCopy = self;
   sub_1004AD524();
 }
 
 - (void)processAppForegrounding
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004AD524();
 }
 
@@ -99,38 +99,38 @@
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7Journal11AppDelegate_isAppLocked) = 1;
   *(&self->super.super.isa + OBJC_IVAR____TtC7Journal11AppDelegate_hasProcessedLatestAppUnlock) = 0;
-  v2 = self;
+  selfCopy = self;
   sub_1004AD324();
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1004B6488(&qword_100AD1B20, type metadata accessor for LaunchOptionsKey);
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = sub_1004B5A10();
 
   return v8 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
+  sessionCopy = session;
+  role = [sessionCopy role];
   v7 = objc_allocWithZone(UISceneConfiguration);
   v8 = String._bridgeToObjectiveC()();
-  v9 = [v7 initWithName:v8 sessionRole:v6];
+  v9 = [v7 initWithName:v8 sessionRole:role];
 
   return v9;
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -149,7 +149,7 @@
   return v10 & 1;
 }
 
-- (void)protectedDataWillBecomeUnavailable:(id)a3
+- (void)protectedDataWillBecomeUnavailable:(id)unavailable
 {
   v3 = sub_1000F24EC(&qword_100AD5170);
   __chkstk_darwin(v3 - 8);
@@ -169,21 +169,21 @@
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001D64B0();
   sub_1004AC808();
   AppSessionManager.appSessionDidTerminate()();
 }
 
-- (void)showNewWindow:(id)a3
+- (void)showNewWindow:(id)window
 {
   v4 = type metadata accessor for UISceneSessionActivationRequest();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (window)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -195,7 +195,7 @@
     memset(v10, 0, sizeof(v10));
   }
 
-  v8 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   v9 = UIWindowSceneSessionRoleApplication;
   UISceneSessionActivationRequest.init(role:userActivity:options:)();
   UIApplication.activateSceneSession(for:errorHandler:)();
@@ -204,21 +204,21 @@
   sub_100004F84(v10, &qword_100AD13D0);
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1004AF7BC(a3);
+  selfCopy = self;
+  sub_1004AF7BC(builder);
   swift_unknownObjectRelease();
 }
 
-- (void)showMacSettings:(id)a3
+- (void)showMacSettings:(id)settings
 {
   v4 = type metadata accessor for UISceneSessionActivationRequest();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (settings)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -230,7 +230,7 @@
     memset(v9, 0, sizeof(v9));
   }
 
-  v8 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   type metadata accessor for MacSettingsSceneDelegate();
   sub_100454A18();
   UIApplication.activateSceneSession(for:errorHandler:)();
@@ -239,7 +239,7 @@
   sub_100004F84(v9, &qword_100AD13D0);
 }
 
-- (void)showMacNotificationsSettings:(id)a3
+- (void)showMacNotificationsSettings:(id)settings
 {
   v4 = sub_1000F24EC(&unk_100AD6DD0);
   __chkstk_darwin(v4 - 8);
@@ -247,7 +247,7 @@
   v7 = type metadata accessor for OpenSensitiveURLAction.Destination();
   __chkstk_darwin(v7);
   v9 = v10 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (settings)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -267,30 +267,30 @@
   sub_100004F84(v10, &qword_100AD13D0);
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
-  v7 = self;
-  [v6 action];
+  commandCopy = command;
+  selfCopy = self;
+  [commandCopy action];
   if (static Selector.== infix(_:_:)())
   {
-    [v6 setAttributes:(sub_100811FCC() & 1) == 0];
+    [commandCopy setAttributes:(sub_100811FCC() & 1) == 0];
   }
 
   else
   {
-    v8.receiver = v7;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
-    [(AppDelegate *)&v8 validateCommand:v6];
+    [(AppDelegate *)&v8 validateCommand:commandCopy];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -299,10 +299,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_1004B44A0(a3, v10);
+  v8 = sub_1004B44A0(action, v10);
 
   sub_100004F84(v10, &qword_100AD13D0);
   return v8 & 1;

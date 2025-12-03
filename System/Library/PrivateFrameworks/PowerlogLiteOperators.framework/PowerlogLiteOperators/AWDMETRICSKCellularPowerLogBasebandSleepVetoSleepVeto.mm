@@ -1,18 +1,18 @@
 @interface AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
-- (int)StringAsSubsystem:(id)a3;
+- (int)StringAsState:(id)state;
+- (int)StringAsSubsystem:(id)subsystem;
 - (int)state;
 - (int)subsystem;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasSubsystem:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasState:(BOOL)state;
+- (void)setHasSubsystem:(BOOL)subsystem;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasSubsystem:(BOOL)a3
+- (void)setHasSubsystem:(BOOL)subsystem
 {
-  if (a3)
+  if (subsystem)
   {
     v3 = 4;
   }
@@ -45,30 +45,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSubsystem:(id)a3
+- (int)StringAsSubsystem:(id)subsystem
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CPS"])
+  subsystemCopy = subsystem;
+  if ([subsystemCopy isEqualToString:@"CPS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"L1C"])
+  else if ([subsystemCopy isEqualToString:@"L1C"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CDP_DL"])
+  else if ([subsystemCopy isEqualToString:@"CDP_DL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CDP_UL"])
+  else if ([subsystemCopy isEqualToString:@"CDP_UL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CDP_HOST"])
+  else if ([subsystemCopy isEqualToString:@"CDP_HOST"])
   {
     v4 = 4;
   }
@@ -94,9 +94,9 @@
   }
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -109,35 +109,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CPU_CLK_GATE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"CPU_CLK_GATE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CPU_WRAP_PWR_GATE"])
+  else if ([stateCopy isEqualToString:@"CPU_WRAP_PWR_GATE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOCSLP_SLP_VCXO_OFF"])
+  else if ([stateCopy isEqualToString:@"SOCSLP_SLP_VCXO_OFF"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOCSLP_SLP_SOC_ON"])
+  else if ([stateCopy isEqualToString:@"SOCSLP_SLP_SOC_ON"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SOCSLP_SLP_S2R"])
+  else if ([stateCopy isEqualToString:@"SOCSLP_SLP_S2R"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NO_BLOCKER"])
+  else if ([stateCopy isEqualToString:@"NO_BLOCKER"])
   {
     v4 = 5;
   }
@@ -156,20 +156,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto;
   v4 = [(AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   blockerName = self->_blockerName;
   if (blockerName)
   {
-    [v3 setObject:blockerName forKey:@"blocker_name"];
+    [dictionary setObject:blockerName forKey:@"blocker_name"];
   }
 
   has = self->_has;
@@ -233,14 +233,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_blockerName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -248,7 +248,7 @@ LABEL_7:
   {
     subsystem = self->_subsystem;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -269,33 +269,33 @@ LABEL_5:
 
   state = self->_state;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_6:
     durationMs = self->_durationMs;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_blockerName)
   {
-    v6 = v4;
-    [v4 setBlockerName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBlockerName:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 6) = self->_subsystem;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 6) = self->_subsystem;
+    *(toCopy + 28) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -314,22 +314,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 5) = self->_state;
-  *(v4 + 28) |= 2u;
+  *(toCopy + 5) = self->_state;
+  *(toCopy + 28) |= 2u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 4) = self->_durationMs;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 4) = self->_durationMs;
+    *(toCopy + 28) |= 1u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_blockerName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_blockerName copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -371,16 +371,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   blockerName = self->_blockerName;
-  if (blockerName | *(v4 + 1))
+  if (blockerName | *(equalCopy + 1))
   {
     if (![(NSString *)blockerName isEqual:?])
     {
@@ -390,13 +390,13 @@ LABEL_4:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_subsystem != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_subsystem != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
 LABEL_18:
     v6 = 0;
@@ -405,21 +405,21 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_state != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_state != *(equalCopy + 5))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 28) & 1) == 0;
+  v6 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_durationMs != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_durationMs != *(equalCopy + 4))
     {
       goto LABEL_18;
     }
@@ -473,22 +473,22 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDMETRICSKCellularPowerLogBasebandSleepVetoSleepVeto *)self setBlockerName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_subsystem = *(v4 + 6);
+    self->_subsystem = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -501,17 +501,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_state = *(v4 + 5);
+  self->_state = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_6:
-    self->_durationMs = *(v4 + 4);
+    self->_durationMs = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

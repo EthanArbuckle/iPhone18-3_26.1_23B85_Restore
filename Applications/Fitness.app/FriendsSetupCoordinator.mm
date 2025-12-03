@@ -1,31 +1,31 @@
 @interface FriendsSetupCoordinator
-- (BOOL)friendsSetupViewControllerShouldTransitionToCloudKitSignInPhase:(id)a3;
+- (BOOL)friendsSetupViewControllerShouldTransitionToCloudKitSignInPhase:(id)phase;
 - (_TtC10FitnessApp23FriendsSetupCoordinator)init;
 - (void)applicationDidBecomeActive;
 - (void)dealloc;
-- (void)friendsSetupViewController:(id)a3 didCompletePhase:(int64_t)a4;
-- (void)friendsSetupViewControllerDidCompleteSetup:(id)a3;
+- (void)friendsSetupViewController:(id)controller didCompletePhase:(int64_t)phase;
+- (void)friendsSetupViewControllerDidCompleteSetup:(id)setup;
 @end
 
 @implementation FriendsSetupCoordinator
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4 = [objc_opt_self() defaultCenter];
-  [v4 removeObserver:v2];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for FriendsSetupCoordinator();
   [(FriendsSetupCoordinator *)&v5 dealloc];
 }
 
 - (void)applicationDidBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_10062B10C();
 }
 
@@ -36,26 +36,26 @@
   return result;
 }
 
-- (BOOL)friendsSetupViewControllerShouldTransitionToCloudKitSignInPhase:(id)a3
+- (BOOL)friendsSetupViewControllerShouldTransitionToCloudKitSignInPhase:(id)phase
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10062DBBC();
 
   return (v4 & 1) == 0;
 }
 
-- (void)friendsSetupViewController:(id)a3 didCompletePhase:(int64_t)a4
+- (void)friendsSetupViewController:(id)controller didCompletePhase:(int64_t)phase
 {
-  v6 = a3;
-  v7 = self;
-  sub_10062ECD4(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10062ECD4(phase);
 }
 
-- (void)friendsSetupViewControllerDidCompleteSetup:(id)a3
+- (void)friendsSetupViewControllerDidCompleteSetup:(id)setup
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 

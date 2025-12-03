@@ -2,10 +2,10 @@
 + (id)defaultParameters;
 - (AXMSynthObservableParameters)init;
 - (NSDictionary)dictionaryRepresentation;
-- (id)getValueForParameter:(id)a3;
-- (void)notifyObserversOfValueChange:(id)a3 forParameter:(id)a4;
-- (void)removeParameterObserver:(id)a3;
-- (void)setValue:(id)a3 forParameter:(id)a4;
+- (id)getValueForParameter:(id)parameter;
+- (void)notifyObserversOfValueChange:(id)change forParameter:(id)parameter;
+- (void)removeParameterObserver:(id)observer;
+- (void)setValue:(id)value forParameter:(id)parameter;
 @end
 
 @implementation AXMSynthObservableParameters
@@ -21,13 +21,13 @@
     supportedParameters = v2->_supportedParameters;
     v2->_supportedParameters = v3;
 
-    v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     parameterObservers = v2->_parameterObservers;
-    v2->_parameterObservers = v5;
+    v2->_parameterObservers = weakObjectsPointerArray;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     parameterValues = v2->_parameterValues;
-    v2->_parameterValues = v7;
+    v2->_parameterValues = dictionary;
 
     [(AXMSynthObservableParameters *)v2 addSupportedParameters];
   }
@@ -38,7 +38,7 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(AXMSynthObservableParameters *)self supportedParameters];
   v14 = 0u;
   v15 = 0u;
@@ -59,7 +59,7 @@
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = [(AXMSynthObservableParameters *)self getValueForParameter:v8, v12];
-        [v3 setObject:v9 forKeyedSubscript:v8];
+        [dictionary setObject:v9 forKeyedSubscript:v8];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -68,17 +68,17 @@
     while (v5);
   }
 
-  v10 = [v3 copy];
+  v10 = [dictionary copy];
 
   return v10;
 }
 
-- (void)removeParameterObserver:(id)a3
+- (void)removeParameterObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   for (i = 0; i < [(NSPointerArray *)self->_parameterObservers count]; ++i)
   {
-    if ([(NSPointerArray *)self->_parameterObservers pointerAtIndex:i]== v5)
+    if ([(NSPointerArray *)self->_parameterObservers pointerAtIndex:i]== observerCopy)
     {
       if (i != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -90,11 +90,11 @@
   }
 }
 
-- (void)notifyObserversOfValueChange:(id)a3 forParameter:(id)a4
+- (void)notifyObserversOfValueChange:(id)change forParameter:(id)parameter
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  parameterCopy = parameter;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -114,7 +114,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) parameterValueDidChange:v6 forParameter:{v7, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) parameterValueDidChange:changeCopy forParameter:{parameterCopy, v12}];
       }
 
       while (v9 != v11);
@@ -125,23 +125,23 @@
   }
 }
 
-- (void)setValue:(id)a3 forParameter:(id)a4
+- (void)setValue:(id)value forParameter:(id)parameter
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(AXMSynthObservableParameters *)self assertParameterIsSupported:v6])
+  valueCopy = value;
+  parameterCopy = parameter;
+  if ([(AXMSynthObservableParameters *)self assertParameterIsSupported:parameterCopy])
   {
-    [(NSMutableDictionary *)self->_parameterValues setObject:v7 forKeyedSubscript:v6];
-    [(AXMSynthObservableParameters *)self notifyObserversOfValueChange:v7 forParameter:v6];
+    [(NSMutableDictionary *)self->_parameterValues setObject:valueCopy forKeyedSubscript:parameterCopy];
+    [(AXMSynthObservableParameters *)self notifyObserversOfValueChange:valueCopy forParameter:parameterCopy];
   }
 }
 
-- (id)getValueForParameter:(id)a3
+- (id)getValueForParameter:(id)parameter
 {
-  v4 = a3;
-  if ([(AXMSynthObservableParameters *)self isParameterSupported:v4])
+  parameterCopy = parameter;
+  if ([(AXMSynthObservableParameters *)self isParameterSupported:parameterCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_parameterValues objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_parameterValues objectForKeyedSubscript:parameterCopy];
   }
 
   else

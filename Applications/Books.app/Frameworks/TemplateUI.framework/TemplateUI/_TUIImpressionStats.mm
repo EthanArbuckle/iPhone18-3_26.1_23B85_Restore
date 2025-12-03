@@ -1,7 +1,7 @@
 @interface _TUIImpressionStats
 - (_TUIImpressionStats)init;
-- (id)impressionForData:(id)a3 size:(CGSize)a4 create:(BOOL)a5;
-- (id)impressionForIdentifier:(id)a3;
+- (id)impressionForData:(id)data size:(CGSize)size create:(BOOL)create;
+- (id)impressionForIdentifier:(id)identifier;
 @end
 
 @implementation _TUIImpressionStats
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (id)impressionForData:(id)a3 size:(CGSize)a4 create:(BOOL)a5
+- (id)impressionForData:(id)data size:(CGSize)size create:(BOOL)create
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [v9 identifier];
-  v11 = v10;
-  if (v10)
+  createCopy = create;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  identifier = [dataCopy identifier];
+  v11 = identifier;
+  if (identifier)
   {
-    v10 = [(NSMutableDictionary *)self->_impressions objectForKey:v10];
+    identifier = [(NSMutableDictionary *)self->_impressions objectForKey:identifier];
   }
 
-  if (v9)
+  if (dataCopy)
   {
     v12 = v11 == 0;
   }
@@ -44,32 +44,32 @@
     v12 = 1;
   }
 
-  v13 = !v12 && v10 == 0;
+  v13 = !v12 && identifier == 0;
   if (v13)
   {
-    v14 = 0;
+    height = 0;
   }
 
   else
   {
-    v14 = v10;
+    height = identifier;
   }
 
-  if (v13 && v5)
+  if (v13 && createCopy)
   {
     v15 = [TUIImpression alloc];
-    v16 = [v9 data];
-    v14 = [(TUIImpression *)v15 initWithData:v16 size:v11 identifier:width, height];
+    data = [dataCopy data];
+    height = [(TUIImpression *)v15 initWithData:data size:v11 identifier:width, height];
 
-    [(NSMutableDictionary *)self->_impressions setObject:v14 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_impressions setObject:height forKeyedSubscript:v11];
   }
 
-  return v14;
+  return height;
 }
 
-- (id)impressionForIdentifier:(id)a3
+- (id)impressionForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSMutableDictionary *)self->_impressions objectForKeyedSubscript:?];
   }

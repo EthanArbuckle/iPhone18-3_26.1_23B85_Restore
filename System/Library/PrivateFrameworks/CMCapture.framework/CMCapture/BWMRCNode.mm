@@ -1,17 +1,17 @@
 @interface BWMRCNode
-- (BOOL)_shouldEmitSBufForBarcodeCount:(__int128 *)a3 originalPTS:;
+- (BOOL)_shouldEmitSBufForBarcodeCount:(__int128 *)count originalPTS:;
 - (BWMRCNode)init;
 - (CGRect)rectOfInterest;
 - (uint64_t)_setupSampleBufferProcessor;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
-- (void)_newSymbologiesArrayFromIdentifiers:(uint64_t)a1;
+- (void)_newSymbologiesArrayFromIdentifiers:(uint64_t)identifiers;
 - (void)_teardownSampleBufferProcessor;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
+- (void)didReachEndOfDataForInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMrcIdentifiers:(id)a3;
-- (void)setRectOfInterest:(CGRect)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMrcIdentifiers:(id)identifiers;
+- (void)setRectOfInterest:(CGRect)interest;
 @end
 
 @implementation BWMRCNode
@@ -94,22 +94,22 @@
   }
 }
 
-- (void)setMrcIdentifiers:(id)a3
+- (void)setMrcIdentifiers:(id)identifiers
 {
-  v5 = [a3 copy];
+  v5 = [identifiers copy];
   self->_mrcIdentifiers = v5;
   [(BWNodeOutput *)self->super._output setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:v5]];
 
   self->_symbologiesArray = [(BWMRCNode *)self _newSymbologiesArrayFromIdentifiers:?];
 }
 
-- (void)setRectOfInterest:(CGRect)a3
+- (void)setRectOfInterest:(CGRect)interest
 {
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;
   v10.size.height = 1.0;
-  v9 = CGRectIntersection(a3, v10);
+  v9 = CGRectIntersection(interest, v10);
   x = v9.origin.x;
   y = v9.origin.y;
   width = v9.size.width;
@@ -152,23 +152,23 @@
   return result;
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(BWMRCNode *)self _teardownSampleBufferProcessor];
   v5.receiver = self;
   v5.super_class = BWMRCNode;
-  [(BWNode *)&v5 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v5 didReachEndOfDataForInput:input];
 }
 
 - (uint64_t)_setupSampleBufferProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v20 = 0;
-  v2 = *(a1 + 128);
+  v2 = *(self + 128);
   if (!v2)
   {
     fig_log_get_emitter();
@@ -179,7 +179,7 @@
 
   v2(*MEMORY[0x1E695E480], 0, &v20);
   v3 = v20;
-  *(a1 + 136) = v20;
+  *(self + 136) = v20;
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (!v4)
   {
@@ -191,7 +191,7 @@ LABEL_21:
     return v18;
   }
 
-  v5 = v4(v3, mrcn_processorOutputReadyCallback, a1);
+  v5 = v4(v3, mrcn_processorOutputReadyCallback, self);
   if (v5)
   {
     v18 = v5;
@@ -205,7 +205,7 @@ LABEL_21:
     v7(v6, *off_1E7989E18, *MEMORY[0x1E695E4D0]);
   }
 
-  v8 = *(a1 + 144);
+  v8 = *(self + 144);
   if (v8)
   {
     v9 = OUTLINED_FUNCTION_2_32();
@@ -234,7 +234,7 @@ LABEL_21:
     }
   }
 
-  if (*(a1 + 205) == 1)
+  if (*(self + 205) == 1)
   {
     v14 = OUTLINED_FUNCTION_2_32();
     v15 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -257,14 +257,14 @@ LABEL_21:
   }
 }
 
-- (void)_newSymbologiesArrayFromIdentifiers:(uint64_t)a1
+- (void)_newSymbologiesArrayFromIdentifiers:(uint64_t)identifiers
 {
-  if (!a1)
+  if (!identifiers)
   {
     return 0;
   }
 
-  if (!*(a1 + 208))
+  if (!*(identifiers + 208))
   {
     v4 = *MEMORY[0x1E69C68B8];
     v5 = *MEMORY[0x1E6962998];
@@ -332,7 +332,7 @@ LABEL_21:
     v88[18] = *off_1E798D110;
     v89[18] = *MEMORY[0x1E69C6900];
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:19];
-    *(a1 + 208) = v31;
+    *(identifiers + 208) = v31;
     v32 = v31;
   }
 
@@ -352,10 +352,10 @@ LABEL_21:
         }
 
         v45 = *(8 * i);
-        v46 = [*(a1 + 208) objectForKey:v45];
+        v46 = [*(identifiers + 208) objectForKey:v45];
         if (v46)
         {
-          v46 = [v33 addObject:{objc_msgSend(*(a1 + 208), "objectForKeyedSubscript:", v45)}];
+          v46 = [v33 addObject:{objc_msgSend(*(identifiers + 208), "objectForKeyedSubscript:", v45)}];
         }
       }
 
@@ -370,9 +370,9 @@ LABEL_21:
 
 - (void)_teardownSampleBufferProcessor
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     if (v2)
     {
       v3 = *(*(CMBaseObjectGetVTable() + 16) + 24);
@@ -381,26 +381,26 @@ LABEL_21:
         v3(v2);
       }
 
-      v4 = *(a1 + 136);
+      v4 = *(self + 136);
       if (v4)
       {
         CFRelease(v4);
-        *(a1 + 136) = 0;
+        *(self + 136) = 0;
       }
     }
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *off_1E798A340, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A340, 0);
   v7 = v6;
   if (v6)
   {
     dispatch_group_enter(v6);
   }
 
-  v8 = CMGetAttachment(a3, *off_1E798A488, 0);
+  v8 = CMGetAttachment(buffer, *off_1E798A488, 0);
   if (!v8 || ([v8 BOOLValue] & 1) != 0 || (v9 = FigSampleBufferProcessorGetFigBaseObject(), (v10 = *(*(CMBaseObjectGetVTable() + 8) + 56)) != 0) && !v10(v9, *off_1E7989E28, 0))
   {
     os_unfair_lock_lock(&self->_rectOfInterestLock);
@@ -436,7 +436,7 @@ LABEL_21:
       v17 = *(*(CMBaseObjectGetVTable() + 16) + 16);
       if (v17)
       {
-        v17(sampleBufferProcessor, a3);
+        v17(sampleBufferProcessor, buffer);
       }
     }
   }
@@ -448,9 +448,9 @@ LABEL_21:
   }
 }
 
-- (BOOL)_shouldEmitSBufForBarcodeCount:(__int128 *)a3 originalPTS:
+- (BOOL)_shouldEmitSBufForBarcodeCount:(__int128 *)count originalPTS:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -458,15 +458,15 @@ LABEL_21:
   v4 = a2;
   if (!a2)
   {
-    v4 = *(a1 + 160);
+    v4 = *(self + 160);
   }
 
   v5 = v4 > 0;
-  *(a1 + 160) = a2;
-  v6 = *(a1 + 216);
-  v8 = *a3;
-  v9 = *(a3 + 2);
-  [v6 node:a1 didEmitCodesCount:a2 emittedIdentifiers:0 originalPTS:&v8];
+  *(self + 160) = a2;
+  v6 = *(self + 216);
+  v8 = *count;
+  v9 = *(count + 2);
+  [v6 node:self didEmitCodesCount:a2 emittedIdentifiers:0 originalPTS:&v8];
   return v5;
 }
 

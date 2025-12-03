@@ -1,17 +1,17 @@
 @interface EQKitRule
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (EQKitRule)initWithHeight:(double)a3 depth:(double)a4 width:(double)a5 cgColor:(CGColor *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (EQKitRule)initWithHeight:(double)height depth:(double)depth width:(double)width cgColor:(CGColor *)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitRule
 
-- (EQKitRule)initWithHeight:(double)a3 depth:(double)a4 width:(double)a5 cgColor:(CGColor *)a6
+- (EQKitRule)initWithHeight:(double)height depth:(double)depth width:(double)width cgColor:(CGColor *)color
 {
   v14.receiver = self;
   v14.super_class = EQKitRule;
@@ -19,12 +19,12 @@
   v11 = v10;
   if (v10)
   {
-    v10->mHeight = a3;
-    v10->mDepth = a4;
-    v10->mWidth = a5;
-    if (a6)
+    v10->mHeight = height;
+    v10->mDepth = depth;
+    v10->mWidth = width;
+    if (color)
     {
-      v12 = CFRetain(a6);
+      v12 = CFRetain(color);
     }
 
     else
@@ -46,10 +46,10 @@
   [(EQKitRule *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   objc_msgSend_height(self, v9, v10, v11);
   v13 = v12;
   objc_msgSend_depth(self, v14, v15, v16);
@@ -60,21 +60,21 @@
   return objc_msgSend_initWithHeight_depth_width_cgColor_(v8, v22, mCGColor, v23, v13, v18, v24);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(isMemberOfClass) = 1;
     return isMemberOfClass;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_10;
   }
 
   v5 = objc_opt_class();
-  isMemberOfClass = objc_msgSend_isMemberOfClass_(a3, v6, v5, v7);
+  isMemberOfClass = objc_msgSend_isMemberOfClass_(equal, v6, v5, v7);
   if (!isMemberOfClass)
   {
     return isMemberOfClass;
@@ -82,8 +82,8 @@
 
   objc_msgSend_height(self, v9, v10, v11);
   v13 = v12;
-  objc_msgSend_height(a3, v14, v15, v16);
-  if (v13 != v20 || (objc_msgSend_depth(self, v17, v18, v19), v22 = v21, objc_msgSend_depth(a3, v23, v24, v25), v22 != v29) || (objc_msgSend_width(self, v26, v27, v28), v31 = v30, objc_msgSend_width(a3, v32, v33, v34), v31 != v38))
+  objc_msgSend_height(equal, v14, v15, v16);
+  if (v13 != v20 || (objc_msgSend_depth(self, v17, v18, v19), v22 = v21, objc_msgSend_depth(equal, v23, v24, v25), v22 != v29) || (objc_msgSend_width(self, v26, v27, v28), v31 = v30, objc_msgSend_width(equal, v32, v33, v34), v31 != v38))
   {
 LABEL_10:
     LOBYTE(isMemberOfClass) = 0;
@@ -91,7 +91,7 @@ LABEL_10:
   }
 
   v39 = objc_msgSend_color(self, v35, v36, v37);
-  v43 = objc_msgSend_color(a3, v40, v41, v42);
+  v43 = objc_msgSend_color(equal, v40, v41, v42);
 
   LOBYTE(isMemberOfClass) = CGColorEqualToColor(v39, v43);
   return isMemberOfClass;
@@ -104,13 +104,13 @@ LABEL_10:
   return [(EQKitBox *)&v3 hash];
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  if (a3)
+  if (context)
   {
-    y = a4.y;
-    x = a4.x;
-    objc_msgSend_width(self, a2, a3, v4);
+    y = offset.y;
+    x = offset.x;
+    objc_msgSend_width(self, a2, context, v4);
     v10 = v9;
     objc_msgSend_vsize(self, v11, v12, v13);
     if (v10 > 0.0)
@@ -120,8 +120,8 @@ LABEL_10:
       {
         if (self->mCGColor)
         {
-          CGContextSaveGState(a3);
-          CGContextSetFillColorWithColor(a3, self->mCGColor);
+          CGContextSaveGState(context);
+          CGContextSetFillColorWithColor(context, self->mCGColor);
         }
 
         objc_msgSend_height(self, v14, v15, v16);
@@ -145,23 +145,23 @@ LABEL_10:
           v23 = v18;
         }
 
-        CGContextFillRect(a3, *&v21);
+        CGContextFillRect(context, *&v21);
         if (self->mCGColor)
         {
 
-          CGContextRestoreGState(a3);
+          CGContextRestoreGState(context);
         }
       }
     }
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  v4 = *(a3 + 6);
+  v4 = *(spec + 6);
   if (v4 == 2)
   {
-    a4.x = a4.x + self->mWidth;
+    offset.x = offset.x + self->mWidth;
   }
 
   else if (v4)
@@ -169,7 +169,7 @@ LABEL_10:
     return 1;
   }
 
-  sub_275CD8470(a3, a4.x, a4.y, self->mHeight);
+  sub_275CD8470(spec, offset.x, offset.y, self->mHeight);
   return 1;
 }
 

@@ -18,34 +18,34 @@
 
 - (unint64_t)characterLimit
 {
-  v3 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-  v4 = [v3 isStoreAsset];
+  propertyProvider = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+  isStoreAsset = [propertyProvider isStoreAsset];
 
-  if (!v4)
+  if (!isStoreAsset)
   {
     return 138;
   }
 
-  v5 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-  v6 = [v5 storeShortURL];
-  if (v6)
+  propertyProvider2 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+  storeShortURL = [propertyProvider2 storeShortURL];
+  if (storeShortURL)
   {
-    v7 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-    v8 = [v7 storeShortURL];
-    v9 = [v8 absoluteString];
+    propertyProvider3 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+    storeShortURL2 = [propertyProvider3 storeShortURL];
+    absoluteString = [storeShortURL2 absoluteString];
   }
 
   else
   {
-    v9 = &stru_2D2930;
+    absoluteString = &stru_2D2930;
   }
 
   v11 = IMCommonCoreBundle();
   v12 = [v11 localizedStringForKey:@"%@ %@" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-  v13 = [[NSString alloc] initWithFormat:v12, &stru_2D2930, v9];
+  v13 = [[NSString alloc] initWithFormat:v12, &stru_2D2930, absoluteString];
   v14 = [v13 length];
-  v15 = [(__CFString *)v9 length];
+  v15 = [(__CFString *)absoluteString length];
   v16 = 138;
   if (!v15)
   {
@@ -61,40 +61,40 @@
 {
   v15.receiver = self;
   v15.super_class = AEAnnotationTwitterWeiboActivityItemProvider;
-  v3 = [(AEAnnotationSocialActivityItemProvider *)&v15 text];
-  v4 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-  v5 = [v4 isStoreAsset];
+  text = [(AEAnnotationSocialActivityItemProvider *)&v15 text];
+  propertyProvider = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+  isStoreAsset = [propertyProvider isStoreAsset];
 
-  if (v5)
+  if (isStoreAsset)
   {
-    v6 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-    v7 = [v6 storeShortURL];
-    if (v7)
+    propertyProvider2 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+    storeShortURL = [propertyProvider2 storeShortURL];
+    if (storeShortURL)
     {
-      v8 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-      v9 = [v8 storeShortURL];
-      v10 = [v9 absoluteString];
+      propertyProvider3 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+      storeShortURL2 = [propertyProvider3 storeShortURL];
+      absoluteString = [storeShortURL2 absoluteString];
     }
 
     else
     {
-      v10 = &stru_2D2930;
+      absoluteString = &stru_2D2930;
     }
 
     v11 = IMCommonCoreBundle();
     v12 = [v11 localizedStringForKey:@"%@ %@" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-    v13 = [NSString stringWithFormat:v12, v3, v10];
+    v13 = [NSString stringWithFormat:v12, text, absoluteString];
 
-    v3 = v13;
+    text = v13;
   }
 
-  return v3;
+  return text;
 }
 
 - (id)expandedItemProviders
 {
-  v3 = [(AEAnnotationTwitterWeiboActivityItemProvider *)self supportedActivityTypes];
+  supportedActivityTypes = [(AEAnnotationTwitterWeiboActivityItemProvider *)self supportedActivityTypes];
   v4 = +[NSMutableArray array];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -107,12 +107,12 @@
   v12[3] = &unk_2C8C50;
   v12[4] = self;
   v5 = [[IMBlockActivityItemPlusThumbnailProvider alloc] initWithUTI:@"public.plain-text" resolutionBlock:v13 thumbnailResolutionBlock:v12];
-  [(IMBlockActivityItemProvider *)v5 setSupportedActivityTypes:v3];
+  [(IMBlockActivityItemProvider *)v5 setSupportedActivityTypes:supportedActivityTypes];
   [v4 addObject:v5];
-  v6 = [(AEAssetActivityItemProviderSource *)self propertyProvider];
-  v7 = [v6 isStoreAsset];
+  propertyProvider = [(AEAssetActivityItemProviderSource *)self propertyProvider];
+  isStoreAsset = [propertyProvider isStoreAsset];
 
-  if (v7)
+  if (isStoreAsset)
   {
     v10[4] = self;
     v11[0] = _NSConcreteStackBlock;
@@ -125,7 +125,7 @@
     v10[2] = sub_2A330;
     v10[3] = &unk_2C8C50;
     v8 = [[IMBlockActivityItemPlusThumbnailProvider alloc] initWithUTI:@"public.url" resolutionBlock:v11 thumbnailResolutionBlock:v10];
-    [(IMBlockActivityItemProvider *)v8 setSupportedActivityTypes:v3];
+    [(IMBlockActivityItemProvider *)v8 setSupportedActivityTypes:supportedActivityTypes];
     [v4 addObject:v8];
   }
 

@@ -1,38 +1,38 @@
 @interface RootViewController
 - (CKBrowserViewControllerSendDelegate)sendDelegate;
-- (RootViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4;
-- (RootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (RootViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source;
+- (RootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)dismiss;
-- (void)setAdamID:(id)a3;
-- (void)setBalloonPlugin:(id)a3;
-- (void)setBalloonPluginDataSource:(id)a3;
-- (void)setPresentationViewController:(id)a3;
-- (void)setSendDelegate:(id)a3;
-- (void)setStoreLaunchURL:(id)a3 sourceApplication:(id)a4;
-- (void)shieldViewUnlockButtonPressed:(id)a3;
-- (void)storeRootViewController:(id)a3 didComplete:(id)a4;
-- (void)storeRootViewController:(id)a3 openApp:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setAdamID:(id)d;
+- (void)setBalloonPlugin:(id)plugin;
+- (void)setBalloonPluginDataSource:(id)source;
+- (void)setPresentationViewController:(id)controller;
+- (void)setSendDelegate:(id)delegate;
+- (void)setStoreLaunchURL:(id)l sourceApplication:(id)application;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
+- (void)storeRootViewController:(id)controller didComplete:(id)complete;
+- (void)storeRootViewController:(id)controller openApp:(id)app;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RootViewController
 
-- (RootViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4
+- (RootViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RootViewController *)self initWithBalloonPlugin:v6];
+  pluginCopy = plugin;
+  sourceCopy = source;
+  v8 = [(RootViewController *)self initWithBalloonPlugin:pluginCopy];
 
   if (v8)
   {
 
     v9 = *(&v8->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPluginDataSource);
-    *(&v8->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPluginDataSource) = v7;
-    v7 = v9;
+    *(&v8->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPluginDataSource) = sourceCopy;
+    sourceCopy = v9;
   }
 
   return v8;
@@ -44,12 +44,12 @@
   v6.super_class = type metadata accessor for RootViewController();
   v2 = v6.receiver;
   [(RootViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemBackgroundColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
+    [v4 setBackgroundColor:systemBackgroundColor];
   }
 
   else
@@ -58,23 +58,23 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewWillAppear:v3];
+  [(RootViewController *)&v5 viewWillAppear:appearCopy];
   sub_4A890();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewIsAppearing:v3];
+  [(RootViewController *)&v5 viewIsAppearing:appearingCopy];
   if ([*&v4[OBJC_IVAR___RootViewController_appProtectionSubject] isLocked])
   {
     sub_4AC88();
@@ -86,13 +86,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for RootViewController();
   v4 = v5.receiver;
-  [(RootViewController *)&v5 viewDidAppear:v3];
+  [(RootViewController *)&v5 viewDidAppear:appearCopy];
   if (([*&v4[OBJC_IVAR___RootViewController_appProtectionSubject] isLocked] & 1) == 0)
   {
     sub_4AFA4();
@@ -101,10 +101,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentTraitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  currentTraitCollection = [objc_opt_self() currentTraitCollection];
+  userInterfaceIdiom = [currentTraitCollection userInterfaceIdiom];
 
-  if (v3 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -115,18 +115,18 @@
   }
 }
 
-- (void)setAdamID:(id)a3
+- (void)setAdamID:(id)d
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_adamID);
-  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_adamID) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_adamID) = d;
+  dCopy = d;
 }
 
-- (void)setPresentationViewController:(id)a3
+- (void)setPresentationViewController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_presentationViewController);
-  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_presentationViewController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_presentationViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (CKBrowserViewControllerSendDelegate)sendDelegate
@@ -136,26 +136,26 @@
   return v2;
 }
 
-- (void)setSendDelegate:(id)a3
+- (void)setSendDelegate:(id)delegate
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_sendDelegate) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_sendDelegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setBalloonPlugin:(id)a3
+- (void)setBalloonPlugin:(id)plugin
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPlugin);
-  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPlugin) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPlugin) = plugin;
+  pluginCopy = plugin;
 }
 
-- (void)setBalloonPluginDataSource:(id)a3
+- (void)setBalloonPluginDataSource:(id)source
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPluginDataSource);
-  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPluginDataSource) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___RootViewController_balloonPluginDataSource) = source;
+  sourceCopy = source;
 }
 
 - (void)dismiss
@@ -172,12 +172,12 @@
   }
 }
 
-- (void)setStoreLaunchURL:(id)a3 sourceApplication:(id)a4
+- (void)setStoreLaunchURL:(id)l sourceApplication:(id)application
 {
   v7 = sub_BD88(&unk_93FD30);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  if (a3)
+  if (l)
   {
     sub_757060();
     v10 = sub_7570A0();
@@ -190,10 +190,10 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  if (a4)
+  if (application)
   {
     v12 = sub_769240();
-    a4 = v13;
+    application = v13;
   }
 
   else
@@ -201,21 +201,21 @@
     v12 = 0;
   }
 
-  v14 = self;
-  sub_4B9B8(v9, v12, a4);
+  selfCopy = self;
+  sub_4B9B8(v9, v12, application);
 
   sub_10A2C(v9, &unk_93FD30);
 }
 
-- (void)storeRootViewController:(id)a3 didComplete:(id)a4
+- (void)storeRootViewController:(id)controller didComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_4CB3C(v7);
+  controllerCopy = controller;
+  completeCopy = complete;
+  selfCopy = self;
+  sub_4CB3C(completeCopy);
 }
 
-- (void)storeRootViewController:(id)a3 openApp:(id)a4
+- (void)storeRootViewController:(id)controller openApp:(id)app
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR___RootViewController_sendDelegate))
   {
@@ -225,20 +225,20 @@
       v6 = v5;
       if ([v5 respondsToSelector:"openAppExtensionWithAdamID:"])
       {
-        [v6 openAppExtensionWithAdamID:a4];
+        [v6 openAppExtensionWithAdamID:app];
       }
     }
   }
 }
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
-  sub_4BE28(v4);
+  pressedCopy = pressed;
+  selfCopy = self;
+  sub_4BE28(pressedCopy);
 }
 
-- (RootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (RootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

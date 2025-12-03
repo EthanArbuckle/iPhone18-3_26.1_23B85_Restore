@@ -19,7 +19,7 @@
 
 - (void)updateColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_10044F090();
 }
 

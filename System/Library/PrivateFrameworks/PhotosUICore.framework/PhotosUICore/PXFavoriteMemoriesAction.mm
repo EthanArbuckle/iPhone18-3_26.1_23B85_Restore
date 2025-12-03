@@ -1,37 +1,37 @@
 @interface PXFavoriteMemoriesAction
-+ (BOOL)toggledValueForMemories:(id)a3;
-+ (id)menuTitleForMemories:(id)a3;
-- (PXFavoriteMemoriesAction)initWithMemories:(id)a3;
-- (PXFavoriteMemoriesAction)initWithMemories:(id)a3 favorite:(BOOL)a4;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
++ (BOOL)toggledValueForMemories:(id)memories;
++ (id)menuTitleForMemories:(id)memories;
+- (PXFavoriteMemoriesAction)initWithMemories:(id)memories;
+- (PXFavoriteMemoriesAction)initWithMemories:(id)memories favorite:(BOOL)favorite;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXFavoriteMemoriesAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXFavoriteMemoriesAction *)self isFavorite];
+  undoCopy = undo;
+  isFavorite = [(PXFavoriteMemoriesAction *)self isFavorite];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__PXFavoriteMemoriesAction_performUndo___block_invoke;
   v6[3] = &__block_descriptor_33_e44_v24__0__PHMemoryChangeRequest_8__NSString_16l;
-  v7 = !v5;
-  [(PXMemoriesAction *)self performMemoryChanges:v6 completionHandler:v4];
+  v7 = !isFavorite;
+  [(PXMemoriesAction *)self performMemoryChanges:v6 completionHandler:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXFavoriteMemoriesAction *)self isFavorite];
+  actionCopy = action;
+  isFavorite = [(PXFavoriteMemoriesAction *)self isFavorite];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__PXFavoriteMemoriesAction_performAction___block_invoke;
   v6[3] = &unk_1E772E2E0;
-  v7 = v5;
+  v7 = isFavorite;
   v6[4] = self;
-  [(PXMemoriesAction *)self performMemoryChanges:v6 completionHandler:v4];
+  [(PXMemoriesAction *)self performMemoryChanges:v6 completionHandler:actionCopy];
 }
 
 void __42__PXFavoriteMemoriesAction_performAction___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -63,25 +63,25 @@ void __42__PXFavoriteMemoriesAction_performAction___block_invoke(uint64_t a1, vo
   [v7 sendEvent:v8 withPayload:v13];
 }
 
-- (PXFavoriteMemoriesAction)initWithMemories:(id)a3
+- (PXFavoriteMemoriesAction)initWithMemories:(id)memories
 {
-  v4 = a3;
-  v5 = -[PXFavoriteMemoriesAction initWithMemories:favorite:](self, "initWithMemories:favorite:", v4, [objc_opt_class() toggledValueForMemories:v4]);
+  memoriesCopy = memories;
+  v5 = -[PXFavoriteMemoriesAction initWithMemories:favorite:](self, "initWithMemories:favorite:", memoriesCopy, [objc_opt_class() toggledValueForMemories:memoriesCopy]);
 
   return v5;
 }
 
-- (PXFavoriteMemoriesAction)initWithMemories:(id)a3 favorite:(BOOL)a4
+- (PXFavoriteMemoriesAction)initWithMemories:(id)memories favorite:(BOOL)favorite
 {
-  v4 = a4;
+  favoriteCopy = favorite;
   v12.receiver = self;
   v12.super_class = PXFavoriteMemoriesAction;
-  v5 = [(PXMemoriesAction *)&v12 initWithMemories:a3];
+  v5 = [(PXMemoriesAction *)&v12 initWithMemories:memories];
   v6 = v5;
   if (v5)
   {
-    v5->_favorite = v4;
-    if (v4)
+    v5->_favorite = favoriteCopy;
+    if (favoriteCopy)
     {
       v7 = @"heart";
     }
@@ -110,9 +110,9 @@ void __42__PXFavoriteMemoriesAction_performAction___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-+ (id)menuTitleForMemories:(id)a3
++ (id)menuTitleForMemories:(id)memories
 {
-  if ([a1 toggledValueForMemories:a3])
+  if ([self toggledValueForMemories:memories])
   {
     v3 = @"PXMemoriesFeedFavoriteMenuActionTitle";
   }
@@ -127,10 +127,10 @@ void __42__PXFavoriteMemoriesAction_performAction___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (BOOL)toggledValueForMemories:(id)a3
++ (BOOL)toggledValueForMemories:(id)memories
 {
-  v3 = a3;
-  if ([v3 count])
+  memoriesCopy = memories;
+  if ([memoriesCopy count])
   {
     PXExists();
   }

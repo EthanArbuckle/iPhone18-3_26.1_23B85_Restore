@@ -1,133 +1,133 @@
 @interface AGXG18PFamilyDevice
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)a3;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)a3;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)descriptor;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)size;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)length options:(unint64_t)options;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)descriptor;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)descriptor;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)descriptor;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)maxThreadsPerThreadgroup;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)a3 pixelFormat:(unint64_t)a4 sampleCount:(unint64_t)a5;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)a3 pixelFormat:(unint64_t)a4 sampleCount:(unint64_t)a5 sparsePageSize:(unint64_t)a6;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)tileSizeWithSparsePageSize:(SEL)a3 textureType:(int64_t)a4 pixelFormat:(unint64_t)a5 sampleCount:(unint64_t)a6;
-- (AGXG18PFamilyDevice)initWithAcceleratorPort:(unsigned int)a3 simultaneousInstances:(unsigned int)a4;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)type pixelFormat:(unint64_t)format sampleCount:(unint64_t)count;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)type pixelFormat:(unint64_t)format sampleCount:(unint64_t)count sparsePageSize:(unint64_t)size;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)tileSizeWithSparsePageSize:(SEL)size textureType:(int64_t)type pixelFormat:(unint64_t)format sampleCount:(unint64_t)count;
+- (AGXG18PFamilyDevice)initWithAcceleratorPort:(unsigned int)port simultaneousInstances:(unsigned int)instances;
 - (BOOL)buildBVHForRIA;
 - (BOOL)disableConsistentPerfState;
-- (BOOL)enableConsistentPerfState:(int)a3;
-- (BOOL)isCompatibleWithAccelerationStructure:(id)a3;
-- (BOOL)isVendorSliceCompatibleWithDeploymentTarget:(unsigned int)a3 platform:(unsigned int)a4 sdkVersion:(unsigned int)a5 compilerPluginVersion:(unsigned int)a6;
-- (BOOL)mapShaderSampleBufferWithBuffer:(id *)a3 capacity:(unint64_t)a4 size:(unint64_t)a5;
-- (BOOL)setupCompiler:(int)a3;
+- (BOOL)enableConsistentPerfState:(int)state;
+- (BOOL)isCompatibleWithAccelerationStructure:(id)structure;
+- (BOOL)isVendorSliceCompatibleWithDeploymentTarget:(unsigned int)target platform:(unsigned int)platform sdkVersion:(unsigned int)version compilerPluginVersion:(unsigned int)pluginVersion;
+- (BOOL)mapShaderSampleBufferWithBuffer:(id *)buffer capacity:(unint64_t)capacity size:(unint64_t)size;
+- (BOOL)setupCompiler:(int)compiler;
 - (BOOL)supportsMemoryOrderAtomics;
 - (BOOL)supportsRaytracing;
 - (MTLArchitecture)architecture;
 - (MTLTargetDeviceArchitecture)targetDeviceArchitecture;
 - (NSArray)counterSets;
 - (id).cxx_construct;
-- (id)copyIOSurfaceSharedTextureProperties:(id)a3;
-- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)a3 primitiveAccelerationStructures:(id)a4 withDescriptor:(id)a5;
-- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)a3 withDescriptor:(id)a4;
-- (id)functionHandleWithFunction:(id)a3;
-- (id)functionHandleWithFunction:(id)a3 resourceIndex:(unint64_t)a4;
-- (id)getConsistentPerfStateInfoAndReset:(BOOL)a3;
+- (id)copyIOSurfaceSharedTextureProperties:(id)properties;
+- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor;
+- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)bytes withDescriptor:(id)descriptor;
+- (id)functionHandleWithFunction:(id)function;
+- (id)functionHandleWithFunction:(id)function resourceIndex:(unint64_t)index;
+- (id)getConsistentPerfStateInfoAndReset:(BOOL)reset;
 - (id)getConsistentPerfStateMappingTable;
-- (id)getMostCompatibleArchitecture:(id)a3;
+- (id)getMostCompatibleArchitecture:(id)architecture;
 - (id)gpuRevisionName;
-- (id)mtlTensorFromGpuResourceID:(MTLResourceID)a3;
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 withDescriptor:(id)a4;
-- (id)newArchiveWithURL:(id)a3 error:(id *)a4;
-- (id)newArgumentEncoderWithLayout:(id)a3;
-- (id)newArgumentTableWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newBinaryArchiveWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6;
-- (id)newBufferWithDescriptor:(id)a3;
-- (id)newBufferWithIOSurface:(__IOSurface *)a3;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 placementSparsePageSize:(int64_t)a5;
+- (id)mtlTensorFromGpuResourceID:(MTLResourceID)d;
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size withDescriptor:(id)descriptor;
+- (id)newArchiveWithURL:(id)l error:(id *)error;
+- (id)newArgumentEncoderWithLayout:(id)layout;
+- (id)newArgumentTableWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newBinaryArchiveWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator;
+- (id)newBufferWithDescriptor:(id)descriptor;
+- (id)newBufferWithIOSurface:(__IOSurface *)surface;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options placementSparsePageSize:(int64_t)size;
 - (id)newCommandAllocator;
-- (id)newCommandAllocatorWithDescriptor:(id)a3 error:(id *)a4;
+- (id)newCommandAllocatorWithDescriptor:(id)descriptor error:(id *)error;
 - (id)newCommandBuffer;
 - (id)newCommandQueue;
-- (id)newCommandQueueWithDescriptor:(id)a3;
-- (id)newCompilerWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newCounterHeapWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newCounterSampleBufferWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newCounterSampleBufferWithLength:(unint64_t)a3 label:(id)a4 error:(id *)a5;
+- (id)newCommandQueueWithDescriptor:(id)descriptor;
+- (id)newCompilerWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newCounterHeapWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newCounterSampleBufferWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newCounterSampleBufferWithLength:(unint64_t)length label:(id)label error:(id *)error;
 - (id)newDefaultLibrary;
-- (id)newDepthStencilStateWithDescriptor:(id)a3;
+- (id)newDepthStencilStateWithDescriptor:(id)descriptor;
 - (id)newDevicePoolAliasedCommandAllocator;
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5;
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)newHeapWithDescriptor:(id)a3;
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newIndirectArgumentBufferLayoutWithStructType:(id)a3;
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newIndirectRenderCommandEncoderWithBuffer:(id)a3;
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error;
+- (id)newDynamicLibrary:(id)library error:(id *)error;
+- (id)newDynamicLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)newHeapWithDescriptor:(id)descriptor;
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newIndirectArgumentBufferLayoutWithStructType:(id)type;
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options;
+- (id)newIndirectRenderCommandEncoderWithBuffer:(id)buffer;
 - (id)newLateEvalEvent;
-- (id)newLibraryWithData:(id)a3 error:(id *)a4;
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4;
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)newLibraryWithData:(id)data error:(id *)error;
+- (id)newLibraryWithFile:(id)file error:(id *)error;
+- (id)newLibraryWithSource:(id)source options:(id)options error:(id *)error;
 - (id)newMTL4CommandQueue;
-- (id)newMTL4CommandQueueWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newPerformanceStateAssertion:(int64_t)a3 error:(id *)a4;
-- (id)newProfileWithExecutionSize:(unint64_t)a3;
-- (id)newRasterizationRateMapWithDescriptor:(id)a3;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newResourceGroupFromResources:(const void *)a3 count:(unint64_t)a4;
-- (id)newSamplerStateWithDescriptor:(id)a3;
-- (id)newTensorWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 strides:(id)a6 error:(id *)a7;
-- (id)newTensorWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newTextureLayoutWithDescriptor:(id)a3 isHeapOrBufferBacked:(BOOL)a4;
-- (id)newTextureViewPoolWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newTextureWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5 deallocator:(id)a6;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5;
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5 slice:(unint64_t)a6;
+- (id)newMTL4CommandQueueWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newPerformanceStateAssertion:(int64_t)assertion error:(id *)error;
+- (id)newProfileWithExecutionSize:(unint64_t)size;
+- (id)newRasterizationRateMapWithDescriptor:(id)descriptor;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newResourceGroupFromResources:(const void *)resources count:(unint64_t)count;
+- (id)newSamplerStateWithDescriptor:(id)descriptor;
+- (id)newTensorWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset strides:(id)strides error:(id *)error;
+- (id)newTensorWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newTextureLayoutWithDescriptor:(id)descriptor isHeapOrBufferBacked:(BOOL)backed;
+- (id)newTextureViewPoolWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newTextureWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor deallocator:(id)deallocator;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane;
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane slice:(unint64_t)slice;
 - (int64_t)currentPerformanceState;
 - (unint64_t)bufferRobustnessSupport;
 - (unint64_t)latestSupportedGenericBVHVersion;
-- (unint64_t)sizeOfCounterHeapEntry:(int64_t)a3;
+- (unint64_t)sizeOfCounterHeapEntry:(int64_t)entry;
 - (unsigned)gpuCoreCount;
 - (void)_decrementCommandQueueCount;
 - (void)_deregisterForSignpostEnablement;
 - (void)_incrementCommandQueueCount;
 - (void)_purgeDevice;
 - (void)_registerForSignpostEnablement;
-- (void)_storeComputePipelineState:(id)a3;
-- (void)_storeRenderPipelineState:(id)a3;
+- (void)_storeComputePipelineState:(id)state;
+- (void)_storeRenderPipelineState:(id)state;
 - (void)alertCommandBufferActivityComplete;
 - (void)alertCommandBufferActivityStart;
-- (void)compileVisibleFunction:(id)a3 withDescriptor:(id)a4 completionHandler:(id)a5;
-- (void)compileVisibleFunction:(id)a3 withDescriptor:(id)a4 destinationBinaryArchive:(id)a5 error:(id *)a6;
-- (void)compileVisibleFunction:(id)a3 withDescriptor:(id)a4 error:(id *)a5;
+- (void)compileVisibleFunction:(id)function withDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)compileVisibleFunction:(id)function withDescriptor:(id)descriptor destinationBinaryArchive:(id)archive error:(id *)error;
+- (void)compileVisibleFunction:(id)function withDescriptor:(id)descriptor error:(id *)error;
 - (void)dealloc;
-- (void)deserializeCompileTimeStats:(id)a3 addToDictionary:(id)a4;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 fromBytes:(const void *)a4 primitiveAccelerationStructures:(id)a5 withDescriptor:(id)a6;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBytes:(const void *)a4 withDescriptor:(id)a5;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)removePerformanceStateAssertion:(id)a3;
-- (void)reserveResourceIndicesForResourceType:(unint64_t)a3 indices:(unint64_t *)a4 indexCount:(unint64_t)a5;
-- (void)sampleTimestamps:(unint64_t *)a3 gpuTimestamp:(unint64_t *)a4;
+- (void)deserializeCompileTimeStats:(id)stats addToDictionary:(id)dictionary;
+- (void)deserializeInstanceAccelerationStructure:(id)structure fromBytes:(const void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBytes:(const void *)bytes withDescriptor:(id)descriptor;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newLibraryWithSource:(id)source options:(id)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)removePerformanceStateAssertion:(id)assertion;
+- (void)reserveResourceIndicesForResourceType:(unint64_t)type indices:(unint64_t *)indices indexCount:(unint64_t)count;
+- (void)sampleTimestamps:(unint64_t *)timestamps gpuTimestamp:(unint64_t *)timestamp;
 - (void)setupDeferred;
 - (void)shrinkHeaps;
 - (void)unmapShaderSampleBuffer;
@@ -146,9 +146,9 @@
   return self;
 }
 
-- (unint64_t)sizeOfCounterHeapEntry:(int64_t)a3
+- (unint64_t)sizeOfCounterHeapEntry:(int64_t)entry
 {
-  if (a3 == 1)
+  if (entry == 1)
   {
     return 8;
   }
@@ -157,49 +157,49 @@
   return 0;
 }
 
-- (id)newCounterHeapWithDescriptor:(id)a3 error:(id *)a4
+- (id)newCounterHeapWithDescriptor:(id)descriptor error:(id *)error
 {
   v10[1] = *MEMORY[0x29EDCA608];
-  if ([a3 type] == 1)
+  if ([descriptor type] == 1)
   {
     v7 = [AGXTimestampCounterHeap alloc];
 
-    return [(AGXTimestampCounterHeap *)v7 initWithDevice:self descriptor:a3 error:a4];
+    return [(AGXTimestampCounterHeap *)v7 initWithDevice:self descriptor:descriptor error:error];
   }
 
   else
   {
     v9 = *MEMORY[0x29EDB9ED8];
     v10[0] = @"Type must be MTLCounterHeapTypeTimestamp";
-    *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLCounterHeapDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1)}];
+    *error = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLCounterHeapDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1)}];
     fwrite("AGX: MTLCounterHeap: Only timestamp counter heaps are currently supported.\n", 0x4BuLL, 1uLL, *MEMORY[0x29EDCA610]);
     return 0;
   }
 }
 
-- (id)functionHandleWithFunction:(id)a3 resourceIndex:(unint64_t)a4
+- (id)functionHandleWithFunction:(id)function resourceIndex:(unint64_t)index
 {
-  if (([a3 options] & 1) == 0 || objc_msgSend(a3, "functionType") != 6)
+  if (([function options] & 1) == 0 || objc_msgSend(function, "functionType") != 6)
   {
     return 0;
   }
 
-  return AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::getBinaryLinkedIntersectionFnHandle(a3, self);
+  return AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::getBinaryLinkedIntersectionFnHandle(function, self);
 }
 
-- (id)functionHandleWithFunction:(id)a3
+- (id)functionHandleWithFunction:(id)function
 {
-  if (([a3 options] & 1) == 0 || objc_msgSend(a3, "functionType") != 6)
+  if (([function options] & 1) == 0 || objc_msgSend(function, "functionType") != 6)
   {
     return 0;
   }
 
-  return AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::getBinaryLinkedIntersectionFnHandle(a3, self);
+  return AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::getBinaryLinkedIntersectionFnHandle(function, self);
 }
 
-- (id)mtlTensorFromGpuResourceID:(MTLResourceID)a3
+- (id)mtlTensorFromGpuResourceID:(MTLResourceID)d
 {
-  impl = a3._impl;
+  impl = d._impl;
   v4 = self->_impl;
   os_unfair_lock_lock(v4 + 2946);
   os_unfair_lock_assert_owner(v4 + 2946);
@@ -208,26 +208,26 @@
   return v5;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)tensorSizeAndAlignWithDescriptor:(id)descriptor
 {
-  v4 = *[objc_msgSend(a3 "dimensions")];
+  v4 = *[objc_msgSend(descriptor "dimensions")];
   if (v4)
   {
     v5 = 8 * v4 - 8;
-    v6 = *([objc_msgSend(a3 "dimensions")] + v5 + 8);
-    v7 = *([objc_msgSend(a3 "strides")] + v5 + 8) * v6;
-    v8 = [a3 dataType];
-    if (v8 <= 36)
+    v6 = *([objc_msgSend(descriptor "dimensions")] + v5 + 8);
+    v7 = *([objc_msgSend(descriptor "strides")] + v5 + 8) * v6;
+    dataType = [descriptor dataType];
+    if (dataType <= 36)
     {
-      if (v8 > 28)
+      if (dataType > 28)
       {
-        if (v8 == 29)
+        if (dataType == 29)
         {
           v9 = 7u;
           goto LABEL_40;
         }
 
-        if (v8 == 33)
+        if (dataType == 33)
         {
           v9 = 8u;
           goto LABEL_40;
@@ -236,13 +236,13 @@
 
       else
       {
-        if (v8 == 3)
+        if (dataType == 3)
         {
           v9 = 0;
           goto LABEL_40;
         }
 
-        if (v8 == 16)
+        if (dataType == 16)
         {
           v9 = 1u;
           goto LABEL_40;
@@ -250,15 +250,15 @@
       }
     }
 
-    else if (v8 <= 44)
+    else if (dataType <= 44)
     {
-      if (v8 == 37)
+      if (dataType == 37)
       {
         v9 = 5u;
         goto LABEL_40;
       }
 
-      if (v8 == 41)
+      if (dataType == 41)
       {
         v9 = 6u;
         goto LABEL_40;
@@ -267,7 +267,7 @@
 
     else
     {
-      switch(v8)
+      switch(dataType)
       {
         case '-':
           v9 = 3u;
@@ -287,18 +287,18 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v10 = [a3 dataType];
-  if (v10 <= 36)
+  dataType2 = [descriptor dataType];
+  if (dataType2 <= 36)
   {
-    if (v10 > 28)
+    if (dataType2 > 28)
     {
-      if (v10 == 29)
+      if (dataType2 == 29)
       {
         v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[7];
         goto LABEL_41;
       }
 
-      if (v10 == 33)
+      if (dataType2 == 33)
       {
         v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[8];
         goto LABEL_41;
@@ -307,13 +307,13 @@ LABEL_40:
 
     else
     {
-      if (v10 == 3)
+      if (dataType2 == 3)
       {
         v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[0];
         goto LABEL_41;
       }
 
-      if (v10 == 16)
+      if (dataType2 == 16)
       {
         v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[1];
         goto LABEL_41;
@@ -321,15 +321,15 @@ LABEL_40:
     }
   }
 
-  else if (v10 <= 44)
+  else if (dataType2 <= 44)
   {
-    if (v10 == 37)
+    if (dataType2 == 37)
     {
       v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[5];
       goto LABEL_41;
     }
 
-    if (v10 == 41)
+    if (dataType2 == 41)
     {
       v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[6];
       goto LABEL_41;
@@ -338,7 +338,7 @@ LABEL_40:
 
   else
   {
-    switch(v10)
+    switch(dataType2)
     {
       case '-':
         v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[3];
@@ -354,18 +354,18 @@ LABEL_40:
 
   v11 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[255];
 LABEL_41:
-  v12 = [a3 dataType];
-  if (v12 <= 36)
+  dataType3 = [descriptor dataType];
+  if (dataType3 <= 36)
   {
-    if (v12 > 28)
+    if (dataType3 > 28)
     {
-      if (v12 == 29)
+      if (dataType3 == 29)
       {
         v13 = 7u;
         goto LABEL_63;
       }
 
-      if (v12 == 33)
+      if (dataType3 == 33)
       {
         v13 = 8u;
         goto LABEL_63;
@@ -374,13 +374,13 @@ LABEL_41:
 
     else
     {
-      if (v12 == 3)
+      if (dataType3 == 3)
       {
         v13 = 0;
         goto LABEL_63;
       }
 
-      if (v12 == 16)
+      if (dataType3 == 16)
       {
         v13 = 1u;
         goto LABEL_63;
@@ -392,15 +392,15 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  if (v12 <= 44)
+  if (dataType3 <= 44)
   {
-    if (v12 == 37)
+    if (dataType3 == 37)
     {
       v13 = 5u;
       goto LABEL_63;
     }
 
-    if (v12 == 41)
+    if (dataType3 == 41)
     {
       v13 = 6u;
       goto LABEL_63;
@@ -409,19 +409,19 @@ LABEL_62:
     goto LABEL_62;
   }
 
-  if (v12 == 45)
+  if (dataType3 == 45)
   {
     v13 = 3u;
     goto LABEL_63;
   }
 
-  if (v12 == 49)
+  if (dataType3 == 49)
   {
     v13 = 4u;
     goto LABEL_63;
   }
 
-  if (v12 != 121)
+  if (dataType3 != 121)
   {
     goto LABEL_62;
   }
@@ -435,26 +435,26 @@ LABEL_63:
   return result;
 }
 
-- (id)newTensorWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 strides:(id)a6 error:(id *)a7
+- (id)newTensorWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset strides:(id)strides error:(id *)error
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
-  if (![a4 validateWithBuffer:a3 offset:a5 error:a7])
+  if (![descriptor validateWithBuffer:buffer offset:offset error:error])
   {
     return 0;
   }
 
-  v13 = [a4 dataType];
-  if (v13 <= 36)
+  dataType = [descriptor dataType];
+  if (dataType <= 36)
   {
-    if (v13 > 28)
+    if (dataType > 28)
     {
-      if (v13 == 29)
+      if (dataType == 29)
       {
         v14 = 7u;
         goto LABEL_25;
       }
 
-      if (v13 == 33)
+      if (dataType == 33)
       {
         v14 = 8u;
         goto LABEL_25;
@@ -463,13 +463,13 @@ LABEL_63:
 
     else
     {
-      if (v13 == 3)
+      if (dataType == 3)
       {
         v14 = 0;
         goto LABEL_25;
       }
 
-      if (v13 == 16)
+      if (dataType == 16)
       {
         v14 = 1u;
         goto LABEL_25;
@@ -477,15 +477,15 @@ LABEL_63:
     }
   }
 
-  else if (v13 <= 44)
+  else if (dataType <= 44)
   {
-    if (v13 == 37)
+    if (dataType == 37)
     {
       v14 = 5u;
       goto LABEL_25;
     }
 
-    if (v13 == 41)
+    if (dataType == 41)
     {
       v14 = 6u;
       goto LABEL_25;
@@ -494,7 +494,7 @@ LABEL_63:
 
   else
   {
-    switch(v13)
+    switch(dataType)
     {
       case '-':
         v14 = 3u;
@@ -510,23 +510,23 @@ LABEL_63:
 
   v14 = 0xFFu;
 LABEL_25:
-  v16 = a5 / AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[v14];
+  v16 = offset / AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[v14];
   v17 = [AGXG18PFamilyTensor alloc];
-  v18 = [objc_msgSend(a4 "dimensions")];
-  v19 = [objc_msgSend(a4 "dimensions")];
-  v20 = [a6 tensorExtentsInternal];
-  v21 = [a4 dataType];
-  if (v21 <= 36)
+  v18 = [objc_msgSend(descriptor "dimensions")];
+  v19 = [objc_msgSend(descriptor "dimensions")];
+  tensorExtentsInternal = [strides tensorExtentsInternal];
+  dataType2 = [descriptor dataType];
+  if (dataType2 <= 36)
   {
-    if (v21 > 28)
+    if (dataType2 > 28)
     {
-      if (v21 == 29)
+      if (dataType2 == 29)
       {
         v22 = 7;
         goto LABEL_47;
       }
 
-      if (v21 == 33)
+      if (dataType2 == 33)
       {
         v22 = 8;
         goto LABEL_47;
@@ -535,13 +535,13 @@ LABEL_25:
 
     else
     {
-      if (v21 == 3)
+      if (dataType2 == 3)
       {
         v22 = 0;
         goto LABEL_47;
       }
 
-      if (v21 == 16)
+      if (dataType2 == 16)
       {
         v22 = 1;
         goto LABEL_47;
@@ -553,15 +553,15 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if (v21 <= 44)
+  if (dataType2 <= 44)
   {
-    if (v21 == 37)
+    if (dataType2 == 37)
     {
       v22 = 5;
       goto LABEL_47;
     }
 
-    if (v21 == 41)
+    if (dataType2 == 41)
     {
       v22 = 6;
       goto LABEL_47;
@@ -570,19 +570,19 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (v21 == 45)
+  if (dataType2 == 45)
   {
     v22 = 3;
     goto LABEL_47;
   }
 
-  if (v21 == 49)
+  if (dataType2 == 49)
   {
     v22 = 4;
     goto LABEL_47;
   }
 
-  if (v21 != 121)
+  if (dataType2 != 121)
   {
     goto LABEL_46;
   }
@@ -590,31 +590,31 @@ LABEL_46:
   v22 = 2;
 LABEL_47:
   LOBYTE(v23) = v22;
-  return -[AGXG18PFamilyTensor initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:](v17, "initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:", a3, self, v18, v19 + 8, v20 + 8, v16, v23, [a4 usage], objc_msgSend(a4, "resourceIndex"));
+  return -[AGXG18PFamilyTensor initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:](v17, "initWithBuffer:device:rank:dims:strides:offset:dataType:usage:resourceIndex:", buffer, self, v18, v19 + 8, tensorExtentsInternal + 8, v16, v23, [descriptor usage], objc_msgSend(descriptor, "resourceIndex"));
 }
 
-- (id)newTensorWithDescriptor:(id)a3 error:(id *)a4
+- (id)newTensorWithDescriptor:(id)descriptor error:(id *)error
 {
   v33[16] = *MEMORY[0x29EDCA608];
   [(AGXG18PFamilyDevice *)self setupDeferred];
-  if (![a3 validateWithDevice:self error:a4])
+  if (![descriptor validateWithDevice:self error:error])
   {
     return 0;
   }
 
-  v7 = *[objc_msgSend(a3 "dimensions")];
-  v8 = [a3 dataType];
-  if (v8 <= 36)
+  v7 = *[objc_msgSend(descriptor "dimensions")];
+  dataType = [descriptor dataType];
+  if (dataType <= 36)
   {
-    if (v8 > 28)
+    if (dataType > 28)
     {
-      if (v8 == 29)
+      if (dataType == 29)
       {
         v9 = 7u;
         goto LABEL_25;
       }
 
-      if (v8 == 33)
+      if (dataType == 33)
       {
         v9 = 8u;
         goto LABEL_25;
@@ -623,13 +623,13 @@ LABEL_47:
 
     else
     {
-      if (v8 == 3)
+      if (dataType == 3)
       {
         v9 = 0;
         goto LABEL_25;
       }
 
-      if (v8 == 16)
+      if (dataType == 16)
       {
         v9 = 1u;
         goto LABEL_25;
@@ -637,15 +637,15 @@ LABEL_47:
     }
   }
 
-  else if (v8 <= 44)
+  else if (dataType <= 44)
   {
-    if (v8 == 37)
+    if (dataType == 37)
     {
       v9 = 5u;
       goto LABEL_25;
     }
 
-    if (v8 == 41)
+    if (dataType == 41)
     {
       v9 = 6u;
       goto LABEL_25;
@@ -654,7 +654,7 @@ LABEL_47:
 
   else
   {
-    switch(v8)
+    switch(dataType)
     {
       case '-':
         v9 = 3u;
@@ -684,9 +684,9 @@ LABEL_25:
     v22 = 1;
     while (1)
     {
-      v23 = [a3 usage];
-      v24 = ([objc_msgSend(a3 "dimensions")] + 8);
-      if (v22 == 1 && (v23 & 4) != 0)
+      usage = [descriptor usage];
+      v24 = ([objc_msgSend(descriptor "dimensions")] + 8);
+      if (v22 == 1 && (usage & 4) != 0)
       {
         break;
       }
@@ -701,18 +701,18 @@ LABEL_44:
     }
 
     v25 = *v24;
-    v26 = [a3 dataType];
-    if (v26 <= 36)
+    dataType2 = [descriptor dataType];
+    if (dataType2 <= 36)
     {
-      if (v26 > 28)
+      if (dataType2 > 28)
       {
-        if (v26 == 29)
+        if (dataType2 == 29)
         {
           v27 = 7u;
           goto LABEL_69;
         }
 
-        if (v26 == 33)
+        if (dataType2 == 33)
         {
           v27 = 8u;
           goto LABEL_69;
@@ -721,13 +721,13 @@ LABEL_44:
 
       else
       {
-        if (v26 == 3)
+        if (dataType2 == 3)
         {
           v27 = 0;
           goto LABEL_69;
         }
 
-        if (v26 == 16)
+        if (dataType2 == 16)
         {
           v27 = 1u;
           goto LABEL_69;
@@ -735,15 +735,15 @@ LABEL_44:
       }
     }
 
-    else if (v26 <= 44)
+    else if (dataType2 <= 44)
     {
-      if (v26 == 37)
+      if (dataType2 == 37)
       {
         v27 = 5u;
         goto LABEL_69;
       }
 
-      if (v26 == 41)
+      if (dataType2 == 41)
       {
         v27 = 6u;
         goto LABEL_69;
@@ -752,7 +752,7 @@ LABEL_44:
 
     else
     {
-      switch(v26)
+      switch(dataType2)
       {
         case '-':
           v27 = 3u;
@@ -769,18 +769,18 @@ LABEL_44:
     v27 = 0xFFu;
 LABEL_69:
     v28 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[v27];
-    v29 = [a3 dataType];
-    if (v29 <= 36)
+    dataType3 = [descriptor dataType];
+    if (dataType3 <= 36)
     {
-      if (v29 > 28)
+      if (dataType3 > 28)
       {
-        if (v29 == 29)
+        if (dataType3 == 29)
         {
           v30 = 7u;
           goto LABEL_91;
         }
 
-        if (v29 == 33)
+        if (dataType3 == 33)
         {
           v30 = 8u;
           goto LABEL_91;
@@ -789,13 +789,13 @@ LABEL_69:
 
       else
       {
-        if (v29 == 3)
+        if (dataType3 == 3)
         {
           v30 = 0;
           goto LABEL_91;
         }
 
-        if (v29 == 16)
+        if (dataType3 == 16)
         {
           v30 = 1u;
           goto LABEL_91;
@@ -803,15 +803,15 @@ LABEL_69:
       }
     }
 
-    else if (v29 <= 44)
+    else if (dataType3 <= 44)
     {
-      if (v29 == 37)
+      if (dataType3 == 37)
       {
         v30 = 5u;
         goto LABEL_91;
       }
 
-      if (v29 == 41)
+      if (dataType3 == 41)
       {
         v30 = 6u;
         goto LABEL_91;
@@ -820,7 +820,7 @@ LABEL_69:
 
     else
     {
-      switch(v29)
+      switch(dataType3)
       {
         case '-':
           v30 = 3u;
@@ -842,16 +842,16 @@ LABEL_91:
 
 LABEL_27:
   v12 = v33[v7 - 1];
-  v13 = [objc_msgSend(a3 "dimensions")];
+  v13 = [objc_msgSend(descriptor "dimensions")];
   v14 = v12 * v32 * *(v13 + 8 * v7);
-  v15 = [a3 usage];
+  usage2 = [descriptor usage];
   v16 = (v14 + 63) & 0xFFFFFFFFFFFFFFC0;
   if (v7 != 1)
   {
     v16 = v14;
   }
 
-  if ((v15 & 4) != 0)
+  if ((usage2 & 4) != 0)
   {
     v11 = v16;
   }
@@ -863,19 +863,19 @@ LABEL_27:
 
 LABEL_32:
   v17 = [AGXG18PFamilyTensor alloc];
-  v18 = [objc_msgSend(a3 "dimensions")];
-  v19 = [a3 dataType];
-  if (v19 <= 36)
+  v18 = [objc_msgSend(descriptor "dimensions")];
+  dataType4 = [descriptor dataType];
+  if (dataType4 <= 36)
   {
-    if (v19 > 28)
+    if (dataType4 > 28)
     {
-      if (v19 == 29)
+      if (dataType4 == 29)
       {
         v20 = 7;
         goto LABEL_104;
       }
 
-      if (v19 == 33)
+      if (dataType4 == 33)
       {
         v20 = 8;
         goto LABEL_104;
@@ -884,13 +884,13 @@ LABEL_32:
 
     else
     {
-      if (v19 == 3)
+      if (dataType4 == 3)
       {
         v20 = 0;
         goto LABEL_104;
       }
 
-      if (v19 == 16)
+      if (dataType4 == 16)
       {
         v20 = 1;
         goto LABEL_104;
@@ -902,15 +902,15 @@ LABEL_103:
     goto LABEL_104;
   }
 
-  if (v19 <= 44)
+  if (dataType4 <= 44)
   {
-    if (v19 == 37)
+    if (dataType4 == 37)
     {
       v20 = 5;
       goto LABEL_104;
     }
 
-    if (v19 == 41)
+    if (dataType4 == 41)
     {
       v20 = 6;
       goto LABEL_104;
@@ -919,19 +919,19 @@ LABEL_103:
     goto LABEL_103;
   }
 
-  if (v19 == 45)
+  if (dataType4 == 45)
   {
     v20 = 3;
     goto LABEL_104;
   }
 
-  if (v19 == 49)
+  if (dataType4 == 49)
   {
     v20 = 4;
     goto LABEL_104;
   }
 
-  if (v19 != 121)
+  if (dataType4 != 121)
   {
     goto LABEL_103;
   }
@@ -939,19 +939,19 @@ LABEL_103:
   v20 = 2;
 LABEL_104:
   LOBYTE(v31) = v20;
-  return -[AGXG18PFamilyTensor initWithDevice:length:rank:dims:strides:offset:dataType:usage:resourceIndex:storageMode:resourceOptions:](v17, "initWithDevice:length:rank:dims:strides:offset:dataType:usage:resourceIndex:storageMode:resourceOptions:", self, v11, v7, v18 + 8, v33, 0, v31, [a3 usage], objc_msgSend(a3, "resourceIndex"), 0, objc_msgSend(a3, "resourceOptions"));
+  return -[AGXG18PFamilyTensor initWithDevice:length:rank:dims:strides:offset:dataType:usage:resourceIndex:storageMode:resourceOptions:](v17, "initWithDevice:length:rank:dims:strides:offset:dataType:usage:resourceIndex:storageMode:resourceOptions:", self, v11, v7, v18 + 8, v33, 0, v31, [descriptor usage], objc_msgSend(descriptor, "resourceIndex"), 0, objc_msgSend(descriptor, "resourceOptions"));
 }
 
-- (void)reserveResourceIndicesForResourceType:(unint64_t)a3 indices:(unint64_t *)a4 indexCount:(unint64_t)a5
+- (void)reserveResourceIndicesForResourceType:(unint64_t)type indices:(unint64_t *)indices indexCount:(unint64_t)count
 {
   v36 = *MEMORY[0x29EDCA608];
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 <= 3)
+    if (type <= 3)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 != 1)
+        if (type != 1)
         {
           return;
         }
@@ -982,12 +982,12 @@ LABEL_104:
           goto LABEL_78;
         }
 
-        if (!a5)
+        if (!count)
         {
           goto LABEL_82;
         }
 
-        if ((a5 & 0x8000000000000000) == 0)
+        if ((count & 0x8000000000000000) == 0)
         {
           operator new();
         }
@@ -1022,7 +1022,7 @@ LABEL_104:
           goto LABEL_78;
         }
 
-        if (!a5)
+        if (!count)
         {
           if (atomic_load_explicit(v16 + 8412, memory_order_acquire))
           {
@@ -1041,7 +1041,7 @@ LABEL_104:
           goto LABEL_82;
         }
 
-        if ((a5 & 0x8000000000000000) == 0)
+        if ((count & 0x8000000000000000) == 0)
         {
           operator new();
         }
@@ -1051,7 +1051,7 @@ LABEL_104:
     }
 
     v12 = self->_impl;
-    if (a3 == 4)
+    if (type == 4)
     {
       v13 = 1476;
     }
@@ -1064,14 +1064,14 @@ LABEL_104:
     goto LABEL_68;
   }
 
-  if (a3 > 7)
+  if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8uLL:
-        v20 = [(AGXG18PFamilyDevice *)self buildBVHForRIA];
+        buildBVHForRIA = [(AGXG18PFamilyDevice *)self buildBVHForRIA];
         v21 = self->_impl;
-        if (v20)
+        if (buildBVHForRIA)
         {
           v8 = v21 + 2546;
           os_unfair_lock_lock(v21 + 2546);
@@ -1098,12 +1098,12 @@ LABEL_104:
             goto LABEL_78;
           }
 
-          if (!a5)
+          if (!count)
           {
             goto LABEL_82;
           }
 
-          if ((a5 & 0x8000000000000000) == 0)
+          if ((count & 0x8000000000000000) == 0)
           {
             operator new();
           }
@@ -1136,12 +1136,12 @@ LABEL_104:
             goto LABEL_78;
           }
 
-          if (!a5)
+          if (!count)
           {
             goto LABEL_82;
           }
 
-          if ((a5 & 0x8000000000000000) == 0)
+          if ((count & 0x8000000000000000) == 0)
           {
             operator new();
           }
@@ -1175,12 +1175,12 @@ LABEL_104:
           goto LABEL_78;
         }
 
-        if (!a5)
+        if (!count)
         {
           goto LABEL_82;
         }
 
-        if ((a5 & 0x8000000000000000) == 0)
+        if ((count & 0x8000000000000000) == 0)
         {
           operator new();
         }
@@ -1193,9 +1193,9 @@ LABEL_104:
         v9 = *&v7[3708]._os_unfair_lock_opaque;
         if (!*(v9 + 760) && atomic_load_explicit((v9 + 756), memory_order_acquire) + 1 < 2)
         {
-          if (a5)
+          if (count)
           {
-            if ((a5 & 0x8000000000000000) == 0)
+            if ((count & 0x8000000000000000) == 0)
             {
               operator new();
             }
@@ -1242,11 +1242,11 @@ LABEL_86:
     std::__throw_bad_array_new_length[abi:nn200100]();
   }
 
-  if (a3 == 6)
+  if (type == 6)
   {
-    v24 = [(AGXG18PFamilyDevice *)self requiresRaytracingEmulation];
+    requiresRaytracingEmulation = [(AGXG18PFamilyDevice *)self requiresRaytracingEmulation];
     v12 = self->_impl;
-    if (!v24)
+    if (!requiresRaytracingEmulation)
     {
       v13 = 1670;
       goto LABEL_68;
@@ -1255,33 +1255,33 @@ LABEL_86:
 
   else
   {
-    v15 = [(AGXG18PFamilyDevice *)self requiresRaytracingEmulation];
+    requiresRaytracingEmulation2 = [(AGXG18PFamilyDevice *)self requiresRaytracingEmulation];
     v12 = self->_impl;
-    if (!v15)
+    if (!requiresRaytracingEmulation2)
     {
       v13 = 1864;
 LABEL_68:
 
-      AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::reserve(&v12[v13], a4, a5);
+      AGX::Mempool<32u,0u,true,0u,0u,unsigned long long>::reserve(&v12[v13], indices, count);
       return;
     }
   }
 
   v25 = v12[1962];
 
-  std::vector<unsigned long long>::__insert_with_size[abi:nn200100]<unsigned long long *,unsigned long long *>((v12 + 1961), v25, a4, &a4[a5], a5);
+  std::vector<unsigned long long>::__insert_with_size[abi:nn200100]<unsigned long long *,unsigned long long *>((v12 + 1961), v25, indices, &indices[count], count);
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithDescriptor:(id)descriptor
 {
   v7 = 0;
   v8 = 0;
   v9 = 0;
   if (self)
   {
-    v3 = self;
-    [(AGXG18PFamilyDevice *)self accelerationStructureSizesWithDescriptor:a3];
-    self = v3;
+    selfCopy = self;
+    [(AGXG18PFamilyDevice *)self accelerationStructureSizesWithDescriptor:descriptor];
+    self = selfCopy;
     v4 = v7;
   }
 
@@ -1296,28 +1296,28 @@ LABEL_68:
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapAccelerationStructureSizeAndAlignWithSize:(unint64_t)size
 {
   v4 = 1024;
   result.var1 = v4;
-  result.var0 = a3;
+  result.var0 = size;
   return result;
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 fromBytes:(const void *)a4 primitiveAccelerationStructures:(id)a5 withDescriptor:(id)a6
+- (void)deserializeInstanceAccelerationStructure:(id)structure fromBytes:(const void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor
 {
   if ([(AGXG18PFamilyDevice *)self requiresRaytracingEmulation])
   {
     v27.receiver = self;
     v27.super_class = AGXG18PFamilyDevice;
-    [(_MTLDevice *)&v27 deserializeInstanceAccelerationStructure:a3 fromBytes:a4 primitiveAccelerationStructures:a5 withDescriptor:a6];
+    [(_MTLDevice *)&v27 deserializeInstanceAccelerationStructure:structure fromBytes:bytes primitiveAccelerationStructures:structures withDescriptor:descriptor];
     return;
   }
 
-  v25 = a3;
-  v26 = *(a3 + 43);
-  memcpy(v26, a4 + 24, *(a4 + 1) - 24);
-  if (((*(a4 + 36) - *(a4 + 38)) & 0xFFFFFFF0) != 0)
+  structureCopy = structure;
+  v26 = *(structure + 43);
+  memcpy(v26, bytes + 24, *(bytes + 1) - 24);
+  if (((*(bytes + 36) - *(bytes + 38)) & 0xFFFFFFF0) != 0)
   {
     v11 = 0;
     v12 = (v26 + v26[16] + 8);
@@ -1325,19 +1325,19 @@ LABEL_68:
     {
       v13 = *(v12 - 1);
       v14 = *v12;
-      v15 = *(a4 + 22) >> 30;
-      if ([a6 instanceDescriptorType] == 2)
+      v15 = *(bytes + 22) >> 30;
+      if ([descriptor instanceDescriptorType] == 2)
       {
         break;
       }
 
-      if (v15 > 2 != ([a6 instanceDescriptorType] == 4))
+      if (v15 > 2 != ([descriptor instanceDescriptorType] == 4))
       {
         goto LABEL_8;
       }
 
 LABEL_9:
-      v16 = *([a5 objectAtIndexedSubscript:v14] + 360);
+      v16 = *([structures objectAtIndexedSubscript:v14] + 360);
       {
         AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::getSelectedRiaBvhGen(void)::riaBvhGenOverride = 0;
       }
@@ -1362,9 +1362,9 @@ LABEL_9:
       *&v17[v19] = v16;
       if (v15 <= 2)
       {
-        v20 = [objc_msgSend(a5 objectAtIndexedSubscript:{v14), "buffer"}];
+        v20 = [objc_msgSend(structures objectAtIndexedSubscript:{v14), "buffer"}];
         v21 = *(v20 + *MEMORY[0x29EDC5638] + 8);
-        v22 = [objc_msgSend(a5 objectAtIndexedSubscript:{v14), "bufferOffset"}];
+        v22 = [objc_msgSend(structures objectAtIndexedSubscript:{v14), "bufferOffset"}];
         v23 = 88;
         if (v18 < 5)
         {
@@ -1376,7 +1376,7 @@ LABEL_9:
 
       *v12 = v16;
       v12 += 4;
-      if (++v11 >= ((*(a4 + 36) - *(a4 + 38)) >> 4))
+      if (++v11 >= ((*(bytes + 36) - *(bytes + 38)) >> 4))
       {
         goto LABEL_23;
       }
@@ -1393,65 +1393,65 @@ LABEL_8:
   }
 
 LABEL_23:
-  v24 = v25[43];
-  *(v24 + 144) = [v25 accelerationStructureUniqueIdentifier];
+  v24 = structureCopy[43];
+  *(v24 + 144) = [structureCopy accelerationStructureUniqueIdentifier];
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBytes:(const void *)a4 withDescriptor:(id)a5
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBytes:(const void *)bytes withDescriptor:(id)descriptor
 {
   if ([(AGXG18PFamilyDevice *)self requiresRaytracingEmulation])
   {
     v10.receiver = self;
     v10.super_class = AGXG18PFamilyDevice;
-    [(_MTLDevice *)&v10 deserializePrimitiveAccelerationStructure:a3 fromBytes:a4 withDescriptor:a5];
+    [(_MTLDevice *)&v10 deserializePrimitiveAccelerationStructure:structure fromBytes:bytes withDescriptor:descriptor];
   }
 
   else
   {
-    memcpy(*(a3 + 43), a4 + 24, *(a4 + 1) - 24);
-    v9 = *(a3 + 43);
-    *(v9 + 144) = [a3 accelerationStructureUniqueIdentifier];
+    memcpy(*(structure + 43), bytes + 24, *(bytes + 1) - 24);
+    v9 = *(structure + 43);
+    *(v9 + 144) = [structure accelerationStructureUniqueIdentifier];
   }
 }
 
-- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)a3 primitiveAccelerationStructures:(id)a4 withDescriptor:(id)a5
+- (id)deserializeInstanceAccelerationStructureFromBytes:(void *)bytes primitiveAccelerationStructures:(id)structures withDescriptor:(id)descriptor
 {
   if ([(AGXG18PFamilyDevice *)self requiresRaytracingEmulation])
   {
     v12.receiver = self;
     v12.super_class = AGXG18PFamilyDevice;
-    v9 = [(_MTLDevice *)&v12 deserializeInstanceAccelerationStructureFromBytes:a3 primitiveAccelerationStructures:a4 withDescriptor:a5];
+    v9 = [(_MTLDevice *)&v12 deserializeInstanceAccelerationStructureFromBytes:bytes primitiveAccelerationStructures:structures withDescriptor:descriptor];
     v10 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithDevice:self src:v9];
   }
 
   else
   {
-    v10 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithDevice:self length:*(a3 + 2) resourceIndex:0 storageMode:0];
+    v10 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithDevice:self length:*(bytes + 2) resourceIndex:0 storageMode:0];
     if (v10)
     {
-      [(AGXG18PFamilyDevice *)self deserializeInstanceAccelerationStructure:v10 fromBytes:a3 primitiveAccelerationStructures:a4 withDescriptor:a5];
+      [(AGXG18PFamilyDevice *)self deserializeInstanceAccelerationStructure:v10 fromBytes:bytes primitiveAccelerationStructures:structures withDescriptor:descriptor];
     }
   }
 
   return v10;
 }
 
-- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)a3 withDescriptor:(id)a4
+- (id)deserializePrimitiveAccelerationStructureFromBytes:(void *)bytes withDescriptor:(id)descriptor
 {
   if ([(AGXG18PFamilyDevice *)self requiresRaytracingEmulation])
   {
     v9.receiver = self;
     v9.super_class = AGXG18PFamilyDevice;
-    return [(_MTLDevice *)&v9 deserializePrimitiveAccelerationStructureFromBytes:a3 withDescriptor:a4];
+    return [(_MTLDevice *)&v9 deserializePrimitiveAccelerationStructureFromBytes:bytes withDescriptor:descriptor];
   }
 
   else
   {
-    result = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithDevice:self length:*(a3 + 2) resourceIndex:0 storageMode:0];
+    result = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithDevice:self length:*(bytes + 2) resourceIndex:0 storageMode:0];
     if (result)
     {
       v8 = result;
-      [(AGXG18PFamilyDevice *)self deserializePrimitiveAccelerationStructure:result fromBytes:a3 withDescriptor:a4];
+      [(AGXG18PFamilyDevice *)self deserializePrimitiveAccelerationStructure:result fromBytes:bytes withDescriptor:descriptor];
       return v8;
     }
   }
@@ -1459,26 +1459,26 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)isCompatibleWithAccelerationStructure:(id)a3
+- (BOOL)isCompatibleWithAccelerationStructure:(id)structure
 {
   if ([(AGXG18PFamilyDevice *)self requiresRaytracingEmulation])
   {
     v8.receiver = self;
     v8.super_class = AGXG18PFamilyDevice;
-    return [(_MTLDevice *)&v8 isCompatibleWithAccelerationStructure:a3];
+    return [(_MTLDevice *)&v8 isCompatibleWithAccelerationStructure:structure];
   }
 
   v6 = 2;
-  if (a3.var0 != 465430)
+  if (structure.var0 != 465430)
   {
     v6 = 3;
   }
 
-  if (AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::kBvhChipCodes[v6] == a3.var0)
+  if (AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::kBvhChipCodes[v6] == structure.var0)
   {
-    v7 = a3.var1 & 0xFFF0FFF;
+    v7 = structure.var1 & 0xFFF0FFF;
     result = 1;
-    if ((a3.var1 & 0xFFF0FFF) == 0x1000006 || !(a3.var1 & 0xE000 | (AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::kBvhVersions[v6] ^ a3.var1) & 0xFF0FFF))
+    if ((structure.var1 & 0xFFF0FFF) == 0x1000006 || !(structure.var1 & 0xE000 | (AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::kBvhVersions[v6] ^ structure.var1) & 0xFF0FFF))
     {
       return result;
     }
@@ -1486,8 +1486,8 @@ LABEL_23:
 
   else
   {
-    v7 = a3.var1 & 0xFFF0FFF;
-    if ((a3.var1 & 0xFFF0FFF) == 0x1000006)
+    v7 = structure.var1 & 0xFFF0FFF;
+    if ((structure.var1 & 0xFFF0FFF) == 0x1000006)
     {
       return 1;
     }
@@ -1502,7 +1502,7 @@ LABEL_23:
   return result;
 }
 
-- (id)newAccelerationStructureWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x29EDCA608];
   if ([(AGXG18PFamilyDevice *)self buildBVHForRIA])
@@ -1539,49 +1539,49 @@ LABEL_23:
 
   v9 = [AGXG18PFamilyRayTracingAccelerationStructureSW alloc];
 
-  return [(AGXG18PFamilyRayTracingAccelerationStructureSW *)v9 initWithBuffer:a3 offset:a4 device:self resourceIndex:a5];
+  return [(AGXG18PFamilyRayTracingAccelerationStructureSW *)v9 initWithBuffer:buffer offset:offset device:self resourceIndex:index];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 withDescriptor:(id)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size withDescriptor:(id)descriptor
 {
-  if ([a4 forceResourceIndex])
+  if ([descriptor forceResourceIndex])
   {
-    v7 = [a4 resourceIndex];
+    resourceIndex = [descriptor resourceIndex];
   }
 
   else
   {
-    v7 = 0;
+    resourceIndex = 0;
   }
 
-  v8 = [(AGXG18PFamilyDevice *)self buildBVHForRIA];
+  buildBVHForRIA = [(AGXG18PFamilyDevice *)self buildBVHForRIA];
   v9 = off_29F340780;
-  if (!v8)
+  if (!buildBVHForRIA)
   {
     v9 = off_29F340788;
   }
 
   v10 = objc_alloc(*v9);
-  v11 = [a4 storageMode];
+  storageMode = [descriptor storageMode];
 
-  return [v10 initWithDevice:self length:a3 resourceIndex:v7 storageMode:v11];
+  return [v10 initWithDevice:self length:size resourceIndex:resourceIndex storageMode:storageMode];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
-  v7 = [(AGXG18PFamilyDevice *)self buildBVHForRIA];
+  buildBVHForRIA = [(AGXG18PFamilyDevice *)self buildBVHForRIA];
   v8 = off_29F340780;
-  if (!v7)
+  if (!buildBVHForRIA)
   {
     v8 = off_29F340788;
   }
 
   v9 = objc_alloc(*v8);
 
-  return [v9 initWithDevice:self length:a3 resourceIndex:a4 storageMode:2];
+  return [v9 initWithDevice:self length:size resourceIndex:index storageMode:2];
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)accelerationStructureSizesWithDescriptor:(SEL)descriptor
 {
   if ([(AGXG18PFamilyDevice *)self buildBVHForRIA])
   {
@@ -1673,28 +1673,28 @@ LABEL_23:
 
 - (BOOL)supportsRaytracing
 {
-  v3 = [(_MTLDevice *)self argumentBuffersSupport];
-  if (v3)
+  argumentBuffersSupport = [(_MTLDevice *)self argumentBuffersSupport];
+  if (argumentBuffersSupport)
   {
 
-    LOBYTE(v3) = [(_MTLDevice *)self supportsFunctionPointers];
+    LOBYTE(argumentBuffersSupport) = [(_MTLDevice *)self supportsFunctionPointers];
   }
 
-  return v3;
+  return argumentBuffersSupport;
 }
 
-- (id)newCounterSampleBufferWithLength:(unint64_t)a3 label:(id)a4 error:(id *)a5
+- (id)newCounterSampleBufferWithLength:(unint64_t)length label:(id)label error:(id *)error
 {
   v9 = [AGXMTLCounterSampleBuffer alloc];
 
-  return [(AGXMTLCounterSampleBuffer *)v9 initWithDevice:self length:a3 label:a4 options:0 error:a5];
+  return [(AGXMTLCounterSampleBuffer *)v9 initWithDevice:self length:length label:label options:0 error:error];
 }
 
-- (id)newCounterSampleBufferWithDescriptor:(id)a3 error:(id *)a4
+- (id)newCounterSampleBufferWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = [AGXMTLCounterSampleBuffer alloc];
 
-  return [(AGXMTLCounterSampleBuffer *)v7 initWithDevice:self descriptor:a3 error:a4];
+  return [(AGXMTLCounterSampleBuffer *)v7 initWithDevice:self descriptor:descriptor error:error];
 }
 
 - (NSArray)counterSets
@@ -1709,7 +1709,7 @@ LABEL_23:
   return v7;
 }
 
-- (void)sampleTimestamps:(unint64_t *)a3 gpuTimestamp:(unint64_t *)a4
+- (void)sampleTimestamps:(unint64_t *)timestamps gpuTimestamp:(unint64_t *)timestamp
 {
   v6 = mach_absolute_time();
   if (getTimebaseInfo(void)::once != -1)
@@ -1720,22 +1720,22 @@ LABEL_23:
   }
 
   v7 = v6 * getTimebaseInfo(void)::sTimebaseInfo / unk_2A17A17F0;
-  *a3 = v7;
-  *a4 = v7;
+  *timestamps = v7;
+  *timestamp = v7;
 }
 
-- (id)copyIOSurfaceSharedTextureProperties:(id)a3
+- (id)copyIOSurfaceSharedTextureProperties:(id)properties
 {
   v5 = objc_opt_new();
-  v6 = [[AGXTextureLayout alloc] initWithDevice:self descriptor:a3 isHeapOrBufferBacked:0];
+  v6 = [[AGXTextureLayout alloc] initWithDevice:self descriptor:properties isHeapOrBufferBacked:0];
   v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{-[AGXTextureLayout size](v6, "size")}];
   [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x29EDBB128]];
 
-  [v5 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(a3, "compressionMode")), @"kAGXCompressionMode"}];
+  [v5 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(properties, "compressionMode")), @"kAGXCompressionMode"}];
   return v5;
 }
 
-- (id)newResourceGroupFromResources:(const void *)a3 count:(unint64_t)a4
+- (id)newResourceGroupFromResources:(const void *)resources count:(unint64_t)count
 {
   if (os_parse_boot_arg_int() && [AGXG18PFamilyDevice newResourceGroupFromResources:count:]::disableDropHints == 1)
   {
@@ -1745,49 +1745,49 @@ LABEL_23:
   v7 = [AGXG18PFamilyResourceGroup alloc];
   impl = self->_impl;
 
-  return [(AGXG18PFamilyResourceGroup *)v7 initWithDevice:impl resources:a3 count:a4];
+  return [(AGXG18PFamilyResourceGroup *)v7 initWithDevice:impl resources:resources count:count];
 }
 
-- (id)newRasterizationRateMapWithDescriptor:(id)a3
+- (id)newRasterizationRateMapWithDescriptor:(id)descriptor
 {
   v5 = [AGXG18PFamilyRasterizationRateMap alloc];
 
-  return [(AGXG18PFamilyRasterizationRateMap *)v5 initWithDevice:self descriptor:a3];
+  return [(AGXG18PFamilyRasterizationRateMap *)v5 initWithDevice:self descriptor:descriptor];
 }
 
-- (id)newArgumentEncoderWithLayout:(id)a3
+- (id)newArgumentEncoderWithLayout:(id)layout
 {
   v5 = [AGXG18PFamilyIndirectArgumentEncoder alloc];
 
-  return [(AGXG18PFamilyIndirectArgumentEncoder *)v5 initWithLayout:a3 device:self];
+  return [(AGXG18PFamilyIndirectArgumentEncoder *)v5 initWithLayout:layout device:self];
 }
 
-- (id)newIndirectArgumentBufferLayoutWithStructType:(id)a3
+- (id)newIndirectArgumentBufferLayoutWithStructType:(id)type
 {
   v4 = [AGXG18PFamilyIndirectArgumentBufferLayout alloc];
 
-  return [(AGXG18PFamilyIndirectArgumentBufferLayout *)v4 initWithStructType:a3];
+  return [(AGXG18PFamilyIndirectArgumentBufferLayout *)v4 initWithStructType:type];
 }
 
-- (BOOL)setupCompiler:(int)a3
+- (BOOL)setupCompiler:(int)compiler
 {
   v29 = *MEMORY[0x29EDCA608];
   impl = self->_impl;
   v5 = objc_autoreleasePoolPush();
-  impl[4265] = a3;
-  if (a3 - 14) < 0xEu && ((0x38FDu >> (a3 - 14)))
+  impl[4265] = compiler;
+  if (compiler - 14) < 0xEu && ((0x38FDu >> (compiler - 14)))
   {
-    v6 = (qword_29D2F2F20[(a3 - 14)] | qword_29D2F2EB0[(a3 - 14)]) >> 32;
+    v6 = (qword_29D2F2F20[(compiler - 14)] | qword_29D2F2EB0[(compiler - 14)]) >> 32;
   }
 
   else
   {
     v6 = 0;
-    if (a3 > 196629)
+    if (compiler > 196629)
     {
-      if (a3 > 196639)
+      if (compiler > 196639)
       {
-        switch(a3)
+        switch(compiler)
         {
           case 196640:
             v6 = 403;
@@ -1805,7 +1805,7 @@ LABEL_40:
 
       else
       {
-        switch(a3)
+        switch(compiler)
         {
           case 196630:
             v6 = 610;
@@ -1826,9 +1826,9 @@ LABEL_19:
       }
     }
 
-    else if (a3 > 65569)
+    else if (compiler > 65569)
     {
-      switch(a3)
+      switch(compiler)
       {
         case 65570:
           v6 = 323;
@@ -1850,7 +1850,7 @@ LABEL_24:
 
     else
     {
-      switch(a3)
+      switch(compiler)
       {
         case 65560:
           v6 = 67;
@@ -1871,9 +1871,9 @@ LABEL_13:
     }
   }
 
-  if (a3 <= 196616)
+  if (compiler <= 196616)
   {
-    switch(a3)
+    switch(compiler)
     {
       case 65542:
         v7 = "g9p";
@@ -1937,17 +1937,17 @@ LABEL_13:
     goto LABEL_76;
   }
 
-  if (a3 > 262174)
+  if (compiler > 262174)
   {
-    if (a3 != 262175)
+    if (compiler != 262175)
     {
-      if (a3 == 327684)
+      if (compiler == 327684)
       {
         v7 = "g5p";
         goto LABEL_76;
       }
 
-      if (a3 != 327704)
+      if (compiler != 327704)
       {
 LABEL_52:
         v7 = 0;
@@ -1964,7 +1964,7 @@ LABEL_48:
     goto LABEL_76;
   }
 
-  switch(a3)
+  switch(compiler)
   {
     case 196617:
 LABEL_53:
@@ -2114,57 +2114,57 @@ LABEL_89:
   return self;
 }
 
-- (void)deserializeCompileTimeStats:(id)a3 addToDictionary:(id)a4
+- (void)deserializeCompileTimeStats:(id)stats addToDictionary:(id)dictionary
 {
   v12 = 0;
   buffer_ptr = 0;
-  v5 = dispatch_data_create_map(a3, &buffer_ptr, &v12);
+  v5 = dispatch_data_create_map(stats, &buffer_ptr, &v12);
   if (v5)
   {
     v6 = v5;
     v7 = buffer_ptr;
     v8 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:*buffer_ptr];
-    [a4 setObject:v8 forKey:*MEMORY[0x29EDBB390]];
+    [dictionary setObject:v8 forKey:*MEMORY[0x29EDBB390]];
     v9 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v7[1]];
-    [a4 setObject:v9 forKey:*MEMORY[0x29EDBB388]];
+    [dictionary setObject:v9 forKey:*MEMORY[0x29EDBB388]];
     v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v7[2]];
-    [a4 setObject:v10 forKey:*MEMORY[0x29EDBB3C8]];
+    [dictionary setObject:v10 forKey:*MEMORY[0x29EDBB3C8]];
     v11 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v7[3]];
-    [a4 setObject:v11 forKey:*MEMORY[0x29EDBB378]];
+    [dictionary setObject:v11 forKey:*MEMORY[0x29EDBB378]];
     dispatch_release(v6);
   }
 }
 
-- (id)newLibraryWithData:(id)a3 error:(id *)a4
+- (id)newLibraryWithData:(id)data error:(id *)error
 {
   atomic_fetch_or(&self->_telemetry, 0x10000000000uLL);
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyDevice;
-  return [(_MTLDevice *)&v5 newLibraryWithData:a3 error:a4];
+  return [(_MTLDevice *)&v5 newLibraryWithData:data error:error];
 }
 
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)newLibraryWithSource:(id)source options:(id)options completionHandler:(id)handler
 {
   atomic_fetch_or(&self->_telemetry, 0x20000000000uLL);
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyDevice;
-  [(_MTLDevice *)&v5 newLibraryWithSource:a3 options:a4 completionHandler:a5];
+  [(_MTLDevice *)&v5 newLibraryWithSource:source options:options completionHandler:handler];
 }
 
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 error:(id *)a5
+- (id)newLibraryWithSource:(id)source options:(id)options error:(id *)error
 {
   atomic_fetch_or(&self->_telemetry, 0x20000000000uLL);
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyDevice;
-  return [(_MTLDevice *)&v6 newLibraryWithSource:a3 options:a4 error:a5];
+  return [(_MTLDevice *)&v6 newLibraryWithSource:source options:options error:error];
 }
 
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4
+- (id)newLibraryWithFile:(id)file error:(id *)error
 {
   atomic_fetch_or(&self->_telemetry, 0x20000000000uLL);
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyDevice;
-  return [(_MTLDevice *)&v5 newLibraryWithFile:a3 error:a4];
+  return [(_MTLDevice *)&v5 newLibraryWithFile:file error:error];
 }
 
 - (id)newDefaultLibrary
@@ -2175,18 +2175,18 @@ LABEL_89:
   return [(_MTLDevice *)&v3 newDefaultLibrary];
 }
 
-- (id)newTextureLayoutWithDescriptor:(id)a3 isHeapOrBufferBacked:(BOOL)a4
+- (id)newTextureLayoutWithDescriptor:(id)descriptor isHeapOrBufferBacked:(BOOL)backed
 {
-  v4 = a4;
+  backedCopy = backed;
   v7 = [AGXTextureLayout alloc];
 
-  return [(AGXTextureLayout *)v7 initWithDevice:self descriptor:a3 isHeapOrBufferBacked:v4];
+  return [(AGXTextureLayout *)v7 initWithDevice:self descriptor:descriptor isHeapOrBufferBacked:backedCopy];
 }
 
-- (id)newArchiveWithURL:(id)a3 error:(id *)a4
+- (id)newArchiveWithURL:(id)l error:(id *)error
 {
-  v6 = [[AGXG18PFamilyArchive_mtlnext alloc] initWithDevice:self error:a4];
-  if (![(AGXG18PFamilyArchive_mtlnext *)v6 loadFromURL:a3 error:a4])
+  v6 = [[AGXG18PFamilyArchive_mtlnext alloc] initWithDevice:self error:error];
+  if (![(AGXG18PFamilyArchive_mtlnext *)v6 loadFromURL:l error:error])
   {
 
     return 0;
@@ -2195,33 +2195,33 @@ LABEL_89:
   return v6;
 }
 
-- (id)newCompilerWithDescriptor:(id)a3 error:(id *)a4
+- (id)newCompilerWithDescriptor:(id)descriptor error:(id *)error
 {
   v6 = [AGXG18PFamilyCompiler alloc];
 
-  return [(AGXG18PFamilyCompiler *)v6 initWithDevice:self descriptor:a3];
+  return [(AGXG18PFamilyCompiler *)v6 initWithDevice:self descriptor:descriptor];
 }
 
-- (id)newBinaryArchiveWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryArchiveWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = [AGXG18PFamilyBinaryArchive alloc];
 
-  return [(_MTLBinaryArchive *)v7 initWithDevice:self descriptor:a3 error:a4];
+  return [(_MTLBinaryArchive *)v7 initWithDevice:self descriptor:descriptor error:error];
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)newDynamicLibraryWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if (![(_MTLDevice *)self validateDynamicLibraryURL:a3 error:a5])
+  if (![(_MTLDevice *)self validateDynamicLibraryURL:l error:error])
   {
     return 0;
   }
 
   v9 = [AGXG18PFamilyDynamicLibrary alloc];
 
-  return [(AGXG18PFamilyDynamicLibrary *)v9 initWithURL:a3 device:self options:a4 error:a5];
+  return [(AGXG18PFamilyDynamicLibrary *)v9 initWithURL:l device:self options:options error:error];
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error
 {
   if (![_MTLDevice validateDynamicLibraryURL:"validateDynamicLibraryURL:error:" error:?])
   {
@@ -2230,62 +2230,62 @@ LABEL_89:
 
   v7 = [AGXG18PFamilyDynamicLibrary alloc];
 
-  return [(AGXG18PFamilyDynamicLibrary *)v7 initWithURL:a3 device:self error:a4];
+  return [(AGXG18PFamilyDynamicLibrary *)v7 initWithURL:l device:self error:error];
 }
 
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error
 {
-  if (![(_MTLDevice *)self validateDynamicLibrary:a3 state:0 error:?])
+  if (![(_MTLDevice *)self validateDynamicLibrary:library state:0 error:?])
   {
     return 0;
   }
 
   v9 = *(self->_impl + 896);
 
-  return AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(v9, a3, a4, self, 0, a5, 0, 0);
+  return AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(v9, library, descriptor, self, 0, error, 0, 0);
 }
 
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4
+- (id)newDynamicLibrary:(id)library error:(id *)error
 {
-  if (![(_MTLDevice *)self validateDynamicLibrary:a3 state:0 error:a4])
+  if (![(_MTLDevice *)self validateDynamicLibrary:library state:0 error:error])
   {
     return 0;
   }
 
   v7 = *(self->_impl + 896);
 
-  return AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(v7, a3, 0, self, 0, a4, 0, 0);
+  return AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(v7, library, 0, self, 0, error, 0, 0);
 }
 
-- (id)newDynamicLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
   if (![_MTLDevice validateDynamicLibraryDescriptor:"validateDynamicLibraryDescriptor:error:" error:?])
   {
     return 0;
   }
 
-  if ([a3 library])
+  if ([descriptor library])
   {
     v7 = *(self->_impl + 896);
-    v8 = [a3 library];
-    v9 = [a3 options];
+    library = [descriptor library];
+    options = [descriptor options];
 
-    return AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(v7, v8, 0, self, v9, a4, 0, 0);
+    return AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(v7, library, 0, self, options, error, 0, 0);
   }
 
   else
   {
     v11 = [AGXG18PFamilyDynamicLibrary alloc];
-    v12 = [a3 url];
-    v13 = [a3 options];
+    v12 = [descriptor url];
+    options2 = [descriptor options];
 
-    return [(AGXG18PFamilyDynamicLibrary *)v11 initWithURL:v12 device:self options:v13 error:a4];
+    return [(AGXG18PFamilyDynamicLibrary *)v11 initWithURL:v12 device:self options:options2 error:error];
   }
 }
 
-- (void)compileVisibleFunction:(id)a3 withDescriptor:(id)a4 destinationBinaryArchive:(id)a5 error:(id *)a6
+- (void)compileVisibleFunction:(id)function withDescriptor:(id)descriptor destinationBinaryArchive:(id)archive error:(id *)error
 {
-  if ([a3 functionType] == 6 && !-[AGXG18PFamilyDevice requiresRaytracingEmulation](self, "requiresRaytracingEmulation"))
+  if ([function functionType] == 6 && !-[AGXG18PFamilyDevice requiresRaytracingEmulation](self, "requiresRaytracingEmulation"))
   {
     v13 = *(self->_impl + 896);
     v15 = MEMORY[0x29EDCA5F8];
@@ -2293,20 +2293,20 @@ LABEL_89:
     v17 = ___ZN3AGX23UserCommonShaderFactoryINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE29addIntersectionFnSetToArchiveEP21MTLFunctionDescriptorPU22objcproto11MTLFunction11objc_objectP19AGXG18PFamilyDeviceP26AGXG18PFamilyBinaryArchivePP7NSError_block_invoke;
     v18 = &__block_descriptor_48_e21_v24__0Q8__NSString_16l;
     v19 = v13;
-    v20 = a6;
-    AGX::UserShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryLinkedIntersectionProgramVariants<true>(v13, a4, a3, self, a5, 0, 0, &v15);
-    if (a6)
+    errorCopy = error;
+    AGX::UserShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryLinkedIntersectionProgramVariants<true>(v13, descriptor, function, self, archive, 0, 0, &v15);
+    if (error)
     {
-      v14 = *a6;
+      v14 = *error;
     }
   }
 
   else
   {
     v11 = *(self->_impl + 896);
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
+      *error = 0;
     }
 
     v22[0] = 0;
@@ -2317,22 +2317,22 @@ LABEL_89:
     v16 = 3221225472;
     v17 = ___ZN3AGX23UserCommonShaderFactoryINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE27addVisibleFunctionToArchiveEP21MTLFunctionDescriptorPU22objcproto11MTLFunction11objc_objectP19AGXG18PFamilyDeviceP26AGXG18PFamilyBinaryArchivePP7NSError_block_invoke;
     v18 = &unk_29F3411D0;
-    v20 = v11;
-    v21 = a6;
+    errorCopy = v11;
+    errorCopy2 = error;
     v19 = v22;
-    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::compileVisibleFunction(v11, a4, a3, self, a5, 0, 0, &v15);
-    if (a6)
+    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::compileVisibleFunction(v11, descriptor, function, self, archive, 0, 0, &v15);
+    if (error)
     {
-      v12 = *a6;
+      v12 = *error;
     }
 
     _Block_object_dispose(v22, 8);
   }
 }
 
-- (void)compileVisibleFunction:(id)a3 withDescriptor:(id)a4 completionHandler:(id)a5
+- (void)compileVisibleFunction:(id)function withDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  if ([a3 functionType] == 6 && !-[AGXG18PFamilyDevice requiresRaytracingEmulation](self, "requiresRaytracingEmulation"))
+  if ([function functionType] == 6 && !-[AGXG18PFamilyDevice requiresRaytracingEmulation](self, "requiresRaytracingEmulation"))
   {
     v10 = *(self->_impl + 896);
     v21[0] = 0;
@@ -2345,10 +2345,10 @@ LABEL_89:
     v12 = 3221225472;
     v13 = ___ZN3AGX23UserCommonShaderFactoryINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE23createIntersectionFnSetEP21MTLFunctionDescriptorPU22objcproto11MTLFunction11objc_objectP19AGXG18PFamilyDeviceP26AGXG18PFamilyBinaryArchivePP7NSErrorPU27objcproto16MTL4CompilerTask11objc_objectU13block_pointerFvSF_E_block_invoke;
     v14 = &unk_29F341990;
-    v16 = v21;
-    v17 = v10;
-    v15 = a5;
-    AGX::UserShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryLinkedIntersectionProgramVariants<true>(v10, a4, a3, self, 0, a5 != 0, 0, &v11);
+    selfCopy = v21;
+    functionCopy2 = v10;
+    functionCopy = handler;
+    AGX::UserShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryLinkedIntersectionProgramVariants<true>(v10, descriptor, function, self, 0, handler != 0, 0, &v11);
     _Block_object_dispose(v21, 8);
   }
 
@@ -2359,52 +2359,52 @@ LABEL_89:
     v12 = 3221225472;
     v13 = ___ZN3AGX23UserCommonShaderFactoryINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE31createDynamicLibraryForFunctionEP21MTLFunctionDescriptorPU22objcproto11MTLFunction11objc_objectP19AGXG18PFamilyDeviceP26AGXG18PFamilyBinaryArchivePP7NSErrorPU27objcproto16MTL4CompilerTask11objc_objectU13block_pointerFvSF_E_block_invoke;
     v14 = &unk_29F341A30;
-    v15 = a3;
-    v16 = self;
-    v17 = a3;
-    v18 = a5;
+    functionCopy = function;
+    selfCopy = self;
+    functionCopy2 = function;
+    handlerCopy2 = handler;
     v19 = v9;
     v20 = 0;
-    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::compileVisibleFunction(v9, a4, a3, self, 0, a5 != 0, 0, &v11);
+    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::compileVisibleFunction(v9, descriptor, function, self, 0, handler != 0, 0, &v11);
   }
 }
 
-- (void)compileVisibleFunction:(id)a3 withDescriptor:(id)a4 error:(id *)a5
+- (void)compileVisibleFunction:(id)function withDescriptor:(id)descriptor error:(id *)error
 {
-  if ([a3 functionType] == 6 && !-[AGXG18PFamilyDevice requiresRaytracingEmulation](self, "requiresRaytracingEmulation"))
+  if ([function functionType] == 6 && !-[AGXG18PFamilyDevice requiresRaytracingEmulation](self, "requiresRaytracingEmulation"))
   {
     v11 = *(self->_impl + 896);
 
-    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createIntersectionFnSet(v11, a4, a3, self, 0, a5);
+    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createIntersectionFnSet(v11, descriptor, function, self, 0, error);
   }
 
   else
   {
     v9 = *(self->_impl + 896);
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = ___ZN3AGX23UserCommonShaderFactoryINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesEE31createDynamicLibraryForFunctionEP21MTLFunctionDescriptorPU22objcproto11MTLFunction11objc_objectP19AGXG18PFamilyDeviceP26AGXG18PFamilyBinaryArchivePP7NSErrorPU27objcproto16MTL4CompilerTask11objc_objectU13block_pointerFvSF_E_block_invoke;
     v12[3] = &unk_29F341A30;
-    v12[4] = a3;
+    v12[4] = function;
     v12[5] = self;
-    v12[6] = a3;
+    v12[6] = function;
     v12[7] = 0;
     v12[8] = v9;
-    v12[9] = a5;
-    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::compileVisibleFunction(v9, a4, a3, self, 0, 0, 0, v12);
-    if (a5)
+    v12[9] = error;
+    AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::compileVisibleFunction(v9, descriptor, function, self, 0, 0, 0, v12);
+    if (error)
     {
-      v10 = *a5;
+      v10 = *error;
     }
   }
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v7 = *(self->_impl + 897);
   v8[0] = MEMORY[0x29EDCA5F8];
@@ -2412,8 +2412,8 @@ LABEL_89:
   v8[2] = __90__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_options_completionHandler___block_invoke;
   v8[3] = &unk_29F3410C8;
   v8[4] = self;
-  v8[5] = a5;
-  AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(v7, a3, self, 0, a4, 0, 0, 0, 0, v8);
+  v8[5] = handler;
+  AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(v7, descriptor, self, 0, options, 0, 0, 0, 0, v8);
 }
 
 uint64_t __90__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2424,14 +2424,14 @@ uint64_t __90__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_opti
   return v3();
 }
 
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  TileRenderPipeline_impl = AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(*(self->_impl + 897), a3, self, 0, a4, a5, a6, 0, 0, 0);
+  TileRenderPipeline_impl = AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(*(self->_impl + 897), descriptor, self, 0, options, reflection, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeRenderPipelineState:TileRenderPipeline_impl];
   return TileRenderPipeline_impl;
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v6 = *(self->_impl + 897);
   v7[0] = MEMORY[0x29EDCA5F8];
@@ -2439,8 +2439,8 @@ uint64_t __90__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_opti
   v7[2] = __82__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_completionHandler___block_invoke;
   v7[3] = &unk_29F3410C8;
   v7[4] = self;
-  v7[5] = a4;
-  AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(v6, a3, self, 0, 0, 0, 0, 0, 0, v7);
+  v7[5] = handler;
+  AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(v6, descriptor, self, 0, 0, 0, 0, 0, 0, v7);
 }
 
 uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2451,9 +2451,9 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_comp
   return v3();
 }
 
-- (id)newRenderPipelineStateWithTileDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithTileDescriptor:(id)descriptor error:(id *)error
 {
-  TileRenderPipeline_impl = AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(*(self->_impl + 897), a3, self, 0, 0, 0, a4, 0, 0, 0);
+  TileRenderPipeline_impl = AGX::UserTileShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createTileRenderPipeline_impl(*(self->_impl + 897), descriptor, self, 0, 0, 0, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeRenderPipelineState:TileRenderPipeline_impl];
   return TileRenderPipeline_impl;
 }
@@ -2493,7 +2493,7 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_comp
   os_unfair_lock_unlock(impl + 4309);
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v7 = *(self->_impl + 896);
   v8[0] = MEMORY[0x29EDCA5F8];
@@ -2501,8 +2501,8 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithTileDescriptor_comp
   v8[2] = __87__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke;
   v8[3] = &unk_29F3410F0;
   v8[4] = self;
-  v8[5] = a5;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(v7, a3, self, 0, a4, 0, 0, 0, 0, v8);
+  v8[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(v7, descriptor, self, 0, options, 0, 0, 0, 0, v8);
 }
 
 uint64_t __87__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2513,14 +2513,14 @@ uint64_t __87__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_options
   return v3();
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*(self->_impl + 896), a3, self, 0, a4, a5, a6, 0, 0, 0);
+  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*(self->_impl + 896), descriptor, self, 0, options, reflection, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeComputePipelineState:ComputePipeline_impl];
   return ComputePipeline_impl;
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v6 = *(self->_impl + 896);
   v7[0] = MEMORY[0x29EDCA5F8];
@@ -2528,8 +2528,8 @@ uint64_t __87__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_options
   v7[2] = __79__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_completionHandler___block_invoke;
   v7[3] = &unk_29F3410F0;
   v7[4] = self;
-  v7[5] = a4;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(v6, a3, self, 0, 0, 0, 0, 0, 0, v7);
+  v7[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(v6, descriptor, self, 0, 0, 0, 0, 0, 0, v7);
 }
 
 uint64_t __79__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2540,16 +2540,16 @@ uint64_t __79__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_complet
   return v3();
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*(self->_impl + 896), a3, self, 0, 0, 0, a4, 0, 0, 0);
+  ComputePipeline_impl = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline_impl(*(self->_impl + 896), descriptor, self, 0, 0, 0, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeComputePipelineState:ComputePipeline_impl];
   return ComputePipeline_impl;
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
@@ -2560,8 +2560,8 @@ uint64_t __79__AGXG18PFamilyDevice_newComputePipelineStateWithDescriptor_complet
   v10[2] = __86__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke;
   v10[3] = &unk_29F3410C8;
   v10[4] = self;
-  v10[5] = a5;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(v9, a3, self, 0, a4, 0, 0, 0, 0, v10);
+  v10[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(v9, descriptor, self, 0, options, 0, 0, 0, 0, v10);
 }
 
 uint64_t __86__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2572,21 +2572,21 @@ uint64_t __86__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_options_
   return v3();
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
 
-  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(*(self->_impl + 896), a3, self, 0, a4, a5, a6, 0, 0, 0);
+  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(*(self->_impl + 896), descriptor, self, 0, options, reflection, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeRenderPipelineState:RenderPipeline];
   return RenderPipeline;
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
@@ -2597,8 +2597,8 @@ uint64_t __86__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_options_
   v8[2] = __78__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_completionHandler___block_invoke;
   v8[3] = &unk_29F3410C8;
   v8[4] = self;
-  v8[5] = a4;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(v7, a3, self, 0, 0, 0, 0, 0, 0, v8);
+  v8[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(v7, descriptor, self, 0, 0, 0, 0, 0, 0, v8);
 }
 
 uint64_t __78__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2609,21 +2609,21 @@ uint64_t __78__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_completi
   return v3();
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
 
-  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(*(self->_impl + 896), a3, self, 0, 0, 0, a4, 0, 0, 0);
+  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLRenderPipelineDescriptor>(*(self->_impl + 896), descriptor, self, 0, 0, 0, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeRenderPipelineState:RenderPipeline];
   return RenderPipeline;
 }
 
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
@@ -2634,8 +2634,8 @@ uint64_t __78__AGXG18PFamilyDevice_newRenderPipelineStateWithDescriptor_completi
   v10[2] = __90__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_options_completionHandler___block_invoke;
   v10[3] = &unk_29F3410C8;
   v10[4] = self;
-  v10[5] = a5;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(v9, a3, self, 0, a4, 0, 0, 0, 0, v10);
+  v10[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(v9, descriptor, self, 0, options, 0, 0, 0, 0, v10);
 }
 
 uint64_t __90__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2646,9 +2646,9 @@ uint64_t __90__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_opti
   return v3();
 }
 
-- (void)newRenderPipelineStateWithMeshDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithMeshDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
@@ -2659,8 +2659,8 @@ uint64_t __90__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_opti
   v8[2] = __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_completionHandler___block_invoke;
   v8[3] = &unk_29F3410C8;
   v8[4] = self;
-  v8[5] = a4;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(v7, a3, self, 0, 0, 0, 0, 0, 0, v8);
+  v8[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(v7, descriptor, self, 0, 0, 0, 0, 0, 0, v8);
 }
 
 uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2671,64 +2671,64 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
   return v3();
 }
 
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
 
-  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(*(self->_impl + 896), a3, self, 0, a4, a5, a6, 0, 0, 0);
+  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(*(self->_impl + 896), descriptor, self, 0, options, reflection, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeRenderPipelineState:RenderPipeline];
   return RenderPipeline;
 }
 
-- (id)newRenderPipelineStateWithMeshDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithMeshDescriptor:(id)descriptor error:(id *)error
 {
-  if ([a3 maxVertexAmplificationCount] >= 2)
+  if ([descriptor maxVertexAmplificationCount] >= 2)
   {
     atomic_fetch_or(&self->_telemetry.usage[1], 0x200000000uLL);
   }
 
-  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(*(self->_impl + 896), a3, self, 0, 0, 0, a4, 0, 0, 0);
+  RenderPipeline = AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline_impl<MTLMeshRenderPipelineDescriptor>(*(self->_impl + 896), descriptor, self, 0, 0, 0, error, 0, 0, 0);
   [(AGXG18PFamilyDevice *)self _storeRenderPipelineState:RenderPipeline];
   return RenderPipeline;
 }
 
-- (void)_storeComputePipelineState:(id)a3
+- (void)_storeComputePipelineState:(id)state
 {
-  if (*(self->_impl + 16945) == 1 && [a3 label] && objc_msgSend(objc_msgSend(a3, "label"), "length"))
+  if (*(self->_impl + 16945) == 1 && [state label] && objc_msgSend(objc_msgSend(state, "label"), "length"))
   {
     os_unfair_lock_lock(&self->_pipelineStatesLock);
     if (([(NSPointerArray *)self->_pipelineStates count]& 0x1FFFFFFFFFFF8000) == 0)
     {
-      [(NSPointerArray *)self->_pipelineStates addPointer:a3];
+      [(NSPointerArray *)self->_pipelineStates addPointer:state];
     }
 
     os_unfair_lock_unlock(&self->_pipelineStatesLock);
   }
 }
 
-- (void)_storeRenderPipelineState:(id)a3
+- (void)_storeRenderPipelineState:(id)state
 {
-  if (*(self->_impl + 16945) == 1 && [a3 label] && objc_msgSend(objc_msgSend(a3, "label"), "length"))
+  if (*(self->_impl + 16945) == 1 && [state label] && objc_msgSend(objc_msgSend(state, "label"), "length"))
   {
     os_unfair_lock_lock(&self->_pipelineStatesLock);
     if (([(NSPointerArray *)self->_pipelineStates count]& 0x1FFFFFFFFFFF8000) == 0)
     {
-      [(NSPointerArray *)self->_pipelineStates addPointer:a3];
+      [(NSPointerArray *)self->_pipelineStates addPointer:state];
     }
 
     os_unfair_lock_unlock(&self->_pipelineStatesLock);
   }
 }
 
-- (id)newSamplerStateWithDescriptor:(id)a3
+- (id)newSamplerStateWithDescriptor:(id)descriptor
 {
   p_telemetry = &self->_telemetry;
   if (self->_telemetry.isEnabled)
   {
-    if ([a3 lodAverage])
+    if ([descriptor lodAverage])
     {
       v6 = 4096;
     }
@@ -2738,10 +2738,10 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
       v6 = 1;
     }
 
-    [a3 lodMinClamp];
+    [descriptor lodMinClamp];
     if (v7 == 0.0)
     {
-      [a3 lodMaxClamp];
+      [descriptor lodMaxClamp];
       v8 = 13;
       if (v9 == 3.4028e38)
       {
@@ -2755,7 +2755,7 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
     }
 
     v10 = (1 << v8) | v6;
-    if ([a3 maxAnisotropy] == 1)
+    if ([descriptor maxAnisotropy] == 1)
     {
       v11 = 1;
     }
@@ -2765,23 +2765,23 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
       v11 = 256;
     }
 
-    v12 = [a3 normalizedCoordinates];
+    normalizedCoordinates = [descriptor normalizedCoordinates];
     v13 = 1024;
-    if (v12)
+    if (normalizedCoordinates)
     {
       v13 = 512;
     }
 
     v14 = v10 | v11 | v13;
-    v15 = [a3 reductionMode];
+    reductionMode = [descriptor reductionMode];
     v16 = 2048;
-    if (!v15)
+    if (!reductionMode)
     {
       v16 = 1;
     }
 
     v17 = v14 | v16;
-    [a3 lodBias];
+    [descriptor lodBias];
     v18 = 0x4000;
     if (v19 == 0.0)
     {
@@ -2789,39 +2789,39 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
     }
 
     v20 = v17 | v18;
-    v21 = [a3 sAddressMode];
-    if (v21 > 4)
+    sAddressMode = [descriptor sAddressMode];
+    if (sAddressMode > 4)
     {
       LOBYTE(v22) = 0;
     }
 
     else
     {
-      v22 = qword_29D2F4200[v21];
+      v22 = qword_29D2F4200[sAddressMode];
     }
 
     v23 = v20 | (1 << v22);
-    v24 = [a3 tAddressMode];
-    if (v24 > 4)
+    tAddressMode = [descriptor tAddressMode];
+    if (tAddressMode > 4)
     {
       LOBYTE(v25) = 0;
     }
 
     else
     {
-      v25 = qword_29D2F4200[v24];
+      v25 = qword_29D2F4200[tAddressMode];
     }
 
     v26 = v23 | (1 << v25);
-    v27 = [a3 rAddressMode];
-    if (v27 > 4)
+    rAddressMode = [descriptor rAddressMode];
+    if (rAddressMode > 4)
     {
       LOBYTE(v28) = 0;
     }
 
     else
     {
-      v28 = qword_29D2F4200[v27];
+      v28 = qword_29D2F4200[rAddressMode];
     }
 
     atomic_fetch_or(p_telemetry, v26 | (1 << v28));
@@ -2832,25 +2832,25 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
   __p[0] = 0;
   __p[1] = 0;
   v66 = 0;
-  v30 = 32 * ([a3 mipFilter] != 0);
-  v31 = v30 | (([a3 mipFilter] == 2) << 6);
-  v32 = v31 | (([a3 minFilter] == 1) << 7);
-  v33 = v32 | (([a3 magFilter] == 1) << 8);
+  v30 = 32 * ([descriptor mipFilter] != 0);
+  v31 = v30 | (([descriptor mipFilter] == 2) << 6);
+  v32 = v31 | (([descriptor minFilter] == 1) << 7);
+  v33 = v32 | (([descriptor magFilter] == 1) << 8);
   v57[0] = v33;
-  v34 = [a3 compareFunction];
+  compareFunction = [descriptor compareFunction];
   v35 = 0;
-  if (v34 <= 7)
+  if (compareFunction <= 7)
   {
-    v35 = word_29D2F27F0[v34];
+    v35 = word_29D2F27F0[compareFunction];
   }
 
   v57[0] = v33 | v35;
-  v36 = ([a3 maxAnisotropy] + 0.5) & 0x1F;
-  v37 = v36 & 0xFFFFFF1F | (32 * ([a3 sAddressMode] & 7));
-  v38 = v37 & 0xFFFFF8FF | (([a3 tAddressMode] & 7) << 8);
-  v39 = v38 & 0xFFFFC7FF | (([a3 rAddressMode] & 7) << 11);
+  v36 = ([descriptor maxAnisotropy] + 0.5) & 0x1F;
+  v37 = v36 & 0xFFFFFF1F | (32 * ([descriptor sAddressMode] & 7));
+  v38 = v37 & 0xFFFFF8FF | (([descriptor tAddressMode] & 7) << 8);
+  v39 = v38 & 0xFFFFC7FF | (([descriptor rAddressMode] & 7) << 11);
   v58 = v39;
-  if ([a3 normalizedCoordinates])
+  if ([descriptor normalizedCoordinates])
   {
     v40 = 0x4000;
   }
@@ -2862,7 +2862,7 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
 
   v41 = v39 | v40;
   v58 = v41;
-  if ([a3 lodAverage])
+  if ([descriptor lodAverage])
   {
     v42 = 0x8000;
   }
@@ -2872,11 +2872,11 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
     v42 = 0;
   }
 
-  v43 = (v41 | v42) & 0xFFFCFFFF | (([a3 minFilter] & 3) << 16);
-  v44 = v43 & 0xFFF3FFFF | (([a3 magFilter] & 3) << 18);
-  v45 = v44 & 0xF9FFFFFF | (([a3 reductionMode] & 3) << 25);
+  v43 = (v41 | v42) & 0xFFFCFFFF | (([descriptor minFilter] & 3) << 16);
+  v44 = v43 & 0xFFF3FFFF | (([descriptor magFilter] & 3) << 18);
+  v45 = v44 & 0xF9FFFFFF | (([descriptor reductionMode] & 3) << 25);
   v58 = v45;
-  if ([a3 supportArgumentBuffers])
+  if ([descriptor supportArgumentBuffers])
   {
     v46 = 0x100000;
   }
@@ -2888,7 +2888,7 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
 
   v47 = v45 & 0xFFEFFFFF | v46;
   v58 = v47;
-  if ([a3 forceSeamsOnCubemapFiltering])
+  if ([descriptor forceSeamsOnCubemapFiltering])
   {
     v48 = 0x1000000;
   }
@@ -2899,37 +2899,37 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
   }
 
   v49 = v47 & 0xFEFFFFFF | v48;
-  v50 = [a3 borderColor];
-  v58 = v49 & 0xFF9FFFFF | ((v50 & 3) << 21);
-  if ((~v50 & 3) != 0)
+  borderColor = [descriptor borderColor];
+  v58 = v49 & 0xFF9FFFFF | ((borderColor & 3) << 21);
+  if ((~borderColor & 3) != 0)
   {
-    v64 = 0;
+    pixelFormat = 0;
     v63 = 0;
     v62 = 0;
   }
 
   else
   {
-    LODWORD(v62) = [a3 customBorderColorValue];
-    HIDWORD(v62) = [a3 customBorderColorValue];
-    LODWORD(v63) = [a3 customBorderColorValue];
-    HIDWORD(v63) = [a3 customBorderColorValue];
-    v64 = [a3 pixelFormat];
+    LODWORD(v62) = [descriptor customBorderColorValue];
+    HIDWORD(v62) = [descriptor customBorderColorValue];
+    LODWORD(v63) = [descriptor customBorderColorValue];
+    HIDWORD(v63) = [descriptor customBorderColorValue];
+    pixelFormat = [descriptor pixelFormat];
   }
 
-  [a3 lodMinClamp];
+  [descriptor lodMinClamp];
   v59 = v51;
-  [a3 lodMaxClamp];
+  [descriptor lodMaxClamp];
   v60 = v52;
-  [a3 lodBias];
+  [descriptor lodBias];
   v61 = v53;
-  v54 = [a3 label];
-  if (v54)
+  label = [descriptor label];
+  if (label)
   {
-    MEMORY[0x29ED51E00](__p, [v54 UTF8String]);
+    MEMORY[0x29ED51E00](__p, [label UTF8String]);
   }
 
-  result = AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::findOrCreateSampler(impl, v57, self, a3);
+  result = AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::findOrCreateSampler(impl, v57, self, descriptor);
   if (SHIBYTE(v66) < 0)
   {
     v56 = result;
@@ -2961,12 +2961,12 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
   return [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v8 forKeys:v7 count:3];
 }
 
-- (id)getConsistentPerfStateInfoAndReset:(BOOL)a3
+- (id)getConsistentPerfStateInfoAndReset:(BOOL)reset
 {
   v10[3] = *MEMORY[0x29EDCA608];
   [(IOGPUMetalDevice *)self deviceRef];
   inputStruct = 2;
-  BYTE1(inputStruct) = a3;
+  BYTE1(inputStruct) = reset;
   outputStructCnt = 8;
   Connect = IOGPUDeviceGetConnect();
   if (IOConnectCallStructMethod(Connect, 0x109u, &inputStruct, 8uLL, v6, &outputStructCnt))
@@ -3001,9 +3001,9 @@ uint64_t __82__AGXG18PFamilyDevice_newRenderPipelineStateWithMeshDescriptor_comp
   return 1;
 }
 
-- (BOOL)enableConsistentPerfState:(int)a3
+- (BOOL)enableConsistentPerfState:(int)state
 {
-  v3 = a3;
+  stateCopy = state;
   impl = self->_impl;
   [(IOGPUMetalDevice *)self deviceRef];
   inputStructCnt = 8;
@@ -3025,7 +3025,7 @@ LABEL_6:
   os_unfair_lock_unlock(impl + 4165);
   v6 = 1;
   LOBYTE(outputStruct) = 1;
-  HIBYTE(outputStruct) = v3;
+  HIBYTE(outputStruct) = stateCopy;
   if (IOConnectCallStructMethod(Connect, 0x109u, &outputStruct, inputStructCnt, &outputStruct, &inputStructCnt))
   {
     os_unfair_lock_lock(impl + 4165);
@@ -3072,7 +3072,7 @@ LABEL_6:
   }
 }
 
-- (void)removePerformanceStateAssertion:(id)a3
+- (void)removePerformanceStateAssertion:(id)assertion
 {
   v14 = *MEMORY[0x29EDCA608];
   p_performance_state_assertion = &self->performance_state_assertion;
@@ -3117,17 +3117,17 @@ LABEL_6:
   os_unfair_lock_unlock(&p_performance_state_assertion->lock.lock);
 }
 
-- (id)newPerformanceStateAssertion:(int64_t)a3 error:(id *)a4
+- (id)newPerformanceStateAssertion:(int64_t)assertion error:(id *)error
 {
   v30[1] = *MEMORY[0x29EDCA608];
-  if (a3 < 3)
+  if (assertion < 3)
   {
     p_performance_state_assertion = &self->performance_state_assertion;
     os_unfair_lock_lock(&self->performance_state_assertion.lock.lock);
     existingAssertion = p_performance_state_assertion->existingAssertion;
     if (p_performance_state_assertion->existingAssertion)
     {
-      if (existingAssertion->_requestedLevel == a3)
+      if (existingAssertion->_requestedLevel == assertion)
       {
         v9 = existingAssertion;
       }
@@ -3135,9 +3135,9 @@ LABEL_6:
       else
       {
         v21 = *MEMORY[0x29EDB9ED8];
-        v22 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Requested MTLDevicePerformanceState (%ld) is incompatible with the performance state currently set on the system.", a3];
-        v16 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:2 userInfo:v16];
+        assertion = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Requested MTLDevicePerformanceState (%ld) is incompatible with the performance state currently set on the system.", assertion];
+        v16 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&assertion forKeys:&v21 count:1];
+        *error = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:2 userInfo:v16];
         fwrite("AGX: PerformanceState: Incompatible PerformanceStateAssertion already exists\n\n", 0x4EuLL, 1uLL, *MEMORY[0x29EDCA610]);
         v9 = 0;
       }
@@ -3148,11 +3148,11 @@ LABEL_6:
     outputStructCnt = 8;
     Connect = IOGPUDeviceGetConnect();
     outputStruct[0] = 1;
-    outputStruct[1] = a3;
+    outputStruct[1] = assertion;
     v12 = IOConnectCallStructMethod(Connect, 0x10Du, outputStruct, 8uLL, outputStruct, &outputStructCnt);
     if (!v12)
     {
-      v9 = [[AGXG18PFamilyPerformanceStateAssertion alloc] initWithDevice:self level:a3];
+      v9 = [[AGXG18PFamilyPerformanceStateAssertion alloc] initWithDevice:self level:assertion];
       p_performance_state_assertion->existingAssertion = v9;
 LABEL_16:
       os_unfair_lock_unlock(&p_performance_state_assertion->lock.lock);
@@ -3181,7 +3181,7 @@ LABEL_16:
 LABEL_15:
         v17 = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:v15 userInfo:v14];
         v9 = 0;
-        *a4 = v17;
+        *error = v17;
         goto LABEL_16;
       }
 
@@ -3198,7 +3198,7 @@ LABEL_15:
   v29 = *MEMORY[0x29EDB9ED8];
   v30[0] = @"The provided performanceState is invalid";
   v10 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-  *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:2 userInfo:v10];
+  *error = [MEMORY[0x29EDB9FA0] errorWithDomain:@"MTLPerformanceStateAssertionDomain" code:2 userInfo:v10];
   fprintf(*MEMORY[0x29EDCA610], "AGX: PerformanceState: Provided performance state %d is unknown or invalid\n\n", 4);
   return 0;
 }
@@ -3271,13 +3271,13 @@ LABEL_15:
   }
 }
 
-- (BOOL)mapShaderSampleBufferWithBuffer:(id *)a3 capacity:(unint64_t)a4 size:(unint64_t)a5
+- (BOOL)mapShaderSampleBufferWithBuffer:(id *)buffer capacity:(unint64_t)capacity size:(unint64_t)size
 {
-  v5 = a5;
+  sizeCopy = size;
   v23[2] = *MEMORY[0x29EDCA608];
   impl = self->_impl;
-  [(IOGPUMetalDevice *)self deviceRef:a3];
-  if (a3 || v5)
+  [(IOGPUMetalDevice *)self deviceRef:buffer];
+  if (buffer || sizeCopy)
   {
     impl[16624] = 0;
     v9 = GRCCopyAllCounterSourceGroup();
@@ -3313,10 +3313,10 @@ LABEL_15:
       v13 = v11;
     }
 
-    if (v23[1] = v13, [objc_msgSend(v9 objectAtIndexedSubscript:{0), "setOptions:", objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", v23, v22, 2)}], v14 = objc_msgSend(MEMORY[0x29EDB8DE8], "arrayWithCapacity:", 4), v21[0] = objc_msgSend(MEMORY[0x29EDC11C8], "selectWithName:options:", @"KickBoundary", 0), v21[1] = objc_msgSend(MEMORY[0x29EDC11C8], "selectWithName:options:", @"TimerFixed", &unk_2A240CDC8), v17 = objc_msgSend(MEMORY[0x29EDB8D80], "arrayWithObjects:count:", v21, 2), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_TIMESTAMP"), 0)), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_GPU_CYCLES"), 0)), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_SAMPLE_TYPE"), 0)), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_ENCODER_ID"), 0)), v18 = 0, (objc_msgSend(v10, "requestTriggers:firstErrorIndex:", v17, &v18)) && (objc_msgSend(v10, "requestCounters:firstErrorIndex:", v14, &v18) & 1) != 0 && ((v15 = objc_msgSend(objc_msgSend(objc_msgSend(v9, "objectAtIndexedSubscript:", 0), "sourceList"), "count"), v19[0] = @"ShaderProfiler", v19[1] = @"BufferSizeInKB", v20[0] = MEMORY[0x29EDB8EB0], v15 != 1) ? (v16 = 6) : (v16 = 4), (v20[1] = objc_msgSend(MEMORY[0x29EDBA070], "numberWithUnsignedLongLong:", ((((v16 * v5) >> 2) + 2 * *MEMORY[0x29EDCA6D0] - 1) & -*MEMORY[0x29EDCA6D0]) >> 10), objc_msgSend(v10, "setOptions:", objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", v20, v19, 2)), (objc_msgSend(v10, "setEnabled:", 1)) && (objc_msgSend(objc_msgSend(v9, "objectAtIndexedSubscript:", 0), "startSampling")))
+    if (v23[1] = v13, [objc_msgSend(v9 objectAtIndexedSubscript:{0), "setOptions:", objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", v23, v22, 2)}], v14 = objc_msgSend(MEMORY[0x29EDB8DE8], "arrayWithCapacity:", 4), v21[0] = objc_msgSend(MEMORY[0x29EDC11C8], "selectWithName:options:", @"KickBoundary", 0), v21[1] = objc_msgSend(MEMORY[0x29EDC11C8], "selectWithName:options:", @"TimerFixed", &unk_2A240CDC8), v17 = objc_msgSend(MEMORY[0x29EDB8D80], "arrayWithObjects:count:", v21, 2), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_TIMESTAMP"), 0)), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_GPU_CYCLES"), 0)), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_SAMPLE_TYPE"), 0)), objc_msgSend(v14, "addObject:", objc_msgSend(MEMORY[0x29EDC11C0], "selectWithName:options:", objc_msgSend(MEMORY[0x29EDBA0F8], "stringWithUTF8String:", "GRC_ENCODER_ID"), 0)), v18 = 0, (objc_msgSend(v10, "requestTriggers:firstErrorIndex:", v17, &v18)) && (objc_msgSend(v10, "requestCounters:firstErrorIndex:", v14, &v18) & 1) != 0 && ((v15 = objc_msgSend(objc_msgSend(objc_msgSend(v9, "objectAtIndexedSubscript:", 0), "sourceList"), "count"), v19[0] = @"ShaderProfiler", v19[1] = @"BufferSizeInKB", v20[0] = MEMORY[0x29EDB8EB0], v15 != 1) ? (v16 = 6) : (v16 = 4), (v20[1] = objc_msgSend(MEMORY[0x29EDBA070], "numberWithUnsignedLongLong:", ((((v16 * sizeCopy) >> 2) + 2 * *MEMORY[0x29EDCA6D0] - 1) & -*MEMORY[0x29EDCA6D0]) >> 10), objc_msgSend(v10, "setOptions:", objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjects:forKeys:count:", v20, v19, 2)), (objc_msgSend(v10, "setEnabled:", 1)) && (objc_msgSend(objc_msgSend(v9, "objectAtIndexedSubscript:", 0), "startSampling")))
     {
-      *(impl + 2077) = a3;
-      *(impl + 4162) = v5;
+      *(impl + 2077) = buffer;
+      *(impl + 4162) = sizeCopy;
       *(impl + 4157) = 0;
       *(impl + 2079) = v9;
       result = 1;
@@ -3341,51 +3341,51 @@ LABEL_22:
   return result;
 }
 
-- (id)newHeapWithDescriptor:(id)a3
+- (id)newHeapWithDescriptor:(id)descriptor
 {
   p_telemetry = &self->_telemetry;
   v6 = &self->_telemetry.usage[1];
   atomic_fetch_or(&self->_telemetry.usage[1], 0x200uLL);
-  if ([a3 hazardTrackingMode] == 2)
+  if ([descriptor hazardTrackingMode] == 2)
   {
     atomic_fetch_or(v6, 0x400uLL);
   }
 
-  if ([a3 type] == 1)
+  if ([descriptor type] == 1)
   {
     atomic_fetch_or(&p_telemetry->usage[1], 0x800uLL);
   }
 
-  v7 = [a3 type];
+  type = [descriptor type];
   v8 = off_29F340790;
-  if (v7 != 2)
+  if (type != 2)
   {
     v8 = off_29F340770;
   }
 
   v9 = objc_alloc(*v8);
 
-  return [v9 initWithDevice:self descriptor:a3];
+  return [v9 initWithDevice:self descriptor:descriptor];
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)a3 options:(unint64_t)a4
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)length options:(unint64_t)options
 {
   v5 = 256;
   result.var1 = v5;
-  result.var0 = a3;
+  result.var0 = length;
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)descriptor
 {
-  if ([a3 validateWithDevice:self])
+  if ([descriptor validateWithDevice:self])
   {
-    v5 = [a3 descriptorPrivate];
+    descriptorPrivate = [descriptor descriptorPrivate];
     v6 = 0;
-    v7 = *(v5 + 96);
+    v7 = *(descriptorPrivate + 96);
     if (v7 == 2)
     {
-      v9 = a3;
+      descriptorCopy3 = descriptor;
       LODWORD(v8) = 0;
       v6 = 2;
     }
@@ -3397,26 +3397,26 @@ LABEL_22:
         v6 = 9;
       }
 
-      v8 = *(v5 + 152);
+      v8 = *(descriptorPrivate + 152);
       if (v8 == 3 || v8 == 2 || v8 == 1)
       {
-        v9 = a3;
+        descriptorCopy3 = descriptor;
       }
 
       else
       {
-        v9 = a3;
+        descriptorCopy3 = descriptor;
         LODWORD(v8) = 0;
       }
     }
 
     v10 = v6 & 0xFB;
-    if (!*(v5 + 128))
+    if (!*(descriptorPrivate + 128))
     {
       v10 = 2;
     }
 
-    v46 = *(v5 + 8);
+    v46 = *(descriptorPrivate + 8);
     v11 = v46 - 1;
     if ((v46 - 1) > 0x289)
     {
@@ -3430,7 +3430,7 @@ LABEL_22:
 
     v13 = v10 | ((*(v12 + 60) & 0xC) != 0);
     v14 = v10 & 0xEB | ((*(v12 + 60) & 0xC) != 0);
-    v15 = *(v5 + 176);
+    v15 = *(descriptorPrivate + 176);
     if (v15 == 2)
     {
       v16 = v13 | 0x10;
@@ -3442,9 +3442,9 @@ LABEL_22:
 
     v17 = (v8 << 8) | (v15 << 32);
     impl = self->_impl;
-    v44 = *v5;
-    v45 = *(v5 + 104);
-    v18 = *(v5 + 168) - 1;
+    v44 = *descriptorPrivate;
+    v45 = *(descriptorPrivate + 104);
+    v18 = *(descriptorPrivate + 168) - 1;
     if (v18 > 9)
     {
       v42 = 0;
@@ -3456,10 +3456,10 @@ LABEL_22:
     }
 
     v19 = v17 & 0xFFFFFFFFFFFFFF00 | v14;
-    v41 = *(v5 + 208);
-    if ((*(v5 + 72) - 1) < 4)
+    v41 = *(descriptorPrivate + 208);
+    if ((*(descriptorPrivate + 72) - 1) < 4)
     {
-      v20 = *(v5 + 72);
+      v20 = *(descriptorPrivate + 72);
     }
 
     else
@@ -3468,15 +3468,15 @@ LABEL_22:
     }
 
     v40 = v20;
-    v21 = *(v5 + 84);
-    v22 = *(v5 + 16);
-    v23 = *(v5 + 24);
-    v24 = *(v5 + 32);
-    v25 = *(v5 + 40);
-    v26 = *(v5 + 48);
-    v27 = *(v5 + 56);
-    v28 = *(v5 + 112) & 0xFLL;
-    v29 = [v9 resourceIndex];
+    v21 = *(descriptorPrivate + 84);
+    v22 = *(descriptorPrivate + 16);
+    v23 = *(descriptorPrivate + 24);
+    v24 = *(descriptorPrivate + 32);
+    v25 = *(descriptorPrivate + 40);
+    v26 = *(descriptorPrivate + 48);
+    v27 = *(descriptorPrivate + 56);
+    v28 = *(descriptorPrivate + 112) & 0xFLL;
+    resourceIndex = [descriptorCopy3 resourceIndex];
     if (v11 > 0x289)
     {
       v30 = &texFormatUnsupported;
@@ -3487,7 +3487,7 @@ LABEL_22:
       v30 = *(&off_29F342380 + v11);
     }
 
-    AGX::TextureGen4<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::TextureGen4(v47, impl, 0, 2, v44, v30, v46, v45, v29, v41, v19, v42, v40, v21, v22, v23, v24, v25, v26, v27, 0, 0, 0, v28, 0, 0, 0, 0, 0, v25, 0, 0, 1, v39, 0);
+    AGX::TextureGen4<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::TextureGen4(v47, impl, 0, 2, v44, v30, v46, v45, resourceIndex, v41, v19, v42, v40, v21, v22, v23, v24, v25, v26, v27, 0, 0, 0, v28, 0, 0, 0, 0, 0, v25, 0, 0, 1, v39, 0);
     v47[0] = off_2A23FA3D8;
     BaseAlignment = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getBaseAlignment(v47);
     v32 = v47[46];
@@ -3543,10 +3543,10 @@ LABEL_22:
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5 slice:(unint64_t)a6
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane slice:(unint64_t)slice
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
-  v11 = IOSurfaceCopyValue(a4, *MEMORY[0x29EDBB148]);
+  v11 = IOSurfaceCopyValue(iosurface, *MEMORY[0x29EDBB148]);
   if (v11)
   {
     v12 = v11;
@@ -3556,19 +3556,19 @@ LABEL_22:
 
       v14 = [AGXG18PFamilyTexture alloc];
 
-      return [(AGXTexture *)v14 initWithSharedTextureHandle:a4 device:self desc:a3 compressionMode:v13];
+      return [(AGXTexture *)v14 initWithSharedTextureHandle:iosurface device:self desc:descriptor compressionMode:v13];
     }
   }
 
   v16 = [AGXG18PFamilyTexture alloc];
 
-  return [(AGXTexture *)v16 initWithDevice:self desc:a3 iosurface:a4 plane:a5 slice:a6];
+  return [(AGXTexture *)v16 initWithDevice:self desc:descriptor iosurface:iosurface plane:plane slice:slice];
 }
 
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
-  v9 = IOSurfaceCopyValue(a4, *MEMORY[0x29EDBB148]);
+  v9 = IOSurfaceCopyValue(iosurface, *MEMORY[0x29EDBB148]);
   if (v9)
   {
     v10 = v9;
@@ -3578,26 +3578,26 @@ LABEL_22:
 
       v12 = [AGXG18PFamilyTexture alloc];
 
-      return [(AGXTexture *)v12 initWithSharedTextureHandle:a4 device:self desc:a3 compressionMode:v11];
+      return [(AGXTexture *)v12 initWithSharedTextureHandle:iosurface device:self desc:descriptor compressionMode:v11];
     }
   }
 
   v14 = [AGXG18PFamilyTexture alloc];
 
-  return [(AGXTexture *)v14 initWithDevice:self desc:a3 iosurface:a4 plane:a5 slice:0];
+  return [(AGXTexture *)v14 initWithDevice:self desc:descriptor iosurface:iosurface plane:plane slice:0];
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
-  if ([a3 placementSparsePageSize])
+  if ([descriptor placementSparsePageSize])
   {
-    if ([a3 placementSparsePageSize] == 103)
+    if ([descriptor placementSparsePageSize] == 103)
     {
       v5 = 0x40000;
     }
 
-    else if ([a3 placementSparsePageSize] == 102)
+    else if ([descriptor placementSparsePageSize] == 102)
     {
       v5 = 0x10000;
     }
@@ -3609,7 +3609,7 @@ LABEL_22:
 
     v9 = [AGXG18PFamilyTexture alloc];
 
-    return [(AGXTexture *)v9 initWithDevice:self desc:a3 sparsePageSize:v5];
+    return [(AGXTexture *)v9 initWithDevice:self desc:descriptor sparsePageSize:v5];
   }
 
   else
@@ -3617,24 +3617,24 @@ LABEL_22:
     v6 = [AGXG18PFamilyTexture alloc];
     v7 = *(self->_impl + 16989);
 
-    return [(AGXTexture *)v6 initWithDevice:self desc:a3 isSuballocDisabled:v7];
+    return [(AGXTexture *)v6 initWithDevice:self desc:descriptor isSuballocDisabled:v7];
   }
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)tileSizeWithSparsePageSize:(SEL)a3 textureType:(int64_t)a4 pixelFormat:(unint64_t)a5 sampleCount:(unint64_t)a6
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)tileSizeWithSparsePageSize:(SEL)size textureType:(int64_t)type pixelFormat:(unint64_t)format sampleCount:(unint64_t)count
 {
-  if ((a6 - 1) > 0x289)
+  if ((count - 1) > 0x289)
   {
     v7 = &texFormatUnsupported;
   }
 
   else
   {
-    v7 = *(&off_29F342380 + (a6 - 1));
+    v7 = *(&off_29F342380 + (count - 1));
   }
 
   v8 = 0x4000;
-  if (a4 == 102)
+  if (type == 102)
   {
     v8 = 0x10000;
   }
@@ -3643,7 +3643,7 @@ LABEL_22:
   v11 = *v9;
   v10 = v9[1];
   v12 = a7 * *(v7 + 88);
-  if (a4 == 103)
+  if (type == 103)
   {
     v8 = 0x40000;
   }
@@ -3667,11 +3667,11 @@ LABEL_22:
   return self;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)a3 pixelFormat:(unint64_t)a4 sampleCount:(unint64_t)a5 sparsePageSize:(unint64_t)a6
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)type pixelFormat:(unint64_t)format sampleCount:(unint64_t)count sparsePageSize:(unint64_t)size
 {
   if (self)
   {
-    return [($F99D9A4FB75BC57F3386B8DC8EE08D7A *)self tileSizeWithSparsePageSize:a7 textureType:a4 pixelFormat:a5 sampleCount:a6];
+    return [($F99D9A4FB75BC57F3386B8DC8EE08D7A *)self tileSizeWithSparsePageSize:a7 textureType:format pixelFormat:count sampleCount:size];
   }
 
   retstr->var0 = 0;
@@ -3680,11 +3680,11 @@ LABEL_22:
   return self;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)a3 pixelFormat:(unint64_t)a4 sampleCount:(unint64_t)a5
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)sparseTileSizeWithTextureType:(SEL)type pixelFormat:(unint64_t)format sampleCount:(unint64_t)count
 {
   if (self)
   {
-    return [($F99D9A4FB75BC57F3386B8DC8EE08D7A *)self tileSizeWithSparsePageSize:101 textureType:a4 pixelFormat:a5 sampleCount:a6];
+    return [($F99D9A4FB75BC57F3386B8DC8EE08D7A *)self tileSizeWithSparsePageSize:101 textureType:format pixelFormat:count sampleCount:a6];
   }
 
   retstr->var0 = 0;
@@ -3693,63 +3693,63 @@ LABEL_22:
   return self;
 }
 
-- (id)newIOCommandQueueWithDescriptor:(id)a3 error:(id *)a4
+- (id)newIOCommandQueueWithDescriptor:(id)descriptor error:(id *)error
 {
   atomic_fetch_or(&self->_telemetry.usage[1], 0x800000uLL);
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyDevice;
-  return [(IOGPUMetalDevice *)&v5 newIOCommandQueueWithDescriptor:a3 error:a4];
+  return [(IOGPUMetalDevice *)&v5 newIOCommandQueueWithDescriptor:descriptor error:error];
 }
 
-- (id)newIndirectRenderCommandEncoderWithBuffer:(id)a3
+- (id)newIndirectRenderCommandEncoderWithBuffer:(id)buffer
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
   v4 = [AGXG18PFamilyIndirectRenderCommandEncoder alloc];
 
-  return [(AGXG18PFamilyIndirectRenderCommandEncoder *)v4 initWithBuffer:a3];
+  return [(AGXG18PFamilyIndirectRenderCommandEncoder *)v4 initWithBuffer:buffer];
 }
 
-- (id)newIndirectCommandBufferWithDescriptor:(id)a3 maxCommandCount:(unint64_t)a4 options:(unint64_t)a5
+- (id)newIndirectCommandBufferWithDescriptor:(id)descriptor maxCommandCount:(unint64_t)count options:(unint64_t)options
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
   v9 = [AGXG18PFamilyIndirectCommandBuffer alloc];
   v10 = *(self->_impl + 16989);
 
-  return [(AGXG18PFamilyIndirectCommandBuffer *)v9 initWithDevice:self descriptor:a3 count:a4 options:a5 isSuballocDisabled:v10];
+  return [(AGXG18PFamilyIndirectCommandBuffer *)v9 initWithDevice:self descriptor:descriptor count:count options:options isSuballocDisabled:v10];
 }
 
-- (id)newBufferWithIOSurface:(__IOSurface *)a3
+- (id)newBufferWithIOSurface:(__IOSurface *)surface
 {
   v5 = [AGXG18PFamilyBuffer alloc];
 
-  return [(AGXBuffer *)v5 initWithDevice:self iosurface:a3 pinnedGPUAddress:0];
+  return [(AGXBuffer *)v5 initWithDevice:self iosurface:surface pinnedGPUAddress:0];
 }
 
-- (id)newTextureWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5 deallocator:(id)a6
+- (id)newTextureWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor deallocator:(id)deallocator
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
   v11 = [AGXG18PFamilyTexture alloc];
 
-  return [(AGXTexture *)v11 initWithDevice:self bytes:a3 length:a4 desc:a5 deallocator:a6];
+  return [(AGXTexture *)v11 initWithDevice:self bytes:copy length:length desc:descriptor deallocator:deallocator];
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 placementSparsePageSize:(int64_t)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options placementSparsePageSize:(int64_t)size
 {
   p_telemetry = &self->_telemetry;
   v6 = 0x8000000000000000;
-  if ((a4 & 0x100) == 0)
+  if ((options & 0x100) == 0)
   {
     v6 = 1;
   }
 
   atomic_fetch_or(p_telemetry, v6);
-  if (!(a4 >> 4))
+  if (!(options >> 4))
   {
     v7 = 184;
     goto LABEL_7;
   }
 
-  if (a4 >> 4 == 2)
+  if (options >> 4 == 2)
   {
     v7 = 192;
 LABEL_7:
@@ -3757,53 +3757,53 @@ LABEL_7:
   }
 
   atomic_fetch_add(&self->_telemetry.genericCounts.count[6], 1uLL);
-  return [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:self length:a3 alignment:1 options:a4 pointerTag:0 pinnedGPUAddress:0 placementSparsePageSize:a5];
+  return [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:self length:length alignment:1 options:options pointerTag:0 pinnedGPUAddress:0 placementSparsePageSize:size];
 }
 
-- (id)newBufferWithDescriptor:(id)a3
+- (id)newBufferWithDescriptor:(id)descriptor
 {
-  v5 = [a3 length];
-  v6 = [a3 resourceOptions];
-  v7 = (16 * ([a3 storageMode] & 0xF)) | v6;
-  v8 = [a3 alignment];
-  v9 = [a3 pointerTag];
-  if ([a3 addressRanges])
+  v5 = [descriptor length];
+  resourceOptions = [descriptor resourceOptions];
+  v7 = (16 * ([descriptor storageMode] & 0xF)) | resourceOptions;
+  alignment = [descriptor alignment];
+  pointerTag = [descriptor pointerTag];
+  if ([descriptor addressRanges])
   {
-    v10 = [a3 addressRanges];
-    result = -[AGXBuffer initWithDevice:addressRanges:addressRangeCount:length:alignment:options:pinnedGPUAddress:]([AGXG18PFamilyBuffer alloc], "initWithDevice:addressRanges:addressRangeCount:length:alignment:options:pinnedGPUAddress:", self, [v10 ranges], objc_msgSend(v10, "count"), v5, v8, v7, objc_msgSend(a3, "pinnedGPUAddress"));
+    addressRanges = [descriptor addressRanges];
+    result = -[AGXBuffer initWithDevice:addressRanges:addressRangeCount:length:alignment:options:pinnedGPUAddress:]([AGXG18PFamilyBuffer alloc], "initWithDevice:addressRanges:addressRangeCount:length:alignment:options:pinnedGPUAddress:", self, [addressRanges ranges], objc_msgSend(addressRanges, "count"), v5, alignment, v7, objc_msgSend(descriptor, "pinnedGPUAddress"));
     goto LABEL_3;
   }
 
-  if (![a3 iosurface])
+  if (![descriptor iosurface])
   {
-    if ([a3 noCopy])
+    if ([descriptor noCopy])
     {
-      result = -[AGXBuffer initWithDevice:bytes:length:alignment:pointerTag:options:deallocator:pinnedGPUAddress:]([AGXG18PFamilyBuffer alloc], "initWithDevice:bytes:length:alignment:pointerTag:options:deallocator:pinnedGPUAddress:", self, [a3 contents], v5, v8, v9, v7, objc_msgSend(a3, "deallocator"), objc_msgSend(a3, "pinnedGPUAddress"));
+      result = -[AGXBuffer initWithDevice:bytes:length:alignment:pointerTag:options:deallocator:pinnedGPUAddress:]([AGXG18PFamilyBuffer alloc], "initWithDevice:bytes:length:alignment:pointerTag:options:deallocator:pinnedGPUAddress:", self, [descriptor contents], v5, alignment, pointerTag, v7, objc_msgSend(descriptor, "deallocator"), objc_msgSend(descriptor, "pinnedGPUAddress"));
     }
 
     else
     {
-      v24[0] = [a3 pinnedGPUAddress];
-      v24[1] = [a3 parentGPUAddress];
-      v24[2] = [a3 parentGPUSize];
+      v24[0] = [descriptor pinnedGPUAddress];
+      v24[1] = [descriptor parentGPUAddress];
+      v24[2] = [descriptor parentGPUSize];
       v18 = [AGXG18PFamilyBuffer alloc];
       v19 = *(self->_impl + 16989);
-      v20 = [a3 pinnedGPUAddress];
+      pinnedGPUAddress = [descriptor pinnedGPUAddress];
       v21 = v24;
-      if (!v20)
+      if (!pinnedGPUAddress)
       {
         v21 = 0;
       }
 
-      result = [(AGXBuffer *)v18 initWithDevice:self length:v5 alignment:v8 pointerTag:v9 options:v7 isSuballocDisabled:v19 pinnedGPULocation:v21];
+      result = [(AGXBuffer *)v18 initWithDevice:self length:v5 alignment:alignment pointerTag:pointerTag options:v7 isSuballocDisabled:v19 pinnedGPULocation:v21];
       if (result)
       {
         v22 = result;
-        v23 = [a3 contents];
+        contents = [descriptor contents];
         result = v22;
-        if (v23)
+        if (contents)
         {
-          memcpy([v22 contents], objc_msgSend(a3, "contents"), v5);
+          memcpy([v22 contents], objc_msgSend(descriptor, "contents"), v5);
           result = v22;
         }
       }
@@ -3817,7 +3817,7 @@ LABEL_3:
 
     p_telemetry = &self->_telemetry;
     v13 = 0x8000000000000000;
-    if ((v6 & 0x100) == 0)
+    if ((resourceOptions & 0x100) == 0)
     {
       v13 = 1;
     }
@@ -3845,25 +3845,25 @@ LABEL_15:
   }
 
   v15 = [AGXG18PFamilyBuffer alloc];
-  v16 = [a3 iosurface];
-  v17 = [a3 pinnedGPUAddress];
+  iosurface = [descriptor iosurface];
+  pinnedGPUAddress2 = [descriptor pinnedGPUAddress];
 
-  return [(AGXBuffer *)v15 initWithDevice:self iosurface:v16 pinnedGPUAddress:v17];
+  return [(AGXBuffer *)v15 initWithDevice:self iosurface:iosurface pinnedGPUAddress:pinnedGPUAddress2];
 }
 
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator
 {
   p_telemetry = &self->_telemetry;
   v12 = 0x8000000000000000;
-  if ((a5 & 0x100) == 0)
+  if ((options & 0x100) == 0)
   {
     v12 = 1;
   }
 
   atomic_fetch_or(p_telemetry, v12);
-  if (a5 >> 4)
+  if (options >> 4)
   {
-    if (a5 >> 4 != 2)
+    if (options >> 4 != 2)
     {
       goto LABEL_8;
     }
@@ -3881,29 +3881,29 @@ LABEL_8:
   atomic_fetch_add(&self->_telemetry.genericCounts.count[5], 1uLL);
   v14 = [AGXG18PFamilyBuffer alloc];
 
-  return [(AGXBuffer *)v14 initWithDevice:self bytes:a3 length:a4 options:a5 deallocator:a6 pinnedGPUAddress:0];
+  return [(AGXBuffer *)v14 initWithDevice:self bytes:copy length:length options:options deallocator:deallocator pinnedGPUAddress:0];
 }
 
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options
 {
-  v5 = a5;
-  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:self length:a4 options:a5 isSuballocDisabled:*(self->_impl + 16989) pinnedGPULocation:0];
+  optionsCopy = options;
+  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:self length:length options:options isSuballocDisabled:*(self->_impl + 16989) pinnedGPULocation:0];
   if (result)
   {
     v10 = result;
-    memcpy([result contents], a3, a4);
+    memcpy([result contents], bytes, length);
     p_telemetry = &self->_telemetry;
     v12 = 0x8000000000000000;
-    if ((v5 & 0x100) == 0)
+    if ((optionsCopy & 0x100) == 0)
     {
       v12 = 1;
     }
 
     atomic_fetch_or(p_telemetry, v12);
-    if (v5 >> 4)
+    if (optionsCopy >> 4)
     {
       result = v10;
-      if (v5 >> 4 != 2)
+      if (optionsCopy >> 4 != 2)
       {
 LABEL_9:
         atomic_fetch_add(&self->_telemetry.genericCounts.count[6], 1uLL);
@@ -3926,19 +3926,19 @@ LABEL_9:
   return result;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
   p_telemetry = &self->_telemetry;
   v8 = 0x8000000000000000;
-  if ((a4 & 0x100) == 0)
+  if ((options & 0x100) == 0)
   {
     v8 = 1;
   }
 
   atomic_fetch_or(p_telemetry, v8);
-  if (a4 >> 4)
+  if (options >> 4)
   {
-    if (a4 >> 4 != 2)
+    if (options >> 4 != 2)
     {
       goto LABEL_8;
     }
@@ -3957,10 +3957,10 @@ LABEL_8:
   v10 = [AGXG18PFamilyBuffer alloc];
   v11 = *(self->_impl + 16989);
 
-  return [(AGXBuffer *)v10 initWithDevice:self length:a3 alignment:1 options:a4 isSuballocDisabled:v11 pinnedGPULocation:0];
+  return [(AGXBuffer *)v10 initWithDevice:self length:length alignment:1 options:options isSuballocDisabled:v11 pinnedGPULocation:0];
 }
 
-- (id)newCommandQueueWithDescriptor:(id)a3
+- (id)newCommandQueueWithDescriptor:(id)descriptor
 {
   if (*(self->_impl + 16997) == 1)
   {
@@ -3970,7 +3970,7 @@ LABEL_8:
     }
   }
 
-  v5 = [[AGXG18PFamilyCommandQueue alloc] initWithDevice:self descriptor:a3];
+  v5 = [[AGXG18PFamilyCommandQueue alloc] initWithDevice:self descriptor:descriptor];
   [(AGXG18PFamilyDevice *)self setupDeferred];
   return v5;
 }
@@ -4581,25 +4581,25 @@ void __36__AGXG18PFamilyDevice_setupDeferred__block_invoke(uint64_t a1)
   dispatch_activate(*(v2 + 17280));
 }
 
-- (id)newDepthStencilStateWithDescriptor:(id)a3
+- (id)newDepthStencilStateWithDescriptor:(id)descriptor
 {
   impl = self->_impl;
   os_unfair_lock_lock(impl + 4166);
   v86 = 0;
   memset(__p, 0, sizeof(__p));
   v80 = impl;
-  v6 = [a3 frontFaceStencil];
-  v7 = [a3 backFaceStencil];
-  LODWORD(__p[0]) = [v6 stencilCompareFunction] & 7;
-  LODWORD(__p[0]) = __p[0] & 0xFFFFFFC7 | (8 * ([v6 stencilFailureOperation] & 7));
-  LODWORD(__p[0]) = __p[0] & 0xFFFFFE3F | (([v6 depthFailureOperation] & 7) << 6);
-  LODWORD(__p[0]) = __p[0] & 0xFFFFF1FF | (([v6 depthStencilPassOperation] & 7) << 9);
-  LODWORD(__p[0]) = __p[0] & 0xFFFF1FFF | (([v7 stencilCompareFunction] & 7) << 13);
-  LODWORD(__p[0]) = __p[0] & 0xFFF8FFFF | (([v7 stencilFailureOperation] & 7) << 16);
-  LODWORD(__p[0]) = __p[0] & 0xFFC7FFFF | (([v7 depthFailureOperation] & 7) << 19);
-  LODWORD(__p[0]) = __p[0] & 0xFE3FFFFF | (([v7 depthStencilPassOperation] & 7) << 22);
-  LODWORD(__p[0]) = __p[0] & 0xE3FFFFFF | (([a3 depthCompareFunction] & 7) << 26);
-  if ([a3 isDepthWriteEnabled])
+  frontFaceStencil = [descriptor frontFaceStencil];
+  backFaceStencil = [descriptor backFaceStencil];
+  LODWORD(__p[0]) = [frontFaceStencil stencilCompareFunction] & 7;
+  LODWORD(__p[0]) = __p[0] & 0xFFFFFFC7 | (8 * ([frontFaceStencil stencilFailureOperation] & 7));
+  LODWORD(__p[0]) = __p[0] & 0xFFFFFE3F | (([frontFaceStencil depthFailureOperation] & 7) << 6);
+  LODWORD(__p[0]) = __p[0] & 0xFFFFF1FF | (([frontFaceStencil depthStencilPassOperation] & 7) << 9);
+  LODWORD(__p[0]) = __p[0] & 0xFFFF1FFF | (([backFaceStencil stencilCompareFunction] & 7) << 13);
+  LODWORD(__p[0]) = __p[0] & 0xFFF8FFFF | (([backFaceStencil stencilFailureOperation] & 7) << 16);
+  LODWORD(__p[0]) = __p[0] & 0xFFC7FFFF | (([backFaceStencil depthFailureOperation] & 7) << 19);
+  LODWORD(__p[0]) = __p[0] & 0xFE3FFFFF | (([backFaceStencil depthStencilPassOperation] & 7) << 22);
+  LODWORD(__p[0]) = __p[0] & 0xE3FFFFFF | (([descriptor depthCompareFunction] & 7) << 26);
+  if ([descriptor isDepthWriteEnabled])
   {
     v8 = 0x20000000;
   }
@@ -4610,14 +4610,14 @@ void __36__AGXG18PFamilyDevice_setupDeferred__block_invoke(uint64_t a1)
   }
 
   LODWORD(__p[0]) = __p[0] & 0xDFFFFFFF | v8;
-  BYTE4(__p[0]) = [v6 readMask];
-  BYTE5(__p[0]) = [v6 writeMask];
-  BYTE6(__p[0]) = [v7 readMask];
-  HIBYTE(__p[0]) = [v7 writeMask];
-  v9 = [a3 label];
-  if (v9)
+  BYTE4(__p[0]) = [frontFaceStencil readMask];
+  BYTE5(__p[0]) = [frontFaceStencil writeMask];
+  BYTE6(__p[0]) = [backFaceStencil readMask];
+  HIBYTE(__p[0]) = [backFaceStencil writeMask];
+  label = [descriptor label];
+  if (label)
   {
-    MEMORY[0x29ED51E00](&__p[1], [v9 UTF8String]);
+    MEMORY[0x29ED51E00](&__p[1], [label UTF8String]);
   }
 
   else
@@ -4637,7 +4637,7 @@ void __36__AGXG18PFamilyDevice_setupDeferred__block_invoke(uint64_t a1)
     v10 = 1;
   }
 
-  v79 = self;
+  selfCopy = self;
   if (v11 == 7 && v10)
   {
     v12 = 0;
@@ -4917,7 +4917,7 @@ LABEL_145:
     }
   }
 
-  v50 = [(_MTLDepthStencilState *)[AGXG18PFamilyDepthStencilState alloc] initWithDevice:v79 depthStencilDescriptor:a3];
+  v50 = [(_MTLDepthStencilState *)[AGXG18PFamilyDepthStencilState alloc] initWithDevice:selfCopy depthStencilDescriptor:descriptor];
   v50->_impl.desc.var0.dword = __p[0];
   std::string::operator=(&v50->_impl.desc.label, &__p[1]);
   v50->_impl.desc.var1 = v86;
@@ -5099,28 +5099,28 @@ LABEL_131:
   return v50;
 }
 
-- (BOOL)isVendorSliceCompatibleWithDeploymentTarget:(unsigned int)a3 platform:(unsigned int)a4 sdkVersion:(unsigned int)a5 compilerPluginVersion:(unsigned int)a6
+- (BOOL)isVendorSliceCompatibleWithDeploymentTarget:(unsigned int)target platform:(unsigned int)platform sdkVersion:(unsigned int)version compilerPluginVersion:(unsigned int)pluginVersion
 {
   v6 = &unk_2A179E000;
   {
-    v26 = self;
-    v23 = a4;
-    v24 = a6;
-    v25 = a3;
+    selfCopy = self;
+    platformCopy = platform;
+    pluginVersionCopy = pluginVersion;
+    targetCopy = target;
     v6 = &unk_2A179E000;
-    a3 = v25;
-    a4 = v23;
-    a6 = v24;
+    target = targetCopy;
+    platform = platformCopy;
+    pluginVersion = pluginVersionCopy;
     v22 = v21;
-    self = v26;
+    self = selfCopy;
     if (v22)
     {
       [AGXG18PFamilyDevice isVendorSliceCompatibleWithDeploymentTarget:platform:sdkVersion:compilerPluginVersion:]::forceBinaryArchiveIncompatible = 0;
       v6 = &unk_2A179E000;
-      a3 = v25;
-      a4 = v23;
-      a6 = v24;
-      self = v26;
+      target = targetCopy;
+      platform = platformCopy;
+      pluginVersion = pluginVersionCopy;
+      self = selfCopy;
     }
   }
 
@@ -5129,10 +5129,10 @@ LABEL_131:
     return 0;
   }
 
-  LODWORD(v7) = a3 | (BYTE2(a3) << 8) | (a3 >> 4) & 0xFF0;
-  if (a4 == 1)
+  LODWORD(v7) = target | (BYTE2(target) << 8) | (target >> 4) & 0xFF0;
+  if (platform == 1)
   {
-    v8 = a3 | (BYTE2(a3) << 8) | (a3 >> 4) & 0xFF0;
+    v8 = target | (BYTE2(target) << 8) | (target >> 4) & 0xFF0;
   }
 
   else
@@ -5140,7 +5140,7 @@ LABEL_131:
     v8 = 0;
   }
 
-  if ((a4 & 0xFFFFFFFE) == 2)
+  if ((platform & 0xFFFFFFFE) == 2)
   {
     v9 = v7 << 16;
   }
@@ -5151,7 +5151,7 @@ LABEL_131:
   }
 
   v10 = v9 | v8;
-  if (a4 == 4)
+  if (platform == 4)
   {
     v7 = v7;
   }
@@ -5186,22 +5186,22 @@ LABEL_131:
   v16 = v14 | v15 | v13;
   v17 = v16 & 0xC0013001000;
   v18 = v16 & v11;
-  return (!v17 || v18 >= v17) && *(self->_impl + 4260) == a6;
+  return (!v17 || v18 >= v17) && *(self->_impl + 4260) == pluginVersion;
 }
 
-- (id)getMostCompatibleArchitecture:(id)a3
+- (id)getMostCompatibleArchitecture:(id)architecture
 {
   v21 = *MEMORY[0x29EDCA608];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [architecture countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
-    v15 = 0;
+    cpuSubtype2 = 0;
+    cpuType = 0;
     v8 = *v17;
     v9 = 0xFFFFFFFFLL;
     while (1)
@@ -5210,31 +5210,31 @@ LABEL_131:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(architecture);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 cpuType] == 16777235)
         {
-          v12 = [v11 cpuSubtype];
-          if (v12 <= 321)
+          cpuSubtype = [v11 cpuSubtype];
+          if (cpuSubtype <= 321)
           {
-            if (v12 <= 113)
+            if (cpuSubtype <= 113)
             {
-              if (v12 <= 80)
+              if (cpuSubtype <= 80)
               {
-                if (v12 == 34)
+                if (cpuSubtype == 34)
                 {
                   v13 = 5;
                   goto LABEL_65;
                 }
 
-                if (v12 == 65)
+                if (cpuSubtype == 65)
                 {
                   goto LABEL_50;
                 }
 
-                if (v12 != 67)
+                if (cpuSubtype != 67)
                 {
                   continue;
                 }
@@ -5242,9 +5242,9 @@ LABEL_131:
 
               else
               {
-                if (v12 <= 82)
+                if (cpuSubtype <= 82)
                 {
-                  if (v12 != 81)
+                  if (cpuSubtype != 81)
                   {
 LABEL_62:
                     v13 = 6;
@@ -5256,17 +5256,17 @@ LABEL_50:
 LABEL_65:
                   if (v13 <= [(AGXG18PFamilyDevice *)self featureProfile]&& (v9 == 0xFFFFFFFF || v13 > v9))
                   {
-                    v15 = [v11 cpuType];
-                    v7 = [v11 cpuSubtype];
+                    cpuType = [v11 cpuType];
+                    cpuSubtype2 = [v11 cpuSubtype];
                     v9 = v13;
                   }
 
                   continue;
                 }
 
-                if (v12 != 83)
+                if (cpuSubtype != 83)
                 {
-                  if (v12 != 97)
+                  if (cpuSubtype != 97)
                   {
                     continue;
                   }
@@ -5280,20 +5280,20 @@ LABEL_57:
               goto LABEL_65;
             }
 
-            if (v12 <= 242)
+            if (cpuSubtype <= 242)
             {
-              if (v12 == 114)
+              if (cpuSubtype == 114)
               {
                 goto LABEL_62;
               }
 
-              if (v12 == 210)
+              if (cpuSubtype == 210)
               {
                 v13 = 7;
                 goto LABEL_65;
               }
 
-              if (v12 != 227)
+              if (cpuSubtype != 227)
               {
                 continue;
               }
@@ -5301,14 +5301,14 @@ LABEL_57:
               goto LABEL_57;
             }
 
-            if (v12 <= 274)
+            if (cpuSubtype <= 274)
             {
-              if (v12 == 243)
+              if (cpuSubtype == 243)
               {
                 goto LABEL_57;
               }
 
-              if (v12 != 259)
+              if (cpuSubtype != 259)
               {
                 continue;
               }
@@ -5318,12 +5318,12 @@ LABEL_53:
               goto LABEL_65;
             }
 
-            if (v12 == 275)
+            if (cpuSubtype == 275)
             {
               goto LABEL_57;
             }
 
-            if (v12 != 290)
+            if (cpuSubtype != 290)
             {
               continue;
             }
@@ -5331,18 +5331,18 @@ LABEL_53:
             goto LABEL_61;
           }
 
-          if (v12 > 433)
+          if (cpuSubtype > 433)
           {
-            if (v12 <= 529)
+            if (cpuSubtype <= 529)
             {
-              if (v12 != 434)
+              if (cpuSubtype != 434)
               {
-                if (v12 == 435)
+                if (cpuSubtype == 435)
                 {
                   goto LABEL_57;
                 }
 
-                if (v12 != 498)
+                if (cpuSubtype != 498)
                 {
                   continue;
                 }
@@ -5351,9 +5351,9 @@ LABEL_53:
 
             else
             {
-              if (v12 <= 593)
+              if (cpuSubtype <= 593)
               {
-                if (v12 != 530 && v12 != 562)
+                if (cpuSubtype != 530 && cpuSubtype != 562)
                 {
                   continue;
                 }
@@ -5361,14 +5361,14 @@ LABEL_53:
                 goto LABEL_61;
               }
 
-              if (v12 == 594)
+              if (cpuSubtype == 594)
               {
 LABEL_61:
                 v13 = 8;
                 goto LABEL_65;
               }
 
-              if (v12 != 610)
+              if (cpuSubtype != 610)
               {
                 continue;
               }
@@ -5377,19 +5377,19 @@ LABEL_61:
 
           else
           {
-            if (v12 <= 369)
+            if (cpuSubtype <= 369)
             {
-              if (v12 == 322)
+              if (cpuSubtype == 322)
               {
                 goto LABEL_61;
               }
 
-              if (v12 == 323)
+              if (cpuSubtype == 323)
               {
                 goto LABEL_53;
               }
 
-              if (v12 != 339)
+              if (cpuSubtype != 339)
               {
                 continue;
               }
@@ -5399,11 +5399,11 @@ LABEL_39:
               goto LABEL_65;
             }
 
-            if (v12 > 401)
+            if (cpuSubtype > 401)
             {
-              if (v12 != 402)
+              if (cpuSubtype != 402)
               {
-                if (v12 != 403)
+                if (cpuSubtype != 403)
                 {
                   continue;
                 }
@@ -5412,9 +5412,9 @@ LABEL_39:
               }
             }
 
-            else if (v12 != 370)
+            else if (cpuSubtype != 370)
             {
-              if (v12 != 371)
+              if (cpuSubtype != 371)
               {
                 continue;
               }
@@ -5428,17 +5428,17 @@ LABEL_39:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [architecture countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (!v6)
       {
-        return [objc_alloc(MEMORY[0x29EDBB510]) initWithCPUType:v15 cpuSubtype:v7];
+        return [objc_alloc(MEMORY[0x29EDBB510]) initWithCPUType:cpuType cpuSubtype:cpuSubtype2];
       }
     }
   }
 
-  v7 = 0;
-  v15 = 0;
-  return [objc_alloc(MEMORY[0x29EDBB510]) initWithCPUType:v15 cpuSubtype:v7];
+  cpuSubtype2 = 0;
+  cpuType = 0;
+  return [objc_alloc(MEMORY[0x29EDBB510]) initWithCPUType:cpuType cpuSubtype:cpuSubtype2];
 }
 
 - (MTLArchitecture)architecture
@@ -5897,19 +5897,19 @@ LABEL_8:
   return result;
 }
 
-- (id)newTextureViewPoolWithDescriptor:(id)a3 error:(id *)a4
+- (id)newTextureViewPoolWithDescriptor:(id)descriptor error:(id *)error
 {
   [(AGXG18PFamilyDevice *)self setupDeferred];
   v7 = [AGXG18PFamilyTextureViewPool alloc];
 
-  return [(AGXG18PFamilyTextureViewPool *)v7 initWithDevice:self descriptor:a3 error:a4];
+  return [(AGXG18PFamilyTextureViewPool *)v7 initWithDevice:self descriptor:descriptor error:error];
 }
 
-- (id)newArgumentTableWithDescriptor:(id)a3 error:(id *)a4
+- (id)newArgumentTableWithDescriptor:(id)descriptor error:(id *)error
 {
   v6 = [AGXG18PFamilyArgumentTable_mtlnext alloc];
 
-  return [(AGXG18PFamilyArgumentTable_mtlnext *)v6 initWithDescriptor:a3 device:self];
+  return [(AGXG18PFamilyArgumentTable_mtlnext *)v6 initWithDescriptor:descriptor device:self];
 }
 
 - (id)newCommandBuffer
@@ -5920,12 +5920,12 @@ LABEL_8:
   return [(AGXG18PFamilyCommandBuffer_mtlnext *)v3 initWithDevice:self];
 }
 
-- (id)newMTL4CommandQueueWithDescriptor:(id)a3 error:(id *)a4
+- (id)newMTL4CommandQueueWithDescriptor:(id)descriptor error:(id *)error
 {
-  [(AGXG18PFamilyDevice *)self setupDeferred:a3];
+  [(AGXG18PFamilyDevice *)self setupDeferred:descriptor];
   v6 = [AGXG18PFamilyCommandQueue_mtlnext alloc];
 
-  return [(AGXG18PFamilyCommandQueue_mtlnext *)v6 initWithDevice:self descriptor:a3];
+  return [(AGXG18PFamilyCommandQueue_mtlnext *)v6 initWithDevice:self descriptor:descriptor];
 }
 
 - (id)newMTL4CommandQueue
@@ -5943,12 +5943,12 @@ LABEL_8:
   return [(AGXG18PFamilyCommandAllocator_mtlnext *)v3 initWithDeviceAndAliasToDevicePools:self];
 }
 
-- (id)newCommandAllocatorWithDescriptor:(id)a3 error:(id *)a4
+- (id)newCommandAllocatorWithDescriptor:(id)descriptor error:(id *)error
 {
-  [(AGXG18PFamilyDevice *)self setupDeferred:a3];
+  [(AGXG18PFamilyDevice *)self setupDeferred:descriptor];
   v6 = [AGXG18PFamilyCommandAllocator_mtlnext alloc];
 
-  return [(AGXG18PFamilyCommandAllocator_mtlnext *)v6 initWithDevice:self descriptor:a3];
+  return [(AGXG18PFamilyCommandAllocator_mtlnext *)v6 initWithDevice:self descriptor:descriptor];
 }
 
 - (id)newCommandAllocator
@@ -5959,15 +5959,15 @@ LABEL_8:
   return [(AGXG18PFamilyCommandAllocator_mtlnext *)v3 initWithDevice:self];
 }
 
-- (AGXG18PFamilyDevice)initWithAcceleratorPort:(unsigned int)a3 simultaneousInstances:(unsigned int)a4
+- (AGXG18PFamilyDevice)initWithAcceleratorPort:(unsigned int)port simultaneousInstances:(unsigned int)instances
 {
   v7 = *MEMORY[0x29EDCA608];
   gatherDeviceOptions(AGX::HAL300::Device *,NSString **,NSString **)::deviceOptions = 0;
   if (gatherDeviceOptions(AGX::HAL300::Device *,NSString **,NSString **)::once != -1)
   {
-    v5 = self;
+    selfCopy = self;
     dispatch_once(&gatherDeviceOptions(AGX::HAL300::Device *,NSString **,NSString **)::once, &__block_literal_global_1823);
-    self = v5;
+    self = selfCopy;
   }
 
   v6.receiver = self;
@@ -5980,12 +5980,12 @@ LABEL_8:
   return 0;
 }
 
-- (id)newProfileWithExecutionSize:(unint64_t)a3
+- (id)newProfileWithExecutionSize:(unint64_t)size
 {
-  v4 = [(IOGPUMetalDevice *)self deviceRef];
+  deviceRef = [(IOGPUMetalDevice *)self deviceRef];
   v5 = [AGXG18PFamilyDeadlineProfile alloc];
 
-  return [(AGXG18PFamilyDeadlineProfile *)v5 initWithDevice:v4 executionSize:a3];
+  return [(AGXG18PFamilyDeadlineProfile *)v5 initWithDevice:deviceRef executionSize:size];
 }
 
 - (unint64_t)bufferRobustnessSupport

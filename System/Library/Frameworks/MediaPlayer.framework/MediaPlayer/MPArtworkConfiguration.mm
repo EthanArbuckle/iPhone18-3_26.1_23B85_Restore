@@ -1,9 +1,9 @@
 @interface MPArtworkConfiguration
 + (id)systemConfiguration;
-- (MPArtworkConfiguration)initWithConfigurationDictionaries:(id)a3;
+- (MPArtworkConfiguration)initWithConfigurationDictionaries:(id)dictionaries;
 - (id)description;
-- (id)sizesToAutogenerateForMediaType:(unint64_t)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5;
-- (id)supportedSizesForMediaType:(unint64_t)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5;
+- (id)sizesToAutogenerateForMediaType:(unint64_t)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType;
+- (id)supportedSizesForMediaType:(unint64_t)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType;
 @end
 
 @implementation MPArtworkConfiguration
@@ -12,15 +12,15 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPArtworkConfiguration *)self artworkConfiguration];
-  v6 = [v3 stringWithFormat:@"<%@ %p %@>\n", v4, self, v5];
+  artworkConfiguration = [(MPArtworkConfiguration *)self artworkConfiguration];
+  v6 = [v3 stringWithFormat:@"<%@ %p %@>\n", v4, self, artworkConfiguration];
 
   return v6;
 }
 
-- (id)sizesToAutogenerateForMediaType:(unint64_t)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5
+- (id)sizesToAutogenerateForMediaType:(unint64_t)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType
 {
-  if (a3 == 0xFF)
+  if (type == 0xFF)
   {
     v7 = 255;
   }
@@ -30,7 +30,7 @@
     v7 = 0;
   }
 
-  if ((~a3 & 0xFF00) != 0)
+  if ((~type & 0xFF00) != 0)
   {
     v8 = v7;
   }
@@ -40,19 +40,19 @@
     v8 = v7 | 0xFF00;
   }
 
-  v9 = vandq_s8(vshlq_u32(vdupq_n_s32(a3), xmmword_1A273DDC0), xmmword_1A273DDD0);
+  v9 = vandq_s8(vshlq_u32(vdupq_n_s32(type), xmmword_1A273DDC0), xmmword_1A273DDD0);
   *v9.i8 = vorr_s8(*v9.i8, *&vextq_s8(v9, v9, 8uLL));
-  v10 = v9.i32[0] | a3 & 0x3210 | v9.i32[1];
-  v11 = (a3 >> 1) & 2 | (a3 >> 2) & 0x100 | (a3 >> 1) & 0x400 | v8;
-  v12 = [(MPArtworkConfiguration *)self artworkConfiguration];
-  v13 = [v12 sizesToAutogenerateForMediaType:v10 | v11 artworkType:a4 artworkVariantType:a5];
+  v10 = v9.i32[0] | type & 0x3210 | v9.i32[1];
+  v11 = (type >> 1) & 2 | (type >> 2) & 0x100 | (type >> 1) & 0x400 | v8;
+  artworkConfiguration = [(MPArtworkConfiguration *)self artworkConfiguration];
+  v13 = [artworkConfiguration sizesToAutogenerateForMediaType:v10 | v11 artworkType:artworkType artworkVariantType:variantType];
 
   return v13;
 }
 
-- (id)supportedSizesForMediaType:(unint64_t)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5
+- (id)supportedSizesForMediaType:(unint64_t)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType
 {
-  if (a3 == 0xFF)
+  if (type == 0xFF)
   {
     v7 = 255;
   }
@@ -62,7 +62,7 @@
     v7 = 0;
   }
 
-  if ((~a3 & 0xFF00) != 0)
+  if ((~type & 0xFF00) != 0)
   {
     v8 = v7;
   }
@@ -72,25 +72,25 @@
     v8 = v7 | 0xFF00;
   }
 
-  v9 = vandq_s8(vshlq_u32(vdupq_n_s32(a3), xmmword_1A273DDC0), xmmword_1A273DDD0);
+  v9 = vandq_s8(vshlq_u32(vdupq_n_s32(type), xmmword_1A273DDC0), xmmword_1A273DDD0);
   *v9.i8 = vorr_s8(*v9.i8, *&vextq_s8(v9, v9, 8uLL));
-  v10 = v9.i32[0] | a3 & 0x3210 | v9.i32[1];
-  v11 = (a3 >> 1) & 2 | (a3 >> 2) & 0x100 | (a3 >> 1) & 0x400 | v8;
-  v12 = [(MPArtworkConfiguration *)self artworkConfiguration];
-  v13 = [v12 supportedSizesForMediaType:v10 | v11 artworkType:a4 artworkVariantType:a5];
+  v10 = v9.i32[0] | type & 0x3210 | v9.i32[1];
+  v11 = (type >> 1) & 2 | (type >> 2) & 0x100 | (type >> 1) & 0x400 | v8;
+  artworkConfiguration = [(MPArtworkConfiguration *)self artworkConfiguration];
+  v13 = [artworkConfiguration supportedSizesForMediaType:v10 | v11 artworkType:artworkType artworkVariantType:variantType];
 
   return v13;
 }
 
-- (MPArtworkConfiguration)initWithConfigurationDictionaries:(id)a3
+- (MPArtworkConfiguration)initWithConfigurationDictionaries:(id)dictionaries
 {
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v8.receiver = self;
   v8.super_class = MPArtworkConfiguration;
   v5 = [(MPArtworkConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B3450]) initWithConfigurationDictionaries:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69B3450]) initWithConfigurationDictionaries:dictionariesCopy];
     [(MPArtworkConfiguration *)v5 setArtworkConfiguration:v6];
   }
 

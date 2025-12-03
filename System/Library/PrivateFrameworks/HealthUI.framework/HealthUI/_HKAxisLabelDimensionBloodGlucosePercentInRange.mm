@@ -11,9 +11,9 @@
   v2 = [(_HKAxisLabelDimensionBloodGlucosePercentInRange *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ADA0] hk_percentNumberFormatter];
+    hk_percentNumberFormatter = [MEMORY[0x1E696ADA0] hk_percentNumberFormatter];
     formatter = v2->_formatter;
-    v2->_formatter = v3;
+    v2->_formatter = hk_percentNumberFormatter;
   }
 
   return v2;

@@ -1,20 +1,20 @@
 @interface ATXBestAppDataSource
-- (ATXBestAppDataSource)initWithDevice:(id)a3;
-- (void)bestAppSuggestionWithCallback:(id)a3;
+- (ATXBestAppDataSource)initWithDevice:(id)device;
+- (void)bestAppSuggestionWithCallback:(id)callback;
 @end
 
 @implementation ATXBestAppDataSource
 
-- (ATXBestAppDataSource)initWithDevice:(id)a3
+- (ATXBestAppDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = ATXBestAppDataSource;
   v6 = [(ATXBestAppDataSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     bestAppSuggestionManager = v7->_bestAppSuggestionManager;
     v7->_bestAppSuggestionManager = v8;
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (void)bestAppSuggestionWithCallback:(id)a3
+- (void)bestAppSuggestionWithCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(UABestAppSuggestionManager *)self->_bestAppSuggestionManager bestAppSuggestion];
-  if (!v5)
+  callbackCopy = callback;
+  bestAppSuggestion = [(UABestAppSuggestionManager *)self->_bestAppSuggestionManager bestAppSuggestion];
+  if (!bestAppSuggestion)
   {
     v6 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -37,7 +37,7 @@
     }
   }
 
-  v4[2](v4, v5, 0);
+  callbackCopy[2](callbackCopy, bestAppSuggestion, 0);
 }
 
 @end

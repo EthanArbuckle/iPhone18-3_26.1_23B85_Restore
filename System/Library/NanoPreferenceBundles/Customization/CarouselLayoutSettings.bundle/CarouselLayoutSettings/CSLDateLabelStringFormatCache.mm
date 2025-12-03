@@ -20,23 +20,23 @@
 - (NSDateFormatter)timeFormatter;
 - (NSDateFormatter)timeNoAMPMFormatter;
 - (NSNumberFormatter)decimalFormatter;
-- (id)formatAbbreviatedTimerDuration:(double)a3;
-- (id)formatAlarmSnoozeDuration:(double)a3;
-- (id)formatDateAsAbbreviatedDayMonthStyle:(id)a3;
-- (id)formatDateAsAbbreviatedDayMonthWithTimeStyle:(id)a3;
-- (id)formatDateAsAbbreviatedDayOfWeekWithTime:(id)a3;
-- (id)formatDateAsDayMonthYearStyle:(id)a3;
-- (id)formatDateAsDayOfWeek:(id)a3;
-- (id)formatDateAsDayOfWeekMonthDayStyle:(id)a3;
-- (id)formatDateAsLongYMDHMSNoSpacesWithDate:(id)a3;
-- (id)formatDateAsLongYMDHMSZWithDate:(id)a3;
-- (id)formatDateAsRelativeDateAndTimeStyle:(id)a3;
-- (id)formatDateAsRelativeDateStyle:(id)a3;
-- (id)formatDateAsShortDayMonthWithTimeStyle:(id)a3;
-- (id)formatDateAsTimeNoAMPM:(id)a3;
-- (id)formatDateAsTimeStyle:(id)a3;
-- (id)formatNumberAsDecimal:(id)a3;
-- (void)_withLock:(id)a3;
+- (id)formatAbbreviatedTimerDuration:(double)duration;
+- (id)formatAlarmSnoozeDuration:(double)duration;
+- (id)formatDateAsAbbreviatedDayMonthStyle:(id)style;
+- (id)formatDateAsAbbreviatedDayMonthWithTimeStyle:(id)style;
+- (id)formatDateAsAbbreviatedDayOfWeekWithTime:(id)time;
+- (id)formatDateAsDayMonthYearStyle:(id)style;
+- (id)formatDateAsDayOfWeek:(id)week;
+- (id)formatDateAsDayOfWeekMonthDayStyle:(id)style;
+- (id)formatDateAsLongYMDHMSNoSpacesWithDate:(id)date;
+- (id)formatDateAsLongYMDHMSZWithDate:(id)date;
+- (id)formatDateAsRelativeDateAndTimeStyle:(id)style;
+- (id)formatDateAsRelativeDateStyle:(id)style;
+- (id)formatDateAsShortDayMonthWithTimeStyle:(id)style;
+- (id)formatDateAsTimeNoAMPM:(id)m;
+- (id)formatDateAsTimeStyle:(id)style;
+- (id)formatNumberAsDecimal:(id)decimal;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
 @end
 
@@ -76,11 +76,11 @@
   [(CSLDateLabelStringFormatCache *)&v3 dealloc];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   pthread_mutex_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   pthread_mutex_unlock(&self->_lock);
 }
@@ -484,101 +484,101 @@
   return v2;
 }
 
-- (id)formatNumberAsDecimal:(id)a3
+- (id)formatNumberAsDecimal:(id)decimal
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self decimalFormatter];
-  v6 = [v5 stringFromNumber:v4];
+  decimalCopy = decimal;
+  decimalFormatter = [(CSLDateLabelStringFormatCache *)self decimalFormatter];
+  v6 = [decimalFormatter stringFromNumber:decimalCopy];
 
   return v6;
 }
 
-- (id)formatDateAsDayOfWeek:(id)a3
+- (id)formatDateAsDayOfWeek:(id)week
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self dayOfWeekFormatter];
-  v6 = [v5 stringFromDate:v4];
+  weekCopy = week;
+  dayOfWeekFormatter = [(CSLDateLabelStringFormatCache *)self dayOfWeekFormatter];
+  v6 = [dayOfWeekFormatter stringFromDate:weekCopy];
 
   return v6;
 }
 
-- (id)formatDateAsAbbreviatedDayOfWeekWithTime:(id)a3
+- (id)formatDateAsAbbreviatedDayOfWeekWithTime:(id)time
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self dayOfWeekWithTimeFormatter];
-  v6 = [v5 stringFromDate:v4];
+  timeCopy = time;
+  dayOfWeekWithTimeFormatter = [(CSLDateLabelStringFormatCache *)self dayOfWeekWithTimeFormatter];
+  v6 = [dayOfWeekWithTimeFormatter stringFromDate:timeCopy];
 
   return v6;
 }
 
-- (id)formatDateAsDayMonthYearStyle:(id)a3
+- (id)formatDateAsDayMonthYearStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self dayMonthYearFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  dayMonthYearFormatter = [(CSLDateLabelStringFormatCache *)self dayMonthYearFormatter];
+  v6 = [dayMonthYearFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsShortDayMonthWithTimeStyle:(id)a3
+- (id)formatDateAsShortDayMonthWithTimeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self shortDayMonthTimeFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  shortDayMonthTimeFormatter = [(CSLDateLabelStringFormatCache *)self shortDayMonthTimeFormatter];
+  v6 = [shortDayMonthTimeFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsAbbreviatedDayMonthStyle:(id)a3
+- (id)formatDateAsAbbreviatedDayMonthStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self abbrevDayMonthFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  abbrevDayMonthFormatter = [(CSLDateLabelStringFormatCache *)self abbrevDayMonthFormatter];
+  v6 = [abbrevDayMonthFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsAbbreviatedDayMonthWithTimeStyle:(id)a3
+- (id)formatDateAsAbbreviatedDayMonthWithTimeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self abbrevDayMonthTimeFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  abbrevDayMonthTimeFormatter = [(CSLDateLabelStringFormatCache *)self abbrevDayMonthTimeFormatter];
+  v6 = [abbrevDayMonthTimeFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsTimeStyle:(id)a3
+- (id)formatDateAsTimeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self timeFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  timeFormatter = [(CSLDateLabelStringFormatCache *)self timeFormatter];
+  v6 = [timeFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsRelativeDateAndTimeStyle:(id)a3
+- (id)formatDateAsRelativeDateAndTimeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self relativeDateTimeFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  relativeDateTimeFormatter = [(CSLDateLabelStringFormatCache *)self relativeDateTimeFormatter];
+  v6 = [relativeDateTimeFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsDayOfWeekMonthDayStyle:(id)a3
+- (id)formatDateAsDayOfWeekMonthDayStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self dayOfWeekMonthDayFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  dayOfWeekMonthDayFormatter = [(CSLDateLabelStringFormatCache *)self dayOfWeekMonthDayFormatter];
+  v6 = [dayOfWeekMonthDayFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatDateAsTimeNoAMPM:(id)a3
+- (id)formatDateAsTimeNoAMPM:(id)m
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self timeNoAMPMFormatter];
-  v6 = [v5 stringFromDate:v4];
+  mCopy = m;
+  timeNoAMPMFormatter = [(CSLDateLabelStringFormatCache *)self timeNoAMPMFormatter];
+  v6 = [timeNoAMPMFormatter stringFromDate:mCopy];
 
   v7 = +[NSCharacterSet whitespaceCharacterSet];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -586,34 +586,34 @@
   return v8;
 }
 
-- (id)formatDateAsLongYMDHMSZWithDate:(id)a3
+- (id)formatDateAsLongYMDHMSZWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self longYMDHMSZFormatter];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  longYMDHMSZFormatter = [(CSLDateLabelStringFormatCache *)self longYMDHMSZFormatter];
+  v6 = [longYMDHMSZFormatter stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (id)formatDateAsLongYMDHMSNoSpacesWithDate:(id)a3
+- (id)formatDateAsLongYMDHMSNoSpacesWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self longYMDHMSNoSpaceFormatter];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  longYMDHMSNoSpaceFormatter = [(CSLDateLabelStringFormatCache *)self longYMDHMSNoSpaceFormatter];
+  v6 = [longYMDHMSNoSpaceFormatter stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (id)formatDateAsRelativeDateStyle:(id)a3
+- (id)formatDateAsRelativeDateStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CSLDateLabelStringFormatCache *)self relativeDateFormatter];
-  v6 = [v5 stringFromDate:v4];
+  styleCopy = style;
+  relativeDateFormatter = [(CSLDateLabelStringFormatCache *)self relativeDateFormatter];
+  v6 = [relativeDateFormatter stringFromDate:styleCopy];
 
   return v6;
 }
 
-- (id)formatAbbreviatedTimerDuration:(double)a3
+- (id)formatAbbreviatedTimerDuration:(double)duration
 {
   if ([(CSLDateLabelStringFormatCache *)self _shouldShowHoursForTimerDuration:?])
   {
@@ -625,13 +625,13 @@
     [(CSLDateLabelStringFormatCache *)self abbreviatedTimerJustMinutesSecondsFormatter];
   }
   v5 = ;
-  v6 = [NSDate dateWithTimeInterval:self->_timerReferenceDate sinceDate:a3];
+  v6 = [NSDate dateWithTimeInterval:self->_timerReferenceDate sinceDate:duration];
   v7 = [v5 stringFromDate:v6];
 
   return v7;
 }
 
-- (id)formatAlarmSnoozeDuration:(double)a3
+- (id)formatAlarmSnoozeDuration:(double)duration
 {
   if ([(CSLDateLabelStringFormatCache *)self _shouldShowHoursForTimerDuration:?])
   {
@@ -643,7 +643,7 @@
     [(CSLDateLabelStringFormatCache *)self alarmSnoozeJustMinutesSecondsFormatter];
   }
   v5 = ;
-  v6 = [NSDate dateWithTimeInterval:self->_alarmReferenceDate sinceDate:a3];
+  v6 = [NSDate dateWithTimeInterval:self->_alarmReferenceDate sinceDate:duration];
   v7 = [v5 stringFromDate:v6];
 
   return v7;

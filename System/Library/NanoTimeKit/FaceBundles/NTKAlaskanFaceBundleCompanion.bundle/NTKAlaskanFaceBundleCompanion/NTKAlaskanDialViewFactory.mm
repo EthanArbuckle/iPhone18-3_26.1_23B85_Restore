@@ -12,7 +12,7 @@
 - (id)_12HourDialView
 {
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   v38 = 0u;
   v39 = 0u;
@@ -29,7 +29,7 @@
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  sub_D99C(v4, &v25);
+  sub_D99C(device, &v25);
   v5 = objc_alloc_init(NTKAlaskanChronoDialViewOptions);
   [(NTKAlaskanChronoDialViewOptions *)v5 setTicksCount:120];
   [(NTKAlaskanChronoDialViewOptions *)v5 setLargerTicksTestBlock:&stru_38CA0];
@@ -71,7 +71,7 @@
 - (id)_tachymeterDialView
 {
   v2 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
+  device = [v2 device];
 
   v73 = 0u;
   v74 = 0u;
@@ -88,8 +88,8 @@
   v61 = 0u;
   v62 = 0u;
   v60 = 0u;
-  v28 = v3;
-  sub_D99C(v3, &v60);
+  v28 = device;
+  sub_D99C(device, &v60);
   v4 = objc_alloc_init(NTKAlaskanChronoDialViewOptions);
   v5 = [&off_3AD48 mutableCopy];
   LODWORD(v6) = 101;
@@ -230,7 +230,7 @@
 - (id)_60secondsDialView
 {
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   v38 = 0u;
   v39 = 0u;
@@ -247,7 +247,7 @@
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  sub_D99C(v4, &v25);
+  sub_D99C(device, &v25);
   v5 = objc_alloc_init(NTKAlaskanChronoDialViewOptions);
   [(NTKAlaskanChronoDialViewOptions *)v5 setTicksCount:120];
   [(NTKAlaskanChronoDialViewOptions *)v5 setLargerTicksTestBlock:&stru_38DB0];
@@ -289,7 +289,7 @@
 - (id)_30secondsDialView
 {
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   v38 = 0u;
   v39 = 0u;
@@ -306,7 +306,7 @@
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  sub_D99C(v4, &v25);
+  sub_D99C(device, &v25);
   v5 = objc_alloc_init(NTKAlaskanChronoDialViewOptions);
   [(NTKAlaskanChronoDialViewOptions *)v5 setTicksCount:120];
   [(NTKAlaskanChronoDialViewOptions *)v5 setLargerTicksTestBlock:&stru_38E10];
@@ -348,7 +348,7 @@
 - (id)_6secondsDialView
 {
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   v23 = 0u;
   v24 = 0u;
@@ -365,7 +365,7 @@
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  sub_D99C(v4, &v10);
+  sub_D99C(device, &v10);
   v5 = objc_alloc_init(NTKAlaskanChronoDialViewOptions);
   [(NTKAlaskanChronoDialViewOptions *)v5 setTicksCount:150];
   [(NTKAlaskanChronoDialViewOptions *)v5 setLargerTicksTestBlock:&stru_38E70];
@@ -397,7 +397,7 @@
 - (id)_3secondsDialView
 {
   v3 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v4 = [v3 device];
+  device = [v3 device];
 
   v23 = 0u;
   v24 = 0u;
@@ -414,7 +414,7 @@
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  sub_D99C(v4, &v10);
+  sub_D99C(device, &v10);
   v5 = objc_alloc_init(NTKAlaskanChronoDialViewOptions);
   [(NTKAlaskanChronoDialViewOptions *)v5 setTicksCount:150];
   [(NTKAlaskanChronoDialViewOptions *)v5 setLargerTicksTestBlock:&stru_38F10];

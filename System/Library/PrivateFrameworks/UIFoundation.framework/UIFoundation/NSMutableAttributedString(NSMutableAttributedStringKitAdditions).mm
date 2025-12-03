@@ -18,40 +18,40 @@
 
 - (uint64_t)convertWritingDirectionToBidiControlCharacters
 {
-  [a1 beginEditing];
-  if ([a1 length])
+  [self beginEditing];
+  if ([self length])
   {
     v2 = 0;
     do
     {
-      v3 = [a1 convertWritingDirectionToBidiControlCharactersForParagraphAtIndex:v2];
+      v3 = [self convertWritingDirectionToBidiControlCharactersForParagraphAtIndex:v2];
       v2 = v3 + v4;
     }
 
-    while (v3 + v4 < [a1 length]);
+    while (v3 + v4 < [self length]);
   }
 
-  return [a1 endEditing];
+  return [self endEditing];
 }
 
 - (uint64_t)fixAttributesInRange:()NSMutableAttributedStringKitAdditions
 {
-  v7 = [a1 _attributeFixingInProgress];
-  if ((v7 & 1) == 0)
+  _attributeFixingInProgress = [self _attributeFixingInProgress];
+  if ((_attributeFixingInProgress & 1) == 0)
   {
-    [a1 _setAttributeFixingInProgress:1];
+    [self _setAttributeFixingInProgress:1];
   }
 
-  [a1 beginEditing];
-  [a1 fixGlyphInfoAttributeInRange:{a3, a4}];
-  [a1 fixFontAttributeInRange:{a3, a4}];
-  [a1 fixParagraphStyleAttributeInRange:{a3, a4}];
-  [a1 fixAttachmentAttributeInRange:{a3, a4}];
-  [objc_msgSend(a1 "_intentResolver")];
-  result = [a1 endEditing];
-  if ((v7 & 1) == 0)
+  [self beginEditing];
+  [self fixGlyphInfoAttributeInRange:{a3, a4}];
+  [self fixFontAttributeInRange:{a3, a4}];
+  [self fixParagraphStyleAttributeInRange:{a3, a4}];
+  [self fixAttachmentAttributeInRange:{a3, a4}];
+  [objc_msgSend(self "_intentResolver")];
+  result = [self endEditing];
+  if ((_attributeFixingInProgress & 1) == 0)
   {
-    return [a1 _setAttributeFixingInProgress:0];
+    return [self _setAttributeFixingInProgress:0];
   }
 
   return result;
@@ -62,12 +62,12 @@
   v7 = MEMORY[0x193AD3F60](0);
   *theSet = 0u;
   v219 = 0u;
-  v8 = [a1 string];
+  string = [self string];
   v216 = 0;
   v217 = 0;
-  [a1 _isStringDrawingTextStorage];
-  v212 = a1;
-  v205 = [a1 _shouldSetOriginalFontAttribute];
+  [self _isStringDrawingTextStorage];
+  selfCopy = self;
+  _shouldSetOriginalFontAttribute = [self _shouldSetOriginalFontAttribute];
   if (fixFontAttributeInRange__onceToken != -1)
   {
     [NSMutableAttributedString(NSMutableAttributedStringKitAdditions) fixFontAttributeInRange:];
@@ -92,7 +92,7 @@
       goto LABEL_7;
     }
 
-    v9 = [(__CFString *)v8 characterAtIndex:a3];
+    v9 = [(__CFString *)string characterAtIndex:a3];
     if ((v9 & 0xF800 | 0x400) != 0xDC00)
     {
       LOBYTE(v193) = fixFontAttributeInRange__nonBaseSetBMP;
@@ -107,7 +107,7 @@
       }
     }
 
-    v10.location = [(__CFString *)v8 rangeOfComposedCharacterSequenceAtIndex:a3];
+    v10.location = [(__CFString *)string rangeOfComposedCharacterSequenceAtIndex:a3];
     if (a3 != v10.location)
     {
       location = v10.location;
@@ -126,11 +126,11 @@ LABEL_7:
       v199 = 0;
     }
 
-    if (a4 + a3 < [(__CFString *)v8 length])
+    if (a4 + a3 < [(__CFString *)string length])
     {
-      v14 = [(__CFString *)v8 characterAtIndex:a4 + a3];
+      v14 = [(__CFString *)string characterAtIndex:a4 + a3];
       v15 = a4 + a3 - 1;
-      if (([(__CFString *)v8 characterAtIndex:v15]& 0xFC00) == 0xD800)
+      if (([(__CFString *)string characterAtIndex:v15]& 0xFC00) == 0xD800)
       {
         goto LABEL_12;
       }
@@ -144,7 +144,7 @@ LABEL_7:
       if ((v192 & 1) != 0 || v14 - 4448 < 0x9A || (v14 & 0xFFF0) == 0xF870 || v14 == 8205 || (v14 & 0xFFF0) == 0xF860 || fixFontAttributeInRange__combiningDataBMP && *(fixFontAttributeInRange__combiningDataBMP + (v14 >> 8)) && *(fixFontAttributeInRange__combiningDataBMP + (*(fixFontAttributeInRange__combiningDataBMP + (v14 >> 8)) << 8) - 256 + v14 + 256) == 9)
       {
 LABEL_12:
-        v236.location = [(__CFString *)v8 rangeOfComposedCharacterSequenceAtIndex:v15];
+        v236.location = [(__CFString *)string rangeOfComposedCharacterSequenceAtIndex:v15];
         v244.location = a3;
         v244.length = a4;
         v16 = NSUnionRange(v236, v244);
@@ -159,10 +159,10 @@ LABEL_12:
     v199 = 0;
   }
 
-  theString[0] = v8;
+  theString[0] = string;
   *(&v229 + 1) = a3;
   *&v230 = a4;
-  theString[1] = CFStringGetCharactersPtr(v8);
+  theString[1] = CFStringGetCharactersPtr(string);
   if (theString[1])
   {
     CStringPtr = 0;
@@ -170,7 +170,7 @@ LABEL_12:
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(v8, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(string, 0x600u);
   }
 
   *(&v230 + 1) = 0;
@@ -183,8 +183,8 @@ LABEL_12:
     goto LABEL_555;
   }
 
-  v203 = 0;
-  v204 = v8;
+  coveredCharacterSet = 0;
+  v204 = string;
   v197 = v7;
   range1 = 0;
   v18 = 0;
@@ -192,10 +192,10 @@ LABEL_12:
   v208 = 0;
   v209 = 0;
   v213 = 0;
-  v20 = 0;
+  lastResortFont = 0;
   v210 = 0;
   v21 = 0;
-  v202 = 0;
+  _isDefaultFace = 0;
   v201 = a3 - 1;
   v200 = a3 - 2;
   v195 = a4 + a3;
@@ -207,7 +207,7 @@ LABEL_12:
   {
     if (v18 == v19)
     {
-      v22 = [v212 attribute:@"NSFont" atIndex:v18 + a3 longestEffectiveRange:&v216 inRange:{a3, a4}];
+      v22 = [selfCopy attribute:@"NSFont" atIndex:v18 + a3 longestEffectiveRange:&v216 inRange:{a3, a4}];
       v23 = v22;
       if (v22 && ([v22 _isDefaultFace] & 1) == 0 && (v24 = objc_msgSend(v23, "coveredCharacterSet")) != 0)
       {
@@ -224,17 +224,17 @@ LABEL_12:
       v27 = v216;
       v28 = v217;
       v209 = v26;
-      if (v20)
+      if (lastResortFont)
       {
         if (v23)
         {
           [v23 pointSize];
           v30 = v29;
-          [v20 pointSize];
-          if (v30 != v31 || (v32 = [v23 traits], v32 != objc_msgSend(v20, "traits")) || (CTFontGetWeight(), v34 = v33, CTFontGetWeight(), vabdd_f64(v34, v35) >= 0.00000011920929) || (memset(&v235, 0, sizeof(v235)), CTFontGetMatrix(&v235, v23), memset(&v234, 0, sizeof(v234)), CTFontGetMatrix(&v234, v20), t1 = v235, t2 = v234, !CGAffineTransformEqualToTransform(&t1, &t2)))
+          [lastResortFont pointSize];
+          if (v30 != v31 || (v32 = [v23 traits], v32 != objc_msgSend(lastResortFont, "traits")) || (CTFontGetWeight(), v34 = v33, CTFontGetWeight(), vabdd_f64(v34, v35) >= 0.00000011920929) || (memset(&v235, 0, sizeof(v235)), CTFontGetMatrix(&v235, v23), memset(&v234, 0, sizeof(v234)), CTFontGetMatrix(&v234, lastResortFont), t1 = v235, t2 = v234, !CGAffineTransformEqualToTransform(&t1, &t2)))
           {
-            [v212 addAttribute:@"NSFont" value:v20 range:{v210, v21}];
-            if (v205)
+            [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v21}];
+            if (_shouldSetOriginalFontAttribute)
             {
               v36 = v213;
               if (!v213)
@@ -247,10 +247,10 @@ LABEL_12:
                 v36 = NSDefaultFont__defaultFont;
               }
 
-              [v212 addAttribute:@"NSOriginalFont" value:v36 range:{v210, v21}];
+              [selfCopy addAttribute:@"NSOriginalFont" value:v36 range:{v210, v21}];
             }
 
-            v20 = 0;
+            lastResortFont = 0;
           }
         }
       }
@@ -390,19 +390,19 @@ LABEL_58:
                     a4 = v206;
                     if (v51 < v216 || (v83 = v213, v51 - v216 >= v217))
                     {
-                      v83 = [v212 attribute:@"NSFont" atIndex:v51 effectiveRange:0];
+                      v83 = [selfCopy attribute:@"NSFont" atIndex:v51 effectiveRange:0];
                     }
 
                     if (([v83 _hasColorGlyphs] & 1) == 0)
                     {
                       v84 = CTFontCreateEmojiFontForFont();
-                      if (v20)
+                      if (lastResortFont)
                       {
                         v85 = NSIntersectsRange() ? v50 - v210 : v215;
                         if (v85)
                         {
-                          [v212 addAttribute:@"NSFont" value:v20 range:{v210, v85}];
-                          if (v205)
+                          [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v85}];
+                          if (_shouldSetOriginalFontAttribute)
                           {
                             v86 = v213;
                             if (!v213)
@@ -415,17 +415,17 @@ LABEL_58:
                               v86 = NSDefaultFont__defaultFont;
                             }
 
-                            [v212 addAttribute:@"NSOriginalFont" value:v86 range:{v210, v85}];
+                            [selfCopy addAttribute:@"NSOriginalFont" value:v86 range:{v210, v85}];
                           }
                         }
                       }
 
-                      v203 = [v84 coveredCharacterSet];
-                      v202 = 0;
+                      coveredCharacterSet = [v84 coveredCharacterSet];
+                      _isDefaultFace = 0;
                       v37 = v51 + 2;
                       v210 = v50;
                       v21 = 2;
-                      v20 = v84;
+                      lastResortFont = v84;
                       goto LABEL_312;
                     }
 
@@ -475,7 +475,7 @@ LABEL_58:
             }
 
 LABEL_180:
-            if (v20)
+            if (lastResortFont)
             {
               v88 = v18 == v19;
             }
@@ -488,11 +488,11 @@ LABEL_180:
             if (v88 && v37 - 1 >= v199)
             {
 LABEL_186:
-              if (v20)
+              if (lastResortFont)
               {
-                [v212 addAttribute:@"NSFont" value:v20 range:{v210, v215}];
+                [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v215}];
                 a4 = v206;
-                if (!v205)
+                if (!_shouldSetOriginalFontAttribute)
                 {
                   goto LABEL_438;
                 }
@@ -607,7 +607,7 @@ LABEL_225:
                 if (!CFCharacterSetIsLongCharacterMember(theSet[0], 0x2Du))
                 {
 LABEL_238:
-                  if (v20)
+                  if (lastResortFont)
                   {
                     v107 = v210 + v215 - 1;
                     if (v107 < 0 || (v108 = v230, v230 <= v107))
@@ -651,9 +651,9 @@ LABEL_238:
                       v109 = buffer[v107 - v129];
                     }
 
-                    if (!(((v109 & 0xFFF0) == 65024) | v202 & 1) && CFCharacterSetIsLongCharacterMember(v203, v100))
+                    if (!(((v109 & 0xFFF0) == 65024) | _isDefaultFace & 1) && CFCharacterSetIsLongCharacterMember(coveredCharacterSet, v100))
                     {
-                      v202 = 0;
+                      _isDefaultFace = 0;
                       v110 = 1;
                       if (HIWORD(v100))
                       {
@@ -664,8 +664,8 @@ LABEL_238:
                       goto LABEL_312;
                     }
 
-                    [v212 addAttribute:@"NSFont" value:v20 range:{v210, v215}];
-                    if (v205)
+                    [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v215}];
+                    if (_shouldSetOriginalFontAttribute)
                     {
                       v111 = v103;
                       if (!v103)
@@ -678,7 +678,7 @@ LABEL_238:
                         v111 = NSDefaultFont__defaultFont;
                       }
 
-                      [v212 addAttribute:@"NSOriginalFont" value:v111 range:{v210, v215}];
+                      [selfCopy addAttribute:@"NSOriginalFont" value:v111 range:{v210, v215}];
                     }
                   }
 
@@ -714,14 +714,14 @@ LABEL_238:
                     if (CFCharacterSetIsLongCharacterMember([NSDefaultFont__defaultFont coveredCharacterSet], v100))
                     {
                       a3 = v211;
-                      if (v205)
+                      if (_shouldSetOriginalFontAttribute)
                       {
                         if (NSDefaultFont_onceToken != -1)
                         {
                           [NSMutableAttributedString(NSMutableAttributedStringKitAdditions) fixFontAttributeInRange:];
                         }
 
-                        [v212 addAttribute:@"NSOriginalFont" value:NSDefaultFont__defaultFont range:{v114, v21}];
+                        [selfCopy addAttribute:@"NSOriginalFont" value:NSDefaultFont__defaultFont range:{v114, v21}];
                       }
 
                       if (NSDefaultFont_onceToken != -1)
@@ -729,17 +729,17 @@ LABEL_238:
                         [NSMutableAttributedString(NSMutableAttributedStringKitAdditions) fixFontAttributeInRange:];
                       }
 
-                      v20 = NSDefaultFont__defaultFont;
+                      lastResortFont = NSDefaultFont__defaultFont;
                       if ([NSDefaultFont__defaultFont _isDefaultFace])
                       {
                         v213 = 0;
 LABEL_538:
-                        v202 = 1;
+                        _isDefaultFace = 1;
                         goto LABEL_540;
                       }
 
-                      v203 = [v20 coveredCharacterSet];
-                      v202 = 0;
+                      coveredCharacterSet = [lastResortFont coveredCharacterSet];
+                      _isDefaultFace = 0;
                       v213 = 0;
                       goto LABEL_540;
                     }
@@ -856,14 +856,14 @@ LABEL_484:
                               v169 = NSDefaultFont__defaultFont;
                             }
 
-                            v170 = [v169 bestMatchingFontForCharacters:v123 length:v122 attributes:objc_msgSend(v212 actualCoveredLength:{"attributesAtIndex:effectiveRange:", v210, 0), 0}];
+                            v170 = [v169 bestMatchingFontForCharacters:v123 length:v122 attributes:objc_msgSend(selfCopy actualCoveredLength:{"attributesAtIndex:effectiveRange:", v210, 0), 0}];
                             if (v170)
                             {
-                              v20 = v170;
-                              v202 = [v170 _isDefaultFace];
-                              if ((v202 & 1) == 0)
+                              lastResortFont = v170;
+                              _isDefaultFace = [v170 _isDefaultFace];
+                              if ((_isDefaultFace & 1) == 0)
                               {
-                                v203 = [v20 coveredCharacterSet];
+                                coveredCharacterSet = [lastResortFont coveredCharacterSet];
                               }
 
                               a3 = v211;
@@ -879,7 +879,7 @@ LABEL_492:
                       if (fixFontAttributeInRange__useDecoTypeFontForUrdu == 1)
                       {
                         a3 = v211;
-                        if (CTFontIsSystemUIFont() && MEMORY[0x193AD3A90]([v212 attribute:v196 atIndex:v114 effectiveRange:0]))
+                        if (CTFontIsSystemUIFont() && MEMORY[0x193AD3A90]([selfCopy attribute:v196 atIndex:v114 effectiveRange:0]))
                         {
                           NextUrduSequenceFromString = range1.location;
                           if (range1.location + range1.length <= v114)
@@ -910,13 +910,13 @@ LABEL_492:
                               v245.location = v211 + v37 + v113;
                               v176 = NSIntersectionRange(range1, v245);
                               v208 = CopyForKnownUrduSequences;
-                              [v212 addAttribute:@"NSFont" value:CopyForKnownUrduSequences range:{v176.location, v176.length}];
-                              if (v205)
+                              [selfCopy addAttribute:@"NSFont" value:CopyForKnownUrduSequences range:{v176.location, v176.length}];
+                              if (_shouldSetOriginalFontAttribute)
                               {
-                                [v212 addAttribute:@"NSOriginalFont" value:v173 range:{v176.location, v176.length}];
+                                [selfCopy addAttribute:@"NSOriginalFont" value:v173 range:{v176.location, v176.length}];
                               }
 
-                              v20 = 0;
+                              lastResortFont = 0;
                               v37 = v176.location + v176.length;
                               v210 = v114;
                               goto LABEL_508;
@@ -994,8 +994,8 @@ LABEL_492:
                           v186 = NSDefaultFont__defaultFont;
                         }
 
-                        v20 = [v186 bestMatchingFontForCharacters:v178 length:v21 attributes:objc_msgSend(v212 actualCoveredLength:{"attributesAtIndex:effectiveRange:", v114, 0), 0}];
-                        if (!v20)
+                        lastResortFont = [v186 bestMatchingFontForCharacters:v178 length:v21 attributes:objc_msgSend(selfCopy actualCoveredLength:{"attributesAtIndex:effectiveRange:", v114, 0), 0}];
+                        if (!lastResortFont)
                         {
                           v187 = v103;
                           if (!v103)
@@ -1008,20 +1008,20 @@ LABEL_492:
                             v187 = NSDefaultFont__defaultFont;
                           }
 
-                          v20 = [v187 lastResortFont];
+                          lastResortFont = [v187 lastResortFont];
                         }
 
-                        if (([v20 _isDefaultFace] & 1) == 0)
+                        if (([lastResortFont _isDefaultFace] & 1) == 0)
                         {
-                          v203 = [v20 coveredCharacterSet];
-                          v202 = 0;
+                          coveredCharacterSet = [lastResortFont coveredCharacterSet];
+                          _isDefaultFace = 0;
                           goto LABEL_540;
                         }
 
                         goto LABEL_538;
                       }
 
-                      v20 = 0;
+                      lastResortFont = 0;
 LABEL_540:
                       v210 = v211 + v37 + v113;
                       goto LABEL_541;
@@ -1082,16 +1082,16 @@ LABEL_454:
               }
 
 LABEL_311:
-              if (!v20)
+              if (!lastResortFont)
               {
 LABEL_312:
                 a3 = v211;
                 goto LABEL_541;
               }
 
-              [v212 addAttribute:@"NSFont" value:v20 range:{v210, v215}];
+              [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v215}];
               a3 = v211;
-              if (!v205)
+              if (!_shouldSetOriginalFontAttribute)
               {
                 goto LABEL_438;
               }
@@ -1151,7 +1151,7 @@ LABEL_211:
           goto LABEL_225;
         }
 
-        v98 = [objc_msgSend(v212 attribute:NSGlyphInfoAttributeName atIndex:v201 + v37 effectiveRange:{0), "_baseString"}];
+        v98 = [objc_msgSend(selfCopy attribute:NSGlyphInfoAttributeName atIndex:v201 + v37 effectiveRange:{0), "_baseString"}];
         if (!v98)
         {
           v100 = 65533;
@@ -1165,7 +1165,7 @@ LABEL_211:
           goto LABEL_237;
         }
 
-        if (v20)
+        if (lastResortFont)
         {
           v101 = v18 == v19;
         }
@@ -1282,7 +1282,7 @@ LABEL_211:
               v163 = NSDefaultFont__defaultFont;
             }
 
-            v164 = [v163 bestMatchingFontForCharacters:v63 length:v21 attributes:objc_msgSend(v212 actualCoveredLength:{"attributesAtIndex:effectiveRange:", v60, 0), 0}];
+            v164 = [v163 bestMatchingFontForCharacters:v63 length:v21 attributes:objc_msgSend(selfCopy actualCoveredLength:{"attributesAtIndex:effectiveRange:", v60, 0), 0}];
             a3 = v211;
             if (v164)
             {
@@ -1292,13 +1292,13 @@ LABEL_211:
                 goto LABEL_463;
               }
 
-              if (v20)
+              if (lastResortFont)
               {
                 v167 = (NSIntersectsRange() & (v60 > v210)) != 0 ? v60 - v210 : v215;
                 if (v167)
                 {
-                  [v212 addAttribute:@"NSFont" value:v20 range:{v210, v167}];
-                  if (v205)
+                  [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v167}];
+                  if (_shouldSetOriginalFontAttribute)
                   {
                     v168 = v213;
                     if (!v213)
@@ -1311,20 +1311,20 @@ LABEL_211:
                       v168 = NSDefaultFont__defaultFont;
                     }
 
-                    [v212 addAttribute:@"NSOriginalFont" value:v168 range:{v210, v167}];
+                    [selfCopy addAttribute:@"NSOriginalFont" value:v168 range:{v210, v167}];
                   }
                 }
               }
 
-              v202 = [v165 _isDefaultFace];
-              if ((v202 & 1) == 0)
+              _isDefaultFace = [v165 _isDefaultFace];
+              if ((_isDefaultFace & 1) == 0)
               {
-                v203 = [v165 coveredCharacterSet];
+                coveredCharacterSet = [v165 coveredCharacterSet];
               }
 
               v37 = v21 - v211 + v60;
               v210 = v60;
-              v20 = v165;
+              lastResortFont = v165;
               goto LABEL_508;
             }
           }
@@ -1332,7 +1332,7 @@ LABEL_211:
       }
 
 LABEL_464:
-      if (v20)
+      if (lastResortFont)
       {
         v166 = v56;
       }
@@ -1520,7 +1520,7 @@ LABEL_376:
           if (v131 == v37)
           {
 LABEL_377:
-            if (!v20)
+            if (!lastResortFont)
             {
               a4 = v206;
 LABEL_379:
@@ -1531,10 +1531,10 @@ LABEL_463:
             }
 
             v21 = v215;
-            [v212 addAttribute:@"NSFont" value:v20 range:{v210, v215}];
+            [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v215}];
             a4 = v206;
             a3 = v211;
-            if (!v205)
+            if (!_shouldSetOriginalFontAttribute)
             {
               goto LABEL_438;
             }
@@ -1555,7 +1555,7 @@ LABEL_544:
             }
 
 LABEL_413:
-            [v212 addAttribute:@"NSOriginalFont" value:v89 range:{v210, v21}];
+            [selfCopy addAttribute:@"NSOriginalFont" value:v89 range:{v210, v21}];
             goto LABEL_438;
           }
 
@@ -1714,7 +1714,7 @@ LABEL_348:
     }
 
 LABEL_380:
-    if ((v20 == 0) | v202 & 1)
+    if ((lastResortFont == 0) | _isDefaultFace & 1)
     {
       a4 = v206;
       a3 = v211;
@@ -1722,7 +1722,7 @@ LABEL_380:
     }
 
     a3 = v211;
-    if (!CFCharacterSetIsLongCharacterMember(v203, v40))
+    if (!CFCharacterSetIsLongCharacterMember(coveredCharacterSet, v40))
     {
       a4 = v206;
       goto LABEL_424;
@@ -1790,7 +1790,7 @@ LABEL_392:
       }
 
 LABEL_394:
-      if (!CFCharacterSetIsLongCharacterMember(v203, v153))
+      if (!CFCharacterSetIsLongCharacterMember(coveredCharacterSet, v153))
       {
         break;
       }
@@ -1806,8 +1806,8 @@ LABEL_394:
       }
     }
 
-    [v212 addAttribute:@"NSFont" value:v20 range:{v210, v215}];
-    if (v205)
+    [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v215}];
+    if (_shouldSetOriginalFontAttribute)
     {
       v160 = v213;
       a3 = v211;
@@ -1821,13 +1821,13 @@ LABEL_394:
         v160 = NSDefaultFont__defaultFont;
       }
 
-      [v212 addAttribute:@"NSOriginalFont" value:v160 range:{v210, v215}];
-      v20 = 0;
+      [selfCopy addAttribute:@"NSOriginalFont" value:v160 range:{v210, v215}];
+      lastResortFont = 0;
     }
 
     else
     {
-      v20 = 0;
+      lastResortFont = 0;
       a3 = v211;
     }
 
@@ -1837,7 +1837,7 @@ LABEL_421:
     if (v88)
     {
 LABEL_423:
-      v202 = 0;
+      _isDefaultFace = 0;
       v21 = a3 - v210 + v37;
       goto LABEL_541;
     }
@@ -1858,10 +1858,10 @@ LABEL_424:
 
     v37 = v69;
 LABEL_430:
-    if (v20)
+    if (lastResortFont)
     {
-      [v212 addAttribute:@"NSFont" value:v20 range:{v210, v21}];
-      if (v205)
+      [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v21}];
+      if (_shouldSetOriginalFontAttribute)
       {
         v161 = v213;
         if (!v213)
@@ -1874,14 +1874,14 @@ LABEL_430:
           v161 = NSDefaultFont__defaultFont;
         }
 
-        [v212 addAttribute:@"NSOriginalFont" value:v161 range:{v210, v21}];
+        [selfCopy addAttribute:@"NSOriginalFont" value:v161 range:{v210, v21}];
       }
     }
 
     if (v213)
     {
 LABEL_438:
-      v20 = 0;
+      lastResortFont = 0;
     }
 
     else
@@ -1891,11 +1891,11 @@ LABEL_438:
         [NSMutableAttributedString(NSMutableAttributedStringKitAdditions) fixFontAttributeInRange:];
       }
 
-      v20 = NSDefaultFont__defaultFont;
-      v202 = [NSDefaultFont__defaultFont _isDefaultFace];
-      if ((v202 & 1) == 0)
+      lastResortFont = NSDefaultFont__defaultFont;
+      _isDefaultFace = [NSDefaultFont__defaultFont _isDefaultFace];
+      if ((_isDefaultFace & 1) == 0)
       {
-        v203 = [v20 coveredCharacterSet];
+        coveredCharacterSet = [lastResortFont coveredCharacterSet];
       }
 
       v162 = v201 + v37;
@@ -1925,11 +1925,11 @@ LABEL_541:
 
   while (v37 < a4);
   v7 = v197;
-  if (v20)
+  if (lastResortFont)
   {
-    [v212 addAttribute:@"NSFont" value:v20 range:{v210, v21}];
+    [selfCopy addAttribute:@"NSFont" value:lastResortFont range:{v210, v21}];
     v188 = v208;
-    if (v205)
+    if (_shouldSetOriginalFontAttribute)
     {
       v189 = v213;
       if (!v213)
@@ -1942,7 +1942,7 @@ LABEL_541:
         v189 = NSDefaultFont__defaultFont;
       }
 
-      [v212 addAttribute:@"NSOriginalFont" value:v189 range:{v210, v21}];
+      [selfCopy addAttribute:@"NSOriginalFont" value:v189 range:{v210, v21}];
     }
   }
 
@@ -1969,7 +1969,7 @@ LABEL_555:
     v7 = 0;
   }
 
-  result = [a1 length];
+  result = [self length];
   if (result > a3 + a4)
   {
     v9 = a3 + a4 + 1;
@@ -1982,12 +1982,12 @@ LABEL_555:
 
   if (v7 < v9)
   {
-    v10 = 0;
+    string = 0;
     v17 = 0;
     v18 = 0;
     while (1)
     {
-      result = [a1 attribute:@"NSParagraphStyle" atIndex:v7 effectiveRange:&v17];
+      result = [self attribute:@"NSParagraphStyle" atIndex:v7 effectiveRange:&v17];
       v7 = v18 + v17;
       if (v18 + v17 >= v9)
       {
@@ -1995,12 +1995,12 @@ LABEL_555:
       }
 
       v11 = result;
-      if (!v10)
+      if (!string)
       {
-        v10 = [a1 string];
+        string = [self string];
       }
 
-      result = [v10 characterAtIndex:v7 - 1];
+      result = [string characterAtIndex:v7 - 1];
       if (result <= 12)
       {
         break;
@@ -2013,10 +2013,10 @@ LABEL_555:
           goto LABEL_22;
         }
 
-        result = [v10 length];
+        result = [string length];
         if (v7 < result)
         {
-          result = [v10 characterAtIndex:v7];
+          result = [string characterAtIndex:v7];
           if (result == 10)
           {
             goto LABEL_22;
@@ -2038,7 +2038,7 @@ LABEL_31:
 
 LABEL_22:
     v16 = 0;
-    [v10 getParagraphStart:0 end:&v16 contentsEnd:0 forRange:{v7, 0}];
+    [string getParagraphStart:0 end:&v16 contentsEnd:0 forRange:{v7, 0}];
     v13 = v16;
     if (v16)
     {
@@ -2052,17 +2052,17 @@ LABEL_22:
 
     v14 = 0;
     v15 = 0;
-    result = [a1 attribute:@"NSParagraphStyle" atIndex:v7 longestEffectiveRange:&v14 inRange:{v7, v13 - v7}];
+    result = [self attribute:@"NSParagraphStyle" atIndex:v7 longestEffectiveRange:&v14 inRange:{v7, v13 - v7}];
     if (result != v11 || v15 + v14 < v13)
     {
       if (v11)
       {
-        result = [a1 addAttribute:@"NSParagraphStyle" value:v11 range:{v7, v13 - v7}];
+        result = [self addAttribute:@"NSParagraphStyle" value:v11 range:{v7, v13 - v7}];
       }
 
       else
       {
-        result = [a1 removeAttribute:@"NSParagraphStyle" range:{v7, v13 - v7}];
+        result = [self removeAttribute:@"NSParagraphStyle" range:{v7, v13 - v7}];
       }
     }
 
@@ -2075,13 +2075,13 @@ LABEL_22:
 
 - (void)fixAttachmentAttributeInRange:()NSMutableAttributedStringKitAdditions
 {
-  v6 = a1;
-  v7 = [a1 string];
+  selfCopy = self;
+  string = [self string];
   v59 = a3 + a4;
-  theString = v7;
+  theString = string;
   v74 = a3;
   v75 = a4;
-  CharactersPtr = CFStringGetCharactersPtr(v7);
+  CharactersPtr = CFStringGetCharactersPtr(string);
   if (CharactersPtr)
   {
     CStringPtr = 0;
@@ -2089,7 +2089,7 @@ LABEL_22:
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(v7, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(string, 0x600u);
   }
 
   v76 = 0;
@@ -2112,13 +2112,13 @@ LABEL_22:
     v9 = a3;
     v55 = a3;
     v56 = a4;
-    v57 = v6;
-    v58 = v7;
+    v57 = selfCopy;
+    v58 = string;
     do
     {
       v61 = 0;
       v62 = 0;
-      v10 = [v6 attributesAtIndex:v9 effectiveRange:{&v61, v51, v52 * 2, v53}];
+      v10 = [selfCopy attributesAtIndex:v9 effectiveRange:{&v61, v51, v52 * 2, v53}];
       v11 = @"CTAdaptiveImageProvider";
       if (![v10 objectForKeyedSubscript:@"CTAdaptiveImageProvider"])
       {
@@ -2151,7 +2151,7 @@ LABEL_30:
       v15 = v9 - 1;
       if (v9 <= a3)
       {
-        v18 = [(__CFString *)v7 characterAtIndex:v9 - 1];
+        v18 = [(__CFString *)string characterAtIndex:v9 - 1];
       }
 
       else
@@ -2160,7 +2160,7 @@ LABEL_30:
         if ((v15 - a3) < 0 || (v17 = v75, v75 <= v16))
         {
 LABEL_26:
-          if ([v6 attribute:@"NSTextParagraphAnchoredAttachment" atIndex:v9 - 1 effectiveRange:0] == v14)
+          if ([selfCopy attribute:@"NSTextParagraphAnchoredAttachment" atIndex:v9 - 1 effectiveRange:0] == v14)
           {
             goto LABEL_30;
           }
@@ -2207,7 +2207,7 @@ LABEL_26:
 
       if (v18 > 0xCu)
       {
-        if (v18 != 8233 && (v18 != 13 || v9 < [(__CFString *)v7 length]&& [(__CFString *)v7 characterAtIndex:v9]== 10))
+        if (v18 != 8233 && (v18 != 13 || v9 < [(__CFString *)string length]&& [(__CFString *)string characterAtIndex:v9]== 10))
         {
           goto LABEL_26;
         }
@@ -2218,7 +2218,7 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      if ([v6 attribute:@"NSTextParagraphAnchoredAttachment" atIndex:v9 - 1 effectiveRange:0] != v14)
+      if ([selfCopy attribute:@"NSTextParagraphAnchoredAttachment" atIndex:v9 - 1 effectiveRange:0] != v14)
       {
         goto LABEL_30;
       }
@@ -2230,7 +2230,7 @@ LABEL_27:
       {
         v21 = v9;
 LABEL_64:
-        [v6 removeAttribute:@"NSTextParagraphAnchoredAttachment" range:{v21, v20}];
+        [selfCopy removeAttribute:@"NSTextParagraphAnchoredAttachment" range:{v21, v20}];
         goto LABEL_65;
       }
 
@@ -2298,7 +2298,7 @@ LABEL_31:
         {
 LABEL_57:
           v60 = 0;
-          v7 = v58;
+          string = v58;
           [(__CFString *)v58 getParagraphStart:0 end:&v60 contentsEnd:0 forRange:v9, v13 - v9];
           if (v13 >= v60)
           {
@@ -2332,7 +2332,7 @@ LABEL_57:
 
       v21 = v48 + v9;
       v20 = v13 - (v48 + v9);
-      v7 = v58;
+      string = v58;
       if (v13 <= v48 + v9)
       {
         goto LABEL_65;
@@ -2368,18 +2368,18 @@ LABEL_65:
           v30 = a4;
         }
 
-        [v6 attribute:v11 atIndex:v9 longestEffectiveRange:&v61 inRange:{v29, v30}];
+        [selfCopy attribute:v11 atIndex:v9 longestEffectiveRange:&v61 inRange:{v29, v30}];
         if (!CharactersPtr && v62 == 1)
         {
-          if ([(__CFString *)v7 characterAtIndex:v9]!= 65532)
+          if ([(__CFString *)string characterAtIndex:v9]!= 65532)
           {
             v32 = v61;
             v31 = v62;
 LABEL_76:
             a3 = v55;
             a4 = v56;
-            v6 = v57;
-            v7 = v58;
+            selfCopy = v57;
+            string = v58;
             if (v31)
             {
               [v57 removeAttribute:v11 range:{v32, v31}];
@@ -2505,10 +2505,10 @@ LABEL_105:
     v10 = result;
     v13 = 0;
     v14 = 0;
-    result = [a1 attribute:@"NSFont" atIndex:a4 longestEffectiveRange:&v13 inRange:{a4, a5}];
+    result = [self attribute:@"NSFont" atIndex:a4 longestEffectiveRange:&v13 inRange:{a4, a5}];
     if (v13 == a4 && v14 == a5)
     {
-      result = [a3 _glyphForFont:result baseString:{objc_msgSend(objc_msgSend(a1, "string"), "substringWithRange:", a4, v10)}];
+      result = [a3 _glyphForFont:result baseString:{objc_msgSend(objc_msgSend(self, "string"), "substringWithRange:", a4, v10)}];
       if (result)
       {
         v12 = v10;
@@ -2526,7 +2526,7 @@ LABEL_105:
 
   if (a5)
   {
-    return [a1 removeAttribute:NSGlyphInfoAttributeName range:{a4, a5}];
+    return [self removeAttribute:NSGlyphInfoAttributeName range:{a4, a5}];
   }
 
   return result;
@@ -2539,10 +2539,10 @@ LABEL_105:
   v7 = a3 + a4;
   if (a3)
   {
-    v8 = [a1 attribute:NSGlyphInfoAttributeName atIndex:a3 - 1 longestEffectiveRange:&v12 inRange:{0, a3}];
+    v8 = [self attribute:NSGlyphInfoAttributeName atIndex:a3 - 1 longestEffectiveRange:&v12 inRange:{0, a3}];
     if (v8)
     {
-      [a1 _fixGlyphInfo:v8 inRange:{v12, v13}];
+      [self _fixGlyphInfo:v8 inRange:{v12, v13}];
     }
   }
 
@@ -2556,10 +2556,10 @@ LABEL_105:
     v9 = a3;
     do
     {
-      v10 = [a1 attribute:NSGlyphInfoAttributeName atIndex:v9 longestEffectiveRange:&v12 inRange:{a3, a4}];
+      v10 = [self attribute:NSGlyphInfoAttributeName atIndex:v9 longestEffectiveRange:&v12 inRange:{a3, a4}];
       if (v10)
       {
-        [a1 _fixGlyphInfo:v10 inRange:{v12, v13}];
+        [self _fixGlyphInfo:v10 inRange:{v12, v13}];
       }
 
       v9 = v13 + v12;
@@ -2568,13 +2568,13 @@ LABEL_105:
     while (v13 + v12 < v7);
   }
 
-  result = [a1 length];
+  result = [self length];
   if (v9 < result)
   {
-    result = [a1 attribute:NSGlyphInfoAttributeName atIndex:v9 longestEffectiveRange:&v12 inRange:{v9, objc_msgSend(a1, "length") - v9}];
+    result = [self attribute:NSGlyphInfoAttributeName atIndex:v9 longestEffectiveRange:&v12 inRange:{v9, objc_msgSend(self, "length") - v9}];
     if (result)
     {
-      return [a1 _fixGlyphInfo:result inRange:{v12, v13}];
+      return [self _fixGlyphInfo:result inRange:{v12, v13}];
     }
   }
 
@@ -2663,11 +2663,11 @@ LABEL_105:
 
 - (uint64_t)_changeIntAttribute:()NSMutableAttributedStringKitAdditions by:range:
 {
-  result = [a1 zone];
+  result = [self zone];
   if (a6)
   {
     v12 = result;
-    [a1 beginEditing];
+    [self beginEditing];
     if (a5 < a5 + a6)
     {
       v13 = a5;
@@ -2675,21 +2675,21 @@ LABEL_105:
       {
         v16 = 0;
         v17 = 0;
-        v14 = [a1 attribute:a3 atIndex:v13 longestEffectiveRange:&v16 inRange:{a5, a6}];
-        if (v14)
+        integerValue = [self attribute:a3 atIndex:v13 longestEffectiveRange:&v16 inRange:{a5, a6}];
+        if (integerValue)
         {
-          v14 = [v14 integerValue];
+          integerValue = [integerValue integerValue];
         }
 
-        if (&v14[a4])
+        if (&integerValue[a4])
         {
-          v15 = [objc_msgSend(MEMORY[0x1E696AD98] allocWithZone:{v12), "initWithInteger:", &v14[a4]}];
-          [a1 addAttribute:a3 value:v15 range:{v16, v17}];
+          v15 = [objc_msgSend(MEMORY[0x1E696AD98] allocWithZone:{v12), "initWithInteger:", &integerValue[a4]}];
+          [self addAttribute:a3 value:v15 range:{v16, v17}];
         }
 
         else
         {
-          [a1 removeAttribute:a3 range:{v16, v17}];
+          [self removeAttribute:a3 range:{v16, v17}];
         }
 
         v13 = v17 + v16;
@@ -2698,7 +2698,7 @@ LABEL_105:
       while (v17 + v16 < a5 + a6);
     }
 
-    return [a1 endEditing];
+    return [self endEditing];
   }
 
   return result;
@@ -2706,23 +2706,23 @@ LABEL_105:
 
 - (unint64_t)convertBidiControlCharactersToWritingDirectionForParagraphAtIndex:()NSMutableAttributedStringKitAdditions
 {
-  v5 = [a1 mutableString];
-  v6 = [MEMORY[0x1E695DF70] array];
+  mutableString = [self mutableString];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0;
   v19 = 0;
   v17 = 0;
   v7 = _NSBidiEmbeddingAndOverrideCharSet();
-  [v5 getParagraphStart:&v19 end:&v17 contentsEnd:&v18 forRange:{a3, 0}];
+  [mutableString getParagraphStart:&v19 end:&v17 contentsEnd:&v18 forRange:{a3, 0}];
   v8 = v18;
   v9 = v19;
   if (v18 > v19)
   {
-    v10 = [v5 characterAtIndex:v19];
+    v10 = [mutableString characterAtIndex:v19];
     v9 = v19;
     if ((v10 & 0xFFFE) == 0x200E)
     {
-      [a1 setBaseWritingDirection:v10 == 8207 range:{v19, v17 - v19}];
-      [v5 deleteCharactersInRange:{v19, 1}];
+      [self setBaseWritingDirection:v10 == 8207 range:{v19, v17 - v19}];
+      [mutableString deleteCharactersInRange:{v19, 1}];
       v8 = v18 - 1;
       --v17;
       --v18;
@@ -2739,7 +2739,7 @@ LABEL_105:
   {
     do
     {
-      v11 = [v5 rangeOfCharacterFromSet:v7 options:0 range:{v9, v8 - v9}];
+      v11 = [mutableString rangeOfCharacterFromSet:v7 options:0 range:{v9, v8 - v9}];
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v12 = v18;
@@ -2752,14 +2752,14 @@ LABEL_105:
 
       if (v12 > v9)
       {
-        if ([v6 count])
+        if ([array count])
         {
-          [a1 addAttribute:@"NSWritingDirection" value:objc_msgSend(MEMORY[0x1E695DEC8] range:{"arrayWithArray:", v6), v9, v12 - v9}];
+          [self addAttribute:@"NSWritingDirection" value:objc_msgSend(MEMORY[0x1E695DEC8] range:{"arrayWithArray:", array), v9, v12 - v9}];
         }
 
         else
         {
-          [a1 removeAttribute:@"NSWritingDirection" range:{v9, v12 - v9}];
+          [self removeAttribute:@"NSWritingDirection" range:{v9, v12 - v9}];
         }
       }
 
@@ -2770,7 +2770,7 @@ LABEL_105:
       }
 
       v9 = v12;
-      v13 = [v5 characterAtIndex:v12];
+      v13 = [mutableString characterAtIndex:v12];
       if (v13 <= 8235)
       {
         if (v13 == 8234)
@@ -2793,9 +2793,9 @@ LABEL_105:
         switch(v13)
         {
           case 8236:
-            if ([v6 count])
+            if ([array count])
             {
-              [v6 removeLastObject];
+              [array removeLastObject];
             }
 
             break;
@@ -2807,12 +2807,12 @@ LABEL_105:
             v14 = MEMORY[0x1E696AD98];
             v15 = 3;
 LABEL_26:
-            [v6 addObject:{objc_msgSend(v14, "numberWithUnsignedInteger:", v15)}];
+            [array addObject:{objc_msgSend(v14, "numberWithUnsignedInteger:", v15)}];
             break;
         }
       }
 
-      [v5 deleteCharactersInRange:{v12, 1}];
+      [mutableString deleteCharactersInRange:{v12, 1}];
       v8 = v18 - 1;
       --v17;
       v18 = v8;
@@ -2823,7 +2823,7 @@ LABEL_26:
 
   if (v17 > v8)
   {
-    [a1 removeAttribute:@"NSWritingDirection" range:?];
+    [self removeAttribute:@"NSWritingDirection" range:?];
   }
 
   return v19;
@@ -2831,40 +2831,40 @@ LABEL_26:
 
 - (uint64_t)convertBidiControlCharactersToWritingDirection
 {
-  [a1 beginEditing];
-  if ([a1 length])
+  [self beginEditing];
+  if ([self length])
   {
     v2 = 0;
     do
     {
-      v3 = [a1 convertBidiControlCharactersToWritingDirectionForParagraphAtIndex:v2];
+      v3 = [self convertBidiControlCharactersToWritingDirectionForParagraphAtIndex:v2];
       v2 = v3 + v4;
     }
 
-    while (v3 + v4 < [a1 length]);
+    while (v3 + v4 < [self length]);
   }
 
-  return [a1 endEditing];
+  return [self endEditing];
 }
 
 - (unint64_t)convertWritingDirectionToBidiControlCharactersForParagraphAtIndex:()NSMutableAttributedStringKitAdditions
 {
-  v5 = [a1 mutableString];
+  mutableString = [self mutableString];
   v32 = 0;
   v33 = 0;
   v31 = 0;
-  v27 = a1;
-  v6 = [objc_msgSend(a1 attribute:@"NSParagraphStyle" atIndex:a3 effectiveRange:{0), "baseWritingDirection"}];
+  selfCopy = self;
+  v6 = [objc_msgSend(self attribute:@"NSParagraphStyle" atIndex:a3 effectiveRange:{0), "baseWritingDirection"}];
   v29 = 0;
   v30 = 0;
   v28 = 0;
-  [(__CFString *)v5 getParagraphStart:&v33 end:&v31 contentsEnd:&v32 forRange:a3, 0];
+  [(__CFString *)mutableString getParagraphStart:&v33 end:&v31 contentsEnd:&v32 forRange:a3, 0];
   v7 = v32;
   v8 = v33;
   v9 = v6 != -1 && v32 > v33;
   if (v9)
   {
-    v10 = _NSStringImputedBaseWritingDirectionAtIndex(v5, v33, v33, v32 - v33);
+    v10 = _NSStringImputedBaseWritingDirectionAtIndex(mutableString, v33, v33, v32 - v33);
     if (v10 == -1 || v10 == v6)
     {
       v7 = v32;
@@ -2885,7 +2885,7 @@ LABEL_26:
 
       v28 = v12;
       v13 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1];
-      [(__CFString *)v5 insertString:v13 atIndex:v33];
+      [(__CFString *)mutableString insertString:v13 atIndex:v33];
       v8 = v33 + 1;
       v7 = ++v32;
       ++v33;
@@ -2906,7 +2906,7 @@ LABEL_41:
   v26 = @"NSWritingDirection";
   do
   {
-    v16 = [v27 attribute:v26 atIndex:v8 longestEffectiveRange:&v29 inRange:{v8, v7 - v8, v26}];
+    v16 = [selfCopy attribute:v26 atIndex:v8 longestEffectiveRange:&v29 inRange:{v8, v7 - v8, v26}];
     v17 = [v16 count];
     v18 = v17;
     v19 = 0;
@@ -2939,7 +2939,7 @@ LABEL_41:
     {
       do
       {
-        -[__CFString insertString:atIndex:](v5, "insertString:atIndex:", [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1], v8++);
+        -[__CFString insertString:atIndex:](mutableString, "insertString:atIndex:", [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1], v8++);
         ++v31;
         ++v32;
         --v21;
@@ -2969,7 +2969,7 @@ LABEL_41:
           v28 += 3;
         }
 
-        -[__CFString insertString:atIndex:](v5, "insertString:atIndex:", [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1], v8++);
+        -[__CFString insertString:atIndex:](mutableString, "insertString:atIndex:", [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1], v8++);
         v7 = v32 + 1;
         ++v31;
         ++v32;
@@ -2994,7 +2994,7 @@ LABEL_41:
   do
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1];
-    [(__CFString *)v5 insertString:v23 atIndex:v32];
+    [(__CFString *)mutableString insertString:v23 atIndex:v32];
     v24 = ++v31;
     ++v32;
     --v18;
@@ -3002,7 +3002,7 @@ LABEL_41:
 
   while (v18);
 LABEL_42:
-  [v27 removeAttribute:@"NSWritingDirection" range:{v33, v24 - v33}];
+  [selfCopy removeAttribute:@"NSWritingDirection" range:{v33, v24 - v33}];
   return v33;
 }
 

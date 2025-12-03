@@ -1,11 +1,11 @@
 @interface GTDownloadContext
-- (GTDownloadContext)initWithQueue:(id)a3 forRequest:(apr_array_header_t *)a4;
+- (GTDownloadContext)initWithQueue:(id)queue forRequest:(apr_array_header_t *)request;
 - (id)accelerationStructureCommandEncoder;
 - (id)blitCommandEncoder;
 - (id)computeCommandEncoder;
 - (id)newCommandBuffer;
 - (void)dealloc;
-- (void)flushWithCallback:(id)a3;
+- (void)flushWithCallback:(id)callback;
 @end
 
 @implementation GTDownloadContext
@@ -82,15 +82,15 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
   mach_absolute_time();
 }
 
-- (void)flushWithCallback:(id)a3
+- (void)flushWithCallback:(id)callback
 {
   accelerationStructureCommandEncoder = self->_accelerationStructureCommandEncoder;
-  v5 = a3;
+  callbackCopy = callback;
   [(MTLAccelerationStructureCommandEncoderSPI *)accelerationStructureCommandEncoder endEncoding];
   [(MTLBlitCommandEncoder *)self->_blit endEncoding];
   [(MTLCommandBuffer *)self->_command commit];
   [(MTLCommandBuffer *)self->_command waitUntilCompleted];
-  v5[2](v5, self->_objects);
+  callbackCopy[2](callbackCopy, self->_objects);
 
   v6 = g_signpostLog;
   if (os_signpost_enabled(g_signpostLog))
@@ -161,9 +161,9 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
   v10 = self->_accelerationStructureCommandEncoder;
   if (!v10)
   {
-    v11 = [(MTLCommandBuffer *)self->_command accelerationStructureCommandEncoder];
+    accelerationStructureCommandEncoder = [(MTLCommandBuffer *)self->_command accelerationStructureCommandEncoder];
     v12 = self->_accelerationStructureCommandEncoder;
-    self->_accelerationStructureCommandEncoder = v11;
+    self->_accelerationStructureCommandEncoder = accelerationStructureCommandEncoder;
 
     v10 = self->_accelerationStructureCommandEncoder;
   }
@@ -206,9 +206,9 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
   v10 = self->_computeCommandEncoder;
   if (!v10)
   {
-    v11 = [(MTLCommandBuffer *)self->_command computeCommandEncoder];
+    computeCommandEncoder = [(MTLCommandBuffer *)self->_command computeCommandEncoder];
     v12 = self->_computeCommandEncoder;
-    self->_computeCommandEncoder = v11;
+    self->_computeCommandEncoder = computeCommandEncoder;
 
     v10 = self->_computeCommandEncoder;
   }
@@ -256,9 +256,9 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
     if (v11 == 1000)
     {
       [(MTLBlitCommandEncoder *)v10 endEncoding];
-      v12 = [(MTLCommandBuffer *)self->_command blitCommandEncoder];
+      blitCommandEncoder = [(MTLCommandBuffer *)self->_command blitCommandEncoder];
       v13 = self->_blit;
-      self->_blit = v12;
+      self->_blit = blitCommandEncoder;
 
       self->_blitRequestCount = 1;
       v10 = self->_blit;
@@ -267,9 +267,9 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
 
   else
   {
-    v14 = [(MTLCommandBuffer *)self->_command blitCommandEncoder];
+    blitCommandEncoder2 = [(MTLCommandBuffer *)self->_command blitCommandEncoder];
     v15 = self->_blit;
-    self->_blit = v14;
+    self->_blit = blitCommandEncoder2;
 
     v10 = self->_blit;
     self->_blitRequestCount = 1;
@@ -293,9 +293,9 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
   [(GTDownloadContext *)&v3 dealloc];
 }
 
-- (GTDownloadContext)initWithQueue:(id)a3 forRequest:(apr_array_header_t *)a4
+- (GTDownloadContext)initWithQueue:(id)queue forRequest:(apr_array_header_t *)request
 {
-  v7 = a3;
+  queueCopy = queue;
   v28.receiver = self;
   v28.super_class = GTDownloadContext;
   v8 = [(GTDownloadContext *)&v28 init];
@@ -303,7 +303,7 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
   if (v8)
   {
     apr_pool_create_ex(&v8->_pool, 0, 0, 0);
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v10 = objc_alloc_init(MTLCommandBufferDescriptor);
     commandBufferDescriptor = v9->_commandBufferDescriptor;
     v9->_commandBufferDescriptor = v10;
@@ -317,16 +317,16 @@ void __26__GTDownloadContext_flush__block_invoke(id a1, NSArray *a2)
     command = v9->_command;
     v9->_command = v12;
 
-    v14 = [[NSMutableArray alloc] initWithCapacity:2 * a4->nelts];
+    v14 = [[NSMutableArray alloc] initWithCapacity:2 * request->nelts];
     objects = v9->_objects;
     v9->_objects = v14;
 
-    v9->_requests = apr_array_copy(v9->_pool, a4);
-    v16 = [[NSMutableArray alloc] initWithCapacity:a4->nelts];
+    v9->_requests = apr_array_copy(v9->_pool, request);
+    v16 = [[NSMutableArray alloc] initWithCapacity:request->nelts];
     MTLResources = v9->_MTLResources;
     v9->_MTLResources = v16;
 
-    v18 = [[NSMutableArray alloc] initWithCapacity:a4->nelts];
+    v18 = [[NSMutableArray alloc] initWithCapacity:request->nelts];
     originalMTLResources = v9->_originalMTLResources;
     v9->_originalMTLResources = v18;
 

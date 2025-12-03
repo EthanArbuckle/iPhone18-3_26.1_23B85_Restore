@@ -1,6 +1,6 @@
 @interface MatchedMedSchedule
 + (BOOL)supportsSecureCoding;
-- (MatchedMedSchedule)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (MatchedMedSchedule)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation MatchedMedSchedule
@@ -13,16 +13,16 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (MatchedMedSchedule)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (MatchedMedSchedule)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
-  if (a3)
+  MEMORY[0x277D82BE0](identifier);
+  MEMORY[0x277D82BE0](string);
+  MEMORY[0x277D82BE0](hint);
+  if (identifier)
   {
     v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v17 = v5;
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](identifier);
     v18 = v16;
     v19 = v17;
   }
@@ -35,11 +35,11 @@
 
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v6;
-  if (a5)
+  if (hint)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v7;
-    MEMORY[0x277D82BD8](a5);
+    MEMORY[0x277D82BD8](hint);
     v12 = v10;
     v13 = v11;
   }
@@ -51,7 +51,7 @@
   }
 
   v9 = MatchedMedSchedule.init(identifier:display:pronunciationHint:)(v18, v19, v14, v15, v12, v13);
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](string);
   return v9;
 }
 

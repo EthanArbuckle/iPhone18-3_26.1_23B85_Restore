@@ -1,10 +1,10 @@
 @interface SBChainableModifierEvent
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)unhandledCopy;
-- (void)handleWithReason:(id)a3;
+- (void)handleWithReason:(id)reason;
 @end
 
 @implementation SBChainableModifierEvent
@@ -19,22 +19,22 @@
   return v2;
 }
 
-- (void)handleWithReason:(id)a3
+- (void)handleWithReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reasonCopy = reason;
   if (self->_handled)
   {
     [(SBChainableModifierEvent *)a2 handleWithReason:?];
   }
 
   self->_handled = 1;
-  v6 = [v5 copy];
+  v6 = [reasonCopy copy];
   handledReason = self->_handledReason;
   self->_handledReason = v6;
 
-  v8 = [(SBChainableModifierEvent *)self loggingCategory];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  loggingCategory = [(SBChainableModifierEvent *)self loggingCategory];
+  if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_INFO))
   {
     v9 = [(SBChainableModifierEvent *)self description];
     v10 = self->_handledReason;
@@ -42,11 +42,11 @@
     v12 = v9;
     v13 = 2112;
     v14 = v10;
-    _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "Handling event: %@ for reason: %@", &v11, 0x16u);
+    _os_log_impl(&dword_21ED4E000, loggingCategory, OS_LOG_TYPE_INFO, "Handling event: %@ for reason: %@", &v11, 0x16u);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[8] = self->_handled;
@@ -57,15 +57,15 @@
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBChainableModifierEvent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBChainableModifierEvent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [v4 appendBool:self->_handled withName:@"handled" ifEqualTo:1];
@@ -76,10 +76,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBChainableModifierEvent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBChainableModifierEvent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)handleWithReason:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

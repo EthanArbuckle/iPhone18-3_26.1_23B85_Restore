@@ -1,6 +1,6 @@
 @interface CKSSShare
-- (CKSSShare)initWithParams:(ccss_shamir_parameters *)a3 share:(ccss_shamir_share *)a4;
-- (CKSSShare)initWithParams:(ccss_shamir_parameters *)a3 x:(unsigned int)a4 y:(id)a5;
+- (CKSSShare)initWithParams:(ccss_shamir_parameters *)params share:(ccss_shamir_share *)share;
+- (CKSSShare)initWithParams:(ccss_shamir_parameters *)params x:(unsigned int)x y:(id)y;
 - (id)y;
 - (unsigned)x;
 - (void)dealloc;
@@ -8,13 +8,13 @@
 
 @implementation CKSSShare
 
-- (CKSSShare)initWithParams:(ccss_shamir_parameters *)a3 x:(unsigned int)a4 y:(id)a5
+- (CKSSShare)initWithParams:(ccss_shamir_parameters *)params x:(unsigned int)x y:(id)y
 {
-  v6 = a5;
+  yCopy = y;
   v12.receiver = self;
   v12.super_class = CKSSShare;
   v7 = [(CKSSShare *)&v12 init];
-  if (v7 && (v8 = ccss_sizeof_share(), v7->_share_size = v8, v7->_share = malloc_type_malloc(v8, 0xDDFD590CuLL), ccss_shamir_share_init(), share = v7->_share, [v6 bytes], objc_msgSend(v6, "length"), ccss_shamir_share_import()))
+  if (v7 && (v8 = ccss_sizeof_share(), v7->_share_size = v8, v7->_share = malloc_type_malloc(v8, 0xDDFD590CuLL), ccss_shamir_share_init(), share = v7->_share, [yCopy bytes], objc_msgSend(yCopy, "length"), ccss_shamir_share_import()))
   {
     free(v7->_share);
     printf("Failed on import with share import");
@@ -29,7 +29,7 @@
   return v10;
 }
 
-- (CKSSShare)initWithParams:(ccss_shamir_parameters *)a3 share:(ccss_shamir_share *)a4
+- (CKSSShare)initWithParams:(ccss_shamir_parameters *)params share:(ccss_shamir_share *)share
 {
   v9.receiver = self;
   v9.super_class = CKSSShare;
@@ -40,7 +40,7 @@
     v5->_share_size = v6;
     v7 = malloc_type_malloc(v6, 0xB12A3E84uLL);
     v5->_share = v7;
-    memcpy(v7, a4, v5->_share_size);
+    memcpy(v7, share, v5->_share_size);
   }
 
   return v5;

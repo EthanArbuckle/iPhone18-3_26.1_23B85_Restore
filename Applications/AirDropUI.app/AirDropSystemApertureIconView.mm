@@ -1,7 +1,7 @@
 @interface AirDropSystemApertureIconView
 - (CGSize)intrinsicContentSize;
 - (_TtC9AirDropUI29AirDropSystemApertureIconView)init;
-- (_TtC9AirDropUI29AirDropSystemApertureIconView)initWithCoder:(id)a3;
+- (_TtC9AirDropUI29AirDropSystemApertureIconView)initWithCoder:(id)coder;
 @end
 
 @implementation AirDropSystemApertureIconView
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (_TtC9AirDropUI29AirDropSystemApertureIconView)initWithCoder:(id)a3
+- (_TtC9AirDropUI29AirDropSystemApertureIconView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9AirDropUI29AirDropSystemApertureIconView_progress) = 0;
   v4 = OBJC_IVAR____TtC9AirDropUI29AirDropSystemApertureIconView_transferState;

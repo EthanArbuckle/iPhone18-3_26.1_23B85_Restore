@@ -1,16 +1,16 @@
 @interface NumberedTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NumberedTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthExposureNotificationUI.NumberedTextView" hasInstanceMethod:@"number" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"HealthExposureNotificationUI.NumberedTextView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HealthExposureNotificationUI.NumberedTextView" hasInstanceMethod:@"details" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthExposureNotificationUI.NumberedTextView" hasInstanceMethod:@"number" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"HealthExposureNotificationUI.NumberedTextView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HealthExposureNotificationUI.NumberedTextView" hasInstanceMethod:@"details" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

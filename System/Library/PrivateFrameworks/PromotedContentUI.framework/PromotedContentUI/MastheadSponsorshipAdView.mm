@@ -1,13 +1,13 @@
 @interface MastheadSponsorshipAdView
 - (CGSize)intrinsicContentSize;
-- (_TtC17PromotedContentUI25MastheadSponsorshipAdView)initWithFrame:(CGRect)a3;
+- (_TtC17PromotedContentUI25MastheadSponsorshipAdView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MastheadSponsorshipAdView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C19D16B4(0.0, 0.0, 1.79769313e308, 1.79769313e308);
   v4 = sub_1C1A6F39C();
   [v3 setText_];
@@ -18,14 +18,14 @@
   v7 = v6;
   v9 = v8;
 
-  [*(&v2->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI25MastheadSponsorshipAdView_imageViewWidthConstraint) constant];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI25MastheadSponsorshipAdView_imageViewWidthConstraint) constant];
   if (v7 <= v10)
   {
     v7 = v10;
   }
 
   v11 = v9 + 4.0;
-  [*(&v2->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI25MastheadSponsorshipAdView_imageViewHeightConstraint) constant];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC17PromotedContentUI25MastheadSponsorshipAdView_imageViewHeightConstraint) constant];
   v13 = v12;
 
   v14 = v11 + v13;
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (_TtC17PromotedContentUI25MastheadSponsorshipAdView)initWithFrame:(CGRect)a3
+- (_TtC17PromotedContentUI25MastheadSponsorshipAdView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

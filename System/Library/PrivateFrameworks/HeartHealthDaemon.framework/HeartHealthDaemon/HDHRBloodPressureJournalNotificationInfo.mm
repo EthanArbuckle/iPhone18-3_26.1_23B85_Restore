@@ -1,24 +1,24 @@
 @interface HDHRBloodPressureJournalNotificationInfo
-- (HDHRBloodPressureJournalNotificationInfo)initWithWakeupAlarmStartDate:(id)a3 wakeupAlarmCount:(unint64_t)a4 bedtimeAlarmStartDate:(id)a5 bedtimeAlarmCount:(unint64_t)a6;
+- (HDHRBloodPressureJournalNotificationInfo)initWithWakeupAlarmStartDate:(id)date wakeupAlarmCount:(unint64_t)count bedtimeAlarmStartDate:(id)startDate bedtimeAlarmCount:(unint64_t)alarmCount;
 - (id)description;
 @end
 
 @implementation HDHRBloodPressureJournalNotificationInfo
 
-- (HDHRBloodPressureJournalNotificationInfo)initWithWakeupAlarmStartDate:(id)a3 wakeupAlarmCount:(unint64_t)a4 bedtimeAlarmStartDate:(id)a5 bedtimeAlarmCount:(unint64_t)a6
+- (HDHRBloodPressureJournalNotificationInfo)initWithWakeupAlarmStartDate:(id)date wakeupAlarmCount:(unint64_t)count bedtimeAlarmStartDate:(id)startDate bedtimeAlarmCount:(unint64_t)alarmCount
 {
-  v10 = a3;
-  v11 = a5;
+  dateCopy = date;
+  startDateCopy = startDate;
   v15.receiver = self;
   v15.super_class = HDHRBloodPressureJournalNotificationInfo;
   v12 = [(HDHRBloodPressureJournalNotificationInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(HDHRBloodPressureJournalNotificationInfo *)v12 setWakeupAlarmStartDate:v10];
-    [(HDHRBloodPressureJournalNotificationInfo *)v13 setWakeupAlarmCount:a4];
-    [(HDHRBloodPressureJournalNotificationInfo *)v13 setBedtimeAlarmStartDate:v11];
-    [(HDHRBloodPressureJournalNotificationInfo *)v13 setBedtimeAlarmCount:a6];
+    [(HDHRBloodPressureJournalNotificationInfo *)v12 setWakeupAlarmStartDate:dateCopy];
+    [(HDHRBloodPressureJournalNotificationInfo *)v13 setWakeupAlarmCount:count];
+    [(HDHRBloodPressureJournalNotificationInfo *)v13 setBedtimeAlarmStartDate:startDateCopy];
+    [(HDHRBloodPressureJournalNotificationInfo *)v13 setBedtimeAlarmCount:alarmCount];
   }
 
   return v13;
@@ -28,11 +28,11 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v3 setDateFormat:@"yyyy-MM-dd HH:mm"];
-  v4 = [(HDHRBloodPressureJournalNotificationInfo *)self wakeupAlarmStartDate];
-  if (v4)
+  wakeupAlarmStartDate = [(HDHRBloodPressureJournalNotificationInfo *)self wakeupAlarmStartDate];
+  if (wakeupAlarmStartDate)
   {
-    v5 = [(HDHRBloodPressureJournalNotificationInfo *)self wakeupAlarmStartDate];
-    v6 = [v3 stringFromDate:v5];
+    wakeupAlarmStartDate2 = [(HDHRBloodPressureJournalNotificationInfo *)self wakeupAlarmStartDate];
+    v6 = [v3 stringFromDate:wakeupAlarmStartDate2];
   }
 
   else
@@ -40,11 +40,11 @@
     v6 = @"nil";
   }
 
-  v7 = [(HDHRBloodPressureJournalNotificationInfo *)self bedtimeAlarmStartDate];
-  if (v7)
+  bedtimeAlarmStartDate = [(HDHRBloodPressureJournalNotificationInfo *)self bedtimeAlarmStartDate];
+  if (bedtimeAlarmStartDate)
   {
-    v8 = [(HDHRBloodPressureJournalNotificationInfo *)self bedtimeAlarmStartDate];
-    v9 = [v3 stringFromDate:v8];
+    bedtimeAlarmStartDate2 = [(HDHRBloodPressureJournalNotificationInfo *)self bedtimeAlarmStartDate];
+    v9 = [v3 stringFromDate:bedtimeAlarmStartDate2];
   }
 
   else

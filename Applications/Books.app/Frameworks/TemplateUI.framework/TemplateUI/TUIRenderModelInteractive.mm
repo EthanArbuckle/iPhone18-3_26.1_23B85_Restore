@@ -1,35 +1,35 @@
 @interface TUIRenderModelInteractive
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (NSString)description;
-- (TUIRenderModelInteractive)initWithReuseIdentifier:(id)a3 identifier:(id)a4 style:(id)a5 elementStates:(id)a6 imageModelIDToResource:(id)a7 actionHandler:(id)a8 viewState:(id)a9 enabled:(BOOL)a10 pressScale:(double)a11 touchInsets:(UIEdgeInsets)a12 pointer:(id)a13 focusStyle:(id)a14 menu:(id)a15 name:(id)a16;
+- (TUIRenderModelInteractive)initWithReuseIdentifier:(id)identifier identifier:(id)a4 style:(id)style elementStates:(id)states imageModelIDToResource:(id)resource actionHandler:(id)handler viewState:(id)state enabled:(BOOL)self0 pressScale:(double)self1 touchInsets:(UIEdgeInsets)self2 pointer:(id)self3 focusStyle:(id)self4 menu:(id)self5 name:(id)self6;
 - (UIEdgeInsets)touchInsets;
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4;
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc;
 - (unint64_t)hash;
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUIRenderModelInteractive
 
-- (TUIRenderModelInteractive)initWithReuseIdentifier:(id)a3 identifier:(id)a4 style:(id)a5 elementStates:(id)a6 imageModelIDToResource:(id)a7 actionHandler:(id)a8 viewState:(id)a9 enabled:(BOOL)a10 pressScale:(double)a11 touchInsets:(UIEdgeInsets)a12 pointer:(id)a13 focusStyle:(id)a14 menu:(id)a15 name:(id)a16
+- (TUIRenderModelInteractive)initWithReuseIdentifier:(id)identifier identifier:(id)a4 style:(id)style elementStates:(id)states imageModelIDToResource:(id)resource actionHandler:(id)handler viewState:(id)state enabled:(BOOL)self0 pressScale:(double)self1 touchInsets:(UIEdgeInsets)self2 pointer:(id)self3 focusStyle:(id)self4 menu:(id)self5 name:(id)self6
 {
-  right = a12.right;
-  bottom = a12.bottom;
-  left = a12.left;
-  top = a12.top;
-  v45 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  identifierCopy = identifier;
   v26 = a4;
-  obj = a5;
-  v50 = a5;
-  v27 = a6;
-  v28 = a7;
-  v49 = a8;
-  v48 = a9;
-  v47 = a13;
-  v29 = a14;
-  v30 = a15;
-  v31 = a16;
+  obj = style;
+  styleCopy = style;
+  statesCopy = states;
+  resourceCopy = resource;
+  handlerCopy = handler;
+  stateCopy = state;
+  pointerCopy = pointer;
+  focusStyleCopy = focusStyle;
+  menuCopy = menu;
+  nameCopy = name;
   v51.receiver = self;
   v51.super_class = TUIRenderModelInteractive;
   v32 = [(TUIRenderModelInteractive *)&v51 init];
@@ -39,34 +39,34 @@
     identifier = v32->_identifier;
     v32->_identifier = v33;
 
-    v35 = [v45 copy];
+    v35 = [identifierCopy copy];
     reuseIdentifier = v32->_reuseIdentifier;
     v32->_reuseIdentifier = v35;
 
     objc_storeStrong(&v32->_style, obj);
-    v37 = [v27 copy];
+    v37 = [statesCopy copy];
     stateToModel = v32->_stateToModel;
     v32->_stateToModel = v37;
 
-    v39 = [v28 copy];
+    v39 = [resourceCopy copy];
     imageModelIDToResource = v32->_imageModelIDToResource;
     v32->_imageModelIDToResource = v39;
 
-    v41 = [v31 copy];
+    v41 = [nameCopy copy];
     name = v32->_name;
     v32->_name = v41;
 
-    objc_storeStrong(&v32->_pointer, a13);
-    objc_storeStrong(&v32->_focusStyle, a14);
-    objc_storeStrong(&v32->_menu, a15);
-    objc_storeStrong(&v32->_viewState, a9);
-    v32->_enabled = a10;
-    v32->_pressScale = a11;
+    objc_storeStrong(&v32->_pointer, pointer);
+    objc_storeStrong(&v32->_focusStyle, focusStyle);
+    objc_storeStrong(&v32->_menu, menu);
+    objc_storeStrong(&v32->_viewState, state);
+    v32->_enabled = enabled;
+    v32->_pressScale = scale;
     v32->_touchInsets.top = top;
     v32->_touchInsets.left = left;
     v32->_touchInsets.bottom = bottom;
     v32->_touchInsets.right = right;
-    objc_storeStrong(&v32->_actionHandler, a8);
+    objc_storeStrong(&v32->_actionHandler, handler);
   }
 
   return v32;
@@ -81,61 +81,61 @@
   return v5;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  collectorCopy = collector;
   stateToModel = self->_stateToModel;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
-  v8 = *&a4->c;
-  v12 = *&a4->a;
+  v8 = *&transform->c;
+  v12 = *&transform->a;
   v13 = v8;
   v10[2] = sub_15D3A0;
   v10[3] = &unk_262DE8;
-  v11 = v6;
-  v14 = *&a4->tx;
-  v9 = v6;
+  v11 = collectorCopy;
+  v14 = *&transform->tx;
+  v9 = collectorCopy;
   [(NSDictionary *)stateToModel enumerateKeysAndObjectsUsingBlock:v10];
 }
 
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  collectorCopy = collector;
+  queryCopy = query;
+  resolverCopy = resolver;
   stateToModel = self->_stateToModel;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
-  v14 = *&a4->c;
-  v22 = *&a4->a;
+  v14 = *&transform->c;
+  v22 = *&transform->a;
   v23 = v14;
   v18[2] = sub_15D4E4;
   v18[3] = &unk_262E10;
-  v24 = *&a4->tx;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v24 = *&transform->tx;
+  v19 = collectorCopy;
+  v20 = queryCopy;
+  v21 = resolverCopy;
+  v15 = resolverCopy;
+  v16 = queryCopy;
+  v17 = collectorCopy;
   [(NSDictionary *)stateToModel enumerateKeysAndObjectsUsingBlock:v18];
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = modelCopy;
     }
 
     else
     {
       v6 = objc_opt_class();
-      v7 = TUIDynamicCast(v6, v4);
+      v7 = TUIDynamicCast(v6, modelCopy);
     }
 
     v9 = v7;
@@ -169,19 +169,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelInteractive *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelInteractive *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }
 
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc
 {
   v7 = objc_alloc(objc_opt_class());
   reuseIdentifier = self->_reuseIdentifier;
   identifier = self->_identifier;
   style = self->_style;
-  v11 = (a4)(self->_stateToModel, a3);
+  v11 = (proc)(self->_stateToModel, flags);
   LOBYTE(v14) = self->_enabled;
   v12 = [v7 initWithReuseIdentifier:reuseIdentifier identifier:identifier style:style elementStates:v11 imageModelIDToResource:self->_imageModelIDToResource actionHandler:self->_actionHandler viewState:self->_pressScale enabled:self->_touchInsets.top pressScale:self->_touchInsets.left touchInsets:self->_touchInsets.bottom pointer:self->_touchInsets.right focusStyle:self->_viewState menu:v14 name:{self->_pointer, self->_focusStyle, self->_menu, self->_name}];
 

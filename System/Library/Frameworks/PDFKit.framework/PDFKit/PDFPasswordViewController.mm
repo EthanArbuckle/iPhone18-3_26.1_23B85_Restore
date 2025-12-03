@@ -1,17 +1,17 @@
 @interface PDFPasswordViewController
-- (PDFPasswordViewController)initWithDelegate:(id)a3;
+- (PDFPasswordViewController)initWithDelegate:(id)delegate;
 - (void)clearPasswordField;
 - (void)focusOnPasswordField;
-- (void)presentInvalidPasswordAlertWithParentViewController:(id)a3;
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4;
+- (void)presentInvalidPasswordAlertWithParentViewController:(id)controller;
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view;
 - (void)viewDidLoad;
 @end
 
 @implementation PDFPasswordViewController
 
-- (PDFPasswordViewController)initWithDelegate:(id)a3
+- (PDFPasswordViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = PDFKitBundle();
   v8.receiver = self;
   v8.super_class = PDFPasswordViewController;
@@ -19,7 +19,7 @@
 
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
   }
 
   return v6;
@@ -27,19 +27,19 @@
 
 - (void)clearPasswordField
 {
-  v2 = [(UIDocumentPasswordView *)self->_uiDocPasswordView passwordField];
-  [v2 setText:&stru_1F416DF70];
+  passwordField = [(UIDocumentPasswordView *)self->_uiDocPasswordView passwordField];
+  [passwordField setText:&stru_1F416DF70];
 }
 
 - (void)focusOnPasswordField
 {
-  v2 = [(UIDocumentPasswordView *)self->_uiDocPasswordView passwordField];
-  [v2 becomeFirstResponder];
+  passwordField = [(UIDocumentPasswordView *)self->_uiDocPasswordView passwordField];
+  [passwordField becomeFirstResponder];
 }
 
-- (void)presentInvalidPasswordAlertWithParentViewController:(id)a3
+- (void)presentInvalidPasswordAlertWithParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = MEMORY[0x1E69DC650];
   v6 = PDFKitLocalizedString(@"Invalid Password");
   v7 = PDFKitLocalizedString(@"Please enter the password again.");
@@ -56,7 +56,7 @@
   v11 = [v9 actionWithTitle:v10 style:0 handler:&v12];
 
   [v8 addAction:{v11, v12, v13, v14, v15}];
-  [v4 presentViewController:v8 animated:1 completion:0];
+  [controllerCopy presentViewController:v8 animated:1 completion:0];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -68,18 +68,18 @@ void __81__PDFPasswordViewController_presentInvalidPasswordAlertWithParentViewCo
   [WeakRetained focusOnPasswordField];
 }
 
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && [v9 length])
+  passwordCopy = password;
+  viewCopy = view;
+  if (passwordCopy && [passwordCopy length])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained userDidEnterPassword:v9 forPasswordViewController:self];
+    v8 = [WeakRetained userDidEnterPassword:passwordCopy forPasswordViewController:self];
 
     if (v8)
     {
-      [v6 resignFirstResponder];
+      [viewCopy resignFirstResponder];
     }
 
     [(PDFPasswordViewController *)self clearPasswordField];
@@ -97,17 +97,17 @@ void __81__PDFPasswordViewController_presentInvalidPasswordAlertWithParentViewCo
 
   [(UIDocumentPasswordView *)self->_uiDocPasswordView setPasswordDelegate:self];
   v5 = self->_uiDocPasswordView;
-  v6 = [(PDFPasswordViewController *)self view];
-  [v6 bounds];
+  view = [(PDFPasswordViewController *)self view];
+  [view bounds];
   [(UIDocumentPasswordView *)v5 setFrame:?];
 
   [(UIDocumentPasswordView *)self->_uiDocPasswordView setAutoresizingMask:18];
-  v7 = [(PDFPasswordViewController *)self view];
-  [v7 addSubview:self->_uiDocPasswordView];
+  view2 = [(PDFPasswordViewController *)self view];
+  [view2 addSubview:self->_uiDocPasswordView];
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  v9 = [(PDFPasswordViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view3 = [(PDFPasswordViewController *)self view];
+  [view3 setBackgroundColor:clearColor];
 }
 
 @end

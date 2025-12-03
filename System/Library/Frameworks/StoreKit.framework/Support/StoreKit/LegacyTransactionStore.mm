@@ -1,5 +1,5 @@
 @interface LegacyTransactionStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (SQLiteDatabaseStoreDescriptor)storeDescriptor;
 @end
 
@@ -12,10 +12,10 @@
   return v2;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  v3 = a3;
-  v4 = sub_10017F308(v3);
+  schemaCopy = schema;
+  v4 = sub_10017F308(schemaCopy);
 
   return v4;
 }

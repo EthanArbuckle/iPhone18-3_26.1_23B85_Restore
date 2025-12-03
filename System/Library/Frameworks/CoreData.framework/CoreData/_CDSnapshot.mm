@@ -1,17 +1,17 @@
 @interface _CDSnapshot
-+ (Class)classForEntity:(id)a3;
-+ (unsigned)newBatchAllocation:(id *)a3 count:(unsigned int)a4 withOwnedObjectIDs:(id *)a5;
++ (Class)classForEntity:(id)entity;
++ (unsigned)newBatchAllocation:(id *)allocation count:(unsigned int)count withOwnedObjectIDs:(id *)ds;
 + (void)_entityDeallocated;
 + (void)_invalidateStaticCaches;
 + (void)initialize;
 - (id)copy;
 - (id)description;
 - (id)mutableCopy;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)initWithObjectID:(void *)a1;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)initWithObjectID:(void *)d;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation _CDSnapshot
@@ -92,7 +92,7 @@ LABEL_8:
 + (void)_entityDeallocated
 {
   v6 = *MEMORY[0x1E69E9840];
-  IndexedIvars = object_getIndexedIvars(a1);
+  IndexedIvars = object_getIndexedIvars(self);
   if (IndexedIvars)
   {
     v3 = IndexedIvars;
@@ -113,14 +113,14 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_getClass("_CDSnapshot") == a1)
+  if (objc_getClass("_CDSnapshot") == self)
   {
     objc_opt_self();
-    object_getIndexedIvars(a1);
+    object_getIndexedIvars(self);
     qword_1ED4BEB20 = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   }
 
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS____CDSnapshot;
   objc_msgSendSuper2(&v3, sel_initialize);
 }
@@ -214,32 +214,32 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (Class)classForEntity:(id)a3
++ (Class)classForEntity:(id)entity
 {
   v123 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(a3 "name")];
+  v5 = [objc_msgSend(entity "name")];
   if (!v5 || (v6 = v5, !*v5))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Entity name must not be nil." userInfo:0]);
   }
 
-  v70 = a1;
-  Name = class_getName(a1);
+  selfCopy = self;
+  Name = class_getName(self);
   v69 = v6;
   snprintf(__str, 0x200uLL, "%s_%s_", Name, v6);
-  v71 = a3;
-  v8 = *(*(a3 + 14) + 8);
-  v75 = *(a3 + 12) + 24;
+  entityCopy = entity;
+  v8 = *(*(entity + 14) + 8);
+  v75 = *(entity + 12) + 24;
   v9 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] arrayWithObjects:{v10, v11, v12, 0}];
-  [v15 addObject:v13];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  v15 = [MEMORY[0x1E695DF70] arrayWithObjects:{array, array2, array3, 0}];
+  [v15 addObject:array4];
   obj = v15;
-  [v15 addObject:v14];
+  [v15 addObject:array5];
   if (!v8)
   {
 LABEL_22:
@@ -273,8 +273,8 @@ LABEL_22:
     v65 = 4 * (v23 - 1);
     v72 = v8;
     v73 = 2;
-    v25 = v70;
-    v24 = v71;
+    v25 = selfCopy;
+    v24 = entityCopy;
     v26 = v69;
     while (1)
     {
@@ -410,8 +410,8 @@ LABEL_102:
     {
 LABEL_92:
       objc_registerClassPair(v27);
-      v25 = v70;
-      v24 = v71;
+      v25 = selfCopy;
+      v24 = entityCopy;
       v26 = v69;
       v21 = v64;
       CFArrayAppendValue(qword_1ED4BEB20, v27);
@@ -434,7 +434,7 @@ LABEL_92:
       v57 = class_getInstanceVariable(v27, "_cd_nullFlags_");
       Offset = ivar_getOffset(v57);
       *(v34 + 17) = class_getInstanceSize(v27) - Offset;
-      [objc_msgSend(v71 "versionHash")];
+      [objc_msgSend(entityCopy "versionHash")];
       goto LABEL_30;
     }
 
@@ -487,11 +487,11 @@ LABEL_46:
 
       v41 = *(*(&v80 + 1) + 8 * v40);
       v42 = [objc_msgSend(v41 "name")];
-      v43 = [v41 _entitysReferenceID];
+      _entitysReferenceID = [v41 _entitysReferenceID];
       if ([v41 _propertyType] != 2 && objc_msgSend(v41, "_propertyType") != 6)
       {
-        v47 = [v41 _propertyType];
-        if (v47 == 7)
+        _propertyType = [v41 _propertyType];
+        if (_propertyType == 7)
         {
           v46 = 7;
         }
@@ -501,24 +501,24 @@ LABEL_46:
           v46 = 0;
         }
 
-        v48 = 8 * (v47 == 7);
+        v48 = 8 * (_propertyType == 7);
         v45 = 3;
         goto LABEL_78;
       }
 
-      v44 = [v41 attributeType];
-      if (v44 <= 599)
+      attributeType = [v41 attributeType];
+      if (attributeType <= 599)
       {
-        if (v44 > 299)
+        if (attributeType > 299)
         {
-          if (v44 == 300)
+          if (attributeType == 300)
           {
             v45 = 3;
             v46 = 4;
             goto LABEL_77;
           }
 
-          if (v44 == 500)
+          if (attributeType == 500)
           {
 LABEL_67:
             v45 = 3;
@@ -532,9 +532,9 @@ LABEL_76:
           goto LABEL_77;
         }
 
-        if (v44 != 100)
+        if (attributeType != 100)
         {
-          if (v44 != 200)
+          if (attributeType != 200)
           {
             goto LABEL_76;
           }
@@ -550,14 +550,14 @@ LABEL_76:
 
       else
       {
-        if (v44 > 899)
+        if (attributeType > 899)
         {
-          if (v44 == 900)
+          if (attributeType == 900)
           {
             goto LABEL_67;
           }
 
-          if (v44 == 1800 || v44 == 2200)
+          if (attributeType == 1800 || attributeType == 2200)
           {
             v45 = 3;
             v46 = 8;
@@ -569,7 +569,7 @@ LABEL_77:
           goto LABEL_76;
         }
 
-        if (v44 == 600)
+        if (attributeType == 600)
         {
           v45 = 2;
           v46 = 6;
@@ -578,7 +578,7 @@ LABEL_75:
           goto LABEL_78;
         }
 
-        if (v44 != 800)
+        if (attributeType != 800)
         {
           goto LABEL_76;
         }
@@ -619,7 +619,7 @@ LABEL_78:
         v51 = 8;
       }
 
-      *(*(v34 + 7) + v43) = v49;
+      *(*(v34 + 7) + _entitysReferenceID) = v49;
       v52 = _CDSnapshotDataTypeToObjCType(v49);
       if (!class_addIvar(v27, v42, v51, v50, v52))
       {
@@ -651,38 +651,38 @@ LABEL_78:
 
     if ([v17 _propertyType] == 2 || objc_msgSend(v17, "_propertyType") == 6)
     {
-      v19 = [v17 attributeType];
-      if (v19 <= 499)
+      attributeType2 = [v17 attributeType];
+      if (attributeType2 <= 499)
       {
-        v20 = v11;
-        if (v19 == 100)
+        v20 = array2;
+        if (attributeType2 == 100)
         {
           goto LABEL_21;
         }
 
-        v20 = v12;
-        if (v19 == 200)
+        v20 = array3;
+        if (attributeType2 == 200)
         {
           goto LABEL_21;
         }
 
-        v20 = v13;
-        if (v19 == 300)
+        v20 = array4;
+        if (attributeType2 == 300)
         {
           goto LABEL_21;
         }
       }
 
-      else if (v19 > 799)
+      else if (attributeType2 > 799)
       {
-        v20 = v10;
-        if (v19 == 800)
+        v20 = array;
+        if (attributeType2 == 800)
         {
           goto LABEL_21;
         }
 
-        v20 = v13;
-        if (v19 == 900)
+        v20 = array4;
+        if (attributeType2 == 900)
         {
           goto LABEL_21;
         }
@@ -690,14 +690,14 @@ LABEL_78:
 
       else
       {
-        v20 = v13;
-        if (v19 == 500)
+        v20 = array4;
+        if (attributeType2 == 500)
         {
           goto LABEL_21;
         }
 
-        v20 = v12;
-        if (v19 == 600)
+        v20 = array3;
+        if (attributeType2 == 600)
         {
           goto LABEL_21;
         }
@@ -709,7 +709,7 @@ LABEL_78:
       [v17 _propertyType];
     }
 
-    v20 = v14;
+    v20 = array5;
 LABEL_21:
     [v20 addObject:v17];
     v16 = (v16 + 1);
@@ -723,18 +723,18 @@ LABEL_21:
   return result;
 }
 
-+ (unsigned)newBatchAllocation:(id *)a3 count:(unsigned int)a4 withOwnedObjectIDs:(id *)a5
++ (unsigned)newBatchAllocation:(id *)allocation count:(unsigned int)count withOwnedObjectIDs:(id *)ds
 {
-  v6 = a3;
-  result = _PFAllocateObjects(a1, a3, a4, 0);
+  allocationCopy = allocation;
+  result = _PFAllocateObjects(self, allocation, count, 0);
   if (result)
   {
     v8 = result;
     do
     {
-      v10 = *v6++;
+      v10 = *allocationCopy++;
       v9 = v10;
-      v11 = *a5++;
+      v11 = *ds++;
       *(v9 + 16) = v11;
       --v8;
     }
@@ -745,14 +745,14 @@ LABEL_21:
   return result;
 }
 
-- (void)initWithObjectID:(void *)a1
+- (void)initWithObjectID:(void *)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = d;
   v5.super_class = _CDSnapshot;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)
@@ -798,64 +798,64 @@ LABEL_21:
   v5 = [(_CDSnapshot *)&v42 description];
   if (!self)
   {
-    v6 = [0 name];
+    name = [0 name];
     cd_objectID = 0;
     v11 = 0;
     goto LABEL_80;
   }
 
-  v6 = [(NSEntityDescription *)[(NSManagedObjectID *)self->_cd_objectID entity] name];
+  name = [(NSEntityDescription *)[(NSManagedObjectID *)self->_cd_objectID entity] name];
   cd_objectID = self->_cd_objectID;
-  v8 = [(NSEntityDescription *)[(NSManagedObjectID *)cd_objectID entity] properties];
-  v9 = [(NSArray *)v8 count];
+  properties = [(NSEntityDescription *)[(NSManagedObjectID *)cd_objectID entity] properties];
+  v9 = [(NSArray *)properties count];
   v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v9];
   v11 = v10;
   if (v9)
   {
     v34 = cd_objectID;
-    v35 = v6;
+    v35 = name;
     v36 = v5;
     v37 = v4;
     v38 = v3;
     v39 = v9;
     v12 = 0;
-    v40 = v8;
+    v40 = properties;
     v41 = v10;
     while (1)
     {
-      v13 = [(NSArray *)v8 objectAtIndex:v12];
-      v14 = [v13 name];
-      v15 = [(_CDSnapshot *)self valueForKey:v14];
+      v13 = [(NSArray *)properties objectAtIndex:v12];
+      name2 = [v13 name];
+      v15 = [(_CDSnapshot *)self valueForKey:name2];
       if (v15)
       {
         v16 = v15;
-        v17 = [v13 _propertyType];
-        if (v17 > 5)
+        _propertyType = [v13 _propertyType];
+        if (_propertyType > 5)
         {
-          if ((v17 - 6) <= 1)
+          if ((_propertyType - 6) <= 1)
           {
 LABEL_16:
-            v21 = [v13 attributeType];
-            if (v21 <= 799)
+            attributeType = [v13 attributeType];
+            if (attributeType <= 799)
             {
-              if (v21 <= 399)
+              if (attributeType <= 399)
               {
-                if (v21 != 100 && v21 != 200)
+                if (attributeType != 100 && attributeType != 200)
                 {
                   v20 = @"(...not nil..)";
-                  if (v21 != 300)
+                  if (attributeType != 300)
                   {
                     goto LABEL_73;
                   }
                 }
               }
 
-              else if (v21 > 599)
+              else if (attributeType > 599)
               {
-                if (v21 != 600)
+                if (attributeType != 600)
                 {
                   v20 = @"(...not nil..)";
-                  if (v21 != 700)
+                  if (attributeType != 700)
                   {
                     goto LABEL_73;
                   }
@@ -864,7 +864,7 @@ LABEL_16:
                   {
                     if ([(__CFString *)v16 length]>= 0xC9)
                     {
-                      v18 = [(__CFString *)v16 substringToIndex:200];
+                      objectID = [(__CFString *)v16 substringToIndex:200];
                       goto LABEL_72;
                     }
 
@@ -874,10 +874,10 @@ LABEL_16:
                 }
               }
 
-              else if (v21 != 400)
+              else if (attributeType != 400)
               {
                 v20 = @"(...not nil..)";
-                if (v21 != 500)
+                if (attributeType != 500)
                 {
                   goto LABEL_73;
                 }
@@ -889,24 +889,24 @@ LABEL_70:
 
             else
             {
-              if (v21 > 1199)
+              if (attributeType > 1199)
               {
-                if (v21 > 1999)
+                if (attributeType > 1999)
                 {
-                  if (v21 != 2100)
+                  if (attributeType != 2100)
                   {
                     v20 = @"(...not nil..)";
-                    if (v21 != 2000)
+                    if (attributeType != 2000)
                     {
                       goto LABEL_73;
                     }
                   }
                 }
 
-                else if (v21 != 1200)
+                else if (attributeType != 1200)
                 {
                   v20 = @"(...not nil..)";
-                  if (v21 != 1800)
+                  if (attributeType != 1800)
                   {
                     goto LABEL_73;
                   }
@@ -915,12 +915,12 @@ LABEL_70:
                 goto LABEL_70;
               }
 
-              if (v21 <= 999)
+              if (attributeType <= 999)
               {
-                if (v21 != 800)
+                if (attributeType != 800)
                 {
                   v20 = @"(...not nil..)";
-                  if (v21 != 900)
+                  if (attributeType != 900)
                   {
                     goto LABEL_73;
                   }
@@ -929,10 +929,10 @@ LABEL_70:
                 goto LABEL_70;
               }
 
-              if (v21 != 1000)
+              if (attributeType != 1000)
               {
                 v20 = @"(...not nil..)";
-                if (v21 != 1100)
+                if (attributeType != 1100)
                 {
                   goto LABEL_73;
                 }
@@ -954,7 +954,7 @@ LABEL_70:
               v29 = [(__CFString *)v16 subdataWithRange:0, 50];
             }
 
-            v18 = [(__CFString *)v29 description];
+            objectID = [(__CFString *)v29 description];
             goto LABEL_72;
           }
 
@@ -964,12 +964,12 @@ LABEL_27:
           goto LABEL_74;
         }
 
-        if (v17 == 2)
+        if (_propertyType == 2)
         {
           goto LABEL_16;
         }
 
-        if (v17 == 3)
+        if (_propertyType == 3)
         {
 LABEL_10:
           objc_opt_class();
@@ -1030,18 +1030,18 @@ LABEL_10:
 
 LABEL_48:
             v11 = v41;
-            [v41 setObject:v22 forKey:v14];
+            [v41 setObject:v22 forKey:name2];
 
             v9 = v39;
-            v8 = v40;
+            properties = v40;
             goto LABEL_75;
           }
 
-          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<relationship fault: %p '%@'>", v16, objc_msgSend(-[__CFString relationship](v16, "relationship"), "name")];
+          objectID = [MEMORY[0x1E696AEC0] stringWithFormat:@"<relationship fault: %p '%@'>", v16, objc_msgSend(-[__CFString relationship](v16, "relationship"), "name")];
           goto LABEL_72;
         }
 
-        if (v17 != 4)
+        if (_propertyType != 4)
         {
           goto LABEL_27;
         }
@@ -1064,16 +1064,16 @@ LABEL_48:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"foreign key: %@", v16, v33];
+            objectID = [MEMORY[0x1E696AEC0] stringWithFormat:@"foreign key: %@", v16, v33];
           }
 
           else
           {
-            v18 = [(__CFString *)v16 objectID];
+            objectID = [(__CFString *)v16 objectID];
           }
 
 LABEL_72:
-          v20 = v18;
+          v20 = objectID;
 LABEL_73:
           v19 = v11;
           goto LABEL_74;
@@ -1090,13 +1090,13 @@ LABEL_73:
       }
 
 LABEL_74:
-      [v19 setObject:v20 forKey:v14];
+      [v19 setObject:v20 forKey:name2];
 LABEL_75:
       if (++v12 == v9)
       {
         v4 = v37;
         v3 = v38;
-        v6 = v35;
+        name = v35;
         v5 = v36;
         cd_objectID = v34;
         break;
@@ -1105,23 +1105,23 @@ LABEL_75:
   }
 
 LABEL_80:
-  v30 = [v4 stringWithFormat:@"%@ (entity: %@; id: %@ ; data: %@)", v5, v6, cd_objectID, v11];
+  v30 = [v4 stringWithFormat:@"%@ (entity: %@; id: %@ ; data: %@)", v5, name, cd_objectID, v11];
   objc_autoreleasePoolPop(v3);
   result = v30;
   v32 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v5 = [(NSManagedObjectID *)self->_cd_objectID entity];
-  v6 = v5;
-  if (v5)
+  entity = [(NSManagedObjectID *)self->_cd_objectID entity];
+  v6 = entity;
+  if (entity)
   {
-    v5 = v5->_propertyMapping;
+    entity = entity->_propertyMapping;
   }
 
-  v7 = [(NSEntityDescription *)v5 indexForKey:a3];
+  v7 = [(NSEntityDescription *)entity indexForKey:key];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_4;
@@ -1139,7 +1139,7 @@ LABEL_80:
 LABEL_4:
     v14.receiver = self;
     v14.super_class = _CDSnapshot;
-    return [(_CDSnapshot *)&v14 valueForKey:a3];
+    return [(_CDSnapshot *)&v14 valueForKey:key];
   }
 
   v11 = MEMORY[0x1E695DF00];
@@ -1149,40 +1149,40 @@ LABEL_4:
   return [v11 dateWithTimeIntervalSinceReferenceDate:v13];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   if (*&self->_cd_flags)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"snapshot is marked read only" userInfo:0]);
   }
 
-  v7 = [(NSManagedObjectID *)self->_cd_objectID entity];
-  v8 = v7;
-  if (v7)
+  entity = [(NSManagedObjectID *)self->_cd_objectID entity];
+  v8 = entity;
+  if (entity)
   {
-    v7 = v7->_propertyMapping;
+    entity = entity->_propertyMapping;
   }
 
-  v9 = [(NSEntityDescription *)v7 indexForKey:a4];
+  v9 = [(NSEntityDescription *)entity indexForKey:key];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_10;
   }
 
   v10 = v9;
-  if (a3)
+  if (value)
   {
     isa = v8->_properties[v9 + 3].super.super.isa;
     if (([(objc_class *)isa _isRelationship]& 1) == 0 && [(objc_class *)isa attributeType]== 900)
     {
-      if ([a3 isNSNumber])
+      if ([value isNSNumber])
       {
-        [a3 doubleValue];
+        [value doubleValue];
       }
 
       else
       {
-        [a3 timeIntervalSinceReferenceDate];
+        [value timeIntervalSinceReferenceDate];
       }
 
       v13 = v12;
@@ -1196,7 +1196,7 @@ LABEL_4:
 LABEL_10:
     v16.receiver = self;
     v16.super_class = _CDSnapshot;
-    [(_CDSnapshot *)&v16 setValue:a3 forKey:a4];
+    [(_CDSnapshot *)&v16 setValue:value forKey:key];
     return;
   }
 

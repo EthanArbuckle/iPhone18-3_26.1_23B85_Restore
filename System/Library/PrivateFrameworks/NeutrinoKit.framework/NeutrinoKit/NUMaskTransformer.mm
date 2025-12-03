@@ -1,24 +1,24 @@
 @interface NUMaskTransformer
-+ (BOOL)isMaskValid:(id)a3;
-+ (CGImage)createImageIsolatedToMask:(id)a3 mediaView:(id)a4;
-+ (CGImage)createImageIsolatedToMask:(id)a3 source:(id)a4 geometry:(id)a5 composition:(id)a6;
-+ (id)applyRenderedOutputGeometryFromSpace:(id)a3 toInputImage:(id)a4 geometry:(id)a5 composition:(id)a6 error:(id *)a7;
-+ (id)imageForComposition:(id)a3 size:(CGSize)a4;
-+ (id)maskedImageBackgroundImage:(id)a3 source:(id)a4;
-+ (id)transformedImage:(id)a3 forComposition:(id)a4 imageSize:(CGSize)a5 error:(id *)a6;
-+ (void)imageForComposition:(id)a3 size:(CGSize)a4 completion:(id)a5;
++ (BOOL)isMaskValid:(id)valid;
++ (CGImage)createImageIsolatedToMask:(id)mask mediaView:(id)view;
++ (CGImage)createImageIsolatedToMask:(id)mask source:(id)source geometry:(id)geometry composition:(id)composition;
++ (id)applyRenderedOutputGeometryFromSpace:(id)space toInputImage:(id)image geometry:(id)geometry composition:(id)composition error:(id *)error;
++ (id)imageForComposition:(id)composition size:(CGSize)size;
++ (id)maskedImageBackgroundImage:(id)image source:(id)source;
++ (id)transformedImage:(id)image forComposition:(id)composition imageSize:(CGSize)size error:(id *)error;
++ (void)imageForComposition:(id)composition size:(CGSize)size completion:(id)completion;
 @end
 
 @implementation NUMaskTransformer
 
-+ (id)transformedImage:(id)a3 forComposition:(id)a4 imageSize:(CGSize)a5 error:(id *)a6
++ (id)transformedImage:(id)image forComposition:(id)composition imageSize:(CGSize)size error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v42 = *MEMORY[0x277D85DE8];
-  specific = a3;
-  v12 = a4;
-  if (!a6)
+  specific = image;
+  compositionCopy = composition;
+  if (!error)
   {
     v37 = NUAssertLogger_155();
     v30 = &off_25BD44000;
@@ -30,7 +30,7 @@
       _os_log_error_impl(&dword_25BD29000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v41, 0xCu);
     }
 
-    a6 = MEMORY[0x277D2CF60];
+    error = MEMORY[0x277D2CF60];
     specific = dispatch_get_specific(*MEMORY[0x277D2CF60]);
     v13 = NUAssertLogger_155();
     v39 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -38,11 +38,11 @@
     {
       if (v39)
       {
-        specific = dispatch_get_specific(*a6);
+        specific = dispatch_get_specific(*error);
         v40 = MEMORY[0x277CCACC8];
         v30 = specific;
-        a6 = [v40 callStackSymbols];
-        v6 = [a6 componentsJoinedByString:@"\n"];
+        error = [v40 callStackSymbols];
+        v6 = [error componentsJoinedByString:@"\n"];
         LODWORD(v41.a) = 138543618;
         *(&v41.a + 4) = specific;
         WORD2(v41.b) = 2114;
@@ -54,9 +54,9 @@
     else if (v39)
     {
       specific = [MEMORY[0x277CCACC8] callStackSymbols];
-      a6 = [specific componentsJoinedByString:@"\n"];
+      error = [specific componentsJoinedByString:@"\n"];
       LODWORD(v41.a) = 138543362;
-      *(&v41.a + 4) = a6;
+      *(&v41.a + 4) = error;
       _os_log_error_impl(&dword_25BD29000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v41, 0xCu);
     }
 
@@ -64,8 +64,8 @@
     goto LABEL_44;
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = compositionCopy;
+  if (!compositionCopy)
   {
     v23 = MEMORY[0x277D2CF98];
     v24 = @"Nil composition";
@@ -82,7 +82,7 @@ LABEL_21:
     v25 = specific;
 LABEL_23:
     [v23 invalidError:v24 object:v25];
-    *a6 = v26 = 0;
+    *error = v26 = 0;
     goto LABEL_24;
   }
 
@@ -117,7 +117,7 @@ LABEL_23:
   v31 = [objc_alloc(MEMORY[0x277D2CFF0]) initWithTargetPixelCount:v29];
   [v30 setScalePolicy:v31];
 
-  v32 = [v30 submitSynchronous:a6];
+  v32 = [v30 submitSynchronous:error];
   v6 = v32;
   if (!v32)
   {
@@ -127,7 +127,7 @@ LABEL_32:
       v35 = *MEMORY[0x277D2D080];
       if (os_log_type_enabled(*MEMORY[0x277D2D080], OS_LOG_TYPE_ERROR))
       {
-        v36 = *a6;
+        v36 = *error;
         LODWORD(v41.a) = 138412290;
         *(&v41.a + 4) = v36;
         _os_log_error_impl(&dword_25BD29000, v35, OS_LOG_TYPE_ERROR, "Geometry request failed: %@", &v41, 0xCu);
@@ -142,8 +142,8 @@ LABEL_44:
     goto LABEL_32;
   }
 
-  v33 = [v32 geometry];
-  v34 = [NUMaskTransformer applyRenderedOutputGeometryFromSpace:@"/masterSpace" toInputImage:specific geometry:v33 composition:v13 error:a6];
+  geometry = [v32 geometry];
+  v34 = [NUMaskTransformer applyRenderedOutputGeometryFromSpace:@"/masterSpace" toInputImage:specific geometry:geometry composition:v13 error:error];
 
   specific = v34;
   v26 = specific;
@@ -154,14 +154,14 @@ LABEL_24:
   return v26;
 }
 
-+ (void)imageForComposition:(id)a3 size:(CGSize)a4 completion:(id)a5
++ (void)imageForComposition:(id)composition size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v29[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277D2CFC8]) initWithComposition:v8];
+  compositionCopy = composition;
+  completionCopy = completion;
+  v10 = [objc_alloc(MEMORY[0x277D2CFC8]) initWithComposition:compositionCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -177,7 +177,7 @@ LABEL_24:
     v13 = [v11 errorWithDomain:@"NUMaskTransformerErrorDomain" code:2 userInfo:v12];
 
     [v23[5] setError:v13];
-    v9[2](v9, v23[5]);
+    completionCopy[2](completionCopy, v23[5]);
   }
 
   v14 = [objc_alloc(MEMORY[0x277D2CFF0]) initWithTargetPixelCount:(width * height)];
@@ -194,7 +194,7 @@ LABEL_24:
   v16[3] = &unk_279973D68;
   v18 = v20;
   v19 = &v22;
-  v15 = v9;
+  v15 = completionCopy;
   v17 = v15;
   [v10 submit:v16];
 
@@ -221,13 +221,13 @@ void __57__NUMaskTransformer_imageForComposition_size_completion___block_invoke(
   (*(a1[4] + 16))();
 }
 
-+ (id)imageForComposition:(id)a3 size:(CGSize)a4
++ (id)imageForComposition:(id)composition size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277D2CFC8]) initWithComposition:v6];
+  compositionCopy = composition;
+  v7 = [objc_alloc(MEMORY[0x277D2CFC8]) initWithComposition:compositionCopy];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -256,14 +256,14 @@ void __57__NUMaskTransformer_imageForComposition_size_completion___block_invoke(
     [v7 submit:&v21];
     v11 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v10, v11);
-    v12 = [v31[5] error];
-    if (!v12)
+    error = [v31[5] error];
+    if (!error)
     {
-      v12 = [v31[5] image];
-      if (!v12)
+      error = [v31[5] image];
+      if (!error)
       {
-        v17 = [v31[5] geometry];
-        v18 = v17 == 0;
+        geometry = [v31[5] geometry];
+        v18 = geometry == 0;
 
         if (!v18)
         {
@@ -274,9 +274,9 @@ void __57__NUMaskTransformer_imageForComposition_size_completion___block_invoke(
         v36 = *MEMORY[0x277CCA450];
         v37 = @"Timeout reached";
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-        v12 = [v19 errorWithDomain:@"NUMaskTransformerErrorDomain" code:1 userInfo:v20];
+        error = [v19 errorWithDomain:@"NUMaskTransformerErrorDomain" code:1 userInfo:v20];
 
-        [v31[5] setError:v12];
+        [v31[5] setError:error];
       }
     }
 
@@ -321,9 +321,9 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)isMaskValid:(id)a3
++ (BOOL)isMaskValid:(id)valid
 {
-  [a3 extent];
+  [valid extent];
   if (v3 < 0.0 && v4 < 0.0)
   {
     return 0;
@@ -337,38 +337,38 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
   return v5 > 0.0;
 }
 
-+ (id)maskedImageBackgroundImage:(id)a3 source:(id)a4
++ (id)maskedImageBackgroundImage:(id)image source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 extent];
+  sourceCopy = source;
+  imageCopy = image;
+  [sourceCopy extent];
   v8 = v7;
-  [v6 extent];
+  [imageCopy extent];
   v10 = v8 / v9;
-  [v5 extent];
+  [sourceCopy extent];
   v12 = v11;
-  [v6 extent];
+  [imageCopy extent];
   CGAffineTransformMakeScale(&v18, v10, v12 / v13);
-  v14 = [v6 imageByApplyingTransform:&v18];
+  v14 = [imageCopy imageByApplyingTransform:&v18];
 
-  v15 = [MEMORY[0x277CBF750] blendWithAlphaMaskFilter];
-  [v15 setBackgroundImage:v14];
-  [v15 setMaskImage:v14];
-  [v15 setInputImage:v5];
+  blendWithAlphaMaskFilter = [MEMORY[0x277CBF750] blendWithAlphaMaskFilter];
+  [blendWithAlphaMaskFilter setBackgroundImage:v14];
+  [blendWithAlphaMaskFilter setMaskImage:v14];
+  [blendWithAlphaMaskFilter setInputImage:sourceCopy];
 
-  v16 = [v15 outputImage];
+  outputImage = [blendWithAlphaMaskFilter outputImage];
 
-  return v16;
+  return outputImage;
 }
 
-+ (id)applyRenderedOutputGeometryFromSpace:(id)a3 toInputImage:(id)a4 geometry:(id)a5 composition:(id)a6 error:(id *)a7
++ (id)applyRenderedOutputGeometryFromSpace:(id)space toInputImage:(id)image geometry:(id)geometry composition:(id)composition error:(id *)error
 {
   v110 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!a7)
+  spaceCopy = space;
+  imageCopy = image;
+  geometryCopy = geometry;
+  compositionCopy = composition;
+  if (!error)
   {
     v82 = NUAssertLogger_155();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
@@ -390,8 +390,8 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
         v90 = dispatch_get_specific(*v84);
         v91 = MEMORY[0x277CCACC8];
         v92 = v90;
-        v93 = [v91 callStackSymbols];
-        v94 = [v93 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v91 callStackSymbols];
+        v94 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v107 = v90;
         v108 = 2114;
@@ -402,8 +402,8 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
 
     else if (v87)
     {
-      v88 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v89 = [v88 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v89 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v107 = v89;
       _os_log_error_impl(&dword_25BD29000, v86, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -412,34 +412,34 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
     _NUAssertFailHandler();
   }
 
-  v15 = v14;
-  if (v13)
+  v15 = compositionCopy;
+  if (geometryCopy)
   {
-    v16 = [v13 transformWithSourceSpace:v11 destinationSpace:@"/Image" error:a7];
+    v16 = [geometryCopy transformWithSourceSpace:spaceCopy destinationSpace:@"/Image" error:error];
     if (v16)
     {
       v17 = [objc_alloc(MEMORY[0x277D2CFB0]) initWithComposition:v15];
-      v18 = [MEMORY[0x277D2D010] stopAtTagFilter:v11];
+      v18 = [MEMORY[0x277D2D010] stopAtTagFilter:spaceCopy];
       v105 = v18;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v105 count:1];
       [v17 setPipelineFilters:v19];
 
       v20 = objc_alloc(MEMORY[0x277D2CFF0]);
-      [v12 extent];
+      [imageCopy extent];
       v22 = v21;
-      [v12 extent];
+      [imageCopy extent];
       v24 = [v20 initWithTargetPixelCount:(v22 * v23)];
       [v17 setScalePolicy:v24];
 
-      v25 = [v17 submitSynchronous:a7];
+      v25 = [v17 submitSynchronous:error];
       if (v25)
       {
         v100 = v25;
-        v97 = [v25 geometry];
-        [v97 renderScale];
+        geometry = [v25 geometry];
+        [geometry renderScale];
         NUScaleToDouble();
         v27 = v26;
-        [v12 extent];
+        [imageCopy extent];
         v95 = 1.0 / v27;
         NUScaleRect();
         v29 = v28;
@@ -478,26 +478,26 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
         v58 = [MEMORY[0x277CBF788] vectorWithX:v48 Y:v49];
         v103[4] = *MEMORY[0x277CBFAF0];
         v104[3] = v58;
-        v104[4] = v12;
+        v104[4] = imageCopy;
         v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v104 forKeys:v103 count:5];
         v96 = [v50 filterWithName:@"CIPerspectiveTransform" withInputParameters:v59];
 
-        v60 = [v96 outputImage];
-        [v13 renderScale];
+        outputImage = [v96 outputImage];
+        [geometryCopy renderScale];
         NUScaleToDouble();
         v62 = v95 * v61;
-        [v97 scaledExtent];
+        [geometry scaledExtent];
         v64 = v63;
-        [v97 scaledExtent];
+        [geometry scaledExtent];
         v66 = v64 / v65;
-        [v12 extent];
+        [imageCopy extent];
         v69 = v67 / v68 / v66;
-        v70 = [v97 scaledSize];
-        [v97 scaledSize];
-        LODWORD(v57) = v70 > v71;
-        v72 = [v13 scaledSize];
-        [v13 scaledSize];
-        if (v57 == v72 <= v73)
+        scaledSize = [geometry scaledSize];
+        [geometry scaledSize];
+        LODWORD(v57) = scaledSize > v71;
+        scaledSize2 = [geometryCopy scaledSize];
+        [geometryCopy scaledSize];
+        if (v57 == scaledSize2 <= v73)
         {
           v69 = 1.0 / v69;
         }
@@ -509,14 +509,14 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
         v75 = [MEMORY[0x277CCABB0] numberWithDouble:v69];
         v102[1] = v75;
         v76 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:v101 count:2];
-        v77 = [v60 imageByApplyingFilter:@"CILanczosScaleTransform" withInputParameters:v76];
+        v77 = [outputImage imageByApplyingFilter:@"CILanczosScaleTransform" withInputParameters:v76];
 
-        [v13 scaledExtent];
+        [geometryCopy scaledExtent];
         v78 = [v77 imageByCroppingToRect:?];
 
-        v79 = [MEMORY[0x277CBF750] colorClampFilter];
-        [v79 setInputImage:v78];
-        v80 = [v79 outputImage];
+        colorClampFilter = [MEMORY[0x277CBF750] colorClampFilter];
+        [colorClampFilter setInputImage:v78];
+        outputImage2 = [colorClampFilter outputImage];
 
         v15 = v99;
         v17 = v98;
@@ -526,55 +526,55 @@ void __46__NUMaskTransformer_imageForComposition_size___block_invoke(uint64_t a1
 
       else
       {
-        v80 = 0;
+        outputImage2 = 0;
       }
     }
 
     else
     {
-      v80 = 0;
+      outputImage2 = 0;
     }
   }
 
   else
   {
     [MEMORY[0x277D2CF98] invalidError:@"Nil geometry passed to NUMaskTransformer" object:0];
-    *a7 = v80 = 0;
+    *error = outputImage2 = 0;
   }
 
-  return v80;
+  return outputImage2;
 }
 
-+ (CGImage)createImageIsolatedToMask:(id)a3 mediaView:(id)a4
++ (CGImage)createImageIsolatedToMask:(id)mask mediaView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 _geometry];
-  v9 = [v6 snapshotImage];
-  v10 = [v6 composition];
+  viewCopy = view;
+  maskCopy = mask;
+  _geometry = [viewCopy _geometry];
+  snapshotImage = [viewCopy snapshotImage];
+  composition = [viewCopy composition];
 
-  v11 = [a1 createImageIsolatedToMask:v7 source:v9 geometry:v8 composition:v10];
+  v11 = [self createImageIsolatedToMask:maskCopy source:snapshotImage geometry:_geometry composition:composition];
   return v11;
 }
 
-+ (CGImage)createImageIsolatedToMask:(id)a3 source:(id)a4 geometry:(id)a5 composition:(id)a6
++ (CGImage)createImageIsolatedToMask:(id)mask source:(id)source geometry:(id)geometry composition:(id)composition
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = [a3 imageByApplyingFilter:@"CIColorInvert"];
+  sourceCopy = source;
+  compositionCopy = composition;
+  geometryCopy = geometry;
+  v13 = [mask imageByApplyingFilter:@"CIColorInvert"];
   v14 = [v13 imageByApplyingFilter:@"CIMaskToAlpha"];
   v22 = 0;
-  v15 = [a1 applyRenderedOutputGeometryFromSpace:@"/masterSpace" toInputImage:v14 geometry:v12 composition:v11 error:&v22];
+  v15 = [self applyRenderedOutputGeometryFromSpace:@"/masterSpace" toInputImage:v14 geometry:geometryCopy composition:compositionCopy error:&v22];
 
   v16 = v22;
   if (v15)
   {
-    v17 = [a1 maskedImageBackgroundImage:v15 source:v10];
-    v18 = [MEMORY[0x277CBF740] context];
+    v17 = [self maskedImageBackgroundImage:v15 source:sourceCopy];
+    context = [MEMORY[0x277CBF740] context];
     [v17 extent];
-    v19 = [v18 createCGImage:v17 fromRect:?];
+    v19 = [context createCGImage:v17 fromRect:?];
   }
 
   else

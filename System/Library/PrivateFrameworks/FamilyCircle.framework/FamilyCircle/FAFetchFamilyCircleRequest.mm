@@ -1,11 +1,11 @@
 @interface FAFetchFamilyCircleRequest
 - (FAFetchFamilyCircleRequest)init;
-- (id)fetchCachedFamilyCircle:(id *)a3;
-- (id)fetchCachedFamilyCircleWithCache:(id)a3 deviceInfo:(id)a4 error:(id *)a5;
-- (id)fetchFamilyCircleWithError:(id *)a3;
+- (id)fetchCachedFamilyCircle:(id *)circle;
+- (id)fetchCachedFamilyCircleWithCache:(id)cache deviceInfo:(id)info error:(id *)error;
+- (id)fetchFamilyCircleWithError:(id *)error;
 - (id)requestOptions;
 - (unint64_t)_cachePolicy;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAFetchFamilyCircleRequest
@@ -57,8 +57,8 @@
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = FAFetchFamilyCircleRequest;
-  v3 = [(FAFamilyCircleRequest *)&v12 requestOptions];
-  v4 = [v3 mutableCopy];
+  requestOptions = [(FAFamilyCircleRequest *)&v12 requestOptions];
+  v4 = [requestOptions mutableCopy];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[FAFetchFamilyCircleRequest promptUserToResolveAuthenticatonFailure](self, "promptUserToResolveAuthenticatonFailure")}];
   [v4 setObject:v5 forKeyedSubscript:@"promptUserToResolveAuthenticatonFailure"];
@@ -85,29 +85,29 @@
   return v9;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__FAFetchFamilyCircleRequest_startRequestWithCompletionHandler___block_invoke;
   v16[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v17 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v16];
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B70B0000, v7, OS_LOG_TYPE_DEFAULT, "Starting family request: %@", buf, 0xCu);
   }
 
-  v8 = [(FAFetchFamilyCircleRequest *)self _cachePolicy];
-  v9 = [(FAFetchFamilyCircleRequest *)self signedInAccountShouldBeApprover];
-  v10 = [(FAFetchFamilyCircleRequest *)self context];
-  v11 = [(FAFetchFamilyCircleRequest *)self requestOptions];
+  _cachePolicy = [(FAFetchFamilyCircleRequest *)self _cachePolicy];
+  signedInAccountShouldBeApprover = [(FAFetchFamilyCircleRequest *)self signedInAccountShouldBeApprover];
+  context = [(FAFetchFamilyCircleRequest *)self context];
+  requestOptions = [(FAFetchFamilyCircleRequest *)self requestOptions];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__FAFetchFamilyCircleRequest_startRequestWithCompletionHandler___block_invoke_29;
@@ -115,7 +115,7 @@
   v14[4] = self;
   v15 = v5;
   v12 = v5;
-  [v6 fetchFamilyCircleWithCachePolicy:v8 signedInAccountShouldBeApprover:v9 context:v10 options:v11 replyBlock:v14];
+  [v6 fetchFamilyCircleWithCachePolicy:_cachePolicy signedInAccountShouldBeApprover:signedInAccountShouldBeApprover context:context options:requestOptions replyBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -170,7 +170,7 @@ void __64__FAFetchFamilyCircleRequest_startRequestWithCompletionHandler___block_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchFamilyCircleWithError:(id *)a3
+- (id)fetchFamilyCircleWithError:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -209,21 +209,21 @@ void __64__FAFetchFamilyCircleRequest_startRequestWithCompletionHandler___block_
   v27[3] = &unk_1E7CA5670;
   v27[4] = &v34;
   v12 = [(FAFamilyCircleRequest *)self synchronousRemoteObjectWithErrorHandler:v27];
-  v13 = [(FAFetchFamilyCircleRequest *)self _cachePolicy];
-  v14 = [(FAFetchFamilyCircleRequest *)self signedInAccountShouldBeApprover];
-  v15 = [(FAFetchFamilyCircleRequest *)self context];
-  v16 = [(FAFetchFamilyCircleRequest *)self requestOptions];
+  _cachePolicy = [(FAFetchFamilyCircleRequest *)self _cachePolicy];
+  signedInAccountShouldBeApprover = [(FAFetchFamilyCircleRequest *)self signedInAccountShouldBeApprover];
+  context = [(FAFetchFamilyCircleRequest *)self context];
+  requestOptions = [(FAFetchFamilyCircleRequest *)self requestOptions];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __57__FAFetchFamilyCircleRequest_fetchFamilyCircleWithError___block_invoke_2;
   v26[3] = &unk_1E7CA58D0;
   v26[4] = &v34;
   v26[5] = &v28;
-  [v12 fetchFamilyCircleWithCachePolicy:v13 signedInAccountShouldBeApprover:v14 context:v15 options:v16 replyBlock:v26];
+  [v12 fetchFamilyCircleWithCachePolicy:_cachePolicy signedInAccountShouldBeApprover:signedInAccountShouldBeApprover context:context options:requestOptions replyBlock:v26];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v35[5];
+    *error = v35[5];
   }
 
   Nanoseconds = _FASignpostGetNanoseconds(v6, v8);
@@ -231,22 +231,22 @@ void __64__FAFetchFamilyCircleRequest_startRequestWithCompletionHandler___block_
   v19 = v18;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
-    v20 = [v35[5] code];
+    code = [v35[5] code];
     *buf = 67240192;
-    LODWORD(v41) = v20;
+    LODWORD(v41) = code;
     _os_signpost_emit_with_name_impl(&dword_1B70B0000, v19, OS_SIGNPOST_INTERVAL_END, v6, "FetchFamilyCircleRequestSync", " ErrorCode=%{public,signpost.telemetry:number1,name=ErrorCode}d ", buf, 8u);
   }
 
   v21 = _FASignpostLogSystem();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v35[5] code];
+    code2 = [v35[5] code];
     *buf = 134218496;
     v41 = v6;
     v42 = 2048;
     v43 = Nanoseconds / 1000000000.0;
     v44 = 1026;
-    v45 = v25;
+    v45 = code2;
     _os_log_debug_impl(&dword_1B70B0000, v21, OS_LOG_TYPE_DEBUG, "END [%lld] %fs:FetchFamilyCircleRequestSync  ErrorCode=%{public,signpost.telemetry:number1,name=ErrorCode}d ", buf, 0x1Cu);
   }
 
@@ -289,66 +289,66 @@ void __57__FAFetchFamilyCircleRequest_fetchFamilyCircleWithError___block_invoke_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchCachedFamilyCircle:(id *)a3
+- (id)fetchCachedFamilyCircle:(id *)circle
 {
   v5 = objc_alloc_init(FADeviceInfo);
-  v6 = [MEMORY[0x1E6959A48] defaultStore];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
   v7 = [FAFamilyCircleCache alloc];
-  v8 = [v6 aa_primaryAppleAccount];
-  v9 = [(FAFamilyCircleCache *)v7 initWithAccount:v8];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v9 = [(FAFamilyCircleCache *)v7 initWithAccount:aa_primaryAppleAccount];
 
-  v10 = [(FAFetchFamilyCircleRequest *)self fetchCachedFamilyCircleWithCache:v9 deviceInfo:v5 error:a3];
+  v10 = [(FAFetchFamilyCircleRequest *)self fetchCachedFamilyCircleWithCache:v9 deviceInfo:v5 error:circle];
 
   return v10;
 }
 
-- (id)fetchCachedFamilyCircleWithCache:(id)a3 deviceInfo:(id)a4 error:(id *)a5
+- (id)fetchCachedFamilyCircleWithCache:(id)cache deviceInfo:(id)info error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  cacheCopy = cache;
+  infoCopy = info;
   v10 = _FALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B70B0000, v10, OS_LOG_TYPE_DEFAULT, "Starting in process family request: %@", buf, 0xCu);
   }
 
-  v11 = [v9 unlockedSinceBoot];
-  if (v11)
+  unlockedSinceBoot = [infoCopy unlockedSinceBoot];
+  if (unlockedSinceBoot)
   {
     v19 = 0;
-    v12 = [v8 loadWithError:&v19];
+    v12 = [cacheCopy loadWithError:&v19];
     v13 = v19;
-    v14 = [v12 familyCircleIfFresh];
+    familyCircleIfFresh = [v12 familyCircleIfFresh];
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] fa_familyErrorWithCode:-1010];
-    v14 = 0;
+    familyCircleIfFresh = 0;
   }
 
   v15 = _FALogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v14;
+    selfCopy = familyCircleIfFresh;
     v22 = 2112;
     v23 = v13;
     _os_log_impl(&dword_1B70B0000, v15, OS_LOG_TYPE_DEFAULT, "Family request came back with response: %@ - %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v16 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return familyCircleIfFresh;
 }
 
 - (void)fetchFamilyCircleWithError:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

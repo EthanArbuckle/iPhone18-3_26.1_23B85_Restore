@@ -1,6 +1,6 @@
 @interface WBProfileDifference
 - (WBProfileDifference)init;
-- (WBProfileDifference)initWithResult:(unint64_t)a3 settingsKeys:(id)a4;
+- (WBProfileDifference)initWithResult:(unint64_t)result settingsKeys:(id)keys;
 @end
 
 @implementation WBProfileDifference
@@ -13,17 +13,17 @@
   return v4;
 }
 
-- (WBProfileDifference)initWithResult:(unint64_t)a3 settingsKeys:(id)a4
+- (WBProfileDifference)initWithResult:(unint64_t)result settingsKeys:(id)keys
 {
-  v6 = a4;
+  keysCopy = keys;
   v13.receiver = self;
   v13.super_class = WBProfileDifference;
   v7 = [(WBProfileDifference *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_result = a3;
-    v9 = [v6 copy];
+    v7->_result = result;
+    v9 = [keysCopy copy];
     settingsKeys = v8->_settingsKeys;
     v8->_settingsKeys = v9;
 

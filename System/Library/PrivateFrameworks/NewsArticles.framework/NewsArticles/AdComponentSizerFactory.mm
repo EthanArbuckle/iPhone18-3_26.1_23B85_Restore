@@ -1,7 +1,7 @@
 @interface AdComponentSizerFactory
 - (NSString)type;
 - (_TtC12NewsArticles23AdComponentSizerFactory)init;
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6;
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider;
 @end
 
 @implementation AdComponentSizerFactory
@@ -14,14 +14,14 @@
   return v2;
 }
 
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = a5;
+  optionsCopy = options;
   swift_unknownObjectRetain();
-  v12 = self;
-  v13 = sub_1D7BD8BC0(a3, a4, v11, a6);
+  selfCopy = self;
+  v13 = sub_1D7BD8BC0(component, layout, optionsCopy, provider);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 

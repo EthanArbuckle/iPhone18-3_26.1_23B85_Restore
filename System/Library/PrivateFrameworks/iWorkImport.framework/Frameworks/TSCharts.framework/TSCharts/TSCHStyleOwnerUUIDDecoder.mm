@@ -1,6 +1,6 @@
 @interface TSCHStyleOwnerUUIDDecoder
-+ (id)UUIDDecoderWithUUID:(id)a3;
-- (TSCHStyleOwnerUUIDDecoder)initWithUUID:(id)a3;
++ (id)UUIDDecoderWithUUID:(id)d;
+- (TSCHStyleOwnerUUIDDecoder)initWithUUID:(id)d;
 - (unint64_t)decodeUInt64;
 - (unsigned)decodeByte;
 - (void)endDecode;
@@ -8,24 +8,24 @@
 
 @implementation TSCHStyleOwnerUUIDDecoder
 
-+ (id)UUIDDecoderWithUUID:(id)a3
++ (id)UUIDDecoderWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithUUID_(v5, v6, v7, v8, v9, v4);
+  dCopy = d;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithUUID_(v5, v6, v7, v8, v9, dCopy);
 
   return v10;
 }
 
-- (TSCHStyleOwnerUUIDDecoder)initWithUUID:(id)a3
+- (TSCHStyleOwnerUUIDDecoder)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = TSCHStyleOwnerUUIDDecoder;
   v6 = [(TSCHStyleOwnerUUIDDecoder *)&v26 init];
   if (v6)
   {
-    if (!v4)
+    if (!dCopy)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "[TSCHStyleOwnerUUIDDecoder initWithUUID:]");
@@ -35,7 +35,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
     }
 
-    objc_msgSend_getUUIDBytes_(v4, v5, v7, v8, v9, v6->_UUID);
+    objc_msgSend_getUUIDBytes_(dCopy, v5, v7, v8, v9, v6->_UUID);
   }
 
   return v6;

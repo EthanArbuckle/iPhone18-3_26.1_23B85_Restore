@@ -1,34 +1,34 @@
 @interface ESDClientCalendarAvailabilityResponseDelegate
-- (ESDClientCalendarAvailabilityResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 startDate:(id)a5 endDate:(id)a6 ignoredEventID:(id)a7 addresses:(id)a8;
-- (void)calendarAvailabilityRequestReturnedResults:(id)a3;
+- (ESDClientCalendarAvailabilityResponseDelegate)initWithAccountID:(id)d client:(id)client startDate:(id)date endDate:(id)endDate ignoredEventID:(id)iD addresses:(id)addresses;
+- (void)calendarAvailabilityRequestReturnedResults:(id)results;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)performRequest;
 @end
 
 @implementation ESDClientCalendarAvailabilityResponseDelegate
 
-- (ESDClientCalendarAvailabilityResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 startDate:(id)a5 endDate:(id)a6 ignoredEventID:(id)a7 addresses:(id)a8
+- (ESDClientCalendarAvailabilityResponseDelegate)initWithAccountID:(id)d client:(id)client startDate:(id)date endDate:(id)endDate ignoredEventID:(id)iD addresses:(id)addresses
 {
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  iDCopy = iD;
+  addressesCopy = addresses;
   v27.receiver = self;
   v27.super_class = ESDClientCalendarAvailabilityResponseDelegate;
-  v18 = [(ESDClientDelegate *)&v27 initWithAccountID:a3 client:a4];
+  v18 = [(ESDClientDelegate *)&v27 initWithAccountID:d client:client];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_startDate, a5);
-    objc_storeStrong(&v19->_endDate, a6);
-    objc_storeStrong(&v19->_ignoredEventID, a7);
-    objc_storeStrong(&v19->_addresses, a8);
+    objc_storeStrong(&v18->_startDate, date);
+    objc_storeStrong(&v19->_endDate, endDate);
+    objc_storeStrong(&v19->_ignoredEventID, iD);
+    objc_storeStrong(&v19->_addresses, addresses);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = [v21 UTF8String];
+    uTF8String = [v21 UTF8String];
 
-    v23 = dispatch_queue_create(v22, 0);
+    v23 = dispatch_queue_create(uTF8String, 0);
     queue = v19->_queue;
     v19->_queue = v23;
   }
@@ -44,10 +44,10 @@
   [(ESDClientDelegate *)&v3 dealloc];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(ESDClientDelegate *)self finished])
   {
     [(ESDClientDelegate *)self setFinished:1];
@@ -59,23 +59,23 @@
       *buf = 138412546;
       v30 = objc_opt_class();
       v31 = 2112;
-      v32 = v4;
+      v32 = errorCopy;
       v8 = v30;
       _os_log_impl(&dword_24A184000, v5, v7, "[%@] finished with error %@", buf, 0x16u);
     }
 
     if (self->_requestID)
     {
-      v9 = [v4 domain];
-      if ([v9 isEqualToString:*MEMORY[0x277D038E0]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x277D038E0]])
       {
-        v10 = [v4 code];
+        code = [errorCopy code];
 
-        if (v10 == -1)
+        if (code == -1)
         {
           v11 = +[ESDAgentManager sharedManager];
-          v12 = [(ESDClientDelegate *)self accountID];
-          v13 = [v11 accountWithAccountID:v12];
+          accountID = [(ESDClientDelegate *)self accountID];
+          v13 = [v11 accountWithAccountID:accountID];
 
           if (v13)
           {
@@ -90,11 +90,11 @@
             {
               v20 = objc_opt_class();
               v21 = v20;
-              v22 = [(ESDClientDelegate *)self accountID];
+              accountID2 = [(ESDClientDelegate *)self accountID];
               *buf = 138412546;
               v30 = v20;
               v31 = 2112;
-              v32 = v22;
+              v32 = accountID2;
               _os_log_impl(&dword_24A184000, v18, v19, "[%@] finished, but could not find an account with the ID %@", buf, 0x16u);
             }
           }
@@ -113,14 +113,14 @@
     v24 = 3221225472;
     v25 = __65__ESDClientCalendarAvailabilityResponseDelegate_finishWithError___block_invoke;
     v26 = &unk_278FCDB98;
-    v27 = self;
-    v28 = v4;
+    selfCopy = self;
+    v28 = errorCopy;
     dispatch_sync(queue, &v23);
 
 LABEL_12:
     v15 = [(ESDClientDelegate *)self client:v23];
-    v16 = [(ESDClientDelegate *)self delegateID];
-    [v15 delegateWithIDIsGoingAway:v16];
+    delegateID = [(ESDClientDelegate *)self delegateID];
+    [v15 delegateWithIDIsGoingAway:delegateID];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -158,8 +158,8 @@ void __65__ESDClientCalendarAvailabilityResponseDelegate_finishWithError___block
   if (![(DADisableableObject *)self isDisabled])
   {
     v3 = +[ESDAgentManager sharedManager];
-    v4 = [(ESDClientDelegate *)self accountID];
-    v5 = [v3 accountWithAccountID:v4];
+    accountID = [(ESDClientDelegate *)self accountID];
+    v5 = [v3 accountWithAccountID:accountID];
 
     if (v5)
     {
@@ -174,9 +174,9 @@ void __65__ESDClientCalendarAvailabilityResponseDelegate_finishWithError___block
       v9 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v8, v9))
       {
-        v10 = [(ESDClientDelegate *)self accountID];
+        accountID2 = [(ESDClientDelegate *)self accountID];
         v13 = 138412290;
-        v14 = v10;
+        v14 = accountID2;
         _os_log_impl(&dword_24A184000, v8, v9, "Could not get an account with the ID [%@]", &v13, 0xCu);
       }
 
@@ -188,10 +188,10 @@ void __65__ESDClientCalendarAvailabilityResponseDelegate_finishWithError___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calendarAvailabilityRequestReturnedResults:(id)a3
+- (void)calendarAvailabilityRequestReturnedResults:(id)results
 {
-  v4 = a3;
-  if (v4 && !-[DADisableableObject isDisabled](self, "isDisabled") && [v4 count])
+  resultsCopy = results;
+  if (resultsCopy && !-[DADisableableObject isDisabled](self, "isDisabled") && [resultsCopy count])
   {
     queue = self->_queue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -199,7 +199,7 @@ void __65__ESDClientCalendarAvailabilityResponseDelegate_finishWithError___block
     v6[2] = __92__ESDClientCalendarAvailabilityResponseDelegate_calendarAvailabilityRequestReturnedResults___block_invoke;
     v6[3] = &unk_278FCDB98;
     v6[4] = self;
-    v7 = v4;
+    v7 = resultsCopy;
     dispatch_sync(queue, v6);
   }
 }

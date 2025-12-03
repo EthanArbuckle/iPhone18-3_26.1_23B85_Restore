@@ -1,34 +1,34 @@
 @interface PKPeerPaymentUserInfoRequest
-- (PKPeerPaymentUserInfoRequest)initWithAccountIdentifier:(id)a3 lastUpdated:(id)a4;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentUserInfoRequest)initWithAccountIdentifier:(id)identifier lastUpdated:(id)updated;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentUserInfoRequest
 
-- (PKPeerPaymentUserInfoRequest)initWithAccountIdentifier:(id)a3 lastUpdated:(id)a4
+- (PKPeerPaymentUserInfoRequest)initWithAccountIdentifier:(id)identifier lastUpdated:(id)updated
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  updatedCopy = updated;
   v12.receiver = self;
   v12.super_class = PKPeerPaymentUserInfoRequest;
   v9 = [(PKOverlayableWebServiceRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountIdentifier, a3);
-    objc_storeStrong(&v10->_lastUpdated, a4);
+    objc_storeStrong(&v9->_accountIdentifier, identifier);
+    objc_storeStrong(&v10->_lastUpdated, updated);
   }
 
   return v10;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -88,7 +88,7 @@ LABEL_12:
     v21[1] = accountIdentifier;
     v21[2] = @"userInfo";
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
-    v19 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v18 queryParameters:v12 appleAccountInformation:v8];
+    v19 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v18 queryParameters:v12 appleAccountInformation:v8];
 
     [v19 setHTTPMethod:@"GET"];
     [v19 setCachePolicy:1];

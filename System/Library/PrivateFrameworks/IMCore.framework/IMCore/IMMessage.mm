@@ -1,25 +1,25 @@
 @interface IMMessage
-+ (IMMessage)messageWithLocation:(id)a3 flags:(unint64_t)a4 error:(id)a5 guid:(id)a6;
-+ (id)breadcrumbMessageWithText:(id)a3 associatedMessageGUID:(id)a4 balloonBundleID:(id)a5 fileTransferGUIDs:(id)a6 payloadData:(id)a7 threadIdentifier:(id)a8;
-+ (id)customAcknowledgementMessageWithPayloadData:(id)a3 associatedMessageGUID:(id)a4 balloonBundleID:(id)a5 messageSummaryInfo:(id)a6 threadIdentifier:(id)a7;
-+ (id)defaultInvitationMessageFromSender:(id)a3 flags:(unint64_t)a4;
-+ (id)fromMeIMHandle:(id)a3 withText:(id)a4 fileTransferGUIDs:(id)a5 flags:(unint64_t)a6;
-+ (id)instantMessageWithAssociatedMessageContent:(id)a3 associatedMessageGUID:(id)a4 associatedMessageType:(int64_t)a5 associatedMessageRange:(_NSRange)a6 associatedMessageEmoji:(id)a7 messageSummaryInfo:(id)a8 threadIdentifier:(id)a9;
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 fileTransferGUIDs:(id)a5 flags:(unint64_t)a6 balloonBundleID:(id)a7 payloadData:(id)a8 expressiveSendStyleID:(id)a9;
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 fileTransferGUIDs:(id)a5 flags:(unint64_t)a6 threadIdentifier:(id)a7;
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 flags:(unint64_t)a5 expressiveSendStyleID:(id)a6 threadIdentifier:(id)a7;
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 flags:(unint64_t)a5 threadIdentifier:(id)a6 associatedMessageGUID:(id)a7 scheduledDate:(id)a8;
-+ (id)locatingMessageWithGuid:(id)a3 error:(id)a4;
-+ (id)messageFromIMMessageItem:(id)a3 sender:(id)a4 subject:(id)a5;
-+ (id)messageFromIMMessageItemDictionary:(id)a3 body:(id)a4 sender:(id)a5 subject:(id)a6;
-+ (id)textMessageWithLocation:(id)a3 flags:(unint64_t)a4 error:(id)a5 guid:(id)a6;
++ (IMMessage)messageWithLocation:(id)location flags:(unint64_t)flags error:(id)error guid:(id)guid;
++ (id)breadcrumbMessageWithText:(id)text associatedMessageGUID:(id)d balloonBundleID:(id)iD fileTransferGUIDs:(id)ds payloadData:(id)data threadIdentifier:(id)identifier;
++ (id)customAcknowledgementMessageWithPayloadData:(id)data associatedMessageGUID:(id)d balloonBundleID:(id)iD messageSummaryInfo:(id)info threadIdentifier:(id)identifier;
++ (id)defaultInvitationMessageFromSender:(id)sender flags:(unint64_t)flags;
++ (id)fromMeIMHandle:(id)handle withText:(id)text fileTransferGUIDs:(id)ds flags:(unint64_t)flags;
++ (id)instantMessageWithAssociatedMessageContent:(id)content associatedMessageGUID:(id)d associatedMessageType:(int64_t)type associatedMessageRange:(_NSRange)range associatedMessageEmoji:(id)emoji messageSummaryInfo:(id)info threadIdentifier:(id)identifier;
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject fileTransferGUIDs:(id)ds flags:(unint64_t)flags balloonBundleID:(id)d payloadData:(id)data expressiveSendStyleID:(id)iD;
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject fileTransferGUIDs:(id)ds flags:(unint64_t)flags threadIdentifier:(id)identifier;
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject flags:(unint64_t)flags expressiveSendStyleID:(id)d threadIdentifier:(id)identifier;
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject flags:(unint64_t)flags threadIdentifier:(id)identifier associatedMessageGUID:(id)d scheduledDate:(id)date;
++ (id)locatingMessageWithGuid:(id)guid error:(id)error;
++ (id)messageFromIMMessageItem:(id)item sender:(id)sender subject:(id)subject;
++ (id)messageFromIMMessageItemDictionary:(id)dictionary body:(id)body sender:(id)sender subject:(id)subject;
++ (id)textMessageWithLocation:(id)location flags:(unint64_t)flags error:(id)error guid:(id)guid;
 - (BOOL)hasEditedParts;
 - (BOOL)hasInlineAttachments;
 - (BOOL)isAssociatedMessage;
 - (BOOL)isCancelTypingMessage;
 - (BOOL)isDeviceActionMessage;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIncomingTypingMessage;
 - (BOOL)isIncomingTypingOrCancelTypingMessage;
 - (BOOL)isRCSEncryptionTest;
@@ -32,7 +32,7 @@
 - (BOOL)isTimeSensitive;
 - (BOOL)isTypingMessage;
 - (BOOL)isTypingOrCancelTypingMessage;
-- (IMMessage)initWithSender:(id)a3 fileTransfer:(id)a4;
+- (IMMessage)initWithSender:(id)sender fileTransfer:(id)transfer;
 - (IMMessageItem)_imMessageItem;
 - (IMTapback)tapback;
 - (NSArray)inlineAttachmentAttributesArray;
@@ -43,30 +43,30 @@
 - (NSString)summaryString;
 - (_NSRange)associatedMessageRange;
 - (id)_account;
-- (id)_copyWithFlags:(unint64_t)a3;
-- (id)_initWithSender:(id)a3 time:(id)a4 timeRead:(id)a5 timeDelivered:(id)a6 timePlayed:(id)a7 plainText:(id)a8 text:(id)a9 messageSubject:(id)a10 fileTransferGUIDs:(id)a11 flags:(unint64_t)a12 error:(id)a13 guid:(id)a14 messageID:(int64_t)a15 subject:(id)a16 balloonBundleID:(id)a17 payloadData:(id)a18 expressiveSendStyleID:(id)a19 timeExpressiveSendPlayed:(id)a20 associatedMessageGUID:(id)a21 associatedMessageType:(int64_t)a22 associatedMessageRange:(_NSRange)a23 associatedMessageEmoji:(id)a24 messageSummaryInfo:(id)a25 threadIdentifier:(id)a26 dateEdited:(id)a27 dateRecovered:(id)a28 scheduleType:(unint64_t)a29 scheduleState:(unint64_t)a30;
-- (id)_transcriptPluginChatItemFromTypeErasedPartChatItems:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_copyWithFlags:(unint64_t)flags;
+- (id)_initWithSender:(id)sender time:(id)time timeRead:(id)read timeDelivered:(id)delivered timePlayed:(id)played plainText:(id)text text:(id)a9 messageSubject:(id)self0 fileTransferGUIDs:(id)self1 flags:(unint64_t)self2 error:(id)self3 guid:(id)self4 messageID:(int64_t)self5 subject:(id)self6 balloonBundleID:(id)self7 payloadData:(id)self8 expressiveSendStyleID:(id)self9 timeExpressiveSendPlayed:(id)sendPlayed associatedMessageGUID:(id)uID associatedMessageType:(int64_t)type associatedMessageRange:(_NSRange)range associatedMessageEmoji:(id)emoji messageSummaryInfo:(id)info threadIdentifier:(id)identifier dateEdited:(id)edited dateRecovered:(id)recovered scheduleType:(unint64_t)scheduleType scheduleState:(unint64_t)sender0;
+- (id)_transcriptPluginChatItemFromTypeErasedPartChatItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionForPurpose:(int64_t)a3;
-- (id)descriptionForPurpose:(int64_t)a3 inChat:(id)a4;
-- (id)descriptionForPurpose:(int64_t)a3 inChat:(id)a4 senderDisplayName:(id)a5;
-- (id)messagePartMatchingPartIndex:(int64_t)a3;
+- (id)descriptionForPurpose:(int64_t)purpose;
+- (id)descriptionForPurpose:(int64_t)purpose inChat:(id)chat;
+- (id)descriptionForPurpose:(int64_t)purpose inChat:(id)chat senderDisplayName:(id)name;
+- (id)messagePartMatchingPartIndex:(int64_t)index;
 - (id)messagesBySeparatingRichLinks;
-- (id)messagesSeparatedByByteLength:(int64_t)a3;
-- (id)richLinkDataSourceWithChatContext:(id)a3;
-- (id)tapbackSummaryForConversationListUsingIsAdaptiveImageGlyphProvider:(id)a3 isCommSafetySensitiveProvider:(id)a4 adaptiveImageGlyphProvider:(id)a5 effectString:(id)a6;
-- (void)addEditedPartIndex:(int64_t)a3;
-- (void)addRetractedPartIndex:(int64_t)a3;
-- (void)setAssociatedBalloonBundleID:(id)a3;
-- (void)setEditedPartIndexes:(id)a3;
-- (void)setIsKeyTransparencyVerifiedMessage:(BOOL)a3;
-- (void)setIsTapToRetry:(BOOL)a3;
-- (void)setNeedsRelay:(BOOL)a3;
-- (void)setPendingSatelliteSend:(BOOL)a3;
-- (void)setRetractedPartIndexes:(id)a3;
-- (void)setSentOrReceivedOffGrid:(BOOL)a3;
-- (void)setSourceApplicationID:(id)a3;
+- (id)messagesSeparatedByByteLength:(int64_t)length;
+- (id)richLinkDataSourceWithChatContext:(id)context;
+- (id)tapbackSummaryForConversationListUsingIsAdaptiveImageGlyphProvider:(id)provider isCommSafetySensitiveProvider:(id)sensitiveProvider adaptiveImageGlyphProvider:(id)glyphProvider effectString:(id)string;
+- (void)addEditedPartIndex:(int64_t)index;
+- (void)addRetractedPartIndex:(int64_t)index;
+- (void)setAssociatedBalloonBundleID:(id)d;
+- (void)setEditedPartIndexes:(id)indexes;
+- (void)setIsKeyTransparencyVerifiedMessage:(BOOL)message;
+- (void)setIsTapToRetry:(BOOL)retry;
+- (void)setNeedsRelay:(BOOL)relay;
+- (void)setPendingSatelliteSend:(BOOL)send;
+- (void)setRetractedPartIndexes:(id)indexes;
+- (void)setSentOrReceivedOffGrid:(BOOL)grid;
+- (void)setSourceApplicationID:(id)d;
 @end
 
 @implementation IMMessage
@@ -223,12 +223,12 @@
   return isRemoved;
 }
 
-- (id)tapbackSummaryForConversationListUsingIsAdaptiveImageGlyphProvider:(id)a3 isCommSafetySensitiveProvider:(id)a4 adaptiveImageGlyphProvider:(id)a5 effectString:(id)a6
+- (id)tapbackSummaryForConversationListUsingIsAdaptiveImageGlyphProvider:(id)provider isCommSafetySensitiveProvider:(id)sensitiveProvider adaptiveImageGlyphProvider:(id)glyphProvider effectString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  sensitiveProviderCopy = sensitiveProvider;
+  glyphProviderCopy = glyphProvider;
+  stringCopy = string;
   v18 = objc_msgSend_associatedMessageType(self, v14, v15) & 0xFFFFFFFFFFFFFFF8;
   if (v18 != 3000 && v18 != 2000)
   {
@@ -263,7 +263,7 @@ LABEL_15:
 
   v29 = v26;
   v30 = objc_msgSend_messageSummaryInfo(self, v27, v28);
-  v34 = objc_msgSend_previewAttributedStringWithMessageSummaryInfo_isAdaptiveImageGlyphProvider_isCommSafetySensitiveProvider_adaptiveImageGlyphProvider_senderDisplayName_isFromMe_effectString_(v29, v31, v30, v10, v11, v12, v25, v24, v13);
+  v34 = objc_msgSend_previewAttributedStringWithMessageSummaryInfo_isAdaptiveImageGlyphProvider_isCommSafetySensitiveProvider_adaptiveImageGlyphProvider_senderDisplayName_isFromMe_effectString_(v29, v31, v30, providerCopy, sensitiveProviderCopy, glyphProviderCopy, v25, v24, stringCopy);
   if (!v34)
   {
     v35 = objc_msgSend_plainBody(self, v32, v33);
@@ -286,10 +286,10 @@ LABEL_16:
   return v34;
 }
 
-- (id)descriptionForPurpose:(int64_t)a3
+- (id)descriptionForPurpose:(int64_t)purpose
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_guid(self, a2, a3);
+  v5 = objc_msgSend_guid(self, a2, purpose);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -316,7 +316,7 @@ LABEL_16:
 
         if (v19)
         {
-          v21 = objc_msgSend_descriptionForPurpose_inChat_(self, v14, a3, v18);
+          v21 = objc_msgSend_descriptionForPurpose_inChat_(self, v14, purpose, v18);
 
           goto LABEL_11;
         }
@@ -332,7 +332,7 @@ LABEL_16:
     }
   }
 
-  v21 = objc_msgSend_descriptionForPurpose_inChat_(self, v20, a3, 0);
+  v21 = objc_msgSend_descriptionForPurpose_inChat_(self, v20, purpose, 0);
 LABEL_11:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -340,11 +340,11 @@ LABEL_11:
   return v21;
 }
 
-- (id)descriptionForPurpose:(int64_t)a3 inChat:(id)a4
+- (id)descriptionForPurpose:(int64_t)purpose inChat:(id)chat
 {
-  if (a4)
+  if (chat)
   {
-    v6 = objc_msgSend_chatStyle(a4, a2, a3) != 45;
+    v6 = objc_msgSend_chatStyle(chat, a2, purpose) != 45;
   }
 
   else
@@ -352,65 +352,65 @@ LABEL_11:
     v6 = 0;
   }
 
-  v7 = objc_msgSend__imMessageItem(self, a2, a3);
-  v9 = objc_msgSend_descriptionForPurpose_isGroupMessage_messageDataSource_attachmentDataSource_(v7, v8, a3, v6, 0, &unk_1F1B6E240);
+  v7 = objc_msgSend__imMessageItem(self, a2, purpose);
+  v9 = objc_msgSend_descriptionForPurpose_isGroupMessage_messageDataSource_attachmentDataSource_(v7, v8, purpose, v6, 0, &unk_1F1B6E240);
 
   return v9;
 }
 
-- (id)descriptionForPurpose:(int64_t)a3 inChat:(id)a4 senderDisplayName:(id)a5
+- (id)descriptionForPurpose:(int64_t)purpose inChat:(id)chat senderDisplayName:(id)name
 {
-  v10 = a5;
-  if (a4)
+  nameCopy = name;
+  if (chat)
   {
-    a4 = (objc_msgSend_chatStyle(a4, v8, v9) != 45);
+    chat = (objc_msgSend_chatStyle(chat, v8, v9) != 45);
   }
 
   v11 = objc_msgSend__imMessageItem(self, v8, v9);
-  v13 = objc_msgSend_descriptionForPurpose_isGroupMessage_senderDisplayName_messageDataSource_attachmentDataSource_(v11, v12, a3, a4, v10, 0, &unk_1F1B6E260);
+  v13 = objc_msgSend_descriptionForPurpose_isGroupMessage_senderDisplayName_messageDataSource_attachmentDataSource_(v11, v12, purpose, chat, nameCopy, 0, &unk_1F1B6E260);
 
   return v13;
 }
 
-+ (id)defaultInvitationMessageFromSender:(id)a3 flags:(unint64_t)a4
++ (id)defaultInvitationMessageFromSender:(id)sender flags:(unint64_t)flags
 {
-  v5 = a3;
+  senderCopy = sender;
   v8 = objc_msgSend_messageClass(IMChatRegistry, v6, v7);
   v9 = objc_alloc(MEMORY[0x1E696AAB0]);
   v11 = objc_msgSend_initWithString_(v9, v10, &stru_1F1B76F98);
   v12 = [v8 alloc];
   v15 = objc_msgSend_date(MEMORY[0x1E695DF00], v13, v14);
-  v17 = objc_msgSend_initWithSender_time_text_fileTransferGUIDs_flags_error_guid_subject_threadIdentifier_(v12, v16, v5, v15, v11, 0, a4 | 1, 0, 0, 0, 0);
+  v17 = objc_msgSend_initWithSender_time_text_fileTransferGUIDs_flags_error_guid_subject_threadIdentifier_(v12, v16, senderCopy, v15, v11, 0, flags | 1, 0, 0, 0, 0);
 
   return v17;
 }
 
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 flags:(unint64_t)a5 expressiveSendStyleID:(id)a6 threadIdentifier:(id)a7
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject flags:(unint64_t)flags expressiveSendStyleID:(id)d threadIdentifier:(id)identifier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a1 alloc];
+  identifierCopy = identifier;
+  dCopy = d;
+  subjectCopy = subject;
+  textCopy = text;
+  v16 = [self alloc];
   v19 = objc_msgSend_date(MEMORY[0x1E695DF00], v17, v18);
   v22 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v20, v21);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v16, v23, 0, v19, 0, 0, 0, 0, v15, v14, 0, a5, 0, v22, 0, 0, 0, 0, v13, 0, 0, 0, 0, 0, 0, 0, v12, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v16, v23, 0, v19, 0, 0, 0, 0, textCopy, subjectCopy, 0, flags, 0, v22, 0, 0, 0, 0, dCopy, 0, 0, 0, 0, 0, 0, 0, identifierCopy, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 flags:(unint64_t)a5 threadIdentifier:(id)a6 associatedMessageGUID:(id)a7 scheduledDate:(id)a8
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject flags:(unint64_t)flags threadIdentifier:(id)identifier associatedMessageGUID:(id)d scheduledDate:(id)date
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v20 = [a1 alloc];
-  if (v13)
+  dateCopy = date;
+  dCopy = d;
+  identifierCopy = identifier;
+  subjectCopy = subject;
+  textCopy = text;
+  v20 = [self alloc];
+  if (dateCopy)
   {
     v21 = 2;
-    v22 = v13;
+    v22 = dateCopy;
   }
 
   else
@@ -420,63 +420,63 @@ LABEL_11:
   }
 
   v23 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v18, v19);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v20, v24, 0, v22, 0, 0, 0, 0, v17, v16, 0, a5, 0, v23, 0, 0, 0, 0, 0, 0, v14, 0, 0, 0, 0, 0, v15, 0, 0, v21, v13 != 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v20, v24, 0, v22, 0, 0, 0, 0, textCopy, subjectCopy, 0, flags, 0, v23, 0, 0, 0, 0, 0, 0, dCopy, 0, 0, 0, 0, 0, identifierCopy, 0, 0, v21, dateCopy != 0);
 
-  if (!v13)
+  if (!dateCopy)
   {
   }
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 fileTransferGUIDs:(id)a5 flags:(unint64_t)a6 threadIdentifier:(id)a7
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject fileTransferGUIDs:(id)ds flags:(unint64_t)flags threadIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!v12)
+  textCopy = text;
+  subjectCopy = subject;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  if (!textCopy)
   {
-    v12 = objc_alloc_init(MEMORY[0x1E696AAB0]);
+    textCopy = objc_alloc_init(MEMORY[0x1E696AAB0]);
   }
 
-  v16 = [a1 alloc];
+  v16 = [self alloc];
   v19 = objc_msgSend_date(MEMORY[0x1E695DF00], v17, v18);
   v22 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v20, v21);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v16, v23, 0, v19, 0, 0, 0, 0, v12, v13, v14, a6, 0, v22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, v15, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v16, v23, 0, v19, 0, 0, 0, 0, textCopy, subjectCopy, dsCopy, flags, 0, v22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, identifierCopy, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)instantMessageWithText:(id)a3 messageSubject:(id)a4 fileTransferGUIDs:(id)a5 flags:(unint64_t)a6 balloonBundleID:(id)a7 payloadData:(id)a8 expressiveSendStyleID:(id)a9
++ (id)instantMessageWithText:(id)text messageSubject:(id)subject fileTransferGUIDs:(id)ds flags:(unint64_t)flags balloonBundleID:(id)d payloadData:(id)data expressiveSendStyleID:(id)iD
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (!v15)
+  textCopy = text;
+  subjectCopy = subject;
+  dsCopy = ds;
+  dCopy = d;
+  dataCopy = data;
+  iDCopy = iD;
+  if (!textCopy)
   {
-    v15 = objc_alloc_init(MEMORY[0x1E696AAB0]);
+    textCopy = objc_alloc_init(MEMORY[0x1E696AAB0]);
   }
 
-  v21 = [a1 alloc];
+  v21 = [self alloc];
   v24 = objc_msgSend_date(MEMORY[0x1E695DF00], v22, v23);
   v27 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v25, v26);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v21, v28, 0, v24, 0, 0, 0, 0, v15, v16, v17, a6, 0, v27, 0, 0, v18, v19, v20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v21, v28, 0, v24, 0, 0, 0, 0, textCopy, subjectCopy, dsCopy, flags, 0, v27, 0, 0, dCopy, dataCopy, iDCopy, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)fromMeIMHandle:(id)a3 withText:(id)a4 fileTransferGUIDs:(id)a5 flags:(unint64_t)a6
++ (id)fromMeIMHandle:(id)handle withText:(id)text fileTransferGUIDs:(id)ds flags:(unint64_t)flags
 {
-  v11 = a3;
-  v12 = a4;
-  v14 = a5;
-  if (v11)
+  handleCopy = handle;
+  textCopy = text;
+  dsCopy = ds;
+  if (handleCopy)
   {
-    if (v12)
+    if (textCopy)
     {
       goto LABEL_4;
     }
@@ -484,23 +484,23 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  sub_1A84E1A0C(a2, a1, v13);
-  if (!v12)
+  sub_1A84E1A0C(a2, self, v13);
+  if (!textCopy)
   {
 LABEL_3:
-    v12 = objc_alloc_init(MEMORY[0x1E696AAB0]);
+    textCopy = objc_alloc_init(MEMORY[0x1E696AAB0]);
   }
 
 LABEL_4:
-  v15 = [a1 alloc];
+  v15 = [self alloc];
   v18 = objc_msgSend_date(MEMORY[0x1E695DF00], v16, v17);
   v21 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v19, v20);
-  v23 = objc_msgSend_initWithSender_time_text_fileTransferGUIDs_flags_error_guid_subject_threadIdentifier_(v15, v22, v11, v18, v12, v14, a6, 0, v21, 0, 0);
+  v23 = objc_msgSend_initWithSender_time_text_fileTransferGUIDs_flags_error_guid_subject_threadIdentifier_(v15, v22, handleCopy, v18, textCopy, dsCopy, flags, 0, v21, 0, 0);
 
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v168 = objc_alloc(objc_opt_class());
   v167 = objc_msgSend_sender(self, v4, v5);
@@ -606,84 +606,84 @@ LABEL_4:
   return v33;
 }
 
-- (id)_copyWithFlags:(unint64_t)a3
+- (id)_copyWithFlags:(unint64_t)flags
 {
-  v4 = objc_msgSend_copy(self, a2, a3);
-  objc_msgSend__updateFlags_(v4, v5, a3);
+  v4 = objc_msgSend_copy(self, a2, flags);
+  objc_msgSend__updateFlags_(v4, v5, flags);
   return v4;
 }
 
-- (id)_initWithSender:(id)a3 time:(id)a4 timeRead:(id)a5 timeDelivered:(id)a6 timePlayed:(id)a7 plainText:(id)a8 text:(id)a9 messageSubject:(id)a10 fileTransferGUIDs:(id)a11 flags:(unint64_t)a12 error:(id)a13 guid:(id)a14 messageID:(int64_t)a15 subject:(id)a16 balloonBundleID:(id)a17 payloadData:(id)a18 expressiveSendStyleID:(id)a19 timeExpressiveSendPlayed:(id)a20 associatedMessageGUID:(id)a21 associatedMessageType:(int64_t)a22 associatedMessageRange:(_NSRange)a23 associatedMessageEmoji:(id)a24 messageSummaryInfo:(id)a25 threadIdentifier:(id)a26 dateEdited:(id)a27 dateRecovered:(id)a28 scheduleType:(unint64_t)a29 scheduleState:(unint64_t)a30
+- (id)_initWithSender:(id)sender time:(id)time timeRead:(id)read timeDelivered:(id)delivered timePlayed:(id)played plainText:(id)text text:(id)a9 messageSubject:(id)self0 fileTransferGUIDs:(id)self1 flags:(unint64_t)self2 error:(id)self3 guid:(id)self4 messageID:(int64_t)self5 subject:(id)self6 balloonBundleID:(id)self7 payloadData:(id)self8 expressiveSendStyleID:(id)self9 timeExpressiveSendPlayed:(id)sendPlayed associatedMessageGUID:(id)uID associatedMessageType:(int64_t)type associatedMessageRange:(_NSRange)range associatedMessageEmoji:(id)emoji messageSummaryInfo:(id)info threadIdentifier:(id)identifier dateEdited:(id)edited dateRecovered:(id)recovered scheduleType:(unint64_t)scheduleType scheduleState:(unint64_t)sender0
 {
   v177 = *MEMORY[0x1E69E9840];
-  v166 = a3;
-  v147 = a4;
-  v165 = a4;
-  v148 = a5;
-  v34 = a5;
-  v149 = a6;
-  v162 = a6;
-  v161 = a7;
-  v35 = a8;
+  senderCopy = sender;
+  timeCopy = time;
+  timeCopy2 = time;
+  readCopy = read;
+  readCopy2 = read;
+  deliveredCopy = delivered;
+  deliveredCopy2 = delivered;
+  playedCopy = played;
+  textCopy = text;
   v168 = a9;
-  v160 = a10;
-  v163 = a11;
-  v36 = a13;
-  v37 = a14;
+  subjectCopy = subject;
+  dsCopy = ds;
+  errorCopy = error;
+  guidCopy = guid;
   v159 = a16;
-  v158 = a17;
-  v38 = v34;
-  v157 = a18;
-  v156 = a19;
-  v155 = a20;
-  v154 = a21;
-  v153 = a24;
-  v39 = a25;
-  v40 = a26;
-  v41 = v165;
-  v152 = a27;
+  iDCopy = iD;
+  v38 = readCopy2;
+  dataCopy = data;
+  styleIDCopy = styleID;
+  sendPlayedCopy = sendPlayed;
+  uIDCopy = uID;
+  emojiCopy = emoji;
+  infoCopy = info;
+  identifierCopy = identifier;
+  v41 = timeCopy2;
+  editedCopy = edited;
   v175.receiver = self;
   v175.super_class = IMMessage;
   v42 = [(IMMessage *)&v175 init];
   v43 = v42;
   if (v42)
   {
-    v143 = v40;
-    v144 = v36;
+    v143 = identifierCopy;
+    v144 = errorCopy;
     v145 = v38;
-    v151 = v37;
-    objc_storeStrong(&v42->_sender, a3);
-    objc_storeStrong(&v43->_time, v147);
-    objc_storeStrong(&v43->_messageSubject, a10);
-    v43->_messageID = a15;
-    v43->_flags = a12;
-    objc_storeStrong(&v43->_timeRead, v148);
-    objc_storeStrong(&v43->_timeDelivered, v149);
-    objc_storeStrong(&v43->_timePlayed, a7);
+    v151 = guidCopy;
+    objc_storeStrong(&v42->_sender, sender);
+    objc_storeStrong(&v43->_time, timeCopy);
+    objc_storeStrong(&v43->_messageSubject, subject);
+    v43->_messageID = d;
+    v43->_flags = flags;
+    objc_storeStrong(&v43->_timeRead, readCopy);
+    objc_storeStrong(&v43->_timeDelivered, deliveredCopy);
+    objc_storeStrong(&v43->_timePlayed, played);
     objc_storeStrong(&v43->_subject, a16);
-    objc_storeStrong(&v43->_balloonBundleID, a17);
-    objc_storeStrong(&v43->_payloadData, a18);
-    objc_storeStrong(&v43->_expressiveSendStyleID, a19);
-    objc_storeStrong(&v43->_timeExpressiveSendPlayed, a20);
-    objc_storeStrong(&v43->_associatedMessageGUID, a21);
-    v43->_associatedMessageType = a22;
-    v43->_associatedMessageRange = a23;
-    objc_storeStrong(&v43->_associatedMessageEmoji, a24);
-    objc_storeStrong(&v43->_messageSummaryInfo, a25);
-    v45 = objc_msgSend_objectForKey_(v39, v44, *MEMORY[0x1E69A7208]);
+    objc_storeStrong(&v43->_balloonBundleID, iD);
+    objc_storeStrong(&v43->_payloadData, data);
+    objc_storeStrong(&v43->_expressiveSendStyleID, styleID);
+    objc_storeStrong(&v43->_timeExpressiveSendPlayed, sendPlayed);
+    objc_storeStrong(&v43->_associatedMessageGUID, uID);
+    v43->_associatedMessageType = type;
+    v43->_associatedMessageRange = range;
+    objc_storeStrong(&v43->_associatedMessageEmoji, emoji);
+    objc_storeStrong(&v43->_messageSummaryInfo, info);
+    v45 = objc_msgSend_objectForKey_(infoCopy, v44, *MEMORY[0x1E69A7208]);
     associatedBalloonBundleID = v43->_associatedBalloonBundleID;
     v43->_associatedBalloonBundleID = v45;
 
-    v48 = objc_msgSend_objectForKey_(v39, v47, *MEMORY[0x1E69A7250]);
+    v48 = objc_msgSend_objectForKey_(infoCopy, v47, *MEMORY[0x1E69A7250]);
     sourceApplicationID = v43->_sourceApplicationID;
     v43->_sourceApplicationID = v48;
 
-    objc_storeStrong(&v43->_dateEdited, a27);
-    v43->_scheduleType = a29;
-    v43->_scheduleState = a30;
-    if (v37)
+    objc_storeStrong(&v43->_dateEdited, edited);
+    v43->_scheduleType = scheduleType;
+    v43->_scheduleState = state;
+    if (guidCopy)
     {
-      v52 = v37;
+      v52 = guidCopy;
     }
 
     else
@@ -695,7 +695,7 @@ LABEL_4:
     v43->_guid = v52;
 
     v56 = v38;
-    if (objc_msgSend_isLoginIMHandle(v166, v54, v55))
+    if (objc_msgSend_isLoginIMHandle(senderCopy, v54, v55))
     {
       v43->_flags |= 4uLL;
     }
@@ -705,18 +705,18 @@ LABEL_4:
       objc_storeStrong(&v43->_text, a9);
     }
 
-    v57 = v39;
-    objc_storeStrong(&v43->_fileTransferGUIDs, a11);
-    if (objc_msgSend_length(v35, v58, v59))
+    v57 = infoCopy;
+    objc_storeStrong(&v43->_fileTransferGUIDs, ds);
+    if (objc_msgSend_length(textCopy, v58, v59))
     {
-      v62 = v35;
+      v62 = textCopy;
       plainBody = v43->_plainBody;
       v43->_plainBody = v62;
     }
 
     else
     {
-      v64 = objc_msgSend_count(v163, v60, v61);
+      v64 = objc_msgSend_count(dsCopy, v60, v61);
       v67 = objc_msgSend_string(v43->_text, v65, v66);
       plainBody = v67;
       if (v64)
@@ -792,8 +792,8 @@ LABEL_4:
 LABEL_30:
 
       v56 = v145;
-      v36 = v144;
-      v37 = v151;
+      errorCopy = v144;
+      guidCopy = v151;
     }
 
     if ((v43->_flags & 0x20000000) == 0)
@@ -840,7 +840,7 @@ LABEL_36:
             v164 = objc_msgSend_messageSummaryInfo(v43, v135, v136);
             v142 = objc_msgSend_objectForKeyedSubscript_(v164, v141, *MEMORY[0x1E69A7220]);
 
-            v37 = v151;
+            guidCopy = v151;
             if (!v142)
             {
               v137 = v43->_flags | 8;
@@ -850,20 +850,20 @@ LABEL_36:
 LABEL_46:
             v137 = v43->_flags & 0xFFFFFFFFFFFFFFF7;
 LABEL_47:
-            v41 = v165;
+            v41 = timeCopy2;
             v43->_flags = v137;
-            objc_storeStrong(&v43->_error, a13);
-            objc_storeStrong(&v43->_threadIdentifier, a26);
+            objc_storeStrong(&v43->_error, error);
+            objc_storeStrong(&v43->_threadIdentifier, identifier);
             replyCountsByPart = v43->_replyCountsByPart;
             v43->_replyCountsByPart = 0;
 
-            v39 = v57;
-            v40 = v143;
+            infoCopy = v57;
+            identifierCopy = v143;
             v38 = v56;
             goto LABEL_48;
           }
 
-          v37 = v151;
+          guidCopy = v151;
         }
       }
     }
@@ -877,10 +877,10 @@ LABEL_48:
   return v43;
 }
 
-- (IMMessage)initWithSender:(id)a3 fileTransfer:(id)a4
+- (IMMessage)initWithSender:(id)sender fileTransfer:(id)transfer
 {
-  v6 = a3;
-  v9 = objc_msgSend_guid(a4, v7, v8);
+  senderCopy = sender;
+  v9 = objc_msgSend_guid(transfer, v7, v8);
   v10 = objc_alloc(MEMORY[0x1E695DF20]);
   v12 = objc_msgSend_initWithObjectsAndKeys_(v10, v11, v9, *MEMORY[0x1E69A5F68], 0);
   v13 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -889,7 +889,7 @@ LABEL_48:
   v18 = objc_msgSend_initWithObjects_(v16, v17, v9, 0);
   v21 = objc_msgSend_date(MEMORY[0x1E695DF00], v19, v20);
   v24 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v22, v23);
-  v26 = objc_msgSend_initWithSender_time_text_fileTransferGUIDs_flags_error_guid_subject_threadIdentifier_(self, v25, v6, v21, v15, v18, 1, 0, v24, 0, 0);
+  v26 = objc_msgSend_initWithSender_time_text_fileTransferGUIDs_flags_error_guid_subject_threadIdentifier_(self, v25, senderCopy, v21, v15, v18, 1, 0, v24, 0, 0);
 
   v27 = v26;
   return v27;
@@ -1118,10 +1118,10 @@ LABEL_15:
   return v8;
 }
 
-- (void)setIsKeyTransparencyVerifiedMessage:(BOOL)a3
+- (void)setIsKeyTransparencyVerifiedMessage:(BOOL)message
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!message)
   {
     v3 = 0;
   }
@@ -1129,10 +1129,10 @@ LABEL_15:
   self->_flags = self->_flags & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setIsTapToRetry:(BOOL)a3
+- (void)setIsTapToRetry:(BOOL)retry
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!retry)
   {
     v3 = 0;
   }
@@ -1140,10 +1140,10 @@ LABEL_15:
   self->_flags = self->_flags & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setPendingSatelliteSend:(BOOL)a3
+- (void)setPendingSatelliteSend:(BOOL)send
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!send)
   {
     v3 = 0;
   }
@@ -1151,10 +1151,10 @@ LABEL_15:
   self->_flags = self->_flags & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setNeedsRelay:(BOOL)a3
+- (void)setNeedsRelay:(BOOL)relay
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!relay)
   {
     v3 = 0;
   }
@@ -1162,10 +1162,10 @@ LABEL_15:
   self->_flags = self->_flags & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setSentOrReceivedOffGrid:(BOOL)a3
+- (void)setSentOrReceivedOffGrid:(BOOL)grid
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!grid)
   {
     v3 = 0;
   }
@@ -1209,9 +1209,9 @@ LABEL_15:
   return v10;
 }
 
-- (void)setEditedPartIndexes:(id)a3
+- (void)setEditedPartIndexes:(id)indexes
 {
-  v17 = objc_msgSend___im_numberArray(a3, a2, a3);
+  v17 = objc_msgSend___im_numberArray(indexes, a2, indexes);
   v6 = objc_msgSend_messageSummaryInfo(self, v4, v5);
   if (objc_msgSend_count(v6, v7, v8))
   {
@@ -1229,18 +1229,18 @@ LABEL_15:
   self->_messageSummaryInfo = v14;
 }
 
-- (void)addEditedPartIndex:(int64_t)a3
+- (void)addEditedPartIndex:(int64_t)index
 {
-  v13 = objc_msgSend_editedPartIndexes(self, a2, a3);
+  v13 = objc_msgSend_editedPartIndexes(self, a2, index);
   v7 = objc_msgSend_mutableCopy(v13, v5, v6);
-  objc_msgSend_addIndex_(v7, v8, a3);
+  objc_msgSend_addIndex_(v7, v8, index);
   v11 = objc_msgSend_copy(v7, v9, v10);
   objc_msgSend_setEditedPartIndexes_(self, v12, v11);
 }
 
-- (void)setRetractedPartIndexes:(id)a3
+- (void)setRetractedPartIndexes:(id)indexes
 {
-  v17 = objc_msgSend___im_numberArray(a3, a2, a3);
+  v17 = objc_msgSend___im_numberArray(indexes, a2, indexes);
   v6 = objc_msgSend_messageSummaryInfo(self, v4, v5);
   if (objc_msgSend_count(v6, v7, v8))
   {
@@ -1258,11 +1258,11 @@ LABEL_15:
   self->_messageSummaryInfo = v14;
 }
 
-- (void)addRetractedPartIndex:(int64_t)a3
+- (void)addRetractedPartIndex:(int64_t)index
 {
-  v13 = objc_msgSend_retractedPartIndexes(self, a2, a3);
+  v13 = objc_msgSend_retractedPartIndexes(self, a2, index);
   v7 = objc_msgSend_mutableCopy(v13, v5, v6);
-  objc_msgSend_addIndex_(v7, v8, a3);
+  objc_msgSend_addIndex_(v7, v8, index);
   v11 = objc_msgSend_copy(v7, v9, v10);
   objc_msgSend_setRetractedPartIndexes_(self, v12, v11);
 }
@@ -1284,13 +1284,13 @@ LABEL_15:
   return v8;
 }
 
-- (void)setAssociatedBalloonBundleID:(id)a3
+- (void)setAssociatedBalloonBundleID:(id)d
 {
   p_associatedBalloonBundleID = &self->_associatedBalloonBundleID;
-  v12 = a3;
-  if ((objc_msgSend_isEqualToString_(*p_associatedBalloonBundleID, v6, v12) & 1) == 0)
+  dCopy = d;
+  if ((objc_msgSend_isEqualToString_(*p_associatedBalloonBundleID, v6, dCopy) & 1) == 0)
   {
-    objc_storeStrong(&self->_associatedBalloonBundleID, a3);
+    objc_storeStrong(&self->_associatedBalloonBundleID, d);
     Mutable = objc_msgSend_mutableCopy(self->_messageSummaryInfo, v7, v8);
     if (!Mutable)
     {
@@ -1307,12 +1307,12 @@ LABEL_15:
   }
 }
 
-- (void)setSourceApplicationID:(id)a3
+- (void)setSourceApplicationID:(id)d
 {
-  v12 = a3;
-  if ((objc_msgSend_isEqualToString_(self->_sourceApplicationID, v5, v12) & 1) == 0)
+  dCopy = d;
+  if ((objc_msgSend_isEqualToString_(self->_sourceApplicationID, v5, dCopy) & 1) == 0)
   {
-    objc_storeStrong(&self->_sourceApplicationID, a3);
+    objc_storeStrong(&self->_sourceApplicationID, d);
     Mutable = objc_msgSend_mutableCopy(self->_messageSummaryInfo, v6, v7);
     if (!Mutable)
     {
@@ -1559,13 +1559,13 @@ LABEL_15:
   return timeDelivered_timePlayed_subject_body_bodyData_attributes_fileTransferGUIDs_flags_guid_messageID_account_accountID_service_handle_roomName_unformattedID_countryCode_expireState_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_errorType_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_bizIntent_locale_biaReferenceID_messageSummaryInfo_partCount_threadIdentifier_dateRecovered_scheduleType_scheduleState_cloudKitChatID;
 }
 
-+ (id)messageFromIMMessageItem:(id)a3 sender:(id)a4 subject:(id)a5
++ (id)messageFromIMMessageItem:(id)item sender:(id)sender subject:(id)subject
 {
-  v7 = a3;
-  v139 = a5;
-  v138 = a4;
+  itemCopy = item;
+  subjectCopy = subject;
+  senderCopy = sender;
   v10 = objc_msgSend_messageClass(IMChatRegistry, v8, v9);
-  v13 = objc_msgSend_errorCode(v7, v11, v12);
+  v13 = objc_msgSend_errorCode(itemCopy, v11, v12);
   if (v13)
   {
     v148 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v14, @"__kIMMessageErrorDomain", v13, 0);
@@ -1576,11 +1576,11 @@ LABEL_15:
     v148 = 0;
   }
 
-  v16 = objc_msgSend_subject(v7, v14, v15);
+  v16 = objc_msgSend_subject(itemCopy, v14, v15);
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v20 = objc_msgSend_subject(v7, v18, v19);
+    v20 = objc_msgSend_subject(itemCopy, v18, v19);
     v147 = objc_msgSend_initWithString_(v17, v21, v20);
   }
 
@@ -1590,47 +1590,47 @@ LABEL_15:
   }
 
   v137 = [v10 alloc];
-  v146 = objc_msgSend_time(v7, v22, v23);
-  v145 = objc_msgSend_timeRead(v7, v24, v25);
-  v142 = objc_msgSend_timeDelivered(v7, v26, v27);
-  v136 = objc_msgSend_timePlayed(v7, v28, v29);
-  v135 = objc_msgSend_plainBody(v7, v30, v31);
-  v144 = objc_msgSend_body(v7, v32, v33);
-  v143 = objc_msgSend_fileTransferGUIDs(v7, v34, v35);
-  v134 = objc_msgSend_flags(v7, v36, v37);
-  v141 = objc_msgSend_guid(v7, v38, v39);
-  v133 = objc_msgSend_messageID(v7, v40, v41);
-  v140 = objc_msgSend_balloonBundleID(v7, v42, v43);
-  v132 = objc_msgSend_payloadData(v7, v44, v45);
-  v131 = objc_msgSend_expressiveSendStyleID(v7, v46, v47);
-  v130 = objc_msgSend_timeExpressiveSendPlayed(v7, v48, v49);
-  v128 = objc_msgSend_associatedMessageGUID(v7, v50, v51);
-  v129 = objc_msgSend_associatedMessageType(v7, v52, v53);
-  v56 = objc_msgSend_associatedMessageRange(v7, v54, v55);
+  v146 = objc_msgSend_time(itemCopy, v22, v23);
+  v145 = objc_msgSend_timeRead(itemCopy, v24, v25);
+  v142 = objc_msgSend_timeDelivered(itemCopy, v26, v27);
+  v136 = objc_msgSend_timePlayed(itemCopy, v28, v29);
+  v135 = objc_msgSend_plainBody(itemCopy, v30, v31);
+  v144 = objc_msgSend_body(itemCopy, v32, v33);
+  v143 = objc_msgSend_fileTransferGUIDs(itemCopy, v34, v35);
+  v134 = objc_msgSend_flags(itemCopy, v36, v37);
+  v141 = objc_msgSend_guid(itemCopy, v38, v39);
+  v133 = objc_msgSend_messageID(itemCopy, v40, v41);
+  v140 = objc_msgSend_balloonBundleID(itemCopy, v42, v43);
+  v132 = objc_msgSend_payloadData(itemCopy, v44, v45);
+  v131 = objc_msgSend_expressiveSendStyleID(itemCopy, v46, v47);
+  v130 = objc_msgSend_timeExpressiveSendPlayed(itemCopy, v48, v49);
+  v128 = objc_msgSend_associatedMessageGUID(itemCopy, v50, v51);
+  v129 = objc_msgSend_associatedMessageType(itemCopy, v52, v53);
+  v56 = objc_msgSend_associatedMessageRange(itemCopy, v54, v55);
   v124 = v57;
   v125 = v56;
-  v127 = objc_msgSend_associatedMessageEmoji(v7, v57, v58);
-  v126 = objc_msgSend_messageSummaryInfo(v7, v59, v60);
-  v63 = objc_msgSend_threadIdentifier(v7, v61, v62);
-  v66 = objc_msgSend_dateEdited(v7, v64, v65);
-  v69 = objc_msgSend_dateRecovered(v7, v67, v68);
-  v72 = objc_msgSend_scheduleType(v7, v70, v71);
-  v75 = objc_msgSend_scheduleState(v7, v73, v74);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v137, v76, v138, v146, v145, v142, v136, v135, v144, v147, v143, v134, v148, v141, v133, v139, v140, v132, v131, v130, v128, v129, v125, v124, v127, v126, v63, v66, v69, v72, v75);
+  v127 = objc_msgSend_associatedMessageEmoji(itemCopy, v57, v58);
+  v126 = objc_msgSend_messageSummaryInfo(itemCopy, v59, v60);
+  v63 = objc_msgSend_threadIdentifier(itemCopy, v61, v62);
+  v66 = objc_msgSend_dateEdited(itemCopy, v64, v65);
+  v69 = objc_msgSend_dateRecovered(itemCopy, v67, v68);
+  v72 = objc_msgSend_scheduleType(itemCopy, v70, v71);
+  v75 = objc_msgSend_scheduleState(itemCopy, v73, v74);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v137, v76, senderCopy, v146, v145, v142, v136, v135, v144, v147, v143, v134, v148, v141, v133, subjectCopy, v140, v132, v131, v130, v128, v129, v125, v124, v127, v126, v63, v66, v69, v72, v75);
 
-  v80 = objc_msgSend_sortID(v7, v78, v79);
+  v80 = objc_msgSend_sortID(itemCopy, v78, v79);
   objc_msgSend_setSortID_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v81, v80);
-  v84 = objc_msgSend_account(v7, v82, v83);
-  v85 = _IMBestAccountForIMItem(v7, 0, v84, 0, 0);
+  v84 = objc_msgSend_account(itemCopy, v82, v83);
+  v85 = _IMBestAccountForIMItem(itemCopy, 0, v84, 0, 0);
 
-  v88 = objc_msgSend_threadOriginator(v7, v86, v87);
+  v88 = objc_msgSend_threadOriginator(itemCopy, v86, v87);
   IMMessageFromIMItem = _CreateIMMessageFromIMItem(v88, v85, 1);
 
   objc_msgSend_setThreadOriginator_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v90, IMMessageFromIMItem);
-  v93 = objc_msgSend_replyCountsByPart(v7, v91, v92);
+  v93 = objc_msgSend_replyCountsByPart(itemCopy, v91, v92);
   objc_msgSend_setReplyCountsByPart_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v94, v93);
 
-  v97 = objc_msgSend_flags(v7, v95, v96);
+  v97 = objc_msgSend_flags(itemCopy, v95, v96);
   if (objc_msgSend_isEmote(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v98, v99))
   {
     v97 |= 2uLL;
@@ -1656,32 +1656,32 @@ LABEL_15:
     objc_msgSend__updateFlags_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v106, v97);
   }
 
-  v109 = objc_msgSend_syndicationRanges(v7, v107, v108);
+  v109 = objc_msgSend_syndicationRanges(itemCopy, v107, v108);
   objc_msgSend__syndicationRanges_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v110, v109);
 
-  v113 = objc_msgSend_syncedSyndicationRanges(v7, v111, v112);
+  v113 = objc_msgSend_syncedSyndicationRanges(itemCopy, v111, v112);
   objc_msgSend__syncedSyndicationRanges_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v114, v113);
 
-  v117 = objc_msgSend_telemetryMetrics(v7, v115, v116);
+  v117 = objc_msgSend_telemetryMetrics(itemCopy, v115, v116);
   objc_msgSend_setTelemetryMetrics_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v118, v117);
 
-  v121 = objc_msgSend_telemetryMetricsReasonCode(v7, v119, v120);
+  v121 = objc_msgSend_telemetryMetricsReasonCode(itemCopy, v119, v120);
   objc_msgSend_setTelemetryMetricsReasonCode_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v122, v121);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)messageFromIMMessageItemDictionary:(id)a3 body:(id)a4 sender:(id)a5 subject:(id)a6
++ (id)messageFromIMMessageItemDictionary:(id)dictionary body:(id)body sender:(id)sender subject:(id)subject
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v174 = a6;
+  dictionaryCopy = dictionary;
+  bodyCopy = body;
+  senderCopy = sender;
+  subjectCopy = subject;
   v157 = objc_msgSend_messageClass(IMChatRegistry, v12, v13);
-  v15 = objc_msgSend_objectForKey_(v9, v14, @"flags");
+  v15 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"flags");
   v150 = objc_msgSend_unsignedLongLongValue(v15, v16, v17);
 
-  v19 = objc_msgSend_objectForKey_(v9, v18, @"error");
+  v19 = objc_msgSend_objectForKey_(dictionaryCopy, v18, @"error");
   v22 = objc_msgSend_unsignedIntValue(v19, v20, v21);
 
   if (v22)
@@ -1694,13 +1694,13 @@ LABEL_15:
     v172 = 0;
   }
 
-  v24 = objc_msgSend_objectForKey_(v9, v23, @"subject");
-  v175 = objc_msgSend_objectForKey_(v9, v25, @"plainBody");
-  v27 = objc_msgSend_objectForKey_(v9, v26, @"bodyData");
-  v171 = objc_msgSend_objectForKey_(v9, v28, @"balloonBundleID");
-  v170 = objc_msgSend_objectForKey_(v9, v29, @"payloadData");
-  v169 = objc_msgSend_objectForKey_(v9, v30, @"expressiveSendStyleID");
-  v168 = objc_msgSend_objectForKey_(v9, v31, @"associatedMessageGUID");
+  v24 = objc_msgSend_objectForKey_(dictionaryCopy, v23, @"subject");
+  v175 = objc_msgSend_objectForKey_(dictionaryCopy, v25, @"plainBody");
+  v27 = objc_msgSend_objectForKey_(dictionaryCopy, v26, @"bodyData");
+  v171 = objc_msgSend_objectForKey_(dictionaryCopy, v28, @"balloonBundleID");
+  v170 = objc_msgSend_objectForKey_(dictionaryCopy, v29, @"payloadData");
+  v169 = objc_msgSend_objectForKey_(dictionaryCopy, v30, @"expressiveSendStyleID");
+  v168 = objc_msgSend_objectForKey_(dictionaryCopy, v31, @"associatedMessageGUID");
   if (v24)
   {
     v34 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -1713,7 +1713,7 @@ LABEL_15:
   }
 
   v152 = v24;
-  if (!v10)
+  if (!bodyCopy)
   {
     if (objc_msgSend_length(v175, v32, v33))
     {
@@ -1723,39 +1723,39 @@ LABEL_15:
         sub_1A84E1A88();
       }
 
-      v10 = objc_msgSend_initWithString_attributes_(v39, v38, v175, qword_1EB2EA388);
+      bodyCopy = objc_msgSend_initWithString_attributes_(v39, v38, v175, qword_1EB2EA388);
     }
 
     else if (objc_msgSend_length(v27, v36, v37))
     {
       v40 = objc_autoreleasePoolPush();
-      v10 = JWDecodeCodableObjectWithStandardAllowlist();
+      bodyCopy = JWDecodeCodableObjectWithStandardAllowlist();
       objc_autoreleasePoolPop(v40);
     }
 
     else
     {
-      v10 = 0;
+      bodyCopy = 0;
     }
   }
 
   v151 = v27;
-  v41 = objc_msgSend_objectForKey_(v9, v32, @"time");
-  v43 = objc_msgSend_objectForKey_(v9, v42, @"timeDelivered");
-  v45 = objc_msgSend_objectForKey_(v9, v44, @"timeRead");
-  v47 = objc_msgSend_objectForKey_(v9, v46, @"timePlayed");
-  v49 = objc_msgSend_objectForKey_(v9, v48, @"timeExpressiveSendPlayed");
-  v51 = objc_msgSend_objectForKeyedSubscript_(v9, v50, @"associatedMessageRangeLocation");
+  v41 = objc_msgSend_objectForKey_(dictionaryCopy, v32, @"time");
+  v43 = objc_msgSend_objectForKey_(dictionaryCopy, v42, @"timeDelivered");
+  v45 = objc_msgSend_objectForKey_(dictionaryCopy, v44, @"timeRead");
+  v47 = objc_msgSend_objectForKey_(dictionaryCopy, v46, @"timePlayed");
+  v49 = objc_msgSend_objectForKey_(dictionaryCopy, v48, @"timeExpressiveSendPlayed");
+  v51 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v50, @"associatedMessageRangeLocation");
   v144 = objc_msgSend_integerValue(v51, v52, v53);
 
-  v55 = objc_msgSend_objectForKeyedSubscript_(v9, v54, @"associatedMessageRangeLength");
+  v55 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v54, @"associatedMessageRangeLength");
   v143 = objc_msgSend_integerValue(v55, v56, v57);
 
-  v166 = objc_msgSend_objectForKey_(v9, v58, @"associatedMessageEmoji");
-  v165 = objc_msgSend_objectForKey_(v9, v59, @"threadIdentifier");
-  v164 = objc_msgSend_objectForKey_(v9, v60, @"dateEdited");
-  v163 = objc_msgSend_objectForKey_(v9, v61, @"scheduleType");
-  v162 = objc_msgSend_objectForKey_(v9, v62, @"scheduleState");
+  v166 = objc_msgSend_objectForKey_(dictionaryCopy, v58, @"associatedMessageEmoji");
+  v165 = objc_msgSend_objectForKey_(dictionaryCopy, v59, @"threadIdentifier");
+  v164 = objc_msgSend_objectForKey_(dictionaryCopy, v60, @"dateEdited");
+  v163 = objc_msgSend_objectForKey_(dictionaryCopy, v61, @"scheduleType");
+  v162 = objc_msgSend_objectForKey_(dictionaryCopy, v62, @"scheduleState");
   if (v49)
   {
     v65 = MEMORY[0x1E695DF00];
@@ -1780,7 +1780,7 @@ LABEL_15:
     v160 = 0;
   }
 
-  v71 = objc_msgSend_objectForKey_(v9, v63, @"dateRecovered");
+  v71 = objc_msgSend_objectForKey_(dictionaryCopy, v63, @"dateRecovered");
   v145 = v71;
   if (v71)
   {
@@ -1838,8 +1838,8 @@ LABEL_30:
   v155 = 0;
 LABEL_31:
   v148 = v43;
-  v153 = v11;
-  v173 = v10;
+  v153 = senderCopy;
+  v173 = bodyCopy;
   v149 = v41;
   v146 = v49;
   v147 = v45;
@@ -1855,16 +1855,16 @@ LABEL_31:
     v154 = 0;
   }
 
-  v91 = objc_msgSend_objectForKey_(v9, v77, @"fileTransferGUIDs");
-  v93 = objc_msgSend_objectForKey_(v9, v92, @"guid");
-  v95 = objc_msgSend_objectForKey_(v9, v94, @"messageID");
+  v91 = objc_msgSend_objectForKey_(dictionaryCopy, v77, @"fileTransferGUIDs");
+  v93 = objc_msgSend_objectForKey_(dictionaryCopy, v92, @"guid");
+  v95 = objc_msgSend_objectForKey_(dictionaryCopy, v94, @"messageID");
   v98 = objc_msgSend_longLongValue(v95, v96, v97);
-  v100 = objc_msgSend_objectForKey_(v9, v99, @"associatedMessageType");
+  v100 = objc_msgSend_objectForKey_(dictionaryCopy, v99, @"associatedMessageType");
   v103 = objc_msgSend_longLongValue(v100, v101, v102);
-  v105 = objc_msgSend_objectForKey_(v9, v104, @"messageSummaryInfo");
+  v105 = objc_msgSend_objectForKey_(dictionaryCopy, v104, @"messageSummaryInfo");
   v108 = objc_msgSend_unsignedIntegerValue(v163, v106, v107);
   v111 = objc_msgSend_unsignedIntegerValue(v162, v109, v110);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v142, v112, v153, v158, v156, v155, v154, v175, v173, v167, v91, v150, v172, v93, v98, v174, v171, v170, v169, v161, v168, v103, v144, v143, v166, v105, v165, v160, v159, v108, v111);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v142, v112, v153, v158, v156, v155, v154, v175, v173, v167, v91, v150, v172, v93, v98, subjectCopy, v171, v170, v169, v161, v168, v103, v144, v143, v166, v105, v165, v160, v159, v108, v111);
 
   if (v47)
   {
@@ -1912,19 +1912,19 @@ LABEL_31:
     objc_msgSend__updateFlags_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v123, v118);
   }
 
-  v125 = objc_msgSend_objectForKey_(v9, v124, @"threadOriginator");
+  v125 = objc_msgSend_objectForKey_(dictionaryCopy, v124, @"threadOriginator");
   v127 = objc_msgSend_messageFromIMMessageItemDictionary_body_sender_subject_(IMMessage, v126, v125, 0, 0, 0);
   objc_msgSend_setThreadOriginator_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v128, v127);
-  v130 = objc_msgSend_objectForKey_(v9, v129, @"syndicationRanges");
+  v130 = objc_msgSend_objectForKey_(dictionaryCopy, v129, @"syndicationRanges");
   objc_msgSend__syndicationRanges_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v131, v130);
 
-  v133 = objc_msgSend_objectForKey_(v9, v132, @"syncedSyndicationRanges");
+  v133 = objc_msgSend_objectForKey_(dictionaryCopy, v132, @"syncedSyndicationRanges");
   objc_msgSend__syncedSyndicationRanges_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v134, v133);
 
-  v136 = objc_msgSend_objectForKey_(v9, v135, @"telemetryMetrics");
+  v136 = objc_msgSend_objectForKey_(dictionaryCopy, v135, @"telemetryMetrics");
   objc_msgSend_setTelemetryMetrics_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v137, v136);
 
-  v139 = objc_msgSend_objectForKey_(v9, v138, @"telemetryMetricsReasonCode");
+  v139 = objc_msgSend_objectForKey_(dictionaryCopy, v138, @"telemetryMetricsReasonCode");
   objc_msgSend_setTelemetryMetricsReasonCode_(timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState, v140, v139);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
@@ -1943,11 +1943,11 @@ LABEL_31:
     }
   }
 
-  v4 = self;
-  v7 = objc_msgSend_payloadData(v4, v5, v6);
+  selfCopy = self;
+  v7 = objc_msgSend_payloadData(selfCopy, v5, v6);
   v10 = objc_msgSend_length(v7, v8, v9) != 0;
 
-  v13 = objc_msgSend_fileTransferGUIDs(v4, v11, v12);
+  v13 = objc_msgSend_fileTransferGUIDs(selfCopy, v11, v12);
   v16 = objc_msgSend_count(v13, v14, v15) != 0;
 
   if (v10 && v16)
@@ -1957,9 +1957,9 @@ LABEL_31:
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v23 = objc_msgSend_payloadData(v4, v21, v22);
+        v23 = objc_msgSend_payloadData(selfCopy, v21, v22);
         v26 = objc_msgSend_length(v23, v24, v25);
-        v29 = objc_msgSend_fileTransferGUIDs(v4, v27, v28);
+        v29 = objc_msgSend_fileTransferGUIDs(selfCopy, v27, v28);
         v32 = objc_msgSend_count(v29, v30, v31);
         *buf = 134218240;
         *&buf[4] = v26;
@@ -1969,7 +1969,7 @@ LABEL_31:
       }
     }
 
-    v127[0] = v4;
+    v127[0] = selfCopy;
     v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v19, v127, 1);
   }
 
@@ -1986,7 +1986,7 @@ LABEL_31:
     v121[2] = 0x3032000000;
     v121[3] = sub_1A8259BE0;
     v121[4] = sub_1A825AF1C;
-    v122 = objc_msgSend_guid(v4, v17, v18);
+    v122 = objc_msgSend_guid(selfCopy, v17, v18);
     v117 = 0;
     v118 = &v117;
     v119 = 0x2020000000;
@@ -2000,13 +2000,13 @@ LABEL_31:
     v111 = 0x3032000000;
     v112 = sub_1A8259BE0;
     v113 = sub_1A825AF1C;
-    v114 = objc_msgSend_text(v4, v34, v35);
+    v114 = objc_msgSend_text(selfCopy, v34, v35);
     v107[0] = 0;
     v107[1] = v107;
     v107[2] = 0x3032000000;
     v107[3] = sub_1A8259BE0;
     v107[4] = sub_1A825AF1C;
-    v108 = objc_msgSend_text(v4, v36, v37);
+    v108 = objc_msgSend_text(selfCopy, v36, v37);
     v38 = sub_1A8399EB0(v110[5]);
     v39 = v110[5];
     v110[5] = v38;
@@ -2019,7 +2019,7 @@ LABEL_31:
     v101 = &v109;
     v102 = v107;
     v103 = v121;
-    v41 = v4;
+    v41 = selfCopy;
     v100 = v41;
     v104 = v115;
     v105 = &v117;
@@ -2078,7 +2078,7 @@ LABEL_31:
   return v33;
 }
 
-- (id)messagesSeparatedByByteLength:(int64_t)a3
+- (id)messagesSeparatedByByteLength:(int64_t)length
 {
   v61 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -2087,7 +2087,7 @@ LABEL_31:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v60 = a3;
+      lengthCopy = length;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Separating message by byte length: %ld", buf, 0xCu);
     }
   }
@@ -2095,7 +2095,7 @@ LABEL_31:
   v7 = objc_msgSend_text(self, v4, v5);
   v48 = objc_msgSend_string(v7, v8, v9);
 
-  v11 = objc_msgSend___im_separateStringByByteLength_(v48, v10, a3);
+  v11 = objc_msgSend___im_separateStringByByteLength_(v48, v10, length);
   v50 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v56 = 0u;
   v57 = 0u;
@@ -2187,32 +2187,32 @@ LABEL_31:
   return v14;
 }
 
-- (id)messagePartMatchingPartIndex:(int64_t)a3
+- (id)messagePartMatchingPartIndex:(int64_t)index
 {
-  v7 = objc_msgSend_text(self, a2, a3);
+  v7 = objc_msgSend_text(self, a2, index);
   if (!v7)
   {
     if (objc_msgSend_length(self->_plainBody, v5, v6))
     {
       v8 = objc_alloc(MEMORY[0x1E696AAB0]);
       v7 = objc_msgSend_initWithString_(v8, v9, self->_plainBody);
-      objc_msgSend___im_messagePartMatchingPartIndex_(v7, v10, a3);
+      objc_msgSend___im_messagePartMatchingPartIndex_(v7, v10, index);
       goto LABEL_6;
     }
 
     v7 = 0;
   }
 
-  objc_msgSend___im_messagePartMatchingPartIndex_(v7, v5, a3);
+  objc_msgSend___im_messagePartMatchingPartIndex_(v7, v5, index);
   v11 = LABEL_6:;
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v21 = 1;
   }
@@ -2222,7 +2222,7 @@ LABEL_31:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       flags = self->_flags;
       if (flags != objc_msgSend_flags(v6, v8, v9) || (messageID = self->_messageID, messageID != objc_msgSend_messageID(v6, v10, v11)))
       {
@@ -2536,7 +2536,7 @@ LABEL_63:
 
     v115.receiver = self;
     v115.super_class = IMMessage;
-    v21 = [(IMMessage *)&v115 isEqual:v5];
+    v21 = [(IMMessage *)&v115 isEqual:equalCopy];
   }
 
 LABEL_93:
@@ -2789,11 +2789,11 @@ LABEL_93:
   return hasPrefix;
 }
 
-- (id)richLinkDataSourceWithChatContext:(id)a3
+- (id)richLinkDataSourceWithChatContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend__imMessageItem(self, v5, v6);
-  v9 = objc_msgSend__newMessagePartsForMessageItem_chatContext_(IMMessagePartChatItem, v8, v7, v4);
+  v9 = objc_msgSend__newMessagePartsForMessageItem_chatContext_(IMMessagePartChatItem, v8, v7, contextCopy);
   v11 = objc_msgSend__transcriptPluginChatItemFromTypeErasedPartChatItems_(self, v10, v9);
   v14 = objc_msgSend_dataSource(v11, v12, v13);
   v17 = objc_msgSend_bundleID(v14, v15, v16);
@@ -2821,13 +2821,13 @@ LABEL_93:
   return v21;
 }
 
-- (id)_transcriptPluginChatItemFromTypeErasedPartChatItems:(id)a3
+- (id)_transcriptPluginChatItemFromTypeErasedPartChatItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemsCopy;
   }
 
   else
@@ -2835,7 +2835,7 @@ LABEL_93:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = itemsCopy;
       if (objc_msgSend_count(v5, v6, v7) == 1 && (objc_msgSend_firstObject(v5, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
       {
         v4 = objc_msgSend_firstObject(v5, v12, v13);
@@ -2856,11 +2856,11 @@ LABEL_93:
   return v4;
 }
 
-+ (IMMessage)messageWithLocation:(id)a3 flags:(unint64_t)a4 error:(id)a5 guid:(id)a6
++ (IMMessage)messageWithLocation:(id)location flags:(unint64_t)flags error:(id)error guid:(id)guid
 {
-  v10 = a5;
-  v11 = a6;
-  v15 = objc_msgSend__vCardDataWithCLLocation_(a1, v12, a3);
+  errorCopy = error;
+  guidCopy = guid;
+  v15 = objc_msgSend__vCardDataWithCLLocation_(self, v12, location);
   if (v15)
   {
     v16 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v13, v14);
@@ -2878,14 +2878,14 @@ LABEL_93:
     v30 = objc_alloc(MEMORY[0x1E695DEC8]);
     v32 = objc_msgSend_initWithObjects_(v30, v31, v24, 0);
     objc_msgSend___im_attributedStringByAssigningMessagePartNumbers(v29, v33, v34);
-    v36 = v35 = v10;
-    v37 = [a1 alloc];
+    v36 = v35 = errorCopy;
+    v37 = [self alloc];
     objc_msgSend_date(MEMORY[0x1E695DF00], v38, v39);
-    v41 = v40 = v11;
-    timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v37, v42, 0, v41, 0, 0, 0, 0, v36, 0, v32, a4, v35, v40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    v41 = v40 = guidCopy;
+    timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v37, v42, 0, v41, 0, 0, 0, 0, v36, 0, v32, flags, v35, v40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    v11 = v40;
-    v10 = v35;
+    guidCopy = v40;
+    errorCopy = v35;
   }
 
   else
@@ -2896,19 +2896,19 @@ LABEL_93:
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)textMessageWithLocation:(id)a3 flags:(unint64_t)a4 error:(id)a5 guid:(id)a6
++ (id)textMessageWithLocation:(id)location flags:(unint64_t)flags error:(id)error guid:(id)guid
 {
-  v9 = a5;
-  v10 = a6;
+  errorCopy = error;
+  guidCopy = guid;
   v11 = IMCurrentLocationURLFromLocation();
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x1E696AAB0]);
     v14 = objc_msgSend_initWithString_(v12, v13, v11);
     v17 = objc_msgSend___im_attributedStringByAssigningMessagePartNumbers(v14, v15, v16);
-    v18 = [a1 alloc];
+    v18 = [self alloc];
     v21 = objc_msgSend_date(MEMORY[0x1E695DF00], v19, v20);
-    timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v18, v22, 0, v21, 0, 0, 0, 0, v17, 0, 0, a4, v9, v10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v18, v22, 0, v21, 0, 0, 0, 0, v17, 0, 0, flags, errorCopy, guidCopy, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   }
 
   else
@@ -2919,63 +2919,63 @@ LABEL_93:
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)locatingMessageWithGuid:(id)a3 error:(id)a4
++ (id)locatingMessageWithGuid:(id)guid error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  errorCopy = error;
+  guidCopy = guid;
+  v8 = [self alloc];
   v11 = objc_msgSend_date(MEMORY[0x1E695DF00], v9, v10);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v8, v12, 0, v11, 0, 0, 0, 0, 0, 0, 0, 8388620, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v8, v12, 0, v11, 0, 0, 0, 0, 0, 0, 0, 8388620, errorCopy, guidCopy, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)instantMessageWithAssociatedMessageContent:(id)a3 associatedMessageGUID:(id)a4 associatedMessageType:(int64_t)a5 associatedMessageRange:(_NSRange)a6 associatedMessageEmoji:(id)a7 messageSummaryInfo:(id)a8 threadIdentifier:(id)a9
++ (id)instantMessageWithAssociatedMessageContent:(id)content associatedMessageGUID:(id)d associatedMessageType:(int64_t)type associatedMessageRange:(_NSRange)range associatedMessageEmoji:(id)emoji messageSummaryInfo:(id)info threadIdentifier:(id)identifier
 {
-  length = a6.length;
-  location = a6.location;
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a4;
-  v19 = a3;
-  v20 = [a1 alloc];
+  length = range.length;
+  location = range.location;
+  identifierCopy = identifier;
+  infoCopy = info;
+  emojiCopy = emoji;
+  dCopy = d;
+  contentCopy = content;
+  v20 = [self alloc];
   v23 = objc_msgSend_date(MEMORY[0x1E695DF00], v21, v22);
   v26 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v24, v25);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v20, v27, 0, v23, 0, 0, 0, 0, v19, 0, 0, 5, 0, v26, 0, 0, 0, 0, 0, 0, v18, a5, location, length, v17, v16, v15, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v20, v27, 0, v23, 0, 0, 0, 0, contentCopy, 0, 0, 5, 0, v26, 0, 0, 0, 0, 0, 0, dCopy, type, location, length, emojiCopy, infoCopy, identifierCopy, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)breadcrumbMessageWithText:(id)a3 associatedMessageGUID:(id)a4 balloonBundleID:(id)a5 fileTransferGUIDs:(id)a6 payloadData:(id)a7 threadIdentifier:(id)a8
++ (id)breadcrumbMessageWithText:(id)text associatedMessageGUID:(id)d balloonBundleID:(id)iD fileTransferGUIDs:(id)ds payloadData:(id)data threadIdentifier:(id)identifier
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [a1 alloc];
+  identifierCopy = identifier;
+  dataCopy = data;
+  dsCopy = ds;
+  iDCopy = iD;
+  dCopy = d;
+  textCopy = text;
+  v20 = [self alloc];
   v23 = objc_msgSend_date(MEMORY[0x1E695DF00], v21, v22);
   v26 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v24, v25);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v20, v27, 0, v23, 0, 0, 0, 0, v19, 0, v16, 5, 0, v26, 0, 0, v17, v15, 0, 0, v18, 2, 0, 0x7FFFFFFFFFFFFFFFLL, 0, 0, v14, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v20, v27, 0, v23, 0, 0, 0, 0, textCopy, 0, dsCopy, 5, 0, v26, 0, 0, iDCopy, dataCopy, 0, 0, dCopy, 2, 0, 0x7FFFFFFFFFFFFFFFLL, 0, 0, identifierCopy, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }
 
-+ (id)customAcknowledgementMessageWithPayloadData:(id)a3 associatedMessageGUID:(id)a4 balloonBundleID:(id)a5 messageSummaryInfo:(id)a6 threadIdentifier:(id)a7
++ (id)customAcknowledgementMessageWithPayloadData:(id)data associatedMessageGUID:(id)d balloonBundleID:(id)iD messageSummaryInfo:(id)info threadIdentifier:(id)identifier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [a1 alloc];
+  identifierCopy = identifier;
+  infoCopy = info;
+  iDCopy = iD;
+  dCopy = d;
+  dataCopy = data;
+  v17 = [self alloc];
   v20 = objc_msgSend_date(MEMORY[0x1E695DF00], v18, v19);
   v21 = objc_alloc(MEMORY[0x1E696AAB0]);
   v23 = objc_msgSend_initWithString_(v21, v22, @" ");
   v26 = objc_msgSend_stringGUID(MEMORY[0x1E696AEC0], v24, v25);
-  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v17, v27, 0, v20, 0, 0, 0, 0, v23, 0, 0, 5, 0, v26, 0, 0, v14, v16, 0, 0, v15, 4000, 0, 0x7FFFFFFFFFFFFFFFLL, 0, v13, v12, 0, 0, 0, 0);
+  timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState = objc_msgSend__initWithSender_time_timeRead_timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState_(v17, v27, 0, v20, 0, 0, 0, 0, v23, 0, 0, 5, 0, v26, 0, 0, iDCopy, dataCopy, 0, 0, dCopy, 4000, 0, 0x7FFFFFFFFFFFFFFFLL, 0, infoCopy, identifierCopy, 0, 0, 0, 0);
 
   return timeDelivered_timePlayed_plainText_text_messageSubject_fileTransferGUIDs_flags_error_guid_messageID_subject_balloonBundleID_payloadData_expressiveSendStyleID_timeExpressiveSendPlayed_associatedMessageGUID_associatedMessageType_associatedMessageRange_associatedMessageEmoji_messageSummaryInfo_threadIdentifier_dateEdited_dateRecovered_scheduleType_scheduleState;
 }

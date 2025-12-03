@@ -1,16 +1,16 @@
 @interface PSUsageBundleManager
 - (id)allUsageBundleApps;
-- (void)_loadUsageBundlesWithHandler:(id)a3;
-- (void)vendUsageBundleAppsWithHandler:(id)a3;
+- (void)_loadUsageBundlesWithHandler:(id)handler;
+- (void)vendUsageBundleAppsWithHandler:(id)handler;
 @end
 
 @implementation PSUsageBundleManager
 
-- (void)_loadUsageBundlesWithHandler:(id)a3
+- (void)_loadUsageBundlesWithHandler:(id)handler
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v46 = self;
+  handlerCopy = handler;
+  selfCopy = self;
   storageReporters = self->_storageReporters;
   if (!storageReporters)
   {
@@ -88,25 +88,25 @@ LABEL_5:
               _os_log_impl(&dword_18B008000, v24, OS_LOG_TYPE_DEFAULT, "Loading usage bundle %@", buf, 0xCu);
             }
 
-            v25 = [v23 pathExtension];
-            v26 = [v25 isEqualToString:@"bundle"];
+            pathExtension = [v23 pathExtension];
+            v26 = [pathExtension isEqualToString:@"bundle"];
 
             if (v26)
             {
               v52 = v23;
               v51 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithPath:v23];
               v27 = objc_alloc_init([v51 principalClass]);
-              v28 = [v27 usageBundleApps];
-              if ([v28 count])
+              usageBundleApps = [v27 usageBundleApps];
+              if ([usageBundleApps count])
               {
-                [(NSMutableArray *)v46->_storageReporters addObject:v27];
+                [(NSMutableArray *)selfCopy->_storageReporters addObject:v27];
               }
 
               v55 = 0u;
               v56 = 0u;
               v53 = 0u;
               v54 = 0u;
-              v29 = v28;
+              v29 = usageBundleApps;
               v30 = [v29 countByEnumeratingWithState:&v53 objects:v70 count:16];
               if (v30)
               {
@@ -123,10 +123,10 @@ LABEL_5:
 
                     v34 = *(*(&v53 + 1) + 8 * i);
                     [v34 setUsageBundleStorageReporter:v27];
-                    v35 = [v34 bundleIdentifier];
-                    [(NSDictionary *)v8 setValue:v34 forKey:v35];
+                    bundleIdentifier = [v34 bundleIdentifier];
+                    [(NSDictionary *)v8 setValue:v34 forKey:bundleIdentifier];
 
-                    if (v4 && (v4[2](v4, v34) & 1) == 0)
+                    if (handlerCopy && (handlerCopy[2](handlerCopy, v34) & 1) == 0)
                     {
 
                       v36 = 0;
@@ -218,8 +218,8 @@ LABEL_36:
     }
   }
 
-  bundleMap = v46->_bundleMap;
-  v46->_bundleMap = v8;
+  bundleMap = selfCopy->_bundleMap;
+  selfCopy->_bundleMap = v8;
   v39 = v8;
 }
 
@@ -235,21 +235,21 @@ LABEL_36:
   return [(NSDictionary *)bundleMap allValues];
 }
 
-- (void)vendUsageBundleAppsWithHandler:(id)a3
+- (void)vendUsageBundleAppsWithHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   bundleMap = self->_bundleMap;
   if (bundleMap)
   {
-    if (v4)
+    if (handlerCopy)
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [(NSDictionary *)bundleMap allValues];
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      allValues = [(NSDictionary *)bundleMap allValues];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = v7;
@@ -261,14 +261,14 @@ LABEL_36:
           {
             if (*v12 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allValues);
             }
 
-            v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+            handlerCopy[2](handlerCopy, *(*(&v11 + 1) + 8 * v10++));
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v8);
@@ -278,7 +278,7 @@ LABEL_36:
 
   else
   {
-    [(PSUsageBundleManager *)self _loadUsageBundlesWithHandler:v4];
+    [(PSUsageBundleManager *)self _loadUsageBundlesWithHandler:handlerCopy];
   }
 }
 

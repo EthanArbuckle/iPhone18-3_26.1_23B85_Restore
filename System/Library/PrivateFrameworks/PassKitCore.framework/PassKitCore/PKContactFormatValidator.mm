@@ -1,33 +1,33 @@
 @interface PKContactFormatValidator
-- (BOOL)_isFieldEntry:(id)a3 validForContactFieldConfiguration:(id)a4;
-- (BOOL)_isFieldEntry:(id)a3 validForPickerContactFieldConfiguration:(id)a4;
-- (BOOL)_isFieldEntry:(id)a3 validForTextContactFieldConfiguration:(id)a4;
-- (BOOL)emailAddressIsValid:(id)a3;
-- (BOOL)hasFormatValidationConfigurationForCountryCode:(id)a3;
-- (BOOL)isFamilyName:(id)a3 validFormatForCountryCode:(id)a4;
-- (BOOL)isGivenName:(id)a3 validFormatForCountryCode:(id)a4;
-- (BOOL)isPhoneticFamilyName:(id)a3 validFormatForCountryCode:(id)a4;
-- (BOOL)isPhoneticGivenName:(id)a3 validFormatForCountryCode:(id)a4;
-- (BOOL)isPostalAddressFieldEntry:(id)a3 validForPostalFieldKey:(id)a4 forCountryCode:(id)a5;
-- (BOOL)phoneNumberIsValid:(id)a3 forCountryCode:(id)a4;
-- (PKContactFormatValidator)initWithConfiguration:(id)a3;
-- (id)_formattedFieldEntry:(id)a3 forFieldConfiguration:(id)a4;
-- (id)contactFieldConfigurationForFamilyNameForCountryCode:(id)a3;
-- (id)contactFieldConfigurationForGivenNameForCountryCode:(id)a3;
-- (id)contactFieldConfigurationForPhoneticFamilyNameForCountryCode:(id)a3;
-- (id)contactFieldConfigurationForPhoneticGivenNameForCountryCode:(id)a3;
-- (id)contactFieldConfigurationForPostalField:(id)a3 forCountryCode:(id)a4;
-- (id)formatPostalAddress:(id)a3;
-- (unint64_t)checkNameFormat:(id)a3 forCountryCode:(id)a4;
-- (unint64_t)checkPostalAddressFormat:(id)a3;
+- (BOOL)_isFieldEntry:(id)entry validForContactFieldConfiguration:(id)configuration;
+- (BOOL)_isFieldEntry:(id)entry validForPickerContactFieldConfiguration:(id)configuration;
+- (BOOL)_isFieldEntry:(id)entry validForTextContactFieldConfiguration:(id)configuration;
+- (BOOL)emailAddressIsValid:(id)valid;
+- (BOOL)hasFormatValidationConfigurationForCountryCode:(id)code;
+- (BOOL)isFamilyName:(id)name validFormatForCountryCode:(id)code;
+- (BOOL)isGivenName:(id)name validFormatForCountryCode:(id)code;
+- (BOOL)isPhoneticFamilyName:(id)name validFormatForCountryCode:(id)code;
+- (BOOL)isPhoneticGivenName:(id)name validFormatForCountryCode:(id)code;
+- (BOOL)isPostalAddressFieldEntry:(id)entry validForPostalFieldKey:(id)key forCountryCode:(id)code;
+- (BOOL)phoneNumberIsValid:(id)valid forCountryCode:(id)code;
+- (PKContactFormatValidator)initWithConfiguration:(id)configuration;
+- (id)_formattedFieldEntry:(id)entry forFieldConfiguration:(id)configuration;
+- (id)contactFieldConfigurationForFamilyNameForCountryCode:(id)code;
+- (id)contactFieldConfigurationForGivenNameForCountryCode:(id)code;
+- (id)contactFieldConfigurationForPhoneticFamilyNameForCountryCode:(id)code;
+- (id)contactFieldConfigurationForPhoneticGivenNameForCountryCode:(id)code;
+- (id)contactFieldConfigurationForPostalField:(id)field forCountryCode:(id)code;
+- (id)formatPostalAddress:(id)address;
+- (unint64_t)checkNameFormat:(id)format forCountryCode:(id)code;
+- (unint64_t)checkPostalAddressFormat:(id)format;
 @end
 
 @implementation PKContactFormatValidator
 
-- (PKContactFormatValidator)initWithConfiguration:(id)a3
+- (PKContactFormatValidator)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (v5)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v10.receiver = self;
     v10.super_class = PKContactFormatValidator;
@@ -35,54 +35,54 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_configuration, a3);
+      objc_storeStrong(&v6->_configuration, configuration);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)hasFormatValidationConfigurationForCountryCode:(id)a3
+- (BOOL)hasFormatValidationConfigurationForCountryCode:(id)code
 {
-  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a3];
+  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (unint64_t)checkNameFormat:(id)a3 forCountryCode:(id)a4
+- (unint64_t)checkNameFormat:(id)format forCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a4];
-  v8 = [v7 nameComponentFormatConfiguration];
-  if (v8)
+  formatCopy = format;
+  v7 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
+  nameComponentFormatConfiguration = [v7 nameComponentFormatConfiguration];
+  if (nameComponentFormatConfiguration)
   {
-    v9 = [v6 phoneticRepresentation];
-    v10 = [v6 givenName];
-    v11 = [v8 givenNameFieldConfiguration];
-    v12 = [(PKContactFormatValidator *)self _isFieldEntry:v10 validForContactFieldConfiguration:v11];
+    phoneticRepresentation = [formatCopy phoneticRepresentation];
+    givenName = [formatCopy givenName];
+    givenNameFieldConfiguration = [nameComponentFormatConfiguration givenNameFieldConfiguration];
+    v12 = [(PKContactFormatValidator *)self _isFieldEntry:givenName validForContactFieldConfiguration:givenNameFieldConfiguration];
 
     v13 = !v12;
-    v14 = [v6 familyName];
-    v15 = [v8 familyNameFieldConfiguration];
-    v16 = [(PKContactFormatValidator *)self _isFieldEntry:v14 validForContactFieldConfiguration:v15];
+    familyName = [formatCopy familyName];
+    familyNameFieldConfiguration = [nameComponentFormatConfiguration familyNameFieldConfiguration];
+    v16 = [(PKContactFormatValidator *)self _isFieldEntry:familyName validForContactFieldConfiguration:familyNameFieldConfiguration];
 
     if (!v16)
     {
       v13 |= 2uLL;
     }
 
-    v17 = [v9 givenName];
-    v18 = [v8 phoneticGivenNameFieldConfiguration];
-    v19 = [(PKContactFormatValidator *)self _isFieldEntry:v17 validForContactFieldConfiguration:v18];
+    givenName2 = [phoneticRepresentation givenName];
+    phoneticGivenNameFieldConfiguration = [nameComponentFormatConfiguration phoneticGivenNameFieldConfiguration];
+    v19 = [(PKContactFormatValidator *)self _isFieldEntry:givenName2 validForContactFieldConfiguration:phoneticGivenNameFieldConfiguration];
 
     if (v19)
     {
@@ -94,9 +94,9 @@
       v20 = v13 | 4;
     }
 
-    v21 = [v9 familyName];
-    v22 = [v8 phoneticFamilyNameFieldConfiguration];
-    v23 = [(PKContactFormatValidator *)self _isFieldEntry:v21 validForContactFieldConfiguration:v22];
+    familyName2 = [phoneticRepresentation familyName];
+    phoneticFamilyNameFieldConfiguration = [nameComponentFormatConfiguration phoneticFamilyNameFieldConfiguration];
+    v23 = [(PKContactFormatValidator *)self _isFieldEntry:familyName2 validForContactFieldConfiguration:phoneticFamilyNameFieldConfiguration];
 
     if (v23)
     {
@@ -117,87 +117,87 @@
   return v24;
 }
 
-- (BOOL)isGivenName:(id)a3 validFormatForCountryCode:(id)a4
+- (BOOL)isGivenName:(id)name validFormatForCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForGivenNameForCountryCode:a4];
-  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:v6 validForContactFieldConfiguration:v7];
+  nameCopy = name;
+  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForGivenNameForCountryCode:code];
+  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:nameCopy validForContactFieldConfiguration:v7];
 
   return self;
 }
 
-- (BOOL)isFamilyName:(id)a3 validFormatForCountryCode:(id)a4
+- (BOOL)isFamilyName:(id)name validFormatForCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForFamilyNameForCountryCode:a4];
-  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:v6 validForContactFieldConfiguration:v7];
+  nameCopy = name;
+  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForFamilyNameForCountryCode:code];
+  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:nameCopy validForContactFieldConfiguration:v7];
 
   return self;
 }
 
-- (BOOL)isPhoneticGivenName:(id)a3 validFormatForCountryCode:(id)a4
+- (BOOL)isPhoneticGivenName:(id)name validFormatForCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForPhoneticGivenNameForCountryCode:a4];
-  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:v6 validForContactFieldConfiguration:v7];
+  nameCopy = name;
+  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForPhoneticGivenNameForCountryCode:code];
+  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:nameCopy validForContactFieldConfiguration:v7];
 
   return self;
 }
 
-- (BOOL)isPhoneticFamilyName:(id)a3 validFormatForCountryCode:(id)a4
+- (BOOL)isPhoneticFamilyName:(id)name validFormatForCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForPhoneticFamilyNameForCountryCode:a4];
-  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:v6 validForContactFieldConfiguration:v7];
+  nameCopy = name;
+  v7 = [(PKContactFormatValidator *)self contactFieldConfigurationForPhoneticFamilyNameForCountryCode:code];
+  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:nameCopy validForContactFieldConfiguration:v7];
 
   return self;
 }
 
-- (unint64_t)checkPostalAddressFormat:(id)a3
+- (unint64_t)checkPostalAddressFormat:(id)format
 {
-  v4 = a3;
-  v5 = [v4 ISOCountryCode];
-  if ([v5 length])
+  formatCopy = format;
+  iSOCountryCode = [formatCopy ISOCountryCode];
+  if ([iSOCountryCode length])
   {
-    v6 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:v5];
-    v7 = [v6 addressFormatConfiguration];
-    if (v7)
+    v6 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:iSOCountryCode];
+    addressFormatConfiguration = [v6 addressFormatConfiguration];
+    if (addressFormatConfiguration)
     {
-      v8 = [v4 street];
-      v9 = [v7 streetFieldConfiguration];
-      v10 = [(PKContactFormatValidator *)self _isFieldEntry:v8 validForContactFieldConfiguration:v9];
+      street = [formatCopy street];
+      streetFieldConfiguration = [addressFormatConfiguration streetFieldConfiguration];
+      v10 = [(PKContactFormatValidator *)self _isFieldEntry:street validForContactFieldConfiguration:streetFieldConfiguration];
 
       v11 = !v10;
-      v12 = [v4 subLocality];
-      v13 = [v7 subLocalityFieldConfiguration];
-      v14 = [(PKContactFormatValidator *)self _isFieldEntry:v12 validForContactFieldConfiguration:v13];
+      subLocality = [formatCopy subLocality];
+      subLocalityFieldConfiguration = [addressFormatConfiguration subLocalityFieldConfiguration];
+      v14 = [(PKContactFormatValidator *)self _isFieldEntry:subLocality validForContactFieldConfiguration:subLocalityFieldConfiguration];
 
       if (!v14)
       {
         v11 |= 2uLL;
       }
 
-      v15 = [v4 city];
-      v16 = [v7 cityFieldConfiguration];
-      v17 = [(PKContactFormatValidator *)self _isFieldEntry:v15 validForContactFieldConfiguration:v16];
+      city = [formatCopy city];
+      cityFieldConfiguration = [addressFormatConfiguration cityFieldConfiguration];
+      v17 = [(PKContactFormatValidator *)self _isFieldEntry:city validForContactFieldConfiguration:cityFieldConfiguration];
 
       if (!v17)
       {
         v11 |= 4uLL;
       }
 
-      v18 = [v4 subAdministrativeArea];
-      v19 = [v7 subAdministrativeAreaFieldConfiguration];
-      v20 = [(PKContactFormatValidator *)self _isFieldEntry:v18 validForContactFieldConfiguration:v19];
+      subAdministrativeArea = [formatCopy subAdministrativeArea];
+      subAdministrativeAreaFieldConfiguration = [addressFormatConfiguration subAdministrativeAreaFieldConfiguration];
+      v20 = [(PKContactFormatValidator *)self _isFieldEntry:subAdministrativeArea validForContactFieldConfiguration:subAdministrativeAreaFieldConfiguration];
 
       if (!v20)
       {
         v11 |= 8uLL;
       }
 
-      v21 = [v4 state];
-      v22 = [v7 stateFieldConfiguration];
-      v23 = [(PKContactFormatValidator *)self _isFieldEntry:v21 validForContactFieldConfiguration:v22];
+      state = [formatCopy state];
+      stateFieldConfiguration = [addressFormatConfiguration stateFieldConfiguration];
+      v23 = [(PKContactFormatValidator *)self _isFieldEntry:state validForContactFieldConfiguration:stateFieldConfiguration];
 
       if (v23)
       {
@@ -209,9 +209,9 @@
         v24 = v11 | 0x10;
       }
 
-      v25 = [v4 postalCode];
-      v26 = [v7 postalCodeFieldConfiguration];
-      v27 = [(PKContactFormatValidator *)self _isFieldEntry:v25 validForContactFieldConfiguration:v26];
+      postalCode = [formatCopy postalCode];
+      postalCodeFieldConfiguration = [addressFormatConfiguration postalCodeFieldConfiguration];
+      v27 = [(PKContactFormatValidator *)self _isFieldEntry:postalCode validForContactFieldConfiguration:postalCodeFieldConfiguration];
 
       if (v27)
       {
@@ -238,44 +238,44 @@
   return v28;
 }
 
-- (BOOL)isPostalAddressFieldEntry:(id)a3 validForPostalFieldKey:(id)a4 forCountryCode:(id)a5
+- (BOOL)isPostalAddressFieldEntry:(id)entry validForPostalFieldKey:(id)key forCountryCode:(id)code
 {
-  if (!a3 || !a4 || !a5)
+  if (!entry || !key || !code)
   {
     return 0;
   }
 
-  v8 = a3;
-  v9 = [(PKContactFormatValidator *)self contactFieldConfigurationForPostalField:a4 forCountryCode:a5];
-  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:v8 validForContactFieldConfiguration:v9];
+  entryCopy = entry;
+  v9 = [(PKContactFormatValidator *)self contactFieldConfigurationForPostalField:key forCountryCode:code];
+  LOBYTE(self) = [(PKContactFormatValidator *)self _isFieldEntry:entryCopy validForContactFieldConfiguration:v9];
 
   return self;
 }
 
-- (id)formatPostalAddress:(id)a3
+- (id)formatPostalAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  addressCopy = address;
+  v5 = [addressCopy mutableCopy];
   configuration = self->_configuration;
-  v7 = [v4 ISOCountryCode];
-  v8 = [(PKContactFormatConfiguration *)configuration contactFieldConfigurationForCountryCode:v7];
+  iSOCountryCode = [addressCopy ISOCountryCode];
+  v8 = [(PKContactFormatConfiguration *)configuration contactFieldConfigurationForCountryCode:iSOCountryCode];
 
-  v9 = [v8 addressFormatConfiguration];
-  v10 = v4;
-  if (v9)
+  addressFormatConfiguration = [v8 addressFormatConfiguration];
+  v10 = addressCopy;
+  if (addressFormatConfiguration)
   {
-    v11 = [v4 city];
-    v12 = [v9 cityFieldConfiguration];
-    v13 = [(PKContactFormatValidator *)self _formattedFieldEntry:v11 forFieldConfiguration:v12];
+    city = [addressCopy city];
+    cityFieldConfiguration = [addressFormatConfiguration cityFieldConfiguration];
+    v13 = [(PKContactFormatValidator *)self _formattedFieldEntry:city forFieldConfiguration:cityFieldConfiguration];
 
     if (v13)
     {
       [v5 setCity:v13];
     }
 
-    v14 = [v4 state];
-    v15 = [v9 stateFieldConfiguration];
-    v16 = [(PKContactFormatValidator *)self _formattedFieldEntry:v14 forFieldConfiguration:v15];
+    state = [addressCopy state];
+    stateFieldConfiguration = [addressFormatConfiguration stateFieldConfiguration];
+    v16 = [(PKContactFormatValidator *)self _formattedFieldEntry:state forFieldConfiguration:stateFieldConfiguration];
 
     if (v16)
     {
@@ -288,9 +288,9 @@
       v24 = v13 != 0;
     }
 
-    v17 = [v4 subAdministrativeArea];
-    v18 = [v9 subAdministrativeAreaFieldConfiguration];
-    v19 = [(PKContactFormatValidator *)self _formattedFieldEntry:v17 forFieldConfiguration:v18];
+    subAdministrativeArea = [addressCopy subAdministrativeArea];
+    subAdministrativeAreaFieldConfiguration = [addressFormatConfiguration subAdministrativeAreaFieldConfiguration];
+    v19 = [(PKContactFormatValidator *)self _formattedFieldEntry:subAdministrativeArea forFieldConfiguration:subAdministrativeAreaFieldConfiguration];
 
     if (v19)
     {
@@ -298,9 +298,9 @@
       v24 = 1;
     }
 
-    v20 = [v4 postalCode];
-    v21 = [v9 postalCodeFieldConfiguration];
-    v22 = [(PKContactFormatValidator *)self _formattedFieldEntry:v20 forFieldConfiguration:v21];
+    postalCode = [addressCopy postalCode];
+    postalCodeFieldConfiguration = [addressFormatConfiguration postalCodeFieldConfiguration];
+    v22 = [(PKContactFormatValidator *)self _formattedFieldEntry:postalCode forFieldConfiguration:postalCodeFieldConfiguration];
 
     if (v22)
     {
@@ -310,7 +310,7 @@
     else
     {
 
-      v10 = v4;
+      v10 = addressCopy;
       if (!v24)
       {
         goto LABEL_13;
@@ -325,14 +325,14 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)phoneNumberIsValid:(id)a3 forCountryCode:(id)a4
+- (BOOL)phoneNumberIsValid:(id)valid forCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  validCopy = valid;
+  codeCopy = code;
   if ([(PKContactFormatConfiguration *)self->_configuration checkFormatOfPhoneNumber])
   {
-    v8 = [v6 stringValue];
-    if ([v8 length] > 0x22)
+    stringValue = [validCopy stringValue];
+    if ([stringValue length] > 0x22)
     {
       valid = 0;
     }
@@ -340,7 +340,7 @@ LABEL_13:
     else
     {
       v9 = PNCopyBestGuessCountryCodeForNumber();
-      if (v9 || (v9 = v7) != 0)
+      if (v9 || (v9 = codeCopy) != 0)
       {
         valid = PNIsValidPhoneNumberForCountry();
       }
@@ -369,12 +369,12 @@ LABEL_10:
   return valid;
 }
 
-- (BOOL)emailAddressIsValid:(id)a3
+- (BOOL)emailAddressIsValid:(id)valid
 {
-  v4 = a3;
+  validCopy = valid;
   if ([(PKContactFormatConfiguration *)self->_configuration checkFormatOfEmailAddress])
   {
-    v5 = [objc_alloc(MEMORY[0x1E699B240]) initWithString:v4];
+    v5 = [objc_alloc(MEMORY[0x1E699B240]) initWithString:validCopy];
     v6 = v5 != 0;
   }
 
@@ -386,46 +386,46 @@ LABEL_10:
   return v6;
 }
 
-- (id)contactFieldConfigurationForPostalField:(id)a3 forCountryCode:(id)a4
+- (id)contactFieldConfigurationForPostalField:(id)field forCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a4];
-  v8 = [v7 addressFormatConfiguration];
-  if ([v6 isEqualToString:*MEMORY[0x1E695CC30]])
+  fieldCopy = field;
+  v7 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
+  addressFormatConfiguration = [v7 addressFormatConfiguration];
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E695CC30]])
   {
-    v9 = [v8 streetFieldConfiguration];
+    streetFieldConfiguration = [addressFormatConfiguration streetFieldConfiguration];
 LABEL_13:
-    v10 = v9;
+    v10 = streetFieldConfiguration;
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695CC40]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E695CC40]])
   {
-    v9 = [v8 subLocalityFieldConfiguration];
+    streetFieldConfiguration = [addressFormatConfiguration subLocalityFieldConfiguration];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695CC00]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E695CC00]])
   {
-    v9 = [v8 cityFieldConfiguration];
+    streetFieldConfiguration = [addressFormatConfiguration cityFieldConfiguration];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695CC38]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E695CC38]])
   {
-    v9 = [v8 subAdministrativeAreaFieldConfiguration];
+    streetFieldConfiguration = [addressFormatConfiguration subAdministrativeAreaFieldConfiguration];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695CC28]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E695CC28]])
   {
-    v9 = [v8 stateFieldConfiguration];
+    streetFieldConfiguration = [addressFormatConfiguration stateFieldConfiguration];
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x1E695CC18]])
+  if ([fieldCopy isEqualToString:*MEMORY[0x1E695CC18]])
   {
-    v9 = [v8 postalCodeFieldConfiguration];
+    streetFieldConfiguration = [addressFormatConfiguration postalCodeFieldConfiguration];
     goto LABEL_13;
   }
 
@@ -435,59 +435,59 @@ LABEL_14:
   return v10;
 }
 
-- (id)contactFieldConfigurationForGivenNameForCountryCode:(id)a3
+- (id)contactFieldConfigurationForGivenNameForCountryCode:(id)code
 {
-  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a3];
-  v4 = [v3 nameComponentFormatConfiguration];
-  v5 = [v4 givenNameFieldConfiguration];
+  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
+  nameComponentFormatConfiguration = [v3 nameComponentFormatConfiguration];
+  givenNameFieldConfiguration = [nameComponentFormatConfiguration givenNameFieldConfiguration];
 
-  return v5;
+  return givenNameFieldConfiguration;
 }
 
-- (id)contactFieldConfigurationForFamilyNameForCountryCode:(id)a3
+- (id)contactFieldConfigurationForFamilyNameForCountryCode:(id)code
 {
-  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a3];
-  v4 = [v3 nameComponentFormatConfiguration];
-  v5 = [v4 familyNameFieldConfiguration];
+  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
+  nameComponentFormatConfiguration = [v3 nameComponentFormatConfiguration];
+  familyNameFieldConfiguration = [nameComponentFormatConfiguration familyNameFieldConfiguration];
 
-  return v5;
+  return familyNameFieldConfiguration;
 }
 
-- (id)contactFieldConfigurationForPhoneticGivenNameForCountryCode:(id)a3
+- (id)contactFieldConfigurationForPhoneticGivenNameForCountryCode:(id)code
 {
-  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a3];
-  v4 = [v3 nameComponentFormatConfiguration];
-  v5 = [v4 phoneticGivenNameFieldConfiguration];
+  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
+  nameComponentFormatConfiguration = [v3 nameComponentFormatConfiguration];
+  phoneticGivenNameFieldConfiguration = [nameComponentFormatConfiguration phoneticGivenNameFieldConfiguration];
 
-  return v5;
+  return phoneticGivenNameFieldConfiguration;
 }
 
-- (id)contactFieldConfigurationForPhoneticFamilyNameForCountryCode:(id)a3
+- (id)contactFieldConfigurationForPhoneticFamilyNameForCountryCode:(id)code
 {
-  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:a3];
-  v4 = [v3 nameComponentFormatConfiguration];
-  v5 = [v4 phoneticFamilyNameFieldConfiguration];
+  v3 = [(PKContactFormatConfiguration *)self->_configuration contactFieldConfigurationForCountryCode:code];
+  nameComponentFormatConfiguration = [v3 nameComponentFormatConfiguration];
+  phoneticFamilyNameFieldConfiguration = [nameComponentFormatConfiguration phoneticFamilyNameFieldConfiguration];
 
-  return v5;
+  return phoneticFamilyNameFieldConfiguration;
 }
 
-- (BOOL)_isFieldEntry:(id)a3 validForContactFieldConfiguration:(id)a4
+- (BOOL)_isFieldEntry:(id)entry validForContactFieldConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  entryCopy = entry;
+  configurationCopy = configuration;
+  v8 = configurationCopy;
+  if (!configurationCopy)
   {
     goto LABEL_9;
   }
 
-  v9 = [v7 type];
-  if (v9 == 2)
+  type = [configurationCopy type];
+  if (type == 2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(PKContactFormatValidator *)self _isFieldEntry:v6 validForPickerContactFieldConfiguration:v8];
+      v10 = [(PKContactFormatValidator *)self _isFieldEntry:entryCopy validForPickerContactFieldConfiguration:v8];
       goto LABEL_8;
     }
 
@@ -496,7 +496,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v9 != 1)
+  if (type != 1)
   {
     goto LABEL_9;
   }
@@ -507,7 +507,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(PKContactFormatValidator *)self _isFieldEntry:v6 validForTextContactFieldConfiguration:v8];
+  v10 = [(PKContactFormatValidator *)self _isFieldEntry:entryCopy validForTextContactFieldConfiguration:v8];
 LABEL_8:
   v11 = v10;
 LABEL_10:
@@ -515,17 +515,17 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_isFieldEntry:(id)a3 validForTextContactFieldConfiguration:(id)a4
+- (BOOL)_isFieldEntry:(id)entry validForTextContactFieldConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  entryCopy = entry;
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (configurationCopy)
   {
-    v8 = [v6 minLength];
-    if (v8)
+    minLength = [configurationCopy minLength];
+    if (minLength)
     {
-      v9 = [v5 length] >= v8;
+      v9 = [entryCopy length] >= minLength;
     }
 
     else
@@ -533,23 +533,23 @@ LABEL_10:
       v9 = 1;
     }
 
-    v10 = [v7 maxLength];
-    if (v9 && v10)
+    maxLength = [v7 maxLength];
+    if (v9 && maxLength)
     {
-      v9 = [v5 length] <= v10;
+      v9 = [entryCopy length] <= maxLength;
     }
 
-    v11 = [v7 characterSet];
-    v12 = v11;
-    if (v9 && v11)
+    characterSet = [v7 characterSet];
+    v12 = characterSet;
+    if (v9 && characterSet)
     {
-      v13 = [v7 isValidCharacterSet];
-      if ([v5 length])
+      isValidCharacterSet = [v7 isValidCharacterSet];
+      if ([entryCopy length])
       {
         v14 = 0;
         do
         {
-          v15 = v13 ^ [v12 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v14)}];
+          v15 = isValidCharacterSet ^ [v12 characterIsMember:{objc_msgSend(entryCopy, "characterAtIndex:", v14)}];
           if (v15 == 1)
           {
             break;
@@ -558,7 +558,7 @@ LABEL_10:
           ++v14;
         }
 
-        while (v14 < [v5 length]);
+        while (v14 < [entryCopy length]);
         v9 = v15 ^ 1;
       }
 
@@ -568,11 +568,11 @@ LABEL_10:
       }
     }
 
-    v16 = [v7 validRegex];
-    v17 = v16;
-    if (v9 && v16)
+    validRegex = [v7 validRegex];
+    v17 = validRegex;
+    if (v9 && validRegex)
     {
-      LOBYTE(v9) = [v16 numberOfMatchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}] != 0;
+      LOBYTE(v9) = [validRegex numberOfMatchesInString:entryCopy options:0 range:{0, objc_msgSend(entryCopy, "length")}] != 0;
     }
   }
 
@@ -584,25 +584,25 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_isFieldEntry:(id)a3 validForPickerContactFieldConfiguration:(id)a4
+- (BOOL)_isFieldEntry:(id)entry validForPickerContactFieldConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  entryCopy = entry;
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (configurationCopy)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v8 = [v6 pickerItems];
+    pickerItems = [configurationCopy pickerItems];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __82__PKContactFormatValidator__isFieldEntry_validForPickerContactFieldConfiguration___block_invoke;
     v11[3] = &unk_1E79D5A60;
-    v12 = v5;
+    v12 = entryCopy;
     v13 = &v14;
-    [v8 enumerateObjectsUsingBlock:v11];
+    [pickerItems enumerateObjectsUsingBlock:v11];
 
     v9 = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
@@ -628,20 +628,20 @@ uint64_t __82__PKContactFormatValidator__isFieldEntry_validForPickerContactField
   return result;
 }
 
-- (id)_formattedFieldEntry:(id)a3 forFieldConfiguration:(id)a4
+- (id)_formattedFieldEntry:(id)entry forFieldConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 type] == 2)
+  entryCopy = entry;
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (configurationCopy && [configurationCopy type] == 2)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v7 pickerItems];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    pickerItems = [v7 pickerItems];
+    v9 = [pickerItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -652,36 +652,36 @@ uint64_t __82__PKContactFormatValidator__isFieldEntry_validForPickerContactField
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(pickerItems);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          if ([v13 isValueAccepted:v5])
+          if ([v13 isValueAccepted:entryCopy])
           {
-            v14 = [v13 submissionValue];
-            if (![v5 isEqualToString:v14])
+            submissionValue = [v13 submissionValue];
+            if (![entryCopy isEqualToString:submissionValue])
             {
               goto LABEL_14;
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [pickerItems countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
 
-    v14 = 0;
+    submissionValue = 0;
 LABEL_14:
   }
 
   else
   {
-    v14 = 0;
+    submissionValue = 0;
   }
 
-  return v14;
+  return submissionValue;
 }
 
 @end

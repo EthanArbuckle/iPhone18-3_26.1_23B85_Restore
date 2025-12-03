@@ -1,6 +1,6 @@
 @interface CIStretch
 + (id)customAttributes;
-- (double)computeDOD:(uint64_t)a1;
+- (double)computeDOD:(uint64_t)d;
 - (id)outputImage;
 - (void)setDefaults;
 @end
@@ -28,9 +28,9 @@
   [(CIStretch *)self setInputPoint:v3];
 }
 
-- (double)computeDOD:(uint64_t)a1
+- (double)computeDOD:(uint64_t)d
 {
-  [*(a1 + 80) extent];
+  [*(d + 80) extent];
 
   *&result = CGRectInset(*&v2, -v7, -v7);
   return result;
@@ -90,7 +90,7 @@
     v33 = v32;
     v35 = v34;
     v37 = v36;
-    v38 = [(CIStretch *)self _kernel];
+    _kernel = [(CIStretch *)self _kernel];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __24__CIStretch_outputImage__block_invoke;
@@ -100,7 +100,7 @@
     inputImage = self->inputImage;
     v48[0] = v18;
     v48[1] = v19;
-    return [v38 applyWithExtent:v45 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 2), v31, v33, v35, v37}];
+    return [_kernel applyWithExtent:v45 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 2), v31, v33, v35, v37}];
   }
 
   return result;

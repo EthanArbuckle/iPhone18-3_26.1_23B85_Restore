@@ -1,76 +1,76 @@
 @interface ATXWidgetGalleryRequest
-- (ATXWidgetGalleryRequest)initWithClientIdentity:(id)a3;
-- (ATXWidgetGalleryRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXWidgetGalleryRequest)initWithClientIdentity:(id)identity;
+- (ATXWidgetGalleryRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXWidgetGalleryRequest
 
-- (ATXWidgetGalleryRequest)initWithClientIdentity:(id)a3
+- (ATXWidgetGalleryRequest)initWithClientIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = ATXWidgetGalleryRequest;
   v6 = [(ATXWidgetGalleryRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientIdentity, a3);
+    objc_storeStrong(&v6->_clientIdentity, identity);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXWidgetGalleryRequest *)self clientIdentity];
-  [v4 encodeObject:v5 forKey:@"clientIdentity"];
+  coderCopy = coder;
+  clientIdentity = [(ATXWidgetGalleryRequest *)self clientIdentity];
+  [coderCopy encodeObject:clientIdentity forKey:@"clientIdentity"];
 
-  [v4 encodeInteger:-[ATXWidgetGalleryRequest galleryVariant](self forKey:{"galleryVariant"), @"galleryVariant"}];
-  [v4 encodeInteger:-[ATXWidgetGalleryRequest widgetGridSize](self forKey:{"widgetGridSize"), @"widgetGridSize"}];
-  [v4 encodeInteger:-[ATXWidgetGalleryRequest widgetFamilyMask](self forKey:{"widgetFamilyMask"), @"widgetFamilyMask"}];
-  v6 = [(ATXWidgetGalleryRequest *)self limit];
-  [v4 encodeObject:v6 forKey:@"limit"];
+  [coderCopy encodeInteger:-[ATXWidgetGalleryRequest galleryVariant](self forKey:{"galleryVariant"), @"galleryVariant"}];
+  [coderCopy encodeInteger:-[ATXWidgetGalleryRequest widgetGridSize](self forKey:{"widgetGridSize"), @"widgetGridSize"}];
+  [coderCopy encodeInteger:-[ATXWidgetGalleryRequest widgetFamilyMask](self forKey:{"widgetFamilyMask"), @"widgetFamilyMask"}];
+  limit = [(ATXWidgetGalleryRequest *)self limit];
+  [coderCopy encodeObject:limit forKey:@"limit"];
 
-  v7 = [(ATXWidgetGalleryRequest *)self denyListOfExtensions];
-  [v4 encodeObject:v7 forKey:@"denyListOfExtensions"];
+  denyListOfExtensions = [(ATXWidgetGalleryRequest *)self denyListOfExtensions];
+  [coderCopy encodeObject:denyListOfExtensions forKey:@"denyListOfExtensions"];
 }
 
-- (ATXWidgetGalleryRequest)initWithCoder:(id)a3
+- (ATXWidgetGalleryRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentity"];
   if (v5)
   {
     v6 = [(ATXWidgetGalleryRequest *)self initWithClientIdentity:v5];
     if (v6)
     {
-      v6->_galleryVariant = [v4 decodeIntegerForKey:@"galleryVariant"];
-      v6->_widgetGridSize = [v4 decodeIntegerForKey:@"widgetGridSize"];
-      v6->_widgetFamilyMask = [v4 decodeIntegerForKey:@"widgetFamilyMask"];
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+      v6->_galleryVariant = [coderCopy decodeIntegerForKey:@"galleryVariant"];
+      v6->_widgetGridSize = [coderCopy decodeIntegerForKey:@"widgetGridSize"];
+      v6->_widgetFamilyMask = [coderCopy decodeIntegerForKey:@"widgetFamilyMask"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
       limit = v6->_limit;
       v6->_limit = v7;
 
       v9 = MEMORY[0x1E695DFD8];
       v10 = objc_opt_class();
       v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-      v12 = [v4 decodeObjectOfClasses:v11 forKey:@"denyListOfExtensions"];
+      v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"denyListOfExtensions"];
       denyListOfExtensions = v6->_denyListOfExtensions;
       v6->_denyListOfExtensions = v12;
     }
 
     self = v6;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

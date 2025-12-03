@@ -7,7 +7,7 @@
 - (id)unc_secureFileURL
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (fcntl([a1 fileDescriptor], 50, v5))
+  if (fcntl([self fileDescriptor], 50, v5))
   {
     v1 = 0;
   }

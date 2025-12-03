@@ -1,8 +1,8 @@
 @interface BBSectionSubtypeParameters
 - (BBSectionIcon)sectionIconOverride;
 - (BBSectionSubtypeParameters)fallbackParameters;
-- (BBSectionSubtypeParameters)initWithCoder:(id)a3;
-- (BBSectionSubtypeParameters)initWithFallbackParameters:(id)a3;
+- (BBSectionSubtypeParameters)initWithCoder:(id)coder;
+- (BBSectionSubtypeParameters)initWithFallbackParameters:(id)parameters;
 - (BOOL)allowsAddingToLockScreenWhenUnlocked;
 - (BOOL)allowsAutomaticRemovalFromLockScreen;
 - (BOOL)allowsPersistentBannersInCarPlay;
@@ -12,7 +12,7 @@
 - (BOOL)hideDismissActionInCarPlay;
 - (BOOL)ignoresQuietMode;
 - (BOOL)inertWhenLocked;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)playsMediaWhenRaised;
 - (BOOL)playsSoundForModify;
 - (BOOL)preservesUnlockActionCase;
@@ -43,12 +43,12 @@
 - (unint64_t)hash;
 - (unint64_t)privacySettings;
 - (unint64_t)subtypePriority;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlertSuppressionAppIDs:(id)a3;
-- (void)setIPodOutAlertType:(int64_t)a3;
-- (void)setPrivacySettings:(unint64_t)a3;
-- (void)setSectionIconOverride:(id)a3;
-- (void)setSubtypePriority:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlertSuppressionAppIDs:(id)ds;
+- (void)setIPodOutAlertType:(int64_t)type;
+- (void)setPrivacySettings:(unint64_t)settings;
+- (void)setSectionIconOverride:(id)override;
+- (void)setSubtypePriority:(unint64_t)priority;
 @end
 
 @implementation BBSectionSubtypeParameters
@@ -58,16 +58,16 @@
   hiddenPreviewsBodyPlaceholder = self->_hiddenPreviewsBodyPlaceholder;
   if (hiddenPreviewsBodyPlaceholder)
   {
-    v3 = hiddenPreviewsBodyPlaceholder;
+    hiddenPreviewsBodyPlaceholder = hiddenPreviewsBodyPlaceholder;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained hiddenPreviewsBodyPlaceholder];
+    hiddenPreviewsBodyPlaceholder = [WeakRetained hiddenPreviewsBodyPlaceholder];
   }
 
-  return v3;
+  return hiddenPreviewsBodyPlaceholder;
 }
 
 - (NSString)subtypeSummaryFormat
@@ -75,16 +75,16 @@
   subtypeSummaryFormat = self->_subtypeSummaryFormat;
   if (subtypeSummaryFormat)
   {
-    v3 = subtypeSummaryFormat;
+    subtypeSummaryFormat = subtypeSummaryFormat;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained subtypeSummaryFormat];
+    subtypeSummaryFormat = [WeakRetained subtypeSummaryFormat];
   }
 
-  return v3;
+  return subtypeSummaryFormat;
 }
 
 - (BBSectionIcon)sectionIconOverride
@@ -92,16 +92,16 @@
   sectionIconOverride = self->_sectionIconOverride;
   if (sectionIconOverride)
   {
-    v3 = sectionIconOverride;
+    sectionIconOverride = sectionIconOverride;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained sectionIconOverride];
+    sectionIconOverride = [WeakRetained sectionIconOverride];
   }
 
-  return v3;
+  return sectionIconOverride;
 }
 
 - (NSString)fullAlternateActionLabel
@@ -109,16 +109,16 @@
   fullAlternateActionLabel = self->_fullAlternateActionLabel;
   if (fullAlternateActionLabel)
   {
-    v3 = fullAlternateActionLabel;
+    fullAlternateActionLabel = fullAlternateActionLabel;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained fullAlternateActionLabel];
+    fullAlternateActionLabel = [WeakRetained fullAlternateActionLabel];
   }
 
-  return v3;
+  return fullAlternateActionLabel;
 }
 
 - (NSString)fullUnlockActionLabel
@@ -126,16 +126,16 @@
   fullUnlockActionLabel = self->_fullUnlockActionLabel;
   if (fullUnlockActionLabel)
   {
-    v3 = fullUnlockActionLabel;
+    fullUnlockActionLabel = fullUnlockActionLabel;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained fullUnlockActionLabel];
+    fullUnlockActionLabel = [WeakRetained fullUnlockActionLabel];
   }
 
-  return v3;
+  return fullUnlockActionLabel;
 }
 
 - (NSString)alternateActionLabel
@@ -143,16 +143,16 @@
   alternateActionLabel = self->_alternateActionLabel;
   if (alternateActionLabel)
   {
-    v3 = alternateActionLabel;
+    alternateActionLabel = alternateActionLabel;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained alternateActionLabel];
+    alternateActionLabel = [WeakRetained alternateActionLabel];
   }
 
-  return v3;
+  return alternateActionLabel;
 }
 
 - (NSString)unlockActionLabel
@@ -160,16 +160,16 @@
   unlockActionLabel = self->_unlockActionLabel;
   if (unlockActionLabel)
   {
-    v3 = unlockActionLabel;
+    unlockActionLabel = unlockActionLabel;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained unlockActionLabel];
+    unlockActionLabel = [WeakRetained unlockActionLabel];
   }
 
-  return v3;
+  return unlockActionLabel;
 }
 
 - (BOOL)allowsPersistentBannersInCarPlay
@@ -184,9 +184,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained allowsPersistentBannersInCarPlay];
+    allowsPersistentBannersInCarPlay = [WeakRetained allowsPersistentBannersInCarPlay];
 
-    return v6;
+    return allowsPersistentBannersInCarPlay;
   }
 }
 
@@ -202,9 +202,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained inertWhenLocked];
+    inertWhenLocked = [WeakRetained inertWhenLocked];
 
-    return v6;
+    return inertWhenLocked;
   }
 }
 
@@ -220,9 +220,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained allowsAutomaticRemovalFromLockScreen];
+    allowsAutomaticRemovalFromLockScreen = [WeakRetained allowsAutomaticRemovalFromLockScreen];
 
-    return v6;
+    return allowsAutomaticRemovalFromLockScreen;
   }
 }
 
@@ -238,9 +238,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained prioritizeAtTopOfLockScreen];
+    prioritizeAtTopOfLockScreen = [WeakRetained prioritizeAtTopOfLockScreen];
 
-    return v6;
+    return prioritizeAtTopOfLockScreen;
   }
 }
 
@@ -256,9 +256,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained canBeSilencedByMenuButtonPress];
+    canBeSilencedByMenuButtonPress = [WeakRetained canBeSilencedByMenuButtonPress];
 
-    return v6;
+    return canBeSilencedByMenuButtonPress;
   }
 }
 
@@ -274,9 +274,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained suppressesAlertsWhenAppIsActive];
+    suppressesAlertsWhenAppIsActive = [WeakRetained suppressesAlertsWhenAppIsActive];
 
-    return v6;
+    return suppressesAlertsWhenAppIsActive;
   }
 }
 
@@ -292,9 +292,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained revealsAdditionalContentOnPresentation];
+    revealsAdditionalContentOnPresentation = [WeakRetained revealsAdditionalContentOnPresentation];
 
-    return v6;
+    return revealsAdditionalContentOnPresentation;
   }
 }
 
@@ -310,9 +310,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained privacySettings];
+    privacySettings = [WeakRetained privacySettings];
 
-    return v6;
+    return privacySettings;
   }
 }
 
@@ -328,9 +328,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained coalescesWhenLocked];
+    coalescesWhenLocked = [WeakRetained coalescesWhenLocked];
 
-    return v6;
+    return coalescesWhenLocked;
   }
 }
 
@@ -346,9 +346,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained preventLock];
+    preventLock = [WeakRetained preventLock];
 
-    return v6;
+    return preventLock;
   }
 }
 
@@ -364,9 +364,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained allowsSupplementaryActionsInCarPlay];
+    allowsSupplementaryActionsInCarPlay = [WeakRetained allowsSupplementaryActionsInCarPlay];
 
-    return v6;
+    return allowsSupplementaryActionsInCarPlay;
   }
 }
 
@@ -382,9 +382,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained playsMediaWhenRaised];
+    playsMediaWhenRaised = [WeakRetained playsMediaWhenRaised];
 
-    return v6;
+    return playsMediaWhenRaised;
   }
 }
 
@@ -400,9 +400,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained hideDismissActionInCarPlay];
+    hideDismissActionInCarPlay = [WeakRetained hideDismissActionInCarPlay];
 
-    return v6;
+    return hideDismissActionInCarPlay;
   }
 }
 
@@ -418,9 +418,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained suppressPresentationInAmbient];
+    suppressPresentationInAmbient = [WeakRetained suppressPresentationInAmbient];
 
-    return v6;
+    return suppressPresentationInAmbient;
   }
 }
 
@@ -436,22 +436,22 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained shouldDismissBulletinWhenClosed];
+    shouldDismissBulletinWhenClosed = [WeakRetained shouldDismissBulletinWhenClosed];
 
-    return v6;
+    return shouldDismissBulletinWhenClosed;
   }
 }
 
-- (BBSectionSubtypeParameters)initWithFallbackParameters:(id)a3
+- (BBSectionSubtypeParameters)initWithFallbackParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v8.receiver = self;
   v8.super_class = BBSectionSubtypeParameters;
   v5 = [(BBSectionSubtypeParameters *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BBSectionSubtypeParameters *)v5 setFallbackParameters:v4];
+    [(BBSectionSubtypeParameters *)v5 setFallbackParameters:parametersCopy];
   }
 
   return v6;
@@ -462,16 +462,16 @@
   topic = self->_topic;
   if (topic)
   {
-    v3 = topic;
+    topic = topic;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained topic];
+    topic = [WeakRetained topic];
   }
 
-  return v3;
+  return topic;
 }
 
 - (NSString)missedBannerDescriptionFormat
@@ -479,28 +479,28 @@
   missedBannerDescriptionFormat = self->_missedBannerDescriptionFormat;
   if (missedBannerDescriptionFormat)
   {
-    v3 = missedBannerDescriptionFormat;
+    missedBannerDescriptionFormat = missedBannerDescriptionFormat;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained missedBannerDescriptionFormat];
+    missedBannerDescriptionFormat = [WeakRetained missedBannerDescriptionFormat];
   }
 
-  return v3;
+  return missedBannerDescriptionFormat;
 }
 
-- (void)setSectionIconOverride:(id)a3
+- (void)setSectionIconOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   sectionIconOverride = self->_sectionIconOverride;
   p_sectionIconOverride = &self->_sectionIconOverride;
-  if (sectionIconOverride != v5)
+  if (sectionIconOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_sectionIconOverride, a3);
-    v5 = v8;
+    v8 = overrideCopy;
+    objc_storeStrong(p_sectionIconOverride, override);
+    overrideCopy = v8;
   }
 }
 
@@ -509,16 +509,16 @@
   bannerAccessoryRemoteViewControllerClassName = self->_bannerAccessoryRemoteViewControllerClassName;
   if (bannerAccessoryRemoteViewControllerClassName)
   {
-    v3 = bannerAccessoryRemoteViewControllerClassName;
+    bannerAccessoryRemoteViewControllerClassName = bannerAccessoryRemoteViewControllerClassName;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained bannerAccessoryRemoteViewControllerClassName];
+    bannerAccessoryRemoteViewControllerClassName = [WeakRetained bannerAccessoryRemoteViewControllerClassName];
   }
 
-  return v3;
+  return bannerAccessoryRemoteViewControllerClassName;
 }
 
 - (NSString)bannerAccessoryRemoteServiceBundleIdentifier
@@ -526,16 +526,16 @@
   bannerAccessoryRemoteServiceBundleIdentifier = self->_bannerAccessoryRemoteServiceBundleIdentifier;
   if (bannerAccessoryRemoteServiceBundleIdentifier)
   {
-    v3 = bannerAccessoryRemoteServiceBundleIdentifier;
+    bannerAccessoryRemoteServiceBundleIdentifier = bannerAccessoryRemoteServiceBundleIdentifier;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained bannerAccessoryRemoteServiceBundleIdentifier];
+    bannerAccessoryRemoteServiceBundleIdentifier = [WeakRetained bannerAccessoryRemoteServiceBundleIdentifier];
   }
 
-  return v3;
+  return bannerAccessoryRemoteServiceBundleIdentifier;
 }
 
 - (NSString)secondaryContentRemoteViewControllerClassName
@@ -543,16 +543,16 @@
   secondaryContentRemoteViewControllerClassName = self->_secondaryContentRemoteViewControllerClassName;
   if (secondaryContentRemoteViewControllerClassName)
   {
-    v3 = secondaryContentRemoteViewControllerClassName;
+    secondaryContentRemoteViewControllerClassName = secondaryContentRemoteViewControllerClassName;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained secondaryContentRemoteViewControllerClassName];
+    secondaryContentRemoteViewControllerClassName = [WeakRetained secondaryContentRemoteViewControllerClassName];
   }
 
-  return v3;
+  return secondaryContentRemoteViewControllerClassName;
 }
 
 - (NSString)secondaryContentRemoteServiceBundleIdentifier
@@ -560,16 +560,16 @@
   secondaryContentRemoteServiceBundleIdentifier = self->_secondaryContentRemoteServiceBundleIdentifier;
   if (secondaryContentRemoteServiceBundleIdentifier)
   {
-    v3 = secondaryContentRemoteServiceBundleIdentifier;
+    secondaryContentRemoteServiceBundleIdentifier = secondaryContentRemoteServiceBundleIdentifier;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v3 = [WeakRetained secondaryContentRemoteServiceBundleIdentifier];
+    secondaryContentRemoteServiceBundleIdentifier = [WeakRetained secondaryContentRemoteServiceBundleIdentifier];
   }
 
-  return v3;
+  return secondaryContentRemoteServiceBundleIdentifier;
 }
 
 - (BOOL)preservesUnlockActionCase
@@ -584,9 +584,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained preservesUnlockActionCase];
+    preservesUnlockActionCase = [WeakRetained preservesUnlockActionCase];
 
-    return v6;
+    return preservesUnlockActionCase;
   }
 }
 
@@ -602,9 +602,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained visuallyIndicatesWhenDateIsInFuture];
+    visuallyIndicatesWhenDateIsInFuture = [WeakRetained visuallyIndicatesWhenDateIsInFuture];
 
-    return v6;
+    return visuallyIndicatesWhenDateIsInFuture;
   }
 }
 
@@ -620,9 +620,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained ignoresQuietMode];
+    ignoresQuietMode = [WeakRetained ignoresQuietMode];
 
-    return v6;
+    return ignoresQuietMode;
   }
 }
 
@@ -638,9 +638,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained suppressesTitle];
+    suppressesTitle = [WeakRetained suppressesTitle];
 
-    return v6;
+    return suppressesTitle;
   }
 }
 
@@ -656,9 +656,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained showsUnreadIndicatorForNoticesFeed];
+    showsUnreadIndicatorForNoticesFeed = [WeakRetained showsUnreadIndicatorForNoticesFeed];
 
-    return v6;
+    return showsUnreadIndicatorForNoticesFeed;
   }
 }
 
@@ -674,9 +674,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained showsContactPhoto];
+    showsContactPhoto = [WeakRetained showsContactPhoto];
 
-    return v6;
+    return showsContactPhoto;
   }
 }
 
@@ -692,9 +692,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained playsSoundForModify];
+    playsSoundForModify = [WeakRetained playsSoundForModify];
 
-    return v6;
+    return playsSoundForModify;
   }
 }
 
@@ -710,9 +710,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained subtypePriority];
+    subtypePriority = [WeakRetained subtypePriority];
 
-    return v6;
+    return subtypePriority;
   }
 }
 
@@ -728,9 +728,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained iPodOutAlertType];
+    iPodOutAlertType = [WeakRetained iPodOutAlertType];
 
-    return v6;
+    return iPodOutAlertType;
   }
 }
 
@@ -746,15 +746,15 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained allowsAddingToLockScreenWhenUnlocked];
+    allowsAddingToLockScreenWhenUnlocked = [WeakRetained allowsAddingToLockScreenWhenUnlocked];
 
-    return v6;
+    return allowsAddingToLockScreenWhenUnlocked;
   }
 }
 
-- (void)setAlertSuppressionAppIDs:(id)a3
+- (void)setAlertSuppressionAppIDs:(id)ds
 {
-  v4 = [a3 count] != 0;
+  v4 = [ds count] != 0;
 
   [(BBSectionSubtypeParameters *)self setSuppressesAlertsWhenAppIsActive:v4];
 }
@@ -771,34 +771,34 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackParameters);
-    v6 = [WeakRetained suppressDelayForForwardedBulletins];
+    suppressDelayForForwardedBulletins = [WeakRetained suppressDelayForForwardedBulletins];
 
-    return v6;
+    return suppressDelayForForwardedBulletins;
   }
 }
 
-- (void)setSubtypePriority:(unint64_t)a3
+- (void)setSubtypePriority:(unint64_t)priority
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:priority];
   [(BBSectionSubtypeParameters *)self setBoxedSubtypePriority:v4];
 }
 
-- (void)setIPodOutAlertType:(int64_t)a3
+- (void)setIPodOutAlertType:(int64_t)type
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [(BBSectionSubtypeParameters *)self setBoxedIPodOutAlertType:v4];
 }
 
-- (void)setPrivacySettings:(unint64_t)a3
+- (void)setPrivacySettings:(unint64_t)settings
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:settings];
   [(BBSectionSubtypeParameters *)self setBoxedPrivacySettings:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v47 = 1;
     goto LABEL_115;
@@ -811,200 +811,200 @@
     goto LABEL_115;
   }
 
-  v5 = v4;
-  v6 = [(BBSectionSubtypeParameters *)self hiddenPreviewsBodyPlaceholder];
-  v161 = [(BBSectionSubtypeParameters *)v5 hiddenPreviewsBodyPlaceholder];
-  v162 = v6;
+  v5 = equalCopy;
+  hiddenPreviewsBodyPlaceholder = [(BBSectionSubtypeParameters *)self hiddenPreviewsBodyPlaceholder];
+  hiddenPreviewsBodyPlaceholder2 = [(BBSectionSubtypeParameters *)v5 hiddenPreviewsBodyPlaceholder];
+  v162 = hiddenPreviewsBodyPlaceholder;
   v160 = BSEqualObjects();
   if (v160 && ([(BBSectionSubtypeParameters *)self subtypeSummaryFormat], v8 = objc_claimAutoreleasedReturnValue(), [(BBSectionSubtypeParameters *)v5 subtypeSummaryFormat], v144 = objc_claimAutoreleasedReturnValue(), v145 = v8, BSEqualObjects()))
   {
-    v9 = [(BBSectionSubtypeParameters *)self topic];
+    topic = [(BBSectionSubtypeParameters *)self topic];
     [(BBSectionSubtypeParameters *)v5 topic];
-    v140 = v141 = v9;
+    v140 = v141 = topic;
     if (BSEqualObjects())
     {
-      v10 = [(BBSectionSubtypeParameters *)self missedBannerDescriptionFormat];
+      missedBannerDescriptionFormat = [(BBSectionSubtypeParameters *)self missedBannerDescriptionFormat];
       [(BBSectionSubtypeParameters *)v5 missedBannerDescriptionFormat];
-      v138 = v139 = v10;
+      v138 = v139 = missedBannerDescriptionFormat;
       if (BSEqualObjects())
       {
-        v11 = [(BBSectionSubtypeParameters *)self fullUnlockActionLabel];
+        fullUnlockActionLabel = [(BBSectionSubtypeParameters *)self fullUnlockActionLabel];
         [(BBSectionSubtypeParameters *)v5 fullUnlockActionLabel];
-        v136 = v137 = v11;
+        v136 = v137 = fullUnlockActionLabel;
         if (BSEqualObjects())
         {
-          v12 = [(BBSectionSubtypeParameters *)self unlockActionLabel];
+          unlockActionLabel = [(BBSectionSubtypeParameters *)self unlockActionLabel];
           [(BBSectionSubtypeParameters *)v5 unlockActionLabel];
-          v134 = v135 = v12;
+          v134 = v135 = unlockActionLabel;
           if (BSEqualObjects())
           {
-            v13 = [(BBSectionSubtypeParameters *)self fullAlternateActionLabel];
-            v132 = [(BBSectionSubtypeParameters *)v5 fullAlternateActionLabel];
-            v133 = v13;
+            fullAlternateActionLabel = [(BBSectionSubtypeParameters *)self fullAlternateActionLabel];
+            fullAlternateActionLabel2 = [(BBSectionSubtypeParameters *)v5 fullAlternateActionLabel];
+            v133 = fullAlternateActionLabel;
             if (BSEqualObjects())
             {
-              v14 = [(BBSectionSubtypeParameters *)self alternateActionLabel];
-              v130 = [(BBSectionSubtypeParameters *)v5 alternateActionLabel];
-              v131 = v14;
+              alternateActionLabel = [(BBSectionSubtypeParameters *)self alternateActionLabel];
+              alternateActionLabel2 = [(BBSectionSubtypeParameters *)v5 alternateActionLabel];
+              v131 = alternateActionLabel;
               if (BSEqualObjects())
               {
-                v15 = [(BBSectionSubtypeParameters *)self boxedSuppressesAlertsWhenAppIsActive];
-                v128 = [(BBSectionSubtypeParameters *)v5 boxedSuppressesAlertsWhenAppIsActive];
-                v129 = v15;
+                boxedSuppressesAlertsWhenAppIsActive = [(BBSectionSubtypeParameters *)self boxedSuppressesAlertsWhenAppIsActive];
+                boxedSuppressesAlertsWhenAppIsActive2 = [(BBSectionSubtypeParameters *)v5 boxedSuppressesAlertsWhenAppIsActive];
+                v129 = boxedSuppressesAlertsWhenAppIsActive;
                 if (BSEqualObjects())
                 {
-                  v16 = [(BBSectionSubtypeParameters *)self sectionIconOverride];
-                  v126 = [(BBSectionSubtypeParameters *)v5 sectionIconOverride];
-                  v127 = v16;
+                  sectionIconOverride = [(BBSectionSubtypeParameters *)self sectionIconOverride];
+                  sectionIconOverride2 = [(BBSectionSubtypeParameters *)v5 sectionIconOverride];
+                  v127 = sectionIconOverride;
                   if (BSEqualObjects())
                   {
-                    v17 = [(BBSectionSubtypeParameters *)self boxedCoalescesWhenLocked];
-                    v124 = [(BBSectionSubtypeParameters *)v5 boxedCoalescesWhenLocked];
-                    v125 = v17;
+                    boxedCoalescesWhenLocked = [(BBSectionSubtypeParameters *)self boxedCoalescesWhenLocked];
+                    boxedCoalescesWhenLocked2 = [(BBSectionSubtypeParameters *)v5 boxedCoalescesWhenLocked];
+                    v125 = boxedCoalescesWhenLocked;
                     if (BSEqualObjects())
                     {
-                      v18 = [(BBSectionSubtypeParameters *)self boxedInertWhenLocked];
-                      v122 = [(BBSectionSubtypeParameters *)v5 boxedInertWhenLocked];
-                      v123 = v18;
+                      boxedInertWhenLocked = [(BBSectionSubtypeParameters *)self boxedInertWhenLocked];
+                      boxedInertWhenLocked2 = [(BBSectionSubtypeParameters *)v5 boxedInertWhenLocked];
+                      v123 = boxedInertWhenLocked;
                       if (BSEqualObjects())
                       {
-                        v19 = [(BBSectionSubtypeParameters *)self boxedPreservesUnlockActionCase];
+                        boxedPreservesUnlockActionCase = [(BBSectionSubtypeParameters *)self boxedPreservesUnlockActionCase];
                         v142 = v5;
-                        v120 = [(BBSectionSubtypeParameters *)v5 boxedPreservesUnlockActionCase];
-                        v121 = v19;
+                        boxedPreservesUnlockActionCase2 = [(BBSectionSubtypeParameters *)v5 boxedPreservesUnlockActionCase];
+                        v121 = boxedPreservesUnlockActionCase;
                         if (BSEqualObjects())
                         {
-                          v20 = [(BBSectionSubtypeParameters *)self boxedVisuallyIndicatesWhenDateIsInFuture];
-                          v118 = [(BBSectionSubtypeParameters *)v5 boxedVisuallyIndicatesWhenDateIsInFuture];
-                          v119 = v20;
+                          boxedVisuallyIndicatesWhenDateIsInFuture = [(BBSectionSubtypeParameters *)self boxedVisuallyIndicatesWhenDateIsInFuture];
+                          boxedVisuallyIndicatesWhenDateIsInFuture2 = [(BBSectionSubtypeParameters *)v5 boxedVisuallyIndicatesWhenDateIsInFuture];
+                          v119 = boxedVisuallyIndicatesWhenDateIsInFuture;
                           if (BSEqualObjects())
                           {
-                            v21 = [(BBSectionSubtypeParameters *)self boxedCanBeSilencedByMenuButtonPress];
-                            v116 = [(BBSectionSubtypeParameters *)v5 boxedCanBeSilencedByMenuButtonPress];
-                            v117 = v21;
+                            boxedCanBeSilencedByMenuButtonPress = [(BBSectionSubtypeParameters *)self boxedCanBeSilencedByMenuButtonPress];
+                            boxedCanBeSilencedByMenuButtonPress2 = [(BBSectionSubtypeParameters *)v5 boxedCanBeSilencedByMenuButtonPress];
+                            v117 = boxedCanBeSilencedByMenuButtonPress;
                             if (BSEqualObjects())
                             {
-                              v22 = [(BBSectionSubtypeParameters *)self boxedPreventLock];
-                              v114 = [(BBSectionSubtypeParameters *)v5 boxedPreventLock];
-                              v115 = v22;
+                              boxedPreventLock = [(BBSectionSubtypeParameters *)self boxedPreventLock];
+                              boxedPreventLock2 = [(BBSectionSubtypeParameters *)v5 boxedPreventLock];
+                              v115 = boxedPreventLock;
                               if (BSEqualObjects())
                               {
-                                v23 = [(BBSectionSubtypeParameters *)self boxedIgnoresQuietMode];
-                                v112 = [(BBSectionSubtypeParameters *)v5 boxedIgnoresQuietMode];
-                                v113 = v23;
+                                boxedIgnoresQuietMode = [(BBSectionSubtypeParameters *)self boxedIgnoresQuietMode];
+                                boxedIgnoresQuietMode2 = [(BBSectionSubtypeParameters *)v5 boxedIgnoresQuietMode];
+                                v113 = boxedIgnoresQuietMode;
                                 if (BSEqualObjects())
                                 {
-                                  v24 = [(BBSectionSubtypeParameters *)self boxedSuppressesTitle];
-                                  v110 = [(BBSectionSubtypeParameters *)v5 boxedSuppressesTitle];
-                                  v111 = v24;
+                                  boxedSuppressesTitle = [(BBSectionSubtypeParameters *)self boxedSuppressesTitle];
+                                  boxedSuppressesTitle2 = [(BBSectionSubtypeParameters *)v5 boxedSuppressesTitle];
+                                  v111 = boxedSuppressesTitle;
                                   if (BSEqualObjects())
                                   {
-                                    v25 = [(BBSectionSubtypeParameters *)self boxedShowsUnreadIndicatorForNoticesFeed];
-                                    v108 = [(BBSectionSubtypeParameters *)v5 boxedShowsUnreadIndicatorForNoticesFeed];
-                                    v109 = v25;
+                                    boxedShowsUnreadIndicatorForNoticesFeed = [(BBSectionSubtypeParameters *)self boxedShowsUnreadIndicatorForNoticesFeed];
+                                    boxedShowsUnreadIndicatorForNoticesFeed2 = [(BBSectionSubtypeParameters *)v5 boxedShowsUnreadIndicatorForNoticesFeed];
+                                    v109 = boxedShowsUnreadIndicatorForNoticesFeed;
                                     if (BSEqualObjects())
                                     {
-                                      v26 = [(BBSectionSubtypeParameters *)self boxedShowsContactPhoto];
-                                      v106 = [(BBSectionSubtypeParameters *)v5 boxedShowsContactPhoto];
-                                      v107 = v26;
+                                      boxedShowsContactPhoto = [(BBSectionSubtypeParameters *)self boxedShowsContactPhoto];
+                                      boxedShowsContactPhoto2 = [(BBSectionSubtypeParameters *)v5 boxedShowsContactPhoto];
+                                      v107 = boxedShowsContactPhoto;
                                       if (BSEqualObjects())
                                       {
-                                        v27 = [(BBSectionSubtypeParameters *)self boxedPlaysSoundForModify];
-                                        v104 = [(BBSectionSubtypeParameters *)v142 boxedPlaysSoundForModify];
-                                        v105 = v27;
+                                        boxedPlaysSoundForModify = [(BBSectionSubtypeParameters *)self boxedPlaysSoundForModify];
+                                        boxedPlaysSoundForModify2 = [(BBSectionSubtypeParameters *)v142 boxedPlaysSoundForModify];
+                                        v105 = boxedPlaysSoundForModify;
                                         if (BSEqualObjects())
                                         {
-                                          v28 = [(BBSectionSubtypeParameters *)self boxedSubtypePriority];
-                                          v102 = [(BBSectionSubtypeParameters *)v142 boxedSubtypePriority];
-                                          v103 = v28;
+                                          boxedSubtypePriority = [(BBSectionSubtypeParameters *)self boxedSubtypePriority];
+                                          boxedSubtypePriority2 = [(BBSectionSubtypeParameters *)v142 boxedSubtypePriority];
+                                          v103 = boxedSubtypePriority;
                                           if (BSEqualObjects())
                                           {
-                                            v29 = [(BBSectionSubtypeParameters *)self boxedIPodOutAlertType];
-                                            v100 = [(BBSectionSubtypeParameters *)v142 boxedIPodOutAlertType];
-                                            v101 = v29;
+                                            boxedIPodOutAlertType = [(BBSectionSubtypeParameters *)self boxedIPodOutAlertType];
+                                            boxedIPodOutAlertType2 = [(BBSectionSubtypeParameters *)v142 boxedIPodOutAlertType];
+                                            v101 = boxedIPodOutAlertType;
                                             if (BSEqualObjects())
                                             {
-                                              v30 = [(BBSectionSubtypeParameters *)self boxedAllowsAutomaticRemovalFromLockScreen];
-                                              v98 = [(BBSectionSubtypeParameters *)v142 boxedAllowsAutomaticRemovalFromLockScreen];
-                                              v99 = v30;
+                                              boxedAllowsAutomaticRemovalFromLockScreen = [(BBSectionSubtypeParameters *)self boxedAllowsAutomaticRemovalFromLockScreen];
+                                              boxedAllowsAutomaticRemovalFromLockScreen2 = [(BBSectionSubtypeParameters *)v142 boxedAllowsAutomaticRemovalFromLockScreen];
+                                              v99 = boxedAllowsAutomaticRemovalFromLockScreen;
                                               if (BSEqualObjects())
                                               {
-                                                v31 = [(BBSectionSubtypeParameters *)self boxedAllowsAddingToLockScreenWhenUnlocked];
-                                                v96 = [(BBSectionSubtypeParameters *)v142 boxedAllowsAddingToLockScreenWhenUnlocked];
-                                                v97 = v31;
+                                                boxedAllowsAddingToLockScreenWhenUnlocked = [(BBSectionSubtypeParameters *)self boxedAllowsAddingToLockScreenWhenUnlocked];
+                                                boxedAllowsAddingToLockScreenWhenUnlocked2 = [(BBSectionSubtypeParameters *)v142 boxedAllowsAddingToLockScreenWhenUnlocked];
+                                                v97 = boxedAllowsAddingToLockScreenWhenUnlocked;
                                                 if (BSEqualObjects())
                                                 {
-                                                  v32 = [(BBSectionSubtypeParameters *)self boxedPrioritizeAtTopOfLockScreen];
-                                                  v94 = [(BBSectionSubtypeParameters *)v142 boxedPrioritizeAtTopOfLockScreen];
-                                                  v95 = v32;
+                                                  boxedPrioritizeAtTopOfLockScreen = [(BBSectionSubtypeParameters *)self boxedPrioritizeAtTopOfLockScreen];
+                                                  boxedPrioritizeAtTopOfLockScreen2 = [(BBSectionSubtypeParameters *)v142 boxedPrioritizeAtTopOfLockScreen];
+                                                  v95 = boxedPrioritizeAtTopOfLockScreen;
                                                   if (BSEqualObjects())
                                                   {
-                                                    v33 = [(BBSectionSubtypeParameters *)self boxedRevealsAdditionalContentOnPresentation];
-                                                    v92 = [(BBSectionSubtypeParameters *)v142 boxedRevealsAdditionalContentOnPresentation];
-                                                    v93 = v33;
+                                                    boxedRevealsAdditionalContentOnPresentation = [(BBSectionSubtypeParameters *)self boxedRevealsAdditionalContentOnPresentation];
+                                                    boxedRevealsAdditionalContentOnPresentation2 = [(BBSectionSubtypeParameters *)v142 boxedRevealsAdditionalContentOnPresentation];
+                                                    v93 = boxedRevealsAdditionalContentOnPresentation;
                                                     if (BSEqualObjects())
                                                     {
-                                                      v34 = [(BBSectionSubtypeParameters *)self boxedPrivacySettings];
-                                                      v90 = [(BBSectionSubtypeParameters *)v142 boxedPrivacySettings];
-                                                      v91 = v34;
+                                                      boxedPrivacySettings = [(BBSectionSubtypeParameters *)self boxedPrivacySettings];
+                                                      boxedPrivacySettings2 = [(BBSectionSubtypeParameters *)v142 boxedPrivacySettings];
+                                                      v91 = boxedPrivacySettings;
                                                       if (BSEqualObjects())
                                                       {
-                                                        v35 = [(BBSectionSubtypeParameters *)self boxedShouldDismissBulletinWhenClosed];
-                                                        v88 = [(BBSectionSubtypeParameters *)v142 boxedShouldDismissBulletinWhenClosed];
-                                                        v89 = v35;
+                                                        boxedShouldDismissBulletinWhenClosed = [(BBSectionSubtypeParameters *)self boxedShouldDismissBulletinWhenClosed];
+                                                        boxedShouldDismissBulletinWhenClosed2 = [(BBSectionSubtypeParameters *)v142 boxedShouldDismissBulletinWhenClosed];
+                                                        v89 = boxedShouldDismissBulletinWhenClosed;
                                                         if (BSEqualObjects())
                                                         {
-                                                          v36 = [(BBSectionSubtypeParameters *)self boxedAllowsPersistentBannersInCarPlay];
-                                                          v86 = [(BBSectionSubtypeParameters *)v142 boxedAllowsPersistentBannersInCarPlay];
-                                                          v87 = v36;
+                                                          boxedAllowsPersistentBannersInCarPlay = [(BBSectionSubtypeParameters *)self boxedAllowsPersistentBannersInCarPlay];
+                                                          boxedAllowsPersistentBannersInCarPlay2 = [(BBSectionSubtypeParameters *)v142 boxedAllowsPersistentBannersInCarPlay];
+                                                          v87 = boxedAllowsPersistentBannersInCarPlay;
                                                           if (BSEqualObjects())
                                                           {
-                                                            v37 = [(BBSectionSubtypeParameters *)self boxedAllowsSupplementaryActionsInCarPlay];
-                                                            v84 = [(BBSectionSubtypeParameters *)v142 boxedAllowsSupplementaryActionsInCarPlay];
-                                                            v85 = v37;
+                                                            boxedAllowsSupplementaryActionsInCarPlay = [(BBSectionSubtypeParameters *)self boxedAllowsSupplementaryActionsInCarPlay];
+                                                            boxedAllowsSupplementaryActionsInCarPlay2 = [(BBSectionSubtypeParameters *)v142 boxedAllowsSupplementaryActionsInCarPlay];
+                                                            v85 = boxedAllowsSupplementaryActionsInCarPlay;
                                                             if (BSEqualObjects())
                                                             {
-                                                              v38 = [(BBSectionSubtypeParameters *)self boxedPlaysMediaWhenRaised];
-                                                              v82 = [(BBSectionSubtypeParameters *)v142 boxedPlaysMediaWhenRaised];
-                                                              v83 = v38;
+                                                              boxedPlaysMediaWhenRaised = [(BBSectionSubtypeParameters *)self boxedPlaysMediaWhenRaised];
+                                                              boxedPlaysMediaWhenRaised2 = [(BBSectionSubtypeParameters *)v142 boxedPlaysMediaWhenRaised];
+                                                              v83 = boxedPlaysMediaWhenRaised;
                                                               if (BSEqualObjects())
                                                               {
-                                                                v39 = [(BBSectionSubtypeParameters *)self boxedSuppressDelayForForwardedBulletins];
-                                                                v80 = [(BBSectionSubtypeParameters *)v142 boxedSuppressDelayForForwardedBulletins];
-                                                                v81 = v39;
+                                                                boxedSuppressDelayForForwardedBulletins = [(BBSectionSubtypeParameters *)self boxedSuppressDelayForForwardedBulletins];
+                                                                boxedSuppressDelayForForwardedBulletins2 = [(BBSectionSubtypeParameters *)v142 boxedSuppressDelayForForwardedBulletins];
+                                                                v81 = boxedSuppressDelayForForwardedBulletins;
                                                                 if (BSEqualObjects())
                                                                 {
-                                                                  v40 = [(BBSectionSubtypeParameters *)self boxedHideDismissActionInCarPlay];
-                                                                  v78 = [(BBSectionSubtypeParameters *)v142 boxedHideDismissActionInCarPlay];
-                                                                  v79 = v40;
+                                                                  boxedHideDismissActionInCarPlay = [(BBSectionSubtypeParameters *)self boxedHideDismissActionInCarPlay];
+                                                                  boxedHideDismissActionInCarPlay2 = [(BBSectionSubtypeParameters *)v142 boxedHideDismissActionInCarPlay];
+                                                                  v79 = boxedHideDismissActionInCarPlay;
                                                                   if (BSEqualObjects())
                                                                   {
-                                                                    v41 = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteViewControllerClassName];
-                                                                    v76 = [(BBSectionSubtypeParameters *)v142 bannerAccessoryRemoteViewControllerClassName];
-                                                                    v77 = v41;
+                                                                    bannerAccessoryRemoteViewControllerClassName = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteViewControllerClassName];
+                                                                    bannerAccessoryRemoteViewControllerClassName2 = [(BBSectionSubtypeParameters *)v142 bannerAccessoryRemoteViewControllerClassName];
+                                                                    v77 = bannerAccessoryRemoteViewControllerClassName;
                                                                     if (BSEqualObjects())
                                                                     {
-                                                                      v42 = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteServiceBundleIdentifier];
-                                                                      v74 = [(BBSectionSubtypeParameters *)v142 bannerAccessoryRemoteServiceBundleIdentifier];
-                                                                      v75 = v42;
+                                                                      bannerAccessoryRemoteServiceBundleIdentifier = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteServiceBundleIdentifier];
+                                                                      bannerAccessoryRemoteServiceBundleIdentifier2 = [(BBSectionSubtypeParameters *)v142 bannerAccessoryRemoteServiceBundleIdentifier];
+                                                                      v75 = bannerAccessoryRemoteServiceBundleIdentifier;
                                                                       if (BSEqualObjects())
                                                                       {
-                                                                        v43 = [(BBSectionSubtypeParameters *)self secondaryContentRemoteViewControllerClassName];
-                                                                        v72 = [(BBSectionSubtypeParameters *)v142 secondaryContentRemoteViewControllerClassName];
-                                                                        v73 = v43;
+                                                                        secondaryContentRemoteViewControllerClassName = [(BBSectionSubtypeParameters *)self secondaryContentRemoteViewControllerClassName];
+                                                                        secondaryContentRemoteViewControllerClassName2 = [(BBSectionSubtypeParameters *)v142 secondaryContentRemoteViewControllerClassName];
+                                                                        v73 = secondaryContentRemoteViewControllerClassName;
                                                                         if (BSEqualObjects())
                                                                         {
-                                                                          v44 = [(BBSectionSubtypeParameters *)self secondaryContentRemoteServiceBundleIdentifier];
-                                                                          v70 = [(BBSectionSubtypeParameters *)v142 secondaryContentRemoteServiceBundleIdentifier];
-                                                                          v71 = v44;
+                                                                          secondaryContentRemoteServiceBundleIdentifier = [(BBSectionSubtypeParameters *)self secondaryContentRemoteServiceBundleIdentifier];
+                                                                          secondaryContentRemoteServiceBundleIdentifier2 = [(BBSectionSubtypeParameters *)v142 secondaryContentRemoteServiceBundleIdentifier];
+                                                                          v71 = secondaryContentRemoteServiceBundleIdentifier;
                                                                           if (BSEqualObjects())
                                                                           {
-                                                                            v45 = [(BBSectionSubtypeParameters *)self boxedSuppressPresentationInAmbient];
+                                                                            boxedSuppressPresentationInAmbient = [(BBSectionSubtypeParameters *)self boxedSuppressPresentationInAmbient];
                                                                             v5 = v142;
-                                                                            v46 = [(BBSectionSubtypeParameters *)v142 boxedSuppressPresentationInAmbient];
-                                                                            v69 = v45;
+                                                                            boxedSuppressPresentationInAmbient2 = [(BBSectionSubtypeParameters *)v142 boxedSuppressPresentationInAmbient];
+                                                                            v69 = boxedSuppressPresentationInAmbient;
                                                                             v47 = BSEqualObjects();
-                                                                            v7 = v46;
+                                                                            v7 = boxedSuppressPresentationInAmbient2;
                                                                             v48 = 1;
                                                                             *(&v159 + 1) = 0x100000001;
                                                                             *&v159 = 0x100000001;
@@ -2162,7 +2162,7 @@
 LABEL_46:
   if (v48)
   {
-    v143 = v4;
+    v143 = equalCopy;
     v57 = v47;
     v58 = v52;
     v59 = v53;
@@ -2184,7 +2184,7 @@ LABEL_46:
     v53 = v59;
     v52 = v58;
     v47 = v57;
-    v4 = v143;
+    equalCopy = v143;
     if (!v67)
     {
       goto LABEL_48;
@@ -2404,336 +2404,336 @@ LABEL_115:
 
 - (unint64_t)hash
 {
-  v81 = [(BBSectionSubtypeParameters *)self hiddenPreviewsBodyPlaceholder];
-  v3 = [v81 hash];
-  v80 = [(BBSectionSubtypeParameters *)self subtypeSummaryFormat];
-  v4 = [v80 hash] ^ v3;
-  v79 = [(BBSectionSubtypeParameters *)self topic];
-  v5 = [v79 hash];
-  v78 = [(BBSectionSubtypeParameters *)self missedBannerDescriptionFormat];
-  v6 = v4 ^ v5 ^ [v78 hash];
-  v77 = [(BBSectionSubtypeParameters *)self fullUnlockActionLabel];
-  v7 = [v77 hash];
-  v76 = [(BBSectionSubtypeParameters *)self unlockActionLabel];
-  v8 = v7 ^ [v76 hash];
-  v75 = [(BBSectionSubtypeParameters *)self fullAlternateActionLabel];
-  v9 = v6 ^ v8 ^ [v75 hash];
-  v74 = [(BBSectionSubtypeParameters *)self alternateActionLabel];
-  v10 = [v74 hash];
-  v73 = [(BBSectionSubtypeParameters *)self boxedSuppressesAlertsWhenAppIsActive];
-  v11 = v10 ^ [v73 hash];
-  v72 = [(BBSectionSubtypeParameters *)self sectionIconOverride];
-  v12 = v11 ^ [v72 hash];
-  v71 = [(BBSectionSubtypeParameters *)self boxedCoalescesWhenLocked];
-  v13 = v9 ^ v12 ^ [v71 hash];
-  v70 = [(BBSectionSubtypeParameters *)self boxedInertWhenLocked];
-  v14 = [v70 hash];
-  v69 = [(BBSectionSubtypeParameters *)self boxedPreservesUnlockActionCase];
-  v15 = v14 ^ [v69 hash];
-  v68 = [(BBSectionSubtypeParameters *)self boxedVisuallyIndicatesWhenDateIsInFuture];
-  v16 = v15 ^ [v68 hash];
-  v67 = [(BBSectionSubtypeParameters *)self boxedCanBeSilencedByMenuButtonPress];
-  v17 = v16 ^ [v67 hash];
-  v66 = [(BBSectionSubtypeParameters *)self boxedPreventLock];
-  v18 = v13 ^ v17 ^ [v66 hash];
-  v65 = [(BBSectionSubtypeParameters *)self boxedIgnoresQuietMode];
-  v19 = [v65 hash];
-  v64 = [(BBSectionSubtypeParameters *)self boxedSuppressesTitle];
-  v20 = v19 ^ [v64 hash];
-  v63 = [(BBSectionSubtypeParameters *)self boxedShowsUnreadIndicatorForNoticesFeed];
-  v21 = v20 ^ [v63 hash];
-  v62 = [(BBSectionSubtypeParameters *)self boxedShowsContactPhoto];
-  v22 = v21 ^ [v62 hash];
-  v61 = [(BBSectionSubtypeParameters *)self boxedPlaysSoundForModify];
-  v23 = v22 ^ [v61 hash];
-  v60 = [(BBSectionSubtypeParameters *)self boxedSubtypePriority];
-  v24 = v18 ^ v23 ^ [v60 hash];
-  v59 = [(BBSectionSubtypeParameters *)self boxedIPodOutAlertType];
-  v25 = [v59 hash];
-  v58 = [(BBSectionSubtypeParameters *)self boxedAllowsAutomaticRemovalFromLockScreen];
-  v26 = v25 ^ [v58 hash];
-  v57 = [(BBSectionSubtypeParameters *)self boxedAllowsAddingToLockScreenWhenUnlocked];
-  v27 = v26 ^ [v57 hash];
-  v56 = [(BBSectionSubtypeParameters *)self boxedPrioritizeAtTopOfLockScreen];
-  v28 = v27 ^ [v56 hash];
-  v55 = [(BBSectionSubtypeParameters *)self boxedRevealsAdditionalContentOnPresentation];
-  v29 = v28 ^ [v55 hash];
-  v53 = [(BBSectionSubtypeParameters *)self boxedAllowsPersistentBannersInCarPlay];
-  v30 = v29 ^ [v53 hash];
-  v52 = [(BBSectionSubtypeParameters *)self boxedAllowsSupplementaryActionsInCarPlay];
-  v31 = v24 ^ v30 ^ [v52 hash];
-  v51 = [(BBSectionSubtypeParameters *)self boxedPrivacySettings];
-  v32 = [v51 hash];
-  v33 = [(BBSectionSubtypeParameters *)self boxedShouldDismissBulletinWhenClosed];
-  v34 = v32 ^ [v33 hash];
-  v35 = [(BBSectionSubtypeParameters *)self boxedPlaysMediaWhenRaised];
-  v36 = v34 ^ [v35 hash];
-  v37 = [(BBSectionSubtypeParameters *)self boxedSuppressDelayForForwardedBulletins];
-  v38 = v36 ^ [v37 hash];
-  v39 = [(BBSectionSubtypeParameters *)self boxedHideDismissActionInCarPlay];
-  v40 = v38 ^ [v39 hash];
-  v41 = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteViewControllerClassName];
-  v42 = v40 ^ [v41 hash];
-  v43 = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteServiceBundleIdentifier];
-  v44 = v42 ^ [v43 hash];
-  v45 = [(BBSectionSubtypeParameters *)self secondaryContentRemoteViewControllerClassName];
-  v54 = v31 ^ v44 ^ [v45 hash];
-  v46 = [(BBSectionSubtypeParameters *)self secondaryContentRemoteServiceBundleIdentifier];
-  v47 = [v46 hash];
-  v48 = [(BBSectionSubtypeParameters *)self boxedSuppressPresentationInAmbient];
-  v49 = v47 ^ [v48 hash];
+  hiddenPreviewsBodyPlaceholder = [(BBSectionSubtypeParameters *)self hiddenPreviewsBodyPlaceholder];
+  v3 = [hiddenPreviewsBodyPlaceholder hash];
+  subtypeSummaryFormat = [(BBSectionSubtypeParameters *)self subtypeSummaryFormat];
+  v4 = [subtypeSummaryFormat hash] ^ v3;
+  topic = [(BBSectionSubtypeParameters *)self topic];
+  v5 = [topic hash];
+  missedBannerDescriptionFormat = [(BBSectionSubtypeParameters *)self missedBannerDescriptionFormat];
+  v6 = v4 ^ v5 ^ [missedBannerDescriptionFormat hash];
+  fullUnlockActionLabel = [(BBSectionSubtypeParameters *)self fullUnlockActionLabel];
+  v7 = [fullUnlockActionLabel hash];
+  unlockActionLabel = [(BBSectionSubtypeParameters *)self unlockActionLabel];
+  v8 = v7 ^ [unlockActionLabel hash];
+  fullAlternateActionLabel = [(BBSectionSubtypeParameters *)self fullAlternateActionLabel];
+  v9 = v6 ^ v8 ^ [fullAlternateActionLabel hash];
+  alternateActionLabel = [(BBSectionSubtypeParameters *)self alternateActionLabel];
+  v10 = [alternateActionLabel hash];
+  boxedSuppressesAlertsWhenAppIsActive = [(BBSectionSubtypeParameters *)self boxedSuppressesAlertsWhenAppIsActive];
+  v11 = v10 ^ [boxedSuppressesAlertsWhenAppIsActive hash];
+  sectionIconOverride = [(BBSectionSubtypeParameters *)self sectionIconOverride];
+  v12 = v11 ^ [sectionIconOverride hash];
+  boxedCoalescesWhenLocked = [(BBSectionSubtypeParameters *)self boxedCoalescesWhenLocked];
+  v13 = v9 ^ v12 ^ [boxedCoalescesWhenLocked hash];
+  boxedInertWhenLocked = [(BBSectionSubtypeParameters *)self boxedInertWhenLocked];
+  v14 = [boxedInertWhenLocked hash];
+  boxedPreservesUnlockActionCase = [(BBSectionSubtypeParameters *)self boxedPreservesUnlockActionCase];
+  v15 = v14 ^ [boxedPreservesUnlockActionCase hash];
+  boxedVisuallyIndicatesWhenDateIsInFuture = [(BBSectionSubtypeParameters *)self boxedVisuallyIndicatesWhenDateIsInFuture];
+  v16 = v15 ^ [boxedVisuallyIndicatesWhenDateIsInFuture hash];
+  boxedCanBeSilencedByMenuButtonPress = [(BBSectionSubtypeParameters *)self boxedCanBeSilencedByMenuButtonPress];
+  v17 = v16 ^ [boxedCanBeSilencedByMenuButtonPress hash];
+  boxedPreventLock = [(BBSectionSubtypeParameters *)self boxedPreventLock];
+  v18 = v13 ^ v17 ^ [boxedPreventLock hash];
+  boxedIgnoresQuietMode = [(BBSectionSubtypeParameters *)self boxedIgnoresQuietMode];
+  v19 = [boxedIgnoresQuietMode hash];
+  boxedSuppressesTitle = [(BBSectionSubtypeParameters *)self boxedSuppressesTitle];
+  v20 = v19 ^ [boxedSuppressesTitle hash];
+  boxedShowsUnreadIndicatorForNoticesFeed = [(BBSectionSubtypeParameters *)self boxedShowsUnreadIndicatorForNoticesFeed];
+  v21 = v20 ^ [boxedShowsUnreadIndicatorForNoticesFeed hash];
+  boxedShowsContactPhoto = [(BBSectionSubtypeParameters *)self boxedShowsContactPhoto];
+  v22 = v21 ^ [boxedShowsContactPhoto hash];
+  boxedPlaysSoundForModify = [(BBSectionSubtypeParameters *)self boxedPlaysSoundForModify];
+  v23 = v22 ^ [boxedPlaysSoundForModify hash];
+  boxedSubtypePriority = [(BBSectionSubtypeParameters *)self boxedSubtypePriority];
+  v24 = v18 ^ v23 ^ [boxedSubtypePriority hash];
+  boxedIPodOutAlertType = [(BBSectionSubtypeParameters *)self boxedIPodOutAlertType];
+  v25 = [boxedIPodOutAlertType hash];
+  boxedAllowsAutomaticRemovalFromLockScreen = [(BBSectionSubtypeParameters *)self boxedAllowsAutomaticRemovalFromLockScreen];
+  v26 = v25 ^ [boxedAllowsAutomaticRemovalFromLockScreen hash];
+  boxedAllowsAddingToLockScreenWhenUnlocked = [(BBSectionSubtypeParameters *)self boxedAllowsAddingToLockScreenWhenUnlocked];
+  v27 = v26 ^ [boxedAllowsAddingToLockScreenWhenUnlocked hash];
+  boxedPrioritizeAtTopOfLockScreen = [(BBSectionSubtypeParameters *)self boxedPrioritizeAtTopOfLockScreen];
+  v28 = v27 ^ [boxedPrioritizeAtTopOfLockScreen hash];
+  boxedRevealsAdditionalContentOnPresentation = [(BBSectionSubtypeParameters *)self boxedRevealsAdditionalContentOnPresentation];
+  v29 = v28 ^ [boxedRevealsAdditionalContentOnPresentation hash];
+  boxedAllowsPersistentBannersInCarPlay = [(BBSectionSubtypeParameters *)self boxedAllowsPersistentBannersInCarPlay];
+  v30 = v29 ^ [boxedAllowsPersistentBannersInCarPlay hash];
+  boxedAllowsSupplementaryActionsInCarPlay = [(BBSectionSubtypeParameters *)self boxedAllowsSupplementaryActionsInCarPlay];
+  v31 = v24 ^ v30 ^ [boxedAllowsSupplementaryActionsInCarPlay hash];
+  boxedPrivacySettings = [(BBSectionSubtypeParameters *)self boxedPrivacySettings];
+  v32 = [boxedPrivacySettings hash];
+  boxedShouldDismissBulletinWhenClosed = [(BBSectionSubtypeParameters *)self boxedShouldDismissBulletinWhenClosed];
+  v34 = v32 ^ [boxedShouldDismissBulletinWhenClosed hash];
+  boxedPlaysMediaWhenRaised = [(BBSectionSubtypeParameters *)self boxedPlaysMediaWhenRaised];
+  v36 = v34 ^ [boxedPlaysMediaWhenRaised hash];
+  boxedSuppressDelayForForwardedBulletins = [(BBSectionSubtypeParameters *)self boxedSuppressDelayForForwardedBulletins];
+  v38 = v36 ^ [boxedSuppressDelayForForwardedBulletins hash];
+  boxedHideDismissActionInCarPlay = [(BBSectionSubtypeParameters *)self boxedHideDismissActionInCarPlay];
+  v40 = v38 ^ [boxedHideDismissActionInCarPlay hash];
+  bannerAccessoryRemoteViewControllerClassName = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteViewControllerClassName];
+  v42 = v40 ^ [bannerAccessoryRemoteViewControllerClassName hash];
+  bannerAccessoryRemoteServiceBundleIdentifier = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteServiceBundleIdentifier];
+  v44 = v42 ^ [bannerAccessoryRemoteServiceBundleIdentifier hash];
+  secondaryContentRemoteViewControllerClassName = [(BBSectionSubtypeParameters *)self secondaryContentRemoteViewControllerClassName];
+  v54 = v31 ^ v44 ^ [secondaryContentRemoteViewControllerClassName hash];
+  secondaryContentRemoteServiceBundleIdentifier = [(BBSectionSubtypeParameters *)self secondaryContentRemoteServiceBundleIdentifier];
+  v47 = [secondaryContentRemoteServiceBundleIdentifier hash];
+  boxedSuppressPresentationInAmbient = [(BBSectionSubtypeParameters *)self boxedSuppressPresentationInAmbient];
+  v49 = v47 ^ [boxedSuppressPresentationInAmbient hash];
 
   return v54 ^ v49;
 }
 
-- (BBSectionSubtypeParameters)initWithCoder:(id)a3
+- (BBSectionSubtypeParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = BBSectionSubtypeParameters;
   v5 = [(BBSectionSubtypeParameters *)&v46 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hiddenPreviewsBodyPlaceholder"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hiddenPreviewsBodyPlaceholder"];
     [(BBSectionSubtypeParameters *)v5 setHiddenPreviewsBodyPlaceholder:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtypeSummaryFormat"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtypeSummaryFormat"];
     [(BBSectionSubtypeParameters *)v5 setSubtypeSummaryFormat:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
     [(BBSectionSubtypeParameters *)v5 setTopic:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"missedBannerDescriptionFormat"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"missedBannerDescriptionFormat"];
     [(BBSectionSubtypeParameters *)v5 setMissedBannerDescriptionFormat:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullUnlockActionLabel"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullUnlockActionLabel"];
     [(BBSectionSubtypeParameters *)v5 setFullUnlockActionLabel:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unlockActionLabel"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unlockActionLabel"];
     [(BBSectionSubtypeParameters *)v5 setUnlockActionLabel:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAltnerateActionLabel"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAltnerateActionLabel"];
     [(BBSectionSubtypeParameters *)v5 setFullAlternateActionLabel:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alternateActionLabel"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternateActionLabel"];
     [(BBSectionSubtypeParameters *)v5 setAlternateActionLabel:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionIconOverride"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionIconOverride"];
     [(BBSectionSubtypeParameters *)v5 setSectionIconOverride:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bannerAccessoryRemoteViewControllerClassName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bannerAccessoryRemoteViewControllerClassName"];
     [(BBSectionSubtypeParameters *)v5 setBannerAccessoryRemoteViewControllerClassName:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bannerAccessoryRemoteServiceBundleIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bannerAccessoryRemoteServiceBundleIdentifier"];
     [(BBSectionSubtypeParameters *)v5 setBannerAccessoryRemoteServiceBundleIdentifier:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryContentRemoteViewControllerClassName"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryContentRemoteViewControllerClassName"];
     [(BBSectionSubtypeParameters *)v5 setSecondaryContentRemoteViewControllerClassName:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryContentRemoteServiceBundleIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryContentRemoteServiceBundleIdentifier"];
     [(BBSectionSubtypeParameters *)v5 setSecondaryContentRemoteServiceBundleIdentifier:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppressWhenActive"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppressWhenActive"];
     [(BBSectionSubtypeParameters *)v5 setBoxedSuppressesAlertsWhenAppIsActive:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coalescesWhenLocked"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coalescesWhenLocked"];
     [(BBSectionSubtypeParameters *)v5 setBoxedCoalescesWhenLocked:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inertWhenLocked"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inertWhenLocked"];
     [(BBSectionSubtypeParameters *)v5 setBoxedInertWhenLocked:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preservesUnlockActionCase"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preservesUnlockActionCase"];
     [(BBSectionSubtypeParameters *)v5 setBoxedPreservesUnlockActionCase:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visuallyIndicatesWhenDateIsInFuture"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visuallyIndicatesWhenDateIsInFuture"];
     [(BBSectionSubtypeParameters *)v5 setBoxedVisuallyIndicatesWhenDateIsInFuture:v23];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"canBeSilencedByMenuButtonPress"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"canBeSilencedByMenuButtonPress"];
     [(BBSectionSubtypeParameters *)v5 setBoxedCanBeSilencedByMenuButtonPress:v24];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preventLock"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preventLock"];
     [(BBSectionSubtypeParameters *)v5 setBoxedPreventLock:v25];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ignoresQuietMode"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ignoresQuietMode"];
     [(BBSectionSubtypeParameters *)v5 setBoxedIgnoresQuietMode:v26];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppressesTitle"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppressesTitle"];
     [(BBSectionSubtypeParameters *)v5 setBoxedSuppressesTitle:v27];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"showsUnreadIndicatorForNoticesFeed"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"showsUnreadIndicatorForNoticesFeed"];
     [(BBSectionSubtypeParameters *)v5 setBoxedShowsUnreadIndicatorForNoticesFeed:v28];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"showsContactPhoto"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"showsContactPhoto"];
     [(BBSectionSubtypeParameters *)v5 setBoxedShowsContactPhoto:v29];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playsSoundForModify"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playsSoundForModify"];
     [(BBSectionSubtypeParameters *)v5 setBoxedPlaysSoundForModify:v30];
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtypePriority"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtypePriority"];
     [(BBSectionSubtypeParameters *)v5 setBoxedSubtypePriority:v31];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iPodOutAlertType"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iPodOutAlertType"];
     [(BBSectionSubtypeParameters *)v5 setBoxedIPodOutAlertType:v32];
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAutomaticRemovalFromLockScreen"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAutomaticRemovalFromLockScreen"];
     [(BBSectionSubtypeParameters *)v5 setBoxedAllowsAutomaticRemovalFromLockScreen:v33];
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsAddingToLockScreenWhenUnlocked"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsAddingToLockScreenWhenUnlocked"];
     [(BBSectionSubtypeParameters *)v5 setBoxedAllowsAddingToLockScreenWhenUnlocked:v34];
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prioritizeAtTopOfLockScreen"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prioritizeAtTopOfLockScreen"];
     [(BBSectionSubtypeParameters *)v5 setBoxedPrioritizeAtTopOfLockScreen:v35];
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"revealsAdditionalContentOnPresentation"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"revealsAdditionalContentOnPresentation"];
     [(BBSectionSubtypeParameters *)v5 setBoxedRevealsAdditionalContentOnPresentation:v36];
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privacySettings"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privacySettings"];
     [(BBSectionSubtypeParameters *)v5 setBoxedPrivacySettings:v37];
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shouldDismissBulletinWhenClosed"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shouldDismissBulletinWhenClosed"];
     [(BBSectionSubtypeParameters *)v5 setBoxedShouldDismissBulletinWhenClosed:v38];
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsPersistentBannersInCarPlay"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsPersistentBannersInCarPlay"];
     [(BBSectionSubtypeParameters *)v5 setBoxedAllowsPersistentBannersInCarPlay:v39];
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsSupplementaryActionsInCarPlay"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsSupplementaryActionsInCarPlay"];
     [(BBSectionSubtypeParameters *)v5 setBoxedAllowsSupplementaryActionsInCarPlay:v40];
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playsMediaWhenRaised"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playsMediaWhenRaised"];
     [(BBSectionSubtypeParameters *)v5 setBoxedPlaysMediaWhenRaised:v41];
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppressDelayForForwardedBulletins"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppressDelayForForwardedBulletins"];
     [(BBSectionSubtypeParameters *)v5 setBoxedSuppressDelayForForwardedBulletins:v42];
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hideDismissActionInCarPlay"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hideDismissActionInCarPlay"];
     [(BBSectionSubtypeParameters *)v5 setBoxedHideDismissActionInCarPlay:v43];
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suppressPresentationInAmbient"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suppressPresentationInAmbient"];
     [(BBSectionSubtypeParameters *)v5 setSuppressPresentationInAmbient:v44 != 0];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BBSectionSubtypeParameters *)self hiddenPreviewsBodyPlaceholder];
-  [v4 encodeObject:v5 forKey:@"hiddenPreviewsBodyPlaceholder"];
+  coderCopy = coder;
+  hiddenPreviewsBodyPlaceholder = [(BBSectionSubtypeParameters *)self hiddenPreviewsBodyPlaceholder];
+  [coderCopy encodeObject:hiddenPreviewsBodyPlaceholder forKey:@"hiddenPreviewsBodyPlaceholder"];
 
-  v6 = [(BBSectionSubtypeParameters *)self subtypeSummaryFormat];
-  [v4 encodeObject:v6 forKey:@"subtypeSummaryFormat"];
+  subtypeSummaryFormat = [(BBSectionSubtypeParameters *)self subtypeSummaryFormat];
+  [coderCopy encodeObject:subtypeSummaryFormat forKey:@"subtypeSummaryFormat"];
 
-  v7 = [(BBSectionSubtypeParameters *)self topic];
-  [v4 encodeObject:v7 forKey:@"topic"];
+  topic = [(BBSectionSubtypeParameters *)self topic];
+  [coderCopy encodeObject:topic forKey:@"topic"];
 
-  v8 = [(BBSectionSubtypeParameters *)self missedBannerDescriptionFormat];
-  [v4 encodeObject:v8 forKey:@"missedBannerDescriptionFormat"];
+  missedBannerDescriptionFormat = [(BBSectionSubtypeParameters *)self missedBannerDescriptionFormat];
+  [coderCopy encodeObject:missedBannerDescriptionFormat forKey:@"missedBannerDescriptionFormat"];
 
-  v9 = [(BBSectionSubtypeParameters *)self fullUnlockActionLabel];
-  [v4 encodeObject:v9 forKey:@"fullUnlockActionLabel"];
+  fullUnlockActionLabel = [(BBSectionSubtypeParameters *)self fullUnlockActionLabel];
+  [coderCopy encodeObject:fullUnlockActionLabel forKey:@"fullUnlockActionLabel"];
 
-  v10 = [(BBSectionSubtypeParameters *)self unlockActionLabel];
-  [v4 encodeObject:v10 forKey:@"unlockActionLabel"];
+  unlockActionLabel = [(BBSectionSubtypeParameters *)self unlockActionLabel];
+  [coderCopy encodeObject:unlockActionLabel forKey:@"unlockActionLabel"];
 
-  v11 = [(BBSectionSubtypeParameters *)self fullAlternateActionLabel];
-  [v4 encodeObject:v11 forKey:@"fullAltnerateActionLabel"];
+  fullAlternateActionLabel = [(BBSectionSubtypeParameters *)self fullAlternateActionLabel];
+  [coderCopy encodeObject:fullAlternateActionLabel forKey:@"fullAltnerateActionLabel"];
 
-  v12 = [(BBSectionSubtypeParameters *)self alternateActionLabel];
-  [v4 encodeObject:v12 forKey:@"alternateActionLabel"];
+  alternateActionLabel = [(BBSectionSubtypeParameters *)self alternateActionLabel];
+  [coderCopy encodeObject:alternateActionLabel forKey:@"alternateActionLabel"];
 
-  v13 = [(BBSectionSubtypeParameters *)self sectionIconOverride];
-  [v4 encodeObject:v13 forKey:@"sectionIconOverride"];
+  sectionIconOverride = [(BBSectionSubtypeParameters *)self sectionIconOverride];
+  [coderCopy encodeObject:sectionIconOverride forKey:@"sectionIconOverride"];
 
-  v14 = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteViewControllerClassName];
-  [v4 encodeObject:v14 forKey:@"bannerAccessoryRemoteViewControllerClassName"];
+  bannerAccessoryRemoteViewControllerClassName = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteViewControllerClassName];
+  [coderCopy encodeObject:bannerAccessoryRemoteViewControllerClassName forKey:@"bannerAccessoryRemoteViewControllerClassName"];
 
-  v15 = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteServiceBundleIdentifier];
-  [v4 encodeObject:v15 forKey:@"bannerAccessoryRemoteServiceBundleIdentifier"];
+  bannerAccessoryRemoteServiceBundleIdentifier = [(BBSectionSubtypeParameters *)self bannerAccessoryRemoteServiceBundleIdentifier];
+  [coderCopy encodeObject:bannerAccessoryRemoteServiceBundleIdentifier forKey:@"bannerAccessoryRemoteServiceBundleIdentifier"];
 
-  v16 = [(BBSectionSubtypeParameters *)self secondaryContentRemoteViewControllerClassName];
-  [v4 encodeObject:v16 forKey:@"secondaryContentRemoteViewControllerClassName"];
+  secondaryContentRemoteViewControllerClassName = [(BBSectionSubtypeParameters *)self secondaryContentRemoteViewControllerClassName];
+  [coderCopy encodeObject:secondaryContentRemoteViewControllerClassName forKey:@"secondaryContentRemoteViewControllerClassName"];
 
-  v17 = [(BBSectionSubtypeParameters *)self secondaryContentRemoteServiceBundleIdentifier];
-  [v4 encodeObject:v17 forKey:@"secondaryContentRemoteServiceBundleIdentifier"];
+  secondaryContentRemoteServiceBundleIdentifier = [(BBSectionSubtypeParameters *)self secondaryContentRemoteServiceBundleIdentifier];
+  [coderCopy encodeObject:secondaryContentRemoteServiceBundleIdentifier forKey:@"secondaryContentRemoteServiceBundleIdentifier"];
 
-  v18 = [(BBSectionSubtypeParameters *)self boxedSuppressesAlertsWhenAppIsActive];
-  [v4 encodeObject:v18 forKey:@"suppressWhenActive"];
+  boxedSuppressesAlertsWhenAppIsActive = [(BBSectionSubtypeParameters *)self boxedSuppressesAlertsWhenAppIsActive];
+  [coderCopy encodeObject:boxedSuppressesAlertsWhenAppIsActive forKey:@"suppressWhenActive"];
 
-  v19 = [(BBSectionSubtypeParameters *)self boxedCoalescesWhenLocked];
-  [v4 encodeObject:v19 forKey:@"coalescesWhenLocked"];
+  boxedCoalescesWhenLocked = [(BBSectionSubtypeParameters *)self boxedCoalescesWhenLocked];
+  [coderCopy encodeObject:boxedCoalescesWhenLocked forKey:@"coalescesWhenLocked"];
 
-  v20 = [(BBSectionSubtypeParameters *)self boxedInertWhenLocked];
-  [v4 encodeObject:v20 forKey:@"inertWhenLocked"];
+  boxedInertWhenLocked = [(BBSectionSubtypeParameters *)self boxedInertWhenLocked];
+  [coderCopy encodeObject:boxedInertWhenLocked forKey:@"inertWhenLocked"];
 
-  v21 = [(BBSectionSubtypeParameters *)self boxedPreservesUnlockActionCase];
-  [v4 encodeObject:v21 forKey:@"preservesUnlockActionCase"];
+  boxedPreservesUnlockActionCase = [(BBSectionSubtypeParameters *)self boxedPreservesUnlockActionCase];
+  [coderCopy encodeObject:boxedPreservesUnlockActionCase forKey:@"preservesUnlockActionCase"];
 
-  v22 = [(BBSectionSubtypeParameters *)self boxedVisuallyIndicatesWhenDateIsInFuture];
-  [v4 encodeObject:v22 forKey:@"visuallyIndicatesWhenDateIsInFuture"];
+  boxedVisuallyIndicatesWhenDateIsInFuture = [(BBSectionSubtypeParameters *)self boxedVisuallyIndicatesWhenDateIsInFuture];
+  [coderCopy encodeObject:boxedVisuallyIndicatesWhenDateIsInFuture forKey:@"visuallyIndicatesWhenDateIsInFuture"];
 
-  v23 = [(BBSectionSubtypeParameters *)self boxedCanBeSilencedByMenuButtonPress];
-  [v4 encodeObject:v23 forKey:@"canBeSilencedByMenuButtonPress"];
+  boxedCanBeSilencedByMenuButtonPress = [(BBSectionSubtypeParameters *)self boxedCanBeSilencedByMenuButtonPress];
+  [coderCopy encodeObject:boxedCanBeSilencedByMenuButtonPress forKey:@"canBeSilencedByMenuButtonPress"];
 
-  v24 = [(BBSectionSubtypeParameters *)self boxedPreventLock];
-  [v4 encodeObject:v24 forKey:@"preventLock"];
+  boxedPreventLock = [(BBSectionSubtypeParameters *)self boxedPreventLock];
+  [coderCopy encodeObject:boxedPreventLock forKey:@"preventLock"];
 
-  v25 = [(BBSectionSubtypeParameters *)self boxedIgnoresQuietMode];
-  [v4 encodeObject:v25 forKey:@"ignoresQuietMode"];
+  boxedIgnoresQuietMode = [(BBSectionSubtypeParameters *)self boxedIgnoresQuietMode];
+  [coderCopy encodeObject:boxedIgnoresQuietMode forKey:@"ignoresQuietMode"];
 
-  v26 = [(BBSectionSubtypeParameters *)self boxedSuppressesTitle];
-  [v4 encodeObject:v26 forKey:@"suppressesTitle"];
+  boxedSuppressesTitle = [(BBSectionSubtypeParameters *)self boxedSuppressesTitle];
+  [coderCopy encodeObject:boxedSuppressesTitle forKey:@"suppressesTitle"];
 
-  v27 = [(BBSectionSubtypeParameters *)self boxedShowsUnreadIndicatorForNoticesFeed];
-  [v4 encodeObject:v27 forKey:@"showsUnreadIndicatorForNoticesFeed"];
+  boxedShowsUnreadIndicatorForNoticesFeed = [(BBSectionSubtypeParameters *)self boxedShowsUnreadIndicatorForNoticesFeed];
+  [coderCopy encodeObject:boxedShowsUnreadIndicatorForNoticesFeed forKey:@"showsUnreadIndicatorForNoticesFeed"];
 
-  v28 = [(BBSectionSubtypeParameters *)self boxedShowsContactPhoto];
-  [v4 encodeObject:v28 forKey:@"showsContactPhoto"];
+  boxedShowsContactPhoto = [(BBSectionSubtypeParameters *)self boxedShowsContactPhoto];
+  [coderCopy encodeObject:boxedShowsContactPhoto forKey:@"showsContactPhoto"];
 
-  v29 = [(BBSectionSubtypeParameters *)self boxedPlaysSoundForModify];
-  [v4 encodeObject:v29 forKey:@"playsSoundForModify"];
+  boxedPlaysSoundForModify = [(BBSectionSubtypeParameters *)self boxedPlaysSoundForModify];
+  [coderCopy encodeObject:boxedPlaysSoundForModify forKey:@"playsSoundForModify"];
 
-  v30 = [(BBSectionSubtypeParameters *)self boxedSubtypePriority];
-  [v4 encodeObject:v30 forKey:@"subtypePriority"];
+  boxedSubtypePriority = [(BBSectionSubtypeParameters *)self boxedSubtypePriority];
+  [coderCopy encodeObject:boxedSubtypePriority forKey:@"subtypePriority"];
 
-  v31 = [(BBSectionSubtypeParameters *)self boxedIPodOutAlertType];
-  [v4 encodeObject:v31 forKey:@"iPodOutAlertType"];
+  boxedIPodOutAlertType = [(BBSectionSubtypeParameters *)self boxedIPodOutAlertType];
+  [coderCopy encodeObject:boxedIPodOutAlertType forKey:@"iPodOutAlertType"];
 
-  v32 = [(BBSectionSubtypeParameters *)self boxedAllowsAutomaticRemovalFromLockScreen];
-  [v4 encodeObject:v32 forKey:@"allowsAutomaticRemovalFromLockScreen"];
+  boxedAllowsAutomaticRemovalFromLockScreen = [(BBSectionSubtypeParameters *)self boxedAllowsAutomaticRemovalFromLockScreen];
+  [coderCopy encodeObject:boxedAllowsAutomaticRemovalFromLockScreen forKey:@"allowsAutomaticRemovalFromLockScreen"];
 
-  v33 = [(BBSectionSubtypeParameters *)self boxedAllowsAddingToLockScreenWhenUnlocked];
-  [v4 encodeObject:v33 forKey:@"allowsAddingToLockScreenWhenUnlocked"];
+  boxedAllowsAddingToLockScreenWhenUnlocked = [(BBSectionSubtypeParameters *)self boxedAllowsAddingToLockScreenWhenUnlocked];
+  [coderCopy encodeObject:boxedAllowsAddingToLockScreenWhenUnlocked forKey:@"allowsAddingToLockScreenWhenUnlocked"];
 
-  v34 = [(BBSectionSubtypeParameters *)self boxedPrioritizeAtTopOfLockScreen];
-  [v4 encodeObject:v34 forKey:@"prioritizeAtTopOfLockScreen"];
+  boxedPrioritizeAtTopOfLockScreen = [(BBSectionSubtypeParameters *)self boxedPrioritizeAtTopOfLockScreen];
+  [coderCopy encodeObject:boxedPrioritizeAtTopOfLockScreen forKey:@"prioritizeAtTopOfLockScreen"];
 
-  v35 = [(BBSectionSubtypeParameters *)self boxedRevealsAdditionalContentOnPresentation];
-  [v4 encodeObject:v35 forKey:@"revealsAdditionalContentOnPresentation"];
+  boxedRevealsAdditionalContentOnPresentation = [(BBSectionSubtypeParameters *)self boxedRevealsAdditionalContentOnPresentation];
+  [coderCopy encodeObject:boxedRevealsAdditionalContentOnPresentation forKey:@"revealsAdditionalContentOnPresentation"];
 
-  v36 = [(BBSectionSubtypeParameters *)self boxedPrivacySettings];
-  [v4 encodeObject:v36 forKey:@"privacySettings"];
+  boxedPrivacySettings = [(BBSectionSubtypeParameters *)self boxedPrivacySettings];
+  [coderCopy encodeObject:boxedPrivacySettings forKey:@"privacySettings"];
 
-  v37 = [(BBSectionSubtypeParameters *)self boxedShouldDismissBulletinWhenClosed];
-  [v4 encodeObject:v37 forKey:@"shouldDismissBulletinWhenClosed"];
+  boxedShouldDismissBulletinWhenClosed = [(BBSectionSubtypeParameters *)self boxedShouldDismissBulletinWhenClosed];
+  [coderCopy encodeObject:boxedShouldDismissBulletinWhenClosed forKey:@"shouldDismissBulletinWhenClosed"];
 
-  v38 = [(BBSectionSubtypeParameters *)self boxedAllowsPersistentBannersInCarPlay];
-  [v4 encodeObject:v38 forKey:@"allowsPersistentBannersInCarPlay"];
+  boxedAllowsPersistentBannersInCarPlay = [(BBSectionSubtypeParameters *)self boxedAllowsPersistentBannersInCarPlay];
+  [coderCopy encodeObject:boxedAllowsPersistentBannersInCarPlay forKey:@"allowsPersistentBannersInCarPlay"];
 
-  v39 = [(BBSectionSubtypeParameters *)self boxedAllowsSupplementaryActionsInCarPlay];
-  [v4 encodeObject:v39 forKey:@"allowsSupplementaryActionsInCarPlay"];
+  boxedAllowsSupplementaryActionsInCarPlay = [(BBSectionSubtypeParameters *)self boxedAllowsSupplementaryActionsInCarPlay];
+  [coderCopy encodeObject:boxedAllowsSupplementaryActionsInCarPlay forKey:@"allowsSupplementaryActionsInCarPlay"];
 
-  v40 = [(BBSectionSubtypeParameters *)self boxedPlaysMediaWhenRaised];
-  [v4 encodeObject:v40 forKey:@"playsMediaWhenRaised"];
+  boxedPlaysMediaWhenRaised = [(BBSectionSubtypeParameters *)self boxedPlaysMediaWhenRaised];
+  [coderCopy encodeObject:boxedPlaysMediaWhenRaised forKey:@"playsMediaWhenRaised"];
 
-  v41 = [(BBSectionSubtypeParameters *)self boxedSuppressDelayForForwardedBulletins];
-  [v4 encodeObject:v41 forKey:@"suppressDelayForForwardedBulletins"];
+  boxedSuppressDelayForForwardedBulletins = [(BBSectionSubtypeParameters *)self boxedSuppressDelayForForwardedBulletins];
+  [coderCopy encodeObject:boxedSuppressDelayForForwardedBulletins forKey:@"suppressDelayForForwardedBulletins"];
 
-  v42 = [(BBSectionSubtypeParameters *)self boxedHideDismissActionInCarPlay];
-  [v4 encodeObject:v42 forKey:@"hideDismissActionInCarPlay"];
+  boxedHideDismissActionInCarPlay = [(BBSectionSubtypeParameters *)self boxedHideDismissActionInCarPlay];
+  [coderCopy encodeObject:boxedHideDismissActionInCarPlay forKey:@"hideDismissActionInCarPlay"];
 
-  v43 = [(BBSectionSubtypeParameters *)self boxedSuppressPresentationInAmbient];
-  [v4 encodeObject:v43 forKey:@"suppressPresentationInAmbient"];
+  boxedSuppressPresentationInAmbient = [(BBSectionSubtypeParameters *)self boxedSuppressPresentationInAmbient];
+  [coderCopy encodeObject:boxedSuppressPresentationInAmbient forKey:@"suppressPresentationInAmbient"];
 }
 
 - (BBSectionSubtypeParameters)fallbackParameters

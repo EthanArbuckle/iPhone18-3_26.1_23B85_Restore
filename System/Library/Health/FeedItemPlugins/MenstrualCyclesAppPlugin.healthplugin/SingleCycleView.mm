@@ -1,17 +1,17 @@
 @interface SingleCycleView
 - (UIColor)backgroundColor;
-- (_TtC24MenstrualCyclesAppPlugin15SingleCycleView)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin15SingleCycleView)initWithCoder:(id)coder;
 - (void)adaptToColorSchemeChanges;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)viewModelProviderDidUpdate:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setBackgroundColor:(id)color;
+- (void)viewModelProviderDidUpdate:(id)update;
 @end
 
 @implementation SingleCycleView
@@ -20,24 +20,24 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for SingleCycleView();
-  v2 = [(SingleCycleView *)&v4 backgroundColor];
+  backgroundColor = [(SingleCycleView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for SingleCycleView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v8.receiver;
-  [(SingleCycleView *)&v8 setBackgroundColor:v4];
+  [(SingleCycleView *)&v8 setBackgroundColor:colorCopy];
   v6 = *&v5[OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15SingleCycleView_collectionView];
-  v7 = [v5 backgroundColor];
+  backgroundColor = [v5 backgroundColor];
   [v6 setBackgroundColor_];
 }
 
-- (_TtC24MenstrualCyclesAppPlugin15SingleCycleView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin15SingleCycleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15SingleCycleView_filter) = 51;
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15SingleCycleView_overlayGradient;
@@ -59,32 +59,32 @@
 - (void)layoutMarginsDidChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15SingleCycleView_collectionView);
-  v5 = self;
-  [(SingleCycleView *)v5 layoutMargins];
+  selfCopy = self;
+  [(SingleCycleView *)selfCopy layoutMargins];
   v4 = v3;
-  [(SingleCycleView *)v5 layoutMargins];
+  [(SingleCycleView *)selfCopy layoutMargins];
   [v2 setContentInset_];
 }
 
 - (void)adaptToColorSchemeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E1C98B8();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E1C9A70();
 }
 
-- (void)viewModelProviderDidUpdate:(id)a3
+- (void)viewModelProviderDidUpdate:(id)update
 {
-  v3 = self;
+  selfCopy = self;
   sub_29E1CAA78();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = sub_29E2BCFB4();
   v8 = *(v7 - 8);
@@ -96,15 +96,15 @@
   if (v11)
   {
     v12 = v11;
-    v13 = a4;
-    v14 = self;
+    cellCopy = cell;
+    selfCopy = self;
     sub_29E1CAEDC(v12);
   }
 
   (*(v8 + 8))(v10, v7);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
@@ -114,7 +114,7 @@
   v10 = *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15SingleCycleView_cycleDataSource);
   if (v10 && (*(v10 + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin25SingleCycleViewDataSource_dataFetchingState) & 1) == 0)
   {
-    v11 = self;
+    selfCopy = self;
     v12 = v10;
     sub_29E1C9C4C();
   }
@@ -122,31 +122,31 @@
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_29E1CB424(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_29E1CB424(scrollCopy);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_29E1CBB64("[%{public}s] scrollViewDidEndScrollingAnimation: resuming data fetching");
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E1CB964(a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_29E1CB964(decelerate);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_29E1CBB64("[%{public}s] scrollViewDidEndDecelerating: resuming data fetching");
 }
 

@@ -1,33 +1,33 @@
 @interface FPDWrappedSearchEnumeratorProxy
-- (FPDWrappedSearchEnumeratorProxy)initWithTarget:(id)a3 maximumNumberOfResultsPerPage:(int64_t)a4;
-- (void)enumerateSearchResultsForObserver:(id)a3 startingAtPage:(id)a4;
+- (FPDWrappedSearchEnumeratorProxy)initWithTarget:(id)target maximumNumberOfResultsPerPage:(int64_t)page;
+- (void)enumerateSearchResultsForObserver:(id)observer startingAtPage:(id)page;
 @end
 
 @implementation FPDWrappedSearchEnumeratorProxy
 
-- (FPDWrappedSearchEnumeratorProxy)initWithTarget:(id)a3 maximumNumberOfResultsPerPage:(int64_t)a4
+- (FPDWrappedSearchEnumeratorProxy)initWithTarget:(id)target maximumNumberOfResultsPerPage:(int64_t)page
 {
-  v7 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = FPDWrappedSearchEnumeratorProxy;
   v8 = [(FPDWrappedSearchEnumeratorProxy *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_target, a3);
-    v9->_maximumNumberOfResultsPerPage = a4;
+    objc_storeStrong(&v8->_target, target);
+    v9->_maximumNumberOfResultsPerPage = page;
   }
 
   return v9;
 }
 
-- (void)enumerateSearchResultsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateSearchResultsForObserver:(id)observer startingAtPage:(id)page
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[FPDWrappedSearchEnumeratorObserverProxy alloc] initWithTarget:v7 maximumNumberOfResultsPerPage:self->_maximumNumberOfResultsPerPage];
+  pageCopy = page;
+  observerCopy = observer;
+  v8 = [[FPDWrappedSearchEnumeratorObserverProxy alloc] initWithTarget:observerCopy maximumNumberOfResultsPerPage:self->_maximumNumberOfResultsPerPage];
 
-  [(FPXSearchEnumerator *)self->_target enumerateSearchResultsForObserver:v8 startingAtPage:v6];
+  [(FPXSearchEnumerator *)self->_target enumerateSearchResultsForObserver:v8 startingAtPage:pageCopy];
 }
 
 @end

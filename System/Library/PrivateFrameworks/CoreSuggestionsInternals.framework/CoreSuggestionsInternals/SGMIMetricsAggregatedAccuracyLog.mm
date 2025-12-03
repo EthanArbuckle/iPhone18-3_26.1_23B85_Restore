@@ -1,33 +1,33 @@
 @interface SGMIMetricsAggregatedAccuracyLog
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIgnorablePredictedAsNeutral:(BOOL)a3;
-- (void)setHasIgnorablePredictedAsSalient:(BOOL)a3;
-- (void)setHasNeutralPredictedAsIgnorable:(BOOL)a3;
-- (void)setHasNeutralPredictedAsNeutral:(BOOL)a3;
-- (void)setHasNeutralPredictedAsSalient:(BOOL)a3;
-- (void)setHasSalientPredictedAsIgnorable:(BOOL)a3;
-- (void)setHasSalientPredictedAsNeutral:(BOOL)a3;
-- (void)setHasSalientPredictedAsSalient:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIgnorablePredictedAsNeutral:(BOOL)neutral;
+- (void)setHasIgnorablePredictedAsSalient:(BOOL)salient;
+- (void)setHasNeutralPredictedAsIgnorable:(BOOL)ignorable;
+- (void)setHasNeutralPredictedAsNeutral:(BOOL)neutral;
+- (void)setHasNeutralPredictedAsSalient:(BOOL)salient;
+- (void)setHasSalientPredictedAsIgnorable:(BOOL)ignorable;
+- (void)setHasSalientPredictedAsNeutral:(BOOL)neutral;
+- (void)setHasSalientPredictedAsSalient:(BOOL)salient;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsAggregatedAccuracyLog
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 22);
+  fromCopy = from;
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x100) != 0)
   {
-    self->_salientPredictedAsSalient = *(v4 + 10);
+    self->_salientPredictedAsSalient = *(fromCopy + 10);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 22);
+    v5 = *(fromCopy + 22);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -45,9 +45,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_salientPredictedAsNeutral = *(v4 + 9);
+  self->_salientPredictedAsNeutral = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -60,9 +60,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_salientPredictedAsIgnorable = *(v4 + 8);
+  self->_salientPredictedAsIgnorable = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -75,9 +75,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_neutralPredictedAsSalient = *(v4 + 7);
+  self->_neutralPredictedAsSalient = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -90,9 +90,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_neutralPredictedAsNeutral = *(v4 + 6);
+  self->_neutralPredictedAsNeutral = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -105,9 +105,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_neutralPredictedAsIgnorable = *(v4 + 5);
+  self->_neutralPredictedAsIgnorable = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -120,9 +120,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_ignorablePredictedAsSalient = *(v4 + 4);
+  self->_ignorablePredictedAsSalient = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -135,12 +135,12 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_ignorablePredictedAsNeutral = *(v4 + 3);
+  self->_ignorablePredictedAsNeutral = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
 LABEL_10:
-    self->_ignorablePredictedAsIgnorable = *(v4 + 2);
+    self->_ignorablePredictedAsIgnorable = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -272,25 +272,25 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   has = self->_has;
-  v6 = *(v4 + 22);
+  v6 = *(equalCopy + 22);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 22) & 0x100) == 0 || self->_salientPredictedAsSalient != *(v4 + 10))
+    if ((*(equalCopy + 22) & 0x100) == 0 || self->_salientPredictedAsSalient != *(equalCopy + 10))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 22) & 0x100) != 0)
+  else if ((*(equalCopy + 22) & 0x100) != 0)
   {
 LABEL_47:
     v7 = 0;
@@ -299,7 +299,7 @@ LABEL_47:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_salientPredictedAsNeutral != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_salientPredictedAsNeutral != *(equalCopy + 9))
     {
       goto LABEL_47;
     }
@@ -312,7 +312,7 @@ LABEL_47:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_salientPredictedAsIgnorable != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_salientPredictedAsIgnorable != *(equalCopy + 8))
     {
       goto LABEL_47;
     }
@@ -325,7 +325,7 @@ LABEL_47:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_neutralPredictedAsSalient != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_neutralPredictedAsSalient != *(equalCopy + 7))
     {
       goto LABEL_47;
     }
@@ -338,7 +338,7 @@ LABEL_47:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_neutralPredictedAsNeutral != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_neutralPredictedAsNeutral != *(equalCopy + 6))
     {
       goto LABEL_47;
     }
@@ -351,7 +351,7 @@ LABEL_47:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_neutralPredictedAsIgnorable != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_neutralPredictedAsIgnorable != *(equalCopy + 5))
     {
       goto LABEL_47;
     }
@@ -364,7 +364,7 @@ LABEL_47:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_ignorablePredictedAsSalient != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_ignorablePredictedAsSalient != *(equalCopy + 4))
     {
       goto LABEL_47;
     }
@@ -377,7 +377,7 @@ LABEL_47:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_ignorablePredictedAsNeutral != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_ignorablePredictedAsNeutral != *(equalCopy + 3))
     {
       goto LABEL_47;
     }
@@ -390,7 +390,7 @@ LABEL_47:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_ignorablePredictedAsIgnorable != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_ignorablePredictedAsIgnorable != *(equalCopy + 2))
     {
       goto LABEL_47;
     }
@@ -408,9 +408,9 @@ LABEL_48:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -537,14 +537,14 @@ LABEL_10:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    v4[10] = self->_salientPredictedAsSalient;
-    *(v4 + 22) |= 0x100u;
+    toCopy[10] = self->_salientPredictedAsSalient;
+    *(toCopy + 22) |= 0x100u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -563,8 +563,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[9] = self->_salientPredictedAsNeutral;
-  *(v4 + 22) |= 0x80u;
+  toCopy[9] = self->_salientPredictedAsNeutral;
+  *(toCopy + 22) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -578,8 +578,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  v4[8] = self->_salientPredictedAsIgnorable;
-  *(v4 + 22) |= 0x40u;
+  toCopy[8] = self->_salientPredictedAsIgnorable;
+  *(toCopy + 22) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -593,8 +593,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  v4[7] = self->_neutralPredictedAsSalient;
-  *(v4 + 22) |= 0x20u;
+  toCopy[7] = self->_neutralPredictedAsSalient;
+  *(toCopy + 22) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -608,8 +608,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  v4[6] = self->_neutralPredictedAsNeutral;
-  *(v4 + 22) |= 0x10u;
+  toCopy[6] = self->_neutralPredictedAsNeutral;
+  *(toCopy + 22) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -623,8 +623,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  v4[5] = self->_neutralPredictedAsIgnorable;
-  *(v4 + 22) |= 8u;
+  toCopy[5] = self->_neutralPredictedAsIgnorable;
+  *(toCopy + 22) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -638,8 +638,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  v4[4] = self->_ignorablePredictedAsSalient;
-  *(v4 + 22) |= 4u;
+  toCopy[4] = self->_ignorablePredictedAsSalient;
+  *(toCopy + 22) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -653,21 +653,21 @@ LABEL_9:
   }
 
 LABEL_21:
-  v4[3] = self->_ignorablePredictedAsNeutral;
-  *(v4 + 22) |= 2u;
+  toCopy[3] = self->_ignorablePredictedAsNeutral;
+  *(toCopy + 22) |= 2u;
   if (*&self->_has)
   {
 LABEL_10:
-    v4[2] = self->_ignorablePredictedAsIgnorable;
-    *(v4 + 22) |= 1u;
+    toCopy[2] = self->_ignorablePredictedAsIgnorable;
+    *(toCopy + 22) |= 1u;
   }
 
 LABEL_11:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -795,12 +795,12 @@ LABEL_11:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_salientPredictedAsSalient];
-    [v3 setObject:v7 forKey:@"salientPredictedAsSalient"];
+    [dictionary setObject:v7 forKey:@"salientPredictedAsSalient"];
 
     has = self->_has;
     if ((has & 0x80) == 0)
@@ -821,7 +821,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_salientPredictedAsNeutral];
-  [v3 setObject:v8 forKey:@"salientPredictedAsNeutral"];
+  [dictionary setObject:v8 forKey:@"salientPredictedAsNeutral"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -837,7 +837,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_salientPredictedAsIgnorable];
-  [v3 setObject:v9 forKey:@"salientPredictedAsIgnorable"];
+  [dictionary setObject:v9 forKey:@"salientPredictedAsIgnorable"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -853,7 +853,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_neutralPredictedAsSalient];
-  [v3 setObject:v10 forKey:@"neutralPredictedAsSalient"];
+  [dictionary setObject:v10 forKey:@"neutralPredictedAsSalient"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -869,7 +869,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_neutralPredictedAsNeutral];
-  [v3 setObject:v11 forKey:@"neutralPredictedAsNeutral"];
+  [dictionary setObject:v11 forKey:@"neutralPredictedAsNeutral"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -885,7 +885,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_neutralPredictedAsIgnorable];
-  [v3 setObject:v12 forKey:@"neutralPredictedAsIgnorable"];
+  [dictionary setObject:v12 forKey:@"neutralPredictedAsIgnorable"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -901,7 +901,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ignorablePredictedAsSalient];
-  [v3 setObject:v13 forKey:@"ignorablePredictedAsSalient"];
+  [dictionary setObject:v13 forKey:@"ignorablePredictedAsSalient"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -917,18 +917,18 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ignorablePredictedAsNeutral];
-  [v3 setObject:v14 forKey:@"ignorablePredictedAsNeutral"];
+  [dictionary setObject:v14 forKey:@"ignorablePredictedAsNeutral"];
 
   if (*&self->_has)
   {
 LABEL_10:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ignorablePredictedAsIgnorable];
-    [v3 setObject:v5 forKey:@"ignorablePredictedAsIgnorable"];
+    [dictionary setObject:v5 forKey:@"ignorablePredictedAsIgnorable"];
   }
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -937,15 +937,15 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = SGMIMetricsAggregatedAccuracyLog;
   v4 = [(SGMIMetricsAggregatedAccuracyLog *)&v8 description];
-  v5 = [(SGMIMetricsAggregatedAccuracyLog *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsAggregatedAccuracyLog *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasIgnorablePredictedAsNeutral:(BOOL)a3
+- (void)setHasIgnorablePredictedAsNeutral:(BOOL)neutral
 {
-  if (a3)
+  if (neutral)
   {
     v3 = 2;
   }
@@ -958,9 +958,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasIgnorablePredictedAsSalient:(BOOL)a3
+- (void)setHasIgnorablePredictedAsSalient:(BOOL)salient
 {
-  if (a3)
+  if (salient)
   {
     v3 = 4;
   }
@@ -973,9 +973,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNeutralPredictedAsIgnorable:(BOOL)a3
+- (void)setHasNeutralPredictedAsIgnorable:(BOOL)ignorable
 {
-  if (a3)
+  if (ignorable)
   {
     v3 = 8;
   }
@@ -988,9 +988,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNeutralPredictedAsNeutral:(BOOL)a3
+- (void)setHasNeutralPredictedAsNeutral:(BOOL)neutral
 {
-  if (a3)
+  if (neutral)
   {
     v3 = 16;
   }
@@ -1003,9 +1003,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNeutralPredictedAsSalient:(BOOL)a3
+- (void)setHasNeutralPredictedAsSalient:(BOOL)salient
 {
-  if (a3)
+  if (salient)
   {
     v3 = 32;
   }
@@ -1018,9 +1018,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSalientPredictedAsIgnorable:(BOOL)a3
+- (void)setHasSalientPredictedAsIgnorable:(BOOL)ignorable
 {
-  if (a3)
+  if (ignorable)
   {
     v3 = 64;
   }
@@ -1033,9 +1033,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSalientPredictedAsNeutral:(BOOL)a3
+- (void)setHasSalientPredictedAsNeutral:(BOOL)neutral
 {
-  if (a3)
+  if (neutral)
   {
     v3 = 128;
   }
@@ -1048,9 +1048,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSalientPredictedAsSalient:(BOOL)a3
+- (void)setHasSalientPredictedAsSalient:(BOOL)salient
 {
-  if (a3)
+  if (salient)
   {
     v3 = 256;
   }

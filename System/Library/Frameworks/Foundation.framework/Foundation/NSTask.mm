@@ -1,8 +1,8 @@
 @interface NSTask
-+ (NSTask)allocWithZone:(_NSZone *)a3;
++ (NSTask)allocWithZone:(_NSZone *)zone;
 + (NSTask)launchedTaskWithExecutableURL:(NSURL *)url arguments:(NSArray *)arguments error:(NSError *)error terminationHandler:(void *)terminationHandler;
 + (NSTask)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
-+ (id)launchedTaskWithDictionary:(id)a3;
++ (id)launchedTaskWithDictionary:(id)dictionary;
 - (NSTask)init;
 - (NSURL)currentDirectoryURL;
 - (NSURL)executableURL;
@@ -61,23 +61,23 @@
       objc_exception_throw(v7);
     }
 
-    v6 = [-[NSURL standardizedURL](currentDirectoryURL "standardizedURL")];
+    currentDirectoryPath = [-[NSURL standardizedURL](currentDirectoryURL "standardizedURL")];
   }
 
   else
   {
-    v6 = [+[NSFileManager defaultManager](NSFileManager currentDirectoryPath];
+    currentDirectoryPath = [+[NSFileManager defaultManager](NSFileManager currentDirectoryPath];
   }
 
-  [(NSTask *)self setCurrentDirectoryPath:v6];
+  [(NSTask *)self setCurrentDirectoryPath:currentDirectoryPath];
 }
 
 - (NSURL)currentDirectoryURL
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(NSTask *)self currentDirectoryPath];
+  currentDirectoryPath = [(NSTask *)self currentDirectoryPath];
 
-  return [v2 fileURLWithPath:v3 isDirectory:1];
+  return [v2 fileURLWithPath:currentDirectoryPath isDirectory:1];
 }
 
 - (void)setEnvironment:(NSDictionary *)environment
@@ -168,27 +168,27 @@
   return [(NSTask *)&v3 init];
 }
 
-+ (NSTask)allocWithZone:(_NSZone *)a3
++ (NSTask)allocWithZone:(_NSZone *)zone
 {
-  if (NSTask == a1)
+  if (NSTask == self)
   {
-    a1 = objc_opt_self();
+    self = objc_opt_self();
   }
 
-  return NSAllocateObject(a1, 0, a3);
+  return NSAllocateObject(self, 0, zone);
 }
 
-+ (id)launchedTaskWithDictionary:(id)a3
++ (id)launchedTaskWithDictionary:(id)dictionary
 {
-  v4 = [objc_allocWithZone(a1) init];
-  [v4 launchWithDictionary:a3 error:0];
+  v4 = [objc_allocWithZone(self) init];
+  [v4 launchWithDictionary:dictionary error:0];
 
   return v4;
 }
 
 + (NSTask)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments
 {
-  v6 = [objc_allocWithZone(a1) init];
+  v6 = [objc_allocWithZone(self) init];
   v7 = +[NSTask currentTaskDictionary];
   if (!arguments)
   {
@@ -228,8 +228,8 @@ LABEL_13:
     return 0;
   }
 
-  v11 = [(NSURL *)url path];
-  if (!v11)
+  path = [(NSURL *)url path];
+  if (!path)
   {
     if (error)
     {
@@ -243,8 +243,8 @@ LABEL_13:
     return 0;
   }
 
-  v12 = v11;
-  v13 = objc_alloc_init(a1);
+  v12 = path;
+  v13 = objc_alloc_init(self);
   if (!arguments)
   {
     v19 = MEMORY[0x1E695DF30];

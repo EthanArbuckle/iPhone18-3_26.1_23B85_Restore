@@ -1,7 +1,7 @@
 @interface _NSXPCStoreObjectIDArrayConstantValueExpression
-- (_NSXPCStoreObjectIDArrayConstantValueExpression)initWithCoder:(id)a3;
+- (_NSXPCStoreObjectIDArrayConstantValueExpression)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSXPCStoreObjectIDArrayConstantValueExpression
@@ -16,9 +16,9 @@
   [(_NSXPCStoreObjectIDArrayConstantValueExpression *)&v5 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers"];
   }
@@ -29,19 +29,19 @@
   if ((([Ivar isNSArray] & 1) != 0 || objc_msgSend(Ivar, "isNSSet")) && (v8 = +[NSManagedObjectID _newArchiveForScalarObjectIDs:](NSManagedObjectID, Ivar)) != 0)
   {
     v9 = v8;
-    [a3 encodeObject:v8 forKey:@"NSConstantValue_XPCStoreObjectIDs"];
+    [coder encodeObject:v8 forKey:@"NSConstantValue_XPCStoreObjectIDs"];
   }
 
   else
   {
 
-    [a3 encodeObject:Ivar forKey:@"NSConstantValue"];
+    [coder encodeObject:Ivar forKey:@"NSConstantValue"];
   }
 }
 
-- (_NSXPCStoreObjectIDArrayConstantValueExpression)initWithCoder:(id)a3
+- (_NSXPCStoreObjectIDArrayConstantValueExpression)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers"];
   }
@@ -51,19 +51,19 @@
   v5 = [(_NSXPCStoreObjectIDArrayConstantValueExpression *)&v14 init];
   if (v5)
   {
-    v6 = [a3 allowedClasses];
-    v7 = [NSClassFromString(@"_NSPredicateUtilities") _constantValueClassesForSecureCoding];
-    v8 = [v7 setByAddingObject:objc_opt_class()];
-    if (v6 && [v6 count])
+    allowedClasses = [coder allowedClasses];
+    _constantValueClassesForSecureCoding = [NSClassFromString(@"_NSPredicateUtilities") _constantValueClassesForSecureCoding];
+    v8 = [_constantValueClassesForSecureCoding setByAddingObject:objc_opt_class()];
+    if (allowedClasses && [allowedClasses count])
     {
       v8 = [v8 mutableCopy];
-      [v8 unionSet:v6];
+      [v8 unionSet:allowedClasses];
     }
 
-    v9 = [a3 decodeObjectOfClasses:v8 forKey:@"NSConstantValue_XPCStoreObjectIDs"];
+    v9 = [coder decodeObjectOfClasses:v8 forKey:@"NSConstantValue_XPCStoreObjectIDs"];
     if (v9)
     {
-      v10 = +[NSManagedObjectID unarchivedScalarObjectIDsFromData:withCoordinator:](NSManagedObjectID, v9, [objc_msgSend(a3 "delegate")]);
+      v10 = +[NSManagedObjectID unarchivedScalarObjectIDsFromData:withCoordinator:](NSManagedObjectID, v9, [objc_msgSend(coder "delegate")]);
       if (v10)
       {
         v11 = v10;
@@ -77,7 +77,7 @@
 
     else
     {
-      v11 = [a3 decodeObjectOfClasses:v8 forKey:@"NSConstantValue"];
+      v11 = [coder decodeObjectOfClasses:v8 forKey:@"NSConstantValue"];
     }
   }
 

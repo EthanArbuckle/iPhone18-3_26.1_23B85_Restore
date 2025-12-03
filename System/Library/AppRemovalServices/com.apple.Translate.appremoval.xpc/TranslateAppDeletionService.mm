@@ -1,13 +1,13 @@
 @interface TranslateAppDeletionService
 - (_TtC30com_apple_Translate_appremoval27TranslateAppDeletionService)init;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation TranslateAppDeletionService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -20,7 +20,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_10000228C(v4, v5);
   sub_100002440(v4);
 }

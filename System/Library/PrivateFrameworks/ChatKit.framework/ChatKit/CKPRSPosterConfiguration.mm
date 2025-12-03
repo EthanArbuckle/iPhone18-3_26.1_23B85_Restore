@@ -1,16 +1,16 @@
 @interface CKPRSPosterConfiguration
-+ (double)ck_luminanceInConfiguration:(id)a3;
++ (double)ck_luminanceInConfiguration:(id)configuration;
 @end
 
 @implementation CKPRSPosterConfiguration
 
-+ (double)ck_luminanceInConfiguration:(id)a3
++ (double)ck_luminanceInConfiguration:(id)configuration
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (configuration)
   {
     v14 = 0;
-    v4 = [a3 pr_loadTitleStyleConfigurationWithError:&v14];
+    v4 = [configuration pr_loadTitleStyleConfigurationWithError:&v14];
     v5 = v14;
     if (v4)
     {
@@ -48,7 +48,7 @@
       [CKPRSPosterConfiguration ck_luminanceInConfiguration:v9];
     }
 
-    [a1 ck_defaultLuminance];
+    [self ck_defaultLuminance];
     return v10;
   }
 

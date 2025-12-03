@@ -33,9 +33,9 @@
 
 + (void)prewarm
 {
-  [a1 messageRecordDescriptor];
+  [self messageRecordDescriptor];
 
-  [a1 chatRecordDescriptor];
+  [self chatRecordDescriptor];
 }
 
 - (IMDLegacyRecordBridge)init

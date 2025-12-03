@@ -1,17 +1,17 @@
 @interface NPKCompanionViewServiceConnection
 - (NPKCompanionViewServiceConnection)init;
 - (NPKCompanionViewServiceConnectionDelegate)delegate;
-- (id)_errorHandlerWithCompletion:(id)a3;
-- (id)_remoteObjectProxyWithFailureHandler:(id)a3;
+- (id)_errorHandlerWithCompletion:(id)completion;
+- (id)_remoteObjectProxyWithFailureHandler:(id)handler;
 - (void)dealloc;
-- (void)handleCompanionItemSelectionRequestCancelledForRequestIdentifier:(id)a3;
-- (void)handleCompanionItemSelectionRequestFinishedWithRenewalAmount:(id)a3 serviceProviderData:(id)a4 forRequestIdentifier:(id)a5;
-- (void)handleCompanionValueEntryCancelledForRequestIdentifier:(id)a3;
-- (void)handleCompanionValueEntryFinishedWithCurrencyAmount:(id)a3 forRequestIdentifier:(id)a4;
-- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5;
-- (void)presentRemotePassValueEntryViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5;
-- (void)remoteService:(id)a3 didEstablishConnection:(id)a4;
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4;
+- (void)handleCompanionItemSelectionRequestCancelledForRequestIdentifier:(id)identifier;
+- (void)handleCompanionItemSelectionRequestFinishedWithRenewalAmount:(id)amount serviceProviderData:(id)data forRequestIdentifier:(id)identifier;
+- (void)handleCompanionValueEntryCancelledForRequestIdentifier:(id)identifier;
+- (void)handleCompanionValueEntryFinishedWithCurrencyAmount:(id)amount forRequestIdentifier:(id)identifier;
+- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion;
+- (void)presentRemotePassValueEntryViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion;
+- (void)remoteService:(id)service didEstablishConnection:(id)connection;
+- (void)remoteService:(id)service didInterruptConnection:(id)connection;
 - (void)serviceResumed;
 - (void)serviceSuspended;
 @end
@@ -52,7 +52,7 @@
       *buf = 136315394;
       v9 = "[NPKCompanionViewServiceConnection dealloc]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: NPKCompanionViewService: %s, %@", buf, 0x16u);
     }
   }
@@ -63,12 +63,12 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentRemotePassValueEntryViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5
+- (void)presentRemotePassValueEntryViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contactCopy = contact;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -77,11 +77,11 @@
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = _Block_copy(v10);
+      v14 = _Block_copy(completionCopy);
       *buf = 138412802;
-      v28 = v8;
+      v28 = requestCopy;
       v29 = 2112;
-      v30 = v9;
+      v30 = contactCopy;
       v31 = 2112;
       v32 = v14;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKCompanionViewService: Requested to present remote pass value entry view controller for request: %@ contact: %@ with completion: %@", buf, 0x20u);
@@ -92,12 +92,12 @@
   v23[1] = 3221225472;
   v23[2] = __108__NPKCompanionViewServiceConnection_presentRemotePassValueEntryViewControllerForRequest_contact_completion___block_invoke;
   v23[3] = &unk_2799451C8;
-  v24 = v8;
-  v25 = v9;
-  v15 = v10;
+  v24 = requestCopy;
+  v25 = contactCopy;
+  v15 = completionCopy;
   v26 = v15;
-  v16 = v9;
-  v17 = v8;
+  v16 = contactCopy;
+  v17 = requestCopy;
   v18 = [(NPKCompanionViewServiceConnection *)self _remoteObjectProxyWithFailureHandler:v23];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -171,12 +171,12 @@ uint64_t __108__NPKCompanionViewServiceConnection_presentRemotePassValueEntryVie
   return result;
 }
 
-- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)a3 contact:(id)a4 completion:(id)a5
+- (void)presentRemotePassItemSelectionViewControllerForRequest:(id)request contact:(id)contact completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contactCopy = contact;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -185,11 +185,11 @@ uint64_t __108__NPKCompanionViewServiceConnection_presentRemotePassValueEntryVie
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = _Block_copy(v10);
+      v14 = _Block_copy(completionCopy);
       *buf = 138412802;
-      v28 = v8;
+      v28 = requestCopy;
       v29 = 2112;
-      v30 = v9;
+      v30 = contactCopy;
       v31 = 2112;
       v32 = v14;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKCompanionViewService: Requested to present remote pass item selection view controller for request: %@ contact: %@ with completion: %@", buf, 0x20u);
@@ -200,12 +200,12 @@ uint64_t __108__NPKCompanionViewServiceConnection_presentRemotePassValueEntryVie
   v23[1] = 3221225472;
   v23[2] = __111__NPKCompanionViewServiceConnection_presentRemotePassItemSelectionViewControllerForRequest_contact_completion___block_invoke;
   v23[3] = &unk_2799451C8;
-  v24 = v8;
-  v25 = v9;
-  v15 = v10;
+  v24 = requestCopy;
+  v25 = contactCopy;
+  v15 = completionCopy;
   v26 = v15;
-  v16 = v9;
-  v17 = v8;
+  v16 = contactCopy;
+  v17 = requestCopy;
   v18 = [(NPKCompanionViewServiceConnection *)self _remoteObjectProxyWithFailureHandler:v23];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -279,24 +279,24 @@ uint64_t __111__NPKCompanionViewServiceConnection_presentRemotePassItemSelection
   return result;
 }
 
-- (id)_remoteObjectProxyWithFailureHandler:(id)a3
+- (id)_remoteObjectProxyWithFailureHandler:(id)handler
 {
   remoteService = self->_remoteService;
-  v4 = [(NPKCompanionViewServiceConnection *)self _errorHandlerWithCompletion:a3];
+  v4 = [(NPKCompanionViewServiceConnection *)self _errorHandlerWithCompletion:handler];
   v5 = [(PKXPCService *)remoteService remoteObjectProxyWithErrorHandler:v4];
 
   return v5;
 }
 
-- (id)_errorHandlerWithCompletion:(id)a3
+- (id)_errorHandlerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__NPKCompanionViewServiceConnection__errorHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v9 = v3;
-  v4 = v3;
+  v9 = completionCopy;
+  v4 = completionCopy;
   v5 = _Block_copy(aBlock);
   v6 = _Block_copy(v5);
 
@@ -330,35 +330,35 @@ void __65__NPKCompanionViewServiceConnection__errorHandlerWithCompletion___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCompanionValueEntryFinishedWithCurrencyAmount:(id)a3 forRequestIdentifier:(id)a4
+- (void)handleCompanionValueEntryFinishedWithCurrencyAmount:(id)amount forRequestIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKCompanionViewServiceConnection *)self delegate];
-  [v8 companionViewServiceConnection:self handleCompanionValueEntryDidFinishWithCurrencyAmount:v7 forRequestWithIdentifier:v6];
+  identifierCopy = identifier;
+  amountCopy = amount;
+  delegate = [(NPKCompanionViewServiceConnection *)self delegate];
+  [delegate companionViewServiceConnection:self handleCompanionValueEntryDidFinishWithCurrencyAmount:amountCopy forRequestWithIdentifier:identifierCopy];
 }
 
-- (void)handleCompanionValueEntryCancelledForRequestIdentifier:(id)a3
+- (void)handleCompanionValueEntryCancelledForRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NPKCompanionViewServiceConnection *)self delegate];
-  [v5 companionViewServiceConnection:self handleCompanionValueEntryDidCancelForRequestIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(NPKCompanionViewServiceConnection *)self delegate];
+  [delegate companionViewServiceConnection:self handleCompanionValueEntryDidCancelForRequestIdentifier:identifierCopy];
 }
 
-- (void)handleCompanionItemSelectionRequestFinishedWithRenewalAmount:(id)a3 serviceProviderData:(id)a4 forRequestIdentifier:(id)a5
+- (void)handleCompanionItemSelectionRequestFinishedWithRenewalAmount:(id)amount serviceProviderData:(id)data forRequestIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPKCompanionViewServiceConnection *)self delegate];
-  [v11 companionViewServiceConnection:self handleCompanionItemSelectionDidFinishWithRenewalAmount:v10 serviceProviderData:v9 forRequestWithIdentifier:v8];
+  identifierCopy = identifier;
+  dataCopy = data;
+  amountCopy = amount;
+  delegate = [(NPKCompanionViewServiceConnection *)self delegate];
+  [delegate companionViewServiceConnection:self handleCompanionItemSelectionDidFinishWithRenewalAmount:amountCopy serviceProviderData:dataCopy forRequestWithIdentifier:identifierCopy];
 }
 
-- (void)handleCompanionItemSelectionRequestCancelledForRequestIdentifier:(id)a3
+- (void)handleCompanionItemSelectionRequestCancelledForRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NPKCompanionViewServiceConnection *)self delegate];
-  [v5 companionViewServiceConnection:self handleCompanionItemSelectionDidCancelForRequestIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(NPKCompanionViewServiceConnection *)self delegate];
+  [delegate companionViewServiceConnection:self handleCompanionItemSelectionDidCancelForRequestIdentifier:identifierCopy];
 }
 
 - (void)serviceResumed
@@ -393,11 +393,11 @@ void __65__NPKCompanionViewServiceConnection__errorHandlerWithCompletion___block
   }
 }
 
-- (void)remoteService:(id)a3 didEstablishConnection:(id)a4
+- (void)remoteService:(id)service didEstablishConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -407,9 +407,9 @@ void __65__NPKCompanionViewServiceConnection__errorHandlerWithCompletion___block
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = serviceCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = connectionCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: NPKCompanionViewService: Remote service (%@) did establish connection (%@)", &v11, 0x16u);
     }
   }
@@ -417,7 +417,7 @@ void __65__NPKCompanionViewServiceConnection__errorHandlerWithCompletion___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4
+- (void)remoteService:(id)service didInterruptConnection:(id)connection
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = pk_Payment_log();
@@ -429,7 +429,7 @@ void __65__NPKCompanionViewServiceConnection__errorHandlerWithCompletion___block
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKCompanionViewService: NPKCompanionViewServiceConnection (%@): XPC connection to daemon was interrupted", &v9, 0xCu);
     }
   }

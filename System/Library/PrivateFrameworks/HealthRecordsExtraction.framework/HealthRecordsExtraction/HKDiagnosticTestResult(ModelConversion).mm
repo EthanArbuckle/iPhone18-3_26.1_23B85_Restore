@@ -9,10 +9,10 @@
   v186 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v151 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(__CFString *)v4 representedResource];
-  v149 = [v5 identifier];
+  representedResource = [(__CFString *)v4 representedResource];
+  identifier = [representedResource identifier];
 
-  if (!v149)
+  if (!identifier)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2C0];
@@ -28,11 +28,11 @@
     [v151 addObject:v8];
   }
 
-  v114 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v149];
-  v9 = [(__CFString *)v4 rulesVersion];
-  v115 = [v9 integerValue];
+  v114 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:identifier];
+  rulesVersion = [(__CFString *)v4 rulesVersion];
+  integerValue = [rulesVersion integerValue];
 
-  if (v115 <= 0)
+  if (integerValue <= 0)
   {
     _HKInitializeLogging();
     v10 = *MEMORY[0x277CCC2C0];
@@ -72,7 +72,7 @@
     [v151 addObject:v148];
   }
 
-  v113 = [(__CFString *)v4 country];
+  country = [(__CFString *)v4 country];
   v168 = 0;
   v134 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"note" expectedClass:objc_opt_class() isArray:0 error:&v168];
   v147 = v168;
@@ -117,8 +117,8 @@
     [v151 addObject:v146];
   }
 
-  v19 = [(__CFString *)v4 representedResource];
-  v111 = [v19 extractionHints];
+  representedResource2 = [(__CFString *)v4 representedResource];
+  extractionHints = [representedResource2 extractionHints];
 
   v166 = 0;
   v20 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"diagnosticTestCodingCollection" expectedClass:objc_opt_class() isArray:0 error:&v166];
@@ -541,30 +541,30 @@
     [v151 addObject:v89];
   }
 
-  v92 = [v87 integerValue];
+  integerValue2 = [v87 integerValue];
   if (![v151 count])
   {
-    v100 = [(__CFString *)v4 representedResource];
-    v101 = [v100 receivedDate];
-    v102 = v101;
-    if (v101)
+    representedResource3 = [(__CFString *)v4 representedResource];
+    receivedDate = [representedResource3 receivedDate];
+    v102 = receivedDate;
+    if (receivedDate)
     {
-      v103 = v101;
+      date = receivedDate;
     }
 
     else
     {
-      v103 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v104 = [v133 BOOLValue];
-    v97 = [MEMORY[0x277CCD2E8] localDevice];
-    v150 = [(__CFString *)v4 medicalRecordMetadata];
-    v105 = [MEMORY[0x277CCD350] diagnosticTestResultType];
-    v106 = [MEMORY[0x277CCD348] diagnosticTestResultWithType:v105 note:v134 enteredInError:v104 modifiedDate:v103 originIdentifier:v114 locale:v135 extractionVersion:v115 device:v97 metadata:v150 country:v113 state:(v111 >> 2) & 1 diagnosticTestCodingCollection:v120 value:v121 referenceRanges:v122 effectiveStartDate:v123 category:v124 categoriesCodingCollections:v125 issueDate:v126 effectiveEndDate:v127 statusCoding:v128 interpretationCodingCollections:v129 comments:v130 bodySiteCodingCollection:v131 methodCodingCollection:v132 performers:v86 referenceRangeStatus:v92];
-    v107 = [(__CFString *)v4 representedResource];
-    v108 = [v107 firstSeenDate];
-    [v106 _setCreationDate:v108];
+    bOOLValue = [v133 BOOLValue];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    medicalRecordMetadata = [(__CFString *)v4 medicalRecordMetadata];
+    diagnosticTestResultType = [MEMORY[0x277CCD350] diagnosticTestResultType];
+    v106 = [MEMORY[0x277CCD348] diagnosticTestResultWithType:diagnosticTestResultType note:v134 enteredInError:bOOLValue modifiedDate:date originIdentifier:v114 locale:v135 extractionVersion:integerValue device:localDevice metadata:medicalRecordMetadata country:country state:(extractionHints >> 2) & 1 diagnosticTestCodingCollection:v120 value:v121 referenceRanges:v122 effectiveStartDate:v123 category:v124 categoriesCodingCollections:v125 issueDate:v126 effectiveEndDate:v127 statusCoding:v128 interpretationCodingCollections:v129 comments:v130 bodySiteCodingCollection:v131 methodCodingCollection:v132 performers:v86 referenceRangeStatus:integerValue2];
+    representedResource4 = [(__CFString *)v4 representedResource];
+    firstSeenDate = [representedResource4 firstSeenDate];
+    [v106 _setCreationDate:firstSeenDate];
 
     v99 = v106;
     goto LABEL_118;
@@ -577,7 +577,7 @@
   v95 = [v93 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:201 userInfo:v94];
 
   v96 = v95;
-  v97 = v96;
+  localDevice = v96;
   if (!v96)
   {
     goto LABEL_114;
@@ -593,9 +593,9 @@ LABEL_114:
 
   v98 = v96;
   v99 = 0;
-  *a4 = v97;
+  *a4 = localDevice;
 LABEL_115:
-  v103 = v97;
+  date = localDevice;
 LABEL_118:
 
   v109 = *MEMORY[0x277D85DE8];

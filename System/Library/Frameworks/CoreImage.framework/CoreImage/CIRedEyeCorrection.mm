@@ -104,8 +104,8 @@ LABEL_31:
             v68 = 0u;
             v65 = 0u;
             v66 = 0u;
-            v32 = [v5 allValues];
-            v33 = [v32 countByEnumeratingWithState:&v65 objects:v69 count:16];
+            allValues = [v5 allValues];
+            v33 = [allValues countByEnumeratingWithState:&v65 objects:v69 count:16];
             if (v33)
             {
               v34 = v33;
@@ -117,7 +117,7 @@ LABEL_31:
                 {
                   if (*v66 != v36)
                   {
-                    objc_enumerationMutation(v32);
+                    objc_enumerationMutation(allValues);
                   }
 
                   v38 = *(*(&v65 + 1) + 8 * i);
@@ -140,7 +140,7 @@ LABEL_31:
                   }
                 }
 
-                v34 = [v32 countByEnumeratingWithState:&v65 objects:v69 count:16];
+                v34 = [allValues countByEnumeratingWithState:&v65 objects:v69 count:16];
               }
 
               while (v34);

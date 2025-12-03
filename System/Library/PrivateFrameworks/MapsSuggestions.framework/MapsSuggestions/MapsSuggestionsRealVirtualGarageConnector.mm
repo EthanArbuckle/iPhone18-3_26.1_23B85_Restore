@@ -2,59 +2,59 @@
 - (MapsSuggestionsVirtualGarageConnectorDelegate)delegate;
 - (NSString)uniqueName;
 - (void)closeVGConnection;
-- (void)fetchStateOfChargeForVehicleWithIdentifier:(id)a3 handler:(id)a4;
-- (void)fetchUnpairedVehiclesWithHandler:(id)a3;
+- (void)fetchStateOfChargeForVehicleWithIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchUnpairedVehiclesWithHandler:(id)handler;
 - (void)openVGConnection;
 - (void)startObservingVG;
 - (void)stopObservingVG;
-- (void)virtualGarage:(id)a3 didUpdateUnpairedVehicles:(id)a4;
+- (void)virtualGarage:(id)garage didUpdateUnpairedVehicles:(id)vehicles;
 @end
 
 @implementation MapsSuggestionsRealVirtualGarageConnector
 
 - (void)openVGConnection
 {
-  v3 = [MEMORY[0x1E69DF8B0] sharedService];
-  [v3 openForClient:self];
+  mEMORY[0x1E69DF8B0] = [MEMORY[0x1E69DF8B0] sharedService];
+  [mEMORY[0x1E69DF8B0] openForClient:self];
 }
 
 - (void)closeVGConnection
 {
-  v3 = [MEMORY[0x1E69DF8B0] sharedService];
-  [v3 closeForClient:self];
+  mEMORY[0x1E69DF8B0] = [MEMORY[0x1E69DF8B0] sharedService];
+  [mEMORY[0x1E69DF8B0] closeForClient:self];
 }
 
 - (void)startObservingVG
 {
-  v3 = [MEMORY[0x1E69DF8B0] sharedService];
-  [v3 registerObserver:self];
+  mEMORY[0x1E69DF8B0] = [MEMORY[0x1E69DF8B0] sharedService];
+  [mEMORY[0x1E69DF8B0] registerObserver:self];
 }
 
 - (void)stopObservingVG
 {
-  v3 = [MEMORY[0x1E69DF8B0] sharedService];
-  [v3 unregisterObserver:self];
+  mEMORY[0x1E69DF8B0] = [MEMORY[0x1E69DF8B0] sharedService];
+  [mEMORY[0x1E69DF8B0] unregisterObserver:self];
 }
 
-- (void)fetchUnpairedVehiclesWithHandler:(id)a3
+- (void)fetchUnpairedVehiclesWithHandler:(id)handler
 {
   v3 = MEMORY[0x1E69DF8B0];
-  v4 = a3;
-  v5 = [v3 sharedService];
-  [v5 virtualGarageGetListOfUnpairedVehiclesWithReply:v4];
+  handlerCopy = handler;
+  sharedService = [v3 sharedService];
+  [sharedService virtualGarageGetListOfUnpairedVehiclesWithReply:handlerCopy];
 }
 
-- (void)virtualGarage:(id)a3 didUpdateUnpairedVehicles:(id)a4
+- (void)virtualGarage:(id)garage didUpdateUnpairedVehicles:(id)vehicles
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MapsSuggestionsRealVirtualGarageConnector *)self delegate];
-  if (v8)
+  garageCopy = garage;
+  vehiclesCopy = vehicles;
+  delegate = [(MapsSuggestionsRealVirtualGarageConnector *)self delegate];
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v8 virtualGarageDidUpdateUnpairedVehicles:v7];
+      [delegate virtualGarageDidUpdateUnpairedVehicles:vehiclesCopy];
     }
   }
 
@@ -74,13 +74,13 @@
   }
 }
 
-- (void)fetchStateOfChargeForVehicleWithIdentifier:(id)a3 handler:(id)a4
+- (void)fetchStateOfChargeForVehicleWithIdentifier:(id)identifier handler:(id)handler
 {
   v5 = MEMORY[0x1E69DF8B0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedService];
-  [v8 virtualGarageGetLatestStateOfVehicleWithIdentifier:v7 syncAcrossDevices:0 withReply:v6];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  sharedService = [v5 sharedService];
+  [sharedService virtualGarageGetLatestStateOfVehicleWithIdentifier:identifierCopy syncAcrossDevices:0 withReply:handlerCopy];
 }
 
 - (NSString)uniqueName

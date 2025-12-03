@@ -1,29 +1,29 @@
 @interface HFTemperatureColorProfile
-- (HFTemperatureColorProfile)initWithMinimumTemperature:(float)a3 maximumTemperature:(float)a4;
-- (id)adjustedColorPrimitiveForPrimitive:(id)a3;
+- (HFTemperatureColorProfile)initWithMinimumTemperature:(float)temperature maximumTemperature:(float)maximumTemperature;
+- (id)adjustedColorPrimitiveForPrimitive:(id)primitive;
 @end
 
 @implementation HFTemperatureColorProfile
 
-- (HFTemperatureColorProfile)initWithMinimumTemperature:(float)a3 maximumTemperature:(float)a4
+- (HFTemperatureColorProfile)initWithMinimumTemperature:(float)temperature maximumTemperature:(float)maximumTemperature
 {
   v7.receiver = self;
   v7.super_class = HFTemperatureColorProfile;
   result = [(HFTemperatureColorProfile *)&v7 init];
   if (result)
   {
-    result->_minimumTemperature = a3;
-    result->_maximumTemperature = a4;
+    result->_minimumTemperature = temperature;
+    result->_maximumTemperature = maximumTemperature;
   }
 
   return result;
 }
 
-- (id)adjustedColorPrimitiveForPrimitive:(id)a3
+- (id)adjustedColorPrimitiveForPrimitive:(id)primitive
 {
-  v4 = a3;
+  primitiveCopy = primitive;
   objc_opt_class();
-  v5 = v4;
+  v5 = primitiveCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;

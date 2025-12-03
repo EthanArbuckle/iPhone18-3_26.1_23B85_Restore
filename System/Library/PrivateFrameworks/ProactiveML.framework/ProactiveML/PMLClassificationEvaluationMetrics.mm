@@ -1,71 +1,71 @@
 @interface PMLClassificationEvaluationMetrics
-+ (float)f1Score:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (float)precision:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (float)recall:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (float)roundFloatToSigFigs:(float)a3 sigFigs:(int)a4;
-+ (unint64_t)falseNegatives:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (unint64_t)falsePositives:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (unint64_t)trueNegatives:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (unint64_t)truePositives:(id)a3 predictions:(id)a4 predicate:(id)a5;
-+ (void)addScoresForOutcomes:(id)a3 predictions:(id)a4 predicate:(id)a5 metrics:(id)a6;
-+ (void)setReportSamplingRate:(unsigned int)a3;
++ (float)f1Score:(id)score predictions:(id)predictions predicate:(id)predicate;
++ (float)precision:(id)precision predictions:(id)predictions predicate:(id)predicate;
++ (float)recall:(id)recall predictions:(id)predictions predicate:(id)predicate;
++ (float)roundFloatToSigFigs:(float)figs sigFigs:(int)sigFigs;
++ (unint64_t)falseNegatives:(id)negatives predictions:(id)predictions predicate:(id)predicate;
++ (unint64_t)falsePositives:(id)positives predictions:(id)predictions predicate:(id)predicate;
++ (unint64_t)trueNegatives:(id)negatives predictions:(id)predictions predicate:(id)predicate;
++ (unint64_t)truePositives:(id)positives predictions:(id)predictions predicate:(id)predicate;
++ (void)addScoresForOutcomes:(id)outcomes predictions:(id)predictions predicate:(id)predicate metrics:(id)metrics;
++ (void)setReportSamplingRate:(unsigned int)rate;
 @end
 
 @implementation PMLClassificationEvaluationMetrics
 
-+ (void)setReportSamplingRate:(unsigned int)a3
++ (void)setReportSamplingRate:(unsigned int)rate
 {
-  v6 = [MEMORY[0x277CCAC38] processInfo];
-  v8 = [v6 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
-  if (([v8 isEqualToString:@"python"] & 1) == 0)
+  if (([processName isEqualToString:@"python"] & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PMLClassificationEvaluationMetrics.m" lineNumber:184 description:{@"Process name %@ is not python", v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLClassificationEvaluationMetrics.m" lineNumber:184 description:{@"Process name %@ is not python", processName}];
   }
 
-  kReportSamplingRate = a3;
+  kReportSamplingRate = rate;
 }
 
-+ (float)roundFloatToSigFigs:(float)a3 sigFigs:(int)a4
++ (float)roundFloatToSigFigs:(float)figs sigFigs:(int)sigFigs
 {
-  v5 = a3;
-  v6 = a3 < 0.0;
-  if (a3 == 0.0)
+  figsCopy = figs;
+  v6 = figs < 0.0;
+  if (figs == 0.0)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = -a3;
+    v8 = -figs;
     if (!v6)
     {
-      v8 = v5;
+      v8 = figsCopy;
     }
 
     v7 = vcvtpd_s64_f64(log10(v8));
   }
 
-  v9 = __exp10((a4 - v7));
+  v9 = __exp10((sigFigs - v7));
   if (v9 != 0.0)
   {
-    return roundf(v9 * v5) / v9;
+    return roundf(v9 * figsCopy) / v9;
   }
 
-  return v5;
+  return figsCopy;
 }
 
-+ (void)addScoresForOutcomes:(id)a3 predictions:(id)a4 predicate:(id)a5 metrics:(id)a6
++ (void)addScoresForOutcomes:(id)outcomes predictions:(id)predictions predicate:(id)predicate metrics:(id)metrics
 {
-  v20 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = v20;
-  v13 = [v20 ptr];
-  v14 = [v9 ptr];
-  if ([v20 count])
+  outcomesCopy = outcomes;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  metricsCopy = metrics;
+  v12 = outcomesCopy;
+  v13 = [outcomesCopy ptr];
+  v14 = [predictionsCopy ptr];
+  if ([outcomesCopy count])
   {
     v15 = 0;
     do
@@ -75,48 +75,48 @@
         LODWORD(v16) = *(v14 + 4 * v15);
         [PMLClassificationEvaluationMetrics roundFloatToSigFigs:3 sigFigs:v16];
         v18 = v17;
-        if (v10[2](v10, *(v13 + 4 * v15)))
+        if (predicateCopy[2](predicateCopy, *(v13 + 4 * v15)))
         {
           LODWORD(v19) = v18;
-          [v11 addPositiveScores:v19];
+          [metricsCopy addPositiveScores:v19];
         }
 
         else
         {
           LODWORD(v19) = v18;
-          [v11 addNegativeScores:v19];
+          [metricsCopy addNegativeScores:v19];
         }
       }
 
       ++v15;
     }
 
-    while (v15 < [v20 count]);
+    while (v15 < [outcomesCopy count]);
   }
 }
 
-+ (unint64_t)falseNegatives:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (unint64_t)falseNegatives:(id)negatives predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 ptr];
-  v11 = [v8 ptr];
-  if ([v7 count])
+  negativesCopy = negatives;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  v10 = [negativesCopy ptr];
+  v11 = [predictionsCopy ptr];
+  if ([negativesCopy count])
   {
     v12 = 0;
     v13 = 0;
     do
     {
-      if (v9[2](v9, *(v10 + 4 * v12)))
+      if (predicateCopy[2](predicateCopy, *(v10 + 4 * v12)))
       {
-        v13 += v9[2](v9, *(v11 + 4 * v12)) ^ 1;
+        v13 += predicateCopy[2](predicateCopy, *(v11 + 4 * v12)) ^ 1;
       }
 
       ++v12;
     }
 
-    while (v12 < [v7 count]);
+    while (v12 < [negativesCopy count]);
   }
 
   else
@@ -127,28 +127,28 @@
   return v13;
 }
 
-+ (unint64_t)trueNegatives:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (unint64_t)trueNegatives:(id)negatives predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 ptr];
-  v11 = [v8 ptr];
-  if ([v7 count])
+  negativesCopy = negatives;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  v10 = [negativesCopy ptr];
+  v11 = [predictionsCopy ptr];
+  if ([negativesCopy count])
   {
     v12 = 0;
     v13 = 0;
     do
     {
-      if (((v9[2])(v9, *(v10 + 4 * v12)) & 1) == 0)
+      if (((predicateCopy[2])(predicateCopy, *(v10 + 4 * v12)) & 1) == 0)
       {
-        v13 += v9[2](v9, *(v11 + 4 * v12)) ^ 1;
+        v13 += predicateCopy[2](predicateCopy, *(v11 + 4 * v12)) ^ 1;
       }
 
       ++v12;
     }
 
-    while (v12 < [v7 count]);
+    while (v12 < [negativesCopy count]);
   }
 
   else
@@ -159,28 +159,28 @@
   return v13;
 }
 
-+ (unint64_t)falsePositives:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (unint64_t)falsePositives:(id)positives predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 ptr];
-  v11 = [v8 ptr];
-  if ([v7 count])
+  positivesCopy = positives;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  v10 = [positivesCopy ptr];
+  v11 = [predictionsCopy ptr];
+  if ([positivesCopy count])
   {
     v12 = 0;
     v13 = 0;
     do
     {
-      if (((v9[2])(v9, *(v10 + 4 * v12)) & 1) == 0)
+      if (((predicateCopy[2])(predicateCopy, *(v10 + 4 * v12)) & 1) == 0)
       {
-        v13 += v9[2](v9, *(v11 + 4 * v12));
+        v13 += predicateCopy[2](predicateCopy, *(v11 + 4 * v12));
       }
 
       ++v12;
     }
 
-    while (v12 < [v7 count]);
+    while (v12 < [positivesCopy count]);
   }
 
   else
@@ -191,28 +191,28 @@
   return v13;
 }
 
-+ (unint64_t)truePositives:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (unint64_t)truePositives:(id)positives predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 ptr];
-  v11 = [v8 ptr];
-  if ([v7 count])
+  positivesCopy = positives;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  v10 = [positivesCopy ptr];
+  v11 = [predictionsCopy ptr];
+  if ([positivesCopy count])
   {
     v12 = 0;
     v13 = 0;
     do
     {
-      if (v9[2](v9, *(v10 + 4 * v12)))
+      if (predicateCopy[2](predicateCopy, *(v10 + 4 * v12)))
       {
-        v13 += v9[2](v9, *(v11 + 4 * v12));
+        v13 += predicateCopy[2](predicateCopy, *(v11 + 4 * v12));
       }
 
       ++v12;
     }
 
-    while (v12 < [v7 count]);
+    while (v12 < [positivesCopy count]);
   }
 
   else
@@ -223,14 +223,14 @@
   return v13;
 }
 
-+ (float)f1Score:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (float)f1Score:(id)score predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [PMLClassificationEvaluationMetrics precision:v9 predictions:v8 predicate:v7];
+  predicateCopy = predicate;
+  predictionsCopy = predictions;
+  scoreCopy = score;
+  [PMLClassificationEvaluationMetrics precision:scoreCopy predictions:predictionsCopy predicate:predicateCopy];
   v11 = v10;
-  [PMLClassificationEvaluationMetrics recall:v9 predictions:v8 predicate:v7];
+  [PMLClassificationEvaluationMetrics recall:scoreCopy predictions:predictionsCopy predicate:predicateCopy];
   v13 = v12;
 
   result = 0.0;
@@ -242,31 +242,31 @@
   return result;
 }
 
-+ (float)recall:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (float)recall:(id)recall predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 ptr];
-  v11 = [v8 ptr];
+  recallCopy = recall;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  v10 = [recallCopy ptr];
+  v11 = [predictionsCopy ptr];
   v12 = 0.0;
-  if ([v7 count])
+  if ([recallCopy count])
   {
     v13 = 0;
     v14 = 0;
     v15 = 0;
     do
     {
-      if (v9[2](v9, *(v10 + 4 * v13)))
+      if (predicateCopy[2](predicateCopy, *(v10 + 4 * v13)))
       {
         ++v14;
-        v15 += v9[2](v9, *(v11 + 4 * v13));
+        v15 += predicateCopy[2](predicateCopy, *(v11 + 4 * v13));
       }
 
       ++v13;
     }
 
-    while (v13 < [v7 count]);
+    while (v13 < [recallCopy count]);
     if (v14)
     {
       v12 = v15 / v14;
@@ -276,31 +276,31 @@
   return v12;
 }
 
-+ (float)precision:(id)a3 predictions:(id)a4 predicate:(id)a5
++ (float)precision:(id)precision predictions:(id)predictions predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 ptr];
-  v11 = [v8 ptr];
+  precisionCopy = precision;
+  predictionsCopy = predictions;
+  predicateCopy = predicate;
+  v10 = [precisionCopy ptr];
+  v11 = [predictionsCopy ptr];
   v12 = 0.0;
-  if ([v7 count])
+  if ([precisionCopy count])
   {
     v13 = 0;
     v14 = 0;
     v15 = 0;
     do
     {
-      if (v9[2](v9, *(v11 + 4 * v13)))
+      if (predicateCopy[2](predicateCopy, *(v11 + 4 * v13)))
       {
         ++v15;
-        v14 += v9[2](v9, *(v10 + 4 * v13));
+        v14 += predicateCopy[2](predicateCopy, *(v10 + 4 * v13));
       }
 
       ++v13;
     }
 
-    while (v13 < [v7 count]);
+    while (v13 < [precisionCopy count]);
     if (v15)
     {
       v12 = v14 / v15;

@@ -1,19 +1,19 @@
 @interface SystemApertureIconView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC17TrackingUIService22SystemApertureIconView)initWithCoder:(id)a3;
-- (_TtC17TrackingUIService22SystemApertureIconView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC17TrackingUIService22SystemApertureIconView)initWithCoder:(id)coder;
+- (_TtC17TrackingUIService22SystemApertureIconView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SystemApertureIconView
 
-- (_TtC17TrackingUIService22SystemApertureIconView)initWithFrame:(CGRect)a3
+- (_TtC17TrackingUIService22SystemApertureIconView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC17TrackingUIService22SystemApertureIconView_appIconImageView;
   *(&self->super.super.super.isa + v9) = [objc_allocWithZone(UIImageView) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -22,7 +22,7 @@
   return [(SystemApertureIconView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC17TrackingUIService22SystemApertureIconView)initWithCoder:(id)a3
+- (_TtC17TrackingUIService22SystemApertureIconView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC17TrackingUIService22SystemApertureIconView_appIconImageView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UIImageView) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -40,9 +40,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC17TrackingUIService22SystemApertureIconView_appIconImageView) sizeThatFits:{a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC17TrackingUIService22SystemApertureIconView_appIconImageView) sizeThatFits:{fits.width, fits.height}];
   if (v3 <= 1.0)
   {
     v3 = 1.0;
@@ -53,9 +53,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC17TrackingUIService22SystemApertureIconView_appIconImageView) sizeThatFits:{a4, a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC17TrackingUIService22SystemApertureIconView_appIconImageView) sizeThatFits:{mode, fits.width, fits.height}];
   if (v4 <= 1.0)
   {
     v4 = 1.0;

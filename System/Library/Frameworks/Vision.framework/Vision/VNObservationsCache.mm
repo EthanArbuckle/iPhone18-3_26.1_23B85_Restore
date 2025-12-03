@@ -1,28 +1,28 @@
 @interface VNObservationsCache
 - (VNObservationsCache)init;
-- (id)observationsAcceptedByRequest:(id)a3 testedKeyHandler:(id)a4;
-- (id)observationsForKey:(id)a3;
-- (void)setObservations:(id)a3 forKey:(id)a4;
+- (id)observationsAcceptedByRequest:(id)request testedKeyHandler:(id)handler;
+- (id)observationsForKey:(id)key;
+- (void)setObservations:(id)observations forKey:(id)key;
 @end
 
 @implementation VNObservationsCache
 
-- (id)observationsAcceptedByRequest:(id)a3 testedKeyHandler:(id)a4
+- (id)observationsAcceptedByRequest:(id)request testedKeyHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 frameworkClass];
+  requestCopy = request;
+  handlerCopy = handler;
+  frameworkClass = [requestCopy frameworkClass];
   os_unfair_lock_lock(&self->_observationsCacheLock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(NSMapTable *)self->_observationsCache keyEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observationsCache keyEnumerator];
+  v10 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
-    v17 = self;
+    selfCopy = self;
     v11 = *v19;
     while (2)
     {
@@ -30,27 +30,27 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if ([v13 requestClass] == v8)
+        if ([v13 requestClass] == frameworkClass)
         {
-          v14 = [v6 willAcceptCachedResultsFromRequestWithConfiguration:v13];
-          if (v7)
+          v14 = [requestCopy willAcceptCachedResultsFromRequestWithConfiguration:v13];
+          if (handlerCopy)
           {
-            v7[2](v7, v13, v14);
+            handlerCopy[2](handlerCopy, v13, v14);
           }
 
           if (v14)
           {
-            v15 = [(NSMapTable *)v17->_observationsCache objectForKey:v13];
+            v15 = [(NSMapTable *)selfCopy->_observationsCache objectForKey:v13];
             goto LABEL_14;
           }
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -61,7 +61,7 @@
 
     v15 = 0;
 LABEL_14:
-    self = v17;
+    self = selfCopy;
   }
 
   else
@@ -74,31 +74,31 @@ LABEL_14:
   return v15;
 }
 
-- (void)setObservations:(id)a3 forKey:(id)a4
+- (void)setObservations:(id)observations forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  observationsCopy = observations;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_observationsCacheLock);
   observationsCache = self->_observationsCache;
-  if (v9)
+  if (observationsCopy)
   {
-    v8 = [v9 copy];
-    [(NSMapTable *)observationsCache setObject:v8 forKey:v6];
+    v8 = [observationsCopy copy];
+    [(NSMapTable *)observationsCache setObject:v8 forKey:keyCopy];
   }
 
   else
   {
-    [(NSMapTable *)observationsCache removeObjectForKey:v6];
+    [(NSMapTable *)observationsCache removeObjectForKey:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_observationsCacheLock);
 }
 
-- (id)observationsForKey:(id)a3
+- (id)observationsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_observationsCacheLock);
-  v5 = [(NSMapTable *)self->_observationsCache objectForKey:v4];
+  v5 = [(NSMapTable *)self->_observationsCache objectForKey:keyCopy];
   os_unfair_lock_unlock(&self->_observationsCacheLock);
 
   return v5;
@@ -113,9 +113,9 @@ LABEL_14:
   if (v2)
   {
     v2->_observationsCacheLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     observationsCache = v3->_observationsCache;
-    v3->_observationsCache = v4;
+    v3->_observationsCache = strongToStrongObjectsMapTable;
 
     v6 = v3;
   }

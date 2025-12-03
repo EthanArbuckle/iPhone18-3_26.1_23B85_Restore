@@ -16,7 +16,7 @@
   v9[3] = &unk_27844A258;
   v10 = v6;
   v8 = v6;
-  [a1 _performScrollTestWithParameters:v7 completionBlock:v9];
+  [self _performScrollTestWithParameters:v7 completionBlock:v9];
 }
 
 @end

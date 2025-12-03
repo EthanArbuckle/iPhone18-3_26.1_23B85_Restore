@@ -1,10 +1,10 @@
 @interface AXMDataRegressionModelSine
 - (double)estimatedRadianFrequency;
 - (id)modelDescription;
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4;
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures;
 - (id)partialDerivatives;
 - (void)disqualifyModelIfNecessary;
-- (void)getInitialParams:(double *)a3;
+- (void)getInitialParams:(double *)params;
 @end
 
 @implementation AXMDataRegressionModelSine
@@ -37,44 +37,44 @@ long double __43__AXMDataRegressionModelSine_modelFunction__block_invoke(double 
   }
 }
 
-- (void)getInitialParams:(double *)a3
+- (void)getInitialParams:(double *)params
 {
   v5 = min(self->super._y, self->super._n);
   v6 = max(self->super._y, self->super._n) - v5;
-  *a3 = v6 / 1.5;
+  *params = v6 / 1.5;
   [(AXMDataRegressionModelSine *)self estimatedRadianFrequency];
-  *(a3 + 1) = v7;
-  a3[2] = 0.0;
-  a3[3] = v5 + v6 * 0.5;
+  *(params + 1) = v7;
+  params[2] = 0.0;
+  params[3] = v5 + v6 * 0.5;
 }
 
 - (id)partialDerivatives
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObject:&__block_literal_global_40_1];
-  [v2 addObject:&__block_literal_global_42_1];
-  [v2 addObject:&__block_literal_global_44_0];
-  [v2 addObject:&__block_literal_global_46];
-  v3 = [v2 copy];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:&__block_literal_global_40_1];
+  [array addObject:&__block_literal_global_42_1];
+  [array addObject:&__block_literal_global_44_0];
+  [array addObject:&__block_literal_global_46];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures
 {
   v6 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v6 setUsesSignificantDigits:1];
-  [v6 setMaximumSignificantDigits:a4];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*a3];
+  [v6 setMaximumSignificantDigits:figures];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*parameters];
   v8 = [v6 stringFromNumber:v7];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3[1]];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:parameters[1]];
   v10 = [v6 stringFromNumber:v9];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3[2]];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:parameters[2]];
   v12 = [v6 stringFromNumber:v11];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a3[3]];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:parameters[3]];
   v14 = [v6 stringFromNumber:v13];
 
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"y = %@ * sin(%@x + %@) + %@", v8, v10, v12, v14];
@@ -85,8 +85,8 @@ long double __43__AXMDataRegressionModelSine_modelFunction__block_invoke(double 
 - (double)estimatedRadianFrequency
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AXMDataRegressionModel *)self sortDataPoints];
-  MEMORY[0x1EEE9AC00](v3);
+  sortDataPoints = [(AXMDataRegressionModel *)self sortDataPoints];
+  MEMORY[0x1EEE9AC00](sortDataPoints);
   v6 = v33 - v5;
   if (v4 >= 25)
   {

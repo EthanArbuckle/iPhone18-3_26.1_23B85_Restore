@@ -1,51 +1,51 @@
 @interface MPMediaQuery
-- (id)collectionAtIndex:(unint64_t)a3;
-- (id)collectionWithUid:(unint64_t)a3 property:(id)a4;
-- (id)itemAtIndex:(unint64_t)a3;
-- (id)itemWithUid:(unint64_t)a3;
+- (id)collectionAtIndex:(unint64_t)index;
+- (id)collectionWithUid:(unint64_t)uid property:(id)property;
+- (id)itemAtIndex:(unint64_t)index;
+- (id)itemWithUid:(unint64_t)uid;
 @end
 
 @implementation MPMediaQuery
 
-- (id)collectionAtIndex:(unint64_t)a3
+- (id)collectionAtIndex:(unint64_t)index
 {
-  v5 = [(MPMediaQuery *)self collections];
-  v6 = [v5 count];
+  collections = [(MPMediaQuery *)self collections];
+  v6 = [collections count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(MPMediaQuery *)self collections];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    collections2 = [(MPMediaQuery *)self collections];
+    v8 = [collections2 objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
-  v5 = [(MPMediaQuery *)self items];
-  v6 = [v5 count];
+  items = [(MPMediaQuery *)self items];
+  v6 = [items count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(MPMediaQuery *)self items];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    items2 = [(MPMediaQuery *)self items];
+    v8 = [items2 objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (id)itemWithUid:(unint64_t)a3
+- (id)itemWithUid:(unint64_t)uid
 {
   v17 = 0u;
   v18 = 0u;
@@ -69,14 +69,14 @@ LABEL_3:
       v10 = *(*(&v17 + 1) + 8 * v9);
       v11 = [(MPMediaQuery *)self copy];
       [v11 setShouldIncludeNonLibraryEntities:1];
-      v12 = [NSNumber numberWithUnsignedLongLong:a3];
+      v12 = [NSNumber numberWithUnsignedLongLong:uid];
       v13 = [MPMediaPropertyPredicate predicateWithValue:v12 forProperty:v10];
       [v11 addFilterPredicate:v13];
 
-      v14 = [v11 items];
-      v15 = [v14 firstObject];
+      items = [v11 items];
+      firstObject = [items firstObject];
 
-      if (v15)
+      if (firstObject)
       {
         break;
       }
@@ -97,24 +97,24 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v15 = 0;
+    firstObject = 0;
   }
 
-  return v15;
+  return firstObject;
 }
 
-- (id)collectionWithUid:(unint64_t)a3 property:(id)a4
+- (id)collectionWithUid:(unint64_t)uid property:(id)property
 {
-  v6 = a4;
+  propertyCopy = property;
   v7 = [(MPMediaQuery *)self copy];
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
-  v9 = [MPMediaPropertyPredicate predicateWithValue:v8 forProperty:v6];
+  v8 = [NSNumber numberWithUnsignedLongLong:uid];
+  v9 = [MPMediaPropertyPredicate predicateWithValue:v8 forProperty:propertyCopy];
 
   [v7 addFilterPredicate:v9];
-  v10 = [v7 collections];
-  v11 = [v10 firstObject];
+  collections = [v7 collections];
+  firstObject = [collections firstObject];
 
-  return v11;
+  return firstObject;
 }
 
 @end

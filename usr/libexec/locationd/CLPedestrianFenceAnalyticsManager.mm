@@ -41,7 +41,7 @@
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v7 = self;
+    selfCopy = self;
     obj = [(CLPedestrianFenceAnalyticsManager *)self completedSessionsAwaitingPackets];
     v44 = [(NSMutableArray *)obj countByEnumeratingWithState:&v46 objects:v70 count:16];
     if (v44)
@@ -75,11 +75,11 @@
             [v9 removeObjectForKey:@"metricType"];
           }
 
-          v14 = [(CLPedestrianFenceAnalyticsManager *)v7 aggregateStatsFromPacket:v12 to:v10 useAOPDuration:v13 == 2];
+          v14 = [(CLPedestrianFenceAnalyticsManager *)selfCopy aggregateStatsFromPacket:v12 to:v10 useAOPDuration:v13 == 2];
           [v9 addEntriesFromDictionary:v14];
           v15 = sub_1000081AC();
           v16 = v15;
-          if (v13 == 2 && v15 - v7->_timestampLastLog <= 0.5)
+          if (v13 == 2 && v15 - selfCopy->_timestampLastLog <= 0.5)
           {
             goto LABEL_49;
           }
@@ -99,7 +99,7 @@
             {
               if (v19 >= v12)
               {
-                v20 = sub_100240250(&v7->_odometryPackets, &v45)[15];
+                v20 = sub_100240250(&selfCopy->_odometryPackets, &v45)[15];
                 v17 = p_end_node->__left_;
                 if (p_end_node->__left_)
                 {
@@ -296,7 +296,7 @@ LABEL_33:
             }
           }
 
-          v7->_timestampLastLog = v16;
+          selfCopy->_timestampLastLog = v16;
           if (v13 == 2)
           {
 LABEL_49:
@@ -326,8 +326,8 @@ LABEL_52:
       while (v38);
     }
 
-    [(NSMutableArray *)[(CLPedestrianFenceAnalyticsManager *)v7 completedSessionsAwaitingPackets] removeObjectsInArray:v40];
-    [(CLPedestrianFenceAnalyticsManager *)v7 cleanupPackets];
+    [(NSMutableArray *)[(CLPedestrianFenceAnalyticsManager *)selfCopy completedSessionsAwaitingPackets] removeObjectsInArray:v40];
+    [(CLPedestrianFenceAnalyticsManager *)selfCopy cleanupPackets];
   }
 }
 
@@ -337,29 +337,29 @@ LABEL_52:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v3 = [(NSMutableDictionary *)[(CLPedestrianFenceAnalyticsManager *)self activeOdometryClients] allValues];
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v49 count:16];
+  allValues = [(NSMutableDictionary *)[(CLPedestrianFenceAnalyticsManager *)self activeOdometryClients] allValues];
+  v4 = [allValues countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (v4)
   {
     v5 = *v43;
-    v6 = -1;
+    unsignedShortValue = -1;
     do
     {
       for (i = 0; i != v4; i = i + 1)
       {
         if (*v43 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v42 + 1) + 8 * i);
-        if (v6 >= [objc_msgSend(v8 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}])
+        if (unsignedShortValue >= [objc_msgSend(v8 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}])
         {
-          v6 = [objc_msgSend(v8 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}];
+          unsignedShortValue = [objc_msgSend(v8 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v42 objects:v49 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v42 objects:v49 count:16];
     }
 
     while (v4);
@@ -367,15 +367,15 @@ LABEL_52:
 
   else
   {
-    v6 = -1;
+    unsignedShortValue = -1;
   }
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(NSMutableDictionary *)[(CLPedestrianFenceAnalyticsManager *)self activeFenceSessions] allValues];
-  v10 = [v9 countByEnumeratingWithState:&v38 objects:v48 count:16];
+  allValues2 = [(NSMutableDictionary *)[(CLPedestrianFenceAnalyticsManager *)self activeFenceSessions] allValues];
+  v10 = [allValues2 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v10)
   {
     v11 = *v39;
@@ -385,17 +385,17 @@ LABEL_52:
       {
         if (*v39 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues2);
         }
 
         v13 = *(*(&v38 + 1) + 8 * j);
-        if (v6 >= [v13 unsignedShortValue])
+        if (unsignedShortValue >= [v13 unsignedShortValue])
         {
-          v6 = [v13 unsignedShortValue];
+          unsignedShortValue = [v13 unsignedShortValue];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v38 objects:v48 count:16];
+      v10 = [allValues2 countByEnumeratingWithState:&v38 objects:v48 count:16];
     }
 
     while (v10);
@@ -410,8 +410,8 @@ LABEL_52:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v14 = [(NSMutableDictionary *)[(CLPedestrianFenceAnalyticsManager *)self activeIntervalEvents] allValues];
-  v15 = [v14 countByEnumeratingWithState:&v34 objects:v47 count:16];
+  allValues3 = [(NSMutableDictionary *)[(CLPedestrianFenceAnalyticsManager *)self activeIntervalEvents] allValues];
+  v15 = [allValues3 countByEnumeratingWithState:&v34 objects:v47 count:16];
   if (v15)
   {
     v16 = *v35;
@@ -421,17 +421,17 @@ LABEL_52:
       {
         if (*v35 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues3);
         }
 
         v18 = *(*(&v34 + 1) + 8 * k);
-        if (v6 >= [v18 unsignedShortValue])
+        if (unsignedShortValue >= [v18 unsignedShortValue])
         {
-          v6 = [v18 unsignedShortValue];
+          unsignedShortValue = [v18 unsignedShortValue];
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v34 objects:v47 count:16];
+      v15 = [allValues3 countByEnumeratingWithState:&v34 objects:v47 count:16];
     }
 
     while (v15);
@@ -441,8 +441,8 @@ LABEL_52:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = [(CLPedestrianFenceAnalyticsManager *)self completedSessionsAwaitingPackets];
-  v20 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v30 objects:v46 count:16];
+  completedSessionsAwaitingPackets = [(CLPedestrianFenceAnalyticsManager *)self completedSessionsAwaitingPackets];
+  v20 = [(NSMutableArray *)completedSessionsAwaitingPackets countByEnumeratingWithState:&v30 objects:v46 count:16];
   if (v20)
   {
     v21 = *v31;
@@ -452,17 +452,17 @@ LABEL_52:
       {
         if (*v31 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(completedSessionsAwaitingPackets);
         }
 
         v23 = *(*(&v30 + 1) + 8 * m);
-        if (v6 >= [objc_msgSend(v23 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}])
+        if (unsignedShortValue >= [objc_msgSend(v23 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}])
         {
-          v6 = [objc_msgSend(v23 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}];
+          unsignedShortValue = [objc_msgSend(v23 objectForKeyedSubscript:{@"sequenceNumberStart", "unsignedShortValue"}];
         }
       }
 
-      v20 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v30 objects:v46 count:16];
+      v20 = [(NSMutableArray *)completedSessionsAwaitingPackets countByEnumeratingWithState:&v30 objects:v46 count:16];
     }
 
     while (v20);
@@ -474,7 +474,7 @@ LABEL_52:
     do
     {
       left = begin_node[1].__left_;
-      if (begin_node[4].__left_ >= v6)
+      if (begin_node[4].__left_ >= unsignedShortValue)
       {
         if (left)
         {

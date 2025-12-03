@@ -1,26 +1,26 @@
 @interface CCToolKitToolDisplayRepresentationImageStatic
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolDisplayRepresentationImageStatic)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolDisplayRepresentationImageStatic)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolDisplayRepresentationImageStatic)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolDisplayRepresentationImageStatic)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolDisplayRepresentationImageStaticSymbol)symbol;
 - (NSData)data;
 - (NSString)file;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolDisplayRepresentationImageStatic
 
-- (CCToolKitToolDisplayRepresentationImageStatic)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolDisplayRepresentationImageStatic)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v22[2] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"data"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"data"];
     if (v9)
     {
       objc_opt_class();
@@ -44,7 +44,7 @@ LABEL_21:
       v8 = v11;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"symbol"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"symbol"];
     if (v13)
     {
       v22[0] = 0;
@@ -63,7 +63,7 @@ LABEL_20:
       v13 = v14;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"file"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"file"];
     if (v9)
     {
       v17 = v9;
@@ -91,7 +91,7 @@ LABEL_20:
       v14 = v20;
     }
 
-    v19 = [[CCToolKitToolDisplayRepresentationImageStatic alloc] initWithKind:v14 kindType:v18 error:a4];
+    v19 = [[CCToolKitToolDisplayRepresentationImageStatic alloc] initWithKind:v14 kindType:v18 error:error];
     goto LABEL_20;
   }
 
@@ -113,8 +113,8 @@ LABEL_22:
       goto LABEL_10;
     }
 
-    v5 = [(CCToolKitToolDisplayRepresentationImageStatic *)self data];
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    data = [(CCToolKitToolDisplayRepresentationImageStatic *)self data];
+    v6 = [data base64EncodedStringWithOptions:0];
     [v3 setObject:v6 forKeyedSubscript:@"data"];
 
     kindType = self->_kindType;
@@ -127,17 +127,17 @@ LABEL_22:
       goto LABEL_10;
     }
 
-    v7 = [(CCToolKitToolDisplayRepresentationImageStatic *)self symbol];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"symbol"];
+    symbol = [(CCToolKitToolDisplayRepresentationImageStatic *)self symbol];
+    jsonDictionary = [symbol jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"symbol"];
 
     kindType = self->_kindType;
   }
 
   if (kindType == 3 && self->_file)
   {
-    v9 = [(CCToolKitToolDisplayRepresentationImageStatic *)self file];
-    [v3 setObject:v9 forKeyedSubscript:@"file"];
+    file = [(CCToolKitToolDisplayRepresentationImageStatic *)self file];
+    [v3 setObject:file forKeyedSubscript:@"file"];
   }
 
 LABEL_10:
@@ -146,11 +146,11 @@ LABEL_10:
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_data)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] bytesValue:self->_data];
@@ -194,10 +194,10 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -384,20 +384,20 @@ LABEL_38:
   return v45;
 }
 
-- (CCToolKitToolDisplayRepresentationImageStatic)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolDisplayRepresentationImageStatic)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (!v8 || a4 != 1)
+  if (!kindCopy || type != 1)
   {
-    if (v8 && a4 == 2)
+    if (kindCopy && type == 2)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
       v11 = 0;
       if (IsInstanceOfExpectedClass)
       {
-        v13 = [v8 data];
+        data = [kindCopy data];
         CCPBDataWriterWriteDataField();
 
         goto LABEL_13;
@@ -407,7 +407,7 @@ LABEL_38:
     else
     {
       v11 = 0;
-      if (!v8 || a4 != 3)
+      if (!kindCopy || type != 3)
       {
         goto LABEL_13;
       }
@@ -424,7 +424,7 @@ LABEL_38:
 
 LABEL_14:
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -438,13 +438,13 @@ LABEL_14:
 
   CCPBDataWriterWriteDataField();
 LABEL_13:
-  v15 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

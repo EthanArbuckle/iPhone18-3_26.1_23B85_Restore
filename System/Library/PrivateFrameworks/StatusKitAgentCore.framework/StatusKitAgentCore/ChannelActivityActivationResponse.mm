@@ -1,21 +1,21 @@
 @interface ChannelActivityActivationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)addParticipantPayload:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResponseMessageIndex:(BOOL)a3;
-- (void)setHasRetryIntervalSeconds:(BOOL)a3;
-- (void)setHasServerTimestampSeconds:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasTotalResponseMessages:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipantPayload:(id)payload;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResponseMessageIndex:(BOOL)index;
+- (void)setHasRetryIntervalSeconds:(BOOL)seconds;
+- (void)setHasServerTimestampSeconds:(BOOL)seconds;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasTotalResponseMessages:(BOOL)messages;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelActivityActivationResponse
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 32;
   }
@@ -48,50 +48,50 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AUTH_EXPIRED"])
+  else if ([statusCopy isEqualToString:@"AUTH_EXPIRED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AUTH_FAILED"])
+  else if ([statusCopy isEqualToString:@"AUTH_FAILED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BAD_REQUEST"])
+  else if ([statusCopy isEqualToString:@"BAD_REQUEST"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CHANNEL_IDENTITY_VALIDATION_FAILED"])
+  else if ([statusCopy isEqualToString:@"CHANNEL_IDENTITY_VALIDATION_FAILED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INTERNAL_ERROR"])
+  else if ([statusCopy isEqualToString:@"INTERNAL_ERROR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"STALE_PUBLISH_REJECTED"])
+  else if ([statusCopy isEqualToString:@"STALE_PUBLISH_REJECTED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RATE_LIMITED"])
+  else if ([statusCopy isEqualToString:@"RATE_LIMITED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"INVALID_NONCE"])
+  else if ([statusCopy isEqualToString:@"INVALID_NONCE"])
   {
     v4 = 8;
   }
@@ -104,9 +104,9 @@
   return v4;
 }
 
-- (void)setHasServerTimestampSeconds:(BOOL)a3
+- (void)setHasServerTimestampSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -119,9 +119,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -134,27 +134,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addParticipantPayload:(id)a3
+- (void)addParticipantPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   participantPayloads = self->_participantPayloads;
-  v8 = v4;
+  v8 = payloadCopy;
   if (!participantPayloads)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_participantPayloads;
     self->_participantPayloads = v6;
 
-    v4 = v8;
+    payloadCopy = v8;
     participantPayloads = self->_participantPayloads;
   }
 
-  [(NSMutableArray *)participantPayloads addObject:v4];
+  [(NSMutableArray *)participantPayloads addObject:payloadCopy];
 }
 
-- (void)setHasResponseMessageIndex:(BOOL)a3
+- (void)setHasResponseMessageIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTotalResponseMessages:(BOOL)a3
+- (void)setHasTotalResponseMessages:(BOOL)messages
 {
-  if (a3)
+  if (messages)
   {
     v3 = 64;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasRetryIntervalSeconds:(BOOL)a3
+- (void)setHasRetryIntervalSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 16;
   }
@@ -203,8 +203,8 @@
   v8.receiver = self;
   v8.super_class = ChannelActivityActivationResponse;
   v4 = [(ChannelActivityActivationResponse *)&v8 description];
-  v5 = [(ChannelActivityActivationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelActivityActivationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -212,7 +212,7 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 0x20) != 0)
   {
     status = self->_status;
@@ -226,20 +226,20 @@
       v5 = off_27843DF58[status];
     }
 
-    [v3 setObject:v5 forKey:@"status"];
+    [dictionary setObject:v5 forKey:@"status"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_serverTimestampSeconds];
-    [v3 setObject:v8 forKey:@"server_timestamp_seconds"];
+    [dictionary setObject:v8 forKey:@"server_timestamp_seconds"];
 
     has = self->_has;
   }
@@ -247,7 +247,7 @@
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_version];
-    [v3 setObject:v9 forKey:@"version"];
+    [dictionary setObject:v9 forKey:@"version"];
   }
 
   if ([(NSMutableArray *)self->_participantPayloads count])
@@ -272,8 +272,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -282,14 +282,14 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"participant_payload"];
+    [dictionary setObject:v10 forKey:@"participant_payload"];
   }
 
   v17 = self->_has;
   if ((v17 & 8) != 0)
   {
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_responseMessageIndex];
-    [v3 setObject:v21 forKey:@"response_message_index"];
+    [dictionary setObject:v21 forKey:@"response_message_index"];
 
     v17 = self->_has;
     if ((v17 & 0x40) == 0)
@@ -310,7 +310,7 @@ LABEL_23:
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_totalResponseMessages];
-  [v3 setObject:v22 forKey:@"total_response_messages"];
+  [dictionary setObject:v22 forKey:@"total_response_messages"];
 
   v17 = self->_has;
   if ((v17 & 1) == 0)
@@ -326,25 +326,25 @@ LABEL_24:
 
 LABEL_31:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_activationExpirySeconds];
-  [v3 setObject:v23 forKey:@"activation_expiry_seconds"];
+  [dictionary setObject:v23 forKey:@"activation_expiry_seconds"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_25:
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_retryIntervalSeconds];
-    [v3 setObject:v18 forKey:@"retry_interval_seconds"];
+    [dictionary setObject:v18 forKey:@"retry_interval_seconds"];
   }
 
 LABEL_26:
   v19 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
     status = self->_status;
@@ -451,43 +451,43 @@ LABEL_21:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[12] = self->_status;
-    *(v4 + 64) |= 0x20u;
+    toCopy[12] = self->_status;
+    *(toCopy + 64) |= 0x20u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v11;
+    [toCopy setUuid:?];
+    toCopy = v11;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_serverTimestampSeconds;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = self->_serverTimestampSeconds;
+    *(toCopy + 64) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_version;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 3) = self->_version;
+    *(toCopy + 64) |= 4u;
   }
 
   if ([(ChannelActivityActivationResponse *)self participantPayloadsCount])
   {
     [v11 clearParticipantPayloads];
-    v6 = [(ChannelActivityActivationResponse *)self participantPayloadsCount];
-    if (v6)
+    participantPayloadsCount = [(ChannelActivityActivationResponse *)self participantPayloadsCount];
+    if (participantPayloadsCount)
     {
-      v7 = v6;
+      v7 = participantPayloadsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ChannelActivityActivationResponse *)self participantPayloadAtIndex:i];
@@ -546,10 +546,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x20) != 0)
   {
@@ -557,7 +557,7 @@ LABEL_18:
     *(v5 + 64) |= 0x20u;
   }
 
-  v7 = [(NSData *)self->_uuid copyWithZone:a3];
+  v7 = [(NSData *)self->_uuid copyWithZone:zone];
   v8 = *(v6 + 56);
   *(v6 + 56) = v7;
 
@@ -594,7 +594,7 @@ LABEL_18:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v15 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v6 addParticipantPayload:v15];
       }
 
@@ -656,31 +656,31 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0 || self->_status != *(v4 + 12))
+    if ((*(equalCopy + 64) & 0x20) == 0 || self->_status != *(equalCopy + 12))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x20) != 0)
+  else if ((*(equalCopy + 64) & 0x20) != 0)
   {
     goto LABEL_42;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 7))
+  if (uuid | *(equalCopy + 7))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -690,35 +690,35 @@ LABEL_19:
     has = self->_has;
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_serverTimestampSeconds != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_serverTimestampSeconds != *(equalCopy + 2))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_version != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_version != *(equalCopy + 3))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   participantPayloads = self->_participantPayloads;
-  if (participantPayloads | *(v4 + 4))
+  if (participantPayloads | *(equalCopy + 4))
   {
     if ([(NSMutableArray *)participantPayloads isEqual:?])
     {
@@ -734,47 +734,47 @@ LABEL_42:
 LABEL_23:
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_responseMessageIndex != *(v4 + 10))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_responseMessageIndex != *(equalCopy + 10))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 64) & 0x40) == 0 || self->_totalResponseMessages != *(v4 + 13))
+    if ((*(equalCopy + 64) & 0x40) == 0 || self->_totalResponseMessages != *(equalCopy + 13))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x40) != 0)
+  else if ((*(equalCopy + 64) & 0x40) != 0)
   {
     goto LABEL_42;
   }
 
   if (has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_activationExpirySeconds != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_activationExpirySeconds != *(equalCopy + 1))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_42;
   }
 
-  v10 = (*(v4 + 64) & 0x10) == 0;
+  v10 = (*(equalCopy + 64) & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_retryIntervalSeconds != *(v4 + 11))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_retryIntervalSeconds != *(equalCopy + 11))
     {
       goto LABEL_42;
     }
@@ -875,18 +875,18 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if ((v4[16] & 0x20) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[16] & 0x20) != 0)
   {
-    self->_status = v4[12];
+    self->_status = fromCopy[12];
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ChannelActivityActivationResponse *)self setUuid:?];
   }

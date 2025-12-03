@@ -1,14 +1,14 @@
 @interface NSError
-+ (id)gc_VirtualControllerError:(void *)a3 userInfo:;
++ (id)gc_VirtualControllerError:(void *)error userInfo:;
 @end
 
 @implementation NSError
 
-+ (id)gc_VirtualControllerError:(void *)a3 userInfo:
++ (id)gc_VirtualControllerError:(void *)error userInfo:
 {
-  v4 = a3;
+  errorCopy = error;
   objc_opt_self();
-  v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"GCVirtualControllerError" code:a2 userInfo:v4];
+  v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"GCVirtualControllerError" code:a2 userInfo:errorCopy];
 
   return v5;
 }

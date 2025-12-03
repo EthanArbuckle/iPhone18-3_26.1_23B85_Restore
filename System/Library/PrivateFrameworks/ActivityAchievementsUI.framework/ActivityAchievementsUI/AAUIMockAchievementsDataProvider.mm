@@ -1,16 +1,16 @@
 @interface AAUIMockAchievementsDataProvider
 - (AAUIMockAchievementsDataProvider)init;
-- (id)_ACHDateComponentIntervalWithMonthOffset:(unint64_t)a3;
-- (id)_achievementForTemplate:(id)a3 earnedInstanceCount:(int64_t)a4 earnedInstanceOffset:(int64_t)a5 earnedInstanceValue:(int64_t)a6 goalValue:(int64_t)a7 progressValue:(int64_t)a8;
-- (id)_currentMonthlyChallengeAchievementForTemplate:(id)a3 localizableSuffix:(id)a4 goalValue:(int64_t)a5 progressValue:(int64_t)a6 isEarned:(BOOL)a7;
-- (id)_dateComponentsWithDayOffset:(int64_t)a3;
-- (id)_distanceUnitForLocale:(id)a3;
-- (id)_fitnessUIAssetsURLWithKey:(id)a3 value:(id)a4;
-- (id)_monthStringFromTemplateName:(id)a3;
-- (id)achievementAtIndexPath:(id)a3;
-- (id)headerStringForSection:(int64_t)a3 isRecentAndRelevant:(BOOL)a4;
-- (id)recentAndRelevantAchievementAtIndexPath:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)_ACHDateComponentIntervalWithMonthOffset:(unint64_t)offset;
+- (id)_achievementForTemplate:(id)template earnedInstanceCount:(int64_t)count earnedInstanceOffset:(int64_t)offset earnedInstanceValue:(int64_t)value goalValue:(int64_t)goalValue progressValue:(int64_t)progressValue;
+- (id)_currentMonthlyChallengeAchievementForTemplate:(id)template localizableSuffix:(id)suffix goalValue:(int64_t)value progressValue:(int64_t)progressValue isEarned:(BOOL)earned;
+- (id)_dateComponentsWithDayOffset:(int64_t)offset;
+- (id)_distanceUnitForLocale:(id)locale;
+- (id)_fitnessUIAssetsURLWithKey:(id)key value:(id)value;
+- (id)_monthStringFromTemplateName:(id)name;
+- (id)achievementAtIndexPath:(id)path;
+- (id)headerStringForSection:(int64_t)section isRecentAndRelevant:(BOOL)relevant;
+- (id)recentAndRelevantAchievementAtIndexPath:(id)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation AAUIMockAchievementsDataProvider
@@ -173,73 +173,73 @@
   return v2;
 }
 
-- (id)recentAndRelevantAchievementAtIndexPath:(id)a3
+- (id)recentAndRelevantAchievementAtIndexPath:(id)path
 {
   achievements = self->_achievements;
-  v4 = a3;
-  v5 = -[NSArray objectAtIndexedSubscript:](achievements, "objectAtIndexedSubscript:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndexedSubscript:](achievements, "objectAtIndexedSubscript:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
-- (id)achievementAtIndexPath:(id)a3
+- (id)achievementAtIndexPath:(id)path
 {
   achievements = self->_achievements;
-  v4 = a3;
-  v5 = -[NSArray objectAtIndexedSubscript:](achievements, "objectAtIndexedSubscript:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndexedSubscript:](achievements, "objectAtIndexedSubscript:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_achievements objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_achievements objectAtIndexedSubscript:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)headerStringForSection:(int64_t)a3 isRecentAndRelevant:(BOOL)a4
+- (id)headerStringForSection:(int64_t)section isRecentAndRelevant:(BOOL)relevant
 {
   v23[7] = *MEMORY[0x277D85DE8];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v21 = [v22 localizedStringForKey:@"RECENT" value:&stru_2850CB9E8 table:@"Localizable"];
-  v20 = [v21 localizedUppercaseString];
-  v23[0] = v20;
+  localizedUppercaseString = [v21 localizedUppercaseString];
+  v23[0] = localizedUppercaseString;
   v23[1] = &stru_2850CB9E8;
   v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v19 localizedStringForKey:*MEMORY[0x277CE8A80] value:&stru_2850CB9E8 table:@"Localizable"];
-  v16 = [v17 localizedUppercaseString];
-  v23[2] = v16;
+  localizedUppercaseString2 = [v17 localizedUppercaseString];
+  v23[2] = localizedUppercaseString2;
   v23[3] = &stru_2850CB9E8;
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v15 localizedStringForKey:*MEMORY[0x277CE8A98] value:&stru_2850CB9E8 table:@"Localizable"];
-  v5 = [v4 localizedUppercaseString];
-  v23[4] = v5;
+  localizedUppercaseString3 = [v4 localizedUppercaseString];
+  v23[4] = localizedUppercaseString3;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:*MEMORY[0x277CE8A78] value:&stru_2850CB9E8 table:@"Localizable"];
-  v8 = [v7 localizedUppercaseString];
-  v23[5] = v8;
+  localizedUppercaseString4 = [v7 localizedUppercaseString];
+  v23[5] = localizedUppercaseString4;
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:*MEMORY[0x277CE8AA0] value:&stru_2850CB9E8 table:@"Localizable"];
-  v11 = [v10 localizedUppercaseString];
-  v23[6] = v11;
+  localizedUppercaseString5 = [v10 localizedUppercaseString];
+  v23[6] = localizedUppercaseString5;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:7];
-  v13 = [v12 objectAtIndexedSubscript:a3];
+  v13 = [v12 objectAtIndexedSubscript:section];
 
   return v13;
 }
 
-- (id)_achievementForTemplate:(id)a3 earnedInstanceCount:(int64_t)a4 earnedInstanceOffset:(int64_t)a5 earnedInstanceValue:(int64_t)a6 goalValue:(int64_t)a7 progressValue:(int64_t)a8
+- (id)_achievementForTemplate:(id)template earnedInstanceCount:(int64_t)count earnedInstanceOffset:(int64_t)offset earnedInstanceValue:(int64_t)value goalValue:(int64_t)goalValue progressValue:(int64_t)progressValue
 {
-  v14 = a3;
-  if (a4 < 1)
+  templateCopy = template;
+  if (count < 1)
   {
     v15 = 0;
   }
@@ -247,42 +247,42 @@
   else
   {
     v15 = objc_alloc_init(MEMORY[0x277CE8D38]);
-    v16 = [v14 uniqueName];
-    [v15 setTemplateUniqueName:v16];
+    uniqueName = [templateCopy uniqueName];
+    [v15 setTemplateUniqueName:uniqueName];
 
-    v17 = [(AAUIMockAchievementsDataProvider *)self _dateComponentsWithDayOffset:a5];
+    v17 = [(AAUIMockAchievementsDataProvider *)self _dateComponentsWithDayOffset:offset];
     [v15 setEarnedDateComponents:v17];
 
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
-    v19 = [v14 canonicalUnit];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:value];
+    canonicalUnit = [templateCopy canonicalUnit];
     v20 = ACHHKQuantityWithValueAndUnit();
     [v15 setValue:v20];
   }
 
-  v21 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithTemplate:v14 relevantEarnedInstance:v15 earnedInstanceCount:a4];
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
-  v23 = [v14 canonicalUnit];
+  v21 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithTemplate:templateCopy relevantEarnedInstance:v15 earnedInstanceCount:count];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:goalValue];
+  canonicalUnit2 = [templateCopy canonicalUnit];
   v24 = ACHHKQuantityWithValueAndUnit();
   [v21 setGoal:v24];
 
-  v25 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
-  v26 = [v14 canonicalUnit];
+  v25 = [MEMORY[0x277CCABB0] numberWithInteger:progressValue];
+  canonicalUnit3 = [templateCopy canonicalUnit];
   v27 = ACHHKQuantityWithValueAndUnit();
   [v21 setProgress:v27];
 
-  v28 = [v21 template];
-  v29 = [v28 uniqueName];
-  v30 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"%@/localization/" value:v29];
+  template = [v21 template];
+  uniqueName2 = [template uniqueName];
+  v30 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"%@/localization/" value:uniqueName2];
   [v21 setLocalizationBundleURL:v30];
 
-  v31 = [v21 template];
-  v32 = [v31 uniqueName];
-  v33 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"%@/badgemodel/" value:v32];
+  template2 = [v21 template];
+  uniqueName3 = [template2 uniqueName];
+  v33 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"%@/badgemodel/" value:uniqueName3];
   [v21 setResourceBundleURL:v33];
 
-  v34 = [v21 template];
-  v35 = [v34 uniqueName];
-  v36 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"%@/badgeproperties/" value:v35];
+  template3 = [v21 template];
+  uniqueName4 = [template3 uniqueName];
+  v36 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"%@/badgeproperties/" value:uniqueName4];
   [v21 setPropertyListBundleURL:v36];
 
   ACHApplyBadgePropertiesToAchievement();
@@ -290,33 +290,33 @@
   return v21;
 }
 
-- (id)_currentMonthlyChallengeAchievementForTemplate:(id)a3 localizableSuffix:(id)a4 goalValue:(int64_t)a5 progressValue:(int64_t)a6 isEarned:(BOOL)a7
+- (id)_currentMonthlyChallengeAchievementForTemplate:(id)template localizableSuffix:(id)suffix goalValue:(int64_t)value progressValue:(int64_t)progressValue isEarned:(BOOL)earned
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  if (v7)
+  earnedCopy = earned;
+  templateCopy = template;
+  suffixCopy = suffix;
+  if (earnedCopy)
   {
     v14 = objc_alloc_init(MEMORY[0x277CE8D38]);
-    v15 = [v12 uniqueName];
-    [v14 setTemplateUniqueName:v15];
+    uniqueName = [templateCopy uniqueName];
+    [v14 setTemplateUniqueName:uniqueName];
 
-    v16 = [v12 availabilityEnd];
-    [v14 setEarnedDateComponents:v16];
+    availabilityEnd = [templateCopy availabilityEnd];
+    [v14 setEarnedDateComponents:availabilityEnd];
 
-    v17 = [v12 canonicalUnit];
-    if ([v17 _isMetricDistance])
+    canonicalUnit = [templateCopy canonicalUnit];
+    if ([canonicalUnit _isMetricDistance])
     {
-      v18 = [MEMORY[0x277CBEAF8] currentLocale];
-      v19 = [(AAUIMockAchievementsDataProvider *)self _distanceUnitForLocale:v18];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      canonicalUnit2 = [(AAUIMockAchievementsDataProvider *)self _distanceUnitForLocale:currentLocale];
     }
 
     else
     {
-      v19 = [v12 canonicalUnit];
+      canonicalUnit2 = [templateCopy canonicalUnit];
     }
 
-    v20 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v20 = [MEMORY[0x277CCABB0] numberWithInteger:progressValue];
     v21 = ACHHKQuantityWithValueAndUnit();
     [v14 setValue:v21];
   }
@@ -326,21 +326,21 @@
     v14 = 0;
   }
 
-  v22 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithTemplate:v12 relevantEarnedInstance:v14 earnedInstanceCount:v14 != 0];
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  v24 = [v12 canonicalUnit];
+  v22 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithTemplate:templateCopy relevantEarnedInstance:v14 earnedInstanceCount:v14 != 0];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:value];
+  canonicalUnit3 = [templateCopy canonicalUnit];
   v25 = ACHHKQuantityWithValueAndUnit();
   [v22 setGoal:v25];
 
-  v26 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
-  v27 = [v12 canonicalUnit];
+  v26 = [MEMORY[0x277CCABB0] numberWithInteger:progressValue];
+  canonicalUnit4 = [templateCopy canonicalUnit];
   v28 = ACHHKQuantityWithValueAndUnit();
   [v22 setProgress:v28];
 
-  v29 = [v12 uniqueName];
-  v30 = [(AAUIMockAchievementsDataProvider *)self _monthStringFromTemplateName:v29];
+  uniqueName2 = [templateCopy uniqueName];
+  v30 = [(AAUIMockAchievementsDataProvider *)self _monthStringFromTemplateName:uniqueName2];
 
-  v31 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"MonthlyAchievements/localization/challenge/%@/" value:v13];
+  v31 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"MonthlyAchievements/localization/challenge/%@/" value:suffixCopy];
   [v22 setLocalizationBundleURL:v31];
 
   v32 = [(AAUIMockAchievementsDataProvider *)self _fitnessUIAssetsURLWithKey:@"MonthlyAchievements/models/%@/badgemodel/" value:v30];
@@ -354,14 +354,14 @@
   return v22;
 }
 
-- (id)_fitnessUIAssetsURLWithKey:(id)a3 value:(id)a4
+- (id)_fitnessUIAssetsURLWithKey:(id)key value:(id)value
 {
-  v5 = a3;
+  keyCopy = key;
   v15 = 0;
-  v6 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:&v15, a4];
+  value = [MEMORY[0x277CCACA8] stringWithValidatedFormat:keyCopy validFormatSpecifiers:@"%@" error:&v15, value];
   v7 = v15;
   v8 = v7;
-  if (v6)
+  if (value)
   {
     v9 = 1;
   }
@@ -376,45 +376,45 @@
     v10 = ACHLogDefault();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(AAUIMockAchievementsDataProvider *)v5 _fitnessUIAssetsURLWithKey:v8 value:v10];
+      [(AAUIMockAchievementsDataProvider *)keyCopy _fitnessUIAssetsURLWithKey:v8 value:v10];
     }
   }
 
   v11 = MEMORY[0x277CBEBC0];
-  v12 = [@"file:///System/Library/Health/Assets/FitnessUIAssets.bundle/ActivityAchievements/" stringByAppendingString:v6];
+  v12 = [@"file:///System/Library/Health/Assets/FitnessUIAssets.bundle/ActivityAchievements/" stringByAppendingString:value];
   v13 = [v11 URLWithString:v12];
 
   return v13;
 }
 
-- (id)_dateComponentsWithDayOffset:(int64_t)a3
+- (id)_dateComponentsWithDayOffset:(int64_t)offset
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 hk_startOfDateByAddingDays:a3 toDate:v5];
-  v7 = [v4 components:*MEMORY[0x277CE8B28] fromDate:v6];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar hk_startOfDateByAddingDays:offset toDate:date];
+  v7 = [currentCalendar components:*MEMORY[0x277CE8B28] fromDate:v6];
 
   return v7;
 }
 
-- (id)_ACHDateComponentIntervalWithMonthOffset:(unint64_t)a3
+- (id)_ACHDateComponentIntervalWithMonthOffset:(unint64_t)offset
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 hk_startOfMonthForDate:v5 addingMonths:a3];
-  v7 = [v4 hk_startOfMonthForDate:v5 addingMonths:a3 + 1];
-  v8 = [v4 hk_startOfDateBySubtractingDays:1 fromDate:v7];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [currentCalendar hk_startOfMonthForDate:date addingMonths:offset];
+  v7 = [currentCalendar hk_startOfMonthForDate:date addingMonths:offset + 1];
+  v8 = [currentCalendar hk_startOfDateBySubtractingDays:1 fromDate:v7];
   v9 = *MEMORY[0x277CE8B28];
-  v10 = [v4 components:*MEMORY[0x277CE8B28] fromDate:v6];
-  v11 = [v4 components:v9 fromDate:v8];
+  v10 = [currentCalendar components:*MEMORY[0x277CE8B28] fromDate:v6];
+  v11 = [currentCalendar components:v9 fromDate:v8];
   v12 = [objc_alloc(MEMORY[0x277CE8D30]) initWithStartDateComponents:v10 endDateComponents:v11];
 
   return v12;
 }
 
-- (id)_monthStringFromTemplateName:(id)a3
+- (id)_monthStringFromTemplateName:(id)name
 {
-  v3 = [a3 componentsSeparatedByString:@"_"];
+  v3 = [name componentsSeparatedByString:@"_"];
   v4 = MEMORY[0x277CCACA8];
   v5 = [v3 objectAtIndexedSubscript:1];
   v6 = [v3 objectAtIndexedSubscript:2];
@@ -423,12 +423,12 @@
   return v7;
 }
 
-- (id)_distanceUnitForLocale:(id)a3
+- (id)_distanceUnitForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CBE718]];
-  v4 = [v3 BOOLValue];
+  v3 = [locale objectForKey:*MEMORY[0x277CBE718]];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
   }

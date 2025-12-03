@@ -198,17 +198,17 @@
 
 - (uint64_t)dss_isRetryable
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:DSSDeviceSharingErrorRetryable];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:DSSDeviceSharingErrorRetryable];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)dss_copyRetryable:()DSSAdditions
 {
-  v5 = [a1 userInfo];
-  v6 = [v5 mutableCopy];
+  userInfo = [self userInfo];
+  v6 = [userInfo mutableCopy];
 
   if (a3)
   {
@@ -222,8 +222,8 @@
   }
 
   v8 = objc_alloc(MEMORY[0x277CCA9B8]);
-  v9 = [a1 domain];
-  v10 = [v8 initWithDomain:v9 code:objc_msgSend(a1 userInfo:{"code"), v6}];
+  domain = [self domain];
+  v10 = [v8 initWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v6}];
 
   return v10;
 }

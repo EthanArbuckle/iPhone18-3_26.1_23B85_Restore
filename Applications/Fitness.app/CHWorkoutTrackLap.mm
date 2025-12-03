@@ -1,51 +1,51 @@
 @interface CHWorkoutTrackLap
-- (CHWorkoutTrackLap)initWithWorkoutEvent:(id)a3;
+- (CHWorkoutTrackLap)initWithWorkoutEvent:(id)event;
 - (id)description;
 @end
 
 @implementation CHWorkoutTrackLap
 
-- (CHWorkoutTrackLap)initWithWorkoutEvent:(id)a3
+- (CHWorkoutTrackLap)initWithWorkoutEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v20.receiver = self;
   v20.super_class = CHWorkoutTrackLap;
   v5 = [(CHWorkoutTrackLap *)&v20 init];
   if (v5)
   {
-    v6 = [v4 dateInterval];
-    v7 = [v6 startDate];
-    [(CHWorkoutSegment *)v5 setStartDate:v7];
+    dateInterval = [eventCopy dateInterval];
+    startDate = [dateInterval startDate];
+    [(CHWorkoutSegment *)v5 setStartDate:startDate];
 
-    v8 = [v4 dateInterval];
-    v9 = [v8 endDate];
-    [(CHWorkoutSegment *)v5 setEndDate:v9];
+    dateInterval2 = [eventCopy dateInterval];
+    endDate = [dateInterval2 endDate];
+    [(CHWorkoutSegment *)v5 setEndDate:endDate];
 
-    v10 = [v4 metadata];
-    v11 = [v10 objectForKeyedSubscript:FIPrivateMetadataKeyLapIndex];
+    metadata = [eventCopy metadata];
+    v11 = [metadata objectForKeyedSubscript:FIPrivateMetadataKeyLapIndex];
 
     -[CHWorkoutTrackLap setLapIndex:](v5, "setLapIndex:", [v11 integerValue]);
-    v12 = [v4 metadata];
-    v13 = [v12 objectForKeyedSubscript:FIPrivateMetadataKeyLaneNumber];
+    metadata2 = [eventCopy metadata];
+    v13 = [metadata2 objectForKeyedSubscript:FIPrivateMetadataKeyLaneNumber];
 
     -[CHWorkoutTrackLap setLaneNumber:](v5, "setLaneNumber:", [v13 integerValue]);
-    v14 = [v4 metadata];
-    v15 = [v14 objectForKeyedSubscript:FIPrivateMetadataKeyLapDistance];
+    metadata3 = [eventCopy metadata];
+    v15 = [metadata3 objectForKeyedSubscript:FIPrivateMetadataKeyLapDistance];
 
     [(CHWorkoutSegment *)v5 setDistance:v15];
-    v16 = [v4 metadata];
-    v17 = [v16 objectForKeyedSubscript:FIPrivateMetadataKeyLapDuration];
+    metadata4 = [eventCopy metadata];
+    v17 = [metadata4 objectForKeyedSubscript:FIPrivateMetadataKeyLapDuration];
 
     if (v17)
     {
-      v18 = +[HKUnit secondUnit];
-      [v17 doubleValueForUnit:v18];
+      dateInterval3 = +[HKUnit secondUnit];
+      [v17 doubleValueForUnit:dateInterval3];
     }
 
     else
     {
-      v18 = [v4 dateInterval];
-      [v18 duration];
+      dateInterval3 = [eventCopy dateInterval];
+      [dateInterval3 duration];
     }
 
     [(CHWorkoutSegment *)v5 setElapsedTime:?];

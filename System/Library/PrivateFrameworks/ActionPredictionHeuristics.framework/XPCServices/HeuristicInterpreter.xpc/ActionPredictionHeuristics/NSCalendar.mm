@@ -1,14 +1,14 @@
 @interface NSCalendar
-- (double)atx_timestampWithHour:(unint64_t)a3 minute:(unint64_t)a4 atDayOfTimestamp:(id)a5;
+- (double)atx_timestampWithHour:(unint64_t)hour minute:(unint64_t)minute atDayOfTimestamp:(id)timestamp;
 @end
 
 @implementation NSCalendar
 
-- (double)atx_timestampWithHour:(unint64_t)a3 minute:(unint64_t)a4 atDayOfTimestamp:(id)a5
+- (double)atx_timestampWithHour:(unint64_t)hour minute:(unint64_t)minute atDayOfTimestamp:(id)timestamp
 {
-  v8 = [(NSCalendar *)self components:28 fromDate:a5];
-  [v8 setHour:a3];
-  [v8 setMinute:a4];
+  v8 = [(NSCalendar *)self components:28 fromDate:timestamp];
+  [v8 setHour:hour];
+  [v8 setMinute:minute];
   v9 = [(NSCalendar *)self dateFromComponents:v8];
   [v9 timeIntervalSinceReferenceDate];
   v11 = v10;

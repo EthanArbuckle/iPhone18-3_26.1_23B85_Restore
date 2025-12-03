@@ -1,19 +1,19 @@
 @interface NSSharedKeyDictionary
-+ (id)sharedKeyDictionaryWithKeySet:(id)a3;
-- (NSSharedKeyDictionary)initWithCoder:(id)a3;
-- (NSSharedKeyDictionary)initWithKeySet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sharedKeyDictionaryWithKeySet:(id)set;
+- (NSSharedKeyDictionary)initWithCoder:(id)coder;
+- (NSSharedKeyDictionary)initWithKeySet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObservationInfo:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObservationInfo:(void *)info;
 @end
 
 @implementation NSSharedKeyDictionary
@@ -72,14 +72,14 @@
   return sideDic + count;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     keyMap = self->_keyMap;
     if (keyMap)
     {
-      v6 = (self->_ifkIMP)(keyMap, sel_indexForKey_, a3);
+      v6 = (self->_ifkIMP)(keyMap, sel_indexForKey_, key);
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
       {
         return self->_values[v6];
@@ -89,22 +89,22 @@
 
   sideDic = self->_sideDic;
 
-  return [(NSDictionary *)sideDic objectForKey:a3];
+  return [(NSDictionary *)sideDic objectForKey:key];
 }
 
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v9 = a5 >> 61;
-  if (a3 && v9 || a4 && v9)
+  v9 = count >> 61;
+  if (objects && v9 || keys && v9)
   {
     v19 = _os_log_pack_size();
     v20 = _os_log_pack_fill();
     *v20 = 136315394;
     *(v20 + 4) = "[NSSharedKeyDictionary getObjects:andKeys:count:]";
     *(v20 + 12) = 2048;
-    *(v20 + 14) = a5;
-    v21 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSSharedKeyDictionary getObjects:andKeys:count:]", a5);
+    *(v20 + 14) = count;
+    v21 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSSharedKeyDictionary getObjects:andKeys:count:]", count);
     v22 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v21) osLogPack:0 size:v23 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0), v19];
     objc_exception_throw(v22);
   }
@@ -121,26 +121,26 @@
     v11 = 0;
   }
 
-  if (v11 >= a5)
+  if (v11 >= count)
   {
-    v12 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v11;
+    countCopy = v11;
   }
 
-  [(NSDictionary *)sideDic getObjects:a3 andKeys:a4 count:v12];
-  v13 = a5 - v12;
-  if (a5 != v12)
+  [(NSDictionary *)sideDic getObjects:objects andKeys:keys count:countCopy];
+  v13 = count - countCopy;
+  if (count != countCopy)
   {
     v14 = [(NSSharedKeySet *)self->_keyMap count];
     if (v14)
     {
-      if (a4)
+      if (keys)
       {
-        v15 = &a4[v12];
+        v15 = &keys[countCopy];
       }
 
       else
@@ -148,9 +148,9 @@
         v15 = 0;
       }
 
-      if (a3)
+      if (objects)
       {
-        v16 = &a3[v12];
+        v16 = &objects[countCopy];
       }
 
       else
@@ -245,17 +245,17 @@
   }
 
   v12 = v11;
-  v13 = [(NSArray *)v11 objectEnumerator];
+  objectEnumerator = [(NSArray *)v11 objectEnumerator];
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return objectEnumerator;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v5 = a5;
+  countCopy = count;
   v38[1] = *MEMORY[0x1E69E9840];
-  if (!a4 && a5)
+  if (!objects && count)
   {
     v24 = _os_log_pack_size();
     v26 = v38 - ((MEMORY[0x1EEE9AC00](v24, v25) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -263,13 +263,13 @@
     *v27 = 136315394;
     *(v27 + 4) = "[NSSharedKeyDictionary countByEnumeratingWithState:objects:count:]";
     *(v27 + 12) = 2048;
-    *(v27 + 14) = v5;
-    v28 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSSharedKeyDictionary countByEnumeratingWithState:objects:count:]", v5);
+    *(v27 + 14) = countCopy;
+    v28 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSSharedKeyDictionary countByEnumeratingWithState:objects:count:]", countCopy);
     v29 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v28) osLogPack:0 size:v26, v24];
     objc_exception_throw(v29);
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v30 = _os_log_pack_size();
     v32 = v38 - ((MEMORY[0x1EEE9AC00](v30, v31) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -277,22 +277,22 @@
     *v33 = 136315394;
     *(v33 + 4) = "[NSSharedKeyDictionary countByEnumeratingWithState:objects:count:]";
     *(v33 + 12) = 2048;
-    *(v33 + 14) = v5;
-    v34 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSSharedKeyDictionary countByEnumeratingWithState:objects:count:]", v5);
+    *(v33 + 14) = countCopy;
+    v34 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSSharedKeyDictionary countByEnumeratingWithState:objects:count:]", countCopy);
     v35 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v34) osLogPack:0 size:v32, v30];
     objc_exception_throw(v35);
   }
 
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &self->_mutations;
+    state->var2 = &self->_mutations;
     count = self->_count;
     sideDic = self->_sideDic;
     if (sideDic)
     {
       sideDic = [(NSDictionary *)sideDic count];
-      v12 = a3->var0;
+      v12 = state->var0;
     }
 
     else
@@ -301,13 +301,13 @@
     }
 
     v13 = sideDic + count;
-    a3->var3[0] = v13;
+    state->var3[0] = v13;
     if (v13 <= v12)
     {
-      v5 = 0;
+      countCopy = 0;
       v18 = -1;
 LABEL_22:
-      a3->var0 = v18;
+      state->var0 = v18;
       goto LABEL_23;
     }
 
@@ -339,36 +339,36 @@ LABEL_22:
       v17 = [[NSArray alloc] initWithObjects:0 count:v13];
     }
 
-    a3->var3[1] = v17;
-    var0 = a3->var0;
+    state->var3[1] = v17;
+    var0 = state->var0;
   }
 
-  v19 = a3->var3[0];
+  v19 = state->var3[0];
   v20 = v19 > var0;
   v21 = v19 - var0;
   if (v20)
   {
-    if (v21 < v5)
+    if (v21 < countCopy)
     {
-      v5 = v21;
+      countCopy = v21;
     }
 
-    [a3->var3[1] getObjects:a4 range:?];
-    a3->var1 = a4;
-    v18 = a3->var0 + v5;
+    [state->var3[1] getObjects:objects range:?];
+    state->var1 = objects;
+    v18 = state->var0 + countCopy;
     goto LABEL_22;
   }
 
-  v5 = 0;
+  countCopy = 0;
 LABEL_23:
   v22 = *MEMORY[0x1E69E9840];
-  return v5;
+  return countCopy;
 }
 
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!block)
   {
     v12 = _os_log_pack_size();
     v14 = &v18[-((MEMORY[0x1EEE9AC00](v12, v13) + 15) & 0xFFFFFFFFFFFFFFF0)];
@@ -390,9 +390,9 @@ LABEL_23:
   v19[2] = __71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock___block_invoke;
   v19[3] = &unk_1E6D7D810;
   v19[4] = self;
-  v19[5] = a4;
+  v19[5] = block;
   v19[6] = &v20;
-  if (!__NSCollectionHandleConcurrentEnumerationIfSpecified(a3, 0, v7, v19))
+  if (!__NSCollectionHandleConcurrentEnumerationIfSpecified(options, 0, v7, v19))
   {
     v18[15] = 0;
     if (v7)
@@ -409,7 +409,7 @@ LABEL_23:
 
         v10 = _CFAutoreleasePoolPush();
         [(NSSharedKeySet *)self->_keyMap keyAtIndex:i];
-        __NSDICTIONARY_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+        __NSDICTIONARY_IS_CALLING_OUT_TO_A_BLOCK__(block);
         _CFAutoreleasePoolPop(v10);
       }
     }
@@ -421,7 +421,7 @@ LABEL_23:
   if ((v8 & 1) == 0)
   {
 LABEL_11:
-    [(NSDictionary *)self->_sideDic enumerateKeysAndObjectsWithOptions:a3 usingBlock:a4];
+    [(NSDictionary *)self->_sideDic enumerateKeysAndObjectsWithOptions:options usingBlock:block];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -445,11 +445,11 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   return result;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v26[1] = *MEMORY[0x1E69E9840];
   ++self->_mutations;
-  if (!a4)
+  if (!key)
   {
     v14 = _os_log_pack_size();
     v16 = v26 - ((MEMORY[0x1EEE9AC00](v14, v15) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -461,7 +461,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
     objc_exception_throw(v19);
   }
 
-  if (!a3)
+  if (!object)
   {
     v20 = _os_log_pack_size();
     v22 = v26 - ((MEMORY[0x1EEE9AC00](v20, v21) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -469,8 +469,8 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
     *v23 = 136315394;
     *(v23 + 4) = "[NSSharedKeyDictionary setObject:forKey:]";
     *(v23 + 12) = 2112;
-    *(v23 + 14) = a4;
-    v24 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: object cannot be nil (key: %@)", "[NSSharedKeyDictionary setObject:forKey:]", a4);
+    *(v23 + 14) = key;
+    v24 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: object cannot be nil (key: %@)", "[NSSharedKeyDictionary setObject:forKey:]", key);
     v25 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v24) osLogPack:0 size:v22, v20];
     objc_exception_throw(v25);
   }
@@ -478,7 +478,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   keyMap = self->_keyMap;
   if (keyMap)
   {
-    v8 = (self->_ifkIMP)(keyMap, sel_indexForKey_, a4);
+    v8 = (self->_ifkIMP)(keyMap, sel_indexForKey_, key);
   }
 
   else
@@ -488,7 +488,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
 
   if (self->_doKVO)
   {
-    [(NSSharedKeyDictionary *)self willChangeValueForKey:a4];
+    [(NSSharedKeyDictionary *)self willChangeValueForKey:key];
   }
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -500,22 +500,22 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
       self->_sideDic = sideDic;
     }
 
-    [(NSMutableDictionary *)sideDic setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)sideDic setObject:object forKey:key];
   }
 
   else
   {
     v10 = self->_values[v8];
-    if (v10 != a3)
+    if (v10 != object)
     {
-      if ((a3 & 0x8000000000000000) == 0)
+      if ((object & 0x8000000000000000) == 0)
       {
-        v11 = a3;
+        objectCopy = object;
       }
 
       if (v10)
       {
-        self->_values[v8] = a3;
+        self->_values[v8] = object;
         if (v10 >= 1)
         {
         }
@@ -524,7 +524,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
       else
       {
         ++self->_count;
-        self->_values[v8] = a3;
+        self->_values[v8] = object;
       }
     }
   }
@@ -533,7 +533,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   {
     v12 = *MEMORY[0x1E69E9840];
 
-    [(NSSharedKeyDictionary *)self didChangeValueForKey:a4];
+    [(NSSharedKeyDictionary *)self didChangeValueForKey:key];
   }
 
   else
@@ -542,11 +542,11 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v18[1] = *MEMORY[0x1E69E9840];
   ++self->_mutations;
-  if (!a3)
+  if (!key)
   {
     v12 = _os_log_pack_size();
     v14 = v18 - ((MEMORY[0x1EEE9AC00](v12, v13) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -561,7 +561,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   keyMap = self->_keyMap;
   if (keyMap)
   {
-    v6 = (self->_ifkIMP)(keyMap, sel_indexForKey_, a3);
+    v6 = (self->_ifkIMP)(keyMap, sel_indexForKey_, key);
   }
 
   else
@@ -571,7 +571,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
 
   if (self->_doKVO)
   {
-    [(NSSharedKeyDictionary *)self willChangeValueForKey:a3];
+    [(NSSharedKeyDictionary *)self willChangeValueForKey:key];
   }
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -579,7 +579,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
     sideDic = self->_sideDic;
     if (sideDic)
     {
-      [(NSMutableDictionary *)sideDic removeObjectForKey:a3];
+      [(NSMutableDictionary *)sideDic removeObjectForKey:key];
     }
   }
 
@@ -601,7 +601,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   {
     v10 = *MEMORY[0x1E69E9840];
 
-    [(NSSharedKeyDictionary *)self didChangeValueForKey:a3];
+    [(NSSharedKeyDictionary *)self didChangeValueForKey:key];
   }
 
   else
@@ -610,17 +610,17 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   }
 }
 
-- (NSSharedKeyDictionary)initWithKeySet:(id)a3
+- (NSSharedKeyDictionary)initWithKeySet:(id)set
 {
-  if (a3)
+  if (set)
   {
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((set & 0x8000000000000000) == 0)
     {
-      v6 = a3;
+      setCopy = set;
     }
 
-    self->_keyMap = a3;
-    self->_ifkIMP = [a3 methodForSelector:sel_indexForKey_];
+    self->_keyMap = set;
+    self->_ifkIMP = [set methodForSelector:sel_indexForKey_];
     v7 = malloc_type_calloc([(NSSharedKeySet *)self->_keyMap count], 8uLL, 0x80040B8603338uLL);
     self->_values = v7;
     if (!v7)
@@ -636,16 +636,16 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   return self;
 }
 
-+ (id)sharedKeyDictionaryWithKeySet:(id)a3
++ (id)sharedKeyDictionaryWithKeySet:(id)set
 {
-  v3 = [[a1 alloc] initWithKeySet:a3];
+  v3 = [[self alloc] initWithKeySet:set];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithKeySet:", self->_keyMap}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithKeySet:", self->_keyMap}];
   v5[2] = self->_count;
   v6 = [(NSSharedKeySet *)self->_keyMap count];
   if (v6)
@@ -666,14 +666,14 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
     while (v7 != -1);
   }
 
-  v5[5] = [(NSDictionary *)self->_sideDic mutableCopyWithZone:a3];
+  v5[5] = [(NSDictionary *)self->_sideDic mutableCopyWithZone:zone];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v17 = __CFExceptionProem(self, a2);
     v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: this object can only be encoded by a keyed coder", v17);
@@ -681,9 +681,9 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
     objc_exception_throw(v19);
   }
 
-  [a3 encodeObject:self->_keyMap forKey:@"NS.skkeyset"];
-  [a3 encodeObject:self->_sideDic forKey:@"NS.sideDic"];
-  [a3 encodeInt64:self->_count forKey:@"NS.count"];
+  [coder encodeObject:self->_keyMap forKey:@"NS.skkeyset"];
+  [coder encodeObject:self->_sideDic forKey:@"NS.sideDic"];
+  [coder encodeInt64:self->_count forKey:@"NS.count"];
   if (self->_count)
   {
     v6 = +[(NSArray *)NSMutableArray];
@@ -723,23 +723,23 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
       while (v10);
     }
 
-    [a3 encodeObject:v6 forKey:@"NS.keys"];
-    [a3 encodeObject:v7 forKey:@"NS.values"];
+    [coder encodeObject:v6 forKey:@"NS.keys"];
+    [coder encodeObject:v7 forKey:@"NS.values"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (NSSharedKeyDictionary)initWithCoder:(id)a3
+- (NSSharedKeyDictionary)initWithCoder:(id)coder
 {
   v115 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v17 = __CFExceptionProem(self, a2);
     v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: this object can only be decoded by a keyed coder", v17);
     v19 = _CFAutoreleasePoolAddObject(0, v18);
 
-    [a3 failWithError:__archiveIsCorrupt(v19)];
+    [coder failWithError:__archiveIsCorrupt(v19)];
     self = 0;
     goto LABEL_14;
   }
@@ -751,19 +751,19 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
   v114 = 0;
   if (isKindOfClass)
   {
-    v8 = a3;
+    coderCopy = coder;
   }
 
   else
   {
-    v8 = 0;
+    coderCopy = 0;
   }
 
   v111 = 0;
-  v112 = v8;
-  v109 = v8;
+  v112 = coderCopy;
+  v109 = coderCopy;
   v110 = 0;
-  v9 = [a3 decodeObjectOfClass:v6 forKey:@"NS.skkeyset"];
+  v9 = [coder decodeObjectOfClass:v6 forKey:@"NS.skkeyset"];
   v10 = v9;
   v113 = v9;
   v105 = 8;
@@ -788,7 +788,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
         v37 = __CFExceptionProem(self, a2);
         v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unable to unarchive - memory failure", v37);
         v16 = _CFAutoreleasePoolAddObject(0, v38);
-        if ([a3 decodingFailurePolicy] == 1)
+        if ([coder decodingFailurePolicy] == 1)
         {
         }
 
@@ -804,7 +804,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
           v47 = __CFExceptionProem(self, a2);
           v48 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unable to unarchive - memory failure", v47);
           v16 = _CFAutoreleasePoolAddObject(0, v48);
-          if ([a3 decodingFailurePolicy] == 1)
+          if ([coder decodingFailurePolicy] == 1)
           {
           }
 
@@ -813,7 +813,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
 
         if (v10)
         {
-          [a3 replaceObject:v10 withObject:v24];
+          [coder replaceObject:v10 withObject:v24];
         }
       }
     }
@@ -832,9 +832,9 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
       dispatch_once(&initWithCoder__onceToken, block);
     }
 
-    v28 = [a3 allowedClasses];
-    v29 = [v28 setByAddingObjectsFromSet:initWithCoder__oPlistClasses];
-    sideDic = [a3 decodeObjectOfClasses:objc_msgSend(v29 forKey:{"setByAddingObject:", v26), @"NS.sideDic"}];
+    allowedClasses = [coder allowedClasses];
+    v29 = [allowedClasses setByAddingObjectsFromSet:initWithCoder__oPlistClasses];
+    sideDic = [coder decodeObjectOfClasses:objc_msgSend(v29 forKey:{"setByAddingObject:", v26), @"NS.sideDic"}];
     v31 = sideDic;
     v110 = sideDic;
     self->_sideDic = sideDic;
@@ -851,7 +851,7 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
         v39 = __CFExceptionProem(self, a2);
         v40 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: invalid archive (must be mutable)", v39);
         v36 = _CFAutoreleasePoolAddObject(0, v40);
-        if ([a3 decodingFailurePolicy] == 1)
+        if ([coder decodingFailurePolicy] == 1)
         {
         }
 
@@ -865,12 +865,12 @@ void *__71__NSSharedKeyDictionary_enumerateKeysAndObjectsWithOptions_usingBlock_
         v34 = __CFExceptionProem(self, a2);
         v35 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: invalid archive (invalid dictionary)", v34);
         v36 = _CFAutoreleasePoolAddObject(0, v35);
-        if ([a3 decodingFailurePolicy] == 1)
+        if ([coder decodingFailurePolicy] == 1)
         {
         }
 
 LABEL_82:
-        [a3 failWithError:__archiveIsCorrupt(v36)];
+        [coder failWithError:__archiveIsCorrupt(v36)];
         goto LABEL_11;
       }
 
@@ -883,7 +883,7 @@ LABEL_82:
           v76 = __CFExceptionProem(self, a2);
           v77 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unable to unarchive - memory failure", v76);
           v36 = _CFAutoreleasePoolAddObject(0, v77);
-          if ([a3 decodingFailurePolicy] == 1)
+          if ([coder decodingFailurePolicy] == 1)
           {
           }
 
@@ -892,7 +892,7 @@ LABEL_82:
 
         if (v31)
         {
-          [a3 replaceObject:v31 withObject:v41];
+          [coder replaceObject:v31 withObject:v41];
         }
       }
 
@@ -905,7 +905,7 @@ LABEL_82:
           v45 = __CFExceptionProem(self, a2);
           v46 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unreasonably sized collection", v45);
           v36 = _CFAutoreleasePoolAddObject(0, v46);
-          if ([a3 decodingFailurePolicy] == 1)
+          if ([coder decodingFailurePolicy] == 1)
           {
           }
 
@@ -943,11 +943,11 @@ LABEL_82:
         v78 = objc_opt_class();
         v79 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"unexpected recursive keys (%@)", v78);
         v80 = _CFAutoreleasePoolAddObject(0, v79);
-        if ([a3 decodingFailurePolicy] == 1)
+        if ([coder decodingFailurePolicy] == 1)
         {
         }
 
-        [a3 failWithError:__archiveIsCorrupt(v80)];
+        [coder failWithError:__archiveIsCorrupt(v80)];
         v81 = v51;
 LABEL_86:
         free(v81);
@@ -957,14 +957,14 @@ LABEL_86:
     }
 
 LABEL_56:
-    v53 = [a3 decodeInt64ForKey:@"NS.count"];
+    v53 = [coder decodeInt64ForKey:@"NS.count"];
     v54 = v53;
     if ((v53 & 0x8000000000000000) != 0)
     {
       v58 = __CFExceptionProem(self, a2);
       v59 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: negative count", v58);
       v57 = _CFAutoreleasePoolAddObject(0, v59);
-      if ([a3 decodingFailurePolicy] == 1)
+      if ([coder decodingFailurePolicy] == 1)
       {
       }
     }
@@ -981,8 +981,8 @@ LABEL_56:
         if (*(&self->super.super.super.isa + v105))
         {
           v60 = [v29 setByAddingObject:v25];
-          v61 = [a3 decodeObjectOfClasses:v60 forKey:@"NS.keys"];
-          v62 = [a3 decodeObjectOfClasses:v60 forKey:@"NS.values"];
+          v61 = [coder decodeObjectOfClasses:v60 forKey:@"NS.keys"];
+          v62 = [coder decodeObjectOfClasses:v60 forKey:@"NS.values"];
           if (!_NSIsNSArray(v61))
           {
             v61 = 0;
@@ -1047,7 +1047,7 @@ LABEL_56:
                     v93 = objc_opt_class();
                     v94 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"unexpected recursive keys (%@)", v93);
                     v95 = _CFAutoreleasePoolAddObject(0, v94);
-                    if ([a3 decodingFailurePolicy] == 1)
+                    if ([coder decodingFailurePolicy] == 1)
                     {
                     }
 
@@ -1082,12 +1082,12 @@ LABEL_56:
                 v96 = __CFExceptionProem(self, a2);
                 v97 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: encoded key not present in keyset", v96);
                 v95 = _CFAutoreleasePoolAddObject(0, v97);
-                if ([a3 decodingFailurePolicy] == 1)
+                if ([coder decodingFailurePolicy] == 1)
                 {
                 }
 
 LABEL_109:
-                [a3 failWithError:__archiveIsCorrupt(v95)];
+                [coder failWithError:__archiveIsCorrupt(v95)];
                 free(v102);
                 v81 = v103;
                 goto LABEL_86;
@@ -1096,7 +1096,7 @@ LABEL_109:
               v86 = __CFExceptionProem(self, a2);
               v87 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: more entries than expected", v86);
               v57 = _CFAutoreleasePoolAddObject(0, v87);
-              if ([a3 decodingFailurePolicy] == 1)
+              if ([coder decodingFailurePolicy] == 1)
               {
               }
             }
@@ -1106,7 +1106,7 @@ LABEL_109:
               v84 = __CFExceptionProem(self, a2);
               v85 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: encoded keys/values length does not match", v84);
               v57 = _CFAutoreleasePoolAddObject(0, v85);
-              if ([a3 decodingFailurePolicy] == 1)
+              if ([coder decodingFailurePolicy] == 1)
               {
               }
             }
@@ -1117,7 +1117,7 @@ LABEL_109:
             v82 = __CFExceptionProem(self, a2);
             v83 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: encoded keys/values are empty", v82);
             v57 = _CFAutoreleasePoolAddObject(0, v83);
-            if ([a3 decodingFailurePolicy] == 1)
+            if ([coder decodingFailurePolicy] == 1)
             {
             }
           }
@@ -1128,7 +1128,7 @@ LABEL_109:
           v74 = __CFExceptionProem(self, a2);
           v75 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: invalid archive (encoded count but missing keyset)", v74);
           v57 = _CFAutoreleasePoolAddObject(0, v75);
-          if ([a3 decodingFailurePolicy] == 1)
+          if ([coder decodingFailurePolicy] == 1)
           {
           }
         }
@@ -1139,25 +1139,25 @@ LABEL_109:
         v55 = __CFExceptionProem(self, a2);
         v56 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unreasonably sized collection", v55);
         v57 = _CFAutoreleasePoolAddObject(0, v56);
-        if ([a3 decodingFailurePolicy] == 1)
+        if ([coder decodingFailurePolicy] == 1)
         {
         }
       }
     }
 
-    [a3 failWithError:__archiveIsCorrupt(v57)];
+    [coder failWithError:__archiveIsCorrupt(v57)];
     goto LABEL_11;
   }
 
   v14 = __CFExceptionProem(self, a2);
   v15 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: invalid archive (unexpected keyset: %@)", v14, v13);
   v16 = _CFAutoreleasePoolAddObject(0, v15);
-  if ([a3 decodingFailurePolicy] == 1)
+  if ([coder decodingFailurePolicy] == 1)
   {
   }
 
 LABEL_10:
-  [a3 failWithError:__archiveIsCorrupt(v16)];
+  [coder failWithError:__archiveIsCorrupt(v16)];
 LABEL_11:
   self = 0;
 LABEL_12:
@@ -1180,10 +1180,10 @@ NSSet *__39__NSSharedKeyDictionary_initWithCoder___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setObservationInfo:(void *)a3
+- (void)setObservationInfo:(void *)info
 {
   v5 = *MEMORY[0x1E69E9840];
-  self->_doKVO = a3 != 0;
+  self->_doKVO = info != 0;
   v4.receiver = self;
   v4.super_class = NSSharedKeyDictionary;
   [(NSSharedKeyDictionary *)&v4 setObservationInfo:?];

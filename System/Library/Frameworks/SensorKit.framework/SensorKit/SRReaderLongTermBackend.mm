@@ -3,12 +3,12 @@
 + (void)initialize;
 - (NSXPCConnection)connection;
 - (SRReaderLongTermBackend)init;
-- (SRReaderLongTermBackend)initWithSensor:(id)a3 xpcConnection:(id)a4;
-- (void)continueFetchRequest:(id)a3 samples:(id)a4 timestamp:(double)a5 cursor:(id)a6 fetchState:(unint64_t)a7 error:(id)a8 withCallback:(id)a9;
+- (SRReaderLongTermBackend)initWithSensor:(id)sensor xpcConnection:(id)connection;
+- (void)continueFetchRequest:(id)request samples:(id)samples timestamp:(double)timestamp cursor:(id)cursor fetchState:(unint64_t)state error:(id)error withCallback:(id)callback;
 - (void)dealloc;
-- (void)fetch:(id)a3 withCallback:(id)a4;
-- (void)fetchDevices:(id)a3 reply:(id)a4;
-- (void)fetchReaderMetadata:(id)a3 reply:(id)a4;
+- (void)fetch:(id)fetch withCallback:(id)callback;
+- (void)fetchDevices:(id)devices reply:(id)reply;
+- (void)fetchReaderMetadata:(id)metadata reply:(id)reply;
 - (void)setupConnection;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogLongTermBackend = os_log_create("com.apple.SensorKit", "SRLogLongTermBackend");
   }
@@ -133,41 +133,41 @@ void __42__SRReaderLongTermBackend_setupConnection__block_invoke_18(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetch:(id)a3 withCallback:(id)a4
+- (void)fetch:(id)fetch withCallback:(id)callback
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a3 "sensor")])
+  if (![objc_msgSend(fetch "sensor")])
   {
     sensor = self->_sensor;
-    v10 = [(SRReaderLongTermBackend *)self connection];
+    connection = [(SRReaderLongTermBackend *)self connection];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __46__SRReaderLongTermBackend_fetch_withCallback___block_invoke;
     v26[3] = &unk_1E83302F0;
-    v26[5] = a3;
-    v26[6] = a4;
+    v26[5] = fetch;
+    v26[6] = callback;
     v26[4] = sensor;
-    v11 = [(NSXPCConnection *)v10 remoteObjectProxyWithErrorHandler:v26];
-    if (!-[NSString isEqualToString:](sensor, "isEqualToString:", [a3 sensor]))
+    v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v26];
+    if (!-[NSString isEqualToString:](sensor, "isEqualToString:", [fetch sensor]))
     {
       v15 = SRLogLongTermBackend;
       if (os_log_type_enabled(SRLogLongTermBackend, OS_LOG_TYPE_FAULT))
       {
-        v19 = [a3 sensor];
+        sensor = [fetch sensor];
         *buf = 138543618;
         v28 = sensor;
         v29 = 2114;
-        v30 = v19;
+        v30 = sensor;
         _os_log_fault_impl(&dword_1C914D000, v15, OS_LOG_TYPE_FAULT, "Backend is for sensor %{public}@ but fetching for sensor %{public}@", buf, 0x16u);
       }
 
       v16 = [SRError errorWithCode:0];
-      [a3 from];
-      (*(a4 + 2))(a4, 0, 0, 0, 0, 1, 0, v16);
+      [fetch from];
+      (*(callback + 2))(callback, 0, 0, 0, 0, 1, 0, v16);
       goto LABEL_18;
     }
 
-    [a3 from];
+    [fetch from];
     v13 = v12;
     objc_initWeak(&location, self);
     if ([(NSString *)sensor isEqualToString:@"com.apple.SensorKit.cardioMetrics"])
@@ -178,9 +178,9 @@ void __42__SRReaderLongTermBackend_setupConnection__block_invoke_18(uint64_t a1)
       v23[3] = &unk_1E8330568;
       v14 = &v24;
       objc_copyWeak(&v24, &location);
-      v23[4] = a3;
-      v23[5] = a4;
-      [v11 fetchCardioSamples:a3 reply:v23];
+      v23[4] = fetch;
+      v23[5] = callback;
+      [v11 fetchCardioSamples:fetch reply:v23];
     }
 
     else
@@ -190,13 +190,13 @@ void __42__SRReaderLongTermBackend_setupConnection__block_invoke_18(uint64_t a1)
         v17 = SRLogLongTermBackend;
         if (os_log_type_enabled(SRLogLongTermBackend, OS_LOG_TYPE_FAULT))
         {
-          v20 = [a3 sensor];
+          sensor2 = [fetch sensor];
           *buf = 138543362;
-          v28 = v20;
+          v28 = sensor2;
           _os_log_fault_impl(&dword_1C914D000, v17, OS_LOG_TYPE_FAULT, "Trying to fetch long term data for a sensor %{public}@ that doesn't support it", buf, 0xCu);
         }
 
-        (*(a4 + 2))(a4, 0, 0, 0, 0, 1, 0, [SRError errorWithCode:8194], v13);
+        (*(callback + 2))(callback, 0, 0, 0, 0, 1, 0, [SRError errorWithCode:8194], v13);
         goto LABEL_17;
       }
 
@@ -206,9 +206,9 @@ void __42__SRReaderLongTermBackend_setupConnection__block_invoke_18(uint64_t a1)
       v21[3] = &unk_1E8330568;
       v14 = &v22;
       objc_copyWeak(&v22, &location);
-      v21[4] = a3;
-      v21[5] = a4;
-      [v11 fetchMobilitySamples:a3 reply:v21];
+      v21[4] = fetch;
+      v21[5] = callback;
+      [v11 fetchMobilitySamples:fetch reply:v21];
     }
 
     objc_destroyWeak(v14);
@@ -219,11 +219,11 @@ LABEL_18:
     return;
   }
 
-  [a3 from];
-  v7 = *(a4 + 2);
+  [fetch from];
+  v7 = *(callback + 2);
   v8 = *MEMORY[0x1E69E9840];
 
-  v7(a4, 0, 0, 0, 0, 1, 0, 0);
+  v7(callback, 0, 0, 0, 0, 1, 0, 0);
 }
 
 uint64_t __46__SRReaderLongTermBackend_fetch_withCallback___block_invoke(uint64_t a1, uint64_t a2)
@@ -265,11 +265,11 @@ uint64_t __46__SRReaderLongTermBackend_fetch_withCallback___block_invoke_2(uint6
   return [Weak continueFetchRequest:v13 samples:a2 timestamp:a4 cursor:a3 fetchState:a5 error:v14 withCallback:a6];
 }
 
-- (void)continueFetchRequest:(id)a3 samples:(id)a4 timestamp:(double)a5 cursor:(id)a6 fetchState:(unint64_t)a7 error:(id)a8 withCallback:(id)a9
+- (void)continueFetchRequest:(id)request samples:(id)samples timestamp:(double)timestamp cursor:(id)cursor fetchState:(unint64_t)state error:(id)error withCallback:(id)callback
 {
   v29 = *MEMORY[0x1E69E9840];
-  v14 = (*(a9 + 2))(a9, [a4 bytes], objc_msgSend(a4, "length"), 0, 0, a7, a6, a8, a5);
-  if (a7 == 1)
+  v14 = (*(callback + 2))(callback, [samples bytes], objc_msgSend(samples, "length"), 0, 0, state, cursor, error, timestamp);
+  if (state == 1)
   {
     v17 = SRLogLongTermBackend;
     if (!os_log_type_enabled(SRLogLongTermBackend, OS_LOG_TYPE_INFO))
@@ -288,7 +288,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!a7 && (v14 & 1) == 0)
+  if (!state && (v14 & 1) == 0)
   {
     v22 = SRLogLongTermBackend;
     if (!os_log_type_enabled(SRLogLongTermBackend, OS_LOG_TYPE_DEFAULT))
@@ -312,34 +312,34 @@ LABEL_11:
     v25 = 138543618;
     v26 = v16;
     v27 = 2114;
-    v28 = a6;
+    cursorCopy = cursor;
     _os_log_impl(&dword_1C914D000, v15, OS_LOG_TYPE_INFO, "[%{public}@] Requesting data from new cursor %{public}@", &v25, 0x16u);
   }
 
-  [a3 setFrom:NAN];
-  [a3 setCursor:a6];
-  [(SRReaderLongTermBackend *)self fetch:a3 withCallback:a9];
+  [request setFrom:NAN];
+  [request setCursor:cursor];
+  [(SRReaderLongTermBackend *)self fetch:request withCallback:callback];
 LABEL_12:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchDevices:(id)a3 reply:(id)a4
+- (void)fetchDevices:(id)devices reply:(id)reply
 {
   sensor = self->_sensor;
-  v7 = [(SRReaderLongTermBackend *)self connection];
+  connection = [(SRReaderLongTermBackend *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__SRReaderLongTermBackend_fetchDevices_reply___block_invoke;
   v10[3] = &unk_1E83303E0;
   v10[4] = sensor;
-  v10[5] = a4;
-  v8 = [(NSXPCConnection *)v7 remoteObjectProxyWithErrorHandler:v10];
+  v10[5] = reply;
+  v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__SRReaderLongTermBackend_fetchDevices_reply___block_invoke_23;
   v9[3] = &unk_1E8330590;
-  v9[4] = a4;
-  [v8 fetchDevices:a3 reply:v9];
+  v9[4] = reply;
+  [v8 fetchDevices:devices reply:v9];
 }
 
 uint64_t __46__SRReaderLongTermBackend_fetchDevices_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -361,7 +361,7 @@ uint64_t __46__SRReaderLongTermBackend_fetchDevices_reply___block_invoke(uint64_
   return result;
 }
 
-- (void)fetchReaderMetadata:(id)a3 reply:(id)a4
+- (void)fetchReaderMetadata:(id)metadata reply:(id)reply
 {
   v5 = SRLogLongTermBackend;
   if (os_log_type_enabled(SRLogLongTermBackend, OS_LOG_TYPE_FAULT))
@@ -370,7 +370,7 @@ uint64_t __46__SRReaderLongTermBackend_fetchDevices_reply___block_invoke(uint64_
     _os_log_fault_impl(&dword_1C914D000, v5, OS_LOG_TYPE_FAULT, "fetchReaderMetadata: is not supported for the long term storage backend", v6, 2u);
   }
 
-  (*(a4 + 2))(a4, MEMORY[0x1E695E0F8]);
+  (*(reply + 2))(reply, MEMORY[0x1E695E0F8]);
 }
 
 - (NSXPCConnection)connection
@@ -385,16 +385,16 @@ uint64_t __46__SRReaderLongTermBackend_fetchDevices_reply___block_invoke(uint64_
   return self->_connection;
 }
 
-- (SRReaderLongTermBackend)initWithSensor:(id)a3 xpcConnection:(id)a4
+- (SRReaderLongTermBackend)initWithSensor:(id)sensor xpcConnection:(id)connection
 {
   v8.receiver = self;
   v8.super_class = SRReaderLongTermBackend;
   v6 = [(SRReaderLongTermBackend *)&v8 init];
   if (v6)
   {
-    v6->_sensor = [a3 copy];
+    v6->_sensor = [sensor copy];
     objc_sync_enter(v6);
-    v6->_connection = a4;
+    v6->_connection = connection;
     objc_sync_exit(v6);
   }
 

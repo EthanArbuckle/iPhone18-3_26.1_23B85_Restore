@@ -1,5 +1,5 @@
 @interface AKAccessoryHandler
-+ (id)createDictionaryPayloadFromDevices:(id)a3;
++ (id)createDictionaryPayloadFromDevices:(id)devices;
 + (id)fetchDevicesFromBluetooth;
 + (id)getPairedDevices;
 + (void)syncAccessories;
@@ -9,13 +9,13 @@
 
 + (id)getPairedDevices
 {
-  v8 = a1;
+  selfCopy = self;
   v7[1] = a2;
-  v7[0] = [a1 fetchDevicesFromBluetooth];
+  v7[0] = [self fetchDevicesFromBluetooth];
   v6 = _objc_retain(&__NSDictionary0__struct);
   if (v7[0] && [v7[0] count])
   {
-    v2 = [v8 createDictionaryPayloadFromDevices:v7[0]];
+    v2 = [selfCopy createDictionaryPayloadFromDevices:v7[0]];
     v3 = v6;
     v6 = v2;
     _objc_release(v3);
@@ -30,7 +30,7 @@
 
 + (id)fetchDevicesFromBluetooth
 {
-  location[4] = a1;
+  location[4] = self;
   location[3] = a2;
   location[2] = 0x800000;
   location[1] = 0;
@@ -44,7 +44,7 @@
 
 + (void)syncAccessories
 {
-  v10 = a1;
+  selfCopy = self;
   v9 = a2;
   v2 = +[AKURLBag sharedBag];
   v3 = _NSConcreteStackBlock;
@@ -52,17 +52,17 @@
   v5 = 0;
   v6 = sub_10004BA38;
   v7 = &unk_100320170;
-  v8 = v10;
+  v8 = selfCopy;
   [v2 configurationValueForKey:@"isEventBasedAccessorySyncEnabled" fromCache:1 completion:?];
   _objc_release(v2);
 }
 
-+ (id)createDictionaryPayloadFromDevices:(id)a3
++ (id)createDictionaryPayloadFromDevices:(id)devices
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, devices);
   v74 = +[NSMutableArray array];
   v43 = objc_opt_class();
   v45 = +[AKURLBag sharedBag];
@@ -135,10 +135,10 @@
         }
 
         v67 = *(v66[1] + 8 * v29);
-        v3 = [v67 productID];
+        productID = [v67 productID];
         v64 = 0;
         v26 = 1;
-        if (v3)
+        if (productID)
         {
           LOBYTE(v25) = 0;
           if ([v72 count])
@@ -162,17 +162,17 @@
           [v67 bleAdvertisementTimestamp];
           v63 = v4 + 978307200.0;
           v62 = ((v4 + 978307200.0) * 1000.0);
-          v22 = [v67 btAddressData];
+          btAddressData = [v67 btAddressData];
           v61 = CUPrintNSDataAddress();
-          _objc_release(v22);
+          _objc_release(btAddressData);
           v80[0] = @"dn";
-          v23 = [v67 name];
+          name = [v67 name];
           v58 = 0;
-          if (v23)
+          if (name)
           {
-            v59 = [v67 name];
+            name2 = [v67 name];
             v58 = 1;
-            v21 = v59;
+            v21 = name2;
           }
 
           else
@@ -182,13 +182,13 @@
 
           v81[0] = v21;
           v80[1] = @"pn";
-          v20 = [v67 productName];
+          productName = [v67 productName];
           v56 = 0;
-          if (v20)
+          if (productName)
           {
-            v57 = [v67 productName];
+            productName2 = [v67 productName];
             v56 = 1;
-            v19 = v57;
+            v19 = productName2;
           }
 
           else
@@ -201,13 +201,13 @@
           v17 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v67 colorCodeBest]);
           v81[2] = v17;
           v80[3] = @"fv";
-          v18 = [v67 firmwareVersion];
+          firmwareVersion = [v67 firmwareVersion];
           v54 = 0;
-          if (v18)
+          if (firmwareVersion)
           {
-            v55 = [v67 firmwareVersion];
+            firmwareVersion2 = [v67 firmwareVersion];
             v54 = 1;
-            v16 = v55;
+            v16 = firmwareVersion2;
           }
 
           else
@@ -233,13 +233,13 @@
           v81[4] = v15;
           v80[5] = @"sn";
           v78[0] = @"ssn";
-          v14 = [v67 serialNumber];
+          serialNumber = [v67 serialNumber];
           v50 = 0;
-          if (v14)
+          if (serialNumber)
           {
-            v51 = [v67 serialNumber];
+            serialNumber2 = [v67 serialNumber];
             v50 = 1;
-            v13 = v51;
+            v13 = serialNumber2;
           }
 
           else
@@ -249,13 +249,13 @@
 
           v79[0] = v13;
           v78[1] = @"lsn";
-          v12 = [v67 serialNumberLeft];
+          serialNumberLeft = [v67 serialNumberLeft];
           v48 = 0;
-          if (v12)
+          if (serialNumberLeft)
           {
-            v49 = [v67 serialNumberLeft];
+            serialNumberLeft2 = [v67 serialNumberLeft];
             v48 = 1;
-            v11 = v49;
+            v11 = serialNumberLeft2;
           }
 
           else
@@ -265,13 +265,13 @@
 
           v79[1] = v11;
           v78[2] = @"rsn";
-          v10 = [v67 serialNumberRight];
+          serialNumberRight = [v67 serialNumberRight];
           v46 = 0;
-          if (v10)
+          if (serialNumberRight)
           {
-            v47 = [v67 serialNumberRight];
+            serialNumberRight2 = [v67 serialNumberRight];
             v46 = 1;
-            v9 = v47;
+            v9 = serialNumberRight2;
           }
 
           else
@@ -292,22 +292,22 @@
           _objc_release(v8);
           if (v46)
           {
-            _objc_release(v47);
+            _objc_release(serialNumberRight2);
           }
 
-          _objc_release(v10);
+          _objc_release(serialNumberRight);
           if (v48)
           {
-            _objc_release(v49);
+            _objc_release(serialNumberLeft2);
           }
 
-          _objc_release(v12);
+          _objc_release(serialNumberLeft);
           if (v50)
           {
-            _objc_release(v51);
+            _objc_release(serialNumber2);
           }
 
-          _objc_release(v14);
+          _objc_release(serialNumber);
           if (v52)
           {
             _objc_release(v53);
@@ -315,23 +315,23 @@
 
           if (v54)
           {
-            _objc_release(v55);
+            _objc_release(firmwareVersion2);
           }
 
-          _objc_release(v18);
+          _objc_release(firmwareVersion);
           _objc_release(v17);
           if (v56)
           {
-            _objc_release(v57);
+            _objc_release(productName2);
           }
 
-          _objc_release(v20);
+          _objc_release(productName);
           if (v58)
           {
-            _objc_release(v59);
+            _objc_release(name2);
           }
 
-          _objc_release(v23);
+          _objc_release(name);
           [v74 addObject:v60];
           objc_storeStrong(&v60, 0);
           objc_storeStrong(&v61, 0);

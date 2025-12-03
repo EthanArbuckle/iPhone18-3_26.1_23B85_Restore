@@ -2,10 +2,10 @@
 - (NPTOBridgeAmountChooser)init;
 - (id)_device;
 - (id)_preferencesAccessor;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (unint64_t)_syncedAmount;
-- (void)_setSyncedAmount:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setSyncedAmount:(unint64_t)amount;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation NPTOBridgeAmountChooser
@@ -27,46 +27,46 @@
 
 - (unint64_t)_syncedAmount
 {
-  v2 = [(NPTOBridgeAmountChooser *)self _preferencesAccessor];
-  v3 = [v2 npto_syncedPhotosLimit];
+  _preferencesAccessor = [(NPTOBridgeAmountChooser *)self _preferencesAccessor];
+  npto_syncedPhotosLimit = [_preferencesAccessor npto_syncedPhotosLimit];
 
-  return v3;
+  return npto_syncedPhotosLimit;
 }
 
-- (void)_setSyncedAmount:(unint64_t)a3
+- (void)_setSyncedAmount:(unint64_t)amount
 {
-  v5 = [(NPTOBridgeAmountChooser *)self _preferencesAccessor];
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forKey:NPTOPreferencesSyncedPhotosLimitKey];
+  _preferencesAccessor = [(NPTOBridgeAmountChooser *)self _preferencesAccessor];
+  v4 = [NSNumber numberWithUnsignedInteger:amount];
+  [_preferencesAccessor setObject:v4 forKey:NPTOPreferencesSyncedPhotosLimitKey];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"A"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"A"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"A"];
   }
 
-  v8 = qword_7DA0[[v6 row]];
+  v8 = qword_7DA0[[pathCopy row]];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"AMOUNT_COUNT" value:&stru_C578 table:@"NanoPhotosBridgeSettings"];
   v11 = [NSString localizedStringWithFormat:v10, v8];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v11];
 
   v13 = +[UIColor whiteColor];
-  v14 = [v7 textLabel];
-  [v14 setColor:v13];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setColor:v13];
 
   v15 = +[PSListController appearance];
-  v16 = [v15 cellHighlightColor];
+  cellHighlightColor = [v15 cellHighlightColor];
 
-  if (v16)
+  if (cellHighlightColor)
   {
     v17 = objc_alloc_init(UIView);
-    [v17 setBackgroundColor:v16];
+    [v17 setBackgroundColor:cellHighlightColor];
     [v7 setSelectedBackgroundView:v17];
   }
 
@@ -88,19 +88,19 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = qword_7DA0[[v7 row]];
-  v9 = [v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = qword_7DA0[[pathCopy row]];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v9 setAccessoryType:3];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [v6 visibleCells];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v11 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -112,7 +112,7 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(visibleCells);
         }
 
         v15 = *(*(&v16 + 1) + 8 * v14);
@@ -125,14 +125,14 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
   }
 
   [(NPTOBridgeAmountChooser *)self _setSyncedAmount:v8];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (id)_preferencesAccessor
@@ -141,8 +141,8 @@
   if (!preferencesAccessor)
   {
     v4 = [NPTOPreferencesAccessor alloc];
-    v5 = [(NPTOBridgeAmountChooser *)self _device];
-    v6 = [v4 initWithDevice:v5];
+    _device = [(NPTOBridgeAmountChooser *)self _device];
+    v6 = [v4 initWithDevice:_device];
     v7 = self->_preferencesAccessor;
     self->_preferencesAccessor = v6;
 
@@ -157,9 +157,9 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface IMDCKSyncTokenStore
-+ (id)tokenForKey:(id)a3;
-+ (void)migrateKey:(id)a3 fromDatabase:(id)a4;
-+ (void)persistToken:(id)a3 forKey:(id)a4;
-- (id)tokenForKey:(id)a3;
-- (void)migrateKey:(id)a3 fromDatabase:(id)a4;
-- (void)persistToken:(id)a3 forKey:(id)a4;
++ (id)tokenForKey:(id)key;
++ (void)migrateKey:(id)key fromDatabase:(id)database;
++ (void)persistToken:(id)token forKey:(id)key;
+- (id)tokenForKey:(id)key;
+- (void)migrateKey:(id)key fromDatabase:(id)database;
+- (void)persistToken:(id)token forKey:(id)key;
 @end
 
 @implementation IMDCKSyncTokenStore
 
-- (void)migrateKey:(id)a3 fromDatabase:(id)a4
+- (void)migrateKey:(id)key fromDatabase:(id)database
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() migrateKey:v6 fromDatabase:v5];
+  databaseCopy = database;
+  keyCopy = key;
+  [objc_opt_class() migrateKey:keyCopy fromDatabase:databaseCopy];
 }
 
-- (id)tokenForKey:(id)a3
+- (id)tokenForKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() tokenForKey:v3];
+  keyCopy = key;
+  v4 = [objc_opt_class() tokenForKey:keyCopy];
 
   return v4;
 }
 
-- (void)persistToken:(id)a3 forKey:(id)a4
+- (void)persistToken:(id)token forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() persistToken:v6 forKey:v5];
+  keyCopy = key;
+  tokenCopy = token;
+  [objc_opt_class() persistToken:tokenCopy forKey:keyCopy];
 }
 
-+ (void)migrateKey:(id)a3 fromDatabase:(id)a4
++ (void)migrateKey:(id)key fromDatabase:(id)database
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-syncStoreVersion", v5];
+  keyCopy = key;
+  databaseCopy = database;
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-syncStoreVersion", keyCopy];
   if (!IMGetAppIntForKey())
   {
     if (IMOSLoggingEnabled())
@@ -45,9 +45,9 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v18 = v5;
+        v18 = keyCopy;
         v19 = 2112;
-        v20 = v6;
+        v20 = databaseCopy;
         v21 = 2048;
         v22 = 0;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Migrating sync token {key: %@, db: %@, version: %ld}", buf, 0x20u);
@@ -55,10 +55,10 @@
     }
 
     v9 = objc_alloc(MEMORY[0x277D18AD0]);
-    v10 = [v6 stringByExpandingTildeInPath];
-    v11 = [v9 initWithPath:v10 storeName:@"IMDCKChatSyncController" dataProtectionClass:0];
+    stringByExpandingTildeInPath = [databaseCopy stringByExpandingTildeInPath];
+    v11 = [v9 initWithPath:stringByExpandingTildeInPath storeName:@"IMDCKChatSyncController" dataProtectionClass:0];
 
-    v12 = [v11 dataForKey:v5 error:0];
+    v12 = [v11 dataForKey:keyCopy error:0];
     v13 = IMOSLoggingEnabled();
     if (v12)
     {
@@ -68,7 +68,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v18 = v5;
+          v18 = keyCopy;
           _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "Found token data, saving to sms.db {key: %@}", buf, 0xCu);
         }
       }
@@ -82,7 +82,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v18 = v5;
+        v18 = keyCopy;
         _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "No token data found {key: %@}", buf, 0xCu);
       }
     }
@@ -94,10 +94,10 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)tokenForKey:(id)a3
++ (id)tokenForKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = IMDKVValueForKey();
   if ([v4 length])
   {
@@ -127,22 +127,22 @@
   return v7;
 }
 
-+ (void)persistToken:(id)a3 forKey:(id)a4
++ (void)persistToken:(id)token forKey:(id)key
 {
-  v9 = a3;
-  if (v9)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v5 = MEMORY[0x277CCAAB0];
-    v6 = a4;
-    v7 = [[v5 alloc] initRequiringSecureCoding:1];
-    [v9 encodeWithCoder:v7];
-    v8 = [v7 encodedData];
+    keyCopy = key;
+    keyCopy2 = [[v5 alloc] initRequiringSecureCoding:1];
+    [tokenCopy encodeWithCoder:keyCopy2];
+    encodedData = [keyCopy2 encodedData];
     IMDKVPersistValueForKey();
   }
 
   else
   {
-    v7 = a4;
+    keyCopy2 = key;
     IMDKVPersistValueForKey();
   }
 }

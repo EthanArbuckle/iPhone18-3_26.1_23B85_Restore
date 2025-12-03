@@ -1,50 +1,50 @@
 @interface CARCarPlayServiceMessageStartSession
-- (CARCarPlayServiceMessageStartSession)initWithDictionaryRepresentation:(id)a3;
-- (CARCarPlayServiceMessageStartSession)initWithSSID:(id)a3 passphrase:(id)a4 channel:(id)a5 securityType:(id)a6 wirelessIPs:(id)a7 wiredIPs:(id)a8 port:(id)a9 deviceID:(id)a10 publicKey:(id)a11 sourceVersion:(id)a12 sdkVersion:(id)a13 assetIdentifier:(id)a14 assetVersion:(id)a15;
+- (CARCarPlayServiceMessageStartSession)initWithDictionaryRepresentation:(id)representation;
+- (CARCarPlayServiceMessageStartSession)initWithSSID:(id)d passphrase:(id)passphrase channel:(id)channel securityType:(id)type wirelessIPs:(id)ps wiredIPs:(id)iPs port:(id)port deviceID:(id)self0 publicKey:(id)self1 sourceVersion:(id)self2 sdkVersion:(id)self3 assetIdentifier:(id)self4 assetVersion:(id)self5;
 - (NSString)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CARCarPlayServiceMessageStartSession
 
-- (CARCarPlayServiceMessageStartSession)initWithSSID:(id)a3 passphrase:(id)a4 channel:(id)a5 securityType:(id)a6 wirelessIPs:(id)a7 wiredIPs:(id)a8 port:(id)a9 deviceID:(id)a10 publicKey:(id)a11 sourceVersion:(id)a12 sdkVersion:(id)a13 assetIdentifier:(id)a14 assetVersion:(id)a15
+- (CARCarPlayServiceMessageStartSession)initWithSSID:(id)d passphrase:(id)passphrase channel:(id)channel securityType:(id)type wirelessIPs:(id)ps wiredIPs:(id)iPs port:(id)port deviceID:(id)self0 publicKey:(id)self1 sourceVersion:(id)self2 sdkVersion:(id)self3 assetIdentifier:(id)self4 assetVersion:(id)self5
 {
-  v41 = a3;
-  v29 = a4;
-  v40 = a4;
-  v30 = a5;
-  v39 = a5;
-  v31 = a6;
-  v38 = a6;
-  v32 = a7;
-  v37 = a7;
-  v36 = a8;
-  v35 = a9;
-  v34 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
+  dCopy = d;
+  passphraseCopy = passphrase;
+  passphraseCopy2 = passphrase;
+  channelCopy = channel;
+  channelCopy2 = channel;
+  typeCopy = type;
+  typeCopy2 = type;
+  psCopy = ps;
+  psCopy2 = ps;
+  iPsCopy = iPs;
+  portCopy = port;
+  iDCopy = iD;
+  keyCopy = key;
+  versionCopy = version;
+  sdkVersionCopy = sdkVersion;
+  identifierCopy = identifier;
+  assetVersionCopy = assetVersion;
   v42.receiver = self;
   v42.super_class = CARCarPlayServiceMessageStartSession;
   v25 = [(CARCarPlayServiceMessageStartSession *)&v42 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_SSID, a3);
-    objc_storeStrong(&v26->_passphrase, v29);
-    objc_storeStrong(&v26->_channel, v30);
-    objc_storeStrong(&v26->_securityType, v31);
-    objc_storeStrong(&v26->_wirelessIPs, v32);
-    objc_storeStrong(&v26->_wiredIPs, a8);
-    objc_storeStrong(&v26->_port, a9);
-    objc_storeStrong(&v26->_deviceID, a10);
-    objc_storeStrong(&v26->_publicKey, a11);
-    objc_storeStrong(&v26->_sourceVersion, a12);
-    objc_storeStrong(&v26->_sdkVersion, a13);
-    objc_storeStrong(&v26->_assetIdentifier, a14);
-    objc_storeStrong(&v26->_assetVersion, a15);
+    objc_storeStrong(&v25->_SSID, d);
+    objc_storeStrong(&v26->_passphrase, passphraseCopy);
+    objc_storeStrong(&v26->_channel, channelCopy);
+    objc_storeStrong(&v26->_securityType, typeCopy);
+    objc_storeStrong(&v26->_wirelessIPs, psCopy);
+    objc_storeStrong(&v26->_wiredIPs, iPs);
+    objc_storeStrong(&v26->_port, port);
+    objc_storeStrong(&v26->_deviceID, iD);
+    objc_storeStrong(&v26->_publicKey, key);
+    objc_storeStrong(&v26->_sourceVersion, version);
+    objc_storeStrong(&v26->_sdkVersion, sdkVersion);
+    objc_storeStrong(&v26->_assetIdentifier, identifier);
+    objc_storeStrong(&v26->_assetVersion, assetVersion);
   }
 
   return v26;
@@ -55,31 +55,31 @@
   v19.receiver = self;
   v19.super_class = CARCarPlayServiceMessageStartSession;
   v18 = [(CARCarPlayServiceMessageStartSession *)&v19 description];
-  v14 = [(CARCarPlayServiceMessageStartSession *)self SSID];
-  v17 = [(CARCarPlayServiceMessageStartSession *)self passphrase];
-  v16 = [(CARCarPlayServiceMessageStartSession *)self channel];
-  v3 = [(CARCarPlayServiceMessageStartSession *)self securityType];
-  v4 = [(CARCarPlayServiceMessageStartSession *)self wirelessIPs];
-  v5 = [(CARCarPlayServiceMessageStartSession *)self wiredIPs];
-  v13 = [(CARCarPlayServiceMessageStartSession *)self port];
-  v6 = [(CARCarPlayServiceMessageStartSession *)self deviceID];
-  v7 = [(CARCarPlayServiceMessageStartSession *)self publicKey];
-  v8 = [(CARCarPlayServiceMessageStartSession *)self sourceVersion];
-  v9 = [(CARCarPlayServiceMessageStartSession *)self sdkVersion];
-  v10 = [(CARCarPlayServiceMessageStartSession *)self assetIdentifier];
-  v11 = [(CARCarPlayServiceMessageStartSession *)self assetVersion];
-  v15 = [NSString stringWithFormat:@"%@ {ssid: %@, pass: %@, channel: %@, security: %@, wirelessIPs: %@, wiredIPs: %@, port: %@, deviceID: %@, publicKey: %@, srcVersion: %@, sdkVersion: %@, assetID: %@, assetVersion: %@}", v18, v14, v17, v16, v3, v4, v5, v13, v6, v7, v8, v9, v10, v11];
+  sSID = [(CARCarPlayServiceMessageStartSession *)self SSID];
+  passphrase = [(CARCarPlayServiceMessageStartSession *)self passphrase];
+  channel = [(CARCarPlayServiceMessageStartSession *)self channel];
+  securityType = [(CARCarPlayServiceMessageStartSession *)self securityType];
+  wirelessIPs = [(CARCarPlayServiceMessageStartSession *)self wirelessIPs];
+  wiredIPs = [(CARCarPlayServiceMessageStartSession *)self wiredIPs];
+  port = [(CARCarPlayServiceMessageStartSession *)self port];
+  deviceID = [(CARCarPlayServiceMessageStartSession *)self deviceID];
+  publicKey = [(CARCarPlayServiceMessageStartSession *)self publicKey];
+  sourceVersion = [(CARCarPlayServiceMessageStartSession *)self sourceVersion];
+  sdkVersion = [(CARCarPlayServiceMessageStartSession *)self sdkVersion];
+  assetIdentifier = [(CARCarPlayServiceMessageStartSession *)self assetIdentifier];
+  assetVersion = [(CARCarPlayServiceMessageStartSession *)self assetVersion];
+  v15 = [NSString stringWithFormat:@"%@ {ssid: %@, pass: %@, channel: %@, security: %@, wirelessIPs: %@, wiredIPs: %@, port: %@, deviceID: %@, publicKey: %@, srcVersion: %@, sdkVersion: %@, assetID: %@, assetVersion: %@}", v18, sSID, passphrase, channel, securityType, wirelessIPs, wiredIPs, port, deviceID, publicKey, sourceVersion, sdkVersion, assetIdentifier, assetVersion];
 
   return v15;
 }
 
-- (CARCarPlayServiceMessageStartSession)initWithDictionaryRepresentation:(id)a3
+- (CARCarPlayServiceMessageStartSession)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  if (v4)
+  representationCopy = representation;
+  if (representationCopy)
   {
     objc_opt_class();
-    v5 = [v4 objectForKey:@"wireless"];
+    v5 = [representationCopy objectForKey:@"wireless"];
     if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v5;
@@ -98,7 +98,7 @@
         sub_100085860();
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_127;
     }
 
@@ -122,7 +122,7 @@
         sub_100085DD0();
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_126;
     }
 
@@ -146,7 +146,7 @@
         sub_100085D5C();
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_125;
     }
 
@@ -170,7 +170,7 @@
         sub_100085CE8();
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_124;
     }
 
@@ -229,7 +229,7 @@
               {
                 v17 = obj;
 
-                v9 = 0;
+                selfCopy = 0;
                 v15 = v74;
                 v13 = v75;
                 goto LABEL_123;
@@ -247,7 +247,7 @@
         }
 
         objc_opt_class();
-        v23 = [v4 objectForKey:@"wired"];
+        v23 = [representationCopy objectForKey:@"wired"];
         if (v23 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v24 = v23;
@@ -282,7 +282,7 @@
             sub_100085C00();
           }
 
-          v9 = 0;
+          selfCopy = 0;
           v17 = obj;
           goto LABEL_121;
         }
@@ -311,7 +311,7 @@
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v9 = 0;
+                selfCopy = 0;
                 v28 = v29;
                 v15 = v74;
                 v13 = v75;
@@ -333,7 +333,7 @@
 
         if (v73 && ![v29 count])
         {
-          v9 = 0;
+          selfCopy = 0;
           v15 = v74;
           v13 = v75;
           v17 = obj;
@@ -345,7 +345,7 @@ LABEL_122:
 
         v66 = v29;
         v35 = objc_opt_class();
-        v36 = [v4 objectForKey:@"port"];
+        v36 = [representationCopy objectForKey:@"port"];
         v37 = sub_10003821C(v35, v36);
 
         v28 = v37;
@@ -359,7 +359,7 @@ LABEL_122:
             sub_100085B8C();
           }
 
-          v9 = 0;
+          selfCopy = 0;
           v15 = v74;
           v17 = obj;
           goto LABEL_120;
@@ -367,7 +367,7 @@ LABEL_122:
 
         v68 = v37;
         v38 = objc_opt_class();
-        v39 = [v4 objectForKey:@"deviceID"];
+        v39 = [representationCopy objectForKey:@"deviceID"];
         v40 = sub_10003821C(v38, v39);
 
         v70 = v40;
@@ -380,14 +380,14 @@ LABEL_122:
             sub_100085B18();
           }
 
-          v9 = 0;
+          selfCopy = 0;
           v17 = obj;
           v28 = v68;
           goto LABEL_119;
         }
 
         v41 = objc_opt_class();
-        v42 = [v4 objectForKey:@"publicKey"];
+        v42 = [representationCopy objectForKey:@"publicKey"];
         v43 = sub_10003821C(v41, v42);
 
         v69 = v43;
@@ -399,7 +399,7 @@ LABEL_122:
             sub_100085AA4();
           }
 
-          v9 = 0;
+          selfCopy = 0;
           v15 = v74;
           v17 = obj;
           v28 = v68;
@@ -407,7 +407,7 @@ LABEL_122:
         }
 
         v44 = objc_opt_class();
-        v45 = [v4 objectForKey:@"sourceVersion"];
+        v45 = [representationCopy objectForKey:@"sourceVersion"];
         v46 = sub_10003821C(v44, v45);
 
         v65 = v46;
@@ -422,12 +422,12 @@ LABEL_122:
             sub_100085A30();
           }
 
-          v9 = 0;
+          selfCopy = 0;
           goto LABEL_117;
         }
 
         v47 = objc_opt_class();
-        v48 = [v4 objectForKey:@"sdkVersion"];
+        v48 = [representationCopy objectForKey:@"sdkVersion"];
         v49 = sub_10003821C(v47, v48);
 
         v64 = v49;
@@ -439,7 +439,7 @@ LABEL_122:
             sub_1000859BC();
           }
 
-          v9 = 0;
+          selfCopy = 0;
           v15 = v74;
           v17 = obj;
           v28 = v68;
@@ -447,7 +447,7 @@ LABEL_122:
         }
 
         v50 = objc_opt_class();
-        v51 = [v4 objectForKey:@"asset"];
+        v51 = [representationCopy objectForKey:@"asset"];
         v52 = sub_10003821C(v50, v51);
 
         v63 = v52;
@@ -466,7 +466,7 @@ LABEL_122:
               sub_100085948();
             }
 
-            v9 = 0;
+            selfCopy = 0;
             v15 = v74;
             v13 = v75;
             v17 = obj;
@@ -486,7 +486,7 @@ LABEL_122:
             {
               sub_1000858D4();
               v60 = v67;
-              v9 = 0;
+              selfCopy = 0;
               v15 = v74;
               v13 = v75;
               v17 = obj;
@@ -495,7 +495,7 @@ LABEL_122:
 
             else
             {
-              v9 = 0;
+              selfCopy = 0;
               v15 = v74;
               v13 = v75;
               v17 = obj;
@@ -525,7 +525,7 @@ LABEL_122:
         v62 = v59;
         self = [(CARCarPlayServiceMessageStartSession *)self initWithSSID:v8 passphrase:v71 channel:v75 securityType:v15 wirelessIPs:v17 wiredIPs:v66 port:v28 deviceID:v70 publicKey:v69 sourceVersion:v65 sdkVersion:v64 assetIdentifier:v59 assetVersion:v58];
         v60 = v58;
-        v9 = self;
+        selfCopy = self;
 LABEL_111:
 
 LABEL_115:
@@ -557,7 +557,7 @@ LABEL_121:
       }
     }
 
-    v9 = 0;
+    selfCopy = 0;
 LABEL_123:
 
 LABEL_124:
@@ -569,64 +569,64 @@ LABEL_127:
     goto LABEL_128;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_128:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(CARCarPlayServiceMessageStartSession *)self SSID];
-  [v4 cr_setSafeObject:v5 forKey:@"SSID"];
+  sSID = [(CARCarPlayServiceMessageStartSession *)self SSID];
+  [v4 cr_setSafeObject:sSID forKey:@"SSID"];
 
-  v6 = [(CARCarPlayServiceMessageStartSession *)self passphrase];
-  [v4 cr_setSafeObject:v6 forKey:@"passphrase"];
+  passphrase = [(CARCarPlayServiceMessageStartSession *)self passphrase];
+  [v4 cr_setSafeObject:passphrase forKey:@"passphrase"];
 
-  v7 = [(CARCarPlayServiceMessageStartSession *)self channel];
-  [v4 cr_setSafeObject:v7 forKey:@"channel"];
+  channel = [(CARCarPlayServiceMessageStartSession *)self channel];
+  [v4 cr_setSafeObject:channel forKey:@"channel"];
 
-  v8 = [(CARCarPlayServiceMessageStartSession *)self securityType];
-  [v4 cr_setSafeObject:v8 forKey:@"securityType"];
+  securityType = [(CARCarPlayServiceMessageStartSession *)self securityType];
+  [v4 cr_setSafeObject:securityType forKey:@"securityType"];
 
-  v9 = [(CARCarPlayServiceMessageStartSession *)self wirelessIPs];
-  [v4 cr_setSafeObject:v9 forKey:@"ipAddresses"];
+  wirelessIPs = [(CARCarPlayServiceMessageStartSession *)self wirelessIPs];
+  [v4 cr_setSafeObject:wirelessIPs forKey:@"ipAddresses"];
 
   [v3 setObject:v4 forKey:@"wireless"];
-  v10 = [(CARCarPlayServiceMessageStartSession *)self wiredIPs];
-  v11 = v10;
-  if (v10)
+  wiredIPs = [(CARCarPlayServiceMessageStartSession *)self wiredIPs];
+  v11 = wiredIPs;
+  if (wiredIPs)
   {
     v23 = @"ipAddresses";
-    v24 = v10;
+    v24 = wiredIPs;
     v12 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     [v3 setObject:v12 forKey:@"wired"];
   }
 
-  v13 = [(CARCarPlayServiceMessageStartSession *)self port];
-  [v3 cr_setSafeObject:v13 forKey:@"port"];
+  port = [(CARCarPlayServiceMessageStartSession *)self port];
+  [v3 cr_setSafeObject:port forKey:@"port"];
 
-  v14 = [(CARCarPlayServiceMessageStartSession *)self deviceID];
-  [v3 cr_setSafeObject:v14 forKey:@"deviceID"];
+  deviceID = [(CARCarPlayServiceMessageStartSession *)self deviceID];
+  [v3 cr_setSafeObject:deviceID forKey:@"deviceID"];
 
-  v15 = [(CARCarPlayServiceMessageStartSession *)self publicKey];
-  [v3 cr_setSafeObject:v15 forKey:@"publicKey"];
+  publicKey = [(CARCarPlayServiceMessageStartSession *)self publicKey];
+  [v3 cr_setSafeObject:publicKey forKey:@"publicKey"];
 
-  v16 = [(CARCarPlayServiceMessageStartSession *)self sourceVersion];
-  [v3 cr_setSafeObject:v16 forKey:@"sourceVersion"];
+  sourceVersion = [(CARCarPlayServiceMessageStartSession *)self sourceVersion];
+  [v3 cr_setSafeObject:sourceVersion forKey:@"sourceVersion"];
 
-  v17 = [(CARCarPlayServiceMessageStartSession *)self sdkVersion];
-  [v3 cr_setSafeObject:v17 forKey:@"sdkVersion"];
+  sdkVersion = [(CARCarPlayServiceMessageStartSession *)self sdkVersion];
+  [v3 cr_setSafeObject:sdkVersion forKey:@"sdkVersion"];
 
-  v18 = [(CARCarPlayServiceMessageStartSession *)self assetIdentifier];
-  v19 = [(CARCarPlayServiceMessageStartSession *)self assetVersion];
-  v20 = v19;
-  if (v18 && v19)
+  assetIdentifier = [(CARCarPlayServiceMessageStartSession *)self assetIdentifier];
+  assetVersion = [(CARCarPlayServiceMessageStartSession *)self assetVersion];
+  v20 = assetVersion;
+  if (assetIdentifier && assetVersion)
   {
     v21 = +[NSMutableDictionary dictionary];
-    [v21 setObject:v18 forKey:@"id"];
+    [v21 setObject:assetIdentifier forKey:@"id"];
     [v21 setObject:v20 forKey:@"version"];
     [v3 setObject:v21 forKey:@"asset"];
   }

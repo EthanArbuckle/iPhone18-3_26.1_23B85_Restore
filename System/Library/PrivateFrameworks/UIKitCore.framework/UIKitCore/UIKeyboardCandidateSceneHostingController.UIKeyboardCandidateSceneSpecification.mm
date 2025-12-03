@@ -9,9 +9,9 @@
 {
   v2 = objc_allocWithZone(MEMORY[0x1E696B090]);
   v3 = sub_18A4A7258();
-  v4 = [v2 initWithActivityType_];
+  initWithActivityType_ = [v2 initWithActivityType_];
 
-  return v4;
+  return initWithActivityType_;
 }
 
 - (_TtCE5UIKitCSo41UIKeyboardCandidateSceneHostingController37UIKeyboardCandidateSceneSpecification)init

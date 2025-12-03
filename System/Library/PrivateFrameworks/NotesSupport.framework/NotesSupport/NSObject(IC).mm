@@ -43,7 +43,7 @@ LABEL_5:
 {
   v8 = a3;
   v9 = a4;
-  [a1 removeObserver:v8 forKeyPath:v9 context:a5];
+  [self removeObserver:v8 forKeyPath:v9 context:a5];
 }
 
 - (uint64_t)ic_shouldIgnoreObserveValue:()IC ofObject:forKeyPath:
@@ -70,15 +70,15 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v14 = [MEMORY[0x1E695DFB0] null];
-  if (v10 == v14)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (v10 == null)
   {
     goto LABEL_10;
   }
 
-  v15 = [MEMORY[0x1E695DFB0] null];
-  v16 = v15;
-  if (v12 == v15)
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v16 = null2;
+  if (v12 == null2)
   {
 
 LABEL_10:
@@ -96,11 +96,11 @@ LABEL_10:
 LABEL_11:
   v35 = v12;
   v36 = v10;
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v19 addObject:v8];
+    [array addObject:v8];
   }
 
   v20 = v7;
@@ -132,7 +132,7 @@ LABEL_11:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v19 addObject:v22];
+          [array addObject:v22];
         }
 
         ++v26;
@@ -150,7 +150,7 @@ LABEL_11:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v28 = v19;
+  v28 = array;
   v29 = [v28 countByEnumeratingWithState:&v38 objects:v46 count:16];
   v7 = v20;
   if (v29)

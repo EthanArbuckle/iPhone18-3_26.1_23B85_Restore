@@ -1,24 +1,24 @@
 @interface DDSMAAutoAssetSelector
-+ (id)allSupportedLinguisticAssetTypeForAssetType:(id)a3;
-+ (id)createWithQuery:(id)a3 supportedAssetSpecifiers:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (DDSMAAutoAssetSelector)initWithAssetType:(id)a3 assetSpecifier:(id)a4;
++ (id)allSupportedLinguisticAssetTypeForAssetType:(id)type;
++ (id)createWithQuery:(id)query supportedAssetSpecifiers:(id)specifiers;
+- (BOOL)isEqual:(id)equal;
+- (DDSMAAutoAssetSelector)initWithAssetType:(id)type assetSpecifier:(id)specifier;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation DDSMAAutoAssetSelector
 
-- (DDSMAAutoAssetSelector)initWithAssetType:(id)a3 assetSpecifier:(id)a4
+- (DDSMAAutoAssetSelector)initWithAssetType:(id)type assetSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = DDSMAAutoAssetSelector;
   v8 = [(DDSMAAutoAssetSelector *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69B1910]) initForAssetType:v6 withAssetSpecifier:v7];
+    v9 = [objc_alloc(MEMORY[0x1E69B1910]) initForAssetType:typeCopy withAssetSpecifier:specifierCopy];
     assetSelector = v8->_assetSelector;
     v8->_assetSelector = v9;
   }
@@ -26,11 +26,11 @@
   return v8;
 }
 
-+ (id)allSupportedLinguisticAssetTypeForAssetType:(id)a3
++ (id)allSupportedLinguisticAssetTypeForAssetType:(id)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.MobileAsset.LinguisticDataAuto"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"com.apple.MobileAsset.LinguisticDataAuto"])
   {
     v4 = MEMORY[0x1E695DFD8];
     v10[0] = @"Priority";
@@ -54,18 +54,18 @@
   return v6;
 }
 
-+ (id)createWithQuery:(id)a3 supportedAssetSpecifiers:(id)a4
++ (id)createWithQuery:(id)query supportedAssetSpecifiers:(id)specifiers
 {
   v72 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  queryCopy = query;
+  specifiersCopy = specifiers;
   v7 = objc_opt_new();
-  v8 = [v5 assetType];
-  v9 = [DDSMAAutoAssetSelector allSupportedLinguisticAssetTypeForAssetType:v8];
+  assetType = [queryCopy assetType];
+  v9 = [DDSMAAutoAssetSelector allSupportedLinguisticAssetTypeForAssetType:assetType];
 
-  v49 = v5;
-  v10 = [v5 filter];
-  v11 = [v10 allowedValuesForKey:@"LinguisticAssetType"];
+  v49 = queryCopy;
+  filter = [queryCopy filter];
+  v11 = [filter allowedValuesForKey:@"LinguisticAssetType"];
 
   v65 = 0u;
   v66 = 0u;
@@ -107,7 +107,7 @@
       +[DDSMAAutoAssetSelector createWithQuery:supportedAssetSpecifiers:];
     }
 
-    v38 = MEMORY[0x1E695E0F0];
+    allObjects2 = MEMORY[0x1E695E0F0];
   }
 
   else
@@ -120,15 +120,15 @@
         +[DDSMAAutoAssetSelector createWithQuery:supportedAssetSpecifiers:];
       }
 
-      v19 = [v9 allObjects];
-      [v7 addObjectsFromArray:v19];
+      allObjects = [v9 allObjects];
+      [v7 addObjectsFromArray:allObjects];
     }
 
     v41 = v12;
     v42 = v9;
     v20 = objc_opt_new();
-    v21 = [v49 filter];
-    v46 = [v21 allowedValuesForKey:@"AssetLocale"];
+    filter2 = [v49 filter];
+    v46 = [filter2 allowedValuesForKey:@"AssetLocale"];
 
     v61 = 0u;
     v62 = 0u;
@@ -174,15 +174,15 @@
                 }
 
                 v54 = [*(v23 + 3928) localeWithLocaleIdentifier:*(*(&v55 + 1) + 8 * j)];
-                v27 = [v54 languageCode];
-                if ([(__CFString *)v27 isEqualToString:v22])
+                languageCode = [v54 languageCode];
+                if ([(__CFString *)languageCode isEqualToString:v22])
                 {
 
-                  v27 = @"tl";
+                  languageCode = @"tl";
                 }
 
-                v28 = [*(v24 + 3776) stringWithFormat:@"%@_%@", v52, v27];
-                if ([v6 containsObject:v28])
+                v28 = [*(v24 + 3776) stringWithFormat:@"%@_%@", v52, languageCode];
+                if ([specifiersCopy containsObject:v28])
                 {
                   v29 = [DDSMAAutoAssetSelector alloc];
                   [v49 assetType];
@@ -190,10 +190,10 @@
                   v31 = v23;
                   v32 = v22;
                   v33 = v20;
-                  v35 = v34 = v6;
+                  v35 = v34 = specifiersCopy;
                   v36 = [(DDSMAAutoAssetSelector *)v29 initWithAssetType:v35 assetSpecifier:v28];
 
-                  v6 = v34;
+                  specifiersCopy = v34;
                   v20 = v33;
                   v22 = v32;
                   v23 = v31;
@@ -235,7 +235,7 @@
       +[DDSMAAutoAssetSelector createWithQuery:supportedAssetSpecifiers:];
     }
 
-    v38 = [v20 allObjects];
+    allObjects2 = [v20 allObjects];
 
     v9 = v42;
     v7 = v43;
@@ -244,37 +244,37 @@
 
   v39 = *MEMORY[0x1E69E9840];
 
-  return v38;
+  return allObjects2;
 }
 
 - (id)description
 {
-  v2 = [(DDSMAAutoAssetSelector *)self assetSelector];
-  v3 = [v2 description];
+  assetSelector = [(DDSMAAutoAssetSelector *)self assetSelector];
+  v3 = [assetSelector description];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DDSMAAutoAssetSelector *)self assetSelector];
-  v3 = [v2 description];
+  assetSelector = [(DDSMAAutoAssetSelector *)self assetSelector];
+  v3 = [assetSelector description];
   v4 = [v3 hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DDSMAAutoAssetSelector *)self assetSelector];
-    v7 = [v5 assetSelector];
+    v5 = equalCopy;
+    assetSelector = [(DDSMAAutoAssetSelector *)self assetSelector];
+    assetSelector2 = [v5 assetSelector];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [assetSelector isEqual:assetSelector2];
   }
 
   else

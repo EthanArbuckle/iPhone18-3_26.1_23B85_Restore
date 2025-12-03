@@ -1,36 +1,36 @@
 @interface TPPBPolicyRedactionAuthenticatedCiphertext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPolicyRedactionAuthenticatedCiphertext
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(TPPBPolicyRedactionAuthenticatedCiphertext *)self setCiphertext:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(TPPBPolicyRedactionAuthenticatedCiphertext *)self setAuthenticationCode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(TPPBPolicyRedactionAuthenticatedCiphertext *)self setInitializationVector:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -41,13 +41,13 @@
   return v4 ^ [(NSData *)self->_initializationVector hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ciphertext = self->_ciphertext, !(ciphertext | v4[2])) || -[NSData isEqual:](ciphertext, "isEqual:")) && ((authenticationCode = self->_authenticationCode, !(authenticationCode | v4[1])) || -[NSData isEqual:](authenticationCode, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ciphertext = self->_ciphertext, !(ciphertext | equalCopy[2])) || -[NSData isEqual:](ciphertext, "isEqual:")) && ((authenticationCode = self->_authenticationCode, !(authenticationCode | equalCopy[1])) || -[NSData isEqual:](authenticationCode, "isEqual:")))
   {
     initializationVector = self->_initializationVector;
-    if (initializationVector | v4[3])
+    if (initializationVector | equalCopy[3])
     {
       v8 = [(NSData *)initializationVector isEqual:?];
     }
@@ -66,78 +66,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_ciphertext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_ciphertext copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_authenticationCode copyWithZone:a3];
+  v8 = [(NSData *)self->_authenticationCode copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_initializationVector copyWithZone:a3];
+  v10 = [(NSData *)self->_initializationVector copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ciphertext)
   {
-    [v4 setCiphertext:?];
-    v4 = v5;
+    [toCopy setCiphertext:?];
+    toCopy = v5;
   }
 
   if (self->_authenticationCode)
   {
     [v5 setAuthenticationCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_initializationVector)
   {
     [v5 setInitializationVector:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ciphertext)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_authenticationCode)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_initializationVector)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   ciphertext = self->_ciphertext;
   if (ciphertext)
   {
-    [v3 setObject:ciphertext forKey:@"ciphertext"];
+    [dictionary setObject:ciphertext forKey:@"ciphertext"];
   }
 
   authenticationCode = self->_authenticationCode;
@@ -161,8 +161,8 @@
   v8.receiver = self;
   v8.super_class = TPPBPolicyRedactionAuthenticatedCiphertext;
   v4 = [(TPPBPolicyRedactionAuthenticatedCiphertext *)&v8 description];
-  v5 = [(TPPBPolicyRedactionAuthenticatedCiphertext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPolicyRedactionAuthenticatedCiphertext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

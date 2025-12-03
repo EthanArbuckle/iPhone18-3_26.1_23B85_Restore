@@ -1,28 +1,28 @@
 @interface PXDebugHierarchyViewTreeBuilder
-+ (id)createObjectForElement:(id)a3 parentObject:(id)a4 options:(unint64_t)a5;
++ (id)createObjectForElement:(id)element parentObject:(id)object options:(unint64_t)options;
 @end
 
 @implementation PXDebugHierarchyViewTreeBuilder
 
-+ (id)createObjectForElement:(id)a3 parentObject:(id)a4 options:(unint64_t)a5
++ (id)createObjectForElement:(id)element parentObject:(id)object options:(unint64_t)options
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 frame];
+  objectCopy = object;
+  elementCopy = element;
+  [elementCopy frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = v6;
+  v16 = objectCopy;
   v17 = objc_alloc_init(PXDebug);
   [(PXDebug *)v17 setFrame:v9, v11, v13, v15];
-  [v7 alpha];
+  [elementCopy alpha];
   [(PXDebug *)v17 setAlpha:?];
-  -[PXDebug setPreviewImage:](v17, "setPreviewImage:", [v7 previewImage]);
-  -[PXDebug setBackgroundColor:](v17, "setBackgroundColor:", [v7 backgroundColor]);
-  v18 = [v7 name];
+  -[PXDebug setPreviewImage:](v17, "setPreviewImage:", [elementCopy previewImage]);
+  -[PXDebug setBackgroundColor:](v17, "setBackgroundColor:", [elementCopy backgroundColor]);
+  name = [elementCopy name];
 
-  [(PXDebug *)v17 setName:v18];
+  [(PXDebug *)v17 setName:name];
   [v16 addSubview:v17];
 
   return v17;

@@ -1,63 +1,63 @@
 @interface GKAppMetadata
 + (id)secureCodedPropertyKeys;
-- (GKAppMetadata)initWithBundleID:(id)a3 adamID:(id)a4 platform:(id)a5 name:(id)a6 shortName:(id)a7 artwork:(id)a8 customIconArtwork:(id)a9 supportsGameCenter:(id)a10 supportsArcade:(BOOL)a11 supportsGameController:(id)a12 isEligibleForGamesApp:(BOOL)a13 supportedGameCenterFeatures:(id)a14 deviceFamilies:(id)a15 genreDisplayName:(id)a16 rawResponse:(id)a17 isIOSBinaryMacOSCompatible:(id)a18 gameDisplayName:(id)a19 miniGamesDeepLink:(id)a20 isGameGenre:(id)a21 ageRating:(id)a22 gkGameGenres:(id)a23;
+- (GKAppMetadata)initWithBundleID:(id)d adamID:(id)iD platform:(id)platform name:(id)name shortName:(id)shortName artwork:(id)artwork customIconArtwork:(id)iconArtwork supportsGameCenter:(id)self0 supportsArcade:(BOOL)self1 supportsGameController:(id)self2 isEligibleForGamesApp:(BOOL)self3 supportedGameCenterFeatures:(id)self4 deviceFamilies:(id)self5 genreDisplayName:(id)self6 rawResponse:(id)self7 isIOSBinaryMacOSCompatible:(id)self8 gameDisplayName:(id)self9 miniGamesDeepLink:(id)link isGameGenre:(id)genre ageRating:(id)rating gkGameGenres:(id)genres;
 - (id)description;
 @end
 
 @implementation GKAppMetadata
 
-- (GKAppMetadata)initWithBundleID:(id)a3 adamID:(id)a4 platform:(id)a5 name:(id)a6 shortName:(id)a7 artwork:(id)a8 customIconArtwork:(id)a9 supportsGameCenter:(id)a10 supportsArcade:(BOOL)a11 supportsGameController:(id)a12 isEligibleForGamesApp:(BOOL)a13 supportedGameCenterFeatures:(id)a14 deviceFamilies:(id)a15 genreDisplayName:(id)a16 rawResponse:(id)a17 isIOSBinaryMacOSCompatible:(id)a18 gameDisplayName:(id)a19 miniGamesDeepLink:(id)a20 isGameGenre:(id)a21 ageRating:(id)a22 gkGameGenres:(id)a23
+- (GKAppMetadata)initWithBundleID:(id)d adamID:(id)iD platform:(id)platform name:(id)name shortName:(id)shortName artwork:(id)artwork customIconArtwork:(id)iconArtwork supportsGameCenter:(id)self0 supportsArcade:(BOOL)self1 supportsGameController:(id)self2 isEligibleForGamesApp:(BOOL)self3 supportedGameCenterFeatures:(id)self4 deviceFamilies:(id)self5 genreDisplayName:(id)self6 rawResponse:(id)self7 isIOSBinaryMacOSCompatible:(id)self8 gameDisplayName:(id)self9 miniGamesDeepLink:(id)link isGameGenre:(id)genre ageRating:(id)rating gkGameGenres:(id)genres
 {
-  v53 = a3;
-  v38 = a4;
-  v52 = a4;
-  v39 = a5;
-  v51 = a5;
-  v40 = a6;
-  v50 = a6;
-  v49 = a7;
-  v41 = a8;
-  v48 = a8;
-  v47 = a9;
-  v54 = a10;
-  v55 = a12;
-  v46 = a14;
-  v45 = a15;
-  v44 = a16;
-  v28 = a17;
-  v29 = a18;
-  v30 = a19;
-  v31 = a20;
-  v43 = a21;
-  v32 = a22;
-  v33 = a23;
+  dCopy = d;
+  iDCopy = iD;
+  iDCopy2 = iD;
+  platformCopy = platform;
+  platformCopy2 = platform;
+  nameCopy = name;
+  nameCopy2 = name;
+  shortNameCopy = shortName;
+  artworkCopy = artwork;
+  artworkCopy2 = artwork;
+  iconArtworkCopy = iconArtwork;
+  centerCopy = center;
+  controllerCopy = controller;
+  featuresCopy = features;
+  familiesCopy = families;
+  displayNameCopy = displayName;
+  responseCopy = response;
+  compatibleCopy = compatible;
+  gameDisplayNameCopy = gameDisplayName;
+  linkCopy = link;
+  genreCopy = genre;
+  ratingCopy = rating;
+  genresCopy = genres;
   v56.receiver = self;
   v56.super_class = GKAppMetadata;
   v34 = [(GKAppMetadata *)&v56 init];
   v35 = v34;
   if (v34)
   {
-    objc_storeStrong(&v34->_bundleID, a3);
-    objc_storeStrong(&v35->_adamID, v38);
-    objc_storeStrong(&v35->_platform, v39);
-    objc_storeStrong(&v35->_name, v40);
-    objc_storeStrong(&v35->_shortName, a7);
-    objc_storeStrong(&v35->_artwork, v41);
-    objc_storeStrong(&v35->_customIconArtwork, a9);
-    v35->_supportsGameCenter = v54;
-    v35->_supportsArcade = a11;
-    v35->_supportsGameController = v55;
-    objc_storeStrong(&v35->_supportedGameCenterFeatures, a14);
-    v35->_isEligibleForGamesApp = a13;
-    objc_storeStrong(&v35->_deviceFamilies, a15);
-    objc_storeStrong(&v35->_genreDisplayName, a16);
-    objc_storeStrong(&v35->_rawResponse, a17);
-    objc_storeStrong(&v35->_isIOSBinaryMacOSCompatible, a18);
-    objc_storeStrong(&v35->_gameDisplayName, a19);
-    objc_storeStrong(&v35->_miniGamesDeepLink, a20);
-    objc_storeStrong(&v35->_isGameGenre, a21);
-    objc_storeStrong(&v35->_ageRating, a22);
-    objc_storeStrong(&v35->_gkGameGenres, a23);
+    objc_storeStrong(&v34->_bundleID, d);
+    objc_storeStrong(&v35->_adamID, iDCopy);
+    objc_storeStrong(&v35->_platform, platformCopy);
+    objc_storeStrong(&v35->_name, nameCopy);
+    objc_storeStrong(&v35->_shortName, shortName);
+    objc_storeStrong(&v35->_artwork, artworkCopy);
+    objc_storeStrong(&v35->_customIconArtwork, iconArtwork);
+    v35->_supportsGameCenter = centerCopy;
+    v35->_supportsArcade = arcade;
+    v35->_supportsGameController = controllerCopy;
+    objc_storeStrong(&v35->_supportedGameCenterFeatures, features);
+    v35->_isEligibleForGamesApp = app;
+    objc_storeStrong(&v35->_deviceFamilies, families);
+    objc_storeStrong(&v35->_genreDisplayName, displayName);
+    objc_storeStrong(&v35->_rawResponse, response);
+    objc_storeStrong(&v35->_isIOSBinaryMacOSCompatible, compatible);
+    objc_storeStrong(&v35->_gameDisplayName, gameDisplayName);
+    objc_storeStrong(&v35->_miniGamesDeepLink, link);
+    objc_storeStrong(&v35->_isGameGenre, genre);
+    objc_storeStrong(&v35->_ageRating, rating);
+    objc_storeStrong(&v35->_gkGameGenres, genres);
   }
 
   return v35;
@@ -141,9 +141,9 @@ void __40__GKAppMetadata_secureCodedPropertyKeys__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GKAppMetadata *)self adamID];
-  v7 = [(GKAppMetadata *)self bundleID];
-  v8 = [v3 stringWithFormat:@"%@: adamID: %@, bundleID: %@", v5, v6, v7];
+  adamID = [(GKAppMetadata *)self adamID];
+  bundleID = [(GKAppMetadata *)self bundleID];
+  v8 = [v3 stringWithFormat:@"%@: adamID: %@, bundleID: %@", v5, adamID, bundleID];
 
   return v8;
 }

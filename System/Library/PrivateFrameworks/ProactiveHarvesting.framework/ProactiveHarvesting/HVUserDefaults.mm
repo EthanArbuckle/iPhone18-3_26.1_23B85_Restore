@@ -13,9 +13,9 @@
 + (void)resetHarvestBudgetRefillDisabled;
 + (void)resetHarvestBudgetReserve;
 + (void)resetHarvestBudgetThrottleBudgetDisabled;
-+ (void)setHarvestBudgetCPUTimeSeconds:(double)a3;
-+ (void)setHarvestBudgetNumberOfOperations:(int64_t)a3;
-+ (void)setHarvestBudgetReserve:(double)a3;
++ (void)setHarvestBudgetCPUTimeSeconds:(double)seconds;
++ (void)setHarvestBudgetNumberOfOperations:(int64_t)operations;
++ (void)setHarvestBudgetReserve:(double)reserve;
 - (HVUserDefaults)init;
 @end
 
@@ -23,16 +23,16 @@
 
 + (BOOL)harvestBudgetRefillDisabled
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"HVHarvestBudgetRefillDisabled"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"HVHarvestBudgetRefillDisabled"];
 
   return v3;
 }
 
 + (BOOL)harvestBudgetDisabled
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"HVHarvestBudgetDisabled"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"HVHarvestBudgetDisabled"];
 
   return v3;
 }
@@ -40,9 +40,9 @@
 + (id)defaults
 {
   v2 = +[HVUserDefaults sharedInstance];
-  v3 = [v2 defaults];
+  defaults = [v2 defaults];
 
-  return v3;
+  return defaults;
 }
 
 + (id)sharedInstance
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = __32__HVUserDefaults_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken3_863 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken3_863, block);
@@ -64,8 +64,8 @@
 
 + (int64_t)harvestBudgetNumberOfOperations
 {
-  v2 = [a1 defaults];
-  v3 = [v2 objectForKey:@"HVHarvestBudgetNumberOfOperations"];
+  defaults = [self defaults];
+  v3 = [defaults objectForKey:@"HVHarvestBudgetNumberOfOperations"];
 
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -73,15 +73,15 @@
     v3 = &unk_284752A60;
   }
 
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 + (double)harvestBudgetCPUTimeSeconds
 {
-  v2 = [a1 defaults];
-  v3 = [v2 objectForKey:@"HVHarvestBudgetCPUTimeSeconds"];
+  defaults = [self defaults];
+  v3 = [defaults objectForKey:@"HVHarvestBudgetCPUTimeSeconds"];
 
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -97,8 +97,8 @@
 
 + (double)harvestBudgetReserve
 {
-  v2 = [a1 defaults];
-  v3 = [v2 objectForKey:@"HVHarvestBudgetReserve"];
+  defaults = [self defaults];
+  v3 = [defaults objectForKey:@"HVHarvestBudgetReserve"];
 
   v4 = 0.95;
   if (v3)
@@ -116,8 +116,8 @@
 
 + (BOOL)harvestBudgetThrottleBudgetDisabled
 {
-  v2 = [a1 defaults];
-  v3 = [v2 BOOLForKey:@"HVHarvestBudgetThrottleBudgetDisabled"];
+  defaults = [self defaults];
+  v3 = [defaults BOOLForKey:@"HVHarvestBudgetThrottleBudgetDisabled"];
 
   return v3;
 }
@@ -152,56 +152,56 @@
 
 + (void)resetHarvestBudgetRefillDisabled
 {
-  v2 = [a1 defaults];
-  [v2 removeObjectForKey:@"HVHarvestBudgetRefillDisabled"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"HVHarvestBudgetRefillDisabled"];
 }
 
 + (void)resetHarvestBudgetThrottleBudgetDisabled
 {
-  v2 = [a1 defaults];
-  [v2 removeObjectForKey:@"HVHarvestBudgetThrottleBudgetDisabled"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"HVHarvestBudgetThrottleBudgetDisabled"];
 }
 
 + (void)resetHarvestBudgetDisabled
 {
-  v2 = [a1 defaults];
-  [v2 removeObjectForKey:@"HVHarvestBudgetDisabled"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"HVHarvestBudgetDisabled"];
 }
 
 + (void)resetHarvestBudgetReserve
 {
-  v2 = [a1 defaults];
-  [v2 removeObjectForKey:@"HVHarvestBudgetReserve"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"HVHarvestBudgetReserve"];
 }
 
-+ (void)setHarvestBudgetReserve:(double)a3
++ (void)setHarvestBudgetReserve:(double)reserve
 {
-  v4 = [a1 defaults];
-  [v4 setDouble:@"HVHarvestBudgetReserve" forKey:a3];
+  defaults = [self defaults];
+  [defaults setDouble:@"HVHarvestBudgetReserve" forKey:reserve];
 }
 
 + (void)resetHarvestBudgetCPUTimeSeconds
 {
-  v2 = [a1 defaults];
-  [v2 removeObjectForKey:@"HVHarvestBudgetCPUTimeSeconds"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"HVHarvestBudgetCPUTimeSeconds"];
 }
 
-+ (void)setHarvestBudgetCPUTimeSeconds:(double)a3
++ (void)setHarvestBudgetCPUTimeSeconds:(double)seconds
 {
-  v4 = [a1 defaults];
-  [v4 setDouble:@"HVHarvestBudgetCPUTimeSeconds" forKey:a3];
+  defaults = [self defaults];
+  [defaults setDouble:@"HVHarvestBudgetCPUTimeSeconds" forKey:seconds];
 }
 
 + (void)resetHarvestBudgetNumberOfOperations
 {
-  v2 = [a1 defaults];
-  [v2 removeObjectForKey:@"HVHarvestBudgetNumberOfOperations"];
+  defaults = [self defaults];
+  [defaults removeObjectForKey:@"HVHarvestBudgetNumberOfOperations"];
 }
 
-+ (void)setHarvestBudgetNumberOfOperations:(int64_t)a3
++ (void)setHarvestBudgetNumberOfOperations:(int64_t)operations
 {
-  v4 = [a1 defaults];
-  [v4 setInteger:a3 forKey:@"HVHarvestBudgetNumberOfOperations"];
+  defaults = [self defaults];
+  [defaults setInteger:operations forKey:@"HVHarvestBudgetNumberOfOperations"];
 }
 
 void __32__HVUserDefaults_sharedInstance__block_invoke(uint64_t a1)

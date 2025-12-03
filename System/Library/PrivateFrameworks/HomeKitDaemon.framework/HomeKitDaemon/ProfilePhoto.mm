@@ -1,16 +1,16 @@
 @interface ProfilePhoto
 - (NSData)photoData;
-- (void)setCropRect:(id)a3;
-- (void)setPhotoData:(id)a3;
+- (void)setCropRect:(id)rect;
+- (void)setPhotoData:(id)data;
 @end
 
 @implementation ProfilePhoto
 
-- (void)setCropRect:(id)a3
+- (void)setCropRect:(id)rect
 {
   v4 = *(self + 2);
-  *(self + 2) = a3;
-  v3 = a3;
+  *(self + 2) = rect;
+  rectCopy = rect;
 }
 
 - (NSData)photoData
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (void)setPhotoData:(id)a3
+- (void)setPhotoData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
 
   v5 = sub_22A4DB62C();
   v7 = v6;

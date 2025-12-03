@@ -1,30 +1,30 @@
 @interface ActivityEditViewController
-- (_TtC7FocusUI26ActivityEditViewController)initWithActivityDescription:(id)a3;
-- (_TtC7FocusUI26ActivityEditViewController)initWithCoder:(id)a3;
-- (_TtC7FocusUI26ActivityEditViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7FocusUI26ActivityEditViewController)initWithActivityDescription:(id)description;
+- (_TtC7FocusUI26ActivityEditViewController)initWithCoder:(id)coder;
+- (_TtC7FocusUI26ActivityEditViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)willDisappearBlock;
-- (void)setWillDisappearBlock:(id)a3;
+- (void)setWillDisappearBlock:(id)block;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ActivityEditViewController
 
-- (_TtC7FocusUI26ActivityEditViewController)initWithActivityDescription:(id)a3
+- (_TtC7FocusUI26ActivityEditViewController)initWithActivityDescription:(id)description
 {
   *(self + OBJC_IVAR____TtC7FocusUI26ActivityEditViewController_visibleHeight) = 0x4084000000000000;
   v3 = (self + OBJC_IVAR____TtC7FocusUI26ActivityEditViewController_willDisappearBlock);
   *v3 = 0;
   v3[1] = 0;
-  *(self + OBJC_IVAR____TtC7FocusUI26ActivityEditViewController_activityDescription) = a3;
+  *(self + OBJC_IVAR____TtC7FocusUI26ActivityEditViewController_activityDescription) = description;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ActivityEditViewController();
   swift_unknownObjectRetain();
   return [(ActivityEditViewController *)&v5 initWithNibName:0 bundle:0];
 }
 
-- (_TtC7FocusUI26ActivityEditViewController)initWithCoder:(id)a3
+- (_TtC7FocusUI26ActivityEditViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC7FocusUI26ActivityEditViewController_visibleHeight) = 0x4084000000000000;
   v3 = (self + OBJC_IVAR____TtC7FocusUI26ActivityEditViewController_willDisappearBlock);
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (void)setWillDisappearBlock:(id)a3
+- (void)setWillDisappearBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -79,23 +79,23 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_24BB493F4(v7);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24BB495D0();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ActivityEditViewController();
   v4 = v8.receiver;
-  v5 = [(ActivityEditViewController *)&v8 viewWillDisappear:v3];
+  v5 = [(ActivityEditViewController *)&v8 viewWillDisappear:disappearCopy];
   v6 = (*((*MEMORY[0x277D85000] & *v4) + 0x70))(v5);
   if (v6)
   {
@@ -110,13 +110,13 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24BB49DA0(a3);
+  selfCopy = self;
+  sub_24BB49DA0(appear);
 }
 
-- (_TtC7FocusUI26ActivityEditViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7FocusUI26ActivityEditViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

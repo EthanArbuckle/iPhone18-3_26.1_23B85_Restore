@@ -1,17 +1,17 @@
 @interface PKSwatchColor
-+ (PKSwatchColor)swatchColor:(void *)a3 identifier:;
++ (PKSwatchColor)swatchColor:(void *)color identifier:;
 @end
 
 @implementation PKSwatchColor
 
-+ (PKSwatchColor)swatchColor:(void *)a3 identifier:
++ (PKSwatchColor)swatchColor:(void *)color identifier:
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = a2;
   objc_opt_self();
   v6 = [PKSwatchColor alloc];
   v7 = v5;
-  v8 = v4;
+  v8 = colorCopy;
   if (v6)
   {
     v13.receiver = v6;

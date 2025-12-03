@@ -1,13 +1,13 @@
 @interface SlotDrawer
 - (_TtC28ManagedAppDistributionDaemon10SlotDrawer)init;
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
 @end
 
 @implementation SlotDrawer
 
-- (id)drawingWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (id)drawingWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v6 = a3;
+  styleCopy = style;
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
@@ -16,7 +16,7 @@
   if (swift_dynamicCast())
   {
     v7 = objc_allocWithZone(type metadata accessor for SecureButton());
-    v8 = sub_1004B5158(v6, v11, a5);
+    v8 = sub_1004B5158(styleCopy, v11, remote);
 
     sub_10000710C(v13);
     v9 = v8;

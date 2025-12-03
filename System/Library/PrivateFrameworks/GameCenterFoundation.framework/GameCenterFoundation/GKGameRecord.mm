@@ -1,32 +1,32 @@
 @interface GKGameRecord
-+ (id)cacheKeyForPlayer:(id)a3 bundleIdentifier:(id)a4;
-+ (id)cacheKeyForPlayer:(id)a3 game:(id)a4;
-+ (id)cacheKeyForPlayer:(id)a3 internal:(id)a4;
-+ (id)gameRecordForPlayer:(id)a3 game:(id)a4;
++ (id)cacheKeyForPlayer:(id)player bundleIdentifier:(id)identifier;
++ (id)cacheKeyForPlayer:(id)player game:(id)game;
++ (id)cacheKeyForPlayer:(id)player internal:(id)internal;
++ (id)gameRecordForPlayer:(id)player game:(id)game;
 + (id)internalRepresentationCache;
-+ (id)internalRepresentationForPlayer:(id)a3 game:(id)a4;
-+ (void)invalidateCacheForPlayer:(id)a3 game:(id)a4;
-+ (void)loadGameRecordForPlayer:(id)a3 game:(id)a4 withCompletionHandler:(id)a5;
-+ (void)loadGameRecordsForPlayer:(id)a3 bundleIDs:(id)a4 withCompletionHandler:(id)a5;
-+ (void)loadGameRecordsForPlayer:(id)a3 games:(id)a4 withCompletionHandler:(id)a5;
-+ (void)partitionGameRecords:(id)a3 returniOS:(id *)a4 returnMac:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)internalRepresentationForPlayer:(id)player game:(id)game;
++ (void)invalidateCacheForPlayer:(id)player game:(id)game;
++ (void)loadGameRecordForPlayer:(id)player game:(id)game withCompletionHandler:(id)handler;
++ (void)loadGameRecordsForPlayer:(id)player bundleIDs:(id)ds withCompletionHandler:(id)handler;
++ (void)loadGameRecordsForPlayer:(id)player games:(id)games withCompletionHandler:(id)handler;
++ (void)partitionGameRecords:(id)records returniOS:(id *)s returnMac:(id *)mac;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)played;
 - (GKGameRecord)init;
-- (GKGameRecord)initWithCoder:(id)a3;
-- (GKGameRecord)initWithInternalRepresentation:(id)a3;
-- (GKGameRecord)initWithInternalRepresentation:(id)a3 player:(id)a4;
+- (GKGameRecord)initWithCoder:(id)coder;
+- (GKGameRecord)initWithInternalRepresentation:(id)representation;
+- (GKGameRecord)initWithInternalRepresentation:(id)representation player:(id)player;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKGameRecord
 
-+ (void)partitionGameRecords:(id)a3 returniOS:(id *)a4 returnMac:(id *)a5
++ (void)partitionGameRecords:(id)records returniOS:(id *)s returnMac:(id *)mac
 {
-  v7 = a3;
-  v8 = [v7 count];
+  recordsCopy = records;
+  v8 = [recordsCopy count];
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v8];
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:v8];
   v15[0] = MEMORY[0x277D85DD0];
@@ -37,12 +37,12 @@
   v17 = v10;
   v11 = v10;
   v12 = v9;
-  [v7 enumerateObjectsUsingBlock:v15];
+  [recordsCopy enumerateObjectsUsingBlock:v15];
 
   v13 = v12;
-  *a5 = v12;
+  *mac = v12;
   v14 = v11;
-  *a4 = v11;
+  *s = v11;
 }
 
 void __57__GKGameRecord_partitionGameRecords_returniOS_returnMac___block_invoke(uint64_t a1, void *a2)
@@ -58,38 +58,38 @@ void __57__GKGameRecord_partitionGameRecords_returniOS_returnMac___block_invoke(
   [*(a1 + v4) addObject:v5];
 }
 
-- (GKGameRecord)initWithInternalRepresentation:(id)a3 player:(id)a4
+- (GKGameRecord)initWithInternalRepresentation:(id)representation player:(id)player
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  representationCopy = representation;
+  playerCopy = player;
+  if (!representationCopy)
   {
-    v6 = +[(GKInternalRepresentation *)GKGameRecordInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKGameRecordInternal];
   }
 
   v11.receiver = self;
   v11.super_class = GKGameRecord;
-  v8 = [(GKGame *)&v11 initWithInternalRepresentation:v6];
+  v8 = [(GKGame *)&v11 initWithInternalRepresentation:representationCopy];
   v9 = v8;
   if (v8)
   {
-    [(GKGameRecord *)v8 setPlayer:v7];
+    [(GKGameRecord *)v8 setPlayer:playerCopy];
   }
 
   return v9;
 }
 
-- (GKGameRecord)initWithInternalRepresentation:(id)a3
+- (GKGameRecord)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
-    v4 = +[(GKInternalRepresentation *)GKGameRecordInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKGameRecordInternal];
   }
 
   v8.receiver = self;
   v8.super_class = GKGameRecord;
-  v5 = [(GKGame *)&v8 initWithInternalRepresentation:v4];
+  v5 = [(GKGame *)&v8 initWithInternalRepresentation:representationCopy];
   if (v5)
   {
     v6 = +[GKLocalPlayer localPlayer];
@@ -107,15 +107,15 @@ void __57__GKGameRecord_partitionGameRecords_returniOS_returnMac___block_invoke(
   return v4;
 }
 
-- (GKGameRecord)initWithCoder:(id)a3
+- (GKGameRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GKGameRecord;
-  v5 = [(GKGame *)&v10 initWithCoder:v4];
+  v5 = [(GKGame *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"player"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"player"];
     player = v5->_player;
     v5->_player = v6;
 
@@ -125,20 +125,20 @@ void __57__GKGameRecord_partitionGameRecords_returniOS_returnMac___block_invoke(
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GKGameRecord;
-  v4 = a3;
-  [(GKGame *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GKGame *)&v6 encodeWithCoder:coderCopy];
   v5 = [(GKGameRecord *)self player:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"player"];
+  [coderCopy encodeObject:v5 forKey:@"player"];
 }
 
 - (BOOL)played
 {
-  v2 = [(GKGameRecord *)self lastPlayedDate];
-  v3 = v2 != 0;
+  lastPlayedDate = [(GKGameRecord *)self lastPlayedDate];
+  v3 = lastPlayedDate != 0;
 
   return v3;
 }
@@ -148,26 +148,26 @@ void __57__GKGameRecord_partitionGameRecords_returniOS_returnMac___block_invoke(
   v7.receiver = self;
   v7.super_class = GKGameRecord;
   v3 = [(GKGame *)&v7 hash];
-  v4 = [(GKGameRecord *)self player];
-  v5 = [v4 hash];
+  player = [(GKGameRecord *)self player];
+  v5 = [player hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v10.receiver = self;
     v10.super_class = GKGameRecord;
     if ([(GKGame *)&v10 isEqual:v5])
     {
-      v6 = [(GKGameRecord *)self player];
-      v7 = [v5 player];
-      v8 = [v6 isEqual:v7];
+      player = [(GKGameRecord *)self player];
+      player2 = [v5 player];
+      v8 = [player isEqual:player2];
     }
 
     else
@@ -186,42 +186,42 @@ void __57__GKGameRecord_partitionGameRecords_returniOS_returnMac___block_invoke(
 
 - (id)description
 {
-  v3 = [(GKGameRecord *)self player];
+  player = [(GKGameRecord *)self player];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(GKGameRecord *)self name];
-  v7 = [(GKGameRecord *)self bundleIdentifier];
-  v8 = [v3 internal];
-  v9 = [v8 conciseDescription];
-  v10 = [v4 stringWithFormat:@"<%@ %p> name:%@ bundleID:%@ player:<%@>", v5, self, v6, v7, v9];
+  name = [(GKGameRecord *)self name];
+  bundleIdentifier = [(GKGameRecord *)self bundleIdentifier];
+  internal = [player internal];
+  conciseDescription = [internal conciseDescription];
+  v10 = [v4 stringWithFormat:@"<%@ %p> name:%@ bundleID:%@ player:<%@>", v5, self, name, bundleIdentifier, conciseDescription];
 
   return v10;
 }
 
-+ (id)cacheKeyForPlayer:(id)a3 bundleIdentifier:(id)a4
++ (id)cacheKeyForPlayer:(id)player bundleIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = [a3 cacheKey];
-  v8 = [v5 stringWithFormat:@"%@-%@", v7, v6];
+  identifierCopy = identifier;
+  cacheKey = [player cacheKey];
+  identifierCopy = [v5 stringWithFormat:@"%@-%@", cacheKey, identifierCopy];
+
+  return identifierCopy;
+}
+
++ (id)cacheKeyForPlayer:(id)player game:(id)game
+{
+  playerCopy = player;
+  bundleIdentifier = [game bundleIdentifier];
+  v8 = [self cacheKeyForPlayer:playerCopy bundleIdentifier:bundleIdentifier];
 
   return v8;
 }
 
-+ (id)cacheKeyForPlayer:(id)a3 game:(id)a4
++ (id)cacheKeyForPlayer:(id)player internal:(id)internal
 {
-  v6 = a3;
-  v7 = [a4 bundleIdentifier];
-  v8 = [a1 cacheKeyForPlayer:v6 bundleIdentifier:v7];
-
-  return v8;
-}
-
-+ (id)cacheKeyForPlayer:(id)a3 internal:(id)a4
-{
-  v6 = a3;
-  v7 = [a4 bundleIdentifier];
-  v8 = [a1 cacheKeyForPlayer:v6 bundleIdentifier:v7];
+  playerCopy = player;
+  bundleIdentifier = [internal bundleIdentifier];
+  v8 = [self cacheKeyForPlayer:playerCopy bundleIdentifier:bundleIdentifier];
 
   return v8;
 }
@@ -245,57 +245,57 @@ uint64_t __43__GKGameRecord_internalRepresentationCache__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)invalidateCacheForPlayer:(id)a3 game:(id)a4
++ (void)invalidateCacheForPlayer:(id)player game:(id)game
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [a1 internalRepresentationCache];
-  v8 = [a1 cacheKeyForPlayer:v7 game:v6];
+  gameCopy = game;
+  playerCopy = player;
+  internalRepresentationCache = [self internalRepresentationCache];
+  v8 = [self cacheKeyForPlayer:playerCopy game:gameCopy];
 
-  [v9 removeObjectForKey:v8];
+  [internalRepresentationCache removeObjectForKey:v8];
 }
 
-+ (id)internalRepresentationForPlayer:(id)a3 game:(id)a4
++ (id)internalRepresentationForPlayer:(id)player game:(id)game
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 internalRepresentationCache];
-  v9 = [a1 cacheKeyForPlayer:v7 game:v6];
+  gameCopy = game;
+  playerCopy = player;
+  internalRepresentationCache = [self internalRepresentationCache];
+  v9 = [self cacheKeyForPlayer:playerCopy game:gameCopy];
 
-  v10 = [v8 objectForKey:v9];
+  v10 = [internalRepresentationCache objectForKey:v9];
   if (!v10)
   {
-    v11 = [v6 internal];
-    v10 = [GKGameRecordInternal gameRecordForGame:v11];
+    internal = [gameCopy internal];
+    v10 = [GKGameRecordInternal gameRecordForGame:internal];
 
-    [v8 setObject:v10 forKey:v9];
+    [internalRepresentationCache setObject:v10 forKey:v9];
   }
 
   return v10;
 }
 
-+ (id)gameRecordForPlayer:(id)a3 game:(id)a4
++ (id)gameRecordForPlayer:(id)player game:(id)game
 {
-  v6 = a3;
-  v7 = [a1 internalRepresentationForPlayer:v6 game:a4];
-  v8 = [[GKGameRecord alloc] initWithInternalRepresentation:v7 player:v6];
+  playerCopy = player;
+  v7 = [self internalRepresentationForPlayer:playerCopy game:game];
+  v8 = [[GKGameRecord alloc] initWithInternalRepresentation:v7 player:playerCopy];
 
   return v8;
 }
 
-+ (void)loadGameRecordForPlayer:(id)a3 game:(id)a4 withCompletionHandler:(id)a5
++ (void)loadGameRecordForPlayer:(id)player game:(id)game withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a3;
-  v11 = [v9 arrayWithObject:a4];
+  playerCopy = player;
+  v11 = [v9 arrayWithObject:game];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__GKGameRecord_loadGameRecordForPlayer_game_withCompletionHandler___block_invoke;
   v13[3] = &unk_2785DDCB0;
-  v14 = v8;
-  v12 = v8;
-  [a1 loadGameRecordsForPlayer:v10 games:v11 withCompletionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [self loadGameRecordsForPlayer:playerCopy games:v11 withCompletionHandler:v13];
 }
 
 void __67__GKGameRecord_loadGameRecordForPlayer_game_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -323,36 +323,36 @@ void __67__GKGameRecord_loadGameRecordForPlayer_game_withCompletionHandler___blo
   (*(v10 + 16))(v10, v11, v6);
 }
 
-+ (void)loadGameRecordsForPlayer:(id)a3 games:(id)a4 withCompletionHandler:(id)a5
++ (void)loadGameRecordsForPlayer:(id)player games:(id)games withCompletionHandler:(id)handler
 {
   v8 = MEMORY[0x277CBEB98];
-  v9 = a5;
-  v10 = a3;
-  v12 = [v8 setWithArray:a4];
+  handlerCopy = handler;
+  playerCopy = player;
+  v12 = [v8 setWithArray:games];
   v11 = [v12 _gkValuesForKeyPath:@"bundleIdentifier"];
-  [a1 loadGameRecordsForPlayer:v10 bundleIDs:v11 withCompletionHandler:v9];
+  [self loadGameRecordsForPlayer:playerCopy bundleIDs:v11 withCompletionHandler:handlerCopy];
 }
 
-+ (void)loadGameRecordsForPlayer:(id)a3 bundleIDs:(id)a4 withCompletionHandler:(id)a5
++ (void)loadGameRecordsForPlayer:(id)player bundleIDs:(id)ds withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 count];
-  v12 = [a1 internalRepresentationCache];
+  playerCopy = player;
+  dsCopy = ds;
+  handlerCopy = handler;
+  v11 = [dsCopy count];
+  internalRepresentationCache = [self internalRepresentationCache];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __73__GKGameRecord_loadGameRecordsForPlayer_bundleIDs_withCompletionHandler___block_invoke;
   v26 = &unk_2785DDD28;
-  v13 = v10;
+  v13 = handlerCopy;
   v30 = v13;
   v31 = v11;
-  v14 = v9;
+  v14 = dsCopy;
   v27 = v14;
-  v32 = a1;
-  v15 = v8;
+  selfCopy = self;
+  v15 = playerCopy;
   v28 = v15;
-  v16 = v12;
+  v16 = internalRepresentationCache;
   v29 = v16;
   v17 = _Block_copy(&v23);
   v18 = v17;
@@ -360,9 +360,9 @@ void __67__GKGameRecord_loadGameRecordForPlayer_game_withCompletionHandler___blo
   {
     v19 = [GKLocalPlayer localPlayer:v23];
     v20 = [GKDaemonProxy proxyForPlayer:v19];
-    v21 = [v20 gameServicePrivate];
-    v22 = [v15 internal];
-    [v21 getGameStatsForPlayer:v22 bundleIDs:v14 handler:v18];
+    gameServicePrivate = [v20 gameServicePrivate];
+    internal = [v15 internal];
+    [gameServicePrivate getGameStatsForPlayer:internal bundleIDs:v14 handler:v18];
   }
 
   else

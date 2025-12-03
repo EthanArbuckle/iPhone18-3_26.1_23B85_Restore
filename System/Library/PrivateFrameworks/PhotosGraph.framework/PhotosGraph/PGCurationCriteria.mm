@@ -1,32 +1,32 @@
 @interface PGCurationCriteria
-- (BOOL)_passesForItem:(id)a3 score:(double *)a4 graph:(id)a5 reasonString:(id *)a6;
-- (BOOL)isPassingForAsset:(id)a3 score:(double *)a4;
-- (PGCurationCriteria)initWithMinimumAssetsRatio:(double)a3 client:(unint64_t)a4;
-- (double)_scoreForSceneClassifications:(id)a3 withSDFoodTrait:(id)a4 curationModel:(id)a5 traitFailed:(BOOL *)a6;
-- (double)_scoreForSceneClassifications:(id)a3 withScenesTrait:(id)a4 curationModel:(id)a5 traitFailed:(BOOL *)a6;
-- (id)niceDescriptionWithGraph:(id)a3;
-- (id)passingAssetsInAssets:(id)a3;
-- (id)peopleTraitStringWithGraph:(id)a3;
+- (BOOL)_passesForItem:(id)item score:(double *)score graph:(id)graph reasonString:(id *)string;
+- (BOOL)isPassingForAsset:(id)asset score:(double *)score;
+- (PGCurationCriteria)initWithMinimumAssetsRatio:(double)ratio client:(unint64_t)client;
+- (double)_scoreForSceneClassifications:(id)classifications withSDFoodTrait:(id)trait curationModel:(id)model traitFailed:(BOOL *)failed;
+- (double)_scoreForSceneClassifications:(id)classifications withScenesTrait:(id)trait curationModel:(id)model traitFailed:(BOOL *)failed;
+- (id)niceDescriptionWithGraph:(id)graph;
+- (id)passingAssetsInAssets:(id)assets;
+- (id)peopleTraitStringWithGraph:(id)graph;
 @end
 
 @implementation PGCurationCriteria
 
-- (id)peopleTraitStringWithGraph:(id)a3
+- (id)peopleTraitStringWithGraph:(id)graph
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(PGCurationSetTrait *)self->_peopleTrait items];
-  v7 = [v6 allObjects];
-  v8 = [v5 initWithArray:v7];
+  items = [(PGCurationSetTrait *)self->_peopleTrait items];
+  allObjects = [items allObjects];
+  v8 = [v5 initWithArray:allObjects];
 
-  v9 = [(PGCurationSetTrait *)self->_peopleTrait negativeItems];
-  v10 = [v9 allObjects];
-  [v8 addObjectsFromArray:v10];
+  negativeItems = [(PGCurationSetTrait *)self->_peopleTrait negativeItems];
+  allObjects2 = [negativeItems allObjects];
+  [v8 addObjectsFromArray:allObjects2];
 
   v49 = v8;
-  v50 = v4;
-  v11 = [v4 personNodesForPersonLocalIdentifiers:v8];
+  v50 = graphCopy;
+  v11 = [graphCopy personNodesForPersonLocalIdentifiers:v8];
   v12 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v11, "count")}];
   v60 = 0u;
   v61 = 0u;
@@ -48,8 +48,8 @@
         }
 
         v18 = *(*(&v60 + 1) + 8 * i);
-        v19 = [v18 localIdentifier];
-        [v12 setObject:v18 forKeyedSubscript:v19];
+        localIdentifier = [v18 localIdentifier];
+        [v12 setObject:v18 forKeyedSubscript:localIdentifier];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v60 objects:v67 count:16];
@@ -69,10 +69,10 @@
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v47 = self;
-  v23 = [(PGCurationSetTrait *)self->_peopleTrait items];
+  selfCopy = self;
+  items2 = [(PGCurationSetTrait *)self->_peopleTrait items];
   v51 = v21;
-  v24 = [v23 sortedArrayUsingDescriptors:v21];
+  v24 = [items2 sortedArrayUsingDescriptors:v21];
 
   v25 = [v24 countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v25)
@@ -90,11 +90,11 @@
 
         v29 = *(*(&v56 + 1) + 8 * j);
         v30 = [v12 objectForKeyedSubscript:v29];
-        v31 = [v30 name];
-        v32 = v31;
-        if (v31)
+        name = [v30 name];
+        v32 = name;
+        if (name)
         {
-          v33 = v31;
+          v33 = name;
         }
 
         else
@@ -115,8 +115,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v34 = [(PGCurationSetTrait *)v47->_peopleTrait negativeItems];
-  v35 = [v34 sortedArrayUsingDescriptors:v51];
+  negativeItems2 = [(PGCurationSetTrait *)selfCopy->_peopleTrait negativeItems];
+  v35 = [negativeItems2 sortedArrayUsingDescriptors:v51];
 
   v36 = [v35 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v36)
@@ -134,11 +134,11 @@
 
         v40 = *(*(&v52 + 1) + 8 * k);
         v41 = [v12 objectForKeyedSubscript:v40];
-        v42 = [v41 name];
-        v43 = v42;
-        if (v42)
+        name2 = [v41 name];
+        v43 = name2;
+        if (name2)
         {
-          v44 = v42;
+          v44 = name2;
         }
 
         else
@@ -160,32 +160,32 @@
   return v22;
 }
 
-- (id)niceDescriptionWithGraph:(id)a3
+- (id)niceDescriptionWithGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = v5;
+  graphCopy = graph;
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = string;
   if (self->_minimumAssetsRatio > 0.0)
   {
-    [v5 appendFormat:@"minimumAssetsRatio = %f\n", *&self->_minimumAssetsRatio];
+    [string appendFormat:@"minimumAssetsRatio = %f\n", *&self->_minimumAssetsRatio];
   }
 
   if ([(PGCurationSceneTrait *)self->_compulsoryScenesTrait isActive])
   {
-    v7 = [(PGCurationTrait *)self->_compulsoryScenesTrait niceDescription];
-    [v6 appendFormat:@"compulsoryScenes = %@\n", v7];
+    niceDescription = [(PGCurationTrait *)self->_compulsoryScenesTrait niceDescription];
+    [v6 appendFormat:@"compulsoryScenes = %@\n", niceDescription];
   }
 
   if ([(PGCurationSceneTrait *)self->_scenesTrait isActive])
   {
-    v8 = [(PGCurationTrait *)self->_scenesTrait niceDescription];
-    [v6 appendFormat:@"scenes = %@\n", v8];
+    niceDescription2 = [(PGCurationTrait *)self->_scenesTrait niceDescription];
+    [v6 appendFormat:@"scenes = %@\n", niceDescription2];
   }
 
   if ([(PGCurationPartOfDayTrait *)self->_partOfDayTrait isActive])
   {
-    v9 = [(PGCurationPartOfDayTrait *)self->_partOfDayTrait niceDescription];
-    [v6 appendFormat:@"partOfDay = %@\n", v9];
+    niceDescription3 = [(PGCurationPartOfDayTrait *)self->_partOfDayTrait niceDescription];
+    [v6 appendFormat:@"partOfDay = %@\n", niceDescription3];
   }
 
   faceFilter = self->_faceFilter;
@@ -206,14 +206,14 @@
 
   if ([(PGCurationSetTrait *)self->_peopleTrait isActive])
   {
-    v12 = [(PGCurationCriteria *)self peopleTraitStringWithGraph:v4];
+    v12 = [(PGCurationCriteria *)self peopleTraitStringWithGraph:graphCopy];
     [v6 appendFormat:@"people = %@\n", v12];
   }
 
   if ([(PGCurationSetTrait *)self->_socialGroupTrait isActive])
   {
-    v13 = [(PGCurationTrait *)self->_socialGroupTrait niceDescription];
-    [v6 appendFormat:@"socialGroup = %@\n", v13];
+    niceDescription4 = [(PGCurationTrait *)self->_socialGroupTrait niceDescription];
+    [v6 appendFormat:@"socialGroup = %@\n", niceDescription4];
   }
 
   if ([(PGCurationContentOrAestheticScoreTrait *)self->_contentOrAestheticScoreTrait isActive])
@@ -232,17 +232,17 @@
   return v6;
 }
 
-- (double)_scoreForSceneClassifications:(id)a3 withSDFoodTrait:(id)a4 curationModel:(id)a5 traitFailed:(BOOL *)a6
+- (double)_scoreForSceneClassifications:(id)classifications withSDFoodTrait:(id)trait curationModel:(id)model traitFailed:(BOOL *)failed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  *a6 = 1;
+  classificationsCopy = classifications;
+  modelCopy = model;
+  *failed = 1;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
+  v10 = classificationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   v12 = 0.0;
   if (v11)
@@ -261,14 +261,14 @@
         v16 = *(*(&v22 + 1) + 8 * i);
         if ([v16 extendedSceneIdentifier] == 2147482622)
         {
-          v17 = [v9 sdModel];
-          v18 = [v17 foodDrinkNode];
+          sdModel = [modelCopy sdModel];
+          foodDrinkNode = [sdModel foodDrinkNode];
           [v16 confidence];
-          v19 = [v18 passesWithConfidence:?];
+          v19 = [foodDrinkNode passesWithConfidence:?];
 
           if (v19)
           {
-            *a6 = 0;
+            *failed = 0;
             v12 = 1.0;
           }
 
@@ -292,28 +292,28 @@ LABEL_12:
   return v12;
 }
 
-- (double)_scoreForSceneClassifications:(id)a3 withScenesTrait:(id)a4 curationModel:(id)a5 traitFailed:(BOOL *)a6
+- (double)_scoreForSceneClassifications:(id)classifications withScenesTrait:(id)trait curationModel:(id)model traitFailed:(BOOL *)failed
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 sceneNames];
-  v13 = [v12 count];
+  classificationsCopy = classifications;
+  traitCopy = trait;
+  modelCopy = model;
+  sceneNames = [traitCopy sceneNames];
+  v13 = [sceneNames count];
   if (v13)
   {
     v14 = v13;
-    v42 = v12;
-    v43 = v11;
-    v44 = a6;
-    v45 = v10;
-    v15 = [v10 confidenceThresholdBySceneIdentifierWithCurationModel:v11];
+    v42 = sceneNames;
+    v43 = modelCopy;
+    failedCopy = failed;
+    v45 = traitCopy;
+    v15 = [traitCopy confidenceThresholdBySceneIdentifierWithCurationModel:modelCopy];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v46 = v9;
-    v16 = v9;
+    v46 = classificationsCopy;
+    v16 = classificationsCopy;
     v17 = [v16 countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v17)
     {
@@ -330,8 +330,8 @@ LABEL_12:
           }
 
           v22 = *(*(&v47 + 1) + 8 * i);
-          v23 = [v22 extendedSceneIdentifier];
-          v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v23];
+          extendedSceneIdentifier = [v22 extendedSceneIdentifier];
+          v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:extendedSceneIdentifier];
           v25 = [v15 objectForKeyedSubscript:v24];
 
           if (v25)
@@ -369,11 +369,11 @@ LABEL_12:
 
 LABEL_17:
 
-    v10 = v45;
-    v30 = [v45 targetNumberOfMatches];
-    if (v30)
+    traitCopy = v45;
+    targetNumberOfMatches = [v45 targetNumberOfMatches];
+    if (targetNumberOfMatches)
     {
-      v31 = v30;
+      v31 = targetNumberOfMatches;
     }
 
     else
@@ -384,9 +384,9 @@ LABEL_17:
     v32 = v31;
     [v45 minimumScore];
     v34 = v33;
-    v35 = [v45 isMatchingRequired];
+    isMatchingRequired = [v45 isMatchingRequired];
     v36 = v19 / v32;
-    if (v35)
+    if (isMatchingRequired)
     {
       v37 = v34;
     }
@@ -397,7 +397,7 @@ LABEL_17:
     }
 
     v38 = fmin(v36 / v37, 1.0);
-    v39 = v35 & (v36 < v34);
+    v39 = isMatchingRequired & (v36 < v34);
     if (v39)
     {
       v29 = 0.0;
@@ -408,14 +408,14 @@ LABEL_17:
       v29 = v38;
     }
 
-    if (v44)
+    if (failedCopy)
     {
-      *v44 &= v39;
+      *failedCopy &= v39;
     }
 
-    v9 = v46;
-    v12 = v42;
-    v11 = v43;
+    classificationsCopy = v46;
+    sceneNames = v42;
+    modelCopy = v43;
   }
 
   else
@@ -427,12 +427,12 @@ LABEL_17:
   return v29;
 }
 
-- (BOOL)_passesForItem:(id)a3 score:(double *)a4 graph:(id)a5 reasonString:(id *)a6
+- (BOOL)_passesForItem:(id)item score:(double *)score graph:(id)graph reasonString:(id *)string
 {
-  v10 = a3;
-  v11 = a5;
+  itemCopy = item;
+  graphCopy = graph;
   v79 = 0;
-  if (a6)
+  if (string)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCAB68]);
   }
@@ -444,13 +444,13 @@ LABEL_17:
 
   if (self->_filterUtilityAssets)
   {
-    [v10 clsContentScore];
+    [itemCopy clsContentScore];
     v14 = v13 < *MEMORY[0x277D3C768];
     v79 = v14;
     if (v14)
     {
       [v12 appendString:@"FAILED: item is utility\n"];
-      v15 = 0;
+      clsSceneClassifications = 0;
       v16 = 0.0;
       goto LABEL_64;
     }
@@ -458,16 +458,16 @@ LABEL_17:
 
   if ([(PGCurationSceneTrait *)self->_compulsoryScenesTrait isActive])
   {
-    v15 = [v10 clsSceneClassifications];
+    clsSceneClassifications = [itemCopy clsSceneClassifications];
     compulsoryScenesTrait = self->_compulsoryScenesTrait;
-    v18 = [v10 curationModel];
-    [(PGCurationCriteria *)self _scoreForSceneClassifications:v15 withScenesTrait:compulsoryScenesTrait curationModel:v18 traitFailed:&v79];
+    curationModel = [itemCopy curationModel];
+    [(PGCurationCriteria *)self _scoreForSceneClassifications:clsSceneClassifications withScenesTrait:compulsoryScenesTrait curationModel:curationModel traitFailed:&v79];
 
     v19 = v79;
     if (v79)
     {
-      v20 = [(PGCurationTrait *)self->_compulsoryScenesTrait niceDescription];
-      [v12 appendFormat:@"FAILED: missing compulsory scenes %@", v20];
+      niceDescription = [(PGCurationTrait *)self->_compulsoryScenesTrait niceDescription];
+      [v12 appendFormat:@"FAILED: missing compulsory scenes %@", niceDescription];
 
       v19 = v79;
     }
@@ -475,25 +475,25 @@ LABEL_17:
     v16 = 0.0;
     if (!v19 && [(PGCurationSceneTrait *)self->_scenesTrait isActive])
     {
-      if (v15)
+      if (clsSceneClassifications)
       {
 LABEL_17:
         scenesTrait = self->_scenesTrait;
-        v22 = [v10 curationModel];
-        [(PGCurationCriteria *)self _scoreForSceneClassifications:v15 withScenesTrait:scenesTrait curationModel:v22 traitFailed:&v79];
+        curationModel2 = [itemCopy curationModel];
+        [(PGCurationCriteria *)self _scoreForSceneClassifications:clsSceneClassifications withScenesTrait:scenesTrait curationModel:curationModel2 traitFailed:&v79];
         v24 = v23;
 
         v25 = v79;
-        v26 = [(PGCurationTrait *)self->_scenesTrait niceDescription];
-        v27 = v26;
+        niceDescription2 = [(PGCurationTrait *)self->_scenesTrait niceDescription];
+        v27 = niceDescription2;
         if (v25)
         {
-          [v12 appendFormat:@"FAILED: missing scenes %@", v26, v71];
+          [v12 appendFormat:@"FAILED: missing scenes %@", niceDescription2, v71];
         }
 
         else
         {
-          [v12 appendFormat:@" - scored %f on scenes %@\n", *&v24, v26];
+          [v12 appendFormat:@" - scored %f on scenes %@\n", *&v24, niceDescription2];
         }
 
         v16 = v24 + 0.0;
@@ -503,7 +503,7 @@ LABEL_17:
       }
 
 LABEL_16:
-      v15 = [v10 clsSceneClassifications];
+      clsSceneClassifications = [itemCopy clsSceneClassifications];
       goto LABEL_17;
     }
 
@@ -517,7 +517,7 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v15 = 0;
+    clsSceneClassifications = 0;
     v28 = 0;
     v16 = 0.0;
   }
@@ -530,17 +530,17 @@ LABEL_23:
 
   if ([(PGCurationPartOfDayTrait *)self->_partOfDayTrait isActive])
   {
-    v29 = [MEMORY[0x277D27758] partOfDayForItem:v10];
+    v29 = [MEMORY[0x277D27758] partOfDayForItem:itemCopy];
     if (v29)
     {
-      v76 = v11;
-      v30 = [(PGCurationPartOfDayTrait *)self->_partOfDayTrait value];
+      v76 = graphCopy;
+      value = [(PGCurationPartOfDayTrait *)self->_partOfDayTrait value];
       v31 = [PGGraphPartOfDayNode partOfDayForPartOfDayName:v29];
       if (v31 != 1)
       {
         v32 = v31;
-        v74 = v31 & v30;
-        v33 = [(PGCurationTrait *)self->_partOfDayTrait isMatchingRequired];
+        v74 = v31 & value;
+        isMatchingRequired = [(PGCurationTrait *)self->_partOfDayTrait isMatchingRequired];
         if (v32 == v74)
         {
           v34 = 1.0;
@@ -551,10 +551,10 @@ LABEL_23:
           v34 = 0.0;
         }
 
-        v35 = v32 != v74 && v33;
+        v35 = v32 != v74 && isMatchingRequired;
         v79 = v35;
         ++v28;
-        v36 = [PGGraphPartOfDayNode stringValueForPartOfDay:v30];
+        v36 = [PGGraphPartOfDayNode stringValueForPartOfDay:value];
         v37 = v36;
         if (v35)
         {
@@ -566,7 +566,7 @@ LABEL_23:
           [v12 appendFormat:@" - scored %f on part of day (%@, expected %@)\n", *&v34, v29, v36];
         }
 
-        v11 = v76;
+        graphCopy = v76;
         v16 = v16 + v34;
       }
     }
@@ -579,12 +579,12 @@ LABEL_23:
 
   if ([(PGCurationSetTrait *)self->_peopleTrait isActive])
   {
-    v77 = v11;
-    v38 = [v10 clsPersonAndPetLocalIdentifiers];
-    v39 = [(PGCurationSetTrait *)self->_peopleTrait items];
-    v75 = v38;
-    v40 = [MEMORY[0x277CBEB58] setWithArray:v38];
-    [v40 intersectSet:v39];
+    v77 = graphCopy;
+    clsPersonAndPetLocalIdentifiers = [itemCopy clsPersonAndPetLocalIdentifiers];
+    items = [(PGCurationSetTrait *)self->_peopleTrait items];
+    v75 = clsPersonAndPetLocalIdentifiers;
+    v40 = [MEMORY[0x277CBEB58] setWithArray:clsPersonAndPetLocalIdentifiers];
+    [v40 intersectSet:items];
     if (v12)
     {
       v73 = [(PGCurationCriteria *)self peopleTraitStringWithGraph:v77];
@@ -595,7 +595,7 @@ LABEL_23:
       v73 = 0;
     }
 
-    if ([v40 isEqualToSet:v39])
+    if ([v40 isEqualToSet:items])
     {
       v41 = [MEMORY[0x277CBEB58] setWithArray:v75];
       [v41 minusSet:v40];
@@ -630,7 +630,7 @@ LABEL_23:
       [v12 appendFormat:@"FAILED: not matching people %@", v73];
     }
 
-    v11 = v77;
+    graphCopy = v77;
   }
 
   if (v79)
@@ -641,26 +641,26 @@ LABEL_23:
   if ([(PGCurationSetTrait *)self->_socialGroupTrait isActive])
   {
     v46 = MEMORY[0x277CBEB58];
-    v47 = [v10 clsPersonAndPetLocalIdentifiers];
-    v48 = [v46 setWithArray:v47];
+    clsPersonAndPetLocalIdentifiers2 = [itemCopy clsPersonAndPetLocalIdentifiers];
+    v48 = [v46 setWithArray:clsPersonAndPetLocalIdentifiers2];
 
-    v49 = [(PGCurationSetTrait *)self->_socialGroupTrait items];
-    [v48 intersectSet:v49];
+    items2 = [(PGCurationSetTrait *)self->_socialGroupTrait items];
+    [v48 intersectSet:items2];
     v50 = [v48 count];
     if (v50)
     {
       ++v28;
-      v16 = v16 + v50 / [v49 count];
+      v16 = v16 + v50 / [items2 count];
     }
 
     else
     {
       v79 = 1;
       [(PGCurationTrait *)self->_socialGroupTrait niceDescription];
-      v51 = v78 = v11;
+      v51 = v78 = graphCopy;
       [v12 appendFormat:@"FAILED: not matching any people from social group %@", v51];
 
-      v11 = v78;
+      graphCopy = v78;
     }
   }
 
@@ -680,14 +680,14 @@ LABEL_73:
     goto LABEL_74;
   }
 
-  [v10 clsContentScore];
+  [itemCopy clsContentScore];
   v56 = v55;
   [(PGCurationTrait *)self->_contentOrAestheticScoreTrait minimumScore];
   v79 = v56 < v57;
   if (v56 < v57)
   {
     v58 = v57;
-    [v10 clsAestheticScore];
+    [itemCopy clsAestheticScore];
     v60 = v59;
     [(PGCurationContentOrAestheticScoreTrait *)self->_contentOrAestheticScoreTrait minimumAestheticScore];
     v79 = v60 < v61;
@@ -701,7 +701,7 @@ LABEL_73:
 LABEL_74:
   if ([(PGCurationCropScoreTrait *)self->_cropScoreTrait isActive])
   {
-    [v10 clsSquareCropScore];
+    [itemCopy clsSquareCropScore];
     v63 = v62;
     [(PGCurationCropScoreTrait *)self->_cropScoreTrait minimumSquareCropScore];
     v79 = v63 < v64;
@@ -718,28 +718,28 @@ LABEL_74:
 LABEL_78:
     if ([(PGCurationSDFoodTrait *)self->_sdFoodTrait isActive])
     {
-      if (!v15)
+      if (!clsSceneClassifications)
       {
-        v15 = [v10 clsSceneClassifications];
+        clsSceneClassifications = [itemCopy clsSceneClassifications];
       }
 
       sdFoodTrait = self->_sdFoodTrait;
-      v66 = [v10 curationModel];
-      [(PGCurationCriteria *)self _scoreForSceneClassifications:v15 withSDFoodTrait:sdFoodTrait curationModel:v66 traitFailed:&v79];
+      curationModel3 = [itemCopy curationModel];
+      [(PGCurationCriteria *)self _scoreForSceneClassifications:clsSceneClassifications withSDFoodTrait:sdFoodTrait curationModel:curationModel3 traitFailed:&v79];
       v68 = v67;
 
       ++v28;
       LODWORD(sdFoodTrait) = v79;
-      v69 = [(PGCurationTrait *)self->_sdFoodTrait niceDescription];
-      v70 = v69;
+      niceDescription3 = [(PGCurationTrait *)self->_sdFoodTrait niceDescription];
+      v70 = niceDescription3;
       if (sdFoodTrait == 1)
       {
-        [v12 appendFormat:@"FAILED: missing SD food classification %@", v69, v71];
+        [v12 appendFormat:@"FAILED: missing SD food classification %@", niceDescription3, v71];
       }
 
       else
       {
-        [v12 appendFormat:@" - scored %f on SD food %@\n", *&v68, v69];
+        [v12 appendFormat:@" - scored %f on SD food %@\n", *&v68, niceDescription3];
       }
 
       v16 = v16 + v68;
@@ -763,15 +763,15 @@ LABEL_59:
   }
 
 LABEL_64:
-  if (a4)
+  if (score)
   {
-    *a4 = v16;
+    *score = v16;
   }
 
-  if (a6)
+  if (string)
   {
     v52 = v12;
-    *a6 = v12;
+    *string = v12;
   }
 
   v53 = !v79;
@@ -779,16 +779,16 @@ LABEL_64:
   return v53;
 }
 
-- (id)passingAssetsInAssets:(id)a3
+- (id)passingAssetsInAssets:(id)assets
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -821,32 +821,32 @@ LABEL_64:
   return v5;
 }
 
-- (BOOL)isPassingForAsset:(id)a3 score:(double *)a4
+- (BOOL)isPassingForAsset:(id)asset score:(double *)score
 {
-  v6 = a3;
-  v7 = v6;
+  assetCopy = asset;
+  v7 = assetCopy;
   v8 = 0;
   v31 = 0;
   if (self->_filterUtilityAssets)
   {
-    [v6 clsContentScore];
+    [assetCopy clsContentScore];
     v8 = v9 < *MEMORY[0x277D3C768];
     v31 = v9 < *MEMORY[0x277D3C768];
   }
 
   if ([(PGCurationSceneTrait *)self->_compulsoryScenesTrait isActive])
   {
-    v10 = [v7 clsSceneClassifications];
+    clsSceneClassifications = [v7 clsSceneClassifications];
     compulsoryScenesTrait = self->_compulsoryScenesTrait;
-    v12 = [v7 curationModel];
-    [(PGCurationCriteria *)self _scoreForSceneClassifications:v10 withScenesTrait:compulsoryScenesTrait curationModel:v12 traitFailed:&v31];
+    curationModel = [v7 curationModel];
+    [(PGCurationCriteria *)self _scoreForSceneClassifications:clsSceneClassifications withScenesTrait:compulsoryScenesTrait curationModel:curationModel traitFailed:&v31];
 
     v8 = v31;
   }
 
   else
   {
-    v10 = 0;
+    clsSceneClassifications = 0;
   }
 
   v13 = 0.0;
@@ -854,14 +854,14 @@ LABEL_64:
   {
     if ([(PGCurationSceneTrait *)self->_scenesTrait isActive])
     {
-      if (!v10)
+      if (!clsSceneClassifications)
       {
-        v10 = [v7 clsSceneClassifications];
+        clsSceneClassifications = [v7 clsSceneClassifications];
       }
 
       scenesTrait = self->_scenesTrait;
-      v15 = [v7 curationModel];
-      [(PGCurationCriteria *)self _scoreForSceneClassifications:v10 withScenesTrait:scenesTrait curationModel:v15 traitFailed:&v31];
+      curationModel2 = [v7 curationModel];
+      [(PGCurationCriteria *)self _scoreForSceneClassifications:clsSceneClassifications withScenesTrait:scenesTrait curationModel:curationModel2 traitFailed:&v31];
       v17 = v16;
 
       v13 = v17 + 0.0;
@@ -883,11 +883,11 @@ LABEL_64:
       v19 = [MEMORY[0x277D27758] partOfDayForItem:v7];
       if (v19)
       {
-        v20 = [(PGCurationPartOfDayTrait *)self->_partOfDayTrait value];
+        value = [(PGCurationPartOfDayTrait *)self->_partOfDayTrait value];
         v21 = [PGGraphPartOfDayNode partOfDayForPartOfDayName:v19];
         if (v21 != 1)
         {
-          if ((v21 & ~v20) != 0)
+          if ((v21 & ~value) != 0)
           {
             v22 = 0.0;
           }
@@ -898,8 +898,8 @@ LABEL_64:
           }
 
           v13 = v13 + v22;
-          v23 = [(PGCurationTrait *)self->_partOfDayTrait isMatchingRequired];
-          v24 = v22 == 0.0 && v23;
+          isMatchingRequired = [(PGCurationTrait *)self->_partOfDayTrait isMatchingRequired];
+          v24 = v22 == 0.0 && isMatchingRequired;
           v31 |= v24;
           ++v18;
         }
@@ -917,14 +917,14 @@ LABEL_29:
 
     else
     {
-      if (!v10)
+      if (!clsSceneClassifications)
       {
-        v10 = [v7 clsSceneClassifications];
+        clsSceneClassifications = [v7 clsSceneClassifications];
       }
 
       sdFoodTrait = self->_sdFoodTrait;
-      v26 = [v7 curationModel];
-      [(PGCurationCriteria *)self _scoreForSceneClassifications:v10 withSDFoodTrait:sdFoodTrait curationModel:v26 traitFailed:&v31];
+      curationModel3 = [v7 curationModel];
+      [(PGCurationCriteria *)self _scoreForSceneClassifications:clsSceneClassifications withSDFoodTrait:sdFoodTrait curationModel:curationModel3 traitFailed:&v31];
       v28 = v27;
 
       v13 = v13 + v28;
@@ -946,25 +946,25 @@ LABEL_31:
   }
 
   v31 = v29;
-  if (a4)
+  if (score)
   {
-    *a4 = v13;
+    *score = v13;
   }
 
   return v29 ^ 1;
 }
 
-- (PGCurationCriteria)initWithMinimumAssetsRatio:(double)a3 client:(unint64_t)a4
+- (PGCurationCriteria)initWithMinimumAssetsRatio:(double)ratio client:(unint64_t)client
 {
   v7.receiver = self;
   v7.super_class = PGCurationCriteria;
   result = [(PGCurationCriteria *)&v7 init];
   if (result)
   {
-    result->_minimumAssetsRatio = a3;
+    result->_minimumAssetsRatio = ratio;
     result->_faceFilter = 1;
     result->_filterUtilityAssets = 1;
-    result->_client = a4;
+    result->_client = client;
   }
 
   return result;

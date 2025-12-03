@@ -1,15 +1,15 @@
 @interface SBSRemoteAlertHandleXPCClient
 - (SBSRemoteAlertHandleXPCClient)init;
 - (id)_connection;
-- (id)createRemoteAlertHandleWithDefinition:(id)a3 configurationContext:(id)a4;
-- (id)remoteAlertHandlesForDefinition:(id)a3 allowsCreation:(BOOL)a4 configurationContext:(id)a5;
-- (void)_handleError:(id)a3;
-- (void)_invalidateHandleForHandleID:(id)a3 withError:(id)a4;
-- (void)activateRemoteAlertHandle:(id)a3 withContext:(id)a4;
-- (void)invalidateRemoteAlertHandle:(id)a3;
-- (void)remoteAlertHandleWithID:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleWithIDDidActivate:(id)a3;
-- (void)remoteAlertHandleWithIDDidDeactivate:(id)a3;
+- (id)createRemoteAlertHandleWithDefinition:(id)definition configurationContext:(id)context;
+- (id)remoteAlertHandlesForDefinition:(id)definition allowsCreation:(BOOL)creation configurationContext:(id)context;
+- (void)_handleError:(id)error;
+- (void)_invalidateHandleForHandleID:(id)d withError:(id)error;
+- (void)activateRemoteAlertHandle:(id)handle withContext:(id)context;
+- (void)invalidateRemoteAlertHandle:(id)handle;
+- (void)remoteAlertHandleWithID:(id)d didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleWithIDDidActivate:(id)activate;
+- (void)remoteAlertHandleWithIDDidDeactivate:(id)deactivate;
 @end
 
 @implementation SBSRemoteAlertHandleXPCClient
@@ -33,43 +33,43 @@
   return v2;
 }
 
-- (void)remoteAlertHandleWithIDDidActivate:(id)a3
+- (void)remoteAlertHandleWithIDDidActivate:(id)activate
 {
-  if (a3)
+  if (activate)
   {
     v3 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:?];
     [v3 _didActivate];
   }
 }
 
-- (void)remoteAlertHandleWithIDDidDeactivate:(id)a3
+- (void)remoteAlertHandleWithIDDidDeactivate:(id)deactivate
 {
-  if (a3)
+  if (deactivate)
   {
     v3 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:?];
     [v3 _didDeactivate];
   }
 }
 
-- (void)remoteAlertHandleWithID:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandleWithID:(id)d didInvalidateWithError:(id)error
 {
-  if (a3)
+  if (d)
   {
-    [(SBSRemoteAlertHandleXPCClient *)self _invalidateHandleForHandleID:a3 withError:a4];
+    [(SBSRemoteAlertHandleXPCClient *)self _invalidateHandleForHandleID:d withError:error];
   }
 }
 
-- (id)remoteAlertHandlesForDefinition:(id)a3 allowsCreation:(BOOL)a4 configurationContext:(id)a5
+- (id)remoteAlertHandlesForDefinition:(id)definition allowsCreation:(BOOL)creation configurationContext:(id)context
 {
-  v6 = a4;
+  creationCopy = creation;
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBSRemoteAlertHandleXPCClient *)self _connection];
-  v11 = [v10 remoteTarget];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-  v28 = v8;
-  v13 = [v11 remoteAlertHandleContextsForDefinition:v8 allowsCreationValue:v12 configurationContext:v9];
+  definitionCopy = definition;
+  contextCopy = context;
+  _connection = [(SBSRemoteAlertHandleXPCClient *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:creationCopy];
+  v28 = definitionCopy;
+  v13 = [remoteTarget remoteAlertHandleContextsForDefinition:definitionCopy allowsCreationValue:v12 configurationContext:contextCopy];
 
   v31 = 0u;
   v32 = 0u;
@@ -97,10 +97,10 @@
       }
 
       v20 = *(*(&v29 + 1) + 8 * v19);
-      v21 = [v20 handleID];
-      if ([v21 length])
+      handleID = [v20 handleID];
+      if ([handleID length])
       {
-        v22 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:v21];
+        v22 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:handleID];
         if (v22)
         {
           if (v17)
@@ -114,7 +114,7 @@ LABEL_9:
 
         else
         {
-          v22 = [[SBSRemoteAlertHandle alloc] _initWithHandleID:v21 handleClient:self];
+          v22 = [[SBSRemoteAlertHandle alloc] _initWithHandleID:handleID handleClient:self];
           if ([v20 isActive])
           {
             [v22 _didActivate];
@@ -130,7 +130,7 @@ LABEL_9:
             handleIDToHandle = self->_handleIDToHandle;
           }
 
-          [(NSMutableDictionary *)handleIDToHandle setObject:v22 forKey:v21];
+          [(NSMutableDictionary *)handleIDToHandle setObject:v22 forKey:handleID];
           if (v17)
           {
             goto LABEL_9;
@@ -157,21 +157,21 @@ LABEL_21:
   return v17;
 }
 
-- (id)createRemoteAlertHandleWithDefinition:(id)a3 configurationContext:(id)a4
+- (id)createRemoteAlertHandleWithDefinition:(id)definition configurationContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSRemoteAlertHandleXPCClient *)self _connection];
-  v9 = [v8 remoteTarget];
-  v10 = [v9 createRemoteAlertHandleContextWithDefinition:v7 configurationContext:v6];
+  contextCopy = context;
+  definitionCopy = definition;
+  _connection = [(SBSRemoteAlertHandleXPCClient *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  v10 = [remoteTarget createRemoteAlertHandleContextWithDefinition:definitionCopy configurationContext:contextCopy];
 
-  v11 = [v10 handleID];
-  if ([v11 length])
+  handleID = [v10 handleID];
+  if ([handleID length])
   {
-    v12 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:v11];
+    v12 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:handleID];
     if (!v12)
     {
-      v12 = [[SBSRemoteAlertHandle alloc] _initWithHandleID:v11 handleClient:self];
+      v12 = [[SBSRemoteAlertHandle alloc] _initWithHandleID:handleID handleClient:self];
       if ([v10 isActive])
       {
         [v12 _didActivate];
@@ -187,7 +187,7 @@ LABEL_21:
         handleIDToHandle = self->_handleIDToHandle;
       }
 
-      [(NSMutableDictionary *)handleIDToHandle setObject:v12 forKey:v11];
+      [(NSMutableDictionary *)handleIDToHandle setObject:v12 forKey:handleID];
     }
   }
 
@@ -199,29 +199,29 @@ LABEL_21:
   return v12;
 }
 
-- (void)activateRemoteAlertHandle:(id)a3 withContext:(id)a4
+- (void)activateRemoteAlertHandle:(id)handle withContext:(id)context
 {
-  v9 = a4;
-  v6 = [a3 handleID];
-  if (v6)
+  contextCopy = context;
+  handleID = [handle handleID];
+  if (handleID)
   {
-    v7 = [(SBSRemoteAlertHandleXPCClient *)self _connection];
-    v8 = [v7 remoteTarget];
-    [v8 activateRemoteAlertHandleWithID:v6 activationContext:v9];
+    _connection = [(SBSRemoteAlertHandleXPCClient *)self _connection];
+    remoteTarget = [_connection remoteTarget];
+    [remoteTarget activateRemoteAlertHandleWithID:handleID activationContext:contextCopy];
   }
 }
 
-- (void)invalidateRemoteAlertHandle:(id)a3
+- (void)invalidateRemoteAlertHandle:(id)handle
 {
-  v4 = [a3 handleID];
-  if (v4)
+  handleID = [handle handleID];
+  if (handleID)
   {
-    v7 = v4;
-    v5 = [(SBSRemoteAlertHandleXPCClient *)self _connection];
-    v6 = [v5 remoteTarget];
-    [v6 invalidateRemoteAlertHandleWithID:v7];
+    v7 = handleID;
+    _connection = [(SBSRemoteAlertHandleXPCClient *)self _connection];
+    remoteTarget = [_connection remoteTarget];
+    [remoteTarget invalidateRemoteAlertHandleWithID:v7];
 
-    v4 = v7;
+    handleID = v7;
   }
 }
 
@@ -361,17 +361,17 @@ uint64_t __44__SBSRemoteAlertHandleXPCClient__connection__block_invoke_6(uint64_
   return result;
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
   v6 = SBSRemoteAlertHandleInvalidationErrorDescription(2uLL);
   [v5 setObject:v6 forKey:*MEMORY[0x1E696A578]];
 
-  if (v4)
+  if (errorCopy)
   {
-    [v5 setObject:v4 forKey:*MEMORY[0x1E696AA08]];
+    [v5 setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
   }
 
   v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SBSRemoteAlertHandleInvalidationErrorDomain" code:2 userInfo:v5];
@@ -406,16 +406,16 @@ uint64_t __44__SBSRemoteAlertHandleXPCClient__connection__block_invoke_6(uint64_
   }
 }
 
-- (void)_invalidateHandleForHandleID:(id)a3 withError:(id)a4
+- (void)_invalidateHandleForHandleID:(id)d withError:(id)error
 {
   calloutQueue = self->_calloutQueue;
-  v7 = a4;
-  v8 = a3;
+  errorCopy = error;
+  dCopy = d;
   dispatch_assert_queue_V2(calloutQueue);
-  v10 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:v8];
-  [v10 _receivedInvalidationWithError:v7];
+  v10 = [(NSMutableDictionary *)self->_handleIDToHandle objectForKey:dCopy];
+  [v10 _receivedInvalidationWithError:errorCopy];
 
-  [(NSMutableDictionary *)self->_handleIDToHandle removeObjectForKey:v8];
+  [(NSMutableDictionary *)self->_handleIDToHandle removeObjectForKey:dCopy];
   if (![(NSMutableDictionary *)self->_handleIDToHandle count])
   {
     handleIDToHandle = self->_handleIDToHandle;

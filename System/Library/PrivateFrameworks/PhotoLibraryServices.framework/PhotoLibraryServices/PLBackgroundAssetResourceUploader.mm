@@ -1,18 +1,18 @@
 @interface PLBackgroundAssetResourceUploader
-+ (id)descriptionForTaskState:(int64_t)a3;
-- (BOOL)handleTaskCompletionWithResponse:(id)a3 jobUUID:(id)a4 error:(id)a5;
-- (BOOL)updateJobWithUUID:(id)a3 withState:(signed __int16)a4 inLibrary:(id)a5;
++ (id)descriptionForTaskState:(int64_t)state;
+- (BOOL)handleTaskCompletionWithResponse:(id)response jobUUID:(id)d error:(id)error;
+- (BOOL)updateJobWithUUID:(id)d withState:(signed __int16)state inLibrary:(id)library;
 - (OS_dispatch_queue)queue;
 - (PLPhotoLibraryFactory)photoLibraryFactory;
-- (id)fetchJobWithUUID:(id)a3 in:(id)a4;
-- (id)fetchPendingJobsForBundleID:(id)a3 in:(id)a4;
-- (id)makeLocallyAvailableWithResource:(id)a3 jobUUID:(id)a4 bundleID:(id)a5 library:(id)a6 completionHandler:(id)a7;
-- (id)urlSessionForBundleID:(id)a3;
-- (void)networkStatusForBundleID:(id)a3 withLevel:(int64_t)a4 completionHandler:(id)a5;
-- (void)uploadFileWithURL:(id)a3 jobUUID:(id)a4 bundleID:(id)a5 request:(id)a6;
-- (void)verifyJobConsistencyWithCompletionHandler:(id)a3;
-- (void)verifyJobsForBundleIDs:(id)a3 completion:(id)a4;
-- (void)verifyJobsForSession:(id)a3 bundleID:(id)a4 :(id)a5;
+- (id)fetchJobWithUUID:(id)d in:(id)in;
+- (id)fetchPendingJobsForBundleID:(id)d in:(id)in;
+- (id)makeLocallyAvailableWithResource:(id)resource jobUUID:(id)d bundleID:(id)iD library:(id)library completionHandler:(id)handler;
+- (id)urlSessionForBundleID:(id)d;
+- (void)networkStatusForBundleID:(id)d withLevel:(int64_t)level completionHandler:(id)handler;
+- (void)uploadFileWithURL:(id)l jobUUID:(id)d bundleID:(id)iD request:(id)request;
+- (void)verifyJobConsistencyWithCompletionHandler:(id)handler;
+- (void)verifyJobsForBundleIDs:(id)ds completion:(id)completion;
+- (void)verifyJobsForSession:(id)session bundleID:(id)d :(id)a5;
 @end
 
 @implementation PLBackgroundAssetResourceUploader
@@ -31,60 +31,60 @@
   return v2;
 }
 
-- (id)urlSessionForBundleID:(id)a3
+- (id)urlSessionForBundleID:(id)d
 {
   v4 = sub_19C5C45DC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_19BF31C94(v4, v6);
 
   return v8;
 }
 
-- (id)makeLocallyAvailableWithResource:(id)a3 jobUUID:(id)a4 bundleID:(id)a5 library:(id)a6 completionHandler:(id)a7
+- (id)makeLocallyAvailableWithResource:(id)resource jobUUID:(id)d bundleID:(id)iD library:(id)library completionHandler:(id)handler
 {
-  v10 = _Block_copy(a7);
+  v10 = _Block_copy(handler);
   v11 = sub_19C5C45DC();
   v13 = v12;
   v14 = sub_19C5C45DC();
   v16 = v15;
   v17 = swift_allocObject();
   *(v17 + 16) = v10;
-  v18 = a3;
-  v19 = a6;
-  v20 = self;
-  v21 = sub_19BF32708(v18, v11, v13, v14, v16, v19, sub_19BF3B288, v17);
+  resourceCopy = resource;
+  libraryCopy = library;
+  selfCopy = self;
+  v21 = sub_19BF32708(resourceCopy, v11, v13, v14, v16, libraryCopy, sub_19BF3B288, v17);
 
   return v21;
 }
 
-- (void)uploadFileWithURL:(id)a3 jobUUID:(id)a4 bundleID:(id)a5 request:(id)a6
+- (void)uploadFileWithURL:(id)l jobUUID:(id)d bundleID:(id)iD request:(id)request
 {
-  v20 = self;
+  selfCopy = self;
   v21 = sub_19C5C448C();
   v6 = *(v21 - 8);
   MEMORY[0x1EEE9AC00](v21);
-  v8 = &v20 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v8 = &selfCopy - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = sub_19C5C44DC();
   v10 = *(v9 - 8);
   MEMORY[0x1EEE9AC00](v9);
-  v12 = &v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v12 = &selfCopy - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19C5C44CC();
   v13 = sub_19C5C45DC();
   v15 = v14;
   v16 = sub_19C5C45DC();
   v18 = v17;
   sub_19C5C447C();
-  v19 = v20;
+  v19 = selfCopy;
   sub_19BF32F88(v12, v13, v15, v16, v18);
 
   (*(v6 + 8))(v8, v21);
   (*(v10 + 8))(v12, v9);
 }
 
-- (BOOL)handleTaskCompletionWithResponse:(id)a3 jobUUID:(id)a4 error:(id)a5
+- (BOOL)handleTaskCompletionWithResponse:(id)response jobUUID:(id)d error:(id)error
 {
-  if (a4)
+  if (d)
   {
     v8 = sub_19C5C45DC();
     v10 = v9;
@@ -96,63 +96,63 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
-  v14 = sub_19BF33950(a3, v8, v10, a5);
+  responseCopy = response;
+  errorCopy = error;
+  selfCopy = self;
+  v14 = sub_19BF33950(response, v8, v10, error);
 
   return v14 & 1;
 }
 
-- (void)verifyJobConsistencyWithCompletionHandler:(id)a3
+- (void)verifyJobConsistencyWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_19BF3405C(v5, v4);
+  selfCopy = self;
+  sub_19BF3405C(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (void)verifyJobsForBundleIDs:(id)a3 completion:(id)a4
+- (void)verifyJobsForBundleIDs:(id)ds completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_19C5C466C();
   _Block_copy(v5);
-  v7 = self;
-  sub_19BF3494C(v6, v7, v5);
+  selfCopy = self;
+  sub_19BF3494C(v6, selfCopy, v5);
   _Block_release(v5);
 }
 
-- (void)verifyJobsForSession:(id)a3 bundleID:(id)a4 :(id)a5
+- (void)verifyJobsForSession:(id)session bundleID:(id)d :(id)a5
 {
   v7 = _Block_copy(a5);
   v8 = sub_19C5C45DC();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a3;
-  v13 = self;
-  sub_19BF35000(v12, v8, v10, sub_19BF39770, v11);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_19BF35000(sessionCopy, v8, v10, sub_19BF39770, v11);
 }
 
-- (id)fetchJobWithUUID:(id)a3 in:(id)a4
+- (id)fetchJobWithUUID:(id)d in:(id)in
 {
   v6 = sub_19C5C45DC();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_19BF36AA0(v6, v8, v9);
+  inCopy = in;
+  selfCopy = self;
+  v11 = sub_19BF36AA0(v6, v8, inCopy);
 
   return v11;
 }
 
-- (id)fetchPendingJobsForBundleID:(id)a3 in:(id)a4
+- (id)fetchPendingJobsForBundleID:(id)d in:(id)in
 {
   v6 = sub_19C5C45DC();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_19BF36FFC(v6, v8, v9);
+  inCopy = in;
+  selfCopy = self;
+  v11 = sub_19BF36FFC(v6, v8, inCopy);
 
   if (v11)
   {
@@ -168,32 +168,32 @@
   return v12;
 }
 
-- (BOOL)updateJobWithUUID:(id)a3 withState:(signed __int16)a4 inLibrary:(id)a5
+- (BOOL)updateJobWithUUID:(id)d withState:(signed __int16)state inLibrary:(id)library
 {
   v8 = sub_19C5C45DC();
   v10 = v9;
-  v11 = a5;
-  v12 = self;
-  LOBYTE(a4) = sub_19BF3764C(v8, v10, a4, v11);
+  libraryCopy = library;
+  selfCopy = self;
+  LOBYTE(state) = sub_19BF3764C(v8, v10, state, libraryCopy);
 
-  return a4 & 1;
+  return state & 1;
 }
 
-- (void)networkStatusForBundleID:(id)a3 withLevel:(int64_t)a4 completionHandler:(id)a5
+- (void)networkStatusForBundleID:(id)d withLevel:(int64_t)level completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_19C5C45DC();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = self;
-  sub_19BF37934(v8, v10, a4, sub_19BF396E4, v11);
+  selfCopy = self;
+  sub_19BF37934(v8, v10, level, sub_19BF396E4, v11);
 }
 
-+ (id)descriptionForTaskState:(int64_t)a3
++ (id)descriptionForTaskState:(int64_t)state
 {
   swift_getObjCClassMetadata();
-  sub_19BF38B34(a3);
+  sub_19BF38B34(state);
   v4 = sub_19C5C45CC();
 
   return v4;

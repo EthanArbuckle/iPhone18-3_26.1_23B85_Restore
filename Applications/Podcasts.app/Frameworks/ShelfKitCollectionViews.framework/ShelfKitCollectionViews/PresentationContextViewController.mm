@@ -1,14 +1,14 @@
 @interface PresentationContextViewController
-- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PresentationContextViewController
 
-- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews33PresentationContextViewController_contextViewController) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews33PresentationContextViewController_flowController);
@@ -31,12 +31,12 @@
   v6.super_class = type metadata accessor for PresentationContextViewController();
   v2 = v6.receiver;
   [(PresentationContextViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v4 setBackgroundColor:clearColor];
   }
 
   else
@@ -45,13 +45,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PresentationContextViewController();
   v4 = v8.receiver;
-  [(PresentationContextViewController *)&v8 viewDidAppear:v3];
+  [(PresentationContextViewController *)&v8 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews33PresentationContextViewController_contextViewController];
   if (v5)
   {
@@ -61,10 +61,10 @@
   }
 }
 
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = _Block_copy(a4);
+  v4 = *&transition;
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -77,12 +77,12 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_2B0DD4(v4, v6, v7);
   sub_2B8D4(v6, v7);
 }
 
-- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews33PresentationContextViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

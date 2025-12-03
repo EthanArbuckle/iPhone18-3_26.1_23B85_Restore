@@ -1,10 +1,10 @@
 @interface EKEventSuggestedLocationDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)_promptForSpanWithSourceView:(id)a3 completionBlock:(id)a4;
-- (void)_saveEventWithSpan:(int64_t)a3;
-- (void)didTapAddSuggestedLocationCell:(id)a3 disambiguatedLocation:(id)a4;
-- (void)didTapDismissSuggestedLocationCell:(id)a3;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)_promptForSpanWithSourceView:(id)view completionBlock:(id)block;
+- (void)_saveEventWithSpan:(int64_t)span;
+- (void)didTapAddSuggestedLocationCell:(id)cell disambiguatedLocation:(id)location;
+- (void)didTapDismissSuggestedLocationCell:(id)cell;
 - (void)reset;
 @end
 
@@ -16,15 +16,15 @@
   self->_cell = 0;
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  if (MEMORY[0x1D38B98D0](self, a2, a3, a4, a5))
+  if (MEMORY[0x1D38B98D0](self, a2, event, calendar, preview))
   {
-    v6 = [(EKEvent *)self->super._event preferredLocation];
-    if ([v6 isStructured] && objc_msgSend(v6, "isPrediction"))
+    preferredLocation = [(EKEvent *)self->super._event preferredLocation];
+    if ([preferredLocation isStructured] && objc_msgSend(preferredLocation, "isPrediction"))
     {
-      v7 = [(EKEventDetailItem *)self delegate];
-      v8 = [v7 minimalMode] ^ 1;
+      delegate = [(EKEventDetailItem *)self delegate];
+      v8 = [delegate minimalMode] ^ 1;
     }
 
     else
@@ -41,7 +41,7 @@
   return v8;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -59,34 +59,34 @@
   return cell;
 }
 
-- (void)_promptForSpanWithSourceView:(id)a3 completionBlock:(id)a4
+- (void)_promptForSpanWithSourceView:(id)view completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  blockCopy = block;
   if (([(EKEvent *)self->super._event isOrWasPartOfRecurringSeries]& 1) != 0)
   {
-    v8 = [(EKEventDetailSuggestedLocationCell *)self->_cell window];
-    v9 = [v8 rootViewController];
+    window = [(EKEventDetailSuggestedLocationCell *)self->_cell window];
+    rootViewController = [window rootViewController];
 
-    v10 = [v9 presentedViewController];
+    presentedViewController = [rootViewController presentedViewController];
 
-    if (v10)
+    if (presentedViewController)
     {
       do
       {
-        v11 = [v9 presentedViewController];
+        presentedViewController2 = [rootViewController presentedViewController];
 
-        v12 = [v11 presentedViewController];
+        v11PresentedViewController = [presentedViewController2 presentedViewController];
 
-        v9 = v11;
+        rootViewController = presentedViewController2;
       }
 
-      while (v12);
+      while (v11PresentedViewController);
     }
 
     else
     {
-      v11 = v9;
+      presentedViewController2 = rootViewController;
     }
 
     v36 = 0;
@@ -95,13 +95,13 @@
     v39 = __Block_byref_object_copy__11;
     v40 = __Block_byref_object_dispose__11;
     v41 = 0;
-    [v6 bannerPopoverSourceRect];
+    [viewCopy bannerPopoverSourceRect];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v6 bannerView];
-    [v6 convertRect:v21 fromView:{v14, v16, v18, v20}];
+    bannerView = [viewCopy bannerView];
+    [viewCopy convertRect:bannerView fromView:{v14, v16, v18, v20}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -111,9 +111,9 @@
     v33[1] = 3221225472;
     v33[2] = __83__EKEventSuggestedLocationDetailItem__promptForSpanWithSourceView_completionBlock___block_invoke;
     v33[3] = &unk_1E8441210;
-    v34 = v7;
+    v34 = blockCopy;
     v35 = &v36;
-    v31 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v11 sourceView:v6 sourceRect:event forEvent:v33 withCompletionHandler:v23, v25, v27, v29];
+    v31 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:presentedViewController2 sourceView:viewCopy sourceRect:event forEvent:v33 withCompletionHandler:v23, v25, v27, v29];
     v32 = v37[5];
     v37[5] = v31;
 
@@ -122,7 +122,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -138,17 +138,17 @@ void __83__EKEventSuggestedLocationDetailItem__promptForSpanWithSourceView_compl
   *(v3 + 40) = 0;
 }
 
-- (void)didTapAddSuggestedLocationCell:(id)a3 disambiguatedLocation:(id)a4
+- (void)didTapAddSuggestedLocationCell:(id)cell disambiguatedLocation:(id)location
 {
-  v6 = a4;
+  locationCopy = location;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__EKEventSuggestedLocationDetailItem_didTapAddSuggestedLocationCell_disambiguatedLocation___block_invoke;
   v8[3] = &unk_1E8441238;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(EKEventSuggestedLocationDetailItem *)self _promptForSpanWithSourceView:a3 completionBlock:v8];
+  v9 = locationCopy;
+  v7 = locationCopy;
+  [(EKEventSuggestedLocationDetailItem *)self _promptForSpanWithSourceView:cell completionBlock:v8];
 }
 
 void __91__EKEventSuggestedLocationDetailItem_didTapAddSuggestedLocationCell_disambiguatedLocation___block_invoke(uint64_t a1, uint64_t a2)
@@ -208,26 +208,26 @@ void __91__EKEventSuggestedLocationDetailItem_didTapAddSuggestedLocationCell_dis
   [*(a1 + 32) _saveEventWithSpan:a2];
 }
 
-- (void)didTapDismissSuggestedLocationCell:(id)a3
+- (void)didTapDismissSuggestedLocationCell:(id)cell
 {
   self->_visibilityChanged = 1;
   v4 = MEMORY[0x1E6966B10];
-  v5 = [(EKEvent *)self->super._event preferredLocation];
-  v6 = [v5 predictedLOI];
-  [v4 userInteractionWithPredictedLocationOfInterest:v6 interaction:8];
+  preferredLocation = [(EKEvent *)self->super._event preferredLocation];
+  predictedLOI = [preferredLocation predictedLOI];
+  [v4 userInteractionWithPredictedLocationOfInterest:predictedLOI interaction:8];
 
   [(EKEvent *)self->super._event rejectPredictedLocation];
 
   [(EKEventSuggestedLocationDetailItem *)self _saveEventWithSpan:4];
 }
 
-- (void)_saveEventWithSpan:(int64_t)a3
+- (void)_saveEventWithSpan:(int64_t)span
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(UIResponder *)self->_cell EKUI_editor];
+  eKUI_editor = [(UIResponder *)self->_cell EKUI_editor];
   event = self->super._event;
   v13 = 0;
-  v7 = [v5 saveEvent:event span:a3 error:&v13];
+  v7 = [eKUI_editor saveEvent:event span:span error:&v13];
   v8 = v13;
   if ((v7 & 1) == 0)
   {
@@ -236,9 +236,9 @@ void __91__EKEventSuggestedLocationDetailItem_didTapAddSuggestedLocationCell_dis
     {
       v10 = self->super._event;
       v11 = v9;
-      v12 = [(EKEvent *)v10 title];
+      title = [(EKEvent *)v10 title];
       *buf = 138412546;
-      v15 = v12;
+      v15 = title;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_ERROR, "Error saving event %@ from the buttons detail item: %@", buf, 0x16u);

@@ -1,33 +1,33 @@
 @interface DataStreamFragment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInitial;
-- (DataStreamFragment)initWithData:(id)a3 sequenceNumber:(id)a4 type:(id)a5;
+- (DataStreamFragment)initWithData:(id)data sequenceNumber:(id)number type:(id)type;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
 @end
 
 @implementation DataStreamFragment
 
-- (DataStreamFragment)initWithData:(id)a3 sequenceNumber:(id)a4 type:(id)a5
+- (DataStreamFragment)initWithData:(id)data sequenceNumber:(id)number type:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dataCopy = data;
+  numberCopy = number;
+  typeCopy = type;
+  if (!dataCopy)
   {
     sub_1001F7A6C();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!numberCopy)
   {
 LABEL_8:
     sub_1001F7A54();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = typeCopy;
+  if (!typeCopy)
   {
 LABEL_9:
     v20 = sub_1001F7A3C();
@@ -40,8 +40,8 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_data, a3);
-    v15 = [v10 copy];
+    objc_storeStrong(&v13->_data, data);
+    v15 = [numberCopy copy];
     sequenceNumber = v14->_sequenceNumber;
     v14->_sequenceNumber = v15;
 
@@ -56,16 +56,16 @@ LABEL_9:
 - (id)attributeDescriptions
 {
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(DataStreamFragment *)self data];
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 length]);
+  data = [(DataStreamFragment *)self data];
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
   v6 = [v3 initWithName:@"Data Length" value:v5];
   v7 = [HMFAttributeDescription alloc];
-  v8 = [(DataStreamFragment *)self sequenceNumber];
-  v9 = [v7 initWithName:@"Sequence Number" value:v8];
+  sequenceNumber = [(DataStreamFragment *)self sequenceNumber];
+  v9 = [v7 initWithName:@"Sequence Number" value:sequenceNumber];
   v15[1] = v9;
   v10 = [HMFAttributeDescription alloc];
-  v11 = [(DataStreamFragment *)self type];
-  v12 = [v10 initWithName:@"Type" value:v11];
+  type = [(DataStreamFragment *)self type];
+  v12 = [v10 initWithName:@"Type" value:type];
   v15[2] = v12;
   v13 = [NSArray arrayWithObjects:v15 count:3];
 
@@ -74,19 +74,19 @@ LABEL_9:
 
 - (BOOL)isInitial
 {
-  v2 = [(DataStreamFragment *)self sequenceNumber];
-  v3 = [v2 unsignedLongLongValue] == 1;
+  sequenceNumber = [(DataStreamFragment *)self sequenceNumber];
+  v3 = [sequenceNumber unsignedLongLongValue] == 1;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -98,17 +98,17 @@ LABEL_9:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 data];
-    v9 = [(DataStreamFragment *)self data];
-    if ([v8 isEqualToData:v9])
+    data = [v6 data];
+    data2 = [(DataStreamFragment *)self data];
+    if ([data isEqualToData:data2])
     {
-      v10 = [v7 sequenceNumber];
-      v11 = [(DataStreamFragment *)self sequenceNumber];
-      if ([v10 isEqualToNumber:v11])
+      sequenceNumber = [v7 sequenceNumber];
+      sequenceNumber2 = [(DataStreamFragment *)self sequenceNumber];
+      if ([sequenceNumber isEqualToNumber:sequenceNumber2])
       {
-        v12 = [v7 type];
-        v13 = [(DataStreamFragment *)self type];
-        v14 = [v12 isEqualToString:v13];
+        type = [v7 type];
+        type2 = [(DataStreamFragment *)self type];
+        v14 = [type isEqualToString:type2];
       }
 
       else
@@ -133,14 +133,14 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(DataStreamFragment *)self data];
-  v4 = [v3 hash];
+  data = [(DataStreamFragment *)self data];
+  v4 = [data hash];
 
-  v5 = [(DataStreamFragment *)self sequenceNumber];
-  v6 = [v5 hash] ^ v4;
+  sequenceNumber = [(DataStreamFragment *)self sequenceNumber];
+  v6 = [sequenceNumber hash] ^ v4;
 
-  v7 = [(DataStreamFragment *)self type];
-  v8 = [v7 hash];
+  type = [(DataStreamFragment *)self type];
+  v8 = [type hash];
 
   return v6 ^ v8;
 }

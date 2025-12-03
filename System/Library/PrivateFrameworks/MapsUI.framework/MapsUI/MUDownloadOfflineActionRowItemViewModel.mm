@@ -1,6 +1,6 @@
 @interface MUDownloadOfflineActionRowItemViewModel
 - (BOOL)titleUsesMonospacedNumbersFont;
-- (MUDownloadOfflineActionRowItemViewModel)initWithOfflineMapProvider:(id)a3;
+- (MUDownloadOfflineActionRowItemViewModel)initWithOfflineMapProvider:(id)provider;
 - (MUOfflineMapProvider)offlineMapProvider;
 - (id)accessoryView;
 - (id)byteCountFormatter;
@@ -23,16 +23,16 @@
 - (unint64_t)actionItemType
 {
   WeakRetained = objc_loadWeakRetained(&self->_offlineMapProvider);
-  v3 = [WeakRetained downloadState];
+  downloadState = [WeakRetained downloadState];
 
-  if ((v3 - 1) > 4)
+  if ((downloadState - 1) > 4)
   {
     return 34;
   }
 
   else
   {
-    return qword_1C587A150[v3 - 1];
+    return qword_1C587A150[downloadState - 1];
   }
 }
 
@@ -50,9 +50,9 @@
     [(MUCircleProgressObservingView *)self->_progressView setImage:v7];
   }
 
-  v8 = [(MUDownloadOfflineActionRowItemViewModel *)self offlineMapProvider];
-  v9 = [v8 downloadProgress];
-  [(MUCircleProgressObservingView *)self->_progressView setProgress:v9];
+  offlineMapProvider = [(MUDownloadOfflineActionRowItemViewModel *)self offlineMapProvider];
+  downloadProgress = [offlineMapProvider downloadProgress];
+  [(MUCircleProgressObservingView *)self->_progressView setProgress:downloadProgress];
 
   v10 = self->_progressView;
 
@@ -85,22 +85,22 @@
 
 - (id)titleText
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_offlineMapProvider);
-  v4 = [WeakRetained downloadState];
+  downloadState = [WeakRetained downloadState];
 
-  if (v4 <= 2)
+  if (downloadState <= 2)
   {
-    if (v4)
+    if (downloadState)
     {
-      if (v4 == 1)
+      if (downloadState == 1)
       {
         v5 = @"Download Map - Waiting [Placecard]";
       }
 
       else
       {
-        if (v4 != 2)
+        if (downloadState != 2)
         {
           goto LABEL_14;
         }
@@ -117,17 +117,17 @@
     goto LABEL_13;
   }
 
-  if (v4 == 3)
+  if (downloadState == 3)
   {
     v5 = @"Download Map - Failed [Placecard]";
 LABEL_13:
-    v2 = _MULocalizedStringFromThisBundle(v5);
+    selfCopy = _MULocalizedStringFromThisBundle(v5);
     goto LABEL_14;
   }
 
-  if (v4 != 4)
+  if (downloadState != 4)
   {
-    if (v4 != 5)
+    if (downloadState != 5)
     {
       goto LABEL_14;
     }
@@ -136,72 +136,72 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v7 = [v2 byteCountFormatter];
-  v8 = [v2 offlineMapProvider];
-  v9 = [v8 downloadProgress];
-  v10 = [v9 byteCompletedCount];
-  v2 = [v7 stringFromByteCount:{objc_msgSend(v10, "longLongValue")}];
+  byteCountFormatter = [selfCopy byteCountFormatter];
+  offlineMapProvider = [selfCopy offlineMapProvider];
+  downloadProgress = [offlineMapProvider downloadProgress];
+  byteCompletedCount = [downloadProgress byteCompletedCount];
+  selfCopy = [byteCountFormatter stringFromByteCount:{objc_msgSend(byteCompletedCount, "longLongValue")}];
 
 LABEL_14:
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)accessoryView
 {
   WeakRetained = objc_loadWeakRetained(&self->_offlineMapProvider);
-  v4 = [WeakRetained downloadState];
+  downloadState = [WeakRetained downloadState];
 
-  if (v4 == 4)
+  if (downloadState == 4)
   {
-    v5 = [(MUDownloadOfflineActionRowItemViewModel *)self progressView];
+    progressView = [(MUDownloadOfflineActionRowItemViewModel *)self progressView];
   }
 
   else
   {
-    v5 = 0;
+    progressView = 0;
   }
 
-  return v5;
+  return progressView;
 }
 
 - (id)symbolName
 {
   WeakRetained = objc_loadWeakRetained(&self->_offlineMapProvider);
-  v3 = [WeakRetained downloadState];
+  downloadState = [WeakRetained downloadState];
 
-  if (v3 > 5)
+  if (downloadState > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E82198B0[v3];
+    return off_1E82198B0[downloadState];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(MUDownloadOfflineActionRowItemViewModel *)self offlineMapProvider];
-  [v3 removeObserver:self];
+  offlineMapProvider = [(MUDownloadOfflineActionRowItemViewModel *)self offlineMapProvider];
+  [offlineMapProvider removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MUDownloadOfflineActionRowItemViewModel;
   [(MUDownloadOfflineActionRowItemViewModel *)&v4 dealloc];
 }
 
-- (MUDownloadOfflineActionRowItemViewModel)initWithOfflineMapProvider:(id)a3
+- (MUDownloadOfflineActionRowItemViewModel)initWithOfflineMapProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = MUDownloadOfflineActionRowItemViewModel;
   v5 = [(MUActionRowItemViewModel *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_offlineMapProvider, v4);
-    [v4 addObserver:v6];
+    v7 = objc_storeWeak(&v5->_offlineMapProvider, providerCopy);
+    [providerCopy addObserver:v6];
   }
 
   return v6;

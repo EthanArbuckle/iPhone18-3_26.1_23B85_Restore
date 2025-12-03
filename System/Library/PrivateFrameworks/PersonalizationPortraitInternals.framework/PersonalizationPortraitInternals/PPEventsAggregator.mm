@@ -1,10 +1,10 @@
 @interface PPEventsAggregator
-- (BOOL)isEvent:(id)a3 dupeOfEvent:(id)a4;
-- (PPEventsAggregator)initWithEventsPool:(id)a3;
+- (BOOL)isEvent:(id)event dupeOfEvent:(id)ofEvent;
+- (PPEventsAggregator)initWithEventsPool:(id)pool;
 - (id)tripCandidatesFromEventsPool;
-- (id)tripCandidatesFromEventsPoolForCategory:(void *)a1;
+- (id)tripCandidatesFromEventsPoolForCategory:(void *)category;
 - (void)dedupeEventsInPool;
-- (void)dedupeEventsInPoolForCategory:(void *)a1;
+- (void)dedupeEventsInPoolForCategory:(void *)category;
 @end
 
 @implementation PPEventsAggregator
@@ -15,10 +15,10 @@
   objc_exception_throw(v2);
 }
 
-- (BOOL)isEvent:(id)a3 dupeOfEvent:(id)a4
+- (BOOL)isEvent:(id)event dupeOfEvent:(id)ofEvent
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  ofEventCopy = ofEvent;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"isEvent: Method must be overridden" userInfo:0];
   objc_exception_throw(v7);
 }
@@ -29,22 +29,22 @@
   objc_exception_throw(v2);
 }
 
-- (PPEventsAggregator)initWithEventsPool:(id)a3
+- (PPEventsAggregator)initWithEventsPool:(id)pool
 {
-  v5 = a3;
+  poolCopy = pool;
   v9.receiver = self;
   v9.super_class = PPEventsAggregator;
   v6 = [(PPEventsAggregator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventsPool, a3);
+    objc_storeStrong(&v6->_eventsPool, pool);
   }
 
   return v7;
 }
 
-- (void)dedupeEventsInPoolForCategory:(void *)a1
+- (void)dedupeEventsInPoolForCategory:(void *)category
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -52,8 +52,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = a1;
-  obj = [a1 eventsPool];
+  categoryCopy = category;
+  obj = [category eventsPool];
   v5 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
@@ -122,23 +122,23 @@ LABEL_16:
     while (v6);
   }
 
-  [v16 setEventsPool:v4];
+  [categoryCopy setEventsPool:v4];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tripCandidatesFromEventsPoolForCategory:(void *)a1
+- (id)tripCandidatesFromEventsPoolForCategory:(void *)category
 {
-  if (a1)
+  if (category)
   {
     v2 = a2;
-    [(PPEventsAggregator *)a1 dedupeEventsInPoolForCategory:a2];
-    v4 = [a1 eventsPool];
+    [(PPEventsAggregator *)category dedupeEventsInPoolForCategory:a2];
+    eventsPool = [category eventsPool];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __62__PPEventsAggregator_tripCandidatesFromEventsPoolForCategory___block_invoke;
     v7[3] = &__block_descriptor_33_e34___PPTripCandidate_16__0__EKEvent_8l;
     v8 = v2;
-    v5 = [v4 _pas_mappedArrayWithTransform:v7];
+    v5 = [eventsPool _pas_mappedArrayWithTransform:v7];
   }
 
   else

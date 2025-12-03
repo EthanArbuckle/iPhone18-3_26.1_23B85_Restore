@@ -1,11 +1,11 @@
 @interface _DASFastPassPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASFastPassPolicy)init;
 - (id)rationaleWithAllSystemConditions;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (int64_t)makeDecisionBasedOnSystemConstraints;
-- (void)updateFastPassShallYield:(BOOL)a3;
+- (void)updateFastPassShallYield:(BOOL)yield;
 @end
 
 @implementation _DASFastPassPolicy
@@ -39,13 +39,13 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 fastPass];
-    v5 = v4 != 0;
+    fastPass = [activityCopy fastPass];
+    v5 = fastPass != 0;
   }
 
   else
@@ -56,13 +56,13 @@
   return v5;
 }
 
-- (void)updateFastPassShallYield:(BOOL)a3
+- (void)updateFastPassShallYield:(BOOL)yield
 {
-  v3 = a3;
+  yieldCopy = yield;
   if (_os_feature_enabled_impl())
   {
-    self->_fastPassShallYield = v3;
-    if (v3)
+    self->_fastPassShallYield = yieldCopy;
+    if (yieldCopy)
     {
       v5 = dispatch_time(0, 900000000000);
       v6 = dispatch_get_global_queue(9, 0);
@@ -85,11 +85,11 @@
   }
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = [(_DASFastPassPolicy *)self makeDecisionBasedOnSystemConstraints:a3];
-  v6 = [(_DASFastPassPolicy *)self rationaleWithAllSystemConditions];
-  v7 = [_DASPolicyResponse policyResponseWithDecision:v5 validityDuration:v6 rationale:900.0];
+  v5 = [(_DASFastPassPolicy *)self makeDecisionBasedOnSystemConstraints:activity];
+  rationaleWithAllSystemConditions = [(_DASFastPassPolicy *)self rationaleWithAllSystemConditions];
+  v7 = [_DASPolicyResponse policyResponseWithDecision:v5 validityDuration:rationaleWithAllSystemConditions rationale:900.0];
 
   return v7;
 }

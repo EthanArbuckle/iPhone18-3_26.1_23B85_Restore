@@ -1,23 +1,23 @@
 @interface VUINowPlayingTimerTriggeredFeature
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (VUINowPlayingTimerTriggeredFeature)initWithType:(unint64_t)a3 duration:(double)a4 repeats:(BOOL)a5 backgroundTimer:(BOOL)a6;
+- (VUINowPlayingTimerTriggeredFeature)initWithType:(unint64_t)type duration:(double)duration repeats:(BOOL)repeats backgroundTimer:(BOOL)timer;
 - (unint64_t)hash;
 @end
 
 @implementation VUINowPlayingTimerTriggeredFeature
 
-- (VUINowPlayingTimerTriggeredFeature)initWithType:(unint64_t)a3 duration:(double)a4 repeats:(BOOL)a5 backgroundTimer:(BOOL)a6
+- (VUINowPlayingTimerTriggeredFeature)initWithType:(unint64_t)type duration:(double)duration repeats:(BOOL)repeats backgroundTimer:(BOOL)timer
 {
   v11.receiver = self;
   v11.super_class = VUINowPlayingTimerTriggeredFeature;
   result = [(VUINowPlayingTimerTriggeredFeature *)&v11 init];
   if (result)
   {
-    result->_type = a3;
-    result->_duration = a4;
-    result->_repeats = a5;
-    result->_backgroundTimer = a6;
+    result->_type = type;
+    result->_duration = duration;
+    result->_repeats = repeats;
+    result->_backgroundTimer = timer;
     *&result->_active = 0;
   }
 
@@ -47,23 +47,23 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUINowPlayingTimerTriggeredFeature *)self type];
-    if (v7 == [(VUINowPlayingTimerTriggeredFeature *)v6 type]&& ([(VUINowPlayingTimerTriggeredFeature *)self duration], v9 = v8, [(VUINowPlayingTimerTriggeredFeature *)v6 duration], v9 == v10))
+    type = [(VUINowPlayingTimerTriggeredFeature *)self type];
+    if (type == [(VUINowPlayingTimerTriggeredFeature *)v6 type]&& ([(VUINowPlayingTimerTriggeredFeature *)self duration], v9 = v8, [(VUINowPlayingTimerTriggeredFeature *)v6 duration], v9 == v10))
     {
-      v11 = [(VUINowPlayingTimerTriggeredFeature *)self repeats];
-      v12 = v11 ^ [(VUINowPlayingTimerTriggeredFeature *)v6 repeats]^ 1;
+      repeats = [(VUINowPlayingTimerTriggeredFeature *)self repeats];
+      v12 = repeats ^ [(VUINowPlayingTimerTriggeredFeature *)v6 repeats]^ 1;
     }
 
     else

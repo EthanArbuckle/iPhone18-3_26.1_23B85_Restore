@@ -1,6 +1,6 @@
 @interface SGAddressCoalescingState
 - (SGAddressCoalescingState)init;
-- (void)coalesceAddress:(__DDResult *)a3 orAppendMatch:(id)a4;
+- (void)coalesceAddress:(__DDResult *)address orAppendMatch:(id)match;
 - (void)dealloc;
 @end
 
@@ -37,9 +37,9 @@
   [(SGAddressCoalescingState *)&v4 dealloc];
 }
 
-- (void)coalesceAddress:(__DDResult *)a3 orAppendMatch:(id)a4
+- (void)coalesceAddress:(__DDResult *)address orAppendMatch:(id)match
 {
-  v24 = a4;
+  matchCopy = match;
   v6 = *MEMORY[0x277D040E0];
   if (DDResultHasType())
   {
@@ -52,18 +52,18 @@
     if (v13 && Range - self->_lastAddressEndPos <= 19 && (lastResult = self->_lastResult, DDAddressResultCanBeMergedWith()))
     {
       v15 = [(NSMutableArray *)self->_matches objectAtIndexedSubscript:self->_lastAddressIndex];
-      v16 = [v15 range];
+      range = [v15 range];
       v17 = v9 - [v15 range];
       v18 = [SGDataDetectorMatch alloc];
-      v19 = [v15 matchType];
-      v20 = [v15 labelRange];
-      v22 = [(SGDataDetectorMatch *)v18 initWithMatchType:v19 range:v16 labelRange:v17 labelString:v20 valueRange:v21 valueString:0, v16, v17, 0];
+      matchType = [v15 matchType];
+      labelRange = [v15 labelRange];
+      v22 = [(SGDataDetectorMatch *)v18 initWithMatchType:matchType range:range labelRange:v17 labelString:labelRange valueRange:v21 valueString:0, range, v17, 0];
       [(NSMutableArray *)self->_matches setObject:v22 atIndexedSubscript:self->_lastAddressIndex];
     }
 
     else
     {
-      [(NSMutableArray *)self->_matches addObject:v24];
+      [(NSMutableArray *)self->_matches addObject:matchCopy];
     }
 
     self->_lastAddressIndex = v11;
@@ -74,12 +74,12 @@
       CFRelease(v23);
     }
 
-    self->_lastResult = CFRetain(a3);
+    self->_lastResult = CFRetain(address);
   }
 
   else
   {
-    [(NSMutableArray *)self->_matches addObject:v24];
+    [(NSMutableArray *)self->_matches addObject:matchCopy];
   }
 }
 

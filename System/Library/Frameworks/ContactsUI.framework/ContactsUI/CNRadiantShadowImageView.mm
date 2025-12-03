@@ -2,7 +2,7 @@
 - (CNRadiantShadowImageView)init;
 - (void)applyAffineTransform;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 - (void)updateLayerFilters;
 @end
 
@@ -23,9 +23,9 @@
   t2 = v12;
   CGAffineTransformConcat(&v11, &t1, &t2);
   v8 = v11;
-  v7 = [(CNRadiantShadowImageView *)self layer];
+  layer = [(CNRadiantShadowImageView *)self layer];
   t1 = v8;
-  [v7 setAffineTransform:&t1];
+  [layer setAffineTransform:&t1];
 }
 
 - (void)updateLayerFilters
@@ -56,15 +56,15 @@
 
   [(CNRadiantShadowImageView *)self setAlpha:0.3];
   v9 = [v3 copy];
-  v10 = [(CNRadiantShadowImageView *)self layer];
-  [v10 setFilters:v9];
+  layer = [(CNRadiantShadowImageView *)self layer];
+  [layer setFilters:v9];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = CNRadiantShadowImageView;
-  [(CNRadiantShadowImageView *)&v4 setImage:a3];
+  [(CNRadiantShadowImageView *)&v4 setImage:image];
   [(CNRadiantShadowImageView *)self updateLayerFilters];
 }
 
@@ -85,11 +85,11 @@
   if (v2)
   {
     [(CNRadiantShadowImageView *)v2 setContentMode:2];
-    v4 = [(CNRadiantShadowImageView *)v3 layer];
-    [v4 setShouldRasterize:1];
+    layer = [(CNRadiantShadowImageView *)v3 layer];
+    [layer setShouldRasterize:1];
 
-    v5 = [(CNRadiantShadowImageView *)v3 layer];
-    [v5 setRasterizationScale:0.5];
+    layer2 = [(CNRadiantShadowImageView *)v3 layer];
+    [layer2 setRasterizationScale:0.5];
 
     v6 = v3;
   }

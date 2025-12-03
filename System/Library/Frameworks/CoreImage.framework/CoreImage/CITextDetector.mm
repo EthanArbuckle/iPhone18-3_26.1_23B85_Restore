@@ -1,14 +1,14 @@
 @interface CITextDetector
-- (CGAffineTransform)ctmForImageWithBounds:(SEL)a3 orientation:(CGRect)a4;
-- (CITextDetector)initWithContext:(id)a3 options:(id)a4;
-- (id)adjustedImageFromImage:(id)a3 orientation:(int)a4 inverseCTM:(CGAffineTransform *)a5;
-- (id)featuresInImage:(id)a3 options:(id)a4;
+- (CGAffineTransform)ctmForImageWithBounds:(SEL)bounds orientation:(CGRect)orientation;
+- (CITextDetector)initWithContext:(id)context options:(id)options;
+- (id)adjustedImageFromImage:(id)image orientation:(int)orientation inverseCTM:(CGAffineTransform *)m;
+- (id)featuresInImage:(id)image options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation CITextDetector
 
-- (CITextDetector)initWithContext:(id)a3 options:(id)a4
+- (CITextDetector)initWithContext:(id)context options:(id)options
 {
   v13.receiver = self;
   v13.super_class = CITextDetector;
@@ -42,18 +42,18 @@
 
       _Block_object_dispose(&v15, 8);
       v6->textDetector = [[v7 alloc] initWithDimensions:{128.0, 128.0}];
-      if (!a3)
+      if (!context)
       {
-        a3 = +[CIContext _singletonContext];
+        context = +[CIContext _singletonContext];
       }
 
-      [(CITextDetector *)v6 setContext:a3];
+      [(CITextDetector *)v6 setContext:context];
       if (!v6->featureOptions)
       {
         v6->featureOptions = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v8 = [a4 objectForKey:@"CIDetectorMinFeatureSize"];
+      v8 = [options objectForKey:@"CIDetectorMinFeatureSize"];
       if (v8)
       {
         v9 = v8;
@@ -113,7 +113,7 @@ void __42__CITextDetector_initWithContext_options___block_invoke()
   [(CITextDetector *)&v5 dealloc];
 }
 
-- (id)featuresInImage:(id)a3 options:(id)a4
+- (id)featuresInImage:(id)image options:(id)options
 {
   v79[1] = *MEMORY[0x1E69E9840];
   v7 = ci_signpost_log_detector();
@@ -132,8 +132,8 @@ void __42__CITextDetector_initWithContext_options___block_invoke()
   v8 = __42__CITextDetector_featuresInImage_options___block_invoke;
   v75 = __42__CITextDetector_featuresInImage_options___block_invoke;
   v76 = &__block_descriptor_40_e5_v8__0l;
-  v77 = self;
-  if (!a3 || !self->textDetector)
+  selfCopy = self;
+  if (!image || !self->textDetector)
   {
     v59 = MEMORY[0x1E695E0F0];
     goto LABEL_33;
@@ -143,7 +143,7 @@ void __42__CITextDetector_initWithContext_options___block_invoke()
   pixelBufferOut = 0;
   v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
   memset(&buf, 0, sizeof(buf));
-  v9 = -[CITextDetector adjustedImageFromImage:orientation:inverseCTM:](self, "adjustedImageFromImage:orientation:inverseCTM:", a3, [objc_msgSend(a4 valueForKey:{@"CIDetectorImageOrientation", "intValue"}], &buf);
+  v9 = -[CITextDetector adjustedImageFromImage:orientation:inverseCTM:](self, "adjustedImageFromImage:orientation:inverseCTM:", image, [objc_msgSend(options valueForKey:{@"CIDetectorImageOrientation", "intValue"}], &buf);
   [v9 extent];
   x = v80.origin.x;
   y = v80.origin.y;
@@ -157,7 +157,7 @@ void __42__CITextDetector_initWithContext_options___block_invoke()
   self->_height = CGRectGetHeight(v81);
   [(FKTextDetector *)self->textDetector resetOptions];
   v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self->featureOptions];
-  [v14 addEntriesFromDictionary:a4];
+  [v14 addEntriesFromDictionary:options];
   v15 = [v14 objectForKey:@"CIDetectorMinFeatureSize"];
   if (v15)
   {
@@ -291,9 +291,9 @@ LABEL_15:
   CVBufferSetAttachment(pixelBufferOut, *MEMORY[0x1E6965F98], *MEMORY[0x1E6965FC8], kCVAttachmentMode_ShouldPropagate);
   if (pixelBufferOut)
   {
-    v24 = [(CITextDetector *)self context];
-    [(CIContext *)v24 render:v9 toCVPixelBuffer:pixelBufferOut];
-    v25 = [(FKTextDetector *)self->textDetector detectFeaturesInBuffer:pixelBufferOut withRegionOfInterest:&v72 error:x, y, width, height];
+    context = [(CITextDetector *)self context];
+    [(CIContext *)context render:v9 toCVPixelBuffer:pixelBufferOut];
+    height = [(FKTextDetector *)self->textDetector detectFeaturesInBuffer:pixelBufferOut withRegionOfInterest:&v72 error:x, y, width, height];
     if (v72)
     {
       NSLog(&cfstr_TextDetectionF.isa, v72);
@@ -301,11 +301,11 @@ LABEL_15:
 
     CVPixelBufferRelease(pixelBufferOut);
     v26 = 0;
-    v60 = v25;
-    while ([v25 count] > v26)
+    v60 = height;
+    while ([height count] > v26)
     {
       v61 = v26;
-      v27 = [v25 objectAtIndex:v26];
+      v27 = [height objectAtIndex:v26];
       v28 = self->_width;
       BoundingBox = makeBoundingBox(v27, v28);
       v31 = v30;
@@ -321,11 +321,11 @@ LABEL_15:
       v67.y = 0.0;
       v36 = self->_width;
       *&v30 = self->_height;
-      v37 = [v27 subFeatures];
-      v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v37, "count")}];
-      for (i = 0; [v37 count] > i; ++i)
+      subFeatures = [v27 subFeatures];
+      v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(subFeatures, "count")}];
+      for (i = 0; [subFeatures count] > i; ++i)
       {
-        v40 = [v37 objectAtIndex:i];
+        v40 = [subFeatures objectAtIndex:i];
         v41 = self->_width;
         v42 = makeBoundingBox(v40, v41);
         v44 = v43;
@@ -341,7 +341,7 @@ LABEL_15:
         v63.y = 0.0;
         v49 = self->_width;
         *&v43 = self->_height;
-        v50 = [v40 text];
+        text = [v40 text];
         v51 = [CITextFeature alloc];
         v62 = buf;
         v82.origin.x = v42;
@@ -349,14 +349,14 @@ LABEL_15:
         v82.size.width = v46;
         v82.size.height = v48;
         v83 = CGRectApplyAffineTransform(v82, &v62);
-        v52 = [(CITextFeature *)v51 initWithBounds:0 topLeft:v50 topRight:v83.origin.x bottomLeft:v83.origin.y bottomRight:v83.size.width subFeatures:v83.size.height messageString:buf.tx + v66.y * buf.c + buf.a * v66.x, buf.ty + v66.y * buf.d + buf.b * v66.x, buf.tx + buf.c * v64.y + buf.a * v64.x, buf.ty + buf.d * v64.y + buf.b * v64.x, buf.tx + buf.c * v65.y + buf.a * v65.x, buf.ty + buf.d * v65.y + buf.b * v65.x, buf.tx + buf.c * v63.y + buf.a * v63.x, buf.ty + buf.d * v63.y + buf.b * v63.x];
+        v52 = [(CITextFeature *)v51 initWithBounds:0 topLeft:text topRight:v83.origin.x bottomLeft:v83.origin.y bottomRight:v83.size.width subFeatures:v83.size.height messageString:buf.tx + v66.y * buf.c + buf.a * v66.x, buf.ty + v66.y * buf.d + buf.b * v66.x, buf.tx + buf.c * v64.y + buf.a * v64.x, buf.ty + buf.d * v64.y + buf.b * v64.x, buf.tx + buf.c * v65.y + buf.a * v65.x, buf.ty + buf.d * v65.y + buf.b * v65.x, buf.tx + buf.c * v63.y + buf.a * v63.x, buf.ty + buf.d * v63.y + buf.b * v63.x];
         if (v52)
         {
           [v38 addObject:v52];
         }
       }
 
-      v53 = [v27 text];
+      text2 = [v27 text];
       v54 = [CITextFeature alloc];
       v62 = buf;
       v84.origin.x = BoundingBox;
@@ -364,13 +364,13 @@ LABEL_15:
       v84.size.width = v33;
       v84.size.height = v35;
       v85 = CGRectApplyAffineTransform(v84, &v62);
-      v55 = [(CITextFeature *)v54 initWithBounds:v38 topLeft:v53 topRight:v85.origin.x bottomLeft:v85.origin.y bottomRight:v85.size.width subFeatures:v85.size.height messageString:buf.tx + v70.y * buf.c + buf.a * v70.x, buf.ty + v70.y * buf.d + buf.b * v70.x, buf.tx + buf.c * v68.y + buf.a * v68.x, buf.ty + buf.d * v68.y + buf.b * v68.x, buf.tx + buf.c * v69.y + buf.a * v69.x, buf.ty + buf.d * v69.y + buf.b * v69.x, buf.tx + buf.c * v67.y + buf.a * v67.x, buf.ty + buf.d * v67.y + buf.b * v67.x];
+      v55 = [(CITextFeature *)v54 initWithBounds:v38 topLeft:text2 topRight:v85.origin.x bottomLeft:v85.origin.y bottomRight:v85.size.width subFeatures:v85.size.height messageString:buf.tx + v70.y * buf.c + buf.a * v70.x, buf.ty + v70.y * buf.d + buf.b * v70.x, buf.tx + buf.c * v68.y + buf.a * v68.x, buf.ty + buf.d * v68.y + buf.b * v68.x, buf.tx + buf.c * v69.y + buf.a * v69.x, buf.ty + buf.d * v69.y + buf.b * v69.x, buf.tx + buf.c * v67.y + buf.a * v67.x, buf.ty + buf.d * v67.y + buf.b * v67.x];
       if (v55)
       {
         [v59 addObject:v55];
       }
 
-      v25 = v60;
+      height = v60;
       v26 = v61 + 1;
     }
   }
@@ -401,10 +401,10 @@ void __42__CITextDetector_featuresInImage_options___block_invoke(uint64_t a1)
   }
 }
 
-- (CGAffineTransform)ctmForImageWithBounds:(SEL)a3 orientation:(CGRect)a4
+- (CGAffineTransform)ctmForImageWithBounds:(SEL)bounds orientation:(CGRect)orientation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = fmax(a4.size.width, a4.size.height);
+  v5 = fmax(orientation.size.width, orientation.size.height);
   t1.b = 0.0;
   t1.c = 0.0;
   v16[0] = 0x3FF0000000000000;
@@ -425,34 +425,34 @@ void __42__CITextDetector_featuresInImage_options___block_invoke(uint64_t a1)
     v8 = v6;
   }
 
-  *&v16[10] = a4.size.width * v8;
+  *&v16[10] = orientation.size.width * v8;
   v17 = xmmword_19CF26640;
   v18 = 0;
   v19 = 0;
   v20 = 0xBFF0000000000000;
-  v21 = a4.size.width * v8;
-  v22 = a4.size.height * v8;
+  v21 = orientation.size.width * v8;
+  v22 = orientation.size.height * v8;
   v24 = 0;
   v25 = 0;
   v23 = 0x3FF0000000000000;
   v26 = xmmword_19CF25100;
   v28 = xmmword_19CF26640;
   v29 = xmmword_19CF25100;
-  v27 = a4.size.height * v8;
-  v30 = a4.size.height * v8;
-  v31 = a4.size.width * v8;
+  v27 = orientation.size.height * v8;
+  v30 = orientation.size.height * v8;
+  v31 = orientation.size.width * v8;
   v32 = xmmword_19CF26640;
   v34 = 0;
   v35 = 0;
   v33 = 0x3FF0000000000000;
-  v36 = a4.size.width * v8;
+  v36 = orientation.size.width * v8;
   v37 = xmmword_19CF26650;
   v39 = 0u;
   v40 = 0u;
   v38 = 0x3FF0000000000000;
   v41 = 0x3FF0000000000000;
   v42 = xmmword_19CF25100;
-  v43 = a4.size.height * v8;
+  v43 = orientation.size.height * v8;
   v44 = 0;
   if ((a5 - 9) >= 0xFFFFFFF8)
   {
@@ -467,8 +467,8 @@ void __42__CITextDetector_featuresInImage_options___block_invoke(uint64_t a1)
   v10 = &v16[6 * v9];
   t1.a = v8;
   t1.d = v8;
-  y = a4.origin.y;
-  *&t1.tx = vandq_s8(vmulq_n_f64(vnegq_f64(a4.origin), v8), vcgtq_f64(vabsq_f64(a4.origin), vdupq_n_s64(0x3F847AE147AE147BuLL)));
+  y = orientation.origin.y;
+  *&t1.tx = vandq_s8(vmulq_n_f64(vnegq_f64(orientation.origin), v8), vcgtq_f64(vabsq_f64(orientation.origin), vdupq_n_s64(0x3F847AE147AE147BuLL)));
   v12 = v10[1];
   *&v14.a = *v10;
   *&v14.c = v12;
@@ -476,12 +476,12 @@ void __42__CITextDetector_featuresInImage_options___block_invoke(uint64_t a1)
   return CGAffineTransformConcat(retstr, &t1, &v14);
 }
 
-- (id)adjustedImageFromImage:(id)a3 orientation:(int)a4 inverseCTM:(CGAffineTransform *)a5
+- (id)adjustedImageFromImage:(id)image orientation:(int)orientation inverseCTM:(CGAffineTransform *)m
 {
-  v6 = *&a4;
-  v7 = a3;
+  v6 = *&orientation;
+  imageCopy = image;
   memset(&v13, 0, sizeof(v13));
-  [a3 extent];
+  [image extent];
   if (self)
   {
     [(CITextDetector *)self ctmForImageWithBounds:v6 orientation:?];
@@ -495,17 +495,17 @@ void __42__CITextDetector_featuresInImage_options___block_invoke(uint64_t a1)
   v11 = v13;
   CGAffineTransformInvert(&v12, &v11);
   v9 = *&v12.c;
-  *&a5->a = *&v12.a;
-  *&a5->c = v9;
-  *&a5->tx = *&v12.tx;
+  *&m->a = *&v12.a;
+  *&m->c = v9;
+  *&m->tx = *&v12.tx;
   v12 = v13;
   if (!CGAffineTransformIsIdentity(&v12))
   {
     v12 = v13;
-    return [v7 imageByApplyingTransform:&v12];
+    return [imageCopy imageByApplyingTransform:&v12];
   }
 
-  return v7;
+  return imageCopy;
 }
 
 @end

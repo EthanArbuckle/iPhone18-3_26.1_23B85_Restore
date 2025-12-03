@@ -13,13 +13,13 @@
   if (v3)
   {
     v4 = *(&self->super.isa + OBJC_IVAR____TtC27HealthMedicationsExperience32MedicationDoseDaySummaryProvider_healthStore);
-    v5 = self;
+    selfCopy = self;
     [v4 stopQuery_];
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -30,7 +30,7 @@
 - (NSString)debugDescription
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1D1670754();
   MEMORY[0x1D388CCF0](v4);
 
@@ -61,7 +61,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_1D1617D5C(0, 0, v6, &unk_1D16732F0, v8);
 
   sub_1D161DF10(v6);

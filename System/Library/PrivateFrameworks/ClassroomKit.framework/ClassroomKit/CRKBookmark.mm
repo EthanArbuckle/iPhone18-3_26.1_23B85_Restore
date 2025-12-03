@@ -1,87 +1,87 @@
 @interface CRKBookmark
-+ (id)favoritesFolderWithChildren:(id)a3;
-+ (id)folderWithName:(id)a3 children:(id)a4 identifier:(id)a5;
-+ (id)leafBookmarkWithName:(id)a3 URL:(id)a4;
-+ (id)readingListFolderWithChildren:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)favoritesFolderWithChildren:(id)children;
++ (id)folderWithName:(id)name children:(id)children identifier:(id)identifier;
++ (id)leafBookmarkWithName:(id)name URL:(id)l;
++ (id)readingListFolderWithChildren:(id)children;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFolder;
-- (BOOL)isFolderWithIdentifier:(id)a3;
-- (CRKBookmark)initWithCoder:(id)a3;
-- (CRKBookmark)initWithName:(id)a3 URL:(id)a4 children:(id)a5 identifier:(id)a6;
+- (BOOL)isFolderWithIdentifier:(id)identifier;
+- (CRKBookmark)initWithCoder:(id)coder;
+- (CRKBookmark)initWithName:(id)name URL:(id)l children:(id)children identifier:(id)identifier;
 - (id)description;
 - (id)urlString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
-- (void)setUrlString:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
+- (void)setUrlString:(id)string;
 @end
 
 @implementation CRKBookmark
 
-+ (id)favoritesFolderWithChildren:(id)a3
++ (id)favoritesFolderWithChildren:(id)children
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  childrenCopy = children;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Favorites" value:&stru_285643BE8 table:0];
 
-  v8 = [a1 folderWithName:v7 children:v5 identifier:@"com.apple.classroomkit.bookmark.favorites-folder"];
+  v8 = [self folderWithName:v7 children:childrenCopy identifier:@"com.apple.classroomkit.bookmark.favorites-folder"];
 
   return v8;
 }
 
-+ (id)readingListFolderWithChildren:(id)a3
++ (id)readingListFolderWithChildren:(id)children
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  childrenCopy = children;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Reading List" value:&stru_285643BE8 table:0];
 
-  v8 = [a1 folderWithName:v7 children:v5 identifier:@"com.apple.classroomkit.bookmark.reading-list-folder"];
+  v8 = [self folderWithName:v7 children:childrenCopy identifier:@"com.apple.classroomkit.bookmark.reading-list-folder"];
 
   return v8;
 }
 
-+ (id)folderWithName:(id)a3 children:(id)a4 identifier:(id)a5
++ (id)folderWithName:(id)name children:(id)children identifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 URL:0 children:v9 identifier:v8];
+  identifierCopy = identifier;
+  childrenCopy = children;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy URL:0 children:childrenCopy identifier:identifierCopy];
 
   return v11;
 }
 
-+ (id)leafBookmarkWithName:(id)a3 URL:(id)a4
++ (id)leafBookmarkWithName:(id)name URL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 URL:v6 children:0 identifier:0];
+  lCopy = l;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy URL:lCopy children:0 identifier:0];
 
   return v8;
 }
 
-- (CRKBookmark)initWithName:(id)a3 URL:(id)a4 children:(id)a5 identifier:(id)a6
+- (CRKBookmark)initWithName:(id)name URL:(id)l children:(id)children identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  lCopy = l;
+  childrenCopy = children;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CRKBookmark;
   v14 = [(CRKBookmark *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v15;
 
-    objc_storeStrong(&v14->_URL, a4);
-    v17 = [v12 copy];
+    objc_storeStrong(&v14->_URL, l);
+    v17 = [childrenCopy copy];
     children = v14->_children;
     v14->_children = v17;
 
-    v19 = [v13 copy];
+    v19 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v19;
   }
@@ -91,15 +91,15 @@
 
 - (BOOL)isFolder
 {
-  v2 = [(CRKBookmark *)self children];
-  v3 = v2 != 0;
+  children = [(CRKBookmark *)self children];
+  v3 = children != 0;
 
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  self->_name = [a3 copy];
+  self->_name = [name copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -107,14 +107,14 @@
 - (id)urlString
 {
   v2 = [(CRKBookmark *)self URL];
-  v3 = [v2 absoluteString];
+  absoluteString = [v2 absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
-- (void)setUrlString:(id)a3
+- (void)setUrlString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = [MEMORY[0x277CBEBC0] URLWithString:?];
     [(CRKBookmark *)self setURL:v4];
@@ -127,16 +127,16 @@
   }
 }
 
-- (BOOL)isFolderWithIdentifier:(id)a3
+- (BOOL)isFolderWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(CRKBookmark *)self isFolder])
   {
-    v5 = [(CRKBookmark *)self identifier];
-    if (v4 | v5)
+    identifier = [(CRKBookmark *)self identifier];
+    if (identifierCopy | identifier)
     {
-      v7 = [(CRKBookmark *)self identifier];
-      v6 = [v7 isEqual:v4];
+      identifier2 = [(CRKBookmark *)self identifier];
+      v6 = [identifier2 isEqual:identifierCopy];
     }
 
     else
@@ -155,22 +155,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKBookmark *)self name];
-  v4 = [v3 hash];
+  name = [(CRKBookmark *)self name];
+  v4 = [name hash];
   v5 = [(CRKBookmark *)self URL];
   v6 = [v5 hash] ^ v4;
-  v7 = [(CRKBookmark *)self children];
-  v8 = [v7 hash];
-  v9 = [(CRKBookmark *)self identifier];
-  v10 = v8 ^ [v9 hash];
+  children = [(CRKBookmark *)self children];
+  v8 = [children hash];
+  identifier = [(CRKBookmark *)self identifier];
+  v10 = v8 ^ [identifier hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [CFSTR(""name URL];
   v6 = [v5 mutableCopy];
 
@@ -182,10 +182,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -214,7 +214,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKBookmark *)v8 valueForKey:v16];
+          v18 = [(CRKBookmark *)selfCopy valueForKey:v16];
           v19 = [(CRKBookmark *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -261,53 +261,53 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKBookmark *)self name];
+  name = [(CRKBookmark *)self name];
   v6 = [(CRKBookmark *)self URL];
-  v7 = [v6 absoluteString];
-  v8 = [(CRKBookmark *)self isFolder];
+  absoluteString = [v6 absoluteString];
+  isFolder = [(CRKBookmark *)self isFolder];
   v9 = @"NO";
-  if (v8)
+  if (isFolder)
   {
     v9 = @"YES";
   }
 
   v10 = v9;
-  v11 = [(CRKBookmark *)self identifier];
+  identifier = [(CRKBookmark *)self identifier];
   v12 = MEMORY[0x277CCABB0];
-  v13 = [(CRKBookmark *)self children];
-  v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
-  v15 = [v3 stringWithFormat:@"<%@: %p { name = %@, URL = %@, isFolder = %@, identifier = %@, childCount = %@ }>", v4, self, v5, v7, v10, v11, v14];
+  children = [(CRKBookmark *)self children];
+  v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(children, "count")}];
+  v15 = [v3 stringWithFormat:@"<%@: %p { name = %@, URL = %@, isFolder = %@, identifier = %@, childCount = %@ }>", v4, self, name, absoluteString, v10, identifier, v14];
 
   return v15;
 }
 
-- (CRKBookmark)initWithCoder:(id)a3
+- (CRKBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CRKBookmark;
   v5 = [(CRKBookmark *)&v21 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"name"];
     name = v5->_name;
     v5->_name = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"URL"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"children"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"children"];
     children = v5->_children;
     v5->_children = v15;
 
     v17 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"identifier"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v18;
   }
@@ -315,20 +315,20 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKBookmark *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(CRKBookmark *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
   v6 = [(CRKBookmark *)self URL];
-  [v4 encodeObject:v6 forKey:@"URL"];
+  [coderCopy encodeObject:v6 forKey:@"URL"];
 
-  v7 = [(CRKBookmark *)self children];
-  [v4 encodeObject:v7 forKey:@"children"];
+  children = [(CRKBookmark *)self children];
+  [coderCopy encodeObject:children forKey:@"children"];
 
-  v8 = [(CRKBookmark *)self identifier];
-  [v4 encodeObject:v8 forKey:@"identifier"];
+  identifier = [(CRKBookmark *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 @end

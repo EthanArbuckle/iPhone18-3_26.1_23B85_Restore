@@ -1,6 +1,6 @@
 @interface SMTNoiseSampler
-- (SMTNoiseSampler)initWithUnigram:(float *)a3 ofSize:(unint64_t)a4;
-- (SMTNoiseSampler)initWithZipfOfSize:(unint64_t)a3;
+- (SMTNoiseSampler)initWithUnigram:(float *)unigram ofSize:(unint64_t)size;
+- (SMTNoiseSampler)initWithZipfOfSize:(unint64_t)size;
 - (id).cxx_construct;
 - (unint64_t)drawNoise;
 @end
@@ -77,7 +77,7 @@
   return v12;
 }
 
-- (SMTNoiseSampler)initWithUnigram:(float *)a3 ofSize:(unint64_t)a4
+- (SMTNoiseSampler)initWithUnigram:(float *)unigram ofSize:(unint64_t)size
 {
   v46.receiver = self;
   v46.super_class = SMTNoiseSampler;
@@ -107,23 +107,23 @@
   memcpy(v6 + 56, __src, 0x9C8uLL);
   std::random_device::~random_device(v44);
   LODWORD(__src[0]) = 0;
-  sub_100002844(v6 + 4, a4, __src, v9);
+  sub_100002844(v6 + 4, size, __src, v9);
   v11 = *(v6 + 1);
   v10 = *(v6 + 2);
   v12 = (v10 - v11) >> 3;
-  if (a4 > v12)
+  if (size > v12)
   {
-    v13 = a4 - v12;
+    v13 = size - v12;
     v14 = *(v6 + 3);
     if (v13 > (v14 - v10) >> 3)
     {
-      if (!(a4 >> 61))
+      if (!(size >> 61))
       {
         v15 = v14 - v11;
-        v16 = (v14 - v11) >> 2;
-        if (v16 <= a4)
+        sizeCopy = (v14 - v11) >> 2;
+        if (sizeCopy <= size)
         {
-          v16 = a4;
+          sizeCopy = size;
         }
 
         if (v15 >= 0x7FFFFFFFFFFFFFF8)
@@ -133,7 +133,7 @@
 
         else
         {
-          v17 = v16;
+          v17 = sizeCopy;
         }
 
         sub_100002B60(v17);
@@ -166,9 +166,9 @@
     goto LABEL_24;
   }
 
-  if (a4 < v12)
+  if (size < v12)
   {
-    v18 = v11 + 8 * a4;
+    v18 = v11 + 8 * size;
 LABEL_24:
     *(v6 + 2) = v18;
   }
@@ -176,12 +176,12 @@ LABEL_24:
   memset(__src, 0, 24);
   memset(&__token, 0, sizeof(__token));
   *&v44[0].__padding_ = 0;
-  if (a4)
+  if (size)
   {
     v23 = 0;
     do
     {
-      v24 = a3[v23] * a4;
+      v24 = unigram[v23] * size;
       *(*(v6 + 4) + 4 * v23) = v24;
       if (v24 >= 1.0)
       {
@@ -197,8 +197,8 @@ LABEL_24:
       *&v44[0].__padding_ = ++v23;
     }
 
-    while (a4 != v23);
-    a4 = __src[0];
+    while (size != v23);
+    size = __src[0];
     v26 = __src[1];
     if (__src[1] != __src[0])
     {
@@ -225,7 +225,7 @@ LABEL_24:
         }
 
         sub_100002A88(v33, v44);
-        a4 = __src[0];
+        size = __src[0];
         v26 = __src[1];
         if (__src[1] == __src[0])
         {
@@ -233,8 +233,8 @@ LABEL_24:
         }
       }
 
-      v34 = v26 - a4;
-      if (v26 != a4)
+      v34 = v26 - size;
+      if (v26 != size)
       {
         v35 = 0;
         v36 = v34 >> 3;
@@ -246,7 +246,7 @@ LABEL_24:
 
         do
         {
-          *(v37 + 4 * *(a4 + 8 * v35++)) = 1065353216;
+          *(v37 + 4 * *(size + 8 * v35++)) = 1065353216;
         }
 
         while (v36 != v35);
@@ -285,22 +285,22 @@ LABEL_24:
 
   operator delete(v38);
 LABEL_50:
-  if (a4)
+  if (size)
   {
-    __src[1] = a4;
-    operator delete(a4);
+    __src[1] = size;
+    operator delete(size);
   }
 
   return v6;
 }
 
-- (SMTNoiseSampler)initWithZipfOfSize:(unint64_t)a3
+- (SMTNoiseSampler)initWithZipfOfSize:(unint64_t)size
 {
-  if (a3)
+  if (size)
   {
-    if (!(a3 >> 62))
+    if (!(size >> 62))
     {
-      sub_100002C84(a3);
+      sub_100002C84(size);
     }
 
     sub_100002C6C();

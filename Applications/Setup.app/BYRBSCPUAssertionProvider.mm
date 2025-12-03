@@ -33,9 +33,9 @@
 
     else if (location)
     {
-      v14 = [location domain];
+      domain = [location domain];
       v13 = 1;
-      v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v14, [location code]);
+      v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location code]);
       v12 = v4;
       v11 = 1;
     }

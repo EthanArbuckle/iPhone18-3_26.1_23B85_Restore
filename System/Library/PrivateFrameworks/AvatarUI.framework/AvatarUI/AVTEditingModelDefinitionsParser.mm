@@ -1,45 +1,45 @@
 @interface AVTEditingModelDefinitionsParser
 + (id)dataFromAvatarKit;
 + (id)dataFromBundle;
-+ (id)errorWithDescription:(id)a3 underlyingError:(id)a4;
-+ (id)localizedString:(id)a3;
-- (AVTEditingModelDefinitionsParser)initWithPlistData:(id)a3 forPlatform:(unint64_t)a4 logger:(id)a5;
-- (BOOL)validateForCategoryWithEnumValue:(id)a3 pickers:(id)a4;
-- (BOOL)validateForColorPicker:(id)a3 colorPaletteCategory:(id)a4 error:(id *)a5;
-- (BOOL)validateForMulticolorPicker:(id)a3 subpickers:(id)a4 error:(id *)a5;
-- (id)applyPlatformOverrideForDictionary:(id)a3;
-- (id)coreModelCategoryFromCategoryDictionary:(id)a3 parsedPickerKeys:(id)a4;
-- (id)coreModelColorsForColorDefinitions:(id)a3 paletteSettingKind:(id)a4;
-- (id)coreModelColorsForPaletteSettingKind:(id)a3;
-- (id)coreModelColorsRowForColorPickerDictionary:(id)a3 settingDestination:(int64_t)a4 inCategory:(int64_t)a5 defaultOptions:(id)a6;
-- (id)coreModelGroupFromGroupDictionary:(id)a3;
-- (id)coreModelMulticolorPickerForDictionary:(id)a3 groupPickerCategory:(int64_t)a4 defaultOptions:(id)a5 parsedPickerKeys:(id)a6 error:(id *)a7;
-- (id)coreModelPresetsForCategory:(int64_t)a3;
-- (id)coreModelRowFromRowDictionary:(id)a3 availableTags:(id)a4 usedTags:(id)a5 defaultOptions:(id)a6;
-- (id)coreModelRowOptionsFromOptionsDictionary:(id)a3;
-- (id)decodePropertyListObjects:(id)a3;
-- (id)gatherAllTagsFromPresets:(id)a3;
-- (id)initForPlatform:(unint64_t)a3 withLogger:(id)a4;
-- (id)localizedSubtitlesForSubtitles:(id)a3 subpickerCount:(int64_t)a4;
-- (id)multicolorAuxiliaryPickerForDictionary:(id)a3 error:(id *)a4;
-- (id)neutralMemojiPresetIdentifierForCategory:(int64_t)a3;
-- (id)pairingFromDictionary:(id)a3;
-- (id)parseCoreModelFromGroupsDefinitions:(id)a3 colorDefaultsDefinitions:(id)a4;
-- (id)symbolNamesFromGroupDictionary:(id)a3;
++ (id)errorWithDescription:(id)description underlyingError:(id)error;
++ (id)localizedString:(id)string;
+- (AVTEditingModelDefinitionsParser)initWithPlistData:(id)data forPlatform:(unint64_t)platform logger:(id)logger;
+- (BOOL)validateForCategoryWithEnumValue:(id)value pickers:(id)pickers;
+- (BOOL)validateForColorPicker:(id)picker colorPaletteCategory:(id)category error:(id *)error;
+- (BOOL)validateForMulticolorPicker:(id)picker subpickers:(id)subpickers error:(id *)error;
+- (id)applyPlatformOverrideForDictionary:(id)dictionary;
+- (id)coreModelCategoryFromCategoryDictionary:(id)dictionary parsedPickerKeys:(id)keys;
+- (id)coreModelColorsForColorDefinitions:(id)definitions paletteSettingKind:(id)kind;
+- (id)coreModelColorsForPaletteSettingKind:(id)kind;
+- (id)coreModelColorsRowForColorPickerDictionary:(id)dictionary settingDestination:(int64_t)destination inCategory:(int64_t)category defaultOptions:(id)options;
+- (id)coreModelGroupFromGroupDictionary:(id)dictionary;
+- (id)coreModelMulticolorPickerForDictionary:(id)dictionary groupPickerCategory:(int64_t)category defaultOptions:(id)options parsedPickerKeys:(id)keys error:(id *)error;
+- (id)coreModelPresetsForCategory:(int64_t)category;
+- (id)coreModelRowFromRowDictionary:(id)dictionary availableTags:(id)tags usedTags:(id)usedTags defaultOptions:(id)options;
+- (id)coreModelRowOptionsFromOptionsDictionary:(id)dictionary;
+- (id)decodePropertyListObjects:(id)objects;
+- (id)gatherAllTagsFromPresets:(id)presets;
+- (id)initForPlatform:(unint64_t)platform withLogger:(id)logger;
+- (id)localizedSubtitlesForSubtitles:(id)subtitles subpickerCount:(int64_t)count;
+- (id)multicolorAuxiliaryPickerForDictionary:(id)dictionary error:(id *)error;
+- (id)neutralMemojiPresetIdentifierForCategory:(int64_t)category;
+- (id)pairingFromDictionary:(id)dictionary;
+- (id)parseCoreModelFromGroupsDefinitions:(id)definitions colorDefaultsDefinitions:(id)defaultsDefinitions;
+- (id)symbolNamesFromGroupDictionary:(id)dictionary;
 - (void)initalizeColorCacheIfNeeded;
-- (void)parseWithCompletionHandler:(id)a3;
+- (void)parseWithCompletionHandler:(id)handler;
 @end
 
 @implementation AVTEditingModelDefinitionsParser
 
-+ (id)errorWithDescription:(id)a3 underlyingError:(id)a4
++ (id)errorWithDescription:(id)description underlyingError:(id)error
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E696A578], a3, 0}];
+  errorCopy = error;
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E696A578], description, 0}];
   v7 = v6;
-  if (v5)
+  if (errorCopy)
   {
-    [v6 setObject:*MEMORY[0x1E696AA08] forKey:v5];
+    [v6 setObject:*MEMORY[0x1E696AA08] forKey:errorCopy];
   }
 
   v8 = [MEMORY[0x1E698E338] errorWithCode:415 userInfo:v7];
@@ -70,9 +70,9 @@
 
   if (!v3)
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 environment];
-    v6 = [v5 objectForKeyedSubscript:@"AVT_RESOURCES_BASE_PATH"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
+    v6 = [environment objectForKeyedSubscript:@"AVT_RESOURCES_BASE_PATH"];
 
     v3 = [v6 stringByAppendingPathComponent:@"editor.plist"];
   }
@@ -82,10 +82,10 @@
   return v7;
 }
 
-+ (id)localizedString:(id)a3
++ (id)localizedString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = AVTLocalizedEditorString();
   }
@@ -98,9 +98,9 @@
   return v4;
 }
 
-- (id)initForPlatform:(unint64_t)a3 withLogger:(id)a4
+- (id)initForPlatform:(unint64_t)platform withLogger:(id)logger
 {
-  v6 = a4;
+  loggerCopy = logger;
   v7 = AVTUIUseLocalEditorModel_once();
   v8 = objc_opt_class();
   if (v7)
@@ -113,43 +113,43 @@
     [v8 dataFromAvatarKit];
   }
   v9 = ;
-  v10 = [(AVTEditingModelDefinitionsParser *)self initWithPlistData:v9 forPlatform:a3 logger:v6];
+  v10 = [(AVTEditingModelDefinitionsParser *)self initWithPlistData:v9 forPlatform:platform logger:loggerCopy];
 
   return v10;
 }
 
-- (AVTEditingModelDefinitionsParser)initWithPlistData:(id)a3 forPlatform:(unint64_t)a4 logger:(id)a5
+- (AVTEditingModelDefinitionsParser)initWithPlistData:(id)data forPlatform:(unint64_t)platform logger:(id)logger
 {
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  loggerCopy = logger;
   v16.receiver = self;
   v16.super_class = AVTEditingModelDefinitionsParser;
   v11 = [(AVTEditingModelDefinitionsParser *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_plistData, a3);
-    v12->_platform = a4;
-    v13 = [objc_opt_class() platformDictionaryKeyForPlatform:a4];
+    objc_storeStrong(&v11->_plistData, data);
+    v12->_platform = platform;
+    v13 = [objc_opt_class() platformDictionaryKeyForPlatform:platform];
     platformDictionaryKey = v12->_platformDictionaryKey;
     v12->_platformDictionaryKey = v13;
 
-    objc_storeStrong(&v12->_logger, a5);
+    objc_storeStrong(&v12->_logger, logger);
   }
 
   return v12;
 }
 
-- (void)parseWithCompletionHandler:(id)a3
+- (void)parseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AVTEditingModelDefinitionsParser *)self plistData];
-  if (!v5)
+  handlerCopy = handler;
+  plistData = [(AVTEditingModelDefinitionsParser *)self plistData];
+  if (!plistData)
   {
     [MEMORY[0x1E695DF30] raise:@"MissingPlistData" format:@"Unable to get data for the plist from AvatarKit"];
   }
 
-  v6 = [(AVTEditingModelDefinitionsParser *)self decodePropertyListObjects:v5];
+  v6 = [(AVTEditingModelDefinitionsParser *)self decodePropertyListObjects:plistData];
   v7 = v6;
   if (v6)
   {
@@ -172,14 +172,14 @@
     v14 = 0;
   }
 
-  v13 = [(AVTEditingModelDefinitionsParser *)self error];
-  v4[2](v4, v14, v13);
+  error = [(AVTEditingModelDefinitionsParser *)self error];
+  handlerCopy[2](handlerCopy, v14, error);
 }
 
-- (id)decodePropertyListObjects:(id)a3
+- (id)decodePropertyListObjects:(id)objects
 {
   v12 = 0;
-  v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v12];
+  v4 = [MEMORY[0x1E696AE40] propertyListWithData:objects options:0 format:0 error:&v12];
   v5 = v4;
   if (v4)
   {
@@ -189,9 +189,9 @@
   else
   {
     v7 = v12;
-    v8 = [(AVTEditingModelDefinitionsParser *)self logger];
-    v9 = [v7 localizedDescription];
-    [v8 logParsingMetadataDefinitionsError:v9];
+    logger = [(AVTEditingModelDefinitionsParser *)self logger];
+    localizedDescription = [v7 localizedDescription];
+    [logger logParsingMetadataDefinitionsError:localizedDescription];
 
     v10 = [objc_opt_class() errorWithDescription:@"Error deserializing plist" underlyingError:v7];
 
@@ -203,29 +203,29 @@
 
 - (void)initalizeColorCacheIfNeeded
 {
-  v3 = [(AVTEditingModelDefinitionsParser *)self colorCache];
+  colorCache = [(AVTEditingModelDefinitionsParser *)self colorCache];
 
-  if (!v3)
+  if (!colorCache)
   {
     v4 = +[AVTEditingModelColors buildAllColors];
     [(AVTEditingModelDefinitionsParser *)self setColorCache:v4];
   }
 }
 
-- (id)parseCoreModelFromGroupsDefinitions:(id)a3 colorDefaultsDefinitions:(id)a4
+- (id)parseCoreModelFromGroupsDefinitions:(id)definitions colorDefaultsDefinitions:(id)defaultsDefinitions
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  definitionsCopy = definitions;
+  defaultsDefinitionsCopy = defaultsDefinitions;
+  if ([definitionsCopy count])
   {
     [(AVTEditingModelDefinitionsParser *)self initalizeColorCacheIfNeeded];
-    v29 = v7;
-    if (v7 && ([v7 objectForKeyedSubscript:kAVTEditingModelDefinitionsColorDefaultsMappingKey], (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (v9 = v8, objc_msgSend(v7, "objectForKeyedSubscript:", kAVTEditingModelDefinitionsColorDefaultsDefinitionsKey), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+    v29 = defaultsDefinitionsCopy;
+    if (defaultsDefinitionsCopy && ([defaultsDefinitionsCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsColorDefaultsMappingKey], (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (v9 = v8, objc_msgSend(defaultsDefinitionsCopy, "objectForKeyedSubscript:", kAVTEditingModelDefinitionsColorDefaultsDefinitionsKey), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
     {
       v11 = [AVTAvatarEditorColorDefaultsProvider alloc];
-      v12 = [(AVTEditingModelDefinitionsParser *)self colorCache];
-      v28 = [(AVTAvatarEditorColorDefaultsProvider *)v11 initWithColorDefaultsDictionary:v7 editingColors:v12];
+      colorCache = [(AVTEditingModelDefinitionsParser *)self colorCache];
+      v28 = [(AVTAvatarEditorColorDefaultsProvider *)v11 initWithColorDefaultsDictionary:defaultsDefinitionsCopy editingColors:colorCache];
     }
 
     else
@@ -233,13 +233,13 @@
       v28 = 0;
     }
 
-    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(definitionsCopy, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v30 = v6;
-    v14 = v6;
+    v30 = definitionsCopy;
+    v14 = definitionsCopy;
     v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v15)
     {
@@ -262,10 +262,10 @@
 
           else
           {
-            v20 = [(AVTEditingModelDefinitionsParser *)self logger];
-            v21 = [(AVTEditingModelDefinitionsParser *)self error];
-            v22 = [v21 description];
-            [v20 logParsingMetadataDefinitionsError:v22];
+            logger = [(AVTEditingModelDefinitionsParser *)self logger];
+            error = [(AVTEditingModelDefinitionsParser *)self error];
+            v22 = [error description];
+            [logger logParsingMetadataDefinitionsError:v22];
           }
         }
 
@@ -276,11 +276,11 @@
     }
 
     v23 = [AVTCoreModel alloc];
-    v24 = [(AVTEditingModelDefinitionsParser *)self colorCache];
-    v25 = [(AVTCoreModel *)v23 initWithGroups:v13 colors:v24 colorDefaultsProvider:v28 forPlatform:[(AVTEditingModelDefinitionsParser *)self platform]];
+    colorCache2 = [(AVTEditingModelDefinitionsParser *)self colorCache];
+    v25 = [(AVTCoreModel *)v23 initWithGroups:v13 colors:colorCache2 colorDefaultsProvider:v28 forPlatform:[(AVTEditingModelDefinitionsParser *)self platform]];
 
-    v7 = v29;
-    v6 = v30;
+    defaultsDefinitionsCopy = v29;
+    definitionsCopy = v30;
   }
 
   else
@@ -294,10 +294,10 @@
   return v25;
 }
 
-- (id)coreModelGroupFromGroupDictionary:(id)a3
+- (id)coreModelGroupFromGroupDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:a3];
+  v4 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:dictionary];
   v5 = objc_opt_class();
   v6 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsGroupNameKey];
   v7 = [v5 localizedString:v6];
@@ -418,17 +418,17 @@ LABEL_27:
   return v34;
 }
 
-- (id)symbolNamesFromGroupDictionary:(id)a3
+- (id)symbolNamesFromGroupDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:kAVTEditingModelDefinitionsGroupSymbolKey];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsGroupSymbolKey];
   if (v4)
   {
     v5 = MEMORY[0x1E695DF90];
     v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:1];
     v7 = [v5 dictionaryWithObject:v4 forKey:v6];
 
-    v8 = [v3 objectForKeyedSubscript:kAVTEditingModelDefinitionsGroupSymbolDarkKey];
+    v8 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsGroupSymbolDarkKey];
     if (v8)
     {
       v9 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
@@ -444,13 +444,13 @@ LABEL_27:
   return v7;
 }
 
-- (id)coreModelCategoryFromCategoryDictionary:(id)a3 parsedPickerKeys:(id)a4
+- (id)coreModelCategoryFromCategoryDictionary:(id)dictionary parsedPickerKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:kAVTEditingModelDefinitionsCategoryNameKey];
+  dictionaryCopy = dictionary;
+  keysCopy = keys;
+  v8 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsCategoryNameKey];
   v9 = [AVTEditingModelMappings presetCategoryFromCategoryName:v8];
-  v30 = [v9 integerValue];
+  integerValue = [v9 integerValue];
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -463,8 +463,8 @@ LABEL_27:
   v45 = __Block_byref_object_copy__9;
   v46 = __Block_byref_object_dispose__9;
   v47 = 0;
-  v10 = [MEMORY[0x1E695DFA0] orderedSet];
-  v11 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:v6];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v11 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:dictionaryCopy];
   v12 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsCategoryPickersKey];
   v13 = v12;
   v14 = MEMORY[0x1E695E0F0];
@@ -480,7 +480,7 @@ LABEL_27:
   if ([(AVTEditingModelDefinitionsParser *)self validateForCategoryWithEnumValue:v9 pickers:v15])
   {
     v27 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsOptionsKey];
-    v28 = v7;
+    v28 = keysCopy;
     v17 = [(AVTEditingModelDefinitionsParser *)self coreModelRowOptionsFromOptionsDictionary:v27];
     v41[0] = 0;
     v41[1] = v41;
@@ -491,16 +491,16 @@ LABEL_27:
     v31[2] = __93__AVTEditingModelDefinitionsParser_coreModelCategoryFromCategoryDictionary_parsedPickerKeys___block_invoke;
     v31[3] = &unk_1E7F3BC08;
     v31[4] = self;
-    v32 = v7;
-    v40 = v30;
+    v32 = keysCopy;
+    v40 = integerValue;
     v26 = v17;
     v33 = v26;
     v37 = v41;
     v34 = v9;
     v38 = &v48;
     v39 = &v42;
-    v18 = v10;
-    v35 = v10;
+    v18 = orderedSet;
+    v35 = orderedSet;
     v19 = v16;
     v36 = v19;
     [v15 enumerateObjectsUsingBlock:v31];
@@ -514,15 +514,15 @@ LABEL_27:
 
     v22 = [objc_opt_class() sortedModelRows:v19 forPlatform:{-[AVTEditingModelDefinitionsParser platform](self, "platform")}];
     v23 = [AVTCoreModelCategory alloc];
-    v24 = [(AVTCoreModelCategory *)v23 initWithPresetCategory:v30 presets:v49[5] tags:v43[5] rows:v22 pairing:v21];
+    v24 = [(AVTCoreModelCategory *)v23 initWithPresetCategory:integerValue presets:v49[5] tags:v43[5] rows:v22 pairing:v21];
 
     _Block_object_dispose(v41, 8);
-    v7 = v28;
+    keysCopy = v28;
   }
 
   else
   {
-    v18 = v10;
+    v18 = orderedSet;
     v24 = 0;
   }
 
@@ -661,43 +661,43 @@ LABEL_25:
 LABEL_26:
 }
 
-- (id)pairingFromDictionary:(id)a3
+- (id)pairingFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = kAVTEditingModelDefinitionsPairedCategoryKey;
-    v4 = a3;
-    v5 = [v4 objectForKeyedSubscript:v3];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy objectForKeyedSubscript:v3];
     v6 = objc_opt_class();
-    v7 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsPairedTitleKey];
+    v7 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsPairedTitleKey];
     v8 = [v6 localizedString:v7];
 
     v9 = objc_opt_class();
-    v10 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsPairTitleKey];
+    v10 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsPairTitleKey];
     v11 = [v9 localizedString:v10];
 
     v12 = objc_opt_class();
-    v13 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsUnpairTitleKey];
+    v13 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsUnpairTitleKey];
     v14 = [v12 localizedString:v13];
 
     v15 = objc_opt_class();
-    v16 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsPairedDescriptionKey];
+    v16 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsPairedDescriptionKey];
     v17 = [v15 localizedString:v16];
 
     v18 = objc_opt_class();
-    v19 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsUnpairedDescriptionKey];
+    v19 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsUnpairedDescriptionKey];
 
     v20 = [v18 localizedString:v19];
 
     if (v5)
     {
       v21 = [AVTEditingModelMappings presetCategoryFromCategoryName:v5];
-      v22 = [v21 integerValue];
+      integerValue = [v21 integerValue];
     }
 
     else
     {
-      v22 = 40;
+      integerValue = 40;
       if (!v8 && !v11 && !v14)
       {
         v23 = 0;
@@ -705,7 +705,7 @@ LABEL_26:
       }
     }
 
-    v23 = [[AVTCoreModelPairing alloc] initWithPairedCategory:v22 pairedTitle:v8 pairTitle:v11 unpairTitle:v14 pairedDescription:v17 unpairedDescription:v20];
+    v23 = [[AVTCoreModelPairing alloc] initWithPairedCategory:integerValue pairedTitle:v8 pairTitle:v11 unpairTitle:v14 pairedDescription:v17 unpairedDescription:v20];
 LABEL_5:
 
     goto LABEL_7;
@@ -717,21 +717,21 @@ LABEL_7:
   return v23;
 }
 
-- (id)coreModelColorsRowForColorPickerDictionary:(id)a3 settingDestination:(int64_t)a4 inCategory:(int64_t)a5 defaultOptions:(id)a6
+- (id)coreModelColorsRowForColorPickerDictionary:(id)dictionary settingDestination:(int64_t)destination inCategory:(int64_t)category defaultOptions:(id)options
 {
-  v10 = a6;
-  if (!a3)
+  optionsCopy = options;
+  if (!dictionary)
   {
     v19 = 0;
     goto LABEL_21;
   }
 
-  v29 = v10;
-  v11 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:a3];
+  v29 = optionsCopy;
+  v11 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:dictionary];
   v12 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsColorPickerPrimaryColorsKey];
   v13 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsColorPickerExtendedColorsKey];
   v14 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsColorPickerAlwaysExtendedKey];
-  v28 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
   v15 = objc_opt_class();
   v16 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsTitleKey];
@@ -739,12 +739,12 @@ LABEL_7:
 
   if (v12)
   {
-    v18 = [(AVTEditingModelDefinitionsParser *)self coreModelColorsForColorDefinitions:v12 paletteSettingKind:a4, a5];
+    category = [(AVTEditingModelDefinitionsParser *)self coreModelColorsForColorDefinitions:v12 paletteSettingKind:destination, category];
     if (!v13)
     {
 LABEL_11:
-      v20 = 0;
-      if (!v18)
+      category2 = 0;
+      if (!category)
       {
         goto LABEL_13;
       }
@@ -757,27 +757,27 @@ LABEL_11:
   {
     if (!v13)
     {
-      v18 = [(AVTEditingModelDefinitionsParser *)self coreModelColorsForPaletteSettingKind:a4, a5];
+      category = [(AVTEditingModelDefinitionsParser *)self coreModelColorsForPaletteSettingKind:destination, category];
       goto LABEL_11;
     }
 
-    v18 = 0;
+    category = 0;
   }
 
-  v20 = [(AVTEditingModelDefinitionsParser *)self coreModelColorsForColorDefinitions:v13 paletteSettingKind:a4, a5];
-  if (!v18)
+  category2 = [(AVTEditingModelDefinitionsParser *)self coreModelColorsForColorDefinitions:v13 paletteSettingKind:destination, category];
+  if (!category)
   {
     goto LABEL_13;
   }
 
 LABEL_12:
-  if ([v18 count])
+  if ([category count])
   {
     goto LABEL_15;
   }
 
 LABEL_13:
-  if (v20 && [v20 count])
+  if (category2 && [category2 count])
   {
 LABEL_15:
     v27 = v12;
@@ -796,7 +796,7 @@ LABEL_15:
     }
 
     v25 = v24;
-    v19 = [[AVTCoreModelColorsPicker alloc] initWithTitle:v17 primaryColors:v18 extendedColors:v20 alwaysShowExtended:v28 colorCategory:a5 destination:a4 pairing:v22 options:v24];
+    v19 = [[AVTCoreModelColorsPicker alloc] initWithTitle:v17 primaryColors:category extendedColors:category2 alwaysShowExtended:bOOLValue colorCategory:category destination:destination pairing:v22 options:v24];
 
     v12 = v27;
     goto LABEL_20;
@@ -805,42 +805,42 @@ LABEL_15:
   v19 = 0;
 LABEL_20:
 
-  v10 = v29;
+  optionsCopy = v29;
 LABEL_21:
 
   return v19;
 }
 
-- (id)coreModelMulticolorPickerForDictionary:(id)a3 groupPickerCategory:(int64_t)a4 defaultOptions:(id)a5 parsedPickerKeys:(id)a6 error:(id *)a7
+- (id)coreModelMulticolorPickerForDictionary:(id)dictionary groupPickerCategory:(int64_t)category defaultOptions:(id)options parsedPickerKeys:(id)keys error:(id *)error
 {
   v100 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v73 = a5;
-  v85 = a6;
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
+  keysCopy = keys;
   [(AVTEditingModelDefinitionsParser *)self initalizeColorCacheIfNeeded];
-  v12 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorSubpickers];
+  v12 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorSubpickers];
   v97 = 0;
-  v71 = v11;
-  LOBYTE(a6) = [(AVTEditingModelDefinitionsParser *)self validateForMulticolorPicker:v11 subpickers:v12 error:&v97];
+  v71 = dictionaryCopy;
+  LOBYTE(keys) = [(AVTEditingModelDefinitionsParser *)self validateForMulticolorPicker:dictionaryCopy subpickers:v12 error:&v97];
   v13 = v97;
   v14 = v13;
-  if ((a6 & 1) == 0)
+  if ((keys & 1) == 0)
   {
     v48 = 0;
-    if (a7 && v13)
+    if (error && v13)
     {
       v49 = v13;
       v48 = 0;
-      *a7 = v14;
+      *error = v14;
     }
 
     goto LABEL_66;
   }
 
-  v74 = a7;
-  v86 = self;
+  errorCopy = error;
+  selfCopy = self;
   v69 = v13;
-  v84 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
@@ -865,20 +865,20 @@ LABEL_21:
 
         v19 = *(*(&v93 + 1) + 8 * i);
         v20 = [v19 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorPickerDestinationKey];
-        v21 = v16;
+        integerValue = v16;
         if (v20)
         {
-          v21 = [v20 integerValue];
+          integerValue = [v20 integerValue];
         }
 
         v81 = v16;
-        v22 = AVTAvatarSettingDestinationForColorPickerIndex(v21);
+        v22 = AVTAvatarSettingDestinationForColorPickerIndex(integerValue);
         v23 = [v19 objectForKeyedSubscript:kAVTEditingModelDefinitionsCategoryNameKey];
-        v24 = a4;
+        categoryCopy = category;
         if (v23)
         {
           v25 = [*(v17 + 3112) presetCategoryFromCategoryName:v23];
-          v24 = [v25 integerValue];
+          categoryCopy = [v25 integerValue];
         }
 
         v26 = *(v17 + 3112);
@@ -886,13 +886,13 @@ LABEL_21:
         v28 = [v26 presetCategoryForColorPaletteName:v27];
 
         v92 = 0;
-        v29 = [(AVTEditingModelDefinitionsParser *)v86 validateForColorPicker:v19 colorPaletteCategory:v28 error:&v92];
+        v29 = [(AVTEditingModelDefinitionsParser *)selfCopy validateForColorPicker:v19 colorPaletteCategory:v28 error:&v92];
         v30 = v92;
         v31 = v30;
         if (v29)
         {
-          v32 = [(AVTEditingModelDefinitionsParser *)v86 coreModelColorsRowForColorPickerDictionary:v19 settingDestination:v22 inCategory:v24 defaultOptions:v73];
-          [v84 addObject:v32];
+          v32 = [(AVTEditingModelDefinitionsParser *)selfCopy coreModelColorsRowForColorPickerDictionary:v19 settingDestination:v22 inCategory:categoryCopy defaultOptions:optionsCopy];
+          [array addObject:v32];
           v16 = v81 + 1;
           v33 = v31 == 0;
         }
@@ -900,11 +900,11 @@ LABEL_21:
         else
         {
           v33 = 0;
-          if (v74 && v30)
+          if (errorCopy && v30)
           {
             v34 = v30;
             v33 = 0;
-            *v74 = v31;
+            *errorCopy = v31;
           }
 
           v16 = v81;
@@ -959,7 +959,7 @@ LABEL_21:
 
           v41 = *(*(&v88 + 1) + 8 * j);
           v42 = [v41 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorNestedPresetPickersCategory];
-          v43 = [(AVTEditingModelDefinitionsParser *)v86 coreModelCategoryFromCategoryDictionary:v42 parsedPickerKeys:v85];
+          v43 = [(AVTEditingModelDefinitionsParser *)selfCopy coreModelCategoryFromCategoryDictionary:v42 parsedPickerKeys:keysCopy];
           v44 = [v41 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorNestedPresetPickersIndex];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -981,8 +981,8 @@ LABEL_21:
 
           if (!v46)
           {
-            v47 = [v44 integerValue];
-            if (v47 < [v84 count])
+            integerValue2 = [v44 integerValue];
+            if (integerValue2 < [array count])
             {
               if (v80)
               {
@@ -1026,7 +1026,7 @@ LABEL_21:
   }
 
   v87 = 0;
-  v48 = [(AVTEditingModelDefinitionsParser *)v86 multicolorAuxiliaryPickerForDictionary:v50 error:&v87];
+  v48 = [(AVTEditingModelDefinitionsParser *)selfCopy multicolorAuxiliaryPickerForDictionary:v50 error:&v87];
   v51 = v87;
   v52 = v51;
   if (v48)
@@ -1038,38 +1038,38 @@ LABEL_50:
     v78 = v53;
     if (v53)
     {
-      v76 = [v53 integerValue];
+      integerValue3 = [v53 integerValue];
     }
 
     else
     {
-      v76 = 0;
+      integerValue3 = 0;
     }
 
     v54 = [v71 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorAllowsRemoval];
     v55 = v54;
     if (v54)
     {
-      v56 = [v54 BOOLValue];
+      bOOLValue = [v54 BOOLValue];
     }
 
     else
     {
-      v56 = 1;
+      bOOLValue = 1;
     }
 
     v57 = [v71 objectForKeyedSubscript:kAVTEditingModelDefinitionsOptionsKey];
     v83 = v50;
     if (v57)
     {
-      v58 = v86;
-      v59 = [(AVTEditingModelDefinitionsParser *)v86 coreModelRowOptionsFromOptionsDictionary:v57];
+      v58 = selfCopy;
+      v59 = [(AVTEditingModelDefinitionsParser *)selfCopy coreModelRowOptionsFromOptionsDictionary:v57];
     }
 
     else
     {
-      v59 = v73;
-      v58 = v86;
+      v59 = optionsCopy;
+      v58 = selfCopy;
     }
 
     v60 = objc_opt_class();
@@ -1077,10 +1077,10 @@ LABEL_50:
     v62 = [v60 localizedString:v61];
 
     v63 = [v71 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorSubtitles];
-    v64 = -[AVTEditingModelDefinitionsParser localizedSubtitlesForSubtitles:subpickerCount:](v58, "localizedSubtitlesForSubtitles:subpickerCount:", v63, [v84 count]);
-    LOBYTE(v68) = v56;
+    v64 = -[AVTEditingModelDefinitionsParser localizedSubtitlesForSubtitles:subpickerCount:](v58, "localizedSubtitlesForSubtitles:subpickerCount:", v63, [array count]);
+    LOBYTE(v68) = bOOLValue;
     v65 = v80;
-    v48 = [[AVTCoreModelMulticolorPicker alloc] initWithTitle:v62 subpickers:v84 subtitles:v64 nestedPresetPickers:v80 auxiliaryPicker:v52 initialState:v76 allowsRemoval:v68 options:v59];
+    v48 = [[AVTCoreModelMulticolorPicker alloc] initWithTitle:v62 subpickers:array subtitles:v64 nestedPresetPickers:v80 auxiliaryPicker:v52 initialState:integerValue3 allowsRemoval:v68 options:v59];
 
     v14 = v69;
     v12 = v70;
@@ -1088,11 +1088,11 @@ LABEL_50:
     goto LABEL_64;
   }
 
-  if (v74 && v51)
+  if (errorCopy && v51)
   {
     v66 = v51;
     v48 = 0;
-    *v74 = v52;
+    *errorCopy = v52;
   }
 
   v65 = v80;
@@ -1104,16 +1104,16 @@ LABEL_66:
   return v48;
 }
 
-- (id)localizedSubtitlesForSubtitles:(id)a3 subpickerCount:(int64_t)a4
+- (id)localizedSubtitlesForSubtitles:(id)subtitles subpickerCount:(int64_t)count
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = [MEMORY[0x1E695DF70] array];
+  subtitlesCopy = subtitles;
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = subtitlesCopy;
   v26 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v26)
   {
@@ -1132,9 +1132,9 @@ LABEL_66:
 
         v27 = v9;
         v31 = *(*(&v32 + 1) + 8 * v9);
-        v30 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v10 = 0x1E696A000uLL;
-        if (a4 >= 1)
+        if (count >= 1)
         {
           v11 = 0;
           v28 = v7 - 1;
@@ -1160,9 +1160,9 @@ LABEL_66:
               }
 
               v16 = v7;
-              v17 = a4;
-              v18 = self;
-              v19 = [v29 objectAtIndexedSubscript:v28];
+              countCopy = count;
+              selfCopy = self;
+              v19 = [array objectAtIndexedSubscript:v28];
               v20 = [v19 objectForKeyedSubscript:v13];
               if (v20)
               {
@@ -1174,8 +1174,8 @@ LABEL_66:
                 v15 = 0;
               }
 
-              self = v18;
-              a4 = v17;
+              self = selfCopy;
+              count = countCopy;
               v7 = v16;
               v8 = 0x1E696A000;
               v10 = 0x1E696A000;
@@ -1185,17 +1185,17 @@ LABEL_66:
               }
             }
 
-            [v30 setObject:v15 forKeyedSubscript:v12];
+            [dictionary setObject:v15 forKeyedSubscript:v12];
 
 LABEL_17:
             ++v11;
           }
 
-          while (a4 != v11);
+          while (count != v11);
         }
 
-        v21 = [v30 copy];
-        [v29 addObject:v21];
+        v21 = [dictionary copy];
+        [array addObject:v21];
 
         ++v7;
         v9 = v27 + 1;
@@ -1208,21 +1208,21 @@ LABEL_17:
     while (v26);
   }
 
-  v22 = [v29 copy];
+  v22 = [array copy];
 
   return v22;
 }
 
-- (id)multicolorAuxiliaryPickerForDictionary:(id)a3 error:(id *)a4
+- (id)multicolorAuxiliaryPickerForDictionary:(id)dictionary error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorAuxiliaryPickerItems];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorAuxiliaryPickerItems];
   if ([v6 count])
   {
-    v30 = a4;
-    v32 = v5;
-    v34 = [MEMORY[0x1E695DF70] array];
+    errorCopy = error;
+    v32 = dictionaryCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -1267,7 +1267,7 @@ LABEL_4:
 
 LABEL_14:
         v24 = [[AVTCoreModelMulticolorAuxilaryPickerItem alloc] initWithIdentifier:v13 title:v16 message:v19];
-        [v34 addObject:v24];
+        [array addObject:v24];
 
         if (v9 == ++v11)
         {
@@ -1290,17 +1290,17 @@ LABEL_13:
 
       if (v23)
       {
-        if (v30)
+        if (errorCopy)
         {
           v28 = v23;
-          *v30 = v23;
+          *errorCopy = v23;
         }
 
         v27 = 0;
         v6 = v31;
-        v5 = v32;
+        dictionaryCopy = v32;
         v25 = obj;
-        v26 = v34;
+        v26 = array;
         goto LABEL_20;
       }
 
@@ -1309,10 +1309,10 @@ LABEL_13:
 
 LABEL_16:
 
-    v5 = v32;
+    dictionaryCopy = v32;
     v25 = [v32 objectForKeyedSubscript:kAVTEditingModelDefinitionsMulticolorAuxiliaryPickerType];
-    v26 = v34;
-    v27 = [[AVTCoreModelMulticolorAuxiliaryPicker alloc] initWithType:v25 items:v34];
+    v26 = array;
+    v27 = [[AVTCoreModelMulticolorAuxiliaryPicker alloc] initWithType:v25 items:array];
     v6 = v31;
 LABEL_20:
   }
@@ -1325,19 +1325,19 @@ LABEL_20:
   return v27;
 }
 
-- (BOOL)validateForCategoryWithEnumValue:(id)a3 pickers:(id)a4
+- (BOOL)validateForCategoryWithEnumValue:(id)value pickers:(id)pickers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  valueCopy = value;
+  pickersCopy = pickers;
+  v8 = pickersCopy;
+  if (!valueCopy)
   {
     v10 = @"Category definitions require a valid %@";
     v11 = &kAVTEditingModelDefinitionsCategoryNameKey;
     goto LABEL_7;
   }
 
-  if (!v7 || ![v7 count])
+  if (!pickersCopy || ![pickersCopy count])
   {
     v10 = @"Category definitions must contain at least one %@";
     v11 = &kAVTEditingModelDefinitionsCategoryPickersKey;
@@ -1357,33 +1357,33 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)validateForMulticolorPicker:(id)a3 subpickers:(id)a4 error:(id *)a5
+- (BOOL)validateForMulticolorPicker:(id)picker subpickers:(id)subpickers error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && [v8 count])
+  pickerCopy = picker;
+  subpickersCopy = subpickers;
+  v9 = subpickersCopy;
+  if (subpickersCopy && [subpickersCopy count])
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = objc_opt_class();
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Multicolor definitions must contain at least one %@", kAVTEditingModelDefinitionsMulticolorSubpickers];
-    *a5 = [v10 errorWithDescription:v11 underlyingError:0];
+    kAVTEditingModelDefinitionsMulticolorSubpickers = [MEMORY[0x1E696AEC0] stringWithFormat:@"Multicolor definitions must contain at least one %@", kAVTEditingModelDefinitionsMulticolorSubpickers];
+    *error = [v10 errorWithDescription:kAVTEditingModelDefinitionsMulticolorSubpickers underlyingError:0];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (BOOL)validateForColorPicker:(id)a3 colorPaletteCategory:(id)a4 error:(id *)a5
+- (BOOL)validateForColorPicker:(id)picker colorPaletteCategory:(id)category error:(id *)error
 {
-  if (a3)
+  if (picker)
   {
-    v5 = a4 == 0;
+    v5 = category == 0;
   }
 
   else
@@ -1392,43 +1392,43 @@ LABEL_8:
   }
 
   v6 = !v5;
-  if (v5 && a5)
+  if (v5 && error)
   {
     v8 = objc_opt_class();
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"colorPicker, %@ doesn't match a valid category", kAVTEditingModelDefinitionsColorPickerPaletteKey];
-    *a5 = [v8 errorWithDescription:v9 underlyingError:0];
+    kAVTEditingModelDefinitionsColorPickerPaletteKey = [MEMORY[0x1E696AEC0] stringWithFormat:@"colorPicker, %@ doesn't match a valid category", kAVTEditingModelDefinitionsColorPickerPaletteKey];
+    *error = [v8 errorWithDescription:kAVTEditingModelDefinitionsColorPickerPaletteKey underlyingError:0];
   }
 
   return v6;
 }
 
-- (id)neutralMemojiPresetIdentifierForCategory:(int64_t)a3
+- (id)neutralMemojiPresetIdentifierForCategory:(int64_t)category
 {
-  v5 = [(AVTEditingModelDefinitionsParser *)self neutralMemojiPresetsIdentifierPerCategory];
+  neutralMemojiPresetsIdentifierPerCategory = [(AVTEditingModelDefinitionsParser *)self neutralMemojiPresetsIdentifierPerCategory];
 
-  if (!v5)
+  if (!neutralMemojiPresetsIdentifierPerCategory)
   {
-    v6 = [MEMORY[0x1E698E2A0] neutralMemojiPresetsIdentifiersPerCategory];
-    [(AVTEditingModelDefinitionsParser *)self setNeutralMemojiPresetsIdentifierPerCategory:v6];
+    neutralMemojiPresetsIdentifiersPerCategory = [MEMORY[0x1E698E2A0] neutralMemojiPresetsIdentifiersPerCategory];
+    [(AVTEditingModelDefinitionsParser *)self setNeutralMemojiPresetsIdentifierPerCategory:neutralMemojiPresetsIdentifiersPerCategory];
   }
 
-  v7 = [(AVTEditingModelDefinitionsParser *)self neutralMemojiPresetsIdentifierPerCategory];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [v7 objectForKey:v8];
+  neutralMemojiPresetsIdentifierPerCategory2 = [(AVTEditingModelDefinitionsParser *)self neutralMemojiPresetsIdentifierPerCategory];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v9 = [neutralMemojiPresetsIdentifierPerCategory2 objectForKey:v8];
 
   return v9;
 }
 
-- (id)coreModelPresetsForCategory:(int64_t)a3
+- (id)coreModelPresetsForCategory:(int64_t)category
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(AVTEditingModelDefinitionsParser *)self neutralMemojiPresetIdentifierForCategory:a3];
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(AVTEditingModelDefinitionsParser *)self neutralMemojiPresetIdentifierForCategory:category];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [MEMORY[0x1E698E2A8] availablePresetsForCategory:{a3, 0}];
+  v7 = [MEMORY[0x1E698E2A8] availablePresetsForCategory:{category, 0}];
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -1446,8 +1446,8 @@ LABEL_8:
         v12 = *(*(&v18 + 1) + 8 * i);
         if (v6)
         {
-          v13 = [*(*(&v18 + 1) + 8 * i) identifier];
-          v14 = [v13 isEqualToString:v6];
+          identifier = [*(*(&v18 + 1) + 8 * i) identifier];
+          v14 = [identifier isEqualToString:v6];
         }
 
         else
@@ -1456,7 +1456,7 @@ LABEL_8:
         }
 
         v15 = [[AVTCoreModelPreset alloc] initWithPreset:v12 isDefaultPreset:v14];
-        [v5 addObject:v15];
+        [array addObject:v15];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1465,28 +1465,28 @@ LABEL_8:
     while (v9);
   }
 
-  v16 = [v5 copy];
+  v16 = [array copy];
 
   return v16;
 }
 
-- (id)coreModelColorsForPaletteSettingKind:(id)a3
+- (id)coreModelColorsForPaletteSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(AVTEditingModelDefinitionsParser *)self colorCache];
-  v6 = [v5 colorsForSettingKind:{var0, var1}];
+  var1 = kind.var1;
+  var0 = kind.var0;
+  colorCache = [(AVTEditingModelDefinitionsParser *)self colorCache];
+  v6 = [colorCache colorsForSettingKind:{var0, var1}];
 
   return v6;
 }
 
-- (id)coreModelColorsForColorDefinitions:(id)a3 paletteSettingKind:(id)a4
+- (id)coreModelColorsForColorDefinitions:(id)definitions paletteSettingKind:(id)kind
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = kind.var1;
+  var0 = kind.var0;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a3;
-  v9 = [v7 array];
+  definitionsCopy = definitions;
+  array = [v7 array];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__AVTEditingModelDefinitionsParser_coreModelColorsForColorDefinitions_paletteSettingKind___block_invoke;
@@ -1494,9 +1494,9 @@ LABEL_8:
   v14[4] = self;
   v16 = var0;
   v17 = var1;
-  v10 = v9;
+  v10 = array;
   v15 = v10;
-  [v8 enumerateObjectsUsingBlock:v14];
+  [definitionsCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v10;
@@ -1563,16 +1563,16 @@ LABEL_9:
   [*(a1 + 40) addObject:v7];
 }
 
-- (id)gatherAllTagsFromPresets:(id)a3
+- (id)gatherAllTagsFromPresets:(id)presets
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  presetsCopy = presets;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = presetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1587,13 +1587,13 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) tags];
+        tags = [*(*(&v15 + 1) + 8 * i) tags];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_invoke;
         v13[3] = &unk_1E7F3BC58;
-        v14 = v4;
-        [v10 enumerateKeysAndObjectsUsingBlock:v13];
+        v14 = dictionary;
+        [tags enumerateKeysAndObjectsUsingBlock:v13];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1602,7 +1602,7 @@ LABEL_9:
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
@@ -1621,17 +1621,17 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
   [v6 unionOrderedSet:v5];
 }
 
-- (id)applyPlatformOverrideForDictionary:(id)a3
+- (id)applyPlatformOverrideForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"platformOverride"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"platformOverride"];
   if (v5 && (-[AVTEditingModelDefinitionsParser platformDictionaryKey](self, "platformDictionaryKey"), v6 = objc_claimAutoreleasedReturnValue(), [v5 objectForKey:v6], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [(AVTEditingModelDefinitionsParser *)self platformDictionaryKey];
-    v9 = [v5 objectForKeyedSubscript:v8];
+    platformDictionaryKey = [(AVTEditingModelDefinitionsParser *)self platformDictionaryKey];
+    v9 = [v5 objectForKeyedSubscript:platformDictionaryKey];
     v10 = [v9 mutableCopy];
 
-    v11 = [v4 mutableCopy];
+    v11 = [dictionaryCopy mutableCopy];
     v12 = [v11 objectForKeyedSubscript:kAVTEditingModelDefinitionsOptionsKey];
     v13 = [v12 mutableCopy];
 
@@ -1650,18 +1650,18 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
 
   else
   {
-    v11 = v4;
+    v11 = dictionaryCopy;
   }
 
   return v11;
 }
 
-- (id)coreModelRowFromRowDictionary:(id)a3 availableTags:(id)a4 usedTags:(id)a5 defaultOptions:(id)a6
+- (id)coreModelRowFromRowDictionary:(id)dictionary availableTags:(id)tags usedTags:(id)usedTags defaultOptions:(id)options
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:a3];
+  tagsCopy = tags;
+  usedTagsCopy = usedTags;
+  optionsCopy = options;
+  v13 = [(AVTEditingModelDefinitionsParser *)self applyPlatformOverrideForDictionary:dictionary];
   v14 = objc_opt_class();
   v15 = [v13 objectForKeyedSubscript:kAVTEditingModelDefinitionsTitleKey];
   v16 = [v14 localizedString:v15];
@@ -1672,13 +1672,13 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
     v18 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v17];
   }
 
-  else if ([v11 count])
+  else if ([usedTagsCopy count])
   {
     v19 = MEMORY[0x1E695DFA0];
-    v20 = [v10 allKeys];
-    v21 = [v19 orderedSetWithArray:v20];
+    allKeys = [tagsCopy allKeys];
+    v21 = [v19 orderedSetWithArray:allKeys];
 
-    [v21 minusOrderedSet:v11];
+    [v21 minusOrderedSet:usedTagsCopy];
     v18 = [v21 copy];
   }
 
@@ -1695,30 +1695,30 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
 
   else
   {
-    v23 = v12;
+    v23 = optionsCopy;
   }
 
   v24 = v23;
   if (v23)
   {
     v25 = [v13 objectForKeyedSubscript:kAVTEditingModelDefinitionsPairingKey];
-    v26 = self;
+    selfCopy = self;
     v27 = v18;
     v28 = v16;
-    v29 = v11;
-    v30 = v10;
+    v29 = usedTagsCopy;
+    v30 = tagsCopy;
     v31 = v25;
-    [(AVTEditingModelDefinitionsParser *)v26 pairingFromDictionary:v25];
+    [(AVTEditingModelDefinitionsParser *)selfCopy pairingFromDictionary:v25];
     v36 = v17;
-    v33 = v32 = v12;
+    v33 = v32 = optionsCopy;
 
-    v10 = v30;
-    v11 = v29;
+    tagsCopy = v30;
+    usedTagsCopy = v29;
     v16 = v28;
     v18 = v27;
     v34 = [[AVTCoreModelPresetsPicker alloc] initWithTitle:v16 representedTags:v27 pairing:v33 options:v24];
 
-    v12 = v32;
+    optionsCopy = v32;
     v17 = v36;
   }
 
@@ -1730,31 +1730,31 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
   return v34;
 }
 
-- (id)coreModelRowOptionsFromOptionsDictionary:(id)a3
+- (id)coreModelRowOptionsFromOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsSeparatorKey];
-  v6 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsCameraKey];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsSeparatorKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsCameraKey];
   v7 = [AVTEditingModelMappings framingModeForCameraIdentifier:v6];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
   v50 = 1;
-  v9 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsPresetOverridesKey];
+  v9 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsPresetOverridesKey];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __77__AVTEditingModelDefinitionsParser_coreModelRowOptionsFromOptionsDictionary___block_invoke;
   v44[3] = &unk_1E7F3BC80;
   v44[4] = self;
   v46 = &v47;
-  v10 = v8;
+  v10 = array;
   v45 = v10;
   [v9 enumerateKeysAndObjectsUsingBlock:v44];
   if (v48[3])
   {
-    v11 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsPoseOverrideKey];
+    v11 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsPoseOverrideKey];
     if ([v11 count])
     {
       v12 = [objc_alloc(MEMORY[0x1E698E288]) initWithDictionaryRepresentation:v11];
@@ -1765,7 +1765,7 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
       v12 = 0;
     }
 
-    v14 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsCameraOverridesKey];
+    v14 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsCameraOverridesKey];
     v35 = v14;
     if (v14)
     {
@@ -1777,10 +1777,10 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
       v36 = 0;
     }
 
-    v15 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsDisplayModeKey];
+    v15 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsDisplayModeKey];
     v34 = [AVTCoreModelPickerOptions displayModeFromString:v15];
 
-    v16 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsDisplayConditionKey];
+    v16 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsDisplayConditionKey];
     if (v16)
     {
       v33 = [AVTCoreModelPickerDisplayCondition displayConditionFromDictionnary:v16];
@@ -1791,7 +1791,7 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
       v33 = 0;
     }
 
-    v40 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsSortingKey];
+    v40 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsSortingKey];
     v17 = [objc_opt_class() defaultSortingOptionForPlatform:{-[AVTEditingModelDefinitionsParser platform](self, "platform")}];
     if (v40)
     {
@@ -1802,16 +1802,16 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
     v32 = v16;
     if (v5)
     {
-      v19 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v19 = 1;
+      bOOLValue = 1;
     }
 
     v39 = v10;
-    v20 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsStickerConfigurationKey];
+    v20 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsStickerConfigurationKey];
     v21 = v12;
     v41 = [v20 objectForKeyedSubscript:kAVTEditingModelDefinitionsStickerConfigurationNameKey];
     v22 = [v20 objectForKeyedSubscript:kAVTEditingModelDefinitionsStickerConfigurationPackKey];
@@ -1831,16 +1831,16 @@ void __61__AVTEditingModelDefinitionsParser_gatherAllTagsFromPresets___block_inv
       v23 = [v24 avt_firstObjectPassingTest:v42];
     }
 
-    v25 = [v4 objectForKeyedSubscript:kAVTEditingModelDefinitionsShowsLabelKey];
+    v25 = [dictionaryCopy objectForKeyedSubscript:kAVTEditingModelDefinitionsShowsLabelKey];
     if ((AVTUIEditorShowAssetsName_once() & 1) != 0 || v25 && [v25 BOOLValue])
     {
-      v26 = v19;
+      v26 = bOOLValue;
       v27 = 1;
     }
 
     else
     {
-      v26 = v19;
+      v26 = bOOLValue;
       v27 = 0;
     }
 

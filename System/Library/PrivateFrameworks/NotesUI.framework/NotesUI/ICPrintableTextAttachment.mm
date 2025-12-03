@@ -1,17 +1,17 @@
 @interface ICPrintableTextAttachment
 - (CGPoint)frameOffset;
-- (CGRect)adjustedBounds:(CGRect)a3 forProposedLineFragment:(CGRect)a4;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)adjustedBounds:(CGRect)bounds forProposedLineFragment:(CGRect)fragment;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 @end
 
 @implementation ICPrintableTextAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
   v11.receiver = self;
   v11.super_class = ICPrintableTextAttachment;
-  [(ICPrintableTextAttachment *)&v11 attachmentBoundsForTextContainer:a3 proposedLineFragment:a6 glyphPosition:a4.origin.x characterIndex:a4.origin.y, a4.size.width, a4.size.height, a5.x, a5.y];
+  [(ICPrintableTextAttachment *)&v11 attachmentBoundsForTextContainer:container proposedLineFragment:index glyphPosition:fragment.origin.x characterIndex:fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   [ICPrintableTextAttachment adjustedBounds:"adjustedBounds:forProposedLineFragment:" forProposedLineFragment:?];
   result.size.height = v10;
   result.size.width = v9;
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   v12.receiver = self;
   v12.super_class = ICPrintableTextAttachment;
-  [(ICPrintableTextAttachment *)&v12 attachmentBoundsForAttributes:a3 location:a4 textContainer:a5 proposedLineFragment:a6.origin.x position:a6.origin.y, a6.size.width, a6.size.height, a7.x, a7.y];
+  [(ICPrintableTextAttachment *)&v12 attachmentBoundsForAttributes:attributes location:location textContainer:container proposedLineFragment:fragment.origin.x position:fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   [ICPrintableTextAttachment adjustedBounds:"adjustedBounds:forProposedLineFragment:" forProposedLineFragment:?];
   result.size.height = v11;
   result.size.width = v10;
@@ -33,14 +33,14 @@
   return result;
 }
 
-- (CGRect)adjustedBounds:(CGRect)a3 forProposedLineFragment:(CGRect)a4
+- (CGRect)adjustedBounds:(CGRect)bounds forProposedLineFragment:(CGRect)fragment
 {
-  width = a4.size.width;
-  height = a3.size.height;
-  v6 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(ICPrintableTextAttachment *)self frameOffset:a3.origin.x];
+  width = fragment.size.width;
+  height = bounds.size.height;
+  v6 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(ICPrintableTextAttachment *)self frameOffset:bounds.origin.x];
   v11 = v10;
   [(ICPrintableTextAttachment *)self frameOffset];
   v13 = v12;

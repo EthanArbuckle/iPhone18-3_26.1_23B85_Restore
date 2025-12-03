@@ -1,5 +1,5 @@
 @interface NFAssertPKWalletForegroundPresentment
-- (BOOL)isEntitled:(id)a3;
+- (BOOL)isEntitled:(id)entitled;
 - (id)onAssert;
 - (id)onDeassert;
 @end
@@ -13,8 +13,8 @@
   if (self)
   {
     v66 = +[_NFHardwareManager sharedHardwareManager];
-    v65 = [v66 expressModeManager];
-    v3 = sub_100006D58(v65);
+    expressModeManager = [v66 expressModeManager];
+    v3 = sub_100006D58(expressModeManager);
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
@@ -191,8 +191,8 @@
     }
 
     *v90 = 0;
-    v48 = [(NFAsserter *)self remoteAssertion];
-    v49 = [v48 description];
+    remoteAssertion = [(NFAsserter *)self remoteAssertion];
+    v49 = [remoteAssertion description];
     v32 = [v36 assert:0 requestor:v49 isFirst:0 updatedVal:v90];
   }
 
@@ -255,12 +255,12 @@
   return v54;
 }
 
-- (BOOL)isEntitled:(id)a3
+- (BOOL)isEntitled:(id)entitled
 {
-  v3 = [a3 NF_whitelistChecker];
-  v4 = [v3 internalAccess];
+  nF_whitelistChecker = [entitled NF_whitelistChecker];
+  internalAccess = [nF_whitelistChecker internalAccess];
 
-  return v4;
+  return internalAccess;
 }
 
 - (id)onDeassert
@@ -384,8 +384,8 @@
   if (([(NFAssertPKPresentConfiguration *)self->_config options]& 5) != 0)
   {
     *buf = 0;
-    v27 = [(NFAsserter *)self remoteAssertion];
-    v28 = [v27 description];
+    remoteAssertion = [(NFAsserter *)self remoteAssertion];
+    v28 = [remoteAssertion description];
     v29 = [v15 deassert:0 requestor:v28 isLast:0 updatedVal:buf];
   }
 

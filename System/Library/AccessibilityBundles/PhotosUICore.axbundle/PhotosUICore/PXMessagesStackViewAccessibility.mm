@@ -1,5 +1,5 @@
 @interface PXMessagesStackViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
@@ -9,26 +9,26 @@
 
 @implementation PXMessagesStackViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXMessagesStackPlaybackControlView"];
-  [v3 validateClass:@"PXBaseMessagesStackView" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXMessagesStackView" isKindOfClass:@"PXBaseMessagesStackView"];
-  [v3 validateClass:@"PXMessagesStackView" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXMessagesStackItemsLayout" hasInstanceMethod:@"primaryItemIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXAssetReference" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXMessagesStackItemsLayout" hasInstanceMethod:@"stackedItemsCount" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PXMessagesStackPlaybackControlView" hasInstanceVariable:@"_button" withType:"_PXMessagesStackPlayButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXMessagesStackPlaybackControlView"];
+  [validationsCopy validateClass:@"PXBaseMessagesStackView" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXMessagesStackView" isKindOfClass:@"PXBaseMessagesStackView"];
+  [validationsCopy validateClass:@"PXMessagesStackView" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXMessagesStackItemsLayout" hasInstanceMethod:@"primaryItemIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXAssetReference" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXMessagesStackItemsLayout" hasInstanceMethod:@"stackedItemsCount" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PXMessagesStackPlaybackControlView" hasInstanceVariable:@"_button" withType:"_PXMessagesStackPlayButton"];
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(PXMessagesStackViewAccessibility *)self accessibilityUserDefinedValue];
+  accessibilityUserDefinedValue = [(PXMessagesStackViewAccessibility *)self accessibilityUserDefinedValue];
 
-  if (v3)
+  if (accessibilityUserDefinedValue)
   {
-    v4 = [(PXMessagesStackViewAccessibility *)self accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue2 = [(PXMessagesStackViewAccessibility *)self accessibilityUserDefinedValue];
   }
 
   else
@@ -51,10 +51,10 @@
     v10 = MEMORY[0x29EDBA0F8];
     v11 = accessibilityPhotosUICoreLocalizedString(@"messages.attachment.stack.view.format");
     v13 = [v10 localizedStringWithFormat:v11, v5, v7];
-    v4 = __UIAXStringForVariables();
+    accessibilityUserDefinedValue2 = __UIAXStringForVariables();
   }
 
-  return v4;
+  return accessibilityUserDefinedValue2;
 }
 
 uint64_t __58__PXMessagesStackViewAccessibility_accessibilityIncrement__block_invoke(uint64_t a1)

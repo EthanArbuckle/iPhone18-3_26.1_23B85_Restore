@@ -1,12 +1,12 @@
 @interface MTKTextureLoaderASTCHelper
-+ (int64_t)isASTCHDRData:(id)a3 is3DBlocks:(BOOL)a4 error:(id *)a5;
++ (int64_t)isASTCHDRData:(id)data is3DBlocks:(BOOL)blocks error:(id *)error;
 @end
 
 @implementation MTKTextureLoaderASTCHelper
 
-+ (int64_t)isASTCHDRData:(id)a3 is3DBlocks:(BOOL)a4 error:(id *)a5
++ (int64_t)isASTCHDRData:(id)data is3DBlocks:(BOOL)blocks error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -16,12 +16,12 @@
   v11[2] = __61__MTKTextureLoaderASTCHelper_isASTCHDRData_is3DBlocks_error___block_invoke;
   v11[3] = &unk_1E8580DB0;
   v11[4] = &v13;
-  v12 = a4;
-  [v7 enumerateByteRangesUsingBlock:v11];
+  blocksCopy = blocks;
+  [dataCopy enumerateByteRangesUsingBlock:v11];
   v8 = v14;
-  if (a5 && v14[3] == -1)
+  if (error && v14[3] == -1)
   {
-    *a5 = _newMTKTextureErrorWithCodeAndErrorString(-1, @"Could not load ASTC texture, data is malformed");
+    *error = _newMTKTextureErrorWithCodeAndErrorString(-1, @"Could not load ASTC texture, data is malformed");
     v8 = v14;
   }
 

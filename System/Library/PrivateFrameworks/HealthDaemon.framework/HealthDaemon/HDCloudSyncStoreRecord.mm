@@ -1,92 +1,92 @@
 @interface HDCloudSyncStoreRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isStoreRecord:(id)a3;
-+ (BOOL)isStoreRecordID:(id)a3;
-+ (HDCloudSyncStoreRecord)recordWithCKRecord:(id)a3 error:(id *)a4;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isStoreRecord:(id)record;
++ (BOOL)isStoreRecordID:(id)d;
++ (HDCloudSyncStoreRecord)recordWithCKRecord:(id)record error:(id *)error;
 + (id)fieldsForUnprotectedSerialization;
-+ (id)recordIDForOwnerIdentifier:(id)a3 storeIdentifier:(id)a4 zoneID:(id)a5;
-+ (id)recordIDWithIndividualZoneID:(id)a3;
++ (id)recordIDForOwnerIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier zoneID:(id)d;
++ (id)recordIDWithIndividualZoneID:(id)d;
 - (BOOL)hasActiveSequence;
-- (BOOL)hasSequenceWithFutureSyncEntityVersions:(id)a3;
+- (BOOL)hasSequenceWithFutureSyncEntityVersions:(id)versions;
 - (BOOL)isChild;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDCloudSyncSequenceRecord)sequenceRecord;
 - (HDCloudSyncShardPredicate)shardPredicate;
-- (HDCloudSyncStoreRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
+- (HDCloudSyncStoreRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (HDSyncIdentity)pendingSyncIdentity;
 - (HDSyncIdentity)syncIdentity;
 - (NSArray)orderedSequenceRecords;
 - (NSString)pendingOwner;
 - (NSUUID)storeIdentifier;
-- (id)_clearSequenceHeaderRecord:(void *)a1;
+- (id)_clearSequenceHeaderRecord:(void *)record;
 - (id)activeSequenceHeaderRecord;
-- (id)addNewSequenceHeaderRecordWithSyncAnchorMap:(id)a3 includedIdentifiers:(id)a4 includedSyncIdentities:(id)a5 includedChildSyncIdentities:(id)a6;
-- (id)addNewTombstoneSequenceHeaderRecordWithIncludedIdentifiers:(id)a3 includedSyncIdentities:(id)a4 includedChildSyncIdentities:(id)a5;
+- (id)addNewSequenceHeaderRecordWithSyncAnchorMap:(id)map includedIdentifiers:(id)identifiers includedSyncIdentities:(id)identities includedChildSyncIdentities:(id)syncIdentities;
+- (id)addNewTombstoneSequenceHeaderRecordWithIncludedIdentifiers:(id)identifiers includedSyncIdentities:(id)identities includedChildSyncIdentities:(id)syncIdentities;
 - (id)clearCurrentSequenceHeaderRecord;
 - (id)clearOldSequenceHeaderRecord;
 - (id)clearPendingSequenceHeaderRecord;
 - (id)clearTombstoneSequenceHeaderRecord;
 - (id)currentSequenceHeaderRecord;
-- (id)initWithCKRecord:(uint64_t)a3 schemaVersion:(void *)a4 underlyingStore:;
+- (id)initWithCKRecord:(uint64_t)record schemaVersion:(void *)version underlyingStore:;
 - (id)oldSequenceHeaderRecord;
 - (id)pendingSequenceHeaderRecord;
-- (id)sequenceRecordWithRecordID:(id)a3;
+- (id)sequenceRecordWithRecordID:(id)d;
 - (id)shortDescription;
-- (int64_t)compare:(id)a3;
-- (void)addSequenceHeaderRecord:(id)a3;
-- (void)removeSequenceHeaderRecord:(id)a3;
-- (void)repairOwnerIdentifier:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setPendingOwner:(id)a3;
-- (void)setPendingSyncIdentity:(id)a3;
-- (void)setProductType:(id)a3;
-- (void)setShardPredicate:(id)a3;
-- (void)setSystemBuildVersion:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)addSequenceHeaderRecord:(id)record;
+- (void)removeSequenceHeaderRecord:(id)record;
+- (void)repairOwnerIdentifier:(id)identifier;
+- (void)setDeviceName:(id)name;
+- (void)setPendingOwner:(id)owner;
+- (void)setPendingSyncIdentity:(id)identity;
+- (void)setProductType:(id)type;
+- (void)setShardPredicate:(id)predicate;
+- (void)setSystemBuildVersion:(id)version;
 @end
 
 @implementation HDCloudSyncStoreRecord
 
-+ (id)recordIDForOwnerIdentifier:(id)a3 storeIdentifier:(id)a4 zoneID:(id)a5
++ (id)recordIDForOwnerIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier zoneID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  storeIdentifierCopy = storeIdentifier;
   v9 = MEMORY[0x277CBC5D0];
-  v10 = a5;
+  dCopy = d;
   v11 = [v9 alloc];
   v12 = MEMORY[0x277CCACA8];
-  v13 = v7;
-  v14 = v8;
+  v13 = identifierCopy;
+  v14 = storeIdentifierCopy;
   v15 = [v12 alloc];
-  v16 = [v14 UUIDString];
+  uUIDString = [v14 UUIDString];
 
-  v17 = [v15 initWithFormat:@"%@/%@/Store", v13, v16];
-  v18 = [v11 initWithRecordName:v17 zoneID:v10];
+  v17 = [v15 initWithFormat:@"%@/%@/Store", v13, uUIDString];
+  v18 = [v11 initWithRecordName:v17 zoneID:dCopy];
 
   return v18;
 }
 
-+ (id)recordIDWithIndividualZoneID:(id)a3
++ (id)recordIDWithIndividualZoneID:(id)d
 {
   v3 = MEMORY[0x277CBC5D0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncRoot" zoneID:v4];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncRoot" zoneID:dCopy];
 
   return v5;
 }
 
-+ (BOOL)isStoreRecord:(id)a3
++ (BOOL)isStoreRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncStoreRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncStoreRecord"];
 
   return v4;
 }
 
-+ (BOOL)isStoreRecordID:(id)a3
++ (BOOL)isStoreRecordID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 recordName];
-  v5 = [v4 isEqualToString:@"CloudSyncRoot"];
+  dCopy = d;
+  recordName = [dCopy recordName];
+  v5 = [recordName isEqualToString:@"CloudSyncRoot"];
 
   if (v5)
   {
@@ -95,8 +95,8 @@
 
   else
   {
-    v7 = [v3 recordName];
-    v8 = [v7 componentsSeparatedByString:@"/"];
+    recordName2 = [dCopy recordName];
+    v8 = [recordName2 componentsSeparatedByString:@"/"];
 
     if ([v8 count] == 3)
     {
@@ -113,7 +113,7 @@
   return v6;
 }
 
-- (HDCloudSyncStoreRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncStoreRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -123,27 +123,27 @@
   return 0;
 }
 
-- (id)initWithCKRecord:(uint64_t)a3 schemaVersion:(void *)a4 underlyingStore:
+- (id)initWithCKRecord:(uint64_t)record schemaVersion:(void *)version underlyingStore:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  versionCopy = version;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = HDCloudSyncStoreRecord;
-    v9 = objc_msgSendSuper2(&v18, sel_initWithCKRecord_schemaVersion_, v7, a3);
+    v9 = objc_msgSendSuper2(&v18, sel_initWithCKRecord_schemaVersion_, v7, record);
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(v9 + 3, a4);
-      v11 = [v10[3] ownerIdentifier];
-      [v7 hd_setValue:v11 ifChangedForKey:@"OwnerIdentifier"];
+      objc_storeStrong(v9 + 3, version);
+      ownerIdentifier = [v10[3] ownerIdentifier];
+      [v7 hd_setValue:ownerIdentifier ifChangedForKey:@"OwnerIdentifier"];
 
-      v12 = [v10[3] pendingOwnerIdentifier];
-      v13 = v12;
-      if (v12)
+      pendingOwnerIdentifier = [v10[3] pendingOwnerIdentifier];
+      v13 = pendingOwnerIdentifier;
+      if (pendingOwnerIdentifier)
       {
-        v14 = v12;
+        v14 = pendingOwnerIdentifier;
       }
 
       else
@@ -156,8 +156,8 @@
       v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10[3], "active")}];
       [v7 hd_setValue:v15 ifChangedForKey:@"Active"];
 
-      v16 = [v10[3] storeIdentifier];
-      [v7 hd_setValue:v16 ifChangedForKey:@"StoreIdentifier"];
+      storeIdentifier = [v10[3] storeIdentifier];
+      [v7 hd_setValue:storeIdentifier ifChangedForKey:@"StoreIdentifier"];
     }
   }
 
@@ -171,19 +171,19 @@
 
 - (HDCloudSyncSequenceRecord)sequenceRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self activeSequenceHeaderRecord];
-  v4 = v3;
-  if (v3)
+  activeSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self activeSequenceHeaderRecord];
+  v4 = activeSequenceHeaderRecord;
+  if (activeSequenceHeaderRecord)
   {
-    v5 = v3;
+    currentSequenceHeaderRecord = activeSequenceHeaderRecord;
   }
 
   else
   {
-    v5 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+    currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
   }
 
-  v6 = v5;
+  v6 = currentSequenceHeaderRecord;
 
   return v6;
 }
@@ -191,9 +191,9 @@
 - (NSArray)orderedSequenceRecords
 {
   v3 = self->_tombstoneSequenceRecord;
-  v4 = [(HDCloudSyncStoreRecord *)self sequenceRecord];
+  sequenceRecord = [(HDCloudSyncStoreRecord *)self sequenceRecord];
   slotASequenceHeaderRecord = self->_slotASequenceHeaderRecord;
-  if (slotASequenceHeaderRecord == v4)
+  if (slotASequenceHeaderRecord == sequenceRecord)
   {
     slotASequenceHeaderRecord = self->_slotBSequenceHeaderRecord;
   }
@@ -202,7 +202,7 @@
   v7 = slotASequenceHeaderRecord;
   v8 = objc_alloc_init(v6);
   [v8 hk_addNonNilObject:v3];
-  [v8 hk_addNonNilObject:v4];
+  [v8 hk_addNonNilObject:sequenceRecord];
   [v8 hk_addNonNilObject:v7];
 
   return v8;
@@ -218,8 +218,8 @@
   {
     if (slotBSequenceHeaderRecord)
     {
-      v7 = [(HDCloudSyncSequenceRecord *)slotASequenceHeaderRecord baselineEpoch];
-      if (v7 <= [(HDCloudSyncSequenceRecord *)*p_slotBSequenceHeaderRecord baselineEpoch])
+      baselineEpoch = [(HDCloudSyncSequenceRecord *)slotASequenceHeaderRecord baselineEpoch];
+      if (baselineEpoch <= [(HDCloudSyncSequenceRecord *)*p_slotBSequenceHeaderRecord baselineEpoch])
       {
         v8 = p_slotBSequenceHeaderRecord;
       }
@@ -252,51 +252,51 @@ LABEL_11:
 
 - (id)clearCurrentSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-  v4 = [(HDCloudSyncStoreRecord *)self _clearSequenceHeaderRecord:v3];
+  currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+  v4 = [(HDCloudSyncStoreRecord *)self _clearSequenceHeaderRecord:currentSequenceHeaderRecord];
 
   return v4;
 }
 
-- (id)_clearSequenceHeaderRecord:(void *)a1
+- (id)_clearSequenceHeaderRecord:(void *)record
 {
   v3 = a2;
   v4 = v3;
-  v5 = 0;
-  if (a1 && v3)
+  recordID = 0;
+  if (record && v3)
   {
-    v6 = a1 + 5;
-    v7 = a1[5];
-    if (v7 == v3 || (v6 = a1 + 6, v7 = a1[6], v7 == v3) || (v6 = a1 + 4, v7 = a1[4], v7 == v3))
+    v6 = record + 5;
+    v7 = record[5];
+    if (v7 == v3 || (v6 = record + 6, v7 = record[6], v7 == v3) || (v6 = record + 4, v7 = record[4], v7 == v3))
     {
       *v6 = 0;
 
-      v8 = [v4 record];
-      v5 = [v8 recordID];
+      record = [v4 record];
+      recordID = [record recordID];
     }
 
     else
     {
-      v5 = 0;
+      recordID = 0;
     }
   }
 
-  return v5;
+  return recordID;
 }
 
 - (id)oldSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-  v4 = v3;
-  if (!v3)
+  currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+  v4 = currentSequenceHeaderRecord;
+  if (!currentSequenceHeaderRecord)
   {
     goto LABEL_4;
   }
 
   slotBSequenceHeaderRecord = self->_slotBSequenceHeaderRecord;
-  if (v3 != self->_slotASequenceHeaderRecord)
+  if (currentSequenceHeaderRecord != self->_slotASequenceHeaderRecord)
   {
-    if (v3 != slotBSequenceHeaderRecord)
+    if (currentSequenceHeaderRecord != slotBSequenceHeaderRecord)
     {
 LABEL_4:
       v6 = 0;
@@ -314,23 +314,23 @@ LABEL_7:
 
 - (id)clearOldSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self oldSequenceHeaderRecord];
-  v4 = [(HDCloudSyncStoreRecord *)self _clearSequenceHeaderRecord:v3];
+  oldSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self oldSequenceHeaderRecord];
+  v4 = [(HDCloudSyncStoreRecord *)self _clearSequenceHeaderRecord:oldSequenceHeaderRecord];
 
   return v4;
 }
 
 - (id)activeSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-  v4 = [(HDCloudSyncSequenceRecord *)v3 isActive];
-  v5 = v3;
-  if (v4)
+  currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+  isActive = [(HDCloudSyncSequenceRecord *)currentSequenceHeaderRecord isActive];
+  v5 = currentSequenceHeaderRecord;
+  if (isActive)
   {
     goto LABEL_7;
   }
 
-  if (v3 == self->_slotASequenceHeaderRecord && (p_slotBSequenceHeaderRecord = &self->_slotBSequenceHeaderRecord, [(HDCloudSyncSequenceRecord *)self->_slotBSequenceHeaderRecord isActive]) || v3 == self->_slotBSequenceHeaderRecord && (p_slotBSequenceHeaderRecord = &self->_slotASequenceHeaderRecord, [(HDCloudSyncSequenceRecord *)self->_slotASequenceHeaderRecord isActive]))
+  if (currentSequenceHeaderRecord == self->_slotASequenceHeaderRecord && (p_slotBSequenceHeaderRecord = &self->_slotBSequenceHeaderRecord, [(HDCloudSyncSequenceRecord *)self->_slotBSequenceHeaderRecord isActive]) || currentSequenceHeaderRecord == self->_slotBSequenceHeaderRecord && (p_slotBSequenceHeaderRecord = &self->_slotASequenceHeaderRecord, [(HDCloudSyncSequenceRecord *)self->_slotASequenceHeaderRecord isActive]))
   {
     v5 = *p_slotBSequenceHeaderRecord;
 LABEL_7:
@@ -346,18 +346,18 @@ LABEL_9:
 
 - (id)pendingSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-  v4 = v3;
-  if (!v3)
+  currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+  v4 = currentSequenceHeaderRecord;
+  if (!currentSequenceHeaderRecord)
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_10;
   }
 
-  v5 = [(HDCloudSyncSequenceRecord *)v3 isActive];
+  isActive = [(HDCloudSyncSequenceRecord *)currentSequenceHeaderRecord isActive];
   v6 = v4;
-  if (v5)
+  if (isActive)
   {
     if (v4 != self->_slotASequenceHeaderRecord || (p_slotASequenceHeaderRecord = &self->_slotBSequenceHeaderRecord, [(HDCloudSyncSequenceRecord *)self->_slotBSequenceHeaderRecord isActive]))
     {
@@ -384,34 +384,34 @@ LABEL_10:
 
 - (id)clearPendingSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncStoreRecord *)self pendingSequenceHeaderRecord];
-  v4 = [(HDCloudSyncStoreRecord *)self _clearSequenceHeaderRecord:v3];
+  pendingSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self pendingSequenceHeaderRecord];
+  v4 = [(HDCloudSyncStoreRecord *)self _clearSequenceHeaderRecord:pendingSequenceHeaderRecord];
 
   return v4;
 }
 
 - (id)clearTombstoneSequenceHeaderRecord
 {
-  v3 = [(HDCloudSyncRecord *)self->_tombstoneSequenceRecord record];
-  v4 = [v3 recordID];
+  record = [(HDCloudSyncRecord *)self->_tombstoneSequenceRecord record];
+  recordID = [record recordID];
 
   tombstoneSequenceRecord = self->_tombstoneSequenceRecord;
   self->_tombstoneSequenceRecord = 0;
 
-  return v4;
+  return recordID;
 }
 
-- (id)addNewSequenceHeaderRecordWithSyncAnchorMap:(id)a3 includedIdentifiers:(id)a4 includedSyncIdentities:(id)a5 includedChildSyncIdentities:(id)a6
+- (id)addNewSequenceHeaderRecordWithSyncAnchorMap:(id)map includedIdentifiers:(id)identifiers includedSyncIdentities:(id)identities includedChildSyncIdentities:(id)syncIdentities
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-  v16 = v15;
-  if (v15)
+  syncIdentitiesCopy = syncIdentities;
+  identitiesCopy = identities;
+  identifiersCopy = identifiers;
+  mapCopy = map;
+  currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+  v16 = currentSequenceHeaderRecord;
+  if (currentSequenceHeaderRecord)
   {
-    if ([v15 slot] == 1)
+    if ([currentSequenceHeaderRecord slot] == 1)
     {
       v17 = 2;
     }
@@ -421,11 +421,11 @@ LABEL_10:
       v17 = 1;
     }
 
-    v18 = -[HDCloudSyncSequenceRecord initForSequenceSlot:syncAnchorMap:changeIndex:baselineEpoch:includedIdentifiers:includedSyncIdentities:includedChildSyncIdentities:storeRecord:]([HDCloudSyncSequenceRecord alloc], "initForSequenceSlot:syncAnchorMap:changeIndex:baselineEpoch:includedIdentifiers:includedSyncIdentities:includedChildSyncIdentities:storeRecord:", v17, v14, [v16 changeIndex], objc_msgSend(v16, "baselineEpoch") + 1, v13, v12, v11, self);
+    v18 = -[HDCloudSyncSequenceRecord initForSequenceSlot:syncAnchorMap:changeIndex:baselineEpoch:includedIdentifiers:includedSyncIdentities:includedChildSyncIdentities:storeRecord:]([HDCloudSyncSequenceRecord alloc], "initForSequenceSlot:syncAnchorMap:changeIndex:baselineEpoch:includedIdentifiers:includedSyncIdentities:includedChildSyncIdentities:storeRecord:", v17, mapCopy, [v16 changeIndex], objc_msgSend(v16, "baselineEpoch") + 1, identifiersCopy, identitiesCopy, syncIdentitiesCopy, self);
 
-    v19 = [v18 slot];
+    slot = [v18 slot];
     v20 = &OBJC_IVAR___HDCloudSyncStoreRecord__slotASequenceHeaderRecord;
-    if (v19 != 1)
+    if (slot != 1)
     {
       v20 = &OBJC_IVAR___HDCloudSyncStoreRecord__slotBSequenceHeaderRecord;
     }
@@ -433,7 +433,7 @@ LABEL_10:
 
   else
   {
-    v18 = [[HDCloudSyncSequenceRecord alloc] initForSequenceSlot:1 syncAnchorMap:v14 changeIndex:0 baselineEpoch:0 includedIdentifiers:v13 includedSyncIdentities:v12 includedChildSyncIdentities:v11 storeRecord:self];
+    v18 = [[HDCloudSyncSequenceRecord alloc] initForSequenceSlot:1 syncAnchorMap:mapCopy changeIndex:0 baselineEpoch:0 includedIdentifiers:identifiersCopy includedSyncIdentities:identitiesCopy includedChildSyncIdentities:syncIdentitiesCopy storeRecord:self];
 
     v20 = &OBJC_IVAR___HDCloudSyncStoreRecord__slotASequenceHeaderRecord;
   }
@@ -444,21 +444,21 @@ LABEL_10:
   v22 = v25;
   if ((v21 & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:372 description:{@"Failed to validate sequence record after creation: %@", v22}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:372 description:{@"Failed to validate sequence record after creation: %@", v22}];
   }
 
   return v18;
 }
 
-- (id)addNewTombstoneSequenceHeaderRecordWithIncludedIdentifiers:(id)a3 includedSyncIdentities:(id)a4 includedChildSyncIdentities:(id)a5
+- (id)addNewTombstoneSequenceHeaderRecordWithIncludedIdentifiers:(id)identifiers includedSyncIdentities:(id)identities includedChildSyncIdentities:(id)syncIdentities
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  syncIdentitiesCopy = syncIdentities;
+  identitiesCopy = identities;
+  identifiersCopy = identifiers;
   v12 = [HDCloudSyncSequenceRecord alloc];
   v13 = objc_alloc_init(HDSyncAnchorMap);
-  v14 = [(HDCloudSyncSequenceRecord *)v12 initForSequenceSlot:3 syncAnchorMap:v13 changeIndex:0 baselineEpoch:-100 includedIdentifiers:v11 includedSyncIdentities:v10 includedChildSyncIdentities:v9 storeRecord:self];
+  v14 = [(HDCloudSyncSequenceRecord *)v12 initForSequenceSlot:3 syncAnchorMap:v13 changeIndex:0 baselineEpoch:-100 includedIdentifiers:identifiersCopy includedSyncIdentities:identitiesCopy includedChildSyncIdentities:syncIdentitiesCopy storeRecord:self];
 
   tombstoneSequenceRecord = self->_tombstoneSequenceRecord;
   self->_tombstoneSequenceRecord = v14;
@@ -466,12 +466,12 @@ LABEL_10:
   [(HDCloudSyncSequenceRecord *)self->_tombstoneSequenceRecord setActive:1];
   v16 = self->_tombstoneSequenceRecord;
   v22 = 0;
-  LOBYTE(v11) = [(HDCloudSyncRecord *)v16 validateWithError:&v22];
+  LOBYTE(identifiersCopy) = [(HDCloudSyncRecord *)v16 validateWithError:&v22];
   v17 = v22;
-  if ((v11 & 1) == 0)
+  if ((identifiersCopy & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:391 description:{@"Failed to validate sequence record after creation: %@", v17}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:391 description:{@"Failed to validate sequence record after creation: %@", v17}];
   }
 
   v18 = self->_tombstoneSequenceRecord;
@@ -480,29 +480,29 @@ LABEL_10:
   return v18;
 }
 
-- (void)addSequenceHeaderRecord:(id)a3
+- (void)addSequenceHeaderRecord:(id)record
 {
-  v6 = a3;
-  v5 = [v6 slot] - 1;
+  recordCopy = record;
+  v5 = [recordCopy slot] - 1;
   if (v5 <= 2)
   {
-    objc_storeStrong((&self->super.super.isa + *off_27861D6E0[v5]), a3);
+    objc_storeStrong((&self->super.super.isa + *off_27861D6E0[v5]), record);
   }
 }
 
-- (void)removeSequenceHeaderRecord:(id)a3
+- (void)removeSequenceHeaderRecord:(id)record
 {
-  v9 = a3;
-  v5 = [(HDCloudSyncSequenceRecord *)v9 slot];
-  switch(v5)
+  recordCopy = record;
+  slot = [(HDCloudSyncSequenceRecord *)recordCopy slot];
+  switch(slot)
   {
     case 3:
       p_tombstoneSequenceRecord = &self->_tombstoneSequenceRecord;
       tombstoneSequenceRecord = self->_tombstoneSequenceRecord;
-      if (tombstoneSequenceRecord != v9)
+      if (tombstoneSequenceRecord != recordCopy)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"_tombstoneSequenceRecord == record"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"_tombstoneSequenceRecord == record"}];
         goto LABEL_14;
       }
 
@@ -510,10 +510,10 @@ LABEL_10:
     case 2:
       p_tombstoneSequenceRecord = &self->_slotBSequenceHeaderRecord;
       tombstoneSequenceRecord = self->_slotBSequenceHeaderRecord;
-      if (tombstoneSequenceRecord != v9)
+      if (tombstoneSequenceRecord != recordCopy)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:418 description:{@"Invalid parameter not satisfying: %@", @"_slotBSequenceHeaderRecord == record"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:418 description:{@"Invalid parameter not satisfying: %@", @"_slotBSequenceHeaderRecord == record"}];
         goto LABEL_14;
       }
 
@@ -521,10 +521,10 @@ LABEL_10:
     case 1:
       p_tombstoneSequenceRecord = &self->_slotASequenceHeaderRecord;
       tombstoneSequenceRecord = self->_slotASequenceHeaderRecord;
-      if (tombstoneSequenceRecord != v9)
+      if (tombstoneSequenceRecord != recordCopy)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
-        [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:414 description:{@"Invalid parameter not satisfying: %@", @"_slotASequenceHeaderRecord == record"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:414 description:{@"Invalid parameter not satisfying: %@", @"_slotASequenceHeaderRecord == record"}];
 LABEL_14:
 
         tombstoneSequenceRecord = *p_tombstoneSequenceRecord;
@@ -552,18 +552,18 @@ LABEL_10:
   return [(HDCloudSyncSequenceRecord *)slotBSequenceHeaderRecord isActive];
 }
 
-- (BOOL)hasSequenceWithFutureSyncEntityVersions:(id)a3
+- (BOOL)hasSequenceWithFutureSyncEntityVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   slotASequenceHeaderRecord = self->_slotASequenceHeaderRecord;
   v8 = 1;
-  if (!slotASequenceHeaderRecord || ![(HDCloudSyncSequenceRecord *)slotASequenceHeaderRecord hasFutureSyncEntityVersions:v4])
+  if (!slotASequenceHeaderRecord || ![(HDCloudSyncSequenceRecord *)slotASequenceHeaderRecord hasFutureSyncEntityVersions:versionsCopy])
   {
     slotBSequenceHeaderRecord = self->_slotBSequenceHeaderRecord;
-    if (!slotBSequenceHeaderRecord || ![(HDCloudSyncSequenceRecord *)slotBSequenceHeaderRecord hasFutureSyncEntityVersions:v4])
+    if (!slotBSequenceHeaderRecord || ![(HDCloudSyncSequenceRecord *)slotBSequenceHeaderRecord hasFutureSyncEntityVersions:versionsCopy])
     {
       tombstoneSequenceRecord = self->_tombstoneSequenceRecord;
-      if (!tombstoneSequenceRecord || ![(HDCloudSyncSequenceRecord *)tombstoneSequenceRecord hasFutureSyncEntityVersions:v4])
+      if (!tombstoneSequenceRecord || ![(HDCloudSyncSequenceRecord *)tombstoneSequenceRecord hasFutureSyncEntityVersions:versionsCopy])
       {
         v8 = 0;
       }
@@ -573,13 +573,13 @@ LABEL_10:
   return v8;
 }
 
-- (id)sequenceRecordWithRecordID:(id)a3
+- (id)sequenceRecordWithRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   p_slotASequenceHeaderRecord = &self->_slotASequenceHeaderRecord;
-  v6 = [(HDCloudSyncRecord *)self->_slotASequenceHeaderRecord record];
-  v7 = [v6 recordID];
-  v8 = [v7 isEqual:v4];
+  record = [(HDCloudSyncRecord *)self->_slotASequenceHeaderRecord record];
+  recordID = [record recordID];
+  v8 = [recordID isEqual:dCopy];
 
   if (v8)
   {
@@ -587,9 +587,9 @@ LABEL_10:
   }
 
   p_slotASequenceHeaderRecord = &self->_slotBSequenceHeaderRecord;
-  v9 = [(HDCloudSyncRecord *)self->_slotBSequenceHeaderRecord record];
-  v10 = [v9 recordID];
-  v11 = [v10 isEqual:v4];
+  record2 = [(HDCloudSyncRecord *)self->_slotBSequenceHeaderRecord record];
+  recordID2 = [record2 recordID];
+  v11 = [recordID2 isEqual:dCopy];
 
   if (v11)
   {
@@ -597,9 +597,9 @@ LABEL_10:
   }
 
   p_slotASequenceHeaderRecord = &self->_tombstoneSequenceRecord;
-  v12 = [(HDCloudSyncRecord *)self->_tombstoneSequenceRecord record];
-  v13 = [v12 recordID];
-  v14 = [v13 isEqual:v4];
+  record3 = [(HDCloudSyncRecord *)self->_tombstoneSequenceRecord record];
+  recordID3 = [record3 recordID];
+  v14 = [recordID3 isEqual:dCopy];
 
   if (v14)
   {
@@ -618,8 +618,8 @@ LABEL_4:
 - (NSUUID)storeIdentifier
 {
   v2 = MEMORY[0x277CCAD78];
-  v3 = [(HDCloudSyncCodableStore *)self->_underlyingStore storeIdentifier];
-  v4 = [v2 hk_UUIDWithData:v3];
+  storeIdentifier = [(HDCloudSyncCodableStore *)self->_underlyingStore storeIdentifier];
+  v4 = [v2 hk_UUIDWithData:storeIdentifier];
 
   return v4;
 }
@@ -629,9 +629,9 @@ LABEL_4:
   v12 = *MEMORY[0x277D85DE8];
   if ([(HDCloudSyncCodableStore *)self->_underlyingStore hasSyncIdentity])
   {
-    v3 = [(HDCloudSyncCodableStore *)self->_underlyingStore syncIdentity];
+    syncIdentity = [(HDCloudSyncCodableStore *)self->_underlyingStore syncIdentity];
     v9 = 0;
-    v4 = [HDSyncIdentity syncIdentityWithCodable:v3 error:&v9];
+    v4 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:&v9];
     v5 = v9;
 
     if (!v4)
@@ -641,7 +641,7 @@ LABEL_4:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v11 = self;
+        selfCopy = self;
         _os_log_fault_impl(&dword_228986000, v6, OS_LOG_TYPE_FAULT, "Failed to decode underlying sync identity for record %@.", buf, 0xCu);
       }
     }
@@ -657,54 +657,54 @@ LABEL_4:
   return v4;
 }
 
-- (void)repairOwnerIdentifier:(id)a3
+- (void)repairOwnerIdentifier:(id)identifier
 {
   underlyingStore = self->_underlyingStore;
-  v6 = a3;
-  v7 = [(HDCloudSyncCodableStore *)underlyingStore ownerIdentifier];
+  identifierCopy = identifier;
+  ownerIdentifier = [(HDCloudSyncCodableStore *)underlyingStore ownerIdentifier];
 
-  if (v7)
+  if (ownerIdentifier)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:504 description:{@"Invalid parameter not satisfying: %@", @"_underlyingStore.ownerIdentifier == nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:504 description:{@"Invalid parameter not satisfying: %@", @"_underlyingStore.ownerIdentifier == nil"}];
   }
 
-  [(HDCloudSyncCodableStore *)self->_underlyingStore setOwnerIdentifier:v6];
-  v9 = [(HDCloudSyncRecord *)self record];
-  [v9 setObject:v6 forKeyedSubscript:@"OwnerIdentifier"];
+  [(HDCloudSyncCodableStore *)self->_underlyingStore setOwnerIdentifier:identifierCopy];
+  record = [(HDCloudSyncRecord *)self record];
+  [record setObject:identifierCopy forKeyedSubscript:@"OwnerIdentifier"];
 }
 
 - (NSString)pendingOwner
 {
-  v3 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
-  v4 = [v3 isEqualToString:&stru_283BF39C8];
+  pendingOwnerIdentifier = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
+  v4 = [pendingOwnerIdentifier isEqualToString:&stru_283BF39C8];
 
   if (v4)
   {
-    v5 = 0;
+    pendingOwnerIdentifier2 = 0;
   }
 
   else
   {
-    v5 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
+    pendingOwnerIdentifier2 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
   }
 
-  return v5;
+  return pendingOwnerIdentifier2;
 }
 
-- (void)setPendingOwner:(id)a3
+- (void)setPendingOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
-  v6 = v4;
+  ownerCopy = owner;
+  pendingOwnerIdentifier = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
+  v6 = ownerCopy;
   v12 = v6;
-  if (v5 != v6 && (!v6 || ([v5 isEqual:v6] & 1) == 0))
+  if (pendingOwnerIdentifier != v6 && (!v6 || ([pendingOwnerIdentifier isEqual:v6] & 1) == 0))
   {
     [(HDCloudSyncCodableStore *)self->_underlyingStore setPendingOwnerIdentifier:v12];
   }
 
-  v7 = [(HDCloudSyncRecord *)self record];
-  v8 = [v7 objectForKeyedSubscript:@"PendingOwner"];
+  record = [(HDCloudSyncRecord *)self record];
+  v8 = [record objectForKeyedSubscript:@"PendingOwner"];
 
   if (!v12)
   {
@@ -736,8 +736,8 @@ LABEL_10:
   }
 
 LABEL_11:
-  v11 = [(HDCloudSyncRecord *)self record];
-  [v11 setObject:v10 forKeyedSubscript:@"PendingOwner"];
+  record2 = [(HDCloudSyncRecord *)self record];
+  [record2 setObject:v10 forKeyedSubscript:@"PendingOwner"];
 
 LABEL_12:
 }
@@ -747,9 +747,9 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
   if ([(HDCloudSyncCodableStore *)self->_underlyingStore hasPendingSyncIdentity])
   {
-    v3 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingSyncIdentity];
+    pendingSyncIdentity = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingSyncIdentity];
     v9 = 0;
-    v4 = [HDSyncIdentity syncIdentityWithCodable:v3 error:&v9];
+    v4 = [HDSyncIdentity syncIdentityWithCodable:pendingSyncIdentity error:&v9];
     v5 = v9;
 
     if (!v4)
@@ -759,7 +759,7 @@ LABEL_12:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v11 = self;
+        selfCopy = self;
         _os_log_fault_impl(&dword_228986000, v6, OS_LOG_TYPE_FAULT, "Failed to decode underlying pending sync identity for record %@.", buf, 0xCu);
       }
     }
@@ -775,47 +775,47 @@ LABEL_12:
   return v4;
 }
 
-- (void)setPendingSyncIdentity:(id)a3
+- (void)setPendingSyncIdentity:(id)identity
 {
   underlyingStore = self->_underlyingStore;
-  v5 = a3;
-  v7 = [(HDCloudSyncCodableStore *)underlyingStore pendingSyncIdentity];
-  v6 = [v5 codableSyncIdentity];
+  identityCopy = identity;
+  pendingSyncIdentity = [(HDCloudSyncCodableStore *)underlyingStore pendingSyncIdentity];
+  codableSyncIdentity = [identityCopy codableSyncIdentity];
 
-  if (v7 != v6 && (!v6 || ([v7 isEqual:v6] & 1) == 0))
+  if (pendingSyncIdentity != codableSyncIdentity && (!codableSyncIdentity || ([pendingSyncIdentity isEqual:codableSyncIdentity] & 1) == 0))
   {
-    [(HDCloudSyncCodableStore *)self->_underlyingStore setPendingSyncIdentity:v6];
+    [(HDCloudSyncCodableStore *)self->_underlyingStore setPendingSyncIdentity:codableSyncIdentity];
   }
 }
 
 - (BOOL)isChild
 {
-  v3 = [(HDCloudSyncCodableStore *)self->_underlyingStore hasIsChild];
-  if (v3)
+  hasIsChild = [(HDCloudSyncCodableStore *)self->_underlyingStore hasIsChild];
+  if (hasIsChild)
   {
     underlyingStore = self->_underlyingStore;
 
-    LOBYTE(v3) = [(HDCloudSyncCodableStore *)underlyingStore isChild];
+    LOBYTE(hasIsChild) = [(HDCloudSyncCodableStore *)underlyingStore isChild];
   }
 
-  return v3;
+  return hasIsChild;
 }
 
-- (void)setProductType:(id)a3
+- (void)setProductType:(id)type
 {
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"productType != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"productType != nil"}];
   }
 
-  v6 = [(HDCloudSyncCodableStore *)self->_underlyingStore productType];
-  v7 = v5;
+  productType = [(HDCloudSyncCodableStore *)self->_underlyingStore productType];
+  v7 = typeCopy;
   v8 = v7;
-  if (v5 && v6 != v7)
+  if (typeCopy && productType != v7)
   {
-    if ([v6 isEqual:v7])
+    if ([productType isEqual:v7])
     {
       goto LABEL_9;
     }
@@ -823,7 +823,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (v6 != v7)
+  if (productType != v7)
   {
 LABEL_8:
     [(HDCloudSyncCodableStore *)self->_underlyingStore setProductType:v8];
@@ -831,12 +831,12 @@ LABEL_8:
 
 LABEL_9:
 
-  v9 = [(HDCloudSyncRecord *)self record];
-  v10 = [v9 objectForKeyedSubscript:@"ProductType"];
+  record = [(HDCloudSyncRecord *)self record];
+  v10 = [record objectForKeyedSubscript:@"ProductType"];
 
   v11 = v8;
   v14 = v11;
-  if (!v5 || v10 == v11)
+  if (!typeCopy || v10 == v11)
   {
     if (v10 == v11)
     {
@@ -849,28 +849,28 @@ LABEL_9:
   if (([v10 isEqual:v11] & 1) == 0)
   {
 LABEL_14:
-    v12 = [(HDCloudSyncRecord *)self record];
-    [v12 setObject:v14 forKeyedSubscript:@"ProductType"];
+    record2 = [(HDCloudSyncRecord *)self record];
+    [record2 setObject:v14 forKeyedSubscript:@"ProductType"];
   }
 
 LABEL_15:
 }
 
-- (void)setSystemBuildVersion:(id)a3
+- (void)setSystemBuildVersion:(id)version
 {
-  v5 = a3;
-  if (!v5)
+  versionCopy = version;
+  if (!versionCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:605 description:{@"Invalid parameter not satisfying: %@", @"systemBuildVersion != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:605 description:{@"Invalid parameter not satisfying: %@", @"systemBuildVersion != nil"}];
   }
 
-  v6 = [(HDCloudSyncCodableStore *)self->_underlyingStore systemBuildVersion];
-  v7 = v5;
+  systemBuildVersion = [(HDCloudSyncCodableStore *)self->_underlyingStore systemBuildVersion];
+  v7 = versionCopy;
   v8 = v7;
-  if (v5 && v6 != v7)
+  if (versionCopy && systemBuildVersion != v7)
   {
-    if ([v6 isEqual:v7])
+    if ([systemBuildVersion isEqual:v7])
     {
       goto LABEL_9;
     }
@@ -878,7 +878,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (v6 != v7)
+  if (systemBuildVersion != v7)
   {
 LABEL_8:
     [(HDCloudSyncCodableStore *)self->_underlyingStore setSystemBuildVersion:v8];
@@ -886,12 +886,12 @@ LABEL_8:
 
 LABEL_9:
 
-  v9 = [(HDCloudSyncRecord *)self record];
-  v10 = [v9 objectForKeyedSubscript:@"SystemBuildVersion"];
+  record = [(HDCloudSyncRecord *)self record];
+  v10 = [record objectForKeyedSubscript:@"SystemBuildVersion"];
 
   v11 = v8;
   v14 = v11;
-  if (!v5 || v10 == v11)
+  if (!versionCopy || v10 == v11)
   {
     if (v10 == v11)
     {
@@ -904,28 +904,28 @@ LABEL_9:
   if (([v10 isEqual:v11] & 1) == 0)
   {
 LABEL_14:
-    v12 = [(HDCloudSyncRecord *)self record];
-    [v12 setObject:v14 forKeyedSubscript:@"SystemBuildVersion"];
+    record2 = [(HDCloudSyncRecord *)self record];
+    [record2 setObject:v14 forKeyedSubscript:@"SystemBuildVersion"];
   }
 
 LABEL_15:
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:618 description:{@"Invalid parameter not satisfying: %@", @"deviceName != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStoreRecord.m" lineNumber:618 description:{@"Invalid parameter not satisfying: %@", @"deviceName != nil"}];
   }
 
-  v6 = [(HDCloudSyncCodableStore *)self->_underlyingStore deviceName];
-  v7 = v5;
+  deviceName = [(HDCloudSyncCodableStore *)self->_underlyingStore deviceName];
+  v7 = nameCopy;
   v8 = v7;
-  if (v5 && v6 != v7)
+  if (nameCopy && deviceName != v7)
   {
-    if ([v6 isEqual:v7])
+    if ([deviceName isEqual:v7])
     {
       goto LABEL_9;
     }
@@ -933,7 +933,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (v6 != v7)
+  if (deviceName != v7)
   {
 LABEL_8:
     [(HDCloudSyncCodableStore *)self->_underlyingStore setDeviceName:v8];
@@ -941,12 +941,12 @@ LABEL_8:
 
 LABEL_9:
 
-  v9 = [(HDCloudSyncRecord *)self record];
-  v10 = [v9 objectForKeyedSubscript:@"DeviceName"];
+  record = [(HDCloudSyncRecord *)self record];
+  v10 = [record objectForKeyedSubscript:@"DeviceName"];
 
   v11 = v8;
   v14 = v11;
-  if (!v5 || v10 == v11)
+  if (!nameCopy || v10 == v11)
   {
     if (v10 == v11)
     {
@@ -959,8 +959,8 @@ LABEL_9:
   if (([v10 isEqual:v11] & 1) == 0)
   {
 LABEL_14:
-    v12 = [(HDCloudSyncRecord *)self record];
-    [v12 setObject:v14 forKeyedSubscript:@"DeviceName"];
+    record2 = [(HDCloudSyncRecord *)self record];
+    [record2 setObject:v14 forKeyedSubscript:@"DeviceName"];
   }
 
 LABEL_15:
@@ -971,8 +971,8 @@ LABEL_15:
   if ([(HDCloudSyncCodableStore *)self->_underlyingStore hasShardPredicate])
   {
     v3 = [HDCloudSyncShardPredicate alloc];
-    v4 = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
-    v5 = [(HDCloudSyncShardPredicate *)v3 initWithCodableShardPredicate:v4];
+    shardPredicate = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
+    v5 = [(HDCloudSyncShardPredicate *)v3 initWithCodableShardPredicate:shardPredicate];
   }
 
   else
@@ -983,58 +983,58 @@ LABEL_15:
   return v5;
 }
 
-- (void)setShardPredicate:(id)a3
+- (void)setShardPredicate:(id)predicate
 {
-  v10 = [a3 codablePredicate];
-  v4 = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
-  if (v10 == v4)
+  codablePredicate = [predicate codablePredicate];
+  shardPredicate = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
+  if (codablePredicate == shardPredicate)
   {
 
 LABEL_8:
-    v9 = v10;
+    v9 = codablePredicate;
     goto LABEL_9;
   }
 
-  v5 = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
-  if (!v5)
+  shardPredicate2 = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
+  if (!shardPredicate2)
   {
 
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
-  v8 = [v10 isEqual:v7];
+  v6 = shardPredicate2;
+  shardPredicate3 = [(HDCloudSyncCodableStore *)self->_underlyingStore shardPredicate];
+  v8 = [codablePredicate isEqual:shardPredicate3];
 
-  v9 = v10;
+  v9 = codablePredicate;
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    [(HDCloudSyncCodableStore *)self->_underlyingStore setShardPredicate:v10];
+    [(HDCloudSyncCodableStore *)self->_underlyingStore setShardPredicate:codablePredicate];
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
   return v5;
 }
 
-+ (HDCloudSyncStoreRecord)recordWithCKRecord:(id)a3 error:(id *)a4
++ (HDCloudSyncStoreRecord)recordWithCKRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 recordType];
-  v8 = [v7 isEqualToString:@"CloudSyncStoreRecord"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v8 = [recordType isEqualToString:@"CloudSyncStoreRecord"];
 
   if (v8)
   {
-    v9 = [v6 hd_requiredValueForKey:@"Version" type:objc_opt_class() error:a4];
+    v9 = [recordCopy hd_requiredValueForKey:@"Version" type:objc_opt_class() error:error];
     if (!v9)
     {
       v15 = 0;
@@ -1044,7 +1044,7 @@ LABEL_78:
     }
 
     v73 = 0;
-    v10 = [v6 hd_optionalEncryptedValueForKey:@"UnderlyingMessage" type:objc_opt_class() error:&v73];
+    v10 = [recordCopy hd_optionalEncryptedValueForKey:@"UnderlyingMessage" type:objc_opt_class() error:&v73];
     v11 = v73;
     v12 = v11;
     if (v10)
@@ -1059,11 +1059,11 @@ LABEL_78:
 
     if (!v13)
     {
-      if (a4)
+      if (error)
       {
         v21 = v11;
         v15 = 0;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -1080,12 +1080,12 @@ LABEL_78:
       v14 = [[HDCloudSyncCodableStore alloc] initWithData:v10];
       if (v14)
       {
-        v15 = -[HDCloudSyncStoreRecord initWithCKRecord:schemaVersion:underlyingStore:]([HDCloudSyncStoreRecord alloc], v6, [v9 integerValue], v14);
+        v15 = -[HDCloudSyncStoreRecord initWithCKRecord:schemaVersion:underlyingStore:]([HDCloudSyncStoreRecord alloc], recordCopy, [v9 integerValue], v14);
       }
 
       else
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Underlying message present but does not decode."];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Underlying message present but does not decode."];
         v15 = 0;
       }
 
@@ -1093,13 +1093,13 @@ LABEL_78:
     }
 
     v22 = objc_alloc_init(HDCloudSyncCodableStore);
-    v23 = [v6 hd_requiredValueForKey:@"OwnerIdentifier" type:objc_opt_class() error:a4];
+    v23 = [recordCopy hd_requiredValueForKey:@"OwnerIdentifier" type:objc_opt_class() error:error];
     [(HDCloudSyncCodableStore *)v22 setOwnerIdentifier:v23];
 
     v66 = v22;
-    v24 = [(HDCloudSyncCodableStore *)v22 ownerIdentifier];
+    ownerIdentifier = [(HDCloudSyncCodableStore *)v22 ownerIdentifier];
 
-    if (!v24)
+    if (!ownerIdentifier)
     {
       v15 = 0;
       v27 = v22;
@@ -1109,7 +1109,7 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    v25 = [v6 hd_requiredValueForKey:@"StoreIdentifier" type:objc_opt_class() error:a4];
+    v25 = [recordCopy hd_requiredValueForKey:@"StoreIdentifier" type:objc_opt_class() error:error];
     if (!v25)
     {
       v15 = 0;
@@ -1125,11 +1125,11 @@ LABEL_75:
       v34 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"record has invalid owner UUID data '%@'", v25}];
       if (v34)
       {
-        if (a4)
+        if (error)
         {
           v36 = v34;
           v15 = 0;
-          *a4 = v34;
+          *error = v34;
         }
 
         else
@@ -1152,12 +1152,12 @@ LABEL_75:
 
     v27 = v66;
     [(HDCloudSyncCodableStore *)v66 setStoreIdentifier:v25];
-    v28 = [v6 hd_requiredValueForKey:@"PendingOwner" type:objc_opt_class() error:a4];
+    v28 = [recordCopy hd_requiredValueForKey:@"PendingOwner" type:objc_opt_class() error:error];
     [(HDCloudSyncCodableStore *)v66 setPendingOwnerIdentifier:v28];
 
-    v29 = [(HDCloudSyncCodableStore *)v66 pendingOwnerIdentifier];
+    pendingOwnerIdentifier = [(HDCloudSyncCodableStore *)v66 pendingOwnerIdentifier];
 
-    if (!v29)
+    if (!pendingOwnerIdentifier)
     {
       v15 = 0;
 LABEL_74:
@@ -1165,7 +1165,7 @@ LABEL_74:
       goto LABEL_75;
     }
 
-    v30 = [v6 hd_requiredValueForKey:@"Active" type:objc_opt_class() error:a4];
+    v30 = [recordCopy hd_requiredValueForKey:@"Active" type:objc_opt_class() error:error];
     v31 = v30;
     if (!v30)
     {
@@ -1177,17 +1177,17 @@ LABEL_73:
 
     -[HDCloudSyncCodableStore setActive:](v66, "setActive:", [v30 BOOLValue]);
     v72 = 0;
-    v32 = [v6 hd_optionalValueForKey:@"SupportedProtocolVersion" type:objc_opt_class() error:&v72];
+    v32 = [recordCopy hd_optionalValueForKey:@"SupportedProtocolVersion" type:objc_opt_class() error:&v72];
     v33 = v72;
     v34 = v33;
     v65 = v32;
     if (!v32 && v33)
     {
-      if (a4)
+      if (error)
       {
         v35 = v33;
         v15 = 0;
-        *a4 = v34;
+        *error = v34;
       }
 
       else
@@ -1201,28 +1201,28 @@ LABEL_73:
 
     if (v32)
     {
-      v37 = [v32 integerValue];
+      integerValue = [v32 integerValue];
     }
 
     else
     {
-      v37 = 0;
+      integerValue = 0;
     }
 
-    [(HDCloudSyncCodableStore *)v66 setSupportedProtocolVersion:v37];
+    [(HDCloudSyncCodableStore *)v66 setSupportedProtocolVersion:integerValue];
     v71 = v34;
-    v64 = [v6 hd_optionalValueForKey:@"RequiredProtocolVersion" type:objc_opt_class() error:&v71];
+    v64 = [recordCopy hd_optionalValueForKey:@"RequiredProtocolVersion" type:objc_opt_class() error:&v71];
     v38 = v71;
 
     v39 = v64;
     if (!v64 && v38)
     {
-      if (a4)
+      if (error)
       {
         v40 = v38;
         v41 = v38;
         v15 = 0;
-        *a4 = v41;
+        *error = v41;
         v42 = v41;
       }
 
@@ -1240,39 +1240,39 @@ LABEL_73:
     v63 = v26;
     if (v64)
     {
-      v43 = [v64 integerValue];
+      integerValue2 = [v64 integerValue];
     }
 
     else
     {
-      v43 = 0;
+      integerValue2 = 0;
     }
 
-    [(HDCloudSyncCodableStore *)v66 setRequiredProtocolVersion:v43];
+    [(HDCloudSyncCodableStore *)v66 setRequiredProtocolVersion:integerValue2];
     v70 = v38;
-    v44 = [v6 hd_optionalValueForKey:@"SystemBuildVersion" type:objc_opt_class() error:&v70];
+    v44 = [recordCopy hd_optionalValueForKey:@"SystemBuildVersion" type:objc_opt_class() error:&v70];
     v45 = v70;
 
     [(HDCloudSyncCodableStore *)v66 setSystemBuildVersion:v44];
-    v46 = [(HDCloudSyncCodableStore *)v66 systemBuildVersion];
+    systemBuildVersion = [(HDCloudSyncCodableStore *)v66 systemBuildVersion];
 
-    if (v46 || !v45)
+    if (systemBuildVersion || !v45)
     {
       v69 = v45;
-      v48 = [v6 hd_optionalValueForKey:@"ProductType" type:objc_opt_class() error:&v69];
+      v48 = [recordCopy hd_optionalValueForKey:@"ProductType" type:objc_opt_class() error:&v69];
       v49 = v69;
 
       [(HDCloudSyncCodableStore *)v66 setProductType:v48];
-      v50 = [(HDCloudSyncCodableStore *)v66 productType];
+      productType = [(HDCloudSyncCodableStore *)v66 productType];
 
-      if (!v50 && v49)
+      if (!productType && v49)
       {
-        if (a4)
+        if (error)
         {
           v51 = v49;
           v52 = v49;
           v15 = 0;
-          *a4 = v52;
+          *error = v52;
           v42 = v52;
         }
 
@@ -1297,16 +1297,16 @@ LABEL_72:
       }
 
       v68 = v49;
-      v53 = [v6 hd_optionalValueForKey:@"DeviceName" type:objc_opt_class() error:&v68];
+      v53 = [recordCopy hd_optionalValueForKey:@"DeviceName" type:objc_opt_class() error:&v68];
       v45 = v68;
 
       [(HDCloudSyncCodableStore *)v66 setDeviceName:v53];
-      v54 = [(HDCloudSyncCodableStore *)v66 deviceName];
+      deviceName = [(HDCloudSyncCodableStore *)v66 deviceName];
 
-      if (v54 || !v45)
+      if (deviceName || !v45)
       {
         v67 = v45;
-        v55 = [v6 hd_optionalValueForKey:@"DeviceMode" type:objc_opt_class() error:&v67];
+        v55 = [recordCopy hd_optionalValueForKey:@"DeviceMode" type:objc_opt_class() error:&v67];
         v56 = v67;
 
         v60 = v55;
@@ -1315,23 +1315,23 @@ LABEL_72:
         {
           if (v55)
           {
-            v59 = [v55 integerValue];
+            integerValue3 = [v55 integerValue];
           }
 
           else
           {
-            v59 = 1;
+            integerValue3 = 1;
           }
 
-          [(HDCloudSyncCodableStore *)v66 setDeviceMode:v59];
-          v15 = -[HDCloudSyncStoreRecord initWithCKRecord:schemaVersion:underlyingStore:]([HDCloudSyncStoreRecord alloc], v6, [v9 integerValue], v66);
+          [(HDCloudSyncCodableStore *)v66 setDeviceMode:integerValue3];
+          v15 = -[HDCloudSyncStoreRecord initWithCKRecord:schemaVersion:underlyingStore:]([HDCloudSyncStoreRecord alloc], recordCopy, [v9 integerValue], v66);
         }
 
-        else if (a4)
+        else if (error)
         {
           v57 = v56;
           v15 = 0;
-          *a4 = v56;
+          *error = v56;
         }
 
         else
@@ -1349,11 +1349,11 @@ LABEL_72:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v47 = v45;
       v15 = 0;
-      *a4 = v45;
+      *error = v45;
     }
 
     else
@@ -1368,14 +1368,14 @@ LABEL_72:
 
   v16 = MEMORY[0x277CCA9B8];
   v17 = objc_opt_class();
-  v18 = [v6 recordType];
-  v19 = [v16 hk_errorForInvalidArgument:@"@" class:v17 selector:a2 format:{@"record has type (%@), but expected (%@)", v18, @"CloudSyncStoreRecord"}];
+  recordType2 = [recordCopy recordType];
+  v19 = [v16 hk_errorForInvalidArgument:@"@" class:v17 selector:a2 format:{@"record has type (%@), but expected (%@)", recordType2, @"CloudSyncStoreRecord"}];
   if (v19)
   {
-    if (a4)
+    if (error)
     {
       v20 = v19;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -1393,7 +1393,7 @@ LABEL_79:
 + (id)fieldsForUnprotectedSerialization
 {
   v38[10] = *MEMORY[0x277D85DE8];
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = &OBJC_METACLASS___HDCloudSyncStoreRecord;
   v22 = objc_msgSendSuper2(&v27, sel_fieldsForUnprotectedSerialization);
   v37 = objc_opt_class();
@@ -1445,30 +1445,30 @@ LABEL_79:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncStoreRecord *)self order];
-  if (v5 >= [v4 order])
+  compareCopy = compare;
+  order = [(HDCloudSyncStoreRecord *)self order];
+  if (order >= [compareCopy order])
   {
-    v7 = [(HDCloudSyncStoreRecord *)self order];
-    if (v7 > [v4 order])
+    order2 = [(HDCloudSyncStoreRecord *)self order];
+    if (order2 > [compareCopy order])
     {
       v6 = 1;
       goto LABEL_14;
     }
 
-    v8 = [(HDCloudSyncStoreRecord *)self shardPredicate];
-    v9 = [v4 shardPredicate];
-    v10 = v9;
-    if (v8)
+    shardPredicate = [(HDCloudSyncStoreRecord *)self shardPredicate];
+    shardPredicate2 = [compareCopy shardPredicate];
+    v10 = shardPredicate2;
+    if (shardPredicate)
     {
-      if (!v9)
+      if (!shardPredicate2)
       {
         goto LABEL_11;
       }
 
-      v6 = [v8 compare:v9];
+      v6 = [shardPredicate compare:shardPredicate2];
       if (v6)
       {
 LABEL_13:
@@ -1477,11 +1477,11 @@ LABEL_13:
       }
     }
 
-    v11 = [(HDCloudSyncRecord *)self record];
-    v12 = [v11 modificationDate];
-    v13 = [v4 record];
-    v14 = [v13 modificationDate];
-    v15 = [v12 hk_isBeforeDate:v14];
+    record = [(HDCloudSyncRecord *)self record];
+    modificationDate = [record modificationDate];
+    record2 = [compareCopy record];
+    modificationDate2 = [record2 modificationDate];
+    v15 = [modificationDate hk_isBeforeDate:modificationDate2];
 
     if (v15)
     {
@@ -1489,19 +1489,19 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v16 = [(HDCloudSyncRecord *)self record];
-    v17 = [v16 modificationDate];
-    v18 = [v4 record];
-    v19 = [v18 modificationDate];
-    v20 = [v17 hk_isAfterDate:v19];
+    record3 = [(HDCloudSyncRecord *)self record];
+    modificationDate3 = [record3 modificationDate];
+    record4 = [compareCopy record];
+    modificationDate4 = [record4 modificationDate];
+    v20 = [modificationDate3 hk_isAfterDate:modificationDate4];
 
     if ((v20 & 1) == 0)
     {
-      v21 = [(HDCloudSyncStoreRecord *)self storeIdentifier];
-      v22 = [v21 UUIDString];
-      v23 = [(HDCloudSyncStoreRecord *)self storeIdentifier];
-      v24 = [v23 UUIDString];
-      v6 = [v22 compare:v24];
+      storeIdentifier = [(HDCloudSyncStoreRecord *)self storeIdentifier];
+      uUIDString = [storeIdentifier UUIDString];
+      storeIdentifier2 = [(HDCloudSyncStoreRecord *)self storeIdentifier];
+      uUIDString2 = [storeIdentifier2 UUIDString];
+      v6 = [uUIDString compare:uUIDString2];
 
       goto LABEL_13;
     }
@@ -1517,10 +1517,10 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -1528,7 +1528,7 @@ LABEL_14:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HDCloudSyncCodableStore *)self->_underlyingStore isEqual:v4->_underlyingStore];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HDCloudSyncCodableStore *)self->_underlyingStore isEqual:equalCopy->_underlyingStore];
   }
 
   return v5;
@@ -1536,14 +1536,14 @@ LABEL_14:
 
 - (id)shortDescription
 {
-  v3 = [(HDCloudSyncCodableStore *)self->_underlyingStore syncIdentity];
+  syncIdentity = [(HDCloudSyncCodableStore *)self->_underlyingStore syncIdentity];
   v60[0] = 0;
-  v58 = [HDSyncIdentity syncIdentityWithCodable:v3 error:v60];
+  v58 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:v60];
   v4 = v60[0];
 
-  v5 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingSyncIdentity];
+  pendingSyncIdentity = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingSyncIdentity];
   v59 = v4;
-  v6 = [HDSyncIdentity syncIdentityWithCodable:v5 error:&v59];
+  v6 = [HDSyncIdentity syncIdentityWithCodable:pendingSyncIdentity error:&v59];
   v7 = v59;
 
   v8 = MEMORY[0x277CCACA8];
@@ -1557,18 +1557,18 @@ LABEL_14:
     v9 = @"Inactive";
   }
 
-  v10 = [(HDCloudSyncRecord *)self record];
-  v57 = [v10 modificationDate];
-  v56 = [(HDCloudSyncStoreRecord *)self systemBuildVersion];
-  v55 = [(HDCloudSyncStoreRecord *)self productType];
-  v11 = [(HDCloudSyncStoreRecord *)self deviceMode];
-  if (v11 == 1)
+  record = [(HDCloudSyncRecord *)self record];
+  modificationDate = [record modificationDate];
+  systemBuildVersion = [(HDCloudSyncStoreRecord *)self systemBuildVersion];
+  productType = [(HDCloudSyncStoreRecord *)self productType];
+  deviceMode = [(HDCloudSyncStoreRecord *)self deviceMode];
+  if (deviceMode == 1)
   {
     v12 = @"Basic";
     goto LABEL_8;
   }
 
-  if (v11 == 2)
+  if (deviceMode == 2)
   {
     v12 = @"Satellite";
 LABEL_8:
@@ -1576,16 +1576,16 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v54 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v11];
+  v54 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", deviceMode];
 LABEL_10:
-  v13 = [(HDCloudSyncStoreRecord *)self supportedProtocolVersion];
-  if (!v13)
+  supportedProtocolVersion = [(HDCloudSyncStoreRecord *)self supportedProtocolVersion];
+  if (!supportedProtocolVersion)
   {
     v14 = @"Tigris";
     goto LABEL_14;
   }
 
-  if (v13 == 1)
+  if (supportedProtocolVersion == 1)
   {
     v14 = @"Yukon";
 LABEL_14:
@@ -1593,20 +1593,20 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v13];
+  v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", supportedProtocolVersion];
 LABEL_16:
-  v15 = [(HDCloudSyncStoreRecord *)self requiredProtocolVersion];
+  requiredProtocolVersion = [(HDCloudSyncStoreRecord *)self requiredProtocolVersion];
   v49 = v7;
-  v47 = v10;
+  v47 = record;
   v45 = v9;
   v46 = v8;
-  if (!v15)
+  if (!requiredProtocolVersion)
   {
     v16 = @"Tigris";
     goto LABEL_20;
   }
 
-  if (v15 == 1)
+  if (requiredProtocolVersion == 1)
   {
     v16 = @"Yukon";
 LABEL_20:
@@ -1614,15 +1614,15 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v15];
+  v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", requiredProtocolVersion];
 LABEL_22:
-  v51 = [(HDCloudSyncStoreRecord *)self storeIdentifier];
-  v50 = [(HDCloudSyncCodableStore *)self->_underlyingStore ownerIdentifier];
-  v17 = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
-  v18 = v17;
-  if (v17)
+  storeIdentifier = [(HDCloudSyncStoreRecord *)self storeIdentifier];
+  ownerIdentifier = [(HDCloudSyncCodableStore *)self->_underlyingStore ownerIdentifier];
+  pendingOwnerIdentifier = [(HDCloudSyncCodableStore *)self->_underlyingStore pendingOwnerIdentifier];
+  v18 = pendingOwnerIdentifier;
+  if (pendingOwnerIdentifier)
   {
-    v19 = v17;
+    v19 = pendingOwnerIdentifier;
   }
 
   else
@@ -1631,9 +1631,9 @@ LABEL_22:
   }
 
   v43 = v19;
-  v20 = [(HDCloudSyncCodableStore *)self->_underlyingStore isChild];
+  isChild = [(HDCloudSyncCodableStore *)self->_underlyingStore isChild];
   v21 = @"NO";
-  if (v20)
+  if (isChild)
   {
     v21 = @"YES";
   }
@@ -1651,8 +1651,8 @@ LABEL_22:
   }
 
   v41 = v22;
-  v44 = [(HDCloudSyncStoreRecord *)self shardPredicate];
-  v23 = [v44 description];
+  shardPredicate = [(HDCloudSyncStoreRecord *)self shardPredicate];
+  v23 = [shardPredicate description];
   v24 = v23;
   v25 = @"--";
   if (v23)
@@ -1661,19 +1661,19 @@ LABEL_22:
   }
 
   v40 = v25;
-  v26 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-  if (v26)
+  currentSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+  if (currentSequenceHeaderRecord)
   {
-    v39 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
-    v27 = [v39 slot];
-    if ((v27 - 1) >= 3)
+    currentSequenceHeaderRecord2 = [(HDCloudSyncStoreRecord *)self currentSequenceHeaderRecord];
+    slot = [currentSequenceHeaderRecord2 slot];
+    if ((slot - 1) >= 3)
     {
-      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v27];
+      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", slot];
     }
 
     else
     {
-      v28 = off_27861D6F8[(v27 - 1)];
+      v28 = off_27861D6F8[(slot - 1)];
     }
   }
 
@@ -1682,19 +1682,19 @@ LABEL_22:
     v28 = &stru_283BF39C8;
   }
 
-  v29 = [(HDCloudSyncStoreRecord *)self oldSequenceHeaderRecord];
-  if (v29)
+  oldSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self oldSequenceHeaderRecord];
+  if (oldSequenceHeaderRecord)
   {
-    v38 = [(HDCloudSyncStoreRecord *)self oldSequenceHeaderRecord];
-    v30 = [v38 slot];
-    if ((v30 - 1) >= 3)
+    oldSequenceHeaderRecord2 = [(HDCloudSyncStoreRecord *)self oldSequenceHeaderRecord];
+    slot2 = [oldSequenceHeaderRecord2 slot];
+    if ((slot2 - 1) >= 3)
     {
-      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v30];
+      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", slot2];
     }
 
     else
     {
-      v31 = off_27861D6F8[(v30 - 1)];
+      v31 = off_27861D6F8[(slot2 - 1)];
     }
   }
 
@@ -1703,34 +1703,34 @@ LABEL_22:
     v31 = &stru_283BF39C8;
   }
 
-  v32 = [(HDCloudSyncStoreRecord *)self activeSequenceHeaderRecord];
-  if (v32)
+  activeSequenceHeaderRecord = [(HDCloudSyncStoreRecord *)self activeSequenceHeaderRecord];
+  if (activeSequenceHeaderRecord)
   {
-    v33 = [(HDCloudSyncStoreRecord *)self activeSequenceHeaderRecord];
-    v34 = [v33 slot];
-    if ((v34 - 1) >= 3)
+    activeSequenceHeaderRecord2 = [(HDCloudSyncStoreRecord *)self activeSequenceHeaderRecord];
+    slot3 = [activeSequenceHeaderRecord2 slot];
+    if ((slot3 - 1) >= 3)
     {
-      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v34];
+      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", slot3];
     }
 
     else
     {
-      v35 = off_27861D6F8[(v34 - 1)];
+      v35 = off_27861D6F8[(slot3 - 1)];
     }
 
-    v36 = [v46 stringWithFormat:@"+ (%@, %@) %@ on %@, Mode: %@, Version: %@ - %@\n| Store: %@ | Owner: %@ | Pending: %@\n| isChild: %@ | SyncIdentity: %@ | PendingSyncIdentity: %@\n| Shard: %@\n| Sequence Headers: Current(%@) Old(%@) Active(%@)\n+--------------------------------------------------", v45, v57, v56, v55, v54, v53, v52, v51, v50, v43, v42, v58, v41, v40, v28, v31, v35];
+    v36 = [v46 stringWithFormat:@"+ (%@, %@) %@ on %@, Mode: %@, Version: %@ - %@\n| Store: %@ | Owner: %@ | Pending: %@\n| isChild: %@ | SyncIdentity: %@ | PendingSyncIdentity: %@\n| Shard: %@\n| Sequence Headers: Current(%@) Old(%@) Active(%@)\n+--------------------------------------------------", v45, modificationDate, systemBuildVersion, productType, v54, v53, v52, storeIdentifier, ownerIdentifier, v43, v42, v58, v41, v40, v28, v31, v35];
   }
 
   else
   {
-    v36 = [v46 stringWithFormat:@"+ (%@, %@) %@ on %@, Mode: %@, Version: %@ - %@\n| Store: %@ | Owner: %@ | Pending: %@\n| isChild: %@ | SyncIdentity: %@ | PendingSyncIdentity: %@\n| Shard: %@\n| Sequence Headers: Current(%@) Old(%@) Active(%@)\n+--------------------------------------------------", v45, v57, v56, v55, v54, v53, v52, v51, v50, v43, v42, v58, v41, v40, v28, v31, &stru_283BF39C8];
+    v36 = [v46 stringWithFormat:@"+ (%@, %@) %@ on %@, Mode: %@, Version: %@ - %@\n| Store: %@ | Owner: %@ | Pending: %@\n| isChild: %@ | SyncIdentity: %@ | PendingSyncIdentity: %@\n| Shard: %@\n| Sequence Headers: Current(%@) Old(%@) Active(%@)\n+--------------------------------------------------", v45, modificationDate, systemBuildVersion, productType, v54, v53, v52, storeIdentifier, ownerIdentifier, v43, v42, v58, v41, v40, v28, v31, &stru_283BF39C8];
   }
 
-  if (v29)
+  if (oldSequenceHeaderRecord)
   {
   }
 
-  if (v26)
+  if (currentSequenceHeaderRecord)
   {
   }
 

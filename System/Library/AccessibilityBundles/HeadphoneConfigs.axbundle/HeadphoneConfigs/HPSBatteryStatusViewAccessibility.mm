@@ -1,5 +1,5 @@
 @interface HPSBatteryStatusViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - ($FFD8FFF7A5D2C2666551BEB14716E99F)_accessibilityBatteryStatus;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)setupViews;
@@ -7,18 +7,18 @@
 
 @implementation HPSBatteryStatusViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"untethered" withType:"B"];
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"leftImageView" withType:"UIImageView"];
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"rightImageView" withType:"UIImageView"];
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"caseImageView" withType:"UIImageView"];
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"deviceImageView" withType:"UIImageView"];
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"currentDevice" withType:"<BluetoothDeviceProtocol>"];
-  [v3 validateClass:@"BTSDevice" hasInstanceMethod:@"classicDevice" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HPSBatteryStatusView" hasInstanceMethod:@"setupViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BTSDevice" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"untethered" withType:"B"];
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"leftImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"rightImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"caseImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"deviceImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceVariable:@"currentDevice" withType:"<BluetoothDeviceProtocol>"];
+  [validationsCopy validateClass:@"BTSDevice" hasInstanceMethod:@"classicDevice" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HPSBatteryStatusView" hasInstanceMethod:@"setupViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BTSDevice" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - ($FFD8FFF7A5D2C2666551BEB14716E99F)_accessibilityBatteryStatus

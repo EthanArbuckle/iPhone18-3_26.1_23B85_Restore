@@ -1,7 +1,7 @@
 @interface _UISplitViewControllerAdaptiveLayoutTransition
-- (BOOL)animateAlongsideTransition:(id)a3 completion:(id)a4;
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
-- (BOOL)hasSuspendedDelegateUpdatesForSplitViewControllerColumn:(int64_t)a3;
+- (BOOL)animateAlongsideTransition:(id)transition completion:(id)completion;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
+- (BOOL)hasSuspendedDelegateUpdatesForSplitViewControllerColumn:(int64_t)column;
 - (CGAffineTransform)targetTransform;
 - (NSSet)viewControllersWithSuspendedAppearanceTransitions;
 - (NSString)description;
@@ -11,26 +11,26 @@
 - (_UISplitViewControllerAdaptiveLayout)newLayout;
 - (_UISplitViewControllerAdaptiveLayout)previousLayout;
 - (_UISplitViewControllerAdaptiveLayoutTransition)init;
-- (void)addViewControllerWithSuspendedAppearanceTransitions:(id)a3;
-- (void)setMutableContainerView:(id)a3;
+- (void)addViewControllerWithSuspendedAppearanceTransitions:(id)transitions;
+- (void)setMutableContainerView:(id)view;
 @end
 
 @implementation _UISplitViewControllerAdaptiveLayoutTransition
 
-- (void)setMutableContainerView:(id)a3
+- (void)setMutableContainerView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutableContainerView);
-  *(&self->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutableContainerView) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_mutableContainerView) = view;
+  viewCopy = view;
 }
 
 - (_UISplitViewControllerAdaptiveLayout)newLayout
 {
-  v2 = self;
-  v3 = [(_UISplitViewControllerAdaptiveLayoutTransition *)v2 mutableNewLayout];
-  if (v3)
+  selfCopy = self;
+  mutableNewLayout = [(_UISplitViewControllerAdaptiveLayoutTransition *)selfCopy mutableNewLayout];
+  if (mutableNewLayout)
   {
-    v4 = v3;
+    v4 = mutableNewLayout;
 
     return v4;
   }
@@ -64,9 +64,9 @@
 
 - (_UISplitViewControllerAdaptiveLayout)previousLayout
 {
-  v2 = [(_UISplitViewControllerAdaptiveLayoutTransition *)self mutablePreviousLayout];
+  mutablePreviousLayout = [(_UISplitViewControllerAdaptiveLayoutTransition *)self mutablePreviousLayout];
 
-  return v2;
+  return mutablePreviousLayout;
 }
 
 - (_UISplitViewControllerAdaptiveLayout)mutablePreviousLayout
@@ -78,11 +78,11 @@
 
 - (UIView)containerView
 {
-  v2 = self;
-  v3 = [(_UISplitViewControllerAdaptiveLayoutTransition *)v2 mutableContainerView];
-  if (v3)
+  selfCopy = self;
+  mutableContainerView = [(_UISplitViewControllerAdaptiveLayoutTransition *)selfCopy mutableContainerView];
+  if (mutableContainerView)
   {
-    v4 = v3;
+    v4 = mutableContainerView;
 
     return v4;
   }
@@ -96,17 +96,17 @@
   return result;
 }
 
-- (BOOL)hasSuspendedDelegateUpdatesForSplitViewControllerColumn:(int64_t)a3
+- (BOOL)hasSuspendedDelegateUpdatesForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptiveLayoutTransition_suspendedDelegateUpdateColumns;
   swift_beginAccess();
-  return sub_188C1CAD8(a3, *(&self->super.isa + v5));
+  return sub_188C1CAD8(column, *(&self->super.isa + v5));
 }
 
-- (BOOL)animateAlongsideTransition:(id)a3 completion:(id)a4
+- (BOOL)animateAlongsideTransition:(id)transition completion:(id)completion
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(transition);
+  v7 = _Block_copy(completion);
   v8 = v7;
   if (!v6)
   {
@@ -135,7 +135,7 @@ LABEL_3:
   *(v10 + 16) = v8;
   v11 = sub_188B17524;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   v13 = sub_188C1CCEC(v6, v9, v11, v10);
   sub_188A55B8C(v11);
   sub_188A55B8C(v6);
@@ -143,10 +143,10 @@ LABEL_6:
   return v13 & 1;
 }
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(animation);
+  v9 = _Block_copy(completion);
   v10 = v9;
   if (!v8)
   {
@@ -174,8 +174,8 @@ LABEL_3:
   *(v12 + 16) = v10;
   v10 = sub_188B17584;
 LABEL_6:
-  v13 = a3;
-  v14 = self;
+  viewCopy = view;
+  selfCopy = self;
   v15 = sub_188C1CF7C(v8, v11, v10, v12);
   sub_188A55B8C(v10);
   sub_188A55B8C(v8);
@@ -194,18 +194,18 @@ LABEL_6:
   return v2;
 }
 
-- (void)addViewControllerWithSuspendedAppearanceTransitions:(id)a3
+- (void)addViewControllerWithSuspendedAppearanceTransitions:(id)transitions
 {
   swift_beginAccess();
-  v5 = a3;
-  v6 = self;
-  sub_188E71674(&v7, v5);
+  transitionsCopy = transitions;
+  selfCopy = self;
+  sub_188E71674(&v7, transitionsCopy);
   swift_endAccess();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FEA294();
 
   v3 = sub_18A4A7258();

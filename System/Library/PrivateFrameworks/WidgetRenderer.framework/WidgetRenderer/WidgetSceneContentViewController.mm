@@ -1,27 +1,27 @@
 @interface WidgetSceneContentViewController
-- (_TtC14WidgetRenderer32WidgetSceneContentViewController)initWithCoder:(id)a3;
-- (id)_timelinesForDateInterval:(id)a3;
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC14WidgetRenderer32WidgetSceneContentViewController)initWithCoder:(id)coder;
+- (id)_timelinesForDateInterval:(id)interval;
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WidgetSceneContentViewController
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1DADB4ADC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1DADB4ADC(change);
 }
 
-- (_TtC14WidgetRenderer32WidgetSceneContentViewController)initWithCoder:(id)a3
+- (_TtC14WidgetRenderer32WidgetSceneContentViewController)initWithCoder:(id)coder
 {
   result = sub_1DAED273C();
   __break(1u);
   return result;
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v4 = sub_1DAECDA2C();
   v5 = *(v4 - 8);
@@ -29,7 +29,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1DAECD9EC();
-  v9 = self;
+  selfCopy = self;
   sub_1DAE0DDF4(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -39,14 +39,14 @@
   return v10;
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1DAE0EF98(a3, sub_1DAE1034C, v7);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_1DAE0EF98(specifier, sub_1DAE1034C, v7);
 }
 
 @end

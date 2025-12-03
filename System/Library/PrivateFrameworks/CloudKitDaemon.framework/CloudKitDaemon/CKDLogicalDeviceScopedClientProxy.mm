@@ -1,11 +1,11 @@
 @interface CKDLogicalDeviceScopedClientProxy
 - (BOOL)processIsAttached;
-- (CKDLogicalDeviceScopedClientProxy)initWithClientConnection:(id)a3 deviceContext:(id)a4;
+- (CKDLogicalDeviceScopedClientProxy)initWithClientConnection:(id)connection deviceContext:(id)context;
 - (CKDXPCConnection)clientConnection;
 - (id)CKPropertiesDescription;
-- (id)openFileWithOpenInfo:(id)a3 error:(id *)a4;
-- (id)readBytesOfInMemoryAssetContentWithUUID:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (void)addThrottle:(id)a3;
+- (id)openFileWithOpenInfo:(id)info error:(id *)error;
+- (id)readBytesOfInMemoryAssetContentWithUUID:(id)d offset:(unint64_t)offset length:(unint64_t)length error:(id *)error;
+- (void)addThrottle:(id)throttle;
 - (void)resetThrottles;
 @end
 
@@ -29,19 +29,19 @@
   return v8;
 }
 
-- (CKDLogicalDeviceScopedClientProxy)initWithClientConnection:(id)a3 deviceContext:(id)a4
+- (CKDLogicalDeviceScopedClientProxy)initWithClientConnection:(id)connection deviceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = CKDLogicalDeviceScopedClientProxy;
   v8 = [(CKDLogicalDeviceScopedClientProxy *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_clientConnection, v6);
-    objc_storeStrong(&v9->_deviceContext, a4);
-    v12 = objc_msgSend_xpcConnection(v6, v10, v11);
+    objc_storeWeak(&v8->_clientConnection, connectionCopy);
+    objc_storeStrong(&v9->_deviceContext, context);
+    v12 = objc_msgSend_xpcConnection(connectionCopy, v10, v11);
     v9->_pid = objc_msgSend_processIdentifier(v12, v13, v14);
   }
 
@@ -55,9 +55,9 @@
   return MEMORY[0x28210E2B8](v3);
 }
 
-- (id)openFileWithOpenInfo:(id)a3 error:(id *)a4
+- (id)openFileWithOpenInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -85,7 +85,7 @@
   v21[1] = 3221225472;
   v21[2] = sub_22518CCAC;
   v21[3] = &unk_278548090;
-  v9 = v6;
+  v9 = infoCopy;
   v22 = v9;
   v24 = &v29;
   v25 = &v35;
@@ -101,11 +101,11 @@
     v15 = v36[5];
     v36[5] = v14;
 
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v16 = 0;
-      *a4 = v36[5];
+      *error = v36[5];
       goto LABEL_10;
     }
   }
@@ -126,7 +126,7 @@ LABEL_3:
       v36[5] = v18;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -141,9 +141,9 @@ LABEL_10:
   return v16;
 }
 
-- (id)readBytesOfInMemoryAssetContentWithUUID:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (id)readBytesOfInMemoryAssetContentWithUUID:(id)d offset:(unint64_t)offset length:(unint64_t)length error:(id *)error
 {
-  v10 = a3;
+  dCopy = d;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -171,9 +171,9 @@ LABEL_10:
   v25 = 3221225472;
   v26 = sub_22518D19C;
   v27 = &unk_2785480B8;
-  v13 = v10;
-  v32 = a4;
-  v33 = a5;
+  v13 = dCopy;
+  offsetCopy = offset;
+  lengthCopy = length;
   v28 = v13;
   v30 = &v37;
   v31 = &v43;
@@ -190,9 +190,9 @@ LABEL_10:
     v44[5] = v18;
 
     v20 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v44[5];
+      *error = v44[5];
     }
   }
 
@@ -207,9 +207,9 @@ LABEL_10:
         v44[5] = v21;
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = v44[5];
+        *error = v44[5];
       }
     }
 
@@ -234,7 +234,7 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22506F000, v3, OS_LOG_TYPE_INFO, "Resetting throttles in %@", &v6, 0xCu);
   }
 
@@ -242,15 +242,15 @@ LABEL_10:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addThrottle:(id)a3
+- (void)addThrottle:(id)throttle
 {
-  v4 = a3;
+  throttleCopy = throttle;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22518D494;
   v7[3] = &unk_278548100;
-  v8 = v4;
-  v5 = v4;
+  v8 = throttleCopy;
+  v5 = throttleCopy;
   objc_msgSend_getLogicalDeviceScopedClientProxySynchronous_errorHandler_clientProxyHandler_(self, v6, 1, &unk_28385CDC0, v7);
 }
 

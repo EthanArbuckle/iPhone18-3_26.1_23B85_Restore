@@ -1,53 +1,53 @@
 @interface CRKScreenObservationMonitor
 - (BOOL)hasObservingInstructors;
 - (CRKScreenObservationMonitor)init;
-- (CRKScreenObservationMonitor)initWithStudentConnectionPrimitives:(id)a3 darwinNotificationPublisher:(id)a4 featureDataStore:(id)a5;
+- (CRKScreenObservationMonitor)initWithStudentConnectionPrimitives:(id)primitives darwinNotificationPublisher:(id)publisher featureDataStore:(id)store;
 - (CRKScreenObservationMonitorDelegate)delegate;
 - (id)instructorIdentifiersByCourseIdentifier;
 - (void)beginObservingEnrollmentStatus;
 - (void)connectToStudentdIfNeeded;
 - (void)dealloc;
-- (void)didEstablishStudentConnection:(id)a3;
+- (void)didEstablishStudentConnection:(id)connection;
 - (void)didLoseStudentConnection;
 - (void)disconnectFromStudentdIfNeeded;
 - (void)enrollmentStatusDidChange;
 - (void)fetchObservingInstructorsByCourse;
-- (void)fetchObservingInstructorsByCourseOperationDidFinish:(id)a3;
-- (void)setObservingInstructorsByCourse:(id)a3;
+- (void)fetchObservingInstructorsByCourseOperationDidFinish:(id)finish;
+- (void)setObservingInstructorsByCourse:(id)course;
 @end
 
 @implementation CRKScreenObservationMonitor
 
 - (void)dealloc
 {
-  v3 = [(CRKScreenObservationMonitor *)self studentConnection];
-  [v3 invalidate];
+  studentConnection = [(CRKScreenObservationMonitor *)self studentConnection];
+  [studentConnection invalidate];
 
-  v4 = [(CRKScreenObservationMonitor *)self observersDidChangeObservation];
-  [v4 invalidate];
+  observersDidChangeObservation = [(CRKScreenObservationMonitor *)self observersDidChangeObservation];
+  [observersDidChangeObservation invalidate];
 
-  v5 = [(CRKScreenObservationMonitor *)self enrollmentStatusDidChangeSubscription];
-  [v5 cancel];
+  enrollmentStatusDidChangeSubscription = [(CRKScreenObservationMonitor *)self enrollmentStatusDidChangeSubscription];
+  [enrollmentStatusDidChangeSubscription cancel];
 
   v6.receiver = self;
   v6.super_class = CRKScreenObservationMonitor;
   [(CRKScreenObservationMonitor *)&v6 dealloc];
 }
 
-- (CRKScreenObservationMonitor)initWithStudentConnectionPrimitives:(id)a3 darwinNotificationPublisher:(id)a4 featureDataStore:(id)a5
+- (CRKScreenObservationMonitor)initWithStudentConnectionPrimitives:(id)primitives darwinNotificationPublisher:(id)publisher featureDataStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  primitivesCopy = primitives;
+  publisherCopy = publisher;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = CRKScreenObservationMonitor;
   v12 = [(CRKScreenObservationMonitor *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_studentConnectionPrimitives, a3);
-    objc_storeStrong(&v13->_darwinNotificationPublisher, a4);
-    objc_storeStrong(&v13->_featureDataStore, a5);
+    objc_storeStrong(&v12->_studentConnectionPrimitives, primitives);
+    objc_storeStrong(&v13->_darwinNotificationPublisher, publisher);
+    objc_storeStrong(&v13->_featureDataStore, store);
     [(CRKScreenObservationMonitor *)v13 beginObservingEnrollmentStatus];
     [(CRKScreenObservationMonitor *)v13 connectToStudentdIfNeeded];
   }
@@ -58,32 +58,32 @@
 - (CRKScreenObservationMonitor)init
 {
   v3 = objc_opt_new();
-  v4 = [v3 makePrimitives];
+  makePrimitives = [v3 makePrimitives];
   v5 = objc_opt_new();
-  v6 = [v5 makeFeatureDataStore];
+  makeFeatureDataStore = [v5 makeFeatureDataStore];
 
   v7 = objc_opt_new();
-  v8 = [(CRKScreenObservationMonitor *)self initWithStudentConnectionPrimitives:v4 darwinNotificationPublisher:v7 featureDataStore:v6];
+  v8 = [(CRKScreenObservationMonitor *)self initWithStudentConnectionPrimitives:makePrimitives darwinNotificationPublisher:v7 featureDataStore:makeFeatureDataStore];
 
   return v8;
 }
 
 - (BOOL)hasObservingInstructors
 {
-  v2 = [(CRKScreenObservationMonitor *)self observingInstructorsByCourse];
-  v3 = [v2 count] != 0;
+  observingInstructorsByCourse = [(CRKScreenObservationMonitor *)self observingInstructorsByCourse];
+  v3 = [observingInstructorsByCourse count] != 0;
 
   return v3;
 }
 
-- (void)setObservingInstructorsByCourse:(id)a3
+- (void)setObservingInstructorsByCourse:(id)course
 {
-  v4 = a3;
+  courseCopy = course;
   observingInstructorsByCourse = self->_observingInstructorsByCourse;
-  if (v4 | observingInstructorsByCourse)
+  if (courseCopy | observingInstructorsByCourse)
   {
-    v9 = v4;
-    if (([(NSDictionary *)observingInstructorsByCourse isEqual:v4]& 1) == 0)
+    v9 = courseCopy;
+    if (([(NSDictionary *)observingInstructorsByCourse isEqual:courseCopy]& 1) == 0)
     {
       [(CRKScreenObservationMonitor *)self willChangeValueForKey:@"observingInstructorsByCourse"];
       v6 = [v9 copy];
@@ -91,8 +91,8 @@
       self->_observingInstructorsByCourse = v6;
 
       [(CRKScreenObservationMonitor *)self didChangeValueForKey:@"observingInstructorsByCourse"];
-      v8 = [(CRKScreenObservationMonitor *)self delegate];
-      [v8 screenObservationMonitor:self observationStatusDidChange:self->_observingInstructorsByCourse];
+      delegate = [(CRKScreenObservationMonitor *)self delegate];
+      [delegate screenObservationMonitor:self observationStatusDidChange:self->_observingInstructorsByCourse];
     }
   }
 
@@ -101,14 +101,14 @@
 
 - (id)instructorIdentifiersByCourseIdentifier
 {
-  v3 = [(CRKScreenObservationMonitor *)self observingInstructorsByCourse];
-  v4 = [v3 allKeys];
+  observingInstructorsByCourse = [(CRKScreenObservationMonitor *)self observingInstructorsByCourse];
+  allKeys = [observingInstructorsByCourse allKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__CRKScreenObservationMonitor_instructorIdentifiersByCourseIdentifier__block_invoke_2;
   v7[3] = &unk_278DC1FB0;
   v7[4] = self;
-  v5 = [v4 crk_dictionaryUsingKeyGenerator:&__block_literal_global_68 valueGenerator:v7];
+  v5 = [allKeys crk_dictionaryUsingKeyGenerator:&__block_literal_global_68 valueGenerator:v7];
 
   return v5;
 }
@@ -135,10 +135,10 @@ id __70__CRKScreenObservationMonitor_instructorIdentifiersByCourseIdentifier__bl
 
 - (void)enrollmentStatusDidChange
 {
-  v3 = [(CRKScreenObservationMonitor *)self featureDataStore];
-  v4 = [v3 isClassroomStudentRoleEnabled];
+  featureDataStore = [(CRKScreenObservationMonitor *)self featureDataStore];
+  isClassroomStudentRoleEnabled = [featureDataStore isClassroomStudentRoleEnabled];
 
-  if (v4)
+  if (isClassroomStudentRoleEnabled)
   {
 
     [(CRKScreenObservationMonitor *)self connectToStudentdIfNeeded];
@@ -154,21 +154,21 @@ id __70__CRKScreenObservationMonitor_instructorIdentifiersByCourseIdentifier__bl
 - (void)beginObservingEnrollmentStatus
 {
   objc_initWeak(&location, self);
-  v3 = [(CRKScreenObservationMonitor *)self enrollmentStatusDidChangeSubscription];
-  [v3 cancel];
+  enrollmentStatusDidChangeSubscription = [(CRKScreenObservationMonitor *)self enrollmentStatusDidChangeSubscription];
+  [enrollmentStatusDidChangeSubscription cancel];
 
-  v4 = [(CRKScreenObservationMonitor *)self darwinNotificationPublisher];
+  darwinNotificationPublisher = [(CRKScreenObservationMonitor *)self darwinNotificationPublisher];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__CRKScreenObservationMonitor_beginObservingEnrollmentStatus__block_invoke;
   v11 = &unk_278DC1870;
   objc_copyWeak(&v12, &location);
-  v5 = [v4 subscribeToNotificationWithName:@"CRKStudentEnrollmentStatusDidChangeNotification" handler:&v8];
+  v5 = [darwinNotificationPublisher subscribeToNotificationWithName:@"CRKStudentEnrollmentStatusDidChangeNotification" handler:&v8];
   [(CRKScreenObservationMonitor *)self setEnrollmentStatusDidChangeSubscription:v5, v8, v9, v10, v11];
 
-  v6 = [(CRKScreenObservationMonitor *)self enrollmentStatusDidChangeSubscription];
+  enrollmentStatusDidChangeSubscription2 = [(CRKScreenObservationMonitor *)self enrollmentStatusDidChangeSubscription];
 
-  if (!v6)
+  if (!enrollmentStatusDidChangeSubscription2)
   {
     v7 = _CRKLogGeneral_7();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -191,28 +191,28 @@ void __61__CRKScreenObservationMonitor_beginObservingEnrollmentStatus__block_inv
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v7 = [(CRKScreenObservationMonitor *)self featureDataStore];
-    if (([v7 isClassroomStudentRoleEnabled] & 1) == 0)
+    featureDataStore = [(CRKScreenObservationMonitor *)self featureDataStore];
+    if (([featureDataStore isClassroomStudentRoleEnabled] & 1) == 0)
     {
 LABEL_5:
 
       return;
     }
 
-    v4 = [(CRKScreenObservationMonitor *)self studentConnection];
-    if (v4)
+    studentConnection = [(CRKScreenObservationMonitor *)self studentConnection];
+    if (studentConnection)
     {
 
       goto LABEL_5;
     }
 
-    v5 = [(CRKScreenObservationMonitor *)self isConnecting];
+    isConnecting = [(CRKScreenObservationMonitor *)self isConnecting];
 
-    if (!v5)
+    if (!isConnecting)
     {
       [(CRKScreenObservationMonitor *)self setConnecting:1];
       objc_initWeak(&location, self);
-      v6 = [(CRKScreenObservationMonitor *)self studentConnectionPrimitives];
+      studentConnectionPrimitives = [(CRKScreenObservationMonitor *)self studentConnectionPrimitives];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __56__CRKScreenObservationMonitor_connectToStudentdIfNeeded__block_invoke;
@@ -223,7 +223,7 @@ LABEL_5:
       v8[2] = __56__CRKScreenObservationMonitor_connectToStudentdIfNeeded__block_invoke_2;
       v8[3] = &unk_278DC1870;
       objc_copyWeak(&v9, &location);
-      [v6 connectWithCompletion:v10 invalidationHandler:v8];
+      [studentConnectionPrimitives connectWithCompletion:v10 invalidationHandler:v8];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(&v11);
@@ -253,16 +253,16 @@ void __56__CRKScreenObservationMonitor_connectToStudentdIfNeeded__block_invoke_2
 
 - (void)disconnectFromStudentdIfNeeded
 {
-  v3 = [(CRKScreenObservationMonitor *)self studentConnection];
+  studentConnection = [(CRKScreenObservationMonitor *)self studentConnection];
 
-  if (v3)
+  if (studentConnection)
   {
-    v4 = [(CRKScreenObservationMonitor *)self observersDidChangeObservation];
-    [v4 invalidate];
+    observersDidChangeObservation = [(CRKScreenObservationMonitor *)self observersDidChangeObservation];
+    [observersDidChangeObservation invalidate];
 
     [(CRKScreenObservationMonitor *)self setObserversDidChangeObservation:0];
-    v5 = [(CRKScreenObservationMonitor *)self studentConnection];
-    [v5 invalidate];
+    studentConnection2 = [(CRKScreenObservationMonitor *)self studentConnection];
+    [studentConnection2 invalidate];
 
     [(CRKScreenObservationMonitor *)self setStudentConnection:0];
     v6 = MEMORY[0x277CBEC10];
@@ -271,26 +271,26 @@ void __56__CRKScreenObservationMonitor_connectToStudentdIfNeeded__block_invoke_2
   }
 }
 
-- (void)didEstablishStudentConnection:(id)a3
+- (void)didEstablishStudentConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKScreenObservationMonitor *)a2 didEstablishStudentConnection:?];
   }
 
   objc_initWeak(&location, self);
-  [(CRKScreenObservationMonitor *)self setStudentConnection:v5];
+  [(CRKScreenObservationMonitor *)self setStudentConnection:connectionCopy];
   [(CRKScreenObservationMonitor *)self setConnecting:0];
-  v6 = [(CRKScreenObservationMonitor *)self observersDidChangeObservation];
-  [v6 invalidate];
+  observersDidChangeObservation = [(CRKScreenObservationMonitor *)self observersDidChangeObservation];
+  [observersDidChangeObservation invalidate];
 
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__CRKScreenObservationMonitor_didEstablishStudentConnection___block_invoke;
   v11 = &unk_278DC28B0;
   objc_copyWeak(&v12, &location);
-  v7 = [v5 observeNotificationWithName:@"CRKActiveInstructorsDidChange" handler:&v8];
+  v7 = [connectionCopy observeNotificationWithName:@"CRKActiveInstructorsDidChange" handler:&v8];
   [(CRKScreenObservationMonitor *)self setObserversDidChangeObservation:v7, v8, v9, v10, v11];
 
   [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourse];
@@ -306,51 +306,51 @@ void __61__CRKScreenObservationMonitor_didEstablishStudentConnection___block_inv
 
 - (void)didLoseStudentConnection
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"CRKScreenObservationMonitor.m" lineNumber:198 description:{@"%@ must be called from the main thread", v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CRKScreenObservationMonitor.m" lineNumber:198 description:{@"%@ must be called from the main thread", v4}];
 }
 
 - (void)fetchObservingInstructorsByCourse
 {
-  v3 = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
-  [v3 cancel];
+  fetchObservingInstructorsByCourseOperation = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
+  [fetchObservingInstructorsByCourseOperation cancel];
 
   v4 = [CRKFetchObservingInstructorsByCourseOperation alloc];
-  v5 = [(CRKScreenObservationMonitor *)self studentConnection];
-  v6 = [(CRKFetchObservingInstructorsByCourseOperation *)v4 initWithRequestPerformer:v5];
+  studentConnection = [(CRKScreenObservationMonitor *)self studentConnection];
+  v6 = [(CRKFetchObservingInstructorsByCourseOperation *)v4 initWithRequestPerformer:studentConnection];
   [(CRKScreenObservationMonitor *)self setFetchObservingInstructorsByCourseOperation:v6];
 
-  v7 = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
-  [v7 addTarget:self selector:sel_fetchObservingInstructorsByCourseOperationDidFinish_ forOperationEvents:6];
+  fetchObservingInstructorsByCourseOperation2 = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
+  [fetchObservingInstructorsByCourseOperation2 addTarget:self selector:sel_fetchObservingInstructorsByCourseOperationDidFinish_ forOperationEvents:6];
 
-  v9 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  v8 = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
-  [v9 addOperation:v8];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  fetchObservingInstructorsByCourseOperation3 = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
+  [crk_backgroundQueue addOperation:fetchObservingInstructorsByCourseOperation3];
 }
 
-- (void)fetchObservingInstructorsByCourseOperationDidFinish:(id)a3
+- (void)fetchObservingInstructorsByCourseOperationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
+  finishCopy = finish;
+  fetchObservingInstructorsByCourseOperation = [(CRKScreenObservationMonitor *)self fetchObservingInstructorsByCourseOperation];
 
-  if (v5 == v4)
+  if (fetchObservingInstructorsByCourseOperation == finishCopy)
   {
-    v6 = [v4 error];
+    error = [finishCopy error];
 
-    if (v6)
+    if (error)
     {
       v7 = _CRKLogGeneral_7();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [(CRKScreenObservationMonitor *)v4 fetchObservingInstructorsByCourseOperationDidFinish:v7];
+        [(CRKScreenObservationMonitor *)finishCopy fetchObservingInstructorsByCourseOperationDidFinish:v7];
       }
     }
 
     else
     {
-      v8 = [v4 resultObject];
-      [(CRKScreenObservationMonitor *)self setObservingInstructorsByCourse:v8];
+      resultObject = [finishCopy resultObject];
+      [(CRKScreenObservationMonitor *)self setObservingInstructorsByCourse:resultObject];
     }
   }
 }

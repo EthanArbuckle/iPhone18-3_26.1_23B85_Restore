@@ -1,15 +1,15 @@
 @interface OBPrivacyButton
-+ (id)buttonWithType:(int64_t)a3;
++ (id)buttonWithType:(int64_t)type;
 - (void)tintColorDidChange;
 @end
 
 @implementation OBPrivacyButton
 
-+ (id)buttonWithType:(int64_t)a3
++ (id)buttonWithType:(int64_t)type
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OBPrivacyButton;
-  v3 = objc_msgSendSuper2(&v5, sel_buttonWithType_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_buttonWithType_, type);
 
   return v3;
 }
@@ -19,14 +19,14 @@
   v10.receiver = self;
   v10.super_class = OBPrivacyButton;
   [(OBPrivacyButton *)&v10 tintColorDidChange];
-  v3 = [(OBPrivacyButton *)self underlineLinks];
-  v4 = [(OBPrivacyButton *)self titleLabel];
-  v5 = [v4 attributedText];
-  v6 = [v5 mutableCopy];
+  underlineLinks = [(OBPrivacyButton *)self underlineLinks];
+  titleLabel = [(OBPrivacyButton *)self titleLabel];
+  attributedText = [titleLabel attributedText];
+  v6 = [attributedText mutableCopy];
 
   v7 = *MEMORY[0x1E69DB758];
   v8 = [v6 length];
-  if (v3)
+  if (underlineLinks)
   {
     [v6 addAttribute:v7 value:&unk_1F2CF8558 range:{0, v8}];
   }
@@ -36,8 +36,8 @@
     [v6 removeAttribute:v7 range:{0, v8}];
   }
 
-  v9 = [(OBPrivacyButton *)self titleLabel];
-  [v9 setAttributedText:v6];
+  titleLabel2 = [(OBPrivacyButton *)self titleLabel];
+  [titleLabel2 setAttributedText:v6];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PHUserFeedbackImportantPerson
-- (PHUserFeedbackImportantPerson)initWithPersonUUID:(id)a3 type:(unint64_t)a4;
+- (PHUserFeedbackImportantPerson)initWithPersonUUID:(id)d type:(unint64_t)type;
 @end
 
 @implementation PHUserFeedbackImportantPerson
 
-- (PHUserFeedbackImportantPerson)initWithPersonUUID:(id)a3 type:(unint64_t)a4
+- (PHUserFeedbackImportantPerson)initWithPersonUUID:(id)d type:(unint64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = PHUserFeedbackImportantPerson;
   v8 = [(PHUserFeedbackImportantPerson *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_personUUID, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_personUUID, d);
+    v9->_type = type;
   }
 
   return v9;

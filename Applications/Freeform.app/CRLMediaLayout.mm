@@ -2,39 +2,39 @@
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
-- (CRLMediaLayout)initWithInfo:(id)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
+- (CRLMediaLayout)initWithInfo:(id)info;
 - (_TtC8Freeform12CRLMediaItem)mediaItem;
 - (id)commandToResetMediaToRawPixelSize;
-- (id)commandToResetToSize:(CGSize)a3;
+- (id)commandToResetToSize:(CGSize)size;
 - (id)stroke;
 - (void)dynamicStrokeWidthChangeDidBegin;
 - (void)dynamicStrokeWidthChangeDidEnd;
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)setBoundsForStandardKnobs:(CGRect)a3;
-- (void)setGeometry:(id)a3;
+- (void)dynamicStrokeWidthUpdateToValue:(double)value;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)setBoundsForStandardKnobs:(CGRect)knobs;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation CRLMediaLayout
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v5.receiver = self;
   v5.super_class = CRLMediaLayout;
   [(CRLCanvasLayout *)&v5 processChangedProperty:?];
-  if (a3 == 16)
+  if (property == 16)
   {
     [(CRLCanvasLayout *)self invalidateFrame];
     [(CRLMediaLayout *)self invalidateAlignmentFrame];
   }
 }
 
-- (CRLMediaLayout)initWithInfo:(id)a3
+- (CRLMediaLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = CRLMediaLayout;
-  result = [(CRLCanvasLayout *)&v4 initWithInfo:a3];
+  result = [(CRLCanvasLayout *)&v4 initWithInfo:info];
   if (result)
   {
     BYTE3(result->_cachedAlignmentFrame.size.width) |= 1u;
@@ -46,8 +46,8 @@
 - (_TtC8Freeform12CRLMediaItem)mediaItem
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -57,36 +57,36 @@
   v2 = *(&self->_cachedAlignmentFrame.size.height + 3);
   if (v2)
   {
-    v3 = v2;
+    stroke = v2;
   }
 
   else
   {
-    v4 = [(CRLMediaLayout *)self mediaItem];
-    v3 = [v4 stroke];
+    mediaItem = [(CRLMediaLayout *)self mediaItem];
+    stroke = [mediaItem stroke];
   }
 
-  return v3;
+  return stroke;
 }
 
 - (void)dynamicStrokeWidthChangeDidBegin
 {
-  v6 = [(CRLMediaLayout *)self mediaItem];
-  v3 = [v6 stroke];
-  v4 = [v3 mutableCopy];
+  mediaItem = [(CRLMediaLayout *)self mediaItem];
+  stroke = [mediaItem stroke];
+  v4 = [stroke mutableCopy];
   v5 = *(&self->_cachedAlignmentFrame.size.height + 3);
   *(&self->_cachedAlignmentFrame.size.height + 3) = v4;
 }
 
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3
+- (void)dynamicStrokeWidthUpdateToValue:(double)value
 {
-  [*(&self->_cachedAlignmentFrame.size.height + 3) setWidth:a3];
+  [*(&self->_cachedAlignmentFrame.size.height + 3) setWidth:value];
   [(CRLMediaLayout *)self processChangedProperty:16];
-  v4 = [(CRLCanvasLayout *)self layoutController];
-  v5 = [v4 canvas];
-  v7 = [v5 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  v6 = [v7 repForLayout:self];
+  v6 = [canvasController repForLayout:self];
   [v6 processChangedProperty:16];
 }
 
@@ -96,18 +96,18 @@
   *(&self->_cachedAlignmentFrame.size.height + 3) = 0.0;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if ((BYTE3(self->_cachedAlignmentFrame.size.width) & 1) == 0)
   {
-    v5 = [(CRLCanvasAbstractLayout *)self geometry];
-    v6 = v5;
-    if (v5 && ([v5 differsInMoreThanTranslationFrom:v4] & 1) == 0)
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    v6 = geometry;
+    if (geometry && ([geometry differsInMoreThanTranslationFrom:geometryCopy] & 1) == 0)
     {
-      if (v4)
+      if (geometryCopy)
       {
-        [v4 transform];
+        [geometryCopy transform];
         v8 = v16.f64[1];
         v7 = v16.f64[0];
         v10 = v17.f64[1];
@@ -143,10 +143,10 @@
 
   v15.receiver = self;
   v15.super_class = CRLMediaLayout;
-  [(CRLBoardItemLayout *)&v15 setGeometry:v4];
+  [(CRLBoardItemLayout *)&v15 setGeometry:geometryCopy];
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -231,8 +231,8 @@
 
 - (CGRect)alignmentFrameInRoot
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
-  if (!v3 || (v4 = v3, -[CRLCanvasAbstractLayout parent](self, "parent"), v5 = objc_claimAutoreleasedReturnValue(), -[CRLCanvasLayout layoutController](self, "layoutController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 rootLayout], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v4, v5 == v7))
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if (!parent || (v4 = parent, -[CRLCanvasAbstractLayout parent](self, "parent"), v5 = objc_claimAutoreleasedReturnValue(), -[CRLCanvasLayout layoutController](self, "layoutController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 rootLayout], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v4, v5 == v7))
   {
     [(CRLMediaLayout *)self alignmentFrame];
   }
@@ -249,23 +249,23 @@
   return result;
 }
 
-- (id)commandToResetToSize:(CGSize)a3
+- (id)commandToResetToSize:(CGSize)size
 {
-  v4 = [(CRLBoardItemLayout *)self boardItem];
-  v5 = [v4 geometry];
-  v6 = [v5 geometryWithNewBounds:sub_10011ECB4()];
+  boardItem = [(CRLBoardItemLayout *)self boardItem];
+  geometry = [boardItem geometry];
+  v6 = [geometry geometryWithNewBounds:sub_10011ECB4()];
 
   v7 = [_TtC8Freeform25CRLCommandSetInfoGeometry alloc];
-  v8 = [(CRLBoardItemLayout *)self boardItem];
-  v9 = [(CRLCommandSetInfoGeometry *)v7 initWithBoardItem:v8 geometry:v6];
+  boardItem2 = [(CRLBoardItemLayout *)self boardItem];
+  v9 = [(CRLCommandSetInfoGeometry *)v7 initWithBoardItem:boardItem2 geometry:v6];
 
   return v9;
 }
 
 - (id)commandToResetMediaToRawPixelSize
 {
-  v3 = [(CRLMediaLayout *)self mediaItem];
-  [v3 mediaRawPixelSize];
+  mediaItem = [(CRLMediaLayout *)self mediaItem];
+  [mediaItem mediaRawPixelSize];
   v5 = v4;
   v7 = v6;
 
@@ -295,12 +295,12 @@
   return result;
 }
 
-- (void)setBoundsForStandardKnobs:(CGRect)a3
+- (void)setBoundsForStandardKnobs:(CGRect)knobs
 {
-  *(&self->_mediaInvalidFlags + 3) = a3.origin.x;
-  *(&self->_dynamicStroke + 3) = *&a3.origin.y;
-  *(&self->_boundsForStandardKnobs.origin.x + 3) = a3.size.width;
-  *(&self->_boundsForStandardKnobs.origin.y + 3) = a3.size.height;
+  *(&self->_mediaInvalidFlags + 3) = knobs.origin.x;
+  *(&self->_dynamicStroke + 3) = *&knobs.origin.y;
+  *(&self->_boundsForStandardKnobs.origin.x + 3) = knobs.size.width;
+  *(&self->_boundsForStandardKnobs.origin.y + 3) = knobs.size.height;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface PanoramaStitchingShaders
-- (PanoramaStitchingShaders)initWithContext:(id)a3;
+- (PanoramaStitchingShaders)initWithContext:(id)context;
 @end
 
 @implementation PanoramaStitchingShaders
 
-- (PanoramaStitchingShaders)initWithContext:(id)a3
+- (PanoramaStitchingShaders)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v44.receiver = self;
   v44.super_class = PanoramaStitchingShaders;
   v5 = [(PanoramaStitchingShaders *)&v44 init];

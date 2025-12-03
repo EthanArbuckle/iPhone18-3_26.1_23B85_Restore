@@ -1,29 +1,29 @@
 @interface HRERecommendableObjectRule
-+ (id)_types:(id)a3 notMatchedByObjects:(id)a4;
-- (BOOL)passesWithHomeObjects:(id)a3;
++ (id)_types:(id)_types notMatchedByObjects:(id)objects;
+- (BOOL)passesWithHomeObjects:(id)objects;
 @end
 
 @implementation HRERecommendableObjectRule
 
-- (BOOL)passesWithHomeObjects:(id)a3
+- (BOOL)passesWithHomeObjects:(id)objects
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HRERule.m" lineNumber:23 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HRERecommendableObjectRule passesWithHomeObjects:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HRERule.m" lineNumber:23 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HRERecommendableObjectRule passesWithHomeObjects:]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (id)_types:(id)a3 notMatchedByObjects:(id)a4
++ (id)_types:(id)_types notMatchedByObjects:(id)objects
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  objectsCopy = objects;
+  v6 = [_types mutableCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__HRERecommendableObjectRule__types_notMatchedByObjects___block_invoke;
   v9[3] = &unk_279776940;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [objectsCopy enumerateObjectsUsingBlock:v9];
 
   return v7;
 }

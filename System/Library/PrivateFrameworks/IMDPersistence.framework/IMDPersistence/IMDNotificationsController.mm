@@ -1,138 +1,138 @@
 @interface IMDNotificationsController
-+ (BOOL)_isFacetimeHighlighted:(id)a3;
-+ (id)_addressBookNameForAddress:(id)a3 orContact:(id)a4;
-+ (id)_addressForHandle:(id)a3;
-+ (id)_displayNameForBusinessChatAddress:(id)a3 businessNameManager:(id)a4;
-+ (id)_displayNameForChatRecord:(id)a3;
-+ (id)_displayNameForHandle:(id)a3 andContact:(id)a4 businessNameManager:(id)a5 suggestionProvider:(id)a6;
-+ (id)_lpLinkMetadataForMessage:(id)a3 attachmentPaths:(id)a4 originalURL:(id)a5;
-+ (id)_pluginPayloadAttachmentPathsForMessage:(id)a3;
-+ (id)_truncateNameIfNeeded:(id)a3;
++ (BOOL)_isFacetimeHighlighted:(id)highlighted;
++ (id)_addressBookNameForAddress:(id)address orContact:(id)contact;
++ (id)_addressForHandle:(id)handle;
++ (id)_displayNameForBusinessChatAddress:(id)address businessNameManager:(id)manager;
++ (id)_displayNameForChatRecord:(id)record;
++ (id)_displayNameForHandle:(id)handle andContact:(id)contact businessNameManager:(id)manager suggestionProvider:(id)provider;
++ (id)_lpLinkMetadataForMessage:(id)message attachmentPaths:(id)paths originalURL:(id)l;
++ (id)_pluginPayloadAttachmentPathsForMessage:(id)message;
++ (id)_truncateNameIfNeeded:(id)needed;
 + (id)logger;
 + (id)sharedInstance;
 + (int)reminderAlertCount;
-+ (int)validateAlertCount:(int)a3;
-- (BOOL)_UTITypeMightBeAnimated:(id)a3;
-- (BOOL)_amIMentionedInMessage:(id)a3;
-- (BOOL)_areAllMessagePartsRetractedForMessageDictionary:(id)a3;
-- (BOOL)_chatHasCategoryMuted:(id)a3 isFromContact:(BOOL)a4;
-- (BOOL)_chatIsMuted:(id)a3;
-- (BOOL)_chatIsMutedBasedOnChatGUID:(id)a3 chatIdentifier:(id)a4 groupID:(id)a5 domainIdentifiers:(id)a6 handles:(id)a7 lastAddressedHandleString:(id)a8 originalGroupID:(id)a9 style:(int64_t)a10;
-- (BOOL)_contentBodyHasLocationURL:(id)a3;
++ (int)validateAlertCount:(int)count;
+- (BOOL)_UTITypeMightBeAnimated:(id)animated;
+- (BOOL)_amIMentionedInMessage:(id)message;
+- (BOOL)_areAllMessagePartsRetractedForMessageDictionary:(id)dictionary;
+- (BOOL)_chatHasCategoryMuted:(id)muted isFromContact:(BOOL)contact;
+- (BOOL)_chatIsMuted:(id)muted;
+- (BOOL)_chatIsMutedBasedOnChatGUID:(id)d chatIdentifier:(id)identifier groupID:(id)iD domainIdentifiers:(id)identifiers handles:(id)handles lastAddressedHandleString:(id)string originalGroupID:(id)groupID style:(int64_t)self0;
+- (BOOL)_contentBodyHasLocationURL:(id)l;
 - (BOOL)_deviceIsElgibileToBeForcedIntoFilteringUnknownSenders;
 - (BOOL)_deviceUnderFirstUnlock;
 - (BOOL)_filteringSettingConfirmed;
-- (BOOL)_handleIsSpokenMessageAllowlisted:(id)a3 chat:(id)a4 message:(id)a5;
-- (BOOL)_isChatbotChat:(id)a3;
+- (BOOL)_handleIsSpokenMessageAllowlisted:(id)allowlisted chat:(id)chat message:(id)message;
+- (BOOL)_isChatbotChat:(id)chat;
 - (BOOL)_isMostActiveDevice;
 - (BOOL)_isRaiseGestureEnabled;
-- (BOOL)_isUnknownSenders:(id)a3;
-- (BOOL)_messageIsBusiness:(id)a3;
-- (BOOL)_messageIsFromFavorite:(id)a3;
-- (BOOL)_messageIsFromKnownContact:(id)a3;
-- (BOOL)_messageIsSOSMapURL:(id)a3;
-- (BOOL)_messageIsStewieEmergency:(id)a3;
-- (BOOL)_messageShouldBeSilentlyDeliveredForBusinessChat:(id)a3;
-- (BOOL)_messageShouldBeSpoken:(id)a3 chatDictionary:(id)a4;
-- (BOOL)_notificationIsFromAFilteredSender:(id)a3 messageDictionary:(id)a4;
-- (BOOL)_shouldOverrideChatSilencingBecauseImMentioned:(id)a3;
-- (BOOL)_shouldPostNotificationForChat:(id)a3 messageDictionary:(id)a4;
-- (BOOL)_shouldPostNotificationRequest:(id)a3 withCurrentlyPostedNotifications:(id)a4;
-- (BOOL)_shouldRepostNotification:(id)a3 withAlreadyPostedNotification:(id)a4;
-- (BOOL)areMyTokens:(id)a3 inMessage:(id)a4;
-- (BOOL)copyFirstFrameOfMultiFrameImageAtFileURL:(id)a3 toFileURL:(id)a4;
-- (BOOL)imagePreviewIsMultiFrameAtFileURL:(id)a3;
-- (BOOL)isFromChatBotNotOTC:(id)a3;
-- (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)a3 participants:(id)a4;
+- (BOOL)_isUnknownSenders:(id)senders;
+- (BOOL)_messageIsBusiness:(id)business;
+- (BOOL)_messageIsFromFavorite:(id)favorite;
+- (BOOL)_messageIsFromKnownContact:(id)contact;
+- (BOOL)_messageIsSOSMapURL:(id)l;
+- (BOOL)_messageIsStewieEmergency:(id)emergency;
+- (BOOL)_messageShouldBeSilentlyDeliveredForBusinessChat:(id)chat;
+- (BOOL)_messageShouldBeSpoken:(id)spoken chatDictionary:(id)dictionary;
+- (BOOL)_notificationIsFromAFilteredSender:(id)sender messageDictionary:(id)dictionary;
+- (BOOL)_shouldOverrideChatSilencingBecauseImMentioned:(id)mentioned;
+- (BOOL)_shouldPostNotificationForChat:(id)chat messageDictionary:(id)dictionary;
+- (BOOL)_shouldPostNotificationRequest:(id)request withCurrentlyPostedNotifications:(id)notifications;
+- (BOOL)_shouldRepostNotification:(id)notification withAlreadyPostedNotification:(id)postedNotification;
+- (BOOL)areMyTokens:(id)tokens inMessage:(id)message;
+- (BOOL)copyFirstFrameOfMultiFrameImageAtFileURL:(id)l toFileURL:(id)rL;
+- (BOOL)imagePreviewIsMultiFrameAtFileURL:(id)l;
+- (BOOL)isFromChatBotNotOTC:(id)c;
+- (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)with participants:(id)participants;
 - (IMDNotificationsController)init;
 - (UNUserNotificationCenter)notificationCenter;
-- (id)RCSCategoryWithIdentifier:(id)a3 actions:(id)a4;
-- (id)SMSCategoryWithIdentifier:(id)a3 actions:(id)a4;
-- (id)_adaptiveImageGlyphForAttachment:(id)a3;
-- (id)_attachmentRecordsForAssociatedMessagePartText:(id)a3;
-- (id)_attributedMessageBodyByInsertingAdaptiveImageGlyphsInMessageBody:(id)a3 attachments:(id)a4;
-- (id)_attributedSummaryOfTapback:(id)a3 messageDictionary:(id)a4 senderDisplayName:(id)a5;
-- (id)_chatDictionaryForChatRecord:(id)a3;
-- (id)_chatDictionaryForMessageRecord:(id)a3;
-- (id)_coreSpotlightChatParticipantsFromChatDictionary:(id)a3 senderHandleID:(id)a4;
-- (id)_dateForMessage:(id)a3;
-- (id)_displayNameForHandle:(id)a3;
-- (id)_displayNameForHandle:(id)a3 andContact:(id)a4 fallbackName:(id)a5;
-- (id)_failedMessageRecordsAfterDateInNanoseconds:(int64_t)a3;
-- (id)_fallbackNameOfChatbotFrom:(id)a3;
-- (id)_groupPhotoInternalFilePathForGroupPhotoGuid:(id)a3;
-- (id)_handleIDsForChatDictionary:(id)a3;
-- (id)_interactionDonationContextWithContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5 isUrgentMessageTrigger:(BOOL)a6;
-- (id)_lastMessageTimeForChat:(id)a3;
-- (id)_lastTwoMessagesForChat:(id)a3;
+- (id)RCSCategoryWithIdentifier:(id)identifier actions:(id)actions;
+- (id)SMSCategoryWithIdentifier:(id)identifier actions:(id)actions;
+- (id)_adaptiveImageGlyphForAttachment:(id)attachment;
+- (id)_attachmentRecordsForAssociatedMessagePartText:(id)text;
+- (id)_attributedMessageBodyByInsertingAdaptiveImageGlyphsInMessageBody:(id)body attachments:(id)attachments;
+- (id)_attributedSummaryOfTapback:(id)tapback messageDictionary:(id)dictionary senderDisplayName:(id)name;
+- (id)_chatDictionaryForChatRecord:(id)record;
+- (id)_chatDictionaryForMessageRecord:(id)record;
+- (id)_coreSpotlightChatParticipantsFromChatDictionary:(id)dictionary senderHandleID:(id)d;
+- (id)_dateForMessage:(id)message;
+- (id)_displayNameForHandle:(id)handle;
+- (id)_displayNameForHandle:(id)handle andContact:(id)contact fallbackName:(id)name;
+- (id)_failedMessageRecordsAfterDateInNanoseconds:(int64_t)nanoseconds;
+- (id)_fallbackNameOfChatbotFrom:(id)from;
+- (id)_groupPhotoInternalFilePathForGroupPhotoGuid:(id)guid;
+- (id)_handleIDsForChatDictionary:(id)dictionary;
+- (id)_interactionDonationContextWithContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary isUrgentMessageTrigger:(BOOL)trigger;
+- (id)_lastMessageTimeForChat:(id)chat;
+- (id)_lastTwoMessagesForChat:(id)chat;
 - (id)_makeNotificationCategories;
-- (id)_messageDictionaryForMessageRecord:(id)a3 copyThreadOriginator:(BOOL)a4;
-- (id)_messagePredicateForNewMessagesAfterDate:(int64_t)a3;
-- (id)_messages:(id)a3 newerThanDate:(int64_t)a4;
-- (id)_nicknameDisplayNameForID:(id)a3;
-- (id)_notificationsSafePreviewFileURLForTransferURL:(id)a3 utiType:(id)a4 knownSender:(BOOL)a5;
-- (id)_requestForNonMostActiveDeviceRequest:(id)a3;
-- (id)_senderDisplayNameForTapback:(id)a3 sendMessageIntent:(id)a4 chatParticipants:(id)a5;
-- (id)_stickerTapbackTransferGUIDFromMessageDictionary:(id)a3;
-- (id)_tapbackFromMessageDictionary:(id)a3;
-- (id)_userNotificationForParticipantChangeMessageRecord:(id)a3;
-- (id)_userNotificationsForFailedDeliveryMessageRecords:(id)a3 isCarouselUITriggered:(BOOL)a4;
-- (id)_userNotificationsForMessageRecords:(id)a3 newerThanDate:(int64_t)a4 isUrgentMessageTrigger:(BOOL)a5 isCarouselUITriggered:(BOOL)a6;
+- (id)_messageDictionaryForMessageRecord:(id)record copyThreadOriginator:(BOOL)originator;
+- (id)_messagePredicateForNewMessagesAfterDate:(int64_t)date;
+- (id)_messages:(id)_messages newerThanDate:(int64_t)date;
+- (id)_nicknameDisplayNameForID:(id)d;
+- (id)_notificationsSafePreviewFileURLForTransferURL:(id)l utiType:(id)type knownSender:(BOOL)sender;
+- (id)_requestForNonMostActiveDeviceRequest:(id)request;
+- (id)_senderDisplayNameForTapback:(id)tapback sendMessageIntent:(id)intent chatParticipants:(id)participants;
+- (id)_stickerTapbackTransferGUIDFromMessageDictionary:(id)dictionary;
+- (id)_tapbackFromMessageDictionary:(id)dictionary;
+- (id)_userNotificationForParticipantChangeMessageRecord:(id)record;
+- (id)_userNotificationsForFailedDeliveryMessageRecords:(id)records isCarouselUITriggered:(BOOL)triggered;
+- (id)_userNotificationsForMessageRecords:(id)records newerThanDate:(int64_t)date isUrgentMessageTrigger:(BOOL)trigger isCarouselUITriggered:(BOOL)triggered;
 - (id)allTokens;
-- (id)contactForHandleRecord:(id)a3;
-- (id)madridBusinessCategoryWithIdentifier:(id)a3 actions:(id)a4;
-- (id)madridCategoryWithIdentifier:(id)a3 actions:(id)a4;
-- (id)madridGroupCategoryWithIdentifier:(id)a3 actions:(id)a4;
-- (id)noRelayCategoryWithIdentifier:(id)a3 actions:(id)a4;
-- (int64_t)_legacyDateForMessageWithRowIDPreference:(int64_t)a3;
+- (id)contactForHandleRecord:(id)record;
+- (id)madridBusinessCategoryWithIdentifier:(id)identifier actions:(id)actions;
+- (id)madridCategoryWithIdentifier:(id)identifier actions:(id)actions;
+- (id)madridGroupCategoryWithIdentifier:(id)identifier actions:(id)actions;
+- (id)noRelayCategoryWithIdentifier:(id)identifier actions:(id)actions;
+- (int64_t)_legacyDateForMessageWithRowIDPreference:(int64_t)preference;
 - (int64_t)lastAlertedFailedMessageDate;
 - (int64_t)lastAlertedMessageDate;
-- (unint64_t)_getMessagesSpokenAllowlistLevel:(BOOL *)a3;
+- (unint64_t)_getMessagesSpokenAllowlistLevel:(BOOL *)level;
 - (unint64_t)_getSpokenMessageAllowlistLevelVersion;
-- (unint64_t)screenTimeNotificationOptionsForChatDictionary:(id)a3;
-- (unint64_t)screenTimeNotificationOptionsForContext:(id)a3;
-- (void)__postNotificationRequests:(id)a3 isMostActiveDevice:(BOOL)a4;
+- (unint64_t)screenTimeNotificationOptionsForChatDictionary:(id)dictionary;
+- (unint64_t)screenTimeNotificationOptionsForContext:(id)context;
+- (void)__postNotificationRequests:(id)requests isMostActiveDevice:(BOOL)device;
 - (void)__postNotifications;
 - (void)_migrateLastedPostedPreferencesIfNeeded;
-- (void)_populateAttachmentsForNotificationContent:(id)a3 messageDictionary:(id)a4 messageRecord:(id)a5 knownSender:(BOOL)a6;
-- (void)_populateBasicNotificationIdentifyingContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5 isCarouselUITriggered:(BOOL)a6;
-- (void)_populateBodyAndTitleForSendFailedNotificationContent:(id)a3 messageDictionary:(id)a4;
-- (void)_populateBodyAndTitleForSendReceivedAsJunkNotificationContent:(id)a3 messageDictionary:(id)a4;
-- (void)_populateBodyForNotificationContent:(id)a3 messageDictionary:(id)a4;
-- (void)_populateIgnoresDoNotDisturb:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5;
-- (void)_populateNotificationContentForTranscriptSharing:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5;
-- (void)_populateRealertCountForNotificationContent:(id)a3;
-- (void)_populateSoundAndDisplayActivationForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5;
-- (void)_populateSubtitleForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5;
-- (void)_populateTimeSensitiveOrCriticalForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5;
-- (void)_populateTitleForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5;
-- (void)_populateUserInfoForMessageContent:(id)a3 messageDictionary:(id)a4 messageIsAddressedToMe:(BOOL)a5;
-- (void)_populateUserInfoOnContentForWatch:(id)a3 messageDictionary:(id)a4 chatDictionary:(id)a5 isCarouselUITriggered:(BOOL)a6;
-- (void)_postNotificationRequests:(id)a3 isMostActiveDevice:(BOOL)a4;
-- (void)_postUnreadNotificationRequests:(id)a3 failedNotificationRequests:(id)a4;
-- (void)_postUrgentNotificationRequests:(id)a3;
+- (void)_populateAttachmentsForNotificationContent:(id)content messageDictionary:(id)dictionary messageRecord:(id)record knownSender:(BOOL)sender;
+- (void)_populateBasicNotificationIdentifyingContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary isCarouselUITriggered:(BOOL)triggered;
+- (void)_populateBodyAndTitleForSendFailedNotificationContent:(id)content messageDictionary:(id)dictionary;
+- (void)_populateBodyAndTitleForSendReceivedAsJunkNotificationContent:(id)content messageDictionary:(id)dictionary;
+- (void)_populateBodyForNotificationContent:(id)content messageDictionary:(id)dictionary;
+- (void)_populateIgnoresDoNotDisturb:(id)disturb chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_populateNotificationContentForTranscriptSharing:(id)sharing chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_populateRealertCountForNotificationContent:(id)content;
+- (void)_populateSoundAndDisplayActivationForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_populateSubtitleForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_populateTimeSensitiveOrCriticalForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_populateTitleForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_populateUserInfoForMessageContent:(id)content messageDictionary:(id)dictionary messageIsAddressedToMe:(BOOL)me;
+- (void)_populateUserInfoOnContentForWatch:(id)watch messageDictionary:(id)dictionary chatDictionary:(id)chatDictionary isCarouselUITriggered:(BOOL)triggered;
+- (void)_postNotificationRequests:(id)requests isMostActiveDevice:(BOOL)device;
+- (void)_postUnreadNotificationRequests:(id)requests failedNotificationRequests:(id)notificationRequests;
+- (void)_postUrgentNotificationRequests:(id)requests;
 - (void)_removeAllDeliveredMessageNotifications;
-- (void)_setContactInMessageDictionary:(id)a3 messageDictionary:(id)a4;
-- (void)_setMessagesSpokenAllowlistLevelInPreferences:(unint64_t)a3;
-- (void)_setSpokenMessageAllowlistLevelVersion:(unint64_t)a3;
+- (void)_setContactInMessageDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
+- (void)_setMessagesSpokenAllowlistLevelInPreferences:(unint64_t)preferences;
+- (void)_setSpokenMessageAllowlistLevelVersion:(unint64_t)version;
 - (void)_setUpNotificationCenter;
 - (void)_setupBusinessNameManager;
 - (void)_setupCriticalNotifications;
 - (void)_setupFirstLoad;
 - (void)_setupMeContactAndTokens;
-- (void)_storeLastAlertedFailedMessageDate:(int64_t)a3;
-- (void)_storeLastAlertedMessageDate:(int64_t)a3;
-- (void)advanceLastAlertedFailedMessageDate:(int64_t)a3;
-- (void)advanceLastAlertedMessageDate:(int64_t)a3;
-- (void)postFirstUnlockMessage:(id)a3 forIdentifier:(id)a4;
-- (void)postNotificationsWithContext:(id)a3;
-- (void)postSharePlayNotificationForChatGUID:(id)a3 faceTimeConversationUUID:(id)a4 handleIdentifier:(id)a5 localizedApplicationName:(id)a6;
-- (void)postUrgentNotificationForMessages:(id)a3 withContext:(id)a4;
-- (void)repostNotificationsFromFirstUnlockWithContext:(id)a3;
-- (void)retractNotificationsForReadMessages:(id)a3;
-- (void)setLastAlertedFailedMessageDate:(int64_t)a3;
-- (void)setLastAlertedMessageDate:(int64_t)a3;
-- (void)updatePostedNotificationsForMessages:(id)a3 withContext:(id)a4;
+- (void)_storeLastAlertedFailedMessageDate:(int64_t)date;
+- (void)_storeLastAlertedMessageDate:(int64_t)date;
+- (void)advanceLastAlertedFailedMessageDate:(int64_t)date;
+- (void)advanceLastAlertedMessageDate:(int64_t)date;
+- (void)postFirstUnlockMessage:(id)message forIdentifier:(id)identifier;
+- (void)postNotificationsWithContext:(id)context;
+- (void)postSharePlayNotificationForChatGUID:(id)d faceTimeConversationUUID:(id)iD handleIdentifier:(id)identifier localizedApplicationName:(id)name;
+- (void)postUrgentNotificationForMessages:(id)messages withContext:(id)context;
+- (void)repostNotificationsFromFirstUnlockWithContext:(id)context;
+- (void)retractNotificationsForReadMessages:(id)messages;
+- (void)setLastAlertedFailedMessageDate:(int64_t)date;
+- (void)setLastAlertedMessageDate:(int64_t)date;
+- (void)updatePostedNotificationsForMessages:(id)messages withContext:(id)context;
 @end
 
 @implementation IMDNotificationsController
@@ -145,7 +145,7 @@
     block[1] = 3221225472;
     block[2] = sub_1B7B09E14;
     block[3] = &unk_1E7CB6A70;
-    block[4] = a1;
+    block[4] = self;
     if (qword_1EDBE62B0 != -1)
     {
       dispatch_once(&qword_1EDBE62B0, block);
@@ -352,7 +352,7 @@
   objc_msgSend_setMeContact_(self, v10, v7);
 }
 
-- (id)madridCategoryWithIdentifier:(id)a3 actions:(id)a4
+- (id)madridCategoryWithIdentifier:(id)identifier actions:(id)actions
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6983218];
@@ -360,19 +360,19 @@
   v20[0] = *MEMORY[0x1E696E698];
   v20[1] = v6;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
+  actionsCopy = actions;
+  identifierCopy = identifier;
   v11 = objc_msgSend_arrayWithObjects_count_(v7, v10, v20, 2);
   v13 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v12, @"MADRID_MESSAGE_FORMAT", 0);
   v15 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v14, @"SINGLE_SUMMARY_FORMAT", 0);
-  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, v9, v8, v11, v13, v15, 14);
+  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, identifierCopy, actionsCopy, v11, v13, v15, 14);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)madridGroupCategoryWithIdentifier:(id)a3 actions:(id)a4
+- (id)madridGroupCategoryWithIdentifier:(id)identifier actions:(id)actions
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6983218];
@@ -380,19 +380,19 @@
   v20[0] = *MEMORY[0x1E696E698];
   v20[1] = v6;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
+  actionsCopy = actions;
+  identifierCopy = identifier;
   v11 = objc_msgSend_arrayWithObjects_count_(v7, v10, v20, 2);
   v13 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v12, @"MADRID_MESSAGE_FORMAT", 0);
   v15 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v14, @"GROUP_SUMMARY_FORMAT", 0);
-  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, v9, v8, v11, v13, v15, 14);
+  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, identifierCopy, actionsCopy, v11, v13, v15, 14);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)madridBusinessCategoryWithIdentifier:(id)a3 actions:(id)a4
+- (id)madridBusinessCategoryWithIdentifier:(id)identifier actions:(id)actions
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6983218];
@@ -400,19 +400,19 @@
   v20[0] = *MEMORY[0x1E696E698];
   v20[1] = v6;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
+  actionsCopy = actions;
+  identifierCopy = identifier;
   v11 = objc_msgSend_arrayWithObjects_count_(v7, v10, v20, 2);
   v13 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v12, @"MADRID_BUSINESS_MESSAGE_FORMAT", 0);
   v15 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v14, @"SINGLE_SUMMARY_FORMAT", 0);
-  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, v9, v8, v11, v13, v15, 14);
+  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, identifierCopy, actionsCopy, v11, v13, v15, 14);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)SMSCategoryWithIdentifier:(id)a3 actions:(id)a4
+- (id)SMSCategoryWithIdentifier:(id)identifier actions:(id)actions
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6983218];
@@ -420,19 +420,19 @@
   v20[0] = *MEMORY[0x1E696E698];
   v20[1] = v6;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
+  actionsCopy = actions;
+  identifierCopy = identifier;
   v11 = objc_msgSend_arrayWithObjects_count_(v7, v10, v20, 2);
   v13 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v12, @"TEXT_MESSAGE_FORMAT", 0);
   v15 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v14, @"SINGLE_SUMMARY_FORMAT", 0);
-  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, v9, v8, v11, v13, v15, 14);
+  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, identifierCopy, actionsCopy, v11, v13, v15, 14);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)RCSCategoryWithIdentifier:(id)a3 actions:(id)a4
+- (id)RCSCategoryWithIdentifier:(id)identifier actions:(id)actions
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6983218];
@@ -440,19 +440,19 @@
   v20[0] = *MEMORY[0x1E696E698];
   v20[1] = v6;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
+  actionsCopy = actions;
+  identifierCopy = identifier;
   v11 = objc_msgSend_arrayWithObjects_count_(v7, v10, v20, 2);
   v13 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v12, @"TEXT_MESSAGE_FORMAT", 0);
   v15 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v14, @"SINGLE_SUMMARY_FORMAT", 0);
-  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, v9, v8, v11, v13, v15, 14);
+  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, identifierCopy, actionsCopy, v11, v13, v15, 14);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)noRelayCategoryWithIdentifier:(id)a3 actions:(id)a4
+- (id)noRelayCategoryWithIdentifier:(id)identifier actions:(id)actions
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6983218];
@@ -460,21 +460,21 @@
   v20[0] = *MEMORY[0x1E696E698];
   v20[1] = v6;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
+  actionsCopy = actions;
+  identifierCopy = identifier;
   v11 = objc_msgSend_arrayWithObjects_count_(v7, v10, v20, 2);
   v13 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v12, @"TEXT_MESSAGE_FORMAT", 0);
   v15 = objc_msgSend_localizedUserNotificationStringForKey_arguments_(MEMORY[0x1E696AEC0], v14, @"SINGLE_SUMMARY_FORMAT", 0);
-  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, v9, v8, v11, v13, v15, 14);
+  v17 = objc_msgSend_categoryWithIdentifier_actions_intentIdentifiers_hiddenPreviewsBodyPlaceholder_categorySummaryFormat_options_(v5, v16, identifierCopy, actionsCopy, v11, v13, v15, 14);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (int64_t)_legacyDateForMessageWithRowIDPreference:(int64_t)a3
+- (int64_t)_legacyDateForMessageWithRowIDPreference:(int64_t)preference
 {
-  v3 = IMDMessageRecordCopyMessageForRowID(a3);
+  v3 = IMDMessageRecordCopyMessageForRowID(preference);
   v6 = v3;
   if (v3)
   {
@@ -622,117 +622,117 @@
 
 - (int64_t)lastAlertedMessageDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lastAlertedMessageDate = v2->_lastAlertedMessageDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastAlertedMessageDate = selfCopy->_lastAlertedMessageDate;
+  objc_sync_exit(selfCopy);
 
   return lastAlertedMessageDate;
 }
 
 - (int64_t)lastAlertedFailedMessageDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lastAlertedFailedMessageDate = v2->_lastAlertedFailedMessageDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastAlertedFailedMessageDate = selfCopy->_lastAlertedFailedMessageDate;
+  objc_sync_exit(selfCopy);
 
   return lastAlertedFailedMessageDate;
 }
 
-- (void)_storeLastAlertedMessageDate:(int64_t)a3
+- (void)_storeLastAlertedMessageDate:(int64_t)date
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1B7B0B420;
   block[3] = &unk_1E7CB6A70;
-  block[4] = a3;
+  block[4] = date;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_storeLastAlertedFailedMessageDate:(int64_t)a3
+- (void)_storeLastAlertedFailedMessageDate:(int64_t)date
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1B7B0B4F8;
   block[3] = &unk_1E7CB6A70;
-  block[4] = a3;
+  block[4] = date;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setLastAlertedMessageDate:(int64_t)a3
+- (void)setLastAlertedMessageDate:(int64_t)date
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_lastAlertedMessageDate = a3;
-  objc_msgSend__storeLastAlertedMessageDate_(v4, v5, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_lastAlertedMessageDate = date;
+  objc_msgSend__storeLastAlertedMessageDate_(selfCopy, v5, date);
   v6 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = objc_msgSend_numberWithLongLong_(MEMORY[0x1E696AD98], v7, v4->_lastAlertedMessageDate);
+    v8 = objc_msgSend_numberWithLongLong_(MEMORY[0x1E696AD98], v7, selfCopy->_lastAlertedMessageDate);
     v10 = 138412290;
     v11 = v8;
     _os_log_impl(&dword_1B7AD5000, v6, OS_LOG_TYPE_DEFAULT, "setting last alerted message date to %@", &v10, 0xCu);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)advanceLastAlertedMessageDate:(int64_t)a3
+- (void)advanceLastAlertedMessageDate:(int64_t)date
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_lastAlertedMessageDate < a3)
+  if (obj->_lastAlertedMessageDate < date)
   {
-    objc_msgSend_setLastAlertedMessageDate_(obj, v4, a3);
+    objc_msgSend_setLastAlertedMessageDate_(obj, v4, date);
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)setLastAlertedFailedMessageDate:(int64_t)a3
+- (void)setLastAlertedFailedMessageDate:(int64_t)date
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_lastAlertedFailedMessageDate = a3;
-  objc_msgSend__storeLastAlertedFailedMessageDate_(obj, v4, a3);
+  obj->_lastAlertedFailedMessageDate = date;
+  objc_msgSend__storeLastAlertedFailedMessageDate_(obj, v4, date);
   objc_sync_exit(obj);
 }
 
-- (void)advanceLastAlertedFailedMessageDate:(int64_t)a3
+- (void)advanceLastAlertedFailedMessageDate:(int64_t)date
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_lastAlertedFailedMessageDate < a3)
+  if (obj->_lastAlertedFailedMessageDate < date)
   {
-    objc_msgSend_setLastAlertedFailedMessageDate_(obj, v4, a3);
+    objc_msgSend_setLastAlertedFailedMessageDate_(obj, v4, date);
   }
 
   objc_sync_exit(obj);
 }
 
-- (id)_messages:(id)a3 newerThanDate:(int64_t)a4
+- (id)_messages:(id)_messages newerThanDate:(int64_t)date
 {
   v4 = MEMORY[0x1E696AE18];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1B7B0B980;
   v11[3] = &unk_1E7CB6B20;
-  v11[4] = a4;
-  v5 = a3;
+  v11[4] = date;
+  _messagesCopy = _messages;
   v7 = objc_msgSend_predicateWithBlock_(v4, v6, v11);
-  v9 = objc_msgSend_filteredArrayUsingPredicate_(v5, v8, v7);
+  v9 = objc_msgSend_filteredArrayUsingPredicate_(_messagesCopy, v8, v7);
 
   return v9;
 }
 
-- (id)_userNotificationForParticipantChangeMessageRecord:(id)a3
+- (id)_userNotificationForParticipantChangeMessageRecord:(id)record
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = IMDCreateIMItemFromIMDMessageRecord(v4, 0, 1, 0);
+  recordCopy = record;
+  v5 = IMDCreateIMItemFromIMDMessageRecord(recordCopy, 0, 1, 0);
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = IMDNotificationsControllerLogHandle();
@@ -768,13 +768,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = objc_msgSend_chatRecord(v4, v15, v16);
+  v10 = objc_msgSend_chatRecord(recordCopy, v15, v16);
   if (!v10)
   {
     v77 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
     {
-      sub_1B7CECC50(v4, v77, v78);
+      sub_1B7CECC50(recordCopy, v77, v78);
     }
 
     goto LABEL_8;
@@ -796,16 +796,16 @@ LABEL_8:
   if (v84[3])
   {
     v26 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v24, v25);
-    v29 = objc_msgSend_guid(v4, v27, v28);
+    v29 = objc_msgSend_guid(recordCopy, v27, v28);
     objc_msgSend_setObject_forKeyedSubscript_(v26, v30, v29, @"__kmessageGUIDKey");
 
-    v33 = objc_msgSend_handleRecord(v4, v31, v32);
+    v33 = objc_msgSend_handleRecord(recordCopy, v31, v32);
     objc_msgSend_setObject_forKeyedSubscript_(v26, v34, v33, @"__kmessageHandleKey");
 
-    v37 = objc_msgSend_handleRecord(v4, v35, v36);
+    v37 = objc_msgSend_handleRecord(recordCopy, v35, v36);
     v39 = objc_msgSend__displayNameForHandle_(self, v38, v37);
 
-    v42 = objc_msgSend_otherHandleRecord(v4, v40, v41);
+    v42 = objc_msgSend_otherHandleRecord(recordCopy, v40, v41);
     v44 = objc_msgSend__displayNameForHandle_(self, v43, v42);
 
     v45 = v84[3];
@@ -826,16 +826,16 @@ LABEL_8:
     objc_msgSend_setObject_forKeyedSubscript_(v26, v53, v52, @"__kmessageTextKey");
 
     v54 = MEMORY[0x1E696AD98];
-    v57 = objc_msgSend_rawDate(v4, v55, v56);
+    v57 = objc_msgSend_rawDate(recordCopy, v55, v56);
     v59 = objc_msgSend_numberWithLongLong_(v54, v58, v57);
     objc_msgSend_setObject_forKeyedSubscript_(v26, v60, v59, @"__kmessageDateKey");
 
     v61 = MEMORY[0x1E696AD98];
-    v64 = objc_msgSend_rawDate(v4, v62, v63);
+    v64 = objc_msgSend_rawDate(recordCopy, v62, v63);
     v66 = objc_msgSend_numberWithLongLong_(v61, v65, v64);
     objc_msgSend_setObject_forKeyedSubscript_(v26, v67, v66, @"__kmessageDateDeliveredKey");
 
-    v70 = objc_msgSend_handleRecord(v4, v68, v69);
+    v70 = objc_msgSend_handleRecord(recordCopy, v68, v69);
     objc_msgSend__setContactInMessageDictionary_messageDictionary_(self, v71, v70, v26);
 
     v72 = IMDNotificationsControllerLogHandle();
@@ -876,23 +876,23 @@ LABEL_9:
   return v12;
 }
 
-- (id)_userNotificationsForMessageRecords:(id)a3 newerThanDate:(int64_t)a4 isUrgentMessageTrigger:(BOOL)a5 isCarouselUITriggered:(BOOL)a6
+- (id)_userNotificationsForMessageRecords:(id)records newerThanDate:(int64_t)date isUrgentMessageTrigger:(BOOL)trigger isCarouselUITriggered:(BOOL)triggered
 {
-  v60 = a6;
-  v6 = a5;
+  triggeredCopy = triggered;
+  triggerCopy = trigger;
   v73 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  recordsCopy = records;
   v63 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v59 = v6;
-  v57 = v8;
-  if (v6)
+  v59 = triggerCopy;
+  v57 = recordsCopy;
+  if (triggerCopy)
   {
-    v10 = v8;
+    v10 = recordsCopy;
   }
 
   else
   {
-    v10 = objc_msgSend__messages_newerThanDate_(self, v9, v8, a4);
+    v10 = objc_msgSend__messages_newerThanDate_(self, v9, recordsCopy, date);
   }
 
   v12 = objc_msgSend__messagesSortedByDate_(self, v11, v10, v10);
@@ -901,7 +901,7 @@ LABEL_9:
   {
     v18 = v15;
     v19 = 0;
-    v58 = self;
+    selfCopy = self;
     do
     {
       v20 = objc_autoreleasePoolPush();
@@ -911,13 +911,13 @@ LABEL_9:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         v29 = objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v27, v28, v25);
-        v32 = objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v30, v31, a4);
+        v32 = objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v30, v31, date);
         *buf = 134218754;
         v66 = v25;
         v67 = 2112;
         v68 = v29;
         v69 = 2048;
-        v70 = a4;
+        dateCopy = date;
         v71 = 2112;
         v72 = v32;
         _os_log_impl(&dword_1B7AD5000, v26, OS_LOG_TYPE_DEFAULT, "iterating new messages for newMessageDate: [%lld]-[%@], last alerted date: [%lld]-[%@]", buf, 0x2Au);
@@ -931,7 +931,7 @@ LABEL_9:
 
       else
       {
-        objc_msgSend__generateNotificationRequestForMessageRecord_isUrgentMessageTrigger_isCarouselUITriggered_shouldAdvanceLastAlertedMessageDate_(self, v35, v22, v59, v60, &v64);
+        objc_msgSend__generateNotificationRequestForMessageRecord_isUrgentMessageTrigger_isCarouselUITriggered_shouldAdvanceLastAlertedMessageDate_(self, v35, v22, v59, triggeredCopy, &v64);
       }
       v37 = ;
       if (v37)
@@ -951,7 +951,7 @@ LABEL_9:
           v68 = v49;
           _os_log_impl(&dword_1B7AD5000, v38, OS_LOG_TYPE_DEFAULT, "Generated notification request for identifier %@ with category identifier %@", buf, 0x16u);
 
-          self = v58;
+          self = selfCopy;
           v12 = v48;
           v18 = v47;
 
@@ -984,16 +984,16 @@ LABEL_9:
   return v63;
 }
 
-- (id)_userNotificationsForFailedDeliveryMessageRecords:(id)a3 isCarouselUITriggered:(BOOL)a4
+- (id)_userNotificationsForFailedDeliveryMessageRecords:(id)records isCarouselUITriggered:(BOOL)triggered
 {
-  v6 = objc_msgSend__messagesSortedByDate_(self, a2, a3);
+  v6 = objc_msgSend__messagesSortedByDate_(self, a2, records);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1B7B0C4C0;
   v13[3] = &unk_1E7CB6B48;
   v13[4] = self;
-  v15 = a4;
+  triggeredCopy = triggered;
   v8 = v7;
   v14 = v8;
   objc_msgSend_enumerateObjectsWithOptions_usingBlock_(v6, v9, 2, v13);
@@ -1003,7 +1003,7 @@ LABEL_9:
   return v8;
 }
 
-- (id)_messagePredicateForNewMessagesAfterDate:(int64_t)a3
+- (id)_messagePredicateForNewMessagesAfterDate:(int64_t)date
 {
   v25[5] = *MEMORY[0x1E69E9840];
   v5 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], a2, @"%K == 0", *MEMORY[0x1E69A7190]);
@@ -1020,7 +1020,7 @@ LABEL_9:
 
   if (objc_msgSend__useDateInPredicate(self, v16, v17))
   {
-    v19 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], v18, @"%K > %ld", *MEMORY[0x1E69A7148], a3);
+    v19 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], v18, @"%K > %ld", *MEMORY[0x1E69A7148], date);
     v21 = objc_msgSend_arrayByAddingObject_(v15, v20, v19);
 
     v15 = v21;
@@ -1212,7 +1212,7 @@ LABEL_19:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v40 = self;
+  selfCopy = self;
   v7 = objc_msgSend_notificationCenter(self, v5, v6);
   v10 = objc_msgSend_deliveredNotifications(v7, v8, v9);
 
@@ -1251,22 +1251,22 @@ LABEL_19:
     while (v15);
   }
 
-  v37 = objc_msgSend_notificationCenter(v40, v35, v36);
+  v37 = objc_msgSend_notificationCenter(selfCopy, v35, v36);
   objc_msgSend_removeDeliveredNotificationsWithIdentifiers_(v37, v38, v4);
 
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_failedMessageRecordsAfterDateInNanoseconds:(int64_t)a3
+- (id)_failedMessageRecordsAfterDateInNanoseconds:(int64_t)nanoseconds
 {
   v35[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = IMDMessageRecordCopyNewestFailedOutgoingMessagesToLimitAfterDate(10, a3);
+  v5 = IMDMessageRecordCopyNewestFailedOutgoingMessagesToLimitAfterDate(10, nanoseconds);
   objc_msgSend_addObjectsFromArray_(v4, v6, v5);
   v8 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], v7, @"%K = %@", *MEMORY[0x1E69A71C8], MEMORY[0x1E695E118]);
   v9 = MEMORY[0x1E696AE18];
   v10 = *MEMORY[0x1E69A7148];
-  v13 = objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v11, v12, a3);
+  v13 = objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v11, v12, nanoseconds);
   v15 = objc_msgSend_predicateWithFormat_(v9, v14, @"%K > %@", v10, v13);
 
   v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1293,53 +1293,53 @@ LABEL_19:
   return v25;
 }
 
-- (void)_postUnreadNotificationRequests:(id)a3 failedNotificationRequests:(id)a4
+- (void)_postUnreadNotificationRequests:(id)requests failedNotificationRequests:(id)notificationRequests
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  notificationRequestsCopy = notificationRequests;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1B7B0D5C4;
   v10[3] = &unk_1E7CB6798;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestsCopy;
+  v12 = notificationRequestsCopy;
+  selfCopy = self;
+  v8 = notificationRequestsCopy;
+  v9 = requestsCopy;
   sub_1B7AF6150(v10);
 }
 
-- (void)_postUrgentNotificationRequests:(id)a3
+- (void)_postUrgentNotificationRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1B7B0D6F0;
   v6[3] = &unk_1E7CB6770;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestsCopy;
+  v5 = requestsCopy;
   sub_1B7AF6150(v6);
 }
 
-- (void)_postNotificationRequests:(id)a3 isMostActiveDevice:(BOOL)a4
+- (void)_postNotificationRequests:(id)requests isMostActiveDevice:(BOOL)device
 {
-  v6 = a3;
+  requestsCopy = requests;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1B7B0D7CC;
   v8[3] = &unk_1E7CB6BE8;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = requestsCopy;
+  deviceCopy = device;
+  v7 = requestsCopy;
   sub_1B7AF6150(v8);
 }
 
-- (void)__postNotificationRequests:(id)a3 isMostActiveDevice:(BOOL)a4
+- (void)__postNotificationRequests:(id)requests isMostActiveDevice:(BOOL)device
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestsCopy = requests;
   v9 = objc_msgSend_notificationCenter(self, v7, v8);
   v12 = objc_msgSend_deliveredNotifications(v9, v10, v11);
 
@@ -1347,7 +1347,7 @@ LABEL_19:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = requestsCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v43, v47, 16);
   if (v14)
   {
@@ -1365,7 +1365,7 @@ LABEL_19:
         }
 
         v19 = *(*(&v43 + 1) + 8 * v17);
-        if (!a4)
+        if (!device)
         {
           v20 = objc_msgSend__requestForNonMostActiveDeviceRequest_(self, v18, v19, v36);
 
@@ -1414,10 +1414,10 @@ LABEL_19:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_requestForNonMostActiveDeviceRequest:(id)a3
+- (id)_requestForNonMostActiveDeviceRequest:(id)request
 {
-  v3 = a3;
-  v6 = objc_msgSend_content(v3, v4, v5);
+  requestCopy = request;
+  v6 = objc_msgSend_content(requestCopy, v4, v5);
   v9 = objc_msgSend_mutableCopy(v6, v7, v8);
 
   v10 = IMDNotificationsControllerLogHandle();
@@ -1449,27 +1449,27 @@ LABEL_19:
   }
 
   v29 = MEMORY[0x1E6983298];
-  v30 = objc_msgSend_identifier(v3, v17, v18);
+  v30 = objc_msgSend_identifier(requestCopy, v17, v18);
   v32 = objc_msgSend_requestWithIdentifier_content_trigger_destinations_(v29, v31, v30, v9, 0, 15);
 
   return v32;
 }
 
-- (void)postNotificationsWithContext:(id)a3
+- (void)postNotificationsWithContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = contextCopy;
     _os_log_impl(&dword_1B7AD5000, v5, OS_LOG_TYPE_DEFAULT, "Post notifications called from client with context %@", &v16, 0xCu);
   }
 
   if (objc_msgSend__haveMigrated(self, v6, v7))
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(v4, v8, @"IMActiveAccountAliasesKey");
+    v9 = objc_msgSend_objectForKeyedSubscript_(contextCopy, v8, @"IMActiveAccountAliasesKey");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1493,15 +1493,15 @@ LABEL_19:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retractNotificationsForReadMessages:(id)a3
+- (void)retractNotificationsForReadMessages:(id)messages
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = messagesCopy;
     _os_log_impl(&dword_1B7AD5000, v5, OS_LOG_TYPE_DEFAULT, "Withdrawing message notifications for message guids %@", buf, 0xCu);
   }
 
@@ -1510,16 +1510,16 @@ LABEL_19:
   v8[2] = sub_1B7B0E0F0;
   v8[3] = &unk_1E7CB6770;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = messagesCopy;
+  v6 = messagesCopy;
   sub_1B7AF6150(v8);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)repostNotificationsFromFirstUnlockWithContext:(id)a3
+- (void)repostNotificationsFromFirstUnlockWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1532,27 +1532,27 @@ LABEL_19:
   v7[2] = sub_1B7B0E294;
   v7[3] = &unk_1E7CB6770;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   sub_1B7AF6150(v7);
 }
 
-- (void)postUrgentNotificationForMessages:(id)a3 withContext:(id)a4
+- (void)postUrgentNotificationForMessages:(id)messages withContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  contextCopy = context;
   v8 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v6;
+    v18 = messagesCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = contextCopy;
     _os_log_impl(&dword_1B7AD5000, v8, OS_LOG_TYPE_DEFAULT, "We need to post these urgent message requests %@ with context %@", &v17, 0x16u);
   }
 
-  v9 = IMDMessageRecordCopyMessagesForGUIDs(v6);
+  v9 = IMDMessageRecordCopyMessagesForGUIDs(messagesCopy);
   AlertedMessageDate = objc_msgSend_lastAlertedMessageDate(self, v10, v11);
   v14 = objc_msgSend__userNotificationsForMessageRecords_newerThanDate_isUrgentMessageTrigger_isCarouselUITriggered_(self, v13, v9, AlertedMessageDate, 1, 0);
   objc_msgSend__postUrgentNotificationRequests_(self, v15, v14);
@@ -1560,20 +1560,20 @@ LABEL_19:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePostedNotificationsForMessages:(id)a3 withContext:(id)a4
+- (void)updatePostedNotificationsForMessages:(id)messages withContext:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  messagesCopy = messages;
   v6 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v49 = v5;
+    v49 = messagesCopy;
     _os_log_impl(&dword_1B7AD5000, v6, OS_LOG_TYPE_DEFAULT, "Updating posted notifications for messages %@", buf, 0xCu);
   }
 
-  v37 = v5;
-  v7 = IMDMessageRecordCopyMessagesForGUIDs(v5);
+  v37 = messagesCopy;
+  v7 = IMDMessageRecordCopyMessagesForGUIDs(messagesCopy);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = 0u;
@@ -1665,23 +1665,23 @@ LABEL_19:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postFirstUnlockMessage:(id)a3 forIdentifier:(id)a4
+- (void)postFirstUnlockMessage:(id)message forIdentifier:(id)identifier
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ((sub_1B7B0C380(v7, v8, v9) & 1) == 0)
+  messageCopy = message;
+  identifierCopy = identifier;
+  if ((sub_1B7B0C380(identifierCopy, v8, v9) & 1) == 0)
   {
-    if (v6)
+    if (messageCopy)
     {
       v10 = IMSharedUtilitiesFrameworkBundle();
       v12 = objc_msgSend_localizedStringForKey_value_table_(v10, v11, @"MADRID_MESSAGE", &stru_1F2FA9728, @"IMSharedUtilities");
 
       v13 = objc_alloc_init(MEMORY[0x1E6983220]);
-      objc_msgSend_setTitle_(v13, v14, v7);
+      objc_msgSend_setTitle_(v13, v14, identifierCopy);
       objc_msgSend_setBody_(v13, v15, v12);
       objc_msgSend_setCategoryIdentifier_(v13, v16, @"MessageExtension-Madrid");
-      objc_msgSend_setThreadIdentifier_(v13, v17, v7);
+      objc_msgSend_setThreadIdentifier_(v13, v17, identifierCopy);
       v20 = objc_msgSend_userInfo(v13, v18, v19);
       Mutable = objc_msgSend_mutableCopy(v20, v21, v22);
 
@@ -1690,11 +1690,11 @@ LABEL_19:
         Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       }
 
-      CFDictionarySetValue(Mutable, @"CKBBContextKeyMessageGUID", v6);
+      CFDictionarySetValue(Mutable, @"CKBBContextKeyMessageGUID", messageCopy);
       CFDictionarySetValue(Mutable, @"CKBBContextKeyIsFirstUnlock", MEMORY[0x1E695E118]);
       objc_msgSend_setUserInfo_(v13, v24, Mutable);
       v26 = objc_msgSend_triggerWithTimeInterval_repeats_(MEMORY[0x1E6983300], v25, 0, 0.1);
-      v28 = objc_msgSend_requestWithIdentifier_content_trigger_(MEMORY[0x1E6983298], v27, v6, v13, v26);
+      v28 = objc_msgSend_requestWithIdentifier_content_trigger_(MEMORY[0x1E6983298], v27, messageCopy, v13, v26);
       v29 = IMDNotificationsControllerLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
@@ -1732,29 +1732,29 @@ LABEL_19:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postSharePlayNotificationForChatGUID:(id)a3 faceTimeConversationUUID:(id)a4 handleIdentifier:(id)a5 localizedApplicationName:(id)a6
+- (void)postSharePlayNotificationForChatGUID:(id)d faceTimeConversationUUID:(id)iD handleIdentifier:(id)identifier localizedApplicationName:(id)name
 {
   v100 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14 = IMDNotificationsControllerLogHandle();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v10 && v11 && v12)
+  if (dCopy && iDCopy && identifierCopy)
   {
     if (v15)
     {
       buf = 138412802;
-      v95 = v10;
+      v95 = dCopy;
       v96 = 2112;
-      v97 = v12;
+      v97 = identifierCopy;
       v98 = 2112;
-      v99 = v13;
+      v99 = nameCopy;
       _os_log_impl(&dword_1B7AD5000, v14, OS_LOG_TYPE_DEFAULT, "Posting SharePlay notification for chat GUID %@ and handle identifier %@ with app name %@", &buf, 0x20u);
     }
 
-    v16 = IMDChatRecordCopyChatForGUID(v10);
+    v16 = IMDChatRecordCopyChatForGUID(dCopy);
     v14 = v16;
     if (!v16)
     {
@@ -1762,15 +1762,15 @@ LABEL_19:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         buf = 138412290;
-        v95 = v10;
+        v95 = dCopy;
         _os_log_impl(&dword_1B7AD5000, v25, OS_LOG_TYPE_DEFAULT, "No chat record for guid: %@", &buf, 0xCu);
       }
 
       goto LABEL_38;
     }
 
-    v85 = v13;
-    v86 = v10;
+    v85 = nameCopy;
+    v86 = dCopy;
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
@@ -1780,8 +1780,8 @@ LABEL_19:
     if (v21)
     {
       v24 = v21;
-      v83 = v11;
-      v84 = self;
+      v83 = iDCopy;
+      selfCopy = self;
       v25 = 0;
       v26 = *v89;
       do
@@ -1795,7 +1795,7 @@ LABEL_19:
 
           v28 = *(*(&v88 + 1) + 8 * i);
           v29 = objc_msgSend_canonicalizedURIString(v28, v22, v23);
-          isEqualToString = objc_msgSend_isEqualToString_(v29, v30, v12);
+          isEqualToString = objc_msgSend_isEqualToString_(v29, v30, identifierCopy);
 
           if (isEqualToString)
           {
@@ -1810,7 +1810,7 @@ LABEL_19:
 
       while (v24);
 
-      v11 = v83;
+      iDCopy = v83;
       if (v25)
       {
         v35 = objc_msgSend_date(MEMORY[0x1E695DF00], v33, v34);
@@ -1843,16 +1843,16 @@ LABEL_19:
         v58 = objc_msgSend_numberWithLongLong_(MEMORY[0x1E696AD98], v57, v82);
         objc_msgSend_setObject_forKeyedSubscript_(v40, v59, v58, @"__kmessageDateDeliveredKey");
 
-        objc_msgSend__setContactInMessageDictionary_messageDictionary_(v84, v60, v25, v40);
-        v62 = objc_msgSend__chatDictionaryForChatRecord_(v84, v61, v14);
+        objc_msgSend__setContactInMessageDictionary_messageDictionary_(selfCopy, v60, v25, v40);
+        v62 = objc_msgSend__chatDictionaryForChatRecord_(selfCopy, v61, v14);
         v87 = 1;
-        v64 = objc_msgSend__generateNotificationRequestForMessageRecord_messageDictionary_chatDictionary_isUrgentMessageTrigger_isCarouselUITriggered_shouldAdvanceLastAlertedMessageDate_(v84, v63, 0, v40, v62, 0, 0, &v87);
+        v64 = objc_msgSend__generateNotificationRequestForMessageRecord_messageDictionary_chatDictionary_isUrgentMessageTrigger_isCarouselUITriggered_shouldAdvanceLastAlertedMessageDate_(selfCopy, v63, 0, v40, v62, 0, 0, &v87);
         v65 = IMDNotificationsControllerLogHandle();
         v66 = os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT);
         if (v64)
         {
           v81 = v62;
-          v10 = v86;
+          dCopy = v86;
           if (v66)
           {
             v69 = objc_msgSend_identifier(v64, v67, v68);
@@ -1867,30 +1867,30 @@ LABEL_19:
 
           v92 = v64;
           v76 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v75, &v92, 1);
-          objc_msgSend__postNotificationRequests_isMostActiveDevice_(v84, v77, v76, 1);
+          objc_msgSend__postNotificationRequests_isMostActiveDevice_(selfCopy, v77, v76, 1);
 
           v62 = v81;
           if (v87 == 1)
           {
-            objc_msgSend_advanceLastAlertedMessageDate_(v84, v78, v82);
+            objc_msgSend_advanceLastAlertedMessageDate_(selfCopy, v78, v82);
           }
         }
 
         else
         {
-          v10 = v86;
+          dCopy = v86;
           if (v66)
           {
             buf = 138412546;
             v95 = v86;
             v96 = 2112;
-            v97 = v12;
+            v97 = identifierCopy;
             _os_log_impl(&dword_1B7AD5000, v65, OS_LOG_TYPE_DEFAULT, "Failed to generate SharePlay notification request for chat GUID %@ and handle identifier %@", &buf, 0x16u);
           }
         }
 
 LABEL_37:
-        v13 = v85;
+        nameCopy = v85;
 LABEL_38:
 
         goto LABEL_39;
@@ -1905,22 +1905,22 @@ LABEL_38:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       buf = 138412290;
-      v95 = v12;
+      v95 = identifierCopy;
       _os_log_impl(&dword_1B7AD5000, v25, OS_LOG_TYPE_DEFAULT, "No handle record for identifier: %@", &buf, 0xCu);
     }
 
-    v10 = v86;
+    dCopy = v86;
     goto LABEL_37;
   }
 
   if (v15)
   {
     buf = 138412802;
-    v95 = v10;
+    v95 = dCopy;
     v96 = 2112;
-    v97 = v11;
+    v97 = iDCopy;
     v98 = 2112;
-    v99 = v12;
+    v99 = identifierCopy;
     _os_log_impl(&dword_1B7AD5000, v14, OS_LOG_TYPE_DEFAULT, "Not posting SharePlay notification because chatGUID (%@), faceTimeConversationUUID (%@), or handleIdentifier (%@) were missing.", &buf, 0x20u);
   }
 
@@ -1954,9 +1954,9 @@ LABEL_39:
   return v8;
 }
 
-- (id)_dateForMessage:(id)a3
+- (id)_dateForMessage:(id)message
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"__kmessageDateKey");
+  v3 = objc_msgSend_objectForKey_(message, a2, @"__kmessageDateKey");
   v6 = objc_msgSend_longLongValue(v3, v4, v5);
 
   v9 = MEMORY[0x1E695DF00];
@@ -1964,45 +1964,45 @@ LABEL_39:
   return objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(v9, v7, v8, v6);
 }
 
-- (void)_populateBasicNotificationIdentifyingContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5 isCarouselUITriggered:(BOOL)a6
+- (void)_populateBasicNotificationIdentifyingContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary isCarouselUITriggered:(BOOL)triggered
 {
   v88 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v80 = objc_msgSend__dateForMessage_(self, v12, v11);
-  objc_msgSend_setDate_(v9, v13, v80);
-  v81 = v10;
-  v15 = objc_msgSend_objectForKey_(v10, v14, @"__kchatChatIdentifierKey");
-  v17 = objc_msgSend_objectForKey_(v11, v16, @"__kmessageServiceKey");
+  contentCopy = content;
+  dictionaryCopy = dictionary;
+  messageDictionaryCopy = messageDictionary;
+  v80 = objc_msgSend__dateForMessage_(self, v12, messageDictionaryCopy);
+  objc_msgSend_setDate_(contentCopy, v13, v80);
+  v81 = dictionaryCopy;
+  v15 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"__kchatChatIdentifierKey");
+  v17 = objc_msgSend_objectForKey_(messageDictionaryCopy, v16, @"__kmessageServiceKey");
   isEqualToString = objc_msgSend_isEqualToString_(v17, v18, *MEMORY[0x1E69A7AE0]);
 
-  v21 = objc_msgSend_objectForKey_(v11, v20, @"__kmessageServiceKey");
+  v21 = objc_msgSend_objectForKey_(messageDictionaryCopy, v20, @"__kmessageServiceKey");
   v23 = objc_msgSend_isEqualToString_(v21, v22, *MEMORY[0x1E69A7AD8]);
 
-  IsBusiness = objc_msgSend__messageIsBusiness_(self, v24, v11);
+  IsBusiness = objc_msgSend__messageIsBusiness_(self, v24, messageDictionaryCopy);
   v27 = IsBusiness;
   v28 = 0;
   v29 = isEqualToString | v23;
   if ((v29 & 1) == 0 && (IsBusiness & 1) == 0)
   {
-    if (objc_msgSend__amIMentionedInMessage_(self, v26, v11))
+    if (objc_msgSend__amIMentionedInMessage_(self, v26, messageDictionaryCopy))
     {
-      objc_msgSend_objectForKey_(v11, v30, @"__kmessageGUIDKey");
+      objc_msgSend_objectForKey_(messageDictionaryCopy, v30, @"__kmessageGUIDKey");
       v28 = LABEL_7:;
       goto LABEL_12;
     }
 
-    v31 = objc_msgSend_objectForKey_(v11, v30, @"__kmessageAssociatedMessageTypeKey");
+    v31 = objc_msgSend_objectForKey_(messageDictionaryCopy, v30, @"__kmessageAssociatedMessageTypeKey");
     v34 = objc_msgSend_longLongValue(v31, v32, v33);
 
     if ((v34 - 2000) <= 0x3EE)
     {
-      objc_msgSend_objectForKey_(v11, v35, @"__kmessageAssociatedMessageGUIDKey");
+      objc_msgSend_objectForKey_(messageDictionaryCopy, v35, @"__kmessageAssociatedMessageGUIDKey");
       goto LABEL_7;
     }
 
-    v36 = objc_msgSend_objectForKey_(v11, v35, @"__kmessageBalloonBundleIDKey");
+    v36 = objc_msgSend_objectForKey_(messageDictionaryCopy, v35, @"__kmessageBalloonBundleIDKey");
     v37 = *MEMORY[0x1E69A6928];
     v38 = IMBalloonExtensionIDWithSuffix();
     v78 = v36;
@@ -2011,20 +2011,20 @@ LABEL_39:
     v28 = 0;
     if (v36 && v34 == 4000)
     {
-      v28 = objc_msgSend_objectForKey_(v11, v40, @"__kmessageAssociatedMessageGUIDKey");
+      v28 = objc_msgSend_objectForKey_(messageDictionaryCopy, v40, @"__kmessageAssociatedMessageGUIDKey");
     }
   }
 
 LABEL_12:
   v79 = v28;
   v41 = objc_msgSend___im_URLForChatIdentifier_entryBody_messageGUID_sourceID_(MEMORY[0x1E695DFF8], v26, v15, 0, v28, @"notification");
-  v43 = objc_msgSend_objectForKey_(v11, v42, @"__kmessageFlagsKey");
+  v43 = objc_msgSend_objectForKey_(messageDictionaryCopy, v42, @"__kmessageFlagsKey");
   v46 = objc_msgSend_unsignedLongLongValue(v43, v44, v45);
 
   if ((v46 & 0x200000) == 0)
   {
     v49 = v41;
-    objc_msgSend_setDefaultActionURL_(v9, v47, v41);
+    objc_msgSend_setDefaultActionURL_(contentCopy, v47, v41);
 LABEL_18:
     v57 = objc_msgSend_objectForKey_(v81, v50, @"__kchatStyleKey");
     v60 = objc_msgSend_longLongValue(v57, v58, v59);
@@ -2033,12 +2033,12 @@ LABEL_18:
     {
       if (isEqualToString)
       {
-        objc_msgSend_setCategoryIdentifier_(v9, v61, @"MessageExtension-SMS");
+        objc_msgSend_setCategoryIdentifier_(contentCopy, v61, @"MessageExtension-SMS");
       }
 
       else
       {
-        objc_msgSend_setCategoryIdentifier_(v9, v61, @"MessageExtension-RCS");
+        objc_msgSend_setCategoryIdentifier_(contentCopy, v61, @"MessageExtension-RCS");
       }
 
       v41 = v49;
@@ -2051,13 +2051,13 @@ LABEL_18:
           _os_log_impl(&dword_1B7AD5000, v62, OS_LOG_TYPE_DEFAULT, "Do not relay notification", buf, 2u);
         }
 
-        objc_msgSend_setCategoryIdentifier_(v9, v63, @"MessageExtension-NoRelay");
+        objc_msgSend_setCategoryIdentifier_(contentCopy, v63, @"MessageExtension-NoRelay");
       }
     }
 
     else if (v27)
     {
-      objc_msgSend_setCategoryIdentifier_(v9, v61, @"MessageExtension-MadridBusiness");
+      objc_msgSend_setCategoryIdentifier_(contentCopy, v61, @"MessageExtension-MadridBusiness");
       v41 = v49;
     }
 
@@ -2066,12 +2066,12 @@ LABEL_18:
       v41 = v49;
       if (v60 == 43)
       {
-        objc_msgSend_setCategoryIdentifier_(v9, v61, @"MessageExtension-MadridGroup");
+        objc_msgSend_setCategoryIdentifier_(contentCopy, v61, @"MessageExtension-MadridGroup");
       }
 
       else
       {
-        objc_msgSend_setCategoryIdentifier_(v9, v61, @"MessageExtension-Madrid");
+        objc_msgSend_setCategoryIdentifier_(contentCopy, v61, @"MessageExtension-Madrid");
       }
     }
 
@@ -2087,7 +2087,7 @@ LABEL_18:
 
   isRaiseGestureEnabled = objc_msgSend__isRaiseGestureEnabled(self, v47, v48);
   v49 = v41;
-  objc_msgSend_setDefaultActionURL_(v9, v52, v41);
+  objc_msgSend_setDefaultActionURL_(contentCopy, v52, v41);
   if (!isRaiseGestureEnabled)
   {
     goto LABEL_18;
@@ -2100,11 +2100,11 @@ LABEL_18:
     _os_log_impl(&dword_1B7AD5000, v53, OS_LOG_TYPE_DEFAULT, "We got an audio message and raise to listen is enabled setting audio notification category", buf, 2u);
   }
 
-  objc_msgSend_setCategoryIdentifier_(v9, v54, @"MessageExtension-AudioRaise");
+  objc_msgSend_setCategoryIdentifier_(contentCopy, v54, @"MessageExtension-AudioRaise");
 LABEL_34:
   if (objc_msgSend_length(v15, v55, v56))
   {
-    objc_msgSend_setThreadIdentifier_(v9, v65, v15);
+    objc_msgSend_setThreadIdentifier_(contentCopy, v65, v15);
   }
 
   else
@@ -2119,9 +2119,9 @@ LABEL_34:
   v67 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
   {
-    v70 = objc_msgSend_date(v9, v68, v69);
-    v73 = objc_msgSend_categoryIdentifier(v9, v71, v72);
-    v76 = objc_msgSend_threadIdentifier(v9, v74, v75);
+    v70 = objc_msgSend_date(contentCopy, v68, v69);
+    v73 = objc_msgSend_categoryIdentifier(contentCopy, v71, v72);
+    v76 = objc_msgSend_threadIdentifier(contentCopy, v74, v75);
     *buf = 138412802;
     v83 = v70;
     v84 = 2112;
@@ -2134,25 +2134,25 @@ LABEL_34:
   v77 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateBodyForNotificationContent:(id)a3 messageDictionary:(id)a4
+- (void)_populateBodyForNotificationContent:(id)content messageDictionary:(id)dictionary
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_objectForKey_(v6, v7, @"__kmessageAttributedBodyKey");
+  contentCopy = content;
+  dictionaryCopy = dictionary;
+  v8 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"__kmessageAttributedBodyKey");
   v13 = objc_msgSend___im_richCardsPreviewText(v8, v9, v10);
   if (!v13)
   {
     v15 = objc_msgSend___im_suggestedReplyPreviewText(v8, v11, v12);
     if (v15)
     {
-      objc_msgSend_setBody_(v5, v14, v15);
+      objc_msgSend_setBody_(contentCopy, v14, v15);
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v16 = objc_msgSend_objectForKey_(v6, v14, @"__kmessageExpressiveSendStyleIDKey");
+    v16 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"__kmessageExpressiveSendStyleIDKey");
     if (objc_msgSend_isEqualToString_(v16, v17, *MEMORY[0x1E69A7088]))
     {
       v55 = v16;
@@ -2167,10 +2167,10 @@ LABEL_18:
 
     else
     {
-      v24 = objc_msgSend_objectForKey_(v6, v18, @"__kmessageTextKey");
+      v24 = objc_msgSend_objectForKey_(dictionaryCopy, v18, @"__kmessageTextKey");
       if (!objc_msgSend_length(v24, v39, v40))
       {
-        v53 = objc_msgSend_objectForKey_(v6, v41, @"__kmessageGUIDKey");
+        v53 = objc_msgSend_objectForKey_(dictionaryCopy, v41, @"__kmessageGUIDKey");
         if (v53)
         {
           v54 = IMDNotificationsControllerLogHandle();
@@ -2231,7 +2231,7 @@ LABEL_14:
     if (objc_msgSend_length(v34, v35, v36) < 0x3E9)
     {
 LABEL_16:
-      objc_msgSend_setBody_(v5, v37, v34);
+      objc_msgSend_setBody_(contentCopy, v37, v34);
 
       v16 = v55;
 LABEL_17:
@@ -2246,19 +2246,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  objc_msgSend_setBody_(v5, v11, v13);
+  objc_msgSend_setBody_(contentCopy, v11, v13);
 LABEL_19:
 
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateSubtitleForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5
+- (void)_populateSubtitleForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v122 = *MEMORY[0x1E69E9840];
-  v103 = a3;
-  v105 = a4;
-  v107 = a5;
-  v109 = objc_msgSend_objectForKey_(v107, v7, @"__kmessageHandleKey");
+  contentCopy = content;
+  dictionaryCopy = dictionary;
+  messageDictionaryCopy = messageDictionary;
+  v109 = objc_msgSend_objectForKey_(messageDictionaryCopy, v7, @"__kmessageHandleKey");
   v8 = objc_opt_class();
   v104 = objc_msgSend__addressForHandle_(v8, v9, v109);
   if (v104 && (MEMORY[0x1B8CAF990]() & 1) != 0)
@@ -2269,25 +2269,25 @@ LABEL_19:
 
   else
   {
-    v12 = v105;
-    if (objc_msgSend__isChatbotChat_(self, v10, v105))
+    v12 = dictionaryCopy;
+    if (objc_msgSend__isChatbotChat_(self, v10, dictionaryCopy))
     {
       v101 = 0;
       v11 = 0;
       goto LABEL_8;
     }
 
-    v101 = objc_msgSend_objectForKeyedSubscript_(v105, v10, @"__kchatGroupNameKey");
+    v101 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"__kchatGroupNameKey");
     v11 = 1;
   }
 
-  v12 = v105;
+  v12 = dictionaryCopy;
 LABEL_8:
   v102 = objc_msgSend_objectForKeyedSubscript_(v12, v10, @"__kchatHandlesForChatKey");
   v13 = v101;
   if (!objc_msgSend_length(v101, v14, v15) && objc_msgSend_count(v102, v16, v17))
   {
-    v48 = objc_msgSend_objectForKeyedSubscript_(v105, v16, @"__kchatStyleKey");
+    v48 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v16, @"__kchatStyleKey");
     v51 = objc_msgSend_longLongValue(v48, v49, v50);
 
     v53 = v11 ^ 1;
@@ -2337,7 +2337,7 @@ LABEL_8:
                 v68 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
                 {
-                  v70 = objc_msgSend_objectForKeyedSubscript_(v107, v69, @"__kmessageGUIDKey");
+                  v70 = objc_msgSend_objectForKeyedSubscript_(messageDictionaryCopy, v69, @"__kmessageGUIDKey");
                   *buf = 138412290;
                   v120 = v70;
                   _os_log_impl(&dword_1B7AD5000, v68, OS_LOG_TYPE_INFO, "Unable to create formatted display string for other recipient handle from messageGUID %@", buf, 0xCu);
@@ -2410,11 +2410,11 @@ LABEL_8:
     }
   }
 
-  v18 = objc_msgSend_objectForKeyedSubscript_(v107, v16, @"__kmessageThreadOriginatorKey");
-  v20 = objc_msgSend_objectForKey_(v107, v19, @"__kmessageServiceKey");
+  v18 = objc_msgSend_objectForKeyedSubscript_(messageDictionaryCopy, v16, @"__kmessageThreadOriginatorKey");
+  v20 = objc_msgSend_objectForKey_(messageDictionaryCopy, v19, @"__kmessageServiceKey");
   isEqualToString = objc_msgSend_isEqualToString_(v20, v21, *MEMORY[0x1E69A7AE0]);
 
-  v24 = objc_msgSend__amIMentionedInMessage_(self, v23, v107);
+  v24 = objc_msgSend__amIMentionedInMessage_(self, v23, messageDictionaryCopy);
   if (!objc_msgSend_length(v13, v25, v26))
   {
     goto LABEL_17;
@@ -2484,24 +2484,24 @@ LABEL_55:
 LABEL_56:
   if (v46)
   {
-    objc_msgSend_setSubtitle_(v103, v47, v45);
+    objc_msgSend_setSubtitle_(contentCopy, v47, v45);
   }
 
   v100 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateBodyAndTitleForSendReceivedAsJunkNotificationContent:(id)a3 messageDictionary:(id)a4
+- (void)_populateBodyAndTitleForSendReceivedAsJunkNotificationContent:(id)content messageDictionary:(id)dictionary
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  dictionaryCopy = dictionary;
   v8 = IMSharedUtilitiesFrameworkBundle();
   v10 = objc_msgSend_localizedStringForKey_value_table_(v8, v9, @"MESSAGE_SEND_RECEIVED_AS_JUNK_DEFAULT", &stru_1F2FA9728, @"IMSharedUtilities");
 
   v11 = IMSharedUtilitiesFrameworkBundle();
   v13 = objc_msgSend_localizedStringForKey_value_table_(v11, v12, @"MESSAGE_SEND_RECEIVED_AS_JUNK_BODY_DEFAULT", &stru_1F2FA9728, @"IMSharedUtilities");
 
-  v16 = objc_msgSend_userInfo(v6, v14, v15);
+  v16 = objc_msgSend_userInfo(contentCopy, v14, v15);
   Mutable = objc_msgSend_mutableCopy(v16, v17, v18);
 
   if (!Mutable)
@@ -2509,10 +2509,10 @@ LABEL_56:
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   }
 
-  v22 = objc_msgSend_objectForKeyedSubscript_(v7, v20, @"__kmessageHandleKey");
+  v22 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v20, @"__kmessageHandleKey");
   if (v22)
   {
-    v23 = objc_msgSend_objectForKey_(v7, v21, @"__kmessageCNContactForSenderKey");
+    v23 = objc_msgSend_objectForKey_(dictionaryCopy, v21, @"__kmessageCNContactForSenderKey");
     v25 = objc_msgSend__displayNameForHandle_andContact_(self, v24, v22, v23);
 
     if (v25)
@@ -2527,7 +2527,7 @@ LABEL_56:
     }
   }
 
-  v33 = objc_msgSend_objectForKeyedSubscript_(v7, v21, @"__kmessageDestinationCallerIDKey");
+  v33 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v21, @"__kmessageDestinationCallerIDKey");
   if (!v33)
   {
     v41 = IMDNotificationsControllerLogHandle();
@@ -2582,17 +2582,17 @@ LABEL_17:
 
   v13 = v39;
 LABEL_18:
-  objc_msgSend_setTitle_(v6, v40, v10);
-  objc_msgSend_setBody_(v6, v51, v13);
+  objc_msgSend_setTitle_(contentCopy, v40, v10);
+  objc_msgSend_setBody_(contentCopy, v51, v13);
   objc_msgSend_setObject_forKey_(Mutable, v52, MEMORY[0x1E695E118], @"CKBBContextKeyIsFailedMessage");
-  objc_msgSend_setUserInfo_(v6, v53, Mutable);
+  objc_msgSend_setUserInfo_(contentCopy, v53, Mutable);
 
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_contentBodyHasLocationURL:(id)a3
+- (BOOL)_contentBodyHasLocationURL:(id)l
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"__kmessageAttributedBodyKey");
+  v3 = objc_msgSend_objectForKeyedSubscript_(l, a2, @"__kmessageAttributedBodyKey");
   v6 = objc_msgSend___im_dataDetectedURLsFromAttributes(v3, v4, v5);
   if (!objc_msgSend_count(v6, v7, v8))
   {
@@ -2645,22 +2645,22 @@ LABEL_11:
   return v35;
 }
 
-- (void)_populateNotificationContentForTranscriptSharing:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5
+- (void)_populateNotificationContentForTranscriptSharing:(id)sharing chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v125 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sharingCopy = sharing;
+  dictionaryCopy = dictionary;
+  messageDictionaryCopy = messageDictionary;
   v12 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v10, v11);
-  LODWORD(a4) = objc_msgSend_isTranscriptSharingEnabled(v12, v13, v14);
+  LODWORD(dictionary) = objc_msgSend_isTranscriptSharingEnabled(v12, v13, v14);
 
-  if (!a4)
+  if (!dictionary)
   {
     goto LABEL_31;
   }
 
   v16 = MEMORY[0x1E69A8270];
-  v17 = objc_msgSend_objectForKey_(v8, v15, @"__kchatEmergencyUserInfo");
+  v17 = objc_msgSend_objectForKey_(dictionaryCopy, v15, @"__kchatEmergencyUserInfo");
   v19 = objc_msgSend_infoFromDictionary_isStewieTranscriptSharingMessage_(v16, v18, v17, 0);
 
   v114 = v19;
@@ -2669,20 +2669,20 @@ LABEL_11:
     goto LABEL_31;
   }
 
-  v111 = v7;
-  v21 = objc_msgSend_objectForKey_(v9, v20, @"__kmessageIsInitialTranscriptSharingItem");
+  v111 = sharingCopy;
+  v21 = objc_msgSend_objectForKey_(messageDictionaryCopy, v20, @"__kmessageIsInitialTranscriptSharingItem");
   v107 = objc_msgSend_BOOLValue(v21, v22, v23);
 
-  v113 = v9;
-  v25 = objc_msgSend_objectForKey_(v9, v24, @"__kmessageHandleKey");
+  v113 = messageDictionaryCopy;
+  v25 = objc_msgSend_objectForKey_(messageDictionaryCopy, v24, @"__kmessageHandleKey");
   v26 = objc_opt_class();
   v109 = v25;
   v28 = objc_msgSend__addressForHandle_(v26, v27, v25);
   v29 = *MEMORY[0x1E69A6EA0];
   v108 = v28;
   hasSuffix = objc_msgSend_hasSuffix_(v28, v30, *MEMORY[0x1E69A6EA0]);
-  v110 = v8;
-  objc_msgSend_objectForKeyedSubscript_(v8, v31, @"__kchatHandlesForChatKey");
+  v110 = dictionaryCopy;
+  objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v31, @"__kchatHandlesForChatKey");
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
@@ -2789,7 +2789,7 @@ LABEL_22:
     v79 = v86;
   }
 
-  v7 = v111;
+  sharingCopy = v111;
   if (v107)
   {
     v87 = MEMORY[0x1E696AEC0];
@@ -2806,7 +2806,7 @@ LABEL_22:
   if (hasSuffix & 1 | ((objc_msgSend__contentBodyHasLocationURL_(self, v80, v113) & 1) == 0))
   {
     v96 = v109;
-    v8 = v110;
+    dictionaryCopy = v110;
     v97 = v108;
     v91 = v116;
   }
@@ -2822,30 +2822,30 @@ LABEL_22:
 
 LABEL_29:
     v96 = v109;
-    v8 = v110;
+    dictionaryCopy = v110;
     v97 = v108;
   }
 
   objc_msgSend_setTitle_(v111, v95, v67);
   objc_msgSend_setSubtitle_(v111, v105, v79);
 
-  v9 = v113;
+  messageDictionaryCopy = v113;
 LABEL_31:
 
   v106 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateBodyAndTitleForSendFailedNotificationContent:(id)a3 messageDictionary:(id)a4
+- (void)_populateBodyAndTitleForSendFailedNotificationContent:(id)content messageDictionary:(id)dictionary
 {
-  v67 = a3;
-  v6 = a4;
+  contentCopy = content;
+  dictionaryCopy = dictionary;
   v7 = IMSharedUtilitiesFrameworkBundle();
   v9 = objc_msgSend_localizedStringForKey_value_table_(v7, v8, @"MESSAGE_SEND_FAILED", &stru_1F2FA9728, @"IMSharedUtilities");
 
   v10 = IMSharedUtilitiesFrameworkBundle();
   v12 = objc_msgSend_localizedStringForKey_value_table_(v10, v11, @"MESSAGE_SEND_TO_UNKNOWN_FAILED", &stru_1F2FA9728, @"IMSharedUtilities");
 
-  v15 = objc_msgSend_userInfo(v67, v13, v14);
+  v15 = objc_msgSend_userInfo(contentCopy, v13, v14);
   Mutable = objc_msgSend_mutableCopy(v15, v16, v17);
 
   if (!Mutable)
@@ -2853,11 +2853,11 @@ LABEL_31:
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   }
 
-  v20 = objc_msgSend_objectForKeyedSubscript_(v6, v19, @"__kmessageHandleKey");
-  v22 = objc_msgSend_objectForKey_(v6, v21, @"__kmessageServiceKey");
+  v20 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v19, @"__kmessageHandleKey");
+  v22 = objc_msgSend_objectForKey_(dictionaryCopy, v21, @"__kmessageServiceKey");
   isEqualToString = objc_msgSend_isEqualToString_(v22, v23, *MEMORY[0x1E69A7AF8]);
 
-  v26 = objc_msgSend_objectForKey_(v6, v25, @"__kmessageServiceKey");
+  v26 = objc_msgSend_objectForKey_(dictionaryCopy, v25, @"__kmessageServiceKey");
   v28 = objc_msgSend_isEqualToString_(v26, v27, *MEMORY[0x1E69A7AE8]);
 
   if ((isEqualToString & 1) != 0 || v28)
@@ -2870,7 +2870,7 @@ LABEL_31:
 
   if (v20)
   {
-    v33 = objc_msgSend_objectForKey_(v6, v29, @"__kmessageCNContactForSenderKey");
+    v33 = objc_msgSend_objectForKey_(dictionaryCopy, v29, @"__kmessageCNContactForSenderKey");
     v35 = objc_msgSend__displayNameForHandle_andContact_(self, v34, v20, v33);
 
     if (v35)
@@ -2882,10 +2882,10 @@ LABEL_31:
       v41 = objc_msgSend_localizedStringWithFormat_(v36, v40, v39, v35);
 
       objc_msgSend_setObject_forKey_(Mutable, v42, v35, @"CKBBContextKeySenderName");
-      v44 = objc_msgSend_objectForKeyedSubscript_(v6, v43, @"__kmessageFlagsKey");
+      v44 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v43, @"__kmessageFlagsKey");
       v47 = objc_msgSend_unsignedLongLongValue(v44, v45, v46);
 
-      v49 = objc_msgSend_objectForKeyedSubscript_(v6, v48, @"__kmessageItemTypeKey");
+      v49 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v48, @"__kmessageItemTypeKey");
       v52 = v49;
       if ((v47 & 0x20000000000) != 0 && !((objc_msgSend_longValue(v49, v50, v51) != 0) | isEqualToString & 1 | v28 & 1))
       {
@@ -2907,22 +2907,22 @@ LABEL_31:
     }
   }
 
-  objc_msgSend_setTitle_(v67, v29, v9);
-  objc_msgSend_setBody_(v67, v62, v12);
-  objc_msgSend_setInterruptionLevel_(v67, v63, 2);
+  objc_msgSend_setTitle_(contentCopy, v29, v9);
+  objc_msgSend_setBody_(contentCopy, v62, v12);
+  objc_msgSend_setInterruptionLevel_(contentCopy, v63, 2);
   objc_msgSend_setObject_forKey_(Mutable, v64, MEMORY[0x1E695E118], @"CKBBContextKeyIsFailedMessage");
-  objc_msgSend_setUserInfo_(v67, v65, Mutable);
+  objc_msgSend_setUserInfo_(contentCopy, v65, Mutable);
 }
 
-- (void)_populateTitleForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5
+- (void)_populateTitleForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v91 = *MEMORY[0x1E69E9840];
-  v88 = a3;
-  v8 = a4;
-  v9 = a5;
-  v11 = objc_msgSend_objectForKey_(v9, v10, @"__kmessageHandleKey");
+  contentCopy = content;
+  dictionaryCopy = dictionary;
+  messageDictionaryCopy = messageDictionary;
+  v11 = objc_msgSend_objectForKey_(messageDictionaryCopy, v10, @"__kmessageHandleKey");
   v12 = MEMORY[0x1E69A8270];
-  v14 = objc_msgSend_objectForKey_(v8, v13, @"__kchatEmergencyUserInfo");
+  v14 = objc_msgSend_objectForKey_(dictionaryCopy, v13, @"__kchatEmergencyUserInfo");
   v87 = objc_msgSend_infoFromDictionary_isStewieTranscriptSharingMessage_(v12, v15, v14, 0);
 
   if (v11)
@@ -2946,14 +2946,14 @@ LABEL_31:
         v86 = 1;
       }
 
-      v29 = objc_msgSend_objectForKey_(v9, v27, @"__kmessageCNContactForSenderKey");
-      v31 = objc_msgSend__fallbackNameOfChatbotFrom_(self, v30, v8);
+      v29 = objc_msgSend_objectForKey_(messageDictionaryCopy, v27, @"__kmessageCNContactForSenderKey");
+      v31 = objc_msgSend__fallbackNameOfChatbotFrom_(self, v30, dictionaryCopy);
       v28 = objc_msgSend__displayNameForHandle_andContact_fallbackName_(self, v32, v11, v29, v31);
 
       if (v28 && objc_msgSend_length(v28, v33, v34))
       {
-        objc_msgSend_setTitle_(v88, v35, v28);
-        v38 = objc_msgSend_userInfo(v88, v36, v37);
+        objc_msgSend_setTitle_(contentCopy, v35, v28);
+        v38 = objc_msgSend_userInfo(contentCopy, v36, v37);
         Mutable = objc_msgSend_mutableCopy(v38, v39, v40);
 
         if (!Mutable)
@@ -2963,9 +2963,9 @@ LABEL_31:
 
         objc_msgSend_setObject_forKey_(Mutable, v42, v28, @"CKBBContextKeySenderName");
         v82 = Mutable;
-        objc_msgSend_setUserInfo_(v88, v43, Mutable);
-        v84 = objc_msgSend_objectForKeyedSubscript_(v8, v44, @"__kchatHandlesForChatKey");
-        v83 = objc_msgSend_objectForKeyedSubscript_(v9, v45, @"__kmessageThreadOriginatorKey");
+        objc_msgSend_setUserInfo_(contentCopy, v43, Mutable);
+        v84 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v44, @"__kchatHandlesForChatKey");
+        v83 = objc_msgSend_objectForKeyedSubscript_(messageDictionaryCopy, v45, @"__kmessageThreadOriginatorKey");
         if (objc_msgSend_count(v84, v46, v47) < 2)
         {
           v54 = 0;
@@ -2973,7 +2973,7 @@ LABEL_31:
 
         else
         {
-          v50 = objc_msgSend_objectForKeyedSubscript_(v8, v48, @"__kchatStyleKey");
+          v50 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v48, @"__kchatStyleKey");
           v54 = objc_msgSend_longLongValue(v50, v51, v52) != 45 && (v85 & v86) != 0;
         }
 
@@ -2985,10 +2985,10 @@ LABEL_31:
           v54 &= v87 == 0;
         }
 
-        v63 = objc_msgSend_objectForKey_(v9, v62, @"__kmessageServiceKey");
+        v63 = objc_msgSend_objectForKey_(messageDictionaryCopy, v62, @"__kmessageServiceKey");
         isEqualToString = objc_msgSend_isEqualToString_(v63, v64, *MEMORY[0x1E69A7AE0]);
 
-        v67 = objc_msgSend__amIMentionedInMessage_(self, v66, v9);
+        v67 = objc_msgSend__amIMentionedInMessage_(self, v66, messageDictionaryCopy);
         if (v54)
         {
           goto LABEL_35;
@@ -3021,7 +3021,7 @@ LABEL_31:
         v75 = IMSharedUtilitiesFrameworkBundle();
         v77 = objc_msgSend_localizedStringForKey_value_table_(v75, v76, v73, &stru_1F2FA9728, @"IMSharedUtilities");
         v79 = objc_msgSend_localizedStringWithFormat_(v74, v78, v77, v28);
-        objc_msgSend_setTitle_(v88, v80, v79);
+        objc_msgSend_setTitle_(contentCopy, v80, v79);
 
 LABEL_35:
       }
@@ -3034,7 +3034,7 @@ LABEL_35:
         v55 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
         {
-          v57 = objc_msgSend_objectForKeyedSubscript_(v9, v56, @"__kmessageGUIDKey");
+          v57 = objc_msgSend_objectForKeyedSubscript_(messageDictionaryCopy, v56, @"__kmessageGUIDKey");
           *buf = 138412290;
           v90 = v57;
           _os_log_impl(&dword_1B7AD5000, v55, OS_LOG_TYPE_INFO, "Unable to create formatted display string for handle from messageGUID %@", buf, 0xCu);
@@ -3054,13 +3054,13 @@ LABEL_35:
   v81 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateSoundAndDisplayActivationForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5
+- (void)_populateSoundAndDisplayActivationForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
+  contentCopy = content;
+  messageDictionaryCopy = messageDictionary;
   v9 = objc_msgSend_soundWithAlertType_(MEMORY[0x1E6983238], v8, 2);
-  v11 = objc_msgSend_objectForKey_(v7, v10, @"__kmessageCNContactForSenderKey");
+  v11 = objc_msgSend_objectForKey_(messageDictionaryCopy, v10, @"__kmessageCNContactForSenderKey");
   v13 = v11;
   if (v11)
   {
@@ -3077,7 +3077,7 @@ LABEL_35:
       v26 = objc_msgSend_ignoreMute(v17, v24, v25);
       objc_msgSend_setShouldIgnoreRingerSwitch_(v9, v27, v26);
       v30 = objc_msgSend_ignoreMute(v17, v28, v29);
-      objc_msgSend_setShouldIgnoreDoNotDisturb_(v6, v31, v30);
+      objc_msgSend_setShouldIgnoreDoNotDisturb_(contentCopy, v31, v30);
       if (objc_msgSend_ignoreMute(v17, v32, v33))
       {
         v34 = IMDNotificationsControllerLogHandle();
@@ -3100,12 +3100,12 @@ LABEL_35:
     }
   }
 
-  v36 = objc_msgSend_objectForKey_(v7, v35, @"__kmessageAssociatedMessageGUIDKey");
+  v36 = objc_msgSend_objectForKey_(messageDictionaryCopy, v35, @"__kmessageAssociatedMessageGUIDKey");
   v39 = objc_msgSend_length(v36, v37, v38);
 
   if (v39)
   {
-    v41 = objc_msgSend_objectForKey_(v7, v40, @"__kmessageAssociatedMessageTypeKey");
+    v41 = objc_msgSend_objectForKey_(messageDictionaryCopy, v40, @"__kmessageAssociatedMessageTypeKey");
     v44 = objc_msgSend_longLongValue(v41, v42, v43);
     if ((v44 - 2000) <= 5)
     {
@@ -3113,13 +3113,13 @@ LABEL_35:
     }
   }
 
-  objc_msgSend_setShouldSuppressScreenLightUp_(v6, v40, 0);
-  objc_msgSend_setSound_(v6, v46, v9);
+  objc_msgSend_setShouldSuppressScreenLightUp_(contentCopy, v40, 0);
+  objc_msgSend_setSound_(contentCopy, v46, v9);
   v47 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
-    v50 = objc_msgSend_sound(v6, v48, v49);
-    if (objc_msgSend_shouldIgnoreDoNotDisturb(v6, v51, v52))
+    v50 = objc_msgSend_sound(contentCopy, v48, v49);
+    if (objc_msgSend_shouldIgnoreDoNotDisturb(contentCopy, v51, v52))
     {
       v55 = @"YES";
     }
@@ -3129,7 +3129,7 @@ LABEL_35:
       v55 = @"NO";
     }
 
-    shouldSuppressScreenLightUp = objc_msgSend_shouldSuppressScreenLightUp(v6, v53, v54);
+    shouldSuppressScreenLightUp = objc_msgSend_shouldSuppressScreenLightUp(contentCopy, v53, v54);
     v59 = 138412802;
     if (shouldSuppressScreenLightUp)
     {
@@ -3152,18 +3152,18 @@ LABEL_35:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateIgnoresDoNotDisturb:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5
+- (void)_populateIgnoresDoNotDisturb:(id)disturb chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v10 = objc_msgSend_objectForKey_(a4, v9, @"__kchatChatIdentifierKey");
+  disturbCopy = disturb;
+  messageDictionaryCopy = messageDictionary;
+  v10 = objc_msgSend_objectForKey_(dictionary, v9, @"__kchatChatIdentifierKey");
   if (MEMORY[0x1B8CAF9D0]())
   {
     v12 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = objc_msgSend_objectForKey_(v8, v13, @"__kmessageGUIDKey");
+      v14 = objc_msgSend_objectForKey_(messageDictionaryCopy, v13, @"__kmessageGUIDKey");
       v22 = 138412290;
       v23 = v14;
       _os_log_impl(&dword_1B7AD5000, v12, OS_LOG_TYPE_DEFAULT, "Chat is flagged as Stewie for message %@ punching through DND", &v22, 0xCu);
@@ -3183,7 +3183,7 @@ LABEL_35:
   v16 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = objc_msgSend_objectForKey_(v8, v17, @"__kmessageGUIDKey");
+    v18 = objc_msgSend_objectForKey_(messageDictionaryCopy, v17, @"__kmessageGUIDKey");
     v22 = 138412290;
     v23 = v18;
     _os_log_impl(&dword_1B7AD5000, v16, OS_LOG_TYPE_DEFAULT, "Chat is flagged as Stewie TS for message %@ punching through DND", &v22, 0xCu);
@@ -3197,23 +3197,23 @@ LABEL_10:
     _os_log_impl(&dword_1B7AD5000, v19, OS_LOG_TYPE_DEFAULT, "Setting ShouldIgnoreDoNotDisturb = YES", &v22, 2u);
   }
 
-  objc_msgSend_setShouldIgnoreDoNotDisturb_(v7, v20, 1);
+  objc_msgSend_setShouldIgnoreDoNotDisturb_(disturbCopy, v20, 1);
 LABEL_13:
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateTimeSensitiveOrCriticalForNotificationContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5
+- (void)_populateTimeSensitiveOrCriticalForNotificationContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v94 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v10 = objc_msgSend_objectForKey_(v8, v9, @"__kmessageFlagsKey");
+  contentCopy = content;
+  messageDictionaryCopy = messageDictionary;
+  v10 = objc_msgSend_objectForKey_(messageDictionaryCopy, v9, @"__kmessageFlagsKey");
   v13 = objc_msgSend_unsignedLongLongValue(v10, v11, v12);
 
   if ((v13 & 0x8000000000) == 0)
   {
-    if (!objc_msgSend__messageIsSOSMapURL_(self, v14, v8))
+    if (!objc_msgSend__messageIsSOSMapURL_(self, v14, messageDictionaryCopy))
     {
       goto LABEL_23;
     }
@@ -3228,7 +3228,7 @@ LABEL_13:
     _os_log_impl(&dword_1B7AD5000, v15, OS_LOG_TYPE_DEFAULT, "Message has an SOS flag", buf, 2u);
   }
 
-  if (objc_msgSend__messageIsSOSMapURL_(self, v16, v8))
+  if (objc_msgSend__messageIsSOSMapURL_(self, v16, messageDictionaryCopy))
   {
 LABEL_7:
     v18 = IMDNotificationsControllerLogHandle();
@@ -3247,31 +3247,31 @@ LABEL_7:
 
   v79 = 0;
 LABEL_10:
-  v23 = objc_msgSend_objectForKey_(v8, v17, @"__kmessageFlagsKey");
+  v23 = objc_msgSend_objectForKey_(messageDictionaryCopy, v17, @"__kmessageFlagsKey");
   v26 = objc_msgSend_unsignedLongLongValue(v23, v24, v25) & 0x4000000000;
 
   sub_1B7B124D4(v27, v28, v29);
   v30 = objc_opt_respondsToSelector();
-  v80 = v8;
+  v80 = messageDictionaryCopy;
   if (v30)
   {
     v33 = sub_1B7B124D4(v30, v31, v32);
     isSOSMessagesUrgentAlertingEnabled = objc_msgSend_isSOSMessagesUrgentAlertingEnabled(v33, v34, v35);
-    v38 = objc_msgSend__messageIsFromKnownContact_(self, v37, v8);
+    v38 = objc_msgSend__messageIsFromKnownContact_(self, v37, messageDictionaryCopy);
     v41 = v38;
     v42 = 1;
     v43 = 2;
     if (v26 && isSOSMessagesUrgentAlertingEnabled && v38)
     {
-      if (objc_msgSend_realertCount(v7, v39, v40) >= 4)
+      if (objc_msgSend_realertCount(contentCopy, v39, v40) >= 4)
       {
-        v46 = objc_msgSend_realertCount(v7, v44, v45);
-        objc_msgSend_setRealertCount_(v7, v47, v46);
+        v46 = objc_msgSend_realertCount(contentCopy, v44, v45);
+        objc_msgSend_setRealertCount_(contentCopy, v47, v46);
       }
 
       else
       {
-        objc_msgSend_setRealertCount_(v7, v44, 4);
+        objc_msgSend_setRealertCount_(contentCopy, v44, 4);
       }
 
       v42 = 0;
@@ -3287,7 +3287,7 @@ LABEL_10:
 
   else
   {
-    v41 = objc_msgSend__messageIsFromKnownContact_(self, v31, v8);
+    v41 = objc_msgSend__messageIsFromKnownContact_(self, v31, messageDictionaryCopy);
     isSOSMessagesUrgentAlertingEnabled = 0;
     v78 = 0;
     v42 = 1;
@@ -3295,10 +3295,10 @@ LABEL_10:
   }
 
   v48 = IMDNotificationsControllerLogHandle();
-  v81 = v7;
+  v81 = contentCopy;
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    v51 = objc_msgSend_realertCount(v7, v49, v50);
+    v51 = objc_msgSend_realertCount(contentCopy, v49, v50);
     *buf = 67110144;
     v85 = v26 >> 38;
     v86 = 1024;
@@ -3314,7 +3314,7 @@ LABEL_10:
 
   v52 = (v13 >> 39) & 1;
 
-  objc_msgSend_setInterruptionLevel_(v7, v53, v43);
+  objc_msgSend_setInterruptionLevel_(contentCopy, v53, v43);
   v56 = objc_msgSend_sharedInstance(MEMORY[0x1E69A8168], v54, v55);
   v77 = *MEMORY[0x1E69A75A0];
   v82[0] = @"markedSOS";
@@ -3344,22 +3344,22 @@ LABEL_10:
   v74 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v73, v83, v82, 8);
   objc_msgSend_trackEvent_withDictionary_(v56, v75, v77, v74);
 
-  v7 = v81;
-  v8 = v80;
+  contentCopy = v81;
+  messageDictionaryCopy = v80;
 LABEL_23:
 
   v76 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_messageIsSOSMapURL:(id)a3
+- (BOOL)_messageIsSOSMapURL:(id)l
 {
-  v3 = a3;
-  v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"__kmessageServiceKey");
+  lCopy = l;
+  v5 = objc_msgSend_objectForKeyedSubscript_(lCopy, v4, @"__kmessageServiceKey");
   isEqualToString = objc_msgSend_isEqualToString_(v5, v6, *MEMORY[0x1E69A7AE0]);
 
   if (isEqualToString)
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(v3, v8, @"__kmessageTextKey");
+    v9 = objc_msgSend_objectForKeyedSubscript_(lCopy, v8, @"__kmessageTextKey");
     v12 = objc_msgSend_im_matchesSOSMapURL(v9, v10, v11);
   }
 
@@ -3371,15 +3371,15 @@ LABEL_23:
   return v12;
 }
 
-- (BOOL)isFromChatBotNotOTC:(id)a3
+- (BOOL)isFromChatBotNotOTC:(id)c
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"__kmessageBalloonBundleIDKey");
+  cCopy = c;
+  v5 = objc_msgSend_objectForKeyedSubscript_(cCopy, v4, @"__kmessageBalloonBundleIDKey");
   if (objc_msgSend_isEqualToString_(v5, v6, *MEMORY[0x1E69A68F0]))
   {
-    v8 = objc_msgSend_objectForKeyedSubscript_(v3, v7, @"__kmessageAttributedBodyKey");
-    v10 = objc_msgSend_objectForKeyedSubscript_(v3, v9, @"__kmessageGUIDKey");
+    v8 = objc_msgSend_objectForKeyedSubscript_(cCopy, v7, @"__kmessageAttributedBodyKey");
+    v10 = objc_msgSend_objectForKeyedSubscript_(cCopy, v9, @"__kmessageGUIDKey");
     v11 = v10;
     v12 = 1;
     if (!v8 || !v10)
@@ -3424,18 +3424,18 @@ LABEL_13:
   return v12;
 }
 
-- (void)_populateUserInfoOnContentForWatch:(id)a3 messageDictionary:(id)a4 chatDictionary:(id)a5 isCarouselUITriggered:(BOOL)a6
+- (void)_populateUserInfoOnContentForWatch:(id)watch messageDictionary:(id)dictionary chatDictionary:(id)chatDictionary isCarouselUITriggered:(BOOL)triggered
 {
   v138[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (objc_msgSend_isFromChatBotNotOTC_(self, v12, v10))
+  watchCopy = watch;
+  dictionaryCopy = dictionary;
+  chatDictionaryCopy = chatDictionary;
+  if (objc_msgSend_isFromChatBotNotOTC_(self, v12, dictionaryCopy))
   {
     goto LABEL_61;
   }
 
-  v15 = objc_msgSend_userInfo(v9, v13, v14);
+  v15 = objc_msgSend_userInfo(watchCopy, v13, v14);
   Mutable = objc_msgSend_mutableCopy(v15, v16, v17);
 
   if (!Mutable)
@@ -3443,23 +3443,23 @@ LABEL_13:
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   }
 
-  v20 = objc_msgSend_objectForKey_(v10, v19, @"__kmessageGUIDKey");
+  v20 = objc_msgSend_objectForKey_(dictionaryCopy, v19, @"__kmessageGUIDKey");
   if (v20)
   {
     CFDictionarySetValue(Mutable, @"CKBBContextKeyMessageGUID", v20);
   }
 
-  v22 = objc_msgSend_objectForKey_(v11, v21, @"__kchatChatIdentifierKey");
+  v22 = objc_msgSend_objectForKey_(chatDictionaryCopy, v21, @"__kchatChatIdentifierKey");
   if (v22)
   {
     CFDictionarySetValue(Mutable, @"CKBBUserInfoKeyChatIdentifier", v22);
   }
 
-  v24 = objc_msgSend_objectForKey_(v11, v23, @"__kchatChatGUIDKey");
+  v24 = objc_msgSend_objectForKey_(chatDictionaryCopy, v23, @"__kchatChatGUIDKey");
 
   if (v24)
   {
-    v26 = objc_msgSend_objectForKey_(v11, v25, @"__kchatChatGUIDKey");
+    v26 = objc_msgSend_objectForKey_(chatDictionaryCopy, v25, @"__kchatChatGUIDKey");
     v138[0] = v26;
     v28 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v138, 1);
 
@@ -3471,10 +3471,10 @@ LABEL_13:
     }
   }
 
-  v31 = objc_msgSend_objectForKey_(v11, v25, @"__kchatStyleKey");
+  v31 = objc_msgSend_objectForKey_(chatDictionaryCopy, v25, @"__kchatStyleKey");
   if (objc_msgSend_integerValue(v31, v32, v33) == 43)
   {
-    v35 = objc_msgSend_objectForKey_(v11, v34, @"__kchatGroupIDKey");
+    v35 = objc_msgSend_objectForKey_(chatDictionaryCopy, v34, @"__kchatGroupIDKey");
     if (v35)
     {
       CFDictionarySetValue(Mutable, @"CKBBContextKeyChatGroupID", v35);
@@ -3483,7 +3483,7 @@ LABEL_13:
 
   else
   {
-    v35 = objc_msgSend_objectForKey_(v10, v34, @"__kmessageCNContactForSenderKey");
+    v35 = objc_msgSend_objectForKey_(dictionaryCopy, v34, @"__kmessageCNContactForSenderKey");
     v38 = objc_msgSend_identifier(v35, v36, v37);
     if (v38)
     {
@@ -3491,12 +3491,12 @@ LABEL_13:
     }
   }
 
-  v40 = objc_msgSend_objectForKey_(v10, v39, @"__kmessageAssociatedMessageGUIDKey");
+  v40 = objc_msgSend_objectForKey_(dictionaryCopy, v39, @"__kmessageAssociatedMessageGUIDKey");
   v43 = objc_msgSend_length(v40, v41, v42);
 
   if (v43)
   {
-    v45 = objc_msgSend_objectForKey_(v10, v44, @"__kmessageAssociatedMessageTypeKey");
+    v45 = objc_msgSend_objectForKey_(dictionaryCopy, v44, @"__kmessageAssociatedMessageTypeKey");
     v48 = objc_msgSend_longLongValue(v45, v46, v47);
     if ((v48 & 0xFFFFFFFFFFFFFFF8) == 0x7D0)
     {
@@ -3509,21 +3509,21 @@ LABEL_13:
     }
   }
 
-  v50 = objc_msgSend_objectForKey_(v10, v44, @"__kmessageBalloonBundleIDKey");
+  v50 = objc_msgSend_objectForKey_(dictionaryCopy, v44, @"__kmessageBalloonBundleIDKey");
   if (objc_msgSend_length(v50, v51, v52))
   {
     objc_msgSend_setObject_forKey_(Mutable, v53, MEMORY[0x1E695E118], @"CKBBContextKeyIsBalloonPluginBulletin");
     objc_msgSend_setObject_forKey_(Mutable, v54, v50, @"CKBBContextKeyBalloonBundleID");
   }
 
-  v55 = objc_msgSend_objectForKey_(v10, v53, @"__kmessageExpressiveSendStyleIDKey");
+  v55 = objc_msgSend_objectForKey_(dictionaryCopy, v53, @"__kmessageExpressiveSendStyleIDKey");
   if (objc_msgSend_containsString_(v55, v56, *MEMORY[0x1E69A7080]))
   {
   }
 
   else
   {
-    v59 = objc_msgSend_objectForKey_(v10, v57, @"__kmessageExpressiveSendStyleIDKey");
+    v59 = objc_msgSend_objectForKey_(dictionaryCopy, v57, @"__kmessageExpressiveSendStyleIDKey");
     v61 = objc_msgSend_containsString_(v59, v60, *MEMORY[0x1E69A7028]);
 
     if (!v61)
@@ -3533,26 +3533,26 @@ LABEL_13:
     }
   }
 
-  v62 = objc_msgSend_objectForKey_(v10, v58, @"__kmessageExpressiveSendStyleIDKey");
+  v62 = objc_msgSend_objectForKey_(dictionaryCopy, v58, @"__kmessageExpressiveSendStyleIDKey");
   objc_msgSend_setObject_forKey_(Mutable, v63, v62, @"CKBBContextKeyEffectIdentifier");
 
   v64 = 1;
 LABEL_30:
-  v65 = objc_msgSend_objectForKey_(v10, v58, @"__kmessageAttachmentsKey");
+  v65 = objc_msgSend_objectForKey_(dictionaryCopy, v58, @"__kmessageAttachmentsKey");
   if (objc_msgSend_count(v65, v66, v67))
   {
     v117 = v50;
     v118 = v31;
-    v119 = self;
-    v121 = v11;
-    v122 = v10;
+    selfCopy = self;
+    v121 = chatDictionaryCopy;
+    v122 = dictionaryCopy;
     if (v64)
     {
       objc_msgSend_setObject_forKey_(Mutable, v68, MEMORY[0x1E695E118], @"CKBBContextKeyIsAttachmentWithEffectBulletin");
     }
 
-    v123 = v9;
-    v70 = objc_msgSend_body(v9, v68, v69);
+    v123 = watchCopy;
+    v70 = objc_msgSend_body(watchCopy, v68, v69);
     v120 = Mutable;
     objc_msgSend_setObject_forKey_(Mutable, v71, v70, @"CKBBContentKeyAttachmentSummary");
 
@@ -3660,16 +3660,16 @@ LABEL_30:
       objc_msgSend_setObject_forKey_(v120, v111, v72, @"CKBBContentKeyCountByAttachmentType");
     }
 
-    v10 = v122;
-    v9 = v123;
-    v11 = v121;
+    dictionaryCopy = v122;
+    watchCopy = v123;
+    chatDictionaryCopy = v121;
     v31 = v118;
-    self = v119;
+    self = selfCopy;
     v65 = v116;
     v50 = v117;
   }
 
-  if (objc_msgSend__amIMentionedInMessage_(self, v68, v10))
+  if (objc_msgSend__amIMentionedInMessage_(self, v68, dictionaryCopy))
   {
     objc_msgSend_setObject_forKey_(Mutable, v112, MEMORY[0x1E695E118], @"messageMentionsMe");
   }
@@ -3682,23 +3682,23 @@ LABEL_30:
     _os_log_impl(&dword_1B7AD5000, v113, OS_LOG_TYPE_DEFAULT, "Set userInfo for dictionaries %@", buf, 0xCu);
   }
 
-  objc_msgSend_setUserInfo_(v9, v114, Mutable);
+  objc_msgSend_setUserInfo_(watchCopy, v114, Mutable);
 LABEL_61:
 
   v115 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateUserInfoForMessageContent:(id)a3 messageDictionary:(id)a4 messageIsAddressedToMe:(BOOL)a5
+- (void)_populateUserInfoForMessageContent:(id)content messageDictionary:(id)dictionary messageIsAddressedToMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_userInfo(v6, v7, v8);
+  contentCopy = content;
+  v9 = objc_msgSend_userInfo(contentCopy, v7, v8);
   Mutable = objc_msgSend_mutableCopy(v9, v10, v11);
 
   if (Mutable)
   {
-    if (!v5)
+    if (!meCopy)
     {
       goto LABEL_4;
     }
@@ -3707,7 +3707,7 @@ LABEL_61:
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  if (v5)
+  if (meCopy)
   {
 LABEL_3:
     objc_msgSend_setObject_forKey_(Mutable, v13, MEMORY[0x1E695E118], @"messageIsAddressedToMe");
@@ -3722,24 +3722,24 @@ LABEL_4:
     _os_log_impl(&dword_1B7AD5000, v14, OS_LOG_TYPE_DEFAULT, "Set userInfo for message content dictionaries %@", &v17, 0xCu);
   }
 
-  objc_msgSend_setUserInfo_(v6, v15, Mutable);
+  objc_msgSend_setUserInfo_(contentCopy, v15, Mutable);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateAttachmentsForNotificationContent:(id)a3 messageDictionary:(id)a4 messageRecord:(id)a5 knownSender:(BOOL)a6
+- (void)_populateAttachmentsForNotificationContent:(id)content messageDictionary:(id)dictionary messageRecord:(id)record knownSender:(BOOL)sender
 {
-  v121 = a6;
+  senderCopy = sender;
   v146 = *MEMORY[0x1E69E9840];
-  v113 = a3;
-  v8 = a4;
-  v109 = a5;
-  v111 = v8;
-  v110 = objc_msgSend_objectForKey_(v8, v9, @"__kmessageAttributedBodyKey");
+  contentCopy = content;
+  dictionaryCopy = dictionary;
+  recordCopy = record;
+  v111 = dictionaryCopy;
+  v110 = objc_msgSend_objectForKey_(dictionaryCopy, v9, @"__kmessageAttributedBodyKey");
   if ((objc_msgSend___im_isRichCardsOrSuggestedReply(v110, v10, v11) & 1) == 0)
   {
-    v13 = objc_msgSend_objectForKeyedSubscript_(v8, v12, @"__kmessageExpressiveSendStyleIDKey");
+    v13 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v12, @"__kmessageExpressiveSendStyleIDKey");
 
-    if (!v13 || (objc_msgSend_objectForKeyedSubscript_(v8, v14, @"__kmessageExpressiveSendStyleIDKey"), v15 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v15, v16, *MEMORY[0x1E69A7088]), v15, (isEqualToString & 1) == 0))
+    if (!v13 || (objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"__kmessageExpressiveSendStyleIDKey"), v15 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v15, v16, *MEMORY[0x1E69A7088]), v15, (isEqualToString & 1) == 0))
     {
       v18 = objc_msgSend_objectForKeyedSubscript_(v111, v14, @"__kmessageAttachmentsKey");
       v114 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20);
@@ -3823,7 +3823,7 @@ LABEL_4:
 
                     if (v54)
                     {
-                      objc_msgSend_setBody_(v113, v64, v54);
+                      objc_msgSend_setBody_(contentCopy, v64, v54);
                       v112 = 1;
                     }
 
@@ -3855,7 +3855,7 @@ LABEL_4:
             if (objc_msgSend_length(v31, v41, v42) != 0 && v37 == 5)
             {
               v66 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x1E695DFF8], v65, v31, 0);
-              v68 = objc_msgSend__notificationsSafePreviewFileURLForTransferURL_utiType_knownSender_(self, v67, v66, inUTI, v121);
+              v68 = objc_msgSend__notificationsSafePreviewFileURLForTransferURL_utiType_knownSender_(self, v67, v66, inUTI, senderCopy);
               isCommSafetySensitive = objc_msgSend_isCommSafetySensitive(v28, v69, v70);
               isAdaptiveImageGlyph = objc_msgSend_isAdaptiveImageGlyph(v28, v72, v73);
               if (IMOSLoggingEnabled())
@@ -3942,7 +3942,7 @@ LABEL_4:
         v26 = 0;
       }
 
-      v91 = IMDCreateIMItemFromIMDMessageRecordRefWithAccountLookup(v109, 0, 1, 0);
+      v91 = IMDCreateIMItemFromIMDMessageRecordRefWithAccountLookup(recordCopy, 0, 1, 0);
       if (v91)
       {
         objc_opt_class();
@@ -3964,14 +3964,14 @@ LABEL_4:
           v105 = v102;
           if ((v112 & 1) == 0 && objc_msgSend_length(v102, v103, v104))
           {
-            objc_msgSend_setBody_(v113, v106, v105);
+            objc_msgSend_setBody_(contentCopy, v106, v105);
           }
         }
       }
 
       if (objc_msgSend_count(v114, v89, v90))
       {
-        objc_msgSend_setAttachments_(v113, v107, v114);
+        objc_msgSend_setAttachments_(contentCopy, v107, v114);
       }
     }
   }
@@ -3979,16 +3979,16 @@ LABEL_4:
   v108 = *MEMORY[0x1E69E9840];
 }
 
-+ (int)validateAlertCount:(int)a3
++ (int)validateAlertCount:(int)count
 {
-  if (a3 > 0xB)
+  if (count > 0xB)
   {
     return 2;
   }
 
   else
   {
-    return dword_1B7D09430[a3];
+    return dword_1B7D09430[count];
   }
 }
 
@@ -4009,7 +4009,7 @@ LABEL_4:
     AppIntegerValue = CFPreferencesGetAppIntegerValue(@"IncomingMessageAlertCount", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat);
     if (keyExistsAndHasValidFormat == 1)
     {
-      result = objc_msgSend_validateAlertCount_(a1, v6, AppIntegerValue);
+      result = objc_msgSend_validateAlertCount_(self, v6, AppIntegerValue);
     }
 
     else
@@ -4023,10 +4023,10 @@ LABEL_4:
   return result;
 }
 
-- (void)_populateRealertCountForNotificationContent:(id)a3
+- (void)_populateRealertCountForNotificationContent:(id)content
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contentCopy = content;
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_opt_class();
@@ -4039,21 +4039,21 @@ LABEL_4:
       _os_log_impl(&dword_1B7AD5000, v8, OS_LOG_TYPE_DEFAULT, "Setting repeat alert count to %d", v11, 8u);
     }
 
-    objc_msgSend_setRealertCount_(v3, v9, v7);
+    objc_msgSend_setRealertCount_(contentCopy, v9, v7);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_messageShouldBeSpoken:(id)a3 chatDictionary:(id)a4
+- (BOOL)_messageShouldBeSpoken:(id)spoken chatDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_objectForKey_(v6, v8, @"__kmessageHandleKey");
+  spokenCopy = spoken;
+  dictionaryCopy = dictionary;
+  v10 = objc_msgSend_objectForKey_(spokenCopy, v8, @"__kmessageHandleKey");
   if (v10)
   {
-    if (objc_msgSend__chatIsMuted_(self, v9, v7))
+    if (objc_msgSend__chatIsMuted_(self, v9, dictionaryCopy))
     {
       v12 = IMDNotificationsControllerLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -4068,7 +4068,7 @@ LABEL_4:
 
     else
     {
-      IsSpokenMessageAllowlisted_chat_message = objc_msgSend__handleIsSpokenMessageAllowlisted_chat_message_(self, v11, v10, v7, v6);
+      IsSpokenMessageAllowlisted_chat_message = objc_msgSend__handleIsSpokenMessageAllowlisted_chat_message_(self, v11, v10, dictionaryCopy, spokenCopy);
       v12 = IMDNotificationsControllerLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -4090,20 +4090,20 @@ LABEL_4:
   return IsSpokenMessageAllowlisted_chat_message;
 }
 
-- (BOOL)_UTITypeMightBeAnimated:(id)a3
+- (BOOL)_UTITypeMightBeAnimated:(id)animated
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && (UTTypeConformsTo(v3, *MEMORY[0x1E69637D8]) || UTTypeConformsTo(v4, *MEMORY[0x1E6963860]));
+  animatedCopy = animated;
+  v4 = animatedCopy;
+  v5 = animatedCopy && (UTTypeConformsTo(animatedCopy, *MEMORY[0x1E69637D8]) || UTTypeConformsTo(v4, *MEMORY[0x1E6963860]));
 
   return v5;
 }
 
-- (id)_notificationsSafePreviewFileURLForTransferURL:(id)a3 utiType:(id)a4 knownSender:(BOOL)a5
+- (id)_notificationsSafePreviewFileURLForTransferURL:(id)l utiType:(id)type knownSender:(BOOL)sender
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  lCopy = l;
   v9 = IMPreviewExtension();
   v10 = IMAttachmentPreviewFileURL();
 
@@ -4112,7 +4112,7 @@ LABEL_4:
     goto LABEL_16;
   }
 
-  if (objc_msgSend__UTITypeMightBeAnimated_(self, v11, v7) && objc_msgSend_imagePreviewIsMultiFrameAtFileURL_(self, v12, v10))
+  if (objc_msgSend__UTITypeMightBeAnimated_(self, v11, typeCopy) && objc_msgSend_imagePreviewIsMultiFrameAtFileURL_(self, v12, v10))
   {
     v14 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -4193,11 +4193,11 @@ LABEL_21:
   return v22;
 }
 
-- (BOOL)_handleIsSpokenMessageAllowlisted:(id)a3 chat:(id)a4 message:(id)a5
+- (BOOL)_handleIsSpokenMessageAllowlisted:(id)allowlisted chat:(id)chat message:(id)message
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  chatCopy = chat;
+  messageCopy = message;
   MessagesSpokenAllowlistLevel = objc_msgSend__getMessagesSpokenAllowlistLevel_(self, v9, 0);
   v11 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -4216,11 +4216,11 @@ LABEL_9:
 
   if (MessagesSpokenAllowlistLevel != 2)
   {
-    if (MessagesSpokenAllowlistLevel != 1 && objc_msgSend__messageIsFromKnownContact_(self, v12, v8))
+    if (MessagesSpokenAllowlistLevel != 1 && objc_msgSend__messageIsFromKnownContact_(self, v12, messageCopy))
     {
       if (MessagesSpokenAllowlistLevel == 4)
       {
-        isDateInYesterday = objc_msgSend__messageIsFromFavorite_(self, v13, v8);
+        isDateInYesterday = objc_msgSend__messageIsFromFavorite_(self, v13, messageCopy);
         goto LABEL_23;
       }
 
@@ -4230,7 +4230,7 @@ LABEL_9:
     goto LABEL_20;
   }
 
-  v15 = objc_msgSend_objectForKey_(v7, v12, @"__kchatLastMessageTimestamp");
+  v15 = objc_msgSend_objectForKey_(chatCopy, v12, @"__kchatLastMessageTimestamp");
   v18 = objc_msgSend_longLongValue(v15, v16, v17);
 
   v19 = IMDNotificationsControllerLogHandle();
@@ -4246,7 +4246,7 @@ LABEL_9:
     v29 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = objc_msgSend_valueForKey_(v7, v30, @"__kchatChatGUIDKey");
+      v31 = objc_msgSend_valueForKey_(chatCopy, v30, @"__kchatChatGUIDKey");
       v37 = 138412290;
       v38 = *&v31;
       _os_log_impl(&dword_1B7AD5000, v29, OS_LOG_TYPE_DEFAULT, "Missing last read date for chatID %@", &v37, 0xCu);
@@ -4281,7 +4281,7 @@ LABEL_23:
   v32 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = objc_msgSend_valueForKey_(v8, v33, @"__kmessageGUIDKey");
+    v34 = objc_msgSend_valueForKey_(messageCopy, v33, @"__kmessageGUIDKey");
     v37 = 138412546;
     v38 = *&v34;
     v39 = 1024;
@@ -4302,16 +4302,16 @@ LABEL_23:
   return v8;
 }
 
-- (void)_setSpokenMessageAllowlistLevelVersion:(unint64_t)a3
+- (void)_setSpokenMessageAllowlistLevelVersion:(unint64_t)version
 {
-  v7 = objc_msgSend_defaultsSharedInstance(self, a2, a3);
-  v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v4, a3);
+  v7 = objc_msgSend_defaultsSharedInstance(self, a2, version);
+  v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v4, version);
   objc_msgSend_setValue_forDomain_forKey_(v7, v6, v5, @"com.apple.MobileSMS", @"kSpokenMessageWhitelistLevelVersion");
 }
 
-- (id)_lastMessageTimeForChat:(id)a3
+- (id)_lastMessageTimeForChat:(id)chat
 {
-  v3 = objc_msgSend__lastTwoMessagesForChat_(self, a2, a3);
+  v3 = objc_msgSend__lastTwoMessagesForChat_(self, a2, chat);
   if (objc_msgSend_count(v3, v4, v5) == 2)
   {
     v8 = objc_msgSend_firstObject(v3, v6, v7);
@@ -4326,62 +4326,62 @@ LABEL_23:
   return v11;
 }
 
-- (id)_lastTwoMessagesForChat:(id)a3
+- (id)_lastTwoMessagesForChat:(id)chat
 {
-  v3 = IMDChatRecordCopyMessagesWithLimit(a3, 2);
+  v3 = IMDChatRecordCopyMessagesWithLimit(chat, 2);
 
   return v3;
 }
 
-- (BOOL)_messageIsFromFavorite:(id)a3
+- (BOOL)_messageIsFromFavorite:(id)favorite
 {
-  v3 = a3;
+  favoriteCopy = favorite;
   v6 = objc_msgSend_sharedResolver(IMDCNPersonAliasResolver, v4, v5);
-  v8 = objc_msgSend_objectForKey_(v3, v7, @"__kmessageCNContactForSenderKey");
+  v8 = objc_msgSend_objectForKey_(favoriteCopy, v7, @"__kmessageCNContactForSenderKey");
 
-  LOBYTE(v3) = objc_msgSend_isCNContactFavorited_(v6, v9, v8);
-  return v3;
+  LOBYTE(favoriteCopy) = objc_msgSend_isCNContactFavorited_(v6, v9, v8);
+  return favoriteCopy;
 }
 
-- (unint64_t)_getMessagesSpokenAllowlistLevel:(BOOL *)a3
+- (unint64_t)_getMessagesSpokenAllowlistLevel:(BOOL *)level
 {
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS");
   keyExistsAndHasValidFormat = 0;
   result = CFPreferencesGetAppIntegerValue(@"kSpokenMessageWhitelistLevel", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat);
-  if (a3)
+  if (level)
   {
-    *a3 = keyExistsAndHasValidFormat == 0;
+    *level = keyExistsAndHasValidFormat == 0;
   }
 
   return result;
 }
 
-- (void)_setMessagesSpokenAllowlistLevelInPreferences:(unint64_t)a3
+- (void)_setMessagesSpokenAllowlistLevelInPreferences:(unint64_t)preferences
 {
-  v7 = objc_msgSend_defaultsSharedInstance(self, a2, a3);
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v4, a3);
+  v7 = objc_msgSend_defaultsSharedInstance(self, a2, preferences);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v4, preferences);
   objc_msgSend_setValue_forDomain_forKey_(v7, v6, v5, @"com.apple.MobileSMS", @"kSpokenMessageWhitelistLevel");
 }
 
-+ (id)_truncateNameIfNeeded:(id)a3
++ (id)_truncateNameIfNeeded:(id)needed
 {
-  v3 = a3;
-  v7 = v3;
-  if (objc_msgSend_length(v3, v4, v5) >= 0xC9)
+  neededCopy = needed;
+  v7 = neededCopy;
+  if (objc_msgSend_length(neededCopy, v4, v5) >= 0xC9)
   {
-    v7 = objc_msgSend_substringWithRange_(v3, v6, 0, 200);
+    v7 = objc_msgSend_substringWithRange_(neededCopy, v6, 0, 200);
   }
 
   return v7;
 }
 
-+ (id)_addressBookNameForAddress:(id)a3 orContact:(id)a4
++ (id)_addressBookNameForAddress:(id)address orContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  addressCopy = address;
+  contactCopy = contact;
+  v9 = contactCopy;
+  if (contactCopy)
   {
     goto LABEL_7;
   }
@@ -4393,8 +4393,8 @@ LABEL_23:
     _os_log_impl(&dword_1B7AD5000, v10, OS_LOG_TYPE_DEFAULT, "We don't have a contact to use. Fetching one", &v20, 2u);
   }
 
-  v13 = objc_msgSend__stripFZIDPrefix(v6, v11, v12);
-  v9 = objc_msgSend__IMDCoreSpotlightCNContactForAddress_(a1, v14, v13);
+  v13 = objc_msgSend__stripFZIDPrefix(addressCopy, v11, v12);
+  v9 = objc_msgSend__IMDCoreSpotlightCNContactForAddress_(self, v14, v13);
   v15 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -4428,14 +4428,14 @@ LABEL_7:
   return v16;
 }
 
-+ (id)_addressForHandle:(id)a3
++ (id)_addressForHandle:(id)handle
 {
-  v4 = a3;
-  v7 = objc_msgSend_canonicalizedURIString(v4, v5, v6);
+  handleCopy = handle;
+  v7 = objc_msgSend_canonicalizedURIString(handleCopy, v5, v6);
   v10 = v7;
   if (!v7 || !objc_msgSend_length(v7, v8, v9))
   {
-    v11 = objc_msgSend__uncanonicalizedAddressForHandle_(a1, v8, v4);
+    v11 = objc_msgSend__uncanonicalizedAddressForHandle_(self, v8, handleCopy);
 
     v10 = v11;
   }
@@ -4443,15 +4443,15 @@ LABEL_7:
   return v10;
 }
 
-+ (id)_displayNameForHandle:(id)a3 andContact:(id)a4 businessNameManager:(id)a5 suggestionProvider:(id)a6
++ (id)_displayNameForHandle:(id)handle andContact:(id)contact businessNameManager:(id)manager suggestionProvider:(id)provider
 {
   v88 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handleCopy = handle;
+  contactCopy = contact;
+  managerCopy = manager;
+  providerCopy = provider;
   v14 = objc_opt_class();
-  v16 = objc_msgSend__addressForHandle_(v14, v15, v10);
+  v16 = objc_msgSend__addressForHandle_(v14, v15, handleCopy);
   v19 = objc_msgSend_im_stripCategoryLabel(v16, v17, v18);
 
   if (objc_msgSend_hasSuffix_(v19, v20, *MEMORY[0x1E69A6EA0]))
@@ -4479,13 +4479,13 @@ LABEL_7:
 
     if (IMIsStringStewieRoadside())
     {
-      v35 = objc_msgSend__database(a1, v30, v31);
+      v35 = objc_msgSend__database(self, v30, v31);
       v37 = objc_msgSend_chatRecordsWithIdentifier_(v35, v36, v19);
       v32 = objc_msgSend_firstObject(v37, v38, v39);
 
       if (v32)
       {
-        v41 = objc_msgSend__displayNameForChatRecord_(a1, v40, v32);
+        v41 = objc_msgSend__displayNameForChatRecord_(self, v40, v32);
 
         v25 = v41;
       }
@@ -4507,15 +4507,15 @@ LABEL_12:
   if (!objc_msgSend_length(v25, v30, v31) && ((MEMORY[0x1B8CAF990](v19) & 1) != 0 || objc_msgSend___im_isChatBot(v19, v44, v45)))
   {
     v46 = objc_opt_class();
-    v48 = objc_msgSend__displayNameForBusinessChatAddress_businessNameManager_(v46, v47, v19, v12);
+    v48 = objc_msgSend__displayNameForBusinessChatAddress_businessNameManager_(v46, v47, v19, managerCopy);
 
     v25 = v48;
   }
 
-  if (!objc_msgSend_length(v25, v42, v43) && (!v11 || objc_msgSend_isCNContactAKnownContact_(MEMORY[0x1E69A7FD0], v49, v11)))
+  if (!objc_msgSend_length(v25, v42, v43) && (!contactCopy || objc_msgSend_isCNContactAKnownContact_(MEMORY[0x1E69A7FD0], v49, contactCopy)))
   {
     v50 = objc_opt_class();
-    v52 = objc_msgSend__addressBookNameForAddress_orContact_(v50, v51, v19, v11);
+    v52 = objc_msgSend__addressBookNameForAddress_orContact_(v50, v51, v19, contactCopy);
 
     v25 = v52;
   }
@@ -4528,12 +4528,12 @@ LABEL_12:
     v84 = 2112;
     v85 = v25;
     v86 = 2112;
-    v87 = v11;
+    v87 = contactCopy;
     _os_log_impl(&dword_1B7AD5000, v53, OS_LOG_TYPE_DEFAULT, "Address: %@, displayName = %@. Contact = %@", &v82, 0x20u);
   }
 
   v56 = objc_msgSend_length(v25, v54, v55);
-  if (v13 && !v56)
+  if (providerCopy && !v56)
   {
     v59 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -4542,7 +4542,7 @@ LABEL_12:
       _os_log_impl(&dword_1B7AD5000, v59, OS_LOG_TYPE_DEFAULT, "We don't have an address book name, so going to try and suggest a name", &v82, 2u);
     }
 
-    v60 = v13[2](v13, v19);
+    v60 = providerCopy[2](providerCopy, v19);
 
     v25 = v60;
   }
@@ -4557,12 +4557,12 @@ LABEL_12:
     }
 
     v62 = objc_opt_class();
-    v64 = objc_msgSend__countryCodeForHandle_(v62, v63, v10);
+    v64 = objc_msgSend__countryCodeForHandle_(v62, v63, handleCopy);
     v65 = objc_opt_class();
     v67 = objc_msgSend__formattedDisplayStringForAddress_countryCode_(v65, v66, v19, v64);
 
     v68 = objc_opt_class();
-    v70 = objc_msgSend__uncanonicalizedAddressForHandle_(v68, v69, v10);
+    v70 = objc_msgSend__uncanonicalizedAddressForHandle_(v68, v69, handleCopy);
     v73 = objc_msgSend_lowercaseString(v70, v71, v72);
     isEqualToString = objc_msgSend_isEqualToString_(v67, v74, v73);
 
@@ -4595,10 +4595,10 @@ LABEL_12:
   return v25;
 }
 
-- (BOOL)_isChatbotChat:(id)a3
+- (BOOL)_isChatbotChat:(id)chat
 {
-  v3 = a3;
-  v6 = objc_msgSend_objectForKey_(v3, v4, *MEMORY[0x1E69A7870]);
+  chatCopy = chat;
+  v6 = objc_msgSend_objectForKey_(chatCopy, v4, *MEMORY[0x1E69A7870]);
   if (v6)
   {
     v7 = 1;
@@ -4606,19 +4606,19 @@ LABEL_12:
 
   else
   {
-    v8 = objc_msgSend_objectForKey_(v3, v5, *MEMORY[0x1E69A6A60]);
+    v8 = objc_msgSend_objectForKey_(chatCopy, v5, *MEMORY[0x1E69A6A60]);
     v7 = v8 != 0;
   }
 
   return v7;
 }
 
-- (id)_fallbackNameOfChatbotFrom:(id)a3
+- (id)_fallbackNameOfChatbotFrom:(id)from
 {
-  v4 = a3;
-  if (objc_msgSend__isChatbotChat_(self, v5, v4))
+  fromCopy = from;
+  if (objc_msgSend__isChatbotChat_(self, v5, fromCopy))
   {
-    v7 = objc_msgSend_objectForKey_(v4, v6, @"__kchatGroupNameKey");
+    v7 = objc_msgSend_objectForKey_(fromCopy, v6, @"__kchatGroupNameKey");
   }
 
   else
@@ -4629,11 +4629,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)_displayNameForHandle:(id)a3 andContact:(id)a4 fallbackName:(id)a5
+- (id)_displayNameForHandle:(id)handle andContact:(id)contact fallbackName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  nameCopy = name;
+  contactCopy = contact;
+  handleCopy = handle;
   v11 = objc_opt_class();
   v14 = objc_msgSend_businessNameManager(self, v12, v13);
   v19[0] = MEMORY[0x1E69E9820];
@@ -4641,34 +4641,34 @@ LABEL_12:
   v19[2] = sub_1B7B15368;
   v19[3] = &unk_1E7CB6CF8;
   v19[4] = self;
-  v20 = v8;
-  v15 = v8;
-  v17 = objc_msgSend__displayNameForHandle_andContact_businessNameManager_suggestionProvider_(v11, v16, v10, v9, v14, v19);
+  v20 = nameCopy;
+  v15 = nameCopy;
+  v17 = objc_msgSend__displayNameForHandle_andContact_businessNameManager_suggestionProvider_(v11, v16, handleCopy, contactCopy, v14, v19);
 
   return v17;
 }
 
-- (id)_displayNameForHandle:(id)a3
+- (id)_displayNameForHandle:(id)handle
 {
-  v4 = a3;
-  v6 = objc_msgSend_contactForHandleRecord_(self, v5, v4);
-  v8 = objc_msgSend__displayNameForHandle_andContact_(self, v7, v4, v6);
+  handleCopy = handle;
+  v6 = objc_msgSend_contactForHandleRecord_(self, v5, handleCopy);
+  v8 = objc_msgSend__displayNameForHandle_andContact_(self, v7, handleCopy, v6);
 
   return v8;
 }
 
-- (id)_nicknameDisplayNameForID:(id)a3
+- (id)_nicknameDisplayNameForID:(id)d
 {
-  v3 = _IMDCoreSpotlightNicknameForAddress(a3);
+  v3 = _IMDCoreSpotlightNicknameForAddress(d);
   v4 = _IMDContactNameForNickname(v3, 1);
 
   return v4;
 }
 
-+ (id)_displayNameForBusinessChatAddress:(id)a3 businessNameManager:(id)a4
++ (id)_displayNameForBusinessChatAddress:(id)address businessNameManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  addressCopy = address;
+  managerCopy = manager;
   v7 = dispatch_semaphore_create(0);
   v25 = 0;
   v26 = &v25;
@@ -4683,7 +4683,7 @@ LABEL_12:
   v24 = &v25;
   v8 = v7;
   v23 = v8;
-  v10 = objc_msgSend_businessNameForUID_updateHandler_(v6, v9, v5, v22);
+  v10 = objc_msgSend_businessNameForUID_updateHandler_(managerCopy, v9, addressCopy, v22);
   v11 = v10;
   if (v10)
   {
@@ -4812,17 +4812,17 @@ LABEL_12:
   return IsEligibleToBeForcedIntoFilteringUnknownSender;
 }
 
-- (BOOL)_messageIsFromKnownContact:(id)a3
+- (BOOL)_messageIsFromKnownContact:(id)contact
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"__kmessageCNContactForSenderKey");
+  v3 = objc_msgSend_objectForKey_(contact, a2, @"__kmessageCNContactForSenderKey");
   isCNContactAKnownContact = objc_msgSend_isCNContactAKnownContact_(MEMORY[0x1E69A7FD0], v4, v3);
 
   return isCNContactAKnownContact;
 }
 
-- (BOOL)_messageIsBusiness:(id)a3
+- (BOOL)_messageIsBusiness:(id)business
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"__kmessageHandleKey");
+  v3 = objc_msgSend_objectForKey_(business, a2, @"__kmessageHandleKey");
   v4 = objc_opt_class();
   v6 = objc_msgSend__addressForHandle_(v4, v5, v3);
   v7 = v6;
@@ -4847,16 +4847,16 @@ LABEL_12:
   return isChatBot;
 }
 
-- (BOOL)_messageIsStewieEmergency:(id)a3
+- (BOOL)_messageIsStewieEmergency:(id)emergency
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  emergencyCopy = emergency;
   v6 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v4, v5);
   v9 = objc_msgSend_stewieEnabled(v6, v7, v8);
 
   if (v9)
   {
-    v11 = objc_msgSend_objectForKey_(v3, v10, @"__kmessageHandleKey");
+    v11 = objc_msgSend_objectForKey_(emergencyCopy, v10, @"__kmessageHandleKey");
     v12 = objc_opt_class();
     v14 = objc_msgSend__addressForHandle_(v12, v13, v11);
     v15 = v14;
@@ -4893,20 +4893,20 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)_notificationIsFromAFilteredSender:(id)a3 messageDictionary:(id)a4
+- (BOOL)_notificationIsFromAFilteredSender:(id)sender messageDictionary:(id)dictionary
 {
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_objectForKey_(v7, v8, @"__kmessageServiceKey");
+  senderCopy = sender;
+  dictionaryCopy = dictionary;
+  v9 = objc_msgSend_objectForKey_(dictionaryCopy, v8, @"__kmessageServiceKey");
   isEqualToString = objc_msgSend_isEqualToString_(v9, v10, *MEMORY[0x1E69A7AE0]);
   isFilterUnknownSendersEnabled = objc_msgSend_isFilterUnknownSendersEnabled(MEMORY[0x1E69A8198], v12, v13);
   isTextMessageExtensionEnabled = objc_msgSend_isTextMessageExtensionEnabled(MEMORY[0x1E69A8198], v14, v15);
-  v18 = objc_msgSend_objectForKey_(v6, v17, @"__kchatIsFilteredKey");
+  v18 = objc_msgSend_objectForKey_(senderCopy, v17, @"__kchatIsFilteredKey");
   v63 = @"YES";
   if ((objc_msgSend_BOOLValue(v18, v19, v20) & 1) == 0)
   {
-    v22 = objc_msgSend_objectForKey_(v6, v21, @"__kchatWasReportedAsiMessageSpamKey");
+    v22 = objc_msgSend_objectForKey_(senderCopy, v21, @"__kchatWasReportedAsiMessageSpamKey");
     if (objc_msgSend_BOOLValue(v22, v23, v24))
     {
       v25 = @"YES";
@@ -4920,10 +4920,10 @@ LABEL_12:
     v63 = v25;
   }
 
-  v27 = objc_msgSend_objectForKeyedSubscript_(v7, v26, @"__kmessageFlagsKey");
+  v27 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v26, @"__kmessageFlagsKey");
   v30 = objc_msgSend_unsignedLongLongValue(v27, v28, v29);
 
-  v32 = objc_msgSend_objectForKey_(v6, v31, @"__kchatSMSCategoryKey");
+  v32 = objc_msgSend_objectForKey_(senderCopy, v31, @"__kchatSMSCategoryKey");
   if (objc_msgSend_intValue(v32, v33, v34) == 1)
   {
     v36 = 1;
@@ -4933,7 +4933,7 @@ LABEL_12:
   {
     v61 = v9;
     v37 = isTextMessageExtensionEnabled;
-    v38 = objc_msgSend_objectForKey_(v6, v35, @"__kchatWasDetectedAsSMSSpamKey");
+    v38 = objc_msgSend_objectForKey_(senderCopy, v35, @"__kchatWasDetectedAsSMSSpamKey");
     if (objc_msgSend_BOOLValue(v38, v39, v40))
     {
       v36 = 1;
@@ -4941,7 +4941,7 @@ LABEL_12:
 
     else
     {
-      v42 = objc_msgSend_objectForKey_(v6, v41, @"__kchatWasReportedAsiMessageSpamKey");
+      v42 = objc_msgSend_objectForKey_(senderCopy, v41, @"__kchatWasReportedAsiMessageSpamKey");
       if (objc_msgSend_BOOLValue(v42, v43, v44))
       {
         v36 = 1;
@@ -4949,7 +4949,7 @@ LABEL_12:
 
       else
       {
-        objc_msgSend_objectForKey_(v6, v45, @"__kchatWasDetectedAsiMessageSpamKey");
+        objc_msgSend_objectForKey_(senderCopy, v45, @"__kchatWasDetectedAsiMessageSpamKey");
         v46 = v60 = self;
         v36 = objc_msgSend_BOOLValue(v46, v47, v48) | (v30 >> 27) & 1;
 
@@ -4961,7 +4961,7 @@ LABEL_12:
     v9 = v61;
   }
 
-  v50 = objc_msgSend__messageIsFromKnownContact_(self, v49, v7);
+  v50 = objc_msgSend__messageIsFromKnownContact_(self, v49, dictionaryCopy);
   v51 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
@@ -5040,21 +5040,21 @@ LABEL_12:
   return v57;
 }
 
-- (BOOL)_chatIsMuted:(id)a3
+- (BOOL)_chatIsMuted:(id)muted
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"__kchatIsMutedKey");
+  v3 = objc_msgSend_objectForKeyedSubscript_(muted, a2, @"__kchatIsMutedKey");
   v6 = objc_msgSend_BOOLValue(v3, v4, v5);
 
   return v6;
 }
 
-- (BOOL)_chatHasCategoryMuted:(id)a3 isFromContact:(BOOL)a4
+- (BOOL)_chatHasCategoryMuted:(id)muted isFromContact:(BOOL)contact
 {
   v5 = MEMORY[0x1E69A8198];
-  v6 = a3;
+  mutedCopy = muted;
   isFilterUnknownSendersEnabled = objc_msgSend_isFilterUnknownSendersEnabled(v5, v7, v8);
   isTextMessageExtensionEnabled = objc_msgSend_isTextMessageExtensionEnabled(MEMORY[0x1E69A8198], v10, v11);
-  v14 = objc_msgSend_objectForKey_(v6, v13, @"__kchatIsFilteredKey");
+  v14 = objc_msgSend_objectForKey_(mutedCopy, v13, @"__kchatIsFilteredKey");
 
   v17 = objc_msgSend_intValue(v14, v15, v16) & 0xF;
   if (v17 <= 2)
@@ -5070,7 +5070,7 @@ LABEL_12:
     if (isPriorityMessagesEnabled)
     {
       result = 0;
-      if (isFilterUnknownSendersEnabled && !a4)
+      if (isFilterUnknownSendersEnabled && !contact)
       {
         v27 = objc_msgSend_personalPriorityEnabled(MEMORY[0x1E69A8198], v32, v33);
         return v27 ^ 1;
@@ -5079,7 +5079,7 @@ LABEL_12:
       return result;
     }
 
-    if (!a4)
+    if (!contact)
     {
       v27 = objc_msgSend_hideUnknownSenders(MEMORY[0x1E69A8198], v32, v33);
       return v27 ^ 1;
@@ -5096,14 +5096,14 @@ LABEL_12:
     result = 0;
     if (v37)
     {
-      if (isFilterUnknownSendersEnabled && !a4)
+      if (isFilterUnknownSendersEnabled && !contact)
       {
         v27 = objc_msgSend_promotionsPriorityEnabled(MEMORY[0x1E69A8198], v38, v39);
         return v27 ^ 1;
       }
     }
 
-    else if ((isFilterUnknownSendersEnabled & isTextMessageExtensionEnabled) == 1 && !a4)
+    else if ((isFilterUnknownSendersEnabled & isTextMessageExtensionEnabled) == 1 && !contact)
     {
       v41 = MEMORY[0x1E69A8198];
 
@@ -5124,14 +5124,14 @@ LABEL_12:
   result = 0;
   if (v24)
   {
-    if (isFilterUnknownSendersEnabled && !a4)
+    if (isFilterUnknownSendersEnabled && !contact)
     {
       v27 = objc_msgSend_transactionsPriorityEnabled(MEMORY[0x1E69A8198], v25, v26);
       return v27 ^ 1;
     }
   }
 
-  else if ((isFilterUnknownSendersEnabled & isTextMessageExtensionEnabled) == 1 && !a4)
+  else if ((isFilterUnknownSendersEnabled & isTextMessageExtensionEnabled) == 1 && !contact)
   {
     v40 = MEMORY[0x1E69A8198];
 
@@ -5141,16 +5141,16 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_shouldPostNotificationForChat:(id)a3 messageDictionary:(id)a4
+- (BOOL)_shouldPostNotificationForChat:(id)chat messageDictionary:(id)dictionary
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  chatCopy = chat;
+  dictionaryCopy = dictionary;
   v10 = objc_msgSend_sharedManager(MEMORY[0x1E69A7EE8], v8, v9);
   if (!objc_msgSend_shouldFilterIncomingMessages(v10, v11, v12))
   {
     v16 = 1;
-    if (!v6)
+    if (!chatCopy)
     {
       goto LABEL_50;
     }
@@ -5161,8 +5161,8 @@ LABEL_9:
       goto LABEL_50;
     }
 
-    v18 = objc_msgSend_objectForKeyedSubscript_(v6, v13, @"__kchatMarkedAsKnownDateKey");
-    v20 = objc_msgSend__dateForMessage_(self, v19, v7);
+    v18 = objc_msgSend_objectForKeyedSubscript_(chatCopy, v13, @"__kchatMarkedAsKnownDateKey");
+    v20 = objc_msgSend__dateForMessage_(self, v19, dictionaryCopy);
     v22 = v20;
     if (v18 && v20 && objc_msgSend_compare_(v20, v21, v18) == -1)
     {
@@ -5180,8 +5180,8 @@ LABEL_47:
 
     else
     {
-      IsMuted = objc_msgSend__chatIsMuted_(self, v21, v6);
-      v25 = objc_msgSend__notificationIsFromAFilteredSender_messageDictionary_(self, v24, v6, v7);
+      IsMuted = objc_msgSend__chatIsMuted_(self, v21, chatCopy);
+      v25 = objc_msgSend__notificationIsFromAFilteredSender_messageDictionary_(self, v24, chatCopy, dictionaryCopy);
       v28 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v26, v27);
       isPriorityMessagesEnabled = objc_msgSend_isPriorityMessagesEnabled(v28, v29, v30);
 
@@ -5197,7 +5197,7 @@ LABEL_47:
 
         else
         {
-          v43 = objc_msgSend_objectForKey_(v7, v32, @"__kmessageFlagsKey");
+          v43 = objc_msgSend_objectForKey_(dictionaryCopy, v32, @"__kmessageFlagsKey");
           v46 = objc_msgSend_unsignedLongLongValue(v43, v44, v45);
 
           if ((v46 & 0x100000000000) != 0)
@@ -5214,8 +5214,8 @@ LABEL_47:
           }
         }
 
-        v56 = objc_msgSend__messageIsFromKnownContact_(self, v32, v7);
-        v58 = objc_msgSend__chatHasCategoryMuted_isFromContact_(self, v57, v6, v56);
+        v56 = objc_msgSend__messageIsFromKnownContact_(self, v32, dictionaryCopy);
+        v58 = objc_msgSend__chatHasCategoryMuted_isFromContact_(self, v57, chatCopy, v56);
         LOBYTE(v16) = 1;
         if (v33)
         {
@@ -5270,8 +5270,8 @@ LABEL_47:
         goto LABEL_46;
       }
 
-      v34 = objc_msgSend__messageIsFromKnownContact_(self, v32, v7);
-      v36 = objc_msgSend__chatHasCategoryMuted_isFromContact_(self, v35, v6, v34);
+      v34 = objc_msgSend__messageIsFromKnownContact_(self, v32, dictionaryCopy);
+      v36 = objc_msgSend__chatHasCategoryMuted_isFromContact_(self, v35, chatCopy, v34);
       v37 = v36;
       if (((IsMuted | v25) & 1) == 0 && !v36)
       {
@@ -5330,7 +5330,7 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v14 = objc_msgSend__handleIDsForChatDictionary_(self, v13, v6);
+  v14 = objc_msgSend__handleIDsForChatDictionary_(self, v13, chatCopy);
   v16 = objc_msgSend_allowsConversationWithHandleIDs_(v10, v15, v14);
   if ((v16 & 1) == 0)
   {
@@ -5342,7 +5342,7 @@ LABEL_48:
     }
   }
 
-  if (v6)
+  if (chatCopy)
   {
     goto LABEL_9;
   }
@@ -5353,14 +5353,14 @@ LABEL_50:
   return v16;
 }
 
-- (BOOL)_isUnknownSenders:(id)a3
+- (BOOL)_isUnknownSenders:(id)senders
 {
-  if (!a3)
+  if (!senders)
   {
     return 0;
   }
 
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"__kchatIsFilteredKey");
+  v3 = objc_msgSend_objectForKey_(senders, a2, @"__kchatIsFilteredKey");
   v6 = objc_msgSend_intValue(v3, v4, v5);
 
   return v6 == 1;
@@ -5375,13 +5375,13 @@ LABEL_50:
   return v9;
 }
 
-- (BOOL)_amIMentionedInMessage:(id)a3
+- (BOOL)_amIMentionedInMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v7 = objc_msgSend_allTokens(self, v5, v6);
   v10 = objc_msgSend_mutableCopy(v7, v8, v9);
 
-  v12 = objc_msgSend_objectForKey_(v4, v11, @"__kmessageDestinationCallerIDKey");
+  v12 = objc_msgSend_objectForKey_(messageCopy, v11, @"__kmessageDestinationCallerIDKey");
   v15 = v12;
   if (v12 && objc_msgSend_length(v12, v13, v14))
   {
@@ -5390,7 +5390,7 @@ LABEL_50:
 
   if (objc_msgSend_count(v10, v13, v14))
   {
-    v17 = objc_msgSend_areMyTokens_inMessage_(self, v16, v10, v4);
+    v17 = objc_msgSend_areMyTokens_inMessage_(self, v16, v10, messageCopy);
   }
 
   else
@@ -5401,22 +5401,22 @@ LABEL_50:
   return v17;
 }
 
-- (BOOL)areMyTokens:(id)a3 inMessage:(id)a4
+- (BOOL)areMyTokens:(id)tokens inMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  tokensCopy = tokens;
+  messageCopy = message;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v8 = objc_msgSend_objectForKey_(v6, v7, @"__kmessageAttributedBodyKey");
+  v8 = objc_msgSend_objectForKey_(messageCopy, v7, @"__kmessageAttributedBodyKey");
   v11 = objc_msgSend_length(v8, v9, v10);
   v12 = *MEMORY[0x1E69A70F8];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1B7B1679C;
   v16[3] = &unk_1E7CB6D48;
-  v13 = v5;
+  v13 = tokensCopy;
   v17 = v13;
   v18 = &v19;
   objc_msgSend_enumerateAttribute_inRange_options_usingBlock_(v8, v14, v12, 0, v11, 0, v16);
@@ -5426,14 +5426,14 @@ LABEL_50:
   return v11;
 }
 
-- (BOOL)_shouldOverrideChatSilencingBecauseImMentioned:(id)a3
+- (BOOL)_shouldOverrideChatSilencingBecauseImMentioned:(id)mentioned
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKey_(v4, v5, @"__kmessageServiceKey");
+  mentionedCopy = mentioned;
+  v6 = objc_msgSend_objectForKey_(mentionedCopy, v5, @"__kmessageServiceKey");
   isEqualToString = objc_msgSend_isEqualToString_(v6, v7, *MEMORY[0x1E69A7AE0]);
 
-  IsBusiness = objc_msgSend__messageIsBusiness_(self, v9, v4);
+  IsBusiness = objc_msgSend__messageIsBusiness_(self, v9, mentionedCopy);
   v13 = IsBusiness;
   if ((isEqualToString & 1) != 0 || (IsBusiness & 1) != 0 || !objc_msgSend__overrideDNDForMessagesAddressingMe(self, v11, v12))
   {
@@ -5470,36 +5470,36 @@ LABEL_50:
 
   else
   {
-    v15 = objc_msgSend__amIMentionedInMessage_(self, v14, v4);
+    v15 = objc_msgSend__amIMentionedInMessage_(self, v14, mentionedCopy);
   }
 
   v19 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (BOOL)_shouldPostNotificationRequest:(id)a3 withCurrentlyPostedNotifications:(id)a4
+- (BOOL)_shouldPostNotificationRequest:(id)request withCurrentlyPostedNotifications:(id)notifications
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (sub_1B7B0C380(v7, v8, v9))
+  requestCopy = request;
+  notificationsCopy = notifications;
+  if (sub_1B7B0C380(notificationsCopy, v8, v9))
   {
     v12 = 0;
   }
 
   else
   {
-    v13 = objc_msgSend_identifier(v6, v10, v11);
+    v13 = objc_msgSend_identifier(requestCopy, v10, v11);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v14 = v7;
+    v14 = notificationsCopy;
     v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v37, v47, 16);
     if (v18)
     {
-      v35 = self;
-      v36 = v7;
+      selfCopy = self;
+      v36 = notificationsCopy;
       v19 = *v38;
 LABEL_5:
       v20 = 0;
@@ -5511,7 +5511,7 @@ LABEL_5:
         }
 
         v21 = *(*(&v37 + 1) + 8 * v20);
-        v22 = objc_msgSend_request(v21, v16, v17, v35);
+        v22 = objc_msgSend_request(v21, v16, v17, selfCopy);
         v25 = objc_msgSend_identifier(v22, v23, v24);
         isEqualToString = objc_msgSend_isEqualToString_(v25, v26, v13);
 
@@ -5528,7 +5528,7 @@ LABEL_5:
             goto LABEL_5;
           }
 
-          v7 = v36;
+          notificationsCopy = v36;
           goto LABEL_18;
         }
       }
@@ -5542,20 +5542,20 @@ LABEL_5:
         v43 = 2112;
         v44 = v22;
         v45 = 2112;
-        v46 = v6;
+        v46 = requestCopy;
         _os_log_impl(&dword_1B7AD5000, v28, OS_LOG_TYPE_DEFAULT, "Request %@ is already delivered {deliveredRequest: %@ currentRequest: %@}", buf, 0x20u);
       }
 
       if (!v18)
       {
-        v7 = v36;
+        notificationsCopy = v36;
         goto LABEL_20;
       }
 
-      shouldRepostNotification_withAlreadyPostedNotification = objc_msgSend__shouldRepostNotification_withAlreadyPostedNotification_(v35, v29, v6, v18);
+      shouldRepostNotification_withAlreadyPostedNotification = objc_msgSend__shouldRepostNotification_withAlreadyPostedNotification_(selfCopy, v29, requestCopy, v18);
       v14 = IMDNotificationsControllerLogHandle();
       v31 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      v7 = v36;
+      notificationsCopy = v36;
       if (shouldRepostNotification_withAlreadyPostedNotification)
       {
         if (v31)
@@ -5607,17 +5607,17 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)_shouldRepostNotification:(id)a3 withAlreadyPostedNotification:(id)a4
+- (BOOL)_shouldRepostNotification:(id)notification withAlreadyPostedNotification:(id)postedNotification
 {
   v68 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_identifier(v6, v7, v8);
-  v12 = objc_msgSend_request(v5, v10, v11);
+  postedNotificationCopy = postedNotification;
+  notificationCopy = notification;
+  v9 = objc_msgSend_identifier(notificationCopy, v7, v8);
+  v12 = objc_msgSend_request(postedNotificationCopy, v10, v11);
 
   v15 = objc_msgSend_content(v12, v13, v14);
 
-  v18 = objc_msgSend_content(v6, v16, v17);
+  v18 = objc_msgSend_content(notificationCopy, v16, v17);
 
   v21 = objc_msgSend_interruptionLevel(v15, v19, v20);
   v26 = objc_msgSend_interruptionLevel(v18, v22, v23);
@@ -5724,14 +5724,14 @@ LABEL_29:
   return v41;
 }
 
-- (unint64_t)screenTimeNotificationOptionsForContext:(id)a3
+- (unint64_t)screenTimeNotificationOptionsForContext:(id)context
 {
-  v3 = a3;
-  if (objc_msgSend_allowedByScreenTime(v3, v4, v5))
+  contextCopy = context;
+  if (objc_msgSend_allowedByScreenTime(contextCopy, v4, v5))
   {
-    if (objc_msgSend_applicationCurrentlyLimited(v3, v6, v7))
+    if (objc_msgSend_applicationCurrentlyLimited(contextCopy, v6, v7))
     {
-      shouldBeAllowedByScreenTimeWhenLimited = objc_msgSend_shouldBeAllowedByScreenTimeWhenLimited(v3, v8, v9);
+      shouldBeAllowedByScreenTimeWhenLimited = objc_msgSend_shouldBeAllowedByScreenTimeWhenLimited(contextCopy, v8, v9);
       v11 = IMDNotificationsControllerLogHandle();
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
       if (shouldBeAllowedByScreenTimeWhenLimited)
@@ -5775,12 +5775,12 @@ LABEL_29:
   return v13;
 }
 
-- (unint64_t)screenTimeNotificationOptionsForChatDictionary:(id)a3
+- (unint64_t)screenTimeNotificationOptionsForChatDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dictionary)
   {
-    v4 = objc_msgSend__handleIDsForChatDictionary_(self, a2, a3);
+    v4 = objc_msgSend__handleIDsForChatDictionary_(self, a2, dictionary);
     v5 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -5824,16 +5824,16 @@ LABEL_29:
   return v14;
 }
 
-- (id)_handleIDsForChatDictionary:(id)a3
+- (id)_handleIDsForChatDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_msgSend_array(MEMORY[0x1E695DF70], v4, v5);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = objc_msgSend_objectForKeyedSubscript_(v3, v7, @"__kchatHandlesForChatKey", 0);
+  v8 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v7, @"__kchatHandlesForChatKey", 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v20, v24, 16);
   if (v10)
   {
@@ -5866,11 +5866,11 @@ LABEL_29:
   return v6;
 }
 
-- (id)_coreSpotlightChatParticipantsFromChatDictionary:(id)a3 senderHandleID:(id)a4
+- (id)_coreSpotlightChatParticipantsFromChatDictionary:(id)dictionary senderHandleID:(id)d
 {
   v45 = *MEMORY[0x1E69E9840];
-  v39 = a4;
-  v6 = objc_msgSend_objectForKey_(a3, v5, @"__kchatParticipantsKey");
+  dCopy = d;
+  v6 = objc_msgSend_objectForKey_(dictionary, v5, @"__kchatParticipantsKey");
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v40 = 0u;
   v41 = 0u;
@@ -5898,13 +5898,13 @@ LABEL_29:
         {
           v17 = _IMDCoreSpotlightCNContactForHandle(v15);
           v20 = objc_msgSend_count(v8, v18, v19);
-          isEqualToString = objc_msgSend_isEqualToString_(v39, v21, v16);
+          isEqualToString = objc_msgSend_isEqualToString_(dCopy, v21, v16);
           v23 = v20 == 1;
           isEqualToContact = (v20 == 1) | isEqualToString;
           if (v23 && (isEqualToString & 1) == 0)
           {
             v25 = v13;
-            v26 = _IMDCoreSpotlightCNContactForHandleID(v39);
+            v26 = _IMDCoreSpotlightCNContactForHandleID(dCopy);
             v28 = v26;
             if (v26)
             {
@@ -5937,12 +5937,12 @@ LABEL_29:
   return v36;
 }
 
-- (id)_groupPhotoInternalFilePathForGroupPhotoGuid:(id)a3
+- (id)_groupPhotoInternalFilePathForGroupPhotoGuid:(id)guid
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5))
+  guidCopy = guid;
+  if (objc_msgSend_length(guidCopy, v4, v5))
   {
-    v6 = IMDAttachmentRecordCopyAttachmentForGUID(v3);
+    v6 = IMDAttachmentRecordCopyAttachmentForGUID(guidCopy);
     v9 = objc_msgSend_path(v6, v7, v8);
   }
 
@@ -5954,40 +5954,40 @@ LABEL_29:
   return v9;
 }
 
-- (id)_interactionDonationContextWithContent:(id)a3 chatDictionary:(id)a4 messageDictionary:(id)a5 isUrgentMessageTrigger:(BOOL)a6
+- (id)_interactionDonationContextWithContent:(id)content chatDictionary:(id)dictionary messageDictionary:(id)messageDictionary isUrgentMessageTrigger:(BOOL)trigger
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v114 = objc_msgSend_objectForKey_(v12, v13, @"__kmessageGUIDKey");
-  v112 = v10;
-  v115 = objc_msgSend_body(v10, v14, v15);
-  v17 = objc_msgSend_objectForKey_(v12, v16, @"__kmessageDateKey");
+  contentCopy = content;
+  dictionaryCopy = dictionary;
+  messageDictionaryCopy = messageDictionary;
+  v114 = objc_msgSend_objectForKey_(messageDictionaryCopy, v13, @"__kmessageGUIDKey");
+  v112 = contentCopy;
+  v115 = objc_msgSend_body(contentCopy, v14, v15);
+  v17 = objc_msgSend_objectForKey_(messageDictionaryCopy, v16, @"__kmessageDateKey");
   v20 = objc_msgSend_longLongValue(v17, v18, v19);
 
   v113 = objc_msgSend___im_dateWithNanosecondTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v21, v22, v20);
-  v111 = objc_msgSend_objectForKey_(v12, v23, @"__kmessageServiceKey");
-  v25 = objc_msgSend_objectForKey_(v12, v24, @"__kmessageHandleKey");
+  v111 = objc_msgSend_objectForKey_(messageDictionaryCopy, v23, @"__kmessageServiceKey");
+  v25 = objc_msgSend_objectForKey_(messageDictionaryCopy, v24, @"__kmessageHandleKey");
   v109 = objc_msgSend_uncanonicalizedURIString(v25, v26, v27);
   v110 = v25;
   v28 = _IMDCoreSpotlightHandleID(v25);
-  v108 = objc_msgSend_objectForKey_(v11, v29, @"__kchatChatGUIDKey");
-  v31 = objc_msgSend_objectForKey_(v11, v30, @"__kchatChatIdentifierKey");
-  v33 = objc_msgSend_objectForKey_(v11, v32, @"__kchatStyleKey");
+  v108 = objc_msgSend_objectForKey_(dictionaryCopy, v29, @"__kchatChatGUIDKey");
+  v31 = objc_msgSend_objectForKey_(dictionaryCopy, v30, @"__kchatChatIdentifierKey");
+  v33 = objc_msgSend_objectForKey_(dictionaryCopy, v32, @"__kchatStyleKey");
   v105 = objc_msgSend_intValue(v33, v34, v35);
 
-  v37 = objc_msgSend_objectForKey_(v11, v36, @"__kchatLastAddressedHandleStringKey");
+  v37 = objc_msgSend_objectForKey_(dictionaryCopy, v36, @"__kchatLastAddressedHandleStringKey");
   v107 = objc_msgSend__stripFZIDPrefix(v37, v38, v39);
 
-  v41 = objc_msgSend_objectForKey_(v11, v40, @"__kchatIsFilteredKey");
+  v41 = objc_msgSend_objectForKey_(dictionaryCopy, v40, @"__kchatIsFilteredKey");
   v44 = objc_msgSend_intValue(v41, v42, v43);
 
-  v106 = objc_msgSend__coreSpotlightChatParticipantsFromChatDictionary_senderHandleID_(self, v45, v11, v28);
+  v106 = objc_msgSend__coreSpotlightChatParticipantsFromChatDictionary_senderHandleID_(self, v45, dictionaryCopy, v28);
   if (objc_msgSend_shouldDisplayGroupNameAndPhotoWith_participants_(self, v46, v44))
   {
-    v103 = objc_msgSend_objectForKey_(v11, v47, @"__kchatGroupPhotoGuidKey");
+    v103 = objc_msgSend_objectForKey_(dictionaryCopy, v47, @"__kchatGroupPhotoGuidKey");
     v104 = objc_msgSend__groupPhotoInternalFilePathForGroupPhotoGuid_(self, v48, v103);
-    v50 = objc_msgSend_objectForKey_(v11, v49, @"__kchatGroupNameKey");
+    v50 = objc_msgSend_objectForKey_(dictionaryCopy, v49, @"__kchatGroupNameKey");
   }
 
   else
@@ -5997,23 +5997,23 @@ LABEL_29:
     v103 = 0;
   }
 
-  v101 = objc_msgSend__amIMentionedInMessage_(self, v47, v12);
-  v102 = objc_msgSend_objectForKey_(v12, v51, @"__kmessageThreadOriginatorKey");
+  v101 = objc_msgSend__amIMentionedInMessage_(self, v47, messageDictionaryCopy);
+  v102 = objc_msgSend_objectForKey_(messageDictionaryCopy, v51, @"__kmessageThreadOriginatorKey");
   v53 = objc_msgSend_objectForKey_(v102, v52, @"__kmessageFlagsKey");
   v56 = objc_msgSend_unsignedLongLongValue(v53, v54, v55);
 
-  if (a6)
+  if (trigger)
   {
     v100 = 1;
   }
 
   else
   {
-    v58 = objc_msgSend_objectForKey_(v12, v57, @"__kmessageFlagsKey");
+    v58 = objc_msgSend_objectForKey_(messageDictionaryCopy, v57, @"__kmessageFlagsKey");
     v100 = (objc_msgSend_unsignedLongLongValue(v58, v59, v60) >> 35) & 1;
   }
 
-  v61 = objc_msgSend_objectForKey_(v11, v57, @"__kchatIsMergedBusinessThread");
+  v61 = objc_msgSend_objectForKey_(dictionaryCopy, v57, @"__kchatIsMergedBusinessThread");
   v99 = objc_msgSend_BOOLValue(v61, v62, v63);
 
   v66 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v64, v65);
@@ -6060,24 +6060,24 @@ LABEL_29:
   return v78;
 }
 
-- (id)_attributedSummaryOfTapback:(id)a3 messageDictionary:(id)a4 senderDisplayName:(id)a5
+- (id)_attributedSummaryOfTapback:(id)tapback messageDictionary:(id)dictionary senderDisplayName:(id)name
 {
   v82 = *MEMORY[0x1E69E9840];
-  v64 = a3;
-  v8 = a4;
-  v62 = a5;
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"__kmessageFlagsKey");
+  tapbackCopy = tapback;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v10 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"__kmessageFlagsKey");
   v58 = objc_msgSend_unsignedLongLongValue(v10, v11, v12);
 
-  v61 = objc_msgSend_objectForKeyedSubscript_(v8, v13, @"__kmessageSummaryInfoDataKey");
+  v61 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v13, @"__kmessageSummaryInfoDataKey");
   v14 = JWDecodeDictionary();
   v16 = objc_msgSend___imami_attributedStringForKey_(v14, v15, *MEMORY[0x1E69A7218]);
-  v63 = v8;
-  v17 = v8;
-  v18 = self;
+  v63 = dictionaryCopy;
+  v17 = dictionaryCopy;
+  selfCopy = self;
   v20 = objc_msgSend_objectForKeyedSubscript_(v17, v19, @"__kmessageAttachmentsKey");
   v60 = v16;
-  v22 = objc_msgSend__attachmentRecordsForAssociatedMessagePartText_(v18, v21, v16);
+  v22 = objc_msgSend__attachmentRecordsForAssociatedMessagePartText_(selfCopy, v21, v16);
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v76 = 0u;
   v77 = 0u;
@@ -6165,22 +6165,22 @@ LABEL_29:
   v65[2] = sub_1B7B18A44;
   v65[3] = &unk_1E7CB6DE8;
   v66 = v51;
-  v67 = v18;
+  v67 = selfCopy;
   v53 = v51;
   v54 = _Block_copy(v65);
-  v59 = objc_msgSend_previewAttributedStringWithMessageSummaryInfo_isAdaptiveImageGlyphProvider_isCommSafetySensitiveProvider_adaptiveImageGlyphProvider_senderDisplayName_isFromMe_effectString_(v64, v55, v14, v50, v52, v54, v62, (v58 >> 2) & 1, 0);
+  v59 = objc_msgSend_previewAttributedStringWithMessageSummaryInfo_isAdaptiveImageGlyphProvider_isCommSafetySensitiveProvider_adaptiveImageGlyphProvider_senderDisplayName_isFromMe_effectString_(tapbackCopy, v55, v14, v50, v52, v54, nameCopy, (v58 >> 2) & 1, 0);
 
   v56 = *MEMORY[0x1E69E9840];
 
   return v59;
 }
 
-- (id)_attachmentRecordsForAssociatedMessagePartText:(id)a3
+- (id)_attachmentRecordsForAssociatedMessagePartText:(id)text
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (text)
   {
-    v3 = objc_msgSend___im_transferGUIDsInAttributedString(a3, a2, a3);
+    v3 = objc_msgSend___im_transferGUIDsInAttributedString(text, a2, text);
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19 = 0u;
     v20 = 0u;
@@ -6227,16 +6227,16 @@ LABEL_29:
   return v16;
 }
 
-- (id)_senderDisplayNameForTapback:(id)a3 sendMessageIntent:(id)a4 chatParticipants:(id)a5
+- (id)_senderDisplayNameForTapback:(id)tapback sendMessageIntent:(id)intent chatParticipants:(id)participants
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  intentCopy = intent;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = a5;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v43, v47, 16);
+  participantsCopy = participants;
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(participantsCopy, v8, &v43, v47, 16);
   if (v11)
   {
     v12 = *v44;
@@ -6246,7 +6246,7 @@ LABEL_3:
     {
       if (*v44 != v12)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(participantsCopy);
       }
 
       v14 = *(*(&v43 + 1) + 8 * v13);
@@ -6257,7 +6257,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v9, &v43, v47, 16);
+        v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(participantsCopy, v9, &v43, v47, 16);
         if (v11)
         {
           goto LABEL_3;
@@ -6310,14 +6310,14 @@ LABEL_3:
   {
 LABEL_9:
     v15 = 0;
-    v16 = v7;
+    v16 = participantsCopy;
   }
 
   v31 = objc_msgSend_length(v15, v35, v36, v43);
 LABEL_22:
   if (!v31)
   {
-    v37 = objc_msgSend_sender(v6, v32, v33);
+    v37 = objc_msgSend_sender(intentCopy, v32, v33);
     v40 = objc_msgSend_displayName(v37, v38, v39);
 
     v15 = v40;
@@ -6328,12 +6328,12 @@ LABEL_22:
   return v15;
 }
 
-- (id)_adaptiveImageGlyphForAttachment:(id)a3
+- (id)_adaptiveImageGlyphForAttachment:(id)attachment
 {
-  v3 = a3;
-  if (objc_msgSend_transferState(v3, v4, v5) == 5)
+  attachmentCopy = attachment;
+  if (objc_msgSend_transferState(attachmentCopy, v4, v5) == 5)
   {
-    v8 = objc_msgSend_path(v3, v6, v7);
+    v8 = objc_msgSend_path(attachmentCopy, v6, v7);
     if (objc_msgSend_length(v8, v9, v10))
     {
       v12 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x1E695DFF8], v11, v8, 0);
@@ -6366,17 +6366,17 @@ LABEL_22:
   return v18;
 }
 
-- (id)_attributedMessageBodyByInsertingAdaptiveImageGlyphsInMessageBody:(id)a3 attachments:(id)a4
+- (id)_attributedMessageBodyByInsertingAdaptiveImageGlyphsInMessageBody:(id)body attachments:(id)attachments
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bodyCopy = body;
+  attachmentsCopy = attachments;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v9 = v7;
+  v9 = attachmentsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v45, v49, 16);
   if (v11)
   {
@@ -6405,19 +6405,19 @@ LABEL_22:
     while (v14);
   }
 
-  v22 = objc_msgSend_length(v6, v20, v21);
-  v25 = objc_msgSend_mutableCopy(v6, v23, v24);
+  v22 = objc_msgSend_length(bodyCopy, v20, v21);
+  v25 = objc_msgSend_mutableCopy(bodyCopy, v23, v24);
   v26 = *MEMORY[0x1E69A5F68];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = sub_1B7B191C8;
   v40[3] = &unk_1E7CB6E10;
   v41 = v8;
-  v42 = self;
-  v43 = v6;
+  selfCopy = self;
+  v43 = bodyCopy;
   v27 = v25;
   v44 = v27;
-  v28 = v6;
+  v28 = bodyCopy;
   v29 = v8;
   objc_msgSend_enumerateAttribute_inRange_options_usingBlock_(v28, v30, v26, 0, v22, 0, v40);
   v38[0] = MEMORY[0x1E69E9820];
@@ -6434,17 +6434,17 @@ LABEL_22:
   return v35;
 }
 
-- (BOOL)_areAllMessagePartsRetractedForMessageDictionary:(id)a3
+- (BOOL)_areAllMessagePartsRetractedForMessageDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"__kmessageBalloonBundleIDKey");
+  dictionaryCopy = dictionary;
+  v5 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v4, @"__kmessageBalloonBundleIDKey");
   v8 = objc_msgSend_sharedInstance(IMExtensionNotificationManager, v6, v7);
   canPopulateUserInfoForMessageBalloonBundleID = objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v8, v9, v5);
 
   if (canPopulateUserInfoForMessageBalloonBundleID)
   {
-    v12 = objc_msgSend_objectForKey_(v3, v11, @"__kmessageGUIDKey");
+    v12 = objc_msgSend_objectForKey_(dictionaryCopy, v11, @"__kmessageGUIDKey");
     v13 = IMDNotificationsControllerLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -6461,16 +6461,16 @@ LABEL_22:
 
   else
   {
-    v12 = objc_msgSend_objectForKeyedSubscript_(v3, v11, @"__kmessageAttributedBodyKey");
-    v16 = objc_msgSend_objectForKeyedSubscript_(v3, v19, @"__kmessageTextKey");
-    if (objc_msgSend_length(v12, v20, v21) || objc_msgSend_length(v16, v22, v23) || (objc_msgSend_objectForKeyedSubscript_(v3, v24, @"__kmessageDateEditedKey"), v27 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend_longLongValue(v27, v28, v29), v27, v30 < 1))
+    v12 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"__kmessageAttributedBodyKey");
+    v16 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v19, @"__kmessageTextKey");
+    if (objc_msgSend_length(v12, v20, v21) || objc_msgSend_length(v16, v22, v23) || (objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v24, @"__kmessageDateEditedKey"), v27 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend_longLongValue(v27, v28, v29), v27, v30 < 1))
     {
       shouldRetractedMessageForBalloonBundleID = 0;
     }
 
     else
     {
-      v32 = objc_msgSend_objectForKey_(v3, v31, @"__kmessageGUIDKey");
+      v32 = objc_msgSend_objectForKey_(dictionaryCopy, v31, @"__kmessageGUIDKey");
       v33 = IMDNotificationsControllerLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
@@ -6487,14 +6487,14 @@ LABEL_22:
   return shouldRetractedMessageForBalloonBundleID;
 }
 
-+ (BOOL)_isFacetimeHighlighted:(id)a3
++ (BOOL)_isFacetimeHighlighted:(id)highlighted
 {
   v61 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v50 = objc_msgSend__pluginPayloadAttachmentPathsForMessage_(a1, v4, v53);
-  v51 = objc_msgSend_objectForKeyedSubscript_(v53, v5, @"__kmessageTextKey");
+  highlightedCopy = highlighted;
+  v50 = objc_msgSend__pluginPayloadAttachmentPathsForMessage_(self, v4, highlightedCopy);
+  v51 = objc_msgSend_objectForKeyedSubscript_(highlightedCopy, v5, @"__kmessageTextKey");
   v7 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v6, v51);
-  v52 = objc_msgSend__lpLinkMetadataForMessage_attachmentPaths_originalURL_(a1, v8, v53, v50, v7);
+  v52 = objc_msgSend__lpLinkMetadataForMessage_attachmentPaths_originalURL_(self, v8, highlightedCopy, v50, v7);
 
   v11 = objc_msgSend_collaborationMetadata(v52, v9, v10);
 
@@ -6593,10 +6593,10 @@ LABEL_23:
   return v46;
 }
 
-+ (id)_pluginPayloadAttachmentPathsForMessage:(id)a3
++ (id)_pluginPayloadAttachmentPathsForMessage:(id)message
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"__kmessageRowIDKey");
+  v3 = objc_msgSend_objectForKey_(message, a2, @"__kmessageRowIDKey");
   v6 = objc_msgSend_longLongValue(v3, v4, v5);
   v7 = IMDMessageRecordCopyAttachmentsForIDWithLock(v6);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -6641,32 +6641,32 @@ LABEL_23:
   return v8;
 }
 
-+ (id)_lpLinkMetadataForMessage:(id)a3 attachmentPaths:(id)a4 originalURL:(id)a5
++ (id)_lpLinkMetadataForMessage:(id)message attachmentPaths:(id)paths originalURL:(id)l
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  pathsCopy = paths;
+  lCopy = l;
   if (MEMORY[0x1B8CAFAC0](@"LPLinkMetadataPresentationTransformer", @"LinkPresentation"))
   {
-    v11 = objc_msgSend_objectForKey_(v7, v10, @"__kmessagePayloadDataKey");
+    v11 = objc_msgSend_objectForKey_(messageCopy, v10, @"__kmessagePayloadDataKey");
     v12 = objc_alloc_init(MEMORY[0x1E69A8010]);
     v44 = v11;
     objc_msgSend_setData_(v12, v13, v11);
-    v43 = objc_msgSend_objectForKey_(v7, v14, @"__kmessageGUIDKey");
+    v43 = objc_msgSend_objectForKey_(messageCopy, v14, @"__kmessageGUIDKey");
     objc_msgSend_setMessageGUID_(v12, v15, v43);
-    v17 = objc_msgSend_objectForKey_(v7, v16, @"__kmessageFlagsKey");
+    v17 = objc_msgSend_objectForKey_(messageCopy, v16, @"__kmessageFlagsKey");
     v20 = (objc_msgSend_unsignedLongLongValue(v17, v18, v19) >> 2) & 1;
 
     objc_msgSend_setIsFromMe_(v12, v21, v20);
-    objc_msgSend_setUrl_(v12, v22, v9);
+    objc_msgSend_setUrl_(v12, v22, lCopy);
     v25 = objc_msgSend_array(MEMORY[0x1E695DF70], v23, v24);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v45 = v8;
-    v26 = v8;
+    v45 = pathsCopy;
+    v26 = pathsCopy;
     v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v46, v50, 16);
     if (v28)
     {
@@ -6699,7 +6699,7 @@ LABEL_23:
     v37 = objc_msgSend_linkMetadataForPluginPayload_(MEMORY[0x1E69A8278], v36, v12);
     v40 = objc_msgSend_copy(v37, v38, v39);
 
-    v8 = v45;
+    pathsCopy = v45;
   }
 
   else
@@ -6720,10 +6720,10 @@ LABEL_23:
   return isUnderFirstDataProtectionLock;
 }
 
-- (id)_messageDictionaryForMessageRecord:(id)a3 copyThreadOriginator:(BOOL)a4
+- (id)_messageDictionaryForMessageRecord:(id)record copyThreadOriginator:(BOOL)originator
 {
-  v4 = a4;
-  v5 = a3;
+  originatorCopy = originator;
+  recordCopy = record;
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
   v8 = objc_msgSend_initWithCapacity_(v6, v7, 20);
   v162 = 0;
@@ -6757,8 +6757,8 @@ LABEL_23:
   v135 = 0;
   v134 = 0;
   v133 = 0;
-  v130 = v5;
-  IMDMessageRecordBulkCopy(v5, &v162, &v163, 0, &v158, &v161, &v160, &v159, 0, &v157, &v138, &v153, &v155, &v140, 0, &v148, &v156, &v150, &v151, &v152, 0, 0, 0, 0, 0, 0, 0, 0, 0, &v147, &v149, &v146, &v154, &v142, &v143, 0, &v145, 0, 0, 0, 0, &v141, 0, 0, &v139, 0, 0, 0, 0, &v137, &v136, &v135, 0, &v144, &v134, &v133, 0);
+  v130 = recordCopy;
+  IMDMessageRecordBulkCopy(recordCopy, &v162, &v163, 0, &v158, &v161, &v160, &v159, 0, &v157, &v138, &v153, &v155, &v140, 0, &v148, &v156, &v150, &v151, &v152, 0, 0, 0, 0, 0, 0, 0, 0, 0, &v147, &v149, &v146, &v154, &v142, &v143, 0, &v145, 0, 0, 0, 0, &v141, 0, 0, &v139, 0, 0, 0, 0, &v137, &v136, &v135, 0, &v144, &v134, &v133, 0);
   v10 = v157;
   v9 = v158;
   v11 = v155;
@@ -6799,7 +6799,7 @@ LABEL_23:
   }
 
   v106 = objc_msgSend_handleRecord(v130, v30, v31);
-  if (v4)
+  if (originatorCopy)
   {
     v36 = IMDMessageRecordCopyMessageForGUID(v101);
     if (v36)
@@ -7096,11 +7096,11 @@ LABEL_23:
   return v79;
 }
 
-- (id)_chatDictionaryForMessageRecord:(id)a3
+- (id)_chatDictionaryForMessageRecord:(id)record
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8 = objc_msgSend_chatRecord(v4, v5, v6);
+  recordCopy = record;
+  v8 = objc_msgSend_chatRecord(recordCopy, v5, v6);
   if (v8)
   {
     v9 = objc_msgSend__chatDictionaryForChatRecord_(self, v7, v8);
@@ -7114,7 +7114,7 @@ LABEL_23:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17 = v4;
+        v17 = recordCopy;
         _os_log_impl(&dword_1B7AD5000, v10, OS_LOG_TYPE_INFO, "We didn't get any chat records for message record %@", &v16, 0xCu);
       }
     }
@@ -7130,12 +7130,12 @@ LABEL_23:
   return v13;
 }
 
-+ (id)_displayNameForChatRecord:(id)a3
++ (id)_displayNameForChatRecord:(id)record
 {
   v5 = 0;
-  if (a3)
+  if (record)
   {
-    _IMDChatRecordBulkCopy(a3, 0, 0, 0, 0, 0, 0, 0, 0, &v5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    _IMDChatRecordBulkCopy(record, 0, 0, 0, 0, 0, 0, 0, 0, &v5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     v3 = v5;
   }
 
@@ -7147,10 +7147,10 @@ LABEL_23:
   return v3;
 }
 
-- (id)_chatDictionaryForChatRecord:(id)a3
+- (id)_chatDictionaryForChatRecord:(id)record
 {
   v124 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
   v7 = objc_msgSend_initWithCapacity_(v5, v6, 10);
   v120 = 0;
@@ -7162,16 +7162,16 @@ LABEL_23:
   v114 = 0;
   v115 = 0;
   v113 = 0;
-  if (v4)
+  if (recordCopy)
   {
-    _IMDChatRecordBulkCopy(v4, &v114, 0, 0, &v115, &v121, 0, &v120, 0, &v119, &v116, 0, &v118, 0, &v113, 0, 0, 0, 0, &v117, 0, 0, 0, 0, 0, 0, 0, 0);
+    _IMDChatRecordBulkCopy(recordCopy, &v114, 0, 0, &v115, &v121, 0, &v120, 0, &v119, &v116, 0, &v118, 0, &v113, 0, 0, 0, 0, &v117, 0, 0, 0, 0, 0, 0, 0, 0);
     v110 = v120;
     v111 = v121;
     v108 = v119;
     v102 = v118;
     v109 = v116;
     v112 = v115;
-    v10 = IMDChatRecordCopyChatLookupRecords(v4, v8, v9);
+    v10 = IMDChatRecordCopyChatLookupRecords(recordCopy, v8, v9);
     v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, *MEMORY[0x1E69A6AD8]);
     v15 = objc_msgSend_firstObject(v12, v13, v14);
 
@@ -7250,7 +7250,7 @@ LABEL_23:
       value = 0;
     }
 
-    v57 = objc_msgSend_handleRecords(v4, v16, v17);
+    v57 = objc_msgSend_handleRecords(recordCopy, v16, v17);
     if (objc_msgSend_count(v57, v58, v59))
     {
       if (v57)
@@ -7272,7 +7272,7 @@ LABEL_23:
 
     IMSharedHelperCatalystNotificationDisabled();
     IsMutedBasedOnChatGUID_chatIdentifier_groupID_domainIdentifiers_handles_lastAddressedHandleString_originalGroupID_style = objc_msgSend__chatIsMutedBasedOnChatGUID_chatIdentifier_groupID_domainIdentifiers_handles_lastAddressedHandleString_originalGroupID_style_(self, v61, v110, v111, v15, v10, v57, v109, 0, v114);
-    v64 = objc_msgSend__lastMessageTimeForChat_(self, v63, v4);
+    v64 = objc_msgSend__lastMessageTimeForChat_(self, v63, recordCopy);
     v67 = v64;
     if (v64)
     {
@@ -7416,17 +7416,17 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)_messageShouldBeSilentlyDeliveredForBusinessChat:(id)a3
+- (BOOL)_messageShouldBeSilentlyDeliveredForBusinessChat:(id)chat
 {
-  v3 = a3;
+  chatCopy = chat;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_objectForKeyedSubscript_(v3, v5, @"__kmessageHandleKey");
+  v6 = objc_msgSend_objectForKeyedSubscript_(chatCopy, v5, @"__kmessageHandleKey");
   v8 = objc_msgSend__addressForHandle_(v4, v7, v6);
   v9 = MEMORY[0x1B8CAF990]();
 
   if (v9)
   {
-    v11 = objc_msgSend_objectForKey_(v3, v10, @"__kmessageSummaryInfoDataKey");
+    v11 = objc_msgSend_objectForKey_(chatCopy, v10, @"__kmessageSummaryInfoDataKey");
     v12 = JWDecodeDictionary();
     v14 = objc_msgSend_objectForKey_(v12, v13, *MEMORY[0x1E69A83C8]);
     v17 = objc_msgSend_BOOLValue(v14, v15, v16);
@@ -7440,32 +7440,32 @@ LABEL_23:
   return v17;
 }
 
-- (BOOL)_chatIsMutedBasedOnChatGUID:(id)a3 chatIdentifier:(id)a4 groupID:(id)a5 domainIdentifiers:(id)a6 handles:(id)a7 lastAddressedHandleString:(id)a8 originalGroupID:(id)a9 style:(int64_t)a10
+- (BOOL)_chatIsMutedBasedOnChatGUID:(id)d chatIdentifier:(id)identifier groupID:(id)iD domainIdentifiers:(id)identifiers handles:(id)handles lastAddressedHandleString:(id)string originalGroupID:(id)groupID style:(int64_t)self0
 {
   v15 = MEMORY[0x1E69A8180];
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
+  groupIDCopy = groupID;
+  stringCopy = string;
+  handlesCopy = handles;
+  identifiersCopy = identifiers;
+  iDCopy = iD;
+  identifierCopy = identifier;
   v24 = objc_msgSend_sharedList(v15, v22, v23);
-  v26 = objc_msgSend___imArrayByApplyingBlock_(v18, v25, &unk_1F2FA0950);
+  v26 = objc_msgSend___imArrayByApplyingBlock_(handlesCopy, v25, &unk_1F2FA0950);
 
-  v28 = objc_msgSend_muteIdentifiersForChatStyle_groupID_domainIdentifiers_participantIDs_lastAddressedHandleID_originalGroupID_chatIdentifier_(v24, v27, a10, v20, v19, v26, v17, v16, v21);
+  v28 = objc_msgSend_muteIdentifiersForChatStyle_groupID_domainIdentifiers_participantIDs_lastAddressedHandleID_originalGroupID_chatIdentifier_(v24, v27, style, iDCopy, identifiersCopy, v26, stringCopy, groupIDCopy, identifierCopy);
 
-  LOBYTE(v16) = objc_msgSend_isMutedChatForMuteIdentifiers_(v24, v29, v28);
-  return v16;
+  LOBYTE(groupIDCopy) = objc_msgSend_isMutedChatForMuteIdentifiers_(v24, v29, v28);
+  return groupIDCopy;
 }
 
-- (id)contactForHandleRecord:(id)a3
+- (id)contactForHandleRecord:(id)record
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (record)
   {
-    v3 = a3;
+    recordCopy = record;
     v4 = objc_opt_class();
-    v6 = objc_msgSend__addressForHandle_(v4, v5, v3);
+    v6 = objc_msgSend__addressForHandle_(v4, v5, recordCopy);
 
     if (MEMORY[0x1B8CAF990](v6))
     {
@@ -7496,20 +7496,20 @@ LABEL_23:
   return v9;
 }
 
-- (void)_setContactInMessageDictionary:(id)a3 messageDictionary:(id)a4
+- (void)_setContactInMessageDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v8 = objc_msgSend_contactForHandleRecord_(self, v7, a3);
+  messageDictionaryCopy = messageDictionary;
+  v8 = objc_msgSend_contactForHandleRecord_(self, v7, dictionary);
   if (v8)
   {
-    CFDictionarySetValue(v6, @"__kmessageCNContactForSenderKey", v8);
+    CFDictionarySetValue(messageDictionaryCopy, @"__kmessageCNContactForSenderKey", v8);
   }
 
   v9 = IMDNotificationsControllerLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = objc_msgSend_objectForKey_(v6, v10, @"__kmessageCNContactForSenderKey");
+    v11 = objc_msgSend_objectForKey_(messageDictionaryCopy, v10, @"__kmessageCNContactForSenderKey");
     v13 = 138412290;
     v14 = v11;
     _os_log_impl(&dword_1B7AD5000, v9, OS_LOG_TYPE_DEFAULT, "CNContact for sender %@", &v13, 0xCu);
@@ -7518,9 +7518,9 @@ LABEL_23:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stickerTapbackTransferGUIDFromMessageDictionary:(id)a3
+- (id)_stickerTapbackTransferGUIDFromMessageDictionary:(id)dictionary
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"__kmessageAttachmentsKey");
+  v3 = objc_msgSend_objectForKeyedSubscript_(dictionary, a2, @"__kmessageAttachmentsKey");
   if (objc_msgSend_count(v3, v4, v5) == 1)
   {
     v8 = objc_msgSend_firstObject(v3, v6, v7);
@@ -7554,10 +7554,10 @@ LABEL_9:
   return v11;
 }
 
-- (id)_tapbackFromMessageDictionary:(id)a3
+- (id)_tapbackFromMessageDictionary:(id)dictionary
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"__kmessageAssociatedMessageTypeKey");
+  dictionaryCopy = dictionary;
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"__kmessageAssociatedMessageTypeKey");
   v9 = v6;
   if (!v6)
   {
@@ -7574,7 +7574,7 @@ LABEL_9:
     {
       if (v10 == 3006)
       {
-        v14 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"__kmessageAssociatedMessageEmojiKey");
+        v14 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"__kmessageAssociatedMessageEmojiKey");
         if (objc_msgSend_length(v14, v30, v31))
         {
           v32 = objc_alloc(MEMORY[0x1E69A8060]);
@@ -7596,7 +7596,7 @@ LABEL_9:
           goto LABEL_30;
         }
 
-        v14 = objc_msgSend__stickerTapbackTransferGUIDFromMessageDictionary_(self, v11, v4);
+        v14 = objc_msgSend__stickerTapbackTransferGUIDFromMessageDictionary_(self, v11, dictionaryCopy);
         if (objc_msgSend_length(v14, v22, v23))
         {
           v24 = objc_alloc(MEMORY[0x1E69A82C8]);
@@ -7630,7 +7630,7 @@ LABEL_10:
 
   if (v10 == 2006)
   {
-    v14 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"__kmessageAssociatedMessageEmojiKey");
+    v14 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"__kmessageAssociatedMessageEmojiKey");
     if (objc_msgSend_length(v14, v26, v27))
     {
       v28 = objc_alloc(MEMORY[0x1E69A8060]);
@@ -7652,7 +7652,7 @@ LABEL_10:
     goto LABEL_30;
   }
 
-  v14 = objc_msgSend__stickerTapbackTransferGUIDFromMessageDictionary_(self, v11, v4);
+  v14 = objc_msgSend__stickerTapbackTransferGUIDFromMessageDictionary_(self, v11, dictionaryCopy);
   if (!objc_msgSend_length(v14, v15, v16))
   {
     v34 = IMDNotificationsControllerLogHandle();
@@ -7675,7 +7675,7 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)imagePreviewIsMultiFrameAtFileURL:(id)a3
+- (BOOL)imagePreviewIsMultiFrameAtFileURL:(id)l
 {
   v3 = sub_1B7CFDFF0();
   v4 = *(v3 - 8);
@@ -7688,7 +7688,7 @@ LABEL_30:
   return v8 & 1;
 }
 
-- (BOOL)copyFirstFrameOfMultiFrameImageAtFileURL:(id)a3 toFileURL:(id)a4
+- (BOOL)copyFirstFrameOfMultiFrameImageAtFileURL:(id)l toFileURL:(id)rL
 {
   v5 = sub_1B7CFDFF0();
   v6 = *(v5 - 8);
@@ -7699,7 +7699,7 @@ LABEL_30:
   v12 = &v17 - v11;
   sub_1B7CFDFB0();
   sub_1B7CFDFB0();
-  v13 = self;
+  selfCopy = self;
   v14 = sub_1B7C1F8F0(v12);
 
   v15 = *(v6 + 8);
@@ -7708,7 +7708,7 @@ LABEL_30:
   return v14 & 1;
 }
 
-- (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)a3 participants:(id)a4
+- (BOOL)shouldDisplayGroupNameAndPhotoWith:(int64_t)with participants:(id)participants
 {
   sub_1B7C81604();
   sub_1B7CFECE0();

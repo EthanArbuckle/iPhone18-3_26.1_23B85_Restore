@@ -1,35 +1,35 @@
 @interface FolderPageIndicatorProvider
 - (_TtC15ControlCenterUI27FolderPageIndicatorProvider)init;
-- (void)folder:(id)a3 didAddList:(id)a4;
-- (void)folder:(id)a3 didRemoveLists:(id)a4 atIndexes:(id)a5;
-- (void)folder:(id)a3 listHiddenDidChange:(id)a4;
-- (void)iconList:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5;
-- (void)iconList:(void *)a3 didRemoveIcon:;
+- (void)folder:(id)folder didAddList:(id)list;
+- (void)folder:(id)folder didRemoveLists:(id)lists atIndexes:(id)indexes;
+- (void)folder:(id)folder listHiddenDidChange:(id)change;
+- (void)iconList:(id)list didReplaceIcon:(id)icon withIcon:(id)withIcon;
+- (void)iconList:(void *)list didRemoveIcon:;
 @end
 
 @implementation FolderPageIndicatorProvider
 
-- (void)iconList:(void *)a3 didRemoveIcon:
+- (void)iconList:(void *)list didRemoveIcon:
 {
-  v4 = a3;
-  v5 = a1;
-  sub_21EA4D224(v4);
+  listCopy = list;
+  selfCopy = self;
+  sub_21EA4D224(listCopy);
 }
 
-- (void)folder:(id)a3 didAddList:(id)a4
+- (void)folder:(id)folder didAddList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  if (([v6 isExtraList_] & 1) == 0)
+  folderCopy = folder;
+  listCopy = list;
+  selfCopy = self;
+  if (([folderCopy isExtraList_] & 1) == 0)
   {
-    [v7 addListObserver_];
+    [listCopy addListObserver_];
   }
 
   sub_21EA4D0DC();
 }
 
-- (void)folder:(id)a3 didRemoveLists:(id)a4 atIndexes:(id)a5
+- (void)folder:(id)folder didRemoveLists:(id)lists atIndexes:(id)indexes
 {
   v7 = sub_21EAA85C0();
   v8 = *(v7 - 8);
@@ -38,24 +38,24 @@
   sub_21EA4E894();
   v11 = sub_21EAA8EC0();
   sub_21EAA85B0();
-  v12 = a3;
-  v13 = self;
+  folderCopy = folder;
+  selfCopy = self;
   sub_21EA4E4F8(v11);
 
   (*(v8 + 8))(v10, v7);
 }
 
-- (void)folder:(id)a3 listHiddenDidChange:(id)a4
+- (void)folder:(id)folder listHiddenDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   sub_21EA4D0DC();
 }
 
-- (void)iconList:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5
+- (void)iconList:(id)list didReplaceIcon:(id)icon withIcon:(id)withIcon
 {
-  v6 = a3;
-  v7 = self;
-  sub_21EA4D224(v6);
+  listCopy = list;
+  selfCopy = self;
+  sub_21EA4D224(listCopy);
 }
 
 - (_TtC15ControlCenterUI27FolderPageIndicatorProvider)init

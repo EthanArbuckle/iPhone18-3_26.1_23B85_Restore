@@ -7,19 +7,19 @@
 
 - (uint64_t)doc_deprecated_interfaceOrientation
 {
-  v2 = [a1 viewIfLoaded];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
+  viewIfLoaded = [self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
 
-  if (v5 && ([v5 _isEmbeddedScreen] & 1) == 0)
+  if (screen && ([screen _isEmbeddedScreen] & 1) == 0)
   {
     [UIViewController(DOCDeprecated) doc_deprecated_interfaceOrientation];
   }
 
-  v6 = [a1 interfaceOrientation];
+  interfaceOrientation = [self interfaceOrientation];
 
-  return v6;
+  return interfaceOrientation;
 }
 
 - (void)doc_deprecated_interfaceOrientation
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(v1, OS_LOG_TYPE_FAULT))
   {
     v3 = 136315138;
-    v4 = [v0 UTF8String];
+    uTF8String = [v0 UTF8String];
     _os_log_fault_impl(&dword_249CE0000, v1, OS_LOG_TYPE_FAULT, "%s", &v3, 0xCu);
   }
 

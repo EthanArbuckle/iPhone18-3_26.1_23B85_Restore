@@ -1,18 +1,18 @@
 @interface NCExpandedPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation NCExpandedPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFTouchPassThroughView"];
-  [v3 validateClass:@"NCExpandedPlatterView" hasInstanceVariable:@"_notificationContentView" withType:"NCNotificationSeamlessContentView"];
-  [v3 validateClass:@"NCExpandedPlatterView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"NCExpandedPlatterViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"NCExpandedPlatterViewControllerDelegate" hasOptionalInstanceMethod:@"expandedPlatterViewController:requestsDismissalWithReason:userInfo:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFTouchPassThroughView"];
+  [validationsCopy validateClass:@"NCExpandedPlatterView" hasInstanceVariable:@"_notificationContentView" withType:"NCNotificationSeamlessContentView"];
+  [validationsCopy validateClass:@"NCExpandedPlatterView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"NCExpandedPlatterViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"NCExpandedPlatterViewControllerDelegate" hasOptionalInstanceMethod:@"expandedPlatterViewController:requestsDismissalWithReason:userInfo:"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,11 +25,11 @@
   v4 = [(NCExpandedPlatterViewAccessibility *)self safeValueForKey:@"_notificationContentView"];
   if (v4)
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v16.receiver = self;
     v16.super_class = NCExpandedPlatterViewAccessibility;
-    v6 = [(NCExpandedPlatterViewAccessibility *)&v16 accessibilityCustomActions];
-    [v5 axSafelyAddObjectsFromArray:v6];
+    accessibilityCustomActions = [(NCExpandedPlatterViewAccessibility *)&v16 accessibilityCustomActions];
+    [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
     objc_initWeak(&location, self);
     v7 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -41,8 +41,8 @@
     objc_copyWeak(&v14, &location);
     v9 = [v7 initWithName:v8 actionHandler:&v10];
 
-    [v5 axSafelyAddObject:{v9, v10, v11, v12, v13}];
-    [v4 setAccessibilityCustomActions:v5];
+    [array axSafelyAddObject:{v9, v10, v11, v12, v13}];
+    [v4 setAccessibilityCustomActions:array];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);

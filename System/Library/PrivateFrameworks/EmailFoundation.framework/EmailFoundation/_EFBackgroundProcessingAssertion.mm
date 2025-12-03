@@ -1,63 +1,63 @@
 @interface _EFBackgroundProcessingAssertion
-- (BOOL)_iterateFilesPerformingAction:(id)a3 error:(id *)a4;
-- (BOOL)_takeAssertionForDuration:(double)a3 error:(id *)a4;
+- (BOOL)_iterateFilesPerformingAction:(id)action error:(id *)error;
+- (BOOL)_takeAssertionForDuration:(double)duration error:(id *)error;
 - (BOOL)isActive;
-- (_DWORD)initWithProtectedFiles:(_DWORD *)a1;
-- (uint64_t)incrementAssertionForDuration:(void *)a3 outResetCount:(double)a4 error:;
+- (_DWORD)initWithProtectedFiles:(_DWORD *)files;
+- (uint64_t)incrementAssertionForDuration:(void *)duration outResetCount:(double)count error:;
 - (void)_checkIfExpired;
-- (void)decrementAssertionWithResetCount:(uint64_t)a1;
+- (void)decrementAssertionWithResetCount:(uint64_t)count;
 @end
 
 @implementation _EFBackgroundProcessingAssertion
 
-- (_DWORD)initWithProtectedFiles:(_DWORD *)a1
+- (_DWORD)initWithProtectedFiles:(_DWORD *)files
 {
   v4 = a2;
-  if (a1)
+  if (files)
   {
-    v7.receiver = a1;
+    v7.receiver = files;
     v7.super_class = _EFBackgroundProcessingAssertion;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    files = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 5, a2);
-      a1[8] = 0;
+      files[8] = 0;
     }
   }
 
-  return a1;
+  return files;
 }
 
 - (BOOL)isActive
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 32));
-  [a1 _checkIfExpired];
-  v2 = *(a1 + 16) != 0;
-  os_unfair_lock_unlock((a1 + 32));
+  os_unfair_lock_lock((self + 32));
+  [self _checkIfExpired];
+  v2 = *(self + 16) != 0;
+  os_unfair_lock_unlock((self + 32));
   return v2;
 }
 
-- (uint64_t)incrementAssertionForDuration:(void *)a3 outResetCount:(double)a4 error:
+- (uint64_t)incrementAssertionForDuration:(void *)duration outResetCount:(double)count error:
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v17 = 0;
     goto LABEL_16;
   }
 
   v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];
-  os_unfair_lock_lock((a1 + 32));
-  [a1 _checkIfExpired];
-  v9 = *(a1 + 16);
-  *(a1 + 16) = v9 + 1;
-  if (v9 && ([v8 timeIntervalSinceDate:*(a1 + 8)], v10 <= 10.0))
+  os_unfair_lock_lock((self + 32));
+  [self _checkIfExpired];
+  v9 = *(self + 16);
+  *(self + 16) = v9 + 1;
+  if (v9 && ([v8 timeIntervalSinceDate:*(self + 8)], v10 <= 10.0))
   {
     v12 = 0;
   }
@@ -65,7 +65,7 @@
   else
   {
     v23 = 0;
-    v11 = [a1 _takeAssertionForDuration:&v23 error:a4];
+    v11 = [self _takeAssertionForDuration:&v23 error:count];
     v12 = v23;
     v13 = _ef_log_EFProtectedFile();
     v14 = v13;
@@ -74,43 +74,43 @@
       v16 = v13;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v21 = *(a1 + 40);
-        v22 = [v12 ef_publicDescription];
+        v21 = *(self + 40);
+        ef_publicDescription = [v12 ef_publicDescription];
         *buf = 134218498;
-        v25 = a4;
+        countCopy2 = count;
         v26 = 2114;
         v27 = v21;
         v28 = 2114;
-        v29 = v22;
+        v29 = ef_publicDescription;
         _os_log_error_impl(&dword_1C6152000, v16, OS_LOG_TYPE_ERROR, "Failed to take assertion of duration %f on files %{public}@ due to error: %{public}@", buf, 0x20u);
       }
 
       v17 = 0;
-      --*(a1 + 16);
+      --*(self + 16);
       goto LABEL_13;
     }
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = *(a1 + 40);
+      v15 = *(self + 40);
       *buf = 134218242;
-      v25 = a4;
+      countCopy2 = count;
       v26 = 2114;
       v27 = v15;
       _os_log_impl(&dword_1C6152000, v14, OS_LOG_TYPE_DEFAULT, "Took assertion of duration %f on files %{public}@", buf, 0x16u);
     }
 
-    objc_storeStrong((a1 + 8), v8);
+    objc_storeStrong((self + 8), v8);
   }
 
   v17 = 1;
 LABEL_13:
-  *a2 = *(a1 + 24);
-  os_unfair_lock_unlock((a1 + 32));
-  if (a3)
+  *a2 = *(self + 24);
+  os_unfair_lock_unlock((self + 32));
+  if (duration)
   {
     v18 = v12;
-    *a3 = v12;
+    *duration = v12;
   }
 
 LABEL_16:
@@ -118,35 +118,35 @@ LABEL_16:
   return v17;
 }
 
-- (void)decrementAssertionWithResetCount:(uint64_t)a1
+- (void)decrementAssertionWithResetCount:(uint64_t)count
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (count)
   {
-    os_unfair_lock_lock((a1 + 32));
-    if (*(a1 + 24) == a2)
+    os_unfair_lock_lock((count + 32));
+    if (*(count + 24) == a2)
     {
-      v4 = *(a1 + 16);
+      v4 = *(count + 16);
       if (!v4)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:sel_decrementAssertionWithResetCount_ object:a1 file:@"EFProtectedFile.m" lineNumber:312 description:@"Decrementing assertion when count is already 0"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_decrementAssertionWithResetCount_ object:count file:@"EFProtectedFile.m" lineNumber:312 description:@"Decrementing assertion when count is already 0"];
 
-        v4 = *(a1 + 16);
+        v4 = *(count + 16);
       }
 
       v5 = v4 - 1;
-      *(a1 + 16) = v5;
+      *(count + 16) = v5;
       if (!v5)
       {
         v15 = 0;
-        v6 = [a1 _releaseAssertionWithError:&v15];
+        v6 = [count _releaseAssertionWithError:&v15];
         v7 = v15;
         v8 = _ef_log_EFProtectedFile();
         v9 = v8;
         if (v6)
         {
-          [(_EFBackgroundProcessingAssertion *)v8 decrementAssertionWithResetCount:a1];
+          [(_EFBackgroundProcessingAssertion *)v8 decrementAssertionWithResetCount:count];
         }
 
         else
@@ -154,29 +154,29 @@ LABEL_16:
           v10 = v8;
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
-            v11 = *(a1 + 40);
-            v12 = [v7 ef_publicDescription];
-            [(_EFBackgroundProcessingAssertion *)v11 decrementAssertionWithResetCount:v12, buf, v10];
+            v11 = *(count + 40);
+            ef_publicDescription = [v7 ef_publicDescription];
+            [(_EFBackgroundProcessingAssertion *)v11 decrementAssertionWithResetCount:ef_publicDescription, buf, v10];
           }
         }
       }
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((count + 32));
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_takeAssertionForDuration:(double)a3 error:(id *)a4
+- (BOOL)_takeAssertionForDuration:(double)duration error:(id *)error
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68___EFBackgroundProcessingAssertion__takeAssertionForDuration_error___block_invoke;
   v5[3] = &__block_descriptor_48_e8_i12__0i8l;
   v5[4] = 0;
-  v5[5] = (a3 * 1000000000.0);
-  return [(_EFBackgroundProcessingAssertion *)self _iterateFilesPerformingAction:v5 error:a4];
+  v5[5] = (duration * 1000000000.0);
+  return [(_EFBackgroundProcessingAssertion *)self _iterateFilesPerformingAction:v5 error:error];
 }
 
 - (void)_checkIfExpired
@@ -189,10 +189,10 @@ LABEL_16:
   }
 }
 
-- (BOOL)_iterateFilesPerformingAction:(id)a3 error:(id *)a4
+- (BOOL)_iterateFilesPerformingAction:(id)action error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -234,7 +234,7 @@ LABEL_16:
       v15 = v22;
       if (v14)
       {
-        if (v5[2](v5, v14) != -1)
+        if (actionCopy[2](actionCopy, v14) != -1)
         {
           goto LABEL_14;
         }
@@ -265,10 +265,10 @@ LABEL_14:
   while (v9);
 LABEL_18:
 
-  if (a4)
+  if (error)
   {
     v17 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v18 = *MEMORY[0x1E69E9840];

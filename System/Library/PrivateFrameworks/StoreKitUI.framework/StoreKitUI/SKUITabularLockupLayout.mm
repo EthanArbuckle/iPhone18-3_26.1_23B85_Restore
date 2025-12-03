@@ -1,14 +1,14 @@
 @interface SKUITabularLockupLayout
-+ (id)fontForLabelViewElement:(id)a3 context:(id)a4;
-- (SKUITabularLockupLayout)initWithLockup:(id)a3 context:(id)a4;
-- (void)sizeColumnsToFitWidth:(double)a3 context:(id)a4;
++ (id)fontForLabelViewElement:(id)element context:(id)context;
+- (SKUITabularLockupLayout)initWithLockup:(id)lockup context:(id)context;
+- (void)sizeColumnsToFitWidth:(double)width context:(id)context;
 @end
 
 @implementation SKUITabularLockupLayout
 
-- (SKUITabularLockupLayout)initWithLockup:(id)a3 context:(id)a4
+- (SKUITabularLockupLayout)initWithLockup:(id)lockup context:(id)context
 {
-  v5 = a3;
+  lockupCopy = lockup;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -38,7 +38,7 @@
     v21[2] = __50__SKUITabularLockupLayout_initWithLockup_context___block_invoke;
     v21[3] = &unk_2781F9640;
     v22 = v14;
-    [v5 enumerateChildrenUsingBlock:v21];
+    [lockupCopy enumerateChildrenUsingBlock:v21];
   }
 
   return v14;
@@ -66,10 +66,10 @@ void __50__SKUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
   }
 }
 
-+ (id)fontForLabelViewElement:(id)a3 context:(id)a4
++ (id)fontForLabelViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -82,22 +82,22 @@ void __50__SKUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
     }
   }
 
-  v15 = [v5 style];
-  v16 = SKUIViewElementFontWithStyle(v15);
+  style = [elementCopy style];
+  v16 = SKUIViewElementFontWithStyle(style);
 
   if (!v16)
   {
-    v17 = [v5 labelViewStyle];
-    if (v17 > 5)
+    labelViewStyle = [elementCopy labelViewStyle];
+    if (labelViewStyle > 5)
     {
       v16 = 0;
     }
 
     else
     {
-      if (((1 << v17) & 0x1B) != 0)
+      if (((1 << labelViewStyle) & 0x1B) != 0)
       {
-        if ([v6 containerViewElementType] == 118)
+        if ([contextCopy containerViewElementType] == 118)
         {
           v18 = 8;
         }
@@ -108,7 +108,7 @@ void __50__SKUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
         }
       }
 
-      else if ([v6 containerViewElementType] == 118)
+      else if ([contextCopy containerViewElementType] == 118)
       {
         v18 = 6;
       }
@@ -125,10 +125,10 @@ void __50__SKUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
   return v16;
 }
 
-- (void)sizeColumnsToFitWidth:(double)a3 context:(id)a4
+- (void)sizeColumnsToFitWidth:(double)width context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -149,10 +149,10 @@ void __50__SKUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 childViewElements];
-        v14 = [v13 firstObject];
+        childViewElements = [v12 childViewElements];
+        firstObject = [childViewElements firstObject];
 
-        [v6 sizeForViewElement:v14 width:a3];
+        [contextCopy sizeForViewElement:firstObject width:width];
         [v12 setSize:?];
       }
 

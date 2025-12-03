@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneSearchScoringRewrite__1 alloc];
     OrgApacheLuceneSearchTermCollectingRewrite_init(v2, v3);

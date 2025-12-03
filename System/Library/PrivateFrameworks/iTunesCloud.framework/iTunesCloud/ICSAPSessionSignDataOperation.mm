@@ -1,30 +1,30 @@
 @interface ICSAPSessionSignDataOperation
-- (void)executeWithSAPContext:(id)a3;
-- (void)finishWithSAPContextPreparationError:(id)a3;
+- (void)executeWithSAPContext:(id)context;
+- (void)finishWithSAPContextPreparationError:(id)error;
 @end
 
 @implementation ICSAPSessionSignDataOperation
 
-- (void)finishWithSAPContextPreparationError:(id)a3
+- (void)finishWithSAPContextPreparationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   responseHandler = self->_responseHandler;
-  v6 = v4;
+  v6 = errorCopy;
   if (responseHandler)
   {
-    responseHandler[2](responseHandler, 0, v4);
-    v4 = v6;
+    responseHandler[2](responseHandler, 0, errorCopy);
+    errorCopy = v6;
   }
 
-  [(ICSAPSessionAbstractOperation *)self finishWithError:v4];
+  [(ICSAPSessionAbstractOperation *)self finishWithError:errorCopy];
 }
 
-- (void)executeWithSAPContext:(id)a3
+- (void)executeWithSAPContext:(id)context
 {
   data = self->_data;
   v12 = 0;
   v13 = 0;
-  v6 = [a3 signData:data returningSignatureData:&v13 error:&v12];
+  v6 = [context signData:data returningSignatureData:&v13 error:&v12];
   v7 = v13;
   v8 = v12;
   v9 = v8;

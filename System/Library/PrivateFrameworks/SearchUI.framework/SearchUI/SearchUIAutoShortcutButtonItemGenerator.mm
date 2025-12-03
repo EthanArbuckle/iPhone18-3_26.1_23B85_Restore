@@ -1,25 +1,25 @@
 @interface SearchUIAutoShortcutButtonItemGenerator
-+ (id)shortcutsForBundleId:(id)a3;
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
++ (id)shortcutsForBundleId:(id)id;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIAutoShortcutButtonItemGenerator
 
-+ (id)shortcutsForBundleId:(id)a3
++ (id)shortcutsForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   if (shortcutsForBundleId__onceToken != -1)
   {
     +[SearchUIAutoShortcutButtonItemGenerator shortcutsForBundleId:];
   }
 
-  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
+  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:idCopy allowPlaceholder:0 error:0];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v6 = [v5 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v7 = [shortcutsForBundleId__shortcutsProvider autoShortcutsForApplicationRecord:v4 localeIdentifier:v6];
+    v7 = [shortcutsForBundleId__shortcutsProvider autoShortcutsForApplicationRecord:v4 localeIdentifier:localeIdentifier];
   }
 
   else
@@ -37,15 +37,15 @@ uint64_t __64__SearchUIAutoShortcutButtonItemGenerator_shortcutsForBundleId___bl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v26 = a4;
-  v29 = v5;
-  v25 = [v5 appAutoShortcutsItem];
-  v28 = [v25 bundleIdentifier];
-  v6 = [objc_opt_class() shortcutsForBundleId:v28];
+  itemCopy = item;
+  completionCopy = completion;
+  v29 = itemCopy;
+  appAutoShortcutsItem = [itemCopy appAutoShortcutsItem];
+  bundleIdentifier = [appAutoShortcutsItem bundleIdentifier];
+  v6 = [objc_opt_class() shortcutsForBundleId:bundleIdentifier];
   v27 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
@@ -67,20 +67,20 @@ uint64_t __64__SearchUIAutoShortcutButtonItemGenerator_shortcutsForBundleId___bl
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 systemImageName];
-        if (v13)
+        systemImageName = [v12 systemImageName];
+        if (systemImageName)
         {
-          v14 = v13;
-          v15 = [v12 localizedShortTitle];
+          v14 = systemImageName;
+          localizedShortTitle = [v12 localizedShortTitle];
 
-          if (v15)
+          if (localizedShortTitle)
           {
             v16 = objc_opt_new();
-            v17 = [v12 systemImageName];
-            [v16 setSymbolName:v17];
+            systemImageName2 = [v12 systemImageName];
+            [v16 setSymbolName:systemImageName2];
 
             [v16 setIsTemplate:1];
-            v18 = [objc_alloc(MEMORY[0x1E69E09B0]) initWithAutoShortcut:v12 bundleIdentifier:v28];
+            v18 = [objc_alloc(MEMORY[0x1E69E09B0]) initWithAutoShortcut:v12 bundleIdentifier:bundleIdentifier];
             v19 = objc_opt_new();
             [v19 setIsRunnableWorkflow:1];
             v30 = 0;
@@ -100,8 +100,8 @@ uint64_t __64__SearchUIAutoShortcutButtonItemGenerator_shortcutsForBundleId___bl
             }
 
             v23 = [[SearchUIButtonItem alloc] initWithSFButtonItem:v29];
-            v24 = [v12 localizedShortTitle];
-            [(SearchUIButtonItem *)v23 setTitle:v24];
+            localizedShortTitle2 = [v12 localizedShortTitle];
+            [(SearchUIButtonItem *)v23 setTitle:localizedShortTitle2];
 
             [(SearchUIButtonItem *)v23 setImage:v16];
             [(SearchUIButtonItem *)v23 setCommand:v19];
@@ -116,7 +116,7 @@ uint64_t __64__SearchUIAutoShortcutButtonItemGenerator_shortcutsForBundleId___bl
     while (v9);
   }
 
-  v26[2](v26, v27, 1);
+  completionCopy[2](completionCopy, v27, 1);
 }
 
 @end

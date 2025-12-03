@@ -1,19 +1,19 @@
 @interface PIParallaxColorSuggester
 - (PIParallaxColorSuggester)init;
-- (PIParallaxColorSuggester)initWithColorAnalysis:(id)a3;
-- (id)suggestedColorForColor:(id)a3;
-- (id)suggestedColorsForColors:(id)a3 fromColorPalette:(id)a4;
-- (void)addRuleWithHueMin:(double)a3 hueMax:(double)a4 suggestion:(id)a5;
+- (PIParallaxColorSuggester)initWithColorAnalysis:(id)analysis;
+- (id)suggestedColorForColor:(id)color;
+- (id)suggestedColorsForColors:(id)colors fromColorPalette:(id)palette;
+- (void)addRuleWithHueMin:(double)min hueMax:(double)max suggestion:(id)suggestion;
 @end
 
 @implementation PIParallaxColorSuggester
 
-- (id)suggestedColorsForColors:(id)a3 fromColorPalette:(id)a4
+- (id)suggestedColorsForColors:(id)colors fromColorPalette:(id)palette
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  colorsCopy = colors;
+  paletteCopy = palette;
+  if (!colorsCopy)
   {
     v23 = NUAssertLogger_4772();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -35,8 +35,8 @@
         v31 = dispatch_get_specific(*v25);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -47,8 +47,8 @@
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v30;
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -57,13 +57,13 @@
     _NUAssertFailHandler();
   }
 
-  v8 = v7;
+  v8 = paletteCopy;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = v6;
+  v10 = colorsCopy;
   v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v11)
   {
@@ -80,10 +80,10 @@
 
         v15 = [(PIParallaxColorSuggester *)self suggestedColorForColor:*(*(&v36 + 1) + 8 * i)];
         v16 = [v8 suggestionForColor:v15];
-        v17 = [v16 primaryColor];
-        if (([v9 containsObject:v17] & 1) == 0)
+        primaryColor = [v16 primaryColor];
+        if (([v9 containsObject:primaryColor] & 1) == 0)
         {
-          [v9 addObject:v17];
+          [v9 addObject:primaryColor];
         }
       }
 
@@ -95,16 +95,16 @@
 
   if ((PFExists() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E69C0750] warmColor];
-    v19 = [v8 paletteColorForColor:v18];
+    warmColor = [MEMORY[0x1E69C0750] warmColor];
+    v19 = [v8 paletteColorForColor:warmColor];
 
     [v9 addObject:v19];
   }
 
   if ((PFExists() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E69C0750] coolColor];
-    v21 = [v8 paletteColorForColor:v20];
+    coolColor = [MEMORY[0x1E69C0750] coolColor];
+    v21 = [v8 paletteColorForColor:coolColor];
 
     [v9 addObject:v21];
   }
@@ -112,11 +112,11 @@
   return v9;
 }
 
-- (void)addRuleWithHueMin:(double)a3 hueMax:(double)a4 suggestion:(id)a5
+- (void)addRuleWithHueMin:(double)min hueMax:(double)max suggestion:(id)suggestion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3 > a4)
+  suggestionCopy = suggestion;
+  if (min > max)
   {
     v12 = NUAssertLogger_4772();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -138,8 +138,8 @@
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v20;
         v30 = 2114;
@@ -150,8 +150,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -165,14 +165,14 @@
   v27[1] = 3221225472;
   v27[2] = __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_invoke;
   v27[3] = &__block_descriptor_48_e22_B16__0__NURuleSystem_8l;
-  *&v27[4] = a3;
-  *&v27[5] = a4;
+  *&v27[4] = min;
+  *&v27[5] = max;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_invoke_2;
   v25[3] = &unk_1E82AA180;
-  v26 = v8;
-  v10 = v8;
+  v26 = suggestionCopy;
+  v10 = suggestionCopy;
   v11 = [v9 ruleWithBlockPredicate:v27 action:v25];
   [(NURuleSystem *)self->_system addRule:v11];
 }
@@ -209,11 +209,11 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
   [v3 setStateObject:v7 forKey:@"outputColor"];
 }
 
-- (id)suggestedColorForColor:(id)a3
+- (id)suggestedColorForColor:(id)color
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     v11 = NUAssertLogger_4772();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -235,8 +235,8 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
         v19 = dispatch_get_specific(*v13);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v19;
         v28 = 2114;
@@ -247,8 +247,8 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v18;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -257,26 +257,26 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = colorCopy;
   system = self->_system;
   v24[0] = @"inputColor";
   v24[1] = @"outputColor";
-  v25[0] = v4;
-  v25[1] = v4;
+  v25[0] = colorCopy;
+  v25[1] = colorCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
   [(NURuleSystem *)system resetAndEvaluateWithInitialState:v7];
 
-  v8 = [(NURuleSystem *)self->_system state];
-  v9 = [v8 objectForKeyedSubscript:@"outputColor"];
+  state = [(NURuleSystem *)self->_system state];
+  v9 = [state objectForKeyedSubscript:@"outputColor"];
 
   return v9;
 }
 
-- (PIParallaxColorSuggester)initWithColorAnalysis:(id)a3
+- (PIParallaxColorSuggester)initWithColorAnalysis:(id)analysis
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  analysisCopy = analysis;
+  if (!analysisCopy)
   {
     v12 = NUAssertLogger_4772();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -298,8 +298,8 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v20;
         v30 = 2114;
@@ -310,8 +310,8 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -320,7 +320,7 @@ void __64__PIParallaxColorSuggester_addRuleWithHueMin_hueMax_suggestion___block_
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = analysisCopy;
   v25.receiver = self;
   v25.super_class = PIParallaxColorSuggester;
   v6 = [(PIParallaxColorSuggester *)&v25 init];
@@ -378,8 +378,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -406,8 +406,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

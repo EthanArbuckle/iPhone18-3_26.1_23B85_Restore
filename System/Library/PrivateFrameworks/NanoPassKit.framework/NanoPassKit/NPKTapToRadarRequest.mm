@@ -1,33 +1,33 @@
 @interface NPKTapToRadarRequest
-+ (void)postWithTitle:(id)a3 body:(id)a4;
-- (NPKTapToRadarRequest)initWithDictionary:(id)a3;
-- (NPKTapToRadarRequest)initWithTitle:(id)a3 body:(id)a4 attachmentPaths:(id)a5;
-- (NPKTapToRadarRequest)initWithURL:(id)a3;
++ (void)postWithTitle:(id)title body:(id)body;
+- (NPKTapToRadarRequest)initWithDictionary:(id)dictionary;
+- (NPKTapToRadarRequest)initWithTitle:(id)title body:(id)body attachmentPaths:(id)paths;
+- (NPKTapToRadarRequest)initWithURL:(id)l;
 - (NSURL)tapToRadarURL;
 - (void)post;
 @end
 
 @implementation NPKTapToRadarRequest
 
-- (NPKTapToRadarRequest)initWithTitle:(id)a3 body:(id)a4 attachmentPaths:(id)a5
+- (NPKTapToRadarRequest)initWithTitle:(id)title body:(id)body attachmentPaths:(id)paths
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  bodyCopy = body;
+  pathsCopy = paths;
   v19.receiver = self;
   v19.super_class = NPKTapToRadarRequest;
   v11 = [(NPKTapToRadarRequest *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [bodyCopy copy];
     body = v11->_body;
     v11->_body = v14;
 
-    v16 = [v10 copy];
+    v16 = [pathsCopy copy];
     attachmentsPaths = v11->_attachmentsPaths;
     v11->_attachmentsPaths = v16;
   }
@@ -35,10 +35,10 @@
   return v11;
 }
 
-- (NPKTapToRadarRequest)initWithDictionary:(id)a3
+- (NPKTapToRadarRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"NPKTapToRadarTitleUserNotificationKey"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"NPKTapToRadarTitleUserNotificationKey"];
   v6 = v5;
   v7 = @"Wallet issue detected automatically";
   if (v5)
@@ -48,7 +48,7 @@
 
   v8 = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"NPKTapToRadarBodyUserNotificationKey"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"NPKTapToRadarBodyUserNotificationKey"];
   v10 = v9;
   v11 = @"Requested to file a rdar.";
   if (v9)
@@ -58,7 +58,7 @@
 
   v12 = v11;
 
-  v13 = [v4 objectForKeyedSubscript:@"NPKTapToRadarAttachmentsPathsNotificationKey"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"NPKTapToRadarAttachmentsPathsNotificationKey"];
 
   if (v13)
   {
@@ -75,10 +75,10 @@
   return v15;
 }
 
-- (NPKTapToRadarRequest)initWithURL:(id)a3
+- (NPKTapToRadarRequest)initWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACE0] componentsWithURL:v4 resolvingAgainstBaseURL:1];
+  lCopy = l;
+  v5 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -97,12 +97,12 @@
   v18 = __Block_byref_object_copy__19;
   v19 = __Block_byref_object_dispose__19;
   v20 = 0;
-  v6 = [v5 scheme];
-  v7 = [v6 isEqualToString:@"tap-to-radar"];
+  scheme = [v5 scheme];
+  v7 = [scheme isEqualToString:@"tap-to-radar"];
 
   if (v7)
   {
-    v8 = [v5 queryItems];
+    queryItems = [v5 queryItems];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __36__NPKTapToRadarRequest_initWithURL___block_invoke;
@@ -110,7 +110,7 @@
     v14[4] = &v27;
     v14[5] = &v21;
     v14[6] = &v15;
-    [v8 enumerateObjectsUsingBlock:v14];
+    [queryItems enumerateObjectsUsingBlock:v14];
   }
 
   if (!v16[5])
@@ -204,18 +204,18 @@ LABEL_7:
   if (!tapToRadarURL)
   {
     v4 = [MEMORY[0x277CCACE0] componentsWithString:@"tap-to-radar://new"];
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentName" value:@"Wallet"];
-    [v5 addObject:v6];
+    [array addObject:v6];
 
     v7 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentVersion" value:@"watchOS"];
-    [v5 addObject:v7];
+    [array addObject:v7];
 
     v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentID" value:@"547743"];
-    [v5 addObject:v8];
+    [array addObject:v8];
 
     v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"Title" value:self->_title];
-    [v5 addObject:v9];
+    [array addObject:v9];
 
     if ([(NSString *)self->_body containsString:@"IMPORTANT:\nThe attached logging may contain the time and location of recent transactions you've made with Apple Pay. These logs greatly assist diagnosing and resolving issues."])
     {
@@ -229,24 +229,24 @@ LABEL_7:
 
     v11 = v10;
     v12 = [MEMORY[0x277CCAD18] queryItemWithName:@"Description" value:v10];
-    [v5 addObject:v12];
+    [array addObject:v12];
 
     v13 = [MEMORY[0x277CCAD18] queryItemWithName:@"AutoDiagnostics" value:{@"phone, watch"}];
-    [v5 addObject:v13];
+    [array addObject:v13];
 
     v14 = [MEMORY[0x277CCAD18] queryItemWithName:@"Classification" value:@"Serious Bug"];
-    [v5 addObject:v14];
+    [array addObject:v14];
 
     v15 = [MEMORY[0x277CCAD18] queryItemWithName:@"Reproducibility" value:@"I Didn't Try"];
-    [v5 addObject:v15];
+    [array addObject:v15];
 
-    v16 = [(NSSet *)self->_attachmentsPaths allObjects];
-    v17 = [v16 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_attachmentsPaths allObjects];
+    v17 = [allObjects componentsJoinedByString:{@", "}];
 
     v18 = [MEMORY[0x277CCAD18] queryItemWithName:@"Attachments" value:v17];
-    [v5 addObject:v18];
+    [array addObject:v18];
 
-    [v4 setQueryItems:v5];
+    [v4 setQueryItems:array];
     v19 = [v4 URL];
     v20 = self->_tapToRadarURL;
     self->_tapToRadarURL = v19;
@@ -271,24 +271,24 @@ LABEL_7:
     if ([(NSSet *)self->_attachmentsPaths count])
     {
       v5 = [v4 mutableCopy];
-      v6 = [(NSSet *)self->_attachmentsPaths allObjects];
-      [v5 setObject:v6 forKeyedSubscript:@"NPKTapToRadarAttachmentsPathsNotificationKey"];
+      allObjects = [(NSSet *)self->_attachmentsPaths allObjects];
+      [v5 setObject:allObjects forKeyedSubscript:@"NPKTapToRadarAttachmentsPathsNotificationKey"];
 
       v4 = v5;
     }
 
-    v7 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v7 postNotificationName:@"com.apple.nanoPassKit.presentTapToRadarDistributedNotification" object:0 userInfo:v4];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.nanoPassKit.presentTapToRadarDistributedNotification" object:0 userInfo:v4];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postWithTitle:(id)a3 body:(id)a4
++ (void)postWithTitle:(id)title body:(id)body
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NPKTapToRadarRequest alloc] initWithTitle:v6 body:v5];
+  bodyCopy = body;
+  titleCopy = title;
+  v7 = [[NPKTapToRadarRequest alloc] initWithTitle:titleCopy body:bodyCopy];
 
   [(NPKTapToRadarRequest *)v7 post];
 }

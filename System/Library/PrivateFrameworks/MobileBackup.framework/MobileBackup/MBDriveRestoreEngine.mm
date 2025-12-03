@@ -1,10 +1,10 @@
 @interface MBDriveRestoreEngine
-+ (MBDriveRestoreEngine)restoreEngineWithSettingsContext:(id)a3 debugContext:(id)a4;
-- (BOOL)_shouldRestoreContentWithFile:(id)a3 quiet:(BOOL)a4;
++ (MBDriveRestoreEngine)restoreEngineWithSettingsContext:(id)context debugContext:(id)debugContext;
+- (BOOL)_shouldRestoreContentWithFile:(id)file quiet:(BOOL)quiet;
 - (BOOL)encrypted;
 - (BOOL)isRestoringToSameDevice;
 - (BOOL)shouldVerifyDigests;
-- (MBDriveRestoreEngine)initWithSettingsContext:(id)a3 debugContext:(id)a4;
+- (MBDriveRestoreEngine)initWithSettingsContext:(id)context debugContext:(id)debugContext;
 - (MBKeyBag)keybag;
 - (MBManifest)manifest;
 - (id)_annotate;
@@ -20,35 +20,35 @@
 - (id)_restore;
 - (id)_restoreContent;
 - (id)_restoreDirectoryAttributes;
-- (id)_restoreRegularFiles:(id)a3 size:(unint64_t)a4;
+- (id)_restoreRegularFiles:(id)files size:(unint64_t)size;
 - (id)_resume;
 - (id)_resumeAfterFailureMoving;
 - (id)_resumeAfterFailureRemoving;
 - (id)_resumeAfterFailureUploading;
 - (id)_resumeAfterSuccess;
 - (id)_setUp;
-- (id)_temporaryPathForFile:(id)a3;
-- (id)endWithError:(id)a3;
-- (id)fileForTemporaryPath:(id)a3;
+- (id)_temporaryPathForFile:(id)file;
+- (id)endWithError:(id)error;
+- (id)fileForTemporaryPath:(id)path;
 - (id)restore;
 @end
 
 @implementation MBDriveRestoreEngine
 
-+ (MBDriveRestoreEngine)restoreEngineWithSettingsContext:(id)a3 debugContext:(id)a4
++ (MBDriveRestoreEngine)restoreEngineWithSettingsContext:(id)context debugContext:(id)debugContext
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MBDriveRestoreEngine alloc] initWithSettingsContext:v6 debugContext:v5];
+  debugContextCopy = debugContext;
+  contextCopy = context;
+  v7 = [[MBDriveRestoreEngine alloc] initWithSettingsContext:contextCopy debugContext:debugContextCopy];
 
   return v7;
 }
 
-- (MBDriveRestoreEngine)initWithSettingsContext:(id)a3 debugContext:(id)a4
+- (MBDriveRestoreEngine)initWithSettingsContext:(id)context debugContext:(id)debugContext
 {
-  v6 = a3;
+  contextCopy = context;
   v34 = 0;
-  v7 = a4;
+  debugContextCopy = debugContext;
   v8 = [MBPersona personalPersonaWithError:&v34];
   v9 = v34;
   if (!v8)
@@ -61,12 +61,12 @@
   v10 = [[MBDomainManager alloc] initWithPersona:v8];
   v33.receiver = self;
   v33.super_class = MBDriveRestoreEngine;
-  v11 = [(MBEngine *)&v33 initWithSettingsContext:v6 debugContext:v7 domainManager:v10];
+  v11 = [(MBEngine *)&v33 initWithSettingsContext:contextCopy debugContext:debugContextCopy domainManager:v10];
 
   if (v11)
   {
-    v12 = [(MBDriveRestoreEngine *)v11 settingsContext];
-    if ([v12 isDeviceTransfer])
+    settingsContext = [(MBDriveRestoreEngine *)v11 settingsContext];
+    if ([settingsContext isDeviceTransfer])
     {
       v13 = 4;
     }
@@ -88,13 +88,13 @@
 
     v18 = [MBProgressDrive alloc];
     v19 = v11->_script;
-    v20 = [(MBDriveRestoreEngine *)v11 settingsContext];
-    v21 = [v20 drive];
-    v22 = [(MBProgressDrive *)v18 initWithScript:v19 delegate:v21];
+    settingsContext2 = [(MBDriveRestoreEngine *)v11 settingsContext];
+    drive = [settingsContext2 drive];
+    v22 = [(MBProgressDrive *)v18 initWithScript:v19 delegate:drive];
     drive = v11->_drive;
     v11->_drive = &v22->super;
 
-    v24 = [[MBBackupHelper alloc] initWithSettingsContext:v6 domainManager:v11->super._domainManager];
+    v24 = [[MBBackupHelper alloc] initWithSettingsContext:contextCopy domainManager:v11->super._domainManager];
     backupHelper = v11->_backupHelper;
     v11->_backupHelper = v24;
 
@@ -120,18 +120,18 @@
     [v10 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:137 description:@"Not a restore engine"];
   }
 
-  v4 = [(MBDriveRestoreEngine *)self properties];
+  properties = [(MBDriveRestoreEngine *)self properties];
 
-  if (!v4)
+  if (!properties)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:138 description:@"Properties not set"];
   }
 
-  v5 = [(MBDriveRestoreEngine *)self properties];
-  v6 = [v5 deviceID];
+  properties2 = [(MBDriveRestoreEngine *)self properties];
+  deviceID = [properties2 deviceID];
   v7 = MBDeviceUDID_Legacy();
-  v8 = [v6 isEqualToString:v7];
+  v8 = [deviceID isEqualToString:v7];
 
   return v8;
 }
@@ -147,10 +147,10 @@
     manifest = self->_manifest;
   }
 
-  v4 = [(MBManifestLike *)manifest properties];
-  v5 = [v4 encrypted];
+  properties = [(MBManifestLike *)manifest properties];
+  encrypted = [properties encrypted];
 
-  return v5;
+  return encrypted;
 }
 
 - (BOOL)shouldVerifyDigests
@@ -159,15 +159,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (MBManifest)manifest
@@ -186,19 +186,19 @@
 
 - (MBKeyBag)keybag
 {
-  v4 = [(MBDriveRestoreEngine *)self settingsContext];
-  v5 = [v4 keybag];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  keybag = [settingsContext keybag];
 
-  if (!v5)
+  if (!keybag)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:162 description:@"No keybag yet"];
   }
 
-  v6 = [(MBDriveRestoreEngine *)self settingsContext];
-  v7 = [v6 keybag];
+  settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+  keybag2 = [settingsContext2 keybag];
 
-  return v7;
+  return keybag2;
 }
 
 - (id)restore
@@ -209,21 +209,21 @@
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MBDriveRestoreEngine *)self settingsContext];
-    [v7 sourceIdentifier];
+    settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+    [settingsContext sourceIdentifier];
     v8 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     *buf = 138412290;
     v31 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting restore from %@", buf, 0xCu);
 
-    v9 = [(MBDriveRestoreEngine *)self settingsContext];
-    v26 = [v9 sourceIdentifier];
+    settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+    sourceIdentifier = [settingsContext2 sourceIdentifier];
     _MBLog();
   }
 
   MBLogDeviceProperties();
-  v10 = [(MBDriveRestoreEngine *)self settingsContext];
-  [v10 log];
+  settingsContext3 = [(MBDriveRestoreEngine *)self settingsContext];
+  [settingsContext3 log];
 
   v11 = MBGetDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -236,28 +236,28 @@
     _MBLog();
   }
 
-  v13 = [(MBDriveRestoreEngine *)self _restore];
+  _restore = [(MBDriveRestoreEngine *)self _restore];
   v14 = MBGetDefaultLog();
   v15 = v14;
-  if (v13)
+  if (_restore)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [MBError loggableDescriptionForError:v13];
+      [MBError loggableDescriptionForError:_restore];
       v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v17 = [MBError descriptionForError:v13];
+      v17 = [MBError descriptionForError:_restore];
       *buf = 138543618;
       v31 = v16;
       v32 = 2112;
       v33 = v17;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Restore error - %{public}@, %@", buf, 0x16u);
 
-      v18 = [MBError loggableDescriptionForError:v13];
-      v28 = [MBError descriptionForError:v13];
+      v18 = [MBError loggableDescriptionForError:_restore];
+      v28 = [MBError descriptionForError:_restore];
       _MBLog();
     }
 
-    v19 = [(MBDriveRestoreEngine *)self _cleanup];
+    _cleanup = [(MBDriveRestoreEngine *)self _cleanup];
   }
 
   else
@@ -272,23 +272,23 @@
       _MBLog();
     }
 
-    v13 = [(MBDriveRestoreEngine *)self _cleanup];
-    if (v13)
+    _restore = [(MBDriveRestoreEngine *)self _cleanup];
+    if (_restore)
     {
       v21 = MBGetDefaultLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [MBError loggableDescriptionForError:v13];
+        [MBError loggableDescriptionForError:_restore];
         v22 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v23 = [MBError descriptionForError:v13];
+        v23 = [MBError descriptionForError:_restore];
         *buf = 138543618;
         v31 = v22;
         v32 = 2112;
         v33 = v23;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Restore error - %{public}@, %@", buf, 0x16u);
 
-        v24 = [MBError loggableDescriptionForError:v13];
-        v29 = [MBError descriptionForError:v13];
+        v24 = [MBError loggableDescriptionForError:_restore];
+        v29 = [MBError descriptionForError:_restore];
         _MBLog();
       }
     }
@@ -296,42 +296,42 @@
 
   objc_autoreleasePoolPop(v3);
 
-  return v13;
+  return _restore;
 }
 
 - (id)_restore
 {
-  v3 = [(MBDriveRestoreEngine *)self _preconditions];
-  if (!v3)
+  _preconditions = [(MBDriveRestoreEngine *)self _preconditions];
+  if (!_preconditions)
   {
-    v3 = [(MBDriveRestoreEngine *)self _setUp];
-    if (!v3)
+    _preconditions = [(MBDriveRestoreEngine *)self _setUp];
+    if (!_preconditions)
     {
-      v3 = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsStartingRestoreWithEngine:self];
-      if (!v3)
+      _preconditions = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsStartingRestoreWithEngine:self];
+      if (!_preconditions)
       {
-        v3 = [(MBDriveRestoreEngine *)self _resume];
-        if (!v3)
+        _preconditions = [(MBDriveRestoreEngine *)self _resume];
+        if (!_preconditions)
         {
-          v3 = [(MBDriveRestoreEngine *)self _prepare];
-          if (!v3)
+          _preconditions = [(MBDriveRestoreEngine *)self _prepare];
+          if (!_preconditions)
           {
-            v3 = [(MBDriveRestoreEngine *)self _restoreContent];
-            if (!v3)
+            _preconditions = [(MBDriveRestoreEngine *)self _restoreContent];
+            if (!_preconditions)
             {
-              v3 = [(MBDriveRestoreEngine *)self _annotate];
-              if (!v3)
+              _preconditions = [(MBDriveRestoreEngine *)self _annotate];
+              if (!_preconditions)
               {
-                v3 = [(MBDriveRestoreEngine *)self _restoreDirectoryAttributes];
-                if (!v3)
+                _preconditions = [(MBDriveRestoreEngine *)self _restoreDirectoryAttributes];
+                if (!_preconditions)
                 {
-                  v3 = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsEndingRestoreWithEngine:self];
-                  if (!v3)
+                  _preconditions = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsEndingRestoreWithEngine:self];
+                  if (!_preconditions)
                   {
-                    v3 = [(MBDriveRestoreEngine *)self _moveRestoreDirs];
-                    if (!v3)
+                    _preconditions = [(MBDriveRestoreEngine *)self _moveRestoreDirs];
+                    if (!_preconditions)
                     {
-                      v3 = [(MBDriveRestoreEngine *)self _postconditions];
+                      _preconditions = [(MBDriveRestoreEngine *)self _postconditions];
                     }
                   }
                 }
@@ -343,7 +343,7 @@
     }
   }
 
-  return v3;
+  return _preconditions;
 }
 
 - (id)_setUp
@@ -370,23 +370,23 @@
   }
 
   v5 = [MBAppManager alloc];
-  v6 = [(MBDriveRestoreEngine *)self settingsContext];
-  v7 = [v6 mobileInstallation];
-  v8 = [(MBAppManager *)v5 initWithMobileInstallation:v7];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  mobileInstallation = [settingsContext mobileInstallation];
+  v8 = [(MBAppManager *)v5 initWithMobileInstallation:mobileInstallation];
   appManager = self->super._appManager;
   self->super._appManager = v8;
 
   v10 = self->super._appManager;
-  v11 = [(MBEngine *)self persona];
+  persona = [(MBEngine *)self persona];
   v38 = 0;
-  LOBYTE(v10) = [(MBAppManager *)v10 loadAppsWithPersona:v11 safeHarbors:1 error:&v38];
+  LOBYTE(v10) = [(MBAppManager *)v10 loadAppsWithPersona:persona safeHarbors:1 error:&v38];
   v12 = v38;
 
   if (v10)
   {
-    v13 = [(MBEngine *)self persona];
+    persona2 = [(MBEngine *)self persona];
     v37 = v12;
-    v14 = [v13 createRestoreDirectoriesWithError:&v37];
+    v14 = [persona2 createRestoreDirectoriesWithError:&v37];
     v15 = v37;
 
     if (v14)
@@ -401,7 +401,7 @@
       if (self->_sharedTemporaryDirectory)
       {
         v35 = v17;
-        v19 = [MBTemporaryDirectory userTemporaryDirectoryForPersona:v13 identifiedBy:@"drive-restore-engine" error:&v35];
+        v19 = [MBTemporaryDirectory userTemporaryDirectoryForPersona:persona2 identifiedBy:@"drive-restore-engine" error:&v35];
         v12 = v35;
 
         userTemporaryDirectory = self->_userTemporaryDirectory;
@@ -411,16 +411,16 @@
         {
           v21 = [MBRestorePolicy alloc];
           v34 = self->super._appManager;
-          v22 = [(MBDriveRestoreEngine *)self settingsContext];
-          v23 = [v22 plugins];
-          v24 = [(MBDriveRestoreEngine *)self properties];
-          v25 = [v24 buildVersion];
-          v26 = [(MBDriveRestoreEngine *)self settingsContext];
-          v27 = [v26 shouldRestoreSystemFiles];
+          settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+          plugins = [settingsContext2 plugins];
+          properties = [(MBDriveRestoreEngine *)self properties];
+          buildVersion = [properties buildVersion];
+          settingsContext3 = [(MBDriveRestoreEngine *)self settingsContext];
+          shouldRestoreSystemFiles = [settingsContext3 shouldRestoreSystemFiles];
           BYTE2(v33) = 0;
           BYTE1(v33) = [(MBEngine *)self restoresPrimaryAccount];
-          LOBYTE(v33) = v27;
-          v28 = [MBRestorePolicy initWithPersona:v21 enginePolicyProvider:"initWithPersona:enginePolicyProvider:appManager:plugins:serviceRestoreMode:osBuildVersionOfBackup:shouldRestoreSystemFiles:isRestoringPrimaryAccount:shouldCreateMissingIntermediateDirectories:" appManager:v13 plugins:self serviceRestoreMode:v34 osBuildVersionOfBackup:v23 shouldRestoreSystemFiles:0 isRestoringPrimaryAccount:v25 shouldCreateMissingIntermediateDirectories:v33];
+          LOBYTE(v33) = shouldRestoreSystemFiles;
+          v28 = [MBRestorePolicy initWithPersona:v21 enginePolicyProvider:"initWithPersona:enginePolicyProvider:appManager:plugins:serviceRestoreMode:osBuildVersionOfBackup:shouldRestoreSystemFiles:isRestoringPrimaryAccount:shouldCreateMissingIntermediateDirectories:" appManager:persona2 plugins:self serviceRestoreMode:v34 osBuildVersionOfBackup:plugins shouldRestoreSystemFiles:0 isRestoringPrimaryAccount:buildVersion shouldCreateMissingIntermediateDirectories:v33];
           restorePolicy = self->_restorePolicy;
           self->_restorePolicy = v28;
 
@@ -477,35 +477,35 @@ LABEL_18:
   return 0;
 }
 
-- (id)_temporaryPathForFile:(id)a3
+- (id)_temporaryPathForFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 shouldRestoreToSharedVolume];
+  fileCopy = file;
+  domain = [fileCopy domain];
+  shouldRestoreToSharedVolume = [domain shouldRestoreToSharedVolume];
   v7 = 11;
-  if (v6)
+  if (shouldRestoreToSharedVolume)
   {
     v7 = 10;
   }
 
   v8 = *(&self->super.super.isa + OBJC_IVAR___MBDriveRestoreEngine__engineType[v7]);
 
-  v9 = [v8 path];
+  path = [v8 path];
 
-  v10 = [v4 fileID];
+  fileID = [fileCopy fileID];
 
-  v11 = [v10 description];
-  v12 = [v9 stringByAppendingPathComponent:v11];
+  v11 = [fileID description];
+  v12 = [path stringByAppendingPathComponent:v11];
 
   return v12;
 }
 
-- (id)endWithError:(id)a3
+- (id)endWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsEndedRestoreWithEngine:self error:v4];
+  errorCopy = error;
+  v5 = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsEndedRestoreWithEngine:self error:errorCopy];
   v6 = v5;
-  if (!v4 && v5)
+  if (!errorCopy && v5)
   {
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -519,42 +519,42 @@ LABEL_18:
       _MBLog();
     }
 
-    v4 = v6;
+    errorCopy = v6;
   }
 
   v9 = [MBEngine stringForEngineType:[(MBDriveRestoreEngine *)self engineType]];
   v10 = [MBEngine stringForEngineMode:[(MBDriveRestoreEngine *)self engineMode]];
   v11 = [NSString stringWithFormat:@"%@.%@.%@", @"com.apple.MobileBackup", v9, v10];
 
-  [MBTelemetry submitEngineCompletedEventName:v11 engineStarted:v4 engineError:self->_startTime];
-  v12 = v4;
+  [MBTelemetry submitEngineCompletedEventName:v11 engineStarted:errorCopy engineError:self->_startTime];
+  v12 = errorCopy;
 
-  return v4;
+  return errorCopy;
 }
 
 - (id)_preconditions
 {
-  v4 = [(MBDriveRestoreEngine *)self settingsContext];
-  v5 = [v4 sourceIdentifier];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  sourceIdentifier = [settingsContext sourceIdentifier];
 
-  if (!v5)
+  if (!sourceIdentifier)
   {
     v47 = +[NSAssertionHandler currentHandler];
     [v47 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:349 description:@"Source identifier missing for restore"];
   }
 
-  v6 = [(MBDriveRestoreEngine *)self settingsContext];
-  v7 = [v6 targetIdentifier];
+  settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+  targetIdentifier = [settingsContext2 targetIdentifier];
   v8 = MBDeviceUDID_Legacy();
-  v9 = [v7 isEqualToString:v8];
+  v9 = [targetIdentifier isEqualToString:v8];
 
   if ((v9 & 1) == 0)
   {
     v48 = +[NSAssertionHandler currentHandler];
-    v49 = [(MBDriveRestoreEngine *)self settingsContext];
-    v50 = [v49 targetIdentifier];
+    settingsContext3 = [(MBDriveRestoreEngine *)self settingsContext];
+    targetIdentifier2 = [settingsContext3 targetIdentifier];
     v51 = MBDeviceUDID_Legacy();
-    [v48 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:350 description:{@"Restore target device ID %@ doesn't match actual device ID %@", v50, v51}];
+    [v48 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:350 description:{@"Restore target device ID %@ doesn't match actual device ID %@", targetIdentifier2, v51}];
   }
 
   backupHelper = self->_backupHelper;
@@ -569,56 +569,56 @@ LABEL_18:
   }
 
   v15 = MBDeviceClass();
-  v16 = [v11 properties];
-  v17 = [v16 deviceClass];
+  properties = [v11 properties];
+  deviceClass = [properties deviceClass];
 
-  if (v17)
+  if (deviceClass)
   {
-    v18 = MBCanRestoreSystemFilesBetweenProductClasses(v15, v17);
+    v18 = MBCanRestoreSystemFilesBetweenProductClasses(v15, deviceClass);
     v19 = MBGetDefaultLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
       v61 = v15;
       v62 = 2112;
-      v63 = v17;
+      v63 = deviceClass;
       v64 = 1024;
       v65 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "currentDeviceClass: %@, sourceDeviceClass: %@ shouldRestoreSystemFiles: %d", buf, 0x1Cu);
-      v54 = v17;
+      shouldRestoreSystemFiles2 = deviceClass;
       v55 = v18;
       v52 = v15;
       _MBLog();
     }
 
-    v20 = [(MBDriveRestoreEngine *)self settingsContext];
-    [v20 setShouldRestoreSystemFiles:v18];
+    settingsContext4 = [(MBDriveRestoreEngine *)self settingsContext];
+    [settingsContext4 setShouldRestoreSystemFiles:v18];
   }
 
   else
   {
-    v20 = MBGetDefaultLog();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    settingsContext4 = MBGetDefaultLog();
+    if (os_log_type_enabled(settingsContext4, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(MBDriveRestoreEngine *)self settingsContext];
-      v22 = [v21 shouldRestoreSystemFiles];
+      settingsContext5 = [(MBDriveRestoreEngine *)self settingsContext];
+      shouldRestoreSystemFiles = [settingsContext5 shouldRestoreSystemFiles];
       *buf = 138412546;
       v61 = v15;
       v62 = 1024;
-      LODWORD(v63) = v22;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "currentDeviceClass: %@, sourceDeviceClass not present in backup, using host provided argument for shouldRestoreSystemFiles: %d", buf, 0x12u);
+      LODWORD(v63) = shouldRestoreSystemFiles;
+      _os_log_impl(&_mh_execute_header, settingsContext4, OS_LOG_TYPE_DEFAULT, "currentDeviceClass: %@, sourceDeviceClass not present in backup, using host provided argument for shouldRestoreSystemFiles: %d", buf, 0x12u);
 
-      v23 = [(MBDriveRestoreEngine *)self settingsContext];
+      settingsContext6 = [(MBDriveRestoreEngine *)self settingsContext];
       v52 = v15;
-      v54 = [v23 shouldRestoreSystemFiles];
+      shouldRestoreSystemFiles2 = [settingsContext6 shouldRestoreSystemFiles];
       _MBLog();
     }
   }
 
-  v24 = [(MBDriveRestoreEngine *)self settingsContext];
-  v25 = [v24 shouldRestoreSystemFiles];
+  settingsContext7 = [(MBDriveRestoreEngine *)self settingsContext];
+  shouldRestoreSystemFiles3 = [settingsContext7 shouldRestoreSystemFiles];
 
-  if ((v25 & 1) == 0)
+  if ((shouldRestoreSystemFiles3 & 1) == 0)
   {
     v26 = MBGetDefaultLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -630,7 +630,7 @@ LABEL_18:
   }
 
   v58 = 0;
-  [v11 closeWithError:{&v58, v52, v54, v55}];
+  [v11 closeWithError:{&v58, v52, shouldRestoreSystemFiles2, v55}];
   v27 = v58;
   v13 = v27;
   if (!v27)
@@ -648,12 +648,12 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v31 = [(MBDriveRestoreEngine *)self settingsContext];
-    v32 = [v31 manager];
-    v33 = v32;
-    if (v32)
+    settingsContext8 = [(MBDriveRestoreEngine *)self settingsContext];
+    manager = [settingsContext8 manager];
+    v33 = manager;
+    if (manager)
     {
-      v34 = v32;
+      v34 = manager;
     }
 
     else
@@ -668,9 +668,9 @@ LABEL_40:
     v37 = v56;
     if (v36)
     {
-      v38 = [v36 state];
-      v39 = v38;
-      if (v38 >= 7 || ((0x71u >> v38) & 1) == 0)
+      state = [v36 state];
+      v39 = state;
+      if (state >= 7 || ((0x71u >> state) & 1) == 0)
       {
         v40 = MBGetDefaultLog();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -792,21 +792,21 @@ LABEL_22:
         {
           [(MBStatus *)self->_status version];
           v17 = v16;
-          v18 = [(MBStatus *)self->_status snapshotStateName];
+          snapshotStateName = [(MBStatus *)self->_status snapshotStateName];
           *buf = 134218242;
           v37 = v17;
           v38 = 2112;
-          v39 = v18;
+          v39 = snapshotStateName;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Status: version=%0.1f, name=%@", buf, 0x16u);
 
           [(MBStatus *)self->_status version];
-          v34 = [(MBStatus *)self->_status snapshotStateName];
+          snapshotStateName2 = [(MBStatus *)self->_status snapshotStateName];
           _MBLog();
         }
 
         [(MBDebugContext *)self->super._debugContext setFlag:@"OldStatusFound"];
         [(MBStatus *)self->_status version];
-        v33 = v19;
+        backupState = v19;
         v20 = @"Unsupported backup status version: %0.1f";
         goto LABEL_20;
       }
@@ -816,12 +816,12 @@ LABEL_22:
   }
 
   debugContext = self->super._debugContext;
-  v23 = [(MBStatus *)self->_status backupStateName];
-  [(MBDebugContext *)debugContext setValue:v23 forName:@"BackupState"];
+  backupStateName = [(MBStatus *)self->_status backupStateName];
+  [(MBDebugContext *)debugContext setValue:backupStateName forName:@"BackupState"];
 
   v24 = self->super._debugContext;
-  v25 = [(MBStatus *)self->_status snapshotStateName];
-  [(MBDebugContext *)v24 setValue:v25 forName:@"SnapshotState"];
+  snapshotStateName3 = [(MBStatus *)self->_status snapshotStateName];
+  [(MBDebugContext *)v24 setValue:snapshotStateName3 forName:@"SnapshotState"];
 
   [(MBDebugContext *)self->super._debugContext setInt:[(MBStatus *)self->_status isFullBackup] forName:@"StatusIsFullBackup"];
   if ([(MBStatus *)self->_status isBackupEmpty])
@@ -830,7 +830,7 @@ LABEL_22:
 LABEL_16:
     v26 = 204;
 LABEL_21:
-    v27 = [MBError errorWithCode:v26 format:v20, v33, v34];
+    v27 = [MBError errorWithCode:v26 format:v20, backupState, snapshotStateName2];
     goto LABEL_22;
   }
 
@@ -844,7 +844,7 @@ LABEL_20:
 
   if (![(MBStatus *)self->_status isBackupNew])
   {
-    v33 = [(MBStatus *)self->_status backupState];
+    backupState = [(MBStatus *)self->_status backupState];
     v20 = @"Invalid backup state: %d";
 LABEL_30:
     v26 = 205;
@@ -853,32 +853,32 @@ LABEL_30:
 
   if ([(MBStatus *)self->_status isUploading])
   {
-    v30 = [(MBDriveRestoreEngine *)self _resumeAfterFailureUploading];
+    _resumeAfterFailureUploading = [(MBDriveRestoreEngine *)self _resumeAfterFailureUploading];
     goto LABEL_37;
   }
 
   if ([(MBStatus *)self->_status isMoving])
   {
-    v30 = [(MBDriveRestoreEngine *)self _resumeAfterFailureMoving];
+    _resumeAfterFailureUploading = [(MBDriveRestoreEngine *)self _resumeAfterFailureMoving];
     goto LABEL_37;
   }
 
   if ([(MBStatus *)self->_status isRemoving])
   {
-    v30 = [(MBDriveRestoreEngine *)self _resumeAfterFailureRemoving];
+    _resumeAfterFailureUploading = [(MBDriveRestoreEngine *)self _resumeAfterFailureRemoving];
     goto LABEL_37;
   }
 
   if (![(MBStatus *)self->_status isFinished])
   {
-    v33 = [(MBStatus *)self->_status snapshotState];
+    backupState = [(MBStatus *)self->_status snapshotState];
     v20 = @"Invalid snapshot state: %d";
     goto LABEL_30;
   }
 
-  v30 = [(MBDriveRestoreEngine *)self _resumeAfterSuccess];
+  _resumeAfterFailureUploading = [(MBDriveRestoreEngine *)self _resumeAfterSuccess];
 LABEL_37:
-  v31 = v30;
+  v31 = _resumeAfterFailureUploading;
 
   if (v31)
   {
@@ -950,13 +950,13 @@ LABEL_23:
   }
 
   drive = self->_drive;
-  v5 = [(MBDriveRestoreEngine *)self settingsContext];
-  v6 = [v5 driveSnapshotDir];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  driveSnapshotDir = [settingsContext driveSnapshotDir];
   v54 = 0;
-  v7 = [(MBDrive *)drive contentsOfDirectoryAtPath:v6 options:0 error:&v54];
+  v7 = [(MBDrive *)drive contentsOfDirectoryAtPath:driveSnapshotDir options:0 error:&v54];
   v8 = v54;
-  v9 = [v7 allKeys];
-  v10 = [NSSet setWithArray:v9];
+  allKeys = [v7 allKeys];
+  v10 = [NSSet setWithArray:allKeys];
 
   if (v8)
   {
@@ -1064,8 +1064,8 @@ LABEL_23:
                   _MBLog();
                 }
 
-                v39 = [(MBManifestLike *)self->_manifest databaseIndex];
-                v40 = [v39 setFlags:8 forFileID:v37];
+                databaseIndex = [(MBManifestLike *)self->_manifest databaseIndex];
+                v40 = [databaseIndex setFlags:8 forFileID:v37];
               }
             }
 
@@ -1157,23 +1157,23 @@ LABEL_36:
 
   +[NSDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = [(MBDriveRestoreEngine *)self _checkCompatibility];
-  if (v7)
+  _checkCompatibility = [(MBDriveRestoreEngine *)self _checkCompatibility];
+  if (_checkCompatibility)
   {
     goto LABEL_9;
   }
 
-  v7 = [(MBDriveRestoreEngine *)self _prepareEncryption];
-  if (v7)
+  _checkCompatibility = [(MBDriveRestoreEngine *)self _prepareEncryption];
+  if (_checkCompatibility)
   {
     goto LABEL_9;
   }
 
-  v7 = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsPreparingRestoreWithEngine:self];
-  if (v7 || ([(MBDriveRestoreEngine *)self _prepareProgress], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MBDriveRestoreEngine *)self _prepareFreeSpace], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MBDriveRestoreEngine *)self _prepareCopyBackup], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  _checkCompatibility = [(MBRestorePolicy *)self->_restorePolicy notifyPluginsPreparingRestoreWithEngine:self];
+  if (_checkCompatibility || ([(MBDriveRestoreEngine *)self _prepareProgress], (_checkCompatibility = objc_claimAutoreleasedReturnValue()) != 0) || ([(MBDriveRestoreEngine *)self _prepareFreeSpace], (_checkCompatibility = objc_claimAutoreleasedReturnValue()) != 0) || ([(MBDriveRestoreEngine *)self _prepareCopyBackup], (_checkCompatibility = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_9:
-    v8 = v7;
+    v8 = _checkCompatibility;
     v9 = v8;
   }
 
@@ -1200,10 +1200,10 @@ LABEL_9:
 
 - (id)_checkCompatibility
 {
-  v3 = [(MBDriveRestoreEngine *)self settingsContext];
-  v4 = [v3 sourceIdentifier];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  sourceIdentifier = [settingsContext sourceIdentifier];
 
-  v5 = [v4 stringByAppendingPathComponent:@"Info.plist"];
+  v5 = [sourceIdentifier stringByAppendingPathComponent:@"Info.plist"];
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1221,9 +1221,9 @@ LABEL_9:
   v9 = v19;
   if (v8)
   {
-    v10 = [v8 productVersion];
-    v11 = [(MBManifestLike *)self->_manifest properties];
-    v12 = [v11 requiredProductVersion];
+    productVersion = [v8 productVersion];
+    properties = [(MBManifestLike *)self->_manifest properties];
+    requiredProductVersion = [properties requiredProductVersion];
 
     v13 = MBGetDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1231,14 +1231,14 @@ LABEL_9:
       *buf = 138543874;
       v21 = @"Info.plist";
       v22 = 2114;
-      v23 = v10;
+      v23 = productVersion;
       v24 = 2114;
-      v25 = v12;
+      v25 = requiredProductVersion;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Loaded %{public}@ - productVersion:%{public}@, requiredProductVersion:%{public}@", buf, 0x20u);
       _MBLog();
     }
 
-    if (v10 && (MBProductVersion(), v14 = objc_claimAutoreleasedReturnValue(), v15 = MBIsRestoreCompatible(), v14, (v15 & 1) == 0))
+    if (productVersion && (MBProductVersion(), v14 = objc_claimAutoreleasedReturnValue(), v15 = MBIsRestoreCompatible(), v14, (v15 & 1) == 0))
     {
       v17 = MBGetDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1259,8 +1259,8 @@ LABEL_9:
 
   else
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    productVersion = MBGetDefaultLog();
+    if (os_log_type_enabled(productVersion, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
       v21 = @"Info.plist";
@@ -1268,7 +1268,7 @@ LABEL_9:
       v23 = v5;
       v24 = 2112;
       v25 = v9;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to fetch %{public}@ at %@: %@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, productVersion, OS_LOG_TYPE_ERROR, "Failed to fetch %{public}@ at %@: %@", buf, 0x20u);
       _MBLog();
     }
 
@@ -1280,20 +1280,20 @@ LABEL_9:
 
 - (id)_prepareEncryption
 {
-  v3 = [(MBManifestLike *)self->_manifest properties];
-  v4 = [v3 encrypted];
+  properties = [(MBManifestLike *)self->_manifest properties];
+  encrypted = [properties encrypted];
 
-  v5 = [(MBDriveRestoreEngine *)self settingsContext];
-  v6 = [v5 password];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  password = [settingsContext password];
 
   if ([(MBEngine *)self isDeviceTransferEngine])
   {
-    if (v4)
+    if (encrypted)
     {
       __assert_rtn("[MBDriveRestoreEngine _prepareEncryption]", "MBDriveRestoreEngine.m", 626, "!encrypted");
     }
 
-    if (v6)
+    if (password)
     {
       __assert_rtn("[MBDriveRestoreEngine _prepareEncryption]", "MBDriveRestoreEngine.m", 627, "!password");
     }
@@ -1301,7 +1301,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!encrypted)
   {
 LABEL_10:
     v9 = 0;
@@ -1310,7 +1310,7 @@ LABEL_10:
 
   manifest = self->_manifest;
   v39 = 0;
-  v8 = [(MBManifestLike *)manifest setupEncryptionWithPassword:v6 withError:&v39];
+  v8 = [(MBManifestLike *)manifest setupEncryptionWithPassword:password withError:&v39];
   v9 = v39;
   if ((v8 & 1) == 0)
   {
@@ -1329,10 +1329,10 @@ LABEL_10:
   }
 
 LABEL_11:
-  v13 = [(MBDriveRestoreEngine *)self settingsContext];
-  v14 = [v13 keybag];
+  settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+  keybag = [settingsContext2 keybag];
 
-  if (!v14)
+  if (!keybag)
   {
     v18 = MBGetDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1342,22 +1342,22 @@ LABEL_11:
       _MBLog();
     }
 
-    v19 = [(MBManifestLike *)self->_manifest properties];
-    v20 = [v19 keybagData];
+    properties2 = [(MBManifestLike *)self->_manifest properties];
+    keybagData = [properties2 keybagData];
 
-    if (v20)
+    if (keybagData)
     {
       v37 = v9;
-      v21 = [MBKeyBag unlockedKeyBagWithData:v20 password:v6 error:&v37];
+      v21 = [MBKeyBag unlockedKeyBagWithData:keybagData password:password error:&v37];
       v12 = v37;
 
-      v22 = [(MBDriveRestoreEngine *)self settingsContext];
-      [v22 setKeybag:v21];
+      settingsContext3 = [(MBDriveRestoreEngine *)self settingsContext];
+      [settingsContext3 setKeybag:v21];
 
-      v23 = [(MBDriveRestoreEngine *)self settingsContext];
-      v24 = [v23 keybag];
+      settingsContext4 = [(MBDriveRestoreEngine *)self settingsContext];
+      keybag2 = [settingsContext4 keybag];
 
-      if (v24)
+      if (keybag2)
       {
 
         goto LABEL_22;
@@ -1387,11 +1387,11 @@ LABEL_11:
     goto LABEL_39;
   }
 
-  v15 = [(MBDriveRestoreEngine *)self settingsContext];
-  v16 = [v15 keybag];
-  v17 = [v16 isUnlocked];
+  settingsContext5 = [(MBDriveRestoreEngine *)self settingsContext];
+  keybag3 = [settingsContext5 keybag];
+  isUnlocked = [keybag3 isUnlocked];
 
-  if ((v17 & 1) == 0)
+  if ((isUnlocked & 1) == 0)
   {
     v25 = MBGetDefaultLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1401,10 +1401,10 @@ LABEL_11:
       _MBLog();
     }
 
-    v26 = [(MBDriveRestoreEngine *)self settingsContext];
-    v27 = [v26 keybag];
+    settingsContext6 = [(MBDriveRestoreEngine *)self settingsContext];
+    keybag4 = [settingsContext6 keybag];
     v38 = v9;
-    v28 = [v27 unlockWithPassword:v6 error:&v38];
+    v28 = [keybag4 unlockWithPassword:password error:&v38];
     v12 = v38;
 
     if (v28)
@@ -1435,7 +1435,7 @@ LABEL_22:
   v29 = MBGetDefaultLog();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (encrypted)
     {
       v30 = @"encrypted";
     }
@@ -1614,12 +1614,12 @@ LABEL_39:
 
 - (id)_prepareCopyBackup
 {
-  v3 = [(MBDriveRestoreEngine *)self settingsContext];
-  v4 = [v3 shouldCopyBackup];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  shouldCopyBackup = [settingsContext shouldCopyBackup];
 
   v5 = MBGetDefaultLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (!v4)
+  if (!shouldCopyBackup)
   {
     if (v6)
     {
@@ -1640,10 +1640,10 @@ LABEL_39:
     _MBLog();
   }
 
-  v7 = [(MBDriveRestoreEngine *)self settingsContext];
-  v8 = [v7 targetIdentifier];
+  settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+  targetIdentifier = [settingsContext2 targetIdentifier];
 
-  [v8 stringByAppendingPathComponent:@"Info.plist"];
+  [targetIdentifier stringByAppendingPathComponent:@"Info.plist"];
   v9 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -1696,7 +1696,7 @@ LABEL_39:
   v65 = 0.0;
   v18 = self->_drive;
   v63 = 0;
-  v19 = [(MBDrive *)v18 usageOfDirectoryAtPath:v8 count:&v65 size:&v64 options:0 error:&v63];
+  v19 = [(MBDrive *)v18 usageOfDirectoryAtPath:targetIdentifier count:&v65 size:&v64 options:0 error:&v63];
   v20 = v63;
   if ((v19 & 1) == 0)
   {
@@ -1786,7 +1786,7 @@ LABEL_14:
   v33 = objc_alloc_init(NSDateFormatter);
   [v33 setDateFormat:@"yyyyMMdd-HHmmss"];
   v34 = [v33 stringFromDate:v32];
-  [NSString stringWithFormat:@"%@-%@", v8, v34];
+  [NSString stringWithFormat:@"%@-%@", targetIdentifier, v34];
   v58 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
   v35 = MBGetDefaultLog();
@@ -1813,7 +1813,7 @@ LABEL_14:
   v38 = v37;
   v39 = self->_drive;
   v60 = v14;
-  v40 = [(MBDrive *)v39 copyItemAtPath:v8 toPath:*&v58 options:0 error:&v60];
+  v40 = [(MBDrive *)v39 copyItemAtPath:targetIdentifier toPath:*&v58 options:0 error:&v60];
   v41 = v60;
 
   if (v40)
@@ -1849,9 +1849,9 @@ LABEL_14:
 
     [v46 setDateStyle:2];
     [v46 setTimeStyle:1];
-    v48 = [v12 displayName];
+    displayName = [v12 displayName];
     v49 = [v46 stringFromDate:v32];
-    v50 = [NSString stringWithFormat:@"%@ - %@", v48, v49];
+    v50 = [NSString stringWithFormat:@"%@ - %@", displayName, v49];
     [v12 setDisplayName:v50];
 
     [*&v58 stringByAppendingPathComponent:@"Info.plist"];
@@ -2032,41 +2032,41 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)_shouldRestoreContentWithFile:(id)a3 quiet:(BOOL)a4
+- (BOOL)_shouldRestoreContentWithFile:(id)file quiet:(BOOL)quiet
 {
-  v86 = a3;
-  v6 = [v86 domain];
-  v7 = [(MBDriveRestoreEngine *)self settingsContext];
-  if ([v7 shouldRestoreSystemFiles])
+  fileCopy = file;
+  domain = [fileCopy domain];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  if ([settingsContext shouldRestoreSystemFiles])
   {
   }
 
   else
   {
-    v8 = [v6 isAppDomain];
+    isAppDomain = [domain isAppDomain];
 
-    if ((v8 & 1) == 0)
+    if ((isAppDomain & 1) == 0)
     {
-      v9 = v86;
-      if ([v6 isSystemSharedContainerDomain] && -[MBRestorePolicy shouldAlwaysRestoreSystemSharedContainerDomain:](self->_restorePolicy, "shouldAlwaysRestoreSystemSharedContainerDomain:", v6))
+      v9 = fileCopy;
+      if ([domain isSystemSharedContainerDomain] && -[MBRestorePolicy shouldAlwaysRestoreSystemSharedContainerDomain:](self->_restorePolicy, "shouldAlwaysRestoreSystemSharedContainerDomain:", domain))
       {
         v15 = 1;
         goto LABEL_94;
       }
 
-      v46 = [v86 relativePath];
-      v10 = [v46 pathComponents];
+      relativePath = [fileCopy relativePath];
+      pathComponents = [relativePath pathComponents];
 
-      v47 = [v10 count];
+      v47 = [pathComponents count];
       v48 = 0;
       do
       {
         v49 = objc_autoreleasePoolPush();
-        v50 = [v10 subarrayWithRange:0, v48];
+        v50 = [pathComponents subarrayWithRange:0, v48];
         v51 = [NSString pathWithComponents:v50];
 
-        v52 = [v6 relativePathsOfSystemFilesToAlwaysRestore];
-        v53 = [v52 containsObject:v51];
+        relativePathsOfSystemFilesToAlwaysRestore = [domain relativePathsOfSystemFilesToAlwaysRestore];
+        v53 = [relativePathsOfSystemFilesToAlwaysRestore containsObject:v51];
 
         objc_autoreleasePoolPop(v49);
         if (v53)
@@ -2083,13 +2083,13 @@ LABEL_13:
       v99 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v14 = [v6 relativePathsOfSystemFilesToAlwaysRestore];
-      v83 = [v14 countByEnumeratingWithState:&v96 objects:v106 count:16];
-      v84 = v10;
+      relativePathsOfSystemFilesToAlwaysRestore2 = [domain relativePathsOfSystemFilesToAlwaysRestore];
+      v83 = [relativePathsOfSystemFilesToAlwaysRestore2 countByEnumeratingWithState:&v96 objects:v106 count:16];
+      v84 = pathComponents;
       if (v83)
       {
         v54 = *v97;
-        v87 = v6;
+        v87 = domain;
         v82 = *v97;
         do
         {
@@ -2098,20 +2098,20 @@ LABEL_13:
           {
             if (*v97 != v54)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(relativePathsOfSystemFilesToAlwaysRestore2);
             }
 
             v56 = v55;
-            v57 = [*(*(&v96 + 1) + 8 * v55) pathComponents];
-            v58 = [v57 count];
+            pathComponents2 = [*(*(&v96 + 1) + 8 * v55) pathComponents];
+            v58 = [pathComponents2 count];
             v59 = 0;
             do
             {
-              v60 = [v57 subarrayWithRange:{0, v59}];
+              v60 = [pathComponents2 subarrayWithRange:{0, v59}];
               v61 = [NSString pathWithComponents:v60];
 
-              v62 = [v86 relativePath];
-              v63 = [v62 isEqualToString:v61];
+              relativePath2 = [fileCopy relativePath];
+              v63 = [relativePath2 isEqualToString:v61];
 
               if (v63)
               {
@@ -2125,35 +2125,35 @@ LABEL_13:
             while (v59 <= v58);
 
             v55 = v56 + 1;
-            v10 = v84;
-            v6 = v87;
+            pathComponents = v84;
+            domain = v87;
             v54 = v82;
           }
 
           while (v55 != v83);
-          v83 = [v14 countByEnumeratingWithState:&v96 objects:v106 count:16];
+          v83 = [relativePathsOfSystemFilesToAlwaysRestore2 countByEnumeratingWithState:&v96 objects:v106 count:16];
         }
 
         while (v83);
       }
 
-      if (!a4)
+      if (!quiet)
       {
-        v14 = MBGetDefaultLog();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+        relativePathsOfSystemFilesToAlwaysRestore2 = MBGetDefaultLog();
+        if (os_log_type_enabled(relativePathsOfSystemFilesToAlwaysRestore2, OS_LOG_TYPE_INFO))
         {
-          v87 = v6;
-          v64 = [v86 absolutePath];
+          v87 = domain;
+          absolutePath = [fileCopy absolutePath];
           *buf = 138412290;
-          v103 = v64;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Not restoring because it's a system file: %@", buf, 0xCu);
+          v103 = absolutePath;
+          _os_log_impl(&_mh_execute_header, relativePathsOfSystemFilesToAlwaysRestore2, OS_LOG_TYPE_INFO, "Not restoring because it's a system file: %@", buf, 0xCu);
 
-          v57 = [v86 absolutePath];
+          pathComponents2 = [fileCopy absolutePath];
           _MBLog();
           v15 = 0;
 LABEL_69:
 
-          v10 = v84;
+          pathComponents = v84;
           goto LABEL_91;
         }
 
@@ -2168,28 +2168,28 @@ LABEL_67:
     }
   }
 
-  v9 = v86;
-  if ([v6 isUninstalledAppDomain])
+  v9 = fileCopy;
+  if ([domain isUninstalledAppDomain])
   {
-    if (!a4)
+    if (!quiet)
     {
-      v10 = MBGetDefaultLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      pathComponents = MBGetDefaultLog();
+      if (os_log_type_enabled(pathComponents, OS_LOG_TYPE_INFO))
       {
-        v11 = [v6 containerID];
-        [v86 relativePath];
-        v13 = v12 = v6;
+        containerID = [domain containerID];
+        [fileCopy relativePath];
+        v13 = v12 = domain;
         *buf = 138412546;
-        v103 = v11;
+        v103 = containerID;
         v104 = 2112;
         v105 = v13;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Not restoring because the app %@ isn't being restored: %@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, pathComponents, OS_LOG_TYPE_INFO, "Not restoring because the app %@ isn't being restored: %@", buf, 0x16u);
 
-        v14 = [v12 containerID];
-        v80 = [v86 relativePath];
+        relativePathsOfSystemFilesToAlwaysRestore2 = [v12 containerID];
+        relativePath3 = [fileCopy relativePath];
         _MBLog();
 
-        v6 = v12;
+        domain = v12;
         goto LABEL_66;
       }
 
@@ -2201,19 +2201,19 @@ LABEL_10:
     goto LABEL_94;
   }
 
-  if ([v6 isLegacyPerAppPlaceholderDomain])
+  if ([domain isLegacyPerAppPlaceholderDomain])
   {
-    if (!a4)
+    if (!quiet)
     {
-      v10 = MBGetDefaultLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      pathComponents = MBGetDefaultLog();
+      if (os_log_type_enabled(pathComponents, OS_LOG_TYPE_INFO))
       {
-        v65 = [v86 absolutePath];
+        absolutePath2 = [fileCopy absolutePath];
         *buf = 138412290;
-        v103 = v65;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Not restoring because it's a placeholder app file: %@", buf, 0xCu);
+        v103 = absolutePath2;
+        _os_log_impl(&_mh_execute_header, pathComponents, OS_LOG_TYPE_INFO, "Not restoring because it's a placeholder app file: %@", buf, 0xCu);
 
-        v14 = [v86 absolutePath];
+        relativePathsOfSystemFilesToAlwaysRestore2 = [fileCopy absolutePath];
         _MBLog();
         goto LABEL_66;
       }
@@ -2224,21 +2224,21 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v85 = a4;
-  v16 = [(MBDriveRestoreEngine *)self properties];
-  v17 = [v16 hasCorruptSQLiteDBs];
+  quietCopy = quiet;
+  properties = [(MBDriveRestoreEngine *)self properties];
+  hasCorruptSQLiteDBs = [properties hasCorruptSQLiteDBs];
 
-  if (v17)
+  if (hasCorruptSQLiteDBs)
   {
-    v18 = [v86 relativePath];
-    v10 = [v18 pathExtension];
+    relativePath4 = [fileCopy relativePath];
+    pathComponents = [relativePath4 pathExtension];
 
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v14 = MBSQLitePathExtensions();
-    v19 = [v14 countByEnumeratingWithState:&v92 objects:v101 count:16];
+    relativePathsOfSystemFilesToAlwaysRestore2 = MBSQLitePathExtensions();
+    v19 = [relativePathsOfSystemFilesToAlwaysRestore2 countByEnumeratingWithState:&v92 objects:v101 count:16];
     if (v19)
     {
       v20 = v19;
@@ -2249,57 +2249,57 @@ LABEL_10:
         {
           if (*v93 != v21)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(relativePathsOfSystemFilesToAlwaysRestore2);
           }
 
-          if ([v10 isEqualToString:*(*(&v92 + 1) + 8 * i)])
+          if ([pathComponents isEqualToString:*(*(&v92 + 1) + 8 * i)])
           {
-            v66 = v6;
+            v66 = domain;
             v67 = MBGetDefaultLog();
-            v9 = v86;
+            v9 = fileCopy;
             if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
             {
-              v68 = [v86 absolutePath];
+              absolutePath3 = [fileCopy absolutePath];
               *buf = 138412290;
-              v103 = v68;
+              v103 = absolutePath3;
               _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_INFO, "Not restoring %@ because sqlite databases are corrupt in this backup", buf, 0xCu);
 
-              v79 = [v86 absolutePath];
+              absolutePath4 = [fileCopy absolutePath];
               _MBLog();
             }
 
             v15 = 0;
-            v6 = v66;
+            domain = v66;
             goto LABEL_92;
           }
         }
 
-        v20 = [v14 countByEnumeratingWithState:&v92 objects:v101 count:16];
+        v20 = [relativePathsOfSystemFilesToAlwaysRestore2 countByEnumeratingWithState:&v92 objects:v101 count:16];
       }
 
       while (v20);
     }
   }
 
-  v87 = v6;
-  v9 = v86;
-  v23 = [v86 relativePath];
-  v24 = [v23 pathComponents];
+  v87 = domain;
+  v9 = fileCopy;
+  relativePath5 = [fileCopy relativePath];
+  pathComponents3 = [relativePath5 pathComponents];
 
-  v25 = [v24 count];
+  v25 = [pathComponents3 count];
   v26 = 0;
   while (1)
   {
-    v10 = v24;
-    v27 = [v24 subarrayWithRange:0, v26];
-    v14 = [NSString pathWithComponents:v27];
+    pathComponents = pathComponents3;
+    v27 = [pathComponents3 subarrayWithRange:0, v26];
+    relativePathsOfSystemFilesToAlwaysRestore2 = [NSString pathWithComponents:v27];
 
-    v28 = [v87 relativePathsNotToRestore];
-    v29 = [v28 containsObject:v14];
+    relativePathsNotToRestore = [v87 relativePathsNotToRestore];
+    v29 = [relativePathsNotToRestore containsObject:relativePathsOfSystemFilesToAlwaysRestore2];
 
     if (v29)
     {
-      if (v85)
+      if (quietCopy)
       {
         goto LABEL_90;
       }
@@ -2307,12 +2307,12 @@ LABEL_10:
       v69 = MBGetDefaultLog();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
       {
-        v70 = [v86 absolutePath];
+        absolutePath5 = [fileCopy absolutePath];
         *buf = 138412290;
-        v103 = v70;
+        v103 = absolutePath5;
         _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "Not restoring: %@", buf, 0xCu);
 
-        v71 = [v86 absolutePath];
+        absolutePath6 = [fileCopy absolutePath];
         goto LABEL_85;
       }
 
@@ -2321,12 +2321,12 @@ LABEL_10:
 
     if (![(MBDriveRestoreEngine *)self isRestoringToSameDevice])
     {
-      v30 = [v87 relativePathsNotToMigrate];
-      v31 = [v30 containsObject:v14];
+      relativePathsNotToMigrate = [v87 relativePathsNotToMigrate];
+      v31 = [relativePathsNotToMigrate containsObject:relativePathsOfSystemFilesToAlwaysRestore2];
 
       if (v31)
       {
-        if (v85)
+        if (quietCopy)
         {
           goto LABEL_90;
         }
@@ -2334,12 +2334,12 @@ LABEL_10:
         v69 = MBGetDefaultLog();
         if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
         {
-          v72 = [v86 absolutePath];
+          absolutePath7 = [fileCopy absolutePath];
           *buf = 138412290;
-          v103 = v72;
+          v103 = absolutePath7;
           _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "Not restoring because this is a migrate: %@", buf, 0xCu);
 
-          v71 = [v86 absolutePath];
+          absolutePath6 = [fileCopy absolutePath];
           goto LABEL_85;
         }
 
@@ -2351,12 +2351,12 @@ LABEL_89:
 
     if (![(MBEngine *)self isDeviceTransferEngine])
     {
-      v32 = [v87 relativePathsNotToRestoreFromLocal];
-      v33 = [v32 containsObject:v14];
+      relativePathsNotToRestoreFromLocal = [v87 relativePathsNotToRestoreFromLocal];
+      v33 = [relativePathsNotToRestoreFromLocal containsObject:relativePathsOfSystemFilesToAlwaysRestore2];
 
       if (v33)
       {
-        if (v85)
+        if (quietCopy)
         {
           goto LABEL_90;
         }
@@ -2364,12 +2364,12 @@ LABEL_89:
         v69 = MBGetDefaultLog();
         if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
         {
-          v73 = [v86 absolutePath];
+          absolutePath8 = [fileCopy absolutePath];
           *buf = 138412290;
-          v103 = v73;
+          v103 = absolutePath8;
           _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "Not restoring because this is a local restore: %@", buf, 0xCu);
 
-          v71 = [v86 absolutePath];
+          absolutePath6 = [fileCopy absolutePath];
 LABEL_85:
           _MBLog();
         }
@@ -2378,18 +2378,18 @@ LABEL_85:
       }
     }
 
-    if (v26 < v25 && [v86 isSymbolicLink])
+    if (v26 < v25 && [fileCopy isSymbolicLink])
     {
-      v34 = [v10 objectAtIndexedSubscript:v26];
+      v34 = [pathComponents objectAtIndexedSubscript:v26];
       if (([v34 isEqualToString:@".."] & 1) == 0)
       {
 
         goto LABEL_36;
       }
 
-      v35 = [v87 shouldRestoreRelativeSymlinks];
+      shouldRestoreRelativeSymlinks = [v87 shouldRestoreRelativeSymlinks];
 
-      if ((v35 & 1) == 0)
+      if ((shouldRestoreRelativeSymlinks & 1) == 0)
       {
         break;
       }
@@ -2398,17 +2398,17 @@ LABEL_85:
 LABEL_36:
 
     ++v26;
-    v24 = v10;
+    pathComponents3 = pathComponents;
     if (v26 > v25)
     {
       v90 = 0u;
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v36 = [(MBDriveRestoreEngine *)self settingsContext];
-      v14 = [v36 plugins];
+      settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+      relativePathsOfSystemFilesToAlwaysRestore2 = [settingsContext2 plugins];
 
-      v37 = [v14 countByEnumeratingWithState:&v88 objects:v100 count:16];
+      v37 = [relativePathsOfSystemFilesToAlwaysRestore2 countByEnumeratingWithState:&v88 objects:v100 count:16];
       if (!v37)
       {
         v15 = 1;
@@ -2425,15 +2425,15 @@ LABEL_39:
       {
         if (*v89 != v39)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(relativePathsOfSystemFilesToAlwaysRestore2);
         }
 
         v43 = *(*(&v88 + 1) + 8 * v41);
         if (objc_opt_respondsToSelector())
         {
           restorePolicy = self->_restorePolicy;
-          v45 = [v86 absolutePath];
-          LOBYTE(restorePolicy) = [v43 shouldRestoreContentWithPolicy:restorePolicy atPath:v45];
+          absolutePath9 = [fileCopy absolutePath];
+          LOBYTE(restorePolicy) = [v43 shouldRestoreContentWithPolicy:restorePolicy atPath:absolutePath9];
 
           if ((restorePolicy & 1) == 0)
           {
@@ -2443,7 +2443,7 @@ LABEL_39:
 
         if (v38 == ++v41)
         {
-          v38 = [v14 countByEnumeratingWithState:&v88 objects:v100 count:16];
+          v38 = [relativePathsOfSystemFilesToAlwaysRestore2 countByEnumeratingWithState:&v88 objects:v100 count:16];
           v15 = 1;
           v40 = &selRef_setServiceDelegate_;
           if (v38)
@@ -2455,30 +2455,30 @@ LABEL_39:
         }
       }
 
-      if (v85)
+      if (quietCopy)
       {
         v15 = 0;
 LABEL_78:
-        v9 = v86;
+        v9 = fileCopy;
         goto LABEL_91;
       }
 
       v69 = MBGetDefaultLog();
-      v9 = v86;
+      v9 = fileCopy;
       if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
       {
         v74 = objc_opt_class();
         Name = class_getName(v74);
-        v76 = [v86 absolutePath];
+        absolutePath10 = [fileCopy absolutePath];
         *buf = 136446466;
         v103 = Name;
         v104 = 2112;
-        v105 = v76;
+        v105 = absolutePath10;
         _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "Not restoring because it was refused by plugin %{public}s: %@", buf, 0x16u);
 
         v77 = objc_opt_class();
         class_getName(v77);
-        v81 = [v86 absolutePath];
+        absolutePath11 = [fileCopy absolutePath];
         _MBLog();
       }
 
@@ -2486,7 +2486,7 @@ LABEL_78:
     }
   }
 
-  if (!v85)
+  if (!quietCopy)
   {
     v69 = MBGetDefaultLog();
     if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
@@ -2502,7 +2502,7 @@ LABEL_78:
 LABEL_90:
   v15 = 0;
 LABEL_91:
-  v6 = v87;
+  domain = v87;
 LABEL_92:
 
 LABEL_93:
@@ -2511,19 +2511,19 @@ LABEL_94:
   return v15;
 }
 
-- (id)_restoreRegularFiles:(id)a3 size:(unint64_t)a4
+- (id)_restoreRegularFiles:(id)files size:(unint64_t)size
 {
-  v6 = a3;
+  filesCopy = files;
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v149 = [v6 count];
+    v149 = [filesCopy count];
     v150 = 2048;
-    v151 = a4;
+    sizeCopy = size;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Downloading %lu files of size %{bytes}llu", buf, 0x16u);
-    v103 = [v6 count];
-    v104 = a4;
+    absolutePath2 = [filesCopy count];
+    sizeCopy2 = size;
     _MBLog();
   }
 
@@ -2532,7 +2532,7 @@ LABEL_94:
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
-  obj = v6;
+  obj = filesCopy;
   v8 = [obj countByEnumeratingWithState:&v143 objects:v160 count:16];
   if (v8)
   {
@@ -2548,29 +2548,29 @@ LABEL_94:
         }
 
         v12 = *(*(&v143 + 1) + 8 * i);
-        v13 = [(MBManifestLike *)self->_manifest databaseIndex:v103];
-        v14 = [v12 fileID];
-        v15 = [v13 flagsForFileID:v14 error:0];
+        v13 = [(MBManifestLike *)self->_manifest databaseIndex:absolutePath2];
+        fileID = [v12 fileID];
+        v15 = [v13 flagsForFileID:fileID error:0];
 
-        v16 = [(MBDriveRestoreEngine *)self settingsContext];
-        v17 = v16;
+        settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+        v17 = settingsContext;
         if ((v15 & 8) != 0)
         {
-          [v16 driveSnapshotDir];
+          [settingsContext driveSnapshotDir];
         }
 
         else
         {
-          [v16 driveBackupDir];
+          [settingsContext driveBackupDir];
         }
         v18 = ;
 
-        v19 = [v12 nonRedirectedDomain];
-        v20 = [v12 relativePath];
-        v21 = [MBFileID fileIDWithDomain:v19 relativePath:v20];
+        nonRedirectedDomain = [v12 nonRedirectedDomain];
+        relativePath = [v12 relativePath];
+        v21 = [MBFileID fileIDWithDomain:nonRedirectedDomain relativePath:relativePath];
 
-        v22 = [(MBManifestLike *)self->_manifest properties];
-        if ([v22 hasManifestDB])
+        properties = [(MBManifestLike *)self->_manifest properties];
+        if ([properties hasManifestDB])
         {
           [v21 filenameWithPrefix];
         }
@@ -2593,8 +2593,8 @@ LABEL_94:
   }
 
   v158 = @"FileHandleFactory";
-  v159 = self;
-  v26 = [NSDictionary dictionaryWithObjects:&v159 forKeys:&v158 count:1];
+  selfCopy = self;
+  v26 = [NSDictionary dictionaryWithObjects:&selfCopy forKeys:&v158 count:1];
   drive = self->_drive;
   v141 = 0;
   v142 = 0;
@@ -2632,7 +2632,7 @@ LABEL_94:
           }
 
           v62 = *(*(&v137 + 1) + 8 * j);
-          v63 = [v56 objectForKeyedSubscript:{v62, v103, v104}];
+          v63 = [v56 objectForKeyedSubscript:{v62, absolutePath2, sizeCopy2}];
           if (([MBError isError:v63 withCode:105]& 1) != 0)
           {
             v59 = 1;
@@ -2646,10 +2646,10 @@ LABEL_94:
               *buf = 138412546;
               v149 = v62;
               v150 = 2112;
-              v151 = v63;
+              sizeCopy = v63;
               _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "Error downloading %@: %@", buf, 0x16u);
-              v103 = v62;
-              v104 = v63;
+              absolutePath2 = v62;
+              sizeCopy2 = v63;
               _MBLog();
             }
           }
@@ -2666,7 +2666,7 @@ LABEL_94:
         v65 = @"No space left on device";
         v66 = 106;
 LABEL_94:
-        v96 = [MBError errorWithCode:v66 format:v65, v103];
+        absolutePath2 = [MBError errorWithCode:v66 format:v65, absolutePath2];
         v30 = v109;
         goto LABEL_106;
       }
@@ -2710,13 +2710,13 @@ LABEL_94:
           }
 
           v36 = *(*(&v133 + 1) + 8 * v35);
-          v37 = [v36 domain];
-          v38 = [v37 shouldDigest];
+          domain = [v36 domain];
+          shouldDigest = [domain shouldDigest];
 
-          if (v38)
+          if (shouldDigest)
           {
-            v39 = [v36 digest];
-            if (v39)
+            digest = [v36 digest];
+            if (digest)
             {
               v40 = [(MBDriveRestoreEngine *)self _temporaryPathForFile:v36];
               v41 = +[MBDigest sha256];
@@ -2725,19 +2725,19 @@ LABEL_94:
               v123 = v132;
               if (v42)
               {
-                v43 = [(std::__fs::filesystem::path *)v42 isEqualToData:v39];
+                v43 = [(std::__fs::filesystem::path *)v42 isEqualToData:digest];
                 v44 = MBGetDefaultLog();
                 v45 = v44;
                 if (v43)
                 {
                   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
                   {
-                    v46 = [v36 absolutePath];
+                    absolutePath = [v36 absolutePath];
                     *buf = 138412290;
-                    v149 = v46;
+                    v149 = absolutePath;
                     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEBUG, "Digest matches: %@", buf, 0xCu);
 
-                    v103 = [v36 absolutePath];
+                    absolutePath2 = [v36 absolutePath];
                     _MBLog();
                   }
                 }
@@ -2746,23 +2746,23 @@ LABEL_94:
                 {
                   if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
                   {
-                    v52 = [v36 absolutePath];
-                    v53 = [v36 fileID];
+                    absolutePath3 = [v36 absolutePath];
+                    fileID2 = [v36 fileID];
                     *buf = 138413058;
                     v149 = v42;
                     v150 = 2112;
-                    v151 = v39;
+                    sizeCopy = digest;
                     v152 = 2112;
-                    v153 = v52;
+                    v153 = absolutePath3;
                     v154 = 2112;
-                    v155 = v53;
+                    v155 = fileID2;
                     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "File SHA256 digest does not match manifest (%@ vs %@): %@ (%@)", buf, 0x2Au);
 
-                    v54 = [v36 absolutePath];
+                    absolutePath4 = [v36 absolutePath];
                     [v36 fileID];
-                    v107 = v106 = v54;
-                    v103 = v42;
-                    v104 = v39;
+                    v107 = v106 = absolutePath4;
+                    absolutePath2 = v42;
+                    sizeCopy2 = digest;
                     _MBLog();
                   }
 
@@ -2781,10 +2781,10 @@ LABEL_94:
                   *buf = 138412546;
                   v149 = v40;
                   v150 = 2112;
-                  v151 = v123;
+                  sizeCopy = v123;
                   _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "Failed to compute the SHA1 digest for %@: %@", buf, 0x16u);
-                  v103 = v40;
-                  v104 = v123;
+                  absolutePath2 = v40;
+                  sizeCopy2 = v123;
                   v31 = v119;
                   _MBLog();
                 }
@@ -2800,17 +2800,17 @@ LABEL_94:
               v47 = MBGetDefaultLog();
               if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
               {
-                v48 = [v36 absolutePath];
-                v49 = [v36 fileID];
+                absolutePath5 = [v36 absolutePath];
+                fileID3 = [v36 fileID];
                 *buf = 138412546;
-                v149 = v48;
+                v149 = absolutePath5;
                 v150 = 2112;
-                v151 = v49;
+                sizeCopy = fileID3;
                 _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "Digest missing from file: %@ (%@)", buf, 0x16u);
 
-                v50 = [v36 absolutePath];
+                absolutePath6 = [v36 absolutePath];
                 [v36 fileID];
-                v104 = v103 = v50;
+                sizeCopy2 = absolutePath2 = absolutePath6;
                 _MBLog();
               }
 
@@ -2837,7 +2837,7 @@ LABEL_94:
   {
     v55 = [MBError errorWithCode:205 format:@"Digest didn't match for some files"];
 LABEL_91:
-    v96 = v55;
+    absolutePath2 = v55;
     goto LABEL_106;
   }
 
@@ -2865,17 +2865,17 @@ LABEL_91:
         v69 = *(*(&v128 + 1) + 8 * k);
         contexta = objc_autoreleasePoolPush();
         v124 = [(MBDriveRestoreEngine *)self _temporaryPathForFile:v69];
-        v70 = [(std::__fs::filesystem::path *)v124 fileSystemRepresentation];
+        fileSystemRepresentation = [(std::__fs::filesystem::path *)v124 fileSystemRepresentation];
         v71 = [(MBRestorePolicy *)self->_restorePolicy restorePathForDriveRestorable:v69];
         restorePolicy = self->_restorePolicy;
-        v73 = [v69 domain];
-        v74 = [v69 relativePath];
-        v75 = [(MBRestorePolicy *)restorePolicy validateRestoreDomain:v73 relativePath:v74];
+        domain2 = [v69 domain];
+        relativePath2 = [v69 relativePath];
+        v75 = [(MBRestorePolicy *)restorePolicy validateRestoreDomain:domain2 relativePath:relativePath2];
 
         if (v75)
         {
           v30 = v75;
-          v96 = v30;
+          absolutePath2 = v30;
           v29 = v113;
           v26 = v115;
           v97 = contexta;
@@ -2887,20 +2887,20 @@ LABEL_105:
         }
 
         v76 = v71;
-        v77 = [v71 fileSystemRepresentation];
+        fileSystemRepresentation2 = [v71 fileSystemRepresentation];
         v78 = MBGetDefaultLog();
         if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
         {
           v79 = [v69 description];
-          v80 = [v69 fileID];
+          fileID4 = [v69 fileID];
           *buf = 138412546;
           v149 = v79;
           v150 = 2112;
-          v151 = v80;
+          sizeCopy = fileID4;
           _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_INFO, "Restoring regular file: %@ (%@)", buf, 0x16u);
 
           v81 = [v69 description];
-          v105 = [v69 fileID];
+          fileID5 = [v69 fileID];
           _MBLog();
         }
 
@@ -2908,7 +2908,7 @@ LABEL_105:
         if (v82)
         {
           v30 = v82;
-          v96 = v30;
+          absolutePath2 = v30;
           v29 = v113;
           v26 = v115;
           v97 = contexta;
@@ -2916,8 +2916,8 @@ LABEL_105:
           goto LABEL_105;
         }
 
-        v84 = v70;
-        rename(v70, v77, v83);
+        v84 = fileSystemRepresentation;
+        rename(fileSystemRepresentation, fileSystemRepresentation2, v83);
         if (v85)
         {
           v86 = *__error();
@@ -2930,7 +2930,7 @@ LABEL_105:
               *buf = 138412802;
               v149 = v124;
               v150 = 2112;
-              v151 = v76;
+              sizeCopy = v76;
               v152 = 1024;
               LODWORD(v153) = v86;
               _os_log_impl(&_mh_execute_header, v94, OS_LOG_TYPE_ERROR, "Skipped rename from %@ to %@: %{errno}d", buf, 0x1Cu);
@@ -2950,7 +2950,7 @@ LABEL_105:
                 *buf = 136315650;
                 v149 = v84;
                 v150 = 2080;
-                v151 = v77;
+                sizeCopy = fileSystemRepresentation2;
                 v152 = 1024;
                 LODWORD(v153) = v86;
                 _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_ERROR, "rename from %s to %s failed: %{errno}d", buf, 0x1Cu);
@@ -2958,7 +2958,7 @@ LABEL_105:
               }
 
               v99 = NSStringFromSelector(a2);
-              v96 = [MBError posixErrorWithCode:v86 path:v76 format:@"%@ rename error", v99];
+              absolutePath2 = [MBError posixErrorWithCode:v86 path:v76 format:@"%@ rename error", v99];
 
               v30 = 0;
               goto LABEL_101;
@@ -2980,7 +2980,7 @@ LABEL_105:
             if ((v90 & 1) == 0)
             {
               v30 = v91;
-              v96 = [MBError errorWithCode:102 error:v91 path:v76 format:@"Error removing directory item while restoring regular file"];
+              absolutePath2 = [MBError errorWithCode:102 error:v91 path:v76 format:@"Error removing directory item while restoring regular file"];
 LABEL_101:
               v29 = v113;
               v26 = v115;
@@ -2988,7 +2988,7 @@ LABEL_101:
               goto LABEL_105;
             }
 
-            rename(v84, v77, v92);
+            rename(v84, fileSystemRepresentation2, v92);
             if (v93)
             {
               v100 = MBGetDefaultLog();
@@ -3001,7 +3001,7 @@ LABEL_101:
                 *buf = 136315650;
                 v149 = v84;
                 v150 = 2080;
-                v151 = v77;
+                sizeCopy = fileSystemRepresentation2;
                 v152 = 1024;
                 LODWORD(v153) = 21;
                 _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_ERROR, "rename from %s to %s failed: %{errno}d", buf, 0x1Cu);
@@ -3009,7 +3009,7 @@ LABEL_101:
               }
 
               v101 = NSStringFromSelector(a2);
-              v96 = [MBError posixErrorWithCode:21 path:v87 format:@"%@ rename error", v101];
+              absolutePath2 = [MBError posixErrorWithCode:21 path:v87 format:@"%@ rename error", v101];
 
               goto LABEL_105;
             }
@@ -3030,7 +3030,7 @@ LABEL_101:
           *buf = 136315394;
           v149 = v84;
           v150 = 2080;
-          v151 = v77;
+          sizeCopy = fileSystemRepresentation2;
           _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_INFO, "Renamed %s to %s", buf, 0x16u);
           _MBLog();
         }
@@ -3048,23 +3048,23 @@ LABEL_101:
     }
   }
 
-  v96 = 0;
+  absolutePath2 = 0;
   v29 = v113;
   v26 = v115;
 LABEL_106:
 
-  return v96;
+  return absolutePath2;
 }
 
 - (id)_annotate
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MBDriveRestoreEngine *)self settingsContext];
-  v5 = [v4 shouldRemoveItemsNotRestored];
+  settingsContext = [(MBDriveRestoreEngine *)self settingsContext];
+  shouldRemoveItemsNotRestored = [settingsContext shouldRemoveItemsNotRestored];
 
   v6 = MBGetDefaultLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (shouldRemoveItemsNotRestored)
   {
     if (v7)
     {
@@ -3075,14 +3075,14 @@ LABEL_106:
 
     +[NSDate timeIntervalSinceReferenceDate];
     v9 = v8;
-    v10 = [(MBEngine *)self persona];
+    persona = [(MBEngine *)self persona];
     engineType = self->_engineType;
-    v12 = [(MBEngine *)self backupPolicy];
-    v13 = [(MBDriveRestoreEngine *)self settingsContext];
-    v6 = +[MBRestoreDirectoryAnnotator restoreDirectoryAnnotatorWithPersona:engineType:backupPolicy:shouldRestoreSystemFiles:encrypted:](MBRestoreDirectoryAnnotator, "restoreDirectoryAnnotatorWithPersona:engineType:backupPolicy:shouldRestoreSystemFiles:encrypted:", v10, engineType, v12, [v13 shouldRestoreSystemFiles], -[MBDriveRestoreEngine encrypted](self, "encrypted"));
+    backupPolicy = [(MBEngine *)self backupPolicy];
+    settingsContext2 = [(MBDriveRestoreEngine *)self settingsContext];
+    v6 = +[MBRestoreDirectoryAnnotator restoreDirectoryAnnotatorWithPersona:engineType:backupPolicy:shouldRestoreSystemFiles:encrypted:](MBRestoreDirectoryAnnotator, "restoreDirectoryAnnotatorWithPersona:engineType:backupPolicy:shouldRestoreSystemFiles:encrypted:", persona, engineType, backupPolicy, [settingsContext2 shouldRestoreSystemFiles], -[MBDriveRestoreEngine encrypted](self, "encrypted"));
 
-    v14 = [(MBDomainManager *)self->super._domainManager allDomains];
-    v15 = [v6 annotateDomains:v14];
+    allDomains = [(MBDomainManager *)self->super._domainManager allDomains];
+    v15 = [v6 annotateDomains:allDomains];
 
     if (v15)
     {
@@ -3178,33 +3178,33 @@ LABEL_12:
 
 - (id)_moveRestoreDirs
 {
-  v2 = [(MBEngine *)self persona];
+  persona = [(MBEngine *)self persona];
   v6 = 0;
-  [v2 finalizeRestoreDirectoriesWithError:&v6];
+  [persona finalizeRestoreDirectoriesWithError:&v6];
   v3 = v6;
   v4 = v6;
 
   return v3;
 }
 
-- (id)fileForTemporaryPath:(id)a3
+- (id)fileForTemporaryPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 lastPathComponent];
-  v7 = [v6 stringByDeletingPathExtension];
-  v8 = [MBFileID fileIDWithString:v7];
+  pathCopy = path;
+  lastPathComponent = [pathCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v8 = [MBFileID fileIDWithString:stringByDeletingPathExtension];
 
   if (!v8)
   {
     v11 = +[NSAssertionHandler currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:1311 description:{@"Couldn't extract file ID from temporary restore path: %@", v5}];
+    [v11 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:1311 description:{@"Couldn't extract file ID from temporary restore path: %@", pathCopy}];
   }
 
   v9 = [(MBManifestLike *)self->_manifest fetchFileWithID:v8 error:0];
   if (!v9)
   {
     v12 = +[NSAssertionHandler currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:1314 description:{@"Couldn't find file object for temporary restore path: %@", v5}];
+    [v12 handleFailureInMethod:a2 object:self file:@"MBDriveRestoreEngine.m" lineNumber:1314 description:{@"Couldn't find file object for temporary restore path: %@", pathCopy}];
   }
 
   return v9;

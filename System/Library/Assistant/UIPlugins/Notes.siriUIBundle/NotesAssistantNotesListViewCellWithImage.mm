@@ -1,19 +1,19 @@
 @interface NotesAssistantNotesListViewCellWithImage
 + (id)reuseIdentifier;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NotesAssistantNotesListViewCellWithImage)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NotesAssistantNotesListViewCellWithImage)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (void)prepareForReuse;
-- (void)setNote:(id)a3;
+- (void)setNote:(id)note;
 @end
 
 @implementation NotesAssistantNotesListViewCellWithImage
 
-- (NotesAssistantNotesListViewCellWithImage)initWithFrame:(CGRect)a3
+- (NotesAssistantNotesListViewCellWithImage)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = NotesAssistantNotesListViewCellWithImage;
-  v3 = [(NotesAssistantNotesListViewCellWithImage *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NotesAssistantNotesListViewCellWithImage *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(ICNoteResultsListCollectionViewCell);
@@ -21,33 +21,33 @@
     v3->_cell = v4;
 
     [(ICNoteResultsListCollectionViewCell *)v3->_cell setAutoresizingMask:18];
-    v6 = [(NotesAssistantNotesListViewCellWithImage *)v3 contentView];
-    [v6 bounds];
+    contentView = [(NotesAssistantNotesListViewCellWithImage *)v3 contentView];
+    [contentView bounds];
     [(ICNoteResultsListCollectionViewCell *)v3->_cell setFrame:?];
 
-    v7 = [(NotesAssistantNotesListViewCellWithImage *)v3 contentView];
-    v8 = [(NotesAssistantNotesListViewCellWithImage *)v3 cell];
-    [v7 addSubview:v8];
+    contentView2 = [(NotesAssistantNotesListViewCellWithImage *)v3 contentView];
+    cell = [(NotesAssistantNotesListViewCellWithImage *)v3 cell];
+    [contentView2 addSubview:cell];
 
     v9 = +[UIColor clearColor];
     [(NotesAssistantNotesListViewCellWithImage *)v3 setBackgroundColor:v9];
 
-    v10 = [(NotesAssistantNotesListViewCellWithImage *)v3 keyline];
-    [v10 setCustomLeftPadding:28.0];
+    keyline = [(NotesAssistantNotesListViewCellWithImage *)v3 keyline];
+    [keyline setCustomLeftPadding:28.0];
 
-    v11 = [(NotesAssistantNotesListViewCellWithImage *)v3 keyline];
-    [v11 setCustomRightPadding:0.0];
+    keyline2 = [(NotesAssistantNotesListViewCellWithImage *)v3 keyline];
+    [keyline2 setCustomRightPadding:0.0];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(NotesAssistantNotesListViewCellWithImage *)self cell];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  cell = [(NotesAssistantNotesListViewCellWithImage *)self cell];
+  [cell sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -58,16 +58,16 @@
   return result;
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
-  v4 = a3;
-  v7 = [[ICNoteResultsCellConfiguration alloc] initWithNote:v4];
+  noteCopy = note;
+  v7 = [[ICNoteResultsCellConfiguration alloc] initWithNote:noteCopy];
 
-  v5 = [(NotesAssistantNotesListViewCellWithImage *)self cell];
-  [v5 setConfiguration:v7 synchronously:1];
+  cell = [(NotesAssistantNotesListViewCellWithImage *)self cell];
+  [cell setConfiguration:v7 synchronously:1];
 
-  v6 = [(NotesAssistantNotesListViewCellWithImage *)self cell];
-  [v6 setUserInteractionEnabled:0];
+  cell2 = [(NotesAssistantNotesListViewCellWithImage *)self cell];
+  [cell2 setUserInteractionEnabled:0];
 }
 
 + (id)reuseIdentifier
@@ -84,16 +84,16 @@
   v4.receiver = self;
   v4.super_class = NotesAssistantNotesListViewCellWithImage;
   [(NotesAssistantNotesListViewCellWithImage *)&v4 prepareForReuse];
-  v3 = [(NotesAssistantNotesListViewCellWithImage *)self cell];
-  [v3 prepareForReuse];
+  cell = [(NotesAssistantNotesListViewCellWithImage *)self cell];
+  [cell prepareForReuse];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(NotesAssistantNotesListViewCellWithImage *)self cell];
-  v3 = [v2 accessibilityLabel];
+  cell = [(NotesAssistantNotesListViewCellWithImage *)self cell];
+  accessibilityLabel = [cell accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

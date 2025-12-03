@@ -1,9 +1,9 @@
 @interface IMBAuthenticationViewController
-- (BOOL)shouldHandleRedirectURI:(id)a3;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (void)didChangeNavigationURL:(id)a3;
-- (void)didChangeSecureStatus:(BOOL)a3;
-- (void)didReceiveCallbackRequest:(id)a3;
+- (BOOL)shouldHandleRedirectURI:(id)i;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (void)didChangeNavigationURL:(id)l;
+- (void)didChangeSecureStatus:(BOOL)status;
+- (void)didReceiveCallbackRequest:(id)request;
 - (void)dismiss;
 - (void)viewDidLoad;
 @end
@@ -12,11 +12,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000493F4();
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
   result = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business31IMBAuthenticationViewController_aswasWindow);
   if (result)
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (BOOL)shouldHandleRedirectURI:(id)a3
+- (BOOL)shouldHandleRedirectURI:(id)i
 {
   v4 = sub_1000AB6EC();
   v5 = *(v4 - 8);
@@ -36,14 +36,14 @@
   __chkstk_darwin(v4, v7);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB6AC();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_10004ACFC();
 
   (*(v5 + 8))(v9, v4);
   return v11 & 1;
 }
 
-- (void)didReceiveCallbackRequest:(id)a3
+- (void)didReceiveCallbackRequest:(id)request
 {
   v4 = sub_1000AB57C();
   v5 = *(v4 - 8);
@@ -51,21 +51,21 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB54C();
-  v10 = self;
+  selfCopy = self;
   sub_10004AE98();
 
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)didChangeSecureStatus:(BOOL)a3
+- (void)didChangeSecureStatus:(BOOL)status
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business31IMBAuthenticationViewController_webViewController);
-  v5 = self;
+  selfCopy = self;
   v4 = v3;
   sub_100072924();
 }
 
-- (void)didChangeNavigationURL:(id)a3
+- (void)didChangeNavigationURL:(id)l
 {
   v4 = sub_1000AB6EC();
   v5 = *(v4 - 8);
@@ -74,7 +74,7 @@
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000AB6AC();
   v10 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business31IMBAuthenticationViewController_webViewController);
-  v11 = self;
+  selfCopy = self;
   v12 = v10;
   sub_100072924();
 
@@ -86,7 +86,7 @@
   v3 = self + OBJC_IVAR____TtC8Business32IMBDetailedMessageViewController__dismissalDelegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRelease();
     if (swift_unknownObjectWeakLoadStrong())
     {
@@ -94,7 +94,7 @@
       ObjectType = swift_getObjectType();
       v6 = *(v4 + 16);
       v7 = type metadata accessor for IMBAuthenticationViewController();
-      v6(v8, v7, ObjectType, v4);
+      v6(selfCopy, v7, ObjectType, v4);
 
       swift_unknownObjectRelease();
     }

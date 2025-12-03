@@ -1,18 +1,18 @@
 @interface NDOAppleCareViewController
 - (NDOAppleCareFlowDelegate)presentor;
-- (NDOAppleCareViewController)initWithCoder:(id)a3;
-- (NDOAppleCareViewController)initWithDeviceInfo:(id)a3 presentationType:(unint64_t)a4;
-- (NDOAppleCareViewController)initWithDeviceInfo:(id)a3 presentationType:(unint64_t)a4 source:(id)a5 deeplinkParams:(id)a6;
-- (NDOAppleCareViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (NDOAppleCareViewController)initWithWarranty:(id)a3;
-- (NDOAppleCareViewController)initWithWarranty:(id)a3 presentationType:(unint64_t)a4;
-- (NDOAppleCareViewController)initWithWarranty:(id)a3 presentationType:(unint64_t)a4 serialNumber:(id)a5;
+- (NDOAppleCareViewController)initWithCoder:(id)coder;
+- (NDOAppleCareViewController)initWithDeviceInfo:(id)info presentationType:(unint64_t)type;
+- (NDOAppleCareViewController)initWithDeviceInfo:(id)info presentationType:(unint64_t)type source:(id)source deeplinkParams:(id)params;
+- (NDOAppleCareViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (NDOAppleCareViewController)initWithWarranty:(id)warranty;
+- (NDOAppleCareViewController)initWithWarranty:(id)warranty presentationType:(unint64_t)type;
+- (NDOAppleCareViewController)initWithWarranty:(id)warranty presentationType:(unint64_t)type serialNumber:(id)number;
 - (NSString)urlString;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
-- (void)setUrlString:(id)a3;
+- (void)setUrlString:(id)string;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NDOAppleCareViewController
@@ -43,9 +43,9 @@
   return v4;
 }
 
-- (void)setUrlString:(id)a3
+- (void)setUrlString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = sub_25BDDFE48();
   }
@@ -64,10 +64,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -78,30 +78,30 @@
   }
 }
 
-- (NDOAppleCareViewController)initWithDeviceInfo:(id)a3 presentationType:(unint64_t)a4
+- (NDOAppleCareViewController)initWithDeviceInfo:(id)info presentationType:(unint64_t)type
 {
-  v4 = a3;
-  v5 = sub_25BDBFBA8(v4);
+  infoCopy = info;
+  v5 = sub_25BDBFBA8(infoCopy);
 
   return v5;
 }
 
-- (NDOAppleCareViewController)initWithDeviceInfo:(id)a3 presentationType:(unint64_t)a4 source:(id)a5 deeplinkParams:(id)a6
+- (NDOAppleCareViewController)initWithDeviceInfo:(id)info presentationType:(unint64_t)type source:(id)source deeplinkParams:(id)params
 {
   v8 = sub_25BDDFE48();
   v10 = v9;
-  if (a6)
+  if (params)
   {
     sub_25BDDFE48();
   }
 
-  v11 = a3;
-  v12 = sub_25BDBFE20(v11, v8, v10);
+  infoCopy = info;
+  v12 = sub_25BDBFE20(infoCopy, v8, v10);
 
   return v12;
 }
 
-- (NDOAppleCareViewController)initWithWarranty:(id)a3
+- (NDOAppleCareViewController)initWithWarranty:(id)warranty
 {
   swift_unknownObjectWeakInit();
   v4 = (self + OBJC_IVAR___NDOAppleCareViewController_source);
@@ -115,7 +115,7 @@
   return result;
 }
 
-- (NDOAppleCareViewController)initWithWarranty:(id)a3 presentationType:(unint64_t)a4
+- (NDOAppleCareViewController)initWithWarranty:(id)warranty presentationType:(unint64_t)type
 {
   swift_unknownObjectWeakInit();
   v5 = (self + OBJC_IVAR___NDOAppleCareViewController_source);
@@ -129,7 +129,7 @@
   return result;
 }
 
-- (NDOAppleCareViewController)initWithWarranty:(id)a3 presentationType:(unint64_t)a4 serialNumber:(id)a5
+- (NDOAppleCareViewController)initWithWarranty:(id)warranty presentationType:(unint64_t)type serialNumber:(id)number
 {
   swift_unknownObjectWeakInit();
   v6 = (self + OBJC_IVAR___NDOAppleCareViewController_source);
@@ -143,7 +143,7 @@
   return result;
 }
 
-- (NDOAppleCareViewController)initWithCoder:(id)a3
+- (NDOAppleCareViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (self + OBJC_IVAR___NDOAppleCareViewController_source);
@@ -159,23 +159,23 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   NDOAppleCareViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   NDOAppleCareViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  NDOAppleCareViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  NDOAppleCareViewController.viewWillAppear(_:)(appear);
 }
 
-- (NDOAppleCareViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NDOAppleCareViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

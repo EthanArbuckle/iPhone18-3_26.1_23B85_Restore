@@ -1,25 +1,25 @@
 @interface HMIFFArchive
-- (HMIFFArchive)initWithJSONPath:(id)a3 error:(id *)a4;
+- (HMIFFArchive)initWithJSONPath:(id)path error:(id *)error;
 - (NSArray)allPersons;
 - (NSArray)homePersons;
 - (NSArray)photosPersons;
-- (id)faceCropsForPerson:(id)a3;
-- (id)sourceUUIDForPerson:(id)a3;
+- (id)faceCropsForPerson:(id)person;
+- (id)sourceUUIDForPerson:(id)person;
 @end
 
 @implementation HMIFFArchive
 
-- (HMIFFArchive)initWithJSONPath:(id)a3 error:(id *)a4
+- (HMIFFArchive)initWithJSONPath:(id)path error:(id *)error
 {
   v37[8] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v36.receiver = self;
   v36.super_class = HMIFFArchive;
   v7 = [(HMIFFArchive *)&v36 init];
   if (v7)
   {
     v8 = MEMORY[0x277CBEA90];
-    v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
+    v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     v10 = [v8 dataWithContentsOfURL:v9];
 
     if (v10)
@@ -42,41 +42,41 @@
       if (v14)
       {
         objc_storeStrong(&v7->_ffData, v14);
-        v16 = [(HMIFFArchive *)v7 ffData];
-        v17 = [v16 objectForKeyedSubscript:@"homePersonsAndFaceCrops"];
+        ffData = [(HMIFFArchive *)v7 ffData];
+        v17 = [ffData objectForKeyedSubscript:@"homePersonsAndFaceCrops"];
         homePersonsAndFaceCrops = v7->_homePersonsAndFaceCrops;
         v7->_homePersonsAndFaceCrops = v17;
 
-        v19 = [(HMIFFArchive *)v7 ffData];
-        v20 = [v19 objectForKeyedSubscript:@"photosPersonsAndFaceCrops"];
+        ffData2 = [(HMIFFArchive *)v7 ffData];
+        v20 = [ffData2 objectForKeyedSubscript:@"photosPersonsAndFaceCrops"];
         photosPersonsAndFaceCrops = v7->_photosPersonsAndFaceCrops;
         v7->_photosPersonsAndFaceCrops = v20;
 
-        v22 = [(HMIFFArchive *)v7 homePersonsAndFaceCrops];
+        homePersonsAndFaceCrops = [(HMIFFArchive *)v7 homePersonsAndFaceCrops];
 
-        if (v22)
+        if (homePersonsAndFaceCrops)
         {
-          v23 = [(HMIFFArchive *)v7 homePersonsAndFaceCrops];
-          v24 = [(HMIFFArchive *)v7 photosPersonsAndFaceCrops];
-          v25 = [v23 arrayByAddingObjectsFromArray:v24];
+          homePersonsAndFaceCrops2 = [(HMIFFArchive *)v7 homePersonsAndFaceCrops];
+          photosPersonsAndFaceCrops = [(HMIFFArchive *)v7 photosPersonsAndFaceCrops];
+          v25 = [homePersonsAndFaceCrops2 arrayByAddingObjectsFromArray:photosPersonsAndFaceCrops];
           allPersonsAndFaceCrops = v7->_allPersonsAndFaceCrops;
           v7->_allPersonsAndFaceCrops = v25;
         }
 
         else
         {
-          v31 = [(HMIFFArchive *)v7 photosPersonsAndFaceCrops];
+          photosPersonsAndFaceCrops2 = [(HMIFFArchive *)v7 photosPersonsAndFaceCrops];
           v32 = v7->_allPersonsAndFaceCrops;
-          v7->_allPersonsAndFaceCrops = v31;
+          v7->_allPersonsAndFaceCrops = photosPersonsAndFaceCrops2;
         }
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
           v30 = v15;
-          *a4 = v15;
+          *error = v15;
         }
 
         HMIErrorLogC(v15);
@@ -92,10 +92,10 @@
     {
       v27 = [MEMORY[0x277CCA9B8] hmiErrorWithCode:-1 description:@"Failed to read json file"];
       v28 = v27;
-      if (a4)
+      if (error)
       {
         v29 = v27;
-        *a4 = v28;
+        *error = v28;
       }
 
       HMIErrorLogC(v28);
@@ -114,39 +114,39 @@ LABEL_16:
 
 - (NSArray)photosPersons
 {
-  v2 = [(HMIFFArchive *)self photosPersonsAndFaceCrops];
-  v3 = [v2 na_map:&__block_literal_global_27];
+  photosPersonsAndFaceCrops = [(HMIFFArchive *)self photosPersonsAndFaceCrops];
+  v3 = [photosPersonsAndFaceCrops na_map:&__block_literal_global_27];
 
   return v3;
 }
 
 - (NSArray)homePersons
 {
-  v2 = [(HMIFFArchive *)self homePersonsAndFaceCrops];
-  v3 = [v2 na_map:&__block_literal_global_174];
+  homePersonsAndFaceCrops = [(HMIFFArchive *)self homePersonsAndFaceCrops];
+  v3 = [homePersonsAndFaceCrops na_map:&__block_literal_global_174];
 
   return v3;
 }
 
 - (NSArray)allPersons
 {
-  v2 = [(HMIFFArchive *)self allPersonsAndFaceCrops];
-  v3 = [v2 na_map:&__block_literal_global_176];
+  allPersonsAndFaceCrops = [(HMIFFArchive *)self allPersonsAndFaceCrops];
+  v3 = [allPersonsAndFaceCrops na_map:&__block_literal_global_176];
 
   return v3;
 }
 
-- (id)faceCropsForPerson:(id)a3
+- (id)faceCropsForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(HMIFFArchive *)self allPersonsAndFaceCrops];
+  personCopy = person;
+  allPersonsAndFaceCrops = [(HMIFFArchive *)self allPersonsAndFaceCrops];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __35__HMIFFArchive_faceCropsForPerson___block_invoke;
   v10[3] = &unk_278753690;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v10];
+  v11 = personCopy;
+  v6 = personCopy;
+  v7 = [allPersonsAndFaceCrops na_firstObjectPassingTest:v10];
 
   if (v7)
   {
@@ -170,17 +170,17 @@ uint64_t __35__HMIFFArchive_faceCropsForPerson___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (id)sourceUUIDForPerson:(id)a3
+- (id)sourceUUIDForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(HMIFFArchive *)self allPersonsAndFaceCrops];
+  personCopy = person;
+  allPersonsAndFaceCrops = [(HMIFFArchive *)self allPersonsAndFaceCrops];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __36__HMIFFArchive_sourceUUIDForPerson___block_invoke;
   v10[3] = &unk_278753690;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v10];
+  v11 = personCopy;
+  v6 = personCopy;
+  v7 = [allPersonsAndFaceCrops na_firstObjectPassingTest:v10];
 
   if (v7)
   {

@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (BOOL)iaptransportdIsRunning;
 - (IAPClientPortManager)init;
-- (int)forwardAccessoryDataToIAP:(id)a3 data:(const char *)a4 length:(unsigned __int16)a5;
-- (int)registerSendDataHandler:(id)a3 queue:(id)a4 sendBlock:(id)a5;
-- (int)unregisterSendDataHandler:(id)a3;
+- (int)forwardAccessoryDataToIAP:(id)p data:(const char *)data length:(unsigned __int16)length;
+- (int)registerSendDataHandler:(id)handler queue:(id)queue sendBlock:(id)block;
+- (int)unregisterSendDataHandler:(id)handler;
 - (void)dealloc;
 - (void)reRegisterHandlers;
-- (void)sendData:(id)a3 data:(char *)a4 length:(unsigned __int16)a5;
-- (void)setIaptransportdIsRunning:(BOOL)a3;
+- (void)sendData:(id)data data:(char *)a4 length:(unsigned __int16)length;
+- (void)setIaptransportdIsRunning:(BOOL)running;
 @end
 
 @implementation IAPClientPortManager
@@ -75,7 +75,7 @@
   return v3;
 }
 
-- (void)setIaptransportdIsRunning:(BOOL)a3
+- (void)setIaptransportdIsRunning:(BOOL)running
 {
   portListQueue = self->_portListQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -83,7 +83,7 @@
   v4[2] = __50__IAPClientPortManager_setIaptransportdIsRunning___block_invoke;
   v4[3] = &unk_279781050;
   v4[4] = self;
-  v5 = a3;
+  runningCopy = running;
   dispatch_sync(portListQueue, v4);
 }
 
@@ -131,7 +131,7 @@ IAPClientPortManager *__38__IAPClientPortManager_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)sendData:(id)a3 data:(char *)a4 length:(unsigned __int16)a5
+- (void)sendData:(id)data data:(char *)a4 length:(unsigned __int16)length
 {
   portListQueue = self->_portListQueue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -139,9 +139,9 @@ IAPClientPortManager *__38__IAPClientPortManager_sharedInstance__block_invoke()
   v6[2] = __45__IAPClientPortManager_sendData_data_length___block_invoke;
   v6[3] = &unk_2797810A0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = data;
   v6[6] = a4;
-  v7 = a5;
+  lengthCopy = length;
   dispatch_sync(portListQueue, v6);
 }
 
@@ -198,13 +198,13 @@ uint64_t __45__IAPClientPortManager_sendData_data_length___block_invoke_3(uint64
   return result;
 }
 
-- (int)registerSendDataHandler:(id)a3 queue:(id)a4 sendBlock:(id)a5
+- (int)registerSendDataHandler:(id)handler queue:(id)queue sendBlock:(id)block
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if (a3 && a4 && a5)
+  if (handler && queue && block)
   {
     portListQueue = self->_portListQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -212,14 +212,14 @@ uint64_t __45__IAPClientPortManager_sendData_data_length___block_invoke_3(uint64
     block[2] = __64__IAPClientPortManager_registerSendDataHandler_queue_sendBlock___block_invoke;
     block[3] = &unk_2797810C8;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a5;
+    block[5] = handler;
+    block[6] = queue;
+    block[7] = block;
     block[8] = &v9;
     dispatch_sync(portListQueue, block);
   }
 
-  else if (!a3 || a4 || a5)
+  else if (!handler || queue || block)
   {
     v12 = -536870206;
   }
@@ -264,7 +264,7 @@ LABEL_8:
   xpc_release(v4);
 }
 
-- (int)unregisterSendDataHandler:(id)a3
+- (int)unregisterSendDataHandler:(id)handler
 {
   v7 = 0;
   v8 = &v7;
@@ -276,7 +276,7 @@ LABEL_8:
   block[2] = __50__IAPClientPortManager_unregisterSendDataHandler___block_invoke;
   block[3] = &unk_2797810F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   block[6] = &v7;
   dispatch_sync(portListQueue, block);
   v4 = *(v8 + 6);
@@ -312,7 +312,7 @@ LABEL_8:
   xpc_release(v3);
 }
 
-- (int)forwardAccessoryDataToIAP:(id)a3 data:(const char *)a4 length:(unsigned __int16)a5
+- (int)forwardAccessoryDataToIAP:(id)p data:(const char *)data length:(unsigned __int16)length
 {
   v10 = 0;
   v11 = &v10;
@@ -324,10 +324,10 @@ LABEL_8:
   block[2] = __62__IAPClientPortManager_forwardAccessoryDataToIAP_data_length___block_invoke;
   block[3] = &unk_279781118;
   block[4] = self;
-  block[5] = a3;
-  v9 = a5;
+  block[5] = p;
+  lengthCopy = length;
   block[6] = &v10;
-  block[7] = a4;
+  block[7] = data;
   dispatch_sync(portListQueue, block);
   v6 = *(v11 + 6);
   _Block_object_dispose(&v10, 8);

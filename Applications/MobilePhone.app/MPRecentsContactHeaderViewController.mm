@@ -1,12 +1,12 @@
 @interface MPRecentsContactHeaderViewController
 - (MPRecentsContactHeaderViewController)init;
 - (id)generateDetailsView;
-- (id)rttConversationForUUID:(id)a3;
+- (id)rttConversationForUUID:(id)d;
 - (int64_t)recentCallTTYType;
 - (void)loadLayoutConstraints;
 - (void)loadRTTConversations;
 - (void)loadView;
-- (void)presentConversationForUUID:(id)a3;
+- (void)presentConversationForUUID:(id)d;
 @end
 
 @implementation MPRecentsContactHeaderViewController
@@ -33,31 +33,31 @@
   v5.super_class = MPRecentsContactHeaderViewController;
   [(MPRecentsContactHeaderViewController *)&v5 loadView];
   [(MPRecentsContactHeaderViewController *)self loadRTTConversations];
-  v3 = [(MPRecentsContactHeaderViewController *)self view];
-  v4 = [(MPRecentsContactHeaderViewController *)self generateDetailsView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v4];
-  [(MPRecentsContactHeaderViewController *)self setDetailsView:v4];
+  view = [(MPRecentsContactHeaderViewController *)self view];
+  generateDetailsView = [(MPRecentsContactHeaderViewController *)self generateDetailsView];
+  [generateDetailsView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:generateDetailsView];
+  [(MPRecentsContactHeaderViewController *)self setDetailsView:generateDetailsView];
   [(MPRecentsContactHeaderViewController *)self loadLayoutConstraints];
 }
 
 - (void)loadLayoutConstraints
 {
-  v13 = [(MPRecentsContactHeaderViewController *)self detailsView];
-  v3 = [(MPRecentsContactHeaderViewController *)self view];
-  v4 = [v13 widthAnchor];
-  v5 = [v3 widthAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  detailsView = [(MPRecentsContactHeaderViewController *)self detailsView];
+  view = [(MPRecentsContactHeaderViewController *)self view];
+  widthAnchor = [detailsView widthAnchor];
+  widthAnchor2 = [view widthAnchor];
+  v6 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v6 setActive:1];
 
-  v7 = [v13 topAnchor];
-  v8 = [v3 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [detailsView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [v13 bottomAnchor];
-  v11 = [v3 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor = [detailsView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v12 setActive:1];
 }
 
@@ -65,8 +65,8 @@
 {
   v3 = [[PHRecentCallDetailsView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(PHRecentCallDetailsView *)v3 setDelegate:self];
-  v4 = [(MPRecentsContactHeaderViewController *)self recentCall];
-  [(PHRecentCallDetailsView *)v3 setRecentCall:v4];
+  recentCall = [(MPRecentsContactHeaderViewController *)self recentCall];
+  [(PHRecentCallDetailsView *)v3 setRecentCall:recentCall];
 
   return v3;
 }
@@ -228,34 +228,34 @@ void __60__MPRecentsContactHeaderViewController_loadRTTConversations__block_invo
 
 - (int64_t)recentCallTTYType
 {
-  v2 = [(MPRecentsContactHeaderViewController *)self recentCall];
-  v3 = [v2 ttyType];
+  recentCall = [(MPRecentsContactHeaderViewController *)self recentCall];
+  ttyType = [recentCall ttyType];
 
-  return v3;
+  return ttyType;
 }
 
-- (id)rttConversationForUUID:(id)a3
+- (id)rttConversationForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MPRecentsContactHeaderViewController *)self rttConversations];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  rttConversations = [(MPRecentsContactHeaderViewController *)self rttConversations];
+  v6 = [rttConversations objectForKey:dCopy];
 
   return v6;
 }
 
-- (void)presentConversationForUUID:(id)a3
+- (void)presentConversationForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = RTTUIConversationViewControllerClass();
   if (v5)
   {
     v6 = v5;
-    v7 = [(MPRecentsContactHeaderViewController *)self rttConversationForUUID:v4];
+    v7 = [(MPRecentsContactHeaderViewController *)self rttConversationForUUID:dCopy];
     if (v7)
     {
       v8 = [v6 viewControllerForConversation:v7];
-      v9 = [(MPRecentsContactHeaderViewController *)self navigationController];
-      [v9 pushViewController:v8 animated:1];
+      navigationController = [(MPRecentsContactHeaderViewController *)self navigationController];
+      [navigationController pushViewController:v8 animated:1];
     }
 
     else

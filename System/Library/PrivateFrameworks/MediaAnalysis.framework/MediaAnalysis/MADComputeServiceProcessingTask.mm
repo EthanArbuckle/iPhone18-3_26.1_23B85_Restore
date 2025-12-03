@@ -1,66 +1,66 @@
 @interface MADComputeServiceProcessingTask
-+ (id)_taskWithPhotosAssets:(id)a3 photoLibraryURLPath:(id)a4 requestID:(id)a5 requests:(id)a6 resultDirectoryURL:(id)a7 cancelBlock:(id)a8 progressHandler:(id)a9 resultsHandler:(id)a10 completionHandler:(id)a11;
-+ (id)_taskWithURLAssets:(id)a3 requestID:(id)a4 requests:(id)a5 resultDirectoryURL:(id)a6 cancelBlock:(id)a7 progressHandler:(id)a8 resultsHandler:(id)a9 completionHandler:(id)a10;
-+ (id)taskWithManagedRequests:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-+ (id)taskWithRequestID:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-+ (id)taskWithRequests:(id)a3 requestID:(id)a4 assetURLs:(id)a5 resultDirectoryURL:(id)a6 cancelBlock:(id)a7 progressHandler:(id)a8 resultsHandler:(id)a9 completionHandler:(id)a10;
-+ (id)taskWithRequests:(id)a3 requestID:(id)a4 localIdentifiers:(id)a5 photoLibraryURL:(id)a6 resultDirectoryURL:(id)a7 cancelBlock:(id)a8 progressHandler:(id)a9 resultsHandler:(id)a10 completionHandler:(id)a11;
-+ (int)_saveResult:(id)a3 fileURL:(id)a4;
-+ (int)_saveResultData:(id)a3 fileURL:(id)a4;
++ (id)_taskWithPhotosAssets:(id)assets photoLibraryURLPath:(id)path requestID:(id)d requests:(id)requests resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)self0 completionHandler:(id)self1;
++ (id)_taskWithURLAssets:(id)assets requestID:(id)d requests:(id)requests resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)self0;
++ (id)taskWithManagedRequests:(id)requests cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
++ (id)taskWithRequestID:(id)d cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
++ (id)taskWithRequests:(id)requests requestID:(id)d assetURLs:(id)ls resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)self0;
++ (id)taskWithRequests:(id)requests requestID:(id)d localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)self0 completionHandler:(id)self1;
++ (int)_saveResult:(id)result fileURL:(id)l;
++ (int)_saveResultData:(id)data fileURL:(id)l;
 - (BOOL)isCancelled;
-- (MADComputeServiceProcessingTask)initWithRequests:(id)a3 requestID:(id)a4 assetURLs:(id)a5 resultDirectoryURL:(id)a6 cancelBlock:(id)a7 progressHandler:(id)a8 resultsHandler:(id)a9 completionHandler:(id)a10;
-- (MADComputeServiceProcessingTask)initWithRequests:(id)a3 requestID:(id)a4 localIdentifiers:(id)a5 photoLibraryURL:(id)a6 resultDirectoryURL:(id)a7 cancelBlock:(id)a8 progressHandler:(id)a9 resultsHandler:(id)a10 completionHandler:(id)a11;
-- (id)_loadAssetsForTaskID:(unint64_t)a3;
+- (MADComputeServiceProcessingTask)initWithRequests:(id)requests requestID:(id)d assetURLs:(id)ls resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)self0;
+- (MADComputeServiceProcessingTask)initWithRequests:(id)requests requestID:(id)d localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)self0 completionHandler:(id)self1;
+- (id)_loadAssetsForTaskID:(unint64_t)d;
 - (id)_partialAnalysisURL;
 - (id)_prepareFaceAssetProcessingTask;
-- (id)_prepareFaceResultWithFaces:(id)a3;
+- (id)_prepareFaceResultWithFaces:(id)faces;
 - (id)_prepareSceneAssetProcessingTask;
-- (id)_prepareSceneResultWithClassifications:(id)a3;
-- (id)_prepareVideoAnalysisResults:(id)a3;
-- (id)_processVideoAsset:(id)a3 partialAnalysis:(id)a4 analysisTypes:(unint64_t)a5 error:(id *)a6;
-- (int)_processVideoAnalysis:(id)a3 analysisError:(id)a4 assetIdentifierType:(id)a5 assetIdentifier:(id)a6;
+- (id)_prepareSceneResultWithClassifications:(id)classifications;
+- (id)_prepareVideoAnalysisResults:(id)results;
+- (id)_processVideoAsset:(id)asset partialAnalysis:(id)analysis analysisTypes:(unint64_t)types error:(id *)error;
+- (int)_processVideoAnalysis:(id)analysis analysisError:(id)error assetIdentifierType:(id)type assetIdentifier:(id)identifier;
 - (int)_resumePausedVideoAnalysis;
 - (int)run;
 - (unint64_t)_videoAnalysisTypes;
 - (void)_processVideoAssetURLs;
 - (void)_processVideoLocalIdentifiers;
 - (void)_processVideoRequests;
-- (void)_processVisionRequest:(id)a3;
-- (void)_runVisionRequest:(id)a3 assetURL:(id)a4 localIdentifier:(id)a5;
-- (void)_savePartialAnalysis:(id)a3 assetIdentifierType:(id)a4 assetIdentifier:(id)a5;
+- (void)_processVisionRequest:(id)request;
+- (void)_runVisionRequest:(id)request assetURL:(id)l localIdentifier:(id)identifier;
+- (void)_savePartialAnalysis:(id)analysis assetIdentifierType:(id)type assetIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation MADComputeServiceProcessingTask
 
-- (MADComputeServiceProcessingTask)initWithRequests:(id)a3 requestID:(id)a4 localIdentifiers:(id)a5 photoLibraryURL:(id)a6 resultDirectoryURL:(id)a7 cancelBlock:(id)a8 progressHandler:(id)a9 resultsHandler:(id)a10 completionHandler:(id)a11
+- (MADComputeServiceProcessingTask)initWithRequests:(id)requests requestID:(id)d localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)self0 completionHandler:(id)self1
 {
-  v41 = a3;
-  v38 = a4;
-  v40 = a5;
-  v37 = a6;
-  v36 = a7;
-  v18 = a8;
-  v39 = a9;
-  v19 = a10;
-  v20 = a11;
+  requestsCopy = requests;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
   v42.receiver = self;
   v42.super_class = MADComputeServiceProcessingTask;
   v21 = [(MADComputeServiceProcessingTask *)&v42 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_requests, a3);
-    objc_storeStrong(&v22->_requestID, a4);
-    objc_storeStrong(&v22->_localIdentifiers, a5);
-    objc_storeStrong(&v22->_photoLibraryURL, a6);
-    objc_storeStrong(&v22->_resultDirectoryURL, a7);
-    v23 = [v41 count];
-    v22->_totalTaskCount = ([v40 count] * v23);
+    objc_storeStrong(&v21->_requests, requests);
+    objc_storeStrong(&v22->_requestID, d);
+    objc_storeStrong(&v22->_localIdentifiers, identifiers);
+    objc_storeStrong(&v22->_photoLibraryURL, l);
+    objc_storeStrong(&v22->_resultDirectoryURL, rL);
+    v23 = [requestsCopy count];
+    v22->_totalTaskCount = ([identifiersCopy count] * v23);
     v22->_finishedTaskCount = 0.0;
-    if (v18)
+    if (blockCopy)
     {
-      v24 = v18;
+      v24 = blockCopy;
     }
 
     else
@@ -72,15 +72,15 @@
     cancelBlock = v22->_cancelBlock;
     v22->_cancelBlock = v25;
 
-    v27 = objc_retainBlock(v39);
+    v27 = objc_retainBlock(handlerCopy);
     progressHandler = v22->_progressHandler;
     v22->_progressHandler = v27;
 
-    v29 = objc_retainBlock(v19);
+    v29 = objc_retainBlock(resultsHandlerCopy);
     resultsHandler = v22->_resultsHandler;
     v22->_resultsHandler = v29;
 
-    v31 = objc_retainBlock(v20);
+    v31 = objc_retainBlock(completionHandlerCopy);
     completionHandler = v22->_completionHandler;
     v22->_completionHandler = v31;
 
@@ -92,48 +92,48 @@
   return v22;
 }
 
-+ (id)taskWithRequests:(id)a3 requestID:(id)a4 localIdentifiers:(id)a5 photoLibraryURL:(id)a6 resultDirectoryURL:(id)a7 cancelBlock:(id)a8 progressHandler:(id)a9 resultsHandler:(id)a10 completionHandler:(id)a11
++ (id)taskWithRequests:(id)requests requestID:(id)d localIdentifiers:(id)identifiers photoLibraryURL:(id)l resultDirectoryURL:(id)rL cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)self0 completionHandler:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = [objc_alloc(objc_opt_class()) initWithRequests:v16 requestID:v17 localIdentifiers:v18 photoLibraryURL:v19 resultDirectoryURL:v20 cancelBlock:v21 progressHandler:v22 resultsHandler:v23 completionHandler:v24];
+  requestsCopy = requests;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
+  v25 = [objc_alloc(objc_opt_class()) initWithRequests:requestsCopy requestID:dCopy localIdentifiers:identifiersCopy photoLibraryURL:lCopy resultDirectoryURL:rLCopy cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   return v25;
 }
 
-- (MADComputeServiceProcessingTask)initWithRequests:(id)a3 requestID:(id)a4 assetURLs:(id)a5 resultDirectoryURL:(id)a6 cancelBlock:(id)a7 progressHandler:(id)a8 resultsHandler:(id)a9 completionHandler:(id)a10
+- (MADComputeServiceProcessingTask)initWithRequests:(id)requests requestID:(id)d assetURLs:(id)ls resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)self0
 {
-  v39 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  requestsCopy = requests;
+  dCopy = d;
+  lsCopy = ls;
+  lCopy = l;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
   v40.receiver = self;
   v40.super_class = MADComputeServiceProcessingTask;
   v21 = [(MADComputeServiceProcessingTask *)&v40 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_requests, a3);
-    objc_storeStrong(&v22->_requestID, a4);
-    objc_storeStrong(&v22->_assetURLs, a5);
-    objc_storeStrong(&v22->_resultDirectoryURL, a6);
-    v23 = [v39 count];
+    objc_storeStrong(&v21->_requests, requests);
+    objc_storeStrong(&v22->_requestID, d);
+    objc_storeStrong(&v22->_assetURLs, ls);
+    objc_storeStrong(&v22->_resultDirectoryURL, l);
+    v23 = [requestsCopy count];
     v22->_totalTaskCount = ([(NSArray *)v22->_assetURLs count]* v23);
     v22->_finishedTaskCount = 0.0;
-    if (v17)
+    if (blockCopy)
     {
-      v24 = v17;
+      v24 = blockCopy;
     }
 
     else
@@ -145,15 +145,15 @@
     cancelBlock = v22->_cancelBlock;
     v22->_cancelBlock = v25;
 
-    v27 = objc_retainBlock(v18);
+    v27 = objc_retainBlock(handlerCopy);
     progressHandler = v22->_progressHandler;
     v22->_progressHandler = v27;
 
-    v29 = objc_retainBlock(v19);
+    v29 = objc_retainBlock(resultsHandlerCopy);
     resultsHandler = v22->_resultsHandler;
     v22->_resultsHandler = v29;
 
-    v31 = objc_retainBlock(v20);
+    v31 = objc_retainBlock(completionHandlerCopy);
     completionHandler = v22->_completionHandler;
     v22->_completionHandler = v31;
 
@@ -165,28 +165,28 @@
   return v22;
 }
 
-+ (id)taskWithRequests:(id)a3 requestID:(id)a4 assetURLs:(id)a5 resultDirectoryURL:(id)a6 cancelBlock:(id)a7 progressHandler:(id)a8 resultsHandler:(id)a9 completionHandler:(id)a10
++ (id)taskWithRequests:(id)requests requestID:(id)d assetURLs:(id)ls resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = [objc_alloc(objc_opt_class()) initWithRequests:v15 requestID:v16 assetURLs:v17 resultDirectoryURL:v18 cancelBlock:v19 progressHandler:v20 resultsHandler:v21 completionHandler:v22];
+  requestsCopy = requests;
+  dCopy = d;
+  lsCopy = ls;
+  lCopy = l;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
+  v23 = [objc_alloc(objc_opt_class()) initWithRequests:requestsCopy requestID:dCopy assetURLs:lsCopy resultDirectoryURL:lCopy cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   return v23;
 }
 
-+ (int)_saveResultData:(id)a3 fileURL:(id)a4
++ (int)_saveResultData:(id)data fileURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [NSString stringWithFormat:@"[MACS][SaveResultData][%@]", v6];
+  dataCopy = data;
+  lCopy = l;
+  lCopy = [NSString stringWithFormat:@"[MACS][SaveResultData][%@]", lCopy];
   v14 = 0;
-  v8 = [v5 writeToURL:v6 options:1 error:&v14];
+  v8 = [dataCopy writeToURL:lCopy options:1 error:&v14];
   v9 = v14;
   if (v8)
   {
@@ -196,9 +196,9 @@
       if (os_log_type_enabled(&_os_log_default, v10))
       {
         *buf = 138412546;
-        v16 = v7;
+        v16 = lCopy;
         v17 = 2112;
-        v18 = v6;
+        v18 = lCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "%@ Saved result to %@", buf, 0x16u);
       }
     }
@@ -214,9 +214,9 @@
       if (os_log_type_enabled(&_os_log_default, v12))
       {
         *buf = 138412802;
-        v16 = v7;
+        v16 = lCopy;
         v17 = 2112;
-        v18 = v5;
+        v18 = dataCopy;
         v19 = 2112;
         v20 = v9;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "%@ Failed to save result %@ - %@", buf, 0x20u);
@@ -229,30 +229,30 @@
   return v11;
 }
 
-+ (int)_saveResult:(id)a3 fileURL:(id)a4
++ (int)_saveResult:(id)result fileURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSString stringWithFormat:@"[MACS][SaveResult][%@]", v7];
+  resultCopy = result;
+  lCopy = l;
+  lCopy = [NSString stringWithFormat:@"[MACS][SaveResult][%@]", lCopy];
   if (MediaAnalysisLogLevel() >= 7)
   {
     v9 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
       *buf = 138412546;
-      v17 = v8;
+      v17 = lCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = resultCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "%@ MACS result %@", buf, 0x16u);
     }
   }
 
   v15 = 0;
-  v10 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v15];
+  v10 = [NSKeyedArchiver archivedDataWithRootObject:resultCopy requiringSecureCoding:1 error:&v15];
   v11 = v15;
   if (v10)
   {
-    v12 = [a1 _saveResultData:v10 fileURL:v7];
+    v12 = [self _saveResultData:v10 fileURL:lCopy];
   }
 
   else
@@ -263,9 +263,9 @@
       if (os_log_type_enabled(&_os_log_default, v13))
       {
         *buf = 138412802;
-        v17 = v8;
+        v17 = lCopy;
         v18 = 2112;
-        v19 = v6;
+        v19 = resultCopy;
         v20 = 2112;
         v21 = v11;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "%@ Failed to archive result %@ - %@", buf, 0x20u);
@@ -278,101 +278,101 @@
   return v12;
 }
 
-+ (id)_taskWithPhotosAssets:(id)a3 photoLibraryURLPath:(id)a4 requestID:(id)a5 requests:(id)a6 resultDirectoryURL:(id)a7 cancelBlock:(id)a8 progressHandler:(id)a9 resultsHandler:(id)a10 completionHandler:(id)a11
++ (id)_taskWithPhotosAssets:(id)assets photoLibraryURLPath:(id)path requestID:(id)d requests:(id)requests resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)self0 completionHandler:(id)self1
 {
-  v31 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v32 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  assetsCopy = assets;
+  pathCopy = path;
+  dCopy = d;
+  requestsCopy = requests;
+  lCopy = l;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1000A8334;
   v33[3] = &unk_100285530;
-  v24 = v22;
+  v24 = resultsHandlerCopy;
   v36 = v24;
-  v25 = v18;
+  v25 = dCopy;
   v34 = v25;
-  v26 = v20;
+  v26 = lCopy;
   v35 = v26;
-  v37 = a1;
+  selfCopy = self;
   v27 = objc_retainBlock(v33);
-  v28 = [NSURL fileURLWithPath:v17];
-  v29 = [MADComputeServiceProcessingTask taskWithRequests:v19 requestID:v25 localIdentifiers:v31 photoLibraryURL:v28 resultDirectoryURL:v26 cancelBlock:v32 progressHandler:v21 resultsHandler:v27 completionHandler:v23];
+  v28 = [NSURL fileURLWithPath:pathCopy];
+  v29 = [MADComputeServiceProcessingTask taskWithRequests:requestsCopy requestID:v25 localIdentifiers:assetsCopy photoLibraryURL:v28 resultDirectoryURL:v26 cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:v27 completionHandler:completionHandlerCopy];
 
   return v29;
 }
 
-+ (id)_taskWithURLAssets:(id)a3 requestID:(id)a4 requests:(id)a5 resultDirectoryURL:(id)a6 cancelBlock:(id)a7 progressHandler:(id)a8 resultsHandler:(id)a9 completionHandler:(id)a10
++ (id)_taskWithURLAssets:(id)assets requestID:(id)d requests:(id)requests resultDirectoryURL:(id)l cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  assetsCopy = assets;
+  dCopy = d;
+  requestsCopy = requests;
+  lCopy = l;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
   v30 = _NSConcreteStackBlock;
   v31 = 3221225472;
   v32 = sub_1000A883C;
   v33 = &unk_100285558;
-  v24 = v22;
+  v24 = resultsHandlerCopy;
   v36 = v24;
-  v25 = v17;
+  v25 = dCopy;
   v34 = v25;
-  v26 = v19;
+  v26 = lCopy;
   v35 = v26;
-  v37 = a1;
+  selfCopy = self;
   v27 = objc_retainBlock(&v30);
-  v28 = [MADComputeServiceProcessingTask taskWithRequests:v18 requestID:v25 assetURLs:v16 resultDirectoryURL:v26 cancelBlock:v20 progressHandler:v21 resultsHandler:v27 completionHandler:v23, v30, v31, v32, v33];
+  v28 = [MADComputeServiceProcessingTask taskWithRequests:requestsCopy requestID:v25 assetURLs:assetsCopy resultDirectoryURL:v26 cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:v27 completionHandler:completionHandlerCopy, v30, v31, v32, v33];
 
   return v28;
 }
 
-+ (id)taskWithManagedRequests:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
++ (id)taskWithManagedRequests:(id)requests cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v79 = a4;
-  v80 = a5;
-  v81 = a6;
-  v12 = a7;
-  v82 = v11;
-  if ([v11 count])
+  requestsCopy = requests;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
+  v82 = requestsCopy;
+  if ([requestsCopy count])
   {
-    v78 = v12;
+    v78 = completionHandlerCopy;
     v86 = +[NSMutableArray array];
     v85 = +[NSMutableArray array];
-    v13 = [v11 firstObject];
-    v91 = [v13 requestID];
+    firstObject = [requestsCopy firstObject];
+    requestID = [firstObject requestID];
 
-    v14 = [v11 firstObject];
-    v15 = [v14 resultDirectoryURL];
-    v16 = [v11 firstObject];
-    v17 = [v16 resultDirectoryURLExtension];
+    firstObject2 = [requestsCopy firstObject];
+    resultDirectoryURL = [firstObject2 resultDirectoryURL];
+    firstObject3 = [requestsCopy firstObject];
+    resultDirectoryURLExtension = [firstObject3 resultDirectoryURLExtension];
     _CFURLAttachSecurityScopeToFileURL();
 
-    v18 = [v82 firstObject];
-    v19 = [v18 resultDirectoryURL];
-    v20 = [v19 startAccessingSecurityScopedResource];
+    firstObject4 = [v82 firstObject];
+    resultDirectoryURL2 = [firstObject4 resultDirectoryURL];
+    startAccessingSecurityScopedResource = [resultDirectoryURL2 startAccessingSecurityScopedResource];
 
-    if (v20)
+    if (startAccessingSecurityScopedResource)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
         v21 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v21))
         {
-          v22 = [v82 firstObject];
-          v23 = [v22 resultDirectoryURL];
+          firstObject5 = [v82 firstObject];
+          resultDirectoryURL3 = [firstObject5 resultDirectoryURL];
           *buf = 138412546;
           v108 = @"[MACS]";
           v109 = 2112;
-          v110 = v23;
+          v110 = resultDirectoryURL3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "%@ Consuming secure scoped result URL %@", buf, 0x16u);
         }
       }
@@ -403,16 +403,16 @@
 
             v27 = *(*(&v102 + 1) + 8 * v26);
             v28 = objc_autoreleasePoolPush();
-            v29 = [NSString stringWithFormat:@"[MACS][%@]", v91];
-            v30 = [v27 requestID];
-            v31 = [v30 isEqualToString:v91];
+            v29 = [NSString stringWithFormat:@"[MACS][%@]", requestID];
+            requestID2 = [v27 requestID];
+            v31 = [requestID2 isEqualToString:requestID];
 
             if (v31)
             {
               v32 = objc_opt_class();
-              v33 = [v27 requestData];
+              requestData = [v27 requestData];
               v101 = 0;
-              v34 = [NSKeyedUnarchiver unarchivedObjectOfClass:v32 fromData:v33 error:&v101];
+              v34 = [NSKeyedUnarchiver unarchivedObjectOfClass:v32 fromData:requestData error:&v101];
               v35 = v101;
 
               if (v34)
@@ -429,13 +429,13 @@
                 }
 
                 [v86 addObject:v34];
-                v38 = [v27 assetURL];
-                v39 = v38 == 0;
+                assetURL = [v27 assetURL];
+                v39 = assetURL == 0;
 
                 if (v39)
                 {
-                  v47 = [v27 assetIdentifier];
-                  v48 = v47 == 0;
+                  assetIdentifier = [v27 assetIdentifier];
+                  v48 = assetIdentifier == 0;
 
                   if (v48)
                   {
@@ -453,16 +453,16 @@
                   {
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
                     {
-                      v49 = [v27 assetIdentifier];
+                      assetIdentifier2 = [v27 assetIdentifier];
                       *buf = 138412546;
                       v108 = v29;
                       v109 = 2112;
-                      v110 = v49;
+                      v110 = assetIdentifier2;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Loading Photos asset %@", buf, 0x16u);
                     }
 
-                    v44 = [v27 assetIdentifier];
-                    [v85 addObject:v44];
+                    assetIdentifier3 = [v27 assetIdentifier];
+                    [v85 addObject:assetIdentifier3];
                     v83 = 0;
 LABEL_33:
 
@@ -474,37 +474,37 @@ LABEL_33:
 
                 else
                 {
-                  v40 = [v27 assetURL];
-                  v41 = [v27 assetURLExtension];
+                  assetURL2 = [v27 assetURL];
+                  assetURLExtension = [v27 assetURLExtension];
                   _CFURLAttachSecurityScopeToFileURL();
 
-                  v42 = [v27 assetURL];
-                  LODWORD(v41) = [v42 startAccessingSecurityScopedResource];
+                  assetURL3 = [v27 assetURL];
+                  LODWORD(assetURLExtension) = [assetURL3 startAccessingSecurityScopedResource];
 
-                  if (v41)
+                  if (assetURLExtension)
                   {
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
                     {
-                      v43 = [v27 assetURL];
+                      assetURL4 = [v27 assetURL];
                       *buf = 138412546;
                       v108 = v29;
                       v109 = 2112;
-                      v110 = v43;
+                      v110 = assetURL4;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Consuming secure scoped URL %@", buf, 0x16u);
                     }
 
-                    v44 = [v27 assetURL];
-                    [v85 addObject:v44];
+                    assetIdentifier3 = [v27 assetURL];
+                    [v85 addObject:assetIdentifier3];
                     goto LABEL_33;
                   }
 
                   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v25))
                   {
-                    v51 = [v27 assetURL];
+                    assetURL5 = [v27 assetURL];
                     *buf = 138412546;
                     v108 = v29;
                     v109 = 2112;
-                    v110 = v51;
+                    v110 = assetURL5;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, v25, "%@ Failed to open secure scoped URL %@; skip", buf, 0x16u);
                   }
                 }
@@ -512,11 +512,11 @@ LABEL_33:
 
               else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v25))
               {
-                v46 = [v27 requestData];
+                requestData2 = [v27 requestData];
                 *buf = 138412546;
                 v108 = v29;
                 v109 = 2112;
-                v110 = v46;
+                v110 = requestData2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v25, "%@ Failed to unarchive request %@; skip", buf, 0x16u);
               }
 
@@ -525,11 +525,11 @@ LABEL_33:
 
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v87))
             {
-              v45 = [v27 requestID];
+              requestID3 = [v27 requestID];
               *buf = 138412546;
               v108 = v29;
               v109 = 2112;
-              v110 = v45;
+              v110 = requestID3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v87, "%@ Mismatched requestID %@; skip", buf, 0x16u);
             }
 
@@ -589,24 +589,24 @@ LABEL_54:
         v94 = @"[MACS]";
         v95 = v63;
         v65 = objc_retainBlock(v92);
-        v66 = [v64 firstObject];
-        v67 = [v66 requestID];
-        v68 = [v64 firstObject];
-        v69 = [v68 resultDirectoryURL];
-        v54 = [a1 _taskWithURLAssets:v85 requestID:v67 requests:v86 resultDirectoryURL:v69 cancelBlock:v79 progressHandler:v80 resultsHandler:v81 completionHandler:v65];
+        firstObject6 = [v64 firstObject];
+        requestID4 = [firstObject6 requestID];
+        firstObject7 = [v64 firstObject];
+        resultDirectoryURL4 = [firstObject7 resultDirectoryURL];
+        v54 = [self _taskWithURLAssets:v85 requestID:requestID4 requests:v86 resultDirectoryURL:resultDirectoryURL4 cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:v65];
 
-        v70 = v93;
+        firstObject8 = v93;
       }
 
       else
       {
-        v70 = [v62 firstObject];
-        v71 = [v70 sourceIdentifier];
-        v72 = [v62 firstObject];
-        v73 = [v72 requestID];
-        v74 = [v62 firstObject];
-        v75 = [v74 resultDirectoryURL];
-        v54 = [a1 _taskWithPhotosAssets:v85 photoLibraryURLPath:v71 requestID:v73 requests:v86 resultDirectoryURL:v75 cancelBlock:v79 progressHandler:v80 resultsHandler:v81 completionHandler:v63];
+        firstObject8 = [v62 firstObject];
+        sourceIdentifier = [firstObject8 sourceIdentifier];
+        firstObject9 = [v62 firstObject];
+        requestID5 = [firstObject9 requestID];
+        firstObject10 = [v62 firstObject];
+        resultDirectoryURL5 = [firstObject10 resultDirectoryURL];
+        v54 = [self _taskWithPhotosAssets:v85 photoLibraryURLPath:sourceIdentifier requestID:requestID5 requests:v86 resultDirectoryURL:resultDirectoryURL5 cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:v63];
       }
     }
 
@@ -617,12 +617,12 @@ LABEL_54:
         v55 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v55))
         {
-          v56 = [v82 firstObject];
-          v57 = [v56 resultDirectoryURL];
+          firstObject11 = [v82 firstObject];
+          resultDirectoryURL6 = [firstObject11 resultDirectoryURL];
           *buf = 138412546;
           v108 = @"[MACS]";
           v109 = 2112;
-          v110 = v57;
+          v110 = resultDirectoryURL6;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v55, "%@ Failed to open secure scoped result URL %@; exit", buf, 0x16u);
         }
       }
@@ -630,7 +630,7 @@ LABEL_54:
       v54 = 0;
     }
 
-    v12 = v78;
+    completionHandlerCopy = v78;
   }
 
   else if (MediaAnalysisLogLevel() < 3)
@@ -640,7 +640,7 @@ LABEL_54:
 
   else
   {
-    v52 = v12;
+    v52 = completionHandlerCopy;
     v53 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v53))
     {
@@ -650,22 +650,22 @@ LABEL_54:
     }
 
     v54 = 0;
-    v12 = v52;
+    completionHandlerCopy = v52;
   }
 
   return v54;
 }
 
-+ (id)taskWithRequestID:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
++ (id)taskWithRequestID:(id)d cancelBlock:(id)block progressHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
   v17 = +[MADManagedRequest requestIDColumnName];
   v18 = +[MADManagedRequest statusColumnName];
-  v19 = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %lu", v17, v12, v18, 0];
+  v19 = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %lu", v17, dCopy, v18, 0];
 
   v26 = 0;
   v20 = [MADManagedRequest fetchTaskScheduleWithPredicate:v19 error:&v26];
@@ -677,14 +677,14 @@ LABEL_54:
     {
       v23 = [v20 count];
       *buf = 138412546;
-      v28 = v12;
+      v28 = dCopy;
       v29 = 2048;
       v30 = v23;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@] Fetched %lu requests", buf, 0x16u);
     }
   }
 
-  v24 = [a1 taskWithManagedRequests:v20 cancelBlock:v13 progressHandler:v14 resultsHandler:v15 completionHandler:v16];
+  v24 = [self taskWithManagedRequests:v20 cancelBlock:blockCopy progressHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   return v24;
 }
@@ -723,26 +723,26 @@ LABEL_54:
   return v3 & 1;
 }
 
-- (id)_loadAssetsForTaskID:(unint64_t)a3
+- (id)_loadAssetsForTaskID:(unint64_t)d
 {
   v5 = +[VCPPhotoLibraryManager sharedManager];
   v6 = [v5 photoLibraryWithURL:self->_photoLibraryURL];
 
-  v7 = [PHAsset vcp_fetchOptionsForLibrary:v6 forTaskID:a3];
+  v7 = [PHAsset vcp_fetchOptionsForLibrary:v6 forTaskID:d];
   v8 = [PHAsset fetchAssetsWithLocalIdentifiers:self->_localIdentifiers options:v7];
 
   return v8;
 }
 
-- (id)_prepareSceneResultWithClassifications:(id)a3
+- (id)_prepareSceneResultWithClassifications:(id)classifications
 {
-  v22 = a3;
+  classificationsCopy = classifications;
   v24 = +[NSMutableSet set];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = v22;
+  v3 = classificationsCopy;
   v4 = [v3 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v4)
   {
@@ -764,11 +764,11 @@ LABEL_54:
 
         if (v10 && [v10 networkId] == 1)
         {
-          v11 = [v10 name];
+          name = [v10 name];
           [v7 confidence];
           v13 = v12;
           [v7 boundingBox];
-          v18 = [MADSceneClassification entryWithLabel:v11 confidence:v13 boundingBox:v14, v15, v16, v17];
+          v18 = [MADSceneClassification entryWithLabel:name confidence:v13 boundingBox:v14, v15, v16, v17];
 
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
           {
@@ -840,11 +840,11 @@ LABEL_54:
       {
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
         {
-          v5 = [v29 results];
+          results = [v29 results];
           *buf = 138412546;
           v49 = v35;
           v50 = 2112;
-          v51 = v5;
+          v51 = results;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Analysis finished - %@", buf, 0x16u);
         }
 
@@ -853,8 +853,8 @@ LABEL_54:
         v41 = 0u;
         v42 = 0u;
         v40 = 0u;
-        v7 = [v29 results];
-        v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        results2 = [v29 results];
+        v8 = [results2 countByEnumeratingWithState:&v40 objects:v47 count:16];
         if (v8)
         {
           v9 = *v41;
@@ -864,14 +864,14 @@ LABEL_54:
             {
               if (*v41 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(results2);
               }
 
               v11 = *(*(&v40 + 1) + 8 * i);
               v12 = objc_autoreleasePoolPush();
-              v13 = [v11 identifier];
+              identifier = [v11 identifier];
               [v11 confidence];
-              v15 = [MADSceneClassification entryWithLabel:v13 confidence:v14 boundingBox:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
+              v15 = [MADSceneClassification entryWithLabel:identifier confidence:v14 boundingBox:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
 
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v36))
               {
@@ -887,7 +887,7 @@ LABEL_54:
               objc_autoreleasePoolPop(v12);
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
+            v8 = [results2 countByEnumeratingWithState:&v40 objects:v47 count:16];
           }
 
           while (v8);
@@ -949,15 +949,15 @@ LABEL_54:
   return v22;
 }
 
-- (id)_prepareFaceResultWithFaces:(id)a3
+- (id)_prepareFaceResultWithFaces:(id)faces
 {
-  v20 = a3;
+  facesCopy = faces;
   v3 = +[NSMutableSet set];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v20;
+  obj = facesCopy;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v4)
   {
@@ -1160,14 +1160,14 @@ LABEL_54:
   return v27;
 }
 
-- (void)_runVisionRequest:(id)a3 assetURL:(id)a4 localIdentifier:(id)a5
+- (void)_runVisionRequest:(id)request assetURL:(id)l localIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  lCopy = l;
+  identifierCopy = identifier;
   v11 = [NSString stringWithFormat:@"[MADComputeServiceProcessingTask][%@]", objc_opt_class()];
-  v12 = [[VNImageRequestHandler alloc] initWithURL:v9 orientation:1 options:&__NSDictionary0__struct];
-  v30 = v8;
+  v12 = [[VNImageRequestHandler alloc] initWithURL:lCopy orientation:1 options:&__NSDictionary0__struct];
+  v30 = requestCopy;
   v13 = [NSArray arrayWithObjects:&v30 count:1];
   v23 = 0;
   v14 = [v12 performRequests:v13 error:&v23];
@@ -1180,11 +1180,11 @@ LABEL_54:
       v16 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v16))
       {
-        v17 = [v8 results];
+        results = [requestCopy results];
         *buf = 138412546;
         v27 = v11;
         v28 = 2112;
-        v29 = v17;
+        v29 = results;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "%@ Analysis finished - %@", buf, 0x16u);
       }
     }
@@ -1192,14 +1192,14 @@ LABEL_54:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v8 results];
-      [MADCoreMLResult resultWithVisionResults:v18];
+      results2 = [requestCopy results];
+      [MADCoreMLResult resultWithVisionResults:results2];
     }
 
     else
     {
-      v18 = [v8 results];
-      [MADVisionResult resultWithVisionResults:v18];
+      results2 = [requestCopy results];
+      [MADVisionResult resultWithVisionResults:results2];
     }
     v21 = ;
 
@@ -1231,9 +1231,9 @@ LABEL_54:
   }
 }
 
-- (void)_processVisionRequest:(id)a3
+- (void)_processVisionRequest:(id)request
 {
-  v24 = a3;
+  requestCopy = request;
   v23 = [NSString stringWithFormat:@"[MADComputeServiceProcessingTask][%@]", objc_opt_class()];
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -1251,7 +1251,7 @@ LABEL_54:
     v5 = +[VCPPhotoLibraryManager sharedManager];
     v21 = [v5 photoLibraryWithURL:self->_photoLibraryURL];
 
-    v20 = [v21 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [v21 librarySpecificFetchOptions];
     v6 = [PHAsset fetchAssetsWithLocalIdentifiers:self->_localIdentifiers options:?];
     v7 = 0;
     type = VCPLogToOSLogType[3];
@@ -1260,14 +1260,14 @@ LABEL_54:
       v8 = objc_autoreleasePoolPush();
       v9 = [v6 objectAtIndexedSubscript:v7];
       v10 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v9];
-      v11 = [v10 vcp_thumbnailResource];
-      v12 = v11;
+      vcp_thumbnailResource = [v10 vcp_thumbnailResource];
+      v12 = vcp_thumbnailResource;
       self->_finishedTaskCount = self->_finishedTaskCount + 1.0;
-      if (v11)
+      if (vcp_thumbnailResource)
       {
-        v13 = [v11 privateFileURL];
-        v14 = [v9 localIdentifier];
-        [(MADComputeServiceProcessingTask *)self _runVisionRequest:v24 assetURL:v13 localIdentifier:v14];
+        privateFileURL = [vcp_thumbnailResource privateFileURL];
+        localIdentifier = [v9 localIdentifier];
+        [(MADComputeServiceProcessingTask *)self _runVisionRequest:requestCopy assetURL:privateFileURL localIdentifier:localIdentifier];
       }
 
       else
@@ -1276,12 +1276,12 @@ LABEL_54:
         v15 = [NSString stringWithFormat:@"%@ Missing analysis media", v23];
         v26 = v15;
         v16 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-        v13 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v16];
+        privateFileURL = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v16];
 
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
         {
           *buf = 138412290;
-          v28 = v13;
+          v28 = privateFileURL;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@", buf, 0xCu);
         }
 
@@ -1301,16 +1301,16 @@ LABEL_54:
       v18 = objc_autoreleasePoolPush();
       self->_finishedTaskCount = self->_finishedTaskCount + 1.0;
       v19 = [(NSArray *)self->_assetURLs objectAtIndexedSubscript:i];
-      [(MADComputeServiceProcessingTask *)self _runVisionRequest:v24 assetURL:v19 localIdentifier:0];
+      [(MADComputeServiceProcessingTask *)self _runVisionRequest:requestCopy assetURL:v19 localIdentifier:0];
 
       objc_autoreleasePoolPop(v18);
     }
   }
 }
 
-- (id)_prepareVideoAnalysisResults:(id)a3
+- (id)_prepareVideoAnalysisResults:(id)results
 {
-  v113 = a3;
+  resultsCopy = results;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v4 = VCPLogToOSLogType[6];
@@ -1344,12 +1344,12 @@ LABEL_54:
       }
     }
 
-    v7 = [v113 objectForKeyedSubscript:{MediaAnalysisExposureResultsKey, v109}];
-    v8 = [v7 firstObject];
+    v7 = [resultsCopy objectForKeyedSubscript:{MediaAnalysisExposureResultsKey, v109}];
+    firstObject = [v7 firstObject];
 
-    if (v8)
+    if (firstObject)
     {
-      v9 = [v8 objectForKeyedSubscript:MediaAnalysisResultQualityKey];
+      v9 = [firstObject objectForKeyedSubscript:MediaAnalysisResultQualityKey];
       [v9 doubleValue];
       v11 = v10;
     }
@@ -1368,7 +1368,7 @@ LABEL_54:
         *buf = 138412802;
         *&buf[4] = @"[PrepareVideoAnalysisResults]";
         *&buf[12] = 2112;
-        *&buf[14] = v113;
+        *&buf[14] = resultsCopy;
         *&buf[22] = 2112;
         *&buf[24] = v12;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "%@ MADExposureResult %@ - %@", buf, 0x20u);
@@ -1393,12 +1393,12 @@ LABEL_54:
       }
     }
 
-    v16 = [v113 objectForKeyedSubscript:{MediaAnalysisBlurResultsKey, v109, v110}];
-    v17 = [v16 firstObject];
+    v16 = [resultsCopy objectForKeyedSubscript:{MediaAnalysisBlurResultsKey, v109, v110}];
+    firstObject2 = [v16 firstObject];
 
-    if (v17)
+    if (firstObject2)
     {
-      v18 = [v17 objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
+      v18 = [firstObject2 objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
       v19 = [v18 objectForKeyedSubscript:MediaAnalysisResultSharpnessAttributeKey];
       [v19 doubleValue];
       v21 = v20;
@@ -1418,7 +1418,7 @@ LABEL_54:
         *buf = 138412802;
         *&buf[4] = @"[PrepareVideoAnalysisResults]";
         *&buf[12] = 2112;
-        *&buf[14] = v113;
+        *&buf[14] = resultsCopy;
         *&buf[22] = 2112;
         *&buf[24] = v22;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "%@ MADSharpnessResult %@ - %@", buf, 0x20u);
@@ -1443,7 +1443,7 @@ LABEL_54:
       }
     }
 
-    v120 = [v113 objectForKeyedSubscript:{MediaAnalysisClassificationResultsKey, v109}];
+    v120 = [resultsCopy objectForKeyedSubscript:{MediaAnalysisClassificationResultsKey, v109}];
     v136 = +[PFSceneTaxonomy vcp_sharedTaxonomy];
     v133 = +[NSMutableDictionary dictionary];
     v122 = 0;
@@ -1491,15 +1491,15 @@ LABEL_54:
             v38 = v37;
             if (v37 && [v37 networkId] == 1)
             {
-              v39 = [v38 name];
-              v40 = [v133 objectForKeyedSubscript:v39];
+              name = [v38 name];
+              v40 = [v133 objectForKeyedSubscript:name];
               v41 = v40 == 0;
 
               if (v41)
               {
                 v42 = +[NSMutableArray array];
-                v43 = [v38 name];
-                [v133 setObject:v42 forKeyedSubscript:v43];
+                name2 = [v38 name];
+                [v133 setObject:v42 forKeyedSubscript:name2];
               }
 
               *v149 = *buf;
@@ -1517,18 +1517,18 @@ LABEL_54:
                   _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Adding entry %@", v149, 0x16u);
                 }
 
-                v45 = [v38 name];
-                v46 = [v133 objectForKeyedSubscript:v45];
+                name3 = [v38 name];
+                v46 = [v133 objectForKeyedSubscript:name3];
                 [v46 addObject:v44];
               }
 
               else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v127))
               {
-                v47 = [v38 name];
+                name4 = [v38 name];
                 *v149 = 138412546;
                 *&v149[4] = @"[PrepareVideoAnalysisResults]";
                 *&v149[12] = 2112;
-                *&v149[14] = v47;
+                *&v149[14] = name4;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v127, "%@ Failed to create entry for label %@; skip", v149, 0x16u);
               }
             }
@@ -1580,7 +1580,7 @@ LABEL_54:
       }
     }
 
-    v137 = [v113 objectForKeyedSubscript:{MediaAnalysisFaceResultsKey, v109}];
+    v137 = [resultsCopy objectForKeyedSubscript:{MediaAnalysisFaceResultsKey, v109}];
     v134 = +[NSMutableDictionary dictionary];
     v52 = 0;
     *typea = MediaAnalysisResultAttributesKey;
@@ -1683,7 +1683,7 @@ LABEL_54:
       }
     }
 
-    v138 = [v113 objectForKeyedSubscript:{MediaAnalysisMovieSummaryResultsKey, v109}];
+    v138 = [resultsCopy objectForKeyedSubscript:{MediaAnalysisMovieSummaryResultsKey, v109}];
     typeb = +[NSMutableArray array];
     v71 = 0;
     v72 = MediaAnalysisResultQualityKey;
@@ -1726,7 +1726,7 @@ LABEL_54:
       }
     }
 
-    v135 = [v113 objectForKeyedSubscript:MediaAnalysisMovieHighlightResultsKey];
+    v135 = [resultsCopy objectForKeyedSubscript:MediaAnalysisMovieHighlightResultsKey];
     v129 = +[NSMutableArray array];
     for (j = 0; j < [v135 count]; ++j)
     {
@@ -1765,7 +1765,7 @@ LABEL_54:
       }
     }
 
-    v93 = [v113 objectForKeyedSubscript:MediaAnalysisMovieHighlightScoreResultsKey];
+    v93 = [resultsCopy objectForKeyedSubscript:MediaAnalysisMovieHighlightScoreResultsKey];
     v94 = +[NSMutableArray array];
     for (k = 0; k < [v93 count]; ++k)
     {
@@ -1890,13 +1890,13 @@ LABEL_54:
   return v4;
 }
 
-- (void)_savePartialAnalysis:(id)a3 assetIdentifierType:(id)a4 assetIdentifier:(id)a5
+- (void)_savePartialAnalysis:(id)analysis assetIdentifierType:(id)type assetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [NSString stringWithFormat:@"[SavePartialAnalysis][%@]", v10];
-  if (v8)
+  analysisCopy = analysis;
+  typeCopy = type;
+  identifierCopy = identifier;
+  identifierCopy = [NSString stringWithFormat:@"[SavePartialAnalysis][%@]", identifierCopy];
+  if (analysisCopy)
   {
     if (!self->_resultDirectoryURL)
     {
@@ -1906,7 +1906,7 @@ LABEL_54:
         if (os_log_type_enabled(&_os_log_default, v12))
         {
           *buf = 138412290;
-          v37 = v11;
+          v37 = identifierCopy;
           v13 = "%@ No result directory URL; skip saving partial analysis";
           goto LABEL_13;
         }
@@ -1916,7 +1916,7 @@ LABEL_54:
     }
 
     memset(&v31, 0, sizeof(v31));
-    [v8 vcp_syncPoint];
+    [analysisCopy vcp_syncPoint];
     if (!(0 >> 96))
     {
       if (MediaAnalysisLogLevel() >= 4)
@@ -1925,7 +1925,7 @@ LABEL_54:
         if (os_log_type_enabled(&_os_log_default, v12))
         {
           *buf = 138412290;
-          v37 = v11;
+          v37 = identifierCopy;
           v13 = "%@ Invalid sync point in paused analysis";
 LABEL_13:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v12, v13, buf, 0xCu);
@@ -1944,7 +1944,7 @@ LABEL_13:
         time = v31;
         Seconds = CMTimeGetSeconds(&time);
         *buf = 138413058;
-        v37 = v11;
+        v37 = identifierCopy;
         v38 = 2048;
         v39 = Seconds;
         v40 = 2048;
@@ -1960,10 +1960,10 @@ LABEL_13:
     v28 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v32[0] = @"assetIdentifier";
     v32[1] = @"identifierType";
-    v33[0] = v10;
-    v33[1] = v9;
+    v33[0] = identifierCopy;
+    v33[1] = typeCopy;
     v32[2] = @"analysis";
-    v33[2] = v8;
+    v33[2] = analysisCopy;
     v16 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:3];
     v29 = 0;
     v17 = [NSPropertyListSerialization dataWithPropertyList:v16 format:200 options:0 error:&v29];
@@ -1976,7 +1976,7 @@ LABEL_13:
         if (os_log_type_enabled(&_os_log_default, v23))
         {
           *buf = 138412546;
-          v37 = v11;
+          v37 = identifierCopy;
           v38 = 2112;
           v39 = *&v27;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "%@ Failed to serialize partial analysis - %@", buf, 0x16u);
@@ -1986,7 +1986,7 @@ LABEL_13:
       goto LABEL_35;
     }
 
-    v26 = [(MADComputeServiceProcessingTask *)self _partialAnalysisURL];
+    _partialAnalysisURL = [(MADComputeServiceProcessingTask *)self _partialAnalysisURL];
     if (![(NSURL *)self->_resultDirectoryURL startAccessingSecurityScopedResource])
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -1996,7 +1996,7 @@ LABEL_13:
         {
           resultDirectoryURL = self->_resultDirectoryURL;
           *buf = 138412546;
-          v37 = v11;
+          v37 = identifierCopy;
           v38 = 2112;
           v39 = *&resultDirectoryURL;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "%@ Failed to start security scoped resource %@", buf, 0x16u);
@@ -2007,8 +2007,8 @@ LABEL_13:
     }
 
     v18 = +[NSFileManager defaultManager];
-    v19 = [v26 path];
-    v20 = [v18 createFileAtPath:v19 contents:v17 attributes:v28];
+    path = [_partialAnalysisURL path];
+    v20 = [v18 createFileAtPath:path contents:v17 attributes:v28];
 
     if (v20)
     {
@@ -2024,9 +2024,9 @@ LABEL_13:
       }
 
       *buf = 138412546;
-      v37 = v11;
+      v37 = identifierCopy;
       v38 = 2112;
-      v39 = *&v26;
+      v39 = *&_partialAnalysisURL;
       v22 = "%@ Save partial analysis to %@";
     }
 
@@ -2044,9 +2044,9 @@ LABEL_13:
       }
 
       *buf = 138412546;
-      v37 = v11;
+      v37 = identifierCopy;
       v38 = 2112;
-      v39 = *&v26;
+      v39 = *&_partialAnalysisURL;
       v22 = "%@ Failed to save partial analysis to %@";
     }
 
@@ -2065,7 +2065,7 @@ LABEL_35:
     if (os_log_type_enabled(&_os_log_default, v12))
     {
       *buf = 138412290;
-      v37 = v11;
+      v37 = identifierCopy;
       v13 = "%@ No partial analysis to store";
       goto LABEL_13;
     }
@@ -2074,55 +2074,55 @@ LABEL_35:
 LABEL_36:
 }
 
-- (int)_processVideoAnalysis:(id)a3 analysisError:(id)a4 assetIdentifierType:(id)a5 assetIdentifier:(id)a6
+- (int)_processVideoAnalysis:(id)analysis analysisError:(id)error assetIdentifierType:(id)type assetIdentifier:(id)identifier
 {
-  v33 = a3;
-  v34 = a4;
-  v36 = a5;
-  v35 = a6;
-  v32 = [NSString stringWithFormat:@"[ProcessVideoAnalysis][%@]", v35];
+  analysisCopy = analysis;
+  errorCopy = error;
+  typeCopy = type;
+  identifierCopy = identifier;
+  identifierCopy = [NSString stringWithFormat:@"[ProcessVideoAnalysis][%@]", identifierCopy];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v10 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v10))
     {
       *buf = 138412290;
-      v43 = v32;
+      v43 = identifierCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "%@ Process video analysis results", buf, 0xCu);
     }
   }
 
-  if (v34)
+  if (errorCopy)
   {
-    if ([v34 code] == -128)
+    if ([errorCopy code] == -128)
     {
-      [(MADComputeServiceProcessingTask *)self _savePartialAnalysis:v33 assetIdentifierType:v36 assetIdentifier:v35];
+      [(MADComputeServiceProcessingTask *)self _savePartialAnalysis:analysisCopy assetIdentifierType:typeCopy assetIdentifier:identifierCopy];
     }
 
     totalTaskCount = self->_totalTaskCount;
     finishedTaskCount = self->_finishedTaskCount;
     self->_finishedTaskCount = finishedTaskCount + 1.0;
     (*(self->_progressHandler + 2))((finishedTaskCount + 1.0) / totalTaskCount);
-    v13 = [v36 isEqualToString:@"filePath"];
+    v13 = [typeCopy isEqualToString:@"filePath"];
     resultsHandler = self->_resultsHandler;
     if (v13)
     {
-      v15 = [NSURL fileURLWithPath:v35];
-      resultsHandler[2](resultsHandler, v15, 0, v34);
+      v15 = [NSURL fileURLWithPath:identifierCopy];
+      resultsHandler[2](resultsHandler, v15, 0, errorCopy);
     }
 
     else
     {
-      resultsHandler[2](self->_resultsHandler, v35, 0, v34);
+      resultsHandler[2](self->_resultsHandler, identifierCopy, 0, errorCopy);
     }
 
-    v29 = [v34 code];
+    code = [errorCopy code];
   }
 
   else
   {
-    v16 = [v33 vcp_results];
-    v31 = [(MADComputeServiceProcessingTask *)self _prepareVideoAnalysisResults:v16];
+    vcp_results = [analysisCopy vcp_results];
+    v31 = [(MADComputeServiceProcessingTask *)self _prepareVideoAnalysisResults:vcp_results];
 
     v18 = self->_totalTaskCount;
     v17 = self->_finishedTaskCount;
@@ -2135,7 +2135,7 @@ LABEL_36:
       {
         v20 = [v31 count];
         *buf = 138412546;
-        v43 = v32;
+        v43 = identifierCopy;
         v44 = 2048;
         v45 = v20;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v19, "%@ Calling result handler with %lu results", buf, 0x16u);
@@ -2161,17 +2161,17 @@ LABEL_36:
           }
 
           v25 = *(*(&v37 + 1) + 8 * i);
-          v26 = [v36 isEqualToString:@"filePath"];
+          v26 = [typeCopy isEqualToString:@"filePath"];
           v27 = self->_resultsHandler;
           if (v26)
           {
-            v28 = [NSURL fileURLWithPath:v35];
+            v28 = [NSURL fileURLWithPath:identifierCopy];
             v27[2](v27, v28, v25, 0);
           }
 
           else
           {
-            v27[2](self->_resultsHandler, v35, v25, 0);
+            v27[2](self->_resultsHandler, identifierCopy, v25, 0);
           }
         }
 
@@ -2181,37 +2181,37 @@ LABEL_36:
       while (v22);
     }
 
-    objc_storeStrong(&self->_resumedAssetIdentifier, a6);
-    v29 = 0;
+    objc_storeStrong(&self->_resumedAssetIdentifier, identifier);
+    code = 0;
   }
 
-  return v29;
+  return code;
 }
 
-- (id)_processVideoAsset:(id)a3 partialAnalysis:(id)a4 analysisTypes:(unint64_t)a5 error:(id *)a6
+- (id)_processVideoAsset:(id)asset partialAnalysis:(id)analysis analysisTypes:(unint64_t)types error:(id *)error
 {
-  v10 = a3;
-  v43 = a4;
-  v11 = [v10 localIdentifier];
-  v44 = [NSString stringWithFormat:@"[ProcessVideoAsset][%@]", v11];
+  assetCopy = asset;
+  analysisCopy = analysis;
+  localIdentifier = [assetCopy localIdentifier];
+  v44 = [NSString stringWithFormat:@"[ProcessVideoAsset][%@]", localIdentifier];
 
-  v12 = [v10 photoLibrary];
-  v13 = [VCPDatabaseReader databaseForPhotoLibrary:v12];
+  photoLibrary = [assetCopy photoLibrary];
+  v13 = [VCPDatabaseReader databaseForPhotoLibrary:photoLibrary];
 
   v14 = MediaAnalysisResultsTypesForAnalysisTypes();
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v15 = [v10 photoLibrary];
-    v16 = [v15 mad_fetchRequest];
+    photoLibrary2 = [assetCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary2 mad_fetchRequest];
 
-    v17 = [v10 localIdentifier];
-    v18 = [v16 fetchAnalysisWithLocalIdentifier:v17 predicate:0 resultTypes:v14];
+    localIdentifier2 = [assetCopy localIdentifier];
+    v18 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier2 predicate:0 resultTypes:v14];
   }
 
   else
   {
-    v16 = [v10 localIdentifier];
-    v18 = [v13 queryAnalysisForAsset:v16 withTypes:v14];
+    mad_fetchRequest = [assetCopy localIdentifier];
+    v18 = [v13 queryAnalysisForAsset:mad_fetchRequest withTypes:v14];
   }
 
   if (!v18)
@@ -2219,8 +2219,8 @@ LABEL_36:
     goto LABEL_17;
   }
 
-  v19 = [v18 vcp_version];
-  if (v19 < MediaAnalysisMinValidVersion)
+  vcp_version = [v18 vcp_version];
+  if (vcp_version < MediaAnalysisMinValidVersion)
   {
 
 LABEL_17:
@@ -2228,9 +2228,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v20 = [v18 vcp_dateModified];
-  v21 = [v10 vcp_modificationDate];
-  v22 = [v20 isEqualToDate:v21];
+  vcp_dateModified = [v18 vcp_dateModified];
+  vcp_modificationDate = [assetCopy vcp_modificationDate];
+  v22 = [vcp_dateModified isEqualToDate:vcp_modificationDate];
 
   if ((v22 & 1) == 0)
   {
@@ -2250,7 +2250,7 @@ LABEL_17:
 
   v23 = MediaAnalysisStripOutdatedAnalysis();
 
-  if ((a5 & ~[v23 vcp_types]) != 0)
+  if ((types & ~[v23 vcp_types]) != 0)
   {
     if (MediaAnalysisLogLevel() >= 7)
     {
@@ -2267,7 +2267,7 @@ LABEL_17:
       }
     }
 
-    a5 &= ~[v23 vcp_types];
+    types &= ~[v23 vcp_types];
     if (MediaAnalysisLogLevel() >= 7)
     {
       v41 = VCPLogToOSLogType[7];
@@ -2283,21 +2283,21 @@ LABEL_17:
     }
 
 LABEL_18:
-    if ([v10 isVideo])
+    if ([assetCopy isVideo])
     {
-      v28 = [[VCPMovieAnalyzer alloc] initWithPHAsset:v10 withPausedAnalysis:v43 forAnalysisTypes:a5];
+      v28 = [[VCPMovieAnalyzer alloc] initWithPHAsset:assetCopy withPausedAnalysis:analysisCopy forAnalysisTypes:types];
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_1000B0190;
       v46[3] = &unk_100283000;
       v46[4] = self;
       v29 = [v28 analyzeAsset:v46 streamed:0];
-      v30 = [v28 status];
+      status = [v28 status];
     }
 
     else
     {
-      v28 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:v10 withExistingAnalysis:v23 forAnalysisTypes:a5];
+      v28 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:assetCopy withExistingAnalysis:v23 forAnalysisTypes:types];
       [v28 setAllowStreaming:1];
       [v28 setRequiresOnDemandDownload:1];
       v45[0] = _NSConcreteStackBlock;
@@ -2306,10 +2306,10 @@ LABEL_18:
       v45[3] = &unk_100283000;
       v45[4] = self;
       v29 = [v28 analyzeAsset:v45 withOptions:0];
-      v30 = [v28 status];
+      status = [v28 status];
     }
 
-    v31 = v30;
+    v31 = status;
 
     if (v29)
     {
@@ -2320,13 +2320,13 @@ LABEL_18:
 
     if (v31 == 4)
     {
-      if (a6)
+      if (error)
       {
         v49 = NSLocalizedDescriptionKey;
         v34 = [NSString stringWithFormat:@"%@ Analysis canceled", v44];
         v50 = v34;
         v35 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-        *a6 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v35];
+        *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v35];
       }
     }
 
@@ -2334,13 +2334,13 @@ LABEL_18:
     {
       if (v31 != 2)
       {
-        if (a6)
+        if (error)
         {
           v47 = NSLocalizedDescriptionKey;
           v36 = [NSString stringWithFormat:@"%@ Failed to analyze (status:%ld)", v44, v31];
           v48 = v36;
           v37 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-          *a6 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v37];
+          *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v37];
         }
 
         v26 = 0;
@@ -2389,12 +2389,12 @@ LABEL_35:
 
 - (int)_resumePausedVideoAnalysis
 {
-  v3 = [(MADComputeServiceProcessingTask *)self _partialAnalysisURL];
+  _partialAnalysisURL = [(MADComputeServiceProcessingTask *)self _partialAnalysisURL];
   if ([(NSURL *)self->_resultDirectoryURL startAccessingSecurityScopedResource])
   {
-    v4 = [NSDictionary dictionaryWithContentsOfURL:v3];
+    v4 = [NSDictionary dictionaryWithContentsOfURL:_partialAnalysisURL];
     v5 = +[NSFileManager defaultManager];
-    [v5 removeItemAtURL:v3 error:0];
+    [v5 removeItemAtURL:_partialAnalysisURL error:0];
 
     [(NSURL *)self->_resultDirectoryURL stopAccessingSecurityScopedResource];
     if (!v4)
@@ -2509,7 +2509,7 @@ LABEL_35:
         }
       }
 
-      v21 = [(MADComputeServiceProcessingTask *)self _videoAnalysisTypes];
+      _videoAnalysisTypes = [(MADComputeServiceProcessingTask *)self _videoAnalysisTypes];
       if ([v53 isEqualToString:@"filePath"])
       {
         context = objc_autoreleasePoolPush();
@@ -2548,7 +2548,7 @@ LABEL_35:
         dsema = v23;
         v58 = dsema;
         v50 = objc_retainBlock(v56);
-        v24 = v21;
+        v24 = _videoAnalysisTypes;
         v25 = [NSURL fileURLWithPath:v52];
         v69 = v25;
         v26 = [NSArray arrayWithObjects:&v69 count:1];
@@ -2564,15 +2564,15 @@ LABEL_35:
         dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
         if ([*(*&time.timescale + 40) code] == -128)
         {
-          v28 = [v27 partialAnalysis];
+          partialAnalysis = [v27 partialAnalysis];
           v29 = *(*&buf[8] + 40);
-          *(*&buf[8] + 40) = v28;
+          *(*&buf[8] + 40) = partialAnalysis;
         }
 
         v30 = *(*&buf[8] + 40);
         v31 = *(*&time.timescale + 40);
-        v32 = [v25 path];
-        LOBYTE(v30) = [(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v30 analysisError:v31 assetIdentifierType:@"filePath" assetIdentifier:v32]== 0;
+        path = [v25 path];
+        LOBYTE(v30) = [(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v30 analysisError:v31 assetIdentifierType:@"filePath" assetIdentifier:path]== 0;
 
         if (v30)
         {
@@ -2623,12 +2623,12 @@ LABEL_35:
         v66 = v52;
         v37 = [NSArray arrayWithObjects:&v66 count:1];
         v38 = [PHAsset fetchAssetsWithLocalIdentifiers:v37 options:dsemaa];
-        v39 = [v38 firstObject];
+        firstObject = [v38 firstObject];
 
-        if (v39)
+        if (firstObject)
         {
           v54 = 0;
-          v40 = [(MADComputeServiceProcessingTask *)self _processVideoAsset:v39 partialAnalysis:v6 analysisTypes:v21 error:&v54];
+          v40 = [(MADComputeServiceProcessingTask *)self _processVideoAsset:firstObject partialAnalysis:v6 analysisTypes:_videoAnalysisTypes error:&v54];
           v41 = v54;
           if ([(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v40 analysisError:v41 assetIdentifierType:@"localIdentifier" assetIdentifier:v52])
           {
@@ -2795,8 +2795,8 @@ LABEL_74:
 
         v7 = *(*(&v42 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = [v7 path];
-        v10 = [v9 isEqualToString:self->_resumedAssetIdentifier];
+        path = [v7 path];
+        v10 = [path isEqualToString:self->_resumedAssetIdentifier];
 
         if (!v10)
         {
@@ -2846,15 +2846,15 @@ LABEL_74:
           dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
           if ([v37[5] code] == -128)
           {
-            v16 = [v14 partialAnalysis];
+            partialAnalysis = [v14 partialAnalysis];
             v17 = *(*&buf[8] + 40);
-            *(*&buf[8] + 40) = v16;
+            *(*&buf[8] + 40) = partialAnalysis;
           }
 
           v18 = *(*&buf[8] + 40);
           v19 = v37[5];
-          v20 = [v7 path];
-          LODWORD(v19) = [(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v18 analysisError:v19 assetIdentifierType:@"filePath" assetIdentifier:v20]== 0;
+          path2 = [v7 path];
+          LODWORD(v19) = [(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v18 analysisError:v19 assetIdentifierType:@"filePath" assetIdentifier:path2]== 0;
 
           if (v19)
           {
@@ -2953,41 +2953,41 @@ LABEL_27:
     v11 = [v7 objectAtIndexedSubscript:v8];
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v9))
     {
-      v12 = [v11 localIdentifier];
+      localIdentifier = [v11 localIdentifier];
       *buf = 138412546;
       v26 = @"[ProcessVideoAsset]";
       v27 = 2112;
-      v28 = v12;
+      v28 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "%@[%@] Start processing ...", buf, 0x16u);
     }
 
-    v13 = [(MADComputeServiceProcessingTask *)self _videoAnalysisTypes];
+    _videoAnalysisTypes = [(MADComputeServiceProcessingTask *)self _videoAnalysisTypes];
     v24 = 0;
-    v14 = [(MADComputeServiceProcessingTask *)self _processVideoAsset:v11 partialAnalysis:0 analysisTypes:v13 error:&v24];
+    v14 = [(MADComputeServiceProcessingTask *)self _processVideoAsset:v11 partialAnalysis:0 analysisTypes:_videoAnalysisTypes error:&v24];
     v15 = v24;
-    v16 = [v11 localIdentifier];
-    v17 = [(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v14 analysisError:v15 assetIdentifierType:@"localIdentifier" assetIdentifier:v16]== 0;
+    localIdentifier2 = [v11 localIdentifier];
+    v17 = [(MADComputeServiceProcessingTask *)self _processVideoAnalysis:v14 analysisError:v15 assetIdentifierType:@"localIdentifier" assetIdentifier:localIdentifier2]== 0;
 
     if (v17)
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v9))
       {
-        v19 = [v11 localIdentifier];
+        localIdentifier3 = [v11 localIdentifier];
         *buf = 138412546;
         v26 = @"[ProcessVideoAsset]";
         v27 = 2112;
-        v28 = v19;
+        v28 = localIdentifier3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "%@[%@] Processed analysis", buf, 0x16u);
       }
     }
 
     else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
     {
-      v18 = [v11 localIdentifier];
+      localIdentifier4 = [v11 localIdentifier];
       *buf = 138412546;
       v26 = @"[ProcessVideoAsset]";
       v27 = 2112;
-      v28 = v18;
+      v28 = localIdentifier4;
       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@[%@] Failed to process analysis", buf, 0x16u);
     }
 
@@ -3045,7 +3045,7 @@ LABEL_27:
   while (v4 < [(NSArray *)self->_assetURLs count])
   {
     v6 = [(NSArray *)self->_assetURLs objectAtIndexedSubscript:v4];
-    v7 = [v6 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v6 startAccessingSecurityScopedResource];
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v5))
     {
@@ -3053,7 +3053,7 @@ LABEL_27:
       v9 = v8;
       *buf = 138412802;
       v10 = @"failed";
-      if (v7)
+      if (startAccessingSecurityScopedResource)
       {
         v10 = @"success";
       }
@@ -3077,9 +3077,9 @@ LABEL_27:
   while (v11 < [(NSArray *)self->_requests count])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = [(MADComputeServiceProcessingTask *)self isCancelled];
-    v14 = v13;
-    if (v13)
+    isCancelled = [(MADComputeServiceProcessingTask *)self isCancelled];
+    v14 = isCancelled;
+    if (isCancelled)
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
       {
@@ -3126,8 +3126,8 @@ LABEL_27:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v17 = [(MADComputeServiceProcessingTask *)self _prepareSceneAssetProcessingTask];
-                    if (v17)
+                    _prepareSceneAssetProcessingTask = [(MADComputeServiceProcessingTask *)self _prepareSceneAssetProcessingTask];
+                    if (_prepareSceneAssetProcessingTask)
                     {
                       goto LABEL_34;
                     }
@@ -3159,11 +3159,11 @@ LABEL_86:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v17 = [(MADComputeServiceProcessingTask *)self _prepareFaceAssetProcessingTask];
-                    if (v17)
+                    _prepareSceneAssetProcessingTask = [(MADComputeServiceProcessingTask *)self _prepareFaceAssetProcessingTask];
+                    if (_prepareSceneAssetProcessingTask)
                     {
 LABEL_34:
-                      [v87 addObject:v17];
+                      [v87 addObject:_prepareSceneAssetProcessingTask];
                       goto LABEL_86;
                     }
 
@@ -3200,8 +3200,8 @@ LABEL_44:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v17 = [v15 visionRequest];
-                      [(MADComputeServiceProcessingTask *)self _processVisionRequest:v17];
+                      _prepareSceneAssetProcessingTask = [v15 visionRequest];
+                      [(MADComputeServiceProcessingTask *)self _processVisionRequest:_prepareSceneAssetProcessingTask];
                       goto LABEL_86;
                     }
 
@@ -3214,7 +3214,7 @@ LABEL_44:
                       v32 = [NSDictionary dictionaryWithObjects:&v95 forKeys:&v94 count:1];
                       v79 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 userInfo:v32];
 
-                      v17 = v79;
+                      _prepareSceneAssetProcessingTask = v79;
                       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v83))
                       {
                         *buf = 138412290;
@@ -3233,48 +3233,48 @@ LABEL_44:
 
                     v78 = v15;
                     [v78 consumeSandboxExtension];
-                    v22 = [v78 modelURL];
-                    v81 = [v22 startAccessingSecurityScopedResource];
+                    modelURL = [v78 modelURL];
+                    startAccessingSecurityScopedResource2 = [modelURL startAccessingSecurityScopedResource];
 
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v5))
                     {
-                      v23 = [v78 modelURL];
-                      v24 = v23;
+                      modelURL2 = [v78 modelURL];
+                      v24 = modelURL2;
                       *buf = 138412802;
                       v25 = @"failed";
-                      if (v81)
+                      if (startAccessingSecurityScopedResource2)
                       {
                         v25 = @"success";
                       }
 
                       v103 = v16;
                       v104 = 2112;
-                      v105 = v23;
+                      v105 = modelURL2;
                       v106 = 2112;
                       v107 = v25;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Consuming secure scoped model URL %@ : %@", buf, 0x20u);
                     }
 
-                    v82 = [v78 modelURL];
-                    v26 = [v82 lastPathComponent];
-                    v73 = [v26 isEqualToString:@".mlmodel"];
+                    modelURL3 = [v78 modelURL];
+                    lastPathComponent = [modelURL3 lastPathComponent];
+                    v73 = [lastPathComponent isEqualToString:@".mlmodel"];
 
                     if (v73)
                     {
                       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v5))
                       {
-                        v27 = [v78 modelURL];
+                        modelURL4 = [v78 modelURL];
                         *buf = 138412546;
                         v103 = v16;
                         v104 = 2112;
-                        v105 = v27;
+                        v105 = modelURL4;
                         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Compiling compiledModelURL at %@", buf, 0x16u);
                       }
 
-                      v28 = [v78 modelURL];
+                      modelURL5 = [v78 modelURL];
                       v91 = 0;
-                      v29 = v28;
-                      v74 = [MLModel compileModelAtURL:v28 error:&v91];
+                      v29 = modelURL5;
+                      v74 = [MLModel compileModelAtURL:modelURL5 error:&v91];
                       v70 = v91;
 
                       v90 = v70;
@@ -3284,10 +3284,10 @@ LABEL_44:
 
                     else
                     {
-                      v36 = [v78 modelURL];
+                      modelURL6 = [v78 modelURL];
                       v89 = 0;
-                      v74 = v36;
-                      v80 = [MLModel modelWithContentsOfURL:v36 error:&v89];
+                      v74 = modelURL6;
+                      v80 = [MLModel modelWithContentsOfURL:modelURL6 error:&v89];
                       v30 = v89;
                     }
 
@@ -3342,8 +3342,8 @@ LABEL_44:
                     if (!v43)
                     {
                       v96 = NSLocalizedDescriptionKey;
-                      v67 = [v78 modelURL];
-                      v66 = [NSString stringWithFormat:@"%@ Failed to create VNRequest with CoreML model %@ - %@", v16, v71, v67];
+                      modelURL7 = [v78 modelURL];
+                      v66 = [NSString stringWithFormat:@"%@ Failed to create VNRequest with CoreML model %@ - %@", v16, v71, modelURL7];
                       v97 = v66;
                       v44 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
                       v68 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v44];
@@ -3368,19 +3368,19 @@ LABEL_44:
                     [(MADComputeServiceProcessingTask *)self _processVisionRequest:v43];
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v5))
                     {
-                      v48 = [v78 modelURL];
+                      modelURL8 = [v78 modelURL];
                       *buf = 138412546;
                       v103 = v16;
                       v104 = 2112;
-                      v105 = v48;
+                      v105 = modelURL8;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Releasing secure scoped model URL %@", buf, 0x16u);
                     }
 
-                    v49 = [v78 modelURL];
-                    [v49 stopAccessingSecurityScopedResource];
+                    modelURL9 = [v78 modelURL];
+                    [modelURL9 stopAccessingSecurityScopedResource];
                   }
 
-                  v17 = v78;
+                  _prepareSceneAssetProcessingTask = v78;
                   goto LABEL_86;
                 }
               }
@@ -3411,9 +3411,9 @@ LABEL_30:
     }
 
     v51 = objc_autoreleasePoolPush();
-    v52 = [(MADComputeServiceProcessingTask *)self isCancelled];
-    v53 = v52;
-    if (v52)
+    isCancelled2 = [(MADComputeServiceProcessingTask *)self isCancelled];
+    v53 = isCancelled2;
+    if (isCancelled2)
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
       {
@@ -3484,9 +3484,9 @@ LABEL_30:
     [v59 stopAccessingSecurityScopedResource];
   }
 
-  v60 = [(MADComputeServiceProcessingTask *)self isCancelled];
+  isCancelled3 = [(MADComputeServiceProcessingTask *)self isCancelled];
   completionHandler = self->_completionHandler;
-  if (v60)
+  if (isCancelled3)
   {
     v92 = NSLocalizedDescriptionKey;
     v62 = [NSString stringWithFormat:@"%@ Request is canceled", v86];

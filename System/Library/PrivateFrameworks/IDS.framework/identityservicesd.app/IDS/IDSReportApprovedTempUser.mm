@@ -1,9 +1,9 @@
 @interface IDSReportApprovedTempUser
 - (IDSReportApprovedTempUser)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSReportApprovedTempUser
@@ -22,17 +22,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IDSReportApprovedTempUser;
-  v4 = [(IDSReportApprovedTempUser *)&v8 copyWithZone:a3];
-  v5 = [(IDSReportApprovedTempUser *)self tempUserID];
-  [v4 setTempUserID:v5];
+  v4 = [(IDSReportApprovedTempUser *)&v8 copyWithZone:zone];
+  tempUserID = [(IDSReportApprovedTempUser *)self tempUserID];
+  [v4 setTempUserID:tempUserID];
 
   [v4 setReportAction:{-[IDSReportApprovedTempUser reportAction](self, "reportAction")}];
-  v6 = [(IDSReportApprovedTempUser *)self responseMessage];
-  [v4 setResponseMessage:v6];
+  responseMessage = [(IDSReportApprovedTempUser *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
   return v4;
 }
@@ -60,10 +60,10 @@
     sub_100914A30();
   }
 
-  v5 = [(IDSReportApprovedTempUser *)self tempUserID];
-  if (v5)
+  tempUserID = [(IDSReportApprovedTempUser *)self tempUserID];
+  if (tempUserID)
   {
-    CFDictionarySetValue(v3, @"web-uri", v5);
+    CFDictionarySetValue(v3, @"web-uri", tempUserID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -74,27 +74,27 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Report Unknown Sender response: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v7 = v4;
+    v7 = dictionaryCopy;
     _IDSLogV();
   }
 
   v8.receiver = self;
   v8.super_class = IDSReportApprovedTempUser;
-  [(IDSReportApprovedTempUser *)&v8 handleResponseDictionary:v4, v7];
-  v6 = [v4 objectForKey:@"message"];
+  [(IDSReportApprovedTempUser *)&v8 handleResponseDictionary:dictionaryCopy, v7];
+  v6 = [dictionaryCopy objectForKey:@"message"];
   [(IDSReportApprovedTempUser *)self setResponseMessage:v6];
 }
 

@@ -4,11 +4,11 @@
 - (BOOL)isFullscreen;
 - (CGPoint)drawingOrigin;
 - (UIDebuggingInformationOverlay)init;
-- (UIDebuggingInformationOverlay)initWithFrame:(CGRect)a3;
+- (UIDebuggingInformationOverlay)initWithFrame:(CGRect)frame;
 - (UIDebuggingInformationRootTableViewController)rootTableViewController;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_setHidden:(BOOL)a3;
-- (void)setRootTableViewController:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_setHidden:(BOOL)hidden;
+- (void)setRootTableViewController:(id)controller;
 - (void)toggleFullscreen;
 - (void)toggleVisibility;
 @end
@@ -34,31 +34,31 @@
     }
 
     self = v4;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)isFullscreen
 {
-  v2 = [(UIDebuggingInformationOverlay *)self overlayViewController];
-  v3 = [v2 isFullscreen];
+  overlayViewController = [(UIDebuggingInformationOverlay *)self overlayViewController];
+  isFullscreen = [overlayViewController isFullscreen];
 
-  return v3;
+  return isFullscreen;
 }
 
 + (void)prepareDebuggingOverlay
 {
   if (_UIGetDebuggingOverlayEnabled())
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v2 = [v3 addObserverForName:@"UIApplicationProtectedDataWillBecomeUnavailable" object:0 queue:0 usingBlock:&__block_literal_global_88_1];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v2 = [defaultCenter addObserverForName:@"UIApplicationProtectedDataWillBecomeUnavailable" object:0 queue:0 usingBlock:&__block_literal_global_88_1];
   }
 }
 
@@ -95,18 +95,18 @@ uint64_t __40__UIDebuggingInformationOverlay_overlay__block_invoke()
   return [v4 setHidden:1];
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
   [(UIView *)self frame];
   v6 = v5;
-  v7 = [(UIDebuggingInformationOverlay *)self overlayViewController];
-  v8 = [v7 containerView];
-  [v8 frame];
+  overlayViewController = [(UIDebuggingInformationOverlay *)self overlayViewController];
+  containerView = [overlayViewController containerView];
+  [containerView frame];
   v10 = v6 - v9;
 
   memset(&v20, 0, sizeof(v20));
   CGAffineTransformMakeTranslation(&v20, 0.0, v10);
-  if (a3)
+  if (hidden)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -180,9 +180,9 @@ uint64_t __44__UIDebuggingInformationOverlay__setHidden___block_invoke_3(uint64_
 
 - (void)toggleVisibility
 {
-  v3 = [(UIDebuggingInformationOverlay *)self inspectedWindow];
+  inspectedWindow = [(UIDebuggingInformationOverlay *)self inspectedWindow];
 
-  if (!v3)
+  if (!inspectedWindow)
   {
     v4 = +[UIWindow _applicationKeyWindow];
     [(UIDebuggingInformationOverlay *)self setInspectedWindow:v4];
@@ -195,19 +195,19 @@ uint64_t __44__UIDebuggingInformationOverlay__setHidden___block_invoke_3(uint64_
 
 - (void)toggleFullscreen
 {
-  v2 = [(UIDebuggingInformationOverlay *)self overlayViewController];
-  [v2 toggleFullscreen];
+  overlayViewController = [(UIDebuggingInformationOverlay *)self overlayViewController];
+  [overlayViewController toggleFullscreen];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(UIDebuggingInformationOverlay *)self overlayViewController];
-  v9 = [v8 containerView];
-  [v9 frame];
+  eventCopy = event;
+  overlayViewController = [(UIDebuggingInformationOverlay *)self overlayViewController];
+  containerView = [overlayViewController containerView];
+  [containerView frame];
   v32.x = x;
   v32.y = y;
   v10 = CGRectContainsPoint(v33, v32);
@@ -216,22 +216,22 @@ uint64_t __44__UIDebuggingInformationOverlay__setHidden___block_invoke_3(uint64_
   {
     v28.receiver = self;
     v28.super_class = UIDebuggingInformationOverlay;
-    [(UIView *)&v28 hitTest:v7 withEvent:x, y, v23.receiver, v23.super_class];
-    v11 = LABEL_3:;
+    [(UIView *)&v28 hitTest:eventCopy withEvent:x, y, v23.receiver, v23.super_class];
+    selfCopy = LABEL_3:;
     goto LABEL_19;
   }
 
-  if ([(UIDebuggingInformationOverlay *)self checkingTouches]|| ([(UIDebuggingInformationOverlay *)self lastTouch], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 == v7))
+  if ([(UIDebuggingInformationOverlay *)self checkingTouches]|| ([(UIDebuggingInformationOverlay *)self lastTouch], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 == eventCopy))
   {
-    v13 = [(UIDebuggingInformationOverlay *)self inspectedWindow];
-    v14 = [v13 hitTest:v7 withEvent:{x, y}];
+    inspectedWindow = [(UIDebuggingInformationOverlay *)self inspectedWindow];
+    v14 = [inspectedWindow hitTest:eventCopy withEvent:{x, y}];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [(UIDebuggingInformationOverlay *)self touchObservers];
-    v16 = [v15 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    touchObservers = [(UIDebuggingInformationOverlay *)self touchObservers];
+    v16 = [touchObservers countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v16)
     {
       v17 = v16;
@@ -242,61 +242,61 @@ uint64_t __44__UIDebuggingInformationOverlay__setHidden___block_invoke_3(uint64_
         {
           if (*v25 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(touchObservers);
           }
 
           [*(*(&v24 + 1) + 8 * i) didReceiveNewView:v14];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v17 = [touchObservers countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v17);
     }
 
     [(UIDebuggingInformationOverlay *)self setCheckingTouches:0];
-    v20 = [(UIDebuggingInformationOverlay *)self lastTouch];
+    lastTouch = [(UIDebuggingInformationOverlay *)self lastTouch];
 
-    if (v20 == v7)
+    if (lastTouch == eventCopy)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = v7;
+      v21 = eventCopy;
     }
 
     [(UIDebuggingInformationOverlay *)self setLastTouch:v21];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     if ([(UIDebuggingInformationOverlay *)self touchCaptureEnabled])
     {
-      [(UIView *)&v23 hitTest:v7 withEvent:x, y, self, UIDebuggingInformationOverlay];
+      [(UIView *)&v23 hitTest:eventCopy withEvent:x, y, self, UIDebuggingInformationOverlay];
       goto LABEL_3;
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
 LABEL_19:
 
-  return v11;
+  return selfCopy;
 }
 
-- (UIDebuggingInformationOverlay)initWithFrame:(CGRect)a3
+- (UIDebuggingInformationOverlay)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIDebuggingInformationOverlay;
-  v3 = [(UIWindow *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIWindow *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     touchObservers = v3->_touchObservers;
-    v3->_touchObservers = v4;
+    v3->_touchObservers = array;
 
     [(UIWindow *)v3 setWindowLevel:2200.0];
   }
@@ -306,17 +306,17 @@ LABEL_19:
 
 - (UIDebuggingInformationRootTableViewController)rootTableViewController
 {
-  v2 = [(UIDebuggingInformationOverlay *)self overlayViewController];
-  v3 = [v2 rootTableViewController];
+  overlayViewController = [(UIDebuggingInformationOverlay *)self overlayViewController];
+  rootTableViewController = [overlayViewController rootTableViewController];
 
-  return v3;
+  return rootTableViewController;
 }
 
-- (void)setRootTableViewController:(id)a3
+- (void)setRootTableViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIDebuggingInformationOverlay *)self overlayViewController];
-  [v5 setRootTableViewController:v4];
+  controllerCopy = controller;
+  overlayViewController = [(UIDebuggingInformationOverlay *)self overlayViewController];
+  [overlayViewController setRootTableViewController:controllerCopy];
 }
 
 - (CGPoint)drawingOrigin

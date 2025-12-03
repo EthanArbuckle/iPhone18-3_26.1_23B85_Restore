@@ -71,7 +71,7 @@
   v11.f64[1] = v12;
   v13 = vsub_f32(vcvt_f32_f64(v11), v9);
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:{1.0 / vaddv_f32(vmul_f32(v13, v13))}];
-  v15 = [(CILinearGradient *)self _kernel];
+  _kernel = [(CILinearGradient *)self _kernel];
   v16 = *MEMORY[0x1E695F040];
   v17 = *(MEMORY[0x1E695F040] + 8);
   v18 = *(MEMORY[0x1E695F040] + 16);
@@ -84,7 +84,7 @@
   v25[2] = inputColor0;
   v25[3] = inputColor1;
   v25[4] = v14;
-  return [v15 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 5), v16, v17, v18, v19}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 5), v16, v17, v18, v19}];
 }
 
 @end

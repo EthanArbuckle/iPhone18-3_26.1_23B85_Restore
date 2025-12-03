@@ -1,16 +1,16 @@
 @interface BWCoreImageFilterRendererParameters
-+ (BOOL)containsFilterRequiringFaceLandmarks:(id)a3;
-- (BWCoreImageFilterRendererParameters)initWithFilters:(id)a3 originalOutputFilter:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)depthTypeForFilter:(id)a3;
-- (uint64_t)_ensureResourceRequirementsForFilters:(_BYTE *)a3 outputRequiresFaceLandmarks:(_BYTE *)a4 outputRequiresDepthMap:;
++ (BOOL)containsFilterRequiringFaceLandmarks:(id)landmarks;
+- (BWCoreImageFilterRendererParameters)initWithFilters:(id)filters originalOutputFilter:(id)filter;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)depthTypeForFilter:(id)filter;
+- (uint64_t)_ensureResourceRequirementsForFilters:(_BYTE *)filters outputRequiresFaceLandmarks:(_BYTE *)landmarks outputRequiresDepthMap:;
 - (void)dealloc;
-- (void)setFilters:(id)a3;
+- (void)setFilters:(id)filters;
 @end
 
 @implementation BWCoreImageFilterRendererParameters
 
-- (BWCoreImageFilterRendererParameters)initWithFilters:(id)a3 originalOutputFilter:(id)a4
+- (BWCoreImageFilterRendererParameters)initWithFilters:(id)filters originalOutputFilter:(id)filter
 {
   v10.receiver = self;
   v10.super_class = BWCoreImageFilterRendererParameters;
@@ -19,9 +19,9 @@
   if (v6)
   {
     v9 = 0;
-    [(BWCoreImageFilterRendererParameters *)v6 _ensureResourceRequirementsForFilters:a3 outputRequiresFaceLandmarks:&v9 + 1 outputRequiresDepthMap:&v9];
-    v7->_filters = [a3 copy];
-    v7->_originalOutputFilter = a4;
+    [(BWCoreImageFilterRendererParameters *)v6 _ensureResourceRequirementsForFilters:filters outputRequiresFaceLandmarks:&v9 + 1 outputRequiresDepthMap:&v9];
+    v7->_filters = [filters copy];
+    v7->_originalOutputFilter = filter;
     v7->_requiresFaceLandmarks = HIBYTE(v9);
     v7->_requiresDepthMap = v9;
   }
@@ -36,7 +36,7 @@
   [(BWCoreImageFilterRendererParameters *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithFilters:self->_filters originalOutputFilter:self->_originalOutputFilter];
   *(result + 24) = self->_requiresFaceLandmarks;
@@ -44,33 +44,33 @@
   return result;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  if (self->_filters != a3)
+  if (self->_filters != filters)
   {
     v8 = v3;
     v9 = v4;
     v7 = 0;
-    [(BWCoreImageFilterRendererParameters *)self _ensureResourceRequirementsForFilters:a3 outputRequiresFaceLandmarks:&v7 + 1 outputRequiresDepthMap:&v7];
+    [(BWCoreImageFilterRendererParameters *)self _ensureResourceRequirementsForFilters:filters outputRequiresFaceLandmarks:&v7 + 1 outputRequiresDepthMap:&v7];
 
-    self->_filters = [a3 copy];
+    self->_filters = [filters copy];
     self->_requiresFaceLandmarks = HIBYTE(v7);
     self->_requiresDepthMap = v7;
   }
 }
 
-- (int)depthTypeForFilter:(id)a3
+- (int)depthTypeForFilter:(id)filter
 {
-  v4 = [a3 inputKeys];
-  if (v4)
+  inputKeys = [filter inputKeys];
+  if (inputKeys)
   {
-    v5 = v4;
-    if ([v4 containsObject:@"inputBlurMap"])
+    v5 = inputKeys;
+    if ([inputKeys containsObject:@"inputBlurMap"])
     {
       return 3;
     }
 
-    else if ([v5 containsObject:@"inputDisparity"] && ((objc_msgSend(objc_msgSend(a3, "name"), "isEqualToString:", @"CIPortraitEffectStage") & 1) != 0 || (objc_msgSend(objc_msgSend(a3, "name"), "isEqualToString:", @"CIPortraitEffectStageMono") & 1) != 0))
+    else if ([v5 containsObject:@"inputDisparity"] && ((objc_msgSend(objc_msgSend(filter, "name"), "isEqualToString:", @"CIPortraitEffectStage") & 1) != 0 || (objc_msgSend(objc_msgSend(filter, "name"), "isEqualToString:", @"CIPortraitEffectStageMono") & 1) != 0))
     {
       return 2;
     }
@@ -88,13 +88,13 @@
   }
 }
 
-+ (BOOL)containsFilterRequiringFaceLandmarks:(id)a3
++ (BOOL)containsFilterRequiringFaceLandmarks:(id)landmarks
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v4 = [landmarks countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -106,13 +106,13 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(landmarks);
         }
 
         v6 |= [objc_msgSend(*(*(&v11 + 1) + 8 * i) "inputKeys")];
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [landmarks countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v5);
@@ -126,7 +126,7 @@
   return v6 & 1;
 }
 
-- (uint64_t)_ensureResourceRequirementsForFilters:(_BYTE *)a3 outputRequiresFaceLandmarks:(_BYTE *)a4 outputRequiresDepthMap:
+- (uint64_t)_ensureResourceRequirementsForFilters:(_BYTE *)filters outputRequiresFaceLandmarks:(_BYTE *)landmarks outputRequiresDepthMap:
 {
   if (result)
   {
@@ -151,9 +151,9 @@
             objc_enumerationMutation(a2);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * v9) inputKeys];
-          v11 = [v10 containsObject:@"inputFaceLandmarkArray"];
-          if (([v10 containsObject:@"inputDepthMap"] & 1) != 0 || (objc_msgSend(v10, "containsObject:", @"inputDisparity") & 1) != 0 || (objc_msgSend(v10, "containsObject:", @"inputBlurMap") & 1) != 0 || objc_msgSend(v10, "containsObject:", @"inputShiftMap"))
+          inputKeys = [*(*(&v15 + 1) + 8 * v9) inputKeys];
+          v11 = [inputKeys containsObject:@"inputFaceLandmarkArray"];
+          if (([inputKeys containsObject:@"inputDepthMap"] & 1) != 0 || (objc_msgSend(inputKeys, "containsObject:", @"inputDisparity") & 1) != 0 || (objc_msgSend(inputKeys, "containsObject:", @"inputBlurMap") & 1) != 0 || objc_msgSend(inputKeys, "containsObject:", @"inputShiftMap"))
           {
             v6 = 1;
           }
@@ -176,14 +176,14 @@
       v7 = 0;
     }
 
-    if (a3)
+    if (filters)
     {
-      *a3 = v7 & 1;
+      *filters = v7 & 1;
     }
 
-    if (a4)
+    if (landmarks)
     {
-      *a4 = v6 & 1;
+      *landmarks = v6 & 1;
     }
   }
 

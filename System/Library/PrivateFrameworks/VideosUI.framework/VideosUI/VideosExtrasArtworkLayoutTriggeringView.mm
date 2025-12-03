@@ -6,8 +6,8 @@
 
 - (void)_imageDidChange
 {
-  v2 = [(VideosExtrasArtworkLayoutTriggeringView *)self superview];
-  [v2 setNeedsLayout];
+  superview = [(VideosExtrasArtworkLayoutTriggeringView *)self superview];
+  [superview setNeedsLayout];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface _UIKeyShortcutHUDCategoryHeaderCell
 - (_UIKeyShortcutHUDMenu)categoryMenu;
 - (id)defaultContentConfiguration;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)configureWithCategory:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)configureWithCategory:(id)category;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation _UIKeyShortcutHUDCategoryHeaderCell
 
-- (void)configureWithCategory:(id)a3
+- (void)configureWithCategory:(id)category
 {
-  v4 = a3;
-  [(_UIKeyShortcutHUDCategoryHeaderCell *)self setCategoryMenu:v4];
-  v6 = [(_UIKeyShortcutHUDCategoryHeaderCell *)self defaultContentConfiguration];
-  v5 = [v4 title];
+  categoryCopy = category;
+  [(_UIKeyShortcutHUDCategoryHeaderCell *)self setCategoryMenu:categoryCopy];
+  defaultContentConfiguration = [(_UIKeyShortcutHUDCategoryHeaderCell *)self defaultContentConfiguration];
+  title = [categoryCopy title];
 
-  [v6 setText:v5];
-  [(UICollectionViewCell *)self setContentConfiguration:v6];
+  [defaultContentConfiguration setText:title];
+  [(UICollectionViewCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 - (id)defaultContentConfiguration
 {
   v21.receiver = self;
   v21.super_class = _UIKeyShortcutHUDCategoryHeaderCell;
-  v2 = [(_UIKeyShortcutHUDCell *)&v21 defaultContentConfiguration];
+  defaultContentConfiguration = [(_UIKeyShortcutHUDCell *)&v21 defaultContentConfiguration];
   v3 = +[UIKeyShortcutHUDMetrics currentMetrics];
-  v4 = [v3 categoryHeaderFont];
-  v5 = [v2 textProperties];
-  [v5 setFont:v4];
+  categoryHeaderFont = [v3 categoryHeaderFont];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setFont:categoryHeaderFont];
 
-  [v2 directionalLayoutMargins];
+  [defaultContentConfiguration directionalLayoutMargins];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -42,25 +42,25 @@
   [v17 categoryHeaderVerticalTextAdjustment];
   v19 = v11 - v18;
 
-  [v2 setDirectionalLayoutMargins:{v16, v9, v19, v13}];
+  [defaultContentConfiguration setDirectionalLayoutMargins:{v16, v9, v19, v13}];
 
-  return v2;
+  return defaultContentConfiguration;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v5.receiver = self;
   v5.super_class = _UIKeyShortcutHUDCategoryHeaderCell;
-  [(_UIKeyShortcutHUDMenuCell *)&v5 updateConfigurationUsingState:a3];
+  [(_UIKeyShortcutHUDMenuCell *)&v5 updateConfigurationUsingState:state];
   v4 = +[UIBackgroundConfiguration clearConfiguration];
   [(UICollectionViewCell *)self setBackgroundConfiguration:v4];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v12.receiver = self;
   v12.super_class = _UIKeyShortcutHUDCategoryHeaderCell;
-  v4 = [(UICollectionReusableView *)&v12 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(UICollectionReusableView *)&v12 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 size];
   v6 = v5;
   v7 = +[UIKeyShortcutHUDMetrics currentMetrics];

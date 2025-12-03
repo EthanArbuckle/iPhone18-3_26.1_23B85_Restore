@@ -1,54 +1,54 @@
 @interface NMSDownloadableItem
-- (BOOL)isEqual:(id)a3;
-- (NMSDownloadableItem)initWithMediaLibraryIdentifier:(id)a3 externalLibraryIdentifier:(id)a4 size:(unint64_t)a5 itemType:(unint64_t)a6 manuallyAdded:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (NMSDownloadableItem)initWithMediaLibraryIdentifier:(id)identifier externalLibraryIdentifier:(id)libraryIdentifier size:(unint64_t)size itemType:(unint64_t)type manuallyAdded:(BOOL)added;
 - (id)description;
 - (id)identifier;
 @end
 
 @implementation NMSDownloadableItem
 
-- (NMSDownloadableItem)initWithMediaLibraryIdentifier:(id)a3 externalLibraryIdentifier:(id)a4 size:(unint64_t)a5 itemType:(unint64_t)a6 manuallyAdded:(BOOL)a7
+- (NMSDownloadableItem)initWithMediaLibraryIdentifier:(id)identifier externalLibraryIdentifier:(id)libraryIdentifier size:(unint64_t)size itemType:(unint64_t)type manuallyAdded:(BOOL)added
 {
-  v13 = a3;
-  v14 = a4;
+  identifierCopy = identifier;
+  libraryIdentifierCopy = libraryIdentifier;
   v18.receiver = self;
   v18.super_class = NMSDownloadableItem;
   v15 = [(NMSDownloadableItem *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mediaLibraryIdentifier, a3);
-    objc_storeStrong(&v16->_externalLibraryIdentifier, a4);
-    v16->_size = a5;
-    v16->_itemType = a6;
-    v16->_manuallyAdded = a7;
+    objc_storeStrong(&v15->_mediaLibraryIdentifier, identifier);
+    objc_storeStrong(&v16->_externalLibraryIdentifier, libraryIdentifier);
+    v16->_size = size;
+    v16->_itemType = type;
+    v16->_manuallyAdded = added;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(NMSDownloadableItem *)self mediaLibraryIdentifier];
-    v8 = [(NMSDownloadableItem *)v6 mediaLibraryIdentifier];
-    if (v7 == v8 || [v7 isEqual:v8])
+    mediaLibraryIdentifier = [(NMSDownloadableItem *)self mediaLibraryIdentifier];
+    mediaLibraryIdentifier2 = [(NMSDownloadableItem *)v6 mediaLibraryIdentifier];
+    if (mediaLibraryIdentifier == mediaLibraryIdentifier2 || [mediaLibraryIdentifier isEqual:mediaLibraryIdentifier2])
     {
-      v9 = [(NMSDownloadableItem *)self externalLibraryIdentifier];
-      v10 = [(NMSDownloadableItem *)v6 externalLibraryIdentifier];
-      if (v9 == v10 || [v9 isEqual:v10])
+      externalLibraryIdentifier = [(NMSDownloadableItem *)self externalLibraryIdentifier];
+      externalLibraryIdentifier2 = [(NMSDownloadableItem *)v6 externalLibraryIdentifier];
+      if (externalLibraryIdentifier == externalLibraryIdentifier2 || [externalLibraryIdentifier isEqual:externalLibraryIdentifier2])
       {
-        v11 = [(NMSDownloadableItem *)self itemType];
-        v12 = v11 == [(NMSDownloadableItem *)v6 itemType];
+        itemType = [(NMSDownloadableItem *)self itemType];
+        v12 = itemType == [(NMSDownloadableItem *)v6 itemType];
       }
 
       else
@@ -90,9 +90,9 @@
   v9.receiver = self;
   v9.super_class = NMSDownloadableItem;
   v4 = [(NMSDownloadableItem *)&v9 description];
-  v5 = [(NMSDownloadableItem *)self mediaLibraryIdentifier];
-  v6 = [(NMSDownloadableItem *)self externalLibraryIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@ - MLDB pid: %@ - PDB UUID %@ - size: %llu - type: %lu - manuallyAdded: %x>", v4, v5, v6, -[NMSDownloadableItem size](self, "size"), -[NMSDownloadableItem itemType](self, "itemType"), -[NMSDownloadableItem isManuallyAdded](self, "isManuallyAdded")];
+  mediaLibraryIdentifier = [(NMSDownloadableItem *)self mediaLibraryIdentifier];
+  externalLibraryIdentifier = [(NMSDownloadableItem *)self externalLibraryIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@ - MLDB pid: %@ - PDB UUID %@ - size: %llu - type: %lu - manuallyAdded: %x>", v4, mediaLibraryIdentifier, externalLibraryIdentifier, -[NMSDownloadableItem size](self, "size"), -[NMSDownloadableItem itemType](self, "itemType"), -[NMSDownloadableItem isManuallyAdded](self, "isManuallyAdded")];
 
   return v7;
 }

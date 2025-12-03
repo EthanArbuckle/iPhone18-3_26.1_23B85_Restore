@@ -1,29 +1,29 @@
 @interface SISchemaDictationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaDictationContext)initWithDictionary:(id)a3;
-- (SISchemaDictationContext)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaDictationContext)initWithDictionary:(id)dictionary;
+- (SISchemaDictationContext)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addDictationLocalesEnabled:(id)a3;
-- (void)addKeyboardLocalesEnabled:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDictationLocalesEnabled:(id)enabled;
+- (void)addKeyboardLocalesEnabled:(id)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaDictationContext
 
-- (SISchemaDictationContext)initWithDictionary:(id)a3
+- (SISchemaDictationContext)initWithDictionary:(id)dictionary
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v51.receiver = self;
   v51.super_class = SISchemaDictationContext;
   v5 = [(SISchemaDictationContext *)&v51 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"keyboardLanguage"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"keyboardLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(SISchemaDictationContext *)v5 setKeyboardLanguage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"keyboardLocale"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"keyboardLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(SISchemaDictationContext *)v5 setKeyboardLocale:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dictationLocale"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dictationLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(SISchemaDictationContext *)v5 setDictationLocale:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"userSelectedLocale"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userSelectedLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
     }
 
     v39 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"siriSelectedLocale"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"siriSelectedLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(SISchemaDictationContext *)v5 setSiriSelectedLocale:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"keyboardLocalesEnabled", v14}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"keyboardLocalesEnabled", v14}];
     objc_opt_class();
     v42 = v16;
     v41 = v6;
@@ -109,7 +109,7 @@
       v10 = v40;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"dictationLocalesEnabled"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"dictationLocalesEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,7 +151,7 @@
       v10 = v40;
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -159,7 +159,7 @@
       [(SISchemaDictationContext *)v5 setBundleId:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"textInputSessionId"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"textInputSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -173,30 +173,30 @@
   return v5;
 }
 
-- (SISchemaDictationContext)initWithJSON:(id)a3
+- (SISchemaDictationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaDictationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaDictationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaDictationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -210,33 +210,33 @@
 - (id)dictionaryRepresentation
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(SISchemaDictationContext *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(SISchemaDictationContext *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_dictationLocale)
   {
-    v6 = [(SISchemaDictationContext *)self dictationLocale];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    dictationLocale = [(SISchemaDictationContext *)self dictationLocale];
+    dictionaryRepresentation = [dictationLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"dictationLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dictationLocale"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"dictationLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dictationLocale"];
     }
   }
 
   if ([(NSArray *)self->_dictationLocalesEnableds count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -256,16 +256,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation2 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -275,35 +275,35 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"dictationLocalesEnabled"];
+    [dictionary setObject:array forKeyedSubscript:@"dictationLocalesEnabled"];
   }
 
   if (self->_keyboardLanguage)
   {
-    v17 = [(SISchemaDictationContext *)self keyboardLanguage];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"keyboardLanguage"];
+    keyboardLanguage = [(SISchemaDictationContext *)self keyboardLanguage];
+    v18 = [keyboardLanguage copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"keyboardLanguage"];
   }
 
   if (self->_keyboardLocale)
   {
-    v19 = [(SISchemaDictationContext *)self keyboardLocale];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    keyboardLocale = [(SISchemaDictationContext *)self keyboardLocale];
+    dictionaryRepresentation3 = [keyboardLocale dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"keyboardLocale"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"keyboardLocale"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"keyboardLocale"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"keyboardLocale"];
     }
   }
 
   if ([(NSArray *)self->_keyboardLocalesEnableds count])
   {
-    v22 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -323,16 +323,16 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
-          if (v28)
+          dictionaryRepresentation4 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v22 addObject:v28];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v29 = [MEMORY[0x1E695DFB0] null];
-            [v22 addObject:v29];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -342,60 +342,60 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"keyboardLocalesEnabled"];
+    [dictionary setObject:array2 forKeyedSubscript:@"keyboardLocalesEnabled"];
   }
 
   if (self->_siriSelectedLocale)
   {
-    v30 = [(SISchemaDictationContext *)self siriSelectedLocale];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    siriSelectedLocale = [(SISchemaDictationContext *)self siriSelectedLocale];
+    dictionaryRepresentation5 = [siriSelectedLocale dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"siriSelectedLocale"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"siriSelectedLocale"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"siriSelectedLocale"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"siriSelectedLocale"];
     }
   }
 
   if (self->_textInputSessionId)
   {
-    v33 = [(SISchemaDictationContext *)self textInputSessionId];
-    v34 = [v33 dictionaryRepresentation];
-    if (v34)
+    textInputSessionId = [(SISchemaDictationContext *)self textInputSessionId];
+    dictionaryRepresentation6 = [textInputSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v34 forKeyedSubscript:@"textInputSessionId"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"textInputSessionId"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"textInputSessionId"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"textInputSessionId"];
     }
   }
 
   if (self->_userSelectedLocale)
   {
-    v36 = [(SISchemaDictationContext *)self userSelectedLocale];
-    v37 = [v36 dictionaryRepresentation];
-    if (v37)
+    userSelectedLocale = [(SISchemaDictationContext *)self userSelectedLocale];
+    dictionaryRepresentation7 = [userSelectedLocale dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v37 forKeyedSubscript:@"userSelectedLocale"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"userSelectedLocale"];
     }
 
     else
     {
-      v38 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v38 forKeyedSubscript:@"userSelectedLocale"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"userSelectedLocale"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v40];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v40];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -411,28 +411,28 @@
   return v9 ^ v10 ^ [(SISchemaUUID *)self->_textInputSessionId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = [(SISchemaDictationContext *)self keyboardLanguage];
-  v6 = [v4 keyboardLanguage];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self keyboardLanguage];
+  keyboardLanguage2 = [equalCopy keyboardLanguage];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v7 = [(SISchemaDictationContext *)self keyboardLanguage];
-  if (v7)
+  keyboardLanguage3 = [(SISchemaDictationContext *)self keyboardLanguage];
+  if (keyboardLanguage3)
   {
-    v8 = v7;
-    v9 = [(SISchemaDictationContext *)self keyboardLanguage];
-    v10 = [v4 keyboardLanguage];
-    v11 = [v9 isEqual:v10];
+    v8 = keyboardLanguage3;
+    keyboardLanguage4 = [(SISchemaDictationContext *)self keyboardLanguage];
+    keyboardLanguage5 = [equalCopy keyboardLanguage];
+    v11 = [keyboardLanguage4 isEqual:keyboardLanguage5];
 
     if (!v11)
     {
@@ -444,20 +444,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self keyboardLocale];
-  v6 = [v4 keyboardLocale];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self keyboardLocale];
+  keyboardLanguage2 = [equalCopy keyboardLocale];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v12 = [(SISchemaDictationContext *)self keyboardLocale];
-  if (v12)
+  keyboardLocale = [(SISchemaDictationContext *)self keyboardLocale];
+  if (keyboardLocale)
   {
-    v13 = v12;
-    v14 = [(SISchemaDictationContext *)self keyboardLocale];
-    v15 = [v4 keyboardLocale];
-    v16 = [v14 isEqual:v15];
+    v13 = keyboardLocale;
+    keyboardLocale2 = [(SISchemaDictationContext *)self keyboardLocale];
+    keyboardLocale3 = [equalCopy keyboardLocale];
+    v16 = [keyboardLocale2 isEqual:keyboardLocale3];
 
     if (!v16)
     {
@@ -469,20 +469,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self dictationLocale];
-  v6 = [v4 dictationLocale];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self dictationLocale];
+  keyboardLanguage2 = [equalCopy dictationLocale];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v17 = [(SISchemaDictationContext *)self dictationLocale];
-  if (v17)
+  dictationLocale = [(SISchemaDictationContext *)self dictationLocale];
+  if (dictationLocale)
   {
-    v18 = v17;
-    v19 = [(SISchemaDictationContext *)self dictationLocale];
-    v20 = [v4 dictationLocale];
-    v21 = [v19 isEqual:v20];
+    v18 = dictationLocale;
+    dictationLocale2 = [(SISchemaDictationContext *)self dictationLocale];
+    dictationLocale3 = [equalCopy dictationLocale];
+    v21 = [dictationLocale2 isEqual:dictationLocale3];
 
     if (!v21)
     {
@@ -494,20 +494,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self userSelectedLocale];
-  v6 = [v4 userSelectedLocale];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self userSelectedLocale];
+  keyboardLanguage2 = [equalCopy userSelectedLocale];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v22 = [(SISchemaDictationContext *)self userSelectedLocale];
-  if (v22)
+  userSelectedLocale = [(SISchemaDictationContext *)self userSelectedLocale];
+  if (userSelectedLocale)
   {
-    v23 = v22;
-    v24 = [(SISchemaDictationContext *)self userSelectedLocale];
-    v25 = [v4 userSelectedLocale];
-    v26 = [v24 isEqual:v25];
+    v23 = userSelectedLocale;
+    userSelectedLocale2 = [(SISchemaDictationContext *)self userSelectedLocale];
+    userSelectedLocale3 = [equalCopy userSelectedLocale];
+    v26 = [userSelectedLocale2 isEqual:userSelectedLocale3];
 
     if (!v26)
     {
@@ -519,20 +519,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self siriSelectedLocale];
-  v6 = [v4 siriSelectedLocale];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self siriSelectedLocale];
+  keyboardLanguage2 = [equalCopy siriSelectedLocale];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v27 = [(SISchemaDictationContext *)self siriSelectedLocale];
-  if (v27)
+  siriSelectedLocale = [(SISchemaDictationContext *)self siriSelectedLocale];
+  if (siriSelectedLocale)
   {
-    v28 = v27;
-    v29 = [(SISchemaDictationContext *)self siriSelectedLocale];
-    v30 = [v4 siriSelectedLocale];
-    v31 = [v29 isEqual:v30];
+    v28 = siriSelectedLocale;
+    siriSelectedLocale2 = [(SISchemaDictationContext *)self siriSelectedLocale];
+    siriSelectedLocale3 = [equalCopy siriSelectedLocale];
+    v31 = [siriSelectedLocale2 isEqual:siriSelectedLocale3];
 
     if (!v31)
     {
@@ -544,20 +544,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
-  v6 = [v4 keyboardLocalesEnableds];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
+  keyboardLanguage2 = [equalCopy keyboardLocalesEnableds];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v32 = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
-  if (v32)
+  keyboardLocalesEnableds = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
+  if (keyboardLocalesEnableds)
   {
-    v33 = v32;
-    v34 = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
-    v35 = [v4 keyboardLocalesEnableds];
-    v36 = [v34 isEqual:v35];
+    v33 = keyboardLocalesEnableds;
+    keyboardLocalesEnableds2 = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
+    keyboardLocalesEnableds3 = [equalCopy keyboardLocalesEnableds];
+    v36 = [keyboardLocalesEnableds2 isEqual:keyboardLocalesEnableds3];
 
     if (!v36)
     {
@@ -569,20 +569,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self dictationLocalesEnableds];
-  v6 = [v4 dictationLocalesEnableds];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self dictationLocalesEnableds];
+  keyboardLanguage2 = [equalCopy dictationLocalesEnableds];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v37 = [(SISchemaDictationContext *)self dictationLocalesEnableds];
-  if (v37)
+  dictationLocalesEnableds = [(SISchemaDictationContext *)self dictationLocalesEnableds];
+  if (dictationLocalesEnableds)
   {
-    v38 = v37;
-    v39 = [(SISchemaDictationContext *)self dictationLocalesEnableds];
-    v40 = [v4 dictationLocalesEnableds];
-    v41 = [v39 isEqual:v40];
+    v38 = dictationLocalesEnableds;
+    dictationLocalesEnableds2 = [(SISchemaDictationContext *)self dictationLocalesEnableds];
+    dictationLocalesEnableds3 = [equalCopy dictationLocalesEnableds];
+    v41 = [dictationLocalesEnableds2 isEqual:dictationLocalesEnableds3];
 
     if (!v41)
     {
@@ -594,20 +594,20 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self bundleId];
-  v6 = [v4 bundleId];
-  if ((v5 != 0) == (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self bundleId];
+  keyboardLanguage2 = [equalCopy bundleId];
+  if ((keyboardLanguage != 0) == (keyboardLanguage2 == 0))
   {
     goto LABEL_46;
   }
 
-  v42 = [(SISchemaDictationContext *)self bundleId];
-  if (v42)
+  bundleId = [(SISchemaDictationContext *)self bundleId];
+  if (bundleId)
   {
-    v43 = v42;
-    v44 = [(SISchemaDictationContext *)self bundleId];
-    v45 = [v4 bundleId];
-    v46 = [v44 isEqual:v45];
+    v43 = bundleId;
+    bundleId2 = [(SISchemaDictationContext *)self bundleId];
+    bundleId3 = [equalCopy bundleId];
+    v46 = [bundleId2 isEqual:bundleId3];
 
     if (!v46)
     {
@@ -619,12 +619,12 @@
   {
   }
 
-  v5 = [(SISchemaDictationContext *)self textInputSessionId];
-  v6 = [v4 textInputSessionId];
-  if ((v5 != 0) != (v6 == 0))
+  keyboardLanguage = [(SISchemaDictationContext *)self textInputSessionId];
+  keyboardLanguage2 = [equalCopy textInputSessionId];
+  if ((keyboardLanguage != 0) != (keyboardLanguage2 == 0))
   {
-    v47 = [(SISchemaDictationContext *)self textInputSessionId];
-    if (!v47)
+    textInputSessionId = [(SISchemaDictationContext *)self textInputSessionId];
+    if (!textInputSessionId)
     {
 
 LABEL_50:
@@ -632,10 +632,10 @@ LABEL_50:
       goto LABEL_48;
     }
 
-    v48 = v47;
-    v49 = [(SISchemaDictationContext *)self textInputSessionId];
-    v50 = [v4 textInputSessionId];
-    v51 = [v49 isEqual:v50];
+    v48 = textInputSessionId;
+    textInputSessionId2 = [(SISchemaDictationContext *)self textInputSessionId];
+    textInputSessionId3 = [equalCopy textInputSessionId];
+    v51 = [textInputSessionId2 isEqual:textInputSessionId3];
 
     if (v51)
     {
@@ -655,46 +655,46 @@ LABEL_48:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SISchemaDictationContext *)self keyboardLanguage];
+  toCopy = to;
+  keyboardLanguage = [(SISchemaDictationContext *)self keyboardLanguage];
 
-  if (v5)
+  if (keyboardLanguage)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaDictationContext *)self keyboardLocale];
+  keyboardLocale = [(SISchemaDictationContext *)self keyboardLocale];
 
-  if (v6)
+  if (keyboardLocale)
   {
-    v7 = [(SISchemaDictationContext *)self keyboardLocale];
+    keyboardLocale2 = [(SISchemaDictationContext *)self keyboardLocale];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaDictationContext *)self dictationLocale];
+  dictationLocale = [(SISchemaDictationContext *)self dictationLocale];
 
-  if (v8)
+  if (dictationLocale)
   {
-    v9 = [(SISchemaDictationContext *)self dictationLocale];
+    dictationLocale2 = [(SISchemaDictationContext *)self dictationLocale];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SISchemaDictationContext *)self userSelectedLocale];
+  userSelectedLocale = [(SISchemaDictationContext *)self userSelectedLocale];
 
-  if (v10)
+  if (userSelectedLocale)
   {
-    v11 = [(SISchemaDictationContext *)self userSelectedLocale];
+    userSelectedLocale2 = [(SISchemaDictationContext *)self userSelectedLocale];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(SISchemaDictationContext *)self siriSelectedLocale];
+  siriSelectedLocale = [(SISchemaDictationContext *)self siriSelectedLocale];
 
-  if (v12)
+  if (siriSelectedLocale)
   {
-    v13 = [(SISchemaDictationContext *)self siriSelectedLocale];
+    siriSelectedLocale2 = [(SISchemaDictationContext *)self siriSelectedLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -760,113 +760,113 @@ LABEL_48:
     while (v21);
   }
 
-  v24 = [(SISchemaDictationContext *)self bundleId];
+  bundleId = [(SISchemaDictationContext *)self bundleId];
 
-  if (v24)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v25 = [(SISchemaDictationContext *)self textInputSessionId];
+  textInputSessionId = [(SISchemaDictationContext *)self textInputSessionId];
 
-  if (v25)
+  if (textInputSessionId)
   {
-    v26 = [(SISchemaDictationContext *)self textInputSessionId];
+    textInputSessionId2 = [(SISchemaDictationContext *)self textInputSessionId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addDictationLocalesEnabled:(id)a3
+- (void)addDictationLocalesEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   dictationLocalesEnableds = self->_dictationLocalesEnableds;
-  v8 = v4;
+  v8 = enabledCopy;
   if (!dictationLocalesEnableds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dictationLocalesEnableds;
-    self->_dictationLocalesEnableds = v6;
+    self->_dictationLocalesEnableds = array;
 
-    v4 = v8;
+    enabledCopy = v8;
     dictationLocalesEnableds = self->_dictationLocalesEnableds;
   }
 
-  [(NSArray *)dictationLocalesEnableds addObject:v4];
+  [(NSArray *)dictationLocalesEnableds addObject:enabledCopy];
 }
 
-- (void)addKeyboardLocalesEnabled:(id)a3
+- (void)addKeyboardLocalesEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   keyboardLocalesEnableds = self->_keyboardLocalesEnableds;
-  v8 = v4;
+  v8 = enabledCopy;
   if (!keyboardLocalesEnableds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_keyboardLocalesEnableds;
-    self->_keyboardLocalesEnableds = v6;
+    self->_keyboardLocalesEnableds = array;
 
-    v4 = v8;
+    enabledCopy = v8;
     keyboardLocalesEnableds = self->_keyboardLocalesEnableds;
   }
 
-  [(NSArray *)keyboardLocalesEnableds addObject:v4];
+  [(NSArray *)keyboardLocalesEnableds addObject:enabledCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v26.receiver = self;
   v26.super_class = SISchemaDictationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v26 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaDictationContext *)self keyboardLocale];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v26 applySensitiveConditionsPolicy:policyCopy];
+  keyboardLocale = [(SISchemaDictationContext *)self keyboardLocale];
+  v7 = [keyboardLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaDictationContext *)self deleteKeyboardLocale];
   }
 
-  v9 = [(SISchemaDictationContext *)self dictationLocale];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  dictationLocale = [(SISchemaDictationContext *)self dictationLocale];
+  v10 = [dictationLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaDictationContext *)self deleteDictationLocale];
   }
 
-  v12 = [(SISchemaDictationContext *)self userSelectedLocale];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  userSelectedLocale = [(SISchemaDictationContext *)self userSelectedLocale];
+  v13 = [userSelectedLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaDictationContext *)self deleteUserSelectedLocale];
   }
 
-  v15 = [(SISchemaDictationContext *)self siriSelectedLocale];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  siriSelectedLocale = [(SISchemaDictationContext *)self siriSelectedLocale];
+  v16 = [siriSelectedLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaDictationContext *)self deleteSiriSelectedLocale];
   }
 
-  v18 = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
-  v19 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v18 underConditions:v4];
+  keyboardLocalesEnableds = [(SISchemaDictationContext *)self keyboardLocalesEnableds];
+  v19 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:keyboardLocalesEnableds underConditions:policyCopy];
   [(SISchemaDictationContext *)self setKeyboardLocalesEnableds:v19];
 
-  v20 = [(SISchemaDictationContext *)self dictationLocalesEnableds];
-  v21 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v20 underConditions:v4];
+  dictationLocalesEnableds = [(SISchemaDictationContext *)self dictationLocalesEnableds];
+  v21 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:dictationLocalesEnableds underConditions:policyCopy];
   [(SISchemaDictationContext *)self setDictationLocalesEnableds:v21];
 
-  v22 = [(SISchemaDictationContext *)self textInputSessionId];
-  v23 = [v22 applySensitiveConditionsPolicy:v4];
-  v24 = [v23 suppressMessage];
+  textInputSessionId = [(SISchemaDictationContext *)self textInputSessionId];
+  v23 = [textInputSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v23 suppressMessage];
 
-  if (v24)
+  if (suppressMessage5)
   {
     [(SISchemaDictationContext *)self deleteTextInputSessionId];
   }

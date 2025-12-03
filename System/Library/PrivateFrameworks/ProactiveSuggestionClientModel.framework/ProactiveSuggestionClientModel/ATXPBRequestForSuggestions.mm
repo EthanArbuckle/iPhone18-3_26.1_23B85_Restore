@@ -1,12 +1,12 @@
 @interface ATXPBRequestForSuggestions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBRequestForSuggestions
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBRequestForSuggestions;
   v4 = [(ATXPBRequestForSuggestions *)&v8 description];
-  v5 = [(ATXPBRequestForSuggestions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBRequestForSuggestions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   originatorId = self->_originatorId;
@@ -54,77 +54,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_originatorId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_consumerSubTypeString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     timeout = self->_timeout;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uuidString)
   {
-    [v4 setUuidString:?];
-    v4 = v5;
+    [toCopy setUuidString:?];
+    toCopy = v5;
   }
 
   if (self->_originatorId)
   {
     [v5 setOriginatorId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_consumerSubTypeString)
   {
     [v5 setConsumerSubTypeString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_timeout;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_timeout;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_originatorId copyWithZone:a3];
+  v8 = [(NSString *)self->_originatorId copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_consumerSubTypeString copyWithZone:a3];
+  v10 = [(NSString *)self->_consumerSubTypeString copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -137,16 +137,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 4))
+  if (uuidString | *(equalCopy + 4))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -155,7 +155,7 @@
   }
 
   originatorId = self->_originatorId;
-  if (originatorId | *(v4 + 3))
+  if (originatorId | *(equalCopy + 3))
   {
     if (![(NSString *)originatorId isEqual:?])
     {
@@ -164,7 +164,7 @@
   }
 
   consumerSubTypeString = self->_consumerSubTypeString;
-  if (consumerSubTypeString | *(v4 + 2))
+  if (consumerSubTypeString | *(equalCopy + 2))
   {
     if (![(NSString *)consumerSubTypeString isEqual:?])
     {
@@ -172,10 +172,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_timeout == *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_timeout == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_13;
@@ -231,31 +231,31 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(ATXPBRequestForSuggestions *)self setUuidString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXPBRequestForSuggestions *)self setOriginatorId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBRequestForSuggestions *)self setConsumerSubTypeString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_timeout = v4[1];
+    self->_timeout = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

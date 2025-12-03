@@ -1,39 +1,39 @@
 @interface INUserActivityExecutionInfo
 + (void)initialize;
 - (BOOL)canRunOnLocalDevice;
-- (id)_initWithUserActivityType:(id)a3 launchableAppBundleId:(id)a4 containingAppBundleURL:(id)a5 extensionBundleId:(id)a6;
+- (id)_initWithUserActivityType:(id)type launchableAppBundleId:(id)id containingAppBundleURL:(id)l extensionBundleId:(id)bundleId;
 @end
 
 @implementation INUserActivityExecutionInfo
 
 - (BOOL)canRunOnLocalDevice
 {
-  v3 = [(INExecutionInfo *)self _applicationRecord];
-  v4 = [v3 applicationState];
-  v5 = [v4 isInstalled];
+  _applicationRecord = [(INExecutionInfo *)self _applicationRecord];
+  applicationState = [_applicationRecord applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  if (!v5)
+  if (!isInstalled)
   {
     return 0;
   }
 
-  v6 = [(INExecutionInfo *)self _appInfo];
-  v7 = [v6 supportedActions];
-  v8 = [(INUserActivityExecutionInfo *)self userActivityType];
-  v9 = [v7 containsObject:v8];
+  _appInfo = [(INExecutionInfo *)self _appInfo];
+  supportedActions = [_appInfo supportedActions];
+  userActivityType = [(INUserActivityExecutionInfo *)self userActivityType];
+  v9 = [supportedActions containsObject:userActivityType];
 
   return (v9 & 1) != 0;
 }
 
-- (id)_initWithUserActivityType:(id)a3 launchableAppBundleId:(id)a4 containingAppBundleURL:(id)a5 extensionBundleId:(id)a6
+- (id)_initWithUserActivityType:(id)type launchableAppBundleId:(id)id containingAppBundleURL:(id)l extensionBundleId:(id)bundleId
 {
-  v10 = a3;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = INUserActivityExecutionInfo;
-  v11 = [(INExecutionInfo *)&v15 _initWithLaunchableAppBundleId:a4 displayableAppBundleId:0 containingAppBundleURL:a5 extensionBundleId:a6];
+  v11 = [(INExecutionInfo *)&v15 _initWithLaunchableAppBundleId:id displayableAppBundleId:0 containingAppBundleURL:l extensionBundleId:bundleId];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [typeCopy copy];
     v13 = v11[6];
     v11[6] = v12;
   }
@@ -43,7 +43,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

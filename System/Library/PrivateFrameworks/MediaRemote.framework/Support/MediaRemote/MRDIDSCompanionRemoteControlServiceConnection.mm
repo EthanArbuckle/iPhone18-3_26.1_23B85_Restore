@@ -7,8 +7,8 @@
 - (void)dealloc
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(MRDIDSCompanionRemoteControlServiceConnection *)self notificationToken];
-  [v3 removeObserver:v4];
+  notificationToken = [(MRDIDSCompanionRemoteControlServiceConnection *)self notificationToken];
+  [v3 removeObserver:notificationToken];
 
   v5.receiver = self;
   v5.super_class = MRDIDSCompanionRemoteControlServiceConnection;

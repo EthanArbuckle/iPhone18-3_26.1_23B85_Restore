@@ -3,15 +3,15 @@
 - (COIDSServerBagDelegate)delegate;
 - (NSNumber)isFastFoldEnabled;
 - (NSNumber)isIPDiffingEnabled;
-- (id)_onqueue_serverBagNumberValueForKey:(id)a3;
-- (id)_onqueue_serverBagValueForKey:(id)a3;
+- (id)_onqueue_serverBagNumberValueForKey:(id)key;
+- (id)_onqueue_serverBagValueForKey:(id)key;
 - (void)_onqueue_configureTimer;
 - (void)_onqueue_timerFired;
 - (void)_onqueue_updateCachedValuesWithServerValues;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)configure;
-- (void)setFastFoldEnabled:(id)a3;
-- (void)setIpDiffing:(id)a3;
+- (void)setFastFoldEnabled:(id)enabled;
+- (void)setIpDiffing:(id)diffing;
 @end
 
 @implementation COIDSServerBag
@@ -87,20 +87,20 @@ uint64_t __27__COIDSServerBag_configure__block_invoke(uint64_t a1)
 - (void)_onqueue_updateCachedValuesWithServerValues
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(COIDSServerBag *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COIDSServerBag *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = [(COIDSServerBag *)self _onqueue_serverBagNumberValueForKey:@"co-fastFold-enabled"];
-  v5 = [(COIDSServerBag *)self isFastFoldEnabled];
-  if (v4 && ([v4 isEqual:v5] & 1) == 0)
+  isFastFoldEnabled = [(COIDSServerBag *)self isFastFoldEnabled];
+  if (v4 && ([v4 isEqual:isFastFoldEnabled] & 1) == 0)
   {
     v7 = COCoreLogForCategory(21);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218498;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2112;
-      v17 = v5;
+      v17 = isFastFoldEnabled;
       v18 = 2112;
       v19 = v4;
       _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p Updating fast fold enabled from %@ to %@", &v14, 0x20u);
@@ -116,16 +116,16 @@ uint64_t __27__COIDSServerBag_configure__block_invoke(uint64_t a1)
   }
 
   v8 = [(COIDSServerBag *)self _onqueue_serverBagNumberValueForKey:@"co-ipDiffing-enabled"];
-  v9 = [(COIDSServerBag *)self isIPDiffingEnabled];
-  if (v8 && ([v8 isEqual:v9] & 1) == 0)
+  isIPDiffingEnabled = [(COIDSServerBag *)self isIPDiffingEnabled];
+  if (v8 && ([v8 isEqual:isIPDiffingEnabled] & 1) == 0)
   {
     v10 = COCoreLogForCategory(21);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218498;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2112;
-      v17 = v9;
+      v17 = isIPDiffingEnabled;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_244378000, v10, OS_LOG_TYPE_DEFAULT, "%p Updating ip diffing enabled from %@ to %@", &v14, 0x20u);
@@ -143,27 +143,27 @@ uint64_t __27__COIDSServerBag_configure__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134217984;
-    v15 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%p Notifying delegate of server bag update", &v14, 0xCu);
   }
 
-  v12 = [(COIDSServerBag *)self delegate];
+  delegate = [(COIDSServerBag *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 idsServerBagDidUpdate:self];
+    [delegate idsServerBagDidUpdate:self];
   }
 
 LABEL_19:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_onqueue_serverBagNumberValueForKey:(id)a3
+- (id)_onqueue_serverBagNumberValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(COIDSServerBag *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  keyCopy = key;
+  dispatchQueue = [(COIDSServerBag *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [(COIDSServerBag *)self _onqueue_serverBagValueForKey:v4];
+  v6 = [(COIDSServerBag *)self _onqueue_serverBagValueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -179,23 +179,23 @@ LABEL_19:
   return v7;
 }
 
-- (id)_onqueue_serverBagValueForKey:(id)a3
+- (id)_onqueue_serverBagValueForKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COIDSServerBag *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  keyCopy = key;
+  dispatchQueue = [(COIDSServerBag *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [(COIDSServerBag *)self keySuffix];
-  v7 = [v6 length];
+  keySuffix = [(COIDSServerBag *)self keySuffix];
+  v7 = [keySuffix length];
 
   if (v7)
   {
-    v8 = [(COIDSServerBag *)self keySuffix];
-    v9 = [v4 stringByAppendingString:v8];
+    keySuffix2 = [(COIDSServerBag *)self keySuffix];
+    v9 = [keyCopy stringByAppendingString:keySuffix2];
 
-    v10 = [(COIDSServerBag *)self idsServerBag];
-    v7 = [v10 objectForKey:v9];
+    idsServerBag = [(COIDSServerBag *)self idsServerBag];
+    v7 = [idsServerBag objectForKey:v9];
   }
 
   else
@@ -207,7 +207,7 @@ LABEL_19:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134218498;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v9;
     v18 = 2112;
@@ -222,22 +222,22 @@ LABEL_19:
 
 - (void)_onqueue_configureTimer
 {
-  v3 = [(COIDSServerBag *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COIDSServerBag *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = 1000000000 * [(COIDSServerBag *)self currentTimerDelay];
-  v5 = [(COIDSServerBag *)self refreshTimer];
+  refreshTimer = [(COIDSServerBag *)self refreshTimer];
   v6 = dispatch_time(0, v4);
-  dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(refreshTimer, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   objc_initWeak(&location, self);
-  v7 = [(COIDSServerBag *)self refreshTimer];
+  refreshTimer2 = [(COIDSServerBag *)self refreshTimer];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __41__COIDSServerBag__onqueue_configureTimer__block_invoke;
   v12 = &unk_278E15B10;
   objc_copyWeak(&v13, &location);
-  dispatch_source_set_event_handler(v7, &v9);
+  dispatch_source_set_event_handler(refreshTimer2, &v9);
 
   v8 = [(COIDSServerBag *)self refreshTimer:v9];
   dispatch_activate(v8);
@@ -260,70 +260,70 @@ void __41__COIDSServerBag__onqueue_configureTimer__block_invoke(uint64_t a1)
 - (void)_onqueue_timerFired
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(COIDSServerBag *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(COIDSServerBag *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = COCoreLogForCategory(21);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244378000, v4, OS_LOG_TYPE_DEFAULT, "%p Server bag refresh timer fired", &v11, 0xCu);
   }
 
   [(COIDSServerBag *)self _onqueue_updateCachedValuesWithServerValues];
-  v5 = [(COIDSServerBag *)self currentTimerDelay];
-  if (v5 >= 3600)
+  currentTimerDelay = [(COIDSServerBag *)self currentTimerDelay];
+  if (currentTimerDelay >= 3600)
   {
     v6 = 7200;
   }
 
   else
   {
-    v6 = 2 * v5;
+    v6 = 2 * currentTimerDelay;
   }
 
   [(COIDSServerBag *)self setCurrentTimerDelay:v6];
   v7 = 1000000000 * [(COIDSServerBag *)self currentTimerDelay];
-  v8 = [(COIDSServerBag *)self refreshTimer];
+  refreshTimer = [(COIDSServerBag *)self refreshTimer];
   v9 = dispatch_time(0, v7);
-  dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(refreshTimer, v9, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFastFoldEnabled:(id)a3
+- (void)setFastFoldEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__COIDSServerBag_setFastFoldEnabled___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = enabledCopy;
+  v5 = enabledCopy;
   [(COIDSServerBag *)self _withLock:v6];
 }
 
-- (void)setIpDiffing:(id)a3
+- (void)setIpDiffing:(id)diffing
 {
-  v4 = a3;
+  diffingCopy = diffing;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__COIDSServerBag_setIpDiffing___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = diffingCopy;
+  v5 = diffingCopy;
   [(COIDSServerBag *)self _withLock:v6];
 }
 

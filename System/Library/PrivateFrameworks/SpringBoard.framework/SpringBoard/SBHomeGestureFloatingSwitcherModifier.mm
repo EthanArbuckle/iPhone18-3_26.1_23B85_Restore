@@ -1,68 +1,68 @@
 @interface SBHomeGestureFloatingSwitcherModifier
 - (BOOL)_hasPausedEnoughForFlyIn;
-- (BOOL)_inMultitaskingForLocation:(CGPoint)a3 translation:(CGPoint)a4;
-- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)a3;
-- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)a3;
-- (CGPoint)_frameOffsetForTranslation:(CGPoint)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)a3 selectedAppLayout:(id)a4 continuingGesture:(BOOL)a5 lastGestureWasAnArcSwipe:(BOOL)a6 floatingConfiguration:(int64_t)a7;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)_inMultitaskingForLocation:(CGPoint)location translation:(CGPoint)translation;
+- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)index;
+- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)home;
+- (CGPoint)_frameOffsetForTranslation:(CGPoint)translation;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)d selectedAppLayout:(id)layout continuingGesture:(BOOL)gesture lastGestureWasAnArcSwipe:(BOOL)swipe floatingConfiguration:(int64_t)configuration;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)_centerYOffsetDuringGesture;
 - (double)_distanceYToInSwitcherCardScale;
 - (double)_distanceYToMaxTranslation;
 - (double)_inSwitcherCenterYOffsetWhenPresented;
-- (double)_scaleForTranslation:(CGPoint)a3;
+- (double)_scaleForTranslation:(CGPoint)translation;
 - (double)_switcherCardScale;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOffsetForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOffsetForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 - (double)unconditionalDistanceThresholdForHome;
-- (id)_layoutSettingsForAppLayout:(id)a3 layoutSettings:(id)a4;
-- (id)_responseForActivatingFinalDestination:(int64_t)a3;
-- (id)_updateForGestureDidBeginWithEvent:(id)a3;
-- (id)_updateForGestureDidChangeWithEvent:(id)a3;
-- (id)_updateForGestureDidEndWithEvent:(id)a3;
-- (id)_updateInMultitaskingIfNeededWithEvent:(id)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)_layoutSettingsForAppLayout:(id)layout layoutSettings:(id)settings;
+- (id)_responseForActivatingFinalDestination:(int64_t)destination;
+- (id)_updateForGestureDidBeginWithEvent:(id)event;
+- (id)_updateForGestureDidChangeWithEvent:(id)event;
+- (id)_updateForGestureDidEndWithEvent:(id)event;
+- (id)_updateInMultitaskingIfNeededWithEvent:(id)event;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (id)handleHomeGestureSettingsChangedEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)visibleAppLayouts;
 - (unint64_t)_selectedAppLayoutIndex;
 - (unint64_t)slideOverTongueDirection;
 - (void)_applyPrototypeSettings;
-- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)a3 settings:(id)a4;
-- (void)_beginAnimatingRampingPropertyWithSettings:(id)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)mode settings:(id)settings;
+- (void)_beginAnimatingRampingPropertyWithSettings:(id)settings;
+- (void)_displayLinkFired:(id)fired;
+- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)event;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBHomeGestureFloatingSwitcherModifier
 
-- (SBHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)a3 selectedAppLayout:(id)a4 continuingGesture:(BOOL)a5 lastGestureWasAnArcSwipe:(BOOL)a6 floatingConfiguration:(int64_t)a7
+- (SBHomeGestureFloatingSwitcherModifier)initWithGestureID:(id)d selectedAppLayout:(id)layout continuingGesture:(BOOL)gesture lastGestureWasAnArcSwipe:(BOOL)swipe floatingConfiguration:(int64_t)configuration
 {
-  v12 = a3;
-  v13 = a4;
-  if (!v13)
+  dCopy = d;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBHomeGestureFloatingSwitcherModifier initWithGestureID:selectedAppLayout:continuingGesture:lastGestureWasAnArcSwipe:floatingConfiguration:];
   }
 
   v21.receiver = self;
   v21.super_class = SBHomeGestureFloatingSwitcherModifier;
-  v14 = [(SBGestureSwitcherModifier *)&v21 initWithGestureID:v12];
+  v14 = [(SBGestureSwitcherModifier *)&v21 initWithGestureID:dCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_selectedAppLayout, a4);
-    v15->_continuingGesture = a5;
-    v15->_lastGestureWasAnArcSwipe = a6;
-    v15->_floatingConfiguration = a7;
+    objc_storeStrong(&v14->_selectedAppLayout, layout);
+    v15->_continuingGesture = gesture;
+    v15->_lastGestureWasAnArcSwipe = swipe;
+    v15->_floatingConfiguration = configuration;
     v16 = objc_alloc_init(SBStackedFloatingSwitcherModifier);
     stackedLayoutModifier = v15->_stackedLayoutModifier;
     v15->_stackedLayoutModifier = v16;
@@ -77,18 +77,18 @@
   return v15;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v10.receiver = self;
   v10.super_class = SBHomeGestureFloatingSwitcherModifier;
   [(SBChainableModifier *)&v10 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (!self->_finalDestinationModifier)
     {
       v5 = [SBHomeGestureFinalDestinationSwitcherModifier alloc];
-      v6 = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
-      [v6 minimumYDistanceForHomeOrAppSwitcher];
+      homeGestureSettings = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
+      [homeGestureSettings minimumYDistanceForHomeOrAppSwitcher];
       v8 = [(SBHomeGestureFinalDestinationSwitcherModifier *)v5 initWithDelegate:self initialTranslationAdjustment:3 minYDistanceForHomeOrSwitcher:self->_continuingGesture startingEnvironmentMode:0 continuingGesture:*MEMORY[0x277CBF348] dockModifier:*(MEMORY[0x277CBF348] + 8), v7];
       finalDestinationModifier = self->_finalDestinationModifier;
       self->_finalDestinationModifier = v8;
@@ -100,26 +100,26 @@
   }
 }
 
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3
+- (id)handleHomeGestureSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBHomeGestureFloatingSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBHomeGestureFloatingSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBHomeGestureFloatingSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 >= 2)
+  if (phase >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -127,49 +127,49 @@
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBHomeGestureFloatingSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v13 handleGestureEvent:v5];
-  v7 = [v5 phase];
+  v6 = [(SBGestureSwitcherModifier *)&v13 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
   v8 = 0;
-  if (v7 > 1)
+  if (phase > 1)
   {
-    if (v7 == 2)
+    if (phase == 2)
     {
-      v9 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidChangeWithEvent:v5];
+      v9 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidChangeWithEvent:eventCopy];
     }
 
     else
     {
-      if (v7 != 3)
+      if (phase != 3)
       {
         goto LABEL_11;
       }
 
-      v9 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidEndWithEvent:v5];
+      v9 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidEndWithEvent:eventCopy];
     }
   }
 
   else
   {
-    if (!v7)
+    if (!phase)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"SBHomeGestureFloatingSwitcherModifier.m" lineNumber:179 description:@"Should not be getting PhasePossible"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBHomeGestureFloatingSwitcherModifier.m" lineNumber:179 description:@"Should not be getting PhasePossible"];
 
       v8 = 0;
       goto LABEL_11;
     }
 
-    if (v7 != 1)
+    if (phase != 1)
     {
       goto LABEL_11;
     }
 
-    v9 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidBeginWithEvent:v5];
+    v9 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateForGestureDidBeginWithEvent:eventCopy];
   }
 
   v8 = v9;
@@ -179,9 +179,9 @@ LABEL_11:
   return v11;
 }
 
-- (id)_updateForGestureDidBeginWithEvent:(id)a3
+- (id)_updateForGestureDidBeginWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_gestureHasBegun)
   {
     [SBHomeGestureFloatingSwitcherModifier _updateForGestureDidBeginWithEvent:];
@@ -199,12 +199,12 @@ LABEL_11:
   self->_displayLink = v6;
 
   v8 = self->_displayLink;
-  v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CADisplayLink *)v8 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
   self->_inMultitasking = 0;
   [(SBHomeGestureFloatingSwitcherModifier *)self containerViewBounds];
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   v11 = v10;
   v13 = v12;
   UIRectGetCenter();
@@ -214,29 +214,29 @@ LABEL_11:
   self->_initialTouchLocation.y = v13;
   self->_lastTouchLocation.x = v11;
   self->_lastTouchLocation.y = v13;
-  [(SBHomeGestureFloatingSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v4];
+  [(SBHomeGestureFloatingSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
   v16 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
   [(SBChainableModifierEventResponse *)v5 addChildResponse:v16];
   if (self->_continuingGesture && (-[SBHomeGestureFloatingSwitcherModifier appLayouts](self, "appLayouts"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 count], v17, v18 >= 2))
   {
-    v19 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-    v20 = [(SBUpdateLayoutSwitcherEventResponse *)v19 animationSettings];
-    v21 = [v20 layoutSettings];
-    [(SBHomeGestureFloatingSwitcherModifier *)self _beginAnimatingRampingPropertyWithSettings:v21];
+    switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+    animationSettings = [(SBUpdateLayoutSwitcherEventResponse *)switcherSettings animationSettings];
+    layoutSettings = [animationSettings layoutSettings];
+    [(SBHomeGestureFloatingSwitcherModifier *)self _beginAnimatingRampingPropertyWithSettings:layoutSettings];
   }
 
   else
   {
-    v19 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:8 updateMode:2];
-    [(SBChainableModifierEventResponse *)v5 addChildResponse:v19];
+    switcherSettings = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:8 updateMode:2];
+    [(SBChainableModifierEventResponse *)v5 addChildResponse:switcherSettings];
   }
 
   return v5;
 }
 
-- (id)_updateForGestureDidChangeWithEvent:(id)a3
+- (id)_updateForGestureDidChangeWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBHomeGestureFloatingSwitcherModifier _updateForGestureDidChangeWithEvent:];
@@ -247,17 +247,17 @@ LABEL_11:
     [SBHomeGestureFloatingSwitcherModifier _updateForGestureDidChangeWithEvent:];
   }
 
-  [(SBHomeGestureFloatingSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v4];
+  [(SBHomeGestureFloatingSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
   if ([(SBHomeGestureFloatingSwitcherModifier *)self _isTranslationPastDistanceThresholdToUnconditionallyGoHome:self->_translation.y])
   {
     self->_gestureHoldTimer = 0;
   }
 
   v5 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   v7 = v6;
   v9 = v8;
-  v10 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateInMultitaskingIfNeededWithEvent:v4];
+  v10 = [(SBHomeGestureFloatingSwitcherModifier *)self _updateInMultitaskingIfNeededWithEvent:eventCopy];
   if (v10)
   {
     [(SBChainableModifierEventResponse *)v5 addChildResponse:v10];
@@ -269,10 +269,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_updateForGestureDidEndWithEvent:(id)a3
+- (id)_updateForGestureDidEndWithEvent:(id)event
 {
   v85 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBHomeGestureFloatingSwitcherModifier _updateForGestureDidEndWithEvent:];
@@ -284,32 +284,32 @@ LABEL_11:
   }
 
   self->_gestureHasEnded = 1;
-  [(SBHomeGestureFloatingSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v4];
+  [(SBHomeGestureFloatingSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
   [(CADisplayLink *)self->_displayLink invalidate];
   displayLink = self->_displayLink;
   self->_displayLink = 0;
 
   self->_gestureLiftOffVelocity = self->_velocity;
   self->_gestureLiftOffTranslation = self->_translation;
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   self->_lastTouchLocation.x = v6;
   self->_lastTouchLocation.y = v7;
-  v8 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
-  v9 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier finalDestinationReason];
+  currentFinalDestination = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
+  finalDestinationReason = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier finalDestinationReason];
   v10 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  if (([v4 isCanceled] & 1) == 0 && objc_msgSend(v4, "touchType") == 1)
+  if (([eventCopy isCanceled] & 1) == 0 && objc_msgSend(eventCopy, "touchType") == 1)
   {
-    v11 = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
-    v12 = v11;
-    if (v8 == 4 && self->_selectedAppLayout && [v11 injectGestureVelocityForZoomDown])
+    homeGestureSettings = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
+    v12 = homeGestureSettings;
+    if (currentFinalDestination == 4 && self->_selectedAppLayout && [homeGestureSettings injectGestureVelocityForZoomDown])
     {
-      v13 = [(SBHomeGestureFloatingSwitcherModifier *)self visibleAppLayouts];
-      [v4 velocityInContainerView];
+      visibleAppLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self visibleAppLayouts];
+      [eventCopy velocityInContainerView];
       v15 = v14;
       v17 = v16;
       [(SBHomeGestureFloatingSwitcherModifier *)self switcherViewBounds];
       v19 = v18;
-      v20 = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
+      homeGestureSettings2 = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
       v21 = [(SBHomeGestureFloatingSwitcherModifier *)self currentVelocityValueForVisibleAppLayout:self->_selectedAppLayout key:@"transform"];
       v22 = v21;
       if (v21)
@@ -324,31 +324,31 @@ LABEL_11:
         a = 0.0;
       }
 
-      [v20 scaleVelocityPercentOfGestureVelocityYDividedByViewHeight];
+      [homeGestureSettings2 scaleVelocityPercentOfGestureVelocityYDividedByViewHeight];
       v25 = v17 / v19 * v24;
-      if ([v20 onlyInjectVelocityForShortFlicks] && fabs(a / v25) >= 0.15)
+      if ([homeGestureSettings2 onlyInjectVelocityForShortFlicks] && fabs(a / v25) >= 0.15)
       {
         v26 = 0;
       }
 
       else
       {
-        v71 = self;
+        selfCopy = self;
         v65 = v22;
-        v67 = v9;
+        v67 = finalDestinationReason;
         v68 = v10;
-        v69 = v4;
+        v69 = eventCopy;
         v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-        v70 = v20;
-        [v20 maximumScaleVelocity];
+        v70 = homeGestureSettings2;
+        [homeGestureSettings2 maximumScaleVelocity];
         memset(&v84, 0, sizeof(v84));
         SBVelocityMatrixForUniform2DScaling();
         v79 = 0u;
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v66 = v13;
-        v27 = v13;
+        v66 = visibleAppLayouts;
+        v27 = visibleAppLayouts;
         v28 = [v27 countByEnumeratingWithState:&v77 objects:v83 count:16];
         if (v28)
         {
@@ -377,7 +377,7 @@ LABEL_11:
           while (v29);
         }
 
-        v36 = [(SBHomeGestureFloatingSwitcherModifier *)v71 currentVelocityValueForVisibleAppLayout:v71->_selectedAppLayout key:@"position"];
+        v36 = [(SBHomeGestureFloatingSwitcherModifier *)selfCopy currentVelocityValueForVisibleAppLayout:selfCopy->_selectedAppLayout key:@"position"];
         v63 = v36;
         if (v36)
         {
@@ -452,12 +452,12 @@ LABEL_11:
         }
 
         v10 = v68;
-        v4 = v69;
-        v20 = v70;
-        self = v71;
-        v8 = 4;
-        v9 = v67;
-        v13 = v66;
+        eventCopy = v69;
+        homeGestureSettings2 = v70;
+        self = selfCopy;
+        currentFinalDestination = 4;
+        finalDestinationReason = v67;
+        visibleAppLayouts = v66;
         v22 = v65;
       }
 
@@ -471,25 +471,25 @@ LABEL_11:
   v59 = SBLogSystemGestureAppSwitcher();
   if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
   {
-    v60 = NSStringFromSBHomeGestureFinalDestination(v8);
+    v60 = NSStringFromSBHomeGestureFinalDestination(currentFinalDestination);
     LODWORD(v84.m11) = 138412802;
     *(&v84.m11 + 4) = v60;
     WORD2(v84.m12) = 2048;
-    *(&v84.m12 + 6) = v8;
+    *(&v84.m12 + 6) = currentFinalDestination;
     HIWORD(v84.m13) = 2112;
-    *&v84.m14 = v9;
+    *&v84.m14 = finalDestinationReason;
     _os_log_impl(&dword_21ED4E000, v59, OS_LOG_TYPE_INFO, "Floating Home Gesture Modifier - Final Response: %@ (%lu), Reason: %@", &v84, 0x20u);
   }
 
-  v61 = [(SBHomeGestureFloatingSwitcherModifier *)self _responseForActivatingFinalDestination:v8];
+  v61 = [(SBHomeGestureFloatingSwitcherModifier *)self _responseForActivatingFinalDestination:currentFinalDestination];
   [(SBChainableModifierEventResponse *)v10 addChildResponse:v61];
 
   return v10;
 }
 
-- (void)_beginAnimatingRampingPropertyWithSettings:(id)a3
+- (void)_beginAnimatingRampingPropertyWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   rampingProperty = self->_rampingProperty;
   if (rampingProperty)
   {
@@ -518,7 +518,7 @@ LABEL_11:
   objc_copyWeak(&v14, &location);
   v11 = v9;
   v13 = v11;
-  [v10 sb_animateWithSettings:v4 mode:3 animations:v15 completion:v12];
+  [v10 sb_animateWithSettings:settingsCopy mode:3 animations:v15 completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -542,10 +542,10 @@ void __84__SBHomeGestureFloatingSwitcherModifier__beginAnimatingRampingPropertyW
   }
 }
 
-- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)a3
+- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)event
 {
-  v4 = a3;
-  [v4 translationInContainerView];
+  eventCopy = event;
+  [eventCopy translationInContainerView];
   v6 = v5 + self->_translationAdjustmentForStartingFromSwitcher.x + self->_translationAdjustmentForStartingFromHomeScreen.x;
   v8 = v7 + self->_translationAdjustmentForStartingFromSwitcher.y + self->_translationAdjustmentForStartingFromHomeScreen.y;
   [(SBHomeGestureFloatingSwitcherModifier *)self _distanceYToInSwitcherCardScale];
@@ -555,7 +555,7 @@ void __84__SBHomeGestureFloatingSwitcherModifier__beginAnimatingRampingPropertyW
   self->_translation.y = v8;
   self->_progressToInSwitcherCardScale = v10;
   self->_progressToMaxTranslation = v11;
-  [v4 lastTouchTimestamp];
+  [eventCopy lastTouchTimestamp];
   self->_lastTouchTimestamp = v12;
   [(SBHomeGestureFloatingSwitcherModifier *)self containerViewBounds];
   v14 = v13;
@@ -585,16 +585,16 @@ void __84__SBHomeGestureFloatingSwitcherModifier__beginAnimatingRampingPropertyW
     v15 = v20 + v21;
   }
 
-  v22 = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
   v23 = -v15;
-  if (!v22)
+  if (!isRTLEnabled)
   {
     v23 = v15;
   }
 
   self->_translation.x = v23;
   self->_translation.y = v8;
-  [v4 averageTouchVelocityOverTimeDuration:0.0416666667];
+  [eventCopy averageTouchVelocityOverTimeDuration:0.0416666667];
   self->_velocity.x = v24;
   self->_velocity.y = v25;
   BSUIConstrainValueToIntervalWithRubberBand();
@@ -632,27 +632,27 @@ void __84__SBHomeGestureFloatingSwitcherModifier__beginAnimatingRampingPropertyW
   return result;
 }
 
-- (id)_responseForActivatingFinalDestination:(int64_t)a3
+- (id)_responseForActivatingFinalDestination:(int64_t)destination
 {
-  v5 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  v6 = v5;
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  v6 = appLayouts;
   v7 = 0;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 <= 1)
+  if (destination <= 1)
   {
-    if (!a3)
+    if (!destination)
     {
       v18 = self->_selectedAppLayout;
       goto LABEL_29;
     }
 
-    v9 = 0;
-    if (a3 != 1)
+    lastObject = 0;
+    if (destination != 1)
     {
       goto LABEL_30;
     }
 
-    v12 = [v5 indexOfObject:self->_selectedAppLayout];
+    v12 = [appLayouts indexOfObject:self->_selectedAppLayout];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v12;
@@ -660,7 +660,7 @@ void __84__SBHomeGestureFloatingSwitcherModifier__beginAnimatingRampingPropertyW
       {
         if (!v7)
         {
-          v9 = [v6 lastObject];
+          lastObject = [v6 lastObject];
           goto LABEL_30;
         }
 
@@ -681,13 +681,13 @@ void __84__SBHomeGestureFloatingSwitcherModifier__beginAnimatingRampingPropertyW
 
 LABEL_26:
     v7 = 0;
-    v9 = 0;
+    lastObject = 0;
     goto LABEL_30;
   }
 
-  if (a3 == 2)
+  if (destination == 2)
   {
-    v15 = [v5 indexOfObject:self->_selectedAppLayout];
+    v15 = [appLayouts indexOfObject:self->_selectedAppLayout];
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = v15;
@@ -707,7 +707,7 @@ LABEL_26:
 LABEL_25:
         v18 = [v6 objectAtIndex:v14];
 LABEL_29:
-        v9 = v18;
+        lastObject = v18;
         v7 = 0;
         goto LABEL_30;
       }
@@ -716,17 +716,17 @@ LABEL_29:
     goto LABEL_26;
   }
 
-  if (a3 == 3)
+  if (destination == 3)
   {
-    v9 = self->_selectedAppLayout;
+    lastObject = self->_selectedAppLayout;
     v7 = 0;
     v8 = 1;
   }
 
   else
   {
-    v9 = 0;
-    if (a3 == 4)
+    lastObject = 0;
+    if (destination == 4)
     {
       floatingConfiguration = self->_floatingConfiguration;
       v11 = 4;
@@ -746,13 +746,13 @@ LABEL_29:
       }
 
       v8 = 0x7FFFFFFFFFFFFFFFLL;
-      v9 = 0;
+      lastObject = 0;
     }
   }
 
 LABEL_30:
   v19 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
-  [(SBSwitcherTransitionRequest *)v19 setAppLayout:v9];
+  [(SBSwitcherTransitionRequest *)v19 setAppLayout:lastObject];
   [(SBSwitcherTransitionRequest *)v19 setFloatingSwitcherVisible:v8];
   [(SBSwitcherTransitionRequest *)v19 setFloatingConfiguration:v7];
   v20 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v19 gestureInitiated:1];
@@ -760,36 +760,36 @@ LABEL_30:
   return v20;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v16.receiver = self;
   v16.super_class = SBHomeGestureFloatingSwitcherModifier;
-  v5 = [(SBHomeGestureFloatingSwitcherModifier *)&v16 adjustedAppLayoutsForAppLayouts:v4];
-  if (-[SBGestureSwitcherModifier gesturePhase](self, "gesturePhase") != 3 && [v4 count] >= 5)
+  v5 = [(SBHomeGestureFloatingSwitcherModifier *)&v16 adjustedAppLayoutsForAppLayouts:layoutsCopy];
+  if (-[SBGestureSwitcherModifier gesturePhase](self, "gesturePhase") != 3 && [layoutsCopy count] >= 5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v4 indexOfObject:self->_selectedAppLayout];
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = [layoutsCopy indexOfObject:self->_selectedAppLayout];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL || v7 == 0)
     {
-      [v6 addObjectsFromArray:v4];
+      [array addObjectsFromArray:layoutsCopy];
     }
 
     else
     {
       v9 = v7;
-      v10 = [v4 subarrayWithRange:{v9, objc_msgSend(v4, "count") - v9}];
-      [v6 addObjectsFromArray:v10];
+      v10 = [layoutsCopy subarrayWithRange:{v9, objc_msgSend(layoutsCopy, "count") - v9}];
+      [array addObjectsFromArray:v10];
 
-      v11 = [v4 subarrayWithRange:{0, v9}];
-      [v6 addObjectsFromArray:v11];
+      v11 = [layoutsCopy subarrayWithRange:{0, v9}];
+      [array addObjectsFromArray:v11];
     }
 
-    v12 = [v6 subarrayWithRange:{0, 3}];
+    v12 = [array subarrayWithRange:{0, 3}];
     v13 = [v12 mutableCopy];
 
-    v14 = [v6 lastObject];
-    [v13 addObject:v14];
+    lastObject = [array lastObject];
+    [v13 addObject:lastObject];
 
     v5 = v13;
   }
@@ -797,7 +797,7 @@ LABEL_30:
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v31 = 0;
   v32 = &v31;
@@ -813,12 +813,12 @@ LABEL_30:
   v30[3] = &unk_2783AA618;
   v30[4] = self;
   v30[5] = &v31;
-  v30[6] = a3;
+  v30[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:stackedLayoutModifier usingBlock:v30];
   [(SBHomeGestureFloatingSwitcherModifier *)self _frameOffsetForTranslation:self->_translation.x, self->_translation.y];
   v8 = v7;
   v10 = v9;
-  if (![(SBHomeGestureFloatingSwitcherModifier *)self _isSelectedAppLayoutAtIndex:a3]&& self->_inMultitasking)
+  if (![(SBHomeGestureFloatingSwitcherModifier *)self _isSelectedAppLayoutAtIndex:index]&& self->_inMultitasking)
   {
     x = self->_translation.x;
     if ([(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled])
@@ -827,9 +827,9 @@ LABEL_30:
     }
 
     multitaskingHintProgress = self->_multitaskingHintProgress;
-    v13 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+    appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
     v14 = x * -0.4;
-    v15 = [v13 count] - 1;
+    v15 = [appLayouts count] - 1;
 
     v16 = (v14 + -70.0) * multitaskingHintProgress + (1.0 - multitaskingHintProgress) * v14;
     if (x >= 0.0)
@@ -860,8 +860,8 @@ LABEL_30:
       v16 = v17;
     }
 
-    v20 = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
-    if (v15 == a3)
+    isRTLEnabled = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
+    if (v15 == index)
     {
       v21 = v19;
     }
@@ -871,12 +871,12 @@ LABEL_30:
       v21 = x;
     }
 
-    if (a3 == 1)
+    if (index == 1)
     {
       v21 = v16;
     }
 
-    if (v20)
+    if (isRTLEnabled)
     {
       v8 = -v21;
     }
@@ -916,7 +916,7 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_frameForIndex___block_invok
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if ([(SBHomeGestureFloatingSwitcherModifier *)self _isSelectedAppLayoutAtIndex:?])
   {
@@ -928,10 +928,10 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_frameForIndex___block_invok
 
   else
   {
-    v8 = 2;
-    if (a3 < 2)
+    indexCopy = 2;
+    if (index < 2)
     {
-      v8 = a3;
+      indexCopy = index;
     }
 
     v13 = 0;
@@ -945,7 +945,7 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_frameForIndex___block_invok
     v12[3] = &unk_2783AA618;
     v12[4] = self;
     v12[5] = &v13;
-    v12[6] = v8;
+    v12[6] = indexCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:stackedLayoutModifier usingBlock:v12];
     [(SBHomeGestureFloatingSwitcherModifier *)self _scaleForTranslation:self->_translation.x, self->_translation.y];
     v11 = v10 * v14[3];
@@ -967,29 +967,29 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
 - (id)visibleAppLayouts
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  if ([v4 count])
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  if ([appLayouts count])
   {
-    v5 = [v4 count] - 1;
+    v5 = [appLayouts count] - 1;
     if (v5 >= 2)
     {
       v5 = 2;
     }
 
-    v6 = [v4 subarrayWithRange:{0, v5 + 1}];
+    v6 = [appLayouts subarrayWithRange:{0, v5 + 1}];
     [v3 addObjectsFromArray:v6];
 
-    v7 = [v4 lastObject];
-    [v3 addObject:v7];
+    lastObject = [appLayouts lastObject];
+    [v3 addObject:lastObject];
   }
 
   return v3;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v3 = [(SBHomeGestureFloatingSwitcherModifier *)self medusaSettings];
-  [v3 cornerRadiusForFloatingApps];
+  medusaSettings = [(SBHomeGestureFloatingSwitcherModifier *)self medusaSettings];
+  [medusaSettings cornerRadiusForFloatingApps];
   SBRectCornerRadiiForRadius();
   v5 = v4;
   v7 = v6;
@@ -1007,12 +1007,12 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return result;
 }
 
-- (CGPoint)_frameOffsetForTranslation:(CGPoint)a3
+- (CGPoint)_frameOffsetForTranslation:(CGPoint)translation
 {
-  x = a3.x;
+  x = translation.x;
   v6 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
-  [(SBHomeGestureFloatingSwitcherModifier *)self _gestureProgressToMaxTranslationForTranslation:a3.y];
+  [(SBHomeGestureFloatingSwitcherModifier *)self _gestureProgressToMaxTranslationForTranslation:translation.y];
   v8 = v7;
   [(SBHomeGestureFloatingSwitcherModifier *)self _centerYOffsetDuringGesture];
   v10 = v5 + v8 * v9 + 0.0;
@@ -1026,9 +1026,9 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return result;
 }
 
-- (double)_scaleForTranslation:(CGPoint)a3
+- (double)_scaleForTranslation:(CGPoint)translation
 {
-  [(SBHomeGestureFloatingSwitcherModifier *)self _gestureProgressToMaxTranslationForTranslation:a3.y];
+  [(SBHomeGestureFloatingSwitcherModifier *)self _gestureProgressToMaxTranslationForTranslation:translation.y];
   result = 1.0 - v3;
   if (result < 0.0)
   {
@@ -1053,11 +1053,11 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  v7 = [v6 indexOfObject:v5];
+  layoutCopy = layout;
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts indexOfObject:layoutCopy];
 
   v8 = fabs(self->_translation.x);
   [(SBHomeGestureFloatingSwitcherModifier *)self containerViewBounds];
@@ -1073,9 +1073,9 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
     v12 = v10 + 0.0;
   }
 
-  v13 = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
   x = self->_translation.x;
-  if (v13)
+  if (isRTLEnabled)
   {
     x = -x;
   }
@@ -1091,8 +1091,8 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
 
   else
   {
-    v15 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-    v16 = [v15 count] - 1;
+    appLayouts2 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+    v16 = [appLayouts2 count] - 1;
 
     if (!v7)
     {
@@ -1109,9 +1109,9 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return 0.075;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  if (!a4)
+  if (!index)
   {
     return 1.0;
   }
@@ -1125,24 +1125,24 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
     v10 = v9 <= 0.0 ? 0.0 : v9 + 0.0;
     v11 = fmin(fmax(fmin(v10, 1.0) + self->_multitaskingHintProgress, 0.0), 1.0);
     v5 = v11 * 0.75 + (1.0 - v11) * 0.0;
-    v12 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-    v13 = [v12 count];
+    appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+    v13 = [appLayouts count];
 
     if (v13 >= 4)
     {
-      v14 = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled = [(SBHomeGestureFloatingSwitcherModifier *)self isRTLEnabled];
       x = self->_translation.x;
-      if (v14)
+      if (isRTLEnabled)
       {
         x = -x;
       }
 
-      if (x >= 0.0 && v13 - 1 == a4)
+      if (x >= 0.0 && v13 - 1 == index)
       {
         return 0.0;
       }
 
-      if (x < 0.0 && v13 - 2 == a4)
+      if (x < 0.0 && v13 - 2 == index)
       {
         return 0.0;
       }
@@ -1152,10 +1152,10 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return v5;
 }
 
-- (double)shadowOffsetForIndex:(unint64_t)a3
+- (double)shadowOffsetForIndex:(unint64_t)index
 {
   result = 0.0;
-  if (!a3)
+  if (!index)
   {
     v18 = v8;
     v19 = v7;
@@ -1190,8 +1190,8 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
 {
   if (self->_selectedAppLayout)
   {
-    v3 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-    v4 = [v3 indexOfObject:self->_selectedAppLayout];
+    appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+    v4 = [appLayouts indexOfObject:self->_selectedAppLayout];
   }
 
   else
@@ -1199,53 +1199,53 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
     v4 = 0;
   }
 
-  v5 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-  v6 = [v5 numberOfSnapshotsToCacheInSwitcher];
+  switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+  numberOfSnapshotsToCacheInSwitcher = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
 
-  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v4 numberOfSnapshotsToCache:1 biasForward:v6, 1];
+  return [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v4 numberOfSnapshotsToCache:1 biasForward:numberOfSnapshotsToCacheInSwitcher, 1];
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v24.receiver = self;
   v24.super_class = SBHomeGestureFloatingSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v24 animationAttributesForLayoutElement:v4];
-  if (![v4 switcherLayoutElementType])
+  v5 = [(SBGestureSwitcherModifier *)&v24 animationAttributesForLayoutElement:elementCopy];
+  if (![elementCopy switcherLayoutElementType])
   {
     v6 = [v5 mutableCopy];
-    v7 = [v5 layoutSettings];
-    v8 = [(SBHomeGestureFloatingSwitcherModifier *)self _layoutSettingsForAppLayout:v4 layoutSettings:v7];
+    layoutSettings = [v5 layoutSettings];
+    v8 = [(SBHomeGestureFloatingSwitcherModifier *)self _layoutSettingsForAppLayout:elementCopy layoutSettings:layoutSettings];
     [v6 setLayoutSettings:v8];
 
     v5 = v6;
   }
 
-  if (self->_rampingProperty && ![v4 switcherLayoutElementType])
+  if (self->_rampingProperty && ![elementCopy switcherLayoutElementType])
   {
-    v9 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-    v10 = [v9 count];
-    v11 = [v9 indexOfObject:v4];
+    appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+    v10 = [appLayouts count];
+    v11 = [appLayouts indexOfObject:elementCopy];
     if (v10 >= 2 && v11 == v10 - 1)
     {
       v12 = [v5 mutableCopy];
-      v23 = [v12 layoutSettings];
-      v13 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-      v14 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-      v15 = [v14 animationSettings];
-      v16 = [v15 arcSwipeSettings];
+      layoutSettings2 = [v12 layoutSettings];
+      initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+      switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      arcSwipeSettings = [animationSettings arcSwipeSettings];
 
       [(UIViewFloatAnimatableProperty *)self->_rampingProperty presentationValue];
       v18 = v17;
-      [v16 response];
+      [arcSwipeSettings response];
       v20 = v19;
-      [v23 trackingResponse];
-      [v13 setTrackingResponse:v18 * v21 + (1.0 - v18) * v20];
-      [v16 dampingRatio];
-      [v13 setTrackingDampingRatio:?];
+      [layoutSettings2 trackingResponse];
+      [initWithDefaultValues setTrackingResponse:v18 * v21 + (1.0 - v18) * v20];
+      [arcSwipeSettings dampingRatio];
+      [initWithDefaultValues setTrackingDampingRatio:?];
       v26 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-      [v13 setFrameRateRange:1114113 highFrameRateReason:{*&v26.minimum, *&v26.maximum, *&v26.preferred}];
-      [v12 setLayoutSettings:v13];
+      [initWithDefaultValues setFrameRateRange:1114113 highFrameRateReason:{*&v26.minimum, *&v26.maximum, *&v26.preferred}];
+      [v12 setLayoutSettings:initWithDefaultValues];
 
       v5 = v12;
     }
@@ -1254,19 +1254,19 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return v5;
 }
 
-- (id)_layoutSettingsForAppLayout:(id)a3 layoutSettings:(id)a4
+- (id)_layoutSettingsForAppLayout:(id)layout layoutSettings:(id)settings
 {
-  v6 = a4;
-  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:a3]|| !self->_inMultitaskingChangedProperty)
+  settingsCopy = settings;
+  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:layout]|| !self->_inMultitaskingChangedProperty)
   {
-    v10 = v6;
+    v10 = settingsCopy;
   }
 
   else
   {
-    v7 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-    v8 = [v7 animationSettings];
-    v9 = [v8 cardFlyInSettings];
+    switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    cardFlyInSettings = [animationSettings cardFlyInSettings];
 
     v10 = objc_alloc_init(MEMORY[0x277D65E60]);
     [v10 setDefaultValues];
@@ -1292,13 +1292,13 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
       v11 = fmin(fmax(1.0 - (1.0 - v13) * (1.0 - fmin(v18, 1.0)), 0.0), 1.0);
     }
 
-    [v6 trackingResponse];
+    [settingsCopy trackingResponse];
     v20 = v19;
-    [v9 response];
+    [cardFlyInSettings response];
     v22 = v11 * (v20 - v21);
-    [v9 response];
+    [cardFlyInSettings response];
     [v10 setTrackingResponse:v23 + v22];
-    [v6 dampingRatio];
+    [settingsCopy dampingRatio];
     [v10 setTrackingDampingRatio:?];
     v26 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
     [v10 setFrameRateRange:1114113 highFrameRateReason:{*&v26.minimum, *&v26.maximum, *&v26.preferred}];
@@ -1311,8 +1311,8 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
 {
   v2 = MEMORY[0x277CBEAC0];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  v5 = [v3 setWithArray:v4];
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  v5 = [v3 setWithArray:appLayouts];
   v6 = [v2 dictionaryWithObject:v5 forKey:&unk_283371978];
 
   return v6;
@@ -1331,12 +1331,12 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   }
 }
 
-- (id)_updateInMultitaskingIfNeededWithEvent:(id)a3
+- (id)_updateInMultitaskingIfNeededWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(SBSwitcherModifierEventResponse);
   inMultitasking = self->_inMultitasking;
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   v8 = v7;
   v10 = v9;
 
@@ -1350,10 +1350,10 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
       self->_translationYWhenTriggeredCardFlyIn = self->_translation.y;
     }
 
-    v12 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-    v13 = [v12 animationSettings];
-    v14 = [v13 layoutSettings];
-    [(SBHomeGestureFloatingSwitcherModifier *)self _beginAnimatingMultitaskingPropertyWithMode:3 settings:v14];
+    switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    layoutSettings = [animationSettings layoutSettings];
+    [(SBHomeGestureFloatingSwitcherModifier *)self _beginAnimatingMultitaskingPropertyWithMode:3 settings:layoutSettings];
   }
 
   return v5;
@@ -1370,15 +1370,15 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   return self->_gestureHoldTimer > (v4 * SBScreenMaximumFramesPerSecond());
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   if ([(SBGestureSwitcherModifier *)self gesturePhase]== 2)
   {
     [(SBHomeGestureFloatingSwitcherModifier *)self gestureHandlingModifier:self averageVelocityOverDuration:0.0416666667];
-    v4 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
-    if (v4)
+    currentFinalDestination = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
+    if (currentFinalDestination)
     {
-      v5 = v4 == 4;
+      v5 = currentFinalDestination == 4;
     }
 
     else
@@ -1391,7 +1391,7 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
       self->_gestureHoldTimer = 0;
     }
 
-    else if (v4 == 3 && BSFloatLessThanFloat())
+    else if (currentFinalDestination == 3 && BSFloatLessThanFloat())
     {
       ++self->_gestureHoldTimer;
     }
@@ -1404,9 +1404,9 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   }
 }
 
-- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)a3 settings:(id)a4
+- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)mode settings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   inMultitaskingChangedProperty = self->_inMultitaskingChangedProperty;
   if (inMultitaskingChangedProperty)
   {
@@ -1420,7 +1420,7 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   self->_inMultitaskingChangedProperty = v9;
 
   [(UIViewFloatAnimatableProperty *)self->_inMultitaskingChangedProperty setValue:0.0];
-  v11 = [v6 copy];
+  v11 = [settingsCopy copy];
   LODWORD(v12) = *MEMORY[0x277CD9DD0];
   LODWORD(v13) = *(MEMORY[0x277CD9DD0] + 4);
   LODWORD(v14) = *(MEMORY[0x277CD9DD0] + 8);
@@ -1442,7 +1442,7 @@ uint64_t __55__SBHomeGestureFloatingSwitcherModifier_scaleForIndex___block_invok
   objc_copyWeak(&v21, &location);
   v18 = v16;
   v20 = v18;
-  [v17 sb_animateWithSettings:v15 mode:a3 animations:v22 completion:v19];
+  [v17 sb_animateWithSettings:v15 mode:mode animations:v22 completion:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1466,15 +1466,15 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
   }
 }
 
-- (BOOL)_inMultitaskingForLocation:(CGPoint)a3 translation:(CGPoint)a4
+- (BOOL)_inMultitaskingForLocation:(CGPoint)location translation:(CGPoint)translation
 {
-  y = a4.y;
-  x = a4.x;
+  y = translation.y;
+  x = translation.x;
   inMultitasking = self->_inMultitasking;
-  v8 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination:a3.x];
+  v8 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination:location.x];
   v9 = (v8 - 1) < 2 || inMultitasking;
-  v10 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  v11 = [v10 count];
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  v11 = [appLayouts count];
 
   v13 = fabs(x) > fabs(y) && v8 != 4;
   v14 = v13 || v9;
@@ -1492,9 +1492,9 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
   return ![(SBHomeGestureFloatingSwitcherModifier *)self _isTranslationPastDistanceThresholdToUnconditionallyGoHome:y]& v16;
 }
 
-- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)a3
+- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)home
 {
-  v3 = -a3;
+  v3 = -home;
   [(SBHomeGestureFloatingSwitcherModifier *)self unconditionalDistanceThresholdForHome];
   return v4 < v3;
 }
@@ -1519,8 +1519,8 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
 
 - (double)_inSwitcherCenterYOffsetWhenPresented
 {
-  v3 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-  [v3 switcherCenterYOffsetPercentOfScreenHeight];
+  switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCenterYOffsetPercentOfScreenHeight];
 
   [(SBHomeGestureFloatingSwitcherModifier *)self containerViewBounds];
   [(SBHomeGestureFloatingSwitcherModifier *)self screenScale];
@@ -1531,8 +1531,8 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
 
 - (double)_centerYOffsetDuringGesture
 {
-  v3 = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
-  [v3 homeGestureCenterZoomDownCenterYOffsetFactor];
+  homeGestureSettings = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
+  [homeGestureSettings homeGestureCenterZoomDownCenterYOffsetFactor];
   [(SBHomeGestureFloatingSwitcherModifier *)self containerViewBounds];
   [(SBHomeGestureFloatingSwitcherModifier *)self screenScale];
   BSFloatRoundForScale();
@@ -1543,8 +1543,8 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
 
 - (double)_switcherCardScale
 {
-  v2 = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
-  [v2 deckSwitcherPageScale];
+  switcherSettings = [(SBHomeGestureFloatingSwitcherModifier *)self switcherSettings];
+  [switcherSettings deckSwitcherPageScale];
   v4 = v3;
 
   return v4;
@@ -1552,11 +1552,11 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
 
 - (unint64_t)_selectedAppLayoutIndex
 {
-  v3 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  v4 = v3;
-  if (v3 && self->_selectedAppLayout)
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  v4 = appLayouts;
+  if (appLayouts && self->_selectedAppLayout)
   {
-    v5 = [v3 indexOfObject:?];
+    v5 = [appLayouts indexOfObject:?];
   }
 
   else
@@ -1567,31 +1567,31 @@ void __94__SBHomeGestureFloatingSwitcherModifier__beginAnimatingMultitaskingProp
   return v5;
 }
 
-- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBHomeGestureFloatingSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_selectedAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_selectedAppLayout];
+  return selfCopy;
 }
 
 - (void)_applyPrototypeSettings
 {
   v3 = SBMainScreenPointsPerMillimeter();
-  v9 = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
-  [v9 normalizedDistanceYThresholdForUnconditionalHomeInSlideOver];
+  homeGestureSettings = [(SBHomeGestureFloatingSwitcherModifier *)self homeGestureSettings];
+  [homeGestureSettings normalizedDistanceYThresholdForUnconditionalHomeInSlideOver];
   kHomeGestureNormalizedDistanceYThresholdForUnconditionalHome_1 = v4;
-  [v9 normalizedDistanceYThresholdRangeForUnconditionalHomeInSlideOver];
+  [homeGestureSettings normalizedDistanceYThresholdRangeForUnconditionalHomeInSlideOver];
   kHomeGestureNormalizedDistanceYThresholdRangeForUnconditionalHome_1 = v5;
-  [v9 pauseVelocityThresholdForAppSwitcher];
-  [v9 velocityXThresholdForUnconditionalArcSwipe];
-  [v9 minimumYDistanceForHomeOrAppSwitcher];
+  [homeGestureSettings pauseVelocityThresholdForAppSwitcher];
+  [homeGestureSettings velocityXThresholdForUnconditionalArcSwipe];
+  [homeGestureSettings minimumYDistanceForHomeOrAppSwitcher];
   *&kMinimumYDistanceForHomeOrAppSwitcher_2 = v3 * v6;
-  [v9 cardFlyInMaximumVelocityThreshold];
+  [homeGestureSettings cardFlyInMaximumVelocityThreshold];
   *&kCardFlyInMaximumVelocityThreshold_1 = v3 * v7;
-  [v9 cardFlyInDelayAfterEnteringAppSwitcher];
+  [homeGestureSettings cardFlyInDelayAfterEnteringAppSwitcher];
   kCardFlyInDelayAfterEnteringAppSwitcher_0 = v8;
 }
 

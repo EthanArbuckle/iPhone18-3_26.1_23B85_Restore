@@ -1,30 +1,30 @@
 @interface ASOneTimeCodeCredential
-+ (id)credentialWithCode:(id)a3;
-- (ASOneTimeCodeCredential)initWithCode:(id)a3;
-- (ASOneTimeCodeCredential)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)credentialWithCode:(id)code;
+- (ASOneTimeCodeCredential)initWithCode:(id)code;
+- (ASOneTimeCodeCredential)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASOneTimeCodeCredential
 
-+ (id)credentialWithCode:(id)a3
++ (id)credentialWithCode:(id)code
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCode:v4];
+  codeCopy = code;
+  v5 = [[self alloc] initWithCode:codeCopy];
 
   return v5;
 }
 
-- (ASOneTimeCodeCredential)initWithCode:(id)a3
+- (ASOneTimeCodeCredential)initWithCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v10.receiver = self;
   v10.super_class = ASOneTimeCodeCredential;
   v5 = [(ASOneTimeCodeCredential *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     code = v5->_code;
     v5->_code = v6;
 
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (ASOneTimeCodeCredential)initWithCoder:(id)a3
+- (ASOneTimeCodeCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"code"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"code"];
 
   v6 = [(ASOneTimeCodeCredential *)self initWithCode:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   code = self->_code;
@@ -51,10 +51,10 @@
   return [v4 initWithCode:code];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -65,8 +65,8 @@
     if (objc_opt_isKindOfClass())
     {
       code = self->_code;
-      v6 = [(ASOneTimeCodeCredential *)v4 code];
-      v7 = [(NSString *)code isEqualToString:v6];
+      code = [(ASOneTimeCodeCredential *)equalCopy code];
+      v7 = [(NSString *)code isEqualToString:code];
     }
 
     else

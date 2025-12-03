@@ -1,8 +1,8 @@
 @interface MFSMTPDelivery
 + (id)log;
-- (id)deliverMessageData:(id)a3 toRecipients:(id)a4;
+- (id)deliverMessageData:(id)data toRecipients:(id)recipients;
 - (void)_openConnection;
-- (void)setAccount:(id)a3;
+- (void)setAccount:(id)account;
 @end
 
 @implementation MFSMTPDelivery
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __21__MFSMTPDelivery_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_38 != -1)
   {
     dispatch_once(&log_onceToken_38, block);
@@ -42,12 +42,12 @@ void __21__MFSMTPDelivery_log__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
+  accountCopy = account;
+  v5 = accountCopy;
   connection = self->_connection;
-  if (connection && self->super._account != v4)
+  if (connection && self->super._account != accountCopy)
   {
     self->_connection = 0;
   }
@@ -57,12 +57,12 @@ void __21__MFSMTPDelivery_log__block_invoke(uint64_t a1)
   [(MFMailDelivery *)&v7 setAccount:v5];
 }
 
-- (id)deliverMessageData:(id)a3 toRecipients:(id)a4
+- (id)deliverMessageData:(id)data toRecipients:(id)recipients
 {
   v92[6] = *MEMORY[0x1E69E9840];
-  v75 = a3;
-  v74 = a4;
-  v80 = [(MFAccount *)self->super._account hostname];
+  dataCopy = data;
+  recipientsCopy = recipients;
+  hostname = [(MFAccount *)self->super._account hostname];
   v89 = 1030;
   v88 = 0;
   v81 = +[MFActivityMonitor currentMonitor];
@@ -74,7 +74,7 @@ void __21__MFSMTPDelivery_log__block_invoke(uint64_t a1)
     [(MFSMTPDelivery *)self _openConnection];
   }
 
-  if (v80)
+  if (hostname)
   {
     v6 = 0;
   }
@@ -94,7 +94,7 @@ void __21__MFSMTPDelivery_log__block_invoke(uint64_t a1)
     v9 = objc_loadWeakRetained(&self->super._delegate);
     [v9 setPercentDone:0.1];
 
-    if (!v80)
+    if (!hostname)
     {
       v22 = 0;
       v23 = 0;
@@ -103,28 +103,28 @@ void __21__MFSMTPDelivery_log__block_invoke(uint64_t a1)
       goto LABEL_30;
     }
 
-    v10 = [(MFMailMessage *)self->super._message headers];
-    v11 = [v10 copyAddressListForResentFrom];
-    if (![v11 count])
+    headers = [(MFMailMessage *)self->super._message headers];
+    copyAddressListForResentFrom = [headers copyAddressListForResentFrom];
+    if (![copyAddressListForResentFrom count])
     {
       goto LABEL_21;
     }
 
-    v12 = [v11 objectAtIndex:0];
-    v13 = [v12 emailAddressValue];
-    v14 = [v13 simpleAddress];
-    v15 = v14;
-    if (v14)
+    v12 = [copyAddressListForResentFrom objectAtIndex:0];
+    emailAddressValue = [v12 emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v15 = simpleAddress;
+    if (simpleAddress)
     {
-      v16 = v14;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v16 = [v12 stringValue];
+      stringValue = [v12 stringValue];
     }
 
-    v25 = v16;
+    v25 = stringValue;
 
     if (v25)
     {
@@ -149,25 +149,25 @@ LABEL_21:
       v79 = 0;
     }
 
-    v27 = [(MFMailMessage *)self->super._message senders];
+    senders = [(MFMailMessage *)self->super._message senders];
 
-    if ([v27 count])
+    if ([senders count])
     {
-      v28 = [v27 objectAtIndex:0];
-      v29 = [v28 emailAddressValue];
-      v30 = [v29 simpleAddress];
-      v31 = v30;
-      if (v30)
+      v28 = [senders objectAtIndex:0];
+      emailAddressValue2 = [v28 emailAddressValue];
+      simpleAddress2 = [emailAddressValue2 simpleAddress];
+      v31 = simpleAddress2;
+      if (simpleAddress2)
       {
-        v32 = v30;
+        stringValue2 = simpleAddress2;
       }
 
       else
       {
-        v32 = [v28 stringValue];
+        stringValue2 = [v28 stringValue];
       }
 
-      v33 = v32;
+      v33 = stringValue2;
     }
 
     else
@@ -176,18 +176,18 @@ LABEL_21:
       v28 = v79;
     }
 
-    v11 = v27;
+    copyAddressListForResentFrom = senders;
     v26 = v33;
     goto LABEL_29;
   }
 
-  v17 = [v81 error];
+  error = [v81 error];
 
-  if (!v17)
+  if (!error)
   {
     v18 = MEMORY[0x1E696AEC0];
     v19 = MFLookupLocalizedString(@"SMTP_NO_CONNECTION", @"The connection to the outgoing server “%@” failed. Additional Outgoing Mail Servers can be configured for Mail accounts in Settings > Apps > Mail > Accounts.", @"Delayed");
-    v20 = [v18 stringWithFormat:v19, v80];
+    v20 = [v18 stringWithFormat:v19, hostname];
 
     v89 = 1051;
     v6 = v20;
@@ -214,8 +214,8 @@ LABEL_30:
   v92[4] = *MEMORY[0x1E699B158];
   v92[5] = v37;
   v73 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:6];
-  v38 = [(MFMailDelivery *)self headersForDelivery];
-  v77 = [v38 headersRequiringSMTPUTF8Support];
+  headersForDelivery = [(MFMailDelivery *)self headersForDelivery];
+  headersRequiringSMTPUTF8Support = [headersForDelivery headersRequiringSMTPUTF8Support];
 
   v86[0] = MEMORY[0x1E69E9820];
   v86[1] = 3221225472;
@@ -223,7 +223,7 @@ LABEL_30:
   v86[3] = &unk_1E7AA66D0;
   v72 = v73;
   v87 = v72;
-  if ((v23 | [v77 ef_any:v86]))
+  if ((v23 | [headersRequiringSMTPUTF8Support ef_any:v86]))
   {
     if (![(MFSMTPConnection *)self->_connection supportsSMTPUTF8])
     {
@@ -293,17 +293,17 @@ LABEL_35:
     }
   }
 
-  v47 = [(MFSMTPConnection *)self->_connection maximumMessageBytes];
-  if (v47)
+  maximumMessageBytes = [(MFSMTPConnection *)self->_connection maximumMessageBytes];
+  if (maximumMessageBytes)
   {
-    v48 = [v75 length];
-    v49 = [v75 numberOfNewlinesNeedingConversion:0] + v48;
-    if (v47 < v49)
+    v48 = [dataCopy length];
+    v49 = [dataCopy numberOfNewlinesNeedingConversion:0] + v48;
+    if (maximumMessageBytes < v49)
     {
       v50 = MEMORY[0x1E696AEC0];
       v51 = MFLookupLocalizedString(@"MESSAGE_TOO_LARGE", @"Your message has size %@, which exceeds %@, the maximum allowed by the server.", @"Message");
       v52 = [MEMORY[0x1E696AEC0] mf_stringRepresentationForBytes:v49];
-      v53 = [MEMORY[0x1E696AEC0] mf_stringRepresentationForBytes:v47];
+      v53 = [MEMORY[0x1E696AEC0] mf_stringRepresentationForBytes:maximumMessageBytes];
       v46 = [v50 stringWithFormat:v51, v52, v53];
 
       v42 = 0;
@@ -326,7 +326,7 @@ LABEL_52:
   v85 = 0;
   v82 = 0;
   v83 = 0;
-  v24 = [(MFSMTPConnection *)v55 mailFrom:v78 recipients:v74 withData:v75 host:v80 emailFormatStyle:v41 errorTitle:&v85 errorMessage:&v84 serverResponse:&v83 displayError:&v88 errorCode:&v89 errorUserInfo:&v82];
+  v24 = [(MFSMTPConnection *)v55 mailFrom:v78 recipients:recipientsCopy withData:dataCopy host:hostname emailFormatStyle:v41 errorTitle:&v85 errorMessage:&v84 serverResponse:&v83 displayError:&v88 errorCode:&v89 errorUserInfo:&v82];
   v42 = v85;
   v46 = v84;
 
@@ -339,8 +339,8 @@ LABEL_52:
   v45 = v56 - Current;
   if (!v24)
   {
-    v57 = [(MFMailDelivery *)self account];
-    [v57 checkInConnection:self->_connection];
+    account = [(MFMailDelivery *)self account];
+    [account checkInConnection:self->_connection];
 
     v24 = 0;
     v58 = 1;
@@ -363,9 +363,9 @@ LABEL_56:
       v66 = +[MFSMTPDelivery log];
       if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
       {
-        v67 = [(MFMailMessage *)self->super._message messageID];
-        v68 = [v63 ef_publicDescription];
-        [(MFSMTPDelivery *)v67 deliverMessageData:v68 toRecipients:buf, v66];
+        messageID = [(MFMailMessage *)self->super._message messageID];
+        ef_publicDescription = [v63 ef_publicDescription];
+        [(MFSMTPDelivery *)messageID deliverMessageData:ef_publicDescription toRecipients:buf, v66];
       }
 
       goto LABEL_61;

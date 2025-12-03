@@ -1,27 +1,27 @@
 @interface PSSegmentableSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (double)_accessibilityIncreaseAmount:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (double)_accessibilityIncreaseAmount:(BOOL)amount;
 @end
 
 @implementation PSSegmentableSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSSegmentableSlider" hasInstanceMethod:@"numberOfTicks" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PSSegmentableSlider" hasInstanceMethod:@"offsetBetweenTicksForNumberOfTicks:" withFullSignature:{"f", "Q", 0}];
-  [v3 validateClass:@"PSSegmentableSlider" hasInstanceMethod:@"locksToSegment" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PSSegmentableSlider" isKindOfClass:@"UISlider"];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"PSSegmentableSlider" hasInstanceVariable:@"_segmented" withType:"B"];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSSegmentableSlider" hasInstanceMethod:@"numberOfTicks" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PSSegmentableSlider" hasInstanceMethod:@"offsetBetweenTicksForNumberOfTicks:" withFullSignature:{"f", "Q", 0}];
+  [validationsCopy validateClass:@"PSSegmentableSlider" hasInstanceMethod:@"locksToSegment" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PSSegmentableSlider" isKindOfClass:@"UISlider"];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"PSSegmentableSlider" hasInstanceVariable:@"_segmented" withType:"B"];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"value" withFullSignature:{"f", 0}];
 }
 
-- (double)_accessibilityIncreaseAmount:(BOOL)a3
+- (double)_accessibilityIncreaseAmount:(BOOL)amount
 {
-  v3 = a3;
+  amountCopy = amount;
   v5 = [(PSSegmentableSliderAccessibility *)self safeValueForKey:@"numberOfTicks"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = [(PSSegmentableSliderAccessibility *)self safeValueForKey:@"minimumValue"];
   [v7 floatValue];
@@ -41,7 +41,7 @@
   if ([(PSSegmentableSliderAccessibility *)self safeBoolForKey:@"_segmented"]&& [(PSSegmentableSliderAccessibility *)self safeBoolForKey:@"locksToSegment"])
   {
     v14 = llroundf((v13 - v9) / v10);
-    if (v3)
+    if (amountCopy)
     {
       v15 = v14 + 1;
     }
@@ -51,9 +51,9 @@
       v15 = v14 - 1;
     }
 
-    if (v6 - 1 < v15)
+    if (integerValue - 1 < v15)
     {
-      v15 = v6 - 1;
+      v15 = integerValue - 1;
     }
 
     return (v9 + (v10 * (v15 & ~(v15 >> 63))));
@@ -66,7 +66,7 @@
     v19 = v18;
 
     v20 = (v19 - v9) / 10.0;
-    if (!v3)
+    if (!amountCopy)
     {
       v20 = -v20;
     }

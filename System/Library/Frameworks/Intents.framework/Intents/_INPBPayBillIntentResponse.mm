@@ -1,39 +1,39 @@
 @interface _INPBPayBillIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBPayBillIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPayBillIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPayBillIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPayBillIntentResponse *)self billDetails];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"billDetails"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  billDetails = [(_INPBPayBillIntentResponse *)self billDetails];
+  dictionaryRepresentation = [billDetails dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"billDetails"];
 
-  v6 = [(_INPBPayBillIntentResponse *)self fromAccount];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"fromAccount"];
+  fromAccount = [(_INPBPayBillIntentResponse *)self fromAccount];
+  dictionaryRepresentation2 = [fromAccount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"fromAccount"];
 
-  v8 = [(_INPBPayBillIntentResponse *)self transactionAmount];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"transactionAmount"];
+  transactionAmount = [(_INPBPayBillIntentResponse *)self transactionAmount];
+  dictionaryRepresentation3 = [transactionAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"transactionAmount"];
 
-  v10 = [(_INPBPayBillIntentResponse *)self transactionNote];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"transactionNote"];
+  transactionNote = [(_INPBPayBillIntentResponse *)self transactionNote];
+  dictionaryRepresentation4 = [transactionNote dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"transactionNote"];
 
-  v12 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"transactionScheduledDate"];
+  transactionScheduledDate = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
+  dictionaryRepresentation5 = [transactionScheduledDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"transactionScheduledDate"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -45,28 +45,28 @@
   return v6 ^ [(_INPBDateTimeRange *)self->_transactionScheduledDate hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBPayBillIntentResponse *)self billDetails];
-  v6 = [v4 billDetails];
-  if ((v5 != 0) == (v6 == 0))
+  billDetails = [(_INPBPayBillIntentResponse *)self billDetails];
+  billDetails2 = [equalCopy billDetails];
+  if ((billDetails != 0) == (billDetails2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBPayBillIntentResponse *)self billDetails];
-  if (v7)
+  billDetails3 = [(_INPBPayBillIntentResponse *)self billDetails];
+  if (billDetails3)
   {
-    v8 = v7;
-    v9 = [(_INPBPayBillIntentResponse *)self billDetails];
-    v10 = [v4 billDetails];
-    v11 = [v9 isEqual:v10];
+    v8 = billDetails3;
+    billDetails4 = [(_INPBPayBillIntentResponse *)self billDetails];
+    billDetails5 = [equalCopy billDetails];
+    v11 = [billDetails4 isEqual:billDetails5];
 
     if (!v11)
     {
@@ -78,20 +78,20 @@
   {
   }
 
-  v5 = [(_INPBPayBillIntentResponse *)self fromAccount];
-  v6 = [v4 fromAccount];
-  if ((v5 != 0) == (v6 == 0))
+  billDetails = [(_INPBPayBillIntentResponse *)self fromAccount];
+  billDetails2 = [equalCopy fromAccount];
+  if ((billDetails != 0) == (billDetails2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBPayBillIntentResponse *)self fromAccount];
-  if (v12)
+  fromAccount = [(_INPBPayBillIntentResponse *)self fromAccount];
+  if (fromAccount)
   {
-    v13 = v12;
-    v14 = [(_INPBPayBillIntentResponse *)self fromAccount];
-    v15 = [v4 fromAccount];
-    v16 = [v14 isEqual:v15];
+    v13 = fromAccount;
+    fromAccount2 = [(_INPBPayBillIntentResponse *)self fromAccount];
+    fromAccount3 = [equalCopy fromAccount];
+    v16 = [fromAccount2 isEqual:fromAccount3];
 
     if (!v16)
     {
@@ -103,20 +103,20 @@
   {
   }
 
-  v5 = [(_INPBPayBillIntentResponse *)self transactionAmount];
-  v6 = [v4 transactionAmount];
-  if ((v5 != 0) == (v6 == 0))
+  billDetails = [(_INPBPayBillIntentResponse *)self transactionAmount];
+  billDetails2 = [equalCopy transactionAmount];
+  if ((billDetails != 0) == (billDetails2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBPayBillIntentResponse *)self transactionAmount];
-  if (v17)
+  transactionAmount = [(_INPBPayBillIntentResponse *)self transactionAmount];
+  if (transactionAmount)
   {
-    v18 = v17;
-    v19 = [(_INPBPayBillIntentResponse *)self transactionAmount];
-    v20 = [v4 transactionAmount];
-    v21 = [v19 isEqual:v20];
+    v18 = transactionAmount;
+    transactionAmount2 = [(_INPBPayBillIntentResponse *)self transactionAmount];
+    transactionAmount3 = [equalCopy transactionAmount];
+    v21 = [transactionAmount2 isEqual:transactionAmount3];
 
     if (!v21)
     {
@@ -128,20 +128,20 @@
   {
   }
 
-  v5 = [(_INPBPayBillIntentResponse *)self transactionNote];
-  v6 = [v4 transactionNote];
-  if ((v5 != 0) == (v6 == 0))
+  billDetails = [(_INPBPayBillIntentResponse *)self transactionNote];
+  billDetails2 = [equalCopy transactionNote];
+  if ((billDetails != 0) == (billDetails2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBPayBillIntentResponse *)self transactionNote];
-  if (v22)
+  transactionNote = [(_INPBPayBillIntentResponse *)self transactionNote];
+  if (transactionNote)
   {
-    v23 = v22;
-    v24 = [(_INPBPayBillIntentResponse *)self transactionNote];
-    v25 = [v4 transactionNote];
-    v26 = [v24 isEqual:v25];
+    v23 = transactionNote;
+    transactionNote2 = [(_INPBPayBillIntentResponse *)self transactionNote];
+    transactionNote3 = [equalCopy transactionNote];
+    v26 = [transactionNote2 isEqual:transactionNote3];
 
     if (!v26)
     {
@@ -153,12 +153,12 @@
   {
   }
 
-  v5 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
-  v6 = [v4 transactionScheduledDate];
-  if ((v5 != 0) != (v6 == 0))
+  billDetails = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
+  billDetails2 = [equalCopy transactionScheduledDate];
+  if ((billDetails != 0) != (billDetails2 == 0))
   {
-    v27 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
-    if (!v27)
+    transactionScheduledDate = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
+    if (!transactionScheduledDate)
     {
 
 LABEL_30:
@@ -166,10 +166,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
-    v30 = [v4 transactionScheduledDate];
-    v31 = [v29 isEqual:v30];
+    v28 = transactionScheduledDate;
+    transactionScheduledDate2 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
+    transactionScheduledDate3 = [equalCopy transactionScheduledDate];
+    v31 = [transactionScheduledDate2 isEqual:transactionScheduledDate3];
 
     if (v31)
     {
@@ -189,95 +189,95 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPayBillIntentResponse allocWithZone:](_INPBPayBillIntentResponse init];
-  v6 = [(_INPBBillDetailsValue *)self->_billDetails copyWithZone:a3];
+  v6 = [(_INPBBillDetailsValue *)self->_billDetails copyWithZone:zone];
   [(_INPBPayBillIntentResponse *)v5 setBillDetails:v6];
 
-  v7 = [(_INPBFinancialAccountValue *)self->_fromAccount copyWithZone:a3];
+  v7 = [(_INPBFinancialAccountValue *)self->_fromAccount copyWithZone:zone];
   [(_INPBPayBillIntentResponse *)v5 setFromAccount:v7];
 
-  v8 = [(_INPBPaymentAmountValue *)self->_transactionAmount copyWithZone:a3];
+  v8 = [(_INPBPaymentAmountValue *)self->_transactionAmount copyWithZone:zone];
   [(_INPBPayBillIntentResponse *)v5 setTransactionAmount:v8];
 
-  v9 = [(_INPBString *)self->_transactionNote copyWithZone:a3];
+  v9 = [(_INPBString *)self->_transactionNote copyWithZone:zone];
   [(_INPBPayBillIntentResponse *)v5 setTransactionNote:v9];
 
-  v10 = [(_INPBDateTimeRange *)self->_transactionScheduledDate copyWithZone:a3];
+  v10 = [(_INPBDateTimeRange *)self->_transactionScheduledDate copyWithZone:zone];
   [(_INPBPayBillIntentResponse *)v5 setTransactionScheduledDate:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPayBillIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBPayBillIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPayBillIntentResponse)initWithCoder:(id)a3
+- (_INPBPayBillIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPayBillIntentResponse *)self initWithData:v6];
+    self = [(_INPBPayBillIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBPayBillIntentResponse *)self billDetails];
+  toCopy = to;
+  billDetails = [(_INPBPayBillIntentResponse *)self billDetails];
 
-  if (v4)
+  if (billDetails)
   {
-    v5 = [(_INPBPayBillIntentResponse *)self billDetails];
+    billDetails2 = [(_INPBPayBillIntentResponse *)self billDetails];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBPayBillIntentResponse *)self fromAccount];
+  fromAccount = [(_INPBPayBillIntentResponse *)self fromAccount];
 
-  if (v6)
+  if (fromAccount)
   {
-    v7 = [(_INPBPayBillIntentResponse *)self fromAccount];
+    fromAccount2 = [(_INPBPayBillIntentResponse *)self fromAccount];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBPayBillIntentResponse *)self transactionAmount];
+  transactionAmount = [(_INPBPayBillIntentResponse *)self transactionAmount];
 
-  if (v8)
+  if (transactionAmount)
   {
-    v9 = [(_INPBPayBillIntentResponse *)self transactionAmount];
+    transactionAmount2 = [(_INPBPayBillIntentResponse *)self transactionAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBPayBillIntentResponse *)self transactionNote];
+  transactionNote = [(_INPBPayBillIntentResponse *)self transactionNote];
 
-  if (v10)
+  if (transactionNote)
   {
-    v11 = [(_INPBPayBillIntentResponse *)self transactionNote];
+    transactionNote2 = [(_INPBPayBillIntentResponse *)self transactionNote];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
+  transactionScheduledDate = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (transactionScheduledDate)
   {
-    v14 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
+    transactionScheduledDate2 = [(_INPBPayBillIntentResponse *)self transactionScheduledDate];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 

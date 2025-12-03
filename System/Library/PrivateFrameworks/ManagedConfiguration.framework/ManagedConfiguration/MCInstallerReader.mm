@@ -1,6 +1,6 @@
 @interface MCInstallerReader
 + (id)sharedReader;
-+ (void)_setSystemProfileStorageDirectory:(id)a3 userProfileStorageDirectory:(id)a4;
++ (void)_setSystemProfileStorageDirectory:(id)directory userProfileStorageDirectory:(id)storageDirectory;
 @end
 
 @implementation MCInstallerReader
@@ -24,16 +24,16 @@ uint64_t __33__MCInstallerReader_sharedReader__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)_setSystemProfileStorageDirectory:(id)a3 userProfileStorageDirectory:(id)a4
++ (void)_setSystemProfileStorageDirectory:(id)directory userProfileStorageDirectory:(id)storageDirectory
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  storageDirectoryCopy = storageDirectory;
   v7 = __systemProfileStorageDirectory;
-  __systemProfileStorageDirectory = v5;
-  v9 = v5;
+  __systemProfileStorageDirectory = directoryCopy;
+  v9 = directoryCopy;
 
   v8 = __userProfileStorageDirectory;
-  __userProfileStorageDirectory = v6;
+  __userProfileStorageDirectory = storageDirectoryCopy;
 }
 
 @end

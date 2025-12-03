@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (VUIARAssetRequest)activeAssetRequest;
 - (VUIARQLPreviewManager)init;
-- (id)_previewControllerWithAssetRequest:(id)a3;
-- (id)_quickLookPreviewItemWithFileURL:(id)a3 shareURL:(id)a4;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
-- (void)_presentPreviewControllerWithURL:(id)a3 shareURL:(id)a4 fileName:(id)a5;
+- (id)_previewControllerWithAssetRequest:(id)request;
+- (id)_quickLookPreviewItemWithFileURL:(id)l shareURL:(id)rL;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
+- (void)_presentPreviewControllerWithURL:(id)l shareURL:(id)rL fileName:(id)name;
 - (void)configureDownloadSession;
-- (void)configureUsingDictionary:(id)a3;
-- (void)previewControllerDidDismiss:(id)a3;
-- (void)previewWithURL:(id)a3 shareURL:(id)a4;
-- (void)setActiveAssetRequest:(id)a3;
+- (void)configureUsingDictionary:(id)dictionary;
+- (void)previewControllerDidDismiss:(id)dismiss;
+- (void)previewWithURL:(id)l shareURL:(id)rL;
+- (void)setActiveAssetRequest:(id)request;
 @end
 
 @implementation VUIARQLPreviewManager
@@ -66,8 +66,8 @@ void __39__VUIARQLPreviewManager_sharedInstance__block_invoke()
   }
 
   [v3 setTimeoutIntervalForResource:self->_resourceTimeout];
-  v6 = [MEMORY[0x1E696ADC8] mainQueue];
-  v7 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v3 delegate:self delegateQueue:v6];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+  v7 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v3 delegate:self delegateQueue:mainQueue];
   session = self->_session;
   self->_session = v7;
 }
@@ -106,13 +106,13 @@ void __53__VUIARQLPreviewManager_cancelExistingDownloadsIfAny__block_invoke(uint
   }
 }
 
-- (void)configureUsingDictionary:(id)a3
+- (void)configureUsingDictionary:(id)dictionary
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
-    v5 = [v4 vui_numberForKey:@"resourceTimeoutInterval"];
+    v5 = [dictionaryCopy vui_numberForKey:@"resourceTimeoutInterval"];
     v6 = v5;
     if (v5)
     {
@@ -135,44 +135,44 @@ void __53__VUIARQLPreviewManager_cancelExistingDownloadsIfAny__block_invoke(uint
   }
 }
 
-- (void)setActiveAssetRequest:(id)a3
+- (void)setActiveAssetRequest:(id)request
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activeAssetRequest != v6)
+  requestCopy = request;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activeAssetRequest != requestCopy)
   {
-    objc_storeStrong(&v5->_activeAssetRequest, a3);
+    objc_storeStrong(&selfCopy->_activeAssetRequest, request);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (VUIARAssetRequest)activeAssetRequest
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeAssetRequest;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeAssetRequest;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(VUIARQLPreviewManager *)self activeAssetRequest];
-  v5 = v4;
-  if (v4)
+  activeAssetRequest = [(VUIARQLPreviewManager *)self activeAssetRequest];
+  v5 = activeAssetRequest;
+  if (activeAssetRequest)
   {
-    if ([v4 isDownloading])
+    if ([activeAssetRequest isDownloading])
     {
       v6 = VUIDefaultLogObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 fileName];
+        fileName = [v5 fileName];
         v8 = 138412290;
-        v9 = v7;
+        v9 = fileName;
         _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIARQLPreviewManager - Cancel the active download: %@", &v8, 0xCu);
       }
 
@@ -183,30 +183,30 @@ void __53__VUIARQLPreviewManager_cancelExistingDownloadsIfAny__block_invoke(uint
   }
 }
 
-- (void)previewWithURL:(id)a3 shareURL:(id)a4
+- (void)previewWithURL:(id)l shareURL:(id)rL
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 path];
-  v9 = [v8 lastPathComponent];
+  rLCopy = rL;
+  lCopy = l;
+  path = [lCopy path];
+  lastPathComponent = [path lastPathComponent];
 
-  [(VUIARQLPreviewManager *)self _presentPreviewControllerWithURL:v7 shareURL:v6 fileName:v9];
+  [(VUIARQLPreviewManager *)self _presentPreviewControllerWithURL:lCopy shareURL:rLCopy fileName:lastPathComponent];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(VUIARQLPreviewManager *)self activeAssetRequest];
+  taskCopy = task;
+  lCopy = l;
+  activeAssetRequest = [(VUIARQLPreviewManager *)self activeAssetRequest];
   v10 = VUIDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 remoteURL];
+    remoteURL = [activeAssetRequest remoteURL];
     *buf = 138412546;
-    v23 = v11;
+    v23 = remoteURL;
     v24 = 2112;
-    v25 = v8;
+    v25 = lCopy;
     _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIARQLPreviewManager - NSURLSessionDownloadDelegate: didFinishDownloadingToURL: remote URL: %@, location: %@", buf, 0x16u);
   }
 
@@ -214,13 +214,13 @@ void __53__VUIARQLPreviewManager_cancelExistingDownloadsIfAny__block_invoke(uint
   block[1] = 3221225472;
   v17 = __75__VUIARQLPreviewManager_URLSession_downloadTask_didFinishDownloadingToURL___block_invoke;
   v18 = &unk_1E872E008;
-  v19 = v7;
-  v20 = v9;
-  v21 = v8;
+  v19 = taskCopy;
+  v20 = activeAssetRequest;
+  v21 = lCopy;
   v12 = MEMORY[0x1E696AF00];
-  v13 = v8;
-  v14 = v9;
-  v15 = v7;
+  v13 = lCopy;
+  v14 = activeAssetRequest;
+  v15 = taskCopy;
   if ([v12 isMainThread])
   {
     v17(block);
@@ -263,24 +263,24 @@ LABEL_8:
   [*(a1 + 40) setIsDownloading:0];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
-  v7 = [(VUIARQLPreviewManager *)self activeAssetRequest];
+  errorCopy = error;
+  activeAssetRequest = [(VUIARQLPreviewManager *)self activeAssetRequest];
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [VUIARQLPreviewManager URLSession:v7 task:v6 didCompleteWithError:v8];
+    [VUIARQLPreviewManager URLSession:activeAssetRequest task:errorCopy didCompleteWithError:v8];
   }
 
   v12 = MEMORY[0x1E69E9820];
   v13 = __62__VUIARQLPreviewManager_URLSession_task_didCompleteWithError___block_invoke;
   v14 = &unk_1E872D990;
-  v15 = v6;
-  v16 = v7;
+  v15 = errorCopy;
+  v16 = activeAssetRequest;
   v9 = MEMORY[0x1E696AF00];
-  v10 = v7;
-  v11 = v6;
+  v10 = activeAssetRequest;
+  v11 = errorCopy;
   if ([v9 isMainThread])
   {
     v13(&v12);
@@ -312,7 +312,7 @@ uint64_t __62__VUIARQLPreviewManager_URLSession_task_didCompleteWithError___bloc
   return [v5 setIsDownloading:0];
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
@@ -328,7 +328,7 @@ uint64_t __62__VUIARQLPreviewManager_URLSession_task_didCompleteWithError___bloc
   block[1] = 3221225472;
   v8 = __74__VUIARQLPreviewManager_URLSessionDidFinishEventsForBackgroundURLSession___block_invoke;
   v9 = &unk_1E872D768;
-  v10 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v8(block);
@@ -346,46 +346,46 @@ void __74__VUIARQLPreviewManager_URLSessionDidFinishEventsForBackgroundURLSessio
   [v2 postNotificationName:@"VUIARQLDownloadSessionDidFinishEventsForBackgroundURLSessionNotification" object:*(a1 + 32)];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIARQLPreviewManager - didBecomeInvalidWithError %@", &v7, 0xCu);
   }
 
   [(VUIARQLPreviewManager *)self configureDownloadSession];
 }
 
-- (id)_quickLookPreviewItemWithFileURL:(id)a3 shareURL:(id)a4
+- (id)_quickLookPreviewItemWithFileURL:(id)l shareURL:(id)rL
 {
   v5 = MEMORY[0x1E697A0B8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFileAtURL:v7];
+  rLCopy = rL;
+  lCopy = l;
+  v8 = [[v5 alloc] initWithFileAtURL:lCopy];
 
-  [v8 setCanonicalWebPageURL:v6];
+  [v8 setCanonicalWebPageURL:rLCopy];
   [v8 setForceIgnoreMuteSwitch:1];
 
   return v8;
 }
 
-- (void)_presentPreviewControllerWithURL:(id)a3 shareURL:(id)a4 fileName:(id)a5
+- (void)_presentPreviewControllerWithURL:(id)l shareURL:(id)rL fileName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[VUIARAssetRequest alloc] initWithRemoteURL:v10 shareURL:v8 fileName:v9];
+  rLCopy = rL;
+  nameCopy = name;
+  lCopy = l;
+  v11 = [[VUIARAssetRequest alloc] initWithRemoteURL:lCopy shareURL:rLCopy fileName:nameCopy];
 
-  v12 = [(VUIARAssetRequest *)v11 cachePath];
-  if (v12)
+  cachePath = [(VUIARAssetRequest *)v11 cachePath];
+  if (cachePath)
   {
-    v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12];
+    v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:cachePath];
     v14 = VUIDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -394,7 +394,7 @@ void __74__VUIARQLPreviewManager_URLSessionDidFinishEventsForBackgroundURLSessio
       _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, "VUIARQLPreviewManager - Cached AR file found: %@", &v19, 0xCu);
     }
 
-    v15 = [(VUIARQLPreviewManager *)self _quickLookPreviewItemWithFileURL:v13 shareURL:v8];
+    v15 = [(VUIARQLPreviewManager *)self _quickLookPreviewItemWithFileURL:v13 shareURL:rLCopy];
     v16 = [[VUIARQLPreviewController alloc] initWithQuickLookPreviewItem:v15];
   }
 
@@ -404,20 +404,20 @@ void __74__VUIARQLPreviewManager_URLSessionDidFinishEventsForBackgroundURLSessio
   }
 
   v17 = +[VUIInterfaceFactory sharedInstance];
-  v18 = [v17 controllerPresenter];
+  controllerPresenter = [v17 controllerPresenter];
 
-  [v18 presentViewController:v16 animated:1 completion:0];
+  [controllerPresenter presentViewController:v16 animated:1 completion:0];
 }
 
-- (id)_previewControllerWithAssetRequest:(id)a3
+- (id)_previewControllerWithAssetRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v6 = [v4 remoteURL];
-  v7 = [v6 pathExtension];
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], v7, 0);
-  v9 = [v4 shareURL];
-  v10 = [(VUIARQLPreviewManager *)self _quickLookPreviewItemWithFileURL:v6 shareURL:v9];
+  remoteURL = [requestCopy remoteURL];
+  pathExtension = [remoteURL pathExtension];
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], pathExtension, 0);
+  shareURL = [requestCopy shareURL];
+  v10 = [(VUIARQLPreviewManager *)self _quickLookPreviewItemWithFileURL:remoteURL shareURL:shareURL];
 
   v11 = [objc_alloc(MEMORY[0x1E698D058]) initWithPreviewItemProvider:v5 contentType:PreferredIdentifierForTag previewTitle:&stru_1F5DB25C0 fileSize:&unk_1F5E5D200 previewItem:v10];
   [v11 setUseLoadingTimeout:0];
@@ -427,9 +427,9 @@ void __74__VUIARQLPreviewManager_URLSessionDidFinishEventsForBackgroundURLSessio
   v19 = __60__VUIARQLPreviewManager__previewControllerWithAssetRequest___block_invoke;
   v20 = &unk_1E8731BD8;
   objc_copyWeak(&v23, &location);
-  v12 = v6;
+  v12 = remoteURL;
   v21 = v12;
-  v13 = v4;
+  v13 = requestCopy;
   v22 = v13;
   [v5 registerItemForTypeIdentifier:PreferredIdentifierForTag loadHandler:&v17];
   v14 = [VUIARQLPreviewController alloc];

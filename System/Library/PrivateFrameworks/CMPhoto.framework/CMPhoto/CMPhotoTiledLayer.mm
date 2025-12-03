@@ -1,37 +1,37 @@
 @interface CMPhotoTiledLayer
-- (BOOL)_visibleTileRegionHasChanged:(CGRect)a3 level:(int)a4;
+- (BOOL)_visibleTileRegionHasChanged:(CGRect)changed level:(int)level;
 - (CGSize)imageSize;
-- (CMPhotoTiledLayer)initWithContainer:(id)a3 containerImageIndex:(int64_t)a4 backgroundImageSize:(CGSize)a5 screenSize:(CGSize)a6;
-- (CMPhotoTiledLayer)initWithContainerData:(id)a3 containerImageIndex:(int64_t)a4 backgroundImageSize:(CGSize)a5 screenSize:(CGSize)a6;
-- (double)_zoomStartScaleForImage:(CGSize)a3 placeholderImageSize:(CGSize)a4;
-- (void)_decodeImageRectangle:(CGRect)a3 forLevel:(int)a4 zoomScale:(double)a5 requestId:(unsigned int)a6 completionHandler:(id)a7;
+- (CMPhotoTiledLayer)initWithContainer:(id)container containerImageIndex:(int64_t)index backgroundImageSize:(CGSize)size screenSize:(CGSize)screenSize;
+- (CMPhotoTiledLayer)initWithContainerData:(id)data containerImageIndex:(int64_t)index backgroundImageSize:(CGSize)size screenSize:(CGSize)screenSize;
+- (double)_zoomStartScaleForImage:(CGSize)image placeholderImageSize:(CGSize)size;
+- (void)_decodeImageRectangle:(CGRect)rectangle forLevel:(int)level zoomScale:(double)scale requestId:(unsigned int)id completionHandler:(id)handler;
 - (void)_removeAllTiles;
-- (void)_runMetalConversionOnSurface:(__IOSurface *)a3 cropRect:(CGRect)a4 completionHandler:(id)a5;
-- (void)_runVImageConversionOnSurface:(__IOSurface *)a3 cropRect:(CGRect)a4 completionHandler:(id)a5;
-- (void)_setHDROptions:(id)a3;
-- (void)_setupConverterForSourceColorSpace:(CGColorSpace *)a3 destinationColorSpace:(CGColorSpace *)a4;
-- (void)_updateSubLayers:(id)a3 zoomScale:(double)a4;
+- (void)_runMetalConversionOnSurface:(__IOSurface *)surface cropRect:(CGRect)rect completionHandler:(id)handler;
+- (void)_runVImageConversionOnSurface:(__IOSurface *)surface cropRect:(CGRect)rect completionHandler:(id)handler;
+- (void)_setHDROptions:(id)options;
+- (void)_setupConverterForSourceColorSpace:(CGColorSpace *)space destinationColorSpace:(CGColorSpace *)colorSpace;
+- (void)_updateSubLayers:(id)layers zoomScale:(double)scale;
 - (void)dealloc;
 - (void)flushCache;
 - (void)prepareForDecode;
-- (void)setDecodeToHDROutputMode:(int)a3;
-- (void)setFlexGTCColorSpace:(CGColorSpace *)a3;
-- (void)setVisibleRectangle:(CGRect)a3 zoomScale:(double)a4 completionHandler:(id)a5;
+- (void)setDecodeToHDROutputMode:(int)mode;
+- (void)setFlexGTCColorSpace:(CGColorSpace *)space;
+- (void)setVisibleRectangle:(CGRect)rectangle zoomScale:(double)scale completionHandler:(id)handler;
 - (void)sizeToFit;
 @end
 
 @implementation CMPhotoTiledLayer
 
-- (double)_zoomStartScaleForImage:(CGSize)a3 placeholderImageSize:(CGSize)a4
+- (double)_zoomStartScaleForImage:(CGSize)image placeholderImageSize:(CGSize)size
 {
-  width = a3.width;
+  width = image.width;
   v5 = *(MEMORY[0x1E695F060] + 8);
   result = 0.0;
-  if ((width != *MEMORY[0x1E695F060] || a3.height != v5) && (a4.width != *MEMORY[0x1E695F060] || a4.height != v5))
+  if ((width != *MEMORY[0x1E695F060] || image.height != v5) && (size.width != *MEMORY[0x1E695F060] || size.height != v5))
   {
-    v9 = a4.width / width;
-    v10 = a4.height / a3.height;
-    if (a4.width / width <= v10)
+    v9 = size.width / width;
+    v10 = size.height / image.height;
+    if (size.width / width <= v10)
     {
       v9 = v10;
     }
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (void)_setupConverterForSourceColorSpace:(CGColorSpace *)a3 destinationColorSpace:(CGColorSpace *)a4
+- (void)_setupConverterForSourceColorSpace:(CGColorSpace *)space destinationColorSpace:(CGColorSpace *)colorSpace
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v7 = objc_autoreleasePoolPush();
@@ -66,15 +66,15 @@
   {
 LABEL_12:
     *&srcFormat.bitsPerComponent = 0x2000000008;
-    srcFormat.colorSpace = a3;
+    srcFormat.colorSpace = space;
     srcFormat.bitmapInfo = 8198;
     memset(&srcFormat.version, 0, 20);
     *&destFormat.bitsPerComponent = 0x2000000008;
-    destFormat.colorSpace = a4;
+    destFormat.colorSpace = colorSpace;
     destFormat.bitmapInfo = 8198;
     memset(&destFormat.version, 0, 20);
-    v15 = CGColorSpaceCopyICCData(a3);
-    v16 = CGColorSpaceCopyICCData(a4);
+    v15 = CGColorSpaceCopyICCData(space);
+    v16 = CGColorSpaceCopyICCData(colorSpace);
     v17 = v15;
     v18 = v16;
     if (v15)
@@ -133,7 +133,7 @@ LABEL_12:
 
   v43 = *MEMORY[0x1E695F1D8];
   v44[0] = MEMORY[0x1E695E118];
-  v9 = CGColorConversionInfoCreateFromList([MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1], a3, kCGColorConversionTransformFromSpace, kCGRenderingIntentDefault, a4, 1, 0, 0);
+  v9 = CGColorConversionInfoCreateFromList([MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1], space, kCGColorConversionTransformFromSpace, kCGRenderingIntentDefault, colorSpace, 1, 0, 0);
   if (v9)
   {
     v10 = v9;
@@ -171,10 +171,10 @@ LABEL_19:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_setHDROptions:(id)a3
+- (void)_setHDROptions:(id)options
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (options)
   {
     if ((self->_decodeToHDROutputMode - 1) <= 4)
     {
@@ -197,13 +197,13 @@ LABEL_19:
       v8[3] = @"DecodeToHDRAddFlexGTC";
       v9[2] = MEMORY[0x1E695E118];
       v9[3] = MEMORY[0x1E695E110];
-      [a3 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v9, v8, 4), @"DecodeToHDROutput"}];
+      [options setObject:objc_msgSend(MEMORY[0x1E695DF20] forKeyedSubscript:{"dictionaryWithObjects:forKeys:count:", v9, v8, 4), @"DecodeToHDROutput"}];
     }
 
     colorSpaceFlexGTC = self->_colorSpaceFlexGTC;
     if (colorSpaceFlexGTC)
     {
-      [a3 setObject:colorSpaceFlexGTC forKeyedSubscript:@"UseProvidedColorSpace"];
+      [options setObject:colorSpaceFlexGTC forKeyedSubscript:@"UseProvidedColorSpace"];
     }
   }
 }
@@ -224,16 +224,16 @@ LABEL_19:
   dispatch_async(updateQueue, block);
 }
 
-- (CMPhotoTiledLayer)initWithContainerData:(id)a3 containerImageIndex:(int64_t)a4 backgroundImageSize:(CGSize)a5 screenSize:(CGSize)a6
+- (CMPhotoTiledLayer)initWithContainerData:(id)data containerImageIndex:(int64_t)index backgroundImageSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = a5.height;
-  v9 = a5.width;
+  height = screenSize.height;
+  width = screenSize.width;
+  v8 = size.height;
+  v9 = size.width;
   v12 = 0;
   if (!FigCreateBlockBufferWithCFDataNoCopy())
   {
-    return [(CMPhotoTiledLayer *)self initWithContainer:0 containerImageIndex:a4 backgroundImageSize:v9 screenSize:v8, width, height];
+    return [(CMPhotoTiledLayer *)self initWithContainer:0 containerImageIndex:index backgroundImageSize:v9 screenSize:v8, width, height];
   }
 
   return v12;
@@ -370,7 +370,7 @@ void __28__CMPhotoTiledLayer_dealloc__block_invoke(uint64_t a1)
   CMPhotoSurfacePoolFlushCaches(surfacePool, 0);
 }
 
-- (void)_updateSubLayers:(id)a3 zoomScale:(double)a4
+- (void)_updateSubLayers:(id)layers zoomScale:(double)scale
 {
   v23 = *MEMORY[0x1E69E9840];
   space = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
@@ -382,7 +382,7 @@ void __28__CMPhotoTiledLayer_dealloc__block_invoke(uint64_t a1)
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [layers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -393,32 +393,32 @@ void __28__CMPhotoTiledLayer_dealloc__block_invoke(uint64_t a1)
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layers);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([v12 visible])
         {
-          v13 = [MEMORY[0x1E6979398] layer];
+          layer = [MEMORY[0x1E6979398] layer];
           if (self->_showTileBorders)
           {
             v14 = CGColorCreate(space, _updateSubLayers_zoomScale__orange);
-            [v13 setBorderColor:v14];
+            [layer setBorderColor:v14];
             CGColorRelease(v14);
-            [v13 setBorderWidth:4.0];
+            [layer setBorderWidth:4.0];
           }
 
           [v12 imageRect];
-          [v13 setFrame:?];
-          [v13 setContents:{objc_msgSend(v12, "decodedSurface")}];
+          [layer setFrame:?];
+          [layer setContents:{objc_msgSend(v12, "decodedSurface")}];
           [v12 contentsRect];
-          [v13 setContentsRect:?];
-          [v13 setBackgroundColor:v7];
-          [v13 setOpaque:1];
+          [layer setContentsRect:?];
+          [layer setBackgroundColor:v7];
+          [layer setOpaque:1];
           v15 = self->_isHDROutput && self->_shouldDisplayHDR;
-          [v13 setWantsExtendedDynamicRangeContent:v15];
-          [(CMPhotoTiledLayer *)self addSublayer:v13];
-          -[NSMutableDictionary setObject:forKey:](self->_subLayers, "setObject:forKey:", v13, [v12 key]);
+          [layer setWantsExtendedDynamicRangeContent:v15];
+          [(CMPhotoTiledLayer *)self addSublayer:layer];
+          -[NSMutableDictionary setObject:forKey:](self->_subLayers, "setObject:forKey:", layer, [v12 key]);
         }
 
         else
@@ -430,35 +430,35 @@ void __28__CMPhotoTiledLayer_dealloc__block_invoke(uint64_t a1)
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [layers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
-  if (a4 > 1.0 && _getRasterizeWhenZoomedPreferences_onceToken != -1)
+  if (scale > 1.0 && _getRasterizeWhenZoomedPreferences_onceToken != -1)
   {
     [CMPhotoTiledLayer _updateSubLayers:zoomScale:];
   }
 
-  [(CMPhotoTiledLayer *)self setShouldRasterize:a4 > 1.0];
+  [(CMPhotoTiledLayer *)self setShouldRasterize:scale > 1.0];
   [MEMORY[0x1E6979520] commit];
   CGColorRelease(v7);
   CGColorSpaceRelease(space);
 }
 
-- (void)_runMetalConversionOnSurface:(__IOSurface *)a3 cropRect:(CGRect)a4 completionHandler:(id)a5
+- (void)_runMetalConversionOnSurface:(__IOSurface *)surface cropRect:(CGRect)rect completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12 = objc_autoreleasePoolPush();
   v24 = 0;
   CMPhotoSurfacePoolCreateImageSurface(self->_surfacePool, self->_conversionPixelFormat, width, height, 1, 0x10uLL, 0x10uLL, 1, 0, 1u, 0, &v24, 0);
   if (v24)
   {
-    v13 = [(MTLCommandQueue *)self->_metalCmdQueue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)self->_metalCmdQueue commandBuffer];
     if (self->_hasExtendedColorDisplay)
     {
       v14 = 554;
@@ -472,35 +472,35 @@ void __28__CMPhotoTiledLayer_dealloc__block_invoke(uint64_t a1)
     v15 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:80 width:width height:height mipmapped:0];
     v16 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v14 width:width height:height mipmapped:0];
     [v16 setUsage:6];
-    v17 = [(MTLDevice *)self->_metalDevice newTextureWithDescriptor:v15 iosurface:a3 plane:0];
+    v17 = [(MTLDevice *)self->_metalDevice newTextureWithDescriptor:v15 iosurface:surface plane:0];
     v18 = [(MTLDevice *)self->_metalDevice newTextureWithDescriptor:v16 iosurface:v24 plane:0];
-    [(MPSImageConversion *)self->_metalConverter encodeToCommandBuffer:v13 sourceTexture:v17 destinationTexture:v18];
+    [(MPSImageConversion *)self->_metalConverter encodeToCommandBuffer:commandBuffer sourceTexture:v17 destinationTexture:v18];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHandler___block_invoke;
     v23[3] = &unk_1E77A2BF8;
-    v23[4] = a5;
+    v23[4] = handler;
     v23[5] = v24;
     v23[6] = 0;
     v23[7] = 0;
     *&v23[8] = width;
     *&v23[9] = height;
-    [v13 addScheduledHandler:v23];
+    [commandBuffer addScheduledHandler:v23];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHandler___block_invoke_2;
     v22[3] = &__block_descriptor_40_e28_v16__0___MTLCommandBuffer__8l;
-    v22[4] = a3;
-    [v13 addCompletedHandler:v22];
-    [v13 commit];
-    v19 = v13;
+    v22[4] = surface;
+    [commandBuffer addCompletedHandler:v22];
+    [commandBuffer commit];
+    v19 = commandBuffer;
     metalQueue = self->_metalQueue;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHandler___block_invoke_3;
     v21[3] = &unk_1E77A2620;
-    v21[4] = v13;
+    v21[4] = commandBuffer;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __CMPhotoDispatchAsync_block_invoke;
@@ -511,7 +511,7 @@ void __28__CMPhotoTiledLayer_dealloc__block_invoke(uint64_t a1)
 
   else
   {
-    (*(a5 + 2))(a5, a3, x, y, width, height);
+    (*(handler + 2))(handler, surface, x, y, width, height);
   }
 
   objc_autoreleasePoolPop(v12);
@@ -540,30 +540,30 @@ void __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHan
   v2 = *(a1 + 32);
 }
 
-- (void)_runVImageConversionOnSurface:(__IOSurface *)a3 cropRect:(CGRect)a4 completionHandler:(id)a5
+- (void)_runVImageConversionOnSurface:(__IOSurface *)surface cropRect:(CGRect)rect completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a4.size.width;
-  v13 = a4.size.height;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = rect.size.width;
+  v13 = rect.size.height;
   v21 = 0;
-  CMPhotoSurfacePoolCreateImageSurface(self->_surfacePool, self->_conversionPixelFormat, a4.size.width, a4.size.height, 1, 0x10uLL, 0x10uLL, 1, 0, 1u, 0, &v21, 0);
+  CMPhotoSurfacePoolCreateImageSurface(self->_surfacePool, self->_conversionPixelFormat, rect.size.width, rect.size.height, 1, 0x10uLL, 0x10uLL, 1, 0, 1u, 0, &v21, 0);
   if (v21)
   {
-    IOSurfaceLock(a3, 0, 0);
+    IOSurfaceLock(surface, 0, 0);
     IOSurfaceLock(v21, 0, 0);
-    srcs.data = IOSurfaceGetBaseAddress(a3);
+    srcs.data = IOSurfaceGetBaseAddress(surface);
     srcs.height = v13;
     srcs.width = v12;
-    srcs.rowBytes = IOSurfaceGetBytesPerRow(a3);
+    srcs.rowBytes = IOSurfaceGetBytesPerRow(surface);
     dests.data = IOSurfaceGetBaseAddress(v21);
     dests.height = v13;
     dests.width = v12;
     dests.rowBytes = IOSurfaceGetBytesPerRow(v21);
     v14 = vImageConvert_AnyToAny(self->_vimageConverter, &srcs, &dests, 0, 0x10u);
-    IOSurfaceUnlock(a3, 0, 0);
+    IOSurfaceUnlock(surface, 0, 0);
     IOSurfaceUnlock(v21, 0, 0);
     if (v14)
     {
@@ -576,21 +576,21 @@ void __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHan
       v16.n128_f64[0] = y;
       v17.n128_f64[0] = width;
       v18.n128_f64[0] = height;
-      (*(a5 + 2))(a5, a3, v15, v16, v17, v18);
+      (*(handler + 2))(handler, surface, v15, v16, v17, v18);
     }
 
     else
     {
-      if (a3)
+      if (surface)
       {
-        IOSurfaceDecrementUseCount(a3);
+        IOSurfaceDecrementUseCount(surface);
       }
 
       v15.n128_u64[0] = 0;
       v16.n128_u64[0] = 0;
       v17.n128_f64[0] = v12;
       v18.n128_f64[0] = v13;
-      (*(a5 + 2))(a5, v21, v15, v16, v17, v18);
+      (*(handler + 2))(handler, v21, v15, v16, v17, v18);
     }
 
     CFRelease(v21);
@@ -598,28 +598,28 @@ void __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHan
 
   else
   {
-    (*(a5 + 2))(a5, a3, x, y, width, height);
+    (*(handler + 2))(handler, surface, x, y, width, height);
   }
 }
 
-- (void)_decodeImageRectangle:(CGRect)a3 forLevel:(int)a4 zoomScale:(double)a5 requestId:(unsigned int)a6 completionHandler:(id)a7
+- (void)_decodeImageRectangle:(CGRect)rectangle forLevel:(int)level zoomScale:(double)scale requestId:(unsigned int)id completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v100 = *MEMORY[0x1E69E9840];
   [(CMPhotoTiledLayer *)self _prepareForDecodeSynchronous];
   if (!self->_err)
   {
-    v59 = a5;
-    v60 = a7;
+    scaleCopy = scale;
+    handlerCopy = handler;
     v16 = self->_tileSize.width;
     v17 = self->_tileSize.height;
     v67 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:0];
     v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
     v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
-    v62 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (!self->_isHDROutput || self->_metalConverter || self->_vimageConverter)
     {
       v20 = MEMORY[0x1E696AD98];
@@ -668,11 +668,11 @@ void __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHan
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v66 = self;
+    selfCopy = self;
     visibleTileKeys = self->_visibleTileKeys;
     v23 = [(NSMutableSet *)visibleTileKeys countByEnumeratingWithState:&v90 objects:v99 count:16];
-    v65 = v16 << a4;
-    v61 = v17 << a4;
+    v65 = v16 << level;
+    v61 = v17 << level;
     v68 = (y / v61);
     v69 = ((x + width + -1.0) / v65);
     v70 = (x / v65);
@@ -691,8 +691,8 @@ void __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHan
           }
 
           v27 = *(*(&v90 + 1) + 8 * v26);
-          v28 = [v27 bytes];
-          if (v28[2] == a4 && (*v28 >= v70 ? (v29 = *v28 <= v69) : (v29 = 0), v29 && ((v30 = v28[1], v30 >= v68) ? (v31 = v30 <= v24) : (v31 = 0), v31)))
+          bytes = [v27 bytes];
+          if (bytes[2] == level && (*bytes >= v70 ? (v29 = *bytes <= v69) : (v29 = 0), v29 && ((v30 = bytes[1], v30 >= v68) ? (v31 = v30 <= v24) : (v31 = 0), v31)))
           {
             [(NSMutableSet *)v67 addObject:v27];
           }
@@ -732,12 +732,12 @@ void __77__CMPhotoTiledLayer__runMetalConversionOnSurface_cropRect_completionHan
     v81 = 0;
     v78[0] = MEMORY[0x1E69E9820];
     v78[1] = 3221225472;
-    shouldTile = v66->_shouldTile;
+    shouldTile = selfCopy->_shouldTile;
     v78[2] = __90__CMPhotoTiledLayer__decodeImageRectangle_forLevel_zoomScale_requestId_completionHandler___block_invoke;
     v78[3] = &__block_descriptor_36_e1698_i40__0__CMPhotoDecompressionSession____CFRuntimeBase_QAQ__os_unfair_lock_s_I_Q____CFSet_____C_______CFArray_i____C_______CFArray_i____C_______CFArray_i____C_______CFArray_i____Ci_os_unfair_lock_s_I______CFArray____CMPhotoSurfacePool___CMPhotoScaleAndRotateSession___CMPhotoCodecSessionPool___CMPhotoCodecSessionPool____vQ_8__CMPhotoDecompressionContainer____CFRuntimeBase_QAQ___CMPhotoDecompressionSession_CCCCC__CMPhotoDecompressionContainerVTable___________CFAllocator___OpaqueFigPictureCollection___OpaqueFigFormatReader_____Cqq__CGImageMetadata_____CFDictionary_i____C____CFArray_____Cqq____CC____CCC____CC_________CFAllocator____CCq___OpaqueFigFormatReader_____CFDictionary_________CFArray_____CFArray__C________CFAllocator____i____v____CFURL_____IOSurface_____CFData___OpaqueCMBlockBuffer____OpaqueCMByteStream____OpaqueFigSimpleMutex_______C____CFArray_____CMPhotoUnifiedJPEGDecoder____C___QQ_iCCi____CFData_____CC______QQ_iiI__CGImageMetadata_____CFString_____CFDictionary____qQ_Ci____CFData___CGColorSpace_____CFDictionary__qQ________CC___qQ_iC___C___QQ_i___qQ_i_____CCC___qQ_____CC___qQ_____CFData_____CC___qQ_____CFData_____CC____CFData_____CC____CFData__________CFAllocator____i____v____CFURL_____IOSurface_____CFData___OpaqueCMBlockBuffer____OpaqueCMByteStream_____CFData_____C___iIIIIffifiiiiIIIIi___II____IIIi_II_100C____CGColorSpace_____CFData_____CFString_____CFString_____CFArray_____CFArray__________CFAllocator____i____v____CFURL_____IOSurface_____CFData___OpaqueCMBlockBuffer____OpaqueCMByteStream_____CFData_____Q____________CFArray_____CFArray_______DicomDecoderStruct____QQ___Cq____Cq_i_______CFArray__q_qqqq________CFDictionary_____CFDictionary_____CFDictionary___16Q24_v32l;
-    v35 = a6;
-    v79 = a6;
-    if (!shouldTile || (v36 = CMPhotoDecompressionSetAsyncPreDecodeCallback(v66->_decodeSession, v78, &v66->_requestID), (v66->_err = v36) == 0))
+    idCopy3 = id;
+    idCopy2 = id;
+    if (!shouldTile || (v36 = CMPhotoDecompressionSetAsyncPreDecodeCallback(selfCopy->_decodeSession, v78, &selfCopy->_requestID), (selfCopy->_err = v36) == 0))
     {
       if (v68 <= v24)
       {
@@ -755,32 +755,32 @@ LABEL_48:
         v38 = v70;
         while (1)
         {
-          v39 = atomic_load(&v66->_requestID);
-          if (v39 != v35)
+          v39 = atomic_load(&selfCopy->_requestID);
+          if (v39 != idCopy3)
           {
             break;
           }
 
           v94 = __PAIR64__(v68, v38);
-          LODWORD(v95) = a4;
+          LODWORD(v95) = level;
           v40 = [MEMORY[0x1E695DEF0] dataWithBytes:&v94 length:12];
-          ItemForKey = CMPhotoCacheGetItemForKey(v66->_tileCache);
-          if (([(NSMutableSet *)v66->_visibleTileKeys containsObject:v40]& 1) == 0)
+          ItemForKey = CMPhotoCacheGetItemForKey(selfCopy->_tileCache);
+          if (([(NSMutableSet *)selfCopy->_visibleTileKeys containsObject:v40]& 1) == 0)
           {
             if (ItemForKey)
             {
               [ItemForKey setVisible:1];
-              os_unfair_lock_lock(&v66->_lock);
+              os_unfair_lock_lock(&selfCopy->_lock);
               [v18 addObject:ItemForKey];
               [(NSMutableSet *)v67 addObject:v40];
-              os_unfair_lock_unlock(&v66->_lock);
+              os_unfair_lock_unlock(&selfCopy->_lock);
             }
 
             else
             {
               v101.origin.x = v37;
-              v103.size.width = v66->_imageSize.width;
-              v103.size.height = v66->_imageSize.height;
+              v103.size.width = selfCopy->_imageSize.width;
+              v103.size.height = selfCopy->_imageSize.height;
               v103.origin.x = 0.0;
               v103.origin.y = 0.0;
               v101.origin.y = (v68 * v61);
@@ -810,18 +810,18 @@ LABEL_48:
                 v76[3] = &unk_1E77A2C60;
                 v77 = v102;
                 v76[4] = v40;
-                v76[5] = v66;
+                v76[5] = selfCopy;
                 v76[6] = v18;
                 v76[7] = v67;
-                v47 = CMPhotoDecompressionSessionReserveRequestID(v66->_decodeSession, &v75);
-                v66->_err = v47;
+                v47 = CMPhotoDecompressionSessionReserveRequestID(selfCopy->_decodeSession, &v75);
+                selfCopy->_err = v47;
                 if (v47)
                 {
                   goto LABEL_48;
                 }
 
                 v48 = objc_autoreleasePoolPush();
-                v35 = a6;
+                idCopy3 = id;
                 [v64 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", v45), @"X"}];
                 [v64 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", v46), @"Y"}];
                 [v64 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", v42), @"Width"}];
@@ -836,35 +836,35 @@ LABEL_48:
                   v49 = v42;
                 }
 
-                -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLong:vcvtmd_u64_f64(1.0 / (1 << a4) * v49)], @"MaxPixelSize");
+                -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLong:vcvtmd_u64_f64(1.0 / (1 << level) * v49)], @"MaxPixelSize");
                 -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLong:v75], @"RequestIDOverride");
                 objc_autoreleasePoolPop(v48);
                 aBlock[0] = MEMORY[0x1E69E9820];
                 aBlock[1] = 3221225472;
                 aBlock[2] = __90__CMPhotoTiledLayer__decodeImageRectangle_forLevel_zoomScale_requestId_completionHandler___block_invoke_3;
                 aBlock[3] = &unk_1E77A2CB0;
-                aBlock[4] = v66;
+                aBlock[4] = selfCopy;
                 aBlock[5] = v76;
                 aBlock[6] = v80;
                 aBlock[7] = &v84;
                 aBlock[8] = v82;
-                schedulingQueue = v66->_schedulingQueue;
+                schedulingQueue = selfCopy->_schedulingQueue;
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = __90__CMPhotoTiledLayer__decodeImageRectangle_forLevel_zoomScale_requestId_completionHandler___block_invoke_5;
                 block[3] = &unk_1E77A2CD8;
-                block[4] = v62;
+                block[4] = array;
                 block[5] = v82;
                 block[6] = v75;
                 dispatch_sync(schedulingQueue, block);
-                v51 = CMPhotoDecompressionContainerDecodeImageForIndexAsync(v66->_container, v66->_imageIndex, theDict, 2, &v75, aBlock);
+                v51 = CMPhotoDecompressionContainerDecodeImageForIndexAsync(selfCopy->_container, selfCopy->_imageIndex, theDict, 2, &v75, aBlock);
                 if (v51)
                 {
-                  v66->_err = v51;
+                  selfCopy->_err = v51;
                   goto LABEL_48;
                 }
 
-                if (v66->_err)
+                if (selfCopy->_err)
                 {
                   goto LABEL_48;
                 }
@@ -883,7 +883,7 @@ LABEL_48:
     }
 
 LABEL_52:
-    v52 = v66->_schedulingQueue;
+    v52 = selfCopy->_schedulingQueue;
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __90__CMPhotoTiledLayer__decodeImageRectangle_forLevel_zoomScale_requestId_completionHandler___block_invoke_6;
@@ -904,7 +904,7 @@ LABEL_52:
       }
     }
 
-    metalQueue = v66->_metalQueue;
+    metalQueue = selfCopy->_metalQueue;
     if (metalQueue)
     {
       v94 = MEMORY[0x1E69E9820];
@@ -915,21 +915,21 @@ LABEL_52:
       dispatch_sync(metalQueue, &v94);
     }
 
-    CMPhotoDecompressionSetAsyncPreDecodeCallback(v66->_decodeSession, 0, 0);
-    v56 = atomic_load(&v66->_requestID);
-    if (v56 == v35)
+    CMPhotoDecompressionSetAsyncPreDecodeCallback(selfCopy->_decodeSession, 0, 0);
+    v56 = atomic_load(&selfCopy->_requestID);
+    if (v56 == idCopy3)
     {
 
-      v66->_visibleTileKeys = v67;
-      v66->_zoomLevel = a4;
+      selfCopy->_visibleTileKeys = v67;
+      selfCopy->_zoomLevel = level;
       v71[0] = MEMORY[0x1E69E9820];
       v71[1] = 3221225472;
       v71[2] = __90__CMPhotoTiledLayer__decodeImageRectangle_forLevel_zoomScale_requestId_completionHandler___block_invoke_8;
       v71[3] = &unk_1E77A2D00;
-      v71[4] = v66;
+      v71[4] = selfCopy;
       v71[5] = v18;
-      *&v71[7] = v59;
-      v71[6] = v60;
+      *&v71[7] = scaleCopy;
+      v71[6] = handlerCopy;
       v94 = MEMORY[0x1E69E9820];
       v95 = 3221225472;
       v96 = __CMPhotoDispatchAsync_block_invoke;
@@ -1098,7 +1098,7 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
   [MEMORY[0x1E6979520] commit];
 }
 
-- (BOOL)_visibleTileRegionHasChanged:(CGRect)a3 level:(int)a4
+- (BOOL)_visibleTileRegionHasChanged:(CGRect)changed level:(int)level
 {
   v4 = 0;
   lastZoomScale = self->_lastZoomScale;
@@ -1120,18 +1120,18 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
     v4 = 3;
   }
 
-  result = v4 != a4 || (v7 = self->_tileSize.width << a4, x = self->_lastVisibleRect.origin.x, a3.origin.x / v7 != x / v7) || (v9 = self->_tileSize.height << a4, y = self->_lastVisibleRect.origin.y, a3.origin.y / v9 != y / v9) || (a3.size.width + a3.origin.x - 1) / v7 != (x + self->_lastVisibleRect.size.width - 1) / v7 || (a3.size.height + a3.origin.y - 1) / v9 != (self->_lastVisibleRect.size.height + y - 1) / v9;
+  result = v4 != level || (v7 = self->_tileSize.width << level, x = self->_lastVisibleRect.origin.x, changed.origin.x / v7 != x / v7) || (v9 = self->_tileSize.height << level, y = self->_lastVisibleRect.origin.y, changed.origin.y / v9 != y / v9) || (changed.size.width + changed.origin.x - 1) / v7 != (x + self->_lastVisibleRect.size.width - 1) / v7 || (changed.size.height + changed.origin.y - 1) / v9 != (self->_lastVisibleRect.size.height + y - 1) / v9;
   return result;
 }
 
-- (void)setVisibleRectangle:(CGRect)a3 zoomScale:(double)a4 completionHandler:(id)a5
+- (void)setVisibleRectangle:(CGRect)rectangle zoomScale:(double)scale completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v12 = 0;
-  if (a4 < 0.5 && self->_shouldTile)
+  if (scale < 0.5 && self->_shouldTile)
   {
     v12 = 0;
     v13 = 0.5;
@@ -1141,7 +1141,7 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
       ++v12;
     }
 
-    while (v13 > a4);
+    while (v13 > scale);
   }
 
   if (v12 >= 3)
@@ -1154,33 +1154,33 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
     v14 = v12;
   }
 
-  v15 = [(CMPhotoTiledLayer *)self _visibleTileRegionHasChanged:v14 level:a3.origin.x, y, a3.size.width, a3.size.height];
+  v15 = [(CMPhotoTiledLayer *)self _visibleTileRegionHasChanged:v14 level:rectangle.origin.x, y, rectangle.size.width, rectangle.size.height];
   lastZoomScale = self->_lastZoomScale;
-  v17 = a4 <= 1.0;
+  v17 = scale <= 1.0;
   if (lastZoomScale <= 1.0)
   {
     v17 = 0;
   }
 
-  if (a4 > 1.0 && lastZoomScale <= 1.0)
+  if (scale > 1.0 && lastZoomScale <= 1.0)
   {
     v17 = 1;
   }
 
   zoomStartScale = self->_zoomStartScale;
   lastAboveZoomThreshold = self->_lastAboveZoomThreshold;
-  v21 = zoomStartScale < a4;
+  v21 = zoomStartScale < scale;
   self->_lastVisibleRect.origin.x = x;
   self->_lastVisibleRect.origin.y = y;
   self->_lastVisibleRect.size.width = width;
   self->_lastVisibleRect.size.height = height;
-  self->_lastZoomScale = a4;
+  self->_lastZoomScale = scale;
   self->_lastAboveZoomThreshold = v21;
   v22 = v21 != lastAboveZoomThreshold || v15;
   if (v17 || (v22 & 1) != 0)
   {
     add = atomic_fetch_add(&self->_requestID, 1u);
-    if (zoomStartScale >= a4)
+    if (zoomStartScale >= scale)
     {
       updateQueue = self->_updateQueue;
       v28[0] = MEMORY[0x1E69E9820];
@@ -1192,7 +1192,7 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
       v30 = 3221225472;
       v31 = __CMPhotoDispatchAsync_block_invoke;
       v32 = &unk_1E77A2D78;
-      v33 = v28;
+      handlerCopy = v28;
     }
 
     else
@@ -1211,22 +1211,22 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
       *&v25[7] = y;
       *&v25[8] = width;
       *&v25[9] = height;
-      *&v25[10] = a4;
+      *&v25[10] = scale;
       v26 = v14;
       v27 = add + 1;
       v25[4] = self;
-      v25[5] = a5;
+      v25[5] = handler;
       block = MEMORY[0x1E69E9820];
       v30 = 3221225472;
       v31 = __CMPhotoDispatchAsync_block_invoke;
       v32 = &unk_1E77A2D78;
-      v33 = v25;
+      handlerCopy = v25;
     }
   }
 
   else
   {
-    if (!a5)
+    if (!handler)
     {
       return;
     }
@@ -1235,14 +1235,14 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
     v30 = 3221225472;
     v31 = __CMPhotoDispatchAsync_block_invoke;
     v32 = &unk_1E77A2D78;
-    v33 = a5;
+    handlerCopy = handler;
     updateQueue = MEMORY[0x1E69E96A0];
   }
 
   dispatch_async(updateQueue, &block);
 }
 
-- (void)setFlexGTCColorSpace:(CGColorSpace *)a3
+- (void)setFlexGTCColorSpace:(CGColorSpace *)space
 {
   colorSpaceFlexGTC = self->_colorSpaceFlexGTC;
   if (colorSpaceFlexGTC)
@@ -1250,9 +1250,9 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
     CFRelease(colorSpaceFlexGTC);
   }
 
-  if (a3)
+  if (space)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(space);
   }
 
   else
@@ -1263,10 +1263,10 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
   self->_colorSpaceFlexGTC = v6;
 }
 
-- (void)setDecodeToHDROutputMode:(int)a3
+- (void)setDecodeToHDROutputMode:(int)mode
 {
-  self->_decodeToHDROutputMode = a3;
-  v3 = (a3 - 1) < 5 && ((0x1Du >> (a3 - 1)) & 1) != 0 || self->_isHDRFile;
+  self->_decodeToHDROutputMode = mode;
+  v3 = (mode - 1) < 5 && ((0x1Du >> (mode - 1)) & 1) != 0 || self->_isHDRFile;
   self->_isHDROutput = v3;
 }
 
@@ -1288,12 +1288,12 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CMPhotoTiledLayer)initWithContainer:(id)a3 containerImageIndex:(int64_t)a4 backgroundImageSize:(CGSize)a5 screenSize:(CGSize)a6
+- (CMPhotoTiledLayer)initWithContainer:(id)container containerImageIndex:(int64_t)index backgroundImageSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  height = a6.height;
-  width = a6.width;
-  v9 = a5.height;
-  v10 = a5.width;
+  height = screenSize.height;
+  width = screenSize.width;
+  v9 = size.height;
+  v10 = size.width;
   v78[4] = *MEMORY[0x1E69E9840];
   cf = 0;
   theDict = 0;
@@ -1307,7 +1307,7 @@ void __36__CMPhotoTiledLayer__removeAllTiles__block_invoke(uint64_t a1)
     goto LABEL_72;
   }
 
-  if (!CMPhotoDecompressionDetectContainerFormat(a3, &v12->_containerFormat, v13, v14) || (v15->_hasExtendedColorDisplay = MGGetBoolAnswer(), v15->_imageIndex = a4, v15->_decodePixelFormat = 875704422, v15->_chromaSubsampling = 0, v15->_decodeToHDROutputMode = 0, v15->_decodeToHDROutputModePreferMeteor = 0, v16 = dispatch_queue_create("com.apple.coremedia.tiledlayer.update", 0), v15->_updateQueue = v16, dispatch_queue_set_specific(v16, kUpdateQueueID, kUpdateQueueID, 0), v15->_schedulingQueue = dispatch_queue_create("com.apple.CMPhoto.tiledlayer.scheduling", 0), v17 = *MEMORY[0x1E695E480], CMPhotoDecompressionSessionCreate(*MEMORY[0x1E695E480], 0, &v15->_decodeSession)) || CMPhotoDecompressionSessionCreateContainer(v15->_decodeSession, 0, a3, 0, &v15->_container) || (v73 = 0uLL, v72 = 0, v18 = OUTLINED_FUNCTION_1_23(), CMPhotoDecompressionContainerGetImageGeometryForIndexWithOptions(v18), v19))
+  if (!CMPhotoDecompressionDetectContainerFormat(container, &v12->_containerFormat, v13, v14) || (v15->_hasExtendedColorDisplay = MGGetBoolAnswer(), v15->_imageIndex = index, v15->_decodePixelFormat = 875704422, v15->_chromaSubsampling = 0, v15->_decodeToHDROutputMode = 0, v15->_decodeToHDROutputModePreferMeteor = 0, v16 = dispatch_queue_create("com.apple.coremedia.tiledlayer.update", 0), v15->_updateQueue = v16, dispatch_queue_set_specific(v16, kUpdateQueueID, kUpdateQueueID, 0), v15->_schedulingQueue = dispatch_queue_create("com.apple.CMPhoto.tiledlayer.scheduling", 0), v17 = *MEMORY[0x1E695E480], CMPhotoDecompressionSessionCreate(*MEMORY[0x1E695E480], 0, &v15->_decodeSession)) || CMPhotoDecompressionSessionCreateContainer(v15->_decodeSession, 0, container, 0, &v15->_container) || (v73 = 0uLL, v72 = 0, v18 = OUTLINED_FUNCTION_1_23(), CMPhotoDecompressionContainerGetImageGeometryForIndexWithOptions(v18), v19))
   {
     v28 = 0;
     goto LABEL_72;
@@ -1375,37 +1375,37 @@ LABEL_25:
           v42 = v17;
           if (v40 && (v43 = v41) != 0)
           {
-            v44 = [v40 integerValue];
-            v45 = [v43 integerValue];
-            v46 = v45;
-            if (v36 > v44)
+            integerValue = [v40 integerValue];
+            integerValue2 = [v43 integerValue];
+            v46 = integerValue2;
+            if (v36 > integerValue)
             {
-              v44 = (floor(v36 / v44) + 1.0) * v44;
+              integerValue = (floor(v36 / integerValue) + 1.0) * integerValue;
             }
 
-            v36 = v36 <= v46 ? v45 : (floor(v36 / v46) + 1.0) * v46;
+            v36 = v36 <= v46 ? integerValue2 : (floor(v36 / v46) + 1.0) * v46;
           }
 
           else
           {
-            v44 = v36;
+            integerValue = v36;
           }
         }
 
         else
         {
-          v44 = v36;
+          integerValue = v36;
           v42 = v17;
         }
 
-        *v37 = v44;
+        *v37 = integerValue;
         v15->_tileSize.height = v36;
-        v47 = width / (v44 * 0.5) + 1;
+        v47 = width / (integerValue * 0.5) + 1;
         v48 = v47 + v47 * (height / (v36 * 0.5));
         v49 = (v48 / 4 + v48) / 10 + v48 / 4 + v48;
         v51 = *p_width;
         v50 = v15->_imageSize.height;
-        v52 = (v36 * v44);
+        v52 = (v36 * integerValue);
         if (v15->_decodePixelFormat == 875704422)
         {
           v53 = 3 * v52 / 2;
@@ -1462,9 +1462,9 @@ LABEL_25:
         v15->_shouldTile = (v63 > 2.0) | v60 & 1;
         if (!((v63 > 2.0) | v60 & 1))
         {
-          if (v44 > v51)
+          if (integerValue > v51)
           {
-            v51 = v44;
+            v51 = integerValue;
           }
 
           if (v36 > v50)

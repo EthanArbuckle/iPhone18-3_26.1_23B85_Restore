@@ -1,69 +1,69 @@
 @interface DDUIPairCompleteMessage
-- (DDUIPairCompleteMessage)initWithCancellationReason:(id)a3;
-- (DDUIPairCompleteMessage)initWithDictionaryRepresentation:(id)a3;
-- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)a3;
-- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)a3 listenerUUID:(id)a4;
+- (DDUIPairCompleteMessage)initWithCancellationReason:(id)reason;
+- (DDUIPairCompleteMessage)initWithDictionaryRepresentation:(id)representation;
+- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)result;
+- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)result listenerUUID:(id)d;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation DDUIPairCompleteMessage
 
-- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)a3
+- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)result
 {
   v5.receiver = self;
   v5.super_class = DDUIPairCompleteMessage;
   result = [(DDUIPairCompleteMessage *)&v5 init];
   if (result)
   {
-    result->_notificationResult = a3;
+    result->_notificationResult = result;
   }
 
   return result;
 }
 
-- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)a3 listenerUUID:(id)a4
+- (DDUIPairCompleteMessage)initWithNotificationResult:(unint64_t)result listenerUUID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = DDUIPairCompleteMessage;
   v8 = [(DDUIPairCompleteMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_notificationResult = a3;
-    objc_storeStrong(&v8->_listenerUUID, a4);
+    v8->_notificationResult = result;
+    objc_storeStrong(&v8->_listenerUUID, d);
   }
 
   return v9;
 }
 
-- (DDUIPairCompleteMessage)initWithCancellationReason:(id)a3
+- (DDUIPairCompleteMessage)initWithCancellationReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   v9.receiver = self;
   v9.super_class = DDUIPairCompleteMessage;
   v6 = [(DDUIPairCompleteMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cancellationReason, a3);
+    objc_storeStrong(&v6->_cancellationReason, reason);
     v7->_isCancellation = 1;
   }
 
   return v7;
 }
 
-- (DDUIPairCompleteMessage)initWithDictionaryRepresentation:(id)a3
+- (DDUIPairCompleteMessage)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"DDUIMessageResponseIsCancelKey"];
-    v7 = [v6 BOOLValue];
+    v6 = [representationCopy objectForKeyedSubscript:@"DDUIMessageResponseIsCancelKey"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
       v8 = [v5 objectForKeyedSubscript:@"DDUIMessageResponseCancelReasonKey"];
       self = [(DDUIPairCompleteMessage *)self initWithCancellationReason:v8];
@@ -73,29 +73,29 @@
     {
       v8 = [v5 objectForKeyedSubscript:@"DDUIMessageResponseListenerUUIDKey"];
       v10 = [v5 objectForKeyedSubscript:@"DDUIMessageResponseResultKey"];
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
       if (v8)
       {
-        v12 = [(DDUIPairCompleteMessage *)self initWithNotificationResult:v11 listenerUUID:v8];
+        v12 = [(DDUIPairCompleteMessage *)self initWithNotificationResult:unsignedIntegerValue listenerUUID:v8];
       }
 
       else
       {
-        v12 = [(DDUIPairCompleteMessage *)self initWithNotificationResult:v11];
+        v12 = [(DDUIPairCompleteMessage *)self initWithNotificationResult:unsignedIntegerValue];
       }
 
       self = v12;
     }
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -110,20 +110,20 @@
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v6 = [v5 mutableCopy];
 
-  v7 = [(DDUIPairCompleteMessage *)self cancellationReason];
+  cancellationReason = [(DDUIPairCompleteMessage *)self cancellationReason];
 
-  if (v7)
+  if (cancellationReason)
   {
-    v8 = [(DDUIPairCompleteMessage *)self cancellationReason];
-    [v6 setObject:v8 forKeyedSubscript:@"DDUIMessageResponseCancelReasonKey"];
+    cancellationReason2 = [(DDUIPairCompleteMessage *)self cancellationReason];
+    [v6 setObject:cancellationReason2 forKeyedSubscript:@"DDUIMessageResponseCancelReasonKey"];
   }
 
-  v9 = [(DDUIPairCompleteMessage *)self listenerUUID];
+  listenerUUID = [(DDUIPairCompleteMessage *)self listenerUUID];
 
-  if (v9)
+  if (listenerUUID)
   {
-    v10 = [(DDUIPairCompleteMessage *)self listenerUUID];
-    [v6 setObject:v10 forKeyedSubscript:@"DDUIMessageResponseListenerUUIDKey"];
+    listenerUUID2 = [(DDUIPairCompleteMessage *)self listenerUUID];
+    [v6 setObject:listenerUUID2 forKeyedSubscript:@"DDUIMessageResponseListenerUUIDKey"];
   }
 
   v11 = *MEMORY[0x277D85DE8];

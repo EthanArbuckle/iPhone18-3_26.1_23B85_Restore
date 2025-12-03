@@ -1,24 +1,24 @@
 @interface CKDPZoneRetrieveResponseZoneSummary
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeviceCount:(BOOL)a3;
-- (void)setHasExpired:(BOOL)a3;
-- (void)setHasMetadataQuotaUsage:(BOOL)a3;
-- (void)setHasZoneKeyRollAllowed:(BOOL)a3;
-- (void)setHasZoneishPcsNeedsRolled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeviceCount:(BOOL)count;
+- (void)setHasExpired:(BOOL)expired;
+- (void)setHasMetadataQuotaUsage:(BOOL)usage;
+- (void)setHasZoneKeyRollAllowed:(BOOL)allowed;
+- (void)setHasZoneishPcsNeedsRolled:(BOOL)rolled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneRetrieveResponseZoneSummary
 
-- (void)setHasDeviceCount:(BOOL)a3
+- (void)setHasDeviceCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMetadataQuotaUsage:(BOOL)a3
+- (void)setHasMetadataQuotaUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasZoneishPcsNeedsRolled:(BOOL)a3
+- (void)setHasZoneishPcsNeedsRolled:(BOOL)rolled
 {
-  if (a3)
+  if (rolled)
   {
     v3 = 32;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasZoneKeyRollAllowed:(BOOL)a3
+- (void)setHasZoneKeyRollAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasExpired:(BOOL)a3
+- (void)setHasExpired:(BOOL)expired
 {
-  if (a3)
+  if (expired)
   {
     v3 = 8;
   }
@@ -211,26 +211,26 @@ LABEL_11:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_targetZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_currentServerContinuationToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_clientChangeToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   has = self->_has;
@@ -238,7 +238,7 @@ LABEL_11:
   {
     deviceCount = self->_deviceCount;
     PBDataWriterWriteInt32Field();
-    v4 = v13;
+    toCopy = v13;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -259,20 +259,20 @@ LABEL_9:
 
   assetQuotaUsage = self->_assetQuotaUsage;
   PBDataWriterWriteInt64Field();
-  v4 = v13;
+  toCopy = v13;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_10:
     metadataQuotaUsage = self->_metadataQuotaUsage;
     PBDataWriterWriteInt64Field();
-    v4 = v13;
+    toCopy = v13;
   }
 
 LABEL_11:
   if (self->_capabilities)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 
   v7 = self->_has;
@@ -280,7 +280,7 @@ LABEL_11:
   {
     zoneishPcsNeedsRolled = self->_zoneishPcsNeedsRolled;
     PBDataWriterWriteBOOLField();
-    v4 = v13;
+    toCopy = v13;
     v7 = self->_has;
   }
 
@@ -288,65 +288,65 @@ LABEL_11:
   {
     zoneKeyRollAllowed = self->_zoneKeyRollAllowed;
     PBDataWriterWriteBOOLField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_zonePcsModificationTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_zonePcsModificationDevice)
   {
     PBDataWriterWriteStringField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     expired = self->_expired;
     PBDataWriterWriteBOOLField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_expirationTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   targetZone = self->_targetZone;
-  v15 = v4;
+  v15 = toCopy;
   if (targetZone)
   {
-    objc_msgSend_setTargetZone_(v4, v5, targetZone);
-    v4 = v15;
+    objc_msgSend_setTargetZone_(toCopy, v5, targetZone);
+    toCopy = v15;
   }
 
   currentServerContinuationToken = self->_currentServerContinuationToken;
   if (currentServerContinuationToken)
   {
     objc_msgSend_setCurrentServerContinuationToken_(v15, v5, currentServerContinuationToken);
-    v4 = v15;
+    toCopy = v15;
   }
 
   clientChangeToken = self->_clientChangeToken;
   if (clientChangeToken)
   {
     objc_msgSend_setClientChangeToken_(v15, v5, clientChangeToken);
-    v4 = v15;
+    toCopy = v15;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 12) = self->_deviceCount;
-    *(v4 + 92) |= 4u;
+    *(toCopy + 12) = self->_deviceCount;
+    *(toCopy + 92) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -365,13 +365,13 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 1) = self->_assetQuotaUsage;
-  *(v4 + 92) |= 1u;
+  *(toCopy + 1) = self->_assetQuotaUsage;
+  *(toCopy + 92) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_10:
-    *(v4 + 2) = self->_metadataQuotaUsage;
-    *(v4 + 92) |= 2u;
+    *(toCopy + 2) = self->_metadataQuotaUsage;
+    *(toCopy + 92) |= 2u;
   }
 
 LABEL_11:
@@ -379,65 +379,65 @@ LABEL_11:
   if (capabilities)
   {
     objc_msgSend_setCapabilities_(v15, v5, capabilities);
-    v4 = v15;
+    toCopy = v15;
   }
 
   v11 = self->_has;
   if ((v11 & 0x20) != 0)
   {
-    *(v4 + 90) = self->_zoneishPcsNeedsRolled;
-    *(v4 + 92) |= 0x20u;
+    *(toCopy + 90) = self->_zoneishPcsNeedsRolled;
+    *(toCopy + 92) |= 0x20u;
     v11 = self->_has;
   }
 
   if ((v11 & 0x10) != 0)
   {
-    *(v4 + 89) = self->_zoneKeyRollAllowed;
-    *(v4 + 92) |= 0x10u;
+    *(toCopy + 89) = self->_zoneKeyRollAllowed;
+    *(toCopy + 92) |= 0x10u;
   }
 
   zonePcsModificationTime = self->_zonePcsModificationTime;
   if (zonePcsModificationTime)
   {
     objc_msgSend_setZonePcsModificationTime_(v15, v5, zonePcsModificationTime);
-    v4 = v15;
+    toCopy = v15;
   }
 
   zonePcsModificationDevice = self->_zonePcsModificationDevice;
   if (zonePcsModificationDevice)
   {
     objc_msgSend_setZonePcsModificationDevice_(v15, v5, zonePcsModificationDevice);
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 88) = self->_expired;
-    *(v4 + 92) |= 8u;
+    *(toCopy + 88) = self->_expired;
+    *(toCopy + 92) |= 8u;
   }
 
   expirationTime = self->_expirationTime;
   if (expirationTime)
   {
     objc_msgSend_setExpirationTime_(v15, v5, expirationTime);
-    v4 = v15;
+    toCopy = v15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_targetZone, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_targetZone, v11, zone);
   v13 = *(v10 + 64);
   *(v10 + 64) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_currentServerContinuationToken, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_currentServerContinuationToken, v14, zone);
   v16 = *(v10 + 40);
   *(v10 + 40) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_clientChangeToken, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_clientChangeToken, v17, zone);
   v19 = *(v10 + 32);
   *(v10 + 32) = v18;
 
@@ -474,7 +474,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v22 = objc_msgSend_copyWithZone_(self->_capabilities, v20, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_capabilities, v20, zone);
   v23 = *(v10 + 24);
   *(v10 + 24) = v22;
 
@@ -492,11 +492,11 @@ LABEL_5:
     *(v10 + 92) |= 0x10u;
   }
 
-  v26 = objc_msgSend_copyWithZone_(self->_zonePcsModificationTime, v24, a3);
+  v26 = objc_msgSend_copyWithZone_(self->_zonePcsModificationTime, v24, zone);
   v27 = *(v10 + 80);
   *(v10 + 80) = v26;
 
-  v29 = objc_msgSend_copyWithZone_(self->_zonePcsModificationDevice, v28, a3);
+  v29 = objc_msgSend_copyWithZone_(self->_zonePcsModificationDevice, v28, zone);
   v30 = *(v10 + 72);
   *(v10 + 72) = v29;
 
@@ -506,24 +506,24 @@ LABEL_5:
     *(v10 + 92) |= 8u;
   }
 
-  v32 = objc_msgSend_copyWithZone_(self->_expirationTime, v31, a3);
+  v32 = objc_msgSend_copyWithZone_(self->_expirationTime, v31, zone);
   v33 = *(v10 + 56);
   *(v10 + 56) = v32;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_51;
   }
 
   targetZone = self->_targetZone;
-  v9 = v4[8];
+  v9 = equalCopy[8];
   if (targetZone | v9)
   {
     if (!objc_msgSend_isEqual_(targetZone, v7, v9))
@@ -533,7 +533,7 @@ LABEL_5:
   }
 
   currentServerContinuationToken = self->_currentServerContinuationToken;
-  v11 = v4[5];
+  v11 = equalCopy[5];
   if (currentServerContinuationToken | v11)
   {
     if (!objc_msgSend_isEqual_(currentServerContinuationToken, v7, v11))
@@ -543,7 +543,7 @@ LABEL_5:
   }
 
   clientChangeToken = self->_clientChangeToken;
-  v13 = v4[4];
+  v13 = equalCopy[4];
   if (clientChangeToken | v13)
   {
     if (!objc_msgSend_isEqual_(clientChangeToken, v7, v13))
@@ -553,48 +553,48 @@ LABEL_5:
   }
 
   has = self->_has;
-  v15 = *(v4 + 92);
+  v15 = *(equalCopy + 92);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_deviceCount != *(v4 + 12))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_deviceCount != *(equalCopy + 12))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
     goto LABEL_51;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_assetQuotaUsage != v4[1])
+    if ((*(equalCopy + 92) & 1) == 0 || self->_assetQuotaUsage != equalCopy[1])
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_metadataQuotaUsage != v4[2])
+    if ((*(equalCopy + 92) & 2) == 0 || self->_metadataQuotaUsage != equalCopy[2])
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_51;
   }
 
   capabilities = self->_capabilities;
-  v17 = v4[3];
+  v17 = equalCopy[3];
   if (capabilities | v17)
   {
     if (!objc_msgSend_isEqual_(capabilities, v7, v17))
@@ -603,7 +603,7 @@ LABEL_5:
     }
 
     has = self->_has;
-    v15 = *(v4 + 92);
+    v15 = *(equalCopy + 92);
   }
 
   if ((has & 0x20) != 0)
@@ -613,16 +613,16 @@ LABEL_5:
       goto LABEL_51;
     }
 
-    v26 = *(v4 + 90);
+    v26 = *(equalCopy + 90);
     if (self->_zoneishPcsNeedsRolled)
     {
-      if ((*(v4 + 90) & 1) == 0)
+      if ((*(equalCopy + 90) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 90))
+    else if (*(equalCopy + 90))
     {
       goto LABEL_51;
     }
@@ -640,16 +640,16 @@ LABEL_5:
       goto LABEL_51;
     }
 
-    v27 = *(v4 + 89);
+    v27 = *(equalCopy + 89);
     if (self->_zoneKeyRollAllowed)
     {
-      if ((*(v4 + 89) & 1) == 0)
+      if ((*(equalCopy + 89) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 89))
+    else if (*(equalCopy + 89))
     {
       goto LABEL_51;
     }
@@ -661,14 +661,14 @@ LABEL_5:
   }
 
   zonePcsModificationTime = self->_zonePcsModificationTime;
-  v19 = v4[10];
+  v19 = equalCopy[10];
   if (zonePcsModificationTime | v19 && !objc_msgSend_isEqual_(zonePcsModificationTime, v7, v19))
   {
     goto LABEL_51;
   }
 
   zonePcsModificationDevice = self->_zonePcsModificationDevice;
-  v21 = v4[9];
+  v21 = equalCopy[9];
   if (zonePcsModificationDevice | v21)
   {
     if (!objc_msgSend_isEqual_(zonePcsModificationDevice, v7, v21))
@@ -677,10 +677,10 @@ LABEL_5:
     }
   }
 
-  v22 = *(v4 + 92);
+  v22 = *(equalCopy + 92);
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 92) & 8) == 0)
+    if ((*(equalCopy + 92) & 8) == 0)
     {
       goto LABEL_36;
     }
@@ -690,28 +690,28 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  if ((*(v4 + 92) & 8) == 0)
+  if ((*(equalCopy + 92) & 8) == 0)
   {
     goto LABEL_51;
   }
 
-  v29 = *(v4 + 88);
+  v29 = *(equalCopy + 88);
   if (self->_expired)
   {
-    if ((v4[11] & 1) == 0)
+    if ((equalCopy[11] & 1) == 0)
     {
       goto LABEL_51;
     }
   }
 
-  else if (v4[11])
+  else if (equalCopy[11])
   {
     goto LABEL_51;
   }
 
 LABEL_36:
   expirationTime = self->_expirationTime;
-  v24 = v4[7];
+  v24 = equalCopy[7];
   if (expirationTime | v24)
   {
     isEqual = objc_msgSend_isEqual_(expirationTime, v7, v24);
@@ -806,12 +806,12 @@ LABEL_13:
   return v28 ^ v29 ^ v27 ^ v26 ^ v10 ^ v11 ^ v14 ^ v15 ^ v16 ^ v17 ^ v20 ^ v23 ^ objc_msgSend_hash(self->_expirationTime, v21, v22);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   targetZone = self->_targetZone;
-  v6 = *(v4 + 8);
-  v18 = v4;
+  v6 = *(fromCopy + 8);
+  v18 = fromCopy;
   if (targetZone)
   {
     if (!v6)
@@ -819,7 +819,7 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(targetZone, v4, v6);
+    objc_msgSend_mergeFrom_(targetZone, fromCopy, v6);
   }
 
   else
@@ -829,31 +829,31 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    objc_msgSend_setTargetZone_(self, v4, v6);
+    objc_msgSend_setTargetZone_(self, fromCopy, v6);
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_7:
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (v7)
   {
-    objc_msgSend_setCurrentServerContinuationToken_(self, v4, v7);
-    v4 = v18;
+    objc_msgSend_setCurrentServerContinuationToken_(self, fromCopy, v7);
+    fromCopy = v18;
   }
 
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (v8)
   {
-    objc_msgSend_setClientChangeToken_(self, v4, v8);
-    v4 = v18;
+    objc_msgSend_setClientChangeToken_(self, fromCopy, v8);
+    fromCopy = v18;
   }
 
-  v9 = *(v4 + 92);
+  v9 = *(fromCopy + 92);
   if ((v9 & 4) != 0)
   {
-    self->_deviceCount = *(v4 + 12);
+    self->_deviceCount = *(fromCopy + 12);
     *&self->_has |= 4u;
-    v9 = *(v4 + 92);
+    v9 = *(fromCopy + 92);
     if ((v9 & 1) == 0)
     {
 LABEL_13:
@@ -866,23 +866,23 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 92) & 1) == 0)
+  else if ((*(fromCopy + 92) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_assetQuotaUsage = *(v4 + 1);
+  self->_assetQuotaUsage = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 92) & 2) != 0)
+  if ((*(fromCopy + 92) & 2) != 0)
   {
 LABEL_14:
-    self->_metadataQuotaUsage = *(v4 + 2);
+    self->_metadataQuotaUsage = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_15:
   capabilities = self->_capabilities;
-  v11 = *(v4 + 3);
+  v11 = *(fromCopy + 3);
   if (capabilities)
   {
     if (!v11)
@@ -890,7 +890,7 @@ LABEL_15:
       goto LABEL_24;
     }
 
-    objc_msgSend_mergeFrom_(capabilities, v4, v11);
+    objc_msgSend_mergeFrom_(capabilities, fromCopy, v11);
   }
 
   else
@@ -900,27 +900,27 @@ LABEL_15:
       goto LABEL_24;
     }
 
-    objc_msgSend_setCapabilities_(self, v4, v11);
+    objc_msgSend_setCapabilities_(self, fromCopy, v11);
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_24:
-  v12 = *(v4 + 92);
+  v12 = *(fromCopy + 92);
   if ((v12 & 0x20) != 0)
   {
-    self->_zoneishPcsNeedsRolled = *(v4 + 90);
+    self->_zoneishPcsNeedsRolled = *(fromCopy + 90);
     *&self->_has |= 0x20u;
-    v12 = *(v4 + 92);
+    v12 = *(fromCopy + 92);
   }
 
   if ((v12 & 0x10) != 0)
   {
-    self->_zoneKeyRollAllowed = *(v4 + 89);
+    self->_zoneKeyRollAllowed = *(fromCopy + 89);
     *&self->_has |= 0x10u;
   }
 
   zonePcsModificationTime = self->_zonePcsModificationTime;
-  v14 = *(v4 + 10);
+  v14 = *(fromCopy + 10);
   if (zonePcsModificationTime)
   {
     if (!v14)
@@ -928,7 +928,7 @@ LABEL_24:
       goto LABEL_34;
     }
 
-    objc_msgSend_mergeFrom_(zonePcsModificationTime, v4, v14);
+    objc_msgSend_mergeFrom_(zonePcsModificationTime, fromCopy, v14);
   }
 
   else
@@ -938,37 +938,37 @@ LABEL_24:
       goto LABEL_34;
     }
 
-    objc_msgSend_setZonePcsModificationTime_(self, v4, v14);
+    objc_msgSend_setZonePcsModificationTime_(self, fromCopy, v14);
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_34:
-  v15 = *(v4 + 9);
+  v15 = *(fromCopy + 9);
   if (v15)
   {
-    objc_msgSend_setZonePcsModificationDevice_(self, v4, v15);
-    v4 = v18;
+    objc_msgSend_setZonePcsModificationDevice_(self, fromCopy, v15);
+    fromCopy = v18;
   }
 
-  if ((*(v4 + 92) & 8) != 0)
+  if ((*(fromCopy + 92) & 8) != 0)
   {
-    self->_expired = *(v4 + 88);
+    self->_expired = *(fromCopy + 88);
     *&self->_has |= 8u;
   }
 
   expirationTime = self->_expirationTime;
-  v17 = *(v4 + 7);
+  v17 = *(fromCopy + 7);
   if (expirationTime)
   {
     if (v17)
     {
-      objc_msgSend_mergeFrom_(expirationTime, v4, v17);
+      objc_msgSend_mergeFrom_(expirationTime, fromCopy, v17);
     }
   }
 
   else if (v17)
   {
-    objc_msgSend_setExpirationTime_(self, v4, v17);
+    objc_msgSend_setExpirationTime_(self, fromCopy, v17);
   }
 
   MEMORY[0x2821F96F8]();

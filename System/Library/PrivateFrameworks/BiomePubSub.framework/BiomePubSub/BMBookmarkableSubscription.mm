@@ -2,7 +2,7 @@
 - (id)newBookmark;
 - (id)upstreamSubscriptions;
 - (void)cancel;
-- (void)requestDemand:(int64_t)a3;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation BMBookmarkableSubscription
@@ -15,7 +15,7 @@
   [v2 raise:v3 format:{@"Override method %@ in subclass %@", v4, objc_opt_class()}];
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -36,13 +36,13 @@
 - (id)newBookmark
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = [(BMBookmarkableSubscription *)self upstreamSubscriptions];
+  upstreamSubscriptions = [(BMBookmarkableSubscription *)self upstreamSubscriptions];
   v3 = [MEMORY[0x1E695E0F0] mutableCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = v2;
+  v4 = upstreamSubscriptions;
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
@@ -60,8 +60,8 @@
         v9 = *(*(&v19 + 1) + 8 * i);
         if ([v9 conformsToProtocol:&unk_1F4871E60])
         {
-          v10 = [v9 newBookmark];
-          if (v10)
+          newBookmark = [v9 newBookmark];
+          if (newBookmark)
           {
             goto LABEL_13;
           }
@@ -78,10 +78,10 @@
           }
         }
 
-        v10 = [MEMORY[0x1E695DFB0] null];
+        newBookmark = [MEMORY[0x1E695DFB0] null];
 LABEL_13:
-        v12 = v10;
-        [v3 addObject:v10];
+        v12 = newBookmark;
+        [v3 addObject:newBookmark];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];

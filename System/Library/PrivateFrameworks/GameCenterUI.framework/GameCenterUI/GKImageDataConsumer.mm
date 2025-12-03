@@ -1,15 +1,15 @@
 @interface GKImageDataConsumer
 - (CGSize)size;
-- (GKImageDataConsumer)initWithSize:(CGSize)a3 scale:(double)a4 isLayeredImage:(BOOL)a5;
-- (id)objectForData:(id)a3 error:(id *)a4;
+- (GKImageDataConsumer)initWithSize:(CGSize)size scale:(double)scale isLayeredImage:(BOOL)image;
+- (id)objectForData:(id)data error:(id *)error;
 @end
 
 @implementation GKImageDataConsumer
 
-- (GKImageDataConsumer)initWithSize:(CGSize)a3 scale:(double)a4 isLayeredImage:(BOOL)a5
+- (GKImageDataConsumer)initWithSize:(CGSize)size scale:(double)scale isLayeredImage:(BOOL)image
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = GKImageDataConsumer;
   result = [(GKImageDataConsumer *)&v10 init];
@@ -17,28 +17,28 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_scale = a4;
-    result->_isLayeredImage = a5;
+    result->_scale = scale;
+    result->_isLayeredImage = image;
   }
 
   return result;
 }
 
-- (id)objectForData:(id)a3 error:(id *)a4
+- (id)objectForData:(id)data error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(GKImageDataConsumer *)self isLayeredImage];
+  dataCopy = data;
+  isLayeredImage = [(GKImageDataConsumer *)self isLayeredImage];
   v8 = MEMORY[0x277D755B8];
-  if (v7)
+  if (isLayeredImage)
   {
     [(GKImageDataConsumer *)self scale];
-    [v8 _gkImageWithCheckedData:v6 scale:?];
+    [v8 _gkImageWithCheckedData:dataCopy scale:?];
   }
 
   else
   {
-    [MEMORY[0x277D755B8] _gkImageWithCheckedData:v6];
+    [MEMORY[0x277D755B8] _gkImageWithCheckedData:dataCopy];
   }
   v9 = ;
   if (v9)
@@ -53,15 +53,15 @@
       [(GKImageDataConsumer *)self size];
       if (v14 == *MEMORY[0x277CBF3A8] && v13 == *(MEMORY[0x277CBF3A8] + 8))
       {
-        v16 = v9;
+        selfCopy = v9;
       }
 
       else
       {
-        v16 = self;
+        selfCopy = self;
       }
 
-      [(GKImageDataConsumer *)v16 size];
+      [(GKImageDataConsumer *)selfCopy size];
       v18 = v17;
       v20 = v19;
       v21 = objc_alloc_init(MEMORY[0x277D75568]);
@@ -81,13 +81,13 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v28 = *MEMORY[0x277CCA450];
       v29[0] = @"Could not decode image";
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-      *a4 = [v11 errorWithDomain:@"GKImageDataConsumerErrorDomain" code:-99 userInfo:v12];
+      *error = [v11 errorWithDomain:@"GKImageDataConsumerErrorDomain" code:-99 userInfo:v12];
     }
 
     v10 = 0;

@@ -1,16 +1,16 @@
 @interface _DASFileProtection
-+ (_DASFileProtection)protectionWithType:(id)a3;
++ (_DASFileProtection)protectionWithType:(id)type;
 + (id)complete;
 + (id)completeUnlessOpen;
 + (id)completeUntilFirstUserAuthentication;
 + (id)completeWhenUserInactive;
 + (id)none;
 - (BOOL)indicatesProtection;
-- (BOOL)isEqual:(id)a3;
-- (_DASFileProtection)initWithCoder:(id)a3;
-- (_DASFileProtection)initWithProtection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_DASFileProtection)initWithCoder:(id)coder;
+- (_DASFileProtection)initWithProtection:(id)protection;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASFileProtection
@@ -111,44 +111,44 @@
   return fileProtection;
 }
 
-- (_DASFileProtection)initWithProtection:(id)a3
+- (_DASFileProtection)initWithProtection:(id)protection
 {
-  v5 = a3;
+  protectionCopy = protection;
   v9.receiver = self;
   v9.super_class = _DASFileProtection;
   v6 = [(_DASFileProtection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileProtection, a3);
+    objc_storeStrong(&v6->_fileProtection, protection);
   }
 
   return v7;
 }
 
-+ (_DASFileProtection)protectionWithType:(id)a3
++ (_DASFileProtection)protectionWithType:(id)type
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithProtection:v3];
+  typeCopy = type;
+  v4 = [objc_alloc(objc_opt_class()) initWithProtection:typeCopy];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fileProtection = self->_fileProtection;
   if (fileProtection)
   {
-    [a3 encodeObject:fileProtection forKey:@"fileProtection"];
+    [coder encodeObject:fileProtection forKey:@"fileProtection"];
   }
 }
 
-- (_DASFileProtection)initWithCoder:(id)a3
+- (_DASFileProtection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"fileProtection"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"fileProtection"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileProtection"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileProtection"];
     v6 = v5;
     if (!v5)
     {
@@ -197,10 +197,10 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -210,13 +210,13 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (!self->_fileProtection)
       {
-        v11 = [(_DASFileProtection *)v5 fileProtection];
+        fileProtection = [(_DASFileProtection *)v5 fileProtection];
 
-        if (!v11)
+        if (!fileProtection)
         {
           v10 = 1;
           goto LABEL_12;
@@ -228,13 +228,13 @@ LABEL_17:
         }
       }
 
-      v7 = [(_DASFileProtection *)v6 fileProtection];
+      fileProtection2 = [(_DASFileProtection *)v6 fileProtection];
 
-      if (v7)
+      if (fileProtection2)
       {
         fileProtection = self->_fileProtection;
-        v9 = [(_DASFileProtection *)v6 fileProtection];
-        v10 = [(NSString *)fileProtection isEqual:v9];
+        fileProtection3 = [(_DASFileProtection *)v6 fileProtection];
+        v10 = [(NSString *)fileProtection isEqual:fileProtection3];
       }
 
       else

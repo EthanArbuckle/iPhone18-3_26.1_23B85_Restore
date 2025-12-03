@@ -1,23 +1,23 @@
 @interface PKPassColorProfile
-+ (id)profileForDisplayProfile:(id)a3;
-- (id)_imageForGlyph:(id)a3 color:(id)a4;
-- (id)_initWithBackgroundColor:(id)a3 foregroundColor:(id)a4 labelColor:(id)a5;
-- (id)foregroundAttributesForFont:(id)a3;
-- (id)foregroundColorOverStrip:(BOOL)a3;
-- (id)labelAttributesForFont:(id)a3;
-- (id)labelColorOverStrip:(BOOL)a3;
-- (void)_calculateColorsWithBackgroundColor:(id)a3 foregroundColor:(id)a4 labelColor:(id)a5;
++ (id)profileForDisplayProfile:(id)profile;
+- (id)_imageForGlyph:(id)glyph color:(id)color;
+- (id)_initWithBackgroundColor:(id)color foregroundColor:(id)foregroundColor labelColor:(id)labelColor;
+- (id)foregroundAttributesForFont:(id)font;
+- (id)foregroundColorOverStrip:(BOOL)strip;
+- (id)labelAttributesForFont:(id)font;
+- (id)labelColorOverStrip:(BOOL)strip;
+- (void)_calculateColorsWithBackgroundColor:(id)color foregroundColor:(id)foregroundColor labelColor:(id)labelColor;
 @end
 
 @implementation PKPassColorProfile
 
-+ (id)profileForDisplayProfile:(id)a3
++ (id)profileForDisplayProfile:(id)profile
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  profileCopy = profile;
+  v4 = profileCopy;
+  if (profileCopy)
   {
-    v5 = objc_getAssociatedObject(v3, &ColorProfileCacheKey);
+    v5 = objc_getAssociatedObject(profileCopy, &ColorProfileCacheKey);
     if (v5)
     {
       goto LABEL_23;
@@ -26,87 +26,87 @@
 
   if ([v4 passStyle] == 9)
   {
-    v6 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v7 = MEMORY[0x1E69DC888];
-    v8 = [v4 foregroundColor];
-    v9 = [v7 pkui_colorWithPKColor:v8];
+    foregroundColor = [v4 foregroundColor];
+    v9 = [v7 pkui_colorWithPKColor:foregroundColor];
     if (!v9)
     {
-      v10 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_13:
-      v13 = v10;
+      v13 = whiteColor;
 
       goto LABEL_14;
     }
 
 LABEL_12:
-    v10 = v9;
+    whiteColor = v9;
     goto LABEL_13;
   }
 
-  v11 = [v4 showsBackgroundImage];
+  showsBackgroundImage = [v4 showsBackgroundImage];
   v12 = MEMORY[0x1E69DC888];
-  if (!v11)
+  if (!showsBackgroundImage)
   {
-    v14 = [v4 backgroundColor];
-    v15 = [v12 pkui_colorWithPKColor:v14];
+    backgroundColor = [v4 backgroundColor];
+    v15 = [v12 pkui_colorWithPKColor:backgroundColor];
     v16 = [v15 colorWithAlphaComponent:1.0];
     v17 = v16;
     if (v16)
     {
-      v18 = v16;
+      whiteColor2 = v16;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
     }
 
-    v6 = v18;
+    blackColor = whiteColor2;
 
     v19 = MEMORY[0x1E69DC888];
-    v8 = [v4 foregroundColor];
-    v9 = [v19 pkui_colorWithPKColor:v8];
+    foregroundColor = [v4 foregroundColor];
+    v9 = [v19 pkui_colorWithPKColor:foregroundColor];
     if (!v9)
     {
-      v10 = [MEMORY[0x1E69DC888] blackColor];
+      whiteColor = [MEMORY[0x1E69DC888] blackColor];
       goto LABEL_13;
     }
 
     goto LABEL_12;
   }
 
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  v13 = [v8 colorWithAlphaComponent:0.699999988];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  foregroundColor = [MEMORY[0x1E69DC888] whiteColor];
+  v13 = [foregroundColor colorWithAlphaComponent:0.699999988];
 LABEL_14:
 
   v20 = MEMORY[0x1E69DC888];
-  v21 = [v4 labelColor];
-  v22 = [v20 pkui_colorWithPKColor:v21];
+  labelColor = [v4 labelColor];
+  v22 = [v20 pkui_colorWithPKColor:labelColor];
 
-  v5 = [[PKPassColorProfile alloc] _initWithBackgroundColor:v6 foregroundColor:v13 labelColor:v22];
+  v5 = [[PKPassColorProfile alloc] _initWithBackgroundColor:blackColor foregroundColor:v13 labelColor:v22];
   if ([v4 showsStripImage])
   {
     v23 = MEMORY[0x1E69DC888];
-    v24 = [v4 stripColor];
-    v25 = [v23 pkui_colorWithPKColor:v24];
+    stripColor = [v4 stripColor];
+    v25 = [v23 pkui_colorWithPKColor:stripColor];
     v26 = v25;
     if (v25)
     {
-      v27 = v25;
+      whiteColor3 = v25;
     }
 
     else
     {
-      v27 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
     }
 
-    v28 = v27;
+    v28 = whiteColor3;
 
     v29 = [PKPassColorProfile alloc];
-    v30 = [MEMORY[0x1E69DC888] blackColor];
-    v31 = [(PKPassColorProfile *)v29 _initWithBackgroundColor:v30 foregroundColor:v28 labelColor:v28];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    v31 = [(PKPassColorProfile *)v29 _initWithBackgroundColor:blackColor2 foregroundColor:v28 labelColor:v28];
     v32 = v5[4];
     v5[4] = v31;
   }
@@ -114,8 +114,8 @@ LABEL_14:
   *(v5 + 40) = [v4 supportsAutomaticForegroundVibrancy];
   *(v5 + 41) = [v4 supportsAutomaticLabelVibrancy];
   v33 = MEMORY[0x1E69DC888];
-  v34 = [v4 footerBackgroundColor];
-  v35 = [v33 pkui_colorWithPKColor:v34];
+  footerBackgroundColor = [v4 footerBackgroundColor];
+  v35 = [v33 pkui_colorWithPKColor:footerBackgroundColor];
   v36 = v5[14];
   v5[14] = v35;
 
@@ -129,95 +129,95 @@ LABEL_23:
   return v5;
 }
 
-- (id)_initWithBackgroundColor:(id)a3 foregroundColor:(id)a4 labelColor:(id)a5
+- (id)_initWithBackgroundColor:(id)color foregroundColor:(id)foregroundColor labelColor:(id)labelColor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  colorCopy = color;
+  foregroundColorCopy = foregroundColor;
+  labelColorCopy = labelColor;
   v14.receiver = self;
   v14.super_class = PKPassColorProfile;
   v11 = [(PKPassColorProfile *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(PKPassColorProfile *)v11 _calculateColorsWithBackgroundColor:v8 foregroundColor:v9 labelColor:v10];
+    [(PKPassColorProfile *)v11 _calculateColorsWithBackgroundColor:colorCopy foregroundColor:foregroundColorCopy labelColor:labelColorCopy];
   }
 
   return v12;
 }
 
-- (id)labelColorOverStrip:(BOOL)a3
+- (id)labelColorOverStrip:(BOOL)strip
 {
-  if (a3 && self->_stripProfile)
+  if (strip && self->_stripProfile)
   {
     self = self->_stripProfile;
   }
 
-  v3 = [(PKPassColorProfile *)self labelColor];
+  labelColor = [(PKPassColorProfile *)self labelColor];
 
-  return v3;
+  return labelColor;
 }
 
-- (id)foregroundColorOverStrip:(BOOL)a3
+- (id)foregroundColorOverStrip:(BOOL)strip
 {
-  if (a3 && self->_stripProfile)
+  if (strip && self->_stripProfile)
   {
     self = self->_stripProfile;
   }
 
-  v3 = [(PKPassColorProfile *)self foregroundColor];
+  foregroundColor = [(PKPassColorProfile *)self foregroundColor];
 
-  return v3;
+  return foregroundColor;
 }
 
-- (id)labelAttributesForFont:(id)a3
+- (id)labelAttributesForFont:(id)font
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = *MEMORY[0x1E69DB650];
-  v4 = a3;
-  v5 = [(PKPassColorProfile *)self labelColor];
+  fontCopy = font;
+  labelColor = [(PKPassColorProfile *)self labelColor];
   v8[1] = *MEMORY[0x1E69DB648];
-  v9[0] = v5;
-  v9[1] = v4;
+  v9[0] = labelColor;
+  v9[1] = fontCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
 }
 
-- (id)foregroundAttributesForFont:(id)a3
+- (id)foregroundAttributesForFont:(id)font
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = *MEMORY[0x1E69DB650];
-  v4 = a3;
-  v5 = [(PKPassColorProfile *)self foregroundColor];
+  fontCopy = font;
+  foregroundColor = [(PKPassColorProfile *)self foregroundColor];
   v8[1] = *MEMORY[0x1E69DB648];
-  v9[0] = v5;
-  v9[1] = v4;
+  v9[0] = foregroundColor;
+  v9[1] = fontCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
 }
 
-- (id)_imageForGlyph:(id)a3 color:(id)a4
+- (id)_imageForGlyph:(id)glyph color:(id)color
 {
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  v7 = a4;
-  v8 = a3;
-  [v8 size];
+  colorCopy = color;
+  glyphCopy = glyph;
+  [glyphCopy size];
   width = v16.width;
   height = v16.height;
   UIGraphicsBeginImageContextWithOptions(v16, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v12 = [v7 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v12);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v17.origin.x = v5;
   v17.origin.y = v6;
   v17.size.width = width;
   v17.size.height = height;
   CGContextFillRect(CurrentContext, v17);
-  [v8 drawInRect:22 blendMode:v5 alpha:{v6, width, height, 1.0}];
+  [glyphCopy drawInRect:22 blendMode:v5 alpha:{v6, width, height, 1.0}];
 
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -225,17 +225,17 @@ LABEL_23:
   return v13;
 }
 
-- (void)_calculateColorsWithBackgroundColor:(id)a3 foregroundColor:(id)a4 labelColor:(id)a5
+- (void)_calculateColorsWithBackgroundColor:(id)color foregroundColor:(id)foregroundColor labelColor:(id)labelColor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  colorCopy = color;
+  foregroundColorCopy = foregroundColor;
+  labelColorCopy = labelColor;
   data = 0;
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v13 = CGBitmapContextCreate(&data, 1uLL, 1uLL, 8uLL, 1uLL, DeviceGray, 0);
-  objc_storeStrong(&self->_backgroundColor, a3);
+  objc_storeStrong(&self->_backgroundColor, color);
   self->_backgroundLightness = _ColorLightness(self->_backgroundColor, v13, &data);
-  objc_storeStrong(&self->_foregroundColor, a4);
+  objc_storeStrong(&self->_foregroundColor, foregroundColor);
   self->_foregroundLightness = _ColorLightness(self->_foregroundColor, v13, &data);
   backgroundColor = self->_backgroundColor;
   v15 = (self->_backgroundLightness + -0.400000006) * 1.20000005;
@@ -265,9 +265,9 @@ LABEL_23:
     v19 = 0.300000012;
   }
 
-  if (v11)
+  if (labelColorCopy)
   {
-    v20 = v11;
+    v20 = labelColorCopy;
   }
 
   else

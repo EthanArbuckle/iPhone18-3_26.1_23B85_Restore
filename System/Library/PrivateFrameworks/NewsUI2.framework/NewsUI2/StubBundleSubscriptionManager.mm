@@ -1,10 +1,10 @@
 @interface StubBundleSubscriptionManager
 - (FCEntitlementsOverrideProviderType)entitlementsOverrideProvider;
 - (id)bundleSubscriptionLookupEntry;
-- (void)prepareForUseWithCompletion:(id)a3;
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 completion:(id)a4;
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 hideBundleDetectionUI:(BOOL)a4 completion:(id)a5;
-- (void)setEntitlementsOverrideProvider:(id)a3;
+- (void)prepareForUseWithCompletion:(id)completion;
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy completion:(id)completion;
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy hideBundleDetectionUI:(BOOL)i completion:(id)completion;
+- (void)setEntitlementsOverrideProvider:(id)provider;
 @end
 
 @implementation StubBundleSubscriptionManager
@@ -16,17 +16,17 @@
   return v2;
 }
 
-- (void)setEntitlementsOverrideProvider:(id)a3
+- (void)setEntitlementsOverrideProvider:(id)provider
 {
-  self->entitlementsOverrideProvider = a3;
+  self->entitlementsOverrideProvider = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 completion:(id)a4
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     bundleSubscription = self->bundleSubscription;
@@ -38,9 +38,9 @@
   }
 }
 
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 hideBundleDetectionUI:(BOOL)a4 completion:(id)a5
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy hideBundleDetectionUI:(BOOL)i completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     bundleSubscription = self->bundleSubscription;
@@ -59,9 +59,9 @@
   return v2;
 }
 
-- (void)prepareForUseWithCompletion:(id)a3
+- (void)prepareForUseWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;

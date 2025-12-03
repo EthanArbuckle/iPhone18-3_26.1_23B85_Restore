@@ -1,37 +1,37 @@
 @interface HRETemplateRecommendationGenerator
 + (id)allAvailableTemplates;
-- (HRETemplateRecommendationGenerator)initWithTemplates:(id)a3;
-- (id)_filterTemplates:(id)a3 options:(unint64_t)a4;
-- (void)setupProcess:(id)a3;
+- (HRETemplateRecommendationGenerator)initWithTemplates:(id)templates;
+- (id)_filterTemplates:(id)templates options:(unint64_t)options;
+- (void)setupProcess:(id)process;
 @end
 
 @implementation HRETemplateRecommendationGenerator
 
-- (HRETemplateRecommendationGenerator)initWithTemplates:(id)a3
+- (HRETemplateRecommendationGenerator)initWithTemplates:(id)templates
 {
-  v5 = a3;
+  templatesCopy = templates;
   v9.receiver = self;
   v9.super_class = HRETemplateRecommendationGenerator;
   v6 = [(HREStandardAsyncRecommendationSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templates, a3);
+    objc_storeStrong(&v6->_templates, templates);
   }
 
   return v7;
 }
 
-- (id)_filterTemplates:(id)a3 options:(unint64_t)a4
+- (id)_filterTemplates:(id)templates options:(unint64_t)options
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__HRETemplateRecommendationGenerator__filterTemplates_options___block_invoke;
   v6[3] = &__block_descriptor_35_e21_B16__0__HRETemplate_8l;
-  v7 = (a4 & 2) != 0;
-  v8 = a4 & 1;
-  v9 = (a4 & 4) != 0;
-  v4 = [a3 na_filter:v6];
+  v7 = (options & 2) != 0;
+  v8 = options & 1;
+  v9 = (options & 4) != 0;
+  v4 = [templates na_filter:v6];
 
   return v4;
 }
@@ -49,14 +49,14 @@ BOOL __63__HRETemplateRecommendationGenerator__filterTemplates_options___block_i
   return (isKindOfClass & 1) != 0 && (a1[32] & 1) != 0 || (v5 & 1) != 0 && (a1[33] & 1) != 0 || (v6 & 1) != 0 && (a1[34] & 1) != 0;
 }
 
-- (void)setupProcess:(id)a3
+- (void)setupProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v17.receiver = self;
   v17.super_class = HRETemplateRecommendationGenerator;
-  [(HREStandardAsyncRecommendationSource *)&v17 setupProcess:v4];
+  [(HREStandardAsyncRecommendationSource *)&v17 setupProcess:processCopy];
   objc_opt_class();
-  v5 = v4;
+  v5 = processCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -69,23 +69,23 @@ BOOL __63__HRETemplateRecommendationGenerator__filterTemplates_options___block_i
 
   v7 = v6;
 
-  v8 = [v5 home];
-  v9 = [v8 rooms];
-  v10 = [v9 mutableCopy];
+  home = [v5 home];
+  rooms = [home rooms];
+  v10 = [rooms mutableCopy];
 
-  v11 = [v5 home];
-  v12 = [v11 roomForEntireHome];
+  home2 = [v5 home];
+  roomForEntireHome = [home2 roomForEntireHome];
 
-  if (v12)
+  if (roomForEntireHome)
   {
-    v13 = [v5 home];
-    v14 = [v13 roomForEntireHome];
-    [v10 addObject:v14];
+    home3 = [v5 home];
+    roomForEntireHome2 = [home3 roomForEntireHome];
+    [v10 addObject:roomForEntireHome2];
   }
 
   [v7 setRooms:v10];
-  v15 = [(HRETemplateRecommendationGenerator *)self templates];
-  v16 = -[HRETemplateRecommendationGenerator _filterTemplates:options:](self, "_filterTemplates:options:", v15, [v5 options]);
+  templates = [(HRETemplateRecommendationGenerator *)self templates];
+  v16 = -[HRETemplateRecommendationGenerator _filterTemplates:options:](self, "_filterTemplates:options:", templates, [v5 options]);
   [v7 setActiveTemplates:v16];
 }
 

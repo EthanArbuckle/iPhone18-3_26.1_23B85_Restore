@@ -1,11 +1,11 @@
 @interface UISystemShellApplication
-- (BOOL)_openURL:(id)a3;
+- (BOOL)_openURL:(id)l;
 - (UISystemShellApplication)init;
-- (int64_t)_interfaceOrientationRotationDirectionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4;
-- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithSettings:(id)a4 fromOrientation:(int64_t)a5;
-- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithSettings:(id)a4 fromOrientation:(int64_t)a5 screen:(id)a6;
-- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)a3;
-- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)a3 screen:(id)a4;
+- (int64_t)_interfaceOrientationRotationDirectionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
+- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithSettings:(id)settings fromOrientation:(int64_t)fromOrientation;
+- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithSettings:(id)settings fromOrientation:(int64_t)fromOrientation screen:(id)screen;
+- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)orientation;
+- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)orientation screen:(id)screen;
 @end
 
 @implementation UISystemShellApplication
@@ -23,11 +23,11 @@
     interfaceOrientationTransition = v3->_interfaceOrientationTransition;
     v3->_interfaceOrientationTransition = v4;
 
-    v6 = [MEMORY[0x1E699F7B0] sharedInstance];
-    [v6 setInterfaceOrientation:-[UISystemShellApplication startupInterfaceOrientation](v3 animationSettings:"startupInterfaceOrientation") direction:{0, 0}];
+    mEMORY[0x1E699F7B0] = [MEMORY[0x1E699F7B0] sharedInstance];
+    [mEMORY[0x1E699F7B0] setInterfaceOrientation:-[UISystemShellApplication startupInterfaceOrientation](v3 animationSettings:"startupInterfaceOrientation") direction:{0, 0}];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    objc_initWeak(&location, v7);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_initWeak(&location, defaultCenter);
 
     v8 = objc_loadWeakRetained(&location);
     v13[0] = MEMORY[0x1E69E9820];
@@ -64,12 +64,12 @@ void __32__UISystemShellApplication_init__block_invoke_2()
   [v0 readyForInteraction];
 }
 
-- (BOOL)_openURL:(id)a3
+- (BOOL)_openURL:(id)l
 {
-  v4 = a3;
-  if (v4 && [(UISystemShellApplication *)self canOpenURL:v4])
+  lCopy = l;
+  if (lCopy && [(UISystemShellApplication *)self canOpenURL:lCopy])
   {
-    [(UIApplication *)self _applicationOpenURL:v4 payload:0];
+    [(UIApplication *)self _applicationOpenURL:lCopy payload:0];
     v5 = 1;
   }
 
@@ -81,52 +81,52 @@ void __32__UISystemShellApplication_init__block_invoke_2()
   return v5;
 }
 
-- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)a3
+- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)orientation
 {
-  v5 = [objc_opt_self() mainScreen];
-  [(UISystemShellApplication *)self noteActiveInterfaceOrientationWillChangeToOrientation:a3 screen:v5];
+  mainScreen = [objc_opt_self() mainScreen];
+  [(UISystemShellApplication *)self noteActiveInterfaceOrientationWillChangeToOrientation:orientation screen:mainScreen];
 }
 
-- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)a3 screen:(id)a4
+- (void)noteActiveInterfaceOrientationWillChangeToOrientation:(int64_t)orientation screen:(id)screen
 {
-  v6 = a4;
-  if ([(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition interfaceOrientation]!= a3)
+  screenCopy = screen;
+  if ([(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition interfaceOrientation]!= orientation)
   {
-    [(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition setInterfaceOrientation:a3];
+    [(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition setInterfaceOrientation:orientation];
     [(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition beginTransition];
   }
 
   v7.receiver = self;
   v7.super_class = UISystemShellApplication;
-  [(UIApplication *)&v7 noteActiveInterfaceOrientationWillChangeToOrientation:a3 screen:v6];
+  [(UIApplication *)&v7 noteActiveInterfaceOrientationWillChangeToOrientation:orientation screen:screenCopy];
 }
 
-- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithSettings:(id)a4 fromOrientation:(int64_t)a5
+- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithSettings:(id)settings fromOrientation:(int64_t)fromOrientation
 {
-  v8 = a4;
-  v9 = [objc_opt_self() mainScreen];
-  [(UISystemShellApplication *)self noteActiveInterfaceOrientationDidChangeToOrientation:a3 willAnimateWithSettings:v8 fromOrientation:a5 screen:v9];
+  settingsCopy = settings;
+  mainScreen = [objc_opt_self() mainScreen];
+  [(UISystemShellApplication *)self noteActiveInterfaceOrientationDidChangeToOrientation:orientation willAnimateWithSettings:settingsCopy fromOrientation:fromOrientation screen:mainScreen];
 }
 
-- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithSettings:(id)a4 fromOrientation:(int64_t)a5 screen:(id)a6
+- (void)noteActiveInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithSettings:(id)settings fromOrientation:(int64_t)fromOrientation screen:(id)screen
 {
-  v10 = a4;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = UISystemShellApplication;
-  [(UIApplication *)&v13 noteActiveInterfaceOrientationDidChangeToOrientation:a3 willAnimateWithSettings:v10 fromOrientation:a5 screen:a6];
+  [(UIApplication *)&v13 noteActiveInterfaceOrientationDidChangeToOrientation:orientation willAnimateWithSettings:settingsCopy fromOrientation:fromOrientation screen:screen];
   if ([(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition isTransitioning])
   {
-    [(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition setInterfaceOrientation:a3];
+    [(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition setInterfaceOrientation:orientation];
     [(FBDisplayLayoutTransition *)self->_interfaceOrientationTransition endTransition];
-    v11 = [(UISystemShellApplication *)self _interfaceOrientationRotationDirectionFromOrientation:a5 toOrientation:a3];
-    v12 = [MEMORY[0x1E699F7B0] sharedInstance];
-    [v12 setInterfaceOrientation:a3 animationSettings:v10 direction:v11];
+    v11 = [(UISystemShellApplication *)self _interfaceOrientationRotationDirectionFromOrientation:fromOrientation toOrientation:orientation];
+    mEMORY[0x1E699F7B0] = [MEMORY[0x1E699F7B0] sharedInstance];
+    [mEMORY[0x1E699F7B0] setInterfaceOrientation:orientation animationSettings:settingsCopy direction:v11];
   }
 }
 
-- (int64_t)_interfaceOrientationRotationDirectionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4
+- (int64_t)_interfaceOrientationRotationDirectionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
-  if (a4 == 2)
+  if (toOrientation == 2)
   {
     v4 = 180;
   }
@@ -136,7 +136,7 @@ void __32__UISystemShellApplication_init__block_invoke_2()
     v4 = 0;
   }
 
-  if (a4 == 4)
+  if (toOrientation == 4)
   {
     v5 = -90;
   }
@@ -146,7 +146,7 @@ void __32__UISystemShellApplication_init__block_invoke_2()
     v5 = v4;
   }
 
-  if (a4 == 3)
+  if (toOrientation == 3)
   {
     v6 = 90;
   }
@@ -156,12 +156,12 @@ void __32__UISystemShellApplication_init__block_invoke_2()
     v6 = v5;
   }
 
-  if (a4 == 1)
+  if (toOrientation == 1)
   {
     v6 = 0;
   }
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
     v7 = -180;
   }
@@ -171,7 +171,7 @@ void __32__UISystemShellApplication_init__block_invoke_2()
     v7 = 0;
   }
 
-  if (a3 == 4)
+  if (orientation == 4)
   {
     v8 = 90;
   }
@@ -181,7 +181,7 @@ void __32__UISystemShellApplication_init__block_invoke_2()
     v8 = v7;
   }
 
-  if (a3 == 3)
+  if (orientation == 3)
   {
     v9 = -90;
   }
@@ -191,7 +191,7 @@ void __32__UISystemShellApplication_init__block_invoke_2()
     v9 = v8;
   }
 
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v9 = 0;
   }

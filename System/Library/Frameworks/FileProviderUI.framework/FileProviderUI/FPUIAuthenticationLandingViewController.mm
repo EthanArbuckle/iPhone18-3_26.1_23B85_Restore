@@ -1,33 +1,33 @@
 @interface FPUIAuthenticationLandingViewController
 - (BOOL)_canMoveToNextStep;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (FPUIAuthenticationLandingViewController)initWithURL:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (FPUIAuthenticationLandingViewController)initWithURL:(id)l;
 - (id)defaultRightBarButtonItem;
-- (void)_connect:(id)a3;
-- (void)_connectToServer:(id)a3;
-- (void)_disectURLToComponents:(id)a3;
-- (void)_showRecentServersSectionWithRecentServers:(id)a3 rowAnimation:(int64_t)a4;
+- (void)_connect:(id)_connect;
+- (void)_connectToServer:(id)server;
+- (void)_disectURLToComponents:(id)components;
+- (void)_showRecentServersSectionWithRecentServers:(id)servers rowAnimation:(int64_t)animation;
 - (void)_transitionUIStateToConnecting;
 - (void)_updateNextStep;
-- (void)_updateRecentServerSectionVisibilityWithRowAnimation:(int64_t)a3 forceReload:(BOOL)a4;
-- (void)authenticationDelegate:(id)a3 didEncounterError:(id)a4;
-- (void)removeServerWithRepresentation:(id)a3;
-- (void)setInitialConnectionURL:(id)a3;
+- (void)_updateRecentServerSectionVisibilityWithRowAnimation:(int64_t)animation forceReload:(BOOL)reload;
+- (void)authenticationDelegate:(id)delegate didEncounterError:(id)error;
+- (void)removeServerWithRepresentation:(id)representation;
+- (void)setInitialConnectionURL:(id)l;
 - (void)setupTableViewSections;
 - (void)viewDidLoad;
 @end
 
 @implementation FPUIAuthenticationLandingViewController
 
-- (FPUIAuthenticationLandingViewController)initWithURL:(id)a3
+- (FPUIAuthenticationLandingViewController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = FPUIAuthenticationLandingViewController;
   v5 = [(FPUIAuthenticationTableViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     initialURL = v5->_initialURL;
     v5->_initialURL = v6;
   }
@@ -42,8 +42,8 @@
   v8.super_class = FPUIAuthenticationLandingViewController;
   [(FPUIAuthenticationTableViewController *)&v8 viewDidLoad];
   [(FPUIAuthenticationLandingViewController *)self _disectURLToComponents:self->_initialURL];
-  v3 = [(NSURL *)self->_sanitizedURL absoluteString];
-  [(UITextField *)self->_serverInputTextField setText:v3];
+  absoluteString = [(NSURL *)self->_sanitizedURL absoluteString];
+  [(UITextField *)self->_serverInputTextField setText:absoluteString];
 
   [(FPUIAuthenticationLandingViewController *)self _updateNextStep];
   v4 = objc_opt_self();
@@ -120,13 +120,13 @@
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
   [(FPUIAuthenticationTableViewController *)self setRowDescriptors:v23];
 
-  v24 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __65__FPUIAuthenticationLandingViewController_setupTableViewSections__block_invoke_42;
   v26[3] = &unk_278A515B8;
   v26[4] = self;
-  [v24 recentServerRepresentationsWithCompletionHandler:v26];
+  [authenticationDelegate recentServerRepresentationsWithCompletionHandler:v26];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -186,16 +186,16 @@ uint64_t __65__FPUIAuthenticationLandingViewController_setupTableViewSections__b
   return [v2 _showRecentServersSectionWithRecentServers:v3 rowAnimation:3];
 }
 
-- (void)_showRecentServersSectionWithRecentServers:(id)a3 rowAnimation:(int64_t)a4
+- (void)_showRecentServersSectionWithRecentServers:(id)servers rowAnimation:(int64_t)animation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  serversCopy = servers;
   [(NSMutableArray *)self->_recentServersRowDescriptors removeAllObjects];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v5;
+  obj = serversCopy;
   v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -245,7 +245,7 @@ uint64_t __65__FPUIAuthenticationLandingViewController_setupTableViewSections__b
     while (v6);
   }
 
-  [(FPUIAuthenticationLandingViewController *)self _updateRecentServerSectionVisibilityWithRowAnimation:a4 forceReload:1];
+  [(FPUIAuthenticationLandingViewController *)self _updateRecentServerSectionVisibilityWithRowAnimation:animation forceReload:1];
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -279,15 +279,15 @@ void __99__FPUIAuthenticationLandingViewController__showRecentServersSectionWith
   [v3 pushViewController:v4 animated:1];
 }
 
-- (void)_updateRecentServerSectionVisibilityWithRowAnimation:(int64_t)a3 forceReload:(BOOL)a4
+- (void)_updateRecentServerSectionVisibilityWithRowAnimation:(int64_t)animation forceReload:(BOOL)reload
 {
-  v4 = a4;
+  reloadCopy = reload;
   v7 = [(NSMutableArray *)self->_recentServersRowDescriptors count];
   if (v7)
   {
-    v8 = [(FPUIAuthenticationLandingViewController *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
-    v10 = !UIContentSizeCategoryIsAccessibilityCategory(v9);
+    traitCollection = [(FPUIAuthenticationLandingViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v10 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
   else
@@ -299,40 +299,40 @@ void __99__FPUIAuthenticationLandingViewController__showRecentServersSectionWith
   if ((v7 != 0) != [(FPUIAuthenticationSectionDescriptor *)self->_recentServersSection isActive])
   {
     [(FPUIAuthenticationSectionDescriptor *)self->_recentServersSection setActive:v7 != 0];
-    v11 = [(FPUIAuthenticationTableViewController *)self sectionDescriptors];
-    [v15 addIndex:{objc_msgSend(v11, "indexOfObject:", self->_recentServersSection)}];
+    sectionDescriptors = [(FPUIAuthenticationTableViewController *)self sectionDescriptors];
+    [v15 addIndex:{objc_msgSend(sectionDescriptors, "indexOfObject:", self->_recentServersSection)}];
   }
 
-  if (v4)
+  if (reloadCopy)
   {
-    v12 = [(FPUIAuthenticationTableViewController *)self sectionDescriptors];
-    [v15 addIndex:{objc_msgSend(v12, "indexOfObject:", self->_recentServersSection)}];
+    sectionDescriptors2 = [(FPUIAuthenticationTableViewController *)self sectionDescriptors];
+    [v15 addIndex:{objc_msgSend(sectionDescriptors2, "indexOfObject:", self->_recentServersSection)}];
   }
 
   if (v10 != [(FPUIAuthenticationSectionDescriptor *)self->_recentServersExtraTopPaddingSection isActive])
   {
     [(FPUIAuthenticationSectionDescriptor *)self->_recentServersExtraTopPaddingSection setActive:v10];
-    v13 = [(FPUIAuthenticationTableViewController *)self sectionDescriptors];
-    [v15 addIndex:{objc_msgSend(v13, "indexOfObject:", self->_recentServersExtraTopPaddingSection)}];
+    sectionDescriptors3 = [(FPUIAuthenticationTableViewController *)self sectionDescriptors];
+    [v15 addIndex:{objc_msgSend(sectionDescriptors3, "indexOfObject:", self->_recentServersExtraTopPaddingSection)}];
   }
 
   if ([v15 count])
   {
-    v14 = [(FPUIAuthenticationLandingViewController *)self tableView];
-    [v14 reloadSections:v15 withRowAnimation:a3];
+    tableView = [(FPUIAuthenticationLandingViewController *)self tableView];
+    [tableView reloadSections:v15 withRowAnimation:animation];
   }
 }
 
-- (void)authenticationDelegate:(id)a3 didEncounterError:(id)a4
+- (void)authenticationDelegate:(id)delegate didEncounterError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() defaultTitle];
-  [(FPUIAuthenticationTableViewController *)self setTitle:v8];
+  errorCopy = error;
+  delegateCopy = delegate;
+  defaultTitle = [objc_opt_class() defaultTitle];
+  [(FPUIAuthenticationTableViewController *)self setTitle:defaultTitle];
 
   v9.receiver = self;
   v9.super_class = FPUIAuthenticationLandingViewController;
-  [(FPUIAuthenticationTableViewController *)&v9 authenticationDelegate:v7 didEncounterError:v6];
+  [(FPUIAuthenticationTableViewController *)&v9 authenticationDelegate:delegateCopy didEncounterError:errorCopy];
 }
 
 - (void)_transitionUIStateToConnecting
@@ -347,34 +347,34 @@ void __99__FPUIAuthenticationLandingViewController__showRecentServersSectionWith
 
 - (void)_updateNextStep
 {
-  v3 = [(FPUIAuthenticationLandingViewController *)self _canMoveToNextStep];
+  _canMoveToNextStep = [(FPUIAuthenticationLandingViewController *)self _canMoveToNextStep];
 
-  [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:v3];
+  [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:_canMoveToNextStep];
 }
 
-- (void)setInitialConnectionURL:(id)a3
+- (void)setInitialConnectionURL:(id)l
 {
-  v5 = a3;
-  if (self->_initialURL != v5)
+  lCopy = l;
+  if (self->_initialURL != lCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_initialURL, a3);
+    v7 = lCopy;
+    objc_storeStrong(&self->_initialURL, l);
     [(FPUIAuthenticationLandingViewController *)self _disectURLToComponents:self->_initialURL];
-    v6 = [(NSURL *)self->_sanitizedURL absoluteString];
-    [(UITextField *)self->_serverInputTextField setText:v6];
+    absoluteString = [(NSURL *)self->_sanitizedURL absoluteString];
+    [(UITextField *)self->_serverInputTextField setText:absoluteString];
 
     [(FPUIAuthenticationLandingViewController *)self _updateNextStep];
-    v5 = v7;
+    lCopy = v7;
   }
 }
 
-- (void)_disectURLToComponents:(id)a3
+- (void)_disectURLToComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
-    v10 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-    v4 = [v10 user];
-    v5 = [v4 copy];
+    v10 = [MEMORY[0x277CCACE0] componentsWithURL:components resolvingAgainstBaseURL:0];
+    user = [v10 user];
+    v5 = [user copy];
     initialUsername = self->_initialUsername;
     self->_initialUsername = v5;
 
@@ -386,63 +386,63 @@ void __99__FPUIAuthenticationLandingViewController__showRecentServersSectionWith
   }
 }
 
-- (void)_connect:(id)a3
+- (void)_connect:(id)_connect
 {
   [(FPUIAuthenticationLandingViewController *)self _transitionUIStateToConnecting];
-  v5 = [(UITextField *)self->_serverInputTextField text];
-  v6 = [v5 length];
+  text = [(UITextField *)self->_serverInputTextField text];
+  v6 = [text length];
 
   if (!v6)
   {
     [(FPUIAuthenticationLandingViewController *)a2 _connect:?];
   }
 
-  v8 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
-  v7 = [(UITextField *)self->_serverInputTextField text];
-  [v8 connectToServerAtAddress:v7 connectionFlowDelegate:self];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  text2 = [(UITextField *)self->_serverInputTextField text];
+  [authenticationDelegate connectToServerAtAddress:text2 connectionFlowDelegate:self];
 }
 
-- (void)_connectToServer:(id)a3
+- (void)_connectToServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   [(FPUIAuthenticationLandingViewController *)self _transitionUIStateToConnecting];
-  v7 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
-  v5 = [v4 url];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  v5 = [serverCopy url];
 
-  v6 = [v5 absoluteString];
-  [v7 connectToServerAtAddress:v6 connectionFlowDelegate:self];
+  absoluteString = [v5 absoluteString];
+  [authenticationDelegate connectToServerAtAddress:absoluteString connectionFlowDelegate:self];
 }
 
 - (BOOL)_canMoveToNextStep
 {
-  v2 = [(UITextField *)self->_serverInputTextField text];
-  v3 = [v2 length] != 0;
+  text = [(UITextField *)self->_serverInputTextField text];
+  v3 = [text length] != 0;
 
   return v3;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [(FPUIAuthenticationLandingViewController *)self _canMoveToNextStep];
-  if (v4)
+  _canMoveToNextStep = [(FPUIAuthenticationLandingViewController *)self _canMoveToNextStep];
+  if (_canMoveToNextStep)
   {
     [(FPUIAuthenticationLandingViewController *)self _connect:self];
   }
 
-  return !v4;
+  return !_canMoveToNextStep;
 }
 
-- (void)removeServerWithRepresentation:(id)a3
+- (void)removeServerWithRepresentation:(id)representation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](self->_recentServers, "count") - 1}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v18 = 1128;
-  v19 = self;
+  selfCopy = self;
   v6 = self->_recentServers;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
@@ -459,9 +459,9 @@ void __99__FPUIAuthenticationLandingViewController__showRecentServersSectionWith
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v4 identifier];
-        v14 = [v12 isEqualToString:v13];
+        identifier = [v11 identifier];
+        identifier2 = [representationCopy identifier];
+        v14 = [identifier isEqualToString:identifier2];
 
         if ((v14 & 1) == 0)
         {
@@ -475,11 +475,11 @@ void __99__FPUIAuthenticationLandingViewController__showRecentServersSectionWith
     while (v8);
   }
 
-  v15 = *(&v19->super.super.super.super.super.isa + v18);
-  *(&v19->super.super.super.super.super.isa + v18) = v5;
+  v15 = *(&selfCopy->super.super.super.super.super.isa + v18);
+  *(&selfCopy->super.super.super.super.super.isa + v18) = v5;
   v16 = v5;
 
-  [(FPUIAuthenticationLandingViewController *)v19 _showRecentServersSectionWithRecentServers:*(&v19->super.super.super.super.super.isa + v18) rowAnimation:5];
+  [(FPUIAuthenticationLandingViewController *)selfCopy _showRecentServersSectionWithRecentServers:*(&selfCopy->super.super.super.super.super.isa + v18) rowAnimation:5];
   v17 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,14 +1,14 @@
 @interface SiriUIPersonPickerViewController
-- (id)_pickerResponseForPerson:(id)a3;
+- (id)_pickerResponseForPerson:(id)person;
 - (void)_dismissPicker;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)showPicker:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)showPicker:(id)picker;
 @end
 
 @implementation SiriUIPersonPickerViewController
 
-- (void)showPicker:(id)a3
+- (void)showPicker:(id)picker
 {
   v4 = objc_alloc_init(MEMORY[0x277CBDC18]);
   [v4 setDelegate:self];
@@ -20,7 +20,7 @@
   v12 = 3221225472;
   v13 = __47__SiriUIPersonPickerViewController_showPicker___block_invoke;
   v14 = &unk_279C5A220;
-  v15 = self;
+  selfCopy = self;
   v6 = v4;
   v16 = v6;
   v7 = MEMORY[0x26D63F900](&v11);
@@ -29,8 +29,8 @@
 
   if (v9)
   {
-    v10 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
-    [v10 pickerViewController:self shouldPresentPicker:v6 completion:v7];
+    pickerDelegate = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+    [pickerDelegate pickerViewController:self shouldPresentPicker:v6 completion:v7];
   }
 
   else
@@ -70,12 +70,12 @@ void __47__SiriUIPersonPickerViewController_showPicker___block_invoke(uint64_t a
   }
 }
 
-- (id)_pickerResponseForPerson:(id)a3
+- (id)_pickerResponseForPerson:(id)person
 {
-  v4 = [MEMORY[0x277CFBC48] createSAPersonFromCNContact:a3];
+  v4 = [MEMORY[0x277CFBC48] createSAPersonFromCNContact:person];
   v5 = objc_alloc_init(MEMORY[0x277D47A68]);
-  v6 = [(SiriUIObjectPickerViewController *)self _picker];
-  [v5 setDomainObjectPicker:v6];
+  _picker = [(SiriUIObjectPickerViewController *)self _picker];
+  [v5 setDomainObjectPicker:_picker];
 
   [v5 setSelectedItem:v4];
 
@@ -84,13 +84,13 @@ void __47__SiriUIPersonPickerViewController_showPicker___block_invoke(uint64_t a
 
 - (void)_dismissPicker
 {
-  v3 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+  pickerDelegate = [(SiriUIObjectPickerViewController *)self pickerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
-    [v5 pickerViewController:self willDismissPicker:0];
+    pickerDelegate2 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+    [pickerDelegate2 pickerViewController:self willDismissPicker:0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
@@ -116,43 +116,43 @@ void __50__SiriUIPersonPickerViewController__dismissPicker__block_invoke(uint64_
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   [(SiriUIPersonPickerViewController *)self _dismissPicker];
-  v4 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+  pickerDelegate = [(SiriUIObjectPickerViewController *)self pickerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
-    [v6 pickerViewController:self didRequestKeyboardWithVisibility:1];
+    pickerDelegate2 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+    [pickerDelegate2 pickerViewController:self didRequestKeyboardWithVisibility:1];
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v13 = a3;
-  v6 = [(SiriUIPersonPickerViewController *)self _pickerResponseForPerson:a4];
+  pickerCopy = picker;
+  v6 = [(SiriUIPersonPickerViewController *)self _pickerResponseForPerson:contact];
   if (v6)
   {
-    v7 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+    pickerDelegate = [(SiriUIObjectPickerViewController *)self pickerDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
-      [v9 pickerViewController:self didSelectObject:v6 fromPicker:v13];
+      pickerDelegate2 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+      [pickerDelegate2 pickerViewController:self didSelectObject:v6 fromPicker:pickerCopy];
     }
   }
 
   [(SiriUIPersonPickerViewController *)self _dismissPicker];
-  v10 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+  pickerDelegate3 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
-    [v12 pickerViewController:self didRequestKeyboardWithVisibility:1];
+    pickerDelegate4 = [(SiriUIObjectPickerViewController *)self pickerDelegate];
+    [pickerDelegate4 pickerViewController:self didRequestKeyboardWithVisibility:1];
   }
 }
 

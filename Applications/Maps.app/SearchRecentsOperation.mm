@@ -1,7 +1,7 @@
 @interface SearchRecentsOperation
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (SearchRecentsOperation)initWithSearchQuery:(id)a3 context:(id)a4;
+- (SearchRecentsOperation)initWithSearchQuery:(id)query context:(id)context;
 - (SearchRecentsOperationDelegate)delegate;
 - (void)start;
 @end
@@ -39,7 +39,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SearchRecentsOperation: %@ - is cancelled before starting", buf, 0xCu);
     }
 
@@ -58,7 +58,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SearchRecentsOperation: %@ - collecting results", buf, 0xCu);
     }
 
@@ -102,20 +102,20 @@
   }
 }
 
-- (SearchRecentsOperation)initWithSearchQuery:(id)a3 context:(id)a4
+- (SearchRecentsOperation)initWithSearchQuery:(id)query context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SearchRecentsOperation;
   v8 = [(SearchRecentsOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [queryCopy copy];
     query = v8->_query;
     v8->_query = v9;
 
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
     v8->_stateLock._os_unfair_lock_opaque = 0;
   }
 

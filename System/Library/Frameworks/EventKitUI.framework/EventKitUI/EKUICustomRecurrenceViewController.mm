@@ -1,74 +1,74 @@
 @interface EKUICustomRecurrenceViewController
-+ (BOOL)isRecurrenceRuleOrdinal:(id)a3;
++ (BOOL)isRecurrenceRuleOrdinal:(id)ordinal;
 - (BOOL)_disallowsRecurrenceInterval;
-- (BOOL)prefersPushForSizeClass:(int64_t)a3;
+- (BOOL)prefersPushForSizeClass:(int64_t)class;
 - (BOOL)prohibitsMultipleDaysInMonthlyRecurrence;
 - (BOOL)prohibitsMultipleMonthsInYearlyRecurrence;
 - (CGSize)calculatePreferredContentSize;
 - (EKRecurrenceChooserController)currentChooser;
-- (EKUICustomRecurrenceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (EKUICustomRecurrenceViewController)initWithStartDate:(id)a3 timeZone:(id)a4 clearBackground:(BOOL)a5;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_accessibilityIdentifierStringForFrequency:(int64_t)a3;
-- (id)_chooserForFrequency:(int64_t)a3;
-- (id)_everyStringForFrequency:(int64_t)a3 interval:(int64_t)a4;
-- (id)_stringForFrequency:(int64_t)a3;
-- (id)_stringForFrequency:(int64_t)a3 interval:(int64_t)a4;
+- (EKUICustomRecurrenceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (EKUICustomRecurrenceViewController)initWithStartDate:(id)date timeZone:(id)zone clearBackground:(BOOL)background;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_accessibilityIdentifierStringForFrequency:(int64_t)frequency;
+- (id)_chooserForFrequency:(int64_t)frequency;
+- (id)_everyStringForFrequency:(int64_t)frequency interval:(int64_t)interval;
+- (id)_stringForFrequency:(int64_t)frequency;
+- (id)_stringForFrequency:(int64_t)frequency interval:(int64_t)interval;
 - (id)frequencyPopupMenu;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
 - (id)recurrenceRule;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_numberOfRowsForSection:(int64_t)a3;
-- (int64_t)_tagForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_numberOfRowsForSection:(int64_t)section;
+- (int64_t)_tagForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)_createChoosersAndControls;
 - (void)_frequencyPickerViewUpdated;
 - (void)_refreshCacheAndPickers;
-- (void)_setShowingIntervalPicker:(BOOL)a3;
-- (void)_toggleInlineSpinnerForTag:(int64_t)a3;
+- (void)_setShowingIntervalPicker:(BOOL)picker;
+- (void)_toggleInlineSpinnerForTag:(int64_t)tag;
 - (void)_updateCustomPickerView;
 - (void)_updateFrequencyRows;
 - (void)_updateRecurrenceRule;
 - (void)_updateSummaryLabel;
-- (void)_updateTableSectionsFromFrequency:(int64_t)a3 toFrequency:(int64_t)a4;
-- (void)_yearOrdinalSwitchChanged:(id)a3;
+- (void)_updateTableSectionsFromFrequency:(int64_t)frequency toFrequency:(int64_t)toFrequency;
+- (void)_yearOrdinalSwitchChanged:(id)changed;
 - (void)loadView;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)recurrenceChooser:(id)a3 wantsRowReload:(int64_t)a4;
-- (void)recurrenceChooserWantsReload:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)recurrenceChooser:(id)chooser wantsRowReload:(int64_t)reload;
+- (void)recurrenceChooserWantsReload:(id)reload;
 - (void)resetBackgroundColor;
-- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)a3;
-- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)a3;
-- (void)setRecurrenceRule:(id)a3 shouldUpdatePickers:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)recurrence;
+- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)recurrence;
+- (void)setRecurrenceRule:(id)rule shouldUpdatePickers:(BOOL)pickers;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EKUICustomRecurrenceViewController
 
-- (EKUICustomRecurrenceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (EKUICustomRecurrenceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = EKUICustomRecurrenceViewController;
-  v4 = [(EKUICustomRecurrenceViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(EKUICustomRecurrenceViewController *)&v13 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
     v4->_cachedFrequency = 0;
     v4->_cachedInterval = 1;
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startDate = v5->_startDate;
-    v5->_startDate = v6;
+    v5->_startDate = date;
 
-    v8 = [MEMORY[0x1E695DFE8] systemTimeZone];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
     timeZone = v5->_timeZone;
-    v5->_timeZone = v8;
+    v5->_timeZone = systemTimeZone;
 
     v10 = EventKitUIBundle();
     v11 = [v10 localizedStringForKey:@"Custom" value:&stru_1F4EF6790 table:0];
@@ -78,18 +78,18 @@
   return v5;
 }
 
-- (EKUICustomRecurrenceViewController)initWithStartDate:(id)a3 timeZone:(id)a4 clearBackground:(BOOL)a5
+- (EKUICustomRecurrenceViewController)initWithStartDate:(id)date timeZone:(id)zone clearBackground:(BOOL)background
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v11 = [(EKUICustomRecurrenceViewController *)self initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startDate, a3);
-    objc_storeStrong(&v12->_timeZone, a4);
-    v12->_useClearBackground = a5;
+    objc_storeStrong(&v11->_startDate, date);
+    objc_storeStrong(&v12->_timeZone, zone);
+    v12->_useClearBackground = background;
     [(EKUICustomRecurrenceViewController *)v12 _createChoosersAndControls];
     objc_initWeak(&location, v12);
     v19[0] = objc_opt_class();
@@ -120,42 +120,42 @@ void __81__EKUICustomRecurrenceViewController_initWithStartDate_timeZone_clearBa
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(EKUICustomRecurrenceViewController *)self setTableView:v4];
 
-  v5 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v5 setDelegate:self];
+  tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v6 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v6 setDataSource:self];
+  tableView2 = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v7 lineHeight];
   v9 = v8;
-  v10 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v10 setEstimatedRowHeight:v9];
+  tableView3 = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:v9];
 
   v11 = *MEMORY[0x1E69DE3D0];
-  v12 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v12 setSeparatorInset:{v11, 15.0, v11, 15.0}];
+  tableView4 = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView4 setSeparatorInset:{v11, 15.0, v11, 15.0}];
 
   [(EKUICustomRecurrenceViewController *)self resetBackgroundColor];
   if (EKUIUnscaledCatalyst())
   {
     v13 = EKUIUnscaledCatalystTableRowHeightDefault();
-    v14 = [(EKUICustomRecurrenceViewController *)self tableView];
-    [v14 setRowHeight:v13];
+    tableView5 = [(EKUICustomRecurrenceViewController *)self tableView];
+    [tableView5 setRowHeight:v13];
 
-    v15 = [(EKUICustomRecurrenceViewController *)self tableView];
-    [v15 setSeparatorStyle:1];
+    tableView6 = [(EKUICustomRecurrenceViewController *)self tableView];
+    [tableView6 setSeparatorStyle:1];
   }
 
-  v16 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [(EKUICustomRecurrenceViewController *)self setView:v16];
+  tableView7 = [(EKUICustomRecurrenceViewController *)self tableView];
+  [(EKUICustomRecurrenceViewController *)self setView:tableView7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = EKUICustomRecurrenceViewController;
-  [(EKUICustomRecurrenceViewController *)&v4 viewWillAppear:a3];
+  [(EKUICustomRecurrenceViewController *)&v4 viewWillAppear:appear];
   [(EKUICustomRecurrenceViewController *)self calculatePreferredContentSize];
   [(EKUICustomRecurrenceViewController *)self setPreferredContentSize:?];
 }
@@ -164,18 +164,18 @@ void __81__EKUICustomRecurrenceViewController_initWithStartDate_timeZone_clearBa
 {
   if (self->_useClearBackground || [(UIViewController *)self isPresentedInsidePopover])
   {
-    v5 = [(EKUICustomRecurrenceViewController *)self tableView];
-    v3 = [MEMORY[0x1E69DC888] clearColor];
+    tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v5 = [(EKUICustomRecurrenceViewController *)self tableView];
-    v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+    clearColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  v4 = v3;
-  [v5 setBackgroundColor:v3];
+  v4 = clearColor;
+  [tableView setBackgroundColor:clearColor];
 }
 
 - (CGSize)calculatePreferredContentSize
@@ -224,8 +224,8 @@ void __81__EKUICustomRecurrenceViewController_initWithStartDate_timeZone_clearBa
 
   v15 = EventKitUIBundle();
   v16 = [v15 localizedStringForKey:@"Frequency" value:&stru_1F4EF6790 table:0];
-  v17 = [(EKUIPopupTableViewCell *)self->_frequencySummaryCell textLabel];
-  [v17 setText:v16];
+  textLabel = [(EKUIPopupTableViewCell *)self->_frequencySummaryCell textLabel];
+  [textLabel setText:v16];
 
   [(EKUIPopupTableViewCell *)self->_frequencySummaryCell setAccessibilityIdentifier:@"frequency-cell"];
   v18 = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
@@ -234,20 +234,20 @@ void __81__EKUICustomRecurrenceViewController_initWithStartDate_timeZone_clearBa
 
   if (self->_useClearBackground)
   {
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKRecurrenceMonthlyChooserController *)self->_monthlyChooser setBackgroundColor:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKRecurrenceMonthlyChooserController *)self->_monthlyChooser setBackgroundColor:clearColor];
 
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKRecurrenceChooserController *)self->_yearlyChooser setBackgroundColor:v21];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(EKRecurrenceChooserController *)self->_yearlyChooser setBackgroundColor:clearColor2];
 
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKRecurrenceChooserController *)self->_yearlyOrdinalChooser setBackgroundColor:v22];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(EKRecurrenceChooserController *)self->_yearlyOrdinalChooser setBackgroundColor:clearColor3];
   }
 }
 
 - (id)frequencyPopupMenu
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
   v4 = 0;
   do
@@ -272,14 +272,14 @@ void __81__EKUICustomRecurrenceViewController_initWithStartDate_timeZone_clearBa
       [v7 setState:1];
     }
 
-    [v3 addObject:v7];
+    [array addObject:v7];
 
     objc_destroyWeak(v14);
     ++v4;
   }
 
   while (v4 != 4);
-  v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:v3];
+  v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:array];
   objc_destroyWeak(&location);
 
   return v11;
@@ -298,26 +298,26 @@ void __56__EKUICustomRecurrenceViewController_frequencyPopupMenu__block_invoke(u
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (([(EKUICustomRecurrenceViewController *)self isBeingDismissed]& 1) != 0 || ([(EKUICustomRecurrenceViewController *)self isMovingFromParentViewController]& 1) != 0 || [(EKUICustomRecurrenceViewController *)self alwaysCallCompletionBlock])
   {
-    v5 = [(EKUICustomRecurrenceViewController *)self completionBlock];
-    v6 = [(EKUICustomRecurrenceViewController *)self recurrenceRule];
-    (v5)[2](v5, v6);
+    completionBlock = [(EKUICustomRecurrenceViewController *)self completionBlock];
+    recurrenceRule = [(EKUICustomRecurrenceViewController *)self recurrenceRule];
+    (completionBlock)[2](completionBlock, recurrenceRule);
   }
 
   v7.receiver = self;
   v7.super_class = EKUICustomRecurrenceViewController;
-  [(EKUICustomRecurrenceViewController *)&v7 viewWillDisappear:v3];
+  [(EKUICustomRecurrenceViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKUICustomRecurrenceViewController *)self _tagForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(EKUICustomRecurrenceViewController *)self _tagForIndexPath:pathCopy];
   p_super = [[EKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
   [(EKUITableViewCell *)p_super setSelectionStyle:0];
   if (v8 > 3)
@@ -327,23 +327,23 @@ void __56__EKUICustomRecurrenceViewController_frequencyPopupMenu__block_invoke(u
       case 4:
         v26 = EventKitUIBundle();
         v27 = [v26 localizedStringForKey:@"Days of Week" value:&stru_1F4EF6790 table:0];
-        v28 = [(EKUITableViewCell *)p_super textLabel];
-        [v28 setText:v27];
+        textLabel = [(EKUITableViewCell *)p_super textLabel];
+        [textLabel setText:v27];
 
         [(EKUITableViewCell *)p_super setAccessoryView:self->_yearOrdinalSwitch];
         goto LABEL_21;
       case 5:
-        v23 = [(EKUICustomRecurrenceViewController *)self yearlyOrdinalChooser];
+        yearlyOrdinalChooser = [(EKUICustomRecurrenceViewController *)self yearlyOrdinalChooser];
         break;
       case 6:
-        v23 = [(EKUICustomRecurrenceViewController *)self currentChooser];
+        yearlyOrdinalChooser = [(EKUICustomRecurrenceViewController *)self currentChooser];
         break;
       default:
         goto LABEL_21;
     }
 
-    v34 = v23;
-    v29 = [v23 cellForRow:{objc_msgSend(v7, "row")}];
+    v34 = yearlyOrdinalChooser;
+    v29 = [yearlyOrdinalChooser cellForRow:{objc_msgSend(pathCopy, "row")}];
 
     goto LABEL_20;
   }
@@ -351,8 +351,8 @@ void __56__EKUICustomRecurrenceViewController_frequencyPopupMenu__block_invoke(u
   switch(v8)
   {
     case 1:
-      v24 = [(EKUICustomRecurrenceViewController *)self frequencyPopupMenu];
-      [(EKUIPopupTableViewCell *)self->_frequencySummaryCell setPopupMenu:v24];
+      frequencyPopupMenu = [(EKUICustomRecurrenceViewController *)self frequencyPopupMenu];
+      [(EKUIPopupTableViewCell *)self->_frequencySummaryCell setPopupMenu:frequencyPopupMenu];
 
       v25 = self->_frequencySummaryCell;
       p_super = &v25->super;
@@ -361,13 +361,13 @@ void __56__EKUICustomRecurrenceViewController_frequencyPopupMenu__block_invoke(u
       v29 = self->_intervalSummaryCell;
 
       v30 = [(EKUICustomRecurrenceViewController *)self _everyStringForFrequency:self->_cachedFrequency interval:self->_cachedInterval];
-      v31 = [(UITableViewCell *)v29 textLabel];
-      [v31 setText:v30];
+      textLabel2 = [(UITableViewCell *)v29 textLabel];
+      [textLabel2 setText:v30];
 
       [(UITableViewCell *)v29 setAccessibilityIdentifier:@"interval-summary-cell"];
       v32 = [(EKUICustomRecurrenceViewController *)self _stringForFrequency:self->_cachedFrequency interval:self->_cachedInterval];
-      v33 = [(UITableViewCell *)v29 detailTextLabel];
-      [v33 setText:v32];
+      detailTextLabel = [(UITableViewCell *)v29 detailTextLabel];
+      [detailTextLabel setText:v32];
 
 LABEL_20:
       p_super = v29;
@@ -384,20 +384,20 @@ LABEL_20:
         [(UIPickerView *)self->_intervalPicker setTranslatesAutoresizingMaskIntoConstraints:0];
       }
 
-      v12 = [(EKUITableViewCell *)p_super contentView];
-      [v12 addSubview:self->_intervalPicker];
+      contentView = [(EKUITableViewCell *)p_super contentView];
+      [contentView addSubview:self->_intervalPicker];
 
-      v13 = [(EKUITableViewCell *)p_super contentView];
+      contentView2 = [(EKUITableViewCell *)p_super contentView];
       v14 = MEMORY[0x1E696ACD8];
       v15 = _NSDictionaryOfVariableBindings(&cfstr_Intervalpicker.isa, self->_intervalPicker, 0);
       v16 = [v14 constraintsWithVisualFormat:@"H:|[_intervalPicker]|" options:0 metrics:0 views:v15];
-      [v13 addConstraints:v16];
+      [contentView2 addConstraints:v16];
 
-      v17 = [(EKUITableViewCell *)p_super contentView];
+      contentView3 = [(EKUITableViewCell *)p_super contentView];
       v18 = MEMORY[0x1E696ACD8];
       v19 = _NSDictionaryOfVariableBindings(&cfstr_Intervalpicker.isa, self->_intervalPicker, 0);
       v20 = [v18 constraintsWithVisualFormat:@"V:|[_intervalPicker]|" options:0 metrics:0 views:v19];
-      [v17 addConstraints:v20];
+      [contentView3 addConstraints:v20];
 
       v21 = self->_cachedInterval - 1;
       if ([(EKUICustomRecurrenceViewController *)self _disallowsRecurrenceInterval])
@@ -417,14 +417,14 @@ LABEL_20:
 LABEL_21:
   if (EKUICatalyst())
   {
-    v35 = [v6 backgroundColor];
-    [(EKUITableViewCell *)p_super setBackgroundColor:v35];
+    backgroundColor = [viewCopy backgroundColor];
+    [(EKUITableViewCell *)p_super setBackgroundColor:backgroundColor];
   }
 
   return p_super;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   cachedFrequency = self->_cachedFrequency;
   v4 = 1;
@@ -444,18 +444,18 @@ LABEL_21:
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKUICustomRecurrenceViewController *)self _tagForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(EKUICustomRecurrenceViewController *)self _tagForIndexPath:pathCopy];
   v9 = 0.0;
   if (v8 <= 2)
   {
     if (v8 < 3)
     {
 LABEL_6:
-      [v6 rowHeight];
+      [viewCopy rowHeight];
 LABEL_7:
       v9 = v10;
     }
@@ -476,8 +476,8 @@ LABEL_7:
 
     if (v8 == 6)
     {
-      v14 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-      [v14 heightForRow:{objc_msgSend(v7, "row")}];
+      currentChooser = [(EKUICustomRecurrenceViewController *)self currentChooser];
+      [currentChooser heightForRow:{objc_msgSend(pathCopy, "row")}];
       v9 = v15;
 
       if (EKUIUnscaledCatalyst() && *MEMORY[0x1E69DE3D0] == v9)
@@ -489,8 +489,8 @@ LABEL_7:
 
     else if (v8 == 5)
     {
-      v12 = [(EKUICustomRecurrenceViewController *)self yearlyOrdinalChooser];
-      [v12 heightForRow:{objc_msgSend(v7, "row")}];
+      yearlyOrdinalChooser = [(EKUICustomRecurrenceViewController *)self yearlyOrdinalChooser];
+      [yearlyOrdinalChooser heightForRow:{objc_msgSend(pathCopy, "row")}];
       v9 = v13;
     }
   }
@@ -500,13 +500,13 @@ LABEL_8:
   return v9;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   if ([v6 selectionStyle])
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else
@@ -519,11 +519,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  [a3 deselectRowAtIndexPath:v8 animated:1];
-  v6 = [(EKUICustomRecurrenceViewController *)self _tagForIndexPath:v8];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = [(EKUICustomRecurrenceViewController *)self _tagForIndexPath:pathCopy];
   if (v6 == 2)
   {
     [(EKUICustomRecurrenceViewController *)self _toggleInlineSpinnerForTag:2];
@@ -531,101 +531,101 @@ LABEL_8:
 
   else if (v6 == 6)
   {
-    v7 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-    [v7 rowTapped:{objc_msgSend(v8, "row")}];
+    currentChooser = [(EKUICustomRecurrenceViewController *)self currentChooser];
+    [currentChooser rowTapped:{objc_msgSend(pathCopy, "row")}];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(EKUICustomRecurrenceViewController *)self recurrenceSummaryString:a3];
+    v6 = [(EKUICustomRecurrenceViewController *)self recurrenceSummaryString:view];
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  footerViewCopy = footerView;
   if (EKUICatalyst())
   {
-    v7 = [v9 backgroundColor];
-    v8 = [v6 contentView];
-    [v8 setBackgroundColor:v7];
+    backgroundColor = [viewCopy backgroundColor];
+    contentView = [footerViewCopy contentView];
+    [contentView setBackgroundColor:backgroundColor];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (self->_useClearBackground || [v9 section] == 1 && (-[EKUICustomRecurrenceViewController currentChooser](self, "currentChooser"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "drawBackgroundForRow:", objc_msgSend(v10, "row")), v14, (v15 & 1) == 0))
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (self->_useClearBackground || [pathCopy section] == 1 && (-[EKUICustomRecurrenceViewController currentChooser](self, "currentChooser"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "drawBackgroundForRow:", objc_msgSend(v10, "row")), v14, (v15 & 1) == 0))
   {
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [v8 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [cellCopy setBackgroundColor:clearColor];
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    v13 = [v8 backgroundView];
-    [v13 setBackgroundColor:v12];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    backgroundView = [cellCopy backgroundView];
+    [backgroundView setBackgroundColor:clearColor2];
   }
 }
 
-- (void)_toggleInlineSpinnerForTag:(int64_t)a3
+- (void)_toggleInlineSpinnerForTag:(int64_t)tag
 {
-  v5 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v5 beginUpdates];
+  tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView beginUpdates];
 
-  if (a3 == 2)
+  if (tag == 2)
   {
     [(EKUICustomRecurrenceViewController *)self _setShowingIntervalPicker:!self->_showingIntervalPicker];
   }
 
-  v6 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v6 endUpdates];
+  tableView2 = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView2 endUpdates];
 
   [(EKUICustomRecurrenceViewController *)self calculatePreferredContentSize];
 
   [(EKUICustomRecurrenceViewController *)self setPreferredContentSize:?];
 }
 
-- (void)_setShowingIntervalPicker:(BOOL)a3
+- (void)_setShowingIntervalPicker:(BOOL)picker
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (self->_showingIntervalPicker != a3)
+  if (self->_showingIntervalPicker != picker)
   {
-    v3 = a3;
-    self->_showingIntervalPicker = a3;
+    pickerCopy = picker;
+    self->_showingIntervalPicker = picker;
     v5 = [MEMORY[0x1E696AC88] indexPathForRow:2 inSection:0];
     showingIntervalPicker = self->_showingIntervalPicker;
-    v7 = [(EKUICustomRecurrenceViewController *)self tableView];
+    tableView = [(EKUICustomRecurrenceViewController *)self tableView];
     if (showingIntervalPicker)
     {
       v12[0] = v5;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-      [v7 insertRowsAtIndexPaths:v8 withRowAnimation:6];
+      [tableView insertRowsAtIndexPaths:v8 withRowAnimation:6];
     }
 
     else
     {
       v11 = v5;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
-      [v7 deleteRowsAtIndexPaths:v8 withRowAnimation:6];
+      [tableView deleteRowsAtIndexPaths:v8 withRowAnimation:6];
     }
 
-    if (v3)
+    if (pickerCopy)
     {
-      v7 = [(EKUICustomRecurrenceViewController *)self view];
-      [v7 tintColor];
+      tableView = [(EKUICustomRecurrenceViewController *)self view];
+      [tableView tintColor];
     }
 
     else
@@ -633,18 +633,18 @@ LABEL_8:
       [MEMORY[0x1E69DC888] tableCellGrayTextColor];
     }
     v9 = ;
-    v10 = [(UITableViewCell *)self->_intervalSummaryCell detailTextLabel];
-    [v10 setTextColor:v9];
+    detailTextLabel = [(UITableViewCell *)self->_intervalSummaryCell detailTextLabel];
+    [detailTextLabel setTextColor:v9];
 
-    if (v3)
+    if (pickerCopy)
     {
 
-      v9 = v7;
+      v9 = tableView;
     }
   }
 }
 
-- (void)recurrenceChooserWantsReload:(id)a3
+- (void)recurrenceChooserWantsReload:(id)reload
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -661,14 +661,14 @@ void __67__EKUICustomRecurrenceViewController_recurrenceChooserWantsReload___blo
   [v2 reloadSections:v1 withRowAnimation:0];
 }
 
-- (void)recurrenceChooser:(id)a3 wantsRowReload:(int64_t)a4
+- (void)recurrenceChooser:(id)chooser wantsRowReload:(int64_t)reload
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__EKUICustomRecurrenceViewController_recurrenceChooser_wantsRowReload___block_invoke;
   v4[3] = &unk_1E843F690;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = reload;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v4];
 }
 
@@ -687,38 +687,38 @@ void __71__EKUICustomRecurrenceViewController_recurrenceChooser_wantsRowReload__
   cachedFrequency = self->_cachedFrequency;
   cachedInterval = self->_cachedInterval;
   v12 = objc_opt_new();
-  v5 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-  v6 = v5;
-  if (v5)
+  currentChooser = [(EKUICustomRecurrenceViewController *)self currentChooser];
+  v6 = currentChooser;
+  if (currentChooser)
   {
-    cachedFrequency = [v5 frequency];
+    cachedFrequency = [currentChooser frequency];
     [v6 updateRecurrenceRuleBuilder:v12];
   }
 
   [v12 setFrequency:cachedFrequency];
   [v12 setInterval:cachedInterval];
-  v7 = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
-  if (v6 == v7)
+  yearlyChooser = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
+  if (v6 == yearlyChooser)
   {
-    v8 = [(EKUICustomRecurrenceViewController *)self yearOrdinalSwitch];
-    v9 = [v8 isOn];
+    yearOrdinalSwitch = [(EKUICustomRecurrenceViewController *)self yearOrdinalSwitch];
+    isOn = [yearOrdinalSwitch isOn];
 
-    if (!v9)
+    if (!isOn)
     {
       goto LABEL_7;
     }
 
-    v7 = [(EKUICustomRecurrenceViewController *)self yearlyOrdinalChooser];
-    [v7 updateRecurrenceRuleBuilder:v12];
+    yearlyChooser = [(EKUICustomRecurrenceViewController *)self yearlyOrdinalChooser];
+    [yearlyChooser updateRecurrenceRuleBuilder:v12];
   }
 
 LABEL_7:
-  v10 = [v12 recurrenceRule];
-  [v10 setFirstDayOfTheWeek:{-[EKRecurrenceRule firstDayOfTheWeek](self->_cachedRecurrenceRule, "firstDayOfTheWeek")}];
-  v11 = [(EKRecurrenceRule *)self->_cachedRecurrenceRule recurrenceEnd];
-  [v10 setRecurrenceEnd:v11];
+  recurrenceRule = [v12 recurrenceRule];
+  [recurrenceRule setFirstDayOfTheWeek:{-[EKRecurrenceRule firstDayOfTheWeek](self->_cachedRecurrenceRule, "firstDayOfTheWeek")}];
+  recurrenceEnd = [(EKRecurrenceRule *)self->_cachedRecurrenceRule recurrenceEnd];
+  [recurrenceRule setRecurrenceEnd:recurrenceEnd];
 
-  [(EKUICustomRecurrenceViewController *)self setRecurrenceRule:v10 shouldUpdatePickers:0];
+  [(EKUICustomRecurrenceViewController *)self setRecurrenceRule:recurrenceRule shouldUpdatePickers:0];
 }
 
 - (id)recurrenceRule
@@ -733,25 +733,25 @@ LABEL_7:
   return cachedRecurrenceRule;
 }
 
-- (void)setRecurrenceRule:(id)a3 shouldUpdatePickers:(BOOL)a4
+- (void)setRecurrenceRule:(id)rule shouldUpdatePickers:(BOOL)pickers
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_cachedRecurrenceRule != v7)
+  pickersCopy = pickers;
+  ruleCopy = rule;
+  if (self->_cachedRecurrenceRule != ruleCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_cachedRecurrenceRule, a3);
-    v7 = v8;
+    v8 = ruleCopy;
+    objc_storeStrong(&self->_cachedRecurrenceRule, rule);
+    ruleCopy = v8;
     if (v8)
     {
       [(EKUICustomRecurrenceViewController *)self _updateSummaryLabel];
-      v7 = v8;
+      ruleCopy = v8;
     }
 
-    if (v4)
+    if (pickersCopy)
     {
       [(EKUICustomRecurrenceViewController *)self _refreshCacheAndPickers];
-      v7 = v8;
+      ruleCopy = v8;
     }
   }
 }
@@ -764,26 +764,26 @@ LABEL_7:
   [(EKUICustomRecurrenceViewController *)self _updateCustomPickerView];
   if ([(EKRecurrenceRule *)self->_cachedRecurrenceRule frequency]== EKRecurrenceFrequencyYearly)
   {
-    v4 = [(EKUICustomRecurrenceViewController *)self yearOrdinalSwitch];
-    [v4 setOn:v3];
+    yearOrdinalSwitch = [(EKUICustomRecurrenceViewController *)self yearOrdinalSwitch];
+    [yearOrdinalSwitch setOn:v3];
   }
 }
 
-+ (BOOL)isRecurrenceRuleOrdinal:(id)a3
++ (BOOL)isRecurrenceRuleOrdinal:(id)ordinal
 {
-  v3 = a3;
-  v4 = [v3 setPositions];
-  v5 = [v4 count];
+  ordinalCopy = ordinal;
+  setPositions = [ordinalCopy setPositions];
+  v5 = [setPositions count];
 
   if (v5)
   {
     v6 = 1;
   }
 
-  else if ([v3 frequency] == 2 || objc_msgSend(v3, "frequency") == 3)
+  else if ([ordinalCopy frequency] == 2 || objc_msgSend(ordinalCopy, "frequency") == 3)
   {
-    v7 = [v3 daysOfTheWeek];
-    v6 = [v7 count] != 0;
+    daysOfTheWeek = [ordinalCopy daysOfTheWeek];
+    v6 = [daysOfTheWeek count] != 0;
   }
 
   else
@@ -796,38 +796,38 @@ LABEL_7:
 
 - (BOOL)prohibitsMultipleDaysInMonthlyRecurrence
 {
-  v2 = [(EKUICustomRecurrenceViewController *)self monthlyChooser];
-  v3 = [v2 prohibitsMultipleDaysInMonthlyRecurrence];
+  monthlyChooser = [(EKUICustomRecurrenceViewController *)self monthlyChooser];
+  prohibitsMultipleDaysInMonthlyRecurrence = [monthlyChooser prohibitsMultipleDaysInMonthlyRecurrence];
 
-  return v3;
+  return prohibitsMultipleDaysInMonthlyRecurrence;
 }
 
-- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)a3
+- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)recurrence
 {
-  v3 = a3;
-  v4 = [(EKUICustomRecurrenceViewController *)self monthlyChooser];
-  [v4 setProhibitsMultipleDaysInMonthlyRecurrence:v3];
+  recurrenceCopy = recurrence;
+  monthlyChooser = [(EKUICustomRecurrenceViewController *)self monthlyChooser];
+  [monthlyChooser setProhibitsMultipleDaysInMonthlyRecurrence:recurrenceCopy];
 }
 
 - (BOOL)prohibitsMultipleMonthsInYearlyRecurrence
 {
-  v2 = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
-  v3 = [v2 prohibitsMultipleMonthsInYearlyRecurrence];
+  yearlyChooser = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
+  prohibitsMultipleMonthsInYearlyRecurrence = [yearlyChooser prohibitsMultipleMonthsInYearlyRecurrence];
 
-  return v3;
+  return prohibitsMultipleMonthsInYearlyRecurrence;
 }
 
-- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)a3
+- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)recurrence
 {
-  v3 = a3;
-  v4 = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
-  [v4 setProhibitsMultipleMonthsInYearlyRecurrence:v3];
+  recurrenceCopy = recurrence;
+  yearlyChooser = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
+  [yearlyChooser setProhibitsMultipleMonthsInYearlyRecurrence:recurrenceCopy];
 }
 
 - (void)_updateSummaryLabel
 {
-  v3 = [(EKUICustomRecurrenceViewController *)self recurrenceRule];
-  v4 = [(EKUICustomRecurrenceViewController *)self startDate];
+  recurrenceRule = [(EKUICustomRecurrenceViewController *)self recurrenceRule];
+  startDate = [(EKUICustomRecurrenceViewController *)self startDate];
   v5 = CUIKStringForRecurrenceRuleAndDate();
   [(EKUICustomRecurrenceViewController *)self setRecurrenceSummaryString:v5];
 
@@ -852,68 +852,68 @@ void __57__EKUICustomRecurrenceViewController__updateSummaryLabel__block_invoke(
 
 - (void)_updateCustomPickerView
 {
-  v3 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-  v4 = [v3 frequency];
+  currentChooser = [(EKUICustomRecurrenceViewController *)self currentChooser];
+  frequency = [currentChooser frequency];
 
   v5 = [(EKUICustomRecurrenceViewController *)self _chooserForFrequency:self->_cachedFrequency];
   [(EKUICustomRecurrenceViewController *)self setCurrentChooser:v5];
 
-  v6 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-  v7 = [v6 frequency];
+  currentChooser2 = [(EKUICustomRecurrenceViewController *)self currentChooser];
+  frequency2 = [currentChooser2 frequency];
 
-  v8 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-  [v8 updateFromRecurrenceRule:self->_cachedRecurrenceRule];
+  currentChooser3 = [(EKUICustomRecurrenceViewController *)self currentChooser];
+  [currentChooser3 updateFromRecurrenceRule:self->_cachedRecurrenceRule];
 
-  [(EKUICustomRecurrenceViewController *)self _updateTableSectionsFromFrequency:v4 toFrequency:v7];
+  [(EKUICustomRecurrenceViewController *)self _updateTableSectionsFromFrequency:frequency toFrequency:frequency2];
 }
 
-- (void)_updateTableSectionsFromFrequency:(int64_t)a3 toFrequency:(int64_t)a4
+- (void)_updateTableSectionsFromFrequency:(int64_t)frequency toFrequency:(int64_t)toFrequency
 {
-  v7 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v7 beginUpdates];
+  tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView beginUpdates];
 
-  if (a3 == 3 || a4 != 3)
+  if (frequency == 3 || toFrequency != 3)
   {
-    if (a3 == 3 && a4 != 3)
+    if (frequency == 3 && toFrequency != 3)
     {
-      v13 = [(EKUICustomRecurrenceViewController *)self tableView];
+      tableView2 = [(EKUICustomRecurrenceViewController *)self tableView];
       v14 = [MEMORY[0x1E696AC90] indexSetWithIndex:2];
-      [v13 deleteSections:v14 withRowAnimation:6];
+      [tableView2 deleteSections:v14 withRowAnimation:6];
 
-      v10 = a4 != 0;
+      v10 = toFrequency != 0;
       goto LABEL_10;
     }
   }
 
   else
   {
-    v8 = [(EKUICustomRecurrenceViewController *)self tableView];
+    tableView3 = [(EKUICustomRecurrenceViewController *)self tableView];
     v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:2];
-    [v8 insertSections:v9 withRowAnimation:6];
+    [tableView3 insertSections:v9 withRowAnimation:6];
   }
 
-  v10 = a4 != 0;
-  if (!a3 && a4)
+  v10 = toFrequency != 0;
+  if (!frequency && toFrequency)
   {
-    v11 = [(EKUICustomRecurrenceViewController *)self tableView];
+    tableView4 = [(EKUICustomRecurrenceViewController *)self tableView];
     v12 = [MEMORY[0x1E696AC90] indexSetWithIndex:1];
-    [v11 insertSections:v12 withRowAnimation:6];
+    [tableView4 insertSections:v12 withRowAnimation:6];
 LABEL_13:
 
     goto LABEL_14;
   }
 
 LABEL_10:
-  if (a3 && !a4)
+  if (frequency && !toFrequency)
   {
-    v11 = [(EKUICustomRecurrenceViewController *)self tableView];
+    tableView4 = [(EKUICustomRecurrenceViewController *)self tableView];
     v12 = [MEMORY[0x1E696AC90] indexSetWithIndex:1];
-    [v11 deleteSections:v12 withRowAnimation:6];
+    [tableView4 deleteSections:v12 withRowAnimation:6];
     goto LABEL_13;
   }
 
   v16 = !v10;
-  if (a3 == a4)
+  if (frequency == toFrequency)
   {
     v16 = 1;
   }
@@ -929,8 +929,8 @@ LABEL_10:
   }
 
 LABEL_14:
-  v15 = [(EKUICustomRecurrenceViewController *)self tableView];
-  [v15 endUpdates];
+  tableView5 = [(EKUICustomRecurrenceViewController *)self tableView];
+  [tableView5 endUpdates];
 
   [(EKUICustomRecurrenceViewController *)self calculatePreferredContentSize];
   [(EKUICustomRecurrenceViewController *)self setPreferredContentSize:?];
@@ -948,11 +948,11 @@ void __84__EKUICustomRecurrenceViewController__updateTableSectionsFromFrequency_
   v7[2] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
   v4 = [MEMORY[0x1E696AC88] indexPathForRow:1 inSection:0];
-  v5 = [(EKUICustomRecurrenceViewController *)self tableView];
+  tableView = [(EKUICustomRecurrenceViewController *)self tableView];
   v7[0] = v3;
   v7[1] = v4;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  [v5 reloadRowsAtIndexPaths:v6 withRowAnimation:5];
+  [tableView reloadRowsAtIndexPaths:v6 withRowAnimation:5];
 }
 
 - (void)_frequencyPickerViewUpdated
@@ -965,59 +965,59 @@ void __84__EKUICustomRecurrenceViewController__updateTableSectionsFromFrequency_
   [(UIPickerView *)intervalPicker reloadAllComponents];
 }
 
-- (id)_chooserForFrequency:(int64_t)a3
+- (id)_chooserForFrequency:(int64_t)frequency
 {
-  switch(a3)
+  switch(frequency)
   {
     case 3:
-      v3 = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
+      yearlyChooser = [(EKUICustomRecurrenceViewController *)self yearlyChooser];
       break;
     case 2:
-      v3 = [(EKUICustomRecurrenceViewController *)self monthlyChooser];
+      yearlyChooser = [(EKUICustomRecurrenceViewController *)self monthlyChooser];
       break;
     case 1:
-      v3 = [(EKUICustomRecurrenceViewController *)self weeklyChooser];
+      yearlyChooser = [(EKUICustomRecurrenceViewController *)self weeklyChooser];
       break;
     default:
-      v3 = 0;
+      yearlyChooser = 0;
       break;
   }
 
-  return v3;
+  return yearlyChooser;
 }
 
-- (void)_yearOrdinalSwitchChanged:(id)a3
+- (void)_yearOrdinalSwitchChanged:(id)changed
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AC88];
-  v5 = a3;
+  changedCopy = changed;
   v6 = [v4 indexPathForRow:1 inSection:2];
-  v7 = [v5 isOn];
+  isOn = [changedCopy isOn];
 
-  v8 = [(EKUICustomRecurrenceViewController *)self tableView];
-  if (v7)
+  tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+  if (isOn)
   {
     v12[0] = v6;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v8 insertRowsAtIndexPaths:v9 withRowAnimation:6];
+    [tableView insertRowsAtIndexPaths:v9 withRowAnimation:6];
 
-    v8 = [(EKUICustomRecurrenceViewController *)self tableView];
-    [v8 scrollToRowAtIndexPath:v6 atScrollPosition:3 animated:1];
+    tableView = [(EKUICustomRecurrenceViewController *)self tableView];
+    [tableView scrollToRowAtIndexPath:v6 atScrollPosition:3 animated:1];
   }
 
   else
   {
     v11 = v6;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
-    [v8 deleteRowsAtIndexPaths:v10 withRowAnimation:6];
+    [tableView deleteRowsAtIndexPaths:v10 withRowAnimation:6];
   }
 
   [(EKUICustomRecurrenceViewController *)self _updateRecurrenceRule];
 }
 
-- (id)_stringForFrequency:(int64_t)a3
+- (id)_stringForFrequency:(int64_t)frequency
 {
-  if (a3 <= 3)
+  if (frequency <= 3)
   {
     self = CUIKStringForRepeatType();
   }
@@ -1025,9 +1025,9 @@ void __84__EKUICustomRecurrenceViewController__updateTableSectionsFromFrequency_
   return self;
 }
 
-- (id)_accessibilityIdentifierStringForFrequency:(int64_t)a3
+- (id)_accessibilityIdentifierStringForFrequency:(int64_t)frequency
 {
-  if (a3 <= 3)
+  if (frequency <= 3)
   {
     self = CUIKAccessibilityIdentifierStringForRepeatType();
   }
@@ -1035,14 +1035,14 @@ void __84__EKUICustomRecurrenceViewController__updateTableSectionsFromFrequency_
   return self;
 }
 
-- (id)_stringForFrequency:(int64_t)a3 interval:(int64_t)a4
+- (id)_stringForFrequency:(int64_t)frequency interval:(int64_t)interval
 {
-  v5 = 0;
-  if (a3 > 1)
+  interval = 0;
+  if (frequency > 1)
   {
-    if (a3 == 2)
+    if (frequency == 2)
     {
-      if (a4 <= 1)
+      if (interval <= 1)
       {
         v6 = EventKitUIBundle();
         v7 = v6;
@@ -1059,12 +1059,12 @@ void __84__EKUICustomRecurrenceViewController__updateTableSectionsFromFrequency_
 
     else
     {
-      if (a3 != 3)
+      if (frequency != 3)
       {
         goto LABEL_21;
       }
 
-      if (a4 <= 1)
+      if (interval <= 1)
       {
         v6 = EventKitUIBundle();
         v7 = v6;
@@ -1081,14 +1081,14 @@ void __84__EKUICustomRecurrenceViewController__updateTableSectionsFromFrequency_
 
 LABEL_19:
     v13 = [v11 localizedStringForKey:v12 value:&stru_1F4EF6790 table:0];
-    v5 = [v10 localizedStringWithFormat:v13, a4];
+    interval = [v10 localizedStringWithFormat:v13, interval];
 
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!frequency)
   {
-    if (a4 <= 1)
+    if (interval <= 1)
     {
       v6 = EventKitUIBundle();
       v7 = v6;
@@ -1104,12 +1104,12 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a3 != 1)
+  if (frequency != 1)
   {
     goto LABEL_21;
   }
 
-  if (a4 > 1)
+  if (interval > 1)
   {
     v10 = MEMORY[0x1E696AEC0];
     v11 = EventKitUIBundle();
@@ -1123,22 +1123,22 @@ LABEL_19:
   v8 = @"Custom recurrence frequency week";
   v9 = @"Week";
 LABEL_14:
-  v5 = [v6 localizedStringForKey:v8 value:v9 table:0];
+  interval = [v6 localizedStringForKey:v8 value:v9 table:0];
 LABEL_20:
 
 LABEL_21:
 
-  return v5;
+  return interval;
 }
 
-- (id)_everyStringForFrequency:(int64_t)a3 interval:(int64_t)a4
+- (id)_everyStringForFrequency:(int64_t)frequency interval:(int64_t)interval
 {
-  v5 = 0;
-  if (a3 > 1)
+  interval = 0;
+  if (frequency > 1)
   {
-    if (a3 == 2)
+    if (frequency == 2)
     {
-      if (a4 <= 1)
+      if (interval <= 1)
       {
         v6 = EventKitUIBundle();
         v7 = v6;
@@ -1154,12 +1154,12 @@ LABEL_21:
 
     else
     {
-      if (a3 != 3)
+      if (frequency != 3)
       {
         goto LABEL_21;
       }
 
-      if (a4 <= 1)
+      if (interval <= 1)
       {
         v6 = EventKitUIBundle();
         v7 = v6;
@@ -1175,14 +1175,14 @@ LABEL_21:
 
 LABEL_19:
     v12 = [v10 localizedStringForKey:v11 value:&stru_1F4EF6790 table:0];
-    v5 = [v9 localizedStringWithFormat:v12, a4];
+    interval = [v9 localizedStringWithFormat:v12, interval];
 
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!frequency)
   {
-    if (a4 <= 1)
+    if (interval <= 1)
     {
       v6 = EventKitUIBundle();
       v7 = v6;
@@ -1197,12 +1197,12 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a3 != 1)
+  if (frequency != 1)
   {
     goto LABEL_21;
   }
 
-  if (a4 > 1)
+  if (interval > 1)
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = EventKitUIBundle();
@@ -1215,21 +1215,21 @@ LABEL_19:
   v7 = v6;
   v8 = @"Custom recurrence frequency week every string";
 LABEL_14:
-  v5 = [v6 localizedStringForKey:v8 value:@"Every" table:0];
+  interval = [v6 localizedStringForKey:v8 value:@"Every" table:0];
 LABEL_20:
 
 LABEL_21:
 
-  return v5;
+  return interval;
 }
 
-- (int64_t)_tagForIndexPath:(id)a3
+- (int64_t)_tagForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v6 == 2)
+  if (section == 2)
   {
     if (self->_cachedFrequency != 3)
     {
@@ -1249,12 +1249,12 @@ LABEL_21:
 
   else
   {
-    if (v6 == 1)
+    if (section == 1)
     {
       return 6;
     }
 
-    if (v6)
+    if (section)
     {
       return 0;
     }
@@ -1289,14 +1289,14 @@ LABEL_21:
   }
 }
 
-- (int64_t)_numberOfRowsForSection:(int64_t)a3
+- (int64_t)_numberOfRowsForSection:(int64_t)section
 {
-  if (a3 == 2)
+  if (section == 2)
   {
     if (self->_cachedFrequency == 3)
     {
-      v7 = [(EKUICustomRecurrenceViewController *)self yearOrdinalSwitch];
-      if ([v7 isOn])
+      yearOrdinalSwitch = [(EKUICustomRecurrenceViewController *)self yearOrdinalSwitch];
+      if ([yearOrdinalSwitch isOn])
       {
         v3 = 2;
       }
@@ -1312,15 +1312,15 @@ LABEL_21:
     return 0;
   }
 
-  if (a3 == 1)
+  if (section == 1)
   {
-    v4 = [(EKUICustomRecurrenceViewController *)self currentChooser];
-    v5 = [v4 numberOfRows];
+    currentChooser = [(EKUICustomRecurrenceViewController *)self currentChooser];
+    numberOfRows = [currentChooser numberOfRows];
 
-    return v5;
+    return numberOfRows;
   }
 
-  if (a3)
+  if (section)
   {
     return 0;
   }
@@ -1330,23 +1330,23 @@ LABEL_21:
 
 - (BOOL)_disallowsRecurrenceInterval
 {
-  v3 = [(EKUICustomRecurrenceViewController *)self prohibitsYearlyRecurrenceInterval];
-  if (v3)
+  prohibitsYearlyRecurrenceInterval = [(EKUICustomRecurrenceViewController *)self prohibitsYearlyRecurrenceInterval];
+  if (prohibitsYearlyRecurrenceInterval)
   {
-    LOBYTE(v3) = self->_cachedFrequency == 3;
+    LOBYTE(prohibitsYearlyRecurrenceInterval) = self->_cachedFrequency == 3;
   }
 
-  return v3;
+  return prohibitsYearlyRecurrenceInterval;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  if (a4)
+  if (component)
   {
     return 1;
   }
 
-  if ([(EKUICustomRecurrenceViewController *)self _disallowsRecurrenceInterval:a3])
+  if ([(EKUICustomRecurrenceViewController *)self _disallowsRecurrenceInterval:view])
   {
     return 1;
   }
@@ -1354,12 +1354,12 @@ LABEL_21:
   return 999;
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (!v10)
+  viewCopy = view;
+  reusingViewCopy = reusingView;
+  v11 = reusingViewCopy;
+  if (!reusingViewCopy)
   {
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v11 setTextAlignment:1];
@@ -1370,10 +1370,10 @@ LABEL_21:
     [v11 setMinimumScaleFactor:0.7];
   }
 
-  if (a5 == 1)
+  if (component == 1)
   {
     v13 = 0;
-    v14 = [v9 selectedRowInComponent:0] + 1;
+    v14 = [viewCopy selectedRowInComponent:0] + 1;
     cachedFrequency = self->_cachedFrequency;
     if (cachedFrequency > 1)
     {
@@ -1424,7 +1424,7 @@ LABEL_21:
     v13 = [v16 localizedStringWithFormat:v20, v14];
   }
 
-  else if (a5)
+  else if (component)
   {
     v13 = 0;
   }
@@ -1436,26 +1436,26 @@ LABEL_21:
 
 LABEL_17:
   [v11 setText:v13];
-  [v9 rowSizeForComponent:a5];
+  [viewCopy rowSizeForComponent:component];
   [v11 setFrame:{0.0, 0.0, v21 + -18.0, v22}];
 
   return v11;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  self->_cachedInterval = [v7 selectedRowInComponent:0] + 1;
+  viewCopy = view;
+  self->_cachedInterval = [viewCopy selectedRowInComponent:0] + 1;
   [(EKUICustomRecurrenceViewController *)self _frequencyPickerViewUpdated];
-  if (!a5)
+  if (!component)
   {
-    [v7 reloadComponent:1];
+    [viewCopy reloadComponent:1];
   }
 }
 
-- (BOOL)prefersPushForSizeClass:(int64_t)a3
+- (BOOL)prefersPushForSizeClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     return 1;
   }

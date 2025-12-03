@@ -1,12 +1,12 @@
 @interface OKWidgetView
-- (BOOL)_canRespondToEventWithPoint:(CGPoint)a3;
+- (BOOL)_canRespondToEventWithPoint:(CGPoint)point;
 - (BOOL)downloadIndicatorEnabled;
 - (BOOL)isActivityIndicatorVisible;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)commonInit;
 - (void)dealloc;
-- (void)setActivityIndicatorVisible:(BOOL)a3;
-- (void)updateProgressIndicator:(double)a3;
+- (void)setActivityIndicatorVisible:(BOOL)visible;
+- (void)updateProgressIndicator:(double)indicator;
 @end
 
 @implementation OKWidgetView
@@ -85,10 +85,10 @@
   [(OKWidgetViewProxy *)&v4 dealloc];
 }
 
-- (BOOL)_canRespondToEventWithPoint:(CGPoint)a3
+- (BOOL)_canRespondToEventWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_eventsInset = &self->super._eventsInset;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->super._eventsInset.top, *MEMORY[0x277D768C8]), vceqq_f64(*&self->super._eventsInset.bottom, *(MEMORY[0x277D768C8] + 16))))) & 1) != 0 || ([(OFUIView *)[(OKWidgetViewProxy *)self contentView] frame], left = p_eventsInset->left, v21.origin.x = v8 + left, v21.origin.y = p_eventsInset->top + v9, v21.size.width = v10 - (left + p_eventsInset->right), v21.size.height = v11 - (p_eventsInset->top + p_eventsInset->bottom), v20.x = x, v20.y = y, v12 = CGRectContainsPoint(v21, v20)))
   {
@@ -119,17 +119,17 @@
   return v12;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
   LODWORD(v8) = [(OKWidgetView *)self _canRespondToEventWithPoint:?];
   if (v8)
   {
     v19.receiver = self;
     v19.super_class = OKWidgetView;
-    if (![(OKWidgetView *)&v19 pointInside:a4 withEvent:x, y])
+    if (![(OKWidgetView *)&v19 pointInside:event withEvent:x, y])
     {
       v17 = 0u;
       v18 = 0u;
@@ -155,7 +155,7 @@ LABEL_7:
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         [(OKWidgetView *)self convertPoint:v13 toView:x, y];
-        if ([v13 pointInside:a4 withEvent:?])
+        if ([v13 pointInside:event withEvent:?])
         {
           break;
         }
@@ -182,31 +182,31 @@ LABEL_7:
 
 - (BOOL)downloadIndicatorEnabled
 {
-  v2 = [(OKWidgetViewProxy *)self presentationViewController];
+  presentationViewController = [(OKWidgetViewProxy *)self presentationViewController];
 
-  return [(OKPresentationViewControllerProxy *)v2 downloadIndicatorEnabled];
+  return [(OKPresentationViewControllerProxy *)presentationViewController downloadIndicatorEnabled];
 }
 
 - (BOOL)isActivityIndicatorVisible
 {
-  v3 = [(OKWidgetView *)self downloadIndicatorEnabled];
-  if (v3)
+  downloadIndicatorEnabled = [(OKWidgetView *)self downloadIndicatorEnabled];
+  if (downloadIndicatorEnabled)
   {
-    LOBYTE(v3) = [(OKRoundProgressView *)self->_roundProgressView superview]!= 0;
+    LOBYTE(downloadIndicatorEnabled) = [(OKRoundProgressView *)self->_roundProgressView superview]!= 0;
   }
 
-  return v3;
+  return downloadIndicatorEnabled;
 }
 
-- (void)setActivityIndicatorVisible:(BOOL)a3
+- (void)setActivityIndicatorVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(OKWidgetView *)self downloadIndicatorEnabled])
   {
-    v5 = [(OKWidgetView *)self isActivityIndicatorVisible];
-    if (v3)
+    isActivityIndicatorVisible = [(OKWidgetView *)self isActivityIndicatorVisible];
+    if (visibleCopy)
     {
-      if (!v5)
+      if (!isActivityIndicatorVisible)
       {
         [(OKRoundProgressView *)self->_roundProgressView setAlpha:0.0];
         roundProgressView = self->_roundProgressView;
@@ -270,7 +270,7 @@ LABEL_7:
       }
     }
 
-    else if (v5)
+    else if (isActivityIndicatorVisible)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -296,13 +296,13 @@ uint64_t __44__OKWidgetView_setActivityIndicatorVisible___block_invoke_3(uint64_
   return [v2 removeFromSuperview];
 }
 
-- (void)updateProgressIndicator:(double)a3
+- (void)updateProgressIndicator:(double)indicator
 {
   if ([(OKWidgetView *)self downloadIndicatorEnabled])
   {
     roundProgressView = self->_roundProgressView;
 
-    [(OKRoundProgressView *)roundProgressView setProgress:a3];
+    [(OKRoundProgressView *)roundProgressView setProgress:indicator];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface NSURL
-+ (id)bcs_templatedImageURLWithString:(void *)a3 imageSpecifier:;
++ (id)bcs_templatedImageURLWithString:(void *)string imageSpecifier:;
 - (id)URLByDeletingFragment;
 @end
 
 @implementation NSURL
 
-+ (id)bcs_templatedImageURLWithString:(void *)a3 imageSpecifier:
++ (id)bcs_templatedImageURLWithString:(void *)string imageSpecifier:
 {
   v21[4] = *MEMORY[0x277D85DE8];
   v4 = a2;
@@ -13,16 +13,16 @@
   if (v4)
   {
     v20[0] = @"{w}";
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", *a3];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", *string];
     v21[0] = v5;
     v20[1] = @"{h}";
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3[1]];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", string[1]];
     v21[1] = v6;
     v20[2] = @"{f}";
-    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3[3]];
+    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:string[3]];
     v21[2] = v7;
     v20[3] = @"{c}";
-    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3[2]];
+    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:string[2]];
     v21[3] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:4];
 
@@ -64,24 +64,24 @@ uint64_t __77__NSURL_BusinessChatService__bcs_templatedImageURLWithString_imageS
 
 - (id)URLByDeletingFragment
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 absoluteString];
-    v3 = [v2 rangeOfString:@"#" options:4];
+    absoluteString = [self absoluteString];
+    v3 = [absoluteString rangeOfString:@"#" options:4];
     if (v3 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v1 = v1;
+      selfCopy = selfCopy;
     }
 
     else
     {
-      v4 = [v2 substringToIndex:v3];
-      v1 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+      v4 = [absoluteString substringToIndex:v3];
+      selfCopy = [MEMORY[0x277CBEBC0] URLWithString:v4];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

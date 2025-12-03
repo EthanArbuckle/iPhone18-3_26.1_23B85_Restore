@@ -7,20 +7,20 @@
 
 - (id)defaultEnabledInputModesForCurrentLocale
 {
-  v2 = [MEMORY[0x277D6F380] sharedInputModeController];
-  v3 = [v2 defaultEnabledInputModesForCurrentLocale];
+  mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+  defaultEnabledInputModesForCurrentLocale = [mEMORY[0x277D6F380] defaultEnabledInputModesForCurrentLocale];
 
-  v4 = [v3 copy];
+  v4 = [defaultEnabledInputModesForCurrentLocale copy];
 
   return v4;
 }
 
 - (id)enabledInputModeIdentifiers
 {
-  v2 = [MEMORY[0x277D6F380] sharedInputModeController];
-  v3 = [v2 enabledInputModeIdentifiers];
+  mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+  enabledInputModeIdentifiers = [mEMORY[0x277D6F380] enabledInputModeIdentifiers];
 
-  v4 = [v3 copy];
+  v4 = [enabledInputModeIdentifiers copy];
 
   return v4;
 }

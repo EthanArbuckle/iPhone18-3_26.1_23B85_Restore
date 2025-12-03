@@ -1,29 +1,29 @@
 @interface NPKIDVRemoteDeviceServiceClient
-- (NPKIDVRemoteDeviceServiceClient)initWithRemoteServiceName:(id)a3;
-- (id)_errorHandlerWithCompletion:(id)a3;
-- (id)_remoteObjectProxyWithFailureHandler:(id)a3;
-- (void)didReceiveEvent:(unint64_t)a3 fromRemoteDeviceWithID:(id)a4 eventContext:(id)a5;
-- (void)remoteService:(id)a3 didEstablishConnection:(id)a4;
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4;
+- (NPKIDVRemoteDeviceServiceClient)initWithRemoteServiceName:(id)name;
+- (id)_errorHandlerWithCompletion:(id)completion;
+- (id)_remoteObjectProxyWithFailureHandler:(id)handler;
+- (void)didReceiveEvent:(unint64_t)event fromRemoteDeviceWithID:(id)d eventContext:(id)context;
+- (void)remoteService:(id)service didEstablishConnection:(id)connection;
+- (void)remoteService:(id)service didInterruptConnection:(id)connection;
 @end
 
 @implementation NPKIDVRemoteDeviceServiceClient
 
-- (NPKIDVRemoteDeviceServiceClient)initWithRemoteServiceName:(id)a3
+- (NPKIDVRemoteDeviceServiceClient)initWithRemoteServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = NPKIDVRemoteDeviceServiceClient;
   v5 = [(NPKIDVRemoteDeviceServiceClient *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
     v8 = objc_alloc(MEMORY[0x277D38348]);
     v9 = NPKIDVRemoteDeviceServiceServerProtocolInterface();
-    v10 = [v8 initWithMachServiceName:v4 remoteObjectInterface:v9 exportedObjectInterface:0 exportedObject:v5];
+    v10 = [v8 initWithMachServiceName:nameCopy remoteObjectInterface:v9 exportedObjectInterface:0 exportedObject:v5];
     remoteService = v5->_remoteService;
     v5->_remoteService = v10;
 
@@ -33,12 +33,12 @@
   return v5;
 }
 
-- (void)didReceiveEvent:(unint64_t)a3 fromRemoteDeviceWithID:(id)a4 eventContext:(id)a5
+- (void)didReceiveEvent:(unint64_t)event fromRemoteDeviceWithID:(id)d eventContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
   v9 = self->_serviceName;
-  v10 = a5;
-  v11 = a4;
+  contextCopy = context;
+  dCopy = d;
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -47,7 +47,7 @@
     v14 = pk_Payment_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(a3);
+      v15 = stringsArrayFromNPKIDVRemoteDeviceServiceEvents(event);
       *buf = 138412546;
       v28 = v9;
       v29 = 2112;
@@ -62,17 +62,17 @@
   v24[3] = &unk_279949400;
   v16 = v9;
   v25 = v16;
-  v26 = a3;
+  eventCopy = event;
   v17 = [(NPKIDVRemoteDeviceServiceClient *)self _remoteObjectProxyWithFailureHandler:v24];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __87__NPKIDVRemoteDeviceServiceClient_didReceiveEvent_fromRemoteDeviceWithID_eventContext___block_invoke_56;
   v20[3] = &unk_279945F18;
-  v22 = self;
-  v23 = a3;
+  selfCopy = self;
+  eventCopy2 = event;
   v21 = v16;
   v18 = v16;
-  [v17 didReceiveEvent:a3 fromRemoteDeviceWithID:v11 eventContext:v10 ackHandler:v20];
+  [v17 didReceiveEvent:event fromRemoteDeviceWithID:dCopy eventContext:contextCopy ackHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -125,24 +125,24 @@ void __87__NPKIDVRemoteDeviceServiceClient_didReceiveEvent_fromRemoteDeviceWithI
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_remoteObjectProxyWithFailureHandler:(id)a3
+- (id)_remoteObjectProxyWithFailureHandler:(id)handler
 {
   remoteService = self->_remoteService;
-  v4 = [(NPKIDVRemoteDeviceServiceClient *)self _errorHandlerWithCompletion:a3];
+  v4 = [(NPKIDVRemoteDeviceServiceClient *)self _errorHandlerWithCompletion:handler];
   v5 = [(PKXPCService *)remoteService remoteObjectProxyWithErrorHandler:v4];
 
   return v5;
 }
 
-- (id)_errorHandlerWithCompletion:(id)a3
+- (id)_errorHandlerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__NPKIDVRemoteDeviceServiceClient__errorHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v9 = v3;
-  v4 = v3;
+  v9 = completionCopy;
+  v4 = completionCopy;
   v5 = _Block_copy(aBlock);
   v6 = _Block_copy(v5);
 
@@ -176,11 +176,11 @@ void __63__NPKIDVRemoteDeviceServiceClient__errorHandlerWithCompletion___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didEstablishConnection:(id)a4
+- (void)remoteService:(id)service didEstablishConnection:(id)connection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -190,11 +190,11 @@ void __63__NPKIDVRemoteDeviceServiceClient__errorHandlerWithCompletion___block_i
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v6;
+      v15 = serviceCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = connectionCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %@, remote service:%@ did establish connection:%@", &v12, 0x20u);
     }
   }
@@ -202,11 +202,11 @@ void __63__NPKIDVRemoteDeviceServiceClient__errorHandlerWithCompletion___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4
+- (void)remoteService:(id)service didInterruptConnection:(id)connection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -216,11 +216,11 @@ void __63__NPKIDVRemoteDeviceServiceClient__errorHandlerWithCompletion___block_i
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v6;
+      v15 = serviceCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = connectionCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %@, remote service:%@ did interrupt connection:%@", &v12, 0x20u);
     }
   }

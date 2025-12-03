@@ -1,7 +1,7 @@
 @interface CMOdometerSuitabilityManagerProxy
-- (CMOdometerSuitabilityManagerProxy)initWithOdometerSuitability:(id)a3;
+- (CMOdometerSuitabilityManagerProxy)initWithOdometerSuitability:(id)suitability;
 - (void)_startDaemonConnection;
-- (void)_startOdometerSuitabilityUpdatesWithHandler:(id)a3;
+- (void)_startOdometerSuitabilityUpdatesWithHandler:(id)handler;
 - (void)_stopOdometerSuitabilityUpdates;
 - (void)_teardown;
 - (void)dealloc;
@@ -9,7 +9,7 @@
 
 @implementation CMOdometerSuitabilityManagerProxy
 
-- (CMOdometerSuitabilityManagerProxy)initWithOdometerSuitability:(id)a3
+- (CMOdometerSuitabilityManagerProxy)initWithOdometerSuitability:(id)suitability
 {
   v7.receiver = self;
   v7.super_class = CMOdometerSuitabilityManagerProxy;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_odometerSuitabilityManager = a3;
+    v4->_odometerSuitabilityManager = suitability;
     v4->fInternalQueue = dispatch_queue_create("com.apple.CoreMotion.CMOdometerSuitability.internal", 0);
     v5->fCallbackQueue = dispatch_queue_create("com.apple.CoreMotion.CMOdometerSuitability.callback", 0);
     operator new();
@@ -54,11 +54,11 @@
   CLConnectionClient::start(self->fLocationdConnection);
 }
 
-- (void)_startOdometerSuitabilityUpdatesWithHandler:(id)a3
+- (void)_startOdometerSuitabilityUpdatesWithHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
 
-  self->fHandler = objc_msgSend_copy(a3, v5, v6);
+  self->fHandler = objc_msgSend_copy(handler, v5, v6);
   fLocationdConnection = self->fLocationdConnection;
   sub_19B428B50(&__p, "kCLConnectionMessageOdometerSuitabilityUpdate");
   CLConnectionClient::setHandlerForMessage();

@@ -1,15 +1,15 @@
 @interface WFUnitTypePickerParameter
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 - (id)possibleStates;
 @end
 
 @implementation WFUnitTypePickerParameter
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
   v3 = MEMORY[0x277D7A050];
-  v4 = [a3 value];
-  v5 = [v3 localizedStringForUnitType:v4];
+  value = [state value];
+  v5 = [v3 localizedStringForUnitType:value];
 
   return v5;
 }
@@ -19,8 +19,8 @@
   possibleStates = self->_possibleStates;
   if (!possibleStates)
   {
-    v4 = [MEMORY[0x277D7A050] availableUnitTypes];
-    v5 = [v4 if_compactMap:&__block_literal_global_7559];
+    availableUnitTypes = [MEMORY[0x277D7A050] availableUnitTypes];
+    v5 = [availableUnitTypes if_compactMap:&__block_literal_global_7559];
     v6 = self->_possibleStates;
     self->_possibleStates = v5;
 

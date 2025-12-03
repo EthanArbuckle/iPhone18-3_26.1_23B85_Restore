@@ -1,10 +1,10 @@
 @interface AVPictureInPictureIndicatorLayer
 - (AVPictureInPictureIndicatorLayer)init;
-- (AVPictureInPictureIndicatorLayer)initWithDisplayScale:(double)a3 placeholderImage:(CGImage *)a4 opaque:(BOOL)a5 videoRectWhenPIPBegan:(CGRect)a6;
+- (AVPictureInPictureIndicatorLayer)initWithDisplayScale:(double)scale placeholderImage:(CGImage *)image opaque:(BOOL)opaque videoRectWhenPIPBegan:(CGRect)began;
 - (CGRect)videoRectWhenPIPBegan;
 - (NSString)customText;
 - (void)layoutSublayers;
-- (void)setCustomText:(id)a3;
+- (void)setCustomText:(id)text;
 @end
 
 @implementation AVPictureInPictureIndicatorLayer
@@ -24,17 +24,17 @@
 
 - (NSString)customText
 {
-  v2 = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
-  v3 = [v2 customText];
+  contentLayer = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
+  customText = [contentLayer customText];
 
-  return v3;
+  return customText;
 }
 
-- (void)setCustomText:(id)a3
+- (void)setCustomText:(id)text
 {
-  v4 = a3;
-  v5 = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
-  [v5 setCustomText:v4];
+  textCopy = text;
+  contentLayer = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
+  [contentLayer setCustomText:textCopy];
 }
 
 - (AVPictureInPictureIndicatorLayer)init
@@ -110,25 +110,25 @@
   v19 = round(v28.origin.y);
   v20 = round(v28.size.width);
   v21 = round(v28.size.height);
-  v22 = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
-  [v22 setBounds:{v18, v19, v20, v21}];
+  contentLayer = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
+  [contentLayer setBounds:{v18, v19, v20, v21}];
 
-  v23 = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
+  contentLayer2 = [(AVPictureInPictureIndicatorLayer *)self contentLayer];
   [(AVPictureInPictureIndicatorLayer *)self bounds];
   MidX = CGRectGetMidX(v29);
   [(AVPictureInPictureIndicatorLayer *)self bounds];
-  [v23 setPosition:{MidX, CGRectGetMidY(v30)}];
+  [contentLayer2 setPosition:{MidX, CGRectGetMidY(v30)}];
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (AVPictureInPictureIndicatorLayer)initWithDisplayScale:(double)a3 placeholderImage:(CGImage *)a4 opaque:(BOOL)a5 videoRectWhenPIPBegan:(CGRect)a6
+- (AVPictureInPictureIndicatorLayer)initWithDisplayScale:(double)scale placeholderImage:(CGImage *)image opaque:(BOOL)opaque videoRectWhenPIPBegan:(CGRect)began
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
+  height = began.size.height;
+  width = began.size.width;
+  y = began.origin.y;
+  x = began.origin.x;
+  opaqueCopy = opaque;
   v18.receiver = self;
   v18.super_class = AVPictureInPictureIndicatorLayer;
   v13 = [(AVPictureInPictureIndicatorLayer *)&v18 init];
@@ -139,7 +139,7 @@
     v13->_videoRectWhenPIPBegan.origin.y = y;
     v13->_videoRectWhenPIPBegan.size.width = width;
     v13->_videoRectWhenPIPBegan.size.height = height;
-    v15 = [[AVPictureInPictureIndicatorSublayer alloc] initWithDisplayScale:a4 placeholderImage:v10 opaque:a3];
+    v15 = [[AVPictureInPictureIndicatorSublayer alloc] initWithDisplayScale:image placeholderImage:opaqueCopy opaque:scale];
     contentLayer = v14->_contentLayer;
     v14->_contentLayer = v15;
 

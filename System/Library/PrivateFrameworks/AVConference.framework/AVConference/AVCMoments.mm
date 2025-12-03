@@ -1,31 +1,31 @@
 @interface AVCMoments
 + (BOOL)isLocalRecordingEnabled;
-+ (id)obtainSandboxConsciousURLFromXPCResult:(id)a3;
-- (AVCMoments)initWithConfiguration:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5;
-- (AVCMoments)initWithStreamToken:(int64_t)a3 requesterID:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6;
-- (BOOL)avcMediaRecorderRequestDidEndRequest:(id)a3 withError:(id *)a4;
-- (BOOL)avcMediaRecorderRequestDidRejectRequest:(id)a3 withError:(id *)a4;
-- (BOOL)avcMediaRecorderRequestDidStartRequest:(id)a3 withError:(id *)a4;
-- (BOOL)connectWithConfiguration:(id)a3;
-- (BOOL)connectWithStreamToken:(int64_t)a3;
-- (BOOL)setupDelegate:(id)a3 dispatchQueue:(id)a4;
++ (id)obtainSandboxConsciousURLFromXPCResult:(id)result;
+- (AVCMoments)initWithConfiguration:(id)configuration delegate:(id)delegate dispatchQueue:(id)queue;
+- (AVCMoments)initWithStreamToken:(int64_t)token requesterID:(id)d delegate:(id)delegate dispatchQueue:(id)queue;
+- (BOOL)avcMediaRecorderRequestDidEndRequest:(id)request withError:(id *)error;
+- (BOOL)avcMediaRecorderRequestDidRejectRequest:(id)request withError:(id *)error;
+- (BOOL)avcMediaRecorderRequestDidStartRequest:(id)request withError:(id *)error;
+- (BOOL)connectWithConfiguration:(id)configuration;
+- (BOOL)connectWithStreamToken:(int64_t)token;
+- (BOOL)setupDelegate:(id)delegate dispatchQueue:(id)queue;
 - (id)description;
-- (id)newRequestWithConfiguration:(id)a3;
-- (id)newRequestWithMediaType:(unsigned __int8)a3 mode:(unsigned __int8)a4 requesteeID:(id)a5;
-- (id)newRequestWithMediaType:(unsigned __int8)a3 requesteeID:(id)a4;
+- (id)newRequestWithConfiguration:(id)configuration;
+- (id)newRequestWithMediaType:(unsigned __int8)type mode:(unsigned __int8)mode requesteeID:(id)d;
+- (id)newRequestWithMediaType:(unsigned __int8)type requesteeID:(id)d;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
-- (void)didEndProcessingRequestHelperWithResult:(id)a3;
-- (void)didFinishRequestHelperWithResult:(id)a3;
-- (void)didStartProcessingRequestHelperWithResult:(id)a3;
+- (void)didEndProcessingRequestHelperWithResult:(id)result;
+- (void)didFinishRequestHelperWithResult:(id)result;
+- (void)didStartProcessingRequestHelperWithResult:(id)result;
 - (void)disconnect;
 - (void)registerBlocksForNotifications;
-- (void)updateCapabilities:(unsigned int)a3;
+- (void)updateCapabilities:(unsigned int)capabilities;
 @end
 
 @implementation AVCMoments
 
-- (AVCMoments)initWithStreamToken:(int64_t)a3 requesterID:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6
+- (AVCMoments)initWithStreamToken:(int64_t)token requesterID:(id)d delegate:(id)delegate dispatchQueue:(id)queue
 {
   v31 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -42,13 +42,13 @@
       v21 = 1024;
       v22 = 56;
       v23 = 1024;
-      v24 = a3;
+      tokenCopy = token;
       v25 = 2112;
-      v26 = a4;
+      dCopy = d;
       v27 = 2112;
-      v28 = a5;
+      delegateCopy = delegate;
       v29 = 2112;
-      v30 = a6;
+      queueCopy = queue;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%u, requesterID=%@, delegate=%@, queue=%@", buf, 0x40u);
     }
   }
@@ -59,11 +59,11 @@
   v14 = v13;
   if (v13)
   {
-    v13->_streamToken = a3;
-    v13->_requesterID = [a4 copy];
-    if ([(AVCMoments *)v14 setupDelegate:a5 dispatchQueue:a6])
+    v13->_streamToken = token;
+    v13->_requesterID = [d copy];
+    if ([(AVCMoments *)v14 setupDelegate:delegate dispatchQueue:queue])
     {
-      if ([(AVCMoments *)v14 connectWithStreamToken:a3])
+      if ([(AVCMoments *)v14 connectWithStreamToken:token])
       {
         v14->_isLocalRecordingEnabled = +[AVCMoments isLocalRecordingEnabled];
         return v14;
@@ -83,7 +83,7 @@
   return v14;
 }
 
-- (AVCMoments)initWithConfiguration:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5
+- (AVCMoments)initWithConfiguration:(id)configuration delegate:(id)delegate dispatchQueue:(id)queue
 {
   v27 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -100,11 +100,11 @@
       v19 = 1024;
       v20 = 77;
       v21 = 2112;
-      v22 = a3;
+      configurationCopy = configuration;
       v23 = 2112;
-      v24 = a4;
+      delegateCopy = delegate;
       v25 = 2112;
-      v26 = a5;
+      queueCopy = queue;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d configuration=%@, delegate=%@, queue=%@", buf, 0x3Au);
     }
   }
@@ -115,9 +115,9 @@
   v12 = v11;
   if (v11)
   {
-    if ([(AVCMoments *)v11 setupDelegate:a4 dispatchQueue:a5])
+    if ([(AVCMoments *)v11 setupDelegate:delegate dispatchQueue:queue])
     {
-      if ([(AVCMoments *)v12 connectWithConfiguration:a3])
+      if ([(AVCMoments *)v12 connectWithConfiguration:configuration])
       {
         v12->_isLocalRecordingEnabled = 1;
         return v12;
@@ -147,15 +147,15 @@
   return VCDefaults_GetManagedBoolValueForKey(@"enableLocalVideoRecording", 0);
 }
 
-- (BOOL)setupDelegate:(id)a3 dispatchQueue:(id)a4
+- (BOOL)setupDelegate:(id)delegate dispatchQueue:(id)queue
 {
-  if (!a3)
+  if (!delegate)
   {
     [AVCMoments setupDelegate:dispatchQueue:];
     return v14;
   }
 
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   v6 = objc_alloc_init(AVConferenceXPCClient);
   self->_connection = v6;
   if (!v6)
@@ -172,10 +172,10 @@
     return v12;
   }
 
-  if (a4)
+  if (queue)
   {
-    self->_delegateQueue = a4;
-    dispatch_retain(a4);
+    self->_delegateQueue = queue;
+    dispatch_retain(queue);
   }
 
   else
@@ -215,7 +215,7 @@
   return [v3 stringWithFormat:@"%@: streamToken[%ld] capabilities[%X] requesterID[%@]", NSStringFromClass(v4), self->_streamToken, self->_capabilities, self->_requesterID];
 }
 
-- (BOOL)connectWithConfiguration:(id)a3
+- (BOOL)connectWithConfiguration:(id)configuration
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -235,7 +235,7 @@
   }
 
   v23 = @"vcMomentsConfiguration";
-  v24[0] = [a3 dictionary];
+  v24[0] = [configuration dictionary];
   v7 = -[AVConferenceXPCClient sendMessageSync:arguments:](self->_connection, "sendMessageSync:arguments:", "vcMediaRecorderInitializeStandalone", [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1]);
   v8 = [v7 objectForKeyedSubscript:@"ERROR"];
   if (v8)
@@ -308,7 +308,7 @@ void __39__AVCMoments_connectWithConfiguration___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)connectWithStreamToken:(int64_t)a3
+- (BOOL)connectWithStreamToken:(int64_t)token
 {
   v26[1] = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -324,13 +324,13 @@ void __39__AVCMoments_connectWithConfiguration___block_invoke(uint64_t a1)
       v19 = 1024;
       v20 = 163;
       v21 = 1024;
-      v22 = a3;
+      tokenCopy2 = token;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCMoments: connect for streamToken=%u", buf, 0x22u);
     }
   }
 
   v25 = @"vcMomentsStreamToken";
-  v26[0] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v26[0] = [MEMORY[0x1E696AD98] numberWithInteger:token];
   v7 = -[AVConferenceXPCClient sendMessageSync:arguments:](self->_connection, "sendMessageSync:arguments:", "vcMediaRecorderInitialize", [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1]);
   v8 = [v7 objectForKeyedSubscript:@"ERROR"];
   if (v8)
@@ -349,7 +349,7 @@ void __39__AVCMoments_connectWithConfiguration___block_invoke(uint64_t a1)
         v19 = 1024;
         v20 = 168;
         v21 = 1024;
-        v22 = a3;
+        tokenCopy2 = token;
         v23 = 2080;
         v24 = v11;
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d AVCMomentsClient: Failed connection for streamToken=%u error=%s", buf, 0x2Cu);
@@ -737,14 +737,14 @@ uint64_t __44__AVCMoments_registerBlocksForNotifications__block_invoke_42(uint64
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcMediaRecorderServerDidDisconnect"];
 }
 
-- (void)didStartProcessingRequestHelperWithResult:(id)a3
+- (void)didStartProcessingRequestHelperWithResult:(id)result
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsRequestMode", "intValue"}];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsMediaType", "intValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"vcMomentsTransactionID"];
-  v8 = [a3 objectForKeyedSubscript:@"vcMomentsRequesterID"];
-  v9 = [a3 objectForKeyedSubscript:@"vcMomentsRequesteeID"];
+  v5 = [objc_msgSend(result objectForKeyedSubscript:{@"vcMomentsRequestMode", "intValue"}];
+  v6 = [objc_msgSend(result objectForKeyedSubscript:{@"vcMomentsMediaType", "intValue"}];
+  v7 = [result objectForKeyedSubscript:@"vcMomentsTransactionID"];
+  v8 = [result objectForKeyedSubscript:@"vcMomentsRequesterID"];
+  v9 = [result objectForKeyedSubscript:@"vcMomentsRequesteeID"];
   if (v5 == 2)
   {
     v12 = v9;
@@ -772,7 +772,7 @@ uint64_t __44__AVCMoments_registerBlocksForNotifications__block_invoke_42(uint64
     v10 = 0;
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"vcMomentsError"];
+  v14 = [result objectForKeyedSubscript:@"vcMomentsError"];
   if (!v14 || (v15 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v14 error:0]) == 0)
   {
     v15 = 0;
@@ -784,7 +784,7 @@ uint64_t __44__AVCMoments_registerBlocksForNotifications__block_invoke_42(uint64
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
-      v17 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+      v17 = result ? [objc_msgSend(result "description")] : "<nil>";
       asprintf(&__str, "result=%s", v17);
       if (__str)
       {
@@ -838,9 +838,9 @@ uint64_t __44__AVCMoments_registerBlocksForNotifications__block_invoke_42(uint64
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
-      v18 = [(__CFString *)v16 UTF8String];
-      v19 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-      asprintf(&__str, "%s(%p) result=%s", v18, self, v19);
+      uTF8String = [(__CFString *)v16 UTF8String];
+      v19 = result ? [objc_msgSend(result "description")] : "<nil>";
+      asprintf(&__str, "%s(%p) result=%s", uTF8String, self, v19);
       if (__str)
       {
         v28 = v15;
@@ -883,18 +883,18 @@ LABEL_34:
   [self->_delegate moments:self didStartProcessingRequest:v10 error:v15];
 }
 
-+ (id)obtainSandboxConsciousURLFromXPCResult:(id)a3
++ (id)obtainSandboxConsciousURLFromXPCResult:(id)result
 {
-  v3 = a3;
-  if (!a3)
+  resultCopy = result;
+  if (!result)
   {
-    return v3;
+    return resultCopy;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v3;
+    return resultCopy;
   }
 
   objc_opt_class();
@@ -903,12 +903,12 @@ LABEL_34:
     return 0;
   }
 
-  v4 = [VCSandboxedURL deserialize:v3];
+  v4 = [VCSandboxedURL deserialize:resultCopy];
 
   return [v4 consumeToken];
 }
 
-- (void)didEndProcessingRequestHelperWithResult:(id)a3
+- (void)didEndProcessingRequestHelperWithResult:(id)result
 {
   v85 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -965,7 +965,7 @@ LABEL_11:
         v77 = 2112;
         v78 = v5;
         v79 = 2048;
-        v80 = self;
+        selfCopy5 = self;
         v81 = 2112;
         v82 = v14;
         v9 = " [%s] %s:%d %@(%p) AVCMoments current requests %@";
@@ -976,7 +976,7 @@ LABEL_11:
     }
   }
 
-  v15 = [a3 objectForKeyedSubscript:@"vcMomentsStillImageURL"];
+  v15 = [result objectForKeyedSubscript:@"vcMomentsStillImageURL"];
   v16 = [AVCMoments obtainSandboxConsciousURLFromXPCResult:v15];
   v17 = v16;
   if (v15 && !v16)
@@ -1022,7 +1022,7 @@ LABEL_11:
           v77 = 2112;
           v78 = v18;
           v79 = 2048;
-          v80 = self;
+          selfCopy5 = self;
           v81 = 2080;
           v82 = Name;
           _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected class for stillImageURLResult=%s or failure to decode stillImageURL.", buf, 0x3Au);
@@ -1031,7 +1031,7 @@ LABEL_11:
     }
   }
 
-  v21 = [a3 objectForKeyedSubscript:@"vcMomentsMovieURL"];
+  v21 = [result objectForKeyedSubscript:@"vcMomentsMovieURL"];
   v22 = [AVCMoments obtainSandboxConsciousURLFromXPCResult:v21];
   v23 = v22;
   if (v21 && !v22)
@@ -1077,7 +1077,7 @@ LABEL_11:
           v77 = 2112;
           v78 = v24;
           v79 = 2048;
-          v80 = self;
+          selfCopy5 = self;
           v81 = 2080;
           v82 = v62;
           _os_log_error_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected class for movieURLResult=%s or failure to decode movieURL.", buf, 0x3Au);
@@ -1086,9 +1086,9 @@ LABEL_11:
     }
   }
 
-  v27 = [a3 objectForKeyedSubscript:@"vcMomentsTransactionID"];
+  v27 = [result objectForKeyedSubscript:@"vcMomentsTransactionID"];
   v28 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:v27];
-  v29 = [a3 objectForKeyedSubscript:@"vcMomentsError"];
+  v29 = [result objectForKeyedSubscript:@"vcMomentsError"];
   if (v29)
   {
     v30 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v29 error:0];
@@ -1111,9 +1111,9 @@ LABEL_11:
     v66 = v23;
     v67 = v17;
     v65 = v28;
-    if (a3)
+    if (result)
     {
-      v32 = [objc_msgSend(a3 "description")];
+      v32 = [objc_msgSend(result "description")];
     }
 
     else
@@ -1149,7 +1149,7 @@ LABEL_11:
           v77 = 2080;
           v78 = "";
           v79 = 2080;
-          v80 = v39;
+          selfCopy5 = v39;
           _os_log_impl(&dword_1DB56E000, v42, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
         }
       }
@@ -1174,13 +1174,13 @@ LABEL_11:
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v33 = [(__CFString *)v31 UTF8String];
+    uTF8String = [(__CFString *)v31 UTF8String];
     v66 = v23;
     v67 = v17;
     v65 = v28;
-    if (a3)
+    if (result)
     {
-      v34 = [objc_msgSend(a3 "description")];
+      v34 = [objc_msgSend(result "description")];
     }
 
     else
@@ -1188,7 +1188,7 @@ LABEL_11:
       v34 = "<nil>";
     }
 
-    asprintf(&__str, "%s(%p) result=%s", v33, self, v34);
+    asprintf(&__str, "%s(%p) result=%s", uTF8String, self, v34);
     if (!__str)
     {
       goto LABEL_65;
@@ -1216,7 +1216,7 @@ LABEL_11:
           v77 = 2080;
           v78 = "";
           v79 = 2080;
-          v80 = v35;
+          selfCopy5 = v35;
           _os_log_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
         }
       }
@@ -1274,7 +1274,7 @@ LABEL_66:
       v77 = 2112;
       v78 = v17;
       v79 = 2112;
-      v80 = v68;
+      selfCopy5 = v68;
       v46 = " [%s] %s:%d Failed to remove stillImage at URL=%@ error=%@";
       v47 = v45;
       v48 = 48;
@@ -1313,7 +1313,7 @@ LABEL_66:
       v77 = 2112;
       v78 = v43;
       v79 = 2048;
-      v80 = self;
+      selfCopy5 = self;
       v81 = 2112;
       v82 = v17;
       v83 = 2112;
@@ -1356,7 +1356,7 @@ LABEL_80:
     v77 = 2112;
     v78 = v17;
     v79 = 2112;
-    v80 = v68;
+    selfCopy5 = v68;
     v54 = " [%s] %s:%d Failed to remove movie at URL=%@ error=%@";
     v55 = v53;
     v56 = 48;
@@ -1390,7 +1390,7 @@ LABEL_95:
       v77 = 2112;
       v78 = v51;
       v79 = 2048;
-      v80 = self;
+      selfCopy5 = self;
       v81 = 2112;
       v82 = v17;
       v83 = 2112;
@@ -1406,7 +1406,7 @@ LABEL_91:
   [(NSMutableDictionary *)self->_requests removeObjectForKey:v27];
 }
 
-- (void)didFinishRequestHelperWithResult:(id)a3
+- (void)didFinishRequestHelperWithResult:(id)result
 {
   *(&v57[1] + 6) = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1464,7 +1464,7 @@ LABEL_91:
       v53 = 2112;
       *v54 = v5;
       *&v54[8] = 2048;
-      v55 = self;
+      selfCopy2 = self;
       v56 = 2112;
       v57[0] = v14;
       v9 = " [%s] %s:%d %@(%p) AVCMoments current requests %@";
@@ -1476,9 +1476,9 @@ LABEL_11:
   }
 
 LABEL_12:
-  v15 = [a3 objectForKeyedSubscript:@"vcMomentsTransactionID"];
+  v15 = [result objectForKeyedSubscript:@"vcMomentsTransactionID"];
   v16 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:v15];
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsRequestDidSucceed", "BOOLValue"}])
+  if ([objc_msgSend(result objectForKeyedSubscript:{@"vcMomentsRequestDidSucceed", "BOOLValue"}])
   {
     v17 = 0;
   }
@@ -1494,9 +1494,9 @@ LABEL_12:
     {
       __str = 0;
       v44 = v17;
-      if (a3)
+      if (result)
       {
-        v19 = [objc_msgSend(a3 "description")];
+        v19 = [objc_msgSend(result "description")];
       }
 
       else
@@ -1512,7 +1512,7 @@ LABEL_12:
 
       v41 = v16;
       v42 = v15;
-      v43 = a3;
+      resultCopy2 = result;
       __lasts = 0;
       v26 = strtok_r(__str, "\n", &__lasts);
       v27 = MEMORY[0x1E6986650];
@@ -1533,7 +1533,7 @@ LABEL_12:
             v53 = 2080;
             *v54 = "";
             *&v54[8] = 2080;
-            v55 = v26;
+            selfCopy2 = v26;
             _os_log_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
           }
         }
@@ -1561,11 +1561,11 @@ LABEL_12:
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
-      v20 = [(__CFString *)v18 UTF8String];
+      uTF8String = [(__CFString *)v18 UTF8String];
       v44 = v17;
-      if (a3)
+      if (result)
       {
-        v21 = [objc_msgSend(a3 "description")];
+        v21 = [objc_msgSend(result "description")];
       }
 
       else
@@ -1573,7 +1573,7 @@ LABEL_12:
         v21 = "<nil>";
       }
 
-      asprintf(&__str, "%s(%p) result=%s", v20, self, v21);
+      asprintf(&__str, "%s(%p) result=%s", uTF8String, self, v21);
       if (!__str)
       {
         goto LABEL_41;
@@ -1581,7 +1581,7 @@ LABEL_12:
 
       v41 = v16;
       v42 = v15;
-      v43 = a3;
+      resultCopy2 = result;
       __lasts = 0;
       v22 = strtok_r(__str, "\n", &__lasts);
       v23 = MEMORY[0x1E6986650];
@@ -1602,7 +1602,7 @@ LABEL_12:
             v53 = 2080;
             *v54 = "";
             *&v54[8] = 2080;
-            v55 = v22;
+            selfCopy2 = v22;
             _os_log_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
           }
         }
@@ -1614,7 +1614,7 @@ LABEL_12:
 LABEL_40:
       free(__str);
       v15 = v42;
-      a3 = v43;
+      result = resultCopy2;
       v16 = v41;
 LABEL_41:
       v17 = v44;
@@ -1623,7 +1623,7 @@ LABEL_41:
 
   [self->_delegate moments:self didFinishRequest:v16 error:v17];
   [(NSMutableDictionary *)self->_requests removeObjectForKey:v15];
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsMediaType", "intValue"}] & 0xFE) == 2)
+  if (([objc_msgSend(result objectForKeyedSubscript:{@"vcMomentsMediaType", "intValue"}] & 0xFE) == 2)
   {
     v30 = self->_currentActiveRequestsCount - 1;
     self->_currentActiveRequestsCount = v30;
@@ -1693,7 +1693,7 @@ LABEL_41:
         v53 = 2112;
         *v54 = v31;
         *&v54[8] = 2048;
-        v55 = self;
+        selfCopy2 = self;
         v56 = 1024;
         LODWORD(v57[0]) = 7;
         WORD2(v57[0]) = 1024;
@@ -1710,27 +1710,27 @@ LABEL_55:
   }
 }
 
-- (void)updateCapabilities:(unsigned int)a3
+- (void)updateCapabilities:(unsigned int)capabilities
 {
   dispatch_assert_queue_V2(self->_delegateQueue);
-  if (self->_capabilities != a3)
+  if (self->_capabilities != capabilities)
   {
-    self->_capabilities = a3;
-    v5 = [(AVCMoments *)self delegate];
+    self->_capabilities = capabilities;
+    delegate = [(AVCMoments *)self delegate];
     capabilities = self->_capabilities;
 
-    [(AVCMomentsDelegate *)v5 moments:self capabilitiesDidChange:capabilities];
+    [(AVCMomentsDelegate *)delegate moments:self capabilitiesDidChange:capabilities];
   }
 }
 
-- (id)newRequestWithMediaType:(unsigned __int8)a3 requesteeID:(id)a4
+- (id)newRequestWithMediaType:(unsigned __int8)type requesteeID:(id)d
 {
-  v5 = a3;
+  typeCopy = type;
   v12 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(AVCMediaRecorderRequestConfiguration);
-  [(AVCMediaRecorderRequestConfiguration *)v7 setMediaType:v5];
+  [(AVCMediaRecorderRequestConfiguration *)v7 setMediaType:typeCopy];
   [(AVCMediaRecorderRequestConfiguration *)v7 setRequestMode:2];
-  [(AVCMediaRecorderRequestConfiguration *)v7 setRequesteeID:a4];
+  [(AVCMediaRecorderRequestConfiguration *)v7 setRequesteeID:d];
   v10 = *MEMORY[0x1E6960C70];
   v11 = *(MEMORY[0x1E6960C70] + 16);
   [(AVCMediaRecorderRequestConfiguration *)v7 setMovieFragmentInterval:&v10];
@@ -1739,15 +1739,15 @@ LABEL_55:
   return v8;
 }
 
-- (id)newRequestWithMediaType:(unsigned __int8)a3 mode:(unsigned __int8)a4 requesteeID:(id)a5
+- (id)newRequestWithMediaType:(unsigned __int8)type mode:(unsigned __int8)mode requesteeID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  modeCopy = mode;
+  typeCopy = type;
   v14 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(AVCMediaRecorderRequestConfiguration);
-  [(AVCMediaRecorderRequestConfiguration *)v9 setMediaType:v7];
-  [(AVCMediaRecorderRequestConfiguration *)v9 setRequestMode:v6];
-  [(AVCMediaRecorderRequestConfiguration *)v9 setRequesteeID:a5];
+  [(AVCMediaRecorderRequestConfiguration *)v9 setMediaType:typeCopy];
+  [(AVCMediaRecorderRequestConfiguration *)v9 setRequestMode:modeCopy];
+  [(AVCMediaRecorderRequestConfiguration *)v9 setRequesteeID:d];
   v12 = *MEMORY[0x1E6960C70];
   v13 = *(MEMORY[0x1E6960C70] + 16);
   [(AVCMediaRecorderRequestConfiguration *)v9 setMovieFragmentInterval:&v12];
@@ -1756,7 +1756,7 @@ LABEL_55:
   return v10;
 }
 
-- (id)newRequestWithConfiguration:(id)a3
+- (id)newRequestWithConfiguration:(id)configuration
 {
   v38 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1774,7 +1774,7 @@ LABEL_55:
         v30 = 1024;
         v31 = 427;
         v32 = 2112;
-        v33 = a3;
+        configurationCopy = configuration;
         v8 = " [%s] %s:%d configuration=%@";
         v9 = v7;
         v10 = 38;
@@ -1809,11 +1809,11 @@ LABEL_11:
         v30 = 1024;
         v31 = 427;
         v32 = 2112;
-        v33 = v5;
+        configurationCopy = v5;
         v34 = 2048;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = a3;
+        configurationCopy2 = configuration;
         v8 = " [%s] %s:%d %@(%p) configuration=%@";
         v9 = v12;
         v10 = 58;
@@ -1822,9 +1822,9 @@ LABEL_11:
     }
   }
 
-  if ([a3 requestMode] != 1 || self->_isLocalRecordingEnabled)
+  if ([configuration requestMode] != 1 || self->_isLocalRecordingEnabled)
   {
-    v13 = [a3 mediaType] & 0xFE;
+    v13 = [configuration mediaType] & 0xFE;
     if (v13 == 2 && self->_currentActiveRequestsCount > 99999)
     {
       [(AVCMoments *)self newRequestWithConfiguration:buf];
@@ -1832,7 +1832,7 @@ LABEL_11:
 
     else
     {
-      v14 = [[AVCMomentsRequest alloc] initWithConfiguration:a3 requesterID:self->_requesterID];
+      v14 = [[AVCMomentsRequest alloc] initWithConfiguration:configuration requesterID:self->_requesterID];
       if (v14)
       {
         v15 = v14;
@@ -1883,11 +1883,11 @@ LABEL_11:
                 v30 = 1024;
                 v31 = 450;
                 v32 = 2112;
-                v33 = v17;
+                configurationCopy = v17;
                 v34 = 2048;
-                v35 = self;
+                selfCopy3 = self;
                 v36 = 1024;
-                LODWORD(v37) = 1;
+                LODWORD(configurationCopy2) = 1;
                 _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Notify client reached max request capabilities %d", buf, 0x36u);
               }
             }
@@ -1949,11 +1949,11 @@ LABEL_11:
         v30 = 1024;
         v31 = 430;
         v32 = 2112;
-        v33 = v22;
+        configurationCopy = v22;
         v34 = 2048;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 1024;
-        LODWORD(v37) = 1;
+        LODWORD(configurationCopy2) = 1;
         _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) mode=%d is not supported", buf, 0x36u);
       }
     }
@@ -1962,7 +1962,7 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)avcMediaRecorderRequestDidStartRequest:(id)a3 withError:(id *)a4
+- (BOOL)avcMediaRecorderRequestDidStartRequest:(id)request withError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1973,9 +1973,9 @@ LABEL_11:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (request)
         {
-          v10 = [objc_msgSend(a3 "description")];
+          v10 = [objc_msgSend(request "description")];
         }
 
         else
@@ -2017,9 +2017,9 @@ LABEL_11:
       v12 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (request)
         {
-          v13 = [objc_msgSend(a3 "description")];
+          v13 = [objc_msgSend(request "description")];
         }
 
         else
@@ -2036,7 +2036,7 @@ LABEL_11:
         WORD2(v24) = 2112;
         *(&v24 + 6) = v7;
         HIWORD(v24) = 2048;
-        v25 = self;
+        selfCopy2 = self;
         LOWORD(v26) = 2080;
         *(&v26 + 2) = v13;
         v14 = " [%s] %s:%d %@(%p) AVCMoments: avcMomentsRequestDidStartRequest %s";
@@ -2048,10 +2048,10 @@ LABEL_17:
     }
   }
 
-  v17 = [a3 validateWithError:{a4, *v23, *&v23[16], v24, v25, v26}];
+  v17 = [request validateWithError:{error, *v23, *&v23[16], v24, selfCopy2, v26}];
   if (v17)
   {
-    -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcMediaRecorderStartRequest", [a3 serialize]);
+    -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcMediaRecorderStartRequest", [request serialize]);
   }
 
   else if (objc_opt_class() == self)
@@ -2084,9 +2084,9 @@ LABEL_17:
       v20 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        if (*a4)
+        if (*error)
         {
-          v22 = [objc_msgSend(*a4 "description")];
+          v22 = [objc_msgSend(*error "description")];
         }
 
         else
@@ -2103,7 +2103,7 @@ LABEL_17:
         WORD2(v24) = 2112;
         *(&v24 + 6) = v18;
         HIWORD(v24) = 2048;
-        v25 = self;
+        selfCopy2 = self;
         LOWORD(v26) = 2080;
         *(&v26 + 2) = v22;
         _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) failed validation with error %s", v23, 0x3Au);
@@ -2114,7 +2114,7 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)avcMediaRecorderRequestDidEndRequest:(id)a3 withError:(id *)a4
+- (BOOL)avcMediaRecorderRequestDidEndRequest:(id)request withError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2125,9 +2125,9 @@ LABEL_17:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (request)
         {
-          v10 = [objc_msgSend(a3 "description")];
+          v10 = [objc_msgSend(request "description")];
         }
 
         else
@@ -2169,9 +2169,9 @@ LABEL_17:
       v12 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (request)
         {
-          v13 = [objc_msgSend(a3 "description")];
+          v13 = [objc_msgSend(request "description")];
         }
 
         else
@@ -2188,7 +2188,7 @@ LABEL_17:
         WORD2(v23) = 2112;
         *(&v23 + 6) = v7;
         HIWORD(v23) = 2048;
-        v24 = self;
+        selfCopy2 = self;
         LOWORD(v25) = 2080;
         *(&v25 + 2) = v13;
         v14 = " [%s] %s:%d %@(%p) AVCMoments: avcMomentsRequestDidEndRequest %s";
@@ -2200,12 +2200,12 @@ LABEL_17:
     }
   }
 
-  v17 = [a3 validateWithError:{a4, *v22, *&v22[16], v23, v24, v25}];
+  v17 = [request validateWithError:{error, *v22, *&v22[16], v23, selfCopy2, v25}];
   if (v17)
   {
-    if ([a3 mediaType] == 2 || objc_msgSend(a3, "mediaType") == 4 || objc_msgSend(a3, "mediaType") == 5)
+    if ([request mediaType] == 2 || objc_msgSend(request, "mediaType") == 4 || objc_msgSend(request, "mediaType") == 5)
     {
-      -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcMediaRecorderEndRequest", [a3 serialize]);
+      -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcMediaRecorderEndRequest", [request serialize]);
     }
   }
 
@@ -2248,7 +2248,7 @@ LABEL_17:
         WORD2(v23) = 2112;
         *(&v23 + 6) = v18;
         HIWORD(v23) = 2048;
-        v24 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) failed validation", v22, 0x30u);
       }
     }
@@ -2257,13 +2257,13 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)avcMediaRecorderRequestDidRejectRequest:(id)a3 withError:(id *)a4
+- (BOOL)avcMediaRecorderRequestDidRejectRequest:(id)request withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [a3 validateWithError:a4];
+  v6 = [request validateWithError:error];
   if (v6)
   {
-    -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcMediaRecorderRejectRequest", [a3 serialize]);
+    -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcMediaRecorderRejectRequest", [request serialize]);
   }
 
   else if (objc_opt_class() == self)
@@ -2305,7 +2305,7 @@ LABEL_17:
         v17 = 2112;
         v18 = v7;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) failed validation", &v11, 0x30u);
       }
     }

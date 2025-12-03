@@ -1,61 +1,61 @@
 @interface SKGProcessedItem
 - (NSArray)keyphrases;
 - (SKGEmbedding)embedding;
-- (SKGProcessedItem)initWithReferenceIdentifier:(id)a3 personaIdentifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6;
+- (SKGProcessedItem)initWithReferenceIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class;
 - (unint64_t)breadcrumbsCount;
 - (unint64_t)keyphrasesCount;
-- (void)addAddress:(id)a3;
-- (void)addAirportLocation:(id)a3;
-- (void)addAuthors:(id)a3;
-- (void)addCurrency:(id)a3;
-- (void)addDate:(id)a3;
-- (void)addDetectedCalendarEventTypes:(id)a3;
-- (void)addEmailAddress:(id)a3;
-- (void)addFlight:(id)a3;
-- (void)addInteraction:(id)a3 score:(id)a4;
-- (void)addKeyphrase:(id)a3;
-- (void)addLink:(id)a3;
-- (void)addLocation:(id)a3;
-- (void)addNamedLocation:(id)a3;
-- (void)addOwners:(id)a3;
-- (void)addParticipants:(id)a3;
-- (void)addPhoneNumber:(id)a3;
-- (void)addPrimaryEmbedding:(id)a3;
-- (void)addRecipients:(id)a3;
-- (void)addSecondaryEmbedding:(id)a3;
-- (void)addTrackingNumber:(id)a3;
+- (void)addAddress:(id)address;
+- (void)addAirportLocation:(id)location;
+- (void)addAuthors:(id)authors;
+- (void)addCurrency:(id)currency;
+- (void)addDate:(id)date;
+- (void)addDetectedCalendarEventTypes:(id)types;
+- (void)addEmailAddress:(id)address;
+- (void)addFlight:(id)flight;
+- (void)addInteraction:(id)interaction score:(id)score;
+- (void)addKeyphrase:(id)keyphrase;
+- (void)addLink:(id)link;
+- (void)addLocation:(id)location;
+- (void)addNamedLocation:(id)location;
+- (void)addOwners:(id)owners;
+- (void)addParticipants:(id)participants;
+- (void)addPhoneNumber:(id)number;
+- (void)addPrimaryEmbedding:(id)embedding;
+- (void)addRecipients:(id)recipients;
+- (void)addSecondaryEmbedding:(id)embedding;
+- (void)addTrackingNumber:(id)number;
 - (void)clearKeyphrases;
 - (void)removeEmbedding;
-- (void)setEmbeddingFormat:(unint64_t)a3;
-- (void)setEmbeddingSize:(unint64_t)a3;
+- (void)setEmbeddingFormat:(unint64_t)format;
+- (void)setEmbeddingSize:(unint64_t)size;
 @end
 
 @implementation SKGProcessedItem
 
-- (SKGProcessedItem)initWithReferenceIdentifier:(id)a3 personaIdentifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6
+- (SKGProcessedItem)initWithReferenceIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  classCopy = class;
   v29.receiver = self;
   v29.super_class = SKGProcessedItem;
   v14 = [(SKGProcessedItem *)&v29 init];
   if (v14)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v10, "UTF8String")}];
+    v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(identifierCopy, "UTF8String")}];
     v16 = *(v14 + 31);
     *(v14 + 31) = v15;
 
-    v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v11, "UTF8String")}];
+    v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(personaIdentifierCopy, "UTF8String")}];
     v18 = *(v14 + 32);
     *(v14 + 32) = v17;
 
-    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v12, "UTF8String")}];
+    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(bundleIdentifierCopy, "UTF8String")}];
     v20 = *(v14 + 33);
     *(v14 + 33) = v19;
 
-    v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v13, "UTF8String")}];
+    v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(classCopy, "UTF8String")}];
     v22 = *(v14 + 34);
     *(v14 + 34) = v21;
 
@@ -225,61 +225,61 @@
   self->_keyphrases = 0;
 }
 
-- (void)addKeyphrase:(id)a3
+- (void)addKeyphrase:(id)keyphrase
 {
-  v4 = a3;
+  keyphraseCopy = keyphrase;
   keyphrases = self->_keyphrases;
-  v21 = v4;
+  v21 = keyphraseCopy;
   if (!keyphrases)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = self->_keyphrases;
     self->_keyphrases = v6;
 
-    v4 = v21;
+    keyphraseCopy = v21;
     keyphrases = self->_keyphrases;
   }
 
-  v8 = [v4 keyphrase];
-  v9 = [(NSMutableDictionary *)keyphrases objectForKeyedSubscript:v8];
+  keyphrase = [keyphraseCopy keyphrase];
+  v9 = [(NSMutableDictionary *)keyphrases objectForKeyedSubscript:keyphrase];
 
   if (v9)
   {
     v10 = self->_keyphrases;
-    v11 = [v21 keyphrase];
-    v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v11];
+    keyphrase2 = [v21 keyphrase];
+    keyphrase4 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:keyphrase2];
 
-    v13 = [v12 count];
+    v13 = [keyphrase4 count];
     [v21 score];
     v15 = v14;
-    [v12 score];
+    [keyphrase4 score];
     if (v15 < v16)
     {
       v17 = v21;
 
-      v12 = v17;
+      keyphrase4 = v17;
     }
 
-    [v12 setCount:v13 + 1];
+    [keyphrase4 setCount:v13 + 1];
     v18 = self->_keyphrases;
-    v19 = [v21 keyphrase];
-    [(NSMutableDictionary *)v18 setObject:v12 forKeyedSubscript:v19];
+    keyphrase3 = [v21 keyphrase];
+    [(NSMutableDictionary *)v18 setObject:keyphrase4 forKeyedSubscript:keyphrase3];
   }
 
   else
   {
     [v21 setCount:1];
     v20 = self->_keyphrases;
-    v12 = [v21 keyphrase];
-    [(NSMutableDictionary *)v20 setObject:v21 forKeyedSubscript:v12];
+    keyphrase4 = [v21 keyphrase];
+    [(NSMutableDictionary *)v20 setObject:v21 forKeyedSubscript:keyphrase4];
   }
 }
 
 - (NSArray)keyphrases
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSMutableDictionary *)self->_keyphrases allValues];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_37];
+  allValues = [(NSMutableDictionary *)self->_keyphrases allValues];
+  v5 = [allValues sortedArrayUsingComparator:&__block_literal_global_37];
 
   objc_autoreleasePoolPop(v3);
 
@@ -368,272 +368,272 @@ LABEL_20:
   return v12;
 }
 
-- (void)addEmailAddress:(id)a3
+- (void)addEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   emailAddresses = self->_emailAddresses;
-  v8 = v4;
+  v8 = addressCopy;
   if (!emailAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_emailAddresses;
     self->_emailAddresses = v6;
 
-    v4 = v8;
+    addressCopy = v8;
     emailAddresses = self->_emailAddresses;
   }
 
-  [(NSMutableArray *)emailAddresses addObject:v4];
+  [(NSMutableArray *)emailAddresses addObject:addressCopy];
 }
 
-- (void)addPhoneNumber:(id)a3
+- (void)addPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   phoneNumbers = self->_phoneNumbers;
-  v8 = v4;
+  v8 = numberCopy;
   if (!phoneNumbers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_phoneNumbers;
     self->_phoneNumbers = v6;
 
-    v4 = v8;
+    numberCopy = v8;
     phoneNumbers = self->_phoneNumbers;
   }
 
-  [(NSMutableArray *)phoneNumbers addObject:v4];
+  [(NSMutableArray *)phoneNumbers addObject:numberCopy];
 }
 
-- (void)addAddress:(id)a3
+- (void)addAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   addresses = self->_addresses;
-  v8 = v4;
+  v8 = addressCopy;
   if (!addresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_addresses;
     self->_addresses = v6;
 
-    v4 = v8;
+    addressCopy = v8;
     addresses = self->_addresses;
   }
 
-  [(NSMutableArray *)addresses addObject:v4];
+  [(NSMutableArray *)addresses addObject:addressCopy];
 }
 
-- (void)addLocation:(id)a3
+- (void)addLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   locations = self->_locations;
-  v8 = v4;
+  v8 = locationCopy;
   if (!locations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_locations;
     self->_locations = v6;
 
-    v4 = v8;
+    locationCopy = v8;
     locations = self->_locations;
   }
 
-  [(NSMutableArray *)locations addObject:v4];
+  [(NSMutableArray *)locations addObject:locationCopy];
 }
 
-- (void)addNamedLocation:(id)a3
+- (void)addNamedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   namedLocations = self->_namedLocations;
-  v8 = v4;
+  v8 = locationCopy;
   if (!namedLocations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_namedLocations;
     self->_namedLocations = v6;
 
-    v4 = v8;
+    locationCopy = v8;
     namedLocations = self->_namedLocations;
   }
 
-  [(NSMutableArray *)namedLocations addObject:v4];
+  [(NSMutableArray *)namedLocations addObject:locationCopy];
 }
 
-- (void)addAirportLocation:(id)a3
+- (void)addAirportLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   airportLocations = self->_airportLocations;
-  v8 = v4;
+  v8 = locationCopy;
   if (!airportLocations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_airportLocations;
     self->_airportLocations = v6;
 
-    v4 = v8;
+    locationCopy = v8;
     airportLocations = self->_airportLocations;
   }
 
-  [(NSMutableArray *)airportLocations addObject:v4];
+  [(NSMutableArray *)airportLocations addObject:locationCopy];
 }
 
-- (void)addDate:(id)a3
+- (void)addDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   dates = self->_dates;
-  v8 = v4;
+  v8 = dateCopy;
   if (!dates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_dates;
     self->_dates = v6;
 
-    v4 = v8;
+    dateCopy = v8;
     dates = self->_dates;
   }
 
-  [(NSMutableArray *)dates addObject:v4];
+  [(NSMutableArray *)dates addObject:dateCopy];
 }
 
-- (void)addFlight:(id)a3
+- (void)addFlight:(id)flight
 {
-  v4 = a3;
+  flightCopy = flight;
   flights = self->_flights;
-  v8 = v4;
+  v8 = flightCopy;
   if (!flights)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_flights;
     self->_flights = v6;
 
-    v4 = v8;
+    flightCopy = v8;
     flights = self->_flights;
   }
 
-  [(NSMutableArray *)flights addObject:v4];
+  [(NSMutableArray *)flights addObject:flightCopy];
 }
 
-- (void)addLink:(id)a3
+- (void)addLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   links = self->_links;
-  v8 = v4;
+  v8 = linkCopy;
   if (!links)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_links;
     self->_links = v6;
 
-    v4 = v8;
+    linkCopy = v8;
     links = self->_links;
   }
 
-  [(NSMutableArray *)links addObject:v4];
+  [(NSMutableArray *)links addObject:linkCopy];
 }
 
-- (void)addTrackingNumber:(id)a3
+- (void)addTrackingNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   trackingNumbers = self->_trackingNumbers;
-  v8 = v4;
+  v8 = numberCopy;
   if (!trackingNumbers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_trackingNumbers;
     self->_trackingNumbers = v6;
 
-    v4 = v8;
+    numberCopy = v8;
     trackingNumbers = self->_trackingNumbers;
   }
 
-  [(NSMutableArray *)trackingNumbers addObject:v4];
+  [(NSMutableArray *)trackingNumbers addObject:numberCopy];
 }
 
-- (void)addCurrency:(id)a3
+- (void)addCurrency:(id)currency
 {
-  v4 = a3;
+  currencyCopy = currency;
   currencies = self->_currencies;
-  v8 = v4;
+  v8 = currencyCopy;
   if (!currencies)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_currencies;
     self->_currencies = v6;
 
-    v4 = v8;
+    currencyCopy = v8;
     currencies = self->_currencies;
   }
 
-  [(NSMutableArray *)currencies addObject:v4];
+  [(NSMutableArray *)currencies addObject:currencyCopy];
 }
 
-- (void)addSecondaryEmbedding:(id)a3
+- (void)addSecondaryEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   secondaryEmbeddings = self->_secondaryEmbeddings;
-  v8 = v4;
+  v8 = embeddingCopy;
   if (!secondaryEmbeddings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_secondaryEmbeddings;
     self->_secondaryEmbeddings = v6;
 
-    v4 = v8;
+    embeddingCopy = v8;
     secondaryEmbeddings = self->_secondaryEmbeddings;
   }
 
-  [(NSMutableArray *)secondaryEmbeddings addObject:v4];
+  [(NSMutableArray *)secondaryEmbeddings addObject:embeddingCopy];
 }
 
-- (void)addPrimaryEmbedding:(id)a3
+- (void)addPrimaryEmbedding:(id)embedding
 {
-  v4 = a3;
+  embeddingCopy = embedding;
   primaryEmbeddings = self->_primaryEmbeddings;
-  v8 = v4;
+  v8 = embeddingCopy;
   if (!primaryEmbeddings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_primaryEmbeddings;
     self->_primaryEmbeddings = v6;
 
-    v4 = v8;
+    embeddingCopy = v8;
     primaryEmbeddings = self->_primaryEmbeddings;
   }
 
-  [(NSMutableArray *)primaryEmbeddings addObject:v4];
+  [(NSMutableArray *)primaryEmbeddings addObject:embeddingCopy];
 }
 
-- (void)addDetectedCalendarEventTypes:(id)a3
+- (void)addDetectedCalendarEventTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   detectedCalendarEventTypes = self->_detectedCalendarEventTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!detectedCalendarEventTypes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_detectedCalendarEventTypes;
     self->_detectedCalendarEventTypes = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     detectedCalendarEventTypes = self->_detectedCalendarEventTypes;
   }
 
-  [(NSMutableArray *)detectedCalendarEventTypes addObjectsFromArray:v4];
+  [(NSMutableArray *)detectedCalendarEventTypes addObjectsFromArray:typesCopy];
 }
 
-- (void)setEmbeddingSize:(unint64_t)a3
+- (void)setEmbeddingSize:(unint64_t)size
 {
   v3 = 3;
-  if (a3 == 768)
+  if (size == 768)
   {
     v3 = 2;
   }
 
-  if (a3 == 512)
+  if (size == 512)
   {
     v3 = 1;
   }
 
-  if (a3 == 256)
+  if (size == 256)
   {
     v3 = 0;
   }
@@ -641,15 +641,15 @@ LABEL_20:
   self->_embeddingSize = v3;
 }
 
-- (void)setEmbeddingFormat:(unint64_t)a3
+- (void)setEmbeddingFormat:(unint64_t)format
 {
   v3 = 3;
-  if (a3 == 1)
+  if (format == 1)
   {
     v3 = 1;
   }
 
-  if (a3 == 2)
+  if (format == 2)
   {
     v3 = 0;
   }
@@ -669,13 +669,13 @@ LABEL_20:
   *&self->_firstChunkLength = 0u;
 }
 
-- (void)addOwners:(id)a3
+- (void)addOwners:(id)owners
 {
-  v4 = a3;
-  if (v4)
+  ownersCopy = owners;
+  if (ownersCopy)
   {
     owners = self->_owners;
-    v8 = v4;
+    v8 = ownersCopy;
     if (!owners)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -686,17 +686,17 @@ LABEL_20:
     }
 
     [(NSMutableSet *)owners addObjectsFromArray:v8];
-    v4 = v8;
+    ownersCopy = v8;
   }
 }
 
-- (void)addAuthors:(id)a3
+- (void)addAuthors:(id)authors
 {
-  v4 = a3;
-  if (v4)
+  authorsCopy = authors;
+  if (authorsCopy)
   {
     authors = self->_authors;
-    v8 = v4;
+    v8 = authorsCopy;
     if (!authors)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -707,17 +707,17 @@ LABEL_20:
     }
 
     [(NSMutableSet *)authors addObjectsFromArray:v8];
-    v4 = v8;
+    authorsCopy = v8;
   }
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v4 = a3;
-  if (v4)
+  recipientsCopy = recipients;
+  if (recipientsCopy)
   {
     recipients = self->_recipients;
-    v8 = v4;
+    v8 = recipientsCopy;
     if (!recipients)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -728,17 +728,17 @@ LABEL_20:
     }
 
     [(NSMutableSet *)recipients addObjectsFromArray:v8];
-    v4 = v8;
+    recipientsCopy = v8;
   }
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
-  if (v4)
+  participantsCopy = participants;
+  if (participantsCopy)
   {
     participants = self->_participants;
-    v8 = v4;
+    v8 = participantsCopy;
     if (!participants)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -749,15 +749,15 @@ LABEL_20:
     }
 
     [(NSMutableSet *)participants addObjectsFromArray:v8];
-    v4 = v8;
+    participantsCopy = v8;
   }
 }
 
-- (void)addInteraction:(id)a3 score:(id)a4
+- (void)addInteraction:(id)interaction score:(id)score
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6)
+  interactionCopy = interaction;
+  scoreCopy = score;
+  if (interactionCopy && scoreCopy)
   {
     interactions = self->_interactions;
     if (!interactions)
@@ -769,7 +769,7 @@ LABEL_20:
       interactions = self->_interactions;
     }
 
-    [(NSMutableDictionary *)interactions setObject:v6 forKey:v10];
+    [(NSMutableDictionary *)interactions setObject:scoreCopy forKey:interactionCopy];
   }
 }
 

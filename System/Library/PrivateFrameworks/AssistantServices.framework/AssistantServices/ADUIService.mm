@@ -1,11 +1,11 @@
 @interface ADUIService
-+ (id)serviceIdentifierForRequestDelegate:(id)a3;
-- (ADUIService)initWithRequestDelegate:(id)a3;
-- (BOOL)_shouldWakeSystemForHandlingCommand:(id)a3 executionContext:(id)a4;
-- (id)commandsForDomain:(id)a3;
++ (id)serviceIdentifierForRequestDelegate:(id)delegate;
+- (ADUIService)initWithRequestDelegate:(id)delegate;
+- (BOOL)_shouldWakeSystemForHandlingCommand:(id)command executionContext:(id)context;
+- (id)commandsForDomain:(id)domain;
 - (id)domains;
-- (void)cancelOperationsForRequestID:(id)a3 forAssistantID:(id)a4 fromRemote:(BOOL)a5 reason:(int64_t)a6;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
+- (void)cancelOperationsForRequestID:(id)d forAssistantID:(id)iD fromRemote:(BOOL)remote reason:(int64_t)reason;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
 @end
 
 @implementation ADUIService
@@ -27,13 +27,13 @@
   return v2;
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
+  v14 = commandCopy;
   if (![v14 _adui_shouldBeHandledByAssistantd])
   {
     [(ADCommandCenterRequestDelegate *)self->_requestDelegate adRequestWillReceiveCommand:v14];
@@ -46,12 +46,12 @@
     v50[1] = 3221225472;
     v50[2] = sub_100284490;
     v50[3] = &unk_10051D2A0;
-    v54 = v13;
+    v54 = replyCopy;
     v50[4] = self;
     v15 = v14;
     v51 = v15;
-    v52 = v12;
-    v53 = v11;
+    v52 = contextCopy;
+    v53 = domainCopy;
     v16 = objc_retainBlock(v50);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -78,21 +78,21 @@ LABEL_26:
 
       v44 = v16;
       v20 = v15;
-      v21 = +[ADCommandCenter sharedCommandCenter];
-      v22 = [v21 _responseModeProvider];
-      v23 = [v22 fetchCurrentMode];
-      [v20 setResponseMode:v23];
+      views = +[ADCommandCenter sharedCommandCenter];
+      _responseModeProvider = [views _responseModeProvider];
+      fetchCurrentMode = [_responseModeProvider fetchCurrentMode];
+      [v20 setResponseMode:fetchCurrentMode];
 
       v24 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v25 = v24;
-        v26 = [v21 _responseModeProvider];
-        v27 = [v26 fetchCurrentMode];
+        _responseModeProvider2 = [views _responseModeProvider];
+        fetchCurrentMode2 = [_responseModeProvider2 fetchCurrentMode];
         *buf = 136315394;
         v57 = "[ADUIService handleCommand:forDomain:executionContext:reply:]";
         v58 = 2112;
-        v59 = v27;
+        v59 = fetchCurrentMode2;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s #modes Bridging addDialogs with Response Mode %@", buf, 0x16u);
       }
 
@@ -100,32 +100,32 @@ LABEL_26:
     }
 
     v18 = v15;
-    v19 = [v18 patternId];
-    if (!v19)
+    patternId = [v18 patternId];
+    if (!patternId)
     {
-      v28 = [v18 responseMode];
+      responseMode = [v18 responseMode];
 
-      if (v28)
+      if (responseMode)
       {
         goto LABEL_14;
       }
 
       v45 = v16;
-      v19 = +[ADCommandCenter sharedCommandCenter];
-      v36 = [v19 _responseModeProvider];
-      v37 = [v36 fetchCurrentMode];
-      [v18 setResponseMode:v37];
+      patternId = +[ADCommandCenter sharedCommandCenter];
+      _responseModeProvider3 = [patternId _responseModeProvider];
+      fetchCurrentMode3 = [_responseModeProvider3 fetchCurrentMode];
+      [v18 setResponseMode:fetchCurrentMode3];
 
       v38 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v39 = v38;
-        v43 = [v19 _responseModeProvider];
-        v40 = [v43 fetchCurrentMode];
+        _responseModeProvider4 = [patternId _responseModeProvider];
+        fetchCurrentMode4 = [_responseModeProvider4 fetchCurrentMode];
         *buf = 136315394;
         v57 = "[ADUIService handleCommand:forDomain:executionContext:reply:]";
         v58 = 2112;
-        v59 = v40;
+        v59 = fetchCurrentMode4;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "%s #modes Bridging addViews with Response Mode %@", buf, 0x16u);
       }
 
@@ -137,8 +137,8 @@ LABEL_14:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v21 = [v18 views];
-    v29 = [v21 countByEnumeratingWithState:&v46 objects:v55 count:16];
+    views = [v18 views];
+    v29 = [views countByEnumeratingWithState:&v46 objects:v55 count:16];
     if (!v29)
     {
 LABEL_25:
@@ -147,7 +147,7 @@ LABEL_25:
     }
 
     v30 = v29;
-    v42 = v11;
+    v42 = domainCopy;
     v44 = v16;
     v41 = v15;
     v31 = *v47;
@@ -157,7 +157,7 @@ LABEL_25:
       {
         if (*v47 != v31)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(views);
         }
 
         v33 = *(*(&v46 + 1) + 8 * i);
@@ -168,26 +168,26 @@ LABEL_25:
         }
       }
 
-      v30 = [v21 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      v30 = [views countByEnumeratingWithState:&v46 objects:v55 count:16];
     }
 
     while (v30);
-    v11 = v42;
+    domainCopy = v42;
     v15 = v41;
 LABEL_24:
     v16 = v44;
     goto LABEL_25;
   }
 
-  [v14 _adui_handleWithCompletion:v13];
+  [v14 _adui_handleWithCompletion:replyCopy];
 LABEL_28:
 }
 
-- (BOOL)_shouldWakeSystemForHandlingCommand:(id)a3 executionContext:(id)a4
+- (BOOL)_shouldWakeSystemForHandlingCommand:(id)command executionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[ADUIService _isWakeSystemSupportedOnPlatform](self, "_isWakeSystemSupportedOnPlatform") && [v7 isFromRemote])
+  commandCopy = command;
+  contextCopy = context;
+  if (-[ADUIService _isWakeSystemSupportedOnPlatform](self, "_isWakeSystemSupportedOnPlatform") && [contextCopy isFromRemote])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -201,25 +201,25 @@ LABEL_28:
   return isKindOfClass & 1;
 }
 
-- (void)cancelOperationsForRequestID:(id)a3 forAssistantID:(id)a4 fromRemote:(BOOL)a5 reason:(int64_t)a6
+- (void)cancelOperationsForRequestID:(id)d forAssistantID:(id)iD fromRemote:(BOOL)remote reason:(int64_t)reason
 {
-  v8 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100284A64;
   block[3] = &unk_10051C890;
-  v14 = a5;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  remoteCopy = remote;
+  v12 = dCopy;
+  selfCopy = self;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAGroupIdentifier])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:SAGroupIdentifier])
   {
     v22 = SAPreSynthesizeTTSClassIdentifier;
     v4 = &v22;
@@ -230,7 +230,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:SAPhoneGroupIdentifier])
+  if ([domainCopy isEqualToString:SAPhoneGroupIdentifier])
   {
     if ((AFIsHorseman() & 1) == 0)
     {
@@ -248,21 +248,21 @@ LABEL_11:
   }
 
   v8 = SAGLGroupIdentifier;
-  if ([v3 isEqualToString:SAGLGroupIdentifier])
+  if ([domainCopy isEqualToString:SAGLGroupIdentifier])
   {
     v19 = v8;
     v4 = &v19;
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:SAGuidanceGroupIdentifier])
+  if ([domainCopy isEqualToString:SAGuidanceGroupIdentifier])
   {
     v18 = SAGuidanceGuideUpdateClassIdentifier;
     v4 = &v18;
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:SASettingGroupIdentifier])
+  if ([domainCopy isEqualToString:SASettingGroupIdentifier])
   {
     if (AFIsNano())
     {
@@ -279,14 +279,14 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:SASmsGroupIdentifier])
+  if ([domainCopy isEqualToString:SASmsGroupIdentifier])
   {
     v15 = SASmsPlayAudioClassIdentifier;
     v4 = &v15;
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:SAVCSGroupIdentifier])
+  if ([domainCopy isEqualToString:SAVCSGroupIdentifier])
   {
     v14 = SAVCSAddResultsToContentShelfClassIdentifier;
     v4 = &v14;
@@ -294,14 +294,14 @@ LABEL_11:
   }
 
   v9 = SACardGroupIdentifier;
-  if ([v3 isEqualToString:SACardGroupIdentifier])
+  if ([domainCopy isEqualToString:SACardGroupIdentifier])
   {
     v13 = v9;
     v4 = &v13;
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:SADeviceControlGroupIdentifier])
+  if ([domainCopy isEqualToString:SADeviceControlGroupIdentifier])
   {
     v12[0] = SADeviceControlStartScreenRecordingClassIdentifier;
     v12[1] = SADeviceControlStopScreenRecordingClassIdentifier;
@@ -310,7 +310,7 @@ LABEL_11:
   }
 
   v10 = SAUIGroupIdentifier;
-  if ([v3 isEqualToString:SAUIGroupIdentifier])
+  if ([domainCopy isEqualToString:SAUIGroupIdentifier])
   {
     v11 = v10;
     v4 = &v11;
@@ -323,17 +323,17 @@ LABEL_5:
   return v6;
 }
 
-- (ADUIService)initWithRequestDelegate:(id)a3
+- (ADUIService)initWithRequestDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = ADUIService;
   v6 = [(ADUIService *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestDelegate, a3);
-    v8 = [objc_opt_class() serviceIdentifierForRequestDelegate:v5];
+    objc_storeStrong(&v6->_requestDelegate, delegate);
+    v8 = [objc_opt_class() serviceIdentifierForRequestDelegate:delegateCopy];
     [(ADService *)v7 setIdentifier:v8];
 
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -346,12 +346,12 @@ LABEL_5:
   return v7;
 }
 
-+ (id)serviceIdentifierForRequestDelegate:(id)a3
++ (id)serviceIdentifierForRequestDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initWithFormat:@"com.apple.siri.uiservice.%p", v3];
+  delegateCopy = delegate;
+  delegateCopy = [[NSString alloc] initWithFormat:@"com.apple.siri.uiservice.%p", delegateCopy];
 
-  return v4;
+  return delegateCopy;
 }
 
 @end

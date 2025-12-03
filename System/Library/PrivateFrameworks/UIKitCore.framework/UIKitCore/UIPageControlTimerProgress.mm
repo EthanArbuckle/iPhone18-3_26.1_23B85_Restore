@@ -1,17 +1,17 @@
 @interface UIPageControlTimerProgress
 - (BOOL)_canInstallTimer;
-- (BOOL)_shouldAdvanceToPage:(int64_t)a3;
+- (BOOL)_shouldAdvanceToPage:(int64_t)page;
 - (NSTimeInterval)durationForPage:(NSInteger)page;
 - (UIPageControlTimerProgress)initWithPreferredDuration:(NSTimeInterval)preferredDuration;
 - (void)_didChangeCurrentPage;
-- (void)_displayLinkTicked:(id)a3;
-- (void)_progressVisibilityChanged:(BOOL)a3;
+- (void)_displayLinkTicked:(id)ticked;
+- (void)_progressVisibilityChanged:(BOOL)changed;
 - (void)_updateTimer;
 - (void)dealloc;
-- (void)setCurrentProgress:(float)a3;
+- (void)setCurrentProgress:(float)progress;
 - (void)setDelegate:(id)delegate;
 - (void)setDuration:(NSTimeInterval)duration forPage:(NSInteger)page;
-- (void)setPageControl:(id)a3;
+- (void)setPageControl:(id)control;
 - (void)setPreferredDuration:(NSTimeInterval)preferredDuration;
 @end
 
@@ -21,8 +21,8 @@
 {
   if (preferredDuration <= 0.0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIPageControlProgress.m" lineNumber:110 description:{@"preferredDuration (%f) must be greater than zero.", *&preferredDuration}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControlProgress.m" lineNumber:110 description:{@"preferredDuration (%f) must be greater than zero.", *&preferredDuration}];
   }
 
   v8.receiver = self;
@@ -36,15 +36,15 @@
   return result;
 }
 
-- (void)setPageControl:(id)a3
+- (void)setPageControl:(id)control
 {
   v4.receiver = self;
   v4.super_class = UIPageControlTimerProgress;
-  [(UIPageControlProgress *)&v4 setPageControl:a3];
+  [(UIPageControlProgress *)&v4 setPageControl:control];
   [(UIPageControlTimerProgress *)self _updateTimer];
 }
 
-- (void)setCurrentProgress:(float)a3
+- (void)setCurrentProgress:(float)progress
 {
   v6.receiver = self;
   v6.super_class = UIPageControlTimerProgress;
@@ -80,8 +80,8 @@
 {
   if (preferredDuration <= 0.0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIPageControlProgress.m" lineNumber:138 description:{@"preferredDuration (%f) must be greater than zero.", *&preferredDuration}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControlProgress.m" lineNumber:138 description:{@"preferredDuration (%f) must be greater than zero.", *&preferredDuration}];
   }
 
   self->_preferredDuration = preferredDuration;
@@ -129,8 +129,8 @@
 
 - (void)_didChangeCurrentPage
 {
-  v3 = [(UIPageControlProgress *)self pageControl];
-  -[UIPageControlTimerProgress durationForPage:](self, "durationForPage:", [v3 currentPage]);
+  pageControl = [(UIPageControlProgress *)self pageControl];
+  -[UIPageControlTimerProgress durationForPage:](self, "durationForPage:", [pageControl currentPage]);
   self->_currentDuration = v4;
 
   v5.receiver = self;
@@ -140,59 +140,59 @@
 
 - (BOOL)_canInstallTimer
 {
-  v3 = [(UIPageControlProgress *)self pageControl];
-  v4 = [v3 window];
-  v5 = v4 && [(UIPageControlProgress *)self isProgressVisible]&& [(UIPageControlTimerProgress *)self enableTimer];
+  pageControl = [(UIPageControlProgress *)self pageControl];
+  window = [pageControl window];
+  v5 = window && [(UIPageControlProgress *)self isProgressVisible]&& [(UIPageControlTimerProgress *)self enableTimer];
 
   return v5;
 }
 
 - (void)_updateTimer
 {
-  v3 = [(UIPageControlTimerProgress *)self _canInstallTimer];
-  v4 = [(UIPageControlTimerProgress *)self displayLink];
+  _canInstallTimer = [(UIPageControlTimerProgress *)self _canInstallTimer];
+  displayLink = [(UIPageControlTimerProgress *)self displayLink];
 
-  if (v3)
+  if (_canInstallTimer)
   {
-    if (!v4)
+    if (!displayLink)
     {
-      v5 = [(UIPageControlProgress *)self pageControl];
-      v6 = [v5 _screen];
-      v12 = [v6 displayLinkWithTarget:self selector:sel__displayLinkTicked_];
+      pageControl = [(UIPageControlProgress *)self pageControl];
+      _screen = [pageControl _screen];
+      v12 = [_screen displayLinkWithTarget:self selector:sel__displayLinkTicked_];
 
-      v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v12 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [v12 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-      v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v12 addToRunLoop:v8 forMode:@"UITrackingRunLoopMode"];
+      mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [v12 addToRunLoop:mainRunLoop2 forMode:@"UITrackingRunLoopMode"];
 
       [(UIPageControlTimerProgress *)self setDisplayLink:v12];
       self->_previousTime = CFAbsoluteTimeGetCurrent();
-      v9 = [(UIPageControlProgress *)self pageControl];
-      -[UIPageControlTimerProgress durationForPage:](self, "durationForPage:", [v9 currentPage]);
+      pageControl2 = [(UIPageControlProgress *)self pageControl];
+      -[UIPageControlTimerProgress durationForPage:](self, "durationForPage:", [pageControl2 currentPage]);
       self->_currentDuration = v10;
     }
   }
 
-  else if (v4)
+  else if (displayLink)
   {
-    v11 = [(UIPageControlTimerProgress *)self displayLink];
-    [v11 invalidate];
+    displayLink2 = [(UIPageControlTimerProgress *)self displayLink];
+    [displayLink2 invalidate];
 
     [(UIPageControlTimerProgress *)self setDisplayLink:0];
   }
 }
 
-- (void)_displayLinkTicked:(id)a3
+- (void)_displayLinkTicked:(id)ticked
 {
   Current = CFAbsoluteTimeGetCurrent();
   v5 = Current - self->_previousTime;
-  v6 = [(UIPageControlProgress *)self pageControl];
+  pageControl = [(UIPageControlProgress *)self pageControl];
   v7 = v5 + self->_currentDurationProgress;
-  v10 = v6;
+  v10 = pageControl;
   if (v7 >= self->_currentDuration)
   {
-    v9 = [v6 currentPage] + 1;
+    v9 = [pageControl currentPage] + 1;
     if (v9 == [v10 numberOfPages] && -[UIPageControlTimerProgress resetsToInitialPageAfterEnd](self, "resetsToInitialPageAfterEnd"))
     {
       v9 = 0;
@@ -220,24 +220,24 @@
   self->_previousTime = Current;
 }
 
-- (BOOL)_shouldAdvanceToPage:(int64_t)a3
+- (BOOL)_shouldAdvanceToPage:(int64_t)page
 {
   if ((*&self->_delegateImplements & 2) == 0)
   {
     return 1;
   }
 
-  v6 = [(UIPageControlProgress *)self delegate];
-  LOBYTE(a3) = [v6 pageControlTimerProgress:self shouldAdvanceToPage:a3];
+  delegate = [(UIPageControlProgress *)self delegate];
+  LOBYTE(page) = [delegate pageControlTimerProgress:self shouldAdvanceToPage:page];
 
-  return a3;
+  return page;
 }
 
-- (void)_progressVisibilityChanged:(BOOL)a3
+- (void)_progressVisibilityChanged:(BOOL)changed
 {
   v4.receiver = self;
   v4.super_class = UIPageControlTimerProgress;
-  [(UIPageControlProgress *)&v4 _progressVisibilityChanged:a3];
+  [(UIPageControlProgress *)&v4 _progressVisibilityChanged:changed];
   [(UIPageControlTimerProgress *)self _updateTimer];
 }
 

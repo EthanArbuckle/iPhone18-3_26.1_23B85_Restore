@@ -1,24 +1,24 @@
 @interface ADJasperPearlInFieldCalibrationPearlInput
-- (__n128)setPose:(__n128)a3;
-- (__n128)setPrevPose:(__n128)a3;
+- (__n128)setPose:(__n128)pose;
+- (__n128)setPrevPose:(__n128)pose;
 - (id)getPearlDepthAttachments;
 @end
 
 @implementation ADJasperPearlInFieldCalibrationPearlInput
 
-- (__n128)setPrevPose:(__n128)a3
+- (__n128)setPrevPose:(__n128)pose
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = pose;
   result[10] = a4;
   result[11] = a5;
   return result;
 }
 
-- (__n128)setPose:(__n128)a3
+- (__n128)setPose:(__n128)pose
 {
   result[4] = a2;
-  result[5] = a3;
+  result[5] = pose;
   result[6] = a4;
   result[7] = a5;
   return result;

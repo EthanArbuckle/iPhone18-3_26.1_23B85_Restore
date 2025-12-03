@@ -2,25 +2,25 @@
 - (BOOL)_checkNotAtRootLevel;
 - (BOOL)_isParsingVisit;
 - (BOOL)_isParsingVisitArray;
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4;
-- (BOOL)jsonReaderBeginArray:(id)a3;
-- (BOOL)jsonReaderBeginObject:(id)a3;
-- (BOOL)jsonReaderEndArray:(id)a3;
-- (BOOL)jsonReaderEndObject:(id)a3;
-- (BOOL)parseFileHandle:(id)a3 error:(id *)a4;
-- (BOOL)parseURL:(id)a3 error:(id *)a4;
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value;
+- (BOOL)jsonReaderBeginArray:(id)array;
+- (BOOL)jsonReaderBeginObject:(id)object;
+- (BOOL)jsonReaderEndArray:(id)array;
+- (BOOL)jsonReaderEndObject:(id)object;
+- (BOOL)parseFileHandle:(id)handle error:(id *)error;
+- (BOOL)parseURL:(id)l error:(id *)error;
 - (WBSHistoryImporterDelegate)delegate;
 - (id)_popKeyFromStackIfPossible;
 @end
 
 @implementation WBSChromeHistoryImporter
 
-- (BOOL)parseURL:(id)a3 error:(id *)a4
+- (BOOL)parseURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:a3 options:0 createMode:0 error:a4];
+  v6 = [MEMORY[0x1E696AC00] safari_fileHandleWithURL:l options:0 createMode:0 error:error];
   if (v6)
   {
-    v7 = [(WBSChromeHistoryImporter *)self parseFileHandle:v6 error:a4];
+    v7 = [(WBSChromeHistoryImporter *)self parseFileHandle:v6 error:error];
   }
 
   else
@@ -31,15 +31,15 @@
   return v7;
 }
 
-- (BOOL)parseFileHandle:(id)a3 error:(id *)a4
+- (BOOL)parseFileHandle:(id)handle error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v6 = a3;
+  handleCopy = handle;
   v7 = objc_alloc_init(WBSJSONReader);
   [(WBSJSONReader *)v7 setDelegate:self];
   lastError = self->_lastError;
@@ -50,7 +50,7 @@
   self->_stack = v9;
 
   self->_foundVisitArray = 0;
-  v11 = [(WBSJSONReader *)v7 parseFileHandle:v6 error:a4];
+  v11 = [(WBSJSONReader *)v7 parseFileHandle:handleCopy error:error];
 
   v12 = self->_lastError;
   if (!self->_foundVisitArray && !v12)
@@ -67,10 +67,10 @@
     v12 = self->_lastError;
   }
 
-  if (a4 && !*a4)
+  if (error && !*error)
   {
     v12 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   v17 = v12 == 0;
@@ -130,34 +130,34 @@
 
 - (id)_popKeyFromStackIfPossible
 {
-  v3 = [(NSMutableArray *)self->_stack lastObject];
+  lastObject = [(NSMutableArray *)self->_stack lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NSMutableArray *)self->_stack lastObject];
+    lastObject2 = [(NSMutableArray *)self->_stack lastObject];
     [(NSMutableArray *)self->_stack removeLastObject];
   }
 
   else
   {
-    v5 = 0;
+    lastObject2 = 0;
   }
 
-  return v5;
+  return lastObject2;
 }
 
-- (BOOL)jsonReader:(id)a3 scalarValue:(id)a4
+- (BOOL)jsonReader:(id)reader scalarValue:(id)value
 {
-  v6 = a4;
-  v7 = [(WBSChromeHistoryImporter *)self _checkNotAtRootLevel];
-  if (v7)
+  valueCopy = value;
+  _checkNotAtRootLevel = [(WBSChromeHistoryImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
-    v8 = [(WBSChromeHistoryImporter *)self _popKeyFromStackIfPossible];
-    if ([v8 isEqualToString:@"url"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    _popKeyFromStackIfPossible = [(WBSChromeHistoryImporter *)self _popKeyFromStackIfPossible];
+    if ([_popKeyFromStackIfPossible isEqualToString:@"url"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v9 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+      v9 = [MEMORY[0x1E695DFF8] URLWithString:valueCopy];
       url = self->_url;
       self->_url = v9;
 
@@ -166,33 +166,33 @@
         v11 = WBS_LOG_CHANNEL_PREFIXImport();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          [WBSChromeHistoryImporter jsonReader:v6 scalarValue:v11];
+          [WBSChromeHistoryImporter jsonReader:valueCopy scalarValue:v11];
         }
       }
     }
 
-    else if ([v8 isEqualToString:@"title"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    else if ([_popKeyFromStackIfPossible isEqualToString:@"title"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      objc_storeStrong(&self->_title, a4);
+      objc_storeStrong(&self->_title, value);
     }
 
-    else if ([v8 isEqualToString:@"time_usec"])
+    else if ([_popKeyFromStackIfPossible isEqualToString:@"time_usec"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        self->_visitTime = [v6 integerValue];
+        self->_visitTime = [valueCopy integerValue];
       }
     }
   }
 
-  return v7;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderBeginArray:(id)a3
+- (BOOL)jsonReaderBeginArray:(id)array
 {
-  v4 = [(WBSChromeHistoryImporter *)self _checkNotAtRootLevel];
-  if (v4)
+  _checkNotAtRootLevel = [(WBSChromeHistoryImporter *)self _checkNotAtRootLevel];
+  if (_checkNotAtRootLevel)
   {
     [(NSMutableArray *)self->_stack addObject:&unk_1F308E1F8];
     if ([(WBSChromeHistoryImporter *)self _isParsingVisitArray])
@@ -201,10 +201,10 @@
     }
   }
 
-  return v4;
+  return _checkNotAtRootLevel;
 }
 
-- (BOOL)jsonReaderBeginObject:(id)a3
+- (BOOL)jsonReaderBeginObject:(id)object
 {
   [(NSMutableArray *)self->_stack addObject:&unk_1F308E1E0];
   if ([(WBSChromeHistoryImporter *)self _isParsingVisit])
@@ -218,16 +218,16 @@
   return 1;
 }
 
-- (BOOL)jsonReaderEndArray:(id)a3
+- (BOOL)jsonReaderEndArray:(id)array
 {
   [(NSMutableArray *)self->_stack removeLastObject];
-  v4 = [(WBSChromeHistoryImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSChromeHistoryImporter *)self _popKeyFromStackIfPossible];
   return 1;
 }
 
-- (BOOL)jsonReaderEndObject:(id)a3
+- (BOOL)jsonReaderEndObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([(WBSChromeHistoryImporter *)self _isParsingVisit])
   {
     v5 = objc_autoreleasePoolPush();
@@ -261,8 +261,8 @@
         if (v9 >= self->_ageLimit)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          v12 = [(NSURL *)self->_url absoluteString];
-          [WeakRetained addVisitWithURLString:v12 visitTime:self->_title title:1 loadSuccessful:0 httpGet:0 redirectSourceURLString:0 redirectSourceVisitTime:v10 redirectDestinationURLString:0.0 redirectDestinationVisitTime:0.0 visitCount:1];
+          absoluteString = [(NSURL *)self->_url absoluteString];
+          [WeakRetained addVisitWithURLString:absoluteString visitTime:self->_title title:1 loadSuccessful:0 httpGet:0 redirectSourceURLString:0 redirectSourceVisitTime:v10 redirectDestinationURLString:0.0 redirectDestinationVisitTime:0.0 visitCount:1];
         }
       }
     }
@@ -271,7 +271,7 @@
   }
 
   [(NSMutableArray *)self->_stack removeLastObject];
-  v13 = [(WBSChromeHistoryImporter *)self _popKeyFromStackIfPossible];
+  _popKeyFromStackIfPossible = [(WBSChromeHistoryImporter *)self _popKeyFromStackIfPossible];
 
   return 1;
 }

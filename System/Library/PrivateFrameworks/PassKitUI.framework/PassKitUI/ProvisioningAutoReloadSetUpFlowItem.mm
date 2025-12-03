@@ -1,6 +1,6 @@
 @interface ProvisioningAutoReloadSetUpFlowItem
 - (_TtC9PassKitUI35ProvisioningAutoReloadSetUpFlowItem)init;
-- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)a3 threshold:(id)a4;
+- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)amount threshold:(id)threshold;
 @end
 
 @implementation ProvisioningAutoReloadSetUpFlowItem
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)a3 threshold:(id)a4
+- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)amount threshold:(id)threshold
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD7A66B4(v6, v7);
+  amountCopy = amount;
+  thresholdCopy = threshold;
+  selfCopy = self;
+  sub_1BD7A66B4(amountCopy, thresholdCopy);
 }
 
 @end

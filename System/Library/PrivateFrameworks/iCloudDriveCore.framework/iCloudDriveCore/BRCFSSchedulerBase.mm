@@ -1,29 +1,29 @@
 @interface BRCFSSchedulerBase
 - (BOOL)closed;
-- (BOOL)haveActiveJobsMatching:(id)a3;
-- (BOOL)setState:(int)a3 forJobsMatching:(id)a4;
-- (BRCFSSchedulerBase)initWithSession:(id)a3 name:(id)a4 tableName:(id)a5;
-- (id)aggregateDescriptionForJobsMatching:(id)a3 context:(id)a4;
-- (id)descriptionForJobsMatching:(id)a3 ordering:(id)a4 additionalColumns:(id)a5 additionalValuesHandler:(id)a6 context:(id)a7;
-- (int)jobStateFor:(id)a3;
-- (int64_t)timeToRetryFor:(id)a3;
-- (int64_t)updateStamps:(throttle_stamps *)a3 throttle:(id)a4 now:(int64_t)a5;
-- (unint64_t)postponeJobID:(id)a3 withThrottle:(id)a4;
+- (BOOL)haveActiveJobsMatching:(id)matching;
+- (BOOL)setState:(int)state forJobsMatching:(id)matching;
+- (BRCFSSchedulerBase)initWithSession:(id)session name:(id)name tableName:(id)tableName;
+- (id)aggregateDescriptionForJobsMatching:(id)matching context:(id)context;
+- (id)descriptionForJobsMatching:(id)matching ordering:(id)ordering additionalColumns:(id)columns additionalValuesHandler:(id)handler context:(id)context;
+- (int)jobStateFor:(id)for;
+- (int64_t)timeToRetryFor:(id)for;
+- (int64_t)updateStamps:(throttle_stamps *)stamps throttle:(id)throttle now:(int64_t)now;
+- (unint64_t)postponeJobID:(id)d withThrottle:(id)throttle;
 - (void)_close;
 - (void)cancel;
 - (void)checkIfHasWork;
 - (void)close;
-- (void)computeStamps:(throttle_stamps *)a3 forJobID:(id)a4 throttle:(id)a5 shouldBackoff:(BOOL)a6;
+- (void)computeStamps:(throttle_stamps *)stamps forJobID:(id)d throttle:(id)throttle shouldBackoff:(BOOL)backoff;
 - (void)deleteExpiredJobs;
-- (void)deleteJobsMatching:(id)a3;
-- (void)describeInBuffer:(id)a3 aggregateOfJobsMatching:(id)a4 context:(id)a5;
-- (void)recoverAndReportMissingJobsWithCompletion:(id)a3 recoveryTask:(id)a4;
-- (void)resetBackoffForJobWithID:(id)a3;
+- (void)deleteJobsMatching:(id)matching;
+- (void)describeInBuffer:(id)buffer aggregateOfJobsMatching:(id)matching context:(id)context;
+- (void)recoverAndReportMissingJobsWithCompletion:(id)completion recoveryTask:(id)task;
+- (void)resetBackoffForJobWithID:(id)d;
 - (void)resume;
 - (void)schedule;
-- (void)setHasActiveWork:(BOOL)a3;
-- (void)setHasWork:(BOOL)a3;
-- (void)signalWithDeadline:(int64_t)a3;
+- (void)setHasActiveWork:(BOOL)work;
+- (void)setHasWork:(BOOL)work;
+- (void)signalWithDeadline:(int64_t)deadline;
 - (void)suspend;
 @end
 
@@ -31,8 +31,8 @@
 
 - (BOOL)closed
 {
-  v2 = [(BRCFSSchedulerBase *)self hasWorkGroup];
-  v3 = v2 == 0;
+  hasWorkGroup = [(BRCFSSchedulerBase *)self hasWorkGroup];
+  v3 = hasWorkGroup == 0;
 
   return v3;
 }
@@ -42,8 +42,8 @@
   v15 = *MEMORY[0x277D85DE8];
   if (![(BRCFSSchedulerBase *)self hasActiveWork]&& [(BRCFSSchedulerBase *)self hasWork])
   {
-    v3 = [(BRCAccountSession *)self->_session clientDB];
-    v4 = [v3 numberWithSQL:{@"SELECT throttle_id FROM %@ WHERE throttle_state > 0 LIMIT 1", self->_tableName}];
+    clientDB = [(BRCAccountSession *)self->_session clientDB];
+    v4 = [clientDB numberWithSQL:{@"SELECT throttle_id FROM %@ WHERE throttle_state > 0 LIMIT 1", self->_tableName}];
 
     if (v4)
     {
@@ -68,13 +68,13 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHasWork:(BOOL)a3
+- (void)setHasWork:(BOOL)work
 {
-  v3 = a3;
-  if (![(BRCFSSchedulerBase *)self closed]&& self->_hasWork != v3)
+  workCopy = work;
+  if (![(BRCFSSchedulerBase *)self closed]&& self->_hasWork != workCopy)
   {
     hasWorkGroup = self->_hasWorkGroup;
-    if (v3)
+    if (workCopy)
     {
       dispatch_group_enter(hasWorkGroup);
     }
@@ -84,19 +84,19 @@
       dispatch_group_leave(hasWorkGroup);
     }
 
-    self->_hasWork = v3;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"BRCFSSchedulerBaseDidUpdateHasWorkNotification" object:0];
+    self->_hasWork = workCopy;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"BRCFSSchedulerBaseDidUpdateHasWorkNotification" object:0];
   }
 }
 
-- (void)setHasActiveWork:(BOOL)a3
+- (void)setHasActiveWork:(BOOL)work
 {
-  v3 = a3;
-  if (![(BRCFSSchedulerBase *)self closed]&& self->_hasActiveWork != v3)
+  workCopy = work;
+  if (![(BRCFSSchedulerBase *)self closed]&& self->_hasActiveWork != workCopy)
   {
     hasWorkGroup = self->_hasWorkGroup;
-    if (v3)
+    if (workCopy)
     {
       dispatch_group_enter(hasWorkGroup);
       dispatch_group_enter(self->_hasActiveWorkGroup);
@@ -108,24 +108,24 @@
       dispatch_group_leave(self->_hasActiveWorkGroup);
     }
 
-    self->_hasActiveWork = v3;
+    self->_hasActiveWork = workCopy;
   }
 }
 
-- (BRCFSSchedulerBase)initWithSession:(id)a3 name:(id)a4 tableName:(id)a5
+- (BRCFSSchedulerBase)initWithSession:(id)session name:(id)name tableName:(id)tableName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  nameCopy = name;
+  tableNameCopy = tableName;
   v35.receiver = self;
   v35.super_class = BRCFSSchedulerBase;
   v12 = [(BRCFSSchedulerBase *)&v35 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_session, a3);
-    objc_storeStrong(&v13->_name, a4);
-    v14 = [MEMORY[0x277D82C10] nameWithString:v11];
+    objc_storeStrong(&v12->_session, session);
+    objc_storeStrong(&v13->_name, name);
+    v14 = [MEMORY[0x277D82C10] nameWithString:tableNameCopy];
     tableName = v13->_tableName;
     v13->_tableName = v14;
 
@@ -137,18 +137,18 @@
     hasActiveWorkGroup = v13->_hasActiveWorkGroup;
     v13->_hasActiveWorkGroup = v18;
 
-    v20 = [v9 clientTruthWorkloop];
+    clientTruthWorkloop = [sessionCopy clientTruthWorkloop];
     schedulerWorkloop = v13->_schedulerWorkloop;
-    v13->_schedulerWorkloop = v20;
+    v13->_schedulerWorkloop = clientTruthWorkloop;
 
     v22 = [BRCDeadlineSource alloc];
-    v23 = [(BRCAccountSession *)v13->_session defaultScheduler];
-    v24 = [(BRCDeadlineSource *)v22 initWithScheduler:v23 name:v13->_name];
+    defaultScheduler = [(BRCAccountSession *)v13->_session defaultScheduler];
+    v24 = [(BRCDeadlineSource *)v22 initWithScheduler:defaultScheduler name:v13->_name];
     schedulerSource = v13->_schedulerSource;
     v13->_schedulerSource = v24;
 
-    v26 = [v9 clientTruthWorkloop];
-    [(BRCDeadlineSource *)v13->_schedulerSource setWorkloop:v26];
+    clientTruthWorkloop2 = [sessionCopy clientTruthWorkloop];
+    [(BRCDeadlineSource *)v13->_schedulerSource setWorkloop:clientTruthWorkloop2];
 
     objc_initWeak(&location, v13);
     v27 = v13->_schedulerSource;
@@ -217,56 +217,56 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)haveActiveJobsMatching:(id)a3
+- (BOOL)haveActiveJobsMatching:(id)matching
 {
   session = self->_session;
-  v5 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
+  matchingCopy = matching;
+  clientDB = [(BRCAccountSession *)session clientDB];
   tableName = self->_tableName;
-  v8 = [v5 matchingJobsWhereSQLClause];
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
 
-  v9 = [v6 numberWithSQL:{@"SELECT 1 FROM %@ WHERE %@ AND throttle_state = 1 LIMIT 1", tableName, v8}];
-  LOBYTE(v8) = [v9 BOOLValue];
+  v9 = [clientDB numberWithSQL:{@"SELECT 1 FROM %@ WHERE %@ AND throttle_state = 1 LIMIT 1", tableName, matchingJobsWhereSQLClause}];
+  LOBYTE(matchingJobsWhereSQLClause) = [v9 BOOLValue];
 
-  return v8;
+  return matchingJobsWhereSQLClause;
 }
 
-- (int)jobStateFor:(id)a3
+- (int)jobStateFor:(id)for
 {
   session = self->_session;
-  v5 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
+  forCopy = for;
+  clientDB = [(BRCAccountSession *)session clientDB];
   tableName = self->_tableName;
-  v8 = [v5 matchingJobsWhereSQLClause];
+  matchingJobsWhereSQLClause = [forCopy matchingJobsWhereSQLClause];
 
-  v9 = [v6 numberWithSQL:{@"SELECT throttle_state FROM %@ WHERE %@ AND throttle_state != 0", tableName, v8}];
+  v9 = [clientDB numberWithSQL:{@"SELECT throttle_state FROM %@ WHERE %@ AND throttle_state != 0", tableName, matchingJobsWhereSQLClause}];
   if (v9)
   {
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    v10 = 0;
+    intValue = 0;
   }
 
-  return v10;
+  return intValue;
 }
 
-- (int64_t)timeToRetryFor:(id)a3
+- (int64_t)timeToRetryFor:(id)for
 {
   session = self->_session;
-  v5 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
+  forCopy = for;
+  clientDB = [(BRCAccountSession *)session clientDB];
   tableName = self->_tableName;
-  v8 = [v5 matchingJobsWhereSQLClause];
+  matchingJobsWhereSQLClause = [forCopy matchingJobsWhereSQLClause];
 
-  v9 = [v6 numberWithSQL:{@"SELECT next_retry_stamp FROM %@ WHERE %@ AND throttle_state != 0", tableName, v8}];
+  v9 = [clientDB numberWithSQL:{@"SELECT next_retry_stamp FROM %@ WHERE %@ AND throttle_state != 0", tableName, matchingJobsWhereSQLClause}];
   if (v9)
   {
-    v10 = [v9 longLongValue];
+    longLongValue = [v9 longLongValue];
     v11 = brc_current_date_nsec();
-    v12 = (v10 - v11) & ~((v10 - v11) >> 63);
+    v12 = (longLongValue - v11) & ~((longLongValue - v11) >> 63);
   }
 
   else
@@ -277,31 +277,31 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
   return v12;
 }
 
-- (id)descriptionForJobsMatching:(id)a3 ordering:(id)a4 additionalColumns:(id)a5 additionalValuesHandler:(id)a6 context:(id)a7
+- (id)descriptionForJobsMatching:(id)matching ordering:(id)ordering additionalColumns:(id)columns additionalValuesHandler:(id)handler context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v44 = a6;
-  v15 = a7;
-  v16 = [v15 db];
+  matchingCopy = matching;
+  orderingCopy = ordering;
+  columnsCopy = columns;
+  handlerCopy = handler;
+  contextCopy = context;
+  v16 = [contextCopy db];
   v17 = v16;
   if (v16)
   {
-    v18 = v16;
+    clientDB = v16;
   }
 
   else
   {
-    v18 = [(BRCAccountSession *)self->_session clientDB];
+    clientDB = [(BRCAccountSession *)self->_session clientDB];
   }
 
-  v42 = v18;
+  v42 = clientDB;
 
-  if (v14)
+  if (columnsCopy)
   {
     v19 = [MEMORY[0x277D82C18] rawInjection:" length:{", 1}];
-    v20 = v14;
+    v20 = columnsCopy;
   }
 
   else
@@ -311,11 +311,11 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
   }
 
   tableName = self->_tableName;
-  v22 = [v12 matchingJobsWhereSQLClause];
-  v23 = v22;
-  if (v13)
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
+  v23 = matchingJobsWhereSQLClause;
+  if (orderingCopy)
   {
-    v24 = [v42 fetch:{@"SELECT zone_rowid, throttle_id, throttle_state, retry_count, last_try_stamp, next_retry_stamp, expire_stamp%@%@ FROM %@ WHERE %@%@", v19, v20, tableName, v22, v13}];
+    v24 = [v42 fetch:{@"SELECT zone_rowid, throttle_id, throttle_state, retry_count, last_try_stamp, next_retry_stamp, expire_stamp%@%@ FROM %@ WHERE %@%@", v19, v20, tableName, matchingJobsWhereSQLClause, orderingCopy}];
   }
 
   else
@@ -324,18 +324,18 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
     v24 = [v42 fetch:{@"SELECT zone_rowid, throttle_id, throttle_state, retry_count, last_try_stamp, next_retry_stamp, expire_stamp%@%@ FROM %@ WHERE %@%@", v19, v20, tableName, v23, v25}];
   }
 
-  if (!v14)
+  if (!columnsCopy)
   {
   }
 
-  v41 = v14;
+  v41 = columnsCopy;
 
   if ([v24 next])
   {
-    v39 = v13;
-    v40 = v12;
+    v39 = orderingCopy;
+    v40 = matchingCopy;
     v26 = 0;
-    v27 = v44;
+    v27 = handlerCopy;
     v43 = 0;
     do
     {
@@ -344,9 +344,9 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
       v30 = [v24 longLongAtIndex:4];
       v31 = [v24 longLongAtIndex:5];
       v32 = [v24 longLongAtIndex:6];
-      if (![v15 onlyActiveStuff] || v28)
+      if (![contextCopy onlyActiveStuff] || v28)
       {
-        if (v28 || ([BRCDumpContext nowFromContext:v15], !brc_is_before_deadline()))
+        if (v28 || ([BRCDumpContext nowFromContext:contextCopy], !brc_is_before_deadline()))
         {
           if (v26)
           {
@@ -364,23 +364,23 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
             (v27)[2](v27, v26, v24, 7, v28);
           }
 
-          v33 = [BRCDumpContext stringFromThrottleState:v28 context:v15];
+          v33 = [BRCDumpContext stringFromThrottleState:v28 context:contextCopy];
           [v26 appendFormat:@" %@ attempts:%d", v33, v29];
 
-          v34 = [BRCDumpContext stringFromDueStamp:v30 allowsPast:1 context:v15];
+          v34 = [BRCDumpContext stringFromDueStamp:v30 allowsPast:1 context:contextCopy];
           [v26 appendFormat:@" last:%@", v34];
 
           if (v28)
           {
-            v35 = [BRCDumpContext stringFromDueStamp:v31 allowsPast:0 context:v15];
+            v35 = [BRCDumpContext stringFromDueStamp:v31 allowsPast:0 context:contextCopy];
             [v26 appendFormat:@" next:%@", v35];
           }
 
-          v36 = [BRCDumpContext stringFromDueStamp:v32 allowsPast:0 context:v15];
+          v36 = [BRCDumpContext stringFromDueStamp:v32 allowsPast:0 context:contextCopy];
           [v26 appendFormat:@" cleanup:%@", v36];
 
           [v26 appendString:@"]"];
-          v27 = v44;
+          v27 = handlerCopy;
         }
 
         else
@@ -394,15 +394,15 @@ void __53__BRCFSSchedulerBase_initWithSession_name_tableName___block_invoke(uint
     [v24 close];
     if (v43)
     {
-      v13 = v39;
-      v12 = v40;
+      orderingCopy = v39;
+      matchingCopy = v40;
       if (v26)
       {
         [v26 appendString:@" "];
-        if (v15)
+        if (contextCopy)
         {
 LABEL_31:
-          v37 = [v15 highlightedString:@"old" type:6];
+          v37 = [contextCopy highlightedString:@"old" type:6];
           [v26 appendFormat:@"[%ld %@]", v43, v37];
 
           goto LABEL_36;
@@ -412,7 +412,7 @@ LABEL_31:
       else
       {
         v26 = objc_alloc_init(MEMORY[0x277CCAB68]);
-        if (v15)
+        if (contextCopy)
         {
           goto LABEL_31;
         }
@@ -423,8 +423,8 @@ LABEL_31:
 
     else
     {
-      v13 = v39;
-      v12 = v40;
+      orderingCopy = v39;
+      matchingCopy = v40;
     }
   }
 
@@ -432,7 +432,7 @@ LABEL_31:
   {
     [v24 close];
     v26 = 0;
-    v27 = v44;
+    v27 = handlerCopy;
   }
 
 LABEL_36:
@@ -440,28 +440,28 @@ LABEL_36:
   return v26;
 }
 
-- (void)describeInBuffer:(id)a3 aggregateOfJobsMatching:(id)a4 context:(id)a5
+- (void)describeInBuffer:(id)buffer aggregateOfJobsMatching:(id)matching context:(id)context
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 db];
+  bufferCopy = buffer;
+  matchingCopy = matching;
+  contextCopy = context;
+  v10 = [contextCopy db];
   v11 = v10;
   if (v10)
   {
-    v12 = v10;
+    clientDB = v10;
   }
 
   else
   {
-    v12 = [(BRCAccountSession *)self->_session clientDB];
+    clientDB = [(BRCAccountSession *)self->_session clientDB];
   }
 
-  v13 = v12;
+  v13 = clientDB;
 
   tableName = self->_tableName;
-  v15 = [v8 matchingJobsWhereSQLClause];
-  v16 = [v13 fetch:{@"SELECT throttle_state, COUNT(*) FROM %@ WHERE %@ GROUP BY throttle_state", tableName, v15}];
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
+  v16 = [v13 fetch:{@"SELECT throttle_state, COUNT(*) FROM %@ WHERE %@ GROUP BY throttle_state", tableName, matchingJobsWhereSQLClause}];
 
   if ([v16 next])
   {
@@ -469,21 +469,21 @@ LABEL_36:
     {
       v17 = [v16 unsignedIntAtIndex:0];
       v18 = [v16 unsignedLongAtIndex:1];
-      v19 = [BRCDumpContext stringFromThrottleState:v17 context:v9];
-      [v20 appendFormat:@" %@:%lld", v19, v18];
+      v19 = [BRCDumpContext stringFromThrottleState:v17 context:contextCopy];
+      [bufferCopy appendFormat:@" %@:%lld", v19, v18];
     }
 
     while (([v16 next] & 1) != 0);
   }
 }
 
-- (id)aggregateDescriptionForJobsMatching:(id)a3 context:(id)a4
+- (id)aggregateDescriptionForJobsMatching:(id)matching context:(id)context
 {
   v6 = MEMORY[0x277CCAB68];
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  matchingCopy = matching;
   v9 = objc_alloc_init(v6);
-  [(BRCFSSchedulerBase *)self describeInBuffer:v9 aggregateOfJobsMatching:v8 context:v7];
+  [(BRCFSSchedulerBase *)self describeInBuffer:v9 aggregateOfJobsMatching:matchingCopy context:contextCopy];
 
   if ([v9 length])
   {
@@ -498,12 +498,12 @@ LABEL_36:
   return v10;
 }
 
-- (unint64_t)postponeJobID:(id)a3 withThrottle:(id)a4
+- (unint64_t)postponeJobID:(id)d withThrottle:(id)throttle
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   memset(v21, 0, sizeof(v21));
-  [(BRCFSSchedulerBase *)self computeStamps:v21 forJobID:v6 throttle:a4 shouldBackoff:1];
+  [(BRCFSSchedulerBase *)self computeStamps:v21 forJobID:dCopy throttle:throttle shouldBackoff:1];
   if (DWORD1(v21[0]) == -1)
   {
     [BRCFSSchedulerBase postponeJobID:withThrottle:];
@@ -517,25 +517,25 @@ LABEL_36:
     *buf = 138412802;
     v23 = name;
     v24 = 2112;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
     v27 = v7;
     _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] %@[%@]: post-poning job%@", buf, 0x20u);
   }
 
-  v9 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   tableName = self->_tableName;
   v20 = *(v21 + 8);
   v11 = *(&v21[1] + 1);
   v12 = LODWORD(v21[0]);
-  v13 = [v6 matchingJobsWhereSQLClause];
-  [v9 execute:{@"UPDATE %@ SET   throttle_state = 1, retry_count = %u, last_try_stamp = %llu, next_retry_stamp = %llu, expire_stamp = %llu WHERE %@", tableName, v12, v20, v11, v13}];
+  matchingJobsWhereSQLClause = [dCopy matchingJobsWhereSQLClause];
+  [clientDB execute:{@"UPDATE %@ SET   throttle_state = 1, retry_count = %u, last_try_stamp = %llu, next_retry_stamp = %llu, expire_stamp = %llu WHERE %@", tableName, v12, v20, v11, matchingJobsWhereSQLClause}];
 
   [(BRCFSSchedulerBase *)self signalWithDeadline:*&v21[1]];
-  v14 = [(BRCAccountSession *)self->_session clientDB];
-  v15 = [v14 changes];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  changes = [clientDB2 changes];
 
-  if (v15 >= 2)
+  if (changes >= 2)
   {
     [BRCFSSchedulerBase postponeJobID:withThrottle:];
   }
@@ -546,64 +546,64 @@ LABEL_36:
   return v16;
 }
 
-- (int64_t)updateStamps:(throttle_stamps *)a3 throttle:(id)a4 now:(int64_t)a5
+- (int64_t)updateStamps:(throttle_stamps *)stamps throttle:(id)throttle now:(int64_t)now
 {
-  v7 = a4;
-  if (!v7)
+  throttleCopy = throttle;
+  if (!throttleCopy)
   {
     [BRCFSSchedulerBase updateStamps:throttle:now:];
   }
 
-  v8 = [v7 nsecsToNextRetry:a3->var2 retryCount:a3 now:a5];
+  v8 = [throttleCopy nsecsToNextRetry:stamps->var2 retryCount:stamps now:now];
   v9 = v8;
   if (!v8)
   {
-    a3->var2 = a5;
-    var0 = a3->var0;
-    v8 = [v7 nsecsToNextRetry:a5 retryCount:&var0 now:a5];
+    stamps->var2 = now;
+    var0 = stamps->var0;
+    v8 = [throttleCopy nsecsToNextRetry:now retryCount:&var0 now:now];
   }
 
-  v10 = v8 + a5;
-  if (a5 < 0)
+  v10 = v8 + now;
+  if (now < 0)
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  a3->var3 = v10;
-  v11 = [v7 nsecsBeforeForgettingCounter] + a5;
-  a3->var4 = v11;
-  if (v11 < [v7 nsecsBeforeForgettingCounter])
+  stamps->var3 = v10;
+  v11 = [throttleCopy nsecsBeforeForgettingCounter] + now;
+  stamps->var4 = v11;
+  if (v11 < [throttleCopy nsecsBeforeForgettingCounter])
   {
-    a3->var4 = 0x7FFFFFFFFFFFFFFFLL;
+    stamps->var4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v9;
 }
 
-- (void)computeStamps:(throttle_stamps *)a3 forJobID:(id)a4 throttle:(id)a5 shouldBackoff:(BOOL)a6
+- (void)computeStamps:(throttle_stamps *)stamps forJobID:(id)d throttle:(id)throttle shouldBackoff:(BOOL)backoff
 {
-  v6 = a6;
+  backoffCopy = backoff;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  throttleCopy = throttle;
   v12 = brc_current_date_nsec();
-  if (!v10)
+  if (!dCopy)
   {
     [BRCFSSchedulerBase computeStamps:forJobID:throttle:shouldBackoff:];
   }
 
-  v13 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   tableName = self->_tableName;
-  v15 = [v10 matchingJobsWhereSQLClause];
-  v16 = [v13 fetch:{@"SELECT retry_count, last_try_stamp, next_retry_stamp, expire_stamp, throttle_state FROM %@ WHERE %@", tableName, v15}];
+  matchingJobsWhereSQLClause = [dCopy matchingJobsWhereSQLClause];
+  v16 = [clientDB fetch:{@"SELECT retry_count, last_try_stamp, next_retry_stamp, expire_stamp, throttle_state FROM %@ WHERE %@", tableName, matchingJobsWhereSQLClause}];
 
   if (![v16 next])
   {
-    *&a3->var0 = 0u;
-    *&a3->var3 = 0u;
-    a3->var1 = -1;
-    a3->var4 = [v11 nsecsBeforeForgettingCounter] + v12;
-    if (!v6)
+    *&stamps->var0 = 0u;
+    *&stamps->var3 = 0u;
+    stamps->var1 = -1;
+    stamps->var4 = [throttleCopy nsecsBeforeForgettingCounter] + v12;
+    if (!backoffCopy)
     {
       goto LABEL_13;
     }
@@ -611,21 +611,21 @@ LABEL_36:
     goto LABEL_9;
   }
 
-  a3->var0 = [v16 unsignedIntAtIndex:0];
-  a3->var2 = [v16 longLongAtIndex:1];
-  a3->var3 = [v16 longLongAtIndex:2];
-  a3->var4 = [v16 longLongAtIndex:3];
-  a3->var1 = [v16 unsignedIntAtIndex:4];
+  stamps->var0 = [v16 unsignedIntAtIndex:0];
+  stamps->var2 = [v16 longLongAtIndex:1];
+  stamps->var3 = [v16 longLongAtIndex:2];
+  stamps->var4 = [v16 longLongAtIndex:3];
+  stamps->var1 = [v16 unsignedIntAtIndex:4];
   if ([v16 next])
   {
     [BRCFSSchedulerBase computeStamps:forJobID:throttle:shouldBackoff:];
   }
 
   [v16 close];
-  if (v6)
+  if (backoffCopy)
   {
 LABEL_9:
-    if ([(BRCFSSchedulerBase *)self updateStamps:a3 throttle:v11 now:v12])
+    if ([(BRCFSSchedulerBase *)self updateStamps:stamps throttle:throttleCopy now:v12])
     {
       v17 = brc_bread_crumbs();
       v18 = brc_default_log();
@@ -633,11 +633,11 @@ LABEL_9:
       {
         name = self->_name;
         brc_interval_from_nsec();
-        var0 = a3->var0;
+        var0 = stamps->var0;
         *buf = 138413314;
         v24 = name;
         v25 = 2112;
-        v26 = v10;
+        v26 = dCopy;
         v27 = 2048;
         v28 = v22;
         v29 = 1024;
@@ -654,40 +654,40 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setState:(int)a3 forJobsMatching:(id)a4
+- (BOOL)setState:(int)state forJobsMatching:(id)matching
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(BRCAccountSession *)self->_session clientDB];
+  matchingCopy = matching;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   tableName = self->_tableName;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke;
   v20[3] = &unk_2785013C8;
-  v21 = a3;
+  stateCopy = state;
   v20[4] = self;
   v9 = MEMORY[0x22AA4A310](v20);
-  v10 = [v6 matchingJobsWhereSQLClause];
-  [v7 execute:{@"UPDATE %@   SET throttle_state = call_block(%@, next_retry_stamp) WHERE %@", tableName, v9, v10}];
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
+  [clientDB execute:{@"UPDATE %@   SET throttle_state = call_block(%@, next_retry_stamp) WHERE %@", tableName, v9, matchingJobsWhereSQLClause}];
 
-  v11 = [(BRCAccountSession *)self->_session clientDB];
-  v12 = [v11 changes];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  changes = [clientDB2 changes];
 
-  if (v12)
+  if (changes)
   {
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       name = self->_name;
-      v18 = [v6 jobsDescription];
+      jobsDescription = [matchingCopy jobsDescription];
       v19 = BRCPrettyPrintEnum();
       *buf = 138413314;
       v23 = name;
       v24 = 2112;
-      v25 = v18;
+      v25 = jobsDescription;
       v26 = 2048;
-      v27 = v12;
+      v27 = changes;
       v28 = 2080;
       v29 = v19;
       v30 = 2112;
@@ -697,7 +697,7 @@ LABEL_13:
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v12 != 0;
+  return changes != 0;
 }
 
 void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a1, sqlite3_context *a2, uint64_t a3, sqlite3_value **a4)
@@ -712,32 +712,32 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
   sqlite3_result_int(a2, v5);
 }
 
-- (void)deleteJobsMatching:(id)a3
+- (void)deleteJobsMatching:(id)matching
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
+  matchingCopy = matching;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   tableName = self->_tableName;
-  v7 = [v4 matchingJobsWhereSQLClause];
-  [v5 execute:{@"DELETE FROM %@ WHERE %@", tableName, v7}];
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
+  [clientDB execute:{@"DELETE FROM %@ WHERE %@", tableName, matchingJobsWhereSQLClause}];
 
-  v8 = [(BRCAccountSession *)self->_session clientDB];
-  v9 = [v8 changes];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  changes = [clientDB2 changes];
 
-  if (v9)
+  if (changes)
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       name = self->_name;
-      v14 = [v4 jobsDescription];
+      jobsDescription = [matchingCopy jobsDescription];
       *buf = 138413058;
       v16 = name;
       v17 = 2112;
-      v18 = v14;
+      v18 = jobsDescription;
       v19 = 2048;
-      v20 = v9;
+      v20 = changes;
       v21 = 2112;
       v22 = v10;
       _os_log_debug_impl(&dword_223E7A000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] %@[%@]: Deleted %lld jobs%@", buf, 0x2Au);
@@ -749,10 +749,10 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetBackoffForJobWithID:(id)a3
+- (void)resetBackoffForJobWithID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -761,21 +761,21 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
     *buf = 138412802;
     v15 = name;
     v16 = 2112;
-    v17 = v4;
+    v17 = dCopy;
     v18 = 2112;
     v19 = v5;
     _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] %@[%@]: resetting backoff for job%@", buf, 0x20u);
   }
 
-  v7 = [(BRCAccountSession *)self->_session clientDB];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
   tableName = self->_tableName;
-  v9 = [v4 matchingJobsWhereSQLClause];
-  [v7 execute:{@"UPDATE %@   SET retry_count = 0, next_retry_stamp = 0 WHERE %@", tableName, v9}];
+  matchingJobsWhereSQLClause = [dCopy matchingJobsWhereSQLClause];
+  [clientDB execute:{@"UPDATE %@   SET retry_count = 0, next_retry_stamp = 0 WHERE %@", tableName, matchingJobsWhereSQLClause}];
 
-  v10 = [(BRCAccountSession *)self->_session clientDB];
-  v11 = [v10 changes];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  changes = [clientDB2 changes];
 
-  if (v11 >= 2)
+  if (changes >= 2)
   {
     [BRCFSSchedulerBase resetBackoffForJobWithID:];
   }
@@ -786,13 +786,13 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
 - (void)deleteExpiredJobs
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(BRCAccountSession *)self->_session clientDB];
-  [v3 execute:{@"DELETE FROM %@ WHERE throttle_state = 0 AND expire_stamp <= %lld", self->_tableName, brc_current_date_nsec()}];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB execute:{@"DELETE FROM %@ WHERE throttle_state = 0 AND expire_stamp <= %lld", self->_tableName, brc_current_date_nsec()}];
 
-  v4 = [(BRCAccountSession *)self->_session clientDB];
-  v5 = [v4 changes];
+  clientDB2 = [(BRCAccountSession *)self->_session clientDB];
+  changes = [clientDB2 changes];
 
-  if (v5)
+  if (changes)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -802,7 +802,7 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
       *buf = 138412802;
       v11 = name;
       v12 = 2048;
-      v13 = v5;
+      v13 = changes;
       v14 = 2112;
       v15 = v6;
       _os_log_debug_impl(&dword_223E7A000, v7, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Cleaned up %lld expired jobs%@", buf, 0x20u);
@@ -812,9 +812,9 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recoverAndReportMissingJobsWithCompletion:(id)a3 recoveryTask:(id)a4
+- (void)recoverAndReportMissingJobsWithCompletion:(id)completion recoveryTask:(id)task
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -822,16 +822,16 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
     [BRCFSSchedulerBase recoverAndReportMissingJobsWithCompletion:v5 recoveryTask:v6];
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)signalWithDeadline:(int64_t)a3
+- (void)signalWithDeadline:(int64_t)deadline
 {
   [(BRCFSSchedulerBase *)self setHasActiveWork:1];
   [(BRCFSSchedulerBase *)self setHasWork:1];
   schedulerSource = self->_schedulerSource;
 
-  [(BRCDeadlineSource *)schedulerSource signalWithDeadline:a3];
+  [(BRCDeadlineSource *)schedulerSource signalWithDeadline:deadline];
 }
 
 - (void)schedule
@@ -851,7 +851,7 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
 
 - (void)resume
 {
-  OUTLINED_FUNCTION_6_2(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_6_2(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -860,7 +860,7 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
 
 - (void)suspend
 {
-  OUTLINED_FUNCTION_6_2(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_6_2(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -869,7 +869,7 @@ void __47__BRCFSSchedulerBase_setState_forJobsMatching___block_invoke(uint64_t a
 
 - (void)cancel
 {
-  OUTLINED_FUNCTION_6_2(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_6_2(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);

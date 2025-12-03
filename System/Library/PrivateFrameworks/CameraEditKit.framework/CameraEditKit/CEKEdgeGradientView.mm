@@ -1,28 +1,28 @@
 @interface CEKEdgeGradientView
 - ($01BB1521EC52D44A8E7628F5261DCEC8)gradientDimensions;
-- (CEKEdgeGradientView)initWithFrame:(CGRect)a3;
+- (CEKEdgeGradientView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
-- (void)drawRect:(CGRect)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setCustomEdgeGradientStyleWithColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setCustomEdgeGradientStyleWithColor:(id)color;
 - (void)setEdgeGradientStyleBlack;
 - (void)setEdgeGradientStyleMask;
-- (void)setGradientDimensions:(id)a3;
-- (void)setGradientDirection:(int64_t)a3;
+- (void)setGradientDimensions:(id)dimensions;
+- (void)setGradientDirection:(int64_t)direction;
 @end
 
 @implementation CEKEdgeGradientView
 
-- (CEKEdgeGradientView)initWithFrame:(CGRect)a3
+- (CEKEdgeGradientView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CEKEdgeGradientView;
-  v3 = [(CEKEdgeGradientView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKEdgeGradientView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     customEdgeGradientColor = v3->_customEdgeGradientColor;
-    v3->_customEdgeGradientColor = v4;
+    v3->_customEdgeGradientColor = blackColor;
 
     v3->_gradientDirection = 0;
     [(CEKEdgeGradientView *)v3 setContentMode:3];
@@ -33,24 +33,24 @@
   return v3;
 }
 
-- (void)setGradientDimensions:(id)a3
+- (void)setGradientDimensions:(id)dimensions
 {
-  if (self->_gradientDimensions.startFadeInset != a3.var0 || self->_gradientDimensions.startFadeLength != a3.var1 || self->_gradientDimensions.endFadeLength != a3.var2 || self->_gradientDimensions.endFadeInset != a3.var3)
+  if (self->_gradientDimensions.startFadeInset != dimensions.var0 || self->_gradientDimensions.startFadeLength != dimensions.var1 || self->_gradientDimensions.endFadeLength != dimensions.var2 || self->_gradientDimensions.endFadeInset != dimensions.var3)
   {
-    self->_gradientDimensions = a3;
+    self->_gradientDimensions = dimensions;
     [(CEKEdgeGradientView *)self setNeedsDisplay];
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(CEKEdgeGradientView *)self setNeedsDisplay];
   }
 }
@@ -79,35 +79,35 @@
   }
 }
 
-- (void)setCustomEdgeGradientStyleWithColor:(id)a3
+- (void)setCustomEdgeGradientStyleWithColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  v7 = v5;
-  if (self->_customEdgeGradientColor != v5 && (v5 = [v5 isEqual:?], v6 = v7, (v5 & 1) == 0) || self->_edgeGradientStyle != 2)
+  colorCopy = color;
+  v6 = colorCopy;
+  v7 = colorCopy;
+  if (self->_customEdgeGradientColor != colorCopy && (colorCopy = [colorCopy isEqual:?], v6 = v7, (colorCopy & 1) == 0) || self->_edgeGradientStyle != 2)
   {
     self->_edgeGradientStyle = 2;
-    objc_storeStrong(&self->_customEdgeGradientColor, a3);
-    v5 = [(CEKEdgeGradientView *)self setNeedsDisplay];
+    objc_storeStrong(&self->_customEdgeGradientColor, color);
+    colorCopy = [(CEKEdgeGradientView *)self setNeedsDisplay];
     v6 = v7;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](colorCopy, v6);
 }
 
-- (void)setGradientDirection:(int64_t)a3
+- (void)setGradientDirection:(int64_t)direction
 {
-  if (self->_gradientDirection != a3)
+  if (self->_gradientDirection != direction)
   {
-    self->_gradientDirection = a3;
+    self->_gradientDirection = direction;
     [(CEKEdgeGradientView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v65[6] = *MEMORY[0x1E69E9840];
-  [(CEKEdgeGradientView *)self bounds:a3.origin.x];
+  [(CEKEdgeGradientView *)self bounds:rect.origin.x];
   if (v6 <= 0.0)
   {
     return;
@@ -128,34 +128,34 @@
   v68.size.width = v11;
   v68.size.height = v8;
   CGContextClearRect(CurrentContext, v68);
-  v13 = [(CEKEdgeGradientView *)self edgeGradientStyle];
-  if (!v13)
+  edgeGradientStyle = [(CEKEdgeGradientView *)self edgeGradientStyle];
+  if (!edgeGradientStyle)
   {
-    v14 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v16 = MEMORY[0x1E69DC888];
     goto LABEL_9;
   }
 
-  if (v13 == 2)
+  if (edgeGradientStyle == 2)
   {
-    v14 = [(CEKEdgeGradientView *)self customEdgeGradientColor];
+    blackColor = [(CEKEdgeGradientView *)self customEdgeGradientColor];
     v16 = MEMORY[0x1E69DC888];
 LABEL_9:
-    v15 = [v16 clearColor];
+    clearColor = [v16 clearColor];
     goto LABEL_10;
   }
 
-  if (v13 != 1)
+  if (edgeGradientStyle != 1)
   {
     v17 = 0;
-    v14 = 0;
+    blackColor = 0;
     goto LABEL_12;
   }
 
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  v15 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] blackColor];
 LABEL_10:
-  v17 = v15;
+  v17 = clearColor;
 LABEL_12:
   [v17 set];
   v69.origin.x = v9;
@@ -178,14 +178,14 @@ LABEL_12:
   v71.size.width = v23;
   v71.size.height = v25;
   CGContextClipToRect(CurrentContext, v71);
-  v26 = [(CEKEdgeGradientView *)self gradientDirection];
+  gradientDirection = [(CEKEdgeGradientView *)self gradientDirection];
   [(CEKEdgeGradientView *)self contentInsets];
   v28 = v27;
   v30 = v29;
   [(CEKEdgeGradientView *)self contentInsets];
   v62 = v9;
   v63 = v10;
-  if (v26)
+  if (gradientDirection)
   {
     v33 = v28 / v8;
     v34 = v8;
@@ -200,14 +200,14 @@ LABEL_12:
   }
 
   v36 = 1.0 - v35;
-  v37 = [v14 CGColor];
-  v38 = [v17 CGColor];
-  v65[0] = v37;
-  v65[1] = v37;
-  v65[2] = v38;
-  v65[3] = v38;
-  v65[4] = v37;
-  v65[5] = v37;
+  cGColor = [blackColor CGColor];
+  cGColor2 = [v17 CGColor];
+  v65[0] = cGColor;
+  v65[1] = cGColor;
+  v65[2] = cGColor2;
+  v65[3] = cGColor2;
+  v65[4] = cGColor;
+  v65[5] = cGColor;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:6];
   [(CEKEdgeGradientView *)self gradientDimensions];
   v41 = v40 / v34;
@@ -259,7 +259,7 @@ LABEL_12:
   locations[3] = v51 - v50;
   locations[4] = v51;
   locations[5] = v36;
-  ColorSpace = CGColorGetColorSpace([v14 CGColor]);
+  ColorSpace = CGColorGetColorSpace([blackColor CGColor]);
   v53 = CGGradientCreateWithColors(ColorSpace, v39, locations);
   v72.origin.x = v62;
   v72.origin.y = v63;
@@ -275,7 +275,7 @@ LABEL_12:
   v57 = v63;
   v58 = v11;
   v59 = v8;
-  if (v26)
+  if (gradientDirection)
   {
     MaxX = CGRectGetMinX(*&v56);
     v74.origin.x = v62;

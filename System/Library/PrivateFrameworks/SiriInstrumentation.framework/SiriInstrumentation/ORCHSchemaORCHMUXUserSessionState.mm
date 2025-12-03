@@ -1,41 +1,41 @@
 @interface ORCHSchemaORCHMUXUserSessionState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHMUXUserSessionState)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHMUXUserSessionState)initWithJSON:(id)a3;
+- (ORCHSchemaORCHMUXUserSessionState)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHMUXUserSessionState)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAccessLevel:(BOOL)a3;
-- (void)setHasIsEndOfRequest:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAccessLevel:(BOOL)level;
+- (void)setHasIsEndOfRequest:(BOOL)request;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHMUXUserSessionState
 
-- (ORCHSchemaORCHMUXUserSessionState)initWithDictionary:(id)a3
+- (ORCHSchemaORCHMUXUserSessionState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ORCHSchemaORCHMUXUserSessionState;
   v5 = [(ORCHSchemaORCHMUXUserSessionState *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"state"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMUXUserSessionState setState:](v5, "setState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"accessLevel"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMUXUserSessionState setAccessLevel:](v5, "setAccessLevel:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isEndOfRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isEndOfRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHMUXUserSessionState)initWithJSON:(id)a3
+- (ORCHSchemaORCHMUXUserSessionState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHMUXUserSessionState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHMUXUserSessionState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHMUXUserSessionState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,7 +84,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isEndOfRequest + 1);
   if ((v4 & 2) == 0)
   {
@@ -95,7 +95,7 @@
 
 LABEL_11:
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHMUXUserSessionState isEndOfRequest](self, "isEndOfRequest")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isEndOfRequest"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isEndOfRequest"];
 
     if (!*(&self->_isEndOfRequest + 1))
     {
@@ -114,18 +114,18 @@ LABEL_12:
       v10 = off_1E78DECD8[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"state"];
+    [dictionary setObject:v10 forKeyedSubscript:@"state"];
     goto LABEL_16;
   }
 
-  v5 = [(ORCHSchemaORCHMUXUserSessionState *)self accessLevel];
+  accessLevel = [(ORCHSchemaORCHMUXUserSessionState *)self accessLevel];
   v6 = @"ORCHUSERSESSIONACCESSLEVEL_UNKNOWN";
-  if (v5 == 1)
+  if (accessLevel == 1)
   {
     v6 = @"ORCHUSERSESSIONACCESSLEVEL_LOW";
   }
 
-  if (v5 == 2)
+  if (accessLevel == 2)
   {
     v7 = @"ORCHUSERSESSIONACCESSLEVEL_HIGH";
   }
@@ -135,7 +135,7 @@ LABEL_12:
     v7 = v6;
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"accessLevel"];
+  [dictionary setObject:v7 forKeyedSubscript:@"accessLevel"];
   v4 = *(&self->_isEndOfRequest + 1);
   if ((v4 & 4) != 0)
   {
@@ -149,9 +149,9 @@ LABEL_3:
   }
 
 LABEL_16:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -194,16 +194,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   v5 = *(&self->_isEndOfRequest + 1);
-  v6 = v4[17];
+  v6 = equalCopy[17];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -212,13 +212,13 @@ LABEL_4:
   if (v5)
   {
     state = self->_state;
-    if (state != [v4 state])
+    if (state != [equalCopy state])
     {
       goto LABEL_14;
     }
 
     v5 = *(&self->_isEndOfRequest + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -230,10 +230,10 @@ LABEL_4:
   if (v8)
   {
     accessLevel = self->_accessLevel;
-    if (accessLevel == [v4 accessLevel])
+    if (accessLevel == [equalCopy accessLevel])
     {
       v5 = *(&self->_isEndOfRequest + 1);
-      v6 = v4[17];
+      v6 = equalCopy[17];
       goto LABEL_10;
     }
 
@@ -252,7 +252,7 @@ LABEL_10:
   if (v10)
   {
     isEndOfRequest = self->_isEndOfRequest;
-    if (isEndOfRequest != [v4 isEndOfRequest])
+    if (isEndOfRequest != [equalCopy isEndOfRequest])
     {
       goto LABEL_14;
     }
@@ -264,15 +264,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isEndOfRequest + 1);
-  v6 = v4;
+  v6 = toCopy;
   if (v5)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     v5 = *(&self->_isEndOfRequest + 1);
     if ((v5 & 2) == 0)
     {
@@ -292,20 +292,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*(&self->_isEndOfRequest + 1) & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasIsEndOfRequest:(BOOL)a3
+- (void)setHasIsEndOfRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -318,9 +318,9 @@ LABEL_5:
   *(&self->_isEndOfRequest + 1) = *(&self->_isEndOfRequest + 1) & 0xFB | v3;
 }
 
-- (void)setHasAccessLevel:(BOOL)a3
+- (void)setHasAccessLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 2;
   }

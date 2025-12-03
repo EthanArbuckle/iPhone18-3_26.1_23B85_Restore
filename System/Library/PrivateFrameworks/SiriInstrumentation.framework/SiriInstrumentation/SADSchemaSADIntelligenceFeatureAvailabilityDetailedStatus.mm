@@ -1,64 +1,64 @@
 @interface SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithDictionary:(id)a3;
-- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithJSON:(id)a3;
+- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithDictionary:(id)dictionary;
+- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBuddyStatus:(BOOL)a3;
-- (void)setHasCountPSUSAssets:(BOOL)a3;
-- (void)setHasCountRequiredAssets:(BOOL)a3;
-- (void)setHasCurrentMode:(BOOL)a3;
-- (void)setHasCurrentSubscriptionHash:(BOOL)a3;
-- (void)setHasDownloadState:(BOOL)a3;
-- (void)setHasErrorCount:(BOOL)a3;
-- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)a3;
-- (void)setHasLastMobileAssetDownloadAttemptErrorCode:(BOOL)a3;
-- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasSampledErrorCode:(BOOL)a3;
-- (void)setHasSampledErrorHash:(BOOL)a3;
-- (void)setHasSampledErrorUnderlyingCode:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasSubscriptionDownloadStatus:(BOOL)a3;
-- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastBootInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceLastSubscriptionHashChangeInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)a3;
-- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBuddyStatus:(BOOL)status;
+- (void)setHasCountPSUSAssets:(BOOL)assets;
+- (void)setHasCountRequiredAssets:(BOOL)assets;
+- (void)setHasCurrentMode:(BOOL)mode;
+- (void)setHasCurrentSubscriptionHash:(BOOL)hash;
+- (void)setHasDownloadState:(BOOL)state;
+- (void)setHasErrorCount:(BOOL)count;
+- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)available;
+- (void)setHasLastMobileAssetDownloadAttemptErrorCode:(BOOL)code;
+- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)code;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasSampledErrorCode:(BOOL)code;
+- (void)setHasSampledErrorHash:(BOOL)hash;
+- (void)setHasSampledErrorUnderlyingCode:(BOOL)code;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasSubscriptionDownloadStatus:(BOOL)status;
+- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastBootInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceLastSubscriptionHashChangeInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)seconds;
+- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus
 
-- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithDictionary:(id)a3
+- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v81.receiver = self;
   v81.super_class = SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus;
   v5 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)&v81 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"locale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setLocale:](v5, "setLocale:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"status"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setStatus:](v5, "setStatus:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"currentSubscriptionHash"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"currentSubscriptionHash"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
 
     v60 = v7;
     v61 = v6;
-    v9 = [v4 objectForKeyedSubscript:@"downloadState"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"downloadState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
     }
 
     v58 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorAsset"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setLastMobileAssetDownloadAttemptErrorAsset:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceLastMobileAssetDownloadAttemptInSeconds:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,14 +99,14 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceLastMobileAssetDownloadErrorInSeconds:?];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorCode"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setLastMobileAssetDownloadAttemptErrorCode:](v5, "setLastMobileAssetDownloadAttemptErrorCode:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorDomain"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorDomain"];
     objc_opt_class();
     v80 = v15;
     if (objc_opt_isKindOfClass())
@@ -115,7 +115,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setLastMobileAssetDownloadAttemptErrorDomain:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"errorCount"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"errorCount"];
     objc_opt_class();
     v79 = v17;
     if (objc_opt_isKindOfClass())
@@ -123,7 +123,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setErrorCount:](v5, "setErrorCount:", [v17 unsignedIntValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"failingSubsystemOperations"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"failingSubsystemOperations"];
     objc_opt_class();
     v78 = v18;
     if (objc_opt_isKindOfClass())
@@ -132,7 +132,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setFailingSubsystemOperations:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"sampledSubsystemOperation"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"sampledSubsystemOperation"];
     objc_opt_class();
     v77 = v20;
     if (objc_opt_isKindOfClass())
@@ -141,7 +141,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setSampledSubsystemOperation:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"sampledErrorCode"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorCode"];
     objc_opt_class();
     v76 = v22;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setSampledErrorCode:](v5, "setSampledErrorCode:", [v22 unsignedIntValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"sampledErrorDomain"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorDomain"];
     objc_opt_class();
     v75 = v23;
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setSampledErrorDomain:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"sampledErrorHash"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorHash"];
     objc_opt_class();
     v74 = v25;
     if (objc_opt_isKindOfClass())
@@ -166,7 +166,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setSampledErrorHash:](v5, "setSampledErrorHash:", [v25 unsignedIntValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"sampledErrorUnderlyingCode"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorUnderlyingCode"];
     objc_opt_class();
     v73 = v26;
     if (objc_opt_isKindOfClass())
@@ -174,7 +174,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setSampledErrorUnderlyingCode:](v5, "setSampledErrorUnderlyingCode:", [v26 unsignedIntValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"sampledErrorUnderlyingDomain"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorUnderlyingDomain"];
     objc_opt_class();
     v72 = v27;
     if (objc_opt_isKindOfClass())
@@ -183,7 +183,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setSampledErrorUnderlyingDomain:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
     objc_opt_class();
     v71 = v29;
     if (objc_opt_isKindOfClass())
@@ -192,7 +192,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceLastAppleIntelligenceToggleInSeconds:?];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"timeSinceLastSubscriptionHashChangeInSeconds"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastSubscriptionHashChangeInSeconds"];
     objc_opt_class();
     v70 = v30;
     if (objc_opt_isKindOfClass())
@@ -201,7 +201,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceLastSubscriptionHashChangeInSeconds:?];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"timeSinceLastBootInSeconds"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastBootInSeconds"];
     objc_opt_class();
     v69 = v31;
     if (objc_opt_isKindOfClass())
@@ -210,7 +210,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceLastBootInSeconds:?];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"countPSUSAssets"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"countPSUSAssets"];
     objc_opt_class();
     v68 = v32;
     if (objc_opt_isKindOfClass())
@@ -218,7 +218,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setCountPSUSAssets:](v5, "setCountPSUSAssets:", [v32 unsignedLongLongValue]);
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"countRequiredAssets"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"countRequiredAssets"];
     objc_opt_class();
     v67 = v33;
     if (objc_opt_isKindOfClass())
@@ -226,7 +226,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setCountRequiredAssets:](v5, "setCountRequiredAssets:", [v33 unsignedIntValue]);
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"useCaseID"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"useCaseID"];
     objc_opt_class();
     v66 = v34;
     if (objc_opt_isKindOfClass())
@@ -235,7 +235,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setUseCaseID:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
     objc_opt_class();
     v65 = v36;
     if (objc_opt_isKindOfClass())
@@ -244,7 +244,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceLastSoftwareUpdateInSeconds:?];
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
     objc_opt_class();
     v64 = v37;
     if (objc_opt_isKindOfClass())
@@ -253,7 +253,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceSampledErrorInSeconds:?];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"buddyStatus"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"buddyStatus"];
     objc_opt_class();
     v63 = v38;
     if (objc_opt_isKindOfClass())
@@ -261,7 +261,7 @@
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setBuddyStatus:](v5, "setBuddyStatus:", [v38 intValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
     objc_opt_class();
     v62 = v39;
     if (objc_opt_isKindOfClass())
@@ -271,7 +271,7 @@
     }
 
     v57 = v10;
-    v41 = [v4 objectForKeyedSubscript:@"invocationsCountWhileNotAvailable"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"invocationsCountWhileNotAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -279,7 +279,7 @@
     }
 
     v56 = v12;
-    v42 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -288,7 +288,7 @@
 
     v53 = v41;
     v55 = v13;
-    v43 = [v4 objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -297,14 +297,14 @@
     }
 
     v54 = v14;
-    v45 = [v4 objectForKeyedSubscript:@"mode"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus setMode:](v5, "setMode:", [v45 intValue]);
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"sampledErrorAsset"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"sampledErrorAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -312,7 +312,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setSampledErrorAsset:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"subscriptionDownloadStatus"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionDownloadStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,7 +320,7 @@
     }
 
     v59 = v8;
-    v49 = [v4 objectForKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -328,7 +328,7 @@
       [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)v5 setTimeSinceSubscriptionDownloadStatusCompleteInSeconds:?];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"currentMode"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"currentMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -341,30 +341,30 @@
   return v5;
 }
 
-- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithJSON:(id)a3
+- (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -377,17 +377,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    v4 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buddyStatus];
+    buddyStatus = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buddyStatus];
     v5 = @"SADBUDDYOPTINSTATE_UNKNOWN";
-    if (v4 == 1)
+    if (buddyStatus == 1)
     {
       v5 = @"SADBUDDYOPTINSTATE_OPTEDIN";
     }
 
-    if (v4 == 2)
+    if (buddyStatus == 2)
     {
       v6 = @"SADBUDDYOPTINSTATE_OPTEDOUT";
     }
@@ -397,21 +397,21 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"buddyStatus"];
+    [dictionary setObject:v6 forKeyedSubscript:@"buddyStatus"];
   }
 
   if (self->_buildVersionPriorToSoftwareUpdate)
   {
-    v7 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
+    buildVersionPriorToSoftwareUpdate = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
+    v8 = [buildVersionPriorToSoftwareUpdate copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"buildVersionPriorToSoftwareUpdate"];
   }
 
   has = self->_has;
   if ((*&has & 0x4000) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus countPSUSAssets](self, "countPSUSAssets")}];
-    [v3 setObject:v25 forKeyedSubscript:@"countPSUSAssets"];
+    [dictionary setObject:v25 forKeyedSubscript:@"countPSUSAssets"];
 
     has = self->_has;
     if ((*&has & 0x8000) == 0)
@@ -432,7 +432,7 @@ LABEL_12:
   }
 
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus countRequiredAssets](self, "countRequiredAssets")}];
-  [v3 setObject:v26 forKeyedSubscript:@"countRequiredAssets"];
+  [dictionary setObject:v26 forKeyedSubscript:@"countRequiredAssets"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -458,7 +458,7 @@ LABEL_36:
     v28 = off_1E78E2618[v27];
   }
 
-  [v3 setObject:v28 forKeyedSubscript:@"currentMode"];
+  [dictionary setObject:v28 forKeyedSubscript:@"currentMode"];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -473,7 +473,7 @@ LABEL_14:
 
 LABEL_78:
   v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus currentSubscriptionHash](self, "currentSubscriptionHash")}];
-  [v3 setObject:v52 forKeyedSubscript:@"currentSubscriptionHash"];
+  [dictionary setObject:v52 forKeyedSubscript:@"currentSubscriptionHash"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -499,59 +499,59 @@ LABEL_79:
     v54 = off_1E78E2638[v53];
   }
 
-  [v3 setObject:v54 forKeyedSubscript:@"downloadState"];
+  [dictionary setObject:v54 forKeyedSubscript:@"downloadState"];
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_16:
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus errorCount](self, "errorCount")}];
-    [v3 setObject:v10 forKeyedSubscript:@"errorCount"];
+    [dictionary setObject:v10 forKeyedSubscript:@"errorCount"];
   }
 
 LABEL_17:
   if (self->_failingSubsystemOperations)
   {
-    v11 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"failingSubsystemOperations"];
+    failingSubsystemOperations = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
+    v12 = [failingSubsystemOperations copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"failingSubsystemOperations"];
   }
 
   if ((*(&self->_has + 2) & 8) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus invocationsCountWhileNotAvailable](self, "invocationsCountWhileNotAvailable")}];
-    [v3 setObject:v13 forKeyedSubscript:@"invocationsCountWhileNotAvailable"];
+    [dictionary setObject:v13 forKeyedSubscript:@"invocationsCountWhileNotAvailable"];
   }
 
   if (self->_lastMobileAssetDownloadAttemptErrorAsset)
   {
-    v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorAsset"];
+    lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
+    v15 = [lastMobileAssetDownloadAttemptErrorAsset copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorAsset"];
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus lastMobileAssetDownloadAttemptErrorCode](self, "lastMobileAssetDownloadAttemptErrorCode")}];
-    [v3 setObject:v16 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorCode"];
+    [dictionary setObject:v16 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorCode"];
   }
 
   if (self->_lastMobileAssetDownloadAttemptErrorDomain)
   {
-    v17 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorDomain"];
+    lastMobileAssetDownloadAttemptErrorDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
+    v18 = [lastMobileAssetDownloadAttemptErrorDomain copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorDomain"];
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus lastMobileAssetDownloadAttemptErrorUnderlyingCode](self, "lastMobileAssetDownloadAttemptErrorUnderlyingCode")}];
-    [v3 setObject:v19 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
+    [dictionary setObject:v19 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingCode"];
   }
 
   if (self->_lastMobileAssetDownloadAttemptErrorUnderlyingDomain)
   {
-    v20 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
+    lastMobileAssetDownloadAttemptErrorUnderlyingDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+    v21 = [lastMobileAssetDownloadAttemptErrorUnderlyingDomain copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"lastMobileAssetDownloadAttemptErrorUnderlyingDomain"];
   }
 
   v22 = self->_has;
@@ -568,7 +568,7 @@ LABEL_17:
       v24 = off_1E78E2658[v23];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"locale"];
+    [dictionary setObject:v24 forKeyedSubscript:@"locale"];
     v22 = self->_has;
   }
 
@@ -584,34 +584,34 @@ LABEL_17:
       v29 = @"ORCHSIRIUNDERSTANDINGONDEVICEMODE_FULL_UOD";
     }
 
-    [v3 setObject:v29 forKeyedSubscript:@"mode"];
+    [dictionary setObject:v29 forKeyedSubscript:@"mode"];
   }
 
   if (self->_sampledErrorAsset)
   {
-    v30 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
-    v31 = [v30 copy];
-    [v3 setObject:v31 forKeyedSubscript:@"sampledErrorAsset"];
+    sampledErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
+    v31 = [sampledErrorAsset copy];
+    [dictionary setObject:v31 forKeyedSubscript:@"sampledErrorAsset"];
   }
 
   if (*(&self->_has + 1))
   {
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus sampledErrorCode](self, "sampledErrorCode")}];
-    [v3 setObject:v32 forKeyedSubscript:@"sampledErrorCode"];
+    [dictionary setObject:v32 forKeyedSubscript:@"sampledErrorCode"];
   }
 
   if (self->_sampledErrorDomain)
   {
-    v33 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
-    v34 = [v33 copy];
-    [v3 setObject:v34 forKeyedSubscript:@"sampledErrorDomain"];
+    sampledErrorDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
+    v34 = [sampledErrorDomain copy];
+    [dictionary setObject:v34 forKeyedSubscript:@"sampledErrorDomain"];
   }
 
   v35 = self->_has;
   if ((*&v35 & 0x200) != 0)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus sampledErrorHash](self, "sampledErrorHash")}];
-    [v3 setObject:v36 forKeyedSubscript:@"sampledErrorHash"];
+    [dictionary setObject:v36 forKeyedSubscript:@"sampledErrorHash"];
 
     v35 = self->_has;
   }
@@ -619,28 +619,28 @@ LABEL_17:
   if ((*&v35 & 0x400) != 0)
   {
     v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus sampledErrorUnderlyingCode](self, "sampledErrorUnderlyingCode")}];
-    [v3 setObject:v37 forKeyedSubscript:@"sampledErrorUnderlyingCode"];
+    [dictionary setObject:v37 forKeyedSubscript:@"sampledErrorUnderlyingCode"];
   }
 
   if (self->_sampledErrorUnderlyingDomain)
   {
-    v38 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
-    v39 = [v38 copy];
-    [v3 setObject:v39 forKeyedSubscript:@"sampledErrorUnderlyingDomain"];
+    sampledErrorUnderlyingDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
+    v39 = [sampledErrorUnderlyingDomain copy];
+    [dictionary setObject:v39 forKeyedSubscript:@"sampledErrorUnderlyingDomain"];
   }
 
   if (self->_sampledSubsystemOperation)
   {
-    v40 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
-    v41 = [v40 copy];
-    [v3 setObject:v41 forKeyedSubscript:@"sampledSubsystemOperation"];
+    sampledSubsystemOperation = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
+    v41 = [sampledSubsystemOperation copy];
+    [dictionary setObject:v41 forKeyedSubscript:@"sampledSubsystemOperation"];
   }
 
   v42 = self->_has;
   if ((*&v42 & 2) != 0)
   {
     v49 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus status](self, "status")}];
-    [v3 setObject:v49 forKeyedSubscript:@"status"];
+    [dictionary setObject:v49 forKeyedSubscript:@"status"];
 
     v42 = self->_has;
     if ((*&v42 & 0x400000) == 0)
@@ -671,7 +671,7 @@ LABEL_61:
     v51 = off_1E78E2848[v50];
   }
 
-  [v3 setObject:v51 forKeyedSubscript:@"subscriptionDownloadStatus"];
+  [dictionary setObject:v51 forKeyedSubscript:@"subscriptionDownloadStatus"];
   v42 = self->_has;
   if ((*&v42 & 0x800) == 0)
   {
@@ -688,7 +688,7 @@ LABEL_83:
   v55 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceLastAppleIntelligenceToggleInSeconds];
   v56 = [v55 numberWithDouble:?];
-  [v3 setObject:v56 forKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
+  [dictionary setObject:v56 forKeyedSubscript:@"timeSinceLastAppleIntelligenceToggleInSeconds"];
 
   v42 = self->_has;
   if ((*&v42 & 0x2000) == 0)
@@ -706,7 +706,7 @@ LABEL_84:
   v57 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceLastBootInSeconds];
   v58 = [v57 numberWithDouble:?];
-  [v3 setObject:v58 forKeyedSubscript:@"timeSinceLastBootInSeconds"];
+  [dictionary setObject:v58 forKeyedSubscript:@"timeSinceLastBootInSeconds"];
 
   v42 = self->_has;
   if ((*&v42 & 0x10) == 0)
@@ -724,7 +724,7 @@ LABEL_85:
   v59 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceLastMobileAssetDownloadAttemptInSeconds];
   v60 = [v59 numberWithDouble:?];
-  [v3 setObject:v60 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
+  [dictionary setObject:v60 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadAttemptInSeconds"];
 
   v42 = self->_has;
   if ((*&v42 & 0x20) == 0)
@@ -742,7 +742,7 @@ LABEL_86:
   v61 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceLastMobileAssetDownloadErrorInSeconds];
   v62 = [v61 numberWithDouble:?];
-  [v3 setObject:v62 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
+  [dictionary setObject:v62 forKeyedSubscript:@"timeSinceLastMobileAssetDownloadErrorInSeconds"];
 
   v42 = self->_has;
   if ((*&v42 & 0x10000) == 0)
@@ -760,7 +760,7 @@ LABEL_87:
   v63 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceLastSoftwareUpdateInSeconds];
   v64 = [v63 numberWithDouble:?];
-  [v3 setObject:v64 forKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
+  [dictionary setObject:v64 forKeyedSubscript:@"timeSinceLastSoftwareUpdateInSeconds"];
 
   v42 = self->_has;
   if ((*&v42 & 0x1000) == 0)
@@ -778,7 +778,7 @@ LABEL_88:
   v65 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceLastSubscriptionHashChangeInSeconds];
   v66 = [v65 numberWithDouble:?];
-  [v3 setObject:v66 forKeyedSubscript:@"timeSinceLastSubscriptionHashChangeInSeconds"];
+  [dictionary setObject:v66 forKeyedSubscript:@"timeSinceLastSubscriptionHashChangeInSeconds"];
 
   v42 = self->_has;
   if ((*&v42 & 0x20000) == 0)
@@ -796,7 +796,7 @@ LABEL_89:
   v67 = MEMORY[0x1E696AD98];
   [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceSampledErrorInSeconds];
   v68 = [v67 numberWithDouble:?];
-  [v3 setObject:v68 forKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
+  [dictionary setObject:v68 forKeyedSubscript:@"timeSinceSampledErrorInSeconds"];
 
   if ((*&self->_has & 0x800000) != 0)
   {
@@ -804,21 +804,21 @@ LABEL_69:
     v43 = MEMORY[0x1E696AD98];
     [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self timeSinceSubscriptionDownloadStatusCompleteInSeconds];
     v44 = [v43 numberWithDouble:?];
-    [v3 setObject:v44 forKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
+    [dictionary setObject:v44 forKeyedSubscript:@"timeSinceSubscriptionDownloadStatusCompleteInSeconds"];
   }
 
 LABEL_70:
   if (self->_useCaseID)
   {
-    v45 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
-    v46 = [v45 copy];
-    [v3 setObject:v46 forKeyedSubscript:@"useCaseID"];
+    useCaseID = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
+    v46 = [useCaseID copy];
+    [dictionary setObject:v46 forKeyedSubscript:@"useCaseID"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v47 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v47 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1304,16 +1304,16 @@ LABEL_105:
   return v82 ^ v83 ^ v81 ^ v80 ^ v78 ^ v77 ^ v76 ^ v79 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v38 ^ v42 ^ v43 ^ v45 ^ v46 ^ v47 ^ v48 ^ v49 ^ v53 ^ v57 ^ v58;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_131;
   }
 
   has = self->_has;
-  v6 = v4[65];
+  v6 = equalCopy[65];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_131;
@@ -1322,13 +1322,13 @@ LABEL_105:
   if (*&has)
   {
     locale = self->_locale;
-    if (locale != [v4 locale])
+    if (locale != [equalCopy locale])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v6 = v4[65];
+    v6 = equalCopy[65];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -1340,13 +1340,13 @@ LABEL_105:
   if (v8)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v6 = v4[65];
+    v6 = equalCopy[65];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -1358,13 +1358,13 @@ LABEL_105:
   if (v10)
   {
     currentSubscriptionHash = self->_currentSubscriptionHash;
-    if (currentSubscriptionHash != [v4 currentSubscriptionHash])
+    if (currentSubscriptionHash != [equalCopy currentSubscriptionHash])
     {
       goto LABEL_131;
     }
 
     has = self->_has;
-    v6 = v4[65];
+    v6 = equalCopy[65];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -1376,26 +1376,26 @@ LABEL_105:
   if (v12)
   {
     downloadState = self->_downloadState;
-    if (downloadState != [v4 downloadState])
+    if (downloadState != [equalCopy downloadState])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
-  v15 = [v4 lastMobileAssetDownloadAttemptErrorAsset];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy lastMobileAssetDownloadAttemptErrorAsset];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v16 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
-  if (v16)
+  lastMobileAssetDownloadAttemptErrorAsset3 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
+  if (lastMobileAssetDownloadAttemptErrorAsset3)
   {
-    v17 = v16;
-    v18 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
-    v19 = [v4 lastMobileAssetDownloadAttemptErrorAsset];
-    v20 = [v18 isEqual:v19];
+    v17 = lastMobileAssetDownloadAttemptErrorAsset3;
+    lastMobileAssetDownloadAttemptErrorAsset4 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
+    lastMobileAssetDownloadAttemptErrorAsset5 = [equalCopy lastMobileAssetDownloadAttemptErrorAsset];
+    v20 = [lastMobileAssetDownloadAttemptErrorAsset4 isEqual:lastMobileAssetDownloadAttemptErrorAsset5];
 
     if (!v20)
     {
@@ -1409,7 +1409,7 @@ LABEL_105:
 
   v21 = self->_has;
   v22 = (*&v21 >> 4) & 1;
-  v23 = v4[65];
+  v23 = equalCopy[65];
   if (v22 != ((v23 >> 4) & 1))
   {
     goto LABEL_131;
@@ -1418,14 +1418,14 @@ LABEL_105:
   if (v22)
   {
     timeSinceLastMobileAssetDownloadAttemptInSeconds = self->_timeSinceLastMobileAssetDownloadAttemptInSeconds;
-    [v4 timeSinceLastMobileAssetDownloadAttemptInSeconds];
+    [equalCopy timeSinceLastMobileAssetDownloadAttemptInSeconds];
     if (timeSinceLastMobileAssetDownloadAttemptInSeconds != v25)
     {
       goto LABEL_131;
     }
 
     v21 = self->_has;
-    v23 = v4[65];
+    v23 = equalCopy[65];
   }
 
   v26 = (*&v21 >> 5) & 1;
@@ -1437,14 +1437,14 @@ LABEL_105:
   if (v26)
   {
     timeSinceLastMobileAssetDownloadErrorInSeconds = self->_timeSinceLastMobileAssetDownloadErrorInSeconds;
-    [v4 timeSinceLastMobileAssetDownloadErrorInSeconds];
+    [equalCopy timeSinceLastMobileAssetDownloadErrorInSeconds];
     if (timeSinceLastMobileAssetDownloadErrorInSeconds != v28)
     {
       goto LABEL_131;
     }
 
     v21 = self->_has;
-    v23 = v4[65];
+    v23 = equalCopy[65];
   }
 
   v29 = (*&v21 >> 6) & 1;
@@ -1456,26 +1456,26 @@ LABEL_105:
   if (v29)
   {
     lastMobileAssetDownloadAttemptErrorCode = self->_lastMobileAssetDownloadAttemptErrorCode;
-    if (lastMobileAssetDownloadAttemptErrorCode != [v4 lastMobileAssetDownloadAttemptErrorCode])
+    if (lastMobileAssetDownloadAttemptErrorCode != [equalCopy lastMobileAssetDownloadAttemptErrorCode])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
-  v15 = [v4 lastMobileAssetDownloadAttemptErrorDomain];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy lastMobileAssetDownloadAttemptErrorDomain];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v31 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
-  if (v31)
+  lastMobileAssetDownloadAttemptErrorDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
+  if (lastMobileAssetDownloadAttemptErrorDomain)
   {
-    v32 = v31;
-    v33 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
-    v34 = [v4 lastMobileAssetDownloadAttemptErrorDomain];
-    v35 = [v33 isEqual:v34];
+    v32 = lastMobileAssetDownloadAttemptErrorDomain;
+    lastMobileAssetDownloadAttemptErrorDomain2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
+    lastMobileAssetDownloadAttemptErrorDomain3 = [equalCopy lastMobileAssetDownloadAttemptErrorDomain];
+    v35 = [lastMobileAssetDownloadAttemptErrorDomain2 isEqual:lastMobileAssetDownloadAttemptErrorDomain3];
 
     if (!v35)
     {
@@ -1488,7 +1488,7 @@ LABEL_105:
   }
 
   v36 = (*&self->_has >> 7) & 1;
-  if (v36 != ((v4[65] >> 7) & 1))
+  if (v36 != ((equalCopy[65] >> 7) & 1))
   {
     goto LABEL_131;
   }
@@ -1496,26 +1496,26 @@ LABEL_105:
   if (v36)
   {
     errorCount = self->_errorCount;
-    if (errorCount != [v4 errorCount])
+    if (errorCount != [equalCopy errorCount])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
-  v15 = [v4 failingSubsystemOperations];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy failingSubsystemOperations];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v38 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
-  if (v38)
+  failingSubsystemOperations = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
+  if (failingSubsystemOperations)
   {
-    v39 = v38;
-    v40 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
-    v41 = [v4 failingSubsystemOperations];
-    v42 = [v40 isEqual:v41];
+    v39 = failingSubsystemOperations;
+    failingSubsystemOperations2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
+    failingSubsystemOperations3 = [equalCopy failingSubsystemOperations];
+    v42 = [failingSubsystemOperations2 isEqual:failingSubsystemOperations3];
 
     if (!v42)
     {
@@ -1527,20 +1527,20 @@ LABEL_105:
   {
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
-  v15 = [v4 sampledSubsystemOperation];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy sampledSubsystemOperation];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v43 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
-  if (v43)
+  sampledSubsystemOperation = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
+  if (sampledSubsystemOperation)
   {
-    v44 = v43;
-    v45 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
-    v46 = [v4 sampledSubsystemOperation];
-    v47 = [v45 isEqual:v46];
+    v44 = sampledSubsystemOperation;
+    sampledSubsystemOperation2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
+    sampledSubsystemOperation3 = [equalCopy sampledSubsystemOperation];
+    v47 = [sampledSubsystemOperation2 isEqual:sampledSubsystemOperation3];
 
     if (!v47)
     {
@@ -1553,7 +1553,7 @@ LABEL_105:
   }
 
   v48 = (*&self->_has >> 8) & 1;
-  if (v48 != ((v4[65] >> 8) & 1))
+  if (v48 != ((equalCopy[65] >> 8) & 1))
   {
     goto LABEL_131;
   }
@@ -1561,26 +1561,26 @@ LABEL_105:
   if (v48)
   {
     sampledErrorCode = self->_sampledErrorCode;
-    if (sampledErrorCode != [v4 sampledErrorCode])
+    if (sampledErrorCode != [equalCopy sampledErrorCode])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
-  v15 = [v4 sampledErrorDomain];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy sampledErrorDomain];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v50 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
-  if (v50)
+  sampledErrorDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
+  if (sampledErrorDomain)
   {
-    v51 = v50;
-    v52 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
-    v53 = [v4 sampledErrorDomain];
-    v54 = [v52 isEqual:v53];
+    v51 = sampledErrorDomain;
+    sampledErrorDomain2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
+    sampledErrorDomain3 = [equalCopy sampledErrorDomain];
+    v54 = [sampledErrorDomain2 isEqual:sampledErrorDomain3];
 
     if (!v54)
     {
@@ -1594,7 +1594,7 @@ LABEL_105:
 
   v55 = self->_has;
   v56 = (*&v55 >> 9) & 1;
-  v57 = v4[65];
+  v57 = equalCopy[65];
   if (v56 != ((v57 >> 9) & 1))
   {
     goto LABEL_131;
@@ -1603,13 +1603,13 @@ LABEL_105:
   if (v56)
   {
     sampledErrorHash = self->_sampledErrorHash;
-    if (sampledErrorHash != [v4 sampledErrorHash])
+    if (sampledErrorHash != [equalCopy sampledErrorHash])
     {
       goto LABEL_131;
     }
 
     v55 = self->_has;
-    v57 = v4[65];
+    v57 = equalCopy[65];
   }
 
   v59 = (*&v55 >> 10) & 1;
@@ -1621,26 +1621,26 @@ LABEL_105:
   if (v59)
   {
     sampledErrorUnderlyingCode = self->_sampledErrorUnderlyingCode;
-    if (sampledErrorUnderlyingCode != [v4 sampledErrorUnderlyingCode])
+    if (sampledErrorUnderlyingCode != [equalCopy sampledErrorUnderlyingCode])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
-  v15 = [v4 sampledErrorUnderlyingDomain];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy sampledErrorUnderlyingDomain];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v61 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
-  if (v61)
+  sampledErrorUnderlyingDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
+  if (sampledErrorUnderlyingDomain)
   {
-    v62 = v61;
-    v63 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
-    v64 = [v4 sampledErrorUnderlyingDomain];
-    v65 = [v63 isEqual:v64];
+    v62 = sampledErrorUnderlyingDomain;
+    sampledErrorUnderlyingDomain2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
+    sampledErrorUnderlyingDomain3 = [equalCopy sampledErrorUnderlyingDomain];
+    v65 = [sampledErrorUnderlyingDomain2 isEqual:sampledErrorUnderlyingDomain3];
 
     if (!v65)
     {
@@ -1654,7 +1654,7 @@ LABEL_105:
 
   v66 = self->_has;
   v67 = (*&v66 >> 11) & 1;
-  v68 = v4[65];
+  v68 = equalCopy[65];
   if (v67 != ((v68 >> 11) & 1))
   {
     goto LABEL_131;
@@ -1663,14 +1663,14 @@ LABEL_105:
   if (v67)
   {
     timeSinceLastAppleIntelligenceToggleInSeconds = self->_timeSinceLastAppleIntelligenceToggleInSeconds;
-    [v4 timeSinceLastAppleIntelligenceToggleInSeconds];
+    [equalCopy timeSinceLastAppleIntelligenceToggleInSeconds];
     if (timeSinceLastAppleIntelligenceToggleInSeconds != v70)
     {
       goto LABEL_131;
     }
 
     v66 = self->_has;
-    v68 = v4[65];
+    v68 = equalCopy[65];
   }
 
   v71 = (*&v66 >> 12) & 1;
@@ -1682,14 +1682,14 @@ LABEL_105:
   if (v71)
   {
     timeSinceLastSubscriptionHashChangeInSeconds = self->_timeSinceLastSubscriptionHashChangeInSeconds;
-    [v4 timeSinceLastSubscriptionHashChangeInSeconds];
+    [equalCopy timeSinceLastSubscriptionHashChangeInSeconds];
     if (timeSinceLastSubscriptionHashChangeInSeconds != v73)
     {
       goto LABEL_131;
     }
 
     v66 = self->_has;
-    v68 = v4[65];
+    v68 = equalCopy[65];
   }
 
   v74 = (*&v66 >> 13) & 1;
@@ -1701,14 +1701,14 @@ LABEL_105:
   if (v74)
   {
     timeSinceLastBootInSeconds = self->_timeSinceLastBootInSeconds;
-    [v4 timeSinceLastBootInSeconds];
+    [equalCopy timeSinceLastBootInSeconds];
     if (timeSinceLastBootInSeconds != v76)
     {
       goto LABEL_131;
     }
 
     v66 = self->_has;
-    v68 = v4[65];
+    v68 = equalCopy[65];
   }
 
   v77 = (*&v66 >> 14) & 1;
@@ -1720,13 +1720,13 @@ LABEL_105:
   if (v77)
   {
     countPSUSAssets = self->_countPSUSAssets;
-    if (countPSUSAssets != [v4 countPSUSAssets])
+    if (countPSUSAssets != [equalCopy countPSUSAssets])
     {
       goto LABEL_131;
     }
 
     v66 = self->_has;
-    v68 = v4[65];
+    v68 = equalCopy[65];
   }
 
   v79 = (*&v66 >> 15) & 1;
@@ -1738,26 +1738,26 @@ LABEL_105:
   if (v79)
   {
     countRequiredAssets = self->_countRequiredAssets;
-    if (countRequiredAssets != [v4 countRequiredAssets])
+    if (countRequiredAssets != [equalCopy countRequiredAssets])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
-  v15 = [v4 useCaseID];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy useCaseID];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v81 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
-  if (v81)
+  useCaseID = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
+  if (useCaseID)
   {
-    v82 = v81;
-    v83 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
-    v84 = [v4 useCaseID];
-    v85 = [v83 isEqual:v84];
+    v82 = useCaseID;
+    useCaseID2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
+    useCaseID3 = [equalCopy useCaseID];
+    v85 = [useCaseID2 isEqual:useCaseID3];
 
     if (!v85)
     {
@@ -1771,7 +1771,7 @@ LABEL_105:
 
   v86 = self->_has;
   v87 = HIWORD(*&v86) & 1;
-  v88 = v4[65];
+  v88 = equalCopy[65];
   if (v87 != (HIWORD(v88) & 1))
   {
     goto LABEL_131;
@@ -1780,14 +1780,14 @@ LABEL_105:
   if (v87)
   {
     timeSinceLastSoftwareUpdateInSeconds = self->_timeSinceLastSoftwareUpdateInSeconds;
-    [v4 timeSinceLastSoftwareUpdateInSeconds];
+    [equalCopy timeSinceLastSoftwareUpdateInSeconds];
     if (timeSinceLastSoftwareUpdateInSeconds != v90)
     {
       goto LABEL_131;
     }
 
     v86 = self->_has;
-    v88 = v4[65];
+    v88 = equalCopy[65];
   }
 
   v91 = (*&v86 >> 17) & 1;
@@ -1799,14 +1799,14 @@ LABEL_105:
   if (v91)
   {
     timeSinceSampledErrorInSeconds = self->_timeSinceSampledErrorInSeconds;
-    [v4 timeSinceSampledErrorInSeconds];
+    [equalCopy timeSinceSampledErrorInSeconds];
     if (timeSinceSampledErrorInSeconds != v93)
     {
       goto LABEL_131;
     }
 
     v86 = self->_has;
-    v88 = v4[65];
+    v88 = equalCopy[65];
   }
 
   v94 = (*&v86 >> 18) & 1;
@@ -1818,26 +1818,26 @@ LABEL_105:
   if (v94)
   {
     buddyStatus = self->_buddyStatus;
-    if (buddyStatus != [v4 buddyStatus])
+    if (buddyStatus != [equalCopy buddyStatus])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
-  v15 = [v4 buildVersionPriorToSoftwareUpdate];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy buildVersionPriorToSoftwareUpdate];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v96 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
-  if (v96)
+  buildVersionPriorToSoftwareUpdate = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
+  if (buildVersionPriorToSoftwareUpdate)
   {
-    v97 = v96;
-    v98 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
-    v99 = [v4 buildVersionPriorToSoftwareUpdate];
-    v100 = [v98 isEqual:v99];
+    v97 = buildVersionPriorToSoftwareUpdate;
+    buildVersionPriorToSoftwareUpdate2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
+    buildVersionPriorToSoftwareUpdate3 = [equalCopy buildVersionPriorToSoftwareUpdate];
+    v100 = [buildVersionPriorToSoftwareUpdate2 isEqual:buildVersionPriorToSoftwareUpdate3];
 
     if (!v100)
     {
@@ -1851,7 +1851,7 @@ LABEL_105:
 
   v101 = self->_has;
   v102 = (*&v101 >> 19) & 1;
-  v103 = v4[65];
+  v103 = equalCopy[65];
   if (v102 != ((v103 >> 19) & 1))
   {
     goto LABEL_131;
@@ -1860,13 +1860,13 @@ LABEL_105:
   if (v102)
   {
     invocationsCountWhileNotAvailable = self->_invocationsCountWhileNotAvailable;
-    if (invocationsCountWhileNotAvailable != [v4 invocationsCountWhileNotAvailable])
+    if (invocationsCountWhileNotAvailable != [equalCopy invocationsCountWhileNotAvailable])
     {
       goto LABEL_131;
     }
 
     v101 = self->_has;
-    v103 = v4[65];
+    v103 = equalCopy[65];
   }
 
   v105 = (*&v101 >> 20) & 1;
@@ -1878,26 +1878,26 @@ LABEL_105:
   if (v105)
   {
     lastMobileAssetDownloadAttemptErrorUnderlyingCode = self->_lastMobileAssetDownloadAttemptErrorUnderlyingCode;
-    if (lastMobileAssetDownloadAttemptErrorUnderlyingCode != [v4 lastMobileAssetDownloadAttemptErrorUnderlyingCode])
+    if (lastMobileAssetDownloadAttemptErrorUnderlyingCode != [equalCopy lastMobileAssetDownloadAttemptErrorUnderlyingCode])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-  v15 = [v4 lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
     goto LABEL_130;
   }
 
-  v107 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-  if (v107)
+  lastMobileAssetDownloadAttemptErrorUnderlyingDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  if (lastMobileAssetDownloadAttemptErrorUnderlyingDomain)
   {
-    v108 = v107;
-    v109 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-    v110 = [v4 lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
-    v111 = [v109 isEqual:v110];
+    v108 = lastMobileAssetDownloadAttemptErrorUnderlyingDomain;
+    lastMobileAssetDownloadAttemptErrorUnderlyingDomain2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+    lastMobileAssetDownloadAttemptErrorUnderlyingDomain3 = [equalCopy lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+    v111 = [lastMobileAssetDownloadAttemptErrorUnderlyingDomain2 isEqual:lastMobileAssetDownloadAttemptErrorUnderlyingDomain3];
 
     if (!v111)
     {
@@ -1910,7 +1910,7 @@ LABEL_105:
   }
 
   v112 = (*&self->_has >> 21) & 1;
-  if (v112 != ((v4[65] >> 21) & 1))
+  if (v112 != ((equalCopy[65] >> 21) & 1))
   {
     goto LABEL_131;
   }
@@ -1918,28 +1918,28 @@ LABEL_105:
   if (v112)
   {
     mode = self->_mode;
-    if (mode != [v4 mode])
+    if (mode != [equalCopy mode])
     {
       goto LABEL_131;
     }
   }
 
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
-  v15 = [v4 sampledErrorAsset];
-  if ((v14 != 0) == (v15 == 0))
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
+  lastMobileAssetDownloadAttemptErrorAsset2 = [equalCopy sampledErrorAsset];
+  if ((lastMobileAssetDownloadAttemptErrorAsset != 0) == (lastMobileAssetDownloadAttemptErrorAsset2 == 0))
   {
 LABEL_130:
 
     goto LABEL_131;
   }
 
-  v114 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
-  if (v114)
+  sampledErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
+  if (sampledErrorAsset)
   {
-    v115 = v114;
-    v116 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
-    v117 = [v4 sampledErrorAsset];
-    v118 = [v116 isEqual:v117];
+    v115 = sampledErrorAsset;
+    sampledErrorAsset2 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
+    sampledErrorAsset3 = [equalCopy sampledErrorAsset];
+    v118 = [sampledErrorAsset2 isEqual:sampledErrorAsset3];
 
     if (!v118)
     {
@@ -1953,19 +1953,19 @@ LABEL_130:
 
   v121 = self->_has;
   v122 = (*&v121 >> 22) & 1;
-  v123 = v4[65];
+  v123 = equalCopy[65];
   if (v122 == ((v123 >> 22) & 1))
   {
     if (v122)
     {
       subscriptionDownloadStatus = self->_subscriptionDownloadStatus;
-      if (subscriptionDownloadStatus != [v4 subscriptionDownloadStatus])
+      if (subscriptionDownloadStatus != [equalCopy subscriptionDownloadStatus])
       {
         goto LABEL_131;
       }
 
       v121 = self->_has;
-      v123 = v4[65];
+      v123 = equalCopy[65];
     }
 
     v125 = (*&v121 >> 23) & 1;
@@ -1974,20 +1974,20 @@ LABEL_130:
       if (v125)
       {
         timeSinceSubscriptionDownloadStatusCompleteInSeconds = self->_timeSinceSubscriptionDownloadStatusCompleteInSeconds;
-        [v4 timeSinceSubscriptionDownloadStatusCompleteInSeconds];
+        [equalCopy timeSinceSubscriptionDownloadStatusCompleteInSeconds];
         if (timeSinceSubscriptionDownloadStatusCompleteInSeconds != v127)
         {
           goto LABEL_131;
         }
 
         v121 = self->_has;
-        v123 = v4[65];
+        v123 = equalCopy[65];
       }
 
       v128 = HIBYTE(*&v121) & 1;
       if (v128 == (HIBYTE(v123) & 1))
       {
-        if (!v128 || (currentMode = self->_currentMode, currentMode == [v4 currentMode]))
+        if (!v128 || (currentMode = self->_currentMode, currentMode == [equalCopy currentMode]))
         {
           v119 = 1;
           goto LABEL_132;
@@ -2003,9 +2003,9 @@ LABEL_132:
   return v119;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -2050,9 +2050,9 @@ LABEL_5:
   }
 
 LABEL_6:
-  v5 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
+  lastMobileAssetDownloadAttemptErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorAsset];
 
-  if (v5)
+  if (lastMobileAssetDownloadAttemptErrorAsset)
   {
     PBDataWriterWriteStringField();
   }
@@ -2087,9 +2087,9 @@ LABEL_11:
   }
 
 LABEL_12:
-  v7 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
+  lastMobileAssetDownloadAttemptErrorDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorDomain];
 
-  if (v7)
+  if (lastMobileAssetDownloadAttemptErrorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -2099,16 +2099,16 @@ LABEL_12:
     PBDataWriterWriteUint32Field();
   }
 
-  v8 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
+  failingSubsystemOperations = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self failingSubsystemOperations];
 
-  if (v8)
+  if (failingSubsystemOperations)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
+  sampledSubsystemOperation = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledSubsystemOperation];
 
-  if (v9)
+  if (sampledSubsystemOperation)
   {
     PBDataWriterWriteStringField();
   }
@@ -2118,9 +2118,9 @@ LABEL_12:
     PBDataWriterWriteUint32Field();
   }
 
-  v10 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
+  sampledErrorDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorDomain];
 
-  if (v10)
+  if (sampledErrorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -2137,9 +2137,9 @@ LABEL_12:
     PBDataWriterWriteUint32Field();
   }
 
-  v12 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
+  sampledErrorUnderlyingDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorUnderlyingDomain];
 
-  if (v12)
+  if (sampledErrorUnderlyingDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -2202,9 +2202,9 @@ LABEL_35:
   }
 
 LABEL_36:
-  v14 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
+  useCaseID = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self useCaseID];
 
-  if (v14)
+  if (useCaseID)
   {
     PBDataWriterWriteStringField();
   }
@@ -2239,9 +2239,9 @@ LABEL_41:
   }
 
 LABEL_42:
-  v16 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
+  buildVersionPriorToSoftwareUpdate = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self buildVersionPriorToSoftwareUpdate];
 
-  if (v16)
+  if (buildVersionPriorToSoftwareUpdate)
   {
     PBDataWriterWriteStringField();
   }
@@ -2258,9 +2258,9 @@ LABEL_42:
     PBDataWriterWriteUint32Field();
   }
 
-  v18 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
+  lastMobileAssetDownloadAttemptErrorUnderlyingDomain = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self lastMobileAssetDownloadAttemptErrorUnderlyingDomain];
 
-  if (v18)
+  if (lastMobileAssetDownloadAttemptErrorUnderlyingDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -2270,9 +2270,9 @@ LABEL_42:
     PBDataWriterWriteInt32Field();
   }
 
-  v19 = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
+  sampledErrorAsset = [(SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus *)self sampledErrorAsset];
 
-  if (v19)
+  if (sampledErrorAsset)
   {
     PBDataWriterWriteStringField();
   }
@@ -2309,9 +2309,9 @@ LABEL_57:
 LABEL_58:
 }
 
-- (void)setHasCurrentMode:(BOOL)a3
+- (void)setHasCurrentMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x1000000;
   }
@@ -2324,9 +2324,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)a3
+- (void)setHasTimeSinceSubscriptionDownloadStatusCompleteInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x800000;
   }
@@ -2339,9 +2339,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasSubscriptionDownloadStatus:(BOOL)a3
+- (void)setHasSubscriptionDownloadStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x400000;
   }
@@ -2354,9 +2354,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x200000;
   }
@@ -2369,9 +2369,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)a3
+- (void)setHasLastMobileAssetDownloadAttemptErrorUnderlyingCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x100000;
   }
@@ -2384,9 +2384,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)a3
+- (void)setHasInvocationsCountWhileNotAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x80000;
   }
@@ -2399,9 +2399,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasBuddyStatus:(BOOL)a3
+- (void)setHasBuddyStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x40000;
   }
@@ -2414,9 +2414,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)a3
+- (void)setHasTimeSinceSampledErrorInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x20000;
   }
@@ -2429,9 +2429,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastSoftwareUpdateInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x10000;
   }
@@ -2444,9 +2444,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasCountRequiredAssets:(BOOL)a3
+- (void)setHasCountRequiredAssets:(BOOL)assets
 {
-  if (a3)
+  if (assets)
   {
     v3 = 0x8000;
   }
@@ -2459,9 +2459,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasCountPSUSAssets:(BOOL)a3
+- (void)setHasCountPSUSAssets:(BOOL)assets
 {
-  if (a3)
+  if (assets)
   {
     v3 = 0x4000;
   }
@@ -2474,9 +2474,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasTimeSinceLastBootInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastBootInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 0x2000;
   }
@@ -2489,9 +2489,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasTimeSinceLastSubscriptionHashChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastSubscriptionHashChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4096;
   }
@@ -2504,9 +2504,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastAppleIntelligenceToggleInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2048;
   }
@@ -2519,9 +2519,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasSampledErrorUnderlyingCode:(BOOL)a3
+- (void)setHasSampledErrorUnderlyingCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 1024;
   }
@@ -2534,9 +2534,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasSampledErrorHash:(BOOL)a3
+- (void)setHasSampledErrorHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 512;
   }
@@ -2549,9 +2549,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasSampledErrorCode:(BOOL)a3
+- (void)setHasSampledErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 256;
   }
@@ -2564,9 +2564,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasErrorCount:(BOOL)a3
+- (void)setHasErrorCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -2579,9 +2579,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasLastMobileAssetDownloadAttemptErrorCode:(BOOL)a3
+- (void)setHasLastMobileAssetDownloadAttemptErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 64;
   }
@@ -2594,9 +2594,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastMobileAssetDownloadErrorInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 32;
   }
@@ -2609,9 +2609,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastMobileAssetDownloadAttemptInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 16;
   }
@@ -2624,9 +2624,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasDownloadState:(BOOL)a3
+- (void)setHasDownloadState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -2639,9 +2639,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasCurrentSubscriptionHash:(BOOL)a3
+- (void)setHasCurrentSubscriptionHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 4;
   }
@@ -2654,9 +2654,9 @@ LABEL_58:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }

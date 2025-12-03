@@ -1,10 +1,10 @@
 @interface ATXActivitySuggestionFeedbackEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXActivitySuggestionFeedbackEvent)initWithEventDate:(id)a3 activity:(id)a4 acceptedTriggers:(id)a5 eventType:(unint64_t)a6 suggestionType:(unint64_t)a7 location:(unint64_t)a8;
-- (ATXActivitySuggestionFeedbackEvent)initWithProto:(id)a3;
-- (ATXActivitySuggestionFeedbackEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXActivitySuggestionFeedbackEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXActivitySuggestionFeedbackEvent)initWithEventDate:(id)date activity:(id)activity acceptedTriggers:(id)triggers eventType:(unint64_t)type suggestionType:(unint64_t)suggestionType location:(unint64_t)location;
+- (ATXActivitySuggestionFeedbackEvent)initWithProto:(id)proto;
+- (ATXActivitySuggestionFeedbackEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXActivitySuggestionFeedbackEvent:(id)event;
 - (NSString)description;
 - (id)activityDescription;
 - (id)encodeAsProto;
@@ -15,57 +15,57 @@
 
 @implementation ATXActivitySuggestionFeedbackEvent
 
-- (ATXActivitySuggestionFeedbackEvent)initWithEventDate:(id)a3 activity:(id)a4 acceptedTriggers:(id)a5 eventType:(unint64_t)a6 suggestionType:(unint64_t)a7 location:(unint64_t)a8
+- (ATXActivitySuggestionFeedbackEvent)initWithEventDate:(id)date activity:(id)activity acceptedTriggers:(id)triggers eventType:(unint64_t)type suggestionType:(unint64_t)suggestionType location:(unint64_t)location
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  dateCopy = date;
+  activityCopy = activity;
+  triggersCopy = triggers;
   v23.receiver = self;
   v23.super_class = ATXActivitySuggestionFeedbackEvent;
   v18 = [(ATXActivitySuggestionFeedbackEvent *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventDate, a3);
-    v19->_eventType = a6;
-    v19->_suggestionType = a7;
-    objc_storeStrong(&v19->_activity, a4);
-    v20 = [v17 copy];
+    objc_storeStrong(&v18->_eventDate, date);
+    v19->_eventType = type;
+    v19->_suggestionType = suggestionType;
+    objc_storeStrong(&v19->_activity, activity);
+    v20 = [triggersCopy copy];
     acceptedTriggers = v19->_acceptedTriggers;
     v19->_acceptedTriggers = v20;
 
-    v19->_location = a8;
+    v19->_location = location;
   }
 
   return v19;
 }
 
-- (ATXActivitySuggestionFeedbackEvent)initWithProtoData:(id)a3
+- (ATXActivitySuggestionFeedbackEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBActivitySuggestionFeedbackEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBActivitySuggestionFeedbackEvent alloc] initWithData:dataCopy];
 
     self = [(ATXActivitySuggestionFeedbackEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXActivitySuggestionFeedbackEvent)initWithProto:(id)a3
+- (ATXActivitySuggestionFeedbackEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -82,34 +82,34 @@ LABEL_7:
   }
 
   v5 = MEMORY[0x1E695DF00];
-  v6 = v4;
+  v6 = protoCopy;
   v28 = [[v5 alloc] initWithTimeIntervalSinceReferenceDate:-[ATXPBActivitySuggestionFeedbackEvent date](v6)];
-  v7 = [(ATXPBActivitySuggestionFeedbackEvent *)v6 activity];
+  activity = [(ATXPBActivitySuggestionFeedbackEvent *)v6 activity];
   v26 = [ATXActivity alloc];
-  v25 = [(ATXPBActivity *)v7 modeUUID];
-  v24 = [(ATXPBActivity *)v7 type];
-  v23 = [(ATXPBActivity *)v7 origin];
-  v8 = [(ATXPBActivity *)v7 originBundleId];
-  v9 = [(ATXPBActivity *)v7 originAnchorType];
-  v10 = [(ATXPBActivity *)v7 suggestionUUID];
-  v11 = [(ATXPBActivity *)v7 serializedTriggers];
+  modeUUID = [(ATXPBActivity *)activity modeUUID];
+  type = [(ATXPBActivity *)activity type];
+  origin = [(ATXPBActivity *)activity origin];
+  originBundleId = [(ATXPBActivity *)activity originBundleId];
+  originAnchorType = [(ATXPBActivity *)activity originAnchorType];
+  suggestionUUID = [(ATXPBActivity *)activity suggestionUUID];
+  serializedTriggers = [(ATXPBActivity *)activity serializedTriggers];
   v12 = ATXDeserializeTriggers();
-  v13 = [(ATXPBActivity *)v7 uiLocation];
-  LOBYTE(v22) = [(ATXPBActivity *)v7 shouldSuggestTriggers];
+  uiLocation = [(ATXPBActivity *)activity uiLocation];
+  LOBYTE(v22) = [(ATXPBActivity *)activity shouldSuggestTriggers];
   LOBYTE(v21) = 0;
-  v27 = [(ATXActivity *)v26 initWithModeUUID:v25 userModeName:0 activityType:v24 origin:v23 originBundleId:v8 originAnchorType:v9 allowsSmartEntry:v21 suggestionUUID:v10 triggers:v12 location:v13 shouldSuggestTriggers:v22];
+  v27 = [(ATXActivity *)v26 initWithModeUUID:modeUUID userModeName:0 activityType:type origin:origin originBundleId:originBundleId originAnchorType:originAnchorType allowsSmartEntry:v21 suggestionUUID:suggestionUUID triggers:v12 location:uiLocation shouldSuggestTriggers:v22];
 
-  v14 = [(ATXPBActivitySuggestionFeedbackEvent *)v6 serializedAcceptedTriggers];
+  serializedAcceptedTriggers = [(ATXPBActivitySuggestionFeedbackEvent *)v6 serializedAcceptedTriggers];
   v15 = ATXDeserializeTriggers();
-  v16 = [(ATXPBActivitySuggestionFeedbackEvent *)v6 eventType];
-  v17 = [(ATXPBActivitySuggestionFeedbackEvent *)v6 suggestionType];
-  LODWORD(v10) = [(ATXPBActivitySuggestionFeedbackEvent *)v6 location];
+  eventType = [(ATXPBActivitySuggestionFeedbackEvent *)v6 eventType];
+  suggestionType = [(ATXPBActivitySuggestionFeedbackEvent *)v6 suggestionType];
+  LODWORD(suggestionUUID) = [(ATXPBActivitySuggestionFeedbackEvent *)v6 location];
 
-  self = [(ATXActivitySuggestionFeedbackEvent *)self initWithEventDate:v28 activity:v27 acceptedTriggers:v15 eventType:v16 suggestionType:v17 location:v10];
-  v18 = self;
+  self = [(ATXActivitySuggestionFeedbackEvent *)self initWithEventDate:v28 activity:v27 acceptedTriggers:v15 eventType:eventType suggestionType:suggestionType location:suggestionUUID];
+  selfCopy = self;
 LABEL_8:
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)proto
@@ -124,25 +124,25 @@ LABEL_8:
   v6 = objc_alloc_init(ATXPBActivity);
   [(ATXPBActivity *)v6 setUiLocation:?];
   [(ATXPBActivity *)v6 setType:?];
-  v7 = [(ATXActivity *)v5 modeUUID];
-  [(ATXPBActivity *)v6 setModeUUID:v7];
+  modeUUID = [(ATXActivity *)v5 modeUUID];
+  [(ATXPBActivity *)v6 setModeUUID:modeUUID];
 
-  v8 = [(ATXActivity *)v5 suggestionUUID];
-  [(ATXPBActivity *)v6 setSuggestionUUID:v8];
+  suggestionUUID = [(ATXActivity *)v5 suggestionUUID];
+  [(ATXPBActivity *)v6 setSuggestionUUID:suggestionUUID];
 
   [(ATXPBActivity *)v6 setOrigin:?];
-  v9 = [(ATXActivity *)v5 originBundleId];
-  [(ATXPBActivity *)v6 setOriginBundleId:v9];
+  originBundleId = [(ATXActivity *)v5 originBundleId];
+  [(ATXPBActivity *)v6 setOriginBundleId:originBundleId];
 
-  v10 = [(ATXActivity *)v5 originAnchorType];
-  [(ATXPBActivity *)v6 setOriginAnchorType:v10];
+  originAnchorType = [(ATXActivity *)v5 originAnchorType];
+  [(ATXPBActivity *)v6 setOriginAnchorType:originAnchorType];
 
-  v11 = [(ATXActivity *)v5 triggers];
+  triggers = [(ATXActivity *)v5 triggers];
   v12 = ATXSerializeTriggers();
   [(ATXPBActivity *)v6 setSerializedTriggers:v12];
 
-  LOBYTE(v11) = [(ATXActivity *)v5 shouldSuggestTriggers];
-  [(ATXPBActivity *)v6 setShouldSuggestTriggers:v11];
+  LOBYTE(triggers) = [(ATXActivity *)v5 shouldSuggestTriggers];
+  [(ATXPBActivity *)v6 setShouldSuggestTriggers:triggers];
   [(ATXPBActivitySuggestionFeedbackEvent *)v3 setActivity:v6];
 
   v13 = ATXSerializeTriggers();
@@ -153,18 +153,18 @@ LABEL_8:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXActivitySuggestionFeedbackEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXActivitySuggestionFeedbackEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -181,8 +181,8 @@ LABEL_8:
   v4 = [(NSDate *)self->_eventDate description];
   [v3 setObject:v4 forKeyedSubscript:@"eventDate"];
 
-  v5 = [(ATXActivitySuggestionFeedbackEvent *)self activityDescription];
-  [v3 setObject:v5 forKeyedSubscript:@"activity"];
+  activityDescription = [(ATXActivitySuggestionFeedbackEvent *)self activityDescription];
+  [v3 setObject:activityDescription forKeyedSubscript:@"activity"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_eventType];
   [v3 setObject:v6 forKeyedSubscript:@"eventType"];
@@ -202,8 +202,8 @@ LABEL_8:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXActivitySuggestionFeedbackEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXActivitySuggestionFeedbackEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
@@ -211,45 +211,45 @@ LABEL_8:
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ATXActivitySuggestionFeedbackEvent *)self jsonDict];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  jsonDict = [(ATXActivitySuggestionFeedbackEvent *)self jsonDict];
+  v4 = [v2 stringWithFormat:@"%@", jsonDict];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActivitySuggestionFeedbackEvent *)self isEqualToATXActivitySuggestionFeedbackEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActivitySuggestionFeedbackEvent *)self isEqualToATXActivitySuggestionFeedbackEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXActivitySuggestionFeedbackEvent:(id)a3
+- (BOOL)isEqualToATXActivitySuggestionFeedbackEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   eventType = self->_eventType;
-  if (eventType == [v4 eventType] && (suggestionType = self->_suggestionType, suggestionType == objc_msgSend(v4, "suggestionType")))
+  if (eventType == [eventCopy eventType] && (suggestionType = self->_suggestionType, suggestionType == objc_msgSend(eventCopy, "suggestionType")))
   {
     eventDate = self->_eventDate;
-    v8 = [v4 eventDate];
-    if ([(NSDate *)eventDate isEqualToDate:v8])
+    eventDate = [eventCopy eventDate];
+    if ([(NSDate *)eventDate isEqualToDate:eventDate])
     {
       activity = self->_activity;
-      v10 = [v4 activity];
-      if ([(ATXActivity *)activity isEqual:v10])
+      activity = [eventCopy activity];
+      if ([(ATXActivity *)activity isEqual:activity])
       {
         location = self->_location;
-        v12 = location == [v4 location];
+        v12 = location == [eventCopy location];
       }
 
       else
@@ -275,14 +275,14 @@ LABEL_8:
 - (id)activityDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ATXActivity *)self->_activity modeUUID];
-  v5 = [(ATXActivity *)self->_activity activityType];
-  v6 = [(ATXActivity *)self->_activity location];
-  v7 = [(ATXActivity *)self->_activity shouldSuggestTriggers];
-  v8 = [(ATXActivity *)self->_activity triggers];
-  v9 = [(ATXActivity *)self->_activity suggestionUUID];
-  v10 = [(ATXActivity *)self->_activity localizedSuggestionReason];
-  v11 = [v3 stringWithFormat:@"<modeUUID = %@, activityType = %lu, location = %lu, shouldSuggestTriggers = %d, triggers = %@, suggestionUUID = %@, localizedSuggestionReason = %@>", v4, v5, v6, v7, v8, v9, v10];
+  modeUUID = [(ATXActivity *)self->_activity modeUUID];
+  activityType = [(ATXActivity *)self->_activity activityType];
+  location = [(ATXActivity *)self->_activity location];
+  shouldSuggestTriggers = [(ATXActivity *)self->_activity shouldSuggestTriggers];
+  triggers = [(ATXActivity *)self->_activity triggers];
+  suggestionUUID = [(ATXActivity *)self->_activity suggestionUUID];
+  localizedSuggestionReason = [(ATXActivity *)self->_activity localizedSuggestionReason];
+  v11 = [v3 stringWithFormat:@"<modeUUID = %@, activityType = %lu, location = %lu, shouldSuggestTriggers = %d, triggers = %@, suggestionUUID = %@, localizedSuggestionReason = %@>", modeUUID, activityType, location, shouldSuggestTriggers, triggers, suggestionUUID, localizedSuggestionReason];
 
   return v11;
 }

@@ -1,46 +1,46 @@
 @interface HKGraphSeriesBlockCoordinateList
-+ (id)coordinateListByCombiningSubCoordinates:(id)a3 chartableValueRange:(id)a4;
-+ (id)coordinateListWithCoordinates:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4;
++ (id)coordinateListByCombiningSubCoordinates:(id)coordinates chartableValueRange:(id)range;
++ (id)coordinateListWithCoordinates:(id)coordinates blockPath:(HKGraphSeriesDataBlockPath *)path;
 - (HKGraphSeriesDataBlockPath)blockPathEnd;
 - (HKGraphSeriesDataBlockPath)blockPathStart;
 - (NSArray)coordinates;
-- (id)_coordinatesInChartableRange:(id)a3;
-- (id)firstCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
-- (id)lastCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
-- (int64_t)_numCoordinatesInChartableRange:(id)a3;
+- (id)_coordinatesInChartableRange:(id)range;
+- (id)firstCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
+- (id)lastCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
+- (int64_t)_numCoordinatesInChartableRange:(id)range;
 - (int64_t)numCoordinates;
-- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)a3 chartableValueRange:(id)a4 roundToViewScale:(BOOL)a5 block:(id)a6;
-- (void)enumerateCoordinatesWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4 block:(id)a5;
+- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)transform chartableValueRange:(id)range roundToViewScale:(BOOL)scale block:(id)block;
+- (void)enumerateCoordinatesWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale block:(id)block;
 @end
 
 @implementation HKGraphSeriesBlockCoordinateList
 
-+ (id)coordinateListByCombiningSubCoordinates:(id)a3 chartableValueRange:(id)a4
++ (id)coordinateListByCombiningSubCoordinates:(id)coordinates chartableValueRange:(id)range
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_HKCompoundBlockCoordinateList alloc] initWithSubCoordinates:v6 chartableValueRange:v5];
+  rangeCopy = range;
+  coordinatesCopy = coordinates;
+  v7 = [[_HKCompoundBlockCoordinateList alloc] initWithSubCoordinates:coordinatesCopy chartableValueRange:rangeCopy];
 
   return v7;
 }
 
-+ (id)coordinateListWithCoordinates:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4
++ (id)coordinateListWithCoordinates:(id)coordinates blockPath:(HKGraphSeriesDataBlockPath *)path
 {
-  v5 = a3;
+  coordinatesCopy = coordinates;
   v6 = [_HKBaseBlockCoordinateList alloc];
-  v9 = *a4;
-  v7 = [(_HKBaseBlockCoordinateList *)v6 initWithCoordinates:v5 blockPath:&v9];
+  v9 = *path;
+  v7 = [(_HKBaseBlockCoordinateList *)v6 initWithCoordinates:coordinatesCopy blockPath:&v9];
 
   return v7;
 }
 
-- (void)enumerateCoordinatesWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4 block:(id)a5
+- (void)enumerateCoordinatesWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale block:(id)block
 {
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [(HKGraphSeriesBlockCoordinateList *)self _enumerateCoordinatesWithTransform:v6 chartableValueRange:0 roundToViewScale:a4 block:a5];
+  v6[2] = *&transform->tx;
+  [(HKGraphSeriesBlockCoordinateList *)self _enumerateCoordinatesWithTransform:v6 chartableValueRange:0 roundToViewScale:scale block:block];
 }
 
 - (NSArray)coordinates
@@ -87,7 +87,7 @@
   return result;
 }
 
-- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)a3 chartableValueRange:(id)a4 roundToViewScale:(BOOL)a5 block:(id)a6
+- (void)_enumerateCoordinatesWithTransform:(CGAffineTransform *)transform chartableValueRange:(id)range roundToViewScale:(BOOL)scale block:(id)block
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();
@@ -96,16 +96,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (id)firstCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
-{
-  OUTLINED_FUNCTION_1_1();
-  objc_opt_class();
-  OUTLINED_FUNCTION_0_10();
-  NSRequestConcreteImplementation();
-  return 0;
-}
-
-- (id)lastCoordinateWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)firstCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();
@@ -114,7 +105,7 @@
   return 0;
 }
 
-- (id)_coordinatesInChartableRange:(id)a3
+- (id)lastCoordinateWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();
@@ -123,7 +114,16 @@
   return 0;
 }
 
-- (int64_t)_numCoordinatesInChartableRange:(id)a3
+- (id)_coordinatesInChartableRange:(id)range
+{
+  OUTLINED_FUNCTION_1_1();
+  objc_opt_class();
+  OUTLINED_FUNCTION_0_10();
+  NSRequestConcreteImplementation();
+  return 0;
+}
+
+- (int64_t)_numCoordinatesInChartableRange:(id)range
 {
   OUTLINED_FUNCTION_1_1();
   objc_opt_class();

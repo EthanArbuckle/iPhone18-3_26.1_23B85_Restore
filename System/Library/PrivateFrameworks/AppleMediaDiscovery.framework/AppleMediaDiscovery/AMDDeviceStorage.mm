@@ -1,16 +1,16 @@
 @interface AMDDeviceStorage
-+ (id)performStorageUpdateWithPayload:(id)a3;
-+ (id)queryDeviceStorageWithError:(id *)a3;
++ (id)performStorageUpdateWithPayload:(id)payload;
++ (id)queryDeviceStorageWithError:(id *)error;
 @end
 
 @implementation AMDDeviceStorage
 
-+ (id)queryDeviceStorageWithError:(id *)a3
++ (id)queryDeviceStorageWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v20 = a1;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  errorCopy = error;
   v17 = 0;
   v16 = 0;
   v15 = 0;
@@ -29,7 +29,7 @@
     objc_storeStrong(&oslog, 0);
     v8 = [AMDError allocError:29 withMessage:v14];
     v3 = v8;
-    *v18 = v8;
+    *errorCopy = v8;
     v21 = 0;
     objc_storeStrong(&v14, 0);
   }
@@ -60,13 +60,13 @@
   return v4;
 }
 
-+ (id)performStorageUpdateWithPayload:(id)a3
++ (id)performStorageUpdateWithPayload:(id)payload
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v49 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v47 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (location[0])
   {
@@ -89,9 +89,9 @@
           if (v42)
           {
             v19 = v47;
-            v20 = [v42 localizedDescription];
+            localizedDescription = [v42 localizedDescription];
             [v19 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v20);
+            MEMORY[0x277D82BD8](localizedDescription);
             v50 = MEMORY[0x277D82BE0](v47);
             v46 = 1;
           }
@@ -104,8 +104,8 @@
             }
 
             v17 = +[AMDMiscHelpers getCurrentEpochSeconds];
-            v16 = [v17 longLongValue];
-            v18 = 1000 * (v16 - (86400 * [v43 intValue]));
+            longLongValue = [v17 longLongValue];
+            v18 = 1000 * (longLongValue - (86400 * [v43 intValue]));
             MEMORY[0x277D82BD8](v17);
             v38[1] = v18;
             if ([v39 longLongValue] > v18)
@@ -119,15 +119,15 @@
             {
               v38[0] = 0;
               v36 = 0;
-              v15 = [v49 queryDeviceStorageWithError:&v36];
+              v15 = [selfCopy queryDeviceStorageWithError:&v36];
               objc_storeStrong(v38, v36);
               v37 = v15;
               if (v38[0])
               {
                 v13 = v47;
-                v14 = [v38[0] localizedDescription];
+                localizedDescription2 = [v38[0] localizedDescription];
                 [v13 setObject:? forKey:?];
-                MEMORY[0x277D82BD8](v14);
+                MEMORY[0x277D82BD8](localizedDescription2);
                 v50 = MEMORY[0x277D82BE0](v47);
                 v46 = 1;
               }
@@ -176,9 +176,9 @@
                   if (v26)
                   {
                     v6 = v47;
-                    v7 = [v26 localizedDescription];
+                    localizedDescription3 = [v26 localizedDescription];
                     [v6 setObject:? forKey:?];
-                    MEMORY[0x277D82BD8](v7);
+                    MEMORY[0x277D82BD8](localizedDescription3);
                     v50 = MEMORY[0x277D82BE0](v47);
                     v46 = 1;
                   }

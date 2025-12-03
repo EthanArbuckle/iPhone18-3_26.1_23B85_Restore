@@ -1,6 +1,6 @@
 @interface WFTakeVideoAction
 - (id)disabledOnPlatforms;
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 @end
 
 @implementation WFTakeVideoAction
@@ -9,16 +9,16 @@
 {
   v5.receiver = self;
   v5.super_class = WFTakeVideoAction;
-  v2 = [(WFTakeVideoAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFTakeVideoAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  inputCopy = input;
   v8 = [(WFTakeVideoAction *)self parameterValueForKey:@"WFCameraCaptureQuality" ofClass:objc_opt_class()];
   v9 = [(WFTakeVideoAction *)self parameterValueForKey:@"WFCameraCaptureDevice" ofClass:objc_opt_class()];
   v10 = [(WFTakeVideoAction *)self parameterValueForKey:@"WFRecordingStart" ofClass:objc_opt_class()];
@@ -49,7 +49,7 @@
     v15[2] = __54__WFTakeVideoAction_runWithRemoteUserInterface_input___block_invoke;
     v15[3] = &unk_278C209C0;
     v15[4] = self;
-    [v6 showWithQuality:v8 device:v9 startImmediately:v11 completionHandler:v15];
+    [interfaceCopy showWithQuality:v8 device:v9 startImmediately:v11 completionHandler:v15];
   }
 
   else

@@ -1,99 +1,99 @@
 @interface MTMediaRemoteController
 - (AFMultiUserConnection)siriMultiUserConnection;
-- (BOOL)_commandEventIsFromSiri:(id)a3;
-- (BOOL)_commandEventIsInternal:(id)a3;
-- (MTMediaRemoteController)initWithPlayerController:(id)a3;
+- (BOOL)_commandEventIsFromSiri:(id)siri;
+- (BOOL)_commandEventIsInternal:(id)internal;
+- (MTMediaRemoteController)initWithPlayerController:(id)controller;
 - (MTPlayerController)playerController;
 - (__CFArray)copySupportedCommands;
 - (id)_skipBackwardCommandEvent;
 - (id)_skipForwardCommandEvent;
-- (id)accountFromQueueContainingDsid:(id)a3 error:(id *)a4;
-- (int64_t)findIndexOfCommand:(unsigned int)a3 inArray:(__CFArray *)a4;
-- (int64_t)remoteChangePlaybackRate:(id)a3;
-- (int64_t)remoteNextTrack:(id)a3;
-- (int64_t)remotePause:(id)a3;
-- (int64_t)remotePreviousTrack:(id)a3;
+- (id)accountFromQueueContainingDsid:(id)dsid error:(id *)error;
+- (int64_t)findIndexOfCommand:(unsigned int)command inArray:(__CFArray *)array;
+- (int64_t)remoteChangePlaybackRate:(id)rate;
+- (int64_t)remoteNextTrack:(id)track;
+- (int64_t)remotePause:(id)pause;
+- (int64_t)remotePreviousTrack:(id)track;
 - (void)_donateCurrentPlayerItem;
-- (void)accountForRequesterUserId:(id)a3 completionHandler:(id)a4;
+- (void)accountForRequesterUserId:(id)id completionHandler:(id)handler;
 - (void)dealloc;
-- (void)remoteInsertIntoPlaybackQueueCommand:(id)a3 completionHandler:(id)a4;
-- (void)remotePlayCommand:(id)a3 completionHandler:(id)a4;
-- (void)remotePlayItemInPlaybackQueueCommand:(id)a3 completionHandler:(id)a4;
-- (void)remoteRemoveFromPlaybackQueueCommand:(id)a3 completionHandler:(id)a4;
-- (void)remoteReorderPlaybackQueueCommand:(id)a3 completionHandler:(id)a4;
-- (void)remoteSetPlaybackQueueCommand:(id)a3 isMagicMoment:(BOOL)a4 completionHandler:(id)a5;
-- (void)remoteSetPlaybackSessionCommand:(id)a3 completionHandler:(id)a4;
-- (void)remoteTogglePlayPauseCommand:(id)a3 completionHandler:(id)a4;
+- (void)remoteInsertIntoPlaybackQueueCommand:(id)command completionHandler:(id)handler;
+- (void)remotePlayCommand:(id)command completionHandler:(id)handler;
+- (void)remotePlayItemInPlaybackQueueCommand:(id)command completionHandler:(id)handler;
+- (void)remoteRemoveFromPlaybackQueueCommand:(id)command completionHandler:(id)handler;
+- (void)remoteReorderPlaybackQueueCommand:(id)command completionHandler:(id)handler;
+- (void)remoteSetPlaybackQueueCommand:(id)command isMagicMoment:(BOOL)moment completionHandler:(id)handler;
+- (void)remoteSetPlaybackSessionCommand:(id)command completionHandler:(id)handler;
+- (void)remoteTogglePlayPauseCommand:(id)command completionHandler:(id)handler;
 - (void)sessionIdentifierDidChange;
-- (void)updatePreferredSkipDurationsFromUserDefaults:(id)a3 forCommandCenter:(id)a4;
-- (void)updateRemoteSkipPreferenceFromDefaults:(id)a3;
+- (void)updatePreferredSkipDurationsFromUserDefaults:(id)defaults forCommandCenter:(id)center;
+- (void)updateRemoteSkipPreferenceFromDefaults:(id)defaults;
 @end
 
 @implementation MTMediaRemoteController
 
-- (MTMediaRemoteController)initWithPlayerController:(id)a3
+- (MTMediaRemoteController)initWithPlayerController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 player];
-  [(MTMediaRemoteController *)self setPlayerController:v4];
-  v6 = [v4 playbackQueueController];
+  controllerCopy = controller;
+  player = [controllerCopy player];
+  [(MTMediaRemoteController *)self setPlayerController:controllerCopy];
+  playbackQueueController = [controllerCopy playbackQueueController];
   v7 = _MTLogCategoryMediaRemote();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v5;
+    v51 = player;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Starting setup of media remote controller for player: %@", buf, 0xCu);
   }
 
   v45.receiver = self;
   v45.super_class = MTMediaRemoteController;
-  v8 = [(MTMediaRemoteController *)&v45 initWithPlayer:v5];
+  v8 = [(MTMediaRemoteController *)&v45 initWithPlayer:player];
   v9 = v8;
   if (v8)
   {
-    [(MTMediaRemoteController *)v8 setPlaybackQueueController:v6];
-    [v6 setSessionDelegate:v9];
-    v10 = [v5 commandCenter];
-    v11 = [v10 insertIntoPlaybackQueueCommand];
-    [v11 addTarget:v9 action:"remoteInsertIntoPlaybackQueueCommand:completionHandler:"];
+    [(MTMediaRemoteController *)v8 setPlaybackQueueController:playbackQueueController];
+    [playbackQueueController setSessionDelegate:v9];
+    commandCenter = [player commandCenter];
+    insertIntoPlaybackQueueCommand = [commandCenter insertIntoPlaybackQueueCommand];
+    [insertIntoPlaybackQueueCommand addTarget:v9 action:"remoteInsertIntoPlaybackQueueCommand:completionHandler:"];
 
-    v12 = [v10 playItemInQueueCommand];
-    [v12 addTarget:v9 action:"remotePlayItemInPlaybackQueueCommand:completionHandler:"];
+    playItemInQueueCommand = [commandCenter playItemInQueueCommand];
+    [playItemInQueueCommand addTarget:v9 action:"remotePlayItemInPlaybackQueueCommand:completionHandler:"];
 
-    v13 = [v10 reorderQueueCommand];
-    [v13 addTarget:v9 action:"remoteReorderPlaybackQueueCommand:completionHandler:"];
+    reorderQueueCommand = [commandCenter reorderQueueCommand];
+    [reorderQueueCommand addTarget:v9 action:"remoteReorderPlaybackQueueCommand:completionHandler:"];
 
-    v14 = [v10 removeFromPlaybackQueueCommand];
-    [v14 addTarget:v9 action:"remoteRemoveFromPlaybackQueueCommand:completionHandler:"];
+    removeFromPlaybackQueueCommand = [commandCenter removeFromPlaybackQueueCommand];
+    [removeFromPlaybackQueueCommand addTarget:v9 action:"remoteRemoveFromPlaybackQueueCommand:completionHandler:"];
 
-    v15 = [v10 setPlaybackQueueCommand];
-    [v15 addTarget:v9 action:"remoteSetPlaybackQueueCommand:completionHandler:" usingExtendedStatus:1];
+    setPlaybackQueueCommand = [commandCenter setPlaybackQueueCommand];
+    [setPlaybackQueueCommand addTarget:v9 action:"remoteSetPlaybackQueueCommand:completionHandler:" usingExtendedStatus:1];
 
-    v16 = [v10 playCommand];
-    [v16 addTarget:v9 action:"remotePlayCommand:completionHandler:"];
+    playCommand = [commandCenter playCommand];
+    [playCommand addTarget:v9 action:"remotePlayCommand:completionHandler:"];
 
     if (os_feature_enabled_red_sun())
     {
-      v17 = [v10 setPlaybackQueueCommand];
-      [v17 registerSupportedQueueType:8];
+      setPlaybackQueueCommand2 = [commandCenter setPlaybackQueueCommand];
+      [setPlaybackQueueCommand2 registerSupportedQueueType:8];
     }
 
-    v18 = [v10 setPlaybackSessionCommand];
-    [v18 addTarget:v9 action:"remoteSetPlaybackSessionCommand:completionHandler:"];
+    setPlaybackSessionCommand = [commandCenter setPlaybackSessionCommand];
+    [setPlaybackSessionCommand addTarget:v9 action:"remoteSetPlaybackSessionCommand:completionHandler:"];
 
-    v19 = [v10 setPlaybackSessionCommand];
+    setPlaybackSessionCommand2 = [commandCenter setPlaybackSessionCommand];
     v49 = @"com.apple.podcasts.MTPlaybackQueueController.GenericQueue";
     v20 = [NSArray arrayWithObjects:&v49 count:1];
-    [v19 setSupportedSessionTypes:v20];
+    [setPlaybackSessionCommand2 setSupportedSessionTypes:v20];
 
-    v21 = [v10 setPlaybackSessionCommand];
+    setPlaybackSessionCommand3 = [commandCenter setPlaybackSessionCommand];
     v48 = @"com.apple.podcasts.MTPlaybackQueueController.GenericQueue";
     v22 = [NSArray arrayWithObjects:&v48 count:1];
-    [v21 setExportableSessionTypes:v22];
+    [setPlaybackSessionCommand3 setExportableSessionTypes:v22];
 
     [MPRemoteCommandCenter updateLaunchCommandsWithConfigurationHandler:&stru_1004D9A60];
     v23 = +[IMAVPlayer sharedPlayer];
-    LODWORD(v22) = v5 == v23;
+    LODWORD(v22) = player == v23;
 
     if (v22)
     {
@@ -101,9 +101,9 @@
       v25 = [v24 initWithPlayerID:kMTPodcastsMagicMomentsPlayerID];
       [(MTMediaRemoteController *)v9 setMetadataCommandCenter:v25];
 
-      v26 = [(MTMediaRemoteController *)v9 metadataCommandCenter];
-      v27 = [v26 setPlaybackQueueCommand];
-      [v27 addTarget:v9 action:"remoteSetMetadataPlaybackQueueCommand:completionHandler:" usingExtendedStatus:1];
+      metadataCommandCenter = [(MTMediaRemoteController *)v9 metadataCommandCenter];
+      setPlaybackQueueCommand3 = [metadataCommandCenter setPlaybackQueueCommand];
+      [setPlaybackQueueCommand3 addTarget:v9 action:"remoteSetMetadataPlaybackQueueCommand:completionHandler:" usingExtendedStatus:1];
     }
 
     objc_initWeak(buf, v9);
@@ -126,7 +126,7 @@
     objc_copyWeak(&v44, buf);
     v34 = v28;
     v42 = v34;
-    v35 = v10;
+    v35 = commandCenter;
     v43 = v35;
     [(MTDictionaryDiff *)v33 addCallback:v41];
     [(MTDefaultsChangeNotifier *)v9->_defaultsObserver start];
@@ -157,7 +157,7 @@
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v5;
+    v51 = player;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Finished setup of media remote controller for player: %@", buf, 0xCu);
   }
 
@@ -179,29 +179,29 @@
   return siriMultiUserConnection;
 }
 
-- (void)accountForRequesterUserId:(id)a3 completionHandler:(id)a4
+- (void)accountForRequesterUserId:(id)id completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTMediaRemoteController *)self siriMultiUserConnection];
+  handlerCopy = handler;
+  idCopy = id;
+  siriMultiUserConnection = [(MTMediaRemoteController *)self siriMultiUserConnection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100083D6C;
   v10[3] = &unk_1004D9AD8;
-  v11 = v6;
-  v9 = v6;
-  [v8 getHomeUserIdForSharedUserId:v7 completion:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [siriMultiUserConnection getHomeUserIdForSharedUserId:idCopy completion:v10];
 }
 
-- (id)accountFromQueueContainingDsid:(id)a3 error:(id *)a4
+- (id)accountFromQueueContainingDsid:(id)dsid error:(id *)error
 {
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"enqueuerDSID"];
+  userInfo = [dsid userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"enqueuerDSID"];
 
   if (v6)
   {
     v7 = +[ACAccountStore ic_sharedAccountStore];
-    v8 = [v7 ic_storeAccountForStoreAccountID:v6 error:a4];
+    v8 = [v7 ic_storeAccountForStoreAccountID:v6 error:error];
 
     v9 = _MTLogCategoryMediaRemote();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -224,18 +224,18 @@
 
 - (void)dealloc
 {
-  v3 = [(MTMediaRemoteController *)self player];
-  v4 = [v3 commandCenter];
-  v5 = [v4 setPlaybackQueueCommand];
-  [v5 removeTarget:self];
+  player = [(MTMediaRemoteController *)self player];
+  commandCenter = [player commandCenter];
+  setPlaybackQueueCommand = [commandCenter setPlaybackQueueCommand];
+  [setPlaybackQueueCommand removeTarget:self];
 
-  v6 = [(MTMediaRemoteController *)self player];
-  v7 = [v6 commandCenter];
-  v8 = [v7 playCommand];
-  [v8 removeTarget:self];
+  player2 = [(MTMediaRemoteController *)self player];
+  commandCenter2 = [player2 commandCenter];
+  playCommand = [commandCenter2 playCommand];
+  [playCommand removeTarget:self];
 
-  v9 = [(MTMediaRemoteController *)self defaultsObserver];
-  [v9 stop];
+  defaultsObserver = [(MTMediaRemoteController *)self defaultsObserver];
+  [defaultsObserver stop];
 
   [(MTMediaRemoteController *)self setDefaultsObserver:0];
   v10.receiver = self;
@@ -247,35 +247,35 @@
 {
   v9.receiver = self;
   v9.super_class = MTMediaRemoteController;
-  v3 = [(MTMediaRemoteController *)&v9 copySupportedCommands];
+  copySupportedCommands = [(MTMediaRemoteController *)&v9 copySupportedCommands];
   v4 = MRMediaRemoteCommandInfoCreate();
   MRMediaRemoteCommandInfoSetCommand();
   MRMediaRemoteCommandInfoSetEnabled();
-  CFArrayAppendValue(v3, v4);
+  CFArrayAppendValue(copySupportedCommands, v4);
   CFRelease(v4);
   v5 = MRMediaRemoteCommandInfoCreate();
   MRMediaRemoteCommandInfoSetCommand();
   MRMediaRemoteCommandInfoSetEnabled();
-  CFArrayAppendValue(v3, v5);
+  CFArrayAppendValue(copySupportedCommands, v5);
   CFRelease(v5);
-  v6 = [(MTMediaRemoteController *)self findIndexOfCommand:4 inArray:v3];
+  v6 = [(MTMediaRemoteController *)self findIndexOfCommand:4 inArray:copySupportedCommands];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    CFArrayRemoveValueAtIndex(v3, v6);
+    CFArrayRemoveValueAtIndex(copySupportedCommands, v6);
   }
 
-  v7 = [(MTMediaRemoteController *)self findIndexOfCommand:5 inArray:v3];
+  v7 = [(MTMediaRemoteController *)self findIndexOfCommand:5 inArray:copySupportedCommands];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    CFArrayRemoveValueAtIndex(v3, v7);
+    CFArrayRemoveValueAtIndex(copySupportedCommands, v7);
   }
 
-  return v3;
+  return copySupportedCommands;
 }
 
-- (int64_t)findIndexOfCommand:(unsigned int)a3 inArray:(__CFArray *)a4
+- (int64_t)findIndexOfCommand:(unsigned int)command inArray:(__CFArray *)array
 {
-  if (CFArrayGetCount(a4) < 1)
+  if (CFArrayGetCount(array) < 1)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -283,13 +283,13 @@
   v6 = 0;
   while (1)
   {
-    CFArrayGetValueAtIndex(a4, v6);
-    if (MRMediaRemoteCommandInfoGetCommand() == a3)
+    CFArrayGetValueAtIndex(array, v6);
+    if (MRMediaRemoteCommandInfoGetCommand() == command)
     {
       break;
     }
 
-    if (++v6 >= CFArrayGetCount(a4))
+    if (++v6 >= CFArrayGetCount(array))
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -298,44 +298,44 @@
   return v6;
 }
 
-- (void)remoteInsertIntoPlaybackQueueCommand:(id)a3 completionHandler:(id)a4
+- (void)remoteInsertIntoPlaybackQueueCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 playbackQueue];
+  commandCopy = command;
+  handlerCopy = handler;
+  playbackQueue = [commandCopy playbackQueue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 playbackQueue];
-    v11 = [v10 trackIdentifiers];
+    playbackQueue2 = [commandCopy playbackQueue];
+    trackIdentifiers = [playbackQueue2 trackIdentifiers];
     v12 = +[MTPlaybackIdentifierUtil sharedInstance];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100084644;
     v13[3] = &unk_1004D9B00;
-    v16 = v7;
-    v14 = v6;
-    v15 = self;
-    [v12 fetchPlayerItemsForPlaybackQueueRequestIdentifiers:v11 completion:v13];
+    v16 = handlerCopy;
+    v14 = commandCopy;
+    selfCopy = self;
+    [v12 fetchPlayerItemsForPlaybackQueueRequestIdentifiers:trackIdentifiers completion:v13];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 200);
+    (*(handlerCopy + 2))(handlerCopy, 200);
   }
 }
 
-- (void)remotePlayItemInPlaybackQueueCommand:(id)a3 completionHandler:(id)a4
+- (void)remotePlayItemInPlaybackQueueCommand:(id)command completionHandler:(id)handler
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(MTMediaRemoteController *)self playbackQueueController];
-  v8 = [v6 contentItemID];
+  handlerCopy = handler;
+  commandCopy = command;
+  playbackQueueController = [(MTMediaRemoteController *)self playbackQueueController];
+  contentItemID = [commandCopy contentItemID];
 
-  LODWORD(v6) = [v7 playItemWithContentID:v8];
-  if (v6)
+  LODWORD(commandCopy) = [playbackQueueController playItemWithContentID:contentItemID];
+  if (commandCopy)
   {
     [(MTMediaRemoteController *)self _donateCurrentPlayerItem];
     v9 = 0;
@@ -346,45 +346,45 @@
     v9 = 200;
   }
 
-  v10[2](v10, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)remoteReorderPlaybackQueueCommand:(id)a3 completionHandler:(id)a4
+- (void)remoteReorderPlaybackQueueCommand:(id)command completionHandler:(id)handler
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(MTMediaRemoteController *)self playbackQueueController];
-  v8 = [v6 contentItemID];
-  v9 = [v6 insertAfterContextItemID];
+  handlerCopy = handler;
+  commandCopy = command;
+  playbackQueueController = [(MTMediaRemoteController *)self playbackQueueController];
+  contentItemID = [commandCopy contentItemID];
+  insertAfterContextItemID = [commandCopy insertAfterContextItemID];
 
-  [v7 reorderItemWithContentId:v8 afterItemWithContentID:v9];
-  v10[2]();
+  [playbackQueueController reorderItemWithContentId:contentItemID afterItemWithContentID:insertAfterContextItemID];
+  handlerCopy[2]();
 }
 
-- (void)remoteRemoveFromPlaybackQueueCommand:(id)a3 completionHandler:(id)a4
+- (void)remoteRemoveFromPlaybackQueueCommand:(id)command completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(MTMediaRemoteController *)self playbackQueueController];
-  v8 = [v6 contentItemID];
+  handlerCopy = handler;
+  commandCopy = command;
+  playbackQueueController = [(MTMediaRemoteController *)self playbackQueueController];
+  contentItemID = [commandCopy contentItemID];
 
-  [v7 removeItemWithContentID:v8];
-  v9[2]();
+  [playbackQueueController removeItemWithContentID:contentItemID];
+  handlerCopy[2]();
 }
 
-- (void)remoteSetPlaybackQueueCommand:(id)a3 isMagicMoment:(BOOL)a4 completionHandler:(id)a5
+- (void)remoteSetPlaybackQueueCommand:(id)command isMagicMoment:(BOOL)moment completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  commandCopy = command;
+  handlerCopy = handler;
   v10 = _MTLogCategoryMediaRemote();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = commandCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set Playback Queue: %@", buf, 0xCu);
   }
 
-  v11 = [v8 playbackQueue];
+  playbackQueue = [commandCopy playbackQueue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -397,28 +397,28 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "remoteSetPlaybackQueueCommand with playbackQueue type MPLocalMediaQueryRemotePlaybackQueue", buf, 2u);
     }
 
-    v14 = [v8 playbackQueue];
-    v15 = [v14 mediaQuery];
+    playbackQueue2 = [commandCopy playbackQueue];
+    mediaQuery = [playbackQueue2 mediaQuery];
     v16 = [MTMediaQueryManifest alloc];
-    v17 = [v14 firstItem];
-    v18 = [(MTMediaQueryManifest *)v16 initWithMediaQuery:v15 initialItem:v17];
+    firstItem = [playbackQueue2 firstItem];
+    v18 = [(MTMediaQueryManifest *)v16 initWithMediaQuery:mediaQuery initialItem:firstItem];
 
-    v19 = [v14 isRequestingImmediatePlayback];
-    v20 = [(MTMediaRemoteController *)self playerController];
-    [v20 setManifest:v18 startPlayback:v19 reason:7 interactive:0 completion:0];
+    isRequestingImmediatePlayback = [playbackQueue2 isRequestingImmediatePlayback];
+    playerController = [(MTMediaRemoteController *)self playerController];
+    [playerController setManifest:v18 startPlayback:isRequestingImmediatePlayback reason:7 interactive:0 completion:0];
 
     v21 = [MPRemoteCommandStatus statusWithCode:0];
-    v9[2](v9, v21);
+    handlerCopy[2](handlerCopy, v21);
 
     goto LABEL_71;
   }
 
-  v22 = [v8 playbackQueue];
+  playbackQueue3 = [commandCopy playbackQueue];
   objc_opt_class();
   v23 = objc_opt_isKindOfClass();
 
-  v24 = [v8 playbackQueue];
-  v14 = v24;
+  playbackQueue4 = [commandCopy playbackQueue];
+  playbackQueue2 = playbackQueue4;
   if ((v23 & 1) == 0)
   {
     objc_opt_class();
@@ -428,24 +428,24 @@
     {
       if (os_feature_enabled_red_sun())
       {
-        v27 = [(MTMediaRemoteController *)self playbackQueueController];
-        [v27 clearUpNextManifest];
+        playbackQueueController = [(MTMediaRemoteController *)self playbackQueueController];
+        [playbackQueueController clearUpNextManifest];
 
-        v14 = [MPRemoteCommandStatus statusWithCode:0];
-        v9[2](v9, v14);
+        playbackQueue2 = [MPRemoteCommandStatus statusWithCode:0];
+        handlerCopy[2](handlerCopy, playbackQueue2);
       }
 
       else
       {
-        v56 = [(MTMediaRemoteController *)self playerController];
+        playerController2 = [(MTMediaRemoteController *)self playerController];
         v84[0] = _NSConcreteStackBlock;
         v84[1] = 3221225472;
         v84[2] = sub_1000860B4;
         v84[3] = &unk_1004D84D0;
-        v85 = v9;
-        [v56 clearPlayerManifestWithCompletion:v84];
+        v85 = handlerCopy;
+        [playerController2 clearPlayerManifestWithCompletion:v84];
 
-        v14 = v85;
+        playbackQueue2 = v85;
       }
 
       goto LABEL_71;
@@ -455,29 +455,29 @@ LABEL_68:
     v76 = _MTLogCategoryMediaRemote();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
     {
-      v77 = [v8 playbackQueue];
+      playbackQueue5 = [commandCopy playbackQueue];
       *buf = 138412290;
-      *&buf[4] = v77;
+      *&buf[4] = playbackQueue5;
       _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_ERROR, "Unhandled Set Playback Queue Command! %@", buf, 0xCu);
     }
 
-    v14 = [MPRemoteCommandStatus statusWithCode:200];
-    v9[2](v9, v14);
+    playbackQueue2 = [MPRemoteCommandStatus statusWithCode:200];
+    handlerCopy[2](handlerCopy, playbackQueue2);
     goto LABEL_71;
   }
 
-  if (a4)
+  if (moment)
   {
-    v25 = 0;
+    isRequestingImmediatePlayback2 = 0;
   }
 
   else
   {
-    v25 = [v24 isRequestingImmediatePlayback];
+    isRequestingImmediatePlayback2 = [playbackQueue4 isRequestingImmediatePlayback];
   }
 
-  v28 = [v14 trackIdentifiers];
-  v29 = [v28 firstObject];
+  trackIdentifiers = [playbackQueue2 trackIdentifiers];
+  firstObject = [trackIdentifiers firstObject];
 
   objc_opt_class();
   v30 = objc_opt_isKindOfClass();
@@ -488,18 +488,18 @@ LABEL_68:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v29;
+      *&buf[4] = firstObject;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Playback Queue Identifier: %@", buf, 0xCu);
     }
 
-    v33 = [[MTURLCommandRequest alloc] initWithURLString:v29];
+    v33 = [[MTURLCommandRequest alloc] initWithURLString:firstObject];
     if ([(MTURLCommandRequest *)v33 commandType]== 2)
     {
       v34 = _MTLogCategoryMediaRemote();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v14 siriAssetInfo];
-        v36 = [v35 length];
+        siriAssetInfo = [playbackQueue2 siriAssetInfo];
+        v36 = [siriAssetInfo length];
         *buf = 67109120;
         *&buf[4] = v36 != 0;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "SetPlaybackQueue has assetInfo: %d", buf, 8u);
@@ -508,15 +508,15 @@ LABEL_68:
       v37 = _MTLogCategoryMediaRemote();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
-        v38 = [v14 siriAssetInfo];
+        siriAssetInfo2 = [playbackQueue2 siriAssetInfo];
         *buf = 138412290;
-        *&buf[4] = v38;
+        *&buf[4] = siriAssetInfo2;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "SetPlaybackQueue assetInfo: %@", buf, 0xCu);
       }
 
       if (![(MTURLCommandRequest *)v33 playReason])
       {
-        if ([(MTMediaRemoteController *)self _commandEventIsFromSiri:v8])
+        if ([(MTMediaRemoteController *)self _commandEventIsFromSiri:commandCopy])
         {
           v39 = 9;
         }
@@ -531,11 +531,11 @@ LABEL_68:
         v33 = v40;
       }
 
-      v41 = [v14 userInfo];
-      v81 = [v41 objectForKeyedSubscript:@"requesterUserId"];
+      userInfo = [playbackQueue2 userInfo];
+      v81 = [userInfo objectForKeyedSubscript:@"requesterUserId"];
 
-      v42 = [v14 userInfo];
-      v79 = [v42 objectForKeyedSubscript:@"sharedUserId"];
+      userInfo2 = [playbackQueue2 userInfo];
+      v79 = [userInfo2 objectForKeyedSubscript:@"sharedUserId"];
 
       v43 = _MTLogCategoryMediaRemote();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -569,40 +569,40 @@ LABEL_68:
       v106[3] = &unk_1004D9B50;
       v33 = v33;
       v107 = v33;
-      v108 = self;
-      v109 = v14;
+      selfCopy = self;
+      v109 = playbackQueue2;
       v112 = buf;
       v113 = &v122;
-      v114 = v25;
-      v115 = a4;
-      v110 = v29;
-      v111 = v9;
+      v114 = isRequestingImmediatePlayback2;
+      momentCopy = moment;
+      v110 = firstObject;
+      v111 = handlerCopy;
       v45 = objc_retainBlock(v106);
       v46 = _MTLogCategoryMediaRemote();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [(MTMediaRemoteController *)self siriMultiUserConnection];
+        siriMultiUserConnection = [(MTMediaRemoteController *)self siriMultiUserConnection];
         *v116 = 138412290;
-        v117 = v47;
+        v117 = siriMultiUserConnection;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Siri connection: %@", v116, 0xCu);
       }
 
       v48 = +[MPPlaybackUserDefaults standardUserDefaults];
-      v49 = [v48 isPrivateListeningEnabled];
-      v50 = [v49 BOOLValue];
+      isPrivateListeningEnabled = [v48 isPrivateListeningEnabled];
+      bOOLValue = [isPrivateListeningEnabled BOOLValue];
 
-      v51 = [(MTMediaRemoteController *)self siriMultiUserConnection];
-      if (!v51 || (v52 = [v81 length] == 0, v51, v52))
+      siriMultiUserConnection2 = [(MTMediaRemoteController *)self siriMultiUserConnection];
+      if (!siriMultiUserConnection2 || (v52 = [v81 length] == 0, siriMultiUserConnection2, v52))
       {
         v64 = _MTLogCategoryMediaRemote();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
           *v116 = 67109120;
-          LODWORD(v117) = v50;
+          LODWORD(v117) = bOOLValue;
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Device private listening value: %d", v116, 8u);
         }
 
-        *(*(&v122 + 1) + 24) = v50 ^ 1;
+        *(*(&v122 + 1) + 24) = bOOLValue ^ 1;
         (v45[2])(v45);
       }
 
@@ -616,14 +616,14 @@ LABEL_68:
         v100 = v81;
         v101 = v79;
         v104 = &v122;
-        v105 = v50;
+        v105 = bOOLValue;
         v102 = v45;
         [(MTMediaRemoteController *)self accountForRequesterUserId:v100 completionHandler:v99];
       }
 
-      v65 = [(MTMediaRemoteController *)self siriAnalyticsController];
-      v66 = [v8 contextID];
-      [v65 observePlaybackStartEventForRefId:v66];
+      siriAnalyticsController = [(MTMediaRemoteController *)self siriAnalyticsController];
+      contextID = [commandCopy contextID];
+      [siriAnalyticsController observePlaybackStartEventForRefId:contextID];
 
       _Block_object_dispose(buf, 8);
       _Block_object_dispose(&v122, 8);
@@ -651,16 +651,16 @@ LABEL_64:
       v94[1] = 3221225472;
       v94[2] = sub_100085C9C;
       v94[3] = &unk_1004D9BC8;
-      v95 = v29;
-      v58 = v14;
+      v95 = firstObject;
+      v58 = playbackQueue2;
       v96 = v58;
       v98 = buf;
-      v59 = v9;
+      v59 = handlerCopy;
       v97 = v59;
       v60 = objc_retainBlock(v94);
       v82 = objc_alloc_init(AFMultiUserConnection);
-      v61 = [v58 userInfo];
-      v62 = [v61 objectForKeyedSubscript:@"requesterUserId"];
+      userInfo3 = [v58 userInfo];
+      v62 = [userInfo3 objectForKeyedSubscript:@"requesterUserId"];
 
       v63 = _MTLogCategoryMediaRemote();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
@@ -702,16 +702,16 @@ LABEL_64:
         _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "remoteSetPlaybackQueueCommand with command type MTURLCommandRequestTypeSetRemotePlaybackQueue", buf, 2u);
       }
 
-      v70 = [v14 replaceIntent];
-      v71 = 2 * (v70 == 1);
-      if (v70 == 2)
+      replaceIntent = [playbackQueue2 replaceIntent];
+      v71 = 2 * (replaceIntent == 1);
+      if (replaceIntent == 2)
       {
         v71 = 1;
       }
 
       v78 = v71;
       v89 = 0;
-      v80 = [(MTMediaRemoteController *)self accountFromQueueContainingDsid:v14 error:&v89];
+      v80 = [(MTMediaRemoteController *)self accountFromQueueContainingDsid:playbackQueue2 error:&v89];
       v83 = v89;
       if (v83)
       {
@@ -724,16 +724,16 @@ LABEL_64:
         }
       }
 
-      v73 = [(MTMediaRemoteController *)self playerController];
-      v74 = [v14 trackIdentifiers];
-      v75 = [v8 sessionIdentifierOverride];
+      playerController3 = [(MTMediaRemoteController *)self playerController];
+      trackIdentifiers2 = [playbackQueue2 trackIdentifiers];
+      sessionIdentifierOverride = [commandCopy sessionIdentifierOverride];
       v86[0] = _NSConcreteStackBlock;
       v86[1] = 3221225472;
       v86[2] = sub_100085F94;
       v86[3] = &unk_1004D9B28;
-      v87 = v14;
-      v88 = v9;
-      [MTRemoteSetPlaybackQueueUtil decodeAndSetPlaybackQueueForController:v73 fromIdentifiers:v74 sessionIdentifierOverride:v75 enqueuer:v80 accountLookupFailed:v83 != 0 startPlayback:v25 upNextQueueIntent:v78 completion:v86];
+      v87 = playbackQueue2;
+      v88 = handlerCopy;
+      [MTRemoteSetPlaybackQueueUtil decodeAndSetPlaybackQueueForController:playerController3 fromIdentifiers:trackIdentifiers2 sessionIdentifierOverride:sessionIdentifierOverride enqueuer:v80 accountLookupFailed:v83 != 0 startPlayback:isRequestingImmediatePlayback2 upNextQueueIntent:v78 completion:v86];
 
       goto LABEL_64;
     }
@@ -741,7 +741,7 @@ LABEL_64:
     if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v29;
+      *&buf[4] = firstObject;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "Unexpected track identifier for SetPlaybackQueue command: %@", buf, 0xCu);
     }
 
@@ -754,35 +754,35 @@ LABEL_64:
     *buf = 138412546;
     *&buf[4] = v53;
     *&buf[12] = 2112;
-    *&buf[14] = v29;
+    *&buf[14] = firstObject;
     v54 = v53;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Track identifier for SetPlaybackQueue command was unexpected type: %@ (%@)", buf, 0x16u);
   }
 
   v55 = [MPRemoteCommandStatus statusWithCode:200];
-  v9[2](v9, v55);
+  handlerCopy[2](handlerCopy, v55);
 
 LABEL_71:
 }
 
-- (void)remoteSetPlaybackSessionCommand:(id)a3 completionHandler:(id)a4
+- (void)remoteSetPlaybackSessionCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 playbackSessionData];
+  commandCopy = command;
+  handlerCopy = handler;
+  playbackSessionData = [commandCopy playbackSessionData];
   v31[0] = objc_opt_class();
   v31[1] = objc_opt_class();
   v9 = [NSArray arrayWithObjects:v31 count:2];
   v10 = [NSSet setWithArray:v9];
   v28 = 0;
-  v11 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v10 fromData:v8 error:&v28];
+  v11 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v10 fromData:playbackSessionData error:&v28];
   v12 = v28;
 
   v13 = _MTLogCategoryMediaRemote();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = commandCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Set Playback Session: %@", buf, 0xCu);
   }
 
@@ -796,72 +796,72 @@ LABEL_71:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to set playback session, unarchiving error: %@", buf, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 200);
+      handlerCopy[2](handlerCopy, 200);
     }
   }
 
   else
   {
     v15 = [MTURLCommandRequest alloc];
-    v16 = [v11 firstObject];
-    v17 = [(MTURLCommandRequest *)v15 initWithURLString:v16];
-    v18 = [(MTURLCommandRequest *)v17 requesterDsid];
+    firstObject = [v11 firstObject];
+    v17 = [(MTURLCommandRequest *)v15 initWithURLString:firstObject];
+    requesterDsid = [(MTURLCommandRequest *)v17 requesterDsid];
 
     v19 = _MTLogCategoryMediaRemote();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v18;
+      v30 = requesterDsid;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Set Playback Session enqueuer DSID: %@", buf, 0xCu);
     }
 
     v20 = +[ACAccountStore ic_sharedAccountStore];
-    v21 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v18 longLongValue]);
+    v21 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [requesterDsid longLongValue]);
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100086484;
     v23[3] = &unk_1004D9C40;
-    v24 = v18;
-    v25 = self;
+    v24 = requesterDsid;
+    selfCopy = self;
     v26 = v11;
-    v27 = v7;
-    v22 = v18;
+    v27 = handlerCopy;
+    v22 = requesterDsid;
     [v20 ic_storeAccountForStoreAccountID:v21 completion:v23];
   }
 }
 
-- (void)remotePlayCommand:(id)a3 completionHandler:(id)a4
+- (void)remotePlayCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaRemoteOptions];
-  v9 = [v8 objectForKey:kMRMediaRemoteOptionInterruptionEvent];
-  v10 = [v9 BOOLValue];
+  commandCopy = command;
+  handlerCopy = handler;
+  mediaRemoteOptions = [commandCopy mediaRemoteOptions];
+  v9 = [mediaRemoteOptions objectForKey:kMRMediaRemoteOptionInterruptionEvent];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = _MTLogCategoryMediaRemote();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = commandCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "received remotePlay: %@", buf, 0xCu);
   }
 
-  v12 = [(MTMediaRemoteController *)self playerController];
-  v13 = [v12 player];
-  v14 = [v13 manifest];
-  v15 = [v14 currentItem];
+  playerController = [(MTMediaRemoteController *)self playerController];
+  player = [playerController player];
+  manifest = [player manifest];
+  currentItem = [manifest currentItem];
 
-  if (v15)
+  if (currentItem)
   {
     [(MTMediaRemoteController *)self _donateCurrentPlayerItem];
-    if ([(MTMediaRemoteController *)self _commandEventIsFromSiri:v6])
+    if ([(MTMediaRemoteController *)self _commandEventIsFromSiri:commandCopy])
     {
       v16 = 9;
     }
 
-    else if ([(MTMediaRemoteController *)self _commandEventIsInternal:v6])
+    else if ([(MTMediaRemoteController *)self _commandEventIsInternal:commandCopy])
     {
       v16 = 7;
     }
@@ -871,8 +871,8 @@ LABEL_71:
       v16 = 8;
     }
 
-    v17 = [v12 playWithReason:v16 interruptEvent:v10];
-    if (v7)
+    v17 = [playerController playWithReason:v16 interruptEvent:bOOLValue];
+    if (handlerCopy)
     {
       if (v17)
       {
@@ -884,7 +884,7 @@ LABEL_71:
         v18 = 200;
       }
 
-      v7[2](v7, v18);
+      handlerCopy[2](handlerCopy, v18);
     }
   }
 
@@ -894,43 +894,43 @@ LABEL_71:
     v19[1] = 3221225472;
     v19[2] = sub_1000869A0;
     v19[3] = &unk_1004D9C90;
-    v20 = v12;
-    v21 = self;
-    v23 = v10;
-    v22 = v7;
+    v20 = playerController;
+    selfCopy = self;
+    v23 = bOOLValue;
+    v22 = handlerCopy;
     [v20 restorePlayerManifestWithCompletion:v19];
   }
 }
 
-- (int64_t)remotePause:(id)a3
+- (int64_t)remotePause:(id)pause
 {
   v4.receiver = self;
   v4.super_class = MTMediaRemoteController;
-  return [(MTMediaRemoteController *)&v4 remotePause:a3];
+  return [(MTMediaRemoteController *)&v4 remotePause:pause];
 }
 
-- (void)remoteTogglePlayPauseCommand:(id)a3 completionHandler:(id)a4
+- (void)remoteTogglePlayPauseCommand:(id)command completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100086C44;
   v7[3] = &unk_1004D9CB8;
-  v8 = self;
-  v9 = a4;
-  v6.receiver = v8;
+  selfCopy = self;
+  handlerCopy = handler;
+  v6.receiver = selfCopy;
   v6.super_class = MTMediaRemoteController;
-  v5 = v9;
-  [(MTMediaRemoteController *)&v6 remoteTogglePlayPauseCommand:a3 completionHandler:v7];
+  v5 = handlerCopy;
+  [(MTMediaRemoteController *)&v6 remoteTogglePlayPauseCommand:command completionHandler:v7];
 }
 
-- (int64_t)remoteNextTrack:(id)a3
+- (int64_t)remoteNextTrack:(id)track
 {
-  v4 = a3;
-  if ([(MTMediaRemoteController *)self remoteSkipPreference]!= 1 || [(MTMediaRemoteController *)self _commandEventIsFromSiri:v4]|| [(MTMediaRemoteController *)self _commandEventIsInternal:v4])
+  trackCopy = track;
+  if ([(MTMediaRemoteController *)self remoteSkipPreference]!= 1 || [(MTMediaRemoteController *)self _commandEventIsFromSiri:trackCopy]|| [(MTMediaRemoteController *)self _commandEventIsInternal:trackCopy])
   {
     v8.receiver = self;
     v8.super_class = MTMediaRemoteController;
-    v5 = [(MTMediaRemoteController *)&v8 remoteNextTrack:v4];
+    v5 = [(MTMediaRemoteController *)&v8 remoteNextTrack:trackCopy];
     if (!v5)
     {
       [(MTMediaRemoteController *)self _donateCurrentPlayerItem];
@@ -939,21 +939,21 @@ LABEL_71:
 
   else
   {
-    v6 = [(MTMediaRemoteController *)self _skipForwardCommandEvent];
-    v5 = [(MTMediaRemoteController *)self remoteSkipForward:v6];
+    _skipForwardCommandEvent = [(MTMediaRemoteController *)self _skipForwardCommandEvent];
+    v5 = [(MTMediaRemoteController *)self remoteSkipForward:_skipForwardCommandEvent];
   }
 
   return v5;
 }
 
-- (int64_t)remotePreviousTrack:(id)a3
+- (int64_t)remotePreviousTrack:(id)track
 {
-  v4 = a3;
-  if ([(MTMediaRemoteController *)self remoteSkipPreference]!= 1 || [(MTMediaRemoteController *)self _commandEventIsFromSiri:v4]|| [(MTMediaRemoteController *)self _commandEventIsInternal:v4])
+  trackCopy = track;
+  if ([(MTMediaRemoteController *)self remoteSkipPreference]!= 1 || [(MTMediaRemoteController *)self _commandEventIsFromSiri:trackCopy]|| [(MTMediaRemoteController *)self _commandEventIsInternal:trackCopy])
   {
     v8.receiver = self;
     v8.super_class = MTMediaRemoteController;
-    v5 = [(MTMediaRemoteController *)&v8 remotePreviousTrack:v4];
+    v5 = [(MTMediaRemoteController *)&v8 remotePreviousTrack:trackCopy];
     if (!v5)
     {
       [(MTMediaRemoteController *)self _donateCurrentPlayerItem];
@@ -962,38 +962,38 @@ LABEL_71:
 
   else
   {
-    v6 = [(MTMediaRemoteController *)self _skipBackwardCommandEvent];
-    v5 = [(MTMediaRemoteController *)self remoteSkipBackward:v6];
+    _skipBackwardCommandEvent = [(MTMediaRemoteController *)self _skipBackwardCommandEvent];
+    v5 = [(MTMediaRemoteController *)self remoteSkipBackward:_skipBackwardCommandEvent];
   }
 
   return v5;
 }
 
-- (int64_t)remoteChangePlaybackRate:(id)a3
+- (int64_t)remoteChangePlaybackRate:(id)rate
 {
   v4.receiver = self;
   v4.super_class = MTMediaRemoteController;
-  return [(MTMediaRemoteController *)&v4 remoteChangePlaybackRate:a3];
+  return [(MTMediaRemoteController *)&v4 remoteChangePlaybackRate:rate];
 }
 
 - (void)sessionIdentifierDidChange
 {
-  v3 = [(MTMediaRemoteController *)self player];
-  v7 = [v3 commandCenter];
+  player = [(MTMediaRemoteController *)self player];
+  commandCenter = [player commandCenter];
 
-  v4 = [v7 setPlaybackSessionCommand];
-  v5 = [(MTMediaRemoteController *)self playbackQueueController];
-  v6 = [v5 sessionIdentifier];
-  [v4 setCurrentPlaybackSessionIdentifier:v6];
+  setPlaybackSessionCommand = [commandCenter setPlaybackSessionCommand];
+  playbackQueueController = [(MTMediaRemoteController *)self playbackQueueController];
+  sessionIdentifier = [playbackQueueController sessionIdentifier];
+  [setPlaybackSessionCommand setCurrentPlaybackSessionIdentifier:sessionIdentifier];
 }
 
-- (void)updatePreferredSkipDurationsFromUserDefaults:(id)a3 forCommandCenter:(id)a4
+- (void)updatePreferredSkipDurationsFromUserDefaults:(id)defaults forCommandCenter:(id)center
 {
   v5 = kMTSkipForwardIntervalDefaultKey;
-  v6 = a4;
-  v7 = a3;
-  v13 = [v7 valueForKey:v5];
-  v8 = [v7 valueForKey:kMTSkipBackwardsIntervalDefaultKey];
+  centerCopy = center;
+  defaultsCopy = defaults;
+  v13 = [defaultsCopy valueForKey:v5];
+  v8 = [defaultsCopy valueForKey:kMTSkipBackwardsIntervalDefaultKey];
 
   v9 = [NSMutableArray arrayWithObjects:&off_100500CA0, &off_100500CB8, &off_100500CD0, &off_100500CE8, &off_100500D00, 0];
   v10 = [NSMutableArray arrayWithObjects:&off_100500CA0, &off_100500CB8, &off_100500CD0, &off_100500CE8, &off_100500D00, 0];
@@ -1009,25 +1009,25 @@ LABEL_71:
     [v10 insertObject:v8 atIndex:0];
   }
 
-  v11 = [v6 skipForwardCommand];
-  [v11 setPreferredIntervals:v9];
+  skipForwardCommand = [centerCopy skipForwardCommand];
+  [skipForwardCommand setPreferredIntervals:v9];
 
-  v12 = [v6 skipBackwardCommand];
+  skipBackwardCommand = [centerCopy skipBackwardCommand];
 
-  [v12 setPreferredIntervals:v10];
+  [skipBackwardCommand setPreferredIntervals:v10];
 }
 
-- (void)updateRemoteSkipPreferenceFromDefaults:(id)a3
+- (void)updateRemoteSkipPreferenceFromDefaults:(id)defaults
 {
-  v4 = [a3 BOOLForKey:kMTRemoteSkipInsteadOfNextTrackDefaultKey];
+  v4 = [defaults BOOLForKey:kMTRemoteSkipInsteadOfNextTrackDefaultKey];
 
   [(MTMediaRemoteController *)self setRemoteSkipPreference:v4];
 }
 
-- (BOOL)_commandEventIsFromSiri:(id)a3
+- (BOOL)_commandEventIsFromSiri:(id)siri
 {
-  v3 = [a3 mediaRemoteOptions];
-  v4 = [v3 objectForKey:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
+  mediaRemoteOptions = [siri mediaRemoteOptions];
+  v4 = [mediaRemoteOptions objectForKey:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
 
   if ([v4 isEqualToString:@"com.apple.siri"])
   {
@@ -1042,10 +1042,10 @@ LABEL_71:
   return v5;
 }
 
-- (BOOL)_commandEventIsInternal:(id)a3
+- (BOOL)_commandEventIsInternal:(id)internal
 {
-  v4 = [a3 mediaRemoteOptions];
-  v5 = [v4 objectForKey:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
+  mediaRemoteOptions = [internal mediaRemoteOptions];
+  v5 = [mediaRemoteOptions objectForKey:kMRMediaRemoteOptionRemoteControlInterfaceIdentifier];
 
   LOBYTE(self) = [(NSArray *)self->_internalRequestLabels containsObject:v5];
   return self;
@@ -1053,41 +1053,41 @@ LABEL_71:
 
 - (id)_skipForwardCommandEvent
 {
-  v2 = [(MTMediaRemoteController *)self player];
-  v3 = [v2 commandCenter];
+  player = [(MTMediaRemoteController *)self player];
+  commandCenter = [player commandCenter];
 
-  v4 = [v3 skipForwardCommand];
-  v5 = [v4 preferredIntervals];
-  v6 = [v5 firstObject];
+  skipForwardCommand = [commandCenter skipForwardCommand];
+  preferredIntervals = [skipForwardCommand preferredIntervals];
+  firstObject = [preferredIntervals firstObject];
 
-  [v6 doubleValue];
-  v7 = [v4 newCommandEventWithInterval:?];
+  [firstObject doubleValue];
+  v7 = [skipForwardCommand newCommandEventWithInterval:?];
 
   return v7;
 }
 
 - (id)_skipBackwardCommandEvent
 {
-  v2 = [(MTMediaRemoteController *)self player];
-  v3 = [v2 commandCenter];
+  player = [(MTMediaRemoteController *)self player];
+  commandCenter = [player commandCenter];
 
-  v4 = [v3 skipBackwardCommand];
-  v5 = [v4 preferredIntervals];
-  v6 = [v5 firstObject];
+  skipBackwardCommand = [commandCenter skipBackwardCommand];
+  preferredIntervals = [skipBackwardCommand preferredIntervals];
+  firstObject = [preferredIntervals firstObject];
 
-  [v6 doubleValue];
-  v7 = [v4 newCommandEventWithInterval:?];
+  [firstObject doubleValue];
+  v7 = [skipBackwardCommand newCommandEventWithInterval:?];
 
   return v7;
 }
 
 - (void)_donateCurrentPlayerItem
 {
-  v2 = [(MTMediaRemoteController *)self playerController];
-  v4 = [v2 compositeManifest];
+  playerController = [(MTMediaRemoteController *)self playerController];
+  compositeManifest = [playerController compositeManifest];
 
   v3 = +[MTIntentDonationUtil sharedInstance];
-  [v3 donateManifestCurrentItem:v4];
+  [v3 donateManifestCurrentItem:compositeManifest];
 }
 
 - (MTPlayerController)playerController

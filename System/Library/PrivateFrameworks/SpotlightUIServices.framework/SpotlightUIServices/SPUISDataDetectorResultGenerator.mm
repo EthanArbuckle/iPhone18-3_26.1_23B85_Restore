@@ -1,17 +1,17 @@
 @interface SPUISDataDetectorResultGenerator
-- (id)buildCardSectionForEmail:(id)a3;
-- (id)buildCardSectionForPhoneNumber:(id)a3;
-- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)a3 person:(id)a4;
-- (id)buildResultSectionForTrackingNumber:(id)a3 carrier:(id)a4 url:(id)a5 queryId:(unint64_t)a6;
-- (id)buildResultSectionWithCardSections:(id)a3 queryId:(unint64_t)a4 resultBundleId:(id)a5 sectionTitle:(id)a6 completion:(id)a7;
-- (id)buttonItemWithTitle:(id)a3 symbol:(id)a4 command:(id)a5;
-- (id)personWithPhoneNumber:(id)a3 email:(id)a4;
-- (void)buildResultSectionsForDateTimeFromResult:(id)a3 querString:(id)a4 completion:(id)a5 queryId:(unint64_t)a6 searchString:(id)a7;
-- (void)buildResultSectionsForEmailFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5;
-- (void)buildResultSectionsForPhoneNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5;
-- (void)buildResultSectionsForTrackingNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5;
+- (id)buildCardSectionForEmail:(id)email;
+- (id)buildCardSectionForPhoneNumber:(id)number;
+- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)title person:(id)person;
+- (id)buildResultSectionForTrackingNumber:(id)number carrier:(id)carrier url:(id)url queryId:(unint64_t)id;
+- (id)buildResultSectionWithCardSections:(id)sections queryId:(unint64_t)id resultBundleId:(id)bundleId sectionTitle:(id)title completion:(id)completion;
+- (id)buttonItemWithTitle:(id)title symbol:(id)symbol command:(id)command;
+- (id)personWithPhoneNumber:(id)number email:(id)email;
+- (void)buildResultSectionsForDateTimeFromResult:(id)result querString:(id)string completion:(id)completion queryId:(unint64_t)id searchString:(id)searchString;
+- (void)buildResultSectionsForEmailFromResult:(id)result completion:(id)completion queryId:(unint64_t)id;
+- (void)buildResultSectionsForPhoneNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id;
+- (void)buildResultSectionsForTrackingNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id;
 - (void)cancel;
-- (void)getResultSections:(id)a3 queryId:(unint64_t)a4 completion:(id)a5;
+- (void)getResultSections:(id)sections queryId:(unint64_t)id completion:(id)completion;
 @end
 
 @implementation SPUISDataDetectorResultGenerator
@@ -31,38 +31,38 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   }
 }
 
-- (void)buildResultSectionsForTrackingNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5
+- (void)buildResultSectionsForTrackingNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 subResults];
-  v11 = [v10 firstObject];
-  v12 = [v11 type];
+  completionCopy = completion;
+  resultCopy = result;
+  subResults = [resultCopy subResults];
+  firstObject = [subResults firstObject];
+  type = [firstObject type];
 
-  [v9 coreResult];
+  [resultCopy coreResult];
   v13 = DDResultGetShipmentTrackingUrlString();
   v14 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-  v15 = [v9 value];
+  value = [resultCopy value];
 
-  v16 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionForTrackingNumber:v15 carrier:v12 url:v14 queryId:a5];
+  v16 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionForTrackingNumber:value carrier:type url:v14 queryId:id];
 
   v19[0] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v8[2](v8, v17);
+  completionCopy[2](completionCopy, v17);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildResultSectionForTrackingNumber:(id)a3 carrier:(id)a4 url:(id)a5 queryId:(unint64_t)a6
+- (id)buildResultSectionForTrackingNumber:(id)number carrier:(id)carrier url:(id)url queryId:(unint64_t)id
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D4C598];
-  v9 = a5;
-  v10 = a4;
-  v33 = [v8 textWithString:a3];
+  urlCopy = url;
+  carrierCopy = carrier;
+  v33 = [v8 textWithString:number];
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x277D4C550] punchoutWithURL:v9];
+  v12 = [MEMORY[0x277D4C550] punchoutWithURL:urlCopy];
 
   v30 = v11;
   [v11 setPunchout:v12];
@@ -73,7 +73,7 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   [v13 setIsTemplate:1];
   v14 = objc_opt_new();
   [v14 setTitle:v33];
-  v15 = [MEMORY[0x277D4C598] textWithString:v10];
+  v15 = [MEMORY[0x277D4C598] textWithString:carrierCopy];
 
   v36[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
@@ -94,24 +94,24 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   v21 = [v20 localizedStringForKey:@"QUICK_ACTION_PACKAGE_TRACKING_SECTION_TITLE" value:&stru_287C50EE8 table:@"SpotlightServices"];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v22 localizedStringForKey:@"QUICK_ACTION_PACKAGE_TRACKING_COMPLETION" value:&stru_287C50EE8 table:@"SpotlightServices"];
-  v24 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v18 queryId:a6 resultBundleId:v19 sectionTitle:v21 completion:v23];
+  v24 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v18 queryId:id resultBundleId:v19 sectionTitle:v21 completion:v23];
 
-  v25 = [v30 punchout];
-  v26 = [v24 results];
-  v27 = [v26 firstObject];
-  [v27 setPunchout:v25];
+  punchout = [v30 punchout];
+  results = [v24 results];
+  firstObject = [results firstObject];
+  [firstObject setPunchout:punchout];
 
   v28 = *MEMORY[0x277D85DE8];
 
   return v24;
 }
 
-- (void)buildResultSectionsForPhoneNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5
+- (void)buildResultSectionsForPhoneNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  completionCopy = completion;
   v29 = 0;
-  v9 = [a3 getPhoneValue:&v29 label:0];
+  v9 = [result getPhoneValue:&v29 label:0];
   v10 = v29;
   if (v9)
   {
@@ -125,7 +125,7 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
 
     if (!v10 || v16)
     {
-      v8[2](v8, MEMORY[0x277CBEBF8]);
+      completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
     }
 
     else
@@ -135,16 +135,16 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
       v26 = *MEMORY[0x277D65A50];
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v18 = a5;
+      idCopy = id;
       [v17 localizedStringForKey:@"QUICK_ACTION_PHONE_NUMBER_SECTION_TITLE" value:&stru_287C50EE8 table:@"SpotlightServices"];
       v19 = v28 = v11;
       v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v21 = [v20 localizedStringForKey:@"QUICK_ACTION_PHONE_NUMBER_COMPLETION" value:&stru_287C50EE8 table:@"SpotlightServices"];
-      v22 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v25 queryId:v18 resultBundleId:v26 sectionTitle:v19 completion:v21];
+      v22 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v25 queryId:idCopy resultBundleId:v26 sectionTitle:v19 completion:v21];
 
       v30 = v22;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-      (v8)[2](v8, v23);
+      (completionCopy)[2](completionCopy, v23);
 
       v11 = v28;
     }
@@ -152,17 +152,17 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
 
   else
   {
-    v8[2](v8, MEMORY[0x277CBEBF8]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildCardSectionForPhoneNumber:(id)a3
+- (id)buildCardSectionForPhoneNumber:(id)number
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SPUISDataDetectorResultGenerator *)self personWithPhoneNumber:v4 email:0];
+  numberCopy = number;
+  v5 = [(SPUISDataDetectorResultGenerator *)self personWithPhoneNumber:numberCopy email:0];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ADD_NUMBER" value:&stru_287C50EE8 table:@"SpotlightServices"];
   v8 = [(SPUISDataDetectorResultGenerator *)self buildPersonBasedSubtitleButtonItemWithTitle:v7 person:v5];
@@ -182,7 +182,7 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   [v12 setTrailingButtonItems:v14];
 
   v15 = objc_opt_new();
-  [v15 setPhoneNumber:v4];
+  [v15 setPhoneNumber:numberCopy];
 
   [v12 setCommand:v15];
   v16 = *MEMORY[0x277D85DE8];
@@ -190,12 +190,12 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   return v12;
 }
 
-- (void)buildResultSectionsForEmailFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5
+- (void)buildResultSectionsForEmailFromResult:(id)result completion:(id)completion queryId:(unint64_t)id
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  completionCopy = completion;
   v27 = 0;
-  v9 = [a3 getMailValue:&v27 label:0];
+  v9 = [result getMailValue:&v27 label:0];
   v10 = v27;
   if (v9)
   {
@@ -208,7 +208,7 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
 
     if (!v10 || v15)
     {
-      v8[2](v8, MEMORY[0x277CBEBF8]);
+      completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
     }
 
     else
@@ -217,32 +217,32 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
       v29 = v26;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
       v25 = *MEMORY[0x277D65A48];
-      v23 = a5;
+      idCopy = id;
       v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v17 = [v16 localizedStringForKey:@"QUICK_ACTION_EMAIL_SECTION_TITLE" value:&stru_287C50EE8 table:@"SpotlightServices"];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"QUICK_ACTION_EMAIL_COMPLETION" value:&stru_287C50EE8 table:@"SpotlightServices"];
-      v20 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v24 queryId:v23 resultBundleId:v25 sectionTitle:v17 completion:v19];
+      v20 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v24 queryId:idCopy resultBundleId:v25 sectionTitle:v17 completion:v19];
 
       v28 = v20;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-      (v8)[2](v8, v21);
+      (completionCopy)[2](completionCopy, v21);
     }
   }
 
   else
   {
-    v8[2](v8, MEMORY[0x277CBEBF8]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildCardSectionForEmail:(id)a3
+- (id)buildCardSectionForEmail:(id)email
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SPUISDataDetectorResultGenerator *)self personWithPhoneNumber:0 email:v4];
+  emailCopy = email;
+  v5 = [(SPUISDataDetectorResultGenerator *)self personWithPhoneNumber:0 email:emailCopy];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ADD_EMAIL" value:&stru_287C50EE8 table:@"SpotlightServices"];
   v8 = [(SPUISDataDetectorResultGenerator *)self buildPersonBasedSubtitleButtonItemWithTitle:v7 person:v5];
@@ -250,7 +250,7 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   v9 = objc_opt_new();
   [v9 setPerson:v5];
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x277D4C598] textWithString:v4];
+  v11 = [MEMORY[0x277D4C598] textWithString:emailCopy];
   [v10 setTitle:v11];
 
   [v10 setSubtitleButtonItem:v8];
@@ -259,7 +259,7 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   [v10 setTrailingButtonItems:v12];
 
   v13 = objc_opt_new();
-  [v13 setEmail:v4];
+  [v13 setEmail:emailCopy];
 
   [v10 setCommand:v13];
   v14 = *MEMORY[0x277D85DE8];
@@ -267,27 +267,27 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   return v10;
 }
 
-- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)a3 person:(id)a4
+- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)title person:(id)person
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  personCopy = person;
+  titleCopy = title;
   v8 = objc_opt_new();
   [v8 setAddToExistingContact:0];
-  [v8 setPerson:v6];
+  [v8 setPerson:personCopy];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CREATE_NEW_CONTACT" value:&stru_287C50EE8 table:@"SpotlightServices"];
   v11 = [(SPUISDataDetectorResultGenerator *)self buttonItemWithTitle:v10 symbol:@"person.crop.circle" command:v8];
 
   v12 = objc_opt_new();
   [v12 setAddToExistingContact:1];
-  [v12 setPerson:v6];
+  [v12 setPerson:personCopy];
 
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"ADD_TO_EXISTING_CONTACT" value:&stru_287C50EE8 table:@"SpotlightServices"];
   v15 = [(SPUISDataDetectorResultGenerator *)self buttonItemWithTitle:v14 symbol:@"person.crop.circle.badge.plus" command:v12];
 
-  v16 = [(SPUISDataDetectorResultGenerator *)self buttonItemWithTitle:v7 symbol:0 command:0];
+  v16 = [(SPUISDataDetectorResultGenerator *)self buttonItemWithTitle:titleCopy symbol:0 command:0];
 
   v20[0] = v11;
   v20[1] = v15;
@@ -299,22 +299,22 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   return v16;
 }
 
-- (id)personWithPhoneNumber:(id)a3 email:(id)a4
+- (id)personWithPhoneNumber:(id)number email:(id)email
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  emailCopy = email;
   v7 = objc_opt_new();
-  if (v5)
+  if (numberCopy)
   {
-    v13[0] = v5;
+    v13[0] = numberCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     [v7 setPhoneNumbers:v8];
   }
 
-  if (v6)
+  if (emailCopy)
   {
-    v12 = v6;
+    v12 = emailCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     [v7 setEmailAddresses:v9];
   }
@@ -324,101 +324,101 @@ void __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion
   return v7;
 }
 
-- (void)buildResultSectionsForDateTimeFromResult:(id)a3 querString:(id)a4 completion:(id)a5 queryId:(unint64_t)a6 searchString:(id)a7
+- (void)buildResultSectionsForDateTimeFromResult:(id)result querString:(id)string completion:(id)completion queryId:(unint64_t)id searchString:(id)searchString
 {
   v89[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v82 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
+  resultCopy = result;
+  stringCopy = string;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v85 = 0;
-  v14 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   v15 = [MEMORY[0x277CBEAA8] now];
-  v16 = [v11 type];
+  type = [resultCopy type];
   v77 = *MEMORY[0x277D04190];
-  if ([v16 isEqualToString:?])
+  if ([type isEqualToString:?])
   {
 
 LABEL_4:
     v83 = 0;
     v84 = 0;
-    v19 = [v11 extractStartDate:&v84 startTimezone:0 endDate:&v83 endTimezone:0 allDayRef:&v85 referenceDate:v15 referenceTimezone:v14];
+    v19 = [resultCopy extractStartDate:&v84 startTimezone:0 endDate:&v83 endTimezone:0 allDayRef:&v85 referenceDate:v15 referenceTimezone:systemTimeZone];
     v20 = v84;
     v21 = v83;
     v22 = v21;
     if ((v19 & 1) == 0)
     {
-      v12[2](v12, MEMORY[0x277CBEBF8]);
+      completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
       goto LABEL_32;
     }
 
     v79 = v15;
     v80 = v21;
-    v23 = v11;
+    v23 = resultCopy;
     v24 = v20;
-    v76 = a6;
-    v25 = v12;
-    v26 = v14;
+    idCopy2 = id;
+    v25 = completionCopy;
+    v26 = systemTimeZone;
     goto LABEL_6;
   }
 
-  v17 = [v11 type];
-  v18 = [v17 isEqualToString:*MEMORY[0x277D040A0]];
+  type2 = [resultCopy type];
+  v18 = [type2 isEqualToString:*MEMORY[0x277D040A0]];
 
   if (v18)
   {
     goto LABEL_4;
   }
 
-  v76 = a6;
+  idCopy2 = id;
   v36 = v15;
-  v25 = v12;
+  v25 = completionCopy;
   v79 = v36;
-  v37 = [v11 dateFromReferenceDate:? referenceTimezone:? timezoneRef:? allDayRef:?];
+  v37 = [resultCopy dateFromReferenceDate:? referenceTimezone:? timezoneRef:? allDayRef:?];
   v80 = 0;
-  v23 = v11;
-  v26 = v14;
+  v23 = resultCopy;
+  v26 = systemTimeZone;
   if (v37)
   {
-    v27 = v13;
+    v27 = currentCalendar;
     v24 = v37;
-    v80 = [v13 dateByAddingUnit:32 value:1 toDate:? options:?];
+    v80 = [currentCalendar dateByAddingUnit:32 value:1 toDate:? options:?];
     goto LABEL_7;
   }
 
   v24 = 0;
 LABEL_6:
-  v27 = v13;
+  v27 = currentCalendar;
 LABEL_7:
   v28 = MEMORY[0x277CCACA8];
   v29 = v23;
-  v30 = [v23 value];
-  v31 = [v28 stringWithFormat:@"%@ ", v30];
-  v32 = [v82 stringByReplacingOccurrencesOfString:v31 withString:&stru_287C50EE8];
+  value = [v23 value];
+  v31 = [v28 stringWithFormat:@"%@ ", value];
+  v32 = [stringCopy stringByReplacingOccurrencesOfString:v31 withString:&stru_287C50EE8];
 
   v33 = v29;
-  v34 = [v29 value];
-  v35 = [v32 stringByReplacingOccurrencesOfString:v34 withString:&stru_287C50EE8];
+  value2 = [v29 value];
+  v35 = [v32 stringByReplacingOccurrencesOfString:value2 withString:&stru_287C50EE8];
 
   v20 = v24;
   if (!v24 || self && self->_canceled)
   {
     v25[2](v25, MEMORY[0x277CBEBF8]);
 
-    v13 = v27;
-    v14 = v26;
-    v12 = v25;
-    v11 = v33;
+    currentCalendar = v27;
+    systemTimeZone = v26;
+    completionCopy = v25;
+    resultCopy = v33;
     v15 = v79;
     v22 = v80;
     goto LABEL_32;
   }
 
   v38 = v27;
-  v11 = v33;
+  resultCopy = v33;
   if (v80)
   {
-    v14 = v26;
+    systemTimeZone = v26;
     if ([v80 compare:v20] == -1)
     {
       v39 = v80;
@@ -431,14 +431,14 @@ LABEL_7:
   else
   {
     v80 = 0;
-    v14 = v26;
+    systemTimeZone = v26;
   }
 
-  v12 = v25;
+  completionCopy = v25;
   if ([v20 compare:v79] == -1 && objc_msgSend(v38, "isDateInToday:", v20))
   {
-    v40 = [v33 type];
-    if ([v40 isEqualToString:*MEMORY[0x277D04198]])
+    type3 = [v33 type];
+    if ([type3 isEqualToString:*MEMORY[0x277D04198]])
     {
 
 LABEL_24:
@@ -458,14 +458,14 @@ LABEL_24:
 
     [v33 type];
     v41 = v20;
-    v42 = self;
+    selfCopy = self;
     v44 = v43 = v38;
     v45 = [v44 isEqualToString:v77];
 
     v38 = v43;
-    self = v42;
+    self = selfCopy;
     v20 = v41;
-    v11 = v33;
+    resultCopy = v33;
 
     if (v45)
     {
@@ -498,8 +498,8 @@ LABEL_28:
   v52 = objc_opt_new();
   v74 = v49;
   v53 = MEMORY[0x277D4C598];
-  v54 = [v49 title];
-  v55 = [v53 textWithString:v54];
+  title = [v49 title];
+  v55 = [v53 textWithString:title];
   [v52 setTitle:v55];
 
   v56 = [objc_alloc(MEMORY[0x277D4C220]) initWithDate:v78];
@@ -529,45 +529,45 @@ LABEL_28:
   v66 = *MEMORY[0x277D65A40];
   v67 = [SPUISUtilities localizedStringForKey:@"QUICK_ACTION_CALENDAR_EVENT_SECTION_TITLE"];
   v68 = [SPUISUtilities localizedStringForKey:@"QUICK_ACTION_CALENDAR_EVENT_COMPLETION"];
-  v69 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v65 queryId:v76 resultBundleId:v66 sectionTitle:v67 completion:v68];
+  v69 = [(SPUISDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v65 queryId:idCopy2 resultBundleId:v66 sectionTitle:v67 completion:v68];
 
   v86 = v69;
   v70 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
-  (v12)[2](v12, v70);
+  (completionCopy)[2](completionCopy, v70);
 
   v22 = v81;
   v20 = v78;
 
-  v13 = v75;
+  currentCalendar = v75;
   v15 = v79;
 LABEL_32:
 
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildResultSectionWithCardSections:(id)a3 queryId:(unint64_t)a4 resultBundleId:(id)a5 sectionTitle:(id)a6 completion:(id)a7
+- (id)buildResultSectionWithCardSections:(id)sections queryId:(unint64_t)id resultBundleId:(id)bundleId sectionTitle:(id)title completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v11 = *MEMORY[0x277D65A38];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  completionCopy = completion;
+  titleCopy = title;
+  bundleIdCopy = bundleId;
+  sectionsCopy = sections;
   v16 = objc_opt_new();
-  [v16 setCardSections:v15];
+  [v16 setCardSections:sectionsCopy];
 
   v17 = objc_alloc_init(MEMORY[0x277D65850]);
   [v17 setInlineCard:v16];
   [v17 setTopHit:SSSetTopHitWithReasonString()];
-  [v17 setResultBundleId:v14];
+  [v17 setResultBundleId:bundleIdCopy];
 
   [v17 setSectionBundleIdentifier:v11];
-  [v17 setSectionHeader:v13];
-  [v17 setQueryId:a4];
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%llu", v11, a4];
+  [v17 setSectionHeader:titleCopy];
+  [v17 setQueryId:id];
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%llu", v11, id];
   [v17 setIdentifier:v18];
 
-  [v17 setCompletion:v12];
+  [v17 setCompletion:completionCopy];
   [v17 setApplicationBundleIdentifier:v11];
   [v17 setType:2];
   v19 = objc_alloc_init(MEMORY[0x277D65848]);
@@ -577,30 +577,30 @@ LABEL_32:
 
   [v19 setBundleIdentifier:v11];
   [v19 setDomain:10];
-  [v19 setTitle:v13];
+  [v19 setTitle:titleCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (id)buttonItemWithTitle:(id)a3 symbol:(id)a4 command:(id)a5
+- (id)buttonItemWithTitle:(id)title symbol:(id)symbol command:(id)command
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  symbolCopy = symbol;
+  commandCopy = command;
+  titleCopy = title;
   v10 = objc_opt_new();
-  [v10 setTitle:v9];
+  [v10 setTitle:titleCopy];
 
-  if (v7)
+  if (symbolCopy)
   {
     v11 = objc_opt_new();
     [v11 setIsTemplate:1];
-    [v11 setSymbolName:v7];
+    [v11 setSymbolName:symbolCopy];
     [v10 setImage:v11];
   }
 
-  [v10 setCommand:v8];
+  [v10 setCommand:commandCopy];
 
   return v10;
 }
@@ -620,26 +620,26 @@ LABEL_32:
   [MEMORY[0x277D04220] cancelJob:ddJobIdentifier];
 }
 
-- (void)getResultSections:(id)a3 queryId:(unint64_t)a4 completion:(id)a5
+- (void)getResultSections:(id)sections queryId:(unint64_t)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  sectionsCopy = sections;
+  completionCopy = completion;
   v10 = [objc_alloc(MEMORY[0x277D04228]) initWithScannerType:0 passiveIntent:1];
   [v10 setResultsOptions:{objc_msgSend(v10, "resultsOptions") | 0x1000}];
-  v11 = [v8 length];
+  v11 = [sectionsCopy length];
   v12 = MEMORY[0x277D04220];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__SPUISDataDetectorResultGenerator_getResultSections_queryId_completion___block_invoke;
   v16[3] = &unk_279D0C0E8;
-  v18 = v9;
+  v18 = completionCopy;
   v19 = 0;
   v20 = v11;
-  v21 = a4;
+  idCopy = id;
   v16[4] = self;
-  v17 = v8;
-  v13 = v8;
-  v14 = v9;
+  v17 = sectionsCopy;
+  v13 = sectionsCopy;
+  v14 = completionCopy;
   v15 = [v12 scanString:v13 range:0 configuration:v11 completionBlock:{v10, v16}];
   if (self)
   {

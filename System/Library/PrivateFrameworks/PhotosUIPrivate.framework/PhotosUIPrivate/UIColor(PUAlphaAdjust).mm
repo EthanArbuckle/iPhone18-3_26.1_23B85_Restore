@@ -8,12 +8,12 @@
 - (id)pu_colorWithIncreasedBrightness
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if ([a1 getHue:&v4 saturation:&v5 brightness:&v6 alpha:v7])
+  if ([self getHue:&v4 saturation:&v5 brightness:&v6 alpha:v7])
   {
     v2 = [MEMORY[0x1E69DC888] colorWithHue:v4 saturation:v5 brightness:v6 + 0.0500000007 alpha:v7[0]];
   }
 
-  else if ([a1 getWhite:&v4 alpha:&v5])
+  else if ([self getWhite:&v4 alpha:&v5])
   {
     v2 = [MEMORY[0x1E69DC888] colorWithWhite:v4 + 0.0500000007 alpha:v5];
   }
@@ -29,12 +29,12 @@
 - (id)pu_colorWithIncreasedAlpha
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if ([a1 getHue:&v4 saturation:&v5 brightness:&v6 alpha:v7])
+  if ([self getHue:&v4 saturation:&v5 brightness:&v6 alpha:v7])
   {
     v2 = [MEMORY[0x1E69DC888] colorWithHue:v4 saturation:v5 brightness:v6 alpha:v7[0] + 0.100000001];
   }
 
-  else if ([a1 getWhite:&v4 alpha:&v5])
+  else if ([self getWhite:&v4 alpha:&v5])
   {
     v2 = [MEMORY[0x1E69DC888] colorWithWhite:v4 alpha:v5 + 0.100000001];
   }

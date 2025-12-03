@@ -1,9 +1,9 @@
 @interface ZoomIdleSlugOpacityDetailController
-- (id)idleSlugOpacity:(id)a3;
+- (id)idleSlugOpacity:(id)opacity;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_handleSliderIsChanging:(id)a3;
-- (void)setIdleSlugOpacity:(id)a3 specifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_handleSliderIsChanging:(id)changing;
+- (void)setIdleSlugOpacity:(id)opacity specifier:(id)specifier;
 @end
 
 @implementation ZoomIdleSlugOpacityDetailController
@@ -24,33 +24,33 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = ZoomIdleSlugOpacityDetailController;
-  v5 = [(ZoomIdleSlugOpacityDetailController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(ZoomIdleSlugOpacityDetailController *)&v10 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 control];
-    if (!v6)
+    control = [v5 control];
+    if (!control)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 contentView];
-        v8 = [v7 subviews];
-        v6 = [v8 ax_firstObjectUsingBlock:&__block_literal_global_16];
+        contentView = [v5 contentView];
+        subviews = [contentView subviews];
+        control = [subviews ax_firstObjectUsingBlock:&__block_literal_global_16];
       }
 
       else
       {
-        v6 = 0;
+        control = 0;
       }
     }
 
-    [v6 setContinuous:1];
-    [v6 addTarget:self action:"_handleSliderIsChanging:" forControlEvents:4096];
+    [control setContinuous:1];
+    [control addTarget:self action:"_handleSliderIsChanging:" forControlEvents:4096];
   }
 
   return v5;
@@ -65,7 +65,7 @@ BOOL __71__ZoomIdleSlugOpacityDetailController_tableView_cellForRowAtIndexPath__
   return isKindOfClass & 1;
 }
 
-- (id)idleSlugOpacity:(id)a3
+- (id)idleSlugOpacity:(id)opacity
 {
   v3 = +[AXSettings sharedInstance];
   [v3 zoomIdleSlugOpacity];
@@ -74,26 +74,26 @@ BOOL __71__ZoomIdleSlugOpacityDetailController_tableView_cellForRowAtIndexPath__
   return v4;
 }
 
-- (void)setIdleSlugOpacity:(id)a3 specifier:(id)a4
+- (void)setIdleSlugOpacity:(id)opacity specifier:(id)specifier
 {
-  v4 = a3;
-  [v4 floatValue];
+  opacityCopy = opacity;
+  [opacityCopy floatValue];
   v6 = v5;
   v7 = +[AXSettings sharedInstance];
   [v7 setZoomIdleSlugOpacity:v6];
 
   v9 = +[ZoomServices sharedInstance];
-  [v4 floatValue];
+  [opacityCopy floatValue];
   LODWORD(v6) = v8;
 
   [v9 notifyZoomIdleSlugOpacityChangedTo:*&v6];
 }
 
-- (void)_handleSliderIsChanging:(id)a3
+- (void)_handleSliderIsChanging:(id)changing
 {
-  v3 = a3;
+  changingCopy = changing;
   v6 = +[ZoomServices sharedInstance];
-  [v3 value];
+  [changingCopy value];
   v5 = v4;
 
   [v6 notifyZoomIdleSlugOpacityChangedTo:v5];

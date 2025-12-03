@@ -1,6 +1,6 @@
 @interface MCDNSProxyPayload
 + (id)typeStrings;
-- (MCDNSProxyPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCDNSProxyPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSDictionary)configurationDictionary;
 - (id)installationWarnings;
 - (id)payloadDescriptionKeyValueSections;
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (MCDNSProxyPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCDNSProxyPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = MCDNSProxyPayload;
-  v9 = [(MCPayload *)&v39 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v39 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (v9)
   {
     v38 = 0;
-    v10 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"AppBundleIdentifier" isRequired:1 outError:&v38];
+    v10 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"AppBundleIdentifier" isRequired:1 outError:&v38];
     v11 = v38;
     appBundleIdentifier = v9->_appBundleIdentifier;
     v9->_appBundleIdentifier = v10;
@@ -39,7 +39,7 @@
     if (v9->_appBundleIdentifier)
     {
       v37 = v11;
-      v13 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProviderBundleIdentifier" isRequired:0 outError:&v37];
+      v13 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ProviderBundleIdentifier" isRequired:0 outError:&v37];
       v14 = v37;
 
       providerBundleIdentifier = v9->_providerBundleIdentifier;
@@ -58,7 +58,7 @@
       if (v16)
       {
         v36 = v14;
-        v17 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProviderConfiguration" isRequired:0 outError:&v36];
+        v17 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ProviderConfiguration" isRequired:0 outError:&v36];
         v11 = v36;
 
         providerConfiguration = v9->_providerConfiguration;
@@ -67,7 +67,7 @@
         if (v9->_providerBundleIdentifier || !v11)
         {
           v35 = v11;
-          v19 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"DNSProxyUUID" isRequired:0 outError:&v35];
+          v19 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"DNSProxyUUID" isRequired:0 outError:&v35];
           v20 = v35;
 
           dnsProxyUUID = v9->_dnsProxyUUID;
@@ -83,17 +83,17 @@
       }
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v22 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v23 = v22;
-        v24 = [(MCPayload *)v9 friendlyName];
+        friendlyName = [(MCPayload *)v9 friendlyName];
         *buf = 138543618;
-        v41 = v24;
+        v41 = friendlyName;
         v42 = 2114;
-        v43 = v8;
+        v43 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v23, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -102,10 +102,10 @@
     {
       v25 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
       v26 = v25;
-      if (a5)
+      if (error)
       {
         v27 = v25;
-        *a5 = v26;
+        *error = v26;
       }
 
       v28 = _MCLogObjects;
@@ -114,11 +114,11 @@
         v29 = v28;
         v30 = objc_opt_class();
         v31 = v30;
-        v32 = [v26 MCVerboseDescription];
+        mCVerboseDescription = [v26 MCVerboseDescription];
         *buf = 138543618;
         v41 = v30;
         v42 = 2114;
-        v43 = v32;
+        v43 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v29, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -134,33 +134,33 @@
 {
   v8.receiver = self;
   v8.super_class = MCDNSProxyPayload;
-  v3 = [(MCPayload *)&v8 stubDictionary];
-  v4 = [(MCDNSProxyPayload *)self appBundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"AppBundleIdentifier"];
+  stubDictionary = [(MCPayload *)&v8 stubDictionary];
+  appBundleIdentifier = [(MCDNSProxyPayload *)self appBundleIdentifier];
+  [stubDictionary setObject:appBundleIdentifier forKeyedSubscript:@"AppBundleIdentifier"];
 
-  v5 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"ProviderBundleIdentifier"];
+  providerBundleIdentifier = [(MCDNSProxyPayload *)self providerBundleIdentifier];
+  [stubDictionary setObject:providerBundleIdentifier forKeyedSubscript:@"ProviderBundleIdentifier"];
 
-  v6 = [(MCDNSProxyPayload *)self dnsProxyUUID];
-  [v3 setObject:v6 forKeyedSubscript:@"DNSProxyUUID"];
+  dnsProxyUUID = [(MCDNSProxyPayload *)self dnsProxyUUID];
+  [stubDictionary setObject:dnsProxyUUID forKeyedSubscript:@"DNSProxyUUID"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (NSDictionary)configurationDictionary
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-  v4 = [(MCPayload *)self displayName];
-  [v3 setObject:v4 forKeyedSubscript:@"PayloadDisplayName"];
+  displayName = [(MCPayload *)self displayName];
+  [v3 setObject:displayName forKeyedSubscript:@"PayloadDisplayName"];
 
-  v5 = [(MCDNSProxyPayload *)self appBundleIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"AppBundleIdentifier"];
+  appBundleIdentifier = [(MCDNSProxyPayload *)self appBundleIdentifier];
+  [v3 setObject:appBundleIdentifier forKeyedSubscript:@"AppBundleIdentifier"];
 
-  v6 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"ProviderBundleIdentifier"];
+  providerBundleIdentifier = [(MCDNSProxyPayload *)self providerBundleIdentifier];
+  [v3 setObject:providerBundleIdentifier forKeyedSubscript:@"ProviderBundleIdentifier"];
 
-  v7 = [(MCDNSProxyPayload *)self providerConfiguration];
-  [v3 setObject:v7 forKeyedSubscript:@"ProviderConfiguration"];
+  providerConfiguration = [(MCDNSProxyPayload *)self providerConfiguration];
+  [v3 setObject:providerConfiguration forKeyedSubscript:@"ProviderConfiguration"];
 
   return v3;
 }
@@ -169,34 +169,34 @@
 {
   v13.receiver = self;
   v13.super_class = MCDNSProxyPayload;
-  v3 = [(MCPayload *)&v13 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v13 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCDNSProxyPayload *)self appBundleIdentifier];
-  [v4 appendFormat:@"App: %@\n", v5];
+  appBundleIdentifier = [(MCDNSProxyPayload *)self appBundleIdentifier];
+  [v4 appendFormat:@"App: %@\n", appBundleIdentifier];
 
-  v6 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
+  providerBundleIdentifier = [(MCDNSProxyPayload *)self providerBundleIdentifier];
 
-  if (v6)
+  if (providerBundleIdentifier)
   {
-    v7 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
-    [v4 appendFormat:@"App's provider: %@\n", v7];
+    providerBundleIdentifier2 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
+    [v4 appendFormat:@"App's provider: %@\n", providerBundleIdentifier2];
   }
 
-  v8 = [(MCDNSProxyPayload *)self providerConfiguration];
+  providerConfiguration = [(MCDNSProxyPayload *)self providerConfiguration];
 
-  if (v8)
+  if (providerConfiguration)
   {
-    v9 = [(MCDNSProxyPayload *)self providerConfiguration];
-    [v4 appendFormat:@"Provider's configuration: %@\n", v9];
+    providerConfiguration2 = [(MCDNSProxyPayload *)self providerConfiguration];
+    [v4 appendFormat:@"Provider's configuration: %@\n", providerConfiguration2];
   }
 
-  v10 = [(MCDNSProxyPayload *)self dnsProxyUUID];
+  dnsProxyUUID = [(MCDNSProxyPayload *)self dnsProxyUUID];
 
-  if (v10)
+  if (dnsProxyUUID)
   {
-    v11 = [(MCDNSProxyPayload *)self dnsProxyUUID];
-    [v4 appendFormat:@"DNSProxyUUID            : %@\n", v11];
+    dnsProxyUUID2 = [(MCDNSProxyPayload *)self dnsProxyUUID];
+    [v4 appendFormat:@"DNSProxyUUID            : %@\n", dnsProxyUUID2];
   }
 
   return v4;
@@ -204,8 +204,8 @@
 
 - (id)subtitle2Label
 {
-  v9 = [(MCDNSProxyPayload *)self subtitle2Description];
-  if (v9)
+  subtitle2Description = [(MCDNSProxyPayload *)self subtitle2Description];
+  if (subtitle2Description)
   {
     v10 = MCLocalizedFormat(@"DNS_PROXY_PROVIDER_BUNDLE_COLON", v2, v3, v4, v5, v6, v7, v8, v12);
   }
@@ -223,30 +223,30 @@
   v22[1] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v4 = [MCKeyValue alloc];
-  v5 = [(MCDNSProxyPayload *)self appBundleIdentifier];
+  appBundleIdentifier = [(MCDNSProxyPayload *)self appBundleIdentifier];
   v6 = MCLocalizedString(@"DNS_PROXY_APP");
-  v7 = [(MCKeyValue *)v4 initWithLocalizedString:v5 localizedKey:v6];
+  v7 = [(MCKeyValue *)v4 initWithLocalizedString:appBundleIdentifier localizedKey:v6];
   [v3 addObject:v7];
 
-  v8 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
+  providerBundleIdentifier = [(MCDNSProxyPayload *)self providerBundleIdentifier];
 
-  if (v8)
+  if (providerBundleIdentifier)
   {
     v9 = [MCKeyValue alloc];
-    v10 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
+    providerBundleIdentifier2 = [(MCDNSProxyPayload *)self providerBundleIdentifier];
     v11 = MCLocalizedString(@"DNS_PROXY_PROVIDER_BUNDLE");
-    v12 = [(MCKeyValue *)v9 initWithLocalizedString:v10 localizedKey:v11];
+    v12 = [(MCKeyValue *)v9 initWithLocalizedString:providerBundleIdentifier2 localizedKey:v11];
     [v3 addObject:v12];
   }
 
-  v13 = [(MCDNSProxyPayload *)self dnsProxyUUID];
+  dnsProxyUUID = [(MCDNSProxyPayload *)self dnsProxyUUID];
 
-  if (v13)
+  if (dnsProxyUUID)
   {
     v14 = [MCKeyValue alloc];
-    v15 = [(MCDNSProxyPayload *)self dnsProxyUUID];
+    dnsProxyUUID2 = [(MCDNSProxyPayload *)self dnsProxyUUID];
     v16 = MCLocalizedString(@"DNS_PROXY_UUID");
-    v17 = [(MCKeyValue *)v14 initWithLocalizedString:v15 localizedKey:v16];
+    v17 = [(MCKeyValue *)v14 initWithLocalizedString:dnsProxyUUID2 localizedKey:v16];
     [v3 addObject:v17];
   }
 

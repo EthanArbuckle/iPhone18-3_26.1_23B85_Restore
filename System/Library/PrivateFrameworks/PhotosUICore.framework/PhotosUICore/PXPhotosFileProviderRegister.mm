@@ -1,5 +1,5 @@
 @interface PXPhotosFileProviderRegister
-+ (BOOL)canRegisterFileRepresentationsFor:(id)a3 contentType:(id)a4 configuration:(id)a5;
++ (BOOL)canRegisterFileRepresentationsFor:(id)for contentType:(id)type configuration:(id)configuration;
 + (NSString)urlQueryItemClientEncodingPolicyKey;
 + (NSString)urlQueryItemDownscalingTargetDimensionKey;
 + (NSString)urlQueryItemIdentifierCodeKey;
@@ -11,12 +11,12 @@
 + (NSString)urlQueryItemUUIDKey;
 + (NSString)urlQueryItemVideoPresetKey;
 - (PXPhotosFileProviderRegister)init;
-- (PXPhotosFileProviderRegister)initWithConfiguration:(id)a3 fileProviderManager:(id)a4 domain:(id)a5;
-- (id)registerFileRepresentationsWithItemProvider:(id)a3 asset:(id)a4;
-- (id)registerFolderRepresentationWithItemProvider:(id)a3 object:(id)a4;
-- (id)registeredFileRepresentationWithContentType:(id)a3 uuid:(id)a4 identifierCode:(id)a5 libraryIdentifier:(id)a6 itemType:(unint64_t)a7 encodingPolicy:(int64_t)a8 hasLimitedVisibility:(BOOL)a9;
-- (id)registeredFileRepresentationsWithAsset:(id)a3;
-- (id)registeredFolderRepresentationWithObject:(id)a3;
+- (PXPhotosFileProviderRegister)initWithConfiguration:(id)configuration fileProviderManager:(id)manager domain:(id)domain;
+- (id)registerFileRepresentationsWithItemProvider:(id)provider asset:(id)asset;
+- (id)registerFolderRepresentationWithItemProvider:(id)provider object:(id)object;
+- (id)registeredFileRepresentationWithContentType:(id)type uuid:(id)uuid identifierCode:(id)code libraryIdentifier:(id)identifier itemType:(unint64_t)itemType encodingPolicy:(int64_t)policy hasLimitedVisibility:(BOOL)visibility;
+- (id)registeredFileRepresentationsWithAsset:(id)asset;
+- (id)registeredFolderRepresentationWithObject:(id)object;
 @end
 
 @implementation PXPhotosFileProviderRegister
@@ -91,25 +91,25 @@
   return v2;
 }
 
-- (PXPhotosFileProviderRegister)initWithConfiguration:(id)a3 fileProviderManager:(id)a4 domain:(id)a5
+- (PXPhotosFileProviderRegister)initWithConfiguration:(id)configuration fileProviderManager:(id)manager domain:(id)domain
 {
-  *(&self->super.isa + OBJC_IVAR___PXPhotosFileProviderRegister_configuration) = a3;
-  *(&self->super.isa + OBJC_IVAR___PXPhotosFileProviderRegister_fileProviderManager) = a4;
-  *(&self->super.isa + OBJC_IVAR___PXPhotosFileProviderRegister_domain) = a5;
+  *(&self->super.isa + OBJC_IVAR___PXPhotosFileProviderRegister_configuration) = configuration;
+  *(&self->super.isa + OBJC_IVAR___PXPhotosFileProviderRegister_fileProviderManager) = manager;
+  *(&self->super.isa + OBJC_IVAR___PXPhotosFileProviderRegister_domain) = domain;
   v12.receiver = self;
   v12.super_class = type metadata accessor for PhotosFileProviderRegister();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  domainCopy = domain;
   return [(PXPhotosFileProviderRegister *)&v12 init];
 }
 
-- (id)registerFileRepresentationsWithItemProvider:(id)a3 asset:(id)a4
+- (id)registerFileRepresentationsWithItemProvider:(id)provider asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A498CE30(v6, v7);
+  providerCopy = provider;
+  assetCopy = asset;
+  selfCopy = self;
+  sub_1A498CE30(providerCopy, assetCopy);
 
   sub_1A5240E64();
   v9 = sub_1A524CA14();
@@ -117,15 +117,15 @@
   return v9;
 }
 
-- (id)registerFolderRepresentationWithItemProvider:(id)a3 object:(id)a4
+- (id)registerFolderRepresentationWithItemProvider:(id)provider object:(id)object
 {
   sub_1A3EE53E0(0);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_1A498E054(v10, v11, v9);
+  providerCopy = provider;
+  objectCopy = object;
+  selfCopy = self;
+  sub_1A498E054(providerCopy, objectCopy, v9);
 
   v13 = sub_1A5240E64();
   v14 = *(v13 - 8);
@@ -141,20 +141,20 @@
   return v16;
 }
 
-- (id)registeredFolderRepresentationWithObject:(id)a3
+- (id)registeredFolderRepresentationWithObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A498E8BC(v4);
+  objectCopy = object;
+  selfCopy = self;
+  v6 = sub_1A498E8BC(objectCopy);
 
   return v6;
 }
 
-- (id)registeredFileRepresentationsWithAsset:(id)a3
+- (id)registeredFileRepresentationsWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A498EB88(v4);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_1A498EB88(assetCopy);
 
   type metadata accessor for PhotosFileProviderRegister.FileRepresentation(0);
   v6 = sub_1A524CA14();
@@ -162,36 +162,36 @@
   return v6;
 }
 
-+ (BOOL)canRegisterFileRepresentationsFor:(id)a3 contentType:(id)a4 configuration:(id)a5
++ (BOOL)canRegisterFileRepresentationsFor:(id)for contentType:(id)type configuration:(id)configuration
 {
   v8 = sub_1A5246D14();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  forCopy = for;
+  typeCopy = type;
+  configurationCopy = configuration;
   sub_1A5246C44();
 
-  _s12PhotosUICore0A20FileProviderRegisterC03caneC15Representations3for11contentType13configurationSbSo7PHAssetC_07UniformJ11Identifiers6UTTypeVAC13ConfigurationCtFZ_0(v12, v11, v14);
-  LOBYTE(a4) = v15;
+  _s12PhotosUICore0A20FileProviderRegisterC03caneC15Representations3for11contentType13configurationSbSo7PHAssetC_07UniformJ11Identifiers6UTTypeVAC13ConfigurationCtFZ_0(forCopy, v11, configurationCopy);
+  LOBYTE(type) = v15;
 
   (*(v9 + 8))(v11, v8);
-  return a4 & 1;
+  return type & 1;
 }
 
-- (id)registeredFileRepresentationWithContentType:(id)a3 uuid:(id)a4 identifierCode:(id)a5 libraryIdentifier:(id)a6 itemType:(unint64_t)a7 encodingPolicy:(int64_t)a8 hasLimitedVisibility:(BOOL)a9
+- (id)registeredFileRepresentationWithContentType:(id)type uuid:(id)uuid identifierCode:(id)code libraryIdentifier:(id)identifier itemType:(unint64_t)itemType encodingPolicy:(int64_t)policy hasLimitedVisibility:(BOOL)visibility
 {
-  v31 = a8;
-  v32 = a7;
-  HIDWORD(v30) = a9;
+  policyCopy = policy;
+  itemTypeCopy = itemType;
+  HIDWORD(v30) = visibility;
   v33 = sub_1A5246D14();
   MEMORY[0x1EEE9AC00](v33);
   v15 = &v30 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  typeCopy = type;
+  uuidCopy = uuid;
+  codeCopy = code;
+  identifierCopy = identifier;
   self;
   sub_1A5246C44();
 
@@ -204,7 +204,7 @@
   v26 = sub_1A524C674();
   v28 = v27;
 
-  sub_1A498F250(v15, v20, v22, v23, v25, v26, v28, v32, v31, BYTE4(v30));
+  sub_1A498F250(v15, v20, v22, v23, v25, v26, v28, itemTypeCopy, policyCopy, BYTE4(v30));
 }
 
 - (PXPhotosFileProviderRegister)init

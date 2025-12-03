@@ -1,21 +1,21 @@
 @interface HKTableFormatter
 + (id)formatterForCodableCondensedWorkouts;
 - (HKTableFormatter)init;
-- (HKTableFormatter)initWithColumnTitles:(id)a3;
+- (HKTableFormatter)initWithColumnTitles:(id)titles;
 - (id)_columnWidths;
-- (id)_formattedTableHeaderForColumnWidths:(id)a3;
+- (id)_formattedTableHeaderForColumnWidths:(id)widths;
 - (id)formattedTable;
 - (id)formattedTableHeader;
-- (id)stringFromDate:(id)a3 fallback:(id)a4;
-- (id)stringFromTimeInterval:(double)a3;
+- (id)stringFromDate:(id)date fallback:(id)fallback;
+- (id)stringFromTimeInterval:(double)interval;
 - (int64_t)rowCount;
-- (void)_appendColumn:(id)a3 width:(int64_t)a4 padding:(id)a5 row:(id)a6;
-- (void)_enumerateFormattedRowsWithColumnWidths:(id)a3 handler:(id)a4;
+- (void)_appendColumn:(id)column width:(int64_t)width padding:(id)padding row:(id)row;
+- (void)_enumerateFormattedRowsWithColumnWidths:(id)widths handler:(id)handler;
 - (void)appendEmptyRow;
-- (void)appendHeterogenousRow:(id)a3;
-- (void)appendRow:(id)a3;
-- (void)appendWorkout:(id)a3;
-- (void)enumerateFormattedRows:(id)a3;
+- (void)appendHeterogenousRow:(id)row;
+- (void)appendRow:(id)row;
+- (void)appendWorkout:(id)workout;
+- (void)enumerateFormattedRows:(id)rows;
 @end
 
 @implementation HKTableFormatter
@@ -27,39 +27,39 @@
   return v2;
 }
 
-- (void)appendWorkout:(id)a3
+- (void)appendWorkout:(id)workout
 {
   v35[11] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  workoutCopy = workout;
   v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[HKTableFormatter rowCount](self, "rowCount")];
   v35[0] = v34;
-  v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(v4, "persistentID")];
+  v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(workoutCopy, "persistentID")];
   v35[1] = v33;
   v5 = MEMORY[0x1E696AFB0];
-  v32 = [v4 uuid];
+  uuid = [workoutCopy uuid];
   v31 = [v5 hk_UUIDWithData:?];
-  v30 = [v31 UUIDString];
-  v35[2] = v30;
+  uUIDString = [v31 UUIDString];
+  v35[2] = uUIDString;
   v6 = 0x1E695D000;
   v7 = MEMORY[0x1E695DF00];
-  [v4 creationDate];
+  [workoutCopy creationDate];
   v29 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
   v28 = [(HKTableFormatter *)self stringFromDate:?];
   v35[3] = v28;
   v8 = MEMORY[0x1E695DF00];
-  [v4 startDate];
+  [workoutCopy startDate];
   v27 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
   v26 = [(HKTableFormatter *)self stringFromDate:?];
   v35[4] = v26;
   v9 = MEMORY[0x1E695DF00];
-  [v4 endDate];
+  [workoutCopy endDate];
   v25 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
   v24 = [(HKTableFormatter *)self stringFromDate:?];
   v35[5] = v24;
-  v23 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "type")}];
-  v22 = [v23 stringValue];
-  v35[6] = v22;
-  v21 = +[HKWorkout _stringFromWorkoutActivityType:](HKWorkout, "_stringFromWorkoutActivityType:", [v4 type]);
+  v23 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(workoutCopy, "type")}];
+  stringValue = [v23 stringValue];
+  v35[6] = stringValue;
+  v21 = +[HKWorkout _stringFromWorkoutActivityType:](HKWorkout, "_stringFromWorkoutActivityType:", [workoutCopy type]);
   v10 = [v21 substringFromIndex:21];
   v11 = v10;
   v12 = @"Unknown";
@@ -69,13 +69,13 @@
   }
 
   v35[7] = v12;
-  [v4 duration];
+  [workoutCopy duration];
   v13 = [(HKTableFormatter *)self stringFromTimeInterval:?];
   v35[8] = v13;
-  v14 = [v4 hasCondenserVersion];
-  if (v14)
+  hasCondenserVersion = [workoutCopy hasCondenserVersion];
+  if (hasCondenserVersion)
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(v4, "condenserVersion")];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(workoutCopy, "condenserVersion")];
   }
 
   else
@@ -84,11 +84,11 @@
   }
 
   v35[9] = v15;
-  v16 = [v4 hasCondenserDate];
-  if (v16)
+  hasCondenserDate = [workoutCopy hasCondenserDate];
+  if (hasCondenserDate)
   {
     v17 = MEMORY[0x1E695DF00];
-    [v4 condenserDate];
+    [workoutCopy condenserDate];
     v6 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
     v18 = [(HKTableFormatter *)self stringFromDate:v6];
   }
@@ -102,32 +102,32 @@
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:11];
   [(HKTableFormatter *)self appendRow:v19];
 
-  if (v16)
+  if (hasCondenserDate)
   {
   }
 
-  if (v14)
+  if (hasCondenserVersion)
   {
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (HKTableFormatter)initWithColumnTitles:(id)a3
+- (HKTableFormatter)initWithColumnTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   v11.receiver = self;
   v11.super_class = HKTableFormatter;
   v5 = [(HKTableFormatter *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titlesCopy copy];
     titles = v5->_titles;
     v5->_titles = v6;
 
     if (v5->_titles)
     {
-      v8 = [v4 hk_map:&__block_literal_global_120];
+      v8 = [titlesCopy hk_map:&__block_literal_global_120];
       columns = v5->_columns;
       v5->_columns = v8;
     }
@@ -153,13 +153,13 @@ id __41__HKTableFormatter_initWithColumnTitles___block_invoke()
   return 0;
 }
 
-- (void)appendRow:(id)a3
+- (void)appendRow:(id)row
 {
-  v5 = a3;
-  v6 = v5;
+  rowCopy = row;
+  v6 = rowCopy;
   if (!self->_columns)
   {
-    v7 = [v5 hk_map:&__block_literal_global_10_0];
+    v7 = [rowCopy hk_map:&__block_literal_global_10_0];
     columns = self->_columns;
     self->_columns = v7;
   }
@@ -193,9 +193,9 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
   [v6 addObject:v5];
 }
 
-- (void)appendHeterogenousRow:(id)a3
+- (void)appendHeterogenousRow:(id)row
 {
-  v4 = [a3 hk_map:&__block_literal_global_24];
+  v4 = [row hk_map:&__block_literal_global_24];
   [(HKTableFormatter *)self appendRow:v4];
 }
 
@@ -210,8 +210,8 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
   result = self->_columns;
   if (result)
   {
-    v3 = [result firstObject];
-    v4 = [v3 count];
+    firstObject = [result firstObject];
+    v4 = [firstObject count];
 
     return v4;
   }
@@ -296,48 +296,48 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
   return v3;
 }
 
-- (void)_appendColumn:(id)a3 width:(int64_t)a4 padding:(id)a5 row:(id)a6
+- (void)_appendColumn:(id)column width:(int64_t)width padding:(id)padding row:(id)row
 {
-  v15 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![v11 length])
+  columnCopy = column;
+  paddingCopy = padding;
+  rowCopy = row;
+  if (![paddingCopy length])
   {
     [HKTableFormatter _appendColumn:a2 width:self padding:? row:?];
   }
 
-  [v12 appendString:v15];
-  v13 = [v15 length];
-  if (v13 < a4)
+  [rowCopy appendString:columnCopy];
+  v13 = [columnCopy length];
+  if (v13 < width)
   {
     v14 = v13;
     do
     {
-      [v12 appendString:v11];
-      v14 += [v11 length];
+      [rowCopy appendString:paddingCopy];
+      v14 += [paddingCopy length];
     }
 
-    while (v14 < a4);
+    while (v14 < width);
   }
 }
 
 - (id)formattedTableHeader
 {
-  v3 = [(HKTableFormatter *)self _columnWidths];
-  v4 = [(HKTableFormatter *)self _formattedTableHeaderForColumnWidths:v3];
+  _columnWidths = [(HKTableFormatter *)self _columnWidths];
+  v4 = [(HKTableFormatter *)self _formattedTableHeaderForColumnWidths:_columnWidths];
 
   return v4;
 }
 
-- (id)_formattedTableHeaderForColumnWidths:(id)a3
+- (id)_formattedTableHeaderForColumnWidths:(id)widths
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  widthsCopy = widths;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [widthsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -349,13 +349,13 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(widthsCopy);
         }
 
         v7 += [*(*(&v19 + 1) + 8 * i) integerValue];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [widthsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -381,7 +381,7 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
       do
       {
         v13 = [(NSArray *)self->_titles objectAtIndexedSubscript:v12];
-        v14 = [v4 objectAtIndexedSubscript:v12];
+        v14 = [widthsCopy objectAtIndexedSubscript:v12];
         -[HKTableFormatter _appendColumn:width:padding:row:](self, "_appendColumn:width:padding:row:", v13, [v14 integerValue], @" ", v10);
 
         ++v12;
@@ -396,7 +396,7 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
       v15 = 0;
       do
       {
-        v16 = [v4 objectAtIndexedSubscript:v15];
+        v16 = [widthsCopy objectAtIndexedSubscript:v15];
         -[HKTableFormatter _appendColumn:width:padding:row:](self, "_appendColumn:width:padding:row:", &stru_1F05FF230, [v16 integerValue], @"-", v10);
 
         ++v15;
@@ -413,17 +413,17 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
   return v10;
 }
 
-- (void)enumerateFormattedRows:(id)a3
+- (void)enumerateFormattedRows:(id)rows
 {
-  v4 = a3;
-  v5 = [(HKTableFormatter *)self _columnWidths];
-  [(HKTableFormatter *)self _enumerateFormattedRowsWithColumnWidths:v5 handler:v4];
+  rowsCopy = rows;
+  _columnWidths = [(HKTableFormatter *)self _columnWidths];
+  [(HKTableFormatter *)self _enumerateFormattedRowsWithColumnWidths:_columnWidths handler:rowsCopy];
 }
 
-- (void)_enumerateFormattedRowsWithColumnWidths:(id)a3 handler:(id)a4
+- (void)_enumerateFormattedRowsWithColumnWidths:(id)widths handler:(id)handler
 {
-  v16 = a3;
-  v6 = a4;
+  widthsCopy = widths;
+  handlerCopy = handler;
   if ([(NSArray *)self->_columns count])
   {
     v7 = [(NSArray *)self->_columns objectAtIndexedSubscript:0];
@@ -432,7 +432,7 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
     if (v8)
     {
       v9 = 0;
-      v15 = v6 + 16;
+      v15 = handlerCopy + 16;
       do
       {
         v10 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -443,7 +443,7 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
           {
             v12 = [(NSArray *)self->_columns objectAtIndexedSubscript:v11, v15];
             v13 = [v12 objectAtIndexedSubscript:v9];
-            v14 = [v16 objectAtIndexedSubscript:v11];
+            v14 = [widthsCopy objectAtIndexedSubscript:v11];
             -[HKTableFormatter _appendColumn:width:padding:row:](self, "_appendColumn:width:padding:row:", v13, [v14 integerValue], @" ", v10);
 
             ++v11;
@@ -452,7 +452,7 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
           while (v11 < [(NSArray *)self->_columns count]);
         }
 
-        (*(v6 + 2))(v6, v9, v10);
+        (*(handlerCopy + 2))(handlerCopy, v9, v10);
 
         ++v9;
       }
@@ -464,9 +464,9 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
 
 - (id)formattedTable
 {
-  v3 = [(HKTableFormatter *)self _columnWidths];
+  _columnWidths = [(HKTableFormatter *)self _columnWidths];
   v4 = objc_alloc(MEMORY[0x1E696AD60]);
-  v5 = [(HKTableFormatter *)self _formattedTableHeaderForColumnWidths:v3];
+  v5 = [(HKTableFormatter *)self _formattedTableHeaderForColumnWidths:_columnWidths];
   v6 = [v4 initWithString:v5];
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -475,21 +475,21 @@ void __30__HKTableFormatter_appendRow___block_invoke_2(uint64_t a1, void *a2, ui
   v9[3] = &unk_1E73841A8;
   v7 = v6;
   v10 = v7;
-  [(HKTableFormatter *)self _enumerateFormattedRowsWithColumnWidths:v3 handler:v9];
+  [(HKTableFormatter *)self _enumerateFormattedRowsWithColumnWidths:_columnWidths handler:v9];
 
   return v7;
 }
 
-- (id)stringFromDate:(id)a3 fallback:(id)a4
+- (id)stringFromDate:(id)date fallback:(id)fallback
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  fallbackCopy = fallback;
   if (self->_dateFormatter)
   {
-    if (v6)
+    if (dateCopy)
     {
 LABEL_3:
-      v8 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v6];
+      v8 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:dateCopy];
       goto LABEL_6;
     }
   }
@@ -501,25 +501,25 @@ LABEL_3:
     self->_dateFormatter = v9;
 
     [(NSDateFormatter *)self->_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-    if (v6)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v8 = v7;
+  v8 = fallbackCopy;
 LABEL_6:
   v11 = v8;
 
   return v11;
 }
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
   v6 = 0;
   v7 = 0;
   v5 = 0.0;
-  HKSeparateTimeIntervalComponents(1, &v7, &v6, &v5, a3);
+  HKSeparateTimeIntervalComponents(1, &v7, &v6, &v5, interval);
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld:%02ld:%02ld", v7, v6, v5];
 
   return v3;

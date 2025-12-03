@@ -1,43 +1,43 @@
 @interface HUHomeHubMigrationOnboardingFlow
-- (HUHomeHubMigrationOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4 devices:(id)a5;
+- (HUHomeHubMigrationOnboardingFlow)initWithUsageOptions:(id)options home:(id)home devices:(id)devices;
 - (NSMutableArray)migrationErrors;
-- (id)_determineNextViewControllerWithPriorResults:(id)a3;
-- (id)processUserInput:(id)a3;
-- (void)_checkHomePodResidentUpgradeRequirementsInHome:(id)a3;
-- (void)_checkResidentStatusInHome:(id)a3;
-- (void)addMigrationError:(id)a3;
+- (id)_determineNextViewControllerWithPriorResults:(id)results;
+- (id)processUserInput:(id)input;
+- (void)_checkHomePodResidentUpgradeRequirementsInHome:(id)home;
+- (void)_checkResidentStatusInHome:(id)home;
+- (void)addMigrationError:(id)error;
 @end
 
 @implementation HUHomeHubMigrationOnboardingFlow
 
-- (HUHomeHubMigrationOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4 devices:(id)a5
+- (HUHomeHubMigrationOnboardingFlow)initWithUsageOptions:(id)options home:(id)home devices:(id)devices
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  homeCopy = home;
+  devicesCopy = devices;
   v23.receiver = self;
   v23.super_class = HUHomeHubMigrationOnboardingFlow;
   v11 = [(HUHomeHubMigrationOnboardingFlow *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a4);
+    objc_storeStrong(&v11->_home, home);
     v12->_shouldBlockMigrationWithAppleTVWarning = 0;
     objc_initWeak(&location, v12);
-    v13 = [objc_opt_class() needsOnboardingForHome:v12->_home options:v8];
+    v13 = [objc_opt_class() needsOnboardingForHome:v12->_home options:optionsCopy];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __70__HUHomeHubMigrationOnboardingFlow_initWithUsageOptions_home_devices___block_invoke;
     v19[3] = &unk_277DB91E0;
     objc_copyWeak(&v21, &location);
-    v20 = v10;
+    v20 = devicesCopy;
     v14 = [v13 flatMap:v19];
     onboardingFuture = v12->_onboardingFuture;
     v12->_onboardingFuture = v14;
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     migrationErrors = v12->_migrationErrors;
-    v12->_migrationErrors = v16;
+    v12->_migrationErrors = array;
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -332,12 +332,12 @@ id __70__HUHomeHubMigrationOnboardingFlow_initWithUsageOptions_home_devices___bl
   return v31;
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  inputCopy = input;
   objc_opt_class();
-  v6 = [v5 objectForKeyedSubscript:@"HUHomeHub2OnboardingKey_UserInput"];
+  v6 = [inputCopy objectForKeyedSubscript:@"HUHomeHub2OnboardingKey_UserInput"];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -352,35 +352,35 @@ id __70__HUHomeHubMigrationOnboardingFlow_initWithUsageOptions_home_devices___bl
 
   if (!v8)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"HUHomeHubMigrationOnboardingFlow.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"userInputValue != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeHubMigrationOnboardingFlow.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"userInputValue != nil"}];
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"HUHomeHub2OnboardingKey_ErrorDescription"];
+  v9 = [inputCopy objectForKeyedSubscript:@"HUHomeHub2OnboardingKey_ErrorDescription"];
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v45 = v5;
+    v45 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationOnboardingFlow-processUserInput:] with input results: %@", buf, 0xCu);
   }
 
   if ([v8 integerValue] && objc_msgSend(v8, "integerValue") != 1 && objc_msgSend(v8, "integerValue") != 2 && objc_msgSend(v8, "integerValue") != 3 && objc_msgSend(v8, "integerValue") != 10 && objc_msgSend(v8, "integerValue") != 4 && objc_msgSend(v8, "integerValue") != 5 && objc_msgSend(v8, "integerValue") != 6 && objc_msgSend(v8, "integerValue") != 8 && objc_msgSend(v8, "integerValue") != 7 && objc_msgSend(v8, "integerValue") != 9)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"HUHomeHubMigrationOnboardingFlow.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromIntro) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromDeviceWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromSharedUserWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_DontSetup) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_Done) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromAppleTVWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromResidentWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_MigrationInProgress) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_MigrationSucceeded) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_MigrationFailed) || (userInputValue.integerValue== HUHomeHub2OnboardingValue_ResetAppleHome)"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUHomeHubMigrationOnboardingFlow.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromIntro) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromDeviceWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromSharedUserWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_DontSetup) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_Done) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromAppleTVWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_ContinueFromResidentWarning) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_MigrationInProgress) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_MigrationSucceeded) || (userInputValue.integerValue == HUHomeHub2OnboardingValue_MigrationFailed) || (userInputValue.integerValue== HUHomeHub2OnboardingValue_ResetAppleHome)"}];
   }
 
   if (![v8 integerValue] || objc_msgSend(v8, "integerValue") == 4 || objc_msgSend(v8, "integerValue") == 5 || objc_msgSend(v8, "integerValue") == 1 || objc_msgSend(v8, "integerValue") == 2)
   {
-    v11 = [(HUHomeHubMigrationOnboardingFlow *)self _determineNextViewControllerWithPriorResults:v5];
+    v11 = [(HUHomeHubMigrationOnboardingFlow *)self _determineNextViewControllerWithPriorResults:inputCopy];
     goto LABEL_26;
   }
 
   if ([v8 integerValue] == 3 || objc_msgSend(v8, "integerValue") == 10)
   {
-    v13 = [(HUHomeHubMigrationOnboardingFlow *)self onboardingFuture];
-    [v13 finishWithNoResult];
+    onboardingFuture = [(HUHomeHubMigrationOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
 
 LABEL_32:
     v11 = 0;
@@ -390,8 +390,8 @@ LABEL_32:
   if ([v8 integerValue] == 6)
   {
     v14 = [HUHomeHubMigrationProgressViewController alloc];
-    v15 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-    v11 = [(HUHomeHubMigrationProgressViewController *)v14 initWithOwnedHomes:v15 onboardingFlow:self];
+    homes = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+    v11 = [(HUHomeHubMigrationProgressViewController *)v14 initWithOwnedHomes:homes onboardingFlow:self];
 LABEL_42:
 
     goto LABEL_26;
@@ -399,8 +399,8 @@ LABEL_42:
 
   if ([v8 integerValue] == 7)
   {
-    v16 = [(HUHomeHubMigrationOnboardingFlow *)self migrationErrors];
-    v17 = [v16 count];
+    migrationErrors = [(HUHomeHubMigrationOnboardingFlow *)self migrationErrors];
+    v17 = [migrationErrors count];
 
     v18 = v17 > 1;
     if (v17 <= 1)
@@ -413,20 +413,20 @@ LABEL_42:
       v19 = @"HUSoftwareUpdateMigrationFailedDescription_AfterMultipleAttempts";
     }
 
-    v15 = _HULocalizedStringWithDefaultValue(v19, v19, 1);
+    homes = _HULocalizedStringWithDefaultValue(v19, v19, 1);
     if (v9)
     {
       v20 = MEMORY[0x277CCACA8];
       v21 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationFailedDescriptionWithDevice", @"HUSoftwareUpdateMigrationFailedDescriptionWithDevice", 1);
       v22 = [v20 stringWithFormat:@"%@\n%@", v21, v9];
 
-      v15 = v22;
+      homes = v22;
     }
 
     v23 = [HUHomeHubMigrationFailedViewController alloc];
-    v24 = [(HUHomeHubMigrationOnboardingFlow *)self home];
-    v25 = [v24 name];
-    v11 = [(HUHomeHubMigrationFailedViewController *)v23 initWithDetailText:v15 failedState:v18 homeName:v25];
+    home = [(HUHomeHubMigrationOnboardingFlow *)self home];
+    name = [home name];
+    v11 = [(HUHomeHubMigrationFailedViewController *)v23 initWithDetailText:homes failedState:v18 homeName:name];
 
     goto LABEL_42;
   }
@@ -438,51 +438,51 @@ LABEL_42:
       goto LABEL_32;
     }
 
-    v30 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-    if ([v30 count] > 1)
+    homes2 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+    if ([homes2 count] > 1)
     {
-      v15 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationSuccessDescriptionMultipleHomes", @"HUSoftwareUpdateMigrationSuccessDescriptionMultipleHomes", 1);
+      homes = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationSuccessDescriptionMultipleHomes", @"HUSoftwareUpdateMigrationSuccessDescriptionMultipleHomes", 1);
     }
 
     else
     {
-      v31 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-      v32 = [v31 firstObject];
-      v33 = [v32 hf_displayName];
-      v15 = HULocalizedStringWithFormat(@"HUSoftwareUpdateMigrationSuccessDescriptionSpecificHome", @"%@", v34, v35, v36, v37, v38, v39, v33);
+      homes3 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+      firstObject = [homes3 firstObject];
+      hf_displayName = [firstObject hf_displayName];
+      homes = HULocalizedStringWithFormat(@"HUSoftwareUpdateMigrationSuccessDescriptionSpecificHome", @"%@", v34, v35, v36, v37, v38, v39, hf_displayName);
     }
 
     v41 = [HUHomeHubMigrationSuccessViewController alloc];
     v42 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationSuccessTitle", @"HUSoftwareUpdateMigrationSuccessTitle", 1);
-    v11 = [(HUHomeHubMigrationSuccessViewController *)v41 initWithTitle:v42 detailText:v15 symbolName:0];
+    v11 = [(HUHomeHubMigrationSuccessViewController *)v41 initWithTitle:v42 detailText:homes symbolName:0];
 
     goto LABEL_42;
   }
 
   v26 = _HULocalizedStringWithDefaultValue(@"HUResetAppleHomeMigrationOnboardingDetailText", @"HUResetAppleHomeMigrationOnboardingDetailText", 1);
   v27 = [HUHomeHubMigrationFailedViewController alloc];
-  v28 = [(HUHomeHubMigrationOnboardingFlow *)self home];
-  v29 = [v28 name];
-  v11 = [(HUHomeHubMigrationFailedViewController *)v27 initWithDetailText:v26 failedState:2 homeName:v29];
+  home2 = [(HUHomeHubMigrationOnboardingFlow *)self home];
+  name2 = [home2 name];
+  v11 = [(HUHomeHubMigrationFailedViewController *)v27 initWithDetailText:v26 failedState:2 homeName:name2];
 
 LABEL_26:
 
   return v11;
 }
 
-- (id)_determineNextViewControllerWithPriorResults:(id)a3
+- (id)_determineNextViewControllerWithPriorResults:(id)results
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"HUHomeHub2OnboardingKey_UserInput"];
-  v6 = [v4 objectForKeyedSubscript:@"HUUpgradeMultiUserDevicesOnboardingKey_UserInput"];
+  resultsCopy = results;
+  v5 = [resultsCopy objectForKeyedSubscript:@"HUHomeHub2OnboardingKey_UserInput"];
+  v6 = [resultsCopy objectForKeyedSubscript:@"HUUpgradeMultiUserDevicesOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *v50 = self;
     *&v50[8] = 2112;
-    *&v50[10] = v4;
+    *&v50[10] = resultsCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationOnboardingFlow:_determineNextViewControllerWithPriorResults] %@ | results = [%@]", buf, 0x16u);
   }
 
@@ -502,11 +502,11 @@ LABEL_37:
               v43 = HFLogForCategory();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
-                v44 = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowUserWarning];
+                shouldShowUserWarning = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowUserWarning];
                 *buf = 138412546;
                 *v50 = self;
                 *&v50[8] = 1024;
-                *&v50[10] = v44;
+                *&v50[10] = shouldShowUserWarning;
                 _os_log_impl(&dword_20CEB6000, v43, OS_LOG_TYPE_DEFAULT, "%@: _determineNextViewControllerWithPriorResults result is nil. Marking onboarding future as finished. shouldShowUserWarning: %{BOOL}d", buf, 0x12u);
               }
 
@@ -525,15 +525,15 @@ LABEL_37:
 
     else
     {
-      v8 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-      v9 = [v8 na_flatMap:&__block_literal_global_117];
+      homes = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+      v9 = [homes na_flatMap:&__block_literal_global_117];
       v10 = [v9 na_filter:&__block_literal_global_59_1];
       [(HUHomeHubMigrationOnboardingFlow *)self setHomePodsToUpdate:v10];
 
       if ([(HUHomeHubMigrationOnboardingFlow *)self upgradeRequirements])
       {
-        v11 = [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
-        v12 = [v11 hmf_isEmpty] ^ 1;
+        homePodsToUpdate = [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
+        v12 = [homePodsToUpdate hmf_isEmpty] ^ 1;
       }
 
       else
@@ -544,50 +544,50 @@ LABEL_37:
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
+        homePodsToUpdate2 = [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
         [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
         v47 = v48 = v12;
         v15 = v6;
-        v16 = v4;
+        v16 = resultsCopy;
         v17 = v5;
         v18 = [v47 count];
-        v19 = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowResidentWarning];
-        v20 = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowAppleTVWarning];
-        v21 = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowDeviceWarning];
-        v22 = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowUserWarning];
+        shouldShowResidentWarning = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowResidentWarning];
+        shouldShowAppleTVWarning = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowAppleTVWarning];
+        shouldShowDeviceWarning = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowDeviceWarning];
+        shouldShowUserWarning2 = [(HUHomeHubMigrationOnboardingFlow *)self shouldShowUserWarning];
         *buf = 67110658;
         *v50 = v48;
         *&v50[4] = 2112;
-        *&v50[6] = v14;
+        *&v50[6] = homePodsToUpdate2;
         *&v50[14] = 2048;
         *&v50[16] = v18;
         v5 = v17;
-        v4 = v16;
+        resultsCopy = v16;
         v6 = v15;
         v51 = 1024;
-        v52 = v19;
+        v52 = shouldShowResidentWarning;
         v53 = 1024;
-        v54 = v20;
+        v54 = shouldShowAppleTVWarning;
         v55 = 1024;
-        v56 = v21;
+        v56 = shouldShowDeviceWarning;
         v57 = 1024;
-        v58 = v22;
+        v58 = shouldShowUserWarning2;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationOnboardingFlow:_determineNextViewControllerWithPriorResults] shouldShowUpdateHomePodsView = %{BOOL}d | homePods = [%@] (count = %lu), shouldShowResidentWarning = %{BOOL}d, shouldShowAppleTVWarning = %{BOOL}d | shouldShowDeviceWarning = %{BOOL}d | shouldShowUserWarning = %{BOOL}d", buf, 0x34u);
 
         v12 = v48;
       }
 
-      v23 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-      v24 = [v23 na_flatMap:&__block_literal_global_62_0];
+      homes2 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+      v24 = [homes2 na_flatMap:&__block_literal_global_62_0];
       v25 = [v24 na_filter:&__block_literal_global_65];
       [(HUHomeHubMigrationOnboardingFlow *)self setAppleTVsToUpdate:v25];
 
       if (v12)
       {
         v26 = [HUHomeHubUpdateHomePodsViewController alloc];
-        v27 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-        v28 = [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
-        v29 = [(HUHomeHubUpdateHomePodsViewController *)v26 initWithOwnedHomes:v27 homePodsToUpdate:v28];
+        homes3 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+        homePodsToUpdate3 = [(HUHomeHubMigrationOnboardingFlow *)self homePodsToUpdate];
+        v29 = [(HUHomeHubUpdateHomePodsViewController *)v26 initWithOwnedHomes:homes3 homePodsToUpdate:homePodsToUpdate3];
 
         if (v29)
         {
@@ -600,8 +600,8 @@ LABEL_37:
       if ([(HUHomeHubMigrationOnboardingFlow *)self shouldShowAppleTVWarning])
       {
         v30 = [HUHomeHubAppleTVUpdateWarningViewController alloc];
-        v31 = [(HUHomeHubMigrationOnboardingFlow *)self appleTVsToUpdate];
-        v29 = [(HUHomeHubAppleTVUpdateWarningViewController *)v30 initWithAppleTVsToUpdate:v31 shouldBlockMigration:[(HUHomeHubMigrationOnboardingFlow *)self shouldBlockMigrationWithAppleTVWarning]];
+        appleTVsToUpdate = [(HUHomeHubMigrationOnboardingFlow *)self appleTVsToUpdate];
+        v29 = [(HUHomeHubAppleTVUpdateWarningViewController *)v30 initWithAppleTVsToUpdate:appleTVsToUpdate shouldBlockMigration:[(HUHomeHubMigrationOnboardingFlow *)self shouldBlockMigrationWithAppleTVWarning]];
 
         if ([(HUHomeHubMigrationOnboardingFlow *)self shouldShowResidentWarning])
         {
@@ -623,8 +623,8 @@ LABEL_31:
 LABEL_35:
           v39 = [HUHomeHubSharedHomeWarningViewController alloc];
           v40 = MEMORY[0x277CBEB98];
-          v41 = [(HUHomeHubMigrationOnboardingFlow *)self sharedHomes];
-          v42 = [v40 setWithArray:v41];
+          sharedHomes = [(HUHomeHubMigrationOnboardingFlow *)self sharedHomes];
+          v42 = [v40 setWithArray:sharedHomes];
           v29 = [(HUHomeHubSharedHomeWarningViewController *)v39 initWithSharedHomes:v42];
 
           v38 = v29;
@@ -640,16 +640,16 @@ LABEL_36:
         }
 
         v36 = [HUHomeHubSharedUserWarningViewController alloc];
-        v37 = [(HUHomeHubMigrationOnboardingFlow *)self homesToUsersMap];
-        v29 = [(HUHomeHubSharedUserWarningViewController *)v36 initWithHomesToUsersMap:v37];
+        homesToUsersMap = [(HUHomeHubMigrationOnboardingFlow *)self homesToUsersMap];
+        v29 = [(HUHomeHubSharedUserWarningViewController *)v36 initWithHomesToUsersMap:homesToUsersMap];
 
         goto LABEL_33;
       }
 
       v32 = [HUHomeHubPersonalDeviceWarningViewController alloc];
-      v33 = [(HUHomeHubMigrationOnboardingFlow *)self devices];
-      v34 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
-      v29 = [(HUHomeHubPersonalDeviceWarningViewController *)v32 initWithDevices:v33 homes:v34];
+      devices = [(HUHomeHubMigrationOnboardingFlow *)self devices];
+      homes4 = [(HUHomeHubMigrationOnboardingFlow *)self homes];
+      v29 = [(HUHomeHubPersonalDeviceWarningViewController *)v32 initWithDevices:devices homes:homes4];
 
 LABEL_29:
       if (![(HUHomeHubMigrationOnboardingFlow *)self shouldShowUserWarning])
@@ -676,10 +676,10 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_HomeHub2Migration_FinishedOnboarding"];
+  [resultsCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_HomeHub2Migration_FinishedOnboarding"];
 LABEL_40:
-  v45 = [(HUHomeHubMigrationOnboardingFlow *)self onboardingFuture];
-  [v45 finishWithNoResult];
+  onboardingFuture = [(HUHomeHubMigrationOnboardingFlow *)self onboardingFuture];
+  [onboardingFuture finishWithNoResult];
 
   v29 = 0;
 LABEL_41:
@@ -703,18 +703,18 @@ uint64_t __81__HUHomeHubMigrationOnboardingFlow__determineNextViewControllerWith
   return v3 ^ 1u;
 }
 
-- (void)_checkHomePodResidentUpgradeRequirementsInHome:(id)a3
+- (void)_checkHomePodResidentUpgradeRequirementsInHome:(id)home
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = HFPreferencesBoolForKey();
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = self;
+    selfCopy3 = self;
     v19 = 2048;
-    v20 = [(HUHomeHubMigrationOnboardingFlow *)self upgradeRequirements];
+    upgradeRequirements = [(HUHomeHubMigrationOnboardingFlow *)self upgradeRequirements];
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: upgradeRequirements = [%lu]", buf, 0x16u);
   }
 
@@ -727,43 +727,43 @@ uint64_t __81__HUHomeHubMigrationOnboardingFlow__determineNextViewControllerWith
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Bypassing HomePod software version check for HH2 because the override is enabled", buf, 2u);
     }
 
-    v8 = self;
+    selfCopy4 = self;
     v9 = 0;
 LABEL_7:
-    [(HUHomeHubMigrationOnboardingFlow *)v8 setUpgradeRequirements:v9];
+    [(HUHomeHubMigrationOnboardingFlow *)selfCopy4 setUpgradeRequirements:v9];
     goto LABEL_9;
   }
 
   if (![(HUHomeHubMigrationOnboardingFlow *)self upgradeRequirements])
   {
-    v10 = [v4 residentDevices];
-    v11 = [v10 count];
+    residentDevices = [homeCopy residentDevices];
+    v11 = [residentDevices count];
 
     if (v11)
     {
       v12 = HFLogForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 residentDevices];
+        residentDevices2 = [homeCopy residentDevices];
         *buf = 138412802;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2112;
-        v20 = v13;
+        upgradeRequirements = residentDevices2;
         v21 = 2112;
-        v22 = v4;
+        v22 = homeCopy;
         _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@: residentDevices = [%@] in home: [%@]", buf, 0x20u);
       }
 
-      v14 = [v4 residentDevices];
+      residentDevices3 = [homeCopy residentDevices];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequirementsInHome___block_invoke;
       v16[3] = &unk_277DBD480;
       v16[4] = self;
-      v15 = [v14 na_allObjectsPassTest:v16];
+      v15 = [residentDevices3 na_allObjectsPassTest:v16];
 
       v9 = v15 ^ 1u;
-      v8 = self;
+      selfCopy4 = self;
       goto LABEL_7;
     }
   }
@@ -804,27 +804,27 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
   return v9;
 }
 
-- (void)_checkResidentStatusInHome:(id)a3
+- (void)_checkResidentStatusInHome:(id)home
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   if (![(HUHomeHubMigrationOnboardingFlow *)self shouldShowResidentWarning])
   {
     v6 = MEMORY[0x277CBEB98];
-    v7 = [v5 residentDevices];
-    v8 = [v6 setWithArray:v7];
+    residentDevices = [homeCopy residentDevices];
+    v8 = [v6 setWithArray:residentDevices];
     v9 = [v8 na_filter:&__block_literal_global_75_0];
 
     v10 = MEMORY[0x277CBEB98];
-    v11 = [v5 residentDevices];
-    v12 = [v10 setWithArray:v11];
+    residentDevices2 = [homeCopy residentDevices];
+    v12 = [v10 setWithArray:residentDevices2];
     v13 = [v12 na_filter:&__block_literal_global_77_0];
 
     if ([v9 count])
     {
       v14 = [v9 count];
-      v15 = [v5 residentDevices];
-      v16 = v14 == [v15 count];
+      residentDevices3 = [homeCopy residentDevices];
+      v16 = v14 == [residentDevices3 count];
     }
 
     else
@@ -832,10 +832,10 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
       v16 = 0;
     }
 
-    v17 = [v5 residentDevices];
-    v18 = [v17 count];
+    residentDevices4 = [homeCopy residentDevices];
+    v18 = [residentDevices4 count];
 
-    v19 = ([v5 hf_hasAppleTVs] & 1) == 0 && objc_msgSend(v13, "count") != 0;
+    v19 = ([homeCopy hf_hasAppleTVs] & 1) == 0 && objc_msgSend(v13, "count") != 0;
     if (v18)
     {
       v20 = v16;
@@ -858,29 +858,29 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
     {
       v23 = NSStringFromSelector(a2);
       v24 = [v9 count];
-      v25 = [v5 residentDevices];
+      residentDevices5 = [homeCopy residentDevices];
       *buf = 138413314;
       *v57 = v23;
       *&v57[8] = 2112;
-      v58 = v5;
+      v58 = homeCopy;
       v59 = 2048;
       v60 = v24;
       v61 = 2112;
       v62 = v9;
       v63 = 2048;
-      v64 = [v25 count];
+      v64 = [residentDevices5 count];
       _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@ - home = %@, number of ipad resident devices = %lu, iPadResidentDevices = %@, number of total residents = %lu.", buf, 0x34u);
     }
   }
 
   if (![(HUHomeHubMigrationOnboardingFlow *)self shouldBlockMigrationWithAppleTVWarning])
   {
-    v26 = [v5 hf_appleTVs];
-    v27 = [v26 na_map:&__block_literal_global_81_0];
+    hf_appleTVs = [homeCopy hf_appleTVs];
+    v27 = [hf_appleTVs na_map:&__block_literal_global_81_0];
 
     v28 = MEMORY[0x277CBEB98];
-    v29 = [v5 residentDevices];
-    v30 = [v28 setWithArray:v29];
+    residentDevices6 = [homeCopy residentDevices];
+    v30 = [v28 setWithArray:residentDevices6];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __63__HUHomeHubMigrationOnboardingFlow__checkResidentStatusInHome___block_invoke_2_82;
@@ -890,12 +890,12 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
     v32 = [v30 na_filter:v54];
 
     v33 = [v32 na_filter:&__block_literal_global_84_0];
-    v34 = [v5 hf_homePods];
-    v35 = [v34 na_map:&__block_literal_global_86_2];
+    hf_homePods = [homeCopy hf_homePods];
+    v35 = [hf_homePods na_map:&__block_literal_global_86_2];
 
     v36 = MEMORY[0x277CBEB98];
-    v37 = [v5 residentDevices];
-    v38 = [v36 setWithArray:v37];
+    residentDevices7 = [homeCopy residentDevices];
+    v38 = [v36 setWithArray:residentDevices7];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __63__HUHomeHubMigrationOnboardingFlow__checkResidentStatusInHome___block_invoke_5;
@@ -911,18 +911,18 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
       [(HUHomeHubMigrationOnboardingFlow *)self setShouldShowAppleTVWarning:1];
       v41 = [v33 count];
       v42 = [v32 count];
-      v43 = [v39 hmf_isEmpty];
+      hmf_isEmpty = [v39 hmf_isEmpty];
       v44 = HFLogForCategory();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
         *v57 = v41 != v42;
         *&v57[4] = 1024;
-        *&v57[6] = v43 ^ 1;
+        *&v57[6] = hmf_isEmpty ^ 1;
         _os_log_impl(&dword_20CEB6000, v44, OS_LOG_TYPE_DEFAULT, "hasHH2SupportedAppleTV = %d, hasHH2SupportedHomePod = %d", buf, 0xEu);
       }
 
-      [(HUHomeHubMigrationOnboardingFlow *)self setShouldBlockMigrationWithAppleTVWarning:(v41 == v42) & v43];
+      [(HUHomeHubMigrationOnboardingFlow *)self setShouldBlockMigrationWithAppleTVWarning:(v41 == v42) & hmf_isEmpty];
       a2 = v40;
       v31 = v50;
     }
@@ -933,11 +933,11 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
       v46 = NSStringFromSelector(a2);
       v47 = [v33 count];
       v48 = [v32 count];
-      v49 = [(HUHomeHubMigrationOnboardingFlow *)self shouldBlockMigrationWithAppleTVWarning];
+      shouldBlockMigrationWithAppleTVWarning = [(HUHomeHubMigrationOnboardingFlow *)self shouldBlockMigrationWithAppleTVWarning];
       *buf = 138413570;
       *v57 = v46;
       *&v57[8] = 2112;
-      v58 = v5;
+      v58 = homeCopy;
       v59 = 2048;
       v60 = v47;
       v61 = 2112;
@@ -945,7 +945,7 @@ uint64_t __83__HUHomeHubMigrationOnboardingFlow__checkHomePodResidentUpgradeRequ
       v63 = 2048;
       v64 = v48;
       v65 = 1024;
-      v66 = v49;
+      v66 = shouldBlockMigrationWithAppleTVWarning;
       _os_log_impl(&dword_20CEB6000, v45, OS_LOG_TYPE_DEFAULT, "%@ - home = %@, number of Apple TV resident devices that need a software update = %lu, appleTVResidentDevicesToUpdate = %@, number of total Apple TV residents = %lu, blocking migration = %d", buf, 0x3Au);
     }
   }
@@ -1026,24 +1026,24 @@ uint64_t __63__HUHomeHubMigrationOnboardingFlow__checkResidentStatusInHome___blo
   return v8;
 }
 
-- (void)addMigrationError:(id)a3
+- (void)addMigrationError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    [(NSMutableArray *)self->_migrationErrors addObject:v4];
+    [(NSMutableArray *)self->_migrationErrors addObject:errorCopy];
   }
 
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = [(NSMutableArray *)self->_migrationErrors count];
     v8 = 138412802;
-    v9 = v4;
+    v9 = errorCopy;
     v10 = 2048;
-    v11 = v6;
+    v11 = code;
     v12 = 2048;
     v13 = v7;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationOnboardingFlow-addMigrationError] Added migration error: %@ (%lu). Total errors: %lu", &v8, 0x20u);

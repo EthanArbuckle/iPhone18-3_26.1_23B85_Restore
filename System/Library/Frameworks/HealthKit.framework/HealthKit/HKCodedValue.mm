@@ -1,42 +1,42 @@
 @interface HKCodedValue
-+ (id)codedValueWithCodings:(id)a3 value:(id)a4 referenceRanges:(id)a5;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)codedValueWithCodings:(id)codings value:(id)value referenceRanges:(id)ranges;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKCodedValue)init;
-- (HKCodedValue)initWithCoder:(id)a3;
-- (HKCodedValue)initWithCodings:(id)a3 value:(id)a4 referenceRanges:(id)a5;
+- (HKCodedValue)initWithCoder:(id)coder;
+- (HKCodedValue)initWithCodings:(id)codings value:(id)value referenceRanges:(id)ranges;
 - (HKConcept)ontologyConcept;
-- (id)chartableCodedQuantitySetWithDate:(id)a3 error:(id *)a4;
-- (id)chartableCodedQuantityWithError:(id *)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)chartableCodedQuantitySetWithDate:(id)date error:(id *)error;
+- (id)chartableCodedQuantityWithError:(id *)error;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)_setOntologyConcept:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setOntologyConcept:(id)concept;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCodedValue
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
   v10 = *MEMORY[0x1E69E9840];
   v9 = @"concept";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [v3 arrayWithObjects:&v9 count:1];
-  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:v4, v9, v10];
+  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:prefixCopy, v9, v10];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-+ (id)codedValueWithCodings:(id)a3 value:(id)a4 referenceRanges:(id)a5
++ (id)codedValueWithCodings:(id)codings value:(id)value referenceRanges:(id)ranges
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithCodings:v10 value:v9 referenceRanges:v8];
+  rangesCopy = ranges;
+  valueCopy = value;
+  codingsCopy = codings;
+  v11 = [[self alloc] initWithCodings:codingsCopy value:valueCopy referenceRanges:rangesCopy];
 
   return v11;
 }
@@ -51,14 +51,14 @@
   return 0;
 }
 
-- (HKCodedValue)initWithCodings:(id)a3 value:(id)a4 referenceRanges:(id)a5
+- (HKCodedValue)initWithCodings:(id)codings value:(id)value referenceRanges:(id)ranges
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  codingsCopy = codings;
+  valueCopy = value;
+  rangesCopy = ranges;
+  if (codingsCopy)
   {
-    if (v10)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -67,7 +67,7 @@
   else
   {
     [HKCodedValue initWithCodings:a2 value:self referenceRanges:?];
-    if (v10)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -80,15 +80,15 @@ LABEL_3:
   v12 = [(HKCodedValue *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [codingsCopy copy];
     codings = v12->_codings;
     v12->_codings = v13;
 
-    v15 = [v10 copy];
+    v15 = [valueCopy copy];
     value = v12->_value;
     v12->_value = v15;
 
-    v17 = [v11 copy];
+    v17 = [rangesCopy copy];
     referenceRanges = v12->_referenceRanges;
     v12->_referenceRanges = v17;
   }
@@ -96,17 +96,17 @@ LABEL_3:
   return v12;
 }
 
-- (void)_setOntologyConcept:(id)a3
+- (void)_setOntologyConcept:(id)concept
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  conceptCopy = concept;
+  v8 = conceptCopy;
+  if (!conceptCopy)
   {
     [(HKCodedValue *)a2 _setOntologyConcept:?];
-    v5 = 0;
+    conceptCopy = 0;
   }
 
-  v6 = [v5 copy];
+  v6 = [conceptCopy copy];
   ontologyConcept = self->_ontologyConcept;
   self->_ontologyConcept = v6;
 }
@@ -120,20 +120,20 @@ LABEL_3:
   return v4;
 }
 
-- (id)chartableCodedQuantityWithError:(id *)a3
+- (id)chartableCodedQuantityWithError:(id *)error
 {
-  v5 = [(HKInspectableValue *)self->_value codedQuantityValue];
-  if (v5)
+  codedQuantityValue = [(HKInspectableValue *)self->_value codedQuantityValue];
+  if (codedQuantityValue)
   {
-    v6 = [(NSArray *)self->_referenceRanges firstObject];
+    firstObject = [(NSArray *)self->_referenceRanges firstObject];
     codings = self->_codings;
-    v8 = [v6 valueRange];
-    v9 = [v8 min];
-    v10 = [v9 codedQuantityValue];
-    v11 = [v6 valueRange];
-    v12 = [v11 max];
-    v13 = [v12 codedQuantityValue];
-    v14 = [HKChartableCodedQuantity chartableCodedQuantityWithCodings:codings originalCodedQuantity:v5 originalRangeLowCodedQuantity:v10 originalRangeHighCodedQuantity:v13 error:a3];
+    valueRange = [firstObject valueRange];
+    v9 = [valueRange min];
+    codedQuantityValue2 = [v9 codedQuantityValue];
+    valueRange2 = [firstObject valueRange];
+    v12 = [valueRange2 max];
+    codedQuantityValue3 = [v12 codedQuantityValue];
+    v14 = [HKChartableCodedQuantity chartableCodedQuantityWithCodings:codings originalCodedQuantity:codedQuantityValue originalRangeLowCodedQuantity:codedQuantityValue2 originalRangeHighCodedQuantity:codedQuantityValue3 error:error];
   }
 
   else
@@ -144,17 +144,17 @@ LABEL_3:
   return v14;
 }
 
-- (id)chartableCodedQuantitySetWithDate:(id)a3 error:(id *)a4
+- (id)chartableCodedQuantitySetWithDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HKInspectableValue *)self->_value codedQuantityValue];
+  dateCopy = date;
+  codedQuantityValue = [(HKInspectableValue *)self->_value codedQuantityValue];
 
-  if (v7)
+  if (codedQuantityValue)
   {
-    v8 = [(HKCodedValue *)self chartableCodedQuantityWithError:a4];
+    v8 = [(HKCodedValue *)self chartableCodedQuantityWithError:error];
     if (v8)
     {
-      v9 = [HKChartableCodedQuantitySet setWithChartableQuantity:v8 date:v6];
+      v9 = [HKChartableCodedQuantitySet setWithChartableQuantity:v8 date:dateCopy];
     }
 
     else
@@ -165,9 +165,9 @@ LABEL_3:
 
   else
   {
-    v10 = [(HKInspectableValue *)self->_value codedValueCollection];
+    codedValueCollection = [(HKInspectableValue *)self->_value codedValueCollection];
 
-    if (v10)
+    if (codedValueCollection)
     {
       v22 = 0;
       v23 = &v22;
@@ -175,24 +175,24 @@ LABEL_3:
       v25 = __Block_byref_object_copy_;
       v26 = __Block_byref_object_dispose_;
       v27 = 0;
-      v11 = [(HKInspectableValue *)self->_value codedValueCollection];
-      v12 = [v11 codedValues];
+      codedValueCollection2 = [(HKInspectableValue *)self->_value codedValueCollection];
+      codedValues = [codedValueCollection2 codedValues];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __56__HKCodedValue_chartableCodedQuantitySetWithDate_error___block_invoke;
       v21[3] = &unk_1E7376B90;
       v21[4] = &v22;
-      v13 = [v12 hk_map:v21];
+      v13 = [codedValues hk_map:v21];
 
       v14 = v23[5];
       if (v14)
       {
         v15 = v14;
         v16 = v15;
-        if (a4)
+        if (error)
         {
           v17 = v15;
-          *a4 = v16;
+          *error = v16;
         }
 
         else
@@ -207,7 +207,7 @@ LABEL_3:
       {
         codings = self->_codings;
         v20 = 0;
-        v9 = [HKChartableCodedQuantitySet setWithMedicalCodings:codings quantities:v13 date:v6 error:&v20];
+        v9 = [HKChartableCodedQuantitySet setWithMedicalCodings:codings quantities:v13 date:dateCopy error:&v20];
       }
 
       _Block_object_dispose(&v22, 8);
@@ -215,7 +215,7 @@ LABEL_3:
 
     else
     {
-      [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Unable to create chartable quantity set from coded value %@", self}];
+      [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Unable to create chartable quantity set from coded value %@", self}];
       v9 = 0;
     }
   }
@@ -233,16 +233,16 @@ id __56__HKCodedValue_chartableCodedQuantitySetWithDate_error___block_invoke(uin
   return v3;
 }
 
-- (HKCodedValue)initWithCoder:(id)a3
+- (HKCodedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HKCodedValue;
   v5 = [(HKCodedValue *)&v18 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"Codings"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"Codings"];
     codings = v5->_codings;
     v5->_codings = v7;
 
@@ -252,16 +252,16 @@ id __56__HKCodedValue_chartableCodedQuantitySetWithDate_error___block_invoke(uin
       goto LABEL_6;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ontologyConcept"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ontologyConcept"];
     ontologyConcept = v5->_ontologyConcept;
     v5->_ontologyConcept = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     value = v5->_value;
     v5->_value = v11;
 
     v13 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"ReferenceRanges"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ReferenceRanges"];
     referenceRanges = v5->_referenceRanges;
     v5->_referenceRanges = v14;
   }
@@ -272,14 +272,14 @@ LABEL_6:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   codings = self->_codings;
-  v5 = a3;
-  [v5 encodeObject:codings forKey:@"Codings"];
-  [v5 encodeObject:self->_ontologyConcept forKey:@"ontologyConcept"];
-  [v5 encodeObject:self->_value forKey:@"Value"];
-  [v5 encodeObject:self->_referenceRanges forKey:@"ReferenceRanges"];
+  coderCopy = coder;
+  [coderCopy encodeObject:codings forKey:@"Codings"];
+  [coderCopy encodeObject:self->_ontologyConcept forKey:@"ontologyConcept"];
+  [coderCopy encodeObject:self->_value forKey:@"Value"];
+  [coderCopy encodeObject:self->_referenceRanges forKey:@"ReferenceRanges"];
 }
 
 - (unint64_t)hash
@@ -290,10 +290,10 @@ LABEL_6:
   return v4 ^ v5 ^ [(NSArray *)self->_referenceRanges hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -303,7 +303,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       codings = self->_codings;
       v7 = v5->_codings;
       v14 = 0;
@@ -337,11 +337,11 @@ LABEL_6:
   return v14;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"concept"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"concept"])
   {
     if (self->_codings)
     {
@@ -359,7 +359,7 @@ LABEL_6:
 
   else
   {
-    [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
     v9 = 0;
   }
 
@@ -368,14 +368,14 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 isEqualToString:@"concept"];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [pathCopy isEqualToString:@"concept"];
   if (v10)
   {
-    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], self->_codings != 0, v9, a5);
+    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], self->_codings != 0, pathCopy, error);
 
     if (!v11)
     {
@@ -383,16 +383,16 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v9 = [v8 firstObject];
-    v12 = [v9 object];
-    v13 = [v12 copy];
+    pathCopy = [conceptsCopy firstObject];
+    object = [pathCopy object];
+    v13 = [object copy];
     ontologyConcept = self->_ontologyConcept;
     self->_ontologyConcept = v13;
   }
 
   else
   {
-    [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v9 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
   }
 
 LABEL_7:

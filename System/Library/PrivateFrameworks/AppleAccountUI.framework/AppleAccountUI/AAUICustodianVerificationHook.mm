@@ -1,59 +1,59 @@
 @interface AAUICustodianVerificationHook
-- (AAUICustodianVerificationHook)initWithAccountManager:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUICustodianVerificationHook)initWithAccountManager:(id)manager;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
 - (void)_cancelFlow;
 - (void)_dismissUI;
 - (void)_displayCustodianFetchErrorAlert;
-- (void)_displayListOfCustodiansWithContacts:(id)a3;
-- (void)_processAttributes:(id)a3;
-- (void)_verifyCustodianWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_displayListOfCustodiansWithContacts:(id)contacts;
+- (void)_processAttributes:(id)attributes;
+- (void)_verifyCustodianWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 - (void)tableWelcomeViewControllerDidTapPrimaryButton;
 - (void)tableWelcomeViewControllerDidTapSecondaryButton;
 @end
 
 @implementation AAUICustodianVerificationHook
 
-- (AAUICustodianVerificationHook)initWithAccountManager:(id)a3
+- (AAUICustodianVerificationHook)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = AAUICustodianVerificationHook;
   v6 = [(AAUICustodianVerificationHook *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"custodian:verify"];
+  name = [element name];
+  v4 = [name isEqualToString:@"custodian:verify"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C7058]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:*MEMORY[0x1E69C7058]];
   v5 = [v4 isEqualToString:@"custodian:verify"];
 
   return v5;
 }
 
-- (void)_processAttributes:(id)a3
+- (void)_processAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
+  v5 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
 
   v7 = v5;
   if (objc_opt_isKindOfClass())
@@ -69,37 +69,37 @@
   self->_forceInline = [v6 BOOLValue];
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v9 = a6;
-  v10 = a3;
-  [(AAUICustodianVerificationHook *)self _processAttributes:a4];
-  v11 = [v10 name];
+  completionCopy = completion;
+  elementCopy = element;
+  [(AAUICustodianVerificationHook *)self _processAttributes:attributes];
+  name = [elementCopy name];
 
-  [(AAUICustodianVerificationHook *)self _verifyCustodianWithServerAttributes:v11 completion:v9];
+  [(AAUICustodianVerificationHook *)self _verifyCustodianWithServerAttributes:name completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 clientInfo];
-  [(AAUICustodianVerificationHook *)self _processAttributes:v8];
+  completionCopy = completion;
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  [(AAUICustodianVerificationHook *)self _processAttributes:clientInfo];
 
-  v10 = [v7 clientInfo];
+  clientInfo2 = [modelCopy clientInfo];
 
-  v9 = [v10 objectForKeyedSubscript:@"custodian:verify"];
-  [(AAUICustodianVerificationHook *)self _verifyCustodianWithServerAttributes:v9 completion:v6];
+  v9 = [clientInfo2 objectForKeyedSubscript:@"custodian:verify"];
+  [(AAUICustodianVerificationHook *)self _verifyCustodianWithServerAttributes:v9 completion:completionCopy];
 }
 
-- (void)_verifyCustodianWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_verifyCustodianWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [AAUICustodianVerificationHook _verifyCustodianWithServerAttributes:v6 completion:v8];
+    [AAUICustodianVerificationHook _verifyCustodianWithServerAttributes:attributesCopy completion:v8];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -114,7 +114,7 @@
   v14[2] = __81__AAUICustodianVerificationHook__verifyCustodianWithServerAttributes_completion___block_invoke;
   v14[3] = &unk_1E820CFA0;
   objc_copyWeak(&v16, &location);
-  v13 = v7;
+  v13 = completionCopy;
   v14[4] = self;
   v15 = v13;
   [(AAContactsProvider *)v12 fetchMyWalrusEligibleCustodians:v14];
@@ -225,19 +225,19 @@ void __65__AAUICustodianVerificationHook__displayCustodianFetchErrorAlert__block
   }
 }
 
-- (void)_displayListOfCustodiansWithContacts:(id)a3
+- (void)_displayListOfCustodiansWithContacts:(id)contacts
 {
-  v4 = a3;
-  v14 = [[AAUICustodiansListViewController alloc] initWithContacts:v4];
+  contactsCopy = contacts;
+  v14 = [[AAUICustodiansListViewController alloc] initWithContacts:contactsCopy];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelFlow];
-  v6 = [(OBBaseWelcomeController *)v14 navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(OBBaseWelcomeController *)v14 navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
   [(AAUIOBTableWelcomeController *)v14 setDelegate:self];
   v7 = [AAUINavigationItemSpinnerController alloc];
-  v8 = [(OBBaseWelcomeController *)v14 navigationItem];
-  v9 = [(AAUINavigationItemSpinnerController *)v7 initWithNavigationItem:v8 hideBackButton:1];
+  navigationItem2 = [(OBBaseWelcomeController *)v14 navigationItem];
+  v9 = [(AAUINavigationItemSpinnerController *)v7 initWithNavigationItem:navigationItem2 hideBackButton:1];
   spinnerController = self->_spinnerController;
   self->_spinnerController = v9;
 
@@ -249,10 +249,10 @@ void __65__AAUICustodianVerificationHook__displayCustodianFetchErrorAlert__block
   else
   {
     v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v14];
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v13 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [v11 setModalPresentationStyle:2];
     }
@@ -293,7 +293,7 @@ void __65__AAUICustodianVerificationHook__displayCustodianFetchErrorAlert__block
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1 & 1;
+  v2[1] = self & 1;
   _os_log_debug_impl(&dword_1C5355000, a2, OS_LOG_TYPE_DEBUG, "Dismissing custodian verification UI, was modally presented: %d", v2, 8u);
 }
 

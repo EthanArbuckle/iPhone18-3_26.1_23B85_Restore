@@ -1,58 +1,58 @@
 @interface _UIContextMenuCommitAnimation
-- (_UIContextMenuCommitAnimation)initWithSource:(id)a3 container:(id)a4;
+- (_UIContextMenuCommitAnimation)initWithSource:(id)source container:(id)container;
 - (void)_prepareAnimationViews;
 - (void)_prepareSnapshots;
-- (void)animateWithAlongsideActions:(id)a3 completion:(id)a4;
+- (void)animateWithAlongsideActions:(id)actions completion:(id)completion;
 @end
 
 @implementation _UIContextMenuCommitAnimation
 
-- (_UIContextMenuCommitAnimation)initWithSource:(id)a3 container:(id)a4
+- (_UIContextMenuCommitAnimation)initWithSource:(id)source container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  containerCopy = container;
   v14.receiver = self;
   v14.super_class = _UIContextMenuCommitAnimation;
   v8 = [(_UIContextMenuCommitAnimation *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(_UIContextMenuCommitAnimation *)v8 setSource:v6];
-    [(_UIContextMenuCommitAnimation *)v9 setContainer:v7];
-    v10 = [v7 traitCollection];
-    v11 = _UIContextMenuGetPlatformMetrics([v10 userInterfaceIdiom]);
+    [(_UIContextMenuCommitAnimation *)v8 setSource:sourceCopy];
+    [(_UIContextMenuCommitAnimation *)v9 setContainer:containerCopy];
+    traitCollection = [containerCopy traitCollection];
+    v11 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
     [v11 menuCornerRadius];
     [(_UIContextMenuCommitAnimation *)v9 setSourceRadius:?];
 
-    v12 = [v7 traitCollection];
-    [v12 displayCornerRadius];
+    traitCollection2 = [containerCopy traitCollection];
+    [traitCollection2 displayCornerRadius];
     [(_UIContextMenuCommitAnimation *)v9 setDestinationRadius:?];
   }
 
   return v9;
 }
 
-- (void)animateWithAlongsideActions:(id)a3 completion:(id)a4
+- (void)animateWithAlongsideActions:(id)actions completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72___UIContextMenuCommitAnimation_animateWithAlongsideActions_completion___block_invoke;
   aBlock[3] = &unk_1E70FE248;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v43 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(_UIContextMenuCommitAnimation *)self container];
-  v11 = [v10 traitCollection];
-  v12 = _UIContextMenuGetPlatformMetrics([v11 userInterfaceIdiom]);
+  container = [(_UIContextMenuCommitAnimation *)self container];
+  traitCollection = [container traitCollection];
+  v12 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   v13 = [_UIClickPresentationFeedbackGenerator alloc];
-  v14 = [v12 presentationFeedbackConfiguration];
-  v15 = [(_UIContextMenuCommitAnimation *)self container];
-  v16 = [(_UIClickPresentationFeedbackGenerator *)v13 initWithConfiguration:v14 view:v15];
+  presentationFeedbackConfiguration = [v12 presentationFeedbackConfiguration];
+  container2 = [(_UIContextMenuCommitAnimation *)self container];
+  v16 = [(_UIClickPresentationFeedbackGenerator *)v13 initWithConfiguration:presentationFeedbackConfiguration view:container2];
 
   [(_UIClickPresentationFeedbackGenerator *)v16 userInteractionStarted];
   [(_UIClickPresentationFeedbackGenerator *)v16 poppedAtLocation:1.79769313e308, 1.79769313e308];
@@ -63,13 +63,13 @@
   v41[3] = &unk_1E70F3590;
   v41[4] = self;
   [UIView performWithoutAnimation:v41];
-  if (v6)
+  if (actionsCopy)
   {
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __72___UIContextMenuCommitAnimation_animateWithAlongsideActions_completion___block_invoke_2;
     v39[3] = &unk_1E70F0F78;
-    v40 = v6;
+    v40 = actionsCopy;
     [UIViewController _performWithoutDeferringTransitions:v39];
   }
 
@@ -77,11 +77,11 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = [(_UIContextMenuCommitAnimation *)self container];
-  v18 = [v17 _window];
-  v19 = [v18 subviews];
+  container3 = [(_UIContextMenuCommitAnimation *)self container];
+  _window = [container3 _window];
+  subviews = [_window subviews];
 
-  v20 = [v19 countByEnumeratingWithState:&v35 objects:v44 count:16];
+  v20 = [subviews countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (!v20)
   {
 
@@ -96,7 +96,7 @@ LABEL_17:
   v21 = v20;
   v29 = v9;
   v30 = v8;
-  v31 = v6;
+  v31 = actionsCopy;
   v22 = 0;
   v23 = *v36;
   do
@@ -105,7 +105,7 @@ LABEL_17:
     {
       if (*v36 != v23)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(subviews);
       }
 
       v25 = *(*(&v35 + 1) + 8 * i);
@@ -122,12 +122,12 @@ LABEL_17:
       }
     }
 
-    v21 = [v19 countByEnumeratingWithState:&v35 objects:v44 count:16];
+    v21 = [subviews countByEnumeratingWithState:&v35 objects:v44 count:16];
   }
 
   while (v21);
 
-  v6 = v31;
+  actionsCopy = v31;
   v9 = v29;
   if (!v22)
   {
@@ -159,36 +159,36 @@ LABEL_18:
 
 - (void)_prepareSnapshots
 {
-  v3 = [(_UIContextMenuCommitAnimation *)self container];
-  v4 = [(_UIContextMenuCommitAnimation *)self container];
-  [v4 bounds];
-  v9 = _UISnapshotScreenAtViewRectAfterCommit(v3, 0, v5, v6, v7, v8);
+  container = [(_UIContextMenuCommitAnimation *)self container];
+  container2 = [(_UIContextMenuCommitAnimation *)self container];
+  [container2 bounds];
+  v9 = _UISnapshotScreenAtViewRectAfterCommit(container, 0, v5, v6, v7, v8);
 
-  v10 = [(_UIContextMenuCommitAnimation *)self container];
-  [v10 bounds];
+  container3 = [(_UIContextMenuCommitAnimation *)self container];
+  [container3 bounds];
   [v9 setFrame:?];
 
   [(_UIContextMenuCommitAnimation *)self setOriginalContentSnapshotView:v9];
-  v11 = [(_UIContextMenuCommitAnimation *)self source];
-  v12 = [v11 layer];
-  v13 = [v12 presentationLayer];
-  [v13 frame];
+  source = [(_UIContextMenuCommitAnimation *)self source];
+  layer = [source layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(_UIContextMenuCommitAnimation *)self source];
-  v23 = [v22 superview];
-  v24 = [(_UIContextMenuCommitAnimation *)self container];
-  [v23 convertRect:v24 toView:{v15, v17, v19, v21}];
+  source2 = [(_UIContextMenuCommitAnimation *)self source];
+  superview = [source2 superview];
+  container4 = [(_UIContextMenuCommitAnimation *)self container];
+  [superview convertRect:container4 toView:{v15, v17, v19, v21}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
 
-  v33 = [(_UIContextMenuCommitAnimation *)self container];
-  v34 = _UISnapshotScreenAtViewRectAfterCommit(v33, 0, v26, v28, v30, v32);
+  container5 = [(_UIContextMenuCommitAnimation *)self container];
+  v34 = _UISnapshotScreenAtViewRectAfterCommit(container5, 0, v26, v28, v30, v32);
 
   [v34 setFrame:{0.0, 0.0, v30, v32}];
   [(_UIContextMenuCommitAnimation *)self sourceRadius];
@@ -200,22 +200,22 @@ LABEL_18:
 - (void)_prepareAnimationViews
 {
   v3 = [_UIContextMenuCommitContainerView alloc];
-  v4 = [(_UIContextMenuCommitAnimation *)self container];
-  [v4 bounds];
+  container = [(_UIContextMenuCommitAnimation *)self container];
+  [container bounds];
   v5 = [(UIView *)v3 initWithFrame:?];
 
-  v6 = [(_UIContextMenuCommitAnimation *)self originalContentSnapshotView];
-  [(UIView *)v5 addSubview:v6];
+  originalContentSnapshotView = [(_UIContextMenuCommitAnimation *)self originalContentSnapshotView];
+  [(UIView *)v5 addSubview:originalContentSnapshotView];
 
-  v7 = [(_UIContextMenuCommitAnimation *)self container];
-  v8 = [v7 _window];
-  [v8 addSubview:v5];
+  container2 = [(_UIContextMenuCommitAnimation *)self container];
+  _window = [container2 _window];
+  [_window addSubview:v5];
 
   [(_UIContextMenuCommitAnimation *)self setAnimationContainer:v5];
-  v9 = [(_UIContextMenuCommitAnimation *)self source];
-  v10 = [v9 layer];
-  v11 = [v10 presentationLayer];
-  [v11 frame];
+  source = [(_UIContextMenuCommitAnimation *)self source];
+  layer = [source layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -225,17 +225,17 @@ LABEL_18:
   [(UIView *)v20 setClipsToBounds:1];
   [(_UIContextMenuCommitAnimation *)self sourceRadius];
   [(UIView *)v20 _setContinuousCornerRadius:?];
-  v21 = [(_UIContextMenuCommitAnimation *)self animationContainer];
-  [v21 addSubview:v20];
+  animationContainer = [(_UIContextMenuCommitAnimation *)self animationContainer];
+  [animationContainer addSubview:v20];
 
   [(_UIContextMenuCommitAnimation *)self setMorphContainer:v20];
   v22 = [_UIPortalView alloc];
-  v23 = [(_UIContextMenuCommitAnimation *)self destination];
-  [v23 bounds];
+  destination = [(_UIContextMenuCommitAnimation *)self destination];
+  [destination bounds];
   v24 = [(_UIPortalView *)v22 initWithFrame:?];
 
-  v25 = [(_UIContextMenuCommitAnimation *)self destination];
-  [(_UIPortalView *)v24 setSourceView:v25];
+  destination2 = [(_UIContextMenuCommitAnimation *)self destination];
+  [(_UIPortalView *)v24 setSourceView:destination2];
 
   [(_UIPortalView *)v24 setAllowsBackdropGroups:1];
   [(_UIPortalView *)v24 setAllowsHitTesting:1];
@@ -244,11 +244,11 @@ LABEL_18:
   [(UIView *)v24 bounds];
   v27 = [(UIView *)v26 initWithFrame:?];
   [(UIView *)v27 addSubview:v24];
-  v28 = [(_UIContextMenuCommitAnimation *)self morphContainer];
-  [v28 addSubview:v27];
+  morphContainer = [(_UIContextMenuCommitAnimation *)self morphContainer];
+  [morphContainer addSubview:v27];
 
-  v29 = [(_UIContextMenuCommitAnimation *)self morphContainer];
-  [v29 bounds];
+  morphContainer2 = [(_UIContextMenuCommitAnimation *)self morphContainer];
+  [morphContainer2 bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
@@ -287,18 +287,18 @@ LABEL_18:
 
   [(_UIContextMenuCommitAnimation *)self setDestinationTransformView:v27];
   v48 = [UIView alloc];
-  v49 = [(_UIContextMenuCommitAnimation *)self sourceSnapshotView];
-  [v49 bounds];
+  sourceSnapshotView = [(_UIContextMenuCommitAnimation *)self sourceSnapshotView];
+  [sourceSnapshotView bounds];
   v50 = [(UIView *)v48 initWithFrame:?];
 
-  v51 = [(_UIContextMenuCommitAnimation *)self sourceSnapshotView];
-  [(UIView *)v50 addSubview:v51];
+  sourceSnapshotView2 = [(_UIContextMenuCommitAnimation *)self sourceSnapshotView];
+  [(UIView *)v50 addSubview:sourceSnapshotView2];
 
-  v52 = [(_UIContextMenuCommitAnimation *)self morphContainer];
-  [v52 addSubview:v50];
+  morphContainer3 = [(_UIContextMenuCommitAnimation *)self morphContainer];
+  [morphContainer3 addSubview:v50];
 
-  v53 = [(_UIContextMenuCommitAnimation *)self morphContainer];
-  [v53 bounds];
+  morphContainer4 = [(_UIContextMenuCommitAnimation *)self morphContainer];
+  [morphContainer4 bounds];
   v55 = v54;
   v57 = v56;
   v59 = v58;

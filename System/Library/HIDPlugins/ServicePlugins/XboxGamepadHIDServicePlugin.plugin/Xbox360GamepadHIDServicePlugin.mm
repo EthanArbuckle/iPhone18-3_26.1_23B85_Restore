@@ -1,12 +1,12 @@
 @interface Xbox360GamepadHIDServicePlugin
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5;
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client;
 - (id)defaultHapticMotors;
-- (id)propertyForKey:(id)a3 client:(id)a4;
+- (id)propertyForKey:(id)key client:(id)client;
 - (void)activate;
 - (void)cancel;
 - (void)dispatchHapticEvent;
-- (void)handleControlSurfaceInputPayload:(int64_t)a3 withData:(id)a4 timestamp:(unint64_t)a5;
-- (void)setLEDMode:(unsigned __int8)a3;
+- (void)handleControlSurfaceInputPayload:(int64_t)payload withData:(id)data timestamp:(unint64_t)timestamp;
+- (void)setLEDMode:(unsigned __int8)mode;
 - (void)setupRawReportHandling;
 @end
 
@@ -37,11 +37,11 @@
   os_activity_scope_leave(&state);
 }
 
-- (id)propertyForKey:(id)a3 client:(id)a4
+- (id)propertyForKey:(id)key client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"LEDMode"])
+  keyCopy = key;
+  clientCopy = client;
+  if ([keyCopy isEqualToString:@"LEDMode"])
   {
     v8 = [NSNumber numberWithUnsignedChar:self->_ledMode];
   }
@@ -50,7 +50,7 @@
   {
     v11.receiver = self;
     v11.super_class = Xbox360GamepadHIDServicePlugin;
-    v8 = [(GCGamepadHIDServicePlugin *)&v11 propertyForKey:v6 client:v7];
+    v8 = [(GCGamepadHIDServicePlugin *)&v11 propertyForKey:keyCopy client:clientCopy];
   }
 
   v9 = v8;
@@ -58,17 +58,17 @@
   return v9;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"LEDMode"])
+  propertyCopy = property;
+  keyCopy = key;
+  clientCopy = client;
+  if ([keyCopy isEqualToString:@"LEDMode"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[Xbox360GamepadHIDServicePlugin setLEDMode:](self, "setLEDMode:", [v8 unsignedIntValue]);
+      -[Xbox360GamepadHIDServicePlugin setLEDMode:](self, "setLEDMode:", [propertyCopy unsignedIntValue]);
     }
 
     v11 = 0;
@@ -78,63 +78,63 @@
   {
     v13.receiver = self;
     v13.super_class = Xbox360GamepadHIDServicePlugin;
-    v11 = [(GCGamepadHIDServicePlugin *)&v13 setProperty:v8 forKey:v9 client:v10];
+    v11 = [(GCGamepadHIDServicePlugin *)&v13 setProperty:propertyCopy forKey:keyCopy client:clientCopy];
   }
 
   return v11;
 }
 
-- (void)setLEDMode:(unsigned __int8)a3
+- (void)setLEDMode:(unsigned __int8)mode
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_0, "Set LED Mode", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v5, &state);
-  v6 = self;
-  objc_sync_enter(v6);
-  v6->_ledMode = a3;
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_ledMode = mode;
+  objc_sync_exit(selfCopy);
 
-  v7 = [(GCGamepadHIDServicePlugin *)v6 dispatchQueue];
+  dispatchQueue = [(GCGamepadHIDServicePlugin *)selfCopy dispatchQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_7830;
   v8[3] = &unk_106D8;
-  v9 = a3;
-  v8[4] = v6;
-  dispatch_async(v7, v8);
+  modeCopy = mode;
+  v8[4] = selfCopy;
+  dispatch_async(dispatchQueue, v8);
 }
 
 - (void)setupRawReportHandling
 {
   objc_initWeak(&location, self);
-  v3 = [(GCGamepadHIDServicePlugin *)self device];
+  device = [(GCGamepadHIDServicePlugin *)self device];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_79EC;
   v4[3] = &unk_10588;
   objc_copyWeak(&v5, &location);
-  [v3 setInputReportHandler:v4];
+  [device setInputReportHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)handleControlSurfaceInputPayload:(int64_t)a3 withData:(id)a4 timestamp:(unint64_t)a5
+- (void)handleControlSurfaceInputPayload:(int64_t)payload withData:(id)data timestamp:(unint64_t)timestamp
 {
-  v9 = a4;
-  v10 = a4;
-  v11 = [v10 bytes];
-  v12 = [v10 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v12 = [dataCopy2 length];
 
   if (v12 <= 0x13)
   {
-    sub_8BC4(a3, v12);
+    sub_8BC4(payload, v12);
   }
 
   else
   {
-    v13 = v11[1];
+    v13 = bytes[1];
     v41 = ((v13 >> 3) & 1);
     v42 = (v13 & 1);
     v14 = ((v13 >> 13) & 1);
@@ -142,10 +142,10 @@
     v40 = ((v13 >> 12) & 1);
     v15 = ((v13 >> 14) & 1);
     v16 = (v13 >> 15);
-    LOBYTE(v14) = *(v11 + 4);
+    LOBYTE(v14) = *(bytes + 4);
     *&v17 = LODWORD(v14);
     v18 = *&v17 / 255.0;
-    LOBYTE(v17) = *(v11 + 5);
+    LOBYTE(v17) = *(bytes + 5);
     v19 = v17 / 255.0;
     v20 = ((v13 >> 6) & 1);
     v21 = ((v13 >> 7) & 1);
@@ -154,7 +154,7 @@
     __asm { FMOV            V1.2S, #1.0 }
 
     v29 = vbic_s8(_D1, vceqz_s32(vand_s8(v22, 0x20000000100)));
-    v30 = vdivq_f32(vcvtq_f32_s32(vmovl_s16(*(v11 + 3))), vdupq_n_s32(0x46FFFE00u));
+    v30 = vdivq_f32(vcvtq_f32_s32(vmovl_s16(*(bytes + 3))), vdupq_n_s32(0x46FFFE00u));
     v31 = vrev64q_s32(v30);
     v32 = vzip1q_s32(v31, v31);
     v33 = vzip2q_s32(v31, v31);
@@ -173,9 +173,9 @@
     v30.i16[3] = v34.u8[7];
     v37 = vandq_s8(vextq_s8(v35, v35, 4uLL), vcltzq_s32(vshlq_n_s32(vmovl_u16(*v30.i8), 0x1FuLL)));
     v38 = v36;
-    [(GCGamepadHIDServicePlugin *)self dispatchHomeButtonEventWithValue:(v13 >> 10) & 1 timestamp:a5];
-    [(GCGamepadHIDServicePlugin *)self dispatchMenuButtonEventWithValue:(v11[1] >> 4) & 1 timestamp:a5];
-    [(GCGamepadHIDServicePlugin *)self dispatchOptionsButtonEventWithValue:(v11[1] >> 5) & 1 timestamp:a5];
+    [(GCGamepadHIDServicePlugin *)self dispatchHomeButtonEventWithValue:(v13 >> 10) & 1 timestamp:timestamp];
+    [(GCGamepadHIDServicePlugin *)self dispatchMenuButtonEventWithValue:(bytes[1] >> 4) & 1 timestamp:timestamp];
+    [(GCGamepadHIDServicePlugin *)self dispatchOptionsButtonEventWithValue:(bytes[1] >> 5) & 1 timestamp:timestamp];
     v43 = 0;
     v44 = v42;
     v45 = v23;
@@ -198,26 +198,26 @@
     v62 = 0u;
     v63 = 0u;
     v64 = 0;
-    [(GCGamepadHIDServicePlugin *)self dispatchGameControllerExtendedEventWithState:&v43 timestamp:a5];
+    [(GCGamepadHIDServicePlugin *)self dispatchGameControllerExtendedEventWithState:&v43 timestamp:timestamp];
   }
 }
 
 - (void)dispatchHapticEvent
 {
   v11 = 2048;
-  v3 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-  v4 = [v3 objectAtIndex:0];
+  hapticMotors = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+  v4 = [hapticMotors objectAtIndex:0];
   [v4 frequency];
   *(&v11 + 3) = (v5 * 255.0);
 
-  v6 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-  v7 = [v6 objectAtIndex:1];
+  hapticMotors2 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+  v7 = [hapticMotors2 objectAtIndex:1];
   [v7 frequency];
   WORD2(v11) = (v8 * 255.0);
 
-  v9 = [(GCGamepadHIDServicePlugin *)self device];
+  device = [(GCGamepadHIDServicePlugin *)self device];
   v10 = 0;
-  [v9 setReport:&v11 reportLength:8 withIdentifier:0 forType:1 error:&v10];
+  [device setReport:&v11 reportLength:8 withIdentifier:0 forType:1 error:&v10];
 }
 
 - (id)defaultHapticMotors

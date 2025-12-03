@@ -1,13 +1,13 @@
 @interface ActivitySharingHeaderSwiftUITableViewCell
-- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithCoder:(id)a3;
-- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithCoder:(id)coder;
+- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation ActivitySharingHeaderSwiftUITableViewCell
 
-- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = String._bridgeToObjectiveC()();
@@ -20,17 +20,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for ActivitySharingHeaderSwiftUITableViewCell();
-  v7 = [(ActivitySharingHeaderSwiftUITableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(ActivitySharingHeaderSwiftUITableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithCoder:(id)a3
+- (_TtC10FitnessApp41ActivitySharingHeaderSwiftUITableViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ActivitySharingHeaderSwiftUITableViewCell();
-  v4 = a3;
-  v5 = [(ActivitySharingHeaderSwiftUITableViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ActivitySharingHeaderSwiftUITableViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,14 +1,14 @@
 @interface SeparatorView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation SeparatorView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = sub_100751374();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
@@ -16,7 +16,7 @@
   v9 = OBJC_IVAR____TtC22SubscribePageExtension13SeparatorView_separator;
   swift_beginAccess();
   (*(v6 + 16))(v8, self + v9, v5);
-  v10 = self;
+  selfCopy = self;
   sub_100751334();
   v12 = v11;
 
@@ -37,7 +37,7 @@
   v7 = OBJC_IVAR____TtC22SubscribePageExtension13SeparatorView_separator;
   swift_beginAccess();
   (*(v4 + 16))(v6, self + v7, v3);
-  v8 = self;
+  selfCopy = self;
   sub_100751334();
   v10 = v9;
 
@@ -51,7 +51,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006B8E9C();
 }
 

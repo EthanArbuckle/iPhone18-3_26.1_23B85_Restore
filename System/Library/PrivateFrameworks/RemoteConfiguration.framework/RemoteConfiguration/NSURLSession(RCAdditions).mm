@@ -6,12 +6,12 @@
 
 - (__CFString)rc_logIdentifier
 {
-  v1 = [a1 configuration];
-  v2 = [v1 identifier];
-  v3 = v2;
-  if (v2)
+  configuration = [self configuration];
+  identifier = [configuration identifier];
+  v3 = identifier;
+  if (identifier)
   {
-    v4 = v2;
+    v4 = identifier;
   }
 
   else

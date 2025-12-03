@@ -8,8 +8,8 @@
 {
   v3 = a3;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277D4D390] mainBundle];
-  v6 = [v4 imageNamed:v3 inBundle:v5 compatibleWithTraitCollection:0];
+  mainBundle = [MEMORY[0x277D4D390] mainBundle];
+  v6 = [v4 imageNamed:v3 inBundle:mainBundle compatibleWithTraitCollection:0];
 
   return v6;
 }

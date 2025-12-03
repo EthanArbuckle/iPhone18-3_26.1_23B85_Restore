@@ -5,23 +5,23 @@
 - (BOOL)hasSPIEntitlement;
 - (BOOL)hasSystemLaunchDaemonEntitlement;
 - (BOOL)isBackgroundAssetsExtension;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateEntitlementsWithSDKVersion:(unsigned int)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateEntitlementsWithSDKVersion:(unsigned int)version error:(id *)error;
 - (CKEntitlements)initWithCurrentProcess;
-- (CKEntitlements)initWithEntitlementsDict:(id)a3;
-- (CKEntitlements)initWithSqliteRepresentation:(id)a3;
+- (CKEntitlements)initWithEntitlementsDict:(id)dict;
+- (CKEntitlements)initWithSqliteRepresentation:(id)representation;
 - (NSArray)extendedShareAccessEntitlement;
 - (NSString)applicationBundleID;
 - (NSString)apsEnvironmentEntitlement;
 - (NSString)associatedApplicationBundleID;
 - (NSString)description;
 - (NSString)systemLaunchDaemonEntitlement;
-- (id)entitlementsByAddingOverlay:(id)a3;
+- (id)entitlementsByAddingOverlay:(id)overlay;
 - (id)sqliteRepresentation;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (int64_t)containerEnvironment;
 - (unint64_t)hash;
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4;
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index;
 @end
 
 @implementation CKEntitlements
@@ -49,7 +49,7 @@
       _os_log_error_impl(&dword_1883EA000, v5, OS_LOG_TYPE_ERROR, "Unable to get a self audit token: %d", buf, 8u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -58,11 +58,11 @@
     *buf = *task_info_out;
     v15 = v13;
     self = objc_msgSend_initWithAuditToken_pid_(self, v8, buf, v7);
-    v6 = self;
+    selfCopy = self;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v6;
+  return selfCopy;
 }
 
 - (int64_t)containerEnvironment
@@ -123,11 +123,11 @@ LABEL_4:
 - (NSString)applicationBundleID
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    cachedApplicationBundleID = v2->_cachedApplicationBundleID;
+    cachedApplicationBundleID = selfCopy->_cachedApplicationBundleID;
     if (cachedApplicationBundleID)
     {
       v5 = cachedApplicationBundleID;
@@ -135,12 +135,12 @@ LABEL_4:
     }
   }
 
-  v6 = sub_1883F4174(v2, v3);
+  v6 = sub_1883F4174(selfCopy, v3);
   if (v6)
   {
-    if (v2)
+    if (selfCopy)
     {
-      procName = v2->_procName;
+      procName = selfCopy->_procName;
     }
 
     else
@@ -150,17 +150,17 @@ LABEL_4:
 
     v8 = procName;
     v9 = CKAppIdentifierFromTeamAppTuple(v6, v8);
-    if (v2)
+    if (selfCopy)
     {
-      objc_storeStrong(&v2->_cachedApplicationBundleID, v9);
+      objc_storeStrong(&selfCopy->_cachedApplicationBundleID, v9);
     }
 
     goto LABEL_17;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    pid = v2->_pid;
+    pid = selfCopy->_pid;
   }
 
   else
@@ -171,9 +171,9 @@ LABEL_4:
   buffer[0] = 0;
   if (!proc_pidinfo(pid, 11, 1uLL, buffer, 1024) && buffer[0])
   {
-    if (v2)
+    if (selfCopy)
     {
-      v11 = v2->_procName;
+      v11 = selfCopy->_procName;
     }
 
     else
@@ -190,11 +190,11 @@ LABEL_17:
   v15[1] = 3221225472;
   v15[2] = sub_1884213EC;
   v15[3] = &unk_1E70BC388;
-  v15[4] = v2;
+  v15[4] = selfCopy;
   if (qword_1ED4B6010 != -1)
   {
     dispatch_once(&qword_1ED4B6010, v15);
-    if (v2)
+    if (selfCopy)
     {
       goto LABEL_20;
     }
@@ -204,18 +204,18 @@ LABEL_26:
     goto LABEL_21;
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     goto LABEL_26;
   }
 
 LABEL_20:
-  v12 = v2->_cachedApplicationBundleID;
+  v12 = selfCopy->_cachedApplicationBundleID;
 LABEL_21:
   v5 = v12;
 
 LABEL_22:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x1E69E9840];
 
@@ -271,15 +271,15 @@ LABEL_22:
   return v3;
 }
 
-- (CKEntitlements)initWithEntitlementsDict:(id)a3
+- (CKEntitlements)initWithEntitlementsDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v11.receiver = self;
   v11.super_class = CKEntitlements;
   v7 = [(CKEntitlements *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_CKDeepCopy(v4, v5, v6);
+    v8 = objc_msgSend_CKDeepCopy(dictCopy, v5, v6);
     entitlementsDict = v7->_entitlementsDict;
     v7->_entitlementsDict = v8;
   }
@@ -297,10 +297,10 @@ LABEL_22:
   return v7;
 }
 
-- (id)entitlementsByAddingOverlay:(id)a3
+- (id)entitlementsByAddingOverlay:(id)overlay
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  overlayCopy = overlay;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -329,7 +329,7 @@ LABEL_22:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = v6;
+  v14 = overlayCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v35, v39, 16);
   if (v16)
   {
@@ -414,18 +414,18 @@ LABEL_22:
   return v30;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v5 = a3;
+  entitlementCopy = entitlement;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
-    objc_msgSend_objectForKeyedSubscript_(Property, v7, v5);
+    objc_msgSend_objectForKeyedSubscript_(Property, v7, entitlementCopy);
   }
 
   else
   {
-    objc_msgSend_objectForKeyedSubscript_(0, v4, v5);
+    objc_msgSend_objectForKeyedSubscript_(0, v4, entitlementCopy);
   }
   v8 = ;
 
@@ -492,10 +492,10 @@ LABEL_22:
   return v12 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v19) = 1;
   }
@@ -505,7 +505,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v7 = sub_1883F4174(v5, v6);
       v9 = sub_1883F4174(self, v8);
       v11 = v9;
@@ -943,13 +943,13 @@ LABEL_81:
   return v10;
 }
 
-- (CKEntitlements)initWithSqliteRepresentation:(id)a3
+- (CKEntitlements)initWithSqliteRepresentation:(id)representation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  representationCopy = representation;
+  if (objc_msgSend_length(representationCopy, v5, v6))
   {
-    v8 = objc_msgSend_dataUsingEncoding_(v4, v7, 4);
+    v8 = objc_msgSend_dataUsingEncoding_(representationCopy, v7, 4);
     v17 = 0;
     v10 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v9, v8, 0, &v17);
     v12 = v17;
@@ -968,36 +968,36 @@ LABEL_81:
         _os_log_error_impl(&dword_1883EA000, v14, OS_LOG_TYPE_ERROR, "Error converting JSON data to CKEntitlements: %{public}@", buf, 0xCu);
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       self = objc_msgSend_initWithEntitlementsDict_(self, v11, v10);
-      v13 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)validateEntitlementsWithSDKVersion:(unsigned int)a3 error:(id *)a4
+- (BOOL)validateEntitlementsWithSDKVersion:(unsigned int)version error:(id *)error
 {
   v231[26] = *MEMORY[0x1E69E9840];
-  v174 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v5 = self;
-  newValue = objc_msgSend_mutableCopy(v5, v6, v7);
+  selfCopy2 = self;
+  newValue = objc_msgSend_mutableCopy(selfCopy2, v6, v7);
 
   v231[0] = @"com.apple.private.cloudkit.masquerade";
   v231[1] = @"com.apple.private.cloudkit.setEnvironment";
@@ -1044,7 +1044,7 @@ LABEL_81:
   v210 = 0u;
   v13 = v9;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v207, v227, 16);
-  v171 = HIWORD(a3);
+  v171 = HIWORD(version);
   v173 = v13;
   if (v15)
   {
@@ -1062,7 +1062,7 @@ LABEL_81:
 
         v20 = *(*(&v207 + 1) + 8 * v19);
         objc_msgSend_addObject_(0, v16, v20);
-        v22 = objc_msgSend_valueForEntitlement_(v174, v21, v20);
+        v22 = objc_msgSend_valueForEntitlement_(selfCopy, v21, v20);
         if (v22 && (objc_opt_respondsToSelector() & 1) == 0)
         {
           v23 = ck_log_initialization_block;
@@ -1084,10 +1084,10 @@ LABEL_81:
           if (v171 > 0xE)
           {
             v13 = v173;
-            if (a4)
+            if (error)
             {
               objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 8, @"Application has malformed entitlements.  Found value %@ for entitlement %@, expected something that supports -BOOLValue", v22, v20);
-              *a4 = v102 = 0;
+              *error = v102 = 0;
             }
 
             else
@@ -1135,7 +1135,7 @@ LABEL_81:
 
         v33 = *(*(&v203 + 1) + 8 * v32);
         objc_msgSend_addObject_(0, v29, v33);
-        v22 = objc_msgSend_valueForEntitlement_(v174, v34, v33);
+        v22 = objc_msgSend_valueForEntitlement_(selfCopy, v34, v33);
         if (v22)
         {
           objc_opt_class();
@@ -1160,10 +1160,10 @@ LABEL_81:
             if (v171 > 0xE)
             {
               v13 = v173;
-              if (a4)
+              if (error)
               {
                 objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v37, @"CKErrorDomain", 8, @"Application has malformed entitlements.  Found value %@ for entitlement %@, expected a string", v22, v33);
-                *a4 = v102 = 0;
+                *error = v102 = 0;
               }
 
               else
@@ -1195,7 +1195,7 @@ LABEL_81:
   v199 = 0u;
   v200 = 0u;
   v38 = v164;
-  v40 = v174;
+  v40 = selfCopy;
   v168 = objc_msgSend_countByEnumeratingWithState_objects_count_(v38, v39, &v199, v225, 16);
   if (v168)
   {
@@ -1259,7 +1259,7 @@ LABEL_81:
           while (v49);
 
           v13 = v173;
-          v40 = v174;
+          v40 = selfCopy;
           v42 = v157;
           v38 = v160;
           if ((v51 & 1) == 0)
@@ -1283,8 +1283,8 @@ LABEL_48:
 
             if (v171 > 0xE || (objc_msgSend_isEqualToString_(v44, v57, @"com.apple.developer.icloud-services") & 1) != 0)
             {
-              v103 = a4;
-              if (a4)
+              errorCopy4 = error;
+              if (error)
               {
                 v152 = v22;
                 v154 = v44;
@@ -1351,14 +1351,14 @@ LABEL_96:
 
           if (v171 > 0xE)
           {
-            if (a4)
+            if (error)
             {
               v153 = v38;
               v100 = v38;
-              v101 = a4;
+              errorCopy3 = error;
               objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v99, @"CKErrorDomain", 8, @"Application has malformed entitlements.  Found value %@ for entitlement %@, expected a string", v22, v153);
 LABEL_164:
-              *v101 = v102 = 0;
+              *errorCopy3 = v102 = 0;
 LABEL_177:
               v38 = v100;
               goto LABEL_166;
@@ -1561,10 +1561,10 @@ LABEL_144:
 
         if (v171 > 0xE)
         {
-          if (a4)
+          if (error)
           {
             objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v134, @"CKErrorDomain", 8, @"Application has malformed entitlements.  Found value %@ for entitlement %@, expected a type of [ string : [ string : string ] ]", v107, v100);
-            *a4 = v102 = 0;
+            *error = v102 = 0;
           }
 
           else
@@ -1583,7 +1583,7 @@ LABEL_144:
 LABEL_153:
     v38 = @"com.apple.developer.icloud-container-environment";
 
-    v22 = objc_msgSend_valueForEntitlement_(v174, v135, v38);
+    v22 = objc_msgSend_valueForEntitlement_(selfCopy, v135, v38);
 
     objc_msgSend_addObject_(0, v136, v38);
     if (v22)
@@ -1613,11 +1613,11 @@ LABEL_153:
 
         if (v171 > 0xE)
         {
-          if (a4)
+          if (error)
           {
             v155 = v38;
             v100 = v38;
-            v101 = a4;
+            errorCopy3 = error;
             objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v141, @"CKErrorDomain", 8, @"Application has malformed entitlements.  Found value %@ for entitlement %@, expected %@ or %@", v22, v155, @"production", @"development");
             goto LABEL_164;
           }
@@ -1636,9 +1636,9 @@ LABEL_165:
     if (v171 <= 0xE)
     {
       v146 = v38;
-      if (v174)
+      if (selfCopy)
       {
-        Property = objc_getProperty(v174, v145, 24, 1);
+        Property = objc_getProperty(selfCopy, v145, 24, 1);
       }
 
       else
@@ -1651,9 +1651,9 @@ LABEL_165:
 
       v102 = 1;
       v38 = v146;
-      if (v174 && (isEqual & 1) == 0)
+      if (selfCopy && (isEqual & 1) == 0)
       {
-        objc_setProperty_atomic_copy(v174, v151, newValue, 24);
+        objc_setProperty_atomic_copy(selfCopy, v151, newValue, 24);
       }
     }
 
@@ -1745,7 +1745,7 @@ LABEL_60:
       while (v74);
 
       v13 = v173;
-      v40 = v174;
+      v40 = selfCopy;
       v61 = v158;
       v38 = v160;
       v62 = v156;
@@ -1795,8 +1795,8 @@ LABEL_83:
     }
   }
 
-  v103 = a4;
-  if (!a4)
+  errorCopy4 = error;
+  if (!error)
   {
     goto LABEL_165;
   }
@@ -1805,7 +1805,7 @@ LABEL_83:
   v154 = v169;
   v104 = @"Application has malformed entitlements.  Found value %@ for entitlement %@, expected a dict of string : string";
 LABEL_115:
-  v105 = v103;
+  v105 = errorCopy4;
   objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v57, @"CKErrorDomain", 8, v104, v152, v154);
   *v105 = v102 = 0;
   v38 = v160;
@@ -1815,11 +1815,11 @@ LABEL_166:
   return v102;
 }
 
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index
 {
-  v6 = a3;
+  statementCopy = statement;
   v10 = objc_msgSend_sqliteRepresentation(self, v7, v8);
-  objc_msgSend_bindText_atIndex_(v6, v9, v10, a4);
+  objc_msgSend_bindText_atIndex_(statementCopy, v9, v10, index);
 }
 
 @end

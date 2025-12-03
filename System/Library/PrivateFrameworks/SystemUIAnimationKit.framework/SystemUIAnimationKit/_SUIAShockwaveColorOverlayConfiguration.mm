@@ -7,23 +7,23 @@
 - (double)colorMaskBlurRadius;
 - (double)colorMaskScale;
 - (double)colorMatrixOpacity;
-- (void)_setColorBlurRadius:(double)a3;
-- (void)_setColorMaskBlurRadius:(double)a3;
-- (void)_setColorMaskCenter:(CGPoint)a3;
-- (void)_setColorMaskDonutFrame:(CGRect)a3;
-- (void)_setColorMaskScale:(double)a3;
-- (void)_setColorMatrix:(CAColorMatrix *)a3;
-- (void)_setColorMatrixOpacity:(double)a3;
-- (void)_setUsesGaussianBlurMaskingTechnique:(BOOL)a3;
+- (void)_setColorBlurRadius:(double)radius;
+- (void)_setColorMaskBlurRadius:(double)radius;
+- (void)_setColorMaskCenter:(CGPoint)center;
+- (void)_setColorMaskDonutFrame:(CGRect)frame;
+- (void)_setColorMaskScale:(double)scale;
+- (void)_setColorMatrix:(CAColorMatrix *)matrix;
+- (void)_setColorMatrixOpacity:(double)opacity;
+- (void)_setUsesGaussianBlurMaskingTechnique:(BOOL)technique;
 @end
 
 @implementation _SUIAShockwaveColorOverlayConfiguration
 
-- (void)_setColorMaskDonutFrame:(CGRect)a3
+- (void)_setColorMaskDonutFrame:(CGRect)frame
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"colorMaskDonutFrame"];
 }
 
@@ -45,15 +45,15 @@
   return result;
 }
 
-- (void)_setColorMatrix:(CAColorMatrix *)a3
+- (void)_setColorMatrix:(CAColorMatrix *)matrix
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = *&a3->var12;
-  v7[2] = *&a3->var8;
+  v4 = *&matrix->var12;
+  v7[2] = *&matrix->var8;
   v7[3] = v4;
-  v7[4] = *&a3->var16;
-  v5 = *&a3->var4;
-  v7[0] = *&a3->var0;
+  v7[4] = *&matrix->var16;
+  v5 = *&matrix->var4;
+  v7[0] = *&matrix->var0;
   v7[1] = v5;
   v6 = [MEMORY[0x277CCAE60] valueWithBytes:v7 objCType:"{CAColorMatrix=ffffffffffffffffffff}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v6 forKey:@"colorMatrix"];
@@ -72,10 +72,10 @@
   return result;
 }
 
-- (void)_setColorMatrixOpacity:(double)a3
+- (void)_setColorMatrixOpacity:(double)opacity
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:opacity];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"colorMatrixOpacity"];
 }
 
@@ -88,10 +88,10 @@
   return v4;
 }
 
-- (void)_setColorBlurRadius:(double)a3
+- (void)_setColorBlurRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"colorBlurRadius"];
 }
 
@@ -104,10 +104,10 @@
   return v4;
 }
 
-- (void)_setUsesGaussianBlurMaskingTechnique:(BOOL)a3
+- (void)_setUsesGaussianBlurMaskingTechnique:(BOOL)technique
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:technique];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"usesGaussianBlurMaskingTechnique"];
 }
 
@@ -120,10 +120,10 @@
   return v4;
 }
 
-- (void)_setColorMaskBlurRadius:(double)a3
+- (void)_setColorMaskBlurRadius:(double)radius
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"colorMaskBlurRadius"];
 }
 
@@ -136,10 +136,10 @@
   return v4;
 }
 
-- (void)_setColorMaskScale:(double)a3
+- (void)_setColorMaskScale:(double)scale
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"colorMaskScale"];
 }
 
@@ -152,11 +152,11 @@
   return v4;
 }
 
-- (void)_setColorMaskCenter:(CGPoint)a3
+- (void)_setColorMaskCenter:(CGPoint)center
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGPoint=dd}"];
+  centerCopy = center;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&centerCopy objCType:"{CGPoint=dd}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"colorMaskCenter"];
 }
 

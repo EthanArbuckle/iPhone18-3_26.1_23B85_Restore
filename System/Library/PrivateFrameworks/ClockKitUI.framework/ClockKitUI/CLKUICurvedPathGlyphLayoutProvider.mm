@@ -2,8 +2,8 @@
 - (CGAffineTransform)makeTransform;
 - (CGPoint)layoutLocation;
 - (CLKUICurvedPathGlyphLayoutProvider)init;
-- (void)setPath:(id)a3;
-- (void)setUsedWidth:(double)a3;
+- (void)setPath:(id)path;
+- (void)setUsedWidth:(double)width;
 @end
 
 @implementation CLKUICurvedPathGlyphLayoutProvider
@@ -28,14 +28,14 @@
   return v2;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   p_path = &self->_path;
-  if (self->_path != v5)
+  if (self->_path != pathCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_path, a3);
+    v8 = pathCopy;
+    objc_storeStrong(p_path, path);
     [(CLKUIBezierPathStepper *)self->_pathStepper setPath:v8];
     p_path = [(CLKUIBezierPathStepper *)self->_pathStepper totalLength];
     self->_pathLength = v7;
@@ -44,11 +44,11 @@
   MEMORY[0x1EEE66BE0](p_path);
 }
 
-- (void)setUsedWidth:(double)a3
+- (void)setUsedWidth:(double)width
 {
-  if (self->_usedWidth != a3)
+  if (self->_usedWidth != width)
   {
-    self->_usedWidth = a3;
+    self->_usedWidth = width;
     textAlignment = self->_textAlignment;
     if (textAlignment > 2)
     {
@@ -73,12 +73,12 @@
           return;
         }
 
-        v4 = self->_pathLength - a3;
+        v4 = self->_pathLength - width;
         goto LABEL_10;
       }
     }
 
-    v4 = (self->_pathLength - a3) * 0.5;
+    v4 = (self->_pathLength - width) * 0.5;
 LABEL_10:
     self->_startOffset = v4;
   }
@@ -93,20 +93,20 @@ LABEL_10:
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v8 = [(CLKUIBezierPathStepper *)pathStepper mapOffsetsToPathPositions:v7];
 
-  v9 = [v8 firstObject];
-  [v9 tangent];
+  firstObject = [v8 firstObject];
+  [firstObject tangent];
   v11 = v10;
 
-  v12 = [v8 firstObject];
-  [v12 tangent];
+  firstObject2 = [v8 firstObject];
+  [firstObject2 tangent];
   v14 = v13;
 
-  v15 = [v8 firstObject];
-  [v15 point];
+  firstObject3 = [v8 firstObject];
+  [firstObject3 point];
   v17 = v16 + self->_baselineOffset * v14;
 
-  v18 = [v8 firstObject];
-  [v18 point];
+  firstObject4 = [v8 firstObject];
+  [firstObject4 point];
   v20 = v19 - self->_baselineOffset * v11;
 
   retstr->a = v11;

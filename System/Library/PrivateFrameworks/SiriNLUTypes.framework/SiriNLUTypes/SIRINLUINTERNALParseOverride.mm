@@ -1,36 +1,36 @@
 @interface SIRINLUINTERNALParseOverride
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsParserIdentifier:(id)a3;
+- (int)StringAsParserIdentifier:(id)identifier;
 - (int)parserIdentifier;
 - (unint64_t)hash;
-- (void)addNluRequestRules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnabled:(BOOL)a3;
-- (void)setHasParserIdentifier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNluRequestRules:(id)rules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnabled:(BOOL)enabled;
+- (void)setHasParserIdentifier:(BOOL)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALParseOverride
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALParseOverride *)self setIdA:?];
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 4) != 0)
   {
-    self->_enabled = *(v4 + 56);
+    self->_enabled = *(fromCopy + 56);
     *&self->_has |= 4u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -43,23 +43,23 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 60) & 1) == 0)
+  else if ((*(fromCopy + 60) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_creationTimestampMsSinceUnixEpoch = *(v4 + 1);
+  self->_creationTimestampMsSinceUnixEpoch = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 60) & 2) != 0)
+  if ((*(fromCopy + 60) & 2) != 0)
   {
 LABEL_6:
-    self->_parserIdentifier = *(v4 + 10);
+    self->_parserIdentifier = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
 LABEL_7:
   parse = self->_parse;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (parse)
   {
     if (v7)
@@ -77,7 +77,7 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -101,7 +101,7 @@ LABEL_7:
     while (v10);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUINTERNALParseOverride *)self setSerializedParse:?];
   }
@@ -153,16 +153,16 @@ LABEL_8:
   return v7 ^ v8 ^ [(NSData *)self->_serializedParse hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   idA = self->_idA;
-  if (idA | *(v4 + 2))
+  if (idA | *(equalCopy + 2))
   {
     if (![(NSString *)idA isEqual:?])
     {
@@ -170,10 +170,10 @@ LABEL_8:
     }
   }
 
-  v6 = *(v4 + 60);
+  v6 = *(equalCopy + 60);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -183,21 +183,21 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((*(v4 + 60) & 4) == 0)
+  if ((*(equalCopy + 60) & 4) == 0)
   {
     goto LABEL_28;
   }
 
-  v7 = *(v4 + 56);
+  v7 = *(equalCopy + 56);
   if (self->_enabled)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_28;
   }
@@ -205,38 +205,38 @@ LABEL_28:
 LABEL_6:
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_creationTimestampMsSinceUnixEpoch != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_creationTimestampMsSinceUnixEpoch != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_parserIdentifier != *(v4 + 10))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_parserIdentifier != *(equalCopy + 10))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   parse = self->_parse;
-  if (parse | *(v4 + 4) && ![(SIRINLUEXTERNALUserParse *)parse isEqual:?])
+  if (parse | *(equalCopy + 4) && ![(SIRINLUEXTERNALUserParse *)parse isEqual:?])
   {
     goto LABEL_28;
   }
 
   nluRequestRules = self->_nluRequestRules;
-  if (nluRequestRules | *(v4 + 3))
+  if (nluRequestRules | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)nluRequestRules isEqual:?])
     {
@@ -245,7 +245,7 @@ LABEL_6:
   }
 
   serializedParse = self->_serializedParse;
-  if (serializedParse | *(v4 + 6))
+  if (serializedParse | *(equalCopy + 6))
   {
     v11 = [(NSData *)serializedParse isEqual:?];
   }
@@ -260,11 +260,11 @@ LABEL_29:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idA copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idA copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -301,7 +301,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(SIRINLUEXTERNALUserParse *)self->_parse copyWithZone:a3];
+  v9 = [(SIRINLUEXTERNALUserParse *)self->_parse copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -324,7 +324,7 @@ LABEL_5:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v16 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addNluRequestRules:v16];
       }
 
@@ -334,7 +334,7 @@ LABEL_5:
     while (v13);
   }
 
-  v17 = [(NSData *)self->_serializedParse copyWithZone:a3];
+  v17 = [(NSData *)self->_serializedParse copyWithZone:zone];
   v18 = *(v5 + 48);
   *(v5 + 48) = v17;
 
@@ -342,21 +342,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_idA)
   {
-    [v4 setIdA:?];
-    v4 = v10;
+    [toCopy setIdA:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 56) = self->_enabled;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 56) = self->_enabled;
+    *(toCopy + 60) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -375,13 +375,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_creationTimestampMsSinceUnixEpoch;
-  *(v4 + 60) |= 1u;
+  *(toCopy + 1) = self->_creationTimestampMsSinceUnixEpoch;
+  *(toCopy + 60) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 10) = self->_parserIdentifier;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 10) = self->_parserIdentifier;
+    *(toCopy + 60) |= 2u;
   }
 
 LABEL_7:
@@ -393,10 +393,10 @@ LABEL_7:
   if ([(SIRINLUINTERNALParseOverride *)self nluRequestRulesCount])
   {
     [v10 clearNluRequestRules];
-    v6 = [(SIRINLUINTERNALParseOverride *)self nluRequestRulesCount];
-    if (v6)
+    nluRequestRulesCount = [(SIRINLUINTERNALParseOverride *)self nluRequestRulesCount];
+    if (nluRequestRulesCount)
     {
-      v7 = v6;
+      v7 = nluRequestRulesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SIRINLUINTERNALParseOverride *)self nluRequestRulesAtIndex:i];
@@ -411,10 +411,10 @@ LABEL_7:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idA)
   {
     PBDataWriterWriteStringField();
@@ -498,12 +498,12 @@ LABEL_7:
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idA = self->_idA;
   if (idA)
   {
-    [v3 setObject:idA forKey:@"id_a"];
+    [dictionary setObject:idA forKey:@"id_a"];
   }
 
   has = self->_has;
@@ -556,8 +556,8 @@ LABEL_13:
   parse = self->_parse;
   if (parse)
   {
-    v12 = [(SIRINLUEXTERNALUserParse *)parse dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"parse"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUserParse *)parse dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"parse"];
   }
 
   if ([(NSMutableArray *)self->_nluRequestRules count])
@@ -582,8 +582,8 @@ LABEL_13:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -612,79 +612,79 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALParseOverride;
   v4 = [(SIRINLUINTERNALParseOverride *)&v8 description];
-  v5 = [(SIRINLUINTERNALParseOverride *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALParseOverride *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNluRequestRules:(id)a3
+- (void)addNluRequestRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   nluRequestRules = self->_nluRequestRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!nluRequestRules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nluRequestRules;
     self->_nluRequestRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     nluRequestRules = self->_nluRequestRules;
   }
 
-  [(NSMutableArray *)nluRequestRules addObject:v4];
+  [(NSMutableArray *)nluRequestRules addObject:rulesCopy];
 }
 
-- (int)StringAsParserIdentifier:(id)a3
+- (int)StringAsParserIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PARSER_IDENTIFIER_UNSET"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_UNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_OVERRIDES"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_OVERRIDES"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_SNLC"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_SNLC"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_NLV4"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_NLV4"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_CATI"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_CATI"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_SHORTCUTS_EXACT"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_SHORTCUTS_EXACT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_UAAP"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_UAAP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_PSC"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_PSC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_LVC"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_LVC"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_SSU"])
+  else if ([identifierCopy isEqualToString:@"PARSER_IDENTIFIER_SSU"])
   {
     v4 = 9;
   }
@@ -697,9 +697,9 @@ LABEL_13:
   return v4;
 }
 
-- (void)setHasParserIdentifier:(BOOL)a3
+- (void)setHasParserIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 2;
   }
@@ -725,9 +725,9 @@ LABEL_13:
   }
 }
 
-- (void)setHasEnabled:(BOOL)a3
+- (void)setHasEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }

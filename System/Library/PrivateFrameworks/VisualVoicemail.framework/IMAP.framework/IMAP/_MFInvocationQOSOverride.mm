@@ -1,23 +1,23 @@
 @interface _MFInvocationQOSOverride
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeOverride;
-- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)a3 desiredQoS:(unsigned int)a4 lowPriority:(BOOL)a5;
-- (void)applyOverrideWhileForeground:(BOOL)a3;
+- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)pthread desiredQoS:(unsigned int)s lowPriority:(BOOL)priority;
+- (void)applyOverrideWhileForeground:(BOOL)foreground;
 - (void)dealloc;
 @end
 
 @implementation _MFInvocationQOSOverride
 
-- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)a3 desiredQoS:(unsigned int)a4 lowPriority:(BOOL)a5
+- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)pthread desiredQoS:(unsigned int)s lowPriority:(BOOL)priority
 {
   v9.receiver = self;
   v9.super_class = _MFInvocationQOSOverride;
   result = [(_MFInvocationQOSOverride *)&v9 init];
   if (result)
   {
-    result->_pthread = a3;
-    result->_desiredQoS = a4;
-    result->_lowPriority = a5;
+    result->_pthread = pthread;
+    result->_desiredQoS = s;
+    result->_lowPriority = priority;
   }
 
   return result;
@@ -31,10 +31,10 @@
   [(_MFInvocationQOSOverride *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -44,8 +44,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_MFInvocationQOSOverride *)v4 pthread];
-      v6 = v5 == [(_MFInvocationQOSOverride *)self pthread];
+      pthread = [(_MFInvocationQOSOverride *)equalCopy pthread];
+      v6 = pthread == [(_MFInvocationQOSOverride *)self pthread];
     }
 
     else
@@ -57,15 +57,15 @@
   return v6;
 }
 
-- (void)applyOverrideWhileForeground:(BOOL)a3
+- (void)applyOverrideWhileForeground:(BOOL)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   if (self->_override)
   {
     goto LABEL_3;
   }
 
-  if (![(_MFInvocationQOSOverride *)self isLowPriority]|| v3)
+  if (![(_MFInvocationQOSOverride *)self isLowPriority]|| foregroundCopy)
   {
     self->_override = pthread_override_qos_class_start_np([(_MFInvocationQOSOverride *)self pthread], [(_MFInvocationQOSOverride *)self desiredQoS], -12);
     return;
@@ -74,7 +74,7 @@
   if (self->_override)
   {
 LABEL_3:
-    if ([(_MFInvocationQOSOverride *)self isLowPriority]&& !v3)
+    if ([(_MFInvocationQOSOverride *)self isLowPriority]&& !foregroundCopy)
     {
 
       [(_MFInvocationQOSOverride *)self removeOverride];

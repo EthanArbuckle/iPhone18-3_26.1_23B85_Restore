@@ -3,8 +3,8 @@
 - (CGPoint)_flippedFocusPoint;
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (void)_displayLinkCallback:(id)a3;
-- (void)setFocusPoint:(CGPoint)a3;
+- (void)_displayLinkCallback:(id)callback;
+- (void)setFocusPoint:(CGPoint)point;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
@@ -18,14 +18,14 @@
 
   v5 = [CAPackage packageWithContentsOfURL:v4 type:kCAPackageTypeCAMLBundle options:0 error:0];
   v6 = [NSNumber numberWithInteger:[(CKSpotlightEffectView *)self zIndex]];
-  v7 = [v6 stringValue];
+  stringValue = [v6 stringValue];
 
-  v8 = [v5 publishedObjectWithName:v7];
+  v8 = [v5 publishedObjectWithName:stringValue];
   [(CKSpotlightEffectView *)self bounds];
   v10 = v9;
   v12 = v11;
-  v13 = [(CKSpotlightEffectView *)self layer];
-  [v13 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(CKSpotlightEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   [v8 setBeginTime:?];
 
   [v8 setPosition:{v10 * 0.5, v12 * 0.5}];
@@ -35,7 +35,7 @@
   [v8 setAllowsGroupBlending:0];
   if ([(CKSpotlightEffectView *)self zIndex]== &dword_0 + 3)
   {
-    v370 = v7;
+    v370 = stringValue;
     v371 = v5;
     v372 = v4;
     [(CKSpotlightEffectView *)self _flippedFocusPoint];
@@ -66,115 +66,115 @@
       self->_elasticRemainingTime = 0.0;
     }
 
-    v26 = [v8 sublayers];
-    v27 = [v26 objectAtIndexedSubscript:0];
+    sublayers = [v8 sublayers];
+    v27 = [sublayers objectAtIndexedSubscript:0];
     darken = self->_darken;
     self->_darken = v27;
 
-    v29 = [v8 sublayers];
-    v30 = [v29 objectAtIndexedSubscript:0];
-    v31 = [v30 sublayers];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    sublayers2 = [v8 sublayers];
+    v30 = [sublayers2 objectAtIndexedSubscript:0];
+    sublayers3 = [v30 sublayers];
+    v32 = [sublayers3 objectAtIndexedSubscript:0];
     circleParent = self->_circleParent;
     self->_circleParent = v32;
 
-    v34 = [v8 sublayers];
-    v35 = [v34 objectAtIndexedSubscript:0];
-    v36 = [v35 sublayers];
-    [v36 objectAtIndexedSubscript:0];
+    sublayers4 = [v8 sublayers];
+    v35 = [sublayers4 objectAtIndexedSubscript:0];
+    sublayers5 = [v35 sublayers];
+    [sublayers5 objectAtIndexedSubscript:0];
     v37 = v377 = self;
-    v38 = [v37 sublayers];
-    v39 = [v38 objectAtIndexedSubscript:0];
+    sublayers6 = [v37 sublayers];
+    v39 = [sublayers6 objectAtIndexedSubscript:0];
     ringParent = v377->_ringParent;
     v377->_ringParent = v39;
 
-    v41 = [v8 sublayers];
-    v42 = [v41 objectAtIndexedSubscript:0];
-    v43 = [v42 sublayers];
-    v44 = [v43 objectAtIndexedSubscript:0];
-    v45 = [v44 sublayers];
-    [v45 objectAtIndexedSubscript:0];
+    sublayers7 = [v8 sublayers];
+    v42 = [sublayers7 objectAtIndexedSubscript:0];
+    sublayers8 = [v42 sublayers];
+    v44 = [sublayers8 objectAtIndexedSubscript:0];
+    sublayers9 = [v44 sublayers];
+    [sublayers9 objectAtIndexedSubscript:0];
     v47 = v46 = v8;
-    v48 = [v47 sublayers];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    sublayers10 = [v47 sublayers];
+    v49 = [sublayers10 objectAtIndexedSubscript:0];
     ring0Parent = v377->_ring0Parent;
     v377->_ring0Parent = v49;
 
-    v51 = [v46 sublayers];
-    v52 = [v51 objectAtIndexedSubscript:0];
-    v53 = [v52 sublayers];
-    v54 = [v53 objectAtIndexedSubscript:0];
-    v55 = [v54 sublayers];
-    v56 = [v55 objectAtIndexedSubscript:0];
-    v57 = [v56 sublayers];
-    v58 = [v57 objectAtIndexedSubscript:0];
-    v59 = [v58 sublayers];
-    v60 = [v59 objectAtIndexedSubscript:0];
+    sublayers11 = [v46 sublayers];
+    v52 = [sublayers11 objectAtIndexedSubscript:0];
+    sublayers12 = [v52 sublayers];
+    v54 = [sublayers12 objectAtIndexedSubscript:0];
+    sublayers13 = [v54 sublayers];
+    v56 = [sublayers13 objectAtIndexedSubscript:0];
+    sublayers14 = [v56 sublayers];
+    v58 = [sublayers14 objectAtIndexedSubscript:0];
+    sublayers15 = [v58 sublayers];
+    v60 = [sublayers15 objectAtIndexedSubscript:0];
     ring0 = v377->_ring0;
     v377->_ring0 = v60;
 
-    v62 = [v46 sublayers];
-    v63 = [v62 objectAtIndexedSubscript:0];
-    v64 = [v63 sublayers];
-    v65 = [v64 objectAtIndexedSubscript:0];
-    v66 = [v65 sublayers];
-    v67 = [v66 objectAtIndexedSubscript:0];
-    v68 = [v67 sublayers];
-    v69 = [v68 objectAtIndexedSubscript:1];
+    sublayers16 = [v46 sublayers];
+    v63 = [sublayers16 objectAtIndexedSubscript:0];
+    sublayers17 = [v63 sublayers];
+    v65 = [sublayers17 objectAtIndexedSubscript:0];
+    sublayers18 = [v65 sublayers];
+    v67 = [sublayers18 objectAtIndexedSubscript:0];
+    sublayers19 = [v67 sublayers];
+    v69 = [sublayers19 objectAtIndexedSubscript:1];
     ring1 = v377->_ring1;
     v377->_ring1 = v69;
 
-    v71 = [v46 sublayers];
-    v72 = [v71 objectAtIndexedSubscript:1];
+    sublayers20 = [v46 sublayers];
+    v72 = [sublayers20 objectAtIndexedSubscript:1];
     dustEmitter = v377->_dustEmitter;
     v377->_dustEmitter = v72;
 
-    v74 = [v46 sublayers];
-    v75 = [v74 objectAtIndexedSubscript:1];
-    v76 = [v75 sublayers];
-    v77 = [v76 objectAtIndexedSubscript:0];
+    sublayers21 = [v46 sublayers];
+    v75 = [sublayers21 objectAtIndexedSubscript:1];
+    sublayers22 = [v75 sublayers];
+    v77 = [sublayers22 objectAtIndexedSubscript:0];
     beamParent1 = v377->_beamParent1;
     v377->_beamParent1 = v77;
 
-    v79 = [v46 sublayers];
-    v80 = [v79 objectAtIndexedSubscript:1];
-    v81 = [v80 sublayers];
-    v82 = [v81 objectAtIndexedSubscript:0];
-    v83 = [v82 sublayers];
-    v84 = [v83 objectAtIndexedSubscript:0];
+    sublayers23 = [v46 sublayers];
+    v80 = [sublayers23 objectAtIndexedSubscript:1];
+    sublayers24 = [v80 sublayers];
+    v82 = [sublayers24 objectAtIndexedSubscript:0];
+    sublayers25 = [v82 sublayers];
+    v84 = [sublayers25 objectAtIndexedSubscript:0];
     beamPos1 = v377->_beamPos1;
     v377->_beamPos1 = v84;
 
-    v86 = [v46 sublayers];
-    v87 = [v86 objectAtIndexedSubscript:1];
-    v88 = [v87 sublayers];
-    v89 = [v88 objectAtIndexedSubscript:0];
-    v90 = [v89 sublayers];
-    v91 = [v90 objectAtIndexedSubscript:0];
-    v92 = [v91 sublayers];
-    v93 = [v92 objectAtIndexedSubscript:0];
+    sublayers26 = [v46 sublayers];
+    v87 = [sublayers26 objectAtIndexedSubscript:1];
+    sublayers27 = [v87 sublayers];
+    v89 = [sublayers27 objectAtIndexedSubscript:0];
+    sublayers28 = [v89 sublayers];
+    v91 = [sublayers28 objectAtIndexedSubscript:0];
+    sublayers29 = [v91 sublayers];
+    v93 = [sublayers29 objectAtIndexedSubscript:0];
     beam1 = v377->_beam1;
     v377->_beam1 = v93;
 
-    v95 = [v46 sublayers];
-    v96 = [v95 objectAtIndexedSubscript:2];
+    sublayers30 = [v46 sublayers];
+    v96 = [sublayers30 objectAtIndexedSubscript:2];
     beamParent0 = v377->_beamParent0;
     v377->_beamParent0 = v96;
 
-    v98 = [v46 sublayers];
-    v99 = [v98 objectAtIndexedSubscript:2];
-    v100 = [v99 sublayers];
-    v101 = [v100 objectAtIndexedSubscript:0];
+    sublayers31 = [v46 sublayers];
+    v99 = [sublayers31 objectAtIndexedSubscript:2];
+    sublayers32 = [v99 sublayers];
+    v101 = [sublayers32 objectAtIndexedSubscript:0];
     beamPos0 = v377->_beamPos0;
     v377->_beamPos0 = v101;
 
     v369 = v46;
-    v103 = [v46 sublayers];
-    v104 = [v103 objectAtIndexedSubscript:2];
-    v105 = [v104 sublayers];
-    v106 = [v105 objectAtIndexedSubscript:0];
-    v107 = [v106 sublayers];
-    v108 = [v107 objectAtIndexedSubscript:0];
+    sublayers33 = [v46 sublayers];
+    v104 = [sublayers33 objectAtIndexedSubscript:2];
+    sublayers34 = [v104 sublayers];
+    v106 = [sublayers34 objectAtIndexedSubscript:0];
+    sublayers35 = [v106 sublayers];
+    v108 = [sublayers35 objectAtIndexedSubscript:0];
     beam0 = v377->_beam0;
     v377->_beam0 = v108;
 
@@ -185,9 +185,9 @@
     [(CALayer *)v377->_darken setBounds:0.0, 0.0, v10, v12];
     [(CALayer *)v377->_circleParent setPosition:v10 * 0.5, v12 * 0.5];
     [(CALayer *)v377->_circleParent setBounds:0.0, 0.0, v10, v12];
-    v112 = [(CKSpotlightEffectView *)v377 messageOrientation];
-    v377->_leftToRight = v112 == 0;
-    if (v112)
+    messageOrientation = [(CKSpotlightEffectView *)v377 messageOrientation];
+    v377->_leftToRight = messageOrientation == 0;
+    if (messageOrientation)
     {
       CATransform3DMakeScale(&v381, 0.65, 0.65, 0.65);
       v113 = v377->_beamPos0;
@@ -249,13 +249,13 @@
     [(CAEmitterLayer *)v124 setValue:v125 forKeyPath:@"emitterPosition.y"];
 
     v126 = v10 * v12 * 0.00056;
-    v127 = [(CAEmitterLayer *)v377->_dustEmitter emitterCells];
-    v128 = [v127 objectAtIndexedSubscript:0];
+    emitterCells = [(CAEmitterLayer *)v377->_dustEmitter emitterCells];
+    v128 = [emitterCells objectAtIndexedSubscript:0];
     *&v129 = v126;
     [v128 setBirthRate:v129];
 
-    v130 = [(CAEmitterLayer *)v377->_dustEmitter emitterCells];
-    v131 = [v130 objectAtIndexedSubscript:0];
+    emitterCells2 = [(CAEmitterLayer *)v377->_dustEmitter emitterCells];
+    v131 = [emitterCells2 objectAtIndexedSubscript:0];
     [v131 setContentsScale:10.0];
 
     [(CAEmitterLayer *)v377->_dustEmitter setPosition:v10 * 0.5, v12 * 0.5];
@@ -263,13 +263,13 @@
     [(CAEmitterLayer *)v377->_dustEmitter setSeed:arc4random()];
     v132 = [CAKeyframeAnimation animationWithKeyPath:@"backgroundColor"];
     v133 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    v134 = [v133 CGColor];
+    cGColor = [v133 CGColor];
     v135 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.94];
-    v136 = [v135 CGColor];
+    cGColor2 = [v135 CGColor];
     v137 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.94];
-    v138 = [v137 CGColor];
+    cGColor3 = [v137 CGColor];
     v139 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    v140 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v134, v136, v138, [v139 CGColor], 0);
+    v140 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor, cGColor2, cGColor3, [v139 CGColor], 0);
     [v132 setValues:v140];
 
     [v132 setKeyTimes:&off_8768];
@@ -518,15 +518,15 @@
     [v245 setTimingFunctions:v263];
 
     v264 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
-    v265 = [v264 CGColor];
+    cGColor4 = [v264 CGColor];
     v266 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
-    v267 = [v266 CGColor];
+    cGColor5 = [v266 CGColor];
     v268 = [UIColor colorWithRed:0.654901961 green:0.82745098 blue:0.996078431 alpha:1.0];
-    v269 = [v268 CGColor];
+    cGColor6 = [v268 CGColor];
     v270 = [UIColor colorWithRed:0.654901961 green:0.82745098 blue:0.996078431 alpha:1.0];
-    v271 = [v270 CGColor];
+    cGColor7 = [v270 CGColor];
     v272 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
-    v273 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v265, v267, v269, v271, [v272 CGColor], 0);
+    v273 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor4, cGColor5, cGColor6, cGColor7, [v272 CGColor], 0);
     [v245 setValues:v273];
 
     v366 = v245;
@@ -671,11 +671,11 @@
     v5 = v371;
     v4 = v372;
     v8 = v369;
-    v7 = v370;
+    stringValue = v370;
   }
 
-  v345 = [(CKSpotlightEffectView *)self layer];
-  [v345 addSublayer:v8];
+  layer2 = [(CKSpotlightEffectView *)self layer];
+  [layer2 addSublayer:v8];
 
   objc_storeStrong(&self->_SpotlightLayer, v8);
   v346 = dispatch_time(0, 5700000000);
@@ -701,7 +701,7 @@
   return result;
 }
 
-- (void)_displayLinkCallback:(id)a3
+- (void)_displayLinkCallback:(id)callback
 {
   v4 = CACurrentMediaTime();
   v5 = v4 - self->_elasticLastTime;
@@ -778,11 +778,11 @@
   +[CATransaction commit];
 }
 
-- (void)setFocusPoint:(CGPoint)a3
+- (void)setFocusPoint:(CGPoint)point
 {
-  if (self->_focusPoint.x != a3.x || self->_focusPoint.y != a3.y)
+  if (self->_focusPoint.x != point.x || self->_focusPoint.y != point.y)
   {
-    self->_focusPoint = a3;
+    self->_focusPoint = point;
   }
 }
 

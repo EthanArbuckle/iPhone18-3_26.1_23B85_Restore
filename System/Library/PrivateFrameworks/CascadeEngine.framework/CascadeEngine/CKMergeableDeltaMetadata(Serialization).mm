@@ -12,15 +12,15 @@
   v6 = v11;
   if (v5)
   {
-    v7 = v5;
+    data = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v8 = v7;
+  v8 = data;
 
   if (a4 && v6)
   {

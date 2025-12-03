@@ -1,24 +1,24 @@
 @interface PLPlaceholderThumbnailManager
 + (id)sharedManager;
 - (PLPlaceholderThumbnailManager)init;
-- (id)_cacheKeyForFormat:(id)a3 photoImageSize:(CGSize)a4 photoImageColor:(id)a5;
-- (id)newPlaceholderImageForFormat:(unsigned __int16)a3 photoImageSize:(CGSize)a4;
-- (id)placeholderDataForFormat:(unsigned __int16)a3 photoImageSize:(CGSize)a4 width:(int *)a5 height:(int *)a6 bytesPerRow:(int *)a7 dataWidth:(int *)a8 dataHeight:(int *)a9 imageDataOffset:(int *)a10;
+- (id)_cacheKeyForFormat:(id)format photoImageSize:(CGSize)size photoImageColor:(id)color;
+- (id)newPlaceholderImageForFormat:(unsigned __int16)format photoImageSize:(CGSize)size;
+- (id)placeholderDataForFormat:(unsigned __int16)format photoImageSize:(CGSize)size width:(int *)width height:(int *)height bytesPerRow:(int *)row dataWidth:(int *)dataWidth dataHeight:(int *)dataHeight imageDataOffset:(int *)self0;
 @end
 
 @implementation PLPlaceholderThumbnailManager
 
-- (id)newPlaceholderImageForFormat:(unsigned __int16)a3 photoImageSize:(CGSize)a4
+- (id)newPlaceholderImageForFormat:(unsigned __int16)format photoImageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__110502;
   v18 = __Block_byref_object_dispose__110503;
   v19 = 0;
-  v6 = [MEMORY[0x1E69BF260] formatWithID:a3];
+  v6 = [MEMORY[0x1E69BF260] formatWithID:format];
   v7 = v6;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
@@ -162,9 +162,9 @@ LABEL_29:
   }
 }
 
-- (id)placeholderDataForFormat:(unsigned __int16)a3 photoImageSize:(CGSize)a4 width:(int *)a5 height:(int *)a6 bytesPerRow:(int *)a7 dataWidth:(int *)a8 dataHeight:(int *)a9 imageDataOffset:(int *)a10
+- (id)placeholderDataForFormat:(unsigned __int16)format photoImageSize:(CGSize)size width:(int *)width height:(int *)height bytesPerRow:(int *)row dataWidth:(int *)dataWidth dataHeight:(int *)dataHeight imageDataOffset:(int *)self0
 {
-  v10 = [MEMORY[0x1E69BF260] formatWithID:a3];
+  v10 = [MEMORY[0x1E69BF260] formatWithID:format];
   if ([v10 isThumbnail])
   {
     v11 = DCIM_resolvedPlaceholderImageColor();
@@ -289,28 +289,28 @@ void __135__PLPlaceholderThumbnailManager_placeholderDataForFormat_photoImageSiz
   }
 }
 
-- (id)_cacheKeyForFormat:(id)a3 photoImageSize:(CGSize)a4 photoImageColor:(id)a5
+- (id)_cacheKeyForFormat:(id)format photoImageSize:(CGSize)size photoImageColor:(id)color
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 isCropped];
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  formatCopy = format;
+  isCropped = [formatCopy isCropped];
   v11 = MEMORY[0x1E696AEC0];
-  if (v10)
+  if (isCropped)
   {
-    v12 = [v9 formatID];
+    formatID = [formatCopy formatID];
 
-    v13 = [v8 hash];
-    [v11 stringWithFormat:@"%d~%lu", v12, v13, v18];
+    v13 = [colorCopy hash];
+    [v11 stringWithFormat:@"%d~%lu", formatID, v13, v18];
   }
 
   else
   {
-    v14 = [v9 formatID];
+    formatID2 = [formatCopy formatID];
 
-    v15 = [v8 hash];
-    [v11 stringWithFormat:@"%d~%lu_%.4f", v14, v15, width / height];
+    v15 = [colorCopy hash];
+    [v11 stringWithFormat:@"%d~%lu_%.4f", formatID2, v15, width / height];
   }
   v16 = ;
 

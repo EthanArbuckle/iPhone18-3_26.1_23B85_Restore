@@ -1,36 +1,36 @@
 @interface AVTMetalHelper
-+ (id)helperForDevice:(uint64_t)a1;
-- (id)_initWithDevice:(id)a3;
-- (id)_locked_computePipelineStateWithFunctionName:(id)a3;
-- (id)_locked_functionNamed:(id)a3;
-- (id)_locked_renderPipelineStateWithDescriptor:(id *)a3 hashNumber:(id)a4;
-- (id)computePipelineStateWithFunctionName:(id)a1;
++ (id)helperForDevice:(uint64_t)device;
+- (id)_initWithDevice:(id)device;
+- (id)_locked_computePipelineStateWithFunctionName:(id)name;
+- (id)_locked_functionNamed:(id)named;
+- (id)_locked_renderPipelineStateWithDescriptor:(id *)descriptor hashNumber:(id)number;
+- (id)computePipelineStateWithFunctionName:(id)name;
 - (id)device;
-- (id)functionNamed:(id)a1;
-- (id)renderPipelineStateWithDescriptor:(void *)a1;
+- (id)functionNamed:(id)named;
+- (id)renderPipelineStateWithDescriptor:(void *)descriptor;
 - (os_unfair_lock_s)library;
 - (void)_locked_instanciateLibraryIfNeeded;
 @end
 
 @implementation AVTMetalHelper
 
-- (id)_initWithDevice:(id)a3
+- (id)_initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = AVTMetalHelper;
   v6 = [(AVTMetalHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-+ (id)helperForDevice:(uint64_t)a1
++ (id)helperForDevice:(uint64_t)device
 {
   v2 = a2;
   objc_opt_self();
@@ -68,9 +68,9 @@
   }
 }
 
-- (id)_locked_functionNamed:(id)a3
+- (id)_locked_functionNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   functions = self->_functions;
   if (!functions)
   {
@@ -81,7 +81,7 @@
     functions = self->_functions;
   }
 
-  v8 = [(NSMutableDictionary *)functions objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)functions objectForKeyedSubscript:namedCopy];
   if (v8)
   {
     v9 = v8;
@@ -90,8 +90,8 @@
   else
   {
     [(AVTMetalHelper *)self _locked_instanciateLibraryIfNeeded];
-    v9 = [(MTLLibrary *)self->_library newFunctionWithName:v4];
-    [(NSMutableDictionary *)self->_functions setObject:v9 forKeyedSubscript:v4];
+    v9 = [(MTLLibrary *)self->_library newFunctionWithName:namedCopy];
+    [(NSMutableDictionary *)self->_functions setObject:v9 forKeyedSubscript:namedCopy];
     if (!v9)
     {
       v10 = avt_default_log();
@@ -107,10 +107,10 @@
   return v9;
 }
 
-- (id)renderPipelineStateWithDescriptor:(void *)a1
+- (id)renderPipelineStateWithDescriptor:(void *)descriptor
 {
-  v3 = a1;
-  if (a1)
+  descriptorCopy = descriptor;
+  if (descriptor)
   {
     v4 = 0x9DDFEA08EB382D69 * ((0x9DDFEA08EB382D69 * *a2) ^ ((0x9DDFEA08EB382D69 * *a2) >> 47));
     v5 = 0x9DDFEA08EB382D69 * (v4 ^ (v4 >> 47));
@@ -133,10 +133,10 @@
     v17 = 0x9DDFEA08EB382D69 * ((0x9DDFEA08EB382D69 * (v16 ^ (v16 >> 47))) ^ ((0x9DDFEA08EB382D69 * (v15 ^ (0x9DDFEA08EB382D69 * (v16 ^ (v16 >> 47))))) >> 47) ^ (0x9DDFEA08EB382D69 * (v15 ^ (0x9DDFEA08EB382D69 * (v16 ^ (v16 >> 47))))));
     v18 = 0x9DDFEA08EB382D69 * (v17 ^ (v17 >> 47));
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:0x9DDFEA08EB382D69 * ((0x9DDFEA08EB382D69 * (v18 ^ ((0x9DDFEA08EB382D69 * (*(a2 + 88) ^ v18)) >> 47) ^ (0x9DDFEA08EB382D69 * (*(a2 + 88) ^ v18)))) ^ ((0x9DDFEA08EB382D69 * (v18 ^ ((0x9DDFEA08EB382D69 * (*(a2 + 88) ^ v18)) >> 47) ^ (0x9DDFEA08EB382D69 * (*(a2 + 88) ^ v18)))) >> 47))];
-    v20 = [*(v3 + 5) objectForKeyedSubscript:v19];
+    v20 = [*(descriptorCopy + 5) objectForKeyedSubscript:v19];
     if (!v20)
     {
-      os_unfair_lock_lock(v3 + 6);
+      os_unfair_lock_lock(descriptorCopy + 6);
       v21 = *(a2 + 48);
       v27[2] = *(a2 + 32);
       v27[3] = v21;
@@ -150,20 +150,20 @@
       v25 = *(a2 + 88);
       v30 = v24;
       v31 = v25;
-      v20 = [v3 _locked_renderPipelineStateWithDescriptor:v27 hashNumber:v19];
-      os_unfair_lock_unlock(v3 + 6);
+      v20 = [descriptorCopy _locked_renderPipelineStateWithDescriptor:v27 hashNumber:v19];
+      os_unfair_lock_unlock(descriptorCopy + 6);
     }
 
-    v3 = v20;
+    descriptorCopy = v20;
   }
 
-  return v3;
+  return descriptorCopy;
 }
 
-- (id)_locked_renderPipelineStateWithDescriptor:(id *)a3 hashNumber:(id)a4
+- (id)_locked_renderPipelineStateWithDescriptor:(id *)descriptor hashNumber:(id)number
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  numberCopy = number;
   renderPipelineStates = self->_renderPipelineStates;
   if (!renderPipelineStates)
   {
@@ -174,29 +174,29 @@
     renderPipelineStates = self->_renderPipelineStates;
   }
 
-  v10 = [(NSMutableDictionary *)renderPipelineStates objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)renderPipelineStates objectForKeyedSubscript:numberCopy];
   if (!v10)
   {
     v11 = objc_alloc_init(MEMORY[0x1E6974140]);
-    v12 = [v11 colorAttachments];
-    v13 = [v12 objectAtIndexedSubscript:0];
+    colorAttachments = [v11 colorAttachments];
+    v13 = [colorAttachments objectAtIndexedSubscript:0];
 
-    [v13 setPixelFormat:a3->var0];
-    [v11 setDepthAttachmentPixelFormat:a3->var1];
-    [v13 setBlendingEnabled:a3->var2];
-    [v13 setRgbBlendOperation:a3->var3];
-    [v13 setSourceRGBBlendFactor:a3->var4];
-    [v13 setDestinationRGBBlendFactor:a3->var5];
-    [v13 setAlphaBlendOperation:a3->var6];
-    [v13 setSourceAlphaBlendFactor:a3->var7];
-    [v13 setDestinationAlphaBlendFactor:a3->var8];
-    v14 = [(AVTMetalHelper *)self _locked_functionNamed:a3->var9];
+    [v13 setPixelFormat:descriptor->var0];
+    [v11 setDepthAttachmentPixelFormat:descriptor->var1];
+    [v13 setBlendingEnabled:descriptor->var2];
+    [v13 setRgbBlendOperation:descriptor->var3];
+    [v13 setSourceRGBBlendFactor:descriptor->var4];
+    [v13 setDestinationRGBBlendFactor:descriptor->var5];
+    [v13 setAlphaBlendOperation:descriptor->var6];
+    [v13 setSourceAlphaBlendFactor:descriptor->var7];
+    [v13 setDestinationAlphaBlendFactor:descriptor->var8];
+    v14 = [(AVTMetalHelper *)self _locked_functionNamed:descriptor->var9];
     [v11 setVertexFunction:v14];
 
-    v15 = [(AVTMetalHelper *)self _locked_functionNamed:a3->var10];
+    v15 = [(AVTMetalHelper *)self _locked_functionNamed:descriptor->var10];
     [v11 setFragmentFunction:v15];
 
-    [v11 setRasterSampleCount:a3->var11];
+    [v11 setRasterSampleCount:descriptor->var11];
     device = self->_device;
     v31 = 0;
     v10 = [(MTLDevice *)device newRenderPipelineStateWithDescriptor:v11 error:&v31];
@@ -206,8 +206,8 @@
       v18 = avt_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        var9 = a3->var9;
-        var10 = a3->var10;
+        var9 = descriptor->var9;
+        var10 = descriptor->var10;
         *buf = 138412802;
         v33 = var9;
         v34 = 2112;
@@ -218,7 +218,7 @@
       }
     }
 
-    [(NSMutableDictionary *)self->_renderPipelineStates setObject:v10 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_renderPipelineStates setObject:v10 forKeyedSubscript:numberCopy];
 
     if (!v10)
     {
@@ -237,9 +237,9 @@
   return v10;
 }
 
-- (id)_locked_computePipelineStateWithFunctionName:(id)a3
+- (id)_locked_computePipelineStateWithFunctionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   computePipelineStates = self->_computePipelineStates;
   if (!computePipelineStates)
   {
@@ -250,10 +250,10 @@
     computePipelineStates = self->_computePipelineStates;
   }
 
-  v8 = [(NSMutableDictionary *)computePipelineStates objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)computePipelineStates objectForKeyedSubscript:nameCopy];
   if (!v8)
   {
-    v9 = [(AVTMetalHelper *)self _locked_functionNamed:v4];
+    v9 = [(AVTMetalHelper *)self _locked_functionNamed:nameCopy];
     device = self->_device;
     v22 = 0;
     v8 = [(MTLDevice *)device newComputePipelineStateWithFunction:v9 error:&v22];
@@ -263,11 +263,11 @@
       v12 = avt_default_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(AVTMetalHelper *)v4 _locked_computePipelineStateWithFunctionName:v11, v12];
+        [(AVTMetalHelper *)nameCopy _locked_computePipelineStateWithFunctionName:v11, v12];
       }
     }
 
-    [(NSMutableDictionary *)self->_computePipelineStates setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_computePipelineStates setObject:v8 forKeyedSubscript:nameCopy];
 
     if (!v8)
     {
@@ -286,72 +286,72 @@
 
 - (id)device
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (os_unfair_lock_s)library
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = *&a1[4]._os_unfair_lock_opaque;
+    selfCopy = self;
+    v3 = *&self[4]._os_unfair_lock_opaque;
     if (!v3)
     {
-      os_unfair_lock_lock(a1 + 6);
-      [(os_unfair_lock_s *)v2 _locked_instanciateLibraryIfNeeded];
-      os_unfair_lock_unlock(v2 + 6);
-      v3 = *&v2[4]._os_unfair_lock_opaque;
+      os_unfair_lock_lock(self + 6);
+      [(os_unfair_lock_s *)selfCopy _locked_instanciateLibraryIfNeeded];
+      os_unfair_lock_unlock(selfCopy + 6);
+      v3 = *&selfCopy[4]._os_unfair_lock_opaque;
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)functionNamed:(id)a1
+- (id)functionNamed:(id)named
 {
   v3 = a2;
-  if (a1)
+  if (named)
   {
-    v4 = [*(a1 + 4) objectForKeyedSubscript:v3];
+    v4 = [*(named + 4) objectForKeyedSubscript:v3];
     if (!v4)
     {
-      os_unfair_lock_lock(a1 + 6);
-      v4 = [a1 _locked_functionNamed:v3];
-      os_unfair_lock_unlock(a1 + 6);
+      os_unfair_lock_lock(named + 6);
+      v4 = [named _locked_functionNamed:v3];
+      os_unfair_lock_unlock(named + 6);
     }
 
-    a1 = v4;
+    named = v4;
   }
 
-  return a1;
+  return named;
 }
 
-- (id)computePipelineStateWithFunctionName:(id)a1
+- (id)computePipelineStateWithFunctionName:(id)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    v4 = [*(a1 + 6) objectForKeyedSubscript:v3];
+    v4 = [*(name + 6) objectForKeyedSubscript:v3];
     if (!v4)
     {
-      os_unfair_lock_lock(a1 + 6);
-      v4 = [a1 _locked_computePipelineStateWithFunctionName:v3];
-      os_unfair_lock_unlock(a1 + 6);
+      os_unfair_lock_lock(name + 6);
+      v4 = [name _locked_computePipelineStateWithFunctionName:v3];
+      os_unfair_lock_unlock(name + 6);
     }
 
-    a1 = v4;
+    name = v4;
   }
 
-  return a1;
+  return name;
 }
 
 - (void)_locked_functionNamed:(uint64_t)a3 .cold.1(NSObject *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

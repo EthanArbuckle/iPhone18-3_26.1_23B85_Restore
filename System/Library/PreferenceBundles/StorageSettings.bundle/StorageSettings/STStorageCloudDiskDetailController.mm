@@ -1,13 +1,13 @@
 @interface STStorageCloudDiskDetailController
 - (id)specifiers;
-- (id)valueForSpecifier:(id)a3;
+- (id)valueForSpecifier:(id)specifier;
 @end
 
 @implementation STStorageCloudDiskDetailController
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSValueKey];
+  v3 = [specifier propertyForKey:PSValueKey];
   [v3 longLongValue];
   v4 = STFormattedSize();
 
@@ -27,8 +27,8 @@
   v6 = STStorageLocStr(@"DOCUMENTS_AND_DATA");
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:"valueForSpecifier:" detail:0 cell:4 edit:0];
 
-  v8 = [v4 appSize];
-  v9 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 userTotal]);
+  appSize = [v4 appSize];
+  v9 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [appSize userTotal]);
   [v7 setProperty:v9 forKey:PSValueKey];
 
   [v3 addObject:v7];

@@ -88,37 +88,37 @@
 {
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
-    v2 = [a1 ic_resolvedColorForLightUserInterfaceStyle];
+    selfCopy = [self ic_resolvedColorForLightUserInterfaceStyle];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 + (id)ic_noteEditorSecondaryLabelColor
 {
-  v0 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v1 = [v0 ic_resolvedColorForNoteEditor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  ic_resolvedColorForNoteEditor = [secondaryLabelColor ic_resolvedColorForNoteEditor];
 
-  return v1;
+  return ic_resolvedColorForNoteEditor;
 }
 
 + (id)ic_noteEditorBackgroundColor
 {
-  v0 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v1 = [v0 ic_resolvedColorForNoteEditor];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  ic_resolvedColorForNoteEditor = [systemBackgroundColor ic_resolvedColorForNoteEditor];
 
-  return v1;
+  return ic_resolvedColorForNoteEditor;
 }
 
 + (id)ICDarkenedTintColor
 {
-  v2 = [a1 ICTintColor];
-  v3 = [a1 ic_darkerAccessibilityColorForColor:v2];
+  iCTintColor = [self ICTintColor];
+  v3 = [self ic_darkerAccessibilityColorForColor:iCTintColor];
 
   return v3;
 }
@@ -154,11 +154,11 @@
 
 + (id)ICTintedSelectionColor
 {
-  v1 = [a1 ICTintColor];
+  iCTintColor = [self ICTintColor];
   if (sUsingCustomTintColor == 1)
   {
-    v2 = [MEMORY[0x1E69DC888] ICTintColor];
-    v3 = [v2 colorWithAlphaComponent:0.2];
+    iCTintColor2 = [MEMORY[0x1E69DC888] ICTintColor];
+    v3 = [iCTintColor2 colorWithAlphaComponent:0.2];
   }
 
   else
@@ -179,8 +179,8 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 ic_attachmentBackgroundColor];
-    v6 = [v5 resolvedColorWithTraitCollection:v4];
+    ic_attachmentBackgroundColor = [self ic_attachmentBackgroundColor];
+    v6 = [ic_attachmentBackgroundColor resolvedColorWithTraitCollection:v4];
   }
 
   else
@@ -196,24 +196,24 @@
 {
   v3 = MEMORY[0x1E69DC888];
   v4 = a3;
-  v5 = [v3 tintColor];
-  v6 = [v5 resolvedColorWithTraitCollection:v4];
+  tintColor = [v3 tintColor];
+  v6 = [tintColor resolvedColorWithTraitCollection:v4];
 
   return v6;
 }
 
 - (uint64_t)ic_resolvedColor
 {
-  v1 = [a1 CGColor];
+  cGColor = [self CGColor];
   v2 = MEMORY[0x1E69DC888];
 
-  return [v2 colorWithCGColor:v1];
+  return [v2 colorWithCGColor:cGColor];
 }
 
 - (id)ic_resolvedColorForLightUserInterfaceStyle
 {
   v2 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:1];
-  v3 = [a1 resolvedColorWithTraitCollection:v2];
+  v3 = [self resolvedColorWithTraitCollection:v2];
 
   return v3;
 }
@@ -248,16 +248,16 @@
 
 + (id)ICGrayTodoButtonColor
 {
-  v1 = [a1 tertiaryLabelColor];
-  v2 = [v1 ic_resolvedColorForNoteEditor];
+  tertiaryLabelColor = [self tertiaryLabelColor];
+  ic_resolvedColorForNoteEditor = [tertiaryLabelColor ic_resolvedColorForNoteEditor];
 
-  return v2;
+  return ic_resolvedColorForNoteEditor;
 }
 
 + (id)ICLearnMoreButtonPressedColor
 {
-  v1 = [a1 ICLearnMoreButtonUnpressedColor];
-  v2 = [v1 colorWithAlphaComponent:0.4];
+  iCLearnMoreButtonUnpressedColor = [self ICLearnMoreButtonUnpressedColor];
+  v2 = [iCLearnMoreButtonUnpressedColor colorWithAlphaComponent:0.4];
 
   return v2;
 }
@@ -361,16 +361,16 @@
 + (id)ic_imageFromColor:()IC size:
 {
   v7 = a5;
-  v13.width = a1;
+  v13.width = self;
   v13.height = a2;
   UIGraphicsBeginImageContext(v13);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [v7 CGColor];
+  cGColor = [v7 CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v9);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v14.origin.x = 0.0;
   v14.origin.y = 0.0;
-  v14.size.width = a1;
+  v14.size.width = self;
   v14.size.height = a2;
   CGContextFillRect(CurrentContext, v14);
   v10 = UIGraphicsGetImageFromCurrentImageContext();
@@ -397,34 +397,34 @@
 
 + (id)ICBlockQuoteBackgroundColor
 {
-  v0 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v1 = [v0 ic_resolvedColorForNoteEditor];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  ic_resolvedColorForNoteEditor = [tertiaryLabelColor ic_resolvedColorForNoteEditor];
 
-  return v1;
+  return ic_resolvedColorForNoteEditor;
 }
 
 + (id)ic_noteEditorLabelColor
 {
-  v0 = [MEMORY[0x1E69DC888] labelColor];
-  v1 = [v0 ic_resolvedColorForNoteEditor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  ic_resolvedColorForNoteEditor = [labelColor ic_resolvedColorForNoteEditor];
 
-  return v1;
+  return ic_resolvedColorForNoteEditor;
 }
 
 + (id)ic_noteEditorPreviewColorForceLightContent:()IC
 {
   if (a3)
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    v3 = [v4 ic_resolvedColorForNoteEditor];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    whiteColor = [secondarySystemGroupedBackgroundColor ic_resolvedColorForNoteEditor];
   }
 
-  return v3;
+  return whiteColor;
 }
 
 + (id)ic_notePreviewBackgroundLightContent:()IC
@@ -476,25 +476,25 @@
 
 - (id)ic_colorString
 {
-  v1 = [a1 CGColor];
-  if (v1)
+  cGColor = [self CGColor];
+  if (cGColor)
   {
-    v1 = ICStringFromCGColor();
+    cGColor = ICStringFromCGColor();
   }
 
-  return v1;
+  return cGColor;
 }
 
 - (uint64_t)ic_isBlack
 {
-  v1 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return MEMORY[0x1EEE23650](v1);
+  return MEMORY[0x1EEE23650](cGColor);
 }
 
 - (BOOL)ic_isWhite
 {
-  [a1 CGColor];
+  [self CGColor];
   TSUColorLightness();
   return v1 == 1.0;
 }
@@ -502,17 +502,17 @@
 - (id)ic_colorBlendedWithColor:()IC
 {
   v4 = a3;
-  if (v4 && ![a1 isEqual:v4])
+  if (v4 && ![self isEqual:v4])
   {
-    v5 = [a1 _colorBlendedWithColor:v4];
+    selfCopy = [self _colorBlendedWithColor:v4];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
@@ -520,25 +520,25 @@
 - (id)ic_colorBlendedWithColor:()IC fraction:
 {
   v6 = a4;
-  if (v6 && ![a1 isEqual:v6])
+  if (v6 && ![self isEqual:v6])
   {
-    [a1 alphaComponent];
+    [self alphaComponent];
     v9 = v8;
     [v6 alphaComponent];
     v11 = v10 * a2 + (1.0 - a2) * v9;
-    v12 = [a1 colorWithAlphaComponent:1.0];
+    v12 = [self colorWithAlphaComponent:1.0];
     v13 = [v6 colorWithAlphaComponent:a2];
     v14 = [v12 _colorBlendedWithColor:v13];
 
-    v7 = [v14 colorWithAlphaComponent:v11];
+    selfCopy = [v14 colorWithAlphaComponent:v11];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

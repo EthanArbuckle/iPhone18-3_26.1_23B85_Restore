@@ -1,20 +1,20 @@
 @interface PowerUISmartChargeManagerUnsupported
 + (id)manager;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PowerUISmartChargeManagerUnsupported)init;
-- (void)client:(id)a3 getMCLLimitWithHandler:(id)a4;
-- (void)client:(id)a3 setDEoCState:(unint64_t)a4 withHandler:(id)a5;
-- (void)client:(id)a3 setMCLLimit:(unsigned __int8)a4 withHandler:(id)a5;
-- (void)client:(id)a3 setMCMState:(unint64_t)a4 withHandler:(id)a5;
-- (void)client:(id)a3 setState:(unint64_t)a4 withHandler:(id)a5;
-- (void)fullChargeDeadlineWithHandler:(id)a3;
-- (void)isMCMCurrentlyEnabledWithHandler:(id)a3;
-- (void)isSmartChargingCurrentlyEnabledWithHandler:(id)a3;
-- (void)legacy_isOBCEngagedWithHandler:(id)a3;
-- (void)shouldMCMBeDisplayedWithHandler:(id)a3;
-- (void)simulateCurrentOutputAsOfDate:(id)a3 overrideAllSignals:(BOOL)a4 withHandler:(id)a5;
-- (void)smartChargingUIStateWithHandler:(id)a3;
-- (void)tmpDisableMCLViaClient:(id)a3 withHandler:(id)a4;
+- (void)client:(id)client getMCLLimitWithHandler:(id)handler;
+- (void)client:(id)client setDEoCState:(unint64_t)state withHandler:(id)handler;
+- (void)client:(id)client setMCLLimit:(unsigned __int8)limit withHandler:(id)handler;
+- (void)client:(id)client setMCMState:(unint64_t)state withHandler:(id)handler;
+- (void)client:(id)client setState:(unint64_t)state withHandler:(id)handler;
+- (void)fullChargeDeadlineWithHandler:(id)handler;
+- (void)isMCMCurrentlyEnabledWithHandler:(id)handler;
+- (void)isSmartChargingCurrentlyEnabledWithHandler:(id)handler;
+- (void)legacy_isOBCEngagedWithHandler:(id)handler;
+- (void)shouldMCMBeDisplayedWithHandler:(id)handler;
+- (void)simulateCurrentOutputAsOfDate:(id)date overrideAllSignals:(BOOL)signals withHandler:(id)handler;
+- (void)smartChargingUIStateWithHandler:(id)handler;
+- (void)tmpDisableMCLViaClient:(id)client withHandler:(id)handler;
 @end
 
 @implementation PowerUISmartChargeManagerUnsupported
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CCAE90];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_282D598A0];
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
@@ -54,9 +54,9 @@
   v14 = [v8 setWithObjects:{v9, v10, v11, v12, v13, objc_opt_class(), 0}];
   [v7 setClasses:v14 forSelector:sel_statusWithHandler_ argumentIndex:0 ofReply:1];
 
-  [v6 setExportedInterface:v7];
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -68,109 +68,109 @@
   return v2;
 }
 
-- (void)client:(id)a3 setState:(unint64_t)a4 withHandler:(id)a5
+- (void)client:(id)client setState:(unint64_t)state withHandler:(id)handler
 {
   v6 = MEMORY[0x277CCA9B8];
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [v6 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a5 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)fullChargeDeadlineWithHandler:(id)a3
+- (void)fullChargeDeadlineWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)legacy_isOBCEngagedWithHandler:(id)a3
+- (void)legacy_isOBCEngagedWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a3 + 2))(v5, 0, 0, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, 0, 0, v6);
 }
 
-- (void)smartChargingUIStateWithHandler:(id)a3
+- (void)smartChargingUIStateWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a3 + 2))(v5, 1, 100, 0, v6);
+  (*(handler + 2))(handlerCopy, 1, 100, 0, v6);
 }
 
-- (void)isSmartChargingCurrentlyEnabledWithHandler:(id)a3
+- (void)isSmartChargingCurrentlyEnabledWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)simulateCurrentOutputAsOfDate:(id)a3 overrideAllSignals:(BOOL)a4 withHandler:(id)a5
+- (void)simulateCurrentOutputAsOfDate:(id)date overrideAllSignals:(BOOL)signals withHandler:(id)handler
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a5;
-  v9 = [v6 distantPast];
+  handlerCopy = handler;
+  distantPast = [v6 distantPast];
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a5 + 2))(v7, v9, v8);
+  (*(handler + 2))(handlerCopy, distantPast, v8);
 }
 
-- (void)client:(id)a3 setMCMState:(unint64_t)a4 withHandler:(id)a5
+- (void)client:(id)client setMCMState:(unint64_t)state withHandler:(id)handler
 {
   v6 = MEMORY[0x277CCA9B8];
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [v6 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a5 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)isMCMCurrentlyEnabledWithHandler:(id)a3
+- (void)isMCMCurrentlyEnabledWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a3 + 2))(v5, 3, v6);
+  (*(handler + 2))(handlerCopy, 3, v6);
 }
 
-- (void)shouldMCMBeDisplayedWithHandler:(id)a3
+- (void)shouldMCMBeDisplayedWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)client:(id)a3 setDEoCState:(unint64_t)a4 withHandler:(id)a5
+- (void)client:(id)client setDEoCState:(unint64_t)state withHandler:(id)handler
 {
   v6 = MEMORY[0x277CCA9B8];
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [v6 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a5 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)client:(id)a3 setMCLLimit:(unsigned __int8)a4 withHandler:(id)a5
+- (void)client:(id)client setMCLLimit:(unsigned __int8)limit withHandler:(id)handler
 {
   v6 = MEMORY[0x277CCA9B8];
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [v6 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a5 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)client:(id)a3 getMCLLimitWithHandler:(id)a4
+- (void)client:(id)client getMCLLimitWithHandler:(id)handler
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [v5 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a4 + 2))(v6, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, v7);
 }
 
-- (void)tmpDisableMCLViaClient:(id)a3 withHandler:(id)a4
+- (void)tmpDisableMCLViaClient:(id)client withHandler:(id)handler
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [v5 errorWithDomain:@"PowerUISmartChargingErrorDomain" code:4 userInfo:0];
-  (*(a4 + 2))(v6, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, v7);
 }
 
 @end

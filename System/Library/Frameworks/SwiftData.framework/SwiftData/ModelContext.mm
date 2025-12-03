@@ -1,13 +1,13 @@
 @interface ModelContext
-- (void)_clearChangedThisTransaction:(id)a3;
-- (void)_processChangedManagedObjectIDs:(id)a3;
+- (void)_clearChangedThisTransaction:(id)transaction;
+- (void)_processChangedManagedObjectIDs:(id)ds;
 - (void)autosave;
 - (void)checkAutosaveConditions;
 @end
 
 @implementation ModelContext
 
-- (void)_processChangedManagedObjectIDs:(id)a3
+- (void)_processChangedManagedObjectIDs:(id)ds
 {
   v3 = sub_197520BFC();
   v4 = *(v3 - 8);
@@ -21,7 +21,7 @@
   (*(v4 + 8))(v8, v3);
 }
 
-- (void)_clearChangedThisTransaction:(id)a3
+- (void)_clearChangedThisTransaction:(id)transaction
 {
   v3 = sub_1975219CC();
 

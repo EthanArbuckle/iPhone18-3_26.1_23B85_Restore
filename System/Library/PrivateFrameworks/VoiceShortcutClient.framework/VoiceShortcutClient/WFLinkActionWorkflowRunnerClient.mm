@@ -1,35 +1,35 @@
 @interface WFLinkActionWorkflowRunnerClient
-- (BOOL)shouldUseRunnerInfrastructureForRequest:(id)a3 action:(id)a4;
-- (WFLinkActionWorkflowRunnerClient)initWithLinkAction:(id)a3 appBundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 runSource:(int64_t)a6 runSourceOverride:(id)a7 authenticationPolicy:(int64_t)a8;
-- (unsigned)transcriptActionSourceForSurface:(unint64_t)a3;
-- (void)finishWithError:(id)a3;
+- (BOOL)shouldUseRunnerInfrastructureForRequest:(id)request action:(id)action;
+- (WFLinkActionWorkflowRunnerClient)initWithLinkAction:(id)action appBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier runSource:(int64_t)source runSourceOverride:(id)override authenticationPolicy:(int64_t)policy;
+- (unsigned)transcriptActionSourceForSurface:(unint64_t)surface;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation WFLinkActionWorkflowRunnerClient
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v11 = a3;
-  v4 = [(WFWorkflowRunnerClient *)self delegate];
+  errorCopy = error;
+  delegate = [(WFWorkflowRunnerClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(WFWorkflowRunnerClient *)self delegate];
-  v7 = v6;
+  delegate2 = [(WFWorkflowRunnerClient *)self delegate];
+  delegate4 = delegate2;
   if (v5)
   {
-    [v6 workflowRunnerClient:self didFinishRunningWorkflowWithOutput:0 error:v11 cancelled:0];
+    [delegate2 workflowRunnerClient:self didFinishRunningWorkflowWithOutput:0 error:errorCopy cancelled:0];
   }
 
   else
   {
     v8 = objc_opt_respondsToSelector();
 
-    v9 = [(WFWorkflowRunnerClient *)self delegate];
-    v7 = v9;
+    delegate3 = [(WFWorkflowRunnerClient *)self delegate];
+    delegate4 = delegate3;
     if (v8)
     {
-      [v9 workflowRunnerClient:self didFinishRunningWorkflowWithAllResults:0 error:v11 cancelled:0];
+      [delegate3 workflowRunnerClient:self didFinishRunningWorkflowWithAllResults:0 error:errorCopy cancelled:0];
     }
 
     else
@@ -41,8 +41,8 @@
         goto LABEL_8;
       }
 
-      v7 = [(WFWorkflowRunnerClient *)self delegate];
-      [v7 workflowRunnerClient:self didFinishRunningWorkflowWithError:v11 cancelled:0];
+      delegate4 = [(WFWorkflowRunnerClient *)self delegate];
+      [delegate4 workflowRunnerClient:self didFinishRunningWorkflowWithError:errorCopy cancelled:0];
     }
   }
 
@@ -51,13 +51,13 @@ LABEL_8:
 
 - (void)start
 {
-  v3 = [(WFWorkflowRunnerClient *)self runRequest];
-  if (v3)
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+  if (runRequest)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = runRequest;
     }
 
     else
@@ -73,13 +73,13 @@ LABEL_8:
 
   v5 = v4;
 
-  v6 = [v5 action];
-  if (v6)
+  action = [v5 action];
+  if (action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = action;
     }
 
     else
@@ -104,26 +104,26 @@ LABEL_8:
 
   else
   {
-    v9 = [v8 linkAction];
-    v10 = [v5 actionContext];
-    v11 = -[WFLinkActionWorkflowRunnerClient transcriptActionSourceForSurface:](self, "transcriptActionSourceForSurface:", [v10 surface]);
+    linkAction = [v8 linkAction];
+    actionContext = [v5 actionContext];
+    v11 = -[WFLinkActionWorkflowRunnerClient transcriptActionSourceForSurface:](self, "transcriptActionSourceForSurface:", [actionContext surface]);
 
     v12 = [WFLinkActionExecutor alloc];
-    v13 = [v8 appBundleIdentifier];
-    v14 = [v8 extensionBundleIdentifier];
-    v15 = [v8 authenticationPolicy];
-    v16 = [(WFLinkActionWorkflowRunnerClient *)self linkRunnerClientRunSourceOverride];
+    appBundleIdentifier = [v8 appBundleIdentifier];
+    extensionBundleIdentifier = [v8 extensionBundleIdentifier];
+    authenticationPolicy = [v8 authenticationPolicy];
+    linkRunnerClientRunSourceOverride = [(WFLinkActionWorkflowRunnerClient *)self linkRunnerClientRunSourceOverride];
     v30 = 0;
-    v17 = [(WFLinkActionExecutor *)v12 initWithLinkAction:v9 appBundleIdentifier:v13 extensionBundleIdentifier:v14 authenticationPolicy:v15 source:v11 sourceOverride:v16 error:&v30];
+    v17 = [(WFLinkActionExecutor *)v12 initWithLinkAction:linkAction appBundleIdentifier:appBundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier authenticationPolicy:authenticationPolicy source:v11 sourceOverride:linkRunnerClientRunSourceOverride error:&v30];
     v18 = v30;
 
     if (v17)
     {
-      v19 = [(WFLinkActionExecutor *)v17 metadata];
-      v20 = [v19 systemProtocols];
+      metadata = [(WFLinkActionExecutor *)v17 metadata];
+      systemProtocols = [metadata systemProtocols];
 
-      v21 = [MEMORY[0x1E69ACA48] sessionStartingProtocol];
-      v22 = [v20 containsObject:v21];
+      sessionStartingProtocol = [MEMORY[0x1E69ACA48] sessionStartingProtocol];
+      v22 = [systemProtocols containsObject:sessionStartingProtocol];
 
       if (v22)
       {
@@ -139,9 +139,9 @@ LABEL_8:
         v23[2] = __41__WFLinkActionWorkflowRunnerClient_start__block_invoke;
         v23[3] = &unk_1E7B00EA0;
         v24 = v17;
-        v25 = self;
+        selfCopy = self;
         v26 = v8;
-        v27 = v9;
+        v27 = linkAction;
         v28 = v5;
         [(WFLinkActionExecutor *)v24 performWithCompletionHandler:v23];
       }
@@ -224,29 +224,29 @@ id __41__WFLinkActionWorkflowRunnerClient_start__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (BOOL)shouldUseRunnerInfrastructureForRequest:(id)a3 action:(id)a4
+- (BOOL)shouldUseRunnerInfrastructureForRequest:(id)request action:(id)action
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  requestCopy = request;
+  actionCopy = action;
+  if (!actionCopy)
   {
     goto LABEL_8;
   }
 
-  v7 = [v5 actionContext];
-  if ([v7 surface] != 10)
+  actionContext = [requestCopy actionContext];
+  if ([actionContext surface] != 10)
   {
-    v8 = [v5 actionContext];
-    if ([v8 surface] == 11)
+    actionContext2 = [requestCopy actionContext];
+    if ([actionContext2 surface] == 11)
     {
 
       goto LABEL_5;
     }
 
-    v10 = [v5 actionContext];
-    v11 = [v10 surface];
+    actionContext3 = [requestCopy actionContext];
+    surface = [actionContext3 surface];
 
-    if (v11 == 18)
+    if (surface == 18)
     {
       goto LABEL_6;
     }
@@ -265,28 +265,28 @@ LABEL_9:
   return v9;
 }
 
-- (unsigned)transcriptActionSourceForSurface:(unint64_t)a3
+- (unsigned)transcriptActionSourceForSurface:(unint64_t)surface
 {
-  if (a3 - 2 > 0xE)
+  if (surface - 2 > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return word_1B1F368F0[a3 - 2];
+    return word_1B1F368F0[surface - 2];
   }
 }
 
-- (WFLinkActionWorkflowRunnerClient)initWithLinkAction:(id)a3 appBundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 runSource:(int64_t)a6 runSourceOverride:(id)a7 authenticationPolicy:(int64_t)a8
+- (WFLinkActionWorkflowRunnerClient)initWithLinkAction:(id)action appBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier runSource:(int64_t)source runSourceOverride:(id)override authenticationPolicy:(int64_t)policy
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v36 = a7;
-  if (v15)
+  actionCopy = action;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  overrideCopy = override;
+  if (actionCopy)
   {
-    if (v16)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -294,55 +294,55 @@ LABEL_9:
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFLinkActionWorkflowRunnerClient.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkActionWorkflowRunnerClient.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-    if (v16)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"WFLinkActionWorkflowRunnerClient.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFLinkActionWorkflowRunnerClient.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
 LABEL_3:
   v18 = [WFLinkContextualAction alloc];
-  if (a8 == 2)
+  if (policy == 2)
   {
     v19 = 2;
   }
 
   else
   {
-    v19 = a8 == 1;
+    v19 = policy == 1;
   }
 
-  v20 = [(WFLinkContextualAction *)v18 initWithAction:v15 appBundleIdentifier:v16 extensionBundleIdentifier:v17 authenticationPolicy:v19];
+  v20 = [(WFLinkContextualAction *)v18 initWithAction:actionCopy appBundleIdentifier:identifierCopy extensionBundleIdentifier:bundleIdentifierCopy authenticationPolicy:v19];
   v21 = [WFContextualActionContext alloc];
-  if (a6 > 9)
+  if (source > 9)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = qword_1B1F368A0[a6];
+    v22 = qword_1B1F368A0[source];
   }
 
   v23 = [(WFContextualActionContext *)v21 initWithSurface:v22];
   v24 = [[WFContextualActionRunDescriptor alloc] initWithAction:v20 context:v23];
   v25 = [[WFContextualActionRunRequest alloc] initWithAction:v20 actionContext:v23];
-  v26 = v15;
+  v26 = actionCopy;
   if ([(WFContextualActionContext *)v23 surface]== 10 || [(WFContextualActionContext *)v23 surface]== 11)
   {
-    v27 = v17;
+    v27 = bundleIdentifierCopy;
     v28 = 3;
   }
 
   else
   {
-    v27 = v17;
+    v27 = bundleIdentifierCopy;
     if ([(WFContextualActionContext *)v23 surface]== 18)
     {
       v28 = 3;
@@ -355,10 +355,10 @@ LABEL_3:
   }
 
   [(WFWorkflowRunRequest *)v25 setPresentationMode:v28];
-  self->_linkRunnerClientRunSource = a6;
+  self->_linkRunnerClientRunSource = source;
   linkRunnerClientRunSourceOverride = self->_linkRunnerClientRunSourceOverride;
-  self->_linkRunnerClientRunSourceOverride = v36;
-  v30 = v36;
+  self->_linkRunnerClientRunSourceOverride = overrideCopy;
+  v30 = overrideCopy;
 
   v37.receiver = self;
   v37.super_class = WFLinkActionWorkflowRunnerClient;

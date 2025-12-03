@@ -1,11 +1,11 @@
 @interface WorkoutPlanAlternativesViewController
 - (CGSize)preferredContentSize;
-- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WorkoutPlanAlternativesViewController
@@ -13,7 +13,7 @@
 - (CGSize)preferredContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_20C138104();
   if (v5 == sub_20C138104())
   {
@@ -24,7 +24,7 @@
 
   else
   {
-    v12.receiver = v4;
+    v12.receiver = selfCopy;
     v12.super_class = ObjectType;
     [(WorkoutPlanAlternativesViewController *)&v12 preferredContentSize];
     v9 = v8;
@@ -39,16 +39,16 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   [(WorkoutPlanAlternativesViewController *)&v5 setPreferredContentSize:width, height];
 }
 
-- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI37WorkoutPlanAlternativesViewController_resignActiveObserver) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI37WorkoutPlanAlternativesViewController_visibility) = 1;
@@ -59,13 +59,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanAlternativesViewController.viewDidLoad()();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_20C132E94();
   v7 = *(v6 - 8);
@@ -73,9 +73,9 @@
   v9 = v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = self;
-  [(WorkoutPlanAlternativesViewController *)&v12 viewWillDisappear:v3];
-  v11[1] = v10;
+  selfCopy = self;
+  [(WorkoutPlanAlternativesViewController *)&v12 viewWillDisappear:disappearCopy];
+  v11[1] = selfCopy;
   sub_20C132E84();
   sub_20B7FE61C(&qword_27C766020);
   sub_20C139274();
@@ -96,7 +96,7 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI37WorkoutPlanAlternativesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

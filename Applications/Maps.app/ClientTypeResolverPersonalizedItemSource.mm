@@ -1,34 +1,34 @@
 @interface ClientTypeResolverPersonalizedItemSource
-- (BOOL)hasObjectWithType:(int)a3;
-- (ClientTypeResolverPersonalizedItemSource)initWithAddressBookManager:(id)a3 locationOfInterestManager:(id)a4;
-- (id)cachedAddressWithType:(int)a3;
-- (id)cachedLOIWithType:(int)a3;
-- (id)cachedObjectWithType:(int)a3;
-- (void)addressOrLOIWithType:(int)a3 completion:(id)a4;
-- (void)objectWithType:(int)a3 completion:(id)a4;
+- (BOOL)hasObjectWithType:(int)type;
+- (ClientTypeResolverPersonalizedItemSource)initWithAddressBookManager:(id)manager locationOfInterestManager:(id)interestManager;
+- (id)cachedAddressWithType:(int)type;
+- (id)cachedLOIWithType:(int)type;
+- (id)cachedObjectWithType:(int)type;
+- (void)addressOrLOIWithType:(int)type completion:(id)completion;
+- (void)objectWithType:(int)type completion:(id)completion;
 @end
 
 @implementation ClientTypeResolverPersonalizedItemSource
 
-- (void)addressOrLOIWithType:(int)a3 completion:(id)a4
+- (void)addressOrLOIWithType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  v4 = *&type;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10094090C;
     v8[3] = &unk_101658568;
-    v9 = v6;
+    v9 = completionCopy;
     [(ClientTypeResolverPersonalizedItemSource *)self objectWithType:v4 completion:v8];
   }
 }
 
-- (id)cachedLOIWithType:(int)a3
+- (id)cachedLOIWithType:(int)type
 {
-  v3 = [(ClientTypeResolverPersonalizedItemSource *)self cachedObjectWithType:*&a3];
+  v3 = [(ClientTypeResolverPersonalizedItemSource *)self cachedObjectWithType:*&type];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -43,9 +43,9 @@
   return v4;
 }
 
-- (id)cachedAddressWithType:(int)a3
+- (id)cachedAddressWithType:(int)type
 {
-  v3 = [(ClientTypeResolverPersonalizedItemSource *)self cachedObjectWithType:*&a3];
+  v3 = [(ClientTypeResolverPersonalizedItemSource *)self cachedObjectWithType:*&type];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -60,9 +60,9 @@
   return v4;
 }
 
-- (id)cachedObjectWithType:(int)a3
+- (id)cachedObjectWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if (!+[AddressBookManager addressBookAllowed]|| ![(ClientTypeResolverPersonalizedItemSource *)self homeAndWorkEnabled]|| ![(ClientTypeResolverSource *)self typeIsValid:v3])
   {
     goto LABEL_9;
@@ -70,13 +70,13 @@
 
   if (v3 == 6)
   {
-    v12 = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
-    v6 = [v12 meCardSchoolAddress];
+    addressBookManager = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
+    meCardSchoolAddress = [addressBookManager meCardSchoolAddress];
 
-    if (!v6)
+    if (!meCardSchoolAddress)
     {
-      v7 = [(ClientTypeResolverPersonalizedItemSource *)self locationOfInterestManager];
-      v8 = [v7 schoolLOIs];
+      locationOfInterestManager = [(ClientTypeResolverPersonalizedItemSource *)self locationOfInterestManager];
+      schoolLOIs = [locationOfInterestManager schoolLOIs];
       goto LABEL_18;
     }
 
@@ -87,16 +87,16 @@
   {
     if (v3 == 1)
     {
-      v5 = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
-      v6 = [v5 meCardHomeAddress];
+      addressBookManager2 = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
+      meCardSchoolAddress = [addressBookManager2 meCardHomeAddress];
 
-      if (!v6)
+      if (!meCardSchoolAddress)
       {
-        v7 = [(ClientTypeResolverPersonalizedItemSource *)self locationOfInterestManager];
-        v8 = [v7 homeLOIs];
+        locationOfInterestManager = [(ClientTypeResolverPersonalizedItemSource *)self locationOfInterestManager];
+        schoolLOIs = [locationOfInterestManager homeLOIs];
 LABEL_18:
-        v14 = v8;
-        v9 = [v8 firstObject];
+        v14 = schoolLOIs;
+        firstObject = [schoolLOIs firstObject];
 
         v13 = 0;
         goto LABEL_19;
@@ -106,48 +106,48 @@ LABEL_18:
     }
 
 LABEL_9:
-    v9 = 0;
+    firstObject = 0;
     goto LABEL_10;
   }
 
-  v11 = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
-  v6 = [v11 meCardWorkAddress];
+  addressBookManager3 = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
+  meCardSchoolAddress = [addressBookManager3 meCardWorkAddress];
 
-  if (!v6)
+  if (!meCardSchoolAddress)
   {
-    v7 = [(ClientTypeResolverPersonalizedItemSource *)self locationOfInterestManager];
-    v8 = [v7 workLOIs];
+    locationOfInterestManager = [(ClientTypeResolverPersonalizedItemSource *)self locationOfInterestManager];
+    schoolLOIs = [locationOfInterestManager workLOIs];
     goto LABEL_18;
   }
 
 LABEL_16:
-  v13 = v6;
-  v9 = v13;
+  v13 = meCardSchoolAddress;
+  firstObject = v13;
 LABEL_19:
 
 LABEL_10:
 
-  return v9;
+  return firstObject;
 }
 
-- (void)objectWithType:(int)a3 completion:(id)a4
+- (void)objectWithType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
-  if (v6)
+  v4 = *&type;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (+[AddressBookManager addressBookAllowed]&& [(ClientTypeResolverPersonalizedItemSource *)self homeAndWorkEnabled]&& [(ClientTypeResolverSource *)self typeIsValid:v4])
     {
       objc_initWeak(&location, self);
-      v7 = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
+      addressBookManager = [(ClientTypeResolverPersonalizedItemSource *)self addressBookManager];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_100940FE0;
       v8[3] = &unk_10162F420;
       objc_copyWeak(&v10, &location);
       v11 = v4;
-      v9 = v6;
-      [v7 performBlockAfterFirstCollection:v8];
+      v9 = completionCopy;
+      [addressBookManager performBlockAfterFirstCollection:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -155,14 +155,14 @@ LABEL_10:
 
     else
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (BOOL)hasObjectWithType:(int)a3
+- (BOOL)hasObjectWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if (![(ClientTypeResolverSource *)self typeIsValid:?])
   {
     return 0;
@@ -183,18 +183,18 @@ LABEL_10:
   return v6;
 }
 
-- (ClientTypeResolverPersonalizedItemSource)initWithAddressBookManager:(id)a3 locationOfInterestManager:(id)a4
+- (ClientTypeResolverPersonalizedItemSource)initWithAddressBookManager:(id)manager locationOfInterestManager:(id)interestManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  interestManagerCopy = interestManager;
   v14.receiver = self;
   v14.super_class = ClientTypeResolverPersonalizedItemSource;
   v9 = [(ClientTypeResolverPersonalizedItemSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_addressBookManager, a3);
-    objc_storeStrong(&v10->_locationOfInterestManager, a4);
+    objc_storeStrong(&v9->_addressBookManager, manager);
+    objc_storeStrong(&v10->_locationOfInterestManager, interestManager);
     locationOfInterestManager = v10->_locationOfInterestManager;
     v12 = [NSSet setWithArray:&off_1016ED0D0];
     [(CoreRoutineLocationOfInterestManager *)locationOfInterestManager monitorLOIsOfTypes:v12];

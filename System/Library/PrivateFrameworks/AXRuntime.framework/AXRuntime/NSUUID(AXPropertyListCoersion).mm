@@ -6,8 +6,8 @@
 
 - (id)_axRecursivelyPropertyListCoercedRepresentationWithError:()AXPropertyListCoersion
 {
-  v1 = [a1 UUIDString];
-  v2 = CFUUIDCreateFromString(0, v1);
+  uUIDString = [self UUIDString];
+  v2 = CFUUIDCreateFromString(0, uUIDString);
   v3 = smugglingDictionaryForCFUUID(v2);
   if (v2)
   {

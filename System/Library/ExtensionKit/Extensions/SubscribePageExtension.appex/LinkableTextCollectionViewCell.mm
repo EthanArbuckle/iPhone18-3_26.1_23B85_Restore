@@ -1,11 +1,11 @@
 @interface LinkableTextCollectionViewCell
-- (_TtC22SubscribePageExtension30LinkableTextCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension30LinkableTextCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LinkableTextCollectionViewCell
 
-- (_TtC22SubscribePageExtension30LinkableTextCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension30LinkableTextCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension30LinkableTextCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100386EF8();
 }
 

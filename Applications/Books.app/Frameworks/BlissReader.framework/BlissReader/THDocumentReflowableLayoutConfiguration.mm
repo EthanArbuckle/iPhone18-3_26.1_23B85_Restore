@@ -1,7 +1,7 @@
 @interface THDocumentReflowableLayoutConfiguration
 - (CGPoint)pageNumberPosition;
 - (UIEdgeInsets)contentInsets;
-- (UIEdgeInsets)noteEdgeInsetsAtScale:(double)a3;
+- (UIEdgeInsets)noteEdgeInsetsAtScale:(double)scale;
 - (double)_contentInsetScrubberVerticalPadding;
 - (double)noteSideLength;
 - (double)scrubberLeftRightInset;
@@ -25,9 +25,9 @@
 
 - (CGPoint)pageNumberPosition
 {
-  v2 = [(THDocumentReflowableLayoutConfiguration *)self bottomFullWidthToolbarFrame];
+  bottomFullWidthToolbarFrame = [(THDocumentReflowableLayoutConfiguration *)self bottomFullWidthToolbarFrame];
 
-  _CGRectGetCenter(v2);
+  _CGRectGetCenter(bottomFullWidthToolbarFrame);
   result.y = v4;
   result.x = v3;
   return result;
@@ -92,14 +92,14 @@
   return result;
 }
 
-- (UIEdgeInsets)noteEdgeInsetsAtScale:(double)a3
+- (UIEdgeInsets)noteEdgeInsetsAtScale:(double)scale
 {
   [-[THDocumentReflowableLayoutConfiguration environment](self "environment")];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(THDocumentReflowableLayoutConfiguration *)self _noteSideLengthAtScale:a3];
+  [(THDocumentReflowableLayoutConfiguration *)self _noteSideLengthAtScale:scale];
   v14 = v13;
   [(THDocumentReflowableLayoutConfiguration *)self gutterWidth];
   v16 = ceil((v15 - v14) * 0.5);

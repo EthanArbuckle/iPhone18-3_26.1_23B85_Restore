@@ -1,15 +1,15 @@
 @interface CNMemojiBackgroundParameters
 + (id)defaultBackgroundColorDescription;
-- (CGPoint)endPointForLayerAtIndex:(int64_t)a3;
-- (CGPoint)startPointForLayerAtIndex:(int64_t)a3;
-- (CNMemojiBackgroundParameters)initWithColorDescription:(id)a3;
-- (double)locationForColorAtIndex:(int64_t)a3 forLayer:(int64_t)a4;
-- (id)backgroundLayerColorForIndex:(int64_t)a3;
-- (id)colorAtIndex:(int64_t)a3 forLayer:(int64_t)a4;
-- (id)colorLayerColorForIndex:(int64_t)a3;
+- (CGPoint)endPointForLayerAtIndex:(int64_t)index;
+- (CGPoint)startPointForLayerAtIndex:(int64_t)index;
+- (CNMemojiBackgroundParameters)initWithColorDescription:(id)description;
+- (double)locationForColorAtIndex:(int64_t)index forLayer:(int64_t)layer;
+- (id)backgroundLayerColorForIndex:(int64_t)index;
+- (id)colorAtIndex:(int64_t)index forLayer:(int64_t)layer;
+- (id)colorLayerColorForIndex:(int64_t)index;
 - (id)description;
-- (id)topGradientLayerColorForIndex:(int64_t)a3;
-- (int64_t)numberOfColorsForLayer:(int64_t)a3;
+- (id)topGradientLayerColorForIndex:(int64_t)index;
+- (int64_t)numberOfColorsForLayer:(int64_t)layer;
 @end
 
 @implementation CNMemojiBackgroundParameters
@@ -28,15 +28,15 @@
   return v9;
 }
 
-- (CNMemojiBackgroundParameters)initWithColorDescription:(id)a3
+- (CNMemojiBackgroundParameters)initWithColorDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v10.receiver = self;
   v10.super_class = CNMemojiBackgroundParameters;
   v5 = [(CNMemojiBackgroundParameters *)&v10 init];
   if (v5)
   {
-    v6 = [[CNMemojiBackgroundColor alloc] initWithColorDescription:v4 alpha:0.4];
+    v6 = [[CNMemojiBackgroundColor alloc] initWithColorDescription:descriptionCopy alpha:0.4];
     contentColor = v5->_contentColor;
     v5->_contentColor = v6;
 
@@ -46,47 +46,47 @@
   return v5;
 }
 
-- (int64_t)numberOfColorsForLayer:(int64_t)a3
+- (int64_t)numberOfColorsForLayer:(int64_t)layer
 {
-  if (a3 > 2)
+  if (layer > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_19567B1B0[a3];
+    return qword_19567B1B0[layer];
   }
 }
 
-- (id)colorAtIndex:(int64_t)a3 forLayer:(int64_t)a4
+- (id)colorAtIndex:(int64_t)index forLayer:(int64_t)layer
 {
-  if (a4 == 2)
+  if (layer == 2)
   {
-    v4 = [(CNMemojiBackgroundParameters *)self topGradientLayerColorForIndex:a3];
+    v4 = [(CNMemojiBackgroundParameters *)self topGradientLayerColorForIndex:index];
   }
 
-  else if (a4 == 1)
+  else if (layer == 1)
   {
-    v4 = [(CNMemojiBackgroundParameters *)self colorLayerColorForIndex:a3];
+    v4 = [(CNMemojiBackgroundParameters *)self colorLayerColorForIndex:index];
   }
 
-  else if (a4)
+  else if (layer)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(CNMemojiBackgroundParameters *)self backgroundLayerColorForIndex:a3];
+    v4 = [(CNMemojiBackgroundParameters *)self backgroundLayerColorForIndex:index];
   }
 
   return v4;
 }
 
-- (id)backgroundLayerColorForIndex:(int64_t)a3
+- (id)backgroundLayerColorForIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
     v5 = 0;
   }
@@ -99,30 +99,30 @@
   return v5;
 }
 
-- (id)colorLayerColorForIndex:(int64_t)a3
+- (id)colorLayerColorForIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v5 = 0;
+    contentColor = 0;
   }
 
   else
   {
-    v5 = [(CNMemojiBackgroundParameters *)self contentColor];
+    contentColor = [(CNMemojiBackgroundParameters *)self contentColor];
   }
 
-  return v5;
+  return contentColor;
 }
 
-- (id)topGradientLayerColorForIndex:(int64_t)a3
+- (id)topGradientLayerColorForIndex:(int64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     v3 = 0.3;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = 0.0;
 LABEL_5:
@@ -136,9 +136,9 @@ LABEL_7:
   return v4;
 }
 
-- (double)locationForColorAtIndex:(int64_t)a3 forLayer:(int64_t)a4
+- (double)locationForColorAtIndex:(int64_t)index forLayer:(int64_t)layer
 {
-  v4 = a4 == 2 && a3 == 1;
+  v4 = layer == 2 && index == 1;
   result = 0.0;
   if (v4)
   {
@@ -148,7 +148,7 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)startPointForLayerAtIndex:(int64_t)a3
+- (CGPoint)startPointForLayerAtIndex:(int64_t)index
 {
   v3 = 0.5;
   v4 = 0.0;
@@ -157,7 +157,7 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)endPointForLayerAtIndex:(int64_t)a3
+- (CGPoint)endPointForLayerAtIndex:(int64_t)index
 {
   v3 = 0.5;
   v4 = 1.0;
@@ -204,9 +204,9 @@ LABEL_7:
     while (v4 < [(CNMemojiBackgroundParameters *)self numberOfLayers]);
   }
 
-  v18 = [v3 build];
+  build = [v3 build];
 
-  return v18;
+  return build;
 }
 
 @end

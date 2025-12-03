@@ -1,49 +1,49 @@
 @interface NLXSchemaCDMSingleServiceSetupAttemptFailed
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithDictionary:(id)a3;
-- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasRetryNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasRetryNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMSingleServiceSetupAttemptFailed
 
-- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithDictionary:(id)a3
+- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLXSchemaCDMSingleServiceSetupAttemptFailed;
   v5 = [(NLXSchemaCDMSingleServiceSetupAttemptFailed *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"serviceType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"serviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMSingleServiceSetupAttemptFailed setServiceType:](v5, "setServiceType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"retryNumber"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"retryNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMSingleServiceSetupAttemptFailed setRetryNumber:](v5, "setRetryNumber:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"reason"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMSingleServiceSetupAttemptFailed setReason:](v5, "setReason:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithJSON:(id)a3
+- (NLXSchemaCDMSingleServiceSetupAttemptFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMSingleServiceSetupAttemptFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMSingleServiceSetupAttemptFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMSingleServiceSetupAttemptFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMSingleServiceSetupAttemptFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v5 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorCode"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -110,7 +110,7 @@ LABEL_3:
 
 LABEL_13:
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMSingleServiceSetupAttemptFailed retryNumber](self, "retryNumber")}];
-      [v3 setObject:v9 forKeyedSubscript:@"retryNumber"];
+      [dictionary setObject:v9 forKeyedSubscript:@"retryNumber"];
 
       if ((*&self->_has & 1) == 0)
       {
@@ -129,7 +129,7 @@ LABEL_14:
         v11 = off_1E78DBE80[v10];
       }
 
-      [v3 setObject:v11 forKeyedSubscript:@"serviceType"];
+      [dictionary setObject:v11 forKeyedSubscript:@"serviceType"];
       goto LABEL_18;
     }
   }
@@ -139,14 +139,14 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  v6 = [(NLXSchemaCDMSingleServiceSetupAttemptFailed *)self reason];
+  reason = [(NLXSchemaCDMSingleServiceSetupAttemptFailed *)self reason];
   v7 = @"CDMSERVICESETUPATTEMPTFAILUREREASON_UNKNOWN";
-  if (v6 == 1)
+  if (reason == 1)
   {
     v7 = @"CDMSERVICESETUPATTEMPTFAILUREREASON_TIMED_OUT";
   }
 
-  if (v6 == 2)
+  if (reason == 2)
   {
     v8 = @"CDMSERVICESETUPATTEMPTFAILUREREASON_ERROR_DURING_SETUP";
   }
@@ -156,7 +156,7 @@ LABEL_14:
     v8 = v7;
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"reason"];
+  [dictionary setObject:v8 forKeyedSubscript:@"reason"];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -170,9 +170,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -229,16 +229,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -247,13 +247,13 @@ LABEL_5:
   if (*&has)
   {
     serviceType = self->_serviceType;
-    if (serviceType != [v4 serviceType])
+    if (serviceType != [equalCopy serviceType])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -265,13 +265,13 @@ LABEL_5:
   if (v8)
   {
     retryNumber = self->_retryNumber;
-    if (retryNumber != [v4 retryNumber])
+    if (retryNumber != [equalCopy retryNumber])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -283,10 +283,10 @@ LABEL_5:
   if (v10)
   {
     reason = self->_reason;
-    if (reason == [v4 reason])
+    if (reason == [equalCopy reason])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -305,7 +305,7 @@ LABEL_14:
   if (v12)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_18;
     }
@@ -317,9 +317,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -366,9 +366,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -381,9 +381,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -396,9 +396,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRetryNumber:(BOOL)a3
+- (void)setHasRetryNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 2;
   }

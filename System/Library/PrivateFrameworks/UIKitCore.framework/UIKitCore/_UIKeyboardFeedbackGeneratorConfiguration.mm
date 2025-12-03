@@ -2,7 +2,7 @@
 - (BOOL)defaultEnabled;
 - (NSDictionary)feedbacks;
 - (id)feedbackKeyPaths;
-- (void)setFeedbacks:(id)a3;
+- (void)setFeedbacks:(id)feedbacks;
 @end
 
 @implementation _UIKeyboardFeedbackGeneratorConfiguration
@@ -19,9 +19,9 @@
 {
   v6.receiver = self;
   v6.super_class = _UIKeyboardFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorConfiguration *)&v6 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v6 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_feedbacks);
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [feedbackKeyPaths arrayByAddingObject:v3];
 
   return v4;
 }
@@ -34,12 +34,12 @@
   return feedbacks;
 }
 
-- (void)setFeedbacks:(id)a3
+- (void)setFeedbacks:(id)feedbacks
 {
-  v4 = a3;
+  feedbacksCopy = feedbacks;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   feedbacks = self->_feedbacks;
-  self->_feedbacks = v4;
+  self->_feedbacks = feedbacksCopy;
 }
 
 @end

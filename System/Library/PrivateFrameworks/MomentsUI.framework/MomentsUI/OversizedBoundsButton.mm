@@ -1,21 +1,21 @@
 @interface OversizedBoundsButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC9MomentsUI21OversizedBoundsButton)initWithCoder:(id)a3;
-- (_TtC9MomentsUI21OversizedBoundsButton)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC9MomentsUI21OversizedBoundsButton)initWithCoder:(id)coder;
+- (_TtC9MomentsUI21OversizedBoundsButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OversizedBoundsButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(OversizedBoundsButton *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(OversizedBoundsButton *)selfCopy bounds];
   v8 = v7;
-  [(OversizedBoundsButton *)v6 bounds];
+  [(OversizedBoundsButton *)selfCopy bounds];
   v10 = v9;
-  [(OversizedBoundsButton *)v6 bounds];
+  [(OversizedBoundsButton *)selfCopy bounds];
   v15 = CGRectInset(v14, v8 * -1.5, v10 * -1.5);
   v13.x = x;
   v13.y = y;
@@ -24,23 +24,23 @@
   return v11;
 }
 
-- (_TtC9MomentsUI21OversizedBoundsButton)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI21OversizedBoundsButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for OversizedBoundsButton();
   return [(OversizedBoundsButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9MomentsUI21OversizedBoundsButton)initWithCoder:(id)a3
+- (_TtC9MomentsUI21OversizedBoundsButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for OversizedBoundsButton();
-  v4 = a3;
-  v5 = [(OversizedBoundsButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(OversizedBoundsButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

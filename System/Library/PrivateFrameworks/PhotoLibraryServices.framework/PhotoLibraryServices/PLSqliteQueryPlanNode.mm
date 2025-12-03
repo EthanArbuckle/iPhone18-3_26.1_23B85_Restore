@@ -1,22 +1,22 @@
 @interface PLSqliteQueryPlanNode
-- (PLSqliteQueryPlanNode)initWithIdentifier:(int)a3 parentIdentifier:(int)a4 unused:(int)a5 nodeDescription:(id)a6;
+- (PLSqliteQueryPlanNode)initWithIdentifier:(int)identifier parentIdentifier:(int)parentIdentifier unused:(int)unused nodeDescription:(id)description;
 @end
 
 @implementation PLSqliteQueryPlanNode
 
-- (PLSqliteQueryPlanNode)initWithIdentifier:(int)a3 parentIdentifier:(int)a4 unused:(int)a5 nodeDescription:(id)a6
+- (PLSqliteQueryPlanNode)initWithIdentifier:(int)identifier parentIdentifier:(int)parentIdentifier unused:(int)unused nodeDescription:(id)description
 {
-  v10 = a6;
+  descriptionCopy = description;
   v17.receiver = self;
   v17.super_class = PLSqliteQueryPlanNode;
   v11 = [(PLSqliteQueryPlanNode *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    v11->_identifier = a3;
-    v11->_parentIdentifier = a4;
-    v11->_unused = a5;
-    v13 = [v10 copy];
+    v11->_identifier = identifier;
+    v11->_parentIdentifier = parentIdentifier;
+    v11->_unused = unused;
+    v13 = [descriptionCopy copy];
     nodeDescription = v12->_nodeDescription;
     v12->_nodeDescription = v13;
 

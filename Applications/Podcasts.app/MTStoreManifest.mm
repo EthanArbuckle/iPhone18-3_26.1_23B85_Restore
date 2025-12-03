@@ -1,31 +1,31 @@
 @interface MTStoreManifest
-+ (BOOL)storePlatformDictionaryHasChildren:(id)a3;
-+ (id)_episodeStorePlatformDictionaryFromSiriAssetInfo:(id)a3 episodeAdamId:(id)a4;
-+ (id)episodeCacheForStoreMediaDictionaries:(id)a3;
-+ (id)playerItemsFromPodcastStorePlatformDictionary:(id)a3 oldestEpisode:(BOOL)a4 restricted:(BOOL *)a5 initiatedByAnotherUser:(BOOL)a6;
-+ (id)podcastStorePlatformDictionaryFromSiriAssetInfo:(id)a3 podcastAdamId:(id)a4;
-+ (id)storeMediaDictionariesToPlayerItems:(id)a3 initiatedByAnotherUser:(BOOL)a4;
-+ (void)createManifestForActivity:(id)a3 completion:(id)a4;
-+ (void)fetchPlayerItemsForStoreTrackIDs:(id)a3 initiatedByAnotherUser:(BOOL)a4 completion:(id)a5;
-- (MTStoreManifest)initWithEpisodeAdamId:(id)a3 siriAssetInfo:(id)a4 initialIndex:(unint64_t)a5 initiatedByAnotherUser:(BOOL)a6;
-- (MTStoreManifest)initWithItems:(id)a3 initialIndex:(unint64_t)a4;
-- (MTStoreManifest)initWithPodcastAdamId:(id)a3 siriAssetInfo:(id)a4 oldestEpisode:(BOOL)a5 initiatedByAnotherUser:(BOOL)a6;
-- (MTStoreManifest)initWithStoreMediaDictionaries:(id)a3 initialIndex:(unint64_t)a4;
-- (id)_initWithEpisodeAdamIds:(id)a3 playheadPosition:(double)a4 initialIndex:(unint64_t)a5;
-- (id)_initWithPodcastStorePlatformDictionary:(id)a3 oldestEpisode:(BOOL)a4;
++ (BOOL)storePlatformDictionaryHasChildren:(id)children;
++ (id)_episodeStorePlatformDictionaryFromSiriAssetInfo:(id)info episodeAdamId:(id)id;
++ (id)episodeCacheForStoreMediaDictionaries:(id)dictionaries;
++ (id)playerItemsFromPodcastStorePlatformDictionary:(id)dictionary oldestEpisode:(BOOL)episode restricted:(BOOL *)restricted initiatedByAnotherUser:(BOOL)user;
++ (id)podcastStorePlatformDictionaryFromSiriAssetInfo:(id)info podcastAdamId:(id)id;
++ (id)storeMediaDictionariesToPlayerItems:(id)items initiatedByAnotherUser:(BOOL)user;
++ (void)createManifestForActivity:(id)activity completion:(id)completion;
++ (void)fetchPlayerItemsForStoreTrackIDs:(id)ds initiatedByAnotherUser:(BOOL)user completion:(id)completion;
+- (MTStoreManifest)initWithEpisodeAdamId:(id)id siriAssetInfo:(id)info initialIndex:(unint64_t)index initiatedByAnotherUser:(BOOL)user;
+- (MTStoreManifest)initWithItems:(id)items initialIndex:(unint64_t)index;
+- (MTStoreManifest)initWithPodcastAdamId:(id)id siriAssetInfo:(id)info oldestEpisode:(BOOL)episode initiatedByAnotherUser:(BOOL)user;
+- (MTStoreManifest)initWithStoreMediaDictionaries:(id)dictionaries initialIndex:(unint64_t)index;
+- (id)_initWithEpisodeAdamIds:(id)ids playheadPosition:(double)position initialIndex:(unint64_t)index;
+- (id)_initWithPodcastStorePlatformDictionary:(id)dictionary oldestEpisode:(BOOL)episode;
 - (id)activity;
-- (void)_loadItemsFromEpisodeAdamIdsWithCompletion:(id)a3;
-- (void)_updateLoadStatus:(BOOL)a3;
-- (void)load:(id)a3;
+- (void)_loadItemsFromEpisodeAdamIdsWithCompletion:(id)completion;
+- (void)_updateLoadStatus:(BOOL)status;
+- (void)load:(id)load;
 @end
 
 @implementation MTStoreManifest
 
-- (MTStoreManifest)initWithEpisodeAdamId:(id)a3 siriAssetInfo:(id)a4 initialIndex:(unint64_t)a5 initiatedByAnotherUser:(BOOL)a6
+- (MTStoreManifest)initWithEpisodeAdamId:(id)id siriAssetInfo:(id)info initialIndex:(unint64_t)index initiatedByAnotherUser:(BOOL)user
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [objc_opt_class() _episodeStorePlatformDictionaryFromSiriAssetInfo:v10 episodeAdamId:v9];
+  idCopy = id;
+  infoCopy = info;
+  v11 = [objc_opt_class() _episodeStorePlatformDictionaryFromSiriAssetInfo:infoCopy episodeAdamId:idCopy];
 
   if (!v11)
   {
@@ -43,9 +43,9 @@
     }
 
 LABEL_7:
-    v22 = v9;
+    v22 = idCopy;
     v18 = [NSArray arrayWithObjects:&v22 count:1];
-    v19 = [(MTStoreManifest *)self _initWithEpisodeAdamIds:v18 playheadPosition:a5 initialIndex:0.0];
+    v19 = [(MTStoreManifest *)self _initWithEpisodeAdamIds:v18 playheadPosition:index initialIndex:0.0];
 
     v17 = v19;
     goto LABEL_8;
@@ -57,7 +57,7 @@ LABEL_7:
   v15 = [v13 storeMediaDictionariesToPlayerItems:v14 initiatedByAnotherUser:{-[MTStoreManifest initiatedByAnotherUser](self, "initiatedByAnotherUser")}];
 
 LABEL_6:
-  v16 = [(MTStoreManifest *)self initWithItems:v15 initialIndex:a5];
+  v16 = [(MTStoreManifest *)self initWithItems:v15 initialIndex:index];
   [(MTStoreManifest *)v16 _updateLoadStatus:v21];
   v17 = v16;
 
@@ -65,13 +65,13 @@ LABEL_8:
   return v17;
 }
 
-- (MTStoreManifest)initWithPodcastAdamId:(id)a3 siriAssetInfo:(id)a4 oldestEpisode:(BOOL)a5 initiatedByAnotherUser:(BOOL)a6
+- (MTStoreManifest)initWithPodcastAdamId:(id)id siriAssetInfo:(id)info oldestEpisode:(BOOL)episode initiatedByAnotherUser:(BOOL)user
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [objc_opt_class() podcastStorePlatformDictionaryFromSiriAssetInfo:v11 podcastAdamId:v10];
+  userCopy = user;
+  episodeCopy = episode;
+  idCopy = id;
+  infoCopy = info;
+  v12 = [objc_opt_class() podcastStorePlatformDictionaryFromSiriAssetInfo:infoCopy podcastAdamId:idCopy];
 
   v13 = [objc_opt_class() storePlatformDictionaryHasChildren:v12];
   v14 = _MTLogCategoryPlayback();
@@ -92,14 +92,14 @@ LABEL_8:
 
   else
   {
-    v16 = [(MTStoreManifest *)self _initWithPodcastStorePlatformDictionary:v12 oldestEpisode:v7];
+    v16 = [(MTStoreManifest *)self _initWithPodcastStorePlatformDictionary:v12 oldestEpisode:episodeCopy];
   }
 
   v17 = v16;
   if (v16)
   {
     [(MTStoreManifest *)v16 setPlayerItemsNeedLoading:v15 & 1];
-    if (v7)
+    if (episodeCopy)
     {
       v18 = 2;
     }
@@ -110,16 +110,16 @@ LABEL_8:
     }
 
     [(MTStoreManifest *)v17 setPlaybackOrder:v18];
-    [(MTStoreManifest *)v17 setPodcastAdamId:v10];
-    [(MTStoreManifest *)v17 setInitiatedByAnotherUser:v6];
+    [(MTStoreManifest *)v17 setPodcastAdamId:idCopy];
+    [(MTStoreManifest *)v17 setInitiatedByAnotherUser:userCopy];
   }
 
   return v17;
 }
 
-- (id)_initWithEpisodeAdamIds:(id)a3 playheadPosition:(double)a4 initialIndex:(unint64_t)a5
+- (id)_initWithEpisodeAdamIds:(id)ids playheadPosition:(double)position initialIndex:(unint64_t)index
 {
-  v8 = a3;
+  idsCopy = ids;
   v12.receiver = self;
   v12.super_class = MTStoreManifest;
   v9 = [(MTPlayerManifest *)&v12 init];
@@ -127,20 +127,20 @@ LABEL_8:
   if (v9)
   {
     [(MTStoreManifest *)v9 setPlayerItemsNeedLoading:1];
-    [(MTStoreManifest *)v10 setInitialPlayheadPosition:a4];
-    [(MTStoreManifest *)v10 setInitialIndex:a5];
-    [(MTStoreManifest *)v10 setEpisodeAdamIds:v8];
+    [(MTStoreManifest *)v10 setInitialPlayheadPosition:position];
+    [(MTStoreManifest *)v10 setInitialIndex:index];
+    [(MTStoreManifest *)v10 setEpisodeAdamIds:idsCopy];
   }
 
   return v10;
 }
 
-- (id)_initWithPodcastStorePlatformDictionary:(id)a3 oldestEpisode:(BOOL)a4
+- (id)_initWithPodcastStorePlatformDictionary:(id)dictionary oldestEpisode:(BOOL)episode
 {
-  v4 = a4;
+  episodeCopy = episode;
   v11 = 0;
-  v6 = a3;
-  v7 = [objc_opt_class() playerItemsFromPodcastStorePlatformDictionary:v6 oldestEpisode:v4 restricted:&v11 initiatedByAnotherUser:{-[MTStoreManifest initiatedByAnotherUser](self, "initiatedByAnotherUser")}];
+  dictionaryCopy = dictionary;
+  v7 = [objc_opt_class() playerItemsFromPodcastStorePlatformDictionary:dictionaryCopy oldestEpisode:episodeCopy restricted:&v11 initiatedByAnotherUser:{-[MTStoreManifest initiatedByAnotherUser](self, "initiatedByAnotherUser")}];
 
   v8 = [(MTStoreManifest *)self initWithItems:v7];
   v9 = v8;
@@ -152,16 +152,16 @@ LABEL_8:
   return v9;
 }
 
-- (void)load:(id)a3
+- (void)load:(id)load
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(MTStoreManifest *)v5 playerItemsNeedLoading])
+  loadCopy = load;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MTStoreManifest *)selfCopy playerItemsNeedLoading])
   {
-    [(MTStoreManifest *)v5 setPlayerItemsNeedLoading:0];
-    v6 = [(MTStoreManifest *)v5 episodeAdamIds];
-    v7 = [v6 count];
+    [(MTStoreManifest *)selfCopy setPlayerItemsNeedLoading:0];
+    episodeAdamIds = [(MTStoreManifest *)selfCopy episodeAdamIds];
+    v7 = [episodeAdamIds count];
 
     if (v7)
     {
@@ -169,23 +169,23 @@ LABEL_8:
       v28[1] = 3221225472;
       v28[2] = sub_1000D57E8;
       v28[3] = &unk_1004DB838;
-      v28[4] = v5;
-      v29 = v4;
-      [(MTStoreManifest *)v5 _loadItemsFromEpisodeAdamIdsWithCompletion:v28];
+      v28[4] = selfCopy;
+      v29 = loadCopy;
+      [(MTStoreManifest *)selfCopy _loadItemsFromEpisodeAdamIdsWithCompletion:v28];
     }
 
     else
     {
-      v8 = [(MTStoreManifest *)v5 podcastAdamId];
-      v9 = [MTStoreIdentifier isNotEmptyNumber:v8];
+      podcastAdamId = [(MTStoreManifest *)selfCopy podcastAdamId];
+      v9 = [MTStoreIdentifier isNotEmptyNumber:podcastAdamId];
 
-      objc_initWeak(&location, v5);
+      objc_initWeak(&location, selfCopy);
       if (v9)
       {
         v10 = [IMContentLookupService alloc];
-        v11 = [(MTStoreManifest *)v5 podcastAdamId];
-        v12 = [v11 stringValue];
-        v30 = v12;
+        podcastAdamId2 = [(MTStoreManifest *)selfCopy podcastAdamId];
+        stringValue = [podcastAdamId2 stringValue];
+        v30 = stringValue;
         v13 = [NSArray arrayWithObjects:&v30 count:1];
         v14 = [v10 initWithIds:v13];
 
@@ -198,8 +198,8 @@ LABEL_8:
         v16 = v15;
         v23 = v16;
         objc_copyWeak(&v26, &location);
-        v24 = v5;
-        v25 = v4;
+        v24 = selfCopy;
+        v25 = loadCopy;
         [v14 request:v22];
 
         objc_destroyWeak(&v26);
@@ -213,8 +213,8 @@ LABEL_8:
         v19[2] = sub_1000D5C14;
         v19[3] = &unk_1004DB888;
         objc_copyWeak(&v21, &location);
-        v20 = v4;
-        v18.receiver = v5;
+        v20 = loadCopy;
+        v18.receiver = selfCopy;
         v18.super_class = MTStoreManifest;
         [(MTStoreManifest *)&v18 load:v19];
 
@@ -226,51 +226,51 @@ LABEL_8:
 
   else
   {
-    v17.receiver = v5;
+    v17.receiver = selfCopy;
     v17.super_class = MTStoreManifest;
-    [(MTStoreManifest *)&v17 load:v4];
+    [(MTStoreManifest *)&v17 load:loadCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (MTStoreManifest)initWithStoreMediaDictionaries:(id)a3 initialIndex:(unint64_t)a4
+- (MTStoreManifest)initWithStoreMediaDictionaries:(id)dictionaries initialIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [objc_opt_class() storeMediaDictionariesToPlayerItems:v6];
+  dictionariesCopy = dictionaries;
+  v7 = [objc_opt_class() storeMediaDictionariesToPlayerItems:dictionariesCopy];
 
-  v8 = [(MTStoreManifest *)self initWithItems:v7 initialIndex:a4];
+  v8 = [(MTStoreManifest *)self initWithItems:v7 initialIndex:index];
   return v8;
 }
 
-- (MTStoreManifest)initWithItems:(id)a3 initialIndex:(unint64_t)a4
+- (MTStoreManifest)initWithItems:(id)items initialIndex:(unint64_t)index
 {
-  v6 = a3;
+  itemsCopy = items;
   v27.receiver = self;
   v27.super_class = MTStoreManifest;
-  v7 = [(MTItemListManifest *)&v27 initWithItems:v6];
+  v7 = [(MTItemListManifest *)&v27 initWithItems:itemsCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(MTItemListManifest *)v7 items];
-    if ([v9 count] <= a4)
+    items = [(MTItemListManifest *)v7 items];
+    if ([items count] <= index)
     {
-      v10 = 0x7FFFFFFFFFFFFFFFLL;
+      indexCopy = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v10 = a4;
+      indexCopy = index;
     }
 
-    [(MTStoreManifest *)v8 setCurrentIndex:v10];
+    [(MTStoreManifest *)v8 setCurrentIndex:indexCopy];
 
-    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v6;
+    v12 = itemsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
@@ -310,10 +310,10 @@ LABEL_8:
   return v8;
 }
 
-- (void)_updateLoadStatus:(BOOL)a3
+- (void)_updateLoadStatus:(BOOL)status
 {
-  v5 = [(MTStoreManifest *)self isLoaded];
-  if (v5)
+  isLoaded = [(MTStoreManifest *)self isLoaded];
+  if (isLoaded)
   {
     v6 = 2;
   }
@@ -323,10 +323,10 @@ LABEL_8:
     v6 = 0;
   }
 
-  if (v5 && !a3)
+  if (isLoaded && !status)
   {
-    v7 = [(MTItemListManifest *)self items];
-    v8 = [v7 count];
+    items = [(MTItemListManifest *)self items];
+    v8 = [items count];
 
     if (v8)
     {
@@ -342,29 +342,29 @@ LABEL_8:
   [(MTStoreManifest *)self setLoadStatus:v6];
 }
 
-- (void)_loadItemsFromEpisodeAdamIdsWithCompletion:(id)a3
+- (void)_loadItemsFromEpisodeAdamIdsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   [(MTStoreManifest *)self initialPlayheadPosition];
   v15[3] = v5;
-  v6 = [(MTStoreManifest *)self initialIndex];
+  initialIndex = [(MTStoreManifest *)self initialIndex];
   v7 = objc_opt_class();
-  v8 = [(MTStoreManifest *)self episodeAdamIds];
-  v9 = [(MTStoreManifest *)self initiatedByAnotherUser];
+  episodeAdamIds = [(MTStoreManifest *)self episodeAdamIds];
+  initiatedByAnotherUser = [(MTStoreManifest *)self initiatedByAnotherUser];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000D6120;
   v11[3] = &unk_1004DB8D8;
   objc_copyWeak(v14, &location);
-  v14[1] = v6;
+  v14[1] = initialIndex;
   v13 = v15;
-  v10 = v4;
+  v10 = completionCopy;
   v12 = v10;
-  [v7 fetchPlayerItemsForStoreTrackIDs:v8 initiatedByAnotherUser:v9 completion:v11];
+  [v7 fetchPlayerItemsForStoreTrackIDs:episodeAdamIds initiatedByAnotherUser:initiatedByAnotherUser completion:v11];
 
   objc_destroyWeak(v14);
   _Block_object_dispose(v15, 8);
@@ -375,54 +375,54 @@ LABEL_8:
 {
   v7.receiver = self;
   v7.super_class = MTStoreManifest;
-  v3 = [(MTPlayerManifest *)&v7 activity];
+  activity = [(MTPlayerManifest *)&v7 activity];
   v4 = [NSNumber numberWithUnsignedInteger:[(MTStoreManifest *)self currentIndex]];
-  [v3 setValue:v4 forKey:@"MTStoreManifestCurrentIndex"];
+  [activity setValue:v4 forKey:@"MTStoreManifestCurrentIndex"];
 
-  v5 = [(MTStoreManifest *)self episodeAdamIds];
-  [v3 setValue:v5 forKey:@"MTStoreManifestAdamIdList"];
+  episodeAdamIds = [(MTStoreManifest *)self episodeAdamIds];
+  [activity setValue:episodeAdamIds forKey:@"MTStoreManifestAdamIdList"];
 
-  return v3;
+  return activity;
 }
 
-+ (void)createManifestForActivity:(id)a3 completion:(id)a4
++ (void)createManifestForActivity:(id)activity completion:(id)completion
 {
-  v15 = a3;
-  v5 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   v6 = +[MTReachability sharedInstance];
-  v7 = [v6 isReachable];
+  isReachable = [v6 isReachable];
 
-  if (v7)
+  if (isReachable)
   {
-    v8 = [v15 userInfo];
-    v9 = [v8 valueForKey:@"MTStoreManifestAdamIdList"];
+    userInfo = [activityCopy userInfo];
+    v9 = [userInfo valueForKey:@"MTStoreManifestAdamIdList"];
 
     if ([v9 count])
     {
-      v10 = [v15 userInfo];
-      v11 = [v10 valueForKey:@"MTStoreManifestCurrentIndex"];
+      userInfo2 = [activityCopy userInfo];
+      v11 = [userInfo2 valueForKey:@"MTStoreManifestCurrentIndex"];
 
       v12 = [MTStoreManifest alloc];
-      [v15 currentTime];
+      [activityCopy currentTime];
       v14 = -[MTStoreManifest _initWithEpisodeAdamIds:playheadPosition:initialIndex:](v12, "_initWithEpisodeAdamIds:playheadPosition:initialIndex:", v9, [v11 unsignedIntegerValue], v13);
-      v5[2](v5, v14);
+      completionCopy[2](completionCopy, v14);
     }
 
     else
     {
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-+ (BOOL)storePlatformDictionaryHasChildren:(id)a3
++ (BOOL)storePlatformDictionaryHasChildren:(id)children
 {
-  v3 = [a3 objectForKeyedSubscript:@"childrenIds"];
+  v3 = [children objectForKeyedSubscript:@"childrenIds"];
   objc_opt_class();
   objc_opt_class();
   v4 = (objc_opt_isKindOfClass() & 1) != 0 && [v3 count] != 0;
@@ -430,13 +430,13 @@ LABEL_8:
   return v4;
 }
 
-+ (id)playerItemsFromPodcastStorePlatformDictionary:(id)a3 oldestEpisode:(BOOL)a4 restricted:(BOOL *)a5 initiatedByAnotherUser:(BOOL)a6
++ (id)playerItemsFromPodcastStorePlatformDictionary:(id)dictionary oldestEpisode:(BOOL)episode restricted:(BOOL *)restricted initiatedByAnotherUser:(BOOL)user
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [v10 objectForKeyedSubscript:@"childrenIds"];
-  v12 = [v10 objectForKeyedSubscript:@"children"];
-  if (a4)
+  userCopy = user;
+  dictionaryCopy = dictionary;
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"childrenIds"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"children"];
+  if (episode)
   {
     [v11 lastObject];
   }
@@ -446,31 +446,31 @@ LABEL_8:
     [v11 firstObject];
   }
   v13 = ;
-  v14 = [v13 stringValue];
-  v15 = [v12 objectForKeyedSubscript:v14];
+  stringValue = [v13 stringValue];
+  v15 = [v12 objectForKeyedSubscript:stringValue];
 
   if (v15)
   {
     v22 = 0;
-    v16 = [v10 objectForKeyedSubscript:@"isNotSubscribeable"];
-    v17 = [v16 BOOLValue];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isNotSubscribeable"];
+    bOOLValue = [v16 BOOLValue];
 
-    v18 = [MTStorePlatformUtil storeMediaDictionaryFromStorePlatformDictionary:v15 artworkSize:&v22 restricted:v17 isNotSubscribeable:kMTPreferredArtworkSize];
-    if (+[MTStorePlatformUtil isExplicitForStorePlatformDictionary:](MTStorePlatformUtil, "isExplicitForStorePlatformDictionary:", v10) && (+[PFRestrictionsController isExplicitContentAllowed]& 1) == 0)
+    v18 = [MTStorePlatformUtil storeMediaDictionaryFromStorePlatformDictionary:v15 artworkSize:&v22 restricted:bOOLValue isNotSubscribeable:kMTPreferredArtworkSize];
+    if (+[MTStorePlatformUtil isExplicitForStorePlatformDictionary:](MTStorePlatformUtil, "isExplicitForStorePlatformDictionary:", dictionaryCopy) && (+[PFRestrictionsController isExplicitContentAllowed]& 1) == 0)
     {
       v22 = 1;
     }
 
-    if (a5)
+    if (restricted)
     {
-      *a5 = v22;
+      *restricted = v22;
     }
 
     if (v18)
     {
       v23 = v18;
       v19 = [NSArray arrayWithObjects:&v23 count:1];
-      v20 = [a1 storeMediaDictionariesToPlayerItems:v19 initiatedByAnotherUser:v6];
+      v20 = [self storeMediaDictionariesToPlayerItems:v19 initiatedByAnotherUser:userCopy];
     }
 
     else
@@ -487,12 +487,12 @@ LABEL_8:
   return v20;
 }
 
-+ (id)podcastStorePlatformDictionaryFromSiriAssetInfo:(id)a3 podcastAdamId:(id)a4
++ (id)podcastStorePlatformDictionaryFromSiriAssetInfo:(id)info podcastAdamId:(id)id
 {
-  v5 = a4;
-  if (a3)
+  idCopy = id;
+  if (info)
   {
-    v6 = [a3 dataUsingEncoding:4];
+    v6 = [info dataUsingEncoding:4];
     v18 = 0;
     v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v18];
     v8 = v7;
@@ -500,8 +500,8 @@ LABEL_8:
     if (!v18)
     {
       v10 = [v7 objectForKey:@"results"];
-      v11 = [v5 stringValue];
-      v12 = [v10 objectForKey:v11];
+      stringValue = [idCopy stringValue];
+      v12 = [v10 objectForKey:stringValue];
 
       v13 = [v12 objectForKey:@"firstAndLastChildrenIds"];
       v14 = [v12 objectForKey:@"firstAndLastChildren"];
@@ -530,14 +530,14 @@ LABEL_8:
   return v9;
 }
 
-+ (id)_episodeStorePlatformDictionaryFromSiriAssetInfo:(id)a3 episodeAdamId:(id)a4
++ (id)_episodeStorePlatformDictionaryFromSiriAssetInfo:(id)info episodeAdamId:(id)id
 {
-  v5 = a4;
-  v6 = v5;
+  idCopy = id;
+  v6 = idCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (info && idCopy)
   {
-    v8 = [a3 dataUsingEncoding:4];
+    v8 = [info dataUsingEncoding:4];
     v14 = 0;
     v9 = [NSJSONSerialization JSONObjectWithData:v8 options:0 error:&v14];
     v10 = v9;
@@ -545,20 +545,20 @@ LABEL_8:
     if (!v14)
     {
       v11 = [v9 objectForKey:@"results"];
-      v12 = [v6 stringValue];
-      v7 = [v11 objectForKey:v12];
+      stringValue = [v6 stringValue];
+      v7 = [v11 objectForKey:stringValue];
     }
   }
 
   return v7;
 }
 
-+ (id)episodeCacheForStoreMediaDictionaries:(id)a3
++ (id)episodeCacheForStoreMediaDictionaries:(id)dictionaries
 {
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = +[NSMutableDictionary dictionary];
   v5 = kEpisodeEnclosureUrl;
-  v6 = [v3 valueForKey:kEpisodeAssetURL];
+  v6 = [dictionariesCopy valueForKey:kEpisodeAssetURL];
 
   v7 = [NSPredicate predicateWithFormat:@"%K in %@", v5, v6];
 
@@ -569,47 +569,47 @@ LABEL_8:
   v10 = [v8 arrayByAddingObjectsFromArray:v9];
 
   v11 = +[MTDB sharedInstance];
-  v12 = [v11 mainOrPrivateContext];
+  mainOrPrivateContext = [v11 mainOrPrivateContext];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000D6D60;
   v19[3] = &unk_1004D8DA8;
-  v20 = v12;
+  v20 = mainOrPrivateContext;
   v21 = v7;
   v22 = v10;
   v23 = v4;
   v13 = v4;
   v14 = v10;
   v15 = v7;
-  v16 = v12;
+  v16 = mainOrPrivateContext;
   [v16 performBlockAndWait:v19];
   v17 = [v13 copy];
 
   return v17;
 }
 
-+ (id)storeMediaDictionariesToPlayerItems:(id)a3 initiatedByAnotherUser:(BOOL)a4
++ (id)storeMediaDictionariesToPlayerItems:(id)items initiatedByAnotherUser:(BOOL)user
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
-  v61 = v4;
-  if (v4)
+  userCopy = user;
+  itemsCopy = items;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
+  v61 = userCopy;
+  if (userCopy)
   {
     v62 = 0;
   }
 
   else
   {
-    v62 = [a1 episodeCacheForStoreMediaDictionaries:v6];
+    v62 = [self episodeCacheForStoreMediaDictionaries:itemsCopy];
   }
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v64 = [obj countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v64)
   {
@@ -704,9 +704,9 @@ LABEL_8:
 
           else
           {
-            v31 = [v17 pubDate];
-            v32 = [v31 verboseDisplayString];
-            [v17 setAlbum:v32];
+            pubDate = [v17 pubDate];
+            verboseDisplayString = [pubDate verboseDisplayString];
+            [v17 setAlbum:verboseDisplayString];
           }
 
           v33 = [v10 objectForKeyedSubscript:@"explicit"];
@@ -735,15 +735,15 @@ LABEL_8:
           v37 = [v10 objectForKeyedSubscript:@"artworkURL"];
           if ([v37 count])
           {
-            v38 = [v37 lastObject];
-            v39 = [v38 objectForKeyedSubscript:@"url"];
+            lastObject = [v37 lastObject];
+            v39 = [lastObject objectForKeyedSubscript:@"url"];
             v40 = [NSURL URLWithString:v39];
             [v17 setArtworkUrl:v40];
           }
 
-          v41 = [v17 artworkUrl];
-          v42 = [v41 absoluteString];
-          v43 = [v42 length];
+          artworkUrl = [v17 artworkUrl];
+          absoluteString = [artworkUrl absoluteString];
+          v43 = [absoluteString length];
 
           if (!v43)
           {
@@ -762,8 +762,8 @@ LABEL_8:
 
           v11 = v68;
           v50 = [NSURL URLWithString:v68];
-          v51 = [v50 pathExtension];
-          v52 = [IMUTITypes UTIByExtension:v51];
+          pathExtension = [v50 pathExtension];
+          v52 = [IMUTITypes UTIByExtension:pathExtension];
 
           if (v52)
           {
@@ -801,13 +801,13 @@ LABEL_8:
   return v53;
 }
 
-+ (void)fetchPlayerItemsForStoreTrackIDs:(id)a3 initiatedByAnotherUser:(BOOL)a4 completion:(id)a5
++ (void)fetchPlayerItemsForStoreTrackIDs:(id)ds initiatedByAnotherUser:(BOOL)user completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
-    v10 = [v8 mt_compactMap:&stru_1004DB8F8];
+    v10 = [dsCopy mt_compactMap:&stru_1004DB8F8];
     v11 = [[IMContentLookupService alloc] initWithIds:v10];
     [v11 setProfile:kMTStoreLookupPodcastProductProfile];
     v14[0] = _NSConcreteStackBlock;
@@ -815,9 +815,9 @@ LABEL_8:
     v14[2] = sub_1000D7954;
     v14[3] = &unk_1004DB920;
     v15 = v10;
-    v17 = a1;
-    v18 = a4;
-    v16 = v9;
+    selfCopy = self;
+    userCopy = user;
+    v16 = completionCopy;
     v12 = v10;
     [v11 request:v14];
   }
@@ -828,13 +828,13 @@ LABEL_8:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v20 = a1;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%@ Found 0 store track IDs", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }

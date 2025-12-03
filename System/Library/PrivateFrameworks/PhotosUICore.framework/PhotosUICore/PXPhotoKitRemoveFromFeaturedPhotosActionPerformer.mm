@@ -1,47 +1,47 @@
 @interface PXPhotoKitRemoveFromFeaturedPhotosActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXPhotoKitRemoveFromFeaturedPhotosActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v6 = a4;
+  collectionCopy = collection;
   if ([off_1E7721428 destructiveActionsEnabled])
   {
-    if ([v6 px_isSuggestion])
+    if ([collectionCopy px_isSuggestion])
     {
-      v7 = 1;
+      px_isFeaturedPhotosCollection = 1;
     }
 
     else
     {
-      v7 = [v6 px_isFeaturedPhotosCollection];
+      px_isFeaturedPhotosCollection = [collectionCopy px_isFeaturedPhotosCollection];
     }
   }
 
   else
   {
-    v7 = 0;
+    px_isFeaturedPhotosCollection = 0;
   }
 
-  return v7;
+  return px_isFeaturedPhotosCollection;
 }
 
 - (void)performBackgroundTask
 {
   v3 = [PXRemoveAssetsFromFeaturedPhotosAction alloc];
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v5 = [(PXAssetsAction *)v3 initWithAssets:v4];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v5 = [(PXAssetsAction *)v3 initWithAssets:assets];
 
-  v6 = [(PXActionPerformer *)self undoManager];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__PXPhotoKitRemoveFromFeaturedPhotosActionPerformer_performBackgroundTask__block_invoke;
   v7[3] = &unk_1E774C5C0;
   v7[4] = self;
-  [(PXAction *)v5 executeWithUndoManager:v6 completionHandler:v7];
+  [(PXAction *)v5 executeWithUndoManager:undoManager completionHandler:v7];
 }
 
 @end

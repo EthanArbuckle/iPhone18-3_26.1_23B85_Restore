@@ -2,10 +2,10 @@
 - (DBGSnapshot)init;
 - (DBGSnapshotManager)snapshotManager;
 - (NSArray)rootLevelSnapshotGroups;
-- (id)nodesKindOfRuntimeClass:(id)a3;
-- (id)nodesMatchingPredicate:(id)a3;
-- (id)rootLevelSnapshotGroupWithIdentifier:(id)a3;
-- (void)addRootLevelGroup:(id)a3;
+- (id)nodesKindOfRuntimeClass:(id)class;
+- (id)nodesMatchingPredicate:(id)predicate;
+- (id)rootLevelSnapshotGroupWithIdentifier:(id)identifier;
+- (void)addRootLevelGroup:(id)group;
 - (void)clearData;
 @end
 
@@ -27,24 +27,24 @@
     v2->_identifierToNodeMap = v5;
 
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v8;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
 }
 
-- (void)addRootLevelGroup:(id)a3
+- (void)addRootLevelGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   [(DBGSnapshot *)self willChangeValueForKey:@"rootLevelSnapshotGroups"];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(DBGSnapshot *)self rootLevelGroups];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  rootLevelGroups = [(DBGSnapshot *)self rootLevelGroups];
+  v6 = [rootLevelGroups countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -55,12 +55,12 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(rootLevelGroups);
       }
 
-      v10 = [*(*(&v14 + 1) + 8 * v9) groupingIdentifier];
-      v11 = [v4 groupingIdentifier];
-      v12 = [v10 isEqualToString:v11];
+      groupingIdentifier = [*(*(&v14 + 1) + 8 * v9) groupingIdentifier];
+      groupingIdentifier2 = [groupCopy groupingIdentifier];
+      v12 = [groupingIdentifier isEqualToString:groupingIdentifier2];
 
       if (v12)
       {
@@ -69,7 +69,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [rootLevelGroups countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -80,9 +80,9 @@ LABEL_3:
     }
   }
 
-  [v4 setSnapshot:self];
-  v13 = [(DBGSnapshot *)self rootLevelGroups];
-  [v13 addObject:v4];
+  [groupCopy setSnapshot:self];
+  rootLevelGroups2 = [(DBGSnapshot *)self rootLevelGroups];
+  [rootLevelGroups2 addObject:groupCopy];
 
   [(DBGSnapshot *)self didChangeValueForKey:@"rootLevelSnapshotGroups"];
 }
@@ -90,24 +90,24 @@ LABEL_3:
 - (void)clearData
 {
   [(DBGSnapshot *)self willChangeValueForKey:@"rootLevelSnapshotGroups"];
-  v3 = [(DBGSnapshot *)self rootLevelGroups];
-  [v3 removeAllObjects];
+  rootLevelGroups = [(DBGSnapshot *)self rootLevelGroups];
+  [rootLevelGroups removeAllObjects];
 
   [(DBGSnapshot *)self didChangeValueForKey:@"rootLevelSnapshotGroups"];
 }
 
-- (id)nodesMatchingPredicate:(id)a3
+- (id)nodesMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(DBGSnapshot *)self identifierToNodeMap];
-  v7 = [v6 objectEnumerator];
+  identifierToNodeMap = [(DBGSnapshot *)self identifierToNodeMap];
+  objectEnumerator = [identifierToNodeMap objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -118,17 +118,17 @@ LABEL_3:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v4 evaluateWithObject:v12])
+        if ([predicateCopy evaluateWithObject:v12])
         {
           [v5 addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -139,18 +139,18 @@ LABEL_3:
   return v13;
 }
 
-- (id)nodesKindOfRuntimeClass:(id)a3
+- (id)nodesKindOfRuntimeClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v5 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(DBGSnapshot *)self identifierToNodeMap];
-  v7 = [v6 objectEnumerator];
+  identifierToNodeMap = [(DBGSnapshot *)self identifierToNodeMap];
+  objectEnumerator = [identifierToNodeMap objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -161,12 +161,12 @@ LABEL_3:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 runtimeType];
-        v14 = [v13 isKindOfTypeWithName:v4];
+        runtimeType = [v12 runtimeType];
+        v14 = [runtimeType isKindOfTypeWithName:classCopy];
 
         if (v14)
         {
@@ -174,7 +174,7 @@ LABEL_3:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -185,15 +185,15 @@ LABEL_3:
   return v15;
 }
 
-- (id)rootLevelSnapshotGroupWithIdentifier:(id)a3
+- (id)rootLevelSnapshotGroupWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(DBGSnapshot *)self rootLevelSnapshotGroups];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  rootLevelSnapshotGroups = [(DBGSnapshot *)self rootLevelSnapshotGroups];
+  v6 = [rootLevelSnapshotGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -206,13 +206,13 @@ LABEL_3:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(rootLevelSnapshotGroups);
       }
 
       v8 = *(*(&v15 + 1) + 8 * v10);
 
-      v12 = [v8 groupingIdentifier];
-      v13 = [v12 isEqualToString:v4];
+      groupingIdentifier = [v8 groupingIdentifier];
+      v13 = [groupingIdentifier isEqualToString:identifierCopy];
 
       if (v13)
       {
@@ -223,7 +223,7 @@ LABEL_3:
       v11 = v8;
       if (v7 == v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [rootLevelSnapshotGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -245,8 +245,8 @@ LABEL_10:
 
 - (NSArray)rootLevelSnapshotGroups
 {
-  v2 = [(DBGSnapshot *)self rootLevelGroups];
-  v3 = [v2 copy];
+  rootLevelGroups = [(DBGSnapshot *)self rootLevelGroups];
+  v3 = [rootLevelGroups copy];
 
   return v3;
 }

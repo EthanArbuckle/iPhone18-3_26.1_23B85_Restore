@@ -1,58 +1,58 @@
 @interface IDSUTunControlChannel
 - (BOOL)connected;
 - (BOOL)isDefaultPairedDeviceStartingToEncrypt;
-- (BOOL)processFairplayDeviceInfo:(id)a3;
-- (BOOL)processFairplayDeviceSessionInfo:(id)a3;
-- (BOOL)processOTRNegotiationMessage:(id)a3;
-- (BOOL)processSuspendOTRNegotiationMessage:(id)a3;
-- (IDSUTunControlChannel)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4 shouldUseServiceConnector:(BOOL)a5 receiveHandler:(id)a6;
-- (id)_utunControlMessageFairplayHostSessionInfo:(unsigned __int8)a3 deviceType:(unsigned __int8)a4 protocolVersion:(unsigned int)a5;
-- (void)_callHandlerWithMessage:(id)a3 resetDataConnections:(BOOL)a4 shouldObliterate:(BOOL)a5 decryptionFailed:(BOOL)a6 shouldTriggerCorruptionRecovery:(BOOL)a7;
-- (void)_cancelConnectionAndResetDataConnections:(BOOL)a3 shouldObliterate:(BOOL)a4 encryptionFailure:(BOOL)a5 shouldTriggerCorruptionRecovery:(BOOL)a6;
+- (BOOL)processFairplayDeviceInfo:(id)info;
+- (BOOL)processFairplayDeviceSessionInfo:(id)info;
+- (BOOL)processOTRNegotiationMessage:(id)message;
+- (BOOL)processSuspendOTRNegotiationMessage:(id)message;
+- (IDSUTunControlChannel)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid shouldUseServiceConnector:(BOOL)connector receiveHandler:(id)handler;
+- (id)_utunControlMessageFairplayHostSessionInfo:(unsigned __int8)info deviceType:(unsigned __int8)type protocolVersion:(unsigned int)version;
+- (void)_callHandlerWithMessage:(id)message resetDataConnections:(BOOL)connections shouldObliterate:(BOOL)obliterate decryptionFailed:(BOOL)failed shouldTriggerCorruptionRecovery:(BOOL)recovery;
+- (void)_cancelConnectionAndResetDataConnections:(BOOL)connections shouldObliterate:(BOOL)obliterate encryptionFailure:(BOOL)failure shouldTriggerCorruptionRecovery:(BOOL)recovery;
 - (void)_checkSendNewMessage;
 - (void)_cleanupConnection;
 - (void)_clearChannel;
 - (void)_destroyFairplayHostSession;
 - (void)_handleFairplayAuthenticationFailure;
 - (void)_receiveFromNWConnection;
-- (void)_sendMessageOnNWConnection:(id)a3;
+- (void)_sendMessageOnNWConnection:(id)connection;
 - (void)dealloc;
 - (void)encryptControlChannelForStoredIdentities;
 - (void)invalidate;
-- (void)processReceivedMessage:(id)a3;
+- (void)processReceivedMessage:(id)message;
 - (void)readFromConnection;
 - (void)resumeOTRNegotiation;
-- (void)sendMessage:(id)a3;
-- (void)sendOTRNegotiationMessage:(id)a3 negotiationCount:(unsigned int)a4 negotiationData:(id)a5;
-- (void)sendPriorityMessage:(id)a3;
-- (void)sendSuspendOTRNegotiationMessage:(id)a3;
+- (void)sendMessage:(id)message;
+- (void)sendOTRNegotiationMessage:(id)message negotiationCount:(unsigned int)count negotiationData:(id)data;
+- (void)sendPriorityMessage:(id)message;
+- (void)sendSuspendOTRNegotiationMessage:(id)message;
 - (void)simulateDecryptionFailure;
-- (void)suspendOTRNegotiation:(id)a3;
-- (void)useConnection:(id)a3 withFirstMessage:(id)a4;
+- (void)suspendOTRNegotiation:(id)negotiation;
+- (void)useConnection:(id)connection withFirstMessage:(id)message;
 - (void)writeToConnection;
 @end
 
 @implementation IDSUTunControlChannel
 
-- (IDSUTunControlChannel)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4 shouldUseServiceConnector:(BOOL)a5 receiveHandler:(id)a6
+- (IDSUTunControlChannel)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid shouldUseServiceConnector:(BOOL)connector receiveHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  handlerCopy = handler;
   v35.receiver = self;
   v35.super_class = IDSUTunControlChannel;
   v13 = [(IDSUTunControlChannel *)&v35 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     deviceUniqueID = v13->_deviceUniqueID;
     v13->_deviceUniqueID = v14;
 
-    v16 = [v11 copy];
+    v16 = [cbuuidCopy copy];
     cbuuid = v13->_cbuuid;
     v13->_cbuuid = v16;
 
-    v18 = [v12 copy];
+    v18 = [handlerCopy copy];
     receiveHandler = v13->_receiveHandler;
     v13->_receiveHandler = v18;
 
@@ -75,19 +75,19 @@
     v13->_sd = -1;
     v13->_fairplayAuthState = 0;
     v13->_receiveHandlerBeingCalled = 0;
-    v13->_shouldUseServiceConnector = a5;
+    v13->_shouldUseServiceConnector = connector;
     connection = v13->_connection;
     v13->_connection = 0;
 
     v13->_connectionReady = 0;
     v29 = [NSString stringWithFormat:@"control channel %@", v13->_deviceUniqueID];
-    v30 = [v29 UTF8String];
+    uTF8String = [v29 UTF8String];
     v31 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-    v32 = dispatch_queue_create(v30, v31);
+    v32 = dispatch_queue_create(uTF8String, v31);
     connectionQueue = v13->_connectionQueue;
     v13->_connectionQueue = v32;
 
-    if ([v10 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
+    if ([dCopy isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
     {
       v13->_isDefaultPairedDevice = 1;
     }
@@ -129,22 +129,22 @@
 
 - (void)encryptControlChannelForStoredIdentities
 {
-  v3 = [(IDSUTunControlChannel *)self identityPair];
+  identityPair = [(IDSUTunControlChannel *)self identityPair];
 
   v4 = +[IDSFoundationLog utunController];
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (identityPair)
   {
     if (v5)
     {
-      v6 = [(IDSUTunControlChannel *)self identityPair];
-      v7 = [v6 localFullIdentity];
-      v8 = [(IDSUTunControlChannel *)self identityPair];
-      v9 = [v8 remotePublicIdentity];
+      identityPair2 = [(IDSUTunControlChannel *)self identityPair];
+      localFullIdentity = [identityPair2 localFullIdentity];
+      identityPair3 = [(IDSUTunControlChannel *)self identityPair];
+      remotePublicIdentity = [identityPair3 remotePublicIdentity];
       v14 = 138478083;
-      v15 = v7;
+      v15 = localFullIdentity;
       v16 = 2113;
-      v17 = v9;
+      v17 = remotePublicIdentity;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "UTunController control channel asked to encrypt {local: %{private}@, remote: %{private}@}", &v14, 0x16u);
     }
 
@@ -159,14 +159,14 @@
   {
     if (v5)
     {
-      v10 = [(IDSUTunControlChannel *)self identityPair];
-      v11 = [v10 localFullIdentity];
-      v12 = [(IDSUTunControlChannel *)self identityPair];
-      v13 = [v12 remotePublicIdentity];
+      identityPair4 = [(IDSUTunControlChannel *)self identityPair];
+      localFullIdentity2 = [identityPair4 localFullIdentity];
+      identityPair5 = [(IDSUTunControlChannel *)self identityPair];
+      remotePublicIdentity2 = [identityPair5 remotePublicIdentity];
       v14 = 134218240;
-      v15 = v11;
+      v15 = localFullIdentity2;
       v16 = 2048;
-      v17 = v13;
+      v17 = remotePublicIdentity2;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "UTunController control channel asked to encrypt without keys (local %p remote %p)", &v14, 0x16u);
     }
   }
@@ -179,8 +179,8 @@
     return 0;
   }
 
-  v3 = [(IDSUTunControlChannel *)self identityPair];
-  v2 = v3 != 0;
+  identityPair = [(IDSUTunControlChannel *)self identityPair];
+  v2 = identityPair != 0;
 
   return v2;
 }
@@ -203,13 +203,13 @@
   nw_connection_receive_message(connection, completion);
 }
 
-- (void)_sendMessageOnNWConnection:(id)a3
+- (void)_sendMessageOnNWConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   if (!self->_shouldUseServiceConnector || self->_connection && self->_connectionReady)
   {
-    v6 = [v4 length];
+    v6 = [connectionCopy length];
     v7 = +[IDSFoundationLog utunController];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
     if (v6)
@@ -235,14 +235,14 @@
       }
 
       connection = self->_connection;
-      v12 = [v7 _createDispatchData];
+      _createDispatchData = [v7 _createDispatchData];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10044A194;
       v14[3] = &unk_100BDC728;
       v15 = v6;
       v14[4] = self;
-      nw_connection_send(connection, v12, _nw_content_context_default_message, 1, v14);
+      nw_connection_send(connection, _createDispatchData, _nw_content_context_default_message, 1, v14);
     }
 
     else if (v8)
@@ -263,9 +263,9 @@
   }
 }
 
-- (void)processReceivedMessage:(id)a3
+- (void)processReceivedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -277,17 +277,17 @@
   {
     v6 = "disabled";
 LABEL_5:
-    v7 = v4;
+    v7 = messageCopy;
 LABEL_6:
     v8 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 length];
+      v9 = [messageCopy length];
       v10 = [(NSMutableData *)self->_pendingDataReceive length];
       *buf = 136316162;
       *&buf[4] = v6;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = messageCopy;
       *&buf[22] = 2048;
       *v75 = v9;
       *&v75[8] = 2112;
@@ -303,8 +303,8 @@ LABEL_6:
 
   if (self->_isReadyForEncrypting)
   {
-    v11 = [(IDSUTunControlChannel *)self identityPair];
-    v12 = v4;
+    identityPair = [(IDSUTunControlChannel *)self identityPair];
+    v12 = messageCopy;
     if (![v12 length])
     {
       v20 = objc_alloc_init(NSData);
@@ -350,20 +350,20 @@ LABEL_40:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138477827;
-          *&buf[4] = v11;
+          *&buf[4] = identityPair;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "   UTUNControlChannel Decrypting {identityPair: %{private}@}", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v54 = v11;
+          v54 = identityPair;
           _IDSLogV();
         }
 
-        v18 = [v11 localFullIdentity];
-        v19 = [v11 remotePublicIdentity];
+        localFullIdentity = [identityPair localFullIdentity];
+        remotePublicIdentity = [identityPair remotePublicIdentity];
         v69 = 0;
-        v20 = [v18 verifyAndExposeData:v13 withSigner:v19 error:&v69];
+        v20 = [localFullIdentity verifyAndExposeData:v13 withSigner:remotePublicIdentity error:&v69];
         v21 = v69;
 
         v22 = v20 != 0;
@@ -431,9 +431,9 @@ LABEL_39:
   if (remoteDeviceEncryptionInfo)
   {
     v25 = [(NSDictionary *)remoteDeviceEncryptionInfo objectForKeyedSubscript:IDSUTunControlChannelRemoteDeviceEncryptionInfo_UNENCRYPTED_Key];
-    v26 = [v25 BOOLValue];
+    bOOLValue = [v25 BOOLValue];
 
-    if (v26)
+    if (bOOLValue)
     {
       v6 = "remote UNENCRYPTED";
       goto LABEL_5;
@@ -475,7 +475,7 @@ LABEL_39:
     v64 = v41;
     LOBYTE(v56) = !self->_avoidMainQueueOverrideToNO;
     LOBYTE(v55) = 0;
-    [v38 legacyPublicKeyDecryptData:v4 fromURI:v39 identity:v36 toURI:v40 pushToken:v57 service:v34 priority:300 isRetry:v55 replayKey:0 completionBlock:v63 avoidMainQueue:v56];
+    [v38 legacyPublicKeyDecryptData:messageCopy fromURI:v39 identity:v36 toURI:v40 pushToken:v57 service:v34 priority:300 isRetry:v55 replayKey:0 completionBlock:v63 avoidMainQueue:v56];
 
     dispatch_semaphore_wait(v41, 0xFFFFFFFFFFFFFFFFLL);
     v30 = v70[3];
@@ -494,7 +494,7 @@ LABEL_39:
     v31 = +[IDSEncryptionController sharedInstance];
     deviceUniqueID = self->_deviceUniqueID;
     v62 = 0;
-    v7 = [v31 legacyPublicKeyDecryptData:v4 toDeviceID:deviceUniqueID priority:300 error:&v62];
+    v7 = [v31 legacyPublicKeyDecryptData:messageCopy toDeviceID:deviceUniqueID priority:300 error:&v62];
     v33 = v62;
 
     v30 = sub_1005C23F8(v33);
@@ -625,12 +625,12 @@ LABEL_9:
     {
       if (__errnum)
       {
-        v9 = self;
+        selfCopy3 = self;
         v10 = 0;
 LABEL_28:
         v18 = 0;
 LABEL_29:
-        [(IDSUTunControlChannel *)v9 _cancelConnectionAndResetDataConnections:v10 shouldObliterate:0 encryptionFailure:0 shouldTriggerCorruptionRecovery:v18];
+        [(IDSUTunControlChannel *)selfCopy3 _cancelConnectionAndResetDataConnections:v10 shouldObliterate:0 encryptionFailure:0 shouldTriggerCorruptionRecovery:v18];
         return;
       }
     }
@@ -674,13 +674,13 @@ LABEL_29:
 
     v10 = [(IDSUTunControlChannel *)self isDefaultPairedDeviceStartingToEncrypt]^ 1;
 LABEL_27:
-    v9 = self;
+    selfCopy3 = self;
     goto LABEL_28;
   }
 
   if (!v13)
   {
-    v24 = [(IDSUTunControlChannel *)self isDefaultPairedDeviceStartingToEncrypt];
+    isDefaultPairedDeviceStartingToEncrypt = [(IDSUTunControlChannel *)self isDefaultPairedDeviceStartingToEncrypt];
     v25 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -693,7 +693,7 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "UTunController control channel for [%@] disconnected on {socket:%d} recv: connection closed", &__errnum, 0x12u);
     }
 
-    v10 = v24 ^ 1;
+    v10 = isDefaultPairedDeviceStartingToEncrypt ^ 1;
     goto LABEL_27;
   }
 
@@ -703,15 +703,15 @@ LABEL_27:
   {
     do
     {
-      v14 = [(NSMutableData *)self->_pendingDataReceive bytes];
-      v15 = __rev16(*v14);
+      bytes = [(NSMutableData *)self->_pendingDataReceive bytes];
+      v15 = __rev16(*bytes);
       if ([(NSMutableData *)self->_pendingDataReceive length]- 2 < v15)
       {
         break;
       }
 
       self->_dataReceivedWithoutMessageCount = 0;
-      v16 = [NSData dataWithBytes:v14 + 1 length:v15];
+      v16 = [NSData dataWithBytes:bytes + 1 length:v15];
       [(NSMutableData *)self->_pendingDataReceive replaceBytesInRange:0 withBytes:v15 + 2 length:0, 0];
       [(IDSUTunControlChannel *)self processReceivedMessage:v16];
     }
@@ -728,7 +728,7 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "control channel corruption detection heuristic hit - resetting", &__errnum, 2u);
     }
 
-    v9 = self;
+    selfCopy3 = self;
     v10 = 0;
     v18 = 1;
     goto LABEL_29;
@@ -767,10 +767,10 @@ LABEL_27:
     {
       if (__errnum)
       {
-        v9 = self;
+        selfCopy2 = self;
         v10 = 0;
 LABEL_22:
-        [(IDSUTunControlChannel *)v9 _cancelConnectionAndResetDataConnections:v10 shouldObliterate:0 encryptionFailure:0 shouldTriggerCorruptionRecovery:0];
+        [(IDSUTunControlChannel *)selfCopy2 _cancelConnectionAndResetDataConnections:v10 shouldObliterate:0 encryptionFailure:0 shouldTriggerCorruptionRecovery:0];
         return;
       }
     }
@@ -843,7 +843,7 @@ LABEL_22:
 
 LABEL_21:
       v10 = [(IDSUTunControlChannel *)self isDefaultPairedDeviceStartingToEncrypt]^ 1;
-      v9 = self;
+      selfCopy2 = self;
       goto LABEL_22;
     }
 
@@ -932,11 +932,11 @@ LABEL_21:
   }
 }
 
-- (void)useConnection:(id)a3 withFirstMessage:(id)a4
+- (void)useConnection:(id)connection withFirstMessage:(id)message
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  connectionCopy = connection;
+  messageCopy = message;
+  if (connectionCopy)
   {
     v9 = self->_connection;
     if (v9)
@@ -948,7 +948,7 @@ LABEL_21:
       [(IDSUTunControlChannel *)self _cleanupConnection];
     }
 
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
     if (self->_shouldUseServiceConnector)
     {
       v11 = sub_1004495E0();
@@ -978,22 +978,22 @@ LABEL_21:
     }
 
     self->_sendSuspended = 0;
-    if (v8 && self->_shouldUseServiceConnector)
+    if (messageCopy && self->_shouldUseServiceConnector)
     {
-      [(NSMutableArray *)self->_outgoingMessages insertObject:v8 atIndex:0];
+      [(NSMutableArray *)self->_outgoingMessages insertObject:messageCopy atIndex:0];
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    nw_connection_set_queue(v7, self->_connectionQueue);
+    nw_connection_set_queue(connectionCopy, self->_connectionQueue);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10044BEF4;
     v15[3] = &unk_100BDC7C8;
-    v14 = v7;
+    v14 = connectionCopy;
     v16 = v14;
-    v17 = self;
+    selfCopy = self;
     v19 = Current;
-    v18 = v8;
+    v18 = messageCopy;
     nw_connection_set_state_changed_handler(v14, v15);
     nw_connection_start(v14);
   }
@@ -1009,16 +1009,16 @@ LABEL_21:
   }
 }
 
-- (void)_callHandlerWithMessage:(id)a3 resetDataConnections:(BOOL)a4 shouldObliterate:(BOOL)a5 decryptionFailed:(BOOL)a6 shouldTriggerCorruptionRecovery:(BOOL)a7
+- (void)_callHandlerWithMessage:(id)message resetDataConnections:(BOOL)connections shouldObliterate:(BOOL)obliterate decryptionFailed:(BOOL)failed shouldTriggerCorruptionRecovery:(BOOL)recovery
 {
   receiveHandler = self->_receiveHandler;
   if (receiveHandler)
   {
-    receiveHandler[2](receiveHandler, a3, a4, a5, a6, a7);
+    receiveHandler[2](receiveHandler, message, connections, obliterate, failed, recovery);
   }
 }
 
-- (void)_cancelConnectionAndResetDataConnections:(BOOL)a3 shouldObliterate:(BOOL)a4 encryptionFailure:(BOOL)a5 shouldTriggerCorruptionRecovery:(BOOL)a6
+- (void)_cancelConnectionAndResetDataConnections:(BOOL)connections shouldObliterate:(BOOL)obliterate encryptionFailure:(BOOL)failure shouldTriggerCorruptionRecovery:(BOOL)recovery
 {
   v11 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1037,10 +1037,10 @@ LABEL_21:
   {
     self->_shouldCallbackOnCancel = 1;
     objc_storeStrong(&self->_canceledConnection, v14);
-    self->_callbackResetDataConnections = a3;
-    self->_callbackShouldObliterate = a4;
-    self->_callbackEncryptionFailed = a5;
-    self->_callbackShouldTriggerCorruptionRecovery = a6;
+    self->_callbackResetDataConnections = connections;
+    self->_callbackShouldObliterate = obliterate;
+    self->_callbackEncryptionFailed = failure;
+    self->_callbackShouldTriggerCorruptionRecovery = recovery;
     [(IDSUTunControlChannel *)self _clearChannel];
     [(IDSUTunControlChannel *)self _cleanupConnection];
   }
@@ -1076,7 +1076,7 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Clearing %@", &v7, 0xCu);
   }
 
@@ -1086,9 +1086,9 @@ LABEL_21:
   if (self->_isDefaultPairedDevice)
   {
     v4 = +[IMLockdownManager sharedInstance];
-    v5 = [v4 isInternalInstall];
+    isInternalInstall = [v4 isInternalInstall];
 
-    if (v5)
+    if (isInternalInstall)
     {
       outgoingStallDetector = self->_outgoingStallDetector;
       if (outgoingStallDetector)
@@ -1183,9 +1183,9 @@ LABEL_20:
           if (remoteDeviceEncryptionInfo)
           {
             v24 = [(NSDictionary *)remoteDeviceEncryptionInfo objectForKeyedSubscript:IDSUTunControlChannelRemoteDeviceEncryptionInfo_UNENCRYPTED_Key];
-            v25 = [v24 BOOLValue];
+            bOOLValue = [v24 BOOLValue];
 
-            if (v25)
+            if (bOOLValue)
             {
               v7 = "remote UNENCRYPTED";
               goto LABEL_14;
@@ -1336,7 +1336,7 @@ LABEL_64:
           goto LABEL_20;
         }
 
-        v13 = [(IDSUTunControlChannel *)self identityPair];
+        identityPair = [(IDSUTunControlChannel *)self identityPair];
         v14 = v4;
         if (![v14 length])
         {
@@ -1360,20 +1360,20 @@ LABEL_46:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138477827;
-          *&buf[4] = v13;
+          *&buf[4] = identityPair;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "   UTUNControlChannel Encrypting {identityPair: %{private}@}", buf, 0xCu);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v53 = v13;
+          v53 = identityPair;
           _IDSLogV();
         }
 
-        v16 = [v13 remotePublicIdentity];
-        v17 = [v13 localFullIdentity];
+        remotePublicIdentity = [identityPair remotePublicIdentity];
+        localFullIdentity = [identityPair localFullIdentity];
         v69 = 0;
-        v18 = [v16 signAndProtectData:v14 withSigner:v17 error:&v69];
+        v18 = [remotePublicIdentity signAndProtectData:v14 withSigner:localFullIdentity error:&v69];
         v19 = v69;
 
         v20 = v18 != 0;
@@ -1451,24 +1451,24 @@ LABEL_32:
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v4 length];
+    v9 = [messageCopy length];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "control channel: sendMessage length: %lu", &v8, 0xCu);
   }
 
-  if (v4)
+  if (messageCopy)
   {
     if (self->_shouldUseServiceConnector)
     {
       if (self->_connection && self->_connectionReady)
       {
-        [(IDSUTunControlChannel *)self _sendMessageOnNWConnection:v4];
+        [(IDSUTunControlChannel *)self _sendMessageOnNWConnection:messageCopy];
       }
 
       else
@@ -1480,37 +1480,37 @@ LABEL_32:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "control channel: waiting for connection, queuing up message to send", &v8, 2u);
         }
 
-        [(NSMutableArray *)self->_outgoingMessages addObject:v4];
+        [(NSMutableArray *)self->_outgoingMessages addObject:messageCopy];
       }
     }
 
     else
     {
-      v6 = [v4 copy];
+      v6 = [messageCopy copy];
       [(NSMutableArray *)self->_outgoingMessages addObject:v6];
       [(IDSUTunControlChannel *)self _checkSendNewMessage];
     }
   }
 }
 
-- (void)sendPriorityMessage:(id)a3
+- (void)sendPriorityMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v4 length];
+    v9 = [messageCopy length];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "control channel: sendPriorityMessage length: %lu", &v8, 0xCu);
   }
 
-  if (v4)
+  if (messageCopy)
   {
     if (self->_shouldUseServiceConnector)
     {
       if (self->_connection && self->_connectionReady)
       {
-        [(IDSUTunControlChannel *)self _sendMessageOnNWConnection:v4];
+        [(IDSUTunControlChannel *)self _sendMessageOnNWConnection:messageCopy];
       }
 
       else
@@ -1522,13 +1522,13 @@ LABEL_32:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "control channel: waiting for connection, queuing up message to send", &v8, 2u);
         }
 
-        [(NSMutableArray *)self->_outgoingMessages addObject:v4];
+        [(NSMutableArray *)self->_outgoingMessages addObject:messageCopy];
       }
     }
 
     else
     {
-      v6 = [v4 copy];
+      v6 = [messageCopy copy];
       [(NSMutableArray *)self->_outgoingPriorityMessages addObject:v6];
       [(IDSUTunControlChannel *)self _checkSendNewMessage];
     }
@@ -1562,14 +1562,14 @@ LABEL_32:
   [(IDSUTunControlChannel *)&v3 dealloc];
 }
 
-- (id)_utunControlMessageFairplayHostSessionInfo:(unsigned __int8)a3 deviceType:(unsigned __int8)a4 protocolVersion:(unsigned int)a5
+- (id)_utunControlMessageFairplayHostSessionInfo:(unsigned __int8)info deviceType:(unsigned __int8)type protocolVersion:(unsigned int)version
 {
   v15 = 0;
   v14 = 0;
   v13 = 0;
-  v16[0] = a3;
-  v16[1] = a4;
-  v16[2] = a5;
+  v16[0] = info;
+  v16[1] = type;
+  v16[2] = version;
   [(IDSUTunControlChannel *)self _destroyFairplayHostSession];
   sub_1001280D8(v16, &v15, &v14, &v13);
   if (v6)
@@ -1620,24 +1620,24 @@ LABEL_32:
   return v9;
 }
 
-- (BOOL)processFairplayDeviceInfo:(id)a3
+- (BOOL)processFairplayDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    *v19 = v4;
+    *v19 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "got control message: FairplayDeviceInfo %@", &v18, 0xCu);
   }
 
-  v6 = [v4 length];
-  v7 = [v4 bytes];
+  v6 = [infoCopy length];
+  bytes = [infoCopy bytes];
   if (v6 == 7)
   {
-    v8 = v7[1];
-    v9 = v7[2];
-    v10 = bswap32(*(v7 + 3));
+    v8 = bytes[1];
+    v9 = bytes[2];
+    v10 = bswap32(*(bytes + 3));
     v11 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -1684,19 +1684,19 @@ LABEL_32:
   return v6 == 7;
 }
 
-- (BOOL)processFairplayDeviceSessionInfo:(id)a3
+- (BOOL)processFairplayDeviceSessionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412290;
-    v24[0] = v4;
+    v24[0] = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "got control message: FairplayDeviceSessionInfo %@", &v23, 0xCu);
   }
 
-  v6 = [v4 length];
-  v7 = [v4 bytes];
+  v6 = [infoCopy length];
+  bytes = [infoCopy bytes];
   if (v6 <= 4)
   {
     v8 = +[IDSFoundationLog utunController];
@@ -1715,8 +1715,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = v7;
-  v13 = bswap32(*(v7 + 1));
+  v12 = bytes;
+  v13 = bswap32(*(bytes + 1));
   if (v6 != (v13 + 5))
   {
     v8 = +[IDSFoundationLog utunController];
@@ -1739,7 +1739,7 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  v14 = [NSData dataWithBytes:v7 + 5 length:v13];
+  v14 = [NSData dataWithBytes:bytes + 5 length:v13];
   v15 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1814,19 +1814,19 @@ LABEL_21:
   }
 }
 
-- (void)sendOTRNegotiationMessage:(id)a3 negotiationCount:(unsigned int)a4 negotiationData:(id)a5
+- (void)sendOTRNegotiationMessage:(id)message negotiationCount:(unsigned int)count negotiationData:(id)data
 {
-  v8 = a3;
-  if (v8 && a5)
+  messageCopy = message;
+  if (messageCopy && data)
   {
-    v9 = a5;
+    dataCopy = data;
     v10 = _IDSLinkPacketBufferCreate();
     v10[655] = 266;
-    v11 = [v8 UTF8String];
-    if (v11)
+    uTF8String = [messageCopy UTF8String];
+    if (uTF8String)
     {
-      v12 = v11;
-      v13 = strlen(v11);
+      v12 = uTF8String;
+      v13 = strlen(uTF8String);
       v10[656] = bswap32(v13) >> 16;
       v14 = v13;
       if (v13)
@@ -1842,14 +1842,14 @@ LABEL_21:
     }
 
     v15 = (v10 + v14);
-    *(v10 + v14 + 1314) = bswap32(a4);
-    v16 = [v9 length];
+    *(v10 + v14 + 1314) = bswap32(count);
+    v16 = [dataCopy length];
     v17 = v16;
     v15[659] = bswap32(v16) >> 16;
     v15 += 660;
-    v18 = [v9 bytes];
+    bytes = [dataCopy bytes];
 
-    memcpy(v15, v18, v17);
+    memcpy(v15, bytes, v17);
     v19 = [NSData dataWithBytes:v10 + 655 length:v15 + v17 - (v10 + 655)];
     _IDSLinkPacketBufferRelease();
     v20 = +[IDSFoundationLog utunController];
@@ -1858,9 +1858,9 @@ LABEL_21:
       v21 = 134218498;
       v22 = [v19 length];
       v23 = 2112;
-      v24 = v8;
+      v24 = messageCopy;
       v25 = 1024;
-      v26 = a4;
+      countCopy = count;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "send control message: OTRNegotiationData (%luB) for %@, count:%08x", &v21, 0x1Cu);
     }
 
@@ -1868,16 +1868,16 @@ LABEL_21:
   }
 }
 
-- (BOOL)processOTRNegotiationMessage:(id)a3
+- (BOOL)processOTRNegotiationMessage:(id)message
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  messageCopy = message;
+  v4 = messageCopy;
+  if (!messageCopy)
   {
     goto LABEL_34;
   }
 
-  v5 = [v3 bytes];
+  bytes = [messageCopy bytes];
   v6 = [v4 length];
   v7 = v6;
   if (v6 <= 3u)
@@ -1897,7 +1897,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v9 = v5[1];
+  v9 = bytes[1];
   if (v9 != 1)
   {
     v8 = +[IDSFoundationLog utunController];
@@ -1911,8 +1911,8 @@ LABEL_34:
     goto LABEL_5;
   }
 
-  v10 = v5 + 2;
-  v11 = __rev16(*(v5 + 1));
+  v10 = bytes + 2;
+  v11 = __rev16(*(bytes + 1));
   v12 = v6 - 4;
   if (v11)
   {
@@ -1926,7 +1926,7 @@ LABEL_34:
 
   if (v13)
   {
-    v16 = [[NSString alloc] initWithBytes:v5 + 4 length:v11 encoding:4];
+    v16 = [[NSString alloc] initWithBytes:bytes + 4 length:v11 encoding:4];
     if (!v16)
     {
       v24 = OSLogHandleForTransportCategory();
@@ -1952,7 +1952,7 @@ LABEL_34:
     }
 
     v14 = v16;
-    v10 = &v5[v11 + 4];
+    v10 = &bytes[v11 + 4];
     v15 = (v12 - v11);
   }
 
@@ -1979,7 +1979,7 @@ LABEL_20:
     goto LABEL_34;
   }
 
-  if (&v10[(bswap32(*(v10 + 2)) >> 16) + 6] > &v5[v6])
+  if (&v10[(bswap32(*(v10 + 2)) >> 16) + 6] > &bytes[v6])
   {
     v17 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -2015,18 +2015,18 @@ LABEL_35:
   return v23;
 }
 
-- (void)sendSuspendOTRNegotiationMessage:(id)a3
+- (void)sendSuspendOTRNegotiationMessage:(id)message
 {
-  v4 = a3;
-  if (v4)
+  messageCopy = message;
+  if (messageCopy)
   {
     v5 = _IDSLinkPacketBufferCreate();
     v5[655] = 268;
-    v6 = [v4 UTF8String];
-    if (v6)
+    uTF8String = [messageCopy UTF8String];
+    if (uTF8String)
     {
-      v7 = v6;
-      v8 = strlen(v6);
+      v7 = uTF8String;
+      v8 = strlen(uTF8String);
       v5[656] = bswap32(v8) >> 16;
       v9 = v8;
       if (v8)
@@ -2049,7 +2049,7 @@ LABEL_35:
       v12 = 134218242;
       v13 = [v10 length];
       v14 = 2112;
-      v15 = v4;
+      v15 = messageCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "send control message: SuspendOTRNegotiationData (%luB) for %@", &v12, 0x16u);
     }
 
@@ -2057,18 +2057,18 @@ LABEL_35:
   }
 }
 
-- (BOOL)processSuspendOTRNegotiationMessage:(id)a3
+- (BOOL)processSuspendOTRNegotiationMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (!messageCopy)
   {
     goto LABEL_13;
   }
 
-  v6 = [v4 bytes];
+  bytes = [messageCopy bytes];
   v7 = [v5 length];
-  v8 = v6[1];
+  v8 = bytes[1];
   if (v8 != 1)
   {
     v14 = +[IDSFoundationLog utunController];
@@ -2085,12 +2085,12 @@ LABEL_35:
   v9 = v7;
   if ((v7 & 0xFFFE) != 2)
   {
-    v10 = __rev16(*(v6 + 1));
+    v10 = __rev16(*(bytes + 1));
     if (v10)
     {
       if (v7 - 4 >= v10)
       {
-        v11 = [[NSString alloc] initWithBytes:v6 + 4 length:v10 encoding:4];
+        v11 = [[NSString alloc] initWithBytes:bytes + 4 length:v10 encoding:4];
         if (v11)
         {
           goto LABEL_7;
@@ -2141,11 +2141,11 @@ LABEL_14:
   return v13;
 }
 
-- (void)suspendOTRNegotiation:(id)a3
+- (void)suspendOTRNegotiation:(id)negotiation
 {
-  v3 = a3;
+  negotiationCopy = negotiation;
   v4 = +[IDSOTRController sharedInstance];
-  [v4 suspendSessionNegotiation:v3 askedByPairedDevice:1];
+  [v4 suspendSessionNegotiation:negotiationCopy askedByPairedDevice:1];
 }
 
 - (void)resumeOTRNegotiation

@@ -1,23 +1,23 @@
 @interface AXSB_SBSceneManagerSafeCategory
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)userInterfaceStyleProvider:(id)a3 didUpdateStyle:(int64_t)a4 preferredAnimationSettings:(id)a5 completion:(id)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)userInterfaceStyleProvider:(id)provider didUpdateStyle:(int64_t)style preferredAnimationSettings:(id)settings completion:(id)completion;
 @end
 
 @implementation AXSB_SBSceneManagerSafeCategory
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSceneManager" conformsToProtocol:@"SBUserInterfaceStyleObserver"];
-  [v3 validateProtocol:@"SBUserInterfaceStyleObserver" hasRequiredInstanceMethod:@"userInterfaceStyleProvider:didUpdateStyle:preferredAnimationSettings:completion:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSceneManager" conformsToProtocol:@"SBUserInterfaceStyleObserver"];
+  [validationsCopy validateProtocol:@"SBUserInterfaceStyleObserver" hasRequiredInstanceMethod:@"userInterfaceStyleProvider:didUpdateStyle:preferredAnimationSettings:completion:"];
 }
 
-- (void)userInterfaceStyleProvider:(id)a3 didUpdateStyle:(int64_t)a4 preferredAnimationSettings:(id)a5 completion:(id)a6
+- (void)userInterfaceStyleProvider:(id)provider didUpdateStyle:(int64_t)style preferredAnimationSettings:(id)settings completion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = AXSB_SBSceneManagerSafeCategory;
-  [(AXSB_SBSceneManagerSafeCategory *)&v12 userInterfaceStyleProvider:a3 didUpdateStyle:a4 preferredAnimationSettings:a5 completion:a6];
+  [(AXSB_SBSceneManagerSafeCategory *)&v12 userInterfaceStyleProvider:provider didUpdateStyle:style preferredAnimationSettings:settings completion:completion];
   v6 = +[AXSpringBoardServerHelper sharedServerHelper];
   if ([v6 _isDarkModeActive])
   {

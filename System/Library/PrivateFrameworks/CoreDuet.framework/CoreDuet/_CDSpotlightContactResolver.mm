@@ -1,10 +1,10 @@
 @interface _CDSpotlightContactResolver
-+ (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3;
++ (id)resolveContactIfPossibleFromContactIdentifierString:(id)string;
 + (id)sharedInstance;
 - (_CDSpotlightContactResolver)init;
-- (id)_getCachedContactForHandle:(id)a3;
+- (id)_getCachedContactForHandle:(id)handle;
 - (void)_purge;
-- (void)_setContact:(id)a3 forHandle:(id)a4;
+- (void)_setContact:(id)contact forHandle:(id)handle;
 - (void)_validateCache;
 @end
 
@@ -58,13 +58,13 @@
   return v3;
 }
 
-+ (id)resolveContactIfPossibleFromContactIdentifierString:(id)a3
++ (id)resolveContactIfPossibleFromContactIdentifierString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v4 = +[_CDSpotlightContactResolver sharedInstance];
-    v5 = [v4 _getCachedContactForHandle:v3];
+    v5 = [v4 _getCachedContactForHandle:stringCopy];
     if (v5)
     {
       v6 = +[_CDLogging spotlightReceiverChannel];
@@ -73,22 +73,22 @@
         [_CDSpotlightContactResolver resolveContactIfPossibleFromContactIdentifierString:v6];
       }
 
-      v7 = [v5 contact];
+      contact = [v5 contact];
     }
 
     else
     {
-      v7 = [_CDContactResolver resolveContactIfPossibleFromContactIdentifierString:v3];
-      [v4 _setContact:v7 forHandle:v3];
+      contact = [_CDContactResolver resolveContactIfPossibleFromContactIdentifierString:stringCopy];
+      [v4 _setContact:contact forHandle:stringCopy];
     }
   }
 
   else
   {
-    v7 = 0;
+    contact = 0;
   }
 
-  return v7;
+  return contact;
 }
 
 - (void)_validateCache
@@ -114,26 +114,26 @@
   dispatch_resume(self->_cacheInvalidationTimer);
 }
 
-- (void)_setContact:(id)a3 forHandle:(id)a4
+- (void)_setContact:(id)contact forHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  handleCopy = handle;
   [(_CDSpotlightContactResolver *)self _validateCache];
   cachedContactsForHandle = self->_cachedContactsForHandle;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53___CDSpotlightContactResolver__setContact_forHandle___block_invoke;
   v11[3] = &unk_1E7367790;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contactCopy;
+  v13 = handleCopy;
+  v9 = handleCopy;
+  v10 = contactCopy;
   [(_PASLock *)cachedContactsForHandle runWithLockAcquired:v11];
 }
 
-- (id)_getCachedContactForHandle:(id)a3
+- (id)_getCachedContactForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   [(_CDSpotlightContactResolver *)self _validateCache];
   v12 = 0;
   v13 = &v12;
@@ -147,7 +147,7 @@
   v9[2] = __58___CDSpotlightContactResolver__getCachedContactForHandle___block_invoke;
   v9[3] = &unk_1E73677B8;
   v11 = &v12;
-  v6 = v4;
+  v6 = handleCopy;
   v10 = v6;
   [(_PASLock *)cachedContactsForHandle runWithLockAcquired:v9];
   v7 = v13[5];

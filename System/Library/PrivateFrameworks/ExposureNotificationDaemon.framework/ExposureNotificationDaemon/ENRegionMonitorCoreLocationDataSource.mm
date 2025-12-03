@@ -1,47 +1,47 @@
 @interface ENRegionMonitorCoreLocationDataSource
 - (BOOL)updateRegionAllowed;
-- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)a3;
-- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)a3 routineManager:(id)a4;
+- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)delegate;
+- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)delegate routineManager:(id)manager;
 - (ENRegionMonitorSourceDelegate)delegate;
-- (void)_processLocation:(id)a3;
-- (void)_processLocation:(id)a3 locationOfInterest:(id)a4;
-- (void)_processLocation:(id)a3 locationsOfInterest:(id)a4;
-- (void)_processVisit:(id)a3;
+- (void)_processLocation:(id)location;
+- (void)_processLocation:(id)location locationOfInterest:(id)interest;
+- (void)_processLocation:(id)location locationsOfInterest:(id)interest;
+- (void)_processVisit:(id)visit;
 - (void)_setup;
-- (void)_updateRegionVisit:(id)a3;
+- (void)_updateRegionVisit:(id)visit;
 - (void)_updatedRegion;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)processLocation:(id)a3 locationOfInterest:(id)a4;
-- (void)processLocation:(id)a3 locationsOfInterest:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)processLocation:(id)location locationOfInterest:(id)interest;
+- (void)processLocation:(id)location locationsOfInterest:(id)interest;
 - (void)setup;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 - (void)updateRegion;
-- (void)updateRegionVisit:(id)a3;
+- (void)updateRegionVisit:(id)visit;
 @end
 
 @implementation ENRegionMonitorCoreLocationDataSource
 
-- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)a3
+- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)delegate
 {
   v4 = MEMORY[0x277D01288];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [(ENRegionMonitorCoreLocationDataSource *)self initWithDelegate:v5 routineManager:v6];
+  delegateCopy = delegate;
+  defaultManager = [v4 defaultManager];
+  v7 = [(ENRegionMonitorCoreLocationDataSource *)self initWithDelegate:delegateCopy routineManager:defaultManager];
 
   return v7;
 }
 
-- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)a3 routineManager:(id)a4
+- (ENRegionMonitorCoreLocationDataSource)initWithDelegate:(id)delegate routineManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  delegateCopy = delegate;
+  managerCopy = manager;
+  v9 = managerCopy;
+  if (delegateCopy)
   {
-    if (v8)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -68,8 +68,8 @@ LABEL_3:
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_routineManager, a4);
-    objc_storeWeak(&v10->delegate, v7);
+    objc_storeStrong(&v10->_routineManager, manager);
+    objc_storeWeak(&v10->delegate, delegateCopy);
     [(ENRegionMonitorCoreLocationDataSource *)v10 setup];
   }
 
@@ -78,38 +78,38 @@ LABEL_3:
 
 - (void)_setup
 {
-  v3 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = objc_alloc(MEMORY[0x277CBFC18]);
   v8 = [MEMORY[0x277CCA8D0] bundleWithPath:@"/System/Library/LocationBundles/ExposureNotificationBundle.bundle"];
-  v5 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  v6 = [v4 initWithEffectiveBundle:v8 delegate:self onQueue:v5];
+  queue2 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  v6 = [v4 initWithEffectiveBundle:v8 delegate:self onQueue:queue2];
   locationManager = self->_locationManager;
   self->_locationManager = v6;
 }
 
 - (void)setup
 {
-  v3 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ENRegionMonitorCoreLocationDataSource_setup__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)startMonitoring
 {
-  v4 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__ENRegionMonitorCoreLocationDataSource_startMonitoring__block_invoke;
   v5[3] = &unk_278FD11C8;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 uint64_t __56__ENRegionMonitorCoreLocationDataSource_startMonitoring__block_invoke(uint64_t a1)
@@ -126,14 +126,14 @@ uint64_t __56__ENRegionMonitorCoreLocationDataSource_startMonitoring__block_invo
 
 - (void)stopMonitoring
 {
-  v4 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__ENRegionMonitorCoreLocationDataSource_stopMonitoring__block_invoke;
   v5[3] = &unk_278FD11C8;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 uint64_t __55__ENRegionMonitorCoreLocationDataSource_stopMonitoring__block_invoke(uint64_t a1)
@@ -154,8 +154,8 @@ uint64_t __55__ENRegionMonitorCoreLocationDataSource_stopMonitoring__block_invok
   v2 = CFPrefs_CopyTypedValue();
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA0] date];
-    [v3 timeIntervalSinceDate:v2];
+    date = [MEMORY[0x277CBEAA0] date];
+    [date timeIntervalSinceDate:v2];
     v5 = v4;
   }
 
@@ -174,79 +174,79 @@ uint64_t __55__ENRegionMonitorCoreLocationDataSource_stopMonitoring__block_invok
 
 - (void)_updatedRegion
 {
-  v3 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ENRegionMonitorCoreLocationDataSource *)self updateRegionAllowed])
   {
-    v4 = [MEMORY[0x277CBEAA0] date];
+    date = [MEMORY[0x277CBEAA0] date];
     CFPrefs_SetValue();
 
     v5 = *MEMORY[0x277CE4220];
-    v6 = [(ENRegionMonitorCoreLocationDataSource *)self locationManager];
-    [v6 setDesiredAccuracy:v5];
+    locationManager = [(ENRegionMonitorCoreLocationDataSource *)self locationManager];
+    [locationManager setDesiredAccuracy:v5];
 
-    v7 = [(ENRegionMonitorCoreLocationDataSource *)self locationManager];
-    [v7 requestLocation];
+    locationManager2 = [(ENRegionMonitorCoreLocationDataSource *)self locationManager];
+    [locationManager2 requestLocation];
   }
 }
 
 - (void)updateRegion
 {
-  v3 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ENRegionMonitorCoreLocationDataSource_updateRegion__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_updateRegionVisit:(id)a3
+- (void)_updateRegionVisit:(id)visit
 {
-  v7 = a3;
-  v5 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  visitCopy = visit;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v7)
+  if (visitCopy)
   {
-    objc_storeStrong(&self->_cachedRegionVisit, a3);
-    v6 = [(ENRegionMonitorCoreLocationDataSource *)self delegate];
-    [v6 regionDataSource:self updatedWithVisit:v7];
+    objc_storeStrong(&self->_cachedRegionVisit, visit);
+    delegate = [(ENRegionMonitorCoreLocationDataSource *)self delegate];
+    [delegate regionDataSource:self updatedWithVisit:visitCopy];
   }
 }
 
-- (void)updateRegionVisit:(id)a3
+- (void)updateRegionVisit:(id)visit
 {
-  v4 = a3;
-  v5 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  visitCopy = visit;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ENRegionMonitorCoreLocationDataSource_updateRegionVisit___block_invoke;
   v7[3] = &unk_278FD1120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = visitCopy;
+  v6 = visitCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_processLocation:(id)a3
+- (void)_processLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  locationCopy = location;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ENRegionMonitorCoreLocationDataSource *)self routineManager];
-  [v4 horizontalAccuracy];
+  routineManager = [(ENRegionMonitorCoreLocationDataSource *)self routineManager];
+  [locationCopy horizontalAccuracy];
   v10[1] = 3221225472;
   v10[0] = MEMORY[0x277D85DD0];
   v10[2] = __58__ENRegionMonitorCoreLocationDataSource__processLocation___block_invoke;
   v10[3] = &unk_278FD11F0;
   v8 = v7 + 250.0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v6 fetchLocationsOfInterestWithinDistance:v9 ofLocation:v10 withHandler:v8];
+  v11 = locationCopy;
+  v9 = locationCopy;
+  [routineManager fetchLocationsOfInterestWithinDistance:v9 ofLocation:v10 withHandler:v8];
 }
 
 void __58__ENRegionMonitorCoreLocationDataSource__processLocation___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -261,24 +261,24 @@ void __58__ENRegionMonitorCoreLocationDataSource__processLocation___block_invoke
   [*(a1 + 32) processLocation:*(a1 + 40) locationsOfInterest:v6];
 }
 
-- (void)_processVisit:(id)a3
+- (void)_processVisit:(id)visit
 {
-  v4 = a3;
-  v5 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  visitCopy = visit;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 _placeInference];
-  v7 = [v6 _loiIdentifier];
+  _placeInference = [visitCopy _placeInference];
+  _loiIdentifier = [_placeInference _loiIdentifier];
 
-  v8 = [(ENRegionMonitorCoreLocationDataSource *)self routineManager];
+  routineManager = [(ENRegionMonitorCoreLocationDataSource *)self routineManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke;
   v10[3] = &unk_278FD1218;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
-  [v8 fetchLocationOfInterestWithIdentifier:v7 withHandler:v10];
+  v11 = visitCopy;
+  selfCopy = self;
+  v9 = visitCopy;
+  [routineManager fetchLocationOfInterestWithIdentifier:_loiIdentifier withHandler:v10];
 }
 
 void __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -312,65 +312,65 @@ void __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke(ui
   [*(a1 + 40) processLocation:v16 locationOfInterest:v18];
 }
 
-- (void)processLocation:(id)a3 locationOfInterest:(id)a4
+- (void)processLocation:(id)location locationOfInterest:(id)interest
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  locationCopy = location;
+  interestCopy = interest;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__ENRegionMonitorCoreLocationDataSource_processLocation_locationOfInterest___block_invoke;
   block[3] = &unk_278FD1240;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = locationCopy;
+  v13 = interestCopy;
+  v9 = interestCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_processLocation:(id)a3 locationOfInterest:(id)a4
+- (void)_processLocation:(id)location locationOfInterest:(id)interest
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v7);
+  locationCopy = location;
+  interestCopy = interest;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v9 = [v8 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v8 isSensitiveLoggingAllowed];
 
-  if (v9 && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
   {
     LogPrintF_safe();
   }
 
-  if (v6)
+  if (interestCopy)
   {
-    v10 = [v6 mapItem];
-    v11 = [v10 address];
-    v12 = [v11 iso3166CountryCode];
+    mapItem = [interestCopy mapItem];
+    address = [mapItem address];
+    iso3166CountryCode = [address iso3166CountryCode];
 
-    v13 = [v6 mapItem];
-    v14 = [v13 address];
-    v15 = [v14 iso3166SubdivisionCode];
+    mapItem2 = [interestCopy mapItem];
+    address2 = [mapItem2 address];
+    iso3166SubdivisionCode = [address2 iso3166SubdivisionCode];
 
-    if (v12)
+    if (iso3166CountryCode)
     {
       v16 = objc_alloc(MEMORY[0x277CC5CA0]);
-      if (v15)
+      if (iso3166SubdivisionCode)
       {
-        v17 = [v16 initWithCountryCode:v12 subdivisionCode:v15];
+        v17 = [v16 initWithCountryCode:iso3166CountryCode subdivisionCode:iso3166SubdivisionCode];
       }
 
       else
       {
-        v17 = [v16 initWithCountryCode:v12];
+        v17 = [v16 initWithCountryCode:iso3166CountryCode];
       }
 
       v20 = v17;
       v21 = objc_alloc(MEMORY[0x277CC5D08]);
-      v22 = [MEMORY[0x277CBEAA0] date];
-      v23 = [v21 initWithRegion:v20 date:v22];
+      date = [MEMORY[0x277CBEAA0] date];
+      v23 = [v21 initWithRegion:v20 date:date];
 
       [(ENRegionMonitorCoreLocationDataSource *)self updateRegionVisit:v23];
     }
@@ -378,9 +378,9 @@ void __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke(ui
     else
     {
       v18 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v19 = [v18 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed2 = [v18 isSensitiveLoggingAllowed];
 
-      if (v19 && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed2 && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
       {
         [ENRegionMonitorCoreLocationDataSource _processLocation:locationOfInterest:];
       }
@@ -393,34 +393,34 @@ void __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke(ui
   }
 }
 
-- (void)processLocation:(id)a3 locationsOfInterest:(id)a4
+- (void)processLocation:(id)location locationsOfInterest:(id)interest
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  locationCopy = location;
+  interestCopy = interest;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__ENRegionMonitorCoreLocationDataSource_processLocation_locationsOfInterest___block_invoke;
   block[3] = &unk_278FD1240;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = locationCopy;
+  v13 = interestCopy;
+  v9 = interestCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_processLocation:(id)a3 locationsOfInterest:(id)a4
+- (void)_processLocation:(id)location locationsOfInterest:(id)interest
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENRegionMonitorCoreLocationDataSource *)self queue];
-  dispatch_assert_queue_V2(v8);
+  locationCopy = location;
+  interestCopy = interest;
+  queue = [(ENRegionMonitorCoreLocationDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = [MEMORY[0x277CCAC28] predicateWithBlock:&__block_literal_global_1];
-  v34 = v7;
-  v10 = [v7 filteredArrayUsingPredicate:v9];
+  v34 = interestCopy;
+  v10 = [interestCopy filteredArrayUsingPredicate:v9];
 
   v11 = *MEMORY[0x277CE41D8];
   v38 = 0u;
@@ -445,14 +445,14 @@ void __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke(ui
 
         v17 = *(*(&v36 + 1) + 8 * i);
         v18 = objc_alloc(MEMORY[0x277CE41F0]);
-        v19 = [v17 location];
-        [v19 latitude];
+        location = [v17 location];
+        [location latitude];
         v21 = v20;
-        v22 = [v17 location];
-        [v22 longitude];
+        location2 = [v17 location];
+        [location2 longitude];
         v24 = [v18 initWithLatitude:v21 longitude:v23];
 
-        [v6 distanceFromLocation:v24];
+        [locationCopy distanceFromLocation:v24];
         if (v25 < v11)
         {
           v26 = v25;
@@ -475,17 +475,17 @@ void __55__ENRegionMonitorCoreLocationDataSource__processVisit___block_invoke(ui
   }
 
   v28 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v29 = [v28 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v28 isSensitiveLoggingAllowed];
 
-  if (v29 && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
   {
     v33 = v11;
     v31 = v14;
-    v32 = v6;
+    v32 = locationCopy;
     LogPrintF_safe();
   }
 
-  [(ENRegionMonitorCoreLocationDataSource *)self _processLocation:v6 locationOfInterest:v14, v31, v32, *&v33];
+  [(ENRegionMonitorCoreLocationDataSource *)self _processLocation:locationCopy locationOfInterest:v14, v31, v32, *&v33];
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -500,45 +500,45 @@ BOOL __78__ENRegionMonitorCoreLocationDataSource__processLocation_locationsOfInt
   return v5;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v8 = a4;
+  locationsCopy = locations;
   v5 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v6 = [v5 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v5 isSensitiveLoggingAllowed];
 
-  if (v6 && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
   {
     [ENRegionMonitorCoreLocationDataSource locationManager:didUpdateLocations:];
   }
 
-  v7 = [v8 lastObject];
-  if (v7)
+  lastObject = [locationsCopy lastObject];
+  if (lastObject)
   {
-    [(ENRegionMonitorCoreLocationDataSource *)self _processLocation:v7];
+    [(ENRegionMonitorCoreLocationDataSource *)self _processLocation:lastObject];
   }
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v7 = a4;
+  visitCopy = visit;
   v5 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v6 = [v5 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v5 isSensitiveLoggingAllowed];
 
-  if (v6 && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitorCoreLocationDataSource <= 30 && (gLogCategory_ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
   {
     [ENRegionMonitorCoreLocationDataSource locationManager:didVisit:];
   }
 
-  if (([v7 hasDepartureDate] & 1) == 0)
+  if (([visitCopy hasDepartureDate] & 1) == 0)
   {
-    [(ENRegionMonitorCoreLocationDataSource *)self _processVisit:v7];
+    [(ENRegionMonitorCoreLocationDataSource *)self _processVisit:visitCopy];
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v5 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (gLogCategory__ENRegionMonitorCoreLocationDataSource <= 90 && (gLogCategory__ENRegionMonitorCoreLocationDataSource != -1 || _LogCategory_Initialize()))
   {
     [ENRegionMonitorCoreLocationDataSource locationManager:didFailWithError:];

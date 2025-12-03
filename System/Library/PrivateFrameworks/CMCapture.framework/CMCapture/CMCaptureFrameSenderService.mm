@@ -1,10 +1,10 @@
 @interface CMCaptureFrameSenderService
 + (void)initialize;
-- (CMCaptureFrameSenderService)initWithEndpointType:(id)a3 endpointCameraUniqueID:(id)a4;
-- (CMCaptureFrameSenderService)initWithEndpointType:(id)a3 endpointPID:(int)a4 endpointProxyPID:(int)a5 endpointAuditToken:(id)a6 endpointProxyAuditToken:(id)a7 endpointCameraUniqueID:(id)a8;
-- (int)sendFrame:(opaqueCMSampleBuffer *)a3;
-- (opaqueCMSampleBuffer)_newSampleBufferToSendFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_addConnection:(id)a3;
+- (CMCaptureFrameSenderService)initWithEndpointType:(id)type endpointCameraUniqueID:(id)d;
+- (CMCaptureFrameSenderService)initWithEndpointType:(id)type endpointPID:(int)d endpointProxyPID:(int)iD endpointAuditToken:(id)token endpointProxyAuditToken:(id)auditToken endpointCameraUniqueID:(id)uniqueID;
+- (int)sendFrame:(opaqueCMSampleBuffer *)frame;
+- (opaqueCMSampleBuffer)_newSampleBufferToSendFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_addConnection:(id)connection;
 - (void)_cleanupSendingPixelBufferMachinery;
 - (void)dealloc;
 @end
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -22,14 +22,14 @@
   }
 }
 
-- (CMCaptureFrameSenderService)initWithEndpointType:(id)a3 endpointCameraUniqueID:(id)a4
+- (CMCaptureFrameSenderService)initWithEndpointType:(id)type endpointCameraUniqueID:(id)d
 {
   memset(v9, 0, sizeof(v9));
   v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v9 length:{32, FigCaptureGetCurrentProcessAuditToken(v9)}];
-  return [(CMCaptureFrameSenderService *)self initWithEndpointType:a3 endpointPID:getpid() endpointProxyPID:0 endpointAuditToken:v7 endpointProxyAuditToken:0 endpointCameraUniqueID:a4];
+  return [(CMCaptureFrameSenderService *)self initWithEndpointType:type endpointPID:getpid() endpointProxyPID:0 endpointAuditToken:v7 endpointProxyAuditToken:0 endpointCameraUniqueID:d];
 }
 
-- (CMCaptureFrameSenderService)initWithEndpointType:(id)a3 endpointPID:(int)a4 endpointProxyPID:(int)a5 endpointAuditToken:(id)a6 endpointProxyAuditToken:(id)a7 endpointCameraUniqueID:(id)a8
+- (CMCaptureFrameSenderService)initWithEndpointType:(id)type endpointPID:(int)d endpointProxyPID:(int)iD endpointAuditToken:(id)token endpointProxyAuditToken:(id)auditToken endpointCameraUniqueID:(id)uniqueID
 {
   v30.receiver = self;
   v30.super_class = CMCaptureFrameSenderService;
@@ -37,23 +37,23 @@
   if (v14)
   {
     *(v14 + 1) = [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
-    *(v14 + 2) = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:a3];
-    v14[12] = a4;
-    v14[13] = a5;
-    *(v14 + 4) = a6;
-    *(v14 + 5) = a7;
+    *(v14 + 2) = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:type];
+    v14[12] = d;
+    v14[13] = iD;
+    *(v14 + 4) = token;
+    *(v14 + 5) = auditToken;
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (a8)
+    if (uniqueID)
     {
-      v16 = a8;
+      uniqueIDCopy = uniqueID;
     }
 
     else
     {
-      v16 = @"unknown";
+      uniqueIDCopy = @"unknown";
     }
 
-    *(v14 + 3) = [v15 initWithString:v16];
+    *(v14 + 3) = [v15 initWithString:uniqueIDCopy];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.CMCapture.CMCaptureFrameSender", v17);
     *(v14 + 7) = v18;
@@ -206,7 +206,7 @@ void __147__CMCaptureFrameSenderService_initWithEndpointType_endpointPID_endpoin
   [(CMCaptureFrameSenderService *)&v5 dealloc];
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
   objc_initWeak(&location, self);
   clientQueue = self->_clientQueue;
@@ -215,7 +215,7 @@ void __147__CMCaptureFrameSenderService_initWithEndpointType_endpointPID_endpoin
   block[2] = __46__CMCaptureFrameSenderService__addConnection___block_invoke;
   block[3] = &unk_1E798F9E8;
   objc_copyWeak(&v7, &location);
-  block[4] = a3;
+  block[4] = connection;
   dispatch_async(clientQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -294,14 +294,14 @@ void __46__CMCaptureFrameSenderService__addConnection___block_invoke(uint64_t a1
   }
 }
 
-- (opaqueCMSampleBuffer)_newSampleBufferToSendFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (opaqueCMSampleBuffer)_newSampleBufferToSendFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   sampleBufferOut = 0;
   pixelBufferOut = 0;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
-    sampleBufferOut = CFRetain(a3);
+    sampleBufferOut = CFRetain(buffer);
     goto LABEL_77;
   }
 
@@ -309,7 +309,7 @@ void __46__CMCaptureFrameSenderService__addConnection___block_invoke(uint64_t a1
   Width = CVPixelBufferGetWidth(ImageBuffer);
   Height = CVPixelBufferGetHeight(v6);
   PixelFormatType = CVPixelBufferGetPixelFormatType(v6);
-  v10 = [CMGetAttachment(a3 @"CrossPlatformRotationDegrees"];
+  v10 = [CMGetAttachment(buffer @"CrossPlatformRotationDegrees"];
   v11 = v10;
   v12 = self->_sendingPixelBufferWidth == Width && self->_sendingPixelBufferHeight == Height && self->_sendingPixelBufferPixelFormatType == PixelFormatType && self->_crossPlatformRotationDegrees == v10;
   sendingPixelBufferPool = self->_sendingPixelBufferPool;
@@ -508,13 +508,13 @@ LABEL_47:
       v40 = *(MEMORY[0x1E6960CF0] + 16);
       *&timingArrayOut.duration.value = *MEMORY[0x1E6960CF0];
       *&timingArrayOut.duration.epoch = v40;
-      if (CMSampleBufferGetSampleTimingInfoArray(a3, 1, 0, timingArrayEntriesNeededOut))
+      if (CMSampleBufferGetSampleTimingInfoArray(buffer, 1, 0, timingArrayEntriesNeededOut))
       {
         [CMCaptureFrameSenderService _newSampleBufferToSendFromSampleBuffer:];
         goto LABEL_77;
       }
 
-      if (*timingArrayEntriesNeededOut && CMSampleBufferGetSampleTimingInfoArray(a3, *timingArrayEntriesNeededOut, &timingArrayOut, timingArrayEntriesNeededOut))
+      if (*timingArrayEntriesNeededOut && CMSampleBufferGetSampleTimingInfoArray(buffer, *timingArrayEntriesNeededOut, &timingArrayOut, timingArrayEntriesNeededOut))
       {
         [CMCaptureFrameSenderService _newSampleBufferToSendFromSampleBuffer:];
         goto LABEL_77;
@@ -544,7 +544,7 @@ LABEL_47:
         goto LABEL_77;
       }
 
-      v42 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+      v42 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
       v43 = [v42 objectForKeyedSubscript:*off_1E798B540];
       v44 = [v42 objectForKeyedSubscript:*off_1E798B238];
       if ([v43 isEqualToString:*off_1E798A0F8])
@@ -558,11 +558,11 @@ LABEL_47:
       }
 
       IsExtensionDeviceType = BWDeviceTypeIsExtensionDeviceType([v44 integerValue]);
-      v47 = [MEMORY[0x1E695DF90] dictionary];
-      [v47 setObject:v43 forKeyedSubscript:@"PortType"];
-      [v47 setObject:v44 forKeyedSubscript:@"DeviceType"];
-      [v47 setObject:objc_msgSend(v42 forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798B220), @"DetectedObjectsInfo"}];
-      [v47 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", IsExtensionDeviceType), @"IsExternalCamera"}];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:v43 forKeyedSubscript:@"PortType"];
+      [dictionary setObject:v44 forKeyedSubscript:@"DeviceType"];
+      [dictionary setObject:objc_msgSend(v42 forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798B220), @"DetectedObjectsInfo"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", IsExtensionDeviceType), @"IsExternalCamera"}];
       v66[0] = 0x1F216A8D0;
       v66[1] = @"MirroredVertical";
       v66[2] = @"MirroredHorizontal";
@@ -575,7 +575,7 @@ LABEL_47:
       if (!v49)
       {
 LABEL_76:
-        CMSetAttachment(sampleBufferOut, @"MetadataDictionary", v47, 1u);
+        CMSetAttachment(sampleBufferOut, @"MetadataDictionary", dictionary, 1u);
         goto LABEL_77;
       }
 
@@ -613,7 +613,7 @@ LABEL_63:
 LABEL_73:
         v55 = [MEMORY[0x1E696AD98] numberWithInt:v56];
 LABEL_74:
-        [v47 setObject:v55 forKeyedSubscript:v54];
+        [dictionary setObject:v55 forKeyedSubscript:v54];
         if (v50 == ++v53)
         {
           v50 = [v48 countByEnumeratingWithState:&v62 objects:v61 count:16];
@@ -648,9 +648,9 @@ LABEL_77:
   return sampleBufferOut;
 }
 
-- (int)sendFrame:(opaqueCMSampleBuffer *)a3
+- (int)sendFrame:(opaqueCMSampleBuffer *)frame
 {
-  if (a3)
+  if (frame)
   {
     objc_initWeak(&location, self);
     clientQueue = self->_clientQueue;
@@ -659,7 +659,7 @@ LABEL_77:
     block[2] = __41__CMCaptureFrameSenderService_sendFrame___block_invoke;
     block[3] = &unk_1E798FA10;
     objc_copyWeak(v8, &location);
-    v8[1] = a3;
+    v8[1] = frame;
     dispatch_async_and_wait(clientQueue, block);
     objc_destroyWeak(v8);
     objc_destroyWeak(&location);

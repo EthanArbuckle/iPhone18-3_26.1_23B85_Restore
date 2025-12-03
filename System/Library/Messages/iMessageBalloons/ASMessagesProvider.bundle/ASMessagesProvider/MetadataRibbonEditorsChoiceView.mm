@@ -1,12 +1,12 @@
 @interface MetadataRibbonEditorsChoiceView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider31MetadataRibbonEditorsChoiceView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider31MetadataRibbonEditorsChoiceView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation MetadataRibbonEditorsChoiceView
 
-- (_TtC18ASMessagesProvider31MetadataRibbonEditorsChoiceView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider31MetadataRibbonEditorsChoiceView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18ASMessagesProvider31MetadataRibbonEditorsChoiceView_id;
   *v4 = 0u;
@@ -29,14 +29,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_110354();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_110614();
   v8 = v7;
   v10 = v9;

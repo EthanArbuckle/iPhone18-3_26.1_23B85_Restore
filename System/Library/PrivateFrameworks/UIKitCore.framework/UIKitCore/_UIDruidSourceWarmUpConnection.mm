@@ -32,8 +32,8 @@
     [(NSXPCConnection *)*p_connection setRemoteObjectInterface:v7];
 
     [(NSXPCConnection *)*p_connection resume];
-    v8 = [(NSXPCConnection *)*p_connection remoteObjectProxy];
-    [v8 warmUp];
+    remoteObjectProxy = [(NSXPCConnection *)*p_connection remoteObjectProxy];
+    [remoteObjectProxy warmUp];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);

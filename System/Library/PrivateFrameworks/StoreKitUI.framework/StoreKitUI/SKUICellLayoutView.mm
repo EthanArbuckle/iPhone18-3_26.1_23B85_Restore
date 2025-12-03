@@ -1,6 +1,6 @@
 @interface SKUICellLayoutView
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUICellLayoutView
@@ -12,18 +12,18 @@
   v1 = "[SKUICellLayoutView layoutSubviews]";
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICellLayoutView setBackgroundColor:];
   }
 
-  [(SKUICellLayout *)self->_layout setBackgroundColor:v4];
+  [(SKUICellLayout *)self->_layout setBackgroundColor:colorCopy];
   v5.receiver = self;
   v5.super_class = SKUICellLayoutView;
-  [(SKUICellLayoutView *)&v5 setBackgroundColor:v4];
+  [(SKUICellLayoutView *)&v5 setBackgroundColor:colorCopy];
 }
 
 - (void)setBackgroundColor:.cold.1()

@@ -1,6 +1,6 @@
 @interface FMDRequestLostModeExitAuth
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestLostModeExitAuth)initWithProvider:(id)a3 lostModeExitAuthToken:(id)a4;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestLostModeExitAuth)initWithProvider:(id)provider lostModeExitAuthToken:(id)token;
 - (FMDServiceProvider)provider;
 - (id)requestBody;
 - (id)requestUrl;
@@ -8,19 +8,19 @@
 
 @implementation FMDRequestLostModeExitAuth
 
-- (FMDRequestLostModeExitAuth)initWithProvider:(id)a3 lostModeExitAuthToken:(id)a4
+- (FMDRequestLostModeExitAuth)initWithProvider:(id)provider lostModeExitAuthToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 account];
+  providerCopy = provider;
+  tokenCopy = token;
+  account = [providerCopy account];
   v11.receiver = self;
   v11.super_class = FMDRequestLostModeExitAuth;
-  v9 = [(FMDRequest *)&v11 initWithAccount:v8];
+  v9 = [(FMDRequest *)&v11 initWithAccount:account];
 
   if (v9)
   {
-    objc_storeWeak(&v9->_provider, v6);
-    objc_storeStrong(&v9->_lostModeExitAuthToken, a4);
+    objc_storeWeak(&v9->_provider, providerCopy);
+    objc_storeStrong(&v9->_lostModeExitAuthToken, token);
   }
 
   return v9;
@@ -29,12 +29,12 @@
 - (id)requestUrl
 {
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 deviceUDID];
+  deviceUDID = [v3 deviceUDID];
 
   v5 = objc_alloc_init(RequestTemplateURL);
-  v6 = [(FMDRequestLostModeExitAuth *)self provider];
-  v7 = [v6 account];
-  v8 = [(RequestTemplateURL *)v5 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/authAfterLostMode" account:v7 udid:v4];
+  provider = [(FMDRequestLostModeExitAuth *)self provider];
+  account = [provider account];
+  v8 = [(RequestTemplateURL *)v5 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/authAfterLostMode" account:account udid:deviceUDID];
 
   return v8;
 }
@@ -43,29 +43,29 @@
 {
   v11.receiver = self;
   v11.super_class = FMDRequestLostModeExitAuth;
-  v3 = [(FMDRequest *)&v11 requestBody];
-  v4 = [(FMDRequestLostModeExitAuth *)self provider];
-  if (v4)
+  requestBody = [(FMDRequest *)&v11 requestBody];
+  provider = [(FMDRequestLostModeExitAuth *)self provider];
+  if (provider)
   {
     v5 = objc_alloc_init(FMDActingRequestDecorator);
-    v6 = [(FMDActingRequestDecorator *)v5 standardDeviceContext];
+    standardDeviceContext = [(FMDActingRequestDecorator *)v5 standardDeviceContext];
 
-    [v3 fm_safelyMapKey:@"deviceContext" toObject:v6];
+    [requestBody fm_safelyMapKey:@"deviceContext" toObject:standardDeviceContext];
   }
 
   v7 = +[NSMutableDictionary dictionary];
   v8 = +[FMDSystemConfig sharedInstance];
-  v9 = [v8 deviceUDID];
-  [v7 fm_safelyMapKey:@"udid" toObject:v9];
+  deviceUDID = [v8 deviceUDID];
+  [v7 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
-  [v3 setObject:v7 forKeyedSubscript:@"deviceInfo"];
+  [requestBody setObject:v7 forKeyedSubscript:@"deviceInfo"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v3 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

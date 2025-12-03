@@ -1,5 +1,5 @@
 @interface _SOTimersSnapshotMutation
-- (_SOTimersSnapshotMutation)initWithBase:(id)a3;
+- (_SOTimersSnapshotMutation)initWithBase:(id)base;
 - (id)getDate;
 - (id)getTimersByID;
 @end
@@ -10,42 +10,42 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_timersByID;
+    timersByID = self->_timersByID;
   }
 
   else
   {
-    v2 = [(SOTimersSnapshot *)self->_base timersByID];
+    timersByID = [(SOTimersSnapshot *)self->_base timersByID];
   }
 
-  return v2;
+  return timersByID;
 }
 
 - (id)getDate
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_date;
+    date = self->_date;
   }
 
   else
   {
-    v2 = [(SOTimersSnapshot *)self->_base date];
+    date = [(SOTimersSnapshot *)self->_base date];
   }
 
-  return v2;
+  return date;
 }
 
-- (_SOTimersSnapshotMutation)initWithBase:(id)a3
+- (_SOTimersSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SOTimersSnapshotMutation;
   v6 = [(_SOTimersSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

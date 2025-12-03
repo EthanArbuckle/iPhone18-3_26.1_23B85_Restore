@@ -2,47 +2,47 @@
 - (NSString)associatedAppBundleIdentifier;
 - (NSURL)launchURL;
 - (_TtC10ClockAngel30TimerApertureElementController)init;
-- (_TtC10ClockAngel30TimerApertureElementController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10ClockAngel30TimerApertureElementController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)preferredHeightForBottomSafeArea;
-- (id)_timelinesForDateInterval:(id)a3;
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4;
+- (id)_timelinesForDateInterval:(id)interval;
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion;
 - (void)collapse;
 - (void)playPausedAction;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setElementIdentifier:(id)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)setPresentationBehaviors:(unint64_t)a3;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setLaunchURL:(id)l;
+- (void)setPresentationBehaviors:(unint64_t)behaviors;
 - (void)stopAction;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TimerApertureElementController
 
-- (void)setPresentationBehaviors:(unint64_t)a3
+- (void)setPresentationBehaviors:(unint64_t)behaviors
 {
   v4 = *(self + OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_presentationBehaviors);
-  *(self + OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_presentationBehaviors) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_presentationBehaviors) = behaviors;
+  if (v4 != behaviors)
   {
-    v5 = self;
-    [-[TimerApertureElementController systemApertureElementContext](v5 "systemApertureElementContext")];
+    selfCopy = self;
+    [-[TimerApertureElementController systemApertureElementContext](selfCopy "systemApertureElementContext")];
     swift_unknownObjectRelease();
   }
 }
 
 - (double)preferredHeightForBottomSafeArea
 {
-  v2 = self;
-  v3 = [(TimerApertureElementController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(TimerApertureElementController *)selfCopy view];
+  if (view)
   {
-    v5 = v3;
-    v6 = [v3 SBUISA_systemApertureObstructedAreaLayoutGuide];
+    v5 = view;
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [view SBUISA_systemApertureObstructedAreaLayoutGuide];
 
-    [v6 layoutFrame];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -89,13 +89,13 @@
   return v11;
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
   v5 = sub_1000032D4(&unk_100119A20, &qword_1000D1DC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -110,7 +110,7 @@
 
   v11 = OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_launchURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_10004EC60(v8, self + v11, &unk_100119A20, &qword_1000D1DC0);
   swift_endAccess();
 }
@@ -133,9 +133,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -152,22 +152,22 @@
   v6[1] = v5;
 }
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10ClockAngel30TimerApertureElementController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B4E30();
 }
 
-- (_TtC10ClockAngel30TimerApertureElementController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10ClockAngel30TimerApertureElementController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -179,42 +179,42 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000B5C9C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000B5C9C(v5, v7, bundle);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000B6674(a3);
+  selfCopy = self;
+  sub_1000B6674(appear);
 }
 
 - (void)playPausedAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BBF38();
 }
 
 - (void)stopAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BC4BC();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1000BC698(a4, width, height);
+  selfCopy = self;
+  sub_1000BC698(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)collapse
 {
-  v2 = self;
-  [-[TimerApertureElementController systemApertureElementContext](v2 "systemApertureElementContext")];
+  selfCopy = self;
+  [-[TimerApertureElementController systemApertureElementContext](selfCopy "systemApertureElementContext")];
   swift_unknownObjectRelease();
 }
 
@@ -225,14 +225,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000BF7D4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1000BF7D4(change);
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v4 = type metadata accessor for DateInterval();
   v5 = *(v4 - 8);
@@ -240,10 +240,10 @@
   __chkstk_darwin(v4);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   isa = DateInterval._bridgeToObjectiveC()().super.isa;
   v11 = type metadata accessor for TimerApertureElementController(0);
-  v14.receiver = v9;
+  v14.receiver = selfCopy;
   v14.super_class = v11;
   v12 = [(TimerApertureElementController *)&v14 _timelinesForDateInterval:isa];
 
@@ -259,9 +259,9 @@
   return v12;
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -274,12 +274,12 @@
   aBlock[2] = sub_10004B270;
   aBlock[3] = &unk_100103A30;
   v9 = _Block_copy(aBlock);
-  v10 = a3;
-  v11 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
 
-  v12.receiver = v11;
+  v12.receiver = selfCopy;
   v12.super_class = type metadata accessor for TimerApertureElementController(0);
-  [(TimerApertureElementController *)&v12 _updateWithFrameSpecifier:v10 completion:v9];
+  [(TimerApertureElementController *)&v12 _updateWithFrameSpecifier:specifierCopy completion:v9];
 
   _Block_release(v9);
 }

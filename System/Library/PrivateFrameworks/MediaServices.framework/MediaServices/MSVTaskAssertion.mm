@@ -2,31 +2,31 @@
 - (BOOL)isValid;
 - (MSVTaskAssertion)init;
 - (id)description;
-- (unsigned)_BSKReasonForMSVReason:(unint64_t)a3;
-- (void)_cancelInvalidationTimerWithCompletion:(id)a3;
+- (unsigned)_BSKReasonForMSVReason:(unint64_t)reason;
+- (void)_cancelInvalidationTimerWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidateOnDate:(id)a3;
+- (void)invalidateOnDate:(id)date;
 @end
 
 @implementation MSVTaskAssertion
 
-- (unsigned)_BSKReasonForMSVReason:(unint64_t)a3
+- (unsigned)_BSKReasonForMSVReason:(unint64_t)reason
 {
-  if (a3 < 3)
+  if (reason < 3)
   {
-    return dword_1AC881CD8[a3];
+    return dword_1AC881CD8[reason];
   }
 
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"MSVTaskAssertion.m" lineNumber:236 description:@"Attempting to convert a non-existing MSVProcessAssertionReason value!"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MSVTaskAssertion.m" lineNumber:236 description:@"Attempting to convert a non-existing MSVProcessAssertionReason value!"];
 
   return result;
 }
 
-- (void)_cancelInvalidationTimerWithCompletion:(id)a3
+- (void)_cancelInvalidationTimerWithCompletion:(id)completion
 {
-  v4 = [a3 copy];
+  v4 = [completion copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__MSVTaskAssertion__cancelInvalidationTimerWithCompletion___block_invoke;
@@ -70,16 +70,16 @@ uint64_t __59__MSVTaskAssertion__cancelInvalidationTimerWithCompletion___block_i
   return processAssertion;
 }
 
-- (void)invalidateOnDate:(id)a3
+- (void)invalidateOnDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__MSVTaskAssertion_invalidateOnDate___block_invoke;
   v6[3] = &unk_1E7982B28;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   [(MSVTaskAssertion *)self _cancelInvalidationTimerWithCompletion:v6];
 }
 
@@ -119,7 +119,7 @@ void __37__MSVTaskAssertion_invalidateOnDate___block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_DEBUG, "Invalidating task assertion: %{public}@", &v7, 0xCu);
   }
 
@@ -145,9 +145,9 @@ void __37__MSVTaskAssertion_invalidateOnDate___block_invoke_2(uint64_t a1)
   subsystem = self->_subsystem;
   name = self->_name;
   uuid = self->_uuid;
-  v10 = [(MSVTaskAssertion *)self isValid];
+  isValid = [(MSVTaskAssertion *)self isValid];
   v11 = @"NO";
-  if (v10)
+  if (isValid)
   {
     v11 = @"YES";
   }
@@ -162,7 +162,7 @@ void __37__MSVTaskAssertion_invalidateOnDate___block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_INFO, "Invalidating task assertion: %{public}@ (dealloc)", buf, 0xCu);
   }
 

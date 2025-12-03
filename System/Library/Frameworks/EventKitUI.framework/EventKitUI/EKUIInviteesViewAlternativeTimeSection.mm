@@ -1,23 +1,23 @@
 @interface EKUIInviteesViewAlternativeTimeSection
-- (BOOL)canSelectRow:(id)a3;
+- (BOOL)canSelectRow:(id)row;
 - (BOOL)searchingForMoreTimes;
 - (Class)customTimeCellClass;
 - (EKUIInviteesViewAlternativeTimeSection)init;
 - (NSArray)searcherTimeSlots;
-- (id)_alternativeTimeAtIndex:(int64_t)a3;
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4;
+- (id)_alternativeTimeAtIndex:(int64_t)index;
+- (id)cellForIndexPath:(id)path inTableView:(id)view;
 - (id)debugTitle;
 - (unint64_t)_numberOfTimeSlotsShown;
 - (unint64_t)initialNumberOfTimeSlotsToShow;
 - (unint64_t)numberOfRows;
-- (void)availabilitySearcherChangedState:(int64_t)a3;
+- (void)availabilitySearcherChangedState:(int64_t)state;
 - (void)clearCheckmark;
 - (void)refreshCellsAfterStateChange;
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3;
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view;
 - (void)searchForMoreTimes;
-- (void)selectRow:(id)a3;
-- (void)setHasCheckedRow:(BOOL)a3;
-- (void)setLastCheckedRow:(int64_t)a3;
+- (void)selectRow:(id)row;
+- (void)setHasCheckedRow:(BOOL)row;
+- (void)setLastCheckedRow:(int64_t)row;
 @end
 
 @implementation EKUIInviteesViewAlternativeTimeSection
@@ -45,16 +45,16 @@
 
 - (unint64_t)numberOfRows
 {
-  v3 = [(EKUIInviteesViewAlternativeTimeSection *)self _numberOfTimeSlotsShown];
+  _numberOfTimeSlotsShown = [(EKUIInviteesViewAlternativeTimeSection *)self _numberOfTimeSlotsShown];
   if ([(EKUIInviteesViewAlternativeTimeSection *)self initialSearchInProgress])
   {
-    return v3 + 1;
+    return _numberOfTimeSlotsShown + 1;
   }
 
-  v5 = [(EKUIInviteesViewAlternativeTimeSection *)self searchExhausted];
-  if (v3)
+  searchExhausted = [(EKUIInviteesViewAlternativeTimeSection *)self searchExhausted];
+  if (_numberOfTimeSlotsShown)
   {
-    v6 = v3 + 1;
+    v6 = _numberOfTimeSlotsShown + 1;
   }
 
   else
@@ -62,9 +62,9 @@
     v6 = 0;
   }
 
-  if (v5)
+  if (searchExhausted)
   {
-    return v3 + 1;
+    return _numberOfTimeSlotsShown + 1;
   }
 
   else
@@ -73,18 +73,18 @@
   }
 }
 
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)cellForIndexPath:(id)path inTableView:(id)view
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
   if ([(EKUIInviteesViewAlternativeTimeSection *)self _isValidRow:v8])
   {
     if ([(EKUIInviteesViewAlternativeTimeSection *)self _isConflictSearchRow:v8])
     {
-      v9 = [(EKUIInviteesViewAlternativeTimeSection *)self cachedConflictSearchCellReuseIdentifier];
-      v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+      cachedConflictSearchCellReuseIdentifier = [(EKUIInviteesViewAlternativeTimeSection *)self cachedConflictSearchCellReuseIdentifier];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:cachedConflictSearchCellReuseIdentifier forIndexPath:pathCopy];
 
       if ([(EKUIInviteesViewAlternativeTimeSection *)self initialSearchInProgress])
       {
@@ -109,8 +109,8 @@
 
     else
     {
-      v16 = [(EKUIInviteesViewAlternativeTimeSection *)self cachedTimeCellReuseIdentifier];
-      v10 = [v7 dequeueReusableCellWithIdentifier:v16 forIndexPath:v6];
+      cachedTimeCellReuseIdentifier = [(EKUIInviteesViewAlternativeTimeSection *)self cachedTimeCellReuseIdentifier];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:cachedTimeCellReuseIdentifier forIndexPath:pathCopy];
 
       objc_initWeak(buf, self);
       v29[0] = MEMORY[0x1E69E9820];
@@ -126,9 +126,9 @@
       objc_copyWeak(v28, buf);
       v28[1] = v8;
       [v10 setShowAllConflictedParticipantsTapped:v27];
-      v17 = [(EKUIInviteesViewAlternativeTimeSection *)self rowsShowingAllParticipants];
+      rowsShowingAllParticipants = [(EKUIInviteesViewAlternativeTimeSection *)self rowsShowingAllParticipants];
       v18 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-      v19 = [v17 containsObject:v18];
+      v19 = [rowsShowingAllParticipants containsObject:v18];
 
       if ([(EKUIInviteesViewAlternativeTimeSection *)self hasCheckedRow])
       {
@@ -141,11 +141,11 @@
       }
 
       v21 = [(EKUIInviteesViewAlternativeTimeSection *)self _alternativeTimeAtIndex:v8];
-      v22 = [v21 startDate];
-      v23 = [v21 endDate];
-      v24 = [(EKUIInviteesViewAlternativeTimeSection *)self timeZone];
-      v25 = [v21 conflictedParticipants];
-      [v10 updateWithStartDate:v22 endDate:v23 timeZone:v24 busyParticipants:v25 showAllParticipants:v19 checked:v20];
+      startDate = [v21 startDate];
+      endDate = [v21 endDate];
+      timeZone = [(EKUIInviteesViewAlternativeTimeSection *)self timeZone];
+      conflictedParticipants = [v21 conflictedParticipants];
+      [v10 updateWithStartDate:startDate endDate:endDate timeZone:timeZone busyParticipants:conflictedParticipants showAllParticipants:v19 checked:v20];
 
       objc_destroyWeak(v28);
       objc_destroyWeak(&v30);
@@ -198,18 +198,18 @@ void __71__EKUIInviteesViewAlternativeTimeSection_cellForIndexPath_inTableView__
   [v2 addObject:v3];
 }
 
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(EKUIInviteesViewAlternativeTimeSection *)self customTimeCellClass];
+  viewCopy = view;
+  customTimeCellClass = [(EKUIInviteesViewAlternativeTimeSection *)self customTimeCellClass];
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v7 = NSStringFromClass(v5);
+  v7 = NSStringFromClass(customTimeCellClass);
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[EKUIInviteesViewAlternativeTimeSection reuseIdentifierVersion](self, "reuseIdentifierVersion")}];
   v9 = [v6 initWithFormat:@"%@-%@", v7, v8];
   [(EKUIInviteesViewAlternativeTimeSection *)self setCachedTimeCellReuseIdentifier:v9];
 
-  v10 = [(EKUIInviteesViewAlternativeTimeSection *)self cachedTimeCellReuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v10];
+  cachedTimeCellReuseIdentifier = [(EKUIInviteesViewAlternativeTimeSection *)self cachedTimeCellReuseIdentifier];
+  [viewCopy registerClass:customTimeCellClass forCellReuseIdentifier:cachedTimeCellReuseIdentifier];
 
   v11 = objc_opt_class();
   v12 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -218,18 +218,18 @@ void __71__EKUIInviteesViewAlternativeTimeSection_cellForIndexPath_inTableView__
   v15 = [v12 initWithFormat:@"%@-%@", v13, v14];
   [(EKUIInviteesViewAlternativeTimeSection *)self setCachedConflictSearchCellReuseIdentifier:v15];
 
-  v16 = [(EKUIInviteesViewAlternativeTimeSection *)self cachedConflictSearchCellReuseIdentifier];
-  [v4 registerClass:v11 forCellReuseIdentifier:v16];
+  cachedConflictSearchCellReuseIdentifier = [(EKUIInviteesViewAlternativeTimeSection *)self cachedConflictSearchCellReuseIdentifier];
+  [viewCopy registerClass:v11 forCellReuseIdentifier:cachedConflictSearchCellReuseIdentifier];
 
   v17 = [(EKUIInviteesViewAlternativeTimeSection *)self reuseIdentifierVersion]+ 1;
 
   [(EKUIInviteesViewAlternativeTimeSection *)self setReuseIdentifierVersion:v17];
 }
 
-- (BOOL)canSelectRow:(id)a3
+- (BOOL)canSelectRow:(id)row
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 row];
+  v4 = [row row];
   if (![(EKUIInviteesViewAlternativeTimeSection *)self _isValidRow:v4])
   {
     v6 = kEKUILogInviteesHandle;
@@ -266,33 +266,33 @@ LABEL_8:
   return v5;
 }
 
-- (void)selectRow:(id)a3
+- (void)selectRow:(id)row
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 row];
-  if (-[EKUIInviteesViewAlternativeTimeSection _isValidRow:](self, "_isValidRow:", [v4 row]))
+  rowCopy = row;
+  v5 = [rowCopy row];
+  if (-[EKUIInviteesViewAlternativeTimeSection _isValidRow:](self, "_isValidRow:", [rowCopy row]))
   {
     if ([(EKUIInviteesViewAlternativeTimeSection *)self _isConflictSearchRow:v5])
     {
-      v6 = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
-      v7 = [v6 count];
+      alternativeTimes = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
+      v7 = [alternativeTimes count];
 
-      v8 = [(EKUIInviteesViewAlternativeTimeSection *)self maximumNumberOfTimeSlotsToShow];
-      v9 = v8 + 10;
-      [(EKUIInviteesViewAlternativeTimeSection *)self setMaximumNumberOfTimeSlotsToShow:v8 + 10];
-      if (v7 < v8 + 10)
+      maximumNumberOfTimeSlotsToShow = [(EKUIInviteesViewAlternativeTimeSection *)self maximumNumberOfTimeSlotsToShow];
+      v9 = maximumNumberOfTimeSlotsToShow + 10;
+      [(EKUIInviteesViewAlternativeTimeSection *)self setMaximumNumberOfTimeSlotsToShow:maximumNumberOfTimeSlotsToShow + 10];
+      if (v7 < maximumNumberOfTimeSlotsToShow + 10)
       {
         [(EKUIInviteesViewAlternativeTimeSection *)self setAvailabilityRequestInProgress:1];
         [(EKUIInviteesViewAlternativeTimeSection *)self searchForMoreTimes];
       }
 
-      v10 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+      tableViewCellHook = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
 
-      if (v10)
+      if (tableViewCellHook)
       {
-        v11 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-        v12 = v11[2](v11, v5);
+        tableViewCellHook2 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+        v12 = tableViewCellHook2[2](tableViewCellHook2, v5);
 
         if (v7 < v9)
         {
@@ -310,16 +310,16 @@ LABEL_8:
         }
       }
 
-      v18 = [(EKUIInviteesViewAlternativeTimeSection *)self showMoreAlternativeTimesTapped];
+      showMoreAlternativeTimesTapped = [(EKUIInviteesViewAlternativeTimeSection *)self showMoreAlternativeTimesTapped];
 
-      if (v18)
+      if (showMoreAlternativeTimesTapped)
       {
         if (v7 < v9)
         {
           v9 = v7;
         }
 
-        if (v9 <= v8)
+        if (v9 <= maximumNumberOfTimeSlotsToShow)
         {
           v19 = 0;
         }
@@ -327,22 +327,22 @@ LABEL_8:
         else
         {
           v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          if (v8 < v9)
+          if (maximumNumberOfTimeSlotsToShow < v9)
           {
             do
             {
-              v20 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:v8];
+              v20 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:maximumNumberOfTimeSlotsToShow];
               [v19 addObject:v20];
 
-              ++v8;
+              ++maximumNumberOfTimeSlotsToShow;
             }
 
-            while (v9 != v8);
+            while (v9 != maximumNumberOfTimeSlotsToShow);
           }
         }
 
-        v22 = [(EKUIInviteesViewAlternativeTimeSection *)self showMoreAlternativeTimesTapped];
-        (v22)[2](v22, v19);
+        showMoreAlternativeTimesTapped2 = [(EKUIInviteesViewAlternativeTimeSection *)self showMoreAlternativeTimesTapped];
+        (showMoreAlternativeTimesTapped2)[2](showMoreAlternativeTimesTapped2, v19);
       }
 
       else
@@ -385,12 +385,12 @@ LABEL_8:
   [(EKUIInviteesViewAlternativeTimeSection *)self setLastCheckedRow:0];
 }
 
-- (void)availabilitySearcherChangedState:(int64_t)a3
+- (void)availabilitySearcherChangedState:(int64_t)state
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [(EKUIInviteesViewAlternativeTimeSection *)self setSearcherHasError:0];
       if ([(EKUIInviteesViewAlternativeTimeSection *)self searchExhausted])
@@ -402,7 +402,7 @@ LABEL_8:
         }
 
         *buf = 138412290;
-        v21 = self;
+        selfCopy2 = self;
         v10 = "Search has been exhausted.  Will not update [%@]";
       }
 
@@ -417,11 +417,11 @@ LABEL_8:
 
           [(EKUIInviteesViewAlternativeTimeSection *)self setInitialSearchInProgress:0];
           [(EKUIInviteesViewAlternativeTimeSection *)self setAvailabilityRequestInProgress:0];
-          v11 = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
-          v19 = v11;
-          if (v11)
+          alternativeTimes = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
+          v19 = alternativeTimes;
+          if (alternativeTimes)
           {
-            v12 = [v11 count];
+            v12 = [alternativeTimes count];
           }
 
           else
@@ -429,11 +429,11 @@ LABEL_8:
             v12 = 0;
           }
 
-          v13 = [(EKUIInviteesViewAlternativeTimeSection *)self searcherTimeSlots];
-          v14 = v13;
-          if (v13)
+          searcherTimeSlots = [(EKUIInviteesViewAlternativeTimeSection *)self searcherTimeSlots];
+          v14 = searcherTimeSlots;
+          if (searcherTimeSlots)
           {
-            v15 = [v13 count];
+            v15 = [searcherTimeSlots count];
           }
 
           else
@@ -443,8 +443,8 @@ LABEL_8:
 
           [(EKUIInviteesViewAlternativeTimeSection *)self setAlternativeTimes:v14];
           v16 = [(EKUIInviteesViewAlternativeTimeSection *)self numberOfRows]- 1;
-          v17 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-          v18 = v17[2](v17, v16);
+          tableViewCellHook = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+          v18 = tableViewCellHook[2](tableViewCellHook, v16);
 
           if (v12 == v15)
           {
@@ -467,7 +467,7 @@ LABEL_8:
         }
 
         *buf = 138412290;
-        v21 = self;
+        selfCopy2 = self;
         v10 = "Still searching for more times.  Will not update [%@]";
       }
 
@@ -475,7 +475,7 @@ LABEL_8:
       return;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       return;
     }
@@ -485,8 +485,8 @@ LABEL_8:
     [(EKUIInviteesViewAlternativeTimeSection *)self setAvailabilityRequestInProgress:0];
     [(EKUIInviteesViewAlternativeTimeSection *)self setSearchExhausted:1];
     v6 = [(EKUIInviteesViewAlternativeTimeSection *)self numberOfRows]- 1;
-    v7 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-    v19 = v7[2](v7, v6);
+    tableViewCellHook2 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+    v19 = tableViewCellHook2[2](tableViewCellHook2, v6);
 
     [v19 setNoAvailableTimesStateWithNumberOfExistingTimes:0 hasError:1];
 LABEL_8:
@@ -494,9 +494,9 @@ LABEL_8:
     return;
   }
 
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -505,8 +505,8 @@ LABEL_8:
     [(EKUIInviteesViewAlternativeTimeSection *)self setMaximumNumberOfTimeSlotsToShow:[(EKUIInviteesViewAlternativeTimeSection *)self initialNumberOfTimeSlotsToShow]];
     [(EKUIInviteesViewAlternativeTimeSection *)self setInitialSearchInProgress:1];
     v4 = [(EKUIInviteesViewAlternativeTimeSection *)self numberOfRows]- 1;
-    v5 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-    v19 = v5[2](v5, v4);
+    tableViewCellHook3 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+    v19 = tableViewCellHook3[2](tableViewCellHook3, v4);
 
     [v19 setInitialSearchInProgressState];
     goto LABEL_8;
@@ -515,8 +515,8 @@ LABEL_8:
   [(EKUIInviteesViewAlternativeTimeSection *)self setAlternativeTimes:?];
   [(EKUIInviteesViewAlternativeTimeSection *)self setHasCheckedRow:0];
   [(EKUIInviteesViewAlternativeTimeSection *)self setLastCheckedRow:0];
-  v8 = [(EKUIInviteesViewAlternativeTimeSection *)self rowsShowingAllParticipants];
-  [v8 removeAllObjects];
+  rowsShowingAllParticipants = [(EKUIInviteesViewAlternativeTimeSection *)self rowsShowingAllParticipants];
+  [rowsShowingAllParticipants removeAllObjects];
 
   [(EKUIInviteesViewAlternativeTimeSection *)self setAvailabilityRequestInProgress:0];
   [(EKUIInviteesViewAlternativeTimeSection *)self setMaximumNumberOfTimeSlotsToShow:0];
@@ -529,8 +529,8 @@ LABEL_8:
 - (void)refreshCellsAfterStateChange
 {
   v3 = [(EKUIInviteesViewAlternativeTimeSection *)self numberOfRows]- 1;
-  v4 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-  v5 = v4[2](v4, v3);
+  tableViewCellHook = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+  v5 = tableViewCellHook[2](tableViewCellHook, v3);
 
   if ([(EKUIInviteesViewAlternativeTimeSection *)self initialSearchInProgress])
   {
@@ -562,7 +562,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[EKUIInviteesViewAlternativeTimeSection initialNumberOfTimeSlotsToShow]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_ERROR, "A subclass has not overridden this method, which must be overridden: [%s].  Subclass instance: [%@]", &v5, 0x16u);
   }
 
@@ -578,7 +578,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[EKUIInviteesViewAlternativeTimeSection searcherTimeSlots]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_ERROR, "A subclass has not overridden this method, which must be overridden: [%s].  Subclass instance: [%@]", &v5, 0x16u);
   }
 
@@ -594,7 +594,7 @@ LABEL_8:
     v6 = 136315394;
     v7 = "[EKUIInviteesViewAlternativeTimeSection customTimeCellClass]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_ERROR, "A subclass has not overridden this method, which must be overridden: [%s].  Subclass instance: [%@]", &v6, 0x16u);
   }
 
@@ -612,7 +612,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[EKUIInviteesViewAlternativeTimeSection searchingForMoreTimes]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_ERROR, "A subclass has not overridden this method, which must be overridden: [%s].  Subclass instance: [%@]", &v5, 0x16u);
   }
 
@@ -628,12 +628,12 @@ LABEL_8:
     v4 = 136315394;
     v5 = "[EKUIInviteesViewAlternativeTimeSection searchForMoreTimes]";
     v6 = 2112;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v3, OS_LOG_TYPE_ERROR, "A subclass has not overridden this method, which must be overridden: [%s].  Subclass instance: [%@]", &v4, 0x16u);
   }
 }
 
-- (void)setHasCheckedRow:(BOOL)a3
+- (void)setHasCheckedRow:(BOOL)row
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = kEKUILogInviteesHandle;
@@ -644,25 +644,25 @@ LABEL_8:
     v14 = 138412546;
     v15 = v7;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_DEBUG, "Setting 'hasCheckedRow' to [%@] in section [%@]", &v14, 0x16u);
   }
 
-  self->_hasCheckedRow = a3;
-  if (!a3)
+  self->_hasCheckedRow = row;
+  if (!row)
   {
-    v8 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+    tableViewCellHook = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
 
-    if (v8)
+    if (tableViewCellHook)
     {
-      v9 = [(EKUIInviteesViewAlternativeTimeSection *)self _numberOfTimeSlotsShown];
-      if (v9 >= 1)
+      _numberOfTimeSlotsShown = [(EKUIInviteesViewAlternativeTimeSection *)self _numberOfTimeSlotsShown];
+      if (_numberOfTimeSlotsShown >= 1)
       {
-        v10 = v9;
+        v10 = _numberOfTimeSlotsShown;
         for (i = 0; i != v10; ++i)
         {
-          v12 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-          v13 = v12[2](v12, i);
+          tableViewCellHook2 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+          v13 = tableViewCellHook2[2](tableViewCellHook2, i);
 
           [v13 setChecked:0];
         }
@@ -671,7 +671,7 @@ LABEL_8:
   }
 }
 
-- (void)setLastCheckedRow:(int64_t)a3
+- (void)setLastCheckedRow:(int64_t)row
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = kEKUILogInviteesHandle;
@@ -679,46 +679,46 @@ LABEL_8:
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = v5;
-    v8 = [v6 numberWithInteger:a3];
+    v8 = [v6 numberWithInteger:row];
     v24 = 138412546;
     v25 = v8;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "Setting last checked row to [%@] in section [%@]", &v24, 0x16u);
   }
 
   lastCheckedRow = self->_lastCheckedRow;
-  self->_lastCheckedRow = a3;
+  self->_lastCheckedRow = row;
   if ([(EKUIInviteesViewAlternativeTimeSection *)self hasCheckedRow])
   {
-    if ([(EKUIInviteesViewAlternativeTimeSection *)self _isValidRow:a3])
+    if ([(EKUIInviteesViewAlternativeTimeSection *)self _isValidRow:row])
     {
-      v10 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+      tableViewCellHook = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
 
-      if (v10)
+      if (tableViewCellHook)
       {
-        v11 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-        v12 = v11[2](v11, lastCheckedRow);
+        tableViewCellHook2 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+        v12 = tableViewCellHook2[2](tableViewCellHook2, lastCheckedRow);
 
         [v12 setChecked:0];
-        v13 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
-        v14 = v13[2](v13, a3);
+        tableViewCellHook3 = [(EKUIInviteesViewAlternativeTimeSection *)self tableViewCellHook];
+        v14 = tableViewCellHook3[2](tableViewCellHook3, row);
 
         [v14 setChecked:1];
         [v14 setSelected:0 animated:1];
       }
 
-      v15 = [(EKUIInviteesViewAlternativeTimeSection *)self newTimeChosen];
+      newTimeChosen = [(EKUIInviteesViewAlternativeTimeSection *)self newTimeChosen];
 
-      if (v15)
+      if (newTimeChosen)
       {
-        v16 = [(EKUIInviteesViewAlternativeTimeSection *)self _alternativeTimeAtIndex:a3];
+        v16 = [(EKUIInviteesViewAlternativeTimeSection *)self _alternativeTimeAtIndex:row];
         if (v16)
         {
-          v17 = [(EKUIInviteesViewAlternativeTimeSection *)self newTimeChosen];
-          v18 = [v16 startDate];
-          v19 = [v16 endDate];
-          (v17)[2](v17, v18, v19);
+          newTimeChosen2 = [(EKUIInviteesViewAlternativeTimeSection *)self newTimeChosen];
+          startDate = [v16 startDate];
+          endDate = [v16 endDate];
+          (newTimeChosen2)[2](newTimeChosen2, startDate, endDate);
         }
       }
     }
@@ -730,7 +730,7 @@ LABEL_8:
       {
         v21 = MEMORY[0x1E696AD98];
         v22 = v20;
-        v23 = [v21 numberWithInteger:a3];
+        v23 = [v21 numberWithInteger:row];
         v24 = 138412290;
         v25 = v23;
         _os_log_impl(&dword_1D3400000, v22, OS_LOG_TYPE_ERROR, "There is no row with index [%@].  Will not 'set last checked row' to its row value.", &v24, 0xCu);
@@ -741,11 +741,11 @@ LABEL_8:
 
 - (unint64_t)_numberOfTimeSlotsShown
 {
-  v3 = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
-  if (v3)
+  alternativeTimes = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
+  if (alternativeTimes)
   {
-    v4 = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
-    v5 = [v4 count];
+    alternativeTimes2 = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
+    v5 = [alternativeTimes2 count];
   }
 
   else
@@ -762,17 +762,17 @@ LABEL_8:
   return result;
 }
 
-- (id)_alternativeTimeAtIndex:(int64_t)a3
+- (id)_alternativeTimeAtIndex:(int64_t)index
 {
-  if ([(EKUIInviteesViewAlternativeTimeSection *)self _numberOfTimeSlotsShown]<= a3)
+  if ([(EKUIInviteesViewAlternativeTimeSection *)self _numberOfTimeSlotsShown]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
-    v6 = [v5 objectAtIndex:a3];
+    alternativeTimes = [(EKUIInviteesViewAlternativeTimeSection *)self alternativeTimes];
+    v6 = [alternativeTimes objectAtIndex:index];
   }
 
   return v6;

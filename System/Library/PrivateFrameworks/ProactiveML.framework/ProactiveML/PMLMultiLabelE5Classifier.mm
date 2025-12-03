@@ -1,17 +1,17 @@
 @interface PMLMultiLabelE5Classifier
-+ (id)classifierWithE5File:(id)a3;
-- (BOOL)initializeNetworkWithE5File:(id)a3;
-- (PMLMultiLabelE5Classifier)initWithE5File:(id)a3;
-- (id)predict:(id)a3;
++ (id)classifierWithE5File:(id)file;
+- (BOOL)initializeNetworkWithE5File:(id)file;
+- (PMLMultiLabelE5Classifier)initWithE5File:(id)file;
+- (id)predict:(id)predict;
 - (void)dealloc;
 @end
 
 @implementation PMLMultiLabelE5Classifier
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
   v19 = *MEMORY[0x277D85DE8];
-  [a3 sparseVectorToDense:self->_input_ids length:self->_inputNumParameters];
+  [predict sparseVectorToDense:self->_input_ids length:self->_inputNumParameters];
   execution_stream = self->_execution_stream;
   v5 = e5rt_execution_stream_execute_sync();
   if (v5)
@@ -55,19 +55,19 @@
   return v9;
 }
 
-- (BOOL)initializeNetworkWithE5File:(id)a3
+- (BOOL)initializeNetworkWithE5File:(id)file
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v5 = PML_LogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v67 = 138412290;
-    v68 = v4;
+    v68 = fileCopy;
     _os_log_impl(&dword_260D68000, v5, OS_LOG_TYPE_DEFAULT, "Initializing E5 model using %@", &v67, 0xCu);
   }
 
-  [(__CFString *)v4 UTF8String];
+  [(__CFString *)fileCopy UTF8String];
   if (e5rt_execution_stream_operation_create_precompiled_compute_operation())
   {
     last_error_message = e5rt_get_last_error_message();
@@ -161,10 +161,10 @@
     goto LABEL_23;
   }
 
-  v24 = [@"inputSequence" UTF8String];
+  uTF8String = [@"inputSequence" UTF8String];
   v25 = self->_input_tensor;
   input_tensor_dtype = self->_input_tensor_dtype;
-  v27 = DescribeTensorDescriptor(v24);
+  v27 = DescribeTensorDescriptor(uTF8String);
   if (v27 == -1)
   {
     v8 = PML_LogHandle();
@@ -296,10 +296,10 @@
     goto LABEL_23;
   }
 
-  v44 = [@"outputLabels" UTF8String];
+  uTF8String2 = [@"outputLabels" UTF8String];
   v45 = self->_output_tensor;
   output_tensor_dtype = self->_output_tensor_dtype;
-  v47 = DescribeTensorDescriptor(v44);
+  v47 = DescribeTensorDescriptor(uTF8String2);
   if (v47 == -1)
   {
     v8 = PML_LogHandle();
@@ -470,13 +470,13 @@ LABEL_26:
   return v21;
 }
 
-- (PMLMultiLabelE5Classifier)initWithE5File:(id)a3
+- (PMLMultiLabelE5Classifier)initWithE5File:(id)file
 {
   v8.receiver = self;
   v8.super_class = PMLMultiLabelE5Classifier;
-  v3 = a3;
+  fileCopy = file;
   v4 = [(PMLMultiLabelE5Classifier *)&v8 init];
-  v5 = [(PMLMultiLabelE5Classifier *)v4 initializeNetworkWithE5File:v3, v8.receiver, v8.super_class];
+  v5 = [(PMLMultiLabelE5Classifier *)v4 initializeNetworkWithE5File:fileCopy, v8.receiver, v8.super_class];
 
   if (v5)
   {
@@ -548,10 +548,10 @@ LABEL_26:
   [(PMLMultiLabelE5Classifier *)&v3 dealloc];
 }
 
-+ (id)classifierWithE5File:(id)a3
++ (id)classifierWithE5File:(id)file
 {
-  v3 = a3;
-  v4 = [[PMLMultiLabelE5Classifier alloc] initWithE5File:v3];
+  fileCopy = file;
+  v4 = [[PMLMultiLabelE5Classifier alloc] initWithE5File:fileCopy];
 
   return v4;
 }

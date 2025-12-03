@@ -1,28 +1,28 @@
 @interface PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter
-- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)a3;
+- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)animation;
 - (_TtCC22_GroupActivities_UIKit32PictureInPicturePreviewPresenter36PictureInPictureProxyDelegateAdapter)init;
-- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)a3;
-- (void)pictureInPictureProxy:(id)a3 didStartPictureInPictureWithAnimationType:(int64_t)a4;
-- (void)pictureInPictureProxy:(id)a3 didStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5;
-- (void)pictureInPictureProxy:(id)a3 failedToStartPictureInPictureWithAnimationType:(int64_t)a4 error:(id)a5;
-- (void)pictureInPictureProxy:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4;
-- (void)pictureInPictureProxy:(id)a3 willStartPictureInPictureWithAnimationType:(int64_t)a4;
+- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)animation;
+- (void)pictureInPictureProxy:(id)proxy didStartPictureInPictureWithAnimationType:(int64_t)type;
+- (void)pictureInPictureProxy:(id)proxy didStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason;
+- (void)pictureInPictureProxy:(id)proxy failedToStartPictureInPictureWithAnimationType:(int64_t)type error:(id)error;
+- (void)pictureInPictureProxy:(id)proxy restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler;
+- (void)pictureInPictureProxy:(id)proxy willStartPictureInPictureWithAnimationType:(int64_t)type;
 @end
 
 @implementation PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter
 
-- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)a3
+- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)animation
 {
   v4 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x58);
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  animationCopy = animation;
   v4(v11);
   v7 = v12;
   v8 = v13;
   result = __swift_project_boxed_opaque_existential_1(v11, v12);
-  if (v6)
+  if (animationCopy)
   {
-    v10 = (*(v8 + 8))(v6, v7, v8);
+    v10 = (*(v8 + 8))(animationCopy, v7, v8);
 
     __swift_destroy_boxed_opaque_existential_0(v11);
 
@@ -37,18 +37,18 @@
   return result;
 }
 
-- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)a3
+- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)animation
 {
   v4 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x58);
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  animationCopy = animation;
   v4(v20);
   v7 = v21;
   v8 = v22;
   __swift_project_boxed_opaque_existential_1(v20, v21);
-  if (v6)
+  if (animationCopy)
   {
-    v13 = (*(v8 + 16))(v6, v7, v8);
+    v13 = (*(v8 + 16))(animationCopy, v7, v8);
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -72,47 +72,47 @@
   return result;
 }
 
-- (void)pictureInPictureProxy:(id)a3 willStartPictureInPictureWithAnimationType:(int64_t)a4
+- (void)pictureInPictureProxy:(id)proxy willStartPictureInPictureWithAnimationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:willStartPictureInPictureWith:)(a3, "Will present preview in picture in picture for session: %s");
+  proxyCopy = proxy;
+  selfCopy = self;
+  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:willStartPictureInPictureWith:)(proxy, "Will present preview in picture in picture for session: %s");
 }
 
-- (void)pictureInPictureProxy:(id)a3 didStartPictureInPictureWithAnimationType:(int64_t)a4
+- (void)pictureInPictureProxy:(id)proxy didStartPictureInPictureWithAnimationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:willStartPictureInPictureWith:)(a3, "Presented preview in picture in picture for session: %s");
+  proxyCopy = proxy;
+  selfCopy = self;
+  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:willStartPictureInPictureWith:)(proxy, "Presented preview in picture in picture for session: %s");
 }
 
-- (void)pictureInPictureProxy:(id)a3 didStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5
+- (void)pictureInPictureProxy:(id)proxy didStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason
 {
-  v7 = a3;
-  v8 = self;
-  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:willStartPictureInPictureWith:)(a3, "Stopping preview in picture in picture for session: %s");
+  proxyCopy = proxy;
+  selfCopy = self;
+  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:willStartPictureInPictureWith:)(proxy, "Stopping preview in picture in picture for session: %s");
 }
 
-- (void)pictureInPictureProxy:(id)a3 failedToStartPictureInPictureWithAnimationType:(int64_t)a4 error:(id)a5
+- (void)pictureInPictureProxy:(id)proxy failedToStartPictureInPictureWithAnimationType:(int64_t)type error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:failedToStartPictureInPictureWith:error:)(a3, a5);
+  proxyCopy = proxy;
+  selfCopy = self;
+  errorCopy = error;
+  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:failedToStartPictureInPictureWith:error:)(proxy, error);
 }
 
-- (void)pictureInPictureProxy:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4
+- (void)pictureInPictureProxy:(id)proxy restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = _s10ObjectiveC8ObjCBoolVIeyBy_SbIegy_TRTA_0;
   }
 
-  v7 = a3;
-  v8 = self;
-  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:)(a3, v6);
+  proxyCopy = proxy;
+  selfCopy = self;
+  specialized PictureInPicturePreviewPresenter.PictureInPictureProxyDelegateAdapter.picture(_:restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:)(proxy, v6);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v6);
 }
 

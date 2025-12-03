@@ -1,20 +1,20 @@
 @interface PKRemoteThumbnailKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteThumbnailKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteThumbnailKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PKRemoteThumbnailKey
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKRemoteThumbnailKey allocWithZone:](PKRemoteThumbnailKey init];
-  v6 = [(NSDictionary *)self->_requestDictionary copyWithZone:a3];
+  v6 = [(NSDictionary *)self->_requestDictionary copyWithZone:zone];
   requestDictionary = v5->_requestDictionary;
   v5->_requestDictionary = v6;
 
-  v8 = [(NSString *)self->_requestIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_requestIdentifier copyWithZone:zone];
   requestIdentifier = v5->_requestIdentifier;
   v5->_requestIdentifier = v8;
 
@@ -23,36 +23,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_requestIdentifier];
-  [v3 safelyAddObject:self->_requestDictionary];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_requestIdentifier];
+  [array safelyAddObject:self->_requestDictionary];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteThumbnailKey *)self isEqualToRemoteThumbnailKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemoteThumbnailKey *)self isEqualToRemoteThumbnailKey:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRemoteThumbnailKey:(id)a3
+- (BOOL)isEqualToRemoteThumbnailKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   requestIdentifier = self->_requestIdentifier;
-  v6 = v4[1];
+  v6 = keyCopy[1];
   if (requestIdentifier)
   {
     v7 = v6 == 0;
@@ -82,7 +82,7 @@ LABEL_7:
 
 LABEL_9:
   requestDictionary = self->_requestDictionary;
-  v10 = v4[2];
+  v10 = keyCopy[2];
   if (requestDictionary && v10)
   {
     v8 = [(NSDictionary *)requestDictionary isEqual:?];

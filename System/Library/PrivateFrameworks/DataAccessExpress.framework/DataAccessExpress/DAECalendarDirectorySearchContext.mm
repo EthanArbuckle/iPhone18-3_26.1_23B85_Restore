@@ -1,24 +1,24 @@
 @interface DAECalendarDirectorySearchContext
-- (DAECalendarDirectorySearchContext)initWithResultsBlock:(id)a3 completionBlock:(id)a4;
-- (void)resultsReturned:(id)a3;
+- (DAECalendarDirectorySearchContext)initWithResultsBlock:(id)block completionBlock:(id)completionBlock;
+- (void)resultsReturned:(id)returned;
 @end
 
 @implementation DAECalendarDirectorySearchContext
 
-- (DAECalendarDirectorySearchContext)initWithResultsBlock:(id)a3 completionBlock:(id)a4
+- (DAECalendarDirectorySearchContext)initWithResultsBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v14.receiver = self;
   v14.super_class = DAECalendarDirectorySearchContext;
   v8 = [(DAECalendarDirectorySearchContext *)&v14 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     resultsBlock = v8->_resultsBlock;
     v8->_resultsBlock = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionBlockCopy);
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v11;
   }
@@ -26,18 +26,18 @@
   return v8;
 }
 
-- (void)resultsReturned:(id)a3
+- (void)resultsReturned:(id)returned
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  resultsBlock = v4->_resultsBlock;
+  returnedCopy = returned;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  resultsBlock = selfCopy->_resultsBlock;
   if (resultsBlock)
   {
-    resultsBlock[2](resultsBlock, v6);
+    resultsBlock[2](resultsBlock, returnedCopy);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

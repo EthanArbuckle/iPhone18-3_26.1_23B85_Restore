@@ -9,8 +9,8 @@
   v5 = a3;
   if ([v5 hasFromDisplayName])
   {
-    v4 = [v5 fromDisplayName];
-    [a1 setFromDisplayName:v4];
+    fromDisplayName = [v5 fromDisplayName];
+    [self setFromDisplayName:fromDisplayName];
   }
 }
 

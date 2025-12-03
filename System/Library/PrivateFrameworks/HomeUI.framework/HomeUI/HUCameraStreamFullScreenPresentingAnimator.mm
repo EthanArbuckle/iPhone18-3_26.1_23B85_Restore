@@ -1,73 +1,73 @@
 @interface HUCameraStreamFullScreenPresentingAnimator
-- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)a3 cameraSnapshot:(id)a4;
-- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)a3 cameraSnapshot:(id)a4 snapshotDemoURL:(id)a5;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)cell cameraSnapshot:(id)snapshot;
+- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)cell cameraSnapshot:(id)snapshot snapshotDemoURL:(id)l;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation HUCameraStreamFullScreenPresentingAnimator
 
-- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)a3 cameraSnapshot:(id)a4
+- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)cell cameraSnapshot:(id)snapshot
 {
-  v7 = a4;
+  snapshotCopy = snapshot;
   v11.receiver = self;
   v11.super_class = HUCameraStreamFullScreenPresentingAnimator;
-  v8 = [(HUCameraStreamFullScreenAnimator *)&v11 initWithSourceCameraCell:a3];
+  v8 = [(HUCameraStreamFullScreenAnimator *)&v11 initWithSourceCameraCell:cell];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cameraSnapshot, a4);
+    objc_storeStrong(&v8->_cameraSnapshot, snapshot);
   }
 
   return v9;
 }
 
-- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)a3 cameraSnapshot:(id)a4 snapshotDemoURL:(id)a5
+- (HUCameraStreamFullScreenPresentingAnimator)initWithSourceCameraCell:(id)cell cameraSnapshot:(id)snapshot snapshotDemoURL:(id)l
 {
-  v9 = a4;
-  v10 = a5;
+  snapshotCopy = snapshot;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = HUCameraStreamFullScreenPresentingAnimator;
-  v11 = [(HUCameraStreamFullScreenAnimator *)&v14 initWithSourceCameraCell:a3];
+  v11 = [(HUCameraStreamFullScreenAnimator *)&v14 initWithSourceCameraCell:cell];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_cameraSnapshot, a4);
-    objc_storeStrong(&v12->_demoSnapshotURL, a5);
+    objc_storeStrong(&v11->_cameraSnapshot, snapshot);
+    objc_storeStrong(&v12->_demoSnapshotURL, l);
   }
 
   return v12;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   v4.receiver = self;
   v4.super_class = HUCameraStreamFullScreenPresentingAnimator;
-  [(HUCameraStreamFullScreenAnimator *)&v4 transitionDuration:a3];
+  [(HUCameraStreamFullScreenAnimator *)&v4 transitionDuration:duration];
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewForKey:*MEMORY[0x277D77248]];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewForKey:*MEMORY[0x277D77248]];
   v7 = objc_alloc(MEMORY[0x277D75D18]);
-  [(HUCameraStreamFullScreenAnimator *)self _toViewFinalFrame:v4];
+  [(HUCameraStreamFullScreenAnimator *)self _toViewFinalFrame:transitionCopy];
   v8 = [v7 initWithFrame:?];
-  v9 = [MEMORY[0x277D75348] systemBlackColor];
-  [v8 setBackgroundColor:v9];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  [v8 setBackgroundColor:systemBlackColor];
 
   [v8 setAlpha:0.0];
-  [v5 addSubview:v8];
-  v10 = [(HUCameraStreamFullScreenAnimator *)self sourceCameraCell];
-  [v10 cameraViewFrame];
+  [containerView addSubview:v8];
+  sourceCameraCell = [(HUCameraStreamFullScreenAnimator *)self sourceCameraCell];
+  [sourceCameraCell cameraViewFrame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(HUCameraStreamFullScreenAnimator *)self sourceCameraCell];
-  [v5 convertRect:v19 fromView:{v12, v14, v16, v18}];
+  sourceCameraCell2 = [(HUCameraStreamFullScreenAnimator *)self sourceCameraCell];
+  [containerView convertRect:sourceCameraCell2 fromView:{v12, v14, v16, v18}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -75,16 +75,16 @@
 
   v28 = [objc_alloc(MEMORY[0x277CD1968]) initWithFrame:{v21, v23, v25, v27}];
   [v28 setContentMode:1];
-  v29 = [(HUCameraStreamFullScreenPresentingAnimator *)self cameraSnapshot];
-  [v28 setCameraSource:v29];
+  cameraSnapshot = [(HUCameraStreamFullScreenPresentingAnimator *)self cameraSnapshot];
+  [v28 setCameraSource:cameraSnapshot];
 
-  [v5 addSubview:v28];
+  [containerView addSubview:v28];
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
     v30 = objc_alloc(MEMORY[0x277D755B8]);
-    v31 = [(HUCameraStreamFullScreenPresentingAnimator *)self demoSnapshotURL];
-    v32 = [v31 path];
-    v33 = [v30 initWithContentsOfFile:v32];
+    demoSnapshotURL = [(HUCameraStreamFullScreenPresentingAnimator *)self demoSnapshotURL];
+    path = [demoSnapshotURL path];
+    v33 = [v30 initWithContentsOfFile:path];
 
     v34 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v33];
     [v28 bounds];
@@ -94,19 +94,19 @@
     [v28 addSubview:v34];
   }
 
-  v35 = [(HUCameraStreamFullScreenAnimator *)self sourceCameraCell];
-  [v35 setCameraViewAlpha:0.0];
+  sourceCameraCell3 = [(HUCameraStreamFullScreenAnimator *)self sourceCameraCell];
+  [sourceCameraCell3 setCameraViewAlpha:0.0];
 
   v36 = MEMORY[0x277D75D18];
-  [(HUCameraStreamFullScreenPresentingAnimator *)self transitionDuration:v4];
+  [(HUCameraStreamFullScreenPresentingAnimator *)self transitionDuration:transitionCopy];
   v38 = v37;
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __64__HUCameraStreamFullScreenPresentingAnimator_animateTransition___block_invoke;
   v51[3] = &unk_277DB8A60;
   v52 = v28;
-  v53 = self;
-  v54 = v4;
+  selfCopy = self;
+  v54 = transitionCopy;
   v55 = v8;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -115,10 +115,10 @@
   v45 = v55;
   v46 = v52;
   v47 = v6;
-  v48 = self;
+  selfCopy2 = self;
   v49 = v54;
-  v50 = v5;
-  v39 = v5;
+  v50 = containerView;
+  v39 = containerView;
   v40 = v54;
   v41 = v6;
   v42 = v52;

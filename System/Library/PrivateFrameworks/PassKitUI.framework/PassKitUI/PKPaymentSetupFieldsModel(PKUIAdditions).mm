@@ -33,7 +33,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v16 = [a1 paymentSetupFieldWithIdentifier:{*(*(&v21 + 1) + 8 * i), v21}];
+        v16 = [self paymentSetupFieldWithIdentifier:{*(*(&v21 + 1) + 8 * i), v21}];
         if (([v16 isFieldTypeLabel] & 1) == 0)
         {
           if (v8)

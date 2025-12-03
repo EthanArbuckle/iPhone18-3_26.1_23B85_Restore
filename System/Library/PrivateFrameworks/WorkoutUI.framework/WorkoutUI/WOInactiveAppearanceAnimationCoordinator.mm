@@ -1,29 +1,29 @@
 @interface WOInactiveAppearanceAnimationCoordinator
 - (WOInactiveAppearanceAnimationCoordinator)init;
-- (void)assertion:(id)a3 didCancelWithError:(id)a4;
-- (void)assertion:(id)a3 didFailToAcquireWithError:(id)a4;
-- (void)assertionWasAcquired:(id)a3;
+- (void)assertion:(id)assertion didCancelWithError:(id)error;
+- (void)assertion:(id)assertion didFailToAcquireWithError:(id)error;
+- (void)assertionWasAcquired:(id)acquired;
 - (void)dealloc;
-- (void)startAnimation:(id)a3;
+- (void)startAnimation:(id)animation;
 @end
 
 @implementation WOInactiveAppearanceAnimationCoordinator
 
-- (void)startAnimation:(id)a3
+- (void)startAnimation:(id)animation
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(animation);
   _Block_copy(v4);
-  v5 = self;
-  specialized InactiveAppearanceAnimationCoordinator.startAnimation(_:)(v5, v4);
+  selfCopy = self;
+  specialized InactiveAppearanceAnimationCoordinator.startAnimation(_:)(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   InactiveAppearanceAnimationCoordinator.invalidateAssertion()();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for InactiveAppearanceAnimationCoordinator();
   [(WOInactiveAppearanceAnimationCoordinator *)&v3 dealloc];
 }
@@ -35,27 +35,27 @@
   return result;
 }
 
-- (void)assertionWasAcquired:(id)a3
+- (void)assertionWasAcquired:(id)acquired
 {
-  v4 = a3;
-  v5 = self;
-  InactiveAppearanceAnimationCoordinator.assertionWasAcquired(_:)(v4);
+  acquiredCopy = acquired;
+  selfCopy = self;
+  InactiveAppearanceAnimationCoordinator.assertionWasAcquired(_:)(acquiredCopy);
 }
 
-- (void)assertion:(id)a3 didFailToAcquireWithError:(id)a4
+- (void)assertion:(id)assertion didFailToAcquireWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  InactiveAppearanceAnimationCoordinator.assertion(_:didFailToAcquireWithError:)(v6);
+  assertionCopy = assertion;
+  errorCopy = error;
+  selfCopy = self;
+  InactiveAppearanceAnimationCoordinator.assertion(_:didFailToAcquireWithError:)(assertionCopy);
 }
 
-- (void)assertion:(id)a3 didCancelWithError:(id)a4
+- (void)assertion:(id)assertion didCancelWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  InactiveAppearanceAnimationCoordinator.assertion(_:didCancelWithError:)(v6, a4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  errorCopy = error;
+  InactiveAppearanceAnimationCoordinator.assertion(_:didCancelWithError:)(assertionCopy, error);
 }
 
 @end

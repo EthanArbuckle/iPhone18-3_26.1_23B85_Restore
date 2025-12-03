@@ -1,258 +1,258 @@
 @interface SFFlightLeg
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFFlightLeg)initWithCoder:(id)a3;
-- (SFFlightLeg)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFFlightLeg)initWithCoder:(id)coder;
+- (SFFlightLeg)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFFlightLeg
 
-- (SFFlightLeg)initWithProtobuf:(id)a3
+- (SFFlightLeg)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v88.receiver = self;
   v88.super_class = SFFlightLeg;
   v5 = [(SFFlightLeg *)&v88 init];
   if (v5)
   {
-    if ([v4 status])
+    if ([protobufCopy status])
     {
-      -[SFFlightLeg setStatus:](v5, "setStatus:", [v4 status]);
+      -[SFFlightLeg setStatus:](v5, "setStatus:", [protobufCopy status]);
     }
 
-    v6 = [v4 departurePublishedTime];
+    departurePublishedTime = [protobufCopy departurePublishedTime];
 
-    if (v6)
+    if (departurePublishedTime)
     {
-      v7 = [v4 departurePublishedTime];
+      departurePublishedTime2 = [protobufCopy departurePublishedTime];
       v8 = MEMORY[0x1E695DF00];
-      [v7 secondsSince1970];
+      [departurePublishedTime2 secondsSince1970];
       v9 = [v8 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setDeparturePublishedTime:v9];
     }
 
-    v10 = [v4 departureActualTime];
+    departureActualTime = [protobufCopy departureActualTime];
 
-    if (v10)
+    if (departureActualTime)
     {
-      v11 = [v4 departureActualTime];
+      departureActualTime2 = [protobufCopy departureActualTime];
       v12 = MEMORY[0x1E695DF00];
-      [v11 secondsSince1970];
+      [departureActualTime2 secondsSince1970];
       v13 = [v12 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setDepartureActualTime:v13];
     }
 
-    v14 = [v4 departureTerminal];
+    departureTerminal = [protobufCopy departureTerminal];
 
-    if (v14)
+    if (departureTerminal)
     {
-      v15 = [v4 departureTerminal];
-      [(SFFlightLeg *)v5 setDepartureTerminal:v15];
+      departureTerminal2 = [protobufCopy departureTerminal];
+      [(SFFlightLeg *)v5 setDepartureTerminal:departureTerminal2];
     }
 
-    v16 = [v4 departureGate];
+    departureGate = [protobufCopy departureGate];
 
-    if (v16)
+    if (departureGate)
     {
-      v17 = [v4 departureGate];
-      [(SFFlightLeg *)v5 setDepartureGate:v17];
+      departureGate2 = [protobufCopy departureGate];
+      [(SFFlightLeg *)v5 setDepartureGate:departureGate2];
     }
 
-    v18 = [v4 departureAirport];
+    departureAirport = [protobufCopy departureAirport];
 
-    if (v18)
+    if (departureAirport)
     {
       v19 = [SFAirport alloc];
-      v20 = [v4 departureAirport];
-      v21 = [(SFAirport *)v19 initWithProtobuf:v20];
+      departureAirport2 = [protobufCopy departureAirport];
+      v21 = [(SFAirport *)v19 initWithProtobuf:departureAirport2];
       [(SFFlightLeg *)v5 setDepartureAirport:v21];
     }
 
-    v22 = [v4 arrivalPublishedTime];
+    arrivalPublishedTime = [protobufCopy arrivalPublishedTime];
 
-    if (v22)
+    if (arrivalPublishedTime)
     {
-      v23 = [v4 arrivalPublishedTime];
+      arrivalPublishedTime2 = [protobufCopy arrivalPublishedTime];
       v24 = MEMORY[0x1E695DF00];
-      [v23 secondsSince1970];
+      [arrivalPublishedTime2 secondsSince1970];
       v25 = [v24 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setArrivalPublishedTime:v25];
     }
 
-    v26 = [v4 arrivalActualTime];
+    arrivalActualTime = [protobufCopy arrivalActualTime];
 
-    if (v26)
+    if (arrivalActualTime)
     {
-      v27 = [v4 arrivalActualTime];
+      arrivalActualTime2 = [protobufCopy arrivalActualTime];
       v28 = MEMORY[0x1E695DF00];
-      [v27 secondsSince1970];
+      [arrivalActualTime2 secondsSince1970];
       v29 = [v28 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setArrivalActualTime:v29];
     }
 
-    v30 = [v4 arrivalTerminal];
+    arrivalTerminal = [protobufCopy arrivalTerminal];
 
-    if (v30)
+    if (arrivalTerminal)
     {
-      v31 = [v4 arrivalTerminal];
-      [(SFFlightLeg *)v5 setArrivalTerminal:v31];
+      arrivalTerminal2 = [protobufCopy arrivalTerminal];
+      [(SFFlightLeg *)v5 setArrivalTerminal:arrivalTerminal2];
     }
 
-    v32 = [v4 arrivalGate];
+    arrivalGate = [protobufCopy arrivalGate];
 
-    if (v32)
+    if (arrivalGate)
     {
-      v33 = [v4 arrivalGate];
-      [(SFFlightLeg *)v5 setArrivalGate:v33];
+      arrivalGate2 = [protobufCopy arrivalGate];
+      [(SFFlightLeg *)v5 setArrivalGate:arrivalGate2];
     }
 
-    v34 = [v4 arrivalAirport];
+    arrivalAirport = [protobufCopy arrivalAirport];
 
-    if (v34)
+    if (arrivalAirport)
     {
       v35 = [SFAirport alloc];
-      v36 = [v4 arrivalAirport];
-      v37 = [(SFAirport *)v35 initWithProtobuf:v36];
+      arrivalAirport2 = [protobufCopy arrivalAirport];
+      v37 = [(SFAirport *)v35 initWithProtobuf:arrivalAirport2];
       [(SFFlightLeg *)v5 setArrivalAirport:v37];
     }
 
-    v38 = [v4 divertedAirport];
+    divertedAirport = [protobufCopy divertedAirport];
 
-    if (v38)
+    if (divertedAirport)
     {
       v39 = [SFAirport alloc];
-      v40 = [v4 divertedAirport];
-      v41 = [(SFAirport *)v39 initWithProtobuf:v40];
+      divertedAirport2 = [protobufCopy divertedAirport];
+      v41 = [(SFAirport *)v39 initWithProtobuf:divertedAirport2];
       [(SFFlightLeg *)v5 setDivertedAirport:v41];
     }
 
-    v42 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v42)
+    if (title)
     {
-      v43 = [v4 title];
-      [(SFFlightLeg *)v5 setTitle:v43];
+      title2 = [protobufCopy title];
+      [(SFFlightLeg *)v5 setTitle:title2];
     }
 
-    v44 = [v4 baggageClaim];
+    baggageClaim = [protobufCopy baggageClaim];
 
-    if (v44)
+    if (baggageClaim)
     {
-      v45 = [v4 baggageClaim];
-      [(SFFlightLeg *)v5 setBaggageClaim:v45];
+      baggageClaim2 = [protobufCopy baggageClaim];
+      [(SFFlightLeg *)v5 setBaggageClaim:baggageClaim2];
     }
 
-    v46 = [v4 departureGateClosedTime];
+    departureGateClosedTime = [protobufCopy departureGateClosedTime];
 
-    if (v46)
+    if (departureGateClosedTime)
     {
-      v47 = [v4 departureGateClosedTime];
+      departureGateClosedTime2 = [protobufCopy departureGateClosedTime];
       v48 = MEMORY[0x1E695DF00];
-      [v47 secondsSince1970];
+      [departureGateClosedTime2 secondsSince1970];
       v49 = [v48 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setDepartureGateClosedTime:v49];
     }
 
-    v50 = [v4 departureRunwayTime];
+    departureRunwayTime = [protobufCopy departureRunwayTime];
 
-    if (v50)
+    if (departureRunwayTime)
     {
-      v51 = [v4 departureRunwayTime];
+      departureRunwayTime2 = [protobufCopy departureRunwayTime];
       v52 = MEMORY[0x1E695DF00];
-      [v51 secondsSince1970];
+      [departureRunwayTime2 secondsSince1970];
       v53 = [v52 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setDepartureRunwayTime:v53];
     }
 
-    v54 = [v4 arrivalRunwayTime];
+    arrivalRunwayTime = [protobufCopy arrivalRunwayTime];
 
-    if (v54)
+    if (arrivalRunwayTime)
     {
-      v55 = [v4 arrivalRunwayTime];
+      arrivalRunwayTime2 = [protobufCopy arrivalRunwayTime];
       v56 = MEMORY[0x1E695DF00];
-      [v55 secondsSince1970];
+      [arrivalRunwayTime2 secondsSince1970];
       v57 = [v56 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setArrivalRunwayTime:v57];
     }
 
-    v58 = [v4 arrivalGateTime];
+    arrivalGateTime = [protobufCopy arrivalGateTime];
 
-    if (v58)
+    if (arrivalGateTime)
     {
-      v59 = [v4 arrivalGateTime];
+      arrivalGateTime2 = [protobufCopy arrivalGateTime];
       v60 = MEMORY[0x1E695DF00];
-      [v59 secondsSince1970];
+      [arrivalGateTime2 secondsSince1970];
       v61 = [v60 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setArrivalGateTime:v61];
     }
 
-    v62 = [v4 lastUpdatedTime];
+    lastUpdatedTime = [protobufCopy lastUpdatedTime];
 
-    if (v62)
+    if (lastUpdatedTime)
     {
-      v63 = [v4 lastUpdatedTime];
+      lastUpdatedTime2 = [protobufCopy lastUpdatedTime];
       v64 = MEMORY[0x1E695DF00];
-      [v63 secondsSince1970];
+      [lastUpdatedTime2 secondsSince1970];
       v65 = [v64 dateWithTimeIntervalSince1970:?];
       [(SFFlightLeg *)v5 setLastUpdatedTime:v65];
     }
 
-    v66 = [v4 pegasusDisplayFields];
+    pegasusDisplayFields = [protobufCopy pegasusDisplayFields];
 
-    if (v66)
+    if (pegasusDisplayFields)
     {
       v67 = [SFPegasusDisplayFields alloc];
-      v68 = [v4 pegasusDisplayFields];
-      v69 = [(SFPegasusDisplayFields *)v67 initWithProtobuf:v68];
+      pegasusDisplayFields2 = [protobufCopy pegasusDisplayFields];
+      v69 = [(SFPegasusDisplayFields *)v67 initWithProtobuf:pegasusDisplayFields2];
       [(SFFlightLeg *)v5 setPegasusDisplayFields:v69];
     }
 
-    if ([v4 pegasusDefinedState])
+    if ([protobufCopy pegasusDefinedState])
     {
-      -[SFFlightLeg setPegasusDefinedState:](v5, "setPegasusDefinedState:", [v4 pegasusDefinedState]);
+      -[SFFlightLeg setPegasusDefinedState:](v5, "setPegasusDefinedState:", [protobufCopy pegasusDefinedState]);
     }
 
-    v70 = [v4 gateArrivalTimes];
+    gateArrivalTimes = [protobufCopy gateArrivalTimes];
 
-    if (v70)
+    if (gateArrivalTimes)
     {
       v71 = [SFFlightDateDescriptor alloc];
-      v72 = [v4 gateArrivalTimes];
-      v73 = [(SFFlightDateDescriptor *)v71 initWithProtobuf:v72];
+      gateArrivalTimes2 = [protobufCopy gateArrivalTimes];
+      v73 = [(SFFlightDateDescriptor *)v71 initWithProtobuf:gateArrivalTimes2];
       [(SFFlightLeg *)v5 setGateArrivalTimes:v73];
     }
 
-    v74 = [v4 runwayArrivalTimes];
+    runwayArrivalTimes = [protobufCopy runwayArrivalTimes];
 
-    if (v74)
+    if (runwayArrivalTimes)
     {
       v75 = [SFFlightDateDescriptor alloc];
-      v76 = [v4 runwayArrivalTimes];
-      v77 = [(SFFlightDateDescriptor *)v75 initWithProtobuf:v76];
+      runwayArrivalTimes2 = [protobufCopy runwayArrivalTimes];
+      v77 = [(SFFlightDateDescriptor *)v75 initWithProtobuf:runwayArrivalTimes2];
       [(SFFlightLeg *)v5 setRunwayArrivalTimes:v77];
     }
 
-    v78 = [v4 gateDepartureTimes];
+    gateDepartureTimes = [protobufCopy gateDepartureTimes];
 
-    if (v78)
+    if (gateDepartureTimes)
     {
       v79 = [SFFlightDateDescriptor alloc];
-      v80 = [v4 gateDepartureTimes];
-      v81 = [(SFFlightDateDescriptor *)v79 initWithProtobuf:v80];
+      gateDepartureTimes2 = [protobufCopy gateDepartureTimes];
+      v81 = [(SFFlightDateDescriptor *)v79 initWithProtobuf:gateDepartureTimes2];
       [(SFFlightLeg *)v5 setGateDepartureTimes:v81];
     }
 
-    v82 = [v4 runwayDepartureTimes];
+    runwayDepartureTimes = [protobufCopy runwayDepartureTimes];
 
-    if (v82)
+    if (runwayDepartureTimes)
     {
       v83 = [SFFlightDateDescriptor alloc];
-      v84 = [v4 runwayDepartureTimes];
-      v85 = [(SFFlightDateDescriptor *)v83 initWithProtobuf:v84];
+      runwayDepartureTimes2 = [protobufCopy runwayDepartureTimes];
+      v85 = [(SFFlightDateDescriptor *)v83 initWithProtobuf:runwayDepartureTimes2];
       [(SFFlightLeg *)v5 setRunwayDepartureTimes:v85];
     }
 
@@ -264,78 +264,78 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFFlightLeg *)self status];
-  v51 = [(SFFlightLeg *)self departurePublishedTime];
-  v4 = [v51 hash] ^ v3;
-  v50 = [(SFFlightLeg *)self departureActualTime];
-  v5 = [v50 hash];
-  v49 = [(SFFlightLeg *)self departureTerminal];
-  v6 = v4 ^ v5 ^ [v49 hash];
-  v48 = [(SFFlightLeg *)self departureGate];
-  v7 = [v48 hash];
-  v47 = [(SFFlightLeg *)self departureAirport];
-  v8 = v7 ^ [v47 hash];
-  v46 = [(SFFlightLeg *)self arrivalPublishedTime];
-  v9 = v6 ^ v8 ^ [v46 hash];
-  v45 = [(SFFlightLeg *)self arrivalActualTime];
-  v10 = [v45 hash];
-  v44 = [(SFFlightLeg *)self arrivalTerminal];
-  v11 = v10 ^ [v44 hash];
-  v43 = [(SFFlightLeg *)self arrivalGate];
-  v12 = v11 ^ [v43 hash];
-  v42 = [(SFFlightLeg *)self arrivalAirport];
-  v13 = v9 ^ v12 ^ [v42 hash];
-  v41 = [(SFFlightLeg *)self divertedAirport];
-  v14 = [v41 hash];
-  v40 = [(SFFlightLeg *)self title];
-  v15 = v14 ^ [v40 hash];
-  v39 = [(SFFlightLeg *)self baggageClaim];
-  v16 = v15 ^ [v39 hash];
-  v38 = [(SFFlightLeg *)self departureGateClosedTime];
-  v17 = v16 ^ [v38 hash];
-  v37 = [(SFFlightLeg *)self departureRunwayTime];
-  v18 = v13 ^ v17 ^ [v37 hash];
-  v19 = [(SFFlightLeg *)self arrivalRunwayTime];
-  v20 = [v19 hash];
-  v21 = [(SFFlightLeg *)self arrivalGateTime];
-  v22 = v20 ^ [v21 hash];
-  v23 = [(SFFlightLeg *)self lastUpdatedTime];
-  v24 = v22 ^ [v23 hash];
-  v25 = [(SFFlightLeg *)self pegasusDisplayFields];
-  v26 = v24 ^ [v25 hash];
+  status = [(SFFlightLeg *)self status];
+  departurePublishedTime = [(SFFlightLeg *)self departurePublishedTime];
+  v4 = [departurePublishedTime hash] ^ status;
+  departureActualTime = [(SFFlightLeg *)self departureActualTime];
+  v5 = [departureActualTime hash];
+  departureTerminal = [(SFFlightLeg *)self departureTerminal];
+  v6 = v4 ^ v5 ^ [departureTerminal hash];
+  departureGate = [(SFFlightLeg *)self departureGate];
+  v7 = [departureGate hash];
+  departureAirport = [(SFFlightLeg *)self departureAirport];
+  v8 = v7 ^ [departureAirport hash];
+  arrivalPublishedTime = [(SFFlightLeg *)self arrivalPublishedTime];
+  v9 = v6 ^ v8 ^ [arrivalPublishedTime hash];
+  arrivalActualTime = [(SFFlightLeg *)self arrivalActualTime];
+  v10 = [arrivalActualTime hash];
+  arrivalTerminal = [(SFFlightLeg *)self arrivalTerminal];
+  v11 = v10 ^ [arrivalTerminal hash];
+  arrivalGate = [(SFFlightLeg *)self arrivalGate];
+  v12 = v11 ^ [arrivalGate hash];
+  arrivalAirport = [(SFFlightLeg *)self arrivalAirport];
+  v13 = v9 ^ v12 ^ [arrivalAirport hash];
+  divertedAirport = [(SFFlightLeg *)self divertedAirport];
+  v14 = [divertedAirport hash];
+  title = [(SFFlightLeg *)self title];
+  v15 = v14 ^ [title hash];
+  baggageClaim = [(SFFlightLeg *)self baggageClaim];
+  v16 = v15 ^ [baggageClaim hash];
+  departureGateClosedTime = [(SFFlightLeg *)self departureGateClosedTime];
+  v17 = v16 ^ [departureGateClosedTime hash];
+  departureRunwayTime = [(SFFlightLeg *)self departureRunwayTime];
+  v18 = v13 ^ v17 ^ [departureRunwayTime hash];
+  arrivalRunwayTime = [(SFFlightLeg *)self arrivalRunwayTime];
+  v20 = [arrivalRunwayTime hash];
+  arrivalGateTime = [(SFFlightLeg *)self arrivalGateTime];
+  v22 = v20 ^ [arrivalGateTime hash];
+  lastUpdatedTime = [(SFFlightLeg *)self lastUpdatedTime];
+  v24 = v22 ^ [lastUpdatedTime hash];
+  pegasusDisplayFields = [(SFFlightLeg *)self pegasusDisplayFields];
+  v26 = v24 ^ [pegasusDisplayFields hash];
   v27 = v26 ^ [(SFFlightLeg *)self pegasusDefinedState];
-  v28 = [(SFFlightLeg *)self gateArrivalTimes];
-  v36 = v18 ^ v27 ^ [v28 hash];
-  v29 = [(SFFlightLeg *)self runwayArrivalTimes];
-  v30 = [v29 hash];
-  v31 = [(SFFlightLeg *)self gateDepartureTimes];
-  v32 = v30 ^ [v31 hash];
-  v33 = [(SFFlightLeg *)self runwayDepartureTimes];
-  v34 = v32 ^ [v33 hash];
+  gateArrivalTimes = [(SFFlightLeg *)self gateArrivalTimes];
+  v36 = v18 ^ v27 ^ [gateArrivalTimes hash];
+  runwayArrivalTimes = [(SFFlightLeg *)self runwayArrivalTimes];
+  v30 = [runwayArrivalTimes hash];
+  gateDepartureTimes = [(SFFlightLeg *)self gateDepartureTimes];
+  v32 = v30 ^ [gateDepartureTimes hash];
+  runwayDepartureTimes = [(SFFlightLeg *)self runwayDepartureTimes];
+  v34 = v32 ^ [runwayDepartureTimes hash];
 
   return v36 ^ v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
     goto LABEL_144;
   }
 
-  if (![(SFFlightLeg *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(SFFlightLeg *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v20 = 0;
     goto LABEL_144;
   }
 
-  v5 = v4;
-  v6 = [(SFFlightLeg *)self status];
-  v236 = [(SFFlightLeg *)v5 status];
-  v237 = v6;
-  if (v6 != v236 || ([(SFFlightLeg *)self departurePublishedTime], v197 = objc_claimAutoreleasedReturnValue(), [(SFFlightLeg *)v5 departurePublishedTime], v196 = objc_claimAutoreleasedReturnValue(), (v197 != 0) == (v196 == 0)))
+  v5 = equalCopy;
+  status = [(SFFlightLeg *)self status];
+  status2 = [(SFFlightLeg *)v5 status];
+  v237 = status;
+  if (status != status2 || ([(SFFlightLeg *)self departurePublishedTime], v197 = objc_claimAutoreleasedReturnValue(), [(SFFlightLeg *)v5 departurePublishedTime], v196 = objc_claimAutoreleasedReturnValue(), (v197 != 0) == (v196 == 0)))
   {
     v229 = 0;
     memset(v226, 0, sizeof(v226));
@@ -394,15 +394,15 @@
     goto LABEL_11;
   }
 
-  v8 = [(SFFlightLeg *)self departurePublishedTime];
-  v9 = v8 != 0;
-  v194 = v8;
-  if (v8)
+  departurePublishedTime = [(SFFlightLeg *)self departurePublishedTime];
+  v9 = departurePublishedTime != 0;
+  v194 = departurePublishedTime;
+  if (departurePublishedTime)
   {
-    v10 = [(SFFlightLeg *)self departurePublishedTime];
+    departurePublishedTime2 = [(SFFlightLeg *)self departurePublishedTime];
     [(SFFlightLeg *)v5 departurePublishedTime];
-    v190 = v191 = v10;
-    if (![v10 isEqual:?])
+    v190 = v191 = departurePublishedTime2;
+    if (![departurePublishedTime2 isEqual:?])
     {
       memset(v226, 0, sizeof(v226));
       v227 = 0;
@@ -463,10 +463,10 @@
     }
   }
 
-  v193 = [(SFFlightLeg *)self departureActualTime];
-  v192 = [(SFFlightLeg *)v5 departureActualTime];
+  departureActualTime = [(SFFlightLeg *)self departureActualTime];
+  departureActualTime2 = [(SFFlightLeg *)v5 departureActualTime];
   HIDWORD(v235[2]) = v9;
-  if ((v193 != 0) == (v192 == 0))
+  if ((departureActualTime != 0) == (departureActualTime2 == 0))
   {
     v227 = 0;
     *&v226[4] = 0;
@@ -527,15 +527,15 @@
     goto LABEL_11;
   }
 
-  v33 = [(SFFlightLeg *)self departureActualTime];
-  v34 = v33 != 0;
-  v189 = v33;
-  if (v33)
+  departureActualTime3 = [(SFFlightLeg *)self departureActualTime];
+  v34 = departureActualTime3 != 0;
+  v189 = departureActualTime3;
+  if (departureActualTime3)
   {
-    v35 = [(SFFlightLeg *)self departureActualTime];
+    departureActualTime4 = [(SFFlightLeg *)self departureActualTime];
     [(SFFlightLeg *)v5 departureActualTime];
-    v185 = v186 = v35;
-    if (![v35 isEqual:?])
+    v185 = v186 = departureActualTime4;
+    if (![departureActualTime4 isEqual:?])
     {
       *&v226[4] = 0;
       v235[1] = 0;
@@ -607,9 +607,9 @@
     LODWORD(v235[2]) = 0;
   }
 
-  v188 = [(SFFlightLeg *)self departureTerminal];
-  v187 = [(SFFlightLeg *)v5 departureTerminal];
-  if ((v188 != 0) == (v187 == 0))
+  departureTerminal = [(SFFlightLeg *)self departureTerminal];
+  departureTerminal2 = [(SFFlightLeg *)v5 departureTerminal];
+  if ((departureTerminal != 0) == (departureTerminal2 == 0))
   {
     *&v226[8] = 0x100000000;
     v235[1] = 0;
@@ -671,15 +671,15 @@
     goto LABEL_11;
   }
 
-  v36 = [(SFFlightLeg *)self departureTerminal];
-  v37 = v36 != 0;
-  v184 = v36;
-  if (v36)
+  departureTerminal3 = [(SFFlightLeg *)self departureTerminal];
+  v37 = departureTerminal3 != 0;
+  v184 = departureTerminal3;
+  if (departureTerminal3)
   {
-    v38 = [(SFFlightLeg *)self departureTerminal];
+    departureTerminal4 = [(SFFlightLeg *)self departureTerminal];
     [(SFFlightLeg *)v5 departureTerminal];
-    v180 = v181 = v38;
-    if (![v38 isEqual:?])
+    v180 = v181 = departureTerminal4;
+    if (![departureTerminal4 isEqual:?])
     {
       v11 = 0;
       *v226 = 0x100000000;
@@ -750,9 +750,9 @@
     HIDWORD(v235[1]) = 0;
   }
 
-  v183 = [(SFFlightLeg *)self departureGate];
-  v182 = [(SFFlightLeg *)v5 departureGate];
-  if ((v183 != 0) == (v182 == 0))
+  departureGate = [(SFFlightLeg *)self departureGate];
+  departureGate2 = [(SFFlightLeg *)v5 departureGate];
+  if ((departureGate != 0) == (departureGate2 == 0))
   {
     *v226 = 0;
     *(v235 + 4) = 0;
@@ -815,15 +815,15 @@
     goto LABEL_11;
   }
 
-  v39 = [(SFFlightLeg *)self departureGate];
-  v40 = v39 != 0;
-  v179 = v39;
-  if (v39)
+  departureGate3 = [(SFFlightLeg *)self departureGate];
+  v40 = departureGate3 != 0;
+  v179 = departureGate3;
+  if (departureGate3)
   {
-    v41 = [(SFFlightLeg *)self departureGate];
+    departureGate4 = [(SFFlightLeg *)self departureGate];
     [(SFFlightLeg *)v5 departureGate];
-    v175 = v176 = v41;
-    if (![v41 isEqual:?])
+    v175 = v176 = departureGate4;
+    if (![departureGate4 isEqual:?])
     {
       v12 = 0;
       v13 = 0;
@@ -893,9 +893,9 @@
     LODWORD(v235[1]) = 0;
   }
 
-  v178 = [(SFFlightLeg *)self departureAirport];
-  v177 = [(SFFlightLeg *)v5 departureAirport];
-  if ((v178 != 0) == (v177 == 0))
+  departureAirport = [(SFFlightLeg *)self departureAirport];
+  departureAirport2 = [(SFFlightLeg *)v5 departureAirport];
+  if ((departureAirport != 0) == (departureAirport2 == 0))
   {
     v13 = 0;
     v235[0] = 0;
@@ -957,15 +957,15 @@
     goto LABEL_11;
   }
 
-  v42 = [(SFFlightLeg *)self departureAirport];
-  v43 = v42 != 0;
-  v174 = v42;
-  if (v42)
+  departureAirport3 = [(SFFlightLeg *)self departureAirport];
+  v43 = departureAirport3 != 0;
+  v174 = departureAirport3;
+  if (departureAirport3)
   {
-    v44 = [(SFFlightLeg *)self departureAirport];
+    departureAirport4 = [(SFFlightLeg *)self departureAirport];
     [(SFFlightLeg *)v5 departureAirport];
-    v170 = v171 = v44;
-    if (![v44 isEqual:?])
+    v170 = v171 = departureAirport4;
+    if (![departureAirport4 isEqual:?])
     {
       v223 = 0;
       v14 = 0;
@@ -1034,9 +1034,9 @@
     HIDWORD(v235[0]) = 0;
   }
 
-  v173 = [(SFFlightLeg *)self arrivalPublishedTime];
-  v172 = [(SFFlightLeg *)v5 arrivalPublishedTime];
-  if ((v173 != 0) == (v172 == 0))
+  arrivalPublishedTime = [(SFFlightLeg *)self arrivalPublishedTime];
+  arrivalPublishedTime2 = [(SFFlightLeg *)v5 arrivalPublishedTime];
+  if ((arrivalPublishedTime != 0) == (arrivalPublishedTime2 == 0))
   {
     v14 = 0;
     LODWORD(v235[0]) = 0;
@@ -1097,15 +1097,15 @@
     goto LABEL_11;
   }
 
-  v45 = [(SFFlightLeg *)self arrivalPublishedTime];
-  v46 = v45 != 0;
-  v169 = v45;
-  if (v45)
+  arrivalPublishedTime3 = [(SFFlightLeg *)self arrivalPublishedTime];
+  v46 = arrivalPublishedTime3 != 0;
+  v169 = arrivalPublishedTime3;
+  if (arrivalPublishedTime3)
   {
-    v47 = [(SFFlightLeg *)self arrivalPublishedTime];
+    arrivalPublishedTime4 = [(SFFlightLeg *)self arrivalPublishedTime];
     [(SFFlightLeg *)v5 arrivalPublishedTime];
-    v165 = v166 = v47;
-    if (![v47 isEqual:?])
+    v165 = v166 = arrivalPublishedTime4;
+    if (![arrivalPublishedTime4 isEqual:?])
     {
       v221 = 0;
       v223 = 0x100000000;
@@ -1174,9 +1174,9 @@
     LODWORD(v235[0]) = 0;
   }
 
-  v168 = [(SFFlightLeg *)self arrivalActualTime];
-  v167 = [(SFFlightLeg *)v5 arrivalActualTime];
-  if ((v168 != 0) == (v167 == 0))
+  arrivalActualTime = [(SFFlightLeg *)self arrivalActualTime];
+  arrivalActualTime2 = [(SFFlightLeg *)v5 arrivalActualTime];
+  if ((arrivalActualTime != 0) == (arrivalActualTime2 == 0))
   {
     v223 = 0x100000000;
     v243 = 0;
@@ -1237,14 +1237,14 @@
 
   else
   {
-    v48 = [(SFFlightLeg *)self arrivalActualTime];
-    HIDWORD(v243) = v48 != 0;
-    v164 = v48;
-    if (!v48 || (-[SFFlightLeg arrivalActualTime](self, "arrivalActualTime"), v49 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalActualTime](v5, "arrivalActualTime"), v161 = v49, v160 = objc_claimAutoreleasedReturnValue(), [v49 isEqual:?]))
+    arrivalActualTime3 = [(SFFlightLeg *)self arrivalActualTime];
+    HIDWORD(v243) = arrivalActualTime3 != 0;
+    v164 = arrivalActualTime3;
+    if (!arrivalActualTime3 || (-[SFFlightLeg arrivalActualTime](self, "arrivalActualTime"), v49 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalActualTime](v5, "arrivalActualTime"), v161 = v49, v160 = objc_claimAutoreleasedReturnValue(), [v49 isEqual:?]))
     {
-      v163 = [(SFFlightLeg *)self arrivalTerminal];
-      v162 = [(SFFlightLeg *)v5 arrivalTerminal];
-      if ((v163 != 0) == (v162 == 0))
+      arrivalTerminal = [(SFFlightLeg *)self arrivalTerminal];
+      arrivalTerminal2 = [(SFFlightLeg *)v5 arrivalTerminal];
+      if ((arrivalTerminal != 0) == (arrivalTerminal2 == 0))
       {
         LODWORD(v243) = 0;
         v215 = 0;
@@ -1305,14 +1305,14 @@
 
       else
       {
-        v50 = [(SFFlightLeg *)self arrivalTerminal];
-        LODWORD(v243) = v50 != 0;
-        v159 = v50;
-        if (!v50 || (-[SFFlightLeg arrivalTerminal](self, "arrivalTerminal"), v51 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalTerminal](v5, "arrivalTerminal"), v156 = v51, v155 = objc_claimAutoreleasedReturnValue(), [v51 isEqual:?]))
+        arrivalTerminal3 = [(SFFlightLeg *)self arrivalTerminal];
+        LODWORD(v243) = arrivalTerminal3 != 0;
+        v159 = arrivalTerminal3;
+        if (!arrivalTerminal3 || (-[SFFlightLeg arrivalTerminal](self, "arrivalTerminal"), v51 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalTerminal](v5, "arrivalTerminal"), v156 = v51, v155 = objc_claimAutoreleasedReturnValue(), [v51 isEqual:?]))
         {
-          v158 = [(SFFlightLeg *)self arrivalGate];
-          v157 = [(SFFlightLeg *)v5 arrivalGate];
-          if ((v158 != 0) == (v157 == 0))
+          arrivalGate = [(SFFlightLeg *)self arrivalGate];
+          arrivalGate2 = [(SFFlightLeg *)v5 arrivalGate];
+          if ((arrivalGate != 0) == (arrivalGate2 == 0))
           {
             v220 = 0;
             v242 = 0;
@@ -1372,14 +1372,14 @@
 
           else
           {
-            v52 = [(SFFlightLeg *)self arrivalGate];
-            v242 = v52 != 0;
-            v154 = v52;
-            if (!v52 || (-[SFFlightLeg arrivalGate](self, "arrivalGate"), v53 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalGate](v5, "arrivalGate"), v151 = v53, v150 = objc_claimAutoreleasedReturnValue(), [v53 isEqual:?]))
+            arrivalGate3 = [(SFFlightLeg *)self arrivalGate];
+            v242 = arrivalGate3 != 0;
+            v154 = arrivalGate3;
+            if (!arrivalGate3 || (-[SFFlightLeg arrivalGate](self, "arrivalGate"), v53 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalGate](v5, "arrivalGate"), v151 = v53, v150 = objc_claimAutoreleasedReturnValue(), [v53 isEqual:?]))
             {
-              v153 = [(SFFlightLeg *)self arrivalAirport];
-              v152 = [(SFFlightLeg *)v5 arrivalAirport];
-              if ((v153 != 0) == (v152 == 0))
+              arrivalAirport = [(SFFlightLeg *)self arrivalAirport];
+              arrivalAirport2 = [(SFFlightLeg *)v5 arrivalAirport];
+              if ((arrivalAirport != 0) == (arrivalAirport2 == 0))
               {
                 v217 = 0;
                 v241 = 0;
@@ -1438,14 +1438,14 @@
 
               else
               {
-                v54 = [(SFFlightLeg *)self arrivalAirport];
-                v241 = v54 != 0;
-                v149 = v54;
-                if (!v54 || (-[SFFlightLeg arrivalAirport](self, "arrivalAirport"), v55 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalAirport](v5, "arrivalAirport"), v145 = objc_claimAutoreleasedReturnValue(), v146 = v55, [v55 isEqual:?]))
+                arrivalAirport3 = [(SFFlightLeg *)self arrivalAirport];
+                v241 = arrivalAirport3 != 0;
+                v149 = arrivalAirport3;
+                if (!arrivalAirport3 || (-[SFFlightLeg arrivalAirport](self, "arrivalAirport"), v55 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalAirport](v5, "arrivalAirport"), v145 = objc_claimAutoreleasedReturnValue(), v146 = v55, [v55 isEqual:?]))
                 {
-                  v148 = [(SFFlightLeg *)self divertedAirport];
-                  v147 = [(SFFlightLeg *)v5 divertedAirport];
-                  if ((v148 != 0) == (v147 == 0))
+                  divertedAirport = [(SFFlightLeg *)self divertedAirport];
+                  divertedAirport2 = [(SFFlightLeg *)v5 divertedAirport];
+                  if ((divertedAirport != 0) == (divertedAirport2 == 0))
                   {
                     v213 = 0;
                     v240 = 0;
@@ -1503,14 +1503,14 @@
 
                   else
                   {
-                    v56 = [(SFFlightLeg *)self divertedAirport];
-                    v240 = v56 != 0;
-                    v144 = v56;
-                    if (!v56 || (-[SFFlightLeg divertedAirport](self, "divertedAirport"), v57 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg divertedAirport](v5, "divertedAirport"), v140 = objc_claimAutoreleasedReturnValue(), v141 = v57, [v57 isEqual:?]))
+                    divertedAirport3 = [(SFFlightLeg *)self divertedAirport];
+                    v240 = divertedAirport3 != 0;
+                    v144 = divertedAirport3;
+                    if (!divertedAirport3 || (-[SFFlightLeg divertedAirport](self, "divertedAirport"), v57 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg divertedAirport](v5, "divertedAirport"), v140 = objc_claimAutoreleasedReturnValue(), v141 = v57, [v57 isEqual:?]))
                     {
-                      v143 = [(SFFlightLeg *)self title];
-                      v142 = [(SFFlightLeg *)v5 title];
-                      if ((v143 != 0) == (v142 == 0))
+                      title = [(SFFlightLeg *)self title];
+                      title2 = [(SFFlightLeg *)v5 title];
+                      if ((title != 0) == (title2 == 0))
                       {
                         v211 = 0;
                         v239 = 0;
@@ -1567,14 +1567,14 @@
 
                       else
                       {
-                        v58 = [(SFFlightLeg *)self title];
-                        v239 = v58 != 0;
-                        v139 = v58;
-                        if (!v58 || (-[SFFlightLeg title](self, "title"), v59 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg title](v5, "title"), v135 = objc_claimAutoreleasedReturnValue(), v136 = v59, [v59 isEqual:?]))
+                        title3 = [(SFFlightLeg *)self title];
+                        v239 = title3 != 0;
+                        v139 = title3;
+                        if (!title3 || (-[SFFlightLeg title](self, "title"), v59 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg title](v5, "title"), v135 = objc_claimAutoreleasedReturnValue(), v136 = v59, [v59 isEqual:?]))
                         {
-                          v138 = [(SFFlightLeg *)self baggageClaim];
-                          v137 = [(SFFlightLeg *)v5 baggageClaim];
-                          if ((v138 != 0) == (v137 == 0))
+                          baggageClaim = [(SFFlightLeg *)self baggageClaim];
+                          baggageClaim2 = [(SFFlightLeg *)v5 baggageClaim];
+                          if ((baggageClaim != 0) == (baggageClaim2 == 0))
                           {
                             v207 = 0;
                             v238 = 0;
@@ -1630,14 +1630,14 @@
 
                           else
                           {
-                            v60 = [(SFFlightLeg *)self baggageClaim];
-                            v238 = v60 != 0;
-                            v134 = v60;
-                            if (!v60 || (-[SFFlightLeg baggageClaim](self, "baggageClaim"), v61 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg baggageClaim](v5, "baggageClaim"), v130 = objc_claimAutoreleasedReturnValue(), v131 = v61, [v61 isEqual:?]))
+                            baggageClaim3 = [(SFFlightLeg *)self baggageClaim];
+                            v238 = baggageClaim3 != 0;
+                            v134 = baggageClaim3;
+                            if (!baggageClaim3 || (-[SFFlightLeg baggageClaim](self, "baggageClaim"), v61 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg baggageClaim](v5, "baggageClaim"), v130 = objc_claimAutoreleasedReturnValue(), v131 = v61, [v61 isEqual:?]))
                             {
-                              v133 = [(SFFlightLeg *)self departureGateClosedTime];
-                              v132 = [(SFFlightLeg *)v5 departureGateClosedTime];
-                              if ((v133 != 0) == (v132 == 0))
+                              departureGateClosedTime = [(SFFlightLeg *)self departureGateClosedTime];
+                              departureGateClosedTime2 = [(SFFlightLeg *)v5 departureGateClosedTime];
+                              if ((departureGateClosedTime != 0) == (departureGateClosedTime2 == 0))
                               {
                                 v205 = 0;
                                 v234 = 0;
@@ -1692,14 +1692,14 @@
 
                               else
                               {
-                                v62 = [(SFFlightLeg *)self departureGateClosedTime];
-                                v234 = v62 != 0;
-                                v129 = v62;
-                                if (!v62 || (-[SFFlightLeg departureGateClosedTime](self, "departureGateClosedTime"), v63 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg departureGateClosedTime](v5, "departureGateClosedTime"), v127 = objc_claimAutoreleasedReturnValue(), v128 = v63, [v63 isEqual:?]))
+                                departureGateClosedTime3 = [(SFFlightLeg *)self departureGateClosedTime];
+                                v234 = departureGateClosedTime3 != 0;
+                                v129 = departureGateClosedTime3;
+                                if (!departureGateClosedTime3 || (-[SFFlightLeg departureGateClosedTime](self, "departureGateClosedTime"), v63 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg departureGateClosedTime](v5, "departureGateClosedTime"), v127 = objc_claimAutoreleasedReturnValue(), v128 = v63, [v63 isEqual:?]))
                                 {
-                                  v126 = [(SFFlightLeg *)self departureRunwayTime];
-                                  v125 = [(SFFlightLeg *)v5 departureRunwayTime];
-                                  if ((v126 != 0) == (v125 == 0))
+                                  departureRunwayTime = [(SFFlightLeg *)self departureRunwayTime];
+                                  departureRunwayTime2 = [(SFFlightLeg *)v5 departureRunwayTime];
+                                  if ((departureRunwayTime != 0) == (departureRunwayTime2 == 0))
                                   {
                                     v206 = 0;
                                     v233 = 0;
@@ -1753,14 +1753,14 @@
 
                                   else
                                   {
-                                    v64 = [(SFFlightLeg *)self departureRunwayTime];
-                                    v233 = v64 != 0;
-                                    v124 = v64;
-                                    if (!v64 || (-[SFFlightLeg departureRunwayTime](self, "departureRunwayTime"), v65 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg departureRunwayTime](v5, "departureRunwayTime"), v122 = objc_claimAutoreleasedReturnValue(), v123 = v65, [v65 isEqual:?]))
+                                    departureRunwayTime3 = [(SFFlightLeg *)self departureRunwayTime];
+                                    v233 = departureRunwayTime3 != 0;
+                                    v124 = departureRunwayTime3;
+                                    if (!departureRunwayTime3 || (-[SFFlightLeg departureRunwayTime](self, "departureRunwayTime"), v65 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg departureRunwayTime](v5, "departureRunwayTime"), v122 = objc_claimAutoreleasedReturnValue(), v123 = v65, [v65 isEqual:?]))
                                     {
-                                      v121 = [(SFFlightLeg *)self arrivalRunwayTime];
-                                      v120 = [(SFFlightLeg *)v5 arrivalRunwayTime];
-                                      if ((v121 != 0) == (v120 == 0))
+                                      arrivalRunwayTime = [(SFFlightLeg *)self arrivalRunwayTime];
+                                      arrivalRunwayTime2 = [(SFFlightLeg *)v5 arrivalRunwayTime];
+                                      if ((arrivalRunwayTime != 0) == (arrivalRunwayTime2 == 0))
                                       {
                                         v210 = 0;
                                         v232 = 0;
@@ -1813,14 +1813,14 @@
 
                                       else
                                       {
-                                        v66 = [(SFFlightLeg *)self arrivalRunwayTime];
-                                        v232 = v66 != 0;
-                                        v119 = v66;
-                                        if (!v66 || (-[SFFlightLeg arrivalRunwayTime](self, "arrivalRunwayTime"), v67 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalRunwayTime](v5, "arrivalRunwayTime"), v117 = objc_claimAutoreleasedReturnValue(), v118 = v67, [v67 isEqual:?]))
+                                        arrivalRunwayTime3 = [(SFFlightLeg *)self arrivalRunwayTime];
+                                        v232 = arrivalRunwayTime3 != 0;
+                                        v119 = arrivalRunwayTime3;
+                                        if (!arrivalRunwayTime3 || (-[SFFlightLeg arrivalRunwayTime](self, "arrivalRunwayTime"), v67 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalRunwayTime](v5, "arrivalRunwayTime"), v117 = objc_claimAutoreleasedReturnValue(), v118 = v67, [v67 isEqual:?]))
                                         {
-                                          v114 = [(SFFlightLeg *)self arrivalGateTime];
-                                          v112 = [(SFFlightLeg *)v5 arrivalGateTime];
-                                          if ((v114 != 0) == (v112 == 0))
+                                          arrivalGateTime = [(SFFlightLeg *)self arrivalGateTime];
+                                          arrivalGateTime2 = [(SFFlightLeg *)v5 arrivalGateTime];
+                                          if ((arrivalGateTime != 0) == (arrivalGateTime2 == 0))
                                           {
                                             v212 = 0;
                                             v231 = 0;
@@ -1872,14 +1872,14 @@
 
                                           else
                                           {
-                                            v68 = [(SFFlightLeg *)self arrivalGateTime];
-                                            v231 = v68 != 0;
-                                            v110 = v68;
-                                            if (!v68 || (-[SFFlightLeg arrivalGateTime](self, "arrivalGateTime"), v69 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalGateTime](v5, "arrivalGateTime"), v115 = objc_claimAutoreleasedReturnValue(), v116 = v69, [v69 isEqual:?]))
+                                            arrivalGateTime3 = [(SFFlightLeg *)self arrivalGateTime];
+                                            v231 = arrivalGateTime3 != 0;
+                                            v110 = arrivalGateTime3;
+                                            if (!arrivalGateTime3 || (-[SFFlightLeg arrivalGateTime](self, "arrivalGateTime"), v69 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg arrivalGateTime](v5, "arrivalGateTime"), v115 = objc_claimAutoreleasedReturnValue(), v116 = v69, [v69 isEqual:?]))
                                             {
-                                              v109 = [(SFFlightLeg *)self lastUpdatedTime];
-                                              v107 = [(SFFlightLeg *)v5 lastUpdatedTime];
-                                              if ((v109 != 0) == (v107 == 0))
+                                              lastUpdatedTime = [(SFFlightLeg *)self lastUpdatedTime];
+                                              lastUpdatedTime2 = [(SFFlightLeg *)v5 lastUpdatedTime];
+                                              if ((lastUpdatedTime != 0) == (lastUpdatedTime2 == 0))
                                               {
                                                 v216 = 0;
                                                 v230 = 0;
@@ -1930,14 +1930,14 @@
 
                                               else
                                               {
-                                                v70 = [(SFFlightLeg *)self lastUpdatedTime];
-                                                v230 = v70 != 0;
-                                                v105 = v70;
-                                                if (!v70 || (-[SFFlightLeg lastUpdatedTime](self, "lastUpdatedTime"), v71 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg lastUpdatedTime](v5, "lastUpdatedTime"), v113 = v71, v111 = objc_claimAutoreleasedReturnValue(), [v71 isEqual:?]))
+                                                lastUpdatedTime3 = [(SFFlightLeg *)self lastUpdatedTime];
+                                                v230 = lastUpdatedTime3 != 0;
+                                                v105 = lastUpdatedTime3;
+                                                if (!lastUpdatedTime3 || (-[SFFlightLeg lastUpdatedTime](self, "lastUpdatedTime"), v71 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg lastUpdatedTime](v5, "lastUpdatedTime"), v113 = v71, v111 = objc_claimAutoreleasedReturnValue(), [v71 isEqual:?]))
                                                 {
-                                                  v104 = [(SFFlightLeg *)self pegasusDisplayFields];
-                                                  v103 = [(SFFlightLeg *)v5 pegasusDisplayFields];
-                                                  if ((v104 != 0) == (v103 == 0))
+                                                  pegasusDisplayFields = [(SFFlightLeg *)self pegasusDisplayFields];
+                                                  pegasusDisplayFields2 = [(SFFlightLeg *)v5 pegasusDisplayFields];
+                                                  if ((pegasusDisplayFields != 0) == (pegasusDisplayFields2 == 0))
                                                   {
                                                     v218 = 0;
                                                     v222 = 0;
@@ -1987,17 +1987,17 @@
 
                                                   else
                                                   {
-                                                    v72 = [(SFFlightLeg *)self pegasusDisplayFields];
-                                                    HIDWORD(v229) = v72 != 0;
-                                                    v100 = v72;
-                                                    if (!v72 || (-[SFFlightLeg pegasusDisplayFields](self, "pegasusDisplayFields"), v73 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg pegasusDisplayFields](v5, "pegasusDisplayFields"), v108 = v73, v106 = objc_claimAutoreleasedReturnValue(), [v73 isEqual:?]))
+                                                    pegasusDisplayFields3 = [(SFFlightLeg *)self pegasusDisplayFields];
+                                                    HIDWORD(v229) = pegasusDisplayFields3 != 0;
+                                                    v100 = pegasusDisplayFields3;
+                                                    if (!pegasusDisplayFields3 || (-[SFFlightLeg pegasusDisplayFields](self, "pegasusDisplayFields"), v73 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg pegasusDisplayFields](v5, "pegasusDisplayFields"), v108 = v73, v106 = objc_claimAutoreleasedReturnValue(), [v73 isEqual:?]))
                                                     {
-                                                      v74 = [(SFFlightLeg *)self pegasusDefinedState];
-                                                      if (v74 == [(SFFlightLeg *)v5 pegasusDefinedState])
+                                                      pegasusDefinedState = [(SFFlightLeg *)self pegasusDefinedState];
+                                                      if (pegasusDefinedState == [(SFFlightLeg *)v5 pegasusDefinedState])
                                                       {
-                                                        v99 = [(SFFlightLeg *)self gateArrivalTimes];
-                                                        v98 = [(SFFlightLeg *)v5 gateArrivalTimes];
-                                                        if ((v99 != 0) == (v98 == 0))
+                                                        gateArrivalTimes = [(SFFlightLeg *)self gateArrivalTimes];
+                                                        gateArrivalTimes2 = [(SFFlightLeg *)v5 gateArrivalTimes];
+                                                        if ((gateArrivalTimes != 0) == (gateArrivalTimes2 == 0))
                                                         {
                                                           v224 = 0;
                                                           v228 = 0;
@@ -2047,14 +2047,14 @@
 
                                                         else
                                                         {
-                                                          v75 = [(SFFlightLeg *)self gateArrivalTimes];
-                                                          HIDWORD(v228) = v75 != 0;
-                                                          v95 = v75;
-                                                          if (!v75 || (-[SFFlightLeg gateArrivalTimes](self, "gateArrivalTimes"), v76 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg gateArrivalTimes](v5, "gateArrivalTimes"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v76, [v76 isEqual:?]))
+                                                          gateArrivalTimes3 = [(SFFlightLeg *)self gateArrivalTimes];
+                                                          HIDWORD(v228) = gateArrivalTimes3 != 0;
+                                                          v95 = gateArrivalTimes3;
+                                                          if (!gateArrivalTimes3 || (-[SFFlightLeg gateArrivalTimes](self, "gateArrivalTimes"), v76 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg gateArrivalTimes](v5, "gateArrivalTimes"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v76, [v76 isEqual:?]))
                                                           {
-                                                            v94 = [(SFFlightLeg *)self runwayArrivalTimes];
-                                                            v93 = [(SFFlightLeg *)v5 runwayArrivalTimes];
-                                                            if ((v94 != 0) == (v93 == 0))
+                                                            runwayArrivalTimes = [(SFFlightLeg *)self runwayArrivalTimes];
+                                                            runwayArrivalTimes2 = [(SFFlightLeg *)v5 runwayArrivalTimes];
+                                                            if ((runwayArrivalTimes != 0) == (runwayArrivalTimes2 == 0))
                                                             {
                                                               v15 = 0;
                                                               v16 = 0;
@@ -2104,14 +2104,14 @@
 
                                                             else
                                                             {
-                                                              v77 = [(SFFlightLeg *)self runwayArrivalTimes];
-                                                              LODWORD(v228) = v77 != 0;
-                                                              v90 = v77;
-                                                              if (!v77 || (-[SFFlightLeg runwayArrivalTimes](self, "runwayArrivalTimes"), v78 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg runwayArrivalTimes](v5, "runwayArrivalTimes"), v96 = objc_claimAutoreleasedReturnValue(), v97 = v78, [v78 isEqual:?]))
+                                                              runwayArrivalTimes3 = [(SFFlightLeg *)self runwayArrivalTimes];
+                                                              LODWORD(v228) = runwayArrivalTimes3 != 0;
+                                                              v90 = runwayArrivalTimes3;
+                                                              if (!runwayArrivalTimes3 || (-[SFFlightLeg runwayArrivalTimes](self, "runwayArrivalTimes"), v78 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg runwayArrivalTimes](v5, "runwayArrivalTimes"), v96 = objc_claimAutoreleasedReturnValue(), v97 = v78, [v78 isEqual:?]))
                                                               {
-                                                                v89 = [(SFFlightLeg *)self gateDepartureTimes];
-                                                                v88 = [(SFFlightLeg *)v5 gateDepartureTimes];
-                                                                if ((v89 != 0) == (v88 == 0))
+                                                                gateDepartureTimes = [(SFFlightLeg *)self gateDepartureTimes];
+                                                                gateDepartureTimes2 = [(SFFlightLeg *)v5 gateDepartureTimes];
+                                                                if ((gateDepartureTimes != 0) == (gateDepartureTimes2 == 0))
                                                                 {
                                                                   v16 = 0;
                                                                   v17 = 0;
@@ -2160,14 +2160,14 @@
 
                                                                 else
                                                                 {
-                                                                  v79 = [(SFFlightLeg *)self gateDepartureTimes];
-                                                                  *&v226[16] = v79 != 0;
-                                                                  v86 = v79;
-                                                                  if (!v79 || (-[SFFlightLeg gateDepartureTimes](self, "gateDepartureTimes"), v80 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg gateDepartureTimes](v5, "gateDepartureTimes"), v91 = objc_claimAutoreleasedReturnValue(), v92 = v80, [v80 isEqual:?]))
+                                                                  gateDepartureTimes3 = [(SFFlightLeg *)self gateDepartureTimes];
+                                                                  *&v226[16] = gateDepartureTimes3 != 0;
+                                                                  v86 = gateDepartureTimes3;
+                                                                  if (!gateDepartureTimes3 || (-[SFFlightLeg gateDepartureTimes](self, "gateDepartureTimes"), v80 = objc_claimAutoreleasedReturnValue(), -[SFFlightLeg gateDepartureTimes](v5, "gateDepartureTimes"), v91 = objc_claimAutoreleasedReturnValue(), v92 = v80, [v80 isEqual:?]))
                                                                   {
-                                                                    v84 = [(SFFlightLeg *)self runwayDepartureTimes];
-                                                                    v83 = [(SFFlightLeg *)v5 runwayDepartureTimes];
-                                                                    if ((v84 != 0) == (v83 == 0))
+                                                                    runwayDepartureTimes = [(SFFlightLeg *)self runwayDepartureTimes];
+                                                                    runwayDepartureTimes2 = [(SFFlightLeg *)v5 runwayDepartureTimes];
+                                                                    if ((runwayDepartureTimes != 0) == (runwayDepartureTimes2 == 0))
                                                                     {
                                                                       v18 = 0;
                                                                       v19 = 0;
@@ -2215,14 +2215,14 @@
 
                                                                     else
                                                                     {
-                                                                      v87 = [(SFFlightLeg *)self runwayDepartureTimes];
-                                                                      if (v87)
+                                                                      runwayDepartureTimes3 = [(SFFlightLeg *)self runwayDepartureTimes];
+                                                                      if (runwayDepartureTimes3)
                                                                       {
-                                                                        v81 = [(SFFlightLeg *)self runwayDepartureTimes];
-                                                                        v82 = [(SFFlightLeg *)v5 runwayDepartureTimes];
-                                                                        v85 = v81;
-                                                                        v20 = [v81 isEqual:v82];
-                                                                        v7 = v82;
+                                                                        runwayDepartureTimes4 = [(SFFlightLeg *)self runwayDepartureTimes];
+                                                                        runwayDepartureTimes5 = [(SFFlightLeg *)v5 runwayDepartureTimes];
+                                                                        v85 = runwayDepartureTimes4;
+                                                                        v20 = [runwayDepartureTimes4 isEqual:runwayDepartureTimes5];
+                                                                        v7 = runwayDepartureTimes5;
                                                                         v19 = 1;
                                                                         LODWORD(v229) = 1;
                                                                         *&v226[8] = 0x100000001;
@@ -2268,7 +2268,7 @@
 
                                                                       else
                                                                       {
-                                                                        v87 = 0;
+                                                                        runwayDepartureTimes3 = 0;
                                                                         v19 = 0;
                                                                         LODWORD(v229) = 1;
                                                                         *&v226[8] = 0x100000001;
@@ -3242,7 +3242,7 @@
 LABEL_11:
   if (v19)
   {
-    v195 = v4;
+    v195 = equalCopy;
     v21 = v20;
     v22 = v14;
     v23 = v15;
@@ -3264,7 +3264,7 @@ LABEL_11:
     v15 = v23;
     v14 = v22;
     v20 = v21;
-    v4 = v195;
+    equalCopy = v195;
     if (!v31)
     {
       goto LABEL_13;
@@ -3580,7 +3580,7 @@ LABEL_119:
   {
   }
 
-  if (v237 == v236)
+  if (v237 == status2)
   {
   }
 
@@ -3588,101 +3588,101 @@ LABEL_144:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setStatus:{-[SFFlightLeg status](self, "status")}];
-  v5 = [(SFFlightLeg *)self departurePublishedTime];
-  v6 = [v5 copy];
+  departurePublishedTime = [(SFFlightLeg *)self departurePublishedTime];
+  v6 = [departurePublishedTime copy];
   [v4 setDeparturePublishedTime:v6];
 
-  v7 = [(SFFlightLeg *)self departureActualTime];
-  v8 = [v7 copy];
+  departureActualTime = [(SFFlightLeg *)self departureActualTime];
+  v8 = [departureActualTime copy];
   [v4 setDepartureActualTime:v8];
 
-  v9 = [(SFFlightLeg *)self departureTerminal];
-  v10 = [v9 copy];
+  departureTerminal = [(SFFlightLeg *)self departureTerminal];
+  v10 = [departureTerminal copy];
   [v4 setDepartureTerminal:v10];
 
-  v11 = [(SFFlightLeg *)self departureGate];
-  v12 = [v11 copy];
+  departureGate = [(SFFlightLeg *)self departureGate];
+  v12 = [departureGate copy];
   [v4 setDepartureGate:v12];
 
-  v13 = [(SFFlightLeg *)self departureAirport];
-  v14 = [v13 copy];
+  departureAirport = [(SFFlightLeg *)self departureAirport];
+  v14 = [departureAirport copy];
   [v4 setDepartureAirport:v14];
 
-  v15 = [(SFFlightLeg *)self arrivalPublishedTime];
-  v16 = [v15 copy];
+  arrivalPublishedTime = [(SFFlightLeg *)self arrivalPublishedTime];
+  v16 = [arrivalPublishedTime copy];
   [v4 setArrivalPublishedTime:v16];
 
-  v17 = [(SFFlightLeg *)self arrivalActualTime];
-  v18 = [v17 copy];
+  arrivalActualTime = [(SFFlightLeg *)self arrivalActualTime];
+  v18 = [arrivalActualTime copy];
   [v4 setArrivalActualTime:v18];
 
-  v19 = [(SFFlightLeg *)self arrivalTerminal];
-  v20 = [v19 copy];
+  arrivalTerminal = [(SFFlightLeg *)self arrivalTerminal];
+  v20 = [arrivalTerminal copy];
   [v4 setArrivalTerminal:v20];
 
-  v21 = [(SFFlightLeg *)self arrivalGate];
-  v22 = [v21 copy];
+  arrivalGate = [(SFFlightLeg *)self arrivalGate];
+  v22 = [arrivalGate copy];
   [v4 setArrivalGate:v22];
 
-  v23 = [(SFFlightLeg *)self arrivalAirport];
-  v24 = [v23 copy];
+  arrivalAirport = [(SFFlightLeg *)self arrivalAirport];
+  v24 = [arrivalAirport copy];
   [v4 setArrivalAirport:v24];
 
-  v25 = [(SFFlightLeg *)self divertedAirport];
-  v26 = [v25 copy];
+  divertedAirport = [(SFFlightLeg *)self divertedAirport];
+  v26 = [divertedAirport copy];
   [v4 setDivertedAirport:v26];
 
-  v27 = [(SFFlightLeg *)self title];
-  v28 = [v27 copy];
+  title = [(SFFlightLeg *)self title];
+  v28 = [title copy];
   [v4 setTitle:v28];
 
-  v29 = [(SFFlightLeg *)self baggageClaim];
-  v30 = [v29 copy];
+  baggageClaim = [(SFFlightLeg *)self baggageClaim];
+  v30 = [baggageClaim copy];
   [v4 setBaggageClaim:v30];
 
-  v31 = [(SFFlightLeg *)self departureGateClosedTime];
-  v32 = [v31 copy];
+  departureGateClosedTime = [(SFFlightLeg *)self departureGateClosedTime];
+  v32 = [departureGateClosedTime copy];
   [v4 setDepartureGateClosedTime:v32];
 
-  v33 = [(SFFlightLeg *)self departureRunwayTime];
-  v34 = [v33 copy];
+  departureRunwayTime = [(SFFlightLeg *)self departureRunwayTime];
+  v34 = [departureRunwayTime copy];
   [v4 setDepartureRunwayTime:v34];
 
-  v35 = [(SFFlightLeg *)self arrivalRunwayTime];
-  v36 = [v35 copy];
+  arrivalRunwayTime = [(SFFlightLeg *)self arrivalRunwayTime];
+  v36 = [arrivalRunwayTime copy];
   [v4 setArrivalRunwayTime:v36];
 
-  v37 = [(SFFlightLeg *)self arrivalGateTime];
-  v38 = [v37 copy];
+  arrivalGateTime = [(SFFlightLeg *)self arrivalGateTime];
+  v38 = [arrivalGateTime copy];
   [v4 setArrivalGateTime:v38];
 
-  v39 = [(SFFlightLeg *)self lastUpdatedTime];
-  v40 = [v39 copy];
+  lastUpdatedTime = [(SFFlightLeg *)self lastUpdatedTime];
+  v40 = [lastUpdatedTime copy];
   [v4 setLastUpdatedTime:v40];
 
-  v41 = [(SFFlightLeg *)self pegasusDisplayFields];
-  v42 = [v41 copy];
+  pegasusDisplayFields = [(SFFlightLeg *)self pegasusDisplayFields];
+  v42 = [pegasusDisplayFields copy];
   [v4 setPegasusDisplayFields:v42];
 
   [v4 setPegasusDefinedState:{-[SFFlightLeg pegasusDefinedState](self, "pegasusDefinedState")}];
-  v43 = [(SFFlightLeg *)self gateArrivalTimes];
-  v44 = [v43 copy];
+  gateArrivalTimes = [(SFFlightLeg *)self gateArrivalTimes];
+  v44 = [gateArrivalTimes copy];
   [v4 setGateArrivalTimes:v44];
 
-  v45 = [(SFFlightLeg *)self runwayArrivalTimes];
-  v46 = [v45 copy];
+  runwayArrivalTimes = [(SFFlightLeg *)self runwayArrivalTimes];
+  v46 = [runwayArrivalTimes copy];
   [v4 setRunwayArrivalTimes:v46];
 
-  v47 = [(SFFlightLeg *)self gateDepartureTimes];
-  v48 = [v47 copy];
+  gateDepartureTimes = [(SFFlightLeg *)self gateDepartureTimes];
+  v48 = [gateDepartureTimes copy];
   [v4 setGateDepartureTimes:v48];
 
-  v49 = [(SFFlightLeg *)self runwayDepartureTimes];
-  v50 = [v49 copy];
+  runwayDepartureTimes = [(SFFlightLeg *)self runwayDepartureTimes];
+  v50 = [runwayDepartureTimes copy];
   [v4 setRunwayDepartureTimes:v50];
 
   return v4;
@@ -3691,31 +3691,31 @@ LABEL_144:
 - (NSData)jsonData
 {
   v2 = [[_SFPBFlightLeg alloc] initWithFacade:self];
-  v3 = [(_SFPBFlightLeg *)v2 jsonData];
+  jsonData = [(_SFPBFlightLeg *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBFlightLeg alloc] initWithFacade:self];
-  v3 = [(_SFPBFlightLeg *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBFlightLeg *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBFlightLeg alloc] initWithFacade:self];
-  v5 = [(_SFPBFlightLeg *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBFlightLeg *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFFlightLeg)initWithCoder:(id)a3
+- (SFFlightLeg)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBFlightLeg alloc] initWithData:v5];
   v7 = [(SFFlightLeg *)self initWithProtobuf:v6];

@@ -1,10 +1,10 @@
 @interface _UIFullFontSize
 + (id)defaultValue;
-+ (id)valued:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)valued:(double)valued;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)setNeedsEvaluation;
-- (_UIFullFontSize)initWithValue:(double)a3 isDefault:(BOOL)a4;
-- (double)valueWithEvaluationIfNeeded:(id)a3;
+- (_UIFullFontSize)initWithValue:(double)value isDefault:(BOOL)default;
+- (double)valueWithEvaluationIfNeeded:(id)needed;
 - (id)overrideUnlessDefault:(double)value;
 @end
 
@@ -19,24 +19,24 @@
   return v3;
 }
 
-- (_UIFullFontSize)initWithValue:(double)a3 isDefault:(BOOL)a4
+- (_UIFullFontSize)initWithValue:(double)value isDefault:(BOOL)default
 {
   v7.receiver = self;
   v7.super_class = _UIFullFontSize;
   result = [(_UIFullFontSize *)&v7 init];
   if (result)
   {
-    result->_value = a3;
-    result->_isDefault = a4;
-    result->_needsEvaluation = a4;
+    result->_value = value;
+    result->_isDefault = default;
+    result->_needsEvaluation = default;
   }
 
   return result;
 }
 
-+ (id)valued:(double)a3
++ (id)valued:(double)valued
 {
-  v3 = [[_UIFullFontSize alloc] initWithValue:0 isDefault:a3];
+  v3 = [[_UIFullFontSize alloc] initWithValue:0 isDefault:valued];
 
   return v3;
 }
@@ -69,14 +69,14 @@
   return isDefault;
 }
 
-- (double)valueWithEvaluationIfNeeded:(id)a3
+- (double)valueWithEvaluationIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (__PAIR64__(self->_needsEvaluation, self->_isDefault) == 0x100000001)
   {
     self->_needsEvaluation = 0;
-    self->_value = (*(v4 + 2))(v4);
+    self->_value = (*(neededCopy + 2))(neededCopy);
   }
 
   value = self->_value;
@@ -84,13 +84,13 @@
   return value;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     isDefault = self->_isDefault;
     v7 = *(v5 + 16);
     v8 = isDefault == 1 && (v7 & 1) != 0 || isDefault == v7 && !self->_needsEvaluation && (*(v5 + 17) & 1) == 0 && vabdd_f64(self->_value, v5[1]) < 0.00000011920929;

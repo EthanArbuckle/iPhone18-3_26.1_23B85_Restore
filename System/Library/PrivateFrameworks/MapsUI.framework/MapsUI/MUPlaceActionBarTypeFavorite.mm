@@ -1,7 +1,7 @@
 @interface MUPlaceActionBarTypeFavorite
 - (BOOL)favorited;
 - (MUPlaceActionBarTypeFavorite)init;
-- (void)setFavorited:(BOOL)a3;
+- (void)setFavorited:(BOOL)favorited;
 @end
 
 @implementation MUPlaceActionBarTypeFavorite
@@ -13,11 +13,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setFavorited:(BOOL)a3
+- (void)setFavorited:(BOOL)favorited
 {
   v5 = OBJC_IVAR___MUPlaceActionBarTypeFavorite_favorited;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = favorited;
 }
 
 - (MUPlaceActionBarTypeFavorite)init

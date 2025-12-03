@@ -1,31 +1,31 @@
 @interface INSpatialEventTrigger
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INSpatialEventTrigger)init;
-- (INSpatialEventTrigger)initWithCoder:(id)a3;
-- (INSpatialEventTrigger)initWithMobileSpace:(int64_t)a3 event:(int64_t)a4;
+- (INSpatialEventTrigger)initWithCoder:(id)coder;
+- (INSpatialEventTrigger)initWithMobileSpace:(int64_t)space event:(int64_t)event;
 - (INSpatialEventTrigger)initWithPlacemark:(CLPlacemark *)placemark event:(INSpatialEvent)event;
-- (INSpatialEventTrigger)initWithPlacemark:(id)a3 event:(int64_t)a4 suggestedValues:(id)a5 mobileSpace:(int64_t)a6;
+- (INSpatialEventTrigger)initWithPlacemark:(id)placemark event:(int64_t)event suggestedValues:(id)values mobileSpace:(int64_t)space;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSpatialEventTrigger
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INSpatialEventTrigger *)self placemark];
-  v7 = [v6 _intents_readableTitleWithLocalizer:v5];
+  localizerCopy = localizer;
+  placemark = [(INSpatialEventTrigger *)self placemark];
+  v7 = [placemark _intents_readableTitleWithLocalizer:localizerCopy];
 
-  v8 = [(INSpatialEventTrigger *)self event];
-  if (v8)
+  event = [(INSpatialEventTrigger *)self event];
+  if (event)
   {
-    if (v8 == INSpatialEventDepart)
+    if (event == INSpatialEventDepart)
     {
       v9 = objc_alloc(MEMORY[0x1E696AEC0]);
       v10 = @"Leaving: %@";
@@ -33,7 +33,7 @@
 
     else
     {
-      if (v8 != INSpatialEventArrive)
+      if (event != INSpatialEventArrive)
       {
         goto LABEL_8;
       }
@@ -42,9 +42,9 @@
       v10 = @"Arriving: %@";
     }
 
-    v11 = INLocalizedStringWithLocalizer(v10, v10, v5);
-    v12 = [v5 locale];
-    self = [v9 initWithFormat:v11 locale:v12, v7];
+    v11 = INLocalizedStringWithLocalizer(v10, v10, localizerCopy);
+    locale = [localizerCopy locale];
+    self = [v9 initWithFormat:v11 locale:locale, v7];
   }
 
   else
@@ -62,25 +62,25 @@ LABEL_8:
   v13[4] = *MEMORY[0x1E69E9840];
   v12[0] = @"placemark";
   placemark = self->_placemark;
-  v4 = placemark;
+  null = placemark;
   if (!placemark)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"event";
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_event];
   v13[1] = v5;
   v12[2] = @"suggestedValues";
   suggestedValues = self->_suggestedValues;
-  v7 = suggestedValues;
+  null2 = suggestedValues;
   if (!suggestedValues)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v7;
+  v13[2] = null2;
   v12[3] = @"mobileSpace";
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_mobileSpace];
   v13[3] = v8;
@@ -99,26 +99,26 @@ LABEL_8:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INSpatialEventTrigger;
   v6 = [(INSpatialEventTrigger *)&v11 description];
-  v7 = [(INSpatialEventTrigger *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INSpatialEventTrigger *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_placemark];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"placemark"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_placemark];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"placemark"];
 
   event = self->_event;
   v10 = @"unknown";
@@ -138,11 +138,11 @@ LABEL_8:
   }
 
   v12 = v11;
-  [v7 if_setObjectIfNonNil:v12 forKey:@"event"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"event"];
 
-  v13 = [v6 encodeObject:self->_suggestedValues];
+  v13 = [encoderCopy encodeObject:self->_suggestedValues];
 
-  [v7 if_setObjectIfNonNil:v13 forKey:@"suggestedValues"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"suggestedValues"];
   if (self->_mobileSpace == 1)
   {
     v14 = @"car";
@@ -154,45 +154,45 @@ LABEL_8:
   }
 
   v15 = v14;
-  [v7 if_setObjectIfNonNil:v15 forKey:@"mobileSpace"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"mobileSpace"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   placemark = self->_placemark;
-  v5 = a3;
-  [v5 encodeObject:placemark forKey:@"placemark"];
-  [v5 encodeInteger:self->_event forKey:@"event"];
-  [v5 encodeObject:self->_suggestedValues forKey:@"suggestedValues"];
-  [v5 encodeInteger:self->_mobileSpace forKey:@"mobileSpace"];
+  coderCopy = coder;
+  [coderCopy encodeObject:placemark forKey:@"placemark"];
+  [coderCopy encodeInteger:self->_event forKey:@"event"];
+  [coderCopy encodeObject:self->_suggestedValues forKey:@"suggestedValues"];
+  [coderCopy encodeInteger:self->_mobileSpace forKey:@"mobileSpace"];
 }
 
-- (INSpatialEventTrigger)initWithCoder:(id)a3
+- (INSpatialEventTrigger)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
-  v6 = [v4 decodeIntegerForKey:@"event"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
+  v6 = [coderCopy decodeIntegerForKey:@"event"];
   v7 = MEMORY[0x1E695DFD8];
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"suggestedValues"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"suggestedValues"];
 
-  v11 = [v4 decodeIntegerForKey:@"mobileSpace"];
+  v11 = [coderCopy decodeIntegerForKey:@"mobileSpace"];
   v12 = [(INSpatialEventTrigger *)self initWithPlacemark:v5 event:v6 suggestedValues:v10 mobileSpace:v11];
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -202,7 +202,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       placemark = self->_placemark;
       v8 = (placemark == v5->_placemark || [(CLPlacemark *)placemark isEqual:?]) && self->_event == v5->_event && ((suggestedValues = self->_suggestedValues, suggestedValues == v5->_suggestedValues) || [(NSArray *)suggestedValues isEqual:?]) && self->_mobileSpace == v5->_mobileSpace;
     }
@@ -228,39 +228,39 @@ LABEL_8:
   return v6 ^ v8;
 }
 
-- (INSpatialEventTrigger)initWithMobileSpace:(int64_t)a3 event:(int64_t)a4
+- (INSpatialEventTrigger)initWithMobileSpace:(int64_t)space event:(int64_t)event
 {
   v7.receiver = self;
   v7.super_class = INSpatialEventTrigger;
   result = [(INSpatialEventTrigger *)&v7 init];
   if (result)
   {
-    result->_event = a4;
-    result->_mobileSpace = a3;
+    result->_event = event;
+    result->_mobileSpace = space;
   }
 
   return result;
 }
 
-- (INSpatialEventTrigger)initWithPlacemark:(id)a3 event:(int64_t)a4 suggestedValues:(id)a5 mobileSpace:(int64_t)a6
+- (INSpatialEventTrigger)initWithPlacemark:(id)placemark event:(int64_t)event suggestedValues:(id)values mobileSpace:(int64_t)space
 {
-  v10 = a3;
-  v11 = a5;
+  placemarkCopy = placemark;
+  valuesCopy = values;
   v18.receiver = self;
   v18.super_class = INSpatialEventTrigger;
   v12 = [(INSpatialEventTrigger *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [placemarkCopy copy];
     placemark = v12->_placemark;
     v12->_placemark = v13;
 
-    v12->_event = a4;
-    v15 = [v11 copy];
+    v12->_event = event;
+    v15 = [valuesCopy copy];
     suggestedValues = v12->_suggestedValues;
     v12->_suggestedValues = v15;
 
-    v12->_mobileSpace = a6;
+    v12->_mobileSpace = space;
   }
 
   return v12;
@@ -291,28 +291,28 @@ LABEL_8:
   return [(INSpatialEventTrigger *)&v3 init];
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"placemark"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"placemark"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"event"];
+    v12 = [fromCopy objectForKeyedSubscript:@"event"];
     v13 = INSpatialEventWithString(v12);
 
     v14 = objc_opt_class();
-    v15 = [v8 objectForKeyedSubscript:@"suggestedValues"];
-    v16 = [v7 decodeObjectsOfClass:v14 from:v15];
+    v15 = [fromCopy objectForKeyedSubscript:@"suggestedValues"];
+    v16 = [decoderCopy decodeObjectsOfClass:v14 from:v15];
 
-    v17 = [v8 objectForKeyedSubscript:@"mobileSpace"];
+    v17 = [fromCopy objectForKeyedSubscript:@"mobileSpace"];
     v18 = [v17 isEqualToString:@"car"];
 
-    v19 = [[a1 alloc] initWithPlacemark:v11 event:v13 suggestedValues:v16 mobileSpace:v18];
+    v19 = [[self alloc] initWithPlacemark:v11 event:v13 suggestedValues:v16 mobileSpace:v18];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface WBSContentAvailabilityDisplayController
 - (BOOL)isDisplaying;
 - (NSString)currentLabel;
-- (WBSContentAvailabilityDisplayController)initWithPresenter:(id)a3;
+- (WBSContentAvailabilityDisplayController)initWithPresenter:(id)presenter;
 - (WBSContentAvailabilityDisplayPresenting)presenter;
 - (unint64_t)currentOptions;
-- (void)displayTimerDidFire:(id)a3;
+- (void)displayTimerDidFire:(id)fire;
 - (void)resetDisplay;
 - (void)scheduleDisplayTimerIfNeeded;
-- (void)updateToContentOptions:(unint64_t)a3;
+- (void)updateToContentOptions:(unint64_t)options;
 @end
 
 @implementation WBSContentAvailabilityDisplayController
 
 - (void)resetDisplay
 {
-  v3 = [(WBSContentAvailabilityDisplayController *)self isDisplaying];
+  isDisplaying = [(WBSContentAvailabilityDisplayController *)self isDisplaying];
   self->_cumulativeOptions = 0;
   availabilityLabels = self->_availabilityLabels;
   self->_availabilityLabels = 0;
@@ -24,7 +24,7 @@
   displayTimer = self->_displayTimer;
   self->_displayTimer = 0;
 
-  if (v3)
+  if (isDisplaying)
   {
     WeakRetained = objc_loadWeakRetained(&self->_presenter);
     [WeakRetained availabilityDisplayController:self didUpdateWithState:2];
@@ -43,35 +43,35 @@
   return availabilityLabels;
 }
 
-- (WBSContentAvailabilityDisplayController)initWithPresenter:(id)a3
+- (WBSContentAvailabilityDisplayController)initWithPresenter:(id)presenter
 {
   v6.receiver = self;
   v6.super_class = WBSContentAvailabilityDisplayController;
-  v3 = a3;
+  presenterCopy = presenter;
   v4 = [(WBSContentAvailabilityDisplayController *)&v6 init];
-  objc_storeWeak(&v4->_presenter, v3);
+  objc_storeWeak(&v4->_presenter, presenterCopy);
 
   v4->_labelDisplayDuration = 1.55;
   return v4;
 }
 
-- (void)updateToContentOptions:(unint64_t)a3
+- (void)updateToContentOptions:(unint64_t)options
 {
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
   v12 = WeakRetained;
-  if (a3 && (v6 = [(WBSBrowsingAssistantAvailabilityLabels *)self->_availabilityLabels representsSupersetOfContentOptions:a3], WeakRetained = v12, !v6))
+  if (options && (v6 = [(WBSBrowsingAssistantAvailabilityLabels *)self->_availabilityLabels representsSupersetOfContentOptions:options], WeakRetained = v12, !v6))
   {
-    self->_cumulativeOptions |= a3;
-    v7 = [(WBSContentAvailabilityDisplayController *)self isDisplaying];
+    self->_cumulativeOptions |= options;
+    isDisplaying = [(WBSContentAvailabilityDisplayController *)self isDisplaying];
     availabilityLabels = self->_availabilityLabels;
     if (availabilityLabels)
     {
-      [(WBSBrowsingAssistantAvailabilityLabels *)availabilityLabels possibleLabelsByIncorporatingContentOptions:a3 intoLabelsAfterIndex:self->_displayedIndex];
+      [(WBSBrowsingAssistantAvailabilityLabels *)availabilityLabels possibleLabelsByIncorporatingContentOptions:options intoLabelsAfterIndex:self->_displayedIndex];
     }
 
     else
     {
-      [WBSBrowsingAssistantAvailabilityLabels possibleLabelsForContentOptions:a3];
+      [WBSBrowsingAssistantAvailabilityLabels possibleLabelsForContentOptions:options];
     }
     v9 = ;
     if ([v9 count] >= 2 && v12)
@@ -89,7 +89,7 @@
 
     self->_displayedIndex = 0;
     [(WBSContentAvailabilityDisplayController *)self scheduleDisplayTimerIfNeeded];
-    [v12 availabilityDisplayController:self didUpdateWithState:v7];
+    [v12 availabilityDisplayController:self didUpdateWithState:isDisplaying];
   }
 
   else
@@ -143,25 +143,25 @@ LABEL_6:
 
 - (void)scheduleDisplayTimerIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 16) invalidate];
-    v2 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    [*(self + 16) invalidate];
+    v2 = *(self + 16);
+    *(self + 16) = 0;
 
-    if ([a1 isDisplaying])
+    if ([self isDisplaying])
     {
-      v3 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:a1 target:sel_displayTimerDidFire_ selector:0 userInfo:0 repeats:*(a1 + 40)];
-      v4 = *(a1 + 16);
-      *(a1 + 16) = v3;
+      v3 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel_displayTimerDidFire_ selector:0 userInfo:0 repeats:*(self + 40)];
+      v4 = *(self + 16);
+      *(self + 16) = v3;
 
-      v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v5 addTimer:*(a1 + 16) forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:*(self + 16) forMode:*MEMORY[0x1E695DA28]];
     }
   }
 }
 
-- (void)displayTimerDidFire:(id)a3
+- (void)displayTimerDidFire:(id)fire
 {
   ++self->_displayedIndex;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);

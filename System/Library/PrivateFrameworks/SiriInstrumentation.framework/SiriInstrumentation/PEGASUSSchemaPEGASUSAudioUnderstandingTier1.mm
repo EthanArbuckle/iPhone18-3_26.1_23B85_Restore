@@ -1,26 +1,26 @@
 @interface PEGASUSSchemaPEGASUSAudioUnderstandingTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAudioUnderstandingTier1
 
-- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = PEGASUSSchemaPEGASUSAudioUnderstandingTier1;
   v5 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioArtist"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioArtist"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)v5 setAudioArtist:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"audioAppName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"audioAppName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)v5 setAudioAppName:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"audioEntity"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"audioEntity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)v5 setAudioEntity:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"audioEntityOriginalValue"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"audioEntityOriginalValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAudioUnderstandingTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,38 +94,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioAppName)
   {
-    v4 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"audioAppName"];
+    audioAppName = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
+    v5 = [audioAppName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioAppName"];
   }
 
   if (self->_audioArtist)
   {
-    v6 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"audioArtist"];
+    audioArtist = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
+    v7 = [audioArtist copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"audioArtist"];
   }
 
   if (self->_audioEntity)
   {
-    v8 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"audioEntity"];
+    audioEntity = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
+    v9 = [audioEntity copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"audioEntity"];
   }
 
   if (self->_audioEntityOriginalValue)
   {
-    v10 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"audioEntityOriginalValue"];
+    audioEntityOriginalValue = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
+    v11 = [audioEntityOriginalValue copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"audioEntityOriginalValue"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,28 +136,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_audioEntityOriginalValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
-  v6 = [v4 audioArtist];
-  if ((v5 != 0) == (v6 == 0))
+  audioArtist = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
+  audioArtist2 = [equalCopy audioArtist];
+  if ((audioArtist != 0) == (audioArtist2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
-  if (v7)
+  audioArtist3 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
+  if (audioArtist3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
-    v10 = [v4 audioArtist];
-    v11 = [v9 isEqual:v10];
+    v8 = audioArtist3;
+    audioArtist4 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
+    audioArtist5 = [equalCopy audioArtist];
+    v11 = [audioArtist4 isEqual:audioArtist5];
 
     if (!v11)
     {
@@ -169,20 +169,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
-  v6 = [v4 audioAppName];
-  if ((v5 != 0) == (v6 == 0))
+  audioArtist = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
+  audioArtist2 = [equalCopy audioAppName];
+  if ((audioArtist != 0) == (audioArtist2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
-  if (v12)
+  audioAppName = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
+  if (audioAppName)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
-    v15 = [v4 audioAppName];
-    v16 = [v14 isEqual:v15];
+    v13 = audioAppName;
+    audioAppName2 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
+    audioAppName3 = [equalCopy audioAppName];
+    v16 = [audioAppName2 isEqual:audioAppName3];
 
     if (!v16)
     {
@@ -194,20 +194,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
-  v6 = [v4 audioEntity];
-  if ((v5 != 0) == (v6 == 0))
+  audioArtist = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
+  audioArtist2 = [equalCopy audioEntity];
+  if ((audioArtist != 0) == (audioArtist2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
-  if (v17)
+  audioEntity = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
+  if (audioEntity)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
-    v20 = [v4 audioEntity];
-    v21 = [v19 isEqual:v20];
+    v18 = audioEntity;
+    audioEntity2 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
+    audioEntity3 = [equalCopy audioEntity];
+    v21 = [audioEntity2 isEqual:audioEntity3];
 
     if (!v21)
     {
@@ -219,12 +219,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
-  v6 = [v4 audioEntityOriginalValue];
-  if ((v5 != 0) != (v6 == 0))
+  audioArtist = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
+  audioArtist2 = [equalCopy audioEntityOriginalValue];
+  if ((audioArtist != 0) != (audioArtist2 == 0))
   {
-    v22 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
-    if (!v22)
+    audioEntityOriginalValue = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
+    if (!audioEntityOriginalValue)
     {
 
 LABEL_25:
@@ -232,10 +232,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
-    v25 = [v4 audioEntityOriginalValue];
-    v26 = [v24 isEqual:v25];
+    v23 = audioEntityOriginalValue;
+    audioEntityOriginalValue2 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
+    audioEntityOriginalValue3 = [equalCopy audioEntityOriginalValue];
+    v26 = [audioEntityOriginalValue2 isEqual:audioEntityOriginalValue3];
 
     if (v26)
     {
@@ -255,47 +255,47 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
+  toCopy = to;
+  audioArtist = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioArtist];
 
-  if (v4)
+  if (audioArtist)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
+  audioAppName = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioAppName];
 
-  if (v5)
+  if (audioAppName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
+  audioEntity = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntity];
 
-  if (v6)
+  if (audioEntity)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
+  audioEntityOriginalValue = [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self audioEntityOriginalValue];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (audioEntityOriginalValue)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSAudioUnderstandingTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioArtist];
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioAppName];
@@ -303,7 +303,7 @@ LABEL_23:
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioEntityOriginalValue];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioArtist];
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioAppName];
@@ -311,7 +311,7 @@ LABEL_23:
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioEntityOriginalValue];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioArtist];
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioAppName];
@@ -319,7 +319,7 @@ LABEL_23:
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioEntityOriginalValue];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioArtist];
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioAppName];
@@ -327,7 +327,7 @@ LABEL_23:
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioEntityOriginalValue];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioArtist];
     [(PEGASUSSchemaPEGASUSAudioUnderstandingTier1 *)self deleteAudioAppName];

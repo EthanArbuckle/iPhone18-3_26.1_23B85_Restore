@@ -1,29 +1,29 @@
 @interface SLGoogleWebClient
-+ (id)dataclassesForScopes:(id)a3;
++ (id)dataclassesForScopes:(id)scopes;
 - (NSString)clientID;
 - (NSString)clientRedirectForAppOpenURL;
-- (SLGoogleWebClient)initWithClientID:(id)a3;
-- (SLGoogleWebClient)initWithCoder:(id)a3;
+- (SLGoogleWebClient)initWithClientID:(id)d;
+- (SLGoogleWebClient)initWithCoder:(id)coder;
 @end
 
 @implementation SLGoogleWebClient
 
-- (SLGoogleWebClient)initWithClientID:(id)a3
+- (SLGoogleWebClient)initWithClientID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SLGoogleWebClient;
   v6 = [(SLGoogleWebClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientID, a3);
+    objc_storeStrong(&v6->_clientID, d);
   }
 
   return v7;
 }
 
-- (SLGoogleWebClient)initWithCoder:(id)a3
+- (SLGoogleWebClient)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SLGoogleWebClient;
@@ -43,12 +43,12 @@
   }
 }
 
-+ (id)dataclassesForScopes:(id)a3
++ (id)dataclassesForScopes:(id)scopes
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  scopesCopy = scopes;
   v4 = [MEMORY[0x1E695DFA8] set];
-  if ([v3 containsObject:@"https://mail.google.com/"])
+  if ([scopesCopy containsObject:@"https://mail.google.com/"])
   {
     v5 = *MEMORY[0x1E69596C0];
     v9[0] = *MEMORY[0x1E6959698];
@@ -57,27 +57,27 @@
     [v4 addObjectsFromArray:v6];
   }
 
-  if ([v3 containsObject:@"https://www.googleapis.com/auth/calendar"])
+  if ([scopesCopy containsObject:@"https://www.googleapis.com/auth/calendar"])
   {
     [v4 addObject:*MEMORY[0x1E6959630]];
   }
 
-  if ([v3 containsObject:@"https://www.googleapis.com/auth/carddav"])
+  if ([scopesCopy containsObject:@"https://www.googleapis.com/auth/carddav"])
   {
     [v4 addObject:*MEMORY[0x1E6959640]];
   }
 
-  v7 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
 - (NSString)clientRedirectForAppOpenURL
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

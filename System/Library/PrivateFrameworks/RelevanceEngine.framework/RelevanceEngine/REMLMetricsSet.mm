@@ -1,9 +1,9 @@
 @interface REMLMetricsSet
-- (BOOL)addMetrics:(id)a3;
+- (BOOL)addMetrics:(id)metrics;
 - (REMLMetricsSet)init;
-- (id)getMetricsByName:(id)a3;
+- (id)getMetricsByName:(id)name;
 - (void)reset;
-- (void)updateMetricsFromFeatures:(id)a3 prediction:(id)a4 truth:(id)a5;
+- (void)updateMetricsFromFeatures:(id)features prediction:(id)prediction truth:(id)truth;
 @end
 
 @implementation REMLMetricsSet
@@ -29,54 +29,54 @@
   return v2;
 }
 
-- (BOOL)addMetrics:(id)a3
+- (BOOL)addMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   metricsIndex = self->metricsIndex;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)metricsIndex objectForKey:v6];
+  name = [metricsCopy name];
+  v7 = [(NSMutableDictionary *)metricsIndex objectForKey:name];
 
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v8 = self->metricsIndex;
-    v9 = [v4 name];
-    [(NSMutableDictionary *)v8 setValue:v7 forKey:v9];
+    name2 = [metricsCopy name];
+    [(NSMutableDictionary *)v8 setValue:v7 forKey:name2];
   }
 
-  v10 = [v7 containsObject:v4];
+  v10 = [v7 containsObject:metricsCopy];
   if ((v10 & 1) == 0)
   {
-    [v7 addObject:v4];
-    [(NSMutableSet *)self->metricsSet addObject:v4];
+    [v7 addObject:metricsCopy];
+    [(NSMutableSet *)self->metricsSet addObject:metricsCopy];
   }
 
   return v10 ^ 1;
 }
 
-- (id)getMetricsByName:(id)a3
+- (id)getMetricsByName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->metricsIndex objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->metricsIndex objectForKey:name];
   v4 = v3;
   if (v3 && [v3 count])
   {
-    v5 = [v4 anyObject];
+    anyObject = [v4 anyObject];
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  return v5;
+  return anyObject;
 }
 
-- (void)updateMetricsFromFeatures:(id)a3 prediction:(id)a4 truth:(id)a5
+- (void)updateMetricsFromFeatures:(id)features prediction:(id)prediction truth:(id)truth
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  featuresCopy = features;
+  predictionCopy = prediction;
+  truthCopy = truth;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -97,7 +97,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v17 + 1) + 8 * v15++) updateMetricsFromFeatures:v8 prediction:v9 truth:{v10, v17}];
+        [*(*(&v17 + 1) + 8 * v15++) updateMetricsFromFeatures:featuresCopy prediction:predictionCopy truth:{truthCopy, v17}];
       }
 
       while (v13 != v15);

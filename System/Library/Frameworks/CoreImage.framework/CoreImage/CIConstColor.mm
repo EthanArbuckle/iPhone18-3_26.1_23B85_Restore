@@ -1,11 +1,11 @@
 @interface CIConstColor
 + (id)alloc;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)cgColor;
 - (CGColorSpace)colorSpace;
-- (CIConstColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(CGColorSpace *)a7;
+- (CIConstColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(CGColorSpace *)space;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CIConstColor
@@ -36,14 +36,14 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CIConstColor *)self components];
-    v6 = [a3 components];
-    return *v5 == *v6 && *(v5 + 1) == v6[1] && *(v5 + 2) == v6[2] && *(v5 + 3) == v6[3];
+    components = [(CIConstColor *)self components];
+    components2 = [equal components];
+    return *components == *components2 && *(components + 1) == components2[1] && *(components + 2) == components2[2] && *(components + 3) == components2[3];
   }
 
   else
@@ -52,7 +52,7 @@
     if (objc_opt_isKindOfClass())
     {
 
-      return [a3 isEqual:self];
+      return [equal isEqual:self];
     }
 
     else
@@ -64,15 +64,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CIConstColor *)self numberOfComponents];
-  v4 = [(CIConstColor *)self components];
-  result = v3;
-  if (v3 >= 1)
+  numberOfComponents = [(CIConstColor *)self numberOfComponents];
+  components = [(CIConstColor *)self components];
+  result = numberOfComponents;
+  if (numberOfComponents >= 1)
   {
-    v6 = v3 & 0x7FFFFFFF;
+    v6 = numberOfComponents & 0x7FFFFFFF;
     do
     {
-      v7 = *v4++;
+      v7 = *components++;
       result = 33 * result + vcvtd_n_s64_f64(v7, 0xAuLL);
       --v6;
     }
@@ -83,16 +83,16 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CIConstColor;
-  [(CIColor *)&v3 encodeWithCoder:a3];
+  [(CIColor *)&v3 encodeWithCoder:coder];
 }
 
-- (CIConstColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(CGColorSpace *)a7
+- (CIConstColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(CGColorSpace *)space
 {
-  v8 = [[CIColor alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v8 = [[CIColor alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v8;
 }

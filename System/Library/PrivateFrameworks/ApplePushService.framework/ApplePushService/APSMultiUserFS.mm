@@ -1,6 +1,6 @@
 @interface APSMultiUserFS
 + (id)sharedInstance;
-- (APSMultiUserFS)initWithIsMultiUserMode:(BOOL)a3;
+- (APSMultiUserFS)initWithIsMultiUserMode:(BOOL)mode;
 - (id)systemPath;
 @end
 
@@ -18,14 +18,14 @@
   return v3;
 }
 
-- (APSMultiUserFS)initWithIsMultiUserMode:(BOOL)a3
+- (APSMultiUserFS)initWithIsMultiUserMode:(BOOL)mode
 {
   v5.receiver = self;
   v5.super_class = APSMultiUserFS;
   result = [(APSMultiUserFS *)&v5 init];
   if (result)
   {
-    result->_isMultiUser = a3;
+    result->_isMultiUser = mode;
   }
 
   return result;

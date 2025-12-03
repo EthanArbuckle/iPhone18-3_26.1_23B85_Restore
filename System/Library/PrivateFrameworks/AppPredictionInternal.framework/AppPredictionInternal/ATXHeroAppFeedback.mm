@@ -1,12 +1,12 @@
 @interface ATXHeroAppFeedback
 - (ATXHeroAppFeedback)init;
-- (ATXHeroAppFeedback)initWithHistogram:(id)a3;
-- (BOOL)shouldShowHeroAppPrediction:(id)a3;
-- (double)_confirmsForHeroAppPrediction:(id)a3;
-- (double)_engagementForHeroAppPrediction:(id)a3;
-- (double)_rejectsForHeroAppPrediction:(id)a3;
-- (void)addConfirmForHeroAppPredictionWithBundleId:(id)a3 weight:(float)a4;
-- (void)addRejectForHeroAppPredictionWithBundleId:(id)a3 weight:(float)a4;
+- (ATXHeroAppFeedback)initWithHistogram:(id)histogram;
+- (BOOL)shouldShowHeroAppPrediction:(id)prediction;
+- (double)_confirmsForHeroAppPrediction:(id)prediction;
+- (double)_engagementForHeroAppPrediction:(id)prediction;
+- (double)_rejectsForHeroAppPrediction:(id)prediction;
+- (void)addConfirmForHeroAppPredictionWithBundleId:(id)id weight:(float)weight;
+- (void)addRejectForHeroAppPredictionWithBundleId:(id)id weight:(float)weight;
 @end
 
 @implementation ATXHeroAppFeedback
@@ -20,56 +20,56 @@
   return v5;
 }
 
-- (ATXHeroAppFeedback)initWithHistogram:(id)a3
+- (ATXHeroAppFeedback)initWithHistogram:(id)histogram
 {
-  v5 = a3;
+  histogramCopy = histogram;
   v9.receiver = self;
   v9.super_class = ATXHeroAppFeedback;
   v6 = [(ATXHeroAppFeedback *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_heroAppHistogram, a3);
+    objc_storeStrong(&v6->_heroAppHistogram, histogram);
   }
 
   return v7;
 }
 
-- (void)addConfirmForHeroAppPredictionWithBundleId:(id)a3 weight:(float)a4
+- (void)addConfirmForHeroAppPredictionWithBundleId:(id)id weight:(float)weight
 {
   heroAppHistogram = self->_heroAppHistogram;
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  idCopy = id;
   v9 = [v6 now];
-  *&v8 = a4;
-  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram addLaunchWithBundleId:v7 date:v9 category:@"confirms_hero" weight:v8];
+  *&v8 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram addLaunchWithBundleId:idCopy date:v9 category:@"confirms_hero" weight:v8];
 }
 
-- (void)addRejectForHeroAppPredictionWithBundleId:(id)a3 weight:(float)a4
+- (void)addRejectForHeroAppPredictionWithBundleId:(id)id weight:(float)weight
 {
   heroAppHistogram = self->_heroAppHistogram;
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  idCopy = id;
   v9 = [v6 now];
-  *&v8 = a4;
-  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram addLaunchWithBundleId:v7 date:v9 category:@"rejects_hero" weight:v8];
+  *&v8 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram addLaunchWithBundleId:idCopy date:v9 category:@"rejects_hero" weight:v8];
 }
 
-- (BOOL)shouldShowHeroAppPrediction:(id)a3
+- (BOOL)shouldShowHeroAppPrediction:(id)prediction
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionCopy = prediction;
   if (![MEMORY[0x277D42590] isInternalBuild] || (v5 = *MEMORY[0x277CEBDC8], LOBYTE(v25) = 0, !CFPreferencesGetAppBooleanValue(v5, *MEMORY[0x277CEBD00], &v25)))
   {
     v6 = +[ATXHeroAndClipConstants sharedInstance];
-    [(ATXHeroAppFeedback *)self _rejectsForHeroAppPrediction:v4];
+    [(ATXHeroAppFeedback *)self _rejectsForHeroAppPrediction:predictionCopy];
     v9 = v8;
-    [(ATXHeroAppFeedback *)self _confirmsForHeroAppPrediction:v4];
+    [(ATXHeroAppFeedback *)self _confirmsForHeroAppPrediction:predictionCopy];
     v11 = v10;
     [v6 heroAppMinimumRejects];
     if (v9 >= v12)
     {
-      [(ATXHeroAppFeedback *)self _engagementForHeroAppPrediction:v4];
+      [(ATXHeroAppFeedback *)self _engagementForHeroAppPrediction:predictionCopy];
       v18 = v17;
       [v6 heroAppEngagementThreshold];
       v20 = v19;
@@ -81,7 +81,7 @@
         {
           [v6 heroAppEngagementThreshold];
           v25 = 138413058;
-          v26 = v4;
+          v26 = predictionCopy;
           v27 = 2048;
           v28 = v9;
           v29 = 2048;
@@ -147,12 +147,12 @@ LABEL_18:
   return v7;
 }
 
-- (double)_engagementForHeroAppPrediction:(id)a3
+- (double)_engagementForHeroAppPrediction:(id)prediction
 {
-  v4 = a3;
-  [(ATXHeroAppFeedback *)self _confirmsForHeroAppPrediction:v4];
+  predictionCopy = prediction;
+  [(ATXHeroAppFeedback *)self _confirmsForHeroAppPrediction:predictionCopy];
   v6 = v5;
-  [(ATXHeroAppFeedback *)self _rejectsForHeroAppPrediction:v4];
+  [(ATXHeroAppFeedback *)self _rejectsForHeroAppPrediction:predictionCopy];
   v8 = v7;
 
   if (v8 == 0.0)
@@ -166,21 +166,21 @@ LABEL_18:
   }
 }
 
-- (double)_confirmsForHeroAppPrediction:(id)a3
+- (double)_confirmsForHeroAppPrediction:(id)prediction
 {
   heroAppHistogram = self->_heroAppHistogram;
-  v4 = [a3 bundleId];
-  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram totalLaunchesForBundleId:v4 category:@"confirms_hero"];
+  bundleId = [prediction bundleId];
+  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram totalLaunchesForBundleId:bundleId category:@"confirms_hero"];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_rejectsForHeroAppPrediction:(id)a3
+- (double)_rejectsForHeroAppPrediction:(id)prediction
 {
   heroAppHistogram = self->_heroAppHistogram;
-  v4 = [a3 bundleId];
-  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram totalLaunchesForBundleId:v4 category:@"rejects_hero"];
+  bundleId = [prediction bundleId];
+  [(_ATXAppLaunchCategoricalHistogram *)heroAppHistogram totalLaunchesForBundleId:bundleId category:@"rejects_hero"];
   v6 = v5;
 
   return v6;

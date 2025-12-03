@@ -1,36 +1,36 @@
 @interface NEKReminderChangeObserver
-- (BOOL)_fetchChangesInto:(id)a3 from:(id)a4 inside:(id)a5 outDeletedReminderAndListMapping:(id *)a6 outMovedReminderAndListMapping:(id *)a7;
-- (BOOL)allCloudKitAccountsInto:(id)a3;
-- (BOOL)allListsInto:(id)a3;
-- (BOOL)allRemindersInto:(id)a3 filter:(id)a4 window:(id)a5;
-- (NEKReminderChangeObserver)initWithQueue:(id)a3 environment:(id)a4;
+- (BOOL)_fetchChangesInto:(id)into from:(id)from inside:(id)inside outDeletedReminderAndListMapping:(id *)mapping outMovedReminderAndListMapping:(id *)listMapping;
+- (BOOL)allCloudKitAccountsInto:(id)into;
+- (BOOL)allListsInto:(id)into;
+- (BOOL)allRemindersInto:(id)into filter:(id)filter window:(id)window;
+- (NEKReminderChangeObserver)initWithQueue:(id)queue environment:(id)environment;
 - (NEKReminderStore)weakReminderDatabaseController;
-- (id)_aggregateIntoInserts:(id)a3 updates:(id)a4 deletes:(id)a5;
+- (id)_aggregateIntoInserts:(id)inserts updates:(id)updates deletes:(id)deletes;
 - (id)changeStateMap;
 - (id)fetchReminderChangeSet;
-- (id)loadChangeTrackingStateMapWithStore:(id)a3;
+- (id)loadChangeTrackingStateMapWithStore:(id)store;
 - (id)previousDefaultReminderListID;
 - (void)beginObservingChanges;
 - (void)dealloc;
 - (void)notifyForDatabaseUpdates;
-- (void)saveChangeTrackingStateMap:(id)a3;
-- (void)setPreviousDefaultReminderListID:(id)a3;
+- (void)saveChangeTrackingStateMap:(id)map;
+- (void)setPreviousDefaultReminderListID:(id)d;
 - (void)stopObservingChanges;
 - (void)storeDidChange;
 @end
 
 @implementation NEKReminderChangeObserver
 
-- (NEKReminderChangeObserver)initWithQueue:(id)a3 environment:(id)a4
+- (NEKReminderChangeObserver)initWithQueue:(id)queue environment:(id)environment
 {
-  v7 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = NEKReminderChangeObserver;
-  v8 = [(NEKChangeObserver *)&v11 initWithEnvironment:a4];
+  v8 = [(NEKChangeObserver *)&v11 initWithEnvironment:environment];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
+    objc_storeStrong(&v8->_queue, queue);
     [(NEKReminderChangeObserver *)v9 beginObservingChanges];
   }
 
@@ -63,11 +63,11 @@
 {
   objc_initWeak(&location, self);
   v3 = os_transaction_create();
-  v4 = [(NEKChangeObserver *)self environment];
-  v5 = [v4 syncCoordinator];
-  v6 = [v5 okToPerformDeltaSync];
+  environment = [(NEKChangeObserver *)self environment];
+  syncCoordinator = [environment syncCoordinator];
+  okToPerformDeltaSync = [syncCoordinator okToPerformDeltaSync];
 
-  if (v6)
+  if (okToPerformDeltaSync)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -105,15 +105,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", &v5, 0xCu);
   }
 
-  v4 = [(NEKChangeObserver *)self delegate];
-  [v4 changeObserverDidObserveChanges:self];
+  delegate = [(NEKChangeObserver *)self delegate];
+  [delegate changeObserverDidObserveChanges:self];
 }
 
-- (id)_aggregateIntoInserts:(id)a3 updates:(id)a4 deletes:(id)a5
+- (id)_aggregateIntoInserts:(id)inserts updates:(id)updates deletes:(id)deletes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  insertsCopy = inserts;
+  updatesCopy = updates;
+  deletesCopy = deletes;
   v51[0] = &off_1000BB850;
   v51[1] = &off_1000BB880;
   v52[0] = &off_1000BB868;
@@ -134,7 +134,7 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v14 = v7;
+  v14 = insertsCopy;
   v15 = [v14 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v15)
   {
@@ -162,7 +162,7 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v19 = v8;
+  v19 = updatesCopy;
   v20 = [v19 countByEnumeratingWithState:&v38 objects:v49 count:16];
   if (v20)
   {
@@ -190,7 +190,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = v9;
+  v24 = deletesCopy;
   v25 = [v24 countByEnumeratingWithState:&v34 objects:v48 count:16];
   if (v25)
   {
@@ -222,9 +222,9 @@
   return v32;
 }
 
-- (BOOL)allCloudKitAccountsInto:(id)a3
+- (BOOL)allCloudKitAccountsInto:(id)into
 {
-  v3 = a3;
+  intoCopy = into;
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_100075868();
@@ -267,15 +267,15 @@
               if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
               {
                 v15 = v14;
-                v16 = [v12 remObjectID];
+                remObjectID = [v12 remObjectID];
                 *buf = 138543618;
                 v29 = @"REMStore";
                 v30 = 2114;
-                v31 = v16;
+                v31 = remObjectID;
                 _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[%{public}@] allCloudKitAccountsInto: sending source wrapper for CloudKit account [%{public}@]", buf, 0x16u);
               }
 
-              if (![v3 push:v13])
+              if (![intoCopy push:v13])
               {
 
                 v19 = 0;
@@ -286,11 +286,11 @@
             else if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
             {
               v17 = v14;
-              v18 = [v12 remObjectID];
+              remObjectID2 = [v12 remObjectID];
               *buf = 138543618;
               v29 = @"REMStore";
               v30 = 2114;
-              v31 = v18;
+              v31 = remObjectID2;
               _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%{public}@] allCloudKitAccountsInto: failed to create source wrapper for CloudKit account [%{public}@]", buf, 0x16u);
             }
           }
@@ -320,9 +320,9 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)allListsInto:(id)a3
+- (BOOL)allListsInto:(id)into
 {
-  v42 = a3;
+  intoCopy = into;
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_1000758F4();
@@ -332,8 +332,8 @@ LABEL_22:
   v52 = 0;
   v5 = [v4 fetchAccountsWithError:&v52];
   v6 = v52;
-  v7 = [(NEKReminderChangeObserver *)self reminderDatabaseController];
-  v8 = [v7 getDefaultListForStore:v4];
+  reminderDatabaseController = [(NEKReminderChangeObserver *)self reminderDatabaseController];
+  v8 = [reminderDatabaseController getDefaultListForStore:v4];
 
   if (v6)
   {
@@ -401,9 +401,9 @@ LABEL_22:
                 if (sub_10000A63C(v22))
                 {
                   v23 = [[NEKCalendarWrapper alloc] initWithChangeType:1 list:v22];
-                  v24 = [v22 remObjectID];
-                  v25 = [v8 remObjectID];
-                  v26 = [v24 isEqual:v25];
+                  remObjectID = [v22 remObjectID];
+                  remObjectID2 = [v8 remObjectID];
+                  v26 = [remObjectID isEqual:remObjectID2];
 
                   if (v26)
                   {
@@ -411,22 +411,22 @@ LABEL_22:
                     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                     {
                       v28 = v27;
-                      v29 = [v22 name];
-                      v30 = sub_10002CDF8(v29);
-                      v31 = [v22 objectID];
+                      name = [v22 name];
+                      v30 = sub_10002CDF8(name);
+                      objectID = [v22 objectID];
                       *buf = 138543874;
                       v54 = @"REMStore";
                       v55 = 2114;
                       v56 = v30;
                       v57 = 2114;
-                      v58 = v31;
+                      v58 = objectID;
                       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] allListsInto: marking [%{public}@] as defaultTaskCalendar, objectID: [%{public}@]", buf, 0x20u);
                     }
 
                     [(NEKCalendarWrapper *)v23 setIsDefaultTaskCalendar:1, v34];
                   }
 
-                  v32 = [v42 push:{v23, v34}];
+                  v32 = [intoCopy push:{v23, v34}];
 
                   if (!v32)
                   {
@@ -475,11 +475,11 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)allRemindersInto:(id)a3 filter:(id)a4 window:(id)a5
+- (BOOL)allRemindersInto:(id)into filter:(id)filter window:(id)window
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intoCopy = into;
+  filterCopy = filter;
+  windowCopy = window;
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_100075A30();
@@ -490,18 +490,18 @@ LABEL_29:
   v27 = 0x2020000000;
   v28 = 1;
   v11 = +[REMStore eks_storeForSyncing];
-  v12 = [(NEKReminderChangeObserver *)self reminderDatabaseController];
+  reminderDatabaseController = [(NEKReminderChangeObserver *)self reminderDatabaseController];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100063E18;
   v19[3] = &unk_1000B5F38;
-  v13 = v10;
+  v13 = windowCopy;
   v20 = v13;
-  v14 = v9;
+  v14 = filterCopy;
   v23 = v14;
-  v15 = v8;
+  v15 = intoCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = reminderDatabaseController;
   v22 = v16;
   v24 = &v25;
   [v11 enumerateAllRemindersWithBlock:v19];
@@ -519,18 +519,18 @@ LABEL_29:
   }
 
   v3 = +[NEKChangeSet changeSetForReminder];
-  v4 = [(NEKReminderChangeObserver *)self reminderDatabaseController];
+  reminderDatabaseController = [(NEKReminderChangeObserver *)self reminderDatabaseController];
   context = objc_autoreleasePoolPush();
   [v3 setTruncated:0];
   v5 = +[REMStore eks_storeForSyncing];
   v6 = [(NEKReminderChangeObserver *)self loadChangeTrackingStateMapWithStore:v5];
 
-  v7 = [v6 deletedAccountIDsFromLoadedMap];
+  deletedAccountIDsFromLoadedMap = [v6 deletedAccountIDsFromLoadedMap];
   if ([v6 hasChangeTrackingTokens])
   {
     v38 = 0;
     v39 = 0;
-    v8 = [(NEKReminderChangeObserver *)self _fetchChangesInto:v3 from:v6 inside:v4 outDeletedReminderAndListMapping:&v39 outMovedReminderAndListMapping:&v38];
+    v8 = [(NEKReminderChangeObserver *)self _fetchChangesInto:v3 from:v6 inside:reminderDatabaseController outDeletedReminderAndListMapping:&v39 outMovedReminderAndListMapping:&v38];
     v9 = v39;
     v10 = v38;
     if (v8)
@@ -586,7 +586,7 @@ LABEL_29:
     }
   }
 
-  if ([v7 count])
+  if ([deletedAccountIDsFromLoadedMap count])
   {
     v22 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -594,18 +594,18 @@ LABEL_29:
       *buf = 138543618;
       v42 = @"REMStore";
       v43 = 2114;
-      v44 = v7;
+      v44 = deletedAccountIDsFromLoadedMap;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] fetchReminderChangeSet: synthesizing delete for REMAccount %{public}@", buf, 0x16u);
     }
 
-    v23 = [v3 deletes];
-    v24 = [v23 mutableCopy];
+    deletes = [v3 deletes];
+    v24 = [deletes mutableCopy];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = v7;
+    v25 = deletedAccountIDsFromLoadedMap;
     v26 = [v25 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v26)
     {
@@ -632,7 +632,7 @@ LABEL_29:
     v30 = [v24 copy];
     [v3 setDeletes:v30];
 
-    v4 = v32;
+    reminderDatabaseController = v32;
   }
 
   objc_autoreleasePoolPop(context);
@@ -640,11 +640,11 @@ LABEL_29:
   return v3;
 }
 
-- (BOOL)_fetchChangesInto:(id)a3 from:(id)a4 inside:(id)a5 outDeletedReminderAndListMapping:(id *)a6 outMovedReminderAndListMapping:(id *)a7
+- (BOOL)_fetchChangesInto:(id)into from:(id)from inside:(id)inside outDeletedReminderAndListMapping:(id *)mapping outMovedReminderAndListMapping:(id *)listMapping
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  intoCopy = into;
+  fromCopy = from;
+  insideCopy = inside;
   self->_sawSeqnoFailure = 0;
   v15 = dispatch_semaphore_create(0);
   objc_initWeak(location, self);
@@ -665,27 +665,27 @@ LABEL_29:
   v31[1] = 3221225472;
   v31[2] = sub_100064638;
   v31[3] = &unk_1000B5F60;
-  v16 = v13;
+  v16 = fromCopy;
   v32 = v16;
   v37 = &v46;
   v38 = &v40;
-  v17 = v12;
+  v17 = intoCopy;
   v33 = v17;
-  v34 = self;
-  v18 = v14;
+  selfCopy = self;
+  v18 = insideCopy;
   v35 = v18;
   objc_copyWeak(&v39, location);
   v19 = v15;
   v36 = v19;
   [v16 fetchChangedObjectIDs:v31];
-  if (a6)
+  if (mapping)
   {
-    *a6 = v47[5];
+    *mapping = v47[5];
   }
 
-  if (a7)
+  if (listMapping)
   {
-    *a7 = v41[5];
+    *listMapping = v41[5];
   }
 
   v20 = dispatch_time(0, 1200000000000);
@@ -708,21 +708,21 @@ LABEL_29:
   return v21 == 0;
 }
 
-- (id)loadChangeTrackingStateMapWithStore:(id)a3
+- (id)loadChangeTrackingStateMapWithStore:(id)store
 {
-  v4 = a3;
-  v5 = [(NEKChangeObserver *)self environment];
-  v6 = [v5 tinyStore];
-  v7 = [(NEKReminderChangeObserver *)self _sequenceKey];
-  v8 = [v6 getStringValueForKey:v7 default:0];
+  storeCopy = store;
+  environment = [(NEKChangeObserver *)self environment];
+  tinyStore = [environment tinyStore];
+  _sequenceKey = [(NEKReminderChangeObserver *)self _sequenceKey];
+  v8 = [tinyStore getStringValueForKey:_sequenceKey default:0];
 
   if (v8 && (v9 = [[NSData alloc] initWithBase64EncodedString:v8 options:0]) != 0)
   {
     v10 = v9;
     v11 = [NEKReminderChangeTrackingStateMap alloc];
-    v12 = [(NEKChangeObserver *)self environment];
-    v13 = [v12 clientName];
-    v14 = [(NEKReminderChangeTrackingStateMap *)v11 initWithData:v10 store:v4 clientName:v13];
+    environment2 = [(NEKChangeObserver *)self environment];
+    clientName = [environment2 clientName];
+    v14 = [(NEKReminderChangeTrackingStateMap *)v11 initWithData:v10 store:storeCopy clientName:clientName];
 
     v15 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -741,9 +741,9 @@ LABEL_29:
   return v14;
 }
 
-- (void)saveChangeTrackingStateMap:(id)a3
+- (void)saveChangeTrackingStateMap:(id)map
 {
-  v4 = [a3 persistToData:0];
+  v4 = [map persistToData:0];
   v5 = [v4 base64EncodedStringWithOptions:0];
   v6 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -753,8 +753,8 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Saved change tracking state map %@", &v11, 0xCu);
   }
 
-  v7 = [(NEKChangeObserver *)self environment];
-  v8 = [v7 tinyStore];
+  environment = [(NEKChangeObserver *)self environment];
+  tinyStore = [environment tinyStore];
   if (v5)
   {
     v9 = v5;
@@ -765,16 +765,16 @@ LABEL_29:
     v9 = &stru_1000B7928;
   }
 
-  v10 = [(NEKReminderChangeObserver *)self _sequenceKey];
-  [v8 setStringValue:v9 forKey:v10];
+  _sequenceKey = [(NEKReminderChangeObserver *)self _sequenceKey];
+  [tinyStore setStringValue:v9 forKey:_sequenceKey];
 }
 
 - (id)previousDefaultReminderListID
 {
-  v3 = [(NEKChangeObserver *)self environment];
-  v4 = [v3 tinyStore];
-  v5 = [(NEKReminderChangeObserver *)self _reminderListKey];
-  v6 = [v4 getStringValueForKey:v5 default:0];
+  environment = [(NEKChangeObserver *)self environment];
+  tinyStore = [environment tinyStore];
+  _reminderListKey = [(NEKReminderChangeObserver *)self _reminderListKey];
+  v6 = [tinyStore getStringValueForKey:_reminderListKey default:0];
 
   if (v6)
   {
@@ -795,25 +795,25 @@ LABEL_29:
   return v8;
 }
 
-- (void)setPreviousDefaultReminderListID:(id)a3
+- (void)setPreviousDefaultReminderListID:(id)d
 {
-  v4 = a3;
-  v9 = [(NEKChangeObserver *)self environment];
-  v5 = [v9 tinyStore];
-  v6 = [v4 uuid];
+  dCopy = d;
+  environment = [(NEKChangeObserver *)self environment];
+  tinyStore = [environment tinyStore];
+  uuid = [dCopy uuid];
 
-  v7 = [v6 UUIDString];
-  v8 = [(NEKReminderChangeObserver *)self _reminderListKey];
-  [v5 setStringValue:v7 forKey:v8];
+  uUIDString = [uuid UUIDString];
+  _reminderListKey = [(NEKReminderChangeObserver *)self _reminderListKey];
+  [tinyStore setStringValue:uUIDString forKey:_reminderListKey];
 }
 
 - (id)changeStateMap
 {
   v3 = objc_alloc_init(NEKReminderChangeTrackingStateMap);
   v4 = +[REMStore eks_storeForSyncing];
-  v5 = [(NEKChangeObserver *)self environment];
-  v6 = [v5 clientName];
-  [(NEKReminderChangeTrackingStateMap *)v3 beginTrackingFromNowForStore:v4 clientName:v6];
+  environment = [(NEKChangeObserver *)self environment];
+  clientName = [environment clientName];
+  [(NEKReminderChangeTrackingStateMap *)v3 beginTrackingFromNowForStore:v4 clientName:clientName];
 
   return v3;
 }

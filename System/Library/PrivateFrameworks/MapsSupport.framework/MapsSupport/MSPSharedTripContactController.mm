@@ -1,25 +1,25 @@
 @interface MSPSharedTripContactController
-- (BOOL)_contactIsActive:(id)a3;
-- (BOOL)contactIsActive:(id)a3;
-- (MSPSharedTripContactController)initWithSharedTripServer:(id)a3;
+- (BOOL)_contactIsActive:(id)active;
+- (BOOL)contactIsActive:(id)active;
+- (MSPSharedTripContactController)initWithSharedTripServer:(id)server;
 - (MSPSharedTripContactControllerDelegate)delegate;
 - (MSPSharingRestorationStorage)archivedSharingStorage;
 - (NSOrderedSet)activeContactsValues;
 - (id)_archivedSharingStorage;
-- (unint64_t)_activeCapabilityTypeForContact:(id)a3 serviceName:(id *)a4;
-- (unint64_t)activeCapabilityTypeForContact:(id)a3 serviceName:(id *)a4;
-- (void)_didStartSharingWithContact:(id)a3 withCapabilityType:(unint64_t)a4 serviceName:(id)a5 error:(id)a6 queue:(id)a7 completion:(id)a8;
+- (unint64_t)_activeCapabilityTypeForContact:(id)contact serviceName:(id *)name;
+- (unint64_t)activeCapabilityTypeForContact:(id)contact serviceName:(id *)name;
+- (void)_didStartSharingWithContact:(id)contact withCapabilityType:(unint64_t)type serviceName:(id)name error:(id)error queue:(id)queue completion:(id)completion;
 - (void)_notifyDelegateContactsChanged;
 - (void)_reset;
-- (void)_shareWithContactValue:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)_stopAllSharingWithReason:(unint64_t)a3 queue:(id)a4 completion:(id)a5;
-- (void)_stopSharingWithContactValue:(id)a3 reason:(unint64_t)a4 queue:(id)a5 completion:(id)a6;
-- (void)_updateActiveSharingHandles:(id)a3 serviceNames:(id)a4;
+- (void)_shareWithContactValue:(id)value queue:(id)queue completion:(id)completion;
+- (void)_stopAllSharingWithReason:(unint64_t)reason queue:(id)queue completion:(id)completion;
+- (void)_stopSharingWithContactValue:(id)value reason:(unint64_t)reason queue:(id)queue completion:(id)completion;
+- (void)_updateActiveSharingHandles:(id)handles serviceNames:(id)names;
 - (void)reset;
-- (void)shareWithContactValue:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)stopAllSharingWithReason:(unint64_t)a3 queue:(id)a4 completion:(id)a5;
-- (void)stopSharingWithContactValue:(id)a3 reason:(unint64_t)a4 queue:(id)a5 completion:(id)a6;
-- (void)updateActiveSharingHandles:(id)a3 serviceNames:(id)a4;
+- (void)shareWithContactValue:(id)value queue:(id)queue completion:(id)completion;
+- (void)stopAllSharingWithReason:(unint64_t)reason queue:(id)queue completion:(id)completion;
+- (void)stopSharingWithContactValue:(id)value reason:(unint64_t)reason queue:(id)queue completion:(id)completion;
+- (void)updateActiveSharingHandles:(id)handles serviceNames:(id)names;
 @end
 
 @implementation MSPSharedTripContactController
@@ -47,19 +47,19 @@
   return v4;
 }
 
-- (MSPSharedTripContactController)initWithSharedTripServer:(id)a3
+- (MSPSharedTripContactController)initWithSharedTripServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v24.receiver = self;
   v24.super_class = MSPSharedTripContactController;
   v5 = [(MSPSharedTripContactController *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sharedTripServer, v4);
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeWeak(&v5->_sharedTripServer, serverCopy);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     sessionIdentifier = v6->_sessionIdentifier;
-    v6->_sessionIdentifier = v7;
+    v6->_sessionIdentifier = uUID;
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB70]);
     activeHandles = v6->_activeHandles;
@@ -82,9 +82,9 @@
     isolationQueue = v6->_isolationQueue;
     v6->_isolationQueue = v18;
 
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v21 = [v20 bundleIdentifier];
-    v22 = [v21 isEqualToString:*MEMORY[0x277D0EA88]];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v22 = [bundleIdentifier isEqualToString:*MEMORY[0x277D0EA88]];
 
     if ((v22 & 1) == 0)
     {
@@ -98,27 +98,27 @@
 - (void)_notifyDelegateContactsChanged
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(MSPSharedTripContactController *)self delegate];
-  if (v3)
+  delegate = [(MSPSharedTripContactController *)self delegate];
+  if (delegate)
   {
     v4 = self->_activeContacts;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__MSPSharedTripContactController__notifyDelegateContactsChanged__block_invoke;
     block[3] = &unk_279866300;
-    v7 = v3;
-    v8 = self;
+    v7 = delegate;
+    selfCopy = self;
     v9 = v4;
     v5 = v4;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)shareWithContactValue:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)shareWithContactValue:(id)value queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -127,12 +127,12 @@
   block[2] = __73__MSPSharedTripContactController_shareWithContactValue_queue_completion___block_invoke;
   block[3] = &unk_2798676A8;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = valueCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = valueCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v19);
@@ -145,77 +145,77 @@ void __73__MSPSharedTripContactController_shareWithContactValue_queue_completion
   [WeakRetained _shareWithContactValue:*(a1 + 32) queue:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_shareWithContactValue:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_shareWithContactValue:(id)value queue:(id)queue completion:(id)completion
 {
   v85 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_isolationQueue);
   WeakRetained = objc_loadWeakRetained(&self->_sharedTripServer);
-  if (!v8)
+  if (!valueCopy)
   {
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v76[2] = __74__MSPSharedTripContactController__shareWithContactValue_queue_completion___block_invoke;
     v76[3] = &unk_2798676D0;
-    v77 = v10;
-    dispatch_async(v9, v76);
+    v77 = completionCopy;
+    dispatch_async(queueCopy, v76);
     v12 = v77;
     goto LABEL_25;
   }
 
-  if ([(MSPSharedTripContactController *)self _contactIsActive:v8])
+  if ([(MSPSharedTripContactController *)self _contactIsActive:valueCopy])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__MSPSharedTripContactController__shareWithContactValue_queue_completion___block_invoke_2;
     block[3] = &unk_2798676D0;
-    v75 = v10;
-    dispatch_async(v9, block);
+    v75 = completionCopy;
+    dispatch_async(queueCopy, block);
     v12 = v75;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 bundleIdentifier];
-  v15 = [v14 isEqualToString:*MEMORY[0x277D0EA88]];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v15 = [bundleIdentifier isEqualToString:*MEMORY[0x277D0EA88]];
 
   if ((v15 & 1) == 0)
   {
     [MEMORY[0x277D0E788] captureUserAction:9025 target:0 value:0];
   }
 
-  v16 = [v8 handleForIDS];
+  handleForIDS = [valueCopy handleForIDS];
 
-  if (v16)
+  if (handleForIDS)
   {
     v12 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
     v70 = 0;
     v71 = &v70;
     v72 = 0x2020000000;
-    v73 = [v12 capabilityLevelForContact:v8];
+    v73 = [v12 capabilityLevelForContact:valueCopy];
     v64 = 0;
     v65 = &v64;
     v66 = 0x3032000000;
     v67 = __Block_byref_object_copy__1;
     v68 = __Block_byref_object_dispose__1;
-    v69 = [v12 serviceNameForContact:v8];
+    v69 = [v12 serviceNameForContact:valueCopy];
     v41 = [(NSUUID *)self->_sessionIdentifier copy];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __74__MSPSharedTripContactController__shareWithContactValue_queue_completion___block_invoke_25;
     v58[3] = &unk_279867720;
     v58[4] = self;
-    v17 = v8;
+    v17 = valueCopy;
     v59 = v17;
     v62 = &v70;
     v63 = &v64;
-    v18 = v9;
+    v18 = queueCopy;
     v60 = v18;
-    v19 = v10;
+    v19 = completionCopy;
     v61 = v19;
     v42 = MEMORY[0x259C7AD60](v58);
     v20 = v71[3];
@@ -228,9 +228,9 @@ LABEL_25:
           v26 = MSPGetSharedTripLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v17 handleForIDS];
+            handleForIDS2 = [v17 handleForIDS];
             *buf = 138412290;
-            v80 = v27;
+            v80 = handleForIDS2;
             _os_log_impl(&dword_25813A000, v26, OS_LOG_TYPE_ERROR, "[ContactController] shareWithContactValue called for handle %@ with MSPSharedTripCapabilityType_Invalid. Exiting Early.", buf, 0xCu);
           }
 
@@ -250,9 +250,9 @@ LABEL_25:
         v28 = MSPGetSharedTripLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [v17 handleForIDS];
+          handleForIDS3 = [v17 handleForIDS];
           *buf = 138412290;
-          v80 = v29;
+          v80 = handleForIDS3;
           _os_log_impl(&dword_25813A000, v28, OS_LOG_TYPE_INFO, "[ContactController] shareWithContactValue called for handle %@ with MSPSharedTripCapabilityType_Unknown. Already waiting for response.", buf, 0xCu);
         }
       }
@@ -262,10 +262,10 @@ LABEL_25:
         log = MSPGetSharedTripLog();
         if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
         {
-          v36 = [v17 handleForIDS];
+          handleForIDS4 = [v17 handleForIDS];
           *buf = 138412290;
-          v80 = v36;
-          v37 = v36;
+          v80 = handleForIDS4;
+          v37 = handleForIDS4;
           _os_log_impl(&dword_25813A000, log, OS_LOG_TYPE_INFO, "[ContactController] shareWithContactValue called for handle %@ with MSPSharedTripCapabilityType_Unknown. Will wait for response.", buf, 0xCu);
         }
 
@@ -294,8 +294,8 @@ LABEL_25:
       v21 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [v17 handleForIDS];
-        v23 = v22;
+        handleForIDS5 = [v17 handleForIDS];
+        v23 = handleForIDS5;
         v24 = v71[3];
         if (v24 > 4)
         {
@@ -309,7 +309,7 @@ LABEL_25:
 
         v30 = v65[5];
         *buf = 138412802;
-        v80 = v22;
+        v80 = handleForIDS5;
         v81 = 2114;
         v82 = v25;
         v83 = 2114;
@@ -317,8 +317,8 @@ LABEL_25:
         _os_log_impl(&dword_25813A000, v21, OS_LOG_TYPE_INFO, "[ContactController] shareWithContactValue called for handle %@ with %{public}@/%{public}@. Will pass to trip service.", buf, 0x20u);
       }
 
-      v31 = [v17 handleForIDS];
-      v78 = v31;
+      handleForIDS6 = [v17 handleForIDS];
+      v78 = handleForIDS6;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
       v33 = v71[3];
       v34 = v65[5];
@@ -515,23 +515,23 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didStartSharingWithContact:(id)a3 withCapabilityType:(unint64_t)a4 serviceName:(id)a5 error:(id)a6 queue:(id)a7 completion:(id)a8
+- (void)_didStartSharingWithContact:(id)contact withCapabilityType:(unint64_t)type serviceName:(id)name error:(id)error queue:(id)queue completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  contactCopy = contact;
+  nameCopy = name;
+  errorCopy = error;
+  completionCopy = completion;
   isolationQueue = self->_isolationQueue;
-  v19 = a7;
+  queueCopy = queue;
   dispatch_assert_queue_V2(isolationQueue);
-  if (v16)
+  if (errorCopy)
   {
     v20 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v41 = v16;
+      v41 = errorCopy;
       _os_log_impl(&dword_25813A000, v20, OS_LOG_TYPE_ERROR, "[ContactController] Error trying to start sharing: %{public}@", buf, 0xCu);
     }
   }
@@ -539,10 +539,10 @@ LABEL_13:
   else
   {
     v20 = [(NSDictionary *)self->_serviceNamesByActiveHandle mutableCopy];
-    v21 = v15;
-    if (!v15)
+    v21 = nameCopy;
+    if (!nameCopy)
     {
-      if (a4 - 2 > 2)
+      if (type - 2 > 2)
       {
         v34 = 0;
         v21 = 0;
@@ -550,15 +550,15 @@ LABEL_13:
 
       else
       {
-        v21 = *off_279867968[a4 - 2];
+        v21 = *off_279867968[type - 2];
         v34 = v21;
       }
     }
 
-    v22 = [v14 handleForIDS];
-    [v20 setObject:v21 forKeyedSubscript:v22];
+    handleForIDS = [contactCopy handleForIDS];
+    [v20 setObject:v21 forKeyedSubscript:handleForIDS];
 
-    if (!v15)
+    if (!nameCopy)
     {
     }
 
@@ -566,9 +566,9 @@ LABEL_13:
     serviceNamesByActiveHandle = self->_serviceNamesByActiveHandle;
     self->_serviceNamesByActiveHandle = v23;
 
-    v25 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v25 bundleIdentifier];
-    v27 = [v26 isEqualToString:*MEMORY[0x277D0EA88]];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v27 = [bundleIdentifier isEqualToString:*MEMORY[0x277D0EA88]];
 
     if ((v27 & 1) == 0)
     {
@@ -578,14 +578,14 @@ LABEL_13:
     v28 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4 > 4)
+      if (type > 4)
       {
         v29 = @"Unknown";
       }
 
       else
       {
-        v29 = off_279867980[a4];
+        v29 = off_279867980[type];
       }
 
       *buf = 138543362;
@@ -598,23 +598,23 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __116__MSPSharedTripContactController__didStartSharingWithContact_withCapabilityType_serviceName_error_queue_completion___block_invoke;
   block[3] = &unk_2798677C0;
-  v38 = v17;
-  v39 = a4;
-  v36 = v15;
-  v37 = v16;
-  v30 = v16;
-  v31 = v15;
-  v32 = v17;
-  dispatch_async(v19, block);
+  v38 = completionCopy;
+  typeCopy = type;
+  v36 = nameCopy;
+  v37 = errorCopy;
+  v30 = errorCopy;
+  v31 = nameCopy;
+  v32 = completionCopy;
+  dispatch_async(queueCopy, block);
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharingWithContactValue:(id)a3 reason:(unint64_t)a4 queue:(id)a5 completion:(id)a6
+- (void)stopSharingWithContactValue:(id)value reason:(unint64_t)reason queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  valueCopy = value;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -623,13 +623,13 @@ LABEL_13:
   v17[2] = __86__MSPSharedTripContactController_stopSharingWithContactValue_reason_queue_completion___block_invoke;
   v17[3] = &unk_2798677E8;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v21[1] = a4;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = valueCopy;
+  v19 = queueCopy;
+  v21[1] = reason;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
+  v16 = valueCopy;
   dispatch_async(isolationQueue, v17);
 
   objc_destroyWeak(v21);
@@ -642,25 +642,25 @@ void __86__MSPSharedTripContactController_stopSharingWithContactValue_reason_que
   [WeakRetained _stopSharingWithContactValue:*(a1 + 32) reason:*(a1 + 64) queue:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_stopSharingWithContactValue:(id)a3 reason:(unint64_t)a4 queue:(id)a5 completion:(id)a6
+- (void)_stopSharingWithContactValue:(id)value reason:(unint64_t)reason queue:(id)queue completion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  valueCopy = value;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (v10)
+  if (valueCopy)
   {
     activeHandles = self->_activeHandles;
-    v14 = [v10 handleForIDS];
-    LOBYTE(activeHandles) = [(NSOrderedSet *)activeHandles containsObject:v14];
+    handleForIDS = [valueCopy handleForIDS];
+    LOBYTE(activeHandles) = [(NSOrderedSet *)activeHandles containsObject:handleForIDS];
 
     if (activeHandles)
     {
-      [(NSMutableSet *)self->_pendingContacts removeObject:v10];
-      v15 = [MEMORY[0x277CCA8D8] mainBundle];
-      v16 = [v15 bundleIdentifier];
-      v17 = [v16 isEqualToString:*MEMORY[0x277D0EA88]];
+      [(NSMutableSet *)self->_pendingContacts removeObject:valueCopy];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v17 = [bundleIdentifier isEqualToString:*MEMORY[0x277D0EA88]];
 
       if ((v17 & 1) == 0)
       {
@@ -668,10 +668,10 @@ void __86__MSPSharedTripContactController_stopSharingWithContactValue_reason_que
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_sharedTripServer);
-      v19 = [v10 handleForIDS];
-      v26[0] = v19;
+      handleForIDS2 = [valueCopy handleForIDS];
+      v26[0] = handleForIDS2;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-      [WeakRetained stopSharingTripWithContacts:v20 reason:a4 completion:v12];
+      [WeakRetained stopSharingTripWithContacts:v20 reason:reason completion:completionCopy];
     }
 
     else
@@ -680,8 +680,8 @@ void __86__MSPSharedTripContactController_stopSharingWithContactValue_reason_que
       v22[1] = 3221225472;
       v22[2] = __87__MSPSharedTripContactController__stopSharingWithContactValue_reason_queue_completion___block_invoke_2;
       v22[3] = &unk_2798676D0;
-      v23 = v12;
-      dispatch_async(v11, v22);
+      v23 = completionCopy;
+      dispatch_async(queueCopy, v22);
       WeakRetained = v23;
     }
   }
@@ -692,8 +692,8 @@ void __86__MSPSharedTripContactController_stopSharingWithContactValue_reason_que
     block[1] = 3221225472;
     block[2] = __87__MSPSharedTripContactController__stopSharingWithContactValue_reason_queue_completion___block_invoke;
     block[3] = &unk_2798676D0;
-    v25 = v12;
-    dispatch_async(v11, block);
+    v25 = completionCopy;
+    dispatch_async(queueCopy, block);
     WeakRetained = v25;
   }
 
@@ -726,10 +726,10 @@ void __87__MSPSharedTripContactController__stopSharingWithContactValue_reason_qu
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAllSharingWithReason:(unint64_t)a3 queue:(id)a4 completion:(id)a5
+- (void)stopAllSharingWithReason:(unint64_t)reason queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -738,11 +738,11 @@ void __87__MSPSharedTripContactController__stopSharingWithContactValue_reason_qu
   block[2] = __76__MSPSharedTripContactController_stopAllSharingWithReason_queue_completion___block_invoke;
   block[3] = &unk_279867810;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = reason;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(v16);
@@ -755,15 +755,15 @@ void __76__MSPSharedTripContactController_stopAllSharingWithReason_queue_complet
   [WeakRetained _stopAllSharingWithReason:*(a1 + 56) queue:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_stopAllSharingWithReason:(unint64_t)a3 queue:(id)a4 completion:(id)a5
+- (void)_stopAllSharingWithReason:(unint64_t)reason queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_isolationQueue);
   if ([(NSOrderedSet *)self->_activeHandles count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_sharedTripServer);
-    [WeakRetained stopSharingTripWithReason:a3 completion:v9];
+    [WeakRetained stopSharingTripWithReason:reason completion:completionCopy];
   }
 
   else
@@ -772,8 +772,8 @@ void __76__MSPSharedTripContactController_stopAllSharingWithReason_queue_complet
     block[1] = 3221225472;
     block[2] = __77__MSPSharedTripContactController__stopAllSharingWithReason_queue_completion___block_invoke;
     block[3] = &unk_2798676D0;
-    v12 = v9;
-    dispatch_async(v8, block);
+    v12 = completionCopy;
+    dispatch_async(queueCopy, block);
   }
 }
 
@@ -790,9 +790,9 @@ void __77__MSPSharedTripContactController__stopAllSharingWithReason_queue_comple
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)contactIsActive:(id)a3
+- (BOOL)contactIsActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v13 = 0;
   v14 = &v13;
@@ -806,8 +806,8 @@ void __77__MSPSharedTripContactController__stopAllSharingWithReason_queue_comple
   v8[3] = &unk_279867860;
   v10 = &v13;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
-  v6 = v4;
+  v9 = activeCopy;
+  v6 = activeCopy;
   dispatch_sync(isolationQueue, v8);
   LOBYTE(isolationQueue) = *(v14 + 24);
 
@@ -823,21 +823,21 @@ void __50__MSPSharedTripContactController_contactIsActive___block_invoke(uint64_
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _contactIsActive:*(a1 + 32)];
 }
 
-- (BOOL)_contactIsActive:(id)a3
+- (BOOL)_contactIsActive:(id)active
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  activeCopy = active;
   dispatch_assert_queue_V2(isolationQueue);
   activeHandles = self->_activeHandles;
-  v7 = [v5 handleForIDS];
+  handleForIDS = [activeCopy handleForIDS];
 
-  LOBYTE(activeHandles) = [(NSOrderedSet *)activeHandles containsObject:v7];
+  LOBYTE(activeHandles) = [(NSOrderedSet *)activeHandles containsObject:handleForIDS];
   return activeHandles;
 }
 
-- (unint64_t)activeCapabilityTypeForContact:(id)a3 serviceName:(id *)a4
+- (unint64_t)activeCapabilityTypeForContact:(id)contact serviceName:(id *)name
 {
-  v6 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v16 = 0;
   v17 = &v16;
@@ -851,9 +851,9 @@ void __50__MSPSharedTripContactController_contactIsActive___block_invoke(uint64_
   block[3] = &unk_279867888;
   v13 = &v16;
   objc_copyWeak(v14, &location);
-  v12 = v6;
-  v14[1] = a4;
-  v8 = v6;
+  v12 = contactCopy;
+  v14[1] = name;
+  v8 = contactCopy;
   dispatch_sync(isolationQueue, block);
   v9 = v17[3];
 
@@ -869,22 +869,22 @@ void __77__MSPSharedTripContactController_activeCapabilityTypeForContact_service
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _activeCapabilityTypeForContact:*(a1 + 32) serviceName:*(a1 + 56)];
 }
 
-- (unint64_t)_activeCapabilityTypeForContact:(id)a3 serviceName:(id *)a4
+- (unint64_t)_activeCapabilityTypeForContact:(id)contact serviceName:(id *)name
 {
   isolationQueue = self->_isolationQueue;
-  v7 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_V2(isolationQueue);
   serviceNamesByActiveHandle = self->_serviceNamesByActiveHandle;
-  v9 = [v7 handleForIDS];
+  handleForIDS = [contactCopy handleForIDS];
 
-  v10 = [(NSDictionary *)serviceNamesByActiveHandle objectForKeyedSubscript:v9];
+  v10 = [(NSDictionary *)serviceNamesByActiveHandle objectForKeyedSubscript:handleForIDS];
 
   if (v10)
   {
     if ([v10 isEqualToString:@"Maps"])
     {
       v11 = 4;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_11;
       }
@@ -902,11 +902,11 @@ void __77__MSPSharedTripContactController_activeCapabilityTypeForContact_service
       v11 = 2;
     }
 
-    if (a4)
+    if (name)
     {
 LABEL_10:
       v12 = v10;
-      *a4 = v10;
+      *name = v10;
     }
   }
 
@@ -920,10 +920,10 @@ LABEL_11:
   return v11;
 }
 
-- (void)updateActiveSharingHandles:(id)a3 serviceNames:(id)a4
+- (void)updateActiveSharingHandles:(id)handles serviceNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  namesCopy = names;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -932,10 +932,10 @@ LABEL_11:
   v11[2] = __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceNames___block_invoke;
   v11[3] = &unk_2798678B0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handlesCopy;
+  v13 = namesCopy;
+  v9 = namesCopy;
+  v10 = handlesCopy;
   dispatch_async(isolationQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -948,13 +948,13 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
   [WeakRetained _updateActiveSharingHandles:*(a1 + 32) serviceNames:*(a1 + 40)];
 }
 
-- (void)_updateActiveSharingHandles:(id)a3 serviceNames:(id)a4
+- (void)_updateActiveSharingHandles:(id)handles serviceNames:(id)names
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  namesCopy = names;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:v6];
+  v8 = [MEMORY[0x277CBEB70] orderedSetWithArray:handlesCopy];
   activeHandles = self->_activeHandles;
   v10 = v8;
   v11 = activeHandles;
@@ -974,8 +974,8 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
       }
 
       objc_storeStrong(&self->_activeHandles, v8);
-      objc_storeStrong(&self->_serviceNamesByActiveHandle, a4);
-      v42 = self;
+      objc_storeStrong(&self->_serviceNamesByActiveHandle, names);
+      selfCopy = self;
       v15 = [(NSOrderedSet *)self->_activeContacts mutableCopy];
       v16 = [v10 mutableCopy];
       v51 = 0u;
@@ -997,8 +997,8 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
               objc_enumerationMutation(v17);
             }
 
-            v22 = [*(*(&v51 + 1) + 8 * i) handleForIDS];
-            [v16 removeObject:v22];
+            handleForIDS = [*(*(&v51 + 1) + 8 * i) handleForIDS];
+            [v16 removeObject:handleForIDS];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -1007,13 +1007,13 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
         while (v19);
       }
 
-      v23 = [MEMORY[0x277D0EC70] sharedPlatform];
-      v24 = [v23 isInternalInstall];
+      mEMORY[0x277D0EC70] = [MEMORY[0x277D0EC70] sharedPlatform];
+      isInternalInstall = [mEMORY[0x277D0EC70] isInternalInstall];
 
-      if (v24)
+      if (isInternalInstall)
       {
-        v40 = v7;
-        v41 = v6;
+        v40 = namesCopy;
+        v41 = handlesCopy;
         v25 = MSPSharedTripGetVirtualReceivers(v16);
         v47 = 0u;
         v48 = 0u;
@@ -1046,14 +1046,14 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
           while (v27);
         }
 
-        v7 = v40;
-        v6 = v41;
+        namesCopy = v40;
+        handlesCopy = v41;
       }
 
       if ([v16 count])
       {
-        v32 = [v16 allObjects];
-        v33 = [MSPSharedTripContact contactsFromIDSHandles:v32];
+        allObjects = [v16 allObjects];
+        v33 = [MSPSharedTripContact contactsFromIDSHandles:allObjects];
         [v17 addObjectsFromArray:v33];
       }
 
@@ -1072,8 +1072,8 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
       v44 = v34;
       [v17 sortUsingComparator:v43];
       v36 = [v17 copy];
-      activeContacts = v42->_activeContacts;
-      v42->_activeContacts = v36;
+      activeContacts = selfCopy->_activeContacts;
+      selfCopy->_activeContacts = v36;
 
       v38 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -1083,7 +1083,7 @@ void __74__MSPSharedTripContactController_updateActiveSharingHandles_serviceName
         _os_log_impl(&dword_25813A000, v38, OS_LOG_TYPE_DEFAULT, "[ContactController] activeContacts is now: %{private}@", buf, 0xCu);
       }
 
-      [(MSPSharedTripContactController *)v42 _notifyDelegateContactsChanged];
+      [(MSPSharedTripContactController *)selfCopy _notifyDelegateContactsChanged];
     }
   }
 
@@ -1194,14 +1194,14 @@ void __56__MSPSharedTripContactController_archivedSharingStorage__block_invoke(u
       }
 
       v10 = *(*(&v33 + 1) + 8 * i);
-      v11 = [v10 handleForIDS];
-      [v3 removeObject:v11];
+      handleForIDS = [v10 handleForIDS];
+      [v3 removeObject:handleForIDS];
 
-      v12 = [MEMORY[0x277D0EC70] sharedPlatform];
-      if ([v12 isInternalInstall])
+      mEMORY[0x277D0EC70] = [MEMORY[0x277D0EC70] sharedPlatform];
+      if ([mEMORY[0x277D0EC70] isInternalInstall])
       {
-        v13 = [v10 handleForIDS];
-        IsValid = MSPSharedTripVirtualReceiverIsValid(v13);
+        handleForIDS2 = [v10 handleForIDS];
+        IsValid = MSPSharedTripVirtualReceiverIsValid(handleForIDS2);
 
         if (IsValid)
         {
@@ -1218,8 +1218,8 @@ void __56__MSPSharedTripContactController_archivedSharingStorage__block_invoke(u
 
       if ((v16 - 2) < 2 || v16 == 0)
       {
-        v18 = [v10 stringValue];
-        [(MSPSharingRestorationStorage *)v5 addMessagesIdentifier:v18];
+        stringValue = [v10 stringValue];
+        [(MSPSharingRestorationStorage *)v5 addMessagesIdentifier:stringValue];
       }
 
       else
@@ -1229,8 +1229,8 @@ void __56__MSPSharedTripContactController_archivedSharingStorage__block_invoke(u
           continue;
         }
 
-        v18 = [v10 stringValue];
-        [(MSPSharingRestorationStorage *)v5 addMapsIdentifier:v18];
+        stringValue = [v10 stringValue];
+        [(MSPSharingRestorationStorage *)v5 addMapsIdentifier:stringValue];
       }
     }
 
@@ -1319,9 +1319,9 @@ void __39__MSPSharedTripContactController_reset__block_invoke(uint64_t a1)
     _os_log_impl(&dword_25813A000, v3, OS_LOG_TYPE_DEFAULT, "[ContactController] Reset", v12, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   sessionIdentifier = self->_sessionIdentifier;
-  self->_sessionIdentifier = v4;
+  self->_sessionIdentifier = uUID;
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB70]);
   activeHandles = self->_activeHandles;

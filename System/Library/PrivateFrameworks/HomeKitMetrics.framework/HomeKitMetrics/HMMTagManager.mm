@@ -1,43 +1,43 @@
 @interface HMMTagManager
 + (id)sharedInstance;
 - (HMMTagManager)init;
-- (void)registerTagObserver:(id)a3 forTags:(id)a4;
+- (void)registerTagObserver:(id)observer forTags:(id)tags;
 - (void)resetTagDispatcher;
-- (void)submitTaggedEvent:(id)a3 processorList:(id)a4;
-- (void)unregisterTagObserver:(id)a3 forTags:(id)a4;
+- (void)submitTaggedEvent:(id)event processorList:(id)list;
+- (void)unregisterTagObserver:(id)observer forTags:(id)tags;
 @end
 
 @implementation HMMTagManager
 
-- (void)unregisterTagObserver:(id)a3 forTags:(id)a4
+- (void)unregisterTagObserver:(id)observer forTags:(id)tags
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMMTagManager *)self currentDispatcher];
-  [v8 unregisterTagObserver:v7 forTags:v6];
+  tagsCopy = tags;
+  observerCopy = observer;
+  currentDispatcher = [(HMMTagManager *)self currentDispatcher];
+  [currentDispatcher unregisterTagObserver:observerCopy forTags:tagsCopy];
 }
 
-- (void)registerTagObserver:(id)a3 forTags:(id)a4
+- (void)registerTagObserver:(id)observer forTags:(id)tags
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMMTagManager *)self currentDispatcher];
-  [v8 registerTagObserver:v7 forTags:v6];
+  tagsCopy = tags;
+  observerCopy = observer;
+  currentDispatcher = [(HMMTagManager *)self currentDispatcher];
+  [currentDispatcher registerTagObserver:observerCopy forTags:tagsCopy];
 }
 
-- (void)submitTaggedEvent:(id)a3 processorList:(id)a4
+- (void)submitTaggedEvent:(id)event processorList:(id)list
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMMTagManager *)self currentDispatcher];
-  [v8 submitTaggedEvent:v7 processorList:v6];
+  listCopy = list;
+  eventCopy = event;
+  currentDispatcher = [(HMMTagManager *)self currentDispatcher];
+  [currentDispatcher submitTaggedEvent:eventCopy processorList:listCopy];
 }
 
 - (void)resetTagDispatcher
 {
   v3 = [HMMTagDispatcher alloc];
-  v5 = [(HMMTagManager *)self workQueue];
-  v4 = [(HMMTagDispatcher *)v3 initWithWorkQueue:v5];
+  workQueue = [(HMMTagManager *)self workQueue];
+  v4 = [(HMMTagDispatcher *)v3 initWithWorkQueue:workQueue];
   [(HMMTagManager *)self setCurrentDispatcher:v4];
 }
 

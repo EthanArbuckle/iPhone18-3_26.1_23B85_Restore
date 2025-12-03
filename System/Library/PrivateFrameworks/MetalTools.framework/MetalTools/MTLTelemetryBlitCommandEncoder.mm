@@ -1,29 +1,29 @@
 @interface MTLTelemetryBlitCommandEncoder
-- (MTLTelemetryBlitCommandEncoder)initWithBlitCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
-- (void)accumulateBlitDistribution:(unint64_t)a3 samples:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6 bufferSize:(unint64_t)a7 type:(unint64_t)a8 option:(unint64_t)a9 src:(unint64_t)a10;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
+- (MTLTelemetryBlitCommandEncoder)initWithBlitCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor;
+- (void)accumulateBlitDistribution:(unint64_t)distribution samples:(unint64_t)samples bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image bufferSize:(unint64_t)size type:(unint64_t)type option:(unint64_t)option src:(unint64_t)self0;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
 - (void)endEncoding;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format;
 @end
 
 @implementation MTLTelemetryBlitCommandEncoder
 
-- (void)accumulateBlitDistribution:(unint64_t)a3 samples:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6 bufferSize:(unint64_t)a7 type:(unint64_t)a8 option:(unint64_t)a9 src:(unint64_t)a10
+- (void)accumulateBlitDistribution:(unint64_t)distribution samples:(unint64_t)samples bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image bufferSize:(unint64_t)size type:(unint64_t)type option:(unint64_t)option src:(unint64_t)self0
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v39[0] = a3;
+  sizeCopy = size;
+  imageCopy = image;
+  rowCopy = row;
+  samplesCopy = samples;
+  v39[0] = distribution;
   if ([(MTLTelemetryDevice *)self->_telemetryDevice enableTelemetry])
   {
     telemetryCommandBuffer = self->_telemetryCommandBuffer;
@@ -32,49 +32,49 @@
     v18 = v17 + 3;
     ++self->_beBlits;
     ++self->_telemetryCommandBuffer->cbBlits;
-    if (a9)
+    if (option)
     {
-      if ((a9 & 3) == 0)
+      if ((option & 3) == 0)
       {
         goto LABEL_44;
       }
 
-      if (!v13)
+      if (!rowCopy)
       {
 LABEL_34:
-        if (!v12)
+        if (!imageCopy)
         {
 LABEL_43:
-          ++LODWORD(v18[117 * a8 + 39 + 13 * a10]);
+          ++LODWORD(v18[117 * type + 39 + 13 * src]);
 LABEL_44:
-          if ((a9 & 4) == 0)
+          if ((option & 4) == 0)
           {
             return;
           }
 
-          if (!v13)
+          if (!rowCopy)
           {
 LABEL_54:
-            if (!v12)
+            if (!imageCopy)
             {
 LABEL_63:
-              v37 = &v18[117 * a8 + 78 + 13 * a10];
+              v37 = &v18[117 * type + 78 + 13 * src];
 LABEL_83:
               ++*v37;
               return;
             }
 
-            v34 = &v18[117 * a8 + 13 * a10];
+            v34 = &v18[117 * type + 13 * src];
             v35 = v34 + 680;
             v36 = *(v34 + 696);
             if (v36)
             {
-              if (*(v35 + 4) < v12)
+              if (*(v35 + 4) < imageCopy)
               {
-                *(v35 + 4) = v12;
+                *(v35 + 4) = imageCopy;
               }
 
-              if (*v35 <= v12)
+              if (*v35 <= imageCopy)
               {
                 goto LABEL_62;
               }
@@ -82,27 +82,27 @@ LABEL_83:
 
             else
             {
-              *(v35 + 4) = v12;
+              *(v35 + 4) = imageCopy;
             }
 
-            *v35 = v12;
+            *v35 = imageCopy;
 LABEL_62:
-            *(v35 + 8) += v12;
+            *(v35 + 8) += imageCopy;
             *(v35 + 16) = v36 + 1;
             goto LABEL_63;
           }
 
-          v31 = &v18[117 * a8 + 13 * a10];
+          v31 = &v18[117 * type + 13 * src];
           v32 = v31 + 656;
           v33 = *(v31 + 672);
           if (v33)
           {
-            if (*(v32 + 4) < v13)
+            if (*(v32 + 4) < rowCopy)
             {
-              *(v32 + 4) = v13;
+              *(v32 + 4) = rowCopy;
             }
 
-            if (*v32 <= v13)
+            if (*v32 <= rowCopy)
             {
               goto LABEL_53;
             }
@@ -110,27 +110,27 @@ LABEL_62:
 
           else
           {
-            *(v32 + 4) = v13;
+            *(v32 + 4) = rowCopy;
           }
 
-          *v32 = v13;
+          *v32 = rowCopy;
 LABEL_53:
-          *(v32 + 8) += v13;
+          *(v32 + 8) += rowCopy;
           *(v32 + 16) = v33 + 1;
           goto LABEL_54;
         }
 
-        v28 = &v18[117 * a8 + 13 * a10];
+        v28 = &v18[117 * type + 13 * src];
         v29 = v28 + 368;
         v30 = *(v28 + 384);
         if (v30)
         {
-          if (*(v29 + 4) < v12)
+          if (*(v29 + 4) < imageCopy)
           {
-            *(v29 + 4) = v12;
+            *(v29 + 4) = imageCopy;
           }
 
-          if (*v29 <= v12)
+          if (*v29 <= imageCopy)
           {
             goto LABEL_42;
           }
@@ -138,27 +138,27 @@ LABEL_53:
 
         else
         {
-          *(v29 + 4) = v12;
+          *(v29 + 4) = imageCopy;
         }
 
-        *v29 = v12;
+        *v29 = imageCopy;
 LABEL_42:
-        *(v29 + 8) += v12;
+        *(v29 + 8) += imageCopy;
         *(v29 + 16) = v30 + 1;
         goto LABEL_43;
       }
 
-      v19 = &v18[117 * a8 + 13 * a10];
+      v19 = &v18[117 * type + 13 * src];
       v20 = v19 + 344;
       v21 = *(v19 + 360);
       if (v21)
       {
-        if (*(v20 + 4) < v13)
+        if (*(v20 + 4) < rowCopy)
         {
-          *(v20 + 4) = v13;
+          *(v20 + 4) = rowCopy;
         }
 
-        if (*v20 <= v13)
+        if (*v20 <= rowCopy)
         {
           goto LABEL_33;
         }
@@ -166,31 +166,31 @@ LABEL_42:
 
       else
       {
-        *(v20 + 4) = v13;
+        *(v20 + 4) = rowCopy;
       }
 
-      *v20 = v13;
+      *v20 = rowCopy;
 LABEL_33:
-      *(v20 + 8) += v13;
+      *(v20 + 8) += rowCopy;
       *(v20 + 16) = v21 + 1;
       goto LABEL_34;
     }
 
-    if (!a8)
+    if (!type)
     {
-      if (v14)
+      if (samplesCopy)
       {
-        v24 = &v18[13 * a10];
+        v24 = &v18[13 * src];
         v25 = (v24 + 1);
         v26 = *(v24 + 6);
         if (v26)
         {
-          if (*(v25 + 4) < v14)
+          if (*(v25 + 4) < samplesCopy)
           {
-            *(v25 + 4) = v14;
+            *(v25 + 4) = samplesCopy;
           }
 
-          if (*v25 <= v14)
+          if (*v25 <= samplesCopy)
           {
             goto LABEL_81;
           }
@@ -198,12 +198,12 @@ LABEL_33:
 
         else
         {
-          *(v25 + 4) = v14;
+          *(v25 + 4) = samplesCopy;
         }
 
-        *v25 = v14;
+        *v25 = samplesCopy;
 LABEL_81:
-        *(v25 + 8) += v14;
+        *(v25 + 8) += samplesCopy;
         *(v25 + 16) = v26 + 1;
         goto LABEL_82;
       }
@@ -211,23 +211,23 @@ LABEL_81:
       goto LABEL_82;
     }
 
-    if ((a8 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((type & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      if (!v13)
+      if (!rowCopy)
       {
         goto LABEL_69;
       }
 
-      v22 = &v18[117 * a8 + 13 * a10];
+      v22 = &v18[117 * type + 13 * src];
       v23 = *(v22 + 48);
       if (v23)
       {
-        if (*(v22 + 36) < v13)
+        if (*(v22 + 36) < rowCopy)
         {
-          *(v22 + 36) = v13;
+          *(v22 + 36) = rowCopy;
         }
 
-        if (*(v22 + 32) <= v13)
+        if (*(v22 + 32) <= rowCopy)
         {
           goto LABEL_68;
         }
@@ -235,27 +235,27 @@ LABEL_81:
 
       else
       {
-        *(v22 + 36) = v13;
+        *(v22 + 36) = rowCopy;
       }
 
-      *(v22 + 32) = v13;
+      *(v22 + 32) = rowCopy;
 LABEL_68:
-      *(v22 + 40) += v13;
+      *(v22 + 40) += rowCopy;
       *(v22 + 48) = v23 + 1;
 LABEL_69:
-      if (v12)
+      if (imageCopy)
       {
-        v38 = &v18[117 * a8 + 13 * a10];
+        v38 = &v18[117 * type + 13 * src];
         v25 = v38 + 56;
         v26 = *(v38 + 72);
         if (v26)
         {
-          if (*(v25 + 4) < v12)
+          if (*(v25 + 4) < imageCopy)
           {
-            *(v25 + 4) = v12;
+            *(v25 + 4) = imageCopy;
           }
 
-          if (*v25 <= v12)
+          if (*v25 <= imageCopy)
           {
             goto LABEL_77;
           }
@@ -263,36 +263,36 @@ LABEL_69:
 
         else
         {
-          *(v25 + 4) = v12;
+          *(v25 + 4) = imageCopy;
         }
 
-        *v25 = v12;
+        *v25 = imageCopy;
 LABEL_77:
-        v14 = v12;
+        samplesCopy = imageCopy;
         goto LABEL_81;
       }
 
 LABEL_82:
-      v37 = &v18[117 * a8 + 13 * a10];
+      v37 = &v18[117 * type + 13 * src];
       goto LABEL_83;
     }
 
-    if (a8 != 1 || !v11)
+    if (type != 1 || !sizeCopy)
     {
       goto LABEL_82;
     }
 
-    v27 = &v17[13 * a10];
+    v27 = &v17[13 * src];
     v25 = (v27 + 130);
     v26 = *(v27 + 264);
     if (v26)
     {
-      if (*(v25 + 4) < v11)
+      if (*(v25 + 4) < sizeCopy)
       {
-        *(v25 + 4) = v11;
+        *(v25 + 4) = sizeCopy;
       }
 
-      if (*v25 <= v11)
+      if (*v25 <= sizeCopy)
       {
         goto LABEL_80;
       }
@@ -300,29 +300,29 @@ LABEL_82:
 
     else
     {
-      *(v25 + 4) = v11;
+      *(v25 + 4) = sizeCopy;
     }
 
-    *v25 = v11;
+    *v25 = sizeCopy;
 LABEL_80:
-    v14 = v11;
+    samplesCopy = sizeCopy;
     goto LABEL_81;
   }
 }
 
-- (MTLTelemetryBlitCommandEncoder)initWithBlitCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLTelemetryBlitCommandEncoder)initWithBlitCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLTelemetryBlitCommandEncoder;
-  v6 = [(MTLToolsBlitCommandEncoder *)&v10 initWithBlitCommandEncoder:a3 parent:a4 descriptor:a5];
+  v6 = [(MTLToolsBlitCommandEncoder *)&v10 initWithBlitCommandEncoder:encoder parent:buffer descriptor:descriptor];
   v7 = v6;
   if (v6)
   {
-    v8 = [(MTLToolsObject *)v6 device];
-    v7->_telemetryDevice = v8;
-    if ([(MTLDevice *)v8 enableTelemetry])
+    device = [(MTLToolsObject *)v6 device];
+    v7->_telemetryDevice = device;
+    if ([(MTLDevice *)device enableTelemetry])
     {
-      v7->_telemetryCommandBuffer = a4;
+      v7->_telemetryCommandBuffer = buffer;
       v7->_beBlits = 0;
     }
   }
@@ -330,13 +330,13 @@ LABEL_80:
   return v7;
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v16 = a7->var0 - a6->var0;
-  if (v16 == [a3 width])
+  v16 = size->var0 - origin->var0;
+  if (v16 == [texture width])
   {
-    v17 = a7->var1 - a6->var1;
-    v18 = v17 != [a3 height];
+    v17 = size->var1 - origin->var1;
+    v18 = v17 != [texture height];
   }
 
   else
@@ -344,25 +344,25 @@ LABEL_80:
     v18 = 1;
   }
 
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a8 pixelFormat], objc_msgSend(a8, "sampleCount"), 0, 0, 0, 0, 0, v18);
-  v19 = [(MTLToolsObject *)self baseObject];
-  v20 = [a3 baseObject];
-  v27 = *&a6->var0;
-  var2 = a6->var2;
-  v25 = *&a7->var0;
-  v26 = a7->var2;
-  v21 = [a8 baseObject];
-  v24 = *a11;
-  [v19 copyFromTexture:v20 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v27 sourceSize:&v25 toTexture:v21 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v24];
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [toTexture pixelFormat], objc_msgSend(toTexture, "sampleCount"), 0, 0, 0, 0, 0, v18);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v27 = *&origin->var0;
+  var2 = origin->var2;
+  v25 = *&size->var0;
+  v26 = size->var2;
+  baseObject3 = [toTexture baseObject];
+  v24 = *destinationOrigin;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v27 sourceSize:&v25 toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v24];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
-  v17 = a7->var0 - a6->var0;
-  if (v17 == [a3 width])
+  v17 = size->var0 - origin->var0;
+  if (v17 == [texture width])
   {
-    v18 = a7->var1 - a6->var1;
-    v19 = v18 != [a3 height];
+    v18 = size->var1 - origin->var1;
+    v19 = v18 != [texture height];
   }
 
   else
@@ -370,113 +370,113 @@ LABEL_80:
     v19 = 1;
   }
 
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a3 pixelFormat], 1, a10, a11, 0, 2, a12, v19);
-  v20 = [(MTLToolsObject *)self baseObject];
-  v21 = [a3 baseObject];
-  v26 = *&a6->var0;
-  var2 = a6->var2;
-  v24 = *&a7->var0;
-  v25 = a7->var2;
-  [v20 copyFromTexture:v21 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v26 sourceSize:&v24 toBuffer:objc_msgSend(a8 destinationOffset:"baseObject") destinationBytesPerRow:a9 destinationBytesPerImage:a10 options:{a11, a12}];
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [texture pixelFormat], 1, row, image, 0, 2, options, v19);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v26 = *&origin->var0;
+  var2 = origin->var2;
+  v24 = *&size->var0;
+  v25 = size->var2;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v26 sourceSize:&v24 toBuffer:objc_msgSend(buffer destinationOffset:"baseObject") destinationBytesPerRow:offset destinationBytesPerImage:row options:{image, options}];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
-  v12 = *a6;
-  v11 = *a7;
-  [(MTLTelemetryBlitCommandEncoder *)self copyFromTexture:a3 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v12 sourceSize:&v11 toBuffer:a8 destinationOffset:a9 destinationBytesPerRow:a10 destinationBytesPerImage:a11 options:0];
+  v12 = *origin;
+  v11 = *size;
+  [(MTLTelemetryBlitCommandEncoder *)self copyFromTexture:texture sourceSlice:slice sourceLevel:level sourceOrigin:&v12 sourceSize:&v11 toBuffer:buffer destinationOffset:offset destinationBytesPerRow:row destinationBytesPerImage:image options:0];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a8 pixelFormat], 1, a5, a6, 0, 3, a12, a4 != 0);
-  v19 = [(MTLToolsObject *)self baseObject];
-  v20 = [a3 baseObject];
-  v23 = *a7;
-  v21 = [a8 baseObject];
-  v22 = *a11;
-  [v19 copyFromBuffer:v20 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v23 toTexture:v21 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v22 options:a12];
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [texture pixelFormat], 1, row, image, 0, 3, options, offset != 0);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v23 = *size;
+  baseObject3 = [texture baseObject];
+  v22 = *origin;
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v23 toTexture:baseObject3 destinationSlice:slice destinationLevel:level destinationOrigin:&v22 options:options];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v12 = *a7;
-  v11 = *a11;
-  [(MTLTelemetryBlitCommandEncoder *)self copyFromBuffer:a3 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v12 toTexture:a8 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v11 options:0];
+  v12 = *size;
+  v11 = *origin;
+  [(MTLTelemetryBlitCommandEncoder *)self copyFromBuffer:buffer sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v12 toTexture:texture destinationSlice:slice destinationLevel:level destinationOrigin:&v11 options:0];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
-  [(MTLTelemetryBlitCommandEncoder *)self accumulateBlitDistribution:0 samples:1 bytesPerRow:0 bytesPerImage:0 bufferSize:a7 type:1 option:0 src:a4 != 0];
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
-  v15 = [a5 baseObject];
+  [(MTLTelemetryBlitCommandEncoder *)self accumulateBlitDistribution:0 samples:1 bytesPerRow:0 bytesPerImage:0 bufferSize:size type:1 option:0 src:offset != 0];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [toBuffer baseObject];
 
-  [v13 copyFromBuffer:v14 sourceOffset:a4 toBuffer:v15 destinationOffset:a6 size:a7];
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset toBuffer:baseObject3 destinationOffset:destinationOffset size:size];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a3 pixelFormat], objc_msgSend(a3, "sampleCount"), 0, 0, 0, 5, 0, 2);
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a3 baseObject];
-  v17 = *&a6->var0.var2;
-  v18[0] = *&a6->var0.var0;
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [texture pixelFormat], objc_msgSend(texture, "sampleCount"), 0, 0, 0, 5, 0, 2);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v17 = *&region->var0.var2;
+  v18[0] = *&region->var0.var0;
   v18[1] = v17;
-  v18[2] = *&a6->var1.var1;
-  [v15 fillTexture:v16 level:a4 slice:a5 region:v18 bytes:a7 length:a8];
+  v18[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v18 bytes:bytes length:length];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a3 pixelFormat], objc_msgSend(a3, "sampleCount"), 0, 0, 0, 5, 0, 2);
-  v16 = [(MTLToolsObject *)self baseObject];
-  v17 = [a3 baseObject];
-  v18 = *&a6->var0.var2;
-  v19[0] = *&a6->var0.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [texture pixelFormat], objc_msgSend(texture, "sampleCount"), 0, 0, 0, 5, 0, 2);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v18 = *&region->var0.var2;
+  v19[0] = *&region->var0.var0;
   v19[1] = v18;
-  v19[2] = *&a6->var1.var1;
-  [v16 fillTexture:v17 level:a4 slice:a5 region:v19 color:{var0, var1, var2, var3}];
+  v19[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v19 color:{var0, var1, var2, var3}];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a3 pixelFormat], objc_msgSend(a3, "sampleCount"), 0, 0, 0, 5, 0, 2);
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v20 = *&a6->var0.var2;
-  v21[0] = *&a6->var0.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [texture pixelFormat], objc_msgSend(texture, "sampleCount"), 0, 0, 0, 5, 0, 2);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v20 = *&region->var0.var2;
+  v21[0] = *&region->var0.var0;
   v21[1] = v20;
-  v21[2] = *&a6->var1.var1;
-  [v18 fillTexture:v19 level:a4 slice:a5 region:v21 color:a8 pixelFormat:var0, var1, var2, var3];
+  v21[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v21 color:format pixelFormat:var0, var1, var2, var3];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a6 pixelFormat], objc_msgSend(a6, "sampleCount"), 0, 0, 0, 0, 0, 0);
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v19 = [a6 baseObject];
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [toTexture pixelFormat], objc_msgSend(toTexture, "sampleCount"), 0, 0, 0, 0, 0, 0);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  baseObject3 = [toTexture baseObject];
 
-  [v17 copyFromTexture:v18 sourceSlice:a4 sourceLevel:a5 toTexture:v19 destinationSlice:a7 destinationLevel:a8 sliceCount:? levelCount:?];
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel sliceCount:? levelCount:?];
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
-  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [a4 pixelFormat], objc_msgSend(a4, "sampleCount"), 0, 0, 0, 0, 0, 0);
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
-  v9 = [a4 baseObject];
+  -[MTLTelemetryBlitCommandEncoder accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:](self, "accumulateBlitDistribution:samples:bytesPerRow:bytesPerImage:bufferSize:type:option:src:", [toTexture pixelFormat], objc_msgSend(toTexture, "sampleCount"), 0, 0, 0, 0, 0, 0);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  baseObject3 = [toTexture baseObject];
 
-  [v7 copyFromTexture:v8 toTexture:v9];
+  [baseObject copyFromTexture:baseObject2 toTexture:baseObject3];
 }
 
 - (void)endEncoding
@@ -514,9 +514,9 @@ LABEL_10:
     }
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 endEncoding];
+  [baseObject endEncoding];
 }
 
 @end

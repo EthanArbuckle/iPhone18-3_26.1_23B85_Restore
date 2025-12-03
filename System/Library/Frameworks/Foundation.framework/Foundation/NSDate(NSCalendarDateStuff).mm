@@ -7,7 +7,7 @@
 
 - (NSCalendarDate)dateWithCalendarFormat:()NSCalendarDateStuff timeZone:
 {
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v6 = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:?];
   [(NSCalendarDate *)v6 setTimeZone:a4];
   [(NSCalendarDate *)v6 setCalendarFormat:a3];
@@ -17,7 +17,7 @@
 - (uint64_t)descriptionWithCalendarFormat:()NSCalendarDateStuff timeZone:locale:
 {
   v9 = objc_allocWithZone(NSCalendarDate);
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v10 = [v9 initWithTimeIntervalSinceReferenceDate:?];
   [v10 setTimeZone:a4];
   [v10 setCalendarFormat:a3];

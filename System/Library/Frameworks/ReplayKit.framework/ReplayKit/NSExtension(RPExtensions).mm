@@ -14,7 +14,7 @@
   v14 = a7;
   v15 = MEMORY[0x277CBEB18];
   v16 = a3;
-  v17 = [v15 array];
+  array = [v15 array];
   v33 = *MEMORY[0x277CCA0F8];
   v34[0] = v16;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
@@ -28,10 +28,10 @@
   v28 = v11;
   v29 = v12;
   v30 = v13;
-  v31 = v17;
+  v31 = array;
   v32 = v14;
   v21 = v14;
-  v22 = v17;
+  v22 = array;
   v23 = v13;
   v24 = v12;
   v25 = v11;
@@ -42,8 +42,8 @@
 
 - (uint64_t)processMode
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 objectForKeyedSubscript:@"NSExtension"];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
   v3 = [v2 objectForKeyedSubscript:@"RPBroadcastProcessMode"];
 
   v4 = [v3 isEqualToString:@"RPBroadcastProcessModeSampleBuffer"];

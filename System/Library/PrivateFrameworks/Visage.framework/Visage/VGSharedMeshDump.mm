@@ -1,29 +1,29 @@
 @interface VGSharedMeshDump
-- (VGSharedMeshDump)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VGSharedMeshDump)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGSharedMeshDump
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
+  coderCopy = coder;
   meshPositions = self->_meshPositions;
   v5 = NSStringFromSelector(sel_meshPositions);
-  [v10 encodeObject:meshPositions forKey:v5];
+  [coderCopy encodeObject:meshPositions forKey:v5];
 
   meshUVs = self->_meshUVs;
   v7 = NSStringFromSelector(sel_meshUVs);
-  [v10 encodeObject:meshUVs forKey:v7];
+  [coderCopy encodeObject:meshUVs forKey:v7];
 
   meshTriangleIndices = self->_meshTriangleIndices;
   v9 = NSStringFromSelector(sel_meshTriangleIndices);
-  [v10 encodeObject:meshTriangleIndices forKey:v9];
+  [coderCopy encodeObject:meshTriangleIndices forKey:v9];
 }
 
-- (VGSharedMeshDump)initWithCoder:(id)a3
+- (VGSharedMeshDump)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = VGSharedMeshDump;
   v5 = [(VGSharedMeshDump *)&v20 init];
@@ -31,19 +31,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_meshPositions);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     meshPositions = v5->_meshPositions;
     v5->_meshPositions = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_meshUVs);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     meshUVs = v5->_meshUVs;
     v5->_meshUVs = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_meshTriangleIndices);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     meshTriangleIndices = v5->_meshTriangleIndices;
     v5->_meshTriangleIndices = v16;
 

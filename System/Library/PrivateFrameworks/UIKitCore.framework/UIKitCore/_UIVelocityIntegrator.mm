@@ -11,10 +11,10 @@
 - (_UIVelocityIntegrator)init;
 - (float64_t)_offset3D;
 - (id).cxx_construct;
-- (void)addSample3D:(id)a3;
-- (void)addSample3D:(id)a3 withTimestamp:(double)a4;
-- (void)addSample:(CGPoint)a3;
-- (void)addSample:(CGPoint)a3 withTimestamp:(double)a4;
+- (void)addSample3D:(id)d;
+- (void)addSample3D:(id)d withTimestamp:(double)timestamp;
+- (void)addSample:(CGPoint)sample;
+- (void)addSample:(CGPoint)sample withTimestamp:(double)timestamp;
 - (void)reset;
 @end
 
@@ -82,22 +82,22 @@
 LABEL_8:
   *&self->_totalTranslation.var0.x = 0u;
   *&self->_totalTranslation.var0.z = 0u;
-  v8 = [(_UIVelocityIntegrator *)self positionFilter];
-  if (v8)
+  positionFilter = [(_UIVelocityIntegrator *)self positionFilter];
+  if (positionFilter)
   {
-    (*(*v8[1] + 24))(v8[1]);
+    (*(*positionFilter[1] + 24))(positionFilter[1]);
   }
 
-  v9 = [(_UIVelocityIntegrator *)self velocityFilter];
-  if (v9)
+  velocityFilter = [(_UIVelocityIntegrator *)self velocityFilter];
+  if (velocityFilter)
   {
-    (*(*v9[1] + 24))(v9[1]);
+    (*(*velocityFilter[1] + 24))(velocityFilter[1]);
   }
 
-  v10 = [(_UIVelocityIntegrator *)self accelerationFilter];
-  if (v10)
+  accelerationFilter = [(_UIVelocityIntegrator *)self accelerationFilter];
+  if (accelerationFilter)
   {
-    (*(*v10[1] + 24))(v10[1]);
+    (*(*accelerationFilter[1] + 24))(accelerationFilter[1]);
   }
 }
 
@@ -162,21 +162,21 @@ LABEL_8:
   return result;
 }
 
-- (void)addSample:(CGPoint)a3 withTimestamp:(double)a4
+- (void)addSample:(CGPoint)sample withTimestamp:(double)timestamp
 {
-  v4[0] = a3;
+  v4[0] = sample;
   v4[1] = xmmword_18A64B720;
-  [(_UIVelocityIntegrator *)self addSample3D:v4 withTimestamp:a4];
+  [(_UIVelocityIntegrator *)self addSample3D:v4 withTimestamp:timestamp];
 }
 
-- (void)addSample:(CGPoint)a3
+- (void)addSample:(CGPoint)sample
 {
-  v3[0] = a3;
+  v3[0] = sample;
   v3[1] = xmmword_18A64B720;
   [(_UIVelocityIntegrator *)self addSample3D:v3];
 }
 
-- (void)addSample3D:(id)a3
+- (void)addSample3D:(id)d
 {
   v4 = v3[1];
   v5[0] = *v3;
@@ -184,9 +184,9 @@ LABEL_8:
   [(_UIVelocityIntegrator *)self addSample3D:v5 withTimestamp:CACurrentMediaTime()];
 }
 
-- (void)addSample3D:(id)a3 withTimestamp:(double)a4
+- (void)addSample3D:(id)d withTimestamp:(double)timestamp
 {
-  var0 = a3.var0.var0;
+  var0 = d.var0.var0;
   v6 = v4;
   v137 = *MEMORY[0x1E69E9840];
   *v130 = 0;
@@ -222,7 +222,7 @@ LABEL_8:
   minimumRequiredMovement = self->_minimumRequiredMovement;
   if (vabdd_f64(*&v130[16], *v4) < minimumRequiredMovement && vabdd_f64(*&v130[24], v4[1]) < minimumRequiredMovement && vabdd_f64(*&v130[32], v4[2]) < minimumRequiredMovement)
   {
-    *v130 = a3.var0.var0;
+    *v130 = d.var0.var0;
     v15 = v135;
     v9[6] = v134;
     v9[7] = v15;
@@ -240,13 +240,13 @@ LABEL_8:
   }
 
   v19 = *v130;
-  if (a3.var0.var0 - *v130 >= 0.0001)
+  if (d.var0.var0 - *v130 >= 0.0001)
   {
 LABEL_9:
     v20 = *(v4 + 1);
     v122 = *v4;
     v123 = v20;
-    v121[0] = *&a3.var0.var0;
+    v121[0] = *&d.var0.var0;
     v124 = 0uLL;
     v125 = 0uLL;
     v126 = 0uLL;
@@ -254,7 +254,7 @@ LABEL_9:
     hysteresisTimeInterval = self->_hysteresisTimeInterval;
     v128 = 0uLL;
     v129 = 0uLL;
-    if (hysteresisTimeInterval != 0.0 && a3.var0.var0 - v19 > hysteresisTimeInterval)
+    if (hysteresisTimeInterval != 0.0 && d.var0.var0 - v19 > hysteresisTimeInterval)
     {
       [(_UIVelocityIntegrator *)self reset];
       *&v120[8] = SPPoint3DZero;
@@ -776,8 +776,8 @@ LABEL_23:
 - (float64_t)_offset3D
 {
   result = 0.0;
-  *a1 = 0u;
-  *(a1 + 1) = 0u;
+  *self = 0u;
+  *(self + 1) = 0u;
   if (a2)
   {
     v3 = a2[6];
@@ -788,8 +788,8 @@ LABEL_23:
       v6 = (*(v4 + 8 * (v5 / 0x1C)) + 144 * (v5 % 0x1C));
       v7 = (*(v4 + 8 * ((v3 + v5 - 1) / 0x1C)) + 144 * ((v3 + v5 - 1) % 0x1C));
       result = v7[2].f64[0] - v6[2].f64[0];
-      *a1 = vsubq_f64(v7[1], v6[1]);
-      a1[2] = result;
+      *self = vsubq_f64(v7[1], v6[1]);
+      self[2] = result;
     }
   }
 
@@ -893,11 +893,11 @@ LABEL_23:
 
 - ($821BAD5B88DA18872EDDEA81553BCF52)offset3D
 {
-  v3 = [(_UIVelocityIntegrator *)v2 _offset3D];
+  _offset3D = [(_UIVelocityIntegrator *)v2 _offset3D];
   result.var0.var3 = v6;
   result.var0.var2 = v5;
   result.var0.var1 = v4;
-  result.var0.var0 = v3;
+  result.var0.var0 = _offset3D;
   return result;
 }
 

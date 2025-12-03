@@ -1,20 +1,20 @@
 @interface LabPepperFile
-- (LabPepperFile)initWithLabPepperURL:(id)a3;
+- (LabPepperFile)initWithLabPepperURL:(id)l;
 - (id)nextEntry;
 - (void)nextEntry;
 @end
 
 @implementation LabPepperFile
 
-- (LabPepperFile)initWithLabPepperURL:(id)a3
+- (LabPepperFile)initWithLabPepperURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = LabPepperFile;
   v5 = [(LabPepperFile *)&v20 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -23,7 +23,7 @@
     v5->_log = v8;
 
     v19 = 0;
-    v10 = [NSFileHandle fileHandleForReadingFromURL:v4 error:&v19];
+    v10 = [NSFileHandle fileHandleForReadingFromURL:lCopy error:&v19];
     v11 = v19;
     if (v11)
     {
@@ -91,9 +91,9 @@ LABEL_15:
       if ([v8 length]== 4)
       {
         v9 = v8;
-        v10 = [v8 bytes];
-        v11 = *v10;
-        v12 = v10[1];
+        bytes = [v8 bytes];
+        v11 = *bytes;
+        v12 = bytes[1];
         [(LabPepperFile *)self setFileOffset:[(LabPepperFile *)self fileOffset]+ 4];
         [v4 seekToFileOffset:{-[LabPepperFile fileOffset](self, "fileOffset")}];
         v13 = [v4 readDataOfLength:v12];
@@ -138,9 +138,9 @@ LABEL_15:
       v8 = [(LabPepperFile *)self log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v19 = [(LabPepperFile *)self fileOffset];
+        fileOffset = [(LabPepperFile *)self fileOffset];
         *buf = 134218498;
-        v25 = v19;
+        v25 = fileOffset;
         v26 = 2112;
         v27 = v4;
         v28 = 2112;
@@ -171,7 +171,7 @@ LABEL_15:
 - (void)nextEntry
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Error opening file %@ before grabbing next LP entry: %@", buf, 0x16u);

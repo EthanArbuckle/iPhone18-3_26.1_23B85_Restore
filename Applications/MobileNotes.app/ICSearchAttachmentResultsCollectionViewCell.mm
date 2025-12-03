@@ -1,31 +1,31 @@
 @interface ICSearchAttachmentResultsCollectionViewCell
 + (CGSize)itemSize;
-- (ICSearchAttachmentResultsCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ICSearchAttachmentResultsCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setAttachment:(id)a3 searchResult:(id)a4;
-- (void)setSelected:(BOOL)a3;
+- (void)setAttachment:(id)attachment searchResult:(id)result;
+- (void)setSelected:(BOOL)selected;
 - (void)updateTextAndStatus;
 - (void)updateThumbnail;
 @end
 
 @implementation ICSearchAttachmentResultsCollectionViewCell
 
-- (ICSearchAttachmentResultsCollectionViewCell)initWithFrame:(CGRect)a3
+- (ICSearchAttachmentResultsCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = ICSearchAttachmentResultsCollectionViewCell;
-  v3 = [(ICSearchAttachmentResultsCollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICSearchAttachmentResultsCollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[ICAttachmentBrickView alloc] initWithType:1];
     attachmentBrickView = v3->_attachmentBrickView;
     v3->_attachmentBrickView = v4;
 
-    v6 = [(ICSearchAttachmentResultsCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_attachmentBrickView];
+    contentView = [(ICSearchAttachmentResultsCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_attachmentBrickView];
 
     [(ICAttachmentBrickView *)v3->_attachmentBrickView ic_addAnchorsToFillSuperview];
     [(ICSearchAttachmentResultsCollectionViewCell *)v3 setAutomaticallyUpdatesBackgroundConfiguration:0];
@@ -38,16 +38,16 @@
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = ICSearchAttachmentResultsCollectionViewCell;
   [(ICSearchAttachmentResultsCollectionViewCell *)&v6 setSelected:?];
   if ([(ICSearchAttachmentResultsCollectionViewCell *)self highlightSelection])
   {
-    v5 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-    [v5 setSelected:v3];
+    attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+    [attachmentBrickView setSelected:selectedCopy];
   }
 }
 
@@ -56,8 +56,8 @@
   v4.receiver = self;
   v4.super_class = ICSearchAttachmentResultsCollectionViewCell;
   [(ICSearchAttachmentResultsCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  [v3 prepareForReuse];
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  [attachmentBrickView prepareForReuse];
 }
 
 + (CGSize)itemSize
@@ -68,34 +68,34 @@
   return result;
 }
 
-- (void)setAttachment:(id)a3 searchResult:(id)a4
+- (void)setAttachment:(id)attachment searchResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  [v8 setAttachment:v7];
+  resultCopy = result;
+  attachmentCopy = attachment;
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  [attachmentBrickView setAttachment:attachmentCopy];
 
-  v10 = [v6 highlightPatternRegexFinder];
+  highlightPatternRegexFinder = [resultCopy highlightPatternRegexFinder];
 
-  v9 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  [v9 setHighlightPatternRegexFinder:v10];
+  attachmentBrickView2 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  [attachmentBrickView2 setHighlightPatternRegexFinder:highlightPatternRegexFinder];
 }
 
 - (void)updateTextAndStatus
 {
-  v2 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  [v2 reloadData];
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  [attachmentBrickView reloadData];
 }
 
 - (void)updateThumbnail
 {
-  v2 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  [v2 reloadData];
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  [attachmentBrickView reloadData];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  if ([(ICSearchAttachmentResultsCollectionViewCell *)self isFocused:a3]&& ![(ICSearchAttachmentResultsCollectionViewCell *)self highlightSelection])
+  if ([(ICSearchAttachmentResultsCollectionViewCell *)self isFocused:context]&& ![(ICSearchAttachmentResultsCollectionViewCell *)self highlightSelection])
   {
     v7 = +[UIColor ICTintColor];
     v5 = 1;
@@ -107,8 +107,8 @@
     v7 = 0;
   }
 
-  v6 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  [v6 setHighlightColor:v7];
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  [attachmentBrickView setHighlightColor:v7];
 
   if (v5)
   {
@@ -117,18 +117,18 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  v3 = [v2 accessibilityLabel];
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  accessibilityLabel = [attachmentBrickView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
-  v3 = [v2 accessibilityValue];
+  attachmentBrickView = [(ICSearchAttachmentResultsCollectionViewCell *)self attachmentBrickView];
+  accessibilityValue = [attachmentBrickView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

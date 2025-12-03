@@ -1,20 +1,20 @@
 @interface SSPlistCacheObjectFactory
-- (BOOL)supportsTypeIdentifier:(id)a3;
-- (id)cachedObjectWithDataRepresentation:(id)a3 typeIdentifier:(id)a4;
+- (BOOL)supportsTypeIdentifier:(id)identifier;
+- (id)cachedObjectWithDataRepresentation:(id)representation typeIdentifier:(id)identifier;
 @end
 
 @implementation SSPlistCacheObjectFactory
 
-- (BOOL)supportsTypeIdentifier:(id)a3
+- (BOOL)supportsTypeIdentifier:(id)identifier
 {
   v4 = +[SSPlistCacheObject cacheObjectTypeIdentifier];
 
-  return [a3 isEqualToString:v4];
+  return [identifier isEqualToString:v4];
 }
 
-- (id)cachedObjectWithDataRepresentation:(id)a3 typeIdentifier:(id)a4
+- (id)cachedObjectWithDataRepresentation:(id)representation typeIdentifier:(id)identifier
 {
-  v4 = [[SSPlistCacheObject alloc] initWithCacheObjectDataRepresentation:a3];
+  v4 = [[SSPlistCacheObject alloc] initWithCacheObjectDataRepresentation:representation];
 
   return v4;
 }

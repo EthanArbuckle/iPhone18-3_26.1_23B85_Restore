@@ -1,39 +1,39 @@
 @interface ConfigAgent
-- (BOOL)startAgentWithOptions:(id)a3;
-- (ConfigAgent)initWithParameters:(id)a3;
+- (BOOL)startAgentWithOptions:(id)options;
+- (ConfigAgent)initWithParameters:(id)parameters;
 - (NEPolicySession)preferredPolicySession;
 - (id)copyAgentData;
-- (id)createUUIDForName:(id)a3;
+- (id)createUUIDForName:(id)name;
 - (id)getAgentData;
 - (id)getAgentMapping;
 - (id)getAssociatedEntity;
 - (id)getRegistrationObject;
 - (id)internalStartHandler;
-- (void)addAgentRegistrationObject:(id)a3;
-- (void)setAgentDescription:(id)a3;
-- (void)setAgentMapping:(id)a3;
-- (void)setAgentUUID:(id)a3;
-- (void)setInternalAgentData:(id)a3;
-- (void)setInternalAgentMapping:(id)a3;
-- (void)setInternalAssociatedEntity:(id)a3;
-- (void)setInternalRegistrationObject:(id)a3;
-- (void)setInternalStartHandler:(id)a3;
-- (void)setPreferredPolicySession:(id)a3;
-- (void)setStartHandler:(id)a3;
-- (void)updateAgentData:(id)a3;
+- (void)addAgentRegistrationObject:(id)object;
+- (void)setAgentDescription:(id)description;
+- (void)setAgentMapping:(id)mapping;
+- (void)setAgentUUID:(id)d;
+- (void)setInternalAgentData:(id)data;
+- (void)setInternalAgentMapping:(id)mapping;
+- (void)setInternalAssociatedEntity:(id)entity;
+- (void)setInternalRegistrationObject:(id)object;
+- (void)setInternalStartHandler:(id)handler;
+- (void)setPreferredPolicySession:(id)session;
+- (void)setStartHandler:(id)handler;
+- (void)updateAgentData:(id)data;
 @end
 
 @implementation ConfigAgent
 
-- (ConfigAgent)initWithParameters:(id)a3
+- (ConfigAgent)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = ConfigAgent;
   v5 = [(ConfigAgent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"EntityName"];
+    v6 = [parametersCopy valueForKey:@"EntityName"];
     internalRegistrationObject = v5->_internalRegistrationObject;
     v5->_internalRegistrationObject = 0;
 
@@ -54,11 +54,11 @@
   return v5;
 }
 
-- (void)addAgentRegistrationObject:(id)a3
+- (void)addAgentRegistrationObject:(id)object
 {
   p_internalRegistrationObject = &self->_internalRegistrationObject;
 
-  objc_storeStrong(p_internalRegistrationObject, a3);
+  objc_storeStrong(p_internalRegistrationObject, object);
 }
 
 - (id)getRegistrationObject
@@ -89,11 +89,11 @@
   return internalAgentData;
 }
 
-- (void)setAgentMapping:(id)a3
+- (void)setAgentMapping:(id)mapping
 {
   p_internalAgentMapping = &self->_internalAgentMapping;
 
-  objc_storeStrong(p_internalAgentMapping, a3);
+  objc_storeStrong(p_internalAgentMapping, mapping);
 }
 
 - (id)getAgentMapping
@@ -103,16 +103,16 @@
   return internalAgentMapping;
 }
 
-- (void)setStartHandler:(id)a3
+- (void)setStartHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
 
     [(ConfigAgent *)self setInternalStartHandler:?];
   }
 }
 
-- (BOOL)startAgentWithOptions:(id)a3
+- (BOOL)startAgentWithOptions:(id)options
 {
   if ([(ConfigAgent *)self isActive])
   {
@@ -120,23 +120,23 @@
   }
 
   [(ConfigAgent *)self setActive:1];
-  v5 = [(ConfigAgent *)self internalRegistrationObject];
-  v6 = [v5 updateNetworkAgent:self];
+  internalRegistrationObject = [(ConfigAgent *)self internalRegistrationObject];
+  v6 = [internalRegistrationObject updateNetworkAgent:self];
 
   return v6;
 }
 
-- (void)updateAgentData:(id)a3
+- (void)updateAgentData:(id)data
 {
-  v7 = a3;
-  if ([v7 isEqual:self->_internalAgentData])
+  dataCopy = data;
+  if ([dataCopy isEqual:self->_internalAgentData])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v7 copy];
+    v5 = [dataCopy copy];
     internalAgentData = self->_internalAgentData;
     self->_internalAgentData = v5;
 
@@ -146,26 +146,26 @@
   self->_internalShouldUpdateAgent = v4;
 }
 
-- (id)createUUIDForName:(id)a3
+- (id)createUUIDForName:(id)name
 {
-  v3 = [a3 UTF8String];
-  v4 = strlen(v3);
-  CC_SHA256(v3, v4, md);
+  uTF8String = [name UTF8String];
+  v4 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v4, md);
   v5 = [[NSUUID alloc] initWithUUIDBytes:md];
 
   return v5;
 }
 
-- (void)setAgentUUID:(id)a3
+- (void)setAgentUUID:(id)d
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 16);
+  objc_setProperty_nonatomic_copy(self, a2, d, 16);
 }
 
-- (void)setAgentDescription:(id)a3
+- (void)setAgentDescription:(id)description
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 24);
+  objc_setProperty_nonatomic_copy(self, a2, description, 24);
 }
 
 - (NEPolicySession)preferredPolicySession
@@ -174,30 +174,30 @@
   return objc_getProperty(self, a2, 32, 1);
 }
 
-- (void)setPreferredPolicySession:(id)a3
+- (void)setPreferredPolicySession:(id)session
 {
 
-  objc_setProperty_atomic(self, a2, a3, 32);
+  objc_setProperty_atomic(self, a2, session, 32);
 }
 
-- (void)setInternalRegistrationObject:(id)a3
+- (void)setInternalRegistrationObject:(id)object
 {
   p_internalRegistrationObject = &self->_internalRegistrationObject;
 
-  objc_storeStrong(p_internalRegistrationObject, a3);
+  objc_storeStrong(p_internalRegistrationObject, object);
 }
 
-- (void)setInternalAssociatedEntity:(id)a3
+- (void)setInternalAssociatedEntity:(id)entity
 {
   p_internalAssociatedEntity = &self->_internalAssociatedEntity;
 
-  objc_storeStrong(p_internalAssociatedEntity, a3);
+  objc_storeStrong(p_internalAssociatedEntity, entity);
 }
 
-- (void)setInternalAgentData:(id)a3
+- (void)setInternalAgentData:(id)data
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 56);
+  objc_setProperty_nonatomic_copy(self, a2, data, 56);
 }
 
 - (id)internalStartHandler
@@ -206,17 +206,17 @@
   return objc_getProperty(self, a2, 64, 1);
 }
 
-- (void)setInternalStartHandler:(id)a3
+- (void)setInternalStartHandler:(id)handler
 {
 
-  objc_setProperty_atomic_copy(self, a2, a3, 64);
+  objc_setProperty_atomic_copy(self, a2, handler, 64);
 }
 
-- (void)setInternalAgentMapping:(id)a3
+- (void)setInternalAgentMapping:(id)mapping
 {
   p_internalAgentMapping = &self->_internalAgentMapping;
 
-  objc_storeStrong(p_internalAgentMapping, a3);
+  objc_storeStrong(p_internalAgentMapping, mapping);
 }
 
 @end

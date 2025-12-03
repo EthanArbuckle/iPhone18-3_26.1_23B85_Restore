@@ -1,36 +1,36 @@
 @interface BKTransitioningViewController
-- (BKTransitioningViewController)initWithContentViewController:(id)a3;
+- (BKTransitioningViewController)initWithContentViewController:(id)controller;
 - (BKTransitioningViewControllerDelegate)delegate;
 - (UIViewController)contentViewController;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
 - (id)transitionCoordinator;
-- (void)_delegate_didTransitionFromViewController:(id)a3 toViewController:(id)a4;
-- (void)_delegate_willTransitionFromViewController:(id)a3 toViewController:(id)a4;
-- (void)_performTransitionFromViewController:(id)a3 toViewController:(id)a4 withTransition:(id)a5 completion:(id)a6;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setContentViewController:(id)a3;
-- (void)transitionToContentViewController:(id)a3 withTransition:(id)a4 completion:(id)a5;
+- (void)_delegate_didTransitionFromViewController:(id)controller toViewController:(id)viewController;
+- (void)_delegate_willTransitionFromViewController:(id)controller toViewController:(id)viewController;
+- (void)_performTransitionFromViewController:(id)controller toViewController:(id)viewController withTransition:(id)transition completion:(id)completion;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setContentViewController:(id)controller;
+- (void)transitionToContentViewController:(id)controller withTransition:(id)transition completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation BKTransitioningViewController
 
-- (BKTransitioningViewController)initWithContentViewController:(id)a3
+- (BKTransitioningViewController)initWithContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = BKTransitioningViewController;
   v5 = [(BKTransitioningViewController *)&v10 init];
   if (v5)
   {
     v6 = [UINavigationController alloc];
-    if (v4)
+    if (controllerCopy)
     {
-      v7 = [v6 initWithRootViewController:v4];
+      v7 = [v6 initWithRootViewController:controllerCopy];
     }
 
     else
@@ -50,111 +50,111 @@
   v22.receiver = self;
   v22.super_class = BKTransitioningViewController;
   [(BKTransitioningViewController *)&v22 viewDidLoad];
-  v3 = [(BKTransitioningViewController *)self navController];
-  [v3 setDelegate:self];
+  navController = [(BKTransitioningViewController *)self navController];
+  [navController setDelegate:self];
 
-  v4 = [(BKTransitioningViewController *)self navController];
-  [v4 setToolbarHidden:1];
+  navController2 = [(BKTransitioningViewController *)self navController];
+  [navController2 setToolbarHidden:1];
 
-  v5 = [(BKTransitioningViewController *)self navController];
-  [v5 setNavigationBarHidden:1];
+  navController3 = [(BKTransitioningViewController *)self navController];
+  [navController3 setNavigationBarHidden:1];
 
-  v6 = [(BKTransitioningViewController *)self navController];
-  [(BKTransitioningViewController *)self addChildViewController:v6];
+  navController4 = [(BKTransitioningViewController *)self navController];
+  [(BKTransitioningViewController *)self addChildViewController:navController4];
 
-  v7 = [(BKTransitioningViewController *)self view];
-  [v7 bounds];
+  view = [(BKTransitioningViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(BKTransitioningViewController *)self navController];
-  v17 = [v16 view];
-  [v17 setFrame:{v9, v11, v13, v15}];
+  navController5 = [(BKTransitioningViewController *)self navController];
+  view2 = [navController5 view];
+  [view2 setFrame:{v9, v11, v13, v15}];
 
-  v18 = [(BKTransitioningViewController *)self view];
-  v19 = [(BKTransitioningViewController *)self navController];
-  v20 = [v19 view];
-  [v18 addSubview:v20];
+  view3 = [(BKTransitioningViewController *)self view];
+  navController6 = [(BKTransitioningViewController *)self navController];
+  view4 = [navController6 view];
+  [view3 addSubview:view4];
 
-  v21 = [(BKTransitioningViewController *)self navController];
-  [v21 didMoveToParentViewController:self];
+  navController7 = [(BKTransitioningViewController *)self navController];
+  [navController7 didMoveToParentViewController:self];
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v2 = [(BKTransitioningViewController *)self navController];
-  v3 = [v2 childViewControllerForStatusBarStyle];
+  navController = [(BKTransitioningViewController *)self navController];
+  childViewControllerForStatusBarStyle = [navController childViewControllerForStatusBarStyle];
 
-  return v3;
+  return childViewControllerForStatusBarStyle;
 }
 
 - (id)childViewControllerForStatusBarHidden
 {
-  v2 = [(BKTransitioningViewController *)self navController];
-  v3 = [v2 childViewControllerForStatusBarHidden];
+  navController = [(BKTransitioningViewController *)self navController];
+  childViewControllerForStatusBarHidden = [navController childViewControllerForStatusBarHidden];
 
-  return v3;
+  return childViewControllerForStatusBarHidden;
 }
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = [(BKTransitioningViewController *)self navController];
-  v3 = [v2 childViewControllerForHomeIndicatorAutoHidden];
+  navController = [(BKTransitioningViewController *)self navController];
+  childViewControllerForHomeIndicatorAutoHidden = [navController childViewControllerForHomeIndicatorAutoHidden];
 
-  return v3;
+  return childViewControllerForHomeIndicatorAutoHidden;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = BKTransitioningViewController;
-  v4 = a3;
-  [(BKTransitioningViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(BKTransitioningViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   [(BKTransitioningViewController *)self setPreferredContentSize:v6, v8];
 }
 
-- (void)transitionToContentViewController:(id)a3 withTransition:(id)a4 completion:(id)a5
+- (void)transitionToContentViewController:(id)controller withTransition:(id)transition completion:(id)completion
 {
-  v8 = a3;
+  controllerCopy = controller;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10018318C;
   v12[3] = &unk_100A088F0;
   v12[4] = self;
-  v13 = a4;
-  v14 = v8;
-  v15 = a5;
-  v9 = v8;
-  v10 = v15;
-  v11 = v13;
+  transitionCopy = transition;
+  v14 = controllerCopy;
+  completionCopy = completion;
+  v9 = controllerCopy;
+  v10 = completionCopy;
+  v11 = transitionCopy;
   [(BKTransitioningViewController *)self im_finishOngoingModalTransitionAnimations:v12];
 }
 
 - (UIViewController)contentViewController
 {
-  v2 = [(BKTransitioningViewController *)self navController];
-  v3 = [v2 topViewController];
+  navController = [(BKTransitioningViewController *)self navController];
+  topViewController = [navController topViewController];
 
-  return v3;
+  return topViewController;
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(BKTransitioningViewController *)self willChangeValueForKey:@"contentViewController"];
-  v5 = [(BKTransitioningViewController *)self contentViewController];
-  [(BKTransitioningViewController *)self setSourceViewController:v5];
+  contentViewController = [(BKTransitioningViewController *)self contentViewController];
+  [(BKTransitioningViewController *)self setSourceViewController:contentViewController];
 
-  v6 = [(BKTransitioningViewController *)self navController];
-  v8 = v4;
+  navController = [(BKTransitioningViewController *)self navController];
+  v8 = controllerCopy;
   v7 = [NSArray arrayWithObjects:&v8 count:1];
 
-  [v6 setViewControllers:v7 animated:0];
+  [navController setViewControllers:v7 animated:0];
   [(BKTransitioningViewController *)self didChangeValueForKey:@"contentViewController"];
 }
 
@@ -162,108 +162,108 @@
 {
   if ([(BKTransitioningViewController *)self gettingTransitionCoordinator])
   {
-    v3 = [(BKTransitioningViewController *)self parentViewController];
-    v4 = [v3 transitionCoordinator];
+    parentViewController = [(BKTransitioningViewController *)self parentViewController];
+    transitionCoordinator = [parentViewController transitionCoordinator];
   }
 
   else
   {
     [(BKTransitioningViewController *)self setGettingTransitionCoordinator:1];
-    v5 = [(BKTransitioningViewController *)self navController];
-    v4 = [v5 transitionCoordinator];
+    navController = [(BKTransitioningViewController *)self navController];
+    transitionCoordinator = [navController transitionCoordinator];
 
     [(BKTransitioningViewController *)self setGettingTransitionCoordinator:0];
   }
 
-  return v4;
+  return transitionCoordinator;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
-  v7 = [(BKTransitioningViewController *)self sourceViewController];
-  [(BKTransitioningViewController *)self _delegate_willTransitionFromViewController:v7 toViewController:v6];
+  viewControllerCopy = viewController;
+  sourceViewController = [(BKTransitioningViewController *)self sourceViewController];
+  [(BKTransitioningViewController *)self _delegate_willTransitionFromViewController:sourceViewController toViewController:viewControllerCopy];
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
-  v7 = [(BKTransitioningViewController *)self sourceViewController];
-  [(BKTransitioningViewController *)self _delegate_didTransitionFromViewController:v7 toViewController:v6];
+  viewControllerCopy = viewController;
+  sourceViewController = [(BKTransitioningViewController *)self sourceViewController];
+  [(BKTransitioningViewController *)self _delegate_didTransitionFromViewController:sourceViewController toViewController:viewControllerCopy];
 
-  v8 = [(BKTransitioningViewController *)self completion];
+  completion = [(BKTransitioningViewController *)self completion];
 
-  if (v8)
+  if (completion)
   {
-    v9 = [(BKTransitioningViewController *)self completion];
-    v9[2](v9, 1);
+    completion2 = [(BKTransitioningViewController *)self completion];
+    completion2[2](completion2, 1);
   }
 
   [(BKTransitioningViewController *)self setCompletion:0];
   [(BKTransitioningViewController *)self setTransition:0];
   [(BKTransitioningViewController *)self setSourceViewController:0];
-  v10 = [(BKTransitioningViewController *)self wallpaperAssertion];
-  [v10 invalidate];
+  wallpaperAssertion = [(BKTransitioningViewController *)self wallpaperAssertion];
+  [wallpaperAssertion invalidate];
 
   [(BKTransitioningViewController *)self setWallpaperAssertion:0];
   [(BKTransitioningViewController *)self setTransitioning:0];
-  v12 = [(BKTransitioningViewController *)self tabBarController];
-  v11 = [(BKTransitioningViewController *)self transitionCoordinator];
-  [v12 im_updateTabBarVisibleWithTransitionCoordinator:v11];
+  tabBarController = [(BKTransitioningViewController *)self tabBarController];
+  transitionCoordinator = [(BKTransitioningViewController *)self transitionCoordinator];
+  [tabBarController im_updateTabBarVisibleWithTransitionCoordinator:transitionCoordinator];
 }
 
-- (void)_performTransitionFromViewController:(id)a3 toViewController:(id)a4 withTransition:(id)a5 completion:(id)a6
+- (void)_performTransitionFromViewController:(id)controller toViewController:(id)viewController withTransition:(id)transition completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  transitionCopy = transition;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v14 = objc_alloc_init(IMViewControllerOneToOneTransitionContext);
-  v15 = [(BKTransitioningViewController *)self view];
-  [v14 setBk_containerView:v15];
+  view = [(BKTransitioningViewController *)self view];
+  [v14 setBk_containerView:view];
 
-  [v14 _setFromViewController:v13];
-  [v14 _setToViewController:v12];
+  [v14 _setFromViewController:controllerCopy];
+  [v14 _setToViewController:viewControllerCopy];
 
   [v14 _setIsAnimated:1];
-  [v11 transitionDuration:v14];
+  [transitionCopy transitionDuration:v14];
   [v14 _setDuration:?];
-  [v14 _setAnimator:v11];
+  [v14 _setAnimator:transitionCopy];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100183808;
   v17[3] = &unk_100A09760;
-  v18 = v10;
-  v16 = v10;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [v14 _setCompletionHandler:v17];
-  [v11 animateTransition:v14];
+  [transitionCopy animateTransition:v14];
 }
 
-- (void)_delegate_willTransitionFromViewController:(id)a3 toViewController:(id)a4
+- (void)_delegate_willTransitionFromViewController:(id)controller toViewController:(id)viewController
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BKTransitioningViewController *)self delegate];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  delegate = [(BKTransitioningViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BKTransitioningViewController *)self delegate];
-    [v9 transitionController:self willTransitionFromViewController:v10 toViewController:v6];
+    delegate2 = [(BKTransitioningViewController *)self delegate];
+    [delegate2 transitionController:self willTransitionFromViewController:controllerCopy toViewController:viewControllerCopy];
   }
 }
 
-- (void)_delegate_didTransitionFromViewController:(id)a3 toViewController:(id)a4
+- (void)_delegate_didTransitionFromViewController:(id)controller toViewController:(id)viewController
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BKTransitioningViewController *)self delegate];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  delegate = [(BKTransitioningViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BKTransitioningViewController *)self delegate];
-    [v9 transitionController:self didTransitionFromViewController:v10 toViewController:v6];
+    delegate2 = [(BKTransitioningViewController *)self delegate];
+    [delegate2 transitionController:self didTransitionFromViewController:controllerCopy toViewController:viewControllerCopy];
   }
 }
 

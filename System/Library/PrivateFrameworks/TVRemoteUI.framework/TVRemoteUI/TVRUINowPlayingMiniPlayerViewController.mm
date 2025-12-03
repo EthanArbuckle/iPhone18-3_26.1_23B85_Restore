@@ -1,41 +1,41 @@
 @interface TVRUINowPlayingMiniPlayerViewController
 - (BOOL)_currentTraitsSizeCategoryRequiresStackedLayout;
-- (BOOL)_effectiveImageFromNowPlayingInfoIsFallbackImage:(id)a3;
+- (BOOL)_effectiveImageFromNowPlayingInfoIsFallbackImage:(id)image;
 - (BOOL)_isCurrentlyStackedLayout;
 - (NSURLSession)urlSession;
 - (TVRUIActionProviding)actionProvider;
-- (TVRUINowPlayingMiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TVRUINowPlayingMiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIImage)fallbackImage;
-- (id)_effectiveImageFromNowPlayingInfo:(id)a3;
+- (id)_effectiveImageFromNowPlayingInfo:(id)info;
 - (id)actionButtonMenu;
-- (id)urlForProductPageKind:(int64_t)a3;
-- (void)_didTapNowPlayingInfo:(id)a3;
-- (void)_requestImageIfNeededForNowPlayingInfo:(id)a3;
+- (id)urlForProductPageKind:(int64_t)kind;
+- (void)_didTapNowPlayingInfo:(id)info;
+- (void)_requestImageIfNeededForNowPlayingInfo:(id)info;
 - (void)_setupSystemMonitor;
-- (void)_updateContraintsForStackedLayout:(BOOL)a3;
+- (void)_updateContraintsForStackedLayout:(BOOL)layout;
 - (void)configureHierarchy;
 - (void)dealloc;
 - (void)onScreenLockChanged;
-- (void)openProductPageForKind:(int64_t)a3;
-- (void)openURL:(id)a3;
+- (void)openProductPageForKind:(int64_t)kind;
+- (void)openURL:(id)l;
 - (void)resetContent;
-- (void)setNowPlayingInfo:(id)a3;
+- (void)setNowPlayingInfo:(id)info;
 - (void)shareEpisode;
 - (void)sharePrimary;
 - (void)shareShow;
-- (void)updateFromNowPlayingInfo:(id)a3;
+- (void)updateFromNowPlayingInfo:(id)info;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVRUINowPlayingMiniPlayerViewController
 
-- (TVRUINowPlayingMiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVRUINowPlayingMiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = TVRUINowPlayingMiniPlayerViewController;
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(TVRUINowPlayingMiniPlayerViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -112,10 +112,10 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v3 = _TVRUINowPlayingLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUINowPlayingMiniPlayerViewController *)self systemMonitor];
-    v5 = [v4 screenLocked];
+    systemMonitor = [(TVRUINowPlayingMiniPlayerViewController *)self systemMonitor];
+    screenLocked = [systemMonitor screenLocked];
     v6 = @"unlocked";
-    if (v5)
+    if (screenLocked)
     {
       v6 = @"locked";
     }
@@ -125,9 +125,9 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Updating actionButton menu because screen is now %@", &v9, 0xCu);
   }
 
-  v7 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButtonMenu];
-  v8 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
-  [v8 setMenu:v7];
+  actionButtonMenu = [(TVRUINowPlayingMiniPlayerViewController *)self actionButtonMenu];
+  actionButton = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
+  [actionButton setMenu:actionButtonMenu];
 }
 
 - (void)viewDidLoad
@@ -138,23 +138,23 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   [(TVRUINowPlayingMiniPlayerViewController *)self configureHierarchy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = TVRUINowPlayingMiniPlayerViewController;
-  [(TVRUINowPlayingMiniPlayerViewController *)&v6 viewWillAppear:a3];
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
-  [(TVRUINowPlayingMiniPlayerViewController *)self updateFromNowPlayingInfo:v4];
+  [(TVRUINowPlayingMiniPlayerViewController *)&v6 viewWillAppear:appear];
+  nowPlayingInfo = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
+  [(TVRUINowPlayingMiniPlayerViewController *)self updateFromNowPlayingInfo:nowPlayingInfo];
 
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self navigationController];
-  [v5 setNavigationBarHidden:1];
+  navigationController = [(TVRUINowPlayingMiniPlayerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 }
 
 - (void)configureHierarchy
 {
   v373 = *MEMORY[0x277D85DE8];
   v336 = +[TVRUIFeatures isSolariumEnabled];
-  v346 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v3 = MEMORY[0x277D755D0];
   v4 = MEMORY[0x277D76918];
@@ -184,22 +184,22 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v11 = [MEMORY[0x277D750C8] actionWithTitle:&stru_287E6AEF8 image:v8 identifier:0 handler:&__block_literal_global_24];
   if (v336)
   {
-    v12 = [MEMORY[0x277D75230] clearGlassButtonConfiguration];
-    [v12 setCornerStyle:4];
+    clearGlassButtonConfiguration = [MEMORY[0x277D75230] clearGlassButtonConfiguration];
+    [clearGlassButtonConfiguration setCornerStyle:4];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D75230] plainButtonConfiguration];
+    clearGlassButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
   }
 
-  v345 = [MEMORY[0x277D75220] buttonWithConfiguration:v12 primaryAction:v11];
-  v13 = [MEMORY[0x277D75348] whiteColor];
-  [v345 setTintColor:v13];
+  v345 = [MEMORY[0x277D75220] buttonWithConfiguration:clearGlassButtonConfiguration primaryAction:v11];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v345 setTintColor:whiteColor];
 
   [v345 setOverrideUserInterfaceStyle:2];
-  v14 = [(TVRUINowPlayingMiniPlayerViewController *)v346 actionButtonMenu];
-  [v345 setMenu:v14];
+  actionButtonMenu = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy actionButtonMenu];
+  [v345 setMenu:actionButtonMenu];
   [v345 setShowsMenuAsPrimaryAction:1];
 
   v15 = MEMORY[0x277D755D0];
@@ -207,8 +207,8 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v17 = [v15 configurationWithFont:v16];
 
   v18 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark" withConfiguration:v17];
-  v19 = [MEMORY[0x277D75230] clearGlassButtonConfiguration];
-  [v19 setCornerStyle:4];
+  clearGlassButtonConfiguration2 = [MEMORY[0x277D75230] clearGlassButtonConfiguration];
+  [clearGlassButtonConfiguration2 setCornerStyle:4];
   v20 = MEMORY[0x277D750C8];
   v361[0] = MEMORY[0x277D85DD0];
   v361[1] = 3221225472;
@@ -216,14 +216,14 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v361[3] = &unk_279D87C68;
   objc_copyWeak(&v362, &location);
   v21 = [v20 actionWithTitle:&stru_287E6AEF8 image:v18 identifier:0 handler:v361];
-  v344 = [MEMORY[0x277D75220] buttonWithConfiguration:v19 primaryAction:v21];
-  v22 = [MEMORY[0x277D75348] whiteColor];
-  [v344 setTintColor:v22];
+  v344 = [MEMORY[0x277D75220] buttonWithConfiguration:clearGlassButtonConfiguration2 primaryAction:v21];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [v344 setTintColor:whiteColor2];
 
-  [v344 setHidden:{-[TVRUINowPlayingMiniPlayerViewController compactSolariumMode](v346, "compactSolariumMode") ^ 1}];
+  [v344 setHidden:{-[TVRUINowPlayingMiniPlayerViewController compactSolariumMode](selfCopy, "compactSolariumMode") ^ 1}];
   objc_destroyWeak(&v362);
 
-  if ([(TVRUINowPlayingMiniPlayerViewController *)v346 horizontalMode]|| v336)
+  if ([(TVRUINowPlayingMiniPlayerViewController *)selfCopy horizontalMode]|| v336)
   {
     v23 = 12.0;
   }
@@ -237,8 +237,8 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   [v24 setContentMode:1];
   [v24 _setContinuousCornerRadius:v23];
   [v24 setClipsToBounds:1];
-  v25 = [MEMORY[0x277D75348] clearColor];
-  [v24 setBackgroundColor:v25];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v24 setBackgroundColor:clearColor];
   v349 = v24;
 
   v334 = [MEMORY[0x277D75210] effectWithStyle:2];
@@ -258,15 +258,15 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v28 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76938] variant:1024];
   [v347 setFont:v28];
 
-  v29 = [MEMORY[0x277D75348] whiteColor];
-  [v347 setTextColor:v29];
+  whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+  [v347 setTextColor:whiteColor3];
 
   [v347 setNumberOfLines:2];
   [v347 setAdjustsFontForContentSizeCategory:1];
   [v347 setAdjustsFontSizeToFitWidth:1];
   LODWORD(v30) = 1148846080;
   [v347 setContentHuggingPriority:1 forAxis:v30];
-  if ([(TVRUINowPlayingMiniPlayerViewController *)v346 compactSolariumMode])
+  if ([(TVRUINowPlayingMiniPlayerViewController *)selfCopy compactSolariumMode])
   {
     [v347 setTextAlignment:1];
   }
@@ -277,15 +277,15 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v31 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76988] variant:1280];
   [v348 setFont:v31];
 
-  v32 = [MEMORY[0x277D75348] whiteColor];
-  [v348 setTextColor:v32];
+  whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+  [v348 setTextColor:whiteColor4];
 
   [v348 setNumberOfLines:2];
   [v348 setAdjustsFontForContentSizeCategory:1];
   [v348 setAdjustsFontSizeToFitWidth:1];
   LODWORD(v33) = 1148846080;
   [v348 setContentHuggingPriority:1 forAxis:v33];
-  if ([(TVRUINowPlayingMiniPlayerViewController *)v346 compactSolariumMode])
+  if ([(TVRUINowPlayingMiniPlayerViewController *)selfCopy compactSolariumMode])
   {
     [v348 setTextAlignment:1];
   }
@@ -296,15 +296,15 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   [v341 setFont:v34];
 
   [v341 setAdjustsFontForContentSizeCategory:1];
-  v35 = [MEMORY[0x277D75348] lightTextColor];
-  [v341 setTextColor:v35];
+  lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+  [v341 setTextColor:lightTextColor];
 
   v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v37 = [v36 localizedStringForKey:@"TVRUINotPlaying" value:&stru_287E6AEF8 table:@"Localizable"];
   [v341 setText:v37];
 
-  [v341 setHidden:{-[TVRUINowPlayingMiniPlayerViewController horizontalMode](v346, "horizontalMode") ^ 1}];
-  v38 = [(TVRUINowPlayingMiniPlayerViewController *)v346 view];
+  [v341 setHidden:{-[TVRUINowPlayingMiniPlayerViewController horizontalMode](selfCopy, "horizontalMode") ^ 1}];
+  view = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy view];
   v359 = 0u;
   v360 = 0u;
   v357 = 0u;
@@ -332,7 +332,7 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
 
         v43 = *(*(&v357 + 1) + 8 * i);
         [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v38 addSubview:v43];
+        [view addSubview:v43];
       }
 
       v40 = [v39 countByEnumeratingWithState:&v357 objects:v372 count:16];
@@ -341,8 +341,8 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
     while (v40);
   }
 
-  v44 = [v38 heightAnchor];
-  v335 = [v44 constraintEqualToConstant:0.0];
+  heightAnchor = [view heightAnchor];
+  v335 = [heightAnchor constraintEqualToConstant:0.0];
 
   LODWORD(v45) = 1132068864;
   [v335 setPriority:v45];
@@ -356,392 +356,392 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
     v46 = 2.0;
   }
 
-  v337 = [v349 leadingAnchor];
-  v330 = [v38 leadingAnchor];
-  v326 = [v337 constraintEqualToAnchor:v330 constant:10.0];
+  leadingAnchor = [v349 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v326 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v370[0] = v326;
-  v322 = [v349 topAnchor];
-  v318 = [v38 topAnchor];
-  v314 = [v322 constraintEqualToAnchor:v318 constant:10.0];
+  topAnchor = [v349 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v314 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v370[1] = v314;
-  v310 = [v349 bottomAnchor];
-  v306 = [v38 bottomAnchor];
-  v302 = [v310 constraintEqualToAnchor:v306 constant:-10.0];
+  bottomAnchor = [v349 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v302 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v370[2] = v302;
-  v298 = [v349 widthAnchor];
-  v294 = [v349 heightAnchor];
-  v290 = [v298 constraintEqualToAnchor:v294 multiplier:1.77777778];
+  widthAnchor = [v349 widthAnchor];
+  heightAnchor2 = [v349 heightAnchor];
+  v290 = [widthAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.77777778];
   v370[3] = v290;
-  v286 = [v343 leadingAnchor];
-  v282 = [v349 leadingAnchor];
-  v278 = [v286 constraintEqualToAnchor:v282];
+  leadingAnchor3 = [v343 leadingAnchor];
+  leadingAnchor4 = [v349 leadingAnchor];
+  v278 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v370[4] = v278;
-  v274 = [v343 trailingAnchor];
-  v270 = [v349 trailingAnchor];
-  v266 = [v274 constraintEqualToAnchor:v270];
+  trailingAnchor = [v343 trailingAnchor];
+  trailingAnchor2 = [v349 trailingAnchor];
+  v266 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v370[5] = v266;
-  v262 = [v343 topAnchor];
-  v258 = [v349 topAnchor];
-  v254 = [v262 constraintEqualToAnchor:v258];
+  topAnchor3 = [v343 topAnchor];
+  topAnchor4 = [v349 topAnchor];
+  v254 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v370[6] = v254;
-  v250 = [v343 bottomAnchor];
-  v246 = [v349 bottomAnchor];
-  v242 = [v250 constraintEqualToAnchor:v246];
+  bottomAnchor3 = [v343 bottomAnchor];
+  bottomAnchor4 = [v349 bottomAnchor];
+  v242 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v370[7] = v242;
-  v238 = [v342 leadingAnchor];
-  v234 = [v349 leadingAnchor];
-  v230 = [v238 constraintEqualToAnchor:v234];
+  leadingAnchor5 = [v342 leadingAnchor];
+  leadingAnchor6 = [v349 leadingAnchor];
+  v230 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v370[8] = v230;
-  v226 = [v342 trailingAnchor];
-  v222 = [v349 trailingAnchor];
-  v218 = [v226 constraintEqualToAnchor:v222];
+  trailingAnchor3 = [v342 trailingAnchor];
+  trailingAnchor4 = [v349 trailingAnchor];
+  v218 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v370[9] = v218;
-  v214 = [v342 topAnchor];
-  v210 = [v349 topAnchor];
-  v206 = [v214 constraintEqualToAnchor:v210];
+  topAnchor5 = [v342 topAnchor];
+  topAnchor6 = [v349 topAnchor];
+  v206 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v370[10] = v206;
-  v202 = [v342 bottomAnchor];
-  v198 = [v349 bottomAnchor];
-  v194 = [v202 constraintEqualToAnchor:v198];
+  bottomAnchor5 = [v342 bottomAnchor];
+  bottomAnchor6 = [v349 bottomAnchor];
+  v194 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v370[11] = v194;
-  v190 = [v350 leadingAnchor];
-  v186 = [v349 trailingAnchor];
-  v182 = [v190 constraintEqualToAnchor:v186 constant:12.0];
+  leadingAnchor7 = [v350 leadingAnchor];
+  trailingAnchor5 = [v349 trailingAnchor];
+  v182 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:12.0];
   v370[12] = v182;
-  v178 = [v350 trailingAnchor];
-  v174 = [v38 trailingAnchor];
-  v170 = [v178 constraintEqualToAnchor:v174 constant:-10.0];
+  trailingAnchor6 = [v350 trailingAnchor];
+  trailingAnchor7 = [view trailingAnchor];
+  v170 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-10.0];
   v370[13] = v170;
-  v166 = [v350 centerYAnchor];
-  v162 = [v38 centerYAnchor];
-  v158 = [v166 constraintEqualToAnchor:v162];
+  centerYAnchor = [v350 centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v158 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v370[14] = v158;
-  v154 = [v348 topAnchor];
-  v150 = [v350 topAnchor];
-  v147 = [v154 constraintEqualToAnchor:v150];
+  topAnchor7 = [v348 topAnchor];
+  topAnchor8 = [v350 topAnchor];
+  v147 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v370[15] = v147;
-  v144 = [v348 leadingAnchor];
-  v141 = [v350 leadingAnchor];
-  v138 = [v144 constraintEqualToAnchor:v141];
+  leadingAnchor8 = [v348 leadingAnchor];
+  leadingAnchor9 = [v350 leadingAnchor];
+  v138 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v370[16] = v138;
-  v135 = [v348 trailingAnchor];
-  v132 = [v350 trailingAnchor];
-  v129 = [v135 constraintEqualToAnchor:v132];
+  trailingAnchor8 = [v348 trailingAnchor];
+  trailingAnchor9 = [v350 trailingAnchor];
+  v129 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v370[17] = v129;
-  v127 = [v347 topAnchor];
-  v125 = [v348 bottomAnchor];
-  v123 = [v127 constraintEqualToAnchor:v125 constant:v46];
+  topAnchor9 = [v347 topAnchor];
+  bottomAnchor7 = [v348 bottomAnchor];
+  v123 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:v46];
   v370[18] = v123;
-  v121 = [v347 leadingAnchor];
-  v119 = [v350 leadingAnchor];
-  v117 = [v121 constraintEqualToAnchor:v119];
+  leadingAnchor10 = [v347 leadingAnchor];
+  leadingAnchor11 = [v350 leadingAnchor];
+  v117 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v370[19] = v117;
-  v115 = [v347 trailingAnchor];
-  v113 = [v350 trailingAnchor];
-  v111 = [v115 constraintEqualToAnchor:v113];
+  trailingAnchor10 = [v347 trailingAnchor];
+  trailingAnchor11 = [v350 trailingAnchor];
+  v111 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
   v370[20] = v111;
-  v109 = [v347 bottomAnchor];
-  v47 = [v350 bottomAnchor];
-  v48 = [v109 constraintEqualToAnchor:v47];
+  bottomAnchor8 = [v347 bottomAnchor];
+  bottomAnchor9 = [v350 bottomAnchor];
+  v48 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
   v370[21] = v48;
-  v49 = [v341 centerXAnchor];
-  v50 = [v38 centerXAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  centerXAnchor = [v341 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v51 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v370[22] = v51;
-  v52 = [v341 centerYAnchor];
-  v53 = [v38 centerYAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
+  centerYAnchor3 = [v341 centerYAnchor];
+  centerYAnchor4 = [view centerYAnchor];
+  v54 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v370[23] = v54;
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v370 count:24];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setHorizontalModeConstraints:v55];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setHorizontalModeConstraints:v55];
 
-  v338 = [v343 leadingAnchor];
-  v331 = [v349 leadingAnchor];
-  v327 = [v338 constraintEqualToAnchor:v331];
+  leadingAnchor12 = [v343 leadingAnchor];
+  leadingAnchor13 = [v349 leadingAnchor];
+  v327 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
   v369[0] = v327;
-  v323 = [v343 trailingAnchor];
-  v319 = [v349 trailingAnchor];
-  v315 = [v323 constraintEqualToAnchor:v319];
+  trailingAnchor12 = [v343 trailingAnchor];
+  trailingAnchor13 = [v349 trailingAnchor];
+  v315 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
   v369[1] = v315;
-  v311 = [v343 topAnchor];
-  v307 = [v349 topAnchor];
-  v303 = [v311 constraintEqualToAnchor:v307];
+  topAnchor10 = [v343 topAnchor];
+  topAnchor11 = [v349 topAnchor];
+  v303 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
   v369[2] = v303;
-  v299 = [v343 bottomAnchor];
-  v295 = [v349 bottomAnchor];
-  v291 = [v299 constraintEqualToAnchor:v295];
+  bottomAnchor10 = [v343 bottomAnchor];
+  bottomAnchor11 = [v349 bottomAnchor];
+  v291 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
   v369[3] = v291;
-  v287 = [v342 leadingAnchor];
-  v283 = [v349 leadingAnchor];
-  v279 = [v287 constraintEqualToAnchor:v283];
+  leadingAnchor14 = [v342 leadingAnchor];
+  leadingAnchor15 = [v349 leadingAnchor];
+  v279 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
   v369[4] = v279;
-  v275 = [v342 trailingAnchor];
-  v271 = [v349 trailingAnchor];
-  v267 = [v275 constraintEqualToAnchor:v271];
+  trailingAnchor14 = [v342 trailingAnchor];
+  trailingAnchor15 = [v349 trailingAnchor];
+  v267 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15];
   v369[5] = v267;
-  v263 = [v342 topAnchor];
-  v259 = [v349 topAnchor];
-  v255 = [v263 constraintEqualToAnchor:v259];
+  topAnchor12 = [v342 topAnchor];
+  topAnchor13 = [v349 topAnchor];
+  v255 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
   v369[6] = v255;
-  v251 = [v342 bottomAnchor];
-  v247 = [v349 bottomAnchor];
-  v243 = [v251 constraintEqualToAnchor:v247];
+  bottomAnchor12 = [v342 bottomAnchor];
+  bottomAnchor13 = [v349 bottomAnchor];
+  v243 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
   v369[7] = v243;
-  v239 = [v349 leadingAnchor];
-  v235 = [v38 leadingAnchor];
-  v231 = [v239 constraintEqualToAnchor:v235 constant:20.0];
+  leadingAnchor16 = [v349 leadingAnchor];
+  leadingAnchor17 = [view leadingAnchor];
+  v231 = [leadingAnchor16 constraintEqualToAnchor:leadingAnchor17 constant:20.0];
   v369[8] = v231;
-  v227 = [v349 centerYAnchor];
-  v223 = [v38 centerYAnchor];
-  v219 = [v227 constraintEqualToAnchor:v223];
+  centerYAnchor5 = [v349 centerYAnchor];
+  centerYAnchor6 = [view centerYAnchor];
+  v219 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v369[9] = v219;
-  v215 = [v349 heightAnchor];
-  v211 = [v215 constraintEqualToConstant:66.0];
+  heightAnchor3 = [v349 heightAnchor];
+  v211 = [heightAnchor3 constraintEqualToConstant:66.0];
   v369[10] = v211;
-  v207 = [v349 widthAnchor];
-  v203 = [v349 heightAnchor];
-  v199 = [v207 constraintEqualToAnchor:v203 multiplier:1.77777778];
+  widthAnchor2 = [v349 widthAnchor];
+  heightAnchor4 = [v349 heightAnchor];
+  v199 = [widthAnchor2 constraintEqualToAnchor:heightAnchor4 multiplier:1.77777778];
   v369[11] = v199;
-  v195 = [v345 trailingAnchor];
-  v191 = [v38 trailingAnchor];
-  v187 = [v195 constraintEqualToAnchor:v191 constant:-20.0];
+  trailingAnchor16 = [v345 trailingAnchor];
+  trailingAnchor17 = [view trailingAnchor];
+  v187 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17 constant:-20.0];
   v369[12] = v187;
-  v183 = [v345 centerYAnchor];
-  v179 = [v38 centerYAnchor];
-  v175 = [v183 constraintEqualToAnchor:v179];
+  centerYAnchor7 = [v345 centerYAnchor];
+  centerYAnchor8 = [view centerYAnchor];
+  v175 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v369[13] = v175;
-  v171 = [v345 widthAnchor];
-  v167 = [v171 constraintEqualToConstant:30.0];
+  widthAnchor3 = [v345 widthAnchor];
+  v167 = [widthAnchor3 constraintEqualToConstant:30.0];
   v369[14] = v167;
-  v163 = [v345 heightAnchor];
-  v159 = [v345 widthAnchor];
-  v155 = [v163 constraintEqualToAnchor:v159];
+  heightAnchor5 = [v345 heightAnchor];
+  widthAnchor4 = [v345 widthAnchor];
+  v155 = [heightAnchor5 constraintEqualToAnchor:widthAnchor4];
   v369[15] = v155;
-  v151 = [v38 heightAnchor];
-  v148 = [v349 heightAnchor];
-  v145 = [v151 constraintGreaterThanOrEqualToAnchor:v148 constant:16.0];
+  heightAnchor6 = [view heightAnchor];
+  heightAnchor7 = [v349 heightAnchor];
+  v145 = [heightAnchor6 constraintGreaterThanOrEqualToAnchor:heightAnchor7 constant:16.0];
   v369[16] = v145;
-  v142 = [v38 heightAnchor];
-  v139 = [v350 heightAnchor];
-  v136 = [v142 constraintGreaterThanOrEqualToAnchor:v139];
+  heightAnchor8 = [view heightAnchor];
+  heightAnchor9 = [v350 heightAnchor];
+  v136 = [heightAnchor8 constraintGreaterThanOrEqualToAnchor:heightAnchor9];
   v369[17] = v136;
   v369[18] = v335;
-  v133 = [v348 topAnchor];
-  v130 = [v350 topAnchor];
-  v128 = [v133 constraintEqualToAnchor:v130];
+  topAnchor14 = [v348 topAnchor];
+  topAnchor15 = [v350 topAnchor];
+  v128 = [topAnchor14 constraintEqualToAnchor:topAnchor15];
   v369[19] = v128;
-  v126 = [v348 leadingAnchor];
-  v124 = [v350 leadingAnchor];
-  v122 = [v126 constraintEqualToAnchor:v124];
+  leadingAnchor18 = [v348 leadingAnchor];
+  leadingAnchor19 = [v350 leadingAnchor];
+  v122 = [leadingAnchor18 constraintEqualToAnchor:leadingAnchor19];
   v369[20] = v122;
-  v120 = [v348 trailingAnchor];
-  v118 = [v350 trailingAnchor];
-  v116 = [v120 constraintEqualToAnchor:v118];
+  trailingAnchor18 = [v348 trailingAnchor];
+  trailingAnchor19 = [v350 trailingAnchor];
+  v116 = [trailingAnchor18 constraintEqualToAnchor:trailingAnchor19];
   v369[21] = v116;
-  v114 = [v347 topAnchor];
-  v112 = [v348 bottomAnchor];
-  v110 = [v114 constraintEqualToAnchor:v112 constant:v46];
+  topAnchor16 = [v347 topAnchor];
+  bottomAnchor14 = [v348 bottomAnchor];
+  v110 = [topAnchor16 constraintEqualToAnchor:bottomAnchor14 constant:v46];
   v369[22] = v110;
-  v108 = [v347 leadingAnchor];
-  v107 = [v350 leadingAnchor];
-  v106 = [v108 constraintEqualToAnchor:v107];
+  leadingAnchor20 = [v347 leadingAnchor];
+  leadingAnchor21 = [v350 leadingAnchor];
+  v106 = [leadingAnchor20 constraintEqualToAnchor:leadingAnchor21];
   v369[23] = v106;
-  v105 = [v347 trailingAnchor];
-  v104 = [v350 trailingAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  trailingAnchor20 = [v347 trailingAnchor];
+  trailingAnchor21 = [v350 trailingAnchor];
+  v103 = [trailingAnchor20 constraintEqualToAnchor:trailingAnchor21];
   v369[24] = v103;
-  v102 = [v347 bottomAnchor];
-  v101 = [v350 bottomAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  bottomAnchor15 = [v347 bottomAnchor];
+  bottomAnchor16 = [v350 bottomAnchor];
+  v100 = [bottomAnchor15 constraintEqualToAnchor:bottomAnchor16];
   v369[25] = v100;
-  v99 = [v350 leadingAnchor];
-  v98 = [v349 trailingAnchor];
-  v56 = [v99 constraintEqualToAnchor:v98 constant:12.0];
+  leadingAnchor22 = [v350 leadingAnchor];
+  trailingAnchor22 = [v349 trailingAnchor];
+  v56 = [leadingAnchor22 constraintEqualToAnchor:trailingAnchor22 constant:12.0];
   v369[26] = v56;
-  v57 = [v350 trailingAnchor];
-  v58 = [v345 imageView];
-  v59 = [v58 leadingAnchor];
-  v60 = [v57 constraintEqualToAnchor:v59 constant:-10.0];
+  trailingAnchor23 = [v350 trailingAnchor];
+  imageView = [v345 imageView];
+  leadingAnchor23 = [imageView leadingAnchor];
+  v60 = [trailingAnchor23 constraintEqualToAnchor:leadingAnchor23 constant:-10.0];
   v369[27] = v60;
-  v61 = [v350 centerYAnchor];
-  v62 = [v38 centerYAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  centerYAnchor9 = [v350 centerYAnchor];
+  centerYAnchor10 = [view centerYAnchor];
+  v63 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
   v369[28] = v63;
   v64 = [MEMORY[0x277CBEA60] arrayWithObjects:v369 count:29];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setStandardLayoutConstraints:v64];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setStandardLayoutConstraints:v64];
 
-  v339 = [v349 topAnchor];
-  v332 = [v38 topAnchor];
-  v328 = [v339 constraintEqualToAnchor:v332];
+  topAnchor17 = [v349 topAnchor];
+  topAnchor18 = [view topAnchor];
+  v328 = [topAnchor17 constraintEqualToAnchor:topAnchor18];
   v368[0] = v328;
-  v324 = [v349 leadingAnchor];
-  v320 = [v38 leadingAnchor];
-  v316 = [v324 constraintEqualToAnchor:v320 constant:20.0];
+  leadingAnchor24 = [v349 leadingAnchor];
+  leadingAnchor25 = [view leadingAnchor];
+  v316 = [leadingAnchor24 constraintEqualToAnchor:leadingAnchor25 constant:20.0];
   v368[1] = v316;
-  v312 = [v349 heightAnchor];
-  v308 = [v312 constraintEqualToConstant:66.0];
+  heightAnchor10 = [v349 heightAnchor];
+  v308 = [heightAnchor10 constraintEqualToConstant:66.0];
   v368[2] = v308;
-  v304 = [v349 widthAnchor];
-  v300 = [v349 heightAnchor];
-  v296 = [v304 constraintEqualToAnchor:v300 multiplier:1.77777778];
+  widthAnchor5 = [v349 widthAnchor];
+  heightAnchor11 = [v349 heightAnchor];
+  v296 = [widthAnchor5 constraintEqualToAnchor:heightAnchor11 multiplier:1.77777778];
   v368[3] = v296;
-  v292 = [v345 trailingAnchor];
-  v288 = [v38 trailingAnchor];
-  v284 = [v292 constraintEqualToAnchor:v288 constant:-20.0];
+  trailingAnchor24 = [v345 trailingAnchor];
+  trailingAnchor25 = [view trailingAnchor];
+  v284 = [trailingAnchor24 constraintEqualToAnchor:trailingAnchor25 constant:-20.0];
   v368[4] = v284;
-  v280 = [v345 centerYAnchor];
-  v276 = [v349 centerYAnchor];
-  v272 = [v280 constraintEqualToAnchor:v276];
+  centerYAnchor11 = [v345 centerYAnchor];
+  centerYAnchor12 = [v349 centerYAnchor];
+  v272 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12];
   v368[5] = v272;
-  v268 = [v345 widthAnchor];
-  v264 = [v268 constraintEqualToConstant:30.0];
+  widthAnchor6 = [v345 widthAnchor];
+  v264 = [widthAnchor6 constraintEqualToConstant:30.0];
   v368[6] = v264;
-  v260 = [v345 heightAnchor];
-  v256 = [v345 widthAnchor];
-  v252 = [v260 constraintEqualToAnchor:v256];
+  heightAnchor12 = [v345 heightAnchor];
+  widthAnchor7 = [v345 widthAnchor];
+  v252 = [heightAnchor12 constraintEqualToAnchor:widthAnchor7];
   v368[7] = v252;
-  v248 = [v350 topAnchor];
-  v244 = [v349 bottomAnchor];
-  v240 = [v248 constraintEqualToAnchor:v244 constant:v46];
+  topAnchor19 = [v350 topAnchor];
+  bottomAnchor17 = [v349 bottomAnchor];
+  v240 = [topAnchor19 constraintEqualToAnchor:bottomAnchor17 constant:v46];
   v368[8] = v240;
-  v236 = [v350 leadingAnchor];
-  v232 = [v38 leadingAnchor];
-  v228 = [v236 constraintEqualToAnchor:v232 constant:12.0];
+  leadingAnchor26 = [v350 leadingAnchor];
+  leadingAnchor27 = [view leadingAnchor];
+  v228 = [leadingAnchor26 constraintEqualToAnchor:leadingAnchor27 constant:12.0];
   v368[9] = v228;
-  v224 = [v350 trailingAnchor];
-  v220 = [v38 trailingAnchor];
-  v216 = [v224 constraintEqualToAnchor:v220 constant:-10.0];
+  trailingAnchor26 = [v350 trailingAnchor];
+  trailingAnchor27 = [view trailingAnchor];
+  v216 = [trailingAnchor26 constraintEqualToAnchor:trailingAnchor27 constant:-10.0];
   v368[10] = v216;
-  v212 = [v350 bottomAnchor];
-  v208 = [v38 bottomAnchor];
-  v204 = [v212 constraintEqualToAnchor:v208];
+  bottomAnchor18 = [v350 bottomAnchor];
+  bottomAnchor19 = [view bottomAnchor];
+  v204 = [bottomAnchor18 constraintEqualToAnchor:bottomAnchor19];
   v368[11] = v204;
-  v200 = [v348 topAnchor];
-  v196 = [v350 topAnchor];
-  v192 = [v200 constraintEqualToAnchor:v196];
+  topAnchor20 = [v348 topAnchor];
+  topAnchor21 = [v350 topAnchor];
+  v192 = [topAnchor20 constraintEqualToAnchor:topAnchor21];
   v368[12] = v192;
-  v188 = [v348 leadingAnchor];
-  v184 = [v350 leadingAnchor];
-  v180 = [v188 constraintEqualToAnchor:v184];
+  leadingAnchor28 = [v348 leadingAnchor];
+  leadingAnchor29 = [v350 leadingAnchor];
+  v180 = [leadingAnchor28 constraintEqualToAnchor:leadingAnchor29];
   v368[13] = v180;
-  v176 = [v348 trailingAnchor];
-  v172 = [v350 trailingAnchor];
-  v168 = [v176 constraintEqualToAnchor:v172];
+  trailingAnchor28 = [v348 trailingAnchor];
+  trailingAnchor29 = [v350 trailingAnchor];
+  v168 = [trailingAnchor28 constraintEqualToAnchor:trailingAnchor29];
   v368[14] = v168;
-  v164 = [v347 topAnchor];
-  v160 = [v348 bottomAnchor];
-  v156 = [v164 constraintEqualToAnchor:v160 constant:v46];
+  topAnchor22 = [v347 topAnchor];
+  bottomAnchor20 = [v348 bottomAnchor];
+  v156 = [topAnchor22 constraintEqualToAnchor:bottomAnchor20 constant:v46];
   v368[15] = v156;
-  v152 = [v347 leadingAnchor];
-  v65 = [v350 leadingAnchor];
-  v66 = [v152 constraintEqualToAnchor:v65];
+  leadingAnchor30 = [v347 leadingAnchor];
+  leadingAnchor31 = [v350 leadingAnchor];
+  v66 = [leadingAnchor30 constraintEqualToAnchor:leadingAnchor31];
   v368[16] = v66;
-  v67 = [v347 trailingAnchor];
-  v68 = [v350 trailingAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68];
+  trailingAnchor30 = [v347 trailingAnchor];
+  trailingAnchor31 = [v350 trailingAnchor];
+  v69 = [trailingAnchor30 constraintEqualToAnchor:trailingAnchor31];
   v368[17] = v69;
-  v70 = [v347 bottomAnchor];
-  v71 = [v350 bottomAnchor];
-  v72 = [v70 constraintEqualToAnchor:v71];
+  bottomAnchor21 = [v347 bottomAnchor];
+  bottomAnchor22 = [v350 bottomAnchor];
+  v72 = [bottomAnchor21 constraintEqualToAnchor:bottomAnchor22];
   v368[18] = v72;
   v73 = [MEMORY[0x277CBEA60] arrayWithObjects:v368 count:19];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setStackedTextLayoutConstraints:v73];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setStackedTextLayoutConstraints:v73];
 
-  v340 = [v38 heightAnchor];
-  v333 = [v340 constraintGreaterThanOrEqualToConstant:56.0];
+  heightAnchor13 = [view heightAnchor];
+  v333 = [heightAnchor13 constraintGreaterThanOrEqualToConstant:56.0];
   v367[0] = v333;
-  v329 = [v38 heightAnchor];
-  v325 = [v329 constraintLessThanOrEqualToConstant:88.0];
+  heightAnchor14 = [view heightAnchor];
+  v325 = [heightAnchor14 constraintLessThanOrEqualToConstant:88.0];
   v367[1] = v325;
-  v321 = [v344 leadingAnchor];
-  v317 = [v38 leadingAnchor];
-  v313 = [v321 constraintEqualToAnchor:v317 constant:17.0];
+  leadingAnchor32 = [v344 leadingAnchor];
+  leadingAnchor33 = [view leadingAnchor];
+  v313 = [leadingAnchor32 constraintEqualToAnchor:leadingAnchor33 constant:17.0];
   v367[2] = v313;
-  v309 = [v344 topAnchor];
-  v305 = [v38 topAnchor];
-  v301 = [v309 constraintEqualToAnchor:v305 constant:17.0];
+  topAnchor23 = [v344 topAnchor];
+  topAnchor24 = [view topAnchor];
+  v301 = [topAnchor23 constraintEqualToAnchor:topAnchor24 constant:17.0];
   v367[3] = v301;
-  v297 = [v344 widthAnchor];
-  v293 = [v344 heightAnchor];
-  v289 = [v297 constraintEqualToAnchor:v293];
+  widthAnchor8 = [v344 widthAnchor];
+  heightAnchor15 = [v344 heightAnchor];
+  v289 = [widthAnchor8 constraintEqualToAnchor:heightAnchor15];
   v367[4] = v289;
-  v285 = [v344 heightAnchor];
-  v281 = [v285 constraintEqualToConstant:44.0];
+  heightAnchor16 = [v344 heightAnchor];
+  v281 = [heightAnchor16 constraintEqualToConstant:44.0];
   v367[5] = v281;
-  v277 = [v350 leadingAnchor];
-  v273 = [v344 trailingAnchor];
-  v269 = [v277 constraintEqualToAnchor:v273 constant:10.0];
+  leadingAnchor34 = [v350 leadingAnchor];
+  trailingAnchor32 = [v344 trailingAnchor];
+  v269 = [leadingAnchor34 constraintEqualToAnchor:trailingAnchor32 constant:10.0];
   v367[6] = v269;
-  v265 = [v350 topAnchor];
-  v261 = [v38 topAnchor];
-  v257 = [v265 constraintGreaterThanOrEqualToAnchor:v261 constant:15.0];
+  topAnchor25 = [v350 topAnchor];
+  topAnchor26 = [view topAnchor];
+  v257 = [topAnchor25 constraintGreaterThanOrEqualToAnchor:topAnchor26 constant:15.0];
   v367[7] = v257;
-  v253 = [v350 bottomAnchor];
-  v249 = [v38 bottomAnchor];
-  v245 = [v253 constraintLessThanOrEqualToAnchor:v249];
+  bottomAnchor23 = [v350 bottomAnchor];
+  bottomAnchor24 = [view bottomAnchor];
+  v245 = [bottomAnchor23 constraintLessThanOrEqualToAnchor:bottomAnchor24];
   v367[8] = v245;
-  v241 = [v350 centerYAnchor];
-  v237 = [v344 centerYAnchor];
-  v233 = [v241 constraintEqualToAnchor:v237];
+  centerYAnchor13 = [v350 centerYAnchor];
+  centerYAnchor14 = [v344 centerYAnchor];
+  v233 = [centerYAnchor13 constraintEqualToAnchor:centerYAnchor14];
   v367[9] = v233;
-  v229 = [v345 leadingAnchor];
-  v225 = [v350 trailingAnchor];
-  v221 = [v229 constraintEqualToAnchor:v225 constant:10.0];
+  leadingAnchor35 = [v345 leadingAnchor];
+  trailingAnchor33 = [v350 trailingAnchor];
+  v221 = [leadingAnchor35 constraintEqualToAnchor:trailingAnchor33 constant:10.0];
   v367[10] = v221;
-  v217 = [v345 topAnchor];
-  v213 = [v38 topAnchor];
-  v209 = [v217 constraintEqualToAnchor:v213 constant:17.0];
+  topAnchor27 = [v345 topAnchor];
+  topAnchor28 = [view topAnchor];
+  v209 = [topAnchor27 constraintEqualToAnchor:topAnchor28 constant:17.0];
   v367[11] = v209;
-  v205 = [v345 widthAnchor];
-  v201 = [v345 heightAnchor];
-  v197 = [v205 constraintEqualToAnchor:v201];
+  widthAnchor9 = [v345 widthAnchor];
+  heightAnchor17 = [v345 heightAnchor];
+  v197 = [widthAnchor9 constraintEqualToAnchor:heightAnchor17];
   v367[12] = v197;
-  v193 = [v345 heightAnchor];
-  v189 = [v193 constraintEqualToConstant:44.0];
+  heightAnchor18 = [v345 heightAnchor];
+  v189 = [heightAnchor18 constraintEqualToConstant:44.0];
   v367[13] = v189;
-  v185 = [v345 trailingAnchor];
-  v181 = [v38 trailingAnchor];
-  v177 = [v185 constraintEqualToAnchor:v181 constant:-17.0];
+  trailingAnchor34 = [v345 trailingAnchor];
+  trailingAnchor35 = [view trailingAnchor];
+  v177 = [trailingAnchor34 constraintEqualToAnchor:trailingAnchor35 constant:-17.0];
   v367[14] = v177;
-  v173 = [v348 topAnchor];
-  v169 = [v350 topAnchor];
-  v165 = [v173 constraintEqualToAnchor:v169];
+  topAnchor29 = [v348 topAnchor];
+  topAnchor30 = [v350 topAnchor];
+  v165 = [topAnchor29 constraintEqualToAnchor:topAnchor30];
   v367[15] = v165;
-  v161 = [v348 leadingAnchor];
-  v157 = [v350 leadingAnchor];
-  v153 = [v161 constraintEqualToAnchor:v157];
+  leadingAnchor36 = [v348 leadingAnchor];
+  leadingAnchor37 = [v350 leadingAnchor];
+  v153 = [leadingAnchor36 constraintEqualToAnchor:leadingAnchor37];
   v367[16] = v153;
-  v149 = [v348 trailingAnchor];
-  v146 = [v350 trailingAnchor];
-  v143 = [v149 constraintEqualToAnchor:v146];
+  trailingAnchor36 = [v348 trailingAnchor];
+  trailingAnchor37 = [v350 trailingAnchor];
+  v143 = [trailingAnchor36 constraintEqualToAnchor:trailingAnchor37];
   v367[17] = v143;
-  v140 = [v347 topAnchor];
-  v137 = [v348 bottomAnchor];
-  v134 = [v140 constraintEqualToAnchor:v137 constant:2.0];
+  topAnchor31 = [v347 topAnchor];
+  bottomAnchor25 = [v348 bottomAnchor];
+  v134 = [topAnchor31 constraintEqualToAnchor:bottomAnchor25 constant:2.0];
   v367[18] = v134;
-  v131 = [v347 leadingAnchor];
-  v74 = [v350 leadingAnchor];
-  v75 = [v131 constraintEqualToAnchor:v74];
+  leadingAnchor38 = [v347 leadingAnchor];
+  leadingAnchor39 = [v350 leadingAnchor];
+  v75 = [leadingAnchor38 constraintEqualToAnchor:leadingAnchor39];
   v367[19] = v75;
-  v76 = [v347 trailingAnchor];
-  v77 = [v350 trailingAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77];
+  trailingAnchor38 = [v347 trailingAnchor];
+  trailingAnchor39 = [v350 trailingAnchor];
+  v78 = [trailingAnchor38 constraintEqualToAnchor:trailingAnchor39];
   v367[20] = v78;
-  v79 = [v347 bottomAnchor];
-  v80 = [v350 bottomAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80];
+  bottomAnchor26 = [v347 bottomAnchor];
+  bottomAnchor27 = [v350 bottomAnchor];
+  v81 = [bottomAnchor26 constraintEqualToAnchor:bottomAnchor27];
   v367[21] = v81;
   v82 = [MEMORY[0x277CBEA60] arrayWithObjects:v367 count:22];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setSolariumCompactModeLayoutConstraints:v82];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setSolariumCompactModeLayoutConstraints:v82];
 
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setImageView:v349];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setTitleLabel:v347];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setSecondaryLabel:v348];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setDismissButton:v344];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setActionButton:v345];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setNarrowAspectImageView:v343];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setNarrowAspectImageVisualEffectView:v342];
-  [(TVRUINowPlayingMiniPlayerViewController *)v346 setNotPlayingLabel:v341];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setImageView:v349];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setTitleLabel:v347];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setSecondaryLabel:v348];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setDismissButton:v344];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setActionButton:v345];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setNarrowAspectImageView:v343];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setNarrowAspectImageVisualEffectView:v342];
+  [(TVRUINowPlayingMiniPlayerViewController *)selfCopy setNotPlayingLabel:v341];
   v366 = objc_opt_class();
   v83 = [MEMORY[0x277CBEA60] arrayWithObjects:&v366 count:1];
   v355[0] = MEMORY[0x277D85DD0];
@@ -749,20 +749,20 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
   v355[2] = __61__TVRUINowPlayingMiniPlayerViewController_configureHierarchy__block_invoke_3;
   v355[3] = &unk_279D89180;
   objc_copyWeak(&v356, &location);
-  v355[4] = v346;
-  v84 = [(TVRUINowPlayingMiniPlayerViewController *)v346 registerForTraitChanges:v83 withHandler:v355];
+  v355[4] = selfCopy;
+  v84 = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy registerForTraitChanges:v83 withHandler:v355];
 
-  v85 = v346;
-  if ([(TVRUINowPlayingMiniPlayerViewController *)v346 horizontalMode])
+  v85 = selfCopy;
+  if ([(TVRUINowPlayingMiniPlayerViewController *)selfCopy horizontalMode])
   {
-    v86 = [(TVRUINowPlayingMiniPlayerViewController *)v346 actionButton];
-    [v86 setHidden:1];
+    actionButton = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy actionButton];
+    [actionButton setHidden:1];
 
-    v87 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v346 action:sel__didTapNowPlayingInfo_];
-    v88 = [(TVRUINowPlayingMiniPlayerViewController *)v346 view];
-    [v88 addGestureRecognizer:v87];
+    v87 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:selfCopy action:sel__didTapNowPlayingInfo_];
+    view2 = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy view];
+    [view2 addGestureRecognizer:v87];
 
-    v85 = v346;
+    v85 = selfCopy;
   }
 
   if ([(TVRUINowPlayingMiniPlayerViewController *)v85 compactSolariumMode])
@@ -771,12 +771,12 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
     v354 = 0u;
     v351 = 0u;
     v352 = 0u;
-    v89 = [(TVRUINowPlayingMiniPlayerViewController *)v85 imageView];
-    v364[0] = v89;
-    v90 = [(TVRUINowPlayingMiniPlayerViewController *)v346 narrowAspectImageView];
-    v364[1] = v90;
-    v91 = [(TVRUINowPlayingMiniPlayerViewController *)v346 narrowAspectImageVisualEffectView];
-    v364[2] = v91;
+    imageView2 = [(TVRUINowPlayingMiniPlayerViewController *)v85 imageView];
+    v364[0] = imageView2;
+    narrowAspectImageView = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy narrowAspectImageView];
+    v364[1] = narrowAspectImageView;
+    narrowAspectImageVisualEffectView = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy narrowAspectImageVisualEffectView];
+    v364[2] = narrowAspectImageVisualEffectView;
     v92 = [MEMORY[0x277CBEA60] arrayWithObjects:v364 count:3];
 
     v93 = [v92 countByEnumeratingWithState:&v351 objects:v365 count:16];
@@ -802,8 +802,8 @@ void __62__TVRUINowPlayingMiniPlayerViewController__setupSystemMonitor__block_in
     }
 
     v96 = MEMORY[0x277CCAAD0];
-    v97 = [(TVRUINowPlayingMiniPlayerViewController *)v346 solariumCompactModeLayoutConstraints];
-    [v96 activateConstraints:v97];
+    solariumCompactModeLayoutConstraints = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy solariumCompactModeLayoutConstraints];
+    [v96 activateConstraints:solariumCompactModeLayoutConstraints];
   }
 
   else
@@ -847,10 +847,10 @@ uint64_t __61__TVRUINowPlayingMiniPlayerViewController_configureHierarchy__block
 {
   if (![(TVRUINowPlayingMiniPlayerViewController *)self compactSolariumMode])
   {
-    v3 = [(TVRUINowPlayingMiniPlayerViewController *)self _currentTraitsSizeCategoryRequiresStackedLayout];
-    if (v3 != [(TVRUINowPlayingMiniPlayerViewController *)self _isCurrentlyStackedLayout])
+    _currentTraitsSizeCategoryRequiresStackedLayout = [(TVRUINowPlayingMiniPlayerViewController *)self _currentTraitsSizeCategoryRequiresStackedLayout];
+    if (_currentTraitsSizeCategoryRequiresStackedLayout != [(TVRUINowPlayingMiniPlayerViewController *)self _isCurrentlyStackedLayout])
     {
-      [(TVRUINowPlayingMiniPlayerViewController *)self _updateContraintsForStackedLayout:v3];
+      [(TVRUINowPlayingMiniPlayerViewController *)self _updateContraintsForStackedLayout:_currentTraitsSizeCategoryRequiresStackedLayout];
     }
   }
 
@@ -1107,71 +1107,71 @@ void __59__TVRUINowPlayingMiniPlayerViewController_actionButtonMenu__block_invok
   [WeakRetained sharePrimary];
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
-  objc_storeStrong(&self->_nowPlayingInfo, a3);
-  v5 = a3;
-  [(TVRUINowPlayingMiniPlayerViewController *)self updateFromNowPlayingInfo:v5];
+  objc_storeStrong(&self->_nowPlayingInfo, info);
+  infoCopy = info;
+  [(TVRUINowPlayingMiniPlayerViewController *)self updateFromNowPlayingInfo:infoCopy];
 }
 
 - (void)resetContent
 {
-  v3 = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self secondaryLabel];
-  [v4 setText:0];
+  secondaryLabel = [(TVRUINowPlayingMiniPlayerViewController *)self secondaryLabel];
+  [secondaryLabel setText:0];
 
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self imageView];
-  [v5 setImage:0];
+  imageView = [(TVRUINowPlayingMiniPlayerViewController *)self imageView];
+  [imageView setImage:0];
 
-  v6 = [(TVRUINowPlayingMiniPlayerViewController *)self notPlayingLabel];
-  [v6 setHidden:0];
+  notPlayingLabel = [(TVRUINowPlayingMiniPlayerViewController *)self notPlayingLabel];
+  [notPlayingLabel setHidden:0];
 
   nowPlayingInfo = self->_nowPlayingInfo;
   self->_nowPlayingInfo = 0;
 }
 
-- (void)updateFromNowPlayingInfo:(id)a3
+- (void)updateFromNowPlayingInfo:(id)info
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 metadata];
-  if (v5)
+  infoCopy = info;
+  metadata = [infoCopy metadata];
+  if (metadata)
   {
     if ([(TVRUINowPlayingMiniPlayerViewController *)self horizontalMode])
     {
-      v6 = [(TVRUINowPlayingMiniPlayerViewController *)self notPlayingLabel];
-      [v6 setHidden:1];
+      notPlayingLabel = [(TVRUINowPlayingMiniPlayerViewController *)self notPlayingLabel];
+      [notPlayingLabel setHidden:1];
     }
 
-    v7 = [v4 tvrui_hasUnknownCanonicalID];
-    if ([v5 kind] == 2)
+    tvrui_hasUnknownCanonicalID = [infoCopy tvrui_hasUnknownCanonicalID];
+    if ([metadata kind] == 2)
     {
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"TVRUISeasonEpisodeTitleBrief" value:&stru_287E6AEF8 table:@"Localizable"];
-      v10 = [v5 tvrui_localizedTitleWithFormatString:v9];
-      v11 = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
-      [v11 setText:v10];
+      v10 = [metadata tvrui_localizedTitleWithFormatString:v9];
+      titleLabel = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
+      [titleLabel setText:v10];
 
-      [v5 tvrui_secondaryTitle];
+      [metadata tvrui_secondaryTitle];
     }
 
     else
     {
-      v12 = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
-      [v12 setText:0];
+      titleLabel2 = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
+      [titleLabel2 setText:0];
 
-      [v5 title];
+      [metadata title];
     }
     v13 = ;
-    v14 = [(TVRUINowPlayingMiniPlayerViewController *)self secondaryLabel];
-    [v14 setText:v13];
+    secondaryLabel = [(TVRUINowPlayingMiniPlayerViewController *)self secondaryLabel];
+    [secondaryLabel setText:v13];
 
-    v15 = [(TVRUINowPlayingMiniPlayerViewController *)self _effectiveImageFromNowPlayingInfo:v4];
-    v16 = [(TVRUINowPlayingMiniPlayerViewController *)self _effectiveImageFromNowPlayingInfoIsFallbackImage:v4];
-    v17 = [(TVRUINowPlayingMiniPlayerViewController *)self imageView];
-    [v17 setImage:v15];
+    v15 = [(TVRUINowPlayingMiniPlayerViewController *)self _effectiveImageFromNowPlayingInfo:infoCopy];
+    v16 = [(TVRUINowPlayingMiniPlayerViewController *)self _effectiveImageFromNowPlayingInfoIsFallbackImage:infoCopy];
+    imageView = [(TVRUINowPlayingMiniPlayerViewController *)self imageView];
+    [imageView setImage:v15];
 
     if (v16)
     {
@@ -1183,8 +1183,8 @@ void __59__TVRUINowPlayingMiniPlayerViewController_actionButtonMenu__block_invok
       v18 = 0;
     }
 
-    v19 = [(TVRUINowPlayingMiniPlayerViewController *)self imageView];
-    [v19 setBackgroundColor:v18];
+    imageView2 = [(TVRUINowPlayingMiniPlayerViewController *)self imageView];
+    [imageView2 setBackgroundColor:v18];
 
     if (v16)
     {
@@ -1192,8 +1192,8 @@ void __59__TVRUINowPlayingMiniPlayerViewController_actionButtonMenu__block_invok
 
     [v15 size];
     v22 = v20 * v21 <= 0.0 || v20 >= v21;
-    v23 = [(TVRUINowPlayingMiniPlayerViewController *)self narrowAspectImageVisualEffectView];
-    [v23 setHidden:v22];
+    narrowAspectImageVisualEffectView = [(TVRUINowPlayingMiniPlayerViewController *)self narrowAspectImageVisualEffectView];
+    [narrowAspectImageVisualEffectView setHidden:v22];
 
     if (v22)
     {
@@ -1205,48 +1205,48 @@ void __59__TVRUINowPlayingMiniPlayerViewController_actionButtonMenu__block_invok
       v24 = v15;
     }
 
-    v25 = [(TVRUINowPlayingMiniPlayerViewController *)self narrowAspectImageView];
-    [v25 setImage:v24];
+    narrowAspectImageView = [(TVRUINowPlayingMiniPlayerViewController *)self narrowAspectImageView];
+    [narrowAspectImageView setImage:v24];
 
     if ([(TVRUINowPlayingMiniPlayerViewController *)self horizontalMode])
     {
-      v26 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
-      [v26 setHidden:1];
+      actionButton = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
+      [actionButton setHidden:1];
     }
 
     else
     {
-      v26 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
-      [v26 setEnabled:v7 ^ 1u];
+      actionButton = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
+      [actionButton setEnabled:tvrui_hasUnknownCanonicalID ^ 1u];
     }
 
-    v27 = [v4 tvrui_mediaIsStopped];
-    v48 = v5;
-    v49 = v4;
+    tvrui_mediaIsStopped = [infoCopy tvrui_mediaIsStopped];
+    v48 = metadata;
+    v49 = infoCopy;
     v47 = v15;
-    if (v27)
+    if (tvrui_mediaIsStopped)
     {
-      v28 = [(TVRUINowPlayingMiniPlayerViewController *)self styleProvider];
-      v29 = [v28 inactiveMediaTextColor];
+      styleProvider = [(TVRUINowPlayingMiniPlayerViewController *)self styleProvider];
+      inactiveMediaTextColor = [styleProvider inactiveMediaTextColor];
     }
 
     else
     {
-      v29 = [MEMORY[0x277D75348] whiteColor];
+      inactiveMediaTextColor = [MEMORY[0x277D75348] whiteColor];
     }
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v30 = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
-    v54[0] = v30;
-    v31 = self;
-    v32 = [(TVRUINowPlayingMiniPlayerViewController *)self secondaryLabel];
-    v54[1] = v32;
-    v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
+    titleLabel3 = [(TVRUINowPlayingMiniPlayerViewController *)self titleLabel];
+    v54[0] = titleLabel3;
+    selfCopy = self;
+    secondaryLabel2 = [(TVRUINowPlayingMiniPlayerViewController *)self secondaryLabel];
+    v54[1] = secondaryLabel2;
+    styleProvider2 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
 
-    v34 = [v33 countByEnumeratingWithState:&v50 objects:v55 count:16];
+    v34 = [styleProvider2 countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v34)
     {
       v35 = v34;
@@ -1257,36 +1257,36 @@ void __59__TVRUINowPlayingMiniPlayerViewController_actionButtonMenu__block_invok
         {
           if (*v51 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(styleProvider2);
           }
 
           v38 = *(*(&v50 + 1) + 8 * i);
-          v39 = v29;
-          if ((v27 & 1) == 0)
+          v39 = inactiveMediaTextColor;
+          if ((tvrui_mediaIsStopped & 1) == 0)
           {
-            v40 = [(TVRUINowPlayingMiniPlayerViewController *)v31 titleLabel];
+            titleLabel4 = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy titleLabel];
 
-            if (v38 == v40)
+            if (v38 == titleLabel4)
             {
-              v41 = [MEMORY[0x277D75348] grayColor];
+              grayColor = [MEMORY[0x277D75348] grayColor];
 
-              v39 = v41;
+              v39 = grayColor;
             }
           }
 
           [v38 setTextColor:v39];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v50 objects:v55 count:16];
+        v35 = [styleProvider2 countByEnumeratingWithState:&v50 objects:v55 count:16];
       }
 
       while (v35);
     }
 
-    if (v27)
+    if (tvrui_mediaIsStopped)
     {
-      v33 = [(TVRUINowPlayingMiniPlayerViewController *)v31 styleProvider];
-      [v33 inactiveMediaImageViewAlpha];
+      styleProvider2 = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy styleProvider];
+      [styleProvider2 inactiveMediaImageViewAlpha];
       v43 = v42;
     }
 
@@ -1295,25 +1295,25 @@ void __59__TVRUINowPlayingMiniPlayerViewController_actionButtonMenu__block_invok
       v43 = 1.0;
     }
 
-    v5 = v48;
-    v4 = v49;
-    v44 = [(TVRUINowPlayingMiniPlayerViewController *)v31 imageView];
-    [v44 setAlpha:v43];
+    metadata = v48;
+    infoCopy = v49;
+    imageView3 = [(TVRUINowPlayingMiniPlayerViewController *)selfCopy imageView];
+    [imageView3 setAlpha:v43];
 
-    if (v27)
+    if (tvrui_mediaIsStopped)
     {
     }
 
-    v45 = [v49 imageDataIsPlaceholder];
-    if ([v45 BOOLValue])
+    imageDataIsPlaceholder = [v49 imageDataIsPlaceholder];
+    if ([imageDataIsPlaceholder BOOLValue])
     {
     }
 
     else
     {
-      v46 = [v49 tvrui_hasArtworkImage];
+      tvrui_hasArtworkImage = [v49 tvrui_hasArtworkImage];
 
-      if (v46)
+      if (tvrui_hasArtworkImage)
       {
 LABEL_43:
 
@@ -1321,48 +1321,48 @@ LABEL_43:
       }
     }
 
-    [(TVRUINowPlayingMiniPlayerViewController *)v31 _requestImageIfNeededForNowPlayingInfo:v49];
+    [(TVRUINowPlayingMiniPlayerViewController *)selfCopy _requestImageIfNeededForNowPlayingInfo:v49];
     goto LABEL_43;
   }
 
 LABEL_44:
 }
 
-- (id)_effectiveImageFromNowPlayingInfo:(id)a3
+- (id)_effectiveImageFromNowPlayingInfo:(id)info
 {
-  v4 = [a3 tvrui_artworkImage];
-  if (!v4)
+  tvrui_artworkImage = [info tvrui_artworkImage];
+  if (!tvrui_artworkImage)
   {
-    v5 = [(TVRUINowPlayingMiniPlayerViewController *)self fetchedImage];
-    v6 = v5;
-    if (v5)
+    fetchedImage = [(TVRUINowPlayingMiniPlayerViewController *)self fetchedImage];
+    v6 = fetchedImage;
+    if (fetchedImage)
     {
-      v7 = v5;
+      fallbackImage = fetchedImage;
     }
 
     else
     {
-      v7 = [(TVRUINowPlayingMiniPlayerViewController *)self fallbackImage];
+      fallbackImage = [(TVRUINowPlayingMiniPlayerViewController *)self fallbackImage];
     }
 
-    v4 = v7;
+    tvrui_artworkImage = fallbackImage;
   }
 
-  return v4;
+  return tvrui_artworkImage;
 }
 
-- (BOOL)_effectiveImageFromNowPlayingInfoIsFallbackImage:(id)a3
+- (BOOL)_effectiveImageFromNowPlayingInfoIsFallbackImage:(id)image
 {
-  v4 = [a3 tvrui_artworkImage];
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self fetchedImage];
-  LOBYTE(self) = (v5 | v4) == 0;
+  tvrui_artworkImage = [image tvrui_artworkImage];
+  fetchedImage = [(TVRUINowPlayingMiniPlayerViewController *)self fetchedImage];
+  LOBYTE(self) = (fetchedImage | tvrui_artworkImage) == 0;
 
   return self;
 }
 
-- (void)openProductPageForKind:(int64_t)a3
+- (void)openProductPageForKind:(int64_t)kind
 {
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self urlForProductPageKind:a3];
+  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self urlForProductPageKind:kind];
   v5 = v4;
   if (v4)
   {
@@ -1374,117 +1374,117 @@ LABEL_44:
   MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (id)urlForProductPageKind:(int64_t)a3
+- (id)urlForProductPageKind:(int64_t)kind
 {
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
-  v5 = [v4 metadata];
+  nowPlayingInfo = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
+  metadata = [nowPlayingInfo metadata];
 
-  if (!v5)
+  if (!metadata)
   {
     goto LABEL_6;
   }
 
-  if (a3 == 1 || a3 == 3)
+  if (kind == 1 || kind == 3)
   {
-    v6 = [v5 productPageURL];
+    productPageURL = [metadata productPageURL];
     goto LABEL_8;
   }
 
-  if (a3 != 2)
+  if (kind != 2)
   {
 LABEL_6:
     v7 = 0;
     goto LABEL_9;
   }
 
-  v6 = [v5 showProductPageURL];
+  productPageURL = [metadata showProductPageURL];
 LABEL_8:
-  v7 = v6;
+  v7 = productPageURL;
 LABEL_9:
 
   return v7;
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = a3;
-    v5 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
-    [v5 openURL:v4];
+    lCopy = l;
+    actionProvider = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
+    [actionProvider openURL:lCopy];
   }
 }
 
 - (void)shareEpisode
 {
   v3 = [TVRUINowPlayingInfoActivityItem alloc];
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
-  v7 = [(TVRUINowPlayingInfoActivityItem *)v3 initWithNowPlayingInfo:v4 shareShow:0];
+  nowPlayingInfo = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
+  v7 = [(TVRUINowPlayingInfoActivityItem *)v3 initWithNowPlayingInfo:nowPlayingInfo shareShow:0];
 
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
-  v6 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
-  [v5 shareItem:v7 presentingViewController:self sourceView:v6];
+  actionProvider = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
+  actionButton = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
+  [actionProvider shareItem:v7 presentingViewController:self sourceView:actionButton];
 }
 
 - (void)shareShow
 {
   v3 = [TVRUINowPlayingInfoActivityItem alloc];
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
-  v7 = [(TVRUINowPlayingInfoActivityItem *)v3 initWithNowPlayingInfo:v4 shareShow:1];
+  nowPlayingInfo = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
+  v7 = [(TVRUINowPlayingInfoActivityItem *)v3 initWithNowPlayingInfo:nowPlayingInfo shareShow:1];
 
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
-  v6 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
-  [v5 shareItem:v7 presentingViewController:self sourceView:v6];
+  actionProvider = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
+  actionButton = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
+  [actionProvider shareItem:v7 presentingViewController:self sourceView:actionButton];
 }
 
 - (void)sharePrimary
 {
   v3 = [TVRUINowPlayingInfoActivityItem alloc];
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
-  v7 = [(TVRUINowPlayingInfoActivityItem *)v3 initWithNowPlayingInfo:v4 shareShow:0];
+  nowPlayingInfo = [(TVRUINowPlayingMiniPlayerViewController *)self nowPlayingInfo];
+  v7 = [(TVRUINowPlayingInfoActivityItem *)v3 initWithNowPlayingInfo:nowPlayingInfo shareShow:0];
 
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
-  v6 = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
-  [v5 shareItem:v7 presentingViewController:self sourceView:v6];
+  actionProvider = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
+  actionButton = [(TVRUINowPlayingMiniPlayerViewController *)self actionButton];
+  [actionProvider shareItem:v7 presentingViewController:self sourceView:actionButton];
 }
 
-- (void)_didTapNowPlayingInfo:(id)a3
+- (void)_didTapNowPlayingInfo:(id)info
 {
-  v4 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
+  actionProvider = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
 
-  if (v4)
+  if (actionProvider)
   {
-    v5 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
-    [v5 displayUpNextInfo];
+    actionProvider2 = [(TVRUINowPlayingMiniPlayerViewController *)self actionProvider];
+    [actionProvider2 displayUpNextInfo];
   }
 }
 
 - (BOOL)_currentTraitsSizeCategoryRequiresStackedLayout
 {
-  v2 = [(TVRUINowPlayingMiniPlayerViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(TVRUINowPlayingMiniPlayerViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x277D767F8]) == NSOrderedDescending;
-  return v2;
+  LOBYTE(traitCollection) = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D767F8]) == NSOrderedDescending;
+  return traitCollection;
 }
 
-- (void)_updateContraintsForStackedLayout:(BOOL)a3
+- (void)_updateContraintsForStackedLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(TVRUINowPlayingMiniPlayerViewController *)self horizontalMode];
+  layoutCopy = layout;
+  horizontalMode = [(TVRUINowPlayingMiniPlayerViewController *)self horizontalMode];
   v6 = MEMORY[0x277CCAAD0];
-  if (v5)
+  if (horizontalMode)
   {
-    v10 = [(TVRUINowPlayingMiniPlayerViewController *)self horizontalModeConstraints];
+    horizontalModeConstraints = [(TVRUINowPlayingMiniPlayerViewController *)self horizontalModeConstraints];
     [v6 activateConstraints:?];
   }
 
   else
   {
-    if (v3)
+    if (layoutCopy)
     {
-      v7 = [(TVRUINowPlayingMiniPlayerViewController *)self stackedTextLayoutConstraints];
-      [v6 activateConstraints:v7];
+      stackedTextLayoutConstraints = [(TVRUINowPlayingMiniPlayerViewController *)self stackedTextLayoutConstraints];
+      [v6 activateConstraints:stackedTextLayoutConstraints];
 
       v8 = MEMORY[0x277CCAAD0];
       [(TVRUINowPlayingMiniPlayerViewController *)self standardLayoutConstraints];
@@ -1492,51 +1492,51 @@ LABEL_9:
 
     else
     {
-      v9 = [(TVRUINowPlayingMiniPlayerViewController *)self standardLayoutConstraints];
-      [v6 activateConstraints:v9];
+      standardLayoutConstraints = [(TVRUINowPlayingMiniPlayerViewController *)self standardLayoutConstraints];
+      [v6 activateConstraints:standardLayoutConstraints];
 
       v8 = MEMORY[0x277CCAAD0];
       [(TVRUINowPlayingMiniPlayerViewController *)self stackedTextLayoutConstraints];
     }
-    v10 = ;
+    horizontalModeConstraints = ;
     [v8 deactivateConstraints:?];
   }
 }
 
 - (BOOL)_isCurrentlyStackedLayout
 {
-  v2 = [(TVRUINowPlayingMiniPlayerViewController *)self stackedTextLayoutConstraints];
-  v3 = [v2 firstObject];
+  stackedTextLayoutConstraints = [(TVRUINowPlayingMiniPlayerViewController *)self stackedTextLayoutConstraints];
+  firstObject = [stackedTextLayoutConstraints firstObject];
 
-  LOBYTE(v2) = [v3 isActive];
-  return v2;
+  LOBYTE(stackedTextLayoutConstraints) = [firstObject isActive];
+  return stackedTextLayoutConstraints;
 }
 
-- (void)_requestImageIfNeededForNowPlayingInfo:(id)a3
+- (void)_requestImageIfNeededForNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 tvrui_effectiveCanonicalID];
-    if (v6)
+    tvrui_effectiveCanonicalID = [infoCopy tvrui_effectiveCanonicalID];
+    if (tvrui_effectiveCanonicalID)
     {
-      v7 = [v5 metadata];
-      v8 = [v7 imageURLTemplate];
+      metadata = [v5 metadata];
+      imageURLTemplate = [metadata imageURLTemplate];
 
-      if (v8)
+      if (imageURLTemplate)
       {
-        v9 = [MEMORY[0x277D6C500] imageTemplateWithString:v8];
+        v9 = [MEMORY[0x277D6C500] imageTemplateWithString:imageURLTemplate];
         v10 = [v9 urlForSize:{400.0, 225.0}];
         objc_initWeak(&location, self);
-        v11 = [(TVRUINowPlayingMiniPlayerViewController *)self urlSession];
+        urlSession = [(TVRUINowPlayingMiniPlayerViewController *)self urlSession];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __82__TVRUINowPlayingMiniPlayerViewController__requestImageIfNeededForNowPlayingInfo___block_invoke;
         v13[3] = &unk_279D87D00;
         objc_copyWeak(&v15, &location);
-        v14 = v6;
-        v12 = [v11 dataTaskWithURL:v10 completionHandler:v13];
+        v14 = tvrui_effectiveCanonicalID;
+        v12 = [urlSession dataTaskWithURL:v10 completionHandler:v13];
 
         [v12 resume];
         objc_destroyWeak(&v15);
@@ -1616,8 +1616,8 @@ void __82__TVRUINowPlayingMiniPlayerViewController__requestImageIfNeededForNowPl
   urlSession = self->_urlSession;
   if (!urlSession)
   {
-    v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v4];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     v6 = self->_urlSession;
     self->_urlSession = v5;
 
@@ -1629,8 +1629,8 @@ void __82__TVRUINowPlayingMiniPlayerViewController__requestImageIfNeededForNowPl
 
 - (void)dealloc
 {
-  v3 = [(TVRUINowPlayingMiniPlayerViewController *)self systemMonitor];
-  [v3 invalidate];
+  systemMonitor = [(TVRUINowPlayingMiniPlayerViewController *)self systemMonitor];
+  [systemMonitor invalidate];
 
   v4.receiver = self;
   v4.super_class = TVRUINowPlayingMiniPlayerViewController;

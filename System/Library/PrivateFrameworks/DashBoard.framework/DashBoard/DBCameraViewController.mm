@@ -1,32 +1,32 @@
 @interface DBCameraViewController
-- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5;
-- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6;
-- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)a3 environment:(id)a4;
+- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)scene application:(id)application environment:(id)environment;
+- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment;
+- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)scene environment:(id)environment;
 - (void)loadView;
-- (void)sendSceneUpdateWithIsForeground:(BOOL)a3;
+- (void)sendSceneUpdateWithIsForeground:(BOOL)foreground;
 @end
 
 @implementation DBCameraViewController
 
-- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)a3 environment:(id)a4
+- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)scene environment:(id)environment
 {
-  v5 = a3;
+  sceneCopy = scene;
   swift_unknownObjectRetain();
-  return DBCameraViewController.init(scene:environment:)(v5, a4);
+  return DBCameraViewController.init(scene:environment:)(sceneCopy, environment);
 }
 
 - (void)loadView
 {
   v3 = objc_allocWithZone(type metadata accessor for DBCameraView());
-  v5 = self;
-  v4 = [v3 initWithFrame_];
-  [(DBCameraViewController *)v5 setView:v4];
+  selfCopy = self;
+  initWithFrame_ = [v3 initWithFrame_];
+  [(DBCameraViewController *)selfCopy setView:initWithFrame_];
 }
 
-- (void)sendSceneUpdateWithIsForeground:(BOOL)a3
+- (void)sendSceneUpdateWithIsForeground:(BOOL)foreground
 {
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = foreground;
   v6 = swift_allocObject();
   *(v6 + 16) = sub_24827EA3C;
   *(v6 + 24) = v5;
@@ -37,9 +37,9 @@
   v9[2] = sub_24827E2DC;
   v9[3] = &block_descriptor_18;
   v7 = _Block_copy(v9);
-  v8 = self;
+  selfCopy = self;
 
-  [(DBSceneHostViewController *)v8 performSceneUpdateWithBlock:v7 completion:0];
+  [(DBSceneHostViewController *)selfCopy performSceneUpdateWithBlock:v7 completion:0];
   _Block_release(v7);
   LOBYTE(v7) = swift_isEscapingClosureAtFileLocation();
 
@@ -49,14 +49,14 @@
   }
 }
 
-- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5
+- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)scene application:(id)application environment:(id)environment
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6
+- (_TtC9DashBoard22DBCameraViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

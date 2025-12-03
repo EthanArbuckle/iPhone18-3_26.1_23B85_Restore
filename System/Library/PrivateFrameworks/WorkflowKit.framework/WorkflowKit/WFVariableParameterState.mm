@@ -1,47 +1,47 @@
 @interface WFVariableParameterState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containedVariables;
 - (WFPropertyListObject)serializedRepresentation;
-- (WFVariableParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFVariableParameterState)initWithVariable:(id)a3;
+- (WFVariableParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFVariableParameterState)initWithVariable:(id)variable;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFVariableParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableParameterState *)self variable];
-  if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableParameterState *)self variable];
+  if (variable && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = [v11 prompt];
-    v9[2](v9, v12, 0);
+    prompt = [variable prompt];
+    handlerCopy[2](handlerCopy, prompt, 0);
   }
 
   else
   {
 
-    v13 = [(WFVariableParameterState *)self variable];
+    variable2 = [(WFVariableParameterState *)self variable];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85__WFVariableParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
     v14[3] = &unk_1E837DC20;
-    v15 = v10;
-    [v13 getContentWithContext:v8 completionHandler:v14];
+    v15 = valueHandlerCopy;
+    [variable2 getContentWithContext:contextCopy completionHandler:v14];
 
-    v11 = v15;
+    variable = v15;
   }
 }
 
 - (NSArray)containedVariables
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(WFVariableParameterState *)self variable];
-  v6[0] = v2;
+  variable = [(WFVariableParameterState *)self variable];
+  v6[0] = variable;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -51,16 +51,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFVariableParameterState *)self variable];
-  v3 = [v2 hash];
+  variable = [(WFVariableParameterState *)self variable];
+  v3 = [variable hash];
 
   return v3 ^ 0xADFAF12DLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -70,14 +70,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(WFVariableParameterState *)self variable];
-      if (v6 || ([(WFVariableParameterState *)v5 variable], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      variable = [(WFVariableParameterState *)self variable];
+      if (variable || ([(WFVariableParameterState *)equalCopy variable], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v7 = [(WFVariableParameterState *)self variable];
-        v8 = [(WFVariableParameterState *)v5 variable];
-        v9 = [v7 isEqual:v8];
+        variable2 = [(WFVariableParameterState *)self variable];
+        variable3 = [(WFVariableParameterState *)equalCopy variable];
+        v9 = [variable2 isEqual:variable3];
 
-        if (v6)
+        if (variable)
         {
 LABEL_11:
 
@@ -103,24 +103,24 @@ LABEL_12:
 
 - (WFPropertyListObject)serializedRepresentation
 {
-  v2 = [(WFVariableParameterState *)self variable];
-  v3 = WFSerializedVariableObject(v2);
+  variable = [(WFVariableParameterState *)self variable];
+  v3 = WFSerializedVariableObject(variable);
 
   return v3;
 }
 
-- (WFVariableParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFVariableParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = representationCopy;
   if (!v12)
   {
 LABEL_8:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -144,31 +144,31 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v13 = WFDeserializedVariableObject(v12, v9, v10);
+  v13 = WFDeserializedVariableObject(v12, providerCopy, parameterCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     self = [(WFVariableParameterState *)self initWithVariable:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
 LABEL_11:
   v17 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (WFVariableParameterState)initWithVariable:(id)a3
+- (WFVariableParameterState)initWithVariable:(id)variable
 {
-  v6 = a3;
-  if (!v6)
+  variableCopy = variable;
+  if (!variableCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFVariableParameterState.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"variable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableParameterState.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"variable"}];
   }
 
   v12.receiver = self;
@@ -177,7 +177,7 @@ LABEL_11:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_variable, a3);
+    objc_storeStrong(&v7->_variable, variable);
     v9 = v8;
   }
 

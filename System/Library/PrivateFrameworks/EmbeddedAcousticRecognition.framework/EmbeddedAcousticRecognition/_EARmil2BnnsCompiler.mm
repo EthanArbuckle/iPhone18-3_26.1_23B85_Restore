@@ -1,6 +1,6 @@
 @interface _EARmil2BnnsCompiler
-+ (BOOL)validateBnnsIr:(id)a3;
-+ (void)compileWithModelMilPath:(id)a3 bnnsIrOutPath:(id)a4 milConfigPath:(id)a5 errorOut:(id *)a6;
++ (BOOL)validateBnnsIr:(id)ir;
++ (void)compileWithModelMilPath:(id)path bnnsIrOutPath:(id)outPath milConfigPath:(id)configPath errorOut:(id *)out;
 + (void)initialize;
 @end
 
@@ -9,33 +9,33 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-+ (void)compileWithModelMilPath:(id)a3 bnnsIrOutPath:(id)a4 milConfigPath:(id)a5 errorOut:(id *)a6
++ (void)compileWithModelMilPath:(id)path bnnsIrOutPath:(id)outPath milConfigPath:(id)configPath errorOut:(id *)out
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  pathCopy = path;
+  outPathCopy = outPath;
+  configPathCopy = configPath;
+  if (pathCopy)
   {
-    if (v10)
+    if (outPathCopy)
     {
-      v12 = [MEMORY[0x1E696AC08] defaultManager];
-      v13 = [v12 fileExistsAtPath:v9];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v13 = [defaultManager fileExistsAtPath:pathCopy];
 
       if (v13)
       {
-        [v9 ear_toString];
-        [v10 ear_toString];
-        if (v11)
+        [pathCopy ear_toString];
+        [outPathCopy ear_toString];
+        if (configPathCopy)
         {
-          [v11 ear_toString];
+          [configPathCopy ear_toString];
         }
 
         else
@@ -69,7 +69,7 @@
 
         v22 = v21;
         v15 = v22;
-        if (!a6 || v20)
+        if (!out || v20)
         {
           goto LABEL_25;
         }
@@ -80,13 +80,13 @@
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
         v17 = [v23 errorWithDomain:@"com.apple.siri.quasar.mil2BnnsCompilation" code:3 userInfo:v16];
 LABEL_24:
-        *a6 = v17;
+        *out = v17;
 
 LABEL_25:
         goto LABEL_26;
       }
 
-      if (a6)
+      if (out)
       {
         v19 = MEMORY[0x1E696ABC0];
         v32 = *MEMORY[0x1E696A578];
@@ -98,7 +98,7 @@ LABEL_25:
       }
     }
 
-    else if (a6)
+    else if (out)
     {
       v18 = MEMORY[0x1E696ABC0];
       v34 = *MEMORY[0x1E696A578];
@@ -110,7 +110,7 @@ LABEL_25:
     }
   }
 
-  else if (a6)
+  else if (out)
   {
     v14 = MEMORY[0x1E696ABC0];
     v36 = *MEMORY[0x1E696A578];
@@ -124,13 +124,13 @@ LABEL_25:
 LABEL_26:
 }
 
-+ (BOOL)validateBnnsIr:(id)a3
++ (BOOL)validateBnnsIr:(id)ir
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  irCopy = ir;
+  v4 = irCopy;
+  if (irCopy)
   {
-    [v3 ear_toString];
+    [irCopy ear_toString];
   }
 
   else

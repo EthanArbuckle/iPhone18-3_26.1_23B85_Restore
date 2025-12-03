@@ -1,46 +1,46 @@
 @interface SXExperimentationManager
-- (SXExperimentationManager)initWithStore:(id)a3;
-- (id)getTreatmentGroupForExperiment:(id)a3;
-- (void)setupExperimentationForDocument:(id)a3 experimentationDelegate:(id)a4;
+- (SXExperimentationManager)initWithStore:(id)store;
+- (id)getTreatmentGroupForExperiment:(id)experiment;
+- (void)setupExperimentationForDocument:(id)document experimentationDelegate:(id)delegate;
 @end
 
 @implementation SXExperimentationManager
 
-- (SXExperimentationManager)initWithStore:(id)a3
+- (SXExperimentationManager)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = SXExperimentationManager;
   v6 = [(SXExperimentationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (void)setupExperimentationForDocument:(id)a3 experimentationDelegate:(id)a4
+- (void)setupExperimentationForDocument:(id)document experimentationDelegate:(id)delegate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 metadata];
-  v9 = [v8 experiment];
+  documentCopy = document;
+  delegateCopy = delegate;
+  metadata = [documentCopy metadata];
+  experiment = [metadata experiment];
 
-  if (v9)
+  if (experiment)
   {
-    v10 = [v9 expirationDate];
+    expirationDate = [experiment expirationDate];
 
-    if (v10)
+    if (expirationDate)
     {
-      v11 = [v9 expirationDate];
-      v12 = [v11 isExpired];
+      expirationDate2 = [experiment expirationDate];
+      isExpired = [expirationDate2 isExpired];
 
-      if (!v12)
+      if (!isExpired)
       {
-        v14 = [(SXExperimentationManager *)self getTreatmentGroupForExperiment:v9];
+        v14 = [(SXExperimentationManager *)self getTreatmentGroupForExperiment:experiment];
         if (!v14)
         {
 LABEL_13:
@@ -52,16 +52,16 @@ LABEL_13:
         if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_INFO))
         {
           v19 = v18;
-          v20 = [v9 identifier];
+          identifier = [experiment identifier];
           v21 = 138412546;
-          v22 = v20;
+          v22 = identifier;
           v23 = 2112;
           v24 = v14;
           _os_log_impl(&dword_1D825C000, v19, OS_LOG_TYPE_INFO, "Starting experiment. experimentIdentifier=%@, treatmentGroup=%@", &v21, 0x16u);
         }
 
-        v15 = [v9 identifier];
-        [v7 didStartExperimentForDocument:v6 experimentIdentifier:v15 treatmentGroup:v14];
+        identifier2 = [experiment identifier];
+        [delegateCopy didStartExperimentForDocument:documentCopy experimentIdentifier:identifier2 treatmentGroup:v14];
 LABEL_12:
 
         goto LABEL_13;
@@ -71,12 +71,12 @@ LABEL_12:
       if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_INFO))
       {
         v14 = v13;
-        v15 = [v9 identifier];
-        v16 = [v9 expirationDate];
+        identifier2 = [experiment identifier];
+        expirationDate3 = [experiment expirationDate];
         v21 = 138412546;
-        v22 = v15;
+        v22 = identifier2;
         v23 = 2112;
-        v24 = v16;
+        v24 = expirationDate3;
         _os_log_impl(&dword_1D825C000, v14, OS_LOG_TYPE_INFO, "Not starting experiment, it has expired. experimentIdentifier=%@, expirationDate=%@", &v21, 0x16u);
 
         goto LABEL_12;
@@ -88,7 +88,7 @@ LABEL_12:
       v17 = SXExperimentationLog;
       if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_ERROR))
       {
-        [SXExperimentationManager setupExperimentationForDocument:v17 experimentationDelegate:v9];
+        [SXExperimentationManager setupExperimentationForDocument:v17 experimentationDelegate:experiment];
       }
     }
   }
@@ -96,52 +96,52 @@ LABEL_12:
 LABEL_14:
 }
 
-- (id)getTreatmentGroupForExperiment:(id)a3
+- (id)getTreatmentGroupForExperiment:(id)experiment
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 treatmentGroups];
-  v6 = [v5 count];
+  experimentCopy = experiment;
+  treatmentGroups = [experimentCopy treatmentGroups];
+  v6 = [treatmentGroups count];
 
   if (!v6)
   {
     v14 = SXExperimentationLog;
     if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_ERROR))
     {
-      [(SXExperimentationManager *)v14 getTreatmentGroupForExperiment:v4];
+      [(SXExperimentationManager *)v14 getTreatmentGroupForExperiment:experimentCopy];
     }
 
     goto LABEL_10;
   }
 
-  v7 = [v4 expirationDate];
+  expirationDate = [experimentCopy expirationDate];
 
-  if (!v7)
+  if (!expirationDate)
   {
     v15 = SXExperimentationLog;
     if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_ERROR))
     {
-      [SXExperimentationManager setupExperimentationForDocument:v15 experimentationDelegate:v4];
+      [SXExperimentationManager setupExperimentationForDocument:v15 experimentationDelegate:experimentCopy];
     }
 
     goto LABEL_10;
   }
 
-  v8 = [v4 expirationDate];
-  v9 = [v8 isExpired];
+  expirationDate2 = [experimentCopy expirationDate];
+  isExpired = [expirationDate2 isExpired];
 
-  if (v9)
+  if (isExpired)
   {
     v10 = SXExperimentationLog;
     if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_INFO))
     {
       v11 = v10;
-      v12 = [v4 identifier];
-      v13 = [v4 expirationDate];
+      identifier = [experimentCopy identifier];
+      expirationDate3 = [experimentCopy expirationDate];
       v30 = 138412546;
-      v31 = v12;
+      v31 = identifier;
       v32 = 2112;
-      v33 = v13;
+      v33 = expirationDate3;
       _os_log_impl(&dword_1D825C000, v11, OS_LOG_TYPE_INFO, "Not starting experiment, it has expired. experimentIdentifier=%@, expirationDate=%@", &v30, 0x16u);
     }
 
@@ -150,32 +150,32 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v18 = [(SXExperimentationManager *)self store];
-  v19 = [v4 identifier];
-  v20 = [v18 treatmentGroupForExperimentIdentifier:v19];
+  store = [(SXExperimentationManager *)self store];
+  identifier2 = [experimentCopy identifier];
+  v20 = [store treatmentGroupForExperimentIdentifier:identifier2];
 
   if (!v20)
   {
-    v24 = [v4 treatmentGroups];
-    v25 = [v4 treatmentGroups];
-    v20 = [v24 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v25, "count"))}];
+    treatmentGroups2 = [experimentCopy treatmentGroups];
+    treatmentGroups3 = [experimentCopy treatmentGroups];
+    v20 = [treatmentGroups2 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(treatmentGroups3, "count"))}];
 
     v26 = SXExperimentationLog;
     if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_INFO))
     {
       v27 = v26;
-      v28 = [v4 identifier];
+      identifier3 = [experimentCopy identifier];
       v30 = 138412546;
-      v31 = v28;
+      v31 = identifier3;
       v32 = 2112;
       v33 = v20;
       _os_log_impl(&dword_1D825C000, v27, OS_LOG_TYPE_INFO, "Selected experiment treatmentGroup. experimentIdentifier=%@, treatmentGroup=%@", &v30, 0x16u);
     }
 
-    v22 = [(SXExperimentationManager *)self store];
-    v23 = [v4 identifier];
-    v29 = [v4 expirationDate];
-    [v22 storeTreatmentGroup:v20 forExperimentIdentifier:v23 expiryDate:v29];
+    store2 = [(SXExperimentationManager *)self store];
+    identifier4 = [experimentCopy identifier];
+    expirationDate4 = [experimentCopy expirationDate];
+    [store2 storeTreatmentGroup:v20 forExperimentIdentifier:identifier4 expiryDate:expirationDate4];
 
     goto LABEL_20;
   }
@@ -183,13 +183,13 @@ LABEL_10:
   v21 = SXExperimentationLog;
   if (os_log_type_enabled(SXExperimentationLog, OS_LOG_TYPE_INFO))
   {
-    v22 = v21;
-    v23 = [v4 identifier];
+    store2 = v21;
+    identifier4 = [experimentCopy identifier];
     v30 = 138412546;
-    v31 = v23;
+    v31 = identifier4;
     v32 = 2112;
     v33 = v20;
-    _os_log_impl(&dword_1D825C000, v22, OS_LOG_TYPE_INFO, "Found treatmentGroup in store. experimentIdentifier=%@, treatmentGroup=%@", &v30, 0x16u);
+    _os_log_impl(&dword_1D825C000, store2, OS_LOG_TYPE_INFO, "Found treatmentGroup in store. experimentIdentifier=%@, treatmentGroup=%@", &v30, 0x16u);
 LABEL_20:
   }
 

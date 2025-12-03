@@ -1,22 +1,22 @@
 @interface ATXHomeScreenConfigCache
-+ (BOOL)appPredictionPanelExistsInPage:(id)a3;
-+ (BOOL)hasWidgetsOnTheHomeScreenWithHomeScreenPages:(id)a3;
-+ (BOOL)suggestionsWidgetExistsInPage:(id)a3;
-+ (id)loadHomeScreenAndTodayPageConfigurationsFromJSONAtPath:(id)a3 error:(id *)a4;
++ (BOOL)appPredictionPanelExistsInPage:(id)page;
++ (BOOL)hasWidgetsOnTheHomeScreenWithHomeScreenPages:(id)pages;
++ (BOOL)suggestionsWidgetExistsInPage:(id)page;
++ (id)loadHomeScreenAndTodayPageConfigurationsFromJSONAtPath:(id)path error:(id *)error;
 - (ATXHomeScreenConfigCache)init;
-- (ATXHomeScreenConfigCache)initWithPath:(id)a3;
+- (ATXHomeScreenConfigCache)initWithPath:(id)path;
 - (BOOL)hasWidgetsOnTheHomeScreen;
-- (BOOL)writeDockAppList:(id)a3 error:(id *)a4;
-- (BOOL)writeHomeScreenPageConfigurations:(id)a3 forClientWithIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)writeTodayPageStacks:(id)a3 appPredictionPanels:(id)a4 error:(id *)a5;
+- (BOOL)writeDockAppList:(id)list error:(id *)error;
+- (BOOL)writeHomeScreenPageConfigurations:(id)configurations forClientWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)writeTodayPageStacks:(id)stacks appPredictionPanels:(id)panels error:(id *)error;
 - (id)homeScreenWidgetPersonalities;
-- (id)loadDockAppListWithError:(id *)a3;
-- (id)loadHomeScreenAndTodayPageConfigurationsIncludingHidden:(BOOL)a3 forClientWithIdentifier:(id)a4 error:(id *)a5;
-- (id)loadHomeScreenPageConfigurationsIncludingHidden:(BOOL)a3 forClientWithIdentifier:(id)a4 error:(id *)a5;
-- (id)loadTodayStacksAndPanelsAsHomeScreenPageWithError:(id *)a3;
+- (id)loadDockAppListWithError:(id *)error;
+- (id)loadHomeScreenAndTodayPageConfigurationsIncludingHidden:(BOOL)hidden forClientWithIdentifier:(id)identifier error:(id *)error;
+- (id)loadHomeScreenPageConfigurationsIncludingHidden:(BOOL)hidden forClientWithIdentifier:(id)identifier error:(id *)error;
+- (id)loadTodayStacksAndPanelsAsHomeScreenPageWithError:(id *)error;
 - (id)prettyPrintedJSON;
 - (int64_t)numOnboardingStacksOnTheHomeScreen;
-- (int64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)a3;
+- (int64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)identifier;
 @end
 
 @implementation ATXHomeScreenConfigCache
@@ -29,20 +29,20 @@
   return v4;
 }
 
-- (ATXHomeScreenConfigCache)initWithPath:(id)a3
+- (ATXHomeScreenConfigCache)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = ATXHomeScreenConfigCache;
   v5 = [(ATXHomeScreenConfigCache *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 createDirectoryAtPath:*(v5 + 1) withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager createDirectoryAtPath:*(v5 + 1) withIntermediateDirectories:1 attributes:0 error:0];
 
     if ((v9 & 1) == 0)
     {
@@ -59,12 +59,12 @@
   return v5;
 }
 
-- (id)loadHomeScreenAndTodayPageConfigurationsIncludingHidden:(BOOL)a3 forClientWithIdentifier:(id)a4 error:(id *)a5
+- (id)loadHomeScreenAndTodayPageConfigurationsIncludingHidden:(BOOL)hidden forClientWithIdentifier:(id)identifier error:(id *)error
 {
-  v7 = [(ATXHomeScreenConfigCache *)self loadHomeScreenPageConfigurationsIncludingHidden:a3 forClientWithIdentifier:a4 error:?];
+  v7 = [(ATXHomeScreenConfigCache *)self loadHomeScreenPageConfigurationsIncludingHidden:hidden forClientWithIdentifier:identifier error:?];
   if (v7)
   {
-    v8 = [(ATXHomeScreenConfigCache *)self loadTodayStacksAndPanelsAsHomeScreenPageWithError:a5];
+    v8 = [(ATXHomeScreenConfigCache *)self loadTodayStacksAndPanelsAsHomeScreenPageWithError:error];
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v7];
@@ -91,11 +91,11 @@
   return v9;
 }
 
-- (id)loadHomeScreenPageConfigurationsIncludingHidden:(BOOL)a3 forClientWithIdentifier:(id)a4 error:(id *)a5
+- (id)loadHomeScreenPageConfigurationsIncludingHidden:(BOOL)hidden forClientWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = objc_alloc(MEMORY[0x1E698AFF0]);
-  v10 = [(ATXHomeScreenConfigCache *)self _filePathForHomeScreenPageConfigWithClientIdentifier:v8];
+  v10 = [(ATXHomeScreenConfigCache *)self _filePathForHomeScreenPageConfigWithClientIdentifier:identifierCopy];
   v11 = __atxlog_handle_home_screen();
   v12 = [v9 initWithCacheFilePath:v10 loggingHandle:v11 debugName:@"Home Screens"];
 
@@ -108,13 +108,13 @@
   v17 = [v12 readSecureCodedObjectWithMaxValidAge:v16 allowableClasses:&v23 error:-1.0];
   v18 = v23;
 
-  if (a5 && [v18 code] != 2)
+  if (error && [v18 code] != 2)
   {
     v19 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
-  if (a3)
+  if (hidden)
   {
     v20 = v17;
   }
@@ -129,12 +129,12 @@
   return v21;
 }
 
-- (BOOL)writeHomeScreenPageConfigurations:(id)a3 forClientWithIdentifier:(id)a4 error:(id *)a5
+- (BOOL)writeHomeScreenPageConfigurations:(id)configurations forClientWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ATXHomeScreenConfigCache *)self loadHomeScreenPageConfigurationsIncludingHidden:1 forClientWithIdentifier:v9 error:0];
-  if (v10 && [v8 isEqualToArray:v10])
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
+  v10 = [(ATXHomeScreenConfigCache *)self loadHomeScreenPageConfigurationsIncludingHidden:1 forClientWithIdentifier:identifierCopy error:0];
+  if (v10 && [configurationsCopy isEqualToArray:v10])
   {
     v11 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -155,11 +155,11 @@
     }
 
     v14 = objc_alloc(MEMORY[0x1E698AFF0]);
-    v15 = [(ATXHomeScreenConfigCache *)self _filePathForHomeScreenPageConfigWithClientIdentifier:v9];
+    v15 = [(ATXHomeScreenConfigCache *)self _filePathForHomeScreenPageConfigWithClientIdentifier:identifierCopy];
     v16 = __atxlog_handle_home_screen();
     v11 = [v14 initWithCacheFilePath:v15 loggingHandle:v16 debugName:@"Home Screens"];
 
-    v12 = [v11 storeSecureCodedObject:v8 error:a5];
+    v12 = [v11 storeSecureCodedObject:configurationsCopy error:error];
     if (v12)
     {
       notify_post([@"com.apple.duetexpertd.homeScreenPageConfigCacheUpdate" UTF8String]);
@@ -199,8 +199,8 @@
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v23 = [v5 stacks];
-        v25 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        stacks = [v5 stacks];
+        v25 = [stacks countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v25)
         {
           v24 = *v31;
@@ -210,7 +210,7 @@
             {
               if (*v31 != v24)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(stacks);
               }
 
               v7 = *(*(&v30 + 1) + 8 * i);
@@ -218,8 +218,8 @@
               v27 = 0u;
               v28 = 0u;
               v29 = 0u;
-              v8 = [v7 widgets];
-              v9 = [v8 countByEnumeratingWithState:&v26 objects:v38 count:16];
+              widgets = [v7 widgets];
+              v9 = [widgets countByEnumeratingWithState:&v26 objects:v38 count:16];
               if (v9)
               {
                 v10 = v9;
@@ -230,25 +230,25 @@
                   {
                     if (*v27 != v11)
                     {
-                      objc_enumerationMutation(v8);
+                      objc_enumerationMutation(widgets);
                     }
 
                     v13 = *(*(&v26 + 1) + 8 * j);
                     v14 = [ATXWidgetPersonality alloc];
-                    v15 = [v13 extensionBundleId];
-                    v16 = [v13 widgetKind];
-                    v17 = [(ATXWidgetPersonality *)v14 initWithExtensionBundleId:v15 kind:v16];
+                    extensionBundleId = [v13 extensionBundleId];
+                    widgetKind = [v13 widgetKind];
+                    v17 = [(ATXWidgetPersonality *)v14 initWithExtensionBundleId:extensionBundleId kind:widgetKind];
                     [v3 addObject:v17];
                   }
 
-                  v10 = [v8 countByEnumeratingWithState:&v26 objects:v38 count:16];
+                  v10 = [widgets countByEnumeratingWithState:&v26 objects:v38 count:16];
                 }
 
                 while (v10);
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v25 = [stacks countByEnumeratingWithState:&v30 objects:v39 count:16];
           }
 
           while (v25);
@@ -283,15 +283,15 @@
   return v3;
 }
 
-+ (BOOL)hasWidgetsOnTheHomeScreenWithHomeScreenPages:(id)a3
++ (BOOL)hasWidgetsOnTheHomeScreenWithHomeScreenPages:(id)pages
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  pagesCopy = pages;
+  v4 = [pagesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -302,17 +302,17 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pagesCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 stacks];
-        v10 = [v9 count];
+        stacks = [v8 stacks];
+        v10 = [stacks count];
 
         if (!v10)
         {
-          v11 = [v8 panels];
-          v12 = [v11 count];
+          panels = [v8 panels];
+          v12 = [panels count];
 
           if (!v12)
           {
@@ -324,7 +324,7 @@
         goto LABEL_13;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [pagesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       v13 = 0;
       if (v5)
       {
@@ -372,8 +372,8 @@ LABEL_13:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v5 = [v4 stacks];
-        v6 = [v5 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        stacks = [v4 stacks];
+        v6 = [stacks countByEnumeratingWithState:&v24 objects:v33 count:16];
         if (v6)
         {
           v7 = v6;
@@ -384,7 +384,7 @@ LABEL_13:
             {
               if (*v25 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(stacks);
               }
 
               v10 = *(*(&v24 + 1) + 8 * j);
@@ -392,8 +392,8 @@ LABEL_13:
               v21 = 0u;
               v22 = 0u;
               v23 = 0u;
-              v11 = [v10 widgets];
-              v12 = [v11 countByEnumeratingWithState:&v20 objects:v32 count:16];
+              widgets = [v10 widgets];
+              v12 = [widgets countByEnumeratingWithState:&v20 objects:v32 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -404,7 +404,7 @@ LABEL_13:
                   {
                     if (*v21 != v14)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(widgets);
                     }
 
                     if ([*(*(&v20 + 1) + 8 * k) isOnboardingWidget])
@@ -414,7 +414,7 @@ LABEL_13:
                     }
                   }
 
-                  v13 = [v11 countByEnumeratingWithState:&v20 objects:v32 count:16];
+                  v13 = [widgets countByEnumeratingWithState:&v20 objects:v32 count:16];
                   if (v13)
                   {
                     continue;
@@ -427,7 +427,7 @@ LABEL_13:
 LABEL_21:
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v24 objects:v33 count:16];
+            v7 = [stacks countByEnumeratingWithState:&v24 objects:v33 count:16];
           }
 
           while (v7);
@@ -443,10 +443,10 @@ LABEL_21:
   return v2;
 }
 
-- (int64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)a3
+- (int64_t)pageIndexOfAppPredictionPanelWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
   [(ATXHomeScreenConfigCache *)self loadHomeScreenAndTodayPageConfigurationsIncludingHidden:1 error:0];
   v26 = 0u;
@@ -473,8 +473,8 @@ LABEL_21:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v9 panels];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        panels = [v9 panels];
+        v11 = [panels countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
         {
           v12 = v11;
@@ -485,22 +485,22 @@ LABEL_21:
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(panels);
               }
 
-              v15 = [*(*(&v22 + 1) + 8 * j) identifier];
-              v16 = [v15 isEqualToString:v4];
+              identifier = [*(*(&v22 + 1) + 8 * j) identifier];
+              v16 = [identifier isEqualToString:identifierCopy];
 
               if (v16)
               {
-                v17 = [v9 pageIndex];
+                pageIndex = [v9 pageIndex];
 
                 v5 = v20;
                 goto LABEL_19;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v12 = [panels countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v12)
             {
               continue;
@@ -513,7 +513,7 @@ LABEL_21:
         v7 = v19;
       }
 
-      v17 = 0x7FFFFFFFFFFFFFFFLL;
+      pageIndex = 0x7FFFFFFFFFFFFFFFLL;
       v5 = v20;
       v21 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
@@ -523,21 +523,21 @@ LABEL_21:
 
   else
   {
-    v17 = 0x7FFFFFFFFFFFFFFFLL;
+    pageIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
 LABEL_19:
 
   objc_autoreleasePoolPop(v5);
-  return v17;
+  return pageIndex;
 }
 
-- (id)loadDockAppListWithError:(id *)a3
+- (id)loadDockAppListWithError:(id *)error
 {
   v5 = objc_alloc(MEMORY[0x1E698AFF0]);
-  v6 = [(ATXHomeScreenConfigCache *)self _filePathForDockConfig];
+  _filePathForDockConfig = [(ATXHomeScreenConfigCache *)self _filePathForDockConfig];
   v7 = __atxlog_handle_home_screen();
-  v8 = [v5 initWithCacheFilePath:v6 loggingHandle:v7 debugName:@"Dock apps"];
+  v8 = [v5 initWithCacheFilePath:_filePathForDockConfig loggingHandle:v7 debugName:@"Dock apps"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -548,20 +548,20 @@ LABEL_19:
   v13 = [v8 readSecureCodedObjectWithMaxValidAge:v12 allowableClasses:&v17 error:-1.0];
   v14 = v17;
 
-  if (a3 && [v14 code] != 2)
+  if (error && [v14 code] != 2)
   {
     v15 = v14;
-    *a3 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (BOOL)writeDockAppList:(id)a3 error:(id *)a4
+- (BOOL)writeDockAppList:(id)list error:(id *)error
 {
-  v6 = a3;
+  listCopy = list;
   v7 = [(ATXHomeScreenConfigCache *)self loadDockAppListWithError:0];
-  if (v7 && [v6 isEqualToSet:v7])
+  if (v7 && [listCopy isEqualToSet:v7])
   {
     v8 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -582,11 +582,11 @@ LABEL_19:
     }
 
     v11 = objc_alloc(MEMORY[0x1E698AFF0]);
-    v12 = [(ATXHomeScreenConfigCache *)self _filePathForDockConfig];
+    _filePathForDockConfig = [(ATXHomeScreenConfigCache *)self _filePathForDockConfig];
     v13 = __atxlog_handle_home_screen();
-    v8 = [v11 initWithCacheFilePath:v12 loggingHandle:v13 debugName:@"Dock apps"];
+    v8 = [v11 initWithCacheFilePath:_filePathForDockConfig loggingHandle:v13 debugName:@"Dock apps"];
 
-    v9 = [v8 storeSecureCodedObject:v6 error:a4];
+    v9 = [v8 storeSecureCodedObject:listCopy error:error];
     if (v9)
     {
       notify_post([@"com.apple.duetexpertd.dockAppListCacheUpdate" UTF8String]);
@@ -596,12 +596,12 @@ LABEL_19:
   return v9;
 }
 
-- (id)loadTodayStacksAndPanelsAsHomeScreenPageWithError:(id *)a3
+- (id)loadTodayStacksAndPanelsAsHomeScreenPageWithError:(id *)error
 {
   v5 = objc_alloc(MEMORY[0x1E698AFF0]);
-  v6 = [(ATXHomeScreenConfigCache *)self _filePathForTodayPage];
+  _filePathForTodayPage = [(ATXHomeScreenConfigCache *)self _filePathForTodayPage];
   v7 = __atxlog_handle_home_screen();
-  v8 = [v5 initWithCacheFilePath:v6 loggingHandle:v7 debugName:@"Today page"];
+  v8 = [v5 initWithCacheFilePath:_filePathForTodayPage loggingHandle:v7 debugName:@"Today page"];
 
   v9 = objc_autoreleasePoolPush();
   v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
@@ -610,29 +610,29 @@ LABEL_19:
   v11 = [v8 readSecureCodedObjectWithMaxValidAge:v10 allowableClasses:&v15 error:-1.0];
   v12 = v15;
 
-  if (a3 && [v12 code] != 2)
+  if (error && [v12 code] != 2)
   {
     v13 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (BOOL)writeTodayPageStacks:(id)a3 appPredictionPanels:(id)a4 error:(id *)a5
+- (BOOL)writeTodayPageStacks:(id)stacks appPredictionPanels:(id)panels error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  panelsCopy = panels;
+  stacksCopy = stacks;
   v10 = [(ATXHomeScreenConfigCache *)self loadTodayStacksAndPanelsAsHomeScreenPageWithError:0];
   v11 = objc_opt_new();
   [v11 setPageIndex:20000];
-  [v11 setStacks:v9];
+  [v11 setStacks:stacksCopy];
 
-  [v11 setPanels:v8];
-  LODWORD(v9) = [v10 isEqual:v11];
+  [v11 setPanels:panelsCopy];
+  LODWORD(stacksCopy) = [v10 isEqual:v11];
   v12 = __atxlog_handle_home_screen();
   v13 = v12;
-  if (v9)
+  if (stacksCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -651,11 +651,11 @@ LABEL_19:
     }
 
     v15 = objc_alloc(MEMORY[0x1E698AFF0]);
-    v16 = [(ATXHomeScreenConfigCache *)self _filePathForTodayPage];
+    _filePathForTodayPage = [(ATXHomeScreenConfigCache *)self _filePathForTodayPage];
     v17 = __atxlog_handle_home_screen();
-    v13 = [v15 initWithCacheFilePath:v16 loggingHandle:v17 debugName:@"Today page"];
+    v13 = [v15 initWithCacheFilePath:_filePathForTodayPage loggingHandle:v17 debugName:@"Today page"];
 
-    v14 = [v13 storeSecureCodedObject:v11 error:a5];
+    v14 = [v13 storeSecureCodedObject:v11 error:error];
     if (v14)
     {
       notify_post([@"com.apple.duetexpertd.todayPageConfigCacheUpdate" UTF8String]);
@@ -665,14 +665,14 @@ LABEL_19:
   return v14;
 }
 
-+ (id)loadHomeScreenAndTodayPageConfigurationsFromJSONAtPath:(id)a3 error:(id *)a4
++ (id)loadHomeScreenAndTodayPageConfigurationsFromJSONAtPath:(id)path error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v5 options:0 error:a4];
+  pathCopy = path;
+  v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:0 error:error];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:a4];
+    v7 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:error];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = [v7 objectForKeyedSubscript:@"Page configurations"];
@@ -731,7 +731,7 @@ LABEL_19:
   v22 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(ATXHomeScreenConfigCache);
   v3 = [(ATXHomeScreenConfigCache *)v2 loadDockAppListWithError:0];
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v5 = [(ATXHomeScreenConfigCache *)v2 loadHomeScreenAndTodayPageConfigurationsIncludingHidden:1 error:0];
   v6 = objc_opt_new();
@@ -754,8 +754,8 @@ LABEL_19:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentationForIntrospection];
-        [v6 addObject:v12];
+        dictionaryRepresentationForIntrospection = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentationForIntrospection];
+        [v6 addObject:dictionaryRepresentationForIntrospection];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -766,7 +766,7 @@ LABEL_19:
 
   v13 = objc_opt_new();
   [v13 setObject:v6 forKeyedSubscript:@"Page configurations"];
-  [v13 setObject:v4 forKeyedSubscript:@"Dock apps"];
+  [v13 setObject:allObjects forKeyedSubscript:@"Dock apps"];
   v14 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v13 options:1 error:0];
   if (v14)
   {
@@ -781,33 +781,33 @@ LABEL_19:
   return v15;
 }
 
-+ (BOOL)appPredictionPanelExistsInPage:(id)a3
++ (BOOL)appPredictionPanelExistsInPage:(id)page
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pageCopy = page;
+  v4 = pageCopy;
+  if (pageCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [v3 panels];
-    v24 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    panels = [pageCopy panels];
+    v24 = [panels countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v24)
     {
       v6 = *v31;
       v7 = *MEMORY[0x1E698AF58];
       v22 = *v31;
       v23 = v4;
-      v25 = v5;
+      v25 = panels;
       do
       {
         for (i = 0; i != v24; ++i)
         {
           if (*v31 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(panels);
           }
 
           v9 = *(*(&v30 + 1) + 8 * i);
@@ -815,8 +815,8 @@ LABEL_19:
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v10 = [v9 widgets];
-          v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          widgets = [v9 widgets];
+          v11 = [widgets countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v11)
           {
             v12 = v11;
@@ -827,23 +827,23 @@ LABEL_19:
               {
                 if (*v27 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(widgets);
                 }
 
                 v15 = *(*(&v26 + 1) + 8 * j);
-                v16 = [v15 extensionBundleId];
-                if ([v16 isEqualToString:v7])
+                extensionBundleId = [v15 extensionBundleId];
+                if ([extensionBundleId isEqualToString:v7])
                 {
-                  v17 = [v15 widgetKind];
+                  widgetKind = [v15 widgetKind];
                   v18 = ATXSpecialWidgetKindAppPredictions();
-                  v19 = [v17 isEqualToString:v18];
+                  v19 = [widgetKind isEqualToString:v18];
 
                   if (v19)
                   {
 
                     v20 = 1;
                     v4 = v23;
-                    v5 = v25;
+                    panels = v25;
                     goto LABEL_23;
                   }
                 }
@@ -853,13 +853,13 @@ LABEL_19:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v12 = [widgets countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v12);
           }
 
-          v5 = v25;
+          panels = v25;
           v6 = v22;
         }
 
@@ -887,33 +887,33 @@ LABEL_23:
   return v20;
 }
 
-+ (BOOL)suggestionsWidgetExistsInPage:(id)a3
++ (BOOL)suggestionsWidgetExistsInPage:(id)page
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pageCopy = page;
+  v4 = pageCopy;
+  if (pageCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [v3 stacks];
-    v24 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    stacks = [pageCopy stacks];
+    v24 = [stacks countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v24)
     {
       v6 = *v31;
       v7 = *MEMORY[0x1E698AFC0];
       v22 = *v31;
       v23 = v4;
-      v25 = v5;
+      v25 = stacks;
       do
       {
         for (i = 0; i != v24; ++i)
         {
           if (*v31 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(stacks);
           }
 
           v9 = *(*(&v30 + 1) + 8 * i);
@@ -921,8 +921,8 @@ LABEL_23:
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v10 = [v9 widgets];
-          v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          widgets = [v9 widgets];
+          v11 = [widgets countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v11)
           {
             v12 = v11;
@@ -933,23 +933,23 @@ LABEL_23:
               {
                 if (*v27 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(widgets);
                 }
 
                 v15 = *(*(&v26 + 1) + 8 * j);
-                v16 = [v15 extensionBundleId];
-                if ([v16 isEqualToString:v7])
+                extensionBundleId = [v15 extensionBundleId];
+                if ([extensionBundleId isEqualToString:v7])
                 {
-                  v17 = [v15 widgetKind];
+                  widgetKind = [v15 widgetKind];
                   v18 = ATXSpecialWidgetKindSiriSuggestions();
-                  v19 = [v17 isEqualToString:v18];
+                  v19 = [widgetKind isEqualToString:v18];
 
                   if (v19)
                   {
 
                     v20 = 1;
                     v4 = v23;
-                    v5 = v25;
+                    stacks = v25;
                     goto LABEL_23;
                   }
                 }
@@ -959,13 +959,13 @@ LABEL_23:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v12 = [widgets countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v12);
           }
 
-          v5 = v25;
+          stacks = v25;
           v6 = v22;
         }
 

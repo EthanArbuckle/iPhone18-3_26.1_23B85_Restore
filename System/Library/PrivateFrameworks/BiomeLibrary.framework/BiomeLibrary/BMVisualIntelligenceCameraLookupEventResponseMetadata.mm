@@ -1,26 +1,26 @@
 @interface BMVisualIntelligenceCameraLookupEventResponseMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithHasResultRetrieved:(id)a3 endReason:(int)a4 httpErrorCode:(id)a5 serverErrorCode:(id)a6;
-- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithHasResultRetrieved:(id)retrieved endReason:(int)reason httpErrorCode:(id)code serverErrorCode:(id)errorCode;
+- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMVisualIntelligenceCameraLookupEventResponseMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMVisualIntelligenceCameraLookupEventResponseMetadata hasHasResultRetrieved](self, "hasHasResultRetrieved") || [v5 hasHasResultRetrieved])
     {
       if (![(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self hasHasResultRetrieved])
@@ -33,15 +33,15 @@
         goto LABEL_19;
       }
 
-      v6 = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self hasResultRetrieved];
-      if (v6 != [v5 hasResultRetrieved])
+      hasResultRetrieved = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self hasResultRetrieved];
+      if (hasResultRetrieved != [v5 hasResultRetrieved])
       {
         goto LABEL_19;
       }
     }
 
-    v7 = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self endReason];
-    if (v7 != [v5 endReason])
+    endReason = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self endReason];
+    if (endReason != [v5 endReason])
     {
       goto LABEL_19;
     }
@@ -58,8 +58,8 @@
         goto LABEL_19;
       }
 
-      v8 = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self httpErrorCode];
-      if (v8 != [v5 httpErrorCode])
+      httpErrorCode = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self httpErrorCode];
+      if (httpErrorCode != [v5 httpErrorCode])
       {
         goto LABEL_19;
       }
@@ -73,8 +73,8 @@
 
     if (-[BMVisualIntelligenceCameraLookupEventResponseMetadata hasServerErrorCode](self, "hasServerErrorCode") && [v5 hasServerErrorCode])
     {
-      v9 = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self serverErrorCode];
-      v10 = v9 == [v5 serverErrorCode];
+      serverErrorCode = [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self serverErrorCode];
+      v10 = serverErrorCode == [v5 serverErrorCode];
     }
 
     else
@@ -129,37 +129,37 @@ LABEL_21:
   }
 
   v14[0] = @"hasResultRetrieved";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"endReason";
-  v8 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"httpErrorCode";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"serverErrorCode";
-  v10 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   if (v6)
   {
@@ -210,16 +210,16 @@ LABEL_22:
   return v11;
 }
 
-- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"hasResultRetrieved"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"hasResultRetrieved"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v32 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"endReason"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endReason"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -233,10 +233,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v31 = 0;
-            v12 = 0;
+            selfCopy4 = 0;
             goto LABEL_35;
           }
 
@@ -247,8 +247,8 @@ LABEL_4:
           v38 = v16;
           v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
           v31 = 0;
-          v12 = 0;
-          *a4 = [v26 initWithDomain:v27 code:2 userInfo:v13];
+          selfCopy4 = 0;
+          *error = [v26 initWithDomain:v27 code:2 userInfo:v13];
           goto LABEL_34;
         }
 
@@ -263,16 +263,16 @@ LABEL_4:
       v31 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"httpErrorCode"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"httpErrorCode"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v16 = 0;
-          v12 = 0;
+          selfCopy4 = 0;
           goto LABEL_34;
         }
 
@@ -282,34 +282,34 @@ LABEL_4:
         v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"httpErrorCode"];
         v36 = v18;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-        v14 = self;
-        v17 = v20 = a4;
+        selfCopy3 = self;
+        v17 = v20 = error;
         v21 = [v29 initWithDomain:v19 code:2 userInfo:v17];
         v16 = 0;
-        v12 = 0;
+        selfCopy4 = 0;
         *v20 = v21;
         goto LABEL_32;
       }
 
-      v14 = self;
-      v15 = a4;
+      selfCopy3 = self;
+      errorCopy2 = error;
       v16 = v13;
     }
 
     else
     {
-      v14 = self;
-      v15 = a4;
+      selfCopy3 = self;
+      errorCopy2 = error;
       v16 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"serverErrorCode"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"serverErrorCode"];
     if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v18 = 0;
 LABEL_22:
-      self = -[BMVisualIntelligenceCameraLookupEventResponseMetadata initWithHasResultRetrieved:endReason:httpErrorCode:serverErrorCode:](v14, "initWithHasResultRetrieved:endReason:httpErrorCode:serverErrorCode:", v32, [v31 intValue], v16, v18);
-      v12 = self;
+      self = -[BMVisualIntelligenceCameraLookupEventResponseMetadata initWithHasResultRetrieved:endReason:httpErrorCode:serverErrorCode:](selfCopy3, "initWithHasResultRetrieved:endReason:httpErrorCode:serverErrorCode:", v32, [v31 intValue], v16, v18);
+      selfCopy4 = self;
 LABEL_33:
 
 LABEL_34:
@@ -323,7 +323,7 @@ LABEL_34:
       goto LABEL_22;
     }
 
-    if (v15)
+    if (errorCopy2)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = *MEMORY[0x1E698F240];
@@ -331,13 +331,13 @@ LABEL_34:
       v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"serverErrorCode"];
       v34 = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      *v15 = [v30 initWithDomain:v28 code:2 userInfo:v23];
+      *errorCopy2 = [v30 initWithDomain:v28 code:2 userInfo:v23];
     }
 
     v18 = 0;
-    v12 = 0;
+    selfCopy4 = 0;
 LABEL_32:
-    self = v14;
+    self = selfCopy3;
     goto LABEL_33;
   }
 
@@ -348,10 +348,10 @@ LABEL_32:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v32 = 0;
-    v12 = 0;
+    selfCopy4 = 0;
     goto LABEL_36;
   }
 
@@ -362,27 +362,27 @@ LABEL_32:
   v40[0] = v31;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v32 = 0;
-  v12 = 0;
-  *a4 = [v10 initWithDomain:v11 code:2 userInfo:v8];
+  selfCopy4 = 0;
+  *error = [v10 initWithDomain:v11 code:2 userInfo:v8];
 LABEL_35:
 
 LABEL_36:
   v24 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMVisualIntelligenceCameraLookupEventResponseMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_hasHasResultRetrieved)
   {
     hasResultRetrieved = self->_hasResultRetrieved;
@@ -404,9 +404,9 @@ LABEL_36:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMVisualIntelligenceCameraLookupEventResponseMetadata;
   v5 = [(BMEventBase *)&v47 init];
@@ -415,12 +415,12 @@ LABEL_36:
     goto LABEL_79;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -431,18 +431,18 @@ LABEL_36:
       while (1)
       {
         v48 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -460,9 +460,9 @@ LABEL_36:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -479,18 +479,18 @@ LABEL_16:
           while (1)
           {
             v48 = 0;
-            v40 = [v4 position] + 1;
-            if (v40 >= [v4 position] && (v41 = objc_msgSend(v4, "position") + 1, v41 <= objc_msgSend(v4, "length")))
+            v40 = [fromCopy position] + 1;
+            if (v40 >= [fromCopy position] && (v41 = objc_msgSend(fromCopy, "position") + 1, v41 <= objc_msgSend(fromCopy, "length")))
             {
-              v42 = [v4 data];
-              [v42 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v39 |= (v48 & 0x7F) << v37;
@@ -508,7 +508,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v29 = 0;
           }
@@ -542,18 +542,18 @@ LABEL_41:
           while (1)
           {
             v48 = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (v48 & 0x7F) << v23;
@@ -571,7 +571,7 @@ LABEL_41:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v29 = 0;
           }
@@ -597,18 +597,18 @@ LABEL_68:
         while (1)
         {
           v48 = 0;
-          v33 = [v4 position] + 1;
-          if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+          v33 = [fromCopy position] + 1;
+          if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
           {
-            v35 = [v4 data];
-            [v35 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v32 |= (v48 & 0x7F) << v30;
@@ -626,7 +626,7 @@ LABEL_68:
           }
         }
 
-        v36 = (v32 != 0) & ~[v4 hasError];
+        v36 = (v32 != 0) & ~[fromCopy hasError];
 LABEL_70:
         v5->_hasResultRetrieved = v36;
       }
@@ -644,18 +644,18 @@ LABEL_70:
         while (1)
         {
           v48 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v48 & 0x7F) << v16;
@@ -671,7 +671,7 @@ LABEL_70:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 3)
         {
 LABEL_63:
           LODWORD(v18) = 0;
@@ -681,13 +681,13 @@ LABEL_63:
       }
 
 LABEL_76:
-      v44 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v44 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_78:
     v45 = 0;
@@ -714,21 +714,21 @@ LABEL_79:
   return v8;
 }
 
-- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithHasResultRetrieved:(id)a3 endReason:(int)a4 httpErrorCode:(id)a5 serverErrorCode:(id)a6
+- (BMVisualIntelligenceCameraLookupEventResponseMetadata)initWithHasResultRetrieved:(id)retrieved endReason:(int)reason httpErrorCode:(id)code serverErrorCode:(id)errorCode
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  retrievedCopy = retrieved;
+  codeCopy = code;
+  errorCodeCopy = errorCode;
   v17.receiver = self;
   v17.super_class = BMVisualIntelligenceCameraLookupEventResponseMetadata;
   v13 = [(BMEventBase *)&v17 init];
   if (v13)
   {
     v13->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (retrievedCopy)
     {
       v13->_hasHasResultRetrieved = 1;
-      v13->_hasResultRetrieved = [v10 BOOLValue];
+      v13->_hasResultRetrieved = [retrievedCopy BOOLValue];
     }
 
     else
@@ -737,33 +737,33 @@ LABEL_79:
       v13->_hasResultRetrieved = 0;
     }
 
-    v13->_endReason = a4;
-    if (v11)
+    v13->_endReason = reason;
+    if (codeCopy)
     {
       v13->_hasHttpErrorCode = 1;
-      v14 = [v11 intValue];
+      intValue = [codeCopy intValue];
     }
 
     else
     {
       v13->_hasHttpErrorCode = 0;
-      v14 = -1;
+      intValue = -1;
     }
 
-    v13->_httpErrorCode = v14;
-    if (v12)
+    v13->_httpErrorCode = intValue;
+    if (errorCodeCopy)
     {
       v13->_hasServerErrorCode = 1;
-      v15 = [v12 intValue];
+      intValue2 = [errorCodeCopy intValue];
     }
 
     else
     {
       v13->_hasServerErrorCode = 0;
-      v15 = -1;
+      intValue2 = -1;
     }
 
-    v13->_serverErrorCode = v15;
+    v13->_serverErrorCode = intValue2;
   }
 
   return v13;
@@ -805,9 +805,9 @@ LABEL_79:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -815,8 +815,8 @@ LABEL_79:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMVisualIntelligenceCameraLookupEventResponseMetadata alloc] initByReadFrom:v7];
     v4 = v8;

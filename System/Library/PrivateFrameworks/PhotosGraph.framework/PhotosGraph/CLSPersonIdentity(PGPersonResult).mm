@@ -8,11 +8,11 @@
 
 - (BOOL)isInferredChild
 {
-  v1 = [a1 birthdayDate];
-  if (v1)
+  birthdayDate = [self birthdayDate];
+  if (birthdayDate)
   {
-    v2 = [MEMORY[0x277CBEAA8] date];
-    [v2 timeIntervalSinceDate:v1];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:birthdayDate];
     v4 = v3;
 
     v5 = v4 < 410248800.0;
@@ -28,15 +28,15 @@
 
 - (uint64_t)compareToPerson:()PGPersonResult
 {
-  v0 = [objc_opt_class() type];
-  v1 = [objc_opt_class() type];
+  type = [objc_opt_class() type];
+  type2 = [objc_opt_class() type];
   v2 = 1;
-  if (v0)
+  if (type)
   {
     v2 = -1;
   }
 
-  if (v0 == v1)
+  if (type == type2)
   {
     return 0;
   }
@@ -49,21 +49,21 @@
 
 - (id)keywordDescription
 {
-  v2 = [a1 fullName];
-  if ([v2 length])
+  fullName = [self fullName];
+  if ([fullName length])
   {
-    v3 = v2;
+    contactIdentifier = fullName;
   }
 
   else
   {
-    v3 = [a1 contactIdentifier];
+    contactIdentifier = [self contactIdentifier];
   }
 
-  v4 = v3;
-  if (v3)
+  v4 = contactIdentifier;
+  if (contactIdentifier)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", @"CLSPersonIdentity", v3];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", @"CLSPersonIdentity", contactIdentifier];
   }
 
   else

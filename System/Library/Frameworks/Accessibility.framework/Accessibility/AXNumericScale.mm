@@ -1,9 +1,9 @@
 @interface AXNumericScale
-+ (id)linearScaleWithLowerBound:(double)a3 upperBound:(double)a4;
-+ (id)lnScaleWithLowerBound:(double)a3 upperBound:(double)a4;
-+ (id)log10ScaleWithLowerBound:(double)a3 upperBound:(double)a4;
++ (id)linearScaleWithLowerBound:(double)bound upperBound:(double)upperBound;
++ (id)lnScaleWithLowerBound:(double)bound upperBound:(double)upperBound;
++ (id)log10ScaleWithLowerBound:(double)bound upperBound:(double)upperBound;
 - (AXNumericScale)init;
-- (AXNumericScale)initWithLowerBound:(double)a3 upperBound:(double)a4 apply:(id)a5 invert:(id)a6;
+- (AXNumericScale)initWithLowerBound:(double)bound upperBound:(double)upperBound apply:(id)apply invert:(id)invert;
 @end
 
 @implementation AXNumericScale
@@ -19,23 +19,23 @@
   return [(AXNumericScale *)self initWithLowerBound:0 upperBound:0 apply:0.0 invert:0.0];
 }
 
-- (AXNumericScale)initWithLowerBound:(double)a3 upperBound:(double)a4 apply:(id)a5 invert:(id)a6
+- (AXNumericScale)initWithLowerBound:(double)bound upperBound:(double)upperBound apply:(id)apply invert:(id)invert
 {
-  v10 = a5;
-  v11 = a6;
+  applyCopy = apply;
+  invertCopy = invert;
   v19.receiver = self;
   v19.super_class = AXNumericScale;
   v12 = [(AXNumericScale *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_lowerBound = a3;
-    v12->_upperBound = a4;
-    v14 = [v10 copy];
+    v12->_lowerBound = bound;
+    v12->_upperBound = upperBound;
+    v14 = [applyCopy copy];
     apply = v13->_apply;
     v13->_apply = v14;
 
-    v16 = [v11 copy];
+    v16 = [invertCopy copy];
     invert = v13->_invert;
     v13->_invert = v16;
   }
@@ -43,23 +43,23 @@
   return v13;
 }
 
-+ (id)linearScaleWithLowerBound:(double)a3 upperBound:(double)a4
++ (id)linearScaleWithLowerBound:(double)bound upperBound:(double)upperBound
 {
-  v4 = [[a1 alloc] initWithLowerBound:&__block_literal_global_383 upperBound:&__block_literal_global_385 apply:a3 invert:a4];
+  v4 = [[self alloc] initWithLowerBound:&__block_literal_global_383 upperBound:&__block_literal_global_385 apply:bound invert:upperBound];
 
   return v4;
 }
 
-+ (id)log10ScaleWithLowerBound:(double)a3 upperBound:(double)a4
++ (id)log10ScaleWithLowerBound:(double)bound upperBound:(double)upperBound
 {
-  v4 = [[a1 alloc] initWithLowerBound:&__block_literal_global_387 upperBound:&__block_literal_global_389 apply:a3 invert:a4];
+  v4 = [[self alloc] initWithLowerBound:&__block_literal_global_387 upperBound:&__block_literal_global_389 apply:bound invert:upperBound];
 
   return v4;
 }
 
-+ (id)lnScaleWithLowerBound:(double)a3 upperBound:(double)a4
++ (id)lnScaleWithLowerBound:(double)bound upperBound:(double)upperBound
 {
-  v4 = [[a1 alloc] initWithLowerBound:&__block_literal_global_391 upperBound:&__block_literal_global_393 apply:a3 invert:a4];
+  v4 = [[self alloc] initWithLowerBound:&__block_literal_global_391 upperBound:&__block_literal_global_393 apply:bound invert:upperBound];
 
   return v4;
 }

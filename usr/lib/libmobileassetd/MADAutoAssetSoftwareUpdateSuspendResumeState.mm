@@ -1,37 +1,37 @@
 @interface MADAutoAssetSoftwareUpdateSuspendResumeState
 + (BOOL)clear;
-+ (BOOL)writeNewSuspendingStateWithNonce:(id)a3 setConfigurationsToEvict:(id)a4;
++ (BOOL)writeNewSuspendingStateWithNonce:(id)nonce setConfigurationsToEvict:(id)evict;
 + (id)_currentState;
 + (id)_nonceFileURL;
 + (id)_stateFileURL;
-+ (int64_t)currentStatusWithStateHandle:(id *)a3;
++ (int64_t)currentStatusWithStateHandle:(id *)handle;
 - (BOOL)suspendedSetConfigurationsFromPreviousOS;
 - (BOOL)suspendedSetConfigurationsHasCurrentNonce;
 - (BOOL)write;
-- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithCoder:(id)a3;
-- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithNonce:(id)a3 status:(int64_t)a4 setConfigurationsToEvict:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithCoder:(id)coder;
+- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithNonce:(id)nonce status:(int64_t)status setConfigurationsToEvict:(id)evict;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetSoftwareUpdateSuspendResumeState
 
-- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithNonce:(id)a3 status:(int64_t)a4 setConfigurationsToEvict:(id)a5
+- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithNonce:(id)nonce status:(int64_t)status setConfigurationsToEvict:(id)evict
 {
-  v9 = a3;
-  v10 = a5;
+  nonceCopy = nonce;
+  evictCopy = evict;
   v16.receiver = self;
   v16.super_class = MADAutoAssetSoftwareUpdateSuspendResumeState;
   v11 = [(MADAutoAssetSoftwareUpdateSuspendResumeState *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_nonce, a3);
-    v12->_status = a4;
+    objc_storeStrong(&v11->_nonce, nonce);
+    v12->_status = status;
     v13 = MGCopyAnswer();
     build = v12->_build;
     v12->_build = v13;
 
-    objc_storeStrong(&v12->_setConfigurationsToEvict, a5);
+    objc_storeStrong(&v12->_setConfigurationsToEvict, evict);
   }
 
   return v12;
@@ -57,10 +57,10 @@
 
     if (v6)
     {
-      v7 = [objc_opt_class() _stateFileURL];
+      _stateFileURL = [objc_opt_class() _stateFileURL];
       v9 = _MADLog(@"AutoControl-SuspendResume");
       v10 = v9;
-      if (v7)
+      if (_stateFileURL)
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
@@ -72,7 +72,7 @@
         }
 
         v14 = 0;
-        v8 = [v3 writeToURL:v7 options:1 error:&v14];
+        v8 = [v3 writeToURL:_stateFileURL options:1 error:&v14];
         v10 = v14;
         if ((v8 & 1) == 0)
         {
@@ -80,7 +80,7 @@
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v17 = v7;
+            v17 = _stateFileURL;
             v18 = 2112;
             v19 = v10;
             _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "{write} encountered error writing suspendResumeState | stateFileURL:%@ writeError:%@", buf, 0x16u);
@@ -102,12 +102,12 @@
 
     else
     {
-      v7 = _MADLog(@"AutoControl-SuspendResume");
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      _stateFileURL = _MADLog(@"AutoControl-SuspendResume");
+      if (os_log_type_enabled(_stateFileURL, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v17 = v5;
-        _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "{write} encountered error serializing suspendResumeState | error:%@", buf, 0xCu);
+        _os_log_impl(&dword_0, _stateFileURL, OS_LOG_TYPE_ERROR, "{write} encountered error serializing suspendResumeState | error:%@", buf, 0xCu);
       }
 
       v8 = 0;
@@ -139,8 +139,8 @@
 
 - (BOOL)suspendedSetConfigurationsHasCurrentNonce
 {
-  v3 = [objc_opt_class() _nonceFileURL];
-  if (!v3)
+  _nonceFileURL = [objc_opt_class() _nonceFileURL];
+  if (!_nonceFileURL)
   {
     v4 = _MADLog(@"AutoControl-SuspendResume");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -152,7 +152,7 @@
     goto LABEL_12;
   }
 
-  v4 = [NSData dataWithContentsOfURL:v3];
+  v4 = [NSData dataWithContentsOfURL:_nonceFileURL];
   if (!v4)
   {
 LABEL_12:
@@ -176,18 +176,18 @@ LABEL_12:
 
   if (v8)
   {
-    v9 = [(MADAutoAssetSoftwareUpdateSuspendResumeState *)self nonce];
-    v10 = [SUCore objectIsEqual:v9 to:v5];
+    nonce = [(MADAutoAssetSoftwareUpdateSuspendResumeState *)self nonce];
+    v10 = [SUCore objectIsEqual:nonce to:v5];
   }
 
   else
   {
-    v9 = _MADLog(@"AutoControl-SuspendResume");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    nonce = _MADLog(@"AutoControl-SuspendResume");
+    if (os_log_type_enabled(nonce, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v14 = v7;
-      _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "{suspendedSetConfigurationsHasCurrentNonce} encountered reading suspendResumeNonce file | unarchiveError:%@", buf, 0xCu);
+      _os_log_impl(&dword_0, nonce, OS_LOG_TYPE_ERROR, "{suspendedSetConfigurationsHasCurrentNonce} encountered reading suspendResumeNonce file | unarchiveError:%@", buf, 0xCu);
     }
 
     v10 = 0;
@@ -197,20 +197,20 @@ LABEL_15:
   return v10;
 }
 
-- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithCoder:(id)a3
+- (MADAutoAssetSoftwareUpdateSuspendResumeState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MADAutoAssetSoftwareUpdateSuspendResumeState;
   v5 = [(MADAutoAssetSoftwareUpdateSuspendResumeState *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v6;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
     build = v5->_build;
     v5->_build = v8;
 
@@ -218,7 +218,7 @@ LABEL_15:
     v16[1] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v16 count:2];
     v11 = [NSSet setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"setConfigurationsToEvict"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"setConfigurationsToEvict"];
     setConfigurationsToEvict = v5->_setConfigurationsToEvict;
     v5->_setConfigurationsToEvict = v12;
   }
@@ -226,43 +226,43 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   nonce = self->_nonce;
-  v9 = v4;
+  v9 = coderCopy;
   if (nonce)
   {
-    [v4 encodeObject:nonce forKey:@"nonce"];
-    v4 = v9;
+    [coderCopy encodeObject:nonce forKey:@"nonce"];
+    coderCopy = v9;
   }
 
   status = self->_status;
   if (status)
   {
     [v9 encodeInteger:status forKey:@"status"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   build = self->_build;
   if (build)
   {
     [v9 encodeObject:build forKey:@"build"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   setConfigurationsToEvict = self->_setConfigurationsToEvict;
   if (setConfigurationsToEvict)
   {
     [v9 encodeObject:setConfigurationsToEvict forKey:@"setConfigurationsToEvict"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
 + (id)_currentState
 {
-  v2 = [objc_opt_class() _stateFileURL];
-  if (!v2)
+  _stateFileURL = [objc_opt_class() _stateFileURL];
+  if (!_stateFileURL)
   {
     v3 = _MADLog(@"AutoControl-SuspendResume");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -274,7 +274,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v3 = [NSData dataWithContentsOfURL:v2];
+  v3 = [NSData dataWithContentsOfURL:_stateFileURL];
   if (!v3)
   {
 LABEL_12:
@@ -319,46 +319,46 @@ LABEL_15:
   return v9;
 }
 
-+ (int64_t)currentStatusWithStateHandle:(id *)a3
++ (int64_t)currentStatusWithStateHandle:(id *)handle
 {
-  v4 = [a1 _currentState];
-  v5 = v4;
-  if (a3)
+  _currentState = [self _currentState];
+  v5 = _currentState;
+  if (handle)
   {
-    v6 = v4;
-    *a3 = v5;
+    v6 = _currentState;
+    *handle = v5;
   }
 
   if (v5)
   {
     if (([v5 suspendedSetConfigurationsFromPreviousOS] & 1) != 0 || !objc_msgSend(v5, "suspendedSetConfigurationsHasCurrentNonce"))
     {
-      v7 = &stru_20 + 69;
+      status = &stru_20 + 69;
     }
 
     else
     {
-      v7 = [v5 status];
+      status = [v5 status];
     }
   }
 
   else
   {
-    v7 = &stru_20 + 68;
+    status = &stru_20 + 68;
   }
 
-  return v7;
+  return status;
 }
 
-+ (BOOL)writeNewSuspendingStateWithNonce:(id)a3 setConfigurationsToEvict:(id)a4
++ (BOOL)writeNewSuspendingStateWithNonce:(id)nonce setConfigurationsToEvict:(id)evict
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  nonceCopy = nonce;
+  evictCopy = evict;
+  v7 = evictCopy;
+  if (nonceCopy && evictCopy)
   {
     v22 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v22];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:nonceCopy requiringSecureCoding:1 error:&v22];
     v9 = v22;
     v10 = v9;
     if (v8)
@@ -373,20 +373,20 @@ LABEL_15:
 
     if (!v11)
     {
-      v12 = _MADLog(@"AutoControl-SuspendResume");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      _nonceFileURL = _MADLog(@"AutoControl-SuspendResume");
+      if (os_log_type_enabled(_nonceFileURL, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v24 = v10;
-        _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "{writeNewSuspendingStateWithNonce} encountered error serializing nonce | error:%@", buf, 0xCu);
+        _os_log_impl(&dword_0, _nonceFileURL, OS_LOG_TYPE_ERROR, "{writeNewSuspendingStateWithNonce} encountered error serializing nonce | error:%@", buf, 0xCu);
       }
 
-      v13 = 0;
+      write = 0;
       goto LABEL_29;
     }
 
-    v12 = [objc_opt_class() _nonceFileURL];
-    if (!v12)
+    _nonceFileURL = [objc_opt_class() _nonceFileURL];
+    if (!_nonceFileURL)
     {
       v16 = _MADLog(@"AutoControl-SuspendResume");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -395,12 +395,12 @@ LABEL_15:
         _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "{writeNewSuspendingStateWithNonce} unable to resolve nonceFileURL", buf, 2u);
       }
 
-      v13 = 0;
+      write = 0;
       goto LABEL_28;
     }
 
     v21 = 0;
-    v14 = [v8 writeToURL:v12 options:0 error:&v21];
+    v14 = [v8 writeToURL:_nonceFileURL options:0 error:&v21];
     v15 = v21;
     v16 = v15;
     if (!v14 || v15)
@@ -409,7 +409,7 @@ LABEL_15:
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v24 = v12;
+        v24 = _nonceFileURL;
         v25 = 2112;
         v26 = v16;
         _os_log_impl(&dword_0, p_super, OS_LOG_TYPE_ERROR, "{writeNewSuspendingStateWithNonce} encountered error writing file | fileURL:%@ error:%@", buf, 0x16u);
@@ -418,11 +418,11 @@ LABEL_15:
 
     else
     {
-      v17 = [[MADAutoAssetSoftwareUpdateSuspendResumeState alloc] initWithNonce:v5 status:201 setConfigurationsToEvict:v7];
+      v17 = [[MADAutoAssetSoftwareUpdateSuspendResumeState alloc] initWithNonce:nonceCopy status:201 setConfigurationsToEvict:v7];
       p_super = &v17->super;
       if (v17)
       {
-        v13 = [(MADAutoAssetSoftwareUpdateSuspendResumeState *)v17 write];
+        write = [(MADAutoAssetSoftwareUpdateSuspendResumeState *)v17 write];
 LABEL_27:
 
 LABEL_28:
@@ -435,14 +435,14 @@ LABEL_29:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v24 = v5;
+        v24 = nonceCopy;
         v25 = 2112;
         v26 = v7;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "{writeNewSuspendingStateWithNonce} unable to alloc/init suspendResumeState | nonce:%@ setConfigurationsToEvict:%@", buf, 0x16u);
       }
     }
 
-    v13 = 0;
+    write = 0;
     goto LABEL_27;
   }
 
@@ -450,16 +450,16 @@ LABEL_29:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v24 = v5;
+    v24 = nonceCopy;
     v25 = 2112;
     v26 = v7;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "{writeNewSuspendingStateWithNonce} missing required parameter | nonce:%@ setConfigurationsToEvict:%@", buf, 0x16u);
   }
 
-  v13 = 0;
+  write = 0;
 LABEL_30:
 
-  return v13;
+  return write;
 }
 
 + (BOOL)clear
@@ -496,8 +496,8 @@ LABEL_33:
   }
 
   v5 = v4;
-  v6 = [a1 _nonceFileURL];
-  if (!v6)
+  _nonceFileURL = [self _nonceFileURL];
+  if (!_nonceFileURL)
   {
     v25 = _MADLog(@"AutoControl-SuspendResume");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -509,11 +509,11 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v7 = v6;
-  [v5 addObject:v6];
+  v7 = _nonceFileURL;
+  [v5 addObject:_nonceFileURL];
 
-  v8 = [a1 _stateFileURL];
-  if (!v8)
+  _stateFileURL = [self _stateFileURL];
+  if (!_stateFileURL)
   {
     v26 = _MADLog(@"AutoControl-SuspendResume");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -526,8 +526,8 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v9 = v8;
-  [v5 addObject:v8];
+  v9 = _stateFileURL;
+  [v5 addObject:_stateFileURL];
 
   v31 = 0u;
   v32 = 0u;
@@ -551,8 +551,8 @@ LABEL_33:
 
         v15 = *(*(&v29 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 path];
-        v18 = [v3 fileExistsAtPath:v17];
+        path = [v15 path];
+        v18 = [v3 fileExistsAtPath:path];
 
         if (v18)
         {

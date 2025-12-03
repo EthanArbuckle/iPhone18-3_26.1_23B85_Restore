@@ -22,45 +22,45 @@
 - (id)ic_dedupedURLWithProhibitedNames:()IC
 {
   v27 = a3;
-  v4 = a1;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 lastPathComponent];
-  v7 = [v6 pathExtension];
-  v25 = v6;
-  v8 = [v6 stringByDeletingPathExtension];
-  v9 = [v4 URLByDeletingLastPathComponent];
+  selfCopy = self;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  lastPathComponent = [selfCopy lastPathComponent];
+  pathExtension = [lastPathComponent pathExtension];
+  v25 = lastPathComponent;
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  uRLByDeletingLastPathComponent = [selfCopy URLByDeletingLastPathComponent];
   v10 = 1;
   v11 = 0x1E696A000uLL;
   v12 = @"%@-%lu";
-  v26 = v7;
+  v26 = pathExtension;
   while (1)
   {
-    if ([v4 checkResourceIsReachableAndReturnError:0])
+    if ([selfCopy checkResourceIsReachableAndReturnError:0])
     {
       goto LABEL_6;
     }
 
-    v13 = [v4 path];
-    if ([v5 fileExistsAtPath:v13])
+    path = [selfCopy path];
+    if ([defaultManager fileExistsAtPath:path])
     {
 
       goto LABEL_6;
     }
 
-    [v4 lastPathComponent];
-    v14 = v9;
-    v15 = v8;
+    [selfCopy lastPathComponent];
+    v14 = uRLByDeletingLastPathComponent;
+    v15 = stringByDeletingPathExtension;
     v16 = v12;
     v17 = v11;
-    v19 = v18 = v5;
+    v19 = v18 = defaultManager;
     v20 = [v27 containsObject:v19];
 
-    v5 = v18;
+    defaultManager = v18;
     v11 = v17;
     v12 = v16;
-    v8 = v15;
-    v9 = v14;
-    v7 = v26;
+    stringByDeletingPathExtension = v15;
+    uRLByDeletingLastPathComponent = v14;
+    pathExtension = v26;
 
     if (!v20)
     {
@@ -68,21 +68,21 @@
     }
 
 LABEL_6:
-    v21 = [*(v11 + 3776) stringWithFormat:v12, v8, v10];
-    if ([v7 length])
+    v21 = [*(v11 + 3776) stringWithFormat:v12, stringByDeletingPathExtension, v10];
+    if ([pathExtension length])
     {
-      v22 = [v21 stringByAppendingPathExtension:v7];
+      v22 = [v21 stringByAppendingPathExtension:pathExtension];
 
       v21 = v22;
     }
 
-    v23 = [v9 URLByAppendingPathComponent:v21 isDirectory:0];
+    v23 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v21 isDirectory:0];
 
     ++v10;
-    v4 = v23;
+    selfCopy = v23;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)ic_updateFlagToExcludeFromBackup:()IC
@@ -96,7 +96,7 @@ LABEL_6:
   v5[1] = 3221225472;
   v5[2] = __46__NSURL_IC__ic_updateFlagToExcludeFromBackup___block_invoke_2;
   v5[3] = &unk_1E8485860;
-  v5[4] = a1;
+  v5[4] = self;
   v6 = a3;
   dispatch_async(ic_updateFlagToExcludeFromBackup__excludeFromBackupQueue, v5);
 }
@@ -107,7 +107,7 @@ LABEL_6:
   v10 = 0;
   v2 = *MEMORY[0x1E695DB80];
   v9 = 0;
-  v3 = [a1 getResourceValue:&v10 forKey:v2 error:&v9];
+  v3 = [self getResourceValue:&v10 forKey:v2 error:&v9];
   v4 = v10;
   v5 = v9;
   if ((v3 & 1) == 0)
@@ -118,16 +118,16 @@ LABEL_6:
       *buf = 138412802;
       v12 = v2;
       v13 = 2112;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2112;
       v16 = v5;
       _os_log_error_impl(&dword_1D4576000, v6, OS_LOG_TYPE_ERROR, "Error checking backup exclusion flag %@ for %@: %@", buf, 0x20u);
     }
   }
 
-  v7 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (uint64_t)ic_isExcludedFromCloudBackups
@@ -136,7 +136,7 @@ LABEL_6:
   v10 = 0;
   v2 = *MEMORY[0x1E695E300];
   v9 = 0;
-  v3 = [a1 getResourceValue:&v10 forKey:v2 error:&v9];
+  v3 = [self getResourceValue:&v10 forKey:v2 error:&v9];
   v4 = v10;
   v5 = v9;
   if ((v3 & 1) == 0)
@@ -147,42 +147,42 @@ LABEL_6:
       *buf = 138412802;
       v12 = v2;
       v13 = 2112;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2112;
       v16 = v5;
       _os_log_error_impl(&dword_1D4576000, v6, OS_LOG_TYPE_ERROR, "Error checking backup exclusion flag %@ for %@: %@", buf, 0x20u);
     }
   }
 
-  v7 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)ic_uniquedURL
 {
-  v1 = a1;
-  if ([v1 checkResourceIsReachableAndReturnError:0])
+  selfCopy = self;
+  if ([selfCopy checkResourceIsReachableAndReturnError:0])
   {
-    v2 = [v1 lastPathComponent];
-    v3 = [v2 pathExtension];
-    v4 = [v2 stringByDeletingPathExtension];
-    v5 = [v1 URLByDeletingLastPathComponent];
+    lastPathComponent = [selfCopy lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    uRLByDeletingLastPathComponent = [selfCopy URLByDeletingLastPathComponent];
     v6 = 1;
     do
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%lu", v4, v6];
-      if ([v3 length])
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%lu", stringByDeletingPathExtension, v6];
+      if ([pathExtension length])
       {
-        v8 = [v7 stringByAppendingPathExtension:v3];
+        v8 = [v7 stringByAppendingPathExtension:pathExtension];
 
         v7 = v8;
       }
 
-      v9 = [v5 URLByAppendingPathComponent:v7 isDirectory:0];
+      v9 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v7 isDirectory:0];
 
       ++v6;
-      v1 = v9;
+      selfCopy = v9;
     }
 
     while (([v9 checkResourceIsReachableAndReturnError:0] & 1) != 0);
@@ -190,7 +190,7 @@ LABEL_6:
 
   else
   {
-    v9 = v1;
+    v9 = selfCopy;
   }
 
   return v9;
@@ -198,23 +198,23 @@ LABEL_6:
 
 - (uint64_t)ic_isBooksURL
 {
-  v1 = [a1 host];
-  v2 = [v1 isEqualToString:@"books.apple.com"];
+  host = [self host];
+  v2 = [host isEqualToString:@"books.apple.com"];
 
   return v2;
 }
 
 - (uint64_t)ic_isNewsURL
 {
-  v1 = [a1 host];
-  if ([v1 isEqualToString:@"apple.news"])
+  host = [self host];
+  if ([host isEqualToString:@"apple.news"])
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqual:@"news.apple.com"];
+    v2 = [host isEqual:@"news.apple.com"];
   }
 
   return v2;
@@ -222,15 +222,15 @@ LABEL_6:
 
 - (uint64_t)ic_isiTunesURL
 {
-  v1 = [a1 host];
-  if ([v1 isEqual:@"itunes.apple.com"] & 1) != 0 || (objc_msgSend(v1, "isEqual:", @"itunes.com"))
+  host = [self host];
+  if ([host isEqual:@"itunes.apple.com"] & 1) != 0 || (objc_msgSend(host, "isEqual:", @"itunes.com"))
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqual:@"itun.es"];
+    v2 = [host isEqual:@"itun.es"];
   }
 
   return v2;
@@ -238,32 +238,32 @@ LABEL_6:
 
 - (uint64_t)ic_isAppStoreURL
 {
-  v1 = [a1 host];
-  v2 = [v1 isEqual:@"appsto.re"];
+  host = [self host];
+  v2 = [host isEqual:@"appsto.re"];
 
   return v2;
 }
 
 - (uint64_t)ic_isPodcastsURL
 {
-  v1 = [a1 host];
-  v2 = [v1 isEqual:@"podcasts.apple.com"];
+  host = [self host];
+  v2 = [host isEqual:@"podcasts.apple.com"];
 
   return v2;
 }
 
 - (uint64_t)ic_isWebURL
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"http"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"http"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 scheme];
-    v3 = [v4 isEqualToString:@"https"];
+    scheme2 = [self scheme];
+    v3 = [scheme2 isEqualToString:@"https"];
   }
 
   return v3;
@@ -271,21 +271,21 @@ LABEL_6:
 
 - (uint64_t)ic_isSupportedAsAttachment
 {
-  if ([a1 ic_isWebURL] & 1) != 0 || (objc_msgSend(a1, "ic_isMapURL"))
+  if ([self ic_isWebURL] & 1) != 0 || (objc_msgSend(self, "ic_isMapURL"))
   {
     return 1;
   }
 
-  return [a1 ic_isSafeFileURLForAttachment];
+  return [self ic_isSafeFileURLForAttachment];
 }
 
 - (uint64_t)ic_isSafeFileURLForAttachment
 {
   v24 = *MEMORY[0x1E69E9840];
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
-    v2 = [a1 path];
-    v3 = [v2 stringByStandardizingPath];
+    path = [self path];
+    stringByStandardizingPath = [path stringByStandardizingPath];
 
     v4 = ic_isSafeFileURLForAttachment_unsafePathPrefixes;
     if (!ic_isSafeFileURLForAttachment_unsafePathPrefixes)
@@ -315,7 +315,7 @@ LABEL_6:
             objc_enumerationMutation(v5);
           }
 
-          if ([v3 hasPrefix:*(*(&v19 + 1) + 8 * v9)])
+          if ([stringByStandardizingPath hasPrefix:*(*(&v19 + 1) + 8 * v9)])
           {
 
             goto LABEL_18;
@@ -345,8 +345,8 @@ LABEL_6:
       v10 = ic_isSafeFileURLForAttachment_unsafeFilenames;
     }
 
-    v13 = [v3 lastPathComponent];
-    v14 = [v10 containsObject:v13];
+    lastPathComponent = [stringByStandardizingPath lastPathComponent];
+    v14 = [v10 containsObject:lastPathComponent];
 
     if (v14)
     {
@@ -356,8 +356,8 @@ LABEL_18:
 
     else
     {
-      v15 = [a1 pathComponents];
-      v16 = [v15 containsObject:@".."];
+      pathComponents = [self pathComponents];
+      v16 = [pathComponents containsObject:@".."];
 
       v17 = v16 ^ 1;
     }
@@ -373,10 +373,10 @@ LABEL_18:
 
 - (id)ic_UTI
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
     v7 = 0;
-    v2 = [a1 getResourceValue:&v7 forKey:*MEMORY[0x1E695DC68] error:0];
+    v2 = [self getResourceValue:&v7 forKey:*MEMORY[0x1E695DC68] error:0];
     v3 = v7;
     v4 = v3;
     v5 = 0;
@@ -396,7 +396,7 @@ LABEL_18:
 
 - (uint64_t)ic_fileSize
 {
-  if ([a1 isFileURL] && (v3 = 0, objc_msgSend(a1, "getResourceValue:forKey:error:", &v3, *MEMORY[0x1E695DB50], 0)))
+  if ([self isFileURL] && (v3 = 0, objc_msgSend(self, "getResourceValue:forKey:error:", &v3, *MEMORY[0x1E695DB50], 0)))
   {
     return [v3 integerValue];
   }
@@ -410,15 +410,15 @@ LABEL_18:
 - (uint64_t)ic_fileOrDirectorySize
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a1 isFileURL])
+  if (![self isFileURL])
   {
     return 0;
   }
 
-  if ([a1 hasDirectoryPath])
+  if ([self hasDirectoryPath])
   {
-    v2 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = [v2 contentsOfDirectoryAtURL:a1 includingPropertiesForKeys:0 options:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = [defaultManager contentsOfDirectoryAtURL:self includingPropertiesForKeys:0 options:0 error:0];
 
     v13 = 0u;
     v14 = 0u;
@@ -457,7 +457,7 @@ LABEL_18:
     return v7;
   }
 
-  return [a1 ic_fileSize];
+  return [self ic_fileSize];
 }
 
 @end

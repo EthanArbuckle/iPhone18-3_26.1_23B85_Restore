@@ -1,19 +1,19 @@
 @interface BRShareProgressView
-- (BRShareProgressView)initWithProgress:(id)a3;
+- (BRShareProgressView)initWithProgress:(id)progress;
 @end
 
 @implementation BRShareProgressView
 
-- (BRShareProgressView)initWithProgress:(id)a3
+- (BRShareProgressView)initWithProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   v44.receiver = self;
   v44.super_class = BRShareProgressView;
   v6 = [(BRShareProgressView *)&v44 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_progress, a3);
+    objc_storeStrong(&v6->_progress, progress);
     v8 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     spinner = v7->_spinner;
     v7->_spinner = v8;
@@ -45,34 +45,34 @@
     [(UILabel *)v7->_progressLabel setFont:v17];
 
     v18 = objc_opt_new();
-    v19 = [(UILabel *)v7->_titleLabel centerXAnchor];
-    v20 = [(BRShareProgressView *)v7 centerXAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerXAnchor = [(UILabel *)v7->_titleLabel centerXAnchor];
+    centerXAnchor2 = [(BRShareProgressView *)v7 centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v18 addObject:v21];
 
-    v22 = [(UIActivityIndicatorView *)v7->_spinner centerXAnchor];
-    v23 = [(BRShareProgressView *)v7 centerXAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    centerXAnchor3 = [(UIActivityIndicatorView *)v7->_spinner centerXAnchor];
+    centerXAnchor4 = [(BRShareProgressView *)v7 centerXAnchor];
+    v24 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v18 addObject:v24];
 
-    v25 = [(UILabel *)v7->_progressLabel centerXAnchor];
-    v26 = [(BRShareProgressView *)v7 centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor5 = [(UILabel *)v7->_progressLabel centerXAnchor];
+    centerXAnchor6 = [(BRShareProgressView *)v7 centerXAnchor];
+    v27 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v18 addObject:v27];
 
-    v28 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
-    v29 = [(UIActivityIndicatorView *)v7->_spinner bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:20.0];
+    firstBaselineAnchor = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
+    bottomAnchor = [(UIActivityIndicatorView *)v7->_spinner bottomAnchor];
+    v30 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:20.0];
     [v18 addObject:v30];
 
-    v31 = [(UILabel *)v7->_progressLabel firstBaselineAnchor];
-    v32 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:16.0];
+    firstBaselineAnchor2 = [(UILabel *)v7->_progressLabel firstBaselineAnchor];
+    firstBaselineAnchor3 = [(UILabel *)v7->_titleLabel firstBaselineAnchor];
+    v33 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:16.0];
     [v18 addObject:v33];
 
-    v34 = [(UILabel *)v7->_progressLabel centerYAnchor];
-    v35 = [(BRShareProgressView *)v7 centerYAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    centerYAnchor = [(UILabel *)v7->_progressLabel centerYAnchor];
+    centerYAnchor2 = [(BRShareProgressView *)v7 centerYAnchor];
+    v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v18 addObject:v36];
 
     [NSLayoutConstraint activateConstraints:v18];

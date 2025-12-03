@@ -1,29 +1,29 @@
 @interface MXAnimationMetric
-- (MXAnimationMetric)initWithCoder:(id)a3;
-- (MXAnimationMetric)initWithGlitchTimeRatio:(id)a3;
-- (MXAnimationMetric)initWithHitchTimeRatio:(id)a3 perceivedHitchTimeRatio:(id)a4;
+- (MXAnimationMetric)initWithCoder:(id)coder;
+- (MXAnimationMetric)initWithGlitchTimeRatio:(id)ratio;
+- (MXAnimationMetric)initWithHitchTimeRatio:(id)ratio perceivedHitchTimeRatio:(id)timeRatio;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXAnimationMetric
 
-- (MXAnimationMetric)initWithGlitchTimeRatio:(id)a3
+- (MXAnimationMetric)initWithGlitchTimeRatio:(id)ratio
 {
-  v5 = a3;
+  ratioCopy = ratio;
   v10.receiver = self;
   v10.super_class = MXAnimationMetric;
   v6 = [(MXMetric *)&v10 init];
   if (v6)
   {
-    [v5 doubleValue];
+    [ratioCopy doubleValue];
     if (v7 <= 0.0)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_scrollHitchTimeRatio, a3);
+    objc_storeStrong(&v6->_scrollHitchTimeRatio, ratio);
   }
 
   v8 = v6;
@@ -32,19 +32,19 @@ LABEL_6:
   return v8;
 }
 
-- (MXAnimationMetric)initWithHitchTimeRatio:(id)a3 perceivedHitchTimeRatio:(id)a4
+- (MXAnimationMetric)initWithHitchTimeRatio:(id)ratio perceivedHitchTimeRatio:(id)timeRatio
 {
-  v7 = a3;
-  v8 = a4;
+  ratioCopy = ratio;
+  timeRatioCopy = timeRatio;
   v14.receiver = self;
   v14.super_class = MXAnimationMetric;
   v9 = [(MXMetric *)&v14 init];
   if (v9)
   {
-    [v7 doubleValue];
+    [ratioCopy doubleValue];
     if (v10 <= 0.0)
     {
-      [v8 doubleValue];
+      [timeRatioCopy doubleValue];
       if (v11 <= 0.0)
       {
         v12 = 0;
@@ -52,8 +52,8 @@ LABEL_6:
       }
     }
 
-    objc_storeStrong(&v9->_scrollHitchTimeRatio, a3);
-    objc_storeStrong(&v9->_hitchTimeRatio, a4);
+    objc_storeStrong(&v9->_scrollHitchTimeRatio, ratio);
+    objc_storeStrong(&v9->_hitchTimeRatio, timeRatio);
   }
 
   v12 = v9;
@@ -62,27 +62,27 @@ LABEL_6:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scrollHitchTimeRatio = self->_scrollHitchTimeRatio;
-  v5 = a3;
-  [v5 encodeObject:scrollHitchTimeRatio forKey:@"scrollHitchTimeRatio"];
-  [v5 encodeObject:self->_hitchTimeRatio forKey:@"hitchTimeRatio"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scrollHitchTimeRatio forKey:@"scrollHitchTimeRatio"];
+  [coderCopy encodeObject:self->_hitchTimeRatio forKey:@"hitchTimeRatio"];
 }
 
-- (MXAnimationMetric)initWithCoder:(id)a3
+- (MXAnimationMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MXAnimationMetric;
   v5 = [(MXMetric *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scrollHitchTimeRatio"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scrollHitchTimeRatio"];
     scrollHitchTimeRatio = v5->_scrollHitchTimeRatio;
     v5->_scrollHitchTimeRatio = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hitchTimeRatio"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hitchTimeRatio"];
     hitchTimeRatio = v5->_hitchTimeRatio;
     v5->_hitchTimeRatio = v8;
   }
@@ -95,15 +95,15 @@ LABEL_6:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (self->_scrollHitchTimeRatio)
   {
-    v4 = [(MXMetric *)self measurementFormatter];
-    v5 = [v4 stringFromMeasurement:self->_scrollHitchTimeRatio];
+    measurementFormatter = [(MXMetric *)self measurementFormatter];
+    v5 = [measurementFormatter stringFromMeasurement:self->_scrollHitchTimeRatio];
     [v3 setObject:v5 forKey:@"scrollHitchTimeRatio"];
   }
 
   if (self->_hitchTimeRatio)
   {
-    v6 = [(MXMetric *)self measurementFormatter];
-    v7 = [v6 stringFromMeasurement:self->_hitchTimeRatio];
+    measurementFormatter2 = [(MXMetric *)self measurementFormatter];
+    v7 = [measurementFormatter2 stringFromMeasurement:self->_hitchTimeRatio];
     [v3 setObject:v7 forKey:@"hitchTimeRatio"];
   }
 

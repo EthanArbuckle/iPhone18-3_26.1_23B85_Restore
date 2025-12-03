@@ -1,28 +1,28 @@
 @interface transportCtx
-- (transportCtx)initWithPiston:(id)a3 ServerName:(id)a4 ServerMaxRead:(unsigned int)a5 ServerMaxWrite:(unsigned int)a6 ServerMaxTransact:(unsigned int)a7 ShareID:(unsigned int)a8;
+- (transportCtx)initWithPiston:(id)piston ServerName:(id)name ServerMaxRead:(unsigned int)read ServerMaxWrite:(unsigned int)write ServerMaxTransact:(unsigned int)transact ShareID:(unsigned int)d;
 @end
 
 @implementation transportCtx
 
-- (transportCtx)initWithPiston:(id)a3 ServerName:(id)a4 ServerMaxRead:(unsigned int)a5 ServerMaxWrite:(unsigned int)a6 ServerMaxTransact:(unsigned int)a7 ShareID:(unsigned int)a8
+- (transportCtx)initWithPiston:(id)piston ServerName:(id)name ServerMaxRead:(unsigned int)read ServerMaxWrite:(unsigned int)write ServerMaxTransact:(unsigned int)transact ShareID:(unsigned int)d
 {
-  v15 = a3;
-  v16 = a4;
+  pistonCopy = piston;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = transportCtx;
   v17 = [(transportCtx *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_pd, a3);
-    objc_storeStrong(&v18->_serverName, a4);
+    objc_storeStrong(&v17->_pd, piston);
+    objc_storeStrong(&v18->_serverName, name);
     fidCtx = v18->_fidCtx;
     v18->_fidCtx = 0;
 
-    v18->_serverMaxRead = a5;
-    v18->_serverMaxWrite = a6;
-    v18->_serverMaxTransact = a7;
-    v18->_shareID = a8;
+    v18->_serverMaxRead = read;
+    v18->_serverMaxWrite = write;
+    v18->_serverMaxTransact = transact;
+    v18->_shareID = d;
   }
 
   return v18;

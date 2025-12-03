@@ -2,28 +2,28 @@
 - (NSString)sourceText;
 - (NSUUID)sourceIdentifier;
 - (STTranslationResult)init;
-- (STTranslationResult)initWithTranslation:(id)a3 sourceText:(id)a4 isFinal:(BOOL)a5;
-- (STTranslationResult)initWithTranslation:(id)a3 sourceText:(id)a4 isFinal:(BOOL)a5 identifier:(id)a6 sourceIdentifier:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSourceText:(id)a3;
-- (void)set_identifier:(id)a3;
-- (void)set_sourceIdentifier:(id)a3;
+- (STTranslationResult)initWithTranslation:(id)translation sourceText:(id)text isFinal:(BOOL)final;
+- (STTranslationResult)initWithTranslation:(id)translation sourceText:(id)text isFinal:(BOOL)final identifier:(id)identifier sourceIdentifier:(id)sourceIdentifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSourceText:(id)text;
+- (void)set_identifier:(id)set_identifier;
+- (void)set_sourceIdentifier:(id)identifier;
 @end
 
 @implementation STTranslationResult
 
-- (void)set_identifier:(id)a3
+- (void)set_identifier:(id)set_identifier
 {
   v4 = *(self + OBJC_IVAR___STTranslationResult__identifier);
-  *(self + OBJC_IVAR___STTranslationResult__identifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___STTranslationResult__identifier) = set_identifier;
+  set_identifierCopy = set_identifier;
 }
 
-- (void)set_sourceIdentifier:(id)a3
+- (void)set_sourceIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR___STTranslationResult__sourceIdentifier);
-  *(self + OBJC_IVAR___STTranslationResult__sourceIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___STTranslationResult__sourceIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (NSString)sourceText
@@ -44,9 +44,9 @@
   return v4;
 }
 
-- (void)setSourceText:(id)a3
+- (void)setSourceText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_26B5E199C();
   }
@@ -69,7 +69,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   STTranslationResult.sourceIdentifier.getter(v6);
 
   v8 = sub_26B5E15DC();
@@ -86,10 +86,10 @@
   return v11;
 }
 
-- (STTranslationResult)initWithTranslation:(id)a3 sourceText:(id)a4 isFinal:(BOOL)a5
+- (STTranslationResult)initWithTranslation:(id)translation sourceText:(id)text isFinal:(BOOL)final
 {
   v7 = sub_26B5E199C();
-  if (a4)
+  if (text)
   {
     v9 = v7;
     v10 = v8;
@@ -105,13 +105,13 @@
     v13 = 0;
   }
 
-  return STTranslationResult.init(translation:sourceText:isFinal:)(v7, v8, v11, v13, a5);
+  return STTranslationResult.init(translation:sourceText:isFinal:)(v7, v8, v11, v13, final);
 }
 
-- (STTranslationResult)initWithTranslation:(id)a3 sourceText:(id)a4 isFinal:(BOOL)a5 identifier:(id)a6 sourceIdentifier:(id)a7
+- (STTranslationResult)initWithTranslation:(id)translation sourceText:(id)text isFinal:(BOOL)final identifier:(id)identifier sourceIdentifier:(id)sourceIdentifier
 {
-  v26 = a5;
-  v27 = self;
+  finalCopy = final;
+  selfCopy = self;
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280407D90, &unk_26B5E3B80);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
@@ -123,9 +123,9 @@
   v17 = &v25[-((v16 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v18 = sub_26B5E199C();
   v20 = v19;
-  if (a4)
+  if (text)
   {
-    a4 = sub_26B5E199C();
+    text = sub_26B5E199C();
     v22 = v21;
   }
 
@@ -135,7 +135,7 @@
   }
 
   sub_26B5E15BC();
-  if (a7)
+  if (sourceIdentifier)
   {
     sub_26B5E15BC();
     v23 = 0;
@@ -147,14 +147,14 @@
   }
 
   (*(v14 + 56))(v12, v23, 1, v13);
-  return STTranslationResult.init(translation:sourceText:isFinal:identifier:sourceIdentifier:)(v18, v20, a4, v22, v26, v17, v12);
+  return STTranslationResult.init(translation:sourceText:isFinal:identifier:sourceIdentifier:)(v18, v20, text, v22, finalCopy, v17, v12);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  STTranslationResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  STTranslationResult.encode(with:)(coderCopy);
 }
 
 - (STTranslationResult)init

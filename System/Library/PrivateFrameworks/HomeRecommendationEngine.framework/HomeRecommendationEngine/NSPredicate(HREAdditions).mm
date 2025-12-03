@@ -12,10 +12,10 @@
   }
 
   v3 = a3;
-  v4 = [v3 predicateFormat];
-  v5 = [v3 predicateFormat];
+  predicateFormat = [v3 predicateFormat];
+  predicateFormat2 = [v3 predicateFormat];
 
-  v6 = [v4 isEqualToString:v5];
+  v6 = [predicateFormat isEqualToString:predicateFormat2];
   return v6;
 }
 

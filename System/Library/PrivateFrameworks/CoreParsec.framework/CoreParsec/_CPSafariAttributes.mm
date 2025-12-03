@@ -1,18 +1,18 @@
 @interface _CPSafariAttributes
-- (BOOL)isEqual:(id)a3;
-- (_CPSafariAttributes)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPSafariAttributes)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSafariAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     hideReason = self->_hideReason;
-    v6 = hideReason == [v4 hideReason];
+    v6 = hideReason == [equalCopy hideReason];
   }
 
   else
@@ -23,9 +23,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_CPSafariAttributes *)self hideReason])
   {
     hideReason = self->_hideReason;
@@ -33,13 +33,13 @@
   }
 }
 
-- (_CPSafariAttributes)initWithFacade:(id)a3
+- (_CPSafariAttributes)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPSafariAttributes *)self init];
   if (v5)
   {
-    -[_CPSafariAttributes setHideReason:](v5, "setHideReason:", [v4 hideReason]);
+    -[_CPSafariAttributes setHideReason:](v5, "setHideReason:", [facadeCopy hideReason]);
     v6 = v5;
   }
 

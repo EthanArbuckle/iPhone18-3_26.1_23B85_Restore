@@ -1,31 +1,31 @@
 @interface ScandiumRIrRatioModelInput
-- (ScandiumRIrRatioModelInput)initWithIr:(id)a3 red:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (ScandiumRIrRatioModelInput)initWithIr:(id)ir red:(id)red;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation ScandiumRIrRatioModelInput
 
-- (ScandiumRIrRatioModelInput)initWithIr:(id)a3 red:(id)a4
+- (ScandiumRIrRatioModelInput)initWithIr:(id)ir red:(id)red
 {
-  v7 = a3;
-  v8 = a4;
+  irCopy = ir;
+  redCopy = red;
   v12.receiver = self;
   v12.super_class = ScandiumRIrRatioModelInput;
   v9 = [(ScandiumRIrRatioModelInput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ir, a3);
-    objc_storeStrong(&v10->_red, a4);
+    objc_storeStrong(&v9->_ir, ir);
+    objc_storeStrong(&v10->_red, red);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ir"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ir"])
   {
     v5 = MEMORY[0x277CBFEF8];
     v6 = [(ScandiumRIrRatioModelInput *)self ir];
@@ -36,7 +36,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"red"])
+  if ([nameCopy isEqualToString:@"red"])
   {
     v5 = MEMORY[0x277CBFEF8];
     v6 = [(ScandiumRIrRatioModelInput *)self red];

@@ -7,14 +7,14 @@
 
 - (__CFString)dd_leadingTextWithNumberOfCharacters:()DDSubstring beforeRange:
 {
-  if ([a1 length] <= a4)
+  if ([self length] <= a4)
   {
     v7 = &stru_282C1E0A8;
   }
 
   else
   {
-    v7 = [a1 substringWithRange:{(a4 - a3) & ~((a4 - a3) >> 63), a3 - ((a3 - a4) & ~((a3 - a4) >> 63))}];
+    v7 = [self substringWithRange:{(a4 - a3) & ~((a4 - a3) >> 63), a3 - ((a3 - a4) & ~((a3 - a4) >> 63))}];
   }
 
   return v7;
@@ -23,7 +23,7 @@
 - (__CFString)dd_trailingTextWithNumberOfCharacters:()DDSubstring afterRange:
 {
   v7 = a4 + a5;
-  v8 = [a1 length];
+  v8 = [self length];
   if (v8 <= v7)
   {
     v10 = &stru_282C1E0A8;
@@ -41,7 +41,7 @@
       v9 = v8 - v7;
     }
 
-    v10 = [a1 substringWithRange:{v7, v9}];
+    v10 = [self substringWithRange:{v7, v9}];
   }
 
   return v10;

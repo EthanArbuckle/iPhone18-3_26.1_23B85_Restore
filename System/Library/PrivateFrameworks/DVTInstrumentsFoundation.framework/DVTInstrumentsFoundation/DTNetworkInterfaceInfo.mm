@@ -1,18 +1,18 @@
 @interface DTNetworkInterfaceInfo
 + (id)interfaceNameMappings;
-+ (void)addInterface:(__SCNetworkInterface *)a3 toNameMapping:(id)a4;
++ (void)addInterface:(__SCNetworkInterface *)interface toNameMapping:(id)mapping;
 @end
 
 @implementation DTNetworkInterfaceInfo
 
-+ (void)addInterface:(__SCNetworkInterface *)a3 toNameMapping:(id)a4
++ (void)addInterface:(__SCNetworkInterface *)interface toNameMapping:(id)mapping
 {
-  v7 = a4;
-  v5 = SCNetworkInterfaceGetBSDName(a3);
-  v6 = SCNetworkInterfaceGetLocalizedDisplayName(a3);
+  mappingCopy = mapping;
+  v5 = SCNetworkInterfaceGetBSDName(interface);
+  v6 = SCNetworkInterfaceGetLocalizedDisplayName(interface);
   if ([v5 length] && objc_msgSend(v6, "length"))
   {
-    [v7 setObject:v6 forKey:v5];
+    [mappingCopy setObject:v6 forKey:v5];
   }
 }
 
@@ -39,7 +39,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 addInterface:*(*(&v13 + 1) + 8 * i) toNameMapping:{v3, v13}];
+        [self addInterface:*(*(&v13 + 1) + 8 * i) toNameMapping:{v3, v13}];
       }
 
       v6 = [(__CFArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -53,7 +53,7 @@
 
   if (!v10)
   {
-    [a1 addInterface:v9 toNameMapping:v3];
+    [self addInterface:v9 toNameMapping:v3];
   }
 
   v11 = *MEMORY[0x277D85DE8];

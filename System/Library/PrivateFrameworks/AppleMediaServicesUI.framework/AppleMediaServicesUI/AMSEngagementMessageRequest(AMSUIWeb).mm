@@ -14,8 +14,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [a1 actions];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  actions = [self actions];
+  v5 = [actions countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,46 +26,46 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actions);
         }
 
-        v9 = [a1 _resultFromMessageAction:*(*(&v23 + 1) + 8 * i)];
+        v9 = [self _resultFromMessageAction:*(*(&v23 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [actions countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
   }
 
   [v2 setObject:v3 forKeyedSubscript:@"actions"];
-  v10 = [a1 appearanceInfo];
-  [v2 setObject:v10 forKeyedSubscript:@"appearanceInfo"];
+  appearanceInfo = [self appearanceInfo];
+  [v2 setObject:appearanceInfo forKeyedSubscript:@"appearanceInfo"];
 
-  v11 = [a1 defaultAction];
-  v12 = [a1 _resultFromMessageAction:v11];
+  defaultAction = [self defaultAction];
+  v12 = [self _resultFromMessageAction:defaultAction];
   [v2 setObject:v12 forKeyedSubscript:@"defaultAction"];
 
-  v13 = [a1 iconURL];
-  v14 = [v13 absoluteString];
-  [v2 setObject:v14 forKeyedSubscript:@"iconURL"];
+  iconURL = [self iconURL];
+  absoluteString = [iconURL absoluteString];
+  [v2 setObject:absoluteString forKeyedSubscript:@"iconURL"];
 
-  v15 = [a1 subtitle];
-  [v2 setObject:v15 forKeyedSubscript:@"message"];
+  subtitle = [self subtitle];
+  [v2 setObject:subtitle forKeyedSubscript:@"message"];
 
-  v16 = [a1 metricsEvent];
-  v17 = [v16 underlyingDictionary];
-  [v2 setObject:v17 forKeyedSubscript:@"metrics"];
+  metricsEvent = [self metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
+  [v2 setObject:underlyingDictionary forKeyedSubscript:@"metrics"];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "presentationAction")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "presentationAction")}];
   [v2 setObject:v18 forKeyedSubscript:@"presentationAction"];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "style")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "style")}];
   [v2 setObject:v19 forKeyedSubscript:@"style"];
 
-  v20 = [a1 title];
-  [v2 setObject:v20 forKeyedSubscript:@"title"];
+  title = [self title];
+  [v2 setObject:title forKeyedSubscript:@"title"];
 
   v21 = *MEMORY[0x1E69E9840];
 
@@ -79,24 +79,24 @@
     v3 = MEMORY[0x1E695DF90];
     v4 = a3;
     v5 = objc_alloc_init(v3);
-    v6 = [v4 deepLink];
-    v7 = [v6 absoluteString];
-    [v5 setObject:v7 forKeyedSubscript:@"deepLink"];
+    deepLink = [v4 deepLink];
+    absoluteString = [deepLink absoluteString];
+    [v5 setObject:absoluteString forKeyedSubscript:@"deepLink"];
 
-    v8 = [v4 metricsEvent];
-    v9 = [v8 underlyingDictionary];
-    [v5 setObject:v9 forKeyedSubscript:@"metrics"];
+    metricsEvent = [v4 metricsEvent];
+    underlyingDictionary = [metricsEvent underlyingDictionary];
+    [v5 setObject:underlyingDictionary forKeyedSubscript:@"metrics"];
 
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "style")}];
     [v5 setObject:v10 forKeyedSubscript:@"style"];
 
-    v11 = [v4 title];
-    [v5 setObject:v11 forKeyedSubscript:@"title"];
+    title = [v4 title];
+    [v5 setObject:title forKeyedSubscript:@"title"];
 
-    v12 = [v4 iconURL];
+    iconURL = [v4 iconURL];
 
-    v13 = [v12 absoluteString];
-    [v5 setObject:v13 forKeyedSubscript:@"iconURL"];
+    absoluteString2 = [iconURL absoluteString];
+    [v5 setObject:absoluteString2 forKeyedSubscript:@"iconURL"];
   }
 
   else

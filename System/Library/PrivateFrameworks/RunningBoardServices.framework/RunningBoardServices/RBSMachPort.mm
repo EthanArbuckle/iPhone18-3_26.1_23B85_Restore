@@ -1,15 +1,15 @@
 @interface RBSMachPort
-+ (id)portConsumingRightForPort:(unsigned int)a3;
-+ (id)portForPort:(unsigned int)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)portConsumingRightForPort:(unsigned int)port;
++ (id)portForPort:(unsigned int)port;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUsable;
-- (RBSMachPort)initWithCoder:(id)a3;
-- (RBSMachPort)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RBSMachPort)initWithCoder:(id)coder;
+- (RBSMachPort)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)port;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -57,9 +57,9 @@
   }
 }
 
-+ (id)portForPort:(unsigned int)a3
++ (id)portForPort:(unsigned int)port
 {
-  if (mach_port_insert_right(*MEMORY[0x1E69E9A60], a3, a3, 0x13u))
+  if (mach_port_insert_right(*MEMORY[0x1E69E9A60], port, port, 0x13u))
   {
     v4 = rbs_general_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@
 
   else
   {
-    [(RBSMachPort *)a3 portForPort:?];
+    [(RBSMachPort *)port portForPort:?];
     v12 = v14;
   }
 
@@ -95,24 +95,24 @@
   return v3;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
   port = self->_port;
   v5 = xpc_mach_send_create();
   if (v5)
   {
-    [v6 encodeXPCObject:v5 forKey:@"_port"];
+    [coderCopy encodeXPCObject:v5 forKey:@"_port"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (RBSMachPort)initWithCoder:(id)a3
+- (RBSMachPort)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69E9EC0];
-  v5 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"_port"];
+  v5 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"_port"];
   v6 = v5;
   if (v5 && MEMORY[0x193AD5A20](v5) == v4)
   {
@@ -129,9 +129,9 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
   port = self->_port;
   if (port - 1 <= 0xFFFFFFFD && (RBSMachPortType(port) & 0x10000) != 0)
@@ -140,14 +140,14 @@
     v6 = xpc_mach_send_create();
     if (v6)
     {
-      [v7 encodeXPCObject:v6 forKey:@"_port"];
+      [coderCopy encodeXPCObject:v6 forKey:@"_port"];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = [RBSMachPort portForPort:self->_port];
@@ -155,10 +155,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -168,8 +168,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RBSMachPort *)self port];
-      v6 = v5 == [(RBSMachPort *)v4 port];
+      port = [(RBSMachPort *)self port];
+      v6 = port == [(RBSMachPort *)equalCopy port];
     }
 
     else
@@ -181,7 +181,7 @@
   return v6;
 }
 
-+ (id)portConsumingRightForPort:(unsigned int)a3
++ (id)portConsumingRightForPort:(unsigned int)port
 {
   v4 = [RBSMachPort alloc];
   if (v4)
@@ -191,7 +191,7 @@
     v4 = objc_msgSendSuper2(&v6, sel_init);
     if (v4)
     {
-      v4->_port = a3;
+      v4->_port = port;
       v4->_lock._os_unfair_lock_opaque = 0;
     }
   }
@@ -199,9 +199,9 @@
   return v4;
 }
 
-- (RBSMachPort)initWithRBSXPCCoder:(id)a3
+- (RBSMachPort)initWithRBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"_port"];
+  v4 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"_port"];
   if (v4)
   {
     v5 = xpc_mach_send_copy_right();

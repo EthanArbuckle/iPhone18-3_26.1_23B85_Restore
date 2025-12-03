@@ -1,74 +1,74 @@
 @interface PHProjectChangeRequest
-+ (id)creationRequestForProjectCopyFromProject:(id)a3;
-+ (id)creationRequestForProjectWithDocumentType:(id)a3 projectExtensionIdentifier:(id)a4;
-+ (id)creationRequestForProjectWithDocumentType:(id)a3 projectExtensionIdentifier:(id)a4 assets:(id)a5 title:(id)a6;
-+ (void)_deleteProjects:(id)a3 withOperation:(int64_t)a4;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (BOOL)prepareForServicePreflightCheck:(id *)a3;
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
++ (id)creationRequestForProjectCopyFromProject:(id)project;
++ (id)creationRequestForProjectWithDocumentType:(id)type projectExtensionIdentifier:(id)identifier;
++ (id)creationRequestForProjectWithDocumentType:(id)type projectExtensionIdentifier:(id)identifier assets:(id)assets title:(id)title;
++ (void)_deleteProjects:(id)projects withOperation:(int64_t)operation;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (BOOL)prepareForServicePreflightCheck:(id *)check;
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (NSData)projectExtensionData;
 - (NSString)projectDocumentType;
 - (NSString)title;
 - (PHProjectChangeRequest)initWithProject:(PHProject *)project;
-- (PHProjectChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHProjectChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (PHProjectChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHProjectChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (id)placeholderForCreatedProject;
 - (id)projectExtensionIdentifier;
 - (id)projectRenderUuid;
 - (void)_prepareAssetIDsIfNeeded;
 - (void)_prepareKeyAssetIDIfNeeded;
-- (void)addAssets:(id)a3;
-- (void)encodeToXPCDict:(id)a3;
-- (void)insertAssets:(id)a3 atIndexes:(id)a4;
-- (void)moveAssetsAtIndexes:(id)a3 toIndex:(unint64_t)a4;
+- (void)addAssets:(id)assets;
+- (void)encodeToXPCDict:(id)dict;
+- (void)insertAssets:(id)assets atIndexes:(id)indexes;
+- (void)moveAssetsAtIndexes:(id)indexes toIndex:(unint64_t)index;
 - (void)removeAssets:(id)assets;
-- (void)removeAssetsAtIndexes:(id)a3;
-- (void)replaceAssetsAtIndexes:(id)a3 withAssets:(id)a4;
-- (void)setAssets:(id)a3;
+- (void)removeAssetsAtIndexes:(id)indexes;
+- (void)replaceAssetsAtIndexes:(id)indexes withAssets:(id)assets;
+- (void)setAssets:(id)assets;
 - (void)setKeyAsset:(PHAsset *)keyAsset;
-- (void)setProjectDocumentType:(id)a3;
+- (void)setProjectDocumentType:(id)type;
 - (void)setProjectExtensionData:(NSData *)projectExtensionData;
-- (void)setProjectExtensionIdentifier:(id)a3;
+- (void)setProjectExtensionIdentifier:(id)identifier;
 - (void)setProjectPreviewImage:(UIImage *)previewImage;
-- (void)setProjectRenderUuid:(id)a3;
+- (void)setProjectRenderUuid:(id)uuid;
 - (void)setTitle:(NSString *)title;
 @end
 
 @implementation PHProjectChangeRequest
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  objectCopy = object;
   helper = self->super._helper;
   v34 = 0;
-  v9 = [(PHChangeRequestHelper *)helper applyMutationsToManagedObject:v7 error:&v34];
+  v9 = [(PHChangeRequestHelper *)helper applyMutationsToManagedObject:objectCopy error:&v34];
   v10 = v34;
-  v11 = [(PHProjectChangeRequest *)self assetsHelper];
-  v12 = v7;
+  assetsHelper = [(PHProjectChangeRequest *)self assetsHelper];
+  v12 = objectCopy;
   if (!v9)
   {
     goto LABEL_9;
   }
 
-  v13 = [v11 mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [assetsHelper mutableObjectIDsAndUUIDs];
 
-  if (v13)
+  if (mutableObjectIDsAndUUIDs)
   {
-    [v11 setAllowsInsert:1];
-    [v11 setAllowsRemove:1];
-    [v11 setAllowsMove:1];
-    v14 = [MEMORY[0x1E69BE540] entityName];
-    [v11 setDestinationEntityName:v14];
+    [assetsHelper setAllowsInsert:1];
+    [assetsHelper setAllowsRemove:1];
+    [assetsHelper setAllowsMove:1];
+    entityName = [MEMORY[0x1E69BE540] entityName];
+    [assetsHelper setDestinationEntityName:entityName];
 
-    v15 = [v11 relationshipName];
-    v16 = [v12 mutableOrderedSetValueForKey:v15];
+    relationshipName = [assetsHelper relationshipName];
+    v16 = [v12 mutableOrderedSetValueForKey:relationshipName];
 
     v33 = v10;
-    v17 = [v11 applyMutationsToManagedObject:v12 orderedMutableChildren:v16 error:&v33];
+    v17 = [assetsHelper applyMutationsToManagedObject:v12 orderedMutableChildren:v16 error:&v33];
     v18 = v33;
 
     if (!v17)
@@ -84,21 +84,21 @@
     v18 = v10;
   }
 
-  v20 = [(PHProjectChangeRequest *)self keyAssetHelper];
-  v21 = [v20 mutableObjectIDsAndUUIDs];
+  keyAssetHelper = [(PHProjectChangeRequest *)self keyAssetHelper];
+  mutableObjectIDsAndUUIDs2 = [keyAssetHelper mutableObjectIDsAndUUIDs];
 
-  if (!v21)
+  if (!mutableObjectIDsAndUUIDs2)
   {
 
     goto LABEL_16;
   }
 
-  [v20 setAllowsInsert:1];
-  v22 = [MEMORY[0x1E69BE540] entityName];
-  [v20 setDestinationEntityName:v22];
+  [keyAssetHelper setAllowsInsert:1];
+  entityName2 = [MEMORY[0x1E69BE540] entityName];
+  [keyAssetHelper setDestinationEntityName:entityName2];
 
   v32 = v18;
-  v23 = [v20 applyMutationsToManagedObjectToOneRelationship:v12 error:&v32];
+  v23 = [keyAssetHelper applyMutationsToManagedObjectToOneRelationship:v12 error:&v32];
   v10 = v32;
 
   if (!v23)
@@ -125,8 +125,8 @@ LABEL_16:
   {
     v28 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E696A578];
-    v29 = [v27 localizedDescription];
-    v36[0] = v29;
+    localizedDescription = [v27 localizedDescription];
+    v36[0] = localizedDescription;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v10 = [v28 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3302 userInfo:v30];
   }
@@ -137,11 +137,11 @@ LABEL_16:
   }
 
 LABEL_10:
-  if (a5 && (v19 & 1) == 0)
+  if (error && (v19 & 1) == 0)
   {
     v24 = v10;
     v19 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   v18 = v10;
@@ -150,32 +150,32 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
   helper = self->super._helper;
   v10 = 0;
-  v7 = [(PHChangeRequestHelper *)helper allowMutationToManagedObject:a3 propertyKey:a4 error:&v10];
+  v7 = [(PHChangeRequestHelper *)helper allowMutationToManagedObject:object propertyKey:key error:&v10];
   v8 = v10;
-  if (a5 && !v7)
+  if (error && !v7)
   {
     v8 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v5 = a3;
-  v6 = [(PHChangeRequest *)self uuid];
+  libraryCopy = library;
+  uuid = [(PHChangeRequest *)self uuid];
   v9 = 0;
-  if (v6)
+  if (uuid)
   {
-    v7 = v6;
-    v8 = [(PHProjectChangeRequest *)self projectDocumentType];
+    v7 = uuid;
+    projectDocumentType = [(PHProjectChangeRequest *)self projectDocumentType];
 
-    if (v8)
+    if (projectDocumentType)
     {
       v9 = 1;
     }
@@ -184,33 +184,33 @@ LABEL_14:
   return v9;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69BE6F0];
-  v7 = a3;
-  v8 = [(PHChangeRequest *)self uuid];
-  v9 = [(PHProjectChangeRequest *)self projectDocumentType];
-  v10 = [(PHProjectChangeRequest *)self projectExtensionIdentifier];
-  v11 = [v6 insertIntoPhotoLibrary:v7 withUUID:v8 documentType:v9 projectExtensionIdentifier:v10];
+  libraryCopy = library;
+  uuid = [(PHChangeRequest *)self uuid];
+  projectDocumentType = [(PHProjectChangeRequest *)self projectDocumentType];
+  projectExtensionIdentifier = [(PHProjectChangeRequest *)self projectExtensionIdentifier];
+  v11 = [v6 insertIntoPhotoLibrary:libraryCopy withUUID:uuid documentType:projectDocumentType projectExtensionIdentifier:projectExtensionIdentifier];
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v12 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create project"];
     v17[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a4 = [v12 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v14];
+    *error = [v12 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v14];
   }
 
   return v11;
 }
 
-- (BOOL)prepareForServicePreflightCheck:(id *)a3
+- (BOOL)prepareForServicePreflightCheck:(id *)check
 {
-  v5 = [(PHChangeRequestHelper *)self->super._helper mutations];
-  v6 = [v5 objectForKeyedSubscript:@"projectData"];
+  mutations = [(PHChangeRequestHelper *)self->super._helper mutations];
+  v6 = [mutations objectForKeyedSubscript:@"projectData"];
 
   if ([v6 length] <= 0x500000)
   {
@@ -219,7 +219,7 @@ LABEL_14:
     v12 = 0;
     v8 = [(PHChangeRequest *)&v11 prepareForServicePreflightCheck:&v12];
     v7 = v12;
-    if (!a3)
+    if (!check)
     {
       goto LABEL_7;
     }
@@ -229,7 +229,7 @@ LABEL_14:
   {
     v7 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:@"projectExtensionData length exceeds maximum"];
     v8 = 0;
-    if (!a3)
+    if (!check)
     {
       goto LABEL_7;
     }
@@ -238,7 +238,7 @@ LABEL_14:
   if (!v8)
   {
     v9 = v7;
-    *a3 = v7;
+    *check = v7;
   }
 
 LABEL_7:
@@ -246,17 +246,17 @@ LABEL_7:
   return v8;
 }
 
-- (PHProjectChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHProjectChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v31.receiver = self;
   v31.super_class = PHProjectChangeRequest;
   v11 = [(PHChangeRequest *)&v31 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
@@ -268,18 +268,18 @@ LABEL_7:
       v28 = &unk_1E75AAEB0;
       v14 = v11;
       v29 = v14;
-      v30 = v9;
+      v30 = requestCopy;
       v15 = _Block_copy(&v25);
       v16 = [PHRelationshipChangeRequestHelper alloc];
-      v17 = [(PHRelationshipChangeRequestHelper *)v16 initWithRelationshipName:@"assets" xpcDict:v8 changeRequestHelper:v11->super._helper, v25, v26, v27, v28];
+      v17 = [(PHRelationshipChangeRequestHelper *)v16 initWithRelationshipName:@"assets" xpcDict:dictCopy changeRequestHelper:v11->super._helper, v25, v26, v27, v28];
       assetsHelper = v14->_assetsHelper;
       v14->_assetsHelper = v17;
 
-      v19 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"customKeyAsset" xpcDict:v8 changeRequestHelper:v11->super._helper];
+      v19 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"customKeyAsset" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
       keyAssetHelper = v14->_keyAssetHelper;
       v14->_keyAssetHelper = v19;
 
-      v21 = xpc_dictionary_get_BOOL(v8, "didSetPreviewImage");
+      v21 = xpc_dictionary_get_BOOL(dictCopy, "didSetPreviewImage");
       v14->_didSetPreviewImage = v21;
       if (v21)
       {
@@ -303,9 +303,9 @@ uint64_t __70__PHProjectChangeRequest_initWithXPCDict_request_clientAuthorizatio
   return [v2 recordUpdateRequest:v3];
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
+  xdict = dict;
   [(PHChangeRequestHelper *)self->super._helper encodeToXPCDict:xdict];
   [(PHRelationshipChangeRequestHelper *)self->_assetsHelper encodeToXPCDict:xdict];
   [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper encodeToXPCDict:xdict];
@@ -316,44 +316,44 @@ uint64_t __70__PHProjectChangeRequest_initWithXPCDict_request_clientAuthorizatio
   }
 }
 
-- (void)moveAssetsAtIndexes:(id)a3 toIndex:(unint64_t)a4
+- (void)moveAssetsAtIndexes:(id)indexes toIndex:(unint64_t)index
 {
-  v10 = a3;
-  if ([v10 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
     [(PHChangeRequestHelper *)self->super._helper didMutate];
     [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-    v6 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
-    v7 = [v6 objectsAtIndexes:v10];
-    [v6 removeObjectsAtIndexes:v10];
-    v8 = [v10 count];
-    v9 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{a4, v8}];
-    [v6 insertObjects:v7 atIndexes:v9];
+    mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+    v7 = [mutableObjectIDsAndUUIDs objectsAtIndexes:indexesCopy];
+    [mutableObjectIDsAndUUIDs removeObjectsAtIndexes:indexesCopy];
+    v8 = [indexesCopy count];
+    v9 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{index, v8}];
+    [mutableObjectIDsAndUUIDs insertObjects:v7 atIndexes:v9];
   }
 }
 
-- (void)replaceAssetsAtIndexes:(id)a3 withAssets:(id)a4
+- (void)replaceAssetsAtIndexes:(id)indexes withAssets:(id)assets
 {
-  v8 = a3;
-  v6 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a4];
+  indexesCopy = indexes;
+  v6 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:assets];
   if (v6)
   {
     [(PHChangeRequestHelper *)self->super._helper didMutate];
     [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-    v7 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
-    [v7 replaceObjectsAtIndexes:v8 withObjects:v6];
+    mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+    [mutableObjectIDsAndUUIDs replaceObjectsAtIndexes:indexesCopy withObjects:v6];
   }
 }
 
-- (void)removeAssetsAtIndexes:(id)a3
+- (void)removeAssetsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  if ([v5 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
     [(PHChangeRequestHelper *)self->super._helper didMutate];
     [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-    v4 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
-    [v4 removeObjectsAtIndexes:v5];
+    mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+    [mutableObjectIDsAndUUIDs removeObjectsAtIndexes:indexesCopy];
   }
 }
 
@@ -365,36 +365,36 @@ uint64_t __70__PHProjectChangeRequest_initWithXPCDict_request_clientAuthorizatio
     v6 = v4;
     [(PHChangeRequestHelper *)self->super._helper didMutate];
     [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-    v5 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
-    [v5 removeObjectsInArray:v6];
+    mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+    [mutableObjectIDsAndUUIDs removeObjectsInArray:v6];
 
     v4 = v6;
   }
 }
 
-- (void)insertAssets:(id)a3 atIndexes:(id)a4
+- (void)insertAssets:(id)assets atIndexes:(id)indexes
 {
-  v8 = a4;
-  v6 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  indexesCopy = indexes;
+  v6 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:assets];
   if (v6)
   {
     [(PHChangeRequestHelper *)self->super._helper didMutate];
     [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-    v7 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
-    [v7 insertObjects:v6 atIndexes:v8];
+    mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+    [mutableObjectIDsAndUUIDs insertObjects:v6 atIndexes:indexesCopy];
   }
 }
 
-- (void)addAssets:(id)a3
+- (void)addAssets:(id)assets
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:assets];
   if (v4)
   {
     v6 = v4;
     [(PHChangeRequestHelper *)self->super._helper didMutate];
     [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-    v5 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
-    [v5 addObjectsFromArray:v6];
+    mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+    [mutableObjectIDsAndUUIDs addObjectsFromArray:v6];
 
     v4 = v6;
   }
@@ -403,8 +403,8 @@ uint64_t __70__PHProjectChangeRequest_initWithXPCDict_request_clientAuthorizatio
 - (void)_prepareAssetIDsIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper originalObjectIDs];
-  if (!v3)
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper originalObjectIDs];
+  if (!originalObjectIDs)
   {
     originalProject = self->_originalProject;
     if (!originalProject)
@@ -412,15 +412,15 @@ uint64_t __70__PHProjectChangeRequest_initWithXPCDict_request_clientAuthorizatio
       goto LABEL_7;
     }
 
-    v3 = [PHQuery queryForAssetsInAssetCollection:originalProject options:0];
-    v5 = [v3 executeQuery];
+    originalObjectIDs = [PHQuery queryForAssetsInAssetCollection:originalProject options:0];
+    executeQuery = [originalObjectIDs executeQuery];
     assetsHelper = self->_assetsHelper;
-    v7 = [v5 fetchedObjectIDs];
-    [(PHRelationshipChangeRequestHelper *)assetsHelper setOriginalObjectIDs:v7];
+    fetchedObjectIDs = [executeQuery fetchedObjectIDs];
+    [(PHRelationshipChangeRequestHelper *)assetsHelper setOriginalObjectIDs:fetchedObjectIDs];
 
-    v8 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper originalObjectIDs];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper originalObjectIDs];
 
-    if (!v8)
+    if (!originalObjectIDs2)
     {
       v9 = self->_assetsHelper;
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -429,13 +429,13 @@ uint64_t __70__PHProjectChangeRequest_initWithXPCDict_request_clientAuthorizatio
   }
 
 LABEL_7:
-  v11 = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_assetsHelper mutableObjectIDsAndUUIDs];
 
-  if (!v11)
+  if (!mutableObjectIDsAndUUIDs)
   {
     v12 = self->_assetsHelper;
-    v14 = [(PHRelationshipChangeRequestHelper *)v12 originalObjectIDs];
-    v13 = [v14 mutableCopy];
+    originalObjectIDs3 = [(PHRelationshipChangeRequestHelper *)v12 originalObjectIDs];
+    v13 = [originalObjectIDs3 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)v12 setMutableObjectIDsAndUUIDs:v13];
   }
 }
@@ -451,10 +451,10 @@ LABEL_7:
     {
       [(PHChangeRequest *)self didMutate];
       [(PHProjectChangeRequest *)self _prepareAssetIDsIfNeeded];
-      v8 = [(PHProjectChangeRequest *)self assetsHelper];
-      v9 = [v8 mutableObjectIDsAndUUIDs];
+      assetsHelper = [(PHProjectChangeRequest *)self assetsHelper];
+      mutableObjectIDsAndUUIDs = [assetsHelper mutableObjectIDsAndUUIDs];
 
-      if (([v9 containsObject:v4] & 1) == 0)
+      if (([mutableObjectIDsAndUUIDs containsObject:v4] & 1) == 0)
       {
         v13[0] = v4;
         v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
@@ -462,11 +462,11 @@ LABEL_7:
       }
 
       [(PHProjectChangeRequest *)self _prepareKeyAssetIDIfNeeded];
-      v11 = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper mutableObjectIDsAndUUIDs];
-      [v11 removeAllObjects];
+      mutableObjectIDsAndUUIDs2 = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper mutableObjectIDsAndUUIDs];
+      [mutableObjectIDsAndUUIDs2 removeAllObjects];
 
-      v12 = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper mutableObjectIDsAndUUIDs];
-      [v12 addObject:v5];
+      mutableObjectIDsAndUUIDs3 = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper mutableObjectIDsAndUUIDs];
+      [mutableObjectIDsAndUUIDs3 addObject:v5];
     }
   }
 }
@@ -474,20 +474,20 @@ LABEL_7:
 - (void)_prepareKeyAssetIDIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
   }
 
-  v4 = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_keyAssetHelper mutableObjectIDsAndUUIDs];
 
-  if (!v4)
+  if (!mutableObjectIDsAndUUIDs)
   {
     keyAssetHelper = self->_keyAssetHelper;
-    v7 = [(PHRelationshipChangeRequestHelper *)keyAssetHelper originalObjectIDs];
-    v6 = [v7 mutableCopy];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)keyAssetHelper originalObjectIDs];
+    v6 = [originalObjectIDs2 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)keyAssetHelper setMutableObjectIDsAndUUIDs:v6];
   }
 }
@@ -506,8 +506,8 @@ LABEL_7:
   [(PHChangeRequest *)self didMutate];
   self->_didSetPreviewImage = 1;
   v4 = objc_alloc_init(MEMORY[0x1E695DF88]);
-  v5 = [*MEMORY[0x1E6983008] identifier];
-  v6 = CGImageDestinationCreateWithData(v4, v5, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6983008] identifier];
+  v6 = CGImageDestinationCreateWithData(v4, identifier, 1uLL, 0);
 
   if (v6)
   {
@@ -520,9 +520,9 @@ LABEL_7:
   self->_previewImageData = v4;
 }
 
-- (void)setAssets:(id)a3
+- (void)setAssets:(id)assets
 {
-  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:a3];
+  v4 = [PHRelationshipChangeRequestHelper objectIDsOrUUIDsFromPHObjects:assets];
   if (v4)
   {
     v7 = v4;
@@ -536,40 +536,40 @@ LABEL_7:
   }
 }
 
-- (void)setProjectRenderUuid:(id)a3
+- (void)setProjectRenderUuid:(id)uuid
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  uuidCopy = uuid;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (uuidCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"projectRenderUuid"];
+    [mutations setObject:uuidCopy forKeyedSubscript:@"projectRenderUuid"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"projectRenderUuid"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"projectRenderUuid"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"projectRenderUuid"];
+    [mutations removeObjectForKey:@"projectRenderUuid"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"projectRenderUuid"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"projectRenderUuid"];
   }
 }
 
 - (id)projectRenderUuid
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"projectRenderUuid"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"projectRenderUuid"];
 
   return v5;
 }
@@ -577,118 +577,118 @@ LABEL_7:
 - (void)setProjectExtensionData:(NSData *)projectExtensionData
 {
   v10 = projectExtensionData;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
   if (v10)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"projectData"];
+    [mutations setObject:v10 forKeyedSubscript:@"projectData"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"projectData"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"projectData"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"projectData"];
+    [mutations removeObjectForKey:@"projectData"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"projectData"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"projectData"];
   }
 }
 
 - (NSData)projectExtensionData
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"projectData"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  data = [mutations objectForKey:@"projectData"];
 
-  if (!v5)
+  if (!data)
   {
-    v5 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  return v5;
+  return data;
 }
 
-- (void)setProjectExtensionIdentifier:(id)a3
+- (void)setProjectExtensionIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  identifierCopy = identifier;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (identifierCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"projectExtensionIdentifier"];
+    [mutations setObject:identifierCopy forKeyedSubscript:@"projectExtensionIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"projectExtensionIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"projectExtensionIdentifier"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"projectExtensionIdentifier"];
+    [mutations removeObjectForKey:@"projectExtensionIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"projectExtensionIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"projectExtensionIdentifier"];
   }
 }
 
 - (id)projectExtensionIdentifier
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"projectExtensionIdentifier"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"projectExtensionIdentifier"];
 
   return v5;
 }
 
-- (void)setProjectDocumentType:(id)a3
+- (void)setProjectDocumentType:(id)type
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (typeCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"projectDocumentType"];
+    [mutations setObject:typeCopy forKeyedSubscript:@"projectDocumentType"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"projectDocumentType"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"projectDocumentType"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"projectDocumentType"];
+    [mutations removeObjectForKey:@"projectDocumentType"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"projectDocumentType"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"projectDocumentType"];
   }
 }
 
 - (NSString)projectDocumentType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"projectDocumentType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"projectDocumentType"];
 
   return v5;
 }
@@ -696,37 +696,37 @@ LABEL_7:
 - (void)setTitle:(NSString *)title
 {
   v10 = title;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
   if (v10)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:v10 forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   return v5;
 }
@@ -754,16 +754,16 @@ LABEL_7:
   return v2;
 }
 
-- (PHProjectChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHProjectChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = PHProjectChangeRequest;
   v8 = [(PHChangeRequest *)&v16 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -783,25 +783,25 @@ LABEL_7:
 {
   v4 = project;
   v5 = [PHProjectChangeRequest alloc];
-  v6 = [(PHObject *)v4 uuid];
-  v7 = [(PHObject *)v4 objectID];
-  v8 = [(PHProjectChangeRequest *)v5 initWithUUID:v6 objectID:v7];
+  uuid = [(PHObject *)v4 uuid];
+  objectID = [(PHObject *)v4 objectID];
+  v8 = [(PHProjectChangeRequest *)v5 initWithUUID:uuid objectID:objectID];
 
   [(PHProjectChangeRequest *)v8 _setOriginalProject:v4];
   return v8;
 }
 
-+ (void)_deleteProjects:(id)a3 withOperation:(int64_t)a4
++ (void)_deleteProjects:(id)projects withOperation:(int64_t)operation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [PHObject assertAllObjects:v6 forSelector:a2 areOfType:objc_opt_class()];
+  projectsCopy = projects;
+  [PHObject assertAllObjects:projectsCopy forSelector:a2 areOfType:objc_opt_class()];
   +[PHPhotoLibrary assertTransaction];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = projectsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -817,7 +817,7 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [(PHTrashableObjectDeleteRequest *)PHCollectionDeleteRequest deleteRequestForObject:*(*(&v13 + 1) + 8 * v11++) operation:a4, v13];
+        v12 = [(PHTrashableObjectDeleteRequest *)PHCollectionDeleteRequest deleteRequestForObject:*(*(&v13 + 1) + 8 * v11++) operation:operation, v13];
       }
 
       while (v9 != v11);
@@ -828,16 +828,16 @@ LABEL_7:
   }
 }
 
-+ (id)creationRequestForProjectCopyFromProject:(id)a3
++ (id)creationRequestForProjectCopyFromProject:(id)project
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 assetCollectionType] == 10)
+  projectCopy = project;
+  if ([projectCopy assetCollectionType] == 10)
   {
-    v4 = [v3 photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [projectCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v6 = [PHAsset fetchAssetsInAssetCollection:v3 options:v5];
+    v6 = [PHAsset fetchAssetsInAssetCollection:projectCopy options:librarySpecificFetchOptions];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v37 = 0x3032000000;
@@ -856,33 +856,33 @@ LABEL_7:
     v27 = __Block_byref_object_copy__20352;
     v28 = __Block_byref_object_dispose__20353;
     v29 = 0;
-    v7 = [v3 photoLibrary];
-    v8 = [v7 photoLibrary];
+    photoLibrary2 = [projectCopy photoLibrary];
+    v7PhotoLibrary = [photoLibrary2 photoLibrary];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __67__PHProjectChangeRequest_creationRequestForProjectCopyFromProject___block_invoke;
     v19[3] = &unk_1E75A9D28;
-    v9 = v3;
+    v9 = projectCopy;
     v20 = v9;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    [v8 performBlockAndWait:v19];
+    [v7PhotoLibrary performBlockAndWait:v19];
 
     v10 = *(*(&buf + 1) + 40);
     v11 = v31[5];
-    v12 = [v9 title];
-    v13 = [PHProjectChangeRequest creationRequestForProjectWithDocumentType:v10 projectExtensionIdentifier:v11 assets:v6 title:v12];
+    title = [v9 title];
+    v13 = [PHProjectChangeRequest creationRequestForProjectWithDocumentType:v10 projectExtensionIdentifier:v11 assets:v6 title:title];
 
     [v13 setProjectData:v25[5]];
-    v14 = [MEMORY[0x1E69BF320] UUIDString];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
     v18 = 0;
-    v15 = [0 duplicateProjectPreviewImageData:v14 error:&v18];
+    v15 = [0 duplicateProjectPreviewImageData:uUIDString error:&v18];
     v16 = v18;
 
     if (v15)
     {
-      [v13 setProjectRenderUuid:v14];
+      [v13 setProjectRenderUuid:uUIDString];
     }
 
     _Block_object_dispose(&v24, 8);
@@ -893,12 +893,12 @@ LABEL_7:
 
   else
   {
-    v5 = PLPhotoKitGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    librarySpecificFetchOptions = PLPhotoKitGetLog();
+    if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v3;
-      _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_ERROR, "Asset collection type is not a project: %@", &buf, 0xCu);
+      *(&buf + 4) = projectCopy;
+      _os_log_impl(&dword_19C86F000, librarySpecificFetchOptions, OS_LOG_TYPE_ERROR, "Asset collection type is not a project: %@", &buf, 0xCu);
     }
 
     v13 = 0;
@@ -931,33 +931,33 @@ void __67__PHProjectChangeRequest_creationRequestForProjectCopyFromProject___blo
   *(v13 + 40) = v12;
 }
 
-+ (id)creationRequestForProjectWithDocumentType:(id)a3 projectExtensionIdentifier:(id)a4 assets:(id)a5 title:(id)a6
++ (id)creationRequestForProjectWithDocumentType:(id)type projectExtensionIdentifier:(id)identifier assets:(id)assets title:(id)title
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PHProjectChangeRequest alloc] initForNewObject];
-  [v13 setProjectDocumentType:v12];
+  titleCopy = title;
+  assetsCopy = assets;
+  identifierCopy = identifier;
+  typeCopy = type;
+  initForNewObject = [[PHProjectChangeRequest alloc] initForNewObject];
+  [initForNewObject setProjectDocumentType:typeCopy];
 
-  [v13 setProjectExtensionIdentifier:v11];
-  [v13 setAssets:v10];
+  [initForNewObject setProjectExtensionIdentifier:identifierCopy];
+  [initForNewObject setAssets:assetsCopy];
 
-  [v13 setTitle:v9];
+  [initForNewObject setTitle:titleCopy];
 
-  return v13;
+  return initForNewObject;
 }
 
-+ (id)creationRequestForProjectWithDocumentType:(id)a3 projectExtensionIdentifier:(id)a4
++ (id)creationRequestForProjectWithDocumentType:(id)type projectExtensionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PHProjectChangeRequest alloc] initForNewObject];
-  [v7 setProjectDocumentType:v6];
+  identifierCopy = identifier;
+  typeCopy = type;
+  initForNewObject = [[PHProjectChangeRequest alloc] initForNewObject];
+  [initForNewObject setProjectDocumentType:typeCopy];
 
-  [v7 setProjectExtensionIdentifier:v5];
+  [initForNewObject setProjectExtensionIdentifier:identifierCopy];
 
-  return v7;
+  return initForNewObject;
 }
 
 @end

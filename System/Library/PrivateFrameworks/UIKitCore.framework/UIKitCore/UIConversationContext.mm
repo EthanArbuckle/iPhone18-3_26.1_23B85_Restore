@@ -8,13 +8,13 @@
 - (id)inputContextHistoryRepresentation
 {
   v3 = [UIInputContextHistory alloc];
-  v4 = [(UIConversationContext *)self threadIdentifier];
-  v5 = [(UIConversationContext *)self participantNameByIdentifier];
-  v6 = [(UIConversationContext *)self selfIdentifiers];
-  v7 = [(UIConversationContext *)self responsePrimaryRecipientIdentifiers];
-  v8 = [(UIConversationContext *)self secondaryRecipientIdentifiers];
-  v9 = [(UIConversationContext *)self infoDictionary];
-  v10 = [(UIInputContextHistory *)v3 initWithThreadIdentifier:v4 participantsIDtoNames:v5 firstPerson:v6 primaryRecipients:v7 secondaryRecipients:v8 info:v9];
+  threadIdentifier = [(UIConversationContext *)self threadIdentifier];
+  participantNameByIdentifier = [(UIConversationContext *)self participantNameByIdentifier];
+  selfIdentifiers = [(UIConversationContext *)self selfIdentifiers];
+  responsePrimaryRecipientIdentifiers = [(UIConversationContext *)self responsePrimaryRecipientIdentifiers];
+  secondaryRecipientIdentifiers = [(UIConversationContext *)self secondaryRecipientIdentifiers];
+  infoDictionary = [(UIConversationContext *)self infoDictionary];
+  v10 = [(UIInputContextHistory *)v3 initWithThreadIdentifier:threadIdentifier participantsIDtoNames:participantNameByIdentifier firstPerson:selfIdentifiers primaryRecipients:responsePrimaryRecipientIdentifiers secondaryRecipients:secondaryRecipientIdentifiers info:infoDictionary];
 
   return v10;
 }

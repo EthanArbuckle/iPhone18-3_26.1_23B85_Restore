@@ -1,40 +1,40 @@
 @interface PKPaymentTokenContext
-+ (PKPaymentTokenContext)contextWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentTokenContext:(id)a3;
-- (PKPaymentTokenContext)initWithCoder:(id)a3;
-- (PKPaymentTokenContext)initWithDictionary:(id)a3 error:(id *)a4;
++ (PKPaymentTokenContext)contextWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentTokenContext:(id)context;
+- (PKPaymentTokenContext)initWithCoder:(id)coder;
+- (PKPaymentTokenContext)initWithDictionary:(id)dictionary error:(id *)error;
 - (PKPaymentTokenContext)initWithMerchantIdentifier:(NSString *)merchantIdentifier externalIdentifier:(NSString *)externalIdentifier merchantName:(NSString *)merchantName merchantDomain:(NSString *)merchantDomain amount:(NSDecimalNumber *)amount;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTokenContext
 
-+ (PKPaymentTokenContext)contextWithProtobuf:(id)a3
++ (PKPaymentTokenContext)contextWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKPaymentTokenContext);
-  v5 = [v3 merchantIdentifier];
-  [(PKPaymentTokenContext *)v4 setMerchantIdentifier:v5];
+  merchantIdentifier = [protobufCopy merchantIdentifier];
+  [(PKPaymentTokenContext *)v4 setMerchantIdentifier:merchantIdentifier];
 
-  v6 = [v3 externalIdentifier];
-  [(PKPaymentTokenContext *)v4 setExternalIdentifier:v6];
+  externalIdentifier = [protobufCopy externalIdentifier];
+  [(PKPaymentTokenContext *)v4 setExternalIdentifier:externalIdentifier];
 
-  v7 = [v3 merchantName];
-  [(PKPaymentTokenContext *)v4 setMerchantName:v7];
+  merchantName = [protobufCopy merchantName];
+  [(PKPaymentTokenContext *)v4 setMerchantName:merchantName];
 
-  v8 = [v3 merchantDomain];
-  [(PKPaymentTokenContext *)v4 setMerchantDomain:v8];
+  merchantDomain = [protobufCopy merchantDomain];
+  [(PKPaymentTokenContext *)v4 setMerchantDomain:merchantDomain];
 
-  if ([v3 hasDecimalAmount])
+  if ([protobufCopy hasDecimalAmount])
   {
-    v9 = [v3 decimalAmount];
-    v10 = PKProtoSupportDecimalNumberFromProtobuf(v9);
+    decimalAmount = [protobufCopy decimalAmount];
+    v10 = PKProtoSupportDecimalNumberFromProtobuf(decimalAmount);
 LABEL_5:
     v11 = v10;
     [(PKPaymentTokenContext *)v4 setAmount:v10];
@@ -42,15 +42,15 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 hasCustomPrecisionAmount])
+  if ([protobufCopy hasCustomPrecisionAmount])
   {
-    v9 = [v3 customPrecisionAmount];
-    v10 = PKLegacyCurrencyStorageIntegerToDecimal([v9 amount], 1);
+    decimalAmount = [protobufCopy customPrecisionAmount];
+    v10 = PKLegacyCurrencyStorageIntegerToDecimal([decimalAmount amount], 1);
     goto LABEL_5;
   }
 
-  v9 = PKLegacyCurrencyStorageIntegerToDecimal([v3 amount], 0);
-  [(PKPaymentTokenContext *)v4 setAmount:v9];
+  decimalAmount = PKLegacyCurrencyStorageIntegerToDecimal([protobufCopy amount], 0);
+  [(PKPaymentTokenContext *)v4 setAmount:decimalAmount];
 LABEL_7:
 
   return v4;
@@ -59,27 +59,27 @@ LABEL_7:
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufPaymentTokenContext);
-  v4 = [(PKPaymentTokenContext *)self merchantIdentifier];
-  [(PKProtobufPaymentTokenContext *)v3 setMerchantIdentifier:v4];
+  merchantIdentifier = [(PKPaymentTokenContext *)self merchantIdentifier];
+  [(PKProtobufPaymentTokenContext *)v3 setMerchantIdentifier:merchantIdentifier];
 
-  v5 = [(PKPaymentTokenContext *)self externalIdentifier];
-  [(PKProtobufPaymentTokenContext *)v3 setExternalIdentifier:v5];
+  externalIdentifier = [(PKPaymentTokenContext *)self externalIdentifier];
+  [(PKProtobufPaymentTokenContext *)v3 setExternalIdentifier:externalIdentifier];
 
-  v6 = [(PKPaymentTokenContext *)self merchantName];
-  [(PKProtobufPaymentTokenContext *)v3 setMerchantName:v6];
+  merchantName = [(PKPaymentTokenContext *)self merchantName];
+  [(PKProtobufPaymentTokenContext *)v3 setMerchantName:merchantName];
 
-  v7 = [(PKPaymentTokenContext *)self merchantDomain];
-  [(PKProtobufPaymentTokenContext *)v3 setMerchantDomain:v7];
+  merchantDomain = [(PKPaymentTokenContext *)self merchantDomain];
+  [(PKProtobufPaymentTokenContext *)v3 setMerchantDomain:merchantDomain];
 
-  v8 = [(PKPaymentTokenContext *)self amount];
-  [(PKProtobufPaymentTokenContext *)v3 setAmount:PKCurrencyDecimalToLegacyStorageInteger(v8, 0)];
+  amount = [(PKPaymentTokenContext *)self amount];
+  [(PKProtobufPaymentTokenContext *)v3 setAmount:PKCurrencyDecimalToLegacyStorageInteger(amount, 0)];
 
-  v9 = [(PKPaymentTokenContext *)self amount];
-  v10 = DecimalToCustomPrecisionProtobuf(v9);
+  amount2 = [(PKPaymentTokenContext *)self amount];
+  v10 = DecimalToCustomPrecisionProtobuf(amount2);
   [(PKProtobufPaymentTokenContext *)v3 setCustomPrecisionAmount:v10];
 
-  v11 = [(PKPaymentTokenContext *)self amount];
-  v12 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(v11);
+  amount3 = [(PKPaymentTokenContext *)self amount];
+  v12 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(amount3);
   [(PKProtobufPaymentTokenContext *)v3 setDecimalAmount:v12];
 
   return v3;
@@ -121,28 +121,28 @@ LABEL_7:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTokenContext *)self isEqualToPaymentTokenContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTokenContext *)self isEqualToPaymentTokenContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentTokenContext:(id)a3
+- (BOOL)isEqualToPaymentTokenContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   merchantIdentifier = self->_merchantIdentifier;
-  v6 = v4[1];
+  v6 = contextCopy[1];
   if (merchantIdentifier)
   {
     v7 = v6 == 0;
@@ -167,7 +167,7 @@ LABEL_7:
   }
 
   externalIdentifier = self->_externalIdentifier;
-  v9 = v4[2];
+  v9 = contextCopy[2];
   if (externalIdentifier && v9)
   {
     if (([(NSString *)externalIdentifier isEqual:?]& 1) == 0)
@@ -182,7 +182,7 @@ LABEL_7:
   }
 
   merchantName = self->_merchantName;
-  v11 = v4[3];
+  v11 = contextCopy[3];
   if (merchantName && v11)
   {
     if (([(NSString *)merchantName isEqual:?]& 1) == 0)
@@ -197,7 +197,7 @@ LABEL_7:
   }
 
   merchantDomain = self->_merchantDomain;
-  v13 = v4[4];
+  v13 = contextCopy[4];
   if (!merchantDomain || !v13)
   {
     if (merchantDomain == v13)
@@ -217,7 +217,7 @@ LABEL_26:
 
 LABEL_22:
   amount = self->_amount;
-  v15 = v4[5];
+  v15 = contextCopy[5];
   if (amount && v15)
   {
     v16 = [(NSDecimalNumber *)amount isEqual:?];
@@ -246,26 +246,26 @@ LABEL_27:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_externalIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_externalIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_merchantName copyWithZone:a3];
+  v10 = [(NSString *)self->_merchantName copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_merchantDomain copyWithZone:a3];
+  v12 = [(NSString *)self->_merchantDomain copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
@@ -290,31 +290,31 @@ LABEL_27:
   return v4;
 }
 
-- (PKPaymentTokenContext)initWithCoder:(id)a3
+- (PKPaymentTokenContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPaymentTokenContext;
   v5 = [(PKPaymentTokenContext *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
     merchantIdentifier = v5->_merchantIdentifier;
     v5->_merchantIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
     merchantName = v5->_merchantName;
     v5->_merchantName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantDomain"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantDomain"];
     merchantDomain = v5->_merchantDomain;
     v5->_merchantDomain = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v14;
   }
@@ -322,42 +322,42 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   merchantIdentifier = self->_merchantIdentifier;
-  v5 = a3;
-  [v5 encodeObject:merchantIdentifier forKey:@"merchantIdentifier"];
-  [v5 encodeObject:self->_externalIdentifier forKey:@"externalIdentifier"];
-  [v5 encodeObject:self->_merchantName forKey:@"merchantName"];
-  [v5 encodeObject:self->_merchantDomain forKey:@"merchantDomain"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:merchantIdentifier forKey:@"merchantIdentifier"];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:@"externalIdentifier"];
+  [coderCopy encodeObject:self->_merchantName forKey:@"merchantName"];
+  [coderCopy encodeObject:self->_merchantDomain forKey:@"merchantDomain"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
 }
 
-- (PKPaymentTokenContext)initWithDictionary:(id)a3 error:(id *)a4
+- (PKPaymentTokenContext)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PKPaymentTokenContext;
   v6 = [(PKPaymentTokenContext *)&v18 init];
   if (v6)
   {
-    v7 = [v5 PKStringForKey:@"merchantIdentifier"];
+    v7 = [dictionaryCopy PKStringForKey:@"merchantIdentifier"];
     merchantIdentifier = v6->_merchantIdentifier;
     v6->_merchantIdentifier = v7;
 
-    v9 = [v5 PKStringForKey:@"externalIdentifier"];
+    v9 = [dictionaryCopy PKStringForKey:@"externalIdentifier"];
     externalIdentifier = v6->_externalIdentifier;
     v6->_externalIdentifier = v9;
 
-    v11 = [v5 PKStringForKey:@"merchantName"];
+    v11 = [dictionaryCopy PKStringForKey:@"merchantName"];
     merchantName = v6->_merchantName;
     v6->_merchantName = v11;
 
-    v13 = [v5 PKStringForKey:@"merchantDomain"];
+    v13 = [dictionaryCopy PKStringForKey:@"merchantDomain"];
     merchantDomain = v6->_merchantDomain;
     v6->_merchantDomain = v13;
 
-    v15 = [v5 PKDecimalNumberFromStringForKey:@"amount"];
+    v15 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amount"];
     amount = v6->_amount;
     v6->_amount = v15;
   }

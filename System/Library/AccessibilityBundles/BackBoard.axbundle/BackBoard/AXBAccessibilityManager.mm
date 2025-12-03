@@ -3,17 +3,17 @@
 + (void)initializeAccessibilityMonitor;
 + (void)updateAccessibilitySettings;
 - (AXBAccessibilityManager)init;
-- (BOOL)_accessibilityDisplayRequiresRotateForPoints:(id)a3;
-- (BOOL)_accessibilityEventTapCallback:(id)a3;
+- (BOOL)_accessibilityDisplayRequiresRotateForPoints:(id)points;
+- (BOOL)_accessibilityEventTapCallback:(id)callback;
 - (BOOL)_accessibilityIsInternalInstall;
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5;
-- (BOOL)_screenReaderCapture:(id)a3;
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port;
+- (BOOL)_screenReaderCapture:(id)capture;
 - (BOOL)_showingBootUI;
 - (double)_processPassiveEventQueue;
 - (id)_accessibilityAssistiveTouchApplication;
 - (id)_accessibilityCarPlayApp;
 - (id)_accessibilityCarPlayApplicationPid;
-- (id)_accessibilityHitTest:(CGPoint)a3;
+- (id)_accessibilityHitTest:(CGPoint)test;
 - (id)_accessibilityInputUIApplication;
 - (id)_accessibilityLiveCaptionsApplication;
 - (id)_accessibilityNativeFocusedApplication;
@@ -23,17 +23,17 @@
 - (id)_accessibilitySystemAppApplicationPid;
 - (id)_accessibilityUIServerApplication;
 - (id)_deliveryManager;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 element:(id)a4;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value element:(id)element;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter;
 - (id)allJobLabels;
-- (int)_handlePidForSpecialCases:(unsigned int)a3;
-- (void)_accessibilityRepostEvent:(id)a3;
+- (int)_handlePidForSpecialCases:(unsigned int)cases;
+- (void)_accessibilityRepostEvent:(id)event;
 - (void)_accessibilitySystemAppApplicationPid;
-- (void)_iosAccessibilitySetValue:(id)a3 forAttribute:(int64_t)a4;
-- (void)_releasePendingEvents:(double)a3;
-- (void)_sendEventRep:(id)a3;
+- (void)_iosAccessibilitySetValue:(id)value forAttribute:(int64_t)attribute;
+- (void)_releasePendingEvents:(double)events;
+- (void)_sendEventRep:(id)rep;
 - (void)_startPassiveResendThread;
-- (void)_undoContextShiftedPoints:(id)a3;
+- (void)_undoContextShiftedPoints:(id)points;
 - (void)_updateVoiceOverIgnoresTrackpad;
 - (void)initializeAccessibility;
 - (void)observerClientDied;
@@ -70,16 +70,16 @@
 
 + (void)initializeAccessibilityMonitor
 {
-  [a1 updateAccessibilitySettings];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
+  [self updateAccessibilitySettings];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
   v4 = *MEMORY[0x29EDC83D8];
-  v5 = [MEMORY[0x29EDBA088] mainQueue];
+  mainQueue = [MEMORY[0x29EDBA088] mainQueue];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __57__AXBAccessibilityManager_initializeAccessibilityMonitor__block_invoke;
   v9[3] = &__block_descriptor_40_e24_v16__0__NSNotification_8l;
-  v9[4] = a1;
-  v6 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:v9];
+  v9[4] = self;
+  v6 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:v9];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v8 = objc_opt_class();
@@ -100,17 +100,17 @@ uint64_t __40__AXBAccessibilityManager_sharedManager__block_invoke()
   v2 = [(AXBAccessibilityManager *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:v2 selector:sel_resetAssistiveTouchHitPort name:*MEMORY[0x29EDC83E0] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_resetAssistiveTouchHitPort name:*MEMORY[0x29EDC83E0] object:0];
 
-    v4 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __31__AXBAccessibilityManager_init__block_invoke;
     v8[3] = &unk_29F2A4B10;
     v5 = v2;
     v9 = v5;
-    [v4 registerUpdateBlock:v8 forRetrieveSelector:sel_voiceOverIgnoreTrackpad withListener:v5];
+    [mEMORY[0x29EDBDFA0] registerUpdateBlock:v8 forRetrieveSelector:sel_voiceOverIgnoreTrackpad withListener:v5];
 
     [(AXBAccessibilityManager *)v5 _updateVoiceOverIgnoresTrackpad];
     v6 = v5;
@@ -121,8 +121,8 @@ uint64_t __40__AXBAccessibilityManager_sharedManager__block_invoke()
 
 - (void)_updateVoiceOverIgnoresTrackpad
 {
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  self->_voiceOverIgnoresTrackpad = [v3 voiceOverIgnoreTrackpad];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  self->_voiceOverIgnoresTrackpad = [mEMORY[0x29EDBDFA0] voiceOverIgnoreTrackpad];
 }
 
 - (void)initializeAccessibility
@@ -268,9 +268,9 @@ id __50__AXBAccessibilityManager_initializeAccessibility__block_invoke_8(uint64_
   return v3;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3
+- (id)_accessibilityHitTest:(CGPoint)test
 {
-  if ([(AXBAccessibilityManager *)self _showingBootUI:a3.x])
+  if ([(AXBAccessibilityManager *)self _showingBootUI:test.x])
   {
     v3 = [NSClassFromString(&cfstr_Bkbootuipresen.isa) safeValueForKey:@"sharedInstance"];
     v4 = [v3 safeValueForKey:@"_overlay"];
@@ -323,11 +323,11 @@ id __50__AXBAccessibilityManager_initializeAccessibility__block_invoke_8(uint64_
   }
 }
 
-- (void)_accessibilityRepostEvent:(id)a3
+- (void)_accessibilityRepostEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
-    AXBSendEventRepresentationUntapped(a3);
+    AXBSendEventRepresentationUntapped(event);
   }
 }
 
@@ -338,7 +338,7 @@ uint64_t __65__AXBAccessibilityManager__accessibilityApplicationForContextId___b
   return result;
 }
 
-- (int)_handlePidForSpecialCases:(unsigned int)a3
+- (int)_handlePidForSpecialCases:(unsigned int)cases
 {
   if (!_AXSAssistiveTouchEnabled())
   {
@@ -352,7 +352,7 @@ uint64_t __65__AXBAccessibilityManager__accessibilityApplicationForContextId___b
     v5 = AssistiveTouchPort;
   }
 
-  if (v5 != a3 || (result = +[AXBackBoardGlue assistiveTouchPid]) == 0)
+  if (v5 != cases || (result = +[AXBackBoardGlue assistiveTouchPid]) == 0)
   {
     if (!+[AXBackBoardGlue accessibilityUIServerPid])
     {
@@ -367,7 +367,7 @@ LABEL_9:
       v7 = AccessibilityUITouchPort;
     }
 
-    if (v7 == a3)
+    if (v7 == cases)
     {
 
       return +[AXBackBoardGlue accessibilityUIServerPid];
@@ -383,10 +383,10 @@ LABEL_13:
 
       else
       {
-        v8 = [(AXBAccessibilityManager *)self _accessibilitySystemAppApplicationPid];
-        v9 = [v8 intValue];
+        _accessibilitySystemAppApplicationPid = [(AXBAccessibilityManager *)self _accessibilitySystemAppApplicationPid];
+        intValue = [_accessibilitySystemAppApplicationPid intValue];
 
-        return v9;
+        return intValue;
       }
     }
   }
@@ -420,13 +420,13 @@ uint64_t __58__AXBAccessibilityManager__accessibilityIsInternalInstall__block_in
   {
     if (launch_data_get_type(v3) == LAUNCH_DATA_DICTIONARY)
     {
-      v4 = [MEMORY[0x29EDB8DE8] array];
-      launch_data_dict_iterate(v3, copyKeysToArray, v4);
+      array = [MEMORY[0x29EDB8DE8] array];
+      launch_data_dict_iterate(v3, copyKeysToArray, array);
     }
 
     else
     {
-      v4 = 0;
+      array = 0;
     }
 
     MEMORY[0x29C2CC080](v3);
@@ -434,10 +434,10 @@ uint64_t __58__AXBAccessibilityManager__accessibilityIsInternalInstall__block_in
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
-  return v4;
+  return array;
 }
 
 - (id)_accessibilitySystemApp
@@ -480,18 +480,18 @@ uint64_t __58__AXBAccessibilityManager__accessibilityIsInternalInstall__block_in
   }
 
 LABEL_9:
-  v10 = [v4 firstObject];
+  firstObject = [v4 firstObject];
   v11 = AXLogSystemApp();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v10;
+    v15 = firstObject;
     _os_log_impl(&dword_29BBBD000, v11, OS_LOG_TYPE_INFO, "Determined system app: %@", buf, 0xCu);
   }
 
   v12 = *MEMORY[0x29EDCA608];
 
-  return v10;
+  return firstObject;
 }
 
 uint64_t __50__AXBAccessibilityManager__accessibilitySystemApp__block_invoke(uint64_t a1, void *a2)
@@ -507,9 +507,9 @@ uint64_t __50__AXBAccessibilityManager__accessibilitySystemApp__block_invoke(uin
   v2 = [NSClassFromString(&cfstr_Bksystemshells.isa) safeValueForKey:@"sharedInstance"];
   v3 = [v2 safeArrayForKey:@"systemApplications"];
   v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_364];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 uint64_t __51__AXBAccessibilityManager__accessibilityCarPlayApp__block_invoke(uint64_t a1, void *a2)
@@ -522,26 +522,26 @@ uint64_t __51__AXBAccessibilityManager__accessibilityCarPlayApp__block_invoke(ui
 
 - (id)_accessibilitySystemAppApplicationBundleId
 {
-  v2 = [(AXBAccessibilityManager *)self _accessibilitySystemApp];
-  v3 = [v2 safeValueForKey:@"bundleIdentifier"];
+  _accessibilitySystemApp = [(AXBAccessibilityManager *)self _accessibilitySystemApp];
+  v3 = [_accessibilitySystemApp safeValueForKey:@"bundleIdentifier"];
 
   return v3;
 }
 
 - (id)_accessibilityCarPlayApplicationPid
 {
-  v2 = [(AXBAccessibilityManager *)self _accessibilityCarPlayApp];
-  v3 = [v2 safeValueForKey:@"pid"];
-  v4 = [v3 unsignedIntValue];
+  _accessibilityCarPlayApp = [(AXBAccessibilityManager *)self _accessibilityCarPlayApp];
+  v3 = [_accessibilityCarPlayApp safeValueForKey:@"pid"];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  if (v4 < 1)
+  if (unsignedIntValue < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+    v5 = [MEMORY[0x29EDBA070] numberWithInt:unsignedIntValue];
   }
 
   return v5;
@@ -549,16 +549,16 @@ uint64_t __51__AXBAccessibilityManager__accessibilityCarPlayApp__block_invoke(ui
 
 - (id)_accessibilitySystemAppApplicationPid
 {
-  v2 = [(AXBAccessibilityManager *)self _accessibilitySystemApp];
-  v3 = [v2 safeValueForKey:@"pid"];
-  v4 = [v3 unsignedIntValue];
+  _accessibilitySystemApp = [(AXBAccessibilityManager *)self _accessibilitySystemApp];
+  v3 = [_accessibilitySystemApp safeValueForKey:@"pid"];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  if (v4 <= 0)
+  if (unsignedIntValue <= 0)
   {
     v6 = AXLogSystemApp();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(AXBAccessibilityManager *)v2 _accessibilitySystemAppApplicationPid];
+      [(AXBAccessibilityManager *)_accessibilitySystemApp _accessibilitySystemAppApplicationPid];
     }
 
     v5 = 0;
@@ -566,7 +566,7 @@ uint64_t __51__AXBAccessibilityManager__accessibilityCarPlayApp__block_invoke(ui
 
   else
   {
-    v5 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+    v5 = [MEMORY[0x29EDBA070] numberWithInt:unsignedIntValue];
   }
 
   return v5;
@@ -617,13 +617,13 @@ uint64_t __51__AXBAccessibilityManager__accessibilityCarPlayApp__block_invoke(ui
   if (_AXSAutomationEnabled() || AXRequestingClient() == 11)
   {
     v3 = MEMORY[0x29EDBA070];
-    v4 = [MEMORY[0x29EDBDFA8] server];
-    v5 = [v3 numberWithInt:{objc_msgSend(v4, "nativeFocusedApplication")}];
+    server = [MEMORY[0x29EDBDFA8] server];
+    v5 = [v3 numberWithInt:{objc_msgSend(server, "nativeFocusedApplication")}];
   }
 
   else
   {
-    v7 = [(AXBAccessibilityManager *)self _deliveryManager];
+    _deliveryManager = [(AXBAccessibilityManager *)self _deliveryManager];
     if (_accessibilityNativeFocusedApplication_onceToken != -1)
     {
       [AXBAccessibilityManager _accessibilityNativeFocusedApplication];
@@ -636,15 +636,15 @@ uint64_t __51__AXBAccessibilityManager__accessibilityCarPlayApp__block_invoke(ui
     v17 = __Block_byref_object_copy_;
     v18 = __Block_byref_object_dispose_;
     v19 = 0;
-    v12 = v7;
+    v12 = _deliveryManager;
     v13 = v8;
     AXPerformSafeBlock();
     v9 = v15[5];
 
     _Block_object_dispose(&v14, 8);
-    v10 = [v9 anyObject];
+    anyObject = [v9 anyObject];
 
-    v11 = [v10 safeUnsignedIntForKey:@"pid"];
+    v11 = [anyObject safeUnsignedIntForKey:@"pid"];
     v5 = [MEMORY[0x29EDBA070] numberWithInt:v11];
   }
 
@@ -678,9 +678,9 @@ uint64_t __65__AXBAccessibilityManager__accessibilityNativeFocusedApplication__b
   }
 
   v3 = +[AXBEventManager sharedManager];
-  v4 = [v3 systemAppPid];
+  systemAppPid = [v3 systemAppPid];
 
-  if (v4 <= 0)
+  if (systemAppPid <= 0)
   {
     NSLog(&cfstr_AccessibilityS.isa);
 LABEL_2:
@@ -688,20 +688,20 @@ LABEL_2:
     goto LABEL_5;
   }
 
-  v2 = [MEMORY[0x29EDBA070] numberWithInt:v4];
+  v2 = [MEMORY[0x29EDBA070] numberWithInt:systemAppPid];
 LABEL_5:
 
   return v2;
 }
 
-- (void)_iosAccessibilitySetValue:(id)a3 forAttribute:(int64_t)a4
+- (void)_iosAccessibilitySetValue:(id)value forAttribute:(int64_t)attribute
 {
-  v6 = a3;
-  switch(a4)
+  valueCopy = value;
+  switch(attribute)
   {
     case 1002:
-      v8 = v6;
-      if ([v6 BOOLValue])
+      v8 = valueCopy;
+      if ([valueCopy BOOLValue])
       {
         setCaptureMode(32);
       }
@@ -713,26 +713,26 @@ LABEL_5:
 
       break;
     case 1003:
-      v9 = v6;
-      [v6 floatValue];
-      v6 = v9;
+      v9 = valueCopy;
+      [valueCopy floatValue];
+      valueCopy = v9;
       *&_SBAXPassiveListenDelay = v7;
       goto LABEL_10;
     case 1004:
-      v8 = v6;
-      -[AXBAccessibilityManager setAccelerometerDisabled:](self, "setAccelerometerDisabled:", [v6 BOOLValue]);
+      v8 = valueCopy;
+      -[AXBAccessibilityManager setAccelerometerDisabled:](self, "setAccelerometerDisabled:", [valueCopy BOOLValue]);
       break;
     default:
       goto LABEL_10;
   }
 
-  v6 = v8;
+  valueCopy = v8;
 LABEL_10:
 }
 
-- (void)_sendEventRep:(id)a3
+- (void)_sendEventRep:(id)rep
 {
-  v3 = a3;
+  repCopy = rep;
   if (_sendEventRep__registerOnce != -1)
   {
     [AXBAccessibilityManager _sendEventRep:];
@@ -743,8 +743,8 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __41__AXBAccessibilityManager__sendEventRep___block_invoke_2;
   block[3] = &unk_29F2A4B10;
-  v7 = v3;
-  v5 = v3;
+  v7 = repCopy;
+  v5 = repCopy;
   dispatch_async(v4, block);
 }
 
@@ -755,26 +755,26 @@ uint64_t __41__AXBAccessibilityManager__sendEventRep___block_invoke()
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 element:(id)a4
+- (id)_iosAccessibilityAttributeValue:(int64_t)value element:(id)element
 {
-  v6 = a4;
+  elementCopy = element;
   v7 = 0;
-  if (a3 <= 1006)
+  if (value <= 1006)
   {
-    if (a3 > 1002)
+    if (value > 1002)
     {
-      switch(a3)
+      switch(value)
       {
         case 1003:
           HIDWORD(v9) = HIDWORD(_SBAXPassiveListenDelay);
           *&v9 = *&_SBAXPassiveListenDelay;
-          v8 = [MEMORY[0x29EDBA070] numberWithFloat:v9];
+          _accessibilityUIServerApplication = [MEMORY[0x29EDBA070] numberWithFloat:v9];
           break;
         case 1005:
-          v8 = [(AXBAccessibilityManager *)self _accessibilityUIServerApplication];
+          _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilityUIServerApplication];
           break;
         case 1006:
-          v8 = [(AXBAccessibilityManager *)self _accessibilityAssistiveTouchApplication];
+          _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilityAssistiveTouchApplication];
           break;
         default:
           goto LABEL_35;
@@ -783,16 +783,16 @@ uint64_t __41__AXBAccessibilityManager__sendEventRep___block_invoke()
 
     else
     {
-      switch(a3)
+      switch(value)
       {
         case 1000:
-          v8 = [(AXBAccessibilityManager *)self _accessibilitySpringBoardApplication];
+          _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilitySpringBoardApplication];
           break;
         case 1001:
-          v8 = [(AXBAccessibilityManager *)self _accessibilitySystemAppApplicationPid];
+          _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilitySystemAppApplicationPid];
           break;
         case 1002:
-          v8 = [MEMORY[0x29EDBA070] numberWithBool:(_SBAXCaptureMode >> 5) & 1];
+          _accessibilityUIServerApplication = [MEMORY[0x29EDBA070] numberWithBool:(_SBAXCaptureMode >> 5) & 1];
           break;
         default:
           goto LABEL_35;
@@ -802,18 +802,18 @@ uint64_t __41__AXBAccessibilityManager__sendEventRep___block_invoke()
     goto LABEL_34;
   }
 
-  if (a3 <= 1010)
+  if (value <= 1010)
   {
-    switch(a3)
+    switch(value)
     {
       case 1007:
-        v8 = [(AXBAccessibilityManager *)self _accessibilityNativeFocusedApplication];
+        _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilityNativeFocusedApplication];
         break;
       case 1009:
-        v8 = [(AXBAccessibilityManager *)self _accessibilityCarPlayApplicationPid];
+        _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilityCarPlayApplicationPid];
         break;
       case 1010:
-        v8 = [(AXBAccessibilityManager *)self _accessibilityLiveCaptionsApplication];
+        _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilityLiveCaptionsApplication];
         break;
       default:
         goto LABEL_35;
@@ -822,14 +822,14 @@ uint64_t __41__AXBAccessibilityManager__sendEventRep___block_invoke()
     goto LABEL_34;
   }
 
-  if (a3 > 2003)
+  if (value > 2003)
   {
-    if (a3 == 2004)
+    if (value == 2004)
     {
       goto LABEL_25;
     }
 
-    if (a3 != 2006)
+    if (value != 2006)
     {
       goto LABEL_35;
     }
@@ -837,36 +837,36 @@ uint64_t __41__AXBAccessibilityManager__sendEventRep___block_invoke()
 
   else
   {
-    if (a3 == 1011)
+    if (value == 1011)
     {
-      v8 = [(AXBAccessibilityManager *)self _accessibilityInputUIApplication];
+      _accessibilityUIServerApplication = [(AXBAccessibilityManager *)self _accessibilityInputUIApplication];
       goto LABEL_34;
     }
 
-    if (a3 != 2001)
+    if (value != 2001)
     {
       goto LABEL_35;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 accessibilityLabel];
+      _accessibilityUIServerApplication = [elementCopy accessibilityLabel];
 LABEL_34:
-      v7 = v8;
+      v7 = _accessibilityUIServerApplication;
       goto LABEL_35;
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 accessibilityValue];
+    _accessibilityUIServerApplication = [elementCopy accessibilityValue];
     goto LABEL_34;
   }
 
 LABEL_25:
   if (objc_opt_respondsToSelector())
   {
-    v8 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v6, "accessibilityTraits")}];
+    _accessibilityUIServerApplication = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(elementCopy, "accessibilityTraits")}];
     goto LABEL_34;
   }
 
@@ -876,15 +876,15 @@ LABEL_35:
   return v7;
 }
 
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port
 {
   v141 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = v7;
+  valueCopy = value;
+  v8 = valueCopy;
   v9 = 0;
-  if (a3 <= 5099)
+  if (action <= 5099)
   {
-    switch(a3)
+    switch(action)
     {
       case 5001:
         objc_opt_class();
@@ -912,7 +912,7 @@ LABEL_48:
 
         break;
       case 5003:
-        setCaptureMode([v7 intValue]);
+        setCaptureMode([valueCopy intValue]);
         goto LABEL_59;
       case 5004:
         buf[0] = 0;
@@ -936,9 +936,9 @@ LABEL_48:
         v101 = v100;
 
         v102 = [v8 objectAtIndex:2];
-        v103 = [v102 unsignedIntValue];
+        unsignedIntValue = [v102 unsignedIntValue];
 
-        [(AXBAccessibilityManager *)self _sendFingerEvent:1 location:0 force:v103 flags:v96 contextId:v98, v101];
+        [(AXBAccessibilityManager *)self _sendFingerEvent:1 location:0 force:unsignedIntValue flags:v96 contextId:v98, v101];
         goto LABEL_60;
       case 5005:
         buf[0] = 0;
@@ -961,9 +961,9 @@ LABEL_48:
         v62 = v61;
 
         v63 = [v8 objectAtIndex:2];
-        v64 = [v63 unsignedIntValue];
+        unsignedIntValue2 = [v63 unsignedIntValue];
 
-        v65 = self;
+        selfCopy2 = self;
         v66 = 2;
         v67 = v57;
         v68 = v59;
@@ -986,15 +986,15 @@ LABEL_48:
         v76 = v75;
 
         v77 = [v8 objectAtIndex:1];
-        v64 = [v77 unsignedIntValue];
+        unsignedIntValue2 = [v77 unsignedIntValue];
 
         v69 = 0.0;
-        v65 = self;
+        selfCopy2 = self;
         v66 = 6;
         v67 = v74;
         v68 = v76;
 LABEL_31:
-        [(AXBAccessibilityManager *)v65 _sendFingerEvent:v66 location:0 force:v64 flags:v67 contextId:v68, v69];
+        [(AXBAccessibilityManager *)selfCopy2 _sendFingerEvent:v66 location:0 force:unsignedIntValue2 flags:v67 contextId:v68, v69];
         goto LABEL_38;
       case 5007:
         [(AXBAccessibilityManager *)self _sendCancelTouchEvent];
@@ -1030,27 +1030,27 @@ LABEL_31:
           _os_log_impl(&dword_29BBBD000, v117, OS_LOG_TYPE_INFO, "Simulating press: %@", buf, 0xCu);
         }
 
-        v118 = [v110 unsignedIntValue];
+        unsignedIntValue3 = [v110 unsignedIntValue];
         [v111 floatValue];
         v120 = v119;
         [v109 floatValue];
         v122 = v121;
-        v123 = [v112 unsignedIntValue];
-        v124 = [v116 unsignedIntValue];
+        unsignedIntValue4 = [v112 unsignedIntValue];
+        unsignedIntValue5 = [v116 unsignedIntValue];
         v125 = v116;
         v126 = v109;
-        v127 = v124;
+        v127 = unsignedIntValue5;
 
         LODWORD(v128) = v120;
-        [(AXBAccessibilityManager *)self simulatePressAtPoint:v118 withContextId:v123 withDelay:v127 withForce:v106 withSecureName:v108 fingerIndex:v128, v122];
+        [(AXBAccessibilityManager *)self simulatePressAtPoint:unsignedIntValue3 withContextId:unsignedIntValue4 withDelay:v127 withForce:v106 withSecureName:v108 fingerIndex:v128, v122];
 
         goto LABEL_48;
       case 5009:
-        -[AXBAccessibilityManager _setDeviceOrientationCapability:](self, "_setDeviceOrientationCapability:", [v7 BOOLValue]);
+        -[AXBAccessibilityManager _setDeviceOrientationCapability:](self, "_setDeviceOrientationCapability:", [valueCopy BOOLValue]);
         goto LABEL_59;
       case 5010:
-        v10 = [MEMORY[0x29EDBDFC0] sharedInstance];
-        [v10 userEventOccurred];
+        mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDFC0] sharedInstance];
+        [mEMORY[0x29EDBDFC0] userEventOccurred];
         goto LABEL_58;
       case 5017:
         buf[0] = 0;
@@ -1083,8 +1083,8 @@ LABEL_31:
 
         v52 = [v37 objectAtIndexedSubscript:4];
 
-        v27 = [v52 unsignedIntValue];
-        v31 = self;
+        unsignedIntValue6 = [v52 unsignedIntValue];
+        selfCopy5 = self;
         v32 = 1;
         goto LABEL_36;
       case 5018:
@@ -1118,8 +1118,8 @@ LABEL_31:
 
         v91 = [v81 objectAtIndexedSubscript:4];
 
-        v27 = [v91 unsignedIntValue];
-        v31 = self;
+        unsignedIntValue6 = [v91 unsignedIntValue];
+        selfCopy5 = self;
         v32 = 2;
 LABEL_36:
         v33 = v40;
@@ -1147,21 +1147,21 @@ LABEL_36:
 
         v26 = [v20 objectAtIndexedSubscript:1];
 
-        v27 = [v26 unsignedIntValue];
+        unsignedIntValue6 = [v26 unsignedIntValue];
         v28 = 0.0;
         v29 = 0.0;
         v30 = 0.0;
-        v31 = self;
+        selfCopy5 = self;
         v32 = 6;
         v33 = v23;
         v34 = v25;
 LABEL_37:
-        [(AXBAccessibilityManager *)v31 _sendStylusEvent:v32 location:0 force:v27 altitude:v33 azimuth:v34 flags:v28 contextId:v29, v30];
+        [(AXBAccessibilityManager *)selfCopy5 _sendStylusEvent:v32 location:0 force:unsignedIntValue6 altitude:v33 azimuth:v34 flags:v28 contextId:v29, v30];
 LABEL_38:
         v9 = 1;
         goto LABEL_60;
       case 5022:
-        unsetCaptureMode([v7 intValue]);
+        unsetCaptureMode([valueCopy intValue]);
         goto LABEL_59;
       default:
         goto LABEL_60;
@@ -1170,42 +1170,42 @@ LABEL_38:
     goto LABEL_59;
   }
 
-  if (a3 <= 5104)
+  if (action <= 5104)
   {
-    if (a3 <= 5101)
+    if (action <= 5101)
     {
-      if (a3 == 5100)
+      if (action == 5100)
       {
-        v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1218];
+        mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1218];
         v11 = MEMORY[0x29EDBDF58];
         v12 = 1219;
       }
 
       else
       {
-        v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1032];
+        mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1032];
         v11 = MEMORY[0x29EDBDF58];
         v12 = 1033;
       }
     }
 
-    else if (a3 == 5102)
+    else if (action == 5102)
     {
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1200];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1200];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1201;
     }
 
-    else if (a3 == 5103)
+    else if (action == 5103)
     {
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1202];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1202];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1203;
     }
 
     else
     {
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1204];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1204];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1205;
     }
@@ -1213,25 +1213,25 @@ LABEL_38:
     goto LABEL_57;
   }
 
-  if (a3 <= 5107)
+  if (action <= 5107)
   {
-    if (a3 == 5105)
+    if (action == 5105)
     {
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1206];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1206];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1207;
     }
 
-    else if (a3 == 5106)
+    else if (action == 5106)
     {
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1216];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1216];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1217;
     }
 
     else
     {
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1222];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1222];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1223;
     }
@@ -1239,41 +1239,41 @@ LABEL_38:
     goto LABEL_57;
   }
 
-  switch(a3)
+  switch(action)
   {
     case 5108:
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1224];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1224];
       v11 = MEMORY[0x29EDBDF58];
       v12 = 1224;
 LABEL_57:
       v131 = [v11 buttonRepresentationWithType:v12];
-      v132 = [MEMORY[0x29EDBDF60] sharedManager];
-      [v132 sendHIDSystemEvent:v10 repostCreatorHIDEvent:0 senderID:0x8000000817319375];
-      [v132 sendHIDSystemEvent:v131 repostCreatorHIDEvent:0 senderID:0x8000000817319375];
+      mEMORY[0x29EDBDF60] = [MEMORY[0x29EDBDF60] sharedManager];
+      [mEMORY[0x29EDBDF60] sendHIDSystemEvent:mEMORY[0x29EDBDFC0] repostCreatorHIDEvent:0 senderID:0x8000000817319375];
+      [mEMORY[0x29EDBDF60] sendHIDSystemEvent:v131 repostCreatorHIDEvent:0 senderID:0x8000000817319375];
 
       goto LABEL_58;
     case 5109:
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1216];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1216];
       v129 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1217];
-      v130 = [MEMORY[0x29EDBDF60] sharedManager];
-      [v130 sendHIDSystemEvent:v10 repostCreatorHIDEvent:0 senderID:0x8000000817319375];
-      v137 = v130;
+      mEMORY[0x29EDBDF60]2 = [MEMORY[0x29EDBDF60] sharedManager];
+      [mEMORY[0x29EDBDF60]2 sendHIDSystemEvent:mEMORY[0x29EDBDFC0] repostCreatorHIDEvent:0 senderID:0x8000000817319375];
+      v137 = mEMORY[0x29EDBDF60]2;
       v138 = v129;
       v15 = v129;
-      v16 = v130;
+      v16 = mEMORY[0x29EDBDF60]2;
       AXPerformBlockOnMainThreadAfterDelay();
 
       v17 = v137;
       goto LABEL_54;
     case 5110:
-      v10 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1222];
+      mEMORY[0x29EDBDFC0] = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1222];
       v13 = [MEMORY[0x29EDBDF58] buttonRepresentationWithType:1223];
-      v14 = [MEMORY[0x29EDBDF60] sharedManager];
-      [v14 sendHIDSystemEvent:v10 repostCreatorHIDEvent:0 senderID:0x8000000817319375];
-      v135 = v14;
+      mEMORY[0x29EDBDF60]3 = [MEMORY[0x29EDBDF60] sharedManager];
+      [mEMORY[0x29EDBDF60]3 sendHIDSystemEvent:mEMORY[0x29EDBDFC0] repostCreatorHIDEvent:0 senderID:0x8000000817319375];
+      v135 = mEMORY[0x29EDBDF60]3;
       v136 = v13;
       v15 = v13;
-      v16 = v14;
+      v16 = mEMORY[0x29EDBDF60]3;
       AXPerformBlockOnMainThreadAfterDelay();
 
       v17 = v135;
@@ -1291,16 +1291,16 @@ LABEL_60:
   return v9;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter
 {
-  v6 = a4;
-  v7 = v6;
+  parameterCopy = parameter;
+  v7 = parameterCopy;
   v8 = 0;
-  if (a3 > 91504)
+  if (value > 91504)
   {
-    if (a3 <= 91506)
+    if (value <= 91506)
     {
-      if (a3 == 91505)
+      if (value == 91505)
       {
         objc_opt_class();
         v70 = __UIAccessibilityCastAsClass();
@@ -1317,21 +1317,21 @@ LABEL_60:
           v80 = v79;
 
           v81 = [v11 objectAtIndexedSubscript:1];
-          v82 = [v81 unsignedIntValue];
+          unsignedIntValue = [v81 unsignedIntValue];
 
           if ([v11 count] < 3)
           {
-            v84 = 0;
+            unsignedIntValue2 = 0;
           }
 
           else
           {
             v83 = [v11 objectAtIndexedSubscript:2];
-            v84 = [v83 unsignedIntValue];
+            unsignedIntValue2 = [v83 unsignedIntValue];
           }
 
           v89 = MEMORY[0x29EDBA168];
-          [(AXBAccessibilityManager *)self accessibilityConvertHostedViewFrame:v82 fromContextId:v84 displayId:v74, v76, v78, v80];
+          [(AXBAccessibilityManager *)self accessibilityConvertHostedViewFrame:unsignedIntValue fromContextId:unsignedIntValue2 displayId:v74, v76, v78, v80];
           goto LABEL_48;
         }
 
@@ -1340,7 +1340,7 @@ LABEL_39:
         goto LABEL_54;
       }
 
-      [v6 pointValue];
+      [parameterCopy pointValue];
       v34 = v33;
       v36 = v35;
       if ([(AXBAccessibilityManager *)self _accessibilityDisplayRequiresRotateForPoints:0])
@@ -1350,15 +1350,15 @@ LABEL_39:
       }
 
       v38 = +[AXBEventManager sharedManager];
-      v39 = [v38 windowServer];
-      v40 = [v39 contextIdAtPosition:{v34, v36}];
+      windowServer = [v38 windowServer];
+      v40 = [windowServer contextIdAtPosition:{v34, v36}];
 
       v26 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v40];
     }
 
     else
     {
-      if (a3 == 91507)
+      if (value == 91507)
       {
         objc_opt_class();
         v61 = __UIAccessibilityCastAsClass();
@@ -1375,15 +1375,15 @@ LABEL_39:
           if ([v11 count] == 2)
           {
             v68 = [v11 objectAtIndexedSubscript:1];
-            v69 = [v68 unsignedIntValue];
+            unsignedIntValue3 = [v68 unsignedIntValue];
           }
 
           else
           {
-            v69 = 0;
+            unsignedIntValue3 = 0;
           }
 
-          v87 = [(AXBAccessibilityManager *)self windowServerDisplayForDisplayId:v69];
+          v87 = [(AXBAccessibilityManager *)self windowServerDisplayForDisplayId:unsignedIntValue3];
           if ([(AXBAccessibilityManager *)self _accessibilityDisplayRequiresRotateForPoints:v87])
           {
             v65 = AXRotateToScreen();
@@ -1398,9 +1398,9 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      if (a3 != 91508)
+      if (value != 91508)
       {
-        if (a3 != 91511)
+        if (value != 91511)
         {
           goto LABEL_54;
         }
@@ -1420,21 +1420,21 @@ LABEL_39:
           v20 = v19;
 
           v21 = [v11 objectAtIndexedSubscript:1];
-          v22 = [v21 unsignedIntValue];
+          unsignedIntValue4 = [v21 unsignedIntValue];
 
           if ([v11 count] < 3)
           {
-            v24 = 0;
+            unsignedIntValue5 = 0;
           }
 
           else
           {
             v23 = [v11 objectAtIndexedSubscript:2];
-            v24 = [v23 unsignedIntValue];
+            unsignedIntValue5 = [v23 unsignedIntValue];
           }
 
           v89 = MEMORY[0x29EDBA168];
-          [(AXBAccessibilityManager *)self accessibilityConvertHostedViewFrame:v22 toContextId:v24 displayId:v14, v16, v18, v20];
+          [(AXBAccessibilityManager *)self accessibilityConvertHostedViewFrame:unsignedIntValue4 toContextId:unsignedIntValue5 displayId:v14, v16, v18, v20];
 LABEL_48:
           v90 = [v89 valueWithRect:?];
 LABEL_49:
@@ -1452,9 +1452,9 @@ LABEL_49:
       }
 
       v85 = [v7 objectForKey:@"contextId"];
-      v86 = [v85 unsignedIntValue];
+      unsignedIntValue6 = [v85 unsignedIntValue];
 
-      v26 = [MEMORY[0x29EDBA070] numberWithInt:{-[AXBAccessibilityManager _accessibilityApplicationForContextId:](self, "_accessibilityApplicationForContextId:", v86)}];
+      v26 = [MEMORY[0x29EDBA070] numberWithInt:{-[AXBAccessibilityManager _accessibilityApplicationForContextId:](self, "_accessibilityApplicationForContextId:", unsignedIntValue6)}];
     }
 
 LABEL_38:
@@ -1462,9 +1462,9 @@ LABEL_38:
     goto LABEL_54;
   }
 
-  if (a3 > 91502)
+  if (value > 91502)
   {
-    if (a3 == 91503)
+    if (value == 91503)
     {
       objc_opt_class();
       v48 = __UIAccessibilityCastAsClass();
@@ -1492,21 +1492,21 @@ LABEL_38:
           v56 = v55;
 
           v57 = [v11 objectAtIndexedSubscript:1];
-          v58 = [v57 unsignedIntValue];
+          unsignedIntValue7 = [v57 unsignedIntValue];
 
           if ([v11 count] < 3)
           {
-            v60 = 0;
+            unsignedIntValue8 = 0;
           }
 
           else
           {
             v59 = [v11 objectAtIndexedSubscript:2];
-            v60 = [v59 unsignedIntValue];
+            unsignedIntValue8 = [v59 unsignedIntValue];
           }
 
           v101 = MEMORY[0x29EDBA168];
-          [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:v58 fromContextId:v60 displayId:v54, v56];
+          [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:unsignedIntValue7 fromContextId:unsignedIntValue8 displayId:v54, v56];
           goto LABEL_64;
         }
 
@@ -1544,21 +1544,21 @@ LABEL_58:
             v96 = v95;
 
             v97 = [v11 objectAtIndexedSubscript:1];
-            v98 = [v97 unsignedIntValue];
+            unsignedIntValue9 = [v97 unsignedIntValue];
 
             if ([v11 count] < 3)
             {
-              v100 = 0;
+              unsignedIntValue10 = 0;
             }
 
             else
             {
               v99 = [v11 objectAtIndexedSubscript:2];
-              v100 = [v99 unsignedIntValue];
+              unsignedIntValue10 = [v99 unsignedIntValue];
             }
 
             v101 = MEMORY[0x29EDBA168];
-            [(AXBAccessibilityManager *)self accessibilityConvertHostedViewPoint:v98 toContextId:v100 displayId:v94, v96];
+            [(AXBAccessibilityManager *)self accessibilityConvertHostedViewPoint:unsignedIntValue9 toContextId:unsignedIntValue10 displayId:v94, v96];
 LABEL_64:
             v90 = [v101 valueWithPoint:?];
             goto LABEL_49;
@@ -1583,14 +1583,14 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  if (a3 != 91500)
+  if (value != 91500)
   {
-    if (a3 != 91501)
+    if (value != 91501)
     {
       goto LABEL_54;
     }
 
-    [v6 pointValue];
+    [parameterCopy pointValue];
     v25 = MEMORY[0x29EDBA168];
     [(AXBAccessibilityManager *)self accessibilityConvertHostedViewPoint:0 toContextId:0 displayId:?];
     v26 = [v25 valueWithPoint:?];
@@ -1602,9 +1602,9 @@ LABEL_52:
   [v41 pointValue];
 
   v42 = [v7 objectForKey:@"displayId"];
-  v43 = [v42 unsignedIntValue];
+  unsignedIntValue11 = [v42 unsignedIntValue];
 
-  v11 = [(AXBAccessibilityManager *)self windowServerDisplayForDisplayId:v43];
+  v11 = [(AXBAccessibilityManager *)self windowServerDisplayForDisplayId:unsignedIntValue11];
   v44 = [v11 contextIdAtPosition:AXRotateToScreen()];
   v45 = [(AXBAccessibilityManager *)self _accessibilityApplicationForContextId:v44];
   v46 = [MEMORY[0x29EDBA070] numberWithInt:v45];
@@ -1619,14 +1619,14 @@ LABEL_54:
   return v8;
 }
 
-- (BOOL)_accessibilityDisplayRequiresRotateForPoints:(id)a3
+- (BOOL)_accessibilityDisplayRequiresRotateForPoints:(id)points
 {
-  v5 = [a3 name];
-  v6 = [v5 isEqualToString:@"TVOut"];
+  name = [points name];
+  v6 = [name isEqualToString:@"TVOut"];
   if (v6)
   {
-    v3 = [MEMORY[0x29EDBBA88] TVOutDisplay];
-    if ([v3 isExternal])
+    tVOutDisplay = [MEMORY[0x29EDBBA88] TVOutDisplay];
+    if ([tVOutDisplay isExternal])
     {
       LOBYTE(v7) = 0;
 LABEL_9:
@@ -1634,21 +1634,21 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (a3)
+    if (points)
     {
       LOBYTE(v7) = 1;
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (points)
   {
     LOBYTE(v7) = 1;
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x29EDBBA88] mainDisplay];
-  v7 = [v8 isExternal] ^ 1;
+  mainDisplay = [MEMORY[0x29EDBBA88] mainDisplay];
+  v7 = [mainDisplay isExternal] ^ 1;
 
   if (v6)
   {
@@ -1665,19 +1665,19 @@ LABEL_10:
   [_PassiveEventLock lock];
   if ([_SBAXPassiveEventQueue count])
   {
-    v3 = [_SBAXPassiveEventQueue objectAtIndex:0];
+    distantFuture = [_SBAXPassiveEventQueue objectAtIndex:0];
     Current = CFAbsoluteTimeGetCurrent();
-    [v3 fireTime];
+    [distantFuture fireTime];
     if (Current >= v5)
     {
       [_SBAXPassiveEventQueue removeObjectAtIndex:0];
       [_PassiveEventLock unlock];
-      v9 = [v3 value];
+      value = [distantFuture value];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v10 = +[AXBEventManager sharedManager];
-        [v10 dispatchEventRepresentationToClient:v9];
+        [v10 dispatchEventRepresentationToClient:value];
       }
 
       else
@@ -1685,8 +1685,8 @@ LABEL_10:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = malloc_type_calloc(1uLL, [v9 length], 0x98479643uLL);
-          [v9 getBytes:v11 length:{objc_msgSend(v9, "length")}];
+          v11 = malloc_type_calloc(1uLL, [value length], 0x98479643uLL);
+          [value getBytes:v11 length:{objc_msgSend(value, "length")}];
           v12 = +[AXBEventManager sharedManager];
           [v12 machPortForPoint:{v11[1], v11[2]}];
 
@@ -1702,7 +1702,7 @@ LABEL_10:
     else
     {
       [_PassiveEventLock unlock];
-      [v3 fireTime];
+      [distantFuture fireTime];
       v7 = v6 - CFAbsoluteTimeGetCurrent();
     }
   }
@@ -1710,15 +1710,15 @@ LABEL_10:
   else
   {
     [_PassiveEventLock unlock];
-    v3 = [MEMORY[0x29EDB8DB0] distantFuture];
-    [v3 timeIntervalSinceNow];
+    distantFuture = [MEMORY[0x29EDB8DB0] distantFuture];
+    [distantFuture timeIntervalSinceNow];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (void)_releasePendingEvents:(double)a3
+- (void)_releasePendingEvents:(double)events
 {
   v18 = *MEMORY[0x29EDCA608];
   [_PassiveEventLock lock];
@@ -1743,7 +1743,7 @@ LABEL_10:
 
         v9 = *(*(&v13 + 1) + 8 * i);
         [v9 fireTime];
-        if (v10 <= a3)
+        if (v10 <= events)
         {
           [v9 fireTime];
           [v9 setFireTime:v11 - *&_SBAXPassiveListenDelay];
@@ -1767,8 +1767,8 @@ LABEL_10:
 
 - (void)_startPassiveResendThread
 {
-  v3 = [MEMORY[0x29EDBA108] currentThread];
-  [v3 setName:@"AXPassiveResentThread"];
+  currentThread = [MEMORY[0x29EDBA108] currentThread];
+  [currentThread setName:@"AXPassiveResentThread"];
 
   [_PassiveEventLock lock];
   _SBAXPassiveSourceRef = CFRunLoopSourceCreate(0, 0, &v7);
@@ -1786,14 +1786,14 @@ LABEL_10:
   }
 }
 
-- (BOOL)_screenReaderCapture:(id)a3
+- (BOOL)_screenReaderCapture:(id)capture
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  captureCopy = capture;
+  v5 = captureCopy;
+  if (captureCopy)
   {
-    v6 = [v4 originalType];
-    if ([(AXBAccessibilityManager *)self _handleItemChooserVisible:v6])
+    originalType = [captureCopy originalType];
+    if ([(AXBAccessibilityManager *)self _handleItemChooserVisible:originalType])
     {
       [v5 setAdditionalFlags:{objc_msgSend(v5, "additionalFlags") | 0x2000000}];
       BKPostAXEvent(v5, 0);
@@ -1802,14 +1802,14 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    if (v6 == 50 && (_SBAXDeviceOrientationCapabilityEnabled & 1) == 0)
+    if (originalType == 50 && (_SBAXDeviceOrientationCapabilityEnabled & 1) == 0)
     {
       goto LABEL_7;
     }
 
-    if ((v6 - 1000) >= 2)
+    if ((originalType - 1000) >= 2)
     {
-      if (v6 == 3200)
+      if (originalType == 3200)
       {
         voiceOverIgnoresTrackpad = self->_voiceOverIgnoresTrackpad;
         goto LABEL_8;
@@ -1818,13 +1818,13 @@ LABEL_7:
       IsKeyboardKey = AXEventTypeIsKeyboardKey();
       v9 = 0;
       LOBYTE(v10) = 1;
-      if (v6 != 3001 && (IsKeyboardKey & 1) == 0)
+      if (originalType != 3001 && (IsKeyboardKey & 1) == 0)
       {
-        if ((v6 - 10) >= 3)
+        if ((originalType - 10) >= 3)
         {
-          if ((v6 - 1025) <= 3)
+          if ((originalType - 1025) <= 3)
           {
-            v10 = 4u >> ((v6 - 1) & 0xF);
+            v10 = 4u >> ((originalType - 1) & 0xF);
           }
         }
 
@@ -1844,7 +1844,7 @@ LABEL_7:
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    if (v6 == 3001 && Current - *&_screenReaderCapture__LastUserEventSent > 4.0)
+    if (originalType == 3001 && Current - *&_screenReaderCapture__LastUserEventSent > 4.0)
     {
       [(AXBAccessibilityManager *)self _userEventOccurred];
       _screenReaderCapture__LastUserEventSent = CFAbsoluteTimeGetCurrent();
@@ -1869,20 +1869,20 @@ LABEL_8:
   return voiceOverIgnoresTrackpad & 1;
 }
 
-- (void)_undoContextShiftedPoints:(id)a3
+- (void)_undoContextShiftedPoints:(id)points
 {
   v19 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  if ([v4 type] == 3001)
+  pointsCopy = points;
+  if ([pointsCopy type] == 3001)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v4 handInfo];
-    v6 = [v5 paths];
+    handInfo = [pointsCopy handInfo];
+    paths = [handInfo paths];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [paths countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1893,17 +1893,17 @@ LABEL_8:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(paths);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 pathWindowContextID];
+          pathWindowContextID = [v11 pathWindowContextID];
           [v11 pathLocation];
-          [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:v12 fromContextId:0 displayId:?];
+          [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:pathWindowContextID fromContextId:0 displayId:?];
           [v11 setPathLocation:?];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [paths countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -1911,24 +1911,24 @@ LABEL_8:
 
     else
     {
-      v12 = 0;
+      pathWindowContextID = 0;
     }
 
-    [v4 location];
-    [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:v12 fromContextId:0 displayId:?];
-    [v4 setLocation:?];
-    [v4 windowLocation];
-    [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:v12 fromContextId:0 displayId:?];
-    [v4 setWindowLocation:?];
+    [pointsCopy location];
+    [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:pathWindowContextID fromContextId:0 displayId:?];
+    [pointsCopy setLocation:?];
+    [pointsCopy windowLocation];
+    [(AXBAccessibilityManager *)self _accessibilityConvertHostedViewPoint:pathWindowContextID fromContextId:0 displayId:?];
+    [pointsCopy setWindowLocation:?];
   }
 
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)_accessibilityEventTapCallback:(id)a3
+- (BOOL)_accessibilityEventTapCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  callbackCopy = callback;
+  v5 = [callbackCopy copy];
   [(AXBAccessibilityManager *)self _undoContextShiftedPoints:v5];
   if ((_SBAXCaptureMode & 0x20) != 0 && ([v5 dataRepresentation], AXPushNotificationToSystemForBroadcast(), *&_SBAXPassiveListenDelay != 0.0) && objc_msgSend(v5, "type", *&_SBAXPassiveListenDelay) == 3001)
   {
@@ -1946,7 +1946,7 @@ LABEL_8:
     }
 
     v10 = objc_opt_new();
-    [v10 setValue:v4];
+    [v10 setValue:callbackCopy];
     [v10 setFireTime:CFAbsoluteTimeGetCurrent() + *&_SBAXPassiveListenDelay];
     [_PassiveEventLock lock];
     [_SBAXPassiveEventQueue addObject:v10];
@@ -2003,7 +2003,7 @@ LABEL_8:
   v11 = *MEMORY[0x29EDCA608];
   v5 = [MEMORY[0x29EDBA070] numberWithInt:a2];
   v7 = 138412546;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2112;
   v10 = v5;
   _os_log_error_impl(&dword_29BBBD000, a3, OS_LOG_TYPE_ERROR, "Pid from system app was not valid: %@ %@", &v7, 0x16u);

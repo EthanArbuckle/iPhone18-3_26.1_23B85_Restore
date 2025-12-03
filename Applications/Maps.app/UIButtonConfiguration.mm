@@ -1,16 +1,16 @@
 @interface UIButtonConfiguration
-+ (id)_maps_cardFooterActionButtonConfigurationWithBaseConfiguration:(id)a3 isSecondary:(BOOL)a4;
-+ (id)_maps_pillButtonConfigurationWithImage:(BOOL)a3 onlyHasImage:(BOOL)a4 scalingImageForDynamicText:(BOOL)a5 scalingTitleForDynamicText:(BOOL)a6;
++ (id)_maps_cardFooterActionButtonConfigurationWithBaseConfiguration:(id)configuration isSecondary:(BOOL)secondary;
++ (id)_maps_pillButtonConfigurationWithImage:(BOOL)image onlyHasImage:(BOOL)hasImage scalingImageForDynamicText:(BOOL)text scalingTitleForDynamicText:(BOOL)dynamicText;
 + (id)_maps_primaryCardFooterActionButtonConfiguration;
-+ (id)_maps_roundPillSymbolButtonConfigurationScalingImageForDynamicText:(BOOL)a3;
++ (id)_maps_roundPillSymbolButtonConfigurationScalingImageForDynamicText:(BOOL)text;
 + (id)_maps_secondaryCardFooterActionButtonConfiguration;
 @end
 
 @implementation UIButtonConfiguration
 
-+ (id)_maps_roundPillSymbolButtonConfigurationScalingImageForDynamicText:(BOOL)a3
++ (id)_maps_roundPillSymbolButtonConfigurationScalingImageForDynamicText:(BOOL)text
 {
-  v3 = [a1 _maps_pillButtonConfigurationWithImage:1 scalingImageForDynamicText:a3 scalingTitleForDynamicText:0];
+  v3 = [self _maps_pillButtonConfigurationWithImage:1 scalingImageForDynamicText:text scalingTitleForDynamicText:0];
   [v3 contentInsets];
   v5 = v4;
   [v3 contentInsets];
@@ -27,16 +27,16 @@
   return v3;
 }
 
-+ (id)_maps_pillButtonConfigurationWithImage:(BOOL)a3 onlyHasImage:(BOOL)a4 scalingImageForDynamicText:(BOOL)a5 scalingTitleForDynamicText:(BOOL)a6
++ (id)_maps_pillButtonConfigurationWithImage:(BOOL)image onlyHasImage:(BOOL)hasImage scalingImageForDynamicText:(BOOL)text scalingTitleForDynamicText:(BOOL)dynamicText
 {
-  v7 = a5;
-  v9 = a3;
+  textCopy = text;
+  imageCopy = image;
   v10 = +[UIButtonConfiguration grayButtonConfiguration];
   [v10 setCornerStyle:4];
-  if (!a4)
+  if (!hasImage)
   {
     v11 = 8.0;
-    if (!v9)
+    if (!imageCopy)
     {
       v11 = 10.0;
     }
@@ -48,7 +48,7 @@
   [v10 setBaseBackgroundColor:v12];
 
   [v10 setImagePadding:4.0];
-  if (v7)
+  if (textCopy)
   {
     [UIFont _maps_fontWithTextStyle:UIFontTextStyleSubheadline weight:0 compatibleWithTraitCollection:UIFontWeightSemibold];
   }
@@ -65,15 +65,15 @@
   v16[1] = 3221225472;
   v16[2] = sub_100904694;
   v16[3] = &unk_10162E4D8;
-  v17 = a6;
+  dynamicTextCopy = dynamicText;
   [v10 setTitleTextAttributesTransformer:v16];
 
   return v10;
 }
 
-+ (id)_maps_cardFooterActionButtonConfigurationWithBaseConfiguration:(id)a3 isSecondary:(BOOL)a4
++ (id)_maps_cardFooterActionButtonConfigurationWithBaseConfiguration:(id)configuration isSecondary:(BOOL)secondary
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = _UISolariumEnabled();
   v6 = &UIFontTextStyleTitle3;
   if (v5)
@@ -97,8 +97,8 @@
   v20[3] = &unk_101652B60;
   v21 = v10;
   v11 = v10;
-  [v4 setTitleTextAttributesTransformer:v20];
-  [v4 setImagePadding:4.0];
+  [configurationCopy setTitleTextAttributesTransformer:v20];
+  [configurationCopy setImagePadding:4.0];
   if (_UISolariumEnabled())
   {
     v12 = 4;
@@ -106,33 +106,33 @@
 
   else
   {
-    v13 = [v4 background];
-    [v13 setCornerRadius:12.0];
+    background = [configurationCopy background];
+    [background setCornerRadius:12.0];
 
     v12 = -1;
   }
 
-  [v4 setCornerStyle:v12];
+  [configurationCopy setCornerStyle:v12];
   leading = NSDirectionalEdgeInsetsZero.leading;
   bottom = NSDirectionalEdgeInsetsZero.bottom;
   trailing = NSDirectionalEdgeInsetsZero.trailing;
-  v17 = [v4 background];
-  [v17 setBackgroundInsets:{NSDirectionalEdgeInsetsZero.top, leading, bottom, trailing}];
+  background2 = [configurationCopy background];
+  [background2 setBackgroundInsets:{NSDirectionalEdgeInsetsZero.top, leading, bottom, trailing}];
 
-  [v4 setContentInsets:{12.0, 10.0, 12.0, 10.0}];
-  [v4 setTitleAlignment:1];
+  [configurationCopy setContentInsets:{12.0, 10.0, 12.0, 10.0}];
+  [configurationCopy setTitleAlignment:1];
   v18 = [UIImageSymbolConfiguration configurationWithFont:v11];
-  [v4 setPreferredSymbolConfigurationForImage:v18];
+  [configurationCopy setPreferredSymbolConfigurationForImage:v18];
 
-  [v4 setTitleLineBreakMode:4];
+  [configurationCopy setTitleLineBreakMode:4];
 
-  return v4;
+  return configurationCopy;
 }
 
 + (id)_maps_secondaryCardFooterActionButtonConfiguration
 {
   v3 = +[UIButtonConfiguration grayButtonConfiguration];
-  v4 = [a1 _maps_cardFooterActionButtonConfigurationWithBaseConfiguration:v3 isSecondary:1];
+  v4 = [self _maps_cardFooterActionButtonConfigurationWithBaseConfiguration:v3 isSecondary:1];
 
   return v4;
 }
@@ -140,7 +140,7 @@
 + (id)_maps_primaryCardFooterActionButtonConfiguration
 {
   v3 = +[UIButtonConfiguration filledButtonConfiguration];
-  v4 = [a1 _maps_cardFooterActionButtonConfigurationWithBaseConfiguration:v3];
+  v4 = [self _maps_cardFooterActionButtonConfigurationWithBaseConfiguration:v3];
 
   return v4;
 }

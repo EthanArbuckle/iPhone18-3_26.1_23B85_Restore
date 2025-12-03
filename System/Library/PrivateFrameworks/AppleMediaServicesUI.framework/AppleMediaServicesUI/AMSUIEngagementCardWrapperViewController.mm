@@ -1,22 +1,22 @@
 @interface AMSUIEngagementCardWrapperViewController
-- (AMSUIEngagementCardWrapperViewController)initWithViewController:(id)a3;
-- (void)setPresentationStyle:(int64_t)a3;
+- (AMSUIEngagementCardWrapperViewController)initWithViewController:(id)controller;
+- (void)setPresentationStyle:(int64_t)style;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUIEngagementCardWrapperViewController
 
-- (AMSUIEngagementCardWrapperViewController)initWithViewController:(id)a3
+- (AMSUIEngagementCardWrapperViewController)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AMSUIEngagementCardWrapperViewController;
   v6 = [(AMSUIEngagementCardWrapperViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v7;
@@ -28,15 +28,15 @@
   v8.super_class = AMSUIEngagementCardWrapperViewController;
   [(AMSUIEngagementCardWrapperViewController *)&v8 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DCCD8]);
-  v4 = [(AMSUIEngagementCardWrapperViewController *)self viewController];
-  v5 = [v3 initWithRootViewController:v4];
+  viewController = [(AMSUIEngagementCardWrapperViewController *)self viewController];
+  v5 = [v3 initWithRootViewController:viewController];
 
-  v6 = [v5 navigationBar];
-  [v6 setRequestedContentSize:3];
+  navigationBar = [v5 navigationBar];
+  [navigationBar setRequestedContentSize:3];
 
   [(AMSUIEngagementCardWrapperViewController *)self setChildNavigationController:v5];
-  v7 = [(AMSUIEngagementCardWrapperViewController *)self childNavigationController];
-  [(AMSUICommonViewController *)self setChildViewController:v7];
+  childNavigationController = [(AMSUIEngagementCardWrapperViewController *)self childNavigationController];
+  [(AMSUICommonViewController *)self setChildViewController:childNavigationController];
 }
 
 - (void)viewWillLayoutSubviews
@@ -44,21 +44,21 @@
   v14.receiver = self;
   v14.super_class = AMSUIEngagementCardWrapperViewController;
   [(AMSUIEngagementCardWrapperViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIEngagementCardWrapperViewController *)self childNavigationController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  childNavigationController = [(AMSUIEngagementCardWrapperViewController *)self childNavigationController];
+  view2 = [childNavigationController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  self->_presentationStyle = a3;
-  if (a3 == 5)
+  self->_presentationStyle = style;
+  if (style == 5)
   {
     PRXIsPad();
     PRXExpectedCardWidthForStyle();
@@ -66,7 +66,7 @@
 
   else
   {
-    if (a3 != 4)
+    if (style != 4)
     {
       return;
     }

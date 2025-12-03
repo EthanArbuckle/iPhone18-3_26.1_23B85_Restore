@@ -2,7 +2,7 @@
 + (id)sharedLogger;
 - (WLLogController)init;
 - (void)_reloadLogPreferences;
-- (void)logMessageFromAddress:(void *)a3 withLevel:(unint64_t)a4 format:(id)a5 args:(char *)a6;
+- (void)logMessageFromAddress:(void *)address withLevel:(unint64_t)level format:(id)format args:(char *)args;
 @end
 
 @implementation WLLogController
@@ -56,32 +56,32 @@ uint64_t __31__WLLogController_sharedLogger__block_invoke()
     v3 = CFPreferencesCopyAppValue(@"LogToSyslog", @"com.apple.welcomekit");
     if ([v5 BOOLValue])
     {
-      v4 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
     }
 
-    self->_loggingEnabled = v4;
+    self->_loggingEnabled = bOOLValue;
   }
 }
 
-- (void)logMessageFromAddress:(void *)a3 withLevel:(unint64_t)a4 format:(id)a5 args:(char *)a6
+- (void)logMessageFromAddress:(void *)address withLevel:(unint64_t)level format:(id)format args:(char *)args
 {
-  v8 = a5;
+  formatCopy = format;
   if (self->_loggingEnabled)
   {
-    v10 = v8;
+    v10 = formatCopy;
     if (logMessageFromAddress_withLevel_format_args__onceToken != -1)
     {
       [WLLogController logMessageFromAddress:withLevel:format:args:];
     }
 
-    v9 = logMessageFromAddress_withLevel_format_args___WLLog_os_trace_type_map[a4];
+    v9 = logMessageFromAddress_withLevel_format_args___WLLog_os_trace_type_map[level];
     os_log_shim_with_CFString();
-    v8 = v10;
+    formatCopy = v10;
   }
 }
 

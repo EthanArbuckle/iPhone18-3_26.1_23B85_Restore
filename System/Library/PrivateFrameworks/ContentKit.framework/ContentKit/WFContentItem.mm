@@ -1,11 +1,11 @@
 @interface WFContentItem
 + (BOOL)canLowercaseTypeDescription;
-+ (BOOL)contentItems:(id)a3 haveContentProperties:(id)a4;
-+ (BOOL)errorIsBadCoercionError:(id)a3;
++ (BOOL)contentItems:(id)items haveContentProperties:(id)properties;
++ (BOOL)errorIsBadCoercionError:(id)error;
 + (BOOL)hasFileOutput;
 + (BOOL)hasStringOutput;
-+ (BOOL)supportedItemClassMustBeDeterminedByInstance:(Class)a3;
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedItemClassMustBeDeterminedByInstance:(Class)instance;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (BOOL)supportedTypesMustBeDeterminedByInstance;
 + (NSArray)allProperties;
 + (NSArray)pasteboardValueClasses;
@@ -22,49 +22,49 @@
 + (NSString)localizedPluralTypeDescription;
 + (NSString)localizedTypeDescription;
 + (WFContentItemStringConversionBehavior)stringConversionBehavior;
-+ (id)badCoercionErrorForItemClass:(Class)a3;
-+ (id)badCoercionErrorForItemClasses:(id)a3;
-+ (id)badCoercionErrorForObjectClass:(Class)a3;
-+ (id)badCoercionErrorForType:(id)a3;
-+ (id)badCoercionErrorForTypeDescription:(id)a3 toTypeDescription:(id)a4;
-+ (id)badCoercionErrorWithReasonString:(id)a3;
++ (id)badCoercionErrorForItemClass:(Class)class;
++ (id)badCoercionErrorForItemClasses:(id)classes;
++ (id)badCoercionErrorForObjectClass:(Class)class;
++ (id)badCoercionErrorForType:(id)type;
++ (id)badCoercionErrorForTypeDescription:(id)description toTypeDescription:(id)typeDescription;
++ (id)badCoercionErrorWithReasonString:(id)string;
 + (id)cachedCoercions;
-+ (id)coercionForCoercingToType:(id)a3 concurrencyMode:(int64_t)a4;
-+ (id)coercionForType:(id)a3;
-+ (id)itemFromSerializedItem:(id)a3 withItemClass:(Class)a4 forType:(id)a5 nameIfKnown:(id)a6 sourceName:(id)a7 attributionSet:(id)a8 cachingIdentifier:(id)a9 completionHandler:(id)a10;
-+ (id)itemWithFile:(id)a3 attributionSet:(id)a4;
-+ (id)itemWithFile:(id)a3 attributionSet:(id)a4 cachingIdentifier:(id)a5;
-+ (id)itemWithFile:(id)a3 origin:(id)a4 disclosureLevel:(unint64_t)a5;
-+ (id)itemWithObject:(id)a3 named:(id)a4;
-+ (id)itemWithObject:(id)a3 named:(id)a4 attributionSet:(id)a5;
-+ (id)itemWithObject:(id)a3 named:(id)a4 attributionSet:(id)a5 cachingIdentifier:(id)a6;
-+ (id)itemWithObject:(id)a3 origin:(id)a4 disclosureLevel:(unint64_t)a5;
-+ (id)itemWithObject:(id)a3 privacyConfiguration:(id)a4;
-+ (id)itemWithRepresentation:(id)a3;
-+ (id)itemWithRepresentation:(id)a3 attributionSet:(id)a4;
-+ (id)itemWithRepresentation:(id)a3 attributionSet:(id)a4 cachingIdentifier:(id)a5;
-+ (id)itemWithRepresentation:(id)a3 attributionSet:(id)a4 includesDefaultAttributionSet:(BOOL)a5;
-+ (id)itemWithRepresentation:(id)a3 forType:(id)a4 attributionSet:(id)a5 includesDefaultAttributionSet:(BOOL)a6 cachingIdentifier:(id)a7;
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)coercionForCoercingToType:(id)type concurrencyMode:(int64_t)mode;
++ (id)coercionForType:(id)type;
++ (id)itemFromSerializedItem:(id)item withItemClass:(Class)class forType:(id)type nameIfKnown:(id)known sourceName:(id)name attributionSet:(id)set cachingIdentifier:(id)identifier completionHandler:(id)self0;
++ (id)itemWithFile:(id)file attributionSet:(id)set;
++ (id)itemWithFile:(id)file attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)itemWithFile:(id)file origin:(id)origin disclosureLevel:(unint64_t)level;
++ (id)itemWithObject:(id)object named:(id)named;
++ (id)itemWithObject:(id)object named:(id)named attributionSet:(id)set;
++ (id)itemWithObject:(id)object named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)itemWithObject:(id)object origin:(id)origin disclosureLevel:(unint64_t)level;
++ (id)itemWithObject:(id)object privacyConfiguration:(id)configuration;
++ (id)itemWithRepresentation:(id)representation;
++ (id)itemWithRepresentation:(id)representation attributionSet:(id)set;
++ (id)itemWithRepresentation:(id)representation attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)itemWithRepresentation:(id)representation attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet;
++ (id)itemWithRepresentation:(id)representation forType:(id)type attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet cachingIdentifier:(id)identifier;
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)namePropertyBuilder;
 + (id)outputTypesFromCoercions;
-+ (id)populateBadCoercionError:(id)a3 withResponsibleComponent:(id)a4;
++ (id)populateBadCoercionError:(id)error withResponsibleComponent:(id)component;
 + (id)propertyBuilders;
-+ (id)propertyForName:(id)a3;
-+ (id)supportedPropertyForProperty:(id)a3;
-+ (void)getContentItemFromSerializedItem:(id)a3 sourceName:(id)a4 completionHandler:(id)a5;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (BOOL)canGenerateIntermediaryRepresentationForItemClass:(Class)a3;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)canPerformCoercion:(id)a3;
-- (BOOL)coercionOptions:(id)a3 allowCoercionsToItemClass:(Class)a4;
-- (BOOL)coercionOptions:(id)a3 allowCoercionsToType:(id)a4;
-- (BOOL)getListSubtitle:(id)a3;
++ (id)propertyForName:(id)name;
++ (id)supportedPropertyForProperty:(id)property;
++ (void)getContentItemFromSerializedItem:(id)item sourceName:(id)name completionHandler:(id)handler;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (BOOL)canGenerateIntermediaryRepresentationForItemClass:(Class)class;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)canPerformCoercion:(id)coercion;
+- (BOOL)coercionOptions:(id)options allowCoercionsToItemClass:(Class)class;
+- (BOOL)coercionOptions:(id)options allowCoercionsToType:(id)type;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (BOOL)hasStringOutput;
-- (BOOL)isCoercibleToItemClass:(Class)a3;
-- (BOOL)isCoercibleToItemClasses:(id)a3;
+- (BOOL)isCoercibleToItemClass:(Class)class;
+- (BOOL)isCoercibleToItemClasses:(id)classes;
 - (BOOL)isScreenTimeEntity;
 - (BOOL)loadsListContentAsynchronously;
 - (NSDictionary)additionalRepresentationsForSerialization;
@@ -86,116 +86,116 @@
 - (NSString)name;
 - (NSString)richListTitle;
 - (NSUUID)cachingIdentifier;
-- (WFContentItem)initWithCoder:(id)a3;
-- (WFContentItem)initWithRepresentation:(id)a3 forType:(id)a4 attributionSet:(id)a5 includesDefaultAttributionSet:(BOOL)a6 cachingIdentifier:(id)a7;
-- (WFContentItem)initWithRepresentationsByType:(id)a3 forType:(id)a4 subItemsByClass:(id)a5 attributionSet:(id)a6 includesDefaultAttributionSet:(BOOL)a7 cachingIdentifier:(id)a8;
+- (WFContentItem)initWithCoder:(id)coder;
+- (WFContentItem)initWithRepresentation:(id)representation forType:(id)type attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet cachingIdentifier:(id)identifier;
+- (WFContentItem)initWithRepresentationsByType:(id)type forType:(id)forType subItemsByClass:(id)class attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet cachingIdentifier:(id)identifier;
 - (WFContentItemChangeTransaction)changeTransaction;
 - (WFFileType)preferredFileType;
 - (WFImage)icon;
 - (WFObjectType)preferredObjectType;
 - (WFRepresentation)internalRepresentation;
-- (id)_getRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)contentItemByMergingAttributionSet:(id)a3;
-- (id)copyWithName:(id)a3 zone:(_NSZone *)a4;
-- (id)defaultSourceForRepresentation:(id)a3;
-- (id)extensionItemWithItemProvider:(id)a3;
-- (id)fileRepresentationForType:(id)a3;
-- (id)fileRepresentationsForType:(id)a3;
-- (id)generateFileRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)generateFirstLevelSubItemsForItemClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)generateRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)generateSubItemsForItemClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)getRepresentationsForType:(id)a3 error:(id *)a4;
-- (id)getRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)intermediaryTypesForCoercionToItemClass:(Class)a3;
-- (id)internalRepresentationForCopyingWithName:(id)a3;
-- (id)itemProviderForTypes:(id)a3;
-- (id)itemsByCoercingToItemClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)nativePasteboardTypeForObjectRepresentationOfClass:(Class)a3;
-- (id)objectForClass:(Class)a3;
-- (id)objectRepresentationForClass:(Class)a3;
-- (id)objectRepresentationsForClass:(Class)a3;
-- (id)objectsForClass:(Class)a3;
-- (id)preferredTypeOfClass:(Class)a3;
-- (id)representationForType:(id)a3;
-- (id)representationsForType:(id)a3;
-- (id)subItemForClass:(Class)a3;
-- (id)subItemsForClass:(Class)a3;
-- (id)typeForCoercionRequest:(id)a3;
-- (void)coerceToItemClass:(Class)a3 completionHandler:(id)a4;
-- (void)coerceToItemClasses:(id)a3 completionHandler:(id)a4;
-- (void)coerceToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (id)_getRepresentationsForType:(id)type options:(id)options error:(id *)error;
+- (id)contentItemByMergingAttributionSet:(id)set;
+- (id)copyWithName:(id)name zone:(_NSZone *)zone;
+- (id)defaultSourceForRepresentation:(id)representation;
+- (id)extensionItemWithItemProvider:(id)provider;
+- (id)fileRepresentationForType:(id)type;
+- (id)fileRepresentationsForType:(id)type;
+- (id)generateFileRepresentationsForType:(id)type options:(id)options error:(id *)error;
+- (id)generateFirstLevelSubItemsForItemClass:(Class)class options:(id)options error:(id *)error;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
+- (id)generateRepresentationsForType:(id)type options:(id)options error:(id *)error;
+- (id)generateSubItemsForItemClass:(Class)class options:(id)options error:(id *)error;
+- (id)getRepresentationsForType:(id)type error:(id *)error;
+- (id)getRepresentationsForType:(id)type options:(id)options error:(id *)error;
+- (id)intermediaryTypesForCoercionToItemClass:(Class)class;
+- (id)internalRepresentationForCopyingWithName:(id)name;
+- (id)itemProviderForTypes:(id)types;
+- (id)itemsByCoercingToItemClass:(Class)class options:(id)options error:(id *)error;
+- (id)nativePasteboardTypeForObjectRepresentationOfClass:(Class)class;
+- (id)objectForClass:(Class)class;
+- (id)objectRepresentationForClass:(Class)class;
+- (id)objectRepresentationsForClass:(Class)class;
+- (id)objectsForClass:(Class)class;
+- (id)preferredTypeOfClass:(Class)class;
+- (id)representationForType:(id)type;
+- (id)representationsForType:(id)type;
+- (id)subItemForClass:(Class)class;
+- (id)subItemsForClass:(Class)class;
+- (id)typeForCoercionRequest:(id)request;
+- (void)coerceToItemClass:(Class)class completionHandler:(id)handler;
+- (void)coerceToItemClasses:(id)classes completionHandler:(id)handler;
+- (void)coerceToItemClasses:(id)classes options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceCoerceToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateFirstLevelSubItemsForItemClass:(Class)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)generateRepresentationsForType:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)generateSubItemsForItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)getFileRepresentation:(id)a3 forType:(id)a4 options:(id)a5;
-- (void)getFileRepresentations:(id)a3 forType:(id)a4 options:(id)a5;
-- (void)getFileRepresentationsForSerialization:(id)a3;
-- (void)getObjectRepresentation:(id)a3 forClass:(Class)a4 options:(id)a5;
-- (void)getObjectRepresentations:(id)a3 forClass:(Class)a4 options:(id)a5;
-- (void)getPreferredFileExtension:(id)a3;
-- (void)getPreferredFileSize:(id)a3;
-- (void)getRepresentationsForType:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)getSerializedItem:(id)a3;
-- (void)getTitleWithPermissionRequestor:(id)a3 completionHandler:(id)a4;
-- (void)performCoercion:(id)a3;
-- (void)setObjectRepresentations:(id)a3 forClass:(Class)a4;
-- (void)setRepresentations:(id)a3 forType:(id)a4;
-- (void)setSubItems:(id)a3 forClass:(Class)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceCoerceToItemClasses:(id)classes options:(id)options completionHandler:(id)handler;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateFileRepresentations:(id)representations options:(id)options forType:(id)type;
+- (void)generateFirstLevelSubItemsForItemClass:(Class)class options:(id)options completionHandler:(id)handler;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)generateRepresentationsForType:(id)type options:(id)options completionHandler:(id)handler;
+- (void)generateSubItemsForItemClasses:(id)classes options:(id)options completionHandler:(id)handler;
+- (void)getFileRepresentation:(id)representation forType:(id)type options:(id)options;
+- (void)getFileRepresentations:(id)representations forType:(id)type options:(id)options;
+- (void)getFileRepresentationsForSerialization:(id)serialization;
+- (void)getObjectRepresentation:(id)representation forClass:(Class)class options:(id)options;
+- (void)getObjectRepresentations:(id)representations forClass:(Class)class options:(id)options;
+- (void)getPreferredFileExtension:(id)extension;
+- (void)getPreferredFileSize:(id)size;
+- (void)getRepresentationsForType:(id)type options:(id)options completionHandler:(id)handler;
+- (void)getSerializedItem:(id)item;
+- (void)getTitleWithPermissionRequestor:(id)requestor completionHandler:(id)handler;
+- (void)performCoercion:(id)coercion;
+- (void)setObjectRepresentations:(id)representations forClass:(Class)class;
+- (void)setRepresentations:(id)representations forType:(id)type;
+- (void)setSubItems:(id)items forClass:(Class)class;
 @end
 
 @implementation WFContentItem
 
 - (NSExtensionItem)minimalExtensionItem
 {
-  v3 = [(WFContentItem *)self minimalItemProvider];
-  v4 = [(WFContentItem *)self extensionItemWithItemProvider:v3];
+  minimalItemProvider = [(WFContentItem *)self minimalItemProvider];
+  v4 = [(WFContentItem *)self extensionItemWithItemProvider:minimalItemProvider];
 
   return v4;
 }
 
 - (NSItemProvider)minimalItemProvider
 {
-  v3 = [(WFContentItem *)self internalRepresentationType];
-  v4 = [v3 conformsToClass:objc_opt_class()];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  v4 = [internalRepresentationType conformsToClass:objc_opt_class()];
 
   if (v4)
   {
     v5 = MEMORY[0x277CBEB70];
-    v6 = [(WFContentItem *)self internalRepresentationType];
-    v7 = [v5 orderedSetWithObject:v6];
+    internalRepresentationType2 = [(WFContentItem *)self internalRepresentationType];
+    v7 = [v5 orderedSetWithObject:internalRepresentationType2];
     v8 = [(WFContentItem *)self itemProviderForTypes:v7];
 
     goto LABEL_9;
   }
 
-  v6 = objc_opt_new();
+  internalRepresentationType2 = objc_opt_new();
   if ([(WFContentItem *)self includesFileRepresentationInSerializedItem])
   {
-    v9 = [(WFContentItem *)self preferredFileType];
+    preferredFileType = [(WFContentItem *)self preferredFileType];
 LABEL_7:
-    v10 = v9;
-    [v6 addObject:v9];
+    v10 = preferredFileType;
+    [internalRepresentationType2 addObject:preferredFileType];
 
     goto LABEL_8;
   }
 
   if ([(WFContentItem *)self hasStringOutput])
   {
-    v9 = [WFObjectType typeWithClass:objc_opt_class()];
+    preferredFileType = [WFObjectType typeWithClass:objc_opt_class()];
     goto LABEL_7;
   }
 
 LABEL_8:
-  v8 = [(WFContentItem *)self itemProviderForTypes:v6];
+  v8 = [(WFContentItem *)self itemProviderForTypes:internalRepresentationType2];
 LABEL_9:
 
   return v8;
@@ -203,21 +203,21 @@ LABEL_9:
 
 - (NSExtensionItem)extensionItem
 {
-  v3 = [(WFContentItem *)self itemProvider];
-  v4 = [(WFContentItem *)self extensionItemWithItemProvider:v3];
+  itemProvider = [(WFContentItem *)self itemProvider];
+  v4 = [(WFContentItem *)self extensionItemWithItemProvider:itemProvider];
 
   return v4;
 }
 
 - (NSItemProvider)itemProvider
 {
-  v3 = [(WFContentItem *)self supportedTypes];
-  v4 = [v3 mutableCopy];
+  supportedTypes = [(WFContentItem *)self supportedTypes];
+  v4 = [supportedTypes mutableCopy];
 
   if ([(WFContentItem *)self includesFileRepresentationInSerializedItem])
   {
-    v5 = [(WFContentItem *)self preferredFileType];
-    [v4 addObject:v5];
+    preferredFileType = [(WFContentItem *)self preferredFileType];
+    [v4 addObject:preferredFileType];
   }
 
   if (![(WFContentItem *)self hasStringOutput])
@@ -231,27 +231,27 @@ LABEL_9:
   return v7;
 }
 
-- (id)extensionItemWithItemProvider:(id)a3
+- (id)extensionItemWithItemProvider:(id)provider
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_opt_new();
-  v6 = [(WFContentItem *)self name];
+  name = [(WFContentItem *)self name];
 
-  if (v6)
+  if (name)
   {
     v7 = objc_alloc(MEMORY[0x277CCA898]);
-    v8 = [(WFContentItem *)self name];
-    v9 = [v7 initWithString:v8];
+    name2 = [(WFContentItem *)self name];
+    v9 = [v7 initWithString:name2];
     [v5 setAttributedTitle:v9];
   }
 
-  v20[0] = v4;
+  v20[0] = providerCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   [v5 setAttachments:v10];
 
-  v11 = [v5 userInfo];
-  v12 = [v11 mutableCopy];
+  userInfo = [v5 userInfo];
+  v12 = [userInfo mutableCopy];
   v13 = v12;
   if (v12)
   {
@@ -265,28 +265,28 @@ LABEL_9:
 
   v15 = v14;
 
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 bundleIdentifier];
-  [v15 setObject:v17 forKey:@"link.contentkit.sourceapp"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v15 setObject:bundleIdentifier forKey:@"link.contentkit.sourceapp"];
 
-  v18 = [(WFContentItem *)self metadataForSerialization];
-  [v15 addEntriesFromDictionary:v18];
+  metadataForSerialization = [(WFContentItem *)self metadataForSerialization];
+  [v15 addEntriesFromDictionary:metadataForSerialization];
 
   [v5 setUserInfo:v15];
 
   return v5;
 }
 
-- (id)itemProviderForTypes:(id)a3
+- (id)itemProviderForTypes:(id)types
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -335,15 +335,15 @@ LABEL_9:
         v15 = v12;
         if (v12)
         {
-          v16 = [v12 string];
+          string = [v12 string];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __55__WFContentItem_NSExtensionItem__itemProviderForTypes___block_invoke;
           v21[3] = &unk_278344F88;
           v22 = v15;
-          v23 = self;
+          selfCopy = self;
           v17 = v15;
-          [v5 registerItemForTypeIdentifier:v16 loadHandler:v21];
+          [v5 registerItemForTypeIdentifier:string loadHandler:v21];
         }
       }
 
@@ -460,19 +460,19 @@ void __55__WFContentItem_NSExtensionItem__itemProviderForTypes___block_invoke_4(
   return [(WFContentItem *)self loadsListThumbnailAsynchronously];
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFContentItem *)self internalRepresentation];
+  subtitleCopy = subtitle;
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) != 0 && (-[WFContentItem name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), -[WFContentItem internalName](self, "internalName"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqualToString:v8], v8, v7, (v9 & 1) == 0))
   {
-    if (v4)
+    if (subtitleCopy)
     {
-      v11 = [(WFContentItem *)self internalName];
-      v4[2](v4, v11);
+      internalName = [(WFContentItem *)self internalName];
+      subtitleCopy[2](subtitleCopy, internalName);
     }
 
     v10 = 1;
@@ -488,11 +488,11 @@ void __55__WFContentItem_NSExtensionItem__itemProviderForTypes___block_invoke_4(
 
 - (NSString)richListTitle
 {
-  v2 = [(WFContentItem *)self name];
-  v3 = [MEMORY[0x277D7A168] parseAnnotatedString:v2];
-  v4 = [v3 displayString];
+  name = [(WFContentItem *)self name];
+  v3 = [MEMORY[0x277D7A168] parseAnnotatedString:name];
+  displayString = [v3 displayString];
 
-  return v4;
+  return displayString;
 }
 
 - (BOOL)isScreenTimeEntity
@@ -506,35 +506,35 @@ void __55__WFContentItem_NSExtensionItem__itemProviderForTypes___block_invoke_4(
   return v2 & 1;
 }
 
-- (id)subItemForClass:(Class)a3
+- (id)subItemForClass:(Class)class
 {
-  v3 = [(WFContentItem *)self subItemsForClass:a3];
-  v4 = [v3 firstObject];
+  v3 = [(WFContentItem *)self subItemsForClass:class];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)subItemsForClass:(Class)a3
+- (id)subItemsForClass:(Class)class
 {
-  v4 = [(WFContentItem *)self subItemsByClass];
-  v5 = [v4 objectForKey:a3];
+  subItemsByClass = [(WFContentItem *)self subItemsByClass];
+  v5 = [subItemsByClass objectForKey:class];
 
   return v5;
 }
 
-- (void)setSubItems:(id)a3 forClass:(Class)a4
+- (void)setSubItems:(id)items forClass:(Class)class
 {
-  v8 = a3;
-  v6 = [(WFContentItem *)self subItemsByClass];
-  v7 = v6;
-  if (v8)
+  itemsCopy = items;
+  subItemsByClass = [(WFContentItem *)self subItemsByClass];
+  v7 = subItemsByClass;
+  if (itemsCopy)
   {
-    [v6 setObject:v8 forKey:a4];
+    [subItemsByClass setObject:itemsCopy forKey:class];
   }
 
   else
   {
-    [v6 removeObjectForKey:a4];
+    [subItemsByClass removeObjectForKey:class];
   }
 }
 
@@ -553,60 +553,60 @@ void __55__WFContentItem_NSExtensionItem__itemProviderForTypes___block_invoke_4(
   return subItemsByClass;
 }
 
-- (id)objectForClass:(Class)a3
+- (id)objectForClass:(Class)class
 {
-  v3 = [(WFContentItem *)self objectRepresentationForClass:a3];
-  v4 = [v3 object];
+  v3 = [(WFContentItem *)self objectRepresentationForClass:class];
+  object = [v3 object];
 
-  return v4;
+  return object;
 }
 
-- (id)objectsForClass:(Class)a3
+- (id)objectsForClass:(Class)class
 {
-  v3 = [(WFContentItem *)self objectRepresentationsForClass:a3];
+  v3 = [(WFContentItem *)self objectRepresentationsForClass:class];
   v4 = [v3 if_map:&__block_literal_global_415];
 
   return v4;
 }
 
-- (void)setObjectRepresentations:(id)a3 forClass:(Class)a4
+- (void)setObjectRepresentations:(id)representations forClass:(Class)class
 {
-  v6 = a3;
-  v7 = [WFObjectType typeWithClass:a4];
-  [(WFContentItem *)self setRepresentations:v6 forType:v7];
+  representationsCopy = representations;
+  v7 = [WFObjectType typeWithClass:class];
+  [(WFContentItem *)self setRepresentations:representationsCopy forType:v7];
 }
 
-- (id)objectRepresentationForClass:(Class)a3
+- (id)objectRepresentationForClass:(Class)class
 {
-  v3 = [(WFContentItem *)self objectRepresentationsForClass:a3];
-  v4 = [v3 firstObject];
+  v3 = [(WFContentItem *)self objectRepresentationsForClass:class];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)objectRepresentationsForClass:(Class)a3
+- (id)objectRepresentationsForClass:(Class)class
 {
-  v4 = [WFObjectType typeWithClass:a3];
+  v4 = [WFObjectType typeWithClass:class];
   v5 = [(WFContentItem *)self representationsForType:v4];
 
   return v5;
 }
 
-- (id)fileRepresentationForType:(id)a3
+- (id)fileRepresentationForType:(id)type
 {
-  v3 = [(WFContentItem *)self fileRepresentationsForType:a3];
-  v4 = [v3 firstObject];
+  v3 = [(WFContentItem *)self fileRepresentationsForType:type];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)fileRepresentationsForType:(id)a3
+- (id)fileRepresentationsForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFContentItem *)self representationsForType:v4];
+    v5 = [(WFContentItem *)self representationsForType:typeCopy];
   }
 
   else
@@ -617,44 +617,44 @@ void __55__WFContentItem_NSExtensionItem__itemProviderForTypes___block_invoke_4(
   return v5;
 }
 
-- (void)setRepresentations:(id)a3 forType:(id)a4
+- (void)setRepresentations:(id)representations forType:(id)type
 {
-  v6 = a3;
-  v10 = a4;
-  if (v6 && ([objc_opt_class() filterRepresentationsForAllowedContent:v6], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
+  representationsCopy = representations;
+  typeCopy = type;
+  if (representationsCopy && ([objc_opt_class() filterRepresentationsForAllowedContent:representationsCopy], representationsByType2 = objc_claimAutoreleasedReturnValue(), representationsCopy, representationsByType2))
   {
-    v8 = [(WFContentItem *)self representationsByType];
-    [v8 setObject:v7 forKey:v10];
+    representationsByType = [(WFContentItem *)self representationsByType];
+    [representationsByType setObject:representationsByType2 forKey:typeCopy];
   }
 
   else
   {
-    v9 = v10;
-    if (!v10)
+    v9 = typeCopy;
+    if (!typeCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = [(WFContentItem *)self representationsByType];
-    [v7 removeObjectForKey:v10];
+    representationsByType2 = [(WFContentItem *)self representationsByType];
+    [representationsByType2 removeObjectForKey:typeCopy];
   }
 
-  v9 = v10;
+  v9 = typeCopy;
 LABEL_7:
 }
 
-- (id)representationForType:(id)a3
+- (id)representationForType:(id)type
 {
-  v3 = [(WFContentItem *)self representationsForType:a3];
-  v4 = [v3 firstObject];
+  v3 = [(WFContentItem *)self representationsForType:type];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)representationsForType:(id)a3
+- (id)representationsForType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   [(WFContentItem *)self representationsByType];
   v16 = 0u;
   v17 = 0u;
@@ -676,9 +676,9 @@ LABEL_7:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        if (([v11 conformsToType:{v4, v16}] & 1) == 0)
+        if (([v11 conformsToType:{typeCopy, v16}] & 1) == 0)
         {
-          if (![v4 isEqualToUTType:v9])
+          if (![typeCopy isEqualToUTType:v9])
           {
             continue;
           }
@@ -689,8 +689,8 @@ LABEL_7:
             continue;
           }
 
-          v12 = [v11 fileExtension];
-          v13 = [v12 length];
+          fileExtension = [v11 fileExtension];
+          v13 = [fileExtension length];
 
           if (!v13)
           {
@@ -733,24 +733,24 @@ LABEL_14:
   return representationsByType;
 }
 
-- (WFContentItem)initWithRepresentationsByType:(id)a3 forType:(id)a4 subItemsByClass:(id)a5 attributionSet:(id)a6 includesDefaultAttributionSet:(BOOL)a7 cachingIdentifier:(id)a8
+- (WFContentItem)initWithRepresentationsByType:(id)type forType:(id)forType subItemsByClass:(id)class attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet cachingIdentifier:(id)identifier
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  typeCopy = type;
+  forTypeCopy = forType;
+  classCopy = class;
+  setCopy = set;
+  identifierCopy = identifier;
   v34.receiver = self;
   v34.super_class = WFContentItem;
   v19 = [(WFContentItem *)&v34 init];
   p_isa = &v19->super.isa;
   if (v19)
   {
-    objc_storeStrong(&v19->_internalRepresentationType, a4);
-    if (v18)
+    objc_storeStrong(&v19->_internalRepresentationType, forType);
+    if (identifierCopy)
     {
-      objc_storeStrong(p_isa + 1, a8);
+      objc_storeStrong(p_isa + 1, identifier);
     }
 
     v32[0] = MEMORY[0x277D85DD0];
@@ -759,8 +759,8 @@ LABEL_14:
     v32[3] = &unk_2783498E0;
     v21 = p_isa;
     v33 = v21;
-    [v14 enumerateKeysAndObjectsUsingBlock:v32];
-    v22 = [v21 representationForType:v15];
+    [typeCopy enumerateKeysAndObjectsUsingBlock:v32];
+    v22 = [v21 representationForType:forTypeCopy];
     if (!v22)
     {
       v29 = 0;
@@ -769,15 +769,15 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v23 = [v16 mutableCopy];
+    v23 = [classCopy mutableCopy];
     v24 = v21[4];
     v21[4] = v23;
 
-    if (v17)
+    if (setCopy)
     {
-      if (a7)
+      if (attributionSet)
       {
-        v35[0] = v17;
+        v35[0] = setCopy;
         v25 = [v21 defaultSourceForRepresentation:v22];
         v35[1] = v25;
         v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
@@ -790,7 +790,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v30 = v17;
+      v30 = setCopy;
     }
 
     else
@@ -809,31 +809,31 @@ LABEL_15:
   return v29;
 }
 
-- (WFContentItem)initWithRepresentation:(id)a3 forType:(id)a4 attributionSet:(id)a5 includesDefaultAttributionSet:(BOOL)a6 cachingIdentifier:(id)a7
+- (WFContentItem)initWithRepresentation:(id)representation forType:(id)type attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet cachingIdentifier:(id)identifier
 {
-  v8 = a6;
+  attributionSetCopy = attributionSet;
   v26[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (!v13)
+  representationCopy = representation;
+  typeCopy = type;
+  setCopy = set;
+  identifierCopy = identifier;
+  if (!representationCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:1506 description:{@"Invalid parameter not satisfying: %@", @"representation"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:1506 description:{@"Invalid parameter not satisfying: %@", @"representation"}];
   }
 
   v17 = [(WFContentItem *)self init];
   if (v17)
   {
     v18 = v17;
-    v24 = v13;
-    v25 = v14;
+    v24 = representationCopy;
+    v25 = typeCopy;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
     v26[0] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-    v21 = [(WFContentItem *)v18 initWithRepresentationsByType:v20 forType:v14 subItemsByClass:0 attributionSet:v15 includesDefaultAttributionSet:v8 cachingIdentifier:v16];
+    v21 = [(WFContentItem *)v18 initWithRepresentationsByType:v20 forType:typeCopy subItemsByClass:0 attributionSet:setCopy includesDefaultAttributionSet:attributionSetCopy cachingIdentifier:identifierCopy];
   }
 
   else
@@ -849,8 +849,8 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = WFContentItem;
   v3 = [(WFContentItem *)&v7 description];
-  v4 = [(WFContentItem *)self name];
-  v5 = [v3 stringByAppendingFormat:@": %@", v4];
+  name = [(WFContentItem *)self name];
+  v5 = [v3 stringByAppendingFormat:@": %@", name];
 
   return v5;
 }
@@ -858,8 +858,8 @@ LABEL_15:
 - (NSOrderedSet)allSupportedItemClasses
 {
   v3 = objc_opt_class();
-  v4 = [(WFContentItem *)self allSupportedTypes];
-  v5 = WFSupportedItemClassesForItemClass(v3, v4);
+  allSupportedTypes = [(WFContentItem *)self allSupportedTypes];
+  v5 = WFSupportedItemClassesForItemClass(v3, allSupportedTypes);
 
   return v5;
 }
@@ -867,21 +867,21 @@ LABEL_15:
 - (NSOrderedSet)supportedItemClasses
 {
   v3 = objc_opt_class();
-  v4 = [(WFContentItem *)self supportedTypes];
-  v5 = WFSupportedItemClassesForItemClass(v3, v4);
+  supportedTypes = [(WFContentItem *)self supportedTypes];
+  v5 = WFSupportedItemClassesForItemClass(v3, supportedTypes);
 
   return v5;
 }
 
 - (NSOrderedSet)allSupportedTypes
 {
-  v2 = self;
+  selfCopy = self;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v7 = __WFCachedRecursivelySupportedTypes_block_invoke;
   v8 = &unk_278349850;
-  v9 = v2;
-  v3 = v2;
+  v9 = selfCopy;
+  v3 = selfCopy;
   v4 = objc_getAssociatedObject(v3, &WFCachedRecursivelySupportedTypes_cachedValue);
   if (!v4)
   {
@@ -892,16 +892,16 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)canGenerateIntermediaryRepresentationForItemClass:(Class)a3
+- (BOOL)canGenerateIntermediaryRepresentationForItemClass:(Class)class
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [(WFContentItem *)self outputTypes];
+  outputTypes = [(WFContentItem *)self outputTypes];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(objc_class *)a3 ownedTypes];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  ownedTypes = [(objc_class *)class ownedTypes];
+  v6 = [ownedTypes countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -912,7 +912,7 @@ LABEL_15:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(ownedTypes);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -920,7 +920,7 @@ LABEL_15:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = v4;
+        v11 = outputTypes;
         v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
@@ -954,7 +954,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [ownedTypes countByEnumeratingWithState:&v22 objects:v27 count:16];
       v16 = 0;
     }
 
@@ -971,15 +971,15 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  v5 = [objc_opt_class() coercionForType:v4];
+  typeCopy = type;
+  v5 = [objc_opt_class() coercionForType:typeCopy];
 
   if (v5)
   {
-    v6 = [v5 handler];
-    v7 = [v6 coercionIsAvailableForItem:self];
+    handler = [v5 handler];
+    v7 = [handler coercionIsAvailableForItem:self];
   }
 
   else
@@ -992,9 +992,9 @@ LABEL_19:
 
 - (NSOrderedSet)supportedTypes
 {
-  v3 = [(WFContentItem *)self ownedTypes];
-  v4 = [(WFContentItem *)self outputTypes];
-  v5 = [v3 orderedSetByAddingObjectsFromOrderedSet:v4];
+  ownedTypes = [(WFContentItem *)self ownedTypes];
+  outputTypes = [(WFContentItem *)self outputTypes];
+  v5 = [ownedTypes orderedSetByAddingObjectsFromOrderedSet:outputTypes];
 
   return v5;
 }
@@ -1009,13 +1009,13 @@ LABEL_19:
   v3 = _Block_copy(aBlock);
   if ([(WFContentItem *)self cachesSupportedTypes])
   {
-    v4 = self;
+    selfCopy = self;
     v5 = v3;
-    v6 = objc_getAssociatedObject(v4, &outputTypes_cachedValue);
+    v6 = objc_getAssociatedObject(selfCopy, &outputTypes_cachedValue);
     if (!v6)
     {
       v6 = v5[2](v5);
-      objc_setAssociatedObject(v4, &outputTypes_cachedValue, v6, 0x303);
+      objc_setAssociatedObject(selfCopy, &outputTypes_cachedValue, v6, 0x303);
     }
   }
 
@@ -1091,13 +1091,13 @@ LABEL_6:
   v5[1] = 3221225472;
   v6 = __27__WFContentItem_ownedTypes__block_invoke;
   v7 = &unk_278349850;
-  v8 = self;
-  v2 = self;
-  v3 = objc_getAssociatedObject(v2, &ownedTypes_cachedValue);
+  selfCopy = self;
+  selfCopy2 = self;
+  v3 = objc_getAssociatedObject(selfCopy2, &ownedTypes_cachedValue);
   if (!v3)
   {
     v3 = v6(v5);
-    objc_setAssociatedObject(v2, &ownedTypes_cachedValue, v3, 0x303);
+    objc_setAssociatedObject(selfCopy2, &ownedTypes_cachedValue, v3, 0x303);
   }
 
   return v3;
@@ -1145,15 +1145,15 @@ id __27__WFContentItem_ownedTypes__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)getPreferredFileSize:(id)a3
+- (void)getPreferredFileSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__WFContentItem_getPreferredFileSize___block_invoke;
   v6[3] = &unk_278349F78;
-  v7 = v4;
-  v5 = v4;
+  v7 = sizeCopy;
+  v5 = sizeCopy;
   [(WFContentItem *)self getFileRepresentation:v6 forType:0];
 }
 
@@ -1166,25 +1166,25 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
   return v4(v2, v3);
 }
 
-- (void)getPreferredFileExtension:(id)a3
+- (void)getPreferredFileExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(WFContentItem *)self internalRepresentationType];
-  v8 = [(WFContentItem *)self fileRepresentationForType:v5];
+  extensionCopy = extension;
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  v8 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType];
 
   if (v8)
   {
-    v6 = [v8 filename];
-    [v6 pathExtension];
+    filename = [v8 filename];
+    [filename pathExtension];
   }
 
   else
   {
-    v6 = [(WFContentItem *)self preferredFileType];
-    [v6 fileExtension];
+    filename = [(WFContentItem *)self preferredFileType];
+    [filename fileExtension];
   }
   v7 = ;
-  v4[2](v4, v7);
+  extensionCopy[2](extensionCopy, v7);
 }
 
 - (WFContentItemChangeTransaction)changeTransaction
@@ -1209,25 +1209,25 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
   return cachingIdentifier;
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v5 = +[WFContentLocation genericLocation];
-  v6 = [(WFContentItem *)self cachingIdentifier];
-  v7 = [WFContentAttributionSet attributionSetWithOrigin:v5 disclosureLevel:0 originalItemIdentifier:v6];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  v7 = [WFContentAttributionSet attributionSetWithOrigin:v5 disclosureLevel:0 originalItemIdentifier:cachingIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
-    v9 = [v8 originalURL];
+    v8 = representationCopy;
+    originalURL = [v8 originalURL];
 
-    if (v9)
+    if (originalURL)
     {
       v15[0] = v7;
-      v10 = [v8 originalURL];
-      v11 = [WFURLContentItem attributionSetContentOfURL:v10];
+      originalURL2 = [v8 originalURL];
+      v11 = [WFURLContentItem attributionSetContentOfURL:originalURL2];
       v15[1] = v11;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
       v13 = [WFContentAttributionSet attributionSetByMergingAttributionSets:v12];
@@ -1241,10 +1241,10 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
 
 - (WFImage)icon
 {
-  v2 = [(WFContentItem *)self preferredFileType];
-  v3 = [v2 documentIcon];
+  preferredFileType = [(WFContentItem *)self preferredFileType];
+  documentIcon = [preferredFileType documentIcon];
 
-  return v3;
+  return documentIcon;
 }
 
 - (WFFileType)preferredFileType
@@ -1261,13 +1261,13 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
   return [(WFContentItem *)self preferredTypeOfClass:v3];
 }
 
-- (id)preferredTypeOfClass:(Class)a3
+- (id)preferredTypeOfClass:(Class)class
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [(WFContentItem *)self internalRepresentationType];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = internalRepresentationType;
   }
 
   else
@@ -1276,8 +1276,8 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(WFContentItem *)self supportedTypes];
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    supportedTypes = [(WFContentItem *)self supportedTypes];
+    v7 = [supportedTypes countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1288,7 +1288,7 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
         {
           if (*v24 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(supportedTypes);
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
@@ -1300,7 +1300,7 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v8 = [supportedTypes countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v8)
         {
           continue;
@@ -1314,8 +1314,8 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(WFContentItem *)self allSupportedTypes];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    allSupportedTypes = [(WFContentItem *)self allSupportedTypes];
+    v13 = [allSupportedTypes countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1326,7 +1326,7 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allSupportedTypes);
           }
 
           v17 = *(*(&v19 + 1) + 8 * j);
@@ -1338,7 +1338,7 @@ uint64_t __38__WFContentItem_getPreferredFileSize___block_invoke(uint64_t a1, vo
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v14 = [allSupportedTypes countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v14)
         {
           continue;
@@ -1359,13 +1359,13 @@ LABEL_22:
 - (NSDictionary)additionalRepresentationsForSerialization
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(WFContentItem *)self internalRepresentation];
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 object];
+    object = [internalRepresentation object];
     v6 = +[WFSerializableContentProvider sharedProvider];
-    v7 = [v6 serializedRepresentationForObject:v5];
+    v7 = [v6 serializedRepresentationForObject:object];
 
     if (v7)
     {
@@ -1373,8 +1373,8 @@ LABEL_22:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [v7 allKeys];
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      allKeys = [v7 allKeys];
+      v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1386,7 +1386,7 @@ LABEL_22:
           {
             if (*v18 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allKeys);
             }
 
             if (([*(*(&v17 + 1) + 8 * v12) hasPrefix:@"link.contentkit."] & 1) == 0)
@@ -1402,7 +1402,7 @@ LABEL_22:
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v10);
@@ -1427,8 +1427,8 @@ LABEL_22:
 
 - (NSDictionary)metadataForSerialization
 {
-  v3 = [(WFContentItem *)self additionalRepresentationsForSerialization];
-  v4 = [v3 mutableCopy];
+  additionalRepresentationsForSerialization = [(WFContentItem *)self additionalRepresentationsForSerialization];
+  v4 = [additionalRepresentationsForSerialization mutableCopy];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
@@ -1436,57 +1436,57 @@ LABEL_22:
   v8 = [v5 stringWithFormat:@"%@%@", @"link.contentkit.itemclass.", v7];
 
   [v4 setObject:v8 forKey:@"link.contentkit.itemclass.identifier"];
-  v9 = [(WFContentItem *)self name];
-  [v4 setObject:v9 forKey:@"link.contentkit.name"];
+  name = [(WFContentItem *)self name];
+  [v4 setObject:name forKey:@"link.contentkit.name"];
 
-  v10 = [(WFContentItem *)self attributionSet];
-  v11 = [v10 wfSerializedRepresentationWithPrivateItemIdentifiers];
-  [v4 setObject:v11 forKey:@"link.contentkit.contentattributionset"];
+  attributionSet = [(WFContentItem *)self attributionSet];
+  wfSerializedRepresentationWithPrivateItemIdentifiers = [attributionSet wfSerializedRepresentationWithPrivateItemIdentifiers];
+  [v4 setObject:wfSerializedRepresentationWithPrivateItemIdentifiers forKey:@"link.contentkit.contentattributionset"];
 
-  v12 = [(WFContentItem *)self cachingIdentifier];
-  v13 = [v12 UUIDString];
-  [v4 setObject:v13 forKey:@"link.contentkit.cachingidentifier"];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  uUIDString = [cachingIdentifier UUIDString];
+  [v4 setObject:uUIDString forKey:@"link.contentkit.cachingidentifier"];
 
   return v4;
 }
 
-- (id)nativePasteboardTypeForObjectRepresentationOfClass:(Class)a3
+- (id)nativePasteboardTypeForObjectRepresentationOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v7 = MEMORY[0x277CE1E90];
 LABEL_6:
-    v6 = [*v7 identifier];
+    identifier = [*v7 identifier];
     goto LABEL_9;
   }
 
-  if (objc_opt_class() == a3 || (+[WFObjectType typeWithClassName:frameworkName:location:](WFObjectType, "typeWithClassName:frameworkName:location:", @"UIImage", @"UIKit", 2), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEqualToClass:a3], v4, v5))
+  if (objc_opt_class() == class || (+[WFObjectType typeWithClassName:frameworkName:location:](WFObjectType, "typeWithClassName:frameworkName:location:", @"UIImage", @"UIKit", 2), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEqualToClass:class], v4, v5))
   {
-    v6 = *MEMORY[0x277D7A420];
+    identifier = *MEMORY[0x277D7A420];
     goto LABEL_9;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v7 = MEMORY[0x277CE1EB0];
     goto LABEL_6;
   }
 
-  v6 = 0;
+  identifier = 0;
 LABEL_9:
 
-  return v6;
+  return identifier;
 }
 
-- (void)getFileRepresentationsForSerialization:(id)a3
+- (void)getFileRepresentationsForSerialization:(id)serialization
 {
-  v4 = a3;
+  serializationCopy = serialization;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__WFContentItem_getFileRepresentationsForSerialization___block_invoke;
   v6[3] = &unk_278349F78;
-  v7 = v4;
-  v5 = v4;
+  v7 = serializationCopy;
+  v5 = serializationCopy;
   [(WFContentItem *)self getFileRepresentation:v6 forType:0];
 }
 
@@ -1513,22 +1513,22 @@ void __56__WFContentItem_getFileRepresentationsForSerialization___block_invoke(u
   }
 }
 
-- (void)getSerializedItem:(id)a3
+- (void)getSerializedItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_new();
-  v6 = [(WFContentItem *)self internalRepresentationType];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectClass];
+    objectClass = [internalRepresentationType objectClass];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [objc_opt_class() pasteboardValueClasses];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    pasteboardValueClasses = [objc_opt_class() pasteboardValueClasses];
+    v9 = [pasteboardValueClasses countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1539,13 +1539,13 @@ void __56__WFContentItem_getFileRepresentationsForSerialization___block_invoke(u
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(pasteboardValueClasses);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          if ([v7 isSubclassOfClass:v13])
+          if ([objectClass isSubclassOfClass:v13])
           {
-            v14 = [(WFContentItem *)self objectForClass:v7];
+            v14 = [(WFContentItem *)self objectForClass:objectClass];
             v15 = [(WFContentItem *)self nativePasteboardTypeForObjectRepresentationOfClass:v13];
             if (v15)
             {
@@ -1556,7 +1556,7 @@ void __56__WFContentItem_getFileRepresentationsForSerialization___block_invoke(u
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [pasteboardValueClasses countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v10)
         {
           continue;
@@ -1569,8 +1569,8 @@ void __56__WFContentItem_getFileRepresentationsForSerialization___block_invoke(u
 LABEL_14:
   }
 
-  v16 = [(WFContentItem *)self metadataForSerialization];
-  [v5 addEntriesFromDictionary:v16];
+  metadataForSerialization = [(WFContentItem *)self metadataForSerialization];
+  [v5 addEntriesFromDictionary:metadataForSerialization];
 
   if ([(WFContentItem *)self includesFileRepresentationInSerializedItem])
   {
@@ -1578,14 +1578,14 @@ LABEL_14:
     v17[1] = 3221225472;
     v17[2] = __35__WFContentItem_getSerializedItem___block_invoke;
     v17[3] = &unk_27834A200;
-    v19 = v4;
+    v19 = itemCopy;
     v18 = v5;
     [(WFContentItem *)self getFileRepresentationsForSerialization:v17];
   }
 
   else
   {
-    (*(v4 + 2))(v4, v5, 0);
+    (*(itemCopy + 2))(itemCopy, v5, 0);
   }
 }
 
@@ -1657,18 +1657,18 @@ void __35__WFContentItem_getSerializedItem___block_invoke(uint64_t a1, void *a2,
 LABEL_16:
 }
 
-- (id)itemsByCoercingToItemClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)itemsByCoercingToItemClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = [(WFContentItem *)self subItemsForClass:a3];
-  if (v9 && [(WFContentItem *)self coercionOptions:v8 allowCoercionsToItemClass:a3])
+  optionsCopy = options;
+  v9 = [(WFContentItem *)self subItemsForClass:class];
+  if (v9 && [(WFContentItem *)self coercionOptions:optionsCopy allowCoercionsToItemClass:class])
   {
     v10 = v9;
   }
 
   else
   {
-    v10 = [(WFContentItem *)self generateSubItemsForItemClass:a3 options:v8 error:a5];
+    v10 = [(WFContentItem *)self generateSubItemsForItemClass:class options:optionsCopy error:error];
   }
 
   v11 = v10;
@@ -1676,17 +1676,17 @@ LABEL_16:
   return v11;
 }
 
-- (void)forceCoerceToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)forceCoerceToItemClasses:(id)classes options:(id)options completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  optionsCopy = options;
+  handlerCopy = handler;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v8;
+  v11 = classesCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -1703,9 +1703,9 @@ LABEL_16:
 
         v16 = *(*(&v21 + 1) + 8 * i);
         v17 = [(WFContentItem *)self subItemsForClass:v16];
-        if (v17 && [(WFContentItem *)self coercionOptions:v9 allowCoercionsToItemClass:v16])
+        if (v17 && [(WFContentItem *)self coercionOptions:optionsCopy allowCoercionsToItemClass:v16])
         {
-          v10[2](v10, v17, 0);
+          handlerCopy[2](handlerCopy, v17, 0);
 
           v18 = v11;
           goto LABEL_12;
@@ -1726,23 +1726,23 @@ LABEL_16:
   v19[1] = 3221225472;
   v19[2] = __68__WFContentItem_forceCoerceToItemClasses_options_completionHandler___block_invoke;
   v19[3] = &unk_27834A430;
-  v20 = v10;
-  [(WFContentItem *)self generateSubItemsForItemClasses:v11 options:v9 completionHandler:v19];
+  v20 = handlerCopy;
+  [(WFContentItem *)self generateSubItemsForItemClasses:v11 options:optionsCopy completionHandler:v19];
   v18 = v20;
 LABEL_12:
 }
 
-- (void)coerceToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)coerceToItemClasses:(id)classes options:(id)options completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  optionsCopy = options;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v8;
+  v11 = classesCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v12)
   {
@@ -1759,11 +1759,11 @@ LABEL_12:
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
-        if ([objc_opt_class() isSubclassOfClass:{v16, v18}] && -[WFContentItem coercionOptions:allowCoercionsToItemClass:](self, "coercionOptions:allowCoercionsToItemClass:", v9, v16))
+        if ([objc_opt_class() isSubclassOfClass:{v16, v18}] && -[WFContentItem coercionOptions:allowCoercionsToItemClass:](self, "coercionOptions:allowCoercionsToItemClass:", optionsCopy, v16))
         {
-          v22 = self;
-          v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
-          v10[2](v10, v17, 0);
+          selfCopy = self;
+          v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
+          handlerCopy[2](handlerCopy, v17, 0);
 
           goto LABEL_12;
         }
@@ -1782,30 +1782,30 @@ LABEL_12:
     }
   }
 
-  [(WFContentItem *)self forceCoerceToItemClasses:v11 options:v9 completionHandler:v10];
+  [(WFContentItem *)self forceCoerceToItemClasses:v11 options:optionsCopy completionHandler:handlerCopy];
 LABEL_12:
 }
 
-- (BOOL)coercionOptions:(id)a3 allowCoercionsToItemClass:(Class)a4
+- (BOOL)coercionOptions:(id)options allowCoercionsToItemClass:(Class)class
 {
   v5 = MEMORY[0x277CBEB70];
-  v6 = a3;
-  v7 = [v5 orderedSetWithObjects:{objc_opt_class(), a4, 0}];
-  v8 = [v6 coercionPathIsDisallowed:v7];
+  optionsCopy = options;
+  v7 = [v5 orderedSetWithObjects:{objc_opt_class(), class, 0}];
+  v8 = [optionsCopy coercionPathIsDisallowed:v7];
 
   return v8 ^ 1;
 }
 
-- (BOOL)coercionOptions:(id)a3 allowCoercionsToType:(id)a4
+- (BOOL)coercionOptions:(id)options allowCoercionsToType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  typeCopy = type;
   v8 = +[WFContentItemRegistry sharedRegistry];
-  v9 = [v8 contentItemClassForType:v7];
+  v9 = [v8 contentItemClassForType:typeCopy];
 
   if (v9)
   {
-    v10 = [(WFContentItem *)self coercionOptions:v6 allowCoercionsToItemClass:v9];
+    v10 = [(WFContentItem *)self coercionOptions:optionsCopy allowCoercionsToItemClass:v9];
   }
 
   else
@@ -1816,65 +1816,65 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)canPerformCoercion:(id)a3
+- (BOOL)canPerformCoercion:(id)coercion
 {
-  v4 = a3;
-  if ([v4 requestType] == 2)
+  coercionCopy = coercion;
+  if ([coercionCopy requestType] == 2)
   {
-    v5 = [v4 contentItemClasses];
-    v6 = [v4 options];
+    contentItemClasses = [coercionCopy contentItemClasses];
+    options = [coercionCopy options];
 
-    [WFContentCoercionSearch searchForCoercingItem:self toItemClasses:v5 options:v6];
+    [WFContentCoercionSearch searchForCoercingItem:self toItemClasses:contentItemClasses options:options];
   }
 
   else
   {
-    v5 = [(WFContentItem *)self typeForCoercionRequest:v4];
-    v6 = [v4 options];
+    contentItemClasses = [(WFContentItem *)self typeForCoercionRequest:coercionCopy];
+    options = [coercionCopy options];
 
-    [WFContentCoercionSearch searchForCoercingItem:self toType:v5 options:v6];
+    [WFContentCoercionSearch searchForCoercingItem:self toType:contentItemClasses options:options];
   }
   v7 = ;
-  v8 = [v7 nextPathNode];
+  nextPathNode = [v7 nextPathNode];
 
-  return v8 != 0;
+  return nextPathNode != 0;
 }
 
-- (void)performCoercion:(id)a3
+- (void)performCoercion:(id)coercion
 {
-  v4 = a3;
-  v5 = [v4 requestType];
-  switch(v5)
+  coercionCopy = coercion;
+  requestType = [coercionCopy requestType];
+  switch(requestType)
   {
     case 0:
-      v12 = [(WFContentItem *)self typeForCoercionRequest:v4];
-      v13 = [v4 options];
+      v12 = [(WFContentItem *)self typeForCoercionRequest:coercionCopy];
+      options = [coercionCopy options];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __33__WFContentItem_performCoercion___block_invoke_2;
       v14[3] = &unk_2783496F0;
-      v15 = v4;
-      [(WFContentItem *)self getRepresentationsForType:v12 options:v13 completionHandler:v14];
+      v15 = coercionCopy;
+      [(WFContentItem *)self getRepresentationsForType:v12 options:options completionHandler:v14];
 
       v8 = v15;
       goto LABEL_7;
     case 1:
-      v9 = [(WFContentItem *)self typeForCoercionRequest:v4];
-      v10 = [v4 options];
-      v11 = [v4 fileRepresentationResultHandler];
-      [(WFContentItem *)self getRepresentationsForType:v9 options:v10 completionHandler:v11];
+      v9 = [(WFContentItem *)self typeForCoercionRequest:coercionCopy];
+      options2 = [coercionCopy options];
+      fileRepresentationResultHandler = [coercionCopy fileRepresentationResultHandler];
+      [(WFContentItem *)self getRepresentationsForType:v9 options:options2 completionHandler:fileRepresentationResultHandler];
 
       break;
     case 2:
-      v6 = [v4 contentItemClasses];
-      v7 = [v4 options];
+      contentItemClasses = [coercionCopy contentItemClasses];
+      options3 = [coercionCopy options];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __33__WFContentItem_performCoercion___block_invoke;
       v16[3] = &unk_2783496C8;
-      v17 = v4;
-      v18 = self;
-      [(WFContentItem *)self coerceToItemClasses:v6 options:v7 completionHandler:v16];
+      v17 = coercionCopy;
+      selfCopy = self;
+      [(WFContentItem *)self coerceToItemClasses:contentItemClasses options:options3 completionHandler:v16];
 
       v8 = v17;
 LABEL_7:
@@ -1903,52 +1903,52 @@ void __33__WFContentItem_performCoercion___block_invoke_2(uint64_t a1, void *a2,
   (v7)[2](v7, v13, v12, v10);
 }
 
-- (id)typeForCoercionRequest:(id)a3
+- (id)typeForCoercionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestType];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  v6 = requestType;
+  if (requestType)
   {
-    if (v5 == 2)
+    if (requestType == 2)
     {
-      v9 = 0;
+      firstObject = 0;
       goto LABEL_21;
     }
 
-    if (v5 == 1)
+    if (requestType == 1)
     {
-      v7 = [v4 fileType];
+      fileType = [requestCopy fileType];
 
-      if (v7)
+      if (fileType)
       {
-        v8 = [v4 fileType];
+        fileType2 = [requestCopy fileType];
 LABEL_9:
-        v9 = v8;
+        firstObject = fileType2;
         goto LABEL_21;
       }
     }
   }
 
-  else if ([v4 objectClass])
+  else if ([requestCopy objectClass])
   {
-    v8 = +[WFObjectType typeWithClass:](WFObjectType, "typeWithClass:", [v4 objectClass]);
+    fileType2 = +[WFObjectType typeWithClass:](WFObjectType, "typeWithClass:", [requestCopy objectClass]);
     goto LABEL_9;
   }
 
-  v10 = [v4 options];
-  v11 = [v10 preferredTypes];
+  options = [requestCopy options];
+  preferredTypes = [options preferredTypes];
 
-  if (v11)
+  if (preferredTypes)
   {
-    v12 = [(WFContentItem *)self supportedTypes];
-    v13 = [v12 mutableCopy];
+    supportedTypes = [(WFContentItem *)self supportedTypes];
+    v13 = [supportedTypes mutableCopy];
 
-    v14 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:v11];
+    v14 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:preferredTypes];
     [v13 intersectOrderedSet:v14];
     if ([v13 count])
     {
-      v9 = [v13 firstObject];
+      firstObject = [v13 firstObject];
 
       goto LABEL_20;
     }
@@ -1958,67 +1958,67 @@ LABEL_9:
   {
     if (v6 != 1)
     {
-      v9 = 0;
+      firstObject = 0;
       goto LABEL_20;
     }
 
-    v15 = [(WFContentItem *)self preferredFileType];
+    preferredFileType = [(WFContentItem *)self preferredFileType];
   }
 
   else
   {
-    v15 = [(WFContentItem *)self preferredObjectType];
+    preferredFileType = [(WFContentItem *)self preferredObjectType];
   }
 
-  v9 = v15;
+  firstObject = preferredFileType;
 LABEL_20:
 
 LABEL_21:
 
-  return v9;
+  return firstObject;
 }
 
-- (id)contentItemByMergingAttributionSet:(id)a3
+- (id)contentItemByMergingAttributionSet:(id)set
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(WFContentAttributionSet *)self->_attributionSet isSupersetOfAttributionSet:v4])
+  setCopy = set;
+  if ([(WFContentAttributionSet *)self->_attributionSet isSupersetOfAttributionSet:setCopy])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
     v27[0] = self->_attributionSet;
-    v27[1] = v4;
+    v27[1] = setCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
     v7 = [WFContentAttributionSet attributionSetByMergingAttributionSets:v6];
 
     objc_opt_class();
-    v5 = objc_opt_new();
-    if (v5)
+    selfCopy = objc_opt_new();
+    if (selfCopy)
     {
-      v8 = [(WFContentItem *)self internalRepresentationType];
-      internalRepresentationType = v5->_internalRepresentationType;
-      v5->_internalRepresentationType = v8;
+      internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+      internalRepresentationType = selfCopy->_internalRepresentationType;
+      selfCopy->_internalRepresentationType = internalRepresentationType;
 
-      v10 = [(WFContentItem *)self representationsByType];
-      v11 = [v10 mutableCopy];
-      representationsByType = v5->_representationsByType;
-      v5->_representationsByType = v11;
+      representationsByType = [(WFContentItem *)self representationsByType];
+      v11 = [representationsByType mutableCopy];
+      representationsByType = selfCopy->_representationsByType;
+      selfCopy->_representationsByType = v11;
 
-      v13 = [(WFContentItem *)self subItemsByClass];
-      v14 = [v13 mutableCopy];
-      subItemsByClass = v5->_subItemsByClass;
-      v5->_subItemsByClass = v14;
+      subItemsByClass = [(WFContentItem *)self subItemsByClass];
+      v14 = [subItemsByClass mutableCopy];
+      subItemsByClass = selfCopy->_subItemsByClass;
+      selfCopy->_subItemsByClass = v14;
 
-      objc_storeStrong(&v5->_attributionSet, v7);
-      v16 = [(WFContentItem *)self cachingIdentifier];
-      cachingIdentifier = v5->_cachingIdentifier;
-      v5->_cachingIdentifier = v16;
+      objc_storeStrong(&selfCopy->_attributionSet, v7);
+      cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+      cachingIdentifier = selfCopy->_cachingIdentifier;
+      selfCopy->_cachingIdentifier = cachingIdentifier;
 
-      [(WFContentItem *)self copyStateToItem:v5];
-      v18 = v5;
+      [(WFContentItem *)self copyStateToItem:selfCopy];
+      v18 = selfCopy;
     }
 
     else
@@ -2037,44 +2037,44 @@ LABEL_21:
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)generateSubItemsForItemClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateSubItemsForItemClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = [(WFContentItem *)self supportedItemClasses];
-  v10 = [v9 containsObject:a3];
+  optionsCopy = options;
+  supportedItemClasses = [(WFContentItem *)self supportedItemClasses];
+  v10 = [supportedItemClasses containsObject:class];
 
   if (v10)
   {
-    v11 = [(WFContentItem *)self generateFirstLevelSubItemsForItemClass:a3 options:v8 error:a5];
+    v11 = [(WFContentItem *)self generateFirstLevelSubItemsForItemClass:class options:optionsCopy error:error];
   }
 
   else
   {
-    v12 = [(WFContentItem *)self allSupportedItemClasses];
-    v13 = [v12 containsObject:a3];
+    allSupportedItemClasses = [(WFContentItem *)self allSupportedItemClasses];
+    v13 = [allSupportedItemClasses containsObject:class];
 
     if (v13)
     {
-      v14 = [WFContentCoercionSearch searchForCoercingItem:self toItemClass:a3 options:v8];
-      v11 = [v14 runCoercionSynchronouslyWithError:a5];
+      v14 = [WFContentCoercionSearch searchForCoercingItem:self toItemClass:class options:optionsCopy];
+      v11 = [v14 runCoercionSynchronouslyWithError:error];
       if ([v11 count])
       {
-        v15 = [v8 itemClassPrioritizationType];
+        itemClassPrioritizationType = [optionsCopy itemClassPrioritizationType];
 
-        if (!v15)
+        if (!itemClassPrioritizationType)
         {
-          [(WFContentItem *)self setSubItems:v11 forClass:a3];
+          [(WFContentItem *)self setSubItems:v11 forClass:class];
         }
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      [objc_opt_class() badCoercionErrorForItemClass:a3];
-      *a5 = v11 = 0;
+      [objc_opt_class() badCoercionErrorForItemClass:class];
+      *error = v11 = 0;
     }
 
     else
@@ -2086,11 +2086,11 @@ LABEL_21:
   return v11;
 }
 
-- (void)generateSubItemsForItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)generateSubItemsForItemClasses:(id)classes options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  optionsCopy = options;
+  handlerCopy = handler;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x3032000000;
@@ -2103,32 +2103,32 @@ LABEL_21:
   v33[3] = __Block_byref_object_copy__252;
   v33[4] = __Block_byref_object_dispose__253;
   v34 = 0;
-  v11 = [v9 itemClassPrioritizationType];
-  v12 = [v11 isEqualToString:@"SupportedTypes"];
+  itemClassPrioritizationType = [optionsCopy itemClassPrioritizationType];
+  v12 = [itemClassPrioritizationType isEqualToString:@"SupportedTypes"];
 
   if (v12)
   {
-    v13 = [(WFContentItem *)self supportedItemClasses];
-    v14 = [v13 array];
+    supportedItemClasses = [(WFContentItem *)self supportedItemClasses];
+    array = [supportedItemClasses array];
 
-    v15 = v8;
+    array2 = classesCopy;
   }
 
   else
   {
-    v14 = v8;
-    v16 = [(WFContentItem *)self supportedItemClasses];
-    v15 = [v16 array];
+    array = classesCopy;
+    supportedItemClasses2 = [(WFContentItem *)self supportedItemClasses];
+    array2 = [supportedItemClasses2 array];
   }
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __74__WFContentItem_generateSubItemsForItemClasses_options_completionHandler___block_invoke;
   v27[3] = &unk_278349678;
-  v17 = v15;
+  v17 = array2;
   v28 = v17;
-  v29 = self;
-  v30 = v9;
+  selfCopy = self;
+  v30 = optionsCopy;
   v31 = v33;
   v32 = v35;
   v21[0] = MEMORY[0x277D85DD0];
@@ -2137,14 +2137,14 @@ LABEL_21:
   v21[3] = &unk_2783496A0;
   v25 = v33;
   v26 = v35;
-  v18 = v10;
+  v18 = handlerCopy;
   v24 = v18;
   v21[4] = self;
-  v19 = v8;
+  v19 = classesCopy;
   v22 = v19;
   v20 = v30;
   v23 = v20;
-  [v14 if_enumerateAsynchronouslyInSequence:v27 completionHandler:v21];
+  [array if_enumerateAsynchronouslyInSequence:v27 completionHandler:v21];
 
   _Block_object_dispose(v33, 8);
   _Block_object_dispose(v35, 8);
@@ -2272,12 +2272,12 @@ void __74__WFContentItem_generateSubItemsForItemClasses_options_completionHandle
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)generateFirstLevelSubItemsForItemClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateFirstLevelSubItemsForItemClass:(Class)class options:(id)options error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v29 = a3;
-  [(WFContentItem *)self intermediaryTypesForCoercionToItemClass:a3];
+  optionsCopy = options;
+  classCopy = class;
+  [(WFContentItem *)self intermediaryTypesForCoercionToItemClass:class];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -2298,11 +2298,11 @@ void __74__WFContentItem_generateSubItemsForItemClasses_options_completionHandle
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [(WFContentItem *)self getRepresentationsForType:v14 options:v8 error:a5];
+        v15 = [(WFContentItem *)self getRepresentationsForType:v14 options:optionsCopy error:error];
         if (v15)
         {
           v18 = v15;
-          v30 = v8;
+          v30 = optionsCopy;
           v17 = objc_opt_new();
           v32 = 0u;
           v33 = 0u;
@@ -2324,8 +2324,8 @@ void __74__WFContentItem_generateSubItemsForItemClasses_options_completionHandle
                 }
 
                 v24 = *(*(&v32 + 1) + 8 * j);
-                v25 = [(WFContentItem *)self attributionSet];
-                v26 = [WFContentItem itemWithRepresentation:v24 attributionSet:v25];
+                attributionSet = [(WFContentItem *)self attributionSet];
+                v26 = [WFContentItem itemWithRepresentation:v24 attributionSet:attributionSet];
 
                 if (v26)
                 {
@@ -2339,12 +2339,12 @@ void __74__WFContentItem_generateSubItemsForItemClasses_options_completionHandle
             while (v21);
           }
 
-          v8 = v30;
-          v27 = [v30 itemClassPrioritizationType];
+          optionsCopy = v30;
+          itemClassPrioritizationType = [v30 itemClassPrioritizationType];
 
-          if (!v27)
+          if (!itemClassPrioritizationType)
           {
-            [(WFContentItem *)self setSubItems:v17 forClass:v29];
+            [(WFContentItem *)self setSubItems:v17 forClass:classCopy];
           }
 
           v9 = obj;
@@ -2373,10 +2373,10 @@ void __74__WFContentItem_generateSubItemsForItemClasses_options_completionHandle
     }
   }
 
-  if (a5)
+  if (error)
   {
-    [objc_opt_class() badCoercionErrorForItemClass:v29];
-    *a5 = v17 = 0;
+    [objc_opt_class() badCoercionErrorForItemClass:classCopy];
+    *error = v17 = 0;
   }
 
   else
@@ -2389,14 +2389,14 @@ LABEL_25:
   return v17;
 }
 
-- (void)generateFirstLevelSubItemsForItemClass:(Class)a3 options:(id)a4 completionHandler:(id)a5
+- (void)generateFirstLevelSubItemsForItemClass:(Class)class options:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if ([(WFContentItem *)self coercionOptions:v8 allowCoercionsToItemClass:a3])
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(WFContentItem *)self coercionOptions:optionsCopy allowCoercionsToItemClass:class])
   {
-    v10 = [(WFContentItem *)self intermediaryTypesForCoercionToItemClass:a3];
-    v11 = [v10 objectEnumerator];
+    v10 = [(WFContentItem *)self intermediaryTypesForCoercionToItemClass:class];
+    objectEnumerator = [v10 objectEnumerator];
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
       v12 = MEMORY[0x277D85CD0];
@@ -2418,13 +2418,13 @@ LABEL_25:
     aBlock[1] = 3221225472;
     aBlock[2] = __82__WFContentItem_generateFirstLevelSubItemsForItemClass_options_completionHandler___block_invoke;
     aBlock[3] = &unk_278349620;
-    v14 = v11;
+    v14 = objectEnumerator;
     v19 = v14;
-    v23 = v9;
+    v23 = handlerCopy;
     v24 = &v26;
-    v20 = self;
-    v25 = a3;
-    v21 = v8;
+    selfCopy = self;
+    classCopy = class;
+    v21 = optionsCopy;
     v15 = v12;
     v22 = v15;
     v16 = _Block_copy(aBlock);
@@ -2437,8 +2437,8 @@ LABEL_25:
 
   else
   {
-    v10 = [objc_opt_class() badCoercionErrorForItemClass:a3];
-    (*(v9 + 2))(v9, 0, v10);
+    v10 = [objc_opt_class() badCoercionErrorForItemClass:class];
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 
@@ -2573,41 +2573,41 @@ void __82__WFContentItem_generateFirstLevelSubItemsForItemClass_options_completi
   }
 }
 
-- (id)intermediaryTypesForCoercionToItemClass:(Class)a3
+- (id)intermediaryTypesForCoercionToItemClass:(Class)class
 {
-  v4 = [(objc_class *)a3 ownedTypes];
-  v5 = [(WFContentItem *)self outputTypes];
+  ownedTypes = [(objc_class *)class ownedTypes];
+  outputTypes = [(WFContentItem *)self outputTypes];
   v6 = MEMORY[0x277CCAC30];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__WFContentItem_intermediaryTypesForCoercionToItemClass___block_invoke;
   v11[3] = &unk_2783495D0;
-  v12 = v4;
-  v7 = v4;
+  v12 = ownedTypes;
+  v7 = ownedTypes;
   v8 = [v6 predicateWithBlock:v11];
-  v9 = [v5 filteredOrderedSetUsingPredicate:v8];
+  v9 = [outputTypes filteredOrderedSetUsingPredicate:v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFContentItem *)self internalRepresentation];
-  v6 = [v5 isEncodable];
-  v7 = [v4 wfFileCoder];
+  coderCopy = coder;
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
+  isEncodable = [internalRepresentation isEncodable];
+  wfFileCoder = [coderCopy wfFileCoder];
 
-  v8 = [(WFContentItem *)self alwaysEncodeUsingWFSerializableContent];
+  alwaysEncodeUsingWFSerializableContent = [(WFContentItem *)self alwaysEncodeUsingWFSerializableContent];
   v9 = objc_opt_class();
-  v10 = [v4 wfFileCoder];
-  v11 = [v9 isAvailableOnPlatform:{objc_msgSend(v10, "targetPlatform")}];
+  wfFileCoder2 = [coderCopy wfFileCoder];
+  v11 = [v9 isAvailableOnPlatform:{objc_msgSend(wfFileCoder2, "targetPlatform")}];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v6 && !v8 && ((v7 == 0) | v11 & 1 | isKindOfClass & 1) != 0)
+  if (isEncodable && !alwaysEncodeUsingWFSerializableContent && ((wfFileCoder == 0) | v11 & 1 | isKindOfClass & 1) != 0)
   {
-    if (!v7)
+    if (!wfFileCoder)
     {
       v15 = getWFContentGraphLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -2618,32 +2618,32 @@ void __82__WFContentItem_generateFirstLevelSubItemsForItemClass_options_completi
       }
     }
 
-    [v4 encodeObject:v5 forKey:@"internalRepresentation"];
-    v13 = [(WFContentItem *)self internalRepresentationType];
+    [coderCopy encodeObject:internalRepresentation forKey:@"internalRepresentation"];
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
     v14 = @"internalRepresentationType";
   }
 
   else
   {
-    v13 = [(WFContentItem *)self metadataForSerialization];
+    internalRepresentationType = [(WFContentItem *)self metadataForSerialization];
     v14 = @"serializationMetadata";
   }
 
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:internalRepresentationType forKey:v14];
 
-  v16 = [(WFContentItem *)self attributionSet];
-  [v4 encodeObject:v16 forKey:@"attributionSet"];
+  attributionSet = [(WFContentItem *)self attributionSet];
+  [coderCopy encodeObject:attributionSet forKey:@"attributionSet"];
 
-  v17 = [(WFContentItem *)self cachingIdentifier];
-  [v4 encodeObject:v17 forKey:@"cachingIdentifier"];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  [coderCopy encodeObject:cachingIdentifier forKey:@"cachingIdentifier"];
 }
 
-- (WFContentItem)initWithCoder:(id)a3
+- (WFContentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"attributionSet"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"attributionSet"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributionSet"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionSet"];
   }
 
   else
@@ -2651,9 +2651,9 @@ void __82__WFContentItem_generateFirstLevelSubItemsForItemClass_options_completi
     v5 = 0;
   }
 
-  if ([v4 containsValueForKey:@"cachingIdentifier"])
+  if ([coderCopy containsValueForKey:@"cachingIdentifier"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cachingIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cachingIdentifier"];
   }
 
   else
@@ -2661,41 +2661,41 @@ void __82__WFContentItem_generateFirstLevelSubItemsForItemClass_options_completi
     v6 = 0;
   }
 
-  if ([v4 containsValueForKey:@"internalRepresentation"])
+  if ([coderCopy containsValueForKey:@"internalRepresentation"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internalRepresentationType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internalRepresentationType"];
     v8 = [MEMORY[0x277CBEB58] setWithObject:objc_opt_class()];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v8 addObject:{objc_msgSend(v7, "objectClass")}];
-      v9 = [(WFContentItem *)self allowedClassesForDecodingInternalRepresentations];
-      v10 = [v9 count];
+      allowedClassesForDecodingInternalRepresentations = [(WFContentItem *)self allowedClassesForDecodingInternalRepresentations];
+      v10 = [allowedClassesForDecodingInternalRepresentations count];
 
       if (v10)
       {
-        v11 = [(WFContentItem *)self allowedClassesForDecodingInternalRepresentations];
-        [v8 addObjectsFromArray:v11];
+        allowedClassesForDecodingInternalRepresentations2 = [(WFContentItem *)self allowedClassesForDecodingInternalRepresentations];
+        [v8 addObjectsFromArray:allowedClassesForDecodingInternalRepresentations2];
       }
     }
 
-    v12 = [v4 decodeObjectOfClasses:v8 forKey:@"internalRepresentation"];
+    v12 = [coderCopy decodeObjectOfClasses:v8 forKey:@"internalRepresentation"];
     v13 = [(WFContentItem *)self initWithRepresentation:v12 forType:v7 attributionSet:v5 cachingIdentifier:v6];
     self = v13;
   }
 
   else
   {
-    if (![v4 containsValueForKey:@"serializationMetadata"])
+    if (![coderCopy containsValueForKey:@"serializationMetadata"])
     {
       v13 = 0;
       goto LABEL_16;
     }
 
     v14 = MEMORY[0x277CBEB98];
-    v15 = [objc_opt_class() pasteboardValueClasses];
-    v16 = [v14 setWithArray:v15];
-    v7 = [v4 decodeObjectOfClasses:v16 forKey:@"serializationMetadata"];
+    pasteboardValueClasses = [objc_opt_class() pasteboardValueClasses];
+    v16 = [v14 setWithArray:pasteboardValueClasses];
+    v7 = [coderCopy decodeObjectOfClasses:v16 forKey:@"serializationMetadata"];
 
     v8 = [v7 objectForKey:@"link.contentkit.name"];
     v17 = [v7 objectForKey:@"link.contentkit.contentattributionset"];
@@ -2710,63 +2710,63 @@ LABEL_16:
   return v13;
 }
 
-- (id)copyWithName:(id)a3 zone:(_NSZone *)a4
+- (id)copyWithName:(id)name zone:(_NSZone *)zone
 {
-  v6 = a3;
-  v7 = [(WFContentItem *)self internalRepresentationForCopyingWithName:v6];
+  nameCopy = name;
+  v7 = [(WFContentItem *)self internalRepresentationForCopyingWithName:nameCopy];
   v8 = v7;
-  if (v6)
+  if (nameCopy)
   {
-    v9 = [v7 copyWithName:v6 zone:a4];
+    v9 = [v7 copyWithName:nameCopy zone:zone];
   }
 
   else
   {
-    v10 = [(WFContentItem *)self name];
-    v9 = [v8 copyWithName:v10 zone:a4];
+    name = [(WFContentItem *)self name];
+    v9 = [v8 copyWithName:name zone:zone];
   }
 
-  v11 = [(WFContentItem *)self classForCopying];
-  v12 = [(WFContentItem *)self attributionSet];
-  v13 = [(WFContentItem *)self cachingIdentifier];
-  v14 = [(objc_class *)v11 itemWithRepresentation:v9 attributionSet:v12 cachingIdentifier:v13];
+  classForCopying = [(WFContentItem *)self classForCopying];
+  attributionSet = [(WFContentItem *)self attributionSet];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  v14 = [(objc_class *)classForCopying itemWithRepresentation:v9 attributionSet:attributionSet cachingIdentifier:cachingIdentifier];
 
   [(WFContentItem *)self copyStateToItem:v14];
   return v14;
 }
 
-- (id)internalRepresentationForCopyingWithName:(id)a3
+- (id)internalRepresentationForCopyingWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(WFContentItem *)self internalRepresentation];
-  if (v4)
+  nameCopy = name;
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
+  if (nameCopy)
   {
-    v6 = [MEMORY[0x277D79F68] typeFromFilename:v4];
-    v7 = [v6 isDeclared];
+    v6 = [MEMORY[0x277D79F68] typeFromFilename:nameCopy];
+    isDeclared = [v6 isDeclared];
 
-    if (v7)
+    if (isDeclared)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v8 = [(WFContentItem *)self preferredFileType];
+        preferredFileType = [(WFContentItem *)self preferredFileType];
         v9 = +[WFCoercionOptions new];
-        v10 = [(WFContentItem *)self getRepresentationsForType:v8 options:v9 error:0];
-        v11 = [v10 firstObject];
+        v10 = [(WFContentItem *)self getRepresentationsForType:preferredFileType options:v9 error:0];
+        firstObject = [v10 firstObject];
 
-        if (v11)
+        if (firstObject)
         {
-          v12 = v11;
+          v12 = firstObject;
 
-          v5 = v12;
+          internalRepresentation = v12;
         }
       }
     }
   }
 
-  v13 = v5;
+  v13 = internalRepresentation;
 
-  return v5;
+  return internalRepresentation;
 }
 
 - (BOOL)hasStringOutput
@@ -2778,73 +2778,73 @@ LABEL_16:
 
 - (NSString)internalName
 {
-  v3 = [(WFContentItem *)self internalRepresentation];
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 object];
-    v5 = [v4 wfName];
-    v6 = v5;
-    if (v5)
+    object = [internalRepresentation object];
+    wfName = [object wfName];
+    v6 = wfName;
+    if (wfName)
     {
-      v7 = v5;
+      name = wfName;
     }
 
     else
     {
-      v7 = [(WFContentItem *)self name];
+      name = [(WFContentItem *)self name];
     }
 
-    v8 = v7;
+    name2 = name;
   }
 
   else
   {
-    v8 = [(WFContentItem *)self name];
+    name2 = [(WFContentItem *)self name];
   }
 
-  return v8;
+  return name2;
 }
 
-- (void)getTitleWithPermissionRequestor:(id)a3 completionHandler:(id)a4
+- (void)getTitleWithPermissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(WFContentItem *)self name];
-  (*(a4 + 2))(v6, v7);
+  handlerCopy = handler;
+  name = [(WFContentItem *)self name];
+  (*(handler + 2))(handlerCopy, name);
 }
 
 - (NSString)name
 {
-  v2 = [(WFContentItem *)self internalRepresentation];
-  v3 = [v2 wfName];
-  v4 = v3;
-  if (v3)
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
+  wfName = [internalRepresentation wfName];
+  v4 = wfName;
+  if (wfName)
   {
-    v5 = v3;
+    localizedTypeDescription = wfName;
   }
 
   else
   {
-    v5 = [objc_opt_class() localizedTypeDescription];
+    localizedTypeDescription = [objc_opt_class() localizedTypeDescription];
   }
 
-  v6 = v5;
+  v6 = localizedTypeDescription;
 
   return v6;
 }
 
 - (WFRepresentation)internalRepresentation
 {
-  v3 = [(WFContentItem *)self internalRepresentationType];
-  v4 = [(WFContentItem *)self representationForType:v3];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  v4 = [(WFContentItem *)self representationForType:internalRepresentationType];
 
   return v4;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = [(WFContentItem *)self generateObjectRepresentationForClass:a3 options:a4 error:a5];
+  v5 = [(WFContentItem *)self generateObjectRepresentationForClass:class options:options error:error];
   v6 = v5;
   if (v5)
   {
@@ -2860,10 +2860,10 @@ LABEL_16:
   return v7;
 }
 
-- (id)generateFileRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateFileRepresentationsForType:(id)type options:(id)options error:(id *)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = [(WFContentItem *)self generateFileRepresentationForType:a3 options:a4 error:a5];
+  v5 = [(WFContentItem *)self generateFileRepresentationForType:type options:options error:error];
   v6 = v5;
   if (v5)
   {
@@ -2879,16 +2879,16 @@ LABEL_16:
   return v7;
 }
 
-- (id)generateRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateRepresentationsForType:(id)type options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() coercionForCoercingToType:v8 concurrencyMode:0];
+  typeCopy = type;
+  optionsCopy = options;
+  v10 = [objc_opt_class() coercionForCoercingToType:typeCopy concurrencyMode:0];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 handler];
-    v13 = [v12 performSynchronousCoercionWithContentItem:self forType:v8 options:v9 error:a5];
+    handler = [v10 handler];
+    v13 = [handler performSynchronousCoercionWithContentItem:self forType:typeCopy options:optionsCopy error:error];
   }
 
   else
@@ -2896,12 +2896,12 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[WFContentItem generateObjectRepresentationsForClass:options:error:](self, "generateObjectRepresentationsForClass:options:error:", [v8 objectClass], v9, a5);
+      -[WFContentItem generateObjectRepresentationsForClass:options:error:](self, "generateObjectRepresentationsForClass:options:error:", [typeCopy objectClass], optionsCopy, error);
     }
 
     else
     {
-      [(WFContentItem *)self generateFileRepresentationsForType:v8 options:v9 error:a5];
+      [(WFContentItem *)self generateFileRepresentationsForType:typeCopy options:optionsCopy error:error];
     }
     v13 = ;
   }
@@ -2909,32 +2909,32 @@ LABEL_16:
   return v13;
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
-  v7 = a3;
-  v8 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-  (*(a3 + 2))(v7, 0, 0, v8);
+  representationCopy = representation;
+  v8 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+  (*(representation + 2))(representationCopy, 0, 0, v8);
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = [objc_opt_class() badCoercionErrorForType:v6];
+  typeCopy = type;
+  representationCopy = representation;
+  v8 = [objc_opt_class() badCoercionErrorForType:typeCopy];
 
-  (*(a3 + 2))(v7, 0, v8);
+  (*(representation + 2))(representationCopy, 0, v8);
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
-  v8 = a3;
+  representationsCopy = representations;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__WFContentItem_generateObjectRepresentations_options_forClass___block_invoke;
   v10[3] = &unk_2783495A8;
-  v11 = v8;
-  v9 = v8;
-  [(WFContentItem *)self generateObjectRepresentation:v10 options:a4 forClass:a5];
+  v11 = representationsCopy;
+  v9 = representationsCopy;
+  [(WFContentItem *)self generateObjectRepresentation:v10 options:options forClass:class];
 }
 
 void __64__WFContentItem_generateObjectRepresentations_options_forClass___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2956,16 +2956,16 @@ void __64__WFContentItem_generateObjectRepresentations_options_forClass___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generateFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentations:(id)representations options:(id)options forType:(id)type
 {
-  v8 = a3;
+  representationsCopy = representations;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__WFContentItem_generateFileRepresentations_options_forType___block_invoke;
   v10[3] = &unk_278349F78;
-  v11 = v8;
-  v9 = v8;
-  [(WFContentItem *)self generateFileRepresentation:v10 options:a4 forType:a5];
+  v11 = representationsCopy;
+  v9 = representationsCopy;
+  [(WFContentItem *)self generateFileRepresentation:v10 options:options forType:type];
 }
 
 void __61__WFContentItem_generateFileRepresentations_options_forType___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2991,17 +2991,17 @@ void __61__WFContentItem_generateFileRepresentations_options_forType___block_inv
   }
 }
 
-- (void)generateRepresentationsForType:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)generateRepresentationsForType:(id)type options:(id)options completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() coercionForCoercingToType:v13 concurrencyMode:1];
+  typeCopy = type;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v10 = [objc_opt_class() coercionForCoercingToType:typeCopy concurrencyMode:1];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 handler];
-    [v12 performAsynchronousCoercionWithContentItem:self forType:v13 options:v8 completionHandler:v9];
+    handler = [v10 handler];
+    [handler performAsynchronousCoercionWithContentItem:self forType:typeCopy options:optionsCopy completionHandler:handlerCopy];
   }
 
   else
@@ -3009,34 +3009,34 @@ void __61__WFContentItem_generateFileRepresentations_options_forType___block_inv
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[WFContentItem generateObjectRepresentations:options:forClass:](self, "generateObjectRepresentations:options:forClass:", v9, v8, [v13 objectClass]);
+      -[WFContentItem generateObjectRepresentations:options:forClass:](self, "generateObjectRepresentations:options:forClass:", handlerCopy, optionsCopy, [typeCopy objectClass]);
     }
 
     else
     {
-      [(WFContentItem *)self generateFileRepresentations:v9 options:v8 forType:v13];
+      [(WFContentItem *)self generateFileRepresentations:handlerCopy options:optionsCopy forType:typeCopy];
     }
   }
 }
 
-- (id)getRepresentationsForType:(id)a3 error:(id *)a4
+- (id)getRepresentationsForType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   v7 = +[WFCoercionOptions new];
-  v8 = [(WFContentItem *)self getRepresentationsForType:v6 options:v7 error:a4];
+  v8 = [(WFContentItem *)self getRepresentationsForType:typeCopy options:v7 error:error];
 
   return v8;
 }
 
-- (id)getRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)getRepresentationsForType:(id)type options:(id)options error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([(WFContentItem *)self coercionOptions:v9 allowCoercionsToType:v8])
+  typeCopy = type;
+  optionsCopy = options;
+  if ([(WFContentItem *)self coercionOptions:optionsCopy allowCoercionsToType:typeCopy])
   {
     v21 = 0;
-    v10 = [(WFContentItem *)self _getRepresentationsForType:v8 options:v9 error:&v21];
+    v10 = [(WFContentItem *)self _getRepresentationsForType:typeCopy options:optionsCopy error:&v21];
     v11 = v21;
     if (v10)
     {
@@ -3046,19 +3046,19 @@ LABEL_15:
       goto LABEL_17;
     }
 
-    if ([v8 isEqualToClass:objc_opt_class()] && (!v11 || objc_msgSend(objc_opt_class(), "errorIsBadCoercionError:", v11)))
+    if ([typeCopy isEqualToClass:objc_opt_class()] && (!v11 || objc_msgSend(objc_opt_class(), "errorIsBadCoercionError:", v11)))
     {
-      v13 = [(WFContentItem *)self internalName];
-      if (v13 && ![(WFContentItem *)self hasStringOutput])
+      internalName = [(WFContentItem *)self internalName];
+      if (internalName && ![(WFContentItem *)self hasStringOutput])
       {
-        v16 = [v9 dictionary];
-        v17 = [v16 objectForKeyedSubscript:@"WFCoercionOptionDisallowFallbackStringCoercionFromName"];
-        v18 = [v17 BOOLValue];
+        dictionary = [optionsCopy dictionary];
+        v17 = [dictionary objectForKeyedSubscript:@"WFCoercionOptionDisallowFallbackStringCoercionFromName"];
+        bOOLValue = [v17 BOOLValue];
 
-        if ((v18 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
-          v19 = [(WFContentItem *)self internalName];
-          v20 = [WFObjectRepresentation object:v19];
+          internalName2 = [(WFContentItem *)self internalName];
+          v20 = [WFObjectRepresentation object:internalName2];
           v22[0] = v20;
           v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
 
@@ -3072,20 +3072,20 @@ LABEL_15:
     }
 
     v12 = 0;
-    if (a5 && v11)
+    if (error && v11)
     {
       v14 = v11;
       v12 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     goto LABEL_15;
   }
 
-  if (a5)
+  if (error)
   {
-    [objc_opt_class() badCoercionErrorForType:v8];
-    *a5 = v12 = 0;
+    [objc_opt_class() badCoercionErrorForType:typeCopy];
+    *error = v12 = 0;
   }
 
   else
@@ -3098,48 +3098,48 @@ LABEL_17:
   return v12;
 }
 
-- (id)_getRepresentationsForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)_getRepresentationsForType:(id)type options:(id)options error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WFContentItem *)self representationsForType:v8];
+  typeCopy = type;
+  optionsCopy = options;
+  v10 = [(WFContentItem *)self representationsForType:typeCopy];
   if (!v10)
   {
-    if ([(WFContentItem *)self canGenerateRepresentationForType:v8])
+    if ([(WFContentItem *)self canGenerateRepresentationForType:typeCopy])
     {
       v11 = getWFContentGraphLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [v8 typeDescription];
-        v13 = v12;
-        if (!v12)
+        typeDescription = [typeCopy typeDescription];
+        string = typeDescription;
+        if (!typeDescription)
         {
-          v13 = [v8 string];
+          string = [typeCopy string];
         }
 
         v18 = 136315650;
         v19 = "[WFContentItem _getRepresentationsForType:options:error:]";
         v20 = 2114;
-        v21 = v13;
+        v21 = string;
         v22 = 2112;
-        v23 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21E1BD000, v11, OS_LOG_TYPE_INFO, "%s Generating %{public}@ representation from %@", &v18, 0x20u);
-        if (!v12)
+        if (!typeDescription)
         {
         }
       }
 
-      v10 = [(WFContentItem *)self generateRepresentationsForType:v8 options:v9 error:a5];
+      v10 = [(WFContentItem *)self generateRepresentationsForType:typeCopy options:optionsCopy error:error];
       if ([v10 count])
       {
-        v14 = [v9 itemClassPrioritizationType];
+        itemClassPrioritizationType = [optionsCopy itemClassPrioritizationType];
 
-        if (!v14)
+        if (!itemClassPrioritizationType)
         {
-          v15 = [v10 firstObject];
-          v16 = [v15 wfType];
-          [(WFContentItem *)self setRepresentations:v10 forType:v16];
+          firstObject = [v10 firstObject];
+          wfType = [firstObject wfType];
+          [(WFContentItem *)self setRepresentations:v10 forType:wfType];
         }
       }
     }
@@ -3153,25 +3153,25 @@ LABEL_17:
   return v10;
 }
 
-- (void)getRepresentationsForType:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)getRepresentationsForType:(id)type options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(WFContentItem *)self coercionOptions:v9 allowCoercionsToType:v8])
+  typeCopy = type;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([(WFContentItem *)self coercionOptions:optionsCopy allowCoercionsToType:typeCopy])
   {
     v30 = 0;
-    v11 = [(WFContentItem *)self _getRepresentationsForType:v8 options:v9 error:&v30];
+    v11 = [(WFContentItem *)self _getRepresentationsForType:typeCopy options:optionsCopy error:&v30];
     v12 = v30;
     if (v11 | v12)
     {
-      v10[2](v10, v11, v12);
+      handlerCopy[2](handlerCopy, v11, v12);
     }
 
     else
     {
-      v14 = [(WFContentItem *)self supportedTypes];
-      v15 = WFAnyInTypesConformsToType(v14, v8);
+      supportedTypes = [(WFContentItem *)self supportedTypes];
+      v15 = WFAnyInTypesConformsToType(supportedTypes, typeCopy);
 
       if (v15)
       {
@@ -3179,36 +3179,36 @@ LABEL_17:
         v25[1] = 3221225472;
         v25[2] = __69__WFContentItem_getRepresentationsForType_options_completionHandler___block_invoke;
         v25[3] = &unk_27834A480;
-        v26 = v9;
-        v27 = self;
-        v28 = v8;
-        v29 = v10;
+        v26 = optionsCopy;
+        selfCopy = self;
+        v28 = typeCopy;
+        v29 = handlerCopy;
         [(WFContentItem *)self generateRepresentationsForType:v28 options:v26 completionHandler:v25];
       }
 
       else
       {
-        v16 = [(WFContentItem *)self allSupportedTypes];
-        v17 = WFAnyInTypesConformsToType(v16, v8);
+        allSupportedTypes = [(WFContentItem *)self allSupportedTypes];
+        v17 = WFAnyInTypesConformsToType(allSupportedTypes, typeCopy);
 
         if (v17)
         {
-          v18 = [WFContentCoercionSearch searchForCoercingItem:self toType:v8 options:v9];
+          v18 = [WFContentCoercionSearch searchForCoercingItem:self toType:typeCopy options:optionsCopy];
           v20[0] = MEMORY[0x277D85DD0];
           v20[1] = 3221225472;
           v20[2] = __69__WFContentItem_getRepresentationsForType_options_completionHandler___block_invoke_2;
           v20[3] = &unk_27834A480;
-          v24 = v10;
-          v21 = v8;
-          v22 = v9;
-          v23 = self;
+          v24 = handlerCopy;
+          v21 = typeCopy;
+          v22 = optionsCopy;
+          selfCopy2 = self;
           [v18 runCoercion:v20];
         }
 
         else
         {
-          v19 = [objc_opt_class() badCoercionErrorForType:v8];
-          v10[2](v10, 0, v19);
+          v19 = [objc_opt_class() badCoercionErrorForType:typeCopy];
+          handlerCopy[2](handlerCopy, 0, v19);
         }
       }
     }
@@ -3216,8 +3216,8 @@ LABEL_17:
 
   else
   {
-    v13 = [objc_opt_class() badCoercionErrorForType:v8];
-    v10[2](v10, 0, v13);
+    v13 = [objc_opt_class() badCoercionErrorForType:typeCopy];
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 }
 
@@ -3367,21 +3367,21 @@ void __24__WFContentItem_dealloc__block_invoke(uint64_t a1)
   *(v4 + 32) = 0;
 }
 
-+ (id)populateBadCoercionError:(id)a3 withResponsibleComponent:(id)a4
++ (id)populateBadCoercionError:(id)error withResponsibleComponent:(id)component
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 localizedDescription];
-  v9 = [a1 badCoercionErrorDefaultResponsibleComponent];
-  v10 = [v8 stringByReplacingOccurrencesOfString:v9 withString:v6];
+  componentCopy = component;
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  badCoercionErrorDefaultResponsibleComponent = [self badCoercionErrorDefaultResponsibleComponent];
+  v10 = [localizedDescription stringByReplacingOccurrencesOfString:badCoercionErrorDefaultResponsibleComponent withString:componentCopy];
 
   v11 = MEMORY[0x277CCA9B8];
   v16[0] = *MEMORY[0x277CCA470];
-  v12 = [v7 localizedFailureReason];
+  localizedFailureReason = [errorCopy localizedFailureReason];
 
   v16[1] = *MEMORY[0x277CCA450];
-  v17[0] = v12;
+  v17[0] = localizedFailureReason;
   v17[1] = v10;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v14 = [v11 errorWithDomain:@"WFContentItemErrorDomain" code:0 userInfo:v13];
@@ -3391,29 +3391,29 @@ void __24__WFContentItem_dealloc__block_invoke(uint64_t a1)
 
 + (NSOrderedSet)allSupportedItemClasses
 {
-  v3 = [a1 allSupportedTypes];
-  v4 = WFSupportedItemClassesForItemClass(a1, v3);
+  allSupportedTypes = [self allSupportedTypes];
+  v4 = WFSupportedItemClassesForItemClass(self, allSupportedTypes);
 
   return v4;
 }
 
 + (NSOrderedSet)supportedItemClasses
 {
-  v3 = [a1 supportedTypes];
-  v4 = WFSupportedItemClassesForItemClass(a1, v3);
+  supportedTypes = [self supportedTypes];
+  v4 = WFSupportedItemClassesForItemClass(self, supportedTypes);
 
   return v4;
 }
 
 + (NSOrderedSet)allSupportedTypes
 {
-  v2 = a1;
+  selfCopy = self;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v7 = __WFCachedRecursivelySupportedTypes_block_invoke;
   v8 = &unk_278349850;
-  v9 = v2;
-  v3 = v2;
+  v9 = selfCopy;
+  v3 = selfCopy;
   v4 = objc_getAssociatedObject(v3, &WFCachedRecursivelySupportedTypes_cachedValue);
   if (!v4)
   {
@@ -3426,22 +3426,22 @@ void __24__WFContentItem_dealloc__block_invoke(uint64_t a1)
 
 + (NSOrderedSet)supportedItemClassesExcludingInstanceSpecificTypes
 {
-  v3 = [a1 supportedTypesExcludingInstanceSpecificTypes];
-  v4 = WFSupportedItemClassesForItemClass(a1, v3);
+  supportedTypesExcludingInstanceSpecificTypes = [self supportedTypesExcludingInstanceSpecificTypes];
+  v4 = WFSupportedItemClassesForItemClass(self, supportedTypesExcludingInstanceSpecificTypes);
 
   return v4;
 }
 
 + (NSOrderedSet)supportedTypesExcludingInstanceSpecificTypes
 {
-  v3 = [a1 supportedTypes];
+  supportedTypes = [self supportedTypes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__WFContentItem_supportedTypesExcludingInstanceSpecificTypes__block_invoke;
   v7[3] = &__block_descriptor_40_e33_B24__0__WFType_8__NSDictionary_16l;
-  v7[4] = a1;
+  v7[4] = self;
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:v7];
-  v5 = [v3 filteredOrderedSetUsingPredicate:v4];
+  v5 = [supportedTypes filteredOrderedSetUsingPredicate:v4];
 
   return v5;
 }
@@ -3453,8 +3453,8 @@ void __24__WFContentItem_dealloc__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a1 supportedTypes];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  supportedTypes = [self supportedTypes];
+  v4 = [supportedTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3465,17 +3465,17 @@ void __24__WFContentItem_dealloc__block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedTypes);
         }
 
-        if ([a1 supportedTypeMustBeDeterminedByInstance:*(*(&v10 + 1) + 8 * i)])
+        if ([self supportedTypeMustBeDeterminedByInstance:*(*(&v10 + 1) + 8 * i)])
         {
           v8 = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [supportedTypes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -3491,33 +3491,33 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v3 = a3;
-  v4 = [objc_opt_class() coercionForType:v3];
+  instanceCopy = instance;
+  v4 = [objc_opt_class() coercionForType:instanceCopy];
 
   if (v4)
   {
-    v5 = [v4 handler];
-    v6 = [v5 hasAvailabilityCheck];
+    handler = [v4 handler];
+    hasAvailabilityCheck = [handler hasAvailabilityCheck];
   }
 
   else
   {
-    v6 = 0;
+    hasAvailabilityCheck = 0;
   }
 
-  return v6;
+  return hasAvailabilityCheck;
 }
 
-+ (BOOL)supportedItemClassMustBeDeterminedByInstance:(Class)a3
++ (BOOL)supportedItemClassMustBeDeterminedByInstance:(Class)instance
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(objc_class *)a3 ownedTypes];
-  v5 = [a1 outputTypes];
-  v6 = [v5 mutableCopy];
+  ownedTypes = [(objc_class *)instance ownedTypes];
+  outputTypes = [self outputTypes];
+  v6 = [outputTypes mutableCopy];
 
-  [v6 intersectOrderedSet:v4];
+  [v6 intersectOrderedSet:ownedTypes];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -3537,7 +3537,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        if (![a1 supportedTypeMustBeDeterminedByInstance:{*(*(&v14 + 1) + 8 * i), v14}])
+        if (![self supportedTypeMustBeDeterminedByInstance:{*(*(&v14 + 1) + 8 * i), v14}])
         {
           v12 = 0;
           goto LABEL_11;
@@ -3566,13 +3566,13 @@ LABEL_11:
   v5[1] = 3221225472;
   v6 = __31__WFContentItem_supportedTypes__block_invoke;
   v7 = &__block_descriptor_40_e5__8__0l;
-  v8 = a1;
-  v2 = a1;
-  v3 = objc_getAssociatedObject(v2, &supportedTypes_cachedValue);
+  selfCopy = self;
+  selfCopy2 = self;
+  v3 = objc_getAssociatedObject(selfCopy2, &supportedTypes_cachedValue);
   if (!v3)
   {
     v3 = v6(v5);
-    objc_setAssociatedObject(v2, &supportedTypes_cachedValue, v3, 0x303);
+    objc_setAssociatedObject(selfCopy2, &supportedTypes_cachedValue, v3, 0x303);
   }
 
   return v3;
@@ -3600,10 +3600,10 @@ id __31__WFContentItem_supportedTypes__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)coercionForType:(id)a3
++ (id)coercionForType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   [objc_opt_class() cachedCoercions];
   v12 = 0u;
   v13 = 0u;
@@ -3623,8 +3623,8 @@ id __31__WFContentItem_supportedTypes__block_invoke(uint64_t a1)
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 type];
-        v10 = [v9 isEqualToType:v3];
+        type = [v8 type];
+        v10 = [type isEqualToType:typeCopy];
 
         if (v10)
         {
@@ -3648,10 +3648,10 @@ LABEL_11:
   return v5;
 }
 
-+ (id)coercionForCoercingToType:(id)a3 concurrencyMode:(int64_t)a4
++ (id)coercionForCoercingToType:(id)type concurrencyMode:(int64_t)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  typeCopy = type;
   [objc_opt_class() cachedCoercions];
   v14 = 0u;
   v15 = 0u;
@@ -3672,7 +3672,7 @@ LABEL_11:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 canProduceType:v5 withConcurrencyMode:{a4, v14}])
+        if ([v11 canProduceType:typeCopy withConcurrencyMode:{mode, v14}])
         {
           v12 = v11;
           goto LABEL_11;
@@ -3701,24 +3701,24 @@ LABEL_11:
   v5[1] = 3221225472;
   v6 = __32__WFContentItem_cachedCoercions__block_invoke;
   v7 = &__block_descriptor_40_e14___NSArray_8__0l;
-  v8 = a1;
-  v2 = a1;
-  v3 = objc_getAssociatedObject(v2, &cachedCoercions_cachedValue);
+  selfCopy = self;
+  selfCopy2 = self;
+  v3 = objc_getAssociatedObject(selfCopy2, &cachedCoercions_cachedValue);
   if (!v3)
   {
     v3 = v6(v5);
-    objc_setAssociatedObject(v2, &cachedCoercions_cachedValue, v3, 0x303);
+    objc_setAssociatedObject(selfCopy2, &cachedCoercions_cachedValue, v3, 0x303);
   }
 
   return v3;
 }
 
-+ (BOOL)contentItems:(id)a3 haveContentProperties:(id)a4
++ (BOOL)contentItems:(id)items haveContentProperties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 contentPropertySubstitutor];
-  HaveProperties = WFContentObjectsHaveProperties(v7, v6, v8);
+  propertiesCopy = properties;
+  itemsCopy = items;
+  contentPropertySubstitutor = [self contentPropertySubstitutor];
+  HaveProperties = WFContentObjectsHaveProperties(itemsCopy, propertiesCopy, contentPropertySubstitutor);
 
   return HaveProperties;
 }
@@ -3731,16 +3731,16 @@ id __43__WFContentItem_contentPropertySubstitutor__block_invoke(uint64_t a1, uin
   return v4;
 }
 
-+ (id)supportedPropertyForProperty:(id)a3
++ (id)supportedPropertyForProperty:(id)property
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertyCopy = property;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 allProperties];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allProperties = [self allProperties];
+  v6 = [allProperties countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -3750,18 +3750,18 @@ id __43__WFContentItem_contentPropertySubstitutor__block_invoke(uint64_t a1, uin
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allProperties);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v4 isEquivalentToProperty:v9])
+        if ([propertyCopy isEquivalentToProperty:v9])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allProperties countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -3776,38 +3776,38 @@ LABEL_11:
   return v6;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  itemsCopy = items;
+  queryCopy = query;
   v11 = +[WFContentItem contentPropertySubstitutor];
-  [v10 runWithObjects:v9 propertySubstitutor:v11 completionHandler:v8];
+  [queryCopy runWithObjects:itemsCopy propertySubstitutor:v11 completionHandler:handlerCopy];
 }
 
 + (WFContentItemStringConversionBehavior)stringConversionBehavior
 {
-  v2 = [a1 localizedTypeDescription];
-  v3 = [WFContentItemStringConversionBehavior coercingToStringWithDescription:v2];
+  localizedTypeDescription = [self localizedTypeDescription];
+  v3 = [WFContentItemStringConversionBehavior coercingToStringWithDescription:localizedTypeDescription];
 
   return v3;
 }
 
-+ (id)propertyForName:(id)a3
++ (id)propertyForName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 allProperties];
-  v6 = [v5 objectMatchingKey:@"name" value:v4];
+  nameCopy = name;
+  allProperties = [self allProperties];
+  v6 = [allProperties objectMatchingKey:@"name" value:nameCopy];
 
   if (!v6)
   {
-    v7 = [a1 allProperties];
-    v6 = [v7 objectMatchingKey:@"displayName" value:v4];
+    allProperties2 = [self allProperties];
+    v6 = [allProperties2 objectMatchingKey:@"displayName" value:nameCopy];
 
     if (!v6)
     {
-      v8 = [a1 allProperties];
-      v6 = [v8 objectMatchingKey:@"singularItemName" value:v4];
+      allProperties3 = [self allProperties];
+      v6 = [allProperties3 objectMatchingKey:@"singularItemName" value:nameCopy];
     }
   }
 
@@ -3818,10 +3818,10 @@ LABEL_11:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  [a1 superclass];
+  [self superclass];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [objc_msgSend(a1 "superclass")];
+    v4 = [objc_msgSend(self "superclass")];
     [v3 addObjectsFromArray:v4];
   }
 
@@ -3829,10 +3829,10 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 properties];
-  v6 = [v5 reverseObjectEnumerator];
+  properties = [self properties];
+  reverseObjectEnumerator = [properties reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3843,7 +3843,7 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -3864,7 +3864,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -3890,13 +3890,13 @@ uint64_t __30__WFContentItem_allProperties__block_invoke(uint64_t a1, void *a2)
   v5[1] = 3221225472;
   v6 = __27__WFContentItem_properties__block_invoke;
   v7 = &__block_descriptor_40_e14___NSArray_8__0l;
-  v8 = a1;
-  v2 = a1;
-  v3 = objc_getAssociatedObject(v2, &properties_cachedValue);
+  selfCopy = self;
+  selfCopy2 = self;
+  v3 = objc_getAssociatedObject(selfCopy2, &properties_cachedValue);
   if (!v3)
   {
     v3 = v6(v5);
-    objc_setAssociatedObject(v2, &properties_cachedValue, v3, 0x303);
+    objc_setAssociatedObject(selfCopy2, &properties_cachedValue, v3, 0x303);
   }
 
   return v3;
@@ -3913,12 +3913,12 @@ id __27__WFContentItem_properties__block_invoke(uint64_t a1)
 + (id)propertyBuilders
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v4 = [a1 namePropertyBuilder];
-    if ([a1 hasFileOutput])
+    namePropertyBuilder = [self namePropertyBuilder];
+    if ([self hasFileOutput])
     {
-      v19[0] = v4;
+      v19[0] = namePropertyBuilder;
       v18 = WFLocalizedContentPropertyNameMarker(@"File Size");
       v17 = [WFContentPropertyBuilder block:&__block_literal_global_363 name:v18 class:objc_opt_class()];
       v16 = [v17 userInfo:@"WFFileSizeProperty"];
@@ -3939,7 +3939,7 @@ id __27__WFContentItem_properties__block_invoke(uint64_t a1)
 
     else
     {
-      v20[0] = v4;
+      v20[0] = namePropertyBuilder;
       v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     }
   }
@@ -4010,12 +4010,12 @@ void __44__WFContentItem_canLowercaseTypeDescription__block_invoke()
 
 + (NSString)countDescription
 {
-  if ([a1 isContentItemSubclass])
+  if ([self isContentItemSubclass])
   {
-    v3 = [a1 ownedTypes];
-    v4 = [v3 firstObject];
+    ownedTypes = [self ownedTypes];
+    firstObject = [ownedTypes firstObject];
 
-    if ([v4 isEqualToUTType:*MEMORY[0x277CE1D48]])
+    if ([firstObject isEqualToUTType:*MEMORY[0x277CE1D48]])
     {
       v5 = WFLocalizedPluralString(@"%d Files");
 
@@ -4031,89 +4031,89 @@ LABEL_6:
 
 + (NSString)localizedPluralFilterDescription
 {
-  v3 = [MEMORY[0x277D7A048] defaultContext];
-  v4 = [a1 localizedPluralFilterDescriptionWithContext:v3];
+  defaultContext = [MEMORY[0x277D7A048] defaultContext];
+  v4 = [self localizedPluralFilterDescriptionWithContext:defaultContext];
 
   return v4;
 }
 
 + (NSString)localizedFilterDescription
 {
-  v3 = [MEMORY[0x277D7A048] defaultContext];
-  v4 = [a1 localizedFilterDescriptionWithContext:v3];
+  defaultContext = [MEMORY[0x277D7A048] defaultContext];
+  v4 = [self localizedFilterDescriptionWithContext:defaultContext];
 
   return v4;
 }
 
 + (NSString)localizedPluralTypeDescription
 {
-  v3 = [MEMORY[0x277D7A048] defaultContext];
-  v4 = [a1 localizedPluralTypeDescriptionWithContext:v3];
+  defaultContext = [MEMORY[0x277D7A048] defaultContext];
+  v4 = [self localizedPluralTypeDescriptionWithContext:defaultContext];
 
   return v4;
 }
 
 + (NSString)localizedTypeDescription
 {
-  v3 = [MEMORY[0x277D7A048] defaultContext];
-  v4 = [a1 localizedTypeDescriptionWithContext:v3];
+  defaultContext = [MEMORY[0x277D7A048] defaultContext];
+  v4 = [self localizedTypeDescriptionWithContext:defaultContext];
 
   return v4;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v5 = a3;
-  if ([a1 isContentItemSubclass])
+  contextCopy = context;
+  if ([self isContentItemSubclass])
   {
-    v6 = [a1 ownedTypes];
-    v7 = [v6 firstObject];
+    ownedTypes = [self ownedTypes];
+    firstObject = [ownedTypes firstObject];
 
-    if ([v7 isEqualToUTType:*MEMORY[0x277CE1D48]])
+    if ([firstObject isEqualToUTType:*MEMORY[0x277CE1D48]])
     {
       v8 = WFLocalizedStringResourceWithKey(@"Files", @"Files");
-      v9 = [v5 localize:v8];
+      v9 = [contextCopy localize:v8];
 
       goto LABEL_6;
     }
 
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:1112 description:@"Subclasses of WFContentItem should provide a plural description of the type"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:1112 description:@"Subclasses of WFContentItem should provide a plural description of the type"];
   }
 
-  v7 = WFLocalizedStringResourceWithKey(@"Anything (Plural)", @"Anything");
-  v9 = [v5 localize:v7];
+  firstObject = WFLocalizedStringResourceWithKey(@"Anything (Plural)", @"Anything");
+  v9 = [contextCopy localize:firstObject];
 LABEL_6:
 
   return v9;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v4 = a3;
-  if ([a1 isContentItemSubclass])
+  contextCopy = context;
+  if ([self isContentItemSubclass])
   {
-    v5 = [a1 ownedTypes];
-    v6 = [v5 firstObject];
+    ownedTypes = [self ownedTypes];
+    firstObject = [ownedTypes firstObject];
 
-    if ([v6 isEqualToUTType:*MEMORY[0x277CE1D48]])
+    if ([firstObject isEqualToUTType:*MEMORY[0x277CE1D48]])
     {
-      v7 = WFLocalizedStringResourceWithKey(@"File", @"File");
-      v8 = [v4 localize:v7];
+      typeDescription = WFLocalizedStringResourceWithKey(@"File", @"File");
+      v8 = [contextCopy localize:typeDescription];
     }
 
     else
     {
-      v7 = [v6 typeDescription];
-      v9 = [v4 locale];
-      v8 = [v7 capitalizedStringWithLocale:v9];
+      typeDescription = [firstObject typeDescription];
+      locale = [contextCopy locale];
+      v8 = [typeDescription capitalizedStringWithLocale:locale];
     }
   }
 
   else
   {
-    v6 = WFLocalizedStringResourceWithKey(@"Anything (Singular)", @"Anything");
-    v8 = [v4 localize:v6];
+    firstObject = WFLocalizedStringResourceWithKey(@"Anything (Singular)", @"Anything");
+    v8 = [contextCopy localize:firstObject];
   }
 
   return v8;
@@ -4121,32 +4121,32 @@ LABEL_6:
 
 + (id)outputTypesFromCoercions
 {
-  v2 = [a1 cachedCoercions];
+  cachedCoercions = [self cachedCoercions];
   v3 = objc_alloc(MEMORY[0x277CBEB70]);
-  v4 = [v2 if_map:&__block_literal_global_300];
+  v4 = [cachedCoercions if_map:&__block_literal_global_300];
   v5 = [v3 initWithArray:v4];
 
   return v5;
 }
 
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  itemCopy = item;
+  namedCopy = named;
+  setCopy = set;
+  identifierCopy = identifier;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [a1 ownedTypes];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  ownedTypes = [self ownedTypes];
+  v16 = [ownedTypes countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v16)
   {
     v17 = v16;
-    v27 = a1;
-    v28 = v12;
+    selfCopy = self;
+    v28 = namedCopy;
     v18 = *v30;
     while (2)
     {
@@ -4154,7 +4154,7 @@ LABEL_6:
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(ownedTypes);
         }
 
         v20 = *(*(&v29 + 1) + 8 * i);
@@ -4162,21 +4162,21 @@ LABEL_6:
         if (objc_opt_isKindOfClass())
         {
           v21 = v20;
-          v22 = [v21 objectClass];
+          objectClass = [v21 objectClass];
           v23 = +[WFSerializableContentProvider sharedProvider];
-          v24 = [v23 objectOfClass:v22 withSerializedRepresentation:v11];
+          v24 = [v23 objectOfClass:objectClass withSerializedRepresentation:itemCopy];
 
           if (v24)
           {
-            v12 = v28;
-            v25 = [v27 itemWithObject:v24 named:v28 attributionSet:v13 cachingIdentifier:v14];
+            namedCopy = v28;
+            v25 = [selfCopy itemWithObject:v24 named:v28 attributionSet:setCopy cachingIdentifier:identifierCopy];
 
             goto LABEL_14;
           }
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v17 = [ownedTypes countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v17)
       {
         continue;
@@ -4186,7 +4186,7 @@ LABEL_6:
     }
 
     v25 = 0;
-    v12 = v28;
+    namedCopy = v28;
   }
 
   else
@@ -4199,44 +4199,44 @@ LABEL_14:
   return v25;
 }
 
-+ (id)itemFromSerializedItem:(id)a3 withItemClass:(Class)a4 forType:(id)a5 nameIfKnown:(id)a6 sourceName:(id)a7 attributionSet:(id)a8 cachingIdentifier:(id)a9 completionHandler:(id)a10
++ (id)itemFromSerializedItem:(id)item withItemClass:(Class)class forType:(id)type nameIfKnown:(id)known sourceName:(id)name attributionSet:(id)set cachingIdentifier:(id)identifier completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (!v17 && v18)
+  itemCopy = item;
+  typeCopy = type;
+  knownCopy = known;
+  nameCopy = name;
+  setCopy = set;
+  identifierCopy = identifier;
+  if (!knownCopy && nameCopy)
   {
-    if ([v16 isEqualToUTType:*MEMORY[0x277CE1E90]])
+    if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1E90]])
     {
-      v17 = 0;
+      knownCopy = 0;
     }
 
     else
     {
       v21 = MEMORY[0x277CCA968];
-      v22 = [MEMORY[0x277CBEAA8] date];
-      v23 = [v21 localizedStringFromDate:v22 dateStyle:2 timeStyle:1];
+      date = [MEMORY[0x277CBEAA8] date];
+      v23 = [v21 localizedStringFromDate:date dateStyle:2 timeStyle:1];
 
       v24 = [v23 stringByReplacingOccurrencesOfString:@":" withString:@"."];
 
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v18, v24];
+      knownCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", nameCopy, v24];
     }
   }
 
-  v25 = [(objc_class *)a4 itemWithSerializedItem:v15 forType:v16 named:v17 attributionSet:v19 cachingIdentifier:v20];
+  v25 = [(objc_class *)class itemWithSerializedItem:itemCopy forType:typeCopy named:knownCopy attributionSet:setCopy cachingIdentifier:identifierCopy];
 
   return v25;
 }
 
-+ (void)getContentItemFromSerializedItem:(id)a3 sourceName:(id)a4 completionHandler:(id)a5
++ (void)getContentItemFromSerializedItem:(id)item sourceName:(id)name completionHandler:(id)handler
 {
   v134 = *MEMORY[0x277D85DE8];
-  v94 = a4;
-  v95 = a5;
-  v7 = [a3 mutableCopy];
+  nameCopy = name;
+  handlerCopy = handler;
+  v7 = [item mutableCopy];
   v8 = WFPopStringForKey(v7, @"link.contentkit.name");
   v9 = v8;
   if (v8)
@@ -4268,21 +4268,21 @@ LABEL_14:
   }
 
   v15 = WFPopStringForKey(v12, @"link.contentkit.cachingidentifier");
-  v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v15];
+  uUID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v15];
   if (v14)
   {
     goto LABEL_12;
   }
 
-  if ([v94 isEqualToString:@"Clipboard"])
+  if ([nameCopy isEqualToString:@"Clipboard"])
   {
-    if (!v16)
+    if (!uUID)
     {
-      v16 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
     v17 = +[WFContentLocation clipboardLocation];
-    v14 = [WFContentAttributionSet attributionSetWithOrigin:v17 disclosureLevel:1 originalItemIdentifier:v16];
+    v14 = [WFContentAttributionSet attributionSetWithOrigin:v17 disclosureLevel:1 originalItemIdentifier:uUID];
 
 LABEL_12:
     if (!v11)
@@ -4304,29 +4304,29 @@ LABEL_13:
   v19 = NSClassFromString(v18);
   if ([(objc_class *)v19 isSubclassOfClass:objc_opt_class()])
   {
-    v20 = [(objc_class *)v19 itemWithSerializedItem:v12 forType:0 named:v93 attributionSet:v14 cachingIdentifier:v16];
+    v20 = [(objc_class *)v19 itemWithSerializedItem:v12 forType:0 named:v93 attributionSet:v14 cachingIdentifier:uUID];
     if (v20)
     {
       v21 = v20;
-      v95[2](v95, v20, 0);
+      handlerCopy[2](handlerCopy, v20, 0);
 
       goto LABEL_90;
     }
   }
 
 LABEL_17:
-  v22 = [v12 allKeys];
-  v89 = [v22 if_map:&__block_literal_global_22979];
+  allKeys = [v12 allKeys];
+  v89 = [allKeys if_map:&__block_literal_global_22979];
 
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
   v23 = +[WFContentItemRegistry sharedRegistry];
-  v24 = [v23 contentItemClasses];
+  contentItemClasses = [v23 contentItemClasses];
 
-  v25 = [v24 countByEnumeratingWithState:&v123 objects:v133 count:16];
-  v90 = v16;
+  v25 = [contentItemClasses countByEnumeratingWithState:&v123 objects:v133 count:16];
+  v90 = uUID;
   v85 = v13;
   v86 = v11;
   v84 = v15;
@@ -4334,7 +4334,7 @@ LABEL_17:
   if (v25)
   {
     v26 = *v124;
-    v87 = v24;
+    v87 = contentItemClasses;
     v76 = *v124;
     do
     {
@@ -4344,7 +4344,7 @@ LABEL_17:
       {
         if (*v124 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(contentItemClasses);
         }
 
         v28 = *(*(&v123 + 1) + 8 * v27);
@@ -4352,12 +4352,12 @@ LABEL_17:
         v120 = 0u;
         v121 = 0u;
         v122 = 0u;
-        v29 = [v28 ownedPasteboardTypes];
-        v82 = [v29 countByEnumeratingWithState:&v119 objects:v132 count:16];
+        ownedPasteboardTypes = [v28 ownedPasteboardTypes];
+        v82 = [ownedPasteboardTypes countByEnumeratingWithState:&v119 objects:v132 count:16];
         if (v82)
         {
           v30 = *v120;
-          obj = v29;
+          obj = ownedPasteboardTypes;
           v80 = *v120;
           do
           {
@@ -4365,7 +4365,7 @@ LABEL_17:
             {
               if (*v120 != v30)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(ownedPasteboardTypes);
               }
 
               v32 = *(*(&v119 + 1) + 8 * i);
@@ -4391,13 +4391,13 @@ LABEL_17:
                     v38 = *(*(&v115 + 1) + 8 * j);
                     if ([v38 conformsToType:v32])
                     {
-                      v39 = [a1 itemFromSerializedItem:v12 withItemClass:v28 forType:v38 nameIfKnown:v93 sourceName:v94 attributionSet:v92 cachingIdentifier:v90 completionHandler:v95];
+                      v39 = [self itemFromSerializedItem:v12 withItemClass:v28 forType:v38 nameIfKnown:v93 sourceName:nameCopy attributionSet:v92 cachingIdentifier:v90 completionHandler:handlerCopy];
                       if (v39)
                       {
                         v49 = v39;
-                        v95[2](v95, v39, 0);
+                        handlerCopy[2](handlerCopy, v39, 0);
 
-                        v16 = v90;
+                        uUID = v90;
                         v50 = v87;
                         goto LABEL_89;
                       }
@@ -4415,7 +4415,7 @@ LABEL_17:
               }
 
               v30 = v80;
-              v29 = obj;
+              ownedPasteboardTypes = obj;
             }
 
             v82 = [obj countByEnumeratingWithState:&v119 objects:v132 count:16];
@@ -4426,7 +4426,7 @@ LABEL_17:
 
         ++v27;
         v26 = v76;
-        v24 = v87;
+        contentItemClasses = v87;
       }
 
       while (v27 != v78);
@@ -4484,7 +4484,7 @@ LABEL_17:
   }
 
   v51 = [v40 count];
-  v16 = v90;
+  uUID = v90;
   if (v51 >= 2)
   {
     v52 = v51;
@@ -4540,12 +4540,12 @@ LABEL_17:
         v104 = 0u;
         v105 = 0u;
         v106 = 0u;
-        v63 = [v62 ownedTypes];
-        v81 = [v63 countByEnumeratingWithState:&v103 objects:v128 count:16];
+        ownedTypes = [v62 ownedTypes];
+        v81 = [ownedTypes countByEnumeratingWithState:&v103 objects:v128 count:16];
         if (v81)
         {
           v64 = *v104;
-          v83 = v63;
+          v83 = ownedTypes;
           v79 = *v104;
           do
           {
@@ -4553,7 +4553,7 @@ LABEL_17:
             {
               if (*v104 != v64)
               {
-                objc_enumerationMutation(v63);
+                objc_enumerationMutation(ownedTypes);
               }
 
               v66 = *(*(&v103 + 1) + 8 * m);
@@ -4579,11 +4579,11 @@ LABEL_17:
                     v72 = *(*(&v99 + 1) + 8 * n);
                     if ([v72 conformsToType:v66])
                     {
-                      v73 = [a1 itemFromSerializedItem:v96 withItemClass:v62 forType:v72 nameIfKnown:v93 sourceName:v94 attributionSet:v92 cachingIdentifier:v90 completionHandler:v95];
+                      v73 = [self itemFromSerializedItem:v96 withItemClass:v62 forType:v72 nameIfKnown:v93 sourceName:nameCopy attributionSet:v92 cachingIdentifier:v90 completionHandler:handlerCopy];
                       if (v73)
                       {
                         v74 = v73;
-                        v95[2](v95, v73, 0);
+                        handlerCopy[2](handlerCopy, v73, 0);
 
                         v50 = v88;
                         goto LABEL_89;
@@ -4601,7 +4601,7 @@ LABEL_17:
                 }
               }
 
-              v63 = v83;
+              ownedTypes = v83;
               v64 = v79;
             }
 
@@ -4623,7 +4623,7 @@ LABEL_17:
     while (v59);
   }
 
-  v95[2](v95, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0);
 LABEL_89:
 
   v13 = v85;
@@ -4640,8 +4640,8 @@ LABEL_90:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a1 ownedTypes];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  ownedTypes = [self ownedTypes];
+  v4 = [ownedTypes countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4652,7 +4652,7 @@ LABEL_3:
     {
       if (*v17 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(ownedTypes);
       }
 
       objc_opt_class();
@@ -4663,7 +4663,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v5 = [ownedTypes countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -4677,8 +4677,8 @@ LABEL_3:
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
-  v3 = [a1 outputTypes];
-  v8 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  ownedTypes = [self outputTypes];
+  v8 = [ownedTypes countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -4688,7 +4688,7 @@ LABEL_11:
     {
       if (*v13 != v9)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(ownedTypes);
       }
 
       objc_opt_class();
@@ -4699,7 +4699,7 @@ LABEL_11:
 
       if (v8 == ++v10)
       {
-        v8 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+        v8 = [ownedTypes countByEnumeratingWithState:&v12 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_11;
@@ -4721,8 +4721,8 @@ LABEL_19:
 + (BOOL)hasStringOutput
 {
   v3 = +[WFStringContentItem ownedTypes];
-  v4 = [a1 ownedTypes];
-  if ([v3 intersectsOrderedSet:v4])
+  ownedTypes = [self ownedTypes];
+  if ([v3 intersectsOrderedSet:ownedTypes])
   {
     v5 = 1;
   }
@@ -4730,124 +4730,124 @@ LABEL_19:
   else
   {
     v6 = +[WFStringContentItem ownedTypes];
-    v7 = [a1 outputTypes];
-    v5 = [v6 intersectsOrderedSet:v7];
+    outputTypes = [self outputTypes];
+    v5 = [v6 intersectsOrderedSet:outputTypes];
   }
 
   return v5;
 }
 
-+ (id)itemWithFile:(id)a3 origin:(id)a4 disclosureLevel:(unint64_t)a5
++ (id)itemWithFile:(id)file origin:(id)origin disclosureLevel:(unint64_t)level
 {
-  v9 = a3;
-  v10 = a4;
+  fileCopy = file;
+  originCopy = origin;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:170 description:{@"object must be a WFFileRepresentation, use itemWithObject: for objects"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:170 description:{@"object must be a WFFileRepresentation, use itemWithObject: for objects"}];
   }
 
   v16 = 0;
-  v11 = WFMakeContentAttributionSetFromOrigin(v10, a5, MEMORY[0x277CBEBF8], &v16);
+  v11 = WFMakeContentAttributionSetFromOrigin(originCopy, level, MEMORY[0x277CBEBF8], &v16);
   v12 = v16;
-  v13 = [a1 itemWithFile:v9 attributionSet:v11 cachingIdentifier:v12];
+  v13 = [self itemWithFile:fileCopy attributionSet:v11 cachingIdentifier:v12];
 
   return v13;
 }
 
-+ (id)itemWithFile:(id)a3 attributionSet:(id)a4 cachingIdentifier:(id)a5
++ (id)itemWithFile:(id)file attributionSet:(id)set cachingIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fileCopy = file;
+  setCopy = set;
+  identifierCopy = identifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:165 description:{@"object must be a WFFileRepresentation, use itemWithObject: for objects"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:165 description:{@"object must be a WFFileRepresentation, use itemWithObject: for objects"}];
   }
 
-  v12 = [a1 itemWithRepresentation:v9 attributionSet:v10 cachingIdentifier:v11];
+  v12 = [self itemWithRepresentation:fileCopy attributionSet:setCopy cachingIdentifier:identifierCopy];
 
   return v12;
 }
 
-+ (id)itemWithFile:(id)a3 attributionSet:(id)a4
++ (id)itemWithFile:(id)file attributionSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  fileCopy = file;
+  setCopy = set;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:160 description:{@"object must be a WFFileRepresentation, use itemWithObject: for objects"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:160 description:{@"object must be a WFFileRepresentation, use itemWithObject: for objects"}];
   }
 
-  v9 = [a1 itemWithRepresentation:v7 attributionSet:v8];
+  v9 = [self itemWithRepresentation:fileCopy attributionSet:setCopy];
 
   return v9;
 }
 
-+ (id)itemWithRepresentation:(id)a3 attributionSet:(id)a4 includesDefaultAttributionSet:(BOOL)a5
++ (id)itemWithRepresentation:(id)representation attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 wfType];
-  v11 = [a1 itemWithRepresentation:v9 forType:v10 attributionSet:v8 includesDefaultAttributionSet:v5];
+  attributionSetCopy = attributionSet;
+  setCopy = set;
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v11 = [self itemWithRepresentation:representationCopy forType:wfType attributionSet:setCopy includesDefaultAttributionSet:attributionSetCopy];
 
   return v11;
 }
 
-+ (id)itemWithRepresentation:(id)a3 attributionSet:(id)a4 cachingIdentifier:(id)a5
++ (id)itemWithRepresentation:(id)representation attributionSet:(id)set cachingIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 wfType];
-  v12 = [a1 itemWithRepresentation:v10 forType:v11 attributionSet:v9 cachingIdentifier:v8];
+  identifierCopy = identifier;
+  setCopy = set;
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v12 = [self itemWithRepresentation:representationCopy forType:wfType attributionSet:setCopy cachingIdentifier:identifierCopy];
 
   return v12;
 }
 
-+ (id)itemWithRepresentation:(id)a3 attributionSet:(id)a4
++ (id)itemWithRepresentation:(id)representation attributionSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 wfType];
-  v9 = [a1 itemWithRepresentation:v7 forType:v8 attributionSet:v6];
+  setCopy = set;
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v9 = [self itemWithRepresentation:representationCopy forType:wfType attributionSet:setCopy];
 
   return v9;
 }
 
-+ (id)itemWithRepresentation:(id)a3
++ (id)itemWithRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [a1 itemWithRepresentation:v4 forType:v5];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [self itemWithRepresentation:representationCopy forType:wfType];
 
   return v6;
 }
 
-+ (id)itemWithRepresentation:(id)a3 forType:(id)a4 attributionSet:(id)a5 includesDefaultAttributionSet:(BOOL)a6 cachingIdentifier:(id)a7
++ (id)itemWithRepresentation:(id)representation forType:(id)type attributionSet:(id)set includesDefaultAttributionSet:(BOOL)attributionSet cachingIdentifier:(id)identifier
 {
-  v8 = a6;
+  attributionSetCopy = attributionSet;
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([a1 isContentItemSubclass])
+  representationCopy = representation;
+  typeCopy = type;
+  setCopy = set;
+  identifierCopy = identifier;
+  if ([self isContentItemSubclass])
   {
-    v31 = v14;
-    v32 = v12;
+    v31 = setCopy;
+    v32 = representationCopy;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [a1 ownedTypes];
-    v17 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    ownedTypes = [self ownedTypes];
+    v17 = [ownedTypes countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v17)
     {
       v18 = v17;
@@ -4859,11 +4859,11 @@ LABEL_19:
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(ownedTypes);
           }
 
           v22 = *(*(&v33 + 1) + 8 * i);
-          if (([v13 conformsToType:v22] & 1) == 0)
+          if (([typeCopy conformsToType:v22] & 1) == 0)
           {
             if (![v22 isEqualToUTType:v20])
             {
@@ -4877,7 +4877,7 @@ LABEL_19:
             }
           }
 
-          v28 = [a1 alloc];
+          v28 = [self alloc];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -4886,17 +4886,17 @@ LABEL_19:
 
           else
           {
-            v29 = v13;
+            v29 = typeCopy;
           }
 
-          v14 = v31;
-          v12 = v32;
-          v23 = [v28 initWithRepresentation:v32 forType:v29 attributionSet:v31 includesDefaultAttributionSet:v8 cachingIdentifier:v15];
+          setCopy = v31;
+          representationCopy = v32;
+          v23 = [v28 initWithRepresentation:v32 forType:v29 attributionSet:v31 includesDefaultAttributionSet:attributionSetCopy cachingIdentifier:identifierCopy];
 
           goto LABEL_22;
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v18 = [ownedTypes countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v18)
         {
           continue;
@@ -4907,14 +4907,14 @@ LABEL_19:
     }
 
     v23 = 0;
-    v14 = v31;
-    v12 = v32;
+    setCopy = v31;
+    representationCopy = v32;
   }
 
   else
   {
     v24 = +[WFContentItemRegistry sharedRegistry];
-    v25 = [v24 contentItemClassForType:v13];
+    v25 = [v24 contentItemClassForType:typeCopy];
 
     if (!v25)
     {
@@ -4926,7 +4926,7 @@ LABEL_19:
         v27 = +[WFContentItemRegistry sharedRegistry];
         v25 = [v27 contentItemClassForType:v26];
 
-        v13 = v26;
+        typeCopy = v26;
       }
 
       else
@@ -4935,7 +4935,7 @@ LABEL_19:
       }
     }
 
-    v23 = [v25 itemWithRepresentation:v12 forType:v13 attributionSet:v14 cachingIdentifier:v15];
+    v23 = [v25 itemWithRepresentation:representationCopy forType:typeCopy attributionSet:setCopy cachingIdentifier:identifierCopy];
   }
 
 LABEL_22:
@@ -4943,149 +4943,149 @@ LABEL_22:
   return v23;
 }
 
-+ (id)itemWithObject:(id)a3 named:(id)a4 attributionSet:(id)a5 cachingIdentifier:(id)a6
++ (id)itemWithObject:(id)object named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
+  objectCopy = object;
+  namedCopy = named;
+  identifierCopy = identifier;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:99 description:{@"object should not be a WFFileRepresentation, use itemWithFile: for files"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:99 description:{@"object should not be a WFFileRepresentation, use itemWithFile: for files"}];
   }
 
-  v15 = [WFObjectRepresentation object:v11 named:v12];
-  v16 = [a1 itemWithRepresentation:v15 attributionSet:v14 cachingIdentifier:v13];
+  v15 = [WFObjectRepresentation object:objectCopy named:namedCopy];
+  v16 = [self itemWithRepresentation:v15 attributionSet:setCopy cachingIdentifier:identifierCopy];
 
   return v16;
 }
 
-+ (id)itemWithObject:(id)a3 named:(id)a4 attributionSet:(id)a5
++ (id)itemWithObject:(id)object named:(id)named attributionSet:(id)set
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  namedCopy = named;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:94 description:{@"object should not be a WFFileRepresentation, use itemWithFile: for files"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:94 description:{@"object should not be a WFFileRepresentation, use itemWithFile: for files"}];
   }
 
-  v12 = [WFObjectRepresentation object:v9 named:v10];
-  v13 = [a1 itemWithRepresentation:v12 attributionSet:v11];
+  v12 = [WFObjectRepresentation object:objectCopy named:namedCopy];
+  v13 = [self itemWithRepresentation:v12 attributionSet:setCopy];
 
   return v13;
 }
 
-+ (id)itemWithObject:(id)a3 named:(id)a4
++ (id)itemWithObject:(id)object named:(id)named
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  namedCopy = named;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"WFContentItem.m" lineNumber:89 description:{@"object should not be a WFFileRepresentation, use itemWithFile: for files"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItem.m" lineNumber:89 description:{@"object should not be a WFFileRepresentation, use itemWithFile: for files"}];
   }
 
-  v9 = [WFObjectRepresentation object:v7 named:v8];
-  v10 = [a1 itemWithRepresentation:v9];
+  v9 = [WFObjectRepresentation object:objectCopy named:namedCopy];
+  v10 = [self itemWithRepresentation:v9];
 
   return v10;
 }
 
-+ (id)itemWithObject:(id)a3 privacyConfiguration:(id)a4
++ (id)itemWithObject:(id)object privacyConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 origin];
-  v9 = [v6 disclosureLevel];
-  v10 = [v6 disclosureWarnings];
+  configurationCopy = configuration;
+  objectCopy = object;
+  origin = [configurationCopy origin];
+  disclosureLevel = [configurationCopy disclosureLevel];
+  disclosureWarnings = [configurationCopy disclosureWarnings];
 
-  v11 = [v10 array];
+  array = [disclosureWarnings array];
   v16 = 0;
-  v12 = WFMakeContentAttributionSetFromOrigin(v8, v9, v11, &v16);
+  v12 = WFMakeContentAttributionSetFromOrigin(origin, disclosureLevel, array, &v16);
   v13 = v16;
 
-  v14 = [a1 itemWithObject:v7 named:0 attributionSet:v12 cachingIdentifier:v13];
+  v14 = [self itemWithObject:objectCopy named:0 attributionSet:v12 cachingIdentifier:v13];
 
   return v14;
 }
 
-+ (id)itemWithObject:(id)a3 origin:(id)a4 disclosureLevel:(unint64_t)a5
++ (id)itemWithObject:(id)object origin:(id)origin disclosureLevel:(unint64_t)level
 {
-  v8 = a3;
-  v9 = [WFContentItemPrivacyConfiguration configurationWithOrigin:a4 disclosureLevel:a5];
-  v10 = [a1 itemWithObject:v8 privacyConfiguration:v9];
+  objectCopy = object;
+  v9 = [WFContentItemPrivacyConfiguration configurationWithOrigin:origin disclosureLevel:level];
+  v10 = [self itemWithObject:objectCopy privacyConfiguration:v9];
 
   return v10;
 }
 
-- (void)coerceToItemClasses:(id)a3 completionHandler:(id)a4
+- (void)coerceToItemClasses:(id)classes completionHandler:(id)handler
 {
-  v5 = [WFCoercionRequest _requestForCoercingToContentClasses:a3 itemCompletionHandler:a4];
+  v5 = [WFCoercionRequest _requestForCoercingToContentClasses:classes itemCompletionHandler:handler];
   [(WFContentItem *)self performCoercion:v5];
 }
 
-- (void)coerceToItemClass:(Class)a3 completionHandler:(id)a4
+- (void)coerceToItemClass:(Class)class completionHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  classCopy = class;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v8 count:1];
-  [(WFContentItem *)self coerceToItemClasses:v7 completionHandler:v6, v8, v9];
+  handlerCopy = handler;
+  v7 = [v5 arrayWithObjects:&classCopy count:1];
+  [(WFContentItem *)self coerceToItemClasses:v7 completionHandler:handlerCopy, classCopy, v9];
 }
 
-- (BOOL)isCoercibleToItemClasses:(id)a3
+- (BOOL)isCoercibleToItemClasses:(id)classes
 {
-  v4 = [WFCoercionRequest requestForCoercingToContentClasses:a3 completionHandler:0];
+  v4 = [WFCoercionRequest requestForCoercingToContentClasses:classes completionHandler:0];
   LOBYTE(self) = [(WFContentItem *)self canPerformCoercion:v4];
 
   return self;
 }
 
-- (BOOL)isCoercibleToItemClass:(Class)a3
+- (BOOL)isCoercibleToItemClass:(Class)class
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v6[0] = a3;
+  v6[0] = class;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   LOBYTE(self) = [(WFContentItem *)self isCoercibleToItemClasses:v4];
 
   return self;
 }
 
-- (void)getObjectRepresentations:(id)a3 forClass:(Class)a4 options:(id)a5
+- (void)getObjectRepresentations:(id)representations forClass:(Class)class options:(id)options
 {
-  v8 = a5;
-  v9 = [WFCoercionRequest requestForCoercingToObjectClass:a4 completionHandler:a3];
-  [v9 setOptions:v8];
+  optionsCopy = options;
+  v9 = [WFCoercionRequest requestForCoercingToObjectClass:class completionHandler:representations];
+  [v9 setOptions:optionsCopy];
 
   [(WFContentItem *)self performCoercion:v9];
 }
 
-- (void)getFileRepresentations:(id)a3 forType:(id)a4 options:(id)a5
+- (void)getFileRepresentations:(id)representations forType:(id)type options:(id)options
 {
-  v8 = a5;
-  v9 = [WFCoercionRequest requestForCoercingToFileType:a4 completionHandler:a3];
-  [v9 setOptions:v8];
+  optionsCopy = options;
+  v9 = [WFCoercionRequest requestForCoercingToFileType:type completionHandler:representations];
+  [v9 setOptions:optionsCopy];
 
   [(WFContentItem *)self performCoercion:v9];
 }
 
-- (void)getFileRepresentation:(id)a3 forType:(id)a4 options:(id)a5
+- (void)getFileRepresentation:(id)representation forType:(id)type options:(id)options
 {
-  v8 = a3;
+  representationCopy = representation;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__WFContentItem_CoercionConvenience__getFileRepresentation_forType_options___block_invoke;
   v10[3] = &unk_27834A430;
-  v11 = v8;
-  v9 = v8;
-  [(WFContentItem *)self getFileRepresentations:v10 forType:a4 options:a5];
+  v11 = representationCopy;
+  v9 = representationCopy;
+  [(WFContentItem *)self getFileRepresentations:v10 forType:type options:options];
 }
 
 void __76__WFContentItem_CoercionConvenience__getFileRepresentation_forType_options___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5096,16 +5096,16 @@ void __76__WFContentItem_CoercionConvenience__getFileRepresentation_forType_opti
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)getObjectRepresentation:(id)a3 forClass:(Class)a4 options:(id)a5
+- (void)getObjectRepresentation:(id)representation forClass:(Class)class options:(id)options
 {
-  v8 = a3;
+  representationCopy = representation;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__WFContentItem_CoercionConvenience__getObjectRepresentation_forClass_options___block_invoke;
   v10[3] = &unk_27834A4C8;
-  v11 = v8;
-  v9 = v8;
-  [(WFContentItem *)self getObjectRepresentations:v10 forClass:a4 options:a5];
+  v11 = representationCopy;
+  v9 = representationCopy;
+  [(WFContentItem *)self getObjectRepresentations:v10 forClass:class options:options];
 }
 
 void __79__WFContentItem_CoercionConvenience__getObjectRepresentation_forClass_options___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -5125,23 +5125,23 @@ void __79__WFContentItem_CoercionConvenience__getObjectRepresentation_forClass_o
   (*(v9 + 16))(v9, v10, v8, v7);
 }
 
-+ (id)badCoercionErrorForObjectClass:(Class)a3
++ (id)badCoercionErrorForObjectClass:(Class)class
 {
-  v4 = [WFObjectType typeWithClass:a3];
-  v5 = [a1 badCoercionErrorForType:v4];
+  v4 = [WFObjectType typeWithClass:class];
+  v5 = [self badCoercionErrorForType:v4];
 
   return v5;
 }
 
-+ (id)badCoercionErrorForType:(id)a3
++ (id)badCoercionErrorForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[WFContentItemRegistry sharedRegistry];
-  v6 = [v5 contentItemClassForType:v4];
+  v6 = [v5 contentItemClassForType:typeCopy];
 
-  if ([v6 isSubclassOfClass:a1])
+  if ([v6 isSubclassOfClass:self])
   {
-    [v4 typeDescription];
+    [typeCopy typeDescription];
   }
 
   else
@@ -5150,25 +5150,25 @@ void __79__WFContentItem_CoercionConvenience__getObjectRepresentation_forClass_o
   }
   v7 = ;
   v8 = objc_opt_class();
-  v9 = [a1 localizedTypeDescription];
-  v10 = [v8 badCoercionErrorForTypeDescription:v9 toTypeDescription:v7];
+  localizedTypeDescription = [self localizedTypeDescription];
+  v10 = [v8 badCoercionErrorForTypeDescription:localizedTypeDescription toTypeDescription:v7];
 
   return v10;
 }
 
-+ (id)badCoercionErrorForItemClass:(Class)a3
++ (id)badCoercionErrorForItemClass:(Class)class
 {
   v5 = objc_opt_class();
-  v6 = [a1 localizedTypeDescription];
-  v7 = [(objc_class *)a3 localizedTypeDescription];
-  v8 = [v5 badCoercionErrorForTypeDescription:v6 toTypeDescription:v7];
+  localizedTypeDescription = [self localizedTypeDescription];
+  localizedTypeDescription2 = [(objc_class *)class localizedTypeDescription];
+  v8 = [v5 badCoercionErrorForTypeDescription:localizedTypeDescription toTypeDescription:localizedTypeDescription2];
 
   return v8;
 }
 
-+ (id)badCoercionErrorForItemClasses:(id)a3
++ (id)badCoercionErrorForItemClasses:(id)classes
 {
-  v4 = [a3 valueForKey:@"localizedTypeDescription"];
+  v4 = [classes valueForKey:@"localizedTypeDescription"];
   v5 = objc_opt_new();
   if ([v4 count])
   {
@@ -5195,64 +5195,64 @@ void __79__WFContentItem_CoercionConvenience__getObjectRepresentation_forClass_o
   }
 
   v13 = objc_opt_class();
-  v14 = [a1 localizedTypeDescription];
-  v15 = [v13 badCoercionErrorForTypeDescription:v14 toTypeDescription:v5];
+  localizedTypeDescription = [self localizedTypeDescription];
+  v15 = [v13 badCoercionErrorForTypeDescription:localizedTypeDescription toTypeDescription:v5];
 
   return v15;
 }
 
-+ (id)badCoercionErrorForTypeDescription:(id)a3 toTypeDescription:(id)a4
++ (id)badCoercionErrorForTypeDescription:(id)description toTypeDescription:(id)typeDescription
 {
-  v6 = a4;
+  typeDescriptionCopy = typeDescription;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
-  if (v6)
+  descriptionCopy = description;
+  if (typeDescriptionCopy)
   {
     v9 = WFLocalizedString(@"Shortcuts couldn’t convert from %@ to %@");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, descriptionCopy, typeDescriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Shortcuts couldn’t convert from %@ to the required type");
-    [v7 localizedStringWithFormat:v9, v8, v13];
+    [v7 localizedStringWithFormat:v9, descriptionCopy, v13];
   }
   v10 = ;
 
-  v11 = [a1 badCoercionErrorWithReasonString:v10];
+  v11 = [self badCoercionErrorWithReasonString:v10];
 
   return v11;
 }
 
-+ (id)badCoercionErrorWithReasonString:(id)a3
++ (id)badCoercionErrorWithReasonString:(id)string
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = WFLocalizedString(@"Conversion Error");
   v6 = MEMORY[0x277CCACA8];
   v7 = WFLocalizedString(@"%@ failed because %@.");
-  v8 = [a1 badCoercionErrorDefaultResponsibleComponent];
-  v9 = [v6 localizedStringWithFormat:v7, v8, v4];
+  badCoercionErrorDefaultResponsibleComponent = [self badCoercionErrorDefaultResponsibleComponent];
+  stringCopy = [v6 localizedStringWithFormat:v7, badCoercionErrorDefaultResponsibleComponent, stringCopy];
 
   v10 = MEMORY[0x277CCA9B8];
   v11 = *MEMORY[0x277CCA450];
   v15[0] = *MEMORY[0x277CCA470];
   v15[1] = v11;
   v16[0] = v5;
-  v16[1] = v9;
+  v16[1] = stringCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v13 = [v10 errorWithDomain:@"WFContentItemErrorDomain" code:0 userInfo:v12];
 
   return v13;
 }
 
-+ (BOOL)errorIsBadCoercionError:(id)a3
++ (BOOL)errorIsBadCoercionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"WFContentItemErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"WFContentItemErrorDomain"])
   {
-    v5 = [v3 code] == 0;
+    v5 = [errorCopy code] == 0;
   }
 
   else
@@ -5272,7 +5272,7 @@ void __79__WFContentItem_CoercionConvenience__getObjectRepresentation_forClass_o
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v2 = [WFObjectType typeWithClassName:@"UIImage" frameworkName:@"UIKit" location:2, v5, v6, v7, v8, v9, objc_opt_class()];
-  v10 = [v2 objectClass];
+  objectClass = [v2 objectClass];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:&v5 count:9];

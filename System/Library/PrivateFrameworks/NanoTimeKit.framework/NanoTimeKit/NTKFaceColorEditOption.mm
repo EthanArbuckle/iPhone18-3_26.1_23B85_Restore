@@ -1,42 +1,42 @@
 @interface NTKFaceColorEditOption
-+ (BOOL)value:(int64_t)a3 existsInDevice:(id)a4;
++ (BOOL)value:(int64_t)value existsInDevice:(id)device;
 + (id)__allOrderedColors;
-+ (id)__orderedValuesForDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
 + (id)__valueToFaceBundleStringDict;
-+ (id)_optionByValidatingValueOfInvalidOption:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)standardColorEditOptionsForDevice:(id)a3;
-+ (id)standardColorValuesForDevice:(id)a3;
-+ (id)standardColorsWithColorClass:(Class)a3 forDevice:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)_optionByValidatingValueOfInvalidOption:(id)option;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)standardColorEditOptionsForDevice:(id)device;
++ (id)standardColorValuesForDevice:(id)device;
++ (id)standardColorsWithColorClass:(Class)class forDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)localizedName;
 - (id)pigmentEditOption;
 @end
 
 @implementation NTKFaceColorEditOption
 
-+ (id)_optionByValidatingValueOfInvalidOption:(id)a3
++ (id)_optionByValidatingValueOfInvalidOption:(id)option
 {
-  v3 = a3;
-  v4 = [v3 device];
-  if (!NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v4))
+  optionCopy = option;
+  device = [optionCopy device];
+  if (!NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(device))
   {
     goto LABEL_17;
   }
 
-  v5 = [v3 _value];
-  v6 = [v4 collectionType];
-  v7 = [v4 materialType];
+  _value = [optionCopy _value];
+  collectionType = [device collectionType];
+  materialType = [device materialType];
   v8 = objc_opt_class();
   v9 = 0;
-  if (v5 > 100)
+  if (_value > 100)
   {
-    switch(v5)
+    switch(_value)
     {
       case 'g':
-        if (v6 == 6)
+        if (collectionType == 6)
         {
           goto LABEL_17;
         }
@@ -44,7 +44,7 @@
         v11 = 39;
         break;
       case 'f':
-        if (v6 == 5)
+        if (collectionType == 5)
         {
 LABEL_17:
           v9 = 0;
@@ -55,12 +55,12 @@ LABEL_17:
         break;
       case 'e':
         v10 = 1001;
-        if (v7 != 8)
+        if (materialType != 8)
         {
           v10 = 1002;
         }
 
-        if (v7 == 10)
+        if (materialType == 10)
         {
           v11 = 1000;
         }
@@ -76,12 +76,12 @@ LABEL_17:
     }
 
 LABEL_19:
-    v9 = [v8 optionWithFaceColor:v11 forDevice:v4];
+    v9 = [v8 optionWithFaceColor:v11 forDevice:device];
     goto LABEL_20;
   }
 
   v11 = 1000;
-  if (v5 == 53 || v5 == 100)
+  if (_value == 53 || _value == 100)
   {
     goto LABEL_19;
   }
@@ -175,14 +175,14 @@ LABEL_16:
   return v3;
 }
 
-+ (id)standardColorEditOptionsForDevice:(id)a3
++ (id)standardColorEditOptionsForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__NTKFaceColorEditOption_standardColorEditOptionsForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __60__NTKFaceColorEditOption_standardColorEditOptionsForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __60__NTKFaceColorEditOption_standardColorEditOptionsForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -261,20 +261,20 @@ id __60__NTKFaceColorEditOption_standardColorEditOptionsForDevice___block_invoke
   return v12;
 }
 
-+ (id)standardColorValuesForDevice:(id)a3
++ (id)standardColorValuesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 pdrDeviceVersion] >= 0x50000)
+  deviceCopy = device;
+  if ([deviceCopy pdrDeviceVersion] >= 0x50000)
   {
-    if ([v3 pdrDeviceVersion] >> 9 >= 0x281)
+    if ([deviceCopy pdrDeviceVersion] >> 9 >= 0x281)
     {
-      if ([v3 pdrDeviceVersion] >= 0x60000)
+      if ([deviceCopy pdrDeviceVersion] >= 0x60000)
       {
-        if ([v3 supportsPDRCapability:753405533])
+        if ([deviceCopy supportsPDRCapability:753405533])
         {
-          if ([v3 supportsPDRCapability:2919474315])
+          if ([deviceCopy supportsPDRCapability:2919474315])
           {
-            v5 = [v3 supportsPDRCapability:3356802055];
+            v5 = [deviceCopy supportsPDRCapability:3356802055];
             v4 = &unk_28418B530;
             if (v5)
             {
@@ -320,13 +320,13 @@ id __60__NTKFaceColorEditOption_standardColorEditOptionsForDevice___block_invoke
   return v7;
 }
 
-+ (id)standardColorsWithColorClass:(Class)a3 forDevice:(id)a4
++ (id)standardColorsWithColorClass:(Class)class forDevice:(id)device
 {
-  v6 = a4;
-  __65__NTKFaceColorEditOption_standardColorsWithColorClass_forDevice___block_invoke(v6, v6);
-  v7 = a1;
-  objc_sync_enter(v7);
-  v8 = NSStringFromClass(a3);
+  deviceCopy = device;
+  __65__NTKFaceColorEditOption_standardColorsWithColorClass_forDevice___block_invoke(deviceCopy, deviceCopy);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = NSStringFromClass(class);
   v9 = [standardColorsWithColorClass_forDevice__standardColorsCache objectForKey:v8];
   v10 = v9;
   if (v9)
@@ -336,11 +336,11 @@ id __60__NTKFaceColorEditOption_standardColorEditOptionsForDevice___block_invoke
 
   else
   {
-    v11 = [(objc_class *)a3 standardColorEditOptionsForDevice:v6];
+    v11 = [(objc_class *)class standardColorEditOptionsForDevice:deviceCopy];
     [standardColorsWithColorClass_forDevice__standardColorsCache setObject:v11 forKey:v8];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -381,15 +381,15 @@ uint64_t __65__NTKFaceColorEditOption_standardColorsWithColorClass_forDevice___b
   return v5;
 }
 
-+ (BOOL)value:(int64_t)a3 existsInDevice:(id)a4
++ (BOOL)value:(int64_t)value existsInDevice:(id)device
 {
-  v5 = a4;
-  v6 = [v5 pdrDeviceVersion];
-  v7 = v6;
-  if (!(v6 >> 18))
+  deviceCopy = device;
+  pdrDeviceVersion = [deviceCopy pdrDeviceVersion];
+  v7 = pdrDeviceVersion;
+  if (!(pdrDeviceVersion >> 18))
   {
     v8 = NTKNewToFortuneColors();
-    v9 = [v8 containsIndex:a3];
+    v9 = [v8 containsIndex:value];
 
     if (v9)
     {
@@ -399,7 +399,7 @@ uint64_t __65__NTKFaceColorEditOption_standardColorsWithColorClass_forDevice___b
     if (v7 >> 9 <= 0x180)
     {
       v10 = NTKNewToElectricColors();
-      v11 = [v10 containsIndex:a3];
+      v11 = [v10 containsIndex:value];
 
       if (v11)
       {
@@ -409,7 +409,7 @@ uint64_t __65__NTKFaceColorEditOption_standardColorsWithColorClass_forDevice___b
 
 LABEL_7:
     v12 = NTKNewToEmperorColors();
-    v13 = [v12 containsIndex:a3];
+    v13 = [v12 containsIndex:value];
 
     if (v13)
     {
@@ -419,16 +419,16 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (v6 >> 8 <= 0x402)
+  if (pdrDeviceVersion >> 8 <= 0x402)
   {
     goto LABEL_7;
   }
 
-  if (HIWORD(v6) <= 4u)
+  if (HIWORD(pdrDeviceVersion) <= 4u)
   {
 LABEL_10:
     v14 = NTKNewToGloryColors();
-    v15 = [v14 containsIndex:a3];
+    v15 = [v14 containsIndex:value];
 
     if (v15)
     {
@@ -438,9 +438,9 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (v6 >> 9 > 0x280)
+  if (pdrDeviceVersion >> 9 > 0x280)
   {
-    if (v6 >> 17 > 2)
+    if (pdrDeviceVersion >> 17 > 2)
     {
       goto LABEL_17;
     }
@@ -450,7 +450,7 @@ LABEL_10:
 
 LABEL_13:
   v16 = NTKNewToGloryEColors();
-  v17 = [v16 containsIndex:a3];
+  v17 = [v16 containsIndex:value];
 
   if (v17)
   {
@@ -459,7 +459,7 @@ LABEL_13:
 
 LABEL_16:
   v18 = NTKNewToGraceColors();
-  v19 = [v18 containsIndex:a3];
+  v19 = [v18 containsIndex:value];
 
   if (v19)
   {
@@ -469,10 +469,10 @@ LABEL_23:
   }
 
 LABEL_17:
-  if (([v5 supportsPDRCapability:753405533] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:753405533] & 1) == 0)
   {
     v20 = NTKNewToGraceEColors();
-    v21 = [v20 containsIndex:a3];
+    v21 = [v20 containsIndex:value];
 
     if (v21)
     {
@@ -480,10 +480,10 @@ LABEL_17:
     }
   }
 
-  if (([v5 supportsPDRCapability:2919474315] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:2919474315] & 1) == 0)
   {
     v22 = NTKNewToHunterColors();
-    v23 = [v22 containsIndex:a3];
+    v23 = [v22 containsIndex:value];
 
     if (v23)
     {
@@ -491,10 +491,10 @@ LABEL_17:
     }
   }
 
-  if (([v5 supportsPDRCapability:3356802055] & 1) == 0)
+  if (([deviceCopy supportsPDRCapability:3356802055] & 1) == 0)
   {
     v24 = NTKNewToHunterEColors();
-    v25 = [v24 containsIndex:a3];
+    v25 = [v24 containsIndex:value];
 
     if (v25)
     {
@@ -502,7 +502,7 @@ LABEL_17:
     }
   }
 
-  if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(v5))
+  if (NTKDeviceSupportsFaceColorMappingAndDistinctFaceColorValues(deviceCopy))
   {
     v26 = 1;
   }
@@ -510,7 +510,7 @@ LABEL_17:
   else
   {
     v28 = NTKDistinctSportPlusAndEditionColors();
-    v29 = [v28 containsIndex:a3];
+    v29 = [v28 containsIndex:value];
 
     v26 = v29 ^ 1;
   }
@@ -520,22 +520,22 @@ LABEL_24:
   return v26 & 1;
 }
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  LOBYTE(self) = [objc_opt_class() value:-[NTKValueEditOption _value](self existsInDevice:{"_value"), v4}];
+  deviceCopy = device;
+  LOBYTE(self) = [objc_opt_class() value:-[NTKValueEditOption _value](self existsInDevice:{"_value"), deviceCopy}];
 
   return self;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__NTKFaceColorEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __50__NTKFaceColorEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __50__NTKFaceColorEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -576,20 +576,20 @@ id __50__NTKFaceColorEditOption__orderedValuesForDevice___block_invoke(uint64_t 
   return v2;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 __allOrderedColors];
-  v6 = [objc_opt_class() _orderedValuesRestrictedByDevice:v4];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  deviceCopy = device;
+  __allOrderedColors = [self __allOrderedColors];
+  v6 = [objc_opt_class() _orderedValuesRestrictedByDevice:deviceCopy];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -604,7 +604,7 @@ id __50__NTKFaceColorEditOption__orderedValuesForDevice___block_invoke(uint64_t 
           objc_enumerationMutation(v9);
         }
 
-        [v5 insertObject:*(*(&v24 + 1) + 8 * i) atIndex:0];
+        [__allOrderedColors insertObject:*(*(&v24 + 1) + 8 * i) atIndex:0];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -618,13 +618,13 @@ id __50__NTKFaceColorEditOption__orderedValuesForDevice___block_invoke(uint64_t 
   v19 = 3221225472;
   v20 = __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke;
   v21 = &unk_278785D38;
-  v22 = v4;
-  v23 = a1;
-  v15 = v4;
+  v22 = deviceCopy;
+  selfCopy = self;
+  v15 = deviceCopy;
   v16 = [v14 predicateWithBlock:&v18];
-  [v5 filterUsingPredicate:{v16, v18, v19, v20, v21}];
+  [__allOrderedColors filterUsingPredicate:{v16, v18, v19, v20, v21}];
 
-  return v5;
+  return __allOrderedColors;
 }
 
 uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(uint64_t a1, void *a2)
@@ -636,25 +636,25 @@ uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(ui
   return [v3 value:v4 existsInDevice:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = NTKFaceColorEditOption;
-  if ([(NTKValueEditOption *)&v15 isEqual:v4])
+  if ([(NTKValueEditOption *)&v15 isEqual:equalCopy])
   {
     v5 = objc_opt_class();
-    v6 = [(NTKEditOption *)self device];
-    v7 = [v5 _orderedValuesRestrictedByDevice:v6];
+    device = [(NTKEditOption *)self device];
+    v7 = [v5 _orderedValuesRestrictedByDevice:device];
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NTKValueEditOption _value](self, "_value")}];
     v9 = [v7 containsObject:v8];
 
     if (v9)
     {
-      v10 = [(NTKEditOption *)self device];
-      v11 = [v10 materialType];
-      v12 = [v4 device];
-      v13 = v11 == [v12 materialType];
+      device2 = [(NTKEditOption *)self device];
+      materialType = [device2 materialType];
+      device3 = [equalCopy device];
+      v13 = materialType == [device3 materialType];
     }
 
     else
@@ -671,26 +671,26 @@ uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(ui
   return v13;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
-  v6 = v5;
+  deviceCopy = device;
+  v6 = deviceCopy;
   v7 = 0;
-  if (a3 > 999)
+  if (value > 999)
   {
     v8 = @"gold-generic-2";
     v9 = @"gold-generic-3";
-    if (a3 != 1002)
+    if (value != 1002)
     {
       v9 = 0;
     }
 
-    if (a3 != 1001)
+    if (value != 1001)
     {
       v8 = v9;
     }
 
-    if (a3 == 1000)
+    if (value == 1000)
     {
       v7 = @"gold-generic-1";
     }
@@ -703,7 +703,7 @@ uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(ui
 
   else
   {
-    switch(a3)
+    switch(value)
     {
       case 0uLL:
         v7 = @"pink";
@@ -970,14 +970,14 @@ uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(ui
         v7 = @"MallardGreen";
         break;
       case 0x64uLL:
-        v10 = [v5 materialType];
+        materialType = [deviceCopy materialType];
         v11 = @"edition";
-        if (v10 == 6)
+        if (materialType == 6)
         {
           v11 = @"edition rose gold";
         }
 
-        if (v10 == 5)
+        if (materialType == 5)
         {
           v7 = @"edition gold";
         }
@@ -989,15 +989,15 @@ uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(ui
 
         break;
       case 0x65uLL:
-        v12 = [v5 materialType];
-        if ((v12 - 7) >= 4)
+        materialType2 = [deviceCopy materialType];
+        if ((materialType2 - 7) >= 4)
         {
           v7 = @"sport+";
         }
 
         else
         {
-          v7 = off_278785D78[v12 - 7];
+          v7 = off_278785D78[materialType2 - 7];
         }
 
         break;
@@ -1026,10 +1026,10 @@ uint64_t __51__NTKFaceColorEditOption___orderedValuesForDevice___block_invoke(ui
 
 - (id)localizedName
 {
-  v2 = [(NTKFaceColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKFaceColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 + (id)__valueToFaceBundleStringDict

@@ -1,8 +1,8 @@
 @interface CDASchemaCDAClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAClientEvent)initWithDictionary:(id)a3;
-- (CDASchemaCDAClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAClientEvent)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAClientEvent)initWithJSON:(id)n;
 - (CDASchemaCDADebugElectionDecisionMade)debugElectionDecisionMade;
 - (CDASchemaCDADeviceAdvertisingEndContext)cdaAdvertisingEndChanged;
 - (CDASchemaCDADeviceAdvertisingStartContext)cdaAdvertisingStartChanged;
@@ -13,7 +13,7 @@
 - (CDASchemaCDAUserFeedbackParticipantCollectionReported)userFeedbackParticipantCollectionReported;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -29,30 +29,30 @@
 - (void)deleteElectionTimerEnded;
 - (void)deleteUserFeedbackCompleted;
 - (void)deleteUserFeedbackParticipantCollectionReported;
-- (void)setCdaAdvertisingEndChanged:(id)a3;
-- (void)setCdaAdvertisingStartChanged:(id)a3;
-- (void)setDebugElectionDecisionMade:(id)a3;
-- (void)setDeviceElectionStateContext:(id)a3;
-- (void)setElectionDecisionMade:(id)a3;
-- (void)setElectionTimerEnded:(id)a3;
-- (void)setUserFeedbackCompleted:(id)a3;
-- (void)setUserFeedbackParticipantCollectionReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCdaAdvertisingEndChanged:(id)changed;
+- (void)setCdaAdvertisingStartChanged:(id)changed;
+- (void)setDebugElectionDecisionMade:(id)made;
+- (void)setDeviceElectionStateContext:(id)context;
+- (void)setElectionDecisionMade:(id)made;
+- (void)setElectionTimerEnded:(id)ended;
+- (void)setUserFeedbackCompleted:(id)completed;
+- (void)setUserFeedbackParticipantCollectionReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(CDASchemaCDAClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 7)
+  whichEvent_Type = [(CDASchemaCDAClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     return @"com.apple.aiml.siri.cda.CDAClientEvent";
   }
 
   else
   {
-    return off_1E78D23C0[v2 - 101];
+    return off_1E78D23C0[whichEvent_Type - 101];
   }
 }
 
@@ -189,15 +189,15 @@
   return v3;
 }
 
-- (CDASchemaCDAClientEvent)initWithDictionary:(id)a3
+- (CDASchemaCDAClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = CDASchemaCDAClientEvent;
   v5 = [(CDASchemaCDAClientEvent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -206,7 +206,7 @@
     }
 
     v27 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"electionDecisionMade"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"electionDecisionMade"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,7 +214,7 @@
       [(CDASchemaCDAClientEvent *)v5 setElectionDecisionMade:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"debugElectionDecisionMade", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"debugElectionDecisionMade", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -222,7 +222,7 @@
       [(CDASchemaCDAClientEvent *)v5 setDebugElectionDecisionMade:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"deviceElectionStateContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceElectionStateContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -230,7 +230,7 @@
       [(CDASchemaCDAClientEvent *)v5 setDeviceElectionStateContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cdaAdvertisingStartChanged"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cdaAdvertisingStartChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -238,7 +238,7 @@
       [(CDASchemaCDAClientEvent *)v5 setCdaAdvertisingStartChanged:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"cdaAdvertisingEndChanged"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"cdaAdvertisingEndChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -246,7 +246,7 @@
       [(CDASchemaCDAClientEvent *)v5 setCdaAdvertisingEndChanged:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"electionTimerEnded"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"electionTimerEnded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -254,7 +254,7 @@
       [(CDASchemaCDAClientEvent *)v5 setElectionTimerEnded:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"userFeedbackCompleted"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"userFeedbackCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,7 +262,7 @@
       [(CDASchemaCDAClientEvent *)v5 setUserFeedbackCompleted:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"userFeedbackParticipantCollectionReported"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"userFeedbackParticipantCollectionReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -276,30 +276,30 @@
   return v5;
 }
 
-- (CDASchemaCDAClientEvent)initWithJSON:(id)a3
+- (CDASchemaCDAClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -312,154 +312,154 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cdaAdvertisingEndChanged)
   {
-    v4 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cdaAdvertisingEndChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+    dictionaryRepresentation = [cdaAdvertisingEndChanged dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cdaAdvertisingEndChanged"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cdaAdvertisingEndChanged"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cdaAdvertisingEndChanged"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cdaAdvertisingEndChanged"];
     }
   }
 
   if (self->_cdaAdvertisingStartChanged)
   {
-    v7 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cdaAdvertisingStartChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+    dictionaryRepresentation2 = [cdaAdvertisingStartChanged dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cdaAdvertisingStartChanged"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cdaAdvertisingStartChanged"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cdaAdvertisingStartChanged"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cdaAdvertisingStartChanged"];
     }
   }
 
   if (self->_debugElectionDecisionMade)
   {
-    v10 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    debugElectionDecisionMade = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+    dictionaryRepresentation3 = [debugElectionDecisionMade dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"debugElectionDecisionMade"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"debugElectionDecisionMade"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"debugElectionDecisionMade"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"debugElectionDecisionMade"];
     }
   }
 
   if (self->_deviceElectionStateContext)
   {
-    v13 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    deviceElectionStateContext = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+    dictionaryRepresentation4 = [deviceElectionStateContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"deviceElectionStateContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"deviceElectionStateContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"deviceElectionStateContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"deviceElectionStateContext"];
     }
   }
 
   if (self->_electionDecisionMade)
   {
-    v16 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    electionDecisionMade = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+    dictionaryRepresentation5 = [electionDecisionMade dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"electionDecisionMade"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"electionDecisionMade"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"electionDecisionMade"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"electionDecisionMade"];
     }
   }
 
   if (self->_electionTimerEnded)
   {
-    v19 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    electionTimerEnded = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+    dictionaryRepresentation6 = [electionTimerEnded dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"electionTimerEnded"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"electionTimerEnded"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"electionTimerEnded"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"electionTimerEnded"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v22 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    eventMetadata = [(CDASchemaCDAClientEvent *)self eventMetadata];
+    dictionaryRepresentation7 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"eventMetadata"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_userFeedbackCompleted)
   {
-    v25 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    userFeedbackCompleted = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+    dictionaryRepresentation8 = [userFeedbackCompleted dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"userFeedbackCompleted"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"userFeedbackCompleted"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"userFeedbackCompleted"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"userFeedbackCompleted"];
     }
   }
 
   if (self->_userFeedbackParticipantCollectionReported)
   {
-    v28 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    userFeedbackParticipantCollectionReported = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+    dictionaryRepresentation9 = [userFeedbackParticipantCollectionReported dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"userFeedbackParticipantCollectionReported"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"userFeedbackParticipantCollectionReported"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"userFeedbackParticipantCollectionReported"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"userFeedbackParticipantCollectionReported"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -475,34 +475,34 @@
   return v9 ^ v10 ^ [(CDASchemaCDAUserFeedbackParticipantCollectionReported *)self->_userFeedbackParticipantCollectionReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_48;
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v8 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(CDASchemaCDAClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(CDASchemaCDAClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -514,20 +514,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
-  v7 = [v4 electionDecisionMade];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+  eventMetadata2 = [equalCopy electionDecisionMade];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v13 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
-  if (v13)
+  electionDecisionMade = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+  if (electionDecisionMade)
   {
-    v14 = v13;
-    v15 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
-    v16 = [v4 electionDecisionMade];
-    v17 = [v15 isEqual:v16];
+    v14 = electionDecisionMade;
+    electionDecisionMade2 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+    electionDecisionMade3 = [equalCopy electionDecisionMade];
+    v17 = [electionDecisionMade2 isEqual:electionDecisionMade3];
 
     if (!v17)
     {
@@ -539,20 +539,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
-  v7 = [v4 debugElectionDecisionMade];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+  eventMetadata2 = [equalCopy debugElectionDecisionMade];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v18 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
-  if (v18)
+  debugElectionDecisionMade = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+  if (debugElectionDecisionMade)
   {
-    v19 = v18;
-    v20 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
-    v21 = [v4 debugElectionDecisionMade];
-    v22 = [v20 isEqual:v21];
+    v19 = debugElectionDecisionMade;
+    debugElectionDecisionMade2 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+    debugElectionDecisionMade3 = [equalCopy debugElectionDecisionMade];
+    v22 = [debugElectionDecisionMade2 isEqual:debugElectionDecisionMade3];
 
     if (!v22)
     {
@@ -564,20 +564,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
-  v7 = [v4 deviceElectionStateContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+  eventMetadata2 = [equalCopy deviceElectionStateContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v23 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
-  if (v23)
+  deviceElectionStateContext = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+  if (deviceElectionStateContext)
   {
-    v24 = v23;
-    v25 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
-    v26 = [v4 deviceElectionStateContext];
-    v27 = [v25 isEqual:v26];
+    v24 = deviceElectionStateContext;
+    deviceElectionStateContext2 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+    deviceElectionStateContext3 = [equalCopy deviceElectionStateContext];
+    v27 = [deviceElectionStateContext2 isEqual:deviceElectionStateContext3];
 
     if (!v27)
     {
@@ -589,20 +589,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
-  v7 = [v4 cdaAdvertisingStartChanged];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+  eventMetadata2 = [equalCopy cdaAdvertisingStartChanged];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v28 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
-  if (v28)
+  cdaAdvertisingStartChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+  if (cdaAdvertisingStartChanged)
   {
-    v29 = v28;
-    v30 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
-    v31 = [v4 cdaAdvertisingStartChanged];
-    v32 = [v30 isEqual:v31];
+    v29 = cdaAdvertisingStartChanged;
+    cdaAdvertisingStartChanged2 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+    cdaAdvertisingStartChanged3 = [equalCopy cdaAdvertisingStartChanged];
+    v32 = [cdaAdvertisingStartChanged2 isEqual:cdaAdvertisingStartChanged3];
 
     if (!v32)
     {
@@ -614,20 +614,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
-  v7 = [v4 cdaAdvertisingEndChanged];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+  eventMetadata2 = [equalCopy cdaAdvertisingEndChanged];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v33 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
-  if (v33)
+  cdaAdvertisingEndChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+  if (cdaAdvertisingEndChanged)
   {
-    v34 = v33;
-    v35 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
-    v36 = [v4 cdaAdvertisingEndChanged];
-    v37 = [v35 isEqual:v36];
+    v34 = cdaAdvertisingEndChanged;
+    cdaAdvertisingEndChanged2 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+    cdaAdvertisingEndChanged3 = [equalCopy cdaAdvertisingEndChanged];
+    v37 = [cdaAdvertisingEndChanged2 isEqual:cdaAdvertisingEndChanged3];
 
     if (!v37)
     {
@@ -639,20 +639,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
-  v7 = [v4 electionTimerEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+  eventMetadata2 = [equalCopy electionTimerEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v38 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
-  if (v38)
+  electionTimerEnded = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+  if (electionTimerEnded)
   {
-    v39 = v38;
-    v40 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
-    v41 = [v4 electionTimerEnded];
-    v42 = [v40 isEqual:v41];
+    v39 = electionTimerEnded;
+    electionTimerEnded2 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+    electionTimerEnded3 = [equalCopy electionTimerEnded];
+    v42 = [electionTimerEnded2 isEqual:electionTimerEnded3];
 
     if (!v42)
     {
@@ -664,20 +664,20 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
-  v7 = [v4 userFeedbackCompleted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+  eventMetadata2 = [equalCopy userFeedbackCompleted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v43 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
-  if (v43)
+  userFeedbackCompleted = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+  if (userFeedbackCompleted)
   {
-    v44 = v43;
-    v45 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
-    v46 = [v4 userFeedbackCompleted];
-    v47 = [v45 isEqual:v46];
+    v44 = userFeedbackCompleted;
+    userFeedbackCompleted2 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+    userFeedbackCompleted3 = [equalCopy userFeedbackCompleted];
+    v47 = [userFeedbackCompleted2 isEqual:userFeedbackCompleted3];
 
     if (!v47)
     {
@@ -689,12 +689,12 @@
   {
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
-  v7 = [v4 userFeedbackParticipantCollectionReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+  eventMetadata2 = [equalCopy userFeedbackParticipantCollectionReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v48 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
-    if (!v48)
+    userFeedbackParticipantCollectionReported = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+    if (!userFeedbackParticipantCollectionReported)
     {
 
 LABEL_51:
@@ -702,10 +702,10 @@ LABEL_51:
       goto LABEL_49;
     }
 
-    v49 = v48;
-    v50 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
-    v51 = [v4 userFeedbackParticipantCollectionReported];
-    v52 = [v50 isEqual:v51];
+    v49 = userFeedbackParticipantCollectionReported;
+    userFeedbackParticipantCollectionReported2 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+    userFeedbackParticipantCollectionReported3 = [equalCopy userFeedbackParticipantCollectionReported];
+    v52 = [userFeedbackParticipantCollectionReported2 isEqual:userFeedbackParticipantCollectionReported3];
 
     if (v52)
     {
@@ -725,82 +725,82 @@ LABEL_49:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(CDASchemaCDAClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(CDASchemaCDAClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(CDASchemaCDAClientEvent *)self eventMetadata];
+    eventMetadata2 = [(CDASchemaCDAClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+  electionDecisionMade = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
 
-  if (v6)
+  if (electionDecisionMade)
   {
-    v7 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+    electionDecisionMade2 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+  debugElectionDecisionMade = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
 
-  if (v8)
+  if (debugElectionDecisionMade)
   {
-    v9 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+    debugElectionDecisionMade2 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+  deviceElectionStateContext = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
 
-  if (v10)
+  if (deviceElectionStateContext)
   {
-    v11 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+    deviceElectionStateContext2 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+  cdaAdvertisingStartChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
 
-  if (v12)
+  if (cdaAdvertisingStartChanged)
   {
-    v13 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+    cdaAdvertisingStartChanged2 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+  cdaAdvertisingEndChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
 
-  if (v14)
+  if (cdaAdvertisingEndChanged)
   {
-    v15 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+    cdaAdvertisingEndChanged2 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+  electionTimerEnded = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
 
-  if (v16)
+  if (electionTimerEnded)
   {
-    v17 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+    electionTimerEnded2 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+  userFeedbackCompleted = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
 
-  if (v18)
+  if (userFeedbackCompleted)
   {
-    v19 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+    userFeedbackCompleted2 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+  userFeedbackParticipantCollectionReported = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (userFeedbackParticipantCollectionReported)
   {
-    v22 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+    userFeedbackParticipantCollectionReported2 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -814,9 +814,9 @@ LABEL_49:
   }
 }
 
-- (void)setUserFeedbackParticipantCollectionReported:(id)a3
+- (void)setUserFeedbackParticipantCollectionReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -839,14 +839,14 @@ LABEL_49:
   self->_userFeedbackCompleted = 0;
 
   v12 = 108;
-  if (!v4)
+  if (!reportedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   userFeedbackParticipantCollectionReported = self->_userFeedbackParticipantCollectionReported;
-  self->_userFeedbackParticipantCollectionReported = v4;
+  self->_userFeedbackParticipantCollectionReported = reportedCopy;
 }
 
 - (void)deleteUserFeedbackCompleted
@@ -859,9 +859,9 @@ LABEL_49:
   }
 }
 
-- (void)setUserFeedbackCompleted:(id)a3
+- (void)setUserFeedbackCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -884,14 +884,14 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 107;
-  if (!v4)
+  if (!completedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   userFeedbackCompleted = self->_userFeedbackCompleted;
-  self->_userFeedbackCompleted = v4;
+  self->_userFeedbackCompleted = completedCopy;
 }
 
 - (void)deleteElectionTimerEnded
@@ -904,9 +904,9 @@ LABEL_49:
   }
 }
 
-- (void)setElectionTimerEnded:(id)a3
+- (void)setElectionTimerEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -929,14 +929,14 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 106;
-  if (!v4)
+  if (!endedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   electionTimerEnded = self->_electionTimerEnded;
-  self->_electionTimerEnded = v4;
+  self->_electionTimerEnded = endedCopy;
 }
 
 - (void)deleteCdaAdvertisingEndChanged
@@ -949,9 +949,9 @@ LABEL_49:
   }
 }
 
-- (void)setCdaAdvertisingEndChanged:(id)a3
+- (void)setCdaAdvertisingEndChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -974,14 +974,14 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 105;
-  if (!v4)
+  if (!changedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   cdaAdvertisingEndChanged = self->_cdaAdvertisingEndChanged;
-  self->_cdaAdvertisingEndChanged = v4;
+  self->_cdaAdvertisingEndChanged = changedCopy;
 }
 
 - (void)deleteCdaAdvertisingStartChanged
@@ -994,9 +994,9 @@ LABEL_49:
   }
 }
 
-- (void)setCdaAdvertisingStartChanged:(id)a3
+- (void)setCdaAdvertisingStartChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -1019,14 +1019,14 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 104;
-  if (!v4)
+  if (!changedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   cdaAdvertisingStartChanged = self->_cdaAdvertisingStartChanged;
-  self->_cdaAdvertisingStartChanged = v4;
+  self->_cdaAdvertisingStartChanged = changedCopy;
 }
 
 - (void)deleteDeviceElectionStateContext
@@ -1039,9 +1039,9 @@ LABEL_49:
   }
 }
 
-- (void)setDeviceElectionStateContext:(id)a3
+- (void)setDeviceElectionStateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -1064,14 +1064,14 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   deviceElectionStateContext = self->_deviceElectionStateContext;
-  self->_deviceElectionStateContext = v4;
+  self->_deviceElectionStateContext = contextCopy;
 }
 
 - (void)deleteDebugElectionDecisionMade
@@ -1084,9 +1084,9 @@ LABEL_49:
   }
 }
 
-- (void)setDebugElectionDecisionMade:(id)a3
+- (void)setDebugElectionDecisionMade:(id)made
 {
-  v4 = a3;
+  madeCopy = made;
   electionDecisionMade = self->_electionDecisionMade;
   self->_electionDecisionMade = 0;
 
@@ -1109,14 +1109,14 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 102;
-  if (!v4)
+  if (!madeCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   debugElectionDecisionMade = self->_debugElectionDecisionMade;
-  self->_debugElectionDecisionMade = v4;
+  self->_debugElectionDecisionMade = madeCopy;
 }
 
 - (void)deleteElectionDecisionMade
@@ -1129,9 +1129,9 @@ LABEL_49:
   }
 }
 
-- (void)setElectionDecisionMade:(id)a3
+- (void)setElectionDecisionMade:(id)made
 {
-  v4 = a3;
+  madeCopy = made;
   debugElectionDecisionMade = self->_debugElectionDecisionMade;
   self->_debugElectionDecisionMade = 0;
 
@@ -1154,99 +1154,99 @@ LABEL_49:
   self->_userFeedbackParticipantCollectionReported = 0;
 
   v12 = 101;
-  if (!v4)
+  if (!madeCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   electionDecisionMade = self->_electionDecisionMade;
-  self->_electionDecisionMade = v4;
+  self->_electionDecisionMade = madeCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = CDASchemaCDAClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(CDASchemaCDAClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CDASchemaCDAClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  electionDecisionMade = [(CDASchemaCDAClientEvent *)self electionDecisionMade];
+  v10 = [electionDecisionMade applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CDASchemaCDAClientEvent *)self deleteElectionDecisionMade];
   }
 
-  v12 = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  debugElectionDecisionMade = [(CDASchemaCDAClientEvent *)self debugElectionDecisionMade];
+  v13 = [debugElectionDecisionMade applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CDASchemaCDAClientEvent *)self deleteDebugElectionDecisionMade];
   }
 
-  v15 = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  deviceElectionStateContext = [(CDASchemaCDAClientEvent *)self deviceElectionStateContext];
+  v16 = [deviceElectionStateContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CDASchemaCDAClientEvent *)self deleteDeviceElectionStateContext];
   }
 
-  v18 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  cdaAdvertisingStartChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingStartChanged];
+  v19 = [cdaAdvertisingStartChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(CDASchemaCDAClientEvent *)self deleteCdaAdvertisingStartChanged];
   }
 
-  v21 = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  cdaAdvertisingEndChanged = [(CDASchemaCDAClientEvent *)self cdaAdvertisingEndChanged];
+  v22 = [cdaAdvertisingEndChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(CDASchemaCDAClientEvent *)self deleteCdaAdvertisingEndChanged];
   }
 
-  v24 = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  electionTimerEnded = [(CDASchemaCDAClientEvent *)self electionTimerEnded];
+  v25 = [electionTimerEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(CDASchemaCDAClientEvent *)self deleteElectionTimerEnded];
   }
 
-  v27 = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  userFeedbackCompleted = [(CDASchemaCDAClientEvent *)self userFeedbackCompleted];
+  v28 = [userFeedbackCompleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(CDASchemaCDAClientEvent *)self deleteUserFeedbackCompleted];
   }
 
-  v30 = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  userFeedbackParticipantCollectionReported = [(CDASchemaCDAClientEvent *)self userFeedbackParticipantCollectionReported];
+  v31 = [userFeedbackParticipantCollectionReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(CDASchemaCDAClientEvent *)self deleteUserFeedbackParticipantCollectionReported];
   }
@@ -1264,98 +1264,98 @@ LABEL_49:
 
 - (int)componentName
 {
-  v2 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-  v3 = [v2 cdaId];
+  eventMetadata = [(CDASchemaCDAClientEvent *)self eventMetadata];
+  cdaId = [eventMetadata cdaId];
 
-  if (v3)
+  if (cdaId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [cdaId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [cdaId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 23;
+        LODWORD(value) = 23;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(CDASchemaCDAClientEvent *)self eventMetadata];
-  v3 = [v2 cdaId];
+  eventMetadata = [(CDASchemaCDAClientEvent *)self eventMetadata];
+  cdaId = [eventMetadata cdaId];
 
-  if (!v3)
+  if (!cdaId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [cdaId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [cdaId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = cdaId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(CDASchemaCDAClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 7)
+  whichEvent_Type = [(CDASchemaCDAClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9040[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9040[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 7)
+  if (tag - 101 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9080[a3 - 101];
+    return off_1E78E9080[tag - 101];
   }
 }
 

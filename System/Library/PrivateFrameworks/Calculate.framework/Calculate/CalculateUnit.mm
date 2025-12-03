@@ -1,8 +1,8 @@
 @interface CalculateUnit
-+ (CalculateUnit)unitWithID:(int)a3 unitsInfo:(id)a4 exponent:(int)a5;
-+ (id)localizedNameForValue:(double)a3 locale:(id)a4 retainingFormat:(BOOL)a5 unitFormat:(unint64_t)a6 unitType:(unint64_t)a7 name:(id)a8;
-- (BOOL)contains:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CalculateUnit)unitWithID:(int)d unitsInfo:(id)info exponent:(int)exponent;
++ (id)localizedNameForValue:(double)value locale:(id)locale retainingFormat:(BOOL)format unitFormat:(unint64_t)unitFormat unitType:(unint64_t)type name:(id)name;
+- (BOOL)contains:(id)contains;
+- (BOOL)isEqual:(id)equal;
 - (CalculateUnit)nextSmallest;
 - (CalculateUnitCategory)category;
 - (NSString)displayName;
@@ -10,8 +10,8 @@
 - (NSString)shortName;
 - (id)description;
 - (id)locale;
-- (id)localizedNameForFormat:(unint64_t)a3;
-- (int64_t)compare:(id)a3;
+- (id)localizedNameForFormat:(unint64_t)format;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CalculateUnit
@@ -27,42 +27,42 @@
 {
   if ([(CalculateUnit *)self exponent]== 1)
   {
-    v3 = [(CalculateUnit *)self name];
+    name = [(CalculateUnit *)self name];
   }
 
   else
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(CalculateUnit *)self name];
-    v3 = [v4 stringWithFormat:@"%@^%d", v5, -[CalculateUnit exponent](self, "exponent")];
+    name2 = [(CalculateUnit *)self name];
+    name = [v4 stringWithFormat:@"%@^%d", name2, -[CalculateUnit exponent](self, "exponent")];
   }
 
-  return v3;
+  return name;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CalculateUnit *)self compare:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CalculateUnit *)self compare:equalCopy]== 0;
 
   return v5;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  if ([v4 length])
+  containsCopy = contains;
+  if ([containsCopy length])
   {
-    if ([v4 containsString:@"|"])
+    if ([containsCopy containsString:@"|"])
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [(CalculateUnit *)self displayNames];
-      v5 = [v6 rangeOfString:v4 options:129] != 0x7FFFFFFFFFFFFFFFLL;
+      displayNames = [(CalculateUnit *)self displayNames];
+      v5 = [displayNames rangeOfString:containsCopy options:129] != 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
@@ -80,9 +80,9 @@
   if (!self->_displayNames || ([(NSLocale *)self->_displayNamesLocale isEqual:v3]& 1) == 0)
   {
     objc_storeStrong(&self->_displayNamesLocale, v3);
-    v4 = [(CalculateUnit *)self name];
+    name = [(CalculateUnit *)self name];
     v5 = [Localize localizationForLocale:v3];
-    v6 = [Localize localizedStringForKey:v4 value:0 table:@"LocalizableUnits" localization:v5];
+    v6 = [Localize localizedStringForKey:name value:0 table:@"LocalizableUnits" localization:v5];
     displayNames = self->_displayNames;
     self->_displayNames = v6;
   }
@@ -93,33 +93,33 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CalculateUnit *)self unitType];
-  v6 = [v4 unitType];
-  if (v5 < v6)
+  compareCopy = compare;
+  unitType = [(CalculateUnit *)self unitType];
+  unitType2 = [compareCopy unitType];
+  if (unitType < unitType2)
   {
     v7 = -1;
   }
 
   else
   {
-    v7 = v5 > v6;
+    v7 = unitType > unitType2;
   }
 
   if (!v7)
   {
-    v8 = [(CalculateUnit *)self exponent];
-    v9 = [v4 exponent];
-    if (v8 < v9)
+    exponent = [(CalculateUnit *)self exponent];
+    exponent2 = [compareCopy exponent];
+    if (exponent < exponent2)
     {
       v7 = -1;
     }
 
     else
     {
-      v7 = v8 > v9;
+      v7 = exponent > exponent2;
     }
   }
 
@@ -130,37 +130,37 @@
 {
   if (!self->_nextSmallest)
   {
-    v3 = [(UnitInfo *)self->_unitInfo nextSmallest];
+    nextSmallest = [(UnitInfo *)self->_unitInfo nextSmallest];
 
-    if (v3)
+    if (nextSmallest)
     {
-      v4 = [(UnitInfo *)self->_unitInfo nextSmallest];
+      nextSmallest2 = [(UnitInfo *)self->_unitInfo nextSmallest];
       v5 = objc_opt_new();
       nextSmallest = self->_nextSmallest;
       self->_nextSmallest = v5;
 
-      v7 = [v4 name];
+      name = [nextSmallest2 name];
       v8 = self->_nextSmallest;
       name = v8->_name;
-      v8->_name = v7;
+      v8->_name = name;
 
       self->_nextSmallest->_exponent = self->_exponent;
-      objc_storeStrong(&self->_nextSmallest->_unitInfo, v4);
-      v10 = [v4 typeInfo];
-      v11 = [v10 name];
-      v12 = [&unk_1F419A730 objectForKeyedSubscript:v11];
+      objc_storeStrong(&self->_nextSmallest->_unitInfo, nextSmallest2);
+      typeInfo = [nextSmallest2 typeInfo];
+      name2 = [typeInfo name];
+      v12 = [&unk_1F419A730 objectForKeyedSubscript:name2];
 
       if (v12)
       {
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
       }
 
       else
       {
-        v13 = 1;
+        intValue = 1;
       }
 
-      self->_nextSmallest->_unitType = v13;
+      self->_nextSmallest->_unitType = intValue;
     }
   }
 
@@ -169,25 +169,25 @@
   return v14;
 }
 
-- (id)localizedNameForFormat:(unint64_t)a3
+- (id)localizedNameForFormat:(unint64_t)format
 {
-  if (a3)
+  if (format)
   {
-    v4 = a3;
+    formatCopy = format;
   }
 
   else
   {
-    v4 = 4;
+    formatCopy = 4;
   }
 
-  v5 = [(CalculateUnit *)self locale];
-  v6 = [(CalculateUnit *)self localizedNameForValue:v5 locale:0 retainingFormat:v4 unitFormat:1.0];
+  locale = [(CalculateUnit *)self locale];
+  v6 = [(CalculateUnit *)self localizedNameForValue:locale locale:0 retainingFormat:formatCopy unitFormat:1.0];
 
   if (([v6 hasSuffix:@"²"] & 1) != 0 || objc_msgSend(v6, "hasSuffix:", @"³"))
   {
-    v7 = [(CalculateUnit *)self locale];
-    v8 = [CalculateResult defaultNumberFormatter:v7];
+    locale2 = [(CalculateUnit *)self locale];
+    v8 = [CalculateResult defaultNumberFormatter:locale2];
 
     v9 = [v8 stringFromNumber:&unk_1F4199CA0];
     if (([v9 isEqualToString:@"1"] & 1) == 0)
@@ -240,19 +240,19 @@ LABEL_12:
   {
     if (self->_unitType == 16)
     {
-      v4 = [(CalculateUnit *)self locale];
-      v5 = [v4 displayNameForKey:*MEMORY[0x1E695D980] value:self->_name];
-      v6 = self->_displayName;
+      locale = [(CalculateUnit *)self locale];
+      v5 = [locale displayNameForKey:*MEMORY[0x1E695D980] value:self->_name];
+      locale2 = self->_displayName;
       self->_displayName = v5;
     }
 
     else
     {
-      v4 = [(NSString *)self->_name stringByAppendingString:@" (Title)"];
+      locale = [(NSString *)self->_name stringByAppendingString:@" (Title)"];
       name = self->_name;
-      v6 = [(CalculateUnit *)self locale];
-      v8 = [Localize localizationForLocale:v6];
-      v9 = [Localize localizedStringForKey:v4 value:name table:@"LocalizableUnitsOutput" localization:v8];
+      locale2 = [(CalculateUnit *)self locale];
+      v8 = [Localize localizationForLocale:locale2];
+      v9 = [Localize localizedStringForKey:locale value:name table:@"LocalizableUnitsOutput" localization:v8];
       v10 = self->_displayName;
       self->_displayName = v9;
     }
@@ -267,14 +267,14 @@ LABEL_12:
 
 - (id)locale
 {
-  v2 = [(CalculateUnit *)self category];
-  v3 = [v2 collection];
-  v4 = [v3 locales];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  category = [(CalculateUnit *)self category];
+  collection = [category collection];
+  locales = [collection locales];
+  firstObject = [locales firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    v7 = firstObject;
   }
 
   else
@@ -287,33 +287,33 @@ LABEL_12:
   return v8;
 }
 
-+ (id)localizedNameForValue:(double)a3 locale:(id)a4 retainingFormat:(BOOL)a5 unitFormat:(unint64_t)a6 unitType:(unint64_t)a7 name:(id)a8
++ (id)localizedNameForValue:(double)value locale:(id)locale retainingFormat:(BOOL)format unitFormat:(unint64_t)unitFormat unitType:(unint64_t)type name:(id)name
 {
-  v11 = a5;
+  formatCopy = format;
   dst[1] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a8;
-  v15 = [Localize localizationForLocale:v13];
-  if (a7 != 16 || (a6 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  localeCopy = locale;
+  nameCopy = name;
+  v15 = [Localize localizationForLocale:localeCopy];
+  if (type != 16 || (unitFormat & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
-    if (a6 - 1 <= 2)
+    if (unitFormat - 1 <= 2)
     {
-      v17 = off_1E815C6F8[a6 - 1];
+      v17 = off_1E815C6F8[unitFormat - 1];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v16 = [v13 localeIdentifier];
-    [v16 UTF8String];
+    localeIdentifier = [localeCopy localeIdentifier];
+    [localeIdentifier UTF8String];
 
     unum_open();
     dst[0] = 0;
-    u_uastrncpy(dst, [v14 UTF8String], 3);
+    u_uastrncpy(dst, [nameCopy UTF8String], 3);
     memset(src, 0, sizeof(src));
     unum_formatDoubleCurrency();
-    v37 = v11;
+    v37 = formatCopy;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
@@ -334,8 +334,8 @@ LABEL_12:
     v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v38];
     v36 = [v31 substringWithRange:{0, 0}];
     v32 = [v31 stringByReplacingOccurrencesOfString:v36 withString:&stru_1F418FCD8];
-    v33 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v34 = [v32 stringByTrimmingCharactersInSet:v33];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v34 = [v32 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     unum_close();
     if (v36)
@@ -355,22 +355,22 @@ LABEL_12:
       goto LABEL_16;
     }
 
-    v11 = v37;
+    formatCopy = v37;
   }
 
   v17 = @" (Long)";
 LABEL_7:
-  v18 = [v14 stringByAppendingString:v17];
+  v18 = [nameCopy stringByAppendingString:v17];
   v19 = [Localize localizedStringForKey:v18 value:&stru_1F418FCD8 table:@"LocalizableUnitsOutput" localization:v15];
   if ([v19 isEqualToString:v18])
   {
-    v20 = [@"%g " stringByAppendingString:v14];
+    v20 = [@"%g " stringByAppendingString:nameCopy];
 
     v19 = v20;
   }
 
-  v21 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v19, *&a3];
-  v22 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%g", *&a3];
+  v21 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v19, *&value];
+  v22 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%g", *&value];
   v23 = [v21 rangeOfString:v22];
   if (v23 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -379,11 +379,11 @@ LABEL_7:
 
   else
   {
-    if (!v11)
+    if (!formatCopy)
     {
       v27 = [v21 stringByReplacingCharactersInRange:v23 withString:{v24, &stru_1F418FCD8}];
-      v28 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v26 = [v27 stringByTrimmingCharactersInSet:v28];
+      whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v26 = [v27 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
       goto LABEL_15;
     }
@@ -400,36 +400,36 @@ LABEL_16:
   return v26;
 }
 
-+ (CalculateUnit)unitWithID:(int)a3 unitsInfo:(id)a4 exponent:(int)a5
++ (CalculateUnit)unitWithID:(int)d unitsInfo:(id)info exponent:(int)exponent
 {
-  v7 = a4;
+  infoCopy = info;
   v8 = objc_opt_new();
-  v9 = [v7 objectAtIndexedSubscript:a3];
-  v10 = [v9 name];
+  v9 = [infoCopy objectAtIndexedSubscript:d];
+  name = [v9 name];
   v11 = *(v8 + 16);
-  *(v8 + 16) = v10;
+  *(v8 + 16) = name;
 
-  *(v8 + 8) = a5;
-  v12 = [v7 objectAtIndexedSubscript:a3];
+  *(v8 + 8) = exponent;
+  v12 = [infoCopy objectAtIndexedSubscript:d];
 
   v13 = *(v8 + 80);
   *(v8 + 80) = v12;
 
-  v14 = [*(v8 + 80) typeInfo];
-  v15 = [v14 name];
-  v16 = [&unk_1F419A730 objectForKeyedSubscript:v15];
+  typeInfo = [*(v8 + 80) typeInfo];
+  name2 = [typeInfo name];
+  v16 = [&unk_1F419A730 objectForKeyedSubscript:name2];
 
   if (v16)
   {
-    v17 = [v16 intValue];
+    intValue = [v16 intValue];
   }
 
   else
   {
-    v17 = 1;
+    intValue = 1;
   }
 
-  *(v8 + 40) = v17;
+  *(v8 + 40) = intValue;
 
   return v8;
 }

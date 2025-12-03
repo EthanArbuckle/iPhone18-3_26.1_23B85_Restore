@@ -1,51 +1,51 @@
 @interface SFUserActivityInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFUserActivityInfo)initWithCoder:(id)a3;
-- (SFUserActivityInfo)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFUserActivityInfo)initWithCoder:(id)coder;
+- (SFUserActivityInfo)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFUserActivityInfo
 
-- (SFUserActivityInfo)initWithProtobuf:(id)a3
+- (SFUserActivityInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v15.receiver = self;
   v15.super_class = SFUserActivityInfo;
   v5 = [(SFUserActivityInfo *)&v15 init];
   if (v5)
   {
-    if ([v4 valueType])
+    if ([protobufCopy valueType])
     {
-      -[SFUserActivityInfo setValueType:](v5, "setValueType:", [v4 valueType]);
+      -[SFUserActivityInfo setValueType:](v5, "setValueType:", [protobufCopy valueType]);
     }
 
-    v6 = [v4 key];
+    v6 = [protobufCopy key];
 
     if (v6)
     {
-      v7 = [v4 key];
+      v7 = [protobufCopy key];
       [(SFUserActivityInfo *)v5 setKey:v7];
     }
 
-    v8 = [v4 stringValue];
+    stringValue = [protobufCopy stringValue];
 
-    if (v8)
+    if (stringValue)
     {
-      v9 = [v4 stringValue];
-      [(SFUserActivityInfo *)v5 setStringValue:v9];
+      stringValue2 = [protobufCopy stringValue];
+      [(SFUserActivityInfo *)v5 setStringValue:stringValue2];
     }
 
-    v10 = [v4 urlValue];
+    urlValue = [protobufCopy urlValue];
 
-    if (v10)
+    if (urlValue)
     {
-      v11 = [v4 urlValue];
-      v12 = _SFPBURLHandwrittenTranslator(v11);
+      urlValue2 = [protobufCopy urlValue];
+      v12 = _SFPBURLHandwrittenTranslator(urlValue2);
       [(SFUserActivityInfo *)v5 setUrlValue:v12];
     }
 
@@ -57,32 +57,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFUserActivityInfo *)self valueType];
+  valueType = [(SFUserActivityInfo *)self valueType];
   v4 = [(SFUserActivityInfo *)self key];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(SFUserActivityInfo *)self stringValue];
-  v7 = [v6 hash];
-  v8 = [(SFUserActivityInfo *)self urlValue];
-  v9 = v7 ^ [v8 hash];
+  v5 = [v4 hash] ^ valueType;
+  stringValue = [(SFUserActivityInfo *)self stringValue];
+  v7 = [stringValue hash];
+  urlValue = [(SFUserActivityInfo *)self urlValue];
+  v9 = v7 ^ [urlValue hash];
 
   return v5 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(SFUserActivityInfo *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFUserActivityInfo *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFUserActivityInfo *)self valueType];
-      if (v7 != [(SFUserActivityInfo *)v6 valueType])
+      v6 = equalCopy;
+      valueType = [(SFUserActivityInfo *)self valueType];
+      if (valueType != [(SFUserActivityInfo *)v6 valueType])
       {
         v12 = 0;
 LABEL_33:
@@ -114,33 +114,33 @@ LABEL_32:
         v32 = v11;
       }
 
-      v13 = [(SFUserActivityInfo *)self stringValue];
-      v14 = [(SFUserActivityInfo *)v6 stringValue];
-      v15 = v14;
-      if ((v13 != 0) == (v14 == 0))
+      stringValue = [(SFUserActivityInfo *)self stringValue];
+      stringValue2 = [(SFUserActivityInfo *)v6 stringValue];
+      v15 = stringValue2;
+      if ((stringValue != 0) == (stringValue2 == 0))
       {
 
         v12 = 0;
         goto LABEL_29;
       }
 
-      v16 = [(SFUserActivityInfo *)self stringValue];
-      if (v16)
+      stringValue3 = [(SFUserActivityInfo *)self stringValue];
+      if (stringValue3)
       {
-        v26 = v13;
-        v17 = [(SFUserActivityInfo *)self stringValue];
-        v28 = [(SFUserActivityInfo *)v6 stringValue];
-        v29 = v17;
-        if (![v17 isEqual:?])
+        v26 = stringValue;
+        stringValue4 = [(SFUserActivityInfo *)self stringValue];
+        stringValue5 = [(SFUserActivityInfo *)v6 stringValue];
+        v29 = stringValue4;
+        if (![stringValue4 isEqual:?])
         {
           v12 = 0;
-          v13 = v26;
+          stringValue = v26;
           goto LABEL_27;
         }
 
-        v30 = v16;
+        v30 = stringValue3;
         v31 = v3;
-        v13 = v26;
+        stringValue = v26;
       }
 
       else
@@ -149,13 +149,13 @@ LABEL_32:
         v31 = v3;
       }
 
-      v18 = [(SFUserActivityInfo *)self urlValue];
-      v19 = [(SFUserActivityInfo *)v6 urlValue];
-      if ((v18 != 0) == (v19 == 0))
+      urlValue = [(SFUserActivityInfo *)self urlValue];
+      urlValue2 = [(SFUserActivityInfo *)v6 urlValue];
+      if ((urlValue != 0) == (urlValue2 == 0))
       {
 
         v12 = 0;
-        v16 = v30;
+        stringValue3 = v30;
         v3 = v31;
         if (!v30)
         {
@@ -165,16 +165,16 @@ LABEL_32:
 
       else
       {
-        v25 = v18;
-        v27 = v19;
-        v20 = [(SFUserActivityInfo *)self urlValue];
-        v16 = v30;
-        if (v20)
+        v25 = urlValue;
+        v27 = urlValue2;
+        urlValue3 = [(SFUserActivityInfo *)self urlValue];
+        stringValue3 = v30;
+        if (urlValue3)
         {
-          v24 = v20;
-          v23 = [(SFUserActivityInfo *)self urlValue];
-          v21 = [(SFUserActivityInfo *)v6 urlValue];
-          v12 = [v23 isEqual:?];
+          v24 = urlValue3;
+          urlValue4 = [(SFUserActivityInfo *)self urlValue];
+          urlValue5 = [(SFUserActivityInfo *)v6 urlValue];
+          v12 = [urlValue4 isEqual:?];
         }
 
         else
@@ -215,20 +215,20 @@ LABEL_34:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setValueType:{-[SFUserActivityInfo valueType](self, "valueType")}];
   v5 = [(SFUserActivityInfo *)self key];
   v6 = [v5 copy];
   [v4 setKey:v6];
 
-  v7 = [(SFUserActivityInfo *)self stringValue];
-  v8 = [v7 copy];
+  stringValue = [(SFUserActivityInfo *)self stringValue];
+  v8 = [stringValue copy];
   [v4 setStringValue:v8];
 
-  v9 = [(SFUserActivityInfo *)self urlValue];
-  v10 = [v9 copy];
+  urlValue = [(SFUserActivityInfo *)self urlValue];
+  v10 = [urlValue copy];
   [v4 setUrlValue:v10];
 
   return v4;
@@ -237,31 +237,31 @@ LABEL_34:
 - (NSData)jsonData
 {
   v2 = [[_SFPBUserActivityInfo alloc] initWithFacade:self];
-  v3 = [(_SFPBUserActivityInfo *)v2 jsonData];
+  jsonData = [(_SFPBUserActivityInfo *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBUserActivityInfo alloc] initWithFacade:self];
-  v3 = [(_SFPBUserActivityInfo *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBUserActivityInfo *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBUserActivityInfo alloc] initWithFacade:self];
-  v5 = [(_SFPBUserActivityInfo *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBUserActivityInfo *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFUserActivityInfo)initWithCoder:(id)a3
+- (SFUserActivityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBUserActivityInfo alloc] initWithData:v5];
   v7 = [(SFUserActivityInfo *)self initWithProtobuf:v6];

@@ -1,7 +1,7 @@
 @interface ICPushNotificationsDisableTypesRequest
-- (ICPushNotificationsDisableTypesRequest)initWithRequestContext:(id)a3 notificationType:(id)a4;
+- (ICPushNotificationsDisableTypesRequest)initWithRequestContext:(id)context notificationType:(id)type;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICPushNotificationsDisableTypesRequest
@@ -14,7 +14,7 @@
   {
     notificationType = self->_notificationType;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = notificationType;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Disabling push notifications for type %{public}@", buf, 0x16u);
@@ -154,16 +154,16 @@ void __49__ICPushNotificationsDisableTypesRequest_execute__block_invoke_18(uint6
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__ICPushNotificationsDisableTypesRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -178,20 +178,20 @@ uint64_t __76__ICPushNotificationsDisableTypesRequest_performRequestWithResponse
   return result;
 }
 
-- (ICPushNotificationsDisableTypesRequest)initWithRequestContext:(id)a3 notificationType:(id)a4
+- (ICPushNotificationsDisableTypesRequest)initWithRequestContext:(id)context notificationType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = ICPushNotificationsDisableTypesRequest;
   v8 = [(ICRequestOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contextCopy copy];
     requestContext = v8->_requestContext;
     v8->_requestContext = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     notificationType = v8->_notificationType;
     v8->_notificationType = v11;
   }

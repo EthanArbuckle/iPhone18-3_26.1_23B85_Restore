@@ -7,15 +7,15 @@
 
 - (NSData)_uudecoded_small
 {
-  v1 = a1;
+  selfCopy = self;
   v11[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     *&v2 = 0xAAAAAAAAAAAAAAAALL;
     *(&v2 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v9[0] = v2;
     v9[1] = v2;
-    v3 = vcvtpd_u64_f64([(NSData *)a1 length]* 0.74 + 100.0);
+    v3 = vcvtpd_u64_f64([(NSData *)self length]* 0.74 + 100.0);
     if (v3 <= 0x64)
     {
       v4 = 100;
@@ -28,7 +28,7 @@
 
     OutputBuffer::OutputBuffer(v9, v4);
     memset(v8, 170, sizeof(v8));
-    DecodeBuffer::DecodeBuffer(v8, v1);
+    DecodeBuffer::DecodeBuffer(v8, selfCopy);
     v11[0] = &unk_1F4F334E0;
     v11[1] = v9;
     v11[3] = v11;
@@ -41,25 +41,25 @@
     if (v5)
     {
       [*(&v9[0] + 1) setLength:*&v9[0]];
-      v1 = *(&v9[0] + 1);
+      selfCopy = *(&v9[0] + 1);
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 - (NSData)_uudecoded_large
 {
-  v1 = a1;
+  selfCopy = self;
   v10[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     *&v2 = 0xAAAAAAAAAAAAAAAALL;
     *(&v2 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -73,14 +73,14 @@
 
     if (!v8[0])
     {
-      v1 = 0;
+      selfCopy = 0;
 LABEL_10:
 
       goto LABEL_11;
     }
 
     memset(v6, 170, sizeof(v6));
-    DecodeBuffer::DecodeBuffer(v6, v1);
+    DecodeBuffer::DecodeBuffer(v6, selfCopy);
     v10[0] = &unk_1F4F33590;
     v10[1] = &v7;
     v10[3] = v10;
@@ -92,13 +92,13 @@ LABEL_10:
     std::__function::__value_func<void ()(unsigned char)>::~__value_func[abi:nn200100](v10);
     if (v3)
     {
-      v1 = TemporaryFile::mappedData(&v7);
+      selfCopy = TemporaryFile::mappedData(&v7);
     }
 
     else
     {
 LABEL_6:
-      v1 = 0;
+      selfCopy = 0;
     }
 
     if (v8[0])
@@ -112,7 +112,7 @@ LABEL_6:
 LABEL_11:
   v4 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 @end

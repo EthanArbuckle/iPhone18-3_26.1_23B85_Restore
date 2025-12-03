@@ -1,13 +1,13 @@
 @interface NTKCharacterFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
 @end
 
 @implementation NTKCharacterFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 210;
@@ -18,14 +18,14 @@
     v4 = 10;
   }
 
-  v5 = [NTKCharacterFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKCharacterFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v22[0] = NTKComplicationSlotTopLeft;
   v22[1] = NTKComplicationSlotTopRight;
   v23[0] = &off_1EA20;
@@ -39,10 +39,10 @@
   do
   {
     v8 = v7;
-    v9 = [(NTKCharacterFaceBundle *)self defaultFaceForDevice:v4];
+    v9 = [(NTKCharacterFaceBundle *)self defaultFaceForDevice:deviceCopy];
     if (v9)
     {
-      v10 = [NTKCharacterEditOption optionWithCharacter:v6 forDevice:v4];
+      v10 = [NTKCharacterEditOption optionWithCharacter:v6 forDevice:deviceCopy];
       [v9 selectOption:v10 forCustomEditMode:12 slot:0];
 
       [v9 _setFaceGalleryComplicationTypesForSlots:v19];

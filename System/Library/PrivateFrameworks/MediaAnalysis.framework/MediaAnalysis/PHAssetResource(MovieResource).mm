@@ -6,10 +6,10 @@
 
 - (id)vcp_avAsset
 {
-  v1 = [a1 privateFileURL];
-  if (v1)
+  privateFileURL = [self privateFileURL];
+  if (privateFileURL)
   {
-    v2 = [MEMORY[0x1E6987E28] assetWithURL:v1];
+    v2 = [MEMORY[0x1E6987E28] assetWithURL:privateFileURL];
   }
 
   else

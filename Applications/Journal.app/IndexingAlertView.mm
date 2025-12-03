@@ -1,7 +1,7 @@
 @interface IndexingAlertView
 - (_TtC7Journal17IndexingAlertView)init;
-- (_TtC7Journal17IndexingAlertView)initWithCoder:(id)a3;
-- (_TtC7Journal17IndexingAlertView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal17IndexingAlertView)initWithCoder:(id)coder;
+- (_TtC7Journal17IndexingAlertView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation IndexingAlertView
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (_TtC7Journal17IndexingAlertView)initWithCoder:(id)a3
+- (_TtC7Journal17IndexingAlertView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC7Journal17IndexingAlertView_bodyLabel;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UILabel) init];
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (_TtC7Journal17IndexingAlertView)initWithFrame:(CGRect)a3
+- (_TtC7Journal17IndexingAlertView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

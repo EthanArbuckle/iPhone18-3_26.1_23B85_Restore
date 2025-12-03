@@ -1,9 +1,9 @@
 @interface HUCameraRecordingExportPreviewViewController
 - (AVQueuePlayer)queuePlayer;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (HMCameraClip)cameraClip;
 - (HMCameraProfile)cameraProfile;
-- (HUCameraRecordingExportPreviewViewController)initWithCameraClip:(id)a3 cameraProfile:(id)a4 completionHandler:(id)a5;
+- (HUCameraRecordingExportPreviewViewController)initWithCameraClip:(id)clip cameraProfile:(id)profile completionHandler:(id)handler;
 - (HUCameraRecordingPlayerView)playerView;
 - (UIButton)submitButton;
 - (UILabel)descriptionLabel;
@@ -18,28 +18,28 @@
 - (void)prepareRecordingForExport;
 - (void)showPrivacyInformation;
 - (void)submitCurrentClip;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUCameraRecordingExportPreviewViewController
 
-- (HUCameraRecordingExportPreviewViewController)initWithCameraClip:(id)a3 cameraProfile:(id)a4 completionHandler:(id)a5
+- (HUCameraRecordingExportPreviewViewController)initWithCameraClip:(id)clip cameraProfile:(id)profile completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clipCopy = clip;
+  profileCopy = profile;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = HUCameraRecordingExportPreviewViewController;
   v11 = [(HUCameraRecordingExportPreviewViewController *)&v18 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_cameraClip, v8);
-    objc_storeWeak(&v12->_cameraProfile, v9);
-    v13 = _Block_copy(v10);
+    objc_storeWeak(&v11->_cameraClip, clipCopy);
+    objc_storeWeak(&v12->_cameraProfile, profileCopy);
+    v13 = _Block_copy(handlerCopy);
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v13;
 
@@ -58,9 +58,9 @@
   v10.receiver = self;
   v10.super_class = HUCameraRecordingExportPreviewViewController;
   [(HUCameraRecordingExportPreviewViewController *)&v10 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HUCameraRecordingExportPreviewViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = _HULocalizedStringWithDefaultValue(@"HUCameraExportFeedbackNavigationTitle", @"HUCameraExportFeedbackNavigationTitle", 1);
   [(HUCameraRecordingExportPreviewViewController *)self setTitle:v5];
@@ -68,8 +68,8 @@
   v6 = objc_alloc(MEMORY[0x277D751E0]);
   v7 = _HULocalizedStringWithDefaultValue(@"HUCameraCancelText", @"HUCameraCancelText", 1);
   v8 = [v6 initWithTitle:v7 style:0 target:self action:sel_cancelSubmission];
-  v9 = [(HUCameraRecordingExportPreviewViewController *)self navigationItem];
-  [v9 setLeftBarButtonItem:v8];
+  navigationItem = [(HUCameraRecordingExportPreviewViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v8];
 
   if ([(HUCameraRecordingExportPreviewViewController *)self hasVideoPreview])
   {
@@ -84,38 +84,38 @@
 
 - (void)_loadPreviewInterface
 {
-  v3 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-  v4 = [v3 superview];
+  playerView = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+  superview = [playerView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(HUCameraRecordingExportPreviewViewController *)self view];
-    v6 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-    [v5 addSubview:v6];
+    view = [(HUCameraRecordingExportPreviewViewController *)self view];
+    playerView2 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+    [view addSubview:playerView2];
 
-    v7 = [(HUCameraRecordingExportPreviewViewController *)self view];
-    v8 = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
-    [v7 addSubview:v8];
+    view2 = [(HUCameraRecordingExportPreviewViewController *)self view];
+    descriptionLabel = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
+    [view2 addSubview:descriptionLabel];
 
-    v9 = [(HUCameraRecordingExportPreviewViewController *)self view];
-    v10 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
-    [v9 addSubview:v10];
+    view3 = [(HUCameraRecordingExportPreviewViewController *)self view];
+    learnMoreTextView = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
+    [view3 addSubview:learnMoreTextView];
 
-    v11 = [(HUCameraRecordingExportPreviewViewController *)self view];
-    v12 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-    [v11 addSubview:v12];
+    view4 = [(HUCameraRecordingExportPreviewViewController *)self view];
+    submitButton = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+    [view4 addSubview:submitButton];
 
     [(HUCameraRecordingExportPreviewViewController *)self _addConstraints];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = HUCameraRecordingExportPreviewViewController;
-  [(HUCameraRecordingExportPreviewViewController *)&v7 traitCollectionDidChange:a3];
-  v4 = [(HUCameraRecordingExportPreviewViewController *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  [(HUCameraRecordingExportPreviewViewController *)&v7 traitCollectionDidChange:change];
+  traitCollection = [(HUCameraRecordingExportPreviewViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x277D75348] systemWhiteColor];
   }
@@ -125,21 +125,21 @@
     [MEMORY[0x277D75348] systemBlackColor];
   }
   v5 = ;
-  v6 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
-  [v6 setColor:v5];
+  loadingIndicatorView = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
+  [loadingIndicatorView setColor:v5];
 }
 
 - (void)_loadLoadingInterface
 {
-  v3 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
+  loadingIndicatorView = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
 
-  if (!v3)
+  if (!loadingIndicatorView)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
     [(HUCameraRecordingExportPreviewViewController *)self setLoadingIndicatorView:v4];
 
-    v5 = [(HUCameraRecordingExportPreviewViewController *)self traitCollection];
-    if ([v5 userInterfaceStyle] == 2)
+    traitCollection = [(HUCameraRecordingExportPreviewViewController *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] systemWhiteColor];
     }
@@ -149,30 +149,30 @@
       [MEMORY[0x277D75348] systemBlackColor];
     }
     v6 = ;
-    v7 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
-    [v7 setColor:v6];
+    loadingIndicatorView2 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
+    [loadingIndicatorView2 setColor:v6];
 
-    v8 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
-    [v8 startAnimating];
+    loadingIndicatorView3 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
+    [loadingIndicatorView3 startAnimating];
 
-    v9 = [(HUCameraRecordingExportPreviewViewController *)self view];
-    [v9 center];
+    view = [(HUCameraRecordingExportPreviewViewController *)self view];
+    [view center];
     v11 = v10;
     v13 = v12;
-    v14 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
-    [v14 setCenter:{v11, v13}];
+    loadingIndicatorView4 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
+    [loadingIndicatorView4 setCenter:{v11, v13}];
 
-    v16 = [(HUCameraRecordingExportPreviewViewController *)self view];
-    v15 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
-    [v16 addSubview:v15];
+    view2 = [(HUCameraRecordingExportPreviewViewController *)self view];
+    loadingIndicatorView5 = [(HUCameraRecordingExportPreviewViewController *)self loadingIndicatorView];
+    [view2 addSubview:loadingIndicatorView5];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HUCameraRecordingExportPreviewViewController;
-  [(HUCameraRecordingExportPreviewViewController *)&v4 viewWillAppear:a3];
+  [(HUCameraRecordingExportPreviewViewController *)&v4 viewWillAppear:appear];
   if ([(HUCameraRecordingExportPreviewViewController *)self hasVideoPreview])
   {
     [(HUCameraRecordingExportPreviewViewController *)self playVideoFile];
@@ -182,7 +182,7 @@
 - (void)playVideoFile
 {
   objc_initWeak(&location, self);
-  v3 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayer];
+  queuePlayer = [(HUCameraRecordingExportPreviewViewController *)self queuePlayer];
   CMTimeMakeWithSeconds(&v10, 0.017, 60);
   v4 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
@@ -191,11 +191,11 @@
   v8[2] = __61__HUCameraRecordingExportPreviewViewController_playVideoFile__block_invoke;
   v8[3] = &unk_277DBCB68;
   objc_copyWeak(&v9, &location);
-  v6 = [v3 addPeriodicTimeObserverForInterval:&v10 queue:v4 usingBlock:v8];
+  v6 = [queuePlayer addPeriodicTimeObserverForInterval:&v10 queue:v4 usingBlock:v8];
   [(HUCameraRecordingExportPreviewViewController *)self setQueuePlayerObserver:v6];
 
-  v7 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayer];
-  [v7 play];
+  queuePlayer2 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayer];
+  [queuePlayer2 play];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -238,117 +238,117 @@ void __61__HUCameraRecordingExportPreviewViewController_playVideoFile__block_inv
   [v11 setProgress:v12];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = HUCameraRecordingExportPreviewViewController;
-  [(HUCameraRecordingExportPreviewViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayerObserver];
+  [(HUCameraRecordingExportPreviewViewController *)&v7 viewWillDisappear:disappear];
+  queuePlayerObserver = [(HUCameraRecordingExportPreviewViewController *)self queuePlayerObserver];
 
-  if (v4)
+  if (queuePlayerObserver)
   {
-    v5 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayer];
-    v6 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayerObserver];
-    [v5 removeTimeObserver:v6];
+    queuePlayer = [(HUCameraRecordingExportPreviewViewController *)self queuePlayer];
+    queuePlayerObserver2 = [(HUCameraRecordingExportPreviewViewController *)self queuePlayerObserver];
+    [queuePlayer removeTimeObserver:queuePlayerObserver2];
   }
 }
 
 - (void)_addConstraints
 {
   v82[16] = *MEMORY[0x277D85DE8];
-  v81 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-  v80 = [v81 heightAnchor];
-  v79 = [v80 constraintEqualToConstant:220.0];
+  playerView = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+  heightAnchor = [playerView heightAnchor];
+  v79 = [heightAnchor constraintEqualToConstant:220.0];
   v82[0] = v79;
-  v78 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-  v77 = [v78 widthAnchor];
-  v76 = [v77 constraintEqualToConstant:390.0];
+  playerView2 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+  widthAnchor = [playerView2 widthAnchor];
+  v76 = [widthAnchor constraintEqualToConstant:390.0];
   v82[1] = v76;
-  v75 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-  v73 = [v75 topAnchor];
-  v74 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v72 = [v74 safeAreaLayoutGuide];
-  v71 = [v72 topAnchor];
-  v70 = [v73 constraintEqualToAnchor:v71 constant:20.0];
+  playerView3 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+  topAnchor = [playerView3 topAnchor];
+  view = [(HUCameraRecordingExportPreviewViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v70 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v82[2] = v70;
-  v69 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-  v67 = [v69 centerXAnchor];
-  v68 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v66 = [v68 centerXAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  playerView4 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+  centerXAnchor = [playerView4 centerXAnchor];
+  view2 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v65 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v82[3] = v65;
-  v64 = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
-  v62 = [v64 topAnchor];
-  v63 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
-  v61 = [v63 bottomAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:10.0];
+  descriptionLabel = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
+  topAnchor3 = [descriptionLabel topAnchor];
+  playerView5 = [(HUCameraRecordingExportPreviewViewController *)self playerView];
+  bottomAnchor = [playerView5 bottomAnchor];
+  v60 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
   v82[4] = v60;
-  v59 = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
-  v57 = [v59 leftAnchor];
-  v58 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v56 = [v58 safeAreaLayoutGuide];
-  v55 = [v56 leftAnchor];
-  v54 = [v57 constraintEqualToAnchor:v55 constant:10.0];
+  descriptionLabel2 = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
+  leftAnchor = [descriptionLabel2 leftAnchor];
+  view3 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide2 leftAnchor];
+  v54 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   v82[5] = v54;
-  v53 = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
-  v51 = [v53 rightAnchor];
-  v52 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v50 = [v52 safeAreaLayoutGuide];
-  v49 = [v50 rightAnchor];
-  v48 = [v51 constraintEqualToAnchor:v49 constant:-10.0];
+  descriptionLabel3 = [(HUCameraRecordingExportPreviewViewController *)self descriptionLabel];
+  rightAnchor = [descriptionLabel3 rightAnchor];
+  view4 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide3 rightAnchor];
+  v48 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
   v82[6] = v48;
-  v47 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v45 = [v47 bottomAnchor];
-  v46 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v44 = [v46 safeAreaLayoutGuide];
-  v43 = [v44 bottomAnchor];
-  v42 = [v45 constraintEqualToAnchor:v43 constant:-20.0];
+  submitButton = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  bottomAnchor2 = [submitButton bottomAnchor];
+  view5 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide4 bottomAnchor];
+  v42 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-20.0];
   v82[7] = v42;
-  v41 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v40 = [v41 heightAnchor];
-  v39 = [v40 constraintEqualToConstant:47.0];
+  submitButton2 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  heightAnchor2 = [submitButton2 heightAnchor];
+  v39 = [heightAnchor2 constraintEqualToConstant:47.0];
   v82[8] = v39;
-  v38 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v36 = [v38 centerXAnchor];
-  v37 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v34 = [v37 centerXAnchor];
-  v33 = [v36 constraintEqualToAnchor:v34];
+  submitButton3 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  centerXAnchor3 = [submitButton3 centerXAnchor];
+  view6 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  centerXAnchor4 = [view6 centerXAnchor];
+  v33 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v82[9] = v33;
-  v32 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v30 = [v32 leftAnchor];
-  v31 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v29 = [v31 safeAreaLayoutGuide];
-  v28 = [v29 leftAnchor];
-  v27 = [v30 constraintEqualToAnchor:v28 constant:20.0];
+  submitButton4 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  leftAnchor3 = [submitButton4 leftAnchor];
+  view7 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  safeAreaLayoutGuide5 = [view7 safeAreaLayoutGuide];
+  leftAnchor4 = [safeAreaLayoutGuide5 leftAnchor];
+  v27 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:20.0];
   v82[10] = v27;
-  v26 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v24 = [v26 rightAnchor];
-  v25 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v23 = [v25 safeAreaLayoutGuide];
-  v22 = [v23 rightAnchor];
-  v21 = [v24 constraintEqualToAnchor:v22 constant:-20.0];
+  submitButton5 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  rightAnchor3 = [submitButton5 rightAnchor];
+  view8 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  safeAreaLayoutGuide6 = [view8 safeAreaLayoutGuide];
+  rightAnchor4 = [safeAreaLayoutGuide6 rightAnchor];
+  v21 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-20.0];
   v82[11] = v21;
-  v20 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
-  v19 = [v20 heightAnchor];
-  v18 = [v19 constraintEqualToConstant:80.0];
+  learnMoreTextView = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
+  heightAnchor3 = [learnMoreTextView heightAnchor];
+  v18 = [heightAnchor3 constraintEqualToConstant:80.0];
   v82[12] = v18;
-  v17 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
-  v15 = [v17 bottomAnchor];
-  v16 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v14 = [v16 topAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14 constant:-10.0];
+  learnMoreTextView2 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
+  bottomAnchor4 = [learnMoreTextView2 bottomAnchor];
+  submitButton6 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  topAnchor4 = [submitButton6 topAnchor];
+  v13 = [bottomAnchor4 constraintEqualToAnchor:topAnchor4 constant:-10.0];
   v82[13] = v13;
-  v3 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
-  v4 = [v3 leftAnchor];
-  v5 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v6 = [v5 leftAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  learnMoreTextView3 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
+  leftAnchor5 = [learnMoreTextView3 leftAnchor];
+  submitButton7 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  leftAnchor6 = [submitButton7 leftAnchor];
+  v7 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
   v82[14] = v7;
-  v8 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
-  v9 = [v8 rightAnchor];
-  v10 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
-  v11 = [v10 rightAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  learnMoreTextView4 = [(HUCameraRecordingExportPreviewViewController *)self learnMoreTextView];
+  rightAnchor5 = [learnMoreTextView4 rightAnchor];
+  submitButton8 = [(HUCameraRecordingExportPreviewViewController *)self submitButton];
+  rightAnchor6 = [submitButton8 rightAnchor];
+  v12 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
   v82[15] = v12;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:16];
 
@@ -358,46 +358,46 @@ void __61__HUCameraRecordingExportPreviewViewController_playVideoFile__block_inv
 - (void)showPrivacyInformation
 {
   v22 = objc_alloc_init(HUCameraRecordingPrivacyTextViewController);
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HUCameraRecordingPrivacyTextViewController *)v22 view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HUCameraRecordingPrivacyTextViewController *)v22 view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc(MEMORY[0x277D751E0]);
   v6 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
   v7 = [v5 initWithTitle:v6 style:0 target:self action:sel_didDismissPrivacyViewController];
-  v8 = [(HUCameraRecordingPrivacyTextViewController *)v22 navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [(HUCameraRecordingPrivacyTextViewController *)v22 navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
   v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v22];
   [v9 setModalPresentationStyle:2];
-  v10 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  v11 = [v9 popoverPresentationController];
-  [v11 setSourceView:v10];
+  view2 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  popoverPresentationController = [v9 popoverPresentationController];
+  [popoverPresentationController setSourceView:view2];
 
-  v12 = [(HUCameraRecordingExportPreviewViewController *)self view];
-  [v12 frame];
+  view3 = [(HUCameraRecordingExportPreviewViewController *)self view];
+  [view3 frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v9 popoverPresentationController];
-  [v21 setSourceRect:{v14, v16, v18, v20}];
+  popoverPresentationController2 = [v9 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v14, v16, v18, v20}];
 
   [(HUCameraRecordingExportPreviewViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
 - (void)submitCurrentClip
 {
-  v3 = [(HUCameraRecordingExportPreviewViewController *)self completionHandler];
-  v3[2](v3, 1);
+  completionHandler = [(HUCameraRecordingExportPreviewViewController *)self completionHandler];
+  completionHandler[2](completionHandler, 1);
 
   [(HUCameraRecordingExportPreviewViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)cancelSubmission
 {
-  v3 = [(HUCameraRecordingExportPreviewViewController *)self completionHandler];
-  v3[2](v3, 0);
+  completionHandler = [(HUCameraRecordingExportPreviewViewController *)self completionHandler];
+  completionHandler[2](completionHandler, 0);
 
   [(HUCameraRecordingExportPreviewViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -416,23 +416,23 @@ void __61__HUCameraRecordingExportPreviewViewController_playVideoFile__block_inv
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
+    cameraClip = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
     *buf = 138412290;
-    v11 = v4;
+    v11 = cameraClip;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Starting Strip and truncate operation for clip:%@", buf, 0xCu);
   }
 
   v5 = objc_alloc(MEMORY[0x277D14480]);
-  v6 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
+  cameraClip2 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__HUCameraRecordingExportPreviewViewController__stripAndTruncateRecording__block_invoke;
   v9[3] = &unk_277DBCB90;
   v9[4] = self;
-  v7 = [v5 initWithCameraClip:v6 completionHandler:v9];
+  v7 = [v5 initWithCameraClip:cameraClip2 completionHandler:v9];
 
-  v8 = [(HUCameraRecordingExportPreviewViewController *)self backgroundSessionQueue];
-  [v8 addOperation:v7];
+  backgroundSessionQueue = [(HUCameraRecordingExportPreviewViewController *)self backgroundSessionQueue];
+  [backgroundSessionQueue addOperation:v7];
 }
 
 void __74__HUCameraRecordingExportPreviewViewController__stripAndTruncateRecording__block_invoke(uint64_t a1, void *a2)
@@ -489,8 +489,8 @@ uint64_t __74__HUCameraRecordingExportPreviewViewController__stripAndTruncateRec
 - (void)prepareRecordingForExport
 {
   v3 = MEMORY[0x277D14470];
-  v4 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
-  LODWORD(v3) = [v3 hasCachedRecordingForCameraClip:v4];
+  cameraClip = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
+  LODWORD(v3) = [v3 hasCachedRecordingForCameraClip:cameraClip];
 
   if (v3)
   {
@@ -508,14 +508,14 @@ uint64_t __74__HUCameraRecordingExportPreviewViewController__stripAndTruncateRec
     }
 
     v6 = objc_alloc(MEMORY[0x277CD18E8]);
-    v7 = [(HUCameraRecordingExportPreviewViewController *)self cameraProfile];
-    v8 = [v7 clipManager];
-    v9 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
-    v10 = [v6 initWithClipManager:v8 clip:v9];
+    cameraProfile = [(HUCameraRecordingExportPreviewViewController *)self cameraProfile];
+    clipManager = [cameraProfile clipManager];
+    cameraClip2 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
+    v10 = [v6 initWithClipManager:clipManager clip:cameraClip2];
 
     v11 = MEMORY[0x277D14500];
-    v12 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
-    v13 = [v11 videoDestinationURLForCameraClip:v12];
+    cameraClip3 = [(HUCameraRecordingExportPreviewViewController *)self cameraClip];
+    v13 = [v11 videoDestinationURLForCameraClip:cameraClip3];
     [v10 setClipDestinationFileURL:v13];
 
     [v10 setDownloadProgressHandler:&__block_literal_global_100];
@@ -580,8 +580,8 @@ void __73__HUCameraRecordingExportPreviewViewController_prepareRecordingForExpor
   if (!playerView)
   {
     v4 = MEMORY[0x277CE65B0];
-    v5 = [(HUCameraRecordingExportPreviewViewController *)self exportURL];
-    v6 = [v4 playerItemWithURL:v5];
+    exportURL = [(HUCameraRecordingExportPreviewViewController *)self exportURL];
+    v6 = [v4 playerItemWithURL:exportURL];
 
     v7 = objc_alloc_init(MEMORY[0x277CE65F8]);
     [(HUCameraRecordingExportPreviewViewController *)self setQueuePlayer:v7];
@@ -589,8 +589,8 @@ void __73__HUCameraRecordingExportPreviewViewController_prepareRecordingForExpor
     [(HUCameraRecordingExportPreviewViewController *)self setLooper:v8];
 
     v9 = [[HUCameraRecordingPlayerView alloc] initWithPlayer:v7 displayingProgressView:1];
-    v10 = [(HUCameraRecordingPlayerView *)v9 layer];
-    [v10 setCornerRadius:8.0];
+    layer = [(HUCameraRecordingPlayerView *)v9 layer];
+    [layer setCornerRadius:8.0];
 
     [(HUCameraRecordingPlayerView *)v9 setClipsToBounds:1];
     [(HUCameraRecordingPlayerView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -632,14 +632,14 @@ void __73__HUCameraRecordingExportPreviewViewController_prepareRecordingForExpor
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
     [(UIButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v4 addTarget:self action:sel_submitCurrentClip forControlEvents:64];
-    v5 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIButton *)v4 setTintColor:v5];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIButton *)v4 setTintColor:systemWhiteColor];
 
-    v6 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIButton *)v4 setBackgroundColor:v6];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIButton *)v4 setBackgroundColor:systemOrangeColor];
 
-    v7 = [(UIButton *)v4 layer];
-    [v7 setCornerRadius:8.0];
+    layer = [(UIButton *)v4 layer];
+    [layer setCornerRadius:8.0];
 
     v8 = _HULocalizedStringWithDefaultValue(@"HUCameraExportFeedbackSubmitButtonTitle", @"HUCameraExportFeedbackSubmitButtonTitle", 1);
     [(UIButton *)v4 setTitle:v8 forState:0];
@@ -666,8 +666,8 @@ void __73__HUCameraRecordingExportPreviewViewController_prepareRecordingForExpor
     v7 = _HULocalizedStringWithDefaultValue(@"HUCameraExportFeedbackConsumerSubheadingLinkText", @"HUCameraExportFeedbackConsumerSubheadingLinkText", 1);
     v8 = [MEMORY[0x277CBEBC0] URLWithString:&stru_2823E0EE8];
     v14 = *MEMORY[0x277D740C0];
-    v9 = [MEMORY[0x277D75348] systemGrayColor];
-    v15[0] = v9;
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    v15[0] = systemGrayColor;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v11 = [v5 hf_attributedLinkStringForString:v6 linkString:v7 linkURL:v8 attributes:v10 additionalLinkAttributes:0];
     [(UITextView *)v4 setAttributedText:v11];
@@ -684,21 +684,21 @@ void __73__HUCameraRecordingExportPreviewViewController_prepareRecordingForExpor
   return learnMoreTextView;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  lCopy = l;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v8;
+    v14 = lCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v11, 0x16u);
   }
 
-  if (!a6)
+  if (!interaction)
   {
     [(HUCameraRecordingExportPreviewViewController *)self showPrivacyInformation];
   }

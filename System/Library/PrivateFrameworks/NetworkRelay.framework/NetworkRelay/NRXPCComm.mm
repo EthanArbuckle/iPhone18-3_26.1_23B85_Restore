@@ -1,12 +1,12 @@
 @interface NRXPCComm
-- (NRXPCComm)initWithDeviceIdentifier:(id)a3 notificationQueue:(id)a4 notificationBlock:(id)a5;
+- (NRXPCComm)initWithDeviceIdentifier:(id)identifier notificationQueue:(id)queue notificationBlock:(id)block;
 - (id)description;
 - (void)activate;
 - (void)activateLocked;
 - (void)cancel;
 - (void)dealloc;
-- (void)sendMessageLocked:(uint64_t)a1;
-- (void)sendXPCCommDictionary:(id)a3;
+- (void)sendMessageLocked:(uint64_t)locked;
+- (void)sendXPCCommDictionary:(id)dictionary;
 @end
 
 @implementation NRXPCComm
@@ -49,10 +49,10 @@ LABEL_8:
 
 - (void)activateLocked
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 12));
-    if (!*(a1 + 32))
+    os_unfair_lock_assert_owner((self + 12));
+    if (!*(self + 32))
     {
       if (nrXPCCopyQueue_onceToken != -1)
       {
@@ -61,11 +61,11 @@ LABEL_8:
 
       v2 = nrXPCCopyQueue_nrXPCQueue;
       mach_service = xpc_connection_create_mach_service("com.apple.terminusd", v2, 2uLL);
-      v4 = *(a1 + 32);
-      *(a1 + 32) = mach_service;
+      v4 = *(self + 32);
+      *(self + 32) = mach_service;
 
-      objc_initWeak(&location, a1);
-      v5 = *(a1 + 32);
+      objc_initWeak(&location, self);
+      v5 = *(self + 32);
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __27__NRXPCComm_activateLocked__block_invoke;
@@ -73,10 +73,10 @@ LABEL_8:
       objc_copyWeak(&v8, &location);
       xpc_connection_set_event_handler(v5, v7);
 
-      v6 = *(a1 + 32);
+      v6 = *(self + 32);
       xpc_connection_activate(v6);
 
-      [(NRXPCComm *)a1 sendMessageLocked:?];
+      [(NRXPCComm *)self sendMessageLocked:?];
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
     }
@@ -288,17 +288,17 @@ LABEL_40:
 LABEL_41:
 }
 
-- (void)sendMessageLocked:(uint64_t)a1
+- (void)sendMessageLocked:(uint64_t)locked
 {
   v58 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!locked)
   {
     goto LABEL_14;
   }
 
-  os_unfair_lock_assert_owner((a1 + 12));
-  [(NRXPCComm *)a1 activateLocked];
+  os_unfair_lock_assert_owner((locked + 12));
+  [(NRXPCComm *)locked activateLocked];
   v4 = xpc_dictionary_create(0, 0, 0);
   if (!v4)
   {
@@ -333,10 +333,10 @@ LABEL_23:
 
   v5 = v4;
   xpc_dictionary_set_uint64(v4, "Type", 0x29uLL);
-  v6 = [a1 deviceIdentifier];
-  v7 = [v6 nrDeviceIdentifier];
+  deviceIdentifier = [locked deviceIdentifier];
+  nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
   v8 = v5;
-  v9 = v7;
+  v9 = nrDeviceIdentifier;
   v10 = v9;
   if (v9)
   {
@@ -410,7 +410,7 @@ LABEL_28:
   }
 
   v13 = v12;
-  if ((*(a1 + 8) & 1) == 0)
+  if ((*(locked + 8) & 1) == 0)
   {
     [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"checkin"];
   }
@@ -418,9 +418,9 @@ LABEL_28:
   v14 = _CFXPCCreateXPCObjectFromCFObject();
   xpc_dictionary_set_value(v11, "XPCCommDictionary", v14);
   xpc_dictionary_set_value(v8, "XPCCommNotification", v11);
-  objc_initWeak(uuid, a1);
+  objc_initWeak(uuid, locked);
   v15 = [v13 description];
-  v16 = *(a1 + 32);
+  v16 = *(locked + 32);
   if (nrXPCCopyQueue_onceToken != -1)
   {
     dispatch_once(&nrXPCCopyQueue_onceToken, &__block_literal_global_2644);
@@ -436,7 +436,7 @@ LABEL_28:
   v54 = v18;
   xpc_connection_send_message_with_reply(v16, v8, v17, handler);
 
-  *(a1 + 8) = 1;
+  *(locked + 8) = 1;
   objc_destroyWeak(&v55);
 
   objc_destroyWeak(uuid);
@@ -502,21 +502,21 @@ void __31__NRXPCComm_sendMessageLocked___block_invoke(uint64_t a1, void *a2)
 LABEL_12:
 }
 
-- (void)sendXPCCommDictionary:(id)a3
+- (void)sendXPCCommDictionary:(id)dictionary
 {
-  v14 = a3;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock(&self->_lock);
   if (!self)
   {
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   if (!self->_cancelled)
   {
-    v5 = self;
+    selfCopy = self;
 LABEL_6:
-    [(NRXPCComm *)v5 sendMessageLocked:v14];
+    [(NRXPCComm *)selfCopy sendMessageLocked:dictionaryCopy];
     goto LABEL_9;
   }
 
@@ -556,10 +556,10 @@ LABEL_9:
     identifier = 0;
   }
 
-  v5 = [(NRXPCComm *)self deviceIdentifier];
-  v6 = [v5 nrDeviceIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 initWithFormat:@"XPCComm[%llu %@]", identifier, v7];
+  deviceIdentifier = [(NRXPCComm *)self deviceIdentifier];
+  nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
+  uUIDString = [nrDeviceIdentifier UUIDString];
+  v8 = [v3 initWithFormat:@"XPCComm[%llu %@]", identifier, uUIDString];
 
   return v8;
 }
@@ -633,13 +633,13 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (NRXPCComm)initWithDeviceIdentifier:(id)a3 notificationQueue:(id)a4 notificationBlock:(id)a5
+- (NRXPCComm)initWithDeviceIdentifier:(id)identifier notificationQueue:(id)queue notificationBlock:(id)block
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!identifierCopy)
   {
     v30 = nrCopyLogObj_336();
     if (sNRCopyLogToStdErr == 1)
@@ -672,7 +672,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = v11;
+  v12 = blockCopy;
   v53.receiver = self;
   v53.super_class = NRXPCComm;
   v13 = [(NRXPCComm *)&v53 init];
@@ -710,17 +710,17 @@ LABEL_18:
   }
 
   v14 = v13;
-  objc_storeStrong(&v13->_deviceIdentifier, a3);
-  objc_storeStrong(&v14->_notificationQueue, a4);
+  objc_storeStrong(&v13->_deviceIdentifier, identifier);
+  objc_storeStrong(&v14->_notificationQueue, queue);
   v15 = MEMORY[0x25F8740C0](v12);
   notificationBlock = v14->_notificationBlock;
   v14->_notificationBlock = v15;
 
   v14->_lock._os_unfair_lock_opaque = 0;
   v14->_identifier = atomic_fetch_add_explicit(&initWithDeviceIdentifier_notificationQueue_notificationBlock__sNRDevicePreferencesIndex, 1uLL, memory_order_relaxed);
-  v17 = [(NRDeviceIdentifier *)v14->_deviceIdentifier nrDeviceIdentifier];
+  nrDeviceIdentifier = [(NRDeviceIdentifier *)v14->_deviceIdentifier nrDeviceIdentifier];
   nrUUID = v14->_nrUUID;
-  v14->_nrUUID = v17;
+  v14->_nrUUID = nrDeviceIdentifier;
 
   _NRAddEligibleNRUUIDForLogObject(v14->_nrUUID);
   v19 = _NRCopyLogObjectForNRUUID(v14->_nrUUID);

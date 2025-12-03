@@ -1,31 +1,31 @@
 @interface BuddyControlCenterVisualIntelligencePresentationManager
 - (BOOL)shouldPresentVisualIntelligencePane;
 - (_TtC5Setup55BuddyControlCenterVisualIntelligencePresentationManager)init;
-- (_TtC5Setup55BuddyControlCenterVisualIntelligencePresentationManager)initWithPreferenceController:(id)a3 deviceProvider:(id)a4 chronicle:(id)a5;
-- (void)updatePresentedKeyWithNewState:(BOOL)a3;
+- (_TtC5Setup55BuddyControlCenterVisualIntelligencePresentationManager)initWithPreferenceController:(id)controller deviceProvider:(id)provider chronicle:(id)chronicle;
+- (void)updatePresentedKeyWithNewState:(BOOL)state;
 @end
 
 @implementation BuddyControlCenterVisualIntelligencePresentationManager
 
-- (_TtC5Setup55BuddyControlCenterVisualIntelligencePresentationManager)initWithPreferenceController:(id)a3 deviceProvider:(id)a4 chronicle:(id)a5
+- (_TtC5Setup55BuddyControlCenterVisualIntelligencePresentationManager)initWithPreferenceController:(id)controller deviceProvider:(id)provider chronicle:(id)chronicle
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  return BuddyControlCenterVisualIntelligencePresentationManager.init(preferenceController:deviceProvider:chronicle:)(v7, a4, a5);
+  return BuddyControlCenterVisualIntelligencePresentationManager.init(preferenceController:deviceProvider:chronicle:)(controllerCopy, provider, chronicle);
 }
 
 - (BOOL)shouldPresentVisualIntelligencePane
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BuddyControlCenterVisualIntelligencePresentationManager.shouldPresentVisualIntelligencePane()();
 
   return v3;
 }
 
-- (void)updatePresentedKeyWithNewState:(BOOL)a3
+- (void)updatePresentedKeyWithNewState:(BOOL)state
 {
-  v4 = self;
-  BuddyControlCenterVisualIntelligencePresentationManager.updatePresentedKey(newState:)(a3);
+  selfCopy = self;
+  BuddyControlCenterVisualIntelligencePresentationManager.updatePresentedKey(newState:)(state);
 }
 
 - (_TtC5Setup55BuddyControlCenterVisualIntelligencePresentationManager)init

@@ -1,46 +1,46 @@
 @interface UAUserActivityClientProcess
-- (BOOL)askSourceProcessToUpdateActivityWithUUID:(id)a3 evenIfClean:(BOOL)a4 completionHandler:(id)a5;
-- (BOOL)didResumeUserActivityWithUUID:(id)a3 completionHandler:(id)a4;
-- (BOOL)isDirtyActivityWithUUID:(id)a3;
-- (BOOL)isEligibleToAdvertiseWithUUID:(id)a3;
-- (BOOL)isEligibleToAlwaysAdvertiseWithUUID:(id)a3;
-- (BOOL)removeUserActivityAdvertiseableItemByUUID:(id)a3;
+- (BOOL)askSourceProcessToUpdateActivityWithUUID:(id)d evenIfClean:(BOOL)clean completionHandler:(id)handler;
+- (BOOL)didResumeUserActivityWithUUID:(id)d completionHandler:(id)handler;
+- (BOOL)isDirtyActivityWithUUID:(id)d;
+- (BOOL)isEligibleToAdvertiseWithUUID:(id)d;
+- (BOOL)isEligibleToAlwaysAdvertiseWithUUID:(id)d;
+- (BOOL)removeUserActivityAdvertiseableItemByUUID:(id)d;
 - (NSArray)uniqueIdentifiers;
 - (NSString)description;
 - (NSXPCConnection)connection;
 - (UACornerActionManager)manager;
 - (UAUserActivityAdvertisableItem)currentAdvertisableActivity;
-- (UAUserActivityClientProcess)initWithController:(id)a3 connection:(id)a4;
+- (UAUserActivityClientProcess)initWithController:(id)controller connection:(id)connection;
 - (id)statusString;
-- (id)userActivityAdvertisableItemByUUID:(id)a3;
-- (void)addUserActivity:(id)a3;
-- (void)dispatchPendingTasksForUUID:(id)a3 error:(id)a4;
-- (void)doAddDynamicUserActivity:(id)a3 matching:(id)a4;
-- (void)doDeleteUserActivityWithUUID:(id)a3;
-- (void)doDetermineIfUserActivityIsCurrent:(id)a3 completionHandler:(id)a4;
-- (void)doFetchUserActivityInfoWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)doGetCurrentUserActivityInfo:(id)a3;
-- (void)doGetLoggingFileForClient:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)doGetUserActivityProxiesWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)doInitializeWithClientVersion:(int64_t)a3 clientInfo:(id)a4 completionHandler:(id)a5;
-- (void)doMarkUserActivityAsDirty:(id)a3 forceImmediate:(BOOL)a4 webpageURL:(id)a5 expiration:(id)a6 hasiCloudDocument:(BOOL)a7 hasUnsynchronizediCloudDoc:(BOOL)a8;
-- (void)doPinUserActivityInfo:(id)a3 completionHandler:(id)a4;
-- (void)doRemoveDynamicUserActivity:(id)a3 matching:(id)a4;
-- (void)doUpdateUserActivityInfo:(id)a3 makeCurrent:(BOOL)a4 completionHandler:(id)a5;
-- (void)doUpdateUserActivityWithUUID:(id)a3 setActive:(BOOL)a4;
+- (id)userActivityAdvertisableItemByUUID:(id)d;
+- (void)addUserActivity:(id)activity;
+- (void)dispatchPendingTasksForUUID:(id)d error:(id)error;
+- (void)doAddDynamicUserActivity:(id)activity matching:(id)matching;
+- (void)doDeleteUserActivityWithUUID:(id)d;
+- (void)doDetermineIfUserActivityIsCurrent:(id)current completionHandler:(id)handler;
+- (void)doFetchUserActivityInfoWithUUID:(id)d completionHandler:(id)handler;
+- (void)doGetCurrentUserActivityInfo:(id)info;
+- (void)doGetLoggingFileForClient:(id)client options:(id)options completionHandler:(id)handler;
+- (void)doGetUserActivityProxiesWithOptions:(id)options completionHandler:(id)handler;
+- (void)doInitializeWithClientVersion:(int64_t)version clientInfo:(id)info completionHandler:(id)handler;
+- (void)doMarkUserActivityAsDirty:(id)dirty forceImmediate:(BOOL)immediate webpageURL:(id)l expiration:(id)expiration hasiCloudDocument:(BOOL)document hasUnsynchronizediCloudDoc:(BOOL)doc;
+- (void)doPinUserActivityInfo:(id)info completionHandler:(id)handler;
+- (void)doRemoveDynamicUserActivity:(id)activity matching:(id)matching;
+- (void)doUpdateUserActivityInfo:(id)info makeCurrent:(BOOL)current completionHandler:(id)handler;
+- (void)doUpdateUserActivityWithUUID:(id)d setActive:(BOOL)active;
 - (void)invalidate;
-- (void)removeUserActivity:(id)a3;
-- (void)setCurrentAdvertisableActivity:(id)a3;
+- (void)removeUserActivity:(id)activity;
+- (void)setCurrentAdvertisableActivity:(id)activity;
 @end
 
 @implementation UAUserActivityClientProcess
 
 - (UAUserActivityAdvertisableItem)currentAdvertisableActivity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentAdvertisableActivity;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentAdvertisableActivity;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -61,16 +61,16 @@
 
 - (NSString)description
 {
-  v3 = [(UAUserActivityClientProcess *)self auditToken];
-  v4 = [v3 pid];
-  v5 = [(UAUserActivityClientProcess *)self bundleIdentifier];
-  v6 = [(UAUserActivityClientProcess *)self uniqueIdentifiers];
+  auditToken = [(UAUserActivityClientProcess *)self auditToken];
+  v4 = [auditToken pid];
+  bundleIdentifier = [(UAUserActivityClientProcess *)self bundleIdentifier];
+  uniqueIdentifiers = [(UAUserActivityClientProcess *)self uniqueIdentifiers];
   v7 = [NSMutableString stringWithFormat:@"{"];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = uniqueIdentifiers;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -85,8 +85,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) UUIDString];
-        [v7 appendFormat:@"%@ ", v13];
+        uUIDString = [*(*(&v16 + 1) + 8 * i) UUIDString];
+        [v7 appendFormat:@"%@ ", uUIDString];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -96,42 +96,42 @@
   }
 
   [v7 appendString:@"}"];
-  v14 = [NSString stringWithFormat:@"UserActivityClient(pid=%d/%@ uuids=%@)", v4, v5, v7];
+  v14 = [NSString stringWithFormat:@"UserActivityClient(pid=%d/%@ uuids=%@)", v4, bundleIdentifier, v7];
 
   return v14;
 }
 
 - (NSArray)uniqueIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_userActivityAdvertisableItemsByUUID allKeys];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_userActivityAdvertisableItemsByUUID allKeys];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allKeys;
 }
 
-- (UAUserActivityClientProcess)initWithController:(id)a3 connection:(id)a4
+- (UAUserActivityClientProcess)initWithController:(id)controller connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 manager];
+  controllerCopy = controller;
+  connectionCopy = connection;
+  manager = [controllerCopy manager];
   v96.receiver = self;
   v96.super_class = UAUserActivityClientProcess;
-  v10 = [(UACornerActionManagerHandler *)&v96 initWithManager:v9 name:@"Application"];
+  v10 = [(UACornerActionManagerHandler *)&v96 initWithManager:manager name:@"Application"];
 
   if (!v10)
   {
     goto LABEL_45;
   }
 
-  snprintf(__str, 0x80uLL, "com.apple.coreservices.useractivity.client-connection.%d", [v8 processIdentifier]);
+  snprintf(__str, 0x80uLL, "com.apple.coreservices.useractivity.client-connection.%d", [connectionCopy processIdentifier]);
   v11 = os_transaction_create();
   [(UAUserActivityClientProcess *)v10 setOs_transaction:v11];
 
-  objc_storeStrong(&v10->_controller, a3);
-  v12 = [v7 manager];
-  objc_storeWeak(&v10->_manager, v12);
+  objc_storeStrong(&v10->_controller, controller);
+  manager2 = [controllerCopy manager];
+  objc_storeWeak(&v10->_manager, manager2);
 
   v13 = objc_alloc_init(NSMutableDictionary);
   userActivityAdvertisableItemsByUUID = v10->_userActivityAdvertisableItemsByUUID;
@@ -149,12 +149,12 @@
   pendingUpdateTasks = v10->_pendingUpdateTasks;
   v10->_pendingUpdateTasks = v19;
 
-  [v8 setExportedObject:v10];
+  [connectionCopy setExportedObject:v10];
   v21 = sub_100001EB0();
-  [v8 setExportedInterface:v21];
+  [connectionCopy setExportedInterface:v21];
 
   v22 = sub_100001DEC();
-  [v8 setRemoteObjectInterface:v22];
+  [connectionCopy setRemoteObjectInterface:v22];
 
   *__str = 0;
   v103 = __str;
@@ -167,14 +167,14 @@
   v95[2] = sub_100057E64;
   v95[3] = &unk_1000C57A0;
   v95[4] = __str;
-  [v8 setInvalidationHandler:v95];
-  objc_storeWeak(&v10->_connection, v8);
+  [connectionCopy setInvalidationHandler:v95];
+  objc_storeWeak(&v10->_connection, connectionCopy);
   v23 = [UAAuditToken alloc];
-  v24 = [(UAUserActivityClientProcess *)v10 connection];
-  v25 = v24;
-  if (v24)
+  connection = [(UAUserActivityClientProcess *)v10 connection];
+  v25 = connection;
+  if (connection)
   {
-    [v24 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -193,28 +193,28 @@
 
   else
   {
-    v28 = [(UAUserActivityClientProcess *)v10 auditToken];
-    v10->_clientIsSandboxed = [v28 isSandboxed];
+    auditToken = [(UAUserActivityClientProcess *)v10 auditToken];
+    v10->_clientIsSandboxed = [auditToken isSandboxed];
   }
 
-  v29 = [(UAUserActivityClientProcess *)v10 connection];
-  v30 = [v29 valueForEntitlement:@"com.apple.application-identifier"];
+  connection2 = [(UAUserActivityClientProcess *)v10 connection];
+  v30 = [connection2 valueForEntitlement:@"com.apple.application-identifier"];
   applicationIdentifier = v10->_applicationIdentifier;
   v10->_applicationIdentifier = v30;
 
-  v32 = [(UAUserActivityClientProcess *)v10 connection];
-  v33 = [v32 valueForEntitlement:@"useractivity-team-identifier"];
+  connection3 = [(UAUserActivityClientProcess *)v10 connection];
+  v33 = [connection3 valueForEntitlement:@"useractivity-team-identifier"];
 
   if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v34 = sub_100001A30(0);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
+      applicationIdentifier = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
       *buf = 138543618;
       *&buf[4] = v33;
       *&buf[12] = 2114;
-      *&buf[14] = v35;
+      *&buf[14] = applicationIdentifier;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Using overridden team identifier %{public}@ for applicationIdentifier %{public}@", buf, 0x16u);
     }
   }
@@ -241,11 +241,11 @@
     v34 = sub_100001A30(0);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v38 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
+      applicationIdentifier2 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
       *buf = 138543618;
       *&buf[4] = v89;
       *&buf[12] = 2114;
-      *&buf[14] = v38;
+      *&buf[14] = applicationIdentifier2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Using developer team identifier %{public}@ for applicationIdentifier %{public}@", buf, 0x16u);
     }
 
@@ -259,42 +259,42 @@
 LABEL_19:
 
 LABEL_20:
-  v40 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
+  applicationIdentifier3 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
 
-  if (v40)
+  if (applicationIdentifier3)
   {
     v10->_clientIsSigned = 1;
   }
 
   else
   {
-    v41 = [(UAUserActivityClientProcess *)v10 connection];
-    v42 = [v41 valueForEntitlement:@"application-identifier"];
+    connection4 = [(UAUserActivityClientProcess *)v10 connection];
+    v42 = [connection4 valueForEntitlement:@"application-identifier"];
     v43 = v10->_applicationIdentifier;
     v10->_applicationIdentifier = v42;
   }
 
-  v44 = [(UAUserActivityClientProcess *)v10 teamID];
-  if (v44)
+  teamID = [(UAUserActivityClientProcess *)v10 teamID];
+  if (teamID)
   {
     goto LABEL_26;
   }
 
-  v45 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
-  v46 = v45 == 0;
+  applicationIdentifier4 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
+  v46 = applicationIdentifier4 == 0;
 
   if (!v46)
   {
-    v44 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
-    v47 = sub_100002058(v44);
+    teamID = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
+    v47 = sub_100002058(teamID);
     v48 = v10->_teamID;
     v10->_teamID = v47;
 
 LABEL_26:
   }
 
-  v49 = [(UAUserActivityClientProcess *)v10 teamID];
-  v50 = v49 == 0;
+  teamID2 = [(UAUserActivityClientProcess *)v10 teamID];
+  v50 = teamID2 == 0;
 
   if (v50)
   {
@@ -302,11 +302,11 @@ LABEL_26:
     v10->_teamID = &stru_1000C67D0;
   }
 
-  v52 = [(UAUserActivityClientProcess *)v10 connection];
-  v53 = v52;
-  if (v52)
+  connection5 = [(UAUserActivityClientProcess *)v10 connection];
+  v53 = connection5;
+  if (connection5)
   {
-    [v52 auditToken];
+    [connection5 auditToken];
   }
 
   else
@@ -317,40 +317,40 @@ LABEL_26:
   v54 = sub_100001FA4(buf);
   [(UAUserActivityClientProcess *)v10 setBundleIdentifier:v54];
 
-  v55 = [(UAUserActivityClientProcess *)v10 bundleIdentifier];
-  v56 = v55 == 0;
+  bundleIdentifier = [(UAUserActivityClientProcess *)v10 bundleIdentifier];
+  v56 = bundleIdentifier == 0;
 
   if (v56)
   {
-    v57 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
-    [(UAUserActivityClientProcess *)v10 setBundleIdentifier:v57];
+    applicationIdentifier5 = [(UAUserActivityClientProcess *)v10 applicationIdentifier];
+    [(UAUserActivityClientProcess *)v10 setBundleIdentifier:applicationIdentifier5];
 
-    v58 = [(UAUserActivityClientProcess *)v10 bundleIdentifier];
-    v59 = [v58 rangeOfString:@":"];
+    bundleIdentifier2 = [(UAUserActivityClientProcess *)v10 bundleIdentifier];
+    v59 = [bundleIdentifier2 rangeOfString:@":"];
     v61 = v60;
 
     if (v61 == 1)
     {
-      v62 = [(UAUserActivityClientProcess *)v10 bundleIdentifier];
-      v63 = [v62 substringFromIndex:v59 + 1];
+      bundleIdentifier3 = [(UAUserActivityClientProcess *)v10 bundleIdentifier];
+      v63 = [bundleIdentifier3 substringFromIndex:v59 + 1];
       [(UAUserActivityClientProcess *)v10 setBundleIdentifier:v63];
     }
   }
 
   v10->_allowedToUseLSAlwaysEligible = 1;
-  v64 = [v8 valueForEntitlement:@"com.apple.private.coreservices.alwaysEligibleEvenWhenInBackground"];
+  v64 = [connectionCopy valueForEntitlement:@"com.apple.private.coreservices.alwaysEligibleEvenWhenInBackground"];
   v10->_allowedToUseEligibleEvenWhenInBackground = sub_100001E30(v64);
 
-  v65 = [v8 valueForEntitlement:@"com.apple.private.coreservices.lsuseractivityd.LSAlwaysPick"];
+  v65 = [connectionCopy valueForEntitlement:@"com.apple.private.coreservices.lsuseractivityd.LSAlwaysPick"];
   v10->_allowedToUseLSAlwaysPick = sub_100001E30(v65);
 
-  v66 = [v8 valueForEntitlement:@"com.apple.private.coreservices.canalwaysadvertise"];
+  v66 = [connectionCopy valueForEntitlement:@"com.apple.private.coreservices.canalwaysadvertise"];
   v10->_allowedToUseUAAlwaysAdvertise = sub_100001E30(v66);
 
-  v67 = [v8 valueForEntitlement:@"com.apple.private.coreservices.cangetcurrentactivityinfo"];
+  v67 = [connectionCopy valueForEntitlement:@"com.apple.private.coreservices.cangetcurrentactivityinfo"];
   v10->_allowedToGetCurrentActivityInfo = sub_100001E30(v67);
 
-  v68 = [v8 valueForEntitlement:@"com.apple.private.coreservices.allowedToMatchUserActivities"];
+  v68 = [connectionCopy valueForEntitlement:@"com.apple.private.coreservices.allowedToMatchUserActivities"];
   if (sub_100001E30(v68))
   {
     v10->_allowedToMatchUserActivities = 1;
@@ -358,21 +358,21 @@ LABEL_26:
 
   else
   {
-    v69 = [v8 valueForEntitlement:@"com.apple.private.coreserivces.allowedToMatchUserActivities"];
+    v69 = [connectionCopy valueForEntitlement:@"com.apple.private.coreserivces.allowedToMatchUserActivities"];
     v10->_allowedToMatchUserActivities = sub_100001E30(v69);
   }
 
-  v70 = [(UAUserActivityClientProcess *)v10 connection];
-  v71 = [v70 valueForEntitlement:@"com.apple.private.canmodifyanyuseractivity"];
+  connection6 = [(UAUserActivityClientProcess *)v10 connection];
+  v71 = [connection6 valueForEntitlement:@"com.apple.private.canmodifyanyuseractivity"];
   v10->_allowedToAccessAnyItem = sub_100001E30(v71);
 
   v72 = sub_100001A30(0);
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
   {
     v73 = [(UAAuditToken *)v10->_auditToken pid];
-    v74 = [v7 appStateMonitor];
+    appStateMonitor = [controllerCopy appStateMonitor];
     v75 = @"YES";
-    if (!v74)
+    if (!appStateMonitor)
     {
       v75 = @"NO";
     }
@@ -392,7 +392,7 @@ LABEL_26:
   v77 = v10;
   v94 = v77;
   dispatch_after(v76, &_dispatch_main_q, block);
-  v78 = [v7 appStateMonitor];
+  appStateMonitor2 = [controllerCopy appStateMonitor];
   v79 = [(UAAuditToken *)v10->_auditToken pid];
   v90[0] = _NSConcreteStackBlock;
   v90[1] = 3221225472;
@@ -400,8 +400,8 @@ LABEL_26:
   v90[3] = &unk_1000C5E90;
   v80 = v77;
   v91 = v80;
-  v92 = v7;
-  [v78 applicationInfoForPID:v79 completion:v90];
+  v92 = controllerCopy;
+  [appStateMonitor2 applicationInfoForPID:v79 completion:v90];
 
   v81 = +[NSNotificationCenter defaultCenter];
   [v81 addObserver:v80 selector:"debugStateChanged:" name:@"UAUserActivityDebugStateChanged" object:0];
@@ -409,21 +409,21 @@ LABEL_26:
   v82 = sub_100001A30(0);
   if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
   {
-    v83 = [(UAUserActivityClientProcess *)v80 auditToken];
-    v84 = [(UAUserActivityClientProcess *)v80 teamID];
-    v85 = [(UAUserActivityClientProcess *)v80 applicationIdentifier];
-    v86 = [(UAUserActivityClientProcess *)v80 bundleIdentifier];
-    v87 = [(UAUserActivityClientProcess *)v80 allowedToAccessAnyItem];
+    auditToken2 = [(UAUserActivityClientProcess *)v80 auditToken];
+    teamID3 = [(UAUserActivityClientProcess *)v80 teamID];
+    applicationIdentifier6 = [(UAUserActivityClientProcess *)v80 applicationIdentifier];
+    bundleIdentifier4 = [(UAUserActivityClientProcess *)v80 bundleIdentifier];
+    allowedToAccessAnyItem = [(UAUserActivityClientProcess *)v80 allowedToAccessAnyItem];
     *buf = 138544387;
-    *&buf[4] = v83;
+    *&buf[4] = auditToken2;
     *&buf[12] = 2113;
-    *&buf[14] = v84;
+    *&buf[14] = teamID3;
     *&buf[22] = 2113;
-    *&buf[24] = v85;
+    *&buf[24] = applicationIdentifier6;
     v98 = 2113;
-    v99 = v86;
+    v99 = bundleIdentifier4;
     v100 = 1026;
-    v101 = v87;
+    v101 = allowedToAccessAnyItem;
     _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_INFO, "UserActivityClient:%{public}@, teamID=%{private}@ applicationID=%{private}@ bundleID=%{private}@ accessAny=%{public,BOOL}d ", buf, 0x30u);
   }
 
@@ -436,28 +436,28 @@ LABEL_45:
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(UAUserActivityClientProcess *)v2 setOs_transaction:0];
-  v3 = [(UAUserActivityClientProcess *)v2 connection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(UAUserActivityClientProcess *)selfCopy setOs_transaction:0];
+  connection = [(UAUserActivityClientProcess *)selfCopy connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(UAUserActivityClientProcess *)v2 connection];
-    [v4 setExportedObject:0];
+    connection2 = [(UAUserActivityClientProcess *)selfCopy connection];
+    [connection2 setExportedObject:0];
 
-    v5 = [(UAUserActivityClientProcess *)v2 connection];
-    [v5 invalidate];
+    connection3 = [(UAUserActivityClientProcess *)selfCopy connection];
+    [connection3 invalidate];
 
-    objc_storeWeak(&v2->_connection, 0);
+    objc_storeWeak(&selfCopy->_connection, 0);
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(UAUserActivityClientProcess *)v2 uniqueIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  uniqueIdentifiers = [(UAUserActivityClientProcess *)selfCopy uniqueIdentifiers];
+  v7 = [uniqueIdentifiers countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -467,7 +467,7 @@ LABEL_45:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(uniqueIdentifiers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -479,87 +479,87 @@ LABEL_45:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "removing %{public}@ userActivityInfoItem", buf, 0xCu);
         }
 
-        [(UAUserActivityClientProcess *)v2 removeUserActivityAdvertiseableItemByUUID:v10];
+        [(UAUserActivityClientProcess *)selfCopy removeUserActivityAdvertiseableItemByUUID:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [uniqueIdentifiers countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
   }
 
   v12 = +[NSNotificationCenter defaultCenter];
-  [v12 removeObserver:v2 name:@"UAUserActivityDebugStateChanged" object:0];
+  [v12 removeObserver:selfCopy name:@"UAUserActivityDebugStateChanged" object:0];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)userActivityAdvertisableItemByUUID:(id)a3
+- (id)userActivityAdvertisableItemByUUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_userActivityAdvertisableItemsByUUID objectForKey:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_userActivityAdvertisableItemsByUUID objectForKey:dCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)addUserActivity:(id)a3
+- (void)addUserActivity:(id)activity
 {
-  v4 = a3;
-  if (v4)
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v8 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    userActivityAdvertisableItemsByUUID = v5->_userActivityAdvertisableItemsByUUID;
-    v7 = [v8 uuid];
-    [(NSMutableDictionary *)userActivityAdvertisableItemsByUUID setObject:v8 forKey:v7];
+    v8 = activityCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    userActivityAdvertisableItemsByUUID = selfCopy->_userActivityAdvertisableItemsByUUID;
+    uuid = [v8 uuid];
+    [(NSMutableDictionary *)userActivityAdvertisableItemsByUUID setObject:v8 forKey:uuid];
 
-    objc_sync_exit(v5);
-    v4 = v8;
+    objc_sync_exit(selfCopy);
+    activityCopy = v8;
   }
 }
 
-- (void)removeUserActivity:(id)a3
+- (void)removeUserActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    v4 = [a3 uuid];
-    [(UAUserActivityClientProcess *)self removeUserActivityAdvertiseableItemByUUID:v4];
+    uuid = [activity uuid];
+    [(UAUserActivityClientProcess *)self removeUserActivityAdvertiseableItemByUUID:uuid];
   }
 }
 
-- (BOOL)removeUserActivityAdvertiseableItemByUUID:(id)a3
+- (BOOL)removeUserActivityAdvertiseableItemByUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543362;
-    v32 = v6;
+    v32 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "uuid=%{public}@", buf, 0xCu);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableSet *)v7->_dirtyUUIDs removeObject:v4];
-  [(NSMutableSet *)v7->_pendingResumeActivityUUIDs removeObject:v4];
-  v8 = [(UAUserActivityClientProcess *)v7 userActivityAdvertisableItemByUUID:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_dirtyUUIDs removeObject:dCopy];
+  [(NSMutableSet *)selfCopy->_pendingResumeActivityUUIDs removeObject:dCopy];
+  v8 = [(UAUserActivityClientProcess *)selfCopy userActivityAdvertisableItemByUUID:dCopy];
   if (!v8)
   {
-    if ([(UAUserActivityClientProcess *)v7 allowedToAccessAnyItem])
+    if ([(UAUserActivityClientProcess *)selfCopy allowedToAccessAnyItem])
     {
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v13 = [(UAUserActivityClientProcess *)v7 controller];
-      v14 = [v13 additionalUserActivityAdvertisableItems];
+      controller = [(UAUserActivityClientProcess *)selfCopy controller];
+      additionalUserActivityAdvertisableItems = [controller additionalUserActivityAdvertisableItems];
 
-      v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v15 = [additionalUserActivityAdvertisableItems countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v15)
       {
         v16 = *v28;
@@ -569,36 +569,36 @@ LABEL_45:
           {
             if (*v28 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(additionalUserActivityAdvertisableItems);
             }
 
             v18 = *(*(&v27 + 1) + 8 * i);
-            v19 = [v18 uuid];
-            v20 = [v19 isEqual:v4];
+            uuid = [v18 uuid];
+            v20 = [uuid isEqual:dCopy];
 
             if (v20)
             {
               v21 = sub_100001A30(0);
               if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
               {
-                v22 = [0 uuid];
-                v23 = [v22 UUIDString];
-                v24 = [0 logString];
+                uuid2 = [0 uuid];
+                uUIDString2 = [uuid2 UUIDString];
+                logString = [0 logString];
                 *buf = 138543619;
-                v32 = v23;
+                v32 = uUIDString2;
                 v33 = 2113;
-                v34 = v24;
+                v34 = logString;
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Removing item %{public}@/%{private}@ from additionalUserActivityAdvertisableItems", buf, 0x16u);
               }
 
-              v25 = [(UAUserActivityClientProcess *)v7 controller];
-              [v25 removeAdditionalUserActivityAdvertisableItems:v18];
+              controller2 = [(UAUserActivityClientProcess *)selfCopy controller];
+              [controller2 removeAdditionalUserActivityAdvertisableItems:v18];
 
               goto LABEL_25;
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          v15 = [additionalUserActivityAdvertisableItems countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v15)
           {
             continue;
@@ -611,73 +611,73 @@ LABEL_45:
 LABEL_25:
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
     goto LABEL_27;
   }
 
-  v9 = [(UAUserActivityClientProcess *)v7 currentAdvertisableActivity];
-  if (v9)
+  currentAdvertisableActivity = [(UAUserActivityClientProcess *)selfCopy currentAdvertisableActivity];
+  if (currentAdvertisableActivity)
   {
-    v10 = [(UAUserActivityClientProcess *)v7 currentAdvertisableActivity];
-    v11 = [v10 uuid];
-    v12 = [v11 isEqual:v4];
+    currentAdvertisableActivity2 = [(UAUserActivityClientProcess *)selfCopy currentAdvertisableActivity];
+    uuid3 = [currentAdvertisableActivity2 uuid];
+    v12 = [uuid3 isEqual:dCopy];
 
     if (v12)
     {
-      [(UAUserActivityClientProcess *)v7 setCurrentAdvertisableActivity:0];
+      [(UAUserActivityClientProcess *)selfCopy setCurrentAdvertisableActivity:0];
       if (sub_1000023A0([v8 type]) || (objc_msgSend(v8, "alwaysEligible") & 1) != 0)
       {
-        LODWORD(v9) = 1;
+        LODWORD(currentAdvertisableActivity) = 1;
       }
 
       else
       {
-        LODWORD(v9) = [v8 alwaysEligible];
+        LODWORD(currentAdvertisableActivity) = [v8 alwaysEligible];
       }
     }
 
     else
     {
-      LODWORD(v9) = 0;
+      LODWORD(currentAdvertisableActivity) = 0;
     }
   }
 
   [v8 setClient:0];
-  [(NSMutableDictionary *)v7->_userActivityAdvertisableItemsByUUID removeObjectForKey:v4];
+  [(NSMutableDictionary *)selfCopy->_userActivityAdvertisableItemsByUUID removeObjectForKey:dCopy];
 
-  objc_sync_exit(v7);
-  if (v9)
+  objc_sync_exit(selfCopy);
+  if (currentAdvertisableActivity)
   {
-    v7 = [(UAUserActivityClientProcess *)v7 manager];
-    [(UAUserActivityClientProcess *)v7 scheduleUpdatingAdvertisableItems];
+    selfCopy = [(UAUserActivityClientProcess *)selfCopy manager];
+    [(UAUserActivityClientProcess *)selfCopy scheduleUpdatingAdvertisableItems];
 LABEL_27:
   }
 
   return v8 != 0;
 }
 
-- (BOOL)isEligibleToAdvertiseWithUUID:(id)a3
+- (BOOL)isEligibleToAdvertiseWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-    if (v5)
+    currentAdvertisableActivity = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    if (currentAdvertisableActivity)
     {
-      v6 = v5;
-      v7 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-      v8 = [v7 uuid];
-      v9 = [v8 isEqual:v4];
+      v6 = currentAdvertisableActivity;
+      currentAdvertisableActivity2 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+      uuid = [currentAdvertisableActivity2 uuid];
+      v9 = [uuid isEqual:dCopy];
 
       if (v9)
       {
-        v10 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:v4];
+        v10 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:dCopy];
         v11 = v10;
         if (v10)
         {
           if ([v10 alwaysPick] & 1) != 0 || (-[UAUserActivityClientProcess controller](self, "controller"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "clientIsActive:", self), v12, (v13) || (objc_msgSend(v11, "proxiedBundleIdentifier"), v14 = objc_claimAutoreleasedReturnValue(), v14, v14) || -[UAUserActivityClientProcess allowedToUseLSAlwaysEligible](self, "allowedToUseLSAlwaysEligible") && (objc_msgSend(v11, "alwaysEligible"))
           {
-            v15 = 1;
+            bOOLValue = 1;
 LABEL_16:
 
             goto LABEL_10;
@@ -685,103 +685,103 @@ LABEL_16:
 
           if ([(UAUserActivityClientProcess *)self allowedToUseEligibleEvenWhenInBackground])
           {
-            v17 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:v4];
-            v18 = [v17 options];
-            v19 = [v18 objectForKeyedSubscript:UAUserActivityEligibleEvenWhenInBackgroundKey];
-            v15 = [v19 BOOLValue];
+            v17 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:dCopy];
+            options = [v17 options];
+            v19 = [options objectForKeyedSubscript:UAUserActivityEligibleEvenWhenInBackgroundKey];
+            bOOLValue = [v19 BOOLValue];
 
             goto LABEL_16;
           }
         }
 
-        v15 = 0;
+        bOOLValue = 0;
         goto LABEL_16;
       }
     }
   }
 
-  v15 = 0;
+  bOOLValue = 0;
 LABEL_10:
 
-  return v15;
+  return bOOLValue;
 }
 
-- (BOOL)isEligibleToAlwaysAdvertiseWithUUID:(id)a3
+- (BOOL)isEligibleToAlwaysAdvertiseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(UAUserActivityClientProcess *)self allowedToUseUAAlwaysAdvertise])
   {
-    v5 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:v4];
+    v5 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:dCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 options];
-      v8 = [v7 objectForKeyedSubscript:UAAlwaysAdvertise];
-      v9 = [v8 BOOLValue];
+      options = [v5 options];
+      v8 = [options objectForKeyedSubscript:UAAlwaysAdvertise];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)isDirtyActivityWithUUID:(id)a3
+- (BOOL)isDirtyActivityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableSet *)v5->_dirtyUUIDs containsObject:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableSet *)selfCopy->_dirtyUUIDs containsObject:dCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)askSourceProcessToUpdateActivityWithUUID:(id)a3 evenIfClean:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)askSourceProcessToUpdateActivityWithUUID:(id)d evenIfClean:(BOOL)clean completionHandler:(id)handler
 {
-  v8 = a3;
-  v47 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v9 = sub_100001A30(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v8 UUIDString];
-    v11 = [(UAUserActivityClientProcess *)self auditToken];
+    uUIDString = [dCopy UUIDString];
+    auditToken = [(UAUserActivityClientProcess *)self auditToken];
     *buf = 138543618;
-    v62 = v10;
+    v62 = uUIDString;
     v63 = 2048;
-    v64 = [v11 pid];
+    v64 = [auditToken pid];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%{public}@ from client %ld", buf, 0x16u);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if (a4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (clean)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = [(NSMutableSet *)v12->_dirtyUUIDs containsObject:v8];
+    v13 = [(NSMutableSet *)selfCopy->_dirtyUUIDs containsObject:dCopy];
   }
 
-  v14 = [(NSMutableSet *)v12->_pendingResumeActivityUUIDs containsObject:v8];
-  objc_sync_exit(v12);
+  v14 = [(NSMutableSet *)selfCopy->_pendingResumeActivityUUIDs containsObject:dCopy];
+  objc_sync_exit(selfCopy);
 
   if (v13)
   {
     if (!v14)
     {
-      v24 = [(UAUserActivityClientProcess *)v12 auditToken];
-      v46 = +[RBSTarget targetWithPid:](RBSTarget, "targetWithPid:", [v24 pid]);
+      auditToken2 = [(UAUserActivityClientProcess *)selfCopy auditToken];
+      v46 = +[RBSTarget targetWithPid:](RBSTarget, "targetWithPid:", [auditToken2 pid]);
 
       v45 = [RBSDomainAttribute attributeWithDomain:@"com.apple.coreservices.useractivityd" name:@"ActivityAdvertising"];
       v25 = [RBSAssertion alloc];
@@ -813,15 +813,15 @@ LABEL_10:
         }
       }
 
-      WeakRetained = objc_loadWeakRetained(&v12->_connection);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_connection);
       v54[0] = _NSConcreteStackBlock;
       v54[1] = 3221225472;
       v54[2] = sub_100059614;
       v54[3] = &unk_1000C5EB8;
-      v32 = v8;
+      v32 = dCopy;
       v55 = v32;
-      v56 = v12;
-      v33 = v47;
+      v56 = selfCopy;
+      v33 = handlerCopy;
       v58 = v33;
       v44 = v27;
       v57 = v44;
@@ -830,18 +830,18 @@ LABEL_10:
       v23 = v34 != 0;
       if (v34)
       {
-        v35 = v12;
+        v35 = selfCopy;
         objc_sync_enter(v35);
-        [(NSMutableSet *)v12->_pendingResumeActivityUUIDs addObject:v32];
+        [(NSMutableSet *)selfCopy->_pendingResumeActivityUUIDs addObject:v32];
         objc_sync_exit(v35);
 
         v36 = [(UAUserActivityClientProcess *)v35 userActivityAdvertisableItemByUUID:v32];
         v37 = sub_100001A30(0);
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [v32 UUIDString];
+          uUIDString2 = [v32 UUIDString];
           *buf = 138543362;
-          v62 = v38;
+          v62 = uUIDString2;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Calling back to client to ask it to save activity %{public}@", buf, 0xCu);
         }
 
@@ -863,11 +863,11 @@ LABEL_10:
         v40 = sub_100001A30(0);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v41 = [(UAUserActivityClientProcess *)v12 bundleIdentifier];
+          bundleIdentifier = [(UAUserActivityClientProcess *)selfCopy bundleIdentifier];
           *buf = 138543619;
           v62 = v32;
           v63 = 2113;
-          v64 = v41;
+          v64 = bundleIdentifier;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Unable to call willSave for user activity %{public}@ for process %{private}@ because its owning process/connection seems to be gone.", buf, 0x16u);
         }
 
@@ -880,41 +880,41 @@ LABEL_10:
     v15 = sub_100001A30(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v8 UUIDString];
+      uUIDString3 = [dCopy UUIDString];
       *buf = 138543362;
-      v62 = v16;
+      v62 = uUIDString3;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, " - A prepareToResume is already in progress for activity %{public}@, queuing callback for when fetch is complete", buf, 0xCu);
     }
 
     v17 = objc_alloc_init(UAUserActivityClientPendingUpdateTask);
-    [(UAUserActivityClientPendingUpdateTask *)v17 setUuid:v8];
-    [(UAUserActivityClientPendingUpdateTask *)v17 setBlock:v47];
-    v18 = v12;
+    [(UAUserActivityClientPendingUpdateTask *)v17 setUuid:dCopy];
+    [(UAUserActivityClientPendingUpdateTask *)v17 setBlock:handlerCopy];
+    v18 = selfCopy;
     objc_sync_enter(v18);
-    v19 = [(UAUserActivityClientProcess *)v18 pendingUpdateTasks];
-    [v19 addObject:v17];
+    pendingUpdateTasks = [(UAUserActivityClientProcess *)v18 pendingUpdateTasks];
+    [pendingUpdateTasks addObject:v17];
 
     objc_sync_exit(v18);
 LABEL_15:
     v23 = 1;
 LABEL_32:
-    v22 = v47;
+    v22 = handlerCopy;
     goto LABEL_33;
   }
 
   v20 = sub_100001A30(0);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v8 UUIDString];
+    uUIDString4 = [dCopy UUIDString];
     *buf = 138543362;
-    v62 = v21;
+    v62 = uUIDString4;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, " - no need to call back to get updated info for activity %{public}@, because it is not dirty", buf, 0xCu);
   }
 
-  v22 = v47;
-  if (v47)
+  v22 = handlerCopy;
+  if (handlerCopy)
   {
-    v47[2]();
+    handlerCopy[2]();
     goto LABEL_15;
   }
 
@@ -924,29 +924,29 @@ LABEL_33:
   return v23;
 }
 
-- (BOOL)didResumeUserActivityWithUUID:(id)a3 completionHandler:(id)a4
+- (BOOL)didResumeUserActivityWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100059B68;
   v14[3] = &unk_1000C5628;
-  v9 = v7;
+  v9 = handlerCopy;
   v15 = v9;
   v10 = [WeakRetained remoteObjectProxyWithErrorHandler:v14];
 
   v11 = sub_100001A30(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543362;
-    v17 = v12;
+    v17 = uUIDString;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Telling client that user activity %{public}@ was resumed (on another device).", buf, 0xCu);
   }
 
-  [v10 tellClientUserActivityItWasResumed:v6];
+  [v10 tellClientUserActivityItWasResumed:dCopy];
   if (v9)
   {
     (*(v9 + 2))(v9, 0);
@@ -955,25 +955,25 @@ LABEL_33:
   return 1;
 }
 
-- (void)dispatchPendingTasksForUUID:(id)a3 error:(id)a4
+- (void)dispatchPendingTasksForUUID:(id)d error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  dCopy = d;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_alloc_init(NSMutableIndexSet);
-  v10 = [(UAUserActivityClientProcess *)v8 pendingUpdateTasks];
+  pendingUpdateTasks = [(UAUserActivityClientProcess *)selfCopy pendingUpdateTasks];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100059F04;
   v20[3] = &unk_1000C5F08;
-  v11 = v6;
+  v11 = dCopy;
   v21 = v11;
-  v12 = v7;
+  v12 = errorCopy;
   v22 = v12;
   v13 = v9;
   v23 = v13;
-  [v10 enumerateObjectsUsingBlock:v20];
+  [pendingUpdateTasks enumerateObjectsUsingBlock:v20];
 
   if ([v13 count])
   {
@@ -988,55 +988,55 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, " -- Called %lu pending fetch tasks for %{public}@, removing from queue", buf, 0x16u);
     }
 
-    v16 = [(UAUserActivityClientProcess *)v8 pendingUpdateTasks];
-    [v16 removeObjectsAtIndexes:v13];
+    pendingUpdateTasks2 = [(UAUserActivityClientProcess *)selfCopy pendingUpdateTasks];
+    [pendingUpdateTasks2 removeObjectsAtIndexes:v13];
   }
 
   else
   {
-    v16 = sub_100001A30(0);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    pendingUpdateTasks2 = sub_100001A30(0);
+    if (os_log_type_enabled(pendingUpdateTasks2, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v25 = v11;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, " -- No pending fetch tasks called for %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, pendingUpdateTasks2, OS_LOG_TYPE_INFO, " -- No pending fetch tasks called for %{public}@", buf, 0xCu);
     }
   }
 
   v17 = sub_100001A30(0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(UAUserActivityClientProcess *)v8 pendingUpdateTasks];
-    v19 = [v18 count];
+    pendingUpdateTasks3 = [(UAUserActivityClientProcess *)selfCopy pendingUpdateTasks];
+    v19 = [pendingUpdateTasks3 count];
     *buf = 134217984;
     v25 = v19;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, " -- %lu remaining queued tasks total", buf, 0xCu);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setCurrentAdvertisableActivity:(id)a3
+- (void)setCurrentAdvertisableActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   obj = self;
   objc_sync_enter(obj);
   currentAdvertisableActivity = obj->_currentAdvertisableActivity;
-  obj->_currentAdvertisableActivity = v4;
+  obj->_currentAdvertisableActivity = activityCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)doInitializeWithClientVersion:(int64_t)a3 clientInfo:(id)a4 completionHandler:(id)a5
+- (void)doInitializeWithClientVersion:(int64_t)version clientInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v11 = sub_100001A30(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(UAUserActivityClientProcess *)self auditToken];
-    v29 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+    auditToken = [(UAUserActivityClientProcess *)self auditToken];
+    bundleIdentifier = [(UAUserActivityClientProcess *)self bundleIdentifier];
     if (self->_allowedToAccessAnyItem)
     {
       v13 = @"YES";
@@ -1048,7 +1048,7 @@ LABEL_33:
     }
 
     v14 = v10;
-    v15 = v9;
+    v15 = handlerCopy;
     if (self->_clientIsSandboxed)
     {
       v16 = @"YES";
@@ -1059,52 +1059,52 @@ LABEL_33:
       v16 = @"NO";
     }
 
-    [v8 description];
-    v17 = v31 = v8;
+    [infoCopy description];
+    v17 = v31 = infoCopy;
     v18 = sub_100009684(v17);
     *buf = 134219267;
-    v33 = a3;
+    versionCopy = version;
     v34 = 2114;
-    v35 = v12;
+    v35 = auditToken;
     v36 = 2113;
     v37 = v30;
     v38 = 2114;
     v39 = v13;
     v40 = 2114;
     v41 = v16;
-    v9 = v15;
+    handlerCopy = v15;
     v10 = v14;
     v42 = 2113;
     v43 = v18;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CLIENT: version=%ld, %{public}@ %{private}@ any=%{public}@ sandbox=%{public}@ clientInfo=%{private}@", buf, 0x3Eu);
 
-    v8 = v31;
+    infoCopy = v31;
   }
 
-  if (v8)
+  if (infoCopy)
   {
     if ([(UAUserActivityClientProcess *)self clientIsSandboxed])
     {
       v19 = +[NSXPCConnection currentConnection];
       v20 = [v19 valueForEntitlement:@"com.apple.private.useractivity.allowedtosetbundleidentifier"];
-      v21 = [v20 BOOLValue];
+      bOOLValue = [v20 BOOLValue];
 
-      if (v21)
+      if (bOOLValue)
       {
-        v22 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+        bundleIdentifier2 = [(UAUserActivityClientProcess *)self bundleIdentifier];
 
-        if (!v22)
+        if (!bundleIdentifier2)
         {
-          v23 = [v8 objectForKey:@"CFBundleIdentifier"];
+          v23 = [infoCopy objectForKey:@"CFBundleIdentifier"];
           [(UAUserActivityClientProcess *)self setBundleIdentifier:v23];
         }
 
-        v24 = [(UAUserActivityClientProcess *)self applicationIdentifier];
+        applicationIdentifier = [(UAUserActivityClientProcess *)self applicationIdentifier];
 
-        if (!v24)
+        if (!applicationIdentifier)
         {
-          v25 = [(UAUserActivityClientProcess *)self bundleIdentifier];
-          [(UAUserActivityClientProcess *)self setApplicationIdentifier:v25];
+          bundleIdentifier3 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+          [(UAUserActivityClientProcess *)self setApplicationIdentifier:bundleIdentifier3];
 LABEL_20:
         }
       }
@@ -1112,75 +1112,75 @@ LABEL_20:
 
     else
     {
-      v26 = [(UAUserActivityClientProcess *)self applicationIdentifier];
+      applicationIdentifier2 = [(UAUserActivityClientProcess *)self applicationIdentifier];
 
-      if (!v26)
+      if (!applicationIdentifier2)
       {
-        v27 = [v8 objectForKey:@"application-identifier"];
+        v27 = [infoCopy objectForKey:@"application-identifier"];
         [(UAUserActivityClientProcess *)self setApplicationIdentifier:v27];
       }
 
-      v28 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+      bundleIdentifier4 = [(UAUserActivityClientProcess *)self bundleIdentifier];
 
-      if (!v28)
+      if (!bundleIdentifier4)
       {
-        v25 = [v8 objectForKey:@"CFBundleIdentifier"];
-        [(UAUserActivityClientProcess *)self setBundleIdentifier:v25];
+        bundleIdentifier3 = [infoCopy objectForKey:@"CFBundleIdentifier"];
+        [(UAUserActivityClientProcess *)self setBundleIdentifier:bundleIdentifier3];
         goto LABEL_20;
       }
     }
   }
 
-  (*(v9 + 2))(v9, 1, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 1, 0, 0);
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)doDeleteUserActivityWithUUID:(id)a3
+- (void)doDeleteUserActivityWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
   v6 = sub_100001A30(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v4 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v8 = 138543362;
-    v9 = v7;
+    v9 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "deleteUserActivity %{public}@", &v8, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    [(UAUserActivityClientProcess *)self removeUserActivityAdvertiseableItemByUUID:v4];
+    [(UAUserActivityClientProcess *)self removeUserActivityAdvertiseableItemByUUID:dCopy];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)doAddDynamicUserActivity:(id)a3 matching:(id)a4
+- (void)doAddDynamicUserActivity:(id)activity matching:(id)matching
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  matchingCopy = matching;
   v8 = sub_100001A30(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138478083;
-    v31 = v6;
+    v31 = activityCopy;
     v32 = 2113;
-    v33 = v7;
+    v33 = matchingCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "doAddDynamicUserActivity(%{private}@ %{private}@)", buf, 0x16u);
   }
 
-  if (v6 && v7)
+  if (activityCopy && matchingCopy)
   {
-    v9 = [(UAUserActivityClientProcess *)self teamID];
-    v10 = [NSString stringWithFormat:@"%@:%@:%@", v9, v7, v6];
+    teamID = [(UAUserActivityClientProcess *)self teamID];
+    activityCopy = [NSString stringWithFormat:@"%@:%@:%@", teamID, matchingCopy, activityCopy];
 
     v11 = _LSCreateHashedBytesForAdvertisingFromString();
     v12 = _LSCreateDatabaseLookupStringFromHashedBytesForAdvertising();
     if (v12)
     {
-      v13 = [(UAUserActivityClientProcess *)self teamID];
-      v14 = [NSString stringWithFormat:@"%@:%@", v13, v7];
+      teamID2 = [(UAUserActivityClientProcess *)self teamID];
+      matchingCopy = [NSString stringWithFormat:@"%@:%@", teamID2, matchingCopy];
 
       v29 = _LSCreateHashedBytesForAdvertisingFromString();
       v15 = _LSCreateDatabaseLookupStringFromHashedBytesForAdvertising();
@@ -1201,12 +1201,12 @@ LABEL_20:
         v38[0] = kUADynamicUserActivityHashKey;
         v38[1] = kUADynamicUserActivityDynamicActivityKey;
         v39[0] = v15;
-        v39[1] = v6;
+        v39[1] = activityCopy;
         v38[2] = kUADynamicUserActivityTeamIDKey;
-        v21 = [(UAUserActivityClientProcess *)self teamID];
+        teamID3 = [(UAUserActivityClientProcess *)self teamID];
         v38[3] = kUADynamicUserActivityAppActivityKey;
-        v39[2] = v21;
-        v39[3] = v7;
+        v39[2] = teamID3;
+        v39[3] = matchingCopy;
         v22 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:4];
 
         [v20 setValue:v22 forKey:v12];
@@ -1224,9 +1224,9 @@ LABEL_20:
           [(UAUserActivityClientProcess *)self teamID];
           v24 = v23 = v11;
           *buf = 138544130;
-          v31 = v6;
+          v31 = activityCopy;
           v32 = 2114;
-          v33 = v7;
+          v33 = matchingCopy;
           v34 = 2114;
           v35 = v15;
           v36 = 2114;
@@ -1240,18 +1240,18 @@ LABEL_20:
 
     else
     {
-      v14 = sub_100001A30(0);
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      matchingCopy = sub_100001A30(0);
+      if (os_log_type_enabled(matchingCopy, OS_LOG_TYPE_ERROR))
       {
         [(UAUserActivityClientProcess *)self teamID];
         v26 = v25 = v11;
         *buf = 138543874;
-        v31 = v6;
+        v31 = activityCopy;
         v32 = 2114;
-        v33 = v7;
+        v33 = matchingCopy;
         v34 = 2114;
         v35 = v26;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "doAddDynamicUserActivity, nil dynamicHash from (%{public}@, %{public}@, %{public}@).", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, matchingCopy, OS_LOG_TYPE_ERROR, "doAddDynamicUserActivity, nil dynamicHash from (%{public}@, %{public}@, %{public}@).", buf, 0x20u);
 
         v11 = v25;
       }
@@ -1260,33 +1260,33 @@ LABEL_20:
 
   else
   {
-    v10 = sub_100001A30(0);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    activityCopy = sub_100001A30(0);
+    if (os_log_type_enabled(activityCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v31 = v6;
+      v31 = activityCopy;
       v32 = 2114;
-      v33 = v7;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "doAddDynamicUserActivity(%{public}@, %{public}@) failed, nil for one param.", buf, 0x16u);
+      v33 = matchingCopy;
+      _os_log_impl(&_mh_execute_header, activityCopy, OS_LOG_TYPE_ERROR, "doAddDynamicUserActivity(%{public}@, %{public}@) failed, nil for one param.", buf, 0x16u);
     }
   }
 }
 
-- (void)doRemoveDynamicUserActivity:(id)a3 matching:(id)a4
+- (void)doRemoveDynamicUserActivity:(id)activity matching:(id)matching
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  matchingCopy = matching;
   v8 = sub_100001A30(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138478083;
-    v40 = v6;
+    v40 = activityCopy;
     v41 = 2113;
-    v42 = v7;
+    v42 = matchingCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "doRemoveDynamicUserActivity(%{private}@ %{private}@)", buf, 0x16u);
   }
 
-  if (v7)
+  if (matchingCopy)
   {
     v9 = [NSUserDefaults alloc];
     v10 = [v9 initWithSuiteName:kUADynamicUserActivitesPreferences];
@@ -1294,10 +1294,10 @@ LABEL_20:
     v12 = [v10 objectForKey:kUADynamicUserActivitiesKey];
     v13 = [v12 mutableCopy];
 
-    if (v6)
+    if (activityCopy)
     {
-      v14 = [(UAUserActivityClientProcess *)self teamID];
-      v15 = [NSString stringWithFormat:@"%@:%@:%@", v14, v7, v6];
+      teamID = [(UAUserActivityClientProcess *)self teamID];
+      activityCopy = [NSString stringWithFormat:@"%@:%@:%@", teamID, matchingCopy, activityCopy];
 
       v16 = _LSCreateHashedBytesForAdvertisingFromString();
       v17 = _LSCreateDatabaseLookupStringFromHashedBytesForAdvertising();
@@ -1310,12 +1310,12 @@ LABEL_20:
     {
       v31 = v11;
       v32 = v10;
-      v15 = [v13 allKeys];
+      activityCopy = [v13 allKeys];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v18 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v18 = [activityCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v18)
       {
         v19 = v18;
@@ -1329,18 +1329,18 @@ LABEL_20:
           {
             if (*v35 != v20)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(activityCopy);
             }
 
             v23 = *(*(&v34 + 1) + 8 * v22);
             v24 = [v13 valueForKey:v23];
             v25 = [v24 valueForKey:v21];
-            if ([v7 isEqualToString:v25])
+            if ([matchingCopy isEqualToString:v25])
             {
               v26 = v21;
               v27 = v20;
-              v28 = v7;
-              v29 = v15;
+              v28 = matchingCopy;
+              v29 = activityCopy;
               v30 = sub_100001A30(0);
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
               {
@@ -1350,8 +1350,8 @@ LABEL_20:
               }
 
               [v13 removeObjectForKey:v23];
-              v15 = v29;
-              v7 = v28;
+              activityCopy = v29;
+              matchingCopy = v28;
               v20 = v27;
               v21 = v26;
               v19 = v33;
@@ -1361,7 +1361,7 @@ LABEL_20:
           }
 
           while (v19 != v22);
-          v19 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v19 = [activityCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
         }
 
         while (v19);
@@ -1370,7 +1370,7 @@ LABEL_20:
       v10 = v32;
       [v32 setValue:v13 forKey:v31];
       [v32 synchronize];
-      v6 = 0;
+      activityCopy = 0;
     }
   }
 
@@ -1380,40 +1380,40 @@ LABEL_20:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v40 = v6;
+      v40 = activityCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "doRemoveDynamicUserActivity(%{public}@), nil appActivity", buf, 0xCu);
     }
   }
 }
 
-- (void)doPinUserActivityInfo:(id)a3 completionHandler:(id)a4
+- (void)doPinUserActivityInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UAUserActivityClientProcess *)self connection];
-  v9 = [v8 valueForEntitlement:@"com.apple.private.coreservices.canopenactivity"];
-  v10 = [v9 BOOLValue];
+  infoCopy = info;
+  handlerCopy = handler;
+  connection = [(UAUserActivityClientProcess *)self connection];
+  v9 = [connection valueForEntitlement:@"com.apple.private.coreservices.canopenactivity"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = +[NSUUID UUID];
-    [v6 setUuid:v11];
-    v12 = [(UAUserActivityClientProcess *)self manager];
-    [v12 setPinnedUserActivityInfoItem:v6];
+    [infoCopy setUuid:v11];
+    manager = [(UAUserActivityClientProcess *)self manager];
+    [manager setPinnedUserActivityInfoItem:infoCopy];
 
     v13 = sub_100001A30(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v6 uuid];
-      v15 = [v14 UUIDString];
+      uuid = [infoCopy uuid];
+      uUIDString = [uuid UUIDString];
       LODWORD(v21[0]) = 138543619;
-      *(v21 + 4) = v15;
+      *(v21 + 4) = uUIDString;
       WORD6(v21[0]) = 2113;
-      *(v21 + 14) = v6;
+      *(v21 + 14) = infoCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Pinned Activity Info: %{public}@/%{private}@", v21, 0x16u);
     }
 
-    v7[2](v7, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
@@ -1422,11 +1422,11 @@ LABEL_20:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = [UAAuditToken alloc];
-      v18 = [(UAUserActivityClientProcess *)self connection];
-      v19 = v18;
-      if (v18)
+      connection2 = [(UAUserActivityClientProcess *)self connection];
+      v19 = connection2;
+      if (connection2)
       {
-        [v18 auditToken];
+        [connection2 auditToken];
       }
 
       else
@@ -1443,24 +1443,24 @@ LABEL_20:
     }
 
     v11 = [NSError errorWithDomain:UAContinuityErrorDomain code:-112 userInfo:0];
-    (v7)[2](v7, 0, v11);
+    (handlerCopy)[2](handlerCopy, 0, v11);
   }
 }
 
-- (void)doGetCurrentUserActivityInfo:(id)a3
+- (void)doGetCurrentUserActivityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (![(UAUserActivityClientProcess *)self allowedToGetCurrentActivityInfo])
   {
     v14 = sub_100001A30(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = [UAAuditToken alloc];
-      v16 = [(UAUserActivityClientProcess *)self connection];
-      v17 = v16;
-      if (v16)
+      connection = [(UAUserActivityClientProcess *)self connection];
+      v17 = connection;
+      if (connection)
       {
-        [v16 auditToken];
+        [connection auditToken];
       }
 
       else
@@ -1479,18 +1479,18 @@ LABEL_20:
     v21 = [NSError errorWithDomain:UAContinuityErrorDomain code:-112 userInfo:0];
     v13 = 0;
 LABEL_22:
-    v20 = 0;
+    bundleIdentifier = 0;
     goto LABEL_23;
   }
 
-  v5 = [(UAUserActivityClientProcess *)self manager];
-  v6 = [v5 uaAdvertisableItemsInOrder];
+  manager = [(UAUserActivityClientProcess *)self manager];
+  uaAdvertisableItemsInOrder = [manager uaAdvertisableItemsInOrder];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v6;
+  v7 = uaAdvertisableItemsInOrder;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (!v8)
   {
@@ -1545,16 +1545,16 @@ LABEL_4:
     goto LABEL_18;
   }
 
-  v18 = [v13 client];
-  v19 = v18;
-  if (v18)
+  client = [v13 client];
+  v19 = client;
+  if (client)
   {
-    v20 = [v18 bundleIdentifier];
+    bundleIdentifier = [client bundleIdentifier];
   }
 
   else
   {
-    v20 = 0;
+    bundleIdentifier = 0;
   }
 
   v21 = 0;
@@ -1562,32 +1562,32 @@ LABEL_23:
   v23 = sub_100001A30(0);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v13 uuid];
-    v25 = [v24 UUIDString];
+    uuid = [v13 uuid];
+    uUIDString = [uuid UUIDString];
     *buf = 138543875;
-    *&buf[4] = v25;
+    *&buf[4] = uUIDString;
     *&buf[12] = 2113;
-    *&buf[14] = v20;
+    *&buf[14] = bundleIdentifier;
     *&buf[22] = 2114;
     *&buf[24] = v21;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "result=%{public}@ %{private}@ error=%{public}@", buf, 0x20u);
   }
 
-  v26 = [v13 uuid];
-  v27 = [v13 activityType];
-  v28 = [v13 dynamicActivityType];
-  v4[2](v4, v26, v27, v28, v20, v21);
+  uuid2 = [v13 uuid];
+  activityType = [v13 activityType];
+  dynamicActivityType = [v13 dynamicActivityType];
+  infoCopy[2](infoCopy, uuid2, activityType, dynamicActivityType, bundleIdentifier, v21);
 }
 
-- (void)doGetUserActivityProxiesWithOptions:(id)a3 completionHandler:(id)a4
+- (void)doGetUserActivityProxiesWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v38 = objc_opt_new();
   v8 = sub_100001A30(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 description];
+    v9 = [optionsCopy description];
     v10 = sub_100009684(v9);
     *buf = 138543362;
     *&buf[4] = v10;
@@ -1596,16 +1596,16 @@ LABEL_23:
 
   if ([(UAUserActivityClientProcess *)self allowedToMatchUserActivities])
   {
-    v36 = v7;
-    v37 = v6;
-    v11 = [(UAUserActivityClientProcess *)self manager];
-    v12 = [v11 advertiseableItems];
+    v36 = handlerCopy;
+    v37 = optionsCopy;
+    manager = [(UAUserActivityClientProcess *)self manager];
+    advertiseableItems = [manager advertiseableItems];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v13 = v12;
+    v13 = advertiseableItems;
     v14 = [v13 countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v14)
     {
@@ -1627,23 +1627,23 @@ LABEL_23:
           if (objc_opt_isKindOfClass())
           {
             v19 = v13;
-            v20 = [v18 client];
-            v21 = v20;
-            if (v20)
+            client = [v18 client];
+            v21 = client;
+            if (client)
             {
-              v22 = [v20 bundleIdentifier];
+              bundleIdentifier = [client bundleIdentifier];
             }
 
             else
             {
-              v22 = 0;
+              bundleIdentifier = 0;
             }
 
             v23 = [UAUserActivityProxy alloc];
-            v24 = [v18 uuid];
-            v25 = [v18 activityType];
-            v26 = [v18 dynamicActivityType];
-            v27 = [v23 initWithUUID:v24 activityType:v25 dynamicActivityType:v26 bundleID:v22];
+            uuid = [v18 uuid];
+            activityType = [v18 activityType];
+            dynamicActivityType = [v18 dynamicActivityType];
+            v27 = [v23 initWithUUID:uuid activityType:activityType dynamicActivityType:dynamicActivityType bundleID:bundleIdentifier];
 
             [v38 addObject:v27];
             v13 = v19;
@@ -1661,8 +1661,8 @@ LABEL_23:
     }
 
     v28 = 0;
-    v7 = v36;
-    v6 = v37;
+    handlerCopy = v36;
+    optionsCopy = v37;
   }
 
   else
@@ -1671,11 +1671,11 @@ LABEL_23:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       v30 = [UAAuditToken alloc];
-      v31 = [(UAUserActivityClientProcess *)self connection];
-      v32 = v31;
-      if (v31)
+      connection = [(UAUserActivityClientProcess *)self connection];
+      v32 = connection;
+      if (connection)
       {
-        [v31 auditToken];
+        [connection auditToken];
       }
 
       else
@@ -1699,19 +1699,19 @@ LABEL_23:
   }
 
   v35 = [v38 copy];
-  v7[2](v7, v35, v28);
+  handlerCopy[2](handlerCopy, v35, v28);
 }
 
-- (void)doDetermineIfUserActivityIsCurrent:(id)a3 completionHandler:(id)a4
+- (void)doDetermineIfUserActivityIsCurrent:(id)current completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  currentCopy = current;
+  handlerCopy = handler;
   v8 = sub_100001A30(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [currentCopy UUIDString];
     *buf = 138543362;
-    *&buf[4] = v9;
+    *&buf[4] = uUIDString;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "doDetermineIfUserActivityIsCurrent: uuid=%{public}@", buf, 0xCu);
   }
 
@@ -1721,11 +1721,11 @@ LABEL_23:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = [UAAuditToken alloc];
-      v22 = [(UAUserActivityClientProcess *)self connection];
-      v23 = v22;
-      if (v22)
+      connection = [(UAUserActivityClientProcess *)self connection];
+      v23 = connection;
+      if (connection)
       {
-        [v22 auditToken];
+        [connection auditToken];
       }
 
       else
@@ -1745,8 +1745,8 @@ LABEL_23:
     v19 = -112;
 LABEL_26:
     v24 = [NSError errorWithDomain:v18 code:v19 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, 0, 0, v24);
-    v11 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v24);
+    clients = currentCopy;
 LABEL_30:
 
     goto LABEL_31;
@@ -1756,10 +1756,10 @@ LABEL_30:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = [(UAUserActivityClientProcess *)self manager];
-  v11 = [v10 clients];
+  manager = [(UAUserActivityClientProcess *)self manager];
+  clients = [manager clients];
 
-  v12 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v12 = [clients countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1770,20 +1770,20 @@ LABEL_30:
       {
         if (*v38 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(clients);
         }
 
         v16 = *(*(&v37 + 1) + 8 * i);
-        v17 = [v16 userActivityInfoForUUID:v6];
+        v17 = [v16 userActivityInfoForUUID:currentCopy];
         if (v17)
         {
           v24 = v17;
           v25 = sub_100001A30(0);
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
-            v26 = [v6 UUIDString];
+            uUIDString2 = [currentCopy UUIDString];
             *buf = 138543875;
-            *&buf[4] = v26;
+            *&buf[4] = uUIDString2;
             *&buf[12] = 2114;
             *&buf[14] = v16;
             *&buf[22] = 2113;
@@ -1794,23 +1794,23 @@ LABEL_30:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [v16 userActivityClientForUUID:v6];
+            v27 = [v16 userActivityClientForUUID:currentCopy];
             v28 = v27;
             if (v27)
             {
-              v29 = [v27 currentAdvertisableActivity];
-              v30 = [v29 uuid];
-              v31 = [v30 isEqual:v6];
+              currentAdvertisableActivity = [v27 currentAdvertisableActivity];
+              uuid = [currentAdvertisableActivity uuid];
+              v31 = [uuid isEqual:currentCopy];
 
-              v32 = [v28 bundleIdentifier];
-              v33 = [v28 auditToken];
-              v34 = [v33 pid];
+              bundleIdentifier = [v28 bundleIdentifier];
+              auditToken = [v28 auditToken];
+              v34 = [auditToken pid];
             }
 
             else
             {
               v34 = 0;
-              v32 = 0;
+              bundleIdentifier = 0;
               v31 = 1;
             }
           }
@@ -1818,18 +1818,18 @@ LABEL_30:
           else
           {
             v34 = 0;
-            v32 = 0;
+            bundleIdentifier = 0;
             v31 = 1;
           }
 
-          v36 = [v24 activityType];
-          (*(v7 + 2))(v7, v31, v32, v34, v36, 0);
+          activityType = [v24 activityType];
+          (*(handlerCopy + 2))(handlerCopy, v31, bundleIdentifier, v34, activityType, 0);
 
           goto LABEL_30;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v13 = [clients countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v13)
       {
         continue;
@@ -1839,7 +1839,7 @@ LABEL_30:
     }
   }
 
-  if (v6)
+  if (currentCopy)
   {
     v18 = UAContinuityErrorDomain;
     v19 = -108;
@@ -1849,45 +1849,45 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)doGetLoggingFileForClient:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)doGetLoggingFileForClient:(id)client options:(id)options completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    v6 = a5;
+    handlerCopy = handler;
     v7 = [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:0];
-    (*(a5 + 2))(v6, 0, v7);
+    (*(handler + 2))(handlerCopy, 0, v7);
   }
 }
 
-- (void)doFetchUserActivityInfoWithUUID:(id)a3 completionHandler:(id)a4
+- (void)doFetchUserActivityInfoWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = sub_100001A30(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138543362;
-    v44 = v10;
+    v44 = uUIDString;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "doFetchUserActivityInfoWithUUID:(%{public}@)", buf, 0xCu);
   }
 
-  v11 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:v6];
+  v11 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:dCopy];
   if (v11)
   {
-    v12 = v11;
+    manager4 = v11;
     if ([v11 isDirty])
     {
       v40[0] = _NSConcreteStackBlock;
       v40[1] = 3221225472;
       v40[2] = sub_10005C13C;
       v40[3] = &unk_1000C5F30;
-      v13 = v7;
+      v13 = handlerCopy;
       v42 = v13;
-      v12 = v12;
-      v41 = v12;
-      if (([v12 requestPayloadWithCompletionHandler:v40] & 1) == 0)
+      manager4 = manager4;
+      v41 = manager4;
+      if (([manager4 requestPayloadWithCompletionHandler:v40] & 1) == 0)
       {
         v14 = sub_100001A30(0);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1906,18 +1906,18 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    v25 = [v12 copy];
+    pinnedUserActivityInfoItem3 = [manager4 copy];
 LABEL_23:
-    v26 = v25;
-    (*(v7 + 2))(v7, v25, 0);
+    v26 = pinnedUserActivityInfoItem3;
+    (*(handlerCopy + 2))(handlerCopy, pinnedUserActivityInfoItem3, 0);
 
     goto LABEL_24;
   }
 
   if ([(UAUserActivityClientProcess *)self allowedToAccessAnyItem]|| [(UAUserActivityClientProcess *)self allowedToGetCurrentActivityInfo])
   {
-    v17 = [(UAUserActivityClientProcess *)self controller];
-    v18 = [v17 userActivityInfoForUUID:v6];
+    controller = [(UAUserActivityClientProcess *)self controller];
+    v18 = [controller userActivityInfoForUUID:dCopy];
 
     if (v18)
     {
@@ -1925,8 +1925,8 @@ LABEL_23:
     }
   }
 
-  v19 = [(UAUserActivityClientProcess *)self manager];
-  v18 = [v19 cornerActionItemForUUID:v6];
+  manager = [(UAUserActivityClientProcess *)self manager];
+  v18 = [manager cornerActionItemForUUID:dCopy];
 
   if (v18)
   {
@@ -1934,9 +1934,9 @@ LABEL_14:
     v20 = sub_100001A30(0);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v6 UUIDString];
+      uUIDString2 = [dCopy UUIDString];
       *buf = 138543362;
-      v44 = v21;
+      v44 = uUIDString2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "-- activity with uuid %{public}@, so fetching payload for it.", buf, 0xCu);
     }
 
@@ -1944,12 +1944,12 @@ LABEL_14:
     v36[1] = 3221225472;
     v36[2] = sub_10005C1D8;
     v36[3] = &unk_1000C5F58;
-    v37 = v6;
-    v12 = v18;
-    v38 = v12;
-    v22 = v7;
+    v37 = dCopy;
+    manager4 = v18;
+    v38 = manager4;
+    v22 = handlerCopy;
     v39 = v22;
-    if (([v12 requestPayloadWithCompletionHandler:v36] & 1) == 0)
+    if (([manager4 requestPayloadWithCompletionHandler:v36] & 1) == 0)
     {
       v23 = sub_100001A30(0);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1966,59 +1966,59 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v27 = [(UAUserActivityClientProcess *)self manager];
-  v28 = [v27 pinnedUserActivityInfoItem];
-  v29 = [v28 uuid];
-  v30 = [v29 isEqual:v6];
+  manager2 = [(UAUserActivityClientProcess *)self manager];
+  pinnedUserActivityInfoItem = [manager2 pinnedUserActivityInfoItem];
+  uuid = [pinnedUserActivityInfoItem uuid];
+  v30 = [uuid isEqual:dCopy];
 
   if (v30)
   {
     v31 = sub_100001A30(0);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(UAUserActivityClientProcess *)self manager];
-      v33 = [v32 pinnedUserActivityInfoItem];
+      manager3 = [(UAUserActivityClientProcess *)self manager];
+      pinnedUserActivityInfoItem2 = [manager3 pinnedUserActivityInfoItem];
       *buf = 138477827;
-      v44 = v33;
+      v44 = pinnedUserActivityInfoItem2;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, " -- Sending Pinned userActivityInfo back to client: %{private}@", buf, 0xCu);
     }
 
-    v12 = [(UAUserActivityClientProcess *)self manager];
-    v25 = [v12 pinnedUserActivityInfoItem];
+    manager4 = [(UAUserActivityClientProcess *)self manager];
+    pinnedUserActivityInfoItem3 = [manager4 pinnedUserActivityInfoItem];
     goto LABEL_23;
   }
 
-  v12 = [NSError errorWithDomain:UAContinuityErrorDomain code:-106 userInfo:0];
+  manager4 = [NSError errorWithDomain:UAContinuityErrorDomain code:-106 userInfo:0];
   v34 = sub_100001A30(0);
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
-    v35 = [v6 UUIDString];
+    uUIDString3 = [dCopy UUIDString];
     *buf = 138543618;
-    v44 = v35;
+    v44 = uUIDString3;
     v45 = 2114;
-    v46 = v12;
+    v46 = manager4;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Activity with uuid %{public}@ fetch requested, but was neither a locally created item nor a corner action item, so returning error %{public}@", buf, 0x16u);
   }
 
-  (*(v7 + 2))(v7, 0, v12);
+  (*(handlerCopy + 2))(handlerCopy, 0, manager4);
 LABEL_24:
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)doUpdateUserActivityInfo:(id)a3 makeCurrent:(BOOL)a4 completionHandler:(id)a5
+- (void)doUpdateUserActivityInfo:(id)info makeCurrent:(BOOL)current completionHandler:(id)handler
 {
-  v105 = a4;
-  v7 = a3;
-  v8 = a5;
+  currentCopy = current;
+  infoCopy = info;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
   v9 = +[UAUserActivityDefaults sharedDefaults];
-  v107 = [v9 debugCrossoverAllActivities];
+  debugCrossoverAllActivities = [v9 debugCrossoverAllActivities];
 
   v10 = sub_100001A30(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    if (v105)
+    if (currentCopy)
     {
       v11 = @"YES";
     }
@@ -2028,24 +2028,24 @@ LABEL_24:
       v11 = @"NO";
     }
 
-    v12 = [v7 uuid];
-    v13 = [v12 UUIDString];
+    uuid = [infoCopy uuid];
+    uUIDString = [uuid UUIDString];
     *buf = 138543875;
     *&buf[4] = v11;
     *&buf[12] = 2114;
-    *&buf[14] = v13;
+    *&buf[14] = uUIDString;
     *&buf[22] = 2113;
-    *&buf[24] = v7;
+    *&buf[24] = infoCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "doUpdateUserActivityInfo: makeCurrent=%{public}@ newInfo = %{public}@/%{private}@", buf, 0x20u);
   }
 
-  v14 = [v7 uuid];
-  v15 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:v14];
+  uuid2 = [infoCopy uuid];
+  v15 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:uuid2];
 
   v16 = +[NSDate date];
-  [v7 setWhen:v16];
+  [infoCopy setWhen:v16];
 
-  v106 = self;
+  selfCopy = self;
   if (v15)
   {
     v17 = 0;
@@ -2053,20 +2053,20 @@ LABEL_24:
     goto LABEL_33;
   }
 
-  v19 = [v7 activityType];
+  activityType = [infoCopy activityType];
 
-  if (!v19)
+  if (!activityType)
   {
     v27 = sub_100001A30(0);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = [(UAUserActivityClientProcess *)self auditToken];
-      v29 = [v28 pid];
-      v30 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+      auditToken = [(UAUserActivityClientProcess *)self auditToken];
+      v29 = [auditToken pid];
+      bundleIdentifier = [(UAUserActivityClientProcess *)self bundleIdentifier];
       *buf = 134218243;
       *&buf[4] = v29;
       *&buf[12] = 2113;
-      *&buf[14] = v30;
+      *&buf[14] = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "The application with pid %ld/%{private}@ didn't provide a activityType.", buf, 0x16u);
     }
 
@@ -2075,15 +2075,15 @@ LABEL_24:
     goto LABEL_18;
   }
 
-  v20 = [(UAUserActivityClientProcess *)self teamID];
-  if (!v20)
+  teamID = [(UAUserActivityClientProcess *)self teamID];
+  if (!teamID)
   {
-    v20 = [(UAUserActivityClientProcess *)self applicationIdentifier];
-    if (([v20 hasPrefix:@"com.apple."] & 1) == 0)
+    teamID = [(UAUserActivityClientProcess *)self applicationIdentifier];
+    if (([teamID hasPrefix:@"com.apple."] & 1) == 0)
     {
-      v33 = [(UAUserActivityClientProcess *)self clientIsSandboxed];
+      clientIsSandboxed = [(UAUserActivityClientProcess *)self clientIsSandboxed];
 
-      if (!v33)
+      if (!clientIsSandboxed)
       {
         goto LABEL_12;
       }
@@ -2091,25 +2091,25 @@ LABEL_24:
       v34 = sub_100001A30(0);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        v35 = [(UAUserActivityClientProcess *)self auditToken];
-        v36 = [v35 pid];
-        v37 = [(UAUserActivityClientProcess *)self bundleIdentifier];
-        if (v37)
+        auditToken2 = [(UAUserActivityClientProcess *)self auditToken];
+        v36 = [auditToken2 pid];
+        bundleIdentifier2 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+        if (bundleIdentifier2)
         {
-          v38 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+          bundleIdentifier3 = [(UAUserActivityClientProcess *)self bundleIdentifier];
         }
 
         else
         {
-          v38 = @"NULL";
+          bundleIdentifier3 = @"NULL";
         }
 
         *buf = 134218243;
         *&buf[4] = v36;
         *&buf[12] = 2113;
-        *&buf[14] = v38;
+        *&buf[14] = bundleIdentifier3;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "The application with pid %ld/%{private}@ doesn't have a team identifier in its application-identifier, or isn't from com.apple., and is sandboxed, so unable to proceed.", buf, 0x16u);
-        if (v37)
+        if (bundleIdentifier2)
         {
         }
       }
@@ -2124,83 +2124,83 @@ LABEL_18:
   }
 
 LABEL_12:
-  v21 = [(UAUserActivityClientProcess *)self teamID];
+  teamID2 = [(UAUserActivityClientProcess *)self teamID];
   v22 = sub_100001A30(0);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = v8;
-    v24 = [(UAUserActivityClientProcess *)self auditToken];
-    v25 = [(UAUserActivityClientProcess *)self bundleIdentifier];
-    if (v25)
+    v23 = handlerCopy;
+    auditToken3 = [(UAUserActivityClientProcess *)self auditToken];
+    bundleIdentifier4 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+    if (bundleIdentifier4)
     {
-      v26 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+      bundleIdentifier5 = [(UAUserActivityClientProcess *)self bundleIdentifier];
     }
 
     else
     {
-      v26 = @"NULL";
+      bundleIdentifier5 = @"NULL";
     }
 
-    v39 = [v7 activityType];
+    activityType2 = [infoCopy activityType];
     *buf = 138544131;
-    *&buf[4] = v24;
+    *&buf[4] = auditToken3;
     *&buf[12] = 2113;
-    *&buf[14] = v21;
+    *&buf[14] = teamID2;
     *&buf[22] = 2113;
-    *&buf[24] = v26;
+    *&buf[24] = bundleIdentifier5;
     v109 = 2113;
-    v110 = v39;
+    v110 = activityType2;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Application %{public}@ is registering an activity with teamID %{private}@ bundleID=%{private}@ activityType=%{private}@", buf, 0x2Au);
 
-    if (v25)
+    if (bundleIdentifier4)
     {
     }
 
-    v8 = v23;
+    handlerCopy = v23;
   }
 
-  v15 = [[UAUserActivityAdvertisableItem alloc] initWithUserActivityInfo:v7 client:self];
-  [(UAUserActivityAdvertisableItem *)v15 setTeamIdentifier:v21];
-  v40 = [(UAUserActivityClientProcess *)self bundleIdentifier];
-  [(UAUserActivityAdvertisableItem *)v15 setBundleIdentifier:v40];
+  v15 = [[UAUserActivityAdvertisableItem alloc] initWithUserActivityInfo:infoCopy client:self];
+  [(UAUserActivityAdvertisableItem *)v15 setTeamIdentifier:teamID2];
+  bundleIdentifier6 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+  [(UAUserActivityAdvertisableItem *)v15 setBundleIdentifier:bundleIdentifier6];
 
   [(UAUserActivityClientProcess *)self addUserActivity:v15];
   v17 = 0;
 LABEL_28:
-  v41 = [v7 options];
-  v42 = [v41 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
+  options = [infoCopy options];
+  v42 = [options objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
 
   LODWORD(v18) = v42 != 0;
   if (v42)
   {
-    v103 = v8;
+    v103 = handlerCopy;
     v43 = sub_100001A30(0);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
-      v44 = [(UAUserActivityAdvertisableItem *)v15 uuid];
-      v45 = [v44 UUIDString];
-      v46 = [(UAAdvertisableItem *)v15 logString];
-      v47 = [v7 options];
-      v48 = [v47 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
+      uuid3 = [(UAUserActivityAdvertisableItem *)v15 uuid];
+      uUIDString2 = [uuid3 UUIDString];
+      logString = [(UAAdvertisableItem *)v15 logString];
+      options2 = [infoCopy options];
+      v48 = [options2 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
       *buf = 138543875;
-      *&buf[4] = v45;
+      *&buf[4] = uUIDString2;
       *&buf[12] = 2113;
-      *&buf[14] = v46;
+      *&buf[14] = logString;
       *&buf[22] = 2114;
       *&buf[24] = v48;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEBUG, "Application item %{public}@/%{private}@ has a proxy %{public}@, so forcing an advertisement update.", buf, 0x20u);
 
-      self = v106;
+      self = selfCopy;
     }
 
-    v8 = v103;
+    handlerCopy = v103;
   }
 
   if (!v15)
   {
-    v75 = [(UAUserActivityClientProcess *)self controller];
-    v76 = [v7 uuid];
-    v77 = [v75 userActivityInfoForUUID:v76];
+    controller = [(UAUserActivityClientProcess *)self controller];
+    uuid4 = [infoCopy uuid];
+    v77 = [controller userActivityInfoForUUID:uuid4];
 
     if (v77)
     {
@@ -2225,12 +2225,12 @@ LABEL_28:
   }
 
 LABEL_33:
-  v49 = [(UAUserActivityAdvertisableItem *)v15 webpageURL];
-  v50 = [v7 webpageURL];
-  v51 = v50;
-  if (v49 && v50)
+  webpageURL = [(UAUserActivityAdvertisableItem *)v15 webpageURL];
+  webpageURL2 = [infoCopy webpageURL];
+  v51 = webpageURL2;
+  if (webpageURL && webpageURL2)
   {
-    v52 = [v49 isEqual:v50];
+    v52 = [webpageURL isEqual:webpageURL2];
 
     if (v52)
     {
@@ -2241,7 +2241,7 @@ LABEL_33:
   else
   {
 
-    if (v49 == v51)
+    if (webpageURL == v51)
     {
       goto LABEL_41;
     }
@@ -2250,25 +2250,25 @@ LABEL_33:
   v53 = sub_100001A30(0);
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
   {
-    v54 = [(UAUserActivityAdvertisableItem *)v15 uuid];
-    v55 = [v54 UUIDString];
-    v56 = [(UAAdvertisableItem *)v15 logString];
+    uuid5 = [(UAUserActivityAdvertisableItem *)v15 uuid];
+    uUIDString3 = [uuid5 UUIDString];
+    logString2 = [(UAAdvertisableItem *)v15 logString];
     *buf = 138543619;
-    *&buf[4] = v55;
+    *&buf[4] = uUIDString3;
     *&buf[12] = 2113;
-    *&buf[14] = v56;
+    *&buf[14] = logString2;
     _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "Application item %{public}@/%{private}@ has changed .webPageURL, forcing an advertisement update.", buf, 0x16u);
   }
 
   LOBYTE(v18) = 1;
 LABEL_41:
-  v57 = [(UAUserActivityAdvertisableItem *)v15 proxiedBundleIdentifier];
-  v58 = [v7 options];
-  v59 = [v58 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
+  proxiedBundleIdentifier = [(UAUserActivityAdvertisableItem *)v15 proxiedBundleIdentifier];
+  options3 = [infoCopy options];
+  v59 = [options3 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
   v60 = v59;
-  if (v57 && v59)
+  if (proxiedBundleIdentifier && v59)
   {
-    v61 = [v57 isEqual:v59];
+    v61 = [proxiedBundleIdentifier isEqual:v59];
 
     if (v61)
     {
@@ -2279,11 +2279,11 @@ LABEL_41:
   else
   {
 
-    if (v57 == v60)
+    if (proxiedBundleIdentifier == v60)
     {
 LABEL_44:
-      self = v106;
-      if (!v105)
+      self = selfCopy;
+      if (!currentCopy)
       {
         if (v18)
         {
@@ -2295,36 +2295,36 @@ LABEL_44:
       }
 
 LABEL_51:
-      v67 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-      if (!v67)
+      currentAdvertisableActivity = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+      if (!currentAdvertisableActivity)
       {
         goto LABEL_59;
       }
 
-      v68 = v67;
-      v69 = v8;
-      v70 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-      v71 = [v70 uuid];
-      v72 = [(UAUserActivityAdvertisableItem *)v15 uuid];
-      v73 = v72;
-      if (!v71)
+      v68 = currentAdvertisableActivity;
+      v69 = handlerCopy;
+      currentAdvertisableActivity2 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+      uuid6 = [currentAdvertisableActivity2 uuid];
+      uuid7 = [(UAUserActivityAdvertisableItem *)v15 uuid];
+      v73 = uuid7;
+      if (!uuid6)
       {
         goto LABEL_57;
       }
 
-      if (v72)
+      if (uuid7)
       {
-        v74 = [v71 isEqual:v72];
+        v74 = [uuid6 isEqual:uuid7];
       }
 
       else
       {
 LABEL_57:
-        v74 = v71 == v72;
+        v74 = uuid6 == uuid7;
       }
 
-      v8 = v69;
-      self = v106;
+      handlerCopy = v69;
+      self = selfCopy;
       if ((v74 & 1) == 0)
       {
 LABEL_59:
@@ -2332,24 +2332,24 @@ LABEL_59:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           [(UAUserActivityAdvertisableItem *)v15 uuid];
-          v80 = v79 = v8;
-          v81 = [v80 UUIDString];
-          v82 = [(UAAdvertisableItem *)v15 logString];
-          v83 = [(UAUserActivityClientProcess *)v106 bundleIdentifier];
-          v84 = [(UAUserActivityClientProcess *)v106 auditToken];
-          v85 = [v84 pid];
+          v80 = v79 = handlerCopy;
+          uUIDString4 = [v80 UUIDString];
+          logString3 = [(UAAdvertisableItem *)v15 logString];
+          bundleIdentifier7 = [(UAUserActivityClientProcess *)selfCopy bundleIdentifier];
+          auditToken4 = [(UAUserActivityClientProcess *)selfCopy auditToken];
+          v85 = [auditToken4 pid];
           *buf = 138544131;
-          *&buf[4] = v81;
+          *&buf[4] = uUIDString4;
           *&buf[12] = 2113;
-          *&buf[14] = v82;
+          *&buf[14] = logString3;
           *&buf[22] = 2113;
-          *&buf[24] = v83;
+          *&buf[24] = bundleIdentifier7;
           v109 = 2048;
           v110 = v85;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "- Making %{public}@/%{private}@ into the currentItem from process %{private}@/%ld", buf, 0x2Au);
 
-          v8 = v79;
-          self = v106;
+          handlerCopy = v79;
+          self = selfCopy;
         }
 
         [(UAUserActivityClientProcess *)self setCurrentAdvertisableActivity:v15];
@@ -2358,7 +2358,7 @@ LABEL_59:
 
       v86 = v18;
       v87 = !sub_1000023A0([(UAUserActivityAdvertisableItem *)v15 type]);
-      v107 |= v87;
+      debugCrossoverAllActivities |= v87;
       LODWORD(v18) = 1;
       if ((v86 & 1) != 0 || v87)
       {
@@ -2369,8 +2369,8 @@ LABEL_68:
           memset(buf, 0, sizeof(buf));
           [(UAAuditToken *)auditToken auditTokenValue];
           v89 = +[UADiagnosticManager sharedManager];
-          v90 = [v7 activityType];
-          [v89 submitUserActivityBecameCurrent:v90 withToken:buf];
+          activityType3 = [infoCopy activityType];
+          [v89 submitUserActivityBecameCurrent:activityType3 withToken:buf];
         }
 
         goto LABEL_70;
@@ -2387,7 +2387,7 @@ LABEL_64:
         LODWORD(v18) = [(UAUserActivityAdvertisableItem *)v15 alwaysEligible];
       }
 
-      if (!v105)
+      if (!currentCopy)
       {
         goto LABEL_70;
       }
@@ -2399,29 +2399,29 @@ LABEL_64:
   v18 = sub_100001A30(0);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v62 = [(UAUserActivityAdvertisableItem *)v15 uuid];
-    v63 = [v62 UUIDString];
-    v64 = [(UAAdvertisableItem *)v15 logString];
-    v65 = [v7 options];
-    v66 = [v65 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
+    uuid8 = [(UAUserActivityAdvertisableItem *)v15 uuid];
+    uUIDString5 = [uuid8 UUIDString];
+    logString4 = [(UAAdvertisableItem *)v15 logString];
+    options4 = [infoCopy options];
+    v66 = [options4 objectForKeyedSubscript:@"UAProxiedBundleIdentifier"];
     *buf = 138543875;
-    *&buf[4] = v63;
+    *&buf[4] = uUIDString5;
     *&buf[12] = 2113;
-    *&buf[14] = v64;
+    *&buf[14] = logString4;
     *&buf[22] = 2114;
     *&buf[24] = v66;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Application item %{public}@/%{private}@ has changed proxy %{public}@, so forcing an advertisement update.", buf, 0x20u);
   }
 
   LODWORD(v18) = 1;
-  self = v106;
-  if (v105)
+  self = selfCopy;
+  if (currentCopy)
   {
     goto LABEL_51;
   }
 
 LABEL_70:
-  [(UAUserActivityAdvertisableItem *)v15 update:v7];
+  [(UAUserActivityAdvertisableItem *)v15 update:infoCopy];
   if (!v17)
   {
     goto LABEL_74;
@@ -2431,14 +2431,14 @@ LABEL_71:
   v91 = sub_100001A30(0);
   if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
   {
-    v92 = [v7 uuid];
-    v93 = [v7 activityType];
+    uuid9 = [infoCopy uuid];
+    activityType4 = [infoCopy activityType];
     *buf = 138543875;
     *&buf[4] = v17;
     *&buf[12] = 2114;
-    *&buf[14] = v92;
+    *&buf[14] = uuid9;
     *&buf[22] = 2113;
-    *&buf[24] = v93;
+    *&buf[24] = activityType4;
     _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_ERROR, "refusing to register user activity from client, and returning error %{public}@ for item %{public}@ %{private}@", buf, 0x20u);
   }
 
@@ -2448,81 +2448,81 @@ LABEL_74:
     v94 = sub_100001A30(0);
     if (os_log_type_enabled(v94, OS_LOG_TYPE_INFO))
     {
-      v95 = [(UAUserActivityAdvertisableItem *)v15 uuid];
-      v96 = [v95 UUIDString];
+      uuid10 = [(UAUserActivityAdvertisableItem *)v15 uuid];
+      uUIDString6 = [uuid10 UUIDString];
       *buf = 138543619;
-      *&buf[4] = v96;
+      *&buf[4] = uUIDString6;
       *&buf[12] = 2113;
       *&buf[14] = v15;
       _os_log_impl(&_mh_execute_header, v94, OS_LOG_TYPE_INFO, "BECOMECURRENT: updating advertisement for %{public}@/%{private}@ because the becomeCurrent item changed or a DNS item changed its URL", buf, 0x16u);
     }
 
-    v97 = [(UAUserActivityClientProcess *)self manager];
-    [v97 scheduleUpdatingAdvertisableItems];
+    manager = [(UAUserActivityClientProcess *)self manager];
+    [manager scheduleUpdatingAdvertisableItems];
   }
 
-  if (v107)
+  if (debugCrossoverAllActivities)
   {
     v98 = sub_100001A30(0);
     if (os_log_type_enabled(v98, OS_LOG_TYPE_INFO))
     {
-      v99 = [(UAUserActivityAdvertisableItem *)v15 uuid];
-      v100 = [v99 UUIDString];
+      uuid11 = [(UAUserActivityAdvertisableItem *)v15 uuid];
+      uUIDString7 = [uuid11 UUIDString];
       *buf = 138543619;
-      *&buf[4] = v100;
+      *&buf[4] = uUIDString7;
       *&buf[12] = 2113;
       *&buf[14] = v15;
       _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_INFO, "BECOMECURRENT: updating notifiers for %{public}@/%{private}@ because the becomeCurrent item changed", buf, 0x16u);
     }
 
-    v101 = [(UAUserActivityClientProcess *)self manager];
-    [v101 scheduleBestAppDetermination];
+    manager2 = [(UAUserActivityClientProcess *)self manager];
+    [manager2 scheduleBestAppDetermination];
   }
 
-  v8[2](v8, v17);
+  handlerCopy[2](handlerCopy, v17);
 
   objc_autoreleasePoolPop(context);
 }
 
-- (void)doUpdateUserActivityWithUUID:(id)a3 setActive:(BOOL)a4
+- (void)doUpdateUserActivityWithUUID:(id)d setActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
+  activeCopy = active;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
   v8 = sub_100001A30(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v10 = @"NO";
     *buf = 138543875;
-    v39 = v9;
-    if (v4)
+    v39 = uUIDString;
+    if (activeCopy)
     {
       v10 = @"YES";
     }
 
     v40 = 2113;
-    v41 = self;
+    selfCopy = self;
     v42 = 2114;
     v43 = v10;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "doUpdateUserActivityWithUUID(%{public}@/%{private}@, current=%{public}@)", buf, 0x20u);
   }
 
-  v11 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:v6];
+  v11 = [(UAUserActivityClientProcess *)self userActivityAdvertisableItemByUUID:dCopy];
   if (v11)
   {
     v37 = v7;
-    v12 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-    if (v12)
+    currentAdvertisableActivity = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    if (currentAdvertisableActivity)
     {
-      v13 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-      v14 = [v13 uuid];
-      v15 = [(__CFString *)v11 uuid];
-      v16 = [v14 isEqual:v15];
+      currentAdvertisableActivity2 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+      uuid = [currentAdvertisableActivity2 uuid];
+      uuid2 = [(__CFString *)v11 uuid];
+      v16 = [uuid isEqual:uuid2];
 
-      if (v16 == v4)
+      if (v16 == activeCopy)
       {
-        LODWORD(v12) = 0;
+        LODWORD(currentAdvertisableActivity) = 0;
         v17 = 0;
         goto LABEL_20;
       }
@@ -2532,7 +2532,7 @@ LABEL_74:
     {
       v16 = 0;
       v17 = 0;
-      if ((v4 & 1) == 0)
+      if ((activeCopy & 1) == 0)
       {
         goto LABEL_20;
       }
@@ -2540,13 +2540,13 @@ LABEL_74:
 
     if (([(__CFString *)v11 alwaysPick]& 1) != 0)
     {
-      LODWORD(v12) = 1;
+      LODWORD(currentAdvertisableActivity) = 1;
     }
 
     else
     {
-      v21 = [(UAUserActivityClientProcess *)self controller];
-      LODWORD(v12) = [v21 clientIsActive:self];
+      controller = [(UAUserActivityClientProcess *)self controller];
+      LODWORD(currentAdvertisableActivity) = [controller clientIsActive:self];
     }
 
     v17 = 1;
@@ -2556,9 +2556,9 @@ LABEL_20:
     {
       [(UAUserActivityClientProcess *)self auditToken];
       v23 = v36 = v17;
-      v24 = [(__CFString *)v11 uuid];
-      v25 = [v24 UUIDString];
-      v26 = v25;
+      uuid3 = [(__CFString *)v11 uuid];
+      uUIDString2 = [uuid3 UUIDString];
+      v26 = uUIDString2;
       v27 = &stru_1000C67D0;
       *buf = 138544387;
       v39 = v23;
@@ -2570,10 +2570,10 @@ LABEL_20:
       v28 = @".";
       v40 = 2114;
       v42 = 2113;
-      v41 = v25;
+      selfCopy = uUIDString2;
       v43 = v11;
       v44 = 2114;
-      if (v12)
+      if (currentAdvertisableActivity)
       {
         v28 = @", and updating advertisment.";
       }
@@ -2589,7 +2589,7 @@ LABEL_20:
     v29 = +[NSDate date];
     [(__CFString *)v11 setWhen:v29];
 
-    if (v16 & 1 | ((v4 & 1) == 0))
+    if (v16 & 1 | ((activeCopy & 1) == 0))
     {
       v7 = v37;
       if (v17)
@@ -2597,14 +2597,14 @@ LABEL_20:
         v30 = sub_100001A30(0);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
-          v31 = [(UAUserActivityClientProcess *)self auditToken];
+          auditToken = [(UAUserActivityClientProcess *)self auditToken];
           *buf = 138543362;
-          v39 = v31;
+          v39 = auditToken;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Triggering the update of the advertisable items because the current status of our application, %{public}@, has changed.", buf, 0xCu);
         }
 
         [(UAUserActivityClientProcess *)self setCurrentAdvertisableActivity:0];
-        LODWORD(v12) = 1;
+        LODWORD(currentAdvertisableActivity) = 1;
       }
     }
 
@@ -2629,15 +2629,15 @@ LABEL_20:
       }
     }
 
-    v34 = [(UAUserActivityClientProcess *)self manager];
-    [v34 scheduleBestAppDetermination];
+    manager = [(UAUserActivityClientProcess *)self manager];
+    [manager scheduleBestAppDetermination];
 
 LABEL_36:
-    if (v12)
+    if (currentAdvertisableActivity)
     {
 LABEL_37:
-      v35 = [(UAUserActivityClientProcess *)self manager];
-      [v35 scheduleUpdatingAdvertisableItems];
+      manager2 = [(UAUserActivityClientProcess *)self manager];
+      [manager2 scheduleUpdatingAdvertisableItems];
 
       goto LABEL_38;
     }
@@ -2645,20 +2645,20 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
-    v18 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    currentAdvertisableActivity3 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
 
-    if (v18)
+    if (currentAdvertisableActivity3)
     {
-      if (v4)
+      if (activeCopy)
       {
         v19 = sub_100001A30(0);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [(UAUserActivityClientProcess *)self auditToken];
+          auditToken2 = [(UAUserActivityClientProcess *)self auditToken];
           *buf = 138543362;
-          v39 = v20;
+          v39 = auditToken2;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Triggering the update of the advertisable items because uuid == nil, for application %{public}@, has changed.", buf, 0xCu);
         }
 
@@ -2673,31 +2673,31 @@ LABEL_38:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)doMarkUserActivityAsDirty:(id)a3 forceImmediate:(BOOL)a4 webpageURL:(id)a5 expiration:(id)a6 hasiCloudDocument:(BOOL)a7 hasUnsynchronizediCloudDoc:(BOOL)a8
+- (void)doMarkUserActivityAsDirty:(id)dirty forceImmediate:(BOOL)immediate webpageURL:(id)l expiration:(id)expiration hasiCloudDocument:(BOOL)document hasUnsynchronizediCloudDoc:(BOOL)doc
 {
-  v75 = a8;
-  v76 = a4;
-  v77 = a7;
-  v82 = a3;
-  v80 = a5;
-  v79 = a6;
+  docCopy = doc;
+  immediateCopy = immediate;
+  documentCopy = document;
+  dirtyCopy = dirty;
+  lCopy = l;
+  expirationCopy = expiration;
   context = objc_autoreleasePoolPush();
   v11 = sub_100001A30(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v82 UUIDString];
-    v13 = [(UAUserActivityClientProcess *)self auditToken];
+    uUIDString = [dirtyCopy UUIDString];
+    auditToken = [(UAUserActivityClientProcess *)self auditToken];
     v14 = @"NO";
     *buf = 138544898;
-    v89 = v12;
+    v89 = uUIDString;
     v90 = 2114;
-    v91 = v13;
-    if (v76)
+    v91 = auditToken;
+    if (immediateCopy)
     {
       v14 = @"YES";
     }
 
-    if (v80)
+    if (lCopy)
     {
       v15 = @"private";
     }
@@ -2710,7 +2710,7 @@ LABEL_38:
     v92 = 2114;
     v93 = v14;
     v16 = " iCloudDoc";
-    if (!v77)
+    if (!documentCopy)
     {
       v16 = "";
     }
@@ -2718,10 +2718,10 @@ LABEL_38:
     v94 = 2114;
     v95 = v15;
     v96 = 2114;
-    v97 = v79;
+    v97 = expirationCopy;
     v98 = 2082;
     v99 = v16;
-    if (v75)
+    if (docCopy)
     {
       v17 = " unSynchronizediCloudDoc";
     }
@@ -2736,24 +2736,24 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "doMarkUserActivityAsDirty(%{public}@) for app %{public}@ forceImmediate=%{public}@ webpageURL=%{public}@ expiration=%{public}@%{public}s%{public}s", buf, 0x48u);
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  [(NSMutableSet *)v18->_dirtyUUIDs addObject:v82];
-  objc_sync_exit(v18);
-  p_isa = &v18->super.super.isa;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_dirtyUUIDs addObject:dirtyCopy];
+  objc_sync_exit(selfCopy);
+  p_isa = &selfCopy->super.super.isa;
 
   v19 = sub_100001A30(0);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v74 = [(UAUserActivityClientProcess *)v18 dirtyUUIDs];
-    v73 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v74 count]);
-    v20 = [(UAUserActivityClientProcess *)v18 dirtyUUIDs];
+    dirtyUUIDs = [(UAUserActivityClientProcess *)selfCopy dirtyUUIDs];
+    v73 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dirtyUUIDs count]);
+    dirtyUUIDs2 = [(UAUserActivityClientProcess *)selfCopy dirtyUUIDs];
     v21 = [NSMutableString stringWithFormat:@"{"];
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v22 = v20;
+    v22 = dirtyUUIDs2;
     v23 = [v22 countByEnumeratingWithState:&v84 objects:buf count:16];
     if (v23)
     {
@@ -2773,8 +2773,8 @@ LABEL_16:
           break;
         }
 
-        v27 = [*(*(&v84 + 1) + 8 * v26) UUIDString];
-        [v21 appendFormat:@"%@ ", v27];
+        uUIDString2 = [*(*(&v84 + 1) + 8 * v26) UUIDString];
+        [v21 appendFormat:@"%@ ", uUIDString2];
 
         if (v23 == ++v26)
         {
@@ -2798,39 +2798,39 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, " -- dirty activities for this client: (%{public}@) %{public}@", buf, 0x16u);
   }
 
-  v28 = [p_isa userActivityAdvertisableItemByUUID:v82];
+  v28 = [p_isa userActivityAdvertisableItemByUUID:dirtyCopy];
   if (v28)
   {
     WeakRetained = objc_loadWeakRetained(p_isa + 11);
-    v30 = [WeakRetained uaAdvertisableItemsInOrder];
-    v31 = [v30 containsObject:v28];
+    uaAdvertisableItemsInOrder = [WeakRetained uaAdvertisableItemsInOrder];
+    v31 = [uaAdvertisableItemsInOrder containsObject:v28];
 
     if (v31)
     {
       v32 = sub_100001A30(0);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v82 UUIDString];
+        uUIDString3 = [dirtyCopy UUIDString];
         *buf = 138543362;
-        v89 = v33;
+        v89 = uUIDString3;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, " -- Updating the user activity, because it's the currently advertised item, to let the server know it should (maybe) re-fetch the payload: %{public}@", buf, 0xCu);
       }
 
-      v34 = [(__CFString *)v28 webpageURL];
-      v35 = v34;
-      if (v80)
+      webpageURL = [(__CFString *)v28 webpageURL];
+      v35 = webpageURL;
+      if (lCopy)
       {
-        if (([v80 isEqual:v34] & 1) == 0)
+        if (([lCopy isEqual:webpageURL] & 1) == 0)
         {
 
-          [(__CFString *)v28 setWebpageURL:v80];
+          [(__CFString *)v28 setWebpageURL:lCopy];
           goto LABEL_38;
         }
       }
 
       else
       {
-        v36 = v34 == 0;
+        v36 = webpageURL == 0;
 
         if (v36)
         {
@@ -2838,14 +2838,14 @@ LABEL_16:
         }
       }
 
-      v37 = [(__CFString *)v28 webpageURL];
-      if (!v37)
+      webpageURL2 = [(__CFString *)v28 webpageURL];
+      if (!webpageURL2)
       {
 
-        if (v80)
+        if (lCopy)
         {
 
-          [(__CFString *)v28 setWebpageURL:v80];
+          [(__CFString *)v28 setWebpageURL:lCopy];
         }
 
         else
@@ -2856,13 +2856,13 @@ LABEL_16:
         goto LABEL_43;
       }
 
-      v38 = [(__CFString *)v28 webpageURL];
-      v39 = [v38 isEqual:v80];
+      webpageURL3 = [(__CFString *)v28 webpageURL];
+      v39 = [webpageURL3 isEqual:lCopy];
 
-      if (v80)
+      if (lCopy)
       {
 
-        [(__CFString *)v28 setWebpageURL:v80];
+        [(__CFString *)v28 setWebpageURL:lCopy];
       }
 
       else
@@ -2873,21 +2873,21 @@ LABEL_16:
       if (v39)
       {
 LABEL_43:
-        v47 = [(__CFString *)v28 expirationDate];
-        v48 = v47;
-        if (v79)
+        expirationDate = [(__CFString *)v28 expirationDate];
+        v48 = expirationDate;
+        if (expirationCopy)
         {
-          if (([v79 isEqual:v47] & 1) == 0)
+          if (([expirationCopy isEqual:expirationDate] & 1) == 0)
           {
 
-            [(__CFString *)v28 setExpirationDate:v79];
+            [(__CFString *)v28 setExpirationDate:expirationCopy];
             goto LABEL_54;
           }
         }
 
         else
         {
-          v49 = v47 == 0;
+          v49 = expirationDate == 0;
 
           if (v49)
           {
@@ -2895,14 +2895,14 @@ LABEL_43:
           }
         }
 
-        v50 = [(__CFString *)v28 expirationDate];
-        if (!v50)
+        expirationDate2 = [(__CFString *)v28 expirationDate];
+        if (!expirationDate2)
         {
 
-          if (v79)
+          if (expirationCopy)
           {
 
-            [(__CFString *)v28 setExpirationDate:v79];
+            [(__CFString *)v28 setExpirationDate:expirationCopy];
           }
 
           else
@@ -2913,13 +2913,13 @@ LABEL_43:
           goto LABEL_57;
         }
 
-        v51 = [(__CFString *)v28 expirationDate];
-        v52 = [v51 isEqual:v79];
+        expirationDate3 = [(__CFString *)v28 expirationDate];
+        v52 = [expirationDate3 isEqual:expirationCopy];
 
-        if (v79)
+        if (expirationCopy)
         {
 
-          [(__CFString *)v28 setExpirationDate:v79];
+          [(__CFString *)v28 setExpirationDate:expirationCopy];
         }
 
         else
@@ -2930,14 +2930,14 @@ LABEL_43:
         if (v52)
         {
 LABEL_57:
-          v56 = [(__CFString *)v28 options];
-          v57 = v56;
-          if (v77)
+          options = [(__CFString *)v28 options];
+          v57 = options;
+          if (documentCopy)
           {
-            if (v56)
+            if (options)
             {
-              v58 = [(__CFString *)v28 options];
-              v59 = [v58 mutableCopy];
+              options2 = [(__CFString *)v28 options];
+              v59 = [options2 mutableCopy];
             }
 
             else
@@ -2946,7 +2946,7 @@ LABEL_57:
             }
 
             [v59 setObject:&__kCFBooleanTrue forKeyedSubscript:_UAUserActivityContainsCloudDocsKey];
-            if (v75)
+            if (docCopy)
             {
               v64 = &__kCFBooleanTrue;
             }
@@ -2963,11 +2963,11 @@ LABEL_57:
             goto LABEL_72;
           }
 
-          if (v56)
+          if (options)
           {
-            v60 = [(__CFString *)v28 options];
+            options3 = [(__CFString *)v28 options];
             v61 = _UAUserActivityContainsCloudDocsKey;
-            v62 = [v60 objectForKeyedSubscript:_UAUserActivityContainsCloudDocsKey];
+            v62 = [options3 objectForKeyedSubscript:_UAUserActivityContainsCloudDocsKey];
             if (v62)
             {
 
@@ -2975,16 +2975,16 @@ LABEL_57:
               goto LABEL_69;
             }
 
-            v66 = [(__CFString *)v28 options];
+            options4 = [(__CFString *)v28 options];
             v63 = _LSUserActivityContainsUnsynchronizedCloudDocsKey;
-            v67 = [v66 objectForKeyedSubscript:_LSUserActivityContainsUnsynchronizedCloudDocsKey];
+            v67 = [options4 objectForKeyedSubscript:_LSUserActivityContainsUnsynchronizedCloudDocsKey];
             v68 = v67 == 0;
 
             if (!v68)
             {
 LABEL_69:
-              v69 = [(__CFString *)v28 options];
-              v59 = [v69 mutableCopy];
+              options5 = [(__CFString *)v28 options];
+              v59 = [options5 mutableCopy];
 
               [v59 removeObjectForKey:v61];
               [v59 removeObjectForKey:v63];
@@ -3003,10 +3003,10 @@ LABEL_72:
             }
           }
 
-          if (v76)
+          if (immediateCopy)
           {
-            v71 = [p_isa currentAdvertisableActivity];
-            v72 = v71 == v28;
+            currentAdvertisableActivity = [p_isa currentAdvertisableActivity];
+            v72 = currentAdvertisableActivity == v28;
 
             if (v72)
             {
@@ -3023,41 +3023,41 @@ LABEL_72:
         }
 
 LABEL_54:
-        v53 = [p_isa currentAdvertisableActivity];
-        v54 = v53 == v28;
+        currentAdvertisableActivity2 = [p_isa currentAdvertisableActivity];
+        v54 = currentAdvertisableActivity2 == v28;
 
         if (v54)
         {
-          v55 = [p_isa manager];
-          [v55 scheduleUpdatingAdvertisableItems];
+          manager = [p_isa manager];
+          [manager scheduleUpdatingAdvertisableItems];
         }
 
         goto LABEL_57;
       }
 
 LABEL_38:
-      v40 = [(__CFString *)v28 activityType];
-      v41 = [v40 isEqual:NSUserActivityTypeBrowsingWeb];
+      activityType = [(__CFString *)v28 activityType];
+      v41 = [activityType isEqual:NSUserActivityTypeBrowsingWeb];
 
       if (v41)
       {
         v42 = sub_100001A30(0);
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
-          v43 = [p_isa auditToken];
-          v44 = [(__CFString *)v28 uuid];
-          v45 = [v44 UUIDString];
+          auditToken2 = [p_isa auditToken];
+          uuid = [(__CFString *)v28 uuid];
+          uUIDString4 = [uuid UUIDString];
           *buf = 138543875;
-          v89 = v43;
+          v89 = auditToken2;
           v90 = 2114;
-          v91 = v45;
+          v91 = uUIDString4;
           v92 = 2113;
           v93 = v28;
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Scheduling an advertising item update, for application %{public}@, because the   changed on a NSUserActivityTypeBrowsingWeb item, %{public}@/%{private}@", buf, 0x20u);
         }
 
-        v46 = [p_isa manager];
-        [v46 scheduleUpdatingAdvertisableItems];
+        manager2 = [p_isa manager];
+        [manager2 scheduleUpdatingAdvertisableItems];
       }
 
       goto LABEL_43;
@@ -3071,44 +3071,44 @@ LABEL_76:
 
 - (id)statusString
 {
-  v3 = [(UAUserActivityClientProcess *)self bundleIdentifier];
+  bundleIdentifier = [(UAUserActivityClientProcess *)self bundleIdentifier];
   v4 = [(UAAuditToken *)self->_auditToken pid];
-  v5 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-  if (v5)
+  currentAdvertisableActivity = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+  if (currentAdvertisableActivity)
   {
-    v44 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-    v43 = [v44 uuid];
-    v46 = [v43 UUIDString];
+    currentAdvertisableActivity2 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    uuid = [currentAdvertisableActivity2 uuid];
+    uUIDString = [uuid UUIDString];
   }
 
   else
   {
-    v46 = @"-";
+    uUIDString = @"-";
   }
 
-  v6 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+  currentAdvertisableActivity3 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
   v7 = &stru_1000C67D0;
-  v47 = v3;
+  v47 = bundleIdentifier;
   v50 = v4;
-  if (v6)
+  if (currentAdvertisableActivity3)
   {
-    v8 = [(UAUserActivityClientProcess *)self dirtyUUIDs];
-    v40 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-    [v40 uuid];
-    v39 = v41 = v8;
-    if ([v8 containsObject:?])
+    dirtyUUIDs = [(UAUserActivityClientProcess *)self dirtyUUIDs];
+    currentAdvertisableActivity4 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    [currentAdvertisableActivity4 uuid];
+    v39 = v41 = dirtyUUIDs;
+    if ([dirtyUUIDs containsObject:?])
     {
       v7 = @"(dirty) ";
     }
   }
 
-  v45 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-  v9 = [v45 proxiedBundleIdentifier];
-  if (v9)
+  currentAdvertisableActivity5 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+  proxiedBundleIdentifier = [currentAdvertisableActivity5 proxiedBundleIdentifier];
+  if (proxiedBundleIdentifier)
   {
-    v38 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-    v37 = [v38 proxiedBundleIdentifier];
-    obj = [NSString stringWithFormat:@"proxyAs=%@ ", v37];
+    currentAdvertisableActivity6 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    proxiedBundleIdentifier2 = [currentAdvertisableActivity6 proxiedBundleIdentifier];
+    obj = [NSString stringWithFormat:@"proxyAs=%@ ", proxiedBundleIdentifier2];
   }
 
   else
@@ -3116,53 +3116,53 @@ LABEL_76:
     obj = &stru_1000C67D0;
   }
 
-  v10 = [(UAUserActivityClientProcess *)self lastFrontTime];
-  if (v10)
+  lastFrontTime = [(UAUserActivityClientProcess *)self lastFrontTime];
+  if (lastFrontTime)
   {
     [(UAUserActivityClientProcess *)self lastFrontTime];
-    v11 = v42 = v6;
+    v11 = v42 = currentAdvertisableActivity3;
     sub_100009AC0(v11);
-    v13 = v12 = v5;
+    v13 = v12 = currentAdvertisableActivity;
     v14 = [NSString stringWithFormat:@" lastFront=%@", v13];
     v35 = v7;
-    v16 = v46;
+    v16 = uUIDString;
     v15 = v47;
-    v51 = [NSMutableString stringWithFormat:@"%@ pid=%d currentActive=%@%@%@%@", v47, v50, v46, v35, obj, v14];
+    v51 = [NSMutableString stringWithFormat:@"%@ pid=%d currentActive=%@%@%@%@", v47, v50, uUIDString, v35, obj, v14];
 
-    v5 = v12;
-    v6 = v42;
+    currentAdvertisableActivity = v12;
+    currentAdvertisableActivity3 = v42;
   }
 
   else
   {
     v36 = v7;
-    v16 = v46;
+    v16 = uUIDString;
     v15 = v47;
-    v51 = [NSMutableString stringWithFormat:@"%@ pid=%d currentActive=%@%@%@%@", v47, v4, v46, v36, obj, &stru_1000C67D0];
+    v51 = [NSMutableString stringWithFormat:@"%@ pid=%d currentActive=%@%@%@%@", v47, v4, uUIDString, v36, obj, &stru_1000C67D0];
   }
 
-  if (v9)
+  if (proxiedBundleIdentifier)
   {
   }
 
-  if (v6)
+  if (currentAdvertisableActivity3)
   {
   }
 
-  if (v5)
+  if (currentAdvertisableActivity)
   {
   }
 
-  v17 = [(UAUserActivityClientProcess *)self uniqueIdentifiers];
-  if ([v17 count] >= 2)
+  uniqueIdentifiers = [(UAUserActivityClientProcess *)self uniqueIdentifiers];
+  if ([uniqueIdentifiers count] >= 2)
   {
   }
 
   else
   {
-    v18 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+    currentAdvertisableActivity7 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
 
-    if (v18)
+    if (currentAdvertisableActivity7)
     {
       goto LABEL_36;
     }
@@ -3188,31 +3188,31 @@ LABEL_76:
         }
 
         v23 = *(*(&v52 + 1) + 8 * i);
-        v24 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
-        if (!v24)
+        currentAdvertisableActivity8 = [(UAUserActivityClientProcess *)self currentAdvertisableActivity];
+        if (!currentAdvertisableActivity8)
         {
           goto LABEL_30;
         }
 
-        v25 = v24;
+        v25 = currentAdvertisableActivity8;
         v26 = objc_opt_self();
-        v27 = [v26 currentAdvertisableActivity];
-        v28 = [v27 uuid];
-        v29 = [v23 isEqual:v28];
+        currentAdvertisableActivity9 = [v26 currentAdvertisableActivity];
+        uuid2 = [currentAdvertisableActivity9 uuid];
+        v29 = [v23 isEqual:uuid2];
 
         if ((v29 & 1) == 0)
         {
 LABEL_30:
-          v30 = [v23 UUIDString];
-          v31 = [(UAUserActivityClientProcess *)self dirtyUUIDs];
-          v32 = [v31 containsObject:v23];
+          uUIDString2 = [v23 UUIDString];
+          dirtyUUIDs2 = [(UAUserActivityClientProcess *)self dirtyUUIDs];
+          v32 = [dirtyUUIDs2 containsObject:v23];
           v33 = "";
           if (v32)
           {
             v33 = " (dirty)";
           }
 
-          [v51 appendFormat:@"%@%s ", v30, v33];
+          [v51 appendFormat:@"%@%s ", uUIDString2, v33];
         }
       }
 

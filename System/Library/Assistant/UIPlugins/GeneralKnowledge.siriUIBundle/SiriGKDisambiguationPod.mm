@@ -1,26 +1,26 @@
 @interface SiriGKDisambiguationPod
-- (SiriGKDisambiguationPod)initWithDisambiguationPod:(id)a3;
+- (SiriGKDisambiguationPod)initWithDisambiguationPod:(id)pod;
 - (id)subtitle;
 - (id)title;
 @end
 
 @implementation SiriGKDisambiguationPod
 
-- (SiriGKDisambiguationPod)initWithDisambiguationPod:(id)a3
+- (SiriGKDisambiguationPod)initWithDisambiguationPod:(id)pod
 {
-  v4 = a3;
+  podCopy = pod;
   v11.receiver = self;
   v11.super_class = SiriGKDisambiguationPod;
   v5 = [(SiriGKDisambiguationPod *)&v11 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [podCopy title];
     title = v5->_title;
-    v5->_title = v6;
+    v5->_title = title;
 
-    v8 = [v4 text];
+    text = [podCopy text];
     subtitle = v5->_subtitle;
-    v5->_subtitle = v8;
+    v5->_subtitle = text;
   }
 
   return v5;

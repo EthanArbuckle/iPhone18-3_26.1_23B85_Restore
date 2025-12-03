@@ -1,19 +1,19 @@
 @interface NotificationsOnboardingViewController
-- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)didTapContinue:(id)a3;
-- (void)didTapNotNow:(id)a3;
+- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)didTapContinue:(id)continue;
+- (void)didTapNotNow:(id)now;
 @end
 
 @implementation NotificationsOnboardingViewController
 
-- (void)didTapContinue:(id)a3
+- (void)didTapContinue:(id)continue
 {
   v4 = sub_1000F24EC(&qword_100AD5170);
   __chkstk_darwin(v4 - 8);
   v6 = &v12[-v5];
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v8 = type metadata accessor for TaskPriority();
@@ -33,28 +33,28 @@
   sub_10000BA7C(v12);
 }
 
-- (void)didTapNotNow:(id)a3
+- (void)didTapNotNow:(id)now
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v5 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v6 = String._bridgeToObjectiveC()();
-  [v5 setBool:1 forKey:v6];
+  [standardUserDefaults setBool:1 forKey:v6];
 
   sub_1006F7B24();
   sub_10000BA7C(&v7);
 }
 
-- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC7Journal37NotificationsOnboardingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

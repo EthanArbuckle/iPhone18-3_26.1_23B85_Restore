@@ -1,40 +1,40 @@
 @interface CCUICASpringAnimationParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CAFrameRateRange)frameRateRange;
 - (NSString)description;
-- (id)_initWithAnimationParameters:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithAnimationParameters:(id)parameters;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CCUICASpringAnimationParameters
 
-- (id)_initWithAnimationParameters:(id)a3
+- (id)_initWithAnimationParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v17.receiver = self;
   v17.super_class = CCUICASpringAnimationParameters;
   v5 = [(CCUICASpringAnimationParameters *)&v17 init];
   if (v5)
   {
-    [v4 mass];
+    [parametersCopy mass];
     v5->_mass = v6;
-    [v4 stiffness];
+    [parametersCopy stiffness];
     v5->_stiffness = v7;
-    [v4 damping];
+    [parametersCopy damping];
     v5->_damping = v8;
-    v9 = [v4 timingFunction];
-    v10 = [v9 copyWithZone:0];
+    timingFunction = [parametersCopy timingFunction];
+    v10 = [timingFunction copyWithZone:0];
     timingFunction = v5->_timingFunction;
     v5->_timingFunction = v10;
 
-    if (v4)
+    if (parametersCopy)
     {
-      [v4 frameRateRange];
+      [parametersCopy frameRateRange];
       v5->_frameRateRange.minimum = v12;
       v5->_frameRateRange.maximum = v13;
       v5->_frameRateRange.preferred = v14;
-      v5->_highFrameRateReason = [v4 highFrameRateReason];
+      v5->_highFrameRateReason = [parametersCopy highFrameRateReason];
     }
 
     else
@@ -57,49 +57,49 @@
   v5 = [v3 appendFloat:@"Stiffness" withName:?];
   [(CCUICASpringAnimationParameters *)self damping];
   v6 = [v3 appendFloat:@"Damping" withName:?];
-  v7 = [(CCUICASpringAnimationParameters *)self timingFunction];
-  v8 = [v3 appendObject:v7 withName:@"Timing Function"];
+  timingFunction = [(CCUICASpringAnimationParameters *)self timingFunction];
+  v8 = [v3 appendObject:timingFunction withName:@"Timing Function"];
 
   [(CCUICASpringAnimationParameters *)self frameRateRange];
   v12 = CCUIStringFromCAFrameRateRange(v9, v10, v11);
   [v3 appendString:v12 withName:@"FrameRateRange"];
 
   v13 = [v3 appendInteger:-[CCUICASpringAnimationParameters highFrameRateReason](self withName:{"highFrameRateReason"), @"highFrameRateReason"}];
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   [(CCUICASpringAnimationParameters *)self mass];
-  v4 = [v3 appendCGFloat:?];
+  v4 = [builder appendCGFloat:?];
   [(CCUICASpringAnimationParameters *)self stiffness];
-  v5 = [v3 appendCGFloat:?];
+  v5 = [builder appendCGFloat:?];
   [(CCUICASpringAnimationParameters *)self damping];
-  v6 = [v3 appendCGFloat:?];
-  v7 = [(CCUICASpringAnimationParameters *)self timingFunction];
-  v8 = [v3 appendObject:v7];
+  v6 = [builder appendCGFloat:?];
+  timingFunction = [(CCUICASpringAnimationParameters *)self timingFunction];
+  v8 = [builder appendObject:timingFunction];
 
   [(CCUICASpringAnimationParameters *)self frameRateRange];
   v10 = v9;
   v12 = v11;
-  v13 = [v3 appendFloat:?];
+  v13 = [builder appendFloat:?];
   LODWORD(v14) = v10;
-  v15 = [v3 appendFloat:v14];
+  v15 = [builder appendFloat:v14];
   LODWORD(v16) = v12;
-  v17 = [v3 appendFloat:v16];
-  v18 = [v3 appendInteger:{-[CCUICASpringAnimationParameters highFrameRateReason](self, "highFrameRateReason")}];
-  v19 = [v3 hash];
+  v17 = [builder appendFloat:v16];
+  v18 = [builder appendInteger:{-[CCUICASpringAnimationParameters highFrameRateReason](self, "highFrameRateReason")}];
+  v19 = [builder hash];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
@@ -109,7 +109,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(CCUICASpringAnimationParameters *)self mass];
       [(CCUICASpringAnimationParameters *)v5 mass];
       if (BSCompareFloats() || ([(CCUICASpringAnimationParameters *)self stiffness], [(CCUICASpringAnimationParameters *)v5 stiffness], BSCompareFloats()) || ([(CCUICASpringAnimationParameters *)self damping], [(CCUICASpringAnimationParameters *)v5 damping], BSCompareFloats()) || ([(CCUICASpringAnimationParameters *)self timingFunction], v6 = objc_claimAutoreleasedReturnValue(), [(CCUICASpringAnimationParameters *)v5 timingFunction], v7 = objc_claimAutoreleasedReturnValue(), v8 = BSEqualObjects(), v7, v6, !v8) || ([(CCUICASpringAnimationParameters *)self frameRateRange], v10 = v9, v12 = v11, v14 = v13, [(CCUICASpringAnimationParameters *)v5 frameRateRange], v22.minimum = v15, v22.maximum = v16, v22.preferred = v17, v21.minimum = v10, v21.maximum = v12, v21.preferred = v14, !CAFrameRateRangeIsEqualToRange(v21, v22)))
@@ -119,8 +119,8 @@
 
       else
       {
-        v18 = [(CCUICASpringAnimationParameters *)self highFrameRateReason];
-        v19 = v18 == [(CCUICASpringAnimationParameters *)v5 highFrameRateReason];
+        highFrameRateReason = [(CCUICASpringAnimationParameters *)self highFrameRateReason];
+        v19 = highFrameRateReason == [(CCUICASpringAnimationParameters *)v5 highFrameRateReason];
       }
     }
 
@@ -133,7 +133,7 @@
   return v19;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CCUIMutableCASpringAnimationParameters alloc];
 

@@ -1,9 +1,9 @@
 @interface PHImportExceptionRecorder
 - (PHImportExceptionRecorder)init;
-- (id)addExceptionWithType:(int64_t)a3 path:(id)a4 underlyingError:(id)a5 file:(char *)a6 line:(unint64_t)a7;
+- (id)addExceptionWithType:(int64_t)type path:(id)path underlyingError:(id)error file:(char *)file line:(unint64_t)line;
 - (id)logForExceptions;
-- (void)addException:(id)a3;
-- (void)addExceptions:(id)a3;
+- (void)addException:(id)exception;
+- (void)addExceptions:(id)exceptions;
 - (void)logErrors;
 @end
 
@@ -70,8 +70,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PHImportExceptionRecorder *)self exceptions];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  exceptions = [(PHImportExceptionRecorder *)self exceptions];
+  v3 = [exceptions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -85,7 +85,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(exceptions);
         }
 
         v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v8, *(*(&v10 + 1) + 8 * v7)];
@@ -95,7 +95,7 @@
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [exceptions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -109,26 +109,26 @@
   return v6;
 }
 
-- (id)addExceptionWithType:(int64_t)a3 path:(id)a4 underlyingError:(id)a5 file:(char *)a6 line:(unint64_t)a7
+- (id)addExceptionWithType:(int64_t)type path:(id)path underlyingError:(id)error file:(char *)file line:(unint64_t)line
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = [[PHImportException alloc] initWithType:a3 path:v13 underlyingError:v12 file:a6 line:a7];
+  errorCopy = error;
+  pathCopy = path;
+  v14 = [[PHImportException alloc] initWithType:type path:pathCopy underlyingError:errorCopy file:file line:line];
 
   [(PHImportExceptionRecorder *)self addException:v14];
 
   return v14;
 }
 
-- (void)addExceptions:(id)a3
+- (void)addExceptions:(id)exceptions
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  exceptionsCopy = exceptions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [exceptionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -140,23 +140,23 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(exceptionsCopy);
         }
 
         [(PHImportExceptionRecorder *)self addException:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [exceptionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addException:(id)a3
+- (void)addException:(id)exception
 {
-  if (a3)
+  if (exception)
   {
     [(NSMutableArray *)self->_exceptions addObject:?];
   }

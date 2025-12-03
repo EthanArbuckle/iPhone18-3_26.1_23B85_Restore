@@ -1,471 +1,471 @@
 @interface TSTTableStyleNetwork
-+ (TSTTableStyleNetwork)networkWithContext:(id)a3 presetID:(unint64_t)a4 colors:(id)a5 alternate:(unint64_t)a6;
-+ (TSTTableStyleNetwork)networkWithContext:(id)a3 presetID:(unint64_t)a4 styleProvider:(id)a5 styleMorphingBlock:(id)a6;
-+ (TSTTableStyleNetwork)networkWithContext:(id)a3 presetID:(unint64_t)a4 styleProvider:(id)a5 tableStyleMorphingBlock:(id)a6 nameStyleMorphingBlock:(id)a7 nameShapeStyleMorphingBlock:(id)a8 cellStyleMorphingBlockByStyleArea:(id)a9 textStyleMorphingBlockByStyleArea:(id)a10;
-+ (id)createStylesInStylesheet:(id)a3 presetID:(unint64_t)a4 colors:(id)a5 alternate:(unint64_t)a6;
++ (TSTTableStyleNetwork)networkWithContext:(id)context presetID:(unint64_t)d colors:(id)colors alternate:(unint64_t)alternate;
++ (TSTTableStyleNetwork)networkWithContext:(id)context presetID:(unint64_t)d styleProvider:(id)provider styleMorphingBlock:(id)block;
++ (TSTTableStyleNetwork)networkWithContext:(id)context presetID:(unint64_t)d styleProvider:(id)provider tableStyleMorphingBlock:(id)block nameStyleMorphingBlock:(id)morphingBlock nameShapeStyleMorphingBlock:(id)styleMorphingBlock cellStyleMorphingBlockByStyleArea:(id)area textStyleMorphingBlockByStyleArea:(id)self0;
++ (id)createStylesInStylesheet:(id)stylesheet presetID:(unint64_t)d colors:(id)colors alternate:(unint64_t)alternate;
 + (id)curatedTableStylePropertySetForCrossDocumentPasteMasterComparison;
-+ (id)defaultTableNameShapeStyleWithContext:(id)a3;
-+ (id)deriveBodyPivotDeEmphasisHorizontalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveBodyPivotEmphasisVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveBodyPivotGroupHorizontalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveBodyPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveCategoryBottomStrokeFromFooterRowSeparatorStroke:(id)a3;
-+ (id)deriveCategoryTopStrokeFromFooterRowSeparatorStroke:(id)a3;
-+ (id)deriveFooterRowPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveHeaderColumnPivotGroupDeEmphasisStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveHeaderColumnPivotGroupHorizontalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveHeaderColumnPivotSeparatorStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveHeaderRowPivotGroupDeEmphasisStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)deriveHeaderRowPivotTitleStrokeFromTableStyle:(id)a3 propertyMap:(id)a4;
-+ (id)identifiersForPresetID:(unint64_t)a3;
-+ (id)networkFromStyleProvider:(id)a3;
-+ (id)networkFromStylesheet:(id)a3 presetID:(unint64_t)a4;
-+ (id)networkFromTheme:(id)a3 presetID:(unint64_t)a4;
-+ (id)networkFromTheme:(id)a3 presetIndex:(unint64_t)a4;
-+ (id)nonValidatedNetworkWithContext:(id)a3 presetID:(unint64_t)a4 styleProvider:(id)a5 tableStyleMorphingBlock:(id)a6 nameStyleMorphingBlock:(id)a7 nameShapeStyleMorphingBlock:(id)a8 cellStyleMorphingBlockByStyleArea:(id)a9 textStyleMorphingBlockByStyleArea:(id)a10;
-+ (id)p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4 returnHeaderRowPivotGroupVerticalStroke:(BOOL)a5;
-+ (unint64_t)pivotTableStyleAreaForRowLevel:(unsigned __int8)a3 columnLevel:(unsigned __int8)a4 numberOfRowLevels:(unint64_t)a5 numberOfColumnLevels:(unint64_t)a6 columnIndex:(TSUViewColumnIndex)a7;
-+ (unint64_t)styleAreaForColumnType:(unsigned __int8)a3 rowType:(unsigned __int8)a4 forAPivotTable:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3 objectComparisonBlock:(id)a4;
-- (BOOL)stylesInStylesheet:(id)a3;
-- (TSTTableStyleNetwork)initWithContext:(id)a3;
-- (TSTTableStyleNetwork)initWithContext:(id)a3 fromDictionary:(id)a4 withPreset:(unint64_t)a5;
-- (TSTTableStyleNetwork)initWithContext:(id)a3 styleProvider:(id)a4;
-- (TSTTableStyleNetwork)initWithContext:(id)a3 styleProvider:(id)a4 presetID:(unint64_t)a5;
++ (id)defaultTableNameShapeStyleWithContext:(id)context;
++ (id)deriveBodyPivotDeEmphasisHorizontalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveBodyPivotEmphasisVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveBodyPivotGroupHorizontalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveBodyPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveCategoryBottomStrokeFromFooterRowSeparatorStroke:(id)stroke;
++ (id)deriveCategoryTopStrokeFromFooterRowSeparatorStroke:(id)stroke;
++ (id)deriveFooterRowPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveHeaderColumnPivotGroupDeEmphasisStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveHeaderColumnPivotGroupHorizontalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveHeaderColumnPivotSeparatorStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveHeaderRowPivotGroupDeEmphasisStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)deriveHeaderRowPivotTitleStrokeFromTableStyle:(id)style propertyMap:(id)map;
++ (id)identifiersForPresetID:(unint64_t)d;
++ (id)networkFromStyleProvider:(id)provider;
++ (id)networkFromStylesheet:(id)stylesheet presetID:(unint64_t)d;
++ (id)networkFromTheme:(id)theme presetID:(unint64_t)d;
++ (id)networkFromTheme:(id)theme presetIndex:(unint64_t)index;
++ (id)nonValidatedNetworkWithContext:(id)context presetID:(unint64_t)d styleProvider:(id)provider tableStyleMorphingBlock:(id)block nameStyleMorphingBlock:(id)morphingBlock nameShapeStyleMorphingBlock:(id)styleMorphingBlock cellStyleMorphingBlockByStyleArea:(id)area textStyleMorphingBlockByStyleArea:(id)self0;
++ (id)p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map returnHeaderRowPivotGroupVerticalStroke:(BOOL)stroke;
++ (unint64_t)pivotTableStyleAreaForRowLevel:(unsigned __int8)level columnLevel:(unsigned __int8)columnLevel numberOfRowLevels:(unint64_t)levels numberOfColumnLevels:(unint64_t)columnLevels columnIndex:(TSUViewColumnIndex)index;
++ (unint64_t)styleAreaForColumnType:(unsigned __int8)type rowType:(unsigned __int8)rowType forAPivotTable:(BOOL)table;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison objectComparisonBlock:(id)block;
+- (BOOL)stylesInStylesheet:(id)stylesheet;
+- (TSTTableStyleNetwork)initWithContext:(id)context;
+- (TSTTableStyleNetwork)initWithContext:(id)context fromDictionary:(id)dictionary withPreset:(unint64_t)preset;
+- (TSTTableStyleNetwork)initWithContext:(id)context styleProvider:(id)provider;
+- (TSTTableStyleNetwork)initWithContext:(id)context styleProvider:(id)provider presetID:(unint64_t)d;
 - (id).cxx_construct;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)copyWithZone:(_NSZone *)a3 context:(id)a4;
-- (id)deriveCategoryCellStyleForTableStyleArea:(unint64_t)a3 connectedToStylesheet:(BOOL)a4;
-- (id)deriveCategoryTextStyleForTableStyleArea:(unint64_t)a3 connectedToStylesheet:(BOOL)a4;
-- (id)dictionaryWithPreset:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)copyWithZone:(_NSZone *)zone context:(id)context;
+- (id)deriveCategoryCellStyleForTableStyleArea:(unint64_t)area connectedToStylesheet:(BOOL)stylesheet;
+- (id)deriveCategoryTextStyleForTableStyleArea:(unint64_t)area connectedToStylesheet:(BOOL)stylesheet;
+- (id)dictionaryWithPreset:(unint64_t)preset;
 - (id)networkForPivotTables;
-- (id)p_deriveCategoryCellStyleForTableStyleArea:(unint64_t)a3 fromCellStyle:(id)a4 connectedToStylesheet:(BOOL)a5;
-- (id)p_deriveCategoryTextStyleForTableStyleArea:(unint64_t)a3 fromTextStyle:(id)a4 connectedToStylesheet:(BOOL)a5;
-- (id)p_derivePivotCellStyleFromCellStyle:(id)a3 optionalSourceFill:(id)a4 brightnessShift:(double)a5 connectedToStylesheet:(BOOL)a6 styleArea:(unint64_t)a7;
+- (id)p_deriveCategoryCellStyleForTableStyleArea:(unint64_t)area fromCellStyle:(id)style connectedToStylesheet:(BOOL)stylesheet;
+- (id)p_deriveCategoryTextStyleForTableStyleArea:(unint64_t)area fromTextStyle:(id)style connectedToStylesheet:(BOOL)stylesheet;
+- (id)p_derivePivotCellStyleFromCellStyle:(id)style optionalSourceFill:(id)fill brightnessShift:(double)shift connectedToStylesheet:(BOOL)stylesheet styleArea:(unint64_t)area;
 - (id)sheetFill;
-- (id)styleForStyleNetworkIndex:(unint64_t)a3;
-- (id)textStyleForTableStyleArea:(unint64_t)a3;
+- (id)styleForStyleNetworkIndex:(unint64_t)index;
+- (id)textStyleForTableStyleArea:(unint64_t)area;
 - (unint64_t)hash;
-- (void)clearAndGenerateCategoryStylesConnectedToStylesheet:(BOOL)a3;
-- (void)clearAndGeneratePivotStylesConnectedToStylesheet:(BOOL)a3;
-- (void)enumerateAllStylesWithBlock:(id)a3;
-- (void)generateCategoryStrokesInTableStyle:(id)a3;
-- (void)generateCategoryStylesConnectedToStylesheet:(BOOL)a3;
-- (void)generatePivotStrokesInTableStyle:(id)a3;
-- (void)generatePivotStylesConnectedToStylesheet:(BOOL)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)maintainPivotStrokesInTableStyle:(id)a3 fromTable:(id)a4;
+- (void)clearAndGenerateCategoryStylesConnectedToStylesheet:(BOOL)stylesheet;
+- (void)clearAndGeneratePivotStylesConnectedToStylesheet:(BOOL)stylesheet;
+- (void)enumerateAllStylesWithBlock:(id)block;
+- (void)generateCategoryStrokesInTableStyle:(id)style;
+- (void)generateCategoryStylesConnectedToStylesheet:(BOOL)stylesheet;
+- (void)generatePivotStrokesInTableStyle:(id)style;
+- (void)generatePivotStylesConnectedToStylesheet:(BOOL)stylesheet;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)maintainPivotStrokesInTableStyle:(id)style fromTable:(id)table;
 - (void)p_clearCategoryStyles;
 - (void)p_clearPivotStyles;
-- (void)p_saveToArchive:(void *)a3 archiver:(id)a4 isPre30Alternate:(BOOL)a5;
-- (void)saveToArchiver:(id)a3;
-- (void)setBodyCellStyle:(id)a3;
-- (void)setBodyTextStyle:(id)a3;
-- (void)setCategoryLevel1CellStyle:(id)a3;
-- (void)setCategoryLevel1TextStyle:(id)a3;
-- (void)setCategoryLevel2CellStyle:(id)a3;
-- (void)setCategoryLevel2TextStyle:(id)a3;
-- (void)setCategoryLevel3CellStyle:(id)a3;
-- (void)setCategoryLevel3TextStyle:(id)a3;
-- (void)setCategoryLevel4CellStyle:(id)a3;
-- (void)setCategoryLevel4TextStyle:(id)a3;
-- (void)setCategoryLevel5CellStyle:(id)a3;
-- (void)setCategoryLevel5TextStyle:(id)a3;
-- (void)setCellStyle:(id)a3 forTableStyleArea:(unint64_t)a4;
-- (void)setFooterRowCellStyle:(id)a3;
-- (void)setFooterRowTextStyle:(id)a3;
-- (void)setHeaderColumnCellStyle:(id)a3;
-- (void)setHeaderColumnTextStyle:(id)a3;
-- (void)setHeaderRowCellStyle:(id)a3;
-- (void)setHeaderRowTextStyle:(id)a3;
-- (void)setLabelLevel1CellStyle:(id)a3;
-- (void)setLabelLevel1TextStyle:(id)a3;
-- (void)setLabelLevel2CellStyle:(id)a3;
-- (void)setLabelLevel2TextStyle:(id)a3;
-- (void)setLabelLevel3CellStyle:(id)a3;
-- (void)setLabelLevel3TextStyle:(id)a3;
-- (void)setLabelLevel4CellStyle:(id)a3;
-- (void)setLabelLevel4TextStyle:(id)a3;
-- (void)setLabelLevel5CellStyle:(id)a3;
-- (void)setLabelLevel5TextStyle:(id)a3;
-- (void)setPivotBodySummaryColumnCellStyle:(id)a3;
-- (void)setPivotBodySummaryRowCellStyle:(id)a3;
-- (void)setPivotHeaderColumnSummaryCellStyle:(id)a3;
-- (void)setTableNameShapeStyle:(id)a3;
-- (void)setTableNameStyle:(id)a3;
-- (void)setTableStyle:(id)a3;
-- (void)setTextStyle:(id)a3 forTableStyleArea:(unint64_t)a4;
+- (void)p_saveToArchive:(void *)archive archiver:(id)archiver isPre30Alternate:(BOOL)alternate;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBodyCellStyle:(id)style;
+- (void)setBodyTextStyle:(id)style;
+- (void)setCategoryLevel1CellStyle:(id)style;
+- (void)setCategoryLevel1TextStyle:(id)style;
+- (void)setCategoryLevel2CellStyle:(id)style;
+- (void)setCategoryLevel2TextStyle:(id)style;
+- (void)setCategoryLevel3CellStyle:(id)style;
+- (void)setCategoryLevel3TextStyle:(id)style;
+- (void)setCategoryLevel4CellStyle:(id)style;
+- (void)setCategoryLevel4TextStyle:(id)style;
+- (void)setCategoryLevel5CellStyle:(id)style;
+- (void)setCategoryLevel5TextStyle:(id)style;
+- (void)setCellStyle:(id)style forTableStyleArea:(unint64_t)area;
+- (void)setFooterRowCellStyle:(id)style;
+- (void)setFooterRowTextStyle:(id)style;
+- (void)setHeaderColumnCellStyle:(id)style;
+- (void)setHeaderColumnTextStyle:(id)style;
+- (void)setHeaderRowCellStyle:(id)style;
+- (void)setHeaderRowTextStyle:(id)style;
+- (void)setLabelLevel1CellStyle:(id)style;
+- (void)setLabelLevel1TextStyle:(id)style;
+- (void)setLabelLevel2CellStyle:(id)style;
+- (void)setLabelLevel2TextStyle:(id)style;
+- (void)setLabelLevel3CellStyle:(id)style;
+- (void)setLabelLevel3TextStyle:(id)style;
+- (void)setLabelLevel4CellStyle:(id)style;
+- (void)setLabelLevel4TextStyle:(id)style;
+- (void)setLabelLevel5CellStyle:(id)style;
+- (void)setLabelLevel5TextStyle:(id)style;
+- (void)setPivotBodySummaryColumnCellStyle:(id)style;
+- (void)setPivotBodySummaryRowCellStyle:(id)style;
+- (void)setPivotHeaderColumnSummaryCellStyle:(id)style;
+- (void)setTableNameShapeStyle:(id)style;
+- (void)setTableNameStyle:(id)style;
+- (void)setTableStyle:(id)style;
+- (void)setTextStyle:(id)style forTableStyleArea:(unint64_t)area;
 - (void)upgradeIfNecessary;
 @end
 
 @implementation TSTTableStyleNetwork
 
-- (void)setTableStyle:(id)a3
+- (void)setTableStyle:(id)style
 {
-  v9 = a3;
-  if (self->_tableStyle != v9)
+  styleCopy = style;
+  if (self->_tableStyle != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(&self->_tableStyle, a3);
+    objc_storeStrong(&self->_tableStyle, style);
   }
 }
 
-- (void)setTableNameStyle:(id)a3
+- (void)setTableNameStyle:(id)style
 {
-  v9 = a3;
-  if (self->_tableNameStyle != v9)
+  styleCopy = style;
+  if (self->_tableNameStyle != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(&self->_tableNameStyle, a3);
+    objc_storeStrong(&self->_tableNameStyle, style);
   }
 }
 
-- (void)setTableNameShapeStyle:(id)a3
+- (void)setTableNameShapeStyle:(id)style
 {
-  v9 = a3;
-  if (self->_tableNameShapeStyle != v9)
+  styleCopy = style;
+  if (self->_tableNameShapeStyle != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(&self->_tableNameShapeStyle, a3);
+    objc_storeStrong(&self->_tableNameShapeStyle, style);
   }
 }
 
-- (void)setBodyCellStyle:(id)a3
+- (void)setBodyCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 1) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 1) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 1, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 1, style);
   }
 }
 
-- (void)setHeaderColumnCellStyle:(id)a3
+- (void)setHeaderColumnCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 3) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 3) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 3, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 3, style);
   }
 }
 
-- (void)setFooterRowCellStyle:(id)a3
+- (void)setFooterRowCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 4) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 4) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 4, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 4, style);
   }
 }
 
-- (void)setHeaderRowCellStyle:(id)a3
+- (void)setHeaderRowCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 2) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 2) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 2, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 2, style);
   }
 }
 
-- (void)setCategoryLevel1CellStyle:(id)a3
+- (void)setCategoryLevel1CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 5) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 5) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 5, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 5, style);
   }
 }
 
-- (void)setCategoryLevel2CellStyle:(id)a3
+- (void)setCategoryLevel2CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 6) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 6) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 6, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 6, style);
   }
 }
 
-- (void)setCategoryLevel3CellStyle:(id)a3
+- (void)setCategoryLevel3CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 7) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 7) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 7, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 7, style);
   }
 }
 
-- (void)setCategoryLevel4CellStyle:(id)a3
+- (void)setCategoryLevel4CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 8) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 8) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 8, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 8, style);
   }
 }
 
-- (void)setCategoryLevel5CellStyle:(id)a3
+- (void)setCategoryLevel5CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 9) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 9) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 9, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 9, style);
   }
 }
 
-- (void)setLabelLevel1CellStyle:(id)a3
+- (void)setLabelLevel1CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 10) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 10) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 10, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 10, style);
   }
 }
 
-- (void)setLabelLevel2CellStyle:(id)a3
+- (void)setLabelLevel2CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 11) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 11) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 11, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 11, style);
   }
 }
 
-- (void)setLabelLevel3CellStyle:(id)a3
+- (void)setLabelLevel3CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 12) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 12) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 12, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 12, style);
   }
 }
 
-- (void)setLabelLevel4CellStyle:(id)a3
+- (void)setLabelLevel4CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 13) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 13) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 13, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 13, style);
   }
 }
 
-- (void)setLabelLevel5CellStyle:(id)a3
+- (void)setLabelLevel5CellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 14) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 14) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 14, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 14, style);
   }
 }
 
-- (void)setBodyTextStyle:(id)a3
+- (void)setBodyTextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 1) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 1) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 1, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 1, style);
   }
 }
 
-- (void)setHeaderColumnTextStyle:(id)a3
+- (void)setHeaderColumnTextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 3) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 3) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 3, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 3, style);
   }
 }
 
-- (void)setFooterRowTextStyle:(id)a3
+- (void)setFooterRowTextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 4) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 4) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 4, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 4, style);
   }
 }
 
-- (void)setHeaderRowTextStyle:(id)a3
+- (void)setHeaderRowTextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 2) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 2) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 2, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 2, style);
   }
 }
 
-- (void)setCategoryLevel1TextStyle:(id)a3
+- (void)setCategoryLevel1TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 5) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 5) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 5, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 5, style);
   }
 }
 
-- (void)setCategoryLevel2TextStyle:(id)a3
+- (void)setCategoryLevel2TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 6) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 6) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 6, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 6, style);
   }
 }
 
-- (void)setCategoryLevel3TextStyle:(id)a3
+- (void)setCategoryLevel3TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 7) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 7) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 7, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 7, style);
   }
 }
 
-- (void)setCategoryLevel4TextStyle:(id)a3
+- (void)setCategoryLevel4TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 8) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 8) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 8, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 8, style);
   }
 }
 
-- (void)setCategoryLevel5TextStyle:(id)a3
+- (void)setCategoryLevel5TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 9) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 9) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 9, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 9, style);
   }
 }
 
-- (void)setLabelLevel1TextStyle:(id)a3
+- (void)setLabelLevel1TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 10) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 10) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 10, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 10, style);
   }
 }
 
-- (void)setLabelLevel2TextStyle:(id)a3
+- (void)setLabelLevel2TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 11) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 11) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 11, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 11, style);
   }
 }
 
-- (void)setLabelLevel3TextStyle:(id)a3
+- (void)setLabelLevel3TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 12) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 12) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 12, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 12, style);
   }
 }
 
-- (void)setLabelLevel4TextStyle:(id)a3
+- (void)setLabelLevel4TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 13) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 13) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 13, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 13, style);
   }
 }
 
-- (void)setLabelLevel5TextStyle:(id)a3
+- (void)setLabelLevel5TextStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_textStyles.__begin_ + 14) != v9)
+  styleCopy = style;
+  if (*(self->_textStyles.__begin_ + 14) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_textStyles.__begin_ + 14, a3);
+    objc_storeStrong(self->_textStyles.__begin_ + 14, style);
   }
 }
 
-- (void)setPivotBodySummaryRowCellStyle:(id)a3
+- (void)setPivotBodySummaryRowCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 15) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 15) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 15, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 15, style);
   }
 }
 
-- (void)setPivotBodySummaryColumnCellStyle:(id)a3
+- (void)setPivotBodySummaryColumnCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 16) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 16) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 16, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 16, style);
   }
 }
 
-- (void)setPivotHeaderColumnSummaryCellStyle:(id)a3
+- (void)setPivotHeaderColumnSummaryCellStyle:(id)style
 {
-  v9 = a3;
-  if (*(self->_cellStyles.__begin_ + 17) != v9)
+  styleCopy = style;
+  if (*(self->_cellStyles.__begin_ + 17) != styleCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    objc_storeStrong(self->_cellStyles.__begin_ + 17, a3);
+    objc_storeStrong(self->_cellStyles.__begin_ + 17, style);
   }
 }
 
-+ (id)networkFromStyleProvider:(id)a3
++ (id)networkFromStyleProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = [TSTTableStyleNetwork alloc];
-  v9 = objc_msgSend_context(v3, v5, v6, v7, v8);
-  v12 = objc_msgSend_initWithContext_styleProvider_(v4, v10, v9, v3, v11);
+  v9 = objc_msgSend_context(providerCopy, v5, v6, v7, v8);
+  v12 = objc_msgSend_initWithContext_styleProvider_(v4, v10, v9, providerCopy, v11);
 
   return v12;
 }
 
-+ (TSTTableStyleNetwork)networkWithContext:(id)a3 presetID:(unint64_t)a4 colors:(id)a5 alternate:(unint64_t)a6
++ (TSTTableStyleNetwork)networkWithContext:(id)context presetID:(unint64_t)d colors:(id)colors alternate:(unint64_t)alternate
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  colorsCopy = colors;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = sub_221220220;
   v29[3] = &unk_278461928;
-  v32 = a4;
-  v30 = v10;
-  v33 = a6;
-  v31 = v9;
+  dCopy = d;
+  v30 = colorsCopy;
+  alternateCopy = alternate;
+  v31 = contextCopy;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = sub_2212202B8;
@@ -481,8 +481,8 @@
   v19[1] = 3221225472;
   v19[2] = sub_22122039C;
   v19[3] = &unk_2784619A0;
-  v22 = a4;
-  v23 = a6;
+  dCopy2 = d;
+  alternateCopy2 = alternate;
   v20 = v30;
   v21 = v25;
   v16[0] = MEMORY[0x277D85DD0];
@@ -493,34 +493,34 @@
   v18 = 0x402E000000000000;
   v11 = v21;
   v12 = v30;
-  v14 = objc_msgSend_networkWithContext_presetID_styleProvider_tableStyleMorphingBlock_nameStyleMorphingBlock_nameShapeStyleMorphingBlock_cellStyleMorphingBlockByStyleArea_textStyleMorphingBlockByStyleArea_(TSTTableStyleNetwork, v13, v11, a4, 0, v29, v26, v24, v19, v16);
+  v14 = objc_msgSend_networkWithContext_presetID_styleProvider_tableStyleMorphingBlock_nameStyleMorphingBlock_nameShapeStyleMorphingBlock_cellStyleMorphingBlockByStyleArea_textStyleMorphingBlockByStyleArea_(TSTTableStyleNetwork, v13, v11, d, 0, v29, v26, v24, v19, v16);
 
   return v14;
 }
 
-+ (id)createStylesInStylesheet:(id)a3 presetID:(unint64_t)a4 colors:(id)a5 alternate:(unint64_t)a6
++ (id)createStylesInStylesheet:(id)stylesheet presetID:(unint64_t)d colors:(id)colors alternate:(unint64_t)alternate
 {
-  v10 = a3;
-  v85 = a5;
-  v84 = objc_msgSend_context(v10, v11, v12, v13, v14);
+  stylesheetCopy = stylesheet;
+  colorsCopy = colors;
+  v84 = objc_msgSend_context(stylesheetCopy, v11, v12, v13, v14);
   v87 = objc_alloc_init(MEMORY[0x277D80AB8]);
-  objc_msgSend_initDefaultPropertyMap_presetID_colors_alternate_(TSTTableStyle, v15, v87, a4, v85, a6);
+  objc_msgSend_initDefaultPropertyMap_presetID_colors_alternate_(TSTTableStyle, v15, v87, d, colorsCopy, alternate);
   v16 = [TSTTableStyle alloc];
   isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v16, v17, v84, 0, v87, 0);
-  v21 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v18, a4, v19, v20);
-  objc_msgSend_addStyle_withIdentifier_(v10, v22, isVariation, v21, v23);
+  v21 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v18, d, v19, v20);
+  objc_msgSend_addStyle_withIdentifier_(stylesheetCopy, v22, isVariation, v21, v23);
 
   v88[0] = MEMORY[0x277D85DD0];
   v88[1] = 3221225472;
   v89 = sub_221220934;
   v90 = &unk_2784619F0;
-  v94 = a4;
-  v24 = v85;
+  dCopy = d;
+  v24 = colorsCopy;
   v91 = v24;
-  v95 = a6;
+  alternateCopy = alternate;
   v25 = v84;
   v92 = v25;
-  v26 = v10;
+  v26 = stylesheetCopy;
   v93 = v26;
   v96 = 0x402E000000000000;
   v97 = 0;
@@ -543,14 +543,14 @@
   objc_msgSend_setValue_forProperty_(v36, v41, v40, 16, v42);
 
   objc_msgSend_setCGFloatValue_forProperty_(v36, v43, 17, v44, v45, 15.0);
-  v49 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v46, a4, v47, v48);
+  v49 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v46, d, v47, v48);
   objc_msgSend_addStyle_withIdentifier_(v26, v50, v36, v49, v51);
 
   v55 = objc_msgSend_defaultTableNameShapeStyleWithContext_(TSTTableStyleNetwork, v52, v25, v53, v54);
-  v59 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v56, a4, v57, v58);
+  v59 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v56, d, v57, v58);
   objc_msgSend_addStyle_withIdentifier_(v26, v60, v55, v59, v61);
 
-  v64 = objc_msgSend_networkFromStylesheet_presetID_(a1, v62, v26, a4, v63);
+  v64 = objc_msgSend_networkFromStylesheet_presetID_(self, v62, v26, d, v63);
   if ((objc_msgSend_valid(v64, v65, v66, v67, v68) & 1) == 0)
   {
     v72 = MEMORY[0x277D81150];
@@ -564,27 +564,27 @@
   return v64;
 }
 
-+ (id)networkFromStylesheet:(id)a3 presetID:(unint64_t)a4
++ (id)networkFromStylesheet:(id)stylesheet presetID:(unint64_t)d
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
   v96 = 0;
   v97 = &v96;
   v98 = 0x3032000000;
   v99 = sub_221221094;
   v100 = sub_2212210A4;
   v6 = [TSTTableStyleNetwork alloc];
-  v11 = objc_msgSend_context(v5, v7, v8, v9, v10);
+  v11 = objc_msgSend_context(stylesheetCopy, v7, v8, v9, v10);
   v101 = objc_msgSend_initWithContext_(v6, v12, v11, v13, v14);
 
-  v18 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v15, a4, v16, v17);
-  v22 = objc_msgSend_cascadedStyleWithIdentifier_(v5, v19, v18, v20, v21);
+  v18 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v15, d, v16, v17);
+  v22 = objc_msgSend_cascadedStyleWithIdentifier_(stylesheetCopy, v19, v18, v20, v21);
 
   if (v22)
   {
     objc_msgSend_setTableStyle_(v97[5], v23, v22, v24, v25);
     objc_opt_class();
-    v29 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v26, a4, v27, v28);
-    v33 = objc_msgSend_cascadedStyleWithIdentifier_(v5, v30, v29, v31, v32);
+    v29 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v26, d, v27, v28);
+    v33 = objc_msgSend_cascadedStyleWithIdentifier_(stylesheetCopy, v30, v29, v31, v32);
     v34 = TSUDynamicCast();
 
     if (!v34)
@@ -599,8 +599,8 @@
 
     objc_msgSend_setTableNameStyle_(v97[5], v35, v34, v36, v37);
     objc_opt_class();
-    v52 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v49, a4, v50, v51);
-    v56 = objc_msgSend_cascadedStyleWithIdentifier_(v5, v53, v52, v54, v55);
+    v52 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v49, d, v50, v51);
+    v56 = objc_msgSend_cascadedStyleWithIdentifier_(stylesheetCopy, v53, v52, v54, v55);
     v57 = TSUDynamicCast();
 
     if (!v57)
@@ -618,8 +618,8 @@
     v90[1] = 3221225472;
     v91 = sub_2212210AC;
     v92 = &unk_278461A18;
-    v95 = a4;
-    v93 = v5;
+    dCopy = d;
+    v93 = stylesheetCopy;
     v94 = &v96;
     v102 = 0;
     v72 = 1;
@@ -633,7 +633,7 @@
     }
 
     while (v72++ != 17);
-    objc_msgSend_setPresetID_(v97[5], v73, a4, v74, v75);
+    objc_msgSend_setPresetID_(v97[5], v73, d, v74, v75);
     v77 = v97[5];
   }
 
@@ -642,7 +642,7 @@
     v78 = MEMORY[0x277D81150];
     v79 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "+[TSTTableStyleNetwork networkFromStylesheet:presetID:]", v24, v25);
     v83 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v80, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableStyleNetwork.mm", v81, v82);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v78, v84, v79, v83, 310, 0, "no default table style in stylesheet %p", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v78, v84, v79, v83, 310, 0, "no default table style in stylesheet %p", stylesheetCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v85, v86, v87, v88);
     v77 = 0;
@@ -653,11 +653,11 @@
   return v77;
 }
 
-+ (id)networkFromTheme:(id)a3 presetID:(unint64_t)a4
++ (id)networkFromTheme:(id)theme presetID:(unint64_t)d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  themeCopy = theme;
+  if (!themeCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "+[TSTTableStyleNetwork networkFromTheme:presetID:]", v6, v7);
@@ -667,7 +667,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
   }
 
-  objc_msgSend_presetsOfKind_(v8, v5, *MEMORY[0x277D80BA8], v6, v7);
+  objc_msgSend_presetsOfKind_(themeCopy, v5, *MEMORY[0x277D80BA8], v6, v7);
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -686,7 +686,7 @@
         }
 
         v29 = *(*(&v36 + 1) + 8 * i);
-        if (objc_msgSend_presetID(v29, v22, v23, v24, v25) == a4)
+        if (objc_msgSend_presetID(v29, v22, v23, v24, v25) == d)
         {
           v26 = v29;
           goto LABEL_13;
@@ -710,10 +710,10 @@ LABEL_13:
   return v34;
 }
 
-+ (id)networkFromTheme:(id)a3 presetIndex:(unint64_t)a4
++ (id)networkFromTheme:(id)theme presetIndex:(unint64_t)index
 {
-  v8 = a3;
-  if (!v8)
+  themeCopy = theme;
+  if (!themeCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "+[TSTTableStyleNetwork networkFromTheme:presetIndex:]", v6, v7);
@@ -723,15 +723,15 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
   }
 
-  v20 = objc_msgSend_presetOfKind_index_(v8, v5, *MEMORY[0x277D80BA8], a4, v7);
+  v20 = objc_msgSend_presetOfKind_index_(themeCopy, v5, *MEMORY[0x277D80BA8], index, v7);
   v25 = objc_msgSend_styleNetwork(v20, v21, v22, v23, v24);
 
   return v25;
 }
 
-+ (TSTTableStyleNetwork)networkWithContext:(id)a3 presetID:(unint64_t)a4 styleProvider:(id)a5 tableStyleMorphingBlock:(id)a6 nameStyleMorphingBlock:(id)a7 nameShapeStyleMorphingBlock:(id)a8 cellStyleMorphingBlockByStyleArea:(id)a9 textStyleMorphingBlockByStyleArea:(id)a10
++ (TSTTableStyleNetwork)networkWithContext:(id)context presetID:(unint64_t)d styleProvider:(id)provider tableStyleMorphingBlock:(id)block nameStyleMorphingBlock:(id)morphingBlock nameShapeStyleMorphingBlock:(id)styleMorphingBlock cellStyleMorphingBlockByStyleArea:(id)area textStyleMorphingBlockByStyleArea:(id)self0
 {
-  v10 = objc_msgSend_nonValidatedNetworkWithContext_presetID_styleProvider_tableStyleMorphingBlock_nameStyleMorphingBlock_nameShapeStyleMorphingBlock_cellStyleMorphingBlockByStyleArea_textStyleMorphingBlockByStyleArea_(TSTTableStyleNetwork, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+  v10 = objc_msgSend_nonValidatedNetworkWithContext_presetID_styleProvider_tableStyleMorphingBlock_nameStyleMorphingBlock_nameShapeStyleMorphingBlock_cellStyleMorphingBlockByStyleArea_textStyleMorphingBlockByStyleArea_(TSTTableStyleNetwork, a2, context, d, provider, block, morphingBlock, styleMorphingBlock, area, styleArea);
   if ((objc_msgSend_valid(v10, v11, v12, v13, v14) & 1) == 0)
   {
     v18 = MEMORY[0x277D81150];
@@ -745,24 +745,24 @@ LABEL_13:
   return v10;
 }
 
-+ (id)nonValidatedNetworkWithContext:(id)a3 presetID:(unint64_t)a4 styleProvider:(id)a5 tableStyleMorphingBlock:(id)a6 nameStyleMorphingBlock:(id)a7 nameShapeStyleMorphingBlock:(id)a8 cellStyleMorphingBlockByStyleArea:(id)a9 textStyleMorphingBlockByStyleArea:(id)a10
++ (id)nonValidatedNetworkWithContext:(id)context presetID:(unint64_t)d styleProvider:(id)provider tableStyleMorphingBlock:(id)block nameStyleMorphingBlock:(id)morphingBlock nameShapeStyleMorphingBlock:(id)styleMorphingBlock cellStyleMorphingBlockByStyleArea:(id)area textStyleMorphingBlockByStyleArea:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v77 = a7;
-  v76 = a8;
-  v18 = a9;
-  v74 = v15;
-  v75 = a10;
-  v72 = v17;
-  v73 = v16;
+  contextCopy = context;
+  providerCopy = provider;
+  blockCopy = block;
+  morphingBlockCopy = morphingBlock;
+  styleMorphingBlockCopy = styleMorphingBlock;
+  areaCopy = area;
+  v74 = contextCopy;
+  styleAreaCopy = styleArea;
+  v72 = blockCopy;
+  v73 = providerCopy;
   v19 = [TSTTableStyleNetwork alloc];
-  v21 = objc_msgSend_initWithContext_styleProvider_presetID_(v19, v20, v15, v16, a4);
+  v21 = objc_msgSend_initWithContext_styleProvider_presetID_(v19, v20, contextCopy, providerCopy, d);
   objc_opt_class();
-  v26 = objc_msgSend_tableStyle(v21, v22, v23, v24, v25, v21, v18);
-  v30 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v27, a4, v28, v29);
-  v31 = (*(v17 + 2))(v17, v26, v30, 1);
+  v26 = objc_msgSend_tableStyle(v21, v22, v23, v24, v25, v21, areaCopy);
+  v30 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v27, d, v28, v29);
+  v31 = (*(blockCopy + 2))(blockCopy, v26, v30, 1);
   v32 = TSUCheckedDynamicCast();
   objc_msgSend_setTableStyle_(v21, v33, v32, v34, v35);
 
@@ -772,8 +772,8 @@ LABEL_13:
   v82[3] = &unk_278461A40;
   v36 = v21;
   v83 = v36;
-  v85 = a4;
-  v71 = v18;
+  dCopy = d;
+  v71 = areaCopy;
   v84 = v71;
   v37 = MEMORY[0x223DA1C10](v82);
   v37[2](v37, 1, 2);
@@ -796,8 +796,8 @@ LABEL_13:
   v78[3] = &unk_278461A40;
   v38 = v36;
   v79 = v38;
-  v81 = a4;
-  v39 = v75;
+  dCopy2 = d;
+  v39 = styleAreaCopy;
   v80 = v39;
   v40 = MEMORY[0x223DA1C10](v78);
   v40[2](v40, 1, 16);
@@ -816,15 +816,15 @@ LABEL_13:
   v40[2](v40, 14, 29);
   objc_opt_class();
   v45 = objc_msgSend_tableNameStyle(v38, v41, v42, v43, v44);
-  v49 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v46, a4, v47, v48);
-  v50 = v77[2](v77, v45, v49, 30);
+  v49 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v46, d, v47, v48);
+  v50 = morphingBlockCopy[2](morphingBlockCopy, v45, v49, 30);
   v51 = TSUCheckedDynamicCast();
   objc_msgSend_setTableNameStyle_(v38, v52, v51, v53, v54);
 
   objc_opt_class();
   v59 = objc_msgSend_tableNameShapeStyle(v38, v55, v56, v57, v58);
-  v63 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v60, a4, v61, v62);
-  v64 = v76[2](v76, v59, v63, 31);
+  v63 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v60, d, v61, v62);
+  v64 = styleMorphingBlockCopy[2](styleMorphingBlockCopy, v59, v63, 31);
   v65 = TSUCheckedDynamicCast();
   objc_msgSend_setTableNameShapeStyle_(v38, v66, v65, v67, v68);
 
@@ -836,19 +836,19 @@ LABEL_13:
   return v38;
 }
 
-+ (TSTTableStyleNetwork)networkWithContext:(id)a3 presetID:(unint64_t)a4 styleProvider:(id)a5 styleMorphingBlock:(id)a6
++ (TSTTableStyleNetwork)networkWithContext:(id)context presetID:(unint64_t)d styleProvider:(id)provider styleMorphingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  contextCopy = context;
+  providerCopy = provider;
+  blockCopy = block;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_221222128;
   v17[3] = &unk_278461A68;
-  v12 = v11;
+  v12 = blockCopy;
   v18 = v12;
   v13 = MEMORY[0x223DA1C10](v17);
-  v15 = objc_msgSend_networkWithContext_presetID_styleProvider_tableStyleMorphingBlock_nameStyleMorphingBlock_nameShapeStyleMorphingBlock_cellStyleMorphingBlockByStyleArea_textStyleMorphingBlockByStyleArea_(TSTTableStyleNetwork, v14, v9, a4, v10, v12, v12, v12, v13, v13);
+  v15 = objc_msgSend_networkWithContext_presetID_styleProvider_tableStyleMorphingBlock_nameStyleMorphingBlock_nameShapeStyleMorphingBlock_cellStyleMorphingBlockByStyleArea_textStyleMorphingBlockByStyleArea_(TSTTableStyleNetwork, v14, contextCopy, d, providerCopy, v12, v12, v12, v13, v13);
 
   return v15;
 }
@@ -911,9 +911,9 @@ LABEL_13:
   return v59;
 }
 
-+ (id)defaultTableNameShapeStyleWithContext:(id)a3
++ (id)defaultTableNameShapeStyleWithContext:(id)context
 {
-  v5 = objc_msgSend_defaultStyleWithContext_(MEMORY[0x277D80F18], a2, a3, v3, v4);
+  v5 = objc_msgSend_defaultStyleWithContext_(MEMORY[0x277D80F18], a2, context, v3, v4);
   objc_msgSend_setIntValue_forProperty_(v5, v6, 1, 149, v7);
   v12 = objc_msgSend_emptyStroke(MEMORY[0x277D803C0], v8, v9, v10, v11);
   objc_msgSend_setValue_forProperty_(v5, v13, v12, 517, v14);
@@ -924,12 +924,12 @@ LABEL_13:
   return v5;
 }
 
-- (TSTTableStyleNetwork)initWithContext:(id)a3
+- (TSTTableStyleNetwork)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = TSTTableStyleNetwork;
-  v5 = [(TSTTableStyleNetwork *)&v8 initWithContext:v4];
+  v5 = [(TSTTableStyleNetwork *)&v8 initWithContext:contextCopy];
   v6 = v5;
   if (v5)
   {
@@ -940,31 +940,31 @@ LABEL_13:
   return v6;
 }
 
-- (TSTTableStyleNetwork)initWithContext:(id)a3 styleProvider:(id)a4
+- (TSTTableStyleNetwork)initWithContext:(id)context styleProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_tableStyle(v7, v8, v9, v10, v11);
+  contextCopy = context;
+  providerCopy = provider;
+  v12 = objc_msgSend_tableStyle(providerCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_rootAncestor(v12, v13, v14, v15, v16);
   v22 = objc_msgSend_styleIdentifier(v17, v18, v19, v20, v21);
   v26 = objc_msgSend_presetIDForStyleID_(TSTTableStyle, v23, v22, v24, v25);
 
-  v28 = objc_msgSend_initWithContext_styleProvider_presetID_(self, v27, v6, v7, v26);
+  v28 = objc_msgSend_initWithContext_styleProvider_presetID_(self, v27, contextCopy, providerCopy, v26);
   return v28;
 }
 
-- (TSTTableStyleNetwork)initWithContext:(id)a3 styleProvider:(id)a4 presetID:(unint64_t)a5
+- (TSTTableStyleNetwork)initWithContext:(id)context styleProvider:(id)provider presetID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = objc_msgSend_initWithContext_(self, v10, v8, v11, v12);
+  contextCopy = context;
+  providerCopy = provider;
+  v13 = objc_msgSend_initWithContext_(self, v10, contextCopy, v11, v12);
   v17 = v13;
   if (v13)
   {
-    objc_msgSend_setPresetID_(v13, v14, a5, v15, v16);
-    if (v9)
+    objc_msgSend_setPresetID_(v13, v14, d, v15, v16);
+    if (providerCopy)
     {
-      v22 = objc_msgSend_context(v9, v18, v19, v20, v21);
+      v22 = objc_msgSend_context(providerCopy, v18, v19, v20, v21);
       v27 = objc_msgSend_context(v17, v23, v24, v25, v26);
 
       if (v22 != v27)
@@ -977,169 +977,169 @@ LABEL_13:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40, v41, v42);
       }
 
-      v43 = objc_msgSend_tableStyle(v9, v28, v29, v30, v31);
+      v43 = objc_msgSend_tableStyle(providerCopy, v28, v29, v30, v31);
       tableStyle = v17->_tableStyle;
       v17->_tableStyle = v43;
 
-      v49 = objc_msgSend_bodyCellStyle(v9, v45, v46, v47, v48);
+      v49 = objc_msgSend_bodyCellStyle(providerCopy, v45, v46, v47, v48);
       begin = v17->_cellStyles.__begin_;
       v51 = begin[1];
       begin[1] = v49;
 
-      v56 = objc_msgSend_headerRowCellStyle(v9, v52, v53, v54, v55);
+      v56 = objc_msgSend_headerRowCellStyle(providerCopy, v52, v53, v54, v55);
       v57 = v17->_cellStyles.__begin_;
       v58 = v57[2];
       v57[2] = v56;
 
-      v63 = objc_msgSend_headerColumnCellStyle(v9, v59, v60, v61, v62);
+      v63 = objc_msgSend_headerColumnCellStyle(providerCopy, v59, v60, v61, v62);
       v64 = v17->_cellStyles.__begin_;
       v65 = v64[3];
       v64[3] = v63;
 
-      v70 = objc_msgSend_footerRowCellStyle(v9, v66, v67, v68, v69);
+      v70 = objc_msgSend_footerRowCellStyle(providerCopy, v66, v67, v68, v69);
       v71 = v17->_cellStyles.__begin_;
       v72 = v71[4];
       v71[4] = v70;
 
-      v77 = objc_msgSend_categoryLevel1CellStyle(v9, v73, v74, v75, v76);
+      v77 = objc_msgSend_categoryLevel1CellStyle(providerCopy, v73, v74, v75, v76);
       v78 = v17->_cellStyles.__begin_;
       v79 = v78[5];
       v78[5] = v77;
 
-      v84 = objc_msgSend_categoryLevel2CellStyle(v9, v80, v81, v82, v83);
+      v84 = objc_msgSend_categoryLevel2CellStyle(providerCopy, v80, v81, v82, v83);
       v85 = v17->_cellStyles.__begin_;
       v86 = v85[6];
       v85[6] = v84;
 
-      v91 = objc_msgSend_categoryLevel3CellStyle(v9, v87, v88, v89, v90);
+      v91 = objc_msgSend_categoryLevel3CellStyle(providerCopy, v87, v88, v89, v90);
       v92 = v17->_cellStyles.__begin_;
       v93 = v92[7];
       v92[7] = v91;
 
-      v98 = objc_msgSend_categoryLevel4CellStyle(v9, v94, v95, v96, v97);
+      v98 = objc_msgSend_categoryLevel4CellStyle(providerCopy, v94, v95, v96, v97);
       v99 = v17->_cellStyles.__begin_;
       v100 = v99[8];
       v99[8] = v98;
 
-      v105 = objc_msgSend_categoryLevel5CellStyle(v9, v101, v102, v103, v104);
+      v105 = objc_msgSend_categoryLevel5CellStyle(providerCopy, v101, v102, v103, v104);
       v106 = v17->_cellStyles.__begin_;
       v107 = v106[9];
       v106[9] = v105;
 
-      v112 = objc_msgSend_labelLevel1CellStyle(v9, v108, v109, v110, v111);
+      v112 = objc_msgSend_labelLevel1CellStyle(providerCopy, v108, v109, v110, v111);
       v113 = v17->_cellStyles.__begin_;
       v114 = v113[10];
       v113[10] = v112;
 
-      v119 = objc_msgSend_labelLevel2CellStyle(v9, v115, v116, v117, v118);
+      v119 = objc_msgSend_labelLevel2CellStyle(providerCopy, v115, v116, v117, v118);
       v120 = v17->_cellStyles.__begin_;
       v121 = v120[11];
       v120[11] = v119;
 
-      v126 = objc_msgSend_labelLevel3CellStyle(v9, v122, v123, v124, v125);
+      v126 = objc_msgSend_labelLevel3CellStyle(providerCopy, v122, v123, v124, v125);
       v127 = v17->_cellStyles.__begin_;
       v128 = v127[12];
       v127[12] = v126;
 
-      v133 = objc_msgSend_labelLevel4CellStyle(v9, v129, v130, v131, v132);
+      v133 = objc_msgSend_labelLevel4CellStyle(providerCopy, v129, v130, v131, v132);
       v134 = v17->_cellStyles.__begin_;
       v135 = v134[13];
       v134[13] = v133;
 
-      v140 = objc_msgSend_labelLevel5CellStyle(v9, v136, v137, v138, v139);
+      v140 = objc_msgSend_labelLevel5CellStyle(providerCopy, v136, v137, v138, v139);
       v141 = v17->_cellStyles.__begin_;
       v142 = v141[14];
       v141[14] = v140;
 
-      v147 = objc_msgSend_bodyTextStyle(v9, v143, v144, v145, v146);
+      v147 = objc_msgSend_bodyTextStyle(providerCopy, v143, v144, v145, v146);
       v148 = v17->_textStyles.__begin_;
       v149 = v148[1];
       v148[1] = v147;
 
-      v154 = objc_msgSend_headerRowTextStyle(v9, v150, v151, v152, v153);
+      v154 = objc_msgSend_headerRowTextStyle(providerCopy, v150, v151, v152, v153);
       v155 = v17->_textStyles.__begin_;
       v156 = v155[2];
       v155[2] = v154;
 
-      v161 = objc_msgSend_headerColumnTextStyle(v9, v157, v158, v159, v160);
+      v161 = objc_msgSend_headerColumnTextStyle(providerCopy, v157, v158, v159, v160);
       v162 = v17->_textStyles.__begin_;
       v163 = v162[3];
       v162[3] = v161;
 
-      v168 = objc_msgSend_footerRowTextStyle(v9, v164, v165, v166, v167);
+      v168 = objc_msgSend_footerRowTextStyle(providerCopy, v164, v165, v166, v167);
       v169 = v17->_textStyles.__begin_;
       v170 = v169[4];
       v169[4] = v168;
 
-      v175 = objc_msgSend_categoryLevel1TextStyle(v9, v171, v172, v173, v174);
+      v175 = objc_msgSend_categoryLevel1TextStyle(providerCopy, v171, v172, v173, v174);
       v176 = v17->_textStyles.__begin_;
       v177 = v176[5];
       v176[5] = v175;
 
-      v182 = objc_msgSend_categoryLevel2TextStyle(v9, v178, v179, v180, v181);
+      v182 = objc_msgSend_categoryLevel2TextStyle(providerCopy, v178, v179, v180, v181);
       v183 = v17->_textStyles.__begin_;
       v184 = v183[6];
       v183[6] = v182;
 
-      v189 = objc_msgSend_categoryLevel3TextStyle(v9, v185, v186, v187, v188);
+      v189 = objc_msgSend_categoryLevel3TextStyle(providerCopy, v185, v186, v187, v188);
       v190 = v17->_textStyles.__begin_;
       v191 = v190[7];
       v190[7] = v189;
 
-      v196 = objc_msgSend_categoryLevel4TextStyle(v9, v192, v193, v194, v195);
+      v196 = objc_msgSend_categoryLevel4TextStyle(providerCopy, v192, v193, v194, v195);
       v197 = v17->_textStyles.__begin_;
       v198 = v197[8];
       v197[8] = v196;
 
-      v203 = objc_msgSend_categoryLevel5TextStyle(v9, v199, v200, v201, v202);
+      v203 = objc_msgSend_categoryLevel5TextStyle(providerCopy, v199, v200, v201, v202);
       v204 = v17->_textStyles.__begin_;
       v205 = v204[9];
       v204[9] = v203;
 
-      v210 = objc_msgSend_labelLevel1TextStyle(v9, v206, v207, v208, v209);
+      v210 = objc_msgSend_labelLevel1TextStyle(providerCopy, v206, v207, v208, v209);
       v211 = v17->_textStyles.__begin_;
       v212 = v211[10];
       v211[10] = v210;
 
-      v217 = objc_msgSend_labelLevel2TextStyle(v9, v213, v214, v215, v216);
+      v217 = objc_msgSend_labelLevel2TextStyle(providerCopy, v213, v214, v215, v216);
       v218 = v17->_textStyles.__begin_;
       v219 = v218[11];
       v218[11] = v217;
 
-      v224 = objc_msgSend_labelLevel3TextStyle(v9, v220, v221, v222, v223);
+      v224 = objc_msgSend_labelLevel3TextStyle(providerCopy, v220, v221, v222, v223);
       v225 = v17->_textStyles.__begin_;
       v226 = v225[12];
       v225[12] = v224;
 
-      v231 = objc_msgSend_labelLevel4TextStyle(v9, v227, v228, v229, v230);
+      v231 = objc_msgSend_labelLevel4TextStyle(providerCopy, v227, v228, v229, v230);
       v232 = v17->_textStyles.__begin_;
       v233 = v232[13];
       v232[13] = v231;
 
-      v238 = objc_msgSend_labelLevel5TextStyle(v9, v234, v235, v236, v237);
+      v238 = objc_msgSend_labelLevel5TextStyle(providerCopy, v234, v235, v236, v237);
       v239 = v17->_textStyles.__begin_;
       v240 = v239[14];
       v239[14] = v238;
 
-      v245 = objc_msgSend_tableNameStyle(v9, v241, v242, v243, v244);
+      v245 = objc_msgSend_tableNameStyle(providerCopy, v241, v242, v243, v244);
       tableNameStyle = v17->_tableNameStyle;
       v17->_tableNameStyle = v245;
 
-      v251 = objc_msgSend_tableNameShapeStyle(v9, v247, v248, v249, v250);
+      v251 = objc_msgSend_tableNameShapeStyle(providerCopy, v247, v248, v249, v250);
       tableNameShapeStyle = v17->_tableNameShapeStyle;
       v17->_tableNameShapeStyle = v251;
 
-      v257 = objc_msgSend_pivotBodySummaryRowCellStyle(v9, v253, v254, v255, v256);
+      v257 = objc_msgSend_pivotBodySummaryRowCellStyle(providerCopy, v253, v254, v255, v256);
       v258 = v17->_cellStyles.__begin_;
       v259 = v258[15];
       v258[15] = v257;
 
-      v264 = objc_msgSend_pivotBodySummaryColumnCellStyle(v9, v260, v261, v262, v263);
+      v264 = objc_msgSend_pivotBodySummaryColumnCellStyle(providerCopy, v260, v261, v262, v263);
       v265 = v17->_cellStyles.__begin_;
       v266 = v265[16];
       v265[16] = v264;
 
-      v271 = objc_msgSend_pivotHeaderColumnSummaryCellStyle(v9, v267, v268, v269, v270);
+      v271 = objc_msgSend_pivotHeaderColumnSummaryCellStyle(providerCopy, v267, v268, v269, v270);
       v272 = v17->_cellStyles.__begin_;
       v273 = v272[17];
       v272[17] = v271;
@@ -1149,12 +1149,12 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 context:(id)a4
+- (id)copyWithZone:(_NSZone *)zone context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = objc_opt_class();
-  v11 = objc_msgSend_allocWithZone_(v7, v8, a3, v9, v10);
-  v15 = objc_msgSend_initWithContext_(v11, v12, v6, v13, v14);
+  v11 = objc_msgSend_allocWithZone_(v7, v8, zone, v9, v10);
+  v15 = objc_msgSend_initWithContext_(v11, v12, contextCopy, v13, v14);
   v16 = v15;
   if (v15)
   {
@@ -1174,10 +1174,10 @@ LABEL_13:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v7 = objc_msgSend_context(self, a2, a3, v3, v4);
-  v10 = objc_msgSend_copyWithZone_context_(self, v8, a3, v7, v9);
+  v7 = objc_msgSend_context(self, a2, zone, v3, v4);
+  v10 = objc_msgSend_copyWithZone_context_(self, v8, zone, v7, v9);
 
   return v10;
 }
@@ -1190,10 +1190,10 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     v9 = TSUDynamicCast();
@@ -1254,7 +1254,7 @@ LABEL_15:
     if (tableStyle)
     {
       v170 = v9;
-      v167 = v4;
+      v167 = equalCopy;
       v168 = v66;
       v83 = objc_msgSend_cellStyles(v9, v75, v76, v77, v78);
       p_cellStyles = &self->_cellStyles;
@@ -1347,7 +1347,7 @@ LABEL_44:
       if (v128 == v129)
       {
         v65 = 1;
-        v4 = v167;
+        equalCopy = v167;
       }
 
       else
@@ -1398,7 +1398,7 @@ LABEL_44:
         while (v143 != v142);
         v65 = 1;
 LABEL_45:
-        v4 = v167;
+        equalCopy = v167;
         v66 = v168;
         v9 = v170;
       }
@@ -1440,10 +1440,10 @@ LABEL_49:
   return v3;
 }
 
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3 objectComparisonBlock:(id)a4
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison objectComparisonBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  comparisonCopy = comparison;
+  blockCopy = block;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -1452,11 +1452,11 @@ LABEL_49:
   v14[1] = 3221225472;
   v14[2] = sub_2212239D0;
   v14[3] = &unk_278461AB8;
-  v16 = v7;
+  v16 = blockCopy;
   v17 = &v18;
-  v15 = v6;
-  v8 = v7;
-  v9 = v6;
+  v15 = comparisonCopy;
+  v8 = blockCopy;
+  v9 = comparisonCopy;
   objc_msgSend_enumerateAllStylesWithBlock_(self, v10, v14, v11, v12);
   LOBYTE(self) = *(v19 + 24);
 
@@ -1464,78 +1464,78 @@ LABEL_49:
   return self;
 }
 
-+ (id)identifiersForPresetID:(unint64_t)a3
++ (id)identifiersForPresetID:(unint64_t)d
 {
   v114[34] = *MEMORY[0x277D85DE8];
   v5 = qword_27CFB52D8;
   if (!qword_27CFB52D8)
   {
-    v114[0] = objc_msgSend_styleIDForPreset_(TSTTableStyle, a2, a3, v3, v4);
-    v113 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v7, a3, 2, v8);
+    v114[0] = objc_msgSend_styleIDForPreset_(TSTTableStyle, a2, d, v3, v4);
+    v113 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v7, d, 2, v8);
     v114[1] = v113;
-    v112 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v9, a3, 3, v10);
+    v112 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v9, d, 3, v10);
     v114[2] = v112;
-    v111 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v11, a3, 4, v12);
+    v111 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v11, d, 4, v12);
     v114[3] = v111;
-    v110 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v13, a3, 1, v14);
+    v110 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v13, d, 1, v14);
     v114[4] = v110;
-    v109 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v15, a3, 5, v16);
+    v109 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v15, d, 5, v16);
     v114[5] = v109;
-    v108 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v17, a3, 6, v18);
+    v108 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v17, d, 6, v18);
     v114[6] = v108;
-    v107 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v19, a3, 7, v20);
+    v107 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v19, d, 7, v20);
     v114[7] = v107;
-    v106 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v21, a3, 8, v22);
+    v106 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v21, d, 8, v22);
     v114[8] = v106;
-    v105 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v23, a3, 9, v24);
+    v105 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v23, d, 9, v24);
     v114[9] = v105;
-    v104 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v25, a3, 10, v26);
+    v104 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v25, d, 10, v26);
     v114[10] = v104;
-    v103 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v27, a3, 11, v28);
+    v103 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v27, d, 11, v28);
     v114[11] = v103;
-    v102 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v29, a3, 12, v30);
+    v102 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v29, d, 12, v30);
     v114[12] = v102;
-    v101 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v31, a3, 13, v32);
+    v101 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v31, d, 13, v32);
     v114[13] = v101;
-    v100 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v33, a3, 14, v34);
+    v100 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v33, d, 14, v34);
     v114[14] = v100;
-    v99 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v35, a3, 2, v36);
+    v99 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v35, d, 2, v36);
     v114[15] = v99;
-    v98 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v37, a3, 3, v38);
+    v98 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v37, d, 3, v38);
     v114[16] = v98;
-    v97 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v39, a3, 4, v40);
+    v97 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v39, d, 4, v40);
     v114[17] = v97;
-    v96 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v41, a3, 1, v42);
+    v96 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v41, d, 1, v42);
     v114[18] = v96;
-    v95 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v43, a3, 5, v44);
+    v95 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v43, d, 5, v44);
     v114[19] = v95;
-    v94 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v45, a3, 6, v46);
+    v94 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v45, d, 6, v46);
     v114[20] = v94;
-    v93 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v47, a3, 7, v48);
+    v93 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v47, d, 7, v48);
     v114[21] = v93;
-    v92 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v49, a3, 8, v50);
+    v92 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v49, d, 8, v50);
     v114[22] = v92;
-    v91 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v51, a3, 9, v52);
+    v91 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v51, d, 9, v52);
     v114[23] = v91;
-    v90 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v53, a3, 10, v54);
+    v90 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v53, d, 10, v54);
     v114[24] = v90;
-    v57 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v55, a3, 11, v56);
+    v57 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v55, d, 11, v56);
     v114[25] = v57;
-    v60 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v58, a3, 12, v59);
+    v60 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v58, d, 12, v59);
     v114[26] = v60;
-    v63 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v61, a3, 13, v62);
+    v63 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v61, d, 13, v62);
     v114[27] = v63;
-    v66 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v64, a3, 14, v65);
+    v66 = objc_msgSend_textStyleIDForPreset_andTableStyleArea_(TSTCellStyle, v64, d, 14, v65);
     v114[28] = v66;
-    v70 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v67, a3, v68, v69);
+    v70 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v67, d, v68, v69);
     v114[29] = v70;
-    v74 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v71, a3, v72, v73);
+    v74 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v71, d, v72, v73);
     v114[30] = v74;
-    v77 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v75, a3, 15, v76);
+    v77 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v75, d, 15, v76);
     v114[31] = v77;
-    v80 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v78, a3, 16, v79);
+    v80 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v78, d, 16, v79);
     v114[32] = v80;
-    v83 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v81, a3, 17, v82);
+    v83 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v81, d, 17, v82);
     v114[33] = v83;
     v84 = v114[0];
     v87 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v85, v114, 34, v86);
@@ -1548,11 +1548,11 @@ LABEL_49:
   return v5;
 }
 
-- (BOOL)stylesInStylesheet:(id)a3
+- (BOOL)stylesInStylesheet:(id)stylesheet
 {
-  v4 = a3;
+  stylesheetCopy = stylesheet;
   v9 = objc_msgSend_context(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_context(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_context(stylesheetCopy, v10, v11, v12, v13);
 
   if (v9 == v14)
   {
@@ -1564,7 +1564,7 @@ LABEL_49:
     v20[1] = 3221225472;
     v20[2] = sub_221224358;
     v20[3] = &unk_278461AE0;
-    v21 = v4;
+    v21 = stylesheetCopy;
     v22 = &v23;
     objc_msgSend_enumerateAllStylesWithBlock_(self, v16, v20, v17, v18);
     v15 = *(v24 + 24);
@@ -1580,18 +1580,18 @@ LABEL_49:
   return v15 & 1;
 }
 
-- (id)textStyleForTableStyleArea:(unint64_t)a3
+- (id)textStyleForTableStyleArea:(unint64_t)area
 {
-  if (a3 - 15 >= 2)
+  if (area - 15 >= 2)
   {
-    if (a3 == 17)
+    if (area == 17)
     {
       v3 = self->_textStyles.__begin_ + 3;
     }
 
     else
     {
-      v3 = &self->_textStyles.__begin_[a3];
+      v3 = &self->_textStyles.__begin_[area];
     }
   }
 
@@ -1603,22 +1603,22 @@ LABEL_49:
   return *v3;
 }
 
-- (void)setCellStyle:(id)a3 forTableStyleArea:(unint64_t)a4
+- (void)setCellStyle:(id)style forTableStyleArea:(unint64_t)area
 {
-  v6 = a3;
+  styleCopy = style;
   objc_msgSend_willModify(self, v7, v8, v9, v10);
   begin = self->_cellStyles.__begin_;
-  v12 = begin[a4];
-  begin[a4] = v6;
+  v12 = begin[area];
+  begin[area] = styleCopy;
 }
 
-- (void)setTextStyle:(id)a3 forTableStyleArea:(unint64_t)a4
+- (void)setTextStyle:(id)style forTableStyleArea:(unint64_t)area
 {
-  v25 = a3;
+  styleCopy = style;
   objc_msgSend_willModify(self, v7, v8, v9, v10);
-  if (a4 - 15 >= 3)
+  if (area - 15 >= 3)
   {
-    objc_storeStrong(&self->_textStyles.__begin_[a4], a3);
+    objc_storeStrong(&self->_textStyles.__begin_[area], style);
   }
 
   else
@@ -1632,9 +1632,9 @@ LABEL_49:
   }
 }
 
-- (id)styleForStyleNetworkIndex:(unint64_t)a3
+- (id)styleForStyleNetworkIndex:(unint64_t)index
 {
-  switch(a3)
+  switch(index)
   {
     case 1uLL:
       v4 = 72;
@@ -1780,9 +1780,9 @@ LABEL_51:
   return v20;
 }
 
-- (void)enumerateAllStylesWithBlock:(id)a3
+- (void)enumerateAllStylesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -1790,14 +1790,14 @@ LABEL_51:
   tableStyle = self->_tableStyle;
   v10 = objc_msgSend_presetID(self, v6, v7, v8, v9);
   v14 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v11, v10, v12, v13);
-  v15 = (v4 + 16);
-  (*(v4 + 2))(v4, tableStyle, v14, 1, v53 + 3);
+  v15 = (blockCopy + 16);
+  (*(blockCopy + 2))(blockCopy, tableStyle, v14, 1, v53 + 3);
 
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = sub_221224FE8;
   v49[3] = &unk_278461B08;
-  v16 = v4;
+  v16 = blockCopy;
   v49[4] = self;
   v50 = v16;
   v51 = &v52;
@@ -1865,7 +1865,7 @@ LABEL_51:
   v44 = sub_2212250B0;
   v45 = &unk_278461B08;
   v19 = v16;
-  v46 = self;
+  selfCopy = self;
   v47 = v19;
   v48 = &v52;
   v20 = MEMORY[0x223DA1C10](&v42);
@@ -1958,13 +1958,13 @@ LABEL_51:
   _Block_object_dispose(&v52, 8);
 }
 
-- (id)dictionaryWithPreset:(unint64_t)a3
+- (id)dictionaryWithPreset:(unint64_t)preset
 {
-  v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3, v3, v4);
+  v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, preset, v3, v4);
   tableStyle = self->_tableStyle;
   if (tableStyle)
   {
-    v12 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v7, a3, v8, v9);
+    v12 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v7, preset, v8, v9);
     objc_msgSend_setObject_forKey_(v10, v13, tableStyle, v12, v14);
   }
 
@@ -1975,7 +1975,7 @@ LABEL_51:
   v39[4] = self;
   v15 = v10;
   v40 = v15;
-  v41 = a3;
+  presetCopy = preset;
   v16 = MEMORY[0x223DA1C10](v39);
   v16[2](v16, 1);
   v16[2](v16, 2);
@@ -1995,10 +1995,10 @@ LABEL_51:
   v33 = 3221225472;
   v34 = sub_221225658;
   v35 = &unk_278461B30;
-  v36 = self;
+  selfCopy = self;
   v17 = v15;
   v37 = v17;
-  v38 = a3;
+  presetCopy2 = preset;
   v18 = MEMORY[0x223DA1C10](&v32);
   v18[2](v18, 1);
   v18[2](v18, 2);
@@ -2017,14 +2017,14 @@ LABEL_51:
   tableNameStyle = self->_tableNameStyle;
   if (tableNameStyle)
   {
-    v23 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v19, a3, v20, v21, v32, v33, v34, v35, v36);
+    v23 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v19, preset, v20, v21, v32, v33, v34, v35, selfCopy);
     objc_msgSend_setObject_forKey_(v17, v24, tableNameStyle, v23, v25);
   }
 
   tableNameShapeStyle = self->_tableNameShapeStyle;
   if (tableNameShapeStyle)
   {
-    v27 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v19, a3, v20, v21);
+    v27 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v19, preset, v20, v21);
     objc_msgSend_setObject_forKey_(v17, v28, tableNameShapeStyle, v27, v29);
   }
 
@@ -2036,17 +2036,17 @@ LABEL_51:
   return v17;
 }
 
-- (TSTTableStyleNetwork)initWithContext:(id)a3 fromDictionary:(id)a4 withPreset:(unint64_t)a5
+- (TSTTableStyleNetwork)initWithContext:(id)context fromDictionary:(id)dictionary withPreset:(unint64_t)preset
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = objc_msgSend_initWithContext_(self, v10, v8, v11, v12);
+  contextCopy = context;
+  dictionaryCopy = dictionary;
+  v13 = objc_msgSend_initWithContext_(self, v10, contextCopy, v11, v12);
   v17 = v13;
   if (v13)
   {
-    objc_msgSend_setPresetID_(v13, v14, a5, v15, v16);
-    v21 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v18, a5, v19, v20);
-    v25 = objc_msgSend_objectForKey_(v9, v22, v21, v23, v24);
+    objc_msgSend_setPresetID_(v13, v14, preset, v15, v16);
+    v21 = objc_msgSend_styleIDForPreset_(TSTTableStyle, v18, preset, v19, v20);
+    v25 = objc_msgSend_objectForKey_(dictionaryCopy, v22, v21, v23, v24);
     tableStyle = v17->_tableStyle;
     v17->_tableStyle = v25;
 
@@ -2056,9 +2056,9 @@ LABEL_51:
     v56[3] = &unk_278461B30;
     v27 = v17;
     v57 = v27;
-    v28 = v9;
+    v28 = dictionaryCopy;
     v58 = v28;
-    v59 = a5;
+    presetCopy = preset;
     v29 = MEMORY[0x223DA1C10](v56);
     v29[2](v29, 1);
     v29[2](v29, 2);
@@ -2082,7 +2082,7 @@ LABEL_51:
     v53 = v30;
     v31 = v28;
     v54 = v31;
-    v55 = a5;
+    presetCopy2 = preset;
     v32 = MEMORY[0x223DA1C10](v52);
     v32[2](v32, 1);
     v32[2](v32, 2);
@@ -2098,12 +2098,12 @@ LABEL_51:
     v32[2](v32, 12);
     v32[2](v32, 13);
     v32[2](v32, 14);
-    v36 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v33, a5, v34, v35);
+    v36 = objc_msgSend_tableNameStyleIDForPreset_(TSTTableStyleNetwork, v33, preset, v34, v35);
     v40 = objc_msgSend_objectForKey_(v31, v37, v36, v38, v39);
     tableNameStyle = v30->_tableNameStyle;
     v30->_tableNameStyle = v40;
 
-    v45 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v42, a5, v43, v44);
+    v45 = objc_msgSend_tableNameShapeStyleIDForPreset_(TSTTableStyleNetwork, v42, preset, v43, v44);
     v49 = objc_msgSend_objectForKey_(v31, v46, v45, v47, v48);
     tableNameShapeStyle = v30->_tableNameShapeStyle;
     v30->_tableNameShapeStyle = v49;
@@ -2116,25 +2116,25 @@ LABEL_51:
   return v17;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[60], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[60], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = *(a3 + 12);
+  unarchiverCopy = unarchiver;
+  v7 = *(archive + 12);
   v184[0] = MEMORY[0x277D85DD0];
   v184[1] = 3221225472;
   v184[2] = sub_221226FEC;
   v184[3] = &unk_27845DF28;
   v184[4] = self;
-  v8 = v6;
+  v8 = unarchiverCopy;
   v10 = objc_opt_class();
   v11 = MEMORY[0x277D80A18];
   if (v7)
@@ -2148,7 +2148,7 @@ LABEL_51:
   }
 
   sub_221222660(&self->_cellStyles.__begin_, 0x12uLL);
-  v12 = *(a3 + 8);
+  v12 = *(archive + 8);
   v183[0] = MEMORY[0x277D85DD0];
   v183[1] = 3221225472;
   v183[2] = sub_2212270F0;
@@ -2166,7 +2166,7 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v13, v14, v11, v15, 0, v183);
   }
 
-  v16 = *(a3 + 9);
+  v16 = *(archive + 9);
   v182[0] = MEMORY[0x277D85DD0];
   v182[1] = 3221225472;
   v182[2] = sub_221227108;
@@ -2184,7 +2184,7 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v17, v18, v11, v19, 0, v182);
   }
 
-  v20 = *(a3 + 10);
+  v20 = *(archive + 10);
   v181[0] = MEMORY[0x277D85DD0];
   v181[1] = 3221225472;
   v181[2] = sub_221227120;
@@ -2202,7 +2202,7 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v21, v22, v11, v23, 0, v181);
   }
 
-  v24 = *(a3 + 11);
+  v24 = *(archive + 11);
   v180[0] = MEMORY[0x277D85DD0];
   v180[1] = 3221225472;
   v180[2] = sub_221227138;
@@ -2220,10 +2220,10 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v25, v26, v11, v27, 0, v180);
   }
 
-  v28 = *(a3 + 4);
+  v28 = *(archive + 4);
   if ((v28 & 0x10000) != 0)
   {
-    v29 = *(a3 + 20);
+    v29 = *(archive + 20);
     v179[0] = MEMORY[0x277D85DD0];
     v179[1] = 3221225472;
     v179[2] = sub_221227150;
@@ -2233,12 +2233,12 @@ LABEL_51:
     v31 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v30, v32, v29, v31, 0, v179);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x20000) != 0)
   {
-    v33 = *(a3 + 21);
+    v33 = *(archive + 21);
     v178[0] = MEMORY[0x277D85DD0];
     v178[1] = 3221225472;
     v178[2] = sub_221227168;
@@ -2248,12 +2248,12 @@ LABEL_51:
     v35 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v34, v36, v33, v35, 0, v178);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x40000) != 0)
   {
-    v37 = *(a3 + 22);
+    v37 = *(archive + 22);
     v177[0] = MEMORY[0x277D85DD0];
     v177[1] = 3221225472;
     v177[2] = sub_221227180;
@@ -2263,12 +2263,12 @@ LABEL_51:
     v39 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v38, v40, v37, v39, 0, v177);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x80000) != 0)
   {
-    v41 = *(a3 + 23);
+    v41 = *(archive + 23);
     v176[0] = MEMORY[0x277D85DD0];
     v176[1] = 3221225472;
     v176[2] = sub_221227198;
@@ -2278,12 +2278,12 @@ LABEL_51:
     v43 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v42, v44, v41, v43, 0, v176);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x100000) != 0)
   {
-    v45 = *(a3 + 24);
+    v45 = *(archive + 24);
     v175[0] = MEMORY[0x277D85DD0];
     v175[1] = 3221225472;
     v175[2] = sub_2212271B0;
@@ -2293,12 +2293,12 @@ LABEL_51:
     v47 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v46, v48, v45, v47, 0, v175);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x4000000) != 0)
   {
-    v49 = *(a3 + 30);
+    v49 = *(archive + 30);
     v174[0] = MEMORY[0x277D85DD0];
     v174[1] = 3221225472;
     v174[2] = sub_2212271C8;
@@ -2308,12 +2308,12 @@ LABEL_51:
     v51 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v50, v52, v49, v51, 0, v174);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x8000000) != 0)
   {
-    v53 = *(a3 + 31);
+    v53 = *(archive + 31);
     v173[0] = MEMORY[0x277D85DD0];
     v173[1] = 3221225472;
     v173[2] = sub_2212271E0;
@@ -2323,12 +2323,12 @@ LABEL_51:
     v55 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v54, v56, v53, v55, 0, v173);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x10000000) != 0)
   {
-    v57 = *(a3 + 32);
+    v57 = *(archive + 32);
     v172[0] = MEMORY[0x277D85DD0];
     v172[1] = 3221225472;
     v172[2] = sub_2212271F8;
@@ -2338,12 +2338,12 @@ LABEL_51:
     v59 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v58, v60, v57, v59, 0, v172);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x20000000) != 0)
   {
-    v61 = *(a3 + 33);
+    v61 = *(archive + 33);
     v171[0] = MEMORY[0x277D85DD0];
     v171[1] = 3221225472;
     v171[2] = sub_221227210;
@@ -2353,12 +2353,12 @@ LABEL_51:
     v63 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v62, v64, v61, v63, 0, v171);
 
-    v28 = *(a3 + 4);
+    v28 = *(archive + 4);
   }
 
   if ((v28 & 0x40000000) != 0)
   {
-    v65 = *(a3 + 34);
+    v65 = *(archive + 34);
     v170[0] = MEMORY[0x277D85DD0];
     v170[1] = 3221225472;
     v170[2] = sub_221227228;
@@ -2370,7 +2370,7 @@ LABEL_51:
   }
 
   sub_2212226E8(&self->_textStyles.__begin_, 0x12uLL);
-  v69 = *(a3 + 4);
+  v69 = *(archive + 4);
   v169[0] = MEMORY[0x277D85DD0];
   v169[1] = 3221225472;
   v169[2] = sub_221227240;
@@ -2388,7 +2388,7 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v70, v71, v11, v72, 0, v169);
   }
 
-  v73 = *(a3 + 5);
+  v73 = *(archive + 5);
   v168[0] = MEMORY[0x277D85DD0];
   v168[1] = 3221225472;
   v168[2] = sub_221227258;
@@ -2406,7 +2406,7 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v74, v75, v11, v76, 0, v168);
   }
 
-  v77 = *(a3 + 6);
+  v77 = *(archive + 6);
   v167[0] = MEMORY[0x277D85DD0];
   v167[1] = 3221225472;
   v167[2] = sub_221227270;
@@ -2424,7 +2424,7 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v78, v79, v11, v80, 0, v167);
   }
 
-  v81 = *(a3 + 7);
+  v81 = *(archive + 7);
   v166[0] = MEMORY[0x277D85DD0];
   v166[1] = 3221225472;
   v166[2] = sub_221227288;
@@ -2442,10 +2442,10 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v82, v83, v11, v84, 0, v166);
   }
 
-  v88 = *(a3 + 4);
+  v88 = *(archive + 4);
   if ((v88 & 0x800) != 0)
   {
-    v89 = *(a3 + 15);
+    v89 = *(archive + 15);
     v165[0] = MEMORY[0x277D85DD0];
     v165[1] = 3221225472;
     v165[2] = sub_2212272A0;
@@ -2455,12 +2455,12 @@ LABEL_51:
     v91 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v90, v92, v89, v91, 0, v165);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x1000) != 0)
   {
-    v93 = *(a3 + 16);
+    v93 = *(archive + 16);
     v164[0] = MEMORY[0x277D85DD0];
     v164[1] = 3221225472;
     v164[2] = sub_2212272B8;
@@ -2470,12 +2470,12 @@ LABEL_51:
     v95 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v94, v96, v93, v95, 0, v164);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x2000) != 0)
   {
-    v97 = *(a3 + 17);
+    v97 = *(archive + 17);
     v163[0] = MEMORY[0x277D85DD0];
     v163[1] = 3221225472;
     v163[2] = sub_2212272D0;
@@ -2485,12 +2485,12 @@ LABEL_51:
     v99 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v98, v100, v97, v99, 0, v163);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x4000) != 0)
   {
-    v101 = *(a3 + 18);
+    v101 = *(archive + 18);
     v162[0] = MEMORY[0x277D85DD0];
     v162[1] = 3221225472;
     v162[2] = sub_2212272E8;
@@ -2500,12 +2500,12 @@ LABEL_51:
     v103 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v102, v104, v101, v103, 0, v162);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x8000) != 0)
   {
-    v105 = *(a3 + 19);
+    v105 = *(archive + 19);
     v161[0] = MEMORY[0x277D85DD0];
     v161[1] = 3221225472;
     v161[2] = sub_221227300;
@@ -2515,12 +2515,12 @@ LABEL_51:
     v107 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v106, v108, v105, v107, 0, v161);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x200000) != 0)
   {
-    v109 = *(a3 + 25);
+    v109 = *(archive + 25);
     v160[0] = MEMORY[0x277D85DD0];
     v160[1] = 3221225472;
     v160[2] = sub_221227318;
@@ -2530,12 +2530,12 @@ LABEL_51:
     v111 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v110, v112, v109, v111, 0, v160);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x400000) != 0)
   {
-    v113 = *(a3 + 26);
+    v113 = *(archive + 26);
     v159[0] = MEMORY[0x277D85DD0];
     v159[1] = 3221225472;
     v159[2] = sub_221227330;
@@ -2545,12 +2545,12 @@ LABEL_51:
     v115 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v114, v116, v113, v115, 0, v159);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x800000) != 0)
   {
-    v117 = *(a3 + 27);
+    v117 = *(archive + 27);
     v158[0] = MEMORY[0x277D85DD0];
     v158[1] = 3221225472;
     v158[2] = sub_221227348;
@@ -2560,12 +2560,12 @@ LABEL_51:
     v119 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v118, v120, v117, v119, 0, v158);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x1000000) != 0)
   {
-    v121 = *(a3 + 28);
+    v121 = *(archive + 28);
     v157[0] = MEMORY[0x277D85DD0];
     v157[1] = 3221225472;
     v157[2] = sub_221227360;
@@ -2575,12 +2575,12 @@ LABEL_51:
     v123 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v122, v124, v121, v123, 0, v157);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x2000000) != 0)
   {
-    v125 = *(a3 + 29);
+    v125 = *(archive + 29);
     v156[0] = MEMORY[0x277D85DD0];
     v156[1] = 3221225472;
     v156[2] = sub_221227378;
@@ -2590,12 +2590,12 @@ LABEL_51:
     v127 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v126, v128, v125, v127, 0, v156);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x200) != 0)
   {
-    v129 = *(a3 + 13);
+    v129 = *(archive + 13);
     v155[0] = MEMORY[0x277D85DD0];
     v155[1] = 3221225472;
     v155[2] = sub_221227390;
@@ -2605,12 +2605,12 @@ LABEL_51:
     v131 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v130, v132, v129, v131, 0, v155);
 
-    v88 = *(a3 + 4);
+    v88 = *(archive + 4);
   }
 
   if ((v88 & 0x400) != 0)
   {
-    v133 = *(a3 + 14);
+    v133 = *(archive + 14);
     v154[0] = MEMORY[0x277D85DD0];
     v154[1] = 3221225472;
     v154[2] = sub_221227494;
@@ -2621,10 +2621,10 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v134, v136, v133, v135, 0, v154);
   }
 
-  self->_presetIndex = *(a3 + 76);
-  if ((*(a3 + 4) & 0x80000000) != 0)
+  self->_presetIndex = *(archive + 76);
+  if ((*(archive + 4) & 0x80000000) != 0)
   {
-    v137 = *(a3 + 35);
+    v137 = *(archive + 35);
     v153[0] = MEMORY[0x277D85DD0];
     v153[1] = 3221225472;
     v153[2] = sub_221227598;
@@ -2635,10 +2635,10 @@ LABEL_51:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v138, v140, v137, v139, 0, v153);
   }
 
-  v141 = *(a3 + 5);
+  v141 = *(archive + 5);
   if (v141)
   {
-    v142 = *(a3 + 36);
+    v142 = *(archive + 36);
     v152[0] = MEMORY[0x277D85DD0];
     v152[1] = 3221225472;
     v152[2] = sub_2212275B0;
@@ -2648,12 +2648,12 @@ LABEL_51:
     v144 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v143, v145, v142, v144, 0, v152);
 
-    v141 = *(a3 + 5);
+    v141 = *(archive + 5);
   }
 
   if ((v141 & 2) != 0)
   {
-    v146 = *(a3 + 37);
+    v146 = *(archive + 37);
     v151[0] = MEMORY[0x277D85DD0];
     v151[1] = 3221225472;
     v151[2] = sub_2212275C8;
@@ -2672,11 +2672,11 @@ LABEL_51:
   objc_msgSend_addFinalizeHandler_(v82, v85, v150, v86, v87);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
-  objc_msgSend_setMessageVersion_(v4, v5, *MEMORY[0x277D80990], v6, v7);
-  v24 = v4;
+  archiverCopy = archiver;
+  objc_msgSend_setMessageVersion_(archiverCopy, v5, *MEMORY[0x277D80990], v6, v7);
+  v24 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v10 = objc_msgSend_messageWithNewFunction_descriptor_(v24, v8, sub_22122B848, off_2812E4498[60], v9);
 
@@ -2691,587 +2691,587 @@ LABEL_51:
   }
 }
 
-- (void)p_saveToArchive:(void *)a3 archiver:(id)a4 isPre30Alternate:(BOOL)a5
+- (void)p_saveToArchive:(void *)archive archiver:(id)archiver isPre30Alternate:(BOOL)alternate
 {
-  v8 = a4;
+  archiverCopy = archiver;
   tableStyle = self->_tableStyle;
-  *(a3 + 4) |= 0x100u;
-  v12 = *(a3 + 12);
-  v224 = v8;
+  *(archive + 4) |= 0x100u;
+  v12 = *(archive + 12);
+  v224 = archiverCopy;
   if (!v12)
   {
-    v13 = *(a3 + 1);
+    v13 = *(archive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v12 = MEMORY[0x223DA0390](v13);
-    *(a3 + 12) = v12;
-    v8 = v224;
+    *(archive + 12) = v12;
+    archiverCopy = v224;
   }
 
-  objc_msgSend_setStrongReference_message_(v8, v9, tableStyle, v12, v10);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v9, tableStyle, v12, v10);
   v16 = *(self->_cellStyles.__begin_ + 2);
-  *(a3 + 4) |= 0x20u;
-  v17 = *(a3 + 9);
+  *(archive + 4) |= 0x20u;
+  v17 = *(archive + 9);
   if (!v17)
   {
-    v18 = *(a3 + 1);
+    v18 = *(archive + 1);
     if (v18)
     {
       v18 = *(v18 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v17 = MEMORY[0x223DA0390](v18);
-    *(a3 + 9) = v17;
+    *(archive + 9) = v17;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v14, v16, v17, v15);
   v21 = *(self->_cellStyles.__begin_ + 3);
-  *(a3 + 4) |= 0x40u;
-  v22 = *(a3 + 10);
+  *(archive + 4) |= 0x40u;
+  v22 = *(archive + 10);
   if (!v22)
   {
-    v23 = *(a3 + 1);
+    v23 = *(archive + 1);
     if (v23)
     {
       v23 = *(v23 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v22 = MEMORY[0x223DA0390](v23);
-    *(a3 + 10) = v22;
+    *(archive + 10) = v22;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v19, v21, v22, v20);
   v26 = *(self->_cellStyles.__begin_ + 4);
-  *(a3 + 4) |= 0x80u;
-  v27 = *(a3 + 11);
+  *(archive + 4) |= 0x80u;
+  v27 = *(archive + 11);
   if (!v27)
   {
-    v28 = *(a3 + 1);
+    v28 = *(archive + 1);
     if (v28)
     {
       v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v27 = MEMORY[0x223DA0390](v28);
-    *(a3 + 11) = v27;
+    *(archive + 11) = v27;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v24, v26, v27, v25);
   v31 = *(self->_cellStyles.__begin_ + 1);
-  *(a3 + 4) |= 0x10u;
-  v32 = *(a3 + 8);
+  *(archive + 4) |= 0x10u;
+  v32 = *(archive + 8);
   if (!v32)
   {
-    v33 = *(a3 + 1);
+    v33 = *(archive + 1);
     if (v33)
     {
       v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v32 = MEMORY[0x223DA0390](v33);
-    *(a3 + 8) = v32;
+    *(archive + 8) = v32;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v29, v31, v32, v30);
   v36 = *(self->_textStyles.__begin_ + 2);
-  *(a3 + 4) |= 2u;
-  v37 = *(a3 + 5);
+  *(archive + 4) |= 2u;
+  v37 = *(archive + 5);
   if (!v37)
   {
-    v38 = *(a3 + 1);
+    v38 = *(archive + 1);
     if (v38)
     {
       v38 = *(v38 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v37 = MEMORY[0x223DA0390](v38);
-    *(a3 + 5) = v37;
+    *(archive + 5) = v37;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v34, v36, v37, v35);
   v41 = *(self->_textStyles.__begin_ + 3);
-  *(a3 + 4) |= 4u;
-  v42 = *(a3 + 6);
+  *(archive + 4) |= 4u;
+  v42 = *(archive + 6);
   if (!v42)
   {
-    v43 = *(a3 + 1);
+    v43 = *(archive + 1);
     if (v43)
     {
       v43 = *(v43 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v42 = MEMORY[0x223DA0390](v43);
-    *(a3 + 6) = v42;
+    *(archive + 6) = v42;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v39, v41, v42, v40);
   v46 = *(self->_textStyles.__begin_ + 4);
-  *(a3 + 4) |= 8u;
-  v47 = *(a3 + 7);
+  *(archive + 4) |= 8u;
+  v47 = *(archive + 7);
   if (!v47)
   {
-    v48 = *(a3 + 1);
+    v48 = *(archive + 1);
     if (v48)
     {
       v48 = *(v48 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v47 = MEMORY[0x223DA0390](v48);
-    *(a3 + 7) = v47;
+    *(archive + 7) = v47;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v44, v46, v47, v45);
   v51 = *(self->_textStyles.__begin_ + 1);
-  *(a3 + 4) |= 1u;
-  v52 = *(a3 + 4);
+  *(archive + 4) |= 1u;
+  v52 = *(archive + 4);
   if (!v52)
   {
-    v53 = *(a3 + 1);
+    v53 = *(archive + 1);
     if (v53)
     {
       v53 = *(v53 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v52 = MEMORY[0x223DA0390](v53);
-    *(a3 + 4) = v52;
+    *(archive + 4) = v52;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v49, v51, v52, v50);
   tableNameStyle = self->_tableNameStyle;
-  *(a3 + 4) |= 0x200u;
-  v57 = *(a3 + 13);
+  *(archive + 4) |= 0x200u;
+  v57 = *(archive + 13);
   if (!v57)
   {
-    v58 = *(a3 + 1);
+    v58 = *(archive + 1);
     if (v58)
     {
       v58 = *(v58 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v57 = MEMORY[0x223DA0390](v58);
-    *(a3 + 13) = v57;
+    *(archive + 13) = v57;
   }
 
   objc_msgSend_setStrongReference_message_(v224, v54, tableNameStyle, v57, v55);
   tableNameShapeStyle = self->_tableNameShapeStyle;
   if (tableNameShapeStyle)
   {
-    *(a3 + 4) |= 0x400u;
-    v62 = *(a3 + 14);
+    *(archive + 4) |= 0x400u;
+    v62 = *(archive + 14);
     if (!v62)
     {
-      v63 = *(a3 + 1);
+      v63 = *(archive + 1);
       if (v63)
       {
         v63 = *(v63 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v62 = MEMORY[0x223DA0390](v63);
-      *(a3 + 14) = v62;
+      *(archive + 14) = v62;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v59, tableNameShapeStyle, v62, v60);
   }
 
   presetIndex = self->_presetIndex;
-  *(a3 + 5) |= 4u;
-  *(a3 + 76) = presetIndex;
-  if (!a5)
+  *(archive + 5) |= 4u;
+  *(archive + 76) = presetIndex;
+  if (!alternate)
   {
     v65 = *(self->_cellStyles.__begin_ + 5);
-    *(a3 + 4) |= 0x10000u;
-    v66 = *(a3 + 20);
+    *(archive + 4) |= 0x10000u;
+    v66 = *(archive + 20);
     if (!v66)
     {
-      v67 = *(a3 + 1);
+      v67 = *(archive + 1);
       if (v67)
       {
         v67 = *(v67 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v66 = MEMORY[0x223DA0390](v67);
-      *(a3 + 20) = v66;
+      *(archive + 20) = v66;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v59, v65, v66, v60);
     v70 = *(self->_cellStyles.__begin_ + 6);
-    *(a3 + 4) |= 0x20000u;
-    v71 = *(a3 + 21);
+    *(archive + 4) |= 0x20000u;
+    v71 = *(archive + 21);
     if (!v71)
     {
-      v72 = *(a3 + 1);
+      v72 = *(archive + 1);
       if (v72)
       {
         v72 = *(v72 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v71 = MEMORY[0x223DA0390](v72);
-      *(a3 + 21) = v71;
+      *(archive + 21) = v71;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v68, v70, v71, v69);
     v75 = *(self->_cellStyles.__begin_ + 7);
-    *(a3 + 4) |= 0x40000u;
-    v76 = *(a3 + 22);
+    *(archive + 4) |= 0x40000u;
+    v76 = *(archive + 22);
     if (!v76)
     {
-      v77 = *(a3 + 1);
+      v77 = *(archive + 1);
       if (v77)
       {
         v77 = *(v77 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v76 = MEMORY[0x223DA0390](v77);
-      *(a3 + 22) = v76;
+      *(archive + 22) = v76;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v73, v75, v76, v74);
     v80 = *(self->_cellStyles.__begin_ + 8);
-    *(a3 + 4) |= 0x80000u;
-    v81 = *(a3 + 23);
+    *(archive + 4) |= 0x80000u;
+    v81 = *(archive + 23);
     if (!v81)
     {
-      v82 = *(a3 + 1);
+      v82 = *(archive + 1);
       if (v82)
       {
         v82 = *(v82 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v81 = MEMORY[0x223DA0390](v82);
-      *(a3 + 23) = v81;
+      *(archive + 23) = v81;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v78, v80, v81, v79);
     v85 = *(self->_cellStyles.__begin_ + 9);
-    *(a3 + 4) |= 0x100000u;
-    v86 = *(a3 + 24);
+    *(archive + 4) |= 0x100000u;
+    v86 = *(archive + 24);
     if (!v86)
     {
-      v87 = *(a3 + 1);
+      v87 = *(archive + 1);
       if (v87)
       {
         v87 = *(v87 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v86 = MEMORY[0x223DA0390](v87);
-      *(a3 + 24) = v86;
+      *(archive + 24) = v86;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v83, v85, v86, v84);
     v90 = *(self->_cellStyles.__begin_ + 10);
-    *(a3 + 4) |= 0x4000000u;
-    v91 = *(a3 + 30);
+    *(archive + 4) |= 0x4000000u;
+    v91 = *(archive + 30);
     if (!v91)
     {
-      v92 = *(a3 + 1);
+      v92 = *(archive + 1);
       if (v92)
       {
         v92 = *(v92 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v91 = MEMORY[0x223DA0390](v92);
-      *(a3 + 30) = v91;
+      *(archive + 30) = v91;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v88, v90, v91, v89);
     v95 = *(self->_cellStyles.__begin_ + 11);
-    *(a3 + 4) |= 0x8000000u;
-    v96 = *(a3 + 31);
+    *(archive + 4) |= 0x8000000u;
+    v96 = *(archive + 31);
     if (!v96)
     {
-      v97 = *(a3 + 1);
+      v97 = *(archive + 1);
       if (v97)
       {
         v97 = *(v97 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v96 = MEMORY[0x223DA0390](v97);
-      *(a3 + 31) = v96;
+      *(archive + 31) = v96;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v93, v95, v96, v94);
     v100 = *(self->_cellStyles.__begin_ + 12);
-    *(a3 + 4) |= 0x10000000u;
-    v101 = *(a3 + 32);
+    *(archive + 4) |= 0x10000000u;
+    v101 = *(archive + 32);
     if (!v101)
     {
-      v102 = *(a3 + 1);
+      v102 = *(archive + 1);
       if (v102)
       {
         v102 = *(v102 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v101 = MEMORY[0x223DA0390](v102);
-      *(a3 + 32) = v101;
+      *(archive + 32) = v101;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v98, v100, v101, v99);
     v105 = *(self->_cellStyles.__begin_ + 13);
-    *(a3 + 4) |= 0x20000000u;
-    v106 = *(a3 + 33);
+    *(archive + 4) |= 0x20000000u;
+    v106 = *(archive + 33);
     if (!v106)
     {
-      v107 = *(a3 + 1);
+      v107 = *(archive + 1);
       if (v107)
       {
         v107 = *(v107 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v106 = MEMORY[0x223DA0390](v107);
-      *(a3 + 33) = v106;
+      *(archive + 33) = v106;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v103, v105, v106, v104);
     v110 = *(self->_cellStyles.__begin_ + 14);
-    *(a3 + 4) |= 0x40000000u;
-    v111 = *(a3 + 34);
+    *(archive + 4) |= 0x40000000u;
+    v111 = *(archive + 34);
     if (!v111)
     {
-      v112 = *(a3 + 1);
+      v112 = *(archive + 1);
       if (v112)
       {
         v112 = *(v112 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v111 = MEMORY[0x223DA0390](v112);
-      *(a3 + 34) = v111;
+      *(archive + 34) = v111;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v108, v110, v111, v109);
     v115 = *(self->_textStyles.__begin_ + 5);
-    *(a3 + 4) |= 0x800u;
-    v116 = *(a3 + 15);
+    *(archive + 4) |= 0x800u;
+    v116 = *(archive + 15);
     if (!v116)
     {
-      v117 = *(a3 + 1);
+      v117 = *(archive + 1);
       if (v117)
       {
         v117 = *(v117 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v116 = MEMORY[0x223DA0390](v117);
-      *(a3 + 15) = v116;
+      *(archive + 15) = v116;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v113, v115, v116, v114);
     v120 = *(self->_textStyles.__begin_ + 6);
-    *(a3 + 4) |= 0x1000u;
-    v121 = *(a3 + 16);
+    *(archive + 4) |= 0x1000u;
+    v121 = *(archive + 16);
     if (!v121)
     {
-      v122 = *(a3 + 1);
+      v122 = *(archive + 1);
       if (v122)
       {
         v122 = *(v122 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v121 = MEMORY[0x223DA0390](v122);
-      *(a3 + 16) = v121;
+      *(archive + 16) = v121;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v118, v120, v121, v119);
     v125 = *(self->_textStyles.__begin_ + 7);
-    *(a3 + 4) |= 0x2000u;
-    v126 = *(a3 + 17);
+    *(archive + 4) |= 0x2000u;
+    v126 = *(archive + 17);
     if (!v126)
     {
-      v127 = *(a3 + 1);
+      v127 = *(archive + 1);
       if (v127)
       {
         v127 = *(v127 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v126 = MEMORY[0x223DA0390](v127);
-      *(a3 + 17) = v126;
+      *(archive + 17) = v126;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v123, v125, v126, v124);
     v130 = *(self->_textStyles.__begin_ + 8);
-    *(a3 + 4) |= 0x4000u;
-    v131 = *(a3 + 18);
+    *(archive + 4) |= 0x4000u;
+    v131 = *(archive + 18);
     if (!v131)
     {
-      v132 = *(a3 + 1);
+      v132 = *(archive + 1);
       if (v132)
       {
         v132 = *(v132 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v131 = MEMORY[0x223DA0390](v132);
-      *(a3 + 18) = v131;
+      *(archive + 18) = v131;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v128, v130, v131, v129);
     v135 = *(self->_textStyles.__begin_ + 9);
-    *(a3 + 4) |= 0x8000u;
-    v136 = *(a3 + 19);
+    *(archive + 4) |= 0x8000u;
+    v136 = *(archive + 19);
     if (!v136)
     {
-      v137 = *(a3 + 1);
+      v137 = *(archive + 1);
       if (v137)
       {
         v137 = *(v137 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v136 = MEMORY[0x223DA0390](v137);
-      *(a3 + 19) = v136;
+      *(archive + 19) = v136;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v133, v135, v136, v134);
     v140 = *(self->_textStyles.__begin_ + 10);
-    *(a3 + 4) |= 0x200000u;
-    v141 = *(a3 + 25);
+    *(archive + 4) |= 0x200000u;
+    v141 = *(archive + 25);
     if (!v141)
     {
-      v142 = *(a3 + 1);
+      v142 = *(archive + 1);
       if (v142)
       {
         v142 = *(v142 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v141 = MEMORY[0x223DA0390](v142);
-      *(a3 + 25) = v141;
+      *(archive + 25) = v141;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v138, v140, v141, v139);
     v145 = *(self->_textStyles.__begin_ + 11);
-    *(a3 + 4) |= 0x400000u;
-    v146 = *(a3 + 26);
+    *(archive + 4) |= 0x400000u;
+    v146 = *(archive + 26);
     if (!v146)
     {
-      v147 = *(a3 + 1);
+      v147 = *(archive + 1);
       if (v147)
       {
         v147 = *(v147 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v146 = MEMORY[0x223DA0390](v147);
-      *(a3 + 26) = v146;
+      *(archive + 26) = v146;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v143, v145, v146, v144);
     v150 = *(self->_textStyles.__begin_ + 12);
-    *(a3 + 4) |= 0x800000u;
-    v151 = *(a3 + 27);
+    *(archive + 4) |= 0x800000u;
+    v151 = *(archive + 27);
     if (!v151)
     {
-      v152 = *(a3 + 1);
+      v152 = *(archive + 1);
       if (v152)
       {
         v152 = *(v152 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v151 = MEMORY[0x223DA0390](v152);
-      *(a3 + 27) = v151;
+      *(archive + 27) = v151;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v148, v150, v151, v149);
     v155 = *(self->_textStyles.__begin_ + 13);
-    *(a3 + 4) |= 0x1000000u;
-    v156 = *(a3 + 28);
+    *(archive + 4) |= 0x1000000u;
+    v156 = *(archive + 28);
     if (!v156)
     {
-      v157 = *(a3 + 1);
+      v157 = *(archive + 1);
       if (v157)
       {
         v157 = *(v157 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v156 = MEMORY[0x223DA0390](v157);
-      *(a3 + 28) = v156;
+      *(archive + 28) = v156;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v153, v155, v156, v154);
     v160 = *(self->_textStyles.__begin_ + 14);
-    *(a3 + 4) |= 0x2000000u;
-    v161 = *(a3 + 29);
+    *(archive + 4) |= 0x2000000u;
+    v161 = *(archive + 29);
     if (!v161)
     {
-      v162 = *(a3 + 1);
+      v162 = *(archive + 1);
       if (v162)
       {
         v162 = *(v162 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v161 = MEMORY[0x223DA0390](v162);
-      *(a3 + 29) = v161;
+      *(archive + 29) = v161;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v158, v160, v161, v159);
     v165 = *(self->_cellStyles.__begin_ + 15);
-    *(a3 + 4) |= 0x80000000;
-    v166 = *(a3 + 35);
+    *(archive + 4) |= 0x80000000;
+    v166 = *(archive + 35);
     if (!v166)
     {
-      v167 = *(a3 + 1);
+      v167 = *(archive + 1);
       if (v167)
       {
         v167 = *(v167 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v166 = MEMORY[0x223DA0390](v167);
-      *(a3 + 35) = v166;
+      *(archive + 35) = v166;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v163, v165, v166, v164);
     v170 = *(self->_cellStyles.__begin_ + 16);
-    *(a3 + 5) |= 1u;
-    v171 = *(a3 + 36);
+    *(archive + 5) |= 1u;
+    v171 = *(archive + 36);
     if (!v171)
     {
-      v172 = *(a3 + 1);
+      v172 = *(archive + 1);
       if (v172)
       {
         v172 = *(v172 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v171 = MEMORY[0x223DA0390](v172);
-      *(a3 + 36) = v171;
+      *(archive + 36) = v171;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v168, v170, v171, v169);
     v175 = *(self->_cellStyles.__begin_ + 17);
-    *(a3 + 5) |= 2u;
-    v176 = *(a3 + 37);
+    *(archive + 5) |= 2u;
+    v176 = *(archive + 37);
     if (!v176)
     {
-      v177 = *(a3 + 1);
+      v177 = *(archive + 1);
       if (v177)
       {
         v177 = *(v177 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v176 = MEMORY[0x223DA0390](v177);
-      *(a3 + 37) = v176;
+      *(archive + 37) = v176;
     }
 
     objc_msgSend_setStrongReference_message_(v224, v173, v175, v176, v174);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v178, 18, a3, v179);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v180, 19, a3, v181);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v182, 20, a3, v183);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v184, 21, a3, v185);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v186, 22, a3, v187);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v188, 13, a3, v189);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v190, 14, a3, v191);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v192, 15, a3, v193);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v194, 16, a3, v195);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v196, 17, a3, v197);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v198, 28, a3, v199);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v200, 29, a3, v201);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v202, 30, a3, v203);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v204, 31, a3, v205);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v206, 32, a3, v207);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v208, 23, a3, v209);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v210, 24, a3, v211);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v212, 25, a3, v213);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v214, 26, a3, v215);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v216, 27, a3, v217);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v218, 33, a3, v219);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v220, 34, a3, v221);
-    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v222, 35, a3, v223);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v178, 18, archive, v179);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v180, 19, archive, v181);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v182, 20, archive, v183);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v184, 21, archive, v185);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v186, 22, archive, v187);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v188, 13, archive, v189);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v190, 14, archive, v191);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v192, 15, archive, v193);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v194, 16, archive, v195);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v196, 17, archive, v197);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v198, 28, archive, v199);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v200, 29, archive, v201);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v202, 30, archive, v203);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v204, 31, archive, v205);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v206, 32, archive, v207);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v208, 23, archive, v209);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v210, 24, archive, v211);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v212, 25, archive, v213);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v214, 26, archive, v215);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v216, 27, archive, v217);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v218, 33, archive, v219);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v220, 34, archive, v221);
+    objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v224, v222, 35, archive, v223);
   }
 }
 
@@ -3413,22 +3413,22 @@ LABEL_51:
   v44[14] = 0;
 }
 
-- (void)clearAndGenerateCategoryStylesConnectedToStylesheet:(BOOL)a3
+- (void)clearAndGenerateCategoryStylesConnectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a3;
-  objc_msgSend_p_clearCategoryStyles(self, a2, a3, v3, v4);
+  stylesheetCopy = stylesheet;
+  objc_msgSend_p_clearCategoryStyles(self, a2, stylesheet, v3, v4);
 
-  objc_msgSend_generateCategoryStylesConnectedToStylesheet_(self, v7, v5, v8, v9);
+  objc_msgSend_generateCategoryStylesConnectedToStylesheet_(self, v7, stylesheetCopy, v8, v9);
 }
 
-- (void)generateCategoryStylesConnectedToStylesheet:(BOOL)a3
+- (void)generateCategoryStylesConnectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
   begin = self->_cellStyles.__begin_;
   if (!begin[5] || !begin[6] || !begin[7] || !begin[8] || !begin[9] || !begin[10] || !begin[11] || !begin[12] || !begin[13] || !begin[14] || (v8 = self->_textStyles.__begin_, !v8[5]) || !v8[6] || !v8[7] || !v8[8] || !v8[9] || !v8[10] || !v8[11] || !v8[12] || !v8[13] || !v8[14])
   {
-    objc_msgSend_willModifyForUpgrade(self, a2, a3, v3, v4);
-    if (v5)
+    objc_msgSend_willModifyForUpgrade(self, a2, stylesheet, v3, v4);
+    if (stylesheetCopy)
     {
       v40 = objc_msgSend_documentRoot(self, v9, v10, v11, v12);
       v17 = objc_msgSend_stylesheet(v40, v13, v14, v15, v16);
@@ -3443,9 +3443,9 @@ LABEL_51:
 
     for (i = 5; i != 15; ++i)
     {
-      v19 = objc_msgSend_deriveCategoryCellStyleForTableStyleArea_connectedToStylesheet_(self, v9, i, v5, v12);
+      v19 = objc_msgSend_deriveCategoryCellStyleForTableStyleArea_connectedToStylesheet_(self, v9, i, stylesheetCopy, v12);
       objc_msgSend_setCellStyle_forTableStyleArea_(self, v20, v19, i, v21);
-      v24 = objc_msgSend_deriveCategoryTextStyleForTableStyleArea_connectedToStylesheet_(self, v22, i, v5, v23);
+      v24 = objc_msgSend_deriveCategoryTextStyleForTableStyleArea_connectedToStylesheet_(self, v22, i, stylesheetCopy, v23);
       objc_msgSend_setTextStyle_forTableStyleArea_(self, v25, v24, i, v26);
       if (v41)
       {
@@ -3467,98 +3467,98 @@ LABEL_51:
   }
 }
 
-- (void)generateCategoryStrokesInTableStyle:(id)a3
+- (void)generateCategoryStrokesInTableStyle:(id)style
 {
-  v90 = a3;
+  styleCopy = style;
   objc_opt_class();
-  v6 = objc_msgSend_valueForProperty_(v90, v3, 783, v4, v5);
+  v6 = objc_msgSend_valueForProperty_(styleCopy, v3, 783, v4, v5);
   v7 = TSUCheckedDynamicCast();
 
   objc_opt_class();
-  v11 = objc_msgSend_valueForProperty_(v90, v8, 784, v9, v10);
+  v11 = objc_msgSend_valueForProperty_(styleCopy, v8, 784, v9, v10);
   v12 = TSUCheckedDynamicCast();
 
   v16 = objc_msgSend_deriveCategoryTopStrokeFromFooterRowSeparatorStroke_(TSTTableStyleNetwork, v13, v7, v14, v15);
   v20 = objc_msgSend_deriveCategoryBottomStrokeFromFooterRowSeparatorStroke_(TSTTableStyleNetwork, v17, v7, v18, v19);
   v24 = objc_msgSend_deriveCategoryInteriorStrokeFromFooterRowVerticalStroke_(TSTTableStyleNetwork, v21, v12, v22, v23);
-  objc_msgSend_setValue_forProperty_(v90, v25, v16, 808, v26);
-  objc_msgSend_setValue_forProperty_(v90, v27, v16, 809, v28);
-  objc_msgSend_setValue_forProperty_(v90, v29, v16, 810, v30);
-  objc_msgSend_setValue_forProperty_(v90, v31, v16, 811, v32);
-  objc_msgSend_setValue_forProperty_(v90, v33, v16, 812, v34);
+  objc_msgSend_setValue_forProperty_(styleCopy, v25, v16, 808, v26);
+  objc_msgSend_setValue_forProperty_(styleCopy, v27, v16, 809, v28);
+  objc_msgSend_setValue_forProperty_(styleCopy, v29, v16, 810, v30);
+  objc_msgSend_setValue_forProperty_(styleCopy, v31, v16, 811, v32);
+  objc_msgSend_setValue_forProperty_(styleCopy, v33, v16, 812, v34);
   v39 = objc_msgSend_zeroWidthEmptyStroke(MEMORY[0x277D803C0], v35, v36, v37, v38);
-  objc_msgSend_setValue_forProperty_(v90, v40, v39, 818, v41);
+  objc_msgSend_setValue_forProperty_(styleCopy, v40, v39, 818, v41);
 
   v46 = objc_msgSend_zeroWidthEmptyStroke(MEMORY[0x277D803C0], v42, v43, v44, v45);
-  objc_msgSend_setValue_forProperty_(v90, v47, v46, 819, v48);
+  objc_msgSend_setValue_forProperty_(styleCopy, v47, v46, 819, v48);
 
   v53 = objc_msgSend_zeroWidthEmptyStroke(MEMORY[0x277D803C0], v49, v50, v51, v52);
-  objc_msgSend_setValue_forProperty_(v90, v54, v53, 820, v55);
+  objc_msgSend_setValue_forProperty_(styleCopy, v54, v53, 820, v55);
 
   v60 = objc_msgSend_zeroWidthEmptyStroke(MEMORY[0x277D803C0], v56, v57, v58, v59);
-  objc_msgSend_setValue_forProperty_(v90, v61, v60, 821, v62);
+  objc_msgSend_setValue_forProperty_(styleCopy, v61, v60, 821, v62);
 
   v67 = objc_msgSend_zeroWidthEmptyStroke(MEMORY[0x277D803C0], v63, v64, v65, v66);
-  objc_msgSend_setValue_forProperty_(v90, v68, v67, 822, v69);
+  objc_msgSend_setValue_forProperty_(styleCopy, v68, v67, 822, v69);
 
-  objc_msgSend_setValue_forProperty_(v90, v70, v20, 813, v71);
-  objc_msgSend_setValue_forProperty_(v90, v72, v20, 814, v73);
-  objc_msgSend_setValue_forProperty_(v90, v74, v20, 815, v75);
-  objc_msgSend_setValue_forProperty_(v90, v76, v20, 816, v77);
-  objc_msgSend_setValue_forProperty_(v90, v78, v20, 817, v79);
-  objc_msgSend_setValue_forProperty_(v90, v80, v24, 823, v81);
-  objc_msgSend_setValue_forProperty_(v90, v82, v24, 824, v83);
-  objc_msgSend_setValue_forProperty_(v90, v84, v24, 825, v85);
-  objc_msgSend_setValue_forProperty_(v90, v86, v24, 826, v87);
-  objc_msgSend_setValue_forProperty_(v90, v88, v24, 827, v89);
+  objc_msgSend_setValue_forProperty_(styleCopy, v70, v20, 813, v71);
+  objc_msgSend_setValue_forProperty_(styleCopy, v72, v20, 814, v73);
+  objc_msgSend_setValue_forProperty_(styleCopy, v74, v20, 815, v75);
+  objc_msgSend_setValue_forProperty_(styleCopy, v76, v20, 816, v77);
+  objc_msgSend_setValue_forProperty_(styleCopy, v78, v20, 817, v79);
+  objc_msgSend_setValue_forProperty_(styleCopy, v80, v24, 823, v81);
+  objc_msgSend_setValue_forProperty_(styleCopy, v82, v24, 824, v83);
+  objc_msgSend_setValue_forProperty_(styleCopy, v84, v24, 825, v85);
+  objc_msgSend_setValue_forProperty_(styleCopy, v86, v24, 826, v87);
+  objc_msgSend_setValue_forProperty_(styleCopy, v88, v24, 827, v89);
 }
 
-- (void)generatePivotStrokesInTableStyle:(id)a3
+- (void)generatePivotStrokesInTableStyle:(id)style
 {
-  v58 = a3;
-  v57 = objc_msgSend_deriveHeaderColumnPivotGroupHorizontalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v3, v58, 0, v4);
-  v7 = objc_msgSend_deriveHeaderColumnPivotGroupDeEmphasisStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v5, v58, 0, v6);
-  v10 = objc_msgSend_deriveHeaderColumnPivotSeparatorStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v8, v58, 0, v9);
-  v13 = objc_msgSend_deriveHeaderRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v11, v58, 0, v12);
-  v16 = objc_msgSend_deriveHeaderRowPivotGroupDeEmphasisStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v14, v58, 0, v15);
-  v19 = objc_msgSend_deriveHeaderRowPivotTitleStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v17, v58, 0, v18);
-  v22 = objc_msgSend_deriveFooterRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v20, v58, 0, v21);
-  v25 = objc_msgSend_deriveBodyPivotGroupHorizontalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v23, v58, 0, v24);
-  v28 = objc_msgSend_deriveBodyPivotGroupVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v26, v58, 0, v27);
-  v31 = objc_msgSend_deriveBodyPivotDeEmphasisHorizontalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v29, v58, 0, v30);
-  v34 = objc_msgSend_deriveBodyPivotEmphasisVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v32, v58, 0, v33);
-  objc_msgSend_setValue_forProperty_(v58, v35, v25, 828, v36);
-  objc_msgSend_setValue_forProperty_(v58, v37, v28, 829, v38);
-  objc_msgSend_setValue_forProperty_(v58, v39, v31, 830, v40);
-  objc_msgSend_setValue_forProperty_(v58, v41, v34, 831, v42);
-  objc_msgSend_setValue_forProperty_(v58, v43, v57, 832, v44);
-  objc_msgSend_setValue_forProperty_(v58, v45, v7, 833, v46);
-  objc_msgSend_setValue_forProperty_(v58, v47, v10, 834, v48);
-  objc_msgSend_setValue_forProperty_(v58, v49, v13, 835, v50);
-  objc_msgSend_setValue_forProperty_(v58, v51, v16, 836, v52);
-  objc_msgSend_setValue_forProperty_(v58, v53, v19, 837, v54);
-  objc_msgSend_setValue_forProperty_(v58, v55, v22, 838, v56);
+  styleCopy = style;
+  v57 = objc_msgSend_deriveHeaderColumnPivotGroupHorizontalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v3, styleCopy, 0, v4);
+  v7 = objc_msgSend_deriveHeaderColumnPivotGroupDeEmphasisStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v5, styleCopy, 0, v6);
+  v10 = objc_msgSend_deriveHeaderColumnPivotSeparatorStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v8, styleCopy, 0, v9);
+  v13 = objc_msgSend_deriveHeaderRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v11, styleCopy, 0, v12);
+  v16 = objc_msgSend_deriveHeaderRowPivotGroupDeEmphasisStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v14, styleCopy, 0, v15);
+  v19 = objc_msgSend_deriveHeaderRowPivotTitleStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v17, styleCopy, 0, v18);
+  v22 = objc_msgSend_deriveFooterRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v20, styleCopy, 0, v21);
+  v25 = objc_msgSend_deriveBodyPivotGroupHorizontalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v23, styleCopy, 0, v24);
+  v28 = objc_msgSend_deriveBodyPivotGroupVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v26, styleCopy, 0, v27);
+  v31 = objc_msgSend_deriveBodyPivotDeEmphasisHorizontalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v29, styleCopy, 0, v30);
+  v34 = objc_msgSend_deriveBodyPivotEmphasisVerticalStrokeFromTableStyle_propertyMap_(TSTTableStyleNetwork, v32, styleCopy, 0, v33);
+  objc_msgSend_setValue_forProperty_(styleCopy, v35, v25, 828, v36);
+  objc_msgSend_setValue_forProperty_(styleCopy, v37, v28, 829, v38);
+  objc_msgSend_setValue_forProperty_(styleCopy, v39, v31, 830, v40);
+  objc_msgSend_setValue_forProperty_(styleCopy, v41, v34, 831, v42);
+  objc_msgSend_setValue_forProperty_(styleCopy, v43, v57, 832, v44);
+  objc_msgSend_setValue_forProperty_(styleCopy, v45, v7, 833, v46);
+  objc_msgSend_setValue_forProperty_(styleCopy, v47, v10, 834, v48);
+  objc_msgSend_setValue_forProperty_(styleCopy, v49, v13, 835, v50);
+  objc_msgSend_setValue_forProperty_(styleCopy, v51, v16, 836, v52);
+  objc_msgSend_setValue_forProperty_(styleCopy, v53, v19, 837, v54);
+  objc_msgSend_setValue_forProperty_(styleCopy, v55, v22, 838, v56);
 }
 
-- (void)maintainPivotStrokesInTableStyle:(id)a3 fromTable:(id)a4
+- (void)maintainPivotStrokesInTableStyle:(id)style fromTable:(id)table
 {
-  v28 = a3;
-  v5 = a4;
-  v10 = objc_msgSend_tableStyle(v5, v6, v7, v8, v9);
+  styleCopy = style;
+  tableCopy = table;
+  v10 = objc_msgSend_tableStyle(tableCopy, v6, v7, v8, v9);
   v14 = objc_msgSend_valueForProperty_(v10, v11, 780, v12, v13);
 
-  objc_msgSend_setValue_forProperty_(v28, v15, v14, 780, v16);
-  v21 = objc_msgSend_tableStyle(v5, v17, v18, v19, v20);
+  objc_msgSend_setValue_forProperty_(styleCopy, v15, v14, 780, v16);
+  v21 = objc_msgSend_tableStyle(tableCopy, v17, v18, v19, v20);
   v25 = objc_msgSend_valueForProperty_(v21, v22, 776, v23, v24);
 
-  objc_msgSend_setValue_forProperty_(v28, v26, v25, 776, v27);
+  objc_msgSend_setValue_forProperty_(styleCopy, v26, v25, 776, v27);
 }
 
-- (id)deriveCategoryCellStyleForTableStyleArea:(unint64_t)a3 connectedToStylesheet:(BOOL)a4
+- (id)deriveCategoryCellStyleForTableStyleArea:(unint64_t)area connectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a4;
-  v8 = objc_msgSend_headerColumnCellStyle(self, a2, a3, a4, v4);
-  v10 = objc_msgSend_p_deriveCategoryCellStyleForTableStyleArea_fromCellStyle_connectedToStylesheet_(self, v9, a3, v8, v5);
+  stylesheetCopy = stylesheet;
+  v8 = objc_msgSend_headerColumnCellStyle(self, a2, area, stylesheet, v4);
+  v10 = objc_msgSend_p_deriveCategoryCellStyleForTableStyleArea_fromCellStyle_connectedToStylesheet_(self, v9, area, v8, stylesheetCopy);
 
   return v10;
 }
@@ -3574,14 +3574,14 @@ LABEL_51:
   return v18;
 }
 
-- (id)p_deriveCategoryCellStyleForTableStyleArea:(unint64_t)a3 fromCellStyle:(id)a4 connectedToStylesheet:(BOOL)a5
+- (id)p_deriveCategoryCellStyleForTableStyleArea:(unint64_t)area fromCellStyle:(id)style connectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a5;
-  v8 = a4;
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
   v13 = objc_msgSend_documentRoot(self, v9, v10, v11, v12);
   v134 = objc_msgSend_stylesheet(v13, v14, v15, v16, v17);
 
-  v133 = objc_msgSend_objectForProperty_(v8, v18, 898, v19, v20);
+  v133 = objc_msgSend_objectForProperty_(styleCopy, v18, 898, v19, v20);
   if (v133 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v31 = objc_msgSend_referenceColor(v133, v21, v22, v23, v24);
@@ -3613,15 +3613,15 @@ LABEL_51:
   v53 = v52;
   objc_msgSend_alphaComponent(v31, v54, v55, v56, v57);
   v63 = v62;
-  if (a3 > 9)
+  if (area > 9)
   {
-    if (a3 > 11)
+    if (area > 11)
     {
-      if (a3 != 12)
+      if (area != 12)
       {
-        if (a3 != 13)
+        if (area != 13)
         {
-          if (a3 != 14)
+          if (area != 14)
           {
             goto LABEL_29;
           }
@@ -3638,7 +3638,7 @@ LABEL_24:
       goto LABEL_26;
     }
 
-    if (a3 != 10)
+    if (area != 10)
     {
 LABEL_22:
       v64 = v53 + 0.08;
@@ -3652,11 +3652,11 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  if (a3 <= 6)
+  if (area <= 6)
   {
-    if (a3 != 5)
+    if (area != 5)
     {
-      if (a3 != 6)
+      if (area != 6)
       {
         goto LABEL_29;
       }
@@ -3667,12 +3667,12 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a3 == 7)
+  if (area == 7)
   {
     goto LABEL_24;
   }
 
-  if (a3 != 8)
+  if (area != 8)
   {
 LABEL_17:
     v64 = v53 + 0.2;
@@ -3700,22 +3700,22 @@ LABEL_29:
   v68 = objc_msgSend_colorWithHue_saturation_brightness_alpha_(MEMORY[0x277D81180], v58, v59, v60, v61, v45, v47, v53, v63);
   v72 = objc_msgSend_colorWithColor_(v67, v69, v68, v70, v71);
 
-  v77 = objc_msgSend_fullPropertyMap(v8, v73, v74, v75, v76);
+  v77 = objc_msgSend_fullPropertyMap(styleCopy, v73, v74, v75, v76);
   objc_msgSend_setObject_forProperty_(v77, v78, v72, 898, v79);
   objc_msgSend_setBoolValue_forProperty_(v77, v80, 0, 896, v81);
-  if (!v5)
+  if (!stylesheetCopy)
   {
 LABEL_38:
     v118 = [TSTCellStyle alloc];
-    v123 = objc_msgSend_context(v8, v119, v120, v121, v122);
+    v123 = objc_msgSend_context(styleCopy, v119, v120, v121, v122);
     isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v118, v124, v123, 0, v77, 0);
     goto LABEL_43;
   }
 
-  v90 = objc_msgSend_stylesheet(v8, v82, v83, v84, v85);
+  v90 = objc_msgSend_stylesheet(styleCopy, v82, v83, v84, v85);
   if (v90 != v134)
   {
-    v68 = objc_msgSend_stylesheet(v8, v86, v87, v88, v89);
+    v68 = objc_msgSend_stylesheet(styleCopy, v86, v87, v88, v89);
     if ((objc_msgSend_isAncestorOf_(v68, v91, v134, v92, v93) & 1) == 0)
     {
 
@@ -3723,7 +3723,7 @@ LABEL_38:
     }
   }
 
-  v98 = objc_msgSend_parent(v8, v86, v87, v88, v89);
+  v98 = objc_msgSend_parent(styleCopy, v86, v87, v88, v89);
   if (!v98)
   {
     if (v90 == v134)
@@ -3739,7 +3739,7 @@ LABEL_40:
   }
 
   v131 = v68;
-  v132 = objc_msgSend_parent(v8, v94, v95, v96, v97);
+  v132 = objc_msgSend_parent(styleCopy, v94, v95, v96, v97);
   v103 = objc_msgSend_stylesheet(v132, v99, v100, v101, v102);
   v108 = v103;
   if (v103 == v134)
@@ -3753,7 +3753,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v109 = objc_msgSend_parent(v8, v104, v105, v106, v107);
+  v109 = objc_msgSend_parent(styleCopy, v104, v105, v106, v107);
   v114 = objc_msgSend_stylesheet(v109, v110, v111, v112, v113);
   isAncestorOf = objc_msgSend_isAncestorOf_(v114, v115, v134, v116, v117);
 
@@ -3768,7 +3768,7 @@ LABEL_40:
 
 LABEL_42:
   objc_opt_class();
-  v123 = objc_msgSend_variationOfStyle_propertyMap_(v134, v126, v8, v77, v127);
+  v123 = objc_msgSend_variationOfStyle_propertyMap_(v134, v126, styleCopy, v77, v127);
   isVariation = TSUCheckedDynamicCast();
 LABEL_43:
   v128 = isVariation;
@@ -3776,32 +3776,32 @@ LABEL_43:
   return v128;
 }
 
-- (id)deriveCategoryTextStyleForTableStyleArea:(unint64_t)a3 connectedToStylesheet:(BOOL)a4
+- (id)deriveCategoryTextStyleForTableStyleArea:(unint64_t)area connectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a4;
-  v8 = objc_msgSend_headerColumnTextStyle(self, a2, a3, a4, v4);
-  v10 = objc_msgSend_p_deriveCategoryTextStyleForTableStyleArea_fromTextStyle_connectedToStylesheet_(self, v9, a3, v8, v5);
+  stylesheetCopy = stylesheet;
+  v8 = objc_msgSend_headerColumnTextStyle(self, a2, area, stylesheet, v4);
+  v10 = objc_msgSend_p_deriveCategoryTextStyleForTableStyleArea_fromTextStyle_connectedToStylesheet_(self, v9, area, v8, stylesheetCopy);
 
   return v10;
 }
 
-- (id)p_deriveCategoryTextStyleForTableStyleArea:(unint64_t)a3 fromTextStyle:(id)a4 connectedToStylesheet:(BOOL)a5
+- (id)p_deriveCategoryTextStyleForTableStyleArea:(unint64_t)area fromTextStyle:(id)style connectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a5;
-  v8 = a4;
-  v13 = v8;
-  if (a3 - 10 > 4)
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
+  v13 = styleCopy;
+  if (area - 10 > 4)
   {
-    v39 = v8;
+    v39 = styleCopy;
     goto LABEL_19;
   }
 
-  v14 = objc_msgSend_fullPropertyMap(v8, v9, v10, v11, v12);
+  v14 = objc_msgSend_fullPropertyMap(styleCopy, v9, v10, v11, v12);
   objc_msgSend_setIntValue_forProperty_(v14, v15, 0, 19, v16);
   v21 = objc_msgSend_documentRoot(self, v17, v18, v19, v20);
   v26 = objc_msgSend_stylesheet(v21, v22, v23, v24, v25);
 
-  if (!v5)
+  if (!stylesheetCopy)
   {
     goto LABEL_12;
   }
@@ -3857,41 +3857,41 @@ LABEL_19:
   return v39;
 }
 
-+ (id)deriveCategoryTopStrokeFromFooterRowSeparatorStroke:(id)a3
++ (id)deriveCategoryTopStrokeFromFooterRowSeparatorStroke:(id)stroke
 {
-  v5 = objc_msgSend_mutableCopy(a3, a2, a3, v3, v4);
+  v5 = objc_msgSend_mutableCopy(stroke, a2, stroke, v3, v4);
   objc_msgSend_setWidth_(v5, v6, v7, v8, v9, 2.0);
   v14 = objc_msgSend_copy(v5, v10, v11, v12, v13);
 
   return v14;
 }
 
-+ (id)deriveCategoryBottomStrokeFromFooterRowSeparatorStroke:(id)a3
++ (id)deriveCategoryBottomStrokeFromFooterRowSeparatorStroke:(id)stroke
 {
-  v5 = objc_msgSend_mutableCopy(a3, a2, a3, v3, v4);
+  v5 = objc_msgSend_mutableCopy(stroke, a2, stroke, v3, v4);
   objc_msgSend_setWidth_(v5, v6, v7, v8, v9, 0.75);
   v14 = objc_msgSend_copy(v5, v10, v11, v12, v13);
 
   return v14;
 }
 
-+ (unint64_t)pivotTableStyleAreaForRowLevel:(unsigned __int8)a3 columnLevel:(unsigned __int8)a4 numberOfRowLevels:(unint64_t)a5 numberOfColumnLevels:(unint64_t)a6 columnIndex:(TSUViewColumnIndex)a7
++ (unint64_t)pivotTableStyleAreaForRowLevel:(unsigned __int8)level columnLevel:(unsigned __int8)columnLevel numberOfRowLevels:(unint64_t)levels numberOfColumnLevels:(unint64_t)columnLevels columnIndex:(TSUViewColumnIndex)index
 {
-  v7 = a3;
+  levelCopy = level;
   v8 = 3;
-  if (a3 >= a5)
+  if (level >= levels)
   {
     v8 = 0;
-    v7 = 0;
+    levelCopy = 0;
   }
 
-  if (!a3)
+  if (!level)
   {
     v8 = 6;
-    v7 = 0;
+    levelCopy = 0;
   }
 
-  if (a3 == 255)
+  if (level == 255)
   {
     v9 = 1;
   }
@@ -3901,20 +3901,20 @@ LABEL_19:
     v9 = v8;
   }
 
-  if (a3 == 255)
+  if (level == 255)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v7;
+    v10 = levelCopy;
   }
 
   v11 = 3;
-  if (a4 < a6)
+  if (columnLevel < columnLevels)
   {
-    var0 = a4;
+    var0 = columnLevel;
   }
 
   else
@@ -3923,13 +3923,13 @@ LABEL_19:
     var0 = 0;
   }
 
-  if (a4 == 255)
+  if (columnLevel == 255)
   {
     v11 = 1;
-    var0 = a7.var0;
+    var0 = index.var0;
   }
 
-  if (a4)
+  if (columnLevel)
   {
     v13 = v11;
   }
@@ -3939,7 +3939,7 @@ LABEL_19:
     v13 = 6;
   }
 
-  if (a4)
+  if (columnLevel)
   {
     v14 = var0;
   }
@@ -3949,43 +3949,43 @@ LABEL_19:
     v14 = 0;
   }
 
-  v15 = sub_221229CA8(v13, v14, a3, a4, a5);
+  v15 = sub_221229CA8(v13, v14, level, columnLevel, levels);
   v19 = sub_221229CA8(v9, v10, v16, v17, v18);
 
   return MEMORY[0x2821F9670](TSTTableStyleNetwork, sel_styleAreaForColumnType_rowType_forAPivotTable_, v15, v19, 1);
 }
 
-+ (unint64_t)styleAreaForColumnType:(unsigned __int8)a3 rowType:(unsigned __int8)a4 forAPivotTable:(BOOL)a5
++ (unint64_t)styleAreaForColumnType:(unsigned __int8)type rowType:(unsigned __int8)rowType forAPivotTable:(BOOL)table
 {
-  v5 = a4 >> 4;
-  if (a4 >> 4 == 1)
+  v5 = rowType >> 4;
+  if (rowType >> 4 == 1)
   {
     return 2;
   }
 
-  if ((a4 & 0xB0) == 0x20)
+  if ((rowType & 0xB0) == 0x20)
   {
     return 4;
   }
 
-  v7 = a4 & 0xF;
-  if (v5 == 3 && !a5)
+  v7 = rowType & 0xF;
+  if (v5 == 3 && !table)
   {
     return v7 + 4;
   }
 
-  if (v5 == 4 && !a5)
+  if (v5 == 4 && !table)
   {
     return v7 + 9;
   }
 
-  v8 = a3 >> 4;
-  if ((a3 & 0xB0) == 0x10 || v8 == 6)
+  v8 = type >> 4;
+  if ((type & 0xB0) == 0x10 || v8 == 6)
   {
     result = 3;
-    if (v5 == 3 && a5)
+    if (v5 == 3 && table)
     {
-      v12 = v7 - 1 <= (a3 & 0xF) || v8 == 6;
+      v12 = v7 - 1 <= (type & 0xF) || v8 == 6;
       if (v12)
       {
         return 17;
@@ -4000,9 +4000,9 @@ LABEL_19:
 
   else
   {
-    v9 = v5 == 3 || !a5;
+    v9 = v5 == 3 || !table;
     v10 = 15;
-    if (!a5)
+    if (!table)
     {
       v10 = 1;
     }
@@ -4044,27 +4044,27 @@ LABEL_19:
   v10[17] = 0;
 }
 
-- (void)clearAndGeneratePivotStylesConnectedToStylesheet:(BOOL)a3
+- (void)clearAndGeneratePivotStylesConnectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a3;
-  objc_msgSend_p_clearPivotStyles(self, a2, a3, v3, v4);
+  stylesheetCopy = stylesheet;
+  objc_msgSend_p_clearPivotStyles(self, a2, stylesheet, v3, v4);
 
-  objc_msgSend_generatePivotStylesConnectedToStylesheet_(self, v7, v5, v8, v9);
+  objc_msgSend_generatePivotStylesConnectedToStylesheet_(self, v7, stylesheetCopy, v8, v9);
 }
 
-- (void)generatePivotStylesConnectedToStylesheet:(BOOL)a3
+- (void)generatePivotStylesConnectedToStylesheet:(BOOL)stylesheet
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
   begin = self->_cellStyles.__begin_;
   if (!begin[15] || !begin[16] || !begin[17])
   {
-    objc_msgSend_willModifyForUpgrade(self, a2, a3, v3, v4);
+    objc_msgSend_willModifyForUpgrade(self, a2, stylesheet, v3, v4);
     v11 = self->_cellStyles.__begin_;
     if (!v11[15])
     {
       v12 = v11[1];
       v13 = objc_msgSend_valueForProperty_(self->_tableStyle, v8, 770, v9, v10);
-      v15 = objc_msgSend_p_derivePivotCellStyleFromCellStyle_optionalSourceFill_brightnessShift_connectedToStylesheet_styleArea_(self, v14, v12, v13, v5, 15, 0.07);
+      v15 = objc_msgSend_p_derivePivotCellStyleFromCellStyle_optionalSourceFill_brightnessShift_connectedToStylesheet_styleArea_(self, v14, v12, v13, stylesheetCopy, 15, 0.07);
       v16 = self->_cellStyles.__begin_;
       v17 = v16[15];
       v16[15] = v15;
@@ -4076,7 +4076,7 @@ LABEL_19:
     {
       v18 = v11[1];
       v19 = objc_msgSend_valueForProperty_(self->_tableStyle, v8, 770, v9, v10);
-      v21 = objc_msgSend_p_derivePivotCellStyleFromCellStyle_optionalSourceFill_brightnessShift_connectedToStylesheet_styleArea_(self, v20, v18, v19, v5, 16, 0.0);
+      v21 = objc_msgSend_p_derivePivotCellStyleFromCellStyle_optionalSourceFill_brightnessShift_connectedToStylesheet_styleArea_(self, v20, v18, v19, stylesheetCopy, 16, 0.0);
       v22 = self->_cellStyles.__begin_;
       v23 = v22[16];
       v22[16] = v21;
@@ -4086,7 +4086,7 @@ LABEL_19:
 
     if (!v11[17])
     {
-      v24 = objc_msgSend_p_derivePivotCellStyleFromCellStyle_optionalSourceFill_brightnessShift_connectedToStylesheet_styleArea_(self, v8, v11[5], 0, v5, 17, 0.0);
+      v24 = objc_msgSend_p_derivePivotCellStyleFromCellStyle_optionalSourceFill_brightnessShift_connectedToStylesheet_styleArea_(self, v8, v11[5], 0, stylesheetCopy, 17, 0.0);
       v25 = self->_cellStyles.__begin_;
       v26 = v25[17];
       v25[17] = v24;
@@ -4094,24 +4094,24 @@ LABEL_19:
   }
 }
 
-- (id)p_derivePivotCellStyleFromCellStyle:(id)a3 optionalSourceFill:(id)a4 brightnessShift:(double)a5 connectedToStylesheet:(BOOL)a6 styleArea:(unint64_t)a7
+- (id)p_derivePivotCellStyleFromCellStyle:(id)style optionalSourceFill:(id)fill brightnessShift:(double)shift connectedToStylesheet:(BOOL)stylesheet styleArea:(unint64_t)area
 {
-  v7 = a6;
-  v11 = a3;
-  v16 = a4;
-  if (a5 < 0.0)
+  stylesheetCopy = stylesheet;
+  styleCopy = style;
+  fillCopy = fill;
+  if (shift < 0.0)
   {
-    a5 = 0.0;
+    shift = 0.0;
   }
 
-  v145 = self;
+  selfCopy = self;
   v17 = objc_msgSend_documentRoot(self, v12, v13, v14, v15);
   v147 = objc_msgSend_stylesheet(v17, v18, v19, v20, v21);
 
   v25 = 0x277D81000;
-  if ((v16 || (objc_msgSend_valueForProperty_(v11, v22, 898, v23, v24), (v16 = objc_claimAutoreleasedReturnValue()) != 0)) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((fillCopy || (objc_msgSend_valueForProperty_(styleCopy, v22, 898, v23, v24), (fillCopy = objc_claimAutoreleasedReturnValue()) != 0)) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v30 = objc_msgSend_referenceColor(v16, v26, v27, v28, v29);
+    v30 = objc_msgSend_referenceColor(fillCopy, v26, v27, v28, v29);
   }
 
   else
@@ -4120,7 +4120,7 @@ LABEL_19:
   }
 
   v35 = v30;
-  v36 = fmin(a5, 1.0);
+  v36 = fmin(shift, 1.0);
   if (v36 <= 0.0)
   {
     v146 = objc_msgSend_colorWithColor_(MEMORY[0x277D801F8], v31, v30, v33, v34);
@@ -4147,27 +4147,27 @@ LABEL_19:
     v146 = objc_msgSend_colorWithColor_(v62, v63, v25, v64, v65);
   }
 
-  v70 = objc_msgSend_fullPropertyMap(v11, v66, v67, v68, v69);
+  v70 = objc_msgSend_fullPropertyMap(styleCopy, v66, v67, v68, v69);
   objc_msgSend_setObject_forProperty_(v70, v71, v146, 898, v72);
   objc_msgSend_setBoolValue_forProperty_(v70, v73, 1, 896, v74);
-  if (!v7)
+  if (!stylesheetCopy)
   {
     goto LABEL_22;
   }
 
-  v83 = objc_msgSend_stylesheet(v11, v75, v76, v77, v78);
-  if (v83 == v147 || (objc_msgSend_stylesheet(v11, v79, v80, v81, v82), v25 = objc_claimAutoreleasedReturnValue(), (objc_msgSend_isAncestorOf_(v25, v84, v147, v85, v86) & 1) != 0))
+  v83 = objc_msgSend_stylesheet(styleCopy, v75, v76, v77, v78);
+  if (v83 == v147 || (objc_msgSend_stylesheet(styleCopy, v79, v80, v81, v82), v25 = objc_claimAutoreleasedReturnValue(), (objc_msgSend_isAncestorOf_(v25, v84, v147, v85, v86) & 1) != 0))
   {
-    v91 = objc_msgSend_parent(v11, v79, v80, v81, v82);
+    v91 = objc_msgSend_parent(styleCopy, v79, v80, v81, v82);
     if (v91)
     {
       v142 = v25;
-      v143 = objc_msgSend_parent(v11, v87, v88, v89, v90);
+      v143 = objc_msgSend_parent(styleCopy, v87, v88, v89, v90);
       v96 = objc_msgSend_stylesheet(v143, v92, v93, v94, v95);
       v101 = v96;
       if (v96 != v147)
       {
-        v102 = objc_msgSend_parent(v11, v97, v98, v99, v100);
+        v102 = objc_msgSend_parent(styleCopy, v97, v98, v99, v100);
         v107 = objc_msgSend_stylesheet(v102, v103, v104, v105, v106);
         isAncestorOf = objc_msgSend_isAncestorOf_(v107, v108, v147, v109, v110);
 
@@ -4181,8 +4181,8 @@ LABEL_19:
         }
 
 LABEL_26:
-        v123 = objc_msgSend_presetID(v145, v111, v112, v113, v114);
-        v120 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v124, v123, a7, v125);
+        v123 = objc_msgSend_presetID(selfCopy, v111, v112, v113, v114);
+        v120 = objc_msgSend_styleIDForPreset_andTableStyleArea_(TSTCellStyle, v124, v123, area, v125);
         objc_opt_class();
         v129 = objc_msgSend_cascadedStyleWithIdentifier_(v147, v126, v120, v127, v128);
         v130 = TSUDynamicCast();
@@ -4195,7 +4195,7 @@ LABEL_26:
         else
         {
           v131 = [TSTCellStyle alloc];
-          v136 = objc_msgSend_context(v11, v132, v133, v134, v135);
+          v136 = objc_msgSend_context(styleCopy, v132, v133, v134, v135);
           isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v131, v137, v136, 0, v70, 0);
 
           objc_msgSend_addStyle_withIdentifier_(v147, v138, isVariation, v120, v139);
@@ -4223,19 +4223,19 @@ LABEL_25:
 
 LABEL_22:
   v115 = [TSTCellStyle alloc];
-  v120 = objc_msgSend_context(v11, v116, v117, v118, v119);
+  v120 = objc_msgSend_context(styleCopy, v116, v117, v118, v119);
   isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v115, v121, v120, 0, v70, 0);
 LABEL_30:
 
   return isVariation;
 }
 
-+ (id)deriveHeaderColumnPivotGroupHorizontalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveHeaderColumnPivotGroupHorizontalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v10 = objc_msgSend_valueForProperty_(v5, v7, 776, v8, v9);
+  v10 = objc_msgSend_valueForProperty_(styleCopy, v7, 776, v8, v9);
   v11 = TSUCheckedDynamicCast();
   v12 = v11;
   if (v11)
@@ -4246,7 +4246,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForProperty_(v6, v14, 776, v15, v16);
+    v17 = objc_msgSend_objectForProperty_(mapCopy, v14, 776, v15, v16);
     v13 = TSUCheckedDynamicCast();
   }
 
@@ -4255,20 +4255,20 @@ LABEL_30:
   return v22;
 }
 
-+ (id)deriveHeaderColumnPivotGroupDeEmphasisStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveHeaderColumnPivotGroupDeEmphasisStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = objc_msgSend_emptyStrokeWithWidth_(MEMORY[0x277D803C0], a2, a3, a4, v4, 0.0);
+  v5 = objc_msgSend_emptyStrokeWithWidth_(MEMORY[0x277D803C0], a2, style, map, v4, 0.0);
 
   return v5;
 }
 
-+ (id)p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4 returnHeaderRowPivotGroupVerticalStroke:(BOOL)a5
++ (id)p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map returnHeaderRowPivotGroupVerticalStroke:(BOOL)stroke
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  strokeCopy = stroke;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v12 = objc_msgSend_valueForProperty_(v7, v9, 775, v10, v11);
+  v12 = objc_msgSend_valueForProperty_(styleCopy, v9, 775, v10, v11);
   v13 = TSUCheckedDynamicCast();
   v14 = v13;
   if (v13)
@@ -4279,12 +4279,12 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v19 = objc_msgSend_objectForProperty_(v8, v16, 775, v17, v18);
+    v19 = objc_msgSend_objectForProperty_(mapCopy, v16, 775, v17, v18);
     v15 = TSUCheckedDynamicCast();
   }
 
   objc_opt_class();
-  v23 = objc_msgSend_valueForProperty_(v7, v20, 780, v21, v22);
+  v23 = objc_msgSend_valueForProperty_(styleCopy, v20, 780, v21, v22);
   v24 = TSUCheckedDynamicCast();
   v25 = v24;
   if (v24)
@@ -4295,7 +4295,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v30 = objc_msgSend_objectForProperty_(v8, v27, 780, v28, v29);
+    v30 = objc_msgSend_objectForProperty_(mapCopy, v27, 780, v28, v29);
     v26 = TSUCheckedDynamicCast();
   }
 
@@ -4309,7 +4309,7 @@ LABEL_30:
     v55 = v46;
   }
 
-  if (v5)
+  if (strokeCopy)
   {
     objc_msgSend_strokeApplyingWidth_(v26, v51, v52, v53, v54, v55);
   }
@@ -4323,33 +4323,33 @@ LABEL_30:
   return v56;
 }
 
-+ (id)deriveHeaderColumnPivotSeparatorStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveHeaderColumnPivotSeparatorStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v4 = objc_msgSend_p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_returnHeaderRowPivotGroupVerticalStroke_(a1, a2, a3, a4, 0);
+  v4 = objc_msgSend_p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_returnHeaderRowPivotGroupVerticalStroke_(self, a2, style, map, 0);
 
   return v4;
 }
 
-+ (id)deriveHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveHeaderRowPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v4 = objc_msgSend_p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_returnHeaderRowPivotGroupVerticalStroke_(a1, a2, a3, a4, 1);
+  v4 = objc_msgSend_p_deriveHeaderColumnPivotSeparatorAndHeaderRowPivotGroupVerticalStrokeFromTableStyle_propertyMap_returnHeaderRowPivotGroupVerticalStroke_(self, a2, style, map, 1);
 
   return v4;
 }
 
-+ (id)deriveHeaderRowPivotGroupDeEmphasisStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveHeaderRowPivotGroupDeEmphasisStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = objc_msgSend_emptyStrokeWithWidth_(MEMORY[0x277D803C0], a2, a3, a4, v4, 0.0);
+  v5 = objc_msgSend_emptyStrokeWithWidth_(MEMORY[0x277D803C0], a2, style, map, v4, 0.0);
 
   return v5;
 }
 
-+ (id)deriveHeaderRowPivotTitleStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveHeaderRowPivotTitleStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v10 = objc_msgSend_valueForProperty_(v5, v7, 781, v8, v9);
+  v10 = objc_msgSend_valueForProperty_(styleCopy, v7, 781, v8, v9);
   v11 = TSUCheckedDynamicCast();
   v12 = v11;
   if (v11)
@@ -4360,7 +4360,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForProperty_(v6, v14, 781, v15, v16);
+    v17 = objc_msgSend_objectForProperty_(mapCopy, v14, 781, v15, v16);
     v13 = TSUCheckedDynamicCast();
   }
 
@@ -4370,12 +4370,12 @@ LABEL_30:
   return v27;
 }
 
-+ (id)deriveFooterRowPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveFooterRowPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v10 = objc_msgSend_valueForProperty_(v5, v7, 784, v8, v9);
+  v10 = objc_msgSend_valueForProperty_(styleCopy, v7, 784, v8, v9);
   v11 = TSUCheckedDynamicCast();
   v12 = v11;
   if (v11)
@@ -4386,7 +4386,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForProperty_(v6, v14, 784, v15, v16);
+    v17 = objc_msgSend_objectForProperty_(mapCopy, v14, 784, v15, v16);
     v13 = TSUCheckedDynamicCast();
   }
 
@@ -4395,12 +4395,12 @@ LABEL_30:
   return v22;
 }
 
-+ (id)deriveBodyPivotGroupHorizontalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveBodyPivotGroupHorizontalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v10 = objc_msgSend_valueForProperty_(v5, v7, 773, v8, v9);
+  v10 = objc_msgSend_valueForProperty_(styleCopy, v7, 773, v8, v9);
   v11 = TSUCheckedDynamicCast();
   v12 = v11;
   if (v11)
@@ -4411,7 +4411,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForProperty_(v6, v14, 773, v15, v16);
+    v17 = objc_msgSend_objectForProperty_(mapCopy, v14, 773, v15, v16);
     v13 = TSUCheckedDynamicCast();
   }
 
@@ -4420,12 +4420,12 @@ LABEL_30:
   return v22;
 }
 
-+ (id)deriveBodyPivotGroupVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveBodyPivotGroupVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v10 = objc_msgSend_valueForProperty_(v5, v7, 774, v8, v9);
+  v10 = objc_msgSend_valueForProperty_(styleCopy, v7, 774, v8, v9);
   v11 = TSUCheckedDynamicCast();
   v12 = v11;
   if (v11)
@@ -4436,7 +4436,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForProperty_(v6, v14, 774, v15, v16);
+    v17 = objc_msgSend_objectForProperty_(mapCopy, v14, 774, v15, v16);
     v13 = TSUCheckedDynamicCast();
   }
 
@@ -4445,19 +4445,19 @@ LABEL_30:
   return v22;
 }
 
-+ (id)deriveBodyPivotDeEmphasisHorizontalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveBodyPivotDeEmphasisHorizontalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = objc_msgSend_emptyStrokeWithWidth_(MEMORY[0x277D803C0], a2, a3, a4, v4, 0.0);
+  v5 = objc_msgSend_emptyStrokeWithWidth_(MEMORY[0x277D803C0], a2, style, map, v4, 0.0);
 
   return v5;
 }
 
-+ (id)deriveBodyPivotEmphasisVerticalStrokeFromTableStyle:(id)a3 propertyMap:(id)a4
++ (id)deriveBodyPivotEmphasisVerticalStrokeFromTableStyle:(id)style propertyMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  styleCopy = style;
+  mapCopy = map;
   objc_opt_class();
-  v10 = objc_msgSend_valueForProperty_(v5, v7, 774, v8, v9);
+  v10 = objc_msgSend_valueForProperty_(styleCopy, v7, 774, v8, v9);
   v11 = TSUCheckedDynamicCast();
   v12 = v11;
   if (v11)
@@ -4468,7 +4468,7 @@ LABEL_30:
   else
   {
     objc_opt_class();
-    v17 = objc_msgSend_objectForProperty_(v6, v14, 774, v15, v16);
+    v17 = objc_msgSend_objectForProperty_(mapCopy, v14, 774, v15, v16);
     v13 = TSUCheckedDynamicCast();
   }
 

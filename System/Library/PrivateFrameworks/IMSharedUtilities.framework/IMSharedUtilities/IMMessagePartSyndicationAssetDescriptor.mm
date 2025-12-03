@@ -1,48 +1,48 @@
 @interface IMMessagePartSyndicationAssetDescriptor
-+ (id)descriptorFromSerializedString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IMMessagePartSyndicationAssetDescriptor)initWithAssetSyndications:(id)a3;
-- (IMMessagePartSyndicationAssetDescriptor)initWithCoder:(id)a3;
++ (id)descriptorFromSerializedString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (IMMessagePartSyndicationAssetDescriptor)initWithAssetSyndications:(id)syndications;
+- (IMMessagePartSyndicationAssetDescriptor)initWithCoder:(id)coder;
 - (NSString)serializedString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)syndicationForPartIndex:(unint64_t)a3 asset:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeSyndicationAssetsInfoFor:(int64_t)a3;
-- (void)replaceSyndicationAssetsInfoWith:(id)a3 asset:(int64_t)a4;
-- (void)updateSyndicationAssetWithInfo:(id)a3 asset:(int64_t)a4;
+- (id)syndicationForPartIndex:(unint64_t)index asset:(int64_t)asset;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeSyndicationAssetsInfoFor:(int64_t)for;
+- (void)replaceSyndicationAssetsInfoWith:(id)with asset:(int64_t)asset;
+- (void)updateSyndicationAssetWithInfo:(id)info asset:(int64_t)asset;
 @end
 
 @implementation IMMessagePartSyndicationAssetDescriptor
 
-- (IMMessagePartSyndicationAssetDescriptor)initWithAssetSyndications:(id)a3
+- (IMMessagePartSyndicationAssetDescriptor)initWithAssetSyndications:(id)syndications
 {
-  v5 = a3;
+  syndicationsCopy = syndications;
   v9.receiver = self;
   v9.super_class = IMMessagePartSyndicationAssetDescriptor;
   v6 = [(IMMessagePartSyndicationAssetDescriptor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetSyndications, a3);
+    objc_storeStrong(&v6->_assetSyndications, syndications);
   }
 
   return v7;
 }
 
-- (id)syndicationForPartIndex:(unint64_t)a3 asset:(int64_t)a4
+- (id)syndicationForPartIndex:(unint64_t)index asset:(int64_t)asset
 {
-  v7 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+  assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
 
-  if (v7)
+  if (assetSyndications)
   {
-    v8 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v10 = [v8 objectForKey:v9];
+    assetSyndications2 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
+    v10 = [assetSyndications2 objectForKey:v9];
 
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
       v12 = [v10 objectForKey:v11];
 
       if (v12)
@@ -53,13 +53,13 @@
 
       else
       {
-        v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-        v16 = [v15 intValue];
+        v15 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
+        intValue = [v15 intValue];
 
         v17 = IMLogHandleForCategory("IMMessagePartSyndicationAssetDescriptor");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          sub_1A88C2160(a3, v16, v17);
+          sub_1A88C2160(index, intValue, v17);
         }
 
         v13 = 0;
@@ -68,7 +68,7 @@
 
     else
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v14 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
       [v14 intValue];
 
       v12 = IMLogHandleForCategory("IMMessagePartSyndicationAssetDescriptor");
@@ -83,8 +83,8 @@
 
   else
   {
-    v8 = IMLogHandleForCategory("IMMessagePartSyndicationAssetDescriptor");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    assetSyndications2 = IMLogHandleForCategory("IMMessagePartSyndicationAssetDescriptor");
+    if (os_log_type_enabled(assetSyndications2, OS_LOG_TYPE_ERROR))
     {
       sub_1A88C2284();
     }
@@ -95,23 +95,23 @@
   return v13;
 }
 
-- (void)updateSyndicationAssetWithInfo:(id)a3 asset:(int64_t)a4
+- (void)updateSyndicationAssetWithInfo:(id)info asset:(int64_t)asset
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  infoCopy = info;
+  v7 = infoCopy;
+  if (infoCopy && [infoCopy count])
   {
-    v8 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+    assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
 
-    if (v8)
+    if (assetSyndications)
     {
-      v9 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-      v10 = [v9 mutableCopy];
+      assetSyndications2 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+      v10 = [assetSyndications2 mutableCopy];
 
-      v11 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-      v13 = [v11 objectForKey:v12];
+      assetSyndications3 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
+      v13 = [assetSyndications3 objectForKey:v12];
       v14 = [v13 mutableCopy];
 
       v15 = [v7 copy];
@@ -163,7 +163,7 @@
           while (v18);
         }
 
-        v25 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+        v25 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
         v10 = v29;
         [v29 setObject:v14 forKeyedSubscript:v25];
 
@@ -177,7 +177,7 @@
 
     else
     {
-      v27 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v27 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
       v35 = v27;
       v36[0] = v7;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
@@ -189,21 +189,21 @@
   }
 }
 
-- (void)replaceSyndicationAssetsInfoWith:(id)a3 asset:(int64_t)a4
+- (void)replaceSyndicationAssetsInfoWith:(id)with asset:(int64_t)asset
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  withCopy = with;
+  v7 = withCopy;
+  if (withCopy && [withCopy count])
   {
-    v8 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+    assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
 
-    if (v8)
+    if (assetSyndications)
     {
-      v9 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-      v10 = [v9 mutableCopy];
+      assetSyndications2 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+      v10 = [assetSyndications2 mutableCopy];
 
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
       [v10 setObject:v7 forKeyedSubscript:v11];
 
       [(IMMessagePartSyndicationAssetDescriptor *)self setAssetSyndications:v10];
@@ -213,7 +213,7 @@
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
       v16 = v13;
       v17[0] = v7;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
@@ -225,16 +225,16 @@
   }
 }
 
-- (void)removeSyndicationAssetsInfoFor:(int64_t)a3
+- (void)removeSyndicationAssetsInfoFor:(int64_t)for
 {
-  v5 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+  assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
 
-  if (v5)
+  if (assetSyndications)
   {
-    v6 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-    v9 = [v6 mutableCopy];
+    assetSyndications2 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+    v9 = [assetSyndications2 mutableCopy];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:for];
     [v9 removeObjectForKey:v7];
 
     [(IMMessagePartSyndicationAssetDescriptor *)self setAssetSyndications:v9];
@@ -362,12 +362,12 @@
   return serializedString;
 }
 
-+ (id)descriptorFromSerializedString:(id)a3
++ (id)descriptorFromSerializedString:(id)string
 {
   v66 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@""];;
-  v37 = v3;
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:@""];;
+  v37 = stringCopy;
   v38 = v4;
   if (!v4 || ![v4 count])
   {
@@ -570,18 +570,18 @@ LABEL_44:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-  v6 = [v4 initWithAssetSyndications:v5];
+  assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+  v6 = [v4 initWithAssetSyndications:assetSyndications];
 
   return v6;
 }
 
-- (IMMessagePartSyndicationAssetDescriptor)initWithCoder:(id)a3
+- (IMMessagePartSyndicationAssetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = IMMessagePartSyndicationAssetDescriptor;
   v5 = [(IMMessagePartSyndicationAssetDescriptor *)&v12 init];
@@ -590,7 +590,7 @@ LABEL_44:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"assetSyndications"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"assetSyndications"];
     assetSyndications = v5->_assetSyndications;
     v5->_assetSyndications = v9;
   }
@@ -598,30 +598,30 @@ LABEL_44:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-  [v4 encodeObject:v5 forKey:@"assetSyndications"];
+  coderCopy = coder;
+  assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+  [coderCopy encodeObject:assetSyndications forKey:@"assetSyndications"];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(IMMessagePartSyndicationAssetDescriptor *)self serializedString];
-  v4 = [v2 stringWithFormat:@"serializedString: %@", v3];
+  serializedString = [(IMMessagePartSyndicationAssetDescriptor *)self serializedString];
+  v4 = [v2 stringWithFormat:@"serializedString: %@", serializedString];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v7 = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
-    v8 = [v4 assetSyndications];
-    v6 = [v7 isEqualToDictionary:v8];
+    assetSyndications = [(IMMessagePartSyndicationAssetDescriptor *)self assetSyndications];
+    assetSyndications2 = [equalCopy assetSyndications];
+    v6 = [assetSyndications isEqualToDictionary:assetSyndications2];
   }
 
   else

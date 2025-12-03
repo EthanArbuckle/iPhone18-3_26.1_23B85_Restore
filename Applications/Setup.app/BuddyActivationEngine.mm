@@ -1,33 +1,33 @@
 @interface BuddyActivationEngine
-+ (id)cellularActivationEngineWithOverrideActivationURL:(id)a3 sessionURL:(id)a4 usingBootstrap:(BOOL)a5;
-+ (id)wifiActivationEngineWithOverrideActivationURL:(id)a3 sessionURL:(id)a4;
-- (BuddyActivationEngine)initWithOverrideActivationURL:(id)a3 sessionURL:(id)a4;
++ (id)cellularActivationEngineWithOverrideActivationURL:(id)l sessionURL:(id)rL usingBootstrap:(BOOL)bootstrap;
++ (id)wifiActivationEngineWithOverrideActivationURL:(id)l sessionURL:(id)rL;
+- (BuddyActivationEngine)initWithOverrideActivationURL:(id)l sessionURL:(id)rL;
 - (NSURLSession)session;
 - (NSURLSessionConfiguration)sessionConfiguration;
-- (id)_newActivationRequestWithOptions:(id)a3 sessionData:(id)a4 error:(id *)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
-- (void)_addCommonHeaders:(id)a3;
+- (id)_newActivationRequestWithOptions:(id)options sessionData:(id)data error:(id *)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
+- (void)_addCommonHeaders:(id)headers;
 - (void)_cleanup;
-- (void)_sendSessionRequest:(id)a3 withOptions:(id)a4;
+- (void)_sendSessionRequest:(id)request withOptions:(id)options;
 - (void)cancel;
-- (void)makeRequest:(id)a3 completion:(id)a4;
-- (void)tryActivateWithOptions:(id)a3 requestMutator:(id)a4 completion:(id)a5;
+- (void)makeRequest:(id)request completion:(id)completion;
+- (void)tryActivateWithOptions:(id)options requestMutator:(id)mutator completion:(id)completion;
 @end
 
 @implementation BuddyActivationEngine
 
-+ (id)wifiActivationEngineWithOverrideActivationURL:(id)a3 sessionURL:(id)a4
++ (id)wifiActivationEngineWithOverrideActivationURL:(id)l sessionURL:(id)rL
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, rL);
   v5 = [BuddyActivationEngine alloc];
   v8 = [(BuddyActivationEngine *)v5 initWithOverrideActivationURL:location[0] sessionURL:v9];
   v6 = v8;
@@ -37,19 +37,19 @@
   return v6;
 }
 
-+ (id)cellularActivationEngineWithOverrideActivationURL:(id)a3 sessionURL:(id)a4 usingBootstrap:(BOOL)a5
++ (id)cellularActivationEngineWithOverrideActivationURL:(id)l sessionURL:(id)rL usingBootstrap:(BOOL)bootstrap
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
+  objc_storeStrong(&v12, rL);
+  bootstrapCopy = bootstrap;
   v7 = [BuddyActivationEngine alloc];
   v10 = [(BuddyActivationEngine *)v7 initWithOverrideActivationURL:location[0] sessionURL:v12];
   [v10 setUseCellular:1];
-  [v10 setUsingBootstrap:a5];
+  [v10 setUsingBootstrap:bootstrap];
   v8 = v10;
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v12, 0);
@@ -57,47 +57,47 @@
   return v8;
 }
 
-- (BuddyActivationEngine)initWithOverrideActivationURL:(id)a3 sessionURL:(id)a4
+- (BuddyActivationEngine)initWithOverrideActivationURL:(id)l sessionURL:(id)rL
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, rL);
+  v5 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v5;
   v12.super_class = BuddyActivationEngine;
-  v15 = [(BuddyActivationEngine *)&v12 init];
-  objc_storeStrong(&v15, v15);
-  if (v15)
+  selfCopy = [(BuddyActivationEngine *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v15 setOverrideActivationURL:location[0]];
-    [v15 setOverrideSessionURL:v13];
+    [selfCopy setOverrideActivationURL:location[0]];
+    [selfCopy setOverrideSessionURL:v13];
     v6 = dispatch_queue_create("Telephony Client Queue", 0);
-    [v15 setTelephonyClientQueue:v6];
+    [selfCopy setTelephonyClientQueue:v6];
 
     v7 = [CoreTelephonyClient alloc];
-    v8 = [v15 telephonyClientQueue];
-    v9 = [v7 initWithQueue:v8];
-    [v15 setTelephonyClient:v9];
+    telephonyClientQueue = [selfCopy telephonyClientQueue];
+    v9 = [v7 initWithQueue:telephonyClientQueue];
+    [selfCopy setTelephonyClient:v9];
   }
 
-  v10 = v15;
+  v10 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
 - (void)cancel
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(BuddyActivationEngine *)self completion];
-  v7 = v9->_session != 0;
-  [(BuddyActivationEngine *)v9 _cleanup];
+  v7 = selfCopy->_session != 0;
+  [(BuddyActivationEngine *)selfCopy _cleanup];
   if (v7)
   {
     oslog = _BYLoggingFacility();
@@ -124,8 +124,8 @@
 - (void)_cleanup
 {
   [(NSURLSession *)self->_session invalidateAndCancel];
-  v2 = [(BuddyActivationEngine *)self connectivityTimer];
-  [(NSTimer *)v2 invalidate];
+  connectivityTimer = [(BuddyActivationEngine *)self connectivityTimer];
+  [(NSTimer *)connectivityTimer invalidate];
 
   objc_storeStrong(&self->_session, 0);
   objc_storeStrong(&self->_activationData, 0);
@@ -137,30 +137,30 @@
 
 - (NSURLSession)session
 {
-  v44 = self;
+  selfCopy = self;
   v43[1] = a2;
   if (!self->_session)
   {
     v43[0] = +[NSURLSessionConfiguration defaultSessionConfiguration];
     [v43[0] setWaitsForConnectivity:1];
-    if (v44->_useCellular)
+    if (selfCopy->_useCellular)
     {
       [v43[0] set_CTDataConnectionServiceType:kCTDataConnectionServiceTypeOTAActivation];
       location = 0;
       v41 = 0;
       v40 = 0;
-      v2 = [(BuddyActivationEngine *)v44 telephonyClient];
+      telephonyClient = [(BuddyActivationEngine *)selfCopy telephonyClient];
       obj = 0;
-      v3 = [(CoreTelephonyClient *)v2 getPreferredDataSubscriptionContextSync:&obj];
+      v3 = [(CoreTelephonyClient *)telephonyClient getPreferredDataSubscriptionContextSync:&obj];
       objc_storeStrong(&location, obj);
       v39 = v3;
 
       if (v39)
       {
         v37 = [[CTBundle alloc] initWithBundleType:1];
-        v4 = [(BuddyActivationEngine *)v44 telephonyClient];
+        telephonyClient2 = [(BuddyActivationEngine *)selfCopy telephonyClient];
         v36 = location;
-        v5 = [(CoreTelephonyClient *)v4 copyCarrierBundleValue:v39 key:@"OTAActivationProxyHost" bundleType:v37 error:&v36];
+        v5 = [(CoreTelephonyClient *)telephonyClient2 copyCarrierBundleValue:v39 key:@"OTAActivationProxyHost" bundleType:v37 error:&v36];
         objc_storeStrong(&location, v36);
         v6 = v41;
         v41 = v5;
@@ -178,9 +178,9 @@
           objc_storeStrong(&oslog, 0);
         }
 
-        v7 = [(BuddyActivationEngine *)v44 telephonyClient];
+        telephonyClient3 = [(BuddyActivationEngine *)selfCopy telephonyClient];
         v33 = location;
-        v8 = [(CoreTelephonyClient *)v7 copyCarrierBundleValue:v39 key:@"OTAActivationProxyPort" bundleType:v37 error:&v33];
+        v8 = [(CoreTelephonyClient *)telephonyClient3 copyCarrierBundleValue:v39 key:@"OTAActivationProxyPort" bundleType:v37 error:&v33];
         objc_storeStrong(&location, v33);
         v9 = v40;
         v40 = v8;
@@ -198,9 +198,9 @@
           objc_storeStrong(&v32, 0);
         }
 
-        v10 = [v39 uuid];
-        v11 = [v10 UUIDString];
-        [v43[0] set_sourceApplicationSecondaryIdentifier:v11];
+        uuid = [v39 uuid];
+        uUIDString = [uuid UUIDString];
+        [v43[0] set_sourceApplicationSecondaryIdentifier:uUIDString];
 
         objc_storeStrong(&v37, 0);
       }
@@ -263,9 +263,9 @@
         if ([v40 integerValue] == 443)
         {
           v14 = +[BuddyActivationConfiguration currentConfiguration];
-          v15 = [v14 cellularActivationMethod];
+          cellularActivationMethod = [v14 cellularActivationMethod];
 
-          if (v15 == 1)
+          if (cellularActivationMethod == 1)
           {
             [v43[0] set_requiresSecureHTTPSProxyConnection:1];
           }
@@ -279,16 +279,16 @@
     }
 
     v16 = v43[0];
-    v17 = v44;
+    v17 = selfCopy;
     v18 = +[NSOperationQueue mainQueue];
     v19 = [NSURLSession sessionWithConfiguration:v16 delegate:v17 delegateQueue:v18];
-    session = v44->_session;
-    v44->_session = v19;
+    session = selfCopy->_session;
+    selfCopy->_session = v19;
 
     objc_storeStrong(v43, 0);
   }
 
-  v21 = v44->_session;
+  v21 = selfCopy->_session;
 
   return v21;
 }
@@ -296,20 +296,20 @@
 - (NSURLSessionConfiguration)sessionConfiguration
 {
   v2 = [(BuddyActivationEngine *)self session:a2];
-  v3 = [(NSURLSession *)v2 configuration];
+  configuration = [(NSURLSession *)v2 configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (id)_newActivationRequestWithOptions:(id)a3 sessionData:(id)a4 error:(id *)a5
+- (id)_newActivationRequestWithOptions:(id)options sessionData:(id)data error:(id *)error
 {
-  v83 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v81 = 0;
-  objc_storeStrong(&v81, a4);
-  v80 = a5;
+  objc_storeStrong(&v81, data);
+  errorCopy = error;
   v79 = 0;
   v78 = 0;
   v77 = 0;
@@ -374,7 +374,7 @@
 
     objc_storeStrong(&v53, 0);
     v51 = [v79 valueForHTTPHeaderField:@"User-Agent"];
-    v19 = v83;
+    v19 = selfCopy;
     v20 = sub_100195EC4();
     v21 = [v20 stringByAppendingFormat:@" %@", v51];
     [(BuddyActivationEngine *)v19 setUserAgent:v21];
@@ -391,14 +391,14 @@
     }
 
     objc_storeStrong(&v50, 0);
-    if (v83->_overrideActivationURL)
+    if (selfCopy->_overrideActivationURL)
     {
-      [v79 setURL:v83->_overrideActivationURL];
+      [v79 setURL:selfCopy->_overrideActivationURL];
     }
 
     v22 = v79;
-    v23 = [(BuddyActivationEngine *)v83 userAgent];
-    [v22 setValue:v23 forHTTPHeaderField:@"User-Agent"];
+    userAgent = [(BuddyActivationEngine *)selfCopy userAgent];
+    [v22 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
     v24 = +[NSLocale _deviceLanguage];
     v87 = v24;
@@ -423,9 +423,9 @@
     {
       v44 = [v79 URL];
       v43 = 1;
-      v42 = [v44 absoluteString];
+      absoluteString = [v44 absoluteString];
       v41 = 1;
-      v27 = [v42 hasSuffix:@"/deviceActivation"];
+      v27 = [absoluteString hasSuffix:@"/deviceActivation"];
     }
 
     if (v41)
@@ -471,14 +471,14 @@
       objc_storeStrong(&v40, 0);
     }
 
-    if (v83->_allowAnyHTTPSCertificate)
+    if (selfCopy->_allowAnyHTTPSCertificate)
     {
       v35 = [v79 URL];
-      v36 = [v35 host];
-      [NSURLRequest setAllowsAnyHTTPSCertificate:1 forHost:v36];
+      host = [v35 host];
+      [NSURLRequest setAllowsAnyHTTPSCertificate:1 forHost:host];
     }
 
-    [(BuddyActivationEngine *)v83 _addCommonHeaders:v79];
+    [(BuddyActivationEngine *)selfCopy _addCommonHeaders:v79];
     v84 = v79;
     v59 = 1;
     objc_storeStrong(&v47, 0);
@@ -500,9 +500,9 @@
 
       else if (v78)
       {
-        v63 = [v78 domain];
+        domain = [v78 domain];
         v62 = 1;
-        v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v63, [v78 code]);
+        v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v78 code]);
         v61 = v14;
         v60 = 1;
       }
@@ -524,10 +524,10 @@
     }
 
     objc_storeStrong(&v65, 0);
-    if (v80)
+    if (errorCopy)
     {
       v15 = v78;
-      *v80 = v15;
+      *errorCopy = v15;
     }
 
     v84 = 0;
@@ -541,14 +541,14 @@
   return v84;
 }
 
-- (void)_sendSessionRequest:(id)a3 withOptions:(id)a4
+- (void)_sendSessionRequest:(id)request withOptions:(id)options
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, options);
   v37 = 0uLL;
   v5 = _BYSignpostSubsystem();
   *&v36 = _BYSignpostCreate();
@@ -584,7 +584,7 @@
   v27 = sub_100209A2C;
   v28 = sub_100209A70;
   v29 = 0;
-  v10 = [(BuddyActivationEngine *)v40 session];
+  session = [(BuddyActivationEngine *)selfCopy session];
   v11 = location[0];
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
@@ -592,10 +592,10 @@
   v18 = sub_100209A7C;
   v19 = &unk_10032F2A8;
   v22 = v37;
-  v20 = v40;
+  v20 = selfCopy;
   v21[0] = v38;
   v21[1] = &v23;
-  v12 = [(NSURLSession *)v10 dataTaskWithRequest:v11 completionHandler:&v15];
+  v12 = [(NSURLSession *)session dataTaskWithRequest:v11 completionHandler:&v15];
   v13 = v24[5];
   v24[5] = v12;
 
@@ -616,18 +616,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)tryActivateWithOptions:(id)a3 requestMutator:(id)a4 completion:(id)a5
+- (void)tryActivateWithOptions:(id)options requestMutator:(id)mutator completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, mutator);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  [(BuddyActivationEngine *)v20 setCompletion:v17];
-  objc_storeStrong(&v20->_activationData, 0);
+  objc_storeStrong(&v17, completion);
+  [(BuddyActivationEngine *)selfCopy setCompletion:v17];
+  objc_storeStrong(&selfCopy->_activationData, 0);
   v7 = dispatch_get_global_queue(25, 0);
   block = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -635,7 +635,7 @@
   v11 = sub_10020AABC;
   v12 = &unk_10032F2D0;
   v15 = v17;
-  v13 = v20;
+  v13 = selfCopy;
   v16 = v18;
   v14 = location[0];
   dispatch_async(v7, &block);
@@ -649,19 +649,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)makeRequest:(id)a3 completion:(id)a4
+- (void)makeRequest:(id)request completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, completion);
   v31 = [location[0] mutableCopy];
-  v5 = [(BuddyActivationEngine *)v34 userAgent];
-  [v31 setValue:v5 forHTTPHeaderField:@"User-Agent"];
+  userAgent = [(BuddyActivationEngine *)selfCopy userAgent];
+  [v31 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
-  objc_storeStrong(&v34->_activationRequest, v31);
+  objc_storeStrong(&selfCopy->_activationRequest, v31);
   v30 = 0;
   v29 = 0;
   v6 = _BYSignpostSubsystem();
@@ -701,9 +701,9 @@
   v20[1] = v27;
   v20[2] = v28;
   v20[0] = v32;
-  [(BuddyActivationEngine *)v34 setCompletion:&v15];
-  v12 = [(BuddyActivationEngine *)v34 session];
-  v14 = [(NSURLSession *)v12 dataTaskWithRequest:v34->_activationRequest];
+  [(BuddyActivationEngine *)selfCopy setCompletion:&v15];
+  session = [(BuddyActivationEngine *)selfCopy session];
+  v14 = [(NSURLSession *)session dataTaskWithRequest:selfCopy->_activationRequest];
 
   v13 = _BYLoggingFacility();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -721,16 +721,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_addCommonHeaders:(id)a3
+- (void)_addCommonHeaders:(id)headers
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v5 = 0;
-  if ([(BuddyActivationEngine *)v7 useCellular])
+  if ([(BuddyActivationEngine *)selfCopy useCellular])
   {
-    if ([(BuddyActivationEngine *)v7 usingBootstrap])
+    if ([(BuddyActivationEngine *)selfCopy usingBootstrap])
     {
       objc_storeStrong(&v5, &off_10033D038);
     }
@@ -743,8 +743,8 @@
 
   if ([v5 count])
   {
-    v3 = [location[0] allHTTPHeaderFields];
-    v4 = [v3 mutableCopy];
+    allHTTPHeaderFields = [location[0] allHTTPHeaderFields];
+    v4 = [allHTTPHeaderFields mutableCopy];
 
     [v4 addEntriesFromDictionary:v5];
     [location[0] setAllHTTPHeaderFields:v4];
@@ -755,18 +755,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, task);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, response);
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, handler);
   oslog = _BYLoggingFacility();
   v18 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -776,9 +776,9 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v9 = [(BuddyActivationEngine *)v24 connectivityTimer];
+  connectivityTimer = [(BuddyActivationEngine *)selfCopy connectivityTimer];
 
-  if (v9)
+  if (connectivityTimer)
   {
     v17 = _BYLoggingFacility();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -791,23 +791,23 @@
     }
 
     objc_storeStrong(&v17, 0);
-    v12 = [(BuddyActivationEngine *)v24 connectivityTimer];
-    [(NSTimer *)v12 invalidate];
+    connectivityTimer2 = [(BuddyActivationEngine *)selfCopy connectivityTimer];
+    [(NSTimer *)connectivityTimer2 invalidate];
 
-    [(BuddyActivationEngine *)v24 setConnectivityTimer:0];
+    [(BuddyActivationEngine *)selfCopy setConnectivityTimer:0];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v24;
-    v14 = [v21 allHeaderFields];
-    [(BuddyActivationEngine *)v13 setResponseHeaders:v14];
+    v13 = selfCopy;
+    allHeaderFields = [v21 allHeaderFields];
+    [(BuddyActivationEngine *)v13 setResponseHeaders:allHeaderFields];
   }
 
   else
   {
-    [(BuddyActivationEngine *)v24 setResponseHeaders:0];
+    [(BuddyActivationEngine *)selfCopy setResponseHeaders:0];
   }
 
   if (v20)
@@ -821,29 +821,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, task);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  if (location[0] == v13->_session)
+  objc_storeStrong(&v10, data);
+  if (location[0] == selfCopy->_session)
   {
-    if (v13->_activationData)
+    if (selfCopy->_activationData)
     {
-      [(NSMutableData *)v13->_activationData appendData:v10];
+      [(NSMutableData *)selfCopy->_activationData appendData:v10];
     }
 
     else
     {
       v7 = [NSMutableData alloc];
       v8 = [v7 initWithData:v10];
-      activationData = v13->_activationData;
-      v13->_activationData = v8;
+      activationData = selfCopy->_activationData;
+      selfCopy->_activationData = v8;
     }
   }
 
@@ -852,22 +852,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, task);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, error);
   oslog = _BYLoggingFacility();
   v21 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v24;
-    v8 = [(NSMutableData *)v26->_activationData length];
+    v8 = [(NSMutableData *)selfCopy->_activationData length];
     v19 = 0;
     v17 = 0;
     if (_BYIsInternalInstall())
@@ -877,9 +877,9 @@
 
     else if (v23)
     {
-      v20 = [v23 domain];
+      domain = [v23 domain];
       v19 = 1;
-      v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v20, [v23 code]);
+      v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v23 code]);
       v18 = v9;
       v17 = 1;
     }
@@ -901,23 +901,23 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  if (location[0] == v26->_session)
+  if (location[0] == selfCopy->_session)
   {
-    v10 = [(BuddyActivationEngine *)v26 completion];
+    completion = [(BuddyActivationEngine *)selfCopy completion];
 
-    if (v10)
+    if (completion)
     {
-      v16 = [(NSMutableData *)v26->_activationData copy];
-      v11 = [(BuddyActivationEngine *)v26 responseHeaders];
-      v15 = [(NSDictionary *)v11 copy];
+      v16 = [(NSMutableData *)selfCopy->_activationData copy];
+      responseHeaders = [(BuddyActivationEngine *)selfCopy responseHeaders];
+      v15 = [(NSDictionary *)responseHeaders copy];
 
-      v14 = [(BuddyActivationEngine *)v26 completion];
-      [(BuddyActivationEngine *)v26 _cleanup];
-      v12 = [v24 response];
-      v13 = [v12 URL];
-      (*(v14 + 2))(v14, v16, v15, v13, v23);
+      completion2 = [(BuddyActivationEngine *)selfCopy completion];
+      [(BuddyActivationEngine *)selfCopy _cleanup];
+      response = [v24 response];
+      v13 = [response URL];
+      (*(completion2 + 2))(completion2, v16, v15, v13, v23);
 
-      objc_storeStrong(&v14, 0);
+      objc_storeStrong(&completion2, 0);
       objc_storeStrong(&v15, 0);
       objc_storeStrong(&v16, 0);
     }
@@ -928,26 +928,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, task);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, redirection);
   v23 = 0;
-  objc_storeStrong(&v23, a6);
+  objc_storeStrong(&v23, request);
   v22 = 0;
-  objc_storeStrong(&v22, a7);
-  v21 = [v24 statusCode];
+  objc_storeStrong(&v22, handler);
+  statusCode = [v24 statusCode];
   oslog = _BYLoggingFacility();
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_10020C1D0(buf, v21, v24, v23);
+    sub_10020C1D0(buf, statusCode, v24, v23);
     _os_log_debug_impl(&_mh_execute_header, oslog, v19, "Activate: Will redirect, code %i: %@, new request: %@", buf, 0x1Cu);
   }
 
@@ -957,14 +957,14 @@
   if (v24)
   {
     v11 = 0;
-    if (v21 == 302)
+    if (statusCode == 302)
     {
       v11 = 0;
-      if (v27->_activationRequest)
+      if (selfCopy->_activationRequest)
       {
-        v18 = [(NSURLRequest *)v27->_activationRequest HTTPBody];
+        hTTPBody = [(NSURLRequest *)selfCopy->_activationRequest HTTPBody];
         v17 = 1;
-        v11 = v18 != 0;
+        v11 = hTTPBody != 0;
       }
     }
   }
@@ -977,25 +977,25 @@
   {
     obj = [v23 mutableCopy];
     [obj setHTTPMethod:@"POST"];
-    v12 = [(NSURLRequest *)v27->_activationRequest valueForHTTPHeaderField:@"Content-Type"];
+    v12 = [(NSURLRequest *)selfCopy->_activationRequest valueForHTTPHeaderField:@"Content-Type"];
     [obj setValue:v12 forHTTPHeaderField:@"Content-Type"];
 
-    v13 = [(NSURLRequest *)v27->_activationRequest valueForHTTPHeaderField:@"Content-Length"];
+    v13 = [(NSURLRequest *)selfCopy->_activationRequest valueForHTTPHeaderField:@"Content-Length"];
     [obj setValue:v13 forHTTPHeaderField:@"Content-Length"];
 
-    v14 = [(BuddyActivationEngine *)v27 userAgent];
-    [obj setValue:v14 forHTTPHeaderField:@"User-Agent"];
+    userAgent = [(BuddyActivationEngine *)selfCopy userAgent];
+    [obj setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
-    v15 = [(NSURLRequest *)v27->_activationRequest HTTPBody];
-    [obj setHTTPBody:v15];
+    hTTPBody2 = [(NSURLRequest *)selfCopy->_activationRequest HTTPBody];
+    [obj setHTTPBody:hTTPBody2];
 
     objc_storeStrong(&v23, obj);
     objc_storeStrong(&obj, 0);
   }
 
-  if (location[0] == v27->_session && v27->_activationRequest != v23)
+  if (location[0] == selfCopy->_session && selfCopy->_activationRequest != v23)
   {
-    [(BuddyActivationEngine *)v27 setActivationRequest:v23];
+    [(BuddyActivationEngine *)selfCopy setActivationRequest:v23];
   }
 
   if (v22)
@@ -1010,21 +1010,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, connectivity);
   v16 = 15.0;
-  if (v19->_useCellular)
+  if (selfCopy->_useCellular)
   {
     v5 = +[BuddyActivationConfiguration currentConfiguration];
-    v6 = [v5 cellularActivationMethod];
+    cellularActivationMethod = [v5 cellularActivationMethod];
 
-    if (v6 == 1)
+    if (cellularActivationMethod == 1)
     {
       v16 = 60.0;
     }
@@ -1046,7 +1046,7 @@
   v12 = &unk_10032CAC0;
   v13 = v17;
   v8 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v9 block:v7];
-  [(BuddyActivationEngine *)v19 setConnectivityTimer:v8, v9, v10, v11, v12];
+  [(BuddyActivationEngine *)selfCopy setConnectivityTimer:v8, v9, v10, v11, v12];
 
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v17, 0);

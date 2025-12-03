@@ -1,5 +1,5 @@
 @interface PIParallaxInfillRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -13,28 +13,28 @@
   return [(PIParallaxInfillJob *)v3 initWithParallaxInfillRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = PIParallaxInfillRequest;
-  v4 = [(NURenderRequest *)&v14 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v14 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIParallaxInfillRequest *)self segmentationMatte];
+    segmentationMatte = [(PIParallaxInfillRequest *)self segmentationMatte];
     v6 = v4[21];
-    v4[21] = v5;
+    v4[21] = segmentationMatte;
 
-    v7 = [(PIParallaxInfillRequest *)self scalePolicy];
+    scalePolicy = [(PIParallaxInfillRequest *)self scalePolicy];
     v8 = v4[22];
-    v4[22] = v7;
+    v4[22] = scalePolicy;
 
-    v9 = [(PIParallaxInfillRequest *)self pixelFormat];
+    pixelFormat = [(PIParallaxInfillRequest *)self pixelFormat];
     v10 = v4[23];
-    v4[23] = v9;
+    v4[23] = pixelFormat;
 
-    v11 = [(PIParallaxInfillRequest *)self colorSpace];
+    colorSpace = [(PIParallaxInfillRequest *)self colorSpace];
     v12 = v4[24];
-    v4[24] = v11;
+    v4[24] = colorSpace;
 
     *(v4 + 160) = [(PIParallaxInfillRequest *)self shouldInfillForeground];
   }
@@ -47,17 +47,17 @@
   v9.receiver = self;
   v9.super_class = PIParallaxInfillRequest;
   [(NURenderRequest *)&v9 _commonInit];
-  v3 = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
+  oneToOneScalePolicy = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
   scalePolicy = self->_scalePolicy;
-  self->_scalePolicy = v3;
+  self->_scalePolicy = oneToOneScalePolicy;
 
-  v5 = [MEMORY[0x1E69B3BF0] BGRA8];
+  bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
   pixelFormat = self->_pixelFormat;
-  self->_pixelFormat = v5;
+  self->_pixelFormat = bGRA8;
 
-  v7 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+  sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
   colorSpace = self->_colorSpace;
-  self->_colorSpace = v7;
+  self->_colorSpace = sRGBColorSpace;
 
   self->_shouldInfillForeground = 0;
 }

@@ -1,21 +1,21 @@
 @interface PBUIDeferredImageSlot
-- (PBUIDeferredImageSlot)initWithLifetimeToken:(id)a3;
-- (void)addImageSlotObserver:(id)a3;
-- (void)updateWithImage:(id)a3;
+- (PBUIDeferredImageSlot)initWithLifetimeToken:(id)token;
+- (void)addImageSlotObserver:(id)observer;
+- (void)updateWithImage:(id)image;
 @end
 
 @implementation PBUIDeferredImageSlot
 
-- (PBUIDeferredImageSlot)initWithLifetimeToken:(id)a3
+- (PBUIDeferredImageSlot)initWithLifetimeToken:(id)token
 {
   v4.receiver = self;
   v4.super_class = PBUIDeferredImageSlot;
-  return [(PBUIImageSlot *)&v4 _initWithImage:0 lifetimeToken:a3];
+  return [(PBUIImageSlot *)&v4 _initWithImage:0 lifetimeToken:token];
 }
 
-- (void)updateWithImage:(id)a3
+- (void)updateWithImage:(id)image
 {
-  [(PBUIImageSlot *)self _setImage:a3];
+  [(PBUIImageSlot *)self _setImage:image];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__PBUIDeferredImageSlot_updateWithImage___block_invoke;
@@ -59,22 +59,22 @@ void __41__PBUIDeferredImageSlot_updateWithImage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addImageSlotObserver:(id)a3
+- (void)addImageSlotObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   imageSlotObservers = self->_imageSlotObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!imageSlotObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_imageSlotObservers;
-    self->_imageSlotObservers = v6;
+    self->_imageSlotObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     imageSlotObservers = self->_imageSlotObservers;
   }
 
-  [(NSHashTable *)imageSlotObservers addObject:v4];
+  [(NSHashTable *)imageSlotObservers addObject:observerCopy];
 }
 
 @end

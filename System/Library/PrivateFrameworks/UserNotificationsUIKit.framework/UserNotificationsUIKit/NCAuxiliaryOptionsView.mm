@@ -1,32 +1,32 @@
 @interface NCAuxiliaryOptionsView
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BSUIFontProvider)fontProvider;
-- (CGRect)_optionsSummaryMeasuringFrameForBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)_optionsSummaryMeasuringFrameForBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCAuxiliaryOptionsView)init;
-- (NCAuxiliaryOptionsView)initWithFrame:(CGRect)a3;
-- (double)_optionsButtonWidthForBounds:(CGRect)a3 auxiliaryOptionButtonsCount:(unint64_t)a4;
+- (NCAuxiliaryOptionsView)initWithFrame:(CGRect)frame;
+- (double)_optionsButtonWidthForBounds:(CGRect)bounds auxiliaryOptionButtonsCount:(unint64_t)count;
 - (id)_newOptionsButton;
 - (id)_preferredFontForAuxiliaryOptionsSummaryTextLabel;
 - (id)_preferredFontForOptionButton;
-- (void)_calculateOptionsSummaryLabelLayoutInfoForBoundsSize:(CGSize)a3;
+- (void)_calculateOptionsSummaryLabelLayoutInfoForBoundsSize:(CGSize)size;
 - (void)_configureAuxiliaryOptionsSummaryTextLabelIfNecessary;
 - (void)_configureOverlayIfNecessary;
 - (void)_layoutOptionsButtons;
 - (void)_layoutOptionsSummaryLabel;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_setDefaultAttributes;
 - (void)_updateTextAttributesForOptionsSummaryLabel;
 - (void)layoutSubviews;
-- (void)setAuxiliaryOptionActions:(id)a3;
-- (void)setAuxiliaryOptionsBackgroundColor:(id)a3;
-- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)a3;
-- (void)setAuxiliaryOptionsSummaryText:(id)a3;
-- (void)setAuxiliaryOptionsTextColor:(id)a3;
-- (void)setAuxiliaryOptionsVisible:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setMaterialRecipe:(int64_t)a3;
-- (void)setMaterialTintColor:(id)a3;
+- (void)setAuxiliaryOptionActions:(id)actions;
+- (void)setAuxiliaryOptionsBackgroundColor:(id)color;
+- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)filter;
+- (void)setAuxiliaryOptionsSummaryText:(id)text;
+- (void)setAuxiliaryOptionsTextColor:(id)color;
+- (void)setAuxiliaryOptionsVisible:(BOOL)visible;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setMaterialRecipe:(int64_t)recipe;
+- (void)setMaterialTintColor:(id)color;
 @end
 
 @implementation NCAuxiliaryOptionsView
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (NCAuxiliaryOptionsView)initWithFrame:(CGRect)a3
+- (NCAuxiliaryOptionsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NCAuxiliaryOptionsView;
-  v3 = [(NCAuxiliaryOptionsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCAuxiliaryOptionsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -82,12 +82,12 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v33 = *MEMORY[0x277D85DE8];
   v4 = 0.0;
-  if (a3.width > 0.0)
+  if (fits.width > 0.0)
   {
     if (self->_optionsSummaryLabel)
     {
@@ -105,10 +105,10 @@
     auxiliaryOptionButtons = self->_auxiliaryOptionButtons;
     if (auxiliaryOptionButtons)
     {
-      v9 = [(NSArray *)auxiliaryOptionButtons firstObject];
-      v10 = [v9 titleLabel];
-      v11 = [v10 font];
-      [v11 _scaledValueForValue:44.0];
+      firstObject = [(NSArray *)auxiliaryOptionButtons firstObject];
+      titleLabel = [firstObject titleLabel];
+      font = [titleLabel font];
+      [font _scaledValueForValue:44.0];
       v13 = v12;
 
       BSRectWithSize();
@@ -176,29 +176,29 @@
   [(NCAuxiliaryOptionsView *)self _layoutOptionsButtons];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(NCAuxiliaryOptionsView *)self _configureOverlayIfNecessary];
-  v5 = [(UIView *)self->_overlayView layer];
-  [v5 setMaskedCorners:12];
+  layer = [(UIView *)self->_overlayView layer];
+  [layer setMaskedCorners:12];
 
   overlayView = self->_overlayView;
 
-  [(UIView *)overlayView _setContinuousCornerRadius:a3];
+  [(UIView *)overlayView _setContinuousCornerRadius:radius];
 }
 
-- (void)setAuxiliaryOptionsSummaryText:(id)a3
+- (void)setAuxiliaryOptionsSummaryText:(id)text
 {
-  v7 = a3;
-  v4 = [(NCAuxiliaryOptionsView *)self auxiliaryOptionsSummaryText];
+  textCopy = text;
+  auxiliaryOptionsSummaryText = [(NCAuxiliaryOptionsView *)self auxiliaryOptionsSummaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    if (v7)
+    if (textCopy)
     {
       [(NCAuxiliaryOptionsView *)self _configureAuxiliaryOptionsSummaryTextLabelIfNecessary];
-      [(UILabel *)self->_optionsSummaryLabel setText:v7];
+      [(UILabel *)self->_optionsSummaryLabel setText:textCopy];
     }
 
     else
@@ -212,14 +212,14 @@
   }
 }
 
-- (void)setAuxiliaryOptionsVisible:(BOOL)a3
+- (void)setAuxiliaryOptionsVisible:(BOOL)visible
 {
-  if (self->_auxiliaryOptionsVisible != a3)
+  if (self->_auxiliaryOptionsVisible != visible)
   {
     v9 = v3;
-    self->_auxiliaryOptionsVisible = a3;
+    self->_auxiliaryOptionsVisible = visible;
     v8 = 0.0;
-    if (a3)
+    if (visible)
     {
       v8 = 1.0;
     }
@@ -230,11 +230,11 @@
   }
 }
 
-- (void)setAuxiliaryOptionActions:(id)a3
+- (void)setAuxiliaryOptionActions:(id)actions
 {
-  v19 = a3;
-  objc_storeStrong(&self->_auxiliaryOptionActions, a3);
-  v5 = [v19 count];
+  actionsCopy = actions;
+  objc_storeStrong(&self->_auxiliaryOptionActions, actions);
+  v5 = [actionsCopy count];
   v6 = [(NSArray *)self->_auxiliaryOptionButtons count];
   v17 = 456;
   auxiliaryOptionButtons = self->_auxiliaryOptionButtons;
@@ -266,8 +266,8 @@
     {
       if (v11 < v5 || v6 <= v11)
       {
-        v12 = [v9 objectAtIndex:{v11, v17}];
-        if (v12)
+        _newOptionsButton = [v9 objectAtIndex:{v11, v17}];
+        if (_newOptionsButton)
         {
           goto LABEL_17;
         }
@@ -275,8 +275,8 @@
 
       else
       {
-        v13 = [v9 lastObject];
-        [v13 removeFromSuperview];
+        lastObject = [v9 lastObject];
+        [lastObject removeFromSuperview];
 
         [v9 removeLastObject];
       }
@@ -288,30 +288,30 @@ LABEL_18:
       }
     }
 
-    v12 = [(NCAuxiliaryOptionsView *)self _newOptionsButton];
-    [v9 addObject:v12];
-    if (!v12)
+    _newOptionsButton = [(NCAuxiliaryOptionsView *)self _newOptionsButton];
+    [v9 addObject:_newOptionsButton];
+    if (!_newOptionsButton)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    v14 = [v19 objectAtIndex:{v11, v17}];
-    [v12 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
-    [v12 addAction:v14 forControlEvents:64];
-    v15 = [v14 title];
-    [v12 setTitle:v15];
+    v14 = [actionsCopy objectAtIndex:{v11, v17}];
+    [_newOptionsButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+    [_newOptionsButton addAction:v14 forControlEvents:64];
+    title = [v14 title];
+    [_newOptionsButton setTitle:title];
 
-    [v12 setTextColor:self->_auxiliaryOptionsTextColor];
-    [v12 setBackgroundTintColor:self->_materialTintColor];
-    [v12 setBackgroundMaterialRecipe:self->_materialRecipe];
-    [v12 setMaterialGroupNameBase:self->_materialGroupNameBase];
+    [_newOptionsButton setTextColor:self->_auxiliaryOptionsTextColor];
+    [_newOptionsButton setBackgroundTintColor:self->_materialTintColor];
+    [_newOptionsButton setBackgroundMaterialRecipe:self->_materialRecipe];
+    [_newOptionsButton setMaterialGroupNameBase:self->_materialGroupNameBase];
 
     goto LABEL_18;
   }
 
 LABEL_19:
-  if ([v19 count])
+  if ([actionsCopy count])
   {
     v16 = v9;
   }
@@ -325,24 +325,24 @@ LABEL_19:
   [(NCAuxiliaryOptionsView *)self setNeedsLayout];
 }
 
-- (void)setAuxiliaryOptionsTextColor:(id)a3
+- (void)setAuxiliaryOptionsTextColor:(id)color
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    if (v4)
+    if (colorCopy)
     {
-      v5 = v4;
+      _defaultTextColor = colorCopy;
     }
 
     else
     {
-      v5 = [(NCAuxiliaryOptionsView *)self _defaultTextColor];
+      _defaultTextColor = [(NCAuxiliaryOptionsView *)self _defaultTextColor];
     }
 
     auxiliaryOptionsTextColor = self->_auxiliaryOptionsTextColor;
-    self->_auxiliaryOptionsTextColor = v5;
+    self->_auxiliaryOptionsTextColor = _defaultTextColor;
 
     v14 = 0u;
     v15 = 0u;
@@ -379,37 +379,37 @@ LABEL_19:
   }
 }
 
-- (void)setAuxiliaryOptionsBackgroundColor:(id)a3
+- (void)setAuxiliaryOptionsBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsBackgroundColor, a3);
+    objc_storeStrong(&self->_auxiliaryOptionsBackgroundColor, color);
     [(UIView *)self->_overlayView setBackgroundColor:self->_auxiliaryOptionsBackgroundColor];
     [(NCAuxiliaryOptionsView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)a3
+- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)filter
 {
-  v6 = a3;
+  filterCopy = filter;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsBackgroundCompositingFilter, a3);
-    v5 = [(UIView *)self->_overlayView layer];
-    [v5 setCompositingFilter:v6];
+    objc_storeStrong(&self->_auxiliaryOptionsBackgroundCompositingFilter, filter);
+    layer = [(UIView *)self->_overlayView layer];
+    [layer setCompositingFilter:filterCopy];
 
     [(NCAuxiliaryOptionsView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaterialTintColor:(id)a3
+- (void)setMaterialTintColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_materialTintColor, a3);
+    objc_storeStrong(&self->_materialTintColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -444,12 +444,12 @@ LABEL_19:
   }
 }
 
-- (void)setMaterialRecipe:(int64_t)a3
+- (void)setMaterialRecipe:(int64_t)recipe
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_materialRecipe != a3)
+  if (self->_materialRecipe != recipe)
   {
-    self->_materialRecipe = a3;
+    self->_materialRecipe = recipe;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -470,7 +470,7 @@ LABEL_19:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setBackgroundMaterialRecipe:{a3, v10}];
+          [*(*(&v10 + 1) + 8 * v9++) setBackgroundMaterialRecipe:{recipe, v10}];
         }
 
         while (v7 != v9);
@@ -484,13 +484,13 @@ LABEL_19:
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  baseCopy = base;
   if ((BSEqualStrings() & 1) == 0)
   {
-    objc_storeStrong(&self->_materialGroupNameBase, a3);
+    objc_storeStrong(&self->_materialGroupNameBase, base);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -550,8 +550,8 @@ LABEL_19:
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(NCAuxiliaryOptionsView *)self _preferredFontForOptionButton];
-        [v8 setFont:v9];
+        _preferredFontForOptionButton = [(NCAuxiliaryOptionsView *)self _preferredFontForOptionButton];
+        [v8 setFont:_preferredFontForOptionButton];
 
         ++v7;
       }
@@ -570,9 +570,9 @@ LABEL_19:
 
 - (void)_setDefaultAttributes
 {
-  v3 = [(NCAuxiliaryOptionsView *)self _defaultTextColor];
+  _defaultTextColor = [(NCAuxiliaryOptionsView *)self _defaultTextColor];
   auxiliaryOptionsTextColor = self->_auxiliaryOptionsTextColor;
-  self->_auxiliaryOptionsTextColor = v3;
+  self->_auxiliaryOptionsTextColor = _defaultTextColor;
 
   v5 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.1];
   auxiliaryOptionsBackgroundColor = self->_auxiliaryOptionsBackgroundColor;
@@ -585,8 +585,8 @@ LABEL_19:
 
 - (id)_preferredFontForAuxiliaryOptionsSummaryTextLabel
 {
-  v2 = [(NCAuxiliaryOptionsView *)self fontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
+  fontProvider = [(NCAuxiliaryOptionsView *)self fontProvider];
+  v3 = [fontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
 
   return v3;
 }
@@ -596,8 +596,8 @@ LABEL_19:
   optionsSummaryLabel = self->_optionsSummaryLabel;
   if (optionsSummaryLabel)
   {
-    v3 = [(NCAuxiliaryOptionsView *)self _preferredFontForAuxiliaryOptionsSummaryTextLabel];
-    [(UILabel *)optionsSummaryLabel setFont:v3];
+    _preferredFontForAuxiliaryOptionsSummaryTextLabel = [(NCAuxiliaryOptionsView *)self _preferredFontForAuxiliaryOptionsSummaryTextLabel];
+    [(UILabel *)optionsSummaryLabel setFont:_preferredFontForAuxiliaryOptionsSummaryTextLabel];
   }
 }
 
@@ -621,8 +621,8 @@ LABEL_19:
 
 - (id)_preferredFontForOptionButton
 {
-  v2 = [(NCAuxiliaryOptionsView *)self fontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:8];
+  fontProvider = [(NCAuxiliaryOptionsView *)self fontProvider];
+  v3 = [fontProvider preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:8];
 
   return v3;
 }
@@ -630,8 +630,8 @@ LABEL_19:
 - (id)_newOptionsButton
 {
   v3 = objc_alloc_init(MEMORY[0x277D3D320]);
-  v4 = [(NCAuxiliaryOptionsView *)self _preferredFontForOptionButton];
-  [v3 setFont:v4];
+  _preferredFontForOptionButton = [(NCAuxiliaryOptionsView *)self _preferredFontForOptionButton];
+  [v3 setFont:_preferredFontForOptionButton];
 
   [v3 _setContinuousCornerRadius:9.5];
   [(NCAuxiliaryOptionsView *)self addSubview:v3];
@@ -651,8 +651,8 @@ LABEL_19:
     [(UIView *)v5 setFrame:?];
     [(UIView *)self->_overlayView setAutoresizingMask:18];
     [(UIView *)self->_overlayView setBackgroundColor:self->_auxiliaryOptionsBackgroundColor];
-    v6 = [(UIView *)self->_overlayView layer];
-    [v6 setCompositingFilter:self->_auxiliaryOptionsBackgroundCompositingFilter];
+    layer = [(UIView *)self->_overlayView layer];
+    [layer setCompositingFilter:self->_auxiliaryOptionsBackgroundCompositingFilter];
 
     v7 = self->_overlayView;
 
@@ -660,13 +660,13 @@ LABEL_19:
   }
 }
 
-- (void)_calculateOptionsSummaryLabelLayoutInfoForBoundsSize:(CGSize)a3
+- (void)_calculateOptionsSummaryLabelLayoutInfoForBoundsSize:(CGSize)size
 {
   if (self->_optionsSummaryLabel)
   {
-    if (a3.width != self->_widthForCachedLayoutInfo)
+    if (size.width != self->_widthForCachedLayoutInfo)
     {
-      self->_widthForCachedLayoutInfo = a3.width;
+      self->_widthForCachedLayoutInfo = size.width;
       optionsSummaryLabel = self->_optionsSummaryLabel;
       BSRectWithSize();
       self->_cachedSummaryLabelNumberOfLines = [(UILabel *)optionsSummaryLabel unui_numberOfLinesInFrame:0 maximum:self->_drawingContext drawingContext:?];
@@ -674,7 +674,7 @@ LABEL_19:
   }
 }
 
-- (CGRect)_optionsSummaryMeasuringFrameForBounds:(CGRect)a3
+- (CGRect)_optionsSummaryMeasuringFrameForBounds:(CGRect)bounds
 {
   [(NCAuxiliaryOptionsView *)self _optionsSummaryWidthForBounds:?];
   [(UILabel *)self->_optionsSummaryLabel unui_measuringHeightWithNumberOfLines:[(NCAuxiliaryOptionsView *)self _summaryLabelNumberOfLinesForBoundsSize:?]];
@@ -711,11 +711,11 @@ LABEL_19:
   }
 }
 
-- (double)_optionsButtonWidthForBounds:(CGRect)a3 auxiliaryOptionButtonsCount:(unint64_t)a4
+- (double)_optionsButtonWidthForBounds:(CGRect)bounds auxiliaryOptionButtonsCount:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    return (CGRectGetWidth(a3) + -28.0 + (a4 - 1) * -10.0) / a4;
+    return (CGRectGetWidth(bounds) + -28.0 + (count - 1) * -10.0) / count;
   }
 
   else
@@ -770,8 +770,8 @@ LABEL_19:
     aBlock[4] = v30;
     *&aBlock[5] = v15;
     v16 = _Block_copy(aBlock);
-    v17 = [MEMORY[0x277D75128] sharedApplication];
-    v18 = [v17 userInterfaceLayoutDirection] == 1;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v18 = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
     if (v18)
     {

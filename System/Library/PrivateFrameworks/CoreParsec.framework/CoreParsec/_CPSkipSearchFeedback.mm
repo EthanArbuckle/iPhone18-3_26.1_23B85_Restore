@@ -1,8 +1,8 @@
 @interface _CPSkipSearchFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSkipSearchFeedback)init;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSkipSearchFeedback
@@ -17,34 +17,34 @@
   return v6 ^ v7 ^ [(NSString *)self->_experimentNamespaceId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_24;
   }
 
-  v6 = [(_CPSkipSearchFeedback *)self input];
-  v7 = [v4 input];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPSkipSearchFeedback *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_23;
   }
 
-  v8 = [(_CPSkipSearchFeedback *)self input];
-  if (v8)
+  input3 = [(_CPSkipSearchFeedback *)self input];
+  if (input3)
   {
-    v9 = v8;
-    v10 = [(_CPSkipSearchFeedback *)self input];
-    v11 = [v4 input];
-    v12 = [v10 isEqual:v11];
+    v9 = input3;
+    input4 = [(_CPSkipSearchFeedback *)self input];
+    input5 = [equalCopy input];
+    v12 = [input4 isEqual:input5];
 
     if (!v12)
     {
@@ -57,25 +57,25 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_24;
   }
 
-  v6 = [(_CPSkipSearchFeedback *)self experimentId];
-  v7 = [v4 experimentId];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPSkipSearchFeedback *)self experimentId];
+  input2 = [equalCopy experimentId];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_23;
   }
 
-  v14 = [(_CPSkipSearchFeedback *)self experimentId];
-  if (v14)
+  experimentId = [(_CPSkipSearchFeedback *)self experimentId];
+  if (experimentId)
   {
-    v15 = v14;
-    v16 = [(_CPSkipSearchFeedback *)self experimentId];
-    v17 = [v4 experimentId];
-    v18 = [v16 isEqual:v17];
+    v15 = experimentId;
+    experimentId2 = [(_CPSkipSearchFeedback *)self experimentId];
+    experimentId3 = [equalCopy experimentId];
+    v18 = [experimentId2 isEqual:experimentId3];
 
     if (!v18)
     {
@@ -87,20 +87,20 @@
   {
   }
 
-  v6 = [(_CPSkipSearchFeedback *)self treatmentId];
-  v7 = [v4 treatmentId];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPSkipSearchFeedback *)self treatmentId];
+  input2 = [equalCopy treatmentId];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_23;
   }
 
-  v19 = [(_CPSkipSearchFeedback *)self treatmentId];
-  if (v19)
+  treatmentId = [(_CPSkipSearchFeedback *)self treatmentId];
+  if (treatmentId)
   {
-    v20 = v19;
-    v21 = [(_CPSkipSearchFeedback *)self treatmentId];
-    v22 = [v4 treatmentId];
-    v23 = [v21 isEqual:v22];
+    v20 = treatmentId;
+    treatmentId2 = [(_CPSkipSearchFeedback *)self treatmentId];
+    treatmentId3 = [equalCopy treatmentId];
+    v23 = [treatmentId2 isEqual:treatmentId3];
 
     if (!v23)
     {
@@ -112,17 +112,17 @@
   {
   }
 
-  v6 = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
-  v7 = [v4 experimentNamespaceId];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
+  input2 = [equalCopy experimentNamespaceId];
+  if ((input != 0) == (input2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v24 = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
-  if (!v24)
+  experimentNamespaceId = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
+  if (!experimentNamespaceId)
   {
 
 LABEL_27:
@@ -130,10 +130,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v25 = v24;
-  v26 = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
-  v27 = [v4 experimentNamespaceId];
-  v28 = [v26 isEqual:v27];
+  v25 = experimentNamespaceId;
+  experimentNamespaceId2 = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
+  experimentNamespaceId3 = [equalCopy experimentNamespaceId];
+  v28 = [experimentNamespaceId2 isEqual:experimentNamespaceId3];
 
   if (v28)
   {
@@ -147,18 +147,18 @@ LABEL_25:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if ([(_CPSkipSearchFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPSkipSearchFeedback *)self input];
+  input = [(_CPSkipSearchFeedback *)self input];
 
-  if (v5)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
@@ -170,30 +170,30 @@ LABEL_25:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_CPSkipSearchFeedback *)self experimentId];
+  experimentId = [(_CPSkipSearchFeedback *)self experimentId];
 
-  if (v8)
+  if (experimentId)
   {
     experimentId = self->_experimentId;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_CPSkipSearchFeedback *)self treatmentId];
+  treatmentId = [(_CPSkipSearchFeedback *)self treatmentId];
 
-  if (v10)
+  if (treatmentId)
   {
     treatmentId = self->_treatmentId;
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
+  experimentNamespaceId = [(_CPSkipSearchFeedback *)self experimentNamespaceId];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (experimentNamespaceId)
   {
     experimentNamespaceId = self->_experimentNamespaceId;
     PBDataWriterWriteStringField();
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 

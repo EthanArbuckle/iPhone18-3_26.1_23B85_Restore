@@ -2,7 +2,7 @@
 - ($41299696D20B6C925B74A5D5E4D5CC87)contentRect;
 - ($41299696D20B6C925B74A5D5E4D5CC87)frameRect;
 - (NUBufferTileAdapter)init;
-- (NUBufferTileAdapter)initWithFrameRect:(id *)a3 contentRect:(id *)a4 buffer:(id)a5;
+- (NUBufferTileAdapter)initWithFrameRect:(id *)rect contentRect:(id *)contentRect buffer:(id)buffer;
 @end
 
 @implementation NUBufferTileAdapter
@@ -55,8 +55,8 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v22 = v12;
       v23 = 2114;
@@ -75,8 +75,8 @@
     v9 = _NUAssertLogger;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -90,11 +90,11 @@
   _NUAssertFailHandler("[NUBufferTileAdapter init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 355, @"Initializer not available: [%@ %@], use designated initializer instead.", v17, v18, v19, v20, v16);
 }
 
-- (NUBufferTileAdapter)initWithFrameRect:(id *)a3 contentRect:(id *)a4 buffer:(id)a5
+- (NUBufferTileAdapter)initWithFrameRect:(id *)rect contentRect:(id *)contentRect buffer:(id)buffer
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!v8)
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     v14 = NUAssertLogger();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -113,8 +113,8 @@
       if (v18)
       {
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -125,8 +125,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -138,14 +138,14 @@
   v28.receiver = self;
   v28.super_class = NUBufferTileAdapter;
   v9 = [(NUBufferTileAdapter *)&v28 init];
-  var0 = a3->var0;
-  *(v9 + 24) = a3->var1;
+  var0 = rect->var0;
+  *(v9 + 24) = rect->var1;
   *(v9 + 8) = var0;
-  var1 = a4->var1;
-  *(v9 + 40) = a4->var0;
+  var1 = contentRect->var1;
+  *(v9 + 40) = contentRect->var0;
   *(v9 + 56) = var1;
   v12 = *(v9 + 9);
-  *(v9 + 9) = v8;
+  *(v9 + 9) = bufferCopy;
 
   return v9;
 }

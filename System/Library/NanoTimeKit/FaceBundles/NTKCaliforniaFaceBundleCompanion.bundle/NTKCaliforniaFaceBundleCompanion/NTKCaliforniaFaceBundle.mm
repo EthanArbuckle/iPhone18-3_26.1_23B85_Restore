@@ -1,56 +1,56 @@
 @interface NTKCaliforniaFaceBundle
-- (id)_californiaFacesWithColorOptions:(id)a3 device:(id)a4;
-- (id)complicationTypesBySlotForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroGraceDefaultFacesForDevice:(id)a3;
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3;
+- (id)_californiaFacesWithColorOptions:(id)options device:(id)device;
+- (id)complicationTypesBySlotForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroGraceDefaultFacesForDevice:(id)device;
+- (id)heroSpring2020DefaultFacesForDevice:(id)device;
 @end
 
 @implementation NTKCaliforniaFaceBundle
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKCaliforniaFaceBundle *)self defaultFaceForDevice:v4];
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  v5 = [(NTKCaliforniaFaceBundle *)self defaultFaceForDevice:deviceCopy];
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v14.receiver = self;
     v14.super_class = NTKCaliforniaFaceBundle;
-    v6 = [(NTKCaliforniaFaceBundle *)&v14 galleryFacesForDevice:v4];
+    v6 = [(NTKCaliforniaFaceBundle *)&v14 galleryFacesForDevice:deviceCopy];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_3224;
     v12[3] = &unk_1C650;
     v12[4] = self;
-    v13 = v4;
+    v13 = deviceCopy;
     [v6 enumerateObjectsUsingBlock:v12];
   }
 
   else if ([v5 deviceSupportsPigmentEditOption])
   {
-    v7 = [(NTKCaliforniaFaceBundle *)self galleryDefaultPigmentOptionsForDevice:v4];
-    v6 = [(NTKCaliforniaFaceBundle *)self _californiaFacesWithColorOptions:v7 device:v4];
+    v7 = [(NTKCaliforniaFaceBundle *)self galleryDefaultPigmentOptionsForDevice:deviceCopy];
+    v6 = [(NTKCaliforniaFaceBundle *)self _californiaFacesWithColorOptions:v7 device:deviceCopy];
   }
 
   else
   {
-    v8 = [NTKCaliforniaColorEditOption optionWithCaliforniaColor:3004 forDevice:v4];
+    v8 = [NTKCaliforniaColorEditOption optionWithCaliforniaColor:3004 forDevice:deviceCopy];
     v15[0] = v8;
-    v9 = [NTKCaliforniaColorEditOption optionWithCaliforniaColor:3003 forDevice:v4];
+    v9 = [NTKCaliforniaColorEditOption optionWithCaliforniaColor:3003 forDevice:deviceCopy];
     v15[1] = v9;
     v10 = [NSArray arrayWithObjects:v15 count:2];
 
-    v6 = [(NTKCaliforniaFaceBundle *)self _californiaFacesWithColorOptions:v10 device:v4];
+    v6 = [(NTKCaliforniaFaceBundle *)self _californiaFacesWithColorOptions:v10 device:deviceCopy];
   }
 
   return v6;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_1EC40;
     v5[1] = &off_1EC88;
@@ -67,9 +67,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[2] = ntk_evergreen_evergreen;
     v5[3] = ntk_evergreen_palePink;
@@ -88,26 +88,26 @@
   return v3;
 }
 
-- (id)_californiaFacesWithColorOptions:(id)a3 device:(id)a4
+- (id)_californiaFacesWithColorOptions:(id)options device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  deviceCopy = device;
   v8 = +[NSMutableArray array];
-  if ([v7 deviceCategory] != &dword_0 + 1 && objc_msgSend(v7, "isRunningGraceOrLater"))
+  if ([deviceCopy deviceCategory] != &dword_0 + 1 && objc_msgSend(deviceCopy, "isRunningGraceOrLater"))
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_38F8;
     v22[3] = &unk_1C678;
-    v23 = v7;
-    v24 = self;
+    v23 = deviceCopy;
+    selfCopy = self;
     v25 = v8;
     v9 = objc_retainBlock(v22);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = optionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v11)
     {
@@ -141,9 +141,9 @@
   return v16;
 }
 
-- (id)heroGraceDefaultFacesForDevice:(id)a3
+- (id)heroGraceDefaultFacesForDevice:(id)device
 {
-  v3 = [NTKCaliforniaFace defaultFaceOfStyle:39 forDevice:a3];
+  v3 = [NTKCaliforniaFace defaultFaceOfStyle:39 forDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -159,11 +159,11 @@
   return v5;
 }
 
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3
+- (id)heroSpring2020DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [NTKCaliforniaFace defaultFaceOfStyle:39 forDevice:v4];
-  v6 = [(NTKCaliforniaFaceBundle *)self complicationTypesBySlotForDevice:v4];
+  deviceCopy = device;
+  v5 = [NTKCaliforniaFace defaultFaceOfStyle:39 forDevice:deviceCopy];
+  v6 = [(NTKCaliforniaFaceBundle *)self complicationTypesBySlotForDevice:deviceCopy];
 
   [v5 _setFaceGalleryComplicationTypesForSlots:v6];
   if (v5)
@@ -180,9 +180,9 @@
   return v7;
 }
 
-- (id)complicationTypesBySlotForDevice:(id)a3
+- (id)complicationTypesBySlotForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v10[0] = NTKComplicationSlotTopLeft;
     v10[1] = NTKComplicationSlotTopRight;

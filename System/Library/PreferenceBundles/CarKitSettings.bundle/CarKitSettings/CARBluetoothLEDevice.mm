@@ -1,9 +1,9 @@
 @interface CARBluetoothLEDevice
-- (BOOL)isEqual:(id)a3;
-- (CARBluetoothLEDevice)initWithPeripheral:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CARBluetoothLEDevice)initWithPeripheral:(id)peripheral;
 - (NSString)name;
 - (NSUUID)identifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)connectionStatus;
 - (unint64_t)hash;
@@ -11,30 +11,30 @@
 
 @implementation CARBluetoothLEDevice
 
-- (CARBluetoothLEDevice)initWithPeripheral:(id)a3
+- (CARBluetoothLEDevice)initWithPeripheral:(id)peripheral
 {
-  v5 = a3;
+  peripheralCopy = peripheral;
   v9.receiver = self;
   v9.super_class = CARBluetoothLEDevice;
   v6 = [(CARBluetoothLEDevice *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peripheral, a3);
+    objc_storeStrong(&v6->_peripheral, peripheral);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CARBluetoothLEDevice *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(CARBluetoothLEDevice *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -47,25 +47,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CARBluetoothLEDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CARBluetoothLEDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
   {
-    v6 = [(CARBluetoothLEDevice *)self identifier];
-    v7 = [v6 copyWithZone:a3];
+    identifier = [(CARBluetoothLEDevice *)self identifier];
+    v7 = [identifier copyWithZone:zone];
     [v5 setIdentifier:v7];
 
     [v5 setPaired:{-[CARBluetoothLEDevice isPaired](self, "isPaired")}];
     [v5 setConnectionStatus:{-[CARBluetoothLEDevice connectionStatus](self, "connectionStatus")}];
-    v8 = [(CARBluetoothLEDevice *)self peripheral];
-    [v5 setPeripheral:v8];
+    peripheral = [(CARBluetoothLEDevice *)self peripheral];
+    [v5 setPeripheral:peripheral];
   }
 
   return v5;
@@ -73,26 +73,26 @@
 
 - (NSUUID)identifier
 {
-  v2 = [(CARBluetoothLEDevice *)self peripheral];
-  v3 = [v2 identifier];
+  peripheral = [(CARBluetoothLEDevice *)self peripheral];
+  identifier = [peripheral identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)name
 {
-  v2 = [(CARBluetoothLEDevice *)self peripheral];
-  v3 = [v2 name];
-  v4 = [v3 stringByAppendingString:@" (LE)"];
+  peripheral = [(CARBluetoothLEDevice *)self peripheral];
+  name = [peripheral name];
+  v4 = [name stringByAppendingString:@" (LE)"];
 
   return v4;
 }
 
 - (int64_t)connectionStatus
 {
-  v2 = [(CARBluetoothLEDevice *)self peripheral];
-  v3 = v2;
-  if (v2 && (v4 = [v2 state], (v4 - 1) <= 2))
+  peripheral = [(CARBluetoothLEDevice *)self peripheral];
+  v3 = peripheral;
+  if (peripheral && (v4 = [peripheral state], (v4 - 1) <= 2))
   {
     v5 = qword_52360[(v4 - 1)];
   }
@@ -110,11 +110,11 @@
   v10.receiver = self;
   v10.super_class = CARBluetoothLEDevice;
   v3 = [(CARBluetoothLEDevice *)&v10 description];
-  v4 = [(CARBluetoothLEDevice *)self identifier];
-  v5 = [(CARBluetoothLEDevice *)self name];
-  v6 = [(CARBluetoothLEDevice *)self connectionStatus];
-  v7 = [(CARBluetoothLEDevice *)self peripheral];
-  v8 = [NSString stringWithFormat:@"%@ {identifier: %@ name: %@ connectionStatus: %ld peripheral: %@}", v3, v4, v5, v6, v7];
+  identifier = [(CARBluetoothLEDevice *)self identifier];
+  name = [(CARBluetoothLEDevice *)self name];
+  connectionStatus = [(CARBluetoothLEDevice *)self connectionStatus];
+  peripheral = [(CARBluetoothLEDevice *)self peripheral];
+  v8 = [NSString stringWithFormat:@"%@ {identifier: %@ name: %@ connectionStatus: %ld peripheral: %@}", v3, identifier, name, connectionStatus, peripheral];
 
   return v8;
 }

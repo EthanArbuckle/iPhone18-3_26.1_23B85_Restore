@@ -1,7 +1,7 @@
 @interface CLBDNDManager
 + (CLBDNDManager)sharedInstance;
-- (unint64_t)resolveBehaviorForBulletin:(id)a3;
-- (unint64_t)resolveBehaviorForClientEventDetails:(id)a3;
+- (unint64_t)resolveBehaviorForBulletin:(id)bulletin;
+- (unint64_t)resolveBehaviorForClientEventDetails:(id)details;
 @end
 
 @implementation CLBDNDManager
@@ -18,20 +18,20 @@
   return v3;
 }
 
-- (unint64_t)resolveBehaviorForBulletin:(id)a3
+- (unint64_t)resolveBehaviorForBulletin:(id)bulletin
 {
-  v4 = [a3 clarity_clientEventDetails];
-  v5 = [(CLBDNDManager *)self resolveBehaviorForClientEventDetails:v4];
+  clarity_clientEventDetails = [bulletin clarity_clientEventDetails];
+  v5 = [(CLBDNDManager *)self resolveBehaviorForClientEventDetails:clarity_clientEventDetails];
 
   return v5;
 }
 
-- (unint64_t)resolveBehaviorForClientEventDetails:(id)a3
+- (unint64_t)resolveBehaviorForClientEventDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = [DNDEventBehaviorResolutionService serviceForClientIdentifier:@"com.apple.private.ClarityBoard.dnd"];
   v8 = 0;
-  v5 = [v4 resolveBehaviorForEventDetails:v3 error:&v8];
+  v5 = [v4 resolveBehaviorForEventDetails:detailsCopy error:&v8];
 
   v6 = [v5 interruptionSuppression] != 0;
   return v6;

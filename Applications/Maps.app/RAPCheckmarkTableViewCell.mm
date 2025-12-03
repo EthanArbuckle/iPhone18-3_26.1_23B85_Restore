@@ -1,16 +1,16 @@
 @interface RAPCheckmarkTableViewCell
-- (RAPCheckmarkTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setChecked:(BOOL)a3;
+- (RAPCheckmarkTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation RAPCheckmarkTableViewCell
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    self->_checked = a3;
-    if (a3)
+    self->_checked = checked;
+    if (checked)
     {
       v3 = 3;
     }
@@ -24,11 +24,11 @@
   }
 }
 
-- (RAPCheckmarkTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPCheckmarkTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = RAPCheckmarkTableViewCell;
-  result = [(RAPSingleLineTableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  result = [(RAPSingleLineTableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
   if (result)
   {
     result->_checked = 0;

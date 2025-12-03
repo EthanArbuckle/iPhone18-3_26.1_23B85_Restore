@@ -23,7 +23,7 @@
 + (id)notificationName
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@
     }
   }
 
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
 
   return v4;
 }

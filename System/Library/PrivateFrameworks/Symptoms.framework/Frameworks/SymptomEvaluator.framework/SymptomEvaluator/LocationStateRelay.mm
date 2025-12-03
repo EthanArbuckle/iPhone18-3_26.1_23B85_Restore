@@ -5,20 +5,20 @@
 - (BOOL)loadCoreRoutine;
 - (LocationStateRelay)init;
 - (id)mobileWiFiLocationManager;
-- (id)rtLOITypeToString:(int64_t)a3;
+- (id)rtLOITypeToString:(int64_t)string;
 - (int64_t)preflightFrameworks;
-- (unint64_t)addPendingLOIBlocks:(id)a3;
-- (void)callPendingLOIBlocksWithCLLocation:(id)a3 LOI:(id)a4 andError:(id)a5;
+- (unint64_t)addPendingLOIBlocks:(id)blocks;
+- (void)callPendingLOIBlocksWithCLLocation:(id)location LOI:(id)i andError:(id)error;
 - (void)cleanUpPendingLOIBlocks;
 - (void)dealloc;
-- (void)determineIfLocationOfInterestIsKnownOfType:(int64_t)a3 queue:(id)a4 reply:(id)a5;
-- (void)fetchCurrentLocationLOIOnQueue:(id)a3 desiredAccuracy:(double)a4 reply:(id)a5;
-- (void)getLocationTechnologyStateForInitialState:(BOOL)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)setGpsInUse:(BOOL)a3;
-- (void)setLOIUseAuthorized:(BOOL)a3;
+- (void)determineIfLocationOfInterestIsKnownOfType:(int64_t)type queue:(id)queue reply:(id)reply;
+- (void)fetchCurrentLocationLOIOnQueue:(id)queue desiredAccuracy:(double)accuracy reply:(id)reply;
+- (void)getLocationTechnologyStateForInitialState:(BOOL)state;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)setGpsInUse:(BOOL)use;
+- (void)setLOIUseAuthorized:(BOOL)authorized;
 - (void)showLocationArrow;
 - (void)unloadFrameworks;
 @end
@@ -363,36 +363,36 @@ void __41__LocationStateRelay_preflightFrameworks__block_invoke(uint64_t a1)
   [v2 setDelegate:*(a1 + 32)];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(LocationStateRelay *)self preflightFrameworks];
+  preflightFrameworks = [(LocationStateRelay *)self preflightFrameworks];
   v4 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = v3;
+    v7 = preflightFrameworks;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "LOI: locationManagerDidChangeAuthorization err = %ld", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCurrentLocationLOIOnQueue:(id)a3 desiredAccuracy:(double)a4 reply:(id)a5
+- (void)fetchCurrentLocationLOIOnQueue:(id)queue desiredAccuracy:(double)accuracy reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  replyCopy = reply;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__LocationStateRelay_fetchCurrentLocationLOIOnQueue_desiredAccuracy_reply___block_invoke;
   v13[3] = &unk_27898E808;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = replyCopy;
+  accuracyCopy = accuracy;
+  v11 = replyCopy;
+  v12 = queueCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -575,21 +575,21 @@ void __75__LocationStateRelay_fetchCurrentLocationLOIOnQueue_desiredAccuracy_rep
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)determineIfLocationOfInterestIsKnownOfType:(int64_t)a3 queue:(id)a4 reply:(id)a5
+- (void)determineIfLocationOfInterestIsKnownOfType:(int64_t)type queue:(id)queue reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  replyCopy = reply;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__LocationStateRelay_determineIfLocationOfInterestIsKnownOfType_queue_reply___block_invoke;
   v13[3] = &unk_27898E808;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = replyCopy;
+  typeCopy = type;
+  v11 = replyCopy;
+  v12 = queueCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -683,16 +683,16 @@ void __77__LocationStateRelay_determineIfLocationOfInterestIsKnownOfType_queue_r
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rtLOITypeToString:(int64_t)a3
+- (id)rtLOITypeToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"<UNKNOWN>";
   }
 
   else
   {
-    return off_27898EAB0[a3];
+    return off_27898EAB0[string];
   }
 }
 
@@ -786,48 +786,48 @@ LABEL_20:
 
 - (void)showLocationArrow
 {
-  v2 = [(LocationStateRelay *)self mobileWiFiLocationManager];
-  [v2 markAsHavingReceivedLocation];
+  mobileWiFiLocationManager = [(LocationStateRelay *)self mobileWiFiLocationManager];
+  [mobileWiFiLocationManager markAsHavingReceivedLocation];
 }
 
-- (unint64_t)addPendingLOIBlocks:(id)a3
+- (unint64_t)addPendingLOIBlocks:(id)blocks
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v4 copy];
+  blocksCopy = blocks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [blocksCopy copy];
   v8 = _Block_copy(v7);
-  [(NSMutableDictionary *)v5->pendingLOIBlocks setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)selfCopy->pendingLOIBlocks setObject:v8 forKeyedSubscript:date];
 
-  v9 = [(NSMutableDictionary *)v5->pendingLOIBlocks count];
-  objc_sync_exit(v5);
+  v9 = [(NSMutableDictionary *)selfCopy->pendingLOIBlocks count];
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)callPendingLOIBlocksWithCLLocation:(id)a3 LOI:(id)a4 andError:(id)a5
+- (void)callPendingLOIBlocksWithCLLocation:(id)location LOI:(id)i andError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  pendingLOIBlocks = v11->pendingLOIBlocks;
+  locationCopy = location;
+  iCopy = i;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingLOIBlocks = selfCopy->pendingLOIBlocks;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__LocationStateRelay_callPendingLOIBlocksWithCLLocation_LOI_andError___block_invoke;
   v16[3] = &unk_27898EA40;
-  v13 = v8;
+  v13 = locationCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = iCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = errorCopy;
   v19 = v15;
   [(NSMutableDictionary *)pendingLOIBlocks enumerateKeysAndObjectsUsingBlock:v16];
-  [(NSMutableDictionary *)v11->pendingLOIBlocks removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->pendingLOIBlocks removeAllObjects];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 void __70__LocationStateRelay_callPendingLOIBlocksWithCLLocation_LOI_andError___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -896,23 +896,23 @@ void __70__LocationStateRelay_callPendingLOIBlocksWithCLLocation_LOI_andError___
 
 - (void)cleanUpPendingLOIBlocks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEB18] array];
-  pendingLOIBlocks = v2->pendingLOIBlocks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x277CBEAA8] date];
+  array = [MEMORY[0x277CBEB18] array];
+  pendingLOIBlocks = selfCopy->pendingLOIBlocks;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke;
   v11 = &unk_27898EA68;
-  v6 = v3;
+  v6 = date;
   v12 = v6;
-  v7 = v4;
+  v7 = array;
   v13 = v7;
   [(NSMutableDictionary *)pendingLOIBlocks enumerateKeysAndObjectsUsingBlock:&v8];
-  [(NSMutableDictionary *)v2->pendingLOIBlocks removeObjectsForKeys:v7, v8, v9, v10, v11];
+  [(NSMutableDictionary *)selfCopy->pendingLOIBlocks removeObjectsForKeys:v7, v8, v9, v10, v11];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -945,10 +945,10 @@ void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1,
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   locationRequestTimer = self->locationRequestTimer;
   if (locationRequestTimer)
   {
@@ -957,7 +957,7 @@ void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1,
     self->locationRequestTimer = 0;
   }
 
-  if (v7 && [v7 count])
+  if (locationsCopy && [locationsCopy count])
   {
     v10 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -966,8 +966,8 @@ void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1,
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Just marked MobileWiFi as having received location", buf, 2u);
     }
 
-    v11 = [v7 lastObject];
-    [v11 horizontalAccuracy];
+    lastObject = [locationsCopy lastObject];
+    [lastObject horizontalAccuracy];
     if (v12 <= 250.0)
     {
       routineManager = self->routineManager;
@@ -976,27 +976,27 @@ void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1,
       v14[2] = __57__LocationStateRelay_locationManager_didUpdateLocations___block_invoke;
       v14[3] = &unk_27898EA90;
       v14[4] = self;
-      v15 = v11;
+      v15 = lastObject;
       [(RTRoutineManager *)routineManager fetchLocationOfInterestAtLocation:v15 withHandler:v14];
     }
 
     else
     {
-      [(LocationStateRelay *)self callPendingLOIBlocksWithCLLocation:v11 LOI:0 andError:0];
+      [(LocationStateRelay *)self callPendingLOIBlocksWithCLLocation:lastObject LOI:0 andError:0];
     }
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   v8 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
   {
     v12 = 138412290;
-    v13 = v7;
+    v13 = errorCopy;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "Location request failed with error: %@", &v12, 0xCu);
   }
 
@@ -1008,12 +1008,12 @@ void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1,
     self->locationRequestTimer = 0;
   }
 
-  [(LocationStateRelay *)self callPendingLOIBlocksWithCLLocation:0 LOI:0 andError:v7];
+  [(LocationStateRelay *)self callPendingLOIBlocksWithCLLocation:0 LOI:0 andError:errorCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLocationTechnologyStateForInitialState:(BOOL)a3
+- (void)getLocationTechnologyStateForInitialState:(BOOL)state
 {
   if ([(LocationStateRelay *)self loadCoreLocation]&& self->clCopyTechnologiesInUseFunc)
   {
@@ -1023,7 +1023,7 @@ void __45__LocationStateRelay_cleanUpPendingLOIBlocks__block_invoke(uint64_t a1,
     block[2] = __64__LocationStateRelay_getLocationTechnologyStateForInitialState___block_invoke;
     block[3] = &unk_27898A3A0;
     block[4] = self;
-    v9 = a3;
+    stateCopy = state;
     dispatch_async(internalQueue, block);
   }
 
@@ -1083,21 +1083,21 @@ void __64__LocationStateRelay_getLocationTechnologyStateForInitialState___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setGpsInUse:(BOOL)a3
+- (void)setGpsInUse:(BOOL)use
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_gpsInUse != a3)
+  if (self->_gpsInUse != use)
   {
     [(LocationStateRelay *)self willChangeValueForKey:@"gpsInUse"];
-    self->_gpsInUse = a3;
+    self->_gpsInUse = use;
     [(LocationStateRelay *)self didChangeValueForKey:@"gpsInUse"];
     v5 = analyticsLogHandle;
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_INFO))
     {
       v6 = v5;
-      v7 = [(LocationStateRelay *)self gpsInUse];
+      gpsInUse = [(LocationStateRelay *)self gpsInUse];
       v8 = " NOT";
-      if (v7)
+      if (gpsInUse)
       {
         v8 = "";
       }
@@ -1111,12 +1111,12 @@ void __64__LocationStateRelay_getLocationTechnologyStateForInitialState___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLOIUseAuthorized:(BOOL)a3
+- (void)setLOIUseAuthorized:(BOOL)authorized
 {
-  if (self->_LOIUseAuthorized != a3)
+  if (self->_LOIUseAuthorized != authorized)
   {
     [(LocationStateRelay *)self willChangeValueForKey:@"LOIUseAuthorized"];
-    self->_LOIUseAuthorized = a3;
+    self->_LOIUseAuthorized = authorized;
 
     [(LocationStateRelay *)self didChangeValueForKey:@"LOIUseAuthorized"];
   }

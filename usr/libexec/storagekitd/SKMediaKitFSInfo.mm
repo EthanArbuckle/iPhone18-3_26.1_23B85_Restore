@@ -1,21 +1,21 @@
 @interface SKMediaKitFSInfo
 - (NSString)fsType;
 - (NSString)volumeName;
-- (SKMediaKitFSInfo)initWithFSInfo:(id)a3;
+- (SKMediaKitFSInfo)initWithFSInfo:(id)info;
 @end
 
 @implementation SKMediaKitFSInfo
 
-- (SKMediaKitFSInfo)initWithFSInfo:(id)a3
+- (SKMediaKitFSInfo)initWithFSInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = SKMediaKitFSInfo;
   v6 = [(SKMediaKitFSInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fsInfo, a3);
+    objc_storeStrong(&v6->_fsInfo, info);
   }
 
   return v7;
@@ -23,16 +23,16 @@
 
 - (NSString)volumeName
 {
-  v2 = [(SKMediaKitFSInfo *)self fsInfo];
-  v3 = [v2 objectForKey:@"Volume name"];
+  fsInfo = [(SKMediaKitFSInfo *)self fsInfo];
+  v3 = [fsInfo objectForKey:@"Volume name"];
 
   return v3;
 }
 
 - (NSString)fsType
 {
-  v2 = [(SKMediaKitFSInfo *)self fsInfo];
-  v3 = [v2 objectForKey:@"Filesystem"];
+  fsInfo = [(SKMediaKitFSInfo *)self fsInfo];
+  v3 = [fsInfo objectForKey:@"Filesystem"];
 
   return v3;
 }

@@ -1,7 +1,7 @@
 @interface BLTPBActionFactory
 + (id)bltVersionToFactories;
 + (id)sharedInstance;
-- (id)actionWithBBAction:(id)a3;
+- (id)actionWithBBAction:(id)action;
 @end
 
 @implementation BLTPBActionFactory
@@ -36,24 +36,24 @@ void __43__BLTPBActionFactory_bltVersionToFactories__block_invoke()
 
 + (id)sharedInstance
 {
-  v3 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
-  v4 = [v3 bltVersion];
+  blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+  bltVersion = [blt_boundedWaitForActivePairedDevice bltVersion];
 
-  if (v4 >= 2)
+  if (bltVersion >= 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = bltVersion;
   }
 
   if (v5 != gCurrentVersion)
   {
-    v6 = [a1 bltVersionToFactories];
+    bltVersionToFactories = [self bltVersionToFactories];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [bltVersionToFactories objectForKeyedSubscript:v7];
     v9 = gCurrentFactory;
     gCurrentFactory = v8;
 
@@ -65,40 +65,40 @@ void __43__BLTPBActionFactory_bltVersionToFactories__block_invoke()
   return v10;
 }
 
-- (id)actionWithBBAction:(id)a3
+- (id)actionWithBBAction:(id)action
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  actionCopy = action;
+  v4 = actionCopy;
+  if (actionCopy)
   {
-    v5 = [v3 appearance];
+    appearance = [actionCopy appearance];
     v6 = objc_alloc_init(BLTPBImage);
-    v7 = [v5 image];
-    v8 = [v7 data];
-    [(BLTPBImage *)v6 setData:v8];
+    image = [appearance image];
+    data = [image data];
+    [(BLTPBImage *)v6 setData:data];
 
-    v9 = [v5 style] == 1;
+    v9 = [appearance style] == 1;
     v10 = objc_alloc_init(BLTPBAppearance);
-    v11 = [v5 title];
-    [(BLTPBAppearance *)v10 setTitle:v11];
+    title = [appearance title];
+    [(BLTPBAppearance *)v10 setTitle:title];
 
     [(BLTPBAppearance *)v10 setDestructive:v9];
     v12 = objc_alloc_init(BLTPBAction);
-    v13 = [v4 identifier];
-    [(BLTPBAction *)v12 setIdentifier:v13];
+    identifier = [v4 identifier];
+    [(BLTPBAction *)v12 setIdentifier:identifier];
 
     -[BLTPBAction setActivationMode:](v12, "setActivationMode:", [v4 activationMode]);
     [(BLTPBAction *)v12 setAppearance:v10];
-    v14 = [v4 launchURL];
-    v15 = [v14 absoluteString];
-    [(BLTPBAction *)v12 setLaunchURL:v15];
+    launchURL = [v4 launchURL];
+    absoluteString = [launchURL absoluteString];
+    [(BLTPBAction *)v12 setLaunchURL:absoluteString];
 
     -[BLTPBAction setBehavior:](v12, "setBehavior:", [v4 behavior]);
-    v16 = [v4 behaviorParameters];
-    v17 = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
-    v18 = v17;
-    if (v17)
+    behaviorParameters = [v4 behaviorParameters];
+    activePairedDeviceSupportsNSNullPListExtenion = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
+    v18 = activePairedDeviceSupportsNSNullPListExtenion;
+    if (activePairedDeviceSupportsNSNullPListExtenion)
     {
       v19 = &v27;
     }
@@ -108,13 +108,13 @@ void __43__BLTPBActionFactory_bltVersionToFactories__block_invoke()
       v19 = 0;
     }
 
-    if (v17)
+    if (activePairedDeviceSupportsNSNullPListExtenion)
     {
       v27 = 0;
     }
 
     v26 = 0;
-    v20 = [BLTObjectSerializer serializeObject:v16 nulls:v19 error:&v26];
+    v20 = [BLTObjectSerializer serializeObject:behaviorParameters nulls:v19 error:&v26];
     v21 = 0;
     if (v18)
     {

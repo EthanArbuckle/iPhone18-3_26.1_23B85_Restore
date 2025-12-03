@@ -1,14 +1,14 @@
 @interface APRemovePrivacySensitiveFieldsContextTransformer
-+ (id)transformedContextForDroppedDueToPolicyFromContext:(id)a3;
++ (id)transformedContextForDroppedDueToPolicyFromContext:(id)context;
 @end
 
 @implementation APRemovePrivacySensitiveFieldsContextTransformer
 
-+ (id)transformedContextForDroppedDueToPolicyFromContext:(id)a3
++ (id)transformedContextForDroppedDueToPolicyFromContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 objectForKeyedSubscript:@"header"];
+  v5 = [contextCopy objectForKeyedSubscript:@"header"];
   v6 = +[NSMutableDictionary dictionary];
   v7 = [v5 objectForKeyedSubscript:@"onboard_status"];
   [v6 setObject:v7 forKeyedSubscript:@"onboard_status"];
@@ -22,7 +22,7 @@
   v10 = [v6 copy];
   [v4 setObject:v10 forKeyedSubscript:@"header"];
 
-  v11 = [v3 objectForKeyedSubscript:?];
+  v11 = [contextCopy objectForKeyedSubscript:?];
 
   v12 = +[NSMutableDictionary dictionary];
   v13 = [v11 objectForKeyedSubscript:@"feedMetadata"];

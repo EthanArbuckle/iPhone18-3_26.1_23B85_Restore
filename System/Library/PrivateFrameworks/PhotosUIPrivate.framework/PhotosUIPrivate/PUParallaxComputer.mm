@@ -1,20 +1,20 @@
 @interface PUParallaxComputer
-- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)a3 visibleRect:(CGRect)a4;
+- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)frame visibleRect:(CGRect)rect;
 @end
 
 @implementation PUParallaxComputer
 
-- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)a3 visibleRect:(CGRect)a4
+- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)frame visibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (CGRectIntersectsRect(a3, a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  if (CGRectIntersectsRect(frame, rect))
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -23,10 +23,10 @@
     aBlock[4] = self;
     v13 = _Block_copy(aBlock);
     v14 = MEMORY[0x1E695EFF8];
-    v15 = [(PUParallaxComputer *)self axis];
-    v16 = v15;
+    axis = [(PUParallaxComputer *)self axis];
+    v16 = axis;
     v30 = height;
-    if (v15)
+    if (axis)
     {
       v37.origin.x = v11;
       v37.origin.y = v10;
@@ -59,7 +59,7 @@
     else
     {
       v17 = *v14;
-      if ((v15 & 2) != 0)
+      if ((axis & 2) != 0)
       {
 LABEL_4:
         v33.origin.x = v11;

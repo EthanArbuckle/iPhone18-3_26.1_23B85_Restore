@@ -1,18 +1,18 @@
 @interface TDThemeSchema
-+ (BOOL)loadThemeConstantsForEntity:(id)a3 inContext:(id)a4;
-- (BOOL)_renditionKey:(const _renditionkeytoken *)a3 isEqualToKeyIgnoringLook:(const _renditionkeytoken *)a4;
-- (TDThemeSchema)initWithThemeDocument:(id)a3;
-- (void)_addSchemaPartDefinitionsForStandardElement:(id *)a3 withElement:(id)a4;
-- (void)_loadConstantForEntity:(id)a3 withDescriptor:(const _themeconstant *)a4;
++ (BOOL)loadThemeConstantsForEntity:(id)entity inContext:(id)context;
+- (BOOL)_renditionKey:(const _renditionkeytoken *)key isEqualToKeyIgnoringLook:(const _renditionkeytoken *)look;
+- (TDThemeSchema)initWithThemeDocument:(id)document;
+- (void)_addSchemaPartDefinitionsForStandardElement:(id *)element withElement:(id)withElement;
+- (void)_loadConstantForEntity:(id)entity withDescriptor:(const _themeconstant *)descriptor;
 - (void)_sanityCheckColorNamesAndUpdateIfNecessary;
 - (void)_sanityCheckEffectRenditionsAndUpdateIfNecessary;
 - (void)_sanityCheckMetafontSizeSelectorsAndUpdateIfNecessary;
 - (void)_sanityCheckMicaRenditionsAndUpdateIfNecessary;
-- (void)_sanityCheckObjectsWithEntityName:(id)a3 globalDescriptor:(void *)a4 matchIdentifierOnly:(BOOL)a5;
+- (void)_sanityCheckObjectsWithEntityName:(id)name globalDescriptor:(void *)descriptor matchIdentifierOnly:(BOOL)only;
 - (void)_sanityCheckSchemaAssets;
 - (void)_sanityCheckSchemaCategoriesAndUpdateIfNecessary;
 - (void)_sanityCheckSchemaDefinitionsAndUpdateIfNecessary;
-- (void)_sanityCheckSchemaPartDefinitionsForStandardElement:(id *)a3 withElement:(id)a4;
+- (void)_sanityCheckSchemaPartDefinitionsForStandardElement:(id *)element withElement:(id)withElement;
 - (void)dealloc;
 - (void)loadBasicThemePart;
 - (void)loadColorNames;
@@ -50,14 +50,14 @@
 
 @implementation TDThemeSchema
 
-- (TDThemeSchema)initWithThemeDocument:(id)a3
+- (TDThemeSchema)initWithThemeDocument:(id)document
 {
   v6.receiver = self;
   v6.super_class = TDThemeSchema;
   v4 = [(TDThemeSchema *)&v6 init];
   if (v4)
   {
-    v4->_doc = a3;
+    v4->_doc = document;
   }
 
   return v4;
@@ -70,32 +70,32 @@
   [(TDThemeSchema *)&v3 dealloc];
 }
 
-- (void)_sanityCheckObjectsWithEntityName:(id)a3 globalDescriptor:(void *)a4 matchIdentifierOnly:(BOOL)a5
+- (void)_sanityCheckObjectsWithEntityName:(id)name globalDescriptor:(void *)descriptor matchIdentifierOnly:(BOOL)only
 {
   v122 = *MEMORY[0x277D85DE8];
   v94 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"identifier" ascending:1];
-  v102 = a3;
-  obj = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->_doc, "allObjectsForEntity:withSortDescriptors:", a3, [MEMORY[0x277CBEA60] arrayWithObject:?]);
-  v95 = a4;
-  v7 = [CoreThemeConstantEnumerator enumeratorForGlobalListAtAddress:a4];
+  nameCopy = name;
+  obj = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->_doc, "allObjectsForEntity:withSortDescriptors:", name, [MEMORY[0x277CBEA60] arrayWithObject:?]);
+  descriptorCopy = descriptor;
+  v7 = [CoreThemeConstantEnumerator enumeratorForGlobalListAtAddress:descriptor];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [v7 nextConstantHelper];
+  nextConstantHelper = [v7 nextConstantHelper];
   v97 = v8;
-  if (!v9)
+  if (!nextConstantHelper)
   {
     goto LABEL_26;
   }
 
-  v10 = v9;
+  nextConstantHelper2 = nextConstantHelper;
   v96 = v7;
   do
   {
-    if (![objc_msgSend(v10 "displayName")])
+    if (![objc_msgSend(nextConstantHelper2 "displayName")])
     {
       break;
     }
 
-    if ([objc_msgSend(v10 "label")])
+    if ([objc_msgSend(nextConstantHelper2 "label")])
     {
       goto LABEL_25;
     }
@@ -125,36 +125,36 @@
         v14 = [objc_msgSend(v13 valueForKey:{@"identifier", "integerValue"}];
         v15 = [v13 valueForKey:@"constantName"];
         v16 = [v13 valueForKey:@"displayName"];
-        v17 = [v10 identifier];
-        v18 = [v10 label];
-        v19 = [v10 displayName];
-        if (v14 != v17)
+        identifier = [nextConstantHelper2 identifier];
+        label = [nextConstantHelper2 label];
+        displayName = [nextConstantHelper2 displayName];
+        if (v14 != identifier)
         {
-          if (a5 || ([v15 isEqualToString:v18] & 1) == 0 && !objc_msgSend(v16, "isEqualToString:", v19))
+          if (only || ([v15 isEqualToString:label] & 1) == 0 && !objc_msgSend(v16, "isEqualToString:", displayName))
           {
             continue;
           }
 
-          v92 = v17;
-          TDSchemaLog(&cfstr_UpdatingIdenti.isa, v20, v21, v22, v23, v24, v25, v26, v18);
-          [v13 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", v17), @"identifier"}];
+          v92 = identifier;
+          TDSchemaLog(&cfstr_UpdatingIdenti.isa, v20, v21, v22, v23, v24, v25, v26, label);
+          [v13 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", identifier), @"identifier"}];
         }
 
-        if (([v15 isEqualToString:v18] & 1) == 0)
+        if (([v15 isEqualToString:label] & 1) == 0)
         {
           v92 = v15;
-          v93 = v18;
-          TDSchemaLog(&cfstr_UpdatingConsta.isa, v27, v28, v29, v30, v31, v32, v33, v18);
-          [v13 setValue:v18 forKey:@"constantName"];
+          v93 = label;
+          TDSchemaLog(&cfstr_UpdatingConsta.isa, v27, v28, v29, v30, v31, v32, v33, label);
+          [v13 setValue:label forKey:@"constantName"];
         }
 
         ++v11;
-        if (([v16 isEqualToString:v19] & 1) == 0)
+        if (([v16 isEqualToString:displayName] & 1) == 0)
         {
           v92 = v16;
-          v93 = v19;
-          TDSchemaLog(&cfstr_UpdatingDispla.isa, v34, v35, v36, v37, v38, v39, v40, v18);
-          [v13 setValue:v19 forKey:@"displayName"];
+          v93 = displayName;
+          TDSchemaLog(&cfstr_UpdatingDispla.isa, v34, v35, v36, v37, v38, v39, v40, label);
+          [v13 setValue:displayName forKey:@"displayName"];
         }
       }
 
@@ -164,7 +164,7 @@
     while (v105);
     if (v11 >= 2)
     {
-      NSLog(&cfstr_WarningDocumen.isa, [v10 valueForKey:@"label"]);
+      NSLog(&cfstr_WarningDocumen.isa, [nextConstantHelper2 valueForKey:@"label"]);
       v7 = v96;
       v8 = v97;
       goto LABEL_25;
@@ -175,19 +175,19 @@
     if (!v11)
     {
 LABEL_24:
-      [v8 addObject:v10];
+      [v8 addObject:nextConstantHelper2];
     }
 
 LABEL_25:
-    v10 = [v7 nextConstantHelper];
+    nextConstantHelper2 = [v7 nextConstantHelper];
   }
 
-  while (v10);
+  while (nextConstantHelper2);
 LABEL_26:
   if ([v8 count])
   {
     v92 = [v8 valueForKey:@"label"];
-    TDSchemaLog(&cfstr_EntityHasMissi.isa, v41, v42, v43, v44, v45, v46, v47, v102);
+    TDSchemaLog(&cfstr_EntityHasMissi.isa, v41, v42, v43, v44, v45, v46, v47, nameCopy);
     v113 = 0u;
     v114 = 0u;
     v111 = 0u;
@@ -207,7 +207,7 @@ LABEL_26:
           }
 
           v52 = *(*(&v111 + 1) + 8 * j);
-          v53 = [(CoreThemeDocument *)self->_doc newObjectForEntity:v102];
+          v53 = [(CoreThemeDocument *)self->_doc newObjectForEntity:nameCopy];
           [v53 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", objc_msgSend(v52, "identifier")), @"identifier"}];
           [v53 setValue:objc_msgSend(v52 forKey:{"label"), @"constantName"}];
           [v53 setValue:objc_msgSend(v52 forKey:{"displayName"), @"displayName"}];
@@ -223,26 +223,26 @@ LABEL_26:
     [-[TDPersistentDocument managedObjectContext](self->_doc "managedObjectContext")];
   }
 
-  v54 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->_doc, "allObjectsForEntity:withSortDescriptors:", v102, [MEMORY[0x277CBEA60] arrayWithObject:v94]);
+  v54 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->_doc, "allObjectsForEntity:withSortDescriptors:", nameCopy, [MEMORY[0x277CBEA60] arrayWithObject:v94]);
   v55 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-  obja = [CoreThemeConstantEnumerator enumeratorForGlobalListAtAddress:v95];
-  v56 = [obja nextConstantHelper];
-  if (v56)
+  obja = [CoreThemeConstantEnumerator enumeratorForGlobalListAtAddress:descriptorCopy];
+  nextConstantHelper3 = [obja nextConstantHelper];
+  if (nextConstantHelper3)
   {
-    v57 = v56;
+    nextConstantHelper4 = nextConstantHelper3;
     v58 = 0;
     do
     {
-      if (![objc_msgSend(v57 "displayName")])
+      if (![objc_msgSend(nextConstantHelper4 "displayName")])
       {
         break;
       }
 
-      v59 = [v57 identifier];
-      v60 = v59;
-      if (v59 > v58)
+      identifier2 = [nextConstantHelper4 identifier];
+      v60 = identifier2;
+      if (identifier2 > v58)
       {
-        v58 = v59;
+        v58 = identifier2;
       }
 
       v104 = v58;
@@ -283,11 +283,11 @@ LABEL_26:
                 v77 = v60;
                 v78 = [objc_msgSend(objc_msgSend(objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
                 v79 = MEMORY[0x277CCAC30];
-                v91 = [v78 name];
+                name = [v78 name];
                 v80 = v79;
                 v60 = v77;
                 v64 = v76;
-                if (-[CoreThemeDocument countForEntity:withPredicate:](self->_doc, "countForEntity:withPredicate:", @"RenditionKeySpec", [v80 predicateWithFormat:@"%K = %@", v91, v75]) <= 0)
+                if (-[CoreThemeDocument countForEntity:withPredicate:](self->_doc, "countForEntity:withPredicate:", @"RenditionKeySpec", [v80 predicateWithFormat:@"%K = %@", name, v75]) <= 0)
                 {
                   v81 = v75;
                 }
@@ -309,11 +309,11 @@ LABEL_26:
         while (v62);
       }
 
-      v57 = [obja nextConstantHelper];
+      nextConstantHelper4 = [obja nextConstantHelper];
       v58 = v104;
     }
 
-    while (v57);
+    while (nextConstantHelper4);
   }
 
   else
@@ -322,10 +322,10 @@ LABEL_26:
   }
 
   v82 = [v54 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"identifier > %d", v58, v92, v93)}];
-  if ([v82 count] && (objc_msgSend(v102, "isEqualToString:", @"EffectType") & 1) == 0 && (objc_msgSend(v102, "isEqualToString:", @"EffectParameterType") & 1) == 0)
+  if ([v82 count] && (objc_msgSend(nameCopy, "isEqualToString:", @"EffectType") & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", @"EffectParameterType") & 1) == 0)
   {
     [v82 valueForKey:@"constantName"];
-    TDSchemaLog(&cfstr_RemovingExtraT.isa, v83, v84, v85, v86, v87, v88, v89, v102);
+    TDSchemaLog(&cfstr_RemovingExtraT.isa, v83, v84, v85, v86, v87, v88, v89, nameCopy);
     [v55 addObjectsFromArray:v82];
   }
 
@@ -342,20 +342,20 @@ LABEL_26:
 {
   v69 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"controlSize.identifier" ascending:1];
-  v54 = self;
+  selfCopy = self;
   obj = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->_doc, "allObjectsForEntity:withSortDescriptors:", @"MetafontSizeSelector", [MEMORY[0x277CBEA60] arrayWithObject:v3]);
 
   v4 = [CoreThemeConstantEnumerator enumeratorForGlobalListAtAddress:MEMORY[0x277D02750]];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v53 = v4;
-  v6 = [v4 nextConstantHelper];
-  if (v6)
+  nextConstantHelper = [v4 nextConstantHelper];
+  if (nextConstantHelper)
   {
-    v7 = v6;
+    nextConstantHelper2 = nextConstantHelper;
     v52 = v5;
     while (1)
     {
-      if (![objc_msgSend(v7 "displayName")])
+      if (![objc_msgSend(nextConstantHelper2 "displayName")])
       {
         goto LABEL_27;
       }
@@ -384,36 +384,36 @@ LABEL_26:
           v9 = *(*(&v63 + 1) + 8 * i);
           v10 = [objc_msgSend(v9 "identifier")];
           v11 = [objc_msgSend(v9 "controlSize")];
-          v12 = [v9 selectorName];
-          v13 = [v9 displayName];
-          v14 = [v7 identifier];
-          v15 = [v7 label];
-          v16 = [v7 displayName];
-          if (v14 == v10 || ([v12 isEqualToString:v15] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", v16))
+          selectorName = [v9 selectorName];
+          displayName = [v9 displayName];
+          identifier = [nextConstantHelper2 identifier];
+          label = [nextConstantHelper2 label];
+          displayName2 = [nextConstantHelper2 displayName];
+          if (identifier == v10 || ([selectorName isEqualToString:label] & 1) != 0 || objc_msgSend(displayName, "isEqualToString:", displayName2))
           {
-            if ([objc_msgSend(v9 "identifier")] != v14)
+            if ([objc_msgSend(v9 "identifier")] != identifier)
             {
               TDSchemaLog(&cfstr_UpdatingIdenti.isa, v17, v18, v19, v20, v21, v22, v23, v9);
-              [v9 setIdentifier:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", v14)}];
+              [v9 setIdentifier:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", identifier)}];
             }
 
-            if (v14 != v11)
+            if (identifier != v11)
             {
               TDSchemaLog(&cfstr_UpdatingContro.isa, v17, v18, v19, v20, v21, v22, v23, v9);
-              [v9 setControlSize:{-[CoreThemeDocument sizeWithIdentifier:](v54->_doc, "sizeWithIdentifier:", v14)}];
+              [v9 setControlSize:{-[CoreThemeDocument sizeWithIdentifier:](selfCopy->_doc, "sizeWithIdentifier:", identifier)}];
             }
 
-            if (([v12 isEqualToString:v15] & 1) == 0)
+            if (([selectorName isEqualToString:label] & 1) == 0)
             {
               TDSchemaLog(&cfstr_UpdatingSelect.isa, v24, v25, v26, v27, v28, v29, v30, v9);
-              [v9 setSelectorName:v15];
+              [v9 setSelectorName:label];
             }
 
             ++v58;
-            if (([v13 isEqualToString:v16] & 1) == 0)
+            if (([displayName isEqualToString:displayName2] & 1) == 0)
             {
               TDSchemaLog(&cfstr_UpdatingDispla_0.isa, v31, v32, v33, v34, v35, v36, v37, v9);
-              [v9 setDisplayName:v16];
+              [v9 setDisplayName:displayName2];
             }
           }
         }
@@ -433,19 +433,19 @@ LABEL_26:
 
       else
       {
-        NSLog(&cfstr_WarningDocumen.isa, v7);
+        NSLog(&cfstr_WarningDocumen.isa, nextConstantHelper2);
         v5 = v52;
       }
 
 LABEL_26:
-      v7 = [v53 nextConstantHelper];
-      if (!v7)
+      nextConstantHelper2 = [v53 nextConstantHelper];
+      if (!nextConstantHelper2)
       {
         goto LABEL_27;
       }
     }
 
-    [v5 addObject:v7];
+    [v5 addObject:nextConstantHelper2];
     goto LABEL_26;
   }
 
@@ -472,8 +472,8 @@ LABEL_27:
           }
 
           v49 = *(*(&v59 + 1) + 8 * j);
-          v50 = [(CoreThemeDocument *)v54->_doc newObjectForEntity:@"MetafontSizeSelector"];
-          [v50 setControlSize:{-[CoreThemeDocument sizeWithIdentifier:](v54->_doc, "sizeWithIdentifier:", objc_msgSend(v49, "identifier"))}];
+          v50 = [(CoreThemeDocument *)selfCopy->_doc newObjectForEntity:@"MetafontSizeSelector"];
+          [v50 setControlSize:{-[CoreThemeDocument sizeWithIdentifier:](selfCopy->_doc, "sizeWithIdentifier:", objc_msgSend(v49, "identifier"))}];
           [v50 setSelectorName:{objc_msgSend(v49, "label")}];
           [v50 setDisplayName:{objc_msgSend(v49, "displayName")}];
         }
@@ -484,7 +484,7 @@ LABEL_27:
       while (v46);
     }
 
-    [-[TDPersistentDocument managedObjectContext](v54->_doc "managedObjectContext")];
+    [-[TDPersistentDocument managedObjectContext](selfCopy->_doc "managedObjectContext")];
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -546,38 +546,38 @@ LABEL_11:
 
   if ([v4 count])
   {
-    v14 = [v4 firstIndex];
-    v15 = self;
-    if (v14 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v4 firstIndex];
+    selfCopy = self;
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (j = v14; j != 0x7FFFFFFFFFFFFFFFLL; j = [v4 indexGreaterThanIndex:j])
+      for (j = firstIndex; j != 0x7FFFFFFFFFFFFFFFLL; j = [v4 indexGreaterThanIndex:j])
       {
-        v17 = [(CoreThemeDocument *)v15->_doc newObjectForEntity:@"ColorName"];
+        v17 = [(CoreThemeDocument *)selfCopy->_doc newObjectForEntity:@"ColorName"];
         v18 = MEMORY[0x277D02730] + 40 * j;
         [v17 setValue:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithUTF8String:", *(v18 + 16)), @"displayName"}];
         [v17 setValue:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithUTF8String:", *(v18 + 24)), @"selector"}];
       }
     }
 
-    [-[TDPersistentDocument managedObjectContext](v15->_doc "managedObjectContext")];
+    [-[TDPersistentDocument managedObjectContext](selfCopy->_doc "managedObjectContext")];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sanityCheckSchemaPartDefinitionsForStandardElement:(id *)a3 withElement:(id)a4
+- (void)_sanityCheckSchemaPartDefinitionsForStandardElement:(id *)element withElement:(id)withElement
 {
   v111 = *MEMORY[0x277D85DE8];
   v7 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"name" ascending:1];
-  v90 = a4;
-  v8 = [a4 parts];
+  withElementCopy = withElement;
+  parts = [withElement parts];
   v86 = v7;
-  v9 = [v8 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v7)}];
-  v10 = self;
+  v9 = [parts sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v7)}];
+  selfCopy = self;
   v11 = [MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self->_doc, "targetPlatform")}];
-  v12 = [v11 partDefinitionCountForElementDefinition:a3];
+  v12 = [v11 partDefinitionCountForElementDefinition:element];
   v13 = malloc_type_malloc(440 * v12, 0xBC29AAC7uLL);
-  memcpy(v13, a3->var4, 440 * v12);
+  memcpy(v13, element->var4, 440 * v12);
   qsort_b(v13, v12, 0x1B8uLL, &__block_literal_global_5);
   v88 = v12;
   obj = [MEMORY[0x277CBEB18] array];
@@ -614,10 +614,10 @@ LABEL_11:
               v13 = v87;
               if (([v22 isEqualToString:{objc_msgSend(v21, "widgetID")}] & 1) == 0)
               {
-                v23 = [v90 name];
+                name = [withElementCopy name];
                 [v21 name];
                 [v21 widgetID];
-                TDSchemaLog(&cfstr_UpdatingWidget.isa, v24, v25, v26, v27, v28, v29, v30, v23);
+                TDSchemaLog(&cfstr_UpdatingWidget.isa, v24, v25, v26, v27, v28, v29, v30, name);
                 [v21 setWidgetID:v22];
               }
 
@@ -654,8 +654,8 @@ LABEL_16:
 
   if ([obj count])
   {
-    v31 = [v90 name];
-    TDSchemaLog(&cfstr_ElementWasMiss.isa, v32, v33, v34, v35, v36, v37, v38, v31);
+    name2 = [withElementCopy name];
+    TDSchemaLog(&cfstr_ElementWasMiss.isa, v32, v33, v34, v35, v36, v37, v38, name2);
   }
 
   v101 = 0u;
@@ -676,14 +676,14 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v43 = [*(*(&v99 + 1) + 8 * j) bytes];
-        v44 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:*v43];
-        v45 = [v11 widgetNameForPartDefinition:v43];
+        bytes = [*(*(&v99 + 1) + 8 * j) bytes];
+        v44 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:*bytes];
+        v45 = [v11 widgetNameForPartDefinition:bytes];
         TDSchemaLog(&cfstr_AddingPart.isa, v46, v47, v48, v49, v50, v51, v52, v44);
-        v53 = [(CoreThemeDocument *)v10->_doc newObjectForEntity:@"SchemaPartDefinition"];
+        v53 = [(CoreThemeDocument *)selfCopy->_doc newObjectForEntity:@"SchemaPartDefinition"];
         [v53 setName:v44];
         [v53 setWidgetID:v45];
-        [v53 setElement:v90];
+        [v53 setElement:withElementCopy];
         [v53 updateDerivedRenditionData];
       }
 
@@ -693,14 +693,14 @@ LABEL_16:
     while (v40);
   }
 
-  v54 = [MEMORY[0x277CBEB18] array];
-  v55 = [v90 parts];
-  v56 = [v55 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v86)}];
+  array = [MEMORY[0x277CBEB18] array];
+  parts2 = [withElementCopy parts];
+  v56 = [parts2 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v86)}];
 
   if ([v56 count] > v88)
   {
-    v57 = [v90 name];
-    TDSchemaLog(&cfstr_DocumentContai.isa, v58, v59, v60, v61, v62, v63, v64, v57);
+    name3 = [withElementCopy name];
+    TDSchemaLog(&cfstr_DocumentContai.isa, v58, v59, v60, v61, v62, v63, v64, name3);
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
@@ -734,7 +734,7 @@ LABEL_29:
 
         else
         {
-          [v54 addObject:v70];
+          [array addObject:v70];
         }
 
         if (v66 == ++v69)
@@ -754,7 +754,7 @@ LABEL_29:
     v94 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v72 = [v54 countByEnumeratingWithState:&v91 objects:v107 count:16];
+    v72 = [array countByEnumeratingWithState:&v91 objects:v107 count:16];
     if (v72)
     {
       v73 = v72;
@@ -765,17 +765,17 @@ LABEL_29:
         {
           if (*v92 != v74)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(array);
           }
 
           v76 = *(*(&v91 + 1) + 8 * k);
-          v77 = [v76 name];
-          TDSchemaLog(&cfstr_DeletingPart.isa, v78, v79, v80, v81, v82, v83, v84, v77);
-          [v90 removePartsObject:v76];
-          [(CoreThemeDocument *)v10->_doc deleteObject:v76];
+          name4 = [v76 name];
+          TDSchemaLog(&cfstr_DeletingPart.isa, v78, v79, v80, v81, v82, v83, v84, name4);
+          [withElementCopy removePartsObject:v76];
+          [(CoreThemeDocument *)selfCopy->_doc deleteObject:v76];
         }
 
-        v73 = [v54 countByEnumeratingWithState:&v91 objects:v107 count:16];
+        v73 = [array countByEnumeratingWithState:&v91 objects:v107 count:16];
       }
 
       while (v73);
@@ -790,26 +790,26 @@ LABEL_29:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addSchemaPartDefinitionsForStandardElement:(id *)a3 withElement:(id)a4
+- (void)_addSchemaPartDefinitionsForStandardElement:(id *)element withElement:(id)withElement
 {
   v7 = [MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self->_doc, "targetPlatform")}];
-  if (a3->var4[0].var3)
+  if (element->var4[0].var3)
   {
     v8 = v7;
     do
     {
-      if (a3->var4[0].var0)
+      if (element->var4[0].var0)
       {
         v9 = [(CoreThemeDocument *)self->_doc newObjectForEntity:@"SchemaPartDefinition"];
-        v10 = [v8 widgetNameForPartDefinition:a3->var4];
-        [v9 setName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithCString:encoding:", a3->var4[0].var0, 4)}];
-        [v9 setElement:a4];
+        v10 = [v8 widgetNameForPartDefinition:element->var4];
+        [v9 setName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithCString:encoding:", element->var4[0].var0, 4)}];
+        [v9 setElement:withElement];
         [v9 setWidgetID:v10];
         [v9 updateDerivedRenditionData];
       }
 
-      var3 = a3->var4[1].var3;
-      a3 = (a3 + 440);
+      var3 = element->var4[1].var3;
+      element = (element + 440);
     }
 
     while (var3);
@@ -821,9 +821,9 @@ LABEL_29:
   v75 = *MEMORY[0x277D85DE8];
   TDSchemaLog(&cfstr_SynchronizingS.isa, a2, v2, v3, v4, v5, v6, v7, v61);
   v9 = [(CoreThemeDocument *)self->_doc allObjectsForEntity:@"SchemaCategory" withSortDescriptors:0];
-  v63 = self;
+  selfCopy = self;
   v10 = [MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self->_doc, "targetPlatform")}];
-  v11 = [v10 elementCategoryCount];
+  elementCategoryCount = [v10 elementCategoryCount];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -845,7 +845,7 @@ LABEL_29:
         }
 
         v16 = *(*(&v69 + 1) + 8 * v15);
-        if (v11)
+        if (elementCategoryCount)
         {
           v17 = 0;
           while (1)
@@ -856,7 +856,7 @@ LABEL_29:
               break;
             }
 
-            if (v11 == ++v17)
+            if (elementCategoryCount == ++v17)
             {
               goto LABEL_10;
             }
@@ -864,9 +864,9 @@ LABEL_29:
 
           if (*v18 != [v16 identifier])
           {
-            v35 = [v16 constantName];
+            constantName = [v16 constantName];
             v62 = *v18;
-            TDSchemaLog(&cfstr_UpdatingIdenti_0.isa, v36, v37, v38, v39, v40, v41, v42, v35);
+            TDSchemaLog(&cfstr_UpdatingIdenti_0.isa, v36, v37, v38, v39, v40, v41, v42, constantName);
             [v16 setIdentifier:*v18];
           }
         }
@@ -874,11 +874,11 @@ LABEL_29:
         else
         {
 LABEL_10:
-          v19 = [v16 displayName];
-          TDSchemaLog(&cfstr_RemovingRelati.isa, v20, v21, v22, v23, v24, v25, v26, v19);
+          displayName = [v16 displayName];
+          TDSchemaLog(&cfstr_RemovingRelati.isa, v20, v21, v22, v23, v24, v25, v26, displayName);
           [v16 removeElements:{objc_msgSend(v16, "elements")}];
-          v27 = [v16 displayName];
-          TDSchemaLog(&cfstr_DeletingCatego.isa, v28, v29, v30, v31, v32, v33, v34, v27);
+          displayName2 = [v16 displayName];
+          TDSchemaLog(&cfstr_DeletingCatego.isa, v28, v29, v30, v31, v32, v33, v34, displayName2);
           [(CoreThemeDocument *)self->_doc deleteObject:v16];
         }
 
@@ -893,9 +893,9 @@ LABEL_10:
     while (v43);
   }
 
-  if (v11)
+  if (elementCategoryCount)
   {
-    for (i = 0; i != v11; ++i)
+    for (i = 0; i != elementCategoryCount; ++i)
     {
       v45 = [v10 elementCategoryAtIndex:i];
       v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:*(v45 + 1)];
@@ -938,18 +938,18 @@ LABEL_20:
       else
       {
 LABEL_26:
-        v51 = [(CoreThemeDocument *)v63->_doc newObjectForEntity:@"SchemaCategory"];
+        v51 = [(CoreThemeDocument *)selfCopy->_doc newObjectForEntity:@"SchemaCategory"];
         [v51 setIdentifier:*v45];
         [v51 setDisplayName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", *(v45 + 2))}];
         [v51 setConstantName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", *(v45 + 1))}];
-        v52 = [v51 displayName];
-        TDSchemaLog(&cfstr_AddedMissingCa.isa, v53, v54, v55, v56, v57, v58, v59, v52);
+        displayName3 = [v51 displayName];
+        TDSchemaLog(&cfstr_AddedMissingCa.isa, v53, v54, v55, v56, v57, v58, v59, displayName3);
       }
     }
   }
 
-  [-[TDPersistentDocument managedObjectContext](v63->_doc "managedObjectContext")];
-  [(CoreThemeDocument *)v63->_doc recacheThemeConstant:@"SchemaCategory"];
+  [-[TDPersistentDocument managedObjectContext](selfCopy->_doc "managedObjectContext")];
+  [(CoreThemeDocument *)selfCopy->_doc recacheThemeConstant:@"SchemaCategory"];
   v60 = *MEMORY[0x277D85DE8];
 }
 
@@ -984,7 +984,7 @@ LABEL_26:
         v12 = *(*(&v122 + 1) + 8 * v11);
         v99 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"name" ascending:1];
         v13 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self->_doc, "allObjectsForEntity:withSortDescriptors:", v12, [MEMORY[0x277CBEA60] arrayWithObject:?]);
-        v14 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v103 = NSClassFromString([objc_msgSend(objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")]);
         v105 = [(objc_class *)v103 elementDefinitionCountWithSchema:v10];
         if (v105)
@@ -1021,9 +1021,9 @@ LABEL_26:
                     if (([v101 isEqualToString:{objc_msgSend(objc_msgSend(v21, "category"), "constantName")}] & 1) == 0)
                     {
                       v23 = [(CoreThemeDocument *)self->_doc schemaCategoryWithIdentifier:*v22];
-                      v24 = [v21 name];
+                      name = [v21 name];
                       [objc_msgSend(v21 "category")];
-                      TDSchemaLog(&cfstr_UpdatingCatego.isa, v25, v26, v27, v28, v29, v30, v31, v24);
+                      TDSchemaLog(&cfstr_UpdatingCatego.isa, v25, v26, v27, v28, v29, v30, v31, name);
                       [v21 setCategory:v23];
                     }
 
@@ -1040,7 +1040,7 @@ LABEL_26:
 
                   if ([v16 compare:{objc_msgSend(v21, "name")}] == -1)
                   {
-                    [v14 addObject:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytesNoCopy:length:freeWhenDone:", v104, 8, 0)}];
+                    [array addObject:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytesNoCopy:length:freeWhenDone:", v104, 8, 0)}];
                     v10 = v102;
                     goto LABEL_23;
                   }
@@ -1057,12 +1057,12 @@ LABEL_26:
               }
             }
 
-            [v14 addObject:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytesNoCopy:length:freeWhenDone:", v104, 8, 0)}];
+            [array addObject:{objc_msgSend(MEMORY[0x277CBEA90], "dataWithBytesNoCopy:length:freeWhenDone:", v104, 8, 0)}];
 LABEL_23:
           }
         }
 
-        if ([v14 count])
+        if ([array count])
         {
           TDSchemaLog(&cfstr_DocumentIsMiss.isa, v39, v40, v41, v42, v43, v44, v45, v94);
         }
@@ -1071,7 +1071,7 @@ LABEL_23:
         v117 = 0u;
         v114 = 0u;
         v115 = 0u;
-        v46 = [v14 countByEnumeratingWithState:&v114 objects:v128 count:16];
+        v46 = [array countByEnumeratingWithState:&v114 objects:v128 count:16];
         if (v46)
         {
           v47 = v46;
@@ -1082,22 +1082,22 @@ LABEL_23:
             {
               if (*v115 != v48)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(array);
               }
 
-              v50 = [*(*(&v114 + 1) + 8 * k) bytes];
-              v51 = [(CoreThemeDocument *)self->_doc schemaCategoryWithIdentifier:*(v50 + 24)];
-              v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:*v50];
-              v53 = [v51 constantName];
-              TDSchemaLog(&stru_2859A0D98.isa, v54, v55, v56, v57, v58, v59, v60, v53);
+              bytes = [*(*(&v114 + 1) + 8 * k) bytes];
+              v51 = [(CoreThemeDocument *)self->_doc schemaCategoryWithIdentifier:*(bytes + 24)];
+              v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:*bytes];
+              constantName = [v51 constantName];
+              TDSchemaLog(&stru_2859A0D98.isa, v54, v55, v56, v57, v58, v59, v60, constantName);
               v61 = [(CoreThemeDocument *)self->_doc newObjectForEntity:v12];
               [v61 setName:v52];
-              [v61 setPublished:*(v50 + 16)];
+              [v61 setPublished:*(bytes + 16)];
               [v61 setCategory:v51];
-              [(TDThemeSchema *)self _addSchemaPartDefinitionsForStandardElement:v50 withElement:v61];
+              [(TDThemeSchema *)self _addSchemaPartDefinitionsForStandardElement:bytes withElement:v61];
             }
 
-            v47 = [v14 countByEnumeratingWithState:&v114 objects:v128 count:16];
+            v47 = [array countByEnumeratingWithState:&v114 objects:v128 count:16];
           }
 
           while (v47);
@@ -1109,7 +1109,7 @@ LABEL_23:
         if ([v62 count] > v105)
         {
           TDSchemaLog(&cfstr_DocumentContai_0.isa, v63, v64, v65, v66, v67, v68, v69, v94);
-          v70 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v110 = 0u;
           v111 = 0u;
           v112 = 0u;
@@ -1132,7 +1132,7 @@ LABEL_23:
                 v76 = *(*(&v110 + 1) + 8 * m);
                 if (v73 >= v105)
                 {
-                  [v70 addObject:*(*(&v110 + 1) + 8 * m)];
+                  [array2 addObject:*(*(&v110 + 1) + 8 * m)];
                 }
 
                 else
@@ -1148,7 +1148,7 @@ LABEL_23:
 
                     else
                     {
-                      [v70 addObject:v76];
+                      [array2 addObject:v76];
                     }
                   }
                 }
@@ -1164,7 +1164,7 @@ LABEL_23:
           v109 = 0u;
           v106 = 0u;
           v107 = 0u;
-          v79 = [v70 countByEnumeratingWithState:&v106 objects:v126 count:16];
+          v79 = [array2 countByEnumeratingWithState:&v106 objects:v126 count:16];
           if (v79)
           {
             v80 = v79;
@@ -1175,16 +1175,16 @@ LABEL_23:
               {
                 if (*v107 != v81)
                 {
-                  objc_enumerationMutation(v70);
+                  objc_enumerationMutation(array2);
                 }
 
                 v83 = *(*(&v106 + 1) + 8 * n);
-                v84 = [v83 name];
-                TDSchemaLog(&cfstr_DeletingElemen.isa, v85, v86, v87, v88, v89, v90, v91, v84);
+                name2 = [v83 name];
+                TDSchemaLog(&cfstr_DeletingElemen.isa, v85, v86, v87, v88, v89, v90, v91, name2);
                 [(CoreThemeDocument *)self->_doc deleteObject:v83];
               }
 
-              v80 = [v70 countByEnumeratingWithState:&v106 objects:v126 count:16];
+              v80 = [array2 countByEnumeratingWithState:&v106 objects:v126 count:16];
             }
 
             while (v80);
@@ -1207,8 +1207,8 @@ LABEL_23:
 - (void)_sanityCheckEffectRenditionsAndUpdateIfNecessary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreThemeDocument *)self->_doc targetPlatform];
-  if (v3 <= 5 && ((1 << v3) & 0x3A) != 0)
+  targetPlatform = [(CoreThemeDocument *)self->_doc targetPlatform];
+  if (targetPlatform <= 5 && ((1 << targetPlatform) & 0x3A) != 0)
   {
     v5 = [(CoreThemeDocument *)self->_doc metadatumForKey:@"PreviousCoreThemeDefinitionDataModelKey"];
     if (v5)
@@ -1295,7 +1295,7 @@ LABEL_23:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_renditionKey:(const _renditionkeytoken *)a3 isEqualToKeyIgnoringLook:(const _renditionkeytoken *)a4
+- (BOOL)_renditionKey:(const _renditionkeytoken *)key isEqualToKeyIgnoringLook:(const _renditionkeytoken *)look
 {
   CUISystemThemeRenditionKeyFormat();
 
@@ -1328,13 +1328,13 @@ LABEL_23:
         v44 = v4;
         v5 = *(*(&v65 + 1) + 8 * v4);
         v6 = [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v5 "renditions")];
-        v49 = [v5 partDefinition];
-        v7 = [v49 renditionGroups];
+        partDefinition = [v5 partDefinition];
+        renditionGroups = [partDefinition renditionGroups];
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v8 = [v7 countByEnumeratingWithState:&v61 objects:v71 count:16];
+        v8 = [renditionGroups countByEnumeratingWithState:&v61 objects:v71 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1345,15 +1345,15 @@ LABEL_23:
             {
               if (*v62 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(renditionGroups);
               }
 
               v12 = *(*(&v61 + 1) + 8 * i);
               if (-[TDThemeSchema _renditionKey:isEqualToKeyIgnoringLook:](self, "_renditionKey:isEqualToKeyIgnoringLook:", [objc_msgSend(v12 "baseKey")], objc_msgSend(objc_msgSend(v5, "baseKeySpec"), "key")))
               {
-                v13 = [MEMORY[0x277CCAA00] defaultManager];
-                v14 = [(CoreThemeDocument *)self->_doc defaultPathComponentsForPartDefinition:v49];
-                v15 = -[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](self->_doc, "folderNameFromRenditionKey:forPartDefinition:", [v12 baseKey], v49);
+                defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+                v14 = [(CoreThemeDocument *)self->_doc defaultPathComponentsForPartDefinition:partDefinition];
+                v15 = -[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](self->_doc, "folderNameFromRenditionKey:forPartDefinition:", [v12 baseKey], partDefinition);
                 v46 = [v14 stringByAppendingPathComponent:v15];
                 if (([objc_msgSend(v5 "folderName")] & 1) == 0)
                 {
@@ -1367,15 +1367,15 @@ LABEL_23:
                 }
 
                 v47 = v16;
-                v48 = v13;
-                if (([v13 fileExistsAtPath:{objc_msgSend(v16, "path")}] & 1) != 0 || objc_msgSend(v13, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v16, 1, 0, 0))
+                v48 = defaultManager;
+                if (([defaultManager fileExistsAtPath:{objc_msgSend(v16, "path")}] & 1) != 0 || objc_msgSend(defaultManager, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v16, 1, 0, 0))
                 {
                   v59 = 0u;
                   v60 = 0u;
                   v57 = 0u;
                   v58 = 0u;
-                  v45 = [v5 renditions];
-                  v51 = [v45 countByEnumeratingWithState:&v57 objects:v70 count:16];
+                  renditions = [v5 renditions];
+                  v51 = [renditions countByEnumeratingWithState:&v57 objects:v70 count:16];
                   if (v51)
                   {
                     v50 = *v58;
@@ -1385,7 +1385,7 @@ LABEL_23:
                       {
                         if (*v58 != v50)
                         {
-                          objc_enumerationMutation(v45);
+                          objc_enumerationMutation(renditions);
                         }
 
                         v18 = *(*(&v57 + 1) + 8 * j);
@@ -1394,8 +1394,8 @@ LABEL_23:
                         v55 = 0u;
                         v56 = 0u;
                         v19 = v12;
-                        v20 = [v12 renditions];
-                        v21 = [v20 countByEnumeratingWithState:&v53 objects:v69 count:16];
+                        renditions2 = [v12 renditions];
+                        v21 = [renditions2 countByEnumeratingWithState:&v53 objects:v69 count:16];
                         if (!v21)
                         {
                           goto LABEL_48;
@@ -1409,18 +1409,18 @@ LABEL_23:
                           {
                             if (*v54 != v23)
                             {
-                              objc_enumerationMutation(v20);
+                              objc_enumerationMutation(renditions2);
                             }
 
                             v25 = *(*(&v53 + 1) + 8 * k);
                             if (-[TDThemeSchema _renditionKey:isEqualToKeyIgnoringLook:](self, "_renditionKey:isEqualToKeyIgnoringLook:", [v25 key], objc_msgSend(objc_msgSend(v18, "keySpec"), "key")))
                             {
-                              v26 = [(CoreThemeDocument *)self->_doc defaultPNGFileNameForSchemaRendition:v25 withPartDefinition:v49];
+                              v26 = [(CoreThemeDocument *)self->_doc defaultPNGFileNameForSchemaRendition:v25 withPartDefinition:partDefinition];
                               v27 = [v48 fileExistsAtPath:{objc_msgSend(objc_msgSend(v47, "path"), "stringByAppendingPathComponent:", v26)}];
-                              v28 = [v18 asset];
+                              asset = [v18 asset];
                               if (v27)
                               {
-                                if ([objc_msgSend(v28 "category")])
+                                if ([objc_msgSend(asset "category")])
                                 {
                                   goto LABEL_48;
                                 }
@@ -1431,7 +1431,7 @@ LABEL_47:
                                 goto LABEL_48;
                               }
 
-                              v29 = [v28 fileURLWithDocument:self->_doc];
+                              v29 = [asset fileURLWithDocument:self->_doc];
                               if ([v29 isEqual:{objc_msgSend(v47, "URLByAppendingPathComponent:", v26)}])
                               {
                                 NSLog(&cfstr_MissingAsset.isa, [v29 path]);
@@ -1451,7 +1451,7 @@ LABEL_47:
 
                               else
                               {
-                                [(CoreThemeDocument *)self->_doc createReferencePNGForSchemaRendition:v25 withPartDefinition:v49 atLocation:v47 error:&v52];
+                                [(CoreThemeDocument *)self->_doc createReferencePNGForSchemaRendition:v25 withPartDefinition:partDefinition atLocation:v47 error:&v52];
                                 if (!v52)
                                 {
                                   v30 = @"wrote new reference file to %@";
@@ -1470,7 +1470,7 @@ LABEL_45:
                             }
                           }
 
-                          v22 = [v20 countByEnumeratingWithState:&v53 objects:v69 count:16];
+                          v22 = [renditions2 countByEnumeratingWithState:&v53 objects:v69 count:16];
                           if (v22)
                           {
                             continue;
@@ -1483,7 +1483,7 @@ LABEL_48:
                         v12 = v19;
                       }
 
-                      v51 = [v45 countByEnumeratingWithState:&v57 objects:v70 count:16];
+                      v51 = [renditions countByEnumeratingWithState:&v57 objects:v70 count:16];
                       if (!v51)
                       {
                         goto LABEL_50;
@@ -1496,7 +1496,7 @@ LABEL_48:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v61 objects:v71 count:16];
+            v9 = [renditionGroups countByEnumeratingWithState:&v61 objects:v71 count:16];
             if (v9)
             {
               continue;
@@ -1563,7 +1563,7 @@ LABEL_50:
 
 - (void)loadThemeSizes
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027C8] + 16);
   if (v5)
@@ -1578,7 +1578,7 @@ LABEL_50:
         break;
       }
 
-      v9 = [[TDThemeSize alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeSize alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1593,7 +1593,7 @@ LABEL_50:
 
 - (void)loadThemeValues
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02800] + 16);
   if (v5)
@@ -1608,7 +1608,7 @@ LABEL_50:
         break;
       }
 
-      v9 = [[TDThemeValue alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeValue alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1623,7 +1623,7 @@ LABEL_50:
 
 - (void)loadThemeElements
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02798] + 48);
   if (v5)
@@ -1641,7 +1641,7 @@ LABEL_50:
       v9 = strlen(kObsoletePrefix);
       if (strncmp(kObsoletePrefix, v8, v9))
       {
-        v10 = [[TDThemeElement alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+        v10 = [[TDThemeElement alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
         [(TDThemeConstant *)v10 setIdentifier:*(v7 - 8)];
         -[TDThemeConstant setDisplayName:](v10, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
         -[TDThemeConstant setConstantName:](v10, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1657,7 +1657,7 @@ LABEL_50:
 
 - (void)loadThemeParts
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027B8] + 16);
   if (v5)
@@ -1675,7 +1675,7 @@ LABEL_50:
       v9 = strlen(kObsoletePrefix);
       if (strncmp(kObsoletePrefix, v8, v9))
       {
-        v10 = [[TDThemePart alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+        v10 = [[TDThemePart alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
         [(TDThemeConstant *)v10 setIdentifier:*v7];
         -[TDThemeConstant setDisplayName:](v10, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
         -[TDThemeConstant setConstantName:](v10, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1691,12 +1691,12 @@ LABEL_50:
 
 - (void)loadBasicThemePart
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *MEMORY[0x277D027B8];
   v6 = *(MEMORY[0x277D027B8] + 8);
   v7 = *(MEMORY[0x277D027B8] + 16);
-  v8 = [[TDThemePart alloc] initWithEntity:v4 insertIntoManagedObjectContext:v3];
+  v8 = [[TDThemePart alloc] initWithEntity:v4 insertIntoManagedObjectContext:managedObjectContext];
   [(TDThemeConstant *)v8 setIdentifier:v5];
   -[TDThemeConstant setDisplayName:](v8, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v7 encoding:1]);
   -[TDThemeConstant setConstantName:](v8, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v6 encoding:1]);
@@ -1704,7 +1704,7 @@ LABEL_50:
 
 - (void)loadThemeStates
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027D0] + 16);
   if (v5)
@@ -1719,7 +1719,7 @@ LABEL_50:
         break;
       }
 
-      v9 = [[TDThemeState alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeState alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1732,14 +1732,14 @@ LABEL_50:
   }
 }
 
-+ (BOOL)loadThemeConstantsForEntity:(id)a3 inContext:(id)a4
++ (BOOL)loadThemeConstantsForEntity:(id)entity inContext:(id)context
 {
   if (loadThemeConstantsForEntity_inContext__onceToken != -1)
   {
     +[TDThemeSchema loadThemeConstantsForEntity:inContext:];
   }
 
-  v6 = [objc_msgSend(loadThemeConstantsForEntity_inContext__constantMappings objectForKey:{objc_msgSend(a3, "name")), "pointerValue"}];
+  v6 = [objc_msgSend(loadThemeConstantsForEntity_inContext__constantMappings objectForKey:{objc_msgSend(entity, "name")), "pointerValue"}];
   if (*(v6 + 16))
   {
     v7 = v6;
@@ -1750,7 +1750,7 @@ LABEL_50:
         break;
       }
 
-      v8 = [[TDThemeConstant alloc] initWithEntity:a3 insertIntoManagedObjectContext:a4];
+      v8 = [[TDThemeConstant alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
       -[TDThemeConstant setValue:forKey:](v8, "setValue:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:*v7], @"identifier");
       -[TDThemeConstant setDisplayName:](v8, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v7[2] encoding:1]);
       -[TDThemeConstant setConstantName:](v8, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v7[1] encoding:1]);
@@ -1774,7 +1774,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemePresentationStates
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027C0] + 16);
   if (v5)
@@ -1789,7 +1789,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemePresentationState alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemePresentationState alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1804,7 +1804,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeDirections
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02778] + 16);
   if (v5)
@@ -1819,7 +1819,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeDirection alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeDirection alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1834,7 +1834,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeDrawingLayers
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02788] + 16);
   if (v5)
@@ -1849,7 +1849,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeDrawingLayer alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeDrawingLayer alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1864,7 +1864,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeIdioms
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027B0] + 16);
   if (v5)
@@ -1879,7 +1879,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeIdiom alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeIdiom alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1894,7 +1894,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeDisplayGamuts
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02780] + 16);
   if (v5)
@@ -1909,7 +1909,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeDisplayGamut alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeDisplayGamut alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1924,7 +1924,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeDeploymentTargets
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02770] + 16);
   if (v5)
@@ -1939,7 +1939,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeDeploymentTarget alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeDeploymentTarget alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1954,7 +1954,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeCompressionTypes
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02768] + 16);
   if (v5)
@@ -1969,7 +1969,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeCompressionType alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeCompressionType alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -1984,7 +1984,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadTexturePixelFormats
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027F0] + 16);
   if (v5)
@@ -1999,7 +1999,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDTexturePixelFormat alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDTexturePixelFormat alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2014,7 +2014,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeTextureFaces
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027E0] + 16);
   if (v5)
@@ -2029,7 +2029,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeDisplayGamut alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeDisplayGamut alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2044,7 +2044,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeTextureInterpretations
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027E8] + 16);
   if (v5)
@@ -2059,7 +2059,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDTextureInterpretation alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDTextureInterpretation alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2074,7 +2074,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeGraphicsFeatureSetClasses
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027A0] + 16);
   if (v5)
@@ -2089,7 +2089,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeGraphicsFeatureSetClass alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeGraphicsFeatureSetClass alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2104,7 +2104,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadThemeUISizeClasses
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027F8] + 16);
   if (v5)
@@ -2119,7 +2119,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeUISizeClass alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeUISizeClass alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2134,7 +2134,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadIterationTypes
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = "Iterate Values";
   if ("Iterate Values")
@@ -2149,7 +2149,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDIterationType alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDIterationType alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2164,7 +2164,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadRenditionTypes
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02760] + 8);
   if (v5)
@@ -2173,7 +2173,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
     v7 = MEMORY[0x277D02760];
     do
     {
-      v8 = [[TDRenditionType alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v8 = [[TDRenditionType alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v8 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v8, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithUTF8String:*(v7 + 2)]);
       -[TDThemeConstant setConstantName:](v8, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
@@ -2188,7 +2188,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadRenditionSubtypes
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02758] + 8);
   if (v5)
@@ -2197,7 +2197,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
     v7 = MEMORY[0x277D02758];
     do
     {
-      v8 = [[TDRenditionSubtype alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v8 = [[TDRenditionSubtype alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v8 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v8, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithUTF8String:*(v7 + 2)]);
       -[TDThemeConstant setConstantName:](v8, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
@@ -2212,7 +2212,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadColorNames
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   if (*(MEMORY[0x277D02730] + 8))
   {
@@ -2226,7 +2226,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v8 = [[TDColorName alloc] initWithEntity:v5 insertIntoManagedObjectContext:v3];
+      v8 = [[TDColorName alloc] initWithEntity:v5 insertIntoManagedObjectContext:managedObjectContext];
       -[TDColorName setDisplayName:](v8, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v7 encoding:1]);
       -[TDColorName setSelector:](v8, "setSelector:", [MEMORY[0x277CCACA8] stringWithCString:*v6 encoding:1]);
 
@@ -2240,7 +2240,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadColorStatuses
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02728] + 8);
   if (v5)
@@ -2255,7 +2255,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeConstant alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeConstant alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       -[TDThemeConstant setValue:forKey:](v9, "setValue:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:*(v7 - 4)], @"identifier");
       -[TDThemeConstant setValue:forKey:](v9, "setValue:forKey:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1], @"displayName");
       -[TDThemeConstant setValue:forKey:](v9, "setValue:forKey:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1], @"constantName");
@@ -2271,7 +2271,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadMetafontSelectors
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02748] + 16);
   if (v5)
@@ -2286,7 +2286,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeConstant alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeConstant alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2301,7 +2301,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadMetafontSizes
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02750] + 16);
   if (v5)
@@ -2318,7 +2318,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
       v9 = *v7;
       v10 = [(CoreThemeDocument *)self->_doc sizeWithIdentifier:*v7];
-      v11 = [[TDMetafontSizeSelector alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v11 = [[TDMetafontSizeSelector alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       -[TDMetafontSizeSelector setIdentifier:](v11, "setIdentifier:", [MEMORY[0x277CCABB0] numberWithInteger:v9]);
       [(TDMetafontSizeSelector *)v11 setControlSize:v10];
       -[TDMetafontSizeSelector setSelectorName:](v11, "setSelectorName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2334,7 +2334,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadEffectConstants
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D02740] + 16);
   if (v5)
@@ -2349,7 +2349,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDThemeConstant alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDThemeConstant alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2375,7 +2375,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v15 = [[TDThemeConstant alloc] initWithEntity:v12 insertIntoManagedObjectContext:v3];
+      v15 = [[TDThemeConstant alloc] initWithEntity:v12 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v15 setIdentifier:*v13];
       -[TDThemeConstant setDisplayName:](v15, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:1]);
       -[TDThemeConstant setConstantName:](v15, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:1]);
@@ -2388,27 +2388,27 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
   }
 }
 
-- (void)_loadConstantForEntity:(id)a3 withDescriptor:(const _themeconstant *)a4
+- (void)_loadConstantForEntity:(id)entity withDescriptor:(const _themeconstant *)descriptor
 {
-  v7 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v8 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
-  if (a4->var2)
+  if (descriptor->var2)
   {
     v9 = v8;
     do
     {
-      if (!a4->var1)
+      if (!descriptor->var1)
       {
         break;
       }
 
       v10 = [objc_alloc(NSClassFromString(objc_msgSend(v9 "managedObjectClassName")))];
-      [v10 setIdentifier:LODWORD(a4->var0)];
-      [v10 setDisplayName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithCString:encoding:", a4->var2, 1)}];
-      [v10 setConstantName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithCString:encoding:", a4->var1, 1)}];
+      [v10 setIdentifier:LODWORD(descriptor->var0)];
+      [v10 setDisplayName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithCString:encoding:", descriptor->var2, 1)}];
+      [v10 setConstantName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithCString:encoding:", descriptor->var1, 1)}];
 
-      var2 = a4[1].var2;
-      ++a4;
+      var2 = descriptor[1].var2;
+      ++descriptor;
     }
 
     while (var2);
@@ -2417,7 +2417,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadTemplateRenderingModeConstants
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = *(MEMORY[0x277D027D8] + 16);
   if (v5)
@@ -2432,7 +2432,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         break;
       }
 
-      v9 = [[TDTemplateRenderingMode alloc] initWithEntity:v6 insertIntoManagedObjectContext:v3];
+      v9 = [[TDTemplateRenderingMode alloc] initWithEntity:v6 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v7];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:v5 encoding:1]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:1]);
@@ -2472,8 +2472,8 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v6 = [v5 parts];
-        v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        parts = [v5 parts];
+        v7 = [parts countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v7)
         {
           v8 = v7;
@@ -2484,17 +2484,17 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
             {
               if (*v25 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(parts);
               }
 
               v11 = *(*(&v24 + 1) + 8 * j);
               [(CoreThemeDocument *)self->_doc createEffectStyleProductionForPartDefinition:v11];
-              v12 = [v5 name];
+              name = [v5 name];
               [v11 name];
-              TDSchemaLog(&cfstr_CreatingCustom.isa, v13, v14, v15, v16, v17, v18, v19, v12);
+              TDSchemaLog(&cfstr_CreatingCustom.isa, v13, v14, v15, v16, v17, v18, v19, name);
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v8 = [parts countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v8);
@@ -2512,7 +2512,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 
 - (void)loadSchemaCategories
 {
-  v3 = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
   v4 = [objc_msgSend(-[CoreThemeDocument managedObjectModel](self->_doc "managedObjectModel")];
   v5 = [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self->_doc, "targetPlatform")), "elementCategoryCount"}];
   if (v5)
@@ -2521,7 +2521,7 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
     for (i = 0; i != v6; ++i)
     {
       v8 = [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self->_doc, "targetPlatform")), "elementCategoryAtIndex:", i}];
-      v9 = [[TDSchemaCategory alloc] initWithEntity:v4 insertIntoManagedObjectContext:v3];
+      v9 = [[TDSchemaCategory alloc] initWithEntity:v4 insertIntoManagedObjectContext:managedObjectContext];
       [(TDThemeConstant *)v9 setIdentifier:*v8];
       -[TDThemeConstant setDisplayName:](v9, "setDisplayName:", [MEMORY[0x277CCACA8] stringWithCString:*(v8 + 2) encoding:4]);
       -[TDThemeConstant setConstantName:](v9, "setConstantName:", [MEMORY[0x277CCACA8] stringWithCString:*(v8 + 1) encoding:4]);
@@ -2533,19 +2533,19 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
 {
   context = objc_autoreleasePoolPush();
   v3 = [MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self->_doc, "targetPlatform")}];
-  v4 = [(TDPersistentDocument *)self->_doc managedObjectContext];
-  v5 = [MEMORY[0x277CBE408] entityForName:@"SchemaElementDefinition" inManagedObjectContext:v4];
-  v6 = [v3 elementDefinitionCount];
-  if (v6)
+  managedObjectContext = [(TDPersistentDocument *)self->_doc managedObjectContext];
+  v5 = [MEMORY[0x277CBE408] entityForName:@"SchemaElementDefinition" inManagedObjectContext:managedObjectContext];
+  elementDefinitionCount = [v3 elementDefinitionCount];
+  if (elementDefinitionCount)
   {
-    v7 = v6;
+    v7 = elementDefinitionCount;
     for (i = 0; i != v7; ++i)
     {
       v9 = [v3 elementDefinitionAtIndex:i];
       if (*v9)
       {
         v10 = v9;
-        v11 = [[TDSchemaElementDefinition alloc] initWithEntity:v5 insertIntoManagedObjectContext:v4];
+        v11 = [[TDSchemaElementDefinition alloc] initWithEntity:v5 insertIntoManagedObjectContext:managedObjectContext];
         -[TDSchemaElementDefinition setName:](v11, "setName:", [MEMORY[0x277CCACA8] stringWithCString:*v10 encoding:4]);
         [(TDSchemaElementDefinition *)v11 setPublished:*(v10 + 16)];
         [(TDSchemaElementDefinition *)v11 setCategory:[(CoreThemeDocument *)self->_doc schemaCategoryWithIdentifier:v10[3]]];
@@ -2554,18 +2554,18 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
     }
   }
 
-  v12 = [MEMORY[0x277CBE408] entityForName:@"SchemaEffectDefinition" inManagedObjectContext:v4];
-  v13 = [v3 effectDefinitionCount];
-  if (v13)
+  v12 = [MEMORY[0x277CBE408] entityForName:@"SchemaEffectDefinition" inManagedObjectContext:managedObjectContext];
+  effectDefinitionCount = [v3 effectDefinitionCount];
+  if (effectDefinitionCount)
   {
-    v14 = v13;
+    v14 = effectDefinitionCount;
     for (j = 0; j != v14; ++j)
     {
       v16 = [v3 effectDefinitionAtIndex:j];
       if (*v16)
       {
         v17 = v16;
-        v18 = [[TDSchemaEffectDefinition alloc] initWithEntity:v12 insertIntoManagedObjectContext:v4];
+        v18 = [[TDSchemaEffectDefinition alloc] initWithEntity:v12 insertIntoManagedObjectContext:managedObjectContext];
         -[TDSchemaEffectDefinition setName:](v18, "setName:", [MEMORY[0x277CCACA8] stringWithCString:*v17 encoding:4]);
         [(TDSchemaEffectDefinition *)v18 setPublished:*(v17 + 16)];
         [(TDSchemaEffectDefinition *)v18 setCategory:[(CoreThemeDocument *)self->_doc schemaCategoryWithIdentifier:v17[3]]];
@@ -2574,18 +2574,18 @@ uint64_t __55__TDThemeSchema_loadThemeConstantsForEntity_inContext___block_invok
     }
   }
 
-  v19 = [MEMORY[0x277CBE408] entityForName:@"SchemaMaterialDefinition" inManagedObjectContext:v4];
-  v20 = [v3 materialDefinitionCount];
-  if (v20)
+  v19 = [MEMORY[0x277CBE408] entityForName:@"SchemaMaterialDefinition" inManagedObjectContext:managedObjectContext];
+  materialDefinitionCount = [v3 materialDefinitionCount];
+  if (materialDefinitionCount)
   {
-    v21 = v20;
+    v21 = materialDefinitionCount;
     for (k = 0; k != v21; ++k)
     {
       v23 = [v3 materialDefinitionAtIndex:k];
       if (*v23)
       {
         v24 = v23;
-        v25 = [[TDSchemaMaterialDefinition alloc] initWithEntity:v19 insertIntoManagedObjectContext:v4];
+        v25 = [[TDSchemaMaterialDefinition alloc] initWithEntity:v19 insertIntoManagedObjectContext:managedObjectContext];
         -[TDSchemaMaterialDefinition setName:](v25, "setName:", [MEMORY[0x277CCACA8] stringWithCString:*v24 encoding:4]);
         [(TDSchemaMaterialDefinition *)v25 setPublished:*(v24 + 16)];
         [(TDSchemaMaterialDefinition *)v25 setCategory:[(CoreThemeDocument *)self->_doc schemaCategoryWithIdentifier:v24[3]]];

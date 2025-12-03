@@ -1,23 +1,23 @@
 @interface PHSublayerResizingView
-- (PHSublayerResizingView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (PHSublayerResizingView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation PHSublayerResizingView
 
-- (PHSublayerResizingView)initWithFrame:(CGRect)a3
+- (PHSublayerResizingView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PHSublayerResizingView;
-  return [(PHSublayerResizingView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(PHSublayerResizingView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PHSublayerResizingView *)self frame];
   v9 = v8;
   v11 = v10;

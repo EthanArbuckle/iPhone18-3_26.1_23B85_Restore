@@ -6,18 +6,18 @@
 
 - (__CFString)axss_keyChordKeyDisplayValueForUSKeyboard:()AXSSKeyChordExtras
 {
-  if (([a1 isEqualToString:@"␣"] & 1) != 0 || objc_msgSend(a1, "isEqualToString:", @" "))
+  if (([self isEqualToString:@"␣"] & 1) != 0 || objc_msgSend(self, "isEqualToString:", @" "))
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AccessibilitySharedSupport"];
     v6 = v5;
     v7 = @"AXSSKeySymbolSpace";
 LABEL_4:
-    v8 = [v5 localizedStringForKey:v7 value:&stru_1F405A428 table:@"AccessibilitySharedSupport"];
+    selfCopy = [v5 localizedStringForKey:v7 value:&stru_1F405A428 table:@"AccessibilitySharedSupport"];
 
     goto LABEL_5;
   }
 
-  if ([a1 isEqualToString:@"⌤"])
+  if ([self isEqualToString:@"⌤"])
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AccessibilitySharedSupport"];
     v6 = v5;
@@ -25,7 +25,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([a1 isEqualToString:@"⇱"])
+  if ([self isEqualToString:@"⇱"])
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AccessibilitySharedSupport"];
     v6 = v5;
@@ -33,7 +33,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([a1 isEqualToString:@"⇲"])
+  if ([self isEqualToString:@"⇲"])
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AccessibilitySharedSupport"];
     v6 = v5;
@@ -41,7 +41,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([a1 isEqualToString:@"⇞"])
+  if ([self isEqualToString:@"⇞"])
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AccessibilitySharedSupport"];
     v6 = v5;
@@ -49,7 +49,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([a1 isEqualToString:@"⇟"])
+  if ([self isEqualToString:@"⇟"])
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AccessibilitySharedSupport"];
     v6 = v5;
@@ -62,38 +62,38 @@ LABEL_4:
     goto LABEL_27;
   }
 
-  if ([a1 isEqualToString:@"⇥"])
+  if ([self isEqualToString:@"⇥"])
   {
-    v8 = @"Tab";
+    selfCopy = @"Tab";
     goto LABEL_5;
   }
 
-  if ([a1 isEqualToString:@"⏎"])
+  if ([self isEqualToString:@"⏎"])
   {
-    v8 = @"Return";
+    selfCopy = @"Return";
     goto LABEL_5;
   }
 
-  if ([a1 isEqualToString:@"⇪"])
+  if ([self isEqualToString:@"⇪"])
   {
-    v8 = @"Caps Lock";
+    selfCopy = @"Caps Lock";
     goto LABEL_5;
   }
 
-  if ([a1 isEqualToString:@"⌫"])
+  if ([self isEqualToString:@"⌫"])
   {
-    v8 = @"Delete";
+    selfCopy = @"Delete";
   }
 
   else
   {
 LABEL_27:
-    v8 = a1;
+    selfCopy = self;
   }
 
 LABEL_5:
 
-  return v8;
+  return selfCopy;
 }
 
 @end

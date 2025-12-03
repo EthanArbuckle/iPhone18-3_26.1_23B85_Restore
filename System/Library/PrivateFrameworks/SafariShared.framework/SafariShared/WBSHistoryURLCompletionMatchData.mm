@@ -1,16 +1,16 @@
 @interface WBSHistoryURLCompletionMatchData
-- (BOOL)matchesAutocompleteTrigger:(id)a3 isStrengthened:(BOOL)a4;
-- (WBSHistoryURLCompletionMatchData)initWithCompletionItem:(void *)a3;
-- (id)userVisibleURLStringAtIndex:(unint64_t)a3;
-- (id)userVisibleURLStringForPageTitleAtIndex:(unint64_t)a3;
-- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)a3;
-- (void)enumeratePageTitlesUsingBlock:(id)a3;
-- (void)enumerateUserVisibleURLsUsingBlock:(id)a3;
+- (BOOL)matchesAutocompleteTrigger:(id)trigger isStrengthened:(BOOL)strengthened;
+- (WBSHistoryURLCompletionMatchData)initWithCompletionItem:(void *)item;
+- (id)userVisibleURLStringAtIndex:(unint64_t)index;
+- (id)userVisibleURLStringForPageTitleAtIndex:(unint64_t)index;
+- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)block;
+- (void)enumeratePageTitlesUsingBlock:(id)block;
+- (void)enumerateUserVisibleURLsUsingBlock:(id)block;
 @end
 
 @implementation WBSHistoryURLCompletionMatchData
 
-- (WBSHistoryURLCompletionMatchData)initWithCompletionItem:(void *)a3
+- (WBSHistoryURLCompletionMatchData)initWithCompletionItem:(void *)item
 {
   v7.receiver = self;
   v7.super_class = WBSHistoryURLCompletionMatchData;
@@ -18,50 +18,50 @@
   v5 = v4;
   if (v4)
   {
-    [(WBSHistoryURLCompletionMatchData *)v4 initWithCompletionItem:a3];
+    [(WBSHistoryURLCompletionMatchData *)v4 initWithCompletionItem:item];
   }
 
   return v5;
 }
 
-- (id)userVisibleURLStringAtIndex:(unint64_t)a3
+- (id)userVisibleURLStringAtIndex:(unint64_t)index
 {
   m_ptr = self->_item.m_ptr;
-  if (!a3)
+  if (!index)
   {
 LABEL_4:
-    v8 = [*(m_ptr + 8) safari_userVisibleURL];
+    safari_userVisibleURL = [*(m_ptr + 8) safari_userVisibleURL];
 
-    return v8;
+    return safari_userVisibleURL;
   }
 
   v7 = m_ptr + 32;
   v6 = *(m_ptr + 4);
-  if (a3 - 1 < (*(v7 + 1) - v6) >> 3)
+  if (index - 1 < (*(v7 + 1) - v6) >> 3)
   {
-    m_ptr = *(v6 + 8 * (a3 - 1));
+    m_ptr = *(v6 + 8 * (index - 1));
     goto LABEL_4;
   }
 
-  v8 = 0;
+  safari_userVisibleURL = 0;
 
-  return v8;
+  return safari_userVisibleURL;
 }
 
-- (id)userVisibleURLStringForPageTitleAtIndex:(unint64_t)a3
+- (id)userVisibleURLStringForPageTitleAtIndex:(unint64_t)index
 {
-  v3 = [*(self->_item.m_ptr + 8) safari_userVisibleURL];
+  safari_userVisibleURL = [*(self->_item.m_ptr + 8) safari_userVisibleURL];
 
-  return v3;
+  return safari_userVisibleURL;
 }
 
-- (void)enumerateUserVisibleURLsUsingBlock:(id)a3
+- (void)enumerateUserVisibleURLsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v5 = *(self->_item.m_ptr + 8);
-  v6 = [v5 safari_userVisibleURL];
-  v4[2](v4, v6, 0, &v15);
+  safari_userVisibleURL = [v5 safari_userVisibleURL];
+  blockCopy[2](blockCopy, safari_userVisibleURL, 0, &v15);
 
   if ((v15 & 1) == 0)
   {
@@ -75,8 +75,8 @@ LABEL_4:
       do
       {
         v12 = *(*(v10 - 8) + 64);
-        v13 = [v12 safari_userVisibleURL];
-        v4[2](v4, v13, v11, &v15);
+        safari_userVisibleURL2 = [v12 safari_userVisibleURL];
+        blockCopy[2](blockCopy, safari_userVisibleURL2, v11, &v15);
 
         if (v15)
         {
@@ -93,37 +93,37 @@ LABEL_4:
   }
 }
 
-- (void)enumeratePageTitlesUsingBlock:(id)a3
+- (void)enumeratePageTitlesUsingBlock:(id)block
 {
-  v3 = *(a3 + 2);
-  v4 = a3;
+  v3 = *(block + 2);
+  blockCopy = block;
   v3();
 }
 
-- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)a3
+- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __84__WBSHistoryURLCompletionMatchData_enumeratePageTitlesAndUserVisibleURLsUsingBlock___block_invoke;
   v6[3] = &unk_1E7FC8418;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(WBSHistoryURLCompletionMatchData *)self enumerateUserVisibleURLsUsingBlock:v6];
 }
 
-- (BOOL)matchesAutocompleteTrigger:(id)a3 isStrengthened:(BOOL)a4
+- (BOOL)matchesAutocompleteTrigger:(id)trigger isStrengthened:(BOOL)strengthened
 {
-  v4 = a4;
+  strengthenedCopy = strengthened;
   m_ptr = self->_item.m_ptr;
   v7 = *(m_ptr + 9);
   v8 = *(m_ptr + 18);
   v9 = *(m_ptr + 8);
   v10 = v7;
-  LOBYTE(v4) = [WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:a3 title:v10 urlString:v9 autoCompleteTriggers:v8 isStrengthened:v4];
+  LOBYTE(strengthenedCopy) = [WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:trigger title:v10 urlString:v9 autoCompleteTriggers:v8 isStrengthened:strengthenedCopy];
 
-  return v4;
+  return strengthenedCopy;
 }
 
 - (void)initWithCompletionItem:(uint64_t)a1 .cold.1(uint64_t a1, atomic_uint *a2)

@@ -1,35 +1,35 @@
 @interface UITab
 - (BKRootBarItem)rootBarItem;
-- (UITab)initWithRootBarItem:(id)a3 viewControllerProvider:(id)a4;
-- (void)setRootBarItem:(id)a3;
+- (UITab)initWithRootBarItem:(id)item viewControllerProvider:(id)provider;
+- (void)setRootBarItem:(id)item;
 @end
 
 @implementation UITab
 
-- (UITab)initWithRootBarItem:(id)a3 viewControllerProvider:(id)a4
+- (UITab)initWithRootBarItem:(id)item viewControllerProvider:(id)provider
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
-  v8 = sub_10059EB00(v7, sub_10059EE94, v6);
+  itemCopy = item;
+  v8 = sub_10059EB00(itemCopy, sub_10059EE94, v6);
 
   return v8;
 }
 
 - (BKRootBarItem)rootBarItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UITab.rootBarItem.getter();
 
   return v3;
 }
 
-- (void)setRootBarItem:(id)a3
+- (void)setRootBarItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  UITab.rootBarItem.setter(v4);
+  itemCopy = item;
+  selfCopy = self;
+  UITab.rootBarItem.setter(itemCopy);
 }
 
 @end

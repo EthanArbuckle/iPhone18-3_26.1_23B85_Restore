@@ -1,33 +1,33 @@
 @interface _MPNowPlayingInfoTransportableSessionRequest
-+ (id)requestWithMediaRemoteRequest:(id)a3;
++ (id)requestWithMediaRemoteRequest:(id)request;
 @end
 
 @implementation _MPNowPlayingInfoTransportableSessionRequest
 
-+ (id)requestWithMediaRemoteRequest:(id)a3
++ (id)requestWithMediaRemoteRequest:(id)request
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 identifier];
-  v7 = [v6 copy];
+  requestCopy = request;
+  v5 = objc_alloc_init(self);
+  identifier = [requestCopy identifier];
+  v7 = [identifier copy];
   v8 = v5[2];
   v5[2] = v7;
 
-  v9 = [v4 type];
-  v10 = [v9 copy];
+  type = [requestCopy type];
+  v10 = [type copy];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [v4 destinationPlayerPath];
+  destinationPlayerPath = [requestCopy destinationPlayerPath];
   v13 = v5[4];
-  v5[4] = v12;
+  v5[4] = destinationPlayerPath;
 
-  v14 = [v4 destinationCommandInfo];
+  destinationCommandInfo = [requestCopy destinationCommandInfo];
   v15 = v5[5];
-  v5[5] = v14;
+  v5[5] = destinationCommandInfo;
 
-  LOBYTE(v9) = [v4 isPreflight];
-  *(v5 + 8) = v9;
+  LOBYTE(type) = [requestCopy isPreflight];
+  *(v5 + 8) = type;
 
   return v5;
 }

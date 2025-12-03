@@ -1,27 +1,27 @@
 @interface ICAMSBagAdapter
-+ (BOOL)_value:(id)a3 matchesExpectedType:(unint64_t)a4;
-+ (id)_valueForBagKey:(id)a3 valueType:(unint64_t)a4 fromURLBag:(id)a5 urlBagLoadingError:(id)a6 valueRetrievingError:(id *)a7;
-+ (id)_valueFromICURLBag:(id)a3 forKeyPath:(id)a4 valueType:(unint64_t)a5;
++ (BOOL)_value:(id)_value matchesExpectedType:(unint64_t)type;
++ (id)_valueForBagKey:(id)key valueType:(unint64_t)type fromURLBag:(id)bag urlBagLoadingError:(id)error valueRetrievingError:(id *)retrievingError;
++ (id)_valueFromICURLBag:(id)bag forKeyPath:(id)path valueType:(unint64_t)type;
 - (BOOL)isExpired;
-- (ICAMSBagAdapter)initWithRequestContext:(id)a3;
+- (ICAMSBagAdapter)initWithRequestContext:(id)context;
 - (NSDate)expirationDate;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)_bagValueForKey:(id)a3 valueType:(unint64_t)a4;
-- (void)_didFinishLoadingBag:(id)a3 error:(id)a4;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)_bagValueForKey:(id)key valueType:(unint64_t)type;
+- (void)_didFinishLoadingBag:(id)bag error:(id)error;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation ICAMSBagAdapter
 
-- (void)_didFinishLoadingBag:(id)a3 error:(id)a4
+- (void)_didFinishLoadingBag:(id)bag error:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  bagCopy = bag;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_urlBag, a3);
-  objc_storeStrong(&self->_urlBagLoadingError, a4);
+  objc_storeStrong(&self->_urlBag, bag);
+  objc_storeStrong(&self->_urlBagLoadingError, error);
   v9 = [(NSMutableArray *)self->_pendingBagValuePromises copy];
   pendingBagValuePromises = self->_pendingBagValuePromises;
   self->_pendingBagValuePromises = 0;
@@ -48,10 +48,10 @@
 
         v15 = *(*(&v23 + 1) + 8 * i);
         v16 = objc_opt_class();
-        v17 = [v15 bagKey];
-        v18 = [v15 bagValueType];
+        bagKey = [v15 bagKey];
+        bagValueType = [v15 bagValueType];
         v22 = 0;
-        v19 = [v16 _valueForBagKey:v17 valueType:v18 fromURLBag:v7 urlBagLoadingError:v8 valueRetrievingError:&v22];
+        v19 = [v16 _valueForBagKey:bagKey valueType:bagValueType fromURLBag:bagCopy urlBagLoadingError:errorCopy valueRetrievingError:&v22];
         v20 = v22;
 
         if (v20)
@@ -72,9 +72,9 @@
   }
 }
 
-- (id)_bagValueForKey:(id)a3 valueType:(unint64_t)a4
+- (id)_bagValueForKey:(id)key valueType:(unint64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   if (*&self->_urlBag == 0)
   {
@@ -85,7 +85,7 @@
       self->_pendingBagValuePromises = v14;
     }
 
-    v11 = [[ICAMSBagValuePromise alloc] initWithBagKey:v6 bagValueType:a4];
+    v11 = [[ICAMSBagValuePromise alloc] initWithBagKey:keyCopy bagValueType:type];
     [(NSMutableArray *)self->_pendingBagValuePromises addObject:v11];
     if ([(NSMutableArray *)self->_pendingBagValuePromises count]== 1)
     {
@@ -99,7 +99,7 @@
       [v16 getBagForRequestContext:requestContext withCompletionHandler:v18];
     }
 
-    v12 = [MEMORY[0x1E698C7E8] bagValueWithKey:v6 valueType:a4 valuePromise:v11];
+    v12 = [MEMORY[0x1E698C7E8] bagValueWithKey:keyCopy valueType:type valuePromise:v11];
   }
 
   else
@@ -108,16 +108,16 @@
     urlBag = self->_urlBag;
     urlBagLoadingError = self->_urlBagLoadingError;
     v19 = 0;
-    v10 = [v7 _valueForBagKey:v6 valueType:a4 fromURLBag:urlBag urlBagLoadingError:urlBagLoadingError valueRetrievingError:&v19];
+    v10 = [v7 _valueForBagKey:keyCopy valueType:type fromURLBag:urlBag urlBagLoadingError:urlBagLoadingError valueRetrievingError:&v19];
     v11 = v19;
     if (v11)
     {
-      [MEMORY[0x1E698C7E8] failingBagValueWithKey:v6 valueType:a4 error:v11];
+      [MEMORY[0x1E698C7E8] failingBagValueWithKey:keyCopy valueType:type error:v11];
     }
 
     else
     {
-      [MEMORY[0x1E698C7E8] frozenBagValueWithKey:v6 value:v10 valueType:a4];
+      [MEMORY[0x1E698C7E8] frozenBagValueWithKey:keyCopy value:v10 valueType:type];
     }
     v12 = ;
   }
@@ -127,15 +127,15 @@
   return v12;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __48__ICAMSBagAdapter_createSnapshotWithCompletion___block_invoke;
   v12[3] = &unk_1E7BF9EC8;
   v12[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v13 = v5;
   v6 = MEMORY[0x1B8C781E0](v12);
   v7 = v6;
@@ -189,18 +189,18 @@ uint64_t __48__ICAMSBagAdapter_createSnapshotWithCompletion___block_invoke_3(uin
 
 - (NSString)profileVersion
 {
-  v2 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v3 = [v2 bagProfileVersion];
+  clientInfo = [(ICRequestContext *)self->_requestContext clientInfo];
+  bagProfileVersion = [clientInfo bagProfileVersion];
 
-  return v3;
+  return bagProfileVersion;
 }
 
 - (NSString)profile
 {
-  v2 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v3 = [v2 bagProfile];
+  clientInfo = [(ICRequestContext *)self->_requestContext clientInfo];
+  bagProfile = [clientInfo bagProfile];
 
-  return v3;
+  return bagProfile;
 }
 
 - (NSDate)expirationDate
@@ -209,17 +209,17 @@ uint64_t __48__ICAMSBagAdapter_createSnapshotWithCompletion___block_invoke_3(uin
   urlBag = self->_urlBag;
   if (urlBag)
   {
-    v4 = [(ICURLBag *)urlBag expirationDate];
+    expirationDate = [(ICURLBag *)urlBag expirationDate];
   }
 
   else
   {
-    v4 = 0;
+    expirationDate = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return expirationDate;
 }
 
 - (BOOL)isExpired
@@ -228,21 +228,21 @@ uint64_t __48__ICAMSBagAdapter_createSnapshotWithCompletion___block_invoke_3(uin
   urlBag = self->_urlBag;
   if (urlBag)
   {
-    v4 = [(ICURLBag *)urlBag isExpired];
+    isExpired = [(ICURLBag *)urlBag isExpired];
   }
 
   else
   {
-    v4 = 0;
+    isExpired = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return isExpired;
 }
 
-- (ICAMSBagAdapter)initWithRequestContext:(id)a3
+- (ICAMSBagAdapter)initWithRequestContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICAMSBagAdapter;
   v6 = [(ICAMSBagAdapter *)&v9 init];
@@ -250,19 +250,19 @@ uint64_t __48__ICAMSBagAdapter_createSnapshotWithCompletion___block_invoke_3(uin
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_requestContext, a3);
+    objc_storeStrong(&v6->_requestContext, context);
   }
 
   return v7;
 }
 
-+ (BOOL)_value:(id)a3 matchesExpectedType:(unint64_t)a4
++ (BOOL)_value:(id)_value matchesExpectedType:(unint64_t)type
 {
-  v5 = a3;
+  _valueCopy = _value;
   v6 = 0;
-  if (a4 > 3)
+  if (type > 3)
   {
-    switch(a4)
+    switch(type)
     {
       case 4uLL:
         isKindOfClass = _NSIsNSString();
@@ -279,7 +279,7 @@ uint64_t __48__ICAMSBagAdapter_createSnapshotWithCompletion___block_invoke_3(uin
 
   else
   {
-    if (a4 - 1 < 3)
+    if (type - 1 < 3)
     {
       isKindOfClass = _NSIsNSNumber();
 LABEL_12:
@@ -287,7 +287,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (!a4)
+    if (!type)
     {
       isKindOfClass = _NSIsNSArray();
       goto LABEL_12;
@@ -299,26 +299,26 @@ LABEL_13:
   return v6 & 1;
 }
 
-+ (id)_valueFromICURLBag:(id)a3 forKeyPath:(id)a4 valueType:(unint64_t)a5
++ (id)_valueFromICURLBag:(id)bag forKeyPath:(id)path valueType:(unint64_t)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 componentsSeparatedByString:@"/"];
+  bagCopy = bag;
+  pathCopy = path;
+  v10 = [pathCopy componentsSeparatedByString:@"/"];
   v11 = [v10 objectAtIndexedSubscript:0];
   if (v11)
   {
     v12 = v11;
     if ([v10 count] != 1)
     {
-      v16 = [v8 dictionaryForBagKey:v12];
+      v16 = [bagCopy dictionaryForBagKey:v12];
       if ([v10 count] < 2)
       {
         v13 = 0;
         goto LABEL_27;
       }
 
-      v24 = a1;
+      selfCopy = self;
       v13 = 0;
       v17 = 1;
       while (1)
@@ -342,15 +342,15 @@ LABEL_13:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v26 = v24;
+            v26 = selfCopy;
             v27 = 2114;
-            v28 = v9;
+            v28 = pathCopy;
             _os_log_impl(&dword_1B4491000, v21, OS_LOG_TYPE_ERROR, "%{public}@ Encountered missing bag value at key path %{public}@", buf, 0x16u);
           }
 
 LABEL_27:
 LABEL_28:
-          if (a5 == 5 && v13 && _NSIsNSString())
+          if (type == 5 && v13 && _NSIsNSString())
           {
             v22 = [MEMORY[0x1E695DFF8] URLWithString:v13];
 
@@ -368,15 +368,15 @@ LABEL_28:
     }
 
     v13 = 0;
-    if (a5 <= 2)
+    if (type <= 2)
     {
-      if (!a5)
+      if (!type)
       {
-        v14 = [v8 arrayForBagKey:v12];
+        v14 = [bagCopy arrayForBagKey:v12];
         goto LABEL_33;
       }
 
-      if (a5 != 1 && a5 != 2)
+      if (type != 1 && type != 2)
       {
         goto LABEL_34;
       }
@@ -384,30 +384,30 @@ LABEL_28:
       goto LABEL_20;
     }
 
-    if (a5 <= 4)
+    if (type <= 4)
     {
-      if (a5 != 3)
+      if (type != 3)
       {
-        v14 = [v8 stringForBagKey:v12];
+        v14 = [bagCopy stringForBagKey:v12];
 LABEL_33:
         v13 = v14;
         goto LABEL_34;
       }
 
 LABEL_20:
-      v14 = [v8 numberForBagKey:v12];
+      v14 = [bagCopy numberForBagKey:v12];
       goto LABEL_33;
     }
 
-    if (a5 == 5)
+    if (type == 5)
     {
-      v13 = [v8 urlForBagKey:v12];
+      v13 = [bagCopy urlForBagKey:v12];
       goto LABEL_28;
     }
 
-    if (a5 == 6)
+    if (type == 6)
     {
-      v14 = [v8 dictionaryForBagKey:v12];
+      v14 = [bagCopy dictionaryForBagKey:v12];
       goto LABEL_33;
     }
 
@@ -423,22 +423,22 @@ LABEL_34:
   return v15;
 }
 
-+ (id)_valueForBagKey:(id)a3 valueType:(unint64_t)a4 fromURLBag:(id)a5 urlBagLoadingError:(id)a6 valueRetrievingError:(id *)a7
++ (id)_valueForBagKey:(id)key valueType:(unint64_t)type fromURLBag:(id)bag urlBagLoadingError:(id)error valueRetrievingError:(id *)retrievingError
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v13)
+  keyCopy = key;
+  bagCopy = bag;
+  errorCopy = error;
+  v15 = errorCopy;
+  if (bagCopy)
   {
-    v16 = [a1 _valueFromICURLBag:v13 forKeyPath:v12 valueType:a4];
+    v16 = [self _valueFromICURLBag:bagCopy forKeyPath:keyCopy valueType:type];
     if (!v16)
     {
       v24 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A278];
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No value for bag key '%@'", v12];
-      v30[0] = v19;
+      keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No value for bag key '%@'", keyCopy];
+      v30[0] = keyCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
       v21 = v24;
       v22 = -7201;
@@ -446,13 +446,13 @@ LABEL_34:
     }
 
     v17 = v16;
-    if (([a1 _value:v16 matchesExpectedType:a4] & 1) == 0)
+    if (([self _value:v16 matchesExpectedType:type] & 1) == 0)
     {
 
       v18 = MEMORY[0x1E696ABC0];
       v27 = *MEMORY[0x1E696A278];
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"value for bag key '%@' is unexpected type '%@'", v12, objc_opt_class()];
-      v28 = v19;
+      keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"value for bag key '%@' is unexpected type '%@'", keyCopy, objc_opt_class()];
+      v28 = keyCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v21 = v18;
       v22 = -7202;
@@ -461,7 +461,7 @@ LABEL_8:
 
 LABEL_9:
       v17 = 0;
-      if (!a7)
+      if (!retrievingError)
       {
         goto LABEL_11;
       }
@@ -472,9 +472,9 @@ LABEL_9:
 
   else
   {
-    if (v14)
+    if (errorCopy)
     {
-      v23 = v14;
+      v23 = errorCopy;
       goto LABEL_9;
     }
 
@@ -482,11 +482,11 @@ LABEL_9:
   }
 
   v23 = 0;
-  if (a7)
+  if (retrievingError)
   {
 LABEL_10:
     v25 = v23;
-    *a7 = v23;
+    *retrievingError = v23;
   }
 
 LABEL_11:

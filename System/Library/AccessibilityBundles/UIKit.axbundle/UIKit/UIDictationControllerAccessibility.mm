@@ -1,22 +1,22 @@
 @interface UIDictationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_axNotifyDictationStarted;
 - (void)_createDictationPresenterWindowIfNecessary;
-- (void)insertSerializedDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)setState:(int)a3;
-- (void)updateLastHypothesis:(id)a3 WithNewHypothesis:(id)a4;
+- (void)insertSerializedDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)setState:(int)state;
+- (void)updateLastHypothesis:(id)hypothesis WithNewHypothesis:(id)newHypothesis;
 @end
 
 @implementation UIDictationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = "@";
   v5 = @"UIDictationController";
   v4 = "v";
@@ -35,26 +35,26 @@
   objc_storeStrong(v9, v8);
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
-  if (!a3)
+  stateCopy = state;
+  if (!state)
   {
 LABEL_9:
-    [(UIDictationControllerAccessibility *)v6 _axNotifyDictationStopped];
+    [(UIDictationControllerAccessibility *)selfCopy _axNotifyDictationStopped];
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     goto LABEL_10;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
-    if (a3 != 6)
+    if (state != 6)
     {
       goto LABEL_10;
     }
@@ -62,11 +62,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(UIDictationControllerAccessibility *)v6 _axNotifyDictationStarted];
+  [(UIDictationControllerAccessibility *)selfCopy _axNotifyDictationStarted];
 LABEL_10:
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = UIDictationControllerAccessibility;
-  [(UIDictationControllerAccessibility *)&v3 setState:v4];
+  [(UIDictationControllerAccessibility *)&v3 setState:stateCopy];
 }
 
 - (void)_axNotifyDictationStarted
@@ -76,32 +76,32 @@ LABEL_10:
   UIAccessibilityPostNotification(0x16A8u, 0);
 }
 
-- (void)updateLastHypothesis:(id)a3 WithNewHypothesis:(id)a4
+- (void)updateLastHypothesis:(id)hypothesis WithNewHypothesis:(id)newHypothesis
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, hypothesis);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, newHypothesis);
+  v5.receiver = selfCopy;
   v5.super_class = UIDictationControllerAccessibility;
   [(UIDictationControllerAccessibility *)&v5 updateLastHypothesis:location[0] WithNewHypothesis:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)insertSerializedDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)insertSerializedDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, identifier);
   if (AXProcessIsInputUI())
   {
-    v35.receiver = v38;
+    v35.receiver = selfCopy;
     v35.super_class = UIDictationControllerAccessibility;
     [(UIDictationControllerAccessibility *)&v35 insertSerializedDictationResult:location[0] withCorrectionIdentifier:v36];
     v34 = 1;
@@ -114,7 +114,7 @@ LABEL_10:
     {
       v32 = 0;
       objc_opt_class();
-      v17 = [(UIDictationControllerAccessibility *)v38 safeValueForKey:@"targetHypothesis"];
+      v17 = [(UIDictationControllerAccessibility *)selfCopy safeValueForKey:@"targetHypothesis"];
       v31 = __UIAccessibilityCastAsClass();
       MEMORY[0x29EDC9740](v17);
       v30 = MEMORY[0x29EDC9748](v31);
@@ -126,7 +126,7 @@ LABEL_10:
       {
         v29 = 0;
         objc_opt_class();
-        v16 = [(UIDictationControllerAccessibility *)v38 safeValueForKey:@"lastHypothesis"];
+        v16 = [(UIDictationControllerAccessibility *)selfCopy safeValueForKey:@"lastHypothesis"];
         v28 = __UIAccessibilityCastAsClass();
         MEMORY[0x29EDC9740](v16);
         v27 = MEMORY[0x29EDC9748](v28);
@@ -142,11 +142,11 @@ LABEL_10:
       v11 = MEMORY[0x29EDBA0F8];
       v12 = accessibilityLocalizedString(@"inserted.text");
       v26 = [v11 stringWithFormat:v33];
-      v13 = [*MEMORY[0x29EDC8008] _accessibilityResponderElement];
-      v6 = [v13 accessibilityTraits];
-      v15 = v6 & *MEMORY[0x29EDC7568];
+      _accessibilityResponderElement = [*MEMORY[0x29EDC8008] _accessibilityResponderElement];
+      accessibilityTraits = [_accessibilityResponderElement accessibilityTraits];
+      v15 = accessibilityTraits & *MEMORY[0x29EDC7568];
       v14 = *MEMORY[0x29EDC7568];
-      MEMORY[0x29EDC9740](v13);
+      MEMORY[0x29EDC9740](_accessibilityResponderElement);
       if (v15 == v14)
       {
         v9 = MEMORY[0x29EDBA0F8];
@@ -170,7 +170,7 @@ LABEL_10:
     }
 
     MEMORY[0x29ED3DFA0](1005);
-    v19.receiver = v38;
+    v19.receiver = selfCopy;
     v19.super_class = UIDictationControllerAccessibility;
     [(UIDictationControllerAccessibility *)&v19 insertSerializedDictationResult:location[0] withCorrectionIdentifier:v36];
     objc_storeStrong(&v33, 0);
@@ -201,12 +201,12 @@ void __95__UIDictationControllerAccessibility_insertSerializedDictationResult_wi
 
 - (void)_createDictationPresenterWindowIfNecessary
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIDictationControllerAccessibility;
   [(UIDictationControllerAccessibility *)&v3 _createDictationPresenterWindowIfNecessary];
-  v2 = [(UIDictationControllerAccessibility *)v5 safeValueForKey:@"dictationPresenterWindow"];
+  v2 = [(UIDictationControllerAccessibility *)selfCopy safeValueForKey:@"dictationPresenterWindow"];
   [v2 setAccessibilityViewIsModal:1];
   MEMORY[0x29EDC9740](v2);
 }

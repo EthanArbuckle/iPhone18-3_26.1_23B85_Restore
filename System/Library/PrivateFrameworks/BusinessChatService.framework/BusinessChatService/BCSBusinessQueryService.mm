@@ -1,34 +1,34 @@
 @interface BCSBusinessQueryService
 - (BCSBusinessQueryService)init;
-- (BCSBusinessQueryService)initWithConnection:(id)a3 clientBundleIdentifier:(id)a4;
-- (id)businessItemForPhoneNumber:(id)a3 isChatSuggestVisible:(BOOL *)a4 error:(id *)a5;
-- (id)businessItemForPhoneNumber:(id)a3 isMessageable:(BOOL *)a4 isChatSuggestVisible:(BOOL *)a5 error:(id *)a6;
-- (id)cachedBusinessMetadataForEmail:(id)a3 error:(id *)a4;
+- (BCSBusinessQueryService)initWithConnection:(id)connection clientBundleIdentifier:(id)identifier;
+- (id)businessItemForPhoneNumber:(id)number isChatSuggestVisible:(BOOL *)visible error:(id *)error;
+- (id)businessItemForPhoneNumber:(id)number isMessageable:(BOOL *)messageable isChatSuggestVisible:(BOOL *)visible error:(id *)error;
+- (id)cachedBusinessMetadataForEmail:(id)email error:(id *)error;
 - (void)_deleteInMemoryCache;
-- (void)_fetchBusinessItemWithDetailsForPhoneNumber:(uint64_t)a1 forClientBundleID:(void *)a2 completion:(void *)a3;
-- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)a3 completion:(id)a4;
-- (void)clearCachesForType:(int64_t)a3 completion:(id)a4;
-- (void)clearExpiredCachesForType:(int64_t)a3 completion:(id)a4;
+- (void)_fetchBusinessItemWithDetailsForPhoneNumber:(uint64_t)number forClientBundleID:(void *)d completion:(void *)completion;
+- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)d completion:(id)completion;
+- (void)clearCachesForType:(int64_t)type completion:(id)completion;
+- (void)clearExpiredCachesForType:(int64_t)type completion:(id)completion;
 - (void)dealloc;
-- (void)didFetchBusinessMetadata:(id)a3 forEmailIdentifier:(id)a4 requestId:(id)a5 error:(id)a6 reply:(id)a7;
-- (void)didFetchBusinessMetadataForEmailsForRequestId:(id)a3 error:(id)a4 reply:(id)a5;
-- (void)fetchBrandWithIdentifier:(id)a3 serviceType:(int64_t)a4 completion:(id)a5;
-- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)a3 metadataCallback:(id)a4 logoURLCallback:(id)a5 completion:(id)a6;
-- (void)fetchBusinessCallerMetadataWithPhoneNumber:(id)a3 completion:(id)a4;
-- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)a3 completion:(id)a4;
-- (void)fetchBusinessItemWithPhoneNumber:(id)a3 completion:(id)a4;
-- (void)fetchBusinessLogoForBusinessIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchBusinessMetadataForEmail:(id)a3 completion:(id)a4;
-- (void)fetchBusinessMetadataForEmailIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchBusinessMetadataForEmails:(id)a3 perItemCallback:(id)a4 completion:(id)a5;
-- (void)fetchLinkItemWithHash:(id)a3 completion:(id)a4;
-- (void)fetchSquareIconDataForBusinessItem:(id)a3 completion:(id)a4;
-- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)a3 completion:(id)a4;
-- (void)isBusinessCallerRegisteredForPhoneNumber:(id)a3 completion:(id)a4;
-- (void)isBusinessRegisteredForPhoneNumber:(id)a3 completion:(id)a4;
-- (void)isBusinessRegisteredForURL:(id)a3 completion:(id)a4;
-- (void)prefetchBloomFilterAndConfigCacheWithCompletion:(id)a3;
-- (void)warmCacheIfNecessaryForPhoneNumbers:(id)a3;
+- (void)didFetchBusinessMetadata:(id)metadata forEmailIdentifier:(id)identifier requestId:(id)id error:(id)error reply:(id)reply;
+- (void)didFetchBusinessMetadataForEmailsForRequestId:(id)id error:(id)error reply:(id)reply;
+- (void)fetchBrandWithIdentifier:(id)identifier serviceType:(int64_t)type completion:(id)completion;
+- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)number metadataCallback:(id)callback logoURLCallback:(id)lCallback completion:(id)completion;
+- (void)fetchBusinessCallerMetadataWithPhoneNumber:(id)number completion:(id)completion;
+- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)number completion:(id)completion;
+- (void)fetchBusinessItemWithPhoneNumber:(id)number completion:(id)completion;
+- (void)fetchBusinessLogoForBusinessIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchBusinessMetadataForEmail:(id)email completion:(id)completion;
+- (void)fetchBusinessMetadataForEmailIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchBusinessMetadataForEmails:(id)emails perItemCallback:(id)callback completion:(id)completion;
+- (void)fetchLinkItemWithHash:(id)hash completion:(id)completion;
+- (void)fetchSquareIconDataForBusinessItem:(id)item completion:(id)completion;
+- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)identifier completion:(id)completion;
+- (void)isBusinessCallerRegisteredForPhoneNumber:(id)number completion:(id)completion;
+- (void)isBusinessRegisteredForPhoneNumber:(id)number completion:(id)completion;
+- (void)isBusinessRegisteredForURL:(id)l completion:(id)completion;
+- (void)prefetchBloomFilterAndConfigCacheWithCompletion:(id)completion;
+- (void)warmCacheIfNecessaryForPhoneNumbers:(id)numbers;
 @end
 
 @implementation BCSBusinessQueryService
@@ -36,25 +36,25 @@
 - (BCSBusinessQueryService)init
 {
   v3 = [[BCSXPCDaemonConnection alloc] initWithMachServiceName:self exportedClient:?];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [(BCSBusinessQueryService *)self initWithConnection:v3 clientBundleIdentifier:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [(BCSBusinessQueryService *)self initWithConnection:v3 clientBundleIdentifier:bundleIdentifier];
 
   return v6;
 }
 
-- (BCSBusinessQueryService)initWithConnection:(id)a3 clientBundleIdentifier:(id)a4
+- (BCSBusinessQueryService)initWithConnection:(id)connection clientBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = BCSBusinessQueryService;
   v9 = [(BCSBusinessQueryService *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_connection, connection);
+    v11 = [identifierCopy copy];
     clientBundleIdentifier = v10->_clientBundleIdentifier;
     v10->_clientBundleIdentifier = v11;
 
@@ -85,10 +85,10 @@
   [(BCSBusinessQueryService *)&v3 dealloc];
 }
 
-- (void)warmCacheIfNecessaryForPhoneNumbers:(id)a3
+- (void)warmCacheIfNecessaryForPhoneNumbers:(id)numbers
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numbersCopy = numbers;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,14 +97,14 @@
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  if ([v4 count] < 0x1F)
+  if ([numbersCopy count] < 0x1F)
   {
-    v6 = v4;
+    v6 = numbersCopy;
   }
 
   else
   {
-    v6 = [v4 subarrayWithRange:{0, 30}];
+    v6 = [numbersCopy subarrayWithRange:{0, 30}];
   }
 
   v7 = v6;
@@ -118,26 +118,26 @@
     connection = 0;
   }
 
-  v9 = [(BCSXPCDaemonConnectionProtocol *)connection remoteObjectProxy];
-  [v9 warmCacheIfNecessaryForPhoneNumbers:v7 forClientBundleID:@"com.apple.businessservicesd"];
+  remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)connection remoteObjectProxy];
+  [remoteObjectProxy warmCacheIfNecessaryForPhoneNumbers:v7 forClientBundleID:@"com.apple.businessservicesd"];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)businessItemForPhoneNumber:(id)a3 isMessageable:(BOOL *)a4 isChatSuggestVisible:(BOOL *)a5 error:(id *)a6
+- (id)businessItemForPhoneNumber:(id)number isMessageable:(BOOL *)messageable isChatSuggestVisible:(BOOL *)visible error:(id *)error
 {
-  if (a4)
+  if (messageable)
   {
-    *a4 = 1;
+    *messageable = 1;
   }
 
-  return [(BCSBusinessQueryService *)self businessItemForPhoneNumber:a3 isChatSuggestVisible:a5 error:a6];
+  return [(BCSBusinessQueryService *)self businessItemForPhoneNumber:number isChatSuggestVisible:visible error:error];
 }
 
-- (id)businessItemForPhoneNumber:(id)a3 isChatSuggestVisible:(BOOL *)a4 error:(id *)a5
+- (id)businessItemForPhoneNumber:(id)number isChatSuggestVisible:(BOOL *)visible error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  numberCopy = number;
   v9 = ABSLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -206,20 +206,20 @@
   v34 = &v35;
   v17 = v16;
   v31 = v17;
-  [BCSBusinessQueryService _fetchBusinessItemWithDetailsForPhoneNumber:v8 forClientBundleID:v30 completion:?];
+  [BCSBusinessQueryService _fetchBusinessItemWithDetailsForPhoneNumber:numberCopy forClientBundleID:v30 completion:?];
   v18 = dispatch_time(0, 1000000000);
   v19 = dispatch_group_wait(v17, v18) == 0;
 
   if (v19)
   {
-    if (a4)
+    if (visible)
     {
-      *a4 = *(v42 + 24);
+      *visible = *(v42 + 24);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v36[5];
+      *error = v36[5];
     }
 
     if (self)
@@ -243,12 +243,12 @@ LABEL_12:
       _os_log_impl(&dword_242072000, v21, OS_LOG_TYPE_DEFAULT, "%s timed out - did really attempt:%d", v47, 0x12u);
     }
 
-    if (a4)
+    if (visible)
     {
-      *a4 = 0;
+      *visible = 0;
     }
 
-    if (a5)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA470];
@@ -257,15 +257,15 @@ LABEL_12:
       v46[0] = @"businessItemForPhoneNumber server fetch timed out";
       v46[1] = @"The operation timed out";
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
-      *a5 = [v22 errorWithDomain:@"BusinessChat" code:-1001 userInfo:v24];
+      *error = [v22 errorWithDomain:@"BusinessChat" code:-1001 userInfo:v24];
     }
 
     if (v15)
     {
-      v26 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       if (self)
       {
-        objc_setProperty_atomic(self, v25, v26, 8);
+        objc_setProperty_atomic(self, v25, date, 8);
       }
     }
 
@@ -339,49 +339,49 @@ void __81__BCSBusinessQueryService_businessItemForPhoneNumber_isChatSuggestVisib
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchBusinessItemWithDetailsForPhoneNumber:(uint64_t)a1 forClientBundleID:(void *)a2 completion:(void *)a3
+- (void)_fetchBusinessItemWithDetailsForPhoneNumber:(uint64_t)number forClientBundleID:(void *)d completion:(void *)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  completionCopy = completion;
+  if (number)
   {
     v6 = @"com.apple.businessservicesd";
-    v7 = a2;
+    dCopy = d;
     v8 = ABSLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *(a1 + 16);
+      v9 = *(number + 16);
       v10 = v9;
-      v11 = [v10 remoteObjectProxy];
+      remoteObjectProxy = [v10 remoteObjectProxy];
       *buf = 136315650;
       v19 = "[BCSBusinessQueryService _fetchBusinessItemWithDetailsForPhoneNumber:forClientBundleID:completion:]";
       v20 = 2112;
       v21 = v9;
       v22 = 2112;
-      v23 = v11;
+      v23 = remoteObjectProxy;
       _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
     }
 
-    v12 = *(a1 + 16);
-    v13 = [v12 remoteObjectProxy];
+    v12 = *(number + 16);
+    remoteObjectProxy2 = [v12 remoteObjectProxy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __100__BCSBusinessQueryService__fetchBusinessItemWithDetailsForPhoneNumber_forClientBundleID_completion___block_invoke;
     v16[3] = &unk_278D39028;
-    v14 = v5;
+    v14 = completionCopy;
 
     v17 = v14;
-    [v13 fetchBusinessItemWithDetailsForPhoneNumber:v7 forClientBundleID:@"com.apple.businessservicesd" completion:v16];
+    [remoteObjectProxy2 fetchBusinessItemWithDetailsForPhoneNumber:dCopy forClientBundleID:@"com.apple.businessservicesd" completion:v16];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBusinessItemWithPhoneNumber:(id)a3 completion:(id)a4
+- (void)fetchBusinessItemWithPhoneNumber:(id)number completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -400,13 +400,13 @@ void __81__BCSBusinessQueryService_businessItemForPhoneNumber_isChatSuggestVisib
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchBusinessItemWithPhoneNumber:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -421,15 +421,15 @@ void __81__BCSBusinessQueryService_businessItemForPhoneNumber_isChatSuggestVisib
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __71__BCSBusinessQueryService_fetchBusinessItemWithPhoneNumber_completion___block_invoke;
   v19[3] = &unk_278D39000;
 
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchBusinessItemWithPhoneNumber:v7 forClientBundleID:@"com.apple.businessservicesd" completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchBusinessItemWithPhoneNumber:numberCopy forClientBundleID:@"com.apple.businessservicesd" completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -445,16 +445,16 @@ uint64_t __71__BCSBusinessQueryService_fetchBusinessItemWithPhoneNumber_completi
   return result;
 }
 
-- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)a3 completion:(id)a4
+- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)number completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__BCSBusinessQueryService_fetchBusinessItemWithDetailsForPhoneNumber_completion___block_invoke;
   v8[3] = &unk_278D39028;
-  v9 = v6;
-  v7 = v6;
-  [BCSBusinessQueryService _fetchBusinessItemWithDetailsForPhoneNumber:a3 forClientBundleID:v8 completion:?];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [BCSBusinessQueryService _fetchBusinessItemWithDetailsForPhoneNumber:number forClientBundleID:v8 completion:?];
 }
 
 uint64_t __100__BCSBusinessQueryService__fetchBusinessItemWithDetailsForPhoneNumber_forClientBundleID_completion___block_invoke(uint64_t a1)
@@ -468,11 +468,11 @@ uint64_t __100__BCSBusinessQueryService__fetchBusinessItemWithDetailsForPhoneNum
   return result;
 }
 
-- (void)isBusinessRegisteredForPhoneNumber:(id)a3 completion:(id)a4
+- (void)isBusinessRegisteredForPhoneNumber:(id)number completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -491,13 +491,13 @@ uint64_t __100__BCSBusinessQueryService__fetchBusinessItemWithDetailsForPhoneNum
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService isBusinessRegisteredForPhoneNumber:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -512,15 +512,15 @@ uint64_t __100__BCSBusinessQueryService__fetchBusinessItemWithDetailsForPhoneNum
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __73__BCSBusinessQueryService_isBusinessRegisteredForPhoneNumber_completion___block_invoke;
   v19[3] = &unk_278D38818;
 
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchIsBusinessPhoneNumber:v7 forClientBundleID:@"com.apple.businessservicesd" completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchIsBusinessPhoneNumber:numberCopy forClientBundleID:@"com.apple.businessservicesd" completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -536,13 +536,13 @@ uint64_t __73__BCSBusinessQueryService_isBusinessRegisteredForPhoneNumber_comple
   return result;
 }
 
-- (void)fetchSquareIconDataForBusinessItem:(id)a3 completion:(id)a4
+- (void)fetchSquareIconDataForBusinessItem:(id)item completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a3;
+    itemCopy = item;
     v8 = ABSLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -561,13 +561,13 @@ uint64_t __73__BCSBusinessQueryService_isBusinessRegisteredForPhoneNumber_comple
       }
 
       v12 = connection;
-      v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+      remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
       *buf = 136315650;
       v22 = "[BCSBusinessQueryService fetchSquareIconDataForBusinessItem:completion:]";
       v23 = 2112;
       v24 = v9;
       v25 = 2112;
-      v26 = v13;
+      v26 = remoteObjectProxy;
       _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
     }
 
@@ -582,15 +582,15 @@ uint64_t __73__BCSBusinessQueryService_isBusinessRegisteredForPhoneNumber_comple
     }
 
     v15 = v14;
-    v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+    remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __73__BCSBusinessQueryService_fetchSquareIconDataForBusinessItem_completion___block_invoke;
     v19[3] = &unk_278D39050;
-    v17 = v6;
+    v17 = completionCopy;
 
     v20 = v17;
-    [v16 fetchSquareIconDataForBusinessItem:v7 forClientBundleID:@"com.apple.businessservicesd" completion:v19];
+    [remoteObjectProxy2 fetchSquareIconDataForBusinessItem:itemCopy forClientBundleID:@"com.apple.businessservicesd" completion:v19];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -619,16 +619,16 @@ void __67__BCSBusinessQueryService_fetchLinkItemWithURL_chopURL_completion___blo
   }
 }
 
-- (void)isBusinessRegisteredForURL:(id)a3 completion:(id)a4
+- (void)isBusinessRegisteredForURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__BCSBusinessQueryService_isBusinessRegisteredForURL_completion___block_invoke;
   v8[3] = &unk_278D390A0;
-  v9 = v6;
-  v7 = v6;
-  [(BCSBusinessQueryService *)self isBusinessRegisteredForURL:a3 chopURL:1 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(BCSBusinessQueryService *)self isBusinessRegisteredForURL:l chopURL:1 completion:v8];
 }
 
 uint64_t __73__BCSBusinessQueryService_isBusinessRegisteredForURL_chopURL_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5)
@@ -653,11 +653,11 @@ uint64_t __74__BCSBusinessQueryService__isBusinessRegisteredForURL_chopURL_compl
   return result;
 }
 
-- (void)fetchLinkItemWithHash:(id)a3 completion:(id)a4
+- (void)fetchLinkItemWithHash:(id)hash completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  hashCopy = hash;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -676,13 +676,13 @@ uint64_t __74__BCSBusinessQueryService__isBusinessRegisteredForURL_chopURL_compl
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchLinkItemWithHash:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -697,7 +697,7 @@ uint64_t __74__BCSBusinessQueryService__isBusinessRegisteredForURL_chopURL_compl
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -707,9 +707,9 @@ uint64_t __74__BCSBusinessQueryService__isBusinessRegisteredForURL_chopURL_compl
   v19[1] = 3221225472;
   v19[2] = __60__BCSBusinessQueryService_fetchLinkItemWithHash_completion___block_invoke;
   v19[3] = &unk_278D39078;
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchLinkItemModelWithHash:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchLinkItemModelWithHash:hashCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -737,11 +737,11 @@ void __60__BCSBusinessQueryService_fetchLinkItemWithHash_completion___block_invo
   }
 }
 
-- (void)isBusinessCallerRegisteredForPhoneNumber:(id)a3 completion:(id)a4
+- (void)isBusinessCallerRegisteredForPhoneNumber:(id)number completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -760,13 +760,13 @@ void __60__BCSBusinessQueryService_fetchLinkItemWithHash_completion___block_invo
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService isBusinessCallerRegisteredForPhoneNumber:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -781,7 +781,7 @@ void __60__BCSBusinessQueryService_fetchLinkItemWithHash_completion___block_invo
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -791,9 +791,9 @@ void __60__BCSBusinessQueryService_fetchLinkItemWithHash_completion___block_invo
   v19[1] = 3221225472;
   v19[2] = __79__BCSBusinessQueryService_isBusinessCallerRegisteredForPhoneNumber_completion___block_invoke;
   v19[3] = &unk_278D38818;
-  v20 = v6;
-  v17 = v6;
-  [v16 isBusinessCallerRegisteredForPhoneNumber:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 isBusinessCallerRegisteredForPhoneNumber:numberCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -809,11 +809,11 @@ uint64_t __79__BCSBusinessQueryService_isBusinessCallerRegisteredForPhoneNumber_
   return result;
 }
 
-- (void)fetchBusinessCallerMetadataWithPhoneNumber:(id)a3 completion:(id)a4
+- (void)fetchBusinessCallerMetadataWithPhoneNumber:(id)number completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -832,13 +832,13 @@ uint64_t __79__BCSBusinessQueryService_isBusinessCallerRegisteredForPhoneNumber_
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchBusinessCallerMetadataWithPhoneNumber:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -853,7 +853,7 @@ uint64_t __79__BCSBusinessQueryService_isBusinessCallerRegisteredForPhoneNumber_
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -863,9 +863,9 @@ uint64_t __79__BCSBusinessQueryService_isBusinessCallerRegisteredForPhoneNumber_
   v19[1] = 3221225472;
   v19[2] = __81__BCSBusinessQueryService_fetchBusinessCallerMetadataWithPhoneNumber_completion___block_invoke;
   v19[3] = &unk_278D390F0;
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchBusinessCallerMetadataForPhoneNumber:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchBusinessCallerMetadataForPhoneNumber:numberCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -881,13 +881,13 @@ uint64_t __81__BCSBusinessQueryService_fetchBusinessCallerMetadataWithPhoneNumbe
   return result;
 }
 
-- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)a3 metadataCallback:(id)a4 logoURLCallback:(id)a5 completion:(id)a6
+- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)number metadataCallback:(id)callback logoURLCallback:(id)lCallback completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  callbackCopy = callback;
+  lCallbackCopy = lCallback;
+  completionCopy = completion;
+  numberCopy = number;
   v14 = ABSLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -906,13 +906,13 @@ uint64_t __81__BCSBusinessQueryService_fetchBusinessCallerMetadataWithPhoneNumbe
     }
 
     v18 = connection;
-    v19 = [(BCSXPCDaemonConnectionProtocol *)v18 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v18 remoteObjectProxy];
     *buf = 136315650;
     v34 = "[BCSBusinessQueryService fetchBusinessCallerMetadataForPhoneNumber:metadataCallback:logoURLCallback:completion:]";
     v35 = 2112;
     v36 = v15;
     v37 = 2112;
-    v38 = v19;
+    v38 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v14, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -927,19 +927,19 @@ uint64_t __81__BCSBusinessQueryService_fetchBusinessCallerMetadataWithPhoneNumbe
   }
 
   v21 = v20;
-  v22 = [(BCSXPCDaemonConnectionProtocol *)v21 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v21 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
   }
 
-  v30 = v11;
+  v30 = lCallbackCopy;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumber_metadataCallback_logoURLCallback_completion___block_invoke;
   v31[3] = &unk_278D39118;
-  v32 = v10;
-  v28 = v12;
+  v32 = callbackCopy;
+  v28 = completionCopy;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumber_metadataCallback_logoURLCallback_completion___block_invoke_2;
@@ -948,10 +948,10 @@ uint64_t __81__BCSBusinessQueryService_fetchBusinessCallerMetadataWithPhoneNumbe
   v27[1] = 3221225472;
   v27[2] = __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumber_metadataCallback_logoURLCallback_completion___block_invoke_3;
   v27[3] = &unk_278D39168;
-  v23 = v12;
-  v24 = v11;
-  v25 = v10;
-  [v22 fetchBusinessCallerMetadataForPhoneNumber:v13 forClientBundleID:self metadataCallback:v31 logoURLCallback:v29 completion:v27];
+  v23 = completionCopy;
+  v24 = lCallbackCopy;
+  v25 = callbackCopy;
+  [remoteObjectProxy2 fetchBusinessCallerMetadataForPhoneNumber:numberCopy forClientBundleID:self metadataCallback:v31 logoURLCallback:v29 completion:v27];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -989,11 +989,11 @@ uint64_t __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumbe
   return result;
 }
 
-- (void)fetchBusinessMetadataForEmail:(id)a3 completion:(id)a4
+- (void)fetchBusinessMetadataForEmail:(id)email completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  emailCopy = email;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1012,13 +1012,13 @@ uint64_t __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumbe
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchBusinessMetadataForEmail:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -1033,7 +1033,7 @@ uint64_t __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumbe
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -1043,9 +1043,9 @@ uint64_t __113__BCSBusinessQueryService_fetchBusinessCallerMetadataForPhoneNumbe
   v19[1] = 3221225472;
   v19[2] = __68__BCSBusinessQueryService_fetchBusinessMetadataForEmail_completion___block_invoke;
   v19[3] = &unk_278D39190;
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchBusinessMetadataForEmail:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchBusinessMetadataForEmail:emailCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1061,11 +1061,11 @@ uint64_t __68__BCSBusinessQueryService_fetchBusinessMetadataForEmail_completion_
   return result;
 }
 
-- (void)fetchBusinessMetadataForEmailIdentifier:(id)a3 completion:(id)a4
+- (void)fetchBusinessMetadataForEmailIdentifier:(id)identifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1084,13 +1084,13 @@ uint64_t __68__BCSBusinessQueryService_fetchBusinessMetadataForEmail_completion_
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchBusinessMetadataForEmailIdentifier:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -1105,7 +1105,7 @@ uint64_t __68__BCSBusinessQueryService_fetchBusinessMetadataForEmail_completion_
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -1115,9 +1115,9 @@ uint64_t __68__BCSBusinessQueryService_fetchBusinessMetadataForEmail_completion_
   v19[1] = 3221225472;
   v19[2] = __78__BCSBusinessQueryService_fetchBusinessMetadataForEmailIdentifier_completion___block_invoke;
   v19[3] = &unk_278D39190;
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchBusinessMetadataForEmailIdentifier:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchBusinessMetadataForEmailIdentifier:identifierCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1133,11 +1133,11 @@ uint64_t __78__BCSBusinessQueryService_fetchBusinessMetadataForEmailIdentifier_c
   return result;
 }
 
-- (void)fetchBusinessLogoForBusinessIdentifier:(id)a3 completion:(id)a4
+- (void)fetchBusinessLogoForBusinessIdentifier:(id)identifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1156,13 +1156,13 @@ uint64_t __78__BCSBusinessQueryService_fetchBusinessMetadataForEmailIdentifier_c
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchBusinessLogoForBusinessIdentifier:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -1177,7 +1177,7 @@ uint64_t __78__BCSBusinessQueryService_fetchBusinessMetadataForEmailIdentifier_c
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -1187,9 +1187,9 @@ uint64_t __78__BCSBusinessQueryService_fetchBusinessMetadataForEmailIdentifier_c
   v19[1] = 3221225472;
   v19[2] = __77__BCSBusinessQueryService_fetchBusinessLogoForBusinessIdentifier_completion___block_invoke;
   v19[3] = &unk_278D391B8;
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchBusinessLogoForBusinessIdentifier:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchBusinessLogoForBusinessIdentifier:identifierCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1205,12 +1205,12 @@ uint64_t __77__BCSBusinessQueryService_fetchBusinessLogoForBusinessIdentifier_co
   return result;
 }
 
-- (void)fetchBusinessMetadataForEmails:(id)a3 perItemCallback:(id)a4 completion:(id)a5
+- (void)fetchBusinessMetadataForEmails:(id)emails perItemCallback:(id)callback completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emailsCopy = emails;
+  callbackCopy = callback;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1229,38 +1229,38 @@ uint64_t __77__BCSBusinessQueryService_fetchBusinessLogoForBusinessIdentifier_co
     }
 
     v15 = connection;
-    v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
     *buf = 136315650;
     v34 = "[BCSBusinessQueryService fetchBusinessMetadataForEmails:perItemCallback:completion:]";
     v35 = 2112;
     v36 = v12;
     v37 = 2112;
-    v38 = v16;
+    v38 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
-  if (![v8 count])
+  if (![emailsCopy count])
   {
     v18 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:@"Batch must contain at least one identifier"];
     goto LABEL_9;
   }
 
-  if ([v8 count] >= 0x1F)
+  if ([emailsCopy count] >= 0x1F)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Batch exceeds maximum size (%ld > %lu)", objc_msgSend(v8, "count"), 30];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Batch exceeds maximum size (%ld > %lu)", objc_msgSend(emailsCopy, "count"), 30];
     v18 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:v17];
 
 LABEL_9:
-    v10[2](v10, v18);
+    completionCopy[2](completionCopy, v18);
     goto LABEL_21;
   }
 
   v18 = objc_alloc_init(BCSBusinessQueryRequest);
-  v19 = [MEMORY[0x277CCAD78] UUID];
-  [(BCSBusinessQueryRequest *)v18 setRequestId:v19];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(BCSBusinessQueryRequest *)v18 setRequestId:uUID];
 
-  [(BCSBusinessQueryRequest *)v18 setFetchEmailsPerItemBlock:v9];
-  [(BCSBusinessQueryRequest *)v18 setFetchEmailsCompletion:v10];
+  [(BCSBusinessQueryRequest *)v18 setFetchEmailsPerItemBlock:callbackCopy];
+  [(BCSBusinessQueryRequest *)v18 setFetchEmailsCompletion:completionCopy];
   if (self)
   {
     [(NSLock *)self->_requestLock lock];
@@ -1274,8 +1274,8 @@ LABEL_9:
   }
 
   v21 = requestsById;
-  v22 = [(BCSBusinessQueryRequest *)v18 requestId];
-  [(NSMutableDictionary *)v21 setObject:v18 forKeyedSubscript:v22];
+  requestId = [(BCSBusinessQueryRequest *)v18 requestId];
+  [(NSMutableDictionary *)v21 setObject:v18 forKeyedSubscript:requestId];
 
   if (self)
   {
@@ -1291,11 +1291,11 @@ LABEL_9:
   v24 = ABSLogCommon();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(BCSBusinessQueryRequest *)v18 requestId];
+    requestId2 = [(BCSBusinessQueryRequest *)v18 requestId];
     *buf = 136315394;
     v34 = "[BCSBusinessQueryService fetchBusinessMetadataForEmails:perItemCallback:completion:]";
     v35 = 2112;
-    v36 = v25;
+    v36 = requestId2;
     _os_log_impl(&dword_242072000, v24, OS_LOG_TYPE_DEFAULT, "%s - issuing request with requestId: %@", buf, 0x16u);
   }
 
@@ -1310,7 +1310,7 @@ LABEL_9:
   }
 
   v27 = v26;
-  v28 = [(BCSXPCDaemonConnectionProtocol *)v27 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v27 remoteObjectProxy];
   if (self)
   {
     clientBundleIdentifier = self->_clientBundleIdentifier;
@@ -1322,8 +1322,8 @@ LABEL_9:
   }
 
   v30 = clientBundleIdentifier;
-  v31 = [(BCSBusinessQueryRequest *)v18 requestId];
-  [v28 fetchBusinessMetadataForEmails:v8 forClientBundleID:v30 requestId:v31 completion:&__block_literal_global_2];
+  requestId3 = [(BCSBusinessQueryRequest *)v18 requestId];
+  [remoteObjectProxy2 fetchBusinessMetadataForEmails:emailsCopy forClientBundleID:v30 requestId:requestId3 completion:&__block_literal_global_2];
 
 LABEL_21:
   v32 = *MEMORY[0x277D85DE8];
@@ -1347,10 +1347,10 @@ void __85__BCSBusinessQueryService_fetchBusinessMetadataForEmails_perItemCallbac
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cachedBusinessMetadataForEmail:(id)a3 error:(id *)a4
+- (id)cachedBusinessMetadataForEmail:(id)email error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  emailCopy = email;
   v7 = ABSLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1369,13 +1369,13 @@ void __85__BCSBusinessQueryService_fetchBusinessMetadataForEmails_perItemCallbac
     }
 
     v11 = connection;
-    v12 = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
     *buf = 136315650;
     *&buf[4] = "[BCSBusinessQueryService cachedBusinessMetadataForEmail:error:]";
     *&buf[12] = 2112;
     *&buf[14] = v8;
     *&buf[22] = 2112;
-    v37 = v12;
+    v37 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v7, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -1425,18 +1425,18 @@ void __85__BCSBusinessQueryService_fetchBusinessMetadataForEmails_perItemCallbac
   v23[3] = &unk_278D39250;
   v17 = v15;
   v24 = v17;
-  v18 = v6;
+  v18 = emailCopy;
   v25 = v18;
-  v26 = self;
+  selfCopy = self;
   v27 = &v30;
   v28 = buf;
   dispatch_sync(serialQueue, v23);
-  if (a4)
+  if (error)
   {
     v19 = v31[5];
     if (v19)
     {
-      *a4 = v19;
+      *error = v19;
     }
   }
 
@@ -1489,11 +1489,11 @@ void __64__BCSBusinessQueryService_cachedBusinessMetadataForEmail_error___block_
   *(v9 + 40) = v5;
 }
 
-- (void)fetchBrandWithIdentifier:(id)a3 serviceType:(int64_t)a4 completion:(id)a5
+- (void)fetchBrandWithIdentifier:(id)identifier serviceType:(int64_t)type completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = ABSLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1512,13 +1512,13 @@ void __64__BCSBusinessQueryService_cachedBusinessMetadataForEmail_error___block_
     }
 
     v14 = connection;
-    v15 = [(BCSXPCDaemonConnectionProtocol *)v14 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v14 remoteObjectProxy];
     *buf = 136315650;
     v24 = "[BCSBusinessQueryService fetchBrandWithIdentifier:serviceType:completion:]";
     v25 = 2112;
     v26 = v11;
     v27 = 2112;
-    v28 = v15;
+    v28 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v10, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -1533,7 +1533,7 @@ void __64__BCSBusinessQueryService_cachedBusinessMetadataForEmail_error___block_
   }
 
   v17 = v16;
-  v18 = [(BCSXPCDaemonConnectionProtocol *)v17 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v17 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -1543,9 +1543,9 @@ void __64__BCSBusinessQueryService_cachedBusinessMetadataForEmail_error___block_
   v21[1] = 3221225472;
   v21[2] = __75__BCSBusinessQueryService_fetchBrandWithIdentifier_serviceType_completion___block_invoke;
   v21[3] = &unk_278D39278;
-  v22 = v8;
-  v19 = v8;
-  [v18 fetchBrandWithIdentifier:v9 forClientBundleID:self serviceType:a4 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [remoteObjectProxy2 fetchBrandWithIdentifier:identifierCopy forClientBundleID:self serviceType:type completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -1561,11 +1561,11 @@ uint64_t __75__BCSBusinessQueryService_fetchBrandWithIdentifier_serviceType_comp
   return result;
 }
 
-- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)identifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1584,13 +1584,13 @@ uint64_t __75__BCSBusinessQueryService_fetchBrandWithIdentifier_serviceType_comp
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     *buf = 136315650;
     v22 = "[BCSBusinessQueryService fetchWebPresentmentPermissionsWithIdentifier:completion:]";
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v13;
+    v26 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", buf, 0x20u);
   }
 
@@ -1605,7 +1605,7 @@ uint64_t __75__BCSBusinessQueryService_fetchBrandWithIdentifier_serviceType_comp
   }
 
   v15 = v14;
-  v16 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v15 remoteObjectProxy];
   if (self)
   {
     self = self->_clientBundleIdentifier;
@@ -1615,9 +1615,9 @@ uint64_t __75__BCSBusinessQueryService_fetchBrandWithIdentifier_serviceType_comp
   v19[1] = 3221225472;
   v19[2] = __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentifier_completion___block_invoke;
   v19[3] = &unk_278D39050;
-  v20 = v6;
-  v17 = v6;
-  [v16 fetchWebPresentmentPermissionsWithIdentifier:v7 forClientBundleID:self completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [remoteObjectProxy2 fetchWebPresentmentPermissionsWithIdentifier:identifierCopy forClientBundleID:self completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1633,10 +1633,10 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
   return result;
 }
 
-- (void)prefetchBloomFilterAndConfigCacheWithCompletion:(id)a3
+- (void)prefetchBloomFilterAndConfigCacheWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1655,13 +1655,13 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     v9 = connection;
-    v10 = [(BCSXPCDaemonConnectionProtocol *)v9 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v9 remoteObjectProxy];
     v14 = 136315650;
     v15 = "[BCSBusinessQueryService prefetchBloomFilterAndConfigCacheWithCompletion:]";
     v16 = 2112;
     v17 = v6;
     v18 = 2112;
-    v19 = v10;
+    v19 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", &v14, 0x20u);
   }
 
@@ -1675,16 +1675,16 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     v11 = 0;
   }
 
-  v12 = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
-  [v12 prefetchMegashardsWithCompletion:v4];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
+  [remoteObjectProxy2 prefetchMegashardsWithCompletion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearCachesForType:(int64_t)a3 completion:(id)a4
+- (void)clearCachesForType:(int64_t)type completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = ABSLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1703,13 +1703,13 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     v11 = connection;
-    v12 = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
     v16 = 136315650;
     v17 = "[BCSBusinessQueryService clearCachesForType:completion:]";
     v18 = 2112;
     v19 = v8;
     v20 = 2112;
-    v21 = v12;
+    v21 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v7, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", &v16, 0x20u);
   }
 
@@ -1723,16 +1723,16 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     v13 = 0;
   }
 
-  v14 = [(BCSXPCDaemonConnectionProtocol *)v13 remoteObjectProxy];
-  [v14 clearCachesForType:a3 completion:v6];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v13 remoteObjectProxy];
+  [remoteObjectProxy2 clearCachesForType:type completion:completionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearExpiredCachesForType:(int64_t)a3 completion:(id)a4
+- (void)clearExpiredCachesForType:(int64_t)type completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = ABSLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1751,13 +1751,13 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     v11 = connection;
-    v12 = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v11 remoteObjectProxy];
     v16 = 136315650;
     v17 = "[BCSBusinessQueryService clearExpiredCachesForType:completion:]";
     v18 = 2112;
     v19 = v8;
     v20 = 2112;
-    v21 = v12;
+    v21 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v7, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", &v16, 0x20u);
   }
 
@@ -1771,17 +1771,17 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     v13 = 0;
   }
 
-  v14 = [(BCSXPCDaemonConnectionProtocol *)v13 remoteObjectProxy];
-  [v14 clearExpiredCachesForType:a3 completion:v6];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v13 remoteObjectProxy];
+  [remoteObjectProxy2 clearExpiredCachesForType:type completion:completionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)a3 completion:(id)a4
+- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)d completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1800,13 +1800,13 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     v12 = connection;
-    v13 = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v12 remoteObjectProxy];
     v17 = 136315650;
     v18 = "[BCSBusinessQueryService clearCachesForLinkItemsAssociatedWithBundleID:completion:]";
     v19 = 2112;
     v20 = v9;
     v21 = 2112;
-    v22 = v13;
+    v22 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", &v17, 0x20u);
   }
 
@@ -1820,31 +1820,31 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     v14 = 0;
   }
 
-  v15 = [(BCSXPCDaemonConnectionProtocol *)v14 remoteObjectProxy];
-  [v15 clearCachesForLinkItemsAssociatedWithBundleID:v7 completion:v6];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v14 remoteObjectProxy];
+  [remoteObjectProxy2 clearCachesForLinkItemsAssociatedWithBundleID:dCopy completion:completionCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFetchBusinessMetadata:(id)a3 forEmailIdentifier:(id)a4 requestId:(id)a5 error:(id)a6 reply:(id)a7
+- (void)didFetchBusinessMetadata:(id)metadata forEmailIdentifier:(id)identifier requestId:(id)id error:(id)error reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  idCopy = id;
+  errorCopy = error;
+  replyCopy = reply;
   v17 = ABSLogCommon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138413058;
-    v25 = v14;
+    v25 = idCopy;
     v26 = 2112;
-    v27 = v12;
+    v27 = metadataCopy;
     v28 = 2112;
-    v29 = v13;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v15;
+    v31 = errorCopy;
     _os_log_impl(&dword_242072000, v17, OS_LOG_TYPE_DEFAULT, "didFetchBusinessMetadata:forEmailIdentifier:withError:reply: - requestId: %@, metadata: %@, identifier: %@, error: %@", &v24, 0x2Au);
   }
 
@@ -1860,7 +1860,7 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     requestsById = 0;
   }
 
-  v19 = [(NSMutableDictionary *)requestsById objectForKeyedSubscript:v14];
+  v19 = [(NSMutableDictionary *)requestsById objectForKeyedSubscript:idCopy];
   if (self)
   {
     requestLock = self->_requestLock;
@@ -1874,40 +1874,40 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
   [(NSLock *)requestLock unlock];
   if (v19)
   {
-    v21 = [v19 fetchEmailsPerItemBlock];
-    v22 = (*(v21 + 16))(v21, v13, v12, v15);
+    fetchEmailsPerItemBlock = [v19 fetchEmailsPerItemBlock];
+    v22 = (*(fetchEmailsPerItemBlock + 16))(fetchEmailsPerItemBlock, identifierCopy, metadataCopy, errorCopy);
   }
 
   else
   {
-    v21 = ABSLogCommon();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    fetchEmailsPerItemBlock = ABSLogCommon();
+    if (os_log_type_enabled(fetchEmailsPerItemBlock, OS_LOG_TYPE_ERROR))
     {
       v24 = 136315138;
       v25 = "[BCSBusinessQueryService didFetchBusinessMetadata:forEmailIdentifier:requestId:error:reply:]";
-      _os_log_error_impl(&dword_242072000, v21, OS_LOG_TYPE_ERROR, "%s - Invalid request ID!", &v24, 0xCu);
+      _os_log_error_impl(&dword_242072000, fetchEmailsPerItemBlock, OS_LOG_TYPE_ERROR, "%s - Invalid request ID!", &v24, 0xCu);
     }
 
     v22 = 0;
   }
 
-  v16[2](v16, v22);
+  replyCopy[2](replyCopy, v22);
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFetchBusinessMetadataForEmailsForRequestId:(id)a3 error:(id)a4 reply:(id)a5
+- (void)didFetchBusinessMetadataForEmailsForRequestId:(id)id error:(id)error reply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  errorCopy = error;
+  replyCopy = reply;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v8;
+    v22 = idCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = errorCopy;
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "didFetchBusinessMetadataForEmailsWithError:reply: - requestId: %@, error: %@", &v21, 0x16u);
   }
 
@@ -1923,7 +1923,7 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     requestsById = 0;
   }
 
-  v13 = [(NSMutableDictionary *)requestsById objectForKeyedSubscript:v8];
+  v13 = [(NSMutableDictionary *)requestsById objectForKeyedSubscript:idCopy];
   if (self)
   {
     requestLock = self->_requestLock;
@@ -1950,8 +1950,8 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     v16 = v15;
-    v17 = [v13 requestId];
-    [(NSMutableDictionary *)v16 removeObjectForKey:v17];
+    requestId = [v13 requestId];
+    [(NSMutableDictionary *)v16 removeObjectForKey:requestId];
 
     if (self)
     {
@@ -1964,22 +1964,22 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     [(NSLock *)v18 unlock];
-    v19 = [v13 fetchEmailsCompletion];
-    (*(v19 + 16))(v19, v9);
+    fetchEmailsCompletion = [v13 fetchEmailsCompletion];
+    (*(fetchEmailsCompletion + 16))(fetchEmailsCompletion, errorCopy);
   }
 
   else
   {
-    v19 = ABSLogCommon();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    fetchEmailsCompletion = ABSLogCommon();
+    if (os_log_type_enabled(fetchEmailsCompletion, OS_LOG_TYPE_ERROR))
     {
       v21 = 136315138;
       v22 = "[BCSBusinessQueryService didFetchBusinessMetadataForEmailsForRequestId:error:reply:]";
-      _os_log_error_impl(&dword_242072000, v19, OS_LOG_TYPE_ERROR, "%s - Invalid request ID!", &v21, 0xCu);
+      _os_log_error_impl(&dword_242072000, fetchEmailsCompletion, OS_LOG_TYPE_ERROR, "%s - Invalid request ID!", &v21, 0xCu);
     }
   }
 
-  v10[2](v10);
+  replyCopy[2](replyCopy);
   v20 = *MEMORY[0x277D85DE8];
 }
 
@@ -2004,13 +2004,13 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     }
 
     v7 = connection;
-    v8 = [(BCSXPCDaemonConnectionProtocol *)v7 remoteObjectProxy];
+    remoteObjectProxy = [(BCSXPCDaemonConnectionProtocol *)v7 remoteObjectProxy];
     v12 = 136315650;
     v13 = "[BCSBusinessQueryService _deleteInMemoryCache]";
     v14 = 2112;
     v15 = v4;
     v16 = 2112;
-    v17 = v8;
+    v17 = remoteObjectProxy;
     _os_log_impl(&dword_242072000, v3, OS_LOG_TYPE_DEFAULT, "%s - connection:%@ remoteObjectProxy:%@", &v12, 0x20u);
   }
 
@@ -2024,8 +2024,8 @@ uint64_t __83__BCSBusinessQueryService_fetchWebPresentmentPermissionsWithIdentif
     v9 = 0;
   }
 
-  v10 = [(BCSXPCDaemonConnectionProtocol *)v9 remoteObjectProxy];
-  [v10 _deleteInMemoryCache];
+  remoteObjectProxy2 = [(BCSXPCDaemonConnectionProtocol *)v9 remoteObjectProxy];
+  [remoteObjectProxy2 _deleteInMemoryCache];
 
   v11 = *MEMORY[0x277D85DE8];
 }

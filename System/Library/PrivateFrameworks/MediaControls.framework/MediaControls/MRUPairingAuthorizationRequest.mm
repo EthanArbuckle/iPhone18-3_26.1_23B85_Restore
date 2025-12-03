@@ -1,31 +1,31 @@
 @interface MRUPairingAuthorizationRequest
-- (MRUPairingAuthorizationRequest)initWithOutputDevice:(id)a3 inputType:(int64_t)a4;
+- (MRUPairingAuthorizationRequest)initWithOutputDevice:(id)device inputType:(int64_t)type;
 - (void)cancel;
-- (void)completeWithPasscode:(id)a3;
+- (void)completeWithPasscode:(id)passcode;
 @end
 
 @implementation MRUPairingAuthorizationRequest
 
-- (MRUPairingAuthorizationRequest)initWithOutputDevice:(id)a3 inputType:(int64_t)a4
+- (MRUPairingAuthorizationRequest)initWithOutputDevice:(id)device inputType:(int64_t)type
 {
-  v7 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = MRUPairingAuthorizationRequest;
   v8 = [(MRUPairingAuthorizationRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_outputDevice, a3);
-    v9->_inputType = a4;
+    objc_storeStrong(&v8->_outputDevice, device);
+    v9->_inputType = type;
   }
 
   return v9;
 }
 
-- (void)completeWithPasscode:(id)a3
+- (void)completeWithPasscode:(id)passcode
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = _MPAVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -38,7 +38,7 @@
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ complete authorization request for device: %{public}@", &v9, 0x16u);
   }
 
-  v8 = [(AVOutputDevice *)self->_outputDevice deviceID];
+  deviceID = [(AVOutputDevice *)self->_outputDevice deviceID];
   MRMediaRemoteCompletePairingHandler();
 }
 
@@ -57,7 +57,7 @@
     _os_log_impl(&dword_1A20FC000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ cancel authorization request for device: %{public}@", &v7, 0x16u);
   }
 
-  v6 = [(AVOutputDevice *)self->_outputDevice deviceID];
+  deviceID = [(AVOutputDevice *)self->_outputDevice deviceID];
   MRMediaRemoteCompletePairingHandler();
 }
 

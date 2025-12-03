@@ -1,20 +1,20 @@
 @interface GPBInt32FloatDictionary
-- (BOOL)isEqual:(id)a3;
-- (GPBInt32FloatDictionary)initWithDictionary:(id)a3;
-- (GPBInt32FloatDictionary)initWithFloats:(const float *)a3 forKeys:(const int *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)computeSerializedSizeAsField:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GPBInt32FloatDictionary)initWithDictionary:(id)dictionary;
+- (GPBInt32FloatDictionary)initWithFloats:(const float *)floats forKeys:(const int *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)computeSerializedSizeAsField:(id)field;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)enumerateForTextFormat:(id)a3;
-- (void)enumerateKeysAndFloatsUsingBlock:(id)a3;
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4;
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4;
+- (void)enumerateForTextFormat:(id)format;
+- (void)enumerateKeysAndFloatsUsingBlock:(id)block;
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key;
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field;
 @end
 
 @implementation GPBInt32FloatDictionary
 
-- (GPBInt32FloatDictionary)initWithFloats:(const float *)a3 forKeys:(const int *)a4 count:(unint64_t)a5
+- (GPBInt32FloatDictionary)initWithFloats:(const float *)floats forKeys:(const int *)keys count:(unint64_t)count
 {
   v15.receiver = self;
   v15.super_class = GPBInt32FloatDictionary;
@@ -22,22 +22,22 @@
   if (v8)
   {
     v8->_dictionary = objc_alloc_init(NSMutableDictionary);
-    if (a4)
+    if (keys)
     {
-      if (a3 && a5)
+      if (floats && count)
       {
         do
         {
           dictionary = v8->_dictionary;
-          v11 = *a3++;
+          v11 = *floats++;
           LODWORD(v9) = v11;
           v12 = [NSNumber numberWithFloat:v9];
-          v13 = *a4++;
+          v13 = *keys++;
           [(NSMutableDictionary *)dictionary setObject:v12 forKey:[NSNumber numberWithInt:v13]];
-          --a5;
+          --count;
         }
 
-        while (a5);
+        while (count);
       }
     }
   }
@@ -45,13 +45,13 @@
   return v8;
 }
 
-- (GPBInt32FloatDictionary)initWithDictionary:(id)a3
+- (GPBInt32FloatDictionary)initWithDictionary:(id)dictionary
 {
   v4 = [(GPBInt32FloatDictionary *)self initWithFloats:0 forKeys:0 count:0];
   v5 = v4;
-  if (a3 && v4)
+  if (dictionary && v4)
   {
-    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
   }
 
   return v5;
@@ -69,16 +69,16 @@
   [(GPBInt32FloatDictionary *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GPBInt32FloatDictionary allocWithZone:a3];
+  v4 = [GPBInt32FloatDictionary allocWithZone:zone];
 
   return [(GPBInt32FloatDictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -90,60 +90,60 @@
   }
 
   dictionary = self->_dictionary;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(NSMutableDictionary *)dictionary isEqual:v6];
 }
 
-- (void)enumerateKeysAndFloatsUsingBlock:(id)a3
+- (void)enumerateKeysAndFloatsUsingBlock:(id)block
 {
   v10 = 0;
   dictionary = self->_dictionary;
-  v5 = [(NSMutableDictionary *)dictionary keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    if (!v6)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v7 = v6;
-    v8 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v6];
-    v9 = [v7 intValue];
+    v7 = nextObject;
+    v8 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject];
+    intValue = [v7 intValue];
     [v8 floatValue];
-    (*(a3 + 2))(a3, v9, &v10);
+    (*(block + 2))(block, intValue, &v10);
   }
 
   while (v10 != 1);
 }
 
-- (unint64_t)computeSerializedSizeAsField:(id)a3
+- (unint64_t)computeSerializedSizeAsField:(id)field
 {
   dictionary = self->_dictionary;
   result = [(NSMutableDictionary *)dictionary count];
   if (result)
   {
     v6 = result;
-    v7 = *(*(a3 + 1) + 30);
-    v8 = [a3 mapKeyDataType];
-    v9 = [(NSMutableDictionary *)dictionary keyEnumerator];
-    v10 = [v9 nextObject];
-    if (v10)
+    v7 = *(*(field + 1) + 30);
+    mapKeyDataType = [field mapKeyDataType];
+    keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v11 = v10;
+      nextObject2 = nextObject;
       v12 = 0;
       do
       {
-        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v11];
-        v14 = sub_10031DFD8([v11 intValue], 1, v8);
+        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+        v14 = sub_10031DFD8([nextObject2 intValue], 1, mapKeyDataType);
         [v13 floatValue];
         v15 = sub_100320864(v7) + v14;
         v12 += v15 + GPBComputeRawVarint32SizeForInteger(v15);
-        v11 = [v9 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v11);
+      while (nextObject2);
     }
 
     else
@@ -151,67 +151,67 @@
       v12 = 0;
     }
 
-    return v12 + GPBComputeWireFormatTagSize(*(*(a3 + 1) + 16), 15) * v6;
+    return v12 + GPBComputeWireFormatTagSize(*(*(field + 1) + 16), 15) * v6;
   }
 
   return result;
 }
 
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field
 {
-  v7 = *(*(a4 + 1) + 30);
-  v8 = [a4 mapKeyDataType];
-  Tag = GPBWireFormatMakeTag(*(*(a4 + 1) + 16), 2);
+  v7 = *(*(field + 1) + 30);
+  mapKeyDataType = [field mapKeyDataType];
+  Tag = GPBWireFormatMakeTag(*(*(field + 1) + 16), 2);
   dictionary = self->_dictionary;
-  v11 = [(NSMutableDictionary *)dictionary keyEnumerator];
-  v12 = [v11 nextObject];
-  if (v12)
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v13 = v12;
+    nextObject2 = nextObject;
     do
     {
-      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v13];
-      [a3 writeInt32NoTag:Tag];
-      v15 = [v13 intValue];
+      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+      [stream writeInt32NoTag:Tag];
+      intValue = [nextObject2 intValue];
       [v14 floatValue];
       v17 = v16;
-      LODWORD(v14) = sub_10031DFD8(v15, 1, v8);
-      [a3 writeInt32NoTag:sub_100320864(v7) + v14];
-      sub_10031E218(a3, v15, 1, v8);
+      LODWORD(v14) = sub_10031DFD8(intValue, 1, mapKeyDataType);
+      [stream writeInt32NoTag:sub_100320864(v7) + v14];
+      sub_10031E218(stream, intValue, 1, mapKeyDataType);
       LODWORD(v18) = v17;
-      sub_1003209DC(a3, v7, v18);
-      v13 = [v11 nextObject];
+      sub_1003209DC(stream, v7, v18);
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v13);
+    while (nextObject2);
   }
 }
 
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key
 {
   dictionary = self->_dictionary;
-  LODWORD(v4) = a3->var1;
+  LODWORD(v4) = value->var1;
   v7 = [NSNumber numberWithFloat:v4];
-  v8 = [NSNumber numberWithInt:a4->var3];
+  v8 = [NSNumber numberWithInt:key->var3];
 
   [(NSMutableDictionary *)dictionary setObject:v7 forKey:v8];
 }
 
-- (void)enumerateForTextFormat:(id)a3
+- (void)enumerateForTextFormat:(id)format
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100325E1C;
   v3[3] = &unk_1004358C8;
-  v3[4] = a3;
+  v3[4] = format;
   [(GPBInt32FloatDictionary *)self enumerateKeysAndFloatsUsingBlock:v3];
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
     autocreator = self->_autocreator;
     if (autocreator)
     {

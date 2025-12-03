@@ -1,5 +1,5 @@
 @interface SPCarrierBundleAdapter
-- (BOOL)getBoolean:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)getBoolean:(id)boolean defaultValue:(BOOL)value;
 - (BOOL)isDualSimON;
 - (BOOL)isLLPHSApplicationEnabled;
 - (BOOL)isSlicingSetup;
@@ -7,24 +7,24 @@
 - (SPCarrierBundleAdapter)init;
 - (SPCarrierBundleAdapterDelegate)delegate;
 - (dispatch_queue_s)get_queue;
-- (id)_getCarrierBundleKeyForDataContext:(id)a3;
-- (id)_getCarrierBundleKeyValue:(id)a3 forContext:(id)a4;
-- (id)getArray:(id)a3 defaultValue:(id)a4;
+- (id)_getCarrierBundleKeyForDataContext:(id)context;
+- (id)_getCarrierBundleKeyValue:(id)value forContext:(id)context;
+- (id)getArray:(id)array defaultValue:(id)value;
 - (id)getCarrierBundleIdentifier;
 - (id)getCarrierBundleVersion;
-- (id)getData:(id)a3 defaultValue:(id)a4;
-- (id)getDict:(id)a3 defaultValue:(id)a4;
+- (id)getData:(id)data defaultValue:(id)value;
+- (id)getDict:(id)dict defaultValue:(id)value;
 - (id)getNRSlicingCBConfigCurrentDataContext;
 - (id)getPhoneNumber;
-- (id)getString:(id)a3 defaultValue:(id)a4;
-- (int64_t)getInteger:(id)a3 defaultValue:(int64_t)a4;
-- (void)_handleSubscriptionAndBundleChange:(id)a3;
-- (void)_loadSlicingConfigForContext:(id)a3;
+- (id)getString:(id)string defaultValue:(id)value;
+- (int64_t)getInteger:(id)integer defaultValue:(int64_t)value;
+- (void)_handleSubscriptionAndBundleChange:(id)change;
+- (void)_loadSlicingConfigForContext:(id)context;
 - (void)_loadSubscriptionInfo;
-- (void)_loadSubscriptionInfoForContext:(id)a3;
-- (void)carrierBundleChange:(id)a3;
+- (void)_loadSubscriptionInfoForContext:(id)context;
+- (void)carrierBundleChange:(id)change;
 - (void)defaultBundleChange;
-- (void)operatorBundleChange:(id)a3;
+- (void)operatorBundleChange:(id)change;
 @end
 
 @implementation SPCarrierBundleAdapter
@@ -74,8 +74,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v4 subscriptionsValid];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  subscriptionsValid = [v4 subscriptionsValid];
+  v7 = [subscriptionsValid countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -87,7 +87,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptionsValid);
         }
 
         [(SPCarrierBundleAdapter *)self _loadSubscriptionInfoForContext:*(*(&v11 + 1) + 8 * v10)];
@@ -95,23 +95,23 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v8 = [subscriptionsValid countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_loadSubscriptionInfoForContext:(id)a3
+- (void)_loadSubscriptionInfoForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SPCarrierBundleAdapter *)self validSubscriptions];
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 slotID]);
-  v7 = [v5 objectForKey:v6];
+  contextCopy = context;
+  validSubscriptions = [(SPCarrierBundleAdapter *)self validSubscriptions];
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [contextCopy slotID]);
+  v7 = [validSubscriptions objectForKey:v6];
 
-  v8 = [(SPCarrierBundleAdapter *)self validSubscriptions];
-  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 slotID]);
-  v10 = [v8 objectForKey:v9];
+  validSubscriptions2 = [(SPCarrierBundleAdapter *)self validSubscriptions];
+  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [contextCopy slotID]);
+  v10 = [validSubscriptions2 objectForKey:v9];
 
   if (v10)
   {
@@ -119,25 +119,25 @@
     if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134217984;
-      v15 = [v4 slotID];
+      slotID = [contextCopy slotID];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating context previously found associated to slotID=%ld", &v14, 0xCu);
     }
   }
 
-  v12 = [(SPCarrierBundleAdapter *)self validSubscriptions];
-  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 slotID]);
-  [v12 setObject:v4 forKey:v13];
+  validSubscriptions3 = [(SPCarrierBundleAdapter *)self validSubscriptions];
+  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [contextCopy slotID]);
+  [validSubscriptions3 setObject:contextCopy forKey:v13];
 
-  [(SPCarrierBundleAdapter *)self _loadSlicingConfigForContext:v4];
+  [(SPCarrierBundleAdapter *)self _loadSlicingConfigForContext:contextCopy];
 }
 
-- (void)_loadSlicingConfigForContext:(id)a3
+- (void)_loadSlicingConfigForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   client = self->_client;
-  v6 = [(SPCarrierBundleAdapter *)self carrierBundleType];
+  carrierBundleType = [(SPCarrierBundleAdapter *)self carrierBundleType];
   v15 = 0;
-  v7 = [(CoreTelephonyClient *)client copyCarrierBundleValue:v4 key:@"NRSlicing" bundleType:v6 error:&v15];
+  v7 = [(CoreTelephonyClient *)client copyCarrierBundleValue:contextCopy key:@"NRSlicing" bundleType:carrierBundleType error:&v15];
   v8 = v15;
 
   if (v8)
@@ -145,7 +145,7 @@
     v9 = qword_100382458;
     if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_ERROR))
     {
-      sub_100285834(v4, v8, v9);
+      sub_100285834(contextCopy, v8, v9);
     }
   }
 
@@ -154,9 +154,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
-      v11 = [NSNumber numberWithInteger:[(__CFString *)v4 slotID]];
-      [v10 setObject:v7 forKey:v11];
+      slicingConfiguration = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+      v11 = [NSNumber numberWithInteger:[(__CFString *)contextCopy slotID]];
+      [slicingConfiguration setObject:v7 forKey:v11];
     }
 
     else
@@ -182,7 +182,7 @@
     if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = contextCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "no NRSlicing definitions in ctxt=%@", buf, 0xCu);
     }
   }
@@ -190,17 +190,17 @@
 
 - (BOOL)isDualSimON
 {
-  v3 = [(SPCarrierBundleAdapter *)self client];
+  client = [(SPCarrierBundleAdapter *)self client];
   v8 = 0;
-  v4 = [v3 getDualSimCapability:&v8];
+  v4 = [client getDualSimCapability:&v8];
 
   if (v4 != 2)
   {
     return 0;
   }
 
-  v5 = [(SPCarrierBundleAdapter *)self validSubscriptions];
-  v6 = [v5 count] > 1;
+  validSubscriptions = [(SPCarrierBundleAdapter *)self validSubscriptions];
+  v6 = [validSubscriptions count] > 1;
 
   return v6;
 }
@@ -217,8 +217,8 @@
   v26 = 0u;
   v27 = 0u;
   v22 = v5;
-  v7 = [v5 subscriptionsValid];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v31 count:16];
+  subscriptionsValid = [v5 subscriptionsValid];
+  v8 = [subscriptionsValid countByEnumeratingWithState:&v24 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -231,13 +231,13 @@
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subscriptionsValid);
         }
 
         v13 = *(*(&v24 + 1) + 8 * v11);
-        v14 = [(SPCarrierBundleAdapter *)self client];
+        client = [(SPCarrierBundleAdapter *)self client];
         v23 = v12;
-        v15 = [v14 copyCarrierBundleVersion:v13 error:&v23];
+        v15 = [client copyCarrierBundleVersion:v13 error:&v23];
         v6 = v23;
 
         if (v15)
@@ -250,7 +250,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v31 count:16];
+      v9 = [subscriptionsValid countByEnumeratingWithState:&v24 objects:v31 count:16];
     }
 
     while (v9);
@@ -307,8 +307,8 @@
   v27 = 0u;
   v28 = 0u;
   v22 = v4;
-  v6 = [v4 subscriptionsValid];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  subscriptionsValid = [v4 subscriptionsValid];
+  v7 = [subscriptionsValid countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -321,14 +321,14 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptionsValid);
         }
 
         v12 = *(*(&v25 + 1) + 8 * v10);
-        v13 = [(SPCarrierBundleAdapter *)self client];
-        v14 = [(SPCarrierBundleAdapter *)self carrierBundleType];
+        client = [(SPCarrierBundleAdapter *)self client];
+        carrierBundleType = [(SPCarrierBundleAdapter *)self carrierBundleType];
         v24 = v11;
-        v15 = [v13 copyBundleIdentifier:v12 bundleType:v14 error:&v24];
+        v15 = [client copyBundleIdentifier:v12 bundleType:carrierBundleType error:&v24];
         v5 = v24;
 
         if (v15)
@@ -341,7 +341,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v8 = [subscriptionsValid countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v8);
@@ -388,9 +388,9 @@
 
 - (id)getPhoneNumber
 {
-  v2 = [(SPCarrierBundleAdapter *)self client];
+  client = [(SPCarrierBundleAdapter *)self client];
   v7 = 0;
-  v3 = [v2 getCurrentDataSubscriptionContextSync:&v7];
+  v3 = [client getCurrentDataSubscriptionContextSync:&v7];
   v4 = v7;
 
   if (v4)
@@ -400,22 +400,22 @@
       sub_1002859B4();
     }
 
-    v5 = 0;
+    phoneNumber = 0;
   }
 
   else
   {
-    v5 = [v3 phoneNumber];
+    phoneNumber = [v3 phoneNumber];
   }
 
-  return v5;
+  return phoneNumber;
 }
 
 - (id)getNRSlicingCBConfigCurrentDataContext
 {
-  v3 = [(SPCarrierBundleAdapter *)self client];
+  client = [(SPCarrierBundleAdapter *)self client];
   v13 = 0;
-  v4 = [v3 getCurrentDataSubscriptionContextSync:&v13];
+  v4 = [client getCurrentDataSubscriptionContextSync:&v13];
   v5 = v13;
 
   if (v5)
@@ -430,14 +430,14 @@
 
   else
   {
-    v7 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
-    v8 = [v7 allKeys];
+    slicingConfiguration = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+    allKeys = [slicingConfiguration allKeys];
     v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 slotID]);
-    if ([v8 containsObject:v9])
+    if ([allKeys containsObject:v9])
     {
-      v10 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+      slicingConfiguration2 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
       v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 slotID]);
-      v6 = [v10 objectForKey:v11];
+      v6 = [slicingConfiguration2 objectForKey:v11];
     }
 
     else
@@ -451,12 +451,12 @@
 
 - (BOOL)isSlicingSetup
 {
-  v2 = [(SPCarrierBundleAdapter *)self getNRSlicingCBConfigCurrentDataContext];
-  v3 = [v2 allValues];
-  if ([v3 count])
+  getNRSlicingCBConfigCurrentDataContext = [(SPCarrierBundleAdapter *)self getNRSlicingCBConfigCurrentDataContext];
+  allValues = [getNRSlicingCBConfigCurrentDataContext allValues];
+  if ([allValues count])
   {
-    v4 = [v2 allValues];
-    v5 = [v4 count] != 0;
+    allValues2 = [getNRSlicingCBConfigCurrentDataContext allValues];
+    v5 = [allValues2 count] != 0;
   }
 
   else
@@ -473,10 +473,10 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
-  v4 = [v3 allKeys];
+  slicingConfiguration = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+  allKeys = [slicingConfiguration allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v5)
   {
     v7 = v5;
@@ -489,12 +489,12 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
-        v12 = [v11 objectForKey:v10];
+        slicingConfiguration2 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+        v12 = [slicingConfiguration2 objectForKey:v10];
 
         v13 = [v12 objectForKey:@"__SlicingTestModule__"];
         if (v13)
@@ -507,11 +507,11 @@
             v19 = qword_100382458;
             if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v18 BOOLValue];
+              bOOLValue = [v18 BOOLValue];
               v21 = @"Disabled";
               *buf = 134218498;
               v29 = v10;
-              if (v20)
+              if (bOOLValue)
               {
                 v21 = @"Enabled";
               }
@@ -523,7 +523,7 @@
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Slicing Test Application for slot=%ld %@=%@", buf, 0x20u);
             }
 
-            v16 = [v18 BOOLValue];
+            bOOLValue2 = [v18 BOOLValue];
           }
 
           else
@@ -533,10 +533,10 @@
               sub_1002859F4();
             }
 
-            v16 = 0;
+            bOOLValue2 = 0;
           }
 
-          return v16;
+          return bOOLValue2;
         }
 
         v14 = qword_100382458;
@@ -548,7 +548,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v24 objects:v34 count:16];
       if (v7)
       {
         continue;
@@ -559,7 +559,7 @@
   }
 
   v15 = qword_100382458;
-  v16 = 0;
+  bOOLValue2 = 0;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -567,7 +567,7 @@
     return 0;
   }
 
-  return v16;
+  return bOOLValue2;
 }
 
 - (BOOL)isLLPHSApplicationEnabled
@@ -576,10 +576,10 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
-  v4 = [v3 allKeys];
+  slicingConfiguration = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+  allKeys = [slicingConfiguration allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v5)
   {
     v7 = v5;
@@ -592,29 +592,29 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
-        v12 = [v11 objectForKey:v10];
+        slicingConfiguration2 = [(SPCarrierBundleAdapter *)self slicingConfiguration];
+        v12 = [slicingConfiguration2 objectForKey:v10];
 
-        v13 = [(SPCarrierBundleAdapter *)self getNRSlicingCBConfigCurrentDataContext];
+        getNRSlicingCBConfigCurrentDataContext = [(SPCarrierBundleAdapter *)self getNRSlicingCBConfigCurrentDataContext];
         if ([(SPCarrierBundleAdapter *)self isSlicingSetup])
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = [v13 objectForKey:@"SupportsLLPHS"];
+            v17 = [getNRSlicingCBConfigCurrentDataContext objectForKey:@"SupportsLLPHS"];
             v18 = qword_100382458;
             if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v17 BOOLValue];
+              bOOLValue = [v17 BOOLValue];
               v20 = @"Disabled";
               *buf = 134218498;
               v28 = v10;
               v29 = 2112;
-              if (v19)
+              if (bOOLValue)
               {
                 v20 = @"Enabled";
               }
@@ -625,7 +625,7 @@
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "LLPHS for slot=%ld %@=%@", buf, 0x20u);
             }
 
-            v16 = [v17 BOOLValue];
+            bOOLValue2 = [v17 BOOLValue];
           }
 
           else
@@ -635,10 +635,10 @@
               sub_100285A74();
             }
 
-            v16 = 0;
+            bOOLValue2 = 0;
           }
 
-          return v16;
+          return bOOLValue2;
         }
 
         v14 = qword_100382458;
@@ -650,7 +650,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v23 objects:v33 count:16];
       if (v7)
       {
         continue;
@@ -661,7 +661,7 @@
   }
 
   v15 = qword_100382458;
-  v16 = 0;
+  bOOLValue2 = 0;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -669,31 +669,31 @@
     return 0;
   }
 
-  return v16;
+  return bOOLValue2;
 }
 
-- (int64_t)getInteger:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)getInteger:(id)integer defaultValue:(int64_t)value
 {
-  v5 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:a3];
+  v5 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:integer];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4 = [v5 integerValue];
+      value = [v5 integerValue];
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (id)getString:(id)a3 defaultValue:(id)a4
+- (id)getString:(id)string defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:a3];
+  valueCopy = value;
+  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:string];
   if (!v7 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9 = v7, (isKindOfClass & 1) == 0))
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -701,13 +701,13 @@
   return v10;
 }
 
-- (id)getData:(id)a3 defaultValue:(id)a4
+- (id)getData:(id)data defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:a3];
+  valueCopy = value;
+  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:data];
   if (!v7 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9 = v7, (isKindOfClass & 1) == 0))
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -715,13 +715,13 @@
   return v10;
 }
 
-- (id)getArray:(id)a3 defaultValue:(id)a4
+- (id)getArray:(id)array defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:a3];
+  valueCopy = value;
+  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:array];
   if (!v7 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9 = v7, (isKindOfClass & 1) == 0))
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -729,25 +729,25 @@
   return v10;
 }
 
-- (BOOL)getBoolean:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)getBoolean:(id)boolean defaultValue:(BOOL)value
 {
-  v5 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:a3];
+  v5 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:boolean];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)getDict:(id)a3 defaultValue:(id)a4
+- (id)getDict:(id)dict defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:a3];
+  valueCopy = value;
+  v7 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyForDataContext:dict];
   if (!v7 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9 = v7, (isKindOfClass & 1) == 0))
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -755,12 +755,12 @@
   return v10;
 }
 
-- (id)_getCarrierBundleKeyForDataContext:(id)a3
+- (id)_getCarrierBundleKeyForDataContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SPCarrierBundleAdapter *)self client];
+  contextCopy = context;
+  client = [(SPCarrierBundleAdapter *)self client];
   v10 = 0;
-  v6 = [v5 getCurrentDataSubscriptionContextSync:&v10];
+  v6 = [client getCurrentDataSubscriptionContextSync:&v10];
   v7 = v10;
 
   if (v7)
@@ -775,20 +775,20 @@
 
   else
   {
-    v8 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyValue:v4 forContext:v6];
+    v8 = [(SPCarrierBundleAdapter *)self _getCarrierBundleKeyValue:contextCopy forContext:v6];
   }
 
   return v8;
 }
 
-- (id)_getCarrierBundleKeyValue:(id)a3 forContext:(id)a4
+- (id)_getCarrierBundleKeyValue:(id)value forContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SPCarrierBundleAdapter *)self client];
-  v9 = [(SPCarrierBundleAdapter *)self carrierBundleType];
+  valueCopy = value;
+  contextCopy = context;
+  client = [(SPCarrierBundleAdapter *)self client];
+  carrierBundleType = [(SPCarrierBundleAdapter *)self carrierBundleType];
   v15 = 0;
-  v10 = [v8 copyCarrierBundleValue:v7 key:v6 bundleType:v9 error:&v15];
+  v10 = [client copyCarrierBundleValue:contextCopy key:valueCopy bundleType:carrierBundleType error:&v15];
   v11 = v15;
 
   if (v11)
@@ -797,9 +797,9 @@
     if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v17 = v6;
+      v17 = valueCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = contextCopy;
       v20 = 2112;
       v21 = v11;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Unable to read key %@ from context=%@ with error=%@", buf, 0x20u);
@@ -816,12 +816,12 @@
   return v13;
 }
 
-- (void)_handleSubscriptionAndBundleChange:(id)a3
+- (void)_handleSubscriptionAndBundleChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
-    [(SPCarrierBundleAdapter *)self _loadSubscriptionInfoForContext:v4];
+    [(SPCarrierBundleAdapter *)self _loadSubscriptionInfoForContext:changeCopy];
   }
 
   else
@@ -829,11 +829,11 @@
     [(SPCarrierBundleAdapter *)self _loadSubscriptionInfo];
   }
 
-  v5 = [(SPCarrierBundleAdapter *)self delegate];
-  if (v5)
+  delegate = [(SPCarrierBundleAdapter *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(SPCarrierBundleAdapter *)self delegate];
+    v6 = delegate;
+    delegate2 = [(SPCarrierBundleAdapter *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
@@ -880,27 +880,27 @@
   [(SPCarrierBundleAdapter *)self _handleSubscriptionAndBundleChange:0];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = qword_100382458;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "carrier bundle changed for ctxt=%@. reloading configuration", &v6, 0xCu);
   }
 
-  [(SPCarrierBundleAdapter *)self _handleSubscriptionAndBundleChange:v4];
+  [(SPCarrierBundleAdapter *)self _handleSubscriptionAndBundleChange:changeCopy];
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
   v4 = qword_100382458;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a3;
+    changeCopy = change;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "operator bundle changed for ctxt=%@. Ignoring update", &v5, 0xCu);
   }
 }

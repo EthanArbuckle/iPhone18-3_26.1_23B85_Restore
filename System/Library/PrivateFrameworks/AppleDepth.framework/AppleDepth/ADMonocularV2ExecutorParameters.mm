@@ -1,21 +1,21 @@
 @interface ADMonocularV2ExecutorParameters
 - (ADMonocularV2ExecutorParameters)init;
-- (id)initForPipeline:(id)a3;
+- (id)initForPipeline:(id)pipeline;
 @end
 
 @implementation ADMonocularV2ExecutorParameters
 
-- (id)initForPipeline:(id)a3
+- (id)initForPipeline:(id)pipeline
 {
-  v4 = a3;
+  pipelineCopy = pipeline;
   v9.receiver = self;
   v9.super_class = ADMonocularV2ExecutorParameters;
   v5 = [(ADExecutorParameters *)&v9 init];
   if (v5)
   {
-    v6 = [v4 pipelineParameters];
+    pipelineParameters = [pipelineCopy pipelineParameters];
     pipelineParameters = v5->_pipelineParameters;
-    v5->_pipelineParameters = v6;
+    v5->_pipelineParameters = pipelineParameters;
   }
 
   return v5;

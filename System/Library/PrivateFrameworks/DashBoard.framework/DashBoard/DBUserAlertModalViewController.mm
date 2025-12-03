@@ -1,32 +1,32 @@
 @interface DBUserAlertModalViewController
-- (DBUserAlertModalViewController)initWithAlert:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (DBUserAlertModalViewController)initWithAlert:(id)alert;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation DBUserAlertModalViewController
 
-- (DBUserAlertModalViewController)initWithAlert:(id)a3
+- (DBUserAlertModalViewController)initWithAlert:(id)alert
 {
-  v5 = a3;
+  alertCopy = alert;
   v9.receiver = self;
   v9.super_class = DBUserAlertModalViewController;
   v6 = [(DBUserAlertModalViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alert, a3);
+    objc_storeStrong(&v6->_alert, alert);
   }
 
   return v7;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = [(DBUserAlertModalViewController *)self alert];
+  alert = [(DBUserAlertModalViewController *)self alert];
   v5 = MEMORY[0x277D75110];
-  v6 = [v4 title];
-  v7 = [v4 message];
-  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  title = [alert title];
+  message = [alert message];
+  v8 = [v5 alertControllerWithTitle:title message:message preferredStyle:1];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -35,14 +35,14 @@
   v17 = v8;
   v9 = v8;
   v10 = _Block_copy(aBlock);
-  v11 = [v4 cancelAction];
-  v10[2](v10, v11, 1, 0);
+  cancelAction = [alert cancelAction];
+  v10[2](v10, cancelAction, 1, 0);
 
-  v12 = [v4 otherAction];
-  v10[2](v10, v12, 0, 0);
+  otherAction = [alert otherAction];
+  v10[2](v10, otherAction, 0, 0);
 
-  v13 = [v4 defaultAction];
-  v10[2](v10, v13, 0, 1);
+  defaultAction = [alert defaultAction];
+  v10[2](v10, defaultAction, 0, 1);
 
   v14 = DBLogForCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))

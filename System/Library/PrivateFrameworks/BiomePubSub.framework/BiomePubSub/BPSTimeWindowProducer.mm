@@ -1,20 +1,20 @@
 @interface BPSTimeWindowProducer
-- (BPSTimeWindowProducer)initWithDateInterval:(id)a3 aggregator:(id)a4 identifier:(id)a5;
+- (BPSTimeWindowProducer)initWithDateInterval:(id)interval aggregator:(id)aggregator identifier:(id)identifier;
 - (id)metadata;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation BPSTimeWindowProducer
 
-- (BPSTimeWindowProducer)initWithDateInterval:(id)a3 aggregator:(id)a4 identifier:(id)a5
+- (BPSTimeWindowProducer)initWithDateInterval:(id)interval aggregator:(id)aggregator identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  intervalCopy = interval;
+  aggregatorCopy = aggregator;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = BPSTimeWindowProducer;
   v12 = [(BPSTimeWindowProducer *)&v21 init];
@@ -22,16 +22,16 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_dateInterval, a3);
-    v14 = [v10 accumulator];
+    objc_storeStrong(&v12->_dateInterval, interval);
+    accumulator = [aggregatorCopy accumulator];
     accumulator = v13->_accumulator;
-    v13->_accumulator = v14;
+    v13->_accumulator = accumulator;
 
-    v16 = [v10 closure];
+    closure = [aggregatorCopy closure];
     closure = v13->_closure;
-    v13->_closure = v16;
+    v13->_closure = closure;
 
-    objc_storeStrong(&v13->_identifier, a5);
+    objc_storeStrong(&v13->_identifier, identifier);
     v18 = [[BPSSubscriptionStatus alloc] initWithState:0 subscription:0];
     status = v13->_status;
     v13->_status = v18;
@@ -49,47 +49,47 @@
   return v2;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v10 = a3;
-  v4 = self;
-  os_unfair_lock_lock(&v4->_lock);
-  if ([(BPSSubscriptionStatus *)v4->_status state]!= 1)
+  completionCopy = completion;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]!= 1)
   {
-    os_unfair_lock_unlock(&v4->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     goto LABEL_12;
   }
 
-  [(BPSSubscriptionStatus *)v4->_status setState:2];
-  v5 = [(BPSWindow *)v4 downstream];
-  v6 = [v10 state];
-  if (v6 == 1)
+  [(BPSSubscriptionStatus *)selfCopy->_status setState:2];
+  downstream = [(BPSWindow *)selfCopy downstream];
+  state = [completionCopy state];
+  if (state == 1)
   {
-    os_unfair_lock_unlock(&v4->_lock);
-    v8 = [v10 error];
-    v9 = [BPSCompletion failureWithError:v8];
-    [v5 receiveCompletion:v9];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    error = [completionCopy error];
+    v9 = [BPSCompletion failureWithError:error];
+    [downstream receiveCompletion:v9];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!state)
   {
-    if (v4->_downstreamRequested)
+    if (selfCopy->_downstreamRequested)
     {
-      v7 = v4->_accumulator;
-      os_unfair_lock_unlock(&v4->_lock);
-      [v5 receiveInput:v7];
+      v7 = selfCopy->_accumulator;
+      os_unfair_lock_unlock(&selfCopy->_lock);
+      [downstream receiveInput:v7];
     }
 
     else
     {
-      os_unfair_lock_unlock(&v4->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
     }
 
-    v8 = +[BPSCompletion success];
-    [v5 receiveCompletion:v8];
+    error = +[BPSCompletion success];
+    [downstream receiveCompletion:error];
     goto LABEL_10;
   }
 
@@ -98,55 +98,55 @@ LABEL_11:
 LABEL_12:
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSSubscriptionStatus *)v5->_status state]== 1)
+  inputCopy = input;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    closure = v5->_closure;
-    v7 = v5->_accumulator;
+    closure = selfCopy->_closure;
+    v7 = selfCopy->_accumulator;
     v8 = _Block_copy(closure);
-    os_unfair_lock_unlock(&v5->_lock);
-    v9 = v8[2](v8, v7, v4);
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    v9 = v8[2](v8, v7, inputCopy);
 
-    os_unfair_lock_lock(&v5->_lock);
-    accumulator = v5->_accumulator;
-    v5->_accumulator = v9;
+    os_unfair_lock_lock(&selfCopy->_lock);
+    accumulator = selfCopy->_accumulator;
+    selfCopy->_accumulator = v9;
 
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   else
   {
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   return 0;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v7 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(BPSSubscriptionStatus *)self->_status state];
-  if (v4 == 2 || v4 == 1)
+  state = [(BPSSubscriptionStatus *)self->_status state];
+  if (state == 2 || state == 1)
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v7 cancel];
+    [subscriptionCopy cancel];
   }
 
-  else if (!v4)
+  else if (!state)
   {
     [(BPSSubscriptionStatus *)self->_status setState:1];
-    [(BPSSubscriptionStatus *)self->_status setSubscription:v7];
-    v5 = [(BPSWindow *)self downstream];
-    v6 = self;
+    [(BPSSubscriptionStatus *)self->_status setSubscription:subscriptionCopy];
+    downstream = [(BPSWindow *)self downstream];
+    selfCopy = self;
     os_unfair_lock_unlock(&self->_lock);
-    [v5 receiveSubscription:v6];
+    [downstream receiveSubscription:selfCopy];
 
-    [v7 requestDemand:0x7FFFFFFFFFFFFFFFLL];
+    [subscriptionCopy requestDemand:0x7FFFFFFFFFFFFFFFLL];
   }
 
   MEMORY[0x1EEE66BB8]();
@@ -154,37 +154,37 @@ LABEL_12:
 
 - (void)cancel
 {
-  v3 = self;
-  os_unfair_lock_lock(&v3->_lock);
-  if ([(BPSSubscriptionStatus *)v3->_status state]== 1)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    [(BPSSubscriptionStatus *)v3->_status setState:2];
-    v2 = [(BPSSubscriptionStatus *)v3->_status subscription];
-    os_unfair_lock_unlock(&v3->_lock);
-    [v2 cancel];
+    [(BPSSubscriptionStatus *)selfCopy->_status setState:2];
+    subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [subscription cancel];
   }
 
   else
   {
-    os_unfair_lock_unlock(&v3->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v5 = self;
-  if (a3 <= 0)
+  selfCopy = self;
+  if (demand <= 0)
   {
-    [(BPSTimeWindowProducer *)a2 requestDemand:v5];
+    [(BPSTimeWindowProducer *)a2 requestDemand:selfCopy];
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSSubscriptionStatus *)v5->_status state]== 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v5->_downstreamRequested = 1;
+    selfCopy->_downstreamRequested = 1;
   }
 
-  os_unfair_lock_unlock(&v5->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
 - (void)requestDemand:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

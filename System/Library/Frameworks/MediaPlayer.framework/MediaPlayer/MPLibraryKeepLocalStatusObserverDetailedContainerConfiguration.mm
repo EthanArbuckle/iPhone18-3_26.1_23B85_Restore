@@ -1,5 +1,5 @@
 @interface MPLibraryKeepLocalStatusObserverDetailedContainerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -196,9 +196,9 @@
 
     else
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v38 handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -395,9 +395,9 @@
 
     else
     {
-      v78 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v79 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v78 handleFailureInFunction:v79 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler2 handleFailureInFunction:v79 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -594,9 +594,9 @@
 
     else
     {
-      v118 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v119 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v118 handleFailureInFunction:v119 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler3 handleFailureInFunction:v119 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -793,9 +793,9 @@
 
     else
     {
-      v158 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v159 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v158 handleFailureInFunction:v159 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler4 handleFailureInFunction:v159 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -993,9 +993,9 @@
 
     else
     {
-      v199 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v200 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v199 handleFailureInFunction:v200 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler5 handleFailureInFunction:v200 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1185,9 +1185,9 @@ LABEL_252:
 
   else
   {
-    v251 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v252 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-    [v251 handleFailureInFunction:v252 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+    [currentHandler6 handleFailureInFunction:v252 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
   }
 
 LABEL_253:
@@ -1312,9 +1312,9 @@ LABEL_253:
   if (*&data[0] != 3001)
   {
 LABEL_281:
-    v294 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v295 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger _MSVHashGetHash(MSVHash)"];
-    [v294 handleFailureInFunction:v295 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
+    [currentHandler7 handleFailureInFunction:v295 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
     return 0;
   }
@@ -1322,17 +1322,17 @@ LABEL_281:
   return *(&data[0] + 1);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if ([(MPLibraryKeepLocalStatusObserverDetailedContainerConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MPLibraryKeepLocalStatusObserverDetailedContainerConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8.receiver = self;
     v8.super_class = MPLibraryKeepLocalStatusObserverDetailedContainerConfiguration;
     if ([(MPLibraryKeepLocalStatusObserverConfiguration *)&v8 isEqual:v5]&& self->_downloadEnabledItemCount == v5->_downloadEnabledItemCount && self->_nonPurgeableItemCount == v5->_nonPurgeableItemCount && self->_redownloadableItemCount == v5->_redownloadableItemCount)

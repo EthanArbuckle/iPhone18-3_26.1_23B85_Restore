@@ -1,6 +1,6 @@
 @interface OSAStreamDeflater
 - (OSAStreamDeflater)init;
-- (id)copyDeflatedDataFromStream:(__sFILE *)a3 withCap:(unsigned int)a4;
+- (id)copyDeflatedDataFromStream:(__sFILE *)stream withCap:(unsigned int)cap;
 - (void)dealloc;
 @end
 
@@ -82,20 +82,20 @@
   [(OSAStreamDeflater *)&v5 dealloc];
 }
 
-- (id)copyDeflatedDataFromStream:(__sFILE *)a3 withCap:(unsigned int)a4
+- (id)copyDeflatedDataFromStream:(__sFILE *)stream withCap:(unsigned int)cap
 {
   v18 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB28]);
   self->_capViolation = 0;
   while (1)
   {
-    self->_strm.avail_in = fread(self->_in, 1uLL, 0x10000uLL, a3);
-    if (ferror(a3))
+    self->_strm.avail_in = fread(self->_in, 1uLL, 0x10000uLL, stream);
+    if (ferror(stream))
     {
       break;
     }
 
-    v8 = feof(a3);
+    v8 = feof(stream);
     v9 = v8 == 0;
     self->_strm.next_in = self->_in;
     do
@@ -113,12 +113,12 @@
     }
 
     while (!self->_strm.avail_out);
-    if ([v7 length] >= a4)
+    if ([v7 length] >= cap)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v16 = 67109120;
-        v17 = a4;
+        capCopy = cap;
         _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "deflateStream abort at cap limit %u", &v16, 8u);
       }
 
@@ -138,7 +138,7 @@
   {
     v11 = *__error();
     v16 = 67109120;
-    v17 = v11;
+    capCopy = v11;
     _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "deflateStream error reading (errno %d)", &v16, 8u);
   }
 

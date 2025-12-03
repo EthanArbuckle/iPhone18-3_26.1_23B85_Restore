@@ -1,27 +1,27 @@
 @interface FLHeaderCell
-- (FLHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (FLHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_updateConstraintsWithImage;
 - (void)_updateConstraintsWithNoImage;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation FLHeaderCell
 
-- (FLHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (FLHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v40.receiver = self;
   v40.super_class = FLHeaderCell;
-  v9 = [(PSTableCell *)&v40 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(PSTableCell *)&v40 initWithStyle:style reuseIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
     [(FLHeaderCell *)v9 setUserInteractionEnabled:0];
-    v11 = [v8 propertyForKey:*MEMORY[0x277CFE418]];
-    v12 = [v11 groupIdentifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x277CFE450]];
+    v11 = [specifierCopy propertyForKey:*MEMORY[0x277CFE418]];
+    groupIdentifier = [v11 groupIdentifier];
+    v13 = [groupIdentifier isEqualToString:*MEMORY[0x277CFE450]];
 
     v14 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(UILabel *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -33,17 +33,17 @@
       v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
       [(UILabel *)v14 setFont:v16];
 
-      v17 = [MEMORY[0x277D3FA48] appearance];
-      v18 = [v17 textColor];
-      if (v18)
+      appearance = [MEMORY[0x277D3FA48] appearance];
+      textColor = [appearance textColor];
+      if (textColor)
       {
-        [(UILabel *)v14 setTextColor:v18];
+        [(UILabel *)v14 setTextColor:textColor];
       }
 
       else
       {
-        v22 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v14 setTextColor:v22];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v14 setTextColor:blackColor];
       }
 
       LODWORD(v23) = 1144750080;
@@ -52,8 +52,8 @@
       v10->_followTitle = v14;
 
       v25 = objc_alloc_init(MEMORY[0x277D756B8]);
-      v26 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UILabel *)v25 setTextColor:v26];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UILabel *)v25 setTextColor:secondaryLabelColor];
 
       [(UILabel *)v25 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v25 setNumberOfLines:0];
@@ -67,17 +67,17 @@
       v19 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
       [(UILabel *)v14 setFont:v19];
 
-      v20 = [MEMORY[0x277D3FA48] appearance];
-      v21 = [v20 textColor];
-      if (v21)
+      appearance2 = [MEMORY[0x277D3FA48] appearance];
+      textColor2 = [appearance2 textColor];
+      if (textColor2)
       {
-        [(UILabel *)v14 setTextColor:v21];
+        [(UILabel *)v14 setTextColor:textColor2];
       }
 
       else
       {
-        v29 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v14 setTextColor:v29];
+        blackColor2 = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v14 setTextColor:blackColor2];
       }
 
       LODWORD(v30) = 1144750080;
@@ -86,17 +86,17 @@
       v10->_followTitle = v14;
 
       v25 = objc_alloc_init(MEMORY[0x277D756B8]);
-      v32 = [MEMORY[0x277D3FA48] appearance];
-      v33 = [v32 textColor];
-      if (v33)
+      appearance3 = [MEMORY[0x277D3FA48] appearance];
+      textColor3 = [appearance3 textColor];
+      if (textColor3)
       {
-        [(UILabel *)v25 setTextColor:v33];
+        [(UILabel *)v25 setTextColor:textColor3];
       }
 
       else
       {
-        v34 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v25 setTextColor:v34];
+        blackColor3 = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v25 setTextColor:blackColor3];
       }
 
       [(UILabel *)v25 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -114,9 +114,9 @@
     followSubtitle = v10->_followSubtitle;
     v10->_followSubtitle = v25;
 
-    v38 = [(FLHeaderCell *)v10 contentView];
-    [v38 addSubview:v10->_followTitle];
-    [v38 addSubview:v10->_followSubtitle];
+    contentView = [(FLHeaderCell *)v10 contentView];
+    [contentView addSubview:v10->_followTitle];
+    [contentView addSubview:v10->_followSubtitle];
     [(FLHeaderCell *)v10 layoutSubviews];
   }
 
@@ -131,28 +131,28 @@
   [(FLHeaderCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v22.receiver = self;
   v22.super_class = FLHeaderCell;
-  v4 = a3;
-  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:*MEMORY[0x277CFE418]];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277CFE418]];
 
-  v6 = [v5 groupIdentifier];
+  groupIdentifier = [v5 groupIdentifier];
   v7 = *MEMORY[0x277CFE448];
-  if ([v6 isEqualToString:*MEMORY[0x277CFE448]])
+  if ([groupIdentifier isEqualToString:*MEMORY[0x277CFE448]])
   {
-    v8 = [v5 userInfo];
+    userInfo = [v5 userInfo];
     v9 = *MEMORY[0x277CFE4B8];
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CFE4B8]];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CFE4B8]];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v5 userInfo];
-      v13 = [v12 objectForKeyedSubscript:v9];
+      userInfo2 = [v5 userInfo];
+      v13 = [userInfo2 objectForKeyedSubscript:v9];
       [(UILabel *)self->_followTitle setText:v13];
 
       goto LABEL_6;
@@ -163,41 +163,41 @@
   {
   }
 
-  v12 = [v5 title];
-  [(UILabel *)self->_followTitle setText:v12];
+  userInfo2 = [v5 title];
+  [(UILabel *)self->_followTitle setText:userInfo2];
 LABEL_6:
 
-  v14 = [v5 groupIdentifier];
-  if (![v14 isEqualToString:v7])
+  groupIdentifier2 = [v5 groupIdentifier];
+  if (![groupIdentifier2 isEqualToString:v7])
   {
 
     goto LABEL_11;
   }
 
-  v15 = [v5 displayExpirationDate];
+  displayExpirationDate = [v5 displayExpirationDate];
 
-  if (!v15)
+  if (!displayExpirationDate)
   {
 LABEL_11:
-    v21 = [v5 informativeText];
+    informativeText = [v5 informativeText];
 LABEL_12:
-    v18 = v21;
-    [(UILabel *)self->_followSubtitle setText:v21];
+    formattedExpirationDate = informativeText;
+    [(UILabel *)self->_followSubtitle setText:informativeText];
     goto LABEL_13;
   }
 
-  v16 = [v5 informativeText];
+  informativeText2 = [v5 informativeText];
 
-  if (!v16)
+  if (!informativeText2)
   {
-    v21 = [v5 formattedExpirationDate];
+    informativeText = [v5 formattedExpirationDate];
     goto LABEL_12;
   }
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v5 formattedExpirationDate];
-  v19 = [v5 informativeText];
-  v20 = [v17 stringWithFormat:@"%@\n%@", v18, v19, v22.receiver, v22.super_class];
+  formattedExpirationDate = [v5 formattedExpirationDate];
+  informativeText3 = [v5 informativeText];
+  v20 = [v17 stringWithFormat:@"%@\n%@", formattedExpirationDate, informativeText3, v22.receiver, v22.super_class];
   [(UILabel *)self->_followSubtitle setText:v20];
 
 LABEL_13:
@@ -207,8 +207,8 @@ LABEL_13:
 - (void)updateConstraints
 {
   [MEMORY[0x277CCAAD0] deactivateConstraints:self->_constraints];
-  v3 = [(PSTableCell *)self specifier];
-  v4 = [v3 propertyForKey:*MEMORY[0x277D3FFC0]];
+  specifier = [(PSTableCell *)self specifier];
+  v4 = [specifier propertyForKey:*MEMORY[0x277D3FFC0]];
 
   if (v4)
   {
@@ -241,12 +241,12 @@ LABEL_13:
 - (void)_updateConstraintsWithImage
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v3 = [(FLHeaderCell *)self imageView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 setContentMode:1];
+  imageView = [(FLHeaderCell *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [imageView setContentMode:1];
   LODWORD(v4) = 1148846080;
-  [v3 setContentHuggingPriority:0 forAxis:v4];
-  v5 = _NSDictionaryOfVariableBindings(&cfstr_FollowtitleFol_0.isa, self->_followTitle, self->_followSubtitle, v3, 0);
+  [imageView setContentHuggingPriority:0 forAxis:v4];
+  v5 = _NSDictionaryOfVariableBindings(&cfstr_FollowtitleFol_0.isa, self->_followTitle, self->_followSubtitle, imageView, 0);
   v17 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-(10)-[imageView(40)]-(10)-[_followTitle]-|" options:0 metrics:0 views:v5];
   v18 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_followTitle attribute:5 relatedBy:0 toItem:self->_followSubtitle attribute:5 multiplier:1.0 constant:0.0];
   v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_followTitle attribute:6 relatedBy:0 toItem:self->_followSubtitle attribute:6 multiplier:1.0 constant:0.0];
@@ -254,7 +254,7 @@ LABEL_13:
   v19 = v5;
   v8 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[_followTitle]-[_followSubtitle]-11-|" options:0 metrics:0 views:v5];
   v9 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-11-[imageView(40)]-(>=0)-|" options:0 metrics:0 views:v7];
-  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_followTitle attribute:3 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:0.0];
+  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_followTitle attribute:3 relatedBy:0 toItem:imageView attribute:3 multiplier:1.0 constant:0.0];
   v11 = [v17 arrayByAddingObjectsFromArray:v8];
   v12 = [v11 arrayByAddingObjectsFromArray:v9];
   v20[0] = v18;

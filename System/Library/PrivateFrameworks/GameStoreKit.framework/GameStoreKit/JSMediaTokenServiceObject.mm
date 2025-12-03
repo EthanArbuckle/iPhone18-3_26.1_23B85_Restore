@@ -1,7 +1,7 @@
 @interface JSMediaTokenServiceObject
 - (NSString)tokenString;
 - (_TtC12GameStoreKit25JSMediaTokenServiceObject)init;
-- (id)overrideToken:(id)a3;
+- (id)overrideToken:(id)token;
 - (id)refreshToken;
 - (void)resetToken;
 @end
@@ -10,17 +10,17 @@
 
 - (id)refreshToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E976F7C();
 
   return v3;
 }
 
-- (id)overrideToken:(id)a3
+- (id)overrideToken:(id)token
 {
   swift_getObjectType();
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_24F92C448();
   v6 = sub_24F92C458();
 
@@ -48,7 +48,7 @@
 - (void)resetToken
 {
   sub_24F929388();
-  v3 = self;
+  selfCopy = self;
   _s9JetEngine16LocalPreferencesC12GameStoreKitE03AppfG0ACvgZ_0();
   if (qword_27F210028 != -1)
   {
@@ -64,7 +64,7 @@
   sub_24F929358();
 
   __swift_destroy_boxed_opaque_existential_1(v7);
-  [*(&v3->super.isa + OBJC_IVAR____TtC12GameStoreKit25JSMediaTokenServiceObject_tokenService) invalidateMediaToken];
+  [*(&selfCopy->super.isa + OBJC_IVAR____TtC12GameStoreKit25JSMediaTokenServiceObject_tokenService) invalidateMediaToken];
 }
 
 - (_TtC12GameStoreKit25JSMediaTokenServiceObject)init

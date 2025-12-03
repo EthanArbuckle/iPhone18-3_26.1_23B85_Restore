@@ -1,38 +1,38 @@
 @interface SRGuideViewController
 - (BOOL)_hasTitle;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (Class)transparentHeaderViewClass;
 - (SAGuidanceGuideSnippet)_guideSnippet;
-- (SRGuideViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)_heightOfRowForDomainSnippet:(id)a3;
+- (SRGuideViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)_heightOfRowForDomainSnippet:(id)snippet;
 - (double)desiredHeightForTransparentHeaderView;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (id)_bigButtonViewController;
-- (id)_domainSnippetForHelpDomainAtIndex:(unint64_t)a3;
-- (id)_domainSnippetForIndexPath:(id)a3;
+- (id)_domainSnippetForHelpDomainAtIndex:(unint64_t)index;
+- (id)_domainSnippetForIndexPath:(id)path;
 - (id)_fallbackImage;
-- (id)_iconImageForGuideDomainSnippet:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)_iconImageForGuideDomainSnippet:(id)snippet;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (int64_t)_numberOfHelpDomains;
 - (int64_t)_numberOfIntentSupportedApps;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_endTrackingGuideShowTimeIfNecessary;
 - (void)_prepareSiriEnabledAppList;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureReusableTransparentHeaderView:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureReusableTransparentHeaderView:(id)view;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SRGuideViewController
 
-- (SRGuideViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SRGuideViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = SRGuideViewController;
@@ -67,11 +67,11 @@
   [(NSCache *)self->_domainIconCache removeAllObjects];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = SRGuideViewController;
-  [(SRGuideViewController *)&v4 setDelegate:a3];
+  [(SRGuideViewController *)&v4 setDelegate:delegate];
   [(SRGuideViewController *)self _prepareSiriEnabledAppList];
 }
 
@@ -85,13 +85,13 @@
     self->_bigButtonController = v4;
 
     v6 = self->_bigButtonController;
-    v7 = [(SRGuideViewController *)self _guideSnippet];
-    v8 = [v7 appPunchOutButton];
-    [(SRBigButtonController *)v6 setAceObject:v8];
+    _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+    appPunchOutButton = [_guideSnippet appPunchOutButton];
+    [(SRBigButtonController *)v6 setAceObject:appPunchOutButton];
 
     v9 = self->_bigButtonController;
-    v10 = [(SRGuideViewController *)self delegate];
-    [(SRBigButtonController *)v9 setDelegate:v10];
+    delegate = [(SRGuideViewController *)self delegate];
+    [(SRBigButtonController *)v9 setDelegate:delegate];
 
     bigButtonController = self->_bigButtonController;
   }
@@ -104,37 +104,37 @@
   v12.receiver = self;
   v12.super_class = SRGuideViewController;
   [(SRGuideViewController *)&v12 loadView];
-  v3 = [(SRGuideViewController *)self collectionView];
-  [v3 setDataSource:self];
-  [v3 setDelegate:self];
+  collectionView = [(SRGuideViewController *)self collectionView];
+  [collectionView setDataSource:self];
+  [collectionView setDelegate:self];
   v4 = objc_opt_class();
   v5 = +[SRGuideViewCell reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
   v6 = objc_opt_class();
   v7 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  [v3 registerClass:v6 forCellWithReuseIdentifier:v7];
+  [collectionView registerClass:v6 forCellWithReuseIdentifier:v7];
 
   v8 = objc_opt_class();
   v9 = +[SiriUISnippetControllerCell reuseIdentifier];
-  [v3 registerClass:v8 forCellWithReuseIdentifier:v9];
+  [collectionView registerClass:v8 forCellWithReuseIdentifier:v9];
 
   v10 = objc_opt_class();
   v11 = +[SRGuideViewHeader reuseIdentifier];
-  [v3 registerClass:v10 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v11];
+  [collectionView registerClass:v10 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v11];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SRGuideViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  collectionView = [(SRGuideViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -146,18 +146,18 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(SRGuideViewController *)self collectionView];
-        [v12 deselectItemAtIndexPath:v11 animated:v3];
+        collectionView2 = [(SRGuideViewController *)self collectionView];
+        [collectionView2 deselectItemAtIndexPath:v11 animated:appearCopy];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -165,14 +165,14 @@
 
   v13.receiver = self;
   v13.super_class = SRGuideViewController;
-  [(SRGuideViewController *)&v13 viewWillAppear:v3];
+  [(SRGuideViewController *)&v13 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SRGuideViewController *)self delegate];
-  v6 = [v5 siriSnippetViewControllerIsVisible:self];
+  appearCopy = appear;
+  delegate = [(SRGuideViewController *)self delegate];
+  v6 = [delegate siriSnippetViewControllerIsVisible:self];
 
   if (v6)
   {
@@ -202,14 +202,14 @@
 
   v10.receiver = self;
   v10.super_class = SRGuideViewController;
-  [(SRGuideViewController *)&v10 viewDidAppear:v3];
+  [(SRGuideViewController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(SRGuideViewController *)self delegate];
-  v6 = [v5 siriSnippetViewControllerIsVisible:self];
+  disappearCopy = disappear;
+  delegate = [(SRGuideViewController *)self delegate];
+  v6 = [delegate siriSnippetViewControllerIsVisible:self];
 
   if (v6)
   {
@@ -230,18 +230,18 @@
 
   v8.receiver = self;
   v8.super_class = SRGuideViewController;
-  [(SRGuideViewController *)&v8 viewDidDisappear:v3];
+  [(SRGuideViewController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(SRGuideViewController *)self _numberOfHelpDomains];
-  v5 = [(SRGuideViewController *)self _numberOfIntentEnabledApps];
-  v6 = v5;
-  if (!v4)
+  _numberOfHelpDomains = [(SRGuideViewController *)self _numberOfHelpDomains];
+  _numberOfIntentEnabledApps = [(SRGuideViewController *)self _numberOfIntentEnabledApps];
+  v6 = _numberOfIntentEnabledApps;
+  if (!_numberOfHelpDomains)
   {
     v8 = 0.0;
-    if (!v5)
+    if (!_numberOfIntentEnabledApps)
     {
       goto LABEL_9;
     }
@@ -260,7 +260,7 @@
     ++v7;
   }
 
-  while (v4 != v7);
+  while (_numberOfHelpDomains != v7);
   if (v6)
   {
 LABEL_7:
@@ -278,14 +278,14 @@ LABEL_7:
   }
 
 LABEL_9:
-  v14 = [(SRGuideViewController *)self _guideSnippet];
-  v15 = [v14 appPunchOutButton];
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  appPunchOutButton = [_guideSnippet appPunchOutButton];
 
-  if (v15)
+  if (appPunchOutButton)
   {
-    v16 = [(SRGuideViewController *)self _bigButtonViewController];
-    v17 = [v16 view];
-    [v17 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
+    _bigButtonViewController = [(SRGuideViewController *)self _bigButtonViewController];
+    view = [_bigButtonViewController view];
+    [view sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
     v8 = v8 + v18 + 8.0;
   }
 
@@ -297,8 +297,8 @@ LABEL_9:
   if (self->_startViewingTime)
   {
     v5 = +[NSDate date];
-    v3 = [(SRGuideViewController *)self delegate];
-    [v3 siriSnippetViewController:self didShowGuideStartDate:self->_startViewingTime endDate:v5];
+    delegate = [(SRGuideViewController *)self delegate];
+    [delegate siriSnippetViewController:self didShowGuideStartDate:self->_startViewingTime endDate:v5];
 
     startViewingTime = self->_startViewingTime;
     self->_startViewingTime = 0;
@@ -310,11 +310,11 @@ LABEL_9:
   guideSnippet = self->_guideSnippet;
   if (!guideSnippet)
   {
-    v4 = [(SRGuideViewController *)self snippet];
+    snippet = [(SRGuideViewController *)self snippet];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = snippet;
       v6 = self->_guideSnippet;
       self->_guideSnippet = v5;
     }
@@ -322,9 +322,9 @@ LABEL_9:
     else
     {
       v6 = +[AFUIGuideCacheManager sharedManager];
-      v7 = [v6 cachedGuideSnippet];
+      cachedGuideSnippet = [v6 cachedGuideSnippet];
       v8 = self->_guideSnippet;
-      self->_guideSnippet = v7;
+      self->_guideSnippet = cachedGuideSnippet;
     }
 
     guideSnippet = self->_guideSnippet;
@@ -348,22 +348,22 @@ LABEL_9:
   return v2;
 }
 
-- (void)configureReusableTransparentHeaderView:(id)a3
+- (void)configureReusableTransparentHeaderView:(id)view
 {
-  v4 = a3;
-  v6 = [(SRGuideViewController *)self _guideSnippet];
-  v5 = [v6 headerText];
-  [v4 setTitle:v5];
+  viewCopy = view;
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  headerText = [_guideSnippet headerText];
+  [viewCopy setTitle:headerText];
 }
 
 - (double)desiredHeightForTransparentHeaderView
 {
-  v3 = [(SRGuideViewController *)self delegate];
-  [v3 siriViewControllerExpectedWidth:self];
+  delegate = [(SRGuideViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v5 = v4;
-  v6 = [(SRGuideViewController *)self _guideSnippet];
-  v7 = [v6 headerText];
-  [SRGuideViewHeader sizeThatFits:v7 text:v5, 1.79769313e308];
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  headerText = [_guideSnippet headerText];
+  [SRGuideViewHeader sizeThatFits:headerText text:v5, 1.79769313e308];
   v9 = v8;
 
   return v9;
@@ -371,90 +371,90 @@ LABEL_9:
 
 - (int64_t)_numberOfHelpDomains
 {
-  v2 = [(SRGuideViewController *)self _guideSnippet];
-  v3 = [v2 domainSnippets];
-  v4 = [v3 count];
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  domainSnippets = [_guideSnippet domainSnippets];
+  v4 = [domainSnippets count];
 
   return v4;
 }
 
 - (int64_t)_numberOfIntentSupportedApps
 {
-  v2 = [(SRGuideViewController *)self _guideSnippet];
-  v3 = [v2 intentEnabledAppSnippets];
-  v4 = [v3 count];
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  intentEnabledAppSnippets = [_guideSnippet intentEnabledAppSnippets];
+  v4 = [intentEnabledAppSnippets count];
 
   return v4;
 }
 
-- (id)_domainSnippetForHelpDomainAtIndex:(unint64_t)a3
+- (id)_domainSnippetForHelpDomainAtIndex:(unint64_t)index
 {
-  v4 = [(SRGuideViewController *)self _guideSnippet];
-  v5 = [v4 domainSnippets];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  domainSnippets = [_guideSnippet domainSnippets];
+  v6 = [domainSnippets objectAtIndexedSubscript:index];
 
   return v6;
 }
 
-- (id)_domainSnippetForIndexPath:(id)a3
+- (id)_domainSnippetForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  if (v5)
+  if (section)
   {
-    [(SRGuideViewController *)self _domainSnippetForEnabledIntentSupportedAppAtIndex:v6];
+    [(SRGuideViewController *)self _domainSnippetForEnabledIntentSupportedAppAtIndex:item];
   }
 
   else
   {
-    [(SRGuideViewController *)self _domainSnippetForHelpDomainAtIndex:v6];
+    [(SRGuideViewController *)self _domainSnippetForHelpDomainAtIndex:item];
   }
   v7 = ;
 
   return v7;
 }
 
-- (double)_heightOfRowForDomainSnippet:(id)a3
+- (double)_heightOfRowForDomainSnippet:(id)snippet
 {
-  v4 = a3;
-  v5 = [v4 domainDisplayName];
-  v6 = [v4 tagPhrase];
+  snippetCopy = snippet;
+  domainDisplayName = [snippetCopy domainDisplayName];
+  tagPhrase = [snippetCopy tagPhrase];
 
-  v7 = [(SRGuideViewController *)self delegate];
-  [v7 siriViewControllerExpectedWidth:self];
-  [SRGuideViewCell heightOfCellWithName:v5 tagPhrase:v6 width:?];
+  delegate = [(SRGuideViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
+  [SRGuideViewCell heightOfCellWithName:domainDisplayName tagPhrase:tagPhrase width:?];
   v9 = v8;
 
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  switch(a4)
+  viewCopy = view;
+  switch(section)
   {
     case 2:
-      v9 = [(SRGuideViewController *)self _guideSnippet];
-      v10 = [v9 appPunchOutButton];
-      v8 = v10 != 0;
+      _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+      appPunchOutButton = [_guideSnippet appPunchOutButton];
+      v8 = appPunchOutButton != 0;
 
       goto LABEL_11;
     case 1:
-      v7 = [(SRGuideViewController *)self _numberOfIntentEnabledApps];
+      _numberOfIntentEnabledApps = [(SRGuideViewController *)self _numberOfIntentEnabledApps];
       goto LABEL_6;
     case 0:
-      v7 = [(SRGuideViewController *)self _numberOfHelpDomains];
+      _numberOfIntentEnabledApps = [(SRGuideViewController *)self _numberOfHelpDomains];
 LABEL_6:
-      v8 = v7;
+      v8 = _numberOfIntentEnabledApps;
       goto LABEL_11;
   }
 
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
   {
-    sub_1000CB864(a4, v11);
+    sub_1000CB864(section, v11);
   }
 
   v8 = 0;
@@ -463,38 +463,38 @@ LABEL_11:
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 section];
-  if (v8 > 1)
+  pathCopy = path;
+  viewCopy = view;
+  section = [pathCopy section];
+  if (section > 1)
   {
     v10 = +[SiriUISnippetControllerCell reuseIdentifier];
-    v11 = [v7 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v6];
+    v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
-    v24 = [(SRGuideViewController *)self _bigButtonViewController];
-    [v11 setSnippetViewController:v24];
+    _bigButtonViewController = [(SRGuideViewController *)self _bigButtonViewController];
+    [v11 setSnippetViewController:_bigButtonViewController];
 
     [v11 setTopPadding:8.0];
   }
 
   else
   {
-    v9 = v8;
+    v9 = section;
     v10 = +[SRGuideViewCell reuseIdentifier];
-    v11 = [v7 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v6];
+    v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
-    v12 = [(SRGuideViewController *)self _domainSnippetForIndexPath:v6];
-    v13 = [v12 aceId];
-    [v11 setAceId:v13];
-    v14 = [(NSCache *)self->_domainIconCache objectForKey:v13];
-    if (!v14)
+    v12 = [(SRGuideViewController *)self _domainSnippetForIndexPath:pathCopy];
+    aceId = [v12 aceId];
+    [v11 setAceId:aceId];
+    _fallbackImage = [(NSCache *)self->_domainIconCache objectForKey:aceId];
+    if (!_fallbackImage)
     {
-      v14 = [(SRGuideViewController *)self _fallbackImage];
+      _fallbackImage = [(SRGuideViewController *)self _fallbackImage];
       spawnedGuideImageFetches = self->_spawnedGuideImageFetches;
-      v16 = [v12 aceId];
-      LOBYTE(spawnedGuideImageFetches) = [(NSMutableSet *)spawnedGuideImageFetches containsObject:v16];
+      aceId2 = [v12 aceId];
+      LOBYTE(spawnedGuideImageFetches) = [(NSMutableSet *)spawnedGuideImageFetches containsObject:aceId2];
 
       if ((spawnedGuideImageFetches & 1) == 0)
       {
@@ -506,26 +506,26 @@ LABEL_11:
         v28[4] = self;
         v18 = v12;
         v29 = v18;
-        v30 = v13;
+        v30 = aceId;
         v31 = v11;
         [(NSOperationQueue *)guideImageOperationQueue addOperationWithBlock:v28];
         v19 = self->_spawnedGuideImageFetches;
-        v20 = [v18 aceId];
-        [(NSMutableSet *)v19 addObject:v20];
+        aceId3 = [v18 aceId];
+        [(NSMutableSet *)v19 addObject:aceId3];
       }
     }
 
-    [v11 setIconImage:v14];
-    v21 = [v12 domainDisplayName];
-    [v11 setName:v21];
+    [v11 setIconImage:_fallbackImage];
+    domainDisplayName = [v12 domainDisplayName];
+    [v11 setName:domainDisplayName];
 
-    v22 = [v12 tagPhrase];
-    [v11 setTagPhrase:v22];
+    tagPhrase = [v12 tagPhrase];
+    [v11 setTagPhrase:tagPhrase];
 
     if (v9)
     {
-      v23 = [(SRGuideViewController *)self _numberOfIntentEnabledApps];
-      if (v23 == [v6 item] + 1)
+      _numberOfIntentEnabledApps = [(SRGuideViewController *)self _numberOfIntentEnabledApps];
+      if (_numberOfIntentEnabledApps == [pathCopy item] + 1)
       {
         [v11 setKeylineType:0];
       }
@@ -533,8 +533,8 @@ LABEL_11:
 
     else
     {
-      v25 = [(SRGuideViewController *)self _numberOfHelpDomains];
-      if (v25 == [v6 item] + 1)
+      _numberOfHelpDomains = [(SRGuideViewController *)self _numberOfHelpDomains];
+      if (_numberOfHelpDomains == [pathCopy item] + 1)
       {
         [v11 setKeylineType:1];
         v26 = +[UIColor siriui_lightKeylineColor];
@@ -546,64 +546,64 @@ LABEL_11:
   return v11;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[SRGuideViewHeader reuseIdentifier];
-  v9 = [v7 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v8 forIndexPath:pathCopy];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
-  if (v7 <= 1)
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
+  if (section <= 1)
   {
-    if (v7)
+    if (section)
     {
-      v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_enabledIntentSupportedAppSnippets, "objectAtIndexedSubscript:", [v6 item]);
+      v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_enabledIntentSupportedAppSnippets, "objectAtIndexedSubscript:", [pathCopy item]);
     }
 
     else
     {
-      v9 = [(SRGuideViewController *)self _guideSnippet];
-      v10 = [v9 domainSnippets];
-      v8 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+      _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+      domainSnippets = [_guideSnippet domainSnippets];
+      v8 = [domainSnippets objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     }
 
-    v11 = [(SRGuideViewController *)self delegate];
+    delegate = [(SRGuideViewController *)self delegate];
     v13 = v8;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
-    [v11 siriSnippetViewController:self pushSirilandSnippets:v12];
+    [delegate siriSnippetViewController:self pushSirilandSnippets:v12];
 
     self->_showingDetails = 1;
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [v6 section];
-  v8 = [(SRGuideViewController *)self delegate];
-  [v8 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  section = [pathCopy section];
+  delegate = [(SRGuideViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v10 = v9;
 
-  if (v7 == 2)
+  if (section == 2)
   {
-    v11 = [(SRGuideViewController *)self _bigButtonViewController];
-    v12 = [v11 view];
-    [v12 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
+    _bigButtonViewController = [(SRGuideViewController *)self _bigButtonViewController];
+    view = [_bigButtonViewController view];
+    [view sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
     v14 = v13 + 8.0;
   }
 
   else
   {
-    v11 = [(SRGuideViewController *)self _domainSnippetForIndexPath:v6];
-    [(SRGuideViewController *)self _heightOfRowForDomainSnippet:v11];
+    _bigButtonViewController = [(SRGuideViewController *)self _domainSnippetForIndexPath:pathCopy];
+    [(SRGuideViewController *)self _heightOfRowForDomainSnippet:_bigButtonViewController];
     v14 = v15;
   }
 
@@ -614,7 +614,7 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -623,18 +623,18 @@ LABEL_11:
   return result;
 }
 
-- (id)_iconImageForGuideDomainSnippet:(id)a3
+- (id)_iconImageForGuideDomainSnippet:(id)snippet
 {
-  v4 = a3;
-  v5 = [v4 iconDisplayIdentifier];
-  v6 = [v4 iconResourceName];
-  if (v5 && [v4 isAppIcon])
+  snippetCopy = snippet;
+  iconDisplayIdentifier = [snippetCopy iconDisplayIdentifier];
+  iconResourceName = [snippetCopy iconResourceName];
+  if (iconDisplayIdentifier && [snippetCopy isAppIcon])
   {
     v7 = +[UIScreen mainScreen];
     [v7 scale];
-    v8 = [UIImage _applicationIconImageForBundleIdentifier:v5 format:1 scale:?];
+    _fallbackImage = [UIImage _applicationIconImageForBundleIdentifier:iconDisplayIdentifier format:1 scale:?];
 
-    if (v8)
+    if (_fallbackImage)
     {
       goto LABEL_13;
     }
@@ -642,14 +642,14 @@ LABEL_11:
 
   else
   {
-    v8 = 0;
+    _fallbackImage = 0;
   }
 
-  if (v6)
+  if (iconResourceName)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [UIImage _deviceSpecificImageNamed:v6 inBundle:v9];
-    if ([v4 iconNeedsProcessing])
+    _fallbackImage = [UIImage _deviceSpecificImageNamed:iconResourceName inBundle:v9];
+    if ([snippetCopy iconNeedsProcessing])
     {
       v10 = +[UIScreen mainScreen];
       [v10 scale];
@@ -661,7 +661,7 @@ LABEL_11:
         [v13 scale];
       }
 
-      [v8 CGImage];
+      [_fallbackImage CGImage];
       v14 = LICreateIconForImage();
       if (v14)
       {
@@ -669,18 +669,18 @@ LABEL_11:
         v16 = [UIImage imageWithCGImage:v14];
 
         CGImageRelease(v15);
-        v8 = v16;
+        _fallbackImage = v16;
       }
     }
   }
 
 LABEL_13:
-  if (!v8)
+  if (!_fallbackImage)
   {
-    v8 = [(SRGuideViewController *)self _fallbackImage];
+    _fallbackImage = [(SRGuideViewController *)self _fallbackImage];
   }
 
-  return v8;
+  return _fallbackImage;
 }
 
 - (id)_fallbackImage
@@ -701,17 +701,17 @@ LABEL_13:
 
 - (BOOL)_hasTitle
 {
-  v2 = [(SRGuideViewController *)self _guideSnippet];
-  v3 = [v2 headerText];
-  v4 = [v3 length] != 0;
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  headerText = [_guideSnippet headerText];
+  v4 = [headerText length] != 0;
 
   return v4;
 }
 
 - (void)_prepareSiriEnabledAppList
 {
-  v3 = [(SRGuideViewController *)self delegate];
-  v4 = [v3 siriEnabledAppListForSiriViewController:self];
+  delegate = [(SRGuideViewController *)self delegate];
+  v4 = [delegate siriEnabledAppListForSiriViewController:self];
   siriEnabledAppList = self->_siriEnabledAppList;
   self->_siriEnabledAppList = v4;
 
@@ -723,10 +723,10 @@ LABEL_13:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(SRGuideViewController *)self _guideSnippet];
-  v9 = [v8 intentEnabledAppSnippets];
+  _guideSnippet = [(SRGuideViewController *)self _guideSnippet];
+  intentEnabledAppSnippets = [_guideSnippet intentEnabledAppSnippets];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [intentEnabledAppSnippets countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -737,15 +737,15 @@ LABEL_13:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(intentEnabledAppSnippets);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
         if ([v14 performIntentEnabledAppAuthorizationCheck])
         {
           v15 = self->_siriEnabledAppList;
-          v16 = [v14 iconDisplayIdentifier];
-          LODWORD(v15) = [(NSSet *)v15 containsObject:v16];
+          iconDisplayIdentifier = [v14 iconDisplayIdentifier];
+          LODWORD(v15) = [(NSSet *)v15 containsObject:iconDisplayIdentifier];
 
           if (!v15)
           {
@@ -756,7 +756,7 @@ LABEL_13:
         [(NSMutableArray *)self->_enabledIntentSupportedAppSnippets addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [intentEnabledAppSnippets countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);

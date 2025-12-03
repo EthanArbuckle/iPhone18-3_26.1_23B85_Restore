@@ -1,16 +1,16 @@
 @interface PLXPCPhotoLibraryStorePolicySandbox
-- (BOOL)hasSandboxAccessForPath:(id)a3;
-- (BOOL)shouldUseXPCStoreForDatabasePath:(id)a3 auditToken:(id *)a4;
+- (BOOL)hasSandboxAccessForPath:(id)path;
+- (BOOL)shouldUseXPCStoreForDatabasePath:(id)path auditToken:(id *)token;
 @end
 
 @implementation PLXPCPhotoLibraryStorePolicySandbox
 
-- (BOOL)shouldUseXPCStoreForDatabasePath:(id)a3 auditToken:(id *)a4
+- (BOOL)shouldUseXPCStoreForDatabasePath:(id)path auditToken:(id *)token
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = *&a4->var0[4];
-  *v21 = *a4->var0;
+  pathCopy = path;
+  v7 = *&token->var0[4];
+  *v21 = *token->var0;
   *&v21[16] = v7;
   if ([MEMORY[0x1E69BF2F0] hasXPCStoreEntitlementOptInForToken:v21])
   {
@@ -30,7 +30,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [(PLXPCPhotoLibraryStorePolicySandbox *)self hasSandboxAccessForPath:v6];
+  v13 = [(PLXPCPhotoLibraryStorePolicySandbox *)self hasSandboxAccessForPath:pathCopy];
   v14 = !v13;
   v15 = PLBackendGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -58,8 +58,8 @@ LABEL_14:
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEBUG, "We do %@have access to the database path, so we are %@using XPC store", v21, 0x16u);
   }
 
-  v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v19 = [v18 BOOLForKey:@"com.apple.Photos.forceXPCStore"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v19 = [standardUserDefaults BOOLForKey:@"com.apple.Photos.forceXPCStore"];
 
   if (v19)
   {
@@ -83,17 +83,17 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)hasSandboxAccessForPath:(id)a3
+- (BOOL)hasSandboxAccessForPath:(id)path
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 isReadableFileAtPath:v5];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager isReadableFileAtPath:pathCopy];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v5 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
 
-    v5 = v8;
+    pathCopy = stringByDeletingLastPathComponent;
   }
 
   if (PLIsAssetsd())
@@ -102,15 +102,15 @@ LABEL_15:
   }
 
   getpid();
-  v17 = [v5 fileSystemRepresentation];
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
   v10 = sandbox_check();
   if (v10 < 0)
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = __error();
-    v14 = [v12 stringWithUTF8String:{strerror(*v13), v17}];
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLXPCPhotoLibraryStorePolicy.m" lineNumber:39 description:{@"Error performing sandbox check in shouldUseXPCPhotoLibraryStore:%@ %@", v5, v14}];
+    v14 = [v12 stringWithUTF8String:{strerror(*v13), fileSystemRepresentation}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLXPCPhotoLibraryStorePolicy.m" lineNumber:39 description:{@"Error performing sandbox check in shouldUseXPCPhotoLibraryStore:%@ %@", pathCopy, v14}];
 
 LABEL_11:
     v9 = 0;

@@ -14,7 +14,7 @@
 
 - (id)generateUserEmbeddingIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C6D389B8();
   v5 = v4;
 

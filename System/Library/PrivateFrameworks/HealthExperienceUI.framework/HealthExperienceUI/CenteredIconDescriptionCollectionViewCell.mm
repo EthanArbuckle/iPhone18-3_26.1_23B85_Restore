@@ -10,8 +10,8 @@
   v4.super_class = type metadata accessor for CenteredIconDescriptionCollectionViewCell();
   v2 = v4.receiver;
   [(CenteredIconDescriptionCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [v2 layer];
-  [v3 setCornerRadius_];
+  layer = [v2 layer];
+  [layer setCornerRadius_];
 }
 
 @end

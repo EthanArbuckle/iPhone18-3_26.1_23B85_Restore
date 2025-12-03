@@ -1,89 +1,89 @@
 @interface SASafeLocation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isReallyEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isReallyEqual:(id)equal;
 - (NSString)description;
-- (SASafeLocation)initWithCoder:(id)a3;
-- (SASafeLocation)initWithLocationUUID:(id)a3 latitude:(double)a4 longitude:(double)a5 radius:(double)a6 referenceFrame:(unint64_t)a7 name:(id)a8 date:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SASafeLocation)initWithCoder:(id)coder;
+- (SASafeLocation)initWithLocationUUID:(id)d latitude:(double)latitude longitude:(double)longitude radius:(double)radius referenceFrame:(unint64_t)frame name:(id)name date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation SASafeLocation
 
-- (SASafeLocation)initWithCoder:(id)a3
+- (SASafeLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"SASafeLocationIdentifier"];
-  [v4 decodeDoubleForKey:@"SASafeLocationLatitude"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"SASafeLocationIdentifier"];
+  [coderCopy decodeDoubleForKey:@"SASafeLocationLatitude"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"SASafeLocationLongitude"];
+  [coderCopy decodeDoubleForKey:@"SASafeLocationLongitude"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"SASafeLocationRadius"];
+  [coderCopy decodeDoubleForKey:@"SASafeLocationRadius"];
   v11 = v10;
-  v12 = [v4 decodeIntegerForKey:@"SASafeLocationReferenceFrame"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASafeLocationNameString"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASafeLocationDate"];
+  v12 = [coderCopy decodeIntegerForKey:@"SASafeLocationReferenceFrame"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASafeLocationNameString"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASafeLocationDate"];
 
   v15 = [(SASafeLocation *)self initWithLocationUUID:v5 latitude:v12 longitude:v13 radius:v14 referenceFrame:v7 name:v9 date:v11];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SASafeLocation *)self identifier];
-  [v4 encodeObject:v5 forKey:@"SASafeLocationIdentifier"];
+  coderCopy = coder;
+  identifier = [(SASafeLocation *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"SASafeLocationIdentifier"];
 
   [(SASafeLocation *)self latitude];
-  [v4 encodeDouble:@"SASafeLocationLatitude" forKey:?];
+  [coderCopy encodeDouble:@"SASafeLocationLatitude" forKey:?];
   [(SASafeLocation *)self longitude];
-  [v4 encodeDouble:@"SASafeLocationLongitude" forKey:?];
+  [coderCopy encodeDouble:@"SASafeLocationLongitude" forKey:?];
   [(SASafeLocation *)self radius];
-  [v4 encodeDouble:@"SASafeLocationRadius" forKey:?];
-  [v4 encodeInteger:-[SASafeLocation referenceFrame](self forKey:{"referenceFrame"), @"SASafeLocationReferenceFrame"}];
-  v6 = [(SASafeLocation *)self name];
-  [v4 encodeObject:v6 forKey:@"SASafeLocationNameString"];
+  [coderCopy encodeDouble:@"SASafeLocationRadius" forKey:?];
+  [coderCopy encodeInteger:-[SASafeLocation referenceFrame](self forKey:{"referenceFrame"), @"SASafeLocationReferenceFrame"}];
+  name = [(SASafeLocation *)self name];
+  [coderCopy encodeObject:name forKey:@"SASafeLocationNameString"];
 
-  v7 = [(SASafeLocation *)self date];
-  [v4 encodeObject:v7 forKey:@"SASafeLocationDate"];
+  date = [(SASafeLocation *)self date];
+  [coderCopy encodeObject:date forKey:@"SASafeLocationDate"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SASafeLocation allocWithZone:a3];
-  v5 = [(SASafeLocation *)self identifier];
+  v4 = [SASafeLocation allocWithZone:zone];
+  identifier = [(SASafeLocation *)self identifier];
   [(SASafeLocation *)self latitude];
   v7 = v6;
   [(SASafeLocation *)self longitude];
   v9 = v8;
   [(SASafeLocation *)self radius];
   v11 = v10;
-  v12 = [(SASafeLocation *)self referenceFrame];
-  v13 = [(SASafeLocation *)self name];
-  v14 = [(SASafeLocation *)self date];
-  v15 = [(SASafeLocation *)v4 initWithLocationUUID:v5 latitude:v12 longitude:v13 radius:v14 referenceFrame:v7 name:v9 date:v11];
+  referenceFrame = [(SASafeLocation *)self referenceFrame];
+  name = [(SASafeLocation *)self name];
+  date = [(SASafeLocation *)self date];
+  v15 = [(SASafeLocation *)v4 initWithLocationUUID:identifier latitude:referenceFrame longitude:name radius:date referenceFrame:v7 name:v9 date:v11];
 
   return v15;
 }
 
-- (SASafeLocation)initWithLocationUUID:(id)a3 latitude:(double)a4 longitude:(double)a5 radius:(double)a6 referenceFrame:(unint64_t)a7 name:(id)a8 date:(id)a9
+- (SASafeLocation)initWithLocationUUID:(id)d latitude:(double)latitude longitude:(double)longitude radius:(double)radius referenceFrame:(unint64_t)frame name:(id)name date:(id)date
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
+  dCopy = d;
+  nameCopy = name;
+  dateCopy = date;
   v28.receiver = self;
   v28.super_class = SASafeLocation;
   v19 = [(SASafeLocation *)&v28 init];
@@ -93,21 +93,21 @@
   }
 
   v20 = 0;
-  if (v16 && v18)
+  if (dCopy && dateCopy)
   {
-    v21 = [v16 copy];
+    v21 = [dCopy copy];
     identifier = v19->_identifier;
     v19->_identifier = v21;
 
-    v19->_latitude = a4;
-    v19->_longitude = a5;
-    v19->_radius = a6;
-    v19->_referenceFrame = a7;
-    v23 = [v17 copy];
+    v19->_latitude = latitude;
+    v19->_longitude = longitude;
+    v19->_radius = radius;
+    v19->_referenceFrame = frame;
+    v23 = [nameCopy copy];
     name = v19->_name;
     v19->_name = v23;
 
-    v25 = [v18 copy];
+    v25 = [dateCopy copy];
     date = v19->_date;
     v19->_date = v25;
 
@@ -118,10 +118,10 @@ LABEL_5:
   return v20;
 }
 
-- (BOOL)isReallyEqual:(id)a3
+- (BOOL)isReallyEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -131,18 +131,18 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SASafeLocation *)self identifier];
-      v9 = [(SASafeLocation *)v7 identifier];
-      if (v8 == v9 || (-[SASafeLocation identifier](self, "identifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SASafeLocation identifier](v7, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      v7 = equalCopy;
+      identifier = [(SASafeLocation *)self identifier];
+      identifier2 = [(SASafeLocation *)v7 identifier];
+      if (identifier == identifier2 || (-[SASafeLocation identifier](self, "identifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SASafeLocation identifier](v7, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
         [(SASafeLocation *)self latitude];
         v13 = v12;
         [(SASafeLocation *)v7 latitude];
         if (v13 == v14 && ([(SASafeLocation *)self longitude], v16 = v15, [(SASafeLocation *)v7 longitude], v16 == v17) && ([(SASafeLocation *)self radius], v19 = v18, [(SASafeLocation *)v7 radius], v19 == v20))
         {
-          v21 = [(SASafeLocation *)self referenceFrame];
-          v10 = v21 == [(SASafeLocation *)v7 referenceFrame];
+          referenceFrame = [(SASafeLocation *)self referenceFrame];
+          v10 = referenceFrame == [(SASafeLocation *)v7 referenceFrame];
           v11 = v10;
         }
 
@@ -152,7 +152,7 @@ LABEL_5:
           v11 = 0;
         }
 
-        if (v8 == v9)
+        if (identifier == identifier2)
         {
           goto LABEL_15;
         }
@@ -177,10 +177,10 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -190,11 +190,11 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SASafeLocation *)self identifier];
-      v7 = [(SASafeLocation *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(SASafeLocation *)self identifier];
+      identifier2 = [(SASafeLocation *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -208,8 +208,8 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(SASafeLocation *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SASafeLocation *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -222,8 +222,8 @@ LABEL_16:
   v21 = NSStringFromClass(v4);
   v23[0] = v21;
   v22[1] = @"SASafeLocationIdentifier";
-  v20 = [(SASafeLocation *)self identifier];
-  v19 = [v20 description];
+  identifier = [(SASafeLocation *)self identifier];
+  v19 = [identifier description];
   v23[1] = v19;
   v22[2] = @"SASafeLocationLatitude";
   v5 = MEMORY[0x277CCABB0];
@@ -244,11 +244,11 @@ LABEL_16:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SASafeLocation referenceFrame](self, "referenceFrame")}];
   v23[5] = v11;
   v22[6] = @"SASafeLocationNameString";
-  v12 = [(SASafeLocation *)self name];
-  if (v12)
+  name = [(SASafeLocation *)self name];
+  if (name)
   {
-    v2 = [(SASafeLocation *)self name];
-    v13 = [v2 description];
+    name2 = [(SASafeLocation *)self name];
+    v13 = [name2 description];
   }
 
   else
@@ -258,12 +258,12 @@ LABEL_16:
 
   v23[6] = v13;
   v22[7] = @"SASafeLocationDate";
-  v14 = [(SASafeLocation *)self date];
-  v15 = [v14 getDateString];
-  v23[7] = v15;
+  date = [(SASafeLocation *)self date];
+  getDateString = [date getDateString];
+  v23[7] = getDateString;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:8];
 
-  if (v12)
+  if (name)
   {
   }
 
@@ -274,9 +274,9 @@ LABEL_16:
 
 - (NSString)description
 {
-  v3 = [(SASafeLocation *)self descriptionDictionary];
+  descriptionDictionary = [(SASafeLocation *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -286,15 +286,15 @@ LABEL_16:
       [(SAConnectionEvent *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }

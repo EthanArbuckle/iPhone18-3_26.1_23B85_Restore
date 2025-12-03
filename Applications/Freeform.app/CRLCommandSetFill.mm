@@ -2,9 +2,9 @@
 - (NSString)actionString;
 - (NSUUID)id;
 - (_TtC8Freeform17CRLCommandSetFill)init;
-- (_TtC8Freeform17CRLCommandSetFill)initWithId:(id)a3 fill:(id)a4;
-- (_TtC8Freeform17CRLCommandSetFill)initWithShapeItem:(id)a3 fill:(id)a4;
-- (void)setActionString:(id)a3;
+- (_TtC8Freeform17CRLCommandSetFill)initWithId:(id)id fill:(id)fill;
+- (_TtC8Freeform17CRLCommandSetFill)initWithShapeItem:(id)item fill:(id)fill;
+- (void)setActionString:(id)string;
 @end
 
 @implementation CRLCommandSetFill
@@ -22,30 +22,30 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform17CRLCommandSetFill)initWithId:(id)a3 fill:(id)a4
+- (_TtC8Freeform17CRLCommandSetFill)initWithId:(id)id fill:(id)fill
 {
   v5 = type metadata accessor for UUID();
   __chkstk_darwin(v5 - 8);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a4;
-  v9 = sub_101288AD0(v7, a4);
+  fillCopy = fill;
+  v9 = sub_101288AD0(v7, fill);
 
   return v9;
 }
 
-- (_TtC8Freeform17CRLCommandSetFill)initWithShapeItem:(id)a3 fill:(id)a4
+- (_TtC8Freeform17CRLCommandSetFill)initWithShapeItem:(id)item fill:(id)fill
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = __chkstk_darwin(v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*(**(a3 + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v9);
-  v12 = a3;
-  v13 = a4;
+  (*(**(item + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v9);
+  itemCopy = item;
+  fillCopy = fill;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v8 + 8))(v11, v7);
-  v15 = [(CRLCommandSetFill *)self initWithId:isa fill:v13];
+  v15 = [(CRLCommandSetFill *)self initWithId:isa fill:fillCopy];
 
   return v15;
 }
@@ -58,7 +58,7 @@
   return v2;
 }
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC8Freeform17CRLCommandSetFill_actionString);

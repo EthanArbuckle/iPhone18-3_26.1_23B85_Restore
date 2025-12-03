@@ -1,90 +1,90 @@
 @interface REMHashtagsDataViewInvocation_fetchByObjectID
-- (BOOL)isEqual:(id)a3;
-- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithCoder:(id)a3;
-- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithObjectIDs:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithCoder:(id)coder;
+- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithObjectIDs:(id)ds;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMHashtagsDataViewInvocation_fetchByObjectID
 
-- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithObjectIDs:(id)a3
+- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithObjectIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = REMHashtagsDataViewInvocation_fetchByObjectID;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_objectIDs, a3);
+    objc_storeStrong(&v6->_objectIDs, ds);
     v7->_allowConcealedObjects = 0;
   }
 
   return v7;
 }
 
-- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithCoder:(id)a3
+- (REMHashtagsDataViewInvocation_fetchByObjectID)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"objectIDs"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"objectIDs"];
 
-  v9 = [v5 decodeBoolForKey:@"allowConcealedObjects"];
+  v9 = [coderCopy decodeBoolForKey:@"allowConcealedObjects"];
   if (v8)
   {
     v10 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self initWithObjectIDs:v8];
     [(REMHashtagsDataViewInvocation_fetchByObjectID *)v10 setAllowConcealedObjects:v9];
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
-  [v5 encodeObject:v4 forKey:@"objectIDs"];
+  coderCopy = coder;
+  objectIDs = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
+  [coderCopy encodeObject:objectIDs forKey:@"objectIDs"];
 
-  [v5 encodeBool:-[REMHashtagsDataViewInvocation_fetchByObjectID allowConcealedObjects](self forKey:{"allowConcealedObjects"), @"allowConcealedObjects"}];
+  [coderCopy encodeBool:-[REMHashtagsDataViewInvocation_fetchByObjectID allowConcealedObjects](self forKey:{"allowConcealedObjects"), @"allowConcealedObjects"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
-  v6 = [v4 objectIDs];
-  v7 = v6;
-  if (v5 == v6)
+  objectIDs = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
+  objectIDs2 = [equalCopy objectIDs];
+  v7 = objectIDs2;
+  if (objectIDs == objectIDs2)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
-  v9 = [v4 objectIDs];
-  v10 = [v8 isEqual:v9];
+  objectIDs3 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
+  objectIDs4 = [equalCopy objectIDs];
+  v10 = [objectIDs3 isEqual:objectIDs4];
 
   if (v10)
   {
 LABEL_6:
-    v12 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self allowConcealedObjects];
-    v11 = v12 ^ [v4 allowConcealedObjects] ^ 1;
+    allowConcealedObjects = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self allowConcealedObjects];
+    v11 = allowConcealedObjects ^ [equalCopy allowConcealedObjects] ^ 1;
     goto LABEL_7;
   }
 
@@ -97,8 +97,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
-  v3 = [v2 hash];
+  objectIDs = [(REMHashtagsDataViewInvocation_fetchByObjectID *)self objectIDs];
+  v3 = [objectIDs hash];
 
   return v3;
 }

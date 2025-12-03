@@ -1,6 +1,6 @@
 @interface CNUICoreFamilyInfo
 - (CNUICoreFamilyInfo)init;
-- (CNUICoreFamilyInfo)initWithMeContact:(id)a3 elements:(id)a4;
+- (CNUICoreFamilyInfo)initWithMeContact:(id)contact elements:(id)elements;
 - (id)description;
 @end
 
@@ -8,16 +8,16 @@
 
 - (CNUICoreFamilyInfo)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreFamilyInfo)initWithMeContact:(id)a3 elements:(id)a4
+- (CNUICoreFamilyInfo)initWithMeContact:(id)contact elements:(id)elements
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  contactCopy = contact;
+  elementsCopy = elements;
+  if (!elementsCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_21 != -1)
     {
@@ -37,8 +37,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_meContact, a3);
-    objc_storeStrong(&v11->_elements, a4);
+    objc_storeStrong(&v10->_meContact, contact);
+    objc_storeStrong(&v11->_elements, elements);
     v12 = v11;
   }
 
@@ -48,15 +48,15 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUICoreFamilyInfo *)self meContact];
-  v5 = [v3 appendObject:v4 withName:@"meContact"];
+  meContact = [(CNUICoreFamilyInfo *)self meContact];
+  v5 = [v3 appendObject:meContact withName:@"meContact"];
 
-  v6 = [(CNUICoreFamilyInfo *)self elements];
-  v7 = [v3 appendObject:v6 withName:@"elements"];
+  elements = [(CNUICoreFamilyInfo *)self elements];
+  v7 = [v3 appendObject:elements withName:@"elements"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

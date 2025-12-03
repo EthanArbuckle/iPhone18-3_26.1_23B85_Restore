@@ -1,32 +1,32 @@
 @interface STGenericIntentResponse
-- (STGenericIntentResponse)initWithCoder:(id)a3;
+- (STGenericIntentResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STGenericIntentResponse
 
-- (STGenericIntentResponse)initWithCoder:(id)a3
+- (STGenericIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = STGenericIntentResponse;
-  v5 = [(AFSiriResponse *)&v7 initWithCoder:v4];
+  v5 = [(AFSiriResponse *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_responseCode = [v4 decodeIntegerForKey:@"_responseCode"];
+    v5->_responseCode = [coderCopy decodeIntegerForKey:@"_responseCode"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STGenericIntentResponse;
-  v4 = a3;
-  [(AFSiriResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_responseCode forKey:{@"_responseCode", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AFSiriResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_responseCode forKey:{@"_responseCode", v5.receiver, v5.super_class}];
 }
 
 - (id)description

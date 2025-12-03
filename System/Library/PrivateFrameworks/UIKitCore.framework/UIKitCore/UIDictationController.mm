@@ -1,300 +1,300 @@
 @interface UIDictationController
-+ (BOOL)_checkTraitsSupportDictation:(id)a3;
-+ (BOOL)_isDictationAllowedWithUserDefaults:(id)a3;
++ (BOOL)_checkTraitsSupportDictation:(id)dictation;
++ (BOOL)_isDictationAllowedWithUserDefaults:(id)defaults;
 + (BOOL)_isLowStorageForOnDeviceDictationAsset;
-+ (BOOL)canHandleCommandIdentifier:(unint64_t)a3;
++ (BOOL)canHandleCommandIdentifier:(unint64_t)identifier;
 + (BOOL)canPerformDictation;
 + (BOOL)canShareDictationData;
 + (BOOL)canUndoOrRedo;
-+ (BOOL)checkTraitsSupportDictation:(id)a3;
++ (BOOL)checkTraitsSupportDictation:(id)dictation;
 + (BOOL)dictationInfoIsOnScreen;
 + (BOOL)dictationIsFunctional;
 + (BOOL)fetchCurrentInputModeSupportsDictation;
 + (BOOL)isDictationSearchBarButtonVisible;
-+ (BOOL)isEventFromMessagesSendButton:(id)a3 inspectResponderChain:(BOOL)a4;
++ (BOOL)isEventFromMessagesSendButton:(id)button inspectResponderChain:(BOOL)chain;
 + (BOOL)isInputDelegateSafariAddressBar;
 + (BOOL)isListening;
 + (BOOL)isRunning;
 + (BOOL)isRunningInTypeAndTalkMode;
-+ (BOOL)isTextViewOnStarkScreen:(id)a3;
++ (BOOL)isTextViewOnStarkScreen:(id)screen;
 + (BOOL)remoteCanDictateCurrentInputMode;
 + (BOOL)shouldDeleteBackward;
 + (BOOL)shouldForwardInInputSystemUI;
-+ (BOOL)shouldHideCursorForTextView:(id)a3;
-+ (BOOL)shouldInsertText:(id)a3;
++ (BOOL)shouldHideCursorForTextView:(id)view;
++ (BOOL)shouldInsertText:(id)text;
 + (BOOL)shouldPreferOnDeviceRecognition;
 + (BOOL)shouldPreferOnlineRecognition;
-+ (BOOL)shouldRemoveTextEntries:(id)a3;
++ (BOOL)shouldRemoveTextEntries:(id)entries;
 + (BOOL)starkSceneExists;
 + (BOOL)supportsSendVoiceCommand;
 + (BOOL)supportsSiriDictationVoiceCommands;
 + (BOOL)supportsSiriDictationVoiceCommandsUIRedesign;
 + (BOOL)supportsUndoCommandForCurrentDictationRequest;
-+ (BOOL)takesPressesBegan:(id)a3 forTextView:(id)a4;
++ (BOOL)takesPressesBegan:(id)began forTextView:(id)view;
 + (BOOL)usingServerManualEndpointingThreshold;
 + (double)serverManualEndpointingThreshold;
-+ (id)UIDictationInstrumentaionLocalIdentifierWithLocalString:(id)a3;
-+ (id)UIDictationLanguageSourceType:(unint64_t)a3;
-+ (id)UIDictationStartStopReasonTypeDescription:(unint64_t)a3;
++ (id)UIDictationInstrumentaionLocalIdentifierWithLocalString:(id)string;
++ (id)UIDictationLanguageSourceType:(unint64_t)type;
++ (id)UIDictationStartStopReasonTypeDescription:(unint64_t)description;
 + (id)activeConnection;
 + (id)activeSLSDictationLanguages;
-+ (id)arrayWithTextEntriesRemoved:(id)a3;
-+ (id)bestInterpretationForDictationResult:(id)a3;
-+ (id)convertEditValuesToHashByPosition:(id)a3 dictationResultEditType:(id)a4;
-+ (id)dictionaryWithTextEntriesRemoved:(id)a3;
-+ (id)firstParameterTextWithParameters:(id)a3;
-+ (id)interpretation:(id)a3 forPhraseIndex:(unint64_t)a4 isShiftLocked:(BOOL)a5 autocapitalizationType:(int64_t)a6 useServerCapitalization:(BOOL)a7;
-+ (id)logAutoPunctuationEdit:(id)a3 deletionValues:(id)a4 substitutionValues:(id)a5 withContext:(id)a6;
-+ (id)mergePunctuationInsertAndDeleteIntoSubstituteTypeForSameStartEnd:(id)a3 deleteEditValues:(id)a4;
-+ (id)removeTextIfNeeded:(id)a3;
-+ (id)removeTextIfNeeded:(id)a3 metadata:(id)a4;
-+ (id)secondParameterTextWithParameters:(id)a3;
-+ (id)serializedDictationPhrases:(id)a3;
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4;
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4 autocapitalization:(int64_t)a5 capitalization:(unint64_t)a6;
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4 autocapitalization:(int64_t)a5 capitalization:(unint64_t)a6 smartPunctuation:(BOOL)a7;
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4 capitalization:(unint64_t)a5;
++ (id)arrayWithTextEntriesRemoved:(id)removed;
++ (id)bestInterpretationForDictationResult:(id)result;
++ (id)convertEditValuesToHashByPosition:(id)position dictationResultEditType:(id)type;
++ (id)dictionaryWithTextEntriesRemoved:(id)removed;
++ (id)firstParameterTextWithParameters:(id)parameters;
++ (id)interpretation:(id)interpretation forPhraseIndex:(unint64_t)index isShiftLocked:(BOOL)locked autocapitalizationType:(int64_t)type useServerCapitalization:(BOOL)capitalization;
++ (id)logAutoPunctuationEdit:(id)edit deletionValues:(id)values substitutionValues:(id)substitutionValues withContext:(id)context;
++ (id)mergePunctuationInsertAndDeleteIntoSubstituteTypeForSameStartEnd:(id)end deleteEditValues:(id)values;
++ (id)removeTextIfNeeded:(id)needed;
++ (id)removeTextIfNeeded:(id)needed metadata:(id)metadata;
++ (id)secondParameterTextWithParameters:(id)parameters;
++ (id)serializedDictationPhrases:(id)phrases;
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform;
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform autocapitalization:(int64_t)autocapitalization capitalization:(unint64_t)capitalization;
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform autocapitalization:(int64_t)autocapitalization capitalization:(unint64_t)capitalization smartPunctuation:(BOOL)punctuation;
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform capitalization:(unint64_t)capitalization;
 + (id)sharedInstance;
 + (id)slsDictationLanguages;
-+ (id)streamingHypothesisForPhrases:(id)a3;
-+ (id)stringForViewMode:(int)a3;
-+ (id)stripNonPunctuationEditValues:(id)a3;
++ (id)streamingHypothesisForPhrases:(id)phrases;
++ (id)stringForViewMode:(int)mode;
++ (id)stripNonPunctuationEditValues:(id)values;
 + (id)textRelatedMetadataKeys;
-+ (id)thirdParameterTextWithParameters:(id)a3;
-+ (id)whitelistedDictationDictionariesFromMetadataDictionaries:(id)a3;
-+ (id)whitelistedDictationDictionaryFromMetadata:(id)a3;
++ (id)thirdParameterTextWithParameters:(id)parameters;
++ (id)whitelistedDictationDictionariesFromMetadataDictionaries:(id)dictionaries;
++ (id)whitelistedDictationDictionaryFromMetadata:(id)metadata;
 + (id)whitelistedDictationMetadataKeys;
-+ (int)UIDictationStartStopReasonToInstrumentationDictationEndPointType:(unint64_t)a3;
-+ (int)UIDictationStartStopReasonToInstrumentationInvocationSourceType:(unint64_t)a3;
-+ (int)mapDictationCommandIdentifierToUEIcommandIdentifier:(unint64_t)a3;
++ (int)UIDictationStartStopReasonToInstrumentationDictationEndPointType:(unint64_t)type;
++ (int)UIDictationStartStopReasonToInstrumentationInvocationSourceType:(unint64_t)type;
++ (int)mapDictationCommandIdentifierToUEIcommandIdentifier:(unint64_t)identifier;
 + (int)viewMode;
-+ (unint64_t)commandIdentifierWithStringIdentifier:(id)a3;
-+ (unint64_t)reasonType:(id)a3;
++ (unint64_t)commandIdentifierWithStringIdentifier:(id)identifier;
++ (unint64_t)reasonType:(id)type;
 + (unint64_t)specificReasonTypeMicButtonOnKeyboard;
 + (unint64_t)specificReasonTypeMicButtonOnKeyboardWithInputSwitcher;
 + (void)applicationDidEnterBackgroundNotification;
-+ (void)didBeginEditingInTextView:(id)a3;
-+ (void)inputSystemSessionWillEndForReason:(int64_t)a3;
-+ (void)instrumentationDictationAlternativeSelectedWithInstrumentationContext:(id)a3 originalText:(id)a4 replacementText:(id)a5 replacementIndex:(unint64_t)a6 alternativesAvailableCount:(unint64_t)a7 dictationLanguage:(id)a8;
-+ (void)instrumentationDictationAlternativesViewedWithInstrumentationContext:(id)a3 alternatives:(id)a4 dictationLanguage:(id)a5;
++ (void)didBeginEditingInTextView:(id)view;
++ (void)inputSystemSessionWillEndForReason:(int64_t)reason;
++ (void)instrumentationDictationAlternativeSelectedWithInstrumentationContext:(id)context originalText:(id)text replacementText:(id)replacementText replacementIndex:(unint64_t)index alternativesAvailableCount:(unint64_t)count dictationLanguage:(id)language;
++ (void)instrumentationDictationAlternativesViewedWithInstrumentationContext:(id)context alternatives:(id)alternatives dictationLanguage:(id)language;
 + (void)keyboardDidShow;
 + (void)keyboardDidUpdateOnScreenStatus;
-+ (void)keyboardWillChangeFromDelegate:(id)a3 toDelegate:(id)a4 shouldPause:(BOOL)a5;
-+ (void)logCorrectionStatisticsForDelegate:(id)a3 reason:(unint64_t)a4;
++ (void)keyboardWillChangeFromDelegate:(id)delegate toDelegate:(id)toDelegate shouldPause:(BOOL)pause;
++ (void)logCorrectionStatisticsForDelegate:(id)delegate reason:(unint64_t)reason;
 + (void)onDidBecomeActive;
 + (void)onWillResignActive;
-+ (void)performOperations:(id)a3 keyboardShifted:(BOOL)a4;
++ (void)performOperations:(id)operations keyboardShifted:(BOOL)shifted;
 + (void)poppedLastStreamingOperation;
 + (void)remoteMicrophoneCapabilityChanged;
 + (void)siriPreferencesChanged;
 + (void)updateLandingView;
 - (BOOL)_allowsMicsInSearchField;
-- (BOOL)_canApplyVoiceCommandWithIdentifierString:(id)a3 firstParameterText:(id)a4 targetString:(id)a5 voiceCommandUUID:(id)a6;
-- (BOOL)_didRecognizeCommandWithIdentifier:(id)a3 strings:(id)a4 parameters:(id)a5 voiceCommandUUID:(id)a6;
-- (BOOL)_handleMultipleTextTargetsForText:(id)a3 payloadText:(id)a4 voiceCommandUUID:(id)a5;
+- (BOOL)_canApplyVoiceCommandWithIdentifierString:(id)string firstParameterText:(id)text targetString:(id)targetString voiceCommandUUID:(id)d;
+- (BOOL)_didRecognizeCommandWithIdentifier:(id)identifier strings:(id)strings parameters:(id)parameters voiceCommandUUID:(id)d;
+- (BOOL)_handleMultipleTextTargetsForText:(id)text payloadText:(id)payloadText voiceCommandUUID:(id)d;
 - (BOOL)_resolvedIsDictationPossible;
 - (BOOL)_shouldApplyLastHypothesis;
 - (BOOL)_shouldDeleteBackward;
-- (BOOL)_shouldInsertText:(id)a3;
+- (BOOL)_shouldInsertText:(id)text;
 - (BOOL)_shouldUpdateHelperMessageDisplay;
 - (BOOL)currentViewModeSupportsDictationMics;
 - (BOOL)dataSharingDecided;
-- (BOOL)dictationConnection:(id)a3 filterState:(id)a4 shouldCheckpointAtToken:(id)a5;
+- (BOOL)dictationConnection:(id)connection filterState:(id)state shouldCheckpointAtToken:(id)token;
 - (BOOL)dictationEnabled;
 - (BOOL)dictationSearchFieldUIEnabled;
-- (BOOL)dictationSearchFieldUISupportsTraitCollection:(id)a3;
+- (BOOL)dictationSearchFieldUISupportsTraitCollection:(id)collection;
 - (BOOL)dictationWordwiseBackspaceEnabled;
 - (BOOL)enableEuclidAlternatives;
 - (BOOL)isFallingBackToMonolingualDictation;
 - (BOOL)languageSupportsAdaptiveDelete;
 - (BOOL)remoteHasMicrophone;
-- (BOOL)shouldOverrideManualEndpointingWithReturnKeyType:(int64_t)a3;
+- (BOOL)shouldOverrideManualEndpointingWithReturnKeyType:(int64_t)type;
 - (BOOL)shouldPresentOptInAlert;
 - (BOOL)shouldSuppressPartialResults;
 - (BOOL)shouldUseDictationSearchFieldBehavior;
 - (BOOL)smartLanguageSelectionOverridden;
-- (BOOL)supportsDictationLanguage:(id)a3 error:(id *)a4;
-- (BOOL)supportsInputMode:(id)a3 error:(id *)a4;
+- (BOOL)supportsDictationLanguage:(id)language error:(id *)error;
+- (BOOL)supportsInputMode:(id)mode error:(id *)error;
 - (BOOL)useAutomaticEndpointing;
 - (NSNumber)dictationRequestOrigin;
 - (NSUndoManager)undoManager;
 - (UIDictationController)init;
 - (UIKeyboardInputMode)currentInputModeForDictation;
-- (_NSRange)_getRangeOfString:(id)a3 inDocumentText:(id)a4;
+- (_NSRange)_getRangeOfString:(id)string inDocumentText:(id)text;
 - (_NSRange)cachedPreSelectionRange;
 - (_NSRange)insertionRange;
 - (_NSRange)preCommandExecutionPositionRange;
-- (_NSRange)selectBestReplacementRangeFromContext:(id)a3 withDeltaRange:(_NSRange)a4 originalSelectedRange:(_NSRange)a5 replacementText:(id)a6;
+- (_NSRange)selectBestReplacementRangeFromContext:(id)context withDeltaRange:(_NSRange)range originalSelectedRange:(_NSRange)selectedRange replacementText:(id)text;
 - (_NSRange)startRangeOfCurrentHypothesis;
-- (__CFString)resultTransformForLanguageModel:(id)a3;
+- (__CFString)resultTransformForLanguageModel:(id)model;
 - (float)audioLevel;
 - (float)maxRecordingLength;
-- (id)_assistantCompatibleLanguageCodeForInputMode:(id)a3;
-- (id)_containingSearchBarForView:(id)a3;
+- (id)_assistantCompatibleLanguageCodeForInputMode:(id)mode;
+- (id)_containingSearchBarForView:(id)view;
 - (id)_currentLanguageForOfflineDictationMetrics;
 - (id)_documentStateForCommandApplicability;
 - (id)_effectiveUndoManager;
-- (id)_finalDictationStartLanguageCodeWithKeyboardInputMode:(id)a3;
-- (id)_getBestHypothesisRangeGivenHintRange:(id)a3 inputDelegateManager:(id)a4 hypothesisRange:(_NSRange *)a5 documentTextInRange:(id *)a6 forHypothesis:(id)a7;
-- (id)_hypothesisRangeFromSelectionRange:(id)a3 inputDelegateManager:(id)a4 forHypothesis:(id)a5;
-- (id)_rangeByExtendingRange:(id)a3 backward:(int64_t)a4 forward:(int64_t)a5 inputDelegateManager:(id)a6;
-- (id)_voiceCommandGrammarParseCandidatesFromPackage:(id)a3 completeCommands:(BOOL)a4;
+- (id)_finalDictationStartLanguageCodeWithKeyboardInputMode:(id)mode;
+- (id)_getBestHypothesisRangeGivenHintRange:(id)range inputDelegateManager:(id)manager hypothesisRange:(_NSRange *)hypothesisRange documentTextInRange:(id *)inRange forHypothesis:(id)hypothesis;
+- (id)_hypothesisRangeFromSelectionRange:(id)range inputDelegateManager:(id)manager forHypothesis:(id)hypothesis;
+- (id)_rangeByExtendingRange:(id)range backward:(int64_t)backward forward:(int64_t)forward inputDelegateManager:(id)manager;
+- (id)_voiceCommandGrammarParseCandidatesFromPackage:(id)package completeCommands:(BOOL)commands;
 - (id)activeMultilingualKeyboardDictationMappings;
-- (id)commandMetadataWithDictationCommandIdentifier:(unint64_t)a3 parameters:(id)a4;
-- (id)commandPayloadStringWithDictationCommandIdentifier:(unint64_t)a3 parameters:(id)a4;
-- (id)commandTargetStringWithDictationCommandIdentifier:(unint64_t)a3 parameters:(id)a4;
+- (id)commandMetadataWithDictationCommandIdentifier:(unint64_t)identifier parameters:(id)parameters;
+- (id)commandPayloadStringWithDictationCommandIdentifier:(unint64_t)identifier parameters:(id)parameters;
+- (id)commandTargetStringWithDictationCommandIdentifier:(unint64_t)identifier parameters:(id)parameters;
 - (id)connectionForStatisticsLogging;
 - (id)currentDictationLanguageForDisplay;
-- (id)dictationBlockForToken:(id)a3;
+- (id)dictationBlockForToken:(id)token;
 - (id)dictationConnection;
-- (id)dictationConnection:(id)a3 willFilterTokensWithLanguageModel:(id)a4 forFinalize:(BOOL)a5;
+- (id)dictationConnection:(id)connection willFilterTokensWithLanguageModel:(id)model forFinalize:(BOOL)finalize;
 - (id)dictationUIState;
-- (id)fieldIdentifierInputDelegate:(id)a3;
+- (id)fieldIdentifierInputDelegate:(id)delegate;
 - (id)language;
-- (id)languageCodeForAssistantLanguageCode:(id)a3;
-- (id)postfixTextForInputDelegate:(id)a3 wordCount:(unint64_t)a4;
-- (id)prefixTextForInputDelegate:(id)a3 wordCount:(unint64_t)a4;
+- (id)languageCodeForAssistantLanguageCode:(id)code;
+- (id)postfixTextForInputDelegate:(id)delegate wordCount:(unint64_t)count;
+- (id)prefixTextForInputDelegate:(id)delegate wordCount:(unint64_t)count;
 - (id)presentingViewControllerForPrivacySheet;
-- (id)selectedTextForInputDelegate:(id)a3;
+- (id)selectedTextForInputDelegate:(id)delegate;
 - (id)streamingOperations;
 - (unint64_t)specificReasonTypeFromApplicationDuringDictation;
-- (void)_addUndoNotificationObservationWithVoiceCommandUUID:(id)a3;
+- (void)_addUndoNotificationObservationWithVoiceCommandUUID:(id)d;
 - (void)_beginOfflineMetricsSession;
 - (void)_beginUndoGroupingIfNecessary;
 - (void)_clearExistingText;
-- (void)_completeStartDictationWithContinuation:(id)a3;
+- (void)_completeStartDictationWithContinuation:(id)continuation;
 - (void)_createDictationPresenterWindowIfNecessary;
 - (void)_deleteBackwardIntoText;
-- (void)_dictationDidRecieveDidBeginDictationNotification:(id)a3;
-- (void)_dictationDidRecieveDidFinishDictationNotification:(id)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_displaySecureContentsAsPlainText:(BOOL)a3 afterDelay:(double)a4;
-- (void)_endEnableDictationPromptAnimated:(BOOL)a3;
+- (void)_dictationDidRecieveDidBeginDictationNotification:(id)notification;
+- (void)_dictationDidRecieveDidFinishDictationNotification:(id)notification;
+- (void)_displayLinkFired:(id)fired;
+- (void)_displaySecureContentsAsPlainText:(BOOL)text afterDelay:(double)delay;
+- (void)_endEnableDictationPromptAnimated:(BOOL)animated;
 - (void)_endOfflineMetricsSession;
 - (void)_endUndoGroupingIfNecessary;
 - (void)_finalizePhrasesOnDictationPause;
 - (void)_handleDataSharingSheetDecision;
 - (void)_handlePrivacySheetDismissal;
-- (void)_handleRecognizedCommandWithCommandIdentifier:(unint64_t)a3 parameters:(id)a4 strings:(id)a5 voiceCommandUUID:(id)a6;
-- (void)_handleWKMultipleTextTargetsForText:(id)a3 payloadText:(id)a4 voiceCommandUUID:(id)a5 completionHandler:(id)a6;
-- (void)_insertSerializedDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)_logEnablementPromtMetricsWithStartDate:(id)a3;
+- (void)_handleRecognizedCommandWithCommandIdentifier:(unint64_t)identifier parameters:(id)parameters strings:(id)strings voiceCommandUUID:(id)d;
+- (void)_handleWKMultipleTextTargetsForText:(id)text payloadText:(id)payloadText voiceCommandUUID:(id)d completionHandler:(id)handler;
+- (void)_insertSerializedDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)_logEnablementPromtMetricsWithStartDate:(id)date;
 - (void)_markOfflineDictationInputMetricEvent;
 - (void)_performDictationRedo;
 - (void)_performDictationUndo;
-- (void)_performStandardEditAction:(SEL)a3 sender:(id)a4;
-- (void)_presentAlertForDictationInputModeOfType:(int64_t)a3 completionHandler:(id)a4;
-- (void)_presentDataSharingOptInAlertWithCompletion:(id)a3;
-- (void)_presentEnablementAndDataSharingPromptIfNeeded:(id)a3;
-- (void)_presentOptInAlertWithCompletion:(id)a3;
-- (void)_presentPrivacySheetForType:(int64_t)a3 completion:(id)a4;
-- (void)_refreshVisibleRTIDocumentStateWithContinuation:(id)a3;
+- (void)_performStandardEditAction:(SEL)action sender:(id)sender;
+- (void)_presentAlertForDictationInputModeOfType:(int64_t)type completionHandler:(id)handler;
+- (void)_presentDataSharingOptInAlertWithCompletion:(id)completion;
+- (void)_presentEnablementAndDataSharingPromptIfNeeded:(id)needed;
+- (void)_presentOptInAlertWithCompletion:(id)completion;
+- (void)_presentPrivacySheetForType:(int64_t)type completion:(id)completion;
+- (void)_refreshVisibleRTIDocumentStateWithContinuation:(id)continuation;
 - (void)_removeUndoNotificationObservation;
-- (void)_requestDocumentContextWithCompletionHandler:(id)a3;
-- (void)_requestFullDocumentContextWithCompletionHandler:(id)a3;
-- (void)_restoreInsertionPointPositionWithKeyboard:(id)a3 originalPositionRange:(_NSRange)a4 targetRange:(_NSRange)a5 payloadRange:(_NSRange)a6 contextBefore:(BOOL)a7;
-- (void)_runFinalizeOperation:(BOOL)a3;
-- (void)_setFinalResultHandler:(id)a3;
-- (void)_setHaveLeakedPartialResultForCommandUtterance:(BOOL)a3;
-- (void)_setupForCommandExecutionWithCommandIdentifier:(unint64_t)a3;
+- (void)_requestDocumentContextWithCompletionHandler:(id)handler;
+- (void)_requestFullDocumentContextWithCompletionHandler:(id)handler;
+- (void)_restoreInsertionPointPositionWithKeyboard:(id)keyboard originalPositionRange:(_NSRange)range targetRange:(_NSRange)targetRange payloadRange:(_NSRange)payloadRange contextBefore:(BOOL)before;
+- (void)_runFinalizeOperation:(BOOL)operation;
+- (void)_setFinalResultHandler:(id)handler;
+- (void)_setHaveLeakedPartialResultForCommandUtterance:(BOOL)utterance;
+- (void)_setupForCommandExecutionWithCommandIdentifier:(unint64_t)identifier;
 - (void)_setupHypothesisAsFinalResults;
-- (void)_startDictationWithContinuation:(id)a3;
+- (void)_startDictationWithContinuation:(id)continuation;
 - (void)_startStreamingAnimations;
 - (void)_stopStreamingAnimation;
-- (void)_touchPhaseChangedForTouch:(id)a3;
-- (void)_updateLastHypothesis:(id)a3 WithNewHypothesis:(id)a4;
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4;
-- (void)beginUserInteraction:(int64_t)a3;
+- (void)_touchPhaseChangedForTouch:(id)touch;
+- (void)_updateLastHypothesis:(id)hypothesis WithNewHypothesis:(id)newHypothesis;
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type;
+- (void)beginUserInteraction:(int64_t)interaction;
 - (void)cancelDictation;
-- (void)cancelDictationForResponderIfNeeded:(id)a3 wantsKeyboard:(BOOL)a4 isPencil:(BOOL)a5;
-- (void)cancelDictationForTextStoreChangesInResponder:(id)a3;
+- (void)cancelDictationForResponderIfNeeded:(id)needed wantsKeyboard:(BOOL)keyboard isPencil:(BOOL)pencil;
+- (void)cancelDictationForTextStoreChangesInResponder:(id)responder;
 - (void)cancelRecordingLimitTimer;
 - (void)clearKeyboardTrackpadModeIfNeeded;
-- (void)clearSelectedTextAndLastDictationResult:(BOOL)a3;
+- (void)clearSelectedTextAndLastDictationResult:(BOOL)result;
 - (void)clearTextFieldPlaceholder;
 - (void)completeStartConnection;
-- (void)completeStartConnectionForFileAtURL:(id)a3 forInputModeIdentifier:(id)a4;
+- (void)completeStartConnectionForFileAtURL:(id)l forInputModeIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)dictationConnection:(id)a3 didBeginLocalRecognitionWithModelInfo:(id)a4;
-- (void)dictationConnection:(id)a3 didFailRecognitionWithError:(id)a4;
-- (void)dictationConnection:(id)a3 didFailRecordingWithError:(id)a4;
-- (void)dictationConnection:(id)a3 didFilterTokensWithFilterState:(id)a4 forFinalize:(BOOL)a5;
-- (void)dictationConnection:(id)a3 didReceivePartialPackage:(id)a4 nluResult:(id)a5 languageModel:(id)a6;
-- (void)dictationConnection:(id)a3 didReceiveSearchResults:(id)a4 recognizedText:(id)a5 stable:(BOOL)a6 final:(BOOL)a7;
-- (void)dictationConnection:(id)a3 didReceiveVoiceCommandCandidatePackage:(id)a4 nluResult:(id)a5;
-- (void)dictationConnection:(id)a3 didStartRecordingWithOptions:(id)a4;
-- (void)dictationConnection:(id)a3 filterState:(id)a4 processFilteredToken:(id)a5 forFinalize:(BOOL)a6;
-- (void)dictationConnection:(id)a3 finalizePhrases:(id)a4 languageModel:(id)a5 correctionIdentifier:(id)a6 secureInput:(BOOL)a7 finalResult:(BOOL)a8;
-- (void)dictationConnection:(id)a3 receivedInterpretation:(id)a4 languageModel:(id)a5 secureInput:(BOOL)a6;
-- (void)dictationConnection:(id)a3 updateOptions:(id)a4;
-- (void)dictationConnectionDidCancelIncompatibleLocalRecognizer:(id)a3;
-- (void)dictationConnectionDidCancelRecording:(id)a3;
-- (void)dictationConnectionDidEndRecording:(id)a3;
-- (void)dictationConnectionDidFinish:(id)a3;
-- (void)dictationConnectionDidStartRecording:(id)a3;
-- (void)dictationConnectionWillStartRecording:(id)a3;
-- (void)dictationConnnectionDidChangeAvailability:(id)a3;
-- (void)dictationPrivacySheetControllerDidFinish:(id)a3;
-- (void)dictationShortCutKey:(id)a3;
-- (void)didShowAlternatives:(id)a3 correctionIdentifier:(id)a4 interactionIdentifier:(id)a5 instrumentationContext:(id)a6 dictationLanguage:(id)a7;
+- (void)dictationConnection:(id)connection didBeginLocalRecognitionWithModelInfo:(id)info;
+- (void)dictationConnection:(id)connection didFailRecognitionWithError:(id)error;
+- (void)dictationConnection:(id)connection didFailRecordingWithError:(id)error;
+- (void)dictationConnection:(id)connection didFilterTokensWithFilterState:(id)state forFinalize:(BOOL)finalize;
+- (void)dictationConnection:(id)connection didReceivePartialPackage:(id)package nluResult:(id)result languageModel:(id)model;
+- (void)dictationConnection:(id)connection didReceiveSearchResults:(id)results recognizedText:(id)text stable:(BOOL)stable final:(BOOL)final;
+- (void)dictationConnection:(id)connection didReceiveVoiceCommandCandidatePackage:(id)package nluResult:(id)result;
+- (void)dictationConnection:(id)connection didStartRecordingWithOptions:(id)options;
+- (void)dictationConnection:(id)connection filterState:(id)state processFilteredToken:(id)token forFinalize:(BOOL)finalize;
+- (void)dictationConnection:(id)connection finalizePhrases:(id)phrases languageModel:(id)model correctionIdentifier:(id)identifier secureInput:(BOOL)input finalResult:(BOOL)result;
+- (void)dictationConnection:(id)connection receivedInterpretation:(id)interpretation languageModel:(id)model secureInput:(BOOL)input;
+- (void)dictationConnection:(id)connection updateOptions:(id)options;
+- (void)dictationConnectionDidCancelIncompatibleLocalRecognizer:(id)recognizer;
+- (void)dictationConnectionDidCancelRecording:(id)recording;
+- (void)dictationConnectionDidEndRecording:(id)recording;
+- (void)dictationConnectionDidFinish:(id)finish;
+- (void)dictationConnectionDidStartRecording:(id)recording;
+- (void)dictationConnectionWillStartRecording:(id)recording;
+- (void)dictationConnnectionDidChangeAvailability:(id)availability;
+- (void)dictationPrivacySheetControllerDidFinish:(id)finish;
+- (void)dictationShortCutKey:(id)key;
+- (void)didShowAlternatives:(id)alternatives correctionIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier instrumentationContext:(id)context dictationLanguage:(id)language;
 - (void)dismissSoftwareKeyboardIfNeeded;
-- (void)endSessionIfNecessaryForTransitionFromState:(int)a3 toState:(int)a4;
+- (void)endSessionIfNecessaryForTransitionFromState:(int)state toState:(int)toState;
 - (void)endSmartLanguageSelectionOverride;
 - (void)endUserInteraction;
 - (void)errorAnimationDidFinish;
-- (void)euclidPhoneticString:(id)a3 maxResultsCount:(unint64_t)a4 completion:(id)a5;
-- (void)finalizeDictationRecognitionWithPhrases:(id)a3 languageModel:(id)a4 correctionIdentifier:(id)a5 secureInput:(BOOL)a6 finalResult:(BOOL)a7;
-- (void)finishDictationRecognitionWithPhrases:(id)a3 languageModel:(id)a4 correctionIdentifier:(id)a5 secureInput:(BOOL)a6;
+- (void)euclidPhoneticString:(id)string maxResultsCount:(unint64_t)count completion:(id)completion;
+- (void)finalizeDictationRecognitionWithPhrases:(id)phrases languageModel:(id)model correctionIdentifier:(id)identifier secureInput:(BOOL)input finalResult:(BOOL)result;
+- (void)finishDictationRecognitionWithPhrases:(id)phrases languageModel:(id)model correctionIdentifier:(id)identifier secureInput:(BOOL)input;
 - (void)forceDictationReturnToKeyboardInputMode;
 - (void)forceOOPDocumentStateSync;
-- (void)handleDictationShouldPause:(BOOL)a3 withNewDelagate:(BOOL)a4;
+- (void)handleDictationShouldPause:(BOOL)pause withNewDelagate:(BOOL)delagate;
 - (void)handleHardwareKeyboardGesture;
 - (void)handleWKActionMoveAfter;
 - (void)handleWKActionMoveBefore;
 - (void)insertLastHypothesisAsFinalResultLocally;
-- (void)insertSerializedDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)instrumentDictationVoiceCommandDisambiguationActionWithVoiceCommandUUID:(id)a3 disambiguationIndex:(id)a4 totalDisambiguationCount:(id)a5;
-- (void)instrumentDictationVoiceCommandUndoTapActionWithVoiceCommandUUID:(id)a3 undoTapAlternativeSelection:(BOOL)a4;
+- (void)insertSerializedDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)instrumentDictationVoiceCommandDisambiguationActionWithVoiceCommandUUID:(id)d disambiguationIndex:(id)index totalDisambiguationCount:(id)count;
+- (void)instrumentDictationVoiceCommandUndoTapActionWithVoiceCommandUUID:(id)d undoTapAlternativeSelection:(BOOL)selection;
 - (void)instrumentationDictationContextEmitInstrumentation;
-- (void)instrumentationDictationTranscriptionMetadataEmitInstrumentationWithDictationResult:(id)a3;
+- (void)instrumentationDictationTranscriptionMetadataEmitInstrumentationWithDictationResult:(id)result;
 - (void)invalidateTextInputView;
-- (void)keyboardDidHide:(id)a3;
+- (void)keyboardDidHide:(id)hide;
 - (void)launchDictationFeedbackApp;
-- (void)logAlternativeSelected:(id)a3 correctionIdentifier:(id)a4 interactionIdentifier:(id)a5;
-- (void)logDidAcceptDictationResult:(id)a3 reasonType:(unint64_t)a4;
-- (void)logDidAcceptReplacement:(id)a3 replacementLanguageCode:(id)a4 originalText:(id)a5 correctionIdentifier:(id)a6 interactionIdentifier:(id)a7;
+- (void)logAlternativeSelected:(id)selected correctionIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier;
+- (void)logDidAcceptDictationResult:(id)result reasonType:(unint64_t)type;
+- (void)logDidAcceptReplacement:(id)replacement replacementLanguageCode:(id)code originalText:(id)text correctionIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier;
 - (void)logEuclidRequested;
-- (void)logEuclidSelection:(id)a3 suggestedTokens:(id)a4 correctedToken:(id)a5 selectedIndex:(int64_t)a6;
-- (void)markDictationTipDeletionEvent:(id)a3 deletedTextRange:(_NSRange)a4;
-- (void)markDictationUndoEventWithVoiceCommandUUID:(id)a3 viaTapOnRevertBubble:(BOOL)a4;
+- (void)logEuclidSelection:(id)selection suggestedTokens:(id)tokens correctedToken:(id)token selectedIndex:(int64_t)index;
+- (void)markDictationTipDeletionEvent:(id)event deletedTextRange:(_NSRange)range;
+- (void)markDictationUndoEventWithVoiceCommandUUID:(id)d viaTapOnRevertBubble:(BOOL)bubble;
 - (void)markKeyboardDeleteMetricEvent;
 - (void)markKeyboardDidReset;
 - (void)markKeyboardInputMetricEvent;
-- (void)notifyDocumentStateChangedAndResumeDictation:(id)a3;
-- (void)optInButtonPressedForPresenter:(id)a3;
-- (void)optOutButtonPressedForPresenter:(id)a3;
-- (void)overrideSmartLanguageSelection:(id)a3;
-- (void)pauseDictationOnUserInteraction:(int64_t)a3;
+- (void)notifyDocumentStateChangedAndResumeDictation:(id)dictation;
+- (void)optInButtonPressedForPresenter:(id)presenter;
+- (void)optOutButtonPressedForPresenter:(id)presenter;
+- (void)overrideSmartLanguageSelection:(id)selection;
+- (void)pauseDictationOnUserInteraction:(int64_t)interaction;
 - (void)pauseSpeechRecognition;
-- (void)performIgnoringDocumentChanges:(id)a3;
-- (void)performIgnoringRTIChanges:(id)a3;
-- (void)performTextReplacementForWebKitWithDeltaRange:(_NSRange)a3 targetText:(id)a4 replacementText:(id)a5 originalSelectedRange:(_NSRange)a6 voiceCommandDisambiguationSelectedIndex:(id)a7 voiceCommandDisambiguationTargetCount:(id)a8 voiceCommandUUID:(id)a9 completionHandler:(id)a10;
+- (void)performIgnoringDocumentChanges:(id)changes;
+- (void)performIgnoringRTIChanges:(id)changes;
+- (void)performTextReplacementForWebKitWithDeltaRange:(_NSRange)range targetText:(id)text replacementText:(id)replacementText originalSelectedRange:(_NSRange)selectedRange voiceCommandDisambiguationSelectedIndex:(id)index voiceCommandDisambiguationTargetCount:(id)count voiceCommandUUID:(id)d completionHandler:(id)self0;
 - (void)playVoiceCommandHapticFeedack;
-- (void)populateInstrumentationMetadataOnCommandExecuted:(id)a3 toExecuted:(id)a4;
-- (void)postNotificationName:(id)a3 userInfo:(id)a4;
-- (void)preferencesChanged:(id)a3;
-- (void)preheatEuclidModelWithLanguageCode:(id)a3 clientID:(id)a4;
+- (void)populateInstrumentationMetadataOnCommandExecuted:(id)executed toExecuted:(id)toExecuted;
+- (void)postNotificationName:(id)name userInfo:(id)info;
+- (void)preferencesChanged:(id)changed;
+- (void)preheatEuclidModelWithLanguageCode:(id)code clientID:(id)d;
 - (void)preheatIfNecessary;
-- (void)prepareDoubleTapShortcutGesture:(id)a3;
+- (void)prepareDoubleTapShortcutGesture:(id)gesture;
 - (void)prepareStartDictationKeyboardGestures;
-- (void)prepareStartDictationKeyboardGesturesForDelegate:(id)a3;
-- (void)prepareVoiceCommandSingleTapGesture:(id)a3;
-- (void)presentAlertOfType:(int64_t)a3 withCompletion:(id)a4;
-- (void)presentEnablementAndDataSharingPromptIfNeeded:(id)a3;
+- (void)prepareStartDictationKeyboardGesturesForDelegate:(id)delegate;
+- (void)prepareVoiceCommandSingleTapGesture:(id)gesture;
+- (void)presentAlertOfType:(int64_t)type withCompletion:(id)completion;
+- (void)presentEnablementAndDataSharingPromptIfNeeded:(id)needed;
 - (void)releaseConnection;
 - (void)removeSelectedText;
 - (void)removeStartDictationKeyboardGestures;
-- (void)requestVisibleTextWithCompletionBlock:(id)a3;
+- (void)requestVisibleTextWithCompletionBlock:(id)block;
 - (void)resetAdaptiveDeleteActivationLogic;
 - (void)resetDictation;
 - (void)resetDictationPendingEdits;
@@ -304,54 +304,54 @@
 - (void)resignFirstResponderWhenIdleIfNeeded;
 - (void)restoreTextFieldPlaceholder;
 - (void)resumeDictation;
-- (void)resumeSpeechRecognitionWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5;
-- (void)rtiInputSessionWillChangeToNewProcess:(id)a3;
-- (void)sendButtonPressedInMessages:(id)a3;
-- (void)setAppState:(int)a3;
-- (void)setCandidateDictationSerializableResults:(id)a3;
-- (void)setCurrentInstrumentationContext:(id)a3;
-- (void)setDictationInfoOnScreenNotifyKey:(BOOL)a3;
-- (void)setDictationInputMode:(id)a3;
-- (void)setDisambiguationActiveEnabled:(BOOL)a3;
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setIgnoreFinalizePhrases:(BOOL)a3;
-- (void)setInteractionIdentifier:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setLocalSpeechRecognitionForced:(BOOL)a3;
-- (void)setShadowState:(int)a3;
-- (void)setState:(int)a3;
+- (void)resumeSpeechRecognitionWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText;
+- (void)rtiInputSessionWillChangeToNewProcess:(id)process;
+- (void)sendButtonPressedInMessages:(id)messages;
+- (void)setAppState:(int)state;
+- (void)setCandidateDictationSerializableResults:(id)results;
+- (void)setCurrentInstrumentationContext:(id)context;
+- (void)setDictationInfoOnScreenNotifyKey:(BOOL)key;
+- (void)setDictationInputMode:(id)mode;
+- (void)setDisambiguationActiveEnabled:(BOOL)enabled;
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setIgnoreFinalizePhrases:(BOOL)phrases;
+- (void)setInteractionIdentifier:(id)identifier;
+- (void)setLanguage:(id)language;
+- (void)setLocalSpeechRecognitionForced:(BOOL)forced;
+- (void)setShadowState:(int)state;
+- (void)setState:(int)state;
 - (void)setupForAsyncDelegate;
 - (void)setupForDictationStart;
 - (void)setupForStreamingDictationStart;
-- (void)setupToInsertResultForNewHypothesis:(id)a3;
-- (void)showLowStorageUserAlertWithLanguage:(id)a3;
+- (void)setupToInsertResultForNewHypothesis:(id)hypothesis;
+- (void)showLowStorageUserAlertWithLanguage:(id)language;
 - (void)showSoftwareKeyboardIfNeeded;
-- (void)startConnectionWithContinuation:(id)a3;
-- (void)startDictationForFileAtURL:(id)a3 forInputModeIdentifier:(id)a4;
-- (void)startDictationWithContinuation:(id)a3;
+- (void)startConnectionWithContinuation:(id)continuation;
+- (void)startDictationForFileAtURL:(id)l forInputModeIdentifier:(id)identifier;
+- (void)startDictationWithContinuation:(id)continuation;
 - (void)startHelperMessageDisplayIfNeeded;
 - (void)startRecordingLimitTimer;
-- (void)stopAndCancelDictationIfNeededWithReasonType:(unint64_t)a3;
-- (void)stopAndCancelDictationWithReasonType:(unint64_t)a3;
+- (void)stopAndCancelDictationIfNeededWithReasonType:(unint64_t)type;
+- (void)stopAndCancelDictationWithReasonType:(unint64_t)type;
 - (void)stopDictation;
-- (void)stopDictation:(BOOL)a3;
+- (void)stopDictation:(BOOL)dictation;
 - (void)stopDictationAndResignFirstResponder;
 - (void)stopDictationByTimer;
-- (void)stopDictationIgnoreFinalizePhrases:(BOOL)a3;
+- (void)stopDictationIgnoreFinalizePhrases:(BOOL)phrases;
 - (void)stopHelperMessageDisplayIfNeeded;
 - (void)stopIdleTimerResetTimer;
 - (void)switchToDictationInputMode;
-- (void)switchToDictationInputModeWithOptions:(id)a3;
-- (void)switchToDictationInputModeWithTouch:(id)a3;
-- (void)switchToDictationInputModeWithTouch:(id)a3 options:(id)a4;
-- (void)switchToDictationInputModeWithTouch:(id)a3 withKeyboardInputMode:(id)a4 options:(id)a5;
-- (void)switchToDictationLanguage:(id)a3 inputOptions:(id)a4;
+- (void)switchToDictationInputModeWithOptions:(id)options;
+- (void)switchToDictationInputModeWithTouch:(id)touch;
+- (void)switchToDictationInputModeWithTouch:(id)touch options:(id)options;
+- (void)switchToDictationInputModeWithTouch:(id)touch withKeyboardInputMode:(id)mode options:(id)options;
+- (void)switchToDictationLanguage:(id)language inputOptions:(id)options;
 - (void)switchToKeyboardInputModeIfNeeded;
-- (void)updateDoubleTapShortcutWithPreference:(int64_t)a3;
+- (void)updateDoubleTapShortcutWithPreference:(int64_t)preference;
 - (void)updateHelperMessageDisplayIfNeeded;
-- (void)updateLastHypothesis:(id)a3 WithNewHypothesis:(id)a4;
+- (void)updateLastHypothesis:(id)hypothesis WithNewHypothesis:(id)newHypothesis;
 - (void)updateRecordingLimitTimerIfNeeded;
-- (void)voiceCommandSingleTapKey:(id)a3;
+- (void)voiceCommandSingleTapKey:(id)key;
 @end
 
 @implementation UIDictationController
@@ -380,10 +380,10 @@
         v6 = *(*(&v10 + 1) + 8 * i);
         if ([v6 _hostsWindows])
         {
-          v7 = [v6 _screen];
-          v8 = [v7 _userInterfaceIdiom];
+          _screen = [v6 _screen];
+          _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-          if (v8 == 3)
+          if (_userInterfaceIdiom == 3)
           {
             LOBYTE(v3) = 1;
             goto LABEL_12;
@@ -440,8 +440,8 @@ LABEL_12:
 
     else
     {
-      v9 = [v3 inputViews];
-      if ([v9 isSplit])
+      inputViews = [v3 inputViews];
+      if ([inputViews isSplit])
       {
         v2 = 4;
       }
@@ -471,9 +471,9 @@ LABEL_12:
       if (([v5 BOOLForKey:@"Dictation Enabled"] & 1) == 0)
       {
         v6 = +[UIDictationConnectionPreferences sharedInstance];
-        v7 = [v6 suppressDictationOptIn];
+        suppressDictationOptIn = [v6 suppressDictationOptIn];
 
-        if (v7)
+        if (suppressDictationOptIn)
         {
           goto LABEL_19;
         }
@@ -547,11 +547,11 @@ LABEL_19:
 
 - (BOOL)_allowsMicsInSearchField
 {
-  v3 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v4 = [v3 firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
   v6 = 0;
-  LOBYTE(self) = [(UIDictationController *)self supportsDictationLanguage:v4 error:&v6];
+  LOBYTE(self) = [(UIDictationController *)self supportsDictationLanguage:firstObject error:&v6];
 
   return self;
 }
@@ -574,31 +574,31 @@ LABEL_19:
       v3->_dictationInputModeNotifierToken = -1;
     }
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:objc_opt_class() selector:sel_applicationDidBecomeActive name:@"UIApplicationDidBecomeActiveNotification" object:0];
-    [v4 addObserver:objc_opt_class() selector:sel_applicationWillResignActive name:@"UIApplicationWillResignActiveNotification" object:0];
-    [v4 addObserver:objc_opt_class() selector:sel_viewServiceDidBecomeActive name:0x1EFBB4830 object:0];
-    [v4 addObserver:objc_opt_class() selector:sel_viewServiceWillResignActive name:0x1EFBB4850 object:0];
-    [v4 addObserver:objc_opt_class() selector:sel_applicationDidEnterBackgroundNotification name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-    [v4 addObserver:objc_opt_class() selector:sel_siriPreferencesChanged name:0x1EFB73710 object:0];
-    [v4 addObserver:objc_opt_class() selector:sel_remoteMicrophoneCapabilityChanged name:@"_UIDeviceRemoteHasMicrophoneDidChangeNotification" object:0];
-    [v4 addObserver:v3 selector:sel_keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
-    [v4 addObserver:v3 selector:sel_keyboardDidHide_ name:@"UIKeyboardPrivateDidHideNotification" object:0];
-    [v4 addObserver:v3 selector:sel_preferencesChanged_ name:*MEMORY[0x1E69D9908] object:0];
-    [v4 addObserver:v3 selector:sel_sendButtonPressedInMessages_ name:@"CKMessageEntryViewSendButtonPressedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_applicationDidBecomeActive name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_applicationWillResignActive name:@"UIApplicationWillResignActiveNotification" object:0];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_viewServiceDidBecomeActive name:0x1EFBB4830 object:0];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_viewServiceWillResignActive name:0x1EFBB4850 object:0];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_applicationDidEnterBackgroundNotification name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_siriPreferencesChanged name:0x1EFB73710 object:0];
+    [defaultCenter addObserver:objc_opt_class() selector:sel_remoteMicrophoneCapabilityChanged name:@"_UIDeviceRemoteHasMicrophoneDidChangeNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_keyboardDidHide_ name:@"UIKeyboardPrivateDidHideNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_preferencesChanged_ name:*MEMORY[0x1E69D9908] object:0];
+    [defaultCenter addObserver:v3 selector:sel_sendButtonPressedInMessages_ name:@"CKMessageEntryViewSendButtonPressedNotification" object:0];
     if (+[UIKeyboard isKeyboardProcess])
     {
-      [v4 addObserver:objc_opt_class() selector:sel_keyboardDidShow name:@"UIKeyboardDidShowNotification" object:0];
-      [v4 addObserver:v3 selector:sel_rtiInputSessionWillChangeToNewProcess_ name:*MEMORY[0x1E69C6FC0] object:0];
+      [defaultCenter addObserver:objc_opt_class() selector:sel_keyboardDidShow name:@"UIKeyboardDidShowNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel_rtiInputSessionWillChangeToNewProcess_ name:*MEMORY[0x1E69C6FC0] object:0];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:v3 selector:sel__dictationDidRecieveDidBeginDictationNotification_ name:@"UIKeyboardDidBeginDictationNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v3 selector:sel__dictationDidRecieveDidBeginDictationNotification_ name:@"UIKeyboardDidBeginDictationNotification" object:0];
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v3 selector:sel__dictationDidRecieveDidFinishDictationNotification_ name:@"UIDictationControllerDictationDidFinish" object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:v3 selector:sel__dictationDidRecieveDidFinishDictationNotification_ name:@"UIDictationControllerDictationDidFinish" object:0];
     }
 
     v8 = +[UIDictationConnectionPreferences sharedInstance];
@@ -632,9 +632,9 @@ LABEL_19:
     v3->_assertionController = v16;
 
     v18 = +[_UIDictationSettingsDomain rootSettings];
-    v19 = [v18 commandHapticFeedbackEnabled];
+    commandHapticFeedbackEnabled = [v18 commandHapticFeedbackEnabled];
 
-    if (v19)
+    if (commandHapticFeedbackEnabled)
     {
       v20 = [UIImpactFeedbackGenerator alloc];
       v21 = +[_UIDictationSettingsDomain rootSettings];
@@ -676,13 +676,13 @@ LABEL_19:
 + (void)onDidBecomeActive
 {
   v2 = +[UIDictationController activeInstance];
-  v3 = [v2 wantsAvailabilityMonitoringWhenAppActive];
+  wantsAvailabilityMonitoringWhenAppActive = [v2 wantsAvailabilityMonitoringWhenAppActive];
 
-  if (v3)
+  if (wantsAvailabilityMonitoringWhenAppActive)
   {
     v4 = +[UIDictationController sharedInstance];
-    v5 = [v4 dictationConnection];
-    [v5 beginAvailabilityMonitoring];
+    dictationConnection = [v4 dictationConnection];
+    [dictationConnection beginAvailabilityMonitoring];
   }
 
   _MergedGlobals_35[0] = 1;
@@ -788,10 +788,10 @@ LABEL_19:
 + (BOOL)fetchCurrentInputModeSupportsDictation
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 textInputTraits];
-  LODWORD(a1) = [a1 checkTraitsSupportDictation:v4];
+  textInputTraits = [v3 textInputTraits];
+  LODWORD(self) = [self checkTraitsSupportDictation:textInputTraits];
 
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -804,14 +804,14 @@ LABEL_19:
   }
 
   v6 = +[UIDictationController sharedInstance];
-  v7 = [v6 currentInputModeForDictation];
-  v8 = [v7 dictationLanguage];
+  currentInputModeForDictation = [v6 currentInputModeForDictation];
+  dictationLanguage = [currentInputModeForDictation dictationLanguage];
 
-  if (v8)
+  if (dictationLanguage)
   {
     v9 = +[UIDictationController sharedInstance];
     v12 = 0;
-    v10 = [v9 supportsDictationLanguage:v8 error:&v12];
+    v10 = [v9 supportsDictationLanguage:dictationLanguage error:&v12];
   }
 
   else
@@ -825,9 +825,9 @@ LABEL_19:
 + (id)activeConnection
 {
   v2 = +[UIDictationController activeInstance];
-  v3 = [v2 dictationConnection];
+  dictationConnection = [v2 dictationConnection];
 
-  return v3;
+  return dictationConnection;
 }
 
 - (void)removeStartDictationKeyboardGestures
@@ -835,8 +835,8 @@ LABEL_19:
   hardwareShortcutRecognizer = self->_hardwareShortcutRecognizer;
   if (hardwareShortcutRecognizer)
   {
-    v4 = [(UIGestureRecognizer *)hardwareShortcutRecognizer view];
-    [v4 removeGestureRecognizer:self->_hardwareShortcutRecognizer];
+    view = [(UIGestureRecognizer *)hardwareShortcutRecognizer view];
+    [view removeGestureRecognizer:self->_hardwareShortcutRecognizer];
 
     v5 = self->_hardwareShortcutRecognizer;
     self->_hardwareShortcutRecognizer = 0;
@@ -845,8 +845,8 @@ LABEL_19:
   hardwareVoiceCommandKeyRecognizer = self->_hardwareVoiceCommandKeyRecognizer;
   if (hardwareVoiceCommandKeyRecognizer)
   {
-    v7 = [(UIGestureRecognizer *)hardwareVoiceCommandKeyRecognizer view];
-    [v7 removeGestureRecognizer:self->_hardwareVoiceCommandKeyRecognizer];
+    view2 = [(UIGestureRecognizer *)hardwareVoiceCommandKeyRecognizer view];
+    [view2 removeGestureRecognizer:self->_hardwareVoiceCommandKeyRecognizer];
 
     v8 = self->_hardwareVoiceCommandKeyRecognizer;
     self->_hardwareVoiceCommandKeyRecognizer = 0;
@@ -856,38 +856,38 @@ LABEL_19:
 - (UIKeyboardInputMode)currentInputModeForDictation
 {
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [v3 currentInputMode];
+  currentInputMode = [v3 currentInputMode];
 
-  if (!v4)
+  if (!currentInputMode)
   {
     v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v5 enabledInputModeIdentifiers];
+    enabledInputModeIdentifiers = [v5 enabledInputModeIdentifiers];
   }
 
   currentInputModeForDictation = self->_currentInputModeForDictation;
   if (currentInputModeForDictation)
   {
-    v8 = currentInputModeForDictation;
+    currentInputMode2 = currentInputModeForDictation;
   }
 
   else
   {
     v9 = +[UIKeyboardInputModeController sharedInputModeController];
-    v8 = [v9 currentInputMode];
+    currentInputMode2 = [v9 currentInputMode];
   }
 
   v10 = +[UIKeyboardInputMode dictationInputMode];
-  v11 = [(UIKeyboardInputMode *)v8 isEqual:v10];
+  v11 = [(UIKeyboardInputMode *)currentInputMode2 isEqual:v10];
 
   if (v11)
   {
     v12 = +[UIKeyboardInputModeController sharedInputModeController];
-    v13 = [v12 currentInputModeInPreference];
+    currentInputModeInPreference = [v12 currentInputModeInPreference];
 
-    v8 = v13;
+    currentInputMode2 = currentInputModeInPreference;
   }
 
-  return v8;
+  return currentInputMode2;
 }
 
 - (BOOL)dictationEnabled
@@ -902,29 +902,29 @@ LABEL_19:
   if (!qword_1ED4987F0)
   {
     v5 = +[UIDictationConnectionPreferences sharedInstance];
-    v6 = [v5 dictationIsEnabled];
+    dictationIsEnabled = [v5 dictationIsEnabled];
 
     v7 = +[UIDictationConnectionPreferences sharedInstance];
-    v8 = [v7 suppressDictationOptIn];
+    suppressDictationOptIn = [v7 suppressDictationOptIn];
 
     v9 = +[UIWindow _applicationKeyWindow];
     if (!v9)
     {
       v10 = +[UIKeyboardImpl activeInstance];
-      v11 = [v10 delegateAsResponder];
-      v12 = [v11 _responderWindow];
-      v13 = v12;
-      if (v12)
+      delegateAsResponder = [v10 delegateAsResponder];
+      _responderWindow = [delegateAsResponder _responderWindow];
+      v13 = _responderWindow;
+      if (_responderWindow)
       {
-        v14 = v12;
+        window = _responderWindow;
       }
 
       else
       {
-        v14 = [v10 window];
+        window = [v10 window];
       }
 
-      v9 = v14;
+      v9 = window;
     }
 
     if (([v9 _isHostedInAnotherProcess] & 1) != 0 || _UIApplicationIsExtension())
@@ -933,7 +933,7 @@ LABEL_19:
       if (v9)
       {
 LABEL_14:
-        v16 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:(v6 | v15) & 1];
+        v16 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:(dictationIsEnabled | v15) & 1];
         v17 = qword_1ED4987F0;
         qword_1ED4987F0 = v16;
 
@@ -944,14 +944,14 @@ LABEL_14:
 
     else
     {
-      v15 = v8 ^ 1;
+      v15 = suppressDictationOptIn ^ 1;
       if (v9)
       {
         goto LABEL_14;
       }
     }
 
-    v2 = v6 | v15;
+    v2 = dictationIsEnabled | v15;
     return v2 & 1;
   }
 
@@ -966,9 +966,9 @@ LABEL_15:
   if ([v2 deviceStateIsLocked])
   {
     v3 = +[UIDictationConnectionPreferences sharedInstance];
-    v4 = [v3 dictationIsEnabled];
+    dictationIsEnabled = [v3 dictationIsEnabled];
 
-    if (!v4)
+    if (!dictationIsEnabled)
     {
       return 0;
     }
@@ -979,18 +979,18 @@ LABEL_15:
   }
 
   v5 = +[UIDictationController sharedInstance];
-  v6 = [v5 dictationDisabledDueToTelephonyActivity];
+  dictationDisabledDueToTelephonyActivity = [v5 dictationDisabledDueToTelephonyActivity];
 
-  if (v6)
+  if (dictationDisabledDueToTelephonyActivity)
   {
     return 0;
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 inputDelegateManager];
-  v10 = [v9 keyInputDelegate];
+  inputDelegateManager = [v8 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v10 _isPasscodeStyle])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([keyInputDelegate _isPasscodeStyle])
   {
     v7 = 0;
   }
@@ -998,11 +998,11 @@ LABEL_15:
   else
   {
     v11 = +[UIDictationController sharedInstance];
-    v12 = [v11 currentInputModeForDictation];
-    v13 = [v12 dictationLanguage];
+    currentInputModeForDictation = [v11 currentInputModeForDictation];
+    dictationLanguage = [currentInputModeForDictation dictationLanguage];
 
-    v14 = [v11 dictationConnection];
-    v7 = [v14 dictationIsAvailableForLanguage:v13];
+    dictationConnection = [v11 dictationConnection];
+    v7 = [dictationConnection dictationIsAvailableForLanguage:dictationLanguage];
   }
 
   return v7;
@@ -1078,8 +1078,8 @@ LABEL_9:
     v8 = +[UIDictationController activeInstance];
     [v8 stopHelperMessageDisplayIfNeeded];
 
-    v9 = +[UIDictationController activeInstance];
-    [v9 _endOfflineMetricsSession];
+    textInputTraits = +[UIDictationController activeInstance];
+    [textInputTraits _endOfflineMetricsSession];
     goto LABEL_10;
   }
 
@@ -1087,36 +1087,36 @@ LABEL_9:
   [v4 updateHelperMessageDisplayIfNeeded];
 
   v5 = +[UIKeyboardImpl activeInstance];
-  v9 = [v5 textInputTraits];
+  textInputTraits = [v5 textInputTraits];
 
-  v6 = v9;
-  if (!v9)
+  v6 = textInputTraits;
+  if (!textInputTraits)
   {
     goto LABEL_11;
   }
 
-  if (UIKeyboardTypeSupportsDictationSpelling([v9 dictationKeyboardType]) || (objc_msgSend(v9, "isSecureTextEntry") & 1) != 0 || objc_msgSend(v9, "forceSpellingDictation"))
+  if (UIKeyboardTypeSupportsDictationSpelling([textInputTraits dictationKeyboardType]) || (objc_msgSend(textInputTraits, "isSecureTextEntry") & 1) != 0 || objc_msgSend(textInputTraits, "forceSpellingDictation"))
   {
     v7 = +[UIDictationController sharedInstance];
     [v7 _beginOfflineMetricsSession];
   }
 
 LABEL_10:
-  v6 = v9;
+  v6 = textInputTraits;
 LABEL_11:
 }
 
 - (BOOL)_resolvedIsDictationPossible
 {
-  v3 = [(UIDictationController *)self remoteHasMicrophone];
-  v4 = [(UIDictationController *)self dictationEnabled];
-  v5 = [(UIDictationController *)self currentInputModeForDictation];
-  v6 = [v5 dictationLanguage];
+  remoteHasMicrophone = [(UIDictationController *)self remoteHasMicrophone];
+  dictationEnabled = [(UIDictationController *)self dictationEnabled];
+  currentInputModeForDictation = [(UIDictationController *)self currentInputModeForDictation];
+  dictationLanguage = [currentInputModeForDictation dictationLanguage];
 
-  if (v6)
+  if (dictationLanguage)
   {
     v13 = 0;
-    v7 = [(UIDictationController *)self supportsDictationLanguage:v6 error:&v13];
+    v7 = [(UIDictationController *)self supportsDictationLanguage:dictationLanguage error:&v13];
   }
 
   else
@@ -1125,19 +1125,19 @@ LABEL_11:
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 textInputTraits];
-  v10 = [UIDictationController _checkTraitsSupportDictation:v9];
+  textInputTraits = [v8 textInputTraits];
+  v10 = [UIDictationController _checkTraitsSupportDictation:textInputTraits];
 
-  v11 = v3 && v4 && v7 && v10;
+  v11 = remoteHasMicrophone && dictationEnabled && v7 && v10;
   return v11;
 }
 
 - (BOOL)remoteHasMicrophone
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _remoteHasMicrophoneCapability];
+  _remoteHasMicrophoneCapability = [v2 _remoteHasMicrophoneCapability];
 
-  return v3;
+  return _remoteHasMicrophoneCapability;
 }
 
 - (void)stopHelperMessageDisplayIfNeeded
@@ -1145,12 +1145,12 @@ LABEL_11:
   if ([(UIDictationController *)self _shouldUpdateHelperMessageDisplay])
   {
     v2 = +[UIKeyboardImpl sharedInstance];
-    v3 = [v2 inputDelegate];
+    inputDelegate = [v2 inputDelegate];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v3 _updateHelpMessageOverrideWithMessage:0];
+      [inputDelegate _updateHelpMessageOverrideWithMessage:0];
     }
   }
 }
@@ -1178,8 +1178,8 @@ LABEL_11:
     if (lastOfflineDictationMetricEvent == 1)
     {
       AFAggregatorClass = getAFAggregatorClass();
-      v5 = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
-      [AFAggregatorClass logDictationFollowedByContinueOccurredForLanguage:v5];
+      _currentLanguageForOfflineDictationMetrics = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
+      [AFAggregatorClass logDictationFollowedByContinueOccurredForLanguage:_currentLanguageForOfflineDictationMetrics];
     }
 
     else
@@ -1190,8 +1190,8 @@ LABEL_11:
       }
 
       v6 = getAFAggregatorClass();
-      v5 = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
-      [v6 logKeyboardInputFollowedByContinueOccurredForLanguage:v5];
+      _currentLanguageForOfflineDictationMetrics = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
+      [v6 logKeyboardInputFollowedByContinueOccurredForLanguage:_currentLanguageForOfflineDictationMetrics];
     }
 
 LABEL_8:
@@ -1201,16 +1201,16 @@ LABEL_8:
 
 + (BOOL)isRunningInTypeAndTalkMode
 {
-  v2 = [a1 isRunning];
-  if (v2)
+  isRunning = [self isRunning];
+  if (isRunning)
   {
     v3 = +[UIKeyboardInputMode dictationInputMode];
-    v4 = [v3 usingTypeAndTalk];
+    usingTypeAndTalk = [v3 usingTypeAndTalk];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isRunning) = usingTypeAndTalk;
   }
 
-  return v2;
+  return isRunning;
 }
 
 void __29__UIDictationController_init__block_invoke(uint64_t a1)
@@ -1225,9 +1225,9 @@ void __29__UIDictationController_init__block_invoke(uint64_t a1)
 
 - (float)maxRecordingLength
 {
-  v2 = [(UIDictationController *)self isDetectingUtterances];
+  isDetectingUtterances = [(UIDictationController *)self isDetectingUtterances];
   result = 60.0;
-  if (v2)
+  if (isDetectingUtterances)
   {
     return 30.0;
   }
@@ -1238,17 +1238,17 @@ void __29__UIDictationController_init__block_invoke(uint64_t a1)
 + (BOOL)usingServerManualEndpointingThreshold
 {
   v2 = +[UIDictationConnectionPreferences sharedInstance];
-  v3 = [v2 ignoreServerManualEndpointingThreshold];
+  ignoreServerManualEndpointingThreshold = [v2 ignoreServerManualEndpointingThreshold];
 
-  return v3 ^ 1;
+  return ignoreServerManualEndpointingThreshold ^ 1;
 }
 
 + (double)serverManualEndpointingThreshold
 {
   v2 = +[UIDictationConnectionPreferences sharedInstance];
-  v3 = [v2 manualEndpointingThreshold];
+  manualEndpointingThreshold = [v2 manualEndpointingThreshold];
 
-  [v3 floatValue];
+  [manualEndpointingThreshold floatValue];
   v5 = v4;
 
   return v5;
@@ -1281,14 +1281,14 @@ void __29__UIDictationController_init__block_invoke(uint64_t a1)
 
 + (BOOL)supportsUndoCommandForCurrentDictationRequest
 {
-  v2 = [a1 supportsSiriDictationVoiceCommands];
-  if (v2)
+  supportsSiriDictationVoiceCommands = [self supportsSiriDictationVoiceCommands];
+  if (supportsSiriDictationVoiceCommands)
   {
 
-    LOBYTE(v2) = +[UIKeyboard isModelessActive];
+    LOBYTE(supportsSiriDictationVoiceCommands) = +[UIKeyboard isModelessActive];
   }
 
-  return v2;
+  return supportsSiriDictationVoiceCommands;
 }
 
 + (BOOL)canUndoOrRedo
@@ -1296,15 +1296,15 @@ void __29__UIDictationController_init__block_invoke(uint64_t a1)
   v3 = +[UIDictationController activeInstance];
   if ([v3 canUndoOrRedo])
   {
-    v4 = 1;
+    supportsUndoCommandForCurrentDictationRequest = 1;
   }
 
   else
   {
-    v4 = [a1 supportsUndoCommandForCurrentDictationRequest];
+    supportsUndoCommandForCurrentDictationRequest = [self supportsUndoCommandForCurrentDictationRequest];
   }
 
-  return v4;
+  return supportsUndoCommandForCurrentDictationRequest;
 }
 
 + (BOOL)isListening
@@ -1360,65 +1360,65 @@ uint64_t __59__UIDictationController_supportsSiriDictationVoiceCommands__block_i
   return _os_feature_enabled_impl();
 }
 
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4 capitalization:(unint64_t)a5
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform capitalization:(unint64_t)capitalization
 {
-  v8 = a3;
+  tokensCopy = tokens;
   v9 = +[UIKeyboardImpl activeInstance];
-  v10 = [v9 textInputTraits];
-  v11 = [v10 autocapitalizationType];
+  textInputTraits = [v9 textInputTraits];
+  autocapitalizationType = [textInputTraits autocapitalizationType];
 
-  v12 = [a1 serializedInterpretationFromTokens:v8 transform:a4 autocapitalization:v11 capitalization:a5];
+  v12 = [self serializedInterpretationFromTokens:tokensCopy transform:transform autocapitalization:autocapitalizationType capitalization:capitalization];
 
   return v12;
 }
 
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4 autocapitalization:(int64_t)a5 capitalization:(unint64_t)a6
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform autocapitalization:(int64_t)autocapitalization capitalization:(unint64_t)capitalization
 {
-  v10 = a3;
+  tokensCopy = tokens;
   v11 = +[UIKeyboardImpl activeInstance];
-  v12 = [v11 smartPunctuationController];
+  smartPunctuationController = [v11 smartPunctuationController];
 
-  if ([v12 smartQuotesEnabled])
+  if ([smartPunctuationController smartQuotesEnabled])
   {
-    v13 = 1;
+    smartDashesEnabled = 1;
   }
 
   else
   {
-    v13 = [v12 smartDashesEnabled];
+    smartDashesEnabled = [smartPunctuationController smartDashesEnabled];
   }
 
-  v14 = [a1 serializedInterpretationFromTokens:v10 transform:a4 autocapitalization:a5 capitalization:a6 smartPunctuation:v13];
+  v14 = [self serializedInterpretationFromTokens:tokensCopy transform:transform autocapitalization:autocapitalization capitalization:capitalization smartPunctuation:smartDashesEnabled];
 
   return v14;
 }
 
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4 autocapitalization:(int64_t)a5 capitalization:(unint64_t)a6 smartPunctuation:(BOOL)a7
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform autocapitalization:(int64_t)autocapitalization capitalization:(unint64_t)capitalization smartPunctuation:(BOOL)punctuation
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = [UIDictationInterpretation serializedInterpretationFromTokens:a3 transform:a4];
-  if ((v8 & 2) != 0)
+  punctuationCopy = punctuation;
+  capitalizationCopy = capitalization;
+  v10 = [UIDictationInterpretation serializedInterpretationFromTokens:tokens transform:transform];
+  if ((capitalizationCopy & 2) != 0)
   {
     v11 = +[UIKeyboardImpl activeInstance];
     v12 = byte_1ED4987D2;
-    v13 = [v11 isShiftLocked];
-    if (a5 == 3 || v13)
+    isShiftLocked = [v11 isShiftLocked];
+    if (autocapitalization == 3 || isShiftLocked)
     {
-      v14 = [v10 uppercaseString];
+      uppercaseString = [v10 uppercaseString];
     }
 
     else
     {
-      if (a5 != 1)
+      if (autocapitalization != 1)
       {
         goto LABEL_8;
       }
 
-      v14 = [v10 capitalizedString];
+      uppercaseString = [v10 capitalizedString];
     }
 
-    v15 = v14;
+    v15 = uppercaseString;
 
     v10 = v15;
 LABEL_8:
@@ -1438,11 +1438,11 @@ LABEL_19:
     }
 
     v19 = +[UIDictationController sharedInstance];
-    v20 = [v19 language];
+    language = [v19 language];
     if ([v19 shouldSuppressSoftwareKeyboard])
     {
       v21 = 1;
-      if (v8)
+      if (capitalizationCopy)
       {
         goto LABEL_25;
       }
@@ -1451,7 +1451,7 @@ LABEL_19:
     else
     {
       v21 = [v19 isProcessingInitialPhrasesForCurrentRequest] ^ 1;
-      if (v8)
+      if (capitalizationCopy)
       {
         goto LABEL_25;
       }
@@ -1464,22 +1464,22 @@ LABEL_19:
     }
 
 LABEL_25:
-    if (v8 & 4) == 0 || ((v21 | v12 ^ 1))
+    if (capitalizationCopy & 4) == 0 || ((v21 | v12 ^ 1))
     {
-      if ((v8 | v21))
+      if ((capitalizationCopy | v21))
       {
         goto LABEL_18;
       }
 
       v27 = [v10 characterAtIndex:0];
       v28 = v27 > 0x7F ? __maskrune(v27, 0x8000uLL) : *(MEMORY[0x1E69E9830] + 4 * v27 + 60) & 0x8000;
-      if ((v8 & 4) == 0 || !v28 || (v12 & 1) != 0 || ![qword_1ED4987E8 canChangeCaseOfFirstLetterInString:v10 toUpperCase:0 language:v20])
+      if ((capitalizationCopy & 4) == 0 || !v28 || (v12 & 1) != 0 || ![qword_1ED4987E8 canChangeCaseOfFirstLetterInString:v10 toUpperCase:0 language:language])
       {
         goto LABEL_18;
       }
 
       v29 = [v10 substringToIndex:1];
-      v30 = [v29 lowercaseString];
+      lowercaseString = [v29 lowercaseString];
     }
 
     else
@@ -1495,16 +1495,16 @@ LABEL_25:
         v26 = *(MEMORY[0x1E69E9830] + 4 * v25 + 60) & 0x1000;
       }
 
-      if (!v26 || ![qword_1ED4987E8 canChangeCaseOfFirstLetterInString:v10 toUpperCase:1 language:v20])
+      if (!v26 || ![qword_1ED4987E8 canChangeCaseOfFirstLetterInString:v10 toUpperCase:1 language:language])
       {
         goto LABEL_18;
       }
 
       v29 = [v10 substringToIndex:1];
-      v30 = [v29 uppercaseString];
+      lowercaseString = [v29 uppercaseString];
     }
 
-    v31 = v30;
+    v31 = lowercaseString;
     v32 = [v10 substringFromIndex:1];
     v22 = [v31 stringByAppendingString:v32];
 
@@ -1518,7 +1518,7 @@ LABEL_18:
   }
 
 LABEL_20:
-  if (v7)
+  if (punctuationCopy)
   {
     v23 = [UIDictationUtilities applySmartPunctuationToString:v10];
 
@@ -1528,36 +1528,36 @@ LABEL_20:
   return v10;
 }
 
-+ (BOOL)_checkTraitsSupportDictation:(id)a3
++ (BOOL)_checkTraitsSupportDictation:(id)dictation
 {
-  v3 = a3;
-  v5 = MGGetBoolAnswer() && (+[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") || ([v3 isSecureTextEntry] & 1) == 0) && (((v4 = objc_msgSend(v3, "keyboardType"), v4 > 0xB) || ((1 << v4) & 0x938) == 0) && v4 != 127 || +[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") || objc_msgSend(v3, "forceEnableDictation")) && (objc_msgSend(v3, "forceDisableDictation") & 1) == 0 && objc_msgSend(v3, "keyboardAppearance") != 127;
+  dictationCopy = dictation;
+  v5 = MGGetBoolAnswer() && (+[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") || ([dictationCopy isSecureTextEntry] & 1) == 0) && (((v4 = objc_msgSend(dictationCopy, "keyboardType"), v4 > 0xB) || ((1 << v4) & 0x938) == 0) && v4 != 127 || +[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") || objc_msgSend(dictationCopy, "forceEnableDictation")) && (objc_msgSend(dictationCopy, "forceDisableDictation") & 1) == 0 && objc_msgSend(dictationCopy, "keyboardAppearance") != 127;
 
   return v5;
 }
 
-+ (BOOL)checkTraitsSupportDictation:(id)a3
++ (BOOL)checkTraitsSupportDictation:(id)dictation
 {
-  v3 = [a1 _checkTraitsSupportDictation:a3];
+  v3 = [self _checkTraitsSupportDictation:dictation];
   if (v3)
   {
     v4 = +[UIDictationController sharedInstance];
-    v5 = [v4 dictationEnabled];
+    dictationEnabled = [v4 dictationEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = dictationEnabled;
   }
 
   return v3;
 }
 
-+ (BOOL)_isDictationAllowedWithUserDefaults:(id)a3
++ (BOOL)_isDictationAllowedWithUserDefaults:(id)defaults
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"Dictation Allowed"];
+  defaultsCopy = defaults;
+  v4 = [defaultsCopy objectForKey:@"Dictation Allowed"];
 
   if (v4)
   {
-    v5 = [v3 BOOLForKey:@"Dictation Allowed"];
+    v5 = [defaultsCopy BOOLForKey:@"Dictation Allowed"];
   }
 
   else
@@ -1571,51 +1571,51 @@ LABEL_20:
 + (BOOL)canPerformDictation
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 isCurrentEditResponderInEditingMode];
+  isCurrentEditResponderInEditingMode = [v3 isCurrentEditResponderInEditingMode];
 
-  if (!v4)
+  if (!isCurrentEditResponderInEditingMode)
   {
     return 0;
   }
 
   v5 = _UIKitUserDefaults();
-  if ([a1 _isDictationAllowedWithUserDefaults:v5] && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "textInputTraits"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(a1, "checkTraitsSupportDictation:", v7), v7, v6, v8))
+  if ([self _isDictationAllowedWithUserDefaults:v5] && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "textInputTraits"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(self, "checkTraitsSupportDictation:", v7), v7, v6, v8))
   {
-    v9 = [a1 dictationIsFunctional];
+    dictationIsFunctional = [self dictationIsFunctional];
   }
 
   else
   {
-    v9 = 0;
+    dictationIsFunctional = 0;
   }
 
-  return v9;
+  return dictationIsFunctional;
 }
 
-+ (id)logAutoPunctuationEdit:(id)a3 deletionValues:(id)a4 substitutionValues:(id)a5 withContext:(id)a6
++ (id)logAutoPunctuationEdit:(id)edit deletionValues:(id)values substitutionValues:(id)substitutionValues withContext:(id)context
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v38 = a4;
-  v37 = a5;
-  v35 = a6;
-  v33 = v10;
-  v11 = [a1 stripNonPunctuationEditValues:v10];
+  editCopy = edit;
+  valuesCopy = values;
+  substitutionValuesCopy = substitutionValues;
+  contextCopy = context;
+  v33 = editCopy;
+  v11 = [self stripNonPunctuationEditValues:editCopy];
   v41 = [v11 mutableCopy];
 
-  v12 = [a1 stripNonPunctuationEditValues:v38];
+  v12 = [self stripNonPunctuationEditValues:valuesCopy];
   v39 = [v12 mutableCopy];
 
-  v13 = [a1 stripNonPunctuationEditValues:v37];
+  v13 = [self stripNonPunctuationEditValues:substitutionValuesCopy];
   v36 = [v13 mutableCopy];
 
-  v40 = [a1 mergePunctuationInsertAndDeleteIntoSubstituteTypeForSameStartEnd:v41 deleteEditValues:v39];
+  v40 = [self mergePunctuationInsertAndDeleteIntoSubstituteTypeForSameStartEnd:v41 deleteEditValues:v39];
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = [v40 allKeys];
-  [v41 removeObjectsForKeys:v14];
+  allKeys = [v40 allKeys];
+  [v41 removeObjectsForKeys:allKeys];
 
-  v15 = [v40 allKeys];
-  [v39 removeObjectsForKeys:v15];
+  allKeys2 = [v40 allKeys];
+  [v39 removeObjectsForKeys:allKeys2];
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v16 addEntriesFromDictionary:v41];
@@ -1702,25 +1702,25 @@ LABEL_15:
     while (v17);
   }
 
-  v30 = [v35 turnIdentifier];
-  v53 = v30;
+  turnIdentifier = [contextCopy turnIdentifier];
+  v53 = turnIdentifier;
   v54 = v43;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
 
   return v31;
 }
 
-+ (id)stripNonPunctuationEditValues:(id)a3
++ (id)stripNonPunctuationEditValues:(id)values
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  valuesCopy = values;
+  v4 = [valuesCopy mutableCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__UIDictationController_stripNonPunctuationEditValues___block_invoke;
   v7[3] = &unk_1E71075F8;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1775,18 +1775,18 @@ LABEL_15:
 LABEL_16:
 }
 
-+ (id)mergePunctuationInsertAndDeleteIntoSubstituteTypeForSameStartEnd:(id)a3 deleteEditValues:(id)a4
++ (id)mergePunctuationInsertAndDeleteIntoSubstituteTypeForSameStartEnd:(id)end deleteEditValues:(id)values
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  endCopy = end;
+  valuesCopy = values;
   v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v23 = v5;
+  v23 = endCopy;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v5 allKeys];
+  obj = [endCopy allKeys];
   v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -1804,13 +1804,13 @@ LABEL_16:
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v6 allKeys];
-        v13 = [v12 containsObject:v11];
+        allKeys = [valuesCopy allKeys];
+        v13 = [allKeys containsObject:v11];
 
         if (v13)
         {
           v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v15 = [v6 objectForKeyedSubscript:v11];
+          v15 = [valuesCopy objectForKeyedSubscript:v11];
           v16 = [v23 objectForKeyedSubscript:v11];
           v17 = [v15 objectForKey:@"text"];
           v18 = [v16 objectForKey:@"text"];
@@ -1830,24 +1830,24 @@ LABEL_16:
   return v22;
 }
 
-+ (id)convertEditValuesToHashByPosition:(id)a3 dictationResultEditType:(id)a4
++ (id)convertEditValuesToHashByPosition:(id)position dictationResultEditType:(id)type
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  positionCopy = position;
+  typeCopy = type;
   v7 = 0x1E695D000uLL;
   v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = positionCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
     v28 = *v30;
-    v25 = v6;
+    v25 = typeCopy;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -1859,7 +1859,7 @@ LABEL_16:
 
         v11 = *(*(&v29 + 1) + 8 * i);
         v12 = objc_alloc_init(*(v7 + 3984));
-        if (@"substitutions" == v6)
+        if (@"substitutions" == typeCopy)
         {
           v16 = [v11 objectForKeyedSubscript:@"original"];
           v13 = [v16 objectForKeyedSubscript:@"start"];
@@ -1876,7 +1876,7 @@ LABEL_16:
           [v12 setObject:v21 forKeyedSubscript:@"replacement"];
 
           v7 = 0x1E695D000;
-          v6 = v25;
+          typeCopy = v25;
 
           [v12 setObject:@"substitution" forKeyedSubscript:@"dictationResultEditType"];
         }
@@ -1885,7 +1885,7 @@ LABEL_16:
         {
           v13 = [v11 objectForKey:@"start"];
           v14 = [v11 objectForKey:@"end"];
-          [v12 setObject:v6 forKeyedSubscript:@"dictationResultEditType"];
+          [v12 setObject:typeCopy forKeyedSubscript:@"dictationResultEditType"];
           v15 = [v11 objectForKey:@"text"];
           [v12 setObject:v15 forKeyedSubscript:@"text"];
         }
@@ -1916,34 +1916,34 @@ LABEL_16:
   return v26;
 }
 
-+ (void)logCorrectionStatisticsForDelegate:(id)a3 reason:(unint64_t)a4
++ (void)logCorrectionStatisticsForDelegate:(id)delegate reason:(unint64_t)reason
 {
   v99 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  delegateCopy = delegate;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_71;
   }
 
-  v62 = v5;
+  v62 = delegateCopy;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "+[UIDictationController logCorrectionStatisticsForDelegate:reason:]"];
 
-  v64 = [v5 metadataDictionariesForDictationResults];
-  if (![v64 count])
+  metadataDictionariesForDictationResults = [delegateCopy metadataDictionariesForDictationResults];
+  if (![metadataDictionariesForDictationResults count])
   {
     goto LABEL_70;
   }
 
   v63 = +[UIDictationController activeInstance];
-  v66 = [v63 connectionForStatisticsLogging];
-  [v63 logDidAcceptDictationResult:v64 reasonType:a4];
+  connectionForStatisticsLogging = [v63 connectionForStatisticsLogging];
+  [v63 logDidAcceptDictationResult:metadataDictionariesForDictationResults reasonType:reason];
   v65 = [MEMORY[0x1E695DFA8] set];
   v68 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v64;
+  obj = metadataDictionariesForDictationResults;
   v70 = [obj countByEnumeratingWithState:&v84 objects:v98 count:16];
   if (!v70)
   {
@@ -1966,9 +1966,9 @@ LABEL_16:
       if (objc_opt_isKindOfClass())
       {
         v8 = v7;
-        v76 = [MEMORY[0x1E695DF20] dictionary];
-        v75 = [MEMORY[0x1E695DF20] dictionary];
-        v74 = [MEMORY[0x1E695DF20] dictionary];
+        dictionary = [MEMORY[0x1E695DF20] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF20] dictionary];
+        dictionary3 = [MEMORY[0x1E695DF20] dictionary];
         v9 = objc_alloc_init(UIDictationConnectionCorrectionInfo);
         v10 = [v8 objectForKey:@"recognizedTextInfo"];
         [(UIDictationConnectionCorrectionInfo *)v9 setRecognizedTextInfo:v10];
@@ -2004,9 +2004,9 @@ LABEL_16:
           }
 
           v15 = [v8 objectForKey:@"insertions"];
-          v16 = [a1 convertEditValuesToHashByPosition:v15 dictationResultEditType:@"insertion"];
+          v16 = [self convertEditValuesToHashByPosition:v15 dictationResultEditType:@"insertion"];
 
-          v76 = v16;
+          dictionary = v16;
         }
 
         v17 = [v8 objectForKey:@"characterDeletionCount"];
@@ -2022,9 +2022,9 @@ LABEL_16:
           }
 
           v19 = [v8 objectForKey:@"deletions"];
-          v20 = [a1 convertEditValuesToHashByPosition:v19 dictationResultEditType:@"deletion"];
+          v20 = [self convertEditValuesToHashByPosition:v19 dictationResultEditType:@"deletion"];
 
-          v75 = v20;
+          dictionary2 = v20;
         }
 
         v21 = [v8 objectForKey:@"characterSubstitutionCount"];
@@ -2040,14 +2040,14 @@ LABEL_16:
           }
 
           v23 = [v8 objectForKey:@"substitutions"];
-          v24 = [a1 convertEditValuesToHashByPosition:v23 dictationResultEditType:@"substitutions"];
+          v24 = [self convertEditValuesToHashByPosition:v23 dictationResultEditType:@"substitutions"];
 
-          v74 = v24;
+          dictionary3 = v24;
         }
 
         if (v12)
         {
-          v25 = [a1 logAutoPunctuationEdit:v76 deletionValues:v75 substitutionValues:v74 withContext:v12];
+          v25 = [self logAutoPunctuationEdit:dictionary deletionValues:dictionary2 substitutionValues:dictionary3 withContext:v12];
           [v68 addEntriesFromDictionary:v25];
         }
 
@@ -2055,8 +2055,8 @@ LABEL_16:
         [(UIDictationConnectionCorrectionInfo *)v9 setCorrectedText:v26];
 
         v27 = MEMORY[0x1E696AEC0];
-        v28 = [(UIDictationConnectionCorrectionInfo *)v9 correctedText];
-        [v27 stringWithFormat:@"%s fullText: %@", "+[UIDictationController logCorrectionStatisticsForDelegate:reason:]", v28];
+        correctedText = [(UIDictationConnectionCorrectionInfo *)v9 correctedText];
+        [v27 stringWithFormat:@"%s fullText: %@", "+[UIDictationController logCorrectionStatisticsForDelegate:reason:]", correctedText];
 
         [MEMORY[0x1E696AEC0] stringWithFormat:@"%s alternativeSelectionCount: %ld", "+[UIDictationController logCorrectionStatisticsForDelegate:reason:]", -[UIDictationConnectionCorrectionInfo alternativeSelectionCount](v9, "alternativeSelectionCount")];
         [MEMORY[0x1E696AEC0] stringWithFormat:@"%s characterModificationCount: %ld", "+[UIDictationController logCorrectionStatisticsForDelegate:reason:]", -[UIDictationConnectionCorrectionInfo characterModificationCount](v9, "characterModificationCount")];
@@ -2074,16 +2074,16 @@ LABEL_16:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v33 = [v30 UUIDString];
+              uUIDString = [v30 UUIDString];
               goto LABEL_34;
             }
 
             v32 = 0;
           }
 
-          v33 = v32;
+          uUIDString = v32;
 LABEL_34:
-          v34 = v33;
+          v34 = uUIDString;
         }
 
         else
@@ -2097,13 +2097,13 @@ LABEL_34:
         v37 = ![(UIDictationConnectionCorrectionInfo *)v9 alternativeSelectionCount]&& ![(UIDictationConnectionCorrectionInfo *)v9 characterModificationCount]&& ![(UIDictationConnectionCorrectionInfo *)v9 characterInsertionCount]&& ![(UIDictationConnectionCorrectionInfo *)v9 characterDeletionCount]&& [(UIDictationConnectionCorrectionInfo *)v9 characterSubstitutionCount]== 0;
         if (!((v29 == 0) | (v37 | v36) & 1))
         {
-          [v66 sendSpeechCorrection:v9 forIdentifier:v29];
+          [connectionForStatisticsLogging sendSpeechCorrection:v9 forIdentifier:v29];
         }
 
         if (!v37 && (v36 & 1) != 0)
         {
-          v38 = [getAFPreferencesClass_0() sharedPreferences];
-          v39 = [v38 siriDataSharingOptInStatus] == 1;
+          sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+          v39 = [sharedPreferences siriDataSharingOptInStatus] == 1;
 
           if (v39)
           {
@@ -2144,8 +2144,8 @@ LABEL_34:
               [v12 emitInstrumentation:v46];
             }
 
-            [v66 sendSpeechCorrection:v9 interactionIdentifier:v34];
-            [v66 sendVisualContextAndCorrectionsInfo:v9 interactionIdentifier:v34];
+            [connectionForStatisticsLogging sendSpeechCorrection:v9 interactionIdentifier:v34];
+            [connectionForStatisticsLogging sendVisualContextAndCorrectionsInfo:v9 interactionIdentifier:v34];
           }
         }
 
@@ -2205,8 +2205,8 @@ LABEL_56:
         _Block_object_dispose(&v93, 8);
         v54 = objc_alloc_init(v52);
         [v54 setExists:1];
-        v55 = [getAFPreferencesClass_0() sharedPreferences];
-        v56 = [v55 siriDataSharingOptInStatus] == 1;
+        sharedPreferences2 = [getAFPreferencesClass_0() sharedPreferences];
+        v56 = [sharedPreferences2 siriDataSharingOptInStatus] == 1;
 
         if (v56)
         {
@@ -2229,8 +2229,8 @@ LABEL_56:
           v58 = v57;
           _Block_object_dispose(&v93, 8);
           v59 = objc_alloc_init(v57);
-          v60 = [v51 turnIdentifier];
-          v61 = [v68 objectForKey:v60];
+          turnIdentifier = [v51 turnIdentifier];
+          v61 = [v68 objectForKey:turnIdentifier];
           [v59 setAutoPunctuationEdits:v61];
 
           [v51 emitInstrumentation:v59];
@@ -2248,7 +2248,7 @@ LABEL_56:
   [v63 releaseConnectionAfterStatisticsLogging];
 LABEL_70:
 
-  v5 = v62;
+  delegateCopy = v62;
 LABEL_71:
 }
 
@@ -2289,120 +2289,120 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
   [*(a1 + 32) addObject:v10];
 }
 
-+ (unint64_t)reasonType:(id)a3
++ (unint64_t)reasonType:(id)type
 {
-  v4 = a3;
-  v5 = [v4 invocationSource];
-  v6 = [v5 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInSafariAddressBar"];
+  typeCopy = type;
+  invocationSource = [typeCopy invocationSource];
+  v6 = [invocationSource isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInSafariAddressBar"];
 
   if (v6)
   {
-    v7 = 10;
+    specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 10;
   }
 
   else
   {
-    v8 = [v4 invocationSource];
-    v9 = [v8 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInFirstResponderSafariAddressBar"];
+    invocationSource2 = [typeCopy invocationSource];
+    v9 = [invocationSource2 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInFirstResponderSafariAddressBar"];
 
     if (v9)
     {
-      v7 = 11;
+      specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 11;
     }
 
     else
     {
-      v10 = [v4 invocationSource];
-      v11 = [v10 isEqualToString:@"UIDictationInputModeInvocationSourceUCBBar"];
+      invocationSource3 = [typeCopy invocationSource];
+      v11 = [invocationSource3 isEqualToString:@"UIDictationInputModeInvocationSourceUCBBar"];
 
       if (v11)
       {
-        v7 = 12;
+        specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 12;
       }
 
       else
       {
-        v12 = [v4 invocationSource];
-        v13 = [v12 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInMessagesTextField"];
+        invocationSource4 = [typeCopy invocationSource];
+        v13 = [invocationSource4 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInMessagesTextField"];
 
         if (v13)
         {
-          v7 = 13;
+          specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 13;
         }
 
         else
         {
-          v14 = [v4 invocationSource];
-          v15 = [v14 isEqualToString:@"UIDictationInputModeInvocationSourceLongPressGesture"];
+          invocationSource5 = [typeCopy invocationSource];
+          v15 = [invocationSource5 isEqualToString:@"UIDictationInputModeInvocationSourceLongPressGesture"];
 
           if (v15)
           {
-            v7 = 26;
+            specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 26;
           }
 
           else
           {
-            v16 = [v4 invocationSource];
-            v17 = [v16 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonMicButtonInFirstResponderSearchBar"];
+            invocationSource6 = [typeCopy invocationSource];
+            v17 = [invocationSource6 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonMicButtonInFirstResponderSearchBar"];
 
             if (v17)
             {
-              v7 = 9;
+              specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 9;
             }
 
             else
             {
-              v18 = [v4 invocationSource];
-              v19 = [v18 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInKeyboard"];
+              invocationSource7 = [typeCopy invocationSource];
+              v19 = [invocationSource7 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonInKeyboard"];
 
               if (v19)
               {
-                v7 = 1;
+                specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 1;
               }
 
               else
               {
-                v20 = [v4 invocationSource];
-                v21 = [v20 isEqualToString:@"UIDictationInputModeInvocationSourceGenerativeField"];
+                invocationSource8 = [typeCopy invocationSource];
+                v21 = [invocationSource8 isEqualToString:@"UIDictationInputModeInvocationSourceGenerativeField"];
 
                 if (v21)
                 {
-                  v7 = 30;
+                  specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 30;
                 }
 
                 else
                 {
-                  v22 = [v4 invocationSource];
-                  v23 = [v22 isEqualToString:@"UIDictationInputModeInvocationSourceDictationPopUpUILanguageSwitcherIcon"];
+                  invocationSource9 = [typeCopy invocationSource];
+                  v23 = [invocationSource9 isEqualToString:@"UIDictationInputModeInvocationSourceDictationPopUpUILanguageSwitcherIcon"];
 
                   if (v23)
                   {
-                    v7 = 28;
+                    specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 28;
                   }
 
                   else
                   {
-                    v24 = [v4 invocationSource];
-                    v25 = [v24 isEqualToString:@"UIDictationInputModeInvocationSourceGlobalButtonOnDictationPlane"];
+                    invocationSource10 = [typeCopy invocationSource];
+                    v25 = [invocationSource10 isEqualToString:@"UIDictationInputModeInvocationSourceGlobalButtonOnDictationPlane"];
 
                     if (v25)
                     {
-                      v7 = 16;
+                      specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 16;
                     }
 
                     else
                     {
-                      v26 = [v4 invocationSource];
-                      v27 = [v26 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonOnKeyboardWithInputSwitcher"];
+                      invocationSource11 = [typeCopy invocationSource];
+                      v27 = [invocationSource11 isEqualToString:@"UIDictationInputModeInvocationSourceMicButtonOnKeyboardWithInputSwitcher"];
 
                       if (v27)
                       {
-                        v7 = [a1 specificReasonTypeMicButtonOnKeyboardWithInputSwitcher];
+                        specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = [self specificReasonTypeMicButtonOnKeyboardWithInputSwitcher];
                       }
 
                       else
                       {
-                        v7 = 18;
+                        specificReasonTypeMicButtonOnKeyboardWithInputSwitcher = 18;
                       }
                     }
                   }
@@ -2415,48 +2415,48 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
     }
   }
 
-  return v7;
+  return specificReasonTypeMicButtonOnKeyboardWithInputSwitcher;
 }
 
-+ (id)UIDictationStartStopReasonTypeDescription:(unint64_t)a3
++ (id)UIDictationStartStopReasonTypeDescription:(unint64_t)description
 {
-  if (a3 - 1 > 0x1E)
+  if (description - 1 > 0x1E)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7115480[a3 - 1];
+    return off_1E7115480[description - 1];
   }
 }
 
-+ (id)UIDictationLanguageSourceType:(unint64_t)a3
++ (id)UIDictationLanguageSourceType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7115578[a3 - 1];
+    return off_1E7115578[type - 1];
   }
 }
 
-- (void)setDictationInputMode:(id)a3
+- (void)setDictationInputMode:(id)mode
 {
-  v12 = a3;
+  modeCopy = mode;
   v4 = +[UIKeyboardInputMode dictationInputMode];
-  v5 = [v12 isEqual:v4];
+  v5 = [modeCopy isEqual:v4];
 
   if ((v5 & 1) == 0)
   {
-    [(UIDictationController *)self setCurrentInputModeForDictation:v12];
-    [v12 setLastUsedDictationLanguage];
+    [(UIDictationController *)self setCurrentInputModeForDictation:modeCopy];
+    [modeCopy setLastUsedDictationLanguage];
     v6 = +[UIKeyboardInputModeController sharedInputModeController];
-    v7 = [v6 currentInputMode];
-    [(UIDictationController *)self setKeyboardInputModeToReturn:v7];
+    currentInputMode = [v6 currentInputMode];
+    [(UIDictationController *)self setKeyboardInputModeToReturn:currentInputMode];
 
     if (!+[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") || (+[UIKeyboard activeKeyboard](UIKeyboard, "activeKeyboard"), v8 = objc_claimAutoreleasedReturnValue(), [v8 _window], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
     {
@@ -2467,14 +2467,14 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
   }
 }
 
-- (void)handleDictationShouldPause:(BOOL)a3 withNewDelagate:(BOOL)a4
+- (void)handleDictationShouldPause:(BOOL)pause withNewDelagate:(BOOL)delagate
 {
-  v4 = a4;
-  v5 = a3;
+  delagateCopy = delagate;
+  pauseCopy = pause;
   v12 = *MEMORY[0x1E69E9840];
   if (+[UIDictationController isRunning])
   {
-    if (v5)
+    if (pauseCopy)
     {
       [(UIDictationController *)self setSkipAutomaticResumeDictation:1];
       v7 = _UIDictationControllerLog();
@@ -2489,7 +2489,7 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
       [v8 pauseDictationForResponderChange];
     }
 
-    else if ([(UIDictationController *)self isDictationPaused]&& v4)
+    else if ([(UIDictationController *)self isDictationPaused]&& delagateCopy)
     {
       if (!+[UIKeyboard isKeyboardProcess])
       {
@@ -2507,16 +2507,16 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
   }
 }
 
-+ (void)keyboardWillChangeFromDelegate:(id)a3 toDelegate:(id)a4 shouldPause:(BOOL)a5
++ (void)keyboardWillChangeFromDelegate:(id)delegate toDelegate:(id)toDelegate shouldPause:(BOOL)pause
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (v7 != v8)
+  pauseCopy = pause;
+  delegateCopy = delegate;
+  toDelegateCopy = toDelegate;
+  if (delegateCopy != toDelegateCopy)
   {
-    if (v7)
+    if (delegateCopy)
     {
-      [UIDictationController logCorrectionStatisticsForDelegate:v7 reason:20];
+      [UIDictationController logCorrectionStatisticsForDelegate:delegateCopy reason:20];
       if (!+[UIDictationUtilities _isUsingLargeFormatDictationUI])
       {
         v9 = +[UIDictationController activeInstance];
@@ -2524,7 +2524,7 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
       }
     }
 
-    if (v8)
+    if (toDelegateCopy)
     {
       if (!+[UIDictationUtilities _isUsingLargeFormatDictationUI])
       {
@@ -2535,11 +2535,11 @@ void __67__UIDictationController_logCorrectionStatisticsForDelegate_reason___blo
       if (+[UIKeyboard usesInputSystemUI])
       {
         v11 = +[UIDictationController activeInstance];
-        [v11 prepareStartDictationKeyboardGesturesForDelegate:v8];
+        [v11 prepareStartDictationKeyboardGesturesForDelegate:toDelegateCopy];
 LABEL_12:
 
         v12 = +[UIKeyboardImpl activeInstance];
-        [v12 forwardDictationEvent_handleDictationShouldPause:v5 withNewDelagate:v8 != 0];
+        [v12 forwardDictationEvent_handleDictationShouldPause:pauseCopy withNewDelagate:toDelegateCopy != 0];
 
         goto LABEL_19;
       }
@@ -2555,15 +2555,15 @@ LABEL_12:
     if (!+[UIKeyboard isKeyboardProcess])
     {
       v13 = +[UIDictationController activeInstance];
-      [v13 handleDictationShouldPause:v5 withNewDelagate:v8 != 0];
+      [v13 handleDictationShouldPause:pauseCopy withNewDelagate:toDelegateCopy != 0];
     }
 
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __79__UIDictationController_keyboardWillChangeFromDelegate_toDelegate_shouldPause___block_invoke;
     v20 = &unk_1E70F35B8;
-    v21 = v8;
-    v22 = v7;
+    v21 = toDelegateCopy;
+    v22 = delegateCopy;
     v14 = _Block_copy(&v17);
     v15 = [UIDictationController activeInstance:v17];
 
@@ -2639,14 +2639,14 @@ LABEL_13:
   }
 }
 
-+ (BOOL)isTextViewOnStarkScreen:(id)a3
++ (BOOL)isTextViewOnStarkScreen:(id)screen
 {
-  v3 = a3;
-  if ([v3 __isKindOfUIResponder])
+  screenCopy = screen;
+  if ([screenCopy __isKindOfUIResponder])
   {
-    v4 = [v3 _responderWindow];
-    v5 = [v4 screen];
-    v6 = [v5 _userInterfaceIdiom] == 3;
+    _responderWindow = [screenCopy _responderWindow];
+    screen = [_responderWindow screen];
+    v6 = [screen _userInterfaceIdiom] == 3;
   }
 
   else
@@ -2657,15 +2657,15 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)shouldHideCursorForTextView:(id)a3
++ (BOOL)shouldHideCursorForTextView:(id)view
 {
-  v4 = a3;
-  if ([a1 isTextViewOnStarkScreen:v4] && objc_msgSend(v4, "__isKindOfUIResponder"))
+  viewCopy = view;
+  if ([self isTextViewOnStarkScreen:viewCopy] && objc_msgSend(viewCopy, "__isKindOfUIResponder"))
   {
-    v5 = [v4 _responderWindow];
-    v6 = [v5 screen];
+    _responderWindow = [viewCopy _responderWindow];
+    screen = [_responderWindow screen];
 
-    v7 = [v6 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    v7 = [screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
     v8 = [v7 integerValue] == 2;
   }
 
@@ -2677,19 +2677,19 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)takesPressesBegan:(id)a3 forTextView:(id)a4
++ (BOOL)takesPressesBegan:(id)began forTextView:(id)view
 {
-  v6 = a3;
-  if ([a1 isTextViewOnStarkScreen:a4])
+  beganCopy = began;
+  if ([self isTextViewOnStarkScreen:view])
   {
-    if (_UIPressesContainsPressType(v6, 4))
+    if (_UIPressesContainsPressType(beganCopy, 4))
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = _UIPressesContainsPressType(v6, 7);
+      v7 = _UIPressesContainsPressType(beganCopy, 7);
     }
   }
 
@@ -2722,12 +2722,12 @@ LABEL_13:
   }
 
   v3 = +[UIDictationController activeInstance];
-  v4 = [v3 _shouldDeleteBackward];
+  _shouldDeleteBackward = [v3 _shouldDeleteBackward];
 
-  return v4;
+  return _shouldDeleteBackward;
 }
 
-- (BOOL)_shouldInsertText:(id)a3
+- (BOOL)_shouldInsertText:(id)text
 {
   if (![(UIDictationController *)self performingStreamingEditingOperation]&& +[UIDictationController isRunning])
   {
@@ -2738,15 +2738,15 @@ LABEL_13:
   return 1;
 }
 
-+ (BOOL)shouldInsertText:(id)a3
++ (BOOL)shouldInsertText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[UIDictationController activeInstance];
 
   if (v4)
   {
     v5 = +[UIDictationController activeInstance];
-    v6 = [v5 _shouldInsertText:v3];
+    v6 = [v5 _shouldInsertText:textCopy];
   }
 
   else
@@ -2757,22 +2757,22 @@ LABEL_13:
   return v6;
 }
 
-+ (id)serializedDictationPhrases:(id)a3
++ (id)serializedDictationPhrases:(id)phrases
 {
-  v3 = [UIDictationUtilities dictationPhrasesFromPhraseArray:a3];
-  v4 = [v3 textArray];
+  v3 = [UIDictationUtilities dictationPhrasesFromPhraseArray:phrases];
+  textArray = [v3 textArray];
 
-  return v4;
+  return textArray;
 }
 
-+ (id)bestInterpretationForDictationResult:(id)a3
++ (id)bestInterpretationForDictationResult:(id)result
 {
-  v3 = a3;
-  v4 = [[UIDictationSerializableResults alloc] initWithArrayOfArrayOfStrings:v3];
+  resultCopy = result;
+  v4 = [[UIDictationSerializableResults alloc] initWithArrayOfArrayOfStrings:resultCopy];
 
-  v5 = [(UIDictationSerializableResults *)v4 bestText];
+  bestText = [(UIDictationSerializableResults *)v4 bestText];
 
-  return v5;
+  return bestText;
 }
 
 + (void)keyboardDidShow
@@ -2780,9 +2780,9 @@ LABEL_13:
   if (byte_1ED4987D3 == 1)
   {
     v2 = +[UIKeyboardImpl activeInstance];
-    v3 = [v2 delegate];
+    delegate = [v2 delegate];
 
-    if (v3)
+    if (delegate)
     {
       byte_1ED4987D3 = 0;
       v4 = +[UIDictationController activeInstance];
@@ -2791,10 +2791,10 @@ LABEL_13:
   }
 }
 
-+ (void)inputSystemSessionWillEndForReason:(int64_t)a3
++ (void)inputSystemSessionWillEndForReason:(int64_t)reason
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) > 1)
+  if ((reason - 1) > 1)
   {
     v4 = _UIDictationControllerLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2802,7 +2802,7 @@ LABEL_13:
       v5 = 136315394;
       v6 = "+[UIDictationController inputSystemSessionWillEndForReason:]";
       v7 = 2048;
-      v8 = a3;
+      reasonCopy = reason;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "%s Unhandled UIDictationInputSystemSessionWillEndReason. Reason=%ld", &v5, 0x16u);
     }
   }
@@ -2810,7 +2810,7 @@ LABEL_13:
   else
   {
 
-    [a1 onWillResignActive];
+    [self onWillResignActive];
   }
 }
 
@@ -2821,22 +2821,22 @@ LABEL_13:
   [v2 _endEnableDictationPromptAnimated:0];
 
   v3 = +[UIDictationController sharedInstance];
-  v4 = [v3 logAppEnterBackground];
+  logAppEnterBackground = [v3 logAppEnterBackground];
 
-  if (v4)
+  if (logAppEnterBackground)
   {
-    v5 = [getAFAnalyticsClass() sharedAnalytics];
+    sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
     v10 = @"isSuspendedUnderLock";
-    v6 = [UIApp isSuspendedUnderLock];
+    isSuspendedUnderLock = [UIApp isSuspendedUnderLock];
     v7 = MEMORY[0x1E695E110];
-    if (v6)
+    if (isSuspendedUnderLock)
     {
       v7 = MEMORY[0x1E695E118];
     }
 
     v11[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v5 logEventWithType:2218 context:v8];
+    [sharedAnalytics logEventWithType:2218 context:v8];
 
     v9 = +[UIDictationController sharedInstance];
     [v9 setLogAppEnterBackground:0];
@@ -2852,7 +2852,7 @@ LABEL_13:
   v4 = qword_1ED4987F8;
   qword_1ED4987F8 = 0;
 
-  [a1 keyboardDidUpdateOnScreenStatus];
+  [self keyboardDidUpdateOnScreenStatus];
   v5 = +[UIDictationController sharedInstance];
   v7 = @"reason";
   v8[0] = @"Dictation controller siri preferences changed";
@@ -2863,7 +2863,7 @@ LABEL_13:
 + (void)remoteMicrophoneCapabilityChanged
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  [a1 keyboardDidUpdateOnScreenStatus];
+  [self keyboardDidUpdateOnScreenStatus];
   v2 = +[UIDictationController sharedInstance];
   v4 = @"reason";
   v5[0] = @"Dictation controller remote microphone capability changed";
@@ -2871,18 +2871,18 @@ LABEL_13:
   [v2 postNotificationName:@"UIKeyboardDictationAvailabilityDidChangeNotification" userInfo:v3];
 }
 
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform
 {
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [MEMORY[0x1E696AD60] string];
+  tokensCopy = tokens;
+  v5 = [tokensCopy count];
+  string = [MEMORY[0x1E696AD60] string];
   if (v5)
   {
     v7 = 0;
     v8 = 0;
     while (1)
     {
-      v9 = [v4 objectAtIndex:v8];
+      v9 = [tokensCopy objectAtIndex:v8];
       if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
       {
         break;
@@ -2890,11 +2890,11 @@ LABEL_13:
 
       if ((v7 & 1) != 0 && ([v9 removeSpaceBefore] & 1) == 0)
       {
-        [v6 appendString:@" "];
+        [string appendString:@" "];
       }
 
-      v10 = [v9 text];
-      [v6 appendString:v10];
+      text = [v9 text];
+      [string appendString:text];
       v7 = [v9 removeSpaceAfter] ^ 1;
 
       if (v5 == ++v8)
@@ -2909,33 +2909,33 @@ LABEL_13:
   else
   {
 LABEL_10:
-    v11 = [v6 _stringByApplyingTransform:a4];
+    v11 = [string _stringByApplyingTransform:transform];
   }
 
   return v11;
 }
 
-+ (id)interpretation:(id)a3 forPhraseIndex:(unint64_t)a4 isShiftLocked:(BOOL)a5 autocapitalizationType:(int64_t)a6 useServerCapitalization:(BOOL)a7
++ (id)interpretation:(id)interpretation forPhraseIndex:(unint64_t)index isShiftLocked:(BOOL)locked autocapitalizationType:(int64_t)type useServerCapitalization:(BOOL)capitalization
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = v11;
-  if (a6 == 3 || v9)
+  lockedCopy = locked;
+  interpretationCopy = interpretation;
+  v12 = interpretationCopy;
+  if (type == 3 || lockedCopy)
   {
-    v13 = [v11 uppercaseString];
+    uppercaseString = [interpretationCopy uppercaseString];
     goto LABEL_6;
   }
 
-  if (a6 == 1)
+  if (type == 1)
   {
-    v13 = [v11 capitalizedString];
+    uppercaseString = [interpretationCopy capitalizedString];
 LABEL_6:
-    v14 = v13;
+    v14 = uppercaseString;
 
     v12 = v14;
   }
 
-  if (!a4 && [v12 length])
+  if (!index && [v12 length])
   {
     v15 = [UIDictationUtilities _properNameForString:v12];
     if (!qword_1ED498800)
@@ -2946,9 +2946,9 @@ LABEL_6:
     }
 
     v18 = +[UIDictationController sharedInstance];
-    v19 = [v18 language];
+    language = [v18 language];
 
-    if (!v15 || a7)
+    if (!v15 || capitalization)
     {
       if (byte_1ED4987D2 == 1)
       {
@@ -2963,34 +2963,34 @@ LABEL_6:
           v23 = *(MEMORY[0x1E69E9830] + 4 * v22 + 60) & 0x1000;
         }
 
-        if (!v23 || ![qword_1ED498800 canChangeCaseOfFirstLetterInString:v12 toUpperCase:0 language:v19])
+        if (!v23 || ![qword_1ED498800 canChangeCaseOfFirstLetterInString:v12 toUpperCase:0 language:language])
         {
           goto LABEL_15;
         }
 
         v26 = [v12 substringToIndex:1];
-        v27 = [v26 uppercaseString];
+        uppercaseString2 = [v26 uppercaseString];
       }
 
       else
       {
-        if (a7)
+        if (capitalization)
         {
           goto LABEL_15;
         }
 
         v24 = [v12 characterAtIndex:0];
         v25 = v24 > 0x7F ? __maskrune(v24, 0x8000uLL) : *(MEMORY[0x1E69E9830] + 4 * v24 + 60) & 0x8000;
-        if (!v25 || ![qword_1ED498800 canChangeCaseOfFirstLetterInString:v12 toUpperCase:0 language:v19])
+        if (!v25 || ![qword_1ED498800 canChangeCaseOfFirstLetterInString:v12 toUpperCase:0 language:language])
         {
           goto LABEL_15;
         }
 
         v26 = [v12 substringToIndex:1];
-        v27 = [v26 lowercaseString];
+        uppercaseString2 = [v26 lowercaseString];
       }
 
-      v28 = v27;
+      v28 = uppercaseString2;
       v29 = [v12 substringFromIndex:1];
       v20 = [v28 stringByAppendingString:v29];
 
@@ -3009,20 +3009,20 @@ LABEL_15:
   return v12;
 }
 
-+ (void)performOperations:(id)a3 keyboardShifted:(BOOL)a4
++ (void)performOperations:(id)operations keyboardShifted:(BOOL)shifted
 {
   v4 = byte_1ED4987D2;
-  byte_1ED4987D2 = a4;
-  (*(a3 + 2))(a3, a2);
+  byte_1ED4987D2 = shifted;
+  (*(operations + 2))(operations, a2);
   byte_1ED4987D2 = v4;
 }
 
 + (void)updateLandingView
 {
   v2 = +[UIDictationLandingView activeInstance];
-  v3 = [v2 superview];
+  superview = [v2 superview];
 
-  if (v3)
+  if (superview)
   {
     v4 = +[UIDictationLandingView activeInstance];
     [v4 updatePosition];
@@ -3032,26 +3032,26 @@ LABEL_15:
 + (BOOL)remoteCanDictateCurrentInputMode
 {
   v2 = +[UIDictationController sharedInstance];
-  v3 = [v2 currentInputModeForDictation];
+  currentInputModeForDictation = [v2 currentInputModeForDictation];
   v6 = 0;
-  v4 = [v2 supportsInputMode:v3 error:&v6];
+  v4 = [v2 supportsInputMode:currentInputModeForDictation error:&v6];
 
-  LODWORD(v3) = [v2 dictationEnabled];
-  LODWORD(v3) = [v2 remoteHasMicrophone] & v3;
+  LODWORD(currentInputModeForDictation) = [v2 dictationEnabled];
+  LODWORD(currentInputModeForDictation) = [v2 remoteHasMicrophone] & currentInputModeForDictation;
 
-  return v3 & v4;
+  return currentInputModeForDictation & v4;
 }
 
-- (id)languageCodeForAssistantLanguageCode:(id)a3
+- (id)languageCodeForAssistantLanguageCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"intl"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"default"))
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"intl"] & 1) != 0 || (objc_msgSend(codeCopy, "isEqualToString:", @"default"))
   {
     v4 = @"en_US";
     goto LABEL_14;
   }
 
-  v5 = [v3 componentsSeparatedByString:@"-"];
+  v5 = [codeCopy componentsSeparatedByString:@"-"];
   if ([v5 count] != 1)
   {
     v6 = [v5 objectAtIndex:0];
@@ -3074,7 +3074,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = v3;
+  v4 = codeCopy;
 LABEL_13:
 
 LABEL_14:
@@ -3082,21 +3082,21 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)supportsDictationLanguage:(id)a3 error:(id *)a4
+- (BOOL)supportsDictationLanguage:(id)language error:(id *)error
 {
-  v5 = a3;
-  if (+[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") && (([v5 isEqualToString:@"zh_CN"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"zh-Hans") & 1) != 0))
+  languageCopy = language;
+  if (+[UIDictationUtilities _isUsingLargeFormatDictationUI](UIDictationUtilities, "_isUsingLargeFormatDictationUI") && (([languageCopy isEqualToString:@"zh_CN"] & 1) != 0 || (objc_msgSend(languageCopy, "hasPrefix:", @"zh-Hans") & 1) != 0))
   {
 LABEL_8:
     v7 = 0;
     goto LABEL_9;
   }
 
-  v6 = [UIDictationConnection dictationIsSupportedForLanguageCode:v5 error:a4];
+  v6 = [UIDictationConnection dictationIsSupportedForLanguageCode:languageCopy error:error];
   v7 = v6;
-  if (a4 && !v6)
+  if (error && !v6)
   {
-    if ([*a4 code] == 1)
+    if ([*error code] == 1)
     {
       +[UIDictationConnection cacheSupportedDictationLanguages];
     }
@@ -3109,28 +3109,28 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)supportsInputMode:(id)a3 error:(id *)a4
+- (BOOL)supportsInputMode:(id)mode error:(id *)error
 {
-  v6 = a3;
+  modeCopy = mode;
   if (+[UIDictationUtilities _isUsingLargeFormatDictationUI])
   {
-    [v6 defaultDictationLanguage];
+    [modeCopy defaultDictationLanguage];
   }
 
   else
   {
-    [v6 languageWithRegion];
+    [modeCopy languageWithRegion];
   }
   v7 = ;
 
-  v8 = [(UIDictationController *)self supportsDictationLanguage:v7 error:a4];
+  v8 = [(UIDictationController *)self supportsDictationLanguage:v7 error:error];
   return v8;
 }
 
 - (float)audioLevel
 {
-  v2 = [(UIDictationController *)self dictationConnection];
-  [v2 averagePower];
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection averagePower];
   v4 = v3;
 
   return v4;
@@ -3139,11 +3139,11 @@ LABEL_9:
 - (BOOL)shouldUseDictationSearchFieldBehavior
 {
   v3 = +[UIKeyboardImpl sharedInstance];
-  v4 = [v3 inputDelegate];
+  inputDelegate = [v3 inputDelegate];
 
   if (+[UIKeyboard isKeyboardProcess])
   {
-    v5 = [(UIDictationController *)self _shouldUseDictationSearchFieldBehavior];
+    _shouldUseDictationSearchFieldBehavior = [(UIDictationController *)self _shouldUseDictationSearchFieldBehavior];
   }
 
   else
@@ -3155,58 +3155,58 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v5 = [v4 showDictationButton];
+    _shouldUseDictationSearchFieldBehavior = [inputDelegate showDictationButton];
   }
 
-  v6 = v5;
+  v6 = _shouldUseDictationSearchFieldBehavior;
 LABEL_7:
 
   return v6;
 }
 
-- (BOOL)shouldOverrideManualEndpointingWithReturnKeyType:(int64_t)a3
+- (BOOL)shouldOverrideManualEndpointingWithReturnKeyType:(int64_t)type
 {
-  v4 = [(UIDictationController *)self currentViewModeSupportsDictationMics];
-  if (v4)
+  currentViewModeSupportsDictationMics = [(UIDictationController *)self currentViewModeSupportsDictationMics];
+  if (currentViewModeSupportsDictationMics)
   {
 
-    LOBYTE(v4) = [(UIDictationController *)self shouldUseDictationSearchFieldBehavior];
+    LOBYTE(currentViewModeSupportsDictationMics) = [(UIDictationController *)self shouldUseDictationSearchFieldBehavior];
   }
 
-  return v4;
+  return currentViewModeSupportsDictationMics;
 }
 
 - (NSNumber)dictationRequestOrigin
 {
-  v2 = [(UIDictationController *)self shouldUseDictationSearchFieldBehavior];
+  shouldUseDictationSearchFieldBehavior = [(UIDictationController *)self shouldUseDictationSearchFieldBehavior];
   v3 = MEMORY[0x1E696AD98];
 
-  return [v3 numberWithInteger:v2];
+  return [v3 numberWithInteger:shouldUseDictationSearchFieldBehavior];
 }
 
-- (id)fieldIdentifierInputDelegate:(id)a3
+- (id)fieldIdentifierInputDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [v3 textInputView];
-  if (v4)
+  delegateCopy = delegate;
+  textInputView = [delegateCopy textInputView];
+  if (textInputView)
   {
-    v5 = v4;
+    v5 = textInputView;
     v6 = &stru_1EFB14550;
     while (1)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", objc_opt_class()];
       v8 = [(__CFString *)v6 stringByAppendingString:v7];
 
-      v9 = [v5 superview];
-      if (!v9)
+      superview = [v5 superview];
+      if (!superview)
       {
         break;
       }
 
-      v10 = v9;
+      v10 = superview;
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [v9 subviews];
-      v13 = [v11 stringWithFormat:@"%ld, ", objc_msgSend(v12, "indexOfObject:", v5)];
+      subviews = [superview subviews];
+      v13 = [v11 stringWithFormat:@"%ld, ", objc_msgSend(subviews, "indexOfObject:", v5)];
       v6 = [(__CFString *)v8 stringByAppendingString:v13];
 
       v5 = v10;
@@ -3221,37 +3221,37 @@ LABEL_7:
   return v8;
 }
 
-- (id)prefixTextForInputDelegate:(id)a3 wordCount:(unint64_t)a4
+- (id)prefixTextForInputDelegate:(id)delegate wordCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [v5 selectedTextRange];
-  v7 = [v6 start];
+  delegateCopy = delegate;
+  selectedTextRange = [delegateCopy selectedTextRange];
+  start = [selectedTextRange start];
 
-  if (v7)
+  if (start)
   {
-    v8 = v7;
+    v8 = start;
     v9 = v8;
     v10 = v8;
-    if (a4)
+    if (count)
     {
       v11 = v8;
       while (1)
       {
-        v12 = [v5 tokenizer];
-        v10 = [v12 positionFromPosition:v11 toBoundary:1 inDirection:1];
+        tokenizer = [delegateCopy tokenizer];
+        v10 = [tokenizer positionFromPosition:v11 toBoundary:1 inDirection:1];
 
         if (!v10)
         {
           break;
         }
 
-        v13 = [v5 tokenizer];
-        v14 = [v13 isPosition:v10 withinTextUnit:1 inDirection:0];
+        tokenizer2 = [delegateCopy tokenizer];
+        v14 = [tokenizer2 isPosition:v10 withinTextUnit:1 inDirection:0];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v5 tokenizer];
-          v16 = [v15 positionFromPosition:v10 toBoundary:1 inDirection:1];
+          tokenizer3 = [delegateCopy tokenizer];
+          v16 = [tokenizer3 positionFromPosition:v10 toBoundary:1 inDirection:1];
 
           v10 = v16;
           if (!v16)
@@ -3261,7 +3261,7 @@ LABEL_7:
         }
 
         v11 = v10;
-        if (!--a4)
+        if (!--count)
         {
           goto LABEL_11;
         }
@@ -3271,8 +3271,8 @@ LABEL_7:
     }
 
 LABEL_11:
-    v18 = [v5 textRangeFromPosition:v10 toPosition:v9];
-    v17 = [v5 textInRange:v18];
+    v18 = [delegateCopy textRangeFromPosition:v10 toPosition:v9];
+    v17 = [delegateCopy textInRange:v18];
   }
 
   else
@@ -3283,37 +3283,37 @@ LABEL_11:
   return v17;
 }
 
-- (id)postfixTextForInputDelegate:(id)a3 wordCount:(unint64_t)a4
+- (id)postfixTextForInputDelegate:(id)delegate wordCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [v5 selectedTextRange];
-  v7 = [v6 end];
+  delegateCopy = delegate;
+  selectedTextRange = [delegateCopy selectedTextRange];
+  v7 = [selectedTextRange end];
 
   if (v7)
   {
     v8 = v7;
     v9 = v8;
     v10 = v8;
-    if (a4)
+    if (count)
     {
       v11 = v8;
       while (1)
       {
-        v12 = [v5 tokenizer];
-        v10 = [v12 positionFromPosition:v11 toBoundary:1 inDirection:0];
+        tokenizer = [delegateCopy tokenizer];
+        v10 = [tokenizer positionFromPosition:v11 toBoundary:1 inDirection:0];
 
         if (!v10)
         {
           break;
         }
 
-        v13 = [v5 tokenizer];
-        v14 = [v13 isPosition:v10 withinTextUnit:1 inDirection:1];
+        tokenizer2 = [delegateCopy tokenizer];
+        v14 = [tokenizer2 isPosition:v10 withinTextUnit:1 inDirection:1];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v5 tokenizer];
-          v16 = [v15 positionFromPosition:v10 toBoundary:1 inDirection:0];
+          tokenizer3 = [delegateCopy tokenizer];
+          v16 = [tokenizer3 positionFromPosition:v10 toBoundary:1 inDirection:0];
 
           v10 = v16;
           if (!v16)
@@ -3323,7 +3323,7 @@ LABEL_11:
         }
 
         v11 = v10;
-        if (!--a4)
+        if (!--count)
         {
           goto LABEL_11;
         }
@@ -3333,8 +3333,8 @@ LABEL_11:
     }
 
 LABEL_11:
-    v18 = [v5 textRangeFromPosition:v9 toPosition:v10];
-    v17 = [v5 textInRange:v18];
+    v18 = [delegateCopy textRangeFromPosition:v9 toPosition:v10];
+    v17 = [delegateCopy textInRange:v18];
   }
 
   else
@@ -3345,17 +3345,17 @@ LABEL_11:
   return v17;
 }
 
-- (id)selectedTextForInputDelegate:(id)a3
+- (id)selectedTextForInputDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [v3 selectedTextRange];
-  v5 = [v4 start];
-  v6 = [v4 end];
+  delegateCopy = delegate;
+  selectedTextRange = [delegateCopy selectedTextRange];
+  start = [selectedTextRange start];
+  v6 = [selectedTextRange end];
   v7 = v6;
   v8 = &stru_1EFB14550;
-  if (v5 && v6 && [v3 comparePosition:v5 toPosition:v6] && objc_msgSend(v3, "comparePosition:toPosition:", v5, v7) == -1)
+  if (start && v6 && [delegateCopy comparePosition:start toPosition:v6] && objc_msgSend(delegateCopy, "comparePosition:toPosition:", start, v7) == -1)
   {
-    v8 = [v3 textInRange:v4];
+    v8 = [delegateCopy textInRange:selectedTextRange];
   }
 
   return v8;
@@ -3364,62 +3364,62 @@ LABEL_11:
 - (BOOL)useAutomaticEndpointing
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 textInputTraits];
+  textInputTraits = [v2 textInputTraits];
 
-  if ([v3 acceptsDictationSearchResults])
+  if ([textInputTraits acceptsDictationSearchResults])
   {
-    v4 = 1;
+    useAutomaticEndpointing = 1;
   }
 
   else
   {
-    v4 = [v3 useAutomaticEndpointing];
+    useAutomaticEndpointing = [textInputTraits useAutomaticEndpointing];
   }
 
-  return v4;
+  return useAutomaticEndpointing;
 }
 
-- (id)_finalDictationStartLanguageCodeWithKeyboardInputMode:(id)a3
+- (id)_finalDictationStartLanguageCodeWithKeyboardInputMode:(id)mode
 {
-  v4 = a3;
-  v5 = [v4 dictationLanguage];
-  if (!v5)
+  modeCopy = mode;
+  dictationLanguage = [modeCopy dictationLanguage];
+  if (!dictationLanguage)
   {
     if (+[UIDictationUtilities _isUsingLargeFormatDictationUI])
     {
-      v5 = [v4 languageWithRegion];
+      dictationLanguage = [modeCopy languageWithRegion];
     }
 
     else
     {
-      v5 = 0;
+      dictationLanguage = 0;
     }
   }
 
-  v6 = TIInputModeGetLanguage();
+  languageCode2 = TIInputModeGetLanguage();
   v7 = TIInputModeGetRegion();
   if (![objc_opt_class() viewMode])
   {
-    v8 = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
+    languageCode = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
 
     v7 = 0;
-    v6 = v8;
+    languageCode2 = languageCode;
   }
 
   if ([(UIDictationController *)self smartLanguageSelectionOverridden])
   {
-    v9 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+    smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
   }
 
   else
   {
-    if (!v6)
+    if (!languageCode2)
     {
-      v10 = [MEMORY[0x1E695DF58] preferredLocale];
-      v6 = [v10 languageCode];
+      preferredLocale = [MEMORY[0x1E695DF58] preferredLocale];
+      languageCode2 = [preferredLocale languageCode];
     }
 
-    if ([v6 isEqualToString:@"ko"] && -[__CFString isEqualToString:](v7, "isEqualToString:", @"KO"))
+    if ([languageCode2 isEqualToString:@"ko"] && -[__CFString isEqualToString:](v7, "isEqualToString:", @"KO"))
     {
 
       v7 = @"KR";
@@ -3430,114 +3430,114 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v7];
+    smartLanguageSelectionOverrideLanguage = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", languageCode2, v7];
   }
 
-  v11 = v9;
+  v11 = smartLanguageSelectionOverrideLanguage;
 
-  v6 = v11;
+  languageCode2 = v11;
 LABEL_17:
-  v12 = [UIDictationUtilities _remapDictationLocaleFromLanguage:v6];
-  v13 = [v12 languageIdentifier];
+  v12 = [UIDictationUtilities _remapDictationLocaleFromLanguage:languageCode2];
+  languageIdentifier = [v12 languageIdentifier];
 
-  return v13;
+  return languageIdentifier;
 }
 
-- (void)dictationConnection:(id)a3 updateOptions:(id)a4
+- (void)dictationConnection:(id)connection updateOptions:(id)options
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  optionsCopy = options;
   v6 = +[UIKeyboardImpl sharedInstance];
-  v7 = [v6 inputDelegate];
-  v8 = [v6 textInputTraits];
-  if ([v5 version])
+  inputDelegate = [v6 inputDelegate];
+  textInputTraits = [v6 textInputTraits];
+  if ([optionsCopy version])
   {
-    [v5 setVersion:1];
-    v9 = [(UIDictationController *)self currentInputModeForDictation];
-    v10 = [v9 dictationLanguage];
-    if (!v10)
+    [optionsCopy setVersion:1];
+    currentInputModeForDictation = [(UIDictationController *)self currentInputModeForDictation];
+    dictationLanguage = [currentInputModeForDictation dictationLanguage];
+    if (!dictationLanguage)
     {
       if (+[UIDictationUtilities _isUsingLargeFormatDictationUI])
       {
-        v10 = [v9 languageWithRegion];
+        dictationLanguage = [currentInputModeForDictation languageWithRegion];
       }
 
       else
       {
-        v10 = 0;
+        dictationLanguage = 0;
       }
     }
 
-    v31 = v7;
+    v31 = inputDelegate;
     v29 = TIInputModeGetLanguageWithRegion();
     v11 = [UIDictationUtilities _remapDictationLocaleFromLanguage:?];
-    v12 = [v11 languageCode];
-    v13 = [v11 regionCode];
-    [v5 setUseAutomaticEndpointing:{-[UIDictationController useAutomaticEndpointing](self, "useAutomaticEndpointing")}];
-    v30 = v9;
-    v14 = [v9 identifier];
+    languageCode = [v11 languageCode];
+    regionCode = [v11 regionCode];
+    [optionsCopy setUseAutomaticEndpointing:{-[UIDictationController useAutomaticEndpointing](self, "useAutomaticEndpointing")}];
+    v30 = currentInputModeForDictation;
+    identifier = [currentInputModeForDictation identifier];
     v15 = TIInputModeGetVariant();
-    [v5 setLayoutIdentifier:v15];
+    [optionsCopy setLayoutIdentifier:v15];
 
-    [v5 setReturnKeyType:{objc_msgSend(v8, "returnKeyType")}];
+    [optionsCopy setReturnKeyType:{objc_msgSend(textInputTraits, "returnKeyType")}];
     if ([objc_opt_class() viewMode])
     {
       if ([objc_opt_class() viewMode] == 6)
       {
-        [v5 setActivationType:2];
+        [optionsCopy setActivationType:2];
       }
     }
 
     else
     {
-      v16 = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
+      languageCode2 = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
 
-      [v5 setActivationType:1];
-      [v5 setUseAutomaticEndpointing:1];
-      [v5 setReturnKeyType:6];
-      v13 = 0;
-      v12 = v16;
+      [optionsCopy setActivationType:1];
+      [optionsCopy setUseAutomaticEndpointing:1];
+      [optionsCopy setReturnKeyType:6];
+      regionCode = 0;
+      languageCode = languageCode2;
     }
 
-    v17 = [(UIDictationController *)self activationIdentifier];
-    [v5 setActivationIdentifier:v17];
+    activationIdentifier = [(UIDictationController *)self activationIdentifier];
+    [optionsCopy setActivationIdentifier:activationIdentifier];
 
-    [v5 setLanguageCode:v12];
-    [v5 setRegionCode:v13];
+    [optionsCopy setLanguageCode:languageCode];
+    [optionsCopy setRegionCode:regionCode];
     v18 = [(UIDictationController *)self fieldIdentifierInputDelegate:v31];
-    [v5 setFieldIdentifier:v18];
+    [optionsCopy setFieldIdentifier:v18];
 
-    [v5 setKeyboardType:{objc_msgSend(v8, "dictationKeyboardType")}];
+    [optionsCopy setKeyboardType:{objc_msgSend(textInputTraits, "dictationKeyboardType")}];
     v19 = +[UIDictationUtilities _isUsingLargeFormatDictationUI];
     if (v19)
     {
-      if (UIKeyboardTypeSupportsDictationSpelling([v5 keyboardType]) || (objc_msgSend(v8, "isSecureTextEntry") & 1) != 0)
+      if (UIKeyboardTypeSupportsDictationSpelling([optionsCopy keyboardType]) || (objc_msgSend(textInputTraits, "isSecureTextEntry") & 1) != 0)
       {
-        v20 = 1;
+        forceSpellingDictation = 1;
       }
 
       else
       {
-        v20 = [v8 forceSpellingDictation];
+        forceSpellingDictation = [textInputTraits forceSpellingDictation];
       }
     }
 
     else
     {
-      v20 = 0;
+      forceSpellingDictation = 0;
     }
 
-    [v5 setSecureInput:v20];
-    [v5 setAcceptsDictationSearchResults:{objc_msgSend(v8, "acceptsDictationSearchResults")}];
-    [v5 setPrefixText:self->_prefixTextForStart];
-    [v5 setSelectedText:self->_selectionTextForStart];
-    [v5 setPostfixText:self->_postfixTextForStart];
-    if (-[UIDictationController shouldOverrideManualEndpointingWithReturnKeyType:](self, "shouldOverrideManualEndpointingWithReturnKeyType:", [v5 returnKeyType]))
+    [optionsCopy setSecureInput:forceSpellingDictation];
+    [optionsCopy setAcceptsDictationSearchResults:{objc_msgSend(textInputTraits, "acceptsDictationSearchResults")}];
+    [optionsCopy setPrefixText:self->_prefixTextForStart];
+    [optionsCopy setSelectedText:self->_selectionTextForStart];
+    [optionsCopy setPostfixText:self->_postfixTextForStart];
+    if (-[UIDictationController shouldOverrideManualEndpointingWithReturnKeyType:](self, "shouldOverrideManualEndpointingWithReturnKeyType:", [optionsCopy returnKeyType]))
     {
-      [v5 setUseAutomaticEndpointing:1];
+      [optionsCopy setUseAutomaticEndpointing:1];
     }
 
-    if ([v5 useAutomaticEndpointing])
+    if ([optionsCopy useAutomaticEndpointing])
     {
       v21 = _UIDictationControllerLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -3547,31 +3547,31 @@ LABEL_17:
         _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_DEFAULT, "%s Starting dictation with automatic endpointing", buf, 0xCu);
       }
 
-      [v5 setReturnKeyType:6];
+      [optionsCopy setReturnKeyType:6];
       [(UIDictationController *)self setReasonType:31];
     }
 
-    v22 = [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext turnIdentifier];
-    [v5 setTurnIdentifier:v22];
+    turnIdentifier = [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext turnIdentifier];
+    [optionsCopy setTurnIdentifier:turnIdentifier];
 
     if (((v19 | _os_feature_enabled_impl() ^ 1) & 1) == 0)
     {
-      v23 = [getAFPreferencesClass_0() sharedPreferences];
-      [v5 setAutoPunctuation:{objc_msgSend(v23, "dictationAutoPunctuationEnabled")}];
+      sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+      [optionsCopy setAutoPunctuation:{objc_msgSend(sharedPreferences, "dictationAutoPunctuationEnabled")}];
     }
 
     v24 = v30;
-    if ([v12 isEqualToString:@"en"] && objc_msgSend(v13, "isEqualToString:", @"US") && objc_msgSend(objc_opt_class(), "supportsSiriDictationVoiceCommands") && (objc_msgSend(objc_opt_class(), "supportsSiriDictationVoiceCommandsUIRedesign") & 1) != 0)
+    if ([languageCode isEqualToString:@"en"] && objc_msgSend(regionCode, "isEqualToString:", @"US") && objc_msgSend(objc_opt_class(), "supportsSiriDictationVoiceCommands") && (objc_msgSend(objc_opt_class(), "supportsSiriDictationVoiceCommandsUIRedesign") & 1) != 0)
     {
       v25 = +[UIKeyboard keyboardBundleIdentifier];
-      [v5 setShouldRecognizeCommands:{+[UIDictationUtilities supportsDictationVoiceEditingUIForBundleIdentifier:](UIDictationUtilities, "supportsDictationVoiceEditingUIForBundleIdentifier:", v25)}];
+      [optionsCopy setShouldRecognizeCommands:{+[UIDictationUtilities supportsDictationVoiceEditingUIForBundleIdentifier:](UIDictationUtilities, "supportsDictationVoiceEditingUIForBundleIdentifier:", v25)}];
 
       v24 = v30;
     }
 
     else
     {
-      [v5 setShouldRecognizeCommands:0];
+      [optionsCopy setShouldRecognizeCommands:0];
     }
 
     prefixTextForStart = self->_prefixTextForStart;
@@ -3583,29 +3583,29 @@ LABEL_17:
     postfixTextForStart = self->_postfixTextForStart;
     self->_postfixTextForStart = 0;
 
-    v7 = v31;
+    inputDelegate = v31;
   }
 }
 
 - (void)completeStartConnection
 {
-  v3 = [(UIDictationController *)self dictationConnection];
-  [v3 start];
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection start];
 
   self->_reasonType = 0;
 }
 
-- (void)startConnectionWithContinuation:(id)a3
+- (void)startConnectionWithContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   [(UIDictationController *)self setupForDictationStart];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__UIDictationController_startConnectionWithContinuation___block_invoke;
   v6[3] = &unk_1E70F37C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = continuationCopy;
+  v5 = continuationCopy;
   [(UIDictationController *)self _completeStartDictationWithContinuation:v6];
 }
 
@@ -3623,37 +3623,37 @@ uint64_t __57__UIDictationController_startConnectionWithContinuation___block_inv
   return result;
 }
 
-- (void)startDictationForFileAtURL:(id)a3 forInputModeIdentifier:(id)a4
+- (void)startDictationForFileAtURL:(id)l forInputModeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__UIDictationController_startDictationForFileAtURL_forInputModeIdentifier___block_invoke;
   v10[3] = &unk_1E70F6228;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = lCopy;
   [(UIDictationController *)self _completeStartDictationWithContinuation:v10];
 }
 
-- (void)completeStartConnectionForFileAtURL:(id)a3 forInputModeIdentifier:(id)a4
+- (void)completeStartConnectionForFileAtURL:(id)l forInputModeIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
-  [v6 stringWithFormat:@"%s Starting dictation connection from saved file for language code: %@", "-[UIDictationController completeStartConnectionForFileAtURL:forInputModeIdentifier:]", v7];
+  identifierCopy = identifier;
+  lCopy = l;
+  [v6 stringWithFormat:@"%s Starting dictation connection from saved file for language code: %@", "-[UIDictationController completeStartConnectionForFileAtURL:forInputModeIdentifier:]", identifierCopy];
 
   [(UIDictationController *)self setState:1];
-  v9 = [(UIDictationController *)self dictationConnection];
-  [v9 startForFileAtURL:v8 forLanguage:v7];
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection startForFileAtURL:lCopy forLanguage:identifierCopy];
 }
 
-- (void)_completeStartDictationWithContinuation:(id)a3
+- (void)_completeStartDictationWithContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Calling _refreshVisibleRTIDocumentStateWithContinuation", "-[UIDictationController _completeStartDictationWithContinuation:]"];
 
   v6[0] = MEMORY[0x1E69E9820];
@@ -3661,8 +3661,8 @@ uint64_t __57__UIDictationController_startConnectionWithContinuation___block_inv
   v6[2] = __65__UIDictationController__completeStartDictationWithContinuation___block_invoke;
   v6[3] = &unk_1E7114CD8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = continuationCopy;
+  v5 = continuationCopy;
   [(UIDictationController *)self _refreshVisibleRTIDocumentStateWithContinuation:v6];
 }
 
@@ -3699,25 +3699,25 @@ uint64_t __65__UIDictationController__completeStartDictationWithContinuation___b
   return result;
 }
 
-- (void)_setFinalResultHandler:(id)a3
+- (void)_setFinalResultHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   finalResultsOperation = self->_finalResultsOperation;
   self->_finalResultsOperation = v4;
 }
 
-- (void)setIgnoreFinalizePhrases:(BOOL)a3
+- (void)setIgnoreFinalizePhrases:(BOOL)phrases
 {
-  v3 = a3;
+  phrasesCopy = phrases;
   v9 = *MEMORY[0x1E69E9840];
-  self->_ignoreFinalizePhrases = a3;
+  self->_ignoreFinalizePhrases = phrases;
   v4 = _UIDictationControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[UIDictationController setIgnoreFinalizePhrases:]";
     v7 = 1024;
-    v8 = v3;
+    v8 = phrasesCopy;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "%s Setting ignoreFinalizePhrases flag %d", &v5, 0x12u);
   }
 }
@@ -3734,8 +3734,8 @@ uint64_t __65__UIDictationController__completeStartDictationWithContinuation___b
     ignoreFinalizePhrases = 0;
   }
 
-  v4 = [(UIDictationController *)self targetHypothesis];
-  v5 = v4;
+  targetHypothesis = [(UIDictationController *)self targetHypothesis];
+  v5 = targetHypothesis;
   if (self->_finalResultsOperation)
   {
     v6 = 1;
@@ -3743,7 +3743,7 @@ uint64_t __65__UIDictationController__completeStartDictationWithContinuation___b
 
   else
   {
-    v6 = v4 == 0;
+    v6 = targetHypothesis == 0;
   }
 
   if (!v6 && !ignoreFinalizePhrases)
@@ -3780,7 +3780,7 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
   [WeakRetained setIgnoreFinalizePhrases:1];
 }
 
-- (void)_runFinalizeOperation:(BOOL)a3
+- (void)_runFinalizeOperation:(BOOL)operation
 {
   if (self->_finalResultsOperation)
   {
@@ -3788,7 +3788,7 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
     finalResultsOperation = self->_finalResultsOperation;
     self->_finalResultsOperation = 0;
 
-    if (!a3)
+    if (!operation)
     {
       [(UIDictationController *)self _stopStreamingAnimation];
     }
@@ -3800,17 +3800,17 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
   }
 }
 
-- (void)endSessionIfNecessaryForTransitionFromState:(int)a3 toState:(int)a4
+- (void)endSessionIfNecessaryForTransitionFromState:(int)state toState:(int)toState
 {
-  v7 = a3 != 6 && a4 == 0;
-  if (a4 == 6 || v7)
+  v7 = state != 6 && toState == 0;
+  if (toState == 6 || v7)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Calling endSession on the connection", "-[UIDictationController endSessionIfNecessaryForTransitionFromState:toState:]"];
 
-    v8 = [(UIDictationController *)self dictationConnection];
-    [v8 endSession];
+    dictationConnection = [(UIDictationController *)self dictationConnection];
+    [dictationConnection endSession];
 
-    if (a4 == 6)
+    if (toState == 6)
     {
       finalResultsOperation = self->_finalResultsOperation;
       self->_finalResultsOperation = 0;
@@ -3823,8 +3823,8 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
   v5 = +[UIDictationView sharedInstance];
   if (([v5 switchingLanguage] & 1) == 0 && !-[UIDictationController shouldStayInDictationInputMode](self, "shouldStayInDictationInputMode"))
   {
-    v3 = +[UIKeyboardImpl activeInstance];
-    if (([v3 isDictationMenuPresented] & 1) == 0)
+    keyboardInputModeToReturn = +[UIKeyboardImpl activeInstance];
+    if (([keyboardInputModeToReturn isDictationMenuPresented] & 1) == 0)
     {
       v4 = +[UIKeyboard isModelessActive];
 
@@ -3834,8 +3834,8 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
       }
 
       v5 = +[UIKeyboardImpl activeInstance];
-      v3 = [(UIDictationController *)self keyboardInputModeToReturn];
-      [v5 setKeyboardInputMode:v3 userInitiated:0];
+      keyboardInputModeToReturn = [(UIDictationController *)self keyboardInputModeToReturn];
+      [v5 setKeyboardInputMode:keyboardInputModeToReturn userInitiated:0];
     }
   }
 }
@@ -3848,15 +3848,15 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
   }
 
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 keyboardWindow];
+  keyboardWindow = [v2 keyboardWindow];
 
   v4 = +[UIKeyboardImpl activeInstance];
   v5 = v4;
-  if (v3)
+  if (keyboardWindow)
   {
-    v6 = [v4 inputDelegate];
-    v7 = [v6 _window];
-    v8 = v7 != v3;
+    inputDelegate = [v4 inputDelegate];
+    _window = [inputDelegate _window];
+    v8 = _window != keyboardWindow;
   }
 
   else
@@ -3864,10 +3864,10 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
     v8 = 1;
   }
 
-  v10 = [v5 inputDelegateManager];
-  v11 = [v10 shouldRespectForwardingInputDelegate];
+  inputDelegateManager = [v5 inputDelegateManager];
+  shouldRespectForwardingInputDelegate = [inputDelegateManager shouldRespectForwardingInputDelegate];
 
-  v9 = v8 & (v11 ^ 1);
+  v9 = v8 & (shouldRespectForwardingInputDelegate ^ 1);
   return v9;
 }
 
@@ -3877,18 +3877,18 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
   if ([(UIDictationController *)self shouldSuppressSoftwareKeyboard])
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 isDictationLanguageMenuPresented];
+    isDictationLanguageMenuPresented = [v3 isDictationLanguageMenuPresented];
 
-    if ((v4 & 1) == 0)
+    if ((isDictationLanguageMenuPresented & 1) == 0)
     {
       v5 = +[UIDictationLandingView sharedInstance];
       [v5 stopLanding];
 
       v6 = +[UIKeyboardImpl sharedInstance];
-      v7 = [v6 textInputTraits];
-      v8 = [v7 returnKeyType];
+      textInputTraits = [v6 textInputTraits];
+      returnKeyType = [textInputTraits returnKeyType];
 
-      if (v8 == 6)
+      if (returnKeyType == 6)
       {
         v9 = +[UIKeyboardImpl sharedInstance];
         [v9 performReturn];
@@ -3898,10 +3898,10 @@ void __55__UIDictationController__setupHypothesisAsFinalResults__block_invoke(ui
       if ([objc_opt_class() shouldForwardInInputSystemUI])
       {
         v10 = +[UIKeyboardImpl activeInstance];
-        v11 = [v10 inputDelegateManager];
-        v12 = [v11 inputSystemSourceSession];
+        inputDelegateManager = [v10 inputDelegateManager];
+        inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-        if (!v12)
+        if (!inputSystemSourceSession)
         {
 LABEL_12:
 
@@ -3916,15 +3916,15 @@ LABEL_13:
           return;
         }
 
-        v13 = [v12 textOperations];
-        [v13 setCustomInfoType:0x1EFB7C8F0];
+        textOperations = [inputSystemSourceSession textOperations];
+        [textOperations setCustomInfoType:0x1EFB7C8F0];
         v17 = @"selector";
         v14 = NSStringFromSelector(sel_resignFirstResponderWhenIdleIfNeeded);
         v18[0] = v14;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-        [v13 setCustomInfo:v15];
+        [textOperations setCustomInfo:v15];
 
-        [v12 flushOperations];
+        [inputSystemSourceSession flushOperations];
       }
 
       else
@@ -3935,9 +3935,9 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v12 = +[UIKeyboardImpl sharedInstance];
-        v13 = [v12 inputDelegate];
-        [v13 resignFirstResponder];
+        inputSystemSourceSession = +[UIKeyboardImpl sharedInstance];
+        textOperations = [inputSystemSourceSession inputDelegate];
+        [textOperations resignFirstResponder];
       }
 
       goto LABEL_12;
@@ -3945,13 +3945,13 @@ LABEL_13:
   }
 }
 
-- (void)setShadowState:(int)a3
+- (void)setShadowState:(int)state
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = _UIDictationControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = stringForState(a3);
+    v5 = stringForState(state);
     v7 = 136315394;
     v8 = "[UIDictationController setShadowState:]";
     v9 = 2112;
@@ -3959,61 +3959,61 @@ LABEL_13:
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "%s State %@", &v7, 0x16u);
   }
 
-  dword_1ED4987D8 = a3;
-  if (a3 == 3 || !a3)
+  dword_1ED4987D8 = state;
+  if (state == 3 || !state)
   {
     v6 = +[UIKeyboardImpl activeInstance];
     [v6 clearDictationMenuTimer];
   }
 }
 
-- (void)setAppState:(int)a3
+- (void)setAppState:(int)state
 {
-  v3 = *&a3;
+  v3 = *&state;
   v19 = *MEMORY[0x1E69E9840];
   if (+[UIKeyboard isKeyboardProcess](UIKeyboard, "isKeyboardProcess") && +[UIKeyboard isMajelEnabled]&& ![(UIDictationController *)self isIgnoringRTIChanges])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 inputDelegateManager];
-    v7 = [v6 inputSystemSourceSession];
+    inputDelegateManager = [v5 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v7)
+    if (inputSystemSourceSession)
     {
       v8 = _UIDictationControllerLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v7 documentTraits];
-        v10 = [v9 appId];
+        documentTraits = [inputSystemSourceSession documentTraits];
+        appId = [documentTraits appId];
         v15 = 136315394;
         v16 = "[UIDictationController setAppState:]";
         v17 = 2112;
-        v18 = v10;
+        v18 = appId;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "%s Invoking setShadowState. appID %@", &v15, 0x16u);
       }
 
-      v11 = [v7 textOperations];
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [inputSystemSourceSession textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v13 = NSStringFromSelector(sel_setShadowState_);
-      [v12 setObject:v13 forKeyedSubscript:@"selector"];
+      [dictionary setObject:v13 forKeyedSubscript:@"selector"];
 
       v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-      [v12 setObject:v14 forKeyedSubscript:@"state"];
+      [dictionary setObject:v14 forKeyedSubscript:@"state"];
 
-      [v11 setCustomInfoType:0x1EFB7C8F0];
-      [v11 setCustomInfo:v12];
-      [v7 flushOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v3 = *&a3;
+  v3 = *&state;
   v33[1] = *MEMORY[0x1E69E9840];
-  if (a3 != 6 || dword_1ED4987DC)
+  if (state != 6 || dword_1ED4987DC)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = stringForState(a3);
+    v6 = stringForState(state);
     [v5 stringWithFormat:@"%s State: %@", "-[UIDictationController setState:]", v6];
 
     v7 = dword_1ED4987DC;
@@ -4056,12 +4056,12 @@ LABEL_13:
       if ([(UIDictationController *)self isRecievingResults])
       {
         v14 = +[UIKeyboardImpl sharedInstance];
-        v15 = [v14 inputDelegate];
+        inputDelegate = [v14 inputDelegate];
 
         if (objc_opt_respondsToSelector())
         {
-          v16 = [v15 interactionAssistant];
-          [v16 configureForSelectionMode];
+          interactionAssistant = [inputDelegate interactionAssistant];
+          [interactionAssistant configureForSelectionMode];
         }
       }
 
@@ -4073,9 +4073,9 @@ LABEL_13:
       }
 
       v17 = +[UIDictationView sharedInstance];
-      v18 = [v17 switchingLanguage];
+      switchingLanguage = [v17 switchingLanguage];
 
-      if ((v18 & 1) == 0)
+      if ((switchingLanguage & 1) == 0)
       {
         [(UIDictationController *)self resignFirstResponderWhenIdleIfNeeded];
         v19 = +[UIKeyboardImpl activeInstance];
@@ -4084,9 +4084,9 @@ LABEL_13:
 
       [(UIDictationController *)self switchToKeyboardInputModeIfNeeded];
       v20 = +[UIKeyboardImpl activeInstance];
-      v21 = [v20 userInteractionDelegate];
+      userInteractionDelegate = [v20 userInteractionDelegate];
 
-      if (v21 && [(UIDictationTipController *)self->_dictationTipController modelessTipShown])
+      if (userInteractionDelegate && [(UIDictationTipController *)self->_dictationTipController modelessTipShown])
       {
         v22 = +[UIKeyboardImpl activeInstance];
         [v22 setUserInteractionDelegate:0];
@@ -4139,9 +4139,9 @@ LABEL_30:
       {
         *p_ignoreFinalizePhrases = 0;
         v27 = +[UIKeyboardImpl activeInstance];
-        v28 = [v27 inputDelegateManager];
-        v29 = [v28 selectionDisplayInteraction];
-        [v29 _setGlowViewMode:1];
+        inputDelegateManager = [v27 inputDelegateManager];
+        selectionDisplayInteraction = [inputDelegateManager selectionDisplayInteraction];
+        [selectionDisplayInteraction _setGlowViewMode:1];
 
 LABEL_37:
         return;
@@ -4186,8 +4186,8 @@ LABEL_32:
 - (void)dealloc
 {
   [(UIDictationController *)self stopHelperMessageDisplayIfNeeded];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:objc_opt_class()];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:objc_opt_class()];
 
   [(_UIDictationPrivacySheetController *)self->_dictationPrivacySheetController setPrivacyDelegate:0];
   [(UIDictationController *)self removeStartDictationKeyboardGestures];
@@ -4238,8 +4238,8 @@ LABEL_32:
 
   else
   {
-    v5 = [(UIDictationController *)self keyboardInputModeToReturn];
-    [v6 setKeyboardInputMode:v5 userInitiated:0];
+    keyboardInputModeToReturn = [(UIDictationController *)self keyboardInputModeToReturn];
+    [v6 setKeyboardInputMode:keyboardInputModeToReturn userInitiated:0];
   }
 }
 
@@ -4271,29 +4271,29 @@ LABEL_32:
   }
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v14 = a4;
+  disabledCopy = disabled;
+  reasonCopy = reason;
   if (+[UIKeyboard isKeyboardProcess])
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 inputDelegateManager];
-    v8 = [v7 inputSystemSourceSession];
+    inputDelegateManager = [v6 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v8)
+    if (inputSystemSourceSession)
     {
-      v9 = [v8 textOperations];
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [inputSystemSourceSession textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = NSStringFromSelector(a2);
-      [v10 setObject:v11 forKeyedSubscript:@"selector"];
+      [dictionary setObject:v11 forKeyedSubscript:@"selector"];
 
-      v12 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-      [v10 setObject:v12 forKeyedSubscript:@"disabled"];
+      v12 = [MEMORY[0x1E696AD98] numberWithBool:disabledCopy];
+      [dictionary setObject:v12 forKeyedSubscript:@"disabled"];
 
-      if (v14)
+      if (reasonCopy)
       {
-        v13 = v14;
+        v13 = reasonCopy;
       }
 
       else
@@ -4301,16 +4301,16 @@ LABEL_32:
         v13 = &stru_1EFB14550;
       }
 
-      [v10 setObject:v13 forKeyedSubscript:@"reason"];
-      [v9 setCustomInfoType:0x1EFB7C8F0];
-      [v9 setCustomInfo:v10];
-      [v8 flushOperations];
+      [dictionary setObject:v13 forKeyedSubscript:@"reason"];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
+      [inputSystemSourceSession flushOperations];
     }
   }
 
   else
   {
-    [UIApp _setIdleTimerDisabled:v4 forReason:v14];
+    [UIApp _setIdleTimerDisabled:disabledCopy forReason:reasonCopy];
   }
 }
 
@@ -4352,8 +4352,8 @@ LABEL_32:
   if (!qword_1ED4987F8)
   {
     v3 = objc_alloc(MEMORY[0x1E696AD98]);
-    v4 = [getAFPreferencesClass_0() sharedPreferences];
-    v5 = [v3 initWithBool:{objc_msgSend(v4, "siriDataSharingOptInStatus") != 0}];
+    sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+    v5 = [v3 initWithBool:{objc_msgSend(sharedPreferences, "siriDataSharingOptInStatus") != 0}];
     v6 = qword_1ED4987F8;
     qword_1ED4987F8 = v5;
 
@@ -4363,10 +4363,10 @@ LABEL_32:
   return [v2 BOOLValue];
 }
 
-- (BOOL)dictationSearchFieldUISupportsTraitCollection:(id)a3
+- (BOOL)dictationSearchFieldUISupportsTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 userInterfaceIdiom] == 1 || objc_msgSend(v3, "userInterfaceIdiom") == 0;
+  collectionCopy = collection;
+  v4 = [collectionCopy userInterfaceIdiom] == 1 || objc_msgSend(collectionCopy, "userInterfaceIdiom") == 0;
 
   return v4;
 }
@@ -4376,10 +4376,10 @@ LABEL_32:
   [(UIDictationController *)self setPreviousHypothesis:0];
   [(UIDictationController *)self setInsertionRange:0x7FFFFFFFFFFFFFFFLL, 0];
   [(UIDictationController *)self setDiscardNextHypothesis:0];
-  v5 = [(UIDictationController *)self streamingOperations];
+  streamingOperations = [(UIDictationController *)self streamingOperations];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 inputDelegate];
-  [v5 dictationWillBeginInDocument:v4];
+  inputDelegate = [v3 inputDelegate];
+  [streamingOperations dictationWillBeginInDocument:inputDelegate];
 }
 
 - (void)setupForAsyncDelegate
@@ -4387,28 +4387,28 @@ LABEL_32:
   if (+[UIKeyboard isKeyboardProcess])
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 remoteTextInputPartner];
-    [v4 forwardKeyboardOperation:sel_setupForAsyncDelegate object:0];
+    remoteTextInputPartner = [v3 remoteTextInputPartner];
+    [remoteTextInputPartner forwardKeyboardOperation:sel_setupForAsyncDelegate object:0];
   }
 
   v5 = +[UIKeyboardImpl activeInstance];
-  v11 = [v5 inputDelegate];
+  inputDelegate = [v5 inputDelegate];
 
-  if ([v11 _usesAsynchronousProtocol] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([inputDelegate _usesAsynchronousProtocol] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = v11;
-    v7 = [v6 selectedTextRange];
-    v8 = [v7 start];
-    -[UIDictationController setSelectionStartWasInitiallyAtParagraphBoundaryForAsyncDelegate:](self, "setSelectionStartWasInitiallyAtParagraphBoundaryForAsyncDelegate:", [v6 isPosition:v8 atBoundary:3 inDirection:1]);
+    v6 = inputDelegate;
+    selectedTextRange = [v6 selectedTextRange];
+    start = [selectedTextRange start];
+    -[UIDictationController setSelectionStartWasInitiallyAtParagraphBoundaryForAsyncDelegate:](self, "setSelectionStartWasInitiallyAtParagraphBoundaryForAsyncDelegate:", [v6 isPosition:start atBoundary:3 inDirection:1]);
 
-    v9 = [v6 selectedTextRange];
-    v10 = [v9 end];
+    selectedTextRange2 = [v6 selectedTextRange];
+    v10 = [selectedTextRange2 end];
     -[UIDictationController setSelectionEndWasInitiallyAtParagraphBoundaryForAsyncDelegate:](self, "setSelectionEndWasInitiallyAtParagraphBoundaryForAsyncDelegate:", [v6 isPosition:v10 atBoundary:3 inDirection:0]);
 
     -[UIDictationController setInitialPreviousCharacterForAsyncDelegate:](self, "setInitialPreviousCharacterForAsyncDelegate:", [v6 _characterInRelationToCaretSelection:0xFFFFFFFFLL]);
-    LOWORD(v9) = [v6 _characterInRelationToCaretSelection:0];
+    LOWORD(selectedTextRange2) = [v6 _characterInRelationToCaretSelection:0];
 
-    [(UIDictationController *)self setInitialCharacterAfterSelectionForAsyncDelegate:v9];
+    [(UIDictationController *)self setInitialCharacterAfterSelectionForAsyncDelegate:selectedTextRange2];
   }
 }
 
@@ -4424,10 +4424,10 @@ LABEL_32:
 
   if (+[UIDictationController viewMode](UIDictationController, "viewMode") && +[UIDictationController viewMode]!= 6)
   {
-    v9 = [(UIDictationController *)self currentInputModeForDictation];
-    v10 = [v9 dictationLanguage];
+    currentInputModeForDictation = [(UIDictationController *)self currentInputModeForDictation];
+    dictationLanguage = [currentInputModeForDictation dictationLanguage];
     v12 = 0;
-    v11 = [(UIDictationController *)self supportsDictationLanguage:v10 error:&v12];
+    v11 = [(UIDictationController *)self supportsDictationLanguage:dictationLanguage error:&v12];
     v3 = v12;
 
     if (!v11)
@@ -4449,18 +4449,18 @@ LABEL_32:
   byte_1ED4987D2 = [v4 isShifted];
   [(UIDictationController *)self setIsProcessingInitialPhrasesForCurrentRequest:1];
   self->_hasCheckedForLeadingSpaceOnce = 0;
-  v5 = [(UIDictationController *)self currentInputModeForDictation];
-  v6 = [v5 dictationLanguage];
+  currentInputModeForDictation2 = [(UIDictationController *)self currentInputModeForDictation];
+  dictationLanguage2 = [currentInputModeForDictation2 dictationLanguage];
 
   if (![objc_opt_class() viewMode])
   {
-    v7 = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
-    v8 = [(UIDictationController *)self languageCodeForAssistantLanguageCode:v7];
+    languageCode = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
+    v8 = [(UIDictationController *)self languageCodeForAssistantLanguageCode:languageCode];
 
-    v6 = v8;
+    dictationLanguage2 = v8;
   }
 
-  [(UIDictationController *)self setLanguage:v6];
+  [(UIDictationController *)self setLanguage:dictationLanguage2];
   [(UIDictationController *)self startRecordingLimitTimer];
   self->_recievingResults = 0;
   [(UIDictationController *)self setupForStreamingDictationStart];
@@ -4470,28 +4470,28 @@ LABEL_32:
 LABEL_9:
 }
 
-- (void)_startDictationWithContinuation:(id)a3
+- (void)_startDictationWithContinuation:(id)continuation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  continuationCopy = continuation;
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 keyboardState];
-  v7 = [v6 documentState];
+  keyboardState = [v5 keyboardState];
+  documentState = [keyboardState documentState];
 
-  v8 = [v7 selectedText];
-  v9 = [v8 copy];
+  selectedText = [documentState selectedText];
+  v9 = [selectedText copy];
   selectedTextAtStart = self->_selectedTextAtStart;
   self->_selectedTextAtStart = v9;
 
-  v11 = [v7 contextBeforeInput];
-  v12 = [v11 length];
+  contextBeforeInput = [documentState contextBeforeInput];
+  v12 = [contextBeforeInput length];
   v13 = [(NSString *)self->_selectedTextAtStart length];
   self->_relativeRangeBefore.location = v12;
   self->_relativeRangeBefore.length = v13;
 
   if ([objc_opt_class() _applicationIsActive])
   {
-    [(UIDictationController *)self startConnectionWithContinuation:v4];
+    [(UIDictationController *)self startConnectionWithContinuation:continuationCopy];
   }
 
   else
@@ -4509,19 +4509,19 @@ LABEL_9:
 + (id)slsDictationLanguages
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [getAFPreferencesClass_0() sharedPreferences];
-  v3 = [v2 dictationSLSLanguagesEnabled];
-  v4 = [v3 keysOfEntriesPassingTest:&__block_literal_global_755];
-  v5 = [v4 allObjects];
+  sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+  dictationSLSLanguagesEnabled = [sharedPreferences dictationSLSLanguagesEnabled];
+  v4 = [dictationSLSLanguagesEnabled keysOfEntriesPassingTest:&__block_literal_global_755];
+  allObjects = [v4 allObjects];
 
-  if ([v5 count])
+  if ([allObjects count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = allObjects;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -4537,7 +4537,7 @@ LABEL_9:
           }
 
           v12 = [*(*(&v15 + 1) + 8 * i) stringByReplacingOccurrencesOfString:@"_" withString:{@"-", v15}];
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -4546,7 +4546,7 @@ LABEL_9:
       while (v9);
     }
 
-    v13 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
+    v13 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
   else
@@ -4565,8 +4565,8 @@ LABEL_9:
   }
 
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [v3 enabledDictationLanguages];
-  v5 = [v4 count];
+  enabledDictationLanguages = [v3 enabledDictationLanguages];
+  v5 = [enabledDictationLanguages count];
 
   if (v5 < 2)
   {
@@ -4574,14 +4574,14 @@ LABEL_9:
   }
 
   v6 = +[UIDictationConnectionPreferences sharedInstance];
-  v7 = [v6 isSmartLanguageSelectionEnabled];
+  isSmartLanguageSelectionEnabled = [v6 isSmartLanguageSelectionEnabled];
 
-  v8 = [objc_opt_class() activeSLSDictationLanguages];
+  activeSLSDictationLanguages = [objc_opt_class() activeSLSDictationLanguages];
 
   result = 1;
-  if (v8)
+  if (activeSLSDictationLanguages)
   {
-    if (v7)
+    if (isSmartLanguageSelectionEnabled)
     {
       return 0;
     }
@@ -4593,9 +4593,9 @@ LABEL_9:
 + (BOOL)_isLowStorageForOnDeviceDictationAsset
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v9 = 0;
-  v3 = [v2 attributesOfFileSystemForPath:@"/private/var/MobileAsset/AssetsV2" error:&v9];
+  v3 = [defaultManager attributesOfFileSystemForPath:@"/private/var/MobileAsset/AssetsV2" error:&v9];
   v4 = v9;
 
   if (!v3)
@@ -4628,43 +4628,43 @@ LABEL_7:
   return v7;
 }
 
-- (void)showLowStorageUserAlertWithLanguage:(id)a3
+- (void)showLowStorageUserAlertWithLanguage:(id)language
 {
   v42[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  languageCopy = language;
   if (+[UIKeyboard isKeyboardProcess])
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 inputDelegateManager];
-    v8 = [v7 inputSystemSourceSession];
+    inputDelegateManager = [v6 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v8)
+    if (inputSystemSourceSession)
     {
-      v9 = [v8 textOperations];
-      [v9 setCustomInfoType:0x1EFB7C8F0];
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
       v41[0] = @"selector";
       v10 = NSStringFromSelector(a2);
       v41[1] = @"language";
       v42[0] = v10;
       v11 = &stru_1EFB14550;
-      if (v5)
+      if (languageCopy)
       {
-        v11 = v5;
+        v11 = languageCopy;
       }
 
       v42[1] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
-      [v9 setCustomInfo:v12];
+      [textOperations setCustomInfo:v12];
 
-      [v8 flushOperations];
+      [inputSystemSourceSession flushOperations];
     }
   }
 
   else
   {
     [(UIDictationController *)self _createDictationPresenterWindowIfNecessary];
-    v13 = [(UIDictationController *)self dictationPresenterWindow];
-    [v13 makeKeyAndVisible];
+    dictationPresenterWindow = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow makeKeyAndVisible];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -4676,17 +4676,17 @@ LABEL_7:
     v16 = [v15 localizedStringForKey:@"Low Storage User Alert Body" value:@"On-device Dictation is temporarily unavailable. You can still use Dictation table:{but 500 MB of space is needed to run all features.", @"Localizable"}];
 
     v17 = +[UIKeyboardInputModeController sharedInputModeController];
-    v18 = [v17 enabledDictationLanguages];
-    v19 = [v18 count];
+    enabledDictationLanguages = [v17 enabledDictationLanguages];
+    v19 = [enabledDictationLanguages count];
 
     if (v19 >= 2)
     {
-      if ([(__CFString *)v5 length])
+      if ([(__CFString *)languageCopy length])
       {
-        v20 = [MEMORY[0x1E695DF58] currentLocale];
-        v21 = [v20 displayNameForKey:*MEMORY[0x1E695D9B0] value:v5];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        v21 = [currentLocale displayNameForKey:*MEMORY[0x1E695D9B0] value:languageCopy];
 
-        if (v21 && ([v21 isEqualToString:v5] & 1) == 0)
+        if (v21 && ([v21 isEqualToString:languageCopy] & 1) == 0)
         {
           v22 = MEMORY[0x1E696AEC0];
           v23 = _UIKitBundle();
@@ -4726,9 +4726,9 @@ LABEL_7:
     [v28 setPreferredAction:v32];
     if (v28)
     {
-      v36 = [(UIDictationController *)self dictationPresenterWindow];
-      v37 = [v36 rootViewController];
-      [v37 presentViewController:v28 animated:1 completion:0];
+      dictationPresenterWindow2 = [(UIDictationController *)self dictationPresenterWindow];
+      rootViewController = [dictationPresenterWindow2 rootViewController];
+      [rootViewController presentViewController:v28 animated:1 completion:0];
     }
   }
 }
@@ -4761,10 +4761,10 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
   [(UIDictationController *)self setStartRangeOfCurrentHypothesis:0x7FFFFFFFFFFFFFFFLL, 0];
 }
 
-- (void)startDictationWithContinuation:(id)a3
+- (void)startDictationWithContinuation:(id)continuation
 {
   v111 = *MEMORY[0x1E69E9840];
-  v99 = a3;
+  continuationCopy = continuation;
   if ([objc_opt_class() shouldForwardEventsToInputSystemUI])
   {
     v4 = +[UIKeyboardImpl activeInstance];
@@ -4776,40 +4776,40 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
   if ([objc_opt_class() shouldForwardInInputSystemUI])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 inputDelegateManager];
+    inputDelegateManager = [v5 inputDelegateManager];
 
-    v7 = [v6 inputSystemSourceSession];
-    if (v7)
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
+    if (inputSystemSourceSession)
     {
-      v8 = [v6 textInputView];
-      v9 = [v6 selectedTextRange];
-      v10 = [v9 start];
-      [v6 caretRectForPosition:v10];
-      [v8 convertRect:0 toView:?];
+      textInputView = [inputDelegateManager textInputView];
+      selectedTextRange = [inputDelegateManager selectedTextRange];
+      start = [selectedTextRange start];
+      [inputDelegateManager caretRectForPosition:start];
+      [textInputView convertRect:0 toView:?];
       v12 = v11;
 
       if (v12 > 2.0)
       {
-        v13 = [v7 textOperations];
-        v14 = [MEMORY[0x1E695DF90] dictionary];
+        textOperations = [inputSystemSourceSession textOperations];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v15 = NSStringFromSelector(sel_updateCaretRectInWindowIfNeeded);
-        [v14 setObject:v15 forKeyedSubscript:@"selector"];
+        [dictionary setObject:v15 forKeyedSubscript:@"selector"];
 
         v16 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-        [v14 setObject:v16 forKeyedSubscript:@"caretRectInWindow.y"];
+        [dictionary setObject:v16 forKeyedSubscript:@"caretRectInWindow.y"];
 
-        [v13 setCustomInfoType:0x1EFB7C8F0];
-        [v13 setCustomInfo:v14];
-        [v7 flushOperations];
+        [textOperations setCustomInfoType:0x1EFB7C8F0];
+        [textOperations setCustomInfo:dictionary];
+        [inputSystemSourceSession flushOperations];
       }
     }
   }
 
   [(UIDictationController *)self resetAdaptiveDeleteActivationLogic];
   v17 = +[UIDictationConnectionPreferences sharedInstance];
-  v18 = [v17 dictationIsEnabled];
+  dictationIsEnabled = [v17 dictationIsEnabled];
 
-  if (v18)
+  if (dictationIsEnabled)
   {
     [(UIDictationController *)self setHasSelectedTextRange:0];
     [(UIDictationController *)self setVisibleRTIDocumentStateAtStart:0];
@@ -4841,9 +4841,9 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
     [(UIDictationController *)self setSendButtonPressedDuringDictation:0];
     [(UIDictationController *)self setShouldStayInDictationInputMode:0];
     [(UIDictationController *)self setLogAppEnterBackground:1];
-    v21 = [MEMORY[0x1E696AFB0] UUID];
-    v22 = [v21 UUIDString];
-    [(UIDictationController *)self setInteractionIdentifier:v22];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(UIDictationController *)self setInteractionIdentifier:uUIDString];
 
     [(UIDictationController *)self setModelessUsedAtLeastOnce:0];
     [(UIDictationController *)self setLocalSpeechRecognitionForced:0];
@@ -4855,9 +4855,9 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
 
     else
     {
-      v24 = [getAFAnalyticsClass() sharedAnalytics];
-      v25 = [v24 newTurnBasedInstrumentationContext];
-      [(UIDictationController *)self setCurrentInstrumentationContext:v25];
+      sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
+      newTurnBasedInstrumentationContext = [sharedAnalytics newTurnBasedInstrumentationContext];
+      [(UIDictationController *)self setCurrentInstrumentationContext:newTurnBasedInstrumentationContext];
     }
 
     [(UIDictationController *)self setModelInfo:0];
@@ -4865,12 +4865,12 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
     [(UIDictationController *)self setFallbackDictationLanguage:0];
     [(UIDictationController *)self setInitialDictationLanguage:0];
     v26 = +[UIKeyboardInputModeController sharedInputModeController];
-    v27 = [v26 currentInputMode];
-    v28 = [v27 primaryLanguage];
-    v29 = v28;
-    if (v28)
+    currentInputMode = [v26 currentInputMode];
+    primaryLanguage = [currentInputMode primaryLanguage];
+    v29 = primaryLanguage;
+    if (primaryLanguage)
     {
-      v30 = v28;
+      v30 = primaryLanguage;
     }
 
     else
@@ -4881,41 +4881,41 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
     [(UIDictationController *)self setCurrentKeyboardPrimaryLanguage:v30];
 
     v31 = +[UIKeyboardInputModeController sharedInputModeController];
-    v32 = [v31 currentInputMode];
-    v33 = [v32 dictationLanguage];
-    [(UIDictationController *)self setInitialDictationLanguage:v33];
+    currentInputMode2 = [v31 currentInputMode];
+    dictationLanguage = [currentInputMode2 dictationLanguage];
+    [(UIDictationController *)self setInitialDictationLanguage:dictationLanguage];
 
     [(UIDictationController *)self setDictationSourceType:0];
-    v34 = [objc_opt_class() slsDictationLanguages];
-    [(UIDictationController *)self setDictationLanguages:v34];
+    slsDictationLanguages = [objc_opt_class() slsDictationLanguages];
+    [(UIDictationController *)self setDictationLanguages:slsDictationLanguages];
 
-    v35 = [(UIDictationController *)self currentInputModeForDictation];
-    v36 = [v35 dictationLanguage];
+    currentInputModeForDictation = [(UIDictationController *)self currentInputModeForDictation];
+    dictationLanguage2 = [currentInputModeForDictation dictationLanguage];
     v37 = +[UIKeyboardImpl activeInstance];
-    v38 = [v37 _sessionIdentifier];
-    v39 = [v38 UUIDString];
-    [(UIDictationController *)self preheatEuclidModelWithLanguageCode:v36 clientID:v39];
+    _sessionIdentifier = [v37 _sessionIdentifier];
+    uUIDString2 = [_sessionIdentifier UUIDString];
+    [(UIDictationController *)self preheatEuclidModelWithLanguageCode:dictationLanguage2 clientID:uUIDString2];
 
-    v40 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+    smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
 
-    if (v40)
+    if (smartLanguageSelectionOverrideLanguage)
     {
-      v98 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+      smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
       [(UIDictationController *)self setDictationSourceType:3];
     }
 
     else
     {
-      v98 = [(UIDictationController *)self initialDictationLanguage];
-      if ([v98 length])
+      smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self initialDictationLanguage];
+      if ([smartLanguageSelectionOverrideLanguage2 length])
       {
         v41 = +[UIKeyboardInputModeController sharedInputModeController];
-        v42 = [v41 keyboardLanguageForDictationLanguage:v98];
+        v42 = [v41 keyboardLanguageForDictationLanguage:smartLanguageSelectionOverrideLanguage2];
 
         v43 = +[UIKeyboardInputModeController sharedInputModeController];
-        v44 = [v43 currentInputMode];
-        v45 = [v44 languageWithRegion];
-        if ([v42 isEqualToString:v45])
+        currentInputMode3 = [v43 currentInputMode];
+        languageWithRegion = [currentInputMode3 languageWithRegion];
+        if ([v42 isEqualToString:languageWithRegion])
         {
           v46 = 1;
         }
@@ -4929,7 +4929,7 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
       }
     }
 
-    if (!v98)
+    if (!smartLanguageSelectionOverrideLanguage2)
     {
       if (!os_variant_has_internal_diagnostics())
       {
@@ -4948,8 +4948,8 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
 
     v97 = [objc_opt_class() UIDictationLanguageSourceType:{-[UIDictationController dictationSourceType](self, "dictationSourceType")}];
     v47 = +[UIKeyboardImpl activeInstance];
-    v48 = [v47 userInteractionDelegate];
-    v49 = v48 == 0;
+    userInteractionDelegate = [v47 userInteractionDelegate];
+    v49 = userInteractionDelegate == 0;
 
     if (v49)
     {
@@ -4958,26 +4958,26 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
     }
 
     v51 = +[UIKeyboardImpl sharedInstance];
-    v52 = [v51 inputDelegateManager];
-    v53 = [v52 asyncInputDelegate];
-    if (v53)
+    inputDelegateManager2 = [v51 inputDelegateManager];
+    asyncInputDelegate = [inputDelegateManager2 asyncInputDelegate];
+    if (asyncInputDelegate)
     {
     }
 
     else
     {
       v55 = +[UIKeyboardImpl sharedInstance];
-      v56 = [v55 inputDelegateManager];
-      v57 = [v56 webInputDelegate];
-      v58 = v57 == 0;
+      inputDelegateManager3 = [v55 inputDelegateManager];
+      webInputDelegate = [inputDelegateManager3 webInputDelegate];
+      v58 = webInputDelegate == 0;
 
       if (v58)
       {
         v89 = +[UIKeyboardImpl sharedInstance];
-        v90 = [v89 inputDelegateManager];
-        v91 = [v90 asyncWebKitInteractionDelegate];
+        inputDelegateManager4 = [v89 inputDelegateManager];
+        asyncWebKitInteractionDelegate = [inputDelegateManager4 asyncWebKitInteractionDelegate];
 
-        if (v91)
+        if (asyncWebKitInteractionDelegate)
         {
           v59 = @"async";
         }
@@ -4985,9 +4985,9 @@ void __61__UIDictationController_showLowStorageUserAlertWithLanguage___block_inv
         else
         {
           v92 = +[UIKeyboardImpl sharedInstance];
-          v93 = [v92 inputDelegate];
+          inputDelegate = [v92 inputDelegate];
 
-          if (v93)
+          if (inputDelegate)
           {
             v59 = @"default";
           }
@@ -5007,47 +5007,47 @@ LABEL_39:
     v60 = _UIDictationControllerLog();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
     {
-      v61 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
+      currentKeyboardPrimaryLanguage = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
       *buf = 136316162;
       *&buf[4] = "[UIDictationController startDictationWithContinuation:]";
       *&buf[12] = 2112;
-      *&buf[14] = v98;
+      *&buf[14] = smartLanguageSelectionOverrideLanguage2;
       *&buf[22] = 2112;
       v107 = v97;
       *v108 = 2112;
-      *&v108[2] = v61;
+      *&v108[2] = currentKeyboardPrimaryLanguage;
       v109 = 2112;
       v110 = v59;
       _os_log_impl(&dword_188A29000, v60, OS_LOG_TYPE_DEFAULT, "%s Dictation Language %@ Source: %@ Keyboard Language %@, InputDelegateType: %@", buf, 0x34u);
     }
 
-    v62 = [getAFAnalyticsClass() sharedAnalytics];
+    sharedAnalytics2 = [getAFAnalyticsClass() sharedAnalytics];
     v104[0] = @"startDictation";
     v63 = [objc_opt_class() UIDictationStartStopReasonTypeDescription:{-[UIDictationController reasonType](self, "reasonType")}];
     v105[0] = v63;
-    v105[1] = v98;
+    v105[1] = smartLanguageSelectionOverrideLanguage2;
     v104[1] = @"dictationLanguage";
     v104[2] = @"dictationLanguageSource";
     v105[2] = v97;
     v104[3] = @"dictationLanguages";
-    v64 = [(UIDictationController *)self dictationLanguages];
-    v65 = v64;
+    dictationLanguages = [(UIDictationController *)self dictationLanguages];
+    v65 = dictationLanguages;
     v66 = MEMORY[0x1E695E0F0];
-    if (v64)
+    if (dictationLanguages)
     {
-      v66 = v64;
+      v66 = dictationLanguages;
     }
 
     v105[3] = v66;
     v104[4] = @"keyboardLocaleIdentifier";
-    v67 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
-    v105[4] = v67;
+    currentKeyboardPrimaryLanguage2 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
+    v105[4] = currentKeyboardPrimaryLanguage2;
     v104[5] = @"dictationUIInteractionIdentifier";
-    v68 = [(UIDictationController *)self interactionIdentifier];
-    v69 = v68;
-    if (v68)
+    interactionIdentifier = [(UIDictationController *)self interactionIdentifier];
+    v69 = interactionIdentifier;
+    if (interactionIdentifier)
     {
-      v70 = v68;
+      v70 = interactionIdentifier;
     }
 
     else
@@ -5057,8 +5057,8 @@ LABEL_39:
 
     v105[5] = v70;
     v104[6] = @"dictationOptInStatus";
-    v71 = [getAFPreferencesClass_0() sharedPreferences];
-    v72 = [v71 siriDataSharingOptInStatus];
+    sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+    siriDataSharingOptInStatus = [sharedPreferences siriDataSharingOptInStatus];
     v100 = 0;
     v101 = &v100;
     v102 = 0x2020000000;
@@ -5081,10 +5081,10 @@ LABEL_39:
     _Block_object_dispose(&v100, 8);
     if (v73)
     {
-      v76 = v73(v72);
+      v76 = v73(siriDataSharingOptInStatus);
       v105[6] = v76;
       v77 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:7];
-      [v62 logEventWithType:1404 context:v77];
+      [sharedAnalytics2 logEventWithType:1404 context:v77];
 
       v100 = 0;
       v101 = &v100;
@@ -5140,8 +5140,8 @@ LABEL_39:
       v85 = objc_alloc_init(v83);
       [v82 setStartedOrChanged:v85];
 
-      v86 = [v82 startedOrChanged];
-      [v86 setExists:1];
+      startedOrChanged = [v82 startedOrChanged];
+      [startedOrChanged setExists:1];
 
       [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v82];
       if (+[UIDictationController viewMode]== 6)
@@ -5149,7 +5149,7 @@ LABEL_39:
         [(UIDictationController *)self _displaySecureContentsAsPlainText:1 afterDelay:0.0];
       }
 
-      [(UIDictationController *)self _startDictationWithContinuation:v99];
+      [(UIDictationController *)self _startDictationWithContinuation:continuationCopy];
       [(UIDictationController *)self _markOfflineDictationInputMetricEvent];
       v87 = +[UIDictationView sharedInstance];
       [v87 setSwitchingLanguage:0];
@@ -5163,9 +5163,9 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    v94 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v95 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_AFSiriDataSharingOptInStatusGetName(AFSiriDataSharingOptInStatus)"];
-    [v94 handleFailureInFunction:v95 file:@"UIDictationController.m" lineNumber:233 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v95 file:@"UIDictationController.m" lineNumber:233 description:{@"%s", dlerror()}];
 
     __break(1u);
 LABEL_67:
@@ -5190,103 +5190,103 @@ LABEL_67:
 LABEL_60:
 }
 
-- (void)setCurrentInstrumentationContext:(id)a3
+- (void)setCurrentInstrumentationContext:(id)context
 {
-  v11 = a3;
-  objc_storeStrong(&self->_currentInstrumentationContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_currentInstrumentationContext, context);
   if (+[UIKeyboard isKeyboardProcess])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 inputDelegateManager];
-    v7 = [v6 inputSystemSourceSession];
+    inputDelegateManager = [v5 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v7)
+    if (inputSystemSourceSession)
     {
-      v8 = [v7 textOperations];
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [inputSystemSourceSession textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v10 = NSStringFromSelector(sel_setCurrentInstrumentationContext_);
-      [v9 setObject:v10 forKeyedSubscript:@"selector"];
+      [dictionary setObject:v10 forKeyedSubscript:@"selector"];
 
-      [v9 setObject:v11 forKeyedSubscript:@"instrumentationContext"];
-      [v8 setCustomInfoType:0x1EFB7C8F0];
-      [v8 setCustomInfo:v9];
-      [v7 flushOperations];
+      [dictionary setObject:contextCopy forKeyedSubscript:@"instrumentationContext"];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
 
-- (void)setLocalSpeechRecognitionForced:(BOOL)a3
+- (void)setLocalSpeechRecognitionForced:(BOOL)forced
 {
-  v3 = a3;
-  self->_localSpeechRecognitionForced = a3;
+  forcedCopy = forced;
+  self->_localSpeechRecognitionForced = forced;
   if (+[UIKeyboard isKeyboardProcess])
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v5 = [v4 inputDelegateManager];
-    v10 = [v5 inputSystemSourceSession];
+    inputDelegateManager = [v4 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v10)
+    if (inputSystemSourceSession)
     {
-      v6 = [v10 textOperations];
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [inputSystemSourceSession textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v8 = NSStringFromSelector(sel_setLocalSpeechRecognitionForced_);
-      [v7 setObject:v8 forKeyedSubscript:@"selector"];
+      [dictionary setObject:v8 forKeyedSubscript:@"selector"];
 
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-      [v7 setObject:v9 forKeyedSubscript:@"forceOfflineRecognition"];
+      v9 = [MEMORY[0x1E696AD98] numberWithBool:forcedCopy];
+      [dictionary setObject:v9 forKeyedSubscript:@"forceOfflineRecognition"];
 
-      [v6 setCustomInfoType:0x1EFB7C8F0];
-      [v6 setCustomInfo:v7];
-      [v10 flushOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
 
-- (void)setInteractionIdentifier:(id)a3
+- (void)setInteractionIdentifier:(id)identifier
 {
-  v11 = a3;
-  objc_storeStrong(&self->_interactionIdentifier, a3);
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_interactionIdentifier, identifier);
   if (+[UIKeyboard isKeyboardProcess])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 inputDelegateManager];
-    v7 = [v6 inputSystemSourceSession];
+    inputDelegateManager = [v5 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v7)
+    if (inputSystemSourceSession)
     {
-      v8 = [v7 textOperations];
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [inputSystemSourceSession textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v10 = NSStringFromSelector(sel_setInteractionIdentifier_);
-      [v9 setObject:v10 forKeyedSubscript:@"selector"];
+      [dictionary setObject:v10 forKeyedSubscript:@"selector"];
 
-      [v9 setObject:v11 forKeyedSubscript:@"interactionIdentifier"];
-      [v8 setCustomInfoType:0x1EFB7C8F0];
-      [v8 setCustomInfo:v9];
-      [v7 flushOperations];
+      [dictionary setObject:identifierCopy forKeyedSubscript:@"interactionIdentifier"];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
 
-- (void)switchToDictationLanguage:(id)a3 inputOptions:(id)a4
+- (void)switchToDictationLanguage:(id)language inputOptions:(id)options
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  optionsCopy = options;
   if (![objc_opt_class() shouldForwardEventsToInputSystemUI])
   {
     if (!+[UIKeyboard isModelessActive])
     {
       v9 = +[UIKeyboardImpl activeInstance];
-      v10 = [(UIDictationController *)self keyboardInputModeToReturn];
-      [v9 setKeyboardInputMode:v10 userInitiated:0];
+      keyboardInputModeToReturn = [(UIDictationController *)self keyboardInputModeToReturn];
+      [v9 setKeyboardInputMode:keyboardInputModeToReturn userInitiated:0];
     }
 
     v11 = +[UIDictationController sharedInstance];
-    [v11 overrideSmartLanguageSelection:v6];
+    [v11 overrideSmartLanguageSelection:languageCopy];
 
     v12 = off_1E70EA000;
     v13 = +[UIKeyboardInputModeController sharedInputModeController];
-    v14 = [v13 keyboardLanguageForDictationLanguage:v6];
+    v14 = [v13 keyboardLanguageForDictationLanguage:languageCopy];
     v15 = v14;
     if (v14)
     {
@@ -5295,20 +5295,20 @@ LABEL_60:
 
     else
     {
-      v16 = v6;
+      v16 = languageCopy;
     }
 
     v17 = v16;
 
-    v18 = [(UIDictationController *)self keyboardInputModeToReturn];
-    v19 = [v18 languageWithRegion];
-    v20 = [v17 isEqualToString:v19];
+    keyboardInputModeToReturn2 = [(UIDictationController *)self keyboardInputModeToReturn];
+    languageWithRegion = [keyboardInputModeToReturn2 languageWithRegion];
+    v20 = [v17 isEqualToString:languageWithRegion];
 
-    v53 = v7;
+    v53 = optionsCopy;
     if (v20)
     {
-      v21 = [(UIDictationController *)self keyboardInputModeToReturn];
-      if (!v21)
+      keyboardInputModeToReturn3 = [(UIDictationController *)self keyboardInputModeToReturn];
+      if (!keyboardInputModeToReturn3)
       {
 LABEL_40:
 
@@ -5323,29 +5323,29 @@ LABEL_40:
       v58 = 0u;
       v59 = 0u;
       v22 = +[UIKeyboardInputModeController sharedInputModeController];
-      v23 = [v22 currentInputMode];
-      v24 = [v23 multilingualSet];
+      currentInputMode = [v22 currentInputMode];
+      multilingualSet = [currentInputMode multilingualSet];
 
-      v25 = [v24 countByEnumeratingWithState:&v58 objects:v63 count:16];
+      v25 = [multilingualSet countByEnumeratingWithState:&v58 objects:v63 count:16];
       if (v25)
       {
         v26 = v25;
-        v21 = 0;
+        keyboardInputModeToReturn3 = 0;
         v27 = *v59;
 LABEL_13:
         v28 = 0;
-        v29 = v21;
+        v29 = keyboardInputModeToReturn3;
         while (1)
         {
           if (*v59 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(multilingualSet);
           }
 
-          v21 = *(*(&v58 + 1) + 8 * v28);
+          keyboardInputModeToReturn3 = *(*(&v58 + 1) + 8 * v28);
 
-          v30 = [v21 languageWithRegion];
-          v31 = [v17 isEqualToString:v30];
+          languageWithRegion2 = [keyboardInputModeToReturn3 languageWithRegion];
+          v31 = [v17 isEqualToString:languageWithRegion2];
 
           if (v31)
           {
@@ -5353,24 +5353,24 @@ LABEL_13:
           }
 
           ++v28;
-          v29 = v21;
+          v29 = keyboardInputModeToReturn3;
           if (v26 == v28)
           {
-            v26 = [v24 countByEnumeratingWithState:&v58 objects:v63 count:16];
+            v26 = [multilingualSet countByEnumeratingWithState:&v58 objects:v63 count:16];
             if (v26)
             {
               goto LABEL_13;
             }
 
-            v7 = v53;
+            optionsCopy = v53;
             v12 = off_1E70EA000;
             goto LABEL_20;
           }
         }
 
-        v7 = v53;
+        optionsCopy = v53;
         v12 = off_1E70EA000;
-        if (v21)
+        if (keyboardInputModeToReturn3)
         {
           goto LABEL_34;
         }
@@ -5385,29 +5385,29 @@ LABEL_20:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v32 = [(__objc2_class *)v12[13] sharedInputModeController];
-      v33 = [v32 activeInputModes];
+      sharedInputModeController = [(__objc2_class *)v12[13] sharedInputModeController];
+      activeInputModes = [sharedInputModeController activeInputModes];
 
-      v34 = [v33 countByEnumeratingWithState:&v54 objects:v62 count:16];
+      v34 = [activeInputModes countByEnumeratingWithState:&v54 objects:v62 count:16];
       if (v34)
       {
         v35 = v34;
-        v21 = 0;
+        keyboardInputModeToReturn3 = 0;
         v36 = *v55;
 LABEL_24:
         v37 = 0;
-        v38 = v21;
+        v38 = keyboardInputModeToReturn3;
         while (1)
         {
           if (*v55 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(activeInputModes);
           }
 
-          v21 = *(*(&v54 + 1) + 8 * v37);
+          keyboardInputModeToReturn3 = *(*(&v54 + 1) + 8 * v37);
 
-          v39 = [v21 languageWithRegion];
-          v40 = [v17 isEqualToString:v39];
+          languageWithRegion3 = [keyboardInputModeToReturn3 languageWithRegion];
+          v40 = [v17 isEqualToString:languageWithRegion3];
 
           if (v40)
           {
@@ -5415,65 +5415,65 @@ LABEL_24:
           }
 
           ++v37;
-          v38 = v21;
+          v38 = keyboardInputModeToReturn3;
           if (v35 == v37)
           {
-            v35 = [v33 countByEnumeratingWithState:&v54 objects:v62 count:16];
+            v35 = [activeInputModes countByEnumeratingWithState:&v54 objects:v62 count:16];
             if (v35)
             {
               goto LABEL_24;
             }
 
-            v21 = 0;
+            keyboardInputModeToReturn3 = 0;
             break;
           }
         }
 
-        v7 = v53;
+        optionsCopy = v53;
         v12 = off_1E70EA000;
       }
 
       else
       {
-        v21 = 0;
+        keyboardInputModeToReturn3 = 0;
       }
 
-      if (!v21)
+      if (!keyboardInputModeToReturn3)
       {
         goto LABEL_40;
       }
     }
 
 LABEL_34:
-    [v21 setDictationLanguage:v6];
+    [keyboardInputModeToReturn3 setDictationLanguage:languageCopy];
     v41 = +[UIDictationView sharedInstance];
     [v41 setShowLanguageLabel:1];
 
-    v42 = [(__objc2_class *)v12[13] sharedInputModeController];
-    v43 = [v42 currentInputMode];
+    sharedInputModeController2 = [(__objc2_class *)v12[13] sharedInputModeController];
+    currentInputMode2 = [sharedInputModeController2 currentInputMode];
     v44 = +[UIKeyboardInputMode dictationInputMode];
-    v45 = [v43 isEqual:v44];
+    v45 = [currentInputMode2 isEqual:v44];
 
     if (v45)
     {
-      [v21 setLastUsedDictationLanguage];
-      v46 = [(__objc2_class *)v12[13] sharedInputModeController];
-      [v46 setCurrentInputModeInPreference:v21];
+      [keyboardInputModeToReturn3 setLastUsedDictationLanguage];
+      sharedInputModeController3 = [(__objc2_class *)v12[13] sharedInputModeController];
+      [sharedInputModeController3 setCurrentInputModeInPreference:keyboardInputModeToReturn3];
 
       v47 = +[UIKeyboardInputMode dictationInputMode];
-      [v47 setCurrentInputModeForDictation:v21];
+      [v47 setCurrentInputModeForDictation:keyboardInputModeToReturn3];
 
-      [(UIDictationController *)self setCurrentInputModeForDictation:v21];
-      [(UIDictationController *)self setKeyboardInputModeToReturn:v21];
+      [(UIDictationController *)self setCurrentInputModeForDictation:keyboardInputModeToReturn3];
+      [(UIDictationController *)self setKeyboardInputModeToReturn:keyboardInputModeToReturn3];
       v48 = +[UIKeyboardImpl activeInstance];
-      v49 = [v48 isInHardwareKeyboardMode];
+      isInHardwareKeyboardMode = [v48 isInHardwareKeyboardMode];
 
-      v7 = v53;
-      if (v49)
+      optionsCopy = v53;
+      if (isInHardwareKeyboardMode)
       {
         v50 = UIApp;
-        v51 = [v21 automaticHardwareLayout];
-        [v50 setHardwareKeyboardLayoutName:v51];
+        automaticHardwareLayout = [keyboardInputModeToReturn3 automaticHardwareLayout];
+        [v50 setHardwareKeyboardLayoutName:automaticHardwareLayout];
       }
 
       [(UIDictationController *)self setInputModeOptions:0];
@@ -5483,32 +5483,32 @@ LABEL_34:
     else
     {
       v52 = +[UIKeyboardImpl activeInstance];
-      [v52 setKeyboardInputMode:v21 userInitiated:1];
+      [v52 setKeyboardInputMode:keyboardInputModeToReturn3 userInitiated:1];
 
-      v7 = v53;
-      [(UIDictationController *)self switchToDictationInputModeWithTouch:0 withKeyboardInputMode:v21 options:v53];
+      optionsCopy = v53;
+      [(UIDictationController *)self switchToDictationInputModeWithTouch:0 withKeyboardInputMode:keyboardInputModeToReturn3 options:v53];
     }
 
     goto LABEL_40;
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  [v8 forwardDictationEvent_switchToDictationLanguage:v6];
+  [v8 forwardDictationEvent_switchToDictationLanguage:languageCopy];
 
 LABEL_41:
 }
 
-- (void)presentEnablementAndDataSharingPromptIfNeeded:(id)a3
+- (void)presentEnablementAndDataSharingPromptIfNeeded:(id)needed
 {
-  v6 = a3;
+  neededCopy = needed;
   v4 = +[UIDictationConnectionPreferences sharedInstance];
   if ([v4 dictationIsEnabled])
   {
-    v5 = [(UIDictationController *)self dataSharingDecided];
+    dataSharingDecided = [(UIDictationController *)self dataSharingDecided];
 
-    if (v5)
+    if (dataSharingDecided)
     {
-      v6[2](v6, 1);
+      neededCopy[2](neededCopy, 1);
       goto LABEL_6;
     }
   }
@@ -5518,55 +5518,55 @@ LABEL_41:
   }
 
   [(UIDictationController *)self dismissSoftwareKeyboardIfNeeded];
-  [(UIDictationController *)self _presentEnablementAndDataSharingPromptIfNeeded:v6];
+  [(UIDictationController *)self _presentEnablementAndDataSharingPromptIfNeeded:neededCopy];
 LABEL_6:
 }
 
-- (void)switchToDictationInputModeWithTouch:(id)a3 withKeyboardInputMode:(id)a4 options:(id)a5
+- (void)switchToDictationInputModeWithTouch:(id)touch withKeyboardInputMode:(id)mode options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  touchCopy = touch;
+  modeCopy = mode;
+  optionsCopy = options;
   v11 = +[UIKeyboardImpl activeInstance];
-  v12 = [v11 inputDelegate];
+  inputDelegate = [v11 inputDelegate];
 
-  if (v12)
+  if (inputDelegate)
   {
     v13 = +[UIDictationConnectionPreferences sharedInstance];
     if ([v13 dictationIsEnabled])
     {
-      v14 = [(UIDictationController *)self dataSharingDecided];
+      dataSharingDecided = [(UIDictationController *)self dataSharingDecided];
 
-      if (v14)
+      if (dataSharingDecided)
       {
-        v15 = [(UIDictationController *)self _finalDictationStartLanguageCodeWithKeyboardInputMode:v9];
-        v16 = [getAFPreferencesClass_0() sharedPreferences];
+        v15 = [(UIDictationController *)self _finalDictationStartLanguageCodeWithKeyboardInputMode:modeCopy];
+        sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
         v17 = objc_opt_respondsToSelector();
 
         if (v17)
         {
-          v18 = [getAFPreferencesClass_0() sharedPreferences];
-          v19 = [v18 performSelector:sel_displayedLowStorageNotificationForLanguage_ withObject:v15];
+          sharedPreferences2 = [getAFPreferencesClass_0() sharedPreferences];
+          v19 = [sharedPreferences2 performSelector:sel_displayedLowStorageNotificationForLanguage_ withObject:v15];
 
-          v20 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
-          if (v20)
+          cachedDisplayLowStorageNotification = [(UIDictationController *)self cachedDisplayLowStorageNotification];
+          if (cachedDisplayLowStorageNotification)
           {
-            [(UIDictationController *)self setCachedDisplayLowStorageNotification:v20];
+            [(UIDictationController *)self setCachedDisplayLowStorageNotification:cachedDisplayLowStorageNotification];
           }
 
           else
           {
-            v21 = [MEMORY[0x1E695DF90] dictionary];
-            [(UIDictationController *)self setCachedDisplayLowStorageNotification:v21];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [(UIDictationController *)self setCachedDisplayLowStorageNotification:dictionary];
           }
 
           v22 = v19 != 0;
 
-          v23 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
-          v24 = [v23 objectForKey:v15];
-          v25 = [v24 BOOLValue];
+          cachedDisplayLowStorageNotification2 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
+          v24 = [cachedDisplayLowStorageNotification2 objectForKey:v15];
+          bOOLValue = [v24 BOOLValue];
 
-          v26 = v22 | v25;
+          v26 = v22 | bOOLValue;
           v27 = +[UIDictationConnectionPreferences sharedInstance];
           LODWORD(v24) = [v27 isOnDeviceDictationSupportMissingAssetForLanguage:v15];
 
@@ -5574,14 +5574,14 @@ LABEL_6:
           {
             if ((v26 & 1) == 0 && [objc_opt_class() _isLowStorageForOnDeviceDictationAsset])
             {
-              v28 = [(UIDictationController *)self dictationConnection];
-              [v28 suppressLowStorageNotificationForLanguage:v15 suppress:1];
+              dictationConnection = [(UIDictationController *)self dictationConnection];
+              [dictationConnection suppressLowStorageNotificationForLanguage:v15 suppress:1];
 
-              v29 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
-              [v29 setObject:MEMORY[0x1E695E118] forKey:v15];
+              cachedDisplayLowStorageNotification3 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
+              [cachedDisplayLowStorageNotification3 setObject:MEMORY[0x1E695E118] forKey:v15];
 
-              v30 = [(UIDictationController *)self dictationConnection];
-              [v30 requestOfflineDictationSupportForLanguage:v15 completion:0];
+              dictationConnection2 = [(UIDictationController *)self dictationConnection];
+              [dictationConnection2 requestOfflineDictationSupportForLanguage:v15 completion:0];
 
               [(UIDictationController *)self showLowStorageUserAlertWithLanguage:v15];
 LABEL_22:
@@ -5592,11 +5592,11 @@ LABEL_22:
 
           else if (v26)
           {
-            v31 = [(UIDictationController *)self dictationConnection];
-            [v31 suppressLowStorageNotificationForLanguage:v15 suppress:0];
+            dictationConnection3 = [(UIDictationController *)self dictationConnection];
+            [dictationConnection3 suppressLowStorageNotificationForLanguage:v15 suppress:0];
 
-            v32 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
-            [v32 setObject:MEMORY[0x1E695E110] forKey:v15];
+            cachedDisplayLowStorageNotification4 = [(UIDictationController *)self cachedDisplayLowStorageNotification];
+            [cachedDisplayLowStorageNotification4 setObject:MEMORY[0x1E695E110] forKey:v15];
           }
         }
 
@@ -5604,12 +5604,12 @@ LABEL_22:
         [v33 acceptAutocorrectionWithCompletionHandler:0];
 
         v34 = +[UIKeyboardInputMode dictationInputMode];
-        [v34 setTriggeringTouch:v8];
-        [v34 setCurrentInputModeForDictation:v9];
-        [(UIDictationController *)self setCurrentInputModeForDictation:v9];
+        [v34 setTriggeringTouch:touchCopy];
+        [v34 setCurrentInputModeForDictation:modeCopy];
+        [(UIDictationController *)self setCurrentInputModeForDictation:modeCopy];
         if (![v34 viewControllerClass])
         {
-          [(UITouch *)v8 _setPhaseChangeDelegate:?];
+          [(UITouch *)touchCopy _setPhaseChangeDelegate:?];
           self->cancelledByWaitingForLocalResults = 0;
           if ([(UIDictationController *)self isFallingBackToMonolingualDictation])
           {
@@ -5618,21 +5618,21 @@ LABEL_22:
 
           else
           {
-            v35 = [v9 isDisplayed] ^ 1;
+            v35 = [modeCopy isDisplayed] ^ 1;
           }
 
           v36 = +[UIDictationView sharedInstance];
           [v36 setShowLanguageLabel:v35];
 
-          [(UIDictationController *)self setInputModeOptions:v10];
-          self->_reasonType = [UIDictationController reasonType:v10];
+          [(UIDictationController *)self setInputModeOptions:optionsCopy];
+          self->_reasonType = [UIDictationController reasonType:optionsCopy];
           v37[0] = MEMORY[0x1E69E9820];
           v37[1] = 3221225472;
           v37[2] = __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboardInputMode_options___block_invoke;
           v37[3] = &unk_1E70F6228;
           v37[4] = self;
-          v38 = v9;
-          v39 = v8;
+          v38 = modeCopy;
+          v39 = touchCopy;
           [(UIDictationController *)self startDictationWithContinuation:v37];
         }
 
@@ -5669,30 +5669,30 @@ void __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboar
   [v3 postNotificationName:@"UIKeyboardDictationAvailabilityDidChangeNotification" userInfo:v4];
 }
 
-- (void)switchToDictationInputModeWithTouch:(id)a3
+- (void)switchToDictationInputModeWithTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
   v6 = +[UIKeyboardInputModeController sharedInputModeController];
-  v7 = [v6 currentInputMode];
-  v10 = [v5 getActiveInputModeInDictationFromMultiLingualInputModes:v7];
+  currentInputMode = [v6 currentInputMode];
+  v10 = [v5 getActiveInputModeInDictationFromMultiLingualInputModes:currentInputMode];
 
   v8 = +[UIKeyboardInputModeController sharedInputModeController];
   [v8 setCurrentInputMode:v10];
 
   v9 = [UIDictationInputModeOptions dictationInputModeOptionsWithInvocationSource:@"UIDictationInputModeInvocationSourceMicButtonInKeyboard"];
-  [(UIDictationController *)self switchToDictationInputModeWithTouch:v4 withKeyboardInputMode:v10 options:v9];
+  [(UIDictationController *)self switchToDictationInputModeWithTouch:touchCopy withKeyboardInputMode:v10 options:v9];
 }
 
-- (void)switchToDictationInputModeWithTouch:(id)a3 options:(id)a4
+- (void)switchToDictationInputModeWithTouch:(id)touch options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  touchCopy = touch;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v9 = [objc_opt_class() shouldForwardEventsToInputSystemUI];
+  shouldForwardEventsToInputSystemUI = [objc_opt_class() shouldForwardEventsToInputSystemUI];
   if (has_internal_diagnostics)
   {
-    if (v9)
+    if (shouldForwardEventsToInputSystemUI)
     {
       v12 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -5703,7 +5703,7 @@ void __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboar
     }
   }
 
-  else if (v9)
+  else if (shouldForwardEventsToInputSystemUI)
   {
     v13 = *(__UILogGetCategoryCachedImpl("Assert", &switchToDictationInputModeWithTouch_options____s_category) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -5714,22 +5714,22 @@ void __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboar
   }
 
   v10 = +[UIKeyboardInputModeController sharedInputModeController];
-  v11 = [v10 currentInputMode];
-  [(UIDictationController *)self switchToDictationInputModeWithTouch:v7 withKeyboardInputMode:v11 options:v6];
+  currentInputMode = [v10 currentInputMode];
+  [(UIDictationController *)self switchToDictationInputModeWithTouch:touchCopy withKeyboardInputMode:currentInputMode options:optionsCopy];
 }
 
-- (void)postNotificationName:(id)a3 userInfo:(id)a4
+- (void)postNotificationName:(id)name userInfo:(id)info
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"UIKeyboardDictationAvailabilityDidChangeNotification"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"UIDictationControllerDictationDidFinish") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"UIKeyboardDidBeginDictationNotification") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"UIDictationControllerDidResumeNotification") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"UIDictationControllerDidPauseNotification") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"UIDictationWillInsertHypothesisNotification"))
+  nameCopy = name;
+  infoCopy = info;
+  if (([nameCopy isEqualToString:@"UIKeyboardDictationAvailabilityDidChangeNotification"] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"UIDictationControllerDictationDidFinish") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"UIKeyboardDidBeginDictationNotification") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"UIDictationControllerDidResumeNotification") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"UIDictationControllerDidPauseNotification") & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"UIDictationWillInsertHypothesisNotification"))
   {
     if (+[UIKeyboard isKeyboardProcess])
     {
-      if ([v6 isEqualToString:@"UIKeyboardDictationAvailabilityDidChangeNotification"])
+      if ([nameCopy isEqualToString:@"UIKeyboardDictationAvailabilityDidChangeNotification"])
       {
-        v8 = [v7 objectForKeyedSubscript:@"reason"];
+        v8 = [infoCopy objectForKeyedSubscript:@"reason"];
         v9 = _UIDictationControllerLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
@@ -5742,22 +5742,22 @@ void __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboar
       }
 
       v10 = +[UIKeyboardImpl activeInstance];
-      v11 = [v10 inputDelegateManager];
-      v12 = [v11 inputSystemSourceSession];
+      inputDelegateManager = [v10 inputDelegateManager];
+      inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-      if (v12)
+      if (inputSystemSourceSession)
       {
-        v13 = [v12 textOperations];
-        [v13 setCustomInfoType:0x1EFB7C8F0];
+        textOperations = [inputSystemSourceSession textOperations];
+        [textOperations setCustomInfoType:0x1EFB7C8F0];
         v21 = @"selector";
         v14 = NSStringFromSelector(sel_postNotificationName_object_userInfo_);
         v24 = v14;
-        v25 = v6;
+        v25 = nameCopy;
         v22 = @"notificationName";
         v23 = @"userInfo";
-        if (v7)
+        if (infoCopy)
         {
-          v15 = v7;
+          v15 = infoCopy;
         }
 
         else
@@ -5767,15 +5767,15 @@ void __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboar
 
         v26 = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v21 count:3];
-        [v13 setCustomInfo:{v16, v21, v22, v23, v24, v25}];
+        [textOperations setCustomInfo:{v16, v21, v22, v23, v24, v25}];
 
-        [v12 flushOperations];
+        [inputSystemSourceSession flushOperations];
       }
     }
 
-    if ([v6 isEqualToString:@"UIKeyboardDidBeginDictationNotification"])
+    if ([nameCopy isEqualToString:@"UIKeyboardDidBeginDictationNotification"])
     {
-      v17 = [v7 objectForKeyedSubscript:@"dictationLanguage"];
+      v17 = [infoCopy objectForKeyedSubscript:@"dictationLanguage"];
       v18 = +[UIKeyboardImpl activeInstance];
       [v18 setActiveDictationLanguage:v17];
 
@@ -5784,11 +5784,11 @@ void __91__UIDictationController_switchToDictationInputModeWithTouch_withKeyboar
 
     else
     {
-      if (![v6 isEqualToString:@"UIDictationControllerDictationDidFinish"])
+      if (![nameCopy isEqualToString:@"UIDictationControllerDictationDidFinish"])
       {
 LABEL_23:
-        v20 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v20 postNotificationName:v6 object:0 userInfo:v7];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:nameCopy object:0 userInfo:infoCopy];
 
         goto LABEL_24;
       }
@@ -5809,17 +5809,17 @@ LABEL_24:
 {
   if ([(UIDictationController *)self smartLanguageSelectionOverridden])
   {
-    v3 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+    smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
   }
 
   else
   {
-    v4 = [(UIDictationController *)self currentInputModeForDictation];
-    v5 = [v4 dictationLanguage];
-    v3 = TIInputModeGetLanguageWithRegion();
+    currentInputModeForDictation = [(UIDictationController *)self currentInputModeForDictation];
+    dictationLanguage = [currentInputModeForDictation dictationLanguage];
+    smartLanguageSelectionOverrideLanguage = TIInputModeGetLanguageWithRegion();
   }
 
-  return v3;
+  return smartLanguageSelectionOverrideLanguage;
 }
 
 - (void)showSoftwareKeyboardIfNeeded
@@ -5827,14 +5827,14 @@ LABEL_24:
   if (![(UIDictationController *)self shouldSuppressSoftwareKeyboard])
   {
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 isMinimized];
+    isMinimized = [v3 isMinimized];
 
-    if (v4)
+    if (isMinimized)
     {
       v5 = +[UIKeyboardImpl activeInstance];
-      v6 = [v5 isInHardwareKeyboardMode];
+      isInHardwareKeyboardMode = [v5 isInHardwareKeyboardMode];
 
-      if ((v6 & 1) == 0)
+      if ((isInHardwareKeyboardMode & 1) == 0)
       {
         [(UIDictationController *)self setDidToggleSoftwareKeyboardVisibleForDictation:1];
         v7 = +[UIKeyboardImpl activeInstance];
@@ -5853,9 +5853,9 @@ LABEL_24:
 - (void)dismissSoftwareKeyboardIfNeeded
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 isMinimized];
+  isMinimized = [v3 isMinimized];
 
-  if ([(UIDictationController *)self didToggleSoftwareKeyboardVisibleForDictation]&& (v4 & 1) == 0)
+  if ([(UIDictationController *)self didToggleSoftwareKeyboardVisibleForDictation]&& (isMinimized & 1) == 0)
   {
     v5 = +[UIKeyboardImpl activeInstance];
     [v5 ejectKeyDown];
@@ -5864,19 +5864,19 @@ LABEL_24:
   [(UIDictationController *)self setDidToggleSoftwareKeyboardVisibleForDictation:0];
 }
 
-- (void)_displaySecureContentsAsPlainText:(BOOL)a3 afterDelay:(double)a4
+- (void)_displaySecureContentsAsPlainText:(BOOL)text afterDelay:(double)delay
 {
-  if (!a3)
+  if (!text)
   {
     v5 = +[UIKeyboardImpl sharedInstance];
-    v7 = [v5 inputDelegate];
+    inputDelegate = [v5 inputDelegate];
 
-    if ([v7 isSecureTextEntry])
+    if ([inputDelegate isSecureTextEntry])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v7;
+        v6 = inputDelegate;
         [v6 setDisplaySecureTextUsingPlainText:0];
         [v6 setDisplaySecureEditsUsingPlainText:0];
         [v6 _forceObscureAllText];
@@ -5890,13 +5890,13 @@ LABEL_24:
   if ([(UIDictationController *)self _shouldUpdateHelperMessageDisplay])
   {
     v3 = +[UIKeyboardImpl sharedInstance];
-    v7 = [v3 inputDelegate];
+    inputDelegate = [v3 inputDelegate];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4 = MEMORY[0x1E696AAB0];
-      v5 = v7;
+      v5 = inputDelegate;
       v6 = [[v4 alloc] initWithString:&stru_1EFB14550];
       [v5 _setOverridePlaceholder:v6 alignment:4];
       self->_prevForceDisplayOverridePlaceholder = [v5 _forceDisplayOverridePlaceholder];
@@ -5911,12 +5911,12 @@ LABEL_24:
   if ([(UIDictationController *)self _shouldUpdateHelperMessageDisplay])
   {
     v3 = +[UIKeyboardImpl sharedInstance];
-    v5 = [v3 inputDelegate];
+    inputDelegate = [v3 inputDelegate];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v5;
+      v4 = inputDelegate;
       [v4 _setOverridePlaceholder:0 alignment:4];
       [v4 _setForceDisplayOverridePlaceholder:self->_prevForceDisplayOverridePlaceholder];
     }
@@ -5944,7 +5944,7 @@ LABEL_24:
   if ([(UIDictationController *)self _shouldUpdateHelperMessageDisplay])
   {
     v2 = +[UIKeyboardImpl sharedInstance];
-    v3 = [v2 inputDelegate];
+    inputDelegate = [v2 inputDelegate];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -5954,18 +5954,18 @@ LABEL_24:
       return;
     }
 
-    v59 = v3;
+    v59 = inputDelegate;
     v4 = +[UIKeyboardImpl sharedInstance];
-    v5 = [v4 textInputTraits];
+    textInputTraits = [v4 textInputTraits];
 
-    v6 = [v5 dictationInfoKeyboardType];
+    dictationInfoKeyboardType = [textInputTraits dictationInfoKeyboardType];
     v7 = +[UIKeyboardImpl sharedInstance];
-    v8 = [v7 currentKey];
-    if (v8)
+    currentKey = [v7 currentKey];
+    if (currentKey)
     {
       v9 = +[UIKeyboardImpl sharedInstance];
-      v10 = [v9 currentKey];
-      v11 = [v10 interactionType] == 10;
+      currentKey2 = [v9 currentKey];
+      v11 = [currentKey2 interactionType] == 10;
     }
 
     else
@@ -5974,35 +5974,35 @@ LABEL_24:
     }
 
     v12 = +[UIKeyboard activeKeyboard];
-    v13 = [v12 isFocused];
+    isFocused = [v12 isFocused];
 
     v14 = +[UIKeyboardInputModeController sharedInputModeController];
-    v15 = [v14 enabledDictationLanguages];
-    v16 = [v15 count];
+    enabledDictationLanguages = [v14 enabledDictationLanguages];
+    v16 = [enabledDictationLanguages count];
 
     if (v16 <= 1)
     {
-      v18 = [MEMORY[0x1E696AAE8] mainBundle];
-      v19 = [v18 preferredLocalizations];
-      v20 = [v19 firstObject];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      preferredLocalizations = [mainBundle preferredLocalizations];
+      firstObject = [preferredLocalizations firstObject];
 
       v21 = +[UIDictationController sharedInstance];
       [v21 currentInputModeForDictation];
       v56 = v11;
-      v22 = v6;
-      v24 = v23 = v5;
-      v25 = [v24 dictationLanguage];
+      v22 = dictationInfoKeyboardType;
+      v24 = v23 = textInputTraits;
+      dictationLanguage = [v24 dictationLanguage];
 
       v26 = MEMORY[0x1E695DF58];
-      v63[0] = v20;
+      v63[0] = firstObject;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:1];
-      v62 = v25;
+      v62 = dictationLanguage;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
       v29 = [v26 matchedLanguagesFromAvailableLanguages:v27 forPreferredLanguages:v28];
       v17 = [v29 count] == 0;
 
-      v5 = v23;
-      v6 = v22;
+      textInputTraits = v23;
+      dictationInfoKeyboardType = v22;
       v11 = v56;
     }
 
@@ -6011,7 +6011,7 @@ LABEL_24:
       v17 = 1;
     }
 
-    if (v11 || (v13 & 1) == 0)
+    if (v11 || (isFocused & 1) == 0)
     {
       v30 = v59;
       [v59 _updateHelpMessageOverrideWithMessage:0];
@@ -6020,8 +6020,8 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v58 = v5;
-    if (UIKeyboardTypeSupportsDictationSpelling(v6) || ([v5 isSecureTextEntry] & 1) != 0 || objc_msgSend(v5, "forceSpellingDictation"))
+    v58 = textInputTraits;
+    if (UIKeyboardTypeSupportsDictationSpelling(dictationInfoKeyboardType) || ([textInputTraits isSecureTextEntry] & 1) != 0 || objc_msgSend(textInputTraits, "forceSpellingDictation"))
     {
       if (v17)
       {
@@ -6031,8 +6031,8 @@ LABEL_23:
 LABEL_16:
         v34 = _UILocalizedString(v31, v32, v33);
         v35 = +[UIDictationController sharedInstance];
-        v36 = [v35 currentInputModeForDictation];
-        v37 = [v36 dictationLanguage];
+        currentInputModeForDictation = [v35 currentInputModeForDictation];
+        dictationLanguage2 = [currentInputModeForDictation dictationLanguage];
 
         if ([v34 hasPrefix:@"%2$@"])
         {
@@ -6044,7 +6044,7 @@ LABEL_16:
           v38 = 5;
         }
 
-        v39 = UIKeyboardDictationDisplayNameInUILanguage(v37, v38);
+        v39 = UIKeyboardDictationDisplayNameInUILanguage(dictationLanguage2, v38);
         v40 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v34 validFormatSpecifiers:@"%@ %@" error:0, @"%@", v39];
 
         goto LABEL_22;
@@ -6083,19 +6083,19 @@ LABEL_22:
     v50 = v49;
     v51 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
     v30 = v59;
-    v52 = [v59 _placeholderColor];
+    _placeholderColor = [v59 _placeholderColor];
     v53 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v40];
     [v53 replaceCharactersInRange:v48 withAttributedString:{v50, v47}];
     v54 = *off_1E70EC918;
     v60[0] = *off_1E70EC920;
     v60[1] = v54;
-    v61[0] = v52;
+    v61[0] = _placeholderColor;
     v61[1] = v51;
     v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:2];
     [v53 addAttributes:v55 range:{0, objc_msgSend(v53, "length")}];
 
     [v59 _updateHelpMessageOverrideWithMessage:v53];
-    v5 = v58;
+    textInputTraits = v58;
     goto LABEL_23;
   }
 }
@@ -6114,9 +6114,9 @@ LABEL_22:
   return state64 & 1;
 }
 
-- (void)setDictationInfoOnScreenNotifyKey:(BOOL)a3
+- (void)setDictationInfoOnScreenNotifyKey:(BOOL)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = setDictationInfoOnScreenNotifyKey__token;
   if (!setDictationInfoOnScreenNotifyKey__token)
   {
@@ -6126,57 +6126,57 @@ LABEL_22:
 
   state64 = 0;
   notify_get_state(v4, &state64);
-  if ((state64 & 1) != v3)
+  if ((state64 & 1) != keyCopy)
   {
-    state64 = v3;
-    notify_set_state(setDictationInfoOnScreenNotifyKey__token, v3);
+    state64 = keyCopy;
+    notify_set_state(setDictationInfoOnScreenNotifyKey__token, keyCopy);
   }
 }
 
 - (void)_createDictationPresenterWindowIfNecessary
 {
-  v3 = [(UIDictationController *)self dictationPresenterWindow];
+  dictationPresenterWindow = [(UIDictationController *)self dictationPresenterWindow];
 
-  if (!v3)
+  if (!dictationPresenterWindow)
   {
     v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v5 = [v4 scene];
+    scene = [v4 scene];
 
     v6 = objc_alloc_init(UIApplicationRotationFollowingWindow);
     [(UIDictationController *)self setDictationPresenterWindow:v6];
 
-    v7 = [(UIDictationController *)self dictationPresenterWindow];
-    [v7 setOpaque:0];
+    dictationPresenterWindow2 = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow2 setOpaque:0];
 
-    v8 = [(UIDictationController *)self dictationPresenterWindow];
+    dictationPresenterWindow3 = [(UIDictationController *)self dictationPresenterWindow];
     v9 = +[UIColor clearColor];
-    [v8 setBackgroundColor:v9];
+    [dictationPresenterWindow3 setBackgroundColor:v9];
 
-    v10 = [(UIDictationController *)self dictationPresenterWindow];
-    [v10 setWindowScene:v5];
+    dictationPresenterWindow4 = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow4 setWindowScene:scene];
 
-    v11 = [(UIDictationController *)self dictationPresenterWindow];
-    [v11 setWindowLevel:2000.0];
+    dictationPresenterWindow5 = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow5 setWindowLevel:2000.0];
 
-    v12 = [(UIDictationController *)self dictationPresenterWindow];
-    [v12 setHidden:1];
+    dictationPresenterWindow6 = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow6 setHidden:1];
 
     v13 = objc_alloc_init(UIApplicationRotationFollowingController);
     [(UIApplicationRotationFollowingController *)v13 setSizesWindowToScene:1];
-    v14 = [(UIDictationController *)self dictationPresenterWindow];
-    [v14 setRootViewController:v13];
+    dictationPresenterWindow7 = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow7 setRootViewController:v13];
   }
 
-  v16 = [(UIDictationController *)self dictationPresenterWindow];
-  v15 = [UIApp keyWindow];
-  [v16 _setSecure:{objc_msgSend(v15, "_isSecure")}];
+  dictationPresenterWindow8 = [(UIDictationController *)self dictationPresenterWindow];
+  keyWindow = [UIApp keyWindow];
+  [dictationPresenterWindow8 _setSecure:{objc_msgSend(keyWindow, "_isSecure")}];
 }
 
-- (void)_logEnablementPromtMetricsWithStartDate:(id)a3
+- (void)_logEnablementPromtMetricsWithStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MEMORY[0x1E695DF00] now];
-  [v5 timeIntervalSinceDate:v4];
+  [v5 timeIntervalSinceDate:dateCopy];
   v7 = v6;
 
   v15 = 0;
@@ -6201,13 +6201,13 @@ LABEL_22:
   [v10 setIsDictationEnabled:{-[UIDictationController enablementLoggingIsDictationEnabled](self, "enablementLoggingIsDictationEnabled")}];
   [v10 setIsLearnMoreButtonClicked:{-[UIDictationController enablementLoggingIsLearnMoreButtonClicked](self, "enablementLoggingIsLearnMoreButtonClicked")}];
   [v10 setPromptVisibilityDurationInMs:(v7 * 1000.0)];
-  v11 = [getAFAnalyticsClass() sharedAnalytics];
-  v12 = [v11 newTurnBasedInstrumentationContext];
+  sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
+  newTurnBasedInstrumentationContext = [sharedAnalytics newTurnBasedInstrumentationContext];
 
-  [v12 emitInstrumentation:v10];
+  [newTurnBasedInstrumentationContext emitInstrumentation:v10];
   if ([(UIDictationController *)self enablementLoggingIsDictationEnabled])
   {
-    v13 = v12;
+    v13 = newTurnBasedInstrumentationContext;
   }
 
   else
@@ -6218,9 +6218,9 @@ LABEL_22:
   objc_storeStrong(&self->_enablementInstrumentationContext, v13);
 }
 
-- (void)_presentEnablementAndDataSharingPromptIfNeeded:(id)a3
+- (void)_presentEnablementAndDataSharingPromptIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   [(UIDictationController *)self setEnablementLoggingIsDictationEnabled:0];
   [(UIDictationController *)self setEnablementLoggingIsLearnMoreButtonClicked:0];
   v5 = [MEMORY[0x1E695DF00] now];
@@ -6236,11 +6236,11 @@ LABEL_22:
   v23[1] = v23;
   v23[2] = 0x2020000000;
   v24 = 0;
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"UIKeyboardWillPresentDictationEnablementPromptNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIKeyboardWillPresentDictationEnablementPromptNotification" object:0];
 
   v7 = +[UIDictationConnectionPreferences sharedInstance];
-  v8 = [v7 suppressDataSharingOptIn];
+  suppressDataSharingOptIn = [v7 suppressDataSharingOptIn];
 
   v9 = objc_alloc_init(DispatchGroupWrapper);
   if (+[UIKeyboard isKeyboardProcess])
@@ -6268,12 +6268,12 @@ LABEL_22:
   v15[1] = 3221225472;
   v15[2] = __72__UIDictationController__presentEnablementAndDataSharingPromptIfNeeded___block_invoke_3;
   v15[3] = &unk_1E7114DC8;
-  v21 = v8;
+  v21 = suppressDataSharingOptIn;
   v19 = v27;
   v15[4] = self;
   v12 = v5;
   v16 = v12;
-  v13 = v4;
+  v13 = neededCopy;
   v18 = v13;
   v14 = v9;
   v17 = v14;
@@ -6469,22 +6469,22 @@ LABEL_19:
   }
 }
 
-- (void)_endEnableDictationPromptAnimated:(BOOL)a3
+- (void)_endEnableDictationPromptAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [MEMORY[0x1E69D9560] dismissEnableDictationPrompt];
-  v5 = [(UIDictationController *)self dictationPrivacySheetController];
+  dictationPrivacySheetController = [(UIDictationController *)self dictationPrivacySheetController];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__UIDictationController__endEnableDictationPromptAnimated___block_invoke;
   v6[3] = &unk_1E70F3590;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:v3 completion:v6];
+  [dictationPrivacySheetController dismissViewControllerAnimated:animatedCopy completion:v6];
 }
 
-- (void)presentAlertOfType:(int64_t)a3 withCompletion:(id)a4
+- (void)presentAlertOfType:(int64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
@@ -6498,32 +6498,32 @@ LABEL_19:
 
   else
   {
-    v10 = [UIApp keyWindow];
-    v11 = [v10 firstResponder];
-    v12 = [v11 inputAccessoryView];
-    v13 = [v11 inputAccessoryViewController];
+    keyWindow = [UIApp keyWindow];
+    firstResponder = [keyWindow firstResponder];
+    inputAccessoryView = [firstResponder inputAccessoryView];
+    inputAccessoryViewController = [firstResponder inputAccessoryViewController];
     *buf = 0;
     v38 = buf;
     v39 = 0x2020000000;
     v40 = 0;
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    v15 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __59__UIDictationController_presentAlertOfType_withCompletion___block_invoke;
     v29[3] = &unk_1E7114E18;
     v35 = buf;
-    v16 = v10;
+    v16 = keyWindow;
     v30 = v16;
-    v17 = v11;
+    v17 = firstResponder;
     v31 = v17;
-    v18 = v12;
+    v18 = inputAccessoryView;
     v32 = v18;
-    v19 = v13;
+    v19 = inputAccessoryViewController;
     v36 = v41;
     v33 = v19;
-    v34 = self;
-    v9 = [v14 addObserverForName:@"UIWindowFirstResponderDidChangeNotification" object:v16 queue:v15 usingBlock:v29];
+    selfCopy = self;
+    v9 = [defaultCenter addObserverForName:@"UIWindowFirstResponderDidChangeNotification" object:v16 queue:mainQueue usingBlock:v29];
 
     _Block_object_dispose(buf, 8);
     v8 = "_UIMonochromaticTreatment";
@@ -6537,15 +6537,15 @@ LABEL_19:
   v28 = v41;
   v20 = v9;
   v26 = v20;
-  v21 = v6;
+  v21 = completionCopy;
   v27 = v21;
   v22 = _Block_copy(aBlock);
-  if (a3 == 2)
+  if (type == 2)
   {
     [(UIDictationController *)self _presentDataSharingOptInAlertWithCompletion:v22];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     [(UIDictationController *)self _presentOptInAlertWithCompletion:v22];
   }
@@ -6675,22 +6675,22 @@ void __59__UIDictationController_presentAlertOfType_withCompletion___block_invok
 - (BOOL)shouldPresentOptInAlert
 {
   v2 = +[UIDictationConnectionPreferences sharedInstance];
-  v3 = [v2 dictationIsEnabled];
+  dictationIsEnabled = [v2 dictationIsEnabled];
 
-  return v3 ^ 1;
+  return dictationIsEnabled ^ 1;
 }
 
-- (void)_presentOptInAlertWithCompletion:(id)a3
+- (void)_presentOptInAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69D9560];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__UIDictationController__presentOptInAlertWithCompletion___block_invoke;
   v7[3] = &unk_1E7114E90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 promptToEnableDictationWithCompletionHandler:v7];
 }
 
@@ -6738,17 +6738,17 @@ id __58__UIDictationController__presentOptInAlertWithCompletion___block_invoke_3
   return v3;
 }
 
-- (void)_presentDataSharingOptInAlertWithCompletion:(id)a3
+- (void)_presentDataSharingOptInAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69D9560];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__UIDictationController__presentDataSharingOptInAlertWithCompletion___block_invoke;
   v7[3] = &unk_1E7104B90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 promptToEnableDataSharingWithCompletionHandler:v7];
 }
 
@@ -6788,12 +6788,12 @@ uint64_t __69__UIDictationController__presentDataSharingOptInAlertWithCompletion
   }
 }
 
-- (void)_presentAlertForDictationInputModeOfType:(int64_t)a3 completionHandler:(id)a4
+- (void)_presentAlertForDictationInputModeOfType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3 == 1 && (+[UIDictationConnectionPreferences sharedInstance](UIDictationConnectionPreferences, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 dictationIsEnabled], v7, v8))
+  handlerCopy = handler;
+  if (type == 1 && (+[UIDictationConnectionPreferences sharedInstance](UIDictationConnectionPreferences, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 dictationIsEnabled], v7, v8))
   {
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -6802,31 +6802,31 @@ uint64_t __69__UIDictationController__presentDataSharingOptInAlertWithCompletion
     v9[1] = 3221225472;
     v9[2] = __84__UIDictationController__presentAlertForDictationInputModeOfType_completionHandler___block_invoke;
     v9[3] = &unk_1E7114ED8;
-    v11 = a3;
-    v10 = v6;
-    [(UIDictationController *)self presentAlertOfType:a3 withCompletion:v9];
+    typeCopy = type;
+    v10 = handlerCopy;
+    [(UIDictationController *)self presentAlertOfType:type withCompletion:v9];
   }
 }
 
 - (id)presentingViewControllerForPrivacySheet
 {
-  v2 = [(UIDictationController *)self dictationPresenterWindow];
-  v3 = [v2 rootViewController];
+  dictationPresenterWindow = [(UIDictationController *)self dictationPresenterWindow];
+  rootViewController = [dictationPresenterWindow rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
-- (void)_presentPrivacySheetForType:(int64_t)a3 completion:(id)a4
+- (void)_presentPrivacySheetForType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(UIDictationController *)self _createDictationPresenterWindowIfNecessary];
-  v7 = _Block_copy(v6);
+  v7 = _Block_copy(completionCopy);
 
   privacySheetDismissalHandler = self->_privacySheetDismissalHandler;
   self->_privacySheetDismissalHandler = v7;
 
   v9 = [_UIDictationPrivacySheetController alloc];
-  if (a3 == 1)
+  if (type == 1)
   {
     v10 = [(_UIDictationPrivacySheetController *)v9 initWithType:1];
   }
@@ -6840,57 +6840,57 @@ uint64_t __69__UIDictationController__presentDataSharingOptInAlertWithCompletion
 
   v24 = v10;
   [(UIDictationController *)self setDictationPrivacySheetController:v10];
-  v11 = [(UIDictationController *)self dictationPrivacySheetController];
-  [v11 setPrivacyDelegate:self];
+  dictationPrivacySheetController = [(UIDictationController *)self dictationPrivacySheetController];
+  [dictationPrivacySheetController setPrivacyDelegate:self];
 
-  v12 = [(UIDictationController *)self dictationPrivacySheetController];
-  v13 = [v12 presentationController];
-  [v13 setDelegate:self];
+  dictationPrivacySheetController2 = [(UIDictationController *)self dictationPrivacySheetController];
+  presentationController = [dictationPrivacySheetController2 presentationController];
+  [presentationController setDelegate:self];
 
-  v14 = [(UIDictationController *)self presentingWindowForPrivacySheet];
-  [v14 makeKeyAndVisible];
+  presentingWindowForPrivacySheet = [(UIDictationController *)self presentingWindowForPrivacySheet];
+  [presentingWindowForPrivacySheet makeKeyAndVisible];
 
   if (+[UIDictationUtilities _isUsingLargeFormatDictationUI])
   {
-    v15 = [(UIDictationController *)self presentingWindowForPrivacySheet];
+    presentingWindowForPrivacySheet2 = [(UIDictationController *)self presentingWindowForPrivacySheet];
     v16 = [UIVisualEffectView alloc];
     v17 = [UIBlurEffect effectWithStyle:1];
     v18 = [(UIVisualEffectView *)v16 initWithEffect:v17];
 
-    [v15 bounds];
+    [presentingWindowForPrivacySheet2 bounds];
     [(UIView *)v18 setFrame:?];
-    [v15 insertSubview:v18 atIndex:0];
+    [presentingWindowForPrivacySheet2 insertSubview:v18 atIndex:0];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v19 = [v24 privacyPresenter];
-    v20 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
-    [v19 setPresentingViewController:v20];
+    privacyPresenter = [v24 privacyPresenter];
+    presentingViewControllerForPrivacySheet = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
+    [privacyPresenter setPresentingViewController:presentingViewControllerForPrivacySheet];
 
-    v21 = [v24 privacyPresenter];
-    [v21 present];
+    privacyPresenter2 = [v24 privacyPresenter];
+    [privacyPresenter2 present];
   }
 
   else
   {
-    v21 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
-    v22 = [(UIDictationController *)self dictationPrivacySheetController];
-    [v21 presentViewController:v22 animated:1 completion:0];
+    privacyPresenter2 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
+    dictationPrivacySheetController3 = [(UIDictationController *)self dictationPrivacySheetController];
+    [privacyPresenter2 presentViewController:dictationPrivacySheetController3 animated:1 completion:0];
   }
 
   [(UIDictationController *)self setDictationInfoOnScreenNotifyKey:1];
 }
 
-- (void)dictationPrivacySheetControllerDidFinish:(id)a3
+- (void)dictationPrivacySheetControllerDidFinish:(id)finish
 {
-  v4 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
+  presentingViewControllerForPrivacySheet = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__UIDictationController_dictationPrivacySheetControllerDidFinish___block_invoke;
   v5[3] = &unk_1E70F3590;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [presentingViewControllerForPrivacySheet dismissViewControllerAnimated:1 completion:v5];
 }
 
 void __66__UIDictationController_dictationPrivacySheetControllerDidFinish___block_invoke(uint64_t a1)
@@ -6905,14 +6905,14 @@ void __66__UIDictationController_dictationPrivacySheetControllerDidFinish___bloc
 
 - (void)_handlePrivacySheetDismissal
 {
-  v3 = [(UIDictationController *)self dictationPrivacySheetController];
-  v4 = [v3 sheetType];
+  dictationPrivacySheetController = [(UIDictationController *)self dictationPrivacySheetController];
+  sheetType = [dictationPrivacySheetController sheetType];
 
   [(UIDictationController *)self setDictationPrivacySheetController:0];
   privacySheetDismissalHandler = self->_privacySheetDismissalHandler;
   if (privacySheetDismissalHandler)
   {
-    v6 = v4 == 1;
+    v6 = sheetType == 1;
     v7 = _Block_copy(privacySheetDismissalHandler);
     v8 = self->_privacySheetDismissalHandler;
     self->_privacySheetDismissalHandler = 0;
@@ -6922,7 +6922,7 @@ void __66__UIDictationController_dictationPrivacySheetControllerDidFinish___bloc
     v13 = __53__UIDictationController__handlePrivacySheetDismissal__block_invoke;
     v14 = &unk_1E7114F00;
     v17 = v6;
-    v15 = self;
+    selfCopy = self;
     v16 = v7;
     v9 = v7[2];
     v10 = v7;
@@ -6963,12 +6963,12 @@ uint64_t __53__UIDictationController__handlePrivacySheetDismissal__block_invoke(
   }
 }
 
-- (void)_touchPhaseChangedForTouch:(id)a3
+- (void)_touchPhaseChangedForTouch:(id)touch
 {
-  v4 = [a3 phase];
-  if ((v4 - 3) <= 1)
+  phase = [touch phase];
+  if ((phase - 3) <= 1)
   {
-    if (v4 == 3)
+    if (phase == 3)
     {
       self->_reasonType = 7;
       [(UIDictationController *)self stopDictation];
@@ -6980,8 +6980,8 @@ uint64_t __53__UIDictationController__handlePrivacySheetDismissal__block_invoke(
     }
 
     v6 = +[UIKeyboardImpl activeInstance];
-    v5 = [(UIDictationController *)self keyboardInputModeToReturn];
-    [v6 setKeyboardInputMode:v5 userInitiated:0];
+    keyboardInputModeToReturn = [(UIDictationController *)self keyboardInputModeToReturn];
+    [v6 setKeyboardInputMode:keyboardInputModeToReturn userInitiated:0];
   }
 }
 
@@ -7000,26 +7000,26 @@ uint64_t __53__UIDictationController__handlePrivacySheetDismissal__block_invoke(
   }
 }
 
-- (void)switchToDictationInputModeWithOptions:(id)a3
+- (void)switchToDictationInputModeWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   if ([objc_opt_class() shouldForwardEventsToInputSystemUI])
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    [v4 forwardDictationEvent_switchToDictationInputModeWithOptions:v5];
+    [v4 forwardDictationEvent_switchToDictationInputModeWithOptions:optionsCopy];
   }
 
   else
   {
-    [(UIDictationController *)self switchToDictationInputModeWithTouch:0 options:v5];
+    [(UIDictationController *)self switchToDictationInputModeWithTouch:0 options:optionsCopy];
   }
 }
 
-- (_NSRange)_getRangeOfString:(id)a3 inDocumentText:(id)a4
+- (_NSRange)_getRangeOfString:(id)string inDocumentText:(id)text
 {
-  v5 = a3;
-  v6 = [a4 mutableCopy];
-  v7 = [v5 mutableCopy];
+  stringCopy = string;
+  v6 = [text mutableCopy];
+  v7 = [stringCopy mutableCopy];
 
   if (qword_1ED498818 != -1)
   {
@@ -7100,13 +7100,13 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
     v5 = _UIDictationControllerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(UIDictationController *)self state];
+      state = [(UIDictationController *)self state];
       reasonType = self->_reasonType;
       v8 = [objc_opt_class() UIDictationStartStopReasonTypeDescription:reasonType];
       *buf = 136315906;
       *&buf[4] = "[UIDictationController cancelDictation]";
       *&buf[12] = 1024;
-      *&buf[14] = v6;
+      *&buf[14] = state;
       *&buf[18] = 2048;
       *&buf[20] = reasonType;
       *&buf[28] = 2112;
@@ -7116,44 +7116,44 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
 
     if ([(UIDictationController *)self state]&& (![(UIDictationController *)self isIgnoringDocumentChanges]|| self->_deferredCancellationRequested))
     {
-      v9 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+      smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
 
-      if (v9)
+      if (smartLanguageSelectionOverrideLanguage)
       {
-        v10 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-        v11 = 3;
+        smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+        dictationSourceType = 3;
       }
 
       else
       {
-        v12 = [(UIDictationController *)self detectedLanguage];
+        detectedLanguage = [(UIDictationController *)self detectedLanguage];
 
-        if (v12)
+        if (detectedLanguage)
         {
-          v10 = [(UIDictationController *)self detectedLanguage];
-          v11 = 4;
+          smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self detectedLanguage];
+          dictationSourceType = 4;
         }
 
         else
         {
-          v13 = [(UIDictationController *)self initialDictationLanguage];
+          initialDictationLanguage = [(UIDictationController *)self initialDictationLanguage];
 
-          if (v13)
+          if (initialDictationLanguage)
           {
-            v10 = [(UIDictationController *)self initialDictationLanguage];
-            v11 = [(UIDictationController *)self dictationSourceType];
+            smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self initialDictationLanguage];
+            dictationSourceType = [(UIDictationController *)self dictationSourceType];
           }
 
           else
           {
-            v11 = 0;
-            v10 = &stru_1EFB14550;
+            dictationSourceType = 0;
+            smartLanguageSelectionOverrideLanguage2 = &stru_1EFB14550;
           }
         }
       }
 
-      v14 = [objc_opt_class() UIDictationLanguageSourceType:v11];
-      v15 = [getAFAnalyticsClass() sharedAnalytics];
+      v14 = [objc_opt_class() UIDictationLanguageSourceType:dictationSourceType];
+      sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
       v60[0] = @"cancelDictation";
       v16 = [objc_opt_class() UIDictationStartStopReasonTypeDescription:{-[UIDictationController reasonType](self, "reasonType")}];
       v61[0] = v16;
@@ -7161,10 +7161,10 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
       v17 = [objc_opt_class() stringForState:{-[UIDictationController state](self, "state")}];
       v61[1] = v17;
       v60[2] = @"isReceivingResults";
-      v18 = [(UIDictationController *)self isRecievingResults];
+      isRecievingResults = [(UIDictationController *)self isRecievingResults];
       v19 = MEMORY[0x1E695E110];
       v20 = MEMORY[0x1E695E118];
-      if (v18)
+      if (isRecievingResults)
       {
         v21 = MEMORY[0x1E695E118];
       }
@@ -7176,8 +7176,8 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
 
       v61[2] = v21;
       v60[3] = @"lastRecognitionText";
-      v22 = [(UIDictationController *)self lastRecognitionText];
-      if (v22)
+      lastRecognitionText = [(UIDictationController *)self lastRecognitionText];
+      if (lastRecognitionText)
       {
         v23 = v20;
       }
@@ -7190,23 +7190,23 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
       v61[3] = v23;
       v60[4] = @"dictationLanguage";
       v60[5] = @"dictationLanguageSource";
-      v61[4] = v10;
+      v61[4] = smartLanguageSelectionOverrideLanguage2;
       v61[5] = v14;
       v60[6] = @"keyboardLocaleIdentifier";
-      v24 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
-      v61[6] = v24;
+      currentKeyboardPrimaryLanguage = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
+      v61[6] = currentKeyboardPrimaryLanguage;
       v60[7] = @"dictationUIInteractionIdentifier";
-      v25 = [(UIDictationController *)self interactionIdentifier];
-      v26 = v25;
+      interactionIdentifier = [(UIDictationController *)self interactionIdentifier];
+      v26 = interactionIdentifier;
       v27 = &stru_1EFB14550;
-      if (v25)
+      if (interactionIdentifier)
       {
-        v27 = v25;
+        v27 = interactionIdentifier;
       }
 
       v61[7] = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:8];
-      [v15 logEventWithType:1403 context:v28];
+      [sharedAnalytics logEventWithType:1403 context:v28];
 
       v56 = 0;
       v57 = &v56;
@@ -7231,14 +7231,14 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
       [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v31];
       self->_deferredCancellationRequested = 0;
       v32 = +[UIKeyboardImpl activeInstance];
-      v33 = [v32 inputDelegateManager];
+      inputDelegateManager = [v32 inputDelegateManager];
 
-      v34 = [v33 hasAsyncCapableInputDelegate];
-      v35 = [v33 keyInputDelegate];
+      hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
+      keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-      if (v35)
+      if (keyInputDelegate)
       {
-        v36 = v34;
+        v36 = hasAsyncCapableInputDelegate;
       }
 
       else
@@ -7248,36 +7248,36 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
 
       if ((v36 & 1) == 0)
       {
-        v37 = [(UIDictationController *)self lastHypothesis];
-        if (v37)
+        lastHypothesis = [(UIDictationController *)self lastHypothesis];
+        if (lastHypothesis)
         {
-          v38 = [(UIDictationController *)self targetHypothesis];
-          v39 = v38 == 0;
+          targetHypothesis = [(UIDictationController *)self targetHypothesis];
+          v39 = targetHypothesis == 0;
 
           if (!v39)
           {
-            v40 = [(UIDictationController *)self lastHypothesis];
-            v41 = [(UIDictationController *)self _hypothesisRangeFromSelectionRange:0 inputDelegateManager:v33 forHypothesis:v40];
+            lastHypothesis2 = [(UIDictationController *)self lastHypothesis];
+            v41 = [(UIDictationController *)self _hypothesisRangeFromSelectionRange:0 inputDelegateManager:inputDelegateManager forHypothesis:lastHypothesis2];
 
             v42 = +[UIDictationLandingView activeInstance];
-            v43 = [v42 superview];
-            v44 = v43 == 0;
+            superview = [v42 superview];
+            v44 = superview == 0;
 
             if (!v44)
             {
-              v45 = [(UIDictationController *)self _rangeByExtendingRange:v41 backward:+[UIDictationLandingView forward:"fallbackPlaceholderLength"]inputDelegateManager:0, v33];
+              v45 = [(UIDictationController *)self _rangeByExtendingRange:v41 backward:+[UIDictationLandingView forward:"fallbackPlaceholderLength"]inputDelegateManager:0, inputDelegateManager];
 
               v41 = v45;
             }
 
-            v46 = [v33 textInRange:v41];
+            v46 = [inputDelegateManager textInRange:v41];
             if (v46)
             {
-              v47 = [(UIDictationController *)self lastHypothesis];
-              if (v47)
+              lastHypothesis3 = [(UIDictationController *)self lastHypothesis];
+              if (lastHypothesis3)
               {
-                v48 = [(UIDictationController *)self lastHypothesis];
-                v49 = [(UIDictationController *)self _getRangeOfString:v48 inDocumentText:v46]== 0x7FFFFFFFFFFFFFFFLL;
+                lastHypothesis4 = [(UIDictationController *)self lastHypothesis];
+                v49 = [(UIDictationController *)self _getRangeOfString:lastHypothesis4 inDocumentText:v46]== 0x7FFFFFFFFFFFFFFFLL;
 
                 if (v49)
                 {
@@ -7295,10 +7295,10 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
       [(UIDictationController *)self _setupHypothesisAsFinalResults];
       if ([(UIDictationController *)self state]== 2)
       {
-        v50 = [v33 _textSelectingContainer];
+        _textSelectingContainer = [inputDelegateManager _textSelectingContainer];
         if (objc_opt_respondsToSelector())
         {
-          [v50 dictationRecordingDidEnd];
+          [_textSelectingContainer dictationRecordingDidEnd];
         }
 
         if (!self->_recievingResults)
@@ -7309,8 +7309,8 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
         }
       }
 
-      v53 = [(UIDictationController *)self dictationConnection];
-      [v53 cancelSpeech];
+      dictationConnection = [(UIDictationController *)self dictationConnection];
+      [dictationConnection cancelSpeech];
 
       [(UIDictationController *)self setState:0];
       [(UIDictationController *)self cancelRecordingLimitTimer];
@@ -7330,18 +7330,18 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
   }
 }
 
-- (void)cancelDictationForTextStoreChangesInResponder:(id)a3
+- (void)cancelDictationForTextStoreChangesInResponder:(id)responder
 {
-  v7 = a3;
+  responderCopy = responder;
   if (![(UIDictationController *)self isDetectingUtterances]&& ![(UIDictationController *)self isIgnoringDocumentChanges])
   {
     if (+[UIDictationController isRunning])
     {
       v4 = +[UIKeyboardImpl activeInstance];
-      v5 = [v4 inputDelegateManager];
-      v6 = [v5 delegateAsResponder];
+      inputDelegateManager = [v4 inputDelegateManager];
+      delegateAsResponder = [inputDelegateManager delegateAsResponder];
 
-      if (v6 == v7)
+      if (delegateAsResponder == responderCopy)
       {
         self->_deferredCancellationRequested = 1;
         [(UIDictationController *)self _startStreamingAnimations];
@@ -7350,14 +7350,14 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
   }
 }
 
-- (void)stopDictation:(BOOL)a3
+- (void)stopDictation:(BOOL)dictation
 {
-  v3 = a3;
+  dictationCopy = dictation;
   v52 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() shouldForwardEventsToInputSystemUI])
   {
     v43 = +[UIKeyboardImpl activeInstance];
-    [v43 forwardDictationEvent_stopDictation:v3];
+    [v43 forwardDictationEvent_stopDictation:dictationCopy];
 
     return;
   }
@@ -7369,16 +7369,16 @@ uint64_t __58__UIDictationController__getRangeOfString_inDocumentText___block_in
 
 LABEL_8:
     v8 = +[UIDictationController sharedInstance];
-    v9 = [v8 dictationTipController];
-    [v9 triggerModelessInputTipDictationStoppedSignal];
+    dictationTipController = [v8 dictationTipController];
+    [dictationTipController triggerModelessInputTipDictationStoppedSignal];
 
     goto LABEL_9;
   }
 
   v6 = +[UIDictationController sharedInstance];
-  v7 = [v6 reasonType];
+  reasonType = [v6 reasonType];
 
-  if (v7 == 1)
+  if (reasonType == 1)
   {
     goto LABEL_8;
   }
@@ -7391,13 +7391,13 @@ LABEL_9:
     v10 = _UIDictationControllerLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(UIDictationController *)self state];
+      state = [(UIDictationController *)self state];
       reasonType = self->_reasonType;
       v13 = [objc_opt_class() UIDictationStartStopReasonTypeDescription:reasonType];
       *buf = 136315906;
       *&buf[4] = "[UIDictationController stopDictation:]";
       *&buf[12] = 1024;
-      *&buf[14] = v11;
+      *&buf[14] = state;
       *&buf[18] = 2048;
       *&buf[20] = reasonType;
       *&buf[28] = 2112;
@@ -7406,12 +7406,12 @@ LABEL_9:
     }
 
     v14 = +[UIKeyboardImpl activeInstance];
-    v15 = [v14 inputDelegateManager];
-    v16 = [v15 _textSelectingContainer];
+    inputDelegateManager = [v14 inputDelegateManager];
+    _textSelectingContainer = [inputDelegateManager _textSelectingContainer];
 
     if (objc_opt_respondsToSelector())
     {
-      [v16 dictationRecordingDidEnd];
+      [_textSelectingContainer dictationRecordingDidEnd];
     }
 
     if ((self->_reasonType | 8) == 0x19)
@@ -7440,38 +7440,38 @@ LABEL_9:
     }
 
     v42 = v18;
-    v19 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+    smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
 
-    if (v19)
+    if (smartLanguageSelectionOverrideLanguage)
     {
-      v20 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-      v21 = 3;
+      smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+      dictationSourceType = 3;
     }
 
     else
     {
-      v22 = [(UIDictationController *)self detectedLanguage];
+      detectedLanguage = [(UIDictationController *)self detectedLanguage];
 
-      if (v22)
+      if (detectedLanguage)
       {
-        v20 = [(UIDictationController *)self detectedLanguage];
-        v21 = 4;
+        smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self detectedLanguage];
+        dictationSourceType = 4;
       }
 
       else
       {
-        v23 = [(UIDictationController *)self initialDictationLanguage];
+        initialDictationLanguage = [(UIDictationController *)self initialDictationLanguage];
 
-        if (v23)
+        if (initialDictationLanguage)
         {
-          v20 = [(UIDictationController *)self initialDictationLanguage];
-          v21 = [(UIDictationController *)self dictationSourceType];
+          smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self initialDictationLanguage];
+          dictationSourceType = [(UIDictationController *)self dictationSourceType];
         }
 
         else
         {
-          v21 = 0;
-          v20 = &stru_1EFB14550;
+          dictationSourceType = 0;
+          smartLanguageSelectionOverrideLanguage2 = &stru_1EFB14550;
         }
       }
     }
@@ -7480,38 +7480,38 @@ LABEL_9:
     [v24 dismissSoftwareKeyboardIfNeeded];
 
     v25 = +[UIKeyboardImpl activeInstance];
-    v26 = [v25 _hasMarkedText];
+    _hasMarkedText = [v25 _hasMarkedText];
 
-    if (v26)
+    if (_hasMarkedText)
     {
       v27 = +[UIKeyboardImpl activeInstance];
       [v27 acceptAutocorrectionWithCompletionHandler:0];
     }
 
-    v28 = [objc_opt_class() UIDictationLanguageSourceType:v21];
-    v29 = [getAFAnalyticsClass() sharedAnalytics];
+    v28 = [objc_opt_class() UIDictationLanguageSourceType:dictationSourceType];
+    sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
     v49[0] = @"stopDictation";
     v30 = [UIDictationController UIDictationStartStopReasonTypeDescription:self->_reasonType];
     v50[0] = v30;
-    v50[1] = v20;
+    v50[1] = smartLanguageSelectionOverrideLanguage2;
     v49[1] = @"dictationLanguage";
     v49[2] = @"dictationLanguageSource";
     v50[2] = v28;
     v49[3] = @"keyboardLocaleIdentifier";
-    v31 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
-    v50[3] = v31;
+    currentKeyboardPrimaryLanguage = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
+    v50[3] = currentKeyboardPrimaryLanguage;
     v49[4] = @"dictationUIInteractionIdentifier";
-    v32 = [(UIDictationController *)self interactionIdentifier];
-    v33 = v32;
+    interactionIdentifier = [(UIDictationController *)self interactionIdentifier];
+    v33 = interactionIdentifier;
     v34 = &stru_1EFB14550;
-    if (v32)
+    if (interactionIdentifier)
     {
-      v34 = v32;
+      v34 = interactionIdentifier;
     }
 
     v50[4] = v34;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:5];
-    [v29 logEventWithType:1405 context:v35];
+    [sharedAnalytics logEventWithType:1405 context:v35];
 
     v45 = 0;
     v46 = &v45;
@@ -7534,12 +7534,12 @@ LABEL_9:
     v38 = objc_alloc_init(v36);
     [v38 setDictationEndPointType:{objc_msgSend(objc_opt_class(), "UIDictationStartStopReasonToInstrumentationDictationEndPointType:", self->_reasonType)}];
     [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v38];
-    v39 = [(UIDictationController *)self dictationConnection];
+    dictationConnection = [(UIDictationController *)self dictationConnection];
     v40 = [UIDictationController UIDictationStartStopReasonTypeDescription:self->_reasonType];
-    [v39 stopSpeech:v40 activationType:v42 result:v44 suppressAlert:v3 ^ 1];
+    [dictationConnection stopSpeech:v40 activationType:v42 result:v44 suppressAlert:dictationCopy ^ 1];
 
-    v41 = [(UIDictationController *)self dictationTipController];
-    [v41 setDismissalReasonType:1];
+    dictationTipController2 = [(UIDictationController *)self dictationTipController];
+    [dictationTipController2 setDismissalReasonType:1];
 
     [(UIDictationController *)self setState:3];
     [(UIDictationController *)self cancelRecordingLimitTimer];
@@ -7553,9 +7553,9 @@ LABEL_9:
   }
 }
 
-- (void)stopDictationIgnoreFinalizePhrases:(BOOL)a3
+- (void)stopDictationIgnoreFinalizePhrases:(BOOL)phrases
 {
-  v3 = a3;
+  phrasesCopy = phrases;
   v18 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() shouldForwardEventsToInputSystemUI])
   {
@@ -7568,43 +7568,43 @@ LABEL_9:
     [(UIDictationController *)self setIgnoreFinalizePhrases:1];
     if (+[UIDictationController isRunning])
     {
-      v5 = [(UIDictationController *)self specificReasonTypeFromApplicationDuringDictation];
+      specificReasonTypeFromApplicationDuringDictation = [(UIDictationController *)self specificReasonTypeFromApplicationDuringDictation];
     }
 
     else
     {
-      v5 = 18;
+      specificReasonTypeFromApplicationDuringDictation = 18;
     }
 
-    [(UIDictationController *)self setReasonType:v5];
+    [(UIDictationController *)self setReasonType:specificReasonTypeFromApplicationDuringDictation];
     v6 = _UIDictationControllerLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(UIDictationController *)self lastHypothesis];
+      lastHypothesis = [(UIDictationController *)self lastHypothesis];
       *buf = 136315394;
       v15 = "[UIDictationController stopDictationIgnoreFinalizePhrases:]";
       v16 = 2112;
-      v17 = v12;
+      v17 = lastHypothesis;
       _os_log_debug_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEBUG, "%s Last hypothesis: %@", buf, 0x16u);
     }
 
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 textInputTraits];
-    v9 = [v8 keyboardType];
+    textInputTraits = [v7 textInputTraits];
+    keyboardType = [textInputTraits keyboardType];
 
-    if (v9 == 126)
+    if (keyboardType == 126)
     {
       v10 = UIKeyboardGetCurrentInputMode();
       v11 = TIInputModeGetBaseLanguage();
       [(UIDictationController *)self setLastMessageKeyboardLanguage:v11];
     }
 
-    [(UIDictationController *)self stopDictation:v3];
+    [(UIDictationController *)self stopDictation:phrasesCopy];
     [(UIDictationController *)self _setFinalResultHandler:0];
   }
 }
 
-- (void)stopAndCancelDictationWithReasonType:(unint64_t)a3
+- (void)stopAndCancelDictationWithReasonType:(unint64_t)type
 {
   v10 = *MEMORY[0x1E69E9840];
   if (+[UIDictationController isRunning])
@@ -7615,25 +7615,25 @@ LABEL_9:
       v6 = 136315394;
       v7 = "[UIDictationController stopAndCancelDictationWithReasonType:]";
       v8 = 2048;
-      v9 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%s reasonType=%lu", &v6, 0x16u);
     }
   }
 
-  [(UIDictationController *)self setReasonType:a3];
+  [(UIDictationController *)self setReasonType:type];
   [(UIDictationController *)self stopDictation];
   [(UIDictationController *)self cancelDictation];
 }
 
-- (void)cancelDictationForResponderIfNeeded:(id)a3 wantsKeyboard:(BOOL)a4 isPencil:(BOOL)a5
+- (void)cancelDictationForResponderIfNeeded:(id)needed wantsKeyboard:(BOOL)keyboard isPencil:(BOOL)pencil
 {
-  v5 = a5;
-  v45 = a3;
+  pencilCopy = pencil;
+  neededCopy = needed;
   v8 = off_1E70EA000;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v45;
+    v9 = neededCopy;
   }
 
   else
@@ -7642,13 +7642,13 @@ LABEL_9:
   }
 
   v10 = v9;
-  v11 = [v10 window];
-  if ([v11 _isTextEffectsWindow])
+  window = [v10 window];
+  if ([window _isTextEffectsWindow])
   {
     v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v13 = [v12 inputViews];
-    v14 = [v13 inputAccessoryView];
-    v15 = [v10 isDescendantOfView:v14];
+    inputViews = [v12 inputViews];
+    inputAccessoryView = [inputViews inputAccessoryView];
+    v15 = [v10 isDescendantOfView:inputAccessoryView];
 
     if (!v15)
     {
@@ -7660,9 +7660,9 @@ LABEL_9:
   {
   }
 
-  if (+[UIDictationController isRunningInTypeAndTalkMode](UIDictationController, "isRunningInTypeAndTalkMode") && (([v45 isFirstResponder] & 1) != 0 || a4 || v5))
+  if (+[UIDictationController isRunningInTypeAndTalkMode](UIDictationController, "isRunningInTypeAndTalkMode") && (([neededCopy isFirstResponder] & 1) != 0 || keyboard || pencilCopy))
   {
-    if ([v45 isFirstResponder])
+    if ([neededCopy isFirstResponder])
     {
       v22 = +[UIKeyboardImpl activeInstance];
       [v22 updateIdleDetection:4];
@@ -7684,51 +7684,51 @@ LABEL_9:
     if ((byte_1ED4987D4 & 1) == 0)
     {
 LABEL_67:
-      v16 = [v45 _responderWindow];
-      v17 = [v16 _isTextEffectsWindow];
+      _responderWindow = [neededCopy _responderWindow];
+      _isTextEffectsWindow = [_responderWindow _isTextEffectsWindow];
 
-      if ((v17 & 1) == 0)
+      if ((_isTextEffectsWindow & 1) == 0)
       {
-        if (![UIApp _isSpringBoard] || (objc_msgSend(v45, "_responderWindow"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "_isSystemGestureWindow"), v18, (v19 & 1) == 0))
+        if (![UIApp _isSpringBoard] || (objc_msgSend(neededCopy, "_responderWindow"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "_isSystemGestureWindow"), v18, (v19 & 1) == 0))
         {
           v20 = 0x1E70E9000uLL;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [v45 _isMicButton];
+            _isMicButton = [neededCopy _isMicButton];
           }
 
           else
           {
-            v21 = 0;
+            _isMicButton = 0;
           }
 
-          v23 = [v10 _disableDictationTouchCancellation];
-          if (+[UIDictationController isRunningInTypeAndTalkMode]|| (v23 & 1) != 0 || (v21 & 1) != 0)
+          _disableDictationTouchCancellation = [v10 _disableDictationTouchCancellation];
+          if (+[UIDictationController isRunningInTypeAndTalkMode]|| (_disableDictationTouchCancellation & 1) != 0 || (_isMicButton & 1) != 0)
           {
             v24 = +[UIKeyboardImpl activeInstance];
-            v25 = [v24 inputDelegateManager];
-            v26 = [v25 delegateAsResponder];
+            inputDelegateManager = [v24 inputDelegateManager];
+            delegateAsResponder = [inputDelegateManager delegateAsResponder];
 
             v27 = +[UIKeyboardImpl activeInstance];
-            v28 = [v27 inputDelegateManager];
-            v29 = [v28 textInputView];
+            inputDelegateManager2 = [v27 inputDelegateManager];
+            textInputView = [inputDelegateManager2 textInputView];
 
-            v30 = v45;
-            if (v45)
+            v30 = neededCopy;
+            if (neededCopy)
             {
               v31 = &qword_1ED498000;
               v32 = &qword_1ED498000;
               v33 = &qword_1ED498000;
               while (1)
               {
-                v45 = v30;
-                if (v30 == v26 || v30 == v29)
+                neededCopy = v30;
+                if (v30 == delegateAsResponder || v30 == textInputView)
                 {
                   break;
                 }
 
-                if (v10 && ([v10 _disableDictationTouchCancellation] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v45, "_isMicButton") & 1) != 0)
+                if (v10 && ([v10 _disableDictationTouchCancellation] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(neededCopy, "_isMicButton") & 1) != 0)
                 {
                   +[UIDictationController isRunningInTypeAndTalkMode];
                   goto LABEL_57;
@@ -7739,7 +7739,7 @@ LABEL_67:
                   dispatch_once(&qword_1ED498828, &__block_literal_global_968);
                 }
 
-                if ([v45 _conformsToProtocolUIKeyInput])
+                if ([neededCopy _conformsToProtocolUIKeyInput])
                 {
                   if (qword_1ED498850 && (objc_opt_isKindOfClass() & 1) != 0)
                   {
@@ -7753,7 +7753,7 @@ LABEL_54:
                   break;
                 }
 
-                if (v32[262] && (objc_opt_isKindOfClass() & 1) != 0 || v33[264] && (objc_opt_isKindOfClass() & 1) != 0 || qword_1ED498848 && (objc_opt_isKindOfClass() & 1) != 0 || ([objc_opt_class() isEventFromMessagesSendButton:v45 inspectResponderChain:0] & 1) != 0)
+                if (v32[262] && (objc_opt_isKindOfClass() & 1) != 0 || v33[264] && (objc_opt_isKindOfClass() & 1) != 0 || qword_1ED498848 && (objc_opt_isKindOfClass() & 1) != 0 || ([objc_opt_class() isEventFromMessagesSendButton:neededCopy inspectResponderChain:0] & 1) != 0)
                 {
                   break;
                 }
@@ -7763,33 +7763,33 @@ LABEL_54:
                   goto LABEL_54;
                 }
 
-                v34 = [v45 nextResponder];
+                nextResponder = [neededCopy nextResponder];
 
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v35 = self;
+                  selfCopy = self;
                   v36 = v8;
-                  v37 = v29;
-                  v38 = v26;
+                  v37 = textInputView;
+                  v38 = delegateAsResponder;
                   v39 = v31;
                   v40 = v32;
                   v41 = v20;
-                  v42 = v34;
+                  v42 = nextResponder;
 
                   v10 = v42;
                   v20 = v41;
                   v32 = v40;
                   v31 = v39;
-                  v26 = v38;
-                  v29 = v37;
+                  delegateAsResponder = v38;
+                  textInputView = v37;
                   v8 = v36;
-                  self = v35;
+                  self = selfCopy;
                   v33 = &qword_1ED498000;
                 }
 
-                v30 = v34;
-                if (!v34)
+                v30 = nextResponder;
+                if (!nextResponder)
                 {
                   goto LABEL_50;
                 }
@@ -7807,13 +7807,13 @@ LABEL_54:
 LABEL_50:
               [(UIDictationController *)self setReasonType:20];
               [(UIDictationController *)self cancelDictation];
-              v45 = 0;
+              neededCopy = 0;
             }
 
 LABEL_57:
           }
 
-          else if (([objc_opt_class() isEventFromMessagesSendButton:v45 inspectResponderChain:1] & 1) == 0)
+          else if (([objc_opt_class() isEventFromMessagesSendButton:neededCopy inspectResponderChain:1] & 1) == 0)
           {
             [(UIDictationController *)self stopAndCancelDictationWithReasonType:20];
             [(UIDictationController *)self resignFirstResponderWhenIdleIfNeeded];
@@ -7844,7 +7844,7 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
   return result;
 }
 
-- (void)stopAndCancelDictationIfNeededWithReasonType:(unint64_t)a3
+- (void)stopAndCancelDictationIfNeededWithReasonType:(unint64_t)type
 {
   v10 = *MEMORY[0x1E69E9840];
   if (+[UIDictationController isRunning])
@@ -7855,14 +7855,14 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
       v6 = 136315394;
       v7 = "[UIDictationController stopAndCancelDictationIfNeededWithReasonType:]";
       v8 = 1024;
-      v9 = [(UIDictationController *)self isFinalizingRecognizedUtterance];
+      isFinalizingRecognizedUtterance = [(UIDictationController *)self isFinalizingRecognizedUtterance];
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%s isFinalizingRecognizedUtterance=%d", &v6, 0x12u);
     }
   }
 
   if (![(UIDictationController *)self isFinalizingRecognizedUtterance])
   {
-    [(UIDictationController *)self stopAndCancelDictationWithReasonType:a3];
+    [(UIDictationController *)self stopAndCancelDictationWithReasonType:type];
   }
 }
 
@@ -7887,62 +7887,62 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
   [(UIDictationController *)self setShouldStayInDictationInputMode:1];
   [(UIDictationController *)self stopAndCancelDictationWithReasonType:18];
   v4 = +[UIKeyboardImpl sharedInstance];
-  v5 = [v4 inputDelegate];
-  [v5 resignFirstResponder];
+  inputDelegate = [v4 inputDelegate];
+  [inputDelegate resignFirstResponder];
 }
 
 - (void)forceDictationReturnToKeyboardInputMode
 {
   v3 = +[UIDictationView sharedInstance];
-  v4 = [v3 switchingLanguage];
+  switchingLanguage = [v3 switchingLanguage];
 
-  if ((v4 & 1) == 0 && [(UIDictationController *)self shouldStayInDictationInputMode])
+  if ((switchingLanguage & 1) == 0 && [(UIDictationController *)self shouldStayInDictationInputMode])
   {
     [(UIDictationController *)self setShouldStayInDictationInputMode:0];
     v6 = +[UIKeyboardImpl activeInstance];
-    v5 = [(UIDictationController *)self keyboardInputModeToReturn];
-    [v6 setKeyboardInputMode:v5 userInitiated:0];
+    keyboardInputModeToReturn = [(UIDictationController *)self keyboardInputModeToReturn];
+    [v6 setKeyboardInputMode:keyboardInputModeToReturn userInitiated:0];
   }
 }
 
-- (void)performIgnoringDocumentChanges:(id)a3
+- (void)performIgnoringDocumentChanges:(id)changes
 {
   ++self->_updatingDocument;
-  (*(a3 + 2))(a3, a2);
+  (*(changes + 2))(changes, a2);
   --self->_updatingDocument;
 }
 
-- (void)performIgnoringRTIChanges:(id)a3
+- (void)performIgnoringRTIChanges:(id)changes
 {
   ++self->_ignoreRTIChanges;
-  (*(a3 + 2))(a3, a2);
+  (*(changes + 2))(changes, a2);
   --self->_ignoreRTIChanges;
 }
 
-+ (id)streamingHypothesisForPhrases:(id)a3
++ (id)streamingHypothesisForPhrases:(id)phrases
 {
-  v3 = [a3 copy];
+  v3 = [phrases copy];
   [v3 setFromKeyboard:0];
   [v3 setTransform:0];
   [v3 setUseServerCapitalization:1];
-  v4 = [v3 bestText];
+  bestText = [v3 bestText];
 
-  return v4;
+  return bestText;
 }
 
-- (__CFString)resultTransformForLanguageModel:(id)a3
+- (__CFString)resultTransformForLanguageModel:(id)model
 {
-  v4 = a3;
-  if ([v4 length])
+  modelCopy = model;
+  if ([modelCopy length])
   {
     v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [(UIDictationController *)self language];
-    v7 = [v5 keyboardLanguageForDictationLanguage:v6];
+    language = [(UIDictationController *)self language];
+    v7 = [v5 keyboardLanguageForDictationLanguage:language];
 
     if ([v7 isEqualToString:@"zh_Hans"])
     {
       v8 = @"Traditional-Simplified";
-      if (([v4 isEqualToString:@"zh_HK"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"zh_TW"))
+      if (([modelCopy isEqualToString:@"zh_HK"] & 1) == 0 && !objc_msgSend(modelCopy, "isEqualToString:", @"zh_TW"))
       {
         v8 = 0;
       }
@@ -7950,7 +7950,7 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
 
     else if ([v7 isEqualToString:@"zh_Hant"])
     {
-      if ([v4 hasSuffix:@"CN"])
+      if ([modelCopy hasSuffix:@"CN"])
       {
         v8 = @"Simplified-Traditional";
       }
@@ -7975,51 +7975,51 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
   return v8;
 }
 
-- (void)logDidAcceptDictationResult:(id)a3 reasonType:(unint64_t)a4
+- (void)logDidAcceptDictationResult:(id)result reasonType:(unint64_t)type
 {
-  v6 = a3;
-  v8 = [(UIDictationController *)self dictationConnection];
-  v7 = [UIDictationController UIDictationStartStopReasonTypeDescription:a4];
-  [v8 logDidAcceptDictationResult:v6 reason:v7 result:self->_lastRecognitionText correctionIdentifier:self->_lastCorrectionIdentifier];
+  resultCopy = result;
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  v7 = [UIDictationController UIDictationStartStopReasonTypeDescription:type];
+  [dictationConnection logDidAcceptDictationResult:resultCopy reason:v7 result:self->_lastRecognitionText correctionIdentifier:self->_lastCorrectionIdentifier];
 }
 
-- (void)logDidAcceptReplacement:(id)a3 replacementLanguageCode:(id)a4 originalText:(id)a5 correctionIdentifier:(id)a6 interactionIdentifier:(id)a7
+- (void)logDidAcceptReplacement:(id)replacement replacementLanguageCode:(id)code originalText:(id)text correctionIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(UIDictationController *)self dictationConnection];
-  [v17 logDidAcceptReplacement:v16 replacementLanguageCode:v15 originalText:v14 correctionIdentifier:v13 interactionIdentifier:v12];
+  interactionIdentifierCopy = interactionIdentifier;
+  identifierCopy = identifier;
+  textCopy = text;
+  codeCopy = code;
+  replacementCopy = replacement;
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection logDidAcceptReplacement:replacementCopy replacementLanguageCode:codeCopy originalText:textCopy correctionIdentifier:identifierCopy interactionIdentifier:interactionIdentifierCopy];
 }
 
-- (void)didShowAlternatives:(id)a3 correctionIdentifier:(id)a4 interactionIdentifier:(id)a5 instrumentationContext:(id)a6 dictationLanguage:(id)a7
+- (void)didShowAlternatives:(id)alternatives correctionIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier instrumentationContext:(id)context dictationLanguage:(id)language
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  [objc_opt_class() instrumentationDictationAlternativesViewedWithInstrumentationContext:v13 alternatives:v16 dictationLanguage:v12];
+  languageCopy = language;
+  contextCopy = context;
+  interactionIdentifierCopy = interactionIdentifier;
+  identifierCopy = identifier;
+  alternativesCopy = alternatives;
+  [objc_opt_class() instrumentationDictationAlternativesViewedWithInstrumentationContext:contextCopy alternatives:alternativesCopy dictationLanguage:languageCopy];
 
-  v17 = [(UIDictationController *)self dictationConnection];
-  [v17 logDidShowAlternatives:v16 correctionIdentifier:v15 interactionIdentifier:v14];
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection logDidShowAlternatives:alternativesCopy correctionIdentifier:identifierCopy interactionIdentifier:interactionIdentifierCopy];
 }
 
-- (void)logAlternativeSelected:(id)a3 correctionIdentifier:(id)a4 interactionIdentifier:(id)a5
+- (void)logAlternativeSelected:(id)selected correctionIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UIDictationController *)self dictationConnection];
-  [v11 logDidSelectAlternative:v10 correctionIdentifier:v9 interactionIdentifier:v8];
+  interactionIdentifierCopy = interactionIdentifier;
+  identifierCopy = identifier;
+  selectedCopy = selected;
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection logDidSelectAlternative:selectedCopy correctionIdentifier:identifierCopy interactionIdentifier:interactionIdentifierCopy];
 }
 
-- (void)insertSerializedDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)insertSerializedDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   if ([objc_opt_class() shouldForwardInInputSystemUI])
   {
     v19[0] = MEMORY[0x1E69E9820];
@@ -8027,35 +8027,35 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
     v19[2] = __82__UIDictationController_insertSerializedDictationResult_withCorrectionIdentifier___block_invoke;
     v19[3] = &unk_1E70F6228;
     v19[4] = self;
-    v9 = v7;
+    v9 = resultCopy;
     v20 = v9;
-    v10 = v8;
+    v10 = identifierCopy;
     v21 = v10;
     [(UIDictationController *)self performIgnoringDocumentChanges:v19];
     v11 = +[UIKeyboardImpl activeInstance];
-    v12 = [v11 inputDelegateManager];
-    v13 = [v12 inputSystemSourceSession];
+    inputDelegateManager = [v11 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v13 && ![(UIDictationController *)self isIgnoringRTIChanges])
+    if (inputSystemSourceSession && ![(UIDictationController *)self isIgnoringRTIChanges])
     {
-      v14 = [v13 textOperations];
-      v15 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [inputSystemSourceSession textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       if (v9)
       {
         v16 = [v9 copy];
-        [v15 setObject:v16 forKeyedSubscript:@"dictationResult"];
+        [dictionary setObject:v16 forKeyedSubscript:@"dictationResult"];
 
         v17 = NSStringFromSelector(a2);
-        [v15 setObject:v17 forKeyedSubscript:@"selector"];
+        [dictionary setObject:v17 forKeyedSubscript:@"selector"];
 
         if (v10)
         {
-          [v15 setObject:v10 forKeyedSubscript:@"correctionIdentifier"];
+          [dictionary setObject:v10 forKeyedSubscript:@"correctionIdentifier"];
         }
 
-        [v14 setCustomInfoType:0x1EFB7C8F0];
-        [v14 setCustomInfo:v15];
-        [v13 flushOperations];
+        [textOperations setCustomInfoType:0x1EFB7C8F0];
+        [textOperations setCustomInfo:dictionary];
+        [inputSystemSourceSession flushOperations];
         [(UIDictationController *)self forceOOPDocumentStateSync];
       }
     }
@@ -8063,86 +8063,86 @@ Class __84__UIDictationController_cancelDictationForResponderIfNeeded_wantsKeybo
 
   else
   {
-    [(UIDictationController *)self _insertSerializedDictationResult:v7 withCorrectionIdentifier:v8];
+    [(UIDictationController *)self _insertSerializedDictationResult:resultCopy withCorrectionIdentifier:identifierCopy];
   }
 
   v18 = +[UIKeyboardImpl activeInstance];
   [v18 touchDictationMenuTimer];
 }
 
-- (void)_insertSerializedDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)_insertSerializedDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 inputDelegateManager];
-  v10 = [v9 keyInputDelegate];
+  inputDelegateManager = [v8 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-  v11 = [v8 inputDelegateManager];
-  v51 = [v11 privateInputDelegate];
+  inputDelegateManager2 = [v8 inputDelegateManager];
+  privateInputDelegate = [inputDelegateManager2 privateInputDelegate];
 
-  v12 = [v8 inputDelegateManager];
-  v13 = [v12 _textSelectingContainer];
+  inputDelegateManager3 = [v8 inputDelegateManager];
+  _textSelectingContainer = [inputDelegateManager3 _textSelectingContainer];
 
   v14 = _UIDictationControllerLog();
-  v52 = v13;
+  v52 = _textSelectingContainer;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v49 = v7;
-    v47 = [v6 showMultilingualAlternatives];
-    v15 = [v6 lowConfidenceAboutLanguageDetection];
-    v16 = [v6 allowsAlternatives];
-    [v6 multilingualAlternatives];
-    v18 = v17 = v6;
-    v19 = self;
+    v49 = identifierCopy;
+    showMultilingualAlternatives = [resultCopy showMultilingualAlternatives];
+    lowConfidenceAboutLanguageDetection = [resultCopy lowConfidenceAboutLanguageDetection];
+    allowsAlternatives = [resultCopy allowsAlternatives];
+    [resultCopy multilingualAlternatives];
+    v18 = v17 = resultCopy;
+    selfCopy = self;
     v20 = [v18 count];
-    v21 = [v17 bestTextForMultilingualAlternatives];
+    bestTextForMultilingualAlternatives = [v17 bestTextForMultilingualAlternatives];
     *buf = 136316418;
     v59 = "[UIDictationController _insertSerializedDictationResult:withCorrectionIdentifier:]";
     v60 = 1024;
-    v61 = v47;
+    v61 = showMultilingualAlternatives;
     v62 = 1024;
-    v63 = v15;
+    v63 = lowConfidenceAboutLanguageDetection;
     v64 = 1024;
-    v65 = v16;
+    v65 = allowsAlternatives;
     v66 = 2048;
     v67 = v20;
-    self = v19;
+    self = selfCopy;
     v68 = 2048;
-    v69 = [v21 count];
-    v7 = v49;
+    v69 = [bestTextForMultilingualAlternatives count];
+    identifierCopy = v49;
     _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "%s showMultilingualAlternatives=%d, lowConfidenceAboutLanguageDetection=%d, allowsAlternatives=%d, multilingualAlternatives count=%lu bestTextForMultilingualAlternatives=%lu", buf, 0x32u);
 
-    v13 = v52;
-    v6 = v17;
+    _textSelectingContainer = v52;
+    resultCopy = v17;
   }
 
-  [(UIDictationController *)self instrumentationDictationTranscriptionMetadataEmitInstrumentationWithDictationResult:v6];
-  v22 = v51;
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Inserting into private input delegate: %@ public input delegate: %@", "-[UIDictationController _insertSerializedDictationResult:withCorrectionIdentifier:]", v51, v13];
+  [(UIDictationController *)self instrumentationDictationTranscriptionMetadataEmitInstrumentationWithDictationResult:resultCopy];
+  v22 = privateInputDelegate;
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Inserting into private input delegate: %@ public input delegate: %@", "-[UIDictationController _insertSerializedDictationResult:withCorrectionIdentifier:]", privateInputDelegate, _textSelectingContainer];
 
-  [v6 bestText];
-  v24 = v23 = v13;
+  [resultCopy bestText];
+  v24 = v23 = _textSelectingContainer;
   [(UIDictationController *)self setLastRecognitionText:v24];
 
-  [(UIDictationController *)self setLastCorrectionIdentifier:v7];
+  [(UIDictationController *)self setLastCorrectionIdentifier:identifierCopy];
   if (!+[UIDictationController viewMode])
   {
-    v25 = [v6 bestResults];
-    v26 = [v25 bestText];
-    [(UIDictationController *)self setLastRecognitionText:v26];
+    bestResults = [resultCopy bestResults];
+    bestText = [bestResults bestText];
+    [(UIDictationController *)self setLastRecognitionText:bestText];
 
-    v27 = [v8 inputDelegate];
-    [v27 insertDictationResult:v25 withCorrectionIdentifier:v25];
+    inputDelegate = [v8 inputDelegate];
+    [inputDelegate insertDictationResult:bestResults withCorrectionIdentifier:bestResults];
 
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v25 = [v6 dictationPhraseArray];
-    [v23 insertDictationResult:v25];
+    bestResults = [resultCopy dictationPhraseArray];
+    [v23 insertDictationResult:bestResults];
 LABEL_7:
 
     goto LABEL_8;
@@ -8150,30 +8150,30 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    [v51 insertDictationResult:v6 withCorrectionIdentifier:v7];
+    [privateInputDelegate insertDictationResult:resultCopy withCorrectionIdentifier:identifierCopy];
   }
 
   else
   {
-    v33 = [v8 inputDelegateManager];
-    v34 = [v33 hasAsyncCapableInputDelegate];
+    inputDelegateManager4 = [v8 inputDelegateManager];
+    hasAsyncCapableInputDelegate = [inputDelegateManager4 hasAsyncCapableInputDelegate];
 
-    if (!v34)
+    if (!hasAsyncCapableInputDelegate)
     {
-      v25 = [v6 bestText];
-      [v10 insertText:v25];
+      bestResults = [resultCopy bestText];
+      [keyInputDelegate insertText:bestResults];
       goto LABEL_7;
     }
 
-    v46 = self;
-    v48 = v6;
-    v50 = v7;
+    selfCopy2 = self;
+    v48 = resultCopy;
+    v50 = identifierCopy;
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v35 = [v6 dictationPhraseArray];
-    v36 = [v35 countByEnumeratingWithState:&v53 objects:v57 count:16];
+    dictationPhraseArray = [resultCopy dictationPhraseArray];
+    v36 = [dictationPhraseArray countByEnumeratingWithState:&v53 objects:v57 count:16];
     if (v36)
     {
       v37 = v36;
@@ -8184,38 +8184,38 @@ LABEL_7:
         {
           if (*v54 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(dictationPhraseArray);
           }
 
           v40 = *(*(&v53 + 1) + 8 * i);
-          v41 = [v40 alternativeInterpretations];
-          v42 = [v41 count];
+          alternativeInterpretations = [v40 alternativeInterpretations];
+          v42 = [alternativeInterpretations count];
 
           if (v42)
           {
-            v43 = [v8 inputDelegateManager];
-            v44 = [v40 text];
-            v45 = [v40 alternativeInterpretations];
-            [v43 insertText:v44 alternatives:v45 style:{objc_msgSend(v40, "style")}];
+            inputDelegateManager5 = [v8 inputDelegateManager];
+            text = [v40 text];
+            alternativeInterpretations2 = [v40 alternativeInterpretations];
+            [inputDelegateManager5 insertText:text alternatives:alternativeInterpretations2 style:{objc_msgSend(v40, "style")}];
           }
 
           else
           {
-            v43 = [v40 text];
-            [v10 insertText:v43];
+            inputDelegateManager5 = [v40 text];
+            [keyInputDelegate insertText:inputDelegateManager5];
           }
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v53 objects:v57 count:16];
+        v37 = [dictationPhraseArray countByEnumeratingWithState:&v53 objects:v57 count:16];
       }
 
       while (v37);
     }
 
-    v6 = v48;
-    v7 = v50;
-    self = v46;
-    v22 = v51;
+    resultCopy = v48;
+    identifierCopy = v50;
+    self = selfCopy2;
+    v22 = privateInputDelegate;
   }
 
 LABEL_8:
@@ -8224,12 +8224,12 @@ LABEL_8:
     [(UIDictationController *)self setHasInsertedAtLeastOneSerializedDictationResult:1];
   }
 
-  v28 = [v6 bestText];
+  bestText2 = [resultCopy bestText];
   selectedTextAtStart = self->_selectedTextAtStart;
-  v30 = [(UIDictationController *)self language];
-  v31 = self;
-  v32 = v30;
-  [UIKBAnalyticsDispatcher didInsertText:v28 relativeRangeBefore:v31->_relativeRangeBefore.location selectedTextBefore:v31->_relativeRangeBefore.length withLanguage:selectedTextAtStart, v30];
+  language = [(UIDictationController *)self language];
+  selfCopy3 = self;
+  v32 = language;
+  [UIKBAnalyticsDispatcher didInsertText:bestText2 relativeRangeBefore:selfCopy3->_relativeRangeBefore.location selectedTextBefore:selfCopy3->_relativeRangeBefore.length withLanguage:selectedTextAtStart, language];
 
   [v8 assertTextForDictation];
   [v8 syncDocumentStateToInputDelegate];
@@ -8240,43 +8240,43 @@ LABEL_8:
 {
   v2 = MEMORY[0x1E696AEC0];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 inputDelegateManager];
-  v5 = [v4 keyInputDelegate];
-  [v2 stringWithFormat:@"%s Deleting text from input delegate: %@", "-[UIDictationController _deleteBackwardIntoText]", v5];
+  inputDelegateManager = [v3 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager keyInputDelegate];
+  [v2 stringWithFormat:@"%s Deleting text from input delegate: %@", "-[UIDictationController _deleteBackwardIntoText]", keyInputDelegate];
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v6 = [v7 inputDelegateManager];
-  [v6 deleteBackward];
+  inputDelegateManager2 = [v7 inputDelegateManager];
+  [inputDelegateManager2 deleteBackward];
 }
 
 - (void)_clearExistingText
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v11 = [v3 inputDelegateManager];
+  inputDelegateManager = [v3 inputDelegateManager];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 inputDelegateManager];
-  v7 = [v6 keyInputDelegate];
-  [v4 stringWithFormat:@"%s Clearing text from input delegate: %@", "-[UIDictationController _clearExistingText]", v7];
+  inputDelegateManager2 = [v5 inputDelegateManager];
+  keyInputDelegate = [inputDelegateManager2 keyInputDelegate];
+  [v4 stringWithFormat:@"%s Clearing text from input delegate: %@", "-[UIDictationController _clearExistingText]", keyInputDelegate];
 
   [(UIDictationController *)self setCanUndoOrRedo:0];
-  v8 = [v11 beginningOfDocument];
-  v9 = [v11 endOfDocument];
-  v10 = [v11 textRangeFromPosition:v8 toPosition:v9];
+  beginningOfDocument = [inputDelegateManager beginningOfDocument];
+  endOfDocument = [inputDelegateManager endOfDocument];
+  v10 = [inputDelegateManager textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-  [v11 replaceRange:v10 withText:&stru_1EFB14550];
+  [inputDelegateManager replaceRange:v10 withText:&stru_1EFB14550];
   [(UIDictationController *)self setCanUndoOrRedo:1];
 }
 
-- (void)finalizeDictationRecognitionWithPhrases:(id)a3 languageModel:(id)a4 correctionIdentifier:(id)a5 secureInput:(BOOL)a6 finalResult:(BOOL)a7
+- (void)finalizeDictationRecognitionWithPhrases:(id)phrases languageModel:(id)model correctionIdentifier:(id)identifier secureInput:(BOOL)input finalResult:(BOOL)result
 {
-  v7 = a7;
-  v8 = a6;
+  resultCopy = result;
+  inputCopy = input;
   v48 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  phrasesCopy = phrases;
+  modelCopy = model;
+  identifierCopy = identifier;
   if (self->_ignoreFinalizePhrases)
   {
     v15 = _UIDictationControllerLog();
@@ -8302,19 +8302,19 @@ LABEL_8:
 
   [(UIDictationController *)self setCanUndoOrRedo:0];
   v16 = +[UIKeyboardImpl activeInstance];
-  v17 = [v16 inputDelegateManager];
-  v18 = [v17 asyncCapableInputDelegate];
+  inputDelegateManager = [v16 inputDelegateManager];
+  asyncCapableInputDelegate = [inputDelegateManager asyncCapableInputDelegate];
 
-  v19 = [v16 inputDelegateManager];
-  v20 = v19;
-  if (v18)
+  inputDelegateManager2 = [v16 inputDelegateManager];
+  v20 = inputDelegateManager2;
+  if (asyncCapableInputDelegate)
   {
-    [v19 asyncCapableInputDelegate];
+    [inputDelegateManager2 asyncCapableInputDelegate];
   }
 
   else
   {
-    [v19 asyncWebKitInteractionDelegate];
+    [inputDelegateManager2 asyncWebKitInteractionDelegate];
   }
   v21 = ;
 
@@ -8323,27 +8323,27 @@ LABEL_8:
     [v21 willInsertFinalDictationResult];
   }
 
-  v45 = v13;
-  [(UIDictationController *)self setSuppressDelegateTextInputDidChangeNotifications:1, v14];
-  v22 = [(UIDictationController *)self lastHypothesis];
-  [(UIDictationController *)self updateLastHypothesis:v22 WithNewHypothesis:&stru_1EFB14550];
+  v45 = modelCopy;
+  [(UIDictationController *)self setSuppressDelegateTextInputDidChangeNotifications:1, identifierCopy];
+  lastHypothesis = [(UIDictationController *)self lastHypothesis];
+  [(UIDictationController *)self updateLastHypothesis:lastHypothesis WithNewHypothesis:&stru_1EFB14550];
 
   [(UIDictationController *)self setSuppressDelegateTextInputDidChangeNotifications:0];
   v23 = +[UIKeyboardInputModeController sharedInputModeController];
-  v24 = [v23 delegate];
+  delegate = [v23 delegate];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
     v26 = +[UIKeyboardInputModeController sharedInputModeController];
-    v27 = [v26 delegate];
-    [v27 dictationRequestDidSucceed];
+    delegate2 = [v26 delegate];
+    [delegate2 dictationRequestDidSucceed];
   }
 
-  v28 = [v12 bestText];
-  if ([v28 length])
+  bestText = [phrasesCopy bestText];
+  if ([bestText length])
   {
-    v29 = [UIDictationUtilities needsTrailingSpaceForPhrases:v12 secureInput:v8];
+    v29 = [UIDictationUtilities needsTrailingSpaceForPhrases:phrasesCopy secureInput:inputCopy];
   }
 
   else
@@ -8351,17 +8351,17 @@ LABEL_8:
     v29 = 0;
   }
 
-  v30 = [v12 bestText];
-  if ([v30 length])
+  bestText2 = [phrasesCopy bestText];
+  if ([bestText2 length])
   {
-    v31 = [UIDictationUtilities needsLeadingSpaceForPhrases:v12 secureInput:v8];
+    v31 = [UIDictationUtilities needsLeadingSpaceForPhrases:phrasesCopy secureInput:inputCopy];
 
     if (v31)
     {
       [(UIDictationController *)self setSuppressDelegateTextInputDidChangeNotifications:1];
-      v32 = [(UIDictationController *)self lastHypothesis];
+      lastHypothesis2 = [(UIDictationController *)self lastHypothesis];
       v33 = @" ";
-      [(UIDictationController *)self updateLastHypothesis:v32 WithNewHypothesis:@" "];
+      [(UIDictationController *)self updateLastHypothesis:lastHypothesis2 WithNewHypothesis:@" "];
 
       [(UIDictationController *)self setSuppressDelegateTextInputDidChangeNotifications:0];
       goto LABEL_22;
@@ -8375,38 +8375,38 @@ LABEL_8:
   v33 = &stru_1EFB14550;
 LABEL_22:
   [(UIDictationController *)self setCanUndoOrRedo:1];
-  v34 = [(UIDictationController *)self resultTransformForLanguageModel:v13];
-  v35 = [v12 copy];
+  v34 = [(UIDictationController *)self resultTransformForLanguageModel:modelCopy];
+  v35 = [phrasesCopy copy];
   [v35 setFromKeyboard:1];
   [v35 setTransform:v34];
-  if (!v7 && [(UIDictationController *)self hasInsertedAtLeastOneSerializedDictationResult])
+  if (!resultCopy && [(UIDictationController *)self hasInsertedAtLeastOneSerializedDictationResult])
   {
-    v8 = 1;
+    inputCopy = 1;
   }
 
-  [v35 setUseServerCapitalization:v8];
+  [v35 setUseServerCapitalization:inputCopy];
   [v35 setAddTrailingSpace:v29];
-  [v35 setIsFinalResult:v7];
-  v36 = [v35 bestText];
-  v37 = [(__CFString *)v33 stringByAppendingString:v36];
+  [v35 setIsFinalResult:resultCopy];
+  bestText3 = [v35 bestText];
+  v37 = [(__CFString *)v33 stringByAppendingString:bestText3];
 
-  v38 = [(UIDictationController *)self visibleContextBeforeInputAtCommandExecution];
-  v39 = v38;
-  if (!v38)
+  visibleContextBeforeInputAtCommandExecution = [(UIDictationController *)self visibleContextBeforeInputAtCommandExecution];
+  v39 = visibleContextBeforeInputAtCommandExecution;
+  if (!visibleContextBeforeInputAtCommandExecution)
   {
-    v38 = &stru_1EFB14550;
+    visibleContextBeforeInputAtCommandExecution = &stru_1EFB14550;
   }
 
-  v40 = [(__CFString *)v38 stringByAppendingString:v37];
+  v40 = [(__CFString *)visibleContextBeforeInputAtCommandExecution stringByAppendingString:v37];
   [(UIDictationController *)self setVisibleContextBeforeInputAtCommandExecution:v40];
 
-  v14 = v44;
+  identifierCopy = v44;
   [(UIDictationController *)self insertSerializedDictationResult:v35 withCorrectionIdentifier:v44];
   [v16 updateReturnKey:0];
   v41 = +[UIKeyboardInputModeController sharedInputModeController];
   v42 = +[UIKeyboardInputModeController sharedInputModeController];
-  v43 = [v42 currentInputModeInPreference];
-  [v41 updateLastUsedInputMode:v43];
+  currentInputModeInPreference = [v42 currentInputModeInPreference];
+  [v41 updateLastUsedInputMode:currentInputModeInPreference];
 
   [(UIDictationController *)self setSelectionStartWasInitiallyAtParagraphBoundaryForAsyncDelegate:0];
   [(UIDictationController *)self setSelectionEndWasInitiallyAtParagraphBoundaryForAsyncDelegate:0];
@@ -8420,16 +8420,16 @@ LABEL_22:
 
   [(UIDictationController *)self setIsProcessingInitialPhrasesForCurrentRequest:0];
 
-  v13 = v45;
+  modelCopy = v45;
 LABEL_30:
 }
 
-- (void)finishDictationRecognitionWithPhrases:(id)a3 languageModel:(id)a4 correctionIdentifier:(id)a5 secureInput:(BOOL)a6
+- (void)finishDictationRecognitionWithPhrases:(id)phrases languageModel:(id)model correctionIdentifier:(id)identifier secureInput:(BOOL)input
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  phrasesCopy = phrases;
+  modelCopy = model;
+  identifierCopy = identifier;
   if (self->_ignoreFinalizePhrases)
   {
     v13 = _UIDictationControllerLog();
@@ -8445,10 +8445,10 @@ LABEL_30:
 
   else
   {
-    v14 = [(UIDictationController *)self isRecievingResults];
-    if ((v14 & 1) == 0)
+    isRecievingResults = [(UIDictationController *)self isRecievingResults];
+    if ((isRecievingResults & 1) == 0)
     {
-      v15 = [UIDictationController streamingHypothesisForPhrases:v10];
+      v15 = [UIDictationController streamingHypothesisForPhrases:phrasesCopy];
       if (![v15 length])
       {
         [(UIDictationController *)self cancelDictation];
@@ -8457,10 +8457,10 @@ LABEL_30:
       }
     }
 
-    if (v10)
+    if (phrasesCopy)
     {
-      v16 = [v10 phrases];
-      v17 = [v16 count] == 0;
+      phrases = [phrasesCopy phrases];
+      v17 = [phrases count] == 0;
     }
 
     else
@@ -8471,19 +8471,19 @@ LABEL_30:
     v18 = +[UIDictationLandingView sharedInstance];
     [v18 setWillInsertResult:!v17];
 
-    if (v14)
+    if (isRecievingResults)
     {
-      v19 = [(UIDictationController *)self streamingOperations];
-      v20 = [v19 isNotEmpty];
+      streamingOperations = [(UIDictationController *)self streamingOperations];
+      isNotEmpty = [streamingOperations isNotEmpty];
 
-      if (v20)
+      if (isNotEmpty)
       {
-        v14 = 5;
+        isRecievingResults = 5;
       }
 
       else
       {
-        v14 = 0;
+        isRecievingResults = 0;
       }
     }
 
@@ -8493,19 +8493,19 @@ LABEL_30:
     v23 = __110__UIDictationController_finishDictationRecognitionWithPhrases_languageModel_correctionIdentifier_secureInput___block_invoke;
     v24 = &unk_1E7114F50;
     objc_copyWeak(&v28, buf);
-    v25 = v10;
-    v26 = v11;
-    v27 = v12;
-    v29 = a6;
+    v25 = phrasesCopy;
+    v26 = modelCopy;
+    v27 = identifierCopy;
+    inputCopy = input;
     [(UIDictationController *)self _setFinalResultHandler:&v21];
     if (v17)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Recognition succeeded, but there were no results returned.", "-[UIDictationController finishDictationRecognitionWithPhrases:languageModel:correctionIdentifier:secureInput:]", v21, v22, v23, v24, v25, v26];
 
-      v14 = 6;
+      isRecievingResults = 6;
     }
 
-    [(UIDictationController *)self setState:v14];
+    [(UIDictationController *)self setState:isRecievingResults];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -8520,34 +8520,34 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
   [WeakRetained finalizeDictationRecognitionWithPhrases:*(a1 + 32) languageModel:*(a1 + 40) correctionIdentifier:*(a1 + 48) secureInput:*(a1 + 64) finalResult:1];
 }
 
-- (id)_voiceCommandGrammarParseCandidatesFromPackage:(id)a3 completeCommands:(BOOL)a4
+- (id)_voiceCommandGrammarParseCandidatesFromPackage:(id)package completeCommands:(BOOL)commands
 {
-  v4 = a4;
+  commandsCopy = commands;
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  packageCopy = package;
   v6 = _UIDictationControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v31 = "[UIDictationController _voiceCommandGrammarParseCandidatesFromPackage:completeCommands:]";
     v32 = 2112;
-    v33 = v5;
+    v33 = packageCopy;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "%s AFVoiceCommandGrammarParsePackage: %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (packageCopy)
   {
-    v22 = v5;
-    v21 = [v5 nBestParses];
-    v7 = [v21 firstObject];
+    v22 = packageCopy;
+    nBestParses = [packageCopy nBestParses];
+    firstObject = [nBestParses firstObject];
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = v7;
-    v8 = [v7 parseCandidates];
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v20 = firstObject;
+    parseCandidates = [firstObject parseCandidates];
+    v9 = [parseCandidates countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -8558,19 +8558,19 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
         {
           if (*v26 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(parseCandidates);
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          if (([v13 isComplete] | !v4) == 1)
+          if (([v13 isComplete] | !commandsCopy) == 1)
           {
-            v14 = [v13 commandId];
-            v15 = [v14 hasSuffix:@"Suppressor"];
+            commandId = [v13 commandId];
+            v15 = [commandId hasSuffix:@"Suppressor"];
 
             if ((v15 & 1) == 0)
             {
-              v16 = [v13 commandId];
-              v17 = [UIDictationController commandIdentifierWithStringIdentifier:v16];
+              commandId2 = [v13 commandId];
+              v17 = [UIDictationController commandIdentifierWithStringIdentifier:commandId2];
 
               if (![(UIDictationController *)self shouldSuppressPartialResults]|| [(UIDictationController *)self isSelectionBasedCommand:v17])
               {
@@ -8580,14 +8580,14 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v10 = [parseCandidates countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v10);
     }
 
     v18 = [v23 copy];
-    v5 = v22;
+    packageCopy = v22;
   }
 
   else
@@ -8598,33 +8598,33 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
   return v18;
 }
 
-- (void)dictationConnection:(id)a3 finalizePhrases:(id)a4 languageModel:(id)a5 correctionIdentifier:(id)a6 secureInput:(BOOL)a7 finalResult:(BOOL)a8
+- (void)dictationConnection:(id)connection finalizePhrases:(id)phrases languageModel:(id)model correctionIdentifier:(id)identifier secureInput:(BOOL)input finalResult:(BOOL)result
 {
-  v8 = a8;
-  v9 = a7;
+  resultCopy = result;
+  inputCopy = input;
   v25 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  phrasesCopy = phrases;
+  modelCopy = model;
+  identifierCopy = identifier;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:]"];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [v13 bestText];
-  [v16 stringWithFormat:@"%s Best interpretation: '%@'", "-[UIDictationController dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:]", v17];
+  bestText = [phrasesCopy bestText];
+  [v16 stringWithFormat:@"%s Best interpretation: '%@'", "-[UIDictationController dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:]", bestText];
 
   v18 = +[UIDictationLandingView activeInstance];
-  LODWORD(v17) = [v18 canStopLanding];
+  LODWORD(bestText) = [v18 canStopLanding];
 
-  if (v17)
+  if (bestText)
   {
     v19 = +[UIDictationLandingView activeInstance];
     [v19 stopLanding];
   }
 
-  v20 = [(UIDictationController *)self isDetectingUtterances];
+  isDetectingUtterances = [(UIDictationController *)self isDetectingUtterances];
   v21 = _UIDictationControllerLog();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (v20)
+  if (isDetectingUtterances)
   {
     if (v22)
     {
@@ -8634,7 +8634,7 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
     }
 
     self->_finalizingRecognizedUtterance = 1;
-    [(UIDictationController *)self finalizeDictationRecognitionWithPhrases:v13 languageModel:v14 correctionIdentifier:v15 secureInput:v9 finalResult:v8];
+    [(UIDictationController *)self finalizeDictationRecognitionWithPhrases:phrasesCopy languageModel:modelCopy correctionIdentifier:identifierCopy secureInput:inputCopy finalResult:resultCopy];
     [(UIDictationController *)self _stopStreamingAnimation];
     [(UIDictationController *)self setTargetHypothesis:0];
     [(UIDictationController *)self setLastHypothesis:0];
@@ -8651,7 +8651,7 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
       _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_DEFAULT, "%s Finalizing dictation result", buf, 0xCu);
     }
 
-    [(UIDictationController *)self finishDictationRecognitionWithPhrases:v13 languageModel:v14 correctionIdentifier:v15 secureInput:v9];
+    [(UIDictationController *)self finishDictationRecognitionWithPhrases:phrasesCopy languageModel:modelCopy correctionIdentifier:identifierCopy secureInput:inputCopy];
   }
 
   self->_recievingResults = 0;
@@ -8671,8 +8671,8 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
   if (!+[UIKeyboard usesInputSystemUI]&& !self->_streamingAnimationActive)
   {
     self->_streamingAnimationActive = 1;
-    v3 = [objc_opt_self() mainScreen];
-    v4 = [v3 displayLinkWithTarget:self selector:sel__displayLinkFired_];
+    mainScreen = [objc_opt_self() mainScreen];
+    v4 = [mainScreen displayLinkWithTarget:self selector:sel__displayLinkFired_];
     streamingAnimationDisplayLink = self->_streamingAnimationDisplayLink;
     self->_streamingAnimationDisplayLink = v4;
 
@@ -8681,18 +8681,18 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
     [(CADisplayLink *)self->_streamingAnimationDisplayLink setPreferredFramesPerSecond:v7];
 
     v8 = self->_streamingAnimationDisplayLink;
-    v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v8 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     self->_lastAnimationUpdateTimeStamp = CACurrentMediaTime();
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  firedCopy = fired;
+  v5 = firedCopy;
   if (self->_streamingAnimationActive)
   {
     if (self->_deferredCancellationRequested)
@@ -8701,7 +8701,7 @@ void __110__UIDictationController_finishDictationRecognitionWithPhrases_language
       goto LABEL_49;
     }
 
-    v65 = v4;
+    v65 = firedCopy;
     v66 = +[UIKeyboardImpl activeInstance];
     if (!v66)
     {
@@ -8714,12 +8714,12 @@ LABEL_48:
     [v65 timestamp];
     v7 = v6;
     lastAnimationUpdateTimeStamp = self->_lastAnimationUpdateTimeStamp;
-    v9 = [(UIDictationController *)self pendingEdits];
+    pendingEdits = [(UIDictationController *)self pendingEdits];
     v10 = v7 - lastAnimationUpdateTimeStamp;
-    if (![v9 count])
+    if (![pendingEdits count])
     {
-      v34 = [(UIDictationController *)self lastHypothesis];
-      if ([v34 length])
+      lastHypothesis = [(UIDictationController *)self lastHypothesis];
+      if ([lastHypothesis length])
       {
         v35 = +[_UIDictationSettingsDomain rootSettings];
         [v35 typewriterEffectMinDurationBetweenHypotheses];
@@ -8731,12 +8731,12 @@ LABEL_48:
         }
 
 LABEL_7:
-        v11 = [(UIDictationController *)self targetHypothesis];
-        v12 = [(UIDictationController *)self lastHypothesis];
-        if ([v11 isEqualToString:v12])
+        targetHypothesis = [(UIDictationController *)self targetHypothesis];
+        lastHypothesis2 = [(UIDictationController *)self lastHypothesis];
+        if ([targetHypothesis isEqualToString:lastHypothesis2])
         {
-          v13 = [(UIDictationController *)self pendingEdits];
-          v14 = [v13 count];
+          pendingEdits2 = [(UIDictationController *)self pendingEdits];
+          v14 = [pendingEdits2 count];
 
           if (!v14)
           {
@@ -8772,9 +8772,9 @@ LABEL_7:
 
             v17 = v16;
             _Block_object_dispose(&v72, 8);
-            v63 = objc_alloc_init(v16);
-            [v63 setExists:1];
-            [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v63];
+            selectedTextRange = objc_alloc_init(v16);
+            [selectedTextRange setExists:1];
+            [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:selectedTextRange];
             if (self->_dictationInputModeSwitchStarted)
             {
               self->_dictationInputModeSwitchStarted = 0;
@@ -8794,18 +8794,18 @@ LABEL_7:
         }
 
         v20 = +[UIDictationLandingView activeInstance];
-        v21 = [v20 canStopLanding];
+        canStopLanding = [v20 canStopLanding];
 
-        if (v21)
+        if (canStopLanding)
         {
           v22 = +[UIDictationLandingView activeInstance];
           [v22 stopLanding];
         }
 
-        v23 = [v66 inputDelegateManager];
-        v63 = [v23 selectedTextRange];
+        inputDelegateManager = [v66 inputDelegateManager];
+        selectedTextRange = [inputDelegateManager selectedTextRange];
 
-        if (v63 && ([v63 isEmpty] & 1) == 0)
+        if (selectedTextRange && ([selectedTextRange isEmpty] & 1) == 0)
         {
           [(UIDictationController *)self removeSelectedText];
 LABEL_47:
@@ -8813,44 +8813,44 @@ LABEL_47:
           goto LABEL_48;
         }
 
-        v24 = [(UIDictationController *)self pendingEdits];
-        v25 = [v24 count];
+        pendingEdits3 = [(UIDictationController *)self pendingEdits];
+        v25 = [pendingEdits3 count];
 
         if (v25)
         {
-          v26 = [(UIDictationController *)self targetHypothesis];
-          v27 = [(UIDictationController *)self previousHypothesis];
-          v28 = [v26 isEqualToString:v27];
+          targetHypothesis2 = [(UIDictationController *)self targetHypothesis];
+          previousHypothesis = [(UIDictationController *)self previousHypothesis];
+          v28 = [targetHypothesis2 isEqualToString:previousHypothesis];
 
           if (v28)
           {
             goto LABEL_31;
           }
 
-          v29 = [(UIDictationController *)self previousHypothesis];
-          v30 = [(UIDictationController *)self targetHypothesis];
-          v31 = [_EditScriptRanged editScriptFromString:v29 toString:v30 chunkSize:0 orderAtomsAscending:1 operationPrecedence:-1 options:0];
+          previousHypothesis2 = [(UIDictationController *)self previousHypothesis];
+          targetHypothesis3 = [(UIDictationController *)self targetHypothesis];
+          v31 = [_EditScriptRanged editScriptFromString:previousHypothesis2 toString:targetHypothesis3 chunkSize:0 orderAtomsAscending:1 operationPrecedence:-1 options:0];
 
-          v32 = [(UIDictationController *)self pendingEdits];
-          v33 = [v31 script];
-          [v32 addObjectsFromArray:v33];
+          pendingEdits4 = [(UIDictationController *)self pendingEdits];
+          script = [v31 script];
+          [pendingEdits4 addObjectsFromArray:script];
         }
 
         else
         {
-          v38 = [(UIDictationController *)self lastHypothesis];
-          v39 = [(UIDictationController *)self targetHypothesis];
-          v31 = [_EditScriptRanged editScriptFromString:v38 toString:v39 chunkSize:0 orderAtomsAscending:1 operationPrecedence:-1 options:0];
+          lastHypothesis3 = [(UIDictationController *)self lastHypothesis];
+          targetHypothesis4 = [(UIDictationController *)self targetHypothesis];
+          v31 = [_EditScriptRanged editScriptFromString:lastHypothesis3 toString:targetHypothesis4 chunkSize:0 orderAtomsAscending:1 operationPrecedence:-1 options:0];
 
-          v40 = [v31 script];
-          v32 = [v40 mutableCopy];
+          script2 = [v31 script];
+          pendingEdits4 = [script2 mutableCopy];
 
-          [(UIDictationController *)self setPendingEdits:v32];
+          [(UIDictationController *)self setPendingEdits:pendingEdits4];
         }
 
 LABEL_31:
-        v41 = [(UIDictationController *)self pendingEdits];
-        v42 = [v41 count];
+        pendingEdits5 = [(UIDictationController *)self pendingEdits];
+        v42 = [pendingEdits5 count];
 
         if (v42)
         {
@@ -8862,8 +8862,8 @@ LABEL_31:
           {
             [v65 timestamp];
             self->_lastAnimationUpdateTimeStamp = v46;
-            v47 = [(UIDictationController *)self lastHypothesis];
-            v64 = [v47 mutableCopy];
+            lastHypothesis4 = [(UIDictationController *)self lastHypothesis];
+            v64 = [lastHypothesis4 mutableCopy];
 
             v69 = 0u;
             v70 = 0u;
@@ -8887,15 +8887,15 @@ LABEL_35:
                 }
 
                 v53 = *(*(&v67 + 1) + 8 * v51);
-                v54 = [v53 editRange];
+                editRange = [v53 editRange];
                 v56 = v55;
-                v57 = [v53 replacementText];
-                [v64 replaceCharactersInRange:v54 withString:{v56, v57}];
+                replacementText = [v53 replacementText];
+                [v64 replaceCharactersInRange:editRange withString:{v56, replacementText}];
 
-                v58 = [v53 replacementText];
-                LODWORD(v54) = [v58 isEqualToString:&stru_1EFB14550];
+                replacementText2 = [v53 replacementText];
+                LODWORD(editRange) = [replacementText2 isEqualToString:&stru_1EFB14550];
 
-                v45 += v54;
+                v45 += editRange;
                 if (v45 <= v48)
                 {
                   break;
@@ -8917,8 +8917,8 @@ LABEL_35:
               }
             }
 
-            v59 = [(UIDictationController *)self pendingEdits];
-            [v59 removeObjectsInRange:{0, v48}];
+            pendingEdits6 = [(UIDictationController *)self pendingEdits];
+            [pendingEdits6 removeObjectsInRange:{0, v48}];
 
             if (self->_ignoreFinalizePhrases)
             {
@@ -8927,8 +8927,8 @@ LABEL_35:
 
             else
             {
-              v60 = [(UIDictationController *)self lastHypothesis];
-              [(UIDictationController *)self updateLastHypothesis:v60 WithNewHypothesis:v64];
+              lastHypothesis5 = [(UIDictationController *)self lastHypothesis];
+              [(UIDictationController *)self updateLastHypothesis:lastHypothesis5 WithNewHypothesis:v64];
             }
           }
         }
@@ -8948,35 +8948,35 @@ LABEL_35:
 LABEL_49:
 }
 
-- (id)_rangeByExtendingRange:(id)a3 backward:(int64_t)a4 forward:(int64_t)a5 inputDelegateManager:(id)a6
+- (id)_rangeByExtendingRange:(id)range backward:(int64_t)backward forward:(int64_t)forward inputDelegateManager:(id)manager
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 start];
-  v12 = v11;
-  if (a4)
+  rangeCopy = range;
+  managerCopy = manager;
+  start = [rangeCopy start];
+  beginningOfDocument = start;
+  if (backward)
   {
-    v12 = [v10 positionFromPosition:v11 offset:-a4];
+    beginningOfDocument = [managerCopy positionFromPosition:start offset:-backward];
 
-    if (!v12)
+    if (!beginningOfDocument)
     {
-      v12 = [v10 beginningOfDocument];
+      beginningOfDocument = [managerCopy beginningOfDocument];
     }
   }
 
-  v13 = [v9 end];
-  v14 = v13;
-  if (a5)
+  v13 = [rangeCopy end];
+  endOfDocument = v13;
+  if (forward)
   {
-    v14 = [v10 positionFromPosition:v13 offset:a5];
+    endOfDocument = [managerCopy positionFromPosition:v13 offset:forward];
 
-    if (!v14)
+    if (!endOfDocument)
     {
-      v14 = [v10 endOfDocument];
+      endOfDocument = [managerCopy endOfDocument];
     }
   }
 
-  v15 = [v10 textRangeFromPosition:v12 toPosition:v14];
+  v15 = [managerCopy textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
   v16 = v15;
   if (v15)
   {
@@ -8985,7 +8985,7 @@ LABEL_49:
 
   else
   {
-    v17 = v9;
+    v17 = rangeCopy;
   }
 
   v18 = v17;
@@ -8993,130 +8993,130 @@ LABEL_49:
   return v17;
 }
 
-- (id)_hypothesisRangeFromSelectionRange:(id)a3 inputDelegateManager:(id)a4 forHypothesis:(id)a5
+- (id)_hypothesisRangeFromSelectionRange:(id)range inputDelegateManager:(id)manager forHypothesis:(id)hypothesis
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  rangeCopy = range;
+  managerCopy = manager;
+  hypothesisCopy = hypothesis;
+  if (!rangeCopy)
   {
-    v7 = [v8 selectedTextRange];
+    rangeCopy = [managerCopy selectedTextRange];
   }
 
-  v10 = [v7 end];
+  v10 = [rangeCopy end];
   if (v10)
   {
-    v11 = v10;
-    v12 = [v8 positionFromPosition:v10 offset:{-objc_msgSend(v9, "length")}];
-    if (!v12)
+    endOfDocument = v10;
+    beginningOfDocument = [managerCopy positionFromPosition:v10 offset:{-objc_msgSend(hypothesisCopy, "length")}];
+    if (!beginningOfDocument)
     {
-      v12 = [v8 beginningOfDocument];
+      beginningOfDocument = [managerCopy beginningOfDocument];
     }
 
-    v13 = [v8 textRangeFromPosition:v12 toPosition:v11];
+    v13 = [managerCopy textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
   }
 
   else
   {
-    v11 = [v8 endOfDocument];
-    v13 = [v8 textRangeFromPosition:v11 toPosition:v11];
+    endOfDocument = [managerCopy endOfDocument];
+    v13 = [managerCopy textRangeFromPosition:endOfDocument toPosition:endOfDocument];
   }
 
   return v13;
 }
 
-- (id)_getBestHypothesisRangeGivenHintRange:(id)a3 inputDelegateManager:(id)a4 hypothesisRange:(_NSRange *)a5 documentTextInRange:(id *)a6 forHypothesis:(id)a7
+- (id)_getBestHypothesisRangeGivenHintRange:(id)range inputDelegateManager:(id)manager hypothesisRange:(_NSRange *)hypothesisRange documentTextInRange:(id *)inRange forHypothesis:(id)hypothesis
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12)
+  rangeCopy = range;
+  managerCopy = manager;
+  hypothesisCopy = hypothesis;
+  if (rangeCopy)
   {
-    if (a5)
+    if (hypothesisRange)
     {
       goto LABEL_3;
     }
 
 LABEL_47:
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:6564 description:@"outTextRange == nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:6564 description:@"outTextRange == nil"];
 
-    if (a6)
+    if (inRange)
     {
       goto LABEL_4;
     }
 
 LABEL_48:
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:6565 description:@"outDocumentText == nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:6565 description:@"outDocumentText == nil"];
 
     goto LABEL_4;
   }
 
-  v41 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:6563 description:@"hintRange == nil"];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:6563 description:@"hintRange == nil"];
 
-  if (!a5)
+  if (!hypothesisRange)
   {
     goto LABEL_47;
   }
 
 LABEL_3:
-  if (!a6)
+  if (!inRange)
   {
     goto LABEL_48;
   }
 
 LABEL_4:
-  v15 = v14;
+  v15 = hypothesisCopy;
   v16 = [v15 length];
-  if ([v12 isEmpty] && !v16)
+  if ([rangeCopy isEmpty] && !v16)
   {
-    a5->location = 0;
-    a5->length = 0;
-    *a6 = &stru_1EFB14550;
-    v12 = v12;
-    v17 = v12;
+    hypothesisRange->location = 0;
+    hypothesisRange->length = 0;
+    *inRange = &stru_1EFB14550;
+    rangeCopy = rangeCopy;
+    v17 = rangeCopy;
     goto LABEL_43;
   }
 
-  *a5 = xmmword_18A678470;
-  *a6 = 0;
-  v17 = [v13 textInRange:v12];
+  *hypothesisRange = xmmword_18A678470;
+  *inRange = 0;
+  v17 = [managerCopy textInRange:rangeCopy];
   if (v17)
   {
     v18 = [(UIDictationController *)self _getRangeOfString:v15 inDocumentText:v17];
     v20 = v18;
     v21 = v19;
-    v48 = v13;
+    v48 = managerCopy;
     if (!v18 && v19 == v16)
     {
-      v44 = a5;
-      v45 = a6;
+      hypothesisRangeCopy2 = hypothesisRange;
+      inRangeCopy3 = inRange;
       v22 = 0;
       v47 = v16;
 LABEL_41:
-      v44->location = v22;
-      v44->length = v47;
+      hypothesisRangeCopy2->location = v22;
+      hypothesisRangeCopy2->length = v47;
       v39 = v17;
-      *v45 = v17;
-      v12 = v12;
+      *inRangeCopy3 = v17;
+      rangeCopy = rangeCopy;
       v23 = v17;
-      v17 = v12;
-      v13 = v48;
+      v17 = rangeCopy;
+      managerCopy = v48;
       goto LABEL_42;
     }
 
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v45 = a6;
+      inRangeCopy3 = inRange;
       v28 = [v17 length] - (v18 + v19);
       goto LABEL_17;
     }
 
-    v24 = [(UIDictationController *)self _rangeByExtendingRange:v12 backward:+[UIDictationLandingView forward:"fallbackPlaceholderLength"]inputDelegateManager:0, v13];
+    managerCopy = [(UIDictationController *)self _rangeByExtendingRange:rangeCopy backward:+[UIDictationLandingView forward:"fallbackPlaceholderLength"]inputDelegateManager:0, managerCopy];
 
-    v23 = [v13 textInRange:v24];
+    v23 = [managerCopy textInRange:managerCopy];
 
     v25 = [(UIDictationController *)self _getRangeOfString:v15 inDocumentText:v23];
     v17 = 0;
@@ -9126,20 +9126,20 @@ LABEL_41:
       if (v25 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v27 = v26;
-        v45 = a6;
+        inRangeCopy3 = inRange;
         v28 = [v23 length] - (v25 + v26);
         v17 = v23;
         v21 = v27;
-        v12 = v24;
+        rangeCopy = managerCopy;
 LABEL_17:
         v46 = v16;
         v47 = v21;
-        v44 = a5;
+        hypothesisRangeCopy2 = hypothesisRange;
         if (v20 < 1)
         {
           v22 = v20;
           v34 = v17;
-          v33 = v12;
+          v33 = rangeCopy;
         }
 
         else
@@ -9147,19 +9147,19 @@ LABEL_17:
           v22 = v20;
           while (1)
           {
-            v29 = [(UIDictationController *)self _rangeByExtendingRange:v12 backward:-1 forward:0 inputDelegateManager:v48, v44];
-            v30 = [v48 textInRange:v29];
+            hypothesisRangeCopy2 = [(UIDictationController *)self _rangeByExtendingRange:rangeCopy backward:-1 forward:0 inputDelegateManager:v48, hypothesisRangeCopy2];
+            v30 = [v48 textInRange:hypothesisRangeCopy2];
             v31 = [(UIDictationController *)self _getRangeOfString:v15 inDocumentText:v30];
             if (!v30 || v31 == 0x7FFFFFFFFFFFFFFFLL)
             {
               v34 = v17;
-              v33 = v12;
+              v33 = rangeCopy;
               goto LABEL_29;
             }
 
             v22 = v31;
             v47 = v32;
-            v33 = v29;
+            v33 = hypothesisRangeCopy2;
 
             v34 = v30;
             if (!v22 && [v34 length] == v46)
@@ -9167,7 +9167,7 @@ LABEL_17:
               break;
             }
 
-            v12 = v33;
+            rangeCopy = v33;
             v17 = v34;
             if (!--v20)
             {
@@ -9183,26 +9183,26 @@ LABEL_30:
         if (v28 < 1)
         {
           v17 = v34;
-          v12 = v33;
+          rangeCopy = v33;
         }
 
         else
         {
           while (1)
           {
-            v35 = [(UIDictationController *)self _rangeByExtendingRange:v33 backward:0 forward:-1 inputDelegateManager:v48, v44];
-            v36 = [v48 textInRange:v35];
+            hypothesisRangeCopy22 = [(UIDictationController *)self _rangeByExtendingRange:v33 backward:0 forward:-1 inputDelegateManager:v48, hypothesisRangeCopy2];
+            v36 = [v48 textInRange:hypothesisRangeCopy22];
             v37 = [(UIDictationController *)self _getRangeOfString:v15 inDocumentText:v36];
             if (!v36 || v37 == 0x7FFFFFFFFFFFFFFFLL)
             {
               v17 = v34;
-              v12 = v33;
+              rangeCopy = v33;
               goto LABEL_40;
             }
 
             v22 = v37;
             v47 = v38;
-            v12 = v35;
+            rangeCopy = hypothesisRangeCopy22;
 
             v17 = v36;
             if (!v22 && [v17 length] == v46)
@@ -9210,7 +9210,7 @@ LABEL_30:
               break;
             }
 
-            v33 = v12;
+            v33 = rangeCopy;
             v34 = v17;
             if (!--v28)
             {
@@ -9226,7 +9226,7 @@ LABEL_40:
       }
     }
 
-    v12 = v24;
+    rangeCopy = managerCopy;
   }
 
   else
@@ -9258,60 +9258,60 @@ LABEL_43:
   }
 }
 
-- (void)updateLastHypothesis:(id)a3 WithNewHypothesis:(id)a4
+- (void)updateLastHypothesis:(id)hypothesis WithNewHypothesis:(id)newHypothesis
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [(UIDictationController *)self _updateLastHypothesis:v7 WithNewHypothesis:v8];
+  hypothesisCopy = hypothesis;
+  newHypothesisCopy = newHypothesis;
+  [(UIDictationController *)self _updateLastHypothesis:hypothesisCopy WithNewHypothesis:newHypothesisCopy];
   v9 = +[UIKeyboardImpl activeInstance];
   [v9 touchDictationMenuTimer];
 
   if ([objc_opt_class() shouldForwardInInputSystemUI])
   {
     v10 = +[UIKeyboardImpl activeInstance];
-    v11 = [v10 inputDelegateManager];
-    v12 = [v11 inputSystemSourceSession];
+    inputDelegateManager = [v10 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v12)
+    if (inputSystemSourceSession)
     {
       if ([(UIDictationController *)self isIgnoringRTIChanges])
       {
-        if ([v8 isEqualToString:&stru_1EFB14550])
+        if ([newHypothesisCopy isEqualToString:&stru_1EFB14550])
         {
-          v13 = [v12 textOperations];
-          [v13 setCustomInfoType:0x1EFB7C8F0];
+          textOperations = [inputSystemSourceSession textOperations];
+          [textOperations setCustomInfoType:0x1EFB7C8F0];
           v20 = @"selector";
           v14 = NSStringFromSelector(sel_resetLastHypothesis);
           v21[0] = v14;
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-          [v13 setCustomInfo:v15];
+          [textOperations setCustomInfo:v15];
 
-          [v12 flushOperations];
+          [inputSystemSourceSession flushOperations];
         }
       }
 
       else
       {
-        v16 = [v12 textOperations];
-        [v16 setCustomInfoType:0x1EFB7C8F0];
+        textOperations2 = [inputSystemSourceSession textOperations];
+        [textOperations2 setCustomInfoType:0x1EFB7C8F0];
         v17 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
         v18 = v17;
-        if (v7)
+        if (hypothesisCopy)
         {
-          [v17 setObject:v7 forKeyedSubscript:@"lastHypothesis"];
+          [v17 setObject:hypothesisCopy forKeyedSubscript:@"lastHypothesis"];
         }
 
-        if (v8)
+        if (newHypothesisCopy)
         {
-          [v18 setObject:v8 forKeyedSubscript:@"newHypothesis"];
+          [v18 setObject:newHypothesisCopy forKeyedSubscript:@"newHypothesis"];
         }
 
         v19 = NSStringFromSelector(a2);
         [v18 setObject:v19 forKeyedSubscript:@"selector"];
 
-        [v16 setCustomInfo:v18];
-        [v12 flushOperations];
+        [textOperations2 setCustomInfo:v18];
+        [inputSystemSourceSession flushOperations];
       }
     }
   }
@@ -9333,24 +9333,24 @@ LABEL_43:
   [v5 performOperations:v6 withTextInputSource:2];
 }
 
-- (void)_updateLastHypothesis:(id)a3 WithNewHypothesis:(id)a4
+- (void)_updateLastHypothesis:(id)hypothesis WithNewHypothesis:(id)newHypothesis
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  hypothesisCopy = hypothesis;
+  newHypothesisCopy = newHypothesis;
   if (![(UIDictationController *)self _shouldApplyLastHypothesis])
   {
     goto LABEL_29;
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 inputDelegateManager];
-  v10 = [v9 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v8 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-  if (v7 && [(__CFString *)v7 length])
+  if (newHypothesisCopy && [(__CFString *)newHypothesisCopy length])
   {
-    v11 = [v6 length];
-    if (v11 > [(__CFString *)v7 length])
+    v11 = [hypothesisCopy length];
+    if (v11 > [(__CFString *)newHypothesisCopy length])
     {
       v12 = 1;
     }
@@ -9368,31 +9368,31 @@ LABEL_43:
     [(UIDictationController *)self postNotificationName:@"UIDictationWillInsertHypothesisNotification" userInfo:v14];
   }
 
-  v15 = [v8 inputDelegateManager];
-  v16 = [v15 selectedTextRange];
+  inputDelegateManager2 = [v8 inputDelegateManager];
+  selectedTextRange = [inputDelegateManager2 selectedTextRange];
 
-  v17 = [v8 inputDelegateManager];
-  v18 = v17;
-  if (!v10)
+  inputDelegateManager3 = [v8 inputDelegateManager];
+  v18 = inputDelegateManager3;
+  if (!hasAsyncCapableInputDelegate)
   {
-    v19 = [(UIDictationController *)self _hypothesisRangeFromSelectionRange:v16 inputDelegateManager:v17 forHypothesis:v6];
+    v19 = [(UIDictationController *)self _hypothesisRangeFromSelectionRange:selectedTextRange inputDelegateManager:inputDelegateManager3 forHypothesis:hypothesisCopy];
 
     v43 = 0;
     v44 = 0;
-    if (v19 && (![v19 isEmpty] || objc_msgSend(v6, "length")))
+    if (v19 && (![v19 isEmpty] || objc_msgSend(hypothesisCopy, "length")))
     {
-      v20 = [v8 inputDelegateManager];
+      inputDelegateManager4 = [v8 inputDelegateManager];
       v42 = 0;
-      v21 = [(UIDictationController *)self _getBestHypothesisRangeGivenHintRange:v19 inputDelegateManager:v20 hypothesisRange:&v43 documentTextInRange:&v42 forHypothesis:v6];
+      v21 = [(UIDictationController *)self _getBestHypothesisRangeGivenHintRange:v19 inputDelegateManager:inputDelegateManager4 hypothesisRange:&v43 documentTextInRange:&v42 forHypothesis:hypothesisCopy];
       v22 = v42;
 
       v19 = v21;
       if (v21)
       {
 LABEL_14:
-        if (v7)
+        if (newHypothesisCopy)
         {
-          v23 = v7;
+          v23 = newHypothesisCopy;
         }
 
         else
@@ -9406,9 +9406,9 @@ LABEL_14:
         v36[2] = __65__UIDictationController__updateLastHypothesis_WithNewHypothesis___block_invoke;
         v36[3] = &unk_1E70F8868;
         v37 = v8;
-        v38 = self;
+        selfCopy = self;
         v39 = v19;
-        v40 = v6;
+        v40 = hypothesisCopy;
         v41 = v24;
         v25 = v24;
         [(UIDictationController *)self performIgnoringDocumentChanges:v36];
@@ -9432,11 +9432,11 @@ LABEL_22:
     v26 = _UIDictationControllerLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
     {
-      v34 = [(UIDictationController *)self lastHypothesis];
+      lastHypothesis = [(UIDictationController *)self lastHypothesis];
       *buf = 136315650;
       v46 = "[UIDictationController _updateLastHypothesis:WithNewHypothesis:]";
       v47 = 2112;
-      v48 = v34;
+      v48 = lastHypothesis;
       v49 = 2112;
       v50 = 0;
       _os_log_fault_impl(&dword_188A29000, v26, OS_LOG_TYPE_FAULT, "%s Could not find the last hypothesis %@ in range '%@'. The likely cause is that something modified the text store or the hypothesis during dictation. Canceling dictation", buf, 0x20u);
@@ -9451,17 +9451,17 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  [v17 replaceRange:0 oldText:v6 withText:v7 forReplaceAction:3];
+  [inputDelegateManager3 replaceRange:0 oldText:hypothesisCopy withText:newHypothesisCopy forReplaceAction:3];
   v19 = v18;
 LABEL_23:
 
   if (+[UIKeyboard isModelessActive])
   {
     v27 = +[UIKeyboardInputModeController sharedInputModeController];
-    v28 = [v27 currentPublicInputMode];
-    if ([v28 isExtensionInputMode])
+    currentPublicInputMode = [v27 currentPublicInputMode];
+    if ([currentPublicInputMode isExtensionInputMode])
     {
-      v29 = [(__CFString *)v7 isEqualToString:&stru_1EFB14550];
+      v29 = [(__CFString *)newHypothesisCopy isEqualToString:&stru_1EFB14550];
 
       if ((v29 & 1) == 0)
       {
@@ -9474,19 +9474,19 @@ LABEL_23:
     }
   }
 
-  v30 = [v8 inputDelegateManager];
-  v31 = [v30 textInteractionAssistant];
-  [v31 setNeedsSelectionDisplayUpdate];
+  inputDelegateManager5 = [v8 inputDelegateManager];
+  textInteractionAssistant = [inputDelegateManager5 textInteractionAssistant];
+  [textInteractionAssistant setNeedsSelectionDisplayUpdate];
 
-  v32 = [v8 _textChoicesAssistant];
-  [v32 resetDictationChoicesAnimated:0];
+  _textChoicesAssistant = [v8 _textChoicesAssistant];
+  [_textChoicesAssistant resetDictationChoicesAnimated:0];
 
-  v33 = [v8 _textChoicesAssistant];
-  [v33 resetDictationUnderlines];
+  _textChoicesAssistant2 = [v8 _textChoicesAssistant];
+  [_textChoicesAssistant2 resetDictationUnderlines];
 
 LABEL_29:
   [(UIDictationController *)self setHasSelectedTextRange:0];
-  [(UIDictationController *)self setLastHypothesis:v7];
+  [(UIDictationController *)self setLastHypothesis:newHypothesisCopy];
 }
 
 uint64_t __65__UIDictationController__updateLastHypothesis_WithNewHypothesis___block_invoke(uint64_t a1)
@@ -9516,34 +9516,34 @@ uint64_t __65__UIDictationController__updateLastHypothesis_WithNewHypothesis___b
   }
 
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 inputDelegateManager];
-  v4 = [v3 shouldRespectForwardingInputDelegate];
+  inputDelegateManager = [v2 inputDelegateManager];
+  shouldRespectForwardingInputDelegate = [inputDelegateManager shouldRespectForwardingInputDelegate];
 
-  return v4;
+  return shouldRespectForwardingInputDelegate;
 }
 
-- (void)setupToInsertResultForNewHypothesis:(id)a3
+- (void)setupToInsertResultForNewHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  v9 = v4;
+  hypothesisCopy = hypothesis;
+  v9 = hypothesisCopy;
   if (self->_streamingAnimationActive)
   {
-    [(UIDictationController *)self setTargetHypothesis:v4];
+    [(UIDictationController *)self setTargetHypothesis:hypothesisCopy];
   }
 
   else
   {
-    v5 = [(UIDictationController *)self lastHypothesis];
+    lastHypothesis = [(UIDictationController *)self lastHypothesis];
 
-    if (!v5)
+    if (!lastHypothesis)
     {
       [(UIDictationController *)self setLastHypothesis:&stru_1EFB14550];
     }
 
     v6 = +[UIDictationLandingView activeInstance];
-    v7 = [v6 canStopLanding];
+    canStopLanding = [v6 canStopLanding];
 
-    if (v7)
+    if (canStopLanding)
     {
       v8 = +[UIDictationLandingView activeInstance];
       [v8 stopLanding];
@@ -9560,11 +9560,11 @@ uint64_t __65__UIDictationController__updateLastHypothesis_WithNewHypothesis___b
   {
     v3 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1EFE2C9B8];
     v4 = MEMORY[0x1E695DF58];
-    v5 = [(UIDictationController *)self language];
-    v6 = [v4 localeWithLocaleIdentifier:v5];
-    v7 = [v6 languageCode];
+    language = [(UIDictationController *)self language];
+    v6 = [v4 localeWithLocaleIdentifier:language];
+    languageCode = [v6 languageCode];
 
-    v8 = [v3 containsObject:v7] ^ 1;
+    v8 = [v3 containsObject:languageCode] ^ 1;
   }
 
   else
@@ -9600,34 +9600,34 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
   return result;
 }
 
-- (void)dictationConnection:(id)a3 receivedInterpretation:(id)a4 languageModel:(id)a5 secureInput:(BOOL)a6
+- (void)dictationConnection:(id)connection receivedInterpretation:(id)interpretation languageModel:(id)model secureInput:(BOOL)input
 {
-  v6 = a6;
+  inputCopy = input;
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  interpretationCopy = interpretation;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnection:receivedInterpretation:languageModel:secureInput:]"];
 
-  if ([v8 length])
+  if ([interpretationCopy length])
   {
     if (self->_shouldResumeDictation)
     {
-      v9 = _UIDictationControllerLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      smartPunctuationController = _UIDictationControllerLog();
+      if (os_log_type_enabled(smartPunctuationController, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
         v47 = "[UIDictationController dictationConnection:receivedInterpretation:languageModel:secureInput:]";
-        _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "%s _shouldResumeDictation is YES. Early return", buf, 0xCu);
+        _os_log_impl(&dword_188A29000, smartPunctuationController, OS_LOG_TYPE_DEFAULT, "%s _shouldResumeDictation is YES. Early return", buf, 0xCu);
       }
     }
 
     else if ([(UIDictationController *)self isProcessingPotentialVoiceCommand])
     {
-      v9 = _UIDictationControllerLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      smartPunctuationController = _UIDictationControllerLog();
+      if (os_log_type_enabled(smartPunctuationController, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
         v47 = "[UIDictationController dictationConnection:receivedInterpretation:languageModel:secureInput:]";
-        _os_log_error_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "%s Received partial result while processing potential voice command. This partial result will be ignored.", buf, 0xCu);
+        _os_log_error_impl(&dword_188A29000, smartPunctuationController, OS_LOG_TYPE_ERROR, "%s Received partial result while processing potential voice command. This partial result will be ignored.", buf, 0xCu);
       }
     }
 
@@ -9643,19 +9643,19 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
           if ([objc_opt_class() shouldForwardInInputSystemUI])
           {
             v11 = +[UIKeyboardImpl activeInstance];
-            v12 = [v11 inputDelegateManager];
-            v13 = [v12 inputSystemSourceSession];
-            v14 = [v13 documentState];
-            v15 = [v14 selectedTextRange];
-            [(UIDictationController *)self setStartRangeOfCurrentHypothesis:v15, v16];
+            inputDelegateManager = [v11 inputDelegateManager];
+            inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
+            documentState = [inputSystemSourceSession documentState];
+            selectedTextRange = [documentState selectedTextRange];
+            [(UIDictationController *)self setStartRangeOfCurrentHypothesis:selectedTextRange, v16];
           }
 
           else
           {
             v11 = +[UIKeyboardImpl sharedInstance];
-            v12 = [v11 documentState];
-            v17 = [v12 _selectedTextRange];
-            [(UIDictationController *)self setStartRangeOfCurrentHypothesis:v17, v18];
+            inputDelegateManager = [v11 documentState];
+            _selectedTextRange = [inputDelegateManager _selectedTextRange];
+            [(UIDictationController *)self setStartRangeOfCurrentHypothesis:_selectedTextRange, v18];
           }
         }
       }
@@ -9672,49 +9672,49 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
         [UIDictationUtilities selectionStartInfoWithBlock:v45];
       }
 
-      if ([UIDictationUtilities needsLeadingSpaceForText:v8 secureInput:v6 previousCharacter:self->_previousCharacter selectionStartIsStartOfParagraph:self->_selectionStartIsStartOfParagraph])
+      if ([UIDictationUtilities needsLeadingSpaceForText:interpretationCopy secureInput:inputCopy previousCharacter:self->_previousCharacter selectionStartIsStartOfParagraph:self->_selectionStartIsStartOfParagraph])
       {
-        v19 = [@" " stringByAppendingString:v8];
+        v19 = [@" " stringByAppendingString:interpretationCopy];
 
-        v8 = v19;
+        interpretationCopy = v19;
       }
 
-      if ([UIDictationUtilities needsTrailingSpaceForText:v8 secureInput:v6])
+      if ([UIDictationUtilities needsTrailingSpaceForText:interpretationCopy secureInput:inputCopy])
       {
-        v20 = [v8 stringByAppendingString:@" "];
+        v20 = [interpretationCopy stringByAppendingString:@" "];
 
-        v8 = v20;
+        interpretationCopy = v20;
       }
 
       self->_recievingResults = 1;
       v21 = +[UIKeyboardImpl activeInstance];
-      v9 = [v21 smartPunctuationController];
+      smartPunctuationController = [v21 smartPunctuationController];
 
-      if (([v9 smartQuotesEnabled]& 1) != 0 || [v9 smartDashesEnabled])
+      if (([smartPunctuationController smartQuotesEnabled]& 1) != 0 || [smartPunctuationController smartDashesEnabled])
       {
-        v22 = [UIDictationUtilities applySmartPunctuationToString:v8];
+        v22 = [UIDictationUtilities applySmartPunctuationToString:interpretationCopy];
 
-        v8 = v22;
+        interpretationCopy = v22;
       }
 
       v23 = +[UIKeyboardImpl activeInstance];
-      v24 = [v23 inputDelegateManager];
+      inputDelegateManager2 = [v23 inputDelegateManager];
 
       if (!+[UIKeyboard isRedesignedTextCursorEnabled])
       {
-        v25 = [v24 textInteractionAssistant];
-        [v25 configureForHighlightMode];
+        textInteractionAssistant = [inputDelegateManager2 textInteractionAssistant];
+        [textInteractionAssistant configureForHighlightMode];
       }
 
-      v26 = [v24 selectedTextRange];
-      v27 = v24;
-      v28 = [v27 beginningOfDocument];
-      v29 = [v26 start];
-      v30 = [v27 offsetFromPosition:v28 toPosition:v29];
+      selectedTextRange2 = [inputDelegateManager2 selectedTextRange];
+      v27 = inputDelegateManager2;
+      beginningOfDocument = [v27 beginningOfDocument];
+      start = [selectedTextRange2 start];
+      v30 = [v27 offsetFromPosition:beginningOfDocument toPosition:start];
 
-      v31 = [v26 start];
-      v32 = [v26 end];
-      v33 = [v27 offsetFromPosition:v31 toPosition:v32];
+      start2 = [selectedTextRange2 start];
+      v32 = [selectedTextRange2 end];
+      v33 = [v27 offsetFromPosition:start2 toPosition:v32];
 
       if ([(UIDictationController *)self discardNextHypothesis])
       {
@@ -9723,11 +9723,11 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
 
       else
       {
-        v35 = [(UIDictationController *)self previousHypothesis];
-        if (v35)
+        previousHypothesis = [(UIDictationController *)self previousHypothesis];
+        if (previousHypothesis)
         {
-          v36 = [(UIDictationController *)self previousHypothesis];
-          v34 = [v8 isEqualToString:v36] ^ 1;
+          previousHypothesis2 = [(UIDictationController *)self previousHypothesis];
+          v34 = [interpretationCopy isEqualToString:previousHypothesis2] ^ 1;
         }
 
         else
@@ -9736,7 +9736,7 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
         }
       }
 
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Hypothesis (willInsert: %d): '%@'", "-[UIDictationController dictationConnection:receivedInterpretation:languageModel:secureInput:]", v34, v8];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Hypothesis (willInsert: %d): '%@'", "-[UIDictationController dictationConnection:receivedInterpretation:languageModel:secureInput:]", v34, interpretationCopy];
 
       if ([(UIDictationController *)self discardNextHypothesis])
       {
@@ -9747,8 +9747,8 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
 
       else
       {
-        v37 = [(UIDictationController *)self previousHypothesis];
-        if (!v37 || (v38 = v37, -[UIDictationController previousHypothesis](self, "previousHypothesis"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v8 isEqualToString:v39], v39, v38, (v40 & 1) == 0))
+        previousHypothesis3 = [(UIDictationController *)self previousHypothesis];
+        if (!previousHypothesis3 || (v38 = previousHypothesis3, -[UIDictationController previousHypothesis](self, "previousHypothesis"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [interpretationCopy isEqualToString:v39], v39, v38, (v40 & 1) == 0))
         {
           if (![(UIDictationController *)self haveReceivedFirstPartialResultForCurrentUtterance])
           {
@@ -9789,8 +9789,8 @@ uint64_t __58__UIDictationController_dictationWordwiseBackspaceEnabled__block_in
             [(UIDictationController *)self setHaveReceivedFirstPartialResultForCurrentUtterance:1];
           }
 
-          [(UIDictationController *)self setupToInsertResultForNewHypothesis:v8];
-          [(UIDictationController *)self setPreviousHypothesis:v8];
+          [(UIDictationController *)self setupToInsertResultForNewHypothesis:interpretationCopy];
+          [(UIDictationController *)self setPreviousHypothesis:interpretationCopy];
         }
       }
     }
@@ -9804,21 +9804,21 @@ uint64_t __94__UIDictationController_dictationConnection_receivedInterpretation_
   return result;
 }
 
-- (id)dictationConnection:(id)a3 willFilterTokensWithLanguageModel:(id)a4 forFinalize:(BOOL)a5
+- (id)dictationConnection:(id)connection willFilterTokensWithLanguageModel:(id)model forFinalize:(BOOL)finalize
 {
-  v6 = a4;
+  modelCopy = model;
   v7 = objc_alloc_init(UIDictationConnectionFilterState);
-  v8 = [(UIDictationController *)self resultTransformForLanguageModel:v6];
+  v8 = [(UIDictationController *)self resultTransformForLanguageModel:modelCopy];
 
   [(UIDictationConnectionFilterState *)v7 setTransform:v8];
 
   return v7;
 }
 
-- (id)dictationBlockForToken:(id)a3
+- (id)dictationBlockForToken:(id)token
 {
-  v4 = [a3 text];
-  if (([v4 isEqualToString:@"\\delete"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"\\backspace"))
+  text = [token text];
+  if (([text isEqualToString:@"\\delete"] & 1) != 0 || objc_msgSend(text, "isEqualToString:", @"\\backspace"))
   {
     v5 = aBlock;
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -9832,7 +9832,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"\\clear"])
+  if ([text isEqualToString:@"\\clear"])
   {
     v5 = v10;
     v10[0] = MEMORY[0x1E69E9820];
@@ -9868,28 +9868,28 @@ uint64_t __48__UIDictationController_dictationBlockForToken___block_invoke_2(uin
   return [v2 _clearExistingText];
 }
 
-- (BOOL)dictationConnection:(id)a3 filterState:(id)a4 shouldCheckpointAtToken:(id)a5
+- (BOOL)dictationConnection:(id)connection filterState:(id)state shouldCheckpointAtToken:(id)token
 {
-  v7 = a4;
-  v8 = [(UIDictationController *)self dictationBlockForToken:a5];
+  stateCopy = state;
+  v8 = [(UIDictationController *)self dictationBlockForToken:token];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 copy];
-    [v7 setPendingDictationCommand:v10];
+    [stateCopy setPendingDictationCommand:v10];
   }
 
   return v9 != 0;
 }
 
-- (void)dictationConnection:(id)a3 filterState:(id)a4 processFilteredToken:(id)a5 forFinalize:(BOOL)a6
+- (void)dictationConnection:(id)connection filterState:(id)state processFilteredToken:(id)token forFinalize:(BOOL)finalize
 {
-  v12 = a4;
-  v9 = [v12 pendingDictationCommand];
+  stateCopy = state;
+  pendingDictationCommand = [stateCopy pendingDictationCommand];
 
-  if (v9)
+  if (pendingDictationCommand)
   {
-    if (a6)
+    if (finalize)
     {
       goto LABEL_4;
     }
@@ -9897,40 +9897,40 @@ uint64_t __48__UIDictationController_dictationBlockForToken___block_invoke_2(uin
     goto LABEL_3;
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:7015 description:@"This should never be called unless there's a pending dictation command!"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:7015 description:@"This should never be called unless there's a pending dictation command!"];
 
-  if (!a6)
+  if (!finalize)
   {
 LABEL_3:
-    v10 = [v12 pendingDictationCommand];
-    v10[2]();
+    pendingDictationCommand2 = [stateCopy pendingDictationCommand];
+    pendingDictationCommand2[2]();
   }
 
 LABEL_4:
-  [v12 setPendingDictationCommand:0];
+  [stateCopy setPendingDictationCommand:0];
 }
 
-- (void)dictationConnection:(id)a3 didFilterTokensWithFilterState:(id)a4 forFinalize:(BOOL)a5
+- (void)dictationConnection:(id)connection didFilterTokensWithFilterState:(id)state forFinalize:(BOOL)finalize
 {
-  v7 = [a4 pendingDictationCommand];
+  pendingDictationCommand = [state pendingDictationCommand];
 
-  if (v7)
+  if (pendingDictationCommand)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:7028 description:@"This should never be called with a pending dictation command!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDictationController.m" lineNumber:7028 description:@"This should never be called with a pending dictation command!"];
   }
 }
 
-- (void)dictationConnectionWillStartRecording:(id)a3
+- (void)dictationConnectionWillStartRecording:(id)recording
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordingCopy = recording;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnectionWillStartRecording:]"];
 
   [(UIDictationController *)self setState:2];
-  v5 = [getAFAnalyticsClass() sharedAnalytics];
-  [v5 logEventWithType:1417 context:0];
+  sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
+  [sharedAnalytics logEventWithType:1417 context:0];
 
   v6 = objc_alloc_init(getSISchemaUEILaunchContextClass());
   v14 = 0;
@@ -9954,31 +9954,31 @@ LABEL_4:
   v9 = objc_alloc_init(v7);
   [v6 setEnded:v9];
 
-  v10 = [v6 ended];
-  [v10 setExists:1];
+  ended = [v6 ended];
+  [ended setExists:1];
 
   [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v6];
   v18 = @"dictationLanguage";
-  v11 = [(UIDictationController *)self currentDictationLanguageForDisplay];
-  v19[0] = v11;
+  currentDictationLanguageForDisplay = [(UIDictationController *)self currentDictationLanguageForDisplay];
+  v19[0] = currentDictationLanguageForDisplay;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
   [(UIDictationController *)self postNotificationName:@"UIKeyboardDidBeginDictationNotification" userInfo:v12];
 }
 
-- (void)dictationConnectionDidStartRecording:(id)a3
+- (void)dictationConnectionDidStartRecording:(id)recording
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnectionDidStartRecording:]"];
 }
 
-- (void)dictationConnection:(id)a3 didStartRecordingWithOptions:(id)a4
+- (void)dictationConnection:(id)connection didStartRecordingWithOptions:(id)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  optionsCopy = options;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnection:didStartRecordingWithOptions:]"];
 
-  self->_localSpeechRecognitionForced = [v5 forceOfflineRecognition];
-  self->_secureOfflineOnlySpeechRecognition = [v5 secureOfflineOnly];
+  self->_localSpeechRecognitionForced = [optionsCopy forceOfflineRecognition];
+  self->_secureOfflineOnlySpeechRecognition = [optionsCopy secureOfflineOnly];
   v6 = _UIDictationControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -9999,13 +9999,13 @@ LABEL_4:
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "%s Enhanced dictation logging enabled=%@", buf, 0x16u);
   }
 
-  v8 = [v5 detectUtterances];
-  if (v8)
+  detectUtterances = [optionsCopy detectUtterances];
+  if (detectUtterances)
   {
-    LOBYTE(v8) = [v5 continuousListening];
+    LOBYTE(detectUtterances) = [optionsCopy continuousListening];
   }
 
-  self->_detectingUtterances = v8;
+  self->_detectingUtterances = detectUtterances;
   v9 = _UIDictationControllerLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -10037,11 +10037,11 @@ LABEL_4:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = +[UIKeyboardInputMode dictationInputMode];
-      v15 = [v14 usingTypeAndTalk];
+      usingTypeAndTalk = [v14 usingTypeAndTalk];
       *buf = 136315394;
       v28 = "[UIDictationController dictationConnection:didStartRecordingWithOptions:]";
       v29 = 1024;
-      LODWORD(v30) = v15;
+      LODWORD(v30) = usingTypeAndTalk;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "%s usingTypeAndTalk = %d", buf, 0x12u);
     }
   }
@@ -10049,9 +10049,9 @@ LABEL_4:
   else
   {
     v16 = +[UIKeyboardInputMode dictationInputMode];
-    v17 = [v16 usingTypeAndTalk];
+    usingTypeAndTalk2 = [v16 usingTypeAndTalk];
 
-    if (!v17)
+    if (!usingTypeAndTalk2)
     {
       goto LABEL_20;
     }
@@ -10074,8 +10074,8 @@ LABEL_20:
   {
     v19 = +[UIKeyboardImpl activeInstance];
     v20 = +[UIDictationController sharedInstance];
-    v21 = [v20 dictationTipController];
-    [v21 resetShowModelessTipSignal];
+    dictationTipController = [v20 dictationTipController];
+    [dictationTipController resetShowModelessTipSignal];
 
     v25 = @"reason";
     v26 = @"Dictation connection did start recording";
@@ -10084,11 +10084,11 @@ LABEL_20:
   }
 
   v23 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v24 = [v23 _textInputSessionAnalytics];
-  [v24 didDictationBegin:1 usesMultiModalDictation:self->_detectingUtterances];
+  _textInputSessionAnalytics = [v23 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didDictationBegin:1 usesMultiModalDictation:self->_detectingUtterances];
 }
 
-- (void)dictationConnectionDidEndRecording:(id)a3
+- (void)dictationConnectionDidEndRecording:(id)recording
 {
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnectionDidEndRecording:]"];
 
@@ -10106,80 +10106,80 @@ LABEL_20:
   }
 }
 
-- (void)dictationConnectionDidCancelRecording:(id)a3
+- (void)dictationConnectionDidCancelRecording:(id)recording
 {
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnectionDidCancelRecording:]"];
 
   [(UIDictationController *)self setState:0];
 }
 
-- (void)dictationConnection:(id)a3 didFailRecordingWithError:(id)a4
+- (void)dictationConnection:(id)connection didFailRecordingWithError:(id)error
 {
-  v14 = a4;
+  errorCopy = error;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnection:didFailRecordingWithError:]"];
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%s error: %@", "-[UIDictationController dictationConnection:didFailRecordingWithError:]", v14];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%s error: %@", "-[UIDictationController dictationConnection:didFailRecordingWithError:]", errorCopy];
   if (!self->cancelledByWaitingForLocalResults)
   {
     v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v5 delegate];
+    delegate = [v5 delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
       v8 = +[UIKeyboardInputModeController sharedInputModeController];
-      v9 = [v8 delegate];
-      [v9 dictationRequestDidFailWithError:v14];
+      delegate2 = [v8 delegate];
+      [delegate2 dictationRequestDidFailWithError:errorCopy];
     }
 
     [(UIDictationController *)self setState:6];
     v10 = +[UIKeyboardImpl activeInstance];
-    v11 = [v10 inputDelegateManager];
-    v12 = [v11 textInputDelegate];
-    v13 = [v12 _textSelectingContainer];
+    inputDelegateManager = [v10 inputDelegateManager];
+    textInputDelegate = [inputDelegateManager textInputDelegate];
+    _textSelectingContainer = [textInputDelegate _textSelectingContainer];
 
     if (objc_opt_respondsToSelector())
     {
-      [v13 dictationRecognitionFailed];
+      [_textSelectingContainer dictationRecognitionFailed];
     }
   }
 }
 
-- (void)dictationConnection:(id)a3 didFailRecognitionWithError:(id)a4
+- (void)dictationConnection:(id)connection didFailRecognitionWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[UIDictationController dictationConnection:didFailRecognitionWithError:]"];
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%s error: %@", "-[UIDictationController dictationConnection:didFailRecognitionWithError:]", v7];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%s error: %@", "-[UIDictationController dictationConnection:didFailRecognitionWithError:]", errorCopy];
   v8 = +[UIKeyboardInputModeController sharedInputModeController];
-  v9 = [v8 delegate];
+  delegate = [v8 delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     v11 = +[UIKeyboardInputModeController sharedInputModeController];
-    v12 = [v11 delegate];
-    [v12 dictationRequestDidFailWithError:v7];
+    delegate2 = [v11 delegate];
+    [delegate2 dictationRequestDidFailWithError:errorCopy];
   }
 
   [(UIDictationController *)self setState:6];
   v13 = +[UIKeyboardImpl sharedInstance];
-  v14 = [v13 inputDelegate];
-  v15 = [v14 _textSelectingContainer];
+  inputDelegate = [v13 inputDelegate];
+  _textSelectingContainer = [inputDelegate _textSelectingContainer];
 
   if (objc_opt_respondsToSelector())
   {
-    [v15 dictationRecognitionFailed];
+    [_textSelectingContainer dictationRecognitionFailed];
   }
 
-  v16 = [v7 code];
-  if ((v16 - 2) <= 2)
+  code = [errorCopy code];
+  if ((code - 2) <= 2)
   {
-    v17 = v16;
+    v17 = code;
     [(UIDictationController *)self _createDictationPresenterWindowIfNecessary];
-    v18 = [(UIDictationController *)self dictationPresenterWindow];
-    [v18 makeKeyAndVisible];
+    dictationPresenterWindow = [(UIDictationController *)self dictationPresenterWindow];
+    [dictationPresenterWindow makeKeyAndVisible];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -10188,7 +10188,7 @@ LABEL_20:
     aBlock[4] = self;
     v19 = _Block_copy(aBlock);
     v20 = v19;
-    v60 = v6;
+    v60 = connectionCopy;
     if (v17 == 4)
     {
       v39 = MEMORY[0x1E696AEC0];
@@ -10273,11 +10273,11 @@ LABEL_20:
 
     if (v30)
     {
-      v58 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
-      [v58 presentViewController:v30 animated:1 completion:0];
+      presentingViewControllerForPrivacySheet = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
+      [presentingViewControllerForPrivacySheet presentViewController:v30 animated:1 completion:0];
     }
 
-    v6 = v60;
+    connectionCopy = v60;
   }
 
   [(UIDictationController *)self postNotificationName:@"UIDictationControllerDictationDidFinish" userInfo:0];
@@ -10318,26 +10318,26 @@ void __73__UIDictationController_dictationConnection_didFailRecognitionWithError
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)dictationConnection:(id)a3 didBeginLocalRecognitionWithModelInfo:(id)a4
+- (void)dictationConnection:(id)connection didBeginLocalRecognitionWithModelInfo:(id)info
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
+  infoCopy = info;
   [v5 stringWithFormat:@"%s", "-[UIDictationController dictationConnection:didBeginLocalRecognitionWithModelInfo:]"];
 
-  [(UIDictationController *)self setModelInfo:v6];
+  [(UIDictationController *)self setModelInfo:infoCopy];
 }
 
-- (void)dictationConnectionDidCancelIncompatibleLocalRecognizer:(id)a3
+- (void)dictationConnectionDidCancelIncompatibleLocalRecognizer:(id)recognizer
 {
   [(UIDictationController *)self _setupHypothesisAsFinalResults];
 
   [(UIDictationController *)self _runFinalizeOperation:1];
 }
 
-- (id)_containingSearchBarForView:(id)a3
+- (id)_containingSearchBarForView:(id)view
 {
-  v3 = a3;
-  if (v3)
+  viewCopy = view;
+  if (viewCopy)
   {
     while (1)
     {
@@ -10347,49 +10347,49 @@ void __73__UIDictationController_dictationConnection_didFailRecognitionWithError
         break;
       }
 
-      v4 = [v3 superview];
+      superview = [viewCopy superview];
 
-      v3 = v4;
-      if (!v4)
+      viewCopy = superview;
+      if (!superview)
       {
         goto LABEL_6;
       }
     }
 
-    v3 = v3;
+    viewCopy = viewCopy;
   }
 
 LABEL_6:
 
-  return v3;
+  return viewCopy;
 }
 
-- (void)dictationConnection:(id)a3 didReceiveSearchResults:(id)a4 recognizedText:(id)a5 stable:(BOOL)a6 final:(BOOL)a7
+- (void)dictationConnection:(id)connection didReceiveSearchResults:(id)results recognizedText:(id)text stable:(BOOL)stable final:(BOOL)final
 {
-  v7 = a7;
-  v8 = a6;
-  v18 = a4;
-  v11 = a5;
+  finalCopy = final;
+  stableCopy = stable;
+  resultsCopy = results;
+  textCopy = text;
   v12 = +[UIKeyboardImpl sharedInstance];
-  v13 = [v12 inputDelegate];
-  v14 = [v13 _textSelectingContainer];
+  inputDelegate = [v12 inputDelegate];
+  _textSelectingContainer = [inputDelegate _textSelectingContainer];
 
-  v15 = [(UIDictationController *)self _containingSearchBarForView:v14];
+  v15 = [(UIDictationController *)self _containingSearchBarForView:_textSelectingContainer];
   v16 = v15;
   if (v15)
   {
     v17 = v15;
 
-    v14 = v17;
+    _textSelectingContainer = v17;
   }
 
   if (_UIIsPrivateMainBundle() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [UIDictationConnection afDelegate:v14 didReceiveSearchResults:v18 recognizedText:v11 stable:v8 final:v7];
+    [UIDictationConnection afDelegate:_textSelectingContainer didReceiveSearchResults:resultsCopy recognizedText:textCopy stable:stableCopy final:finalCopy];
   }
 }
 
-- (void)dictationConnnectionDidChangeAvailability:(id)a3
+- (void)dictationConnnectionDidChangeAvailability:(id)availability
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = @"reason";
@@ -10398,14 +10398,14 @@ LABEL_6:
   [(UIDictationController *)self postNotificationName:@"UIKeyboardDictationAvailabilityDidChangeNotification" userInfo:v4];
 }
 
-- (void)dictationConnectionDidFinish:(id)a3
+- (void)dictationConnectionDidFinish:(id)finish
 {
   if (self->_detectingUtterances)
   {
     v4 = +[UIDictationLandingView activeInstance];
-    v5 = [v4 canStopLanding];
+    canStopLanding = [v4 canStopLanding];
 
-    if (v5)
+    if (canStopLanding)
     {
       v6 = +[UIDictationLandingView activeInstance];
       [v6 stopLanding];
@@ -10419,20 +10419,20 @@ LABEL_6:
   [(UIDictationController *)self postNotificationName:@"UIDictationControllerDictationDidFinish" userInfo:0];
 }
 
-- (void)setCandidateDictationSerializableResults:(id)a3
+- (void)setCandidateDictationSerializableResults:(id)results
 {
-  v14 = a3;
-  objc_storeStrong(&self->_candidateDictationSerializableResults, a3);
+  resultsCopy = results;
+  objc_storeStrong(&self->_candidateDictationSerializableResults, results);
   if ([objc_opt_class() shouldForwardInInputSystemUI])
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 inputDelegateManager];
-    v8 = [v7 inputSystemSourceSession];
+    inputDelegateManager = [v6 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v8 && ![(UIDictationController *)self isIgnoringRTIChanges])
+    if (inputSystemSourceSession && ![(UIDictationController *)self isIgnoringRTIChanges])
     {
-      v9 = [v8 textOperations];
-      [v9 setCustomInfoType:0x1EFB7C8F0];
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
       v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
       v11 = v10;
       candidateDictationSerializableResults = self->_candidateDictationSerializableResults;
@@ -10444,44 +10444,44 @@ LABEL_6:
       v13 = NSStringFromSelector(a2);
       [v11 setObject:v13 forKeyedSubscript:@"selector"];
 
-      [v9 setCustomInfo:v11];
-      [v8 flushOperations];
+      [textOperations setCustomInfo:v11];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
 
-- (void)dictationConnection:(id)a3 didReceivePartialPackage:(id)a4 nluResult:(id)a5 languageModel:(id)a6
+- (void)dictationConnection:(id)connection didReceivePartialPackage:(id)package nluResult:(id)result languageModel:(id)model
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [a4 recognition];
-  v14 = [v13 oneBestTokenList];
+  resultCopy = result;
+  modelCopy = model;
+  connectionCopy = connection;
+  recognition = [package recognition];
+  oneBestTokenList = [recognition oneBestTokenList];
 
   [(UIDictationController *)self updateRecordingLimitTimerIfNeeded];
   v15 = _UIDictationControllerLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 commandGrammarParsePackage];
+    commandGrammarParsePackage = [resultCopy commandGrammarParsePackage];
     v17 = 136315394;
     v18 = "[UIDictationController dictationConnection:didReceivePartialPackage:nluResult:languageModel:]";
     v19 = 2112;
-    v20 = v16;
+    v20 = commandGrammarParsePackage;
     _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "%s Partial AFVoiceCommandGrammarParsePackage: %@", &v17, 0x16u);
   }
 
-  [v12 synthesizeDidRecognizeTokens:v14 languageModel:v11];
+  [connectionCopy synthesizeDidRecognizeTokens:oneBestTokenList languageModel:modelCopy];
 }
 
-- (void)dictationConnection:(id)a3 didReceiveVoiceCommandCandidatePackage:(id)a4 nluResult:(id)a5
+- (void)dictationConnection:(id)connection didReceiveVoiceCommandCandidatePackage:(id)package nluResult:(id)result
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  packageCopy = package;
+  resultCopy = result;
   [(UIDictationController *)self updateRecordingLimitTimerIfNeeded];
-  v11 = [v10 commandGrammarParsePackage];
+  commandGrammarParsePackage = [resultCopy commandGrammarParsePackage];
 
   v12 = _UIDictationControllerLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -10489,11 +10489,11 @@ LABEL_6:
     *buf = 136315394;
     v25 = "[UIDictationController dictationConnection:didReceiveVoiceCommandCandidatePackage:nluResult:]";
     v26 = 2112;
-    v27 = v11;
+    v27 = commandGrammarParsePackage;
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "%s commandGrammarParsePackage: %@", buf, 0x16u);
   }
 
-  v13 = [(UIDictationController *)self _voiceCommandGrammarParseCandidatesFromPackage:v11 completeCommands:1];
+  v13 = [(UIDictationController *)self _voiceCommandGrammarParseCandidatesFromPackage:commandGrammarParsePackage completeCommands:1];
   if ([(UIDictationController *)self isProcessingPotentialVoiceCommand])
   {
     v14 = _UIDictationControllerLog();
@@ -10528,9 +10528,9 @@ LABEL_6:
       v19[3] = &unk_1E7115038;
       v19[4] = self;
       v20 = v13;
-      v21 = v9;
-      v22 = v8;
-      v23 = v11;
+      v21 = packageCopy;
+      v22 = connectionCopy;
+      v23 = commandGrammarParsePackage;
       [(UIDictationController *)self requestVisibleTextWithCompletionBlock:v19];
     }
 
@@ -11424,35 +11424,35 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
   [*(a1 + 40) notifyDocumentStateChangedAndResumeDictation:*(a1 + 72)];
 }
 
-- (void)populateInstrumentationMetadataOnCommandExecuted:(id)a3 toExecuted:(id)a4
+- (void)populateInstrumentationMetadataOnCommandExecuted:(id)executed toExecuted:(id)toExecuted
 {
-  v6 = a4;
-  v5 = [a3 instrumentationMetadata];
-  if ([objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits] && v5)
+  toExecutedCopy = toExecuted;
+  instrumentationMetadata = [executed instrumentationMetadata];
+  if ([objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits] && instrumentationMetadata)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 setHasSpelling:{objc_msgSend(v5, "hasSpelling")}];
+      [toExecutedCopy setHasSpelling:{objc_msgSend(instrumentationMetadata, "hasSpelling")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setHasTextSelection:{objc_msgSend(v5, "hasTextSelection")}];
+      [toExecutedCopy setHasTextSelection:{objc_msgSend(instrumentationMetadata, "hasTextSelection")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setIsWfstParseable:{objc_msgSend(v5, "isWfstParseable")}];
+      [toExecutedCopy setIsWfstParseable:{objc_msgSend(instrumentationMetadata, "isWfstParseable")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setHasAdjacentEdit:{objc_msgSend(v5, "hasAdjacentEdit")}];
+      [toExecutedCopy setHasAdjacentEdit:{objc_msgSend(instrumentationMetadata, "hasAdjacentEdit")}];
     }
   }
 }
 
-+ (void)didBeginEditingInTextView:(id)a3
++ (void)didBeginEditingInTextView:(id)view
 {
   if (+[UIDictationController isRunning])
   {
@@ -11464,25 +11464,25 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
   [v4 setWantsAvailabilityMonitoringWhenAppActive:1];
 }
 
-+ (id)stringForViewMode:(int)a3
++ (id)stringForViewMode:(int)mode
 {
-  if (a3 > 7)
+  if (mode > 7)
   {
     return @"Unknown state";
   }
 
   else
   {
-    return off_1E71155D0[a3];
+    return off_1E71155D0[mode];
   }
 }
 
 + (void)poppedLastStreamingOperation
 {
   v2 = +[UIDictationController sharedInstance];
-  v3 = [v2 state];
+  state = [v2 state];
 
-  if (v3 == 5)
+  if (state == 5)
   {
     v4 = +[UIDictationController sharedInstance];
     [v4 setState:0];
@@ -11493,8 +11493,8 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
 {
   if (![(UIDictationController *)self hasPreheated])
   {
-    v3 = [(UIDictationController *)self dictationConnection];
-    [v3 preheat];
+    dictationConnection = [(UIDictationController *)self dictationConnection];
+    [dictationConnection preheat];
 
     [(UIDictationController *)self setHasPreheated:1];
   }
@@ -11504,41 +11504,41 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
 {
   if (+[UIDictationController viewMode])
   {
-    v3 = self->_language;
+    languageCode = self->_language;
   }
 
   else
   {
-    v3 = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
+    languageCode = [(UIDictationConnectionPreferences *)self->_preferences languageCode];
   }
 
-  return v3;
+  return languageCode;
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v5 = a3;
+  languageCopy = language;
   language = self->_language;
   p_language = &self->_language;
-  if (language != v5)
+  if (language != languageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_language, a3);
-    v5 = v8;
+    v8 = languageCopy;
+    objc_storeStrong(p_language, language);
+    languageCopy = v8;
   }
 }
 
 - (void)prepareStartDictationKeyboardGestures
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 hardwareKeyboardAttached];
+  hardwareKeyboardAttached = [v3 hardwareKeyboardAttached];
 
-  if (v4)
+  if (hardwareKeyboardAttached)
   {
     v7 = +[UIKeyboardImpl activeInstance];
-    v5 = [v7 inputDelegateManager];
-    v6 = [v5 keyInputDelegate];
-    [(UIDictationController *)self prepareStartDictationKeyboardGesturesForDelegate:v6];
+    inputDelegateManager = [v7 inputDelegateManager];
+    keyInputDelegate = [inputDelegateManager keyInputDelegate];
+    [(UIDictationController *)self prepareStartDictationKeyboardGesturesForDelegate:keyInputDelegate];
   }
 
   else
@@ -11548,9 +11548,9 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
   }
 }
 
-- (void)prepareDoubleTapShortcutGesture:(id)a3
+- (void)prepareDoubleTapShortcutGesture:(id)gesture
 {
-  v14 = a3;
+  gestureCopy = gesture;
   hardwareShortcutRecognizer = self->_hardwareShortcutRecognizer;
   if (!hardwareShortcutRecognizer)
   {
@@ -11562,41 +11562,41 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
     hardwareShortcutRecognizer = self->_hardwareShortcutRecognizer;
   }
 
-  v7 = [(UIGestureRecognizer *)hardwareShortcutRecognizer view];
+  view = [(UIGestureRecognizer *)hardwareShortcutRecognizer view];
 
-  if (!v7)
+  if (!view)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v14;
+      textInputView = gestureCopy;
     }
 
     else
     {
-      v8 = [v14 textInputView];
+      textInputView = [gestureCopy textInputView];
     }
 
-    v9 = v8;
-    if (!v8)
+    _keyWindow = textInputView;
+    if (!textInputView)
     {
       v10 = +[UIWindowScene _keyWindowScene];
-      v9 = [(UIWindowScene *)v10 _keyWindow];
+      _keyWindow = [(UIWindowScene *)v10 _keyWindow];
     }
 
-    [v9 addGestureRecognizer:self->_hardwareShortcutRecognizer];
+    [_keyWindow addGestureRecognizer:self->_hardwareShortcutRecognizer];
   }
 
-  v11 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v12 = [v11 valueForPreferenceKey:*MEMORY[0x1E69D9760]];
-  v13 = [v12 intValue];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v12 = [mEMORY[0x1E69D9680] valueForPreferenceKey:*MEMORY[0x1E69D9760]];
+  intValue = [v12 intValue];
 
-  [(UIDictationController *)self updateDoubleTapShortcutWithPreference:v13];
+  [(UIDictationController *)self updateDoubleTapShortcutWithPreference:intValue];
 }
 
-- (void)prepareVoiceCommandSingleTapGesture:(id)a3
+- (void)prepareVoiceCommandSingleTapGesture:(id)gesture
 {
-  v11 = a3;
+  gestureCopy = gesture;
   hardwareVoiceCommandKeyRecognizer = self->_hardwareVoiceCommandKeyRecognizer;
   if (!hardwareVoiceCommandKeyRecognizer)
   {
@@ -11609,56 +11609,56 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
     hardwareVoiceCommandKeyRecognizer = self->_hardwareVoiceCommandKeyRecognizer;
   }
 
-  v7 = [(UIGestureRecognizer *)hardwareVoiceCommandKeyRecognizer view];
+  view = [(UIGestureRecognizer *)hardwareVoiceCommandKeyRecognizer view];
 
-  if (!v7)
+  if (!view)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v11;
+      textInputView = gestureCopy;
     }
 
     else
     {
-      v8 = [v11 textInputView];
+      textInputView = [gestureCopy textInputView];
     }
 
-    v9 = v8;
-    if (!v8)
+    _keyWindow = textInputView;
+    if (!textInputView)
     {
       v10 = +[UIWindowScene _keyWindowScene];
-      v9 = [(UIWindowScene *)v10 _keyWindow];
+      _keyWindow = [(UIWindowScene *)v10 _keyWindow];
     }
 
-    [v9 addGestureRecognizer:self->_hardwareVoiceCommandKeyRecognizer];
+    [_keyWindow addGestureRecognizer:self->_hardwareVoiceCommandKeyRecognizer];
   }
 
   [(UITapGestureRecognizer *)self->_hardwareVoiceCommandKeyRecognizer setAllowedPressTypes:&unk_1EFE2C9D0];
   [(UIGestureRecognizer *)self->_hardwareVoiceCommandKeyRecognizer setAllowedTouchTypes:&unk_1EFE2C9E8];
 }
 
-- (void)prepareStartDictationKeyboardGesturesForDelegate:(id)a3
+- (void)prepareStartDictationKeyboardGesturesForDelegate:(id)delegate
 {
-  v6 = a3;
+  delegateCopy = delegate;
   [(UIDictationController *)self removeStartDictationKeyboardGestures];
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 hardwareKeyboardAttached];
+  hardwareKeyboardAttached = [v4 hardwareKeyboardAttached];
 
-  if (v5)
+  if (hardwareKeyboardAttached)
   {
-    [(UIDictationController *)self prepareDoubleTapShortcutGesture:v6];
-    [(UIDictationController *)self prepareVoiceCommandSingleTapGesture:v6];
+    [(UIDictationController *)self prepareDoubleTapShortcutGesture:delegateCopy];
+    [(UIDictationController *)self prepareVoiceCommandSingleTapGesture:delegateCopy];
   }
 }
 
-- (void)updateDoubleTapShortcutWithPreference:(int64_t)a3
+- (void)updateDoubleTapShortcutWithPreference:(int64_t)preference
 {
-  if (self->_currentShortcutType != a3 || (-[UIGestureRecognizer allowedPressTypes](self->_hardwareShortcutRecognizer, "allowedPressTypes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, !v6))
+  if (self->_currentShortcutType != preference || (-[UIGestureRecognizer allowedPressTypes](self->_hardwareShortcutRecognizer, "allowedPressTypes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, !v6))
   {
     v7 = MEMORY[0x1E695E0F0];
     v8 = &unk_1EFE2CA30;
-    if (a3 == 1)
+    if (preference == 1)
     {
       v7 = &unk_1EFE2CA48;
     }
@@ -11668,7 +11668,7 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
       v8 = MEMORY[0x1E695E0F0];
     }
 
-    if (a3)
+    if (preference)
     {
       v9 = v8;
     }
@@ -11678,7 +11678,7 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
       v9 = &unk_1EFE2CA00;
     }
 
-    if (a3)
+    if (preference)
     {
       v10 = v7;
     }
@@ -11690,7 +11690,7 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
 
     [(UITapGestureRecognizer *)self->_hardwareShortcutRecognizer setAllowedPressTypes:v9];
     [(UIGestureRecognizer *)self->_hardwareShortcutRecognizer setAllowedTouchTypes:v10];
-    self->_currentShortcutType = a3;
+    self->_currentShortcutType = preference;
   }
 }
 
@@ -11710,9 +11710,9 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
     v4 = +[UIKeyboardImpl activeInstance];
     if ([v4 shouldShowDictationKey])
     {
-      v3 = [objc_opt_class() dictationIsFunctional];
+      dictationIsFunctional = [objc_opt_class() dictationIsFunctional];
 
-      if (!v3)
+      if (!dictationIsFunctional)
       {
         return;
       }
@@ -11723,43 +11723,43 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
   }
 }
 
-- (void)dictationShortCutKey:(id)a3
+- (void)dictationShortCutKey:(id)key
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  keyCopy = key;
+  if ([keyCopy state] == 1)
   {
     if (+[UIDictationController isRunning])
     {
-      [v4 setState:4];
+      [keyCopy setState:4];
     }
 
     [(UIDictationController *)self setReasonType:21];
     [(UIDictationController *)self handleHardwareKeyboardGesture];
   }
 
-  if ([v4 state] == 3 && (objc_msgSend(v4, "gestureType") != 1 || +[UIDictationController isRunning](UIDictationController, "isRunning")))
+  if ([keyCopy state] == 3 && (objc_msgSend(keyCopy, "gestureType") != 1 || +[UIDictationController isRunning](UIDictationController, "isRunning")))
   {
     [(UIDictationController *)self setReasonType:21];
     [(UIDictationController *)self handleHardwareKeyboardGesture];
   }
 }
 
-- (void)voiceCommandSingleTapKey:(id)a3
+- (void)voiceCommandSingleTapKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(UIGestureRecognizer *)v4 state]== UIGestureRecognizerStateEnded)
+  keyCopy = key;
+  if ([(UIGestureRecognizer *)keyCopy state]== UIGestureRecognizerStateEnded)
   {
     hardwareVoiceCommandKeyRecognizer = self->_hardwareVoiceCommandKeyRecognizer;
-    if (hardwareVoiceCommandKeyRecognizer == v4)
+    if (hardwareVoiceCommandKeyRecognizer == keyCopy)
     {
-      v6 = [(_UIVoiceCommandButtonTapGestureRecognizer *)hardwareVoiceCommandKeyRecognizer voiceCommandButtonTapDuration];
+      voiceCommandButtonTapDuration = [(_UIVoiceCommandButtonTapGestureRecognizer *)hardwareVoiceCommandKeyRecognizer voiceCommandButtonTapDuration];
       [(UITapGestureRecognizer *)self->_hardwareVoiceCommandKeyRecognizer maximumTapDuration];
       v8 = v7;
       v9 = _UIDictationControllerLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 doubleValue];
+        [voiceCommandButtonTapDuration doubleValue];
         v12 = 136315650;
         v13 = "[UIDictationController voiceCommandSingleTapKey:]";
         v14 = 2048;
@@ -11769,9 +11769,9 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
         _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "%s Triggered with: tapDuration=%f, maxTapDuration=%f", &v12, 0x20u);
       }
 
-      if (v6)
+      if (voiceCommandButtonTapDuration)
       {
-        [v6 doubleValue];
+        [voiceCommandButtonTapDuration doubleValue];
         if (v11 <= v8)
         {
           [(UIDictationController *)self setReasonType:22];
@@ -11782,30 +11782,30 @@ void __94__UIDictationController_dictationConnection_didReceiveVoiceCommandCandi
   }
 }
 
-- (void)preferencesChanged:(id)a3
+- (void)preferencesChanged:(id)changed
 {
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 hardwareKeyboardAttached];
+  hardwareKeyboardAttached = [v4 hardwareKeyboardAttached];
 
-  if (v5)
+  if (hardwareKeyboardAttached)
   {
-    v6 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-    v7 = [v6 valueForPreferenceKey:*MEMORY[0x1E69D9760]];
-    v8 = [v7 intValue];
+    mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+    v7 = [mEMORY[0x1E69D9680] valueForPreferenceKey:*MEMORY[0x1E69D9760]];
+    intValue = [v7 intValue];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__UIDictationController_preferencesChanged___block_invoke;
     v9[3] = &unk_1E70F32F0;
     v9[4] = self;
-    v9[5] = v8;
+    v9[5] = intValue;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 }
 
-- (id)_assistantCompatibleLanguageCodeForInputMode:(id)a3
+- (id)_assistantCompatibleLanguageCodeForInputMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = TIInputModeGetLanguage();
   v5 = TIInputModeGetRegion();
 
@@ -11832,9 +11832,9 @@ LABEL_7:
 
 - (id)_currentLanguageForOfflineDictationMetrics
 {
-  v3 = [(UIDictationController *)self currentInputModeForDictation];
-  v4 = [v3 dictationLanguage];
-  v5 = [(UIDictationController *)self _assistantCompatibleLanguageCodeForInputMode:v4];
+  currentInputModeForDictation = [(UIDictationController *)self currentInputModeForDictation];
+  dictationLanguage = [currentInputModeForDictation dictationLanguage];
+  v5 = [(UIDictationController *)self _assistantCompatibleLanguageCodeForInputMode:dictationLanguage];
 
   return v5;
 }
@@ -11855,25 +11855,25 @@ LABEL_7:
     if (self->_lastOfflineDictationMetricEvent == 1)
     {
       AFAggregatorClass = getAFAggregatorClass();
-      v4 = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
-      [AFAggregatorClass logDictationFollowedByKeyboardInputOccurredForLanguage:v4];
+      _currentLanguageForOfflineDictationMetrics = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
+      [AFAggregatorClass logDictationFollowedByKeyboardInputOccurredForLanguage:_currentLanguageForOfflineDictationMetrics];
     }
 
     self->_lastOfflineDictationMetricEvent = 2;
   }
 }
 
-- (void)markDictationTipDeletionEvent:(id)a3 deletedTextRange:(_NSRange)a4
+- (void)markDictationTipDeletionEvent:(id)event deletedTextRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  eventCopy = event;
   if (self->_lastKeyboardMetricEvent != 3 || !+[UIDictationController isRunning])
   {
     [(UIDictationTipController *)self->_dictationTipController resetDeletionEventCount];
   }
 
-  [(UIDictationTipController *)self->_dictationTipController addDeletionEventCount:v7 deletedTextRange:location, length];
+  [(UIDictationTipController *)self->_dictationTipController addDeletionEventCount:eventCopy deletedTextRange:location, length];
   self->_lastKeyboardMetricEvent = 3;
 }
 
@@ -11884,8 +11884,8 @@ LABEL_7:
     if (self->_lastOfflineDictationMetricEvent == 1)
     {
       AFAggregatorClass = getAFAggregatorClass();
-      v4 = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
-      [AFAggregatorClass logDictationFollowedByKeyboardDeleteOccurredForLanguage:v4];
+      _currentLanguageForOfflineDictationMetrics = [(UIDictationController *)self _currentLanguageForOfflineDictationMetrics];
+      [AFAggregatorClass logDictationFollowedByKeyboardDeleteOccurredForLanguage:_currentLanguageForOfflineDictationMetrics];
     }
 
     self->_lastOfflineDictationMetricEvent = 3;
@@ -11901,47 +11901,47 @@ LABEL_7:
   }
 }
 
-- (void)overrideSmartLanguageSelection:(id)a3
+- (void)overrideSmartLanguageSelection:(id)selection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UIDictationController *)self setSmartLanguageSelectionOverrideLanguage:v4];
+  selectionCopy = selection;
+  [(UIDictationController *)self setSmartLanguageSelectionOverrideLanguage:selectionCopy];
   v5 = _UIDictationControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[UIDictationController overrideSmartLanguageSelection:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = selectionCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%s Dictation language: %@", buf, 0x16u);
   }
 
-  v6 = [getAFAnalyticsClass() sharedAnalytics];
-  v7 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-  v13[0] = v7;
+  sharedAnalytics = [getAFAnalyticsClass() sharedAnalytics];
+  smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+  v13[0] = smartLanguageSelectionOverrideLanguage;
   v12[1] = @"correctionIdentifier";
-  v8 = [(UIDictationController *)self lastCorrectionIdentifier];
-  v9 = v8;
+  lastCorrectionIdentifier = [(UIDictationController *)self lastCorrectionIdentifier];
+  v9 = lastCorrectionIdentifier;
   v10 = MEMORY[0x1E695E0F8];
-  if (v8)
+  if (lastCorrectionIdentifier)
   {
-    v10 = v8;
+    v10 = lastCorrectionIdentifier;
   }
 
   v13[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v6 logEventWithType:2219 context:v11];
+  [sharedAnalytics logEventWithType:2219 context:v11];
 }
 
 - (BOOL)smartLanguageSelectionOverridden
 {
-  v2 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-  v3 = v2 != 0;
+  smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+  v3 = smartLanguageSelectionOverrideLanguage != 0;
 
   return v3;
 }
 
-- (void)rtiInputSessionWillChangeToNewProcess:(id)a3
+- (void)rtiInputSessionWillChangeToNewProcess:(id)process
 {
   if (+[UIKeyboard isKeyboardProcess])
   {
@@ -11981,19 +11981,19 @@ void __63__UIDictationController_rtiInputSessionWillChangeToNewProcess___block_i
   [v0 stopDictationIgnoreFinalizePhrases];
 }
 
-- (void)keyboardDidHide:(id)a3
+- (void)keyboardDidHide:(id)hide
 {
   v4 = +[UIDictationView activeInstance];
-  v5 = [v4 switchingLanguage];
+  switchingLanguage = [v4 switchingLanguage];
 
-  if ((v5 & 1) == 0)
+  if ((switchingLanguage & 1) == 0)
   {
     v6 = +[UIKeyboardImpl activeInstance];
     if ([(UIDictationController *)self shouldStayInDictationInputMode])
     {
       [(UIDictationController *)self setShouldStayInDictationInputMode:0];
-      v7 = [(UIDictationController *)self keyboardInputModeToReturn];
-      [v6 setKeyboardInputMode:v7 userInitiated:0];
+      keyboardInputModeToReturn = [(UIDictationController *)self keyboardInputModeToReturn];
+      [v6 setKeyboardInputMode:keyboardInputModeToReturn userInitiated:0];
     }
 
     else if (([v6 _shouldSuppressSoftwareKeyboard] & 1) == 0 && (objc_msgSend(v6, "isInHardwareKeyboardMode") & 1) == 0 && !-[UIDictationController ignoreKeyboardDidHideNotification](self, "ignoreKeyboardDidHideNotification"))
@@ -12008,10 +12008,10 @@ void __63__UIDictationController_rtiInputSessionWillChangeToNewProcess___block_i
 + (BOOL)isDictationSearchBarButtonVisible
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 inputDelegate];
+  inputDelegate = [v2 inputDelegate];
 
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [v3 showDictationButton] && objc_msgSend(v3, "isEditing") && !objc_msgSend(v3, "hasText");
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [inputDelegate showDictationButton] && objc_msgSend(inputDelegate, "isEditing") && !objc_msgSend(inputDelegate, "hasText");
 
   return v4;
 }
@@ -12035,16 +12035,16 @@ void __48__UIDictationController_textRelatedMetadataKeys__block_invoke()
   qword_1ED498860 = v0;
 }
 
-+ (id)arrayWithTextEntriesRemoved:(id)a3
++ (id)arrayWithTextEntriesRemoved:(id)removed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  removedCopy = removed;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = removedCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -12063,7 +12063,7 @@ void __48__UIDictationController_textRelatedMetadataKeys__block_invoke()
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [a1 arrayWithTextEntriesRemoved:v11];
+          v12 = [self arrayWithTextEntriesRemoved:v11];
         }
 
         else
@@ -12071,7 +12071,7 @@ void __48__UIDictationController_textRelatedMetadataKeys__block_invoke()
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [a1 dictionaryWithTextEntriesRemoved:{v11, v15}];
+            v12 = [self dictionaryWithTextEntriesRemoved:{v11, v15}];
           }
 
           else
@@ -12081,7 +12081,7 @@ void __48__UIDictationController_textRelatedMetadataKeys__block_invoke()
         }
 
         v13 = v12;
-        [v5 addObject:{v12, v15}];
+        [array addObject:{v12, v15}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -12090,22 +12090,22 @@ void __48__UIDictationController_textRelatedMetadataKeys__block_invoke()
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)dictionaryWithTextEntriesRemoved:(id)a3
++ (id)dictionaryWithTextEntriesRemoved:(id)removed
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  removedCopy = removed;
+  dictionary = [v4 dictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__UIDictationController_dictionaryWithTextEntriesRemoved___block_invoke;
   v9[3] = &unk_1E7115060;
-  v11 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = dictionary;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [removedCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -12168,17 +12168,17 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   qword_1ED498870 = v0;
 }
 
-+ (id)whitelistedDictationDictionaryFromMetadata:(id)a3
++ (id)whitelistedDictationDictionaryFromMetadata:(id)metadata
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = +[UIDictationController whitelistedDictationMetadataKeys];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = metadataCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -12197,7 +12197,7 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
         if ([v4 containsObject:{v11, v14}])
         {
           v12 = [v6 objectForKeyedSubscript:v11];
-          [v5 setObject:v12 forKey:v11];
+          [dictionary setObject:v12 forKey:v11];
         }
       }
 
@@ -12207,15 +12207,15 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (BOOL)shouldRemoveTextEntries:(id)a3
++ (BOOL)shouldRemoveTextEntries:(id)entries
 {
-  v4 = a3;
-  if ([a1 canShareDictationData])
+  entriesCopy = entries;
+  if ([self canShareDictationData])
   {
-    v5 = [v4 objectForKey:@"speechRecognitionSource"];
+    v5 = [entriesCopy objectForKey:@"speechRecognitionSource"];
     if ([v5 isEqualToString:@"local"])
     {
       v6 = os_variant_has_internal_diagnostics() ^ 1;
@@ -12237,23 +12237,23 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
 
 + (BOOL)canShareDictationData
 {
-  v3 = [a1 sharedInstance];
-  v4 = [v3 isDetectingUtterances];
+  sharedInstance = [self sharedInstance];
+  isDetectingUtterances = [sharedInstance isDetectingUtterances];
 
-  if ((v4 & 1) == 0)
+  if ((isDetectingUtterances & 1) == 0)
   {
-    v5 = [a1 sharedInstance];
-    v6 = [v5 secureOfflineOnlySpeechRecognition];
+    sharedInstance2 = [self sharedInstance];
+    secureOfflineOnlySpeechRecognition = [sharedInstance2 secureOfflineOnlySpeechRecognition];
 
-    if (!v6)
+    if (!secureOfflineOnlySpeechRecognition)
     {
       return 1;
     }
 
     if (os_variant_has_internal_diagnostics())
     {
-      v9 = [getAFPreferencesClass_0() sharedPreferences];
-      v7 = [v9 siriDataSharingOptInStatus] == 1;
+      sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+      v7 = [sharedPreferences siriDataSharingOptInStatus] == 1;
 
       return v7;
     }
@@ -12262,17 +12262,17 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   return 0;
 }
 
-+ (id)removeTextIfNeeded:(id)a3
++ (id)removeTextIfNeeded:(id)needed
 {
-  v3 = a3;
-  if (v3 && ([objc_opt_class() shouldRemoveTextEntries] & 1) != 0)
+  neededCopy = needed;
+  if (neededCopy && ([objc_opt_class() shouldRemoveTextEntries] & 1) != 0)
   {
     v4 = @"*";
   }
 
   else
   {
-    v4 = v3;
+    v4 = neededCopy;
   }
 
   v5 = v4;
@@ -12280,18 +12280,18 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   return v4;
 }
 
-+ (id)removeTextIfNeeded:(id)a3 metadata:(id)a4
++ (id)removeTextIfNeeded:(id)needed metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && ([objc_opt_class() shouldRemoveTextEntries:v6] & 1) != 0)
+  neededCopy = needed;
+  metadataCopy = metadata;
+  if (neededCopy && ([objc_opt_class() shouldRemoveTextEntries:metadataCopy] & 1) != 0)
   {
     v7 = @"*";
   }
 
   else
   {
-    v7 = v5;
+    v7 = neededCopy;
   }
 
   v8 = v7;
@@ -12299,16 +12299,16 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   return v7;
 }
 
-+ (id)whitelistedDictationDictionariesFromMetadataDictionaries:(id)a3
++ (id)whitelistedDictationDictionariesFromMetadataDictionaries:(id)dictionaries
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  dictionariesCopy = dictionaries;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -12335,7 +12335,7 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
             v12 = v13;
           }
 
-          [v4 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -12345,7 +12345,7 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
     while (v7);
   }
 
-  v14 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+  v14 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v14;
 }
@@ -12355,7 +12355,7 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   v45 = *MEMORY[0x1E69E9840];
   if (!_os_feature_enabled_impl())
   {
-    v9 = 0;
+    allObjects = 0;
     goto LABEL_32;
   }
 
@@ -12365,7 +12365,7 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   v35 = __Block_byref_object_copy__125;
   v36 = __Block_byref_object_dispose__125;
   v2 = +[UIDictationConnectionPreferences sharedInstance];
-  v37 = [v2 dictationSLSEnabledLanguages];
+  dictationSLSEnabledLanguages = [v2 dictationSLSEnabledLanguages];
 
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
   if ([v33[5] count])
@@ -12374,8 +12374,8 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v6 = [v5 preferencesActions];
-      v7 = [v6 valueForPreferenceKey:@"DictationLanguagesEnabled"];
+      preferencesActions = [v5 preferencesActions];
+      v7 = [preferencesActions valueForPreferenceKey:@"DictationLanguagesEnabled"];
       v8 = v33[5];
       *buf = 136315650;
       v40 = "+[UIDictationController activeSLSDictationLanguages]";
@@ -12401,11 +12401,11 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
   if ([v25 count] >= 2)
   {
     v10 = MEMORY[0x1E695DFA8];
-    v11 = [v3 enabledDictationLanguages];
-    v12 = v11;
-    if (v11)
+    enabledDictationLanguages = [v3 enabledDictationLanguages];
+    v12 = enabledDictationLanguages;
+    if (enabledDictationLanguages)
     {
-      v13 = v11;
+      v13 = enabledDictationLanguages;
     }
 
     else
@@ -12418,21 +12418,21 @@ void __57__UIDictationController_whitelistedDictationMetadataKeys__block_invoke(
     [v26 intersectSet:v25];
     if ([v26 count] < 2)
     {
-      v9 = 0;
+      allObjects = 0;
 LABEL_30:
 
       goto LABEL_31;
     }
 
-    v14 = [v3 currentInputMode];
-    v15 = [v14 languageWithRegion];
+    currentInputMode = [v3 currentInputMode];
+    languageWithRegion = [currentInputMode languageWithRegion];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = [v3 enabledDictationLanguages];
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v38 count:16];
+    enabledDictationLanguages2 = [v3 enabledDictationLanguages];
+    v17 = [enabledDictationLanguages2 countByEnumeratingWithState:&v27 objects:v38 count:16];
     if (v17)
     {
       v18 = 0;
@@ -12443,12 +12443,12 @@ LABEL_30:
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(enabledDictationLanguages2);
           }
 
           v21 = *(*(&v27 + 1) + 8 * i);
           v22 = [v3 keyboardLanguageForDictationLanguage:v21];
-          v23 = [v22 isEqualToString:v15];
+          v23 = [v22 isEqualToString:languageWithRegion];
 
           if (v23)
           {
@@ -12461,14 +12461,14 @@ LABEL_30:
           }
         }
 
-        v17 = [v16 countByEnumeratingWithState:&v27 objects:v38 count:16];
+        v17 = [enabledDictationLanguages2 countByEnumeratingWithState:&v27 objects:v38 count:16];
       }
 
       while (v17);
 
       if (v18)
       {
-        v9 = 0;
+        allObjects = 0;
 LABEL_29:
 
         goto LABEL_30;
@@ -12480,17 +12480,17 @@ LABEL_29:
 LABEL_27:
     }
 
-    v9 = [v26 allObjects];
+    allObjects = [v26 allObjects];
     goto LABEL_29;
   }
 
-  v9 = 0;
+  allObjects = 0;
 LABEL_31:
 
   _Block_object_dispose(&v32, 8);
 LABEL_32:
 
-  return v9;
+  return allObjects;
 }
 
 void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -12517,8 +12517,8 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v40[8] = *MEMORY[0x1E69E9840];
   v39[0] = @"EnabledDictationLanguages";
   v38 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v37 = [v38 preferencesActions];
-  v3 = [v37 valueForPreferenceKey:@"DictationLanguagesEnabled"];
+  preferencesActions = [v38 preferencesActions];
+  v3 = [preferencesActions valueForPreferenceKey:@"DictationLanguagesEnabled"];
   v4 = MEMORY[0x1E695E0F8];
   v36 = v3;
   if (v3)
@@ -12533,12 +12533,12 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
 
   v40[0] = v5;
   v39[1] = @"EnabledSLSDictationLanguages";
-  v35 = [getAFPreferencesClass_0() sharedPreferences];
-  v6 = [v35 dictationSLSLanguagesEnabled];
-  v34 = v6;
-  if (v6)
+  sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+  dictationSLSLanguagesEnabled = [sharedPreferences dictationSLSLanguagesEnabled];
+  v34 = dictationSLSLanguagesEnabled;
+  if (dictationSLSLanguagesEnabled)
   {
-    v7 = v6;
+    v7 = dictationSLSLanguagesEnabled;
   }
 
   else
@@ -12549,22 +12549,22 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v40[1] = v7;
   v39[2] = @"EffectiveEnabledDictationLanguages";
   v33 = +[UIKeyboardInputModeController sharedInputModeController];
-  v8 = [v33 enabledDictationLanguages];
-  v9 = v8;
+  enabledDictationLanguages = [v33 enabledDictationLanguages];
+  v9 = enabledDictationLanguages;
   v10 = MEMORY[0x1E695E0F0];
-  if (v8)
+  if (enabledDictationLanguages)
   {
-    v10 = v8;
+    v10 = enabledDictationLanguages;
   }
 
   v40[2] = v10;
   v39[3] = @"SmartLanguageSelectionOverridden";
-  v32 = [(UIDictationController *)self smartLanguageSelectionOverridden];
-  if (v32)
+  smartLanguageSelectionOverridden = [(UIDictationController *)self smartLanguageSelectionOverridden];
+  if (smartLanguageSelectionOverridden)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v30 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-    v12 = [v11 stringWithFormat:@"with %@", v30];
+    smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+    v12 = [v11 stringWithFormat:@"with %@", smartLanguageSelectionOverrideLanguage];
   }
 
   else
@@ -12575,23 +12575,23 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v31 = v12;
   v40[3] = v12;
   v39[4] = @"CurrentKeyboardPrimaryLanguage";
-  v13 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
-  v14 = v13;
+  currentKeyboardPrimaryLanguage = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
+  v14 = currentKeyboardPrimaryLanguage;
   v15 = @"Not set";
-  if (v13)
+  if (currentKeyboardPrimaryLanguage)
   {
-    v15 = v13;
+    v15 = currentKeyboardPrimaryLanguage;
   }
 
   v40[4] = v15;
   v39[5] = @"CurrentKeyboardLanguage";
   v16 = +[UIKeyboardInputModeController sharedInputModeController];
-  v17 = [v16 currentInputMode];
-  v18 = [v17 primaryLanguage];
-  v19 = v18;
-  if (v18)
+  currentInputMode = [v16 currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
+  v19 = primaryLanguage;
+  if (primaryLanguage)
   {
-    v20 = v18;
+    v20 = primaryLanguage;
   }
 
   else
@@ -12602,12 +12602,12 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v40[5] = v20;
   v39[6] = @"DictationLanguage";
   v21 = +[UIKeyboardInputModeController sharedInputModeController];
-  v22 = [v21 currentInputMode];
-  v23 = [v22 dictationLanguage];
-  v24 = v23;
-  if (v23)
+  currentInputMode2 = [v21 currentInputMode];
+  dictationLanguage = [currentInputMode2 dictationLanguage];
+  v24 = dictationLanguage;
+  if (dictationLanguage)
   {
-    v25 = v23;
+    v25 = dictationLanguage;
   }
 
   else
@@ -12617,9 +12617,9 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
 
   v40[6] = v25;
   v39[7] = @"IsFallingBackToMonolingualDictation";
-  v26 = [(UIDictationController *)self isFallingBackToMonolingualDictation];
+  isFallingBackToMonolingualDictation = [(UIDictationController *)self isFallingBackToMonolingualDictation];
   v27 = @"Yes";
-  if (!v26)
+  if (!isFallingBackToMonolingualDictation)
   {
     v27 = @"No";
   }
@@ -12627,7 +12627,7 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v40[7] = v27;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:8];
 
-  if (v32)
+  if (smartLanguageSelectionOverridden)
   {
   }
 
@@ -12657,21 +12657,21 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   _Block_object_dispose(&v45, 8);
   v5 = objc_alloc_init(v3);
   v6 = objc_opt_class();
-  v7 = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
-  v8 = [v6 UIDictationInstrumentaionLocalIdentifierWithLocalString:v7];
+  currentKeyboardPrimaryLanguage = [(UIDictationController *)self currentKeyboardPrimaryLanguage];
+  v8 = [v6 UIDictationInstrumentaionLocalIdentifierWithLocalString:currentKeyboardPrimaryLanguage];
   [v5 setKeyboardLocale:v8];
 
   v9 = objc_opt_class();
-  v10 = [(UIDictationController *)self initialDictationLanguage];
-  v11 = [v9 UIDictationInstrumentaionLocalIdentifierWithLocalString:v10];
+  initialDictationLanguage = [(UIDictationController *)self initialDictationLanguage];
+  v11 = [v9 UIDictationInstrumentaionLocalIdentifierWithLocalString:initialDictationLanguage];
   [v5 setDictationLocale:v11];
 
-  v12 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-  if (v12)
+  smartLanguageSelectionOverrideLanguage = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+  if (smartLanguageSelectionOverrideLanguage)
   {
     v13 = objc_opt_class();
-    v14 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
-    v15 = [v13 UIDictationInstrumentaionLocalIdentifierWithLocalString:v14];
+    smartLanguageSelectionOverrideLanguage2 = [(UIDictationController *)self smartLanguageSelectionOverrideLanguage];
+    v15 = [v13 UIDictationInstrumentaionLocalIdentifierWithLocalString:smartLanguageSelectionOverrideLanguage2];
     [v5 setUserSelectedLocale:v15];
   }
 
@@ -12682,8 +12682,8 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
 
   v16 = objc_alloc(getSISchemaUUIDClass());
   v17 = +[UIKeyboardImpl activeInstance];
-  v18 = [v17 _sessionIdentifier];
-  v19 = [v16 initWithNSUUID:v18];
+  _sessionIdentifier = [v17 _sessionIdentifier];
+  v19 = [v16 initWithNSUUID:_sessionIdentifier];
   [v5 setTextInputSessionId:v19];
 
   v42 = 0u;
@@ -12691,9 +12691,9 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v40 = 0u;
   v41 = 0u;
   v20 = +[UIKeyboardInputModeController sharedInputModeController];
-  v21 = [v20 activeInputModes];
+  activeInputModes = [v20 activeInputModes];
 
-  v22 = [v21 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  v22 = [activeInputModes countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v22)
   {
     v23 = *v41;
@@ -12703,17 +12703,17 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
       {
         if (*v41 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(activeInputModes);
         }
 
         v25 = *(*(&v40 + 1) + 8 * i);
         v26 = objc_opt_class();
-        v27 = [v25 languageWithRegion];
-        v28 = [v26 UIDictationInstrumentaionLocalIdentifierWithLocalString:v27];
+        languageWithRegion = [v25 languageWithRegion];
+        v28 = [v26 UIDictationInstrumentaionLocalIdentifierWithLocalString:languageWithRegion];
         [v5 addKeyboardLocalesEnabled:v28];
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      v22 = [activeInputModes countByEnumeratingWithState:&v40 objects:v50 count:16];
     }
 
     while (v22);
@@ -12724,9 +12724,9 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v36 = 0u;
   v37 = 0u;
   v29 = +[UIKeyboardInputModeController sharedInputModeController];
-  v30 = [v29 activeDictationLanguages];
+  activeDictationLanguages = [v29 activeDictationLanguages];
 
-  v31 = [v30 countByEnumeratingWithState:&v36 objects:v49 count:16];
+  v31 = [activeDictationLanguages countByEnumeratingWithState:&v36 objects:v49 count:16];
   if (v31)
   {
     v32 = *v37;
@@ -12736,14 +12736,14 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
       {
         if (*v37 != v32)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(activeDictationLanguages);
         }
 
         v34 = [objc_opt_class() UIDictationInstrumentaionLocalIdentifierWithLocalString:*(*(&v36 + 1) + 8 * j)];
         [v5 addDictationLocalesEnabled:v34];
       }
 
-      v31 = [v30 countByEnumeratingWithState:&v36 objects:v49 count:16];
+      v31 = [activeDictationLanguages countByEnumeratingWithState:&v36 objects:v49 count:16];
     }
 
     while (v31);
@@ -12755,31 +12755,31 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v5];
 }
 
-- (void)instrumentationDictationTranscriptionMetadataEmitInstrumentationWithDictationResult:(id)a3
+- (void)instrumentationDictationTranscriptionMetadataEmitInstrumentationWithDictationResult:(id)result
 {
   v51 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v34 = [v35 dictationPhraseArray];
-  v3 = [v35 bestTextForMultilingualAlternatives];
-  v4 = v3;
+  resultCopy = result;
+  dictationPhraseArray = [resultCopy dictationPhraseArray];
+  bestTextForMultilingualAlternatives = [resultCopy bestTextForMultilingualAlternatives];
+  v4 = bestTextForMultilingualAlternatives;
   v5 = MEMORY[0x1E695E0F0];
-  if (v3)
+  if (bestTextForMultilingualAlternatives)
   {
-    v5 = v3;
+    v5 = bestTextForMultilingualAlternatives;
   }
 
   v32 = v5;
 
-  if ([v35 lowConfidenceAboutLanguageDetection] && objc_msgSend(v35, "showMultilingualAlternatives") && objc_msgSend(v32, "count"))
+  if ([resultCopy lowConfidenceAboutLanguageDetection] && objc_msgSend(resultCopy, "showMultilingualAlternatives") && objc_msgSend(v32, "count"))
   {
-    v6 = [v35 multilingualAlternatives];
-    v7 = [v6 count];
+    multilingualAlternatives = [resultCopy multilingualAlternatives];
+    v7 = [multilingualAlternatives count];
 
     if (v7)
     {
-      v8 = [v35 multilingualAlternatives];
-      v9 = [v8 objectAtIndex:0];
-      v10 = [v9 dominantLanguage];
+      multilingualAlternatives2 = [resultCopy multilingualAlternatives];
+      v9 = [multilingualAlternatives2 objectAtIndex:0];
+      dominantLanguage = [v9 dominantLanguage];
 
       v11 = 0;
       v12 = 0;
@@ -12789,7 +12789,7 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
     {
       v11 = 0;
       v12 = 0;
-      v10 = 0;
+      dominantLanguage = 0;
     }
 
     v22 = 1;
@@ -12801,7 +12801,7 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v13 = v34;
+    v13 = dictationPhraseArray;
     v11 = 0;
     v12 = 0;
     v14 = [v13 countByEnumeratingWithState:&v37 objects:v50 count:16];
@@ -12820,9 +12820,9 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
           v17 = *(*(&v37 + 1) + 8 * i);
           if ([v17 style] == 1)
           {
-            v18 = [v17 text];
-            v19 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-            v20 = [v18 componentsSeparatedByCharactersInSet:v19];
+            text = [v17 text];
+            whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+            v20 = [text componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
             v21 = [v20 count];
 
             v12 = (v12 + 1);
@@ -12837,7 +12837,7 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
     }
 
     v22 = 0;
-    v10 = 0;
+    dominantLanguage = 0;
   }
 
   v46 = 0;
@@ -12861,9 +12861,9 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   v25 = objc_alloc_init(v23);
   [v25 setNumberOfUnderlines:v12];
   [v25 setCountOfWordsUnderlined:v11];
-  if (v10)
+  if (dominantLanguage)
   {
-    v26 = [objc_opt_class() UIDictationInstrumentaionLocalIdentifierWithLocalString:v10];
+    v26 = [objc_opt_class() UIDictationInstrumentaionLocalIdentifierWithLocalString:dominantLanguage];
     [v25 setAlternativesLocale:v26];
   }
 
@@ -12905,8 +12905,8 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   [v29 setDictationModel:v30];
   if ([(UIDictationController *)self secureOfflineOnlySpeechRecognition])
   {
-    v31 = [(UIDictationController *)self modelInfo];
-    [v29 setDictationModelVersion:v31];
+    modelInfo = [(UIDictationController *)self modelInfo];
+    [v29 setDictationModelVersion:modelInfo];
   }
 
   else
@@ -12918,9 +12918,9 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v29];
 }
 
-+ (id)UIDictationInstrumentaionLocalIdentifierWithLocalString:(id)a3
++ (id)UIDictationInstrumentaionLocalIdentifierWithLocalString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -12949,38 +12949,38 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   return v6;
 }
 
-+ (int)UIDictationStartStopReasonToInstrumentationInvocationSourceType:(unint64_t)a3
++ (int)UIDictationStartStopReasonToInstrumentationInvocationSourceType:(unint64_t)type
 {
-  if (a3 - 1 > 0x1B)
+  if (type - 1 > 0x1B)
   {
     return 0;
   }
 
   else
   {
-    return dword_18A67F5C0[a3 - 1];
+    return dword_18A67F5C0[type - 1];
   }
 }
 
-+ (int)UIDictationStartStopReasonToInstrumentationDictationEndPointType:(unint64_t)a3
++ (int)UIDictationStartStopReasonToInstrumentationDictationEndPointType:(unint64_t)type
 {
-  if (a3 - 1 > 0x1C)
+  if (type - 1 > 0x1C)
   {
     return 0;
   }
 
   else
   {
-    return dword_18A67F630[a3 - 1];
+    return dword_18A67F630[type - 1];
   }
 }
 
-+ (void)instrumentationDictationAlternativesViewedWithInstrumentationContext:(id)a3 alternatives:(id)a4 dictationLanguage:(id)a5
++ (void)instrumentationDictationAlternativesViewedWithInstrumentationContext:(id)context alternatives:(id)alternatives dictationLanguage:(id)language
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  contextCopy = context;
+  alternativesCopy = alternatives;
+  languageCopy = language;
+  if (contextCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -13001,17 +13001,17 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
     v12 = v11;
     _Block_object_dispose(&v20, 8);
     v13 = objc_alloc_init(v11);
-    v14 = [v9 objectForKeyedSubscript:@"alternatives"];
+    v14 = [alternativesCopy objectForKeyedSubscript:@"alternatives"];
     [v13 setCountOfAlternativesAvailable:{objc_msgSend(v14, "count")}];
 
-    v15 = [v9 objectForKeyedSubscript:@"originalText"];
-    v16 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v17 = [v15 componentsSeparatedByCharactersInSet:v16];
+    v15 = [alternativesCopy objectForKeyedSubscript:@"originalText"];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v17 = [v15 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     [v13 setCountOfWordsUnderlined:{objc_msgSend(v17, "count")}];
 
-    if (v10)
+    if (languageCopy)
     {
-      v18 = [a1 UIDictationInstrumentaionLocalIdentifierWithLocalString:v10];
+      v18 = [self UIDictationInstrumentaionLocalIdentifierWithLocalString:languageCopy];
       [v13 setAlternativesLocale:v18];
     }
 
@@ -13020,17 +13020,17 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
       [v13 setAlternativesLocale:0];
     }
 
-    [v8 emitInstrumentation:v13];
+    [contextCopy emitInstrumentation:v13];
   }
 }
 
-+ (void)instrumentationDictationAlternativeSelectedWithInstrumentationContext:(id)a3 originalText:(id)a4 replacementText:(id)a5 replacementIndex:(unint64_t)a6 alternativesAvailableCount:(unint64_t)a7 dictationLanguage:(id)a8
++ (void)instrumentationDictationAlternativeSelectedWithInstrumentationContext:(id)context originalText:(id)text replacementText:(id)replacementText replacementIndex:(unint64_t)index alternativesAvailableCount:(unint64_t)count dictationLanguage:(id)language
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v14)
+  contextCopy = context;
+  textCopy = text;
+  replacementTextCopy = replacementText;
+  languageCopy = language;
+  if (contextCopy)
   {
     v25 = 0;
     v26 = &v25;
@@ -13051,15 +13051,15 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
     v19 = v18;
     _Block_object_dispose(&v25, 8);
     v20 = objc_alloc_init(v18);
-    [v20 setAlternativeListPosition:a6];
-    [v20 setCountOfAlternativesAvailable:a7];
-    v21 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v22 = [v15 componentsSeparatedByCharactersInSet:v21];
+    [v20 setAlternativeListPosition:index];
+    [v20 setCountOfAlternativesAvailable:count];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v22 = [textCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     [v20 setCountOfWordsReplaced:{objc_msgSend(v22, "count")}];
 
-    if (v17)
+    if (languageCopy)
     {
-      v23 = [a1 UIDictationInstrumentaionLocalIdentifierWithLocalString:v17];
+      v23 = [self UIDictationInstrumentaionLocalIdentifierWithLocalString:languageCopy];
       [v20 setAlternativesLocale:v23];
     }
 
@@ -13068,11 +13068,11 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
       [v20 setAlternativesLocale:0];
     }
 
-    [v14 emitInstrumentation:v20];
+    [contextCopy emitInstrumentation:v20];
   }
 }
 
-- (void)optInButtonPressedForPresenter:(id)a3
+- (void)optInButtonPressedForPresenter:(id)presenter
 {
   v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
   v5 = qword_1ED4987F8;
@@ -13080,11 +13080,11 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
 
   [(UIDictationController *)self _handleDataSharingSheetDecision];
   [MEMORY[0x1E69D9560] dismissedDataSharingWithResponse:1];
-  v6 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  presentingViewControllerForPrivacySheet = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
+  [presentingViewControllerForPrivacySheet dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)optOutButtonPressedForPresenter:(id)a3
+- (void)optOutButtonPressedForPresenter:(id)presenter
 {
   v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
   v5 = qword_1ED4987F8;
@@ -13092,31 +13092,31 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
 
   [(UIDictationController *)self _handleDataSharingSheetDecision];
   [MEMORY[0x1E69D9560] dismissedDataSharingWithResponse:3];
-  v6 = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  presentingViewControllerForPrivacySheet = [(UIDictationController *)self presentingViewControllerForPrivacySheet];
+  [presentingViewControllerForPrivacySheet dismissViewControllerAnimated:1 completion:0];
 }
 
 + (BOOL)shouldPreferOnlineRecognition
 {
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 preferOnlineDictation];
+  textInputTraits = [v2 textInputTraits];
+  preferOnlineDictation = [textInputTraits preferOnlineDictation];
 
-  return v4;
+  return preferOnlineDictation;
 }
 
 + (BOOL)shouldPreferOnDeviceRecognition
 {
-  if ([a1 shouldPreferOnlineRecognition])
+  if ([self shouldPreferOnlineRecognition])
   {
     return 0;
   }
 
   v2 = +[UIKeyboardImpl sharedInstance];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 returnKeyType];
+  textInputTraits = [v2 textInputTraits];
+  returnKeyType = [textInputTraits returnKeyType];
 
-  if (v4 != 6)
+  if (returnKeyType != 6)
   {
     return 0;
   }
@@ -13132,7 +13132,7 @@ void __52__UIDictationController_activeSLSDictationLanguages__block_invoke(uint6
   if (!+[UIKeyboard isKeyboardProcess])
   {
     v2 = +[UIKeyboardImpl sharedInstance];
-    v3 = [v2 inputDelegate];
+    inputDelegate = [v2 inputDelegate];
     NSClassFromString(&cfstr_Unifiedfield.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -13145,8 +13145,8 @@ LABEL_5:
   }
 
   v2 = +[UIDictationController sharedInstance];
-  v3 = [v2 _inputDelegateClassName];
-  if (([v3 isEqualToString:@"UnifiedField"] & 1) == 0)
+  inputDelegate = [v2 _inputDelegateClassName];
+  if (([inputDelegate isEqualToString:@"UnifiedField"] & 1) == 0)
   {
     goto LABEL_5;
   }
@@ -13159,15 +13159,15 @@ LABEL_6:
   return v5;
 }
 
-+ (BOOL)isEventFromMessagesSendButton:(id)a3 inspectResponderChain:(BOOL)a4
++ (BOOL)isEventFromMessagesSendButton:(id)button inspectResponderChain:(BOOL)chain
 {
-  v4 = a4;
-  v5 = a3;
+  chainCopy = chain;
+  buttonCopy = button;
   v6 = +[UIKeyboardImpl activeInstance];
-  v7 = [v6 textInputTraits];
-  v8 = [v7 keyboardType];
+  textInputTraits = [v6 textInputTraits];
+  keyboardType = [textInputTraits keyboardType];
 
-  if (v8 == 126)
+  if (keyboardType == 126)
   {
     if (qword_1ED498880 != -1)
     {
@@ -13178,34 +13178,34 @@ LABEL_6:
     {
       if (qword_1ED498888 && (objc_opt_isKindOfClass() & 1) != 0)
       {
-        v9 = [v5 accessibilityIdentification];
-        LODWORD(v10) = [v9 isEqualToString:@"sendButton"];
+        accessibilityIdentification = [buttonCopy accessibilityIdentification];
+        LODWORD(nextResponder) = [accessibilityIdentification isEqualToString:@"sendButton"];
       }
 
       else
       {
-        LODWORD(v10) = 0;
+        LODWORD(nextResponder) = 0;
       }
 
-      if ((v10 | !v4))
+      if ((nextResponder | !chainCopy))
       {
         break;
       }
 
-      v10 = [v5 nextResponder];
+      nextResponder = [buttonCopy nextResponder];
 
-      v5 = v10;
+      buttonCopy = nextResponder;
     }
 
-    while (v10);
+    while (nextResponder);
   }
 
   else
   {
-    LOBYTE(v10) = 0;
+    LOBYTE(nextResponder) = 0;
   }
 
-  return v10;
+  return nextResponder;
 }
 
 Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponderChain___block_invoke()
@@ -13215,21 +13215,21 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
   return result;
 }
 
-- (void)sendButtonPressedInMessages:(id)a3
+- (void)sendButtonPressedInMessages:(id)messages
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   if (+[UIDictationController isRunning])
   {
     [(UIDictationController *)self setSendButtonPressedDuringDictation:1];
-    v5 = [(UIDictationController *)self dictationTipController];
-    [v5 signalDictationSendMessageTip];
+    dictationTipController = [(UIDictationController *)self dictationTipController];
+    [dictationTipController signalDictationSendMessageTip];
   }
 
   v6 = objc_opt_class();
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 inputDelegate];
-  [v6 logCorrectionStatisticsForDelegate:v8 reason:25];
+  inputDelegate = [v7 inputDelegate];
+  [v6 logCorrectionStatisticsForDelegate:inputDelegate reason:25];
 
   v16 = 0;
   v17 = &v16;
@@ -13251,9 +13251,9 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
   _Block_object_dispose(&v16, 8);
   v11 = _UIMainBundleIdentifier();
   v20 = @"dictation-active";
-  v12 = [(UIDictationController *)self isSendButtonPressedDuringDictation];
+  isSendButtonPressedDuringDictation = [(UIDictationController *)self isSendButtonPressedDuringDictation];
   v13 = MEMORY[0x1E695E110];
-  if (v12)
+  if (isSendButtonPressedDuringDictation)
   {
     v13 = MEMORY[0x1E695E118];
   }
@@ -13309,27 +13309,27 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
 - (void)insertLastHypothesisAsFinalResultLocally
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIDictationController *)self lastHypothesis];
+  lastHypothesis = [(UIDictationController *)self lastHypothesis];
   if (+[UIDictationController isRunning])
   {
     v4 = +[UIKeyboardInputMode dictationInputMode];
     if ([v4 usingTypeAndTalk])
     {
-      v5 = [v3 length];
+      v5 = [lastHypothesis length];
 
       if (v5)
       {
-        v6 = [(UIDictationController *)self candidateDictationSerializableResults];
-        v7 = v6;
-        if (v6)
+        candidateDictationSerializableResults = [(UIDictationController *)self candidateDictationSerializableResults];
+        v7 = candidateDictationSerializableResults;
+        if (candidateDictationSerializableResults)
         {
-          v8 = v6;
+          v8 = candidateDictationSerializableResults;
         }
 
         else
         {
           v9 = [UIDictationSerializableResults alloc];
-          v12 = v3;
+          v12 = lastHypothesis;
           v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
           v13[0] = v10;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
@@ -13351,18 +13351,18 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
 - (void)_finalizePhrasesOnDictationPause
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIDictationController *)self candidateDictationSerializableResults];
-  v4 = v3;
-  if (v3)
+  candidateDictationSerializableResults = [(UIDictationController *)self candidateDictationSerializableResults];
+  v4 = candidateDictationSerializableResults;
+  if (candidateDictationSerializableResults)
   {
-    v5 = v3;
+    v5 = candidateDictationSerializableResults;
   }
 
   else
   {
     v6 = [UIDictationSerializableResults alloc];
-    v7 = [(UIDictationController *)self lastHypothesis];
-    v12 = v7;
+    lastHypothesis = [(UIDictationController *)self lastHypothesis];
+    v12 = lastHypothesis;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
     v13[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
@@ -13371,12 +13371,12 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
 
   [(UIDictationController *)self setCandidateDictationSerializableResults:0];
   [(UIDictationSerializableResults *)v5 setFromKeyboard:1];
-  v10 = [(UIDictationController *)self dictationConnection];
-  v11 = [(UIDictationController *)self dictationConnection];
-  -[UIDictationController dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:](self, "dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:", v10, v5, &stru_1EFB14550, 0, [v11 isSecureInput], 0);
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  dictationConnection2 = [(UIDictationController *)self dictationConnection];
+  -[UIDictationController dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:](self, "dictationConnection:finalizePhrases:languageModel:correctionIdentifier:secureInput:finalResult:", dictationConnection, v5, &stru_1EFB14550, 0, [dictationConnection2 isSecureInput], 0);
 }
 
-- (void)pauseDictationOnUserInteraction:(int64_t)a3
+- (void)pauseDictationOnUserInteraction:(int64_t)interaction
 {
   v15 = *MEMORY[0x1E69E9840];
   if (+[UIDictationController isRunning]&& !self->_shouldResumeDictation && ![(UIDictationController *)self dictationIsModifyingText])
@@ -13391,20 +13391,20 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
 
     [(UIDictationController *)self _stopStreamingAnimation];
     [(UIDictationController *)self pauseSpeechRecognition];
-    v6 = [(UIDictationController *)self lastHypothesis];
+    lastHypothesis = [(UIDictationController *)self lastHypothesis];
     v7 = _UIDictationControllerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315394;
       v12 = "[UIDictationController pauseDictationOnUserInteraction:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = lastHypothesis;
       _os_log_debug_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEBUG, "%s lastHypothesis at beginUserInteraction: '%@'", buf, 0x16u);
     }
 
-    if ([v6 length])
+    if ([lastHypothesis length])
     {
-      if ([objc_opt_class() _shouldPerformPhrasesFinalizationIgnoringRTIChangesWithUserInteraction:a3])
+      if ([objc_opt_class() _shouldPerformPhrasesFinalizationIgnoringRTIChangesWithUserInteraction:interaction])
       {
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
@@ -13519,11 +13519,11 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
   [(UIDictationController *)self setPreviousHypothesis:0];
 }
 
-- (void)beginUserInteraction:(int64_t)a3
+- (void)beginUserInteraction:(int64_t)interaction
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [(UIDictationController *)self dictationTipController];
-  [v5 setDismissalReasonType:2];
+  dictationTipController = [(UIDictationController *)self dictationTipController];
+  [dictationTipController setDismissalReasonType:2];
 
   if (+[UIDictationController isRunning]&& !self->_ignoreUserInteraction)
   {
@@ -13533,41 +13533,41 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
       *buf = 136315394;
       *&buf[4] = "[UIDictationController beginUserInteraction:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = interaction;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "%s UIDictationController beginUserInteraction: %ld", buf, 0x16u);
     }
 
-    if ([(UIDictationController *)self userInteractionShouldResetAdaptiveDeleteActivationLogic:a3])
+    if ([(UIDictationController *)self userInteractionShouldResetAdaptiveDeleteActivationLogic:interaction])
     {
       [(UIDictationController *)self resetAdaptiveDeleteActivationLogic];
     }
 
     v8 = +[UIKeyboardImpl activeInstance];
-    if ([(UIDictationController *)self userInteractionShouldDismissDictationTip:a3])
+    if ([(UIDictationController *)self userInteractionShouldDismissDictationTip:interaction])
     {
       [v8 dismissDictationTip];
     }
 
     [v8 _clearDictationMenuTimer:0];
     [(UIDictationController *)self updateRecordingLimitTimerIfNeeded];
-    if (a3 <= 1)
+    if (interaction <= 1)
     {
       [(UIDictationController *)self _removeUndoNotificationObservation];
-      v9 = [v8 _textChoicesAssistant];
-      [v9 resetDictationChoicesAnimated:0];
+      _textChoicesAssistant = [v8 _textChoicesAssistant];
+      [_textChoicesAssistant resetDictationChoicesAnimated:0];
 
-      v10 = [v8 _textChoicesAssistant];
-      [v10 resetDictationUnderlines];
+      _textChoicesAssistant2 = [v8 _textChoicesAssistant];
+      [_textChoicesAssistant2 resetDictationUnderlines];
     }
 
     if (![(UIDictationController *)self shouldResumeDictation])
     {
       v11 = +[UIKeyboardInputMode dictationInputMode];
-      v12 = [v11 usingTypeAndTalk];
+      usingTypeAndTalk = [v11 usingTypeAndTalk];
 
-      if (v12)
+      if (usingTypeAndTalk)
       {
-        [(UIDictationController *)self pauseDictationOnUserInteraction:a3];
+        [(UIDictationController *)self pauseDictationOnUserInteraction:interaction];
         v13 = _UIDictationControllerUndoRedoLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
@@ -13580,8 +13580,8 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
         if (![(UIDictationController *)self modelessUsedAtLeastOnce])
         {
           v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-          v15 = [v14 _textInputSessionAnalytics];
-          [v15 didDictationBegin:0 usesMultiModalDictation:1];
+          _textInputSessionAnalytics = [v14 _textInputSessionAnalytics];
+          [_textInputSessionAnalytics didDictationBegin:0 usesMultiModalDictation:1];
 
           [(UIDictationController *)self setModelessUsedAtLeastOnce:1];
         }
@@ -13630,11 +13630,11 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
     }
   }
 
-  else if (!a3)
+  else if (!interaction)
   {
     v21 = +[UIDictationController sharedInstance];
-    v6 = [v21 dictationTipController];
-    [v6 processSoftwareKeyboardInteraction];
+    dictationTipController2 = [v21 dictationTipController];
+    [dictationTipController2 processSoftwareKeyboardInteraction];
   }
 }
 
@@ -13669,25 +13669,25 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
   else
   {
     v3 = +[UIDictationLandingView activeInstance];
-    v4 = [v3 hasActivePlaceholder];
+    hasActivePlaceholder = [v3 hasActivePlaceholder];
 
-    if ((v4 & 1) == 0)
+    if ((hasActivePlaceholder & 1) == 0)
     {
       v7 = +[UIDictationController sharedInstance];
-      v5 = [v7 dictationTipController];
-      [v5 processUserInteractionEnded];
+      dictationTipController = [v7 dictationTipController];
+      [dictationTipController processUserInteractionEnded];
     }
   }
 }
 
-- (void)resumeSpeechRecognitionWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5
+- (void)resumeSpeechRecognitionWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UIDictationController *)self dictationConnection];
-  [v11 resumeSpeechRecognitionWithPrefixText:v10 postfixText:v9 selectedText:v8];
+  selectedTextCopy = selectedText;
+  postfixTextCopy = postfixText;
+  textCopy = text;
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection resumeSpeechRecognitionWithPrefixText:textCopy postfixText:postfixTextCopy selectedText:selectedTextCopy];
 
   self->_shouldResumeDictation = 0;
   v12 = _UIDictationControllerLog();
@@ -13713,8 +13713,8 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
 
 - (void)pauseSpeechRecognition
 {
-  v3 = [(UIDictationController *)self dictationConnection];
-  [v3 pauseSpeechRecognition];
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection pauseSpeechRecognition];
 
   [(UIDictationController *)self postNotificationName:@"UIDictationControllerDidPauseNotification" userInfo:0];
 }
@@ -13724,16 +13724,16 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
   v5 = +[UIKeyboardImpl activeInstance];
   if ([v5 isTrackpadMode])
   {
-    v2 = [v5 _layout];
-    [v2 didEndTrackpadModeForServerSideDictation];
+    _layout = [v5 _layout];
+    [_layout didEndTrackpadModeForServerSideDictation];
   }
 
   if (([v5 isSyncingDictationLanguageForInputModeSwitch] & 1) == 0)
   {
     v3 = +[UIDictationView activeInstance];
-    v4 = [v3 switchingLanguage];
+    switchingLanguage = [v3 switchingLanguage];
 
-    if ((v4 & 1) == 0)
+    if ((switchingLanguage & 1) == 0)
     {
       [v5 clearDictationMenuTimer];
     }
@@ -13743,23 +13743,23 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
 - (void)removeSelectedText
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 inputDelegateManager];
-  v5 = [v4 selectedTextRange];
+  inputDelegateManager = [v3 inputDelegateManager];
+  selectedTextRange = [inputDelegateManager selectedTextRange];
 
-  if (v5 && ([v5 isEmpty] & 1) == 0)
+  if (selectedTextRange && ([selectedTextRange isEmpty] & 1) == 0)
   {
     [(UIDictationController *)self setCanUndoOrRedo:0];
-    v6 = [v3 inputDelegateManager];
-    v7 = [v6 hasAsyncCapableInputDelegate];
+    inputDelegateManager2 = [v3 inputDelegateManager];
+    hasAsyncCapableInputDelegate = [inputDelegateManager2 hasAsyncCapableInputDelegate];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__UIDictationController_removeSelectedText__block_invoke;
     v12[3] = &unk_1E70F35E0;
     v13 = v3;
-    v14 = v7;
+    v14 = hasAsyncCapableInputDelegate;
     [(UIDictationController *)self performIgnoringDocumentChanges:v12];
-    if (v7)
+    if (hasAsyncCapableInputDelegate)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -13775,14 +13775,14 @@ Class __77__UIDictationController_isEventFromMessagesSendButton_inspectResponder
   [v3 dismissTextChoicePrompt];
   if ([objc_opt_class() shouldForwardInInputSystemUI])
   {
-    v8 = [v3 inputDelegateManager];
-    v9 = [v8 inputSystemSourceSession];
+    inputDelegateManager3 = [v3 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager3 inputSystemSourceSession];
 
-    if (v9)
+    if (inputSystemSourceSession)
     {
-      v10 = [v9 textOperations];
-      [v10 setEditingActionSelector:sel_removeSelectedText];
-      [v9 flushOperations];
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setEditingActionSelector:sel_removeSelectedText];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
@@ -13816,9 +13816,9 @@ void __43__UIDictationController_removeSelectedText__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_requestDocumentContextWithCompletionHandler:(id)a3
+- (void)_requestDocumentContextWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v7 = objc_alloc_init(UIWKDocumentRequest);
   [(UIWKDocumentRequest *)v7 setFlags:133];
   if (_os_feature_enabled_impl())
@@ -13828,17 +13828,17 @@ void __43__UIDictationController_removeSelectedText__block_invoke_2(uint64_t a1)
 
   [(UIWKDocumentRequest *)v7 setSurroundingGranularity:1];
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 inputDelegateManager];
-  [v5 visibleTextRect];
+  inputDelegateManager = [v4 inputDelegateManager];
+  [inputDelegateManager visibleTextRect];
   [(UIWKDocumentRequest *)v7 setDocumentRect:?];
 
-  v6 = [v4 inputDelegateManager];
-  [v6 requestDocumentContext:v7 completionHandler:v3];
+  inputDelegateManager2 = [v4 inputDelegateManager];
+  [inputDelegateManager2 requestDocumentContext:v7 completionHandler:handlerCopy];
 }
 
-- (void)_requestFullDocumentContextWithCompletionHandler:(id)a3
+- (void)_requestFullDocumentContextWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v8 = objc_alloc_init(UIWKDocumentRequest);
   [(UIWKDocumentRequest *)v8 setFlags:133];
   [(UIWKDocumentRequest *)v8 setSurroundingGranularity:5];
@@ -13848,36 +13848,36 @@ void __43__UIDictationController_removeSelectedText__block_invoke_2(uint64_t a1)
   }
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 inputDelegateManager];
-  v6 = [v5 textInputView];
-  [v6 bounds];
+  inputDelegateManager = [v4 inputDelegateManager];
+  textInputView = [inputDelegateManager textInputView];
+  [textInputView bounds];
   [(UIWKDocumentRequest *)v8 setDocumentRect:?];
 
-  v7 = [v4 inputDelegateManager];
-  [v7 requestDocumentContext:v8 completionHandler:v3];
+  inputDelegateManager2 = [v4 inputDelegateManager];
+  [inputDelegateManager2 requestDocumentContext:v8 completionHandler:handlerCopy];
 }
 
 - (BOOL)shouldSuppressPartialResults
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 inputDelegateManager];
-  v5 = [v4 selectedTextRange];
-  if ([v5 isEmpty])
+  inputDelegateManager = [v3 inputDelegateManager];
+  selectedTextRange = [inputDelegateManager selectedTextRange];
+  if ([selectedTextRange isEmpty])
   {
-    v6 = [(UIDictationController *)self hasSelectedTextRange];
+    hasSelectedTextRange = [(UIDictationController *)self hasSelectedTextRange];
   }
 
   else
   {
-    v6 = 1;
+    hasSelectedTextRange = 1;
   }
 
-  return v6;
+  return hasSelectedTextRange;
 }
 
-- (void)requestVisibleTextWithCompletionBlock:(id)a3
+- (void)requestVisibleTextWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -13900,14 +13900,14 @@ void __43__UIDictationController_removeSelectedText__block_invoke_2(uint64_t a1)
   [v6 setFlags:9];
   [v6 setTextGranularity:1];
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 remoteTextInputPartnerPrivate];
+  remoteTextInputPartnerPrivate = [v7 remoteTextInputPartnerPrivate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__UIDictationController_requestVisibleTextWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E71150D8;
-  v11 = v3;
-  v9 = v3;
-  [v8 _performDocumentRequest:v6 completion:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [remoteTextInputPartnerPrivate _performDocumentRequest:v6 completion:v10];
 }
 
 void __63__UIDictationController_requestVisibleTextWithCompletionBlock___block_invoke(uint64_t a1, void *a2)
@@ -13952,16 +13952,16 @@ uint64_t __63__UIDictationController_requestVisibleTextWithCompletionBlock___blo
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_refreshVisibleRTIDocumentStateWithContinuation:(id)a3
+- (void)_refreshVisibleRTIDocumentStateWithContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__UIDictationController__refreshVisibleRTIDocumentStateWithContinuation___block_invoke;
   v6[3] = &unk_1E7115100;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = continuationCopy;
+  v5 = continuationCopy;
   [(UIDictationController *)self requestVisibleTextWithCompletionBlock:v6];
 }
 
@@ -14041,9 +14041,9 @@ void __49__UIDictationController_handleWKActionMoveBefore__block_invoke(uint64_t
   [v7 adjustSelection:v4 completionHandler:{v6, v8}];
 }
 
-- (void)_dictationDidRecieveDidBeginDictationNotification:(id)a3
+- (void)_dictationDidRecieveDidBeginDictationNotification:(id)notification
 {
-  if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP", a3) || +[UIKeyboard isKeyboardProcess])
+  if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP", notification) || +[UIKeyboard isKeyboardProcess])
   {
     notify_set_state(self->_dictationInputModeNotifierToken, 1uLL);
 
@@ -14051,7 +14051,7 @@ void __49__UIDictationController_handleWKActionMoveBefore__block_invoke(uint64_t
   }
 }
 
-- (void)_dictationDidRecieveDidFinishDictationNotification:(id)a3
+- (void)_dictationDidRecieveDidFinishDictationNotification:(id)notification
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = _UIDictationControllerUndoRedoLog();
@@ -14072,79 +14072,79 @@ void __49__UIDictationController_handleWKActionMoveBefore__block_invoke(uint64_t
   if (!+[UIKeyboard isKeyboardProcess])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 _textChoicesAssistant];
-    [v6 resetDictationChoicesAnimated:0];
+    _textChoicesAssistant = [v5 _textChoicesAssistant];
+    [_textChoicesAssistant resetDictationChoicesAnimated:0];
 
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 _textChoicesAssistant];
-    [v8 cancelPendingDictationPromptDisplay];
+    _textChoicesAssistant2 = [v7 _textChoicesAssistant];
+    [_textChoicesAssistant2 cancelPendingDictationPromptDisplay];
   }
 }
 
-+ (id)firstParameterTextWithParameters:(id)a3
++ (id)firstParameterTextWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (+[UIDictationController supportsSiriDictationVoiceCommands])
   {
-    v4 = [v3 objectForKeyedSubscript:@"Param0"];
-    v5 = [v4 text];
+    v4 = [parametersCopy objectForKeyedSubscript:@"Param0"];
+    text = [v4 text];
   }
 
   else
   {
-    v5 = 0;
+    text = 0;
   }
 
-  return v5;
+  return text;
 }
 
-+ (id)secondParameterTextWithParameters:(id)a3
++ (id)secondParameterTextWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (+[UIDictationController supportsSiriDictationVoiceCommands])
   {
-    v4 = [v3 objectForKeyedSubscript:@"Param1"];
-    v5 = [v4 text];
+    v4 = [parametersCopy objectForKeyedSubscript:@"Param1"];
+    text = [v4 text];
   }
 
   else
   {
-    v5 = 0;
+    text = 0;
   }
 
-  return v5;
+  return text;
 }
 
-+ (id)thirdParameterTextWithParameters:(id)a3
++ (id)thirdParameterTextWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (+[UIDictationController supportsSiriDictationVoiceCommands])
   {
-    v4 = [v3 objectForKeyedSubscript:@"Param2"];
-    v5 = [v4 text];
+    v4 = [parametersCopy objectForKeyedSubscript:@"Param2"];
+    text = [v4 text];
   }
 
   else
   {
-    v5 = 0;
+    text = 0;
   }
 
-  return v5;
+  return text;
 }
 
-+ (unint64_t)commandIdentifierWithStringIdentifier:(id)a3
++ (unint64_t)commandIdentifierWithStringIdentifier:(id)identifier
 {
   v3 = qword_1ED498890;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&qword_1ED498890, &__block_literal_global_1346);
   }
 
-  v5 = [qword_1ED498898 objectForKeyedSubscript:v4];
+  v5 = [qword_1ED498898 objectForKeyedSubscript:identifierCopy];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 void __63__UIDictationController_commandIdentifierWithStringIdentifier___block_invoke()
@@ -14156,14 +14156,14 @@ void __63__UIDictationController_commandIdentifierWithStringIdentifier___block_i
   }
 }
 
-- (void)clearSelectedTextAndLastDictationResult:(BOOL)a3
+- (void)clearSelectedTextAndLastDictationResult:(BOOL)result
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65__UIDictationController_clearSelectedTextAndLastDictationResult___block_invoke;
   v3[3] = &unk_1E70F35E0;
   v3[4] = self;
-  v4 = a3;
+  resultCopy = result;
   [(UIDictationController *)self performIgnoringDocumentChanges:v3];
 }
 
@@ -14208,21 +14208,21 @@ void __65__UIDictationController_clearSelectedTextAndLastDictationResult___block
   [*(a1 + 32) setCanUndoOrRedo:1];
 }
 
-+ (BOOL)canHandleCommandIdentifier:(unint64_t)a3
++ (BOOL)canHandleCommandIdentifier:(unint64_t)identifier
 {
-  if (a3 > 0x1B)
+  if (identifier > 0x1B)
   {
     return 0;
   }
 
-  if (((1 << a3) & 0xFF7DFFE) != 0)
+  if (((1 << identifier) & 0xFF7DFFE) != 0)
   {
     return 1;
   }
 
-  if (a3 == 19)
+  if (identifier == 19)
   {
-    return [a1 supportsSendVoiceCommand];
+    return [self supportsSendVoiceCommand];
   }
 
   else
@@ -14231,84 +14231,84 @@ void __65__UIDictationController_clearSelectedTextAndLastDictationResult___block
   }
 }
 
-+ (int)mapDictationCommandIdentifierToUEIcommandIdentifier:(unint64_t)a3
++ (int)mapDictationCommandIdentifierToUEIcommandIdentifier:(unint64_t)identifier
 {
-  if (a3 - 1 > 0x1A)
+  if (identifier - 1 > 0x1A)
   {
     return 0;
   }
 
   else
   {
-    return dword_18A67F6A4[a3 - 1];
+    return dword_18A67F6A4[identifier - 1];
   }
 }
 
-- (void)_restoreInsertionPointPositionWithKeyboard:(id)a3 originalPositionRange:(_NSRange)a4 targetRange:(_NSRange)a5 payloadRange:(_NSRange)a6 contextBefore:(BOOL)a7
+- (void)_restoreInsertionPointPositionWithKeyboard:(id)keyboard originalPositionRange:(_NSRange)range targetRange:(_NSRange)targetRange payloadRange:(_NSRange)payloadRange contextBefore:(BOOL)before
 {
-  length = a4.length;
-  location = a4.location;
-  if (a7)
+  length = range.length;
+  location = range.location;
+  if (before)
   {
-    v10 = a4.location - a5.length;
-    v11 = [a3 inputDelegateManager];
-    v12 = v11;
-    v13 = v10 + a6.length;
+    v10 = range.location - targetRange.length;
+    inputDelegateManager = [keyboard inputDelegateManager];
+    v12 = inputDelegateManager;
+    v13 = v10 + payloadRange.length;
   }
 
   else
   {
-    v11 = [a3 inputDelegateManager];
-    v12 = v11;
+    inputDelegateManager = [keyboard inputDelegateManager];
+    v12 = inputDelegateManager;
     v13 = location;
   }
 
-  v15 = [v11 _textRangeFromNSRange:{v13, length}];
+  v15 = [inputDelegateManager _textRangeFromNSRange:{v13, length}];
 
-  v14 = [a3 inputDelegateManager];
+  inputDelegateManager2 = [keyboard inputDelegateManager];
 
-  [v14 setSelectedTextRange:v15];
+  [inputDelegateManager2 setSelectedTextRange:v15];
 }
 
 - (void)invalidateTextInputView
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 inputDelegateManager];
-  v4 = [v3 textInputView];
+  inputDelegateManager = [v2 inputDelegateManager];
+  textInputView = [inputDelegateManager textInputView];
 
-  [v4 layoutIfNeeded];
+  [textInputView layoutIfNeeded];
 }
 
-- (void)notifyDocumentStateChangedAndResumeDictation:(id)a3
+- (void)notifyDocumentStateChangedAndResumeDictation:(id)dictation
 {
-  v5 = a3;
+  dictationCopy = dictation;
   [(UIDictationController *)self invalidateTextInputView];
   if (+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") || !+[UIKeyboard inputUIOOP])
   {
-    v4 = [v5 remoteTextInputPartner];
-    [v4 documentStateChanged];
+    remoteTextInputPartner = [dictationCopy remoteTextInputPartner];
+    [remoteTextInputPartner documentStateChanged];
   }
 
   [(UIDictationController *)self resumeDictation];
 }
 
-- (id)commandTargetStringWithDictationCommandIdentifier:(unint64_t)a3 parameters:(id)a4
+- (id)commandTargetStringWithDictationCommandIdentifier:(unint64_t)identifier parameters:(id)parameters
 {
-  v5 = a4;
+  parametersCopy = parameters;
   v6 = 0;
-  if (a3 <= 0x17)
+  if (identifier <= 0x17)
   {
-    if (((1 << a3) & 0xC04AC2) != 0)
+    if (((1 << identifier) & 0xC04AC2) != 0)
     {
-      v7 = [objc_opt_class() firstParameterTextWithParameters:v5];
+      v7 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
 LABEL_4:
       v6 = v7;
       goto LABEL_5;
     }
 
-    if (((1 << a3) & 0x30) != 0)
+    if (((1 << identifier) & 0x30) != 0)
     {
-      v7 = [objc_opt_class() secondParameterTextWithParameters:v5];
+      v7 = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
       goto LABEL_4;
     }
   }
@@ -14318,27 +14318,27 @@ LABEL_5:
   return v6;
 }
 
-- (id)commandPayloadStringWithDictationCommandIdentifier:(unint64_t)a3 parameters:(id)a4
+- (id)commandPayloadStringWithDictationCommandIdentifier:(unint64_t)identifier parameters:(id)parameters
 {
-  v5 = a4;
+  parametersCopy = parameters;
   v6 = 0;
-  if (a3 <= 8)
+  if (identifier <= 8)
   {
-    if (a3 != 1)
+    if (identifier != 1)
     {
-      if (a3 != 6)
+      if (identifier != 6)
       {
-        if (a3 != 7)
+        if (identifier != 7)
         {
           goto LABEL_17;
         }
 
-        v7 = [objc_opt_class() firstParameterTextWithParameters:v5];
-        v8 = [v7 uppercaseString];
+        v7 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+        uppercaseString = [v7 uppercaseString];
         goto LABEL_16;
       }
 
-      v10 = [objc_opt_class() secondParameterTextWithParameters:v5];
+      v10 = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
 LABEL_14:
       v6 = v10;
       goto LABEL_17;
@@ -14350,15 +14350,15 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  switch(a3)
+  switch(identifier)
   {
     case 9uLL:
-      v7 = [objc_opt_class() firstParameterTextWithParameters:v5];
-      v8 = [v7 capitalizedString];
+      v7 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+      uppercaseString = [v7 capitalizedString];
       break;
     case 0xBuLL:
-      v7 = [objc_opt_class() firstParameterTextWithParameters:v5];
-      v8 = [v7 lowercaseString];
+      v7 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+      uppercaseString = [v7 lowercaseString];
       break;
     case 0xEuLL:
       v9 = @"_placeholder_UIDictationTextAlternativesActionSelect_4DD80D2E-12A9-4AEE-B8A8-E7B3C8A733E3_";
@@ -14368,33 +14368,33 @@ LABEL_11:
   }
 
 LABEL_16:
-  v6 = v8;
+  v6 = uppercaseString;
 
 LABEL_17:
 
   return v6;
 }
 
-- (id)commandMetadataWithDictationCommandIdentifier:(unint64_t)a3 parameters:(id)a4
+- (id)commandMetadataWithDictationCommandIdentifier:(unint64_t)identifier parameters:(id)parameters
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  parametersCopy = parameters;
   v7 = 0;
-  if (a3 <= 0x17)
+  if (identifier <= 0x17)
   {
-    if (((1 << a3) & 0xC04A82) != 0)
+    if (((1 << identifier) & 0xC04A82) != 0)
     {
-      v8 = [objc_opt_class() secondParameterTextWithParameters:v6];
+      v8 = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
     }
 
     else
     {
-      if (((1 << a3) & 0x70) == 0)
+      if (((1 << identifier) & 0x70) == 0)
       {
         goto LABEL_33;
       }
 
-      v8 = [objc_opt_class() thirdParameterTextWithParameters:v6];
+      v8 = [objc_opt_class() thirdParameterTextWithParameters:parametersCopy];
     }
 
     v9 = v8;
@@ -14413,11 +14413,11 @@ LABEL_17:
       v13 = _UIDictationControllerLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v51 = [v12 localizedDescription];
+        localizedDescription = [v12 localizedDescription];
         *buf = 136315650;
         v69 = "[UIDictationController commandMetadataWithDictationCommandIdentifier:parameters:]";
         v70 = 2112;
-        v71 = v51;
+        v71 = localizedDescription;
         v72 = 2112;
         v73 = v9;
         _os_log_error_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "%s ERROR: Unable to convert command metadata string to JSON dictionary: %@\nJSON string:\n%@", buf, 0x20u);
@@ -14431,9 +14431,9 @@ LABEL_32:
 
     v57 = v10;
     v53 = v9;
-    v60 = [(UIDictationController *)self commandTargetStringWithDictationCommandIdentifier:a3 parameters:v6];
-    v54 = v6;
-    v59 = [(UIDictationController *)self commandPayloadStringWithDictationCommandIdentifier:a3 parameters:v6];
+    v60 = [(UIDictationController *)self commandTargetStringWithDictationCommandIdentifier:identifier parameters:parametersCopy];
+    v54 = parametersCopy;
+    v59 = [(UIDictationController *)self commandPayloadStringWithDictationCommandIdentifier:identifier parameters:parametersCopy];
     v64 = [v11 objectForKeyedSubscript:@"targetStartIndex"];
     v62 = [v11 objectForKeyedSubscript:@"targetLength"];
     v66 = [v11 objectForKeyedSubscript:@"expandedTarget"];
@@ -14444,30 +14444,30 @@ LABEL_32:
     v58 = [v11 objectForKeyedSubscript:@"expandedTargetOffset"];
     v55 = [_UIDictationVoiceCommandInstrumentationMetadata alloc];
     v14 = [v11 objectForKeyedSubscript:@"hasSpelling"];
-    v15 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
     v16 = [v11 objectForKeyedSubscript:@"hasTextSelection"];
-    v17 = [v16 BOOLValue];
+    bOOLValue2 = [v16 BOOLValue];
     v18 = [v11 objectForKeyedSubscript:@"isWfstParseable"];
-    v19 = [v18 BOOLValue];
+    bOOLValue3 = [v18 BOOLValue];
     v20 = [v11 objectForKeyedSubscript:@"hasAdjacentEdit"];
-    v21 = -[_UIDictationVoiceCommandInstrumentationMetadata initWithHasSpelling:hasTextSelection:isWfstParseable:hasAdjacentEdit:](v55, "initWithHasSpelling:hasTextSelection:isWfstParseable:hasAdjacentEdit:", v15, v17, v19, [v20 BOOLValue]);
+    v21 = -[_UIDictationVoiceCommandInstrumentationMetadata initWithHasSpelling:hasTextSelection:isWfstParseable:hasAdjacentEdit:](v55, "initWithHasSpelling:hasTextSelection:isWfstParseable:hasAdjacentEdit:", bOOLValue, bOOLValue2, bOOLValue3, [v20 BOOLValue]);
 
     v22 = v21;
-    if (a3 == 14)
+    if (identifier == 14)
     {
       v24 = @"_placeholder_UIDictationTextAlternativesActionSelect_4DD80D2E-12A9-4AEE-B8A8-E7B3C8A733E3_";
       v9 = v53;
-      v6 = v54;
+      parametersCopy = v54;
       v12 = 0;
       v25 = v52;
     }
 
     else
     {
-      if (a3 != 1)
+      if (identifier != 1)
       {
         v9 = v53;
-        v6 = v54;
+        parametersCopy = v54;
         v12 = 0;
         v28 = v52;
         v26 = v58;
@@ -14477,18 +14477,18 @@ LABEL_20:
         if (v60 && v64 && v62 && v61)
         {
           v30 = [_UIDictationVoiceCommandTargetMetadata alloc];
-          v31 = [v64 intValue];
+          intValue = [v64 intValue];
           v32 = v28;
-          v33 = [v62 intValue];
-          v34 = [v61 intValue];
+          intValue2 = [v62 intValue];
+          intValue3 = [v61 intValue];
           v35 = v30;
           v13 = v60;
-          v36 = v31;
+          v36 = intValue;
           v12 = 0;
-          v37 = v33;
+          v37 = intValue2;
           v28 = v32;
           v26 = v58;
-          v29 = [(_UIDictationVoiceCommandTargetMetadata *)v35 initWithTarget:v60 targetStartIndex:v36 targetLength:v37 targetOffset:v34 payload:v59];
+          v29 = [(_UIDictationVoiceCommandTargetMetadata *)v35 initWithTarget:v60 targetStartIndex:v36 targetLength:v37 targetOffset:intValue3 payload:v59];
         }
 
         v38 = 0;
@@ -14496,19 +14496,19 @@ LABEL_20:
         if (v66 && v65 && v63 && v28 && v26)
         {
           v39 = [_UIDictationVoiceCommandExpandedTargetMetadata alloc];
-          v40 = [v65 intValue];
+          intValue4 = [v65 intValue];
           v41 = v29;
           v42 = v28;
-          v43 = [v63 intValue];
-          v44 = [v26 intValue];
+          intValue5 = [v63 intValue];
+          intValue6 = [v26 intValue];
           v45 = v39;
-          v46 = v40;
+          v46 = intValue4;
           v12 = 0;
           v13 = v60;
-          v47 = v43;
+          v47 = intValue5;
           v28 = v42;
           v29 = v41;
-          v38 = [(_UIDictationVoiceCommandExpandedTargetMetadata *)v45 initWithExpandedTarget:v66 expandedTargetStartIndex:v46 expandedTargetLength:v47 expandedTargetOffset:v44 expandedPayload:v28];
+          v38 = [(_UIDictationVoiceCommandExpandedTargetMetadata *)v45 initWithExpandedTarget:v66 expandedTargetStartIndex:v46 expandedTargetLength:v47 expandedTargetOffset:intValue6 expandedPayload:v28];
         }
 
         v48 = v28;
@@ -14520,16 +14520,16 @@ LABEL_20:
         goto LABEL_32;
       }
 
-      v23 = [objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits];
+      supportsSiriDictationVoiceCommandsAdjacentEdits = [objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits];
       v24 = @"_placeholder_UIDictationTextAlternativesActionDelete_FA6ACA5B-6332-4904-95E9-D4A0894E570D_";
       v25 = v52;
       v9 = v53;
-      if (v23)
+      if (supportsSiriDictationVoiceCommandsAdjacentEdits)
       {
         v24 = v52;
       }
 
-      v6 = v54;
+      parametersCopy = v54;
       v12 = 0;
     }
 
@@ -14555,8 +14555,8 @@ LABEL_33:
   if (+[UIKeyboard isKeyboardProcess])
   {
     v2 = qword_1ED4988A8;
-    v3 = +[UIKeyboard keyboardBundleIdentifier];
-    v4 = [v2 containsObject:v3];
+    textInputDelegate = +[UIKeyboard keyboardBundleIdentifier];
+    v4 = [v2 containsObject:textInputDelegate];
   }
 
   else
@@ -14577,8 +14577,8 @@ LABEL_33:
     }
 
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 inputDelegateManager];
-    v3 = [v7 textInputDelegate];
+    inputDelegateManager = [v6 inputDelegateManager];
+    textInputDelegate = [inputDelegateManager textInputDelegate];
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -14586,7 +14586,7 @@ LABEL_33:
       goto LABEL_6;
     }
 
-    v4 = [v3 canPerformDictationAction:@"UITextInputDictationActionTypeSend"];
+    v4 = [textInputDelegate canPerformDictationAction:@"UITextInputDictationActionTypeSend"];
   }
 
   v5 = v4;
@@ -14609,67 +14609,67 @@ void __49__UIDictationController_supportsSendVoiceCommand__block_invoke_2()
   byte_1ED4987D6 = [v0 containsObject:v1];
 }
 
-- (void)_performStandardEditAction:(SEL)a3 sender:(id)a4
+- (void)_performStandardEditAction:(SEL)action sender:(id)sender
 {
-  v8 = a4;
+  senderCopy = sender;
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 inputDelegateManager];
-  v7 = [v6 delegateAsResponder];
+  inputDelegateManager = [v5 inputDelegateManager];
+  delegateAsResponder = [inputDelegateManager delegateAsResponder];
 
-  if ([v7 canPerformAction:a3 withSender:0])
+  if ([delegateAsResponder canPerformAction:action withSender:0])
   {
-    [UIApp sendAction:a3 to:v7 from:v8 forEvent:0];
+    [UIApp sendAction:action to:delegateAsResponder from:senderCopy forEvent:0];
   }
 }
 
 - (id)_documentStateForCommandApplicability
 {
-  v3 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-  v4 = [v3 documentState];
-  v5 = v4;
-  if (v4)
+  visibleRTIDocumentStateAtCommandRecognition = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+  documentState = [visibleRTIDocumentStateAtCommandRecognition documentState];
+  v5 = documentState;
+  if (documentState)
   {
-    v6 = v4;
+    documentState2 = documentState;
   }
 
   else
   {
-    v7 = [(UIDictationController *)self visibleRTIDocumentStateAtStart];
-    v6 = [v7 documentState];
+    visibleRTIDocumentStateAtStart = [(UIDictationController *)self visibleRTIDocumentStateAtStart];
+    documentState2 = [visibleRTIDocumentStateAtStart documentState];
   }
 
-  return v6;
+  return documentState2;
 }
 
-- (BOOL)_canApplyVoiceCommandWithIdentifierString:(id)a3 firstParameterText:(id)a4 targetString:(id)a5 voiceCommandUUID:(id)a6
+- (BOOL)_canApplyVoiceCommandWithIdentifierString:(id)string firstParameterText:(id)text targetString:(id)targetString voiceCommandUUID:(id)d
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  textCopy = text;
+  targetStringCopy = targetString;
+  dCopy = d;
   v14 = objc_alloc_init(getSISchemaUEIDictationVoiceCommandExecutedClass());
-  v15 = [objc_opt_class() commandIdentifierWithStringIdentifier:v10];
+  v15 = [objc_opt_class() commandIdentifierWithStringIdentifier:stringCopy];
   [v14 setCommandType:{objc_msgSend(objc_opt_class(), "mapDictationCommandIdentifierToUEIcommandIdentifier:", v15)}];
-  v16 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:v13];
+  v16 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:dCopy];
   [v14 setVoiceCommandId:v16];
 
   if (v15)
   {
     if ([objc_opt_class() canHandleCommandIdentifier:v15])
     {
-      v17 = [(UIDictationController *)self _documentStateForCommandApplicability];
-      v18 = v17;
+      _documentStateForCommandApplicability = [(UIDictationController *)self _documentStateForCommandApplicability];
+      v18 = _documentStateForCommandApplicability;
       if (v15 == 26)
       {
-        v19 = [v11 integerValue];
+        integerValue = [textCopy integerValue];
         if (+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP") && +[UIKeyboard isKeyboardProcess])
         {
           maxDisambiguationOptions = self->_maxDisambiguationOptions;
           if (maxDisambiguationOptions)
           {
             v21 = 1;
-            if (v19 == -1 || maxDisambiguationOptions > v19 - 1)
+            if (integerValue == -1 || maxDisambiguationOptions > integerValue - 1)
             {
               goto LABEL_36;
             }
@@ -14679,8 +14679,8 @@ void __49__UIDictationController_supportsSendVoiceCommand__block_invoke_2()
         }
 
         v28 = +[UIKeyboardImpl activeInstance];
-        v29 = [v28 _textChoicesAssistant];
-        v30 = [v29 canHandleDictationChoiceForPromptIndex:v19];
+        _textChoicesAssistant = [v28 _textChoicesAssistant];
+        v30 = [_textChoicesAssistant canHandleDictationChoiceForPromptIndex:integerValue];
 
         if ((v30 & 1) == 0)
         {
@@ -14696,7 +14696,7 @@ LABEL_36:
         goto LABEL_35;
       }
 
-      if (!v17)
+      if (!_documentStateForCommandApplicability)
       {
         goto LABEL_35;
       }
@@ -14704,17 +14704,17 @@ LABEL_36:
       if ([(UIDictationController *)self isSelectionRequiredForCommand:v15])
       {
         v24 = +[UIKeyboardImpl activeInstance];
-        v25 = [v24 inputDelegate];
-        v26 = [v25 selectedTextRange];
-        if (![v26 isEmpty])
+        inputDelegate = [v24 inputDelegate];
+        selectedTextRange = [inputDelegate selectedTextRange];
+        if (![selectedTextRange isEmpty])
         {
 
           goto LABEL_35;
         }
 
-        v35 = [(UIDictationController *)self hasSelectedTextRange];
+        hasSelectedTextRange = [(UIDictationController *)self hasSelectedTextRange];
 
-        if (v35)
+        if (hasSelectedTextRange)
         {
 LABEL_35:
           v21 = 1;
@@ -14727,7 +14727,7 @@ LABEL_35:
           *buf = 136315394;
           v42 = "[UIDictationController _canApplyVoiceCommandWithIdentifierString:firstParameterText:targetString:voiceCommandUUID:]";
           v43 = 2112;
-          v44 = v10;
+          v44 = stringCopy;
           _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_DEFAULT, "%s Command applicability check: no selection found for command with identifier: %@", buf, 0x16u);
         }
       }
@@ -14736,20 +14736,20 @@ LABEL_35:
       {
         if (!-[UIDictationController _isNonEmptyDocumentRequiredForCommand:](self, "_isNonEmptyDocumentRequiredForCommand:", v15) || ![v18 documentIsEmpty])
         {
-          if (v12)
+          if (targetStringCopy)
           {
             v37 = 0;
             v38 = &v37;
             v39 = 0x2020000000;
             v40 = 0;
-            v31 = [v18 contextBeforeInput];
-            v32 = [v18 contextAfterInput];
+            contextBeforeInput = [v18 contextBeforeInput];
+            contextAfterInput = [v18 contextAfterInput];
             v36[0] = MEMORY[0x1E69E9820];
             v36[1] = 3221225472;
             v36[2] = __116__UIDictationController__canApplyVoiceCommandWithIdentifierString_firstParameterText_targetString_voiceCommandUUID___block_invoke;
             v36[3] = &unk_1E7115128;
             v36[4] = &v37;
-            [UIDictationUtilities searchString:v12 contextBefore:v31 contextAfter:v32 completionHandler:v36];
+            [UIDictationUtilities searchString:targetStringCopy contextBefore:contextBeforeInput contextAfter:contextAfterInput completionHandler:v36];
             if ((v38[3] & 1) == 0)
             {
               v34 = _UIDictationControllerLog();
@@ -14758,11 +14758,11 @@ LABEL_35:
                 *buf = 136315907;
                 v42 = "[UIDictationController _canApplyVoiceCommandWithIdentifierString:firstParameterText:targetString:voiceCommandUUID:]";
                 v43 = 2112;
-                v44 = v10;
+                v44 = stringCopy;
                 v45 = 2112;
-                v46 = v12;
+                v46 = targetStringCopy;
                 v47 = 2113;
-                v48 = v31;
+                v48 = contextBeforeInput;
                 _os_log_error_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "%s Command applicability check: command target not found for command with identifier: %@, target: %@, context before %{private}@", buf, 0x2Au);
               }
 
@@ -14782,7 +14782,7 @@ LABEL_35:
           *buf = 136315394;
           v42 = "[UIDictationController _canApplyVoiceCommandWithIdentifierString:firstParameterText:targetString:voiceCommandUUID:]";
           v43 = 2112;
-          v44 = v10;
+          v44 = stringCopy;
           _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_DEFAULT, "%s Command applicability check: document is empty but non-empty document required by command with identifier: %@", buf, 0x16u);
         }
       }
@@ -14794,7 +14794,7 @@ LABEL_35:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = v10;
+      v42 = stringCopy;
       _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_DEFAULT, "UIDictationController unhandled command with identifier: %@", buf, 0xCu);
     }
 
@@ -14810,7 +14810,7 @@ LABEL_35:
       *buf = 136315394;
       v42 = "[UIDictationController _canApplyVoiceCommandWithIdentifierString:firstParameterText:targetString:voiceCommandUUID:]";
       v43 = 2112;
-      v44 = v10;
+      v44 = stringCopy;
       _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_DEFAULT, "%s Unknown command with identifier: %@", buf, 0x16u);
     }
 
@@ -14834,18 +14834,18 @@ uint64_t __116__UIDictationController__canApplyVoiceCommandWithIdentifierString_
   return result;
 }
 
-- (BOOL)_handleMultipleTextTargetsForText:(id)a3 payloadText:(id)a4 voiceCommandUUID:(id)a5
+- (BOOL)_handleMultipleTextTargetsForText:(id)text payloadText:(id)payloadText voiceCommandUUID:(id)d
 {
   v82 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v66 = a4;
-  v9 = a5;
+  textCopy = text;
+  payloadTextCopy = payloadText;
+  dCopy = d;
   [(UIDictationController *)self setCommandTargetRangeMatchingGazeRange:0];
   v10 = +[UIKeyboardImpl activeInstance];
-  v11 = [v10 inputDelegateManager];
-  v12 = [v11 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v10 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-  if (v12)
+  if (hasAsyncCapableInputDelegate)
   {
     v13 = 0;
     goto LABEL_39;
@@ -14853,23 +14853,23 @@ uint64_t __116__UIDictationController__canApplyVoiceCommandWithIdentifierString_
 
   if (!+[UIKeyboard inputUIOOP])
   {
-    v20 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-    v21 = [v20 documentState];
-    if (v21)
+    visibleRTIDocumentStateAtCommandRecognition = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+    documentState = [visibleRTIDocumentStateAtCommandRecognition documentState];
+    if (documentState)
     {
-      v22 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-      v23 = [v22 documentState];
-      v16 = [v23 contextBeforeInput];
+      visibleRTIDocumentStateAtCommandRecognition2 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+      documentState2 = [visibleRTIDocumentStateAtCommandRecognition2 documentState];
+      contextBeforeInput = [documentState2 contextBeforeInput];
     }
 
     else
     {
-      v16 = [(UIDictationController *)self visibleContextBeforeInputAtCommandExecution];
+      contextBeforeInput = [(UIDictationController *)self visibleContextBeforeInputAtCommandExecution];
     }
 
-    v17 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-    v18 = [v17 documentState];
-    if (v18)
+    visibleRTIDocumentStateAtCommandRecognition3 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+    documentState3 = [visibleRTIDocumentStateAtCommandRecognition3 documentState];
+    if (documentState3)
     {
       [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
     }
@@ -14879,50 +14879,50 @@ uint64_t __116__UIDictationController__canApplyVoiceCommandWithIdentifierString_
       [(UIDictationController *)self visibleRTIDocumentStateAtStart];
     }
     v24 = ;
-    v25 = [v24 documentState];
-    v19 = [v25 contextAfterInput];
+    documentState4 = [v24 documentState];
+    contextAfterInput = [documentState4 contextAfterInput];
 
     goto LABEL_14;
   }
 
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v14 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-    v15 = [v14 documentState];
-    v16 = [v15 contextBeforeInput];
+    visibleRTIDocumentStateAtCommandRecognition4 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+    documentState5 = [visibleRTIDocumentStateAtCommandRecognition4 documentState];
+    contextBeforeInput = [documentState5 contextBeforeInput];
 
-    v17 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-    v18 = [v17 documentState];
-    v19 = [v18 contextAfterInput];
+    visibleRTIDocumentStateAtCommandRecognition3 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+    documentState3 = [visibleRTIDocumentStateAtCommandRecognition3 documentState];
+    contextAfterInput = [documentState3 contextAfterInput];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v19 = 0;
-  v16 = 0;
+  contextAfterInput = 0;
+  contextBeforeInput = 0;
 LABEL_15:
-  v26 = [UIDictationUtilities rangesForSearchStringWithWordBoundariesValidation:v16 substring:v8 reverse:0];
-  v58 = v19;
-  v27 = [UIDictationUtilities rangesForSearchStringWithWordBoundariesValidation:v19 substring:v8 reverse:0];
-  v65 = [MEMORY[0x1E695DF70] array];
+  v26 = [UIDictationUtilities rangesForSearchStringWithWordBoundariesValidation:contextBeforeInput substring:textCopy reverse:0];
+  v58 = contextAfterInput;
+  v27 = [UIDictationUtilities rangesForSearchStringWithWordBoundariesValidation:contextAfterInput substring:textCopy reverse:0];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = [v26 count];
   v29 = [v27 count] + v28;
   v13 = v29 > 0;
   v57 = v27;
   if (v29 < 1)
   {
-    v49 = v16;
+    v49 = contextBeforeInput;
   }
 
   else
   {
     v53 = v29 > 0;
-    v54 = self;
-    v55 = v9;
-    v56 = v8;
-    v64 = [MEMORY[0x1E695DF70] array];
-    v63 = [MEMORY[0x1E695DF70] array];
+    selfCopy = self;
+    v55 = dCopy;
+    v56 = textCopy;
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
@@ -14966,26 +14966,26 @@ LABEL_15:
                   objc_enumerationMutation(v32);
                 }
 
-                v37 = [*(*(&v71 + 1) + 8 * i) rangeValue];
+                rangeValue = [*(*(&v71 + 1) + 8 * i) rangeValue];
                 v39 = v38;
-                if (v16)
+                if (contextBeforeInput)
                 {
-                  v37 -= [v16 length];
+                  rangeValue -= [contextBeforeInput length];
                 }
 
-                v40 = [v10 inputDelegateManager];
-                v41 = [v40 textInputDelegate];
-                v42 = [v41 _rangeFromCurrentRangeWithDelta:{v37, v39}];
+                inputDelegateManager2 = [v10 inputDelegateManager];
+                textInputDelegate = [inputDelegateManager2 textInputDelegate];
+                v42 = [textInputDelegate _rangeFromCurrentRangeWithDelta:{rangeValue, v39}];
 
-                [v64 addObject:v42];
+                [array2 addObject:v42];
                 v43 = MEMORY[0x1E696B098];
-                v44 = [v10 inputDelegateManager];
-                v45 = [v44 textInputDelegate];
-                v46 = [v45 _nsrangeForTextRange:v42];
+                inputDelegateManager3 = [v10 inputDelegateManager];
+                textInputDelegate2 = [inputDelegateManager3 textInputDelegate];
+                v46 = [textInputDelegate2 _nsrangeForTextRange:v42];
                 v48 = [v43 valueWithRange:{v46, v47}];
-                [v65 addObject:v48];
+                [array addObject:v48];
 
-                [v63 addObject:v66];
+                [array3 addObject:payloadTextCopy];
               }
 
               v34 = [v32 countByEnumeratingWithState:&v71 objects:v79 count:16];
@@ -14994,12 +14994,12 @@ LABEL_15:
             while (v34);
           }
 
-          v16 = 0;
+          contextBeforeInput = 0;
           v30 = v62 + 1;
         }
 
         while (v62 + 1 != v61);
-        v16 = 0;
+        contextBeforeInput = 0;
         v49 = 0;
         v61 = [obj countByEnumeratingWithState:&v75 objects:v81 count:16];
       }
@@ -15009,26 +15009,26 @@ LABEL_15:
 
     else
     {
-      v49 = v16;
+      v49 = contextBeforeInput;
     }
 
-    v9 = v55;
+    dCopy = v55;
     if ([objc_opt_class() supportsSiriDictationVoiceCommandsUIRedesign])
     {
-      [(UIDictationController *)v54 playVoiceCommandHapticFeedack];
-      v50 = [v10 _textChoicesAssistant];
+      [(UIDictationController *)selfCopy playVoiceCommandHapticFeedack];
+      _textChoicesAssistant = [v10 _textChoicesAssistant];
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __88__UIDictationController__handleMultipleTextTargetsForText_payloadText_voiceCommandUUID___block_invoke;
       v67[3] = &unk_1E7115150;
-      v67[4] = v54;
+      v67[4] = selfCopy;
       v68 = v55;
-      v69 = v64;
+      v69 = array2;
       v70 = v10;
-      [v50 decorateTextInRanges:v69 replacementTexts:v63 allowAutomaticReplacement:1 autoHide:0 voiceCommandTrackingUUID:v68 withCompletionHandler:v67];
+      [_textChoicesAssistant decorateTextInRanges:v69 replacementTexts:array3 allowAutomaticReplacement:1 autoHide:0 voiceCommandTrackingUUID:v68 withCompletionHandler:v67];
     }
 
-    v8 = v56;
+    textCopy = v56;
     v13 = v53;
     v26 = v52;
   }
@@ -15056,10 +15056,10 @@ uint64_t __88__UIDictationController__handleMultipleTextTargetsForText_payloadTe
   return [v9 notifyDocumentStateChangedAndResumeDictation:v10];
 }
 
-- (void)instrumentDictationVoiceCommandUndoTapActionWithVoiceCommandUUID:(id)a3 undoTapAlternativeSelection:(BOOL)a4
+- (void)instrumentDictationVoiceCommandUndoTapActionWithVoiceCommandUUID:(id)d undoTapAlternativeSelection:(BOOL)selection
 {
-  v4 = a4;
-  v6 = a3;
+  selectionCopy = selection;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -15079,18 +15079,18 @@ uint64_t __88__UIDictationController__handleMultipleTextTargetsForText_payloadTe
   v8 = v7;
   _Block_object_dispose(&v12, 8);
   v9 = objc_alloc_init(v7);
-  v10 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:v6];
+  v10 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:dCopy];
   [v9 setVoiceCommandId:v10];
 
-  [v9 setIsUndoTapAlternativeSelection:v4];
+  [v9 setIsUndoTapAlternativeSelection:selectionCopy];
   [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v9];
 }
 
-- (void)instrumentDictationVoiceCommandDisambiguationActionWithVoiceCommandUUID:(id)a3 disambiguationIndex:(id)a4 totalDisambiguationCount:(id)a5
+- (void)instrumentDictationVoiceCommandDisambiguationActionWithVoiceCommandUUID:(id)d disambiguationIndex:(id)index totalDisambiguationCount:(id)count
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  indexCopy = index;
+  countCopy = count;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -15110,43 +15110,43 @@ uint64_t __88__UIDictationController__handleMultipleTextTargetsForText_payloadTe
   v12 = v11;
   _Block_object_dispose(&v16, 8);
   v13 = objc_alloc_init(v11);
-  v14 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:v8];
+  v14 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:dCopy];
   [v13 setVoiceCommandId:v14];
 
   [v13 setDisambiguationType:1];
-  [v13 setDisambiguationIndex:{objc_msgSend(v9, "intValue")}];
-  [v13 setTotalDisambiguationAlternatives:{objc_msgSend(v10, "intValue")}];
+  [v13 setDisambiguationIndex:{objc_msgSend(indexCopy, "intValue")}];
+  [v13 setTotalDisambiguationAlternatives:{objc_msgSend(countCopy, "intValue")}];
   [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v13];
 }
 
-- (void)_handleWKMultipleTextTargetsForText:(id)a3 payloadText:(id)a4 voiceCommandUUID:(id)a5 completionHandler:(id)a6
+- (void)_handleWKMultipleTextTargetsForText:(id)text payloadText:(id)payloadText voiceCommandUUID:(id)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  textCopy = text;
+  payloadTextCopy = payloadText;
+  dCopy = d;
+  handlerCopy = handler;
   v14 = +[UIKeyboardImpl activeInstance];
-  v15 = [v14 inputDelegateManager];
-  v16 = [v15 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v14 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-  if (v16)
+  if (hasAsyncCapableInputDelegate)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __108__UIDictationController__handleWKMultipleTextTargetsForText_payloadText_voiceCommandUUID_completionHandler___block_invoke;
     v17[3] = &unk_1E71151A0;
-    v18 = v10;
-    v19 = v11;
-    v20 = self;
+    v18 = textCopy;
+    v19 = payloadTextCopy;
+    selfCopy = self;
     v21 = v14;
-    v22 = v12;
-    v23 = v13;
+    v22 = dCopy;
+    v23 = handlerCopy;
     [(UIDictationController *)self _requestDocumentContextWithCompletionHandler:v17];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -15360,58 +15360,58 @@ void __108__UIDictationController__handleWKMultipleTextTargetsForText_payloadTex
   }
 }
 
-- (void)_handleRecognizedCommandWithCommandIdentifier:(unint64_t)a3 parameters:(id)a4 strings:(id)a5 voiceCommandUUID:(id)a6
+- (void)_handleRecognizedCommandWithCommandIdentifier:(unint64_t)identifier parameters:(id)parameters strings:(id)strings voiceCommandUUID:(id)d
 {
-  v10 = a4;
-  v98 = a5;
-  v11 = a6;
+  parametersCopy = parameters;
+  stringsCopy = strings;
+  dCopy = d;
   v12 = +[UIKeyboardImpl activeInstance];
-  v13 = [v12 inputDelegateManager];
-  v14 = [v13 textInputDelegate];
-  v15 = [v12 inputDelegateManager];
-  v16 = [v15 selectedTextRange];
-  v17 = [v14 _nsrangeForTextRange:v16];
+  inputDelegateManager = [v12 inputDelegateManager];
+  textInputDelegate = [inputDelegateManager textInputDelegate];
+  inputDelegateManager2 = [v12 inputDelegateManager];
+  selectedTextRange = [inputDelegateManager2 selectedTextRange];
+  v17 = [textInputDelegate _nsrangeForTextRange:selectedTextRange];
   [(UIDictationController *)self setPreCommandExecutionPositionRange:v17, v18];
 
-  if (a3 == 21 || ([(UIDictationController *)self _addUndoNotificationObservationWithVoiceCommandUUID:v11], a3 != 26))
+  if (identifier == 21 || ([(UIDictationController *)self _addUndoNotificationObservationWithVoiceCommandUUID:dCopy], identifier != 26))
   {
-    v19 = [v12 _textChoicesAssistant];
-    [v19 resetDictationChoicesAnimated:0];
+    _textChoicesAssistant = [v12 _textChoicesAssistant];
+    [_textChoicesAssistant resetDictationChoicesAnimated:0];
   }
 
-  v20 = [(UIDictationController *)self commandMetadataWithDictationCommandIdentifier:a3 parameters:v10];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  v20 = [(UIDictationController *)self commandMetadataWithDictationCommandIdentifier:identifier parameters:parametersCopy];
+  if ((identifier & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     if ([objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits])
     {
-      v21 = [v20 expandedTargetMetadata];
+      expandedTargetMetadata = [v20 expandedTargetMetadata];
 
-      if (v21)
+      if (expandedTargetMetadata)
       {
-        v22 = [v12 _textChoicesAssistant];
-        [v22 resetDictationUnderlines];
+        _textChoicesAssistant2 = [v12 _textChoicesAssistant];
+        [_textChoicesAssistant2 resetDictationUnderlines];
 
-        v23 = [objc_opt_class() firstParameterTextWithParameters:v10];
+        v23 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
 LABEL_16:
-        v29 = [objc_opt_class() secondParameterTextWithParameters:v10];
+        lowercaseString = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
 LABEL_25:
-        v37 = v29;
-        v38 = [v20 expandedTargetMetadata];
-        if (v38)
+        v37 = lowercaseString;
+        expandedTargetMetadata2 = [v20 expandedTargetMetadata];
+        if (expandedTargetMetadata2)
         {
-          v39 = v38;
-          v40 = [objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits];
+          v39 = expandedTargetMetadata2;
+          supportsSiriDictationVoiceCommandsAdjacentEdits = [objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits];
 
-          if (v40)
+          if (supportsSiriDictationVoiceCommandsAdjacentEdits)
           {
-            v41 = [v20 expandedTargetMetadata];
-            v42 = [v41 expandedTarget];
+            expandedTargetMetadata3 = [v20 expandedTargetMetadata];
+            expandedTarget = [expandedTargetMetadata3 expandedTarget];
 
-            v43 = [v20 expandedTargetMetadata];
-            v44 = [v43 expandedPayload];
+            expandedTargetMetadata4 = [v20 expandedTargetMetadata];
+            expandedPayload = [expandedTargetMetadata4 expandedPayload];
 
-            v37 = v44;
-            v23 = v42;
+            v37 = expandedPayload;
+            v23 = expandedTarget;
           }
         }
 
@@ -15423,10 +15423,10 @@ LABEL_25:
         v139 = v12;
         v140 = v23;
         v141 = v37;
-        v142 = v11;
+        v142 = dCopy;
         v45 = v37;
-        v31 = v23;
-        [(UIDictationController *)self _handleWKMultipleTextTargetsForText:v31 payloadText:v45 voiceCommandUUID:v142 completionHandler:v138];
+        selectedTextRange3 = v23;
+        [(UIDictationController *)self _handleWKMultipleTextTargetsForText:selectedTextRange3 payloadText:v45 voiceCommandUUID:v142 completionHandler:v138];
 
 LABEL_29:
         goto LABEL_47;
@@ -15434,34 +15434,34 @@ LABEL_29:
     }
   }
 
-  if (a3 <= 0x1A && ((1 << a3) & 0x400C000) != 0)
+  if (identifier <= 0x1A && ((1 << identifier) & 0x400C000) != 0)
   {
-    v24 = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
-    v25 = [v24 selectedTextRange];
-    [(UIDictationController *)self setCachedPreSelectionRange:v25, v26];
+    visibleRTIDocumentStateAtCommandRecognition = [(UIDictationController *)self visibleRTIDocumentStateAtCommandRecognition];
+    selectedTextRange2 = [visibleRTIDocumentStateAtCommandRecognition selectedTextRange];
+    [(UIDictationController *)self setCachedPreSelectionRange:selectedTextRange2, v26];
   }
 
-  v27 = [v12 _textChoicesAssistant];
-  [v27 resetDictationUnderlines];
+  _textChoicesAssistant3 = [v12 _textChoicesAssistant];
+  [_textChoicesAssistant3 resetDictationUnderlines];
 
-  switch(a3)
+  switch(identifier)
   {
     case 6uLL:
     case 7uLL:
     case 9uLL:
     case 0xBuLL:
-      v28 = [objc_opt_class() firstParameterTextWithParameters:v10];
+      v28 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
       v23 = v28;
-      switch(a3)
+      switch(identifier)
       {
         case 0xBuLL:
-          v29 = [v28 lowercaseString];
+          lowercaseString = [v28 lowercaseString];
           break;
         case 9uLL:
-          v29 = [v28 capitalizedString];
+          lowercaseString = [v28 capitalizedString];
           break;
         case 7uLL:
-          v29 = [v28 uppercaseString];
+          lowercaseString = [v28 uppercaseString];
           break;
         default:
           goto LABEL_16;
@@ -15471,56 +15471,56 @@ LABEL_29:
     case 8uLL:
     case 0xAuLL:
     case 0xCuLL:
-      v30 = [v12 inputDelegateManager];
-      v31 = [v30 selectedTextRange];
+      inputDelegateManager3 = [v12 inputDelegateManager];
+      selectedTextRange3 = [inputDelegateManager3 selectedTextRange];
 
-      v32 = [v12 inputDelegateManager];
-      v33 = [v32 hasAsyncCapableInputDelegate];
+      inputDelegateManager4 = [v12 inputDelegateManager];
+      hasAsyncCapableInputDelegate = [inputDelegateManager4 hasAsyncCapableInputDelegate];
 
-      if (v33)
+      if (hasAsyncCapableInputDelegate)
       {
         v143[0] = MEMORY[0x1E69E9820];
         v143[1] = 3221225472;
         v143[2] = __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_parameters_strings_voiceCommandUUID___block_invoke;
         v143[3] = &unk_1E71151C8;
-        v146 = a3;
+        identifierCopy = identifier;
         v144 = v12;
-        v145 = self;
+        selfCopy = self;
         [(UIDictationController *)self _requestDocumentContextWithCompletionHandler:v143];
 
         goto LABEL_29;
       }
 
       [v12 updateForChangedSelection];
-      v34 = [v12 inputDelegateManager];
-      v35 = [v34 textInRange:v31];
+      inputDelegateManager5 = [v12 inputDelegateManager];
+      v35 = [inputDelegateManager5 textInRange:selectedTextRange3];
 
-      switch(a3)
+      switch(identifier)
       {
         case 8uLL:
-          v36 = [v35 uppercaseString];
+          uppercaseString = [v35 uppercaseString];
           break;
         case 0xCuLL:
-          v36 = [v35 lowercaseString];
+          uppercaseString = [v35 lowercaseString];
           break;
         case 0xAuLL:
-          v36 = [v35 capitalizedString];
+          uppercaseString = [v35 capitalizedString];
           break;
         default:
           goto LABEL_56;
       }
 
-      v61 = v36;
+      v61 = uppercaseString;
 
       v35 = v61;
 LABEL_56:
-      v62 = [v12 inputDelegateManager];
-      [v62 insertText:v35];
+      inputDelegateManager6 = [v12 inputDelegateManager];
+      [inputDelegateManager6 insertText:v35];
 
       [(UIDictationController *)self notifyDocumentStateChangedAndResumeDictation:v12];
       goto LABEL_29;
     case 0xEuLL:
-      v51 = [objc_opt_class() firstParameterTextWithParameters:v10];
+      v51 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
       v134[0] = MEMORY[0x1E69E9820];
       v134[1] = 3221225472;
       v134[2] = __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_parameters_strings_voiceCommandUUID___block_invoke_3;
@@ -15528,7 +15528,7 @@ LABEL_56:
       v134[4] = self;
       v135 = v12;
       v136 = v51;
-      v137 = v11;
+      v137 = dCopy;
       v52 = v51;
       [(UIDictationController *)self _handleWKMultipleTextTargetsForText:v52 payloadText:0x1EFB75A90 voiceCommandUUID:v137 completionHandler:v134];
 
@@ -15554,9 +15554,9 @@ LABEL_41:
       goto LABEL_42;
     case 0x14uLL:
       v46 = +[UIDictationLandingView activeInstance];
-      v47 = [v46 canStopLanding];
+      canStopLanding = [v46 canStopLanding];
 
-      if (v47)
+      if (canStopLanding)
       {
         v48 = +[UIDictationLandingView activeInstance];
         [v48 stopLanding];
@@ -15568,12 +15568,12 @@ LABEL_41:
       goto LABEL_47;
     case 0x15uLL:
       [(UIDictationController *)self playVoiceCommandHapticFeedack];
-      v55 = [v12 inputDelegateManager];
-      v56 = [v55 selectedTextRange];
-      v57 = [v56 isEmpty];
+      inputDelegateManager7 = [v12 inputDelegateManager];
+      selectedTextRange4 = [inputDelegateManager7 selectedTextRange];
+      isEmpty = [selectedTextRange4 isEmpty];
 
-      v58 = [(UIDictationController *)self cachedPreSelectionRange];
-      if ((v57 & 1) != 0 || v58 == 0x7FFFFFFFFFFFFFFFLL)
+      cachedPreSelectionRange = [(UIDictationController *)self cachedPreSelectionRange];
+      if ((isEmpty & 1) != 0 || cachedPreSelectionRange == 0x7FFFFFFFFFFFFFFFLL)
       {
         [(UIDictationController *)self _performDictationUndo];
       }
@@ -15581,14 +15581,14 @@ LABEL_41:
       else
       {
         objc_initWeak(&location, self);
-        v59 = [(UIDictationController *)self cursorPositionRestorer];
-        v60 = [(UIDictationController *)self cachedPreSelectionRange];
+        cursorPositionRestorer = [(UIDictationController *)self cursorPositionRestorer];
+        cachedPreSelectionRange2 = [(UIDictationController *)self cachedPreSelectionRange];
         v132[0] = MEMORY[0x1E69E9820];
         v132[1] = 3221225472;
         v132[2] = __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_parameters_strings_voiceCommandUUID___block_invoke_4;
         v132[3] = &unk_1E70F5A28;
         objc_copyWeak(&v133, &location);
-        [v59 setCursorToOffset:v60 completion:v132];
+        [cursorPositionRestorer setCursorToOffset:cachedPreSelectionRange2 completion:v132];
 
         objc_destroyWeak(&v133);
         objc_destroyWeak(&location);
@@ -15600,15 +15600,15 @@ LABEL_41:
       [(UIDictationController *)self _performDictationRedo];
       goto LABEL_47;
     default:
-      if (a3 == 22 || a3 == 5)
+      if (identifier == 22 || identifier == 5)
       {
         location = 0;
         p_location = &location;
         v128 = 0x3032000000;
         v129 = __Block_byref_object_copy__125;
         v130 = __Block_byref_object_dispose__125;
-        v131 = [objc_opt_class() firstParameterTextWithParameters:v10];
-        v54 = [objc_opt_class() secondParameterTextWithParameters:v10];
+        v131 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+        v54 = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
         if ([UIDictationUtilities shouldInsertSpaceBetweenStringA:p_location[5] andStringB:v54])
         {
           [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", p_location[5], v54];
@@ -15619,7 +15619,7 @@ LABEL_41:
           [p_location[5] stringByAppendingString:v54];
         }
         v66 = ;
-        if (a3 == 22)
+        if (identifier == 22)
         {
           v67 = p_location[5];
 
@@ -15638,39 +15638,39 @@ LABEL_41:
         v121 = v69;
         v70 = v66;
         v122 = v70;
-        v123 = v11;
+        v123 = dCopy;
         v124 = &location;
-        v125 = a3;
+        identifierCopy2 = identifier;
         [(UIDictationController *)self _handleWKMultipleTextTargetsForText:v69 payloadText:v70 voiceCommandUUID:v123 completionHandler:v119];
 
         v71 = v120;
         goto LABEL_68;
       }
 
-      if (a3 <= 18)
+      if (identifier <= 18)
       {
-        if (a3 <= 3)
+        if (identifier <= 3)
         {
-          switch(a3)
+          switch(identifier)
           {
             case 1uLL:
-              v83 = [objc_opt_class() firstParameterTextWithParameters:v10];
+              v83 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
               v84 = @"_placeholder_UIDictationTextAlternativesActionDelete_FA6ACA5B-6332-4904-95E9-D4A0894E570D_";
-              v85 = [(UIDictationController *)self commandMetadataWithDictationCommandIdentifier:1 parameters:v10];
+              v85 = [(UIDictationController *)self commandMetadataWithDictationCommandIdentifier:1 parameters:parametersCopy];
               if ([objc_opt_class() supportsSiriDictationVoiceCommandsAdjacentEdits])
               {
-                v86 = [v85 expandedTargetMetadata];
+                expandedTargetMetadata5 = [v85 expandedTargetMetadata];
 
-                if (v86)
+                if (expandedTargetMetadata5)
                 {
-                  v87 = [v85 expandedTargetMetadata];
-                  v88 = [v87 expandedTarget];
+                  expandedTargetMetadata6 = [v85 expandedTargetMetadata];
+                  expandedTarget2 = [expandedTargetMetadata6 expandedTarget];
 
-                  v89 = [v85 expandedTargetMetadata];
-                  v90 = [v89 expandedPayload];
+                  expandedTargetMetadata7 = [v85 expandedTargetMetadata];
+                  expandedPayload2 = [expandedTargetMetadata7 expandedPayload];
 
-                  v83 = v88;
-                  v84 = v90;
+                  v83 = expandedTarget2;
+                  v84 = expandedPayload2;
                 }
               }
 
@@ -15682,24 +15682,24 @@ LABEL_41:
               v102 = v12;
               v103 = v83;
               v104 = v84;
-              v105 = v11;
+              v105 = dCopy;
               v91 = v84;
               v92 = v83;
               [(UIDictationController *)self _handleWKMultipleTextTargetsForText:v92 payloadText:v91 voiceCommandUUID:v105 completionHandler:v101];
 
               break;
             case 2uLL:
-              v80 = [v12 inputDelegateManager];
-              v81 = [v80 hasAsyncCapableInputDelegate];
+              inputDelegateManager8 = [v12 inputDelegateManager];
+              hasAsyncCapableInputDelegate2 = [inputDelegateManager8 hasAsyncCapableInputDelegate];
 
-              if (v81)
+              if (hasAsyncCapableInputDelegate2)
               {
                 v109[0] = MEMORY[0x1E69E9820];
                 v109[1] = 3221225472;
                 v109[2] = __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_parameters_strings_voiceCommandUUID___block_invoke_7;
                 v109[3] = &unk_1E7115240;
                 v110 = v12;
-                v111 = self;
+                selfCopy2 = self;
                 [(UIDictationController *)self _requestFullDocumentContextWithCompletionHandler:v109];
                 v82 = v110;
               }
@@ -15714,26 +15714,26 @@ LABEL_41:
                 block[2] = __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_parameters_strings_voiceCommandUUID___block_invoke_10;
                 block[3] = &unk_1E70F35B8;
                 v107 = v12;
-                v108 = self;
+                selfCopy3 = self;
                 dispatch_after(v95, MEMORY[0x1E69E96A0], block);
                 v82 = v107;
               }
 
               break;
             case 3uLL:
-              v63 = [v12 inputDelegateManager];
-              v64 = [v63 selectedTextRange];
-              v65 = [v64 isEmpty];
+              inputDelegateManager9 = [v12 inputDelegateManager];
+              selectedTextRange5 = [inputDelegateManager9 selectedTextRange];
+              isEmpty2 = [selectedTextRange5 isEmpty];
 
-              if (v65)
+              if (isEmpty2)
               {
                 [v12 handleDeleteWordWithExecutionContext:0];
               }
 
               else
               {
-                v96 = [v12 inputDelegateManager];
-                [v96 deleteBackward];
+                inputDelegateManager10 = [v12 inputDelegateManager];
+                [inputDelegateManager10 deleteBackward];
               }
 
 LABEL_42:
@@ -15746,12 +15746,12 @@ LABEL_47:
           goto LABEL_48;
         }
 
-        if (a3 - 14 < 2)
+        if (identifier - 14 < 2)
         {
           goto LABEL_48;
         }
 
-        if (a3 != 4)
+        if (identifier != 4)
         {
           goto LABEL_47;
         }
@@ -15762,8 +15762,8 @@ LABEL_80:
         v128 = 0x3032000000;
         v129 = __Block_byref_object_copy__125;
         v130 = __Block_byref_object_dispose__125;
-        v131 = [objc_opt_class() firstParameterTextWithParameters:v10];
-        v75 = [objc_opt_class() secondParameterTextWithParameters:v10];
+        v131 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+        v75 = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
         if ([UIDictationUtilities shouldInsertSpaceBetweenStringA:v75 andStringB:p_location[5]])
         {
           [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v75, p_location[5]];
@@ -15774,7 +15774,7 @@ LABEL_80:
           [v75 stringByAppendingString:p_location[5]];
         }
         v93 = ;
-        if (a3 == 23)
+        if (identifier == 23)
         {
           v97 = p_location[5];
 
@@ -15793,16 +15793,16 @@ LABEL_80:
         v114 = v69;
         v70 = v93;
         v115 = v70;
-        v116 = v11;
+        v116 = dCopy;
         v117 = &location;
-        v118 = a3;
+        identifierCopy3 = identifier;
         [(UIDictationController *)self _handleWKMultipleTextTargetsForText:v69 payloadText:v70 voiceCommandUUID:v116 completionHandler:v112];
 
         v71 = v113;
 LABEL_68:
 
         _Block_object_dispose(&location, 8);
-        if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xE)
+        if ((identifier & 0xFFFFFFFFFFFFFFFELL) == 0xE)
         {
           goto LABEL_48;
         }
@@ -15810,11 +15810,11 @@ LABEL_68:
         goto LABEL_47;
       }
 
-      if (a3 <= 23)
+      if (identifier <= 23)
       {
-        if (a3 != 19)
+        if (identifier != 19)
         {
-          if (a3 != 23)
+          if (identifier != 23)
           {
             goto LABEL_47;
           }
@@ -15834,7 +15834,7 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      if (a3 == 24)
+      if (identifier == 24)
       {
         v78 = +[UIKeyboardImpl activeInstance];
         v77 = v78;
@@ -15842,7 +15842,7 @@ LABEL_46:
         goto LABEL_87;
       }
 
-      if (a3 == 25)
+      if (identifier == 25)
       {
         v78 = +[UIKeyboardImpl activeInstance];
         v77 = v78;
@@ -15852,23 +15852,23 @@ LABEL_87:
         goto LABEL_88;
       }
 
-      if (a3 != 26)
+      if (identifier != 26)
       {
         goto LABEL_47;
       }
 
-      v52 = [objc_opt_class() firstParameterTextWithParameters:v10];
-      v72 = [v52 integerValue];
+      v52 = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+      integerValue = [v52 integerValue];
       [(UIDictationController *)self playVoiceCommandHapticFeedack];
       v73 = +[UIKeyboardImpl activeInstance];
-      v74 = [v73 _textChoicesAssistant];
+      _textChoicesAssistant4 = [v73 _textChoicesAssistant];
       v99[0] = MEMORY[0x1E69E9820];
       v99[1] = 3221225472;
       v99[2] = __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_parameters_strings_voiceCommandUUID___block_invoke_12;
       v99[3] = &unk_1E7115268;
       v99[4] = self;
       v100 = v12;
-      [v74 updateDictationChoicesFromPromptIndex:v72 completionHandler:v99];
+      [_textChoicesAssistant4 updateDictationChoicesFromPromptIndex:integerValue completionHandler:v99];
 
       v53 = v100;
 LABEL_35:
@@ -16190,56 +16190,56 @@ void __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_
   }
 }
 
-- (BOOL)_didRecognizeCommandWithIdentifier:(id)a3 strings:(id)a4 parameters:(id)a5 voiceCommandUUID:(id)a6
+- (BOOL)_didRecognizeCommandWithIdentifier:(id)identifier strings:(id)strings parameters:(id)parameters voiceCommandUUID:(id)d
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [objc_opt_class() commandIdentifierWithStringIdentifier:v10];
+  identifierCopy = identifier;
+  stringsCopy = strings;
+  parametersCopy = parameters;
+  dCopy = d;
+  v14 = [objc_opt_class() commandIdentifierWithStringIdentifier:identifierCopy];
   v15 = objc_alloc_init(getSISchemaUEIDictationVoiceCommandExecutedClass());
   [v15 setCommandType:{objc_msgSend(objc_opt_class(), "mapDictationCommandIdentifierToUEIcommandIdentifier:", v14)}];
-  v16 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:v13];
+  v16 = [objc_alloc(getSISchemaUUIDClass()) initWithNSUUID:dCopy];
   [v15 setVoiceCommandId:v16];
 
   if ([objc_opt_class() shouldForwardInInputSystemUI])
   {
     [(UIDictationController *)self clearSelectedTextAndLastDictationResult:[(UIDictationController *)self isSelectionBasedCommand:v14]^ 1];
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v18 = NSStringFromSelector(sel_didRecognizeCommandWithIdentifier_strings_parameters_voiceCommandUUID_allVisibleRangeRects_currentGazePoint_);
-    [v17 setObject:v18 forKeyedSubscript:@"selector"];
+    [dictionary setObject:v18 forKeyedSubscript:@"selector"];
 
-    if (v10)
+    if (identifierCopy)
     {
-      [v17 setObject:v10 forKeyedSubscript:@"identifier"];
+      [dictionary setObject:identifierCopy forKeyedSubscript:@"identifier"];
     }
 
-    if (v11)
+    if (stringsCopy)
     {
-      [v17 setObject:v11 forKeyedSubscript:@"strings"];
+      [dictionary setObject:stringsCopy forKeyedSubscript:@"strings"];
     }
 
-    if (v12)
+    if (parametersCopy)
     {
-      [v17 setObject:v12 forKeyedSubscript:@"parameters"];
+      [dictionary setObject:parametersCopy forKeyedSubscript:@"parameters"];
     }
 
-    if (v13)
+    if (dCopy)
     {
-      [v17 setObject:v13 forKeyedSubscript:@"voiceCommandUUID"];
+      [dictionary setObject:dCopy forKeyedSubscript:@"voiceCommandUUID"];
     }
 
     v19 = +[UIKeyboardImpl activeInstance];
-    v20 = [v19 inputDelegateManager];
-    v21 = [v20 inputSystemSourceSession];
+    inputDelegateManager = [v19 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v21)
+    if (inputSystemSourceSession)
     {
-      v22 = [v21 textOperations];
-      [v22 setCustomInfoType:0x1EFB7C8F0];
-      [v22 setCustomInfo:v17];
-      [v21 flushOperations];
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
+      [inputSystemSourceSession flushOperations];
     }
 
     [(UIDictationController *)self pauseDictation];
@@ -16260,19 +16260,19 @@ void __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_
 
   else
   {
-    v31 = v13;
-    v17 = [objc_opt_class() firstParameterTextWithParameters:v12];
-    v21 = [objc_opt_class() secondParameterTextWithParameters:v12];
+    v31 = dCopy;
+    dictionary = [objc_opt_class() firstParameterTextWithParameters:parametersCopy];
+    inputSystemSourceSession = [objc_opt_class() secondParameterTextWithParameters:parametersCopy];
     v24 = +[UIDictationController sharedInstance];
     [v24 dictationTipController];
-    v25 = v12;
-    v26 = v10;
-    v28 = v27 = v11;
-    [v28 dictationCommandUsed:v14 firstTargetString:v17 secondTargetString:v21];
+    v25 = parametersCopy;
+    v26 = identifierCopy;
+    v28 = v27 = stringsCopy;
+    [v28 dictationCommandUsed:v14 firstTargetString:dictionary secondTargetString:inputSystemSourceSession];
 
-    v11 = v27;
-    v10 = v26;
-    v12 = v25;
+    stringsCopy = v27;
+    identifierCopy = v26;
+    parametersCopy = v25;
 
     [(UIDictationController *)self _setupForCommandExecutionWithCommandIdentifier:v14];
     v29 = _UIDictationControllerLog();
@@ -16281,9 +16281,9 @@ void __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_
       *buf = 136315906;
       v39 = "[UIDictationController _didRecognizeCommandWithIdentifier:strings:parameters:voiceCommandUUID:]";
       v40 = 2112;
-      v41 = v10;
+      v41 = identifierCopy;
       v42 = 2112;
-      v43 = v11;
+      v43 = stringsCopy;
       v44 = 2112;
       v45 = v25;
       _os_log_debug_impl(&dword_188A29000, v29, OS_LOG_TYPE_DEBUG, "%s Recognized command %@ with strings %@ parameters %@", buf, 0x2Au);
@@ -16296,8 +16296,8 @@ void __107__UIDictationController__handleRecognizedCommandWithCommandIdentifier_
     v32[4] = self;
     v37 = v14;
     v33 = v25;
-    v34 = v11;
-    v13 = v31;
+    v34 = stringsCopy;
+    dCopy = v31;
     v35 = v31;
     v36 = v15;
     [(UIDictationController *)self requestVisibleTextWithCompletionBlock:v32];
@@ -16324,9 +16324,9 @@ uint64_t __96__UIDictationController__didRecognizeCommandWithIdentifier_strings_
   return [*(a1 + 32) setIsProcessingPotentialVoiceCommand:0];
 }
 
-- (void)_setupForCommandExecutionWithCommandIdentifier:(unint64_t)a3
+- (void)_setupForCommandExecutionWithCommandIdentifier:(unint64_t)identifier
 {
-  [(UIDictationController *)self clearSelectedTextAndLastDictationResult:[(UIDictationController *)self isSelectionBasedCommand:a3]^ 1];
+  [(UIDictationController *)self clearSelectedTextAndLastDictationResult:[(UIDictationController *)self isSelectionBasedCommand:identifier]^ 1];
   if (!+[UIKeyboard usesInputSystemUI])
   {
     [(UIDictationController *)self pauseDictation];
@@ -16339,13 +16339,13 @@ uint64_t __96__UIDictationController__didRecognizeCommandWithIdentifier_strings_
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 delegateAsResponder];
-  v5 = [v4 _responderForEditing];
-  v6 = [v5 undoManager];
+  delegateAsResponder = [v3 delegateAsResponder];
+  _responderForEditing = [delegateAsResponder _responderForEditing];
+  undoManager = [_responderForEditing undoManager];
 
-  v7 = [(UIDictationController *)self undoManager];
-  v8 = v7;
-  if (!v7)
+  undoManager2 = [(UIDictationController *)self undoManager];
+  v8 = undoManager2;
+  if (!undoManager2)
   {
     v9 = _UIDictationControllerUndoRedoLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -16362,7 +16362,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (v7 != v6)
+  if (undoManager2 != undoManager)
   {
     v9 = _UIDictationControllerUndoRedoLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -16378,7 +16378,7 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v11 = v7;
+  v11 = undoManager2;
 LABEL_8:
 
   return v11;
@@ -16391,22 +16391,22 @@ LABEL_8:
   {
     if ([objc_opt_class() shouldForwardInInputSystemUI] && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "inputDelegateManager"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "inputSystemSourceSession"), v16 = objc_claimAutoreleasedReturnValue(), v4, v3, v16))
     {
-      v5 = [v16 textOperations];
-      v6 = [MEMORY[0x1E695DF90] dictionary];
+      textOperations = [v16 textOperations];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v7 = NSStringFromSelector(sel_beginUndoGroupingIfNecessary_);
-      [v6 setObject:v7 forKeyedSubscript:@"selector"];
+      [dictionary setObject:v7 forKeyedSubscript:@"selector"];
 
-      [v5 setCustomInfoType:0x1EFB7C8F0];
-      [v5 setCustomInfo:v6];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
+      [textOperations setCustomInfo:dictionary];
       [v16 flushOperations];
     }
 
     else if (![(UIDictationController *)self isDictationUndoGroupingOpen])
     {
       v9 = +[UIKeyboardImpl activeInstance];
-      v10 = [v9 delegateAsResponder];
-      v11 = [v10 _responderForEditing];
-      v12 = [v11 undoManager];
+      delegateAsResponder = [v9 delegateAsResponder];
+      _responderForEditing = [delegateAsResponder _responderForEditing];
+      undoManager = [_responderForEditing undoManager];
 
       v13 = _UIDictationControllerUndoRedoLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -16416,16 +16416,16 @@ LABEL_8:
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "%s Beginning undo grouping", buf, 0xCu);
       }
 
-      [(UIDictationController *)self setUndoManager:v12];
-      [v12 beginUndoGrouping];
+      [(UIDictationController *)self setUndoManager:undoManager];
+      [undoManager beginUndoGrouping];
       v14 = _UIDictationControllerUndoRedoLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v12 groupingLevel];
+        groupingLevel = [undoManager groupingLevel];
         *buf = 136315394;
         v18 = "[UIDictationController _beginUndoGroupingIfNecessary]";
         v19 = 2048;
-        v20 = v15;
+        v20 = groupingLevel;
         _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "%s groupingLevel: %ld", buf, 0x16u);
       }
 
@@ -16453,19 +16453,19 @@ LABEL_8:
     if ([objc_opt_class() shouldForwardInInputSystemUI])
     {
       v3 = +[UIKeyboardImpl activeInstance];
-      v4 = [v3 inputDelegateManager];
-      v21 = [v4 inputSystemSourceSession];
+      inputDelegateManager = [v3 inputDelegateManager];
+      inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-      if (v21)
+      if (inputSystemSourceSession)
       {
-        v5 = [v21 textOperations];
-        v6 = [MEMORY[0x1E695DF90] dictionary];
+        textOperations = [inputSystemSourceSession textOperations];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v7 = NSStringFromSelector(sel_endUndoGroupingIfNecessary_);
-        [v6 setObject:v7 forKeyedSubscript:@"selector"];
+        [dictionary setObject:v7 forKeyedSubscript:@"selector"];
 
-        [v5 setCustomInfoType:0x1EFB7C8F0];
-        [v5 setCustomInfo:v6];
-        [v21 flushOperations];
+        [textOperations setCustomInfoType:0x1EFB7C8F0];
+        [textOperations setCustomInfo:dictionary];
+        [inputSystemSourceSession flushOperations];
 
         return;
       }
@@ -16477,25 +16477,25 @@ LABEL_8:
     }
 
     v9 = +[UIKeyboardImpl activeInstance];
-    v10 = [(UIDictationController *)self undoManager];
-    if (!v10)
+    undoManager = [(UIDictationController *)self undoManager];
+    if (!undoManager)
     {
-      v13 = _UIDictationControllerUndoRedoLog();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      undoManager2 = _UIDictationControllerUndoRedoLog();
+      if (os_log_type_enabled(undoManager2, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
         v23 = "[UIDictationController _endUndoGroupingIfNecessary]";
-        _os_log_error_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "%s ERROR: Cached undo manager was nil. Cannot end grouping on the original manager. The undo group may be left open or state inconsistent.", buf, 0xCu);
+        _os_log_error_impl(&dword_188A29000, undoManager2, OS_LOG_TYPE_ERROR, "%s ERROR: Cached undo manager was nil. Cannot end grouping on the original manager. The undo group may be left open or state inconsistent.", buf, 0xCu);
       }
 
       goto LABEL_27;
     }
 
-    v11 = [v9 delegateAsResponder];
-    v12 = [v11 _responderForEditing];
-    v13 = [v12 undoManager];
+    delegateAsResponder = [v9 delegateAsResponder];
+    _responderForEditing = [delegateAsResponder _responderForEditing];
+    undoManager2 = [_responderForEditing undoManager];
 
-    if (v10 != v13)
+    if (undoManager != undoManager2)
     {
       v14 = _UIDictationControllerUndoRedoLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -16506,10 +16506,10 @@ LABEL_8:
       }
     }
 
-    v15 = [v10 groupingLevel];
+    groupingLevel = [undoManager groupingLevel];
     v16 = _UIDictationControllerUndoRedoLog();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v15 < 1)
+    if (groupingLevel < 1)
     {
       if (!v17)
       {
@@ -16521,11 +16521,11 @@ LABEL_27:
         return;
       }
 
-      v20 = [v10 groupingLevel];
+      groupingLevel2 = [undoManager groupingLevel];
       *buf = 136315394;
       v23 = "[UIDictationController _endUndoGroupingIfNecessary]";
       v24 = 2048;
-      v25 = v20;
+      v25 = groupingLevel2;
       v19 = "%s isDictationUndoGroupingOpen was YES but groupingLevel was %ld, so we will forgo ending of the undo grouping (this is likely because a voice command caused the field to lose focus before dictation has fully had a chance to finish)";
     }
 
@@ -16538,18 +16538,18 @@ LABEL_27:
         _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_DEFAULT, "%s Ending undo grouping", buf, 0xCu);
       }
 
-      [v10 endUndoGrouping];
+      [undoManager endUndoGrouping];
       v16 = _UIDictationControllerUndoRedoLog();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_26;
       }
 
-      v18 = [v10 groupingLevel];
+      groupingLevel3 = [undoManager groupingLevel];
       *buf = 136315394;
       v23 = "[UIDictationController _endUndoGroupingIfNecessary]";
       v24 = 2048;
-      v25 = v18;
+      v25 = groupingLevel3;
       v19 = "%s groupingLevel: %ld";
     }
 
@@ -16566,22 +16566,22 @@ LABEL_27:
   }
 }
 
-- (void)_setHaveLeakedPartialResultForCommandUtterance:(BOOL)a3
+- (void)_setHaveLeakedPartialResultForCommandUtterance:(BOOL)utterance
 {
-  v3 = a3;
+  utteranceCopy = utterance;
   v18 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() shouldForwardInInputSystemUI] && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "inputDelegateManager"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "inputSystemSourceSession"), v13 = objc_claimAutoreleasedReturnValue(), v6, v5, v13))
   {
-    v7 = [v13 textOperations];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    textOperations = [v13 textOperations];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = NSStringFromSelector(sel_setHaveLeakedPartialResultForCommandUtterance_);
-    [v8 setObject:v9 forKeyedSubscript:@"selector"];
+    [dictionary setObject:v9 forKeyedSubscript:@"selector"];
 
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v8 setObject:v10 forKeyedSubscript:@"haveLeakedPartialResultForCommandUtterance"];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:utteranceCopy];
+    [dictionary setObject:v10 forKeyedSubscript:@"haveLeakedPartialResultForCommandUtterance"];
 
-    [v7 setCustomInfoType:0x1EFB7C8F0];
-    [v7 setCustomInfo:v8];
+    [textOperations setCustomInfoType:0x1EFB7C8F0];
+    [textOperations setCustomInfo:dictionary];
     [v13 flushOperations];
   }
 
@@ -16590,7 +16590,7 @@ LABEL_27:
     v11 = _UIDictationControllerUndoRedoLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v12 = [MEMORY[0x1E696AD98] numberWithBool:utteranceCopy];
       *buf = 136315394;
       v15 = "[UIDictationController _setHaveLeakedPartialResultForCommandUtterance:]";
       v16 = 2112;
@@ -16598,40 +16598,40 @@ LABEL_27:
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "%s Setting haveLeakedPartialResultForCommandUtterance to %@", buf, 0x16u);
     }
 
-    [(UIDictationController *)self setHaveLeakedPartialResultForCommandUtterance:v3];
+    [(UIDictationController *)self setHaveLeakedPartialResultForCommandUtterance:utteranceCopy];
   }
 }
 
-- (void)markDictationUndoEventWithVoiceCommandUUID:(id)a3 viaTapOnRevertBubble:(BOOL)a4
+- (void)markDictationUndoEventWithVoiceCommandUUID:(id)d viaTapOnRevertBubble:(BOOL)bubble
 {
-  v4 = a4;
-  v8 = a3;
+  bubbleCopy = bubble;
+  dCopy = d;
   if (self->_undoNotificationToken)
   {
-    v6 = [(UIDictationController *)self dictationConnection];
+    dictationConnection = [(UIDictationController *)self dictationConnection];
     v7 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v6 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:0 cursorInVisibleText:0 favorCommandSuppression:0 abortCommandSuppression:0 undoEvent:v7];
+    [dictationConnection updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:0 cursorInVisibleText:0 favorCommandSuppression:0 abortCommandSuppression:0 undoEvent:v7];
 
     [(UIDictationController *)self _removeUndoNotificationObservation];
   }
 
-  [(UIDictationController *)self instrumentDictationVoiceCommandUndoTapActionWithVoiceCommandUUID:v8 undoTapAlternativeSelection:v4];
+  [(UIDictationController *)self instrumentDictationVoiceCommandUndoTapActionWithVoiceCommandUUID:dCopy undoTapAlternativeSelection:bubbleCopy];
 }
 
-- (void)_addUndoNotificationObservationWithVoiceCommandUUID:(id)a3
+- (void)_addUndoNotificationObservationWithVoiceCommandUUID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  dCopy = d;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E696AA30];
-  v7 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__UIDictationController__addUndoNotificationObservationWithVoiceCommandUUID___block_invoke;
   v11[3] = &unk_1E71152B8;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v5 addObserverForName:v6 object:0 queue:v7 usingBlock:v11];
+  v12 = dCopy;
+  v8 = dCopy;
+  v9 = [defaultCenter addObserverForName:v6 object:0 queue:mainQueue usingBlock:v11];
   undoNotificationToken = self->_undoNotificationToken;
   self->_undoNotificationToken = v9;
 }
@@ -16640,8 +16640,8 @@ LABEL_27:
 {
   if (self->_undoNotificationToken)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_undoNotificationToken];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_undoNotificationToken];
 
     undoNotificationToken = self->_undoNotificationToken;
     self->_undoNotificationToken = 0;
@@ -16653,23 +16653,23 @@ LABEL_27:
   v13 = *MEMORY[0x1E69E9840];
   [(UIDictationController *)self pauseDictation];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [(UIDictationController *)self _effectiveUndoManager];
-  if ([v4 canUndo])
+  _effectiveUndoManager = [(UIDictationController *)self _effectiveUndoManager];
+  if ([_effectiveUndoManager canUndo])
   {
-    v5 = [(UIDictationController *)self cursorPositionRestorer];
+    cursorPositionRestorer = [(UIDictationController *)self cursorPositionRestorer];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __46__UIDictationController__performDictationUndo__block_invoke;
     v9[3] = &unk_1E70F35B8;
     v9[4] = self;
-    v10 = v4;
+    v10 = _effectiveUndoManager;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__UIDictationController__performDictationUndo__block_invoke_1584;
     v7[3] = &unk_1E70F35B8;
     v7[4] = self;
     v8 = v3;
-    [v5 saveCursorLocationAndRestoreAfterPerforming:v9 completion:v7];
+    [cursorPositionRestorer saveCursorLocationAndRestoreAfterPerforming:v9 completion:v7];
   }
 
   else
@@ -16728,23 +16728,23 @@ uint64_t __46__UIDictationController__performDictationUndo__block_invoke(uint64_
   v14 = *MEMORY[0x1E69E9840];
   [(UIDictationController *)self pauseDictation];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [(UIDictationController *)self _effectiveUndoManager];
-  if ([v4 canRedo])
+  _effectiveUndoManager = [(UIDictationController *)self _effectiveUndoManager];
+  if ([_effectiveUndoManager canRedo])
   {
-    v5 = [(UIDictationController *)self cursorPositionRestorer];
+    cursorPositionRestorer = [(UIDictationController *)self cursorPositionRestorer];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __46__UIDictationController__performDictationRedo__block_invoke;
     v9[3] = &unk_1E70F35B8;
-    v10 = v4;
-    v11 = self;
+    v10 = _effectiveUndoManager;
+    selfCopy = self;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__UIDictationController__performDictationRedo__block_invoke_1585;
     v7[3] = &unk_1E70F35B8;
     v7[4] = self;
     v8 = v3;
-    [v5 saveCursorLocationAndRestoreAfterPerforming:v9 completion:v7];
+    [cursorPositionRestorer saveCursorLocationAndRestoreAfterPerforming:v9 completion:v7];
   }
 
   else
@@ -16776,27 +16776,27 @@ uint64_t __46__UIDictationController__performDictationRedo__block_invoke(uint64_
   return [*(a1 + 40) invalidateTextInputView];
 }
 
-- (void)performTextReplacementForWebKitWithDeltaRange:(_NSRange)a3 targetText:(id)a4 replacementText:(id)a5 originalSelectedRange:(_NSRange)a6 voiceCommandDisambiguationSelectedIndex:(id)a7 voiceCommandDisambiguationTargetCount:(id)a8 voiceCommandUUID:(id)a9 completionHandler:(id)a10
+- (void)performTextReplacementForWebKitWithDeltaRange:(_NSRange)range targetText:(id)text replacementText:(id)replacementText originalSelectedRange:(_NSRange)selectedRange voiceCommandDisambiguationSelectedIndex:(id)index voiceCommandDisambiguationTargetCount:(id)count voiceCommandUUID:(id)d completionHandler:(id)self0
 {
-  length = a6.length;
-  location = a6.location;
-  v29 = a3.length;
-  v30 = a3.location;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v31 = a10;
-  v28 = self;
-  [(UIDictationController *)self instrumentDictationVoiceCommandDisambiguationActionWithVoiceCommandUUID:v18 disambiguationIndex:v16 totalDisambiguationCount:v17];
+  length = selectedRange.length;
+  location = selectedRange.location;
+  v29 = range.length;
+  v30 = range.location;
+  textCopy = text;
+  replacementTextCopy = replacementText;
+  indexCopy = index;
+  countCopy = count;
+  dCopy = d;
+  handlerCopy = handler;
+  selfCopy = self;
+  [(UIDictationController *)self instrumentDictationVoiceCommandDisambiguationActionWithVoiceCommandUUID:dCopy disambiguationIndex:indexCopy totalDisambiguationCount:countCopy];
   v19 = +[UIKeyboardImpl activeInstance];
-  v20 = [v19 inputDelegateManager];
-  v21 = [v20 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v19 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-  if (v21)
+  if (hasAsyncCapableInputDelegate)
   {
-    v27 = v14;
+    v27 = textCopy;
     v47[0] = 0;
     v47[1] = v47;
     v47[2] = 0x3010000000;
@@ -16804,9 +16804,9 @@ uint64_t __46__UIDictationController__performDictationRedo__block_invoke(uint64_
     v47[4] = location;
     v26 = location;
     v47[5] = length;
-    v22 = [v15 isEqualToString:0x1EFB75A70];
-    v23 = [v15 isEqualToString:0x1EFB75A90];
-    v24 = [v19 inputDelegateManager];
+    v22 = [replacementTextCopy isEqualToString:0x1EFB75A70];
+    v23 = [replacementTextCopy isEqualToString:0x1EFB75A90];
+    inputDelegateManager2 = [v19 inputDelegateManager];
     if ((v22 | v23))
     {
       v25 = v29;
@@ -16823,22 +16823,22 @@ uint64_t __46__UIDictationController__performDictationRedo__block_invoke(uint64_
     v32[3] = &unk_1E71153A8;
     v33 = v19;
     v45 = v22;
-    v34 = v15;
-    v35 = v28;
+    v34 = replacementTextCopy;
+    v35 = selfCopy;
     v42 = v29;
     v40 = v47;
     v41 = v30;
-    v39 = v31;
+    v39 = handlerCopy;
     v46 = v23;
     v36 = v27;
     v43 = v26;
     v44 = length;
-    v37 = v18;
-    v38 = v16;
-    [v24 adjustSelection:v30 completionHandler:{v25, v32}];
+    v37 = dCopy;
+    v38 = indexCopy;
+    [inputDelegateManager2 adjustSelection:v30 completionHandler:{v25, v32}];
 
     _Block_object_dispose(v47, 8);
-    v14 = v27;
+    textCopy = v27;
   }
 }
 
@@ -17171,14 +17171,14 @@ uint64_t __233__UIDictationController_performTextReplacementForWebKitWithDeltaRa
   return result;
 }
 
-- (_NSRange)selectBestReplacementRangeFromContext:(id)a3 withDeltaRange:(_NSRange)a4 originalSelectedRange:(_NSRange)a5 replacementText:(id)a6
+- (_NSRange)selectBestReplacementRangeFromContext:(id)context withDeltaRange:(_NSRange)range originalSelectedRange:(_NSRange)selectedRange replacementText:(id)text
 {
-  location = a5.location;
-  v7 = a4.location;
+  location = selectedRange.location;
+  v7 = range.location;
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = [a3 autocorrectedRanges];
-  v11 = [v10 count];
+  textCopy = text;
+  autocorrectedRanges = [context autocorrectedRanges];
+  v11 = [autocorrectedRanges count];
   v12 = v11;
   if (!v11)
   {
@@ -17187,17 +17187,17 @@ uint64_t __233__UIDictationController_performTextReplacementForWebKitWithDeltaRa
 
   if (v11 != 1)
   {
-    v12 = [v9 length];
+    v12 = [textCopy length];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = v10;
-    v16 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    firstObject = autocorrectedRanges;
+    v16 = [firstObject countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v16)
     {
       v17 = v16;
-      v14 = location + v7;
+      rangeValue = location + v7;
       v18 = *v25;
 LABEL_7:
       v19 = 0;
@@ -17205,17 +17205,17 @@ LABEL_7:
       {
         if (*v25 != v18)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(firstObject);
         }
 
-        if ([*(*(&v24 + 1) + 8 * v19) rangeValue] == v14 && v20 == v12)
+        if ([*(*(&v24 + 1) + 8 * v19) rangeValue] == rangeValue && v20 == v12)
         {
           goto LABEL_4;
         }
 
         if (v17 == ++v19)
         {
-          v17 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v17 = [firstObject countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v17)
           {
             goto LABEL_7;
@@ -17228,17 +17228,17 @@ LABEL_7:
 
     v12 = 0;
 LABEL_17:
-    v14 = 0x7FFFFFFFFFFFFFFFLL;
+    rangeValue = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_18;
   }
 
-  v13 = [v10 firstObject];
-  v14 = [v13 rangeValue];
+  firstObject = [autocorrectedRanges firstObject];
+  rangeValue = [firstObject rangeValue];
   v12 = v15;
 LABEL_4:
 
 LABEL_18:
-  v22 = v14;
+  v22 = rangeValue;
   v23 = v12;
   result.length = v23;
   result.location = v22;
@@ -17253,36 +17253,36 @@ LABEL_18:
   [UIImpactFeedbackGenerator impactOccurredWithIntensity:"impactOccurredWithIntensity:atLocation:" atLocation:?];
 }
 
-- (void)setDisambiguationActiveEnabled:(BOOL)a3
+- (void)setDisambiguationActiveEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_isDisambiguationUIActive = a3;
+  enabledCopy = enabled;
+  self->_isDisambiguationUIActive = enabled;
   if ([objc_opt_class() shouldForwardEventsToInputSystemUI])
   {
-    v10 = +[UIKeyboardImpl activeInstance];
+    dictationConnection2 = +[UIKeyboardImpl activeInstance];
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 _textChoicesAssistant];
-    [v10 forwardDictationEvent_setDisambiguationActive:v3 maxOptions:{objc_msgSend(v6, "numberOfDisambiguationOptions")}];
+    _textChoicesAssistant = [v5 _textChoicesAssistant];
+    [dictationConnection2 forwardDictationEvent_setDisambiguationActive:enabledCopy maxOptions:{objc_msgSend(_textChoicesAssistant, "numberOfDisambiguationOptions")}];
   }
 
   else
   {
-    v7 = [(UIDictationController *)self dictationConnection];
-    v8 = [v7 supportNewVoiceEditingCommandSPI];
+    dictationConnection = [(UIDictationController *)self dictationConnection];
+    supportNewVoiceEditingCommandSPI = [dictationConnection supportNewVoiceEditingCommandSPI];
 
-    v10 = [(UIDictationController *)self dictationConnection];
-    if (v3)
+    dictationConnection2 = [(UIDictationController *)self dictationConnection];
+    if (enabledCopy)
     {
       v5 = [MEMORY[0x1E696AD98] numberWithBool:1];
-      v6 = [MEMORY[0x1E696AD98] numberWithBool:1];
-      if (v8)
+      _textChoicesAssistant = [MEMORY[0x1E696AD98] numberWithBool:1];
+      if (supportNewVoiceEditingCommandSPI)
       {
-        [v10 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:v6 abortCommandSuppression:0 undoEvent:0];
+        [dictationConnection2 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:_textChoicesAssistant abortCommandSuppression:0 undoEvent:0];
       }
 
       else
       {
-        [v10 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:v6 abortCommandSuppression:0];
+        [dictationConnection2 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:_textChoicesAssistant abortCommandSuppression:0];
       }
     }
 
@@ -17290,25 +17290,25 @@ LABEL_18:
     {
       v5 = [MEMORY[0x1E696AD98] numberWithBool:0];
       v9 = [MEMORY[0x1E696AD98] numberWithBool:1];
-      v6 = v9;
-      if (v8)
+      _textChoicesAssistant = v9;
+      if (supportNewVoiceEditingCommandSPI)
       {
-        [v10 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:0 abortCommandSuppression:v9 undoEvent:0];
+        [dictationConnection2 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:0 abortCommandSuppression:v9 undoEvent:0];
       }
 
       else
       {
-        [v10 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:0 abortCommandSuppression:v9];
+        [dictationConnection2 updateVoiceCommandContextWithPrefixText:0 postfixText:0 selectedText:0 disambiguationActive:v5 cursorInVisibleText:0 favorCommandSuppression:0 abortCommandSuppression:v9];
       }
     }
   }
 }
 
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type
 {
-  if (a4 == 42)
+  if (type == 42)
   {
-    [(UIDictationController *)self setDisambiguationActiveEnabled:a3];
+    [(UIDictationController *)self setDisambiguationActiveEnabled:state];
   }
 }
 
@@ -17320,8 +17320,8 @@ LABEL_18:
 
 - (id)activeMultilingualKeyboardDictationMappings
 {
-  v2 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:*MEMORY[0x1E69D96E8]];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v3 = [mEMORY[0x1E69D9680] valueForPreferenceKey:*MEMORY[0x1E69D96E8]];
 
   return v3;
 }
@@ -17329,40 +17329,40 @@ LABEL_18:
 - (BOOL)enableEuclidAlternatives
 {
   v2 = +[UIDictationConnectionPreferences sharedInstance];
-  v3 = [v2 enableEuclidAlternatives];
+  enableEuclidAlternatives = [v2 enableEuclidAlternatives];
 
-  return v3;
+  return enableEuclidAlternatives;
 }
 
-- (void)preheatEuclidModelWithLanguageCode:(id)a3 clientID:(id)a4
+- (void)preheatEuclidModelWithLanguageCode:(id)code clientID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(UIDictationController *)self currentEuclidLanguage];
-  v8 = [v10 isEqualToString:v7];
+  codeCopy = code;
+  dCopy = d;
+  currentEuclidLanguage = [(UIDictationController *)self currentEuclidLanguage];
+  v8 = [codeCopy isEqualToString:currentEuclidLanguage];
 
   if ((v8 & 1) == 0)
   {
-    [(UIDictationController *)self setCurrentEuclidLanguage:v10];
-    v9 = [(UIDictationController *)self dictationConnection];
-    [v9 preheatEuclidModelWithLanguageCode:@"en_US" clientID:v6];
+    [(UIDictationController *)self setCurrentEuclidLanguage:codeCopy];
+    dictationConnection = [(UIDictationController *)self dictationConnection];
+    [dictationConnection preheatEuclidModelWithLanguageCode:@"en_US" clientID:dCopy];
   }
 }
 
-- (void)euclidPhoneticString:(id)a3 maxResultsCount:(unint64_t)a4 completion:(id)a5
+- (void)euclidPhoneticString:(id)string maxResultsCount:(unint64_t)count completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(UIDictationController *)self dictationConnection];
-  [v10 euclidPhoneticString:v9 maxResultsCount:a4 completion:v8];
+  completionCopy = completion;
+  stringCopy = string;
+  dictationConnection = [(UIDictationController *)self dictationConnection];
+  [dictationConnection euclidPhoneticString:stringCopy maxResultsCount:count completion:completionCopy];
 }
 
 - (void)logEuclidRequested
 {
-  v3 = [getAFPreferencesClass_0() sharedPreferences];
-  v4 = [v3 siriDataSharingOptInStatus];
+  sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+  siriDataSharingOptInStatus = [sharedPreferences siriDataSharingOptInStatus];
 
-  if (v4 == 1)
+  if (siriDataSharingOptInStatus == 1)
   {
     v5 = objc_alloc_init(getSISchemaUEIDictationEuclidSpeechAlternativesSelectedClass());
     [v5 setSpeechAlternativesType:1];
@@ -17370,20 +17370,20 @@ LABEL_18:
   }
 }
 
-- (void)logEuclidSelection:(id)a3 suggestedTokens:(id)a4 correctedToken:(id)a5 selectedIndex:(int64_t)a6
+- (void)logEuclidSelection:(id)selection suggestedTokens:(id)tokens correctedToken:(id)token selectedIndex:(int64_t)index
 {
   v43 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v28 = a4;
-  v9 = a5;
-  v10 = [getAFPreferencesClass_0() sharedPreferences];
-  v11 = [v10 siriDataSharingOptInStatus];
+  selectionCopy = selection;
+  tokensCopy = tokens;
+  tokenCopy = token;
+  sharedPreferences = [getAFPreferencesClass_0() sharedPreferences];
+  siriDataSharingOptInStatus = [sharedPreferences siriDataSharingOptInStatus];
 
-  if (v11 == 1)
+  if (siriDataSharingOptInStatus == 1)
   {
     v12 = objc_alloc_init(getSISchemaUEIDictationEuclidSpeechAlternativesSelectedClass());
     [v12 setSpeechAlternativesType:2];
-    [v12 setAlternativesIndexSelectedByUser:a6];
+    [v12 setAlternativesIndexSelectedByUser:index];
     v38 = 0;
     v39 = &v38;
     v40 = 0x2050000000;
@@ -17427,7 +17427,7 @@ LABEL_18:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v20 = v28;
+    v20 = tokensCopy;
     v21 = [v20 countByEnumeratingWithState:&v29 objects:v42 count:16];
     if (v21)
     {
@@ -17442,8 +17442,8 @@ LABEL_18:
             objc_enumerationMutation(v20);
           }
 
-          v24 = [*(*(&v29 + 1) + 8 * v23) candidate];
-          [v19 addObject:v24];
+          candidate = [*(*(&v29 + 1) + 8 * v23) candidate];
+          [v19 addObject:candidate];
 
           ++v23;
         }
@@ -17455,10 +17455,10 @@ LABEL_18:
       while (v21);
     }
 
-    [v18 setRecognizedToken:v27];
+    [v18 setRecognizedToken:selectionCopy];
     [v18 setSuggestedTokens:v19];
-    v25 = [v9 candidate];
-    [v18 setCorrectedToken:v25];
+    candidate2 = [tokenCopy candidate];
+    [v18 setCorrectedToken:candidate2];
 
     [v15 setConfusionPair:v18];
     [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationContext emitInstrumentation:v12];

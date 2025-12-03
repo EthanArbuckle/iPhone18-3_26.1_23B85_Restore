@@ -1,18 +1,18 @@
 @interface IMiMessageAppPayloadDecoder
-+ (id)decodeiMessageAppPayload:(id)a3 senderContext:(id)a4 bundleID:(id)a5 outAttachmentURLs:(id *)a6 error:(id *)a7;
++ (id)decodeiMessageAppPayload:(id)payload senderContext:(id)context bundleID:(id)d outAttachmentURLs:(id *)ls error:(id *)error;
 @end
 
 @implementation IMiMessageAppPayloadDecoder
 
-+ (id)decodeiMessageAppPayload:(id)a3 senderContext:(id)a4 bundleID:(id)a5 outAttachmentURLs:(id *)a6 error:(id *)a7
++ (id)decodeiMessageAppPayload:(id)payload senderContext:(id)context bundleID:(id)d outAttachmentURLs:(id *)ls error:(id *)error
 {
   v86 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v50 = a4;
-  v52 = a5;
+  payloadCopy = payload;
+  contextCopy = context;
+  dCopy = d;
   v11 = IMOSLoggingEnabled();
-  v51 = v10;
-  if (v10 && v52 && a6 && a7)
+  v51 = payloadCopy;
+  if (payloadCopy && dCopy && ls && error)
   {
     if (v11)
     {
@@ -43,11 +43,11 @@
     v67 = sub_1A8602178;
     v68 = 0;
     v62 = 0;
-    v13 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v10 options:1 error:&v62];
+    v13 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:payloadCopy options:1 error:&v62];
     v47 = v62;
-    v48 = [v13 _FTOptionallyDecompressData];
+    _FTOptionallyDecompressData = [v13 _FTOptionallyDecompressData];
 
-    if ([v48 length])
+    if ([_FTOptionallyDecompressData length])
     {
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
@@ -56,7 +56,7 @@
       v61[4] = &v63;
       v61[5] = buf;
       v61[6] = &v69;
-      [IMAttachmentBlastdoor sendBalloonPluginPayloadData:v48 senderContext:v50 withBundleIdentifier:v52 completionBlock:v61];
+      [IMAttachmentBlastdoor sendBalloonPluginPayloadData:_FTOptionallyDecompressData senderContext:contextCopy withBundleIdentifier:dCopy completionBlock:v61];
       v14 = *(v76 + 5);
       if (v14 && !v64[5])
       {
@@ -80,27 +80,27 @@
               }
 
               v22 = *(*(&v57 + 1) + 8 * i);
-              v23 = [MEMORY[0x1E696AEC0] stringGUID];
-              v24 = [v23 stringByAppendingPathExtension:@"pluginPayloadAttachment"];
+              stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+              v24 = [stringGUID stringByAppendingPathExtension:@"pluginPayloadAttachment"];
 
-              v25 = [MEMORY[0x1E696AC08] defaultManager];
-              v26 = [v25 im_randomTemporaryFileURLWithFileName:v24];
+              defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+              v26 = [defaultManager im_randomTemporaryFileURLWithFileName:v24];
 
-              v27 = [v22 content];
-              v28 = [v27 type];
+              content = [v22 content];
+              type = [content type];
 
-              if (v28)
+              if (type)
               {
-                if (v28 == 1)
+                if (type == 1)
                 {
-                  v29 = [v22 content];
-                  v30 = [v29 other];
-                  v31 = [v30 data];
+                  content2 = [v22 content];
+                  other = [content2 other];
+                  data = [other data];
 
                   v56 = 0;
-                  LOBYTE(v30) = [v31 writeToURL:v26 options:1 error:&v56];
+                  LOBYTE(other) = [data writeToURL:v26 options:1 error:&v56];
                   v32 = v56;
-                  if ((v30 & 1) == 0 && IMOSLoggingEnabled())
+                  if ((other & 1) == 0 && IMOSLoggingEnabled())
                   {
                     v33 = OSLogHandleForIMFoundationCategory();
                     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -132,19 +132,19 @@
                   }
                 }
 
-                v35 = [v22 content];
-                v36 = [v35 astc];
-                v37 = [v36 image];
-                v38 = [v37 cgImage];
+                content3 = [v22 content];
+                astc = [content3 astc];
+                image = [astc image];
+                cgImage = [image cgImage];
 
-                v39 = [v22 content];
-                v40 = [v39 astc];
-                v41 = [v40 originalUTIType];
-                v42 = CGImageDestinationCreateWithURL(v26, v41, 1uLL, 0);
+                content4 = [v22 content];
+                astc2 = [content4 astc];
+                originalUTIType = [astc2 originalUTIType];
+                v42 = CGImageDestinationCreateWithURL(v26, originalUTIType, 1uLL, 0);
 
                 if (v42)
                 {
-                  CGImageDestinationAddImage(v42, v38, 0);
+                  CGImageDestinationAddImage(v42, cgImage, 0);
                   if (CGImageDestinationFinalize(v42))
                   {
                     v32 = 0;
@@ -194,7 +194,7 @@
         }
 
         v45 = v54;
-        *a6 = v54;
+        *ls = v54;
       }
 
       else
@@ -204,7 +204,7 @@
         v15 = v64[5];
         if (v15)
         {
-          *a7 = v15;
+          *error = v15;
         }
       }
 
@@ -219,7 +219,7 @@
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *v82 = 138412546;
-          v83 = v10;
+          v83 = payloadCopy;
           v84 = 2112;
           v85 = v47;
           _os_log_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_INFO, "Data loaded from sourceURL was nil: %@ with error: %@", v82, 0x16u);
@@ -228,7 +228,7 @@
 
       v19 = v47;
       v17 = 0;
-      *a7 = v47;
+      *error = v47;
     }
 
     _Block_object_dispose(&v63, 8);

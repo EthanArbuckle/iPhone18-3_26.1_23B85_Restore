@@ -1,9 +1,9 @@
 @interface LookupRequestOperation
-- (BOOL)_performJSSignLookupWithURLBag:(id)a3 error:(id *)a4;
-- (BOOL)_performLocationLookup:(id *)a3;
-- (BOOL)_performPlatformLookup:(id *)a3;
+- (BOOL)_performJSSignLookupWithURLBag:(id)bag error:(id *)error;
+- (BOOL)_performLocationLookup:(id *)lookup;
+- (BOOL)_performPlatformLookup:(id *)lookup;
 - (BOOL)shouldSuppressCookies;
-- (LookupRequestOperation)initWithLookupProperties:(id)a3;
+- (LookupRequestOperation)initWithLookupProperties:(id)properties;
 - (NSString)clientIdentifierHeader;
 - (NSString)userAgent;
 - (SSAuthenticationContext)authenticationContext;
@@ -11,31 +11,31 @@
 - (SSLookupResponse)lookupResponse;
 - (id)_URLBagContext;
 - (id)_authenticationContext;
-- (id)_newLookupResponseWithResultsFromOperation:(id)a3;
-- (id)_newStoreURLOperationWithBagKey:(id)a3;
+- (id)_newLookupResponseWithResultsFromOperation:(id)operation;
+- (id)_newStoreURLOperationWithBagKey:(id)key;
 - (int64_t)personalizationStyle;
-- (void)_setAccountID:(id)a3;
-- (void)_setLookupResponse:(id)a3;
+- (void)_setAccountID:(id)d;
+- (void)_setLookupResponse:(id)response;
 - (void)dealloc;
-- (void)operation:(id)a3 willSendRequest:(id)a4;
+- (void)operation:(id)operation willSendRequest:(id)request;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setPersonalizationStyle:(int64_t)a3;
-- (void)setShouldSuppressCookies:(BOOL)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setPersonalizationStyle:(int64_t)style;
+- (void)setShouldSuppressCookies:(BOOL)cookies;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation LookupRequestOperation
 
-- (LookupRequestOperation)initWithLookupProperties:(id)a3
+- (LookupRequestOperation)initWithLookupProperties:(id)properties
 {
   v6.receiver = self;
   v6.super_class = LookupRequestOperation;
   v4 = [(LookupRequestOperation *)&v6 init];
   if (v4)
   {
-    v4->_properties = [a3 copy];
+    v4->_properties = [properties copy];
   }
 
   return v4;
@@ -87,44 +87,44 @@
   return personalizationStyle;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   [(LookupRequestOperation *)self lock];
   authenticationContext = self->_authenticationContext;
-  if (authenticationContext != a3)
+  if (authenticationContext != context)
   {
 
-    self->_authenticationContext = [a3 copy];
+    self->_authenticationContext = [context copy];
   }
 
   [(LookupRequestOperation *)self unlock];
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(LookupRequestOperation *)self lock];
   clientIdentifierHeader = self->_clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->_clientIdentifierHeader = [a3 copy];
+    self->_clientIdentifierHeader = [header copy];
   }
 
   [(LookupRequestOperation *)self unlock];
 }
 
-- (void)setPersonalizationStyle:(int64_t)a3
+- (void)setPersonalizationStyle:(int64_t)style
 {
   [(LookupRequestOperation *)self lock];
-  self->_personalizationStyle = a3;
+  self->_personalizationStyle = style;
 
   [(LookupRequestOperation *)self unlock];
 }
 
-- (void)setShouldSuppressCookies:(BOOL)a3
+- (void)setShouldSuppressCookies:(BOOL)cookies
 {
   [(LookupRequestOperation *)self lock];
-  self->_shouldSuppressCookies = a3;
+  self->_shouldSuppressCookies = cookies;
 
   [(LookupRequestOperation *)self unlock];
 }
@@ -137,14 +137,14 @@
   return shouldSuppressCookies;
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(LookupRequestOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(LookupRequestOperation *)self unlock];
@@ -191,15 +191,15 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
     if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -234,7 +234,7 @@
   [(LookupRequestOperation *)self setSuccess:v13];
 }
 
-- (void)operation:(id)a3 willSendRequest:(id)a4
+- (void)operation:(id)operation willSendRequest:(id)request
 {
   v7 = objc_alloc_init(NSDateFormatter);
   v5 = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -243,40 +243,40 @@
   v6 = [v7 stringFromDate:{+[NSDate date](NSDate, "date")}];
   if (v6)
   {
-    [a4 setValue:v6 forHTTPHeaderField:@"X-Request-TimeStamp"];
+    [request setValue:v6 forHTTPHeaderField:@"X-Request-TimeStamp"];
   }
 }
 
 - (id)_authenticationContext
 {
-  v3 = [(LookupRequestOperation *)self authenticationContext];
-  v4 = [(SSAuthenticationContext *)v3 HTTPHeaders];
+  authenticationContext = [(LookupRequestOperation *)self authenticationContext];
+  hTTPHeaders = [(SSAuthenticationContext *)authenticationContext HTTPHeaders];
   v5 = SSHTTPHeaderUserAgent;
-  if ([v4 objectForKey:SSHTTPHeaderUserAgent])
+  if ([hTTPHeaders objectForKey:SSHTTPHeaderUserAgent])
   {
-    return v3;
+    return authenticationContext;
   }
 
-  v7 = [(LookupRequestOperation *)self userAgent];
-  if (!v7)
+  userAgent = [(LookupRequestOperation *)self userAgent];
+  if (!userAgent)
   {
-    return v3;
+    return authenticationContext;
   }
 
-  v8 = v7;
-  v9 = [(SSAuthenticationContext *)v3 mutableCopy];
+  v8 = userAgent;
+  v9 = [(SSAuthenticationContext *)authenticationContext mutableCopy];
   [v9 setValue:v8 forHTTPHeaderField:v5];
 
   return v9;
 }
 
-- (id)_newLookupResponseWithResultsFromOperation:(id)a3
+- (id)_newLookupResponseWithResultsFromOperation:(id)operation
 {
-  v4 = [[SSLookupResponse alloc] initWithResponseDictionary:{objc_msgSend(objc_msgSend(a3, "dataProvider"), "output")}];
-  v5 = [a3 response];
-  if (v5)
+  v4 = [[SSLookupResponse alloc] initWithResponseDictionary:{objc_msgSend(objc_msgSend(operation, "dataProvider"), "output")}];
+  response = [operation response];
+  if (response)
   {
-    [v5 itunes_expirationInterval];
+    [response itunes_expirationInterval];
     if (v6 >= 0.0)
     {
       [v4 setExpirationDate:{+[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:")}];
@@ -286,7 +286,7 @@
   return v4;
 }
 
-- (id)_newStoreURLOperationWithBagKey:(id)a3
+- (id)_newStoreURLOperationWithBagKey:(id)key
 {
   v5 = objc_alloc_init(ISStoreURLOperation);
   [v5 setAuthenticationContext:{-[LookupRequestOperation authenticationContext](self, "authenticationContext")}];
@@ -294,11 +294,11 @@
   [v5 setDataProvider:{+[ISJSONDataProvider provider](ISJSONDataProvider, "provider")}];
   v6 = objc_alloc_init(SSMutableURLRequestProperties);
   [v6 setClientIdentifier:{-[LookupRequestOperation clientIdentifierHeader](self, "clientIdentifierHeader")}];
-  [v6 setURLBagKey:a3];
-  v7 = [(SSLookupProperties *)self->_properties timeoutInterval];
-  if (v7)
+  [v6 setURLBagKey:key];
+  timeoutInterval = [(SSLookupProperties *)self->_properties timeoutInterval];
+  if (timeoutInterval)
   {
-    v8 = v7;
+    v8 = timeoutInterval;
     [v6 setAllowedRetryCount:0];
     [v8 doubleValue];
     [v6 setTimeoutInterval:?];
@@ -309,27 +309,27 @@
     [v6 setAllowedRetryCount:2];
   }
 
-  v9 = [(LookupRequestOperation *)self userAgent];
-  if (!v9)
+  userAgent = [(LookupRequestOperation *)self userAgent];
+  if (!userAgent)
   {
-    if (a3 != @"nearby-apps")
+    if (key != @"nearby-apps")
     {
       goto LABEL_7;
     }
 
-    v9 = [+[SSDevice currentDevice](SSDevice "currentDevice")];
+    userAgent = [+[SSDevice currentDevice](SSDevice "currentDevice")];
   }
 
-  [v6 setValue:v9 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  [v6 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 LABEL_7:
-  v10 = [(SSLookupProperties *)self->_properties copyRequestParameters];
-  [v6 setRequestParameters:v10];
+  copyRequestParameters = [(SSLookupProperties *)self->_properties copyRequestParameters];
+  [v6 setRequestParameters:copyRequestParameters];
 
   [v5 setRequestProperties:v6];
   return v5;
 }
 
-- (BOOL)_performJSSignLookupWithURLBag:(id)a3 error:(id *)a4
+- (BOOL)_performJSSignLookupWithURLBag:(id)bag error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -341,12 +341,12 @@ LABEL_7:
   v19 = sub_1001AABAC;
   v20 = sub_1001AABBC;
   v21 = 0;
-  v7 = [[SSVPlatformContext alloc] initWithBagDictionary:{objc_msgSend(a3, "URLBagDictionary")}];
+  v7 = [[SSVPlatformContext alloc] initWithBagDictionary:{objc_msgSend(bag, "URLBagDictionary")}];
   if ([v7 unpersonalizedLookupURLString])
   {
     v8 = [[SSVPlatformRequestOperation alloc] initWithPlatformContext:v7];
     [v8 setKeyProfile:{-[SSLookupProperties keyProfile](self->_properties, "keyProfile")}];
-    [v8 setStoreFrontSuffix:{objc_msgSend(a3, "valueForKey:", @"storefront-header-suffix"}];
+    [v8 setStoreFrontSuffix:{objc_msgSend(bag, "valueForKey:", @"storefront-header-suffix"}];
     [v8 _setUserAgent:{-[LookupRequestOperation userAgent](self, "userAgent")}];
     if ([(LookupRequestOperation *)self personalizationStyle]== 2)
     {
@@ -354,14 +354,14 @@ LABEL_7:
     }
 
     [v8 setShouldSuppressCookies:{-[LookupRequestOperation shouldSuppressCookies](self, "shouldSuppressCookies")}];
-    v9 = [(SSLookupProperties *)self->_properties copyRequestParameters];
-    [v9 removeObjectForKey:SSLookupParameterKeyProfile];
+    copyRequestParameters = [(SSLookupProperties *)self->_properties copyRequestParameters];
+    [copyRequestParameters removeObjectForKey:SSLookupParameterKeyProfile];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1001AABC8;
     v15[3] = &unk_10032B0A0;
     v15[4] = v8;
-    [v9 enumerateKeysAndObjectsUsingBlock:v15];
+    [copyRequestParameters enumerateKeysAndObjectsUsingBlock:v15];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -382,9 +382,9 @@ LABEL_7:
 
   v11 = v23;
   v12 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v12 = *(v11 + 24);
   }
 
@@ -393,7 +393,7 @@ LABEL_7:
   return v12 & 1;
 }
 
-- (BOOL)_performLocationLookup:(id *)a3
+- (BOOL)_performLocationLookup:(id *)lookup
 {
   v29 = 0;
   v30 = &v29;
@@ -411,20 +411,20 @@ LABEL_7:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
-  v7 = [v5 shouldLogToDisk];
-  v8 = [v5 OSLogObject];
-  if (v7)
+  shouldLog = [v5 shouldLog];
+  shouldLogToDisk = [v5 shouldLogToDisk];
+  oSLogObject = [v5 OSLogObject];
+  if (shouldLogToDisk)
   {
-    v6 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v6 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (v6)
+  if (shouldLog)
   {
     v9 = objc_opt_class();
     v33 = 138412290;
@@ -442,8 +442,8 @@ LABEL_7:
     }
   }
 
-  v13 = [(LookupRequestOperation *)self _URLBagContext];
-  v14 = [-[LookupRequestOperation loadedURLBagWithContext:returningError:](self loadedURLBagWithContext:v13 returningError:{v24 + 5), "valueForKey:", @"nearby-apps"}];
+  _URLBagContext = [(LookupRequestOperation *)self _URLBagContext];
+  v14 = [-[LookupRequestOperation loadedURLBagWithContext:returningError:](self loadedURLBagWithContext:_URLBagContext returningError:{v24 + 5), "valueForKey:", @"nearby-apps"}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -465,9 +465,9 @@ LABEL_7:
 
   v17 = v30;
   v18 = *(v30 + 24);
-  if (a3 && (v30[3] & 1) == 0)
+  if (lookup && (v30[3] & 1) == 0)
   {
-    *a3 = v24[5];
+    *lookup = v24[5];
     v18 = *(v17 + 24);
   }
 
@@ -476,7 +476,7 @@ LABEL_7:
   return v18 & 1;
 }
 
-- (BOOL)_performPlatformLookup:(id *)a3
+- (BOOL)_performPlatformLookup:(id *)lookup
 {
   v54 = 0;
   v5 = [(LookupRequestOperation *)self _newStoreURLOperationWithBagKey:@"storeplatform-lookup-url"];
@@ -487,15 +487,15 @@ LABEL_7:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -534,15 +534,15 @@ LABEL_7:
         v15 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v15 shouldLog];
+      shouldLog2 = [v15 shouldLog];
       if ([v15 shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog2 | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_INFO))
@@ -580,15 +580,15 @@ LABEL_7:
           v24 = +[SSLogConfig sharedConfig];
         }
 
-        v25 = [v24 shouldLog];
+        shouldLog3 = [v24 shouldLog];
         if ([v24 shouldLogToDisk])
         {
-          v26 = v25 | 2;
+          v26 = shouldLog3 | 2;
         }
 
         else
         {
-          v26 = v25;
+          v26 = shouldLog3;
         }
 
         if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_INFO))
@@ -625,15 +625,15 @@ LABEL_7:
           v32 = +[SSLogConfig sharedConfig];
         }
 
-        v33 = [v32 shouldLog];
+        shouldLog4 = [v32 shouldLog];
         if ([v32 shouldLogToDisk])
         {
-          v34 = v33 | 2;
+          v34 = shouldLog4 | 2;
         }
 
         else
         {
-          v34 = v33;
+          v34 = shouldLog4;
         }
 
         if (!os_log_type_enabled([v32 OSLogObject], OS_LOG_TYPE_INFO))
@@ -675,15 +675,15 @@ LABEL_7:
           v24 = +[SSLogConfig sharedConfig];
         }
 
-        v40 = [v24 shouldLog];
+        shouldLog5 = [v24 shouldLog];
         if ([v24 shouldLogToDisk])
         {
-          v41 = v40 | 2;
+          v41 = shouldLog5 | 2;
         }
 
         else
         {
-          v41 = v40;
+          v41 = shouldLog5;
         }
 
         if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -716,7 +716,7 @@ LABEL_7:
 
   [v5 setDelegate:{0, v49}];
 
-  if (a3)
+  if (lookup)
   {
     v46 = v12;
   }
@@ -728,37 +728,37 @@ LABEL_7:
 
   if ((v46 & 1) == 0)
   {
-    *a3 = v54;
+    *lookup = v54;
   }
 
   return v12;
 }
 
-- (void)_setAccountID:(id)a3
+- (void)_setAccountID:(id)d
 {
-  v5 = [(LookupRequestOperation *)self authenticationContext];
-  if (([a3 isEqual:{-[SSAuthenticationContext requiredUniqueIdentifier](v5, "requiredUniqueIdentifier")}] & 1) == 0)
+  authenticationContext = [(LookupRequestOperation *)self authenticationContext];
+  if (([d isEqual:{-[SSAuthenticationContext requiredUniqueIdentifier](authenticationContext, "requiredUniqueIdentifier")}] & 1) == 0)
   {
-    v6 = [(SSAuthenticationContext *)v5 mutableCopy];
+    v6 = [(SSAuthenticationContext *)authenticationContext mutableCopy];
     if (!v6)
     {
       v6 = objc_alloc_init(SSMutableAuthenticationContext);
     }
 
     v7 = v6;
-    [v6 setRequiredUniqueIdentifier:a3];
+    [v6 setRequiredUniqueIdentifier:d];
     [(LookupRequestOperation *)self setAuthenticationContext:v7];
   }
 }
 
-- (void)_setLookupResponse:(id)a3
+- (void)_setLookupResponse:(id)response
 {
   [(LookupRequestOperation *)self lock];
   response = self->_response;
-  if (response != a3)
+  if (response != response)
   {
 
-    self->_response = a3;
+    self->_response = response;
   }
 
   [(LookupRequestOperation *)self unlock];
@@ -767,8 +767,8 @@ LABEL_7:
 - (id)_URLBagContext
 {
   v3 = [SSURLBagContext contextWithBagType:0];
-  v4 = [(LookupRequestOperation *)self userAgent];
-  [(SSURLBagContext *)v3 setValue:v4 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(LookupRequestOperation *)self userAgent];
+  [(SSURLBagContext *)v3 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   return v3;
 }
 

@@ -6,7 +6,7 @@
 - (void)_registerForTouchAccommodationsAXSettingsUpdate;
 - (void)_showHoldDurationTripleClickHelp;
 - (void)_updateTouchAccommodationsSetting;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 @end
 
 @implementation AXBTouchAccommodationsController
@@ -37,37 +37,37 @@ uint64_t __53__AXBTouchAccommodationsController_initializeMonitor__block_invoke(
   touchAccommodationsQueue = self->_touchAccommodationsQueue;
   self->_touchAccommodationsQueue = v3;
 
-  v5 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
   v12[2] = __83__AXBTouchAccommodationsController__registerForTouchAccommodationsAXSettingsUpdate__block_invoke;
   v12[3] = &unk_29F2A4B10;
   v12[4] = self;
-  [v5 registerUpdateBlock:v12 forRetrieveSelector:sel_touchAccommodationsHoldDurationEnabled withListener:self];
+  [mEMORY[0x29EDBDFA0] registerUpdateBlock:v12 forRetrieveSelector:sel_touchAccommodationsHoldDurationEnabled withListener:self];
 
-  v6 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __83__AXBTouchAccommodationsController__registerForTouchAccommodationsAXSettingsUpdate__block_invoke_2;
   v11[3] = &unk_29F2A4B10;
   v11[4] = self;
-  [v6 registerUpdateBlock:v11 forRetrieveSelector:sel_touchAccommodationsIgnoreRepeatEnabled withListener:self];
+  [mEMORY[0x29EDBDFA0]2 registerUpdateBlock:v11 forRetrieveSelector:sel_touchAccommodationsIgnoreRepeatEnabled withListener:self];
 
-  v7 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0]3 = [MEMORY[0x29EDBDFA0] sharedInstance];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __83__AXBTouchAccommodationsController__registerForTouchAccommodationsAXSettingsUpdate__block_invoke_3;
   v10[3] = &unk_29F2A4B10;
   v10[4] = self;
-  [v7 registerUpdateBlock:v10 forRetrieveSelector:sel_touchAccommodationsTapActivationMethod withListener:self];
+  [mEMORY[0x29EDBDFA0]3 registerUpdateBlock:v10 forRetrieveSelector:sel_touchAccommodationsTapActivationMethod withListener:self];
 
-  v8 = [MEMORY[0x29EDBDFA0] sharedInstance];
+  mEMORY[0x29EDBDFA0]4 = [MEMORY[0x29EDBDFA0] sharedInstance];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __83__AXBTouchAccommodationsController__registerForTouchAccommodationsAXSettingsUpdate__block_invoke_4;
   v9[3] = &unk_29F2A4B10;
   v9[4] = self;
-  [v8 registerUpdateBlock:v9 forRetrieveSelector:sel_touchAccommodationsEnabled withListener:self];
+  [mEMORY[0x29EDBDFA0]4 registerUpdateBlock:v9 forRetrieveSelector:sel_touchAccommodationsEnabled withListener:self];
 }
 
 - (void)_updateTouchAccommodationsSetting
@@ -127,23 +127,23 @@ void __69__AXBTouchAccommodationsController__updateTouchAccommodationsSetting__b
 
 - (void)_showHoldDurationTripleClickHelp
 {
-  v2 = [(AXBTouchAccommodationsController *)self touchAccommodationsClient];
-  [v2 sendAsynchronousMessage:0 withIdentifier:3 targetAccessQueue:0 completion:0];
+  touchAccommodationsClient = [(AXBTouchAccommodationsController *)self touchAccommodationsClient];
+  [touchAccommodationsClient sendAsynchronousMessage:0 withIdentifier:3 targetAccessQueue:0 completion:0];
 }
 
 - (void)_hideHoldDurationTripleClickHelp
 {
-  v2 = [(AXBTouchAccommodationsController *)self touchAccommodationsClient];
-  [v2 sendAsynchronousMessage:0 withIdentifier:4 targetAccessQueue:0 completion:0];
+  touchAccommodationsClient = [(AXBTouchAccommodationsController *)self touchAccommodationsClient];
+  [touchAccommodationsClient sendAsynchronousMessage:0 withIdentifier:4 targetAccessQueue:0 completion:0];
 }
 
 - (id)_clientIdentifier
 {
-  v2 = [MEMORY[0x29EDBA0B0] processInfo];
-  v3 = [v2 processIdentifier];
+  processInfo = [MEMORY[0x29EDBA0B0] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
   v4 = MEMORY[0x29EDBA0F8];
-  v5 = [MEMORY[0x29EDBA070] numberWithInt:v3];
+  v5 = [MEMORY[0x29EDBA070] numberWithInt:processIdentifier];
   v6 = [v4 stringWithFormat:@"TouchAccommodationsClientIdentifier-%@", v5];
 
   return v6;
@@ -155,8 +155,8 @@ void __69__AXBTouchAccommodationsController__updateTouchAccommodationsSetting__b
   if (!touchAccommodationsClient)
   {
     v4 = objc_alloc(MEMORY[0x29EDBDDD0]);
-    v5 = [(AXBTouchAccommodationsController *)self _clientIdentifier];
-    v6 = [v4 initWithIdentifier:v5 serviceBundleName:@"TouchAccommodations"];
+    _clientIdentifier = [(AXBTouchAccommodationsController *)self _clientIdentifier];
+    v6 = [v4 initWithIdentifier:_clientIdentifier serviceBundleName:@"TouchAccommodations"];
     v7 = self->_touchAccommodationsClient;
     self->_touchAccommodationsClient = v6;
 
@@ -167,7 +167,7 @@ void __69__AXBTouchAccommodationsController__updateTouchAccommodationsSetting__b
   return touchAccommodationsClient;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
   touchAccommodationsQueue = self->_touchAccommodationsQueue;
   block[0] = MEMORY[0x29EDCA5F8];

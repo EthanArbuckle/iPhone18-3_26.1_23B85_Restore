@@ -1,9 +1,9 @@
 @interface BRCSyncOperationBackoffRatio
 - (BRCSyncOperationBackoffRatio)init;
-- (BRCSyncOperationBackoffRatio)initWithCoder:(id)a3;
+- (BRCSyncOperationBackoffRatio)initWithCoder:(id)coder;
 - (float)backoffRatio;
-- (void)encodeWithCoder:(id)a3;
-- (void)newSyncOperationWithError:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)newSyncOperationWithError:(id)error;
 @end
 
 @implementation BRCSyncOperationBackoffRatio
@@ -22,37 +22,37 @@
   return result;
 }
 
-- (BRCSyncOperationBackoffRatio)initWithCoder:(id)a3
+- (BRCSyncOperationBackoffRatio)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BRCSyncOperationBackoffRatio;
   v5 = [(BRCSyncOperationBackoffRatio *)&v7 init];
   if (v5)
   {
-    v5->_totalSyncOperations = [v4 decodeInt64ForKey:@"totalSyncOperations"];
-    v5->_failedSyncOperations = [v4 decodeInt64ForKey:@"failedSyncOperations"];
+    v5->_totalSyncOperations = [coderCopy decodeInt64ForKey:@"totalSyncOperations"];
+    v5->_failedSyncOperations = [coderCopy decodeInt64ForKey:@"failedSyncOperations"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   totalSyncOperations = self->_totalSyncOperations;
-  v5 = a3;
-  [v5 encodeInt64:totalSyncOperations forKey:@"totalSyncOperations"];
-  [v5 encodeInt64:self->_failedSyncOperations forKey:@"failedSyncOperations"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:totalSyncOperations forKey:@"totalSyncOperations"];
+  [coderCopy encodeInt64:self->_failedSyncOperations forKey:@"failedSyncOperations"];
 }
 
 - (float)backoffRatio
 {
   totalSyncOperations = self->_totalSyncOperations;
   v4 = [BRCUserDefaults defaultsForMangledID:0];
-  v5 = [v4 minimumNumberOfFailuresBeforeReportingSyncBackoffRatio];
+  minimumNumberOfFailuresBeforeReportingSyncBackoffRatio = [v4 minimumNumberOfFailuresBeforeReportingSyncBackoffRatio];
 
   result = 0.0;
-  if (totalSyncOperations >= v5)
+  if (totalSyncOperations >= minimumNumberOfFailuresBeforeReportingSyncBackoffRatio)
   {
     return self->_failedSyncOperations / self->_totalSyncOperations;
   }
@@ -60,9 +60,9 @@
   return result;
 }
 
-- (void)newSyncOperationWithError:(id)a3
+- (void)newSyncOperationWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     ++self->_failedSyncOperations;
   }

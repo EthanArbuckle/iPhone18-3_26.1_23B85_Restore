@@ -1,46 +1,46 @@
 @interface HUEditRoomItemManager
 - (BOOL)_canDeleteRoom;
-- (HUEditRoomItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUEditRoomItemManager)initWithRoomBuilder:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUEditRoomItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUEditRoomItemManager)initWithRoomBuilder:(id)builder delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUEditRoomItemManager
 
-- (HUEditRoomItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUEditRoomItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithRoomBuilder_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUEditRoomItemManager.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUEditRoomItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUEditRoomItemManager.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUEditRoomItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUEditRoomItemManager)initWithRoomBuilder:(id)a3 delegate:(id)a4
+- (HUEditRoomItemManager)initWithRoomBuilder:(id)builder delegate:(id)delegate
 {
-  v7 = a3;
+  builderCopy = builder;
   v20.receiver = self;
   v20.super_class = HUEditRoomItemManager;
-  v8 = [(HFItemManager *)&v20 initWithDelegate:a4 sourceItem:0];
+  v8 = [(HFItemManager *)&v20 initWithDelegate:delegate sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_roomBuilder, a3);
-    v10 = [v7 room];
-    v11 = [v7 home];
-    v12 = [v11 roomForEntireHome];
-    v13 = [v10 isEqual:v12];
+    objc_storeStrong(&v8->_roomBuilder, builder);
+    room = [builderCopy room];
+    home = [builderCopy home];
+    roomForEntireHome = [home roomForEntireHome];
+    v13 = [room isEqual:roomForEntireHome];
 
-    v14 = [v7 room];
+    room2 = [builderCopy room];
 
     if ((v13 & 1) == 0)
     {
-      if (v14)
+      if (room2)
       {
         v15 = objc_alloc(MEMORY[0x277D14D38]);
-        v16 = [v7 room];
-        v17 = [v15 initWithItemUpdater:v9 room:v16];
+        room3 = [builderCopy room];
+        v17 = [v15 initWithItemUpdater:v9 room:room3];
         zoneModule = v9->_zoneModule;
         v9->_zoneModule = v17;
       }
@@ -50,10 +50,10 @@
   return v9;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v48 = a3;
+  homeCopy = home;
   v4 = objc_alloc(MEMORY[0x277D14B38]);
   v60 = *MEMORY[0x277D13F10];
   v61[0] = MEMORY[0x277CBEC38];
@@ -101,16 +101,16 @@
   [(HUEditRoomItemManager *)self setWallpaperPickerItem:v25];
 
   v26 = MEMORY[0x277CBEB18];
-  v27 = [(HUEditRoomItemManager *)self nameItem];
-  v53[0] = v27;
-  v28 = [(HUEditRoomItemManager *)self cameraItem];
-  v53[1] = v28;
-  v29 = [(HUEditRoomItemManager *)self chooseWallpaperItem];
-  v53[2] = v29;
-  v30 = [(HUEditRoomItemManager *)self wallpaperThumbnailItem];
-  v53[3] = v30;
-  v31 = [(HUEditRoomItemManager *)self wallpaperPickerItem];
-  v53[4] = v31;
+  nameItem = [(HUEditRoomItemManager *)self nameItem];
+  v53[0] = nameItem;
+  cameraItem = [(HUEditRoomItemManager *)self cameraItem];
+  v53[1] = cameraItem;
+  chooseWallpaperItem = [(HUEditRoomItemManager *)self chooseWallpaperItem];
+  v53[2] = chooseWallpaperItem;
+  wallpaperThumbnailItem = [(HUEditRoomItemManager *)self wallpaperThumbnailItem];
+  v53[3] = wallpaperThumbnailItem;
+  wallpaperPickerItem = [(HUEditRoomItemManager *)self wallpaperPickerItem];
+  v53[4] = wallpaperPickerItem;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:5];
   v33 = [v26 arrayWithArray:v32];
 
@@ -124,24 +124,24 @@
   v35 = [v34 initWithResultsBlock:v50];
   [(HUEditRoomItemManager *)self setRemoveItem:v35];
 
-  v36 = [(HUEditRoomItemManager *)self removeItem];
-  [v33 addObject:v36];
+  removeItem = [(HUEditRoomItemManager *)self removeItem];
+  [v33 addObject:removeItem];
 
   v37 = objc_alloc(MEMORY[0x277D14B40]);
   v38 = [MEMORY[0x277CBEB98] setWithArray:v33];
   v39 = [v37 initWithItems:v38];
 
   v40 = [MEMORY[0x277CBEB18] arrayWithObject:v39];
-  v41 = [(HUEditRoomItemManager *)self zoneModule];
-  v42 = [v41 itemProviders];
-  v43 = [v42 count] == 0;
+  zoneModule = [(HUEditRoomItemManager *)self zoneModule];
+  itemProviders = [zoneModule itemProviders];
+  v43 = [itemProviders count] == 0;
 
   if (!v43)
   {
-    v44 = [(HUEditRoomItemManager *)self zoneModule];
-    v45 = [v44 itemProviders];
-    v46 = [v45 allObjects];
-    [v40 addObjectsFromArray:v46];
+    zoneModule2 = [(HUEditRoomItemManager *)self zoneModule];
+    itemProviders2 = [zoneModule2 itemProviders];
+    allObjects = [itemProviders2 allObjects];
+    [v40 addObjectsFromArray:allObjects];
   }
 
   objc_destroyWeak(&v51);
@@ -167,92 +167,92 @@ id __52__HUEditRoomItemManager__buildItemProvidersForHome___block_invoke(uint64_
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditRoomNameSectionIdentifier"];
   v7 = MEMORY[0x277CBEA60];
-  v8 = [(HUEditRoomItemManager *)self nameItem];
-  v9 = [v7 arrayWithObject:v8];
+  nameItem = [(HUEditRoomItemManager *)self nameItem];
+  v9 = [v7 arrayWithObject:nameItem];
   [v6 setItems:v9];
 
   v10 = _HULocalizedStringWithDefaultValue(@"HUEditRoomNameTitle", @"HUEditRoomNameTitle", 1);
   [v6 setHeaderTitle:v10];
 
   [v5 addObject:v6];
-  v11 = [(HUEditRoomItemManager *)self zoneModule];
-  v12 = [v11 buildSectionsWithDisplayedItems:v4];
+  zoneModule = [(HUEditRoomItemManager *)self zoneModule];
+  v12 = [zoneModule buildSectionsWithDisplayedItems:itemsCopy];
   [v5 addObjectsFromArray:v12];
 
   v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditRoomWallpaperSectionIdentifier"];
   v14 = _HULocalizedStringWithDefaultValue(@"HUEditRoomWallpaperSectionTitle", @"HUEditRoomWallpaperSectionTitle", 1);
   [v13 setHeaderTitle:v14];
 
-  v15 = [(HUEditRoomItemManager *)self cameraItem];
-  v29[0] = v15;
-  v16 = [(HUEditRoomItemManager *)self chooseWallpaperItem];
-  v29[1] = v16;
-  v17 = [(HUEditRoomItemManager *)self wallpaperThumbnailItem];
-  v29[2] = v17;
-  v18 = [(HUEditRoomItemManager *)self wallpaperPickerItem];
-  v29[3] = v18;
+  cameraItem = [(HUEditRoomItemManager *)self cameraItem];
+  v29[0] = cameraItem;
+  chooseWallpaperItem = [(HUEditRoomItemManager *)self chooseWallpaperItem];
+  v29[1] = chooseWallpaperItem;
+  wallpaperThumbnailItem = [(HUEditRoomItemManager *)self wallpaperThumbnailItem];
+  v29[2] = wallpaperThumbnailItem;
+  wallpaperPickerItem = [(HUEditRoomItemManager *)self wallpaperPickerItem];
+  v29[3] = wallpaperPickerItem;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
   [v13 setItems:v19];
 
   [v5 addObject:v13];
-  v20 = [(HUEditRoomItemManager *)self removeItem];
-  v21 = [v20 latestResults];
-  v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
-  LOBYTE(v18) = [v22 BOOLValue];
+  removeItem = [(HUEditRoomItemManager *)self removeItem];
+  latestResults = [removeItem latestResults];
+  v22 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+  LOBYTE(wallpaperPickerItem) = [v22 BOOLValue];
 
-  if ((v18 & 1) == 0)
+  if ((wallpaperPickerItem & 1) == 0)
   {
     v23 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditRoomRemoveSectionIdentifier"];
-    v24 = [(HUEditRoomItemManager *)self removeItem];
-    v28 = v24;
+    removeItem2 = [(HUEditRoomItemManager *)self removeItem];
+    v28 = removeItem2;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
     [v23 setItems:v25];
 
     [v5 addObject:v23];
   }
 
-  v26 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v26 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v26;
 }
 
 - (BOOL)_canDeleteRoom
 {
-  v3 = [(HUEditRoomItemManager *)self roomBuilder];
-  v4 = [v3 room];
-  if (v4)
+  roomBuilder = [(HUEditRoomItemManager *)self roomBuilder];
+  room = [roomBuilder room];
+  if (room)
   {
-    v5 = [(HUEditRoomItemManager *)self roomBuilder];
-    v6 = [v5 room];
-    v7 = [v6 uniqueIdentifier];
-    v8 = [(HFItemManager *)self home];
-    v9 = [v8 roomForEntireHome];
-    v10 = [v9 uniqueIdentifier];
-    if ([v7 isEqual:v10])
+    roomBuilder2 = [(HUEditRoomItemManager *)self roomBuilder];
+    room2 = [roomBuilder2 room];
+    uniqueIdentifier = [room2 uniqueIdentifier];
+    home = [(HFItemManager *)self home];
+    roomForEntireHome = [home roomForEntireHome];
+    uniqueIdentifier2 = [roomForEntireHome uniqueIdentifier];
+    if ([uniqueIdentifier isEqual:uniqueIdentifier2])
     {
-      v11 = 0;
+      hf_currentUserIsAdministrator = 0;
     }
 
     else
     {
-      v12 = [(HFItemManager *)self home];
-      v11 = [v12 hf_currentUserIsAdministrator];
+      home2 = [(HFItemManager *)self home];
+      hf_currentUserIsAdministrator = [home2 hf_currentUserIsAdministrator];
     }
   }
 
   else
   {
-    v11 = 0;
+    hf_currentUserIsAdministrator = 0;
   }
 
-  return v11;
+  return hf_currentUserIsAdministrator;
 }
 
 @end

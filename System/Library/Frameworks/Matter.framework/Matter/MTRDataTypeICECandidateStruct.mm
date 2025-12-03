@@ -1,6 +1,6 @@
 @interface MTRDataTypeICECandidateStruct
 - (MTRDataTypeICECandidateStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeICECandidateStruct);
-  v5 = [(MTRDataTypeICECandidateStruct *)self candidate];
-  [(MTRDataTypeICECandidateStruct *)v4 setCandidate:v5];
+  candidate = [(MTRDataTypeICECandidateStruct *)self candidate];
+  [(MTRDataTypeICECandidateStruct *)v4 setCandidate:candidate];
 
-  v6 = [(MTRDataTypeICECandidateStruct *)self sdpMid];
-  [(MTRDataTypeICECandidateStruct *)v4 setSdpMid:v6];
+  sdpMid = [(MTRDataTypeICECandidateStruct *)self sdpMid];
+  [(MTRDataTypeICECandidateStruct *)v4 setSdpMid:sdpMid];
 
-  v7 = [(MTRDataTypeICECandidateStruct *)self sdpmLineIndex];
-  [(MTRDataTypeICECandidateStruct *)v4 setSdpmLineIndex:v7];
+  sdpmLineIndex = [(MTRDataTypeICECandidateStruct *)self sdpmLineIndex];
+  [(MTRDataTypeICECandidateStruct *)v4 setSdpmLineIndex:sdpmLineIndex];
 
   return v4;
 }

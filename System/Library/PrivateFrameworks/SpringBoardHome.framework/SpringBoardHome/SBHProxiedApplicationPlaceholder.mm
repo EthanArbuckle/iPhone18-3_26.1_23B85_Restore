@@ -1,14 +1,14 @@
 @interface SBHProxiedApplicationPlaceholder
 - (BOOL)canBeShared;
 - (BOOL)cancel;
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
-- (BOOL)iconCompleteUninstall:(id)a3;
-- (BOOL)iconSupportsUninstall:(id)a3;
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context;
+- (BOOL)iconCompleteUninstall:(id)uninstall;
+- (BOOL)iconSupportsUninstall:(id)uninstall;
 - (BOOL)isActive;
 - (BOOL)isCloudDemoted;
 - (BOOL)isDone;
 - (BOOL)isDownloading;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFailed;
 - (BOOL)isInstalling;
 - (BOOL)isNewAppInstallFromStore;
@@ -18,21 +18,21 @@
 - (BOOL)pause;
 - (BOOL)prioritize;
 - (BOOL)resume;
-- (SBHProxiedApplicationPlaceholder)initWithPlaceholderProxy:(id)a3;
+- (SBHProxiedApplicationPlaceholder)initWithPlaceholderProxy:(id)proxy;
 - (SBHProxiedApplicationPlaceholderDelegate)delegate;
-- (double)progressPercentForIcon:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)icon:(id)a3 statusDescriptionForLocation:(id)a4;
+- (double)progressPercentForIcon:(id)icon;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)icon:(id)icon statusDescriptionForLocation:(id)location;
 - (id)succinctDescription;
-- (int64_t)labelAccessoryTypeForIcon:(id)a3;
-- (int64_t)progressStateForIcon:(id)a3;
+- (int64_t)labelAccessoryTypeForIcon:(id)icon;
+- (int64_t)progressStateForIcon:(id)icon;
 - (void)_progressChanged;
 - (void)_reloadThumbnailImage;
 - (void)dealloc;
 - (void)invalidate;
-- (void)placeholderDidChangeSignificantly:(id)a3;
-- (void)placeholderProgressDidUpdate:(id)a3;
+- (void)placeholderDidChangeSignificantly:(id)significantly;
+- (void)placeholderProgressDidUpdate:(id)update;
 @end
 
 @implementation SBHProxiedApplicationPlaceholder
@@ -40,18 +40,18 @@
 - (BOOL)canBeShared
 {
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  v5 = [v3 initWithBundleIdentifier:applicationBundleID allowPlaceholder:1 error:0];
 
   if (v5)
   {
-    v6 = [v5 typeForInstallMachinery];
-    v7 = [v5 iTunesMetadata];
-    v8 = [v7 storeItemIdentifier];
+    typeForInstallMachinery = [v5 typeForInstallMachinery];
+    iTunesMetadata = [v5 iTunesMetadata];
+    storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-    if ([v6 isEqualToString:*MEMORY[0x1E69635B8]])
+    if ([typeForInstallMachinery isEqualToString:*MEMORY[0x1E69635B8]])
     {
-      v9 = v8 == 0;
+      v9 = storeItemIdentifier == 0;
     }
 
     else
@@ -78,38 +78,38 @@
   return v10;
 }
 
-- (SBHProxiedApplicationPlaceholder)initWithPlaceholderProxy:(id)a3
+- (SBHProxiedApplicationPlaceholder)initWithPlaceholderProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v17.receiver = self;
   v17.super_class = SBHProxiedApplicationPlaceholder;
   v6 = [(SBHProxiedApplicationPlaceholder *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_placeholderProxy, a3);
+    objc_storeStrong(&v6->_placeholderProxy, proxy);
     [(FBSApplicationPlaceholder *)v7->_placeholderProxy addObserver:v7];
     v8 = objc_alloc(MEMORY[0x1E69635F8]);
-    v9 = [v5 bundleIdentifier];
-    v10 = [v8 initWithBundleIdentifier:v9 allowPlaceholder:1 error:0];
+    bundleIdentifier = [proxyCopy bundleIdentifier];
+    v10 = [v8 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
 
     if (v10)
     {
-      v11 = [v10 iTunesMetadata];
-      v12 = [v11 storeItemIdentifier];
+      iTunesMetadata = [v10 iTunesMetadata];
+      storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-      if (v12)
+      if (storeItemIdentifier)
       {
-        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
+        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:storeItemIdentifier];
         applicationItemID = v7->_applicationItemID;
         v7->_applicationItemID = v13;
       }
 
-      v15 = [v10 appClipMetadata];
-      v7->_appClip = v15 != 0;
+      appClipMetadata = [v10 appClipMetadata];
+      v7->_appClip = appClipMetadata != 0;
     }
 
-    [(SBHProxiedApplicationPlaceholder *)v7 placeholderDidChangeSignificantly:v5];
+    [(SBHProxiedApplicationPlaceholder *)v7 placeholderDidChangeSignificantly:proxyCopy];
   }
 
   return v7;
@@ -124,56 +124,56 @@
 
 - (BOOL)isDone
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] == 6;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] == 6;
 
   return v3;
 }
 
 - (BOOL)isActive
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] != 0;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] != 0;
 
   return v3;
 }
 
 - (BOOL)isWaiting
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] == 3;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] == 3;
 
   return v3;
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] == 2;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] == 2;
 
   return v3;
 }
 
 - (BOOL)isFailed
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] == 1;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] == 1;
 
   return v3;
 }
 
 - (BOOL)isDownloading
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] == 4;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] == 4;
 
   return v3;
 }
 
 - (BOOL)isInstalling
 {
-  v2 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v3 = [v2 state] == 5;
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v3 = [progress state] == 5;
 
   return v3;
 }
@@ -184,15 +184,15 @@
   v4 = WeakRetained;
   if (WeakRetained && ![WeakRetained placeholderShouldAllowPausing:self])
   {
-    v5 = 0;
+    isPausable = 0;
   }
 
   else
   {
-    v5 = [(FBSApplicationPlaceholder *)self->_placeholderProxy isPausable];
+    isPausable = [(FBSApplicationPlaceholder *)self->_placeholderProxy isPausable];
   }
 
-  return v5;
+  return isPausable;
 }
 
 - (BOOL)isCloudDemoted
@@ -225,9 +225,9 @@
   v3 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+    applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
     v6 = 138543362;
-    v7 = v4;
+    v7 = applicationBundleID;
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_INFO, "PRIORITIZE: %{public}@", &v6, 0xCu);
   }
 
@@ -240,9 +240,9 @@
   v3 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+    applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
     v6 = 138543362;
-    v7 = v4;
+    v7 = applicationBundleID;
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_INFO, "CANCEL: %{public}@", &v6, 0xCu);
   }
 
@@ -255,9 +255,9 @@
   v3 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+    applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
     v6 = 138543362;
-    v7 = v4;
+    v7 = applicationBundleID;
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_INFO, "PAUSE: %{public}@", &v6, 0xCu);
   }
 
@@ -270,9 +270,9 @@
   v3 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+    applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
     v6 = 138543362;
-    v7 = v4;
+    v7 = applicationBundleID;
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_INFO, "RESUME: %{public}@", &v6, 0xCu);
   }
 
@@ -286,23 +286,23 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_INFO, "Updated progress: %@", &v5, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
-  [v4 postNotificationName:@"SBLeafIconDataSourceProgressDidChangeNotification" object:self userInfo:0];
+  sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
+  [sbh_leafIconDataSourceNotificationCenter postNotificationName:@"SBLeafIconDataSourceProgressDidChangeNotification" object:self userInfo:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SBHProxiedApplicationPlaceholder *)self placeholderProxy];
-    v6 = [v4 placeholderProxy];
-    v7 = [v5 isEqual:v6];
+    placeholderProxy = [(SBHProxiedApplicationPlaceholder *)self placeholderProxy];
+    placeholderProxy2 = [equalCopy placeholderProxy];
+    v7 = [placeholderProxy isEqual:placeholderProxy2];
   }
 
   else
@@ -321,21 +321,21 @@
     self->_invalidated = 1;
     [(FBSApplicationPlaceholder *)self->_placeholderProxy removeObserver:self];
     objc_storeWeak(&self->_delegate, 0);
-    v3 = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
-    [v3 postNotificationName:@"SBLeafIconDataSourceDidInvalidateNotification" object:self];
+    sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
+    [sbh_leafIconDataSourceNotificationCenter postNotificationName:@"SBLeafIconDataSourceDidInvalidateNotification" object:self];
   }
 }
 
-- (void)placeholderProgressDidUpdate:(id)a3
+- (void)placeholderProgressDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__SBHProxiedApplicationPlaceholder_placeholderProgressDidUpdate___block_invoke;
   v6[3] = &unk_1E8088F18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -350,16 +350,16 @@ uint64_t __65__SBHProxiedApplicationPlaceholder_placeholderProgressDidUpdate___b
   return result;
 }
 
-- (void)placeholderDidChangeSignificantly:(id)a3
+- (void)placeholderDidChangeSignificantly:(id)significantly
 {
-  v4 = a3;
+  significantlyCopy = significantly;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantly___block_invoke;
   v6[3] = &unk_1E8088F18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = significantlyCopy;
+  v5 = significantlyCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -380,22 +380,22 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
 - (void)_reloadThumbnailImage
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
+  applicationBundleID = [(SBHProxiedApplicationPlaceholder *)self applicationBundleID];
   v4 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = applicationBundleID;
     _os_log_impl(&dword_1BEB18000, v4, OS_LOG_TYPE_INFO, "Reloading thumbnail image for placeholder: %{public}@", &v6, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
-  [v5 postNotificationName:@"SBLeafIconDataSourceDidGenerateImageNotification" object:self];
+  sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
+  [sbh_leafIconDataSourceNotificationCenter postNotificationName:@"SBLeafIconDataSourceDidGenerateImageNotification" object:self];
 }
 
-- (id)icon:(id)a3 statusDescriptionForLocation:(id)a4
+- (id)icon:(id)icon statusDescriptionForLocation:(id)location
 {
-  if (![(SBHProxiedApplicationPlaceholder *)self isActive:a3]|| [(SBHProxiedApplicationPlaceholder *)self isFailed]|| [(SBHProxiedApplicationPlaceholder *)self isDone])
+  if (![(SBHProxiedApplicationPlaceholder *)self isActive:icon]|| [(SBHProxiedApplicationPlaceholder *)self isFailed]|| [(SBHProxiedApplicationPlaceholder *)self isDone])
   {
     v5 = 0;
   }
@@ -429,15 +429,15 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
   return v5;
 }
 
-- (int64_t)progressStateForIcon:(id)a3
+- (int64_t)progressStateForIcon:(id)icon
 {
   v4 = [(SBHProxiedApplicationPlaceholder *)self isCloudDemoted]^ 1;
   if (![(SBHProxiedApplicationPlaceholder *)self isFailed])
   {
     if ([(SBHProxiedApplicationPlaceholder *)self isActive])
     {
-      v5 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-      [v5 percentComplete];
+      progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+      [progress percentComplete];
       v7 = v6;
 
       if (v7 > 2.22044605e-16)
@@ -450,16 +450,16 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
   return v4;
 }
 
-- (double)progressPercentForIcon:(id)a3
+- (double)progressPercentForIcon:(id)icon
 {
-  v3 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  [v3 percentComplete];
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  [progress percentComplete];
   v5 = v4;
 
   return v5;
 }
 
-- (int64_t)labelAccessoryTypeForIcon:(id)a3
+- (int64_t)labelAccessoryTypeForIcon:(id)icon
 {
   if ([(SBHProxiedApplicationPlaceholder *)self isCloudDemoted])
   {
@@ -472,7 +472,7 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
   }
 }
 
-- (BOOL)iconSupportsUninstall:(id)a3
+- (BOOL)iconSupportsUninstall:(id)uninstall
 {
   if ([(SBHProxiedApplicationPlaceholder *)self isDone])
   {
@@ -482,21 +482,21 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
   return [(SBHProxiedApplicationPlaceholder *)self isCancelable];
 }
 
-- (BOOL)iconCompleteUninstall:(id)a3
+- (BOOL)iconCompleteUninstall:(id)uninstall
 {
-  v4 = a3;
-  if ([v4 isApplicationIcon] && objc_msgSend(v4, "isUninstalledByUser"))
+  uninstallCopy = uninstall;
+  if ([uninstallCopy isApplicationIcon] && objc_msgSend(uninstallCopy, "isUninstalledByUser"))
   {
-    v5 = [(SBHProxiedApplicationPlaceholder *)self delegate];
-    [v5 placeholderWantsUninstall:self];
+    delegate = [(SBHProxiedApplicationPlaceholder *)self delegate];
+    [delegate placeholderWantsUninstall:self];
   }
 
   return 1;
 }
 
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
-  if ([(SBHProxiedApplicationPlaceholder *)self isPaused:a3])
+  if ([(SBHProxiedApplicationPlaceholder *)self isPaused:icon])
   {
     if ([(SBHProxiedApplicationPlaceholder *)self resume])
     {
@@ -523,29 +523,29 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
   return 0;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHProxiedApplicationPlaceholder *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHProxiedApplicationPlaceholder *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(SBHProxiedApplicationPlaceholder *)self applicationBundleIdentifier];
-  v6 = [v4 appendObject:v5 withName:@"bundleIdentifier"];
+  applicationBundleIdentifier = [(SBHProxiedApplicationPlaceholder *)self applicationBundleIdentifier];
+  v6 = [v4 appendObject:applicationBundleIdentifier withName:@"bundleIdentifier"];
 
-  v7 = [(SBHProxiedApplicationPlaceholder *)self applicationDisplayName];
-  v8 = [v4 appendObject:v7 withName:@"displayName"];
+  applicationDisplayName = [(SBHProxiedApplicationPlaceholder *)self applicationDisplayName];
+  v8 = [v4 appendObject:applicationDisplayName withName:@"displayName"];
 
-  v9 = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
-  v10 = v9;
-  if (v9)
+  progress = [(FBSApplicationPlaceholder *)self->_placeholderProxy progress];
+  v10 = progress;
+  if (progress)
   {
     v11 = MEMORY[0x1E696AEC0];
-    [v9 percentComplete];
+    [progress percentComplete];
     v13 = [v11 stringWithFormat:@"%.0f%%", v12 * 100.0];
     v14 = [v4 appendObject:v13 withName:@"progress"];
 
@@ -563,10 +563,10 @@ uint64_t __70__SBHProxiedApplicationPlaceholder_placeholderDidChangeSignificantl
 
 - (id)succinctDescription
 {
-  v2 = [(SBHProxiedApplicationPlaceholder *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHProxiedApplicationPlaceholder *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (SBHProxiedApplicationPlaceholderDelegate)delegate

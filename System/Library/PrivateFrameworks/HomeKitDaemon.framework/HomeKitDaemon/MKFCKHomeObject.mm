@@ -1,32 +1,32 @@
 @interface MKFCKHomeObject
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)importDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5;
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-- (BOOL)_exportSiblingRelationshipsFromLocalModel:(void *)a3 localRelationship:(void *)a4 context:;
-- (BOOL)_importSiblingRelationshipsIntoLocalModel:(void *)a3 localRelationship:(void *)a4 context:;
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
-- (BOOL)validateHome:(id *)a3 error:(id *)a4;
-- (BOOL)validateHomeModelID:(id *)a3 error:(id *)a4;
-- (id)_accessoryWithModelID:(void *)a3 context:;
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context;
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
+- (BOOL)_exportSiblingRelationshipsFromLocalModel:(void *)model localRelationship:(void *)relationship context:;
+- (BOOL)_importSiblingRelationshipsIntoLocalModel:(void *)model localRelationship:(void *)relationship context:;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
+- (BOOL)validateHome:(id *)home error:(id *)error;
+- (BOOL)validateHomeModelID:(id *)d error:(id *)error;
+- (id)_accessoryWithModelID:(void *)d context:;
 - (uint64_t)_validateConstraints:(uint64_t)result;
-- (void)_exportSiblingRelationshipsFromLocalModel:(void *)a3 localRelationship:(void *)a4 cloudRelationship:(void *)a5 context:;
-- (void)_importSiblingRelationshipsIntoLocalModel:(void *)a3 localRelationship:(void *)a4 cloudRelationship:(void *)a5 context:;
+- (void)_exportSiblingRelationshipsFromLocalModel:(void *)model localRelationship:(void *)relationship cloudRelationship:(void *)cloudRelationship context:;
+- (void)_importSiblingRelationshipsIntoLocalModel:(void *)model localRelationship:(void *)relationship cloudRelationship:(void *)cloudRelationship context:;
 - (void)willSave;
 @end
 
 @implementation MKFCKHomeObject
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -38,11 +38,11 @@
   objc_exception_throw(v16);
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -54,14 +54,14 @@
   objc_exception_throw(v16);
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v7.receiver = self;
   v7.super_class = MKFCKHomeObject;
   v5 = [(HMDManagedObject *)&v7 validateForUpdate:?];
   if (v5)
   {
-    LOBYTE(v5) = [(MKFCKHomeObject *)self _validateConstraints:a3];
+    LOBYTE(v5) = [(MKFCKHomeObject *)self _validateConstraints:update];
   }
 
   return v5;
@@ -74,18 +74,18 @@
     v3 = result;
     if (([result shouldSkipValidationDuringImport] & 1) == 0)
     {
-      v4 = [v3 home];
-      if (v4)
+      home = [v3 home];
+      if (home)
       {
-        v5 = v4;
-        v6 = [v3 homeModelID];
-        if (v6)
+        v5 = home;
+        homeModelID = [v3 homeModelID];
+        if (homeModelID)
         {
-          v7 = v6;
-          v8 = [v3 home];
-          v9 = [v8 modelID];
-          v10 = [v3 homeModelID];
-          v11 = [v9 isEqual:v10];
+          v7 = homeModelID;
+          home2 = [v3 home];
+          modelID = [home2 modelID];
+          homeModelID2 = [v3 homeModelID];
+          v11 = [modelID isEqual:homeModelID2];
 
           if ((v11 & 1) == 0)
           {
@@ -114,14 +114,14 @@
   return result;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v7.receiver = self;
   v7.super_class = MKFCKHomeObject;
   v5 = [(HMDManagedObject *)&v7 validateForInsert:?];
   if (v5)
   {
-    LOBYTE(v5) = [(MKFCKHomeObject *)self _validateConstraints:a3];
+    LOBYTE(v5) = [(MKFCKHomeObject *)self _validateConstraints:insert];
   }
 
   return v5;
@@ -132,42 +132,42 @@
   v7.receiver = self;
   v7.super_class = MKFCKHomeObject;
   [(MKFCKModel *)&v7 willSave];
-  v3 = [(MKFCKHomeObject *)self homeModelID];
+  homeModelID = [(MKFCKHomeObject *)self homeModelID];
 
-  if (!v3)
+  if (!homeModelID)
   {
-    v4 = [(MKFCKHomeObject *)self home];
-    v5 = v4;
-    if (v4)
+    home = [(MKFCKHomeObject *)self home];
+    v5 = home;
+    if (home)
     {
-      v6 = [v4 modelID];
-      [(MKFCKHomeObject *)self setHomeModelID:v6];
+      modelID = [home modelID];
+      [(MKFCKHomeObject *)self setHomeModelID:modelID];
     }
   }
 }
 
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = objc_autoreleasePoolPush();
-  v15 = a1;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 hmd_debugIdentifier];
+    hmd_debugIdentifier = [dCopy hmd_debugIdentifier];
     v21 = 138544130;
     v22 = v17;
     v23 = 2112;
-    v24 = v18;
+    v24 = hmd_debugIdentifier;
     v25 = 2160;
     v26 = 1752392040;
     v27 = 2112;
-    v28 = v11;
+    v28 = iDCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Local model deleted: %@::%{mask.hash}@", &v21, 0x2Au);
   }
 
@@ -176,22 +176,22 @@
   return 1;
 }
 
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 objectWithID:v10];
-  v15 = MKFPropertyNamesFromDescriptions(v11);
-  v16 = [a1 fetchWithLocalModel:v14 context:v13];
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
+  v14 = [contextCopy objectWithID:dCopy];
+  v15 = MKFPropertyNamesFromDescriptions(propertiesCopy);
+  v16 = [self fetchWithLocalModel:v14 context:contextCopy];
   v17 = v16;
   if (!v16)
   {
     v39 = v15;
     v19 = objc_autoreleasePoolPush();
-    v32 = a1;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -208,16 +208,16 @@
     goto LABEL_17;
   }
 
-  if ([v16 exportFromLocalModel:v14 updatedProperties:v11 context:v13])
+  if ([v16 exportFromLocalModel:v14 updatedProperties:propertiesCopy context:contextCopy])
   {
-    v38 = v12;
+    v38 = updatesCopy;
     v39 = v15;
-    v18 = [v17 hasPersistentChangedValues];
+    hasPersistentChangedValues = [v17 hasPersistentChangedValues];
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     v22 = v21;
-    if (v18)
+    if (hasPersistentChangedValues)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
@@ -233,7 +233,7 @@
 
       objc_autoreleasePoolPop(v19);
       v24 = objc_autoreleasePoolPush();
-      v25 = v20;
+      v25 = selfCopy2;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -272,7 +272,7 @@
       if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
 LABEL_16:
-        v12 = v38;
+        updatesCopy = v38;
 LABEL_17:
 
         objc_autoreleasePoolPop(v19);
@@ -299,15 +299,15 @@ LABEL_18:
   return v34;
 }
 
-+ (BOOL)exportInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)exportInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectWithID:v8];
+  dCopy = d;
+  updatesCopy = updates;
+  contextCopy = context;
+  v11 = [contextCopy objectWithID:dCopy];
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -324,28 +324,28 @@ LABEL_18:
   return 1;
 }
 
-+ (BOOL)importDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)importDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = objc_autoreleasePoolPush();
-  v15 = a1;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 hmd_debugIdentifier];
+    hmd_debugIdentifier = [dCopy hmd_debugIdentifier];
     v21 = 138544130;
     v22 = v17;
     v23 = 2112;
-    v24 = v18;
+    v24 = hmd_debugIdentifier;
     v25 = 2160;
     v26 = 1752392040;
     v27 = 2112;
-    v28 = v11;
+    v28 = iDCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Cloud model deleted: %@::%{mask.hash}@", &v21, 0x2Au);
   }
 
@@ -354,21 +354,21 @@ LABEL_18:
   return 1;
 }
 
-+ (BOOL)importUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)importUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 objectWithID:v10];
-  v15 = MKFPropertyNamesFromDescriptions(v11);
-  v16 = [v14 fetchLocalModelWithContext:v13];
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
+  v14 = [contextCopy objectWithID:dCopy];
+  v15 = MKFPropertyNamesFromDescriptions(propertiesCopy);
+  v16 = [v14 fetchLocalModelWithContext:contextCopy];
   if (!v16)
   {
     v38 = v15;
     v18 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -385,16 +385,16 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  if ([v14 importIntoLocalModel:v16 updatedProperties:v11 context:v13])
+  if ([v14 importIntoLocalModel:v16 updatedProperties:propertiesCopy context:contextCopy])
   {
-    v37 = v12;
+    v37 = updatesCopy;
     v38 = v15;
-    v17 = [v16 hasPersistentChangedValues];
+    hasPersistentChangedValues = [v16 hasPersistentChangedValues];
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     v21 = v20;
-    if (v17)
+    if (hasPersistentChangedValues)
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -410,7 +410,7 @@ LABEL_18:
 
       objc_autoreleasePoolPop(v18);
       v23 = objc_autoreleasePoolPush();
-      v24 = v19;
+      v24 = selfCopy2;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
@@ -449,7 +449,7 @@ LABEL_18:
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
 LABEL_16:
-        v12 = v37;
+        updatesCopy = v37;
 LABEL_17:
 
         objc_autoreleasePoolPop(v18);
@@ -476,15 +476,15 @@ LABEL_18:
   return v33;
 }
 
-+ (BOOL)importInsertWithObjectID:(id)a3 additionalUpdates:(id)a4 context:(id)a5
++ (BOOL)importInsertWithObjectID:(id)d additionalUpdates:(id)updates context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectWithID:v8];
+  dCopy = d;
+  updatesCopy = updates;
+  contextCopy = context;
+  v11 = [contextCopy objectWithID:dCopy];
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -501,10 +501,10 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)validateHomeModelID:(id *)a3 error:(id *)a4
+- (BOOL)validateHomeModelID:(id *)d error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || !*a3 || ([objc_opt_class() hmd_validateUUID:*a3 key:@"homeModelID" error:a4] & 1) != 0)
+  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || !*d || ([objc_opt_class() hmd_validateUUID:*d key:@"homeModelID" error:error] & 1) != 0)
   {
     result = 1;
   }
@@ -512,12 +512,12 @@ LABEL_18:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = *a3;
+      v13 = *d;
       v16 = 138543874;
       v17 = v12;
       v18 = 2114;
@@ -528,20 +528,20 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v9);
-    v14 = [objc_opt_class() hmd_errorForInvalidValue:*a3 key:@"homeModelID"];
+    v14 = [objc_opt_class() hmd_errorForInvalidValue:*d key:@"homeModelID"];
     v15 = v14;
     result = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)validateHome:(id *)a3 error:(id *)a4
+- (BOOL)validateHome:(id *)home error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  if ([(MKFCKModel *)self shouldSkipValidationDuringImport]|| (v7 = *a3, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, (isKindOfClass & 1) != 0) && v7)
+  if ([(MKFCKModel *)self shouldSkipValidationDuringImport]|| (v7 = *home, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, (isKindOfClass & 1) != 0) && v7)
   {
     result = 1;
   }
@@ -549,12 +549,12 @@ LABEL_18:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = *a3;
+      v14 = *home;
       v18 = 138543874;
       v19 = v13;
       v20 = 2114;
@@ -565,41 +565,41 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [objc_opt_class() hmd_errorForInvalidValue:*a3 key:@"home"];
+    v15 = [objc_opt_class() hmd_errorForInvalidValue:*home key:@"home"];
     v16 = v15;
     result = 0;
-    *a4 = v15;
+    *error = v15;
   }
 
   v17 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)_accessoryWithModelID:(void *)a3 context:
+- (id)_accessoryWithModelID:(void *)d context:
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v7 = +[MKFCKAccessory fetchRequest];
     v8 = MEMORY[0x277CCAC30];
-    v9 = [a1 home];
-    v10 = [v8 predicateWithFormat:@"%K == %@ && %K == %@", @"home", v9, @"modelID", v5];
+    home = [self home];
+    v10 = [v8 predicateWithFormat:@"%K == %@ && %K == %@", @"home", home, @"modelID", v5];
     [v7 setPredicate:v10];
 
     v19 = 0;
-    v11 = [v6 executeFetchRequest:v7 error:&v19];
+    v11 = [dCopy executeFetchRequest:v7 error:&v19];
     v12 = v19;
     if (v11)
     {
-      a1 = [v11 firstObject];
+      self = [v11 firstObject];
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -616,45 +616,45 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v13);
-      a1 = 0;
+      self = 0;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_importSiblingRelationshipsIntoLocalModel:(void *)a3 localRelationship:(void *)a4 context:
+- (BOOL)_importSiblingRelationshipsIntoLocalModel:(void *)model localRelationship:(void *)relationship context:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a4;
-    v8 = a3;
+    relationshipCopy = relationship;
+    modelCopy = model;
     v9 = a2;
-    v10 = [v9 entity];
-    v11 = [v10 relationshipsByName];
-    v12 = [v11 objectForKeyedSubscript:v8];
+    entity = [v9 entity];
+    relationshipsByName = [entity relationshipsByName];
+    v12 = [relationshipsByName objectForKeyedSubscript:modelCopy];
 
-    v13 = [a1 relationshipForLocalName:v8 localModel:v9];
+    v13 = [self relationshipForLocalName:modelCopy localModel:v9];
 
-    [(MKFCKHomeObject *)a1 _importSiblingRelationshipsIntoLocalModel:v9 localRelationship:v12 cloudRelationship:v13 context:v7];
+    [(MKFCKHomeObject *)self _importSiblingRelationshipsIntoLocalModel:v9 localRelationship:v12 cloudRelationship:v13 context:relationshipCopy];
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
-- (void)_importSiblingRelationshipsIntoLocalModel:(void *)a3 localRelationship:(void *)a4 cloudRelationship:(void *)a5 context:
+- (void)_importSiblingRelationshipsIntoLocalModel:(void *)model localRelationship:(void *)relationship cloudRelationship:(void *)cloudRelationship context:
 {
-  v9 = a5;
-  v10 = a4;
+  cloudRelationshipCopy = cloudRelationship;
+  relationshipCopy = relationship;
   v11 = a2;
-  v12 = [a3 name];
-  v13 = [v11 mutableSetValueForKey:v12];
+  name = [model name];
+  v13 = [v11 mutableSetValueForKey:name];
 
-  v14 = [v10 name];
+  name2 = [relationshipCopy name];
 
-  v15 = [a1 valueForKey:v14];
+  v15 = [self valueForKey:name2];
 
   v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
   v29[0] = MEMORY[0x277D85DD0];
@@ -669,9 +669,9 @@ LABEL_18:
   v24[2] = __105__MKFCKHomeObject__importSiblingRelationshipsIntoLocalModel_localRelationship_cloudRelationship_context___block_invoke_2;
   v24[3] = &unk_278673528;
   v25 = v17;
-  v18 = v9;
+  v18 = cloudRelationshipCopy;
   v26 = v18;
-  v27 = a1;
+  selfCopy = self;
   v19 = v13;
   v28 = v19;
   v20 = v17;
@@ -913,36 +913,36 @@ LABEL_30:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_exportSiblingRelationshipsFromLocalModel:(void *)a3 localRelationship:(void *)a4 context:
+- (BOOL)_exportSiblingRelationshipsFromLocalModel:(void *)model localRelationship:(void *)relationship context:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a4;
-    v8 = a3;
+    relationshipCopy = relationship;
+    modelCopy = model;
     v9 = a2;
-    v10 = [v9 entity];
-    v11 = [v10 relationshipsByName];
-    v12 = [v11 objectForKeyedSubscript:v8];
+    entity = [v9 entity];
+    relationshipsByName = [entity relationshipsByName];
+    v12 = [relationshipsByName objectForKeyedSubscript:modelCopy];
 
-    v13 = [a1 relationshipForLocalName:v8 localModel:v9];
+    v13 = [self relationshipForLocalName:modelCopy localModel:v9];
 
-    [(MKFCKHomeObject *)a1 _exportSiblingRelationshipsFromLocalModel:v9 localRelationship:v12 cloudRelationship:v13 context:v7];
+    [(MKFCKHomeObject *)self _exportSiblingRelationshipsFromLocalModel:v9 localRelationship:v12 cloudRelationship:v13 context:relationshipCopy];
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
-- (void)_exportSiblingRelationshipsFromLocalModel:(void *)a3 localRelationship:(void *)a4 cloudRelationship:(void *)a5 context:
+- (void)_exportSiblingRelationshipsFromLocalModel:(void *)model localRelationship:(void *)relationship cloudRelationship:(void *)cloudRelationship context:
 {
-  v9 = a5;
-  v10 = a4;
+  cloudRelationshipCopy = cloudRelationship;
+  relationshipCopy = relationship;
   v11 = a2;
-  v12 = [a3 name];
-  v13 = [v11 valueForKey:v12];
+  name = [model name];
+  v13 = [v11 valueForKey:name];
 
-  v14 = [v10 name];
+  name2 = [relationshipCopy name];
 
-  v15 = [a1 mutableSetValueForKey:v14];
+  v15 = [self mutableSetValueForKey:name2];
 
   v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v15, "count")}];
   v29[0] = MEMORY[0x277D85DD0];
@@ -957,9 +957,9 @@ LABEL_30:
   v24[2] = __105__MKFCKHomeObject__exportSiblingRelationshipsFromLocalModel_localRelationship_cloudRelationship_context___block_invoke_2;
   v24[3] = &unk_2786735C8;
   v25 = v17;
-  v18 = v9;
+  v18 = cloudRelationshipCopy;
   v26 = v18;
-  v27 = a1;
+  selfCopy = self;
   v19 = v15;
   v28 = v19;
   v20 = v17;

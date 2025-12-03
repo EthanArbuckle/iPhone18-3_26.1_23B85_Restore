@@ -1,36 +1,36 @@
 @interface HMMediaSystemComponent
 + (id)logCategory;
-+ (id)mediaSystemComponentWithDictionary:(id)a3 home:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
-- (BOOL)mergeRoleWithComponent:(id)a3;
++ (id)mediaSystemComponentWithDictionary:(id)dictionary home:(id)home;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFromNewObject:(id)object;
+- (BOOL)mergeRoleWithComponent:(id)component;
 - (HMAccessory)accessory;
 - (HMMediaProfile)mediaProfile;
-- (HMMediaSystemComponent)initWithCoder:(id)a3;
-- (HMMediaSystemComponent)initWithMediaProfile:(id)a3 role:(id)a4;
-- (HMMediaSystemComponent)initWithUUID:(id)a3 mediaProfile:(id)a4 role:(id)a5;
+- (HMMediaSystemComponent)initWithCoder:(id)coder;
+- (HMMediaSystemComponent)initWithMediaProfile:(id)profile role:(id)role;
+- (HMMediaSystemComponent)initWithUUID:(id)d mediaProfile:(id)profile role:(id)role;
 - (HMMediaSystemRole)role;
 - (NSString)description;
 - (NSUUID)uniqueIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)logIdentifier;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)serialize;
 - (unint64_t)hash;
 - (void)_unconfigure;
-- (void)_updateAccessoryReference:(id)a3;
-- (void)setAccessory:(id)a3;
-- (void)setRole:(id)a3;
+- (void)_updateAccessoryReference:(id)reference;
+- (void)setAccessory:(id)accessory;
+- (void)setRole:(id)role;
 @end
 
 @implementation HMMediaSystemComponent
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableMediaSystemComponent alloc];
-  v5 = [(HMMediaSystemComponent *)self mediaProfile];
-  v6 = [(HMMediaSystemComponent *)self role];
-  v7 = [(HMMediaSystemComponent *)v4 initWithMediaProfile:v5 role:v6];
+  mediaProfile = [(HMMediaSystemComponent *)self mediaProfile];
+  role = [(HMMediaSystemComponent *)self role];
+  v7 = [(HMMediaSystemComponent *)v4 initWithMediaProfile:mediaProfile role:role];
 
   return v7;
 }
@@ -57,77 +57,77 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)mediaSystemComponentWithDictionary:(id)a3 home:(id)a4
++ (id)mediaSystemComponentWithDictionary:(id)dictionary home:(id)home
 {
   v5 = kMediaSystemComponentUUIDCodingKey;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 hmf_UUIDForKey:v5];
-  v9 = [v7 hmf_UUIDForKey:@"kAccessoryUUID"];
-  v10 = [v7 hmf_dictionaryForKey:kMediaSystemComponentRoleCodingKey];
+  homeCopy = home;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy hmf_UUIDForKey:v5];
+  v9 = [dictionaryCopy hmf_UUIDForKey:@"kAccessoryUUID"];
+  v10 = [dictionaryCopy hmf_dictionaryForKey:kMediaSystemComponentRoleCodingKey];
 
   v11 = [[HMMediaSystemRole alloc] initWithDictionary:v10];
-  v12 = [v6 accessories];
+  accessories = [homeCopy accessories];
 
-  v13 = [v12 hmf_firstObjectWithUUID:v9];
+  v13 = [accessories hmf_firstObjectWithUUID:v9];
 
-  v14 = [v13 mediaProfile];
-  v15 = [[HMMediaSystemComponent alloc] initWithUUID:v8 mediaProfile:v14 role:v11];
+  mediaProfile = [v13 mediaProfile];
+  v15 = [[HMMediaSystemComponent alloc] initWithUUID:v8 mediaProfile:mediaProfile role:v11];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMMediaSystemComponent alloc];
-  v5 = [(HMMediaSystemComponent *)self mediaProfile];
-  v6 = [(HMMediaSystemComponent *)self role];
-  v7 = [(HMMediaSystemComponent *)v4 initWithMediaProfile:v5 role:v6];
+  mediaProfile = [(HMMediaSystemComponent *)self mediaProfile];
+  role = [(HMMediaSystemComponent *)self role];
+  v7 = [(HMMediaSystemComponent *)v4 initWithMediaProfile:mediaProfile role:role];
 
   return v7;
 }
 
-- (BOOL)mergeRoleWithComponent:(id)a3
+- (BOOL)mergeRoleWithComponent:(id)component
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMMediaSystemComponent *)self role];
-  v6 = [v4 role];
-  v7 = [v5 isEqual:v6];
+  componentCopy = component;
+  role = [(HMMediaSystemComponent *)self role];
+  role2 = [componentCopy role];
+  v7 = [role isEqual:role2];
 
   if ((v7 & 1) == 0)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 role];
+      role3 = [componentCopy role];
       v16 = 138543618;
       v17 = v11;
       v18 = 2112;
-      v19 = v12;
+      v19 = role3;
       _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating component role: %@ during merge", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [v4 role];
-    [(HMMediaSystemComponent *)v9 setRole:v13];
+    role4 = [componentCopy role];
+    [(HMMediaSystemComponent *)selfCopy setRole:role4];
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v7 ^ 1;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -145,7 +145,7 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -165,30 +165,30 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
 
 - (id)serialize
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(HMMediaSystemComponent *)self uuid];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:kMediaSystemComponentUUIDCodingKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  uuid = [(HMMediaSystemComponent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:kMediaSystemComponentUUIDCodingKey];
 
-  v6 = [(HMMediaSystemComponent *)self accessory];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
-  [v3 setObject:v8 forKeyedSubscript:@"kAccessoryUUID"];
+  accessory = [(HMMediaSystemComponent *)self accessory];
+  uuid2 = [accessory uuid];
+  uUIDString2 = [uuid2 UUIDString];
+  [dictionary setObject:uUIDString2 forKeyedSubscript:@"kAccessoryUUID"];
 
-  v9 = [(HMMediaSystemComponent *)self role];
-  v10 = [v9 serialize];
-  [v3 setObject:v10 forKeyedSubscript:kMediaSystemComponentRoleCodingKey];
+  role = [(HMMediaSystemComponent *)self role];
+  serialize = [role serialize];
+  [dictionary setObject:serialize forKeyedSubscript:kMediaSystemComponentRoleCodingKey];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
-- (void)setAccessory:(id)a3
+- (void)setAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_accessory, v4);
+  objc_storeWeak(&self->_accessory, accessoryCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -221,12 +221,12 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
   return v6;
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   os_unfair_lock_lock_with_options();
   role = self->_role;
-  self->_role = v4;
+  self->_role = roleCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -244,27 +244,27 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
 {
   os_unfair_lock_lock_with_options();
   WeakRetained = objc_loadWeakRetained(&self->_accessory);
-  v4 = [WeakRetained mediaProfile];
+  mediaProfile = [WeakRetained mediaProfile];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return mediaProfile;
 }
 
-- (HMMediaSystemComponent)initWithCoder:(id)a3
+- (HMMediaSystemComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMMediaSystemComponent *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kMediaSystemComponentUUIDCodingKey];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kMediaSystemComponentUUIDCodingKey];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
     objc_storeWeak(&v5->_accessory, v8);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kMediaSystemComponentRoleCodingKey];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kMediaSystemComponentRoleCodingKey];
     role = v5->_role;
     v5->_role = v9;
   }
@@ -272,28 +272,28 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
   return v5;
 }
 
-- (void)_updateAccessoryReference:(id)a3
+- (void)_updateAccessoryReference:(id)reference
 {
-  v4 = [a3 accessories];
-  v5 = [(HMMediaSystemComponent *)self accessory];
-  v6 = [v5 uuid];
-  v7 = [v4 hmf_firstObjectWithUUID:v6];
+  accessories = [reference accessories];
+  accessory = [(HMMediaSystemComponent *)self accessory];
+  uuid = [accessory uuid];
+  v7 = [accessories hmf_firstObjectWithUUID:uuid];
 
   [(HMMediaSystemComponent *)self setAccessory:v7];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMMediaSystemComponent *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(HMMediaSystemComponent *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -303,7 +303,7 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -314,13 +314,13 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMediaSystemComponent *)self uuid];
-      v8 = [(HMMediaSystemComponent *)v6 uuid];
-      if ([v7 hmf_isEqualToUUID:v8])
+      uuid = [(HMMediaSystemComponent *)self uuid];
+      uuid2 = [(HMMediaSystemComponent *)v6 uuid];
+      if ([uuid hmf_isEqualToUUID:uuid2])
       {
-        v9 = [(HMMediaSystemComponent *)self role];
-        v10 = [(HMMediaSystemComponent *)v6 role];
-        v11 = [v9 isEqual:v10];
+        role = [(HMMediaSystemComponent *)self role];
+        role2 = [(HMMediaSystemComponent *)v6 role];
+        v11 = [role isEqual:role2];
       }
 
       else
@@ -342,21 +342,21 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HMMediaSystemComponent *)self uuid];
-  v6 = [(HMMediaSystemComponent *)self accessory];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [(HMMediaSystemComponent *)self role];
-  v9 = [v3 stringWithFormat:@"<%@ uuid: %@ accessory identifier: %@ role: %@>", v4, v5, v7, v8];
+  uuid = [(HMMediaSystemComponent *)self uuid];
+  accessory = [(HMMediaSystemComponent *)self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  role = [(HMMediaSystemComponent *)self role];
+  v9 = [v3 stringWithFormat:@"<%@ uuid: %@ accessory identifier: %@ role: %@>", v4, uuid, uniqueIdentifier, role];
 
   return v9;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMMediaSystemComponent *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMMediaSystemComponent *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)_unconfigure
@@ -366,34 +366,34 @@ uint64_t __37__HMMediaSystemComponent_logCategory__block_invoke()
   [(HMMediaSystemComponent *)self setRole:0];
 }
 
-- (HMMediaSystemComponent)initWithUUID:(id)a3 mediaProfile:(id)a4 role:(id)a5
+- (HMMediaSystemComponent)initWithUUID:(id)d mediaProfile:(id)profile role:(id)role
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  profileCopy = profile;
+  roleCopy = role;
   v16.receiver = self;
   v16.super_class = HMMediaSystemComponent;
   v12 = [(HMMediaSystemComponent *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uuid, a3);
-    v14 = [v10 accessory];
-    objc_storeWeak(&v13->_accessory, v14);
+    objc_storeStrong(&v12->_uuid, d);
+    accessory = [profileCopy accessory];
+    objc_storeWeak(&v13->_accessory, accessory);
 
-    objc_storeStrong(&v13->_role, a5);
+    objc_storeStrong(&v13->_role, role);
   }
 
   return v13;
 }
 
-- (HMMediaSystemComponent)initWithMediaProfile:(id)a3 role:(id)a4
+- (HMMediaSystemComponent)initWithMediaProfile:(id)profile role:(id)role
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(HMMediaSystemComponent *)self initWithUUID:v9 mediaProfile:v8 role:v7];
+  roleCopy = role;
+  profileCopy = profile;
+  uUID = [v6 UUID];
+  v10 = [(HMMediaSystemComponent *)self initWithUUID:uUID mediaProfile:profileCopy role:roleCopy];
 
   return v10;
 }

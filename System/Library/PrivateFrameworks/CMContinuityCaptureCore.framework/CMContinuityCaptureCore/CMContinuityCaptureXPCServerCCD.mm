@@ -1,21 +1,21 @@
 @interface CMContinuityCaptureXPCServerCCD
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CMContinuityCaptureXPCServerCCD)init;
-- (void)_enumerateConnectionsWithBlock:(id)a3;
+- (void)_enumerateConnectionsWithBlock:(id)block;
 - (void)disconnectSession;
-- (void)pauseSessionForEvent:(int64_t)a3;
-- (void)prepareForPullConversation:(id)a3;
-- (void)presentShieldError:(int64_t)a3 userInfo:(id)a4;
+- (void)pauseSessionForEvent:(int64_t)event;
+- (void)prepareForPullConversation:(id)conversation;
+- (void)presentShieldError:(int64_t)error userInfo:(id)info;
 - (void)refreshPrivacyAcknowledgement;
-- (void)requestContinuityCaptureUIConfiguration:(id)a3;
-- (void)resumeStreamingForEvent:(int64_t)a3;
-- (void)setupSingSessionFromURL:(id)a3 remoteDisplayIdentifier:(id)a4;
-- (void)setupSingSessionWithMediaRouteIdentifier:(id)a3 remoteDisplayIdentifier:(id)a4;
+- (void)requestContinuityCaptureUIConfiguration:(id)configuration;
+- (void)resumeStreamingForEvent:(int64_t)event;
+- (void)setupSingSessionFromURL:(id)l remoteDisplayIdentifier:(id)identifier;
+- (void)setupSingSessionWithMediaRouteIdentifier:(id)identifier remoteDisplayIdentifier:(id)displayIdentifier;
 - (void)skipPlacementStep;
-- (void)startListeningWithDelegate:(id)a3;
+- (void)startListeningWithDelegate:(id)delegate;
 - (void)tearDownShieldUI;
-- (void)updateClientsWithConfiguration:(id)a3;
+- (void)updateClientsWithConfiguration:(id)configuration;
 @end
 
 @implementation CMContinuityCaptureXPCServerCCD
@@ -77,9 +77,9 @@ uint64_t __49__CMContinuityCaptureXPCServerCCD_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)startListeningWithDelegate:(id)a3
+- (void)startListeningWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (dword_27ECB4D60)
   {
     v23 = 0;
@@ -99,7 +99,7 @@ uint64_t __49__CMContinuityCaptureXPCServerCCD_sharedInstance__block_invoke()
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   if (!self->_connections)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -153,9 +153,9 @@ void __51__CMContinuityCaptureXPCServerCCD_tearDownShieldUI__block_invoke(uint64
   [v2 tearDownShield];
 }
 
-- (void)presentShieldError:(int64_t)a3 userInfo:(id)a4
+- (void)presentShieldError:(int64_t)error userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (dword_27ECB4D60)
   {
     v22 = 0;
@@ -179,9 +179,9 @@ void __51__CMContinuityCaptureXPCServerCCD_tearDownShieldUI__block_invoke(uint64
   v10[1] = 3221225472;
   v10[2] = __63__CMContinuityCaptureXPCServerCCD_presentShieldError_userInfo___block_invoke;
   v10[3] = &unk_278D5D438;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = infoCopy;
+  errorCopy = error;
+  v9 = infoCopy;
   [(CMContinuityCaptureXPCServerCCD *)self _enumerateConnectionsWithBlock:v10];
 }
 
@@ -191,9 +191,9 @@ void __63__CMContinuityCaptureXPCServerCCD_presentShieldError_userInfo___block_i
   [v3 presentError:*(a1 + 40) userInfo:*(a1 + 32)];
 }
 
-- (void)requestContinuityCaptureUIConfiguration:(id)a3
+- (void)requestContinuityCaptureUIConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (dword_27ECB4D60)
   {
     v5 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -202,23 +202,10 @@ void __63__CMContinuityCaptureXPCServerCCD_presentShieldError_userInfo___block_i
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained requestContinuityCaptureUIConfiguration:v4];
+  [WeakRetained requestContinuityCaptureUIConfiguration:configurationCopy];
 }
 
-- (void)resumeStreamingForEvent:(int64_t)a3
-{
-  if (dword_27ECB4D60)
-  {
-    v5 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
-    os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    fig_log_call_emit_and_clean_up_after_send_and_compose();
-  }
-
-  WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained resumeStreamingForEvent:a3];
-}
-
-- (void)pauseSessionForEvent:(int64_t)a3
+- (void)resumeStreamingForEvent:(int64_t)event
 {
   if (dword_27ECB4D60)
   {
@@ -228,12 +215,25 @@ void __63__CMContinuityCaptureXPCServerCCD_presentShieldError_userInfo___block_i
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pauseSessionForEvent:a3];
+  [WeakRetained resumeStreamingForEvent:event];
 }
 
-- (void)updateClientsWithConfiguration:(id)a3
+- (void)pauseSessionForEvent:(int64_t)event
 {
-  v4 = a3;
+  if (dword_27ECB4D60)
+  {
+    v5 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained pauseSessionForEvent:event];
+}
+
+- (void)updateClientsWithConfiguration:(id)configuration
+{
+  configurationCopy = configuration;
   if (dword_27ECB4D60)
   {
     v19 = 0;
@@ -257,8 +257,8 @@ void __63__CMContinuityCaptureXPCServerCCD_presentShieldError_userInfo___block_i
   v8[1] = 3221225472;
   v8[2] = __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___block_invoke;
   v8[3] = &unk_278D5D460;
-  v9 = v4;
-  v7 = v4;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   [(CMContinuityCaptureXPCServerCCD *)self _enumerateConnectionsWithBlock:v8];
 }
 
@@ -294,9 +294,9 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
   [WeakRetained skipPlacementStep];
 }
 
-- (void)prepareForPullConversation:(id)a3
+- (void)prepareForPullConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   if (dword_27ECB4D60)
   {
     v5 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -305,13 +305,13 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained prepareForPullConversation:v4];
+  [WeakRetained prepareForPullConversation:conversationCopy];
 }
 
-- (void)setupSingSessionFromURL:(id)a3 remoteDisplayIdentifier:(id)a4
+- (void)setupSingSessionFromURL:(id)l remoteDisplayIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   if (dword_27ECB4D60)
   {
     v8 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -320,15 +320,15 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained setupSingSessionFromURL:v6 remoteDisplayIdentifier:v7];
+  [WeakRetained setupSingSessionFromURL:lCopy remoteDisplayIdentifier:identifierCopy];
 }
 
-- (void)setupSingSessionWithMediaRouteIdentifier:(id)a3 remoteDisplayIdentifier:(id)a4
+- (void)setupSingSessionWithMediaRouteIdentifier:(id)identifier remoteDisplayIdentifier:(id)displayIdentifier
 {
-  v6 = a4;
-  v7 = a3;
+  displayIdentifierCopy = displayIdentifier;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained setupSingSessionWithMediaRouteIdentifier:v7 remoteDisplayIdentifier:v6];
+  [WeakRetained setupSingSessionWithMediaRouteIdentifier:identifierCopy remoteDisplayIdentifier:displayIdentifierCopy];
 }
 
 - (void)refreshPrivacyAcknowledgement
@@ -344,9 +344,9 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
   [WeakRetained refreshPrivacyAcknowledgement];
 }
 
-- (void)_enumerateConnectionsWithBlock:(id)a3
+- (void)_enumerateConnectionsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_connectionsLock);
   v5 = [(NSMutableArray *)self->_connections copy];
   os_unfair_lock_unlock(&self->_connectionsLock);
@@ -388,7 +388,7 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
           objc_enumerationMutation(v8);
         }
 
-        v4[2](v4, *(*(&v14 + 1) + 8 * i));
+        blockCopy[2](blockCopy, *(*(&v14 + 1) + 8 * i));
       }
 
       v10 = [v8 countByEnumeratingWithState:&v14 objects:v13 count:16];
@@ -398,22 +398,22 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   serviceListener = self->_serviceListener;
-  if (serviceListener == v6)
+  if (serviceListener == listenerCopy)
   {
     v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2854F7920];
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2854F5EB0];
-    [v7 setRemoteObjectInterface:v10];
+    [connectionCopy setRemoteObjectInterface:v10];
 
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __70__CMContinuityCaptureXPCServerCCD_listener_shouldAcceptNewConnection___block_invoke;
@@ -427,21 +427,21 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
     v21[3] = &unk_278D5D4B0;
     v12 = v11;
     v22 = v12;
-    [v7 setInvalidationHandler:v21];
+    [connectionCopy setInvalidationHandler:v21];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __70__CMContinuityCaptureXPCServerCCD_listener_shouldAcceptNewConnection___block_invoke_3;
     v19[3] = &unk_278D5D4B0;
     v13 = v12;
     v20 = v13;
-    [v7 setInterruptionHandler:v19];
+    [connectionCopy setInterruptionHandler:v19];
     xpcConnectionQueue = self->_xpcConnectionQueue;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __70__CMContinuityCaptureXPCServerCCD_listener_shouldAcceptNewConnection___block_invoke_4;
     v16[3] = &unk_278D5C0A8;
     objc_copyWeak(&v18, &location);
-    v17 = v7;
+    v17 = connectionCopy;
     dispatch_async(xpcConnectionQueue, v16);
 
     objc_destroyWeak(&v18);
@@ -451,7 +451,7 @@ void __66__CMContinuityCaptureXPCServerCCD_updateClientsWithConfiguration___bloc
     objc_destroyWeak(&location);
   }
 
-  return serviceListener == v6;
+  return serviceListener == listenerCopy;
 }
 
 void __70__CMContinuityCaptureXPCServerCCD_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)

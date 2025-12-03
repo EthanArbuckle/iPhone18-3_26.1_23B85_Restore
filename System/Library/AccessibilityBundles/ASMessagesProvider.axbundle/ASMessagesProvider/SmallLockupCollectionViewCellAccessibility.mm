@@ -11,35 +11,35 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 isAccessibilityElement];
+  _axLockupView = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
+  isAccessibilityElement = [_axLockupView isAccessibilityElement];
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 accessibilityLabel];
+  _axLockupView = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
+  accessibilityLabel = [_axLockupView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 accessibilityTraits];
+  _axLockupView = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
+  accessibilityTraits = [_axLockupView accessibilityTraits];
   v4 = *MEMORY[0x29EDC7FD0];
 
-  return v4 | v3;
+  return v4 | accessibilityTraits;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 _accessibilitySupplementaryFooterViews];
+  _axLockupView = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
+  _accessibilitySupplementaryFooterViews = [_axLockupView _accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 - (id)_accessibilityScrollParentForComparingByXAxis
@@ -52,8 +52,8 @@
 - (id)accessibilityUserInputLabels
 {
   objc_opt_class();
-  v3 = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v4 = [v3 safeValueForKey:@"accessibilityTitleLabel"];
+  _axLockupView = [(SmallLockupCollectionViewCellAccessibility *)self _axLockupView];
+  v4 = [_axLockupView safeValueForKey:@"accessibilityTitleLabel"];
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = __UIAXStringForVariables();

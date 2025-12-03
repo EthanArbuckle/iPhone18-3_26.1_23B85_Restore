@@ -1,13 +1,13 @@
 @interface CRXUFormatters
-+ (id)BOOLAsString:(BOOL)a3;
-+ (id)timeIntervalAsString:(double)a3;
++ (id)BOOLAsString:(BOOL)string;
++ (id)timeIntervalAsString:(double)string;
 @end
 
 @implementation CRXUFormatters
 
-+ (id)BOOLAsString:(BOOL)a3
++ (id)BOOLAsString:(BOOL)string
 {
-  if (a3)
+  if (string)
   {
     return @"YES";
   }
@@ -18,24 +18,24 @@
   }
 }
 
-+ (id)timeIntervalAsString:(double)a3
++ (id)timeIntervalAsString:(double)string
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v5 = v4;
-  if (a3 < 0.0)
+  if (string < 0.0)
   {
     [v4 appendString:@"-"];
-    a3 = -a3;
+    string = -string;
   }
 
-  v6 = a3;
-  v7 = (a3 - a3) * 1000.0;
-  v8 = v6 % 0xE10;
-  v9 = v6 % 0xE10 / 0x3C;
-  v10 = v6 % 0xE10 % 0x3C;
-  if (v6 >= 0xE10)
+  stringCopy = string;
+  v7 = (string - string) * 1000.0;
+  v8 = stringCopy % 0xE10;
+  v9 = stringCopy % 0xE10 / 0x3C;
+  v10 = stringCopy % 0xE10 % 0x3C;
+  if (stringCopy >= 0xE10)
   {
-    [v5 appendFormat:@"%lu:", v6 / 0xE10];
+    [v5 appendFormat:@"%lu:", stringCopy / 0xE10];
   }
 
   if ([v5 length])

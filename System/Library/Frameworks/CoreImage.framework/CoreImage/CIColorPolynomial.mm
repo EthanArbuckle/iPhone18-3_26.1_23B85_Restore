@@ -218,7 +218,7 @@
     v34 = v33;
     [(CIVector *)self->inputAlphaCoefficients W];
     v36 = [CIVector vectorWithX:v30 Y:v32 Z:v34 W:v35];
-    v37 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
     [(CIVector *)self->inputAlphaCoefficients X];
     if (v38 == 0.0)
     {
@@ -239,20 +239,20 @@
 
     if ([(CIColorPolynomial *)self _isIdentityAlpha])
     {
-      v47 = [(CIColorPolynomial *)self _kernelRGB];
+      _kernelRGB = [(CIColorPolynomial *)self _kernelRGB];
     }
 
     else
     {
-      v47 = [(CIColorPolynomial *)self _kernel];
+      _kernelRGB = [(CIColorPolynomial *)self _kernel];
     }
 
-    v48[0] = v37;
+    v48[0] = imageByUnpremultiplyingAlpha;
     v48[1] = v12;
     v48[2] = v20;
     v48[3] = v28;
     v48[4] = v36;
-    return [objc_msgSend(v47 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 5), v40, v42, v44, v46), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernelRGB applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 5), v40, v42, v44, v46), "imageByPremultiplyingAlpha"}];
   }
 }
 

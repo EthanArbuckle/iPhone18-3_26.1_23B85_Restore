@@ -1,11 +1,11 @@
 @interface GSVolPath
-+ (id)_volPathOnVolume:(id)a3 withFD:(int)a4 withPath:(id)a5 error:(id *)a6;
-- (BOOL)_canReadFileWithCreds:(const GSCredential *)a3;
++ (id)_volPathOnVolume:(id)volume withFD:(int)d withPath:(id)path error:(id *)error;
+- (BOOL)_canReadFileWithCreds:(const GSCredential *)creds;
 - (BOOL)isInIgnoredLocation;
-- (BOOL)isValidForCreds:(const GSCredential *)a3 documentIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)isValidForCreds:(const GSCredential *)creds documentIdentifier:(id)identifier error:(id *)error;
 - (BOOL)setCopyOnWrite;
 - (id)description;
-- (void)performOnResolvedPath:(id)a3;
+- (void)performOnResolvedPath:(id)path;
 @end
 
 @implementation GSVolPath
@@ -16,8 +16,8 @@
   parentID = self->_parentID;
   path = self->_path;
   device = self->_device;
-  v7 = [(NSString *)path lastPathComponent];
-  v8 = [NSString stringWithFormat:@"<%@ dev:%x docID:%lld parentid:%lld name:%@ fileid:%lld>", path, device, docID, parentID, v7, self->_fileID];
+  lastPathComponent = [(NSString *)path lastPathComponent];
+  v8 = [NSString stringWithFormat:@"<%@ dev:%x docID:%lld parentid:%lld name:%@ fileid:%lld>", path, device, docID, parentID, lastPathComponent, self->_fileID];
 
   return v8;
 }
@@ -104,7 +104,7 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)_canReadFileWithCreds:(const GSCredential *)a3
+- (BOOL)_canReadFileWithCreds:(const GSCredential *)creds
 {
   if (fcntl([(GSManager *)self->_library volDirFd], 50, v8) < 0)
   {
@@ -112,14 +112,14 @@ LABEL_12:
   }
 
   v5 = [NSString stringWithFormat:@"%s%@", v8, self->_path];
-  v6 = sub_100010A70(a3, [v5 fileSystemRepresentation], 1);
+  v6 = sub_100010A70(creds, [v5 fileSystemRepresentation], 1);
 
   return v6;
 }
 
-- (BOOL)isValidForCreds:(const GSCredential *)a3 documentIdentifier:(id)a4 error:(id *)a5
+- (BOOL)isValidForCreds:(const GSCredential *)creds documentIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   if (!self->_docID)
   {
     v11 = [NSString stringWithFormat:@"File has no storage"];
@@ -129,7 +129,7 @@ LABEL_12:
       sub_10002525C();
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -138,9 +138,9 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  if (![(GSVolPath *)self isInIgnoredLocation]&& (!a3 || [(GSVolPath *)self _canReadFileWithCreds:a3]))
+  if (![(GSVolPath *)self isInIgnoredLocation]&& (!creds || [(GSVolPath *)self _canReadFileWithCreds:creds]))
   {
-    if (!v8 || (v17 = 0, v18 = 0, -[GSManager volumeUUID](self->_library, "volumeUUID"), v9 = objc_claimAutoreleasedReturnValue(), [v9 getUUIDBytes:&v17], v9, self->_docID == v8[3]) && (v17 == v8[1] ? (v10 = v18 == v8[2]) : (v10 = 0), v10))
+    if (!identifierCopy || (v17 = 0, v18 = 0, -[GSManager volumeUUID](self->_library, "volumeUUID"), v9 = objc_claimAutoreleasedReturnValue(), [v9 getUUIDBytes:&v17], v9, self->_docID == identifierCopy[3]) && (v17 == identifierCopy[1] ? (v10 = v18 == identifierCopy[2]) : (v10 = 0), v10))
     {
       v15 = 1;
       goto LABEL_21;
@@ -154,11 +154,11 @@ LABEL_12:
     sub_100027A10();
   }
 
-  if (a5)
+  if (error)
   {
     v13 = 104;
 LABEL_19:
-    *a5 = sub_10000F0F8(v13, v11, 0);
+    *error = sub_10000F0F8(v13, v11, 0);
   }
 
 LABEL_20:
@@ -169,26 +169,26 @@ LABEL_21:
   return v15;
 }
 
-+ (id)_volPathOnVolume:(id)a3 withFD:(int)a4 withPath:(id)a5 error:(id *)a6
++ (id)_volPathOnVolume:(id)volume withFD:(int)d withPath:(id)path error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
+  volumeCopy = volume;
+  pathCopy = path;
+  v11 = pathCopy;
   v27 = xmmword_100031338;
   v28 = 0x400000000;
   memset(v31, 0, 480);
   v29 = 0u;
   v30 = 0u;
-  if (a4 < 0)
+  if (d < 0)
   {
-    if (!v10)
+    if (!pathCopy)
     {
 LABEL_16:
       v16 = 0;
       goto LABEL_23;
     }
 
-    if (getattrlist([v10 fileSystemRepresentation], &v27, &v29, 0x428uLL, 0x20u) < 0)
+    if (getattrlist([pathCopy fileSystemRepresentation], &v27, &v29, 0x428uLL, 0x20u) < 0)
     {
       v12 = [NSString stringWithFormat:@"invalid path"];
       v13 = sub_100003164();
@@ -201,7 +201,7 @@ LABEL_16:
     }
   }
 
-  else if (fgetattrlist(a4, &v27, &v29, 0x428uLL, 0x20u) < 0)
+  else if (fgetattrlist(d, &v27, &v29, 0x428uLL, 0x20u) < 0)
   {
     v12 = [NSString stringWithFormat:@"invalid path", v27, v28];
     v13 = sub_100003164();
@@ -213,17 +213,17 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (!v9)
+  if (!volumeCopy)
   {
-    v9 = [GSStorageManager createLibraryForDevice:DWORD1(v29) error:a6];
-    if (!v9)
+    volumeCopy = [GSStorageManager createLibraryForDevice:DWORD1(v29) error:error];
+    if (!volumeCopy)
     {
       goto LABEL_16;
     }
   }
 
-  v14 = [v9 device];
-  if (v14 == DWORD1(v29))
+  device = [volumeCopy device];
+  if (device == DWORD1(v29))
   {
     v15 = SLODWORD(v31[0]);
     if (*(v31 + SLODWORD(v31[0])) != 47)
@@ -235,7 +235,7 @@ LABEL_16:
     v16 = objc_alloc_init(GSVolPath);
     *&v16->_fileID = v30;
     v16->_device = DWORD1(v29);
-    objc_storeStrong(&v16->_library, v9);
+    objc_storeStrong(&v16->_library, volumeCopy);
     v16->_docID = HIDWORD(v29);
     v17 = [v12 stringWithFileSystemRepresentation:v31 + v15 length:strlen(v31 + v15)];
     path = v16->_path;
@@ -261,10 +261,10 @@ LABEL_18:
 
 LABEL_19:
 
-  if (a6)
+  if (error)
   {
     sub_10000F0F8(104, v12, 0);
-    *a6 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -279,10 +279,10 @@ LABEL_23:
   return v16;
 }
 
-- (void)performOnResolvedPath:(id)a3
+- (void)performOnResolvedPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   library = self->_library;
   if (library)
   {
@@ -291,7 +291,7 @@ LABEL_23:
     v10[2] = sub_1000115EC;
     v10[3] = &unk_100041218;
     v10[4] = self;
-    v11 = v4;
+    v11 = pathCopy;
     [(GSManager *)library dispatchSync:v10];
   }
 

@@ -2,23 +2,23 @@
 - (BOOL)_canReloadView;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isVisible;
 - (BOOL)isVisibleAndFrontmost;
-- (BOOL)presentDialog:(id)a3 pendUntilVisible:(BOOL)a4;
-- (BOOL)presentDialogForError:(id)a3 pendUntilVisible:(BOOL)a4;
+- (BOOL)presentDialog:(id)dialog pendUntilVisible:(BOOL)visible;
+- (BOOL)presentDialogForError:(id)error pendUntilVisible:(BOOL)visible;
 - (BOOL)shouldInvalidateForMemoryPurge;
-- (BOOL)window:(id)a3 shouldAutorotateToInterfaceOrientation:(int64_t)a4;
+- (BOOL)window:(id)window shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (NSString)defaultPNGName;
 - (SUClientInterface)clientInterface;
 - (SUNavigationItem)navigationItem;
 - (SUViewController)init;
-- (SUViewController)initWithSection:(id)a3;
+- (SUViewController)initWithSection:(id)section;
 - (double)defaultPNGExpirationTime;
 - (id)_existingNavigationItem;
 - (id)_rotationController;
 - (id)copyArchivableContext;
-- (id)copyChildViewControllersForReason:(int64_t)a3;
+- (id)copyChildViewControllersForReason:(int64_t)reason;
 - (id)copyDefaultScriptProperties;
 - (id)copyScriptProperties;
 - (id)inputAccessoryView;
@@ -30,52 +30,52 @@
 - (int64_t)ITunesStoreUIBarStyle;
 - (int64_t)interfaceOrientation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
-- (void)_dismissFooterAnimationDidStop:(id)a3;
-- (void)_exitStoreButtonAction:(id)a3;
-- (void)_exitStoreButtonDidChangeNotification:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
+- (void)_dismissFooterAnimationDidStop:(id)stop;
+- (void)_exitStoreButtonAction:(id)action;
+- (void)_exitStoreButtonDidChangeNotification:(id)notification;
 - (void)_invalidateForMemoryPurge;
-- (void)_keyboardDidHideNotification:(id)a3;
-- (void)_keyboardDidShowNotification:(id)a3;
-- (void)_keyboardWillHideNotification:(id)a3;
-- (void)_keyboardWillShowNotification:(id)a3;
+- (void)_keyboardDidHideNotification:(id)notification;
+- (void)_keyboardDidShowNotification:(id)notification;
+- (void)_keyboardWillHideNotification:(id)notification;
+- (void)_keyboardWillShowNotification:(id)notification;
 - (void)_presentFooterAnimationDidStop;
-- (void)_reloadExitStoreButtonWithParentViewController:(id)a3;
+- (void)_reloadExitStoreButtonWithParentViewController:(id)controller;
 - (void)_reloadLibraryButton;
-- (void)_setExistingNavigationItem:(id)a3;
+- (void)_setExistingNavigationItem:(id)item;
 - (void)cancelOperations;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)dismissFooterViewControllerAnimated:(BOOL)a3;
-- (void)enqueueOperation:(id)a3 cancelOnDealloc:(BOOL)a4;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)dismissFooterViewControllerAnimated:(BOOL)animated;
+- (void)enqueueOperation:(id)operation cancelOnDealloc:(BOOL)dealloc;
 - (void)invalidate;
 - (void)loadView;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operationFinished:(id)a3;
-- (void)presentFooterViewController:(id)a3 animated:(BOOL)a4;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operationFinished:(id)finished;
+- (void)presentFooterViewController:(id)controller animated:(BOOL)animated;
 - (void)reloadContentSizeForViewInPopover;
-- (void)remoteControlReceivedWithEvent:(id)a3;
+- (void)remoteControlReceivedWithEvent:(id)event;
 - (void)resetRestoredContext;
-- (void)restoreArchivableContext:(id)a3;
-- (void)setInputAccessoryViewController:(id)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setScriptProperties:(id)a3;
-- (void)setSection:(id)a3;
-- (void)setShowsLibraryButton:(BOOL)a3;
-- (void)setSkLoading:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitle:(id)a3 changeTabBarItem:(BOOL)a4;
+- (void)restoreArchivableContext:(id)context;
+- (void)setInputAccessoryViewController:(id)controller;
+- (void)setParentViewController:(id)controller;
+- (void)setScriptProperties:(id)properties;
+- (void)setSection:(id)section;
+- (void)setShowsLibraryButton:(BOOL)button;
+- (void)setSkLoading:(BOOL)loading;
+- (void)setTitle:(id)title;
+- (void)setTitle:(id)title changeTabBarItem:(BOOL)item;
 - (void)storePageProtocolDidChange;
-- (void)trackOperation:(id)a3 cancelOnDealloc:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)trackOperation:(id)operation cancelOnDealloc:(BOOL)dealloc;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SUViewController
@@ -93,27 +93,27 @@
     v2->_showsLibraryButton = 1;
     [(SUViewController *)v2 setContainmentSupport:0];
     [(SUViewController *)v2 reloadContentSizeForViewInPopover];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
-    [v4 addObserver:v2 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
-    [v4 addObserver:v2 selector:sel__keyboardDidHideNotification_ name:*MEMORY[0x1E69DDF70] object:0];
-    [v4 addObserver:v2 selector:sel__keyboardDidShowNotification_ name:*MEMORY[0x1E69DDF78] object:0];
-    [v4 addObserver:v2 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x1E69DE078] object:0];
-    [v4 addObserver:v2 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x1E69DE080] object:0];
-    [v4 addObserver:v2 selector:sel__exitStoreButtonDidChangeNotification_ name:@"SUClientExitStoreButtonDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardDidHideNotification_ name:*MEMORY[0x1E69DDF70] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardDidShowNotification_ name:*MEMORY[0x1E69DDF78] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v2 selector:sel__exitStoreButtonDidChangeNotification_ name:@"SUClientExitStoreButtonDidChangeNotification" object:0];
   }
 
   return v2;
 }
 
-- (SUViewController)initWithSection:(id)a3
+- (SUViewController)initWithSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = [(SUViewController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SUViewController *)v5 setSection:v4];
+    [(SUViewController *)v5 setSection:sectionCopy];
   }
 
   return v6;
@@ -122,14 +122,14 @@
 - (void)dealloc
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
-  [v3 removeObserver:self name:@"SUClientExitStoreButtonDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
+  [defaultCenter removeObserver:self name:@"SUClientExitStoreButtonDidChangeNotification" object:0];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -180,9 +180,9 @@
   {
     if ([(UIViewController *)footerViewController isViewLoaded])
     {
-      v12 = [(UIViewController *)self->_footerViewController view];
-      v13 = [v12 superviewOfClass:objc_opt_class()];
-      [v13 removeHitTestTarget:v12];
+      view = [(UIViewController *)self->_footerViewController view];
+      v13 = [view superviewOfClass:objc_opt_class()];
+      [v13 removeHitTestTarget:view];
     }
 
     [(SUViewController *)self removeChildViewController:self->_footerViewController];
@@ -203,15 +203,15 @@
   [(SUViewController *)&v15 dealloc];
 }
 
-- (id)copyChildViewControllersForReason:(int64_t)a3
+- (id)copyChildViewControllersForReason:(int64_t)reason
 {
-  v4 = [(SUViewController *)self childViewControllers];
-  v5 = [v4 mutableCopy];
+  childViewControllers = [(SUViewController *)self childViewControllers];
+  v5 = [childViewControllers mutableCopy];
 
-  v6 = [(SUViewController *)self presentedViewController];
-  if (v6)
+  presentedViewController = [(SUViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    [v5 removeObjectIdenticalTo:v6];
+    [v5 removeObjectIdenticalTo:presentedViewController];
   }
 
   return v5;
@@ -302,9 +302,9 @@
   v3 = objc_alloc_init(SUViewControllerScriptProperties);
   [(SUViewControllerScriptProperties *)v3 setShowsHorizontalScrollIndicator:1];
   [(SUViewControllerScriptProperties *)v3 setShowsVerticalScrollIndicator:1];
-  v4 = [MEMORY[0x1E69E47F8] sharedCache];
+  mEMORY[0x1E69E47F8] = [MEMORY[0x1E69E47F8] sharedCache];
   v5 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
-  v6 = [v4 URLBagForContext:v5];
+  v6 = [mEMORY[0x1E69E47F8] URLBagForContext:v5];
 
   v7 = [v6 valueForKey:@"p2-client-options"];
   objc_opt_class();
@@ -316,47 +316,47 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v9 = (v11 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+    bOOLValue = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1;
   }
 
-  [(SUViewControllerScriptProperties *)v3 setAlwaysDispatchesScrollEvents:v9];
-  v12 = [(SUViewController *)self viewControllerFactory];
-  v13 = [v12 newPlaceholderViewController];
+  [(SUViewControllerScriptProperties *)v3 setAlwaysDispatchesScrollEvents:bOOLValue];
+  viewControllerFactory = [(SUViewController *)self viewControllerFactory];
+  newPlaceholderViewController = [viewControllerFactory newPlaceholderViewController];
 
-  v14 = [(SUViewController *)self clientInterface];
-  [v13 setClientInterface:v14];
+  clientInterface = [(SUViewController *)self clientInterface];
+  [newPlaceholderViewController setClientInterface:clientInterface];
 
-  v15 = [v13 loadingView];
-  -[SUViewControllerScriptProperties setLoadingIndicatorStyle:](v3, "setLoadingIndicatorStyle:", [v15 activityIndicatorStyle]);
-  v16 = [v15 textColor];
-  [(SUViewControllerScriptProperties *)v3 setLoadingTextColor:v16];
+  loadingView = [newPlaceholderViewController loadingView];
+  -[SUViewControllerScriptProperties setLoadingIndicatorStyle:](v3, "setLoadingIndicatorStyle:", [loadingView activityIndicatorStyle]);
+  textColor = [loadingView textColor];
+  [(SUViewControllerScriptProperties *)v3 setLoadingTextColor:textColor];
 
-  v17 = [v15 textShadowColor];
-  [(SUViewControllerScriptProperties *)v3 setLoadingTextShadowColor:v17];
+  textShadowColor = [loadingView textShadowColor];
+  [(SUViewControllerScriptProperties *)v3 setLoadingTextShadowColor:textShadowColor];
 
-  v18 = [v13 backgroundGradient];
-  [(SUViewControllerScriptProperties *)v3 setPlaceholderBackgroundGradient:v18];
+  backgroundGradient = [newPlaceholderViewController backgroundGradient];
+  [(SUViewControllerScriptProperties *)v3 setPlaceholderBackgroundGradient:backgroundGradient];
 
-  v19 = [(UIViewController *)self section];
-  v20 = [v19 loadingTextColor];
-  if (v20)
+  section = [(UIViewController *)self section];
+  loadingTextColor = [section loadingTextColor];
+  if (loadingTextColor)
   {
-    [(SUViewControllerScriptProperties *)v3 setLoadingTextColor:v20];
+    [(SUViewControllerScriptProperties *)v3 setLoadingTextColor:loadingTextColor];
   }
 
-  v21 = [v19 loadingTextShadowColor];
+  loadingTextShadowColor = [section loadingTextShadowColor];
 
-  if (v21)
+  if (loadingTextShadowColor)
   {
-    [(SUViewControllerScriptProperties *)v3 setLoadingTextShadowColor:v21];
+    [(SUViewControllerScriptProperties *)v3 setLoadingTextShadowColor:loadingTextShadowColor];
   }
 
   return v3;
@@ -377,8 +377,8 @@
 
 - (double)defaultPNGExpirationTime
 {
-  v2 = [MEMORY[0x1E695DF00] distantFuture];
-  [v2 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -386,10 +386,10 @@
 
 - (NSString)defaultPNGName
 {
-  v2 = [(UIViewController *)self section];
-  v3 = [v2 defaultPNGStyle];
+  section = [(UIViewController *)self section];
+  defaultPNGStyle = [section defaultPNGStyle];
 
-  if (v3 == 1)
+  if (defaultPNGStyle == 1)
   {
     return @"Default-Dark";
   }
@@ -400,31 +400,31 @@
   }
 }
 
-- (void)dismissFooterViewControllerAnimated:(BOOL)a3
+- (void)dismissFooterViewControllerAnimated:(BOOL)animated
 {
   if (self->_footerViewController)
   {
-    v3 = a3;
-    v9 = [(SUViewController *)self view];
-    if ([v9 tag] != 1718903668)
+    animatedCopy = animated;
+    view = [(SUViewController *)self view];
+    if ([view tag] != 1718903668)
     {
       [(SUViewController *)a2 dismissFooterViewControllerAnimated:?];
     }
 
-    v6 = [(UIViewController *)self->_footerViewController view];
-    v7 = [v6 superviewOfClass:objc_opt_class()];
-    [v7 removeHitTestTarget:v6];
+    view2 = [(UIViewController *)self->_footerViewController view];
+    v7 = [view2 superviewOfClass:objc_opt_class()];
+    [v7 removeHitTestTarget:view2];
 
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v8 beginIgnoringInteractionEvents];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
-    [(UIViewController *)self->_footerViewController viewWillDisappear:v3];
-    if (v3)
+    [(UIViewController *)self->_footerViewController viewWillDisappear:animatedCopy];
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] beginAnimations:@"dismiss" context:0];
       [MEMORY[0x1E69DD250] setAnimationDelegate:self];
       [MEMORY[0x1E69DD250] setAnimationDidStopSelector:sel__dismissFooterAnimationDidStop_];
-      [v9 setFooterVisible:0];
+      [view setFooterVisible:0];
       [MEMORY[0x1E69DD250] commitAnimations];
     }
 
@@ -435,25 +435,25 @@
   }
 }
 
-- (void)enqueueOperation:(id)a3 cancelOnDealloc:(BOOL)a4
+- (void)enqueueOperation:(id)operation cancelOnDealloc:(BOOL)dealloc
 {
-  v4 = a4;
+  deallocCopy = dealloc;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E69D4938] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  operationCopy = operation;
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -466,24 +466,24 @@
   *v15 = 138543874;
   *&v15[4] = objc_opt_class();
   *&v15[12] = 2112;
-  *&v15[14] = v6;
+  *&v15[14] = operationCopy;
   *&v15[22] = 1024;
-  LODWORD(v16) = v4;
+  LODWORD(v16) = deallocCopy;
   v11 = *&v15[4];
   LODWORD(v14) = 28;
   v12 = _os_log_send_and_compose_impl();
 
   if (v12)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, v15, v14, *v15, *&v15[16], v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, v15, v14, *v15, *&v15[16], v16}];
     free(v12);
     SSFileLog();
 LABEL_9:
   }
 
-  [(SUViewController *)self trackOperation:v6 cancelOnDealloc:v4];
-  v13 = [MEMORY[0x1E69E4798] mainQueue];
-  [v13 addOperation:v6];
+  [(SUViewController *)self trackOperation:operationCopy cancelOnDealloc:deallocCopy];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+  [mainQueue addOperation:operationCopy];
 }
 
 - (void)invalidate
@@ -532,9 +532,9 @@ LABEL_9:
 {
   if ([(SUViewController *)self isViewLoaded])
   {
-    v3 = [(SUViewController *)self view];
-    v4 = [v3 window];
-    v5 = v4 != 0;
+    view = [(SUViewController *)self view];
+    window = [view window];
+    v5 = window != 0;
   }
 
   else
@@ -542,77 +542,77 @@ LABEL_9:
     v5 = 0;
   }
 
-  v6 = [(SUViewController *)self presentedViewController];
-  v7 = v6;
-  v8 = v6 == 0 && v5;
-  if (v6 && v5)
+  presentedViewController = [(SUViewController *)self presentedViewController];
+  v7 = presentedViewController;
+  isVisible = presentedViewController == 0 && v5;
+  if (presentedViewController && v5)
   {
-    v8 = [v6 modalPresentationStyle] != 0;
+    isVisible = [presentedViewController modalPresentationStyle] != 0;
   }
 
-  v9 = [(UIViewController *)self overlayViewController];
-  v10 = v9;
-  if (v9)
+  overlayViewController = [(UIViewController *)self overlayViewController];
+  v10 = overlayViewController;
+  if (overlayViewController)
   {
-    if ([(SUViewController *)v9 isActiveOverlay])
+    if ([(SUViewController *)overlayViewController isActiveOverlay])
     {
       if (v10 != self)
       {
-        v8 = [(SUViewController *)v10 isVisible];
+        isVisible = [(SUViewController *)v10 isVisible];
       }
     }
 
     else
     {
-      v8 = 0;
+      isVisible = 0;
     }
   }
 
-  return v8;
+  return isVisible;
 }
 
 - (BOOL)isVisibleAndFrontmost
 {
-  v3 = [(SUViewController *)self isVisible];
-  v4 = [(SUViewController *)self presentedViewController];
+  isVisible = [(SUViewController *)self isVisible];
+  presentedViewController = [(SUViewController *)self presentedViewController];
 
-  if (v4 || (-[UIViewController iTunesStoreUI_searchFieldController](self, "iTunesStoreUI_searchFieldController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isActive], v5, (v6 & 1) != 0))
+  if (presentedViewController || (-[UIViewController iTunesStoreUI_searchFieldController](self, "iTunesStoreUI_searchFieldController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isActive], v5, (v6 & 1) != 0))
   {
     v7 = 0;
   }
 
   else
   {
-    v9 = [(UIViewController *)self overlayViewController];
-    if (v9)
+    overlayViewController = [(UIViewController *)self overlayViewController];
+    if (overlayViewController)
     {
       v7 = 1;
     }
 
     else
     {
-      v10 = [(UIViewController *)self overlayBackgroundViewController];
-      v7 = v10 == 0;
+      overlayBackgroundViewController = [(UIViewController *)self overlayBackgroundViewController];
+      v7 = overlayBackgroundViewController == 0;
     }
   }
 
-  return v3 && v7;
+  return isVisible && v7;
 }
 
-- (BOOL)presentDialog:(id)a3 pendUntilVisible:(BOOL)a4
+- (BOOL)presentDialog:(id)dialog pendUntilVisible:(BOOL)visible
 {
-  v4 = a4;
+  visibleCopy = visible;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dialogCopy = dialog;
   if ([(SUViewController *)self isViewLoaded])
   {
-    v7 = [(SUViewController *)self view];
-    v8 = [v7 window];
+    view = [(SUViewController *)self view];
+    window = [view window];
 
-    if (v8)
+    if (window)
     {
-      v9 = [(SUViewController *)self clientInterface];
-      [v9 _presentDialog:v6];
+      clientInterface = [(SUViewController *)self clientInterface];
+      [clientInterface _presentDialog:dialogCopy];
 
 LABEL_18:
       v10 = 1;
@@ -621,22 +621,22 @@ LABEL_18:
   }
 
   v10 = 0;
-  if (v6 && v4)
+  if (dialogCopy && visibleCopy)
   {
-    v11 = [MEMORY[0x1E69D4938] sharedConfig];
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 &= 2u;
     }
@@ -664,13 +664,13 @@ LABEL_15:
           pendingDialogs = self->_pendingDialogs;
         }
 
-        [(NSMutableArray *)pendingDialogs addObject:v6, v21];
+        [(NSMutableArray *)pendingDialogs addObject:dialogCopy, v21];
         goto LABEL_18;
       }
 
-      v14 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v23, v22, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v23, v22, v23}];
       free(v16);
-      v21 = v14;
+      v21 = oSLogObject;
       SSFileLog();
     }
 
@@ -682,44 +682,44 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)presentDialogForError:(id)a3 pendUntilVisible:(BOOL)a4
+- (BOOL)presentDialogForError:(id)error pendUntilVisible:(BOOL)visible
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v4 = a4;
+  visibleCopy = visible;
   v6 = MEMORY[0x1E69E4750];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithError:v7];
+  errorCopy = error;
+  v8 = [[v6 alloc] initWithError:errorCopy];
 
-  LOBYTE(v4) = [(SUViewController *)self presentDialog:v8 pendUntilVisible:v4];
-  return v4;
+  LOBYTE(visibleCopy) = [(SUViewController *)self presentDialog:v8 pendUntilVisible:visibleCopy];
+  return visibleCopy;
 }
 
-- (void)presentFooterViewController:(id)a3 animated:(BOOL)a4
+- (void)presentFooterViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
+  controllerCopy = controller;
+  v8 = controllerCopy;
   if (self->_footerViewController)
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(&v12->super.super.super, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(&oSLogObject->super.super.super, OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -739,7 +739,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v20, v19, v20}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v20, v19, v20}];
       free(v14);
       SSFileLog();
     }
@@ -749,40 +749,40 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v7)
+  if (controllerCopy)
   {
-    objc_storeStrong(&self->_footerViewController, a3);
+    objc_storeStrong(&self->_footerViewController, controller);
     [(SUViewController *)self addChildViewController:self->_footerViewController];
-    [(UIViewController *)self->_footerViewController viewWillAppear:v4];
-    v9 = [(SUViewController *)self view];
-    v12 = objc_alloc_init(SUFooterContainerView);
-    -[SUFooterContainerView setAutoresizingMask:](v12, "setAutoresizingMask:", [v9 autoresizingMask]);
-    [(SUFooterContainerView *)v12 setTag:1718903668];
-    [(SUViewController *)self setView:v12];
-    [(SUFooterContainerView *)v12 setContentView:v9];
-    v15 = [(UIViewController *)self->_footerViewController view];
-    [(SUFooterContainerView *)v12 setFooterView:v15];
+    [(UIViewController *)self->_footerViewController viewWillAppear:animatedCopy];
+    mEMORY[0x1E69D4938] = [(SUViewController *)self view];
+    oSLogObject = objc_alloc_init(SUFooterContainerView);
+    -[SUFooterContainerView setAutoresizingMask:](oSLogObject, "setAutoresizingMask:", [mEMORY[0x1E69D4938] autoresizingMask]);
+    [(SUFooterContainerView *)oSLogObject setTag:1718903668];
+    [(SUViewController *)self setView:oSLogObject];
+    [(SUFooterContainerView *)oSLogObject setContentView:mEMORY[0x1E69D4938]];
+    view = [(UIViewController *)self->_footerViewController view];
+    [(SUFooterContainerView *)oSLogObject setFooterView:view];
 
-    v16 = [(UIView *)v12 superviewOfClass:objc_opt_class()];
-    v17 = [(UIViewController *)self->_footerViewController view];
-    [v16 addHitTestTarget:v17];
+    v16 = [(UIView *)oSLogObject superviewOfClass:objc_opt_class()];
+    view2 = [(UIViewController *)self->_footerViewController view];
+    [v16 addHitTestTarget:view2];
 
-    if (v4)
+    if (animatedCopy)
     {
-      [(SUFooterContainerView *)v12 layoutIfNeeded];
-      v18 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v18 beginIgnoringInteractionEvents];
+      [(SUFooterContainerView *)oSLogObject layoutIfNeeded];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] beginIgnoringInteractionEvents];
 
       [MEMORY[0x1E69DD250] beginAnimations:0 context:0];
       [MEMORY[0x1E69DD250] setAnimationDelegate:self];
       [MEMORY[0x1E69DD250] setAnimationDidStopSelector:sel__presentFooterAnimationDidStop];
-      [(SUFooterContainerView *)v12 setFooterVisible:1];
+      [(SUFooterContainerView *)oSLogObject setFooterVisible:1];
       [MEMORY[0x1E69DD250] commitAnimations];
     }
 
     else
     {
-      [(SUFooterContainerView *)v12 setFooterVisible:1];
+      [(SUFooterContainerView *)oSLogObject setFooterVisible:1];
       [(UIViewController *)self->_footerViewController viewDidAppear:0];
     }
 
@@ -805,19 +805,19 @@ LABEL_16:
   [(SUViewController *)self setPreferredContentSize:v4, v5];
 }
 
-- (void)setInputAccessoryViewController:(id)a3
+- (void)setInputAccessoryViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   inputAccessoryViewController = self->_inputAccessoryViewController;
-  if (inputAccessoryViewController != v5)
+  if (inputAccessoryViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     if (inputAccessoryViewController)
     {
       [(SUViewController *)self removeChildViewController:?];
     }
 
-    objc_storeStrong(&self->_inputAccessoryViewController, a3);
+    objc_storeStrong(&self->_inputAccessoryViewController, controller);
     if (self->_inputAccessoryViewController && ([(SUViewController *)self addChildViewController:?], self->_inputAccessoryViewController) && ![(SUViewController *)self isFirstResponder])
     {
       [(SUViewController *)self becomeFirstResponder];
@@ -828,34 +828,34 @@ LABEL_16:
       [(SUViewController *)self reloadInputViews];
     }
 
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setSkLoading:(BOOL)a3
+- (void)setSkLoading:(BOOL)loading
 {
-  if (self->_skLoading != a3)
+  if (self->_skLoading != loading)
   {
-    self->_skLoading = a3;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"SUViewControllerLoadingDidChangeNotification" object:self];
+    self->_skLoading = loading;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SUViewControllerLoadingDidChangeNotification" object:self];
   }
 }
 
-- (void)setSection:(id)a3
+- (void)setSection:(id)section
 {
-  v11 = a3;
-  v4 = [v11 image];
-  v5 = [v4 _imageThatSuppressesAccessibilityHairlineThickening];
+  sectionCopy = section;
+  image = [sectionCopy image];
+  _imageThatSuppressesAccessibilityHairlineThickening = [image _imageThatSuppressesAccessibilityHairlineThickening];
 
-  v6 = [v11 selectedImage];
-  v7 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+  selectedImage = [sectionCopy selectedImage];
+  _imageThatSuppressesAccessibilityHairlineThickening2 = [selectedImage _imageThatSuppressesAccessibilityHairlineThickening];
 
-  v8 = [(SUViewController *)self tabBarItem];
-  v9 = v8;
-  if (v5)
+  tabBarItem = [(SUViewController *)self tabBarItem];
+  v9 = tabBarItem;
+  if (_imageThatSuppressesAccessibilityHairlineThickening)
   {
-    if ([v11 isUsingLocalArtwork])
+    if ([sectionCopy isUsingLocalArtwork])
     {
       [v9 setImageInsets:{2.0, 0.0, -2.0, 0.0}];
     }
@@ -863,66 +863,66 @@ LABEL_16:
 
   else
   {
-    [v8 setImageInsets:{2.0, 0.0, -2.0, 0.0}];
+    [tabBarItem setImageInsets:{2.0, 0.0, -2.0, 0.0}];
     v10 = [MEMORY[0x1E69DCAB8] imageNamed:@"GenericTabItem.png"];
-    v5 = [v10 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v10 _imageThatSuppressesAccessibilityHairlineThickening];
   }
 
   if (_UIApplicationUsesLegacyUI())
   {
-    if (v7)
+    if (_imageThatSuppressesAccessibilityHairlineThickening2)
     {
-      [v9 setImage:v7];
+      [v9 setImage:_imageThatSuppressesAccessibilityHairlineThickening2];
     }
 
     else
     {
-      [v9 setFinishedSelectedImage:0 withFinishedUnselectedImage:v5];
+      [v9 setFinishedSelectedImage:0 withFinishedUnselectedImage:_imageThatSuppressesAccessibilityHairlineThickening];
     }
   }
 
   else
   {
-    [v9 setImage:v5];
-    [v9 setSelectedImage:v7];
+    [v9 setImage:_imageThatSuppressesAccessibilityHairlineThickening];
+    [v9 setSelectedImage:_imageThatSuppressesAccessibilityHairlineThickening2];
   }
 }
 
-- (void)setScriptProperties:(id)a3
+- (void)setScriptProperties:(id)properties
 {
-  v5 = a3;
-  if (self->_cachedScriptProperties != v5)
+  propertiesCopy = properties;
+  if (self->_cachedScriptProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cachedScriptProperties, a3);
-    v5 = v6;
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->_cachedScriptProperties, properties);
+    propertiesCopy = v6;
   }
 }
 
-- (void)setShowsLibraryButton:(BOOL)a3
+- (void)setShowsLibraryButton:(BOOL)button
 {
-  if (self->_showsLibraryButton != a3)
+  if (self->_showsLibraryButton != button)
   {
-    self->_showsLibraryButton = a3;
-    v5 = [(SUViewController *)self parentViewController];
-    [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:v5];
+    self->_showsLibraryButton = button;
+    parentViewController = [(SUViewController *)self parentViewController];
+    [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:parentViewController];
   }
 }
 
-- (void)setTitle:(id)a3 changeTabBarItem:(BOOL)a4
+- (void)setTitle:(id)title changeTabBarItem:(BOOL)item
 {
-  v7 = a3;
-  v6 = [(SUViewController *)self _existingTabBarItem];
-  if (a4)
+  titleCopy = title;
+  _existingTabBarItem = [(SUViewController *)self _existingTabBarItem];
+  if (item)
   {
-    [(SUViewController *)self setTitle:v7];
+    [(SUViewController *)self setTitle:titleCopy];
   }
 
   else
   {
     [(SUViewController *)self _setExistingTabBarItem:0];
-    [(SUViewController *)self setTitle:v7];
-    [(SUViewController *)self _setExistingTabBarItem:v6];
+    [(SUViewController *)self setTitle:titleCopy];
+    [(SUViewController *)self _setExistingTabBarItem:_existingTabBarItem];
   }
 }
 
@@ -933,19 +933,19 @@ LABEL_16:
     return 0;
   }
 
-  v2 = [(SUViewController *)self parentViewController];
-  v3 = [v2 shouldInvalidateForMemoryPurge];
+  parentViewController = [(SUViewController *)self parentViewController];
+  shouldInvalidateForMemoryPurge = [parentViewController shouldInvalidateForMemoryPurge];
 
-  return v3;
+  return shouldInvalidateForMemoryPurge;
 }
 
-- (void)trackOperation:(id)a3 cancelOnDealloc:(BOOL)a4
+- (void)trackOperation:(id)operation cancelOnDealloc:(BOOL)dealloc
 {
-  v4 = a4;
-  v11 = a3;
-  [v11 setDelegate:self];
-  [v11 setShouldMessageMainThread:1];
-  if (v4)
+  deallocCopy = dealloc;
+  operationCopy = operation;
+  [operationCopy setDelegate:self];
+  [operationCopy setShouldMessageMainThread:1];
+  if (deallocCopy)
   {
     v6 = 1008;
   }
@@ -966,20 +966,20 @@ LABEL_16:
     v8 = *v7;
   }
 
-  [v8 addObject:v11];
+  [v8 addObject:operationCopy];
 }
 
 - (BOOL)_canReloadView
 {
   v5.receiver = self;
   v5.super_class = SUViewController;
-  v3 = [(SUViewController *)&v5 _canReloadView];
-  if (v3)
+  _canReloadView = [(SUViewController *)&v5 _canReloadView];
+  if (_canReloadView)
   {
-    LOBYTE(v3) = [(SUViewController *)self shouldInvalidateForMemoryPurge];
+    LOBYTE(_canReloadView) = [(SUViewController *)self shouldInvalidateForMemoryPurge];
   }
 
-  return v3;
+  return _canReloadView;
 }
 
 - (id)copyArchivableContext
@@ -991,14 +991,14 @@ LABEL_16:
 
   v6.receiver = self;
   v6.super_class = SUViewController;
-  v3 = [(UIViewController *)&v6 copyArchivableContext];
+  copyArchivableContext = [(UIViewController *)&v6 copyArchivableContext];
   if (self->_cachedScriptProperties)
   {
-    v4 = [(SUViewController *)self copyScriptProperties];
-    [v3 setValue:v4 forMetadataKey:@"scriptProperties"];
+    copyScriptProperties = [(SUViewController *)self copyScriptProperties];
+    [copyArchivableContext setValue:copyScriptProperties forMetadataKey:@"scriptProperties"];
   }
 
-  return v3;
+  return copyArchivableContext;
 }
 
 - (void)didReceiveMemoryWarning
@@ -1013,20 +1013,20 @@ LABEL_16:
 {
   v4.receiver = self;
   v4.super_class = SUViewController;
-  v2 = [(SUViewController *)&v4 _existingNavigationItem];
+  _existingNavigationItem = [(SUViewController *)&v4 _existingNavigationItem];
 
-  return v2;
+  return _existingNavigationItem;
 }
 
 - (int64_t)interfaceOrientation
 {
-  v3 = [(SUViewController *)self _popoverController];
-  if (v3 && (v4 = v3, v5 = +[SUClientDispatch isTabBarControllerLoaded], v4, v5))
+  _popoverController = [(SUViewController *)self _popoverController];
+  if (_popoverController && (v4 = _popoverController, v5 = +[SUClientDispatch isTabBarControllerLoaded], v4, v5))
   {
     v6 = +[SUClientDispatch tabBarController];
-    v7 = [v6 interfaceOrientation];
+    interfaceOrientation = [v6 interfaceOrientation];
 
-    return v7;
+    return interfaceOrientation;
   }
 
   else
@@ -1039,9 +1039,9 @@ LABEL_16:
 
 - (int64_t)ITunesStoreUIBarStyle
 {
-  v2 = [(UIViewController *)self section];
-  v3 = v2;
-  if (v2 && [v2 defaultPNGStyle] == 1)
+  section = [(UIViewController *)self section];
+  v3 = section;
+  if (section && [section defaultPNGStyle] == 1)
   {
     v4 = 2;
   }
@@ -1058,8 +1058,8 @@ LABEL_16:
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v4 setAutoresizingMask:18];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   [(SUViewController *)self setView:v4];
   if (self->_cachedScriptProperties)
@@ -1070,36 +1070,36 @@ LABEL_16:
 
 - (id)moreListImage
 {
-  v2 = [(UIViewController *)self section];
-  v3 = [v2 moreListImage];
+  section = [(UIViewController *)self section];
+  moreListImage = [section moreListImage];
 
-  return v3;
+  return moreListImage;
 }
 
 - (id)moreListSelectedImage
 {
-  v2 = [(UIViewController *)self section];
-  v3 = [v2 selectedMoreListImage];
+  section = [(UIViewController *)self section];
+  selectedMoreListImage = [section selectedMoreListImage];
 
-  return v3;
+  return selectedMoreListImage;
 }
 
 - (SUNavigationItem)navigationItem
 {
-  v3 = [(SUViewController *)self parentViewController];
+  parentViewController = [(SUViewController *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
 LABEL_4:
-    v7 = [(SUViewController *)self parentViewController];
-    v8 = [v7 navigationItem];
+    parentViewController2 = [(SUViewController *)self parentViewController];
+    navigationItem = [parentViewController2 navigationItem];
 
     goto LABEL_8;
   }
 
-  v4 = [(SUViewController *)self parentViewController];
-  v5 = [v4 navigationItem];
+  parentViewController3 = [(SUViewController *)self parentViewController];
+  navigationItem2 = [parentViewController3 navigationItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1108,9 +1108,9 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v9 = [(SUViewController *)self _existingNavigationItem];
+  _existingNavigationItem = [(SUViewController *)self _existingNavigationItem];
 
-  if (!v9)
+  if (!_existingNavigationItem)
   {
     v10 = objc_alloc_init(SUNavigationItem);
     [(SUViewController *)self _setExistingNavigationItem:v10];
@@ -1118,28 +1118,28 @@ LABEL_4:
 
   v12.receiver = self;
   v12.super_class = SUViewController;
-  v8 = [(SUViewController *)&v12 navigationItem];
+  navigationItem = [(SUViewController *)&v12 navigationItem];
 LABEL_8:
 
-  return v8;
+  return navigationItem;
 }
 
 - (id)navigationController
 {
-  v3 = [(SUViewController *)self parentViewController];
+  parentViewController = [(SUViewController *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
 LABEL_4:
-    v7 = [(SUViewController *)self parentViewController];
-    v8 = [v7 navigationController];
+    parentViewController2 = [(SUViewController *)self parentViewController];
+    navigationController = [parentViewController2 navigationController];
 
     goto LABEL_6;
   }
 
-  v4 = [(SUViewController *)self parentViewController];
-  v5 = [v4 navigationController];
+  parentViewController3 = [(SUViewController *)self parentViewController];
+  navigationController2 = [parentViewController3 navigationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1150,10 +1150,10 @@ LABEL_4:
 
   v10.receiver = self;
   v10.super_class = SUViewController;
-  v8 = [(SUViewController *)&v10 navigationController];
+  navigationController = [(SUViewController *)&v10 navigationController];
 LABEL_6:
 
-  return v8;
+  return navigationController;
 }
 
 - (void)resetRestoredContext
@@ -1166,13 +1166,13 @@ LABEL_6:
   [(UIViewController *)&v4 resetRestoredContext];
 }
 
-- (void)restoreArchivableContext:(id)a3
+- (void)restoreArchivableContext:(id)context
 {
-  v5 = a3;
-  if (self->_restoredContext != v5)
+  contextCopy = context;
+  if (self->_restoredContext != contextCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_restoredContext, a3);
+    v7 = contextCopy;
+    objc_storeStrong(&self->_restoredContext, context);
     v6 = [(SUViewControllerContext *)self->_restoredContext valueForMetadataKey:@"scriptProperties"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1180,64 +1180,64 @@ LABEL_6:
       [(SUViewController *)self setScriptProperties:v6];
     }
 
-    v5 = v7;
+    contextCopy = v7;
   }
 }
 
-- (void)_setExistingNavigationItem:(id)a3
+- (void)_setExistingNavigationItem:(id)item
 {
   v3.receiver = self;
   v3.super_class = SUViewController;
-  [(SUViewController *)&v3 _setExistingNavigationItem:a3];
+  [(SUViewController *)&v3 _setExistingNavigationItem:item];
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SUViewController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(SUViewController *)self parentViewController];
   v8.receiver = self;
   v8.super_class = SUViewController;
-  [(SUViewController *)&v8 setParentViewController:v4];
+  [(SUViewController *)&v8 setParentViewController:controllerCopy];
 
-  v6 = [(SUViewController *)self parentViewController];
+  parentViewController2 = [(SUViewController *)self parentViewController];
 
-  if (v5 != v6)
+  if (parentViewController != parentViewController2)
   {
     [(UIViewController *)self parentViewControllerHierarchyDidChange];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"SUViewControllerParentViewControllerDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SUViewControllerParentViewControllerDidChangeNotification" object:self];
   }
 
-  if (v4 && !self->_canBeWeakScriptReference)
+  if (controllerCopy && !self->_canBeWeakScriptReference)
   {
     self->_canBeWeakScriptReference = 1;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SUViewController *)self title];
-  v6 = [v5 isEqualToString:v4];
+  titleCopy = title;
+  title = [(SUViewController *)self title];
+  v6 = [title isEqualToString:titleCopy];
 
   if ((v6 & 1) == 0)
   {
     v9.receiver = self;
     v9.super_class = SUViewController;
-    [(SUViewController *)&v9 setTitle:v4];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    v8 = [(SUViewController *)self navigationItem];
-    [v7 postNotificationName:@"SUViewControllerNavigationItemDidChangeNotification" object:v8];
+    [(SUViewController *)&v9 setTitle:titleCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    navigationItem = [(SUViewController *)self navigationItem];
+    [defaultCenter postNotificationName:@"SUViewControllerNavigationItemDidChangeNotification" object:navigationItem];
   }
 }
 
 - (void)storePageProtocolDidChange
 {
-  v3 = [(UIViewController *)self storePageProtocol];
-  v4 = v3;
-  if (v3)
+  storePageProtocol = [(UIViewController *)self storePageProtocol];
+  v4 = storePageProtocol;
+  if (storePageProtocol)
   {
-    -[SUViewController setShouldExcludeFromNavigationHistory:](self, "setShouldExcludeFromNavigationHistory:", [v3 shouldExcludeFromNavigationHistory]);
+    -[SUViewController setShouldExcludeFromNavigationHistory:](self, "setShouldExcludeFromNavigationHistory:", [storePageProtocol shouldExcludeFromNavigationHistory]);
   }
 
   v5.receiver = self;
@@ -1249,39 +1249,39 @@ LABEL_6:
 {
   v7.receiver = self;
   v7.super_class = SUViewController;
-  v3 = [(SUViewController *)&v7 tabBarItem];
-  v4 = [(SUViewController *)self clientInterface];
-  v5 = [v4 appearance];
-  [v5 styleTabBarItem:v3];
+  tabBarItem = [(SUViewController *)&v7 tabBarItem];
+  clientInterface = [(SUViewController *)self clientInterface];
+  appearance = [clientInterface appearance];
+  [appearance styleTabBarItem:tabBarItem];
 
-  return v3;
+  return tabBarItem;
 }
 
 - (id)viewControllerFactory
 {
-  v3 = [(SUViewController *)self clientInterface];
-  v4 = [v3 viewControllerFactory];
+  clientInterface = [(SUViewController *)self clientInterface];
+  viewControllerFactory = [clientInterface viewControllerFactory];
 
-  if (v4)
+  if (viewControllerFactory)
   {
-    v5 = v4;
+    viewControllerFactory2 = viewControllerFactory;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SUViewController;
-    v5 = [(UIViewController *)&v8 viewControllerFactory];
+    viewControllerFactory2 = [(UIViewController *)&v8 viewControllerFactory];
   }
 
-  v6 = v5;
+  v6 = viewControllerFactory2;
 
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v33 = *MEMORY[0x1E69E9840];
   if (([(SUViewController *)self containmentSupport]& 1) == 0)
   {
@@ -1304,7 +1304,7 @@ LABEL_6:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v27 + 1) + 8 * i) viewDidAppear:v3];
+          [*(*(&v27 + 1) + 8 * i) viewDidAppear:appearCopy];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -1314,7 +1314,7 @@ LABEL_6:
     }
   }
 
-  v10 = [(SUViewController *)self clientInterface];
+  clientInterface = [(SUViewController *)self clientInterface];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1334,7 +1334,7 @@ LABEL_6:
           objc_enumerationMutation(v11);
         }
 
-        [v10 _presentDialog:*(*(&v23 + 1) + 8 * j)];
+        [clientInterface _presentDialog:*(*(&v23 + 1) + 8 * j)];
       }
 
       v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -1348,7 +1348,7 @@ LABEL_6:
 
   v22.receiver = self;
   v22.super_class = SUViewController;
-  [(SUViewController *)&v22 viewDidAppear:v3];
+  [(SUViewController *)&v22 viewDidAppear:appearCopy];
   if (self->_inputAccessoryViewController)
   {
     [(SUViewController *)self reloadInputViews];
@@ -1368,18 +1368,18 @@ LABEL_6:
     [objc_opt_class() endTransitionSafety];
   }
 
-  v20 = [(SUViewController *)self parentViewController];
+  parentViewController = [(SUViewController *)self parentViewController];
 
-  if (!v20)
+  if (!parentViewController)
   {
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"SUViewControllerParentViewControllerDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SUViewControllerParentViewControllerDidChangeNotification" object:self];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v22 = *MEMORY[0x1E69E9840];
   if (([(SUViewController *)self containmentSupport]& 1) == 0)
   {
@@ -1402,7 +1402,7 @@ LABEL_6:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v17 + 1) + 8 * i) viewDidDisappear:v3];
+          [*(*(&v17 + 1) + 8 * i) viewDidDisappear:disappearCopy];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1412,12 +1412,12 @@ LABEL_6:
     }
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"SUViewControllerDidDisappearNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SUViewControllerDidDisappearNotification" object:self];
 
   v16.receiver = self;
   v16.super_class = SUViewController;
-  [(SUViewController *)&v16 viewDidDisappear:v3];
+  [(SUViewController *)&v16 viewDidDisappear:disappearCopy];
   transitionSafetyCount = self->_transitionSafetyCount;
   v12 = transitionSafetyCount < 1;
   v13 = transitionSafetyCount - 1;
@@ -1427,18 +1427,18 @@ LABEL_6:
     [objc_opt_class() endTransitionSafety];
   }
 
-  v14 = [(SUViewController *)self parentViewController];
+  parentViewController = [(SUViewController *)self parentViewController];
 
-  if (!v14)
+  if (!parentViewController)
   {
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"SUViewControllerParentViewControllerDidChangeNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"SUViewControllerParentViewControllerDidChangeNotification" object:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v19 = *MEMORY[0x1E69E9840];
   memoryPurgeContext = self->_memoryPurgeContext;
   if (memoryPurgeContext)
@@ -1471,7 +1471,7 @@ LABEL_6:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v14 + 1) + 8 * v11++) viewWillAppear:v3];
+          [*(*(&v14 + 1) + 8 * v11++) viewWillAppear:appearCopy];
         }
 
         while (v9 != v11);
@@ -1482,23 +1482,23 @@ LABEL_6:
     }
   }
 
-  if (v3)
+  if (appearCopy)
   {
     ++self->_transitionSafetyCount;
     [objc_opt_class() beginTransitionSafety];
   }
 
-  v12 = [(SUViewController *)self parentViewController];
-  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:v12];
+  parentViewController = [(SUViewController *)self parentViewController];
+  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:parentViewController];
 
   v13.receiver = self;
   v13.super_class = SUViewController;
-  [(SUViewController *)&v13 viewWillAppear:v3];
+  [(SUViewController *)&v13 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x1E69E9840];
   if (([(SUViewController *)self containmentSupport]& 1) == 0)
   {
@@ -1522,7 +1522,7 @@ LABEL_6:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v12 + 1) + 8 * v9++) viewWillDisappear:v3];
+          [*(*(&v12 + 1) + 8 * v9++) viewWillDisappear:disappearCopy];
         }
 
         while (v7 != v9);
@@ -1546,7 +1546,7 @@ LABEL_6:
     while (transitionSafetyCount > 0);
   }
 
-  if (v3)
+  if (disappearCopy)
   {
     self->_transitionSafetyCount = transitionSafetyCount + 1;
     [objc_opt_class() beginTransitionSafety];
@@ -1554,26 +1554,26 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = SUViewController;
-  [(SUViewController *)&v11 viewWillDisappear:v3];
+  [(SUViewController *)&v11 viewWillDisappear:disappearCopy];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:v4];
+  controllerCopy = controller;
+  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:controllerCopy];
   v5.receiver = self;
   v5.super_class = SUViewController;
-  [(SUViewController *)&v5 willMoveToParentViewController:v4];
+  [(SUViewController *)&v5 willMoveToParentViewController:controllerCopy];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(SUViewController *)self _rotationController];
-  v6 = v5;
-  if (v5)
+  _rotationController = [(SUViewController *)self _rotationController];
+  v6 = _rotationController;
+  if (_rotationController)
   {
-    [v5 finishRotationFromInterfaceOrientation:a3];
+    [_rotationController finishRotationFromInterfaceOrientation:orientation];
     [(SURotationController *)self->_rotationController setViewController:0];
     rotationController = self->_rotationController;
     self->_rotationController = 0;
@@ -1600,7 +1600,7 @@ LABEL_6:
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v14 + 1) + 8 * i) didRotateFromInterfaceOrientation:a3];
+          [*(*(&v14 + 1) + 8 * i) didRotateFromInterfaceOrientation:orientation];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1613,7 +1613,7 @@ LABEL_6:
   self->_rotationState = 0;
   v13.receiver = self;
   v13.super_class = SUViewController;
-  [(SUViewController *)&v13 didRotateFromInterfaceOrientation:a3];
+  [(SUViewController *)&v13 didRotateFromInterfaceOrientation:orientation];
 }
 
 - (id)_rotationController
@@ -1621,9 +1621,9 @@ LABEL_6:
   rotationController = self->_rotationController;
   if (!rotationController)
   {
-    v4 = [(SUViewController *)self newRotationController];
+    newRotationController = [(SUViewController *)self newRotationController];
     v5 = self->_rotationController;
-    self->_rotationController = v4;
+    self->_rotationController = newRotationController;
 
     rotationController = self->_rotationController;
   }
@@ -1633,10 +1633,10 @@ LABEL_6:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -1649,15 +1649,15 @@ LABEL_6:
   return 2;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v20 = *MEMORY[0x1E69E9840];
   self->_rotationState = 2;
-  v7 = [(SUViewController *)self _rotationController];
-  v8 = v7;
-  if (v7)
+  _rotationController = [(SUViewController *)self _rotationController];
+  v8 = _rotationController;
+  if (_rotationController)
   {
-    [v7 animateRotationToInterfaceOrientation:a3 duration:a4];
+    [_rotationController animateRotationToInterfaceOrientation:orientation duration:duration];
   }
 
   else if (([(SUViewController *)self containmentSupport]& 1) == 0)
@@ -1681,7 +1681,7 @@ LABEL_6:
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v15 + 1) + 8 * i) willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+          [*(*(&v15 + 1) + 8 * i) willAnimateRotationToInterfaceOrientation:orientation duration:duration];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1693,17 +1693,17 @@ LABEL_6:
 
   v14.receiver = self;
   v14.super_class = SUViewController;
-  [(SUViewController *)&v14 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(SUViewController *)&v14 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = [(SUViewController *)self _rotationController];
-  v8 = v7;
-  if (v7)
+  _rotationController = [(SUViewController *)self _rotationController];
+  v8 = _rotationController;
+  if (_rotationController)
   {
-    [v7 prepareToRotateToInterfaceOrientation:a3];
+    [_rotationController prepareToRotateToInterfaceOrientation:orientation];
   }
 
   else if (([(SUViewController *)self containmentSupport]& 1) == 0)
@@ -1727,7 +1727,7 @@ LABEL_6:
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v15 + 1) + 8 * i) willRotateToInterfaceOrientation:a3 duration:a4];
+          [*(*(&v15 + 1) + 8 * i) willRotateToInterfaceOrientation:orientation duration:duration];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1739,18 +1739,18 @@ LABEL_6:
 
   v14.receiver = self;
   v14.super_class = SUViewController;
-  [(SUViewController *)&v14 willRotateToInterfaceOrientation:a3 duration:a4];
+  [(SUViewController *)&v14 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (BOOL)window:(id)a3 shouldAutorotateToInterfaceOrientation:(int64_t)a4
+- (BOOL)window:(id)window shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  windowCopy = window;
   v19.receiver = self;
   v19.super_class = SUViewController;
-  v7 = [(SUViewController *)&v19 window:v6 shouldAutorotateToInterfaceOrientation:a4];
-  v8 = [(SUViewController *)self _rotationController];
-  if (v8)
+  v7 = [(SUViewController *)&v19 window:windowCopy shouldAutorotateToInterfaceOrientation:orientation];
+  _rotationController = [(SUViewController *)self _rotationController];
+  if (_rotationController)
   {
     if (v7)
     {
@@ -1781,7 +1781,7 @@ LABEL_6:
 
           if (v7)
           {
-            LOBYTE(v7) = [*(*(&v15 + 1) + 8 * i) window:v6 shouldAutorotateToInterfaceOrientation:{a4, v15}];
+            LOBYTE(v7) = [*(*(&v15 + 1) + 8 * i) window:windowCopy shouldAutorotateToInterfaceOrientation:{orientation, v15}];
           }
 
           else
@@ -1804,13 +1804,13 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = SUViewController;
-  v3 = [(SUViewController *)&v5 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(SUViewController *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(SUViewController *)self reloadInputViews];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -1827,21 +1827,21 @@ LABEL_6:
   return [(SUViewController *)&v5 canBecomeFirstResponder];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  if (!sel_isEqual(a3, sel_remoteControlReceivedWithEvent_))
+  if (!sel_isEqual(action, sel_remoteControlReceivedWithEvent_))
   {
     return 1;
   }
 
   v5 = +[SUAudioPlayerSessionManager sessionManager];
-  v6 = [v5 allSessionURLs];
-  v7 = [v6 count] != 0;
+  allSessionURLs = [v5 allSessionURLs];
+  v7 = [allSessionURLs count] != 0;
 
   return v7;
 }
@@ -1850,32 +1850,32 @@ LABEL_6:
 {
   if ([(SUViewController *)self isVisibleAndFrontmost])
   {
-    v3 = [(UIViewController *)self->_inputAccessoryViewController view];
+    view = [(UIViewController *)self->_inputAccessoryViewController view];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUViewController;
-    v3 = [(SUViewController *)&v5 inputAccessoryView];
+    view = [(SUViewController *)&v5 inputAccessoryView];
   }
 
-  return v3;
+  return view;
 }
 
-- (void)remoteControlReceivedWithEvent:(id)a3
+- (void)remoteControlReceivedWithEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 type] == 2)
+  eventCopy = event;
+  if ([eventCopy type] == 2)
   {
     v4 = +[SUAudioPlayerSessionManager sessionManager];
-    v5 = [v4 allSessionURLs];
+    allSessionURLs = [v4 allSessionURLs];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [allSessionURLs countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (!v6)
     {
       goto LABEL_19;
@@ -1889,16 +1889,16 @@ LABEL_6:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSessionURLs);
         }
 
         v10 = [v4 audioPlayerForURL:*(*(&v14 + 1) + 8 * i)];
-        v11 = [v3 subtype];
-        if (v11 > 103)
+        subtype = [eventCopy subtype];
+        if (subtype > 103)
         {
-          if (v11 != 105)
+          if (subtype != 105)
           {
-            if (v11 != 104)
+            if (subtype != 104)
             {
               goto LABEL_17;
             }
@@ -1913,17 +1913,17 @@ LABEL_14:
 
         else
         {
-          if (v11 == 102)
+          if (subtype == 102)
           {
             goto LABEL_14;
           }
 
-          if (v11 == 103)
+          if (subtype == 103)
           {
-            v12 = [v10 playerStatus];
-            v13 = [v12 playerState];
+            playerStatus = [v10 playerStatus];
+            playerState = [playerStatus playerState];
 
-            if (v13 == 2)
+            if (playerState == 2)
             {
               [v10 pause];
             }
@@ -1938,7 +1938,7 @@ LABEL_14:
 LABEL_17:
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allSessionURLs countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (!v7)
       {
 LABEL_19:
@@ -1949,55 +1949,55 @@ LABEL_19:
   }
 }
 
-- (void)_exitStoreButtonAction:(id)a3
+- (void)_exitStoreButtonAction:(id)action
 {
-  v3 = [(SUViewController *)self clientInterface];
-  [v3 _exitStoreWithReason:3];
+  clientInterface = [(SUViewController *)self clientInterface];
+  [clientInterface _exitStoreWithReason:3];
 }
 
-- (void)_dismissFooterAnimationDidStop:(id)a3
+- (void)_dismissFooterAnimationDidStop:(id)stop
 {
-  v8 = [(SUViewController *)self view];
-  v5 = [v8 contentView];
-  [v8 setContentView:0];
-  [(SUViewController *)self setView:v5];
-  [(UIViewController *)self->_footerViewController viewDidDisappear:a3 != 0];
+  view = [(SUViewController *)self view];
+  contentView = [view contentView];
+  [view setContentView:0];
+  [(SUViewController *)self setView:contentView];
+  [(UIViewController *)self->_footerViewController viewDidDisappear:stop != 0];
   [(SUViewController *)self removeChildViewController:self->_footerViewController];
   footerViewController = self->_footerViewController;
   self->_footerViewController = 0;
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v7 endIgnoringInteractionEvents];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] endIgnoringInteractionEvents];
 }
 
 - (void)_presentFooterAnimationDidStop
 {
   [(UIViewController *)self->_footerViewController viewDidAppear:1];
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v2 endIgnoringInteractionEvents];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] endIgnoringInteractionEvents];
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  errorCopy = error;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 &= 2u;
   }
@@ -2008,14 +2008,14 @@ LABEL_19:
     {
       v13 = objc_opt_class();
       v14 = v13;
-      v15 = [v6 requestProperties];
-      [v15 URL];
+      requestProperties = [operationCopy requestProperties];
+      [requestProperties URL];
       v18 = 138544130;
       v19 = v13;
       v20 = 2114;
-      v21 = v6;
+      v21 = operationCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = errorCopy;
       v25 = v24 = 2112;
       LODWORD(v17) = 42;
       v16 = _os_log_send_and_compose_impl();
@@ -2036,9 +2036,9 @@ LABEL_13:
   v18 = 138543874;
   v19 = objc_opt_class();
   v20 = 2114;
-  v21 = v6;
+  v21 = operationCopy;
   v22 = 2112;
-  v23 = v7;
+  v23 = errorCopy;
   v14 = v19;
   LODWORD(v17) = 32;
   v16 = _os_log_send_and_compose_impl();
@@ -2046,7 +2046,7 @@ LABEL_11:
 
   if (v16)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v18, v17}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v18, v17}];
     free(v16);
     SSFileLog();
     goto LABEL_13;
@@ -2054,29 +2054,29 @@ LABEL_11:
 
 LABEL_14:
 
-  [v6 setDelegate:0];
-  [(NSMutableArray *)self->_cancelOnDeallocOperations removeObject:v6];
-  [(NSMutableArray *)self->_operations removeObject:v6];
+  [operationCopy setDelegate:0];
+  [(NSMutableArray *)self->_cancelOnDeallocOperations removeObject:operationCopy];
+  [(NSMutableArray *)self->_operations removeObject:operationCopy];
 }
 
-- (void)operationFinished:(id)a3
+- (void)operationFinished:(id)finished
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  finishedCopy = finished;
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -2091,26 +2091,26 @@ LABEL_14:
   v13 = 138543874;
   v14 = v9;
   v15 = 2114;
-  v16 = v4;
+  v16 = finishedCopy;
   v17 = 1024;
-  v18 = [v4 success];
+  success = [finishedCopy success];
   LODWORD(v12) = 28;
   v11 = _os_log_send_and_compose_impl();
 
   if (v11)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v13, v12}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v13, v12}];
     free(v11);
     SSFileLog();
 LABEL_9:
   }
 
-  [v4 setDelegate:0];
-  [(NSMutableArray *)self->_cancelOnDeallocOperations removeObject:v4];
-  [(NSMutableArray *)self->_operations removeObject:v4];
+  [finishedCopy setDelegate:0];
+  [(NSMutableArray *)self->_cancelOnDeallocOperations removeObject:finishedCopy];
+  [(NSMutableArray *)self->_operations removeObject:finishedCopy];
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   self->_isEnteringForeground = 0;
   [(SUViewController *)self _invalidateForMemoryPurge];
@@ -2118,7 +2118,7 @@ LABEL_9:
   [(SUViewController *)self applicationDidEnterBackground];
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
   self->_isEnteringForeground = 1;
   block[0] = MEMORY[0x1E69E9820];
@@ -2130,72 +2130,72 @@ LABEL_9:
   [(SUViewController *)self applicationWillEnterForeground];
 }
 
-- (void)_exitStoreButtonDidChangeNotification:(id)a3
+- (void)_exitStoreButtonDidChangeNotification:(id)notification
 {
-  v4 = [(SUViewController *)self parentViewController];
-  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:v4];
+  parentViewController = [(SUViewController *)self parentViewController];
+  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:parentViewController];
 }
 
-- (void)_keyboardDidHideNotification:(id)a3
+- (void)_keyboardDidHideNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(SUViewController *)self parentViewController];
+  notificationCopy = notification;
+  parentViewController = [(SUViewController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v6 = [v7 userInfo];
-    [(UIViewController *)self keyboardDidHideWithInfo:v6];
+    userInfo = [notificationCopy userInfo];
+    [(UIViewController *)self keyboardDidHideWithInfo:userInfo];
   }
 }
 
-- (void)_keyboardDidShowNotification:(id)a3
+- (void)_keyboardDidShowNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(SUViewController *)self parentViewController];
+  notificationCopy = notification;
+  parentViewController = [(SUViewController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v6 = [v7 userInfo];
-    [(UIViewController *)self keyboardDidShowWithInfo:v6];
+    userInfo = [notificationCopy userInfo];
+    [(UIViewController *)self keyboardDidShowWithInfo:userInfo];
   }
 }
 
-- (void)_keyboardWillHideNotification:(id)a3
+- (void)_keyboardWillHideNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(SUViewController *)self parentViewController];
+  notificationCopy = notification;
+  parentViewController = [(SUViewController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v6 = [v7 userInfo];
-    [(UIViewController *)self keyboardWillHideWithInfo:v6];
+    userInfo = [notificationCopy userInfo];
+    [(UIViewController *)self keyboardWillHideWithInfo:userInfo];
   }
 }
 
-- (void)_keyboardWillShowNotification:(id)a3
+- (void)_keyboardWillShowNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(SUViewController *)self parentViewController];
+  notificationCopy = notification;
+  parentViewController = [(SUViewController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v6 = [v7 userInfo];
-    [(UIViewController *)self keyboardWillShowWithInfo:v6];
+    userInfo = [notificationCopy userInfo];
+    [(UIViewController *)self keyboardWillShowWithInfo:userInfo];
   }
 }
 
 - (void)_reloadLibraryButton
 {
-  v3 = [(SUViewController *)self parentViewController];
-  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:v3];
+  parentViewController = [(SUViewController *)self parentViewController];
+  [(SUViewController *)self _reloadExitStoreButtonWithParentViewController:parentViewController];
 }
 
 - (void)_invalidateForMemoryPurge
@@ -2206,13 +2206,13 @@ LABEL_9:
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = *MEMORY[0x1E69DDBE8];
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __45__SUViewController__invalidateForMemoryPurge__block_invoke;
     v6[3] = &unk_1E8164320;
     v6[4] = &v7;
-    v4 = [v3 beginBackgroundTaskWithExpirationHandler:v6];
+    v4 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v6];
     v8[3] = v4;
 
     block[0] = MEMORY[0x1E69E9820];
@@ -2259,18 +2259,18 @@ void __45__SUViewController__invalidateForMemoryPurge__block_invoke_2(uint64_t a
   }
 }
 
-- (void)_reloadExitStoreButtonWithParentViewController:(id)a3
+- (void)_reloadExitStoreButtonWithParentViewController:(id)controller
 {
-  v19 = a3;
-  if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || ([(UIViewController *)self overlayViewController], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  controllerCopy = controller;
+  if (!controllerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || ([(UIViewController *)self overlayViewController], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     if (!self->_exitStoreButton)
     {
       goto LABEL_7;
     }
 
-    v5 = [(UIViewController *)self navigationItemForScriptInterface];
-    SUNavigationItemRemoveButton(v5, self->_exitStoreButton);
+    navigationItemForScriptInterface = [(UIViewController *)self navigationItemForScriptInterface];
+    SUNavigationItemRemoveButton(navigationItemForScriptInterface, self->_exitStoreButton);
     [(UIBarButtonItem *)self->_exitStoreButton setTarget:0];
     exitStoreButton = self->_exitStoreButton;
     self->_exitStoreButton = 0;
@@ -2278,7 +2278,7 @@ void __45__SUViewController__invalidateForMemoryPurge__block_invoke_2(uint64_t a
 
   else
   {
-    v5 = self->_exitStoreButton;
+    navigationItemForScriptInterface = self->_exitStoreButton;
     v7 = +[SUClientDispatch exitStoreButtonTitle];
     exitStoreButton = v7;
     if (self->_showsLibraryButton && [(UIBarButtonItem *)v7 length])
@@ -2302,20 +2302,20 @@ void __45__SUViewController__invalidateForMemoryPurge__block_invoke_2(uint64_t a
     }
 
     [(UIBarButtonItem *)self->_exitStoreButton setTitle:exitStoreButton];
-    v11 = [(UIViewController *)self navigationItemForScriptInterface];
-    v12 = v11;
+    navigationItemForScriptInterface2 = [(UIViewController *)self navigationItemForScriptInterface];
+    v12 = navigationItemForScriptInterface2;
     if (self->_exitStoreButton)
     {
-      v13 = [MEMORY[0x1E69DC938] currentDevice];
-      v14 = [v13 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v15 = [(SUViewController *)self clientInterface];
-      v16 = [v15 appearance];
-      v17 = v16;
+      clientInterface = [(SUViewController *)self clientInterface];
+      appearance = [clientInterface appearance];
+      v17 = appearance;
       v18 = self->_exitStoreButton;
-      if (v14 == 1)
+      if (userInterfaceIdiom == 1)
       {
-        [v16 styleExitStoreButtonItem:v18];
+        [appearance styleExitStoreButtonItem:v18];
 
         [v12 setLeftBarButtonItem:self->_exitStoreButton];
         [v12 setLeftItemsSupplementBackButton:1];
@@ -2323,15 +2323,15 @@ void __45__SUViewController__invalidateForMemoryPurge__block_invoke_2(uint64_t a
 
       else
       {
-        [v16 styleBarButtonItem:v18];
+        [appearance styleBarButtonItem:v18];
 
         [v12 setRightBarButtonItem:self->_exitStoreButton];
       }
     }
 
-    else if (v5)
+    else if (navigationItemForScriptInterface)
     {
-      SUNavigationItemRemoveButton(v11, v5);
+      SUNavigationItemRemoveButton(navigationItemForScriptInterface2, navigationItemForScriptInterface);
     }
   }
 

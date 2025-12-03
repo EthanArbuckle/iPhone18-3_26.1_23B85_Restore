@@ -1,29 +1,29 @@
 @interface PRPosterMetadata
-+ (id)decodeObjectWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PRPosterMetadata)initWithBSXPCCoder:(id)a3;
-- (PRPosterMetadata)initWithCoder:(id)a3;
-- (PRPosterMetadata)initWithDisplayNameLocalizationKey:(id)a3;
++ (id)decodeObjectWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
+- (PRPosterMetadata)initWithBSXPCCoder:(id)coder;
+- (PRPosterMetadata)initWithCoder:(id)coder;
+- (PRPosterMetadata)initWithDisplayNameLocalizationKey:(id)key;
 - (id)encodeJSON;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)encodeJSON;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterMetadata
 
-- (PRPosterMetadata)initWithDisplayNameLocalizationKey:(id)a3
+- (PRPosterMetadata)initWithDisplayNameLocalizationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = PRPosterMetadata;
   v5 = [(PRPosterMetadata *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [keyCopy copy];
     displayNameLocalizationKey = v5->_displayNameLocalizationKey;
     v5->_displayNameLocalizationKey = v6;
   }
@@ -31,19 +31,19 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PRMutablePosterMetadata allocWithZone:a3];
-  v5 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-  v6 = [(PRPosterMetadata *)v4 initWithDisplayNameLocalizationKey:v5];
+  v4 = [PRMutablePosterMetadata allocWithZone:zone];
+  displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+  v6 = [(PRPosterMetadata *)v4 initWithDisplayNameLocalizationKey:displayNameLocalizationKey];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -55,9 +55,9 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-      v9 = [(PRPosterMetadata *)v7 displayNameLocalizationKey];
+      v7 = equalCopy;
+      displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+      displayNameLocalizationKey2 = [(PRPosterMetadata *)v7 displayNameLocalizationKey];
 
       v10 = BSEqualStrings();
     }
@@ -73,62 +73,62 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-  v3 = [v2 hash];
+  displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+  v3 = [displayNameLocalizationKey hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-  [v4 encodeObject:v5 forKey:@"displayNameLocalizationKey"];
+  coderCopy = coder;
+  displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+  [coderCopy encodeObject:displayNameLocalizationKey forKey:@"displayNameLocalizationKey"];
 }
 
-- (PRPosterMetadata)initWithCoder:(id)a3
+- (PRPosterMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"displayNameLocalizationKey"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"displayNameLocalizationKey"];
 
   v7 = [(PRPosterMetadata *)self initWithDisplayNameLocalizationKey:v6];
   return v7;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-  [v4 encodeObject:v5 forKey:@"displayNameLocalizationKey"];
+  coderCopy = coder;
+  displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+  [coderCopy encodeObject:displayNameLocalizationKey forKey:@"displayNameLocalizationKey"];
 }
 
-- (PRPosterMetadata)initWithBSXPCCoder:(id)a3
+- (PRPosterMetadata)initWithBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeStringForKey:@"displayNameLocalizationKey"];
+  v4 = [coder decodeStringForKey:@"displayNameLocalizationKey"];
   v5 = [(PRPosterMetadata *)self initWithDisplayNameLocalizationKey:v4];
 
   return v5;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
-  v5 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-  [v4 appendString:v5 withName:@"displayNameLocalizationKey" skipIfEmpty:1];
+  formatterCopy = formatter;
+  displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+  [formatterCopy appendString:displayNameLocalizationKey withName:@"displayNameLocalizationKey" skipIfEmpty:1];
 }
 
 - (id)encodeJSON
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PRPosterMetadata *)self displayNameLocalizationKey];
-  [v3 bs_setSafeObject:v4 forKey:@"displayNameLocalizationKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  displayNameLocalizationKey = [(PRPosterMetadata *)self displayNameLocalizationKey];
+  [dictionary bs_setSafeObject:displayNameLocalizationKey forKey:@"displayNameLocalizationKey"];
 
-  v5 = [(PRPosterMetadata *)self attributeType];
-  [v3 bs_setSafeObject:v5 forKey:@"attributeType"];
+  attributeType = [(PRPosterMetadata *)self attributeType];
+  [dictionary bs_setSafeObject:attributeType forKey:@"attributeType"];
 
   v10 = 0;
-  v6 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v10];
+  v6 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v10];
   v7 = v10;
   if (v7)
   {
@@ -142,10 +142,10 @@
   return v6;
 }
 
-+ (id)decodeObjectWithJSON:(id)a3
++ (id)decodeObjectWithJSON:(id)n
 {
   v9 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v9];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v9];
   v4 = v9;
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && !v4)
   {
@@ -172,7 +172,7 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_error_impl(&dword_1A8AA7000, log, OS_LOG_TYPE_ERROR, "Error encoding to JSON: %@ : %@", &v3, 0x16u);

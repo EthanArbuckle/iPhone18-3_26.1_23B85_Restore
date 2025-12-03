@@ -1,48 +1,48 @@
 @interface TSWebsheetViewController
 - (BOOL)_currentLanguageIsRTL;
-- (BOOL)_isHexadecimalString:(id)a3;
-- (BOOL)_shouldIgnoreWebviewError:(id)a3;
+- (BOOL)_isHexadecimalString:(id)string;
+- (BOOL)_shouldIgnoreWebviewError:(id)error;
 - (TSEntitlementJSHandlerDelegate)callbackDelegate;
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSWebsheetViewController)initWithURL:(id)a3 postdata:(id)a4 carrierName:(id)a5;
+- (TSWebsheetViewController)initWithURL:(id)l postdata:(id)postdata carrierName:(id)name;
 - (id)_processPool;
-- (id)_webViewConfigurationWithProcessPool:(id)a3;
-- (id)initForRemotePlan:(BOOL)a3 carrierName:(id)a4 skipUIDismissal:(BOOL)a5 showCarrierWarning:(BOOL)a6;
+- (id)_webViewConfigurationWithProcessPool:(id)pool;
+- (id)initForRemotePlan:(BOOL)plan carrierName:(id)name skipUIDismissal:(BOOL)dismissal showCarrierWarning:(BOOL)warning;
 - (void)_cancelButtonTapped;
 - (void)_dismissDueToLoadFailure;
 - (void)_doneButtonTapped;
-- (void)_handlePlanPurchaseWithMessageBody:(id)a3;
-- (void)_handleTransferWithMessageBody:(id)a3;
-- (void)_showCancelButton:(BOOL)a3;
+- (void)_handlePlanPurchaseWithMessageBody:(id)body;
+- (void)_handleTransferWithMessageBody:(id)body;
+- (void)_showCancelButton:(BOOL)button;
 - (void)_showFailureAlert;
-- (void)_showVerifyingIndicator:(BOOL)a3;
+- (void)_showVerifyingIndicator:(BOOL)indicator;
 - (void)_transferESimInstallationStarted;
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4;
-- (void)loadRequest:(id)a3 completion:(id)a4;
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change;
+- (void)loadRequest:(id)request completion:(id)completion;
 - (void)loadView;
-- (void)prepare:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)prepare:(id)prepare;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation TSWebsheetViewController
 
-- (id)initForRemotePlan:(BOOL)a3 carrierName:(id)a4 skipUIDismissal:(BOOL)a5 showCarrierWarning:(BOOL)a6
+- (id)initForRemotePlan:(BOOL)plan carrierName:(id)name skipUIDismissal:(BOOL)dismissal showCarrierWarning:(BOOL)warning
 {
-  v6 = a6;
-  v11 = a4;
+  warningCopy = warning;
+  nameCopy = name;
   v30.receiver = self;
   v30.super_class = TSWebsheetViewController;
   v12 = [(TSWebsheetViewController *)&v30 init];
   if (v12)
   {
     v13 = objc_alloc(MEMORY[0x277CE3850]);
-    v14 = [(TSWebsheetViewController *)v12 _processPool];
-    v15 = [(TSWebsheetViewController *)v12 _webViewConfigurationWithProcessPool:v14];
+    _processPool = [(TSWebsheetViewController *)v12 _processPool];
+    v15 = [(TSWebsheetViewController *)v12 _webViewConfigurationWithProcessPool:_processPool];
     v16 = *MEMORY[0x277CBF3A0];
     v17 = *(MEMORY[0x277CBF3A0] + 8);
     v18 = *(MEMORY[0x277CBF3A0] + 16);
@@ -55,15 +55,15 @@
     [(WKWebView *)v12->_webView setUIDelegate:v12];
     [(WKWebView *)v12->_webView _setInputDelegate:v12];
     [(WKWebView *)v12->_webView setAutoresizingMask:18];
-    v22 = [(WKWebView *)v12->_webView scrollView];
-    [v22 setDelegate:v12];
+    scrollView = [(WKWebView *)v12->_webView scrollView];
+    [scrollView setDelegate:v12];
 
     [(WKWebView *)v12->_webView setAutoresizesSubviews:1];
-    if (!a3)
+    if (!plan)
     {
-      if (v6 && [v11 length])
+      if (warningCopy && [nameCopy length])
       {
-        v23 = [[TSCellularSetupLoadingView alloc] initWithCarrierName:v11];
+        v23 = [[TSCellularSetupLoadingView alloc] initWithCarrierName:nameCopy];
       }
 
       else
@@ -89,24 +89,24 @@
     v12->_dismissCause = 2;
     v12->_didReceivePurchaseCallback = 0;
     v12->_didViewAppear = 0;
-    v12->_isRemotePlan = a3;
-    objc_storeStrong(&v12->_currentTitle, a4);
-    v12->_skipUIDismissal = a5;
+    v12->_isRemotePlan = plan;
+    objc_storeStrong(&v12->_currentTitle, name);
+    v12->_skipUIDismissal = dismissal;
   }
 
   return v12;
 }
 
-- (TSWebsheetViewController)initWithURL:(id)a3 postdata:(id)a4 carrierName:(id)a5
+- (TSWebsheetViewController)initWithURL:(id)l postdata:(id)postdata carrierName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(TSWebsheetViewController *)self initForRemotePlan:0 carrierName:a5 skipUIDismissal:0 showCarrierWarning:1];
+  lCopy = l;
+  postdataCopy = postdata;
+  v11 = [(TSWebsheetViewController *)self initForRemotePlan:0 carrierName:name skipUIDismissal:0 showCarrierWarning:1];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(v11 + 132, a3);
-    objc_storeStrong(&v12->_postdata, a4);
+    objc_storeStrong(v11 + 132, l);
+    objc_storeStrong(&v12->_postdata, postdata);
   }
 
   return v12;
@@ -124,16 +124,16 @@
   }
 }
 
-- (void)loadRequest:(id)a3 completion:(id)a4
+- (void)loadRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v6 = MEMORY[0x2667315D0](a4);
+  requestCopy = request;
+  v6 = MEMORY[0x2667315D0](completion);
   requestLoadedCompletion = self->_requestLoadedCompletion;
   self->_requestLoadedCompletion = v6;
 
-  if (v9)
+  if (requestCopy)
   {
-    v8 = [(WKWebView *)self->_webView loadRequest:v9];
+    v8 = [(WKWebView *)self->_webView loadRequest:requestCopy];
   }
 
   else
@@ -142,18 +142,18 @@
   }
 }
 
-- (BOOL)_shouldIgnoreWebviewError:(id)a3
+- (BOOL)_shouldIgnoreWebviewError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  if ([v3 _web_errorIsInDomain:*MEMORY[0x277D7B820]] && v4 == 102)
+  errorCopy = error;
+  code = [errorCopy code];
+  if ([errorCopy _web_errorIsInDomain:*MEMORY[0x277D7B820]] && code == 102)
   {
     v5 = 1;
   }
 
-  else if ([v3 _web_errorIsInDomain:*MEMORY[0x277CCA738]])
+  else if ([errorCopy _web_errorIsInDomain:*MEMORY[0x277CCA738]])
   {
-    v5 = v4 == -999 || v4 == -1012;
+    v5 = code == -999 || code == -1012;
   }
 
   else
@@ -164,26 +164,26 @@
   return v5;
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = _TSLogDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [TSWebsheetViewController webView:didFailProvisionalNavigation:withError:];
   }
 
-  if (!self->_isRemotePlan || ![(TSWebsheetViewController *)self _shouldIgnoreWebviewError:v6])
+  if (!self->_isRemotePlan || ![(TSWebsheetViewController *)self _shouldIgnoreWebviewError:errorCopy])
   {
     [(TSWebsheetViewController *)self _dismissDueToLoadFailure];
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   if (self->_isRemotePlan)
   {
     viewController = self->_viewController;
@@ -192,12 +192,12 @@
       v9 = viewController;
       if (([(UIViewController *)v9 isProcessCanceled]& 1) != 0 || self->_dismissCause == 1)
       {
-        v10 = _TSLogDomain();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+        navigationController = _TSLogDomain();
+        if (os_log_type_enabled(navigationController, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 136315138;
           v17 = "[TSWebsheetViewController webView:didFinishNavigation:]";
-          _os_log_impl(&dword_262AA8000, v10, OS_LOG_TYPE_DEFAULT, "Process Got Cancel or Come Back with error in Loading Page @%s", &v16, 0xCu);
+          _os_log_impl(&dword_262AA8000, navigationController, OS_LOG_TYPE_DEFAULT, "Process Got Cancel or Come Back with error in Loading Page @%s", &v16, 0xCu);
         }
       }
 
@@ -211,8 +211,8 @@
           _os_log_impl(&dword_262AA8000, v11, OS_LOG_TYPE_DEFAULT, "Start Load the view @%s", &v16, 0xCu);
         }
 
-        v10 = [(UIViewController *)self->_viewController navigationController];
-        [v10 pushViewController:self animated:1];
+        navigationController = [(UIViewController *)self->_viewController navigationController];
+        [navigationController pushViewController:self animated:1];
       }
 
       v12 = self->_viewController;
@@ -236,15 +236,15 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = MEMORY[0x277D75128];
-  v8 = a4;
-  v9 = [v7 sharedApplication];
-  v10 = [v8 request];
+  actionCopy = action;
+  sharedApplication = [v7 sharedApplication];
+  request = [actionCopy request];
 
-  v11 = [v10 URL];
+  v11 = [request URL];
 
   v12 = _TSLogDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -252,12 +252,12 @@
     [TSWebsheetViewController webView:decidePolicyForNavigationAction:decisionHandler:];
   }
 
-  v13 = [v11 scheme];
-  v14 = [v13 isEqualToString:@"tel"];
+  scheme = [v11 scheme];
+  v14 = [scheme isEqualToString:@"tel"];
 
-  if (v14 && [v9 canOpenURL:v11])
+  if (v14 && [sharedApplication canOpenURL:v11])
   {
-    [v9 openURL:v11 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global_17];
+    [sharedApplication openURL:v11 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global_17];
     v15 = 0;
   }
 
@@ -266,29 +266,29 @@
     v15 = 1;
   }
 
-  v6[2](v6, v15);
+  handlerCopy[2](handlerCopy, v15);
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = _TSLogDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [TSWebsheetViewController webView:didFailNavigation:withError:];
   }
 
-  if (!self->_isRemotePlan || ![(TSWebsheetViewController *)self _shouldIgnoreWebviewError:v6])
+  if (!self->_isRemotePlan || ![(TSWebsheetViewController *)self _shouldIgnoreWebviewError:errorCopy])
   {
     [(TSWebsheetViewController *)self _dismissDueToLoadFailure];
   }
 }
 
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change
 {
-  v4 = a4;
+  changeCopy = change;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   if (self->_isRemotePlan)
   {
     viewController = self->_viewController;
@@ -313,7 +313,7 @@
     }
   }
 
-  if (v4)
+  if (changeCopy)
   {
     self->_didFirstLayout = 1;
     [(_SFFormAutoFillController *)self->_autoFillController prefillFormsSoonIfNeeded];
@@ -328,8 +328,8 @@ LABEL_10:
 {
   if (!+[TSUtilities isPad])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"transfer.websheet.install.started" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"transfer.websheet.install.started" object:0 userInfo:0];
   }
 
   [(TSWebsheetViewController *)self setDismissCause:3];
@@ -337,47 +337,47 @@ LABEL_10:
   [WeakRetained startTimer:1];
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  messageCopy = message;
   v6 = _TSLogDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 name];
-    v8 = [v5 body];
+    name = [messageCopy name];
+    body = [messageCopy body];
     v38 = 138412802;
-    v39 = v7;
+    v39 = name;
     v40 = 2112;
-    v41 = v8;
+    v41 = body;
     v42 = 2080;
     v43 = "[TSWebsheetViewController userContentController:didReceiveScriptMessage:]";
     _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "js callback: %@ - %@ @%s", &v38, 0x20u);
   }
 
-  v9 = [v5 name];
-  if (![v9 isEqualToString:@"dataPlanAccountUpdatedWithIccid"])
+  name2 = [messageCopy name];
+  if (![name2 isEqualToString:@"dataPlanAccountUpdatedWithIccid"])
   {
-    v10 = [v5 name];
-    v11 = [v10 isEqualToString:@"dataPlanAccountUpdatedWithInfo"];
+    name3 = [messageCopy name];
+    v11 = [name3 isEqualToString:@"dataPlanAccountUpdatedWithInfo"];
 
     if (v11)
     {
       goto LABEL_6;
     }
 
-    v14 = [v5 name];
-    v15 = [v14 isEqualToString:@"dataPlanTransferAccountUpdatedWithInfo"];
+    name4 = [messageCopy name];
+    v15 = [name4 isEqualToString:@"dataPlanTransferAccountUpdatedWithInfo"];
 
     if (v15)
     {
-      v12 = [v5 body];
-      [(TSWebsheetViewController *)self _handleTransferWithMessageBody:v12];
+      body2 = [messageCopy body];
+      [(TSWebsheetViewController *)self _handleTransferWithMessageBody:body2];
       goto LABEL_7;
     }
 
-    v16 = [v5 name];
-    v17 = [v16 isEqualToString:@"showCancelButtonSelected"];
+    name5 = [messageCopy name];
+    v17 = [name5 isEqualToString:@"showCancelButtonSelected"];
 
     if (v17)
     {
@@ -394,8 +394,8 @@ LABEL_17:
 
     else
     {
-      v20 = [v5 name];
-      v21 = [v20 isEqualToString:@"hideCancelButtonSelected"];
+      name6 = [messageCopy name];
+      v21 = [name6 isEqualToString:@"hideCancelButtonSelected"];
 
       if (v21)
       {
@@ -411,8 +411,8 @@ LABEL_17:
 
       else
       {
-        v22 = [v5 name];
-        v23 = [v22 isEqualToString:@"doneSelected"];
+        name7 = [messageCopy name];
+        v23 = [name7 isEqualToString:@"doneSelected"];
 
         if (v23)
         {
@@ -420,29 +420,29 @@ LABEL_17:
           goto LABEL_8;
         }
 
-        v24 = [v5 name];
-        v25 = [v24 isEqualToString:@"dataPlanAccountUpdated"];
+        name8 = [messageCopy name];
+        v25 = [name8 isEqualToString:@"dataPlanAccountUpdated"];
 
         if (!v25)
         {
-          v26 = [v5 name];
-          v27 = [v26 isEqualToString:@"showVerifyingIndicator"];
+          name9 = [messageCopy name];
+          v27 = [name9 isEqualToString:@"showVerifyingIndicator"];
 
           if (v27)
           {
-            v28 = self;
+            selfCopy2 = self;
             v29 = 1;
           }
 
           else
           {
-            v30 = [v5 name];
-            v31 = [v30 isEqualToString:@"hideVerifyingIndicator"];
+            name10 = [messageCopy name];
+            v31 = [name10 isEqualToString:@"hideVerifyingIndicator"];
 
             if (!v31)
             {
-              v32 = [v5 name];
-              v33 = [v32 isEqualToString:@"dismissKeyboard"];
+              name11 = [messageCopy name];
+              v33 = [name11 isEqualToString:@"dismissKeyboard"];
 
               if (v33)
               {
@@ -452,8 +452,8 @@ LABEL_17:
 
               else
               {
-                v34 = [v5 name];
-                v35 = [v34 isEqualToString:@"dataPlanAccountCancelled"];
+                name12 = [messageCopy name];
+                v35 = [name12 isEqualToString:@"dataPlanAccountCancelled"];
 
                 if (v35)
                 {
@@ -463,8 +463,8 @@ LABEL_17:
 
                 else
                 {
-                  v36 = [v5 name];
-                  v37 = [v36 isEqualToString:@"dataPlanPendingRelease"];
+                  name13 = [messageCopy name];
+                  v37 = [name13 isEqualToString:@"dataPlanPendingRelease"];
 
                   if (!v37)
                   {
@@ -479,11 +479,11 @@ LABEL_17:
               goto LABEL_18;
             }
 
-            v28 = self;
+            selfCopy2 = self;
             v29 = 0;
           }
 
-          [(TSWebsheetViewController *)v28 _showVerifyingIndicator:v29];
+          [(TSWebsheetViewController *)selfCopy2 _showVerifyingIndicator:v29];
           goto LABEL_8;
         }
 
@@ -504,8 +504,8 @@ LABEL_18:
   }
 
 LABEL_6:
-  v12 = [v5 body];
-  [(TSWebsheetViewController *)self _handlePlanPurchaseWithMessageBody:v12];
+  body2 = [messageCopy body];
+  [(TSWebsheetViewController *)self _handlePlanPurchaseWithMessageBody:body2];
 LABEL_7:
 
   [(TSWebsheetViewController *)self _transferESimInstallationStarted];
@@ -514,9 +514,9 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  (*(a3 + 2))(a3, 1);
+  (*(prepare + 2))(prepare, 1);
   if ([(NSString *)self->_url length])
   {
     v4 = [MEMORY[0x277CBEBC0] URLWithString:self->_url];
@@ -540,8 +540,8 @@ LABEL_8:
 {
   v2 = objc_alloc_init(MEMORY[0x277CE3890]);
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 builtInPlugInsURL];
-  v5 = [v4 URLByAppendingPathComponent:@"SafariServices.wkbundle"];
+  builtInPlugInsURL = [v3 builtInPlugInsURL];
+  v5 = [builtInPlugInsURL URLByAppendingPathComponent:@"SafariServices.wkbundle"];
   [v2 setInjectedBundleURL:v5];
 
   v6 = [objc_alloc(MEMORY[0x277CE3820]) _initWithConfiguration:v2];
@@ -549,27 +549,27 @@ LABEL_8:
   return v6;
 }
 
-- (id)_webViewConfigurationWithProcessPool:(id)a3
+- (id)_webViewConfigurationWithProcessPool:(id)pool
 {
   v4 = MEMORY[0x277CE38C8];
-  v5 = a3;
-  v6 = [[v4 alloc] initNonPersistentConfiguration];
-  [v6 setSuppressesConnectionTerminationOnSystemChange:1];
-  [v6 setSourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
-  v7 = [objc_alloc(MEMORY[0x277CE3868]) _initWithConfiguration:v6];
-  v8 = [v7 httpCookieStore];
-  [v8 _setCookieAcceptPolicy:2 completionHandler:&__block_literal_global_104];
+  poolCopy = pool;
+  initNonPersistentConfiguration = [[v4 alloc] initNonPersistentConfiguration];
+  [initNonPersistentConfiguration setSuppressesConnectionTerminationOnSystemChange:1];
+  [initNonPersistentConfiguration setSourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
+  v7 = [objc_alloc(MEMORY[0x277CE3868]) _initWithConfiguration:initNonPersistentConfiguration];
+  httpCookieStore = [v7 httpCookieStore];
+  [httpCookieStore _setCookieAcceptPolicy:2 completionHandler:&__block_literal_global_104];
 
   v9 = objc_alloc_init(MEMORY[0x277CE3858]);
   [v9 setAllowsInlineMediaPlayback:1];
   [v9 setDataDetectorTypes:0];
-  [v9 setProcessPool:v5];
+  [v9 setProcessPool:poolCopy];
 
   [v9 setWebsiteDataStore:v7];
   if (+[TSUtilities isPad])
   {
-    v10 = [v9 defaultWebpagePreferences];
-    [v10 setPreferredContentMode:1];
+    defaultWebpagePreferences = [v9 defaultWebpagePreferences];
+    [defaultWebpagePreferences setPreferredContentMode:1];
 
     [v9 _setApplePayEnabled:1];
   }
@@ -732,15 +732,15 @@ void __45__TSWebsheetViewController__showFailureAlert__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_showCancelButton:(BOOL)a3
+- (void)_showCancelButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = +[TSUtilities isPad];
-  v6 = [(TSWebsheetViewController *)self navigationItem];
-  v9 = v6;
+  navigationItem = [(TSWebsheetViewController *)self navigationItem];
+  v9 = navigationItem;
   if (v5)
   {
-    if (v3)
+    if (buttonCopy)
     {
       cancelButton = self->_cancelButton;
     }
@@ -750,12 +750,12 @@ void __45__TSWebsheetViewController__showFailureAlert__block_invoke(uint64_t a1)
       cancelButton = 0;
     }
 
-    [v6 setRightBarButtonItem:cancelButton animated:1];
+    [navigationItem setRightBarButtonItem:cancelButton animated:1];
   }
 
   else
   {
-    if (v3)
+    if (buttonCopy)
     {
       v8 = self->_cancelButton;
     }
@@ -765,43 +765,43 @@ void __45__TSWebsheetViewController__showFailureAlert__block_invoke(uint64_t a1)
       v8 = 0;
     }
 
-    [v6 setLeftBarButtonItem:v8 animated:1];
+    [navigationItem setLeftBarButtonItem:v8 animated:1];
   }
 }
 
-- (void)_showVerifyingIndicator:(BOOL)a3
+- (void)_showVerifyingIndicator:(BOOL)indicator
 {
-  if (a3)
+  if (indicator)
   {
-    v4 = [(TSWebsheetViewController *)self title];
+    title = [(TSWebsheetViewController *)self title];
     currentTitle = self->_currentTitle;
-    self->_currentTitle = v4;
+    self->_currentTitle = title;
 
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"Verifying" value:&stru_28753DF48 table:@"Localizable"];
     [(TSWebsheetViewController *)self setTitle:v7];
 
     v11 = +[TSNavigationBarSpinnerManager sharedManager];
-    v8 = [(TSWebsheetViewController *)self navigationController];
-    v9 = [v8 navigationItem];
+    navigationController = [(TSWebsheetViewController *)self navigationController];
+    navigationItem = [navigationController navigationItem];
     v10 = [objc_opt_class() description];
-    [v11 startSpinnerInNavigationItem:v9 withIdentifier:v10];
+    [v11 startSpinnerInNavigationItem:navigationItem withIdentifier:v10];
   }
 
   else
   {
     [(TSWebsheetViewController *)self setTitle:self->_currentTitle];
     v11 = +[TSNavigationBarSpinnerManager sharedManager];
-    v8 = [objc_opt_class() description];
-    [v11 stopSpinnerForIdentifier:v8];
+    navigationController = [objc_opt_class() description];
+    [v11 stopSpinnerForIdentifier:navigationController];
   }
 }
 
-- (void)_handlePlanPurchaseWithMessageBody:(id)a3
+- (void)_handlePlanPurchaseWithMessageBody:(id)body
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  bodyCopy = body;
+  v5 = bodyCopy;
   if (self->_didReceivePurchaseCallback)
   {
     v6 = _TSLogDomain();
@@ -819,7 +819,7 @@ LABEL_10:
   }
 
   self->_didReceivePurchaseCallback = 1;
-  if (!v4)
+  if (!bodyCopy)
   {
     v6 = _TSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1163,11 +1163,11 @@ LABEL_57:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTransferWithMessageBody:(id)a3
+- (void)_handleTransferWithMessageBody:(id)body
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  bodyCopy = body;
+  if (!bodyCopy)
   {
     v6 = _TSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1178,7 +1178,7 @@ LABEL_57:
     }
 
 LABEL_8:
-    v5 = v4;
+    v5 = bodyCopy;
     v7 = [v5 objectForKeyedSubscript:@"eid"];
     v8 = v7;
     v9 = v7 != 0;
@@ -1486,12 +1486,12 @@ LABEL_45:
 
 - (BOOL)_currentLanguageIsRTL
 {
-  v2 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  if ([v2 count])
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  if ([preferredLanguages count])
   {
     v3 = MEMORY[0x277CBEAF8];
-    v4 = [v2 firstObject];
-    v5 = [v3 characterDirectionForLanguage:v4];
+    firstObject = [preferredLanguages firstObject];
+    v5 = [v3 characterDirectionForLanguage:firstObject];
 
     v6 = v5 == 2;
   }
@@ -1504,29 +1504,29 @@ LABEL_45:
   return v6;
 }
 
-- (BOOL)_isHexadecimalString:(id)a3
+- (BOOL)_isHexadecimalString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
-  v6 = [v5 invertedSet];
+  invertedSet = [v5 invertedSet];
 
-  v7 = [v4 rangeOfCharacterFromSet:v6];
+  v7 = [stringCopy rangeOfCharacterFromSet:invertedSet];
   return v7 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (!self->_didViewAppear)
   {
-    v6 = v4;
-    [v4 contentOffset];
-    v4 = v6;
+    v6 = scrollCopy;
+    [scrollCopy contentOffset];
+    scrollCopy = v6;
     if (v5 > 0.0)
     {
       [v6 setContentOffset:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
-      v4 = v6;
+      scrollCopy = v6;
     }
   }
 }

@@ -6,7 +6,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   ProcessUnstitchedIntents.main()();
 }
 

@@ -1,11 +1,11 @@
 @interface EpisodeCellLayoutGuide
 - (_TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide)init;
-- (_TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide)initWithCoder:(id)coder;
 @end
 
 @implementation EpisodeCellLayoutGuide
 
-- (_TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide_internalTrailingConstraint) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews22EpisodeCellLayoutGuide_extraTrailingPadding) = 0;

@@ -1,12 +1,12 @@
 @interface SFResponseWrapperCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFResponseWrapperCardSection)initWithCoder:(id)a3;
-- (SFResponseWrapperCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFResponseWrapperCardSection)initWithCoder:(id)coder;
+- (SFResponseWrapperCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFResponseWrapperCardSection
@@ -16,38 +16,38 @@
   v13.receiver = self;
   v13.super_class = SFResponseWrapperCardSection;
   v3 = [(SFCardSection *)&v13 hash];
-  v4 = [(SFResponseWrapperCardSection *)self catModel];
-  v5 = [v4 hash];
-  v6 = [(SFResponseWrapperCardSection *)self visualCATOutput];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFResponseWrapperCardSection *)self pattern_model];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(SFResponseWrapperCardSection *)self pattern_models];
-  v11 = v9 ^ [v10 hash];
+  catModel = [(SFResponseWrapperCardSection *)self catModel];
+  v5 = [catModel hash];
+  visualCATOutput = [(SFResponseWrapperCardSection *)self visualCATOutput];
+  v7 = v5 ^ [visualCATOutput hash];
+  pattern_model = [(SFResponseWrapperCardSection *)self pattern_model];
+  v9 = v7 ^ [pattern_model hash];
+  pattern_models = [(SFResponseWrapperCardSection *)self pattern_models];
+  v11 = v9 ^ [pattern_models hash];
 
   return v11 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFResponseWrapperCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFResponseWrapperCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v42.receiver = self;
       v42.super_class = SFResponseWrapperCardSection;
-      if ([(SFCardSection *)&v42 isEqual:v5])
+      if ([(SFCardSection *)&v42 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFResponseWrapperCardSection *)self catModel];
-        v8 = [(SFResponseWrapperCardSection *)v6 catModel];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        catModel = [(SFResponseWrapperCardSection *)self catModel];
+        catModel2 = [(SFResponseWrapperCardSection *)v6 catModel];
+        if ((catModel != 0) == (catModel2 == 0))
         {
           v11 = 0;
 LABEL_38:
@@ -55,65 +55,65 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v9 = [(SFResponseWrapperCardSection *)self catModel];
-        if (v9)
+        catModel3 = [(SFResponseWrapperCardSection *)self catModel];
+        if (catModel3)
         {
-          v10 = [(SFResponseWrapperCardSection *)self catModel];
-          v3 = [(SFResponseWrapperCardSection *)v6 catModel];
-          if (![v10 isEqual:v3])
+          catModel4 = [(SFResponseWrapperCardSection *)self catModel];
+          catModel5 = [(SFResponseWrapperCardSection *)v6 catModel];
+          if (![catModel4 isEqual:catModel5])
           {
             v11 = 0;
             goto LABEL_36;
           }
 
-          v41 = v10;
+          v41 = catModel4;
         }
 
-        v12 = [(SFResponseWrapperCardSection *)self visualCATOutput];
-        v13 = [(SFResponseWrapperCardSection *)v6 visualCATOutput];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        visualCATOutput = [(SFResponseWrapperCardSection *)self visualCATOutput];
+        visualCATOutput2 = [(SFResponseWrapperCardSection *)v6 visualCATOutput];
+        v14 = visualCATOutput2;
+        if ((visualCATOutput != 0) == (visualCATOutput2 == 0))
         {
 
           v11 = 0;
           goto LABEL_35;
         }
 
-        v15 = [(SFResponseWrapperCardSection *)self visualCATOutput];
-        v40 = v15;
-        if (v15)
+        visualCATOutput3 = [(SFResponseWrapperCardSection *)self visualCATOutput];
+        v40 = visualCATOutput3;
+        if (visualCATOutput3)
         {
-          v16 = v15;
+          v16 = visualCATOutput3;
           v35 = v14;
-          v17 = v12;
-          v18 = [(SFResponseWrapperCardSection *)self visualCATOutput];
-          v37 = [(SFResponseWrapperCardSection *)v6 visualCATOutput];
-          v38 = v18;
-          if (![v18 isEqual:?])
+          v17 = visualCATOutput;
+          visualCATOutput4 = [(SFResponseWrapperCardSection *)self visualCATOutput];
+          visualCATOutput5 = [(SFResponseWrapperCardSection *)v6 visualCATOutput];
+          v38 = visualCATOutput4;
+          if (![visualCATOutput4 isEqual:?])
           {
             v11 = 0;
-            v12 = v17;
+            visualCATOutput = v17;
             v14 = v35;
             goto LABEL_33;
           }
 
-          v39 = v3;
-          v12 = v17;
+          v39 = catModel5;
+          visualCATOutput = v17;
           v14 = v35;
         }
 
         else
         {
-          v39 = v3;
+          v39 = catModel5;
         }
 
-        v19 = [(SFResponseWrapperCardSection *)self pattern_model];
-        v20 = [(SFResponseWrapperCardSection *)v6 pattern_model];
-        if ((v19 != 0) == (v20 == 0))
+        pattern_model = [(SFResponseWrapperCardSection *)self pattern_model];
+        pattern_model2 = [(SFResponseWrapperCardSection *)v6 pattern_model];
+        if ((pattern_model != 0) == (pattern_model2 == 0))
         {
 
           v11 = 0;
-          v3 = v39;
+          catModel5 = v39;
           v16 = v40;
           if (!v40)
           {
@@ -123,15 +123,15 @@ LABEL_38:
           goto LABEL_33;
         }
 
-        v33 = v20;
-        v34 = v19;
+        v33 = pattern_model2;
+        v34 = pattern_model;
         [(SFResponseWrapperCardSection *)self pattern_model];
         v36 = v16 = v40;
         if (!v36 || (-[SFResponseWrapperCardSection pattern_model](self, "pattern_model"), v21 = objc_claimAutoreleasedReturnValue(), -[SFResponseWrapperCardSection pattern_model](v6, "pattern_model"), v31 = objc_claimAutoreleasedReturnValue(), v32 = v21, [v21 isEqual:?]))
         {
-          v22 = [(SFResponseWrapperCardSection *)self pattern_models];
-          v23 = [(SFResponseWrapperCardSection *)v6 pattern_models];
-          if ((v22 != 0) == (v23 == 0))
+          pattern_models = [(SFResponseWrapperCardSection *)self pattern_models];
+          pattern_models2 = [(SFResponseWrapperCardSection *)v6 pattern_models];
+          if ((pattern_models != 0) == (pattern_models2 == 0))
           {
 
             v11 = 0;
@@ -140,16 +140,16 @@ LABEL_38:
 
           else
           {
-            v29 = v22;
-            v30 = v23;
-            v24 = [(SFResponseWrapperCardSection *)self pattern_models];
+            v29 = pattern_models;
+            v30 = pattern_models2;
+            pattern_models3 = [(SFResponseWrapperCardSection *)self pattern_models];
             v16 = v40;
-            if (v24)
+            if (pattern_models3)
             {
-              v28 = v24;
-              v27 = [(SFResponseWrapperCardSection *)self pattern_models];
-              v25 = [(SFResponseWrapperCardSection *)v6 pattern_models];
-              v11 = [v27 isEqual:?];
+              v28 = pattern_models3;
+              pattern_models4 = [(SFResponseWrapperCardSection *)self pattern_models];
+              pattern_models5 = [(SFResponseWrapperCardSection *)v6 pattern_models];
+              v11 = [pattern_models4 isEqual:?];
             }
 
             else
@@ -159,7 +159,7 @@ LABEL_38:
             }
           }
 
-          v3 = v39;
+          catModel5 = v39;
           if (!v36)
           {
 LABEL_32:
@@ -169,8 +169,8 @@ LABEL_32:
 LABEL_34:
 
 LABEL_35:
-              v10 = v41;
-              if (!v9)
+              catModel4 = v41;
+              if (!catModel3)
               {
 LABEL_37:
 
@@ -191,7 +191,7 @@ LABEL_33:
         else
         {
           v11 = 0;
-          v3 = v39;
+          catModel5 = v39;
         }
 
         goto LABEL_32;
@@ -206,25 +206,25 @@ LABEL_39:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = SFResponseWrapperCardSection;
-  v4 = [(SFCardSection *)&v14 copyWithZone:a3];
-  v5 = [(SFResponseWrapperCardSection *)self catModel];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v14 copyWithZone:zone];
+  catModel = [(SFResponseWrapperCardSection *)self catModel];
+  v6 = [catModel copy];
   [v4 setCatModel:v6];
 
-  v7 = [(SFResponseWrapperCardSection *)self visualCATOutput];
-  v8 = [v7 copy];
+  visualCATOutput = [(SFResponseWrapperCardSection *)self visualCATOutput];
+  v8 = [visualCATOutput copy];
   [v4 setVisualCATOutput:v8];
 
-  v9 = [(SFResponseWrapperCardSection *)self pattern_model];
-  v10 = [v9 copy];
+  pattern_model = [(SFResponseWrapperCardSection *)self pattern_model];
+  v10 = [pattern_model copy];
   [v4 setPattern_model:v10];
 
-  v11 = [(SFResponseWrapperCardSection *)self pattern_models];
-  v12 = [v11 copy];
+  pattern_models = [(SFResponseWrapperCardSection *)self pattern_models];
+  v12 = [pattern_models copy];
   [v4 setPattern_models:v12];
 
   return v4;
@@ -233,176 +233,176 @@ LABEL_39:
 - (NSData)jsonData
 {
   v2 = [[_SFPBResponseWrapperCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBResponseWrapperCardSection *)v2 jsonData];
+  jsonData = [(_SFPBResponseWrapperCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBResponseWrapperCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBResponseWrapperCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBResponseWrapperCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFResponseWrapperCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFResponseWrapperCardSection)initWithCoder:(id)a3
+- (SFResponseWrapperCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 catModel];
-    [(SFResponseWrapperCardSection *)v5 setCatModel:v9];
+    catModel = [(SFCardSection *)v8 catModel];
+    [(SFResponseWrapperCardSection *)v5 setCatModel:catModel];
 
-    v10 = [(SFCardSection *)v8 visualCATOutput];
-    [(SFResponseWrapperCardSection *)v5 setVisualCATOutput:v10];
+    visualCATOutput = [(SFCardSection *)v8 visualCATOutput];
+    [(SFResponseWrapperCardSection *)v5 setVisualCATOutput:visualCATOutput];
 
-    v11 = [(SFCardSection *)v8 pattern_model];
-    [(SFResponseWrapperCardSection *)v5 setPattern_model:v11];
+    pattern_model = [(SFCardSection *)v8 pattern_model];
+    [(SFResponseWrapperCardSection *)v5 setPattern_model:pattern_model];
 
-    v12 = [(SFCardSection *)v8 pattern_models];
-    [(SFResponseWrapperCardSection *)v5 setPattern_models:v12];
+    pattern_models = [(SFCardSection *)v8 pattern_models];
+    [(SFResponseWrapperCardSection *)v5 setPattern_models:pattern_models];
 
-    v13 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v13];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v14 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v14];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v15 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v15];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v16 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v16];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v17 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v17];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v18 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v18];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v19 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v19];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v20 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v20];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v21 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v21];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v22 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v22];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v23 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v23];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v24 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v24];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v25 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v25];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v26 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v26];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v27 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v27];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v28 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v28];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v29 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v29];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v30 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v30];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v31 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v31];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v32 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v32];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v33 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v33];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v34 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v34];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v35 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v35];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v36 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v36];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v37 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v37];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (SFResponseWrapperCardSection)initWithProtobuf:(id)a3
+- (SFResponseWrapperCardSection)initWithProtobuf:(id)protobuf
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v31.receiver = self;
   v31.super_class = SFResponseWrapperCardSection;
   v5 = [(SFCardSection *)&v31 init];
   if (v5)
   {
-    v6 = [v4 catModel];
+    catModel = [protobufCopy catModel];
 
-    if (v6)
+    if (catModel)
     {
       v7 = [SFCATModel alloc];
-      v8 = [v4 catModel];
-      v9 = [(SFCATModel *)v7 initWithProtobuf:v8];
+      catModel2 = [protobufCopy catModel];
+      v9 = [(SFCATModel *)v7 initWithProtobuf:catModel2];
       [(SFResponseWrapperCardSection *)v5 setCatModel:v9];
     }
 
-    v10 = [v4 visualCATOutput];
+    visualCATOutput = [protobufCopy visualCATOutput];
 
-    if (v10)
+    if (visualCATOutput)
     {
-      v11 = [v4 visualCATOutput];
-      [(SFResponseWrapperCardSection *)v5 setVisualCATOutput:v11];
+      visualCATOutput2 = [protobufCopy visualCATOutput];
+      [(SFResponseWrapperCardSection *)v5 setVisualCATOutput:visualCATOutput2];
     }
 
-    v12 = [v4 pattern_model];
+    pattern_model = [protobufCopy pattern_model];
 
-    if (v12)
+    if (pattern_model)
     {
       v13 = [SFPatternModel alloc];
-      v14 = [v4 pattern_model];
-      v15 = [(SFPatternModel *)v13 initWithProtobuf:v14];
+      pattern_model2 = [protobufCopy pattern_model];
+      v15 = [(SFPatternModel *)v13 initWithProtobuf:pattern_model2];
       [(SFResponseWrapperCardSection *)v5 setPattern_model:v15];
     }
 
-    v16 = [v4 pattern_models];
-    if (v16)
+    pattern_models = [protobufCopy pattern_models];
+    if (pattern_models)
     {
       v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -416,8 +416,8 @@ LABEL_39:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = [v4 pattern_models];
-    v19 = [v18 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    pattern_models2 = [protobufCopy pattern_models];
+    v19 = [pattern_models2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v19)
     {
       v20 = v19;
@@ -428,7 +428,7 @@ LABEL_39:
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(pattern_models2);
           }
 
           v23 = [[SFPatternModel alloc] initWithProtobuf:*(*(&v27 + 1) + 8 * i)];
@@ -438,7 +438,7 @@ LABEL_39:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v20 = [pattern_models2 countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v20);

@@ -3,7 +3,7 @@
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)writeContextConfiguration:(id)a3 withHandler:(id)a4;
+- (void)writeContextConfiguration:(id)configuration withHandler:(id)handler;
 @end
 
 @implementation CMContextConfigurationManager
@@ -56,20 +56,20 @@
   }
 }
 
-- (void)writeContextConfiguration:(id)a3 withHandler:(id)a4
+- (void)writeContextConfiguration:(id)configuration withHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!handler)
   {
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, configuration);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMContextConfigurationManager.mm", 83, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
   if (self->fLocationdConnection)
   {
     v16 = @"CMContextConfigurationKey";
-    v17 = a3;
-    objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], a2, &v17, &v16, 1);
+    configurationCopy = configuration;
+    objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], a2, &configurationCopy, &v16, 1);
     sub_19B686E08();
   }
 
@@ -103,7 +103,7 @@
   }
 
   v11 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v9, @"CMErrorDomain", 103, 0);
-  (*(a4 + 2))(a4, v11);
+  (*(handler + 2))(handler, v11);
   v12 = *MEMORY[0x1E69E9840];
 }
 

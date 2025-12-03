@@ -1,31 +1,31 @@
 @interface SUUIMenuPopoverController
-- (SUUIMenuPopoverController)initWithMenuTitles:(id)a3 selectedIndex:(int64_t)a4;
+- (SUUIMenuPopoverController)initWithMenuTitles:(id)titles selectedIndex:(int64_t)index;
 - (SUUIMenuPopoverDelegate)delegate;
 - (void)_destroyPopoverController;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)popoverController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)presentFromRect:(CGRect)a3 inView:(id)a4 permittedArrowDirections:(unint64_t)a5 animated:(BOOL)a6;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index;
+- (void)popoverController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)presentFromRect:(CGRect)rect inView:(id)view permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated;
 @end
 
 @implementation SUUIMenuPopoverController
 
-- (SUUIMenuPopoverController)initWithMenuTitles:(id)a3 selectedIndex:(int64_t)a4
+- (SUUIMenuPopoverController)initWithMenuTitles:(id)titles selectedIndex:(int64_t)index
 {
-  v6 = a3;
+  titlesCopy = titles;
   v11.receiver = self;
   v11.super_class = SUUIMenuPopoverController;
   v7 = [(SUUIMenuPopoverController *)&v11 init];
   if (v7)
   {
-    v8 = [[SUUIMenuViewController alloc] initWithMenuTitles:v6];
+    v8 = [[SUUIMenuViewController alloc] initWithMenuTitles:titlesCopy];
     menuViewController = v7->_menuViewController;
     v7->_menuViewController = v8;
 
     [(SUUIMenuViewController *)v7->_menuViewController setDelegate:v7];
-    [(SUUIMenuViewController *)v7->_menuViewController setIndexOfCheckedTitle:a4];
+    [(SUUIMenuViewController *)v7->_menuViewController setIndexOfCheckedTitle:index];
   }
 
   return v7;
@@ -40,26 +40,26 @@
   [(SUUIMenuPopoverController *)&v3 dealloc];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = self->_popoverController;
   [(SUUIMenuPopoverController *)self _destroyPopoverController];
-  [(UIPopoverController *)v5 dismissPopoverAnimated:v3];
+  [(UIPopoverController *)v5 dismissPopoverAnimated:animatedCopy];
 }
 
-- (void)presentFromRect:(CGRect)a3 inView:(id)a4 permittedArrowDirections:(unint64_t)a5 animated:(BOOL)a6
+- (void)presentFromRect:(CGRect)rect inView:(id)view permittedArrowDirections:(unint64_t)directions animated:(BOOL)animated
 {
   if (!self->_popoverController)
   {
-    v7 = a6;
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v18 = a4;
-    v14 = [(SUUIMenuPopoverController *)self menuTitles];
-    v15 = ([v14 count] * 45.0);
+    animatedCopy = animated;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    viewCopy = view;
+    menuTitles = [(SUUIMenuPopoverController *)self menuTitles];
+    v15 = ([menuTitles count] * 45.0);
 
     [(SUUIMenuViewController *)self->_menuViewController setPreferredContentSize:320.0, v15];
     v16 = [objc_alloc(MEMORY[0x277D758A0]) initWithContentViewController:self->_menuViewController];
@@ -68,11 +68,11 @@
 
     [(UIPopoverController *)self->_popoverController setDelegate:self];
     [(UIPopoverController *)self->_popoverController setPopoverContentSize:320.0, v15];
-    [(UIPopoverController *)self->_popoverController presentPopoverFromRect:v18 inView:a5 permittedArrowDirections:v7 animated:x, y, width, height];
+    [(UIPopoverController *)self->_popoverController presentPopoverFromRect:viewCopy inView:directions permittedArrowDirections:animatedCopy animated:x, y, width, height];
   }
 }
 
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
@@ -80,13 +80,13 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 menuPopover:self didSelectMenuItemAtIndex:a4];
+    [v8 menuPopover:self didSelectMenuItemAtIndex:index];
   }
 
   [(SUUIMenuPopoverController *)self dismissAnimated:1];
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(SUUIMenuPopoverController *)self _destroyPopoverController];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -99,7 +99,7 @@
   }
 }
 
-- (void)popoverController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
@@ -107,7 +107,7 @@
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 menuPopover:self willRepositionToRect:a4 inView:a5];
+    [v10 menuPopover:self willRepositionToRect:rect inView:view];
   }
 }
 

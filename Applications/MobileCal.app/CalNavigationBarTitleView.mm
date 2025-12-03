@@ -1,26 +1,26 @@
 @interface CalNavigationBarTitleView
-- (CalNavigationBarTitleView)initWithContents:(id)a3;
+- (CalNavigationBarTitleView)initWithContents:(id)contents;
 - (void)layoutSubviews;
 @end
 
 @implementation CalNavigationBarTitleView
 
-- (CalNavigationBarTitleView)initWithContents:(id)a3
+- (CalNavigationBarTitleView)initWithContents:(id)contents
 {
-  v5 = a3;
+  contentsCopy = contents;
   v10.receiver = self;
   v10.super_class = CalNavigationBarTitleView;
   v6 = [(CalNavigationBarTitleView *)&v10 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contents, a3);
+    objc_storeStrong(&v6->_contents, contents);
     [(CalNavigationBarTitleView *)v7 setPreservesSuperviewLayoutMargins:1];
     [(CalNavigationBarTitleView *)v7 setHideStandardTitle:1];
     v8 = +[UIColor clearColor];
     [(CalNavigationBarTitleView *)v7 setBackgroundColor:v8];
 
-    [(CalNavigationBarTitleView *)v7 addSubview:v5];
+    [(CalNavigationBarTitleView *)v7 addSubview:contentsCopy];
   }
 
   return v7;
@@ -32,8 +32,8 @@
   [(CalNavigationBarTitleView *)self bounds];
   [(UIView *)contents sizeThatFits:v4, v5];
   v7 = v6;
-  v8 = [(CalNavigationBarTitleView *)self overlays];
-  [v8 leadingItemsRect];
+  overlays = [(CalNavigationBarTitleView *)self overlays];
+  [overlays leadingItemsRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;

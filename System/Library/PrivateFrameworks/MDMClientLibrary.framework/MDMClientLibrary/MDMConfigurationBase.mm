@@ -1,33 +1,33 @@
 @interface MDMConfigurationBase
-+ (id)sharedConfigurationForChannel:(unint64_t)a3;
-- (BOOL)_memberQueueWriteProperties:(id)a3 channelType:(unint64_t)a4 error:(id *)a5;
-- (BOOL)memberQueueReadConfigurationOutError:(id *)a3;
-- (BOOL)removeMDMConfigurationForChannel:(unint64_t)a3 error:(id *)a4;
-- (BOOL)removeMDMConfigurationWithError:(id *)a3;
-- (BOOL)setPropertyForKey:(id)a3 value:(id)a4 channelType:(unint64_t)a5 error:(id *)a6;
-- (BOOL)setPropertyForKey:(id)a3 value:(id)a4 error:(id *)a5;
-- (BOOL)updateMDMConfigurationForChannel:(unint64_t)a3 createIfNeeded:(BOOL)a4 error:(id *)a5 updateBlock:(id)a6;
++ (id)sharedConfigurationForChannel:(unint64_t)channel;
+- (BOOL)_memberQueueWriteProperties:(id)properties channelType:(unint64_t)type error:(id *)error;
+- (BOOL)memberQueueReadConfigurationOutError:(id *)error;
+- (BOOL)removeMDMConfigurationForChannel:(unint64_t)channel error:(id *)error;
+- (BOOL)removeMDMConfigurationWithError:(id *)error;
+- (BOOL)setPropertyForKey:(id)key value:(id)value channelType:(unint64_t)type error:(id *)error;
+- (BOOL)setPropertyForKey:(id)key value:(id)value error:(id *)error;
+- (BOOL)updateMDMConfigurationForChannel:(unint64_t)channel createIfNeeded:(BOOL)needed error:(id *)error updateBlock:(id)block;
 - (MDMConfigurationBase)init;
 - (NSData)lastPushTokenHash;
 - (NSDate)pushMagicMismatchDateMarker;
 - (NSDictionary)details;
-- (id)_mdmFilePathForChannelType:(unint64_t)a3;
-- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)a3;
-- (id)_memberQueueReadPropertiesForChannelType:(unint64_t)a3 createIfMissingFile:(BOOL)a4 error:(id *)a5;
-- (id)getPropertyForKey:(id)a3 channelType:(unint64_t)a4 error:(id *)a5;
-- (id)getPropertyForKey:(id)a3 error:(id *)a4;
-- (id)retrieveMDMDictionaryWithError:(id *)a3;
+- (id)_mdmFilePathForChannelType:(unint64_t)type;
+- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)type;
+- (id)_memberQueueReadPropertiesForChannelType:(unint64_t)type createIfMissingFile:(BOOL)file error:(id *)error;
+- (id)getPropertyForKey:(id)key channelType:(unint64_t)type error:(id *)error;
+- (id)getPropertyForKey:(id)key error:(id *)error;
+- (id)retrieveMDMDictionaryWithError:(id *)error;
 - (void)memberQueueForgetCurrentConfiguration;
 - (void)refreshDetailsFromDisk;
 @end
 
 @implementation MDMConfigurationBase
 
-+ (id)sharedConfigurationForChannel:(unint64_t)a3
++ (id)sharedConfigurationForChannel:(unint64_t)channel
 {
-  if (a3)
+  if (channel)
   {
-    if (a3 != 1)
+    if (channel != 1)
     {
       goto LABEL_6;
     }
@@ -40,10 +40,10 @@
     v5 = off_2788568D8;
   }
 
-  a1 = [(__objc2_class *)*v5 sharedConfiguration];
+  self = [(__objc2_class *)*v5 sharedConfiguration];
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
 - (MDMConfigurationBase)init
@@ -82,14 +82,14 @@ LABEL_6:
   v9 = __Block_byref_object_copy__3;
   v10 = __Block_byref_object_dispose__3;
   v11 = 0;
-  v4 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__MDMConfigurationBase_refreshDetailsFromDisk__block_invoke;
   v5[3] = &unk_278856E48;
   v5[4] = self;
   v5[5] = buf;
-  dispatch_async(v4, v5);
+  dispatch_async(memberQueue, v5);
 
   _Block_object_dispose(buf, 8);
 }
@@ -103,7 +103,7 @@ void __46__MDMConfigurationBase_refreshDetailsFromDisk__block_invoke(uint64_t a1
   objc_storeStrong((v2 + 40), obj);
 }
 
-- (BOOL)memberQueueReadConfigurationOutError:(id *)a3
+- (BOOL)memberQueueReadConfigurationOutError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v5 = *(DMCLogObjects() + 8);
@@ -124,28 +124,28 @@ void __46__MDMConfigurationBase_refreshDetailsFromDisk__block_invoke(uint64_t a1
     v10 = [v6 objectForKey:@"LastPushTokenHash"];
     [(MDMConfigurationBase *)self setMemberQueueLastPushTokenHash:v10];
 
-    v11 = [(MDMConfigurationBase *)self memberQueueLastPushTokenHash];
-    if (!v11 || (v12 = v11, [(MDMConfigurationBase *)self memberQueueLastPushTokenHash], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v14 = objc_opt_isKindOfClass(), v13, v12, (v14 & 1) != 0))
+    memberQueueLastPushTokenHash = [(MDMConfigurationBase *)self memberQueueLastPushTokenHash];
+    if (!memberQueueLastPushTokenHash || (v12 = memberQueueLastPushTokenHash, [(MDMConfigurationBase *)self memberQueueLastPushTokenHash], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v14 = objc_opt_isKindOfClass(), v13, v12, (v14 & 1) != 0))
     {
       v9 = @"PushMagicMismatchDateMarker";
       v15 = [v6 objectForKey:@"PushMagicMismatchDateMarker"];
       [(MDMConfigurationBase *)self setMemberQueuePushMagicMismatchDateMarker:v15];
 
-      v8 = [(MDMConfigurationBase *)self memberQueuePushMagicMismatchDateMarker];
-      if (!v8)
+      memberQueuePushMagicMismatchDateMarker = [(MDMConfigurationBase *)self memberQueuePushMagicMismatchDateMarker];
+      if (!memberQueuePushMagicMismatchDateMarker)
       {
 LABEL_10:
         v18 = 1;
         goto LABEL_13;
       }
 
-      v16 = [(MDMConfigurationBase *)self memberQueuePushMagicMismatchDateMarker];
+      memberQueuePushMagicMismatchDateMarker2 = [(MDMConfigurationBase *)self memberQueuePushMagicMismatchDateMarker];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v8 = 0;
+        memberQueuePushMagicMismatchDateMarker = 0;
         goto LABEL_10;
       }
     }
@@ -154,12 +154,12 @@ LABEL_10:
     v20 = *MEMORY[0x277D03480];
     v38 = v9;
     v21 = DMCErrorArray();
-    v8 = [v19 DMCErrorWithDomain:v20 code:12011 descriptionArray:v21 errorType:{*MEMORY[0x277D032F8], v38, 0}];
+    memberQueuePushMagicMismatchDateMarker = [v19 DMCErrorWithDomain:v20 code:12011 descriptionArray:v21 errorType:{*MEMORY[0x277D032F8], v38, 0}];
 
     goto LABEL_12;
   }
 
-  v8 = v7;
+  memberQueuePushMagicMismatchDateMarker = v7;
 LABEL_12:
   v18 = 0;
 LABEL_13:
@@ -189,7 +189,7 @@ LABEL_13:
     _os_log_impl(&dword_22E997000, v23, OS_LOG_TYPE_DEFAULT, "MDMConfigurationBase: memberQueueReadConfigurationOutError: doneblock: Configuration not valid!", buf, 2u);
   }
 
-  if (v8)
+  if (memberQueuePushMagicMismatchDateMarker)
   {
     [(MDMConfigurationBase *)self memberQueueForgetCurrentConfiguration];
     v25 = *MEMORY[0x277D03480];
@@ -202,22 +202,22 @@ LABEL_13:
     v27 = DMCErrorArray();
     v28 = DMCLocalizedString();
     v29 = DMCUSEnglishString();
-    v8 = [v26 DMCErrorWithDomain:v25 code:12011 descriptionArray:v27 suggestion:v28 USEnglishSuggestion:v29 underlyingError:0 errorType:*MEMORY[0x277D032F8]];
+    memberQueuePushMagicMismatchDateMarker = [v26 DMCErrorWithDomain:v25 code:12011 descriptionArray:v27 suggestion:v28 USEnglishSuggestion:v29 underlyingError:0 errorType:*MEMORY[0x277D032F8]];
 
     [(MDMConfigurationBase *)self memberQueueForgetCurrentConfiguration];
-    if (!v8)
+    if (!memberQueuePushMagicMismatchDateMarker)
     {
       v33 = 1;
       goto LABEL_31;
     }
   }
 
-  v30 = [v8 domain];
-  if ([v30 isEqualToString:v25])
+  domain = [memberQueuePushMagicMismatchDateMarker domain];
+  if ([domain isEqualToString:v25])
   {
-    v31 = [v8 code];
+    code = [memberQueuePushMagicMismatchDateMarker code];
 
-    if (v31 == 12079)
+    if (code == 12079)
     {
       v32 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -226,9 +226,9 @@ LABEL_13:
         _os_log_impl(&dword_22E997000, v32, OS_LOG_TYPE_DEFAULT, "MDMConfigurationBase: memberQueueReadConfigurationOutError: No MDM installation found!", buf, 2u);
       }
 
-      if (a3)
+      if (error)
       {
-        v8 = v8;
+        memberQueuePushMagicMismatchDateMarker = memberQueuePushMagicMismatchDateMarker;
         goto LABEL_35;
       }
 
@@ -246,13 +246,13 @@ LABEL_31:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v41 = v8;
+    v41 = memberQueuePushMagicMismatchDateMarker;
     _os_log_impl(&dword_22E997000, v34, OS_LOG_TYPE_ERROR, "MDMConfigurationBase: memberQueueReadConfigurationOutError: Invalid MDM installation found. Error: %{public}@", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
-    v8 = v8;
+    memberQueuePushMagicMismatchDateMarker = memberQueuePushMagicMismatchDateMarker;
     if (v33)
     {
 LABEL_36:
@@ -261,8 +261,8 @@ LABEL_36:
     }
 
 LABEL_35:
-    v35 = v8;
-    *a3 = v8;
+    v35 = memberQueuePushMagicMismatchDateMarker;
+    *error = memberQueuePushMagicMismatchDateMarker;
     goto LABEL_36;
   }
 
@@ -286,42 +286,42 @@ LABEL_37:
   [(MDMConfigurationBase *)self setMemberQueuePushMagicMismatchDateMarker:0];
 }
 
-- (BOOL)removeMDMConfigurationWithError:(id *)a3
+- (BOOL)removeMDMConfigurationWithError:(id *)error
 {
-  v5 = [(MDMConfigurationBase *)self channelType];
+  channelType = [(MDMConfigurationBase *)self channelType];
 
-  return [(MDMConfigurationBase *)self removeMDMConfigurationForChannel:v5 error:a3];
+  return [(MDMConfigurationBase *)self removeMDMConfigurationForChannel:channelType error:error];
 }
 
-- (BOOL)updateMDMConfigurationForChannel:(unint64_t)a3 createIfNeeded:(BOOL)a4 error:(id *)a5 updateBlock:(id)a6
+- (BOOL)updateMDMConfigurationForChannel:(unint64_t)channel createIfNeeded:(BOOL)needed error:(id *)error updateBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__3;
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
-  v11 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__MDMConfigurationBase_updateMDMConfigurationForChannel_createIfNeeded_error_updateBlock___block_invoke;
   block[3] = &unk_278856FA8;
   v18 = &v21;
-  v19 = a3;
-  v20 = a4;
+  channelCopy = channel;
+  neededCopy = needed;
   block[4] = self;
-  v12 = v10;
+  v12 = blockCopy;
   v17 = v12;
-  dispatch_async_and_wait(v11, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   [(MDMConfigurationBase *)self refreshDetailsFromDisk];
-  if (a5)
+  if (error)
   {
     v13 = v22[5];
     if (v13)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -429,7 +429,7 @@ LABEL_21:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeMDMConfigurationForChannel:(unint64_t)a3 error:(id *)a4
+- (BOOL)removeMDMConfigurationForChannel:(unint64_t)channel error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -437,23 +437,23 @@ LABEL_21:
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v7 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MDMConfigurationBase_removeMDMConfigurationForChannel_error___block_invoke;
   block[3] = &unk_278856FD0;
   block[5] = &v12;
-  block[6] = a3;
+  block[6] = channel;
   block[4] = self;
-  dispatch_async_and_wait(v7, block);
+  dispatch_async_and_wait(memberQueue, block);
 
   [(MDMConfigurationBase *)self refreshDetailsFromDisk];
-  if (a4)
+  if (error)
   {
     v8 = v13[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -497,14 +497,14 @@ void __63__MDMConfigurationBase_removeMDMConfigurationForChannel_error___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mdmFilePathForChannelType:(unint64_t)a3
+- (id)_mdmFilePathForChannelType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     self = MDMUserFilePath();
   }
 
-  else if (!a3)
+  else if (!type)
   {
     self = MDMFilePath();
   }
@@ -520,14 +520,14 @@ void __63__MDMConfigurationBase_removeMDMConfigurationForChannel_error___block_i
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__MDMConfigurationBase_details__block_invoke;
   v6[3] = &unk_278856F08;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -553,14 +553,14 @@ uint64_t __31__MDMConfigurationBase_details__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__MDMConfigurationBase_lastPushTokenHash__block_invoke;
   v6[3] = &unk_278856F08;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -586,14 +586,14 @@ uint64_t __41__MDMConfigurationBase_lastPushTokenHash__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__MDMConfigurationBase_pushMagicMismatchDateMarker__block_invoke;
   v6[3] = &unk_278856F08;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -611,27 +611,27 @@ uint64_t __51__MDMConfigurationBase_pushMagicMismatchDateMarker__block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)setPropertyForKey:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setPropertyForKey:(id)key value:(id)value error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [(MDMConfigurationBase *)self setPropertyForKey:v9 value:v8 channelType:[(MDMConfigurationBase *)self channelType] error:a5];
+  valueCopy = value;
+  keyCopy = key;
+  LOBYTE(error) = [(MDMConfigurationBase *)self setPropertyForKey:keyCopy value:valueCopy channelType:[(MDMConfigurationBase *)self channelType] error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)getPropertyForKey:(id)a3 error:(id *)a4
+- (id)getPropertyForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MDMConfigurationBase *)self getPropertyForKey:v6 channelType:[(MDMConfigurationBase *)self channelType] error:a4];
+  keyCopy = key;
+  v7 = [(MDMConfigurationBase *)self getPropertyForKey:keyCopy channelType:[(MDMConfigurationBase *)self channelType] error:error];
 
   return v7;
 }
 
-- (BOOL)setPropertyForKey:(id)a3 value:(id)a4 channelType:(unint64_t)a5 error:(id *)a6
+- (BOOL)setPropertyForKey:(id)key value:(id)value channelType:(unint64_t)type error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -642,27 +642,27 @@ uint64_t __51__MDMConfigurationBase_pushMagicMismatchDateMarker__block_invoke(ui
   v27 = __Block_byref_object_copy__3;
   v28 = __Block_byref_object_dispose__3;
   v29 = 0;
-  v12 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __66__MDMConfigurationBase_setPropertyForKey_value_channelType_error___block_invoke;
   v18[3] = &unk_278856FF8;
   v18[4] = self;
-  v23 = a5;
-  v13 = v11;
+  typeCopy = type;
+  v13 = valueCopy;
   v19 = v13;
   v21 = &v24;
-  v14 = v10;
+  v14 = keyCopy;
   v20 = v14;
   v22 = &v30;
-  dispatch_async_and_wait(v12, v18);
+  dispatch_async_and_wait(memberQueue, v18);
 
-  if (a6)
+  if (error)
   {
     v15 = v25[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -745,9 +745,9 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getPropertyForKey:(id)a3 channelType:(unint64_t)a4 error:(id *)a5
+- (id)getPropertyForKey:(id)key channelType:(unint64_t)type error:(id *)error
 {
-  v8 = a3;
+  keyCopy = key;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -760,7 +760,7 @@ LABEL_11:
   v22 = __Block_byref_object_copy__3;
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
-  v9 = [(MDMConfigurationBase *)self memberQueue];
+  memberQueue = [(MDMConfigurationBase *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__MDMConfigurationBase_getPropertyForKey_channelType_error___block_invoke;
@@ -768,17 +768,17 @@ LABEL_11:
   block[4] = self;
   v16 = &v19;
   v17 = &v25;
-  v18 = a4;
-  v10 = v8;
+  typeCopy = type;
+  v10 = keyCopy;
   v15 = v10;
-  dispatch_async_and_wait(v9, block);
+  dispatch_async_and_wait(memberQueue, block);
 
-  if (a5)
+  if (error)
   {
     v11 = v20[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -843,14 +843,14 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)a3
+- (id)_mdmPropertiesFilePathForChannelType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     self = MDMPropertiesUserFilePath();
   }
 
-  else if (!a3)
+  else if (!type)
   {
     self = MDMPropertiesFilePath();
   }
@@ -858,74 +858,74 @@ LABEL_7:
   return self;
 }
 
-- (id)_memberQueueReadPropertiesForChannelType:(unint64_t)a3 createIfMissingFile:(BOOL)a4 error:(id *)a5
+- (id)_memberQueueReadPropertiesForChannelType:(unint64_t)type createIfMissingFile:(BOOL)file error:(id *)error
 {
-  v6 = a4;
+  fileCopy = file;
   v7 = MEMORY[0x277CBEA90];
-  v8 = [(MDMConfigurationBase *)self _mdmPropertiesFilePathForChannelType:a3];
+  v8 = [(MDMConfigurationBase *)self _mdmPropertiesFilePathForChannelType:type];
   v9 = [v7 dataWithContentsOfFile:v8];
 
   if (!v9)
   {
-    if (v6)
+    if (fileCopy)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
+      errorCopy = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
     }
 
     else
     {
-      v10 = 0;
+      errorCopy = 0;
     }
 
     goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x277CCAC58] DMCSafePropertyListWithData:v9 options:2 format:0 error:0];
-  if (v10)
+  errorCopy = [MEMORY[0x277CCAC58] DMCSafePropertyListWithData:v9 options:2 format:0 error:0];
+  if (errorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 LABEL_9:
-      a5 = v10;
-      v10 = a5;
+      error = errorCopy;
+      errorCopy = error;
       goto LABEL_10;
     }
   }
 
-  if (a5)
+  if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D03480];
     v13 = DMCErrorArray();
-    *a5 = [v11 DMCErrorWithDomain:v12 code:12113 descriptionArray:v13 errorType:{*MEMORY[0x277D032F8], 0}];
+    *error = [v11 DMCErrorWithDomain:v12 code:12113 descriptionArray:v13 errorType:{*MEMORY[0x277D032F8], 0}];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_10:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_memberQueueWriteProperties:(id)a3 channelType:(unint64_t)a4 error:(id *)a5
+- (BOOL)_memberQueueWriteProperties:(id)properties channelType:(unint64_t)type error:(id *)error
 {
-  v8 = a3;
-  v9 = [(MDMConfigurationBase *)self _mdmPropertiesFilePathForChannelType:a4];
-  v10 = [v8 DMCWriteToBinaryFile:v9];
+  propertiesCopy = properties;
+  v9 = [(MDMConfigurationBase *)self _mdmPropertiesFilePathForChannelType:type];
+  v10 = [propertiesCopy DMCWriteToBinaryFile:v9];
 
-  if (a5 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D03480];
     v13 = DMCErrorArray();
-    *a5 = [v11 DMCErrorWithDomain:v12 code:12114 descriptionArray:v13 errorType:{*MEMORY[0x277D032F8], 0}];
+    *error = [v11 DMCErrorWithDomain:v12 code:12114 descriptionArray:v13 errorType:{*MEMORY[0x277D032F8], 0}];
   }
 
   return v10;
 }
 
-- (id)retrieveMDMDictionaryWithError:(id *)a3
+- (id)retrieveMDMDictionaryWithError:(id *)error
 {
   v4 = MEMORY[0x277CBEA90];
   v5 = [(MDMConfigurationBase *)self _mdmFilePathForChannelType:[(MDMConfigurationBase *)self channelType]];
@@ -963,10 +963,10 @@ LABEL_10:
 
   v18 = [v13 DMCErrorWithDomain:v14 code:v15 descriptionArray:v11 errorType:{v12, 0}];
 
-  if (a3 && v18)
+  if (error && v18)
   {
     v19 = v18;
-    *a3 = v18;
+    *error = v18;
   }
 
   v8 = 0;

@@ -1,11 +1,11 @@
 @interface SRUIFPlatformHostingInstrumentationHandler
 - (SRUIFPlatformHostingInstrumentationHandler)init;
 - (SRUIFPlatformHostingInstrumentationHandlerDelegate)testDelegate;
-- (void)_computeStateAndInstrumentIfNecessaryForEvent:(unint64_t)a3;
-- (void)appearanceDidChange:(unint64_t)a3 machAbsoluteTime:(unint64_t)a4;
-- (void)hostingBringUpProcessedWithTurnIdenitfier:(id)a3;
-- (void)hostingDismissalProcessedWithTurnIdenitfier:(id)a3;
-- (void)instrumentForAppearanceEvent:(unint64_t)a3 turn:(id)a4 machAbsoluteTime:(unint64_t)a5;
+- (void)_computeStateAndInstrumentIfNecessaryForEvent:(unint64_t)event;
+- (void)appearanceDidChange:(unint64_t)change machAbsoluteTime:(unint64_t)time;
+- (void)hostingBringUpProcessedWithTurnIdenitfier:(id)idenitfier;
+- (void)hostingDismissalProcessedWithTurnIdenitfier:(id)idenitfier;
+- (void)instrumentForAppearanceEvent:(unint64_t)event turn:(id)turn machAbsoluteTime:(unint64_t)time;
 @end
 
 @implementation SRUIFPlatformHostingInstrumentationHandler
@@ -25,39 +25,39 @@
   return v2;
 }
 
-- (void)hostingBringUpProcessedWithTurnIdenitfier:(id)a3
+- (void)hostingBringUpProcessedWithTurnIdenitfier:(id)idenitfier
 {
-  objc_storeStrong(&self->_bringUpTurnIdentifier, a3);
+  objc_storeStrong(&self->_bringUpTurnIdentifier, idenitfier);
   [(SRUIFPlatformHostingInstrumentationHandler *)self _computeStateAndInstrumentIfNecessaryForEvent:0];
 
   [(SRUIFPlatformHostingInstrumentationHandler *)self _computeStateAndInstrumentIfNecessaryForEvent:1];
 }
 
-- (void)hostingDismissalProcessedWithTurnIdenitfier:(id)a3
+- (void)hostingDismissalProcessedWithTurnIdenitfier:(id)idenitfier
 {
-  objc_storeStrong(&self->_dismissalTurnIdentifier, a3);
+  objc_storeStrong(&self->_dismissalTurnIdentifier, idenitfier);
   [(SRUIFPlatformHostingInstrumentationHandler *)self _computeStateAndInstrumentIfNecessaryForEvent:2];
 
   [(SRUIFPlatformHostingInstrumentationHandler *)self _computeStateAndInstrumentIfNecessaryForEvent:3];
 }
 
-- (void)appearanceDidChange:(unint64_t)a3 machAbsoluteTime:(unint64_t)a4
+- (void)appearanceDidChange:(unint64_t)change machAbsoluteTime:(unint64_t)time
 {
   machAbsoluteForAppearances = self->_machAbsoluteForAppearances;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:change];
   [(NSMutableDictionary *)machAbsoluteForAppearances setObject:v7 forKey:v8];
 
-  [(SRUIFPlatformHostingInstrumentationHandler *)self _computeStateAndInstrumentIfNecessaryForEvent:a3];
+  [(SRUIFPlatformHostingInstrumentationHandler *)self _computeStateAndInstrumentIfNecessaryForEvent:change];
 }
 
-- (void)_computeStateAndInstrumentIfNecessaryForEvent:(unint64_t)a3
+- (void)_computeStateAndInstrumentIfNecessaryForEvent:(unint64_t)event
 {
   machAbsoluteForAppearances = self->_machAbsoluteForAppearances;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   v13 = [(NSMutableDictionary *)machAbsoluteForAppearances objectForKeyedSubscript:v6];
 
-  if (a3 > 1)
+  if (event > 1)
   {
     dismissalTurnIdentifier = self->_dismissalTurnIdentifier;
     if (!dismissalTurnIdentifier)
@@ -80,19 +80,19 @@ LABEL_3:
   v8 = dismissalTurnIdentifier;
   if (v13)
   {
-    -[SRUIFPlatformHostingInstrumentationHandler instrumentForAppearanceEvent:turn:machAbsoluteTime:](self, "instrumentForAppearanceEvent:turn:machAbsoluteTime:", a3, v8, [v13 longLongValue]);
+    -[SRUIFPlatformHostingInstrumentationHandler instrumentForAppearanceEvent:turn:machAbsoluteTime:](self, "instrumentForAppearanceEvent:turn:machAbsoluteTime:", event, v8, [v13 longLongValue]);
     v9 = self->_machAbsoluteForAppearances;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:event];
     [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 
-    if (a3 == 1)
+    if (event == 1)
     {
       v11 = 16;
     }
 
     else
     {
-      if (a3 != 3)
+      if (event != 3)
       {
         goto LABEL_11;
       }
@@ -107,15 +107,15 @@ LABEL_3:
 LABEL_11:
 }
 
-- (void)instrumentForAppearanceEvent:(unint64_t)a3 turn:(id)a4 machAbsoluteTime:(unint64_t)a5
+- (void)instrumentForAppearanceEvent:(unint64_t)event turn:(id)turn machAbsoluteTime:(unint64_t)time
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3 > 1)
+  turnCopy = turn;
+  if (event > 1)
   {
-    if (a3 != 2)
+    if (event != 2)
     {
-      if (a3 != 3)
+      if (event != 3)
       {
         goto LABEL_19;
       }
@@ -135,9 +135,9 @@ LABEL_8:
 
   else
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
         goto LABEL_19;
       }
@@ -163,7 +163,7 @@ LABEL_12:
     if (WeakRetained)
     {
       v14 = objc_loadWeakRetained(&self->_testDelegate);
-      [v14 handler:self requestToInstrumentEvent:v9 turn:v8 machAbsoluteTime:a5];
+      [v14 handler:self requestToInstrumentEvent:v9 turn:turnCopy machAbsoluteTime:time];
     }
 
     else
@@ -172,20 +172,20 @@ LABEL_12:
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [v8 turnIdentifier];
-        v18 = [v9 formattedText];
+        turnIdentifier = [turnCopy turnIdentifier];
+        formattedText = [v9 formattedText];
         v20 = 136315906;
         v21 = "[SRUIFPlatformHostingInstrumentationHandler instrumentForAppearanceEvent:turn:machAbsoluteTime:]";
         v22 = 2112;
         v23 = v9;
         v24 = 2112;
-        v25 = v17;
+        v25 = turnIdentifier;
         v26 = 2112;
-        v27 = v18;
+        v27 = formattedText;
         _os_log_impl(&dword_26951F000, v16, OS_LOG_TYPE_DEFAULT, "%s #instrumentation %@ in turn %@: \n%@", &v20, 0x2Au);
       }
 
-      [v8 emitInstrumentation:v9 machAbsoluteTime:a5];
+      [turnCopy emitInstrumentation:v9 machAbsoluteTime:time];
     }
   }
 

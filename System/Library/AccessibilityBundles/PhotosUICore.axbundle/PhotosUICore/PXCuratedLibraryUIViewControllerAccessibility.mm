@@ -1,5 +1,5 @@
 @interface PXCuratedLibraryUIViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)ax_pxg_scrollView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
@@ -7,14 +7,14 @@
 
 @implementation PXCuratedLibraryUIViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"gridView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXGView" hasInstanceMethod:@"scrollViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXUIScrollViewController"];
-  [v3 validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
-  [v3 validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"gridView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXGView" hasInstanceMethod:@"scrollViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXUIScrollViewController"];
+  [validationsCopy validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
+  [validationsCopy validateClass:@"PXCuratedLibraryUIViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (id)ax_pxg_scrollView
@@ -41,11 +41,11 @@
   v5.receiver = self;
   v5.super_class = PXCuratedLibraryUIViewControllerAccessibility;
   [(PXCuratedLibraryUIViewControllerAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
-  v3 = [(PXCuratedLibraryUIViewControllerAccessibility *)self ax_pxg_scrollView];
-  v4 = v3;
-  if (v3)
+  ax_pxg_scrollView = [(PXCuratedLibraryUIViewControllerAccessibility *)self ax_pxg_scrollView];
+  v4 = ax_pxg_scrollView;
+  if (ax_pxg_scrollView)
   {
-    [v3 accessibilitySetIdentification:@"AXCuratedLibraryScrollView"];
+    [ax_pxg_scrollView accessibilitySetIdentification:@"AXCuratedLibraryScrollView"];
   }
 }
 

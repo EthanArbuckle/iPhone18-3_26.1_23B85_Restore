@@ -6,52 +6,52 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v2 = [a1 type];
-  v3 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "unit")}];
-  v4 = [v3 re_actionIdentifierHashValue];
-  if (v2 <= 2)
+  type = [self type];
+  v3 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "unit")}];
+  re_actionIdentifierHashValue = [v3 re_actionIdentifierHashValue];
+  if (type <= 2)
   {
-    if (v2 == 1)
+    if (type == 1)
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "BOOLValue")}];
+      stringValue = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "BOOLValue")}];
       goto LABEL_13;
     }
 
-    if (v2 != 2)
+    if (type != 2)
     {
       goto LABEL_14;
     }
 
     v7 = MEMORY[0x277CCABB0];
-    [a1 doubleValue];
-    v8 = [v7 numberWithDouble:?];
+    [self doubleValue];
+    stringValue = [v7 numberWithDouble:?];
 LABEL_13:
-    v9 = v8;
-    v4 ^= [v8 re_actionIdentifierHashValue];
+    v9 = stringValue;
+    re_actionIdentifierHashValue ^= [stringValue re_actionIdentifierHashValue];
 
     goto LABEL_14;
   }
 
-  switch(v2)
+  switch(type)
   {
     case 3:
-      v8 = [a1 stringValue];
+      stringValue = [self stringValue];
       goto LABEL_13;
     case 4:
       v5 = MEMORY[0x277CCABB0];
-      v6 = [a1 integerValue];
+      integerValue = [self integerValue];
       goto LABEL_11;
     case 5:
       v5 = MEMORY[0x277CCABB0];
-      v6 = [a1 limitValue];
+      integerValue = [self limitValue];
 LABEL_11:
-      v8 = [v5 numberWithInteger:v6];
+      stringValue = [v5 numberWithInteger:integerValue];
       goto LABEL_13;
   }
 
 LABEL_14:
 
-  return v4;
+  return re_actionIdentifierHashValue;
 }
 
 @end

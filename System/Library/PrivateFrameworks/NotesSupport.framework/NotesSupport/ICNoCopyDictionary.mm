@@ -1,41 +1,41 @@
 @interface ICNoCopyDictionary
-- (ICNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)a3;
-- (ICNoCopyDictionary)initWithCapacity:(unint64_t)a3;
+- (ICNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)dictionary;
+- (ICNoCopyDictionary)initWithCapacity:(unint64_t)capacity;
 - (id)allKeys;
 - (id)allValues;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
-- (id)objectForKey:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectForKey:(id)key;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5;
-- (void)setObject:(id)a3 forUncopiedKey:(id)a4;
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count;
+- (void)setObject:(id)object forUncopiedKey:(id)key;
 @end
 
 @implementation ICNoCopyDictionary
 
-- (ICNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)a3
+- (ICNoCopyDictionary)initWithCFDictionary:(__CFDictionary *)dictionary
 {
   v6.receiver = self;
   v6.super_class = ICNoCopyDictionary;
   v4 = [(ICNoCopyDictionary *)&v6 init];
   if (v4)
   {
-    v4->mDictionary = CFDictionaryCreateMutableCopy(0, 0, a3);
+    v4->mDictionary = CFDictionaryCreateMutableCopy(0, 0, dictionary);
   }
 
   return v4;
 }
 
-- (ICNoCopyDictionary)initWithCapacity:(unint64_t)a3
+- (ICNoCopyDictionary)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = ICNoCopyDictionary;
   v4 = [(ICNoCopyDictionary *)&v6 init];
   if (v4)
   {
-    v4->mDictionary = CFDictionaryCreateMutable(0, a3, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
+    v4->mDictionary = CFDictionaryCreateMutable(0, capacity, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
   }
 
   return v4;
@@ -55,30 +55,30 @@
   [(ICNoCopyDictionary *)&v4 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mDictionary = self->mDictionary;
 
   return [v4 initWithCFDictionary:mDictionary];
 }
 
-- (void)setObject:(id)a3 forUncopiedKey:(id)a4
+- (void)setObject:(id)object forUncopiedKey:(id)key
 {
-  if (!a3)
+  if (!object)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to insert nil value into %@", objc_opt_class()}];
-    if (a4)
+    if (key)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    [ICAssert handleFailedAssertWithCondition:"aKey != ((void*)0)" functionName:"[ICNoCopyDictionary setObject:forUncopiedKey:]" simulateCrash:1 showAlert:0 format:@"Inserting a value into no-copy dictionary with a NULL key into %p! Object is %@", self, a3];
+    [ICAssert handleFailedAssertWithCondition:"aKey != ((void*)0)" functionName:"[ICNoCopyDictionary setObject:forUncopiedKey:]" simulateCrash:1 showAlert:0 format:@"Inserting a value into no-copy dictionary with a NULL key into %p! Object is %@", self, object];
     return;
   }
 
-  if (!a4)
+  if (!key)
   {
     goto LABEL_7;
   }
@@ -86,25 +86,25 @@ LABEL_7:
 LABEL_3:
   mDictionary = self->mDictionary;
 
-  CFDictionarySetValue(mDictionary, a4, a3);
+  CFDictionarySetValue(mDictionary, key, object);
 }
 
-- (void)getObjects:(id *)a3 andKeys:(id *)a4 count:(unint64_t)a5
+- (void)getObjects:(id *)objects andKeys:(id *)keys count:(unint64_t)count
 {
   Count = CFDictionaryGetCount(self->mDictionary);
-  if (Count >= a5)
+  if (Count >= count)
   {
-    v10 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v10 = Count;
+    countCopy = Count;
   }
 
-  if (v10)
+  if (countCopy)
   {
-    v11 = (a3 | a4) == 0;
+    v11 = (objects | keys) == 0;
   }
 
   else
@@ -116,15 +116,15 @@ LABEL_3:
   {
     mDictionary = self->mDictionary;
 
-    CFDictionaryGetKeysAndValues(mDictionary, a4, a3);
+    CFDictionaryGetKeysAndValues(mDictionary, keys, objects);
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    return CFDictionaryGetValue(self->mDictionary, a3);
+    return CFDictionaryGetValue(self->mDictionary, key);
   }
 
   else
@@ -156,9 +156,9 @@ LABEL_3:
 
 - (id)objectEnumerator
 {
-  v2 = [(ICNoCopyDictionary *)self allValues];
+  allValues = [(ICNoCopyDictionary *)self allValues];
 
-  return [v2 objectEnumerator];
+  return [allValues objectEnumerator];
 }
 
 - (id)allKeys
@@ -184,15 +184,15 @@ LABEL_3:
 
 - (id)keyEnumerator
 {
-  v2 = [(ICNoCopyDictionary *)self allKeys];
+  allKeys = [(ICNoCopyDictionary *)self allKeys];
 
-  return [v2 objectEnumerator];
+  return [allKeys objectEnumerator];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   Count = CFDictionaryGetCount(self->mDictionary);
-  if (a3->var0 >= Count)
+  if (state->var0 >= Count)
   {
     return 0;
   }
@@ -200,17 +200,17 @@ LABEL_3:
   v10 = Count;
   v11 = malloc_type_malloc(8 * Count, 0x80040B8603338uLL);
   CFDictionaryGetKeysAndValues(self->mDictionary, v11, 0);
-  if (v10 - a3->var0 < a5)
+  if (v10 - state->var0 < count)
   {
-    a5 = v10 - a3->var0;
+    count = v10 - state->var0;
   }
 
-  memcpy(a4, &v11[a3->var0], 8 * a5);
+  memcpy(objects, &v11[state->var0], 8 * count);
   free(v11);
-  a3->var0 += a5;
-  a3->var1 = a4;
-  a3->var2 = &a3->var2;
-  return a5;
+  state->var0 += count;
+  state->var1 = objects;
+  state->var2 = &state->var2;
+  return count;
 }
 
 @end

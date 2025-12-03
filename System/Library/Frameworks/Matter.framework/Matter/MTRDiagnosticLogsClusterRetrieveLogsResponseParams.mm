@@ -1,9 +1,9 @@
 @interface MTRDiagnosticLogsClusterRetrieveLogsResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDiagnosticLogsClusterRetrieveLogsResponseParams)init;
-- (MTRDiagnosticLogsClusterRetrieveLogsResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRDiagnosticLogsClusterRetrieveLogsResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRDiagnosticLogsClusterRetrieveLogsResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
     status = v2->_status;
     v2->_status = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     logContent = v3->_logContent;
-    v3->_logContent = v5;
+    v3->_logContent = data;
 
     utcTimeStamp = v3->_utcTimeStamp;
     v3->_utcTimeStamp = 0;
@@ -37,23 +37,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDiagnosticLogsClusterRetrieveLogsResponseParams);
-  v5 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self status];
-  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setStatus:v5];
+  status = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self status];
+  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self logContent];
-  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setLogContent:v6];
+  logContent = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self logContent];
+  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setLogContent:logContent];
 
-  v7 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self utcTimeStamp];
-  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setUtcTimeStamp:v7];
+  utcTimeStamp = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self utcTimeStamp];
+  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setUtcTimeStamp:utcTimeStamp];
 
-  v8 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self timeSinceBoot];
-  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setTimeSinceBoot:v8];
+  timeSinceBoot = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self timeSinceBoot];
+  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setTimeSinceBoot:timeSinceBoot];
 
-  v9 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -118,7 +118,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRDiagnosticLogsClusterRetrieveLogsResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDiagnosticLogsClusterRetrieveLogsResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDiagnosticLogsClusterRetrieveLogsResponseParams;
@@ -126,7 +126,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -142,17 +142,17 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self setStatus:v5];
 
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
   [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self setLogContent:v6];
 
-  if (*(a3 + 24) == 1)
+  if (*(struct + 24) == 1)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*sub_238DE36B8(a3 + 24)];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*sub_238DE36B8(struct + 24)];
     [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self setUtcTimeStamp:v7];
   }
 
@@ -161,8 +161,8 @@ LABEL_6:
     [(MTRDiagnosticLogsClusterRetrieveLogsResponseParams *)self setUtcTimeStamp:0];
   }
 
-  v9 = *(a3 + 40);
-  v8 = a3 + 40;
+  v9 = *(struct + 40);
+  v8 = struct + 40;
   if (v9 == 1)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*sub_238DE36B8(v8)];

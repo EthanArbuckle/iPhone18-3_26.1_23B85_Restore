@@ -1,39 +1,39 @@
 @interface CRLSwappableAxesGeometry
-+ (id)geometryWithXAxisAlongEdge:(int)a3;
++ (id)geometryWithXAxisAlongEdge:(int)edge;
 + (id)standardAxesGeometry;
 + (id)swappedAxesGeometry;
-- (BOOL)rect:(CGRect)a3 horizontallyOverlapsRect:(CGRect)a4;
-- (BOOL)rect:(CGRect)a3 verticallyOverlapsRect:(CGRect)a4;
-- (CGPoint)makePointWithX:(double)a3 Y:(double)a4;
-- (CGRect)makeHorizontalSpacingRectBetweenRect:(CGRect)a3 andRect:(CGRect)a4;
-- (CGRect)makeRectWithX:(double)a3 Y:(double)a4 width:(double)a5 height:(double)a6;
-- (CGRect)makeVerticalSpacingRectBetweenRect:(CGRect)a3 andRect:(CGRect)a4;
-- (double)pointX:(CGPoint)a3;
-- (double)pointY:(CGPoint)a3;
-- (double)rectHeight:(CGRect)a3;
-- (double)rectMaxX:(CGRect)a3;
-- (double)rectMaxY:(CGRect)a3;
-- (double)rectMidX:(CGRect)a3;
-- (double)rectMidY:(CGRect)a3;
-- (double)rectMinX:(CGRect)a3;
-- (double)rectMinY:(CGRect)a3;
-- (double)rectWidth:(CGRect)a3;
+- (BOOL)rect:(CGRect)rect horizontallyOverlapsRect:(CGRect)overlapsRect;
+- (BOOL)rect:(CGRect)rect verticallyOverlapsRect:(CGRect)overlapsRect;
+- (CGPoint)makePointWithX:(double)x Y:(double)y;
+- (CGRect)makeHorizontalSpacingRectBetweenRect:(CGRect)rect andRect:(CGRect)andRect;
+- (CGRect)makeRectWithX:(double)x Y:(double)y width:(double)width height:(double)height;
+- (CGRect)makeVerticalSpacingRectBetweenRect:(CGRect)rect andRect:(CGRect)andRect;
+- (double)pointX:(CGPoint)x;
+- (double)pointY:(CGPoint)y;
+- (double)rectHeight:(CGRect)height;
+- (double)rectMaxX:(CGRect)x;
+- (double)rectMaxY:(CGRect)y;
+- (double)rectMidX:(CGRect)x;
+- (double)rectMidY:(CGRect)y;
+- (double)rectMinX:(CGRect)x;
+- (double)rectMinY:(CGRect)y;
+- (double)rectWidth:(CGRect)width;
 - (id)description;
-- (id)initFlipped:(BOOL)a3;
-- (int)edgeForStandardRectEdge:(int)a3;
-- (unint64_t)knobTagForStandardKnobTag:(unint64_t)a3;
+- (id)initFlipped:(BOOL)flipped;
+- (int)edgeForStandardRectEdge:(int)edge;
+- (unint64_t)knobTagForStandardKnobTag:(unint64_t)tag;
 @end
 
 @implementation CRLSwappableAxesGeometry
 
-- (id)initFlipped:(BOOL)a3
+- (id)initFlipped:(BOOL)flipped
 {
   v5.receiver = self;
   v5.super_class = CRLSwappableAxesGeometry;
   result = [(CRLSwappableAxesGeometry *)&v5 init];
   if (result)
   {
-    *(result + 16) = a3;
+    *(result + 16) = flipped;
   }
 
   return result;
@@ -69,14 +69,14 @@
   return v2;
 }
 
-+ (id)geometryWithXAxisAlongEdge:(int)a3
++ (id)geometryWithXAxisAlongEdge:(int)edge
 {
-  if ((a3 - 3) < 3)
+  if ((edge - 3) < 3)
   {
     v3 = +[CRLSwappableAxesGeometry swappedAxesGeometry];
   }
 
-  else if (a3 > 2)
+  else if (edge > 2)
   {
     v3 = 0;
   }
@@ -89,13 +89,13 @@
   return v3;
 }
 
-- (unint64_t)knobTagForStandardKnobTag:(unint64_t)a3
+- (unint64_t)knobTagForStandardKnobTag:(unint64_t)tag
 {
   if (self->mFlipped)
   {
-    if (a3 < 0xA && ((0x3DFu >> a3) & 1) != 0)
+    if (tag < 0xA && ((0x3DFu >> tag) & 1) != 0)
     {
-      return qword_101462608[a3];
+      return qword_101462608[tag];
     }
 
     else
@@ -131,204 +131,204 @@
     }
   }
 
-  return a3;
+  return tag;
 }
 
-- (int)edgeForStandardRectEdge:(int)a3
+- (int)edgeForStandardRectEdge:(int)edge
 {
   if (self->mFlipped)
   {
-    if ((a3 - 1) > 4)
+    if ((edge - 1) > 4)
     {
       return 3;
     }
 
     else
     {
-      return dword_101462658[a3 - 1];
+      return dword_101462658[edge - 1];
     }
   }
 
-  return a3;
+  return edge;
 }
 
-- (BOOL)rect:(CGRect)a3 horizontallyOverlapsRect:(CGRect)a4
+- (BOOL)rect:(CGRect)rect horizontallyOverlapsRect:(CGRect)overlapsRect
 {
   if (self->mFlipped)
   {
-    return sub_10011F07C(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    return sub_10011F07C(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, overlapsRect.origin.x, overlapsRect.origin.y, overlapsRect.size.width, overlapsRect.size.height);
   }
 
   else
   {
-    return sub_10011F144(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    return sub_10011F144(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, overlapsRect.origin.x, overlapsRect.origin.y, overlapsRect.size.width, overlapsRect.size.height);
   }
 }
 
-- (BOOL)rect:(CGRect)a3 verticallyOverlapsRect:(CGRect)a4
+- (BOOL)rect:(CGRect)rect verticallyOverlapsRect:(CGRect)overlapsRect
 {
   if (self->mFlipped)
   {
-    return sub_10011F144(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    return sub_10011F144(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, overlapsRect.origin.x, overlapsRect.origin.y, overlapsRect.size.width, overlapsRect.size.height);
   }
 
   else
   {
-    return sub_10011F07C(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    return sub_10011F07C(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, overlapsRect.origin.x, overlapsRect.origin.y, overlapsRect.size.width, overlapsRect.size.height);
   }
 }
 
-- (double)rectMinX:(CGRect)a3
+- (double)rectMinX:(CGRect)x
 {
   if (self->mFlipped)
   {
-    return CGRectGetMinY(a3);
+    return CGRectGetMinY(x);
   }
 
   else
   {
-    return CGRectGetMinX(a3);
+    return CGRectGetMinX(x);
   }
 }
 
-- (double)rectMinY:(CGRect)a3
+- (double)rectMinY:(CGRect)y
 {
   if (self->mFlipped)
   {
-    return CGRectGetMinX(a3);
+    return CGRectGetMinX(y);
   }
 
   else
   {
-    return CGRectGetMinY(a3);
+    return CGRectGetMinY(y);
   }
 }
 
-- (double)rectMidX:(CGRect)a3
+- (double)rectMidX:(CGRect)x
 {
   if (self->mFlipped)
   {
-    return CGRectGetMidY(a3);
+    return CGRectGetMidY(x);
   }
 
   else
   {
-    return CGRectGetMidX(a3);
+    return CGRectGetMidX(x);
   }
 }
 
-- (double)rectMidY:(CGRect)a3
+- (double)rectMidY:(CGRect)y
 {
   if (self->mFlipped)
   {
-    return CGRectGetMidX(a3);
+    return CGRectGetMidX(y);
   }
 
   else
   {
-    return CGRectGetMidY(a3);
+    return CGRectGetMidY(y);
   }
 }
 
-- (double)rectMaxX:(CGRect)a3
+- (double)rectMaxX:(CGRect)x
 {
   if (self->mFlipped)
   {
-    return CGRectGetMaxY(a3);
+    return CGRectGetMaxY(x);
   }
 
   else
   {
-    return CGRectGetMaxX(a3);
+    return CGRectGetMaxX(x);
   }
 }
 
-- (double)rectMaxY:(CGRect)a3
+- (double)rectMaxY:(CGRect)y
 {
   if (self->mFlipped)
   {
-    return CGRectGetMaxX(a3);
+    return CGRectGetMaxX(y);
   }
 
   else
   {
-    return CGRectGetMaxY(a3);
+    return CGRectGetMaxY(y);
   }
 }
 
-- (double)rectWidth:(CGRect)a3
+- (double)rectWidth:(CGRect)width
 {
   if (self->mFlipped)
   {
-    return CGRectGetHeight(a3);
+    return CGRectGetHeight(width);
   }
 
   else
   {
-    return CGRectGetWidth(a3);
+    return CGRectGetWidth(width);
   }
 }
 
-- (double)rectHeight:(CGRect)a3
+- (double)rectHeight:(CGRect)height
 {
   if (self->mFlipped)
   {
-    return CGRectGetWidth(a3);
+    return CGRectGetWidth(height);
   }
 
   else
   {
-    return CGRectGetHeight(a3);
+    return CGRectGetHeight(height);
   }
 }
 
-- (CGRect)makeRectWithX:(double)a3 Y:(double)a4 width:(double)a5 height:(double)a6
+- (CGRect)makeRectWithX:(double)x Y:(double)y width:(double)width height:(double)height
 {
   if (self->mFlipped)
   {
-    v6 = a4;
+    xCopy = y;
   }
 
   else
   {
-    v6 = a3;
+    xCopy = x;
   }
 
   if (self->mFlipped)
   {
-    a4 = a3;
-    v7 = a6;
+    y = x;
+    widthCopy = height;
   }
 
   else
   {
-    v7 = a5;
+    widthCopy = width;
   }
 
   if (self->mFlipped)
   {
-    a6 = a5;
+    height = width;
   }
 
-  v8 = v6;
-  v9 = v7;
-  result.size.height = a6;
+  v8 = xCopy;
+  v9 = widthCopy;
+  result.size.height = height;
   result.size.width = v9;
-  result.origin.y = a4;
+  result.origin.y = y;
   result.origin.x = v8;
   return result;
 }
 
-- (CGRect)makeHorizontalSpacingRectBetweenRect:(CGRect)a3 andRect:(CGRect)a4
+- (CGRect)makeHorizontalSpacingRectBetweenRect:(CGRect)rect andRect:(CGRect)andRect
 {
   if (self->mFlipped)
   {
-    v4 = sub_10011FDEC(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    v4 = sub_10011FDEC(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, andRect.origin.x, andRect.origin.y, andRect.size.width, andRect.size.height);
   }
 
   else
   {
-    v4 = sub_10011FCA0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    v4 = sub_10011FCA0(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, andRect.origin.x, andRect.origin.y, andRect.size.width, andRect.size.height);
   }
 
   result.size.height = v7;
@@ -338,16 +338,16 @@
   return result;
 }
 
-- (CGRect)makeVerticalSpacingRectBetweenRect:(CGRect)a3 andRect:(CGRect)a4
+- (CGRect)makeVerticalSpacingRectBetweenRect:(CGRect)rect andRect:(CGRect)andRect
 {
   if (self->mFlipped)
   {
-    v4 = sub_10011FCA0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    v4 = sub_10011FCA0(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, andRect.origin.x, andRect.origin.y, andRect.size.width, andRect.size.height);
   }
 
   else
   {
-    v4 = sub_10011FDEC(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+    v4 = sub_10011FDEC(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, andRect.origin.x, andRect.origin.y, andRect.size.width, andRect.size.height);
   }
 
   result.size.height = v7;
@@ -357,45 +357,45 @@
   return result;
 }
 
-- (double)pointX:(CGPoint)a3
+- (double)pointX:(CGPoint)x
 {
   if (self->mFlipped)
   {
-    a3.x = a3.y;
+    x.x = x.y;
   }
 
-  return a3.x;
+  return x.x;
 }
 
-- (double)pointY:(CGPoint)a3
+- (double)pointY:(CGPoint)y
 {
   if (!self->mFlipped)
   {
-    a3.x = a3.y;
+    y.x = y.y;
   }
 
-  return a3.x;
+  return y.x;
 }
 
-- (CGPoint)makePointWithX:(double)a3 Y:(double)a4
+- (CGPoint)makePointWithX:(double)x Y:(double)y
 {
   if (self->mFlipped)
   {
-    v4 = a4;
+    xCopy = y;
   }
 
   else
   {
-    v4 = a3;
+    xCopy = x;
   }
 
   if (self->mFlipped)
   {
-    a4 = a3;
+    y = x;
   }
 
-  v5 = v4;
-  result.y = a4;
+  v5 = xCopy;
+  result.y = y;
   result.x = v5;
   return result;
 }

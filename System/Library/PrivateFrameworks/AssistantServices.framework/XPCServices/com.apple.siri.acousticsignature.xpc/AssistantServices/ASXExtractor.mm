@@ -3,7 +3,7 @@
 - (id)_sigx;
 - (id)currentSignature;
 - (void)reset;
-- (void)setSampleRate:(int)a3;
+- (void)setSampleRate:(int)rate;
 @end
 
 @implementation ASXExtractor
@@ -20,9 +20,9 @@
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v4 = [v3 code];
+        code = [v3 code];
         *buf = 134217984;
-        v7 = v4;
+        v7 = code;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Error resetting %ld", buf, 0xCu);
       }
     }
@@ -44,9 +44,9 @@
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v7 = [v3 code];
+        code = [v3 code];
         *buf = 134217984;
-        v13 = v7;
+        v13 = code;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Error getting signature %ld", buf, 0xCu);
       }
 
@@ -74,11 +74,11 @@
   return v4;
 }
 
-- (void)setSampleRate:(int)a3
+- (void)setSampleRate:(int)rate
 {
-  if (self->_sampleRate != a3)
+  if (self->_sampleRate != rate)
   {
-    self->_sampleRate = a3;
+    self->_sampleRate = rate;
     if (self->_sigx)
     {
       self->_sigx = 0;
@@ -102,10 +102,10 @@
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v8 code];
+        code = [v8 code];
         v10 = self->_sampleRate;
         *buf = 134218240;
-        v14 = v9;
+        v14 = code;
         v15 = 1024;
         v16 = v10;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Error %ld setting sample rate %d", buf, 0x12u);

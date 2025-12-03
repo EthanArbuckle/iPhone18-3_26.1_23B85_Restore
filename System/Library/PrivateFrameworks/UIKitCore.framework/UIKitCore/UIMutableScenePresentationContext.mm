@@ -1,60 +1,60 @@
 @interface UIMutableScenePresentationContext
-- (id)_existingLayerPresentationContextCreatingIfNecessary:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setDefaultPresentationContext:(id)a3;
-- (void)_setExclusiveLayerTargetsToInclude:(id)a3;
-- (void)_setForwardsKeyboardLayersToHost:(BOOL)a3;
-- (void)_setLayerTargetsToExclude:(id)a3;
-- (void)_setMinificationFilterName:(id)a3;
-- (void)_setVisibilityPropagationEnabled:(BOOL)a3;
-- (void)modifyLayerPresentationOverrideContextForLayerTarget:(id)a3 block:(id)a4;
-- (void)modifyWindowLayerPresentationContextWithBlock:(id)a3;
+- (id)_existingLayerPresentationContextCreatingIfNecessary:(BOOL)necessary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setDefaultPresentationContext:(id)context;
+- (void)_setExclusiveLayerTargetsToInclude:(id)include;
+- (void)_setForwardsKeyboardLayersToHost:(BOOL)host;
+- (void)_setLayerTargetsToExclude:(id)exclude;
+- (void)_setMinificationFilterName:(id)name;
+- (void)_setVisibilityPropagationEnabled:(BOOL)enabled;
+- (void)modifyLayerPresentationOverrideContextForLayerTarget:(id)target block:(id)block;
+- (void)modifyWindowLayerPresentationContextWithBlock:(id)block;
 - (void)removeAllLayerPresentationOverrides;
-- (void)removeLayerPresentationOverrideForLayerTarget:(id)a3;
-- (void)setAppearanceStyle:(unint64_t)a3;
-- (void)setAsynchronousRenderingOptions:(id)a3;
-- (void)setBackgroundColorWhileHosting:(id)a3;
-- (void)setBackgroundColorWhileNotHosting:(id)a3;
-- (void)setClippingDisabled:(BOOL)a3;
-- (void)setHostTransformer:(id)a3;
-- (void)setInheritsSecurity:(BOOL)a3;
-- (void)setPresentedLayerTypes:(unint64_t)a3;
-- (void)setRenderingMode:(unint64_t)a3;
-- (void)setResizesHostedContext:(BOOL)a3;
-- (void)setShouldPassthroughHitTestEventsIfTransparent:(BOOL)a3;
-- (void)setShouldSupportFlattening:(BOOL)a3;
-- (void)setStopsHitTestTransformAccumulation:(BOOL)a3;
-- (void)setStopsSecureSuperlayersValidation:(BOOL)a3;
-- (void)setZombifiesHostedContext:(BOOL)a3;
+- (void)removeLayerPresentationOverrideForLayerTarget:(id)target;
+- (void)setAppearanceStyle:(unint64_t)style;
+- (void)setAsynchronousRenderingOptions:(id)options;
+- (void)setBackgroundColorWhileHosting:(id)hosting;
+- (void)setBackgroundColorWhileNotHosting:(id)hosting;
+- (void)setClippingDisabled:(BOOL)disabled;
+- (void)setHostTransformer:(id)transformer;
+- (void)setInheritsSecurity:(BOOL)security;
+- (void)setPresentedLayerTypes:(unint64_t)types;
+- (void)setRenderingMode:(unint64_t)mode;
+- (void)setResizesHostedContext:(BOOL)context;
+- (void)setShouldPassthroughHitTestEventsIfTransparent:(BOOL)transparent;
+- (void)setShouldSupportFlattening:(BOOL)flattening;
+- (void)setStopsHitTestTransformAccumulation:(BOOL)accumulation;
+- (void)setStopsSecureSuperlayersValidation:(BOOL)validation;
+- (void)setZombifiesHostedContext:(BOOL)context;
 @end
 
 @implementation UIMutableScenePresentationContext
 
-- (void)setClippingDisabled:(BOOL)a3
+- (void)setClippingDisabled:(BOOL)disabled
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:disabled];
   [(BSMutableSettings *)settings setObject:v4 forSetting:1];
 }
 
-- (void)setAppearanceStyle:(unint64_t)a3
+- (void)setAppearanceStyle:(unint64_t)style
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:style];
   [(BSMutableSettings *)settings setObject:v4 forSetting:2];
 }
 
-- (void)setPresentedLayerTypes:(unint64_t)a3
+- (void)setPresentedLayerTypes:(unint64_t)types
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:types];
   [(BSMutableSettings *)settings setObject:v4 forSetting:3];
 }
 
-- (void)setBackgroundColorWhileHosting:(id)a3
+- (void)setBackgroundColorWhileHosting:(id)hosting
 {
   settings = self->super._settings;
-  if (a3)
+  if (hosting)
   {
     v4 = self->super._settings;
 
@@ -63,15 +63,15 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:4];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:4];
   }
 }
 
-- (void)setBackgroundColorWhileNotHosting:(id)a3
+- (void)setBackgroundColorWhileNotHosting:(id)hosting
 {
   settings = self->super._settings;
-  if (a3)
+  if (hosting)
   {
     v4 = self->super._settings;
 
@@ -80,15 +80,15 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:5];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:5];
   }
 }
 
-- (void)setHostTransformer:(id)a3
+- (void)setHostTransformer:(id)transformer
 {
   settings = self->super._settings;
-  if (a3)
+  if (transformer)
   {
     v4 = self->super._settings;
 
@@ -97,22 +97,22 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:6];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:6];
   }
 }
 
-- (void)setRenderingMode:(unint64_t)a3
+- (void)setRenderingMode:(unint64_t)mode
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
   [(BSMutableSettings *)settings setObject:v4 forSetting:7];
 }
 
-- (void)setAsynchronousRenderingOptions:(id)a3
+- (void)setAsynchronousRenderingOptions:(id)options
 {
   settings = self->super._settings;
-  v4 = [a3 copy];
+  v4 = [options copy];
   v6 = v4;
   if (v4)
   {
@@ -121,90 +121,90 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:13];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:13];
   }
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:security];
   [(BSMutableSettings *)settings setObject:v4 forSetting:14];
 }
 
-- (void)setResizesHostedContext:(BOOL)a3
+- (void)setResizesHostedContext:(BOOL)context
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:context];
   [(BSMutableSettings *)settings setObject:v4 forSetting:15];
 }
 
-- (void)setZombifiesHostedContext:(BOOL)a3
+- (void)setZombifiesHostedContext:(BOOL)context
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:context];
   [(BSMutableSettings *)settings setObject:v4 forSetting:16];
 }
 
-- (void)setShouldPassthroughHitTestEventsIfTransparent:(BOOL)a3
+- (void)setShouldPassthroughHitTestEventsIfTransparent:(BOOL)transparent
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:transparent];
   [(BSMutableSettings *)settings setObject:v4 forSetting:17];
 }
 
-- (void)setStopsHitTestTransformAccumulation:(BOOL)a3
+- (void)setStopsHitTestTransformAccumulation:(BOOL)accumulation
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:accumulation];
   [(BSMutableSettings *)settings setObject:v4 forSetting:18];
 }
 
-- (void)setStopsSecureSuperlayersValidation:(BOOL)a3
+- (void)setStopsSecureSuperlayersValidation:(BOOL)validation
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:validation];
   [(BSMutableSettings *)settings setObject:v4 forSetting:19];
 }
 
-- (void)setShouldSupportFlattening:(BOOL)a3
+- (void)setShouldSupportFlattening:(BOOL)flattening
 {
   settings = self->super._settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:flattening];
   [(BSMutableSettings *)settings setObject:v4 forSetting:20];
 }
 
-- (void)modifyWindowLayerPresentationContextWithBlock:(id)a3
+- (void)modifyWindowLayerPresentationContextWithBlock:(id)block
 {
-  v8 = a3;
-  if (!v8)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIScenePresentationContext.m" lineNumber:616 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationContext.m" lineNumber:616 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
   }
 
-  v5 = [(UIScenePresentationContext *)self windowLayerPresentationContext];
-  v6 = [v5 mutableCopy];
+  windowLayerPresentationContext = [(UIScenePresentationContext *)self windowLayerPresentationContext];
+  v6 = [windowLayerPresentationContext mutableCopy];
 
   if (!v6)
   {
     v6 = objc_alloc_init(UIMutableSceneWindowLayerPresentationContext);
   }
 
-  v8[2](v8, v6);
+  blockCopy[2](blockCopy, v6);
   [(BSMutableSettings *)self->super._settings setObject:v6 forSetting:21];
 }
 
-- (void)modifyLayerPresentationOverrideContextForLayerTarget:(id)a3 block:(id)a4
+- (void)modifyLayerPresentationOverrideContextForLayerTarget:(id)target block:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  targetCopy = target;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (targetCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -212,8 +212,8 @@
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"UIScenePresentationContext.m" lineNumber:630 description:{@"Invalid parameter not satisfying: %@", @"layerTarget"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationContext.m" lineNumber:630 description:{@"Invalid parameter not satisfying: %@", @"layerTarget"}];
 
     if (v9)
     {
@@ -221,12 +221,12 @@
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"UIScenePresentationContext.m" lineNumber:631 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationContext.m" lineNumber:631 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
 
 LABEL_3:
   v10 = [(UIMutableScenePresentationContext *)self _existingLayerPresentationContextCreatingIfNecessary:1];
-  v11 = [v10 objectForKey:v7];
+  v11 = [v10 objectForKey:targetCopy];
   v12 = [v11 mutableCopy];
 
   if (!v12)
@@ -244,9 +244,9 @@ LABEL_3:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v17 = MEMORY[0x1E696AD98];
-      v18 = [v10 objectForKey:v7];
+      v18 = [v10 objectForKey:targetCopy];
       v19 = [v17 numberWithBool:BSEqualObjects()];
-      v20 = [v10 objectForKey:v7];
+      v20 = [v10 objectForKey:targetCopy];
       *buf = 138412802;
       v24 = v19;
       v25 = 2112;
@@ -260,20 +260,20 @@ LABEL_3:
   v16 = [(UIMutableSceneLayerPresentationContext *)v12 copy];
   if ([v16 _isEqualToDefaultContext])
   {
-    [v10 removeObjectForKey:v7];
+    [v10 removeObjectForKey:targetCopy];
   }
 
   else
   {
-    [v10 setObject:v16 forKey:v7];
+    [v10 setObject:v16 forKey:targetCopy];
   }
 }
 
-- (void)removeLayerPresentationOverrideForLayerTarget:(id)a3
+- (void)removeLayerPresentationOverrideForLayerTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = [(UIMutableScenePresentationContext *)self _existingLayerPresentationContextCreatingIfNecessary:0];
-  [v5 removeObjectForKey:v4];
+  [v5 removeObjectForKey:targetCopy];
 }
 
 - (void)removeAllLayerPresentationOverrides
@@ -282,10 +282,10 @@ LABEL_3:
   [v2 removeAllObjects];
 }
 
-- (void)_setMinificationFilterName:(id)a3
+- (void)_setMinificationFilterName:(id)name
 {
   settings = self->super._settings;
-  if (a3)
+  if (name)
   {
     v4 = self->super._settings;
 
@@ -294,28 +294,28 @@ LABEL_3:
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:8];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:8];
   }
 }
 
-- (void)_setDefaultPresentationContext:(id)a3
+- (void)_setDefaultPresentationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   defaultPresentationContext = self->super._defaultPresentationContext;
   p_defaultPresentationContext = &self->super._defaultPresentationContext;
-  if (defaultPresentationContext != v5)
+  if (defaultPresentationContext != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_defaultPresentationContext, a3);
-    v5 = v8;
+    v8 = contextCopy;
+    objc_storeStrong(p_defaultPresentationContext, context);
+    contextCopy = v8;
   }
 }
 
-- (void)_setExclusiveLayerTargetsToInclude:(id)a3
+- (void)_setExclusiveLayerTargetsToInclude:(id)include
 {
   settings = self->super._settings;
-  if (a3)
+  if (include)
   {
     v4 = self->super._settings;
 
@@ -324,15 +324,15 @@ LABEL_3:
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:10];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:10];
   }
 }
 
-- (void)_setLayerTargetsToExclude:(id)a3
+- (void)_setLayerTargetsToExclude:(id)exclude
 {
   settings = self->super._settings;
-  if (a3)
+  if (exclude)
   {
     v4 = self->super._settings;
 
@@ -341,12 +341,12 @@ LABEL_3:
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [(BSMutableSettings *)settings setObject:v5 forSetting:11];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(BSMutableSettings *)settings setObject:null forSetting:11];
   }
 }
 
-- (void)_setVisibilityPropagationEnabled:(BOOL)a3
+- (void)_setVisibilityPropagationEnabled:(BOOL)enabled
 {
   settings = self->super._settings;
   v4 = BSSettingFlagForBool();
@@ -354,7 +354,7 @@ LABEL_3:
   [(BSMutableSettings *)settings setFlag:v4 forSetting:12];
 }
 
-- (void)_setForwardsKeyboardLayersToHost:(BOOL)a3
+- (void)_setForwardsKeyboardLayersToHost:(BOOL)host
 {
   settings = self->super._settings;
   v4 = BSSettingFlagForBool();
@@ -362,16 +362,16 @@ LABEL_3:
   [(BSMutableSettings *)settings setFlag:v4 forSetting:22];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UIScenePresentationContext alloc];
 
   return [(UIScenePresentationContext *)v4 _initWithPresentationContext:self];
 }
 
-- (id)_existingLayerPresentationContextCreatingIfNecessary:(BOOL)a3
+- (id)_existingLayerPresentationContextCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v5 = [(BSMutableSettings *)self->super._settings objectForSetting:9];
   v6 = v5;
   if (v5)
@@ -381,24 +381,24 @@ LABEL_3:
 
   else
   {
-    v7 = !v3;
+    v7 = !necessaryCopy;
   }
 
   v8 = v5;
   if (!v7)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     settings = self->super._settings;
-    if (v9)
+    if (dictionary)
     {
-      v8 = v9;
-      [(BSMutableSettings *)settings setObject:v9 forSetting:9];
+      v8 = dictionary;
+      [(BSMutableSettings *)settings setObject:dictionary forSetting:9];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [(BSMutableSettings *)settings setObject:v11 forSetting:9];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(BSMutableSettings *)settings setObject:null forSetting:9];
 
       v8 = 0;
     }

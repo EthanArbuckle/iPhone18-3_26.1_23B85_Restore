@@ -3,7 +3,7 @@
 - (SysDropSession)init;
 - (id)_getAirDropDiscoverableMode;
 - (id)_getAirDropID;
-- (id)createSysDropSysDiagnoseEvent:(id)a3;
+- (id)createSysDropSysDiagnoseEvent:(id)event;
 - (id)fileTransferredSysDiagnosePath;
 - (int)_runAirDrop;
 - (int)_runFileTransferComplete;
@@ -17,19 +17,19 @@
 - (void)_cleanup;
 - (void)_cleanupSession;
 - (void)_invalidate;
-- (void)_reportError:(id)a3 label:(id)a4;
+- (void)_reportError:(id)error label:(id)label;
 - (void)_run;
 - (void)_runPreCheckRequest;
-- (void)_runPreCheckResponse:(id)a3 error:(id)a4;
+- (void)_runPreCheckResponse:(id)response error:(id)error;
 - (void)activate;
 - (void)dealloc;
 - (void)disconnect;
-- (void)discoveryControllerLegacyModePropertiesDidChange:(id)a3;
-- (void)discoveryControllerSettingsDidChange:(id)a3;
-- (void)discoveryControllerVisibilityDidChange:(id)a3;
+- (void)discoveryControllerLegacyModePropertiesDidChange:(id)change;
+- (void)discoveryControllerSettingsDidChange:(id)change;
+- (void)discoveryControllerVisibilityDidChange:(id)change;
 - (void)enableAirDropForEveryone;
-- (void)fileTransferCompleted:(id)a3;
-- (void)handlePeerEvent:(id)a3 flags:(unsigned int)a4;
+- (void)fileTransferCompleted:(id)completed;
+- (void)handlePeerEvent:(id)event flags:(unsigned int)flags;
 - (void)invalidate;
 - (void)startAirDropSysdiagnose;
 - (void)sysdiagnoseCompleted;
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __29__SysDropSession_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -65,8 +65,8 @@ void __29__SysDropSession_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -259,15 +259,15 @@ void __28__SysDropSession_disconnect__block_invoke(uint64_t a1)
       if (!self->_sfSessionState)
       {
 LABEL_10:
-        v5 = [objc_opt_class() signpostLog];
-        v6 = [(SysDropSession *)self signpostID];
-        if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+        signpostLog = [objc_opt_class() signpostLog];
+        signpostID = [(SysDropSession *)self signpostID];
+        if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v7 = v6;
-          if (os_signpost_enabled(v5))
+          v7 = signpostID;
+          if (os_signpost_enabled(signpostLog))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_252F78000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SFSessionStart", "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SFSessionStart", "", buf, 2u);
           }
         }
       }
@@ -520,10 +520,10 @@ void __36__SysDropSession__runSFSessionStart__block_invoke_42(uint64_t a1, uint6
   [(SFSession *)sfSession sendRequestID:@"sysdrop_check" options:&unk_2864E7CD0 request:v3 responseHandler:v5];
 }
 
-- (void)_runPreCheckResponse:(id)a3 error:(id)a4
+- (void)_runPreCheckResponse:(id)response error:(id)error
 {
-  v11 = a3;
-  v6 = a4;
+  responseCopy = response;
+  errorCopy = error;
   if (gLogCategory_SysDropSession <= 30 && (gLogCategory_SysDropSession != -1 || _LogCategory_Initialize()))
   {
     [SysDropSession _runPreCheckResponse:error:];
@@ -691,17 +691,17 @@ void __36__SysDropSession__runSFSessionStart__block_invoke_42(uint64_t a1, uint6
   return self->_rpFileCompleteState;
 }
 
-- (void)fileTransferCompleted:(id)a3
+- (void)fileTransferCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SysDropSession_fileTransferCompleted___block_invoke;
   v7[3] = &unk_2797142D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completedCopy;
+  v6 = completedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -729,13 +729,13 @@ uint64_t __40__SysDropSession_fileTransferCompleted___block_invoke(uint64_t a1)
 
 - (id)fileTransferredSysDiagnosePath
 {
-  v3 = [(RPFileTransferItem *)self->_transferItem itemURL];
-  v4 = [v3 path];
+  itemURL = [(RPFileTransferItem *)self->_transferItem itemURL];
+  path = [itemURL path];
 
-  if (v4)
+  if (path)
   {
-    v5 = [(RPFileTransferItem *)self->_transferItem itemURL];
-    v6 = [v5 path];
+    itemURL2 = [(RPFileTransferItem *)self->_transferItem itemURL];
+    path2 = [itemURL2 path];
 
     if (gLogCategory_SysDropSession <= 30 && (gLogCategory_SysDropSession != -1 || _LogCategory_Initialize()))
     {
@@ -750,10 +750,10 @@ uint64_t __40__SysDropSession_fileTransferCompleted___block_invoke(uint64_t a1)
       [SysDropSession fileTransferredSysDiagnosePath];
     }
 
-    v6 = &stru_2864DB950;
+    path2 = &stru_2864DB950;
   }
 
-  return v6;
+  return path2;
 }
 
 - (int)_setupHandlers
@@ -1018,14 +1018,14 @@ void __32__SysDropSession__setupHandlers__block_invoke_4(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)createSysDropSysDiagnoseEvent:(id)a3
+- (id)createSysDropSysDiagnoseEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
   v5 = v4;
-  if (v3)
+  if (eventCopy)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "code")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "code")}];
     [v5 setObject:v6 forKeyedSubscript:@"sd_er"];
   }
 
@@ -1034,10 +1034,10 @@ void __32__SysDropSession__setupHandlers__block_invoke_4(uint64_t a1, void *a2)
     [v4 setObject:0 forKeyedSubscript:@"sd_er"];
   }
 
-  v7 = [v3 domain];
-  [v5 setObject:v7 forKeyedSubscript:@"sd_ed"];
+  domain = [eventCopy domain];
+  [v5 setObject:domain forKeyedSubscript:@"sd_ed"];
 
-  v8 = [v3 description];
+  v8 = [eventCopy description];
   [v5 setObject:v8 forKeyedSubscript:@"sd_de"];
 
   return v5;
@@ -1045,15 +1045,15 @@ void __32__SysDropSession__setupHandlers__block_invoke_4(uint64_t a1, void *a2)
 
 - (void)startAirDropSysdiagnose
 {
-  v3 = [(SysDropSession *)self _getAirDropID];
-  if ([v3 length])
+  _getAirDropID = [(SysDropSession *)self _getAirDropID];
+  if ([_getAirDropID length])
   {
-    v4 = [(SysDropSession *)self _getAirDropDiscoverableMode];
-    v5 = v4;
-    if (v4 && ([v4 isEqualToString:@"Everyone"] & 1) != 0)
+    _getAirDropDiscoverableMode = [(SysDropSession *)self _getAirDropDiscoverableMode];
+    v5 = _getAirDropDiscoverableMode;
+    if (_getAirDropDiscoverableMode && ([_getAirDropDiscoverableMode isEqualToString:@"Everyone"] & 1) != 0)
     {
       v6 = objc_opt_new();
-      [v6 setObject:v3 forKeyedSubscript:@"sd_ad_id"];
+      [v6 setObject:_getAirDropID forKeyedSubscript:@"sd_ad_id"];
       if (gLogCategory_SysDropSession <= 30 && (gLogCategory_SysDropSession != -1 || _LogCategory_Initialize()))
       {
         [SysDropSession startAirDropSysdiagnose];
@@ -1161,11 +1161,11 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)handlePeerEvent:(id)a3 flags:(unsigned int)a4
+- (void)handlePeerEvent:(id)event flags:(unsigned int)flags
 {
-  if ((a4 & 1) == 0)
+  if ((flags & 1) == 0)
   {
-    v5 = a3;
+    eventCopy = event;
     self->_sysdiagnoseStatus = CFDictionaryGetInt64Ranged();
     CFDictionaryGetInt64Ranged();
     CFStringGetTypeID();
@@ -1203,11 +1203,11 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3 label:(id)a4
+- (void)_reportError:(id)error label:(id)label
 {
   v32[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  labelCopy = label;
   v8 = gLogCategory_SysDropSession;
   if (gLogCategory_SysDropSession <= 30)
   {
@@ -1226,7 +1226,7 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
 
   v9 = *MEMORY[0x277D85E08];
   FPrintF();
-  [(SysDropSession *)self _cleanupSession:v7];
+  [(SysDropSession *)self _cleanupSession:labelCopy];
   if (self->_totalSecs == 0.0)
   {
     mach_absolute_time();
@@ -1235,23 +1235,23 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
     self->_totalSecs = v11;
   }
 
-  if ([v6 code] != -6723)
+  if ([errorCopy code] != -6723)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v32[0] = v7;
+    v32[0] = labelCopy;
     v31[0] = @"label";
     v31[1] = @"errDomain";
-    v13 = [v6 domain];
-    v14 = v13;
+    domain = [errorCopy domain];
+    v14 = domain;
     v15 = @"?";
-    if (v13)
+    if (domain)
     {
-      v15 = v13;
+      v15 = domain;
     }
 
     v32[1] = v15;
     v31[2] = @"errCode";
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     v32[2] = v16;
     v31[3] = @"totalMs";
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(self->_totalSecs * 1000.0)];
@@ -1264,8 +1264,8 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
     if (progressHandler)
     {
       v29 = @"eo";
-      v20 = v6;
-      if (!v6)
+      v20 = errorCopy;
+      if (!errorCopy)
       {
         v21 = MEMORY[0x277CCA9B8];
         v22 = *MEMORY[0x277CCA590];
@@ -1287,7 +1287,7 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       progressHandler[2](progressHandler, 30, v25);
 
-      if (!v6)
+      if (!errorCopy)
       {
       }
     }
@@ -1296,55 +1296,55 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)discoveryControllerSettingsDidChange:(id)a3
+- (void)discoveryControllerSettingsDidChange:(id)change
 {
-  v3 = a3;
-  v4 = v3;
+  changeCopy = change;
+  v4 = changeCopy;
   if (gLogCategory_SysDropSession <= 30)
   {
-    v5 = v3;
-    if (gLogCategory_SysDropSession != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = changeCopy;
+    if (gLogCategory_SysDropSession != -1 || (changeCopy = _LogCategory_Initialize(), v4 = v5, changeCopy))
     {
-      v3 = [SysDropSession discoveryControllerSettingsDidChange:];
+      changeCopy = [SysDropSession discoveryControllerSettingsDidChange:];
       v4 = v5;
     }
   }
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](changeCopy, v4);
 }
 
-- (void)discoveryControllerVisibilityDidChange:(id)a3
+- (void)discoveryControllerVisibilityDidChange:(id)change
 {
-  v3 = a3;
-  v4 = v3;
+  changeCopy = change;
+  v4 = changeCopy;
   if (gLogCategory_SysDropSession <= 30)
   {
-    v5 = v3;
-    if (gLogCategory_SysDropSession != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = changeCopy;
+    if (gLogCategory_SysDropSession != -1 || (changeCopy = _LogCategory_Initialize(), v4 = v5, changeCopy))
     {
-      v3 = [SysDropSession discoveryControllerVisibilityDidChange:];
+      changeCopy = [SysDropSession discoveryControllerVisibilityDidChange:];
       v4 = v5;
     }
   }
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](changeCopy, v4);
 }
 
-- (void)discoveryControllerLegacyModePropertiesDidChange:(id)a3
+- (void)discoveryControllerLegacyModePropertiesDidChange:(id)change
 {
-  v3 = a3;
-  v4 = v3;
+  changeCopy = change;
+  v4 = changeCopy;
   if (gLogCategory_SysDropSession <= 30)
   {
-    v5 = v3;
-    if (gLogCategory_SysDropSession != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = changeCopy;
+    if (gLogCategory_SysDropSession != -1 || (changeCopy = _LogCategory_Initialize(), v4 = v5, changeCopy))
     {
-      v3 = [SysDropSession discoveryControllerLegacyModePropertiesDidChange:];
+      changeCopy = [SysDropSession discoveryControllerLegacyModePropertiesDidChange:];
       v4 = v5;
     }
   }
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](changeCopy, v4);
 }
 
 - (void)_run
@@ -1352,31 +1352,31 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_invalidateCalled)
   {
-    v3 = [(SysDropSession *)self _runSFSessionStart];
-    if (v3 == 4 || v3 == 2)
+    _runSFSessionStart = [(SysDropSession *)self _runSFSessionStart];
+    if (_runSFSessionStart == 4 || _runSFSessionStart == 2)
     {
       if (gLogCategory_SysDropSession <= 30 && (gLogCategory_SysDropSession != -1 || _LogCategory_Initialize()))
       {
-        v16 = [(SFSession *)self->_sfSession identifier];
+        identifier = [(SFSession *)self->_sfSession identifier];
         LogPrintF();
       }
 
-      v5 = [(SFSession *)self->_sfSession identifier];
+      identifier2 = [(SFSession *)self->_sfSession identifier];
 
-      if (v5)
+      if (identifier2)
       {
-        v6 = [(SysDropSession *)self _setupHandlers];
-        if (v6 == 4 || v6 == 2)
+        _setupHandlers = [(SysDropSession *)self _setupHandlers];
+        if (_setupHandlers == 4 || _setupHandlers == 2)
         {
-          v8 = [(SysDropSession *)self _runPreCheck];
-          if (v8 == 4 || v8 == 2)
+          _runPreCheck = [(SysDropSession *)self _runPreCheck];
+          if (_runPreCheck == 4 || _runPreCheck == 2)
           {
             if (self->_sysdiagnoseDone || ((v10 = [(SysDropSession *)self _runSysdiagnose], v10 != 4) ? (v11 = v10 == 2) : (v11 = 1), v11))
             {
               if (_os_feature_enabled_impl() && self->_homePodCanRPFileTransfer)
               {
-                v12 = [(SysDropSession *)self _runReceiveRPFileTransferSysdiagnose];
-                if (v12 != 2 && v12 != 4)
+                _runReceiveRPFileTransferSysdiagnose = [(SysDropSession *)self _runReceiveRPFileTransferSysdiagnose];
+                if (_runReceiveRPFileTransferSysdiagnose != 2 && _runReceiveRPFileTransferSysdiagnose != 4)
                 {
                   return;
                 }
@@ -1384,8 +1384,8 @@ void __41__SysDropSession_startAirDropSysdiagnose__block_invoke_2(uint64_t a1)
 
               else
               {
-                v14 = [(SysDropSession *)self _runAirDrop];
-                if (v14 != 4 && v14 != 2)
+                _runAirDrop = [(SysDropSession *)self _runAirDrop];
+                if (_runAirDrop != 4 && _runAirDrop != 2)
                 {
                   return;
                 }

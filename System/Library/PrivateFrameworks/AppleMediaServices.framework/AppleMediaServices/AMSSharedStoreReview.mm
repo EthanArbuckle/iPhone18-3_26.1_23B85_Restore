@@ -1,15 +1,15 @@
 @interface AMSSharedStoreReview
 + (AMSBagKeySet)bagKeySet;
-+ (BOOL)_shouldLogNewSessionWithLastLoggedTimeStamp:(id)a3 currentTime:(id)a4 sessionInterval:(int64_t)a5;
-+ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)a3 currentTime:(id)a4 sessionCount:(int64_t)a5 promptInterval:(int64_t)a6;
-+ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)a3 sessionCount:(int64_t)a4;
++ (BOOL)_shouldLogNewSessionWithLastLoggedTimeStamp:(id)stamp currentTime:(id)time sessionInterval:(int64_t)interval;
++ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)metrics currentTime:(id)time sessionCount:(int64_t)count promptInterval:(int64_t)interval;
++ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)metrics sessionCount:(int64_t)count;
 + (id)_storeReviewMetrics;
 + (id)createBagForSubProfile;
-+ (void)_applicationDidForegroundWithCurrentTime:(id)a3 storeReviewMetrics:(id)a4 sessionInterval:(int64_t)a5;
-+ (void)_logDidAttemptPromptReviewWithStoreReviewMetrics:(id)a3 currentTime:(id)a4;
-+ (void)_logNewSessionWithStoreReviewMetrics:(id)a3 currentTime:(id)a4;
-+ (void)_persistStoreReviewMetrics:(id)a3;
-- (AMSSharedStoreReview)initWithBag:(id)a3;
++ (void)_applicationDidForegroundWithCurrentTime:(id)time storeReviewMetrics:(id)metrics sessionInterval:(int64_t)interval;
++ (void)_logDidAttemptPromptReviewWithStoreReviewMetrics:(id)metrics currentTime:(id)time;
++ (void)_logNewSessionWithStoreReviewMetrics:(id)metrics currentTime:(id)time;
++ (void)_persistStoreReviewMetrics:(id)metrics;
+- (AMSSharedStoreReview)initWithBag:(id)bag;
 - (BOOL)isEnabled;
 - (BOOL)shouldAttemptPromptReview;
 - (id)isReviewEnabled;
@@ -31,13 +31,13 @@
 
   else
   {
-    v4 = [(AMSSharedStoreReview *)self sharedStoreReviewQueue];
+    sharedStoreReviewQueue = [(AMSSharedStoreReview *)self sharedStoreReviewQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__AMSSharedStoreReview_applicationDidForeground__block_invoke_2;
     block[3] = &unk_1E73B3680;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(sharedStoreReviewQueue, block);
   }
 }
 
@@ -49,7 +49,7 @@
   v13 = 0;
   v4 = [v3 valueWithError:&v13];
   v5 = v13;
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   if (v5)
   {
@@ -59,8 +59,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSSetLogKeyIfNeeded();
@@ -71,28 +71,28 @@
       v17 = v10;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fetching enabled bag value error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fetching enabled bag value error: %{public}@", buf, 0x20u);
     }
 
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (AMSSharedStoreReview)initWithBag:(id)a3
+- (AMSSharedStoreReview)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v13.receiver = self;
   v13.super_class = AMSSharedStoreReview;
   v6 = [(AMSSharedStoreReview *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
     if (+[AMSSharedStoreReview _isGroupedLogicSupported])
     {
-      v8 = [[AMSStoreReviewGatingController alloc] initWithBag:v5];
+      v8 = [[AMSStoreReviewGatingController alloc] initWithBag:bagCopy];
       p_super = &v7->_storeReviewGatingController->super;
       v7->_storeReviewGatingController = v8;
     }
@@ -113,9 +113,9 @@
 {
   v2 = [(AMSSharedStoreReview *)self bag];
   v3 = [v2 BOOLForKey:@"shared-store-review-enabled"];
-  v4 = [v3 valuePromise];
+  valuePromise = [v3 valuePromise];
 
-  return v4;
+  return valuePromise;
 }
 
 void __48__AMSSharedStoreReview_applicationDidForeground__block_invoke_2(uint64_t a1)
@@ -194,13 +194,13 @@ LABEL_13:
 
   else
   {
-    v4 = [(AMSSharedStoreReview *)self sharedStoreReviewQueue];
+    sharedStoreReviewQueue = [(AMSSharedStoreReview *)self sharedStoreReviewQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__AMSSharedStoreReview_didAttemptPromptReview__block_invoke_2;
     block[3] = &unk_1E73B3680;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(sharedStoreReviewQueue, block);
   }
 }
 
@@ -249,18 +249,18 @@ void __46__AMSSharedStoreReview_didAttemptPromptReview__block_invoke_2(uint64_t 
     v5 = v3;
     v10 = v5;
     [(AMSStoreReviewGatingController *)storeReviewGatingController canPromptWithCompletionHandler:v9];
-    v6 = v10;
+    isReviewEnabled = v10;
   }
 
   else
   {
-    v6 = [(AMSSharedStoreReview *)self isReviewEnabled];
+    isReviewEnabled = [(AMSSharedStoreReview *)self isReviewEnabled];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_2;
     v8[3] = &unk_1E73BB788;
     v8[4] = self;
-    v5 = [v6 continueWithBlock:v8];
+    v5 = [isReviewEnabled continueWithBlock:v8];
   }
 
   return v5;
@@ -465,8 +465,8 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v12 = objc_opt_class();
         v13 = AMSSetLogKeyIfNeeded();
@@ -477,7 +477,7 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
         *&buf[14] = v13;
         *&buf[22] = 2114;
         v34 = v14;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Session count bag value error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Session count bag value error: %{public}@", buf, 0x20u);
       }
 
       v6 = 0;
@@ -502,8 +502,8 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
             v21 = +[AMSLogConfig sharedConfig];
           }
 
-          v22 = [v21 OSLogObject];
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          oSLogObject2 = [v21 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
             v23 = objc_opt_class();
             v24 = AMSSetLogKeyIfNeeded();
@@ -514,7 +514,7 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
             *&buf[14] = v24;
             *&buf[22] = 2114;
             v34 = v25;
-            _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Prompt interval bag value fetch failed: %{public}@, falling back to behaviour without repeated prompt support", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Prompt interval bag value fetch failed: %{public}@, falling back to behaviour without repeated prompt support", buf, 0x20u);
           }
 
           v6 = +[AMSSharedStoreReview _shouldPromptReviewForStoreReviewMetrics:sessionCount:](AMSSharedStoreReview, "_shouldPromptReviewForStoreReviewMetrics:sessionCount:", v10, [v9 integerValue]);
@@ -522,8 +522,8 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
 
         else
         {
-          v26 = [MEMORY[0x1E695DF00] date];
-          v6 = +[AMSSharedStoreReview _shouldPromptReviewForStoreReviewMetrics:currentTime:sessionCount:promptInterval:](AMSSharedStoreReview, "_shouldPromptReviewForStoreReviewMetrics:currentTime:sessionCount:promptInterval:", v10, v26, [v9 integerValue], objc_msgSend(v20, "integerValue"));
+          date = [MEMORY[0x1E695DF00] date];
+          v6 = +[AMSSharedStoreReview _shouldPromptReviewForStoreReviewMetrics:currentTime:sessionCount:promptInterval:](AMSSharedStoreReview, "_shouldPromptReviewForStoreReviewMetrics:currentTime:sessionCount:promptInterval:", v10, date, [v9 integerValue], objc_msgSend(v20, "integerValue"));
         }
       }
 
@@ -543,8 +543,8 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v5 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = AMSSetLogKeyIfNeeded();
@@ -552,7 +552,7 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
       *&buf[4] = v16;
       *&buf[12] = 2114;
       *&buf[14] = v17;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping checking for should attempt review as shared store review is disabled.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping checking for should attempt review as shared store review is disabled.", buf, 0x16u);
     }
 
     v6 = 0;
@@ -561,15 +561,15 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
   return v6 & 1;
 }
 
-+ (void)_applicationDidForegroundWithCurrentTime:(id)a3 storeReviewMetrics:(id)a4 sessionInterval:(int64_t)a5
++ (void)_applicationDidForegroundWithCurrentTime:(id)time storeReviewMetrics:(id)metrics sessionInterval:(int64_t)interval
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:@"last-session-timestamp"];
-  if ([AMSSharedStoreReview _shouldLogNewSessionWithLastLoggedTimeStamp:v9 currentTime:v7 sessionInterval:a5])
+  timeCopy = time;
+  metricsCopy = metrics;
+  v9 = [metricsCopy objectForKeyedSubscript:@"last-session-timestamp"];
+  if ([AMSSharedStoreReview _shouldLogNewSessionWithLastLoggedTimeStamp:v9 currentTime:timeCopy sessionInterval:interval])
   {
-    [AMSSharedStoreReview _logNewSessionWithStoreReviewMetrics:v8 currentTime:v7];
+    [AMSSharedStoreReview _logNewSessionWithStoreReviewMetrics:metricsCopy currentTime:timeCopy];
   }
 
   else
@@ -580,8 +580,8 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = AMSSetLogKeyIfNeeded();
@@ -589,26 +589,26 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
       v15 = v12;
       v16 = 2114;
       v17 = v13;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping tracking for foreground as last logged time stamp is within session interval.", &v14, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping tracking for foreground as last logged time stamp is within session interval.", &v14, 0x16u);
     }
   }
 }
 
-+ (BOOL)_shouldLogNewSessionWithLastLoggedTimeStamp:(id)a3 currentTime:(id)a4 sessionInterval:(int64_t)a5
++ (BOOL)_shouldLogNewSessionWithLastLoggedTimeStamp:(id)stamp currentTime:(id)time sessionInterval:(int64_t)interval
 {
-  if (!a3)
+  if (!stamp)
   {
     return 1;
   }
 
-  [a4 timeIntervalSinceDate:?];
-  return v6 >= a5;
+  [time timeIntervalSinceDate:?];
+  return v6 >= interval;
 }
 
 + (id)_storeReviewMetrics
 {
   v2 = +[AMSProcessInfo currentProcess];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
   if (+[AMSDefaults migratedStorageToDefaultsForNonAMSInternal])
   {
@@ -620,7 +620,7 @@ id __43__AMSSharedStoreReview_shouldAttemptReview__block_invoke_28(uint64_t a1, 
     v4 = AMSStorage;
   }
 
-  v5 = [(__objc2_class *)v4 sharedStoreReviewMetricsForProcess:v3];
+  v5 = [(__objc2_class *)v4 sharedStoreReviewMetricsForProcess:bundleIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -645,11 +645,11 @@ LABEL_9:
   return v8;
 }
 
-+ (void)_logNewSessionWithStoreReviewMetrics:(id)a3 currentTime:(id)a4
++ (void)_logNewSessionWithStoreReviewMetrics:(id)metrics currentTime:(id)time
 {
-  v6 = a4;
-  v13 = [a3 mutableCopy];
-  [v13 setObject:v6 forKeyedSubscript:@"last-session-timestamp"];
+  timeCopy = time;
+  v13 = [metrics mutableCopy];
+  [v13 setObject:timeCopy forKeyedSubscript:@"last-session-timestamp"];
 
   v7 = [v13 objectForKeyedSubscript:@"session-count"];
   v8 = v7;
@@ -665,24 +665,24 @@ LABEL_9:
 
   [v13 setObject:v11 forKeyedSubscript:@"session-count"];
   v12 = [v13 copy];
-  [a1 _persistStoreReviewMetrics:v12];
+  [self _persistStoreReviewMetrics:v12];
 }
 
-+ (void)_logDidAttemptPromptReviewWithStoreReviewMetrics:(id)a3 currentTime:(id)a4
++ (void)_logDidAttemptPromptReviewWithStoreReviewMetrics:(id)metrics currentTime:(id)time
 {
-  v6 = a4;
-  v8 = [a3 mutableCopy];
-  [v8 setObject:v6 forKeyedSubscript:@"did-attempt-review-timestamp"];
+  timeCopy = time;
+  v8 = [metrics mutableCopy];
+  [v8 setObject:timeCopy forKeyedSubscript:@"did-attempt-review-timestamp"];
 
   v7 = [v8 copy];
-  [a1 _persistStoreReviewMetrics:v7];
+  [self _persistStoreReviewMetrics:v7];
 }
 
-+ (void)_persistStoreReviewMetrics:(id)a3
++ (void)_persistStoreReviewMetrics:(id)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = +[AMSProcessInfo currentProcess];
-  v9 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
 
   v5 = +[AMSDefaults migratedStorageToDefaultsForNonAMSInternal];
   v6 = off_1E73B10E0;
@@ -692,16 +692,16 @@ LABEL_9:
   }
 
   v7 = *v6;
-  v8 = [v3 copy];
+  v8 = [metricsCopy copy];
 
-  [(__objc2_class *)v7 setSharedStoreReviewMetrics:v8 forProcess:v9];
+  [(__objc2_class *)v7 setSharedStoreReviewMetrics:v8 forProcess:bundleIdentifier];
 }
 
-+ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)a3 sessionCount:(int64_t)a4
++ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)metrics sessionCount:(int64_t)count
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"session-count"];
+  metricsCopy = metrics;
+  v6 = [metricsCopy objectForKeyedSubscript:@"session-count"];
   v7 = v6;
   v8 = &unk_1F07799D0;
   if (v6)
@@ -711,7 +711,7 @@ LABEL_9:
 
   v9 = v8;
 
-  v10 = [v5 objectForKeyedSubscript:@"did-attempt-review-timestamp"];
+  v10 = [metricsCopy objectForKeyedSubscript:@"did-attempt-review-timestamp"];
 
   if (v10)
   {
@@ -720,7 +720,7 @@ LABEL_9:
 
   else
   {
-    v11 = [v9 integerValue] >= a4;
+    v11 = [v9 integerValue] >= count;
   }
 
   v12 = +[AMSLogConfig sharedConfig];
@@ -729,8 +729,8 @@ LABEL_9:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = AMSSetLogKeyIfNeeded();
@@ -751,18 +751,18 @@ LABEL_9:
     v26 = v9;
     v27 = 2114;
     v28 = v17;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Should prompt: %d, with session count: %{public}@, last attempt: %{public}@", &v19, 0x30u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Should prompt: %d, with session count: %{public}@, last attempt: %{public}@", &v19, 0x30u);
   }
 
   return v11;
 }
 
-+ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)a3 currentTime:(id)a4 sessionCount:(int64_t)a5 promptInterval:(int64_t)a6
++ (BOOL)_shouldPromptReviewForStoreReviewMetrics:(id)metrics currentTime:(id)time sessionCount:(int64_t)count promptInterval:(int64_t)interval
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 objectForKeyedSubscript:@"session-count"];
+  timeCopy = time;
+  metricsCopy = metrics;
+  v11 = [metricsCopy objectForKeyedSubscript:@"session-count"];
   v12 = v11;
   v13 = &unk_1F07799D0;
   if (v11)
@@ -772,20 +772,20 @@ LABEL_9:
 
   v14 = v13;
 
-  v15 = [v10 objectForKeyedSubscript:@"did-attempt-review-timestamp"];
+  v15 = [metricsCopy objectForKeyedSubscript:@"did-attempt-review-timestamp"];
 
-  [v9 timeIntervalSinceDate:v15];
+  [timeCopy timeIntervalSinceDate:v15];
   v17 = v16;
 
-  v19 = (v17 >= a6 || v15 == 0) && [v14 integerValue] >= a5;
+  v19 = (v17 >= interval || v15 == 0) && [v14 integerValue] >= count;
   v20 = +[AMSLogConfig sharedConfig];
   if (!v20)
   {
     v20 = +[AMSLogConfig sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v20 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v22 = objc_opt_class();
     v23 = AMSSetLogKeyIfNeeded();
@@ -807,8 +807,8 @@ LABEL_9:
     v35 = 2114;
     v36 = v25;
     v37 = 2048;
-    v38 = a6;
-    _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Should prompt: %d, with session count: %{public}@, last attempt: %{public}@, prompt interval: %ld", &v27, 0x3Au);
+    intervalCopy = interval;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Should prompt: %d, with session count: %{public}@, last attempt: %{public}@, prompt interval: %ld", &v27, 0x3Au);
   }
 
   return v19;
@@ -816,14 +816,14 @@ LABEL_9:
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagKeySet];
-  v3 = [objc_opt_class() bagSubProfile];
-  v4 = [objc_opt_class() bagSubProfileVersion];
-  [AMSBagKeySet registerBagKeySet:v2 forProfile:v3 profileVersion:v4];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  [AMSBagKeySet registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
-  v5 = [objc_opt_class() bagSubProfile];
-  v6 = [objc_opt_class() bagSubProfileVersion];
-  v7 = [AMSBag bagForProfile:v5 profileVersion:v6];
+  bagSubProfile2 = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion2 = [objc_opt_class() bagSubProfileVersion];
+  v7 = [AMSBag bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v7;
 }

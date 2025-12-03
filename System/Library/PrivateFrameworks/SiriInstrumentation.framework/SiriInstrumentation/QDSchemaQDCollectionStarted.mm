@@ -1,35 +1,35 @@
 @interface QDSchemaQDCollectionStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDCollectionStarted)initWithDictionary:(id)a3;
-- (QDSchemaQDCollectionStarted)initWithJSON:(id)a3;
+- (QDSchemaQDCollectionStarted)initWithDictionary:(id)dictionary;
+- (QDSchemaQDCollectionStarted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)callersAtIndex:(unint64_t)a3;
+- (int)callersAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addCallers:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addCallers:(int)callers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDCollectionStarted
 
-- (QDSchemaQDCollectionStarted)initWithDictionary:(id)a3
+- (QDSchemaQDCollectionStarted)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = QDSchemaQDCollectionStarted;
   v5 = [(QDSchemaQDCollectionStarted *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[QDSchemaQDCollectionStarted setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"callers"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"callers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (QDSchemaQDCollectionStarted)initWithJSON:(id)a3
+- (QDSchemaQDCollectionStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDCollectionStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDCollectionStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDCollectionStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,23 +113,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_callers count])
   {
-    v4 = [(QDSchemaQDCollectionStarted *)self callers];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"callers"];
+    callers = [(QDSchemaQDCollectionStarted *)self callers];
+    v5 = [callers copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"callers"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[QDSchemaQDCollectionStarted exists](self, "exists")}];
-    [v3 setObject:v6 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v6 forKeyedSubscript:@"exists"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,22 +147,22 @@
   return [(NSArray *)self->_callers hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [v4 exists]))
+      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [equalCopy exists]))
       {
-        v6 = [(QDSchemaQDCollectionStarted *)self callers];
-        v7 = [v4 callers];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        callers = [(QDSchemaQDCollectionStarted *)self callers];
+        callers2 = [equalCopy callers];
+        v8 = callers2;
+        if ((callers != 0) != (callers2 == 0))
         {
-          v9 = [(QDSchemaQDCollectionStarted *)self callers];
-          if (!v9)
+          callers3 = [(QDSchemaQDCollectionStarted *)self callers];
+          if (!callers3)
           {
 
 LABEL_13:
@@ -170,10 +170,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(QDSchemaQDCollectionStarted *)self callers];
-          v12 = [v4 callers];
-          v13 = [v11 isEqual:v12];
+          v10 = callers3;
+          callers4 = [(QDSchemaQDCollectionStarted *)self callers];
+          callers5 = [equalCopy callers];
+          v13 = [callers4 isEqual:callers5];
 
           if (v13)
           {
@@ -194,10 +194,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -236,23 +236,23 @@ LABEL_11:
   }
 }
 
-- (int)callersAtIndex:(unint64_t)a3
+- (int)callersAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_callers objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_callers objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addCallers:(int)a3
+- (void)addCallers:(int)callers
 {
-  v3 = *&a3;
+  v3 = *&callers;
   callers = self->_callers;
   if (!callers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_callers;
-    self->_callers = v6;
+    self->_callers = array;
 
     callers = self->_callers;
   }

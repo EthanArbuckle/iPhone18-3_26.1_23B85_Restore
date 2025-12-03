@@ -1,32 +1,32 @@
 @interface HKSimpleDataEntryHeightItem
-- (HKSimpleDataEntryHeightItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 heightInCm:(id)a5 defaultHeightInCm:(id)a6;
+- (HKSimpleDataEntryHeightItem)initWithTitle:(id)title registrantModelKey:(id)key heightInCm:(id)cm defaultHeightInCm:(id)inCm;
 - (double)_defaultCentimeterValue;
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4;
+- (double)pickerView:(id)view widthForComponent:(int64_t)component;
 - (id)_formattedValueForDisplay;
 - (id)cell;
 - (id)formattedKeyAndValue;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)_setHeightValueForPicker:(id)a3 selectedRow:(int64_t)a4;
-- (void)_setTextForInputTextField:(id)a3;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)_setHeightValueForPicker:(id)picker selectedRow:(int64_t)row;
+- (void)_setTextForInputTextField:(id)field;
 - (void)_setupPlaceholder;
 - (void)_updateLocaleDependentValues;
 - (void)_valueDidChange;
 - (void)beginEditing;
-- (void)doneButtonTapped:(id)a3;
-- (void)localeDidChange:(id)a3;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)doneButtonTapped:(id)tapped;
+- (void)localeDidChange:(id)change;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)updateCellDisplay;
 @end
 
 @implementation HKSimpleDataEntryHeightItem
 
-- (HKSimpleDataEntryHeightItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 heightInCm:(id)a5 defaultHeightInCm:(id)a6
+- (HKSimpleDataEntryHeightItem)initWithTitle:(id)title registrantModelKey:(id)key heightInCm:(id)cm defaultHeightInCm:(id)inCm
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  keyCopy = key;
+  cmCopy = cm;
+  inCmCopy = inCm;
   v20.receiver = self;
   v20.super_class = HKSimpleDataEntryHeightItem;
   v15 = [(HKSimpleDataEntryHeightItem *)&v20 init];
@@ -34,10 +34,10 @@
   if (v15)
   {
     [(HKSimpleDataEntryHeightItem *)v15 _updateLocaleDependentValues];
-    objc_storeStrong(&v16->_title, a3);
-    objc_storeStrong(&v16->_registrantModelKey, a4);
-    v17 = v14;
-    if (!v14)
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v16->_registrantModelKey, key);
+    v17 = inCmCopy;
+    if (!inCmCopy)
     {
       v18 = MEMORY[0x1E696AD98];
       [(HKSimpleDataEntryHeightItem *)v16 _defaultCentimeterValue];
@@ -45,11 +45,11 @@
     }
 
     objc_storeStrong(&v16->_defaultValue, v17);
-    if (!v14)
+    if (!inCmCopy)
     {
     }
 
-    objc_storeStrong(&v16->_centimeterValue, a5);
+    objc_storeStrong(&v16->_centimeterValue, cm);
   }
 
   return v16;
@@ -86,8 +86,8 @@
     v5 = self->_cell;
     self->_cell = v4;
 
-    v6 = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
-    [v6 setText:self->_title];
+    titleLabel = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
+    [titleLabel setText:self->_title];
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCD78]);
     picker = self->_picker;
@@ -126,12 +126,12 @@
 
     [(UIPickerView *)v13 selectRow:v14 inComponent:v15 animated:0];
     v16 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v17 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v17 setInputView:v16];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField setInputView:v16];
 
-    v18 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v19 = [(HKSimpleDataEntryItem *)self accessoryToolbar];
-    [v18 setInputAccessoryView:v19];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    accessoryToolbar = [(HKSimpleDataEntryItem *)self accessoryToolbar];
+    [inputTextField2 setInputAccessoryView:accessoryToolbar];
 
     [(HKSimpleDataEntryHeightItem *)self _setupPlaceholder];
     [(HKSimpleDataEntryHeightItem *)self updateCellDisplay];
@@ -155,8 +155,8 @@
 
 - (void)updateCellDisplay
 {
-  v3 = [(HKSimpleDataEntryHeightItem *)self _formattedValueForDisplay];
-  [(HKSimpleDataEntryHeightItem *)self _setTextForInputTextField:v3];
+  _formattedValueForDisplay = [(HKSimpleDataEntryHeightItem *)self _formattedValueForDisplay];
+  [(HKSimpleDataEntryHeightItem *)self _setTextForInputTextField:_formattedValueForDisplay];
 }
 
 - (id)_formattedValueForDisplay
@@ -179,47 +179,47 @@
 {
   if (![(HKSimpleDataEntryItem *)self placeholderType])
   {
-    v3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v5 = [v4 localizedStringForKey:@"OD_PLACEHOLDER_OPTIONAL" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    [v3 setPlaceholder:v5];
+    [inputTextField setPlaceholder:v5];
   }
 
   [(HKSimpleDataEntryHeightItem *)self _setTextForInputTextField:0];
 }
 
-- (void)_setTextForInputTextField:(id)a3
+- (void)_setTextForInputTextField:(id)field
 {
-  v11 = a3;
-  if (-[HKSimpleDataEntryItem placeholderType](self, "placeholderType") == 1 && ![v11 length])
+  fieldCopy = field;
+  if (-[HKSimpleDataEntryItem placeholderType](self, "placeholderType") == 1 && ![fieldCopy length])
   {
-    v8 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v10 = [v9 localizedStringForKey:@"OD_PICKER_CHOOSE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    [v8 setText:v10];
+    [inputTextField setText:v10];
 
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v6 = HKHealthKeyColor();
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = HKHealthKeyColor();
   }
 
   else
   {
-    v4 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v4 setText:v11];
+    inputTextField3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField3 setText:fieldCopy];
 
-    v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v7 = v6;
-  [v5 setTextColor:v6];
+  v7 = labelColor;
+  [inputTextField2 setTextColor:labelColor];
 }
 
 - (void)_valueDidChange
 {
   [(HKSimpleDataEntryHeightItem *)self updateCellDisplay];
-  v3 = [(HKSimpleDataEntryItem *)self delegate];
-  [v3 dataEntryItemDidUpdateValue:self];
+  delegate = [(HKSimpleDataEntryItem *)self delegate];
+  [delegate dataEntryItemDidUpdateValue:self];
 }
 
 - (void)_updateLocaleDependentValues
@@ -228,26 +228,26 @@
   self->_usesImperialUnits = [v3 usesImperialUnits];
 }
 
-- (void)localeDidChange:(id)a3
+- (void)localeDidChange:(id)change
 {
   [(HKSimpleDataEntryHeightItem *)self _updateLocaleDependentValues];
 
   [(HKSimpleDataEntryHeightItem *)self updateCellDisplay];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-  [v3 resignFirstResponder];
+  inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+  [inputTextField resignFirstResponder];
 }
 
-- (void)_setHeightValueForPicker:(id)a3 selectedRow:(int64_t)a4
+- (void)_setHeightValueForPicker:(id)picker selectedRow:(int64_t)row
 {
-  v6 = a3;
-  v14 = v6;
+  pickerCopy = picker;
+  v14 = pickerCopy;
   if (self->_usesImperialUnits)
   {
-    v7 = fmax([v6 selectedRowInComponent:0], 0.0);
+    v7 = fmax([pickerCopy selectedRowInComponent:0], 0.0);
     v8 = fmax([v14 selectedRowInComponent:1], 0.0);
     v9 = MEMORY[0x1E696AD98];
     v10 = +[HKPersonHeightFormatter sharedFormatter];
@@ -259,16 +259,16 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:row];
     v10 = self->_centimeterValue;
     self->_centimeterValue = v13;
   }
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   v4 = 12;
-  if (!a4)
+  if (!component)
   {
     v4 = 10;
   }
@@ -284,39 +284,39 @@
   }
 }
 
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4
+- (double)pickerView:(id)view widthForComponent:(int64_t)component
 {
   if (self->_usesImperialUnits)
   {
 
-    [HKPickerViewTitleMeasurer pickerView:a3 maxWidthForComponent:a4];
+    [HKPickerViewTitleMeasurer pickerView:view maxWidthForComponent:component];
   }
 
   else
   {
-    [a3 frame];
+    [view frame];
     return v7;
   }
 
   return result;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
+  viewCopy = view;
   if (self->_usesImperialUnits)
   {
     v9 = +[HKPersonHeightFormatter sharedFormatter];
     v10 = v9;
-    v11 = a4;
-    if (a5)
+    rowCopy = row;
+    if (component)
     {
-      [v9 formattedValueForInches:v11];
+      [v9 formattedValueForInches:rowCopy];
     }
 
     else
     {
-      [v9 formattedValueForFeet:v11];
+      [v9 formattedValueForFeet:rowCopy];
     }
     v12 = ;
   }
@@ -324,7 +324,7 @@
   else
   {
     v10 = +[HKPersonHeightFormatter sharedFormatter];
-    v12 = [v10 formattedValueForCentimeters:a4];
+    v12 = [v10 formattedValueForCentimeters:row];
   }
 
   v13 = v12;
@@ -332,9 +332,9 @@
   return v13;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  [(HKSimpleDataEntryHeightItem *)self _setHeightValueForPicker:a3 selectedRow:a4, a5];
+  [(HKSimpleDataEntryHeightItem *)self _setHeightValueForPicker:view selectedRow:row, component];
 
   [(HKSimpleDataEntryHeightItem *)self _valueDidChange];
 }

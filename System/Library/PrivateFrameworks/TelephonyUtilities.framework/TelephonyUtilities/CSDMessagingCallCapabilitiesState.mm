@@ -1,27 +1,27 @@
 @interface CSDMessagingCallCapabilitiesState
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingCallCapabilitiesState)initWithCallCapabilitiesState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingCallCapabilitiesState)initWithCallCapabilitiesState:(id)state;
 - (TUCallCapabilitiesState)state;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFaceTimeVideoAvailable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFaceTimeVideoAvailable:(BOOL)available;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingCallCapabilitiesState
 
-- (CSDMessagingCallCapabilitiesState)initWithCallCapabilitiesState:(id)a3
+- (CSDMessagingCallCapabilitiesState)initWithCallCapabilitiesState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(CSDMessagingCallCapabilitiesState *)self init];
   if (v5)
   {
-    -[CSDMessagingCallCapabilitiesState setFaceTimeAudioAvailable:](v5, "setFaceTimeAudioAvailable:", [v4 isFaceTimeAudioAvailable]);
-    -[CSDMessagingCallCapabilitiesState setFaceTimeVideoAvailable:](v5, "setFaceTimeVideoAvailable:", [v4 isFaceTimeVideoAvailable]);
+    -[CSDMessagingCallCapabilitiesState setFaceTimeAudioAvailable:](v5, "setFaceTimeAudioAvailable:", [stateCopy isFaceTimeAudioAvailable]);
+    -[CSDMessagingCallCapabilitiesState setFaceTimeVideoAvailable:](v5, "setFaceTimeVideoAvailable:", [stateCopy isFaceTimeVideoAvailable]);
   }
 
   return v5;
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (void)setHasFaceTimeVideoAvailable:(BOOL)a3
+- (void)setHasFaceTimeVideoAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 2;
   }
@@ -56,8 +56,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingCallCapabilitiesState;
   v3 = [(CSDMessagingCallCapabilitiesState *)&v7 description];
-  v4 = [(CSDMessagingCallCapabilitiesState *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingCallCapabilitiesState *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -83,16 +83,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     faceTimeAudioAvailable = self->_faceTimeAudioAvailable;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -100,31 +100,31 @@
   {
     faceTimeVideoAvailable = self->_faceTimeVideoAvailable;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[8] = self->_faceTimeAudioAvailable;
-    v4[12] |= 1u;
+    toCopy[8] = self->_faceTimeAudioAvailable;
+    toCopy[12] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[9] = self->_faceTimeVideoAvailable;
-    v4[12] |= 2u;
+    toCopy[9] = self->_faceTimeVideoAvailable;
+    toCopy[12] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -142,17 +142,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   if ((*&self->_has & 1) == 0)
   {
-    if ((v4[12] & 1) == 0)
+    if ((equalCopy[12] & 1) == 0)
     {
       goto LABEL_4;
     }
@@ -162,40 +162,40 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((v4[12] & 1) == 0)
+  if ((equalCopy[12] & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v7 = v4[8];
+  v7 = equalCopy[8];
   if (self->_faceTimeAudioAvailable)
   {
-    if ((v4[8] & 1) == 0)
+    if ((equalCopy[8] & 1) == 0)
     {
       goto LABEL_10;
     }
   }
 
-  else if (v4[8])
+  else if (equalCopy[8])
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  v5 = (v4[12] & 2) == 0;
+  v5 = (equalCopy[12] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[12] & 2) != 0)
+    if ((equalCopy[12] & 2) != 0)
     {
       if (self->_faceTimeVideoAvailable)
       {
-        if (v4[9])
+        if (equalCopy[9])
         {
           goto LABEL_18;
         }
       }
 
-      else if (!v4[9])
+      else if (!equalCopy[9])
       {
 LABEL_18:
         v5 = 1;
@@ -237,20 +237,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[12];
+  fromCopy = from;
+  v5 = fromCopy[12];
   if (v5)
   {
-    self->_faceTimeAudioAvailable = v4[8];
+    self->_faceTimeAudioAvailable = fromCopy[8];
     *&self->_has |= 1u;
-    v5 = v4[12];
+    v5 = fromCopy[12];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_faceTimeVideoAvailable = v4[9];
+    self->_faceTimeVideoAvailable = fromCopy[9];
     *&self->_has |= 2u;
   }
 }

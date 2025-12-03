@@ -15,25 +15,25 @@
 - (NSDictionary)protocolPerfTestsIndexed;
 - (NSDictionary)typeTestIndexByPositionsIndexed;
 - (NSDictionary)typeTestIndexByUnitsIndexed;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestingUseOnly
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestingUseOnly;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -46,12 +46,12 @@
   [(CAFAccessory *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -67,18 +67,18 @@
 - (CAFTypeTest)typeTestService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000001"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000001"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -92,11 +92,11 @@
 - (NSArray)typeTestMultiServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000003"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000003"];
@@ -116,18 +116,18 @@
 - (CAFTypeTestWithStates)typeTestWithStatesService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000007"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000007"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -141,11 +141,11 @@
 - (NSArray)typeTestIndexByPositionServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000004"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000004"];
@@ -165,11 +165,11 @@
 - (NSArray)typeTestIndexByUnitServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000005"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000005"];
@@ -189,11 +189,11 @@
 - (NSArray)protocolPerfTestServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000006"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000006"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000006"];
@@ -213,18 +213,18 @@
 - (CAFTestControlSync)testControlSyncService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000008"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000008"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000008"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -238,18 +238,18 @@
 - (CAFTestControlAsync)testControlAsyncService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE000009"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE000009"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE000009"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -263,18 +263,18 @@
 - (CAFTestControlEvent)testControlEventService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x00000000FE00000A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x00000000FE00000A"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x00000000FE00000A"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -288,11 +288,11 @@
 - (NSArray)typeTestIndexByPositions
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFTestingUseOnly *)self typeTestIndexByPositionServices];
+  typeTestIndexByPositionServices = [(CAFTestingUseOnly *)self typeTestIndexByPositionServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [typeTestIndexByPositionServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -319,11 +319,11 @@
 - (NSArray)typeTestIndexByUnits
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFTestingUseOnly *)self typeTestIndexByUnitServices];
+  typeTestIndexByUnitServices = [(CAFTestingUseOnly *)self typeTestIndexByUnitServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"distanceUnit" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [typeTestIndexByUnitServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -350,11 +350,11 @@
 - (NSArray)protocolPerfTests
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFTestingUseOnly *)self protocolPerfTestServices];
+  protocolPerfTestServices = [(CAFTestingUseOnly *)self protocolPerfTestServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"testString" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [protocolPerfTestServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 

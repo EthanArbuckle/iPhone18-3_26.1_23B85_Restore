@@ -1,43 +1,43 @@
 @interface SFAddToHomeScreenViewController
 - (NSString)trustedClientBundleIdentifier;
-- (SFAddToHomeScreenViewController)initWithAddToHomeScreenActivityItem:(id)a3 completion:(id)a4;
-- (SFAddToHomeScreenViewController)initWithWebView:(id)a3 completion:(id)a4;
-- (id)_issueReadOnlySandboxExtensionForURL:(id)a3;
+- (SFAddToHomeScreenViewController)initWithAddToHomeScreenActivityItem:(id)item completion:(id)completion;
+- (SFAddToHomeScreenViewController)initWithWebView:(id)view completion:(id)completion;
+- (id)_issueReadOnlySandboxExtensionForURL:(id)l;
 - (id)_stagedCookiesDirectoryURL;
 - (id)serviceProxy;
 - (void)_addPlaceholderView;
 - (void)_addRemoteViewControllerIfNeeded;
 - (void)_connectToService;
 - (void)_copyCurrentCookiesToStagingDirectory;
-- (void)_didLoadRemoteViewController:(id)a3;
+- (void)_didLoadRemoteViewController:(id)controller;
 - (void)_fetchWebClipMetadataViaJavaScript;
 - (void)_initializeViewService;
 - (void)_removePlaceholderView;
 - (void)_removeStageCookiesDirectoryIfNeeded;
-- (void)dataProvider:(id)a3 didFinishWithResult:(BOOL)a4;
+- (void)dataProvider:(id)provider didFinishWithResult:(BOOL)result;
 - (void)loadView;
-- (void)remoteViewController:(id)a3 didFinishWithResult:(BOOL)a4;
-- (void)serviceProxyWillQueueInvocation:(id)a3;
+- (void)remoteViewController:(id)controller didFinishWithResult:(BOOL)result;
+- (void)serviceProxyWillQueueInvocation:(id)invocation;
 - (void)viewDidLoad;
 @end
 
 @implementation SFAddToHomeScreenViewController
 
-- (SFAddToHomeScreenViewController)initWithWebView:(id)a3 completion:(id)a4
+- (SFAddToHomeScreenViewController)initWithWebView:(id)view completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = SFAddToHomeScreenViewController;
   v9 = [(SFAddToHomeScreenViewController *)&v22 init];
   if (v9)
   {
-    v10 = [v7 URL];
+    v10 = [viewCopy URL];
     initialURL = v9->_initialURL;
     v9->_initialURL = v10;
 
-    objc_storeStrong(&v9->_webView, a3);
-    v12 = _Block_copy(v8);
+    objc_storeStrong(&v9->_webView, view);
+    v12 = _Block_copy(completionCopy);
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = v12;
 
@@ -141,10 +141,10 @@ void __62__SFAddToHomeScreenViewController_initWithWebView_completion___block_in
   [*(a1 + 32) _fetchWebClipMetadataViaJavaScript];
 }
 
-- (SFAddToHomeScreenViewController)initWithAddToHomeScreenActivityItem:(id)a3 completion:(id)a4
+- (SFAddToHomeScreenViewController)initWithAddToHomeScreenActivityItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v38.receiver = self;
   v38.super_class = SFAddToHomeScreenViewController;
   v8 = [(SFAddToHomeScreenViewController *)&v38 init];
@@ -153,18 +153,18 @@ void __62__SFAddToHomeScreenViewController_initWithWebView_completion___block_in
     goto LABEL_14;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   completionHandler = v8->_completionHandler;
   v8->_completionHandler = v9;
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [v6 title];
-  [v11 setObject:v12 forKeyedSubscript:@"PageTitle"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  title = [itemCopy title];
+  [dictionary setObject:title forKeyedSubscript:@"PageTitle"];
 
-  v13 = [v6 URL];
-  [v11 setObject:v13 forKeyedSubscript:@"PageURL"];
+  v13 = [itemCopy URL];
+  [dictionary setObject:v13 forKeyedSubscript:@"PageURL"];
 
-  v14 = [v6 URL];
+  v14 = [itemCopy URL];
   initialURL = v8->_initialURL;
   v8->_initialURL = v14;
 
@@ -182,8 +182,8 @@ void __62__SFAddToHomeScreenViewController_initWithWebView_completion___block_in
     v31[1] = 3221225472;
     v31[2] = __82__SFAddToHomeScreenViewController_initWithAddToHomeScreenActivityItem_completion___block_invoke_2;
     v31[3] = &unk_1E8493990;
-    v32 = v6;
-    v33 = v11;
+    v32 = itemCopy;
+    v33 = dictionary;
     v34 = v16;
     v35 = v17;
     [v32 getHomeScreenWebAppInfoWithCompletionHandler:v31];
@@ -195,7 +195,7 @@ void __62__SFAddToHomeScreenViewController_initWithWebView_completion___block_in
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      (*(v17 + 2))(v17, v11);
+      (*(v17 + 2))(v17, dictionary);
       goto LABEL_8;
     }
 
@@ -203,8 +203,8 @@ void __62__SFAddToHomeScreenViewController_initWithWebView_completion___block_in
     v27[1] = 3221225472;
     v27[2] = __82__SFAddToHomeScreenViewController_initWithAddToHomeScreenActivityItem_completion___block_invoke_10;
     v27[3] = &unk_1E84939E0;
-    v28 = v6;
-    v29 = v11;
+    v28 = itemCopy;
+    v29 = dictionary;
     v30 = v17;
     [v28 getWebAppManifestWithCompletionHandler:v27];
 
@@ -214,17 +214,17 @@ void __62__SFAddToHomeScreenViewController_initWithWebView_completion___block_in
 LABEL_8:
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v6 iconItemProvider];
-    if (v19 && [v19 canLoadObjectOfClass:objc_opt_class()])
+    iconItemProvider = [itemCopy iconItemProvider];
+    if (iconItemProvider && [iconItemProvider canLoadObjectOfClass:objc_opt_class()])
     {
       v20 = objc_opt_class();
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __82__SFAddToHomeScreenViewController_initWithAddToHomeScreenActivityItem_completion___block_invoke_16;
       v24[3] = &unk_1E8493A08;
-      v25 = v6;
+      v25 = itemCopy;
       v26 = v16;
-      v21 = [v19 loadObjectOfClass:v20 completionHandler:v24];
+      v21 = [iconItemProvider loadObjectOfClass:v20 completionHandler:v24];
     }
   }
 
@@ -410,9 +410,9 @@ void __82__SFAddToHomeScreenViewController_initWithAddToHomeScreenActivityItem_c
 
 - (id)_stagedCookiesDirectoryURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 temporaryDirectory];
-  v4 = [v3 URLByAppendingPathComponent:@"StagedCookies"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v4 = [temporaryDirectory URLByAppendingPathComponent:@"StagedCookies"];
 
   return v4;
 }
@@ -420,14 +420,14 @@ void __82__SFAddToHomeScreenViewController_initWithAddToHomeScreenActivityItem_c
 - (void)_removeStageCookiesDirectoryIfNeeded
 {
   v4 = a2;
-  v5 = [a3 safari_privacyPreservingDescription];
+  safari_privacyPreservingDescription = [a3 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_1_4(&dword_1D4644000, v6, v7, "Failed to clean up staged cookies, URL: %@, error: %{public}@", v8, v9, v10, v11, v12);
 }
 
-- (id)_issueReadOnlySandboxExtensionForURL:(id)a3
+- (id)_issueReadOnlySandboxExtensionForURL:(id)l
 {
-  [a3 fileSystemRepresentation];
+  [l fileSystemRepresentation];
   v3 = sandbox_extension_issue_file();
   if (v3)
   {
@@ -453,28 +453,28 @@ void __82__SFAddToHomeScreenViewController_initWithAddToHomeScreenActivityItem_c
 - (void)_copyCurrentCookiesToStagingDirectory
 {
   [(SFAddToHomeScreenViewController *)self _removeStageCookiesDirectoryIfNeeded];
-  v3 = [(SFAddToHomeScreenViewController *)self _stagedCookiesDirectoryURL];
+  _stagedCookiesDirectoryURL = [(SFAddToHomeScreenViewController *)self _stagedCookiesDirectoryURL];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __72__SFAddToHomeScreenViewController__copyCurrentCookiesToStagingDirectory__block_invoke;
   v15 = &unk_1E848FCC0;
-  v16 = self;
-  v4 = v3;
+  selfCopy = self;
+  v4 = _stagedCookiesDirectoryURL;
   v17 = v4;
   v5 = _Block_copy(&v12);
   if (self->_webView)
   {
-    v6 = [MEMORY[0x1E69C9790] sharedController];
-    [v6 copyCookiesFromWebView:self->_webView intoFolderAtURL:v4 completionHandler:v5];
+    mEMORY[0x1E69C9790] = [MEMORY[0x1E69C9790] sharedController];
+    [mEMORY[0x1E69C9790] copyCookiesFromWebView:self->_webView intoFolderAtURL:v4 completionHandler:v5];
   }
 
   else if (self->_cookies)
   {
-    v7 = [MEMORY[0x1E69C9790] sharedController];
+    mEMORY[0x1E69C9790]2 = [MEMORY[0x1E69C9790] sharedController];
     cookies = self->_cookies;
-    v9 = [(NSURL *)self->_initialURL host];
-    v10 = [v9 safari_highLevelDomainFromHost];
-    v11 = [v7 copyCookiesFromArray:cookies matchingDomain:v10 intoFolderAtURL:v4];
+    host = [(NSURL *)self->_initialURL host];
+    safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+    v11 = [mEMORY[0x1E69C9790]2 copyCookiesFromArray:cookies matchingDomain:safari_highLevelDomainFromHost intoFolderAtURL:v4];
 
     v5[2](v5, v11);
   }
@@ -595,9 +595,9 @@ void __69__SFAddToHomeScreenViewController__fetchWebClipMetadataViaJavaScript__b
   v5.receiver = self;
   v5.super_class = SFAddToHomeScreenViewController;
   [(SFAddToHomeScreenViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(SFAddToHomeScreenViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(SFAddToHomeScreenViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)_initializeViewService
@@ -616,7 +616,7 @@ void __69__SFAddToHomeScreenViewController__fetchWebClipMetadataViaJavaScript__b
 
 - (void)_connectToService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SFAddToHomeScreenViewController__connectToService__block_invoke;
@@ -658,14 +658,14 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
   return serviceProxy;
 }
 
-- (void)_didLoadRemoteViewController:(id)a3
+- (void)_didLoadRemoteViewController:(id)controller
 {
-  v5 = a3;
-  objc_storeStrong(&self->_remoteViewController, a3);
-  v6 = [v5 serviceViewControllerProxy];
-  [(SFAddToHomeScreenServiceProtocol *)self->_serviceProxy setTarget:v6];
+  controllerCopy = controller;
+  objc_storeStrong(&self->_remoteViewController, controller);
+  serviceViewControllerProxy = [controllerCopy serviceViewControllerProxy];
+  [(SFAddToHomeScreenServiceProtocol *)self->_serviceProxy setTarget:serviceViewControllerProxy];
 
-  [v5 setDelegate:self];
+  [controllerCopy setDelegate:self];
   if ([MEMORY[0x1E696AAE8] safari_isSafariViewServiceBundle])
   {
     [(SFAddToHomeScreenViewController *)self _addRemoteViewControllerIfNeeded];
@@ -687,19 +687,19 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
 {
   [(SFAddToHomeScreenViewController *)self _removePlaceholderView];
   [(SFAddToHomeScreenViewController *)self addChildViewController:self->_remoteViewController];
-  v7 = [(SFAddToHomeScreenRemoteViewController *)self->_remoteViewController view];
-  v3 = [(SFAddToHomeScreenViewController *)self view];
-  [v3 addSubview:v7];
+  view = [(SFAddToHomeScreenRemoteViewController *)self->_remoteViewController view];
+  view2 = [(SFAddToHomeScreenViewController *)self view];
+  [view2 addSubview:view];
 
-  v4 = [(SFAddToHomeScreenViewController *)self view];
-  [v4 bounds];
-  [v7 setFrame:?];
+  view3 = [(SFAddToHomeScreenViewController *)self view];
+  [view3 bounds];
+  [view setFrame:?];
 
-  [v7 setAutoresizingMask:18];
+  [view setAutoresizingMask:18];
   [(_UIRemoteViewController *)self->_remoteViewController didMoveToParentViewController:self];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  v6 = [(SFAddToHomeScreenViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view4 = [(SFAddToHomeScreenViewController *)self view];
+  [view4 setBackgroundColor:clearColor];
 }
 
 - (void)_addPlaceholderView
@@ -711,12 +711,12 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
   self->_wrappingPlaceholderNavigationController = v5;
 
   [(SFAddToHomeScreenViewController *)self addChildViewController:self->_wrappingPlaceholderNavigationController];
-  v8 = [(SFAddToHomeScreenViewController *)self view];
-  v7 = [(UINavigationController *)self->_wrappingPlaceholderNavigationController view];
-  [v8 addSubview:v7];
-  [v8 bounds];
-  [v7 setFrame:?];
-  [v7 setAutoresizingMask:18];
+  view = [(SFAddToHomeScreenViewController *)self view];
+  view2 = [(UINavigationController *)self->_wrappingPlaceholderNavigationController view];
+  [view addSubview:view2];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
   [(UINavigationController *)self->_wrappingPlaceholderNavigationController didMoveToParentViewController:self];
 }
 
@@ -726,8 +726,8 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
   if (wrappingPlaceholderNavigationController)
   {
     [(UINavigationController *)wrappingPlaceholderNavigationController willMoveToParentViewController:0];
-    v4 = [(UINavigationController *)self->_wrappingPlaceholderNavigationController view];
-    [v4 removeFromSuperview];
+    view = [(UINavigationController *)self->_wrappingPlaceholderNavigationController view];
+    [view removeFromSuperview];
 
     [(UINavigationController *)self->_wrappingPlaceholderNavigationController removeFromParentViewController];
     v5 = self->_wrappingPlaceholderNavigationController;
@@ -735,7 +735,7 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
   }
 }
 
-- (void)serviceProxyWillQueueInvocation:(id)a3
+- (void)serviceProxyWillQueueInvocation:(id)invocation
 {
   if (!self->_cancelViewServiceRequest)
   {
@@ -743,11 +743,11 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
   }
 }
 
-- (void)remoteViewController:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)remoteViewController:(id)controller didFinishWithResult:(BOOL)result
 {
-  v4 = a4;
+  resultCopy = result;
   [(SFAddToHomeScreenViewController *)self _removeStageCookiesDirectoryIfNeeded];
-  if (v4)
+  if (resultCopy)
   {
     [*MEMORY[0x1E69DDA98] suspend];
   }
@@ -774,12 +774,12 @@ void __52__SFAddToHomeScreenViewController__connectToService__block_invoke(uint6
   }
 }
 
-- (void)dataProvider:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)dataProvider:(id)provider didFinishWithResult:(BOOL)result
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a4);
+    completionHandler[2](completionHandler, result);
   }
 }
 

@@ -2,11 +2,11 @@
 + (id)lineWrappingManager;
 + (id)postProcessManager;
 + (id)sharedManager;
-- (BOOL)lockResourcesForLocale:(id)a3 sender:(id)a4 block:(id)a5;
-- (CRLanguageResourcesManager)initWithType:(int64_t)a3;
-- (void)addSubscriber:(id)a3 forLocale:(id)a4;
-- (void)removeSubscriber:(id)a3 forLocale:(id)a4;
-- (void)subscriber:(id)a3 willDeactivateForLocale:(id)a4;
+- (BOOL)lockResourcesForLocale:(id)locale sender:(id)sender block:(id)block;
+- (CRLanguageResourcesManager)initWithType:(int64_t)type;
+- (void)addSubscriber:(id)subscriber forLocale:(id)locale;
+- (void)removeSubscriber:(id)subscriber forLocale:(id)locale;
+- (void)subscriber:(id)subscriber willDeactivateForLocale:(id)locale;
 @end
 
 @implementation CRLanguageResourcesManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __43__CRLanguageResourcesManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960260 != -1)
   {
     dispatch_once(&qword_1ED960260, block);
@@ -41,7 +41,7 @@ void __43__CRLanguageResourcesManager_sharedManager__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __48__CRLanguageResourcesManager_postProcessManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960270 != -1)
   {
     dispatch_once(&qword_1ED960270, block);
@@ -65,7 +65,7 @@ void __48__CRLanguageResourcesManager_postProcessManager__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __49__CRLanguageResourcesManager_lineWrappingManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960280 != -1)
   {
     dispatch_once(&qword_1ED960280, block);
@@ -83,7 +83,7 @@ void __49__CRLanguageResourcesManager_lineWrappingManager__block_invoke(uint64_t
   qword_1ED960278 = v1;
 }
 
-- (CRLanguageResourcesManager)initWithType:(int64_t)a3
+- (CRLanguageResourcesManager)initWithType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = CRLanguageResourcesManager;
@@ -93,101 +93,101 @@ void __49__CRLanguageResourcesManager_lineWrappingManager__block_invoke(uint64_t
     v5 = objc_opt_new();
     [(CRLanguageResourcesManager *)v4 setLanguageResourceStacks:v5];
 
-    [(CRLanguageResourcesManager *)v4 setResourceType:a3];
+    [(CRLanguageResourcesManager *)v4 setResourceType:type];
   }
 
   return v4;
 }
 
-- (void)addSubscriber:(id)a3 forLocale:(id)a4
+- (void)addSubscriber:(id)subscriber forLocale:(id)locale
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  objc_sync_enter(v7);
-  v8 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  v9 = [v8 objectForKey:v6];
+  subscriberCopy = subscriber;
+  localeCopy = locale;
+  languageResourceStacks = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  objc_sync_enter(languageResourceStacks);
+  languageResourceStacks2 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  v9 = [languageResourceStacks2 objectForKey:localeCopy];
 
   if (!v9)
   {
-    v10 = [[CRLanguageResourcesStack alloc] initWithLocaleIdentifier:v6 resourceType:[(CRLanguageResourcesManager *)self resourceType]];
-    v11 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-    [v11 setObject:v10 forKeyedSubscript:v6];
+    v10 = [[CRLanguageResourcesStack alloc] initWithLocaleIdentifier:localeCopy resourceType:[(CRLanguageResourcesManager *)self resourceType]];
+    languageResourceStacks3 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+    [languageResourceStacks3 setObject:v10 forKeyedSubscript:localeCopy];
   }
 
-  v12 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  v13 = [v12 objectForKeyedSubscript:v6];
-  [v13 addSubscriber:v14];
+  languageResourceStacks4 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  v13 = [languageResourceStacks4 objectForKeyedSubscript:localeCopy];
+  [v13 addSubscriber:subscriberCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(languageResourceStacks);
 }
 
-- (void)removeSubscriber:(id)a3 forLocale:(id)a4
+- (void)removeSubscriber:(id)subscriber forLocale:(id)locale
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  objc_sync_enter(v7);
-  v8 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  subscriberCopy = subscriber;
+  localeCopy = locale;
+  languageResourceStacks = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  objc_sync_enter(languageResourceStacks);
+  languageResourceStacks2 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  v9 = [languageResourceStacks2 objectForKeyedSubscript:localeCopy];
 
   if (v9)
   {
-    v10 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-    v11 = [v10 objectForKeyedSubscript:v6];
-    [v11 removeSubscriber:v16];
+    languageResourceStacks3 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+    v11 = [languageResourceStacks3 objectForKeyedSubscript:localeCopy];
+    [v11 removeSubscriber:subscriberCopy];
 
-    v12 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-    v13 = [v12 objectForKeyedSubscript:v6];
-    v14 = [v13 subscriberCount];
+    languageResourceStacks4 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+    v13 = [languageResourceStacks4 objectForKeyedSubscript:localeCopy];
+    subscriberCount = [v13 subscriberCount];
 
-    if (!v14)
+    if (!subscriberCount)
     {
-      v15 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-      [v15 removeObjectForKey:v6];
+      languageResourceStacks5 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+      [languageResourceStacks5 removeObjectForKey:localeCopy];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(languageResourceStacks);
 }
 
-- (void)subscriber:(id)a3 willDeactivateForLocale:(id)a4
+- (void)subscriber:(id)subscriber willDeactivateForLocale:(id)locale
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  objc_sync_enter(v7);
-  v8 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  subscriberCopy = subscriber;
+  localeCopy = locale;
+  languageResourceStacks = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  objc_sync_enter(languageResourceStacks);
+  languageResourceStacks2 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  v9 = [languageResourceStacks2 objectForKeyedSubscript:localeCopy];
 
   if (v9)
   {
-    v10 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-    v11 = [v10 objectForKeyedSubscript:v6];
-    [v11 deactivateSubscriber:v12];
+    languageResourceStacks3 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+    v11 = [languageResourceStacks3 objectForKeyedSubscript:localeCopy];
+    [v11 deactivateSubscriber:subscriberCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(languageResourceStacks);
 }
 
-- (BOOL)lockResourcesForLocale:(id)a3 sender:(id)a4 block:(id)a5
+- (BOOL)lockResourcesForLocale:(id)locale sender:(id)sender block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  objc_sync_enter(v11);
-  v12 = [(CRLanguageResourcesManager *)self languageResourceStacks];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  localeCopy = locale;
+  senderCopy = sender;
+  blockCopy = block;
+  languageResourceStacks = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  objc_sync_enter(languageResourceStacks);
+  languageResourceStacks2 = [(CRLanguageResourcesManager *)self languageResourceStacks];
+  v13 = [languageResourceStacks2 objectForKeyedSubscript:localeCopy];
 
-  objc_sync_exit(v11);
-  if (v13 && ([v13 hasSubscriber:v9] & 1) != 0)
+  objc_sync_exit(languageResourceStacks);
+  if (v13 && ([v13 hasSubscriber:senderCopy] & 1) != 0)
   {
-    v14 = [v13 popResourceForSubscriber:v9];
+    v14 = [v13 popResourceForSubscriber:senderCopy];
     v15 = v14 != 0;
     if (v14)
     {
-      v10[2](v10, v14);
+      blockCopy[2](blockCopy, v14);
       [v13 pushResource:v14];
     }
   }

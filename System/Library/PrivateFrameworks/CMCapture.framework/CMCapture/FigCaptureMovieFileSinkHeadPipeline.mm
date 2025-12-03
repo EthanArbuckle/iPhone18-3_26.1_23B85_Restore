@@ -1,24 +1,24 @@
 @interface FigCaptureMovieFileSinkHeadPipeline
-- (FigCaptureMovieFileSinkHeadPipeline)initWithConfiguration:(id)a3 videoSourceCaptureOutputsByConnectionID:(id)a4 audioSourceCaptureOutput:(id)a5 audioSourceCinematicAudioCaptureOutput:(id)a6 smartCameraInferenceOutput:(id)a7 detectedObjectBoxedMetadataOutputs:(id)a8 objectDetectionSourceOutput:(id)a9 metadataSourcePipelineOutputs:(id)a10 graph:(id)a11 parentPipeline:(id)a12 inferenceScheduler:(id)a13 captureDevicesByConnectionID:(id)a14 audioSourceDelegate:(id)a15 fileCoordinatorStatusDelegate:(id)a16 irisRequestDelegate:(id)a17 masterClock:(OpaqueCMClock *)a18 workgroup:(id)a19 videoGreenGhostMitigationEnabled:(BOOL)a20;
-- (id)_buildFaceDetectionNode:(uint64_t)a1 parentPipeline:objectDetectionSourceOutput:faceDetectionNodeOut:;
-- (uint64_t)_buildMovieFileSinkHeadPipeline:(uint64_t)a1 videoSourceCaptureOutputsByConnectionID:(void *)a2 audioSourceCaptureOutput:(void *)a3 audioSourceCinematicAudioCaptureOutput:(uint64_t)a4 smartCameraInferenceOutput:(uint64_t)a5 detectedObjectBoxedMetadataOutputs:(uint64_t)a6 objectDetectionSourceOutput:(void *)a7 metadataSourcePipelineOutputs:(uint64_t)a8 graph:(void *)a9 parentPipeline:(void *)a10 inferenceScheduler:(void *)a11 captureDevicesByConnectionID:(uint64_t)a12 audioSourceDelegate:(void *)a13 fileCoordinatorStatusDelegate:(uint64_t)a14 irisRequestDelegate:(uint64_t)a15 masterClock:(uint64_t)a16 workgroup:(uint64_t)a17 videoGreenGhostMitigationEnabled:(uint64_t)a18;
+- (FigCaptureMovieFileSinkHeadPipeline)initWithConfiguration:(id)configuration videoSourceCaptureOutputsByConnectionID:(id)d audioSourceCaptureOutput:(id)output audioSourceCinematicAudioCaptureOutput:(id)captureOutput smartCameraInferenceOutput:(id)inferenceOutput detectedObjectBoxedMetadataOutputs:(id)outputs objectDetectionSourceOutput:(id)sourceOutput metadataSourcePipelineOutputs:(id)self0 graph:(id)self1 parentPipeline:(id)self2 inferenceScheduler:(id)self3 captureDevicesByConnectionID:(id)self4 audioSourceDelegate:(id)self5 fileCoordinatorStatusDelegate:(id)self6 irisRequestDelegate:(id)self7 masterClock:(OpaqueCMClock *)self8 workgroup:(id)self9 videoGreenGhostMitigationEnabled:(BOOL)enabled;
+- (id)_buildFaceDetectionNode:(uint64_t)node parentPipeline:objectDetectionSourceOutput:faceDetectionNodeOut:;
+- (uint64_t)_buildMovieFileSinkHeadPipeline:(uint64_t)pipeline videoSourceCaptureOutputsByConnectionID:(void *)d audioSourceCaptureOutput:(void *)output audioSourceCinematicAudioCaptureOutput:(uint64_t)captureOutput smartCameraInferenceOutput:(uint64_t)inferenceOutput detectedObjectBoxedMetadataOutputs:(uint64_t)outputs objectDetectionSourceOutput:(void *)sourceOutput metadataSourcePipelineOutputs:(uint64_t)pipelineOutputs graph:(void *)graph parentPipeline:(void *)pipeline0 inferenceScheduler:(void *)pipeline1 captureDevicesByConnectionID:(uint64_t)pipeline2 audioSourceDelegate:(void *)pipeline3 fileCoordinatorStatusDelegate:(uint64_t)pipeline4 irisRequestDelegate:(uint64_t)pipeline5 masterClock:(uint64_t)pipeline6 workgroup:(uint64_t)pipeline7 videoGreenGhostMitigationEnabled:(uint64_t)pipeline8;
 - (void)dealloc;
-- (void)setSceneClassifierSuspended:(BOOL)a3;
+- (void)setSceneClassifierSuspended:(BOOL)suspended;
 @end
 
 @implementation FigCaptureMovieFileSinkHeadPipeline
 
-- (FigCaptureMovieFileSinkHeadPipeline)initWithConfiguration:(id)a3 videoSourceCaptureOutputsByConnectionID:(id)a4 audioSourceCaptureOutput:(id)a5 audioSourceCinematicAudioCaptureOutput:(id)a6 smartCameraInferenceOutput:(id)a7 detectedObjectBoxedMetadataOutputs:(id)a8 objectDetectionSourceOutput:(id)a9 metadataSourcePipelineOutputs:(id)a10 graph:(id)a11 parentPipeline:(id)a12 inferenceScheduler:(id)a13 captureDevicesByConnectionID:(id)a14 audioSourceDelegate:(id)a15 fileCoordinatorStatusDelegate:(id)a16 irisRequestDelegate:(id)a17 masterClock:(OpaqueCMClock *)a18 workgroup:(id)a19 videoGreenGhostMitigationEnabled:(BOOL)a20
+- (FigCaptureMovieFileSinkHeadPipeline)initWithConfiguration:(id)configuration videoSourceCaptureOutputsByConnectionID:(id)d audioSourceCaptureOutput:(id)output audioSourceCinematicAudioCaptureOutput:(id)captureOutput smartCameraInferenceOutput:(id)inferenceOutput detectedObjectBoxedMetadataOutputs:(id)outputs objectDetectionSourceOutput:(id)sourceOutput metadataSourcePipelineOutputs:(id)self0 graph:(id)self1 parentPipeline:(id)self2 inferenceScheduler:(id)self3 captureDevicesByConnectionID:(id)self4 audioSourceDelegate:(id)self5 fileCoordinatorStatusDelegate:(id)self6 irisRequestDelegate:(id)self7 masterClock:(OpaqueCMClock *)self8 workgroup:(id)self9 videoGreenGhostMitigationEnabled:(BOOL)enabled
 {
   v30.receiver = self;
   v30.super_class = FigCaptureMovieFileSinkHeadPipeline;
-  v26 = [(FigCapturePipeline *)&v30 initWithGraph:a11 name:@"Head Pipeline"];
+  v26 = [(FigCapturePipeline *)&v30 initWithGraph:graph name:@"Head Pipeline"];
   v27 = v26;
   if (v26)
   {
     v26->_indexOfVideoOrientationInMetadataOutputs = -1;
     v26->_inferenceConnections = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v28 = [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:v27 videoSourceCaptureOutputsByConnectionID:a3 audioSourceCaptureOutput:a4 audioSourceCinematicAudioCaptureOutput:a5 smartCameraInferenceOutput:a6 detectedObjectBoxedMetadataOutputs:a7 objectDetectionSourceOutput:a8 metadataSourcePipelineOutputs:a9 graph:a10 parentPipeline:a11 inferenceScheduler:a12 captureDevicesByConnectionID:a13 audioSourceDelegate:a14 fileCoordinatorStatusDelegate:a15 irisRequestDelegate:a16 masterClock:a17 workgroup:a18 videoGreenGhostMitigationEnabled:a19];
+    v28 = [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:v27 videoSourceCaptureOutputsByConnectionID:configuration audioSourceCaptureOutput:d audioSourceCinematicAudioCaptureOutput:output smartCameraInferenceOutput:captureOutput detectedObjectBoxedMetadataOutputs:inferenceOutput objectDetectionSourceOutput:outputs metadataSourcePipelineOutputs:sourceOutput graph:pipelineOutputs parentPipeline:graph inferenceScheduler:pipeline captureDevicesByConnectionID:scheduler audioSourceDelegate:iD fileCoordinatorStatusDelegate:delegate irisRequestDelegate:statusDelegate masterClock:requestDelegate workgroup:clock videoGreenGhostMitigationEnabled:workgroup];
     if (v28)
     {
       [FigCaptureMovieFileSinkHeadPipeline initWithConfiguration:v28 videoSourceCaptureOutputsByConnectionID:v27 audioSourceCaptureOutput:? audioSourceCinematicAudioCaptureOutput:? smartCameraInferenceOutput:? detectedObjectBoxedMetadataOutputs:? objectDetectionSourceOutput:? metadataSourcePipelineOutputs:? graph:? parentPipeline:? inferenceScheduler:? captureDevicesByConnectionID:? audioSourceDelegate:? fileCoordinatorStatusDelegate:? irisRequestDelegate:? masterClock:? workgroup:? videoGreenGhostMitigationEnabled:?];
@@ -29,20 +29,20 @@
   return v27;
 }
 
-- (uint64_t)_buildMovieFileSinkHeadPipeline:(uint64_t)a1 videoSourceCaptureOutputsByConnectionID:(void *)a2 audioSourceCaptureOutput:(void *)a3 audioSourceCinematicAudioCaptureOutput:(uint64_t)a4 smartCameraInferenceOutput:(uint64_t)a5 detectedObjectBoxedMetadataOutputs:(uint64_t)a6 objectDetectionSourceOutput:(void *)a7 metadataSourcePipelineOutputs:(uint64_t)a8 graph:(void *)a9 parentPipeline:(void *)a10 inferenceScheduler:(void *)a11 captureDevicesByConnectionID:(uint64_t)a12 audioSourceDelegate:(void *)a13 fileCoordinatorStatusDelegate:(uint64_t)a14 irisRequestDelegate:(uint64_t)a15 masterClock:(uint64_t)a16 workgroup:(uint64_t)a17 videoGreenGhostMitigationEnabled:(uint64_t)a18
+- (uint64_t)_buildMovieFileSinkHeadPipeline:(uint64_t)pipeline videoSourceCaptureOutputsByConnectionID:(void *)d audioSourceCaptureOutput:(void *)output audioSourceCinematicAudioCaptureOutput:(uint64_t)captureOutput smartCameraInferenceOutput:(uint64_t)inferenceOutput detectedObjectBoxedMetadataOutputs:(uint64_t)outputs objectDetectionSourceOutput:(void *)sourceOutput metadataSourcePipelineOutputs:(uint64_t)pipelineOutputs graph:(void *)graph parentPipeline:(void *)pipeline0 inferenceScheduler:(void *)pipeline1 captureDevicesByConnectionID:(uint64_t)pipeline2 audioSourceDelegate:(void *)pipeline3 fileCoordinatorStatusDelegate:(uint64_t)pipeline4 irisRequestDelegate:(uint64_t)pipeline5 masterClock:(uint64_t)pipeline6 workgroup:(uint64_t)pipeline7 videoGreenGhostMitigationEnabled:(uint64_t)pipeline8
 {
-  if (!a1)
+  if (!pipeline)
   {
     return 0;
   }
 
-  v22 = a1;
+  pipelineCopy = pipeline;
   v269[0] = 0;
-  v23 = [a2 movieFileSinkPipelineConfiguration];
-  v24 = v23;
-  if (v23)
+  movieFileSinkPipelineConfiguration = [d movieFileSinkPipelineConfiguration];
+  v24 = movieFileSinkPipelineConfiguration;
+  if (movieFileSinkPipelineConfiguration)
   {
-    v25 = *(v23 + 16);
+    v25 = *(movieFileSinkPipelineConfiguration + 16);
   }
 
   else
@@ -50,46 +50,46 @@
     v25 = 0;
   }
 
-  v204 = [a13 objectForKeyedSubscript:{objc_msgSend(v25, "connectionID")}];
-  v208 = [v25 irisSinkConfiguration];
-  v26 = [a2 movieFilePipelineStage];
-  v27 = [a3 count];
-  v28 = a4 != 0;
+  v204 = [delegate objectForKeyedSubscript:{objc_msgSend(v25, "connectionID")}];
+  irisSinkConfiguration = [v25 irisSinkConfiguration];
+  movieFilePipelineStage = [d movieFilePipelineStage];
+  v27 = [output count];
+  v28 = captureOutput != 0;
   v29 = 1;
-  if (a4)
+  if (captureOutput)
   {
     v29 = 2;
   }
 
-  if (a5)
+  if (inferenceOutput)
   {
     v28 = v29;
   }
 
   v198 = v28;
   v199 = v27;
-  v30 = [a9 count];
+  v30 = [graph count];
   if (!v24 || (*(v24 + 112) & 1) == 0)
   {
-    v31 = [a2 movieFileSinkPipelineConfiguration];
-    if (v31)
+    movieFileSinkPipelineConfiguration2 = [d movieFileSinkPipelineConfiguration];
+    if (movieFileSinkPipelineConfiguration2)
     {
-      v31 = v31[6];
+      movieFileSinkPipelineConfiguration2 = movieFileSinkPipelineConfiguration2[6];
     }
 
-    v30 += [v31 count];
+    v30 += [movieFileSinkPipelineConfiguration2 count];
   }
 
-  v191 = a2;
+  dCopy = d;
   v194 = v25 != 0;
-  v196 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v215 = v25;
-  v216 = a3;
-  v209 = [a3 objectForKeyedSubscript:{objc_msgSend(v25, "connectionID")}];
-  v32 = [MEMORY[0x1E695DF70] array];
-  v33 = [MEMORY[0x1E695DF70] array];
-  v192 = v26;
-  v193 = a5;
+  outputCopy = output;
+  output = [output objectForKeyedSubscript:{objc_msgSend(v25, "connectionID")}];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  v192 = movieFilePipelineStage;
+  inferenceOutputCopy = inferenceOutput;
   if (v24)
   {
     v34 = *(v24 + 138);
@@ -127,18 +127,18 @@
     v38 = 0.0;
   }
 
-  v39 = [v208 irisMovieCaptureEnabled];
-  v212 = v22;
-  v213 = v33;
+  irisMovieCaptureEnabled = [irisSinkConfiguration irisMovieCaptureEnabled];
+  v212 = pipelineCopy;
+  v213 = array3;
   v205 = v24;
-  if (!v39)
+  if (!irisMovieCaptureEnabled)
   {
     v51 = 0;
     v244 = 0u;
     v243 = 0u;
     v242 = 0u;
     v241 = 0u;
-    v52 = [a9 countByEnumeratingWithState:&v241 objects:v240 count:16];
+    v52 = [graph countByEnumeratingWithState:&v241 objects:v240 count:16];
     if (v52)
     {
       v53 = v52;
@@ -149,19 +149,19 @@
         {
           if (*v242 != v54)
           {
-            objc_enumerationMutation(a9);
+            objc_enumerationMutation(graph);
           }
 
-          [v32 addObject:*(*(&v241 + 1) + 8 * i)];
+          [array2 addObject:*(*(&v241 + 1) + 8 * i)];
         }
 
-        v53 = [a9 countByEnumeratingWithState:&v241 objects:v240 count:16];
+        v53 = [graph countByEnumeratingWithState:&v241 objects:v240 count:16];
       }
 
       while (v53);
     }
 
-    if (v209)
+    if (output)
     {
       if (v24)
       {
@@ -171,19 +171,19 @@
           [(BWNode *)v56 setName:@"Movie File Frame Rate Governor"];
           [(BWFrameRateGovernorNode *)v56 setDropsStartupFramesWithUnstableAE:1];
           [(BWFrameRateGovernorNode *)v56 setAeStabilityTuning:2];
-          if (([a11 addNode:v56 error:v269] & 1) == 0)
+          if (([scheduler addNode:v56 error:v269] & 1) == 0)
           {
             [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
             goto LABEL_280;
           }
 
-          if (([a10 connectOutput:v209 toInput:-[BWNode input](v56 pipelineStage:{"input"), 0}] & 1) == 0)
+          if (([parentPipeline connectOutput:output toInput:-[BWNode input](v56 pipelineStage:{"input"), 0}] & 1) == 0)
           {
             [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
             goto LABEL_280;
           }
 
-          v209 = [(BWNode *)v56 output];
+          output = [(BWNode *)v56 output];
         }
 
         v57 = [BWFileCoordinatorNode alloc];
@@ -191,36 +191,36 @@
         goto LABEL_168;
       }
 
-      v203 = a8;
+      pipelineOutputsCopy3 = pipelineOutputs;
       v57 = [BWFileCoordinatorNode alloc];
       v104 = 0;
       v58 = 1;
 LABEL_169:
       LOBYTE(v176) = v104 & 1;
-      v105 = -[BWFileCoordinatorNode initWithNumberOfVideoInputs:numberOfAudioInputs:numberOfMetadataInputs:numberOfActionOnlyOutputs:overCaptureEnabled:allowLowLatencyWhenPossible:useTrueVideoFileRecordingStaging:motionDataTimeMachine:](v57, "initWithNumberOfVideoInputs:numberOfAudioInputs:numberOfMetadataInputs:numberOfActionOnlyOutputs:overCaptureEnabled:allowLowLatencyWhenPossible:useTrueVideoFileRecordingStaging:motionDataTimeMachine:", v199, v198, v30, v194, v24 & 1, v58, v176, [*(v22 + 32) motionDataTimeMachine]);
-      -[BWFileCoordinatorNode setFlagsLastFrameForVideoCompressor:](v105, "setFlagsLastFrameForVideoCompressor:", [v208 irisMovieCaptureEnabled] ^ 1);
-      [(BWFileCoordinatorNode *)v105 setAudioSourceDelegate:a14];
-      [(BWFileCoordinatorNode *)v105 setFileCoordinatorStatusDelegate:a15];
-      if (([a11 addNode:v105 error:v269] & 1) == 0)
+      v105 = -[BWFileCoordinatorNode initWithNumberOfVideoInputs:numberOfAudioInputs:numberOfMetadataInputs:numberOfActionOnlyOutputs:overCaptureEnabled:allowLowLatencyWhenPossible:useTrueVideoFileRecordingStaging:motionDataTimeMachine:](v57, "initWithNumberOfVideoInputs:numberOfAudioInputs:numberOfMetadataInputs:numberOfActionOnlyOutputs:overCaptureEnabled:allowLowLatencyWhenPossible:useTrueVideoFileRecordingStaging:motionDataTimeMachine:", v199, v198, v30, v194, v24 & 1, v58, v176, [*(pipelineCopy + 32) motionDataTimeMachine]);
+      -[BWFileCoordinatorNode setFlagsLastFrameForVideoCompressor:](v105, "setFlagsLastFrameForVideoCompressor:", [irisSinkConfiguration irisMovieCaptureEnabled] ^ 1);
+      [(BWFileCoordinatorNode *)v105 setAudioSourceDelegate:statusDelegate];
+      [(BWFileCoordinatorNode *)v105 setFileCoordinatorStatusDelegate:requestDelegate];
+      if (([scheduler addNode:v105 error:v269] & 1) == 0)
       {
         [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
         goto LABEL_280;
       }
 
       v106 = v105;
-      *(v22 + 40) = v106;
-      v107 = [(BWNode *)v106 inputs];
-      v108 = [*(v22 + 40) outputs];
-      if (v209)
+      *(pipelineCopy + 40) = v106;
+      inputs = [(BWNode *)v106 inputs];
+      outputs = [*(pipelineCopy + 40) outputs];
+      if (output)
       {
         v109 = v215;
-        if (([a10 connectOutput:v209 toInput:-[NSArray objectAtIndexedSubscript:](v107 pipelineStage:{"objectAtIndexedSubscript:", 0), 0}] & 1) == 0)
+        if (([parentPipeline connectOutput:output toInput:-[NSArray objectAtIndexedSubscript:](inputs pipelineStage:{"objectAtIndexedSubscript:", 0), 0}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        v211 = [v108 objectAtIndexedSubscript:0];
+        v211 = [outputs objectAtIndexedSubscript:0];
         v110 = 1;
       }
 
@@ -231,13 +231,13 @@ LABEL_169:
         v109 = v215;
       }
 
-      if ([v216 count] >= 2)
+      if ([outputCopy count] >= 2)
       {
         v239 = 0u;
         v238 = 0u;
         v237 = 0u;
         v236 = 0u;
-        v111 = [v216 countByEnumeratingWithState:&v236 objects:v235 count:16];
+        v111 = [outputCopy countByEnumeratingWithState:&v236 objects:v235 count:16];
         if (v111)
         {
           v112 = v111;
@@ -248,13 +248,13 @@ LABEL_169:
             {
               if (*v237 != v113)
               {
-                objc_enumerationMutation(v216);
+                objc_enumerationMutation(outputCopy);
               }
 
               v115 = *(*(&v236 + 1) + 8 * j);
               if (([v115 isEqualToString:{objc_msgSend(v109, "connectionID")}] & 1) == 0)
               {
-                if (![a10 connectOutput:objc_msgSend(v216 toInput:"objectForKeyedSubscript:" pipelineStage:{v115), -[NSArray objectAtIndexedSubscript:](v107, "objectAtIndexedSubscript:", v110), 0}])
+                if (![parentPipeline connectOutput:objc_msgSend(outputCopy toInput:"objectForKeyedSubscript:" pipelineStage:{v115), -[NSArray objectAtIndexedSubscript:](inputs, "objectAtIndexedSubscript:", v110), 0}])
                 {
                   [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
                   goto LABEL_280;
@@ -265,23 +265,23 @@ LABEL_169:
               }
             }
 
-            v112 = [v216 countByEnumeratingWithState:&v236 objects:v235 count:16];
+            v112 = [outputCopy countByEnumeratingWithState:&v236 objects:v235 count:16];
           }
 
           while (v112);
         }
       }
 
-      if (a4)
+      if (captureOutput)
       {
         v116 = v213;
-        if (([a10 connectOutput:a4 toInput:-[NSArray objectAtIndexedSubscript:](v107 pipelineStage:{"objectAtIndexedSubscript:", v110), 0}] & 1) == 0)
+        if (([parentPipeline connectOutput:captureOutput toInput:-[NSArray objectAtIndexedSubscript:](inputs pipelineStage:{"objectAtIndexedSubscript:", v110), 0}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        v207 = [v108 objectAtIndexedSubscript:v110++];
+        v207 = [outputs objectAtIndexedSubscript:v110++];
       }
 
       else
@@ -290,15 +290,15 @@ LABEL_169:
         v116 = v213;
       }
 
-      if (v193)
+      if (inferenceOutputCopy)
       {
-        if (([a10 connectOutput:v193 toInput:-[NSArray objectAtIndexedSubscript:](v107 pipelineStage:{"objectAtIndexedSubscript:", v110), 0}] & 1) == 0)
+        if (([parentPipeline connectOutput:inferenceOutputCopy toInput:-[NSArray objectAtIndexedSubscript:](inputs pipelineStage:{"objectAtIndexedSubscript:", v110), 0}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        v200 = [v108 objectAtIndexedSubscript:v110++];
+        v200 = [outputs objectAtIndexedSubscript:v110++];
       }
 
       else
@@ -310,7 +310,7 @@ LABEL_169:
       v234 = 0u;
       v231 = 0u;
       v232 = 0u;
-      v117 = [v32 countByEnumeratingWithState:&v231 objects:v230 count:16];
+      v117 = [array2 countByEnumeratingWithState:&v231 objects:v230 count:16];
       if (v117)
       {
         v118 = v117;
@@ -324,21 +324,21 @@ LABEL_169:
           {
             if (*v232 != v119)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(array2);
             }
 
-            if (![a10 connectOutput:*(*(&v231 + 1) + 8 * v121) toInput:-[NSArray objectAtIndexedSubscript:](v107 pipelineStage:{"objectAtIndexedSubscript:", v122), 0}])
+            if (![parentPipeline connectOutput:*(*(&v231 + 1) + 8 * v121) toInput:-[NSArray objectAtIndexedSubscript:](inputs pipelineStage:{"objectAtIndexedSubscript:", v122), 0}])
             {
               [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
               goto LABEL_280;
             }
 
-            [v116 addObject:{objc_msgSend(v108, "objectAtIndexedSubscript:", v122++)}];
+            [v116 addObject:{objc_msgSend(outputs, "objectAtIndexedSubscript:", v122++)}];
             ++v121;
           }
 
           while (v118 != v121);
-          v118 = [v32 countByEnumeratingWithState:&v231 objects:v230 count:16];
+          v118 = [array2 countByEnumeratingWithState:&v231 objects:v230 count:16];
           v120 = v122;
         }
 
@@ -350,17 +350,17 @@ LABEL_169:
         LODWORD(v122) = v110;
       }
 
-      v123 = [a7 count];
-      if (v203 || v123)
+      v123 = [sourceOutput count];
+      if (pipelineOutputsCopy3 || v123)
       {
-        v125 = [v191 movieFileSinkPipelineConfiguration];
-        v124 = v196;
-        if (!v125 || (*(v125 + 112) & 1) == 0)
+        movieFileSinkPipelineConfiguration3 = [dCopy movieFileSinkPipelineConfiguration];
+        v124 = array;
+        if (!movieFileSinkPipelineConfiguration3 || (*(movieFileSinkPipelineConfiguration3 + 112) & 1) == 0)
         {
-          if (v203)
+          if (pipelineOutputsCopy3)
           {
             *time = 0;
-            [v191 movieFileSinkPipelineConfiguration];
+            [dCopy movieFileSinkPipelineConfiguration];
             v175 = [FigCaptureMovieFileSinkHeadPipeline _buildFaceDetectionNode:v212 parentPipeline:? objectDetectionSourceOutput:? faceDetectionNodeOut:?];
             if (v175)
             {
@@ -369,14 +369,14 @@ LABEL_169:
               return v68;
             }
 
-            a7 = [*time boxedMetadataOutputs];
+            sourceOutput = [*time boxedMetadataOutputs];
           }
 
           v228 = 0u;
           v229 = 0u;
           v226 = 0u;
           v227 = 0u;
-          v126 = [a7 countByEnumeratingWithState:&v226 objects:v225 count:16];
+          v126 = [sourceOutput countByEnumeratingWithState:&v226 objects:v225 count:16];
           if (v126)
           {
             v127 = v126;
@@ -390,23 +390,23 @@ LABEL_169:
               {
                 if (*v227 != v128)
                 {
-                  objc_enumerationMutation(a7);
+                  objc_enumerationMutation(sourceOutput);
                 }
 
-                if (![a10 connectOutput:*(*(&v226 + 1) + 8 * v130) toInput:objc_msgSend(objc_msgSend(*(v212 + 40) pipelineStage:{"inputs"), "objectAtIndexedSubscript:", v122), 0}])
+                if (![parentPipeline connectOutput:*(*(&v226 + 1) + 8 * v130) toInput:objc_msgSend(objc_msgSend(*(v212 + 40) pipelineStage:{"inputs"), "objectAtIndexedSubscript:", v122), 0}])
                 {
                   [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
                   goto LABEL_280;
                 }
 
-                [v213 addObject:{objc_msgSend(v108, "objectAtIndexedSubscript:", v122)}];
-                [v196 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", objc_msgSend(v213, "count") - 1)}];
+                [v213 addObject:{objc_msgSend(outputs, "objectAtIndexedSubscript:", v122)}];
+                [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", objc_msgSend(v213, "count") - 1)}];
                 ++v122;
                 ++v130;
               }
 
               while (v127 != v130);
-              v127 = [a7 countByEnumeratingWithState:&v226 objects:v225 count:16];
+              v127 = [sourceOutput countByEnumeratingWithState:&v226 objects:v225 count:16];
               v129 = v122;
             }
 
@@ -417,12 +417,12 @@ LABEL_169:
 
       else
       {
-        v124 = v196;
+        v124 = array;
       }
 
       if (v215)
       {
-        v217 = [v108 objectAtIndexedSubscript:v122];
+        v217 = [outputs objectAtIndexedSubscript:v122];
         [v213 addObject:?];
         *(v212 + 184) = [v213 count] - 1;
       }
@@ -433,12 +433,12 @@ LABEL_169:
       }
 
       v131 = v124;
-      v132 = [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.moviefile.head" priority:14 workgroup:a18];
-      v133 = v211;
+      v132 = [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.moviefile.head" priority:14 workgroup:enabled];
+      output2 = v211;
       if (v211)
       {
         v134 = v132;
-        if ([v208 irisMovieCaptureEnabled])
+        if ([irisSinkConfiguration irisMovieCaptureEnabled])
         {
           v135 = [BWPhotoDecompressorNode alloc];
           v136 = v205;
@@ -448,19 +448,19 @@ LABEL_169:
           }
 
           v137 = [(BWPhotoDecompressorNode *)v135 initWithSynchronizedSlaveAttachedMediaDecompressionEnabled:v136 & 1];
-          if (([a11 addNode:v137 error:v269] & 1) == 0)
+          if (([scheduler addNode:v137 error:v269] & 1) == 0)
           {
             [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
             goto LABEL_280;
           }
 
-          if (([a10 connectOutput:v211 toInput:-[BWNode input](v137 pipelineStage:{"input"), v134}] & 1) == 0)
+          if (([parentPipeline connectOutput:v211 toInput:-[BWNode input](v137 pipelineStage:{"input"), v134}] & 1) == 0)
           {
             [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
             goto LABEL_280;
           }
 
-          v133 = [(BWNode *)v137 output];
+          output2 = [(BWNode *)v137 output];
           *(v212 + 48) = v137;
         }
       }
@@ -475,19 +475,19 @@ LABEL_169:
         v138 = 0;
       }
 
-      v139 = [v138 requiredMaxFrameRate];
-      v141 = FigCaptureFrameRateAsInt(v139, v140);
+      requiredMaxFrameRate = [v138 requiredMaxFrameRate];
+      v141 = FigCaptureFrameRateAsInt(requiredMaxFrameRate, v140);
       v142 = +[FigCaptureCameraParameters sharedInstance];
       v221 = 0u;
       v222 = 0u;
       v223 = 0u;
       v224 = 0u;
-      v143 = [v204 captureStreams];
-      v144 = [v143 countByEnumeratingWithState:&v221 objects:v220 count:16];
+      captureStreams = [v204 captureStreams];
+      v144 = [captureStreams countByEnumeratingWithState:&v221 objects:v220 count:16];
       if (v144)
       {
         v145 = v144;
-        v146 = v133;
+        v146 = output2;
         v147 = *v222;
 LABEL_231:
         v148 = 0;
@@ -495,19 +495,19 @@ LABEL_231:
         {
           if (*v222 != v147)
           {
-            objc_enumerationMutation(v143);
+            objc_enumerationMutation(captureStreams);
           }
 
           v149 = *(*(&v221 + 1) + 8 * v148);
-          v150 = [v149 portType];
-          v151 = [v149 sensorIDString];
+          portType = [v149 portType];
+          sensorIDString = [v149 sensorIDString];
           if (v141 < 61)
           {
-            if ([(FigCaptureCameraParameters *)v142 chromaticDefringingEnabledForVideoForPortType:v150 sensorIDString:v151])
+            if ([(FigCaptureCameraParameters *)v142 chromaticDefringingEnabledForVideoForPortType:portType sensorIDString:sensorIDString])
             {
 LABEL_241:
-              v153 = [v149 sensorIDString];
-              v154 = [v149 portType];
+              sensorIDString2 = [v149 sensorIDString];
+              portType2 = [v149 portType];
               if (v205)
               {
                 v155 = *(v205 + 138);
@@ -519,16 +519,16 @@ LABEL_241:
               }
 
               v152 = v212;
-              v131 = v196;
-              v156 = [[BWVideoDefringingNode alloc] initWithSensorIDString:v153 portType:v154 propagateSynchronizedSlaveFrame:v155 & 1 isSlomo:v141 > 60];
+              v131 = array;
+              v156 = [[BWVideoDefringingNode alloc] initWithSensorIDString:sensorIDString2 portType:portType2 propagateSynchronizedSlaveFrame:v155 & 1 isSlomo:v141 > 60];
               if (v156)
               {
                 v157 = v156;
-                if ([a11 addNode:v156 error:v269])
+                if ([scheduler addNode:v156 error:v269])
                 {
-                  if ([a10 connectOutput:v146 toInput:-[BWNode input](v157 pipelineStage:{"input"), +[BWPipelineStage pipelineStageWithName:priority:](BWPipelineStage, "pipelineStageWithName:priority:", @"com.apple.coremedia.capture.moviefile.defringing", 14)}])
+                  if ([parentPipeline connectOutput:v146 toInput:-[BWNode input](v157 pipelineStage:{"input"), +[BWPipelineStage pipelineStageWithName:priority:](BWPipelineStage, "pipelineStageWithName:priority:", @"com.apple.coremedia.capture.moviefile.defringing", 14)}])
                   {
-                    v133 = [(BWNode *)v157 output];
+                    output2 = [(BWNode *)v157 output];
                     [*(v212 + 48) setDownstreamIsSharingOutputPool:1];
                     *(v212 + 56) = v157;
                     goto LABEL_248;
@@ -552,22 +552,22 @@ LABEL_241:
             }
           }
 
-          else if ([(FigCaptureCameraParameters *)v142 chromaticDefringingEnabledForSlomoForPortType:v150 sensorIDString:v151])
+          else if ([(FigCaptureCameraParameters *)v142 chromaticDefringingEnabledForSlomoForPortType:portType sensorIDString:sensorIDString])
           {
             goto LABEL_241;
           }
 
           if (v145 == ++v148)
           {
-            v145 = [v143 countByEnumeratingWithState:&v221 objects:v220 count:16];
+            v145 = [captureStreams countByEnumeratingWithState:&v221 objects:v220 count:16];
             if (v145)
             {
               goto LABEL_231;
             }
 
             v152 = v212;
-            v131 = v196;
-            v133 = v146;
+            v131 = array;
+            output2 = v146;
             goto LABEL_248;
           }
         }
@@ -576,15 +576,15 @@ LABEL_241:
       v152 = v212;
 LABEL_248:
       v158 = v215;
-      v159 = v207;
-      v160 = v200;
-      if (v207 && ([v208 irisMovieCaptureEnabled] & 1) == 0)
+      output3 = v207;
+      output5 = v200;
+      if (v207 && ([irisSinkConfiguration irisMovieCaptureEnabled] & 1) == 0)
       {
         v161 = objc_alloc_init(BWAudioConverterNode);
         [(BWNode *)v161 setName:@"AudioConverterNode"];
         [(BWAudioConverterNode *)v161 setCinematicAudioCapture:0];
         -[BWAudioConverterNode setExpectsToRecordOnlyOnce:](v161, "setExpectsToRecordOnlyOnce:", [objc_msgSend(v215 "movieFileSinkConfiguration")]);
-        if (([a11 addNode:v161 error:v269] & 1) == 0)
+        if (([scheduler addNode:v161 error:v269] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
@@ -592,13 +592,13 @@ LABEL_248:
 
         v162 = v161;
         *(v152 + 72) = v162;
-        if (([a10 connectOutput:v207 toInput:-[BWNode input](v162 pipelineStage:{"input"), v192}] & 1) == 0)
+        if (([parentPipeline connectOutput:v207 toInput:-[BWNode input](v162 pipelineStage:{"input"), v192}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        v159 = [*(v152 + 72) output];
+        output3 = [*(v152 + 72) output];
       }
 
       if (v205 && *(v205 + 152) == 1 && v200)
@@ -614,7 +614,7 @@ LABEL_248:
         v164 = v163;
         -[BWAudioRemixAnalysisMetadataNode setMultiCamClientCompositingEnabled:](v163, "setMultiCamClientCompositingEnabled:", [objc_msgSend(v215 "sinkConfiguration")]);
         -[BWAudioRemixAnalysisMetadataNode setExpectsToRecordOnlyOnce:](v164, "setExpectsToRecordOnlyOnce:", [objc_msgSend(v215 "movieFileSinkConfiguration")]);
-        if (![a11 addNode:v164 error:v269] || v269[0])
+        if (![scheduler addNode:v164 error:v269] || v269[0])
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
@@ -622,13 +622,13 @@ LABEL_248:
 
         v165 = v164;
         *(v152 + 88) = v165;
-        if (([a10 connectOutput:v200 toInput:-[BWNode input](v165 pipelineStage:{"input"), v192}] & 1) == 0)
+        if (([parentPipeline connectOutput:v200 toInput:-[BWNode input](v165 pipelineStage:{"input"), v192}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        v166 = [*(v152 + 88) output];
+        output4 = [*(v152 + 88) output];
         [v213 addObject:{objc_msgSend(*(v152 + 88), "metadataOutput")}];
         *(v152 + 192) = [v213 count] - 1;
         v167 = objc_alloc_init(BWAudioConverterNode);
@@ -650,7 +650,7 @@ LABEL_248:
         [(BWAudioConverterNode *)v167 setCinematicAudioCapture:1];
         -[BWAudioConverterNode setMultiCamClientCompositingEnabled:](v167, "setMultiCamClientCompositingEnabled:", [objc_msgSend(v215 "sinkConfiguration")]);
         -[BWAudioConverterNode setExpectsToRecordOnlyOnce:](v167, "setExpectsToRecordOnlyOnce:", [objc_msgSend(v215 "movieFileSinkConfiguration")]);
-        if (([a11 addNode:v167 error:v269] & 1) == 0)
+        if (([scheduler addNode:v167 error:v269] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
@@ -658,13 +658,13 @@ LABEL_248:
 
         v169 = v167;
         *(v152 + 80) = v169;
-        if (([a10 connectOutput:v166 toInput:-[BWNode input](v169 pipelineStage:{"input"), v192}] & 1) == 0)
+        if (([parentPipeline connectOutput:output4 toInput:-[BWNode input](v169 pipelineStage:{"input"), v192}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        v160 = [*(v152 + 80) output];
+        output5 = [*(v152 + 80) output];
         v158 = v215;
       }
 
@@ -685,15 +685,15 @@ LABEL_248:
         }
 
         -[BWVideoOrientationMetadataNode setSourceDeviceType:](v171, "setSourceDeviceType:", [v172 sourceDeviceType]);
-        [(BWVideoOrientationMetadataNode *)v171 setMasterClock:a17];
+        [(BWVideoOrientationMetadataNode *)v171 setMasterClock:workgroup];
         -[BWVideoOrientationMetadataNode setPhysicalMirroringForMovieRecordingEnabled:](v171, "setPhysicalMirroringForMovieRecordingEnabled:", [v158 physicalMirroringForMovieRecordingEnabled]);
-        if (([a11 addNode:v171 error:v269] & 1) == 0)
+        if (([scheduler addNode:v171 error:v269] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
         }
 
-        if (([a10 connectOutput:v217 toInput:-[BWNode input](v171 pipelineStage:{"input"), v192}] & 1) == 0)
+        if (([parentPipeline connectOutput:v217 toInput:-[BWNode input](v171 pipelineStage:{"input"), v192}] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
@@ -706,9 +706,9 @@ LABEL_248:
         *(v152 + 96) = v171;
       }
 
-      *(v152 + 144) = v133;
-      *(v152 + 152) = v159;
-      *(v152 + 160) = v160;
+      *(v152 + 144) = output2;
+      *(v152 + 152) = output3;
+      *(v152 + 160) = output5;
       if ([v213 count])
       {
         *(v152 + 168) = v213;
@@ -728,26 +728,26 @@ LABEL_280:
       return 0;
     }
 
-    v209 = 0;
+    output = 0;
 LABEL_167:
     v58 = v51 ^ 1u;
     v57 = [BWFileCoordinatorNode alloc];
     if (v24)
     {
 LABEL_168:
-      v203 = a8;
+      pipelineOutputsCopy3 = pipelineOutputs;
       v103 = v24;
       LOBYTE(v24) = *(v24 + 138);
       v104 = *(v103 + 151);
       goto LABEL_169;
     }
 
-    v203 = a8;
+    pipelineOutputsCopy3 = pipelineOutputs;
     v104 = 0;
     goto LABEL_169;
   }
 
-  v183 = v39;
+  v183 = irisMovieCaptureEnabled;
   if (v24)
   {
     v195 = *(v24 + 136);
@@ -759,13 +759,13 @@ LABEL_168:
   }
 
   v40 = [objc_msgSend(objc_msgSend(MEMORY[0x1E695DFF8] fileURLWithPath:NSTemporaryDirectory() isDirectory:{1), "URLByAppendingPathComponent:isDirectory:", 0x1F2187490, 1), "URLByAppendingPathComponent:isDirectory:", objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0], "UUID"), "UUIDString"), 1}];
-  v41 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v267 = *MEMORY[0x1E696A3A0];
   v268 = *MEMORY[0x1E696A388];
   v190 = v40;
-  [v41 createDirectoryAtURL:v40 withIntermediateDirectories:1 attributes:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", &v268, &v267, 1), 0}];
-  v42 = v209;
-  if (!v209)
+  [defaultManager createDirectoryAtURL:v40 withIntermediateDirectories:1 attributes:objc_msgSend(MEMORY[0x1E695DF20] error:{"dictionaryWithObjects:forKeys:count:", &v268, &v267, 1), 0}];
+  output6 = output;
+  if (!output)
   {
     v47 = 0;
 LABEL_57:
@@ -793,20 +793,20 @@ LABEL_57:
       v266 = @"PrimaryFormat";
       v46 = -[BWAttachedMediaSplitNode initWithAttachedMediaKeys:attachedMediaToPropagateToPrimaryOutput:](v45, "initWithAttachedMediaKeys:attachedMediaToPropagateToPrimaryOutput:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v266 count:1], v44);
       [(BWNode *)v46 setName:@"Movie File Depth Remover"];
-      if (([a11 addNode:v46 error:v269] & 1) == 0)
+      if (([scheduler addNode:v46 error:v269] & 1) == 0)
       {
         [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
         goto LABEL_280;
       }
 
-      if (([a10 connectOutput:v209 toInput:-[BWNode input](v46 pipelineStage:{"input"), 0}] & 1) == 0)
+      if (([parentPipeline connectOutput:output toInput:-[BWNode input](v46 pipelineStage:{"input"), 0}] & 1) == 0)
       {
         [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
         goto LABEL_280;
       }
 
-      v42 = [(NSArray *)[(BWNode *)v46 outputs] objectAtIndexedSubscript:0];
-      if (!v42)
+      output6 = [(NSArray *)[(BWNode *)v46 outputs] objectAtIndexedSubscript:0];
+      if (!output6)
       {
         v47 = 1;
         v50 = v215;
@@ -835,19 +835,19 @@ LABEL_57:
   [(BWFrameRateGovernorNode *)v49 setDropsStartupFramesWithUnstableAE:1];
   [(BWFrameRateGovernorNode *)v49 setPreservesMotionDataFromDroppedFrames:1];
   v50 = v215;
-  if (([a11 addNode:v49 error:v269] & 1) == 0)
+  if (([scheduler addNode:v49 error:v269] & 1) == 0)
   {
     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
     goto LABEL_280;
   }
 
-  if (([a10 connectOutput:v42 toInput:-[BWNode input](v49 pipelineStage:{"input"), 0}] & 1) == 0)
+  if (([parentPipeline connectOutput:output6 toInput:-[BWNode input](v49 pipelineStage:{"input"), 0}] & 1) == 0)
   {
     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
     goto LABEL_280;
   }
 
-  v42 = [(BWNode *)v49 output];
+  output6 = [(BWNode *)v49 output];
 LABEL_58:
   if (v24)
   {
@@ -863,9 +863,9 @@ LABEL_60:
   if ((v195 & 1) == 0)
   {
     v181 = 0;
-    a6 = 0;
+    outputs = 0;
 LABEL_64:
-    v210 = v42;
+    v210 = output6;
     if (v24)
     {
       v59 = *(v24 + 104);
@@ -903,9 +903,9 @@ LABEL_64:
       }
     }
 
-    v69 = [v215 irisVISMethod];
+    irisVISMethod = [v215 irisVISMethod];
     v63 = 0;
-    if (!v62 || v69 != 5)
+    if (!v62 || irisVISMethod != 5)
     {
       goto LABEL_104;
     }
@@ -924,11 +924,11 @@ LABEL_104:
       v187 = 0;
     }
 
-    v70 = [v204 cameraInfoByPortType];
+    cameraInfoByPortType = [v204 cameraInfoByPortType];
     v71 = [BWIrisStagingNode alloc];
-    v72 = [v208 irisMovieAutoTrimMethod];
+    irisMovieAutoTrimMethod = [irisSinkConfiguration irisMovieAutoTrimMethod];
     v188 = v71;
-    v184 = v70;
+    v184 = cameraInfoByPortType;
     if (v24)
     {
       v185 = *(v24 + 138);
@@ -947,8 +947,8 @@ LABEL_111:
           v74 = 0;
         }
 
-        v202 = a8;
-        v75 = v72;
+        pipelineOutputsCopy4 = pipelineOutputs;
+        v75 = irisMovieAutoTrimMethod;
         if (v24)
         {
           v76 = v24;
@@ -978,8 +978,8 @@ LABEL_111:
         LODWORD(v80) = v74;
         *&v81 = v38;
         *&v82 = v36;
-        v83 = [BWIrisStagingNode initWithNumberOfVideoInputs:v188 numberOfAudioInputs:"initWithNumberOfVideoInputs:numberOfAudioInputs:numberOfMetadataInputs:autoTrimMethod:vitalityScoringEnabled:captureDeviceHasOverCaptureEnabled:overCaptureEnabled:depthEnabled:videoStabilizationOverscanOverride:sequenceAdjusterEnabled:visMotionMetadataPreloadingMode:frameReconstructionEnabled:subjectRelightingEnabled:intermediateJPEGCompressionQuality:intermediateJPEGCompressionRate:maxLossyCompressionLevel:temporaryMovieDirectoryURL:cameraInfoByPortType:smartStyleRenderingEnabled:smartStyleReversibilityEnabled:smartFramingEnabled:irisRequestDelegate:inferenceScheduler:" numberOfMetadataInputs:v199 autoTrimMethod:v198 vitalityScoringEnabled:v30 captureDeviceHasOverCaptureEnabled:v75 overCaptureEnabled:v195 & 1 depthEnabled:v186 videoStabilizationOverscanOverride:v80 sequenceAdjusterEnabled:v81 visMotionMetadataPreloadingMode:v82 frameReconstructionEnabled:v176 subjectRelightingEnabled:v178 intermediateJPEGCompressionQuality:v190 intermediateJPEGCompressionRate:v184 maxLossyCompressionLevel:v180 temporaryMovieDirectoryURL:a16 cameraInfoByPortType:a12 smartStyleRenderingEnabled:? smartStyleReversibilityEnabled:? smartFramingEnabled:? irisRequestDelegate:? inferenceScheduler:?];
-        if (([a11 addNode:v83 error:v269] & 1) == 0)
+        v83 = [BWIrisStagingNode initWithNumberOfVideoInputs:v188 numberOfAudioInputs:"initWithNumberOfVideoInputs:numberOfAudioInputs:numberOfMetadataInputs:autoTrimMethod:vitalityScoringEnabled:captureDeviceHasOverCaptureEnabled:overCaptureEnabled:depthEnabled:videoStabilizationOverscanOverride:sequenceAdjusterEnabled:visMotionMetadataPreloadingMode:frameReconstructionEnabled:subjectRelightingEnabled:intermediateJPEGCompressionQuality:intermediateJPEGCompressionRate:maxLossyCompressionLevel:temporaryMovieDirectoryURL:cameraInfoByPortType:smartStyleRenderingEnabled:smartStyleReversibilityEnabled:smartFramingEnabled:irisRequestDelegate:inferenceScheduler:" numberOfMetadataInputs:v199 autoTrimMethod:v198 vitalityScoringEnabled:v30 captureDeviceHasOverCaptureEnabled:v75 overCaptureEnabled:v195 & 1 depthEnabled:v186 videoStabilizationOverscanOverride:v80 sequenceAdjusterEnabled:v81 visMotionMetadataPreloadingMode:v82 frameReconstructionEnabled:v176 subjectRelightingEnabled:v178 intermediateJPEGCompressionQuality:v190 intermediateJPEGCompressionRate:v184 maxLossyCompressionLevel:v180 temporaryMovieDirectoryURL:clock cameraInfoByPortType:iD smartStyleRenderingEnabled:? smartStyleReversibilityEnabled:? smartFramingEnabled:? irisRequestDelegate:? inferenceScheduler:?];
+        if (([scheduler addNode:v83 error:v269] & 1) == 0)
         {
           [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
           goto LABEL_280;
@@ -988,9 +988,9 @@ LABEL_111:
         *(v212 + 32) = v83;
         [(BWNode *)v83 setName:@"Movie File Staging Node"];
         [(BWIrisStagingNode *)v83 setIntermediateJPEGDownstreamRetainedBufferCount:5];
-        if (v208)
+        if (irisSinkConfiguration)
         {
-          [v208 irisMovieDuration];
+          [irisSinkConfiguration irisMovieDuration];
         }
 
         else
@@ -1001,9 +1001,9 @@ LABEL_111:
         CMTimeMultiplyByRatio(&v262, time, 1, 2);
         *time = v262;
         [(BWIrisStagingNode *)v83 setBufferingTime:time];
-        if (v208)
+        if (irisSinkConfiguration)
         {
-          [v208 irisMovieVideoFrameDuration];
+          [irisSinkConfiguration irisMovieVideoFrameDuration];
         }
 
         else
@@ -1020,8 +1020,8 @@ LABEL_111:
           [(BWIrisStagingNode *)v83 setVitalityScoringSmartCameraPipelineVersion:v182];
         }
 
-        [(BWIrisStagingNode *)v83 setMasterClock:a17];
-        -[BWIrisStagingNode setApplyPreviewShift:](v83, "setApplyPreviewShift:", [v208 irisApplyPreviewShift]);
+        [(BWIrisStagingNode *)v83 setMasterClock:workgroup];
+        -[BWIrisStagingNode setApplyPreviewShift:](v83, "setApplyPreviewShift:", [irisSinkConfiguration irisApplyPreviewShift]);
         if (dword_1ED8440B0)
         {
           LODWORD(v265) = 0;
@@ -1040,11 +1040,11 @@ LABEL_111:
 
           if (v86)
           {
-            v87 = [v208 irisMovieCaptureSuspended];
+            irisMovieCaptureSuspended = [irisSinkConfiguration irisMovieCaptureSuspended];
             *v256 = 136315394;
             *&v256[4] = "[FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:]";
             v257 = 1024;
-            v258 = v87;
+            v258 = irisMovieCaptureSuspended;
             LODWORD(v179) = 18;
             v177 = v256;
             _os_log_send_and_compose_impl();
@@ -1053,7 +1053,7 @@ LABEL_111:
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        if ([v208 irisMovieCaptureSuspended])
+        if ([irisSinkConfiguration irisMovieCaptureSuspended])
         {
           HostTimeClock = CMClockGetHostTimeClock();
           CMClockGetTime(&v255, HostTimeClock);
@@ -1061,20 +1061,20 @@ LABEL_111:
           [(BWIrisStagingNode *)v83 setEndIrisMovieCaptureTime:time];
         }
 
-        v89 = [(BWNode *)v83 inputs];
-        v90 = [(BWNode *)v83 outputs];
+        inputs2 = [(BWNode *)v83 inputs];
+        outputs2 = [(BWNode *)v83 outputs];
         v91 = v210;
         if (v210)
         {
-          if (([a10 connectOutput:v210 toInput:-[NSArray objectAtIndexedSubscript:](v89 pipelineStage:{"objectAtIndexedSubscript:", 0), 0}] & 1) == 0)
+          if (([parentPipeline connectOutput:v210 toInput:-[NSArray objectAtIndexedSubscript:](inputs2 pipelineStage:{"objectAtIndexedSubscript:", 0), 0}] & 1) == 0)
           {
             [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
             goto LABEL_280;
           }
 
-          v209 = [(NSArray *)v90 objectAtIndexedSubscript:0];
+          output = [(NSArray *)outputs2 objectAtIndexedSubscript:0];
           v91 = 1;
-          if (a4)
+          if (captureOutput)
           {
             goto LABEL_136;
           }
@@ -1082,24 +1082,24 @@ LABEL_111:
 
         else
         {
-          v209 = 0;
-          if (a4)
+          output = 0;
+          if (captureOutput)
           {
 LABEL_136:
-            if (([a10 connectOutput:a4 toInput:-[NSArray objectAtIndexedSubscript:](v89 pipelineStage:{"objectAtIndexedSubscript:", v91), 0}] & 1) == 0)
+            if (([parentPipeline connectOutput:captureOutput toInput:-[NSArray objectAtIndexedSubscript:](inputs2 pipelineStage:{"objectAtIndexedSubscript:", v91), 0}] & 1) == 0)
             {
               [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
               goto LABEL_280;
             }
 
-            v92 = [(NSArray *)v90 objectAtIndexedSubscript:v91++];
+            v92 = [(NSArray *)outputs2 objectAtIndexedSubscript:v91++];
 LABEL_140:
-            a4 = v92;
+            captureOutput = v92;
             v254 = 0u;
             v253 = 0u;
             v252 = 0u;
             v251 = 0u;
-            v93 = [a9 countByEnumeratingWithState:&v251 objects:v250 count:16];
+            v93 = [graph countByEnumeratingWithState:&v251 objects:v250 count:16];
             if (v93)
             {
               v94 = v93;
@@ -1110,33 +1110,33 @@ LABEL_140:
                 {
                   if (*v252 != v95)
                   {
-                    objc_enumerationMutation(a9);
+                    objc_enumerationMutation(graph);
                   }
 
-                  if (![a10 connectOutput:*(*(&v251 + 1) + 8 * k) toInput:-[NSArray objectAtIndexedSubscript:](v89 pipelineStage:{"objectAtIndexedSubscript:", v91), 0}])
+                  if (![parentPipeline connectOutput:*(*(&v251 + 1) + 8 * k) toInput:-[NSArray objectAtIndexedSubscript:](inputs2 pipelineStage:{"objectAtIndexedSubscript:", v91), 0}])
                   {
                     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
                     goto LABEL_280;
                   }
 
-                  [v32 addObject:{-[NSArray objectAtIndexedSubscript:](v90, "objectAtIndexedSubscript:", v91++)}];
+                  [array2 addObject:{-[NSArray objectAtIndexedSubscript:](outputs2, "objectAtIndexedSubscript:", v91++)}];
                 }
 
-                v94 = [a9 countByEnumeratingWithState:&v251 objects:v250 count:16];
+                v94 = [graph countByEnumeratingWithState:&v251 objects:v250 count:16];
               }
 
               while (v94);
             }
 
-            v97 = [a7 count];
-            if (v202 || v97)
+            v97 = [sourceOutput count];
+            if (pipelineOutputsCopy4 || v97)
             {
-              v22 = v212;
+              pipelineCopy = v212;
               v24 = v205;
-              if (v202)
+              if (pipelineOutputsCopy4)
               {
                 *time = 0;
-                [v191 movieFileSinkPipelineConfiguration];
+                [dCopy movieFileSinkPipelineConfiguration];
                 v174 = [FigCaptureMovieFileSinkHeadPipeline _buildFaceDetectionNode:v212 parentPipeline:? objectDetectionSourceOutput:? faceDetectionNodeOut:?];
                 if (v174)
                 {
@@ -1145,34 +1145,34 @@ LABEL_140:
                   return v68;
                 }
 
-                a7 = [*time boxedMetadataOutputs];
+                sourceOutput = [*time boxedMetadataOutputs];
               }
 
-              v98 = [MEMORY[0x1E695DF70] array];
+              array4 = [MEMORY[0x1E695DF70] array];
               v246 = 0u;
               v247 = 0u;
               v248 = 0u;
               v249 = 0u;
-              v99 = [a7 countByEnumeratingWithState:&v246 objects:v245 count:16];
+              v99 = [sourceOutput countByEnumeratingWithState:&v246 objects:v245 count:16];
               if (!v99)
               {
-                a7 = v98;
+                sourceOutput = array4;
 LABEL_163:
-                if (a6)
+                if (outputs)
                 {
-                  if (v91 != [(NSArray *)v89 count]- 1)
+                  if (v91 != [(NSArray *)inputs2 count]- 1)
                   {
                     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
                   }
 
-                  if (([a10 connectOutput:a6 toInput:-[NSArray objectAtIndexedSubscript:](v89 pipelineStage:{"objectAtIndexedSubscript:", v91), v181}] & 1) == 0)
+                  if (([parentPipeline connectOutput:outputs toInput:-[NSArray objectAtIndexedSubscript:](inputs2 pipelineStage:{"objectAtIndexedSubscript:", v91), v181}] & 1) == 0)
                   {
                     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
                     goto LABEL_280;
                   }
                 }
 
-                a8 = 0;
+                pipelineOutputs = 0;
                 v51 = v183;
                 goto LABEL_167;
               }
@@ -1185,26 +1185,26 @@ LABEL_163:
                 {
                   if (*v247 != v101)
                   {
-                    objc_enumerationMutation(a7);
+                    objc_enumerationMutation(sourceOutput);
                   }
 
-                  if (![a10 connectOutput:*(*(&v246 + 1) + 8 * m) toInput:-[NSArray objectAtIndexedSubscript:](v89 pipelineStage:{"objectAtIndexedSubscript:", v91), 0}])
+                  if (![parentPipeline connectOutput:*(*(&v246 + 1) + 8 * m) toInput:-[NSArray objectAtIndexedSubscript:](inputs2 pipelineStage:{"objectAtIndexedSubscript:", v91), 0}])
                   {
                     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
                     goto LABEL_280;
                   }
 
-                  [v98 addObject:{-[NSArray objectAtIndexedSubscript:](v90, "objectAtIndexedSubscript:", v91++)}];
+                  [array4 addObject:{-[NSArray objectAtIndexedSubscript:](outputs2, "objectAtIndexedSubscript:", v91++)}];
                 }
 
-                v100 = [a7 countByEnumeratingWithState:&v246 objects:v245 count:16];
+                v100 = [sourceOutput countByEnumeratingWithState:&v246 objects:v245 count:16];
               }
 
               while (v100);
-              a7 = v98;
+              sourceOutput = array4;
             }
 
-            v22 = v212;
+            pipelineCopy = v212;
             v24 = v205;
             goto LABEL_163;
           }
@@ -1225,7 +1225,7 @@ LABEL_163:
     goto LABEL_111;
   }
 
-  if (a6)
+  if (outputs)
   {
     v181 = 0;
     goto LABEL_64;
@@ -1233,37 +1233,37 @@ LABEL_163:
 
   v64 = [[BWFanOutNode alloc] initWithFanOutCount:2 mediaType:1986618469];
   [(BWNode *)v64 setName:@"Inferences (SmartCam and VitalityScoring) Splitter"];
-  if (([a11 addNode:v64 error:v269] & 1) == 0)
+  if (([scheduler addNode:v64 error:v269] & 1) == 0)
   {
     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
     goto LABEL_280;
   }
 
-  if (([a10 connectOutput:v42 toInput:-[BWNode input](v64 pipelineStage:{"input"), 0}] & 1) == 0)
+  if (([parentPipeline connectOutput:output6 toInput:-[BWNode input](v64 pipelineStage:{"input"), 0}] & 1) == 0)
   {
     [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
     goto LABEL_280;
   }
 
-  v42 = [(NSArray *)[(BWNode *)v64 outputs] objectAtIndexedSubscript:0];
-  v181 = [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.moviefile.smartmedia" priority:0 workgroup:a18 discardsLateSampleData:1];
+  output6 = [(NSArray *)[(BWNode *)v64 outputs] objectAtIndexedSubscript:0];
+  v181 = [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.moviefile.smartmedia" priority:0 workgroup:enabled discardsLateSampleData:1];
   if (!v24 || !*(v24 + 80))
   {
-    v67 = FigCaptureCreateAndConfigureSmartCameraInferenceNode(13, v182, v204, a12, 0);
-    if (([a11 addNode:v67 error:v269] & 1) == 0)
+    v67 = FigCaptureCreateAndConfigureSmartCameraInferenceNode(13, v182, v204, iD, 0);
+    if (([scheduler addNode:v67 error:v269] & 1) == 0)
     {
       [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
       goto LABEL_280;
     }
 
-    if (([a10 connectOutput:-[NSArray objectAtIndexedSubscript:](-[BWNode outputs](v64 toInput:"outputs") pipelineStage:{"objectAtIndexedSubscript:", 1), -[BWNode input](v67, "input"), v181}] & 1) == 0)
+    if (([parentPipeline connectOutput:-[NSArray objectAtIndexedSubscript:](-[BWNode outputs](v64 toInput:"outputs") pipelineStage:{"objectAtIndexedSubscript:", 1), -[BWNode input](v67, "input"), v181}] & 1) == 0)
     {
       [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:videoSourceCaptureOutputsByConnectionID:audioSourceCaptureOutput:audioSourceCinematicAudioCaptureOutput:smartCameraInferenceOutput:detectedObjectBoxedMetadataOutputs:objectDetectionSourceOutput:metadataSourcePipelineOutputs:graph:parentPipeline:inferenceScheduler:captureDevicesByConnectionID:audioSourceDelegate:fileCoordinatorStatusDelegate:irisRequestDelegate:masterClock:workgroup:videoGreenGhostMitigationEnabled:];
       goto LABEL_280;
     }
 
-    [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:v67 videoSourceCaptureOutputsByConnectionID:v22 audioSourceCaptureOutput:time audioSourceCinematicAudioCaptureOutput:? smartCameraInferenceOutput:? detectedObjectBoxedMetadataOutputs:? objectDetectionSourceOutput:? metadataSourcePipelineOutputs:? graph:? parentPipeline:? inferenceScheduler:? captureDevicesByConnectionID:? audioSourceDelegate:? fileCoordinatorStatusDelegate:? irisRequestDelegate:? masterClock:? workgroup:? videoGreenGhostMitigationEnabled:?];
-    a6 = *time;
+    [FigCaptureMovieFileSinkHeadPipeline _buildMovieFileSinkHeadPipeline:v67 videoSourceCaptureOutputsByConnectionID:pipelineCopy audioSourceCaptureOutput:time audioSourceCinematicAudioCaptureOutput:? smartCameraInferenceOutput:? detectedObjectBoxedMetadataOutputs:? objectDetectionSourceOutput:? metadataSourcePipelineOutputs:? graph:? parentPipeline:? inferenceScheduler:? captureDevicesByConnectionID:? audioSourceDelegate:? fileCoordinatorStatusDelegate:? irisRequestDelegate:? masterClock:? workgroup:? videoGreenGhostMitigationEnabled:?];
+    outputs = *time;
     goto LABEL_77;
   }
 
@@ -1273,13 +1273,13 @@ LABEL_163:
   v65 = [(NSArray *)[(BWNode *)v64 outputs] objectAtIndexedSubscript:1];
   *time = *(v24 + 180);
   *&time[12] = *(v24 + 192);
-  v66 = FigCaptureBuildSceneClassifierPipeline(a11, v65, v182, 13, v181, 1, time, v204, a12, v256, &v265, &v264);
+  v66 = FigCaptureBuildSceneClassifierPipeline(scheduler, v65, v182, 13, v181, 1, time, v204, iD, v256, &v265, &v264);
   if (!v66)
   {
-    a6 = [v265 objectAtIndexedSubscript:0];
-    *(v22 + 64) = v264;
-    *(v22 + 104) = [(NSArray *)[(BWNode *)v64 outputs] objectAtIndexedSubscript:1];
-    [*(v22 + 112) addObjectsFromArray:*v256];
+    outputs = [v265 objectAtIndexedSubscript:0];
+    *(pipelineCopy + 64) = v264;
+    *(pipelineCopy + 104) = [(NSArray *)[(BWNode *)v64 outputs] objectAtIndexedSubscript:1];
+    [*(pipelineCopy + 112) addObjectsFromArray:*v256];
 LABEL_77:
     v50 = v215;
     if ([v204 overCaptureEnabled])
@@ -1313,11 +1313,11 @@ LABEL_77:
   [(FigCapturePipeline *)&v3 dealloc];
 }
 
-- (void)setSceneClassifierSuspended:(BOOL)a3
+- (void)setSceneClassifierSuspended:(BOOL)suspended
 {
   if (self->_sceneClassifierSinkNode)
   {
-    v3 = a3;
+    suspendedCopy = suspended;
     sceneClassifierPipelineUpstreamOutput = self->_sceneClassifierPipelineUpstreamOutput;
     if (!sceneClassifierPipelineUpstreamOutput)
     {
@@ -1325,13 +1325,13 @@ LABEL_77:
       sceneClassifierPipelineUpstreamOutput = v5;
     }
 
-    [(BWNodeOutput *)sceneClassifierPipelineUpstreamOutput setDiscardsSampleData:v3];
+    [(BWNodeOutput *)sceneClassifierPipelineUpstreamOutput setDiscardsSampleData:suspendedCopy];
   }
 }
 
-- (id)_buildFaceDetectionNode:(uint64_t)a1 parentPipeline:objectDetectionSourceOutput:faceDetectionNodeOut:
+- (id)_buildFaceDetectionNode:(uint64_t)node parentPipeline:objectDetectionSourceOutput:faceDetectionNodeOut:
 {
-  if (!a1)
+  if (!node)
   {
     return 0;
   }

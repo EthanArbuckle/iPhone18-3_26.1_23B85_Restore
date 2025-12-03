@@ -3,24 +3,24 @@
 - (BOOL)isActive;
 - (NSString)description;
 - (NSString)orientationSourceDescription;
-- (SBWindow)initWithFrame:(CGRect)a3;
-- (SBWindow)initWithWindowScene:(id)a3 rootViewController:(id)a4 layoutStrategy:(id)a5 role:(id)a6 debugName:(id)a7;
+- (SBWindow)initWithFrame:(CGRect)frame;
+- (SBWindow)initWithWindowScene:(id)scene rootViewController:(id)controller layoutStrategy:(id)strategy role:(id)role debugName:(id)name;
 - (UIView)recycledViewsContainer;
 - (id)sb_coronaAnimationController;
 - (int64_t)activeInterfaceOrientation;
-- (void)_addHiddenReason:(id)a3;
-- (void)_removeHiddenReason:(id)a3;
-- (void)_sb_updateAutorotatesFlagAndForceInterfaceOrientationUpdate:(BOOL)a3;
-- (void)_updateHidingForSecureRendering:(BOOL)a3;
+- (void)_addHiddenReason:(id)reason;
+- (void)_removeHiddenReason:(id)reason;
+- (void)_sb_updateAutorotatesFlagAndForceInterfaceOrientationUpdate:(BOOL)update;
+- (void)_updateHidingForSecureRendering:(BOOL)rendering;
 - (void)_updateRealIsHidden;
 - (void)dealloc;
-- (void)handleStatusBarChangeFromHeight:(double)a3 toHeight:(double)a4;
-- (void)layoutStrategyFrameOnScreenDidChange:(id)a3;
+- (void)handleStatusBarChangeFromHeight:(double)height toHeight:(double)toHeight;
+- (void)layoutStrategyFrameOnScreenDidChange:(id)change;
 - (void)makeKeyAndVisible;
-- (void)moveToWindowSceneIfNeeded:(id)a3;
+- (void)moveToWindowSceneIfNeeded:(id)needed;
 - (void)sb_updateAutorotatesFlag;
-- (void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)manager;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBWindow
@@ -35,11 +35,11 @@
 
 - (BOOL)_shouldResizeWithScene
 {
-  v2 = [(SBWindow *)self screen];
-  v3 = [v2 displayIdentity];
-  v4 = [v3 isMainDisplay];
+  screen = [(SBWindow *)self screen];
+  displayIdentity = [screen displayIdentity];
+  isMainDisplay = [displayIdentity isMainDisplay];
 
-  return v4 ^ 1;
+  return isMainDisplay ^ 1;
 }
 
 - (UIView)recycledViewsContainer
@@ -77,36 +77,36 @@
   return coronaAnimationController;
 }
 
-- (SBWindow)initWithFrame:(CGRect)a3
+- (SBWindow)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBWindow.m" lineNumber:125 description:{@"%s - dont' call this function - %@", "-[SBWindow initWithFrame:]", v6}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBWindow.m" lineNumber:125 description:{@"%s - dont' call this function - %@", "-[SBWindow initWithFrame:]", callStackSymbols}];
 
   return 0;
 }
 
-- (SBWindow)initWithWindowScene:(id)a3 rootViewController:(id)a4 layoutStrategy:(id)a5 role:(id)a6 debugName:(id)a7
+- (SBWindow)initWithWindowScene:(id)scene rootViewController:(id)controller layoutStrategy:(id)strategy role:(id)role debugName:(id)name
 {
   v49 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v15)
+  sceneCopy = scene;
+  controllerCopy = controller;
+  strategyCopy = strategy;
+  roleCopy = role;
+  nameCopy = name;
+  if (!strategyCopy)
   {
-    v15 = [objc_opt_class() defaultLayoutStrategy];
+    strategyCopy = [objc_opt_class() defaultLayoutStrategy];
   }
 
-  [v15 frameWithInterfaceOrientation:1 windowScene:v13];
+  [strategyCopy frameWithInterfaceOrientation:1 windowScene:sceneCopy];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v26 = SBLogStartup();
   v27 = v26;
-  if (v13)
+  if (sceneCopy)
   {
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -114,13 +114,13 @@
       *buf = 138543618;
       v46 = v28;
       v47 = 2114;
-      v48 = v13;
+      v48 = sceneCopy;
       _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@] wiring up with windowScene: %{public}@", buf, 0x16u);
     }
 
     v44.receiver = self;
     v44.super_class = SBWindow;
-    v29 = [(SBWindow *)&v44 _initWithFrame:v17 debugName:v13 windowScene:v19, v21, v23, v25];
+    v29 = [(SBWindow *)&v44 _initWithFrame:nameCopy debugName:sceneCopy windowScene:v19, v21, v23, v25];
     if (!v29)
     {
       goto LABEL_27;
@@ -128,35 +128,35 @@
 
 LABEL_11:
     v29->_requestedHiddenValue = [(SBWindow *)v29 isHidden];
-    v31 = [objc_opt_class() _isSecure];
-    if ((v31 & 1) == 0)
+    _isSecure = [objc_opt_class() _isSecure];
+    if ((_isSecure & 1) == 0)
     {
-      v32 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v32 addObserver:v29 selector:sel__willEnableSecureRendering_ name:*MEMORY[0x277D66028] object:0];
-      [v32 addObserver:v29 selector:sel__didDisableSecureRendering_ name:*MEMORY[0x277D66020] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v29 selector:sel__willEnableSecureRendering_ name:*MEMORY[0x277D66028] object:0];
+      [defaultCenter addObserver:v29 selector:sel__didDisableSecureRendering_ name:*MEMORY[0x277D66020] object:0];
     }
 
-    objc_storeStrong(&v29->_layoutStrategy, v15);
+    objc_storeStrong(&v29->_layoutStrategy, strategyCopy);
     [(SBWindow *)v29 setClipsToBounds:[(SBWindowLayoutStrategy *)v29->_layoutStrategy shouldClipForWindow:v29]];
     [(SBWindow *)v29 _setWindowInterfaceOrientation:1];
-    if (v16)
+    if (roleCopy)
     {
-      [(SBWindow *)v29 _setRoleHint:v16];
+      [(SBWindow *)v29 _setRoleHint:roleCopy];
     }
 
-    if (v14)
+    if (controllerCopy)
     {
-      v33 = [(SBWindow *)v29 isHidden];
-      [(SBWindow *)v29 setRootViewController:v14];
+      isHidden = [(SBWindow *)v29 isHidden];
+      [(SBWindow *)v29 setRootViewController:controllerCopy];
       [(SBWindow *)v29 setHidden:0];
-      [(SBWindow *)v29 setHidden:v33];
+      [(SBWindow *)v29 setHidden:isHidden];
     }
 
     [(SBWindowLayoutStrategy *)v29->_layoutStrategy addObserver:v29];
-    if ((v31 & 1) == 0)
+    if ((_isSecure & 1) == 0)
     {
       v34 = objc_opt_class();
-      v35 = v13;
+      v35 = sceneCopy;
       if (v34)
       {
         if (objc_opt_isKindOfClass())
@@ -177,19 +177,19 @@ LABEL_11:
 
       v37 = v36;
 
-      v38 = [v37 secureDisplayStateProvider];
-      v39 = v38;
-      if (v38)
+      secureDisplayStateProvider = [v37 secureDisplayStateProvider];
+      v39 = secureDisplayStateProvider;
+      if (secureDisplayStateProvider)
       {
-        v40 = v38;
+        authenticationController = secureDisplayStateProvider;
       }
 
       else
       {
-        v40 = [SBApp authenticationController];
+        authenticationController = [SBApp authenticationController];
       }
 
-      v41 = v40;
+      v41 = authenticationController;
 
       -[SBWindow _updateHidingForSecureRendering:](v29, "_updateHidingForSecureRendering:", [v41 isInSecureDisplayMode]);
     }
@@ -205,7 +205,7 @@ LABEL_11:
   v30 = SBMainWindowScene();
   v43.receiver = self;
   v43.super_class = SBWindow;
-  v29 = [(SBWindow *)&v43 _initWithFrame:v17 debugName:v30 windowScene:v19, v21, v23, v25];
+  v29 = [(SBWindow *)&v43 _initWithFrame:nameCopy debugName:v30 windowScene:v19, v21, v23, v25];
 
   if (v29)
   {
@@ -219,21 +219,21 @@ LABEL_27:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D66028] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D66020] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D66028] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D66020] object:0];
 
   v4.receiver = self;
   v4.super_class = SBWindow;
   [(SBFWindow *)&v4 dealloc];
 }
 
-- (void)layoutStrategyFrameOnScreenDidChange:(id)a3
+- (void)layoutStrategyFrameOnScreenDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SBWindow *)self interfaceOrientation];
-  v6 = [(SBWindow *)self windowScene];
-  [v4 frameWithInterfaceOrientation:v5 windowScene:v6];
+  changeCopy = change;
+  interfaceOrientation = [(SBWindow *)self interfaceOrientation];
+  windowScene = [(SBWindow *)self windowScene];
+  [changeCopy frameWithInterfaceOrientation:interfaceOrientation windowScene:windowScene];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -253,119 +253,119 @@ LABEL_27:
   [(SBWindow *)self _updateRealIsHidden];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SBWindow *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(SBWindow *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if ([v4 userInterfaceStyle] != v6)
+  if ([changeCopy userInterfaceStyle] != userInterfaceStyle)
   {
-    [(SBUICoronaAnimationController *)self->_coronaAnimationController coronaDidChange:v6];
+    [(SBUICoronaAnimationController *)self->_coronaAnimationController coronaDidChange:userInterfaceStyle];
   }
 
   v7.receiver = self;
   v7.super_class = SBWindow;
-  [(SBWindow *)&v7 traitCollectionDidChange:v4];
+  [(SBWindow *)&v7 traitCollectionDidChange:changeCopy];
 }
 
-- (void)handleStatusBarChangeFromHeight:(double)a3 toHeight:(double)a4
+- (void)handleStatusBarChangeFromHeight:(double)height toHeight:(double)toHeight
 {
   if (([objc_opt_class() sb_disableStatusBarHeightChanges] & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = SBWindow;
-    [(SBWindow *)&v7 handleStatusBarChangeFromHeight:a3 toHeight:a4];
+    [(SBWindow *)&v7 handleStatusBarChangeFromHeight:height toHeight:toHeight];
   }
 }
 
 - (void)sb_updateAutorotatesFlag
 {
-  v4 = [objc_opt_class() sb_autorotates];
-  if (v4)
+  sb_autorotates = [objc_opt_class() sb_autorotates];
+  if (sb_autorotates)
   {
-    v2 = [(SBWindow *)self screen];
-    v5 = [v2 _isRotatable];
+    screen = [(SBWindow *)self screen];
+    _isRotatable = [screen _isRotatable];
   }
 
   else
   {
-    v5 = 0;
+    _isRotatable = 0;
   }
 
   v6.receiver = self;
   v6.super_class = SBWindow;
-  [(SBWindow *)&v6 setAutorotates:v5 forceUpdateInterfaceOrientation:0];
-  if (v4)
+  [(SBWindow *)&v6 setAutorotates:_isRotatable forceUpdateInterfaceOrientation:0];
+  if (sb_autorotates)
   {
   }
 }
 
-- (void)_sb_updateAutorotatesFlagAndForceInterfaceOrientationUpdate:(BOOL)a3
+- (void)_sb_updateAutorotatesFlagAndForceInterfaceOrientationUpdate:(BOOL)update
 {
-  v4 = a3;
-  v6 = [objc_opt_class() sb_autorotates];
-  if (v6)
+  updateCopy = update;
+  sb_autorotates = [objc_opt_class() sb_autorotates];
+  if (sb_autorotates)
   {
-    v3 = [(SBWindow *)self screen];
-    v7 = [v3 _isRotatable];
+    screen = [(SBWindow *)self screen];
+    _isRotatable = [screen _isRotatable];
   }
 
   else
   {
-    v7 = 0;
+    _isRotatable = 0;
   }
 
   v8.receiver = self;
   v8.super_class = SBWindow;
-  [(SBWindow *)&v8 setAutorotates:v7 forceUpdateInterfaceOrientation:v4];
-  if (v6)
+  [(SBWindow *)&v8 setAutorotates:_isRotatable forceUpdateInterfaceOrientation:updateCopy];
+  if (sb_autorotates)
   {
   }
 }
 
-- (void)moveToWindowSceneIfNeeded:(id)a3
+- (void)moveToWindowSceneIfNeeded:(id)needed
 {
-  v6 = a3;
-  v4 = [(SBWindow *)self windowScene];
+  neededCopy = needed;
+  windowScene = [(SBWindow *)self windowScene];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = neededCopy;
+  if (windowScene != neededCopy)
   {
-    [(SBWindow *)self setWindowScene:v6];
-    v5 = v6;
+    [(SBWindow *)self setWindowScene:neededCopy];
+    v5 = neededCopy;
   }
 }
 
-- (void)_addHiddenReason:(id)a3
+- (void)_addHiddenReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   additionalHiddenReasons = self->_additionalHiddenReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!additionalHiddenReasons)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_additionalHiddenReasons;
     self->_additionalHiddenReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     additionalHiddenReasons = self->_additionalHiddenReasons;
   }
 
-  [(NSMutableSet *)additionalHiddenReasons addObject:v4];
+  [(NSMutableSet *)additionalHiddenReasons addObject:reasonCopy];
   [(SBWindow *)self _updateRealIsHidden];
 }
 
-- (void)_removeHiddenReason:(id)a3
+- (void)_removeHiddenReason:(id)reason
 {
-  [(NSMutableSet *)self->_additionalHiddenReasons removeObject:a3];
+  [(NSMutableSet *)self->_additionalHiddenReasons removeObject:reason];
 
   [(SBWindow *)self _updateRealIsHidden];
 }
 
-- (void)_updateHidingForSecureRendering:(BOOL)a3
+- (void)_updateHidingForSecureRendering:(BOOL)rendering
 {
-  if (a3 && (-[SBWindow screen](self, "screen"), v4 = objc_claimAutoreleasedReturnValue(), [v4 displayIdentity], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isMainDisplay"), v5, v4, v6))
+  if (rendering && (-[SBWindow screen](self, "screen"), v4 = objc_claimAutoreleasedReturnValue(), [v4 displayIdentity], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isMainDisplay"), v5, v4, v6))
   {
 
     [(SBWindow *)self _addHiddenReason:@"SBWindowHiddenReasonSecureRendering"];
@@ -381,29 +381,29 @@ LABEL_27:
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBWindow *)self _debugName];
-  v5 = [v3 appendObject:v4 withName:0];
+  _debugName = [(SBWindow *)self _debugName];
+  v5 = [v3 appendObject:_debugName withName:0];
 
-  v6 = [v3 appendSuper];
-  v7 = [v3 build];
+  appendSuper = [v3 appendSuper];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (int64_t)activeInterfaceOrientation
 {
-  v3 = [(SBWindow *)self rootViewController];
+  rootViewController = [(SBWindow *)self rootViewController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _overrideWindowActiveInterfaceOrientation];
+    _overrideWindowActiveInterfaceOrientation = [rootViewController _overrideWindowActiveInterfaceOrientation];
   }
 
   else
   {
-    v4 = [(SBWindow *)self _windowInterfaceOrientation];
+    _overrideWindowActiveInterfaceOrientation = [(SBWindow *)self _windowInterfaceOrientation];
   }
 
-  v5 = v4;
+  v5 = _overrideWindowActiveInterfaceOrientation;
 
   return v5;
 }
@@ -415,8 +415,8 @@ LABEL_27:
     return 0;
   }
 
-  v4 = [(SBWindow *)self rootViewController];
-  v3 = v4 != 0;
+  rootViewController = [(SBWindow *)self rootViewController];
+  v3 = rootViewController != 0;
 
   return v3;
 }
@@ -424,8 +424,8 @@ LABEL_27:
 - (NSString)orientationSourceDescription
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBWindow *)self _debugName];
-  v5 = [v3 appendObject:v4 withName:0];
+  _debugName = [(SBWindow *)self _debugName];
+  v5 = [v3 appendObject:_debugName withName:0];
 
   [(SBWindow *)self activeInterfaceOrientation];
   v6 = BSInterfaceOrientationDescription();
@@ -434,16 +434,16 @@ LABEL_27:
   [(SBWindow *)self orientationSourceLevel];
   v9 = [v3 appendInteger:v8 withName:@"level"];
   v10 = [v3 appendBool:-[SBWindow isActive](self withName:{"isActive"), @"active"}];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)a3
+- (void)setAlphaAndObeyBecauseIAmTheWindowManager:(double)manager
 {
   v3.receiver = self;
   v3.super_class = SBWindow;
-  [(SBWindow *)&v3 setAlpha:a3];
+  [(SBWindow *)&v3 setAlpha:manager];
 }
 
 - (void)initWithWindowScene:(NSObject *)a3 rootViewController:layoutStrategy:role:debugName:.cold.1(uint64_t a1, uint64_t a2, NSObject *a3)

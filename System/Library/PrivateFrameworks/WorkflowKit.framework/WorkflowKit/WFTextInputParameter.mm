@@ -2,25 +2,25 @@
 - (BOOL)shouldAlignLabels;
 - (NSString)returnKeyType;
 - (NSString)textContentType;
-- (WFTextInputParameter)initWithDefinition:(id)a3;
-- (id)createDialogTextFieldConfigurationWithDefaultState:(id)a3;
+- (WFTextInputParameter)initWithDefinition:(id)definition;
+- (id)createDialogTextFieldConfigurationWithDefaultState:(id)state;
 - (id)defaultSerializedRepresentation;
 - (id)defaultSupportedVariableTypes;
-- (id)parameterStateFromDialogResponse:(id)a3;
-- (id)rewriteParameterState:(id)a3 withStrings:(id)a4;
-- (id)userVisibleStringsInParameterState:(id)a3 forUseCase:(unint64_t)a4;
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6;
-- (void)setLocalizedPlaceholder:(id)a3;
-- (void)setPrefix:(id)a3;
+- (id)parameterStateFromDialogResponse:(id)response;
+- (id)rewriteParameterState:(id)state withStrings:(id)strings;
+- (id)userVisibleStringsInParameterState:(id)state forUseCase:(unint64_t)case;
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler;
+- (void)setLocalizedPlaceholder:(id)placeholder;
+- (void)setPrefix:(id)prefix;
 @end
 
 @implementation WFTextInputParameter
 
-- (id)userVisibleStringsInParameterState:(id)a3 forUseCase:(unint64_t)a4
+- (id)userVisibleStringsInParameterState:(id)state forUseCase:(unint64_t)case
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  WFTextInputParameter.userVisibleStrings(in:for:)(a3, a4);
+  selfCopy = self;
+  WFTextInputParameter.userVisibleStrings(in:for:)(state, case);
   swift_unknownObjectRelease();
 
   type metadata accessor for WFUserVisibleString();
@@ -30,28 +30,28 @@
   return v8;
 }
 
-- (id)rewriteParameterState:(id)a3 withStrings:(id)a4
+- (id)rewriteParameterState:(id)state withStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
   sub_1CA94C1C8();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = WFTextInputParameter.rewrite(_:withStrings:)(a3);
+  selfCopy = self;
+  v7 = WFTextInputParameter.rewrite(_:withStrings:)(state);
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)parameterStateFromDialogResponse:(id)a3
+- (id)parameterStateFromDialogResponse:(id)response
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  responseCopy = response;
+  if (responseCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = [WFVariableString alloc];
-    v6 = [v4 inputtedText];
-    v7 = [(WFVariableString *)v5 initWithString:v6];
+    inputtedText = [responseCopy inputtedText];
+    v7 = [(WFVariableString *)v5 initWithString:inputtedText];
 
     v8 = [[(objc_class *)[(WFTextInputParameter *)self singleStateClass] alloc] initWithVariableString:v7];
     if ([(WFParameter *)self allowsMultipleValues])
@@ -81,9 +81,9 @@
 
 - (NSString)returnKeyType
 {
-  v2 = [(WFTextInputParameter *)self isMultiline];
+  isMultiline = [(WFTextInputParameter *)self isMultiline];
   v3 = MEMORY[0x1E69E12B0];
-  if (!v2)
+  if (!isMultiline)
   {
     v3 = MEMORY[0x1E69E12B8];
   }
@@ -93,85 +93,85 @@
   return v4;
 }
 
-- (id)createDialogTextFieldConfigurationWithDefaultState:(id)a3
+- (id)createDialogTextFieldConfigurationWithDefaultState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(MEMORY[0x1E69E0D88]);
-  v6 = [v4 variableString];
-  v7 = [v6 stringByRemovingVariables];
-  [v5 setText:v7];
+  variableString = [stateCopy variableString];
+  stringByRemovingVariables = [variableString stringByRemovingVariables];
+  [v5 setText:stringByRemovingVariables];
 
-  v8 = [(WFTextInputParameter *)self prefix];
-  [v5 setPrefix:v8];
+  prefix = [(WFTextInputParameter *)self prefix];
+  [v5 setPrefix:prefix];
 
-  v9 = [(WFParameter *)self localizedPlaceholder];
-  [v5 setPlaceholder:v9];
+  localizedPlaceholder = [(WFParameter *)self localizedPlaceholder];
+  [v5 setPlaceholder:localizedPlaceholder];
 
   [v5 setSecureTextEntry:{-[WFTextInputParameter isSecureTextEntry](self, "isSecureTextEntry")}];
-  v10 = [(WFTextInputParameter *)self keyboardType];
-  [v5 setKeyboardType:v10];
+  keyboardType = [(WFTextInputParameter *)self keyboardType];
+  [v5 setKeyboardType:keyboardType];
 
-  v11 = [(WFTextInputParameter *)self textContentType];
-  [v5 setTextContentType:v11];
+  textContentType = [(WFTextInputParameter *)self textContentType];
+  [v5 setTextContentType:textContentType];
 
-  v12 = [(WFTextInputParameter *)self autocapitalizationType];
-  [v5 setAutocapitalizationType:v12];
+  autocapitalizationType = [(WFTextInputParameter *)self autocapitalizationType];
+  [v5 setAutocapitalizationType:autocapitalizationType];
 
-  v13 = [(WFTextInputParameter *)self autocorrectionType];
-  [v5 setAutocorrectionType:v13];
+  autocorrectionType = [(WFTextInputParameter *)self autocorrectionType];
+  [v5 setAutocorrectionType:autocorrectionType];
 
   [v5 setSmartQuotesDisabled:{-[WFTextInputParameter smartQuotesDisabled](self, "smartQuotesDisabled")}];
   [v5 setSmartDashesDisabled:{-[WFTextInputParameter smartDashesDisabled](self, "smartDashesDisabled")}];
   [v5 setAutoPeriodsDisabled:{-[WFTextInputParameter autoPeriodsDisabled](self, "autoPeriodsDisabled")}];
   [v5 setTextReplacementDisabled:{-[WFTextInputParameter textReplacementDisabled](self, "textReplacementDisabled")}];
   [v5 setMultiline:{-[WFTextInputParameter isMultiline](self, "isMultiline")}];
-  if (v4)
+  if (stateCopy)
   {
-    [v5 setInitialInsertionIndex:{objc_msgSend(v4, "userInputInsertionIndex")}];
+    [v5 setInitialInsertionIndex:{objc_msgSend(stateCopy, "userInputInsertionIndex")}];
   }
 
-  v14 = [(WFTextInputParameter *)self returnKeyType];
-  [v5 setReturnKeyType:v14];
+  returnKeyType = [(WFTextInputParameter *)self returnKeyType];
+  [v5 setReturnKeyType:returnKeyType];
 
   return v5;
 }
 
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 variableString];
-  v14 = [v13 variables];
-  v15 = [v14 count];
+  attributionCopy = attribution;
+  stateCopy = state;
+  promptCopy = prompt;
+  handlerCopy = handler;
+  variableString = [stateCopy variableString];
+  variables = [variableString variables];
+  v15 = [variables count];
 
   if (v15)
   {
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v16 = [(WFTextInputParameter *)self createDialogTextFieldConfigurationWithDefaultState:v10];
+    v16 = [(WFTextInputParameter *)self createDialogTextFieldConfigurationWithDefaultState:stateCopy];
     v17 = objc_alloc(MEMORY[0x1E69E0B80]);
     v18 = [(WFParameter *)self key];
-    v19 = [v17 initWithTextFieldConfiguration:v16 message:0 attribution:v20 prompt:v11 parameterKey:v18];
-    (v12)[2](v12, v19);
+    v19 = [v17 initWithTextFieldConfiguration:v16 message:0 attribution:attributionCopy prompt:promptCopy parameterKey:v18];
+    (handlerCopy)[2](handlerCopy, v19);
   }
 }
 
-- (void)setLocalizedPlaceholder:(id)a3
+- (void)setLocalizedPlaceholder:(id)placeholder
 {
   v4.receiver = self;
   v4.super_class = WFTextInputParameter;
-  [(WFParameter *)&v4 setLocalizedPlaceholder:a3];
+  [(WFParameter *)&v4 setLocalizedPlaceholder:placeholder];
   [(WFParameter *)self attributesDidChange];
 }
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
-  v4 = [a3 copy];
+  v4 = [prefix copy];
   prefix = self->_prefix;
   self->_prefix = v4;
 
@@ -187,9 +187,9 @@
 
 - (BOOL)shouldAlignLabels
 {
-  v3 = [(WFTextInputParameter *)self textAlignment];
+  textAlignment = [(WFTextInputParameter *)self textAlignment];
   v4 = *MEMORY[0x1E69E12C8];
-  v5 = v3;
+  v5 = textAlignment;
   v6 = v5;
   if (v5 == v4)
   {
@@ -221,10 +221,10 @@ LABEL_10:
 
 - (NSString)textContentType
 {
-  v3 = [MEMORY[0x1E6996CA8] sharedContext];
-  v4 = [v3 shouldReverseLayoutDirection];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  shouldReverseLayoutDirection = [mEMORY[0x1E6996CA8] shouldReverseLayoutDirection];
   v5 = MEMORY[0x1E69E12C0];
-  if (!v4)
+  if (!shouldReverseLayoutDirection)
   {
     v5 = MEMORY[0x1E69E12D0];
   }
@@ -233,10 +233,10 @@ LABEL_10:
 
   if (!self->_textContentType)
   {
-    v7 = self->_textAlignment;
+    definition = self->_textAlignment;
     v8 = v6;
     v9 = v8;
-    if (v7 == v8)
+    if (definition == v8)
     {
     }
 
@@ -244,7 +244,7 @@ LABEL_10:
     {
       if (v8)
       {
-        v10 = v7 == 0;
+        v10 = definition == 0;
       }
 
       else
@@ -257,7 +257,7 @@ LABEL_10:
         goto LABEL_13;
       }
 
-      v11 = [(NSString *)v7 isEqualToString:v8];
+      v11 = [(NSString *)definition isEqualToString:v8];
 
       if (!v11)
       {
@@ -265,8 +265,8 @@ LABEL_10:
       }
     }
 
-    v7 = [(WFParameter *)self definition];
-    v9 = [(NSString *)v7 objectForKey:@"TextContentType"];
+    definition = [(WFParameter *)self definition];
+    v9 = [(NSString *)definition objectForKey:@"TextContentType"];
     v12 = objc_opt_class();
     v13 = WFEnforceClass_1501(v9, v12);
     textContentType = self->_textContentType;
@@ -286,20 +286,20 @@ LABEL_14:
 {
   v6.receiver = self;
   v6.super_class = WFTextInputParameter;
-  v2 = [(WFParameter *)&v6 defaultSerializedRepresentation];
+  defaultSerializedRepresentation = [(WFParameter *)&v6 defaultSerializedRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    localize = defaultSerializedRepresentation;
 LABEL_5:
-    v4 = v3;
+    v4 = localize;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 localize];
+    localize = [defaultSerializedRepresentation localize];
     goto LABEL_5;
   }
 
@@ -309,136 +309,136 @@ LABEL_7:
   return v4;
 }
 
-- (WFTextInputParameter)initWithDefinition:(id)a3
+- (WFTextInputParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v64.receiver = self;
   v64.super_class = WFTextInputParameter;
-  v5 = [(WFParameter *)&v64 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v64 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"Prefix"];
+    v6 = [definitionCopy objectForKey:@"Prefix"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     prefix = v5->_prefix;
     v5->_prefix = v8;
 
-    v10 = [v4 objectForKey:@"SecureTextInput"];
+    v10 = [definitionCopy objectForKey:@"SecureTextInput"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
     v5->_secureTextEntry = [v12 BOOLValue];
 
-    v13 = [v4 objectForKey:@"KeyboardType"];
+    v13 = [definitionCopy objectForKey:@"KeyboardType"];
     v14 = objc_opt_class();
     v15 = WFEnforceClass_1501(v13, v14);
     keyboardType = v5->_keyboardType;
     v5->_keyboardType = v15;
 
-    v17 = [v4 objectForKey:@"AutocapitalizationType"];
+    v17 = [definitionCopy objectForKey:@"AutocapitalizationType"];
     v18 = objc_opt_class();
     v19 = WFEnforceClass_1501(v17, v18);
     autocapitalizationType = v5->_autocapitalizationType;
     v5->_autocapitalizationType = v19;
 
-    v21 = [v4 objectForKey:@"DisableAutocorrection"];
+    v21 = [definitionCopy objectForKey:@"DisableAutocorrection"];
     v22 = objc_opt_class();
     v23 = WFEnforceClass_1501(v21, v22);
-    v24 = [v23 BOOLValue];
+    bOOLValue = [v23 BOOLValue];
     v25 = MEMORY[0x1E69E1278];
-    if (!v24)
+    if (!bOOLValue)
     {
       v25 = MEMORY[0x1E69E1270];
     }
 
     objc_storeStrong(&v5->_autocorrectionType, *v25);
 
-    v26 = [v4 objectForKey:@"TextAlignment"];
+    v26 = [definitionCopy objectForKey:@"TextAlignment"];
     v27 = objc_opt_class();
     v28 = WFEnforceClass_1501(v26, v27);
     textAlignment = v5->_textAlignment;
     v5->_textAlignment = v28;
 
-    v30 = [v4 objectForKey:@"Multiline"];
+    v30 = [definitionCopy objectForKey:@"Multiline"];
     v31 = objc_opt_class();
     v32 = WFEnforceClass_1501(v30, v31);
     v5->_multiline = [v32 BOOLValue];
 
-    v33 = [v4 objectForKey:@"MonospaceFont"];
+    v33 = [definitionCopy objectForKey:@"MonospaceFont"];
     v34 = objc_opt_class();
     v35 = WFEnforceClass_1501(v33, v34);
     v5->_monospace = [v35 BOOLValue];
 
-    v36 = [v4 objectForKey:@"ProcessIntoContentItems"];
+    v36 = [definitionCopy objectForKey:@"ProcessIntoContentItems"];
     v37 = objc_opt_class();
     v38 = WFEnforceClass_1501(v36, v37);
     v5->_processesIntoContentItems = [v38 BOOLValue];
 
-    v39 = [v4 objectForKey:@"DisableSmartQuotes"];
+    v39 = [definitionCopy objectForKey:@"DisableSmartQuotes"];
     v40 = objc_opt_class();
     v41 = WFEnforceClass_1501(v39, v40);
 
-    v42 = [v4 objectForKey:@"DisableSmartDashes"];
+    v42 = [definitionCopy objectForKey:@"DisableSmartDashes"];
     v43 = objc_opt_class();
     v44 = WFEnforceClass_1501(v42, v43);
 
     if (v41)
     {
-      v45 = [v41 BOOLValue];
+      bOOLValue2 = [v41 BOOLValue];
     }
 
     else
     {
-      v45 = 1;
+      bOOLValue2 = 1;
     }
 
-    v5->_smartQuotesDisabled = v45;
+    v5->_smartQuotesDisabled = bOOLValue2;
     if (v44)
     {
-      v46 = [v44 BOOLValue];
+      bOOLValue3 = [v44 BOOLValue];
     }
 
     else
     {
-      v46 = 1;
+      bOOLValue3 = 1;
     }
 
-    v5->_smartDashesDisabled = v46;
-    v47 = [v4 objectForKey:@"DisableAutoPeriods"];
+    v5->_smartDashesDisabled = bOOLValue3;
+    v47 = [definitionCopy objectForKey:@"DisableAutoPeriods"];
     v48 = objc_opt_class();
     v49 = WFEnforceClass_1501(v47, v48);
 
-    v50 = [v4 objectForKey:@"DisableTextReplacement"];
+    v50 = [definitionCopy objectForKey:@"DisableTextReplacement"];
     v51 = objc_opt_class();
     v52 = WFEnforceClass_1501(v50, v51);
 
     if (v49)
     {
-      v53 = [v49 BOOLValue];
+      bOOLValue4 = [v49 BOOLValue];
     }
 
     else
     {
-      v53 = 0;
+      bOOLValue4 = 0;
     }
 
-    v5->_autoPeriodsDisabled = v53;
+    v5->_autoPeriodsDisabled = bOOLValue4;
     if (v52)
     {
-      v54 = [v52 BOOLValue];
+      bOOLValue5 = [v52 BOOLValue];
     }
 
     else
     {
-      v54 = 0;
+      bOOLValue5 = 0;
     }
 
-    v5->_textReplacementDisabled = v54;
-    v55 = [v4 objectForKey:@"SyntaxHighlightingType"];
+    v5->_textReplacementDisabled = bOOLValue5;
+    v55 = [definitionCopy objectForKey:@"SyntaxHighlightingType"];
     v56 = objc_opt_class();
     v57 = WFEnforceClass_1501(v55, v56);
 
     v5->_syntaxHighlightingType = [v57 isEqualToString:@"JavaScript"];
-    v58 = [v4 objectForKey:@"HintDisplayMode"];
+    v58 = [definitionCopy objectForKey:@"HintDisplayMode"];
     v59 = objc_opt_class();
     v60 = WFEnforceClass_1501(v58, v59);
 

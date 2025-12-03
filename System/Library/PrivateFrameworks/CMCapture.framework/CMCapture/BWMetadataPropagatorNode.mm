@@ -1,19 +1,19 @@
 @interface BWMetadataPropagatorNode
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMetadataPropagatorNode
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v8 = 0;
-  AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(a3, 101);
+  AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(buffer, 101);
   if ([AttachedInferenceResult isValid] && objc_msgSend(objc_msgSend(AttachedInferenceResult, "inferences"), "count") && (objc_msgSend(objc_msgSend(AttachedInferenceResult, "preventionReason"), "isEqualToString:", @"BlurryInputBuffer") & 1) == 0)
   {
     memset(&sampleTimingArray.presentationTimeStamp, 0, 48);
     *&sampleTimingArray.duration.value = *MEMORY[0x1E6960C70];
     sampleTimingArray.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-    CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, a3);
+    CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, buffer);
     sampleTimingArray.decodeTimeStamp = sampleTimingArray.duration;
     CMSampleBufferCreate(*MEMORY[0x1E695E480], 0, 1u, 0, 0, 0, 0, 1, &sampleTimingArray, 0, 0, &v8);
     if (v8)

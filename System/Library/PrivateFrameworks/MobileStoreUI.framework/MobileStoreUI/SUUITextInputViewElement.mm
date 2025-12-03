@@ -1,24 +1,24 @@
 @interface SUUITextInputViewElement
-+ (BOOL)isTextInputType:(id)a3;
++ (BOOL)isTextInputType:(id)type;
 + (id)supportedFeatures;
-- (SUUITextInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUITextInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUITextInputViewElement
 
-- (SUUITextInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUITextInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUITextInputViewElement;
-  v9 = [(SUUIInputViewElement *)&v18 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIInputViewElement *)&v18 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (!v9)
   {
     goto LABEL_17;
   }
 
-  v10 = [v8 getAttribute:@"type"];
+  v10 = [elementCopy getAttribute:@"type"];
   if ([v10 isEqualToString:@"email"])
   {
     v11 = 7;
@@ -37,14 +37,14 @@
 
   v9->_keyboardType = v11;
 LABEL_8:
-  v12 = [v8 getAttribute:@"maxlength"];
+  v12 = [elementCopy getAttribute:@"maxlength"];
   v13 = v12;
   if (v12)
   {
     v9->_maximumLength = [v12 integerValue];
   }
 
-  v14 = [v8 getAttribute:@"secure"];
+  v14 = [elementCopy getAttribute:@"secure"];
   v15 = v14;
   if (v14)
   {
@@ -56,7 +56,7 @@ LABEL_8:
     v9->_secure = 1;
   }
 
-  v16 = [v8 getAttribute:@"placeholdertext"];
+  v16 = [elementCopy getAttribute:@"placeholdertext"];
   if (v16)
   {
     objc_storeStrong(&v9->_placeholderText, v16);
@@ -66,17 +66,17 @@ LABEL_17:
   return v9;
 }
 
-+ (BOOL)isTextInputType:(id)a3
++ (BOOL)isTextInputType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"number"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"email") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"password"))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"number"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"email") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"password"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"text"];
+    v4 = [typeCopy isEqualToString:@"text"];
   }
 
   return v4;
@@ -91,17 +91,17 @@ LABEL_17:
   return v2;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUITextInputViewElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_keyboardType = [(SUUITextInputViewElement *)v4 keyboardType];
-    self->_maximumLength = [(SUUITextInputViewElement *)v4 maximumLength];
+    self->_keyboardType = [(SUUITextInputViewElement *)elementCopy keyboardType];
+    self->_maximumLength = [(SUUITextInputViewElement *)elementCopy maximumLength];
   }
 
   return v6;

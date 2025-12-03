@@ -1,7 +1,7 @@
 @interface VUIDurationValueTransformer
 + (void)initialize;
 - (VUIDurationValueTransformer)init;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VUIDurationValueTransformer
@@ -12,7 +12,7 @@
   if (v3 == objc_opt_class())
   {
     v4 = MEMORY[0x277CCAE68];
-    v5 = objc_alloc_init(a1);
+    v5 = objc_alloc_init(self);
     [v4 setValueTransformer:v5 forName:@"VUIDurationValueTransformer"];
   }
 }
@@ -41,9 +41,9 @@
   return v2;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
   v5 = v4;
   if (v4 >= 60.0)
   {

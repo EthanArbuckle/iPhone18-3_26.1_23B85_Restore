@@ -1,40 +1,40 @@
 @interface PXPeopleRecoCollectionViewCell
 - (BOOL)hasImageSet;
-- (PXPeopleRecoCollectionViewCell)initWithFrame:(CGRect)a3;
+- (PXPeopleRecoCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3 contentsRect:(CGRect)a4;
-- (void)setIsRejected:(BOOL)a3;
+- (void)setImage:(id)image contentsRect:(CGRect)rect;
+- (void)setIsRejected:(BOOL)rejected;
 @end
 
 @implementation PXPeopleRecoCollectionViewCell
 
 - (BOOL)hasImageSet
 {
-  v2 = [(PXPeopleRecoCollectionViewCell *)self faceView];
-  v3 = [v2 image];
-  v4 = v3 != 0;
+  faceView = [(PXPeopleRecoCollectionViewCell *)self faceView];
+  image = [faceView image];
+  v4 = image != 0;
 
   return v4;
 }
 
-- (void)setImage:(id)a3 contentsRect:(CGRect)a4
+- (void)setImage:(id)image contentsRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v11 = [(PXPeopleRecoCollectionViewCell *)self faceView];
-  v10 = [v11 layer];
-  [v10 setContentsRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  faceView = [(PXPeopleRecoCollectionViewCell *)self faceView];
+  layer = [faceView layer];
+  [layer setContentsRect:{x, y, width, height}];
 
-  [v11 setImage:v9];
+  [faceView setImage:imageCopy];
 }
 
-- (void)setIsRejected:(BOOL)a3
+- (void)setIsRejected:(BOOL)rejected
 {
-  if (a3)
+  if (rejected)
   {
     v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"circle"];
   }
@@ -42,14 +42,14 @@
   else
   {
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle"];
-    v5 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v8 = [v4 px_tintedCircularImageWithColor:v5 backgroundColor:v6];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v8 = [v4 px_tintedCircularImageWithColor:systemWhiteColor backgroundColor:systemBlueColor];
   }
 
-  v7 = [(PXPeopleRecoCollectionViewCell *)self checkView];
-  [v7 setHidden:0];
-  [v7 setImage:v8];
+  checkView = [(PXPeopleRecoCollectionViewCell *)self checkView];
+  [checkView setHidden:0];
+  [checkView setImage:v8];
 }
 
 - (void)layoutSubviews
@@ -60,12 +60,12 @@
   [(PXPeopleRecoCollectionViewCell *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXPeopleRecoCollectionViewCell *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(PXPeopleRecoCollectionViewCell *)self traitCollection];
+  [traitCollection displayScale];
   [PXPeopleFaceCropManager roundedCornerRadiusForTargetSize:v4 displayScale:v6, v8];
   v10 = v9;
-  v11 = [(PXPeopleRecoCollectionViewCell *)self layer];
-  [v11 setCornerRadius:v10];
+  layer = [(PXPeopleRecoCollectionViewCell *)self layer];
+  [layer setCornerRadius:v10];
 }
 
 - (void)prepareForReuse
@@ -73,25 +73,25 @@
   v5.receiver = self;
   v5.super_class = PXPeopleRecoCollectionViewCell;
   [(PXPeopleRecoCollectionViewCell *)&v5 prepareForReuse];
-  v3 = [(PXPeopleRecoCollectionViewCell *)self checkView];
-  [v3 setHidden:1];
+  checkView = [(PXPeopleRecoCollectionViewCell *)self checkView];
+  [checkView setHidden:1];
 
-  v4 = [(PXPeopleRecoCollectionViewCell *)self faceView];
-  [v4 setImage:0];
+  faceView = [(PXPeopleRecoCollectionViewCell *)self faceView];
+  [faceView setImage:0];
 }
 
-- (PXPeopleRecoCollectionViewCell)initWithFrame:(CGRect)a3
+- (PXPeopleRecoCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v40[8] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = PXPeopleRecoCollectionViewCell;
-  v3 = [(PXPeopleRecoCollectionViewCell *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPeopleRecoCollectionViewCell *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXPeopleRecoCollectionViewCell *)v3 setClipsToBounds:1];
-    v5 = [MEMORY[0x1E69DC888] systemGray4Color];
-    [(PXPeopleRecoCollectionViewCell *)v4 setBackgroundColor:v5];
+    systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+    [(PXPeopleRecoCollectionViewCell *)v4 setBackgroundColor:systemGray4Color];
 
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(UIImageView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -101,8 +101,8 @@
     v8 = v6;
 
     v9 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v9 setTintColor:v10];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v9 setTintColor:whiteColor];
 
     [(UIImageView *)v9 setHidden:1];
     [(UIImageView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -112,36 +112,36 @@
     v12 = v9;
 
     v27 = MEMORY[0x1E696ACD8];
-    v38 = [(UIImageView *)v8 leadingAnchor];
-    v37 = [(PXPeopleRecoCollectionViewCell *)v4 leadingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    leadingAnchor = [(UIImageView *)v8 leadingAnchor];
+    leadingAnchor2 = [(PXPeopleRecoCollectionViewCell *)v4 leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v40[0] = v36;
-    v35 = [(UIImageView *)v8 trailingAnchor];
-    v34 = [(PXPeopleRecoCollectionViewCell *)v4 trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    trailingAnchor = [(UIImageView *)v8 trailingAnchor];
+    trailingAnchor2 = [(PXPeopleRecoCollectionViewCell *)v4 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[1] = v33;
-    v32 = [(UIImageView *)v8 topAnchor];
-    v31 = [(PXPeopleRecoCollectionViewCell *)v4 topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    topAnchor = [(UIImageView *)v8 topAnchor];
+    topAnchor2 = [(PXPeopleRecoCollectionViewCell *)v4 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v40[2] = v30;
-    v29 = [(UIImageView *)v8 bottomAnchor];
-    v28 = [(PXPeopleRecoCollectionViewCell *)v4 bottomAnchor];
-    v26 = [v29 constraintEqualToAnchor:v28];
+    bottomAnchor = [(UIImageView *)v8 bottomAnchor];
+    bottomAnchor2 = [(PXPeopleRecoCollectionViewCell *)v4 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v40[3] = v26;
-    v25 = [(UIImageView *)v12 heightAnchor];
-    v24 = [v25 constraintEqualToConstant:22.0];
+    heightAnchor = [(UIImageView *)v12 heightAnchor];
+    v24 = [heightAnchor constraintEqualToConstant:22.0];
     v40[4] = v24;
-    v23 = [(UIImageView *)v12 heightAnchor];
-    v22 = [(UIImageView *)v12 widthAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    heightAnchor2 = [(UIImageView *)v12 heightAnchor];
+    widthAnchor = [(UIImageView *)v12 widthAnchor];
+    v21 = [heightAnchor2 constraintEqualToAnchor:widthAnchor];
     v40[5] = v21;
-    v13 = [(UIImageView *)v12 trailingAnchor];
-    v14 = [(PXPeopleRecoCollectionViewCell *)v4 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:-7.0];
+    trailingAnchor3 = [(UIImageView *)v12 trailingAnchor];
+    trailingAnchor4 = [(PXPeopleRecoCollectionViewCell *)v4 trailingAnchor];
+    v15 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-7.0];
     v40[6] = v15;
-    v16 = [(UIImageView *)v12 bottomAnchor];
-    v17 = [(PXPeopleRecoCollectionViewCell *)v4 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:-7.0];
+    bottomAnchor3 = [(UIImageView *)v12 bottomAnchor];
+    bottomAnchor4 = [(PXPeopleRecoCollectionViewCell *)v4 bottomAnchor];
+    v18 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-7.0];
     v40[7] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:8];
     [v27 activateConstraints:v19];

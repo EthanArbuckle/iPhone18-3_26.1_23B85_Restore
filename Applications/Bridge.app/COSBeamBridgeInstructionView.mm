@@ -1,60 +1,60 @@
 @interface COSBeamBridgeInstructionView
-+ (id)descriptionForPhase:(int64_t)a3;
-+ (id)imageForPhase:(int64_t)a3;
-- (COSBeamBridgeInstructionView)initWithWithUserStudyPhase:(int64_t)a3;
-- (void)bailOut:(id)a3;
++ (id)descriptionForPhase:(int64_t)phase;
++ (id)imageForPhase:(int64_t)phase;
+- (COSBeamBridgeInstructionView)initWithWithUserStudyPhase:(int64_t)phase;
+- (void)bailOut:(id)out;
 - (void)layoutSubviews;
 @end
 
 @implementation COSBeamBridgeInstructionView
 
-- (COSBeamBridgeInstructionView)initWithWithUserStudyPhase:(int64_t)a3
+- (COSBeamBridgeInstructionView)initWithWithUserStudyPhase:(int64_t)phase
 {
   v23.receiver = self;
   v23.super_class = COSBeamBridgeInstructionView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(COSBeamBridgeInstructionView *)&v23 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v7)
+  height = [(COSBeamBridgeInstructionView *)&v23 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v8 = [UIColor colorWithWhite:0.9 alpha:0.45];
-    [(COSBeamBridgeInstructionView *)v7 setBackgroundColor:v8];
+    [(COSBeamBridgeInstructionView *)height setBackgroundColor:v8];
 
     v9 = [UIImageView alloc];
-    v10 = [objc_opt_class() imageForPhase:a3];
+    v10 = [objc_opt_class() imageForPhase:phase];
     v11 = [v9 initWithImage:v10];
-    instructionView = v7->_instructionView;
-    v7->_instructionView = v11;
+    instructionView = height->_instructionView;
+    height->_instructionView = v11;
 
     v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    instructionDetail = v7->_instructionDetail;
-    v7->_instructionDetail = v13;
+    instructionDetail = height->_instructionDetail;
+    height->_instructionDetail = v13;
 
-    [(UILabel *)v7->_instructionDetail setNumberOfLines:0];
-    v15 = v7->_instructionDetail;
+    [(UILabel *)height->_instructionDetail setNumberOfLines:0];
+    v15 = height->_instructionDetail;
     v16 = [UIFont systemFontOfSize:14.5];
     [(UILabel *)v15 setFont:v16];
 
-    v17 = v7->_instructionDetail;
-    v18 = [objc_opt_class() descriptionForPhase:a3];
+    v17 = height->_instructionDetail;
+    v18 = [objc_opt_class() descriptionForPhase:phase];
     [(UILabel *)v17 setText:v18];
 
-    v19 = v7->_instructionDetail;
+    v19 = height->_instructionDetail;
     v20 = +[UIColor whiteColor];
     [(UILabel *)v19 setTextColor:v20];
 
-    [(COSBeamBridgeInstructionView *)v7 addSubview:v7->_instructionView];
-    [(COSBeamBridgeInstructionView *)v7 addSubview:v7->_instructionDetail];
-    v21 = [[UITapGestureRecognizer alloc] initWithTarget:v7 action:"bailOut:"];
+    [(COSBeamBridgeInstructionView *)height addSubview:height->_instructionView];
+    [(COSBeamBridgeInstructionView *)height addSubview:height->_instructionDetail];
+    v21 = [[UITapGestureRecognizer alloc] initWithTarget:height action:"bailOut:"];
     [v21 setNumberOfTapsRequired:4];
-    [(COSBeamBridgeInstructionView *)v7 addGestureRecognizer:v21];
+    [(COSBeamBridgeInstructionView *)height addGestureRecognizer:v21];
   }
 
-  return v7;
+  return height;
 }
 
-- (void)bailOut:(id)a3
+- (void)bailOut:(id)out
 {
   v3 = pbb_setup_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -66,16 +66,16 @@
   [UIApp terminateWithSuccess];
 }
 
-+ (id)imageForPhase:(int64_t)a3
++ (id)imageForPhase:(int64_t)phase
 {
-  if (a3 > 9)
+  if (phase > 9)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = *(&off_10026BC50 + a3);
+    v3 = *(&off_10026BC50 + phase);
     v4 = +[COSInternalUserStudyAssetManager detailBundle];
     v5 = [UIImage imageNamed:v3 inBundle:v4];
   }
@@ -83,16 +83,16 @@
   return v5;
 }
 
-+ (id)descriptionForPhase:(int64_t)a3
++ (id)descriptionForPhase:(int64_t)phase
 {
-  if (a3 > 9)
+  if (phase > 9)
   {
     v5 = &stru_10026E598;
   }
 
   else
   {
-    v3 = *(&off_10026BCA0 + a3);
+    v3 = *(&off_10026BCA0 + phase);
     v4 = +[COSInternalUserStudyAssetManager detailBundle];
     v5 = [v4 localizedStringForKey:v3 value:&stru_10026E598 table:@"User_Study"];
   }

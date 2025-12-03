@@ -1,28 +1,28 @@
 @interface WDSourceOrderController
 - (WDSourceOrderController)init;
-- (WDSourceOrderController)initWithHealthStore:(id)a3;
-- (void)_notifyObserversForDataType:(id)a3 withProviders:(id)a4;
-- (void)getOrderedSourcesForDataType:(id)a3 withCompletion:(id)a4;
-- (void)setOrderedSources:(id)a3 dataType:(id)a4;
+- (WDSourceOrderController)initWithHealthStore:(id)store;
+- (void)_notifyObserversForDataType:(id)type withProviders:(id)providers;
+- (void)getOrderedSourcesForDataType:(id)type withCompletion:(id)completion;
+- (void)setOrderedSources:(id)sources dataType:(id)type;
 @end
 
 @implementation WDSourceOrderController
 
-- (WDSourceOrderController)initWithHealthStore:(id)a3
+- (WDSourceOrderController)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = WDSourceOrderController;
   v5 = [(WDSourceOrderController *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCDA20]) initWithHealthStore:v4];
+    v6 = [objc_alloc(MEMORY[0x277CCDA20]) initWithHealthStore:storeCopy];
     sourceStore = v5->_sourceStore;
     v5->_sourceStore = v6;
 
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v8;
+    v5->_observers = weakObjectsHashTable;
   }
 
   return v5;
@@ -38,28 +38,28 @@
   return 0;
 }
 
-- (void)getOrderedSourcesForDataType:(id)a3 withCompletion:(id)a4
+- (void)getOrderedSourcesForDataType:(id)type withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  typeCopy = type;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     sourceStore = self->_sourceStore;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __71__WDSourceOrderController_getOrderedSourcesForDataType_withCompletion___block_invoke;
     v10[3] = &unk_2796E7C98;
-    v12 = v7;
-    v11 = v6;
+    v12 = completionCopy;
+    v11 = typeCopy;
     [(HKSourceStore *)sourceStore fetchOrderedSourcesForObjectType:v11 completion:v10];
   }
 }
 
-- (void)setOrderedSources:(id)a3 dataType:(id)a4
+- (void)setOrderedSources:(id)sources dataType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  sourcesCopy = sources;
+  typeCopy = type;
   objc_initWeak(&location, self);
   sourceStore = self->_sourceStore;
   v11[0] = MEMORY[0x277D85DD0];
@@ -67,9 +67,9 @@
   v11[2] = __54__WDSourceOrderController_setOrderedSources_dataType___block_invoke;
   v11[3] = &unk_2796E7CC0;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = typeCopy;
   v12 = v9;
-  v10 = v6;
+  v10 = sourcesCopy;
   v13 = v10;
   [(HKSourceStore *)sourceStore updateOrderedSources:v10 forObjectType:v9 completion:v11];
 
@@ -105,11 +105,11 @@ void __54__WDSourceOrderController_setOrderedSources_dataType___block_invoke(id 
   }
 }
 
-- (void)_notifyObserversForDataType:(id)a3 withProviders:(id)a4
+- (void)_notifyObserversForDataType:(id)type withProviders:(id)providers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  providersCopy = providers;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -130,7 +130,7 @@ void __54__WDSourceOrderController_setOrderedSources_dataType___block_invoke(id 
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v14 + 1) + 8 * v12++) sourceOrderUpdatedWithOrder:v7 dataType:v6];
+        [*(*(&v14 + 1) + 8 * v12++) sourceOrderUpdatedWithOrder:providersCopy dataType:typeCopy];
       }
 
       while (v10 != v12);

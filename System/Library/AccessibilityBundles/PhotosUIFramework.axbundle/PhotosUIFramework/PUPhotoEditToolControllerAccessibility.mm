@@ -18,10 +18,10 @@
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditToolControllerAccessibility;
-  v2 = [(PUPhotoEditToolControllerAccessibility *)&v4 centerToolbarView];
-  [v2 _setAccessibilityTraitsBlock:&__block_literal_global_484];
+  centerToolbarView = [(PUPhotoEditToolControllerAccessibility *)&v4 centerToolbarView];
+  [centerToolbarView _setAccessibilityTraitsBlock:&__block_literal_global_484];
 
-  return v2;
+  return centerToolbarView;
 }
 
 @end

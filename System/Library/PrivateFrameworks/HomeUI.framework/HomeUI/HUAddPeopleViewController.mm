@@ -1,104 +1,104 @@
 @interface HUAddPeopleViewController
-+ (void)presentAddPersonOrAlertForHH2Upgrade:(id)a3 withHome:(id)a4 viewContext:(unint64_t)a5 delegate:(id)a6 presentationDelegate:(id)a7;
-- (BOOL)adaptiveTemperatureEnabledForHome:(id)a3;
-- (HUAddPeopleViewController)initWithCoder:(id)a3;
-- (HUAddPeopleViewController)initWithHome:(id)a3 viewContext:(unint64_t)a4;
-- (HUAddPeopleViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (void)presentAddPersonOrAlertForHH2Upgrade:(id)upgrade withHome:(id)home viewContext:(unint64_t)context delegate:(id)delegate presentationDelegate:(id)presentationDelegate;
+- (BOOL)adaptiveTemperatureEnabledForHome:(id)home;
+- (HUAddPeopleViewController)initWithCoder:(id)coder;
+- (HUAddPeopleViewController)initWithHome:(id)home viewContext:(unint64_t)context;
+- (HUAddPeopleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (HUAddPeopleViewControllerDelegate)delegate;
 - (HUPresentationDelegate)presentationDelegate;
 - (MFContactsSearchManager)searchManager;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)IDSDestinationForRecipient:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)IDSDestinationForRecipient:(id)recipient;
 - (id)_getIDSServiceName;
-- (id)_sanitizedIDSCopyIDForPhoneNumber:(id)a3;
-- (id)composeRecipientForAddress:(id)a3;
-- (id)recipientsWithStatusPassingTest:(id)a3;
+- (id)_sanitizedIDSCopyIDForPhoneNumber:(id)number;
+- (id)composeRecipientForAddress:(id)address;
+- (id)recipientsWithStatusPassingTest:(id)test;
 - (id)requiredKeyDescriptors;
 - (id)rightBarButtonTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tintColorForRecipient:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
-- (void)cancelButtonPressed:(id)a3;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
-- (void)contactController:(id)a3 didFinishDownloadingFamilyMemberAvatar:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tintColorForRecipient:(id)recipient;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
+- (void)contactController:(id)controller didFinishDownloadingFamilyMemberAvatar:(id)avatar;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
 - (void)finishedSearchingForAutocompleteResults;
-- (void)handleStatusQueryResults:(id)a3;
-- (void)lookupIDSDestinations:(id)a3;
+- (void)handleStatusQueryResults:(id)results;
+- (void)lookupIDSDestinations:(id)destinations;
 - (void)lookupVisibleRecipients;
 - (void)scheduleDelayedLookupVisibleRecipients;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)sendButtonPressed:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)sendButtonPressed:(id)pressed;
 - (void)sendInvites;
-- (void)setState:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)setState:(unint64_t)state;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)updateStateDependentUI;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUAddPeopleViewController
 
-- (BOOL)adaptiveTemperatureEnabledForHome:(id)a3
+- (BOOL)adaptiveTemperatureEnabledForHome:(id)home
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = _sSo25HUAddPeopleViewControllerC6HomeUIE26adaptiveTemperatureEnabled3forSbSo6HMHomeCSg_tF_0(v3);
+  homeCopy = home;
+  homeCopy2 = home;
+  selfCopy = self;
+  LOBYTE(homeCopy) = _sSo25HUAddPeopleViewControllerC6HomeUIE26adaptiveTemperatureEnabled3forSbSo6HMHomeCSg_tF_0(homeCopy);
 
-  return v3 & 1;
+  return homeCopy & 1;
 }
 
-- (HUAddPeopleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HUAddPeopleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUAddPeopleViewController.m" lineNumber:105 description:{@"%s is unavailable; use %@ instead", "-[HUAddPeopleViewController initWithNibName:bundle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddPeopleViewController.m" lineNumber:105 description:{@"%s is unavailable; use %@ instead", "-[HUAddPeopleViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
 
-- (HUAddPeopleViewController)initWithCoder:(id)a3
+- (HUAddPeopleViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAddPeopleViewController.m" lineNumber:110 description:{@"%s is unavailable; use %@ instead", "-[HUAddPeopleViewController initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddPeopleViewController.m" lineNumber:110 description:{@"%s is unavailable; use %@ instead", "-[HUAddPeopleViewController initWithCoder:]", v6}];
 
   return 0;
 }
 
-- (HUAddPeopleViewController)initWithHome:(id)a3 viewContext:(unint64_t)a4
+- (HUAddPeopleViewController)initWithHome:(id)home viewContext:(unint64_t)context
 {
-  v7 = a3;
+  homeCopy = home;
   v20.receiver = self;
   v20.super_class = HUAddPeopleViewController;
   v8 = [(HUAddPeopleViewController *)&v20 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
-    v9->_viewContext = a4;
+    objc_storeStrong(&v8->_home, home);
+    v9->_viewContext = context;
     v10 = objc_alloc(MEMORY[0x277D145A8]);
-    v11 = [(HUAddPeopleViewController *)v9 requiredKeyDescriptors];
-    v12 = [v10 initWithKeyDescriptors:v11];
+    requiredKeyDescriptors = [(HUAddPeopleViewController *)v9 requiredKeyDescriptors];
+    v12 = [v10 initWithKeyDescriptors:requiredKeyDescriptors];
     contactsController = v9->_contactsController;
     v9->_contactsController = v12;
 
@@ -106,7 +106,7 @@
     familyMembersNotInHome = v9->_familyMembersNotInHome;
     v9->_familyMembersNotInHome = MEMORY[0x277CBEBF8];
 
-    v9->_adaptiveTemperatureEnabled = [(HUAddPeopleViewController *)v9 adaptiveTemperatureEnabledForHome:v7];
+    v9->_adaptiveTemperatureEnabled = [(HUAddPeopleViewController *)v9 adaptiveTemperatureEnabledForHome:homeCopy];
     objc_initWeak(&location, v9);
     v15 = v9->_contactsController;
     v17[0] = MEMORY[0x277D85DD0];
@@ -237,24 +237,24 @@ uint64_t __54__HUAddPeopleViewController_initWithHome_viewContext___block_invoke
   return v7;
 }
 
-+ (void)presentAddPersonOrAlertForHH2Upgrade:(id)a3 withHome:(id)a4 viewContext:(unint64_t)a5 delegate:(id)a6 presentationDelegate:(id)a7
++ (void)presentAddPersonOrAlertForHH2Upgrade:(id)upgrade withHome:(id)home viewContext:(unint64_t)context delegate:(id)delegate presentationDelegate:(id)presentationDelegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = [[HUAddPeopleViewController alloc] initWithHome:v12 viewContext:a5];
-  [(HUAddPeopleViewController *)v15 setDelegate:v14];
+  upgradeCopy = upgrade;
+  homeCopy = home;
+  presentationDelegateCopy = presentationDelegate;
+  delegateCopy = delegate;
+  v15 = [[HUAddPeopleViewController alloc] initWithHome:homeCopy viewContext:context];
+  [(HUAddPeopleViewController *)v15 setDelegate:delegateCopy];
 
-  [(HUAddPeopleViewController *)v15 setPresentationDelegate:v13];
+  [(HUAddPeopleViewController *)v15 setPresentationDelegate:presentationDelegateCopy];
   v16 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v15];
   [v16 setModalPresentationStyle:2];
   v17 = v16;
   v18 = v17;
-  if ([v12 hf_canUpdateToHH2])
+  if ([homeCopy hf_canUpdateToHH2])
   {
-    v19 = [v12 hf_residentDevicesAddedToHome];
-    v20 = [v19 count];
+    hf_residentDevicesAddedToHome = [homeCopy hf_residentDevicesAddedToHome];
+    v20 = [hf_residentDevicesAddedToHome count];
 
     v18 = v17;
     if (v20)
@@ -264,8 +264,8 @@ uint64_t __54__HUAddPeopleViewController_initWithHome_viewContext___block_invoke
       v25[1] = 3221225472;
       v25[2] = __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withHome_viewContext_delegate_presentationDelegate___block_invoke;
       v25[3] = &unk_277DBD130;
-      v26 = v12;
-      v27 = v11;
+      v26 = homeCopy;
+      v27 = upgradeCopy;
       v28 = v17;
       v18 = [v21 hu_alertControllerForAddingPersonWithCompletionHandler:v25];
     }
@@ -277,7 +277,7 @@ uint64_t __54__HUAddPeopleViewController_initWithHome_viewContext___block_invoke
   v23[3] = &unk_277DB8488;
   v24 = v18;
   v22 = v18;
-  [v11 presentViewController:v22 animated:1 completion:v23];
+  [upgradeCopy presentViewController:v22 animated:1 completion:v23];
 }
 
 void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withHome_viewContext_delegate_presentationDelegate___block_invoke(uint64_t a1, void *a2)
@@ -346,123 +346,123 @@ void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withH
   v4 = objc_alloc_init(MEMORY[0x277CD6860]);
   [(HUAddPeopleViewController *)self setComposeView:v4];
 
-  v5 = [MEMORY[0x277D75348] labelColor];
-  v6 = [(HUAddPeopleViewController *)self composeView];
-  [v6 setTypingTextColor:v5];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  [composeView setTypingTextColor:labelColor];
 
   v7 = _HULocalizedStringWithDefaultValue(@"HUPeopleRecipientToLabel", @"HUPeopleRecipientToLabel", 1);
-  v8 = [(HUAddPeopleViewController *)self composeView];
-  [v8 setLabel:v7];
+  composeView2 = [(HUAddPeopleViewController *)self composeView];
+  [composeView2 setLabel:v7];
 
-  v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v10 = [(HUAddPeopleViewController *)self composeView];
-  [v10 setBackgroundColor:v9];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  composeView3 = [(HUAddPeopleViewController *)self composeView];
+  [composeView3 setBackgroundColor:systemBackgroundColor];
 
-  v11 = [(HUAddPeopleViewController *)self composeView];
-  [v11 setSeparatorHidden:1];
+  composeView4 = [(HUAddPeopleViewController *)self composeView];
+  [composeView4 setSeparatorHidden:1];
 
-  v12 = [(HUAddPeopleViewController *)self composeView];
-  [v12 setDelegate:self];
+  composeView5 = [(HUAddPeopleViewController *)self composeView];
+  [composeView5 setDelegate:self];
 
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v13 = [(HUAddPeopleViewController *)self composeView];
-    [v13 setShowsAddButtonWhenExpanded:0];
+    composeView6 = [(HUAddPeopleViewController *)self composeView];
+    [composeView6 setShowsAddButtonWhenExpanded:0];
   }
 
   v14 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(HUAddPeopleViewController *)self setSeparatorView:v14];
 
-  v15 = [MEMORY[0x277D75348] systemLightGrayColor];
-  v16 = [(HUAddPeopleViewController *)self separatorView];
-  [v16 setBackgroundColor:v15];
+  systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
+  separatorView = [(HUAddPeopleViewController *)self separatorView];
+  [separatorView setBackgroundColor:systemLightGrayColor];
 
   v17 = objc_alloc(MEMORY[0x277D75B40]);
   v18 = [v17 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(HUAddPeopleViewController *)self setTableView:v18];
 
-  v19 = [(HUAddPeopleViewController *)self tableView];
-  [v19 setEstimatedRowHeight:55.0];
+  tableView = [(HUAddPeopleViewController *)self tableView];
+  [tableView setEstimatedRowHeight:55.0];
 
-  v20 = [(HUAddPeopleViewController *)self tableView];
-  [v20 setSectionHeaderTopPadding:0.0];
+  tableView2 = [(HUAddPeopleViewController *)self tableView];
+  [tableView2 setSectionHeaderTopPadding:0.0];
 
-  v21 = [(HUAddPeopleViewController *)self tableView];
-  [v21 setDelegate:self];
+  tableView3 = [(HUAddPeopleViewController *)self tableView];
+  [tableView3 setDelegate:self];
 
-  v22 = [(HUAddPeopleViewController *)self tableView];
-  [v22 setDataSource:self];
+  tableView4 = [(HUAddPeopleViewController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v23 = [(HUAddPeopleViewController *)self view];
-  v24 = [(HUAddPeopleViewController *)self composeView];
-  v55[0] = v24;
-  v25 = [(HUAddPeopleViewController *)self separatorView];
-  v55[1] = v25;
-  v26 = [(HUAddPeopleViewController *)self tableView];
-  v55[2] = v26;
+  view = [(HUAddPeopleViewController *)self view];
+  composeView7 = [(HUAddPeopleViewController *)self composeView];
+  v55[0] = composeView7;
+  separatorView2 = [(HUAddPeopleViewController *)self separatorView];
+  v55[1] = separatorView2;
+  tableView5 = [(HUAddPeopleViewController *)self tableView];
+  v55[2] = tableView5;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:3];
-  [v23 naui_addAutoLayoutSubviews:v27];
+  [view naui_addAutoLayoutSubviews:v27];
 
-  v28 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v29 = [(HUAddPeopleViewController *)self view];
-  [v29 setBackgroundColor:v28];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  view2 = [(HUAddPeopleViewController *)self view];
+  [view2 setBackgroundColor:systemBackgroundColor2];
 
-  v30 = [(HUAddPeopleViewController *)self navigationController];
-  v31 = [v30 viewControllers];
-  v32 = [v31 objectAtIndexedSubscript:0];
-  LODWORD(v26) = [v32 isEqual:self];
+  navigationController = [(HUAddPeopleViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v32 = [viewControllers objectAtIndexedSubscript:0];
+  LODWORD(tableView5) = [v32 isEqual:self];
 
-  if (v26)
+  if (tableView5)
   {
     v33 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed_];
-    v34 = [(HUAddPeopleViewController *)self navigationItem];
-    [v34 setLeftBarButtonItem:v33];
+    navigationItem = [(HUAddPeopleViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v33];
 
-    v35 = [(HUAddPeopleViewController *)self navigationItem];
-    v36 = [v35 leftBarButtonItem];
-    [v36 setAccessibilityIdentifier:@"Home.Users.AddPeople.NavigationBar.CancelButton"];
+    navigationItem2 = [(HUAddPeopleViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+    [leftBarButtonItem setAccessibilityIdentifier:@"Home.Users.AddPeople.NavigationBar.CancelButton"];
   }
 
   else
   {
-    v35 = [(HUAddPeopleViewController *)self navigationItem];
-    [v35 setLeftBarButtonItem:0];
+    navigationItem2 = [(HUAddPeopleViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:0];
   }
 
   v37 = objc_alloc(MEMORY[0x277D751E0]);
-  v38 = [(HUAddPeopleViewController *)self rightBarButtonTitle];
-  v39 = [v37 initWithTitle:v38 style:2 target:self action:sel_sendButtonPressed_];
-  v40 = [(HUAddPeopleViewController *)self navigationItem];
-  [v40 setRightBarButtonItem:v39];
+  rightBarButtonTitle = [(HUAddPeopleViewController *)self rightBarButtonTitle];
+  v39 = [v37 initWithTitle:rightBarButtonTitle style:2 target:self action:sel_sendButtonPressed_];
+  navigationItem3 = [(HUAddPeopleViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v39];
 
-  v41 = [(HUAddPeopleViewController *)self navigationItem];
-  v42 = [v41 rightBarButtonItem];
-  [v42 setAccessibilityIdentifier:@"Home.Users.AddPeople.NavigationBar.NextDoneButton"];
+  navigationItem4 = [(HUAddPeopleViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Home.Users.AddPeople.NavigationBar.NextDoneButton"];
 
-  v43 = [(HUAddPeopleViewController *)self tableView];
+  tableView6 = [(HUAddPeopleViewController *)self tableView];
   v44 = objc_opt_class();
   v45 = +[HUAddPeopleTableHeaderFooterView identifier];
-  [v43 registerClass:v44 forHeaderFooterViewReuseIdentifier:v45];
+  [tableView6 registerClass:v44 forHeaderFooterViewReuseIdentifier:v45];
 
-  v46 = [(HUAddPeopleViewController *)self tableView];
+  tableView7 = [(HUAddPeopleViewController *)self tableView];
   v47 = objc_opt_class();
   v48 = objc_opt_class();
   v49 = NSStringFromClass(v48);
-  [v46 registerClass:v47 forCellReuseIdentifier:v49];
+  [tableView7 registerClass:v47 forCellReuseIdentifier:v49];
 
-  v50 = [(HUAddPeopleViewController *)self tableView];
+  tableView8 = [(HUAddPeopleViewController *)self tableView];
   v51 = objc_opt_class();
-  v52 = [MEMORY[0x277CD68B0] identifier];
-  [v50 registerClass:v51 forCellReuseIdentifier:v52];
+  identifier = [MEMORY[0x277CD68B0] identifier];
+  [tableView8 registerClass:v51 forCellReuseIdentifier:identifier];
 
   [(HUAddPeopleViewController *)self updateStateDependentUI];
-  v53 = [(HUAddPeopleViewController *)self view];
-  [v53 setNeedsUpdateConstraints];
+  view3 = [(HUAddPeopleViewController *)self view];
+  [view3 setNeedsUpdateConstraints];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -474,18 +474,18 @@ void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withH
 
   v9.receiver = self;
   v9.super_class = HUAddPeopleViewController;
-  [(HUAddPeopleViewController *)&v9 viewDidAppear:v3];
-  v6 = [(HUAddPeopleViewController *)self composeView];
-  [v6 becomeFirstResponder];
+  [(HUAddPeopleViewController *)&v9 viewDidAppear:appearCopy];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  [composeView becomeFirstResponder];
 
-  v7 = [(HUAddPeopleViewController *)self view];
-  v8 = [v7 tintColor];
-  [(HUAddPeopleViewController *)self setEffectiveTintColor:v8];
+  view = [(HUAddPeopleViewController *)self view];
+  tintColor = [view tintColor];
+  [(HUAddPeopleViewController *)self setEffectiveTintColor:tintColor];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v11 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -497,25 +497,25 @@ void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withH
 
   v8.receiver = self;
   v8.super_class = HUAddPeopleViewController;
-  [(HUAddPeopleViewController *)&v8 viewWillDisappear:v3];
-  v6 = [(HUAddPeopleViewController *)self composeView];
-  v7 = [v6 textView];
-  [v7 resignFirstResponder];
+  [(HUAddPeopleViewController *)&v8 viewWillDisappear:disappearCopy];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  textView = [composeView textView];
+  [textView resignFirstResponder];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(HUAddPeopleViewController *)self composeView];
-  v5 = [v4 textView];
-  [v5 resignFirstResponder];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  textView = [composeView textView];
+  [textView resignFirstResponder];
 
-  v6 = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
-  [v6 invalidate];
+  statusQueryDebounceTimer = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
+  [statusQueryDebounceTimer invalidate];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(HUAddPeopleViewController *)self scheduleDelayedLookupVisibleRecipients];
   }
@@ -523,102 +523,102 @@ void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withH
 
 - (void)updateViewConstraints
 {
-  v3 = [(HUAddPeopleViewController *)self constraints];
+  constraints = [(HUAddPeopleViewController *)self constraints];
 
-  if (!v3)
+  if (!constraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUAddPeopleViewController *)self composeView];
-    v6 = [v5 leadingAnchor];
-    v7 = [(HUAddPeopleViewController *)self view];
-    v8 = [v7 leadingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8];
-    [v4 addObject:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    composeView = [(HUAddPeopleViewController *)self composeView];
+    leadingAnchor = [composeView leadingAnchor];
+    view = [(HUAddPeopleViewController *)self view];
+    leadingAnchor2 = [view leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v9];
 
-    v10 = [(HUAddPeopleViewController *)self composeView];
-    v11 = [v10 trailingAnchor];
-    v12 = [(HUAddPeopleViewController *)self view];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
-    [v4 addObject:v14];
+    composeView2 = [(HUAddPeopleViewController *)self composeView];
+    trailingAnchor = [composeView2 trailingAnchor];
+    view2 = [(HUAddPeopleViewController *)self view];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v14];
 
-    v15 = [(HUAddPeopleViewController *)self separatorView];
-    v16 = [v15 leadingAnchor];
-    v17 = [(HUAddPeopleViewController *)self view];
-    v18 = [v17 leadingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
-    [v4 addObject:v19];
+    separatorView = [(HUAddPeopleViewController *)self separatorView];
+    leadingAnchor3 = [separatorView leadingAnchor];
+    view3 = [(HUAddPeopleViewController *)self view];
+    leadingAnchor4 = [view3 leadingAnchor];
+    v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    [array addObject:v19];
 
-    v20 = [(HUAddPeopleViewController *)self separatorView];
-    v21 = [v20 trailingAnchor];
-    v22 = [(HUAddPeopleViewController *)self view];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
-    [v4 addObject:v24];
+    separatorView2 = [(HUAddPeopleViewController *)self separatorView];
+    trailingAnchor3 = [separatorView2 trailingAnchor];
+    view4 = [(HUAddPeopleViewController *)self view];
+    trailingAnchor4 = [view4 trailingAnchor];
+    v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    [array addObject:v24];
 
-    v25 = [(HUAddPeopleViewController *)self tableView];
-    v26 = [v25 leadingAnchor];
-    v27 = [(HUAddPeopleViewController *)self view];
-    v28 = [v27 leadingAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
-    [v4 addObject:v29];
+    tableView = [(HUAddPeopleViewController *)self tableView];
+    leadingAnchor5 = [tableView leadingAnchor];
+    view5 = [(HUAddPeopleViewController *)self view];
+    leadingAnchor6 = [view5 leadingAnchor];
+    v29 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+    [array addObject:v29];
 
-    v30 = [(HUAddPeopleViewController *)self tableView];
-    v31 = [v30 trailingAnchor];
-    v32 = [(HUAddPeopleViewController *)self view];
-    v33 = [v32 trailingAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
-    [v4 addObject:v34];
+    tableView2 = [(HUAddPeopleViewController *)self tableView];
+    trailingAnchor5 = [tableView2 trailingAnchor];
+    view6 = [(HUAddPeopleViewController *)self view];
+    trailingAnchor6 = [view6 trailingAnchor];
+    v34 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+    [array addObject:v34];
 
-    v35 = [(HUAddPeopleViewController *)self composeView];
-    v36 = [v35 topAnchor];
-    v37 = [(HUAddPeopleViewController *)self view];
-    v38 = [v37 safeAreaLayoutGuide];
-    v39 = [v38 topAnchor];
-    v40 = [v36 constraintEqualToAnchor:v39];
-    [v4 addObject:v40];
+    composeView3 = [(HUAddPeopleViewController *)self composeView];
+    topAnchor = [composeView3 topAnchor];
+    view7 = [(HUAddPeopleViewController *)self view];
+    safeAreaLayoutGuide = [view7 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v40];
 
-    v41 = [(HUAddPeopleViewController *)self composeView];
-    v42 = [v41 bottomAnchor];
-    v43 = [(HUAddPeopleViewController *)self separatorView];
-    v44 = [v43 topAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
-    [v4 addObject:v45];
+    composeView4 = [(HUAddPeopleViewController *)self composeView];
+    bottomAnchor = [composeView4 bottomAnchor];
+    separatorView3 = [(HUAddPeopleViewController *)self separatorView];
+    topAnchor3 = [separatorView3 topAnchor];
+    v45 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
+    [array addObject:v45];
 
-    v46 = [(HUAddPeopleViewController *)self composeView];
-    v47 = [v46 heightAnchor];
+    composeView5 = [(HUAddPeopleViewController *)self composeView];
+    heightAnchor = [composeView5 heightAnchor];
     [MEMORY[0x277CD6860] preferredHeight];
-    v48 = [v47 constraintEqualToConstant:?];
+    v48 = [heightAnchor constraintEqualToConstant:?];
     [(HUAddPeopleViewController *)self setComposeViewBottomConstraint:v48];
 
-    v49 = [(HUAddPeopleViewController *)self composeViewBottomConstraint];
-    [v4 addObject:v49];
+    composeViewBottomConstraint = [(HUAddPeopleViewController *)self composeViewBottomConstraint];
+    [array addObject:composeViewBottomConstraint];
 
-    v50 = [(HUAddPeopleViewController *)self separatorView];
-    v51 = [v50 bottomAnchor];
-    v52 = [(HUAddPeopleViewController *)self tableView];
-    v53 = [v52 topAnchor];
-    v54 = [v51 constraintEqualToAnchor:v53];
-    [v4 addObject:v54];
+    separatorView4 = [(HUAddPeopleViewController *)self separatorView];
+    bottomAnchor2 = [separatorView4 bottomAnchor];
+    tableView3 = [(HUAddPeopleViewController *)self tableView];
+    topAnchor4 = [tableView3 topAnchor];
+    v54 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4];
+    [array addObject:v54];
 
-    v55 = [(HUAddPeopleViewController *)self separatorView];
-    v56 = [v55 heightAnchor];
-    v57 = [MEMORY[0x277D759A0] mainScreen];
-    [v57 scale];
-    v59 = [v56 constraintEqualToConstant:1.0 / v58];
-    [v4 addObject:v59];
+    separatorView5 = [(HUAddPeopleViewController *)self separatorView];
+    heightAnchor2 = [separatorView5 heightAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v59 = [heightAnchor2 constraintEqualToConstant:1.0 / v58];
+    [array addObject:v59];
 
-    v60 = [(HUAddPeopleViewController *)self tableView];
-    v61 = [v60 bottomAnchor];
-    v62 = [(HUAddPeopleViewController *)self view];
-    v63 = [v62 bottomAnchor];
-    v64 = [v61 constraintEqualToAnchor:v63];
-    [v4 addObject:v64];
+    tableView4 = [(HUAddPeopleViewController *)self tableView];
+    bottomAnchor3 = [tableView4 bottomAnchor];
+    view8 = [(HUAddPeopleViewController *)self view];
+    bottomAnchor4 = [view8 bottomAnchor];
+    v64 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array addObject:v64];
 
-    [(HUAddPeopleViewController *)self setConstraints:v4];
+    [(HUAddPeopleViewController *)self setConstraints:array];
     v65 = MEMORY[0x277CCAAD0];
-    v66 = [(HUAddPeopleViewController *)self constraints];
-    [v65 activateConstraints:v66];
+    constraints2 = [(HUAddPeopleViewController *)self constraints];
+    [v65 activateConstraints:constraints2];
   }
 
   v67.receiver = self;
@@ -626,43 +626,43 @@ void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withH
   [(HUAddPeopleViewController *)&v67 updateViewConstraints];
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[HUAddPeopleViewController cancelButtonPressed:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = pressedCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%s) User selected 'cancel' button %@", &v10, 0x16u);
   }
 
-  v6 = [(HUAddPeopleViewController *)self presentationDelegate];
-  v7 = [v6 finishPresentation:self animated:1];
+  presentationDelegate = [(HUAddPeopleViewController *)self presentationDelegate];
+  v7 = [presentationDelegate finishPresentation:self animated:1];
 
-  v8 = [(HUAddPeopleViewController *)self delegate];
+  delegate = [(HUAddPeopleViewController *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(HUAddPeopleViewController *)self delegate];
-    [v9 addPeopleViewControllerDidCancel:self];
+    delegate2 = [(HUAddPeopleViewController *)self delegate];
+    [delegate2 addPeopleViewControllerDidCancel:self];
   }
 }
 
-- (void)sendButtonPressed:(id)a3
+- (void)sendButtonPressed:(id)pressed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[HUAddPeopleViewController sendButtonPressed:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = pressedCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%s) User selected 'send' button %@", &v7, 0x16u);
   }
 
@@ -672,28 +672,28 @@ void __117__HUAddPeopleViewController_presentAddPersonOrAlertForHH2Upgrade_withH
   }
 
   [(HUAddPeopleViewController *)self setUnatomizedAddress:0];
-  v6 = [(HUAddPeopleViewController *)self composeView];
-  [v6 finishEnteringRecipient];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  [composeView finishEnteringRecipient];
 
   [(HUAddPeopleViewController *)self sendInvites];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"invited";
-      if (a3 == 1)
+      if (state == 1)
       {
         v6 = @"send requested";
       }
 
-      if (!a3)
+      if (!state)
       {
         v6 = @"composing";
       }
@@ -735,22 +735,22 @@ LABEL_9:
   return v3;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(HUAddPeopleViewController *)self showingAutoCompleteResults])
   {
     return 1;
   }
 
-  v5 = [(HUAddPeopleViewController *)self familyMembersNotInHome];
-  v4 = [v5 count] != 0;
+  familyMembersNotInHome = [(HUAddPeopleViewController *)self familyMembersNotInHome];
+  v4 = [familyMembersNotInHome count] != 0;
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(HUAddPeopleViewController *)self showingAutoCompleteResults:a3])
+  if ([(HUAddPeopleViewController *)self showingAutoCompleteResults:view])
   {
     [(HUAddPeopleViewController *)self autoCompleteResults];
   }
@@ -765,73 +765,73 @@ LABEL_9:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   if ([(HUAddPeopleViewController *)self showingAutoCompleteResults])
   {
-    v8 = [MEMORY[0x277CD68B0] identifier];
-    v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+    identifier = [MEMORY[0x277CD68B0] identifier];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:identifier];
 
-    v10 = [(HUAddPeopleViewController *)self autoCompleteResults];
-    v11 = [v6 row];
+    autoCompleteResults = [(HUAddPeopleViewController *)self autoCompleteResults];
+    v11 = [pathCopy row];
 
-    v12 = [v10 objectAtIndexedSubscript:v11];
+    v12 = [autoCompleteResults objectAtIndexedSubscript:v11];
     [v9 setRecipient:v12];
 
     [v9 setShouldDimIrrelevantInformation:0];
-    v13 = [v9 recipient];
-    v14 = [(HUAddPeopleViewController *)self tintColorForRecipient:v13];
+    recipient = [v9 recipient];
+    v14 = [(HUAddPeopleViewController *)self tintColorForRecipient:recipient];
     [v9 setTintColor:v14 animated:0];
 
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v15];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v9 setBackgroundColor:clearColor];
   }
 
   else
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v9 = [v7 dequeueReusableCellWithIdentifier:v17];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v17];
 
-    v18 = [(HUAddPeopleViewController *)self familyMembersNotInHome];
-    v19 = [v6 row];
+    familyMembersNotInHome = [(HUAddPeopleViewController *)self familyMembersNotInHome];
+    v19 = [pathCopy row];
 
-    v20 = [v18 objectAtIndexedSubscript:v19];
+    v20 = [familyMembersNotInHome objectAtIndexedSubscript:v19];
 
-    v21 = [(HUAddPeopleViewController *)self contactsController];
-    v22 = [v20 dsid];
-    v23 = [v21 contactForFamilyMemberWithDsid:v22];
+    contactsController = [(HUAddPeopleViewController *)self contactsController];
+    dsid = [v20 dsid];
+    v23 = [contactsController contactForFamilyMemberWithDsid:dsid];
 
     v24 = MEMORY[0x277CCACA8];
-    v25 = [v20 firstName];
-    v26 = [v20 lastName];
-    v15 = [v24 hf_formattedPersonNameForFirstName:v25 lastName:v26];
+    firstName = [v20 firstName];
+    lastName = [v20 lastName];
+    clearColor = [v24 hf_formattedPersonNameForFirstName:firstName lastName:lastName];
 
-    v27 = [v20 appleID];
-    LODWORD(v26) = [v27 hf_isEmail];
+    appleID = [v20 appleID];
+    LODWORD(lastName) = [appleID hf_isEmail];
 
-    if (v26)
+    if (lastName)
     {
-      v28 = [v20 appleID];
+      appleID2 = [v20 appleID];
     }
 
     else
     {
-      v28 = 0;
+      appleID2 = 0;
     }
 
-    [v9 setTitleText:v15];
-    [v9 setDescriptionText:v28];
+    [v9 setTitleText:clearColor];
+    [v9 setDescriptionText:appleID2];
     [v9 setContact:v23];
-    v29 = [v23 imageData];
+    imageData = [v23 imageData];
 
-    if (v29)
+    if (imageData)
     {
       v30 = MEMORY[0x277D755B8];
-      v31 = [v23 imageData];
-      v32 = [v30 imageWithData:v31];
+      imageData2 = [v23 imageData];
+      v32 = [v30 imageWithData:imageData2];
       [v9 setPhoto:v32];
     }
   }
@@ -839,9 +839,9 @@ LABEL_9:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  if (![(HUAddPeopleViewController *)self showingAutoCompleteResults:a3])
+  if (![(HUAddPeopleViewController *)self showingAutoCompleteResults:view])
   {
     return *MEMORY[0x277D76F30];
   }
@@ -852,9 +852,9 @@ LABEL_9:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(HUAddPeopleViewController *)self showingAutoCompleteResults:a3])
+  if ([(HUAddPeopleViewController *)self showingAutoCompleteResults:view])
   {
     return 0.0;
   }
@@ -863,80 +863,80 @@ LABEL_9:
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   if (![(HUAddPeopleViewController *)self showingAutoCompleteResults])
   {
-    v20 = [(HUAddPeopleViewController *)self familyMembersNotInHome];
-    v21 = [v6 row];
+    familyMembersNotInHome = [(HUAddPeopleViewController *)self familyMembersNotInHome];
+    v21 = [pathCopy row];
 
-    v22 = [v20 objectAtIndexedSubscript:v21];
+    v22 = [familyMembersNotInHome objectAtIndexedSubscript:v21];
 
-    v23 = [(HUAddPeopleViewController *)self contactsController];
-    v24 = [v22 dsid];
-    v25 = [v23 contactForFamilyMemberWithDsid:v24];
+    contactsController = [(HUAddPeopleViewController *)self contactsController];
+    dsid = [v22 dsid];
+    v25 = [contactsController contactForFamilyMemberWithDsid:dsid];
 
-    v26 = [v25 emailAddresses];
-    v27 = [v26 count];
+    emailAddresses = [v25 emailAddresses];
+    v27 = [emailAddresses count];
 
     if (v27)
     {
-      v28 = [v25 emailAddresses];
-      v29 = [v28 firstObject];
-      v30 = [v29 value];
+      emailAddresses2 = [v25 emailAddresses];
+      firstObject = [emailAddresses2 firstObject];
+      value = [firstObject value];
       v31 = 0;
     }
 
     else
     {
-      v28 = [v25 phoneNumbers];
-      v29 = [v28 firstObject];
-      v32 = [v29 value];
-      v30 = [v32 stringValue];
+      emailAddresses2 = [v25 phoneNumbers];
+      firstObject = [emailAddresses2 firstObject];
+      value2 = [firstObject value];
+      value = [value2 stringValue];
 
       v31 = 1;
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:v25 address:v30 kind:v31];
+    v9 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:v25 address:value kind:v31];
     goto LABEL_10;
   }
 
-  v7 = [(HUAddPeopleViewController *)self autoCompleteResults];
-  v8 = [v6 row];
+  autoCompleteResults = [(HUAddPeopleViewController *)self autoCompleteResults];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [autoCompleteResults objectAtIndexedSubscript:v8];
 
-  v10 = [(HUAddPeopleViewController *)self contactsController];
+  contactsController2 = [(HUAddPeopleViewController *)self contactsController];
   v11 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:v9];
-  v12 = [v10 statusForDestination:v11];
+  v12 = [contactsController2 statusForDestination:v11];
 
   if (v12 != 4)
   {
 LABEL_10:
-    v33 = [(HUAddPeopleViewController *)self composeView];
-    [v33 addRecipient:v9];
+    composeView = [(HUAddPeopleViewController *)self composeView];
+    [composeView addRecipient:v9];
 
-    v34 = [(HUAddPeopleViewController *)self composeView];
-    [v34 clearText];
+    composeView2 = [(HUAddPeopleViewController *)self composeView];
+    [composeView2 clearText];
 
     goto LABEL_13;
   }
 
   v13 = *MEMORY[0x277D13860];
   v42 = *MEMORY[0x277D13860];
-  v14 = [v9 address];
-  v43[0] = v14;
+  address = [v9 address];
+  v43[0] = address;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
 
   if (self->_adaptiveTemperatureEnabled && (-[HUAddPeopleViewController contactsController](self, "contactsController"), v16 = objc_claimAutoreleasedReturnValue(), -[HUAddPeopleViewController IDSDestinationForRecipient:](self, "IDSDestinationForRecipient:", v9), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v16 hasAdaptiveTemperatureIDSCapabilityForDestination:v17], v17, v16, (v18 & 1) == 0))
   {
     v40 = v13;
-    v35 = [v9 contact];
-    v36 = [v35 givenName];
-    v41 = v36;
+    contact = [v9 contact];
+    givenName = [contact givenName];
+    v41 = givenName;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
 
     v19 = 105;
@@ -949,22 +949,22 @@ LABEL_10:
   }
 
   v38 = [MEMORY[0x277CCA9B8] hf_errorWithCode:v19];
-  v39 = [MEMORY[0x277D14640] sharedHandler];
-  [v39 handleError:v38 operationType:*MEMORY[0x277D13BF0] options:v15 retryBlock:0 cancelBlock:0];
+  mEMORY[0x277D14640] = [MEMORY[0x277D14640] sharedHandler];
+  [mEMORY[0x277D14640] handleError:v38 operationType:*MEMORY[0x277D13BF0] options:v15 retryBlock:0 cancelBlock:0];
 
 LABEL_13:
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v14 = a4;
+  headerViewCopy = headerView;
   v7 = [MEMORY[0x277D74300] systemFontOfSize:11.0 weight:*MEMORY[0x277D743F8]];
-  v8 = [v14 textLabel];
-  [v8 setFont:v7];
+  textLabel = [headerViewCopy textLabel];
+  [textLabel setFont:v7];
 
-  v9 = [(HUAddPeopleViewController *)self familyMembersNotInHome];
-  v10 = [v9 count];
-  if (a5 || !v10)
+  familyMembersNotInHome = [(HUAddPeopleViewController *)self familyMembersNotInHome];
+  v10 = [familyMembersNotInHome count];
+  if (section || !v10)
   {
     v11 = @"HUPeopleTableSectionContacts";
   }
@@ -975,21 +975,21 @@ LABEL_13:
   }
 
   v12 = _HULocalizedStringWithDefaultValue(v11, v11, 1);
-  v13 = [v14 textLabel];
-  [v13 setText:v12];
+  textLabel2 = [headerViewCopy textLabel];
+  [textLabel2 setText:v12];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(HUAddPeopleViewController *)self tableView:v6 numberOfRowsInSection:a4])
+  viewCopy = view;
+  if ([(HUAddPeopleViewController *)self tableView:viewCopy numberOfRowsInSection:section])
   {
     v7 = +[HUAddPeopleTableHeaderFooterView identifier];
-    v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v7];
+    v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v7];
 
     v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    v10 = [v8 textLabel];
-    [v10 setFont:v9];
+    textLabel = [v8 textLabel];
+    [textLabel setFont:v9];
   }
 
   else
@@ -1000,80 +1000,80 @@ LABEL_13:
   return v8;
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v15 = a4;
-  v5 = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
-  [v5 invalidate];
+  changeCopy = change;
+  statusQueryDebounceTimer = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
+  [statusQueryDebounceTimer invalidate];
 
-  if ([v15 length])
+  if ([changeCopy length])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    [(HUAddPeopleViewController *)self setAdditionalAutoCompleteResults:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(HUAddPeopleViewController *)self setAdditionalAutoCompleteResults:array];
 
-    v7 = [(HUAddPeopleViewController *)self lastSearchID];
+    lastSearchID = [(HUAddPeopleViewController *)self lastSearchID];
 
-    if (v7)
+    if (lastSearchID)
     {
-      v8 = [(HUAddPeopleViewController *)self searchManager];
-      v9 = [(HUAddPeopleViewController *)self lastSearchID];
-      [v8 cancelTaskWithID:v9];
+      searchManager = [(HUAddPeopleViewController *)self searchManager];
+      lastSearchID2 = [(HUAddPeopleViewController *)self lastSearchID];
+      [searchManager cancelTaskWithID:lastSearchID2];
     }
 
-    v10 = [(HUAddPeopleViewController *)self searchManager];
-    v11 = [v10 searchForText:v15 withAutocompleteFetchContext:0 consumer:self];
+    searchManager2 = [(HUAddPeopleViewController *)self searchManager];
+    v11 = [searchManager2 searchForText:changeCopy withAutocompleteFetchContext:0 consumer:self];
     [(HUAddPeopleViewController *)self setLastSearchID:v11];
   }
 
   else
   {
-    v12 = [(HUAddPeopleViewController *)self lastSearchID];
+    lastSearchID3 = [(HUAddPeopleViewController *)self lastSearchID];
 
-    if (v12)
+    if (lastSearchID3)
     {
-      v13 = [(HUAddPeopleViewController *)self searchManager];
-      v14 = [(HUAddPeopleViewController *)self lastSearchID];
-      [v13 cancelTaskWithID:v14];
+      searchManager3 = [(HUAddPeopleViewController *)self searchManager];
+      lastSearchID4 = [(HUAddPeopleViewController *)self lastSearchID];
+      [searchManager3 cancelTaskWithID:lastSearchID4];
     }
 
     [(HUAddPeopleViewController *)self setShowingAutoCompleteResults:0];
-    v10 = [(HUAddPeopleViewController *)self tableView];
-    [v10 reloadData];
+    searchManager2 = [(HUAddPeopleViewController *)self tableView];
+    [searchManager2 reloadData];
   }
 
   [(HUAddPeopleViewController *)self updateStateDependentUI];
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
-  v5 = a4;
+  recipientCopy = recipient;
   [(HUAddPeopleViewController *)self updateStateDependentUI];
-  v6 = [(HUAddPeopleViewController *)self tintColorForRecipient:v5];
-  v7 = [(HUAddPeopleViewController *)self composeView];
-  v8 = [v7 atomViewForRecipient:v5];
+  v6 = [(HUAddPeopleViewController *)self tintColorForRecipient:recipientCopy];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  v8 = [composeView atomViewForRecipient:recipientCopy];
 
   [v8 setTintColor:v6];
-  v9 = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
-  [v9 invalidate];
+  statusQueryDebounceTimer = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
+  [statusQueryDebounceTimer invalidate];
 
   [(HUAddPeopleViewController *)self lookupVisibleRecipients];
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  [a3 removeRecipient:a4];
+  [view removeRecipient:recipient];
 
   [(HUAddPeopleViewController *)self updateStateDependentUI];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   v7 = MEMORY[0x277CCA900];
-  v8 = a4;
-  v9 = [v7 whitespaceCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  addressCopy = address;
+  whitespaceCharacterSet = [v7 whitespaceCharacterSet];
+  v10 = [addressCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (![v10 length])
   {
@@ -1084,12 +1084,12 @@ LABEL_13:
   if (v11)
   {
     v12 = v11;
-    v13 = [(HUAddPeopleViewController *)self composeView];
-    [v13 addRecipient:v12];
+    composeView = [(HUAddPeopleViewController *)self composeView];
+    [composeView addRecipient:v12];
 
 LABEL_4:
     [(HUAddPeopleViewController *)self setUnatomizedAddress:0];
-    [v6 clearText];
+    [viewCopy clearText];
     goto LABEL_8;
   }
 
@@ -1105,14 +1105,14 @@ LABEL_4:
 LABEL_8:
 }
 
-- (void)composeRecipientView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeRecipientView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = [(HUAddPeopleViewController *)self composeViewBottomConstraint:a3];
+  height = size.height;
+  v5 = [(HUAddPeopleViewController *)self composeViewBottomConstraint:view];
   [v5 setConstant:height];
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBDC18]);
@@ -1138,151 +1138,151 @@ LABEL_8:
   [v4 setDisplayedPropertyKeys:v10];
 
   [v4 setModalPresentationStyle:2];
-  v11 = [(HUAddPeopleViewController *)self navigationController];
-  [v11 presentViewController:v4 animated:1 completion:0];
+  navigationController = [(HUAddPeopleViewController *)self navigationController];
+  [navigationController presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient
 {
-  v3 = [(HUAddPeopleViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(HUAddPeopleViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactController:(id)a3 didFinishDownloadingFamilyMemberAvatar:(id)a4
+- (void)contactController:(id)controller didFinishDownloadingFamilyMemberAvatar:(id)avatar
 {
-  v16 = a4;
+  avatarCopy = avatar;
   if (![(HUAddPeopleViewController *)self showingAutoCompleteResults])
   {
-    v5 = [(HUAddPeopleViewController *)self familyMembersNotInHome];
-    v6 = [v5 indexOfObject:v16];
+    familyMembersNotInHome = [(HUAddPeopleViewController *)self familyMembersNotInHome];
+    v6 = [familyMembersNotInHome indexOfObject:avatarCopy];
 
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [(HUAddPeopleViewController *)self tableView];
+      tableView = [(HUAddPeopleViewController *)self tableView];
       v8 = [MEMORY[0x277CCAA70] indexPathForRow:v6 inSection:0];
-      v9 = [v7 cellForRowAtIndexPath:v8];
+      v9 = [tableView cellForRowAtIndexPath:v8];
 
-      v10 = [(HUAddPeopleViewController *)self contactsController];
-      v11 = [v16 dsid];
-      v12 = [v10 contactForFamilyMemberWithDsid:v11];
+      contactsController = [(HUAddPeopleViewController *)self contactsController];
+      dsid = [avatarCopy dsid];
+      v12 = [contactsController contactForFamilyMemberWithDsid:dsid];
 
       v13 = MEMORY[0x277D755B8];
-      v14 = [v12 imageData];
-      v15 = [v13 imageWithData:v14];
+      imageData = [v12 imageData];
+      v15 = [v13 imageWithData:imageData];
       [v9 setPhoto:v15];
     }
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = [(HUAddPeopleViewController *)self composeView];
-  [(HUAddPeopleViewController *)self composeRecipientViewDidFinishPickingRecipient:v4];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  [(HUAddPeopleViewController *)self composeRecipientViewDidFinishPickingRecipient:composeView];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 emailAddresses];
-  v7 = [v6 count];
+  contactCopy = contact;
+  emailAddresses = [contactCopy emailAddresses];
+  v7 = [emailAddresses count];
 
   if (v7)
   {
-    v8 = [v5 emailAddresses];
-    v9 = [v8 firstObject];
-    v10 = [v9 value];
+    emailAddresses2 = [contactCopy emailAddresses];
+    firstObject = [emailAddresses2 firstObject];
+    value = [firstObject value];
     v11 = 0;
   }
 
   else
   {
-    v8 = [v5 phoneNumbers];
-    v9 = [v8 firstObject];
-    v12 = [v9 value];
-    v10 = [v12 stringValue];
+    emailAddresses2 = [contactCopy phoneNumbers];
+    firstObject = [emailAddresses2 firstObject];
+    value2 = [firstObject value];
+    value = [value2 stringValue];
 
     v11 = 1;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:v5 address:v10 kind:v11];
+  v13 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:contactCopy address:value kind:v11];
   v14 = HFLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
     v18 = v13;
     v19 = 2112;
-    v20 = v5;
+    v20 = contactCopy;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "Adding new recipient %@ from contact %@", &v17, 0x16u);
   }
 
-  v15 = [(HUAddPeopleViewController *)self composeView];
-  [v15 addRecipient:v13];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  [composeView addRecipient:v13];
 
-  v16 = [(HUAddPeopleViewController *)self composeView];
-  [(HUAddPeopleViewController *)self composeRecipientViewDidFinishPickingRecipient:v16];
+  composeView2 = [(HUAddPeopleViewController *)self composeView];
+  [(HUAddPeopleViewController *)self composeRecipientViewDidFinishPickingRecipient:composeView2];
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 contact];
-  v7 = [v5 key];
+  propertyCopy = property;
+  contact = [propertyCopy contact];
+  v7 = [propertyCopy key];
   v8 = [v7 isEqualToString:*MEMORY[0x277CBCFC0]];
 
   if (v8)
   {
-    v9 = [v6 emailAddresses];
-    v10 = [v9 firstObject];
-    v11 = [v10 value];
+    emailAddresses = [contact emailAddresses];
+    firstObject = [emailAddresses firstObject];
+    value = [firstObject value];
     v12 = 0;
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v13 = [v5 key];
+  v13 = [propertyCopy key];
   v14 = [v13 isEqualToString:*MEMORY[0x277CBD098]];
 
   if (v14)
   {
-    v9 = [v6 phoneNumbers];
-    v10 = [v9 firstObject];
-    v15 = [v10 value];
-    v11 = [v15 stringValue];
+    emailAddresses = [contact phoneNumbers];
+    firstObject = [emailAddresses firstObject];
+    value2 = [firstObject value];
+    value = [value2 stringValue];
 
     v12 = 1;
     goto LABEL_5;
   }
 
-  v11 = 0;
+  value = 0;
   v12 = 5;
 LABEL_7:
-  v16 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:v6 address:v11 kind:v12];
+  v16 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:contact address:value kind:v12];
   v17 = HFLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412546;
     v21 = v16;
     v22 = 2112;
-    v23 = v6;
+    v23 = contact;
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "Adding new recipient %@ from contact %@", &v20, 0x16u);
   }
 
-  v18 = [(HUAddPeopleViewController *)self composeView];
-  [v18 addRecipient:v16];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  [composeView addRecipient:v16];
 
-  v19 = [(HUAddPeopleViewController *)self composeView];
-  [(HUAddPeopleViewController *)self composeRecipientViewDidFinishPickingRecipient:v19];
+  composeView2 = [(HUAddPeopleViewController *)self composeView];
+  [(HUAddPeopleViewController *)self composeRecipientViewDidFinishPickingRecipient:composeView2];
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUAddPeopleViewController *)self lastSearchID];
-  v9 = [v7 isEqualToNumber:v8];
+  resultsCopy = results;
+  dCopy = d;
+  lastSearchID = [(HUAddPeopleViewController *)self lastSearchID];
+  v9 = [dCopy isEqualToNumber:lastSearchID];
 
   if (v9)
   {
@@ -1291,9 +1291,9 @@ LABEL_7:
     v12[2] = __69__HUAddPeopleViewController_consumeAutocompleteSearchResults_taskID___block_invoke;
     v12[3] = &unk_277DBD158;
     v12[4] = self;
-    v10 = [v6 na_filter:v12];
-    v11 = [(HUAddPeopleViewController *)self additionalAutoCompleteResults];
-    [v11 addObjectsFromArray:v10];
+    v10 = [resultsCopy na_filter:v12];
+    additionalAutoCompleteResults = [(HUAddPeopleViewController *)self additionalAutoCompleteResults];
+    [additionalAutoCompleteResults addObjectsFromArray:v10];
 
     [(HUAddPeopleViewController *)self setShowingAutoCompleteResults:1];
   }
@@ -1323,8 +1323,8 @@ uint64_t __69__HUAddPeopleViewController_consumeAutocompleteSearchResults_taskID
 {
   if (-[HUAddPeopleViewController showingAutoCompleteResults](self, "showingAutoCompleteResults") && (-[HUAddPeopleViewController additionalAutoCompleteResults](self, "additionalAutoCompleteResults"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
-    v5 = [(HUAddPeopleViewController *)self additionalAutoCompleteResults];
-    v6 = [v5 copy];
+    additionalAutoCompleteResults = [(HUAddPeopleViewController *)self additionalAutoCompleteResults];
+    v6 = [additionalAutoCompleteResults copy];
     [(HUAddPeopleViewController *)self setAutoCompleteResults:v6];
 
     v7 = 1;
@@ -1336,26 +1336,26 @@ uint64_t __69__HUAddPeopleViewController_consumeAutocompleteSearchResults_taskID
   }
 
   [(HUAddPeopleViewController *)self setShowingAutoCompleteResults:v7];
-  v8 = [(HUAddPeopleViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(HUAddPeopleViewController *)self tableView];
+  [tableView reloadData];
 
   [(HUAddPeopleViewController *)self scheduleDelayedLookupVisibleRecipients];
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  statusCopy = status;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
     v25 = v10;
     v26 = 2112;
-    v27 = v8;
+    v27 = statusCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: %@ Received IDS update for destinations: %@", buf, 0x20u);
   }
 
@@ -1367,30 +1367,30 @@ uint64_t __69__HUAddPeopleViewController_consumeAutocompleteSearchResults_taskID
     {
       v13 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@: %@ Checking IDS capabilities...", buf, 0x16u);
     }
 
-    v14 = [MEMORY[0x277D18728] sharedInstance];
-    v15 = [v8 allKeys];
-    v16 = [(HUAddPeopleViewController *)self _getIDSServiceName];
-    v17 = [MEMORY[0x277D189C8] refreshIDInfo];
+    mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
+    allKeys = [statusCopy allKeys];
+    _getIDSServiceName = [(HUAddPeopleViewController *)self _getIDSServiceName];
+    refreshIDInfo = [MEMORY[0x277D189C8] refreshIDInfo];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __92__HUAddPeopleViewController_batchQueryController_updatedDestinationsStatus_onService_error___block_invoke;
     v18[3] = &unk_277DBD1C8;
     v18[4] = self;
     v20 = a2;
-    v19 = v8;
+    v19 = statusCopy;
     v21 = adaptiveTemperatureEnabled;
-    [v14 idInfoForDestinations:v15 service:v16 infoTypes:1 options:v17 listenerID:@"HomeUI" queue:MEMORY[0x277D85CD0] completionBlock:v18];
+    [mEMORY[0x277D18728] idInfoForDestinations:allKeys service:_getIDSServiceName infoTypes:1 options:refreshIDInfo listenerID:@"HomeUI" queue:MEMORY[0x277D85CD0] completionBlock:v18];
   }
 
   else
   {
-    [(HUAddPeopleViewController *)self handleStatusQueryResults:v8];
+    [(HUAddPeopleViewController *)self handleStatusQueryResults:statusCopy];
   }
 }
 
@@ -1644,35 +1644,35 @@ LABEL_28:
   }
 }
 
-- (void)handleStatusQueryResults:(id)a3
+- (void)handleStatusQueryResults:(id)results
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultsCopy = results;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v7;
     v38 = 2112;
-    v39 = v5;
+    v39 = resultsCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Will handle status query results for destinations: %@", buf, 0x20u);
   }
 
-  v8 = [(HUAddPeopleViewController *)self contactsController];
-  v27 = v5;
-  [v8 entriesUpdated:v5];
+  contactsController = [(HUAddPeopleViewController *)self contactsController];
+  v27 = resultsCopy;
+  [contactsController entriesUpdated:resultsCopy];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [(HUAddPeopleViewController *)self composeView];
-  v10 = [v9 recipients];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  recipients = [composeView recipients];
 
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v11 = [recipients countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1683,32 +1683,32 @@ LABEL_28:
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(recipients);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
         v16 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:v15];
-        v17 = [(HUAddPeopleViewController *)self contactsController];
-        v18 = [v17 statusForDestination:v16];
+        contactsController2 = [(HUAddPeopleViewController *)self contactsController];
+        v18 = [contactsController2 statusForDestination:v16];
 
         v19 = HFLogForCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v20 = [MEMORY[0x277D145A8] stringForRecipientStatus:v18];
           *buf = 138412546;
-          v35 = v16;
+          selfCopy = v16;
           v36 = 2112;
           v37 = v20;
           _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "Status of destination %@ is %@", buf, 0x16u);
         }
 
         v21 = [(HUAddPeopleViewController *)self tintColorForRecipient:v15];
-        v22 = [(HUAddPeopleViewController *)self composeView];
-        v23 = [v22 atomViewForRecipient:v15];
+        composeView2 = [(HUAddPeopleViewController *)self composeView];
+        v23 = [composeView2 atomViewForRecipient:v15];
         [v23 setTintColor:v21];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v12 = [recipients countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v12);
@@ -1723,14 +1723,14 @@ LABEL_28:
       _os_log_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_DEFAULT, "Updating search results...", buf, 2u);
     }
 
-    v25 = [(HUAddPeopleViewController *)self tableView];
-    v26 = [v25 indexPathsForVisibleRows];
+    tableView = [(HUAddPeopleViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __54__HUAddPeopleViewController_handleStatusQueryResults___block_invoke;
     v28[3] = &unk_277DBD1F0;
     v28[4] = self;
-    [v26 enumerateObjectsUsingBlock:v28];
+    [indexPathsForVisibleRows enumerateObjectsUsingBlock:v28];
   }
 
   if ([(HUAddPeopleViewController *)self state]== 1)
@@ -1761,13 +1761,13 @@ void __54__HUAddPeopleViewController_handleStatusQueryResults___block_invoke(uin
   }
 }
 
-- (id)tintColorForRecipient:(id)a3
+- (id)tintColorForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(HUAddPeopleViewController *)self contactsController];
-  v6 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:v4];
+  recipientCopy = recipient;
+  contactsController = [(HUAddPeopleViewController *)self contactsController];
+  v6 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:recipientCopy];
 
-  v7 = [v5 statusForDestination:v6];
+  v7 = [contactsController statusForDestination:v6];
   if (v7 == 3)
   {
     [(HUAddPeopleViewController *)self effectiveTintColor];
@@ -1784,48 +1784,48 @@ void __54__HUAddPeopleViewController_handleStatusQueryResults___block_invoke(uin
 
 - (void)updateStateDependentUI
 {
-  v3 = [(HUAddPeopleViewController *)self state];
-  v4 = [(HUAddPeopleViewController *)self spinner];
-  v5 = v4;
-  if (!v3)
+  state = [(HUAddPeopleViewController *)self state];
+  spinner = [(HUAddPeopleViewController *)self spinner];
+  v5 = spinner;
+  if (!state)
   {
 
     if (v5)
     {
-      v18 = [(HUAddPeopleViewController *)self spinner];
-      [v18 stopAnimating];
+      spinner2 = [(HUAddPeopleViewController *)self spinner];
+      [spinner2 stopAnimating];
 
       [(HUAddPeopleViewController *)self setSpinner:0];
       v19 = objc_alloc(MEMORY[0x277D751E0]);
-      v20 = [(HUAddPeopleViewController *)self rightBarButtonTitle];
-      v21 = [v19 initWithTitle:v20 style:2 target:self action:sel_sendButtonPressed_];
-      v22 = [(HUAddPeopleViewController *)self navigationItem];
-      [v22 setRightBarButtonItem:v21];
+      rightBarButtonTitle = [(HUAddPeopleViewController *)self rightBarButtonTitle];
+      v21 = [v19 initWithTitle:rightBarButtonTitle style:2 target:self action:sel_sendButtonPressed_];
+      navigationItem = [(HUAddPeopleViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:v21];
     }
 
-    v23 = [(HUAddPeopleViewController *)self composeView];
-    v24 = [v23 textView];
-    v25 = [v24 text];
-    v26 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v27 = [v25 stringByRemovingCharactersFromSet:v26];
+    composeView = [(HUAddPeopleViewController *)self composeView];
+    textView = [composeView textView];
+    text = [textView text];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v27 = [text stringByRemovingCharactersFromSet:whitespaceCharacterSet];
     v28 = [v27 length] != 0;
-    v29 = [(HUAddPeopleViewController *)self navigationItem];
-    v30 = [v29 rightBarButtonItem];
-    [v30 setEnabled:v28];
+    navigationItem2 = [(HUAddPeopleViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v28];
 
-    v31 = [(HUAddPeopleViewController *)self navigationItem];
-    v32 = [v31 leftBarButtonItem];
-    [v32 setEnabled:1];
+    navigationItem3 = [(HUAddPeopleViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem3 leftBarButtonItem];
+    [leftBarButtonItem setEnabled:1];
 
-    v33 = [(HUAddPeopleViewController *)self tableView];
-    [v33 setAllowsSelection:1];
+    tableView = [(HUAddPeopleViewController *)self tableView];
+    [tableView setAllowsSelection:1];
 
-    v34 = [(HUAddPeopleViewController *)self composeView];
-    v35 = [v34 addButton];
-    [v35 setEnabled:1];
+    composeView2 = [(HUAddPeopleViewController *)self composeView];
+    addButton = [composeView2 addButton];
+    [addButton setEnabled:1];
 
-    v36 = [(HUAddPeopleViewController *)self composeView];
-    [v36 setUserInteractionEnabled:1];
+    composeView3 = [(HUAddPeopleViewController *)self composeView];
+    [composeView3 setUserInteractionEnabled:1];
     goto LABEL_9;
   }
 
@@ -1835,33 +1835,33 @@ void __54__HUAddPeopleViewController_handleStatusQueryResults___block_invoke(uin
     [(HUAddPeopleViewController *)self setSpinner:v6];
 
     v7 = objc_alloc(MEMORY[0x277D751E0]);
-    v8 = [(HUAddPeopleViewController *)self spinner];
-    v9 = [v7 initWithCustomView:v8];
-    v10 = [(HUAddPeopleViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v9];
+    spinner3 = [(HUAddPeopleViewController *)self spinner];
+    v9 = [v7 initWithCustomView:spinner3];
+    navigationItem4 = [(HUAddPeopleViewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:v9];
 
-    v11 = [(HUAddPeopleViewController *)self spinner];
-    [v11 startAnimating];
+    spinner4 = [(HUAddPeopleViewController *)self spinner];
+    [spinner4 startAnimating];
   }
 
-  v12 = [(HUAddPeopleViewController *)self tableView];
-  [v12 setAllowsSelection:0];
+  tableView2 = [(HUAddPeopleViewController *)self tableView];
+  [tableView2 setAllowsSelection:0];
 
-  v13 = [(HUAddPeopleViewController *)self composeView];
-  v14 = [v13 addButton];
-  [v14 setEnabled:0];
+  composeView4 = [(HUAddPeopleViewController *)self composeView];
+  addButton2 = [composeView4 addButton];
+  [addButton2 setEnabled:0];
 
-  v15 = [(HUAddPeopleViewController *)self composeView];
-  [v15 setUserInteractionEnabled:0];
+  composeView5 = [(HUAddPeopleViewController *)self composeView];
+  [composeView5 setUserInteractionEnabled:0];
 
-  v16 = [(HUAddPeopleViewController *)self composeView];
-  [v16 resignFirstResponder];
+  composeView6 = [(HUAddPeopleViewController *)self composeView];
+  [composeView6 resignFirstResponder];
 
   if ([(HUAddPeopleViewController *)self state]>= 2)
   {
-    v36 = [(HUAddPeopleViewController *)self navigationItem];
-    v17 = [v36 leftBarButtonItem];
-    [v17 setEnabled:0];
+    composeView3 = [(HUAddPeopleViewController *)self navigationItem];
+    leftBarButtonItem2 = [composeView3 leftBarButtonItem];
+    [leftBarButtonItem2 setEnabled:0];
 
 LABEL_9:
   }
@@ -1896,32 +1896,32 @@ LABEL_9:
   return v4;
 }
 
-- (id)IDSDestinationForRecipient:(id)a3
+- (id)IDSDestinationForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [v4 uncommentedAddress];
-  v6 = v5;
-  if (v5)
+  recipientCopy = recipient;
+  uncommentedAddress = [recipientCopy uncommentedAddress];
+  v6 = uncommentedAddress;
+  if (uncommentedAddress)
   {
-    v7 = v5;
+    address = uncommentedAddress;
   }
 
   else
   {
-    v7 = [v4 address];
+    address = [recipientCopy address];
   }
 
-  v8 = v7;
+  v8 = address;
 
   v9 = IMStripFormattingFromAddress();
-  if ([v4 kind] == 1)
+  if ([recipientCopy kind] == 1)
   {
     v10 = [(HUAddPeopleViewController *)self _sanitizedIDSCopyIDForPhoneNumber:v9];
   }
 
   else
   {
-    if ([v4 kind])
+    if ([recipientCopy kind])
     {
       goto LABEL_9;
     }
@@ -1937,48 +1937,48 @@ LABEL_9:
   return v9;
 }
 
-- (id)_sanitizedIDSCopyIDForPhoneNumber:(id)a3
+- (id)_sanitizedIDSCopyIDForPhoneNumber:(id)number
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 containsString:@"+"])
+  numberCopy = number;
+  if ([numberCopy containsString:@"+"])
   {
     v4 = IDSCopyIDForPhoneNumber();
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAF8] currentLocale];
-    v6 = [v5 regionCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    regionCode = [currentLocale regionCode];
 
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v3;
+      v10 = numberCopy;
       v11 = 2112;
-      v12 = v6;
+      v12 = regionCode;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Phone number %@ does not include country code, looking at current locale to add one: %@", &v9, 0x16u);
     }
 
-    v4 = MEMORY[0x20F31EAA0](v3, v6, 0);
+    v4 = MEMORY[0x20F31EAA0](numberCopy, regionCode, 0);
   }
 
   return v4;
 }
 
-- (id)composeRecipientForAddress:(id)a3
+- (id)composeRecipientForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(HUAddPeopleViewController *)self requiredKeyDescriptors];
-  if (![v4 hf_isPhoneNumber])
+  addressCopy = address;
+  requiredKeyDescriptors = [(HUAddPeopleViewController *)self requiredKeyDescriptors];
+  if (![addressCopy hf_isPhoneNumber])
   {
-    if (![v4 hf_isEmail])
+    if (![addressCopy hf_isEmail])
     {
       goto LABEL_7;
     }
 
-    v6 = [MEMORY[0x277D145A8] contactForEmailAddress:v4 keyDescriptors:v5];
+    v6 = [MEMORY[0x277D145A8] contactForEmailAddress:addressCopy keyDescriptors:requiredKeyDescriptors];
     v7 = 0;
     if (!v6)
     {
@@ -1986,12 +1986,12 @@ LABEL_9:
     }
 
 LABEL_6:
-    v8 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:v6 address:v4 kind:v7];
+    v8 = [objc_alloc(MEMORY[0x277CD6858]) initWithContact:v6 address:addressCopy kind:v7];
 
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x277D145A8] contactForPhoneNumber:v4 keyDescriptors:v5];
+  v6 = [MEMORY[0x277D145A8] contactForPhoneNumber:addressCopy keyDescriptors:requiredKeyDescriptors];
   v7 = 1;
   if (v6)
   {
@@ -2007,8 +2007,8 @@ LABEL_8:
 
 - (void)scheduleDelayedLookupVisibleRecipients
 {
-  v3 = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
-  [v3 invalidate];
+  statusQueryDebounceTimer = [(HUAddPeopleViewController *)self statusQueryDebounceTimer];
+  [statusQueryDebounceTimer invalidate];
 
   v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_lookupVisibleRecipients selector:0 userInfo:0 repeats:0.5];
   [(HUAddPeopleViewController *)self setStatusQueryDebounceTimer:v4];
@@ -2022,10 +2022,10 @@ LABEL_8:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [(HUAddPeopleViewController *)self composeView];
-  v5 = [v4 recipients];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  recipients = [composeView recipients];
 
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v6 = [recipients countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2037,14 +2037,14 @@ LABEL_8:
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(recipients);
         }
 
         v10 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:*(*(&v30 + 1) + 8 * v9)];
         if (v10)
         {
-          v11 = [(HUAddPeopleViewController *)self contactsController];
-          v12 = [v11 statusForDestination:v10];
+          contactsController = [(HUAddPeopleViewController *)self contactsController];
+          v12 = [contactsController statusForDestination:v10];
 
           if (!v12)
           {
@@ -2056,7 +2056,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v7 = [recipients countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v7);
@@ -2068,10 +2068,10 @@ LABEL_8:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [(HUAddPeopleViewController *)self tableView];
-    v14 = [v13 indexPathsForVisibleRows];
+    tableView = [(HUAddPeopleViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-    v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    v15 = [indexPathsForVisibleRows countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v15)
     {
       v16 = v15;
@@ -2083,18 +2083,18 @@ LABEL_8:
         {
           if (*v27 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(indexPathsForVisibleRows);
           }
 
           v19 = *(*(&v26 + 1) + 8 * v18);
-          v20 = [(HUAddPeopleViewController *)self autoCompleteResults];
-          v21 = [v20 objectAtIndexedSubscript:{objc_msgSend(v19, "row")}];
+          autoCompleteResults = [(HUAddPeopleViewController *)self autoCompleteResults];
+          v21 = [autoCompleteResults objectAtIndexedSubscript:{objc_msgSend(v19, "row")}];
 
           v22 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:v21];
           if (v22)
           {
-            v23 = [(HUAddPeopleViewController *)self contactsController];
-            v24 = [v23 statusForDestination:v22];
+            contactsController2 = [(HUAddPeopleViewController *)self contactsController];
+            v24 = [contactsController2 statusForDestination:v22];
 
             if (!v24)
             {
@@ -2106,7 +2106,7 @@ LABEL_8:
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v16 = [indexPathsForVisibleRows countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v16);
@@ -2115,63 +2115,63 @@ LABEL_8:
 
   if ([v3 count])
   {
-    v25 = [v3 allObjects];
-    [(HUAddPeopleViewController *)self lookupIDSDestinations:v25];
+    allObjects = [v3 allObjects];
+    [(HUAddPeopleViewController *)self lookupIDSDestinations:allObjects];
   }
 }
 
-- (void)lookupIDSDestinations:(id)a3
+- (void)lookupIDSDestinations:(id)destinations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAddPeopleViewController *)self statusQueryController];
+  destinationsCopy = destinations;
+  statusQueryController = [(HUAddPeopleViewController *)self statusQueryController];
 
-  if (v5)
+  if (statusQueryController)
   {
-    v6 = [(HUAddPeopleViewController *)self statusQueryController];
-    [v6 invalidate];
+    statusQueryController2 = [(HUAddPeopleViewController *)self statusQueryController];
+    [statusQueryController2 invalidate];
   }
 
-  v7 = [(HUAddPeopleViewController *)self contactsController];
-  [v7 markDestinationsPending:v4];
+  contactsController = [(HUAddPeopleViewController *)self contactsController];
+  [contactsController markDestinationsPending:destinationsCopy];
 
-  v8 = [(HUAddPeopleViewController *)self _getIDSServiceName];
-  v9 = [(HUAddPeopleViewController *)self contactsController];
-  v10 = [v9 pendingDestinations];
+  _getIDSServiceName = [(HUAddPeopleViewController *)self _getIDSServiceName];
+  contactsController2 = [(HUAddPeopleViewController *)self contactsController];
+  pendingDestinations = [contactsController2 pendingDestinations];
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412802;
-    v16 = v8;
+    v16 = _getIDSServiceName;
     v17 = 2112;
-    v18 = v4;
+    v18 = destinationsCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = pendingDestinations;
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "Performing IDS lookup with service name %@ for destination(s): %@. allPendingDestinations = %@", &v15, 0x20u);
   }
 
   v12 = objc_alloc(MEMORY[0x277D186D8]);
-  v13 = [v12 initWithService:v8 delegate:self queue:MEMORY[0x277D85CD0]];
+  v13 = [v12 initWithService:_getIDSServiceName delegate:self queue:MEMORY[0x277D85CD0]];
   [(HUAddPeopleViewController *)self setStatusQueryController:v13];
 
-  v14 = [(HUAddPeopleViewController *)self statusQueryController];
-  [v14 setDestinations:v10];
+  statusQueryController3 = [(HUAddPeopleViewController *)self statusQueryController];
+  [statusQueryController3 setDestinations:pendingDestinations];
 }
 
-- (id)recipientsWithStatusPassingTest:(id)a3
+- (id)recipientsWithStatusPassingTest:(id)test
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v18 = [MEMORY[0x277CBEB18] array];
+  testCopy = test;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(HUAddPeopleViewController *)self composeView];
-  v6 = [v5 recipients];
+  composeView = [(HUAddPeopleViewController *)self composeView];
+  recipients = [composeView recipients];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [recipients countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2182,29 +2182,29 @@ LABEL_8:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recipients);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(HUAddPeopleViewController *)self contactsController];
+        contactsController = [(HUAddPeopleViewController *)self contactsController];
         v13 = [(HUAddPeopleViewController *)self IDSDestinationForRecipient:v11];
-        v14 = [v12 statusForDestination:v13];
+        v14 = [contactsController statusForDestination:v13];
 
-        if (v4[2](v4, v14))
+        if (testCopy[2](testCopy, v14))
         {
-          [v18 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [recipients countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  if ([v18 count])
+  if ([array count])
   {
-    v15 = v18;
+    v15 = array;
   }
 
   else
@@ -2224,17 +2224,17 @@ LABEL_8:
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUAddPeopleViewController *)self composeView];
-    v5 = [v4 recipients];
+    composeView = [(HUAddPeopleViewController *)self composeView];
+    recipients = [composeView recipients];
     *buf = 138412290;
-    v69 = v5;
+    v69 = recipients;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to send invitation(s) to recipients: %@", buf, 0xCu);
   }
 
   v6 = [(HUAddPeopleViewController *)self recipientsWithStatusPassingTest:&__block_literal_global_269_0];
-  v7 = [(HUAddPeopleViewController *)self composeView];
-  v8 = [v7 recipients];
-  v9 = [v8 count] == 0;
+  composeView2 = [(HUAddPeopleViewController *)self composeView];
+  recipients2 = [composeView2 recipients];
+  v9 = [recipients2 count] == 0;
 
   if (v9)
   {
@@ -2246,8 +2246,8 @@ LABEL_8:
     }
 
     v13 = [MEMORY[0x277CCA9B8] hf_errorWithCode:40];
-    v14 = [MEMORY[0x277D14640] sharedHandler];
-    [v14 handleError:v13 operationType:*MEMORY[0x277D13BF8] options:0 retryBlock:0 cancelBlock:0];
+    mEMORY[0x277D14640] = [MEMORY[0x277D14640] sharedHandler];
+    [mEMORY[0x277D14640] handleError:v13 operationType:*MEMORY[0x277D13BF8] options:0 retryBlock:0 cancelBlock:0];
 
     [(HUAddPeopleViewController *)self setState:0];
   }
@@ -2293,51 +2293,51 @@ LABEL_8:
     v13 = [MEMORY[0x277CCA9B8] hf_errorWithCode:v11];
     v20 = *MEMORY[0x277D13860];
     v66 = *MEMORY[0x277D13860];
-    v21 = [v6 firstObject];
-    v22 = [v21 address];
-    v67 = v22;
+    firstObject = [v6 firstObject];
+    address = [firstObject address];
+    v67 = address;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
 
     if (v11 == 105)
     {
       v64 = v20;
-      v24 = [v6 firstObject];
-      v25 = [v24 contact];
-      v26 = [v25 givenName];
-      v65 = v26;
+      firstObject2 = [v6 firstObject];
+      contact = [firstObject2 contact];
+      givenName = [contact givenName];
+      v65 = givenName;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
 
       v23 = v27;
     }
 
-    v28 = [MEMORY[0x277D14640] sharedHandler];
-    [v28 handleError:v13 operationType:*MEMORY[0x277D13BF0] options:v23 retryBlock:0 cancelBlock:0];
+    mEMORY[0x277D14640]2 = [MEMORY[0x277D14640] sharedHandler];
+    [mEMORY[0x277D14640]2 handleError:v13 operationType:*MEMORY[0x277D13BF0] options:v23 retryBlock:0 cancelBlock:0];
 
     [(HUAddPeopleViewController *)self setState:0];
   }
 
   else
   {
-    v15 = [(HUAddPeopleViewController *)self unatomizedAddress];
+    unatomizedAddress = [(HUAddPeopleViewController *)self unatomizedAddress];
 
-    if (v15)
+    if (unatomizedAddress)
     {
       v16 = HFLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v46 = [(HUAddPeopleViewController *)self unatomizedAddress];
+        unatomizedAddress2 = [(HUAddPeopleViewController *)self unatomizedAddress];
         *buf = 138412290;
-        v69 = v46;
+        v69 = unatomizedAddress2;
         _os_log_error_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_ERROR, "Failing send due to invalid unatomized address: %@", buf, 0xCu);
       }
 
       v13 = [MEMORY[0x277CCA9B8] hf_errorWithCode:40];
-      v17 = [MEMORY[0x277D14640] sharedHandler];
+      mEMORY[0x277D14640]3 = [MEMORY[0x277D14640] sharedHandler];
       v62 = *MEMORY[0x277D13860];
-      v18 = [(HUAddPeopleViewController *)self unatomizedAddress];
-      v63 = v18;
+      unatomizedAddress3 = [(HUAddPeopleViewController *)self unatomizedAddress];
+      v63 = unatomizedAddress3;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-      [v17 handleError:v13 operationType:*MEMORY[0x277D13BF0] options:v19 retryBlock:0 cancelBlock:0];
+      [mEMORY[0x277D14640]3 handleError:v13 operationType:*MEMORY[0x277D13BF0] options:v19 retryBlock:0 cancelBlock:0];
 
       [(HUAddPeopleViewController *)self setState:0];
     }
@@ -2359,31 +2359,31 @@ LABEL_8:
       else
       {
         [(HUAddPeopleViewController *)self setState:2];
-        v30 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-        v31 = [(HUAddPeopleViewController *)self composeView];
-        v32 = [v31 recipients];
+        uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+        composeView3 = [(HUAddPeopleViewController *)self composeView];
+        recipients3 = [composeView3 recipients];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __40__HUAddPeopleViewController_sendInvites__block_invoke_274;
         v58[3] = &unk_277DBD238;
-        v29 = v30;
+        v29 = uRLQueryAllowedCharacterSet;
         v59 = v29;
-        v33 = [v32 na_map:v58];
+        v33 = [recipients3 na_map:v58];
 
         if ([(HUAddPeopleViewController *)self viewContext]== 1)
         {
-          v34 = [(HUAddPeopleViewController *)self delegate];
+          delegate = [(HUAddPeopleViewController *)self delegate];
           v35 = objc_opt_respondsToSelector();
 
           if (v35)
           {
-            v36 = [(HUAddPeopleViewController *)self delegate];
-            [v36 didSelectPeopleForInvite:self inviteeAddresses:v33];
+            delegate2 = [(HUAddPeopleViewController *)self delegate];
+            [delegate2 didSelectPeopleForInvite:self inviteeAddresses:v33];
           }
 
           [(HUAddPeopleViewController *)self setRequiresPresentingViewControllerDismissal:0];
-          v37 = [(HUAddPeopleViewController *)self presentationDelegate];
-          v38 = [v37 finishPresentation:self animated:1];
+          presentationDelegate = [(HUAddPeopleViewController *)self presentationDelegate];
+          v38 = [presentationDelegate finishPresentation:self animated:1];
         }
 
         else
@@ -2401,7 +2401,7 @@ LABEL_8:
           v54[3] = &unk_277DBB198;
           v41 = v33;
           v55 = v41;
-          v56 = self;
+          selfCopy = self;
           v42 = [v40 flatMap:v54];
 
           objc_initWeak(buf, self);
@@ -2416,7 +2416,7 @@ LABEL_8:
           v49[2] = __40__HUAddPeopleViewController_sendInvites__block_invoke_3;
           v49[3] = &unk_277DB7E90;
           v50 = v41;
-          v51 = self;
+          selfCopy2 = self;
           v44 = [v42 addFailureBlock:v49];
           v47[0] = MEMORY[0x277D85DD0];
           v47[1] = 3221225472;
@@ -2708,11 +2708,11 @@ void __40__HUAddPeopleViewController_sendInvites__block_invoke_5(uint64_t a1, vo
 
 - (id)_getIDSServiceName
 {
-  v2 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v3 = [v2 homeManager];
-  v4 = [v3 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (v4)
+  if (hasOptedToHH2)
   {
     return @"com.apple.private.alloy.home.invite";
   }

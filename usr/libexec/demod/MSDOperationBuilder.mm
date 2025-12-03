@@ -1,47 +1,47 @@
 @interface MSDOperationBuilder
-- (id)buildAppDataOperationsWithIdentifier:(id)a3 andDependencies:(id)a4;
-- (id)buildAppRemovalOperationsWithIdentifier:(id)a3;
-- (id)buildBackupOperationsWithPath:(id)a3 andIndex:(unint64_t)a4;
-- (id)buildConfigurationProfileOperationsWithIdentifier:(id)a3;
-- (id)buildProvisioningProfileOperations:(id)a3;
-- (id)buildSettingsOperationWithIdentifier:(id)a3;
-- (id)buildStandalonePkgOperationsWithIdentifier:(id)a3;
-- (id)buildSystemAppOperationsWithIdentifier:(id)a3;
-- (id)sequentialGroupForIdentifiers:(id)a3 andContext:(id)a4;
-- (id)sequentialOperationsForIdentifiers:(id)a3 andContext:(id)a4;
+- (id)buildAppDataOperationsWithIdentifier:(id)identifier andDependencies:(id)dependencies;
+- (id)buildAppRemovalOperationsWithIdentifier:(id)identifier;
+- (id)buildBackupOperationsWithPath:(id)path andIndex:(unint64_t)index;
+- (id)buildConfigurationProfileOperationsWithIdentifier:(id)identifier;
+- (id)buildProvisioningProfileOperations:(id)operations;
+- (id)buildSettingsOperationWithIdentifier:(id)identifier;
+- (id)buildStandalonePkgOperationsWithIdentifier:(id)identifier;
+- (id)buildSystemAppOperationsWithIdentifier:(id)identifier;
+- (id)sequentialGroupForIdentifiers:(id)identifiers andContext:(id)context;
+- (id)sequentialOperationsForIdentifiers:(id)identifiers andContext:(id)context;
 @end
 
 @implementation MSDOperationBuilder
 
-- (id)buildBackupOperationsWithPath:(id)a3 andIndex:(unint64_t)a4
+- (id)buildBackupOperationsWithPath:(id)path andIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(MSDOperationBuilder *)self signedManifest];
-  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 getVersion]);
+  pathCopy = path;
+  signedManifest = [(MSDOperationBuilder *)self signedManifest];
+  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [signedManifest getVersion]);
 
-  v9 = [MSDSignedManifest getComponentFromPath:v6 forManifestVersion:v8];
+  v9 = [MSDSignedManifest getComponentFromPath:pathCopy forManifestVersion:v8];
   v10 = +[MSDTargetDevice sharedInstance];
-  v11 = [v10 demoUserHomePath];
+  demoUserHomePath = [v10 demoUserHomePath];
 
   v12 = [MSDManifest alloc];
-  v13 = [(MSDOperationBuilder *)self signedManifest];
-  v14 = [v13 mergedBackupManifest:{a4, 1}];
-  v15 = [(MSDManifest *)v12 initWithDictionary:v14 andUserHomePath:v11];
+  signedManifest2 = [(MSDOperationBuilder *)self signedManifest];
+  v14 = [signedManifest2 mergedBackupManifest:{index, 1}];
+  v15 = [(MSDManifest *)v12 initWithDictionary:v14 andUserHomePath:demoUserHomePath];
 
   if (v15)
   {
     v16 = [MSDContentFilesContext defaultContextForBackupItem:v9];
     [v16 setMasterManifest:v15];
     [v16 setVerifyFileHash:[(MSDOperationBuilder *)self verifyHashBeforeStaging]];
-    v17 = [(MSDOperationBuilder *)self signedManifest];
-    v18 = [v17 originServerForBackupManifest:{a4, 1}];
+    signedManifest3 = [(MSDOperationBuilder *)self signedManifest];
+    v18 = [signedManifest3 originServerForBackupManifest:{index, 1}];
     [v16 setOriginServer:v18];
 
-    v19 = [(MSDOperationBuilder *)self signedManifest];
-    v20 = [v19 getDataComponentRealSizeFromSection:@"BackupData" forIdentifier:v9];
+    signedManifest4 = [(MSDOperationBuilder *)self signedManifest];
+    v20 = [signedManifest4 getDataComponentRealSizeFromSection:@"BackupData" forIdentifier:v9];
     [v16 setDiskSpacedRequired:v20];
 
-    [v16 setContentBeingInstalled:a4, 1];
+    [v16 setContentBeingInstalled:index, 1];
     [v16 setAppIdentifier:v9];
     if ([(MSDOperationBuilder *)self forBackgroundDownload])
     {
@@ -65,18 +65,18 @@
       goto LABEL_13;
     }
 
-    v23 = [(MSDOperationBuilder *)self signedManifest];
-    v24 = [v23 isItemBaseBackup:v6];
+    signedManifest5 = [(MSDOperationBuilder *)self signedManifest];
+    v24 = [signedManifest5 isItemBaseBackup:pathCopy];
 
-    if (v24 & 1) != 0 || (-[MSDOperationBuilder signedManifest](self, "signedManifest"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 isItemProvisioningProfileBackup:v6], v25, (v26))
+    if (v24 & 1) != 0 || (-[MSDOperationBuilder signedManifest](self, "signedManifest"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 isItemProvisioningProfileBackup:pathCopy], v25, (v26))
     {
       v27 = &off_10016B518;
     }
 
     else
     {
-      v30 = [(MSDOperationBuilder *)self signedManifest];
-      v31 = [v30 isItemConfigurationProfileBackup:v6];
+      signedManifest6 = [(MSDOperationBuilder *)self signedManifest];
+      v31 = [signedManifest6 isItemConfigurationProfileBackup:pathCopy];
 
       if (!v31)
       {
@@ -105,11 +105,11 @@ LABEL_14:
   return v28;
 }
 
-- (id)buildStandalonePkgOperationsWithIdentifier:(id)a3
+- (id)buildStandalonePkgOperationsWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MSDOperationBuilder *)self signedManifest];
-  v6 = [v5 getManifestInfoFromSection:@"Packages" forIdentifier:v4];
+  identifierCopy = identifier;
+  signedManifest = [(MSDOperationBuilder *)self signedManifest];
+  v6 = [signedManifest getManifestInfoFromSection:@"Packages" forIdentifier:identifierCopy];
 
   if (!v6)
   {
@@ -117,7 +117,7 @@ LABEL_14:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v4;
+      v24 = identifierCopy;
       v22 = "Missing Info section for stand-alone package:  %{public}@";
 LABEL_13:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, v22, buf, 0xCu);
@@ -135,7 +135,7 @@ LABEL_14:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v4;
+      v24 = identifierCopy;
       v22 = "Missing Hash value in the Info section for stand-alone package:  %{public}@";
       goto LABEL_13;
     }
@@ -145,23 +145,23 @@ LABEL_14:
 
   v8 = v7;
   v9 = objc_alloc_init(MSDInstallableFileContext);
-  [(MSDOperationContext *)v9 setIdentifier:v4];
+  [(MSDOperationContext *)v9 setIdentifier:identifierCopy];
   [(MSDInstallableFileContext *)v9 setFileType:1];
-  v10 = [v8 hexStringRepresentation];
-  [(MSDInstallableFileContext *)v9 setFileHash:v10];
+  hexStringRepresentation = [v8 hexStringRepresentation];
+  [(MSDInstallableFileContext *)v9 setFileHash:hexStringRepresentation];
 
   [(MSDInstallableFileContext *)v9 setVerifyFileHash:[(MSDOperationBuilder *)self verifyHashBeforeStaging]];
-  v11 = [(MSDOperationBuilder *)self signedManifest];
-  v12 = [v11 getOriginServerFromSection:@"Packages" forIdentifier:v4];
+  signedManifest2 = [(MSDOperationBuilder *)self signedManifest];
+  v12 = [signedManifest2 getOriginServerFromSection:@"Packages" forIdentifier:identifierCopy];
   [(MSDInstallableFileContext *)v9 setOriginServer:v12];
 
-  v13 = [(MSDOperationBuilder *)self signedManifest];
-  v14 = [v13 getStandAlonePackageRealSize:v4];
-  v15 = [v14 unsignedLongLongValue];
+  signedManifest3 = [(MSDOperationBuilder *)self signedManifest];
+  v14 = [signedManifest3 getStandAlonePackageRealSize:identifierCopy];
+  unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-  v16 = [(MSDOperationBuilder *)self signedManifest];
-  v17 = [v16 getStandAlonePackageFileSize:v4];
-  v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v17 unsignedLongLongValue] + v15 + ((((((5 * v15) >> 1) & 0x3FFFFFFFFFFFFFFFLL) * 0x28F5C28F5C28F5C3uLL) >> 64) >> 2));
+  signedManifest4 = [(MSDOperationBuilder *)self signedManifest];
+  v17 = [signedManifest4 getStandAlonePackageFileSize:identifierCopy];
+  v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v17 unsignedLongLongValue] + unsignedLongLongValue + ((((((5 * unsignedLongLongValue) >> 1) & 0x3FFFFFFFFFFFFFFFLL) * 0x28F5C28F5C28F5C3uLL) >> 64) >> 2));
   [(MSDOperationContext *)v9 setDiskSpacedRequired:v18];
 
   v19 = [NSMutableArray arrayWithObjects:@"MSDBasePrepareOperation", @"MSDInstallableFileDownloadOperation", 0];
@@ -177,10 +177,10 @@ LABEL_6:
   return v20;
 }
 
-- (id)buildConfigurationProfileOperationsWithIdentifier:(id)a3
+- (id)buildConfigurationProfileOperationsWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v20 = sub_100063A54();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -191,8 +191,8 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v5 = [(MSDOperationBuilder *)self signedManifest];
-  v6 = [v5 getManifestDataFromSection:@"ConfigurationProfiles" forIdentifier:v4];
+  signedManifest = [(MSDOperationBuilder *)self signedManifest];
+  v6 = [signedManifest getManifestDataFromSection:@"ConfigurationProfiles" forIdentifier:identifierCopy];
 
   if (!v6)
   {
@@ -216,8 +216,8 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v7 = [(MSDOperationBuilder *)self signedManifest];
-  v8 = [v7 getManifestInfoFromSection:@"ConfigurationProfiles" forIdentifier:v4];
+  signedManifest2 = [(MSDOperationBuilder *)self signedManifest];
+  v8 = [signedManifest2 getManifestInfoFromSection:@"ConfigurationProfiles" forIdentifier:identifierCopy];
 
   if (!v8)
   {
@@ -225,31 +225,31 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v9 = [v6 allKeys];
-  v10 = [v9 firstObject];
+  allKeys = [v6 allKeys];
+  firstObject = [allKeys firstObject];
 
-  v11 = [v6 objectForKey:v10];
+  v11 = [v6 objectForKey:firstObject];
   v12 = [v11 objectForKey:@"MSDManifestFileHash"];
 
   if (!v12)
   {
-    sub_1000CB914(v10, v4, v8);
+    sub_1000CB914(firstObject, identifierCopy, v8);
     goto LABEL_20;
   }
 
   v13 = objc_alloc_init(MSDInstallableFileContext);
-  [(MSDOperationContext *)v13 setIdentifier:v4];
+  [(MSDOperationContext *)v13 setIdentifier:identifierCopy];
   [(MSDInstallableFileContext *)v13 setFileType:3];
-  v14 = [v12 hexStringRepresentation];
-  [(MSDInstallableFileContext *)v13 setFileHash:v14];
+  hexStringRepresentation = [v12 hexStringRepresentation];
+  [(MSDInstallableFileContext *)v13 setFileHash:hexStringRepresentation];
 
   [(MSDInstallableFileContext *)v13 setVerifyFileHash:[(MSDOperationBuilder *)self verifyHashBeforeStaging]];
-  v15 = [(MSDOperationBuilder *)self signedManifest];
-  v16 = [v15 getOriginServerFromSection:@"ConfigurationProfiles" forIdentifier:v4];
+  signedManifest3 = [(MSDOperationBuilder *)self signedManifest];
+  v16 = [signedManifest3 getOriginServerFromSection:@"ConfigurationProfiles" forIdentifier:identifierCopy];
   [(MSDInstallableFileContext *)v13 setOriginServer:v16];
 
-  v17 = [(MSDOperationBuilder *)self signedManifest];
-  v18 = [v17 getDataComponentRealSizeFromSection:@"ConfigurationProfiles" forIdentifier:v4];
+  signedManifest4 = [(MSDOperationBuilder *)self signedManifest];
+  v18 = [signedManifest4 getDataComponentRealSizeFromSection:@"ConfigurationProfiles" forIdentifier:identifierCopy];
   [(MSDOperationContext *)v13 setDiskSpacedRequired:v18];
 
   v19 = [v8 objectForKey:@"ProfileIdentifier"];
@@ -268,13 +268,13 @@ LABEL_9:
   return v21;
 }
 
-- (id)buildAppRemovalOperationsWithIdentifier:(id)a3
+- (id)buildAppRemovalOperationsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(MSDInstallableFileContext);
   [(MSDInstallableFileContext *)v6 setFileType:0];
-  [(MSDOperationContext *)v6 setIdentifier:v4];
+  [(MSDOperationContext *)v6 setIdentifier:identifierCopy];
 
   [(MSDInstallableFileContext *)v6 setVerifyFileHash:[(MSDOperationBuilder *)self verifyHashBeforeStaging]];
   v13 = @"MSDIPAUninstallOperation";
@@ -283,9 +283,9 @@ LABEL_9:
 
   if (v8)
   {
-    v9 = [v8 operations];
-    v10 = [v9 allObjects];
-    [v5 addObjectsFromArray:v10];
+    operations = [v8 operations];
+    allObjects = [operations allObjects];
+    [v5 addObjectsFromArray:allObjects];
 
     v11 = v5;
   }
@@ -299,11 +299,11 @@ LABEL_9:
   return v11;
 }
 
-- (id)buildSettingsOperationWithIdentifier:(id)a3
+- (id)buildSettingsOperationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MSDOperationBuilder *)self signedManifest];
-  v6 = [v5 getSettingsDataFromSection:@"BackupData" forIdentifier:v4];
+  identifierCopy = identifier;
+  signedManifest = [(MSDOperationBuilder *)self signedManifest];
+  v6 = [signedManifest getSettingsDataFromSection:@"BackupData" forIdentifier:identifierCopy];
 
   v7 = sub_100063A54();
   v8 = v7;
@@ -318,7 +318,7 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s - %{public}@", &v12, 0x16u);
     }
 
-    v8 = [MSDSettingsContext defaultContextForIdentifier:v4];
+    v8 = [MSDSettingsContext defaultContextForIdentifier:identifierCopy];
     [v8 setDataDict:v6];
     v9 = +[NSMutableArray array];
     [v9 addObject:@"MSDSettingsInstallOperation"];
@@ -338,16 +338,16 @@ LABEL_9:
   return v10;
 }
 
-- (id)sequentialOperationsForIdentifiers:(id)a3 andContext:(id)a4
+- (id)sequentialOperationsForIdentifiers:(id)identifiers andContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   v7 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -362,7 +362,7 @@ LABEL_9:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [MSDOperationRepository createOperationFromIdentifier:*(*(&v18 + 1) + 8 * i) withContext:v6, v18];
+        v13 = [MSDOperationRepository createOperationFromIdentifier:*(*(&v18 + 1) + 8 * i) withContext:contextCopy, v18];
         if (!v13)
         {
 
@@ -373,8 +373,8 @@ LABEL_9:
         v14 = v13;
         if ([v7 count])
         {
-          v15 = [v7 lastObject];
-          [v14 addDependency:v15];
+          lastObject = [v7 lastObject];
+          [v14 addDependency:lastObject];
         }
 
         [v7 addObject:v14];
@@ -396,26 +396,26 @@ LABEL_13:
   return v16;
 }
 
-- (id)sequentialGroupForIdentifiers:(id)a3 andContext:(id)a4
+- (id)sequentialGroupForIdentifiers:(id)identifiers andContext:(id)context
 {
-  v4 = [(MSDOperationBuilder *)self sequentialOperationsForIdentifiers:a3 andContext:a4];
+  v4 = [(MSDOperationBuilder *)self sequentialOperationsForIdentifiers:identifiers andContext:context];
   v5 = [[MSDOperationGroup alloc] initWithOperations:v4];
 
   return v5;
 }
 
-- (id)buildAppDataOperationsWithIdentifier:(id)a3 andDependencies:(id)a4
+- (id)buildAppDataOperationsWithIdentifier:(id)identifier andDependencies:(id)dependencies
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dependenciesCopy = dependencies;
   v8 = +[MSDTargetDevice sharedInstance];
-  v55 = [v8 demoUserHomePath];
+  demoUserHomePath = [v8 demoUserHomePath];
 
   v57 = objc_alloc_init(NSMutableArray);
   v9 = objc_alloc_init(MSDOperationContext);
-  v56 = v6;
-  [(MSDOperationContext *)v9 setIdentifier:v6];
-  if ([v7 count])
+  v56 = identifierCopy;
+  [(MSDOperationContext *)v9 setIdentifier:identifierCopy];
+  if ([dependenciesCopy count])
   {
     v71 = @"MSDApplicationDataPrepareOperation";
     v10 = [NSArray arrayWithObjects:&v71 count:1];
@@ -428,7 +428,7 @@ LABEL_13:
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v12 = v7;
+      v12 = dependenciesCopy;
       v13 = [v12 countByEnumeratingWithState:&v62 objects:v70 count:16];
       if (!v13)
       {
@@ -439,7 +439,7 @@ LABEL_13:
       v51 = *v63;
       v54 = v11;
       v48 = v9;
-      v49 = v7;
+      v49 = dependenciesCopy;
       v50 = v12;
       while (1)
       {
@@ -523,8 +523,8 @@ LABEL_16:
                     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Creating operation sequence for app data: <Name = %{public}@, Type = %{public}@>", buf, 0x16u);
                   }
 
-                  v29 = [(MSDOperationBuilder *)self signedManifest];
-                  v30 = [v29 getManifestDataFromSection:v18 forIdentifier:v27];
+                  signedManifest = [(MSDOperationBuilder *)self signedManifest];
+                  v30 = [signedManifest getManifestDataFromSection:v18 forIdentifier:v27];
 
                   if (!v30)
                   {
@@ -534,12 +534,12 @@ LABEL_55:
 
                     v44 = 0;
                     v9 = v48;
-                    v7 = v49;
+                    dependenciesCopy = v49;
                     goto LABEL_56;
                   }
 
-                  v31 = [(MSDOperationBuilder *)self signedManifest];
-                  v32 = [v31 isContainerizedComponent:v18];
+                  signedManifest2 = [(MSDOperationBuilder *)self signedManifest];
+                  v32 = [signedManifest2 isContainerizedComponent:v18];
 
                   if (v32)
                   {
@@ -551,18 +551,18 @@ LABEL_55:
                     [MSDContentFilesContext defaultContextForNonContainerizedAppDataItem:v27];
                   }
                   v33 = ;
-                  v34 = [[MSDManifest alloc] initWithDictionary:v30 andUserHomePath:v55];
+                  v34 = [[MSDManifest alloc] initWithDictionary:v30 andUserHomePath:demoUserHomePath];
                   [v33 setMasterManifest:v34];
 
                   [v33 setIdentifier:v27];
                   [v33 setContainerType:v18];
                   [v33 setVerifyFileHash:{-[MSDOperationBuilder verifyHashBeforeStaging](self, "verifyHashBeforeStaging")}];
-                  v35 = [(MSDOperationBuilder *)self signedManifest];
-                  v36 = [v35 getOriginServerFromSection:v18 forIdentifier:v27];
+                  signedManifest3 = [(MSDOperationBuilder *)self signedManifest];
+                  v36 = [signedManifest3 getOriginServerFromSection:v18 forIdentifier:v27];
                   [v33 setOriginServer:v36];
 
-                  v37 = [(MSDOperationBuilder *)self signedManifest];
-                  v38 = [v37 getDataComponentRealSizeFromSection:v18 forIdentifier:v27];
+                  signedManifest4 = [(MSDOperationBuilder *)self signedManifest];
+                  v38 = [signedManifest4 getDataComponentRealSizeFromSection:v18 forIdentifier:v27];
                   [v33 setDiskSpacedRequired:v38];
 
                   [v33 setAppIdentifier:v56];
@@ -639,7 +639,7 @@ LABEL_17:
         v43 = [v12 countByEnumeratingWithState:&v62 objects:v70 count:16];
         v14 = v43;
         v9 = v48;
-        v7 = v49;
+        dependenciesCopy = v49;
         if (!v43)
         {
 LABEL_49:
@@ -660,7 +660,7 @@ LABEL_49:
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v6;
+      *&buf[4] = identifierCopy;
       _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "No app dependencies for %{public}@; skip building AppData operations ...", buf, 0xCu);
     }
 
@@ -672,15 +672,15 @@ LABEL_56:
   return v44;
 }
 
-- (id)buildProvisioningProfileOperations:(id)a3
+- (id)buildProvisioningProfileOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v5 = objc_alloc_init(NSMutableArray);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = v4;
+  v6 = operationsCopy;
   v29 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v29)
   {
@@ -697,21 +697,21 @@ LABEL_56:
         }
 
         v8 = *(*(&v30 + 1) + 8 * i);
-        v9 = [(MSDOperationBuilder *)self signedManifest];
-        v10 = [v9 getManifestDataFromSection:@"ProvisioningProfiles" forIdentifier:v8];
+        signedManifest = [(MSDOperationBuilder *)self signedManifest];
+        v10 = [signedManifest getManifestDataFromSection:@"ProvisioningProfiles" forIdentifier:v8];
 
         if (!v10)
         {
           sub_1000CBE84(v8, &v34);
-          v12 = v34;
+          firstObject = v34;
           goto LABEL_20;
         }
 
         if ([v10 count] != 1)
         {
-          v12 = sub_100063A54();
+          firstObject = sub_100063A54();
           v6 = obj;
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
           {
             sub_1000CBD70();
           }
@@ -719,10 +719,10 @@ LABEL_56:
           goto LABEL_21;
         }
 
-        v11 = [v10 allKeys];
-        v12 = [v11 firstObject];
+        allKeys = [v10 allKeys];
+        firstObject = [allKeys firstObject];
 
-        v13 = [v10 objectForKey:v12];
+        v13 = [v10 objectForKey:firstObject];
         v14 = [v13 objectForKey:@"MSDManifestFileHash"];
 
         if (!v14)
@@ -734,16 +734,16 @@ LABEL_56:
         v15 = objc_alloc_init(MSDInstallableFileContext);
         [(MSDOperationContext *)v15 setIdentifier:v8];
         [(MSDInstallableFileContext *)v15 setFileType:2];
-        v16 = [v14 hexStringRepresentation];
-        [(MSDInstallableFileContext *)v15 setFileHash:v16];
+        hexStringRepresentation = [v14 hexStringRepresentation];
+        [(MSDInstallableFileContext *)v15 setFileHash:hexStringRepresentation];
 
         [(MSDInstallableFileContext *)v15 setVerifyFileHash:[(MSDOperationBuilder *)self verifyHashBeforeStaging]];
-        v17 = [(MSDOperationBuilder *)self signedManifest];
-        v18 = [v17 getOriginServerFromSection:@"ProvisioningProfiles" forIdentifier:v8];
+        signedManifest2 = [(MSDOperationBuilder *)self signedManifest];
+        v18 = [signedManifest2 getOriginServerFromSection:@"ProvisioningProfiles" forIdentifier:v8];
         [(MSDInstallableFileContext *)v15 setOriginServer:v18];
 
-        v19 = [(MSDOperationBuilder *)self signedManifest];
-        v20 = [v19 getDataComponentRealSizeFromSection:@"ProvisioningProfiles" forIdentifier:v8];
+        signedManifest3 = [(MSDOperationBuilder *)self signedManifest];
+        v20 = [signedManifest3 getDataComponentRealSizeFromSection:@"ProvisioningProfiles" forIdentifier:v8];
         [(MSDOperationContext *)v15 setDiskSpacedRequired:v20];
 
         v21 = [NSMutableArray arrayWithObjects:@"MSDProvisioningProfilePrepareOperation", @"MSDInstallableFileDownloadOperation", 0];
@@ -757,7 +757,7 @@ LABEL_56:
         if (!v22)
         {
 
-          v12 = v21;
+          firstObject = v21;
 LABEL_20:
           v6 = obj;
 LABEL_21:
@@ -787,16 +787,16 @@ LABEL_22:
   return v24;
 }
 
-- (id)buildSystemAppOperationsWithIdentifier:(id)a3
+- (id)buildSystemAppOperationsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(MSDOperationBuilder *)self signedManifest];
-  v7 = [v6 getSystemAppDataList];
+  signedManifest = [(MSDOperationBuilder *)self signedManifest];
+  getSystemAppDataList = [signedManifest getSystemAppDataList];
 
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (getSystemAppDataList && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v48 = v4;
+    v48 = identifierCopy;
     if ([(MSDOperationBuilder *)self forBackgroundDownload])
     {
       v8 = 0;
@@ -805,7 +805,7 @@ LABEL_22:
     else
     {
       v8 = objc_alloc_init(MSDOperationContext);
-      [(MSDOperationContext *)v8 setIdentifier:v4];
+      [(MSDOperationContext *)v8 setIdentifier:identifierCopy];
       v57 = @"MSDSystemAppsDataPrepareOperation";
       v9 = [NSArray arrayWithObjects:&v57 count:1];
       v10 = [(MSDOperationBuilder *)self sequentialGroupForIdentifiers:v9 andContext:v8];
@@ -815,9 +815,9 @@ LABEL_22:
         goto LABEL_30;
       }
 
-      v11 = [(MSDOperationContext *)v10 operations];
-      v12 = [v11 allObjects];
-      [v5 addObjectsFromArray:v12];
+      operations = [(MSDOperationContext *)v10 operations];
+      allObjects = [operations allObjects];
+      [v5 addObjectsFromArray:allObjects];
 
       v8 = v10;
     }
@@ -826,8 +826,8 @@ LABEL_22:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v47 = v7;
-    obj = v7;
+    v47 = getSystemAppDataList;
+    obj = getSystemAppDataList;
     v13 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v13)
     {
@@ -854,8 +854,8 @@ LABEL_22:
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Processing system app: %{public}@", v28, 0xCu);
           }
 
-          v29 = [(MSDOperationBuilder *)self signedManifest];
-          v30 = [v29 getSystemAppDependecies:v18];
+          signedManifest2 = [(MSDOperationBuilder *)self signedManifest];
+          v30 = [signedManifest2 getSystemAppDependecies:v18];
 
           if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -879,9 +879,9 @@ LABEL_22:
               [v31 addDependency:v8];
             }
 
-            v33 = [v32 operations];
-            v34 = [v33 allObjects];
-            [v5 addObjectsFromArray:v34];
+            operations2 = [v32 operations];
+            allObjects2 = [operations2 allObjects];
+            [v5 addObjectsFromArray:allObjects2];
           }
 
           else
@@ -912,8 +912,8 @@ LABEL_22:
 
     v10 = v5;
 LABEL_29:
-    v7 = v47;
-    v4 = v48;
+    getSystemAppDataList = v47;
+    identifierCopy = v48;
   }
 
   else

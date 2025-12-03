@@ -1,15 +1,15 @@
 @interface ADRapportProximityObservation
-+ (id)newWithBuilder:(id)a3;
-- (ADRapportProximityObservation)initWithBuilder:(id)a3;
-- (ADRapportProximityObservation)initWithCoder:(id)a3;
-- (ADRapportProximityObservation)initWithDeviceIDPair:(id)a3 proximity:(int)a4 observationDate:(id)a5;
-- (ADRapportProximityObservation)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADRapportProximityObservation)initWithBuilder:(id)builder;
+- (ADRapportProximityObservation)initWithCoder:(id)coder;
+- (ADRapportProximityObservation)initWithDeviceIDPair:(id)pair proximity:(int)proximity observationDate:(id)date;
+- (ADRapportProximityObservation)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADRapportProximityObservation
@@ -66,13 +66,13 @@
   return v13;
 }
 
-- (ADRapportProximityObservation)initWithDictionaryRepresentation:(id)a3
+- (ADRapportProximityObservation)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"deviceIDPair"];
+    v6 = [representationCopy objectForKey:@"deviceIDPair"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
       v18 = 0;
     }
 
-    v19 = [v18 intValue];
+    intValue = [v18 intValue];
     v20 = [v5 objectForKey:@"observationDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -154,49 +154,49 @@
       v21 = 0;
     }
 
-    self = [(ADRapportProximityObservation *)self initWithDeviceIDPair:v15 proximity:v19 observationDate:v21];
-    v16 = self;
+    self = [(ADRapportProximityObservation *)self initWithDeviceIDPair:v15 proximity:intValue observationDate:v21];
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceIDPair = self->_deviceIDPair;
-  v6 = a3;
-  [v6 encodeObject:deviceIDPair forKey:@"ADRapportProximityObservation::deviceIDPair"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceIDPair forKey:@"ADRapportProximityObservation::deviceIDPair"];
   v5 = [NSNumber numberWithInt:self->_proximity];
-  [v6 encodeObject:v5 forKey:@"ADRapportProximityObservation::proximity"];
+  [coderCopy encodeObject:v5 forKey:@"ADRapportProximityObservation::proximity"];
 
-  [v6 encodeObject:self->_observationDate forKey:@"ADRapportProximityObservation::observationDate"];
+  [coderCopy encodeObject:self->_observationDate forKey:@"ADRapportProximityObservation::observationDate"];
 }
 
-- (ADRapportProximityObservation)initWithCoder:(id)a3
+- (ADRapportProximityObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"ADRapportProximityObservation::deviceIDPair"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"ADRapportProximityObservation::deviceIDPair"];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportProximityObservation::proximity"];
-  v9 = [v8 intValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportProximityObservation::proximity"];
+  intValue = [v8 intValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportProximityObservation::observationDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportProximityObservation::observationDate"];
 
-  v11 = [(ADRapportProximityObservation *)self initWithDeviceIDPair:v7 proximity:v9 observationDate:v10];
+  v11 = [(ADRapportProximityObservation *)self initWithDeviceIDPair:v7 proximity:intValue observationDate:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -206,17 +206,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       proximity = self->_proximity;
       if (proximity == [(ADRapportProximityObservation *)v5 proximity])
       {
-        v7 = [(ADRapportProximityObservation *)v5 deviceIDPair];
+        deviceIDPair = [(ADRapportProximityObservation *)v5 deviceIDPair];
         deviceIDPair = self->_deviceIDPair;
-        if (deviceIDPair == v7 || [(NSSet *)deviceIDPair isEqual:v7])
+        if (deviceIDPair == deviceIDPair || [(NSSet *)deviceIDPair isEqual:deviceIDPair])
         {
-          v9 = [(ADRapportProximityObservation *)v5 observationDate];
+          observationDate = [(ADRapportProximityObservation *)v5 observationDate];
           observationDate = self->_observationDate;
-          v11 = observationDate == v9 || [(NSDate *)observationDate isEqual:v9];
+          v11 = observationDate == observationDate || [(NSDate *)observationDate isEqual:observationDate];
         }
 
         else
@@ -250,7 +250,7 @@
   return v5 ^ v6;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -261,43 +261,43 @@
   return v6;
 }
 
-- (ADRapportProximityObservation)initWithDeviceIDPair:(id)a3 proximity:(int)a4 observationDate:(id)a5
+- (ADRapportProximityObservation)initWithDeviceIDPair:(id)pair proximity:(int)proximity observationDate:(id)date
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100357DF0;
   v11[3] = &unk_10051D200;
-  v14 = a4;
-  v12 = a3;
-  v13 = a5;
-  v7 = v13;
-  v8 = v12;
+  proximityCopy = proximity;
+  pairCopy = pair;
+  dateCopy = date;
+  v7 = dateCopy;
+  v8 = pairCopy;
   v9 = [(ADRapportProximityObservation *)self initWithBuilder:v11];
 
   return v9;
 }
 
-- (ADRapportProximityObservation)initWithBuilder:(id)a3
+- (ADRapportProximityObservation)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = ADRapportProximityObservation;
   v5 = [(ADRapportProximityObservation *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADRapportProximityObservationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADRapportProximityObservationMutation *)v7 isDirty])
     {
-      v8 = [(_ADRapportProximityObservationMutation *)v7 getDeviceIDPair];
-      v9 = [v8 copy];
+      getDeviceIDPair = [(_ADRapportProximityObservationMutation *)v7 getDeviceIDPair];
+      v9 = [getDeviceIDPair copy];
       deviceIDPair = v6->_deviceIDPair;
       v6->_deviceIDPair = v9;
 
       v6->_proximity = [(_ADRapportProximityObservationMutation *)v7 getProximity];
-      v11 = [(_ADRapportProximityObservationMutation *)v7 getObservationDate];
-      v12 = [v11 copy];
+      getObservationDate = [(_ADRapportProximityObservationMutation *)v7 getObservationDate];
+      v12 = [getObservationDate copy];
       observationDate = v6->_observationDate;
       v6->_observationDate = v12;
     }
@@ -306,32 +306,32 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADRapportProximityObservationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADRapportProximityObservationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADRapportProximityObservation);
-      v7 = [(_ADRapportProximityObservationMutation *)v5 getDeviceIDPair];
-      v8 = [v7 copy];
+      getDeviceIDPair = [(_ADRapportProximityObservationMutation *)v5 getDeviceIDPair];
+      v8 = [getDeviceIDPair copy];
       deviceIDPair = v6->_deviceIDPair;
       v6->_deviceIDPair = v8;
 
       v6->_proximity = [(_ADRapportProximityObservationMutation *)v5 getProximity];
-      v10 = [(_ADRapportProximityObservationMutation *)v5 getObservationDate];
-      v11 = [v10 copy];
+      getObservationDate = [(_ADRapportProximityObservationMutation *)v5 getObservationDate];
+      v11 = [getObservationDate copy];
       observationDate = v6->_observationDate;
       v6->_observationDate = v11;
     }

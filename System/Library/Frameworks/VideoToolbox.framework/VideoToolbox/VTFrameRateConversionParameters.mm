@@ -1,11 +1,11 @@
 @interface VTFrameRateConversionParameters
-- (VTFrameRateConversionParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 interpolationPhase:(id)a6 submissionMode:(int64_t)a7 destinationFrames:(id)a8;
+- (VTFrameRateConversionParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow interpolationPhase:(id)phase submissionMode:(int64_t)mode destinationFrames:(id)frames;
 - (void)dealloc;
 @end
 
 @implementation VTFrameRateConversionParameters
 
-- (VTFrameRateConversionParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 interpolationPhase:(id)a6 submissionMode:(int64_t)a7 destinationFrames:(id)a8
+- (VTFrameRateConversionParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow interpolationPhase:(id)phase submissionMode:(int64_t)mode destinationFrames:(id)frames
 {
   v28 = *MEMORY[0x1E69E9840];
   if (!loadVEFrameworkOnce())
@@ -26,18 +26,18 @@ LABEL_15:
   }
 
   v15 = NSClassFromString(&cfstr_Veframeratecon_0.isa);
-  self->_sourceFrame = a3;
-  self->_nextFrame = a4;
-  self->_destinationFrames = a8;
-  self->_opticalFlow = a5;
-  self->_interpolationPhase = a6;
-  self->_submissionMode = a7;
+  self->_sourceFrame = frame;
+  self->_nextFrame = nextFrame;
+  self->_destinationFrames = frames;
+  self->_opticalFlow = flow;
+  self->_interpolationPhase = phase;
+  self->_submissionMode = mode;
   self->_veDestinationFrames = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_destinationFrames, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [a8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v16 = [frames countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v16)
   {
     v17 = v16;
@@ -48,13 +48,13 @@ LABEL_15:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(a8);
+          objc_enumerationMutation(frames);
         }
 
         -[NSMutableArray addObject:](self->_veDestinationFrames, "addObject:", [*(*(&v22 + 1) + 8 * i) veFrame]);
       }
 
-      v17 = [a8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v17 = [frames countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v17);

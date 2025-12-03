@@ -1,11 +1,11 @@
 @interface BCSemanticLayoutOptions
 + (id)current;
-+ (id)fromJSON:(id)a3;
++ (id)fromJSON:(id)n;
 + (id)logger;
 - (id)asJSON;
 - (void)reset;
 - (void)save;
-- (void)setValuesFromDictionary:(id)a3;
+- (void)setValuesFromDictionary:(id)dictionary;
 @end
 
 @implementation BCSemanticLayoutOptions
@@ -44,15 +44,15 @@
 - (void)save
 {
   v4 = +[NSUserDefaults standardUserDefaults];
-  v3 = [(BCSemanticLayoutOptions *)self asJSON];
-  [v4 setObject:v3 forKey:@"kBKSemanticLayoutOptions_v3"];
+  asJSON = [(BCSemanticLayoutOptions *)self asJSON];
+  [v4 setObject:asJSON forKey:@"kBKSemanticLayoutOptions_v3"];
 }
 
-+ (id)fromJSON:(id)a3
++ (id)fromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = objc_opt_new();
-  v6 = [v4 dataUsingEncoding:4];
+  v6 = [nCopy dataUsingEncoding:4];
 
   if (v6)
   {
@@ -62,10 +62,10 @@
     if (v8)
     {
 
-      v9 = [a1 logger];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      logger = [self logger];
+      if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
       {
-        sub_1E6704(v8, v9);
+        sub_1E6704(v8, logger);
       }
 
       v7 = &__NSDictionary0__struct;
@@ -83,17 +83,17 @@
   return v5;
 }
 
-- (void)setValuesFromDictionary:(id)a3
+- (void)setValuesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  [(BCSemanticLayoutOptions *)self setFontScale:sub_66774(v4, @"kBKSemanticLayoutOption_FontScale", 16.0)];
-  [(BCSemanticLayoutOptions *)self setSideInsetFactor:sub_66774(v4, @"kBKSemanticLayoutOption_SideInsetFactor", 0.085)];
-  [(BCSemanticLayoutOptions *)self setMinCPLForSpreadPages:sub_66774(v4, @"kBKSemanticLayoutOption_MinCPLForSpreadPages", 90.0)];
-  [(BCSemanticLayoutOptions *)self setContentInsetTopSmall:sub_66774(v4, @"kBKSemanticLayoutOption_ContentInsetTopSmall", 44.0)];
-  [(BCSemanticLayoutOptions *)self setContentInsetTopMedium:sub_66774(v4, @"kBKSemanticLayoutOption_ContentInsetTopMedium", 60.0)];
-  [(BCSemanticLayoutOptions *)self setContentInsetTopLarge:sub_66774(v4, @"kBKSemanticLayoutOption_ContentInsetTopLarge", 96.0)];
-  [(BCSemanticLayoutOptions *)self setScrubberWidth:sub_66774(v4, @"kBKSemanticLayoutOption_ScrubberWidth", 44.0)];
-  v5 = sub_66774(v4, @"kBKSemanticLayoutOption_ScrubberHeight", 28.0);
+  dictionaryCopy = dictionary;
+  [(BCSemanticLayoutOptions *)self setFontScale:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_FontScale", 16.0)];
+  [(BCSemanticLayoutOptions *)self setSideInsetFactor:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_SideInsetFactor", 0.085)];
+  [(BCSemanticLayoutOptions *)self setMinCPLForSpreadPages:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_MinCPLForSpreadPages", 90.0)];
+  [(BCSemanticLayoutOptions *)self setContentInsetTopSmall:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_ContentInsetTopSmall", 44.0)];
+  [(BCSemanticLayoutOptions *)self setContentInsetTopMedium:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_ContentInsetTopMedium", 60.0)];
+  [(BCSemanticLayoutOptions *)self setContentInsetTopLarge:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_ContentInsetTopLarge", 96.0)];
+  [(BCSemanticLayoutOptions *)self setScrubberWidth:sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_ScrubberWidth", 44.0)];
+  v5 = sub_66774(dictionaryCopy, @"kBKSemanticLayoutOption_ScrubberHeight", 28.0);
 
   [(BCSemanticLayoutOptions *)self setScrubberHeight:v5];
 }
@@ -144,10 +144,10 @@
 
   else
   {
-    v13 = [objc_opt_class() logger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    logger = [objc_opt_class() logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
     {
-      sub_1E6704(v11, v13);
+      sub_1E6704(v11, logger);
     }
 
     v12 = 0;

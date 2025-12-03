@@ -1,10 +1,10 @@
 @interface SPUISShortcutResultBuilder
-+ (BOOL)supportsResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
 - (BOOL)buildButtonItemsAreTrailing;
 - (BOOL)resultShadowsSettingResult;
-- (SPUISShortcutResultBuilder)initWithResult:(id)a3;
+- (SPUISShortcutResultBuilder)initWithResult:(id)result;
 - (id)buildAppTopHitEntityCardSection;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildButtonItems;
 - (id)buildCommand;
 - (id)buildCompactThumbnail;
@@ -20,36 +20,36 @@
 
 @implementation SPUISShortcutResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v9.receiver = a1;
+  resultCopy = result;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SPUISShortcutResultBuilder;
-  if (objc_msgSendSuper2(&v9, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v9, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 resultBundleId];
-    v7 = [objc_opt_class() bundleId];
-    v5 = [v6 isEqualToString:v7];
+    resultBundleId = [resultCopy resultBundleId];
+    bundleId = [objc_opt_class() bundleId];
+    v5 = [resultBundleId isEqualToString:bundleId];
   }
 
   return v5;
 }
 
-- (SPUISShortcutResultBuilder)initWithResult:(id)a3
+- (SPUISShortcutResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v32.receiver = self;
   v32.super_class = SPUISShortcutResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v32 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v32 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2408] withType:objc_opt_class()];
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC24F0] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2408] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC24F0] withType:objc_opt_class()];
     -[SPUISShortcutResultBuilder setIsBackgroundRunnable:](v5, "setIsBackgroundRunnable:", [v7 BOOLValue]);
 
     v8 = [v6 objectAtIndexedSubscript:0];
@@ -66,67 +66,67 @@
 
     [(SPUISShortcutResultBuilder *)v5 setAlternateNames:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setName:v10];
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setNumberOfActionsString:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x277CC2FE8] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x277CC2FE8] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setPunchoutLabel:v12];
 
-    v13 = [v4 valueForAttribute:*MEMORY[0x277CC3088] withType:objc_opt_class()];
+    v13 = [resultCopy valueForAttribute:*MEMORY[0x277CC3088] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setSettingsPreference:v13];
 
-    v14 = [v4 valueForAttribute:*MEMORY[0x277CC3080] withType:objc_opt_class()];
+    v14 = [resultCopy valueForAttribute:*MEMORY[0x277CC3080] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setActionIdentifier:v14];
 
-    v15 = [v4 valueForAttribute:*MEMORY[0x277CC2770] withType:objc_opt_class()];
+    v15 = [resultCopy valueForAttribute:*MEMORY[0x277CC2770] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setDomainIdentifier:v15];
 
-    v16 = [v4 valueForAttribute:*MEMORY[0x277CC30C0] withType:objc_opt_class()];
+    v16 = [resultCopy valueForAttribute:*MEMORY[0x277CC30C0] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setLnPropertyIdentifier:v16];
 
-    v17 = [v4 valueForAttribute:*MEMORY[0x277CC30C8] withType:objc_opt_class()];
+    v17 = [resultCopy valueForAttribute:*MEMORY[0x277CC30C8] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setPrimaryPhrase:v17];
 
-    v18 = [v4 valueForAttribute:*MEMORY[0x277CC3090] withType:objc_opt_class()];
+    v18 = [resultCopy valueForAttribute:*MEMORY[0x277CC3090] withType:objc_opt_class()];
     [(SPUISShortcutResultBuilder *)v5 setBiomeStreamIdentifier:v18];
 
-    v19 = [v4 valueForAttribute:*MEMORY[0x277CC30A8] withType:objc_opt_class()];
+    v19 = [resultCopy valueForAttribute:*MEMORY[0x277CC30A8] withType:objc_opt_class()];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 unsignedIntegerValue];
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    [(SPUISShortcutResultBuilder *)v5 setEntityThumbnailDisplayStyle:v21];
-    v22 = [v4 valueForAttribute:*MEMORY[0x277CC30D0] withType:objc_opt_class()];
+    [(SPUISShortcutResultBuilder *)v5 setEntityThumbnailDisplayStyle:unsignedIntegerValue];
+    v22 = [resultCopy valueForAttribute:*MEMORY[0x277CC30D0] withType:objc_opt_class()];
     v23 = v22;
     if (v22)
     {
-      v24 = [v22 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v22 unsignedIntegerValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedIntegerValue2 = 0;
     }
 
-    [(SPUISShortcutResultBuilder *)v5 setEntityBadgeType:v24];
-    v25 = [(SPUISResultBuilder *)v5 relatedAppBundleIdentifier];
-    if ([v25 isEqualToString:@"com.apple.mobiletimer"])
+    [(SPUISShortcutResultBuilder *)v5 setEntityBadgeType:unsignedIntegerValue2];
+    relatedAppBundleIdentifier = [(SPUISResultBuilder *)v5 relatedAppBundleIdentifier];
+    if ([relatedAppBundleIdentifier isEqualToString:@"com.apple.mobiletimer"])
     {
-      v26 = [(SPUISShortcutResultBuilder *)v5 domainIdentifier];
+      domainIdentifier = [(SPUISShortcutResultBuilder *)v5 domainIdentifier];
       v27 = MEMORY[0x277D7A180];
-      v28 = [(SPUISResultBuilder *)v5 relatedAppBundleIdentifier];
-      v29 = [v27 spotlightDomainIdentifierForBundleIdentifier:v28];
-      -[SPUISShortcutResultBuilder setIsAlarmResult:](v5, "setIsAlarmResult:", [v26 isEqual:v29]);
+      relatedAppBundleIdentifier2 = [(SPUISResultBuilder *)v5 relatedAppBundleIdentifier];
+      v29 = [v27 spotlightDomainIdentifierForBundleIdentifier:relatedAppBundleIdentifier2];
+      -[SPUISShortcutResultBuilder setIsAlarmResult:](v5, "setIsAlarmResult:", [domainIdentifier isEqual:v29]);
     }
 
     else
@@ -134,8 +134,8 @@
       [(SPUISShortcutResultBuilder *)v5 setIsAlarmResult:0];
     }
 
-    v30 = [(SPUISShortcutResultBuilder *)v5 domainIdentifier];
-    -[SPUISShortcutResultBuilder setIsCustomAppAttributedShortcut:](v5, "setIsCustomAppAttributedShortcut:", [v30 isEqualToString:*MEMORY[0x277D7A350]]);
+    domainIdentifier2 = [(SPUISShortcutResultBuilder *)v5 domainIdentifier];
+    -[SPUISShortcutResultBuilder setIsCustomAppAttributedShortcut:](v5, "setIsCustomAppAttributedShortcut:", [domainIdentifier2 isEqualToString:*MEMORY[0x277D7A350]]);
   }
 
   return v5;
@@ -145,31 +145,31 @@
 {
   v6.receiver = self;
   v6.super_class = SPUISShortcutResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v6 buildResult];
-  v4 = [(SPUISShortcutResultBuilder *)self userActivityRequiredString];
-  [v3 setUserActivityRequiredString:v4];
+  buildResult = [(SPUISResultBuilder *)&v6 buildResult];
+  userActivityRequiredString = [(SPUISShortcutResultBuilder *)self userActivityRequiredString];
+  [buildResult setUserActivityRequiredString:userActivityRequiredString];
 
-  [v3 setType:20];
+  [buildResult setType:20];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildTitle
 {
-  v3 = [(SPUISResultBuilder *)self result];
-  if (![v3 shouldUseCompactDisplay] || -[SPUISShortcutResultBuilder isCustomAppAttributedShortcut](self, "isCustomAppAttributedShortcut"))
+  result = [(SPUISResultBuilder *)self result];
+  if (![result shouldUseCompactDisplay] || -[SPUISShortcutResultBuilder isCustomAppAttributedShortcut](self, "isCustomAppAttributedShortcut"))
   {
 
 LABEL_4:
     v10.receiver = self;
     v10.super_class = SPUISShortcutResultBuilder;
-    v4 = [(SPUISResultBuilder *)&v10 buildTitle];
-    [v4 setMaxLines:2];
+    buildTitle = [(SPUISResultBuilder *)&v10 buildTitle];
+    [buildTitle setMaxLines:2];
     goto LABEL_5;
   }
 
-  v6 = [(SPUISShortcutResultBuilder *)self primaryPhrase];
-  v7 = [v6 length];
+  primaryPhrase = [(SPUISShortcutResultBuilder *)self primaryPhrase];
+  v7 = [primaryPhrase length];
 
   if (!v7)
   {
@@ -177,42 +177,42 @@ LABEL_4:
   }
 
   v8 = MEMORY[0x277D4C598];
-  v9 = [(SPUISShortcutResultBuilder *)self primaryPhrase];
-  v4 = [v8 textWithString:v9];
+  primaryPhrase2 = [(SPUISShortcutResultBuilder *)self primaryPhrase];
+  buildTitle = [v8 textWithString:primaryPhrase2];
 
 LABEL_5:
 
-  return v4;
+  return buildTitle;
 }
 
 - (id)buildStandardThumbnail
 {
-  v3 = [(SPUISShortcutResultBuilder *)self lnPropertyIdentifier];
+  lnPropertyIdentifier = [(SPUISShortcutResultBuilder *)self lnPropertyIdentifier];
 
-  if (v3)
+  if (lnPropertyIdentifier)
   {
-    v4 = objc_opt_new();
-    v5 = [(SPUISShortcutResultBuilder *)self lnPropertyIdentifier];
-    [v4 setLnPropertyIdentifier:v5];
+    buildThumbnail = objc_opt_new();
+    lnPropertyIdentifier2 = [(SPUISShortcutResultBuilder *)self lnPropertyIdentifier];
+    [buildThumbnail setLnPropertyIdentifier:lnPropertyIdentifier2];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SPUISShortcutResultBuilder;
-    v4 = [(SPUISResultBuilder *)&v7 buildThumbnail];
+    buildThumbnail = [(SPUISResultBuilder *)&v7 buildThumbnail];
   }
 
-  [v4 setCornerRoundingStyle:{4 * (-[SPUISShortcutResultBuilder entityThumbnailDisplayStyle](self, "entityThumbnailDisplayStyle") == 1)}];
+  [buildThumbnail setCornerRoundingStyle:{4 * (-[SPUISShortcutResultBuilder entityThumbnailDisplayStyle](self, "entityThumbnailDisplayStyle") == 1)}];
 
-  return v4;
+  return buildThumbnail;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
-  v4 = a3;
-  v5 = [(SPUISShortcutResultBuilder *)self biomeStreamIdentifier];
-  v6 = [v5 length];
+  thumbnailCopy = thumbnail;
+  biomeStreamIdentifier = [(SPUISShortcutResultBuilder *)self biomeStreamIdentifier];
+  v6 = [biomeStreamIdentifier length];
 
   if (v6)
   {
@@ -223,7 +223,7 @@ LABEL_5:
   {
     v9.receiver = self;
     v9.super_class = SPUISShortcutResultBuilder;
-    v7 = [(SPUISResultBuilder *)&v9 buildBadgingImageWithThumbnail:v4];
+    v7 = [(SPUISResultBuilder *)&v9 buildBadgingImageWithThumbnail:thumbnailCopy];
   }
 
   return v7;
@@ -232,23 +232,23 @@ LABEL_5:
 - (id)buildCompactThumbnail
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISResultBuilder *)self relatedAppBundleIdentifier];
-  [v3 setBundleIdentifier:v4];
+  relatedAppBundleIdentifier = [(SPUISResultBuilder *)self relatedAppBundleIdentifier];
+  [v3 setBundleIdentifier:relatedAppBundleIdentifier];
 
   return v3;
 }
 
 - (id)buildThumbnail
 {
-  v3 = [(SPUISResultBuilder *)self result];
-  v4 = [v3 valueForAttribute:*MEMORY[0x277CC31D8] withType:objc_opt_class()];
+  result = [(SPUISResultBuilder *)self result];
+  v4 = [result valueForAttribute:*MEMORY[0x277CC31D8] withType:objc_opt_class()];
 
-  v5 = [(SPUISResultBuilder *)self result];
-  if (![v5 shouldUseCompactDisplay] || -[SPUISShortcutResultBuilder isCustomAppAttributedShortcut](self, "isCustomAppAttributedShortcut"))
+  result2 = [(SPUISResultBuilder *)self result];
+  if (![result2 shouldUseCompactDisplay] || -[SPUISShortcutResultBuilder isCustomAppAttributedShortcut](self, "isCustomAppAttributedShortcut"))
   {
 
 LABEL_4:
-    v6 = [(SPUISShortcutResultBuilder *)self buildStandardThumbnail];
+    buildStandardThumbnail = [(SPUISShortcutResultBuilder *)self buildStandardThumbnail];
     goto LABEL_5;
   }
 
@@ -257,9 +257,9 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v6 = [(SPUISShortcutResultBuilder *)self buildCompactThumbnail];
+  buildStandardThumbnail = [(SPUISShortcutResultBuilder *)self buildCompactThumbnail];
 LABEL_5:
-  v7 = v6;
+  v7 = buildStandardThumbnail;
 
   return v7;
 }
@@ -268,8 +268,8 @@ LABEL_5:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D4C598];
-  v3 = [(SPUISShortcutResultBuilder *)self numberOfActionsString];
-  v4 = [v2 textWithString:v3];
+  numberOfActionsString = [(SPUISShortcutResultBuilder *)self numberOfActionsString];
+  v4 = [v2 textWithString:numberOfActionsString];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -280,10 +280,10 @@ LABEL_5:
 
 - (id)buildFootnote
 {
-  v3 = [(SPUISResultBuilder *)self result];
-  v4 = [v3 relatedAppIdentifier];
+  result = [(SPUISResultBuilder *)self result];
+  relatedAppIdentifier = [result relatedAppIdentifier];
 
-  if (v4)
+  if (relatedAppIdentifier)
   {
     v5 = 0;
   }
@@ -291,8 +291,8 @@ LABEL_5:
   else
   {
     v6 = MEMORY[0x277D4C598];
-    v7 = [(SPUISShortcutResultBuilder *)self alternateNames];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    alternateNames = [(SPUISShortcutResultBuilder *)self alternateNames];
+    v8 = [alternateNames objectAtIndexedSubscript:0];
     v5 = [v6 textWithString:v8];
   }
 
@@ -303,11 +303,11 @@ LABEL_5:
 {
   if ([(SPUISShortcutResultBuilder *)self resultShadowsSettingResult])
   {
-    v3 = objc_opt_new();
-    v4 = [(SPUISShortcutResultBuilder *)self settingsPreference];
-    [v3 setCoreSpotlightIdentifier:v4];
+    buildCommand = objc_opt_new();
+    settingsPreference = [(SPUISShortcutResultBuilder *)self settingsPreference];
+    [buildCommand setCoreSpotlightIdentifier:settingsPreference];
 
-    [v3 setApplicationBundleIdentifier:@"com.apple.Preferences"];
+    [buildCommand setApplicationBundleIdentifier:@"com.apple.Preferences"];
   }
 
   else if ([(SPUISShortcutResultBuilder *)self isAlarmResult])
@@ -317,22 +317,22 @@ LABEL_5:
       [SPUISShortcutResultBuilder buildCommand];
     }
 
-    v3 = objc_opt_new();
-    v5 = [(SPUISResultBuilder *)self result];
-    v6 = [v5 relatedAppIdentifier];
-    [v3 setApplicationBundleIdentifier:v6];
+    buildCommand = objc_opt_new();
+    result = [(SPUISResultBuilder *)self result];
+    relatedAppIdentifier = [result relatedAppIdentifier];
+    [buildCommand setApplicationBundleIdentifier:relatedAppIdentifier];
 
-    [v3 setUserActivityRequiredString:buildCommand_alarmToggleUserActivityString];
+    [buildCommand setUserActivityRequiredString:buildCommand_alarmToggleUserActivityString];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISShortcutResultBuilder;
-    v3 = [(SPUISResultBuilder *)&v8 buildCommand];
+    buildCommand = [(SPUISResultBuilder *)&v8 buildCommand];
   }
 
-  return v3;
+  return buildCommand;
 }
 
 void __42__SPUISShortcutResultBuilder_buildCommand__block_invoke()
@@ -349,14 +349,14 @@ void __42__SPUISShortcutResultBuilder_buildCommand__block_invoke()
     v3 = objc_opt_new();
     v13.receiver = self;
     v13.super_class = SPUISShortcutResultBuilder;
-    v4 = [(SPUISResultBuilder *)&v13 buildCommand];
-    [v3 setCommand:v4];
+    buildCommand = [(SPUISResultBuilder *)&v13 buildCommand];
+    [v3 setCommand:buildCommand];
 
     v15[0] = v3;
     v5 = MEMORY[0x277CBEA60];
     v6 = v15;
 LABEL_5:
-    v8 = [v5 arrayWithObjects:v6 count:1];
+    buildButtonItems = [v5 arrayWithObjects:v6 count:1];
 
     goto LABEL_7;
   }
@@ -366,8 +366,8 @@ LABEL_5:
     v3 = objc_opt_new();
     v12.receiver = self;
     v12.super_class = SPUISShortcutResultBuilder;
-    v7 = [(SPUISResultBuilder *)&v12 buildCommand];
-    [v3 setCommand:v7];
+    buildCommand2 = [(SPUISResultBuilder *)&v12 buildCommand];
+    [v3 setCommand:buildCommand2];
 
     v14 = v3;
     v5 = MEMORY[0x277CBEA60];
@@ -377,11 +377,11 @@ LABEL_5:
 
   v11.receiver = self;
   v11.super_class = SPUISShortcutResultBuilder;
-  v8 = [(SPUISResultBuilder *)&v11 buildButtonItems];
+  buildButtonItems = [(SPUISResultBuilder *)&v11 buildButtonItems];
 LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return buildButtonItems;
 }
 
 - (BOOL)buildButtonItemsAreTrailing
@@ -404,17 +404,17 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  v4 = [(SPUISResultBuilder *)self result];
-  v5 = [(SPUISShortcutResultBuilder *)self buildStandardThumbnail];
-  v6 = [(SPUISResultBuilder *)self result];
-  if ([v6 shouldUseCompactDisplay] && !-[SPUISShortcutResultBuilder isCustomAppAttributedShortcut](self, "isCustomAppAttributedShortcut"))
+  result = [(SPUISResultBuilder *)self result];
+  buildStandardThumbnail = [(SPUISShortcutResultBuilder *)self buildStandardThumbnail];
+  result2 = [(SPUISResultBuilder *)self result];
+  if ([result2 shouldUseCompactDisplay] && !-[SPUISShortcutResultBuilder isCustomAppAttributedShortcut](self, "isCustomAppAttributedShortcut"))
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v3 = v5;
+      v3 = buildStandardThumbnail;
       if (v3)
       {
         goto LABEL_20;
@@ -426,26 +426,26 @@ LABEL_7:
   {
   }
 
-  v7 = [v4 applicationBundleIdentifier];
-  if ([v7 isEqualToString:@"com.apple.shortcuts"])
+  applicationBundleIdentifier = [result applicationBundleIdentifier];
+  if ([applicationBundleIdentifier isEqualToString:@"com.apple.shortcuts"])
   {
 
 LABEL_9:
-    v10 = [(SPUISResultBuilder *)self result];
-    v11 = [v10 valueForAttribute:*MEMORY[0x277CC3078] withType:objc_opt_class()];
+    result3 = [(SPUISResultBuilder *)self result];
+    v11 = [result3 valueForAttribute:*MEMORY[0x277CC3078] withType:objc_opt_class()];
 
     if (v11)
     {
-      v12 = v11;
+      trailingThumbnailSymbol = v11;
     }
 
     else
     {
-      v12 = [(SPUISShortcutResultBuilder *)self trailingThumbnailSymbol];
+      trailingThumbnailSymbol = [(SPUISShortcutResultBuilder *)self trailingThumbnailSymbol];
     }
 
-    v13 = v12;
-    if ([v12 length])
+    v13 = trailingThumbnailSymbol;
+    if ([trailingThumbnailSymbol length])
     {
       v3 = objc_opt_new();
       [v3 setSymbolName:v13];
@@ -460,8 +460,8 @@ LABEL_9:
     goto LABEL_20;
   }
 
-  v8 = [v4 resultBundleId];
-  v9 = [v8 isEqualToString:@"com.apple.shortcuts"];
+  resultBundleId = [result resultBundleId];
+  v9 = [resultBundleId isEqualToString:@"com.apple.shortcuts"];
 
   if (v9)
   {
@@ -480,26 +480,26 @@ LABEL_21:
 {
   v6.receiver = self;
   v6.super_class = SPUISShortcutResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v6 buildDetailedRowCardSection];
-  v4 = [(SPUISShortcutResultBuilder *)self actionIdentifier];
-  [v3 setCommandDetail:v4];
+  buildDetailedRowCardSection = [(SPUISResultBuilder *)&v6 buildDetailedRowCardSection];
+  actionIdentifier = [(SPUISShortcutResultBuilder *)self actionIdentifier];
+  [buildDetailedRowCardSection setCommandDetail:actionIdentifier];
 
-  [v3 setButtonItemsAreTrailing:1];
+  [buildDetailedRowCardSection setButtonItemsAreTrailing:1];
 
-  return v3;
+  return buildDetailedRowCardSection;
 }
 
 - (id)buildAppTopHitEntityCardSection
 {
   v16.receiver = self;
   v16.super_class = SPUISShortcutResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v16 buildAppTopHitEntityCardSection];
-  v4 = [v3 thumbnail];
+  buildAppTopHitEntityCardSection = [(SPUISResultBuilder *)&v16 buildAppTopHitEntityCardSection];
+  thumbnail = [buildAppTopHitEntityCardSection thumbnail];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || [(SPUISShortcutResultBuilder *)self isCustomAppAttributedShortcut]&& (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = [(SPUISResultBuilder *)self result];
-    v6 = [v5 valueForAttribute:*MEMORY[0x277CC3078] withType:objc_opt_class()];
+    result = [(SPUISResultBuilder *)self result];
+    v6 = [result valueForAttribute:*MEMORY[0x277CC3078] withType:objc_opt_class()];
 
     v7 = objc_opt_new();
     v8 = v7;
@@ -515,28 +515,28 @@ LABEL_21:
 
     [v7 setSymbolName:v9];
 
-    v4 = v8;
+    thumbnail = v8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v4;
+    v10 = thumbnail;
     [v10 setIsTemplate:1];
     [v10 setPunchThroughBackground:1];
     [v10 setPrimaryColor:7];
     [v10 setCornerRoundingStyle:4];
   }
 
-  v11 = [(SPUISShortcutResultBuilder *)self entityBadgeType];
-  if (v11 == 1)
+  entityBadgeType = [(SPUISShortcutResultBuilder *)self entityBadgeType];
+  if (entityBadgeType == 1)
   {
     v12 = @"com.apple.mobilephone";
   }
 
   else
   {
-    if (v11 != 2)
+    if (entityBadgeType != 2)
     {
       goto LABEL_15;
     }
@@ -546,24 +546,24 @@ LABEL_21:
 
   v13 = objc_opt_new();
   [v13 setBundleIdentifier:v12];
-  [v4 setBadgingImage:v13];
+  [thumbnail setBadgingImage:v13];
 
 LABEL_15:
-  [v3 setThumbnail:v4];
-  v14 = [(SPUISShortcutResultBuilder *)self actionIdentifier];
-  [v3 setCommandDetail:v14];
+  [buildAppTopHitEntityCardSection setThumbnail:thumbnail];
+  actionIdentifier = [(SPUISShortcutResultBuilder *)self actionIdentifier];
+  [buildAppTopHitEntityCardSection setCommandDetail:actionIdentifier];
 
-  return v3;
+  return buildAppTopHitEntityCardSection;
 }
 
 - (BOOL)resultShadowsSettingResult
 {
-  v3 = [(SPUISShortcutResultBuilder *)self settingsPreference];
-  if ([v3 length])
+  settingsPreference = [(SPUISShortcutResultBuilder *)self settingsPreference];
+  if ([settingsPreference length])
   {
-    v4 = [(SPUISResultBuilder *)self result];
-    v5 = [v4 relatedAppIdentifier];
-    v6 = [v5 isEqualToString:@"com.apple.Preferences"];
+    result = [(SPUISResultBuilder *)self result];
+    relatedAppIdentifier = [result relatedAppIdentifier];
+    v6 = [relatedAppIdentifier isEqualToString:@"com.apple.Preferences"];
   }
 
   else

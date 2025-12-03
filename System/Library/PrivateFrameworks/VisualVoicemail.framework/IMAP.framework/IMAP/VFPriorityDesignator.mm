@@ -12,106 +12,106 @@
 
 + (VFPriorityDesignator)currentDesignator
 {
-  v3 = [a1 currentDesignatorIfExists];
-  v4 = v3;
-  if (v3)
+  currentDesignatorIfExists = [self currentDesignatorIfExists];
+  v4 = currentDesignatorIfExists;
+  if (currentDesignatorIfExists)
   {
-    v5 = v3;
+    installNewDesignator = currentDesignatorIfExists;
   }
 
   else
   {
-    v5 = [a1 installNewDesignator];
+    installNewDesignator = [self installNewDesignator];
   }
 
-  v6 = v5;
+  v6 = installNewDesignator;
 
   return v6;
 }
 
 + (id)installNewDesignator
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v3 threadDictionary];
+  v2 = objc_alloc_init(self);
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  [v4 setObject:v2 forKeyedSubscript:@"VFThreadPriorityDesignator"];
+  [threadDictionary setObject:v2 forKeyedSubscript:@"VFThreadPriorityDesignator"];
 
   return v2;
 }
 
 + (id)currentDesignatorIfExists
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"VFThreadPriorityDesignator"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"VFThreadPriorityDesignator"];
 
   return v4;
 }
 
 + (id)currentDesignatorStackIfExists
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"VFThreadPriorityDesignatorStack"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"VFThreadPriorityDesignatorStack"];
 
   return v4;
 }
 
 + (id)currentDesignatorStack
 {
-  v2 = [a1 currentDesignatorStackIfExists];
-  if (!v2)
+  currentDesignatorStackIfExists = [self currentDesignatorStackIfExists];
+  if (!currentDesignatorStackIfExists)
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    v4 = [v3 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v4 setObject:v2 forKeyedSubscript:@"VFThreadPriorityDesignatorStack"];
+    currentDesignatorStackIfExists = objc_alloc_init(MEMORY[0x277CBEB18]);
+    [threadDictionary setObject:currentDesignatorStackIfExists forKeyedSubscript:@"VFThreadPriorityDesignatorStack"];
   }
 
-  return v2;
+  return currentDesignatorStackIfExists;
 }
 
 + (id)pushNewDesignator
 {
-  v3 = [a1 currentDesignatorIfExists];
-  if (v3)
+  currentDesignatorIfExists = [self currentDesignatorIfExists];
+  if (currentDesignatorIfExists)
   {
-    v4 = v3;
-    v5 = [a1 currentDesignatorStack];
-    [v5 addObject:v4];
+    v4 = currentDesignatorIfExists;
+    currentDesignatorStack = [self currentDesignatorStack];
+    [currentDesignatorStack addObject:v4];
 
-    v6 = [a1 installNewDesignator];
+    installNewDesignator = [self installNewDesignator];
   }
 
   else
   {
-    v6 = [a1 currentDesignator];
+    installNewDesignator = [self currentDesignator];
   }
 
-  return v6;
+  return installNewDesignator;
 }
 
 + (void)destroyCurrentDesignator
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v7 = [v3 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  [v7 removeObjectForKey:@"VFThreadPriorityDesignator"];
-  v4 = [a1 currentDesignatorStackIfExists];
-  v5 = v4;
-  if (v4)
+  [threadDictionary removeObjectForKey:@"VFThreadPriorityDesignator"];
+  currentDesignatorStackIfExists = [self currentDesignatorStackIfExists];
+  v5 = currentDesignatorStackIfExists;
+  if (currentDesignatorStackIfExists)
   {
-    v6 = [v4 lastObject];
-    [v7 setObject:v6 forKeyedSubscript:@"VFThreadPriorityDesignator"];
+    lastObject = [currentDesignatorStackIfExists lastObject];
+    [threadDictionary setObject:lastObject forKeyedSubscript:@"VFThreadPriorityDesignator"];
 
     [v5 removeLastObject];
     if (![v5 count])
     {
-      [v7 setObject:0 forKeyedSubscript:@"VFThreadPriorityDesignatorStack"];
+      [threadDictionary setObject:0 forKeyedSubscript:@"VFThreadPriorityDesignatorStack"];
     }
   }
 }

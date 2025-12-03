@@ -1,5 +1,5 @@
 @interface HealthRecordsPluginAppDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (_TtC13HealthRecords30HealthRecordsPluginAppDelegate)init;
 @end
 
@@ -13,14 +13,14 @@
   return [(HealthRecordsPluginAppDelegate *)&v3 init];
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -30,16 +30,16 @@
 
   v8 = sub_29D5B3E5C();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = sub_29D5B3D3C();
+    optionsCopy = sub_29D5B3D3C();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_29D57487C(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_29D57487C(application, v8, v10, optionsCopy);
 
   return v13 & 1;
 }

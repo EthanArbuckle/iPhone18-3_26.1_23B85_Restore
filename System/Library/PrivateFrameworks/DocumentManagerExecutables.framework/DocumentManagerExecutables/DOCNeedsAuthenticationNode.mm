@@ -1,13 +1,13 @@
 @interface DOCNeedsAuthenticationNode
 - (NSError)enumeratorError;
 - (_TtC26DocumentManagerExecutables26DOCNeedsAuthenticationNode)init;
-- (_TtC26DocumentManagerExecutables26DOCNeedsAuthenticationNode)initWithCoder:(id)a3;
-- (id)iteratorWithOptions:(unsigned int)a3;
+- (_TtC26DocumentManagerExecutables26DOCNeedsAuthenticationNode)initWithCoder:(id)coder;
+- (id)iteratorWithOptions:(unsigned int)options;
 @end
 
 @implementation DOCNeedsAuthenticationNode
 
-- (_TtC26DocumentManagerExecutables26DOCNeedsAuthenticationNode)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables26DOCNeedsAuthenticationNode)initWithCoder:(id)coder
 {
   type metadata accessor for DOCNeedsAuthenticationNode();
   swift_deallocPartialClassInstance();
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (id)iteratorWithOptions:(unsigned int)a3
+- (id)iteratorWithOptions:(unsigned int)options
 {
   v3 = objc_allocWithZone(MEMORY[0x277D046C0]);
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FINode);

@@ -14,7 +14,7 @@
   v6 = (v3 * 1.7321) * 0.5;
   v7 = [CIVector vectorWithX:1.0 / v3 Y:1.0 / v6];
   v8 = [CIVector vectorWithX:v5 Y:v6];
-  v9 = [(CIHexagonalPixellate *)self _CIHexagonalPixellate];
+  _CIHexagonalPixellate = [(CIHexagonalPixellate *)self _CIHexagonalPixellate];
   [(CIImage *)self->inputImage extent];
   v17 = CGRectInset(v16, -v4, -v4);
   x = v17.origin.x;
@@ -23,7 +23,7 @@
   height = v17.size.height;
   LODWORD(v17.origin.x) = 1058262330;
   v15[4] = [MEMORY[0x1E696AD98] numberWithFloat:{v17.origin.x, self->inputImage, self->inputCenter, v7, v8}];
-  return [v9 applyWithExtent:&__block_literal_global_57 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v15, 5), x, y, width, height}];
+  return [_CIHexagonalPixellate applyWithExtent:&__block_literal_global_57 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v15, 5), x, y, width, height}];
 }
 
 + (id)customAttributes

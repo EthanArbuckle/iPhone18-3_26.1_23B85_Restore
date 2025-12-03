@@ -1,21 +1,21 @@
 @interface MUBendableGrabberView
-- (CGSize)_intrinsicSizeWithAngle:(double)a3;
+- (CGSize)_intrinsicSizeWithAngle:(double)angle;
 - (CGSize)intrinsicContentSize;
-- (MUBendableGrabberView)initWithSize:(CGSize)a3 minimumAngle:(double)a4 maximumAngle:(double)a5;
+- (MUBendableGrabberView)initWithSize:(CGSize)size minimumAngle:(double)angle maximumAngle:(double)maximumAngle;
 - (UIColor)color;
-- (void)drawRect:(CGRect)a3;
-- (void)setColor:(id)a3;
-- (void)setLayoutProgress:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor:(id)color;
+- (void)setLayoutProgress:(double)progress;
 @end
 
 @implementation MUBendableGrabberView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v19 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = MUBendableGrabberView;
@@ -25,8 +25,8 @@
   {
     v9 = CurrentContext;
     v10 = self->_height;
-    v11 = [(MUBendableGrabberView *)self color];
-    [v11 setStroke];
+    color = [(MUBendableGrabberView *)self color];
+    [color setStroke];
     CGContextSetLineWidth(v9, v10);
     CGContextSetLineCap(v9, kCGLineCapRound);
     points.x = v10 * 0.5 + x;
@@ -42,9 +42,9 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (CGSize)_intrinsicSizeWithAngle:(double)a3
+- (CGSize)_intrinsicSizeWithAngle:(double)angle
 {
-  v4 = __sincos_stret(a3);
+  v4 = __sincos_stret(angle);
   width = self->_width;
   v6 = self->_height + v4.__sinval * 0.5 * width;
   v7 = width * v4.__cosval;
@@ -63,9 +63,9 @@
   return result;
 }
 
-- (void)setLayoutProgress:(double)a3
+- (void)setLayoutProgress:(double)progress
 {
-  v4 = fmin(fmax(a3, 0.0), 1.0);
+  v4 = fmin(fmax(progress, 0.0), 1.0);
   if (vabdd_f64(self->_layoutProgress, v4) > 2.22044605e-16)
   {
     self->_layoutProgress = v4;
@@ -76,15 +76,15 @@
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_color, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_color, color);
     [(MUBendableGrabberView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -93,9 +93,9 @@
   color = self->_color;
   if (!color)
   {
-    v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     v5 = self->_color;
-    self->_color = v4;
+    self->_color = tertiaryLabelColor;
 
     color = self->_color;
   }
@@ -103,20 +103,20 @@
   return color;
 }
 
-- (MUBendableGrabberView)initWithSize:(CGSize)a3 minimumAngle:(double)a4 maximumAngle:(double)a5
+- (MUBendableGrabberView)initWithSize:(CGSize)size minimumAngle:(double)angle maximumAngle:(double)maximumAngle
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = MUBendableGrabberView;
-  v9 = [(MUBendableGrabberView *)&v12 initWithFrame:0.0, 0.0, a3.width, a3.height];
+  v9 = [(MUBendableGrabberView *)&v12 initWithFrame:0.0, 0.0, size.width, size.height];
   v10 = v9;
   if (v9)
   {
     v9->_width = width;
     v9->_height = height;
-    v9->_minimumAngle = a4;
-    v9->_maximumAngle = a5;
+    v9->_minimumAngle = angle;
+    v9->_maximumAngle = maximumAngle;
     [(MUBendableGrabberView *)v9 setOpaque:0];
     [(MUBendableGrabberView *)v10 setClearsContextBeforeDrawing:1];
   }

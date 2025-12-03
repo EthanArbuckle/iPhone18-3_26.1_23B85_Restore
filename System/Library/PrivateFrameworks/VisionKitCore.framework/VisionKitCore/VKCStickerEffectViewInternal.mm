@@ -2,57 +2,57 @@
 + (void)resetRestingOrientation;
 - (CGSize)intrinsicContentSize;
 - (NSString)description;
-- (VKCStickerEffectViewInternal)initWithFrame:(CGRect)a3;
-- (void)_internalUpdateFromDisplayLink:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (VKCStickerEffectViewInternal)initWithFrame:(CGRect)frame;
+- (void)_internalUpdateFromDisplayLink:(id)link;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)playSettlingAnimation;
-- (void)setCurlPosition:(float)a3;
-- (void)setEffect:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setIsPaused:(BOOL)a3;
-- (void)snapshotWithCompletionHandler:(id)a3;
+- (void)setCurlPosition:(float)position;
+- (void)setEffect:(id)effect;
+- (void)setImage:(id)image;
+- (void)setIsPaused:(BOOL)paused;
+- (void)snapshotWithCompletionHandler:(id)handler;
 @end
 
 @implementation VKCStickerEffectViewInternal
 
-- (void)setCurlPosition:(float)a3
+- (void)setCurlPosition:(float)position
 {
-  v4 = self;
-  sub_1B4402650(a3);
+  selfCopy = self;
+  sub_1B4402650(position);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v5 = a3;
-  v4 = self;
-  sub_1B4407774(v5);
+  effectCopy = effect;
+  selfCopy = self;
+  sub_1B4407774(effectCopy);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v6 = *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_image);
-  *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_image) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_image) = image;
+  imageCopy = image;
+  selfCopy = self;
   sub_1B4402790(v6);
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_isPaused);
-  *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_isPaused) = a3;
-  if (v4 != a3)
+  *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_isPaused) = paused;
+  if (v4 != paused)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1B4404C34();
   }
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B4402928();
 
   v3 = sub_1B4416070();
@@ -60,17 +60,17 @@
   return v3;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if ((*(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_displayLinkActive) & 1) == 0)
   {
     v4 = *(&self->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_displayLink);
     v6 = v4;
-    v9 = self;
+    selfCopy = self;
     sub_1B440506C(v4);
     v8 = v7;
 
-    *(&v9->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_unitScreenCenter) = v8;
+    *(&selfCopy->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_unitScreenCenter) = v8;
     sub_1B4404C34();
   }
 }
@@ -98,41 +98,41 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B4403A7C();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B4403D48();
 }
 
 - (void)playSettlingAnimation
 {
-  v2 = self;
-  *(&v2->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_settlingStartTime) = CACurrentMediaTime();
+  selfCopy = self;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR___VKCStickerEffectViewInternal_settlingStartTime) = CACurrentMediaTime();
   sub_1B4404C34();
 }
 
-- (void)_internalUpdateFromDisplayLink:(id)a3
+- (void)_internalUpdateFromDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B4404D74(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_1B4404D74(linkCopy);
 }
 
-- (void)snapshotWithCompletionHandler:(id)a3
+- (void)snapshotWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1B4407E04(v5, v4);
+  selfCopy = self;
+  sub_1B4407E04(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (VKCStickerEffectViewInternal)initWithFrame:(CGRect)a3
+- (VKCStickerEffectViewInternal)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

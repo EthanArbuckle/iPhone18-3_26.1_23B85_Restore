@@ -1,17 +1,17 @@
 @interface PMLSparseMatrix
-+ (PMLSparseMatrix)sparseMatrixWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4;
-+ (id)sparseMatrixFromNumbers:(id)a3;
-- (PMLSparseMatrix)initWithSparseMatrix:(sparse_m_float *)a3;
++ (PMLSparseMatrix)sparseMatrixWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns;
++ (id)sparseMatrixFromNumbers:(id)numbers;
+- (PMLSparseMatrix)initWithSparseMatrix:(sparse_m_float *)matrix;
 - (PMLSparseMatrix)matrixWithConstantColumn;
 - (float)maxValue;
 - (float)minValue;
-- (float)valueAtRow:(unint64_t)a3 column:(unint64_t)a4;
-- (void)_enumerateSparseRowsWithBlock:(id)a3;
+- (float)valueAtRow:(unint64_t)row column:(unint64_t)column;
+- (void)_enumerateSparseRowsWithBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateNonZeroValuesForRow:(unint64_t)a3 withBlock:(id)a4;
-- (void)enumerateNonZeroValuesWithBlock:(id)a3;
-- (void)setIsSymmetric:(BOOL)a3;
-- (void)setMatrix:(sparse_m_float *)a3;
+- (void)enumerateNonZeroValuesForRow:(unint64_t)row withBlock:(id)block;
+- (void)enumerateNonZeroValuesWithBlock:(id)block;
+- (void)setIsSymmetric:(BOOL)symmetric;
+- (void)setMatrix:(sparse_m_float *)matrix;
 @end
 
 @implementation PMLSparseMatrix
@@ -83,10 +83,10 @@ uint64_t __27__PMLSparseMatrix_minValue__block_invoke(uint64_t result, float a2)
   v9[3] = &__block_descriptor_40_e21_v40__0Q8Q16r_f24r_q32l;
   v9[4] = v3;
   [(PMLSparseMatrix *)self _enumerateSparseRowsWithBlock:v9];
-  v4 = [(PMLSparseMatrix *)self numberOfRows];
-  if (v4)
+  numberOfRows = [(PMLSparseMatrix *)self numberOfRows];
+  if (numberOfRows)
   {
-    v5 = v4;
+    v5 = numberOfRows;
     for (i = 0; i != v5; ++i)
     {
       sparse_insert_entry_float(v3, 1.0, i, [(PMLSparseMatrix *)self numberOfColumns]);
@@ -99,14 +99,14 @@ uint64_t __27__PMLSparseMatrix_minValue__block_invoke(uint64_t result, float a2)
   return v7;
 }
 
-- (void)enumerateNonZeroValuesForRow:(unint64_t)a3 withBlock:(id)a4
+- (void)enumerateNonZeroValuesForRow:(unint64_t)row withBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v7 = malloc_type_malloc(4 * [(PMLSparseMatrix *)self numberOfColumns], 0x100004052888210uLL);
   v8 = malloc_type_malloc(8 * [(PMLSparseMatrix *)self numberOfColumns], 0x100004000313F17uLL);
   column_end = 0;
-  v9 = sparse_extract_sparse_row_float(self->_matrix, a3, 0, &column_end, [(PMLSparseMatrix *)self numberOfColumns], v7, v8);
+  v9 = sparse_extract_sparse_row_float(self->_matrix, row, 0, &column_end, [(PMLSparseMatrix *)self numberOfColumns], v7, v8);
   v10 = v9;
   if (v9 < 0)
   {
@@ -128,7 +128,7 @@ uint64_t __27__PMLSparseMatrix_minValue__block_invoke(uint64_t result, float a2)
       v14 = *v11++;
       v15 = v14;
       v16 = *v12++;
-      v6[2](v6, a3, v16, v15);
+      blockCopy[2](blockCopy, row, v16, v15);
       --v13;
     }
 
@@ -141,15 +141,15 @@ uint64_t __27__PMLSparseMatrix_minValue__block_invoke(uint64_t result, float a2)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNonZeroValuesWithBlock:(id)a3
+- (void)enumerateNonZeroValuesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__PMLSparseMatrix_enumerateNonZeroValuesWithBlock___block_invoke;
   v6[3] = &unk_279AC0368;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PMLSparseMatrix *)self _enumerateSparseRowsWithBlock:v6];
 }
 
@@ -174,16 +174,16 @@ uint64_t __51__PMLSparseMatrix_enumerateNonZeroValuesWithBlock___block_invoke(ui
   return result;
 }
 
-- (void)_enumerateSparseRowsWithBlock:(id)a3
+- (void)_enumerateSparseRowsWithBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = malloc_type_malloc(4 * [(PMLSparseMatrix *)self numberOfColumns], 0x100004052888210uLL);
   v6 = malloc_type_malloc(8 * [(PMLSparseMatrix *)self numberOfColumns], 0x100004000313F17uLL);
-  v7 = [(PMLSparseMatrix *)self numberOfRows];
-  if (v7)
+  numberOfRows = [(PMLSparseMatrix *)self numberOfRows];
+  if (numberOfRows)
   {
-    v9 = v7;
+    v9 = numberOfRows;
     v10 = 0;
     v11 = MEMORY[0x277D86220];
     *&v8 = 67109120;
@@ -210,7 +210,7 @@ uint64_t __51__PMLSparseMatrix_enumerateNonZeroValuesWithBlock___block_invoke(ui
         v14 = v12;
       }
 
-      v4[2](v4, v10++, v14, v5, v6);
+      blockCopy[2](blockCopy, v10++, v14, v5, v6);
     }
 
     while (v9 != v10);
@@ -222,7 +222,7 @@ uint64_t __51__PMLSparseMatrix_enumerateNonZeroValuesWithBlock___block_invoke(ui
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (float)valueAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (float)valueAtRow:(unint64_t)row column:(unint64_t)column
 {
   v7 = malloc_type_malloc(8 * [(PMLSparseMatrix *)self numberOfColumns], 0x100004000313F17uLL);
   if (!v7 || (v8 = v7, (v9 = malloc_type_malloc(4 * [(PMLSparseMatrix *)self numberOfColumns], 0x100004052888210uLL)) == 0))
@@ -233,12 +233,12 @@ uint64_t __51__PMLSparseMatrix_enumerateNonZeroValuesWithBlock___block_invoke(ui
 
   v10 = v9;
   column_end = 0;
-  v11 = sparse_extract_sparse_row_float(self->_matrix, a3, 0, &column_end, [(PMLSparseMatrix *)self numberOfColumns], v9, v8);
+  v11 = sparse_extract_sparse_row_float(self->_matrix, row, 0, &column_end, [(PMLSparseMatrix *)self numberOfColumns], v9, v8);
   v12 = 0.0;
   if (v11 >= 1)
   {
     v13 = 0;
-    while (v8[v13] != a4)
+    while (v8[v13] != column)
     {
       if (v11 == ++v13)
       {
@@ -263,36 +263,36 @@ LABEL_9:
   [(PMLSparseMatrix *)&v3 dealloc];
 }
 
-- (void)setIsSymmetric:(BOOL)a3
+- (void)setIsSymmetric:(BOOL)symmetric
 {
-  v6 = [(PMLSparseMatrix *)self numberOfRows];
-  if (v6 != [(PMLSparseMatrix *)self numberOfColumns])
+  numberOfRows = [(PMLSparseMatrix *)self numberOfRows];
+  if (numberOfRows != [(PMLSparseMatrix *)self numberOfColumns])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:50 description:{@"Can not mark %lu x %lu matrix as symmetric", -[PMLSparseMatrix numberOfRows](self, "numberOfRows"), -[PMLSparseMatrix numberOfColumns](self, "numberOfColumns")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:50 description:{@"Can not mark %lu x %lu matrix as symmetric", -[PMLSparseMatrix numberOfRows](self, "numberOfRows"), -[PMLSparseMatrix numberOfColumns](self, "numberOfColumns")}];
   }
 
-  self->_isSymmetric = a3;
+  self->_isSymmetric = symmetric;
 }
 
-- (void)setMatrix:(sparse_m_float *)a3
+- (void)setMatrix:(sparse_m_float *)matrix
 {
-  if (!a3)
+  if (!matrix)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"matrix"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"matrix"}];
   }
 
   sparse_matrix_destroy(self->_matrix);
-  self->_matrix = a3;
+  self->_matrix = matrix;
 }
 
-- (PMLSparseMatrix)initWithSparseMatrix:(sparse_m_float *)a3
+- (PMLSparseMatrix)initWithSparseMatrix:(sparse_m_float *)matrix
 {
-  if (!a3)
+  if (!matrix)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"matrix"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"matrix"}];
   }
 
   v8.receiver = self;
@@ -300,18 +300,18 @@ LABEL_9:
   result = [(PMLSparseMatrix *)&v8 init];
   if (result)
   {
-    result->_matrix = a3;
+    result->_matrix = matrix;
   }
 
   return result;
 }
 
-+ (id)sparseMatrixFromNumbers:(id)a3
++ (id)sparseMatrixFromNumbers:(id)numbers
 {
-  v3 = a3;
-  v4 = [v3 count];
-  v20 = v3;
-  v5 = [v3 objectAtIndexedSubscript:0];
+  numbersCopy = numbers;
+  v4 = [numbersCopy count];
+  v20 = numbersCopy;
+  v5 = [numbersCopy objectAtIndexedSubscript:0];
   v6 = [v5 count];
 
   v7 = sparse_matrix_create_float(v4, v6);
@@ -330,8 +330,8 @@ LABEL_9:
 
       else
       {
-        v15 = [MEMORY[0x277CCA890] currentHandler];
-        [v15 handleFailureInMethod:a2 object:a1 file:@"PMLSparseMatrix.m" lineNumber:69 description:{@"Invalid shape, all rows must be the same length (row %lu length: %lu, first row length: %lu)", i, objc_msgSend(v9, "count"), v6}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSparseMatrix.m" lineNumber:69 description:{@"Invalid shape, all rows must be the same length (row %lu length: %lu, first row length: %lu)", i, objc_msgSend(v9, "count"), v6}];
 
         if (v6)
         {
@@ -356,14 +356,14 @@ LABEL_5:
   }
 
   sparse_commit(v7);
-  v16 = [[a1 alloc] initWithSparseMatrix:v7];
+  v16 = [[self alloc] initWithSparseMatrix:v7];
 
   return v16;
 }
 
-+ (PMLSparseMatrix)sparseMatrixWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4
++ (PMLSparseMatrix)sparseMatrixWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns
 {
-  v4 = [[a1 alloc] initWithSparseMatrix:{sparse_matrix_create_float(a3, a4)}];
+  v4 = [[self alloc] initWithSparseMatrix:{sparse_matrix_create_float(rows, columns)}];
 
   return v4;
 }

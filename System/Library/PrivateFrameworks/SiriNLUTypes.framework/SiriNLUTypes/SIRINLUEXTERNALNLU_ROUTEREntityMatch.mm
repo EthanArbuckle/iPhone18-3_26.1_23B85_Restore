@@ -1,43 +1,43 @@
 @interface SIRINLUEXTERNALNLU_ROUTEREntityMatch
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMatcherType:(id)a3;
+- (int)StringAsMatcherType:(id)type;
 - (int)matcherType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMatchScore:(BOOL)a3;
-- (void)setHasMatcherType:(BOOL)a3;
-- (void)setHasStartIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMatchScore:(BOOL)score;
+- (void)setHasMatcherType:(BOOL)type;
+- (void)setHasStartIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTEREntityMatch
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self setSourceItemIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self setEntityName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(fromCopy + 80);
   if ((v5 & 2) != 0)
   {
-    self->_startIndex = *(v4 + 2);
+    self->_startIndex = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -50,23 +50,23 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 80) & 1) == 0)
+  else if ((*(fromCopy + 80) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_endIndex = *(v4 + 1);
+  self->_endIndex = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 80) & 4) != 0)
+  if ((*(fromCopy + 80) & 4) != 0)
   {
 LABEL_8:
-    self->_matchScore = *(v4 + 12);
+    self->_matchScore = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 
 LABEL_9:
   matchProperties = self->_matchProperties;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (matchProperties)
   {
     if (!v7)
@@ -87,27 +87,27 @@ LABEL_9:
     [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self setMatchProperties:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_18:
-  if ((*(v4 + 80) & 8) != 0)
+  if ((*(fromCopy + 80) & 8) != 0)
   {
-    self->_matcherType = *(v4 + 13);
+    self->_matcherType = *(fromCopy + 13);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self setOriginAppBundleId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self setUserUtterance:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self setIdentifier:?];
   }
@@ -196,16 +196,16 @@ LABEL_11:
   return v17 ^ [(NSString *)self->_identifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   sourceItemIdentifier = self->_sourceItemIdentifier;
-  if (sourceItemIdentifier | *(v4 + 8))
+  if (sourceItemIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)sourceItemIdentifier isEqual:?])
     {
@@ -214,7 +214,7 @@ LABEL_11:
   }
 
   entityName = self->_entityName;
-  if (entityName | *(v4 + 3))
+  if (entityName | *(equalCopy + 3))
   {
     if (![(NSString *)entityName isEqual:?])
     {
@@ -223,48 +223,48 @@ LABEL_11:
   }
 
   has = self->_has;
-  v8 = *(v4 + 80);
+  v8 = *(equalCopy + 80);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_startIndex != *(v4 + 2))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_startIndex != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_endIndex != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_endIndex != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_matchScore != *(v4 + 12))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_matchScore != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   matchProperties = self->_matchProperties;
-  if (matchProperties | *(v4 + 5))
+  if (matchProperties | *(equalCopy + 5))
   {
     if (![(SIRINLUEXTERNALNLU_ROUTERMatchProperties *)matchProperties isEqual:?])
     {
@@ -274,12 +274,12 @@ LABEL_35:
     }
 
     has = self->_has;
-    v8 = *(v4 + 80);
+    v8 = *(equalCopy + 80);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_matcherType != *(v4 + 13))
+    if ((v8 & 8) == 0 || self->_matcherType != *(equalCopy + 13))
     {
       goto LABEL_35;
     }
@@ -291,13 +291,13 @@ LABEL_35:
   }
 
   originAppBundleId = self->_originAppBundleId;
-  if (originAppBundleId | *(v4 + 7) && ![(NSString *)originAppBundleId isEqual:?])
+  if (originAppBundleId | *(equalCopy + 7) && ![(NSString *)originAppBundleId isEqual:?])
   {
     goto LABEL_35;
   }
 
   userUtterance = self->_userUtterance;
-  if (userUtterance | *(v4 + 9))
+  if (userUtterance | *(equalCopy + 9))
   {
     if (![(NSString *)userUtterance isEqual:?])
     {
@@ -306,7 +306,7 @@ LABEL_35:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     v13 = [(NSString *)identifier isEqual:?];
   }
@@ -321,14 +321,14 @@ LABEL_36:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sourceItemIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sourceItemIdentifier copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
-  v8 = [(NSString *)self->_entityName copyWithZone:a3];
+  v8 = [(NSString *)self->_entityName copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -365,7 +365,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(SIRINLUEXTERNALNLU_ROUTERMatchProperties *)self->_matchProperties copyWithZone:a3];
+  v11 = [(SIRINLUEXTERNALNLU_ROUTERMatchProperties *)self->_matchProperties copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -375,42 +375,42 @@ LABEL_5:
     *(v5 + 80) |= 8u;
   }
 
-  v13 = [(NSString *)self->_originAppBundleId copyWithZone:a3];
+  v13 = [(NSString *)self->_originAppBundleId copyWithZone:zone];
   v14 = *(v5 + 56);
   *(v5 + 56) = v13;
 
-  v15 = [(NSString *)self->_userUtterance copyWithZone:a3];
+  v15 = [(NSString *)self->_userUtterance copyWithZone:zone];
   v16 = *(v5 + 72);
   *(v5 + 72) = v15;
 
-  v17 = [(NSString *)self->_identifier copyWithZone:a3];
+  v17 = [(NSString *)self->_identifier copyWithZone:zone];
   v18 = *(v5 + 32);
   *(v5 + 32) = v17;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sourceItemIdentifier)
   {
-    [v4 setSourceItemIdentifier:?];
-    v4 = v6;
+    [toCopy setSourceItemIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_entityName)
   {
     [v6 setEntityName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_startIndex;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 2) = self->_startIndex;
+    *(toCopy + 80) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -429,61 +429,61 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 1) = self->_endIndex;
-  *(v4 + 80) |= 1u;
+  *(toCopy + 1) = self->_endIndex;
+  *(toCopy + 80) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    *(v4 + 12) = LODWORD(self->_matchScore);
-    *(v4 + 80) |= 4u;
+    *(toCopy + 12) = LODWORD(self->_matchScore);
+    *(toCopy + 80) |= 4u;
   }
 
 LABEL_9:
   if (self->_matchProperties)
   {
     [v6 setMatchProperties:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 13) = self->_matcherType;
-    *(v4 + 80) |= 8u;
+    *(toCopy + 13) = self->_matcherType;
+    *(toCopy + 80) |= 8u;
   }
 
   if (self->_originAppBundleId)
   {
     [v6 setOriginAppBundleId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_userUtterance)
   {
     [v6 setUserUtterance:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     [v6 setIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_sourceItemIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_entityName)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -491,7 +491,7 @@ LABEL_9:
   {
     startIndex = self->_startIndex;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -512,56 +512,56 @@ LABEL_7:
 
   endIndex = self->_endIndex;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     matchScore = self->_matchScore;
     PBDataWriterWriteFloatField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_9:
   if (self->_matchProperties)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     matcherType = self->_matcherType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_originAppBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_userUtterance)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   sourceItemIdentifier = self->_sourceItemIdentifier;
   if (sourceItemIdentifier)
   {
-    [v3 setObject:sourceItemIdentifier forKey:@"sourceItemIdentifier"];
+    [dictionary setObject:sourceItemIdentifier forKey:@"sourceItemIdentifier"];
   }
 
   entityName = self->_entityName;
@@ -609,8 +609,8 @@ LABEL_9:
   matchProperties = self->_matchProperties;
   if (matchProperties)
   {
-    v11 = [(SIRINLUEXTERNALNLU_ROUTERMatchProperties *)matchProperties dictionaryRepresentation];
-    [v5 setObject:v11 forKey:@"matchProperties"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERMatchProperties *)matchProperties dictionaryRepresentation];
+    [v5 setObject:dictionaryRepresentation forKey:@"matchProperties"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -656,26 +656,26 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTEREntityMatch;
   v4 = [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTEREntityMatch *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsMatcherType:(id)a3
+- (int)StringAsMatcherType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"siriEntityMatcher"])
+  else if ([typeCopy isEqualToString:@"siriEntityMatcher"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"globalEntityMatcher"])
+  else if ([typeCopy isEqualToString:@"globalEntityMatcher"])
   {
     v4 = 2;
   }
@@ -688,9 +688,9 @@ LABEL_9:
   return v4;
 }
 
-- (void)setHasMatcherType:(BOOL)a3
+- (void)setHasMatcherType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -716,9 +716,9 @@ LABEL_9:
   }
 }
 
-- (void)setHasMatchScore:(BOOL)a3
+- (void)setHasMatchScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -731,9 +731,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStartIndex:(BOOL)a3
+- (void)setHasStartIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }

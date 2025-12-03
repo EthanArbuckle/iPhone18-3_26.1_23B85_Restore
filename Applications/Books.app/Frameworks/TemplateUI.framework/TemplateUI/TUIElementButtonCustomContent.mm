@@ -1,37 +1,37 @@
 @interface TUIElementButtonCustomContent
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementButtonCustomContent
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v10 = a3;
-  v7 = a5;
-  v8 = [a4 finalizeModelsWithParent:0 box:0 context:v7];
+  objectCopy = object;
+  contextCopy = context;
+  v8 = [builder finalizeModelsWithParent:0 box:0 context:contextCopy];
   if ([v8 count] == &dword_0 + 1)
   {
-    v9 = [v8 firstObject];
-    [v10 setModel:v9];
+    firstObject = [v8 firstObject];
+    [objectCopy setModel:firstObject];
   }
 
   else
   {
-    [v7 reportError:1021];
+    [contextCopy reportError:1021];
   }
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 model];
+  objectCopy = object;
+  builderCopy = builder;
+  model = [objectCopy model];
 
-  if (v7)
+  if (model)
   {
-    v8 = [v9 model];
-    [v6 addContentModel:v8];
+    model2 = [objectCopy model];
+    [builderCopy addContentModel:model2];
   }
 }
 

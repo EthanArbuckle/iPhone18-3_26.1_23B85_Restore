@@ -3,8 +3,8 @@
 - (AXLTAudioTextDumper)init;
 - (void)cleanUp;
 - (void)init;
-- (void)saveAudioBuffer:(id)a3 appName:(id)a4 sessionStartTime:(id)a5;
-- (void)saveTranscribedText:(id)a3 appName:(id)a4 sessionStartTime:(id)a5;
+- (void)saveAudioBuffer:(id)buffer appName:(id)name sessionStartTime:(id)time;
+- (void)saveTranscribedText:(id)text appName:(id)name sessionStartTime:(id)time;
 @end
 
 @implementation AXLTAudioTextDumper
@@ -35,8 +35,8 @@ uint64_t __37__AXLTAudioTextDumper_sharedInstance__block_invoke()
   v2 = [(AXLTAudioTextDumper *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"saveTranscribedTextAndAudio"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"saveTranscribedTextAndAudio"];
     if (v4)
     {
       LOBYTE(v4) = isInternalInstall();
@@ -71,11 +71,11 @@ uint64_t __37__AXLTAudioTextDumper_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)saveAudioBuffer:(id)a3 appName:(id)a4 sessionStartTime:(id)a5
+- (void)saveAudioBuffer:(id)buffer appName:(id)name sessionStartTime:(id)time
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  nameCopy = name;
+  timeCopy = time;
   if (self->_dumpTestData)
   {
     saveQueue = self->_saveQueue;
@@ -84,9 +84,9 @@ uint64_t __37__AXLTAudioTextDumper_sharedInstance__block_invoke()
     v12[2] = __64__AXLTAudioTextDumper_saveAudioBuffer_appName_sessionStartTime___block_invoke;
     v12[3] = &unk_27981CBD8;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = bufferCopy;
+    v14 = nameCopy;
+    v15 = timeCopy;
     dispatch_async(saveQueue, v12);
   }
 }
@@ -151,25 +151,25 @@ void __64__AXLTAudioTextDumper_saveAudioBuffer_appName_sessionStartTime___block_
   v25 = v26;
 }
 
-- (void)saveTranscribedText:(id)a3 appName:(id)a4 sessionStartTime:(id)a5
+- (void)saveTranscribedText:(id)text appName:(id)name sessionStartTime:(id)time
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_dumpTestData && [v8 length])
+  textCopy = text;
+  nameCopy = name;
+  timeCopy = time;
+  if (self->_dumpTestData && [textCopy length])
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     saveQueue = self->_saveQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__AXLTAudioTextDumper_saveTranscribedText_appName_sessionStartTime___block_invoke;
     block[3] = &unk_27981CC00;
     block[4] = self;
-    v15 = v9;
-    v16 = v10;
-    v17 = v11;
-    v18 = v8;
-    v13 = v11;
+    v15 = nameCopy;
+    v16 = timeCopy;
+    v17 = date;
+    v18 = textCopy;
+    v13 = date;
     dispatch_async(saveQueue, block);
   }
 }
@@ -243,7 +243,7 @@ uint64_t __30__AXLTAudioTextDumper_cleanUp__block_invoke(uint64_t a1)
 - (void)init
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_256022000, a2, OS_LOG_TYPE_DEBUG, "Dump files path: %@", &v4, 0xCu);

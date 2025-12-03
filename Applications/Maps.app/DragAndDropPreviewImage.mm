@@ -1,22 +1,22 @@
 @interface DragAndDropPreviewImage
 - (UIDragPreview)dragPreview;
-- (id)targetedDragPreviewWithTarget:(id)a3;
+- (id)targetedDragPreviewWithTarget:(id)target;
 @end
 
 @implementation DragAndDropPreviewImage
 
-- (id)targetedDragPreviewWithTarget:(id)a3
+- (id)targetedDragPreviewWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = objc_alloc_init(UIDragPreviewParameters);
-  v6 = [(DragAndDropPreviewImage *)self visiblePath];
-  [v5 setVisiblePath:v6];
+  visiblePath = [(DragAndDropPreviewImage *)self visiblePath];
+  [v5 setVisiblePath:visiblePath];
 
   v7 = [UIImageView alloc];
-  v8 = [(DragAndDropPreviewImage *)self image];
-  v9 = [v7 initWithImage:v8];
+  image = [(DragAndDropPreviewImage *)self image];
+  v9 = [v7 initWithImage:image];
 
-  v10 = [[UITargetedDragPreview alloc] initWithView:v9 parameters:v5 target:v4];
+  v10 = [[UITargetedDragPreview alloc] initWithView:v9 parameters:v5 target:targetCopy];
 
   return v10;
 }
@@ -24,12 +24,12 @@
 - (UIDragPreview)dragPreview
 {
   v3 = objc_alloc_init(UIDragPreviewParameters);
-  v4 = [(DragAndDropPreviewImage *)self visiblePath];
-  [v3 setVisiblePath:v4];
+  visiblePath = [(DragAndDropPreviewImage *)self visiblePath];
+  [v3 setVisiblePath:visiblePath];
 
   v5 = [UIImageView alloc];
-  v6 = [(DragAndDropPreviewImage *)self image];
-  v7 = [v5 initWithImage:v6];
+  image = [(DragAndDropPreviewImage *)self image];
+  v7 = [v5 initWithImage:image];
 
   v8 = [[UIDragPreview alloc] initWithView:v7 parameters:v3];
 

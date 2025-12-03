@@ -1,57 +1,57 @@
 @interface NEPrivateLTENetwork
-- (NEPrivateLTENetwork)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEPrivateLTENetwork)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEPrivateLTENetwork
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEPrivateLTENetwork allocWithZone:?]];
-  v5 = [(NEPrivateLTENetwork *)self mobileCountryCode];
-  [(NEPrivateLTENetwork *)v4 setMobileCountryCode:v5];
+  mobileCountryCode = [(NEPrivateLTENetwork *)self mobileCountryCode];
+  [(NEPrivateLTENetwork *)v4 setMobileCountryCode:mobileCountryCode];
 
-  v6 = [(NEPrivateLTENetwork *)self mobileNetworkCode];
-  [(NEPrivateLTENetwork *)v4 setMobileNetworkCode:v6];
+  mobileNetworkCode = [(NEPrivateLTENetwork *)self mobileNetworkCode];
+  [(NEPrivateLTENetwork *)v4 setMobileNetworkCode:mobileNetworkCode];
 
-  v7 = [(NEPrivateLTENetwork *)self trackingAreaCode];
-  [(NEPrivateLTENetwork *)v4 setTrackingAreaCode:v7];
+  trackingAreaCode = [(NEPrivateLTENetwork *)self trackingAreaCode];
+  [(NEPrivateLTENetwork *)v4 setTrackingAreaCode:trackingAreaCode];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEPrivateLTENetwork *)self mobileCountryCode];
-  [v4 encodeObject:v5 forKey:@"PLTEMCC"];
+  coderCopy = coder;
+  mobileCountryCode = [(NEPrivateLTENetwork *)self mobileCountryCode];
+  [coderCopy encodeObject:mobileCountryCode forKey:@"PLTEMCC"];
 
-  v6 = [(NEPrivateLTENetwork *)self mobileNetworkCode];
-  [v4 encodeObject:v6 forKey:@"PLTEMNC"];
+  mobileNetworkCode = [(NEPrivateLTENetwork *)self mobileNetworkCode];
+  [coderCopy encodeObject:mobileNetworkCode forKey:@"PLTEMNC"];
 
-  v7 = [(NEPrivateLTENetwork *)self trackingAreaCode];
-  [v4 encodeObject:v7 forKey:@"PLTETAC"];
+  trackingAreaCode = [(NEPrivateLTENetwork *)self trackingAreaCode];
+  [coderCopy encodeObject:trackingAreaCode forKey:@"PLTETAC"];
 }
 
-- (NEPrivateLTENetwork)initWithCoder:(id)a3
+- (NEPrivateLTENetwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NEPrivateLTENetwork;
   v5 = [(NEPrivateLTENetwork *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PLTEMCC"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PLTEMCC"];
     mobileCountryCode = v5->_mobileCountryCode;
     v5->_mobileCountryCode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PLTEMNC"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PLTEMNC"];
     mobileNetworkCode = v5->_mobileNetworkCode;
     v5->_mobileNetworkCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PLTETAC"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PLTETAC"];
     trackingAreaCode = v5->_trackingAreaCode;
     v5->_trackingAreaCode = v10;
   }
@@ -62,18 +62,18 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEPrivateLTENetwork *)self mobileCountryCode];
-  v5 = [(NEPrivateLTENetwork *)self mobileNetworkCode];
-  v6 = [(NEPrivateLTENetwork *)self trackingAreaCode];
-  if (v6)
+  mobileCountryCode = [(NEPrivateLTENetwork *)self mobileCountryCode];
+  mobileNetworkCode = [(NEPrivateLTENetwork *)self mobileNetworkCode];
+  trackingAreaCode = [(NEPrivateLTENetwork *)self trackingAreaCode];
+  if (trackingAreaCode)
   {
-    v7 = [(NEPrivateLTENetwork *)self trackingAreaCode];
-    v8 = [v3 stringWithFormat:@"Mobile Country Code:[%@] Mobile Network Code:[%@] Tracking Area Code:[%@]", v4, v5, v7];
+    trackingAreaCode2 = [(NEPrivateLTENetwork *)self trackingAreaCode];
+    v8 = [v3 stringWithFormat:@"Mobile Country Code:[%@] Mobile Network Code:[%@] Tracking Area Code:[%@]", mobileCountryCode, mobileNetworkCode, trackingAreaCode2];
   }
 
   else
   {
-    v8 = [v3 stringWithFormat:@"Mobile Country Code:[%@] Mobile Network Code:[%@] Tracking Area Code:[%@]", v4, v5, &stru_1F3880810];
+    v8 = [v3 stringWithFormat:@"Mobile Country Code:[%@] Mobile Network Code:[%@] Tracking Area Code:[%@]", mobileCountryCode, mobileNetworkCode, &stru_1F3880810];
   }
 
   return v8;

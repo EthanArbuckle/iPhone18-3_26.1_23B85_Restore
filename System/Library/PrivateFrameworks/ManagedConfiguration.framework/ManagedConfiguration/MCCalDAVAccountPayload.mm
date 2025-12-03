@@ -1,6 +1,6 @@
 @interface MCCalDAVAccountPayload
 - (BOOL)containsSensitiveUserInformation;
-- (MCCalDAVAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCCalDAVAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSArray)calendarAccountIdentifiers;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -12,21 +12,21 @@
 
 @implementation MCCalDAVAccountPayload
 
-- (MCCalDAVAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCCalDAVAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v62.receiver = self;
   v62.super_class = MCCalDAVAccountPayload;
-  v10 = [(MCPayload *)&v62 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v62 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_19;
   }
 
   v61 = 0;
-  v11 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVAccountDescription" isRequired:0 outError:&v61];
+  v11 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVAccountDescription" isRequired:0 outError:&v61];
   v12 = v61;
   accountDescription = v10->_accountDescription;
   v10->_accountDescription = v11;
@@ -37,7 +37,7 @@
   }
 
   v60 = 0;
-  v14 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVUsername" isRequired:0 outError:&v60];
+  v14 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVUsername" isRequired:0 outError:&v60];
   v12 = v60;
   username = v10->_username;
   v10->_username = v14;
@@ -48,7 +48,7 @@
   }
 
   v59 = 0;
-  v16 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVPrincipalURL" isRequired:0 outError:&v59];
+  v16 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVPrincipalURL" isRequired:0 outError:&v59];
   v12 = v59;
   principalURL = v10->_principalURL;
   v10->_principalURL = v16;
@@ -59,7 +59,7 @@
   }
 
   v58 = 0;
-  v18 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CalDAVUseSSL" isRequired:0 outError:&v58];
+  v18 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CalDAVUseSSL" isRequired:0 outError:&v58];
   v12 = v58;
   useSSLNum = v10->_useSSLNum;
   v10->_useSSLNum = v18;
@@ -81,7 +81,7 @@
 
   v10->_useSSL = [(NSNumber *)v20 BOOLValue];
   v57 = 0;
-  v23 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CalDAVPort" isRequired:0 outError:&v57];
+  v23 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"CalDAVPort" isRequired:0 outError:&v57];
   v12 = v57;
   portNum = v10->_portNum;
   v10->_portNum = v23;
@@ -93,7 +93,7 @@
 
   v10->_port = [(NSNumber *)v10->_portNum intValue];
   v56 = 0;
-  v25 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"VPNUUID" isRequired:0 outError:&v56];
+  v25 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"VPNUUID" isRequired:0 outError:&v56];
   v12 = v56;
   VPNUUID = v10->_VPNUUID;
   v10->_VPNUUID = v25;
@@ -103,10 +103,10 @@
     goto LABEL_10;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v53 = 0;
-    v40 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVHostName" isRequired:0 outError:&v53];
+    v40 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVHostName" isRequired:0 outError:&v53];
     v12 = v53;
     hostname = v10->_hostname;
     v10->_hostname = v40;
@@ -117,7 +117,7 @@
     }
 
     v52 = 0;
-    v42 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVAccountPersistentUUID" isRequired:0 outError:&v52];
+    v42 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVAccountPersistentUUID" isRequired:0 outError:&v52];
     v12 = v52;
     accountPersistentUUID = v10->_accountPersistentUUID;
     v10->_accountPersistentUUID = v42;
@@ -129,14 +129,14 @@
 
     v51 = 0;
     v44 = &v51;
-    v45 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ACAccountIdentifier" isRequired:0 outError:&v51];
+    v45 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ACAccountIdentifier" isRequired:0 outError:&v51];
     v46 = &OBJC_IVAR___MCCalDAVAccountPayload__acAccountIdentifier;
   }
 
   else
   {
     v55 = 0;
-    v47 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVHostName" isRequired:1 outError:&v55];
+    v47 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVHostName" isRequired:1 outError:&v55];
     v12 = v55;
     v48 = v10->_hostname;
     v10->_hostname = v47;
@@ -146,10 +146,10 @@
 LABEL_10:
       v27 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
       v28 = v27;
-      if (a5)
+      if (error)
       {
         v29 = v27;
-        *a5 = v28;
+        *error = v28;
       }
 
       v30 = _MCLogObjects;
@@ -158,11 +158,11 @@ LABEL_10:
         v31 = v30;
         v32 = objc_opt_class();
         v33 = v32;
-        v34 = [v28 MCVerboseDescription];
+        mCVerboseDescription = [v28 MCVerboseDescription];
         *buf = 138543618;
         v64 = v32;
         v65 = 2114;
-        v66 = v34;
+        v66 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v31, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -172,7 +172,7 @@ LABEL_10:
 
     v54 = 0;
     v44 = &v54;
-    v45 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVPassword" isRequired:0 outError:&v54];
+    v45 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"CalDAVPassword" isRequired:0 outError:&v54];
     v46 = &OBJC_IVAR___MCCalDAVAccountPayload__password;
   }
 
@@ -187,17 +187,17 @@ LABEL_10:
   }
 
 LABEL_15:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v35 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v36 = v35;
-      v37 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v64 = v37;
+      v64 = friendlyName;
       v65 = 2114;
-      v66 = v8;
+      v66 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v36, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -211,8 +211,8 @@ LABEL_19:
 {
   v6.receiver = self;
   v6.super_class = MCCalDAVAccountPayload;
-  v3 = [(MCPayload *)&v6 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v6 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_accountDescription)
   {
@@ -271,12 +271,12 @@ LABEL_19:
 {
   v15.receiver = self;
   v15.super_class = MCCalDAVAccountPayload;
-  v3 = [(MCPayload *)&v15 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v15 stubDictionary];
+  v4 = stubDictionary;
   accountDescription = self->_accountDescription;
   if (accountDescription)
   {
-    [v3 setObject:accountDescription forKey:@"CalDAVAccountDescription"];
+    [stubDictionary setObject:accountDescription forKey:@"CalDAVAccountDescription"];
   }
 
   hostname = self->_hostname;
@@ -329,8 +329,8 @@ LABEL_19:
 
 - (id)subtitle1Label
 {
-  v2 = [(MCCalDAVAccountPayload *)self hostname];
-  if (v2)
+  hostname = [(MCCalDAVAccountPayload *)self hostname];
+  if (hostname)
   {
     v3 = @"CALDAV_SERVER_NAME_COLON";
   }
@@ -347,46 +347,46 @@ LABEL_19:
 
 - (id)subtitle2Label
 {
-  v3 = [(MCCalDAVAccountPayload *)self username];
-  if (v3)
+  username = [(MCCalDAVAccountPayload *)self username];
+  if (username)
   {
-    v4 = v3;
-    v5 = [(MCCalDAVAccountPayload *)self hostname];
+    v4 = username;
+    hostname = [(MCCalDAVAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = MCLocalizedString(@"CALDAV_USERNAME_COLON");
+      username = MCLocalizedString(@"CALDAV_USERNAME_COLON");
     }
 
     else
     {
-      v3 = 0;
+      username = 0;
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCCalDAVAccountPayload *)self username];
-  if (v3)
+  username = [(MCCalDAVAccountPayload *)self username];
+  if (username)
   {
-    v4 = v3;
-    v5 = [(MCCalDAVAccountPayload *)self hostname];
+    v4 = username;
+    hostname = [(MCCalDAVAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = [(MCCalDAVAccountPayload *)self username];
+      username = [(MCCalDAVAccountPayload *)self username];
     }
 
     else
     {
-      v3 = 0;
+      username = 0;
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -500,8 +500,8 @@ LABEL_19:
     return 1;
   }
 
-  v4 = [(MCCalDAVAccountPayload *)self password];
-  v3 = v4 != 0;
+  password = [(MCCalDAVAccountPayload *)self password];
+  v3 = password != 0;
 
   return v3;
 }

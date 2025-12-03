@@ -4,11 +4,11 @@
 - (PXPlacesMapOptionsControllerDelegate)delegate;
 - (unint64_t)mapStyle;
 - (unint64_t)perspectiveButtonState;
-- (void)chooseMapViewDidTapAttributionWithURL:(id)a3;
-- (void)chooseMapViewDidTapCardForMapStyle:(unint64_t)a3;
-- (void)mapOptionsViewDidTapMapModeSettingsButton:(id)a3;
-- (void)mapOptionsViewDidTapPerspectiveButton:(id)a3;
-- (void)setEnableUserTrackingButton:(BOOL)a3;
+- (void)chooseMapViewDidTapAttributionWithURL:(id)l;
+- (void)chooseMapViewDidTapCardForMapStyle:(unint64_t)style;
+- (void)mapOptionsViewDidTapMapModeSettingsButton:(id)button;
+- (void)mapOptionsViewDidTapPerspectiveButton:(id)button;
+- (void)setEnableUserTrackingButton:(BOOL)button;
 @end
 
 @implementation PXPlacesMapOptionsController
@@ -24,7 +24,7 @@
 - (unint64_t)mapStyle
 {
   v2 = *(self + OBJC_IVAR___PXPlacesMapOptionsController_mapModeController);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1A49B5C34([v2 mapStyle]);
 
   return v4;
@@ -32,7 +32,7 @@
 
 - (unint64_t)perspectiveButtonState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A49B4568();
 
   return v3;
@@ -45,13 +45,13 @@
   return *(self + v3);
 }
 
-- (void)setEnableUserTrackingButton:(BOOL)a3
+- (void)setEnableUserTrackingButton:(BOOL)button
 {
   v5 = OBJC_IVAR___PXPlacesMapOptionsController_enableUserTrackingButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
   v6 = *((*MEMORY[0x1E69E7D40] & *self) + 0x90);
-  v7 = self;
+  selfCopy = self;
   v8 = v6();
   if (v8)
   {
@@ -67,21 +67,21 @@
   return result;
 }
 
-- (void)mapOptionsViewDidTapMapModeSettingsButton:(id)a3
+- (void)mapOptionsViewDidTapMapModeSettingsButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  PlacesMapOptionsController.mapOptionsViewDidTapMapModeSettingsButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  PlacesMapOptionsController.mapOptionsViewDidTapMapModeSettingsButton(_:)(buttonCopy);
 }
 
-- (void)mapOptionsViewDidTapPerspectiveButton:(id)a3
+- (void)mapOptionsViewDidTapPerspectiveButton:(id)button
 {
   v4 = sub_1A5246F24();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(self + OBJC_IVAR___PXPlacesMapOptionsController_mapModeController);
-  v12 = self;
+  selfCopy = self;
   if (![v8 toggle3DModeIfPossible])
   {
     v10 = sub_1A3CB8D34();
@@ -89,17 +89,17 @@
     sub_1A49B63A8();
   }
 
-  v9 = v12;
+  v9 = selfCopy;
 }
 
-- (void)chooseMapViewDidTapCardForMapStyle:(unint64_t)a3
+- (void)chooseMapViewDidTapCardForMapStyle:(unint64_t)style
 {
   v4 = *(self + OBJC_IVAR___PXPlacesMapOptionsController_mapModeController);
-  v5 = self;
+  selfCopy = self;
   [v4 setMapStyle_];
 }
 
-- (void)chooseMapViewDidTapAttributionWithURL:(id)a3
+- (void)chooseMapViewDidTapAttributionWithURL:(id)l
 {
   v3 = sub_1A5240E64();
   v4 = *(v3 - 8);

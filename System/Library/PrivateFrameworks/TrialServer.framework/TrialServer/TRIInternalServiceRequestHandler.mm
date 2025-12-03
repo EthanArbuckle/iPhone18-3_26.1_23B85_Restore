@@ -1,43 +1,43 @@
 @interface TRIInternalServiceRequestHandler
-- (TRIInternalServiceRequestHandler)initWithPromise:(id)a3 auditToken:(id *)a4 entitlementWitness:(id)a5;
-- (void)_experimentRecordsWithDeploymentEnvironments:(id)a3 serverContext:(id)a4 completion:(id)a5;
-- (void)activeExperimentInformationWithEnvironments:(id)a3 completion:(id)a4;
-- (void)activeRolloutInformationWithCompletion:(id)a3;
-- (void)addWithoutRunningForTask:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)deregisterNamespaceWithNamespaceName:(id)a3 teamId:(id)a4 completion:(id)a5;
-- (void)dynamicNamespaceRecordsWithCompletion:(id)a3;
-- (void)experimentHasMatchingNCV:(id)a3 completion:(id)a4;
-- (void)experimentIdsWithActiveStateAndNamespaceName:(id)a3 completion:(id)a4;
-- (void)experimentNotificationsWithExperimentId:(id)a3 cloudKitContainer:(int)a4 teamId:(id)a5 completion:(id)a6;
-- (void)immediatelySchedulePostUpgradeActivityWithCompletion:(id)a3;
-- (void)isOptedOutOfExperimentationWithCompletion:(id)a3;
-- (void)lastFetchDateForContainer:(int)a3 teamId:(id)a4 completion:(id)a5;
-- (void)registerNamespaceWithNamespaceName:(id)a3 compatibilityVersion:(unsigned int)a4 defaultsFileURL:(id)a5 teamId:(id)a6 appContainerId:(id)a7 appContainerType:(int64_t)a8 cloudKitContainerId:(int)a9 completion:(id)a10;
-- (void)removeUnusedChannelsWithCompletion:(id)a3;
-- (void)resumeSQLiteCKDatabaseQueueWithCompletion:(id)a3;
-- (void)resumeTaskQueueWithCompletion:(id)a3;
-- (void)rolloutNotificationWithLatestDeploymentForRolloutId:(id)a3 cloudKitContainer:(int)a4 teamId:(id)a5 completion:(id)a6;
-- (void)setFailureInjectionDelegate:(id)a3;
-- (void)setLastFetchDate:(id)a3 forContainer:(int)a4 teamId:(id)a5 completion:(id)a6;
-- (void)setSubscription:(id)a3 namespaceName:(id)a4 completion:(id)a5;
-- (void)startDownloadNamespaceWithName:(id)a3 teamId:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)submitTask:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)subscriptionForNamespaceName:(id)a3 completion:(id)a4;
-- (void)suspendSQLiteCKDatabaseQueueWithCompletion:(id)a3;
-- (void)taskRecordsWithCompletion:(id)a3;
-- (void)treatmentValidForExperimentWithId:(id)a3 treatmentId:(id)a4 completion:(id)a5;
+- (TRIInternalServiceRequestHandler)initWithPromise:(id)promise auditToken:(id *)token entitlementWitness:(id)witness;
+- (void)_experimentRecordsWithDeploymentEnvironments:(id)environments serverContext:(id)context completion:(id)completion;
+- (void)activeExperimentInformationWithEnvironments:(id)environments completion:(id)completion;
+- (void)activeRolloutInformationWithCompletion:(id)completion;
+- (void)addWithoutRunningForTask:(id)task options:(id)options completion:(id)completion;
+- (void)deregisterNamespaceWithNamespaceName:(id)name teamId:(id)id completion:(id)completion;
+- (void)dynamicNamespaceRecordsWithCompletion:(id)completion;
+- (void)experimentHasMatchingNCV:(id)v completion:(id)completion;
+- (void)experimentIdsWithActiveStateAndNamespaceName:(id)name completion:(id)completion;
+- (void)experimentNotificationsWithExperimentId:(id)id cloudKitContainer:(int)container teamId:(id)teamId completion:(id)completion;
+- (void)immediatelySchedulePostUpgradeActivityWithCompletion:(id)completion;
+- (void)isOptedOutOfExperimentationWithCompletion:(id)completion;
+- (void)lastFetchDateForContainer:(int)container teamId:(id)id completion:(id)completion;
+- (void)registerNamespaceWithNamespaceName:(id)name compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l teamId:(id)id appContainerId:(id)containerId appContainerType:(int64_t)type cloudKitContainerId:(int)kitContainerId completion:(id)self0;
+- (void)removeUnusedChannelsWithCompletion:(id)completion;
+- (void)resumeSQLiteCKDatabaseQueueWithCompletion:(id)completion;
+- (void)resumeTaskQueueWithCompletion:(id)completion;
+- (void)rolloutNotificationWithLatestDeploymentForRolloutId:(id)id cloudKitContainer:(int)container teamId:(id)teamId completion:(id)completion;
+- (void)setFailureInjectionDelegate:(id)delegate;
+- (void)setLastFetchDate:(id)date forContainer:(int)container teamId:(id)id completion:(id)completion;
+- (void)setSubscription:(id)subscription namespaceName:(id)name completion:(id)completion;
+- (void)startDownloadNamespaceWithName:(id)name teamId:(id)id options:(id)options completion:(id)completion;
+- (void)submitTask:(id)task options:(id)options completion:(id)completion;
+- (void)subscriptionForNamespaceName:(id)name completion:(id)completion;
+- (void)suspendSQLiteCKDatabaseQueueWithCompletion:(id)completion;
+- (void)taskRecordsWithCompletion:(id)completion;
+- (void)treatmentValidForExperimentWithId:(id)id treatmentId:(id)treatmentId completion:(id)completion;
 @end
 
 @implementation TRIInternalServiceRequestHandler
 
-- (TRIInternalServiceRequestHandler)initWithPromise:(id)a3 auditToken:(id *)a4 entitlementWitness:(id)a5
+- (TRIInternalServiceRequestHandler)initWithPromise:(id)promise auditToken:(id *)token entitlementWitness:(id)witness
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  promiseCopy = promise;
+  witnessCopy = witness;
+  if (!promiseCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
   }
 
   v17.receiver = self;
@@ -46,19 +46,19 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_promise, a3);
-    v14 = *a4->var0;
-    *&v13->_auditToken.val[4] = *&a4->var0[4];
+    objc_storeStrong(&v12->_promise, promise);
+    v14 = *token->var0;
+    *&v13->_auditToken.val[4] = *&token->var0[4];
     *v13->_auditToken.val = v14;
-    objc_storeStrong(&v13->_entitlementWitness, a5);
+    objc_storeStrong(&v13->_entitlementWitness, witness);
   }
 
   return v13;
 }
 
-- (void)taskRecordsWithCompletion:(id)a3
+- (void)taskRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__TRIInternalServiceRequestHandler_taskRecordsWithCompletion___block_invoke;
@@ -72,8 +72,8 @@
   v9[2] = __62__TRIInternalServiceRequestHandler_taskRecordsWithCompletion___block_invoke_46;
   v9[3] = &unk_279DE04F8;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v5;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v9];
 }
@@ -147,16 +147,16 @@ LABEL_7:
   }
 }
 
-- (void)experimentNotificationsWithExperimentId:(id)a3 cloudKitContainer:(int)a4 teamId:(id)a5 completion:(id)a6
+- (void)experimentNotificationsWithExperimentId:(id)id cloudKitContainer:(int)container teamId:(id)teamId completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277D736B0] applicationBundleIdentifierFromSelf];
-  if (!v14)
+  idCopy = id;
+  teamIdCopy = teamId;
+  completionCopy = completion;
+  applicationBundleIdentifierFromSelf = [MEMORY[0x277D736B0] applicationBundleIdentifierFromSelf];
+  if (!applicationBundleIdentifierFromSelf)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"trialdBundleId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"trialdBundleId"}];
   }
 
   v31[0] = MEMORY[0x277D85DD0];
@@ -164,9 +164,9 @@ LABEL_7:
   v31[2] = __112__TRIInternalServiceRequestHandler_experimentNotificationsWithExperimentId_cloudKitContainer_teamId_completion___block_invoke;
   v31[3] = &unk_279DE0520;
   v31[4] = self;
-  v15 = v11;
+  v15 = idCopy;
   v32 = v15;
-  v33 = a4;
+  containerCopy = container;
   v16 = MEMORY[0x2743948D0](v31);
   v16[2](v16, 0);
   promise = self->_promise;
@@ -174,17 +174,17 @@ LABEL_7:
   v24[1] = 3221225472;
   v24[2] = __112__TRIInternalServiceRequestHandler_experimentNotificationsWithExperimentId_cloudKitContainer_teamId_completion___block_invoke_54;
   v24[3] = &unk_279DE0598;
-  v28 = v13;
+  v28 = completionCopy;
   v29 = v16;
-  v30 = a4;
+  containerCopy2 = container;
   v25 = v15;
-  v26 = v12;
-  v27 = v14;
-  v18 = v14;
-  v19 = v12;
+  v26 = teamIdCopy;
+  v27 = applicationBundleIdentifierFromSelf;
+  v18 = applicationBundleIdentifierFromSelf;
+  v19 = teamIdCopy;
   v20 = v16;
   v21 = v15;
-  v22 = v13;
+  v22 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v24];
 }
 
@@ -373,16 +373,16 @@ void __112__TRIInternalServiceRequestHandler_experimentNotificationsWithExperime
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rolloutNotificationWithLatestDeploymentForRolloutId:(id)a3 cloudKitContainer:(int)a4 teamId:(id)a5 completion:(id)a6
+- (void)rolloutNotificationWithLatestDeploymentForRolloutId:(id)id cloudKitContainer:(int)container teamId:(id)teamId completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277D736B0] applicationBundleIdentifierFromSelf];
-  if (!v14)
+  idCopy = id;
+  teamIdCopy = teamId;
+  completionCopy = completion;
+  applicationBundleIdentifierFromSelf = [MEMORY[0x277D736B0] applicationBundleIdentifierFromSelf];
+  if (!applicationBundleIdentifierFromSelf)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"trialdBundleId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"trialdBundleId"}];
   }
 
   v31[0] = MEMORY[0x277D85DD0];
@@ -390,9 +390,9 @@ void __112__TRIInternalServiceRequestHandler_experimentNotificationsWithExperime
   v31[2] = __124__TRIInternalServiceRequestHandler_rolloutNotificationWithLatestDeploymentForRolloutId_cloudKitContainer_teamId_completion___block_invoke;
   v31[3] = &unk_279DE0520;
   v31[4] = self;
-  v15 = v11;
+  v15 = idCopy;
   v32 = v15;
-  v33 = a4;
+  containerCopy = container;
   v16 = MEMORY[0x2743948D0](v31);
   v16[2](v16, 0);
   promise = self->_promise;
@@ -400,17 +400,17 @@ void __112__TRIInternalServiceRequestHandler_experimentNotificationsWithExperime
   v24[1] = 3221225472;
   v24[2] = __124__TRIInternalServiceRequestHandler_rolloutNotificationWithLatestDeploymentForRolloutId_cloudKitContainer_teamId_completion___block_invoke_85;
   v24[3] = &unk_279DE0598;
-  v28 = v13;
+  v28 = completionCopy;
   v29 = v16;
-  v30 = a4;
+  containerCopy2 = container;
   v25 = v15;
-  v26 = v12;
-  v27 = v14;
-  v18 = v14;
-  v19 = v12;
+  v26 = teamIdCopy;
+  v27 = applicationBundleIdentifierFromSelf;
+  v18 = applicationBundleIdentifierFromSelf;
+  v19 = teamIdCopy;
   v20 = v16;
   v21 = v15;
-  v22 = v13;
+  v22 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v24];
 }
 
@@ -617,19 +617,19 @@ void __124__TRIInternalServiceRequestHandler_rolloutNotificationWithLatestDeploy
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitTask:(id)a3 options:(id)a4 completion:(id)a5
+- (void)submitTask:(id)task options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  optionsCopy = options;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __66__TRIInternalServiceRequestHandler_submitTask_options_completion___block_invoke;
   v24[3] = &unk_279DE05E8;
   v24[4] = self;
-  v11 = v8;
+  v11 = taskCopy;
   v25 = v11;
-  v12 = v9;
+  v12 = optionsCopy;
   v26 = v12;
   v13 = MEMORY[0x2743948D0](v24);
   v13[2](v13, 0);
@@ -638,14 +638,14 @@ void __124__TRIInternalServiceRequestHandler_rolloutNotificationWithLatestDeploy
   v19[1] = 3221225472;
   v19[2] = __66__TRIInternalServiceRequestHandler_submitTask_options_completion___block_invoke_93;
   v19[3] = &unk_279DE0610;
-  v22 = v10;
+  v22 = completionCopy;
   v23 = v13;
   v20 = v11;
   v21 = v12;
   v15 = v12;
   v16 = v11;
   v17 = v13;
-  v18 = v10;
+  v18 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v19];
 }
 
@@ -762,16 +762,16 @@ void __66__TRIInternalServiceRequestHandler_submitTask_options_completion___bloc
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addWithoutRunningForTask:(id)a3 options:(id)a4 completion:(id)a5
+- (void)addWithoutRunningForTask:(id)task options:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  taskCopy = task;
+  optionsCopy = options;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (!taskCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"task"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"task"}];
 
     if (v12)
     {
@@ -779,13 +779,13 @@ void __66__TRIInternalServiceRequestHandler_submitTask_options_completion___bloc
     }
 
 LABEL_5:
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -796,10 +796,10 @@ LABEL_3:
   v26[2] = __80__TRIInternalServiceRequestHandler_addWithoutRunningForTask_options_completion___block_invoke;
   v26[3] = &unk_279DE05E8;
   v26[4] = self;
-  v13 = v9;
+  v13 = taskCopy;
   v27 = v13;
-  v28 = v10;
-  v14 = v10;
+  v28 = optionsCopy;
+  v14 = optionsCopy;
   v15 = MEMORY[0x2743948D0](v26);
   v15[2](v15, 0);
   promise = self->_promise;
@@ -899,13 +899,13 @@ void __80__TRIInternalServiceRequestHandler_addWithoutRunningForTask_options_com
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resumeTaskQueueWithCompletion:(id)a3
+- (void)resumeTaskQueueWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v14[0] = MEMORY[0x277D85DD0];
@@ -920,10 +920,10 @@ void __80__TRIInternalServiceRequestHandler_addWithoutRunningForTask_options_com
   v11[1] = 3221225472;
   v11[2] = __66__TRIInternalServiceRequestHandler_resumeTaskQueueWithCompletion___block_invoke_108;
   v11[3] = &unk_279DE04F8;
-  v12 = v5;
+  v12 = completionCopy;
   v13 = v6;
   v8 = v6;
-  v9 = v5;
+  v9 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v11];
 }
 
@@ -989,17 +989,17 @@ void __66__TRIInternalServiceRequestHandler_resumeTaskQueueWithCompletion___bloc
   }
 }
 
-- (void)lastFetchDateForContainer:(int)a3 teamId:(id)a4 completion:(id)a5
+- (void)lastFetchDateForContainer:(int)container teamId:(id)id completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__TRIInternalServiceRequestHandler_lastFetchDateForContainer_teamId_completion___block_invoke;
   v21[3] = &unk_279DE0520;
   v21[4] = self;
-  v23 = a3;
-  v10 = v8;
+  containerCopy = container;
+  v10 = idCopy;
   v22 = v10;
   v11 = MEMORY[0x2743948D0](v21);
   v11[2](v11, 0);
@@ -1008,13 +1008,13 @@ void __66__TRIInternalServiceRequestHandler_resumeTaskQueueWithCompletion___bloc
   v16[1] = 3221225472;
   v16[2] = __80__TRIInternalServiceRequestHandler_lastFetchDateForContainer_teamId_completion___block_invoke_109;
   v16[3] = &unk_279DE0660;
-  v18 = v9;
+  v18 = completionCopy;
   v19 = v11;
-  v20 = a3;
+  containerCopy2 = container;
   v17 = v10;
   v13 = v10;
   v14 = v11;
-  v15 = v9;
+  v15 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v16];
 }
 
@@ -1126,20 +1126,20 @@ void __80__TRIInternalServiceRequestHandler_lastFetchDateForContainer_teamId_com
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastFetchDate:(id)a3 forContainer:(int)a4 teamId:(id)a5 completion:(id)a6
+- (void)setLastFetchDate:(id)date forContainer:(int)container teamId:(id)id completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  idCopy = id;
+  completionCopy = completion;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __84__TRIInternalServiceRequestHandler_setLastFetchDate_forContainer_teamId_completion___block_invoke;
   v27[3] = &unk_279DE0688;
   v27[4] = self;
-  v13 = v10;
+  v13 = dateCopy;
   v28 = v13;
-  v30 = a4;
-  v14 = v11;
+  containerCopy = container;
+  v14 = idCopy;
   v29 = v14;
   v15 = MEMORY[0x2743948D0](v27);
   v15[2](v15, 0);
@@ -1148,15 +1148,15 @@ void __80__TRIInternalServiceRequestHandler_lastFetchDateForContainer_teamId_com
   v21[1] = 3221225472;
   v21[2] = __84__TRIInternalServiceRequestHandler_setLastFetchDate_forContainer_teamId_completion___block_invoke_113;
   v21[3] = &unk_279DE06B0;
-  v24 = v12;
+  v24 = completionCopy;
   v25 = v15;
-  v26 = a4;
+  containerCopy2 = container;
   v22 = v13;
   v23 = v14;
   v17 = v14;
   v18 = v13;
   v19 = v15;
-  v20 = v12;
+  v20 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v21];
 }
 
@@ -1297,15 +1297,15 @@ LABEL_19:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFailureInjectionDelegate:(id)a3
+- (void)setFailureInjectionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__TRIInternalServiceRequestHandler_setFailureInjectionDelegate___block_invoke;
   v13[3] = &unk_279DE0208;
   v13[4] = self;
-  v5 = v4;
+  v5 = delegateCopy;
   v14 = v5;
   v6 = MEMORY[0x2743948D0](v13);
   v6[2](v6, 0);
@@ -1376,9 +1376,9 @@ void __64__TRIInternalServiceRequestHandler_setFailureInjectionDelegate___block_
   }
 }
 
-- (void)suspendSQLiteCKDatabaseQueueWithCompletion:(id)a3
+- (void)suspendSQLiteCKDatabaseQueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__TRIInternalServiceRequestHandler_suspendSQLiteCKDatabaseQueueWithCompletion___block_invoke;
@@ -1391,10 +1391,10 @@ void __64__TRIInternalServiceRequestHandler_setFailureInjectionDelegate___block_
   v9[1] = 3221225472;
   v9[2] = __79__TRIInternalServiceRequestHandler_suspendSQLiteCKDatabaseQueueWithCompletion___block_invoke_118;
   v9[3] = &unk_279DE04F8;
-  v10 = v4;
+  v10 = completionCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v9];
 }
 
@@ -1467,9 +1467,9 @@ void __79__TRIInternalServiceRequestHandler_suspendSQLiteCKDatabaseQueueWithComp
   }
 }
 
-- (void)resumeSQLiteCKDatabaseQueueWithCompletion:(id)a3
+- (void)resumeSQLiteCKDatabaseQueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__TRIInternalServiceRequestHandler_resumeSQLiteCKDatabaseQueueWithCompletion___block_invoke;
@@ -1482,10 +1482,10 @@ void __79__TRIInternalServiceRequestHandler_suspendSQLiteCKDatabaseQueueWithComp
   v9[1] = 3221225472;
   v9[2] = __78__TRIInternalServiceRequestHandler_resumeSQLiteCKDatabaseQueueWithCompletion___block_invoke_120;
   v9[3] = &unk_279DE04F8;
-  v10 = v4;
+  v10 = completionCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v9];
 }
 
@@ -1558,9 +1558,9 @@ void __78__TRIInternalServiceRequestHandler_resumeSQLiteCKDatabaseQueueWithCompl
   }
 }
 
-- (void)removeUnusedChannelsWithCompletion:(id)a3
+- (void)removeUnusedChannelsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__TRIInternalServiceRequestHandler_removeUnusedChannelsWithCompletion___block_invoke;
@@ -1573,10 +1573,10 @@ void __78__TRIInternalServiceRequestHandler_resumeSQLiteCKDatabaseQueueWithCompl
   v9[1] = 3221225472;
   v9[2] = __71__TRIInternalServiceRequestHandler_removeUnusedChannelsWithCompletion___block_invoke_121;
   v9[3] = &unk_279DE04F8;
-  v10 = v4;
+  v10 = completionCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v9];
 }
 
@@ -1680,29 +1680,29 @@ void __71__TRIInternalServiceRequestHandler_removeUnusedChannelsWithCompletion__
   [v2 addObject:v3];
 }
 
-- (void)registerNamespaceWithNamespaceName:(id)a3 compatibilityVersion:(unsigned int)a4 defaultsFileURL:(id)a5 teamId:(id)a6 appContainerId:(id)a7 appContainerType:(int64_t)a8 cloudKitContainerId:(int)a9 completion:(id)a10
+- (void)registerNamespaceWithNamespaceName:(id)name compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l teamId:(id)id appContainerId:(id)containerId appContainerType:(int64_t)type cloudKitContainerId:(int)kitContainerId completion:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v31 = a10;
+  nameCopy = name;
+  lCopy = l;
+  idCopy = id;
+  containerIdCopy = containerId;
+  completionCopy = completion;
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __178__TRIInternalServiceRequestHandler_registerNamespaceWithNamespaceName_compatibilityVersion_defaultsFileURL_teamId_appContainerId_appContainerType_cloudKitContainerId_completion___block_invoke;
   v43[3] = &unk_279DE0750;
   v43[4] = self;
-  v19 = v15;
+  v19 = nameCopy;
   v44 = v19;
-  v49 = a4;
-  v20 = v16;
+  versionCopy = version;
+  v20 = lCopy;
   v45 = v20;
-  v21 = v17;
+  v21 = idCopy;
   v46 = v21;
-  v22 = v18;
+  v22 = containerIdCopy;
   v47 = v22;
-  v48 = a8;
-  v50 = a9;
+  typeCopy = type;
+  kitContainerIdCopy = kitContainerId;
   v23 = MEMORY[0x2743948D0](v43);
   v23[2](v23, 0);
   promise = self->_promise;
@@ -1710,21 +1710,21 @@ void __71__TRIInternalServiceRequestHandler_removeUnusedChannelsWithCompletion__
   v33[1] = 3221225472;
   v33[2] = __178__TRIInternalServiceRequestHandler_registerNamespaceWithNamespaceName_compatibilityVersion_defaultsFileURL_teamId_appContainerId_appContainerType_cloudKitContainerId_completion___block_invoke_125;
   v33[3] = &unk_279DE07A0;
-  v38 = v31;
+  v38 = completionCopy;
   v39 = v23;
   v34 = v19;
   v35 = v22;
   v36 = v21;
   v37 = v20;
-  v40 = a8;
-  v41 = a4;
-  v42 = a9;
+  typeCopy2 = type;
+  versionCopy2 = version;
+  kitContainerIdCopy2 = kitContainerId;
   v25 = v20;
   v26 = v21;
   v27 = v22;
   v28 = v19;
   v29 = v23;
-  v30 = v31;
+  v30 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v33];
 }
 
@@ -1893,19 +1893,19 @@ void __178__TRIInternalServiceRequestHandler_registerNamespaceWithNamespaceName_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterNamespaceWithNamespaceName:(id)a3 teamId:(id)a4 completion:(id)a5
+- (void)deregisterNamespaceWithNamespaceName:(id)name teamId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  idCopy = id;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __91__TRIInternalServiceRequestHandler_deregisterNamespaceWithNamespaceName_teamId_completion___block_invoke;
   v24[3] = &unk_279DE05E8;
   v24[4] = self;
-  v11 = v8;
+  v11 = nameCopy;
   v25 = v11;
-  v12 = v9;
+  v12 = idCopy;
   v26 = v12;
   v13 = MEMORY[0x2743948D0](v24);
   v13[2](v13, 0);
@@ -1914,14 +1914,14 @@ void __178__TRIInternalServiceRequestHandler_registerNamespaceWithNamespaceName_
   v19[1] = 3221225472;
   v19[2] = __91__TRIInternalServiceRequestHandler_deregisterNamespaceWithNamespaceName_teamId_completion___block_invoke_146;
   v19[3] = &unk_279DE0610;
-  v22 = v10;
+  v22 = completionCopy;
   v23 = v13;
   v20 = v11;
   v21 = v12;
   v15 = v12;
   v16 = v11;
   v17 = v13;
-  v18 = v10;
+  v18 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v19];
 }
 
@@ -2064,22 +2064,22 @@ void __91__TRIInternalServiceRequestHandler_deregisterNamespaceWithNamespaceName
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDownloadNamespaceWithName:(id)a3 teamId:(id)a4 options:(id)a5 completion:(id)a6
+- (void)startDownloadNamespaceWithName:(id)name teamId:(id)id options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  idCopy = id;
+  optionsCopy = options;
+  completionCopy = completion;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __93__TRIInternalServiceRequestHandler_startDownloadNamespaceWithName_teamId_options_completion___block_invoke;
   v30[3] = &unk_279DE0438;
   v30[4] = self;
-  v14 = v10;
+  v14 = nameCopy;
   v31 = v14;
-  v15 = v11;
+  v15 = idCopy;
   v32 = v15;
-  v16 = v12;
+  v16 = optionsCopy;
   v33 = v16;
   v17 = MEMORY[0x2743948D0](v30);
   v17[2](v17, 0);
@@ -2088,7 +2088,7 @@ void __91__TRIInternalServiceRequestHandler_deregisterNamespaceWithNamespaceName
   v24[1] = 3221225472;
   v24[2] = __93__TRIInternalServiceRequestHandler_startDownloadNamespaceWithName_teamId_options_completion___block_invoke_156;
   v24[3] = &unk_279DE07C8;
-  v28 = v13;
+  v28 = completionCopy;
   v29 = v17;
   v25 = v14;
   v26 = v15;
@@ -2097,7 +2097,7 @@ void __91__TRIInternalServiceRequestHandler_deregisterNamespaceWithNamespaceName
   v20 = v15;
   v21 = v14;
   v22 = v17;
-  v23 = v13;
+  v23 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v24];
 }
 
@@ -2230,9 +2230,9 @@ void __93__TRIInternalServiceRequestHandler_startDownloadNamespaceWithName_teamI
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dynamicNamespaceRecordsWithCompletion:(id)a3
+- (void)dynamicNamespaceRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__TRIInternalServiceRequestHandler_dynamicNamespaceRecordsWithCompletion___block_invoke;
@@ -2245,10 +2245,10 @@ void __93__TRIInternalServiceRequestHandler_startDownloadNamespaceWithName_teamI
   v9[1] = 3221225472;
   v9[2] = __74__TRIInternalServiceRequestHandler_dynamicNamespaceRecordsWithCompletion___block_invoke_159;
   v9[3] = &unk_279DE04F8;
-  v10 = v4;
+  v10 = completionCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v9];
 }
 
@@ -2339,19 +2339,19 @@ void __74__TRIInternalServiceRequestHandler_dynamicNamespaceRecordsWithCompletio
   }
 }
 
-- (void)subscriptionForNamespaceName:(id)a3 completion:(id)a4
+- (void)subscriptionForNamespaceName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   promise = self->_promise;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__TRIInternalServiceRequestHandler_subscriptionForNamespaceName_completion___block_invoke;
   v11[3] = &unk_279DE06D8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = nameCopy;
+  v13 = completionCopy;
+  v9 = nameCopy;
+  v10 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v11];
 }
 
@@ -2396,22 +2396,22 @@ void __76__TRIInternalServiceRequestHandler_subscriptionForNamespaceName_complet
 LABEL_11:
 }
 
-- (void)setSubscription:(id)a3 namespaceName:(id)a4 completion:(id)a5
+- (void)setSubscription:(id)subscription namespaceName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subscriptionCopy = subscription;
+  nameCopy = name;
+  completionCopy = completion;
   promise = self->_promise;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__TRIInternalServiceRequestHandler_setSubscription_namespaceName_completion___block_invoke;
   v15[3] = &unk_279DE07F0;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = nameCopy;
+  v18 = completionCopy;
+  v16 = subscriptionCopy;
+  v12 = nameCopy;
+  v13 = subscriptionCopy;
+  v14 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v15];
 }
 
@@ -2457,16 +2457,16 @@ LABEL_10:
   }
 }
 
-- (void)activeRolloutInformationWithCompletion:(id)a3
+- (void)activeRolloutInformationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   promise = self->_promise;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__TRIInternalServiceRequestHandler_activeRolloutInformationWithCompletion___block_invoke;
   v7[3] = &unk_279DE0880;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v7];
 }
 
@@ -2851,11 +2851,11 @@ uint64_t __75__TRIInternalServiceRequestHandler_activeRolloutInformationWithComp
   return v7;
 }
 
-- (void)_experimentRecordsWithDeploymentEnvironments:(id)a3 serverContext:(id)a4 completion:(id)a5
+- (void)_experimentRecordsWithDeploymentEnvironments:(id)environments serverContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentsCopy = environments;
+  contextCopy = context;
+  completionCopy = completion;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __106__TRIInternalServiceRequestHandler__experimentRecordsWithDeploymentEnvironments_serverContext_completion___block_invoke;
@@ -2874,30 +2874,30 @@ uint64_t __75__TRIInternalServiceRequestHandler_activeRolloutInformationWithComp
   v24[1] = 3221225472;
   v24[2] = __106__TRIInternalServiceRequestHandler__experimentRecordsWithDeploymentEnvironments_serverContext_completion___block_invoke_2;
   v24[3] = &unk_279DE0548;
-  v14 = v10;
+  v14 = completionCopy;
   v25 = v14;
   v15 = MEMORY[0x2743948D0](v24);
   v16 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_287FC4F30];
-  if (v8)
+  if (environmentsCopy)
   {
-    if ([v8 isSubsetOfSet:v16])
+    if ([environmentsCopy isSubsetOfSet:v16])
     {
       v17 = objc_opt_new();
-      v18 = [v9 experimentDatabase];
+      experimentDatabase = [contextCopy experimentDatabase];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __106__TRIInternalServiceRequestHandler__experimentRecordsWithDeploymentEnvironments_serverContext_completion___block_invoke_204;
       v21[3] = &unk_279DE08A8;
-      v22 = v8;
-      v19 = v17;
-      v23 = v19;
-      v20 = [v18 enumerateExperimentRecordsWithBlock:v21];
+      v22 = environmentsCopy;
+      environmentsCopy = v17;
+      v23 = environmentsCopy;
+      v20 = [experimentDatabase enumerateExperimentRecordsWithBlock:v21];
 
       if (v20)
       {
         if (v14)
         {
-          (*(v14 + 2))(v14, v19, 0);
+          (*(v14 + 2))(v14, environmentsCopy, 0);
         }
       }
 
@@ -2909,8 +2909,8 @@ uint64_t __75__TRIInternalServiceRequestHandler_activeRolloutInformationWithComp
 
     else
     {
-      v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"The calling process is not entitled for access to deployment environments %@.", v8];
-      (v15)[2](v15, 3, v19);
+      environmentsCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"The calling process is not entitled for access to deployment environments %@.", environmentsCopy];
+      (v15)[2](v15, 3, environmentsCopy);
     }
   }
 
@@ -3013,14 +3013,14 @@ void __106__TRIInternalServiceRequestHandler__experimentRecordsWithDeploymentEnv
   }
 }
 
-- (void)experimentHasMatchingNCV:(id)a3 completion:(id)a4
+- (void)experimentHasMatchingNCV:(id)v completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  vCopy = v;
+  completionCopy = completion;
+  if (!vCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:928 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCInternalService.m" lineNumber:928 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
   }
 
   promise = self->_promise;
@@ -3028,10 +3028,10 @@ void __106__TRIInternalServiceRequestHandler__experimentRecordsWithDeploymentEnv
   v13[1] = 3221225472;
   v13[2] = __72__TRIInternalServiceRequestHandler_experimentHasMatchingNCV_completion___block_invoke;
   v13[3] = &unk_279DE06D8;
-  v14 = v7;
-  v15 = v8;
-  v10 = v7;
-  v11 = v8;
+  v14 = vCopy;
+  v15 = completionCopy;
+  v10 = vCopy;
+  v11 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v13];
 }
 
@@ -3108,11 +3108,11 @@ void __72__TRIInternalServiceRequestHandler_experimentHasMatchingNCV_completion_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)treatmentValidForExperimentWithId:(id)a3 treatmentId:(id)a4 completion:(id)a5
+- (void)treatmentValidForExperimentWithId:(id)id treatmentId:(id)treatmentId completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   promise = self->_promise;
   v15[0] = MEMORY[0x277D85DD0];
@@ -3120,11 +3120,11 @@ void __72__TRIInternalServiceRequestHandler_experimentHasMatchingNCV_completion_
   v15[2] = __93__TRIInternalServiceRequestHandler_treatmentValidForExperimentWithId_treatmentId_completion___block_invoke;
   v15[3] = &unk_279DE08F8;
   objc_copyWeak(&v19, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v18 = v12;
-  v13 = v8;
+  v13 = idCopy;
   v16 = v13;
-  v14 = v9;
+  v14 = treatmentIdCopy;
   v17 = v14;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v15];
 
@@ -3259,20 +3259,20 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activeExperimentInformationWithEnvironments:(id)a3 completion:(id)a4
+- (void)activeExperimentInformationWithEnvironments:(id)environments completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  environmentsCopy = environments;
+  completionCopy = completion;
   promise = self->_promise;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__TRIInternalServiceRequestHandler_activeExperimentInformationWithEnvironments_completion___block_invoke;
   v11[3] = &unk_279DE07F0;
-  v12 = v6;
-  v13 = v7;
+  v12 = environmentsCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = environmentsCopy;
+  v10 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v11];
 }
 
@@ -3713,16 +3713,16 @@ LABEL_30:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)immediatelySchedulePostUpgradeActivityWithCompletion:(id)a3
+- (void)immediatelySchedulePostUpgradeActivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   promise = self->_promise;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __89__TRIInternalServiceRequestHandler_immediatelySchedulePostUpgradeActivityWithCompletion___block_invoke;
   v7[3] = &unk_279DE0880;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v7];
 }
 
@@ -3806,10 +3806,10 @@ void __55__TRIInternalServiceRequestHandler_logSystemCovariates__block_invoke(ui
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)experimentIdsWithActiveStateAndNamespaceName:(id)a3 completion:(id)a4
+- (void)experimentIdsWithActiveStateAndNamespaceName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __92__TRIInternalServiceRequestHandler_experimentIdsWithActiveStateAndNamespaceName_completion___block_invoke;
@@ -3822,10 +3822,10 @@ void __55__TRIInternalServiceRequestHandler_logSystemCovariates__block_invoke(ui
   v13[2] = __92__TRIInternalServiceRequestHandler_experimentIdsWithActiveStateAndNamespaceName_completion___block_invoke_237;
   v13[3] = &unk_279DE0638;
   v15 = v8;
-  v16 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v16 = completionCopy;
+  v14 = nameCopy;
+  v10 = nameCopy;
+  v11 = completionCopy;
   v12 = v8;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v13];
 }
@@ -3956,16 +3956,16 @@ void __92__TRIInternalServiceRequestHandler_experimentIdsWithActiveStateAndNames
   }
 }
 
-- (void)isOptedOutOfExperimentationWithCompletion:(id)a3
+- (void)isOptedOutOfExperimentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   promise = self->_promise;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__TRIInternalServiceRequestHandler_isOptedOutOfExperimentationWithCompletion___block_invoke;
   v7[3] = &unk_279DE0880;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v7];
 }
 

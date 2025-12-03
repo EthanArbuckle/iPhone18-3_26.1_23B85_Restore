@@ -1,18 +1,18 @@
 @interface NUTimeTransformSlowMo
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)time;
+- (BOOL)isEqual:(id)equal;
 - (NUTimeTransformSlowMo)init;
-- (NUTimeTransformSlowMo)initWithSlowMoBeginTime:(id *)a3 endTime:(id *)a4 rate:(float)a5 assetDuration:(double)a6;
-- (NUTimeTransformSlowMo)initWithSlowMoTimeMapper:(id)a3 isInverse:(BOOL)a4;
+- (NUTimeTransformSlowMo)initWithSlowMoBeginTime:(id *)time endTime:(id *)endTime rate:(float)rate assetDuration:(double)duration;
+- (NUTimeTransformSlowMo)initWithSlowMoTimeMapper:(id)mapper isInverse:(BOOL)inverse;
 - (id)inverseTransform;
 @end
 
 @implementation NUTimeTransformSlowMo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -22,10 +22,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timeMapper = self->_timeMapper;
-      v7 = [(NUTimeTransformSlowMo *)v5 timeMapper];
-      if (timeMapper == v7)
+      timeMapper = [(NUTimeTransformSlowMo *)v5 timeMapper];
+      if (timeMapper == timeMapper)
       {
         isInverse = self->_isInverse;
         v8 = isInverse == [(NUTimeTransformSlowMo *)v5 isInverse];
@@ -46,7 +46,7 @@
   return v8;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)transformTime:(SEL)time
 {
   timeMapper = self->_timeMapper;
   if (self->_isInverse)
@@ -70,8 +70,8 @@
 
 - (id)inverseTransform
 {
-  v2 = self;
-  v3 = [(NUTimeTransformSlowMo *)v2 initWithSlowMoTimeMapper:v2->_timeMapper isInverse:!v2->_isInverse];
+  selfCopy = self;
+  v3 = [(NUTimeTransformSlowMo *)selfCopy initWithSlowMoTimeMapper:selfCopy->_timeMapper isInverse:!selfCopy->_isInverse];
 
   return v3;
 }
@@ -122,8 +122,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -139,8 +139,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -156,14 +156,14 @@ LABEL_14:
   _NUAssertFailHandler("[NUTimeTransformSlowMo init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 717, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-- (NUTimeTransformSlowMo)initWithSlowMoTimeMapper:(id)a3 isInverse:(BOOL)a4
+- (NUTimeTransformSlowMo)initWithSlowMoTimeMapper:(id)mapper isInverse:(BOOL)inverse
 {
-  v7 = a3;
+  mapperCopy = mapper;
   v12.receiver = self;
   v12.super_class = NUTimeTransformSlowMo;
   v8 = [(NUTimeTransformSlowMo *)&v12 init];
   v9 = v8;
-  if (v8 && (v8->_isInverse = a4, objc_storeStrong(&v8->_timeMapper, a3), !v9->_timeMapper))
+  if (v8 && (v8->_isInverse = inverse, objc_storeStrong(&v8->_timeMapper, mapper), !v9->_timeMapper))
   {
     v10 = 0;
   }
@@ -176,18 +176,18 @@ LABEL_14:
   return v10;
 }
 
-- (NUTimeTransformSlowMo)initWithSlowMoBeginTime:(id *)a3 endTime:(id *)a4 rate:(float)a5 assetDuration:(double)a6
+- (NUTimeTransformSlowMo)initWithSlowMoBeginTime:(id *)time endTime:(id *)endTime rate:(float)rate assetDuration:(double)duration
 {
   v22 = *MEMORY[0x1E69E9840];
   memset(&v20, 0, sizeof(v20));
-  lhs = *a4;
-  rhs = *a3;
+  lhs = *endTime;
+  rhs = *time;
   CMTimeSubtract(&duration.start, &lhs, &rhs);
-  lhs = *a3;
+  lhs = *time;
   CMTimeRangeMake(&v20, &lhs, &duration.start);
   v17 = 0;
   duration = v20;
-  v10 = [NUSlowMotionUtilities timeMapperForAssetDuration:&duration rate:&v17 range:a6 error:COERCE_DOUBLE(__PAIR64__(HIDWORD(v20.start.epoch), LODWORD(a5)))];
+  v10 = [NUSlowMotionUtilities timeMapperForAssetDuration:&duration rate:&v17 range:duration error:COERCE_DOUBLE(__PAIR64__(HIDWORD(v20.start.epoch), LODWORD(rate)))];
   v11 = v17;
   if (v11)
   {

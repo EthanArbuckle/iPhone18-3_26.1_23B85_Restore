@@ -1,24 +1,24 @@
 @interface SIRINLUINTERNALTurnInputRule
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addNegativeContextRules:(id)a3;
-- (void)addPositiveContextRules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNegativeContextRules:(id)rules;
+- (void)addPositiveContextRules:(id)rules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALTurnInputRule
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   utteranceRule = self->_utteranceRule;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (utteranceRule)
   {
     if (v6)
@@ -36,7 +36,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -64,7 +64,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 1);
+  v12 = *(fromCopy + 1);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -98,13 +98,13 @@
   return v4 ^ [(NSMutableArray *)self->_negativeContextRules hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((utteranceRule = self->_utteranceRule, !(utteranceRule | v4[3])) || -[SIRINLUINTERNALUtteranceRule isEqual:](utteranceRule, "isEqual:")) && ((positiveContextRules = self->_positiveContextRules, !(positiveContextRules | v4[2])) || -[NSMutableArray isEqual:](positiveContextRules, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((utteranceRule = self->_utteranceRule, !(utteranceRule | equalCopy[3])) || -[SIRINLUINTERNALUtteranceRule isEqual:](utteranceRule, "isEqual:")) && ((positiveContextRules = self->_positiveContextRules, !(positiveContextRules | equalCopy[2])) || -[NSMutableArray isEqual:](positiveContextRules, "isEqual:")))
   {
     negativeContextRules = self->_negativeContextRules;
-    if (negativeContextRules | v4[1])
+    if (negativeContextRules | equalCopy[1])
     {
       v8 = [(NSMutableArray *)negativeContextRules isEqual:?];
     }
@@ -123,11 +123,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUINTERNALUtteranceRule *)self->_utteranceRule copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUINTERNALUtteranceRule *)self->_utteranceRule copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -151,7 +151,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addPositiveContextRules:v13];
 
         ++v12;
@@ -184,7 +184,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addNegativeContextRules:v19];
 
         ++v18;
@@ -201,49 +201,49 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_utteranceRule)
   {
-    [v12 setUtteranceRule:?];
+    [toCopy setUtteranceRule:?];
   }
 
   if ([(SIRINLUINTERNALTurnInputRule *)self positiveContextRulesCount])
   {
-    [v12 clearPositiveContextRules];
-    v4 = [(SIRINLUINTERNALTurnInputRule *)self positiveContextRulesCount];
-    if (v4)
+    [toCopy clearPositiveContextRules];
+    positiveContextRulesCount = [(SIRINLUINTERNALTurnInputRule *)self positiveContextRulesCount];
+    if (positiveContextRulesCount)
     {
-      v5 = v4;
+      v5 = positiveContextRulesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALTurnInputRule *)self positiveContextRulesAtIndex:i];
-        [v12 addPositiveContextRules:v7];
+        [toCopy addPositiveContextRules:v7];
       }
     }
   }
 
   if ([(SIRINLUINTERNALTurnInputRule *)self negativeContextRulesCount])
   {
-    [v12 clearNegativeContextRules];
-    v8 = [(SIRINLUINTERNALTurnInputRule *)self negativeContextRulesCount];
-    if (v8)
+    [toCopy clearNegativeContextRules];
+    negativeContextRulesCount = [(SIRINLUINTERNALTurnInputRule *)self negativeContextRulesCount];
+    if (negativeContextRulesCount)
     {
-      v9 = v8;
+      v9 = negativeContextRulesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALTurnInputRule *)self negativeContextRulesAtIndex:j];
-        [v12 addNegativeContextRules:v11];
+        [toCopy addNegativeContextRules:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_utteranceRule)
   {
     PBDataWriterWriteSubmessage();
@@ -319,12 +319,12 @@
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   utteranceRule = self->_utteranceRule;
   if (utteranceRule)
   {
-    v5 = [(SIRINLUINTERNALUtteranceRule *)utteranceRule dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"utterance_rule"];
+    dictionaryRepresentation = [(SIRINLUINTERNALUtteranceRule *)utteranceRule dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"utterance_rule"];
   }
 
   if ([(NSMutableArray *)self->_positiveContextRules count])
@@ -349,8 +349,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -359,7 +359,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"positive_context_rules"];
+    [dictionary setObject:v6 forKey:@"positive_context_rules"];
   }
 
   if ([(NSMutableArray *)self->_negativeContextRules count])
@@ -384,8 +384,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -394,12 +394,12 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"negative_context_rules"];
+    [dictionary setObject:v13 forKey:@"negative_context_rules"];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -408,46 +408,46 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALTurnInputRule;
   v4 = [(SIRINLUINTERNALTurnInputRule *)&v8 description];
-  v5 = [(SIRINLUINTERNALTurnInputRule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALTurnInputRule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNegativeContextRules:(id)a3
+- (void)addNegativeContextRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   negativeContextRules = self->_negativeContextRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!negativeContextRules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_negativeContextRules;
     self->_negativeContextRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     negativeContextRules = self->_negativeContextRules;
   }
 
-  [(NSMutableArray *)negativeContextRules addObject:v4];
+  [(NSMutableArray *)negativeContextRules addObject:rulesCopy];
 }
 
-- (void)addPositiveContextRules:(id)a3
+- (void)addPositiveContextRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   positiveContextRules = self->_positiveContextRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!positiveContextRules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_positiveContextRules;
     self->_positiveContextRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     positiveContextRules = self->_positiveContextRules;
   }
 
-  [(NSMutableArray *)positiveContextRules addObject:v4];
+  [(NSMutableArray *)positiveContextRules addObject:rulesCopy];
 }
 
 @end

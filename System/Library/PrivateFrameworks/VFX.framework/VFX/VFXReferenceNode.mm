@@ -1,36 +1,36 @@
 @interface VFXReferenceNode
-- (BOOL)_isNameUnique:(id)a3;
+- (BOOL)_isNameUnique:(id)unique;
 - (BOOL)isVirtualEnvironmentNode;
-- (VFXReferenceNode)initWithCoder:(id)a3;
-- (VFXReferenceNode)initWithNode:(id)a3;
-- (VFXReferenceNode)initWithURL:(id)a3;
-- (id)_loadReferencedWorldWithURL:(id)a3;
+- (VFXReferenceNode)initWithCoder:(id)coder;
+- (VFXReferenceNode)initWithNode:(id)node;
+- (VFXReferenceNode)initWithURL:(id)l;
+- (id)_loadReferencedWorldWithURL:(id)l;
 - (id)_resolveURL;
 - (id)description;
 - (id)overrides;
 - (void)_applyOverrides;
-- (void)_applyUnsharing:(id)a3 alreadyShared:(id)a4;
-- (void)_copyWithOptions:(unint64_t)a3 to:(id)a4 copyContext:(id)a5;
-- (void)_diffNode:(id)a3 with:(id)a4 path:(id)a5;
-- (void)_diffObject:(id)a3 with:(id)a4 path:(id)a5;
-- (void)_loadWithNode:(id)a3 fromURL:(BOOL)a4;
-- (void)_loadWithURL:(id)a3;
-- (void)addOverride:(id)a3 forKeyPath:(id)a4;
+- (void)_applyUnsharing:(id)unsharing alreadyShared:(id)shared;
+- (void)_copyWithOptions:(unint64_t)options to:(id)to copyContext:(id)context;
+- (void)_diffNode:(id)node with:(id)with path:(id)path;
+- (void)_diffObject:(id)object with:(id)with path:(id)path;
+- (void)_loadWithNode:(id)node fromURL:(BOOL)l;
+- (void)_loadWithURL:(id)l;
+- (void)addOverride:(id)override forKeyPath:(id)path;
 - (void)collectOverrides;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)load;
 - (void)removeAllOverrides;
-- (void)removeForKeyPath:(id)a3;
-- (void)setOverrides:(id)a3;
-- (void)setReferenceURL:(id)a3;
-- (void)setReferencedNode:(id)a3;
+- (void)removeForKeyPath:(id)path;
+- (void)setOverrides:(id)overrides;
+- (void)setReferenceURL:(id)l;
+- (void)setReferencedNode:(id)node;
 - (void)unload;
 @end
 
 @implementation VFXReferenceNode
 
-- (VFXReferenceNode)initWithURL:(id)a3
+- (VFXReferenceNode)initWithURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = VFXReferenceNode;
@@ -38,13 +38,13 @@
   v7 = v4;
   if (v4)
   {
-    objc_msgSend_setReferenceURL_(v4, v5, a3, v6);
+    objc_msgSend_setReferenceURL_(v4, v5, l, v6);
   }
 
   return v7;
 }
 
-- (VFXReferenceNode)initWithNode:(id)a3
+- (VFXReferenceNode)initWithNode:(id)node
 {
   v9.receiver = self;
   v9.super_class = VFXReferenceNode;
@@ -52,7 +52,7 @@
   v7 = v4;
   if (v4)
   {
-    objc_msgSend_setReferencedNode_(v4, v5, a3, v6);
+    objc_msgSend_setReferencedNode_(v4, v5, node, v6);
   }
 
   return v7;
@@ -65,9 +65,9 @@
   [(VFXNode *)&v3 dealloc];
 }
 
-- (void)_diffObject:(id)a3 with:(id)a4 path:(id)a5
+- (void)_diffObject:(id)object with:(id)with path:(id)path
 {
-  v72 = a5;
+  pathCopy = path;
   v82 = *MEMORY[0x1E69E9840];
   if (qword_1EB658CC0 != -1)
   {
@@ -124,10 +124,10 @@
         }
 
         v51 = *(*(&v76 + 1) + 8 * j);
-        if ((objc_msgSend_containsObject_(qword_1EB658CB8, v46, v51, v47, v72) & 1) == 0 && (objc_msgSend_hasPrefix_(v51, v46, @"_", v47) & 1) == 0 && (objc_msgSend_hasPrefix_(v51, v46, @"world", v47) & 1) == 0)
+        if ((objc_msgSend_containsObject_(qword_1EB658CB8, v46, v51, v47, pathCopy) & 1) == 0 && (objc_msgSend_hasPrefix_(v51, v46, @"_", v47) & 1) == 0 && (objc_msgSend_hasPrefix_(v51, v46, @"world", v47) & 1) == 0)
         {
-          v52 = objc_msgSend_valueForKey_(a3, v46, v51, v47);
-          v55 = objc_msgSend_valueForKey_(a4, v53, v51, v54);
+          v52 = objc_msgSend_valueForKey_(object, v46, v51, v47);
+          v55 = objc_msgSend_valueForKey_(with, v53, v51, v54);
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
@@ -146,7 +146,7 @@
 
             if ((isEqual & 1) == 0)
             {
-              v67 = objc_msgSend_stringByAppendingString_(v72, v46, @".", v47);
+              v67 = objc_msgSend_stringByAppendingString_(pathCopy, v46, @".", v47);
               v70 = objc_msgSend_stringByAppendingString_(v67, v68, v51, v69);
               objc_msgSend_addOverride_forKeyPath_(self, v71, v52, v70);
             }
@@ -160,10 +160,10 @@
     while (v48);
   }
 
-  objc_msgSend_didChangeValueForKey_(self, v46, @"overrides", v47, v72);
+  objc_msgSend_didChangeValueForKey_(self, v46, @"overrides", v47, pathCopy);
 }
 
-- (BOOL)_isNameUnique:(id)a3
+- (BOOL)_isNameUnique:(id)unique
 {
   v7 = 0;
   v8 = &v7;
@@ -173,7 +173,7 @@
   v6[1] = 3221225472;
   v6[2] = sub_1AF319728;
   v6[3] = &unk_1E7A7EDE8;
-  v6[4] = a3;
+  v6[4] = unique;
   v6[5] = &v7;
   objc_msgSend_enumerateHierarchyUsingBlock_(self, a2, v6, v3);
   v4 = *(v8 + 6) == 1;
@@ -181,55 +181,55 @@
   return v4;
 }
 
-- (void)_diffNode:(id)a3 with:(id)a4 path:(id)a5
+- (void)_diffNode:(id)node with:(id)with path:(id)path
 {
-  if (objc_msgSend_name(a3, a2, a3, a4))
+  if (objc_msgSend_name(node, a2, node, with))
   {
-    v12 = objc_msgSend_name(a3, v9, v10, v11);
+    v12 = objc_msgSend_name(node, v9, v10, v11);
     if ((objc_msgSend_containsString_(v12, v13, @".", v14) & 1) == 0)
     {
-      v17 = objc_msgSend_name(a3, v9, v15, v16);
+      v17 = objc_msgSend_name(node, v9, v15, v16);
       if (objc_msgSend__isNameUnique_(self, v18, v17, v19))
       {
-        v22 = objc_msgSend_name(a3, v9, v20, v21);
-        a5 = objc_msgSend_stringByAppendingString_(@"/", v23, v22, v24);
+        v22 = objc_msgSend_name(node, v9, v20, v21);
+        path = objc_msgSend_stringByAppendingString_(@"/", v23, v22, v24);
       }
     }
   }
 
-  v171 = a4;
-  objc_msgSend__diffObject_with_path_(self, v9, a3, a4, a5);
-  v170 = a3;
-  if (objc_msgSend_model(a3, v25, v26, v27) && objc_msgSend_model(a4, v28, v29, v30))
+  withCopy = with;
+  objc_msgSend__diffObject_with_path_(self, v9, node, with, path);
+  nodeCopy = node;
+  if (objc_msgSend_model(node, v25, v26, v27) && objc_msgSend_model(with, v28, v29, v30))
   {
-    v31 = objc_msgSend_model(a3, v28, v29, v30);
-    v35 = objc_msgSend_model(v171, v32, v33, v34);
-    v38 = objc_msgSend_stringByAppendingString_(a5, v36, @".", v37);
+    v31 = objc_msgSend_model(node, v28, v29, v30);
+    v35 = objc_msgSend_model(withCopy, v32, v33, v34);
+    v38 = objc_msgSend_stringByAppendingString_(path, v36, @".", v37);
     v41 = objc_msgSend_stringByAppendingString_(v38, v39, @"model", v40);
     objc_msgSend__diffObject_with_path_(self, v42, v31, v35, v41);
-    v46 = objc_msgSend_model(a3, v43, v44, v45);
+    v46 = objc_msgSend_model(node, v43, v44, v45);
     v50 = objc_msgSend_materials(v46, v47, v48, v49);
     v54 = objc_msgSend_count(v50, v51, v52, v53);
-    v58 = objc_msgSend_model(v171, v55, v56, v57);
+    v58 = objc_msgSend_model(withCopy, v55, v56, v57);
     v62 = objc_msgSend_materials(v58, v59, v60, v61);
     if (v54 == objc_msgSend_count(v62, v63, v64, v65))
     {
-      v69 = objc_msgSend_model(a3, v66, v67, v68);
+      v69 = objc_msgSend_model(node, v66, v67, v68);
       v175 = objc_msgSend_materials(v69, v70, v71, v72);
-      v76 = objc_msgSend_model(v171, v73, v74, v75);
+      v76 = objc_msgSend_model(withCopy, v73, v74, v75);
       v174 = objc_msgSend_materials(v76, v77, v78, v79);
       if (v54)
       {
         v80 = 0;
         v172 = v54;
-        v173 = a5;
+        pathCopy = path;
         do
         {
           v81 = objc_msgSend_objectAtIndexedSubscript_(v175, v28, v80, v30);
           v84 = objc_msgSend_objectAtIndexedSubscript_(v174, v82, v80, v83);
           v176 = v80;
           v87 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v85, @"model.materials[%d]", v86, v80);
-          v90 = objc_msgSend_stringByAppendingString_(a5, v88, @".", v89);
+          v90 = objc_msgSend_stringByAppendingString_(path, v88, @".", v89);
           v93 = objc_msgSend_stringByAppendingString_(v90, v91, v87, v92);
           objc_msgSend__diffObject_with_path_(self, v94, v81, v84, v93);
           v98 = objc_msgSend_properties(v81, v95, v96, v97);
@@ -244,13 +244,13 @@
                 v111 = objc_msgSend_objectAtIndexedSubscript_(v98, v28, i, v30);
                 v114 = objc_msgSend_objectAtIndexedSubscript_(v102, v112, i, v113);
                 v117 = objc_msgSend_objectAtIndexedSubscript_(v98, v115, i, v116);
-                v121 = self;
+                selfCopy = self;
                 v122 = objc_msgSend_materialPropertyName(v117, v118, v119, v120);
                 v125 = objc_msgSend_stringByAppendingString_(v93, v123, @".", v124);
                 v126 = v122;
-                self = v121;
+                self = selfCopy;
                 v129 = objc_msgSend_stringByAppendingString_(v125, v127, v126, v128);
-                objc_msgSend__diffObject_with_path_(v121, v130, v111, v114, v129);
+                objc_msgSend__diffObject_with_path_(selfCopy, v130, v111, v114, v129);
               }
             }
           }
@@ -265,7 +265,7 @@
           }
 
           v80 = v176 + 1;
-          a5 = v173;
+          path = pathCopy;
         }
 
         while (v176 + 1 != v172);
@@ -282,9 +282,9 @@
     }
   }
 
-  v133 = objc_msgSend_childNodes(v170, v28, v29, v30);
+  v133 = objc_msgSend_childNodes(nodeCopy, v28, v29, v30);
   v137 = objc_msgSend_count(v133, v134, v135, v136);
-  v141 = objc_msgSend_childNodes(v171, v138, v139, v140);
+  v141 = objc_msgSend_childNodes(withCopy, v138, v139, v140);
   if (v137 == objc_msgSend_count(v141, v142, v143, v144))
   {
     if (v137)
@@ -292,13 +292,13 @@
       for (j = 0; j != v137; ++j)
       {
         v148 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v145, @"[%d]", v146, j);
-        v151 = objc_msgSend_stringByAppendingString_(a5, v149, @".", v150);
-        a5 = objc_msgSend_stringByAppendingString_(v151, v152, v148, v153);
-        v157 = objc_msgSend_childNodes(v170, v154, v155, v156);
+        v151 = objc_msgSend_stringByAppendingString_(path, v149, @".", v150);
+        path = objc_msgSend_stringByAppendingString_(v151, v152, v148, v153);
+        v157 = objc_msgSend_childNodes(nodeCopy, v154, v155, v156);
         v160 = objc_msgSend_objectAtIndexedSubscript_(v157, v158, j, v159);
-        v164 = objc_msgSend_childNodes(v171, v161, v162, v163);
+        v164 = objc_msgSend_childNodes(withCopy, v161, v162, v163);
         v167 = objc_msgSend_objectAtIndexedSubscript_(v164, v165, j, v166);
-        objc_msgSend__diffNode_with_path_(self, v168, v160, v167, a5);
+        objc_msgSend__diffNode_with_path_(self, v168, v160, v167, path);
       }
     }
   }
@@ -350,9 +350,9 @@
   }
 }
 
-- (void)addOverride:(id)a3 forKeyPath:(id)a4
+- (void)addOverride:(id)override forKeyPath:(id)path
 {
-  objc_msgSend_willChangeValueForKey_(self, a2, @"overrides", a4);
+  objc_msgSend_willChangeValueForKey_(self, a2, @"overrides", path);
   overrides = self->_overrides;
   if (!overrides)
   {
@@ -360,15 +360,15 @@
     self->_overrides = overrides;
   }
 
-  objc_msgSend_setObject_forKey_(overrides, v7, a3, a4);
+  objc_msgSend_setObject_forKey_(overrides, v7, override, path);
 
   objc_msgSend_didChangeValueForKey_(self, v9, @"overrides", v10);
 }
 
-- (void)removeForKeyPath:(id)a3
+- (void)removeForKeyPath:(id)path
 {
   objc_msgSend_willChangeValueForKey_(self, a2, @"overrides", v3);
-  objc_msgSend_removeObjectForKey_(self->_overrides, v6, a3, v7);
+  objc_msgSend_removeObjectForKey_(self->_overrides, v6, path, v7);
   if (!objc_msgSend_count(self->_overrides, v8, v9, v10))
   {
 
@@ -399,30 +399,30 @@
   }
 }
 
-- (void)setOverrides:(id)a3
+- (void)setOverrides:(id)overrides
 {
   objc_msgSend_willChangeValueForKey_(self, a2, @"overrides", v3);
 
-  self->_overrides = objc_msgSend_mutableCopy(a3, v6, v7, v8);
+  self->_overrides = objc_msgSend_mutableCopy(overrides, v6, v7, v8);
 
   objc_msgSend_didChangeValueForKey_(self, v9, @"overrides", v10);
 }
 
-- (void)_applyUnsharing:(id)a3 alreadyShared:(id)a4
+- (void)_applyUnsharing:(id)unsharing alreadyShared:(id)shared
 {
   v103 = *MEMORY[0x1E69E9840];
-  if ((objc_msgSend_containsObject_(a4, a2, a3, a4) & 1) == 0)
+  if ((objc_msgSend_containsObject_(shared, a2, unsharing, shared) & 1) == 0)
   {
-    objc_msgSend_addObject_(a4, v7, a3, v8);
-    v10 = objc_msgSend_rangeOfString_options_(a3, v9, @".", 4);
+    objc_msgSend_addObject_(shared, v7, unsharing, v8);
+    v10 = objc_msgSend_rangeOfString_options_(unsharing, v9, @".", 4);
     if (v13 == 1)
     {
       v14 = v10;
       v15 = v10 + 1;
-      if (v10 + 1 < objc_msgSend_length(a3, 1, v11, v12))
+      if (v10 + 1 < objc_msgSend_length(unsharing, 1, v11, v12))
       {
-        v18 = objc_msgSend_substringToIndex_(a3, v16, v14, v17);
-        v21 = objc_msgSend_substringFromIndex_(a3, v19, v15, v20);
+        v18 = objc_msgSend_substringToIndex_(unsharing, v16, v14, v17);
+        v21 = objc_msgSend_substringFromIndex_(unsharing, v19, v15, v20);
         v24 = objc_msgSend_valueForKeyPath_(self, v22, v18, v23);
         if (v24)
         {
@@ -438,9 +438,9 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ((objc_msgSend_containsObject_(a4, v38, v18, v39) & 1) == 0)
+            if ((objc_msgSend_containsObject_(shared, v38, v18, v39) & 1) == 0)
             {
-              objc_msgSend__applyUnsharing_alreadyShared_(self, v40, v18, a4);
+              objc_msgSend__applyUnsharing_alreadyShared_(self, v40, v18, shared);
               v25 = objc_msgSend_valueForKeyPath_(self, v42, v18, v43);
             }
 
@@ -478,7 +478,7 @@ LABEL_13:
                     {
                       v77 = objc_msgSend_materials(v25, v74, v75, v76);
                       *buf = 138412802;
-                      v98 = a3;
+                      unsharingCopy = unsharing;
                       v99 = 1024;
                       v100 = v47;
                       v101 = 1024;
@@ -541,24 +541,24 @@ LABEL_13:
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v7, v8, v10, v9);
 }
 
-- (void)_copyWithOptions:(unint64_t)a3 to:(id)a4 copyContext:(id)a5
+- (void)_copyWithOptions:(unint64_t)options to:(id)to copyContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = VFXReferenceNode;
-  [(VFXNode *)&v16 _copyWithOptions:a3 to:a4 copyContext:a5];
-  objc_msgSend_setReferenceURL_(a4, v7, self->_referenceURL, v8);
-  objc_msgSend_setReferencedNode_(a4, v9, self->_referenceNode, v10);
-  objc_msgSend_setLoadingPolicy_(a4, v11, self->_loadingPolicy, v12);
-  *(a4 + 37) = objc_msgSend_mutableCopy(self->_overrides, v13, v14, v15);
+  [(VFXNode *)&v16 _copyWithOptions:options to:to copyContext:context];
+  objc_msgSend_setReferenceURL_(to, v7, self->_referenceURL, v8);
+  objc_msgSend_setReferencedNode_(to, v9, self->_referenceNode, v10);
+  objc_msgSend_setLoadingPolicy_(to, v11, self->_loadingPolicy, v12);
+  *(to + 37) = objc_msgSend_mutableCopy(self->_overrides, v13, v14, v15);
 }
 
-- (void)setReferenceURL:(id)a3
+- (void)setReferenceURL:(id)l
 {
   referenceURL = self->_referenceURL;
-  if (referenceURL != a3)
+  if (referenceURL != l)
   {
 
-    self->_referenceURL = objc_msgSend_copy(a3, v6, v7, v8);
+    self->_referenceURL = objc_msgSend_copy(l, v6, v7, v8);
   }
 }
 
@@ -569,13 +569,13 @@ LABEL_13:
   return objc_msgSend_isEqualToString_(v4, v5, @"env", v6);
 }
 
-- (void)setReferencedNode:(id)a3
+- (void)setReferencedNode:(id)node
 {
   referenceNode = self->_referenceNode;
-  if (referenceNode != a3)
+  if (referenceNode != node)
   {
 
-    self->_referenceNode = a3;
+    self->_referenceNode = node;
   }
 }
 
@@ -650,12 +650,12 @@ LABEL_13:
   self->_loaded = 0;
 }
 
-- (id)_loadReferencedWorldWithURL:(id)a3
+- (id)_loadReferencedWorldWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
 
-    return MEMORY[0x1EEE66B58](VFXWorld, sel_worldWithURL_options_error_, a3, 0);
+    return MEMORY[0x1EEE66B58](VFXWorld, sel_worldWithURL_options_error_, l, 0);
   }
 
   else
@@ -693,14 +693,14 @@ LABEL_13:
   }
 }
 
-- (void)_loadWithNode:(id)a3 fromURL:(BOOL)a4
+- (void)_loadWithNode:(id)node fromURL:(BOOL)l
 {
-  v4 = a4;
+  lCopy = l;
   v29 = *MEMORY[0x1E69E9840];
   self->_loaded = 1;
-  v7 = objc_msgSend_clone(a3, a2, a3, a4);
+  v7 = objc_msgSend_clone(node, a2, node, l);
   objc_msgSend_enumerateHierarchyUsingBlock_(v7, v8, &unk_1F24EC208, v9);
-  if (v4)
+  if (lCopy)
   {
     v26 = 0u;
     v27 = 0u;
@@ -732,7 +732,7 @@ LABEL_13:
       while (v18);
     }
 
-    objc_msgSend__copyAnimationsFrom_(self, v16, a3, v17);
+    objc_msgSend__copyAnimationsFrom_(self, v16, node, v17);
   }
 
   else
@@ -743,9 +743,9 @@ LABEL_13:
   objc_msgSend__applyOverrides(self, v21, v22, v23);
 }
 
-- (void)_loadWithURL:(id)a3
+- (void)_loadWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v8 = objc_msgSend_valueForKey_(VFXTransaction, a2, @"VFXReferenceLoadingStack", v3);
     if (!v8)
@@ -754,7 +754,7 @@ LABEL_13:
       objc_msgSend_setValue_forKey_(VFXTransaction, v9, v8, @"VFXReferenceLoadingStack");
     }
 
-    if (objc_msgSend_containsObject_(v8, v6, a3, v7))
+    if (objc_msgSend_containsObject_(v8, v6, l, v7))
     {
       v12 = sub_1AF0D5194();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -765,9 +765,9 @@ LABEL_13:
 
     else
     {
-      objc_msgSend_addObject_(v8, v10, a3, v11);
-      ReferencedWorldWithURL = objc_msgSend__loadReferencedWorldWithURL_(self, v14, a3, v15);
-      objc_msgSend_removeObject_(v8, v17, a3, v18);
+      objc_msgSend_addObject_(v8, v10, l, v11);
+      ReferencedWorldWithURL = objc_msgSend__loadReferencedWorldWithURL_(self, v14, l, v15);
+      objc_msgSend_removeObject_(v8, v17, l, v18);
       if (ReferencedWorldWithURL)
       {
         v22 = objc_msgSend_rootNode(ReferencedWorldWithURL, v19, v20, v21);
@@ -801,33 +801,33 @@ LABEL_13:
   return objc_msgSend_stringWithFormat_(v3, v6, @"<%@: %p source=%@>", v7, v5, self, referenceURL);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   referenceURL = self->_referenceURL;
   if (referenceURL)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, referenceURL, @"referenceURL");
+    objc_msgSend_encodeObject_forKey_(coder, a2, referenceURL, @"referenceURL");
   }
 
   referenceNode = self->_referenceNode;
   if (referenceNode)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, referenceNode, @"referenceNode");
+    objc_msgSend_encodeObject_forKey_(coder, a2, referenceNode, @"referenceNode");
   }
 
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->_loadingPolicy, @"loadingPolicy");
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->_loadingPolicy, @"loadingPolicy");
   overrides = self->_overrides;
   if (overrides)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v7, overrides, @"overrides");
+    objc_msgSend_encodeObject_forKey_(coder, v7, overrides, @"overrides");
   }
 
   v9.receiver = self;
   v9.super_class = VFXReferenceNode;
-  [(VFXNode *)&v9 encodeWithCoder:a3];
+  [(VFXNode *)&v9 encodeWithCoder:coder];
 }
 
-- (VFXReferenceNode)initWithCoder:(id)a3
+- (VFXReferenceNode)initWithCoder:(id)coder
 {
   v38[2] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
@@ -840,23 +840,23 @@ LABEL_13:
     v38[1] = objc_opt_class();
     v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, v38, 2);
     v10 = objc_msgSend_setWithArray_(v5, v8, v7, v9);
-    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v11, v10, @"referenceURL");
+    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v11, v10, @"referenceURL");
     objc_msgSend_setReferenceURL_(v4, v13, v12, v14);
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"referenceNode");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"referenceNode");
     objc_msgSend_setReferencedNode_(v4, v18, v17, v19);
-    v22 = objc_msgSend_decodeIntegerForKey_(a3, v20, @"loadingPolicy", v21);
+    v22 = objc_msgSend_decodeIntegerForKey_(coder, v20, @"loadingPolicy", v21);
     objc_msgSend_setLoadingPolicy_(v4, v23, v22, v24);
     v25 = sub_1AF37287C();
-    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v26, v25, @"overrides");
+    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v26, v25, @"overrides");
     objc_msgSend_setOverrides_(v4, v28, v27, v29);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4->_sourceDocumentURL = objc_msgSend_documentURL(a3, v30, v31, v32);
+      v4->_sourceDocumentURL = objc_msgSend_documentURL(coder, v30, v31, v32);
     }
 
-    if ((objc_msgSend_containsValueForKey_(a3, v30, @"childNodes", v32) & 1) == 0 && !v4->_loadingPolicy)
+    if ((objc_msgSend_containsValueForKey_(coder, v30, @"childNodes", v32) & 1) == 0 && !v4->_loadingPolicy)
     {
       objc_msgSend_load(v4, v33, v34, v35);
     }

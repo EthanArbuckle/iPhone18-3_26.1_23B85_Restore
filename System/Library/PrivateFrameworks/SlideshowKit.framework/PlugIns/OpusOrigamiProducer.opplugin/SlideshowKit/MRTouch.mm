@@ -1,57 +1,57 @@
 @interface MRTouch
-+ (id)touchWithLocation:(CGPoint)a3 timestamp:(double)a4 tapCount:(unint64_t)a5;
-+ (id)touchWithUITouch:(id)a3 inView:(id)a4;
++ (id)touchWithLocation:(CGPoint)location timestamp:(double)timestamp tapCount:(unint64_t)count;
++ (id)touchWithUITouch:(id)touch inView:(id)view;
 - (CGPoint)location;
-- (MRTouch)initWithUITouch:(id)a3 inView:(id)a4;
+- (MRTouch)initWithUITouch:(id)touch inView:(id)view;
 - (id)description;
-- (void)addGestureRecognizer:(id)a3;
+- (void)addGestureRecognizer:(id)recognizer;
 - (void)dealloc;
 @end
 
 @implementation MRTouch
 
-+ (id)touchWithLocation:(CGPoint)a3 timestamp:(double)a4 tapCount:(unint64_t)a5
++ (id)touchWithLocation:(CGPoint)location timestamp:(double)timestamp tapCount:(unint64_t)count
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v9 = objc_alloc_init(MRTouch);
   v9->_location.x = x;
   v9->_location.y = y;
-  v9->_timestamp = a4;
-  v9->_tapCount = a5;
+  v9->_timestamp = timestamp;
+  v9->_tapCount = count;
   v9->_phase = 0;
 
   return v9;
 }
 
-- (MRTouch)initWithUITouch:(id)a3 inView:(id)a4
+- (MRTouch)initWithUITouch:(id)touch inView:(id)view
 {
   v15.receiver = self;
   v15.super_class = MRTouch;
   v6 = [(MRTouch *)&v15 init];
   if (v6)
   {
-    [a3 locationInView:a4];
+    [touch locationInView:view];
     v6->_location.x = v7;
     v6->_location.y = v8;
-    [a4 contentScaleFactor];
+    [view contentScaleFactor];
     v6->_location.x = v9 * v6->_location.x;
-    [a4 bounds];
+    [view bounds];
     v11 = v10 - v6->_location.y;
-    [a4 contentScaleFactor];
+    [view contentScaleFactor];
     v6->_location.y = v12 * v11;
-    [a3 timestamp];
+    [touch timestamp];
     v6->_timestamp = v13;
-    v6->_tapCount = [a3 tapCount];
-    v6->_phase = [a3 phase];
+    v6->_tapCount = [touch tapCount];
+    v6->_phase = [touch phase];
   }
 
   return v6;
 }
 
-+ (id)touchWithUITouch:(id)a3 inView:(id)a4
++ (id)touchWithUITouch:(id)touch inView:(id)view
 {
-  v4 = [[MRTouch alloc] initWithUITouch:a3 inView:a4];
+  v4 = [[MRTouch alloc] initWithUITouch:touch inView:view];
 
   return v4;
 }
@@ -64,7 +64,7 @@
   [(MRTouch *)&v3 dealloc];
 }
 
-- (void)addGestureRecognizer:(id)a3
+- (void)addGestureRecognizer:(id)recognizer
 {
   gestureRecognizers = self->_gestureRecognizers;
   if (!gestureRecognizers)
@@ -73,7 +73,7 @@
     self->_gestureRecognizers = gestureRecognizers;
   }
 
-  [(NSMutableArray *)gestureRecognizers addObject:a3];
+  [(NSMutableArray *)gestureRecognizers addObject:recognizer];
 }
 
 - (id)description

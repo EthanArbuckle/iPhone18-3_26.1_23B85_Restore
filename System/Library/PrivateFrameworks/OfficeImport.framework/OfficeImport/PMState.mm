@@ -1,6 +1,6 @@
 @interface PMState
 - (PMState)init;
-- (void)setCurrentRowStyle:(id)a3;
+- (void)setCurrentRowStyle:(id)style;
 @end
 
 @implementation PMState
@@ -20,14 +20,14 @@
   return v2;
 }
 
-- (void)setCurrentRowStyle:(id)a3
+- (void)setCurrentRowStyle:(id)style
 {
-  v5 = a3;
-  if (self->mCurrentRowStyle != v5)
+  styleCopy = style;
+  if (self->mCurrentRowStyle != styleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mCurrentRowStyle, a3);
-    v5 = v6;
+    v6 = styleCopy;
+    objc_storeStrong(&self->mCurrentRowStyle, style);
+    styleCopy = v6;
   }
 }
 

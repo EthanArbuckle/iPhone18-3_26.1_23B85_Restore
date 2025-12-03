@@ -1,7 +1,7 @@
 @interface AVRoutingWeakReference
-+ (AVRoutingWeakReference)allocWithZone:(_NSZone *)a3;
++ (AVRoutingWeakReference)allocWithZone:(_NSZone *)zone;
 + (void)initialize;
-- (AVRoutingWeakReference)initWithReferencedObject:(id)a3;
+- (AVRoutingWeakReference)initWithReferencedObject:(id)object;
 - (id)referencedObject;
 @end
 
@@ -9,30 +9,30 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _concreteAVRoutingWeakReferenceClass = objc_opt_class();
   }
 }
 
-+ (AVRoutingWeakReference)allocWithZone:(_NSZone *)a3
++ (AVRoutingWeakReference)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = _concreteAVRoutingWeakReferenceClass;
 
-    return [v6 allocWithZone:a3];
+    return [v6 allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___AVRoutingWeakReference;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (AVRoutingWeakReference)initWithReferencedObject:(id)a3
+- (AVRoutingWeakReference)initWithReferencedObject:(id)object
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);

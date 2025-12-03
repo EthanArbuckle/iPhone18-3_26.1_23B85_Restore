@@ -1,9 +1,9 @@
 @interface WBSReaderAvailabilityCheckResult
 - (NSDictionary)combinedMetadataForTests;
-- (WBSReaderAvailabilityCheckResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WBSReaderAvailabilityCheckResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSReaderAvailabilityCheckResult
@@ -53,75 +53,75 @@
 
 - (NSDictionary)combinedMetadataForTests
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   textSamples = self->_textSamples;
   if (textSamples)
   {
-    [v3 setObject:textSamples forKeyedSubscript:@"textSamples"];
+    [dictionary setObject:textSamples forKeyedSubscript:@"textSamples"];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_readerAvailable;
   *(v5 + 9) = self->_isSameDocumentNavigation;
-  v6 = [(NSArray *)self->_textSamples copyWithZone:a3];
+  v6 = [(NSArray *)self->_textSamples copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 10) = self->_doesPageUseSearchEngineOptimizationMetadata;
-  v8 = [(NSURL *)self->_canonicalURL copyWithZone:a3];
+  v8 = [(NSURL *)self->_canonicalURL copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeBool:self->_readerAvailable forKey:@"isReaderAvailable"];
-  [v6 encodeBool:self->_isSameDocumentNavigation forKey:@"isSameDocumentNavigation"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_readerAvailable forKey:@"isReaderAvailable"];
+  [coderCopy encodeBool:self->_isSameDocumentNavigation forKey:@"isSameDocumentNavigation"];
   textSamples = self->_textSamples;
   if (textSamples)
   {
-    [v6 encodeObject:textSamples forKey:@"textSamples"];
+    [coderCopy encodeObject:textSamples forKey:@"textSamples"];
   }
 
-  [v6 encodeBool:self->_doesPageUseSearchEngineOptimizationMetadata forKey:@"doesPageUseSearchEngineOptimizationMetadata"];
+  [coderCopy encodeBool:self->_doesPageUseSearchEngineOptimizationMetadata forKey:@"doesPageUseSearchEngineOptimizationMetadata"];
   canonicalURL = self->_canonicalURL;
   if (canonicalURL)
   {
-    [v6 encodeObject:canonicalURL forKey:@"canonicalURL"];
+    [coderCopy encodeObject:canonicalURL forKey:@"canonicalURL"];
   }
 }
 
-- (WBSReaderAvailabilityCheckResult)initWithCoder:(id)a3
+- (WBSReaderAvailabilityCheckResult)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = WBSReaderAvailabilityCheckResult;
   v5 = [(WBSReaderAvailabilityCheckResult *)&v15 init];
   if (v5)
   {
-    v5->_readerAvailable = [v4 decodeBoolForKey:@"isReaderAvailable"];
-    v5->_isSameDocumentNavigation = [v4 decodeBoolForKey:@"isSameDocumentNavigation"];
+    v5->_readerAvailable = [coderCopy decodeBoolForKey:@"isReaderAvailable"];
+    v5->_isSameDocumentNavigation = [coderCopy decodeBoolForKey:@"isSameDocumentNavigation"];
     v6 = MEMORY[0x1E695DFD8];
     v16[0] = objc_opt_class();
     v16[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"textSamples"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"textSamples"];
     textSamples = v5->_textSamples;
     v5->_textSamples = v9;
 
-    v5->_doesPageUseSearchEngineOptimizationMetadata = [v4 decodeBoolForKey:@"doesPageUseSearchEngineOptimizationMetadata"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"canonicalURL"];
+    v5->_doesPageUseSearchEngineOptimizationMetadata = [coderCopy decodeBoolForKey:@"doesPageUseSearchEngineOptimizationMetadata"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"canonicalURL"];
     canonicalURL = v5->_canonicalURL;
     v5->_canonicalURL = v11;
 

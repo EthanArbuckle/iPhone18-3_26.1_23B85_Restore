@@ -1,6 +1,6 @@
 @interface _UIKeyboardArbiterDebugEntry
 - (_UIKeyboardArbiterDebugEntry)init;
-- (void)enumerateContents:(id)a3;
+- (void)enumerateContents:(id)contents;
 @end
 
 @implementation _UIKeyboardArbiterDebugEntry
@@ -12,24 +12,24 @@
   v2 = [(_UIKeyboardArbiterDebugEntry *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v2->_timestamp;
-    v2->_timestamp = v3;
+    v2->_timestamp = date;
   }
 
   return v2;
 }
 
-- (void)enumerateContents:(id)a3
+- (void)enumerateContents:(id)contents
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"Timestamp";
   timestamp = self->_timestamp;
-  v5 = a3;
+  contentsCopy = contents;
   v6 = [(NSDate *)timestamp description];
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  (*(a3 + 2))(v5, v7);
+  (*(contents + 2))(contentsCopy, v7);
 
   v8 = *MEMORY[0x277D85DE8];
 }

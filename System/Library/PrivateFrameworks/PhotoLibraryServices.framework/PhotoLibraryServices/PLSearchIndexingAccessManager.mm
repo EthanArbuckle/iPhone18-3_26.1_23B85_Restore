@@ -1,5 +1,5 @@
 @interface PLSearchIndexingAccessManager
-- (PLSearchIndexingAccessManager)initWithQueue:(id)a3 openBlock:(id)a4 closeBlock:(id)a5 deferCloseSeconds:(unint64_t)a6;
+- (PLSearchIndexingAccessManager)initWithQueue:(id)queue openBlock:(id)block closeBlock:(id)closeBlock deferCloseSeconds:(unint64_t)seconds;
 - (void)removeUser;
 @end
 
@@ -43,9 +43,9 @@ void __38__PLSearchIndexingAccessManager_reset__block_invoke(uint64_t a1)
   location[4] = &unk_1E75787F8;
   location[5] = self;
   v3 = PLResultWithUnfairLock();
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     objc_initWeak(location, self);
     v5 = dispatch_time(0, 1000000000 * self->_deferCloseSeconds);
@@ -123,11 +123,11 @@ void __40__PLSearchIndexingAccessManager_addUser__block_invoke(uint64_t a1)
   }
 }
 
-- (PLSearchIndexingAccessManager)initWithQueue:(id)a3 openBlock:(id)a4 closeBlock:(id)a5 deferCloseSeconds:(unint64_t)a6
+- (PLSearchIndexingAccessManager)initWithQueue:(id)queue openBlock:(id)block closeBlock:(id)closeBlock deferCloseSeconds:(unint64_t)seconds
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  queueCopy = queue;
+  blockCopy = block;
+  closeBlockCopy = closeBlock;
   v21.receiver = self;
   v21.super_class = PLSearchIndexingAccessManager;
   v14 = [(PLSearchIndexingAccessManager *)&v21 init];
@@ -135,16 +135,16 @@ void __40__PLSearchIndexingAccessManager_addUser__block_invoke(uint64_t a1)
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    v16 = [v12 copy];
+    v16 = [blockCopy copy];
     openBlock = v15->_openBlock;
     v15->_openBlock = v16;
 
-    v18 = [v13 copy];
+    v18 = [closeBlockCopy copy];
     closeBlock = v15->_closeBlock;
     v15->_closeBlock = v18;
 
-    v15->_deferCloseSeconds = a6;
-    objc_storeStrong(&v15->_queue, a3);
+    v15->_deferCloseSeconds = seconds;
+    objc_storeStrong(&v15->_queue, queue);
   }
 
   return v15;

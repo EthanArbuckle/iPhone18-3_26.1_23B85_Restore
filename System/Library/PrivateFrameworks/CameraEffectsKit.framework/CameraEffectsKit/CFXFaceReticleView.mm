@@ -1,26 +1,26 @@
 @interface CFXFaceReticleView
-- (CFXFaceReticleView)initWithFrame:(CGRect)a3 reticleType:(int64_t)a4;
-- (void)animojiCloseAnimationWithCompletion:(id)a3;
+- (CFXFaceReticleView)initWithFrame:(CGRect)frame reticleType:(int64_t)type;
+- (void)animojiCloseAnimationWithCompletion:(id)completion;
 - (void)animojiFadeInAnimation;
 - (void)fadeInAnimation;
-- (void)fadeOutAndEndHapticWithCompletionBlock:(id)a3;
-- (void)fadeOutAnimationWithCompletion:(id)a3;
-- (void)hideAnimojiFaceReticleAnimatedWithCompletion:(id)a3;
+- (void)fadeOutAndEndHapticWithCompletionBlock:(id)block;
+- (void)fadeOutAnimationWithCompletion:(id)completion;
+- (void)hideAnimojiFaceReticleAnimatedWithCompletion:(id)completion;
 - (void)setupAnimojiReticleLayers;
-- (void)shouldUseHapticFeedback:(BOOL)a3;
+- (void)shouldUseHapticFeedback:(BOOL)feedback;
 - (void)showAndAnimateAnimojiFaceReticle;
-- (void)updateFrameForDisplayRelativeToBounds:(CGRect)a3;
-- (void)userFeedbackForTrackingType:(int64_t)a3 needsHaptics:(BOOL)a4;
+- (void)updateFrameForDisplayRelativeToBounds:(CGRect)bounds;
+- (void)userFeedbackForTrackingType:(int64_t)type needsHaptics:(BOOL)haptics;
 @end
 
 @implementation CFXFaceReticleView
 
-- (CFXFaceReticleView)initWithFrame:(CGRect)a3 reticleType:(int64_t)a4
+- (CFXFaceReticleView)initWithFrame:(CGRect)frame reticleType:(int64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19.receiver = self;
   v19.super_class = CFXFaceReticleView;
   v9 = [(CFXFaceReticleView *)&v19 initWithFrame:?];
@@ -34,16 +34,16 @@
 
     [(UIImageView *)v10->_reticleImageView setHidden:1];
     v10->_canPerformFadeInAnimations = 1;
-    if (a4 == 1)
+    if (type == 1)
     {
       [(CFXFaceReticleView *)v10 setupAnimojiReticleLayers];
     }
 
-    else if (!a4)
+    else if (!type)
     {
       v13 = MEMORY[0x277D755B8];
-      v14 = [MEMORY[0x277CCA8D8] jfxBundle];
-      v15 = [v13 imageNamed:@"faceIndicator" inBundle:v14 compatibleWithTraitCollection:0];
+      jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+      v15 = [v13 imageNamed:@"faceIndicator" inBundle:jfxBundle compatibleWithTraitCollection:0];
 
       [v15 size];
       v17 = [v15 resizableImageWithCapInsets:{v16 * 0.5, v16 * 0.5, v16 * 0.5, v16 * 0.5}];
@@ -56,12 +56,12 @@
   return v10;
 }
 
-- (void)updateFrameForDisplayRelativeToBounds:(CGRect)a3
+- (void)updateFrameForDisplayRelativeToBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = +[JFXOrientationMonitor interfaceOrientation];
   v9 = +[CFXMediaSettings sharedInstance];
   [v9 frameSize];
@@ -73,14 +73,14 @@
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(CFXFaceReticleView *)self reticleImageView];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  reticleImageView = [(CFXFaceReticleView *)self reticleImageView];
+  [reticleImageView setFrame:{v14, v16, v18, v20}];
 }
 
-- (void)userFeedbackForTrackingType:(int64_t)a3 needsHaptics:(BOOL)a4
+- (void)userFeedbackForTrackingType:(int64_t)type needsHaptics:(BOOL)haptics
 {
-  v4 = a4;
-  if (a3 == 1)
+  hapticsCopy = haptics;
+  if (type == 1)
   {
     [(CFXFaceReticleView *)self fadeInAnimation];
   }
@@ -90,7 +90,7 @@
     [(CFXFaceReticleView *)self fadeOutAnimationWithCompletion:0];
   }
 
-  [(CFXFaceReticleView *)self shouldUseHapticFeedback:v4];
+  [(CFXFaceReticleView *)self shouldUseHapticFeedback:hapticsCopy];
 }
 
 - (void)fadeInAnimation
@@ -99,16 +99,16 @@
   {
     [(CFXFaceReticleView *)self setCanPerformFadeInAnimations:0];
     [(CFXFaceReticleView *)self setCanPerformFadeOutAnimations:1];
-    v3 = [(CFXFaceReticleView *)self reticleImageView];
-    [v3 setHidden:0];
+    reticleImageView = [(CFXFaceReticleView *)self reticleImageView];
+    [reticleImageView setHidden:0];
 
-    v4 = [(CFXFaceReticleView *)self reticleImageView];
-    [v4 setAlpha:0.0];
+    reticleImageView2 = [(CFXFaceReticleView *)self reticleImageView];
+    [reticleImageView2 setAlpha:0.0];
 
     CGAffineTransformMakeScale(&v17, 0.85, 0.85);
-    v5 = [(CFXFaceReticleView *)self reticleImageView];
+    reticleImageView3 = [(CFXFaceReticleView *)self reticleImageView];
     location = v17;
-    [v5 setTransform:&location];
+    [reticleImageView3 setTransform:&location];
 
     v6 = objc_alloc(MEMORY[0x277D75D40]);
     v15[0] = MEMORY[0x277D85DD0];
@@ -128,16 +128,16 @@
     [(CFXFaceReticleView *)self setBounceAnimator:v9];
 
     objc_initWeak(&location, self);
-    v10 = [(CFXFaceReticleView *)self bounceAnimator];
+    bounceAnimator = [(CFXFaceReticleView *)self bounceAnimator];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __37__CFXFaceReticleView_fadeInAnimation__block_invoke_3;
     v12[3] = &unk_278D7CB98;
     objc_copyWeak(&v13, &location);
-    [v10 addCompletion:v12];
+    [bounceAnimator addCompletion:v12];
 
-    v11 = [(CFXFaceReticleView *)self bounceAnimator];
-    [v11 startAnimationAfterDelay:0.5];
+    bounceAnimator2 = [(CFXFaceReticleView *)self bounceAnimator];
+    [bounceAnimator2 startAnimationAfterDelay:0.5];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -179,9 +179,9 @@ void __37__CFXFaceReticleView_fadeInAnimation__block_invoke_3(uint64_t a1)
   [v3 setBounceAnimator:0];
 }
 
-- (void)fadeOutAnimationWithCompletion:(id)a3
+- (void)fadeOutAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CFXFaceReticleView *)self canPerformFadeOutAnimations])
   {
     [(CFXFaceReticleView *)self setCanPerformFadeOutAnimations:0];
@@ -195,40 +195,40 @@ void __37__CFXFaceReticleView_fadeInAnimation__block_invoke_3(uint64_t a1)
     [(CFXFaceReticleView *)self setFadeOutAnimator:v6];
 
     objc_initWeak(&location, self);
-    v7 = [(CFXFaceReticleView *)self fadeOutAnimator];
+    fadeOutAnimator = [(CFXFaceReticleView *)self fadeOutAnimator];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_2;
     v14[3] = &unk_278D7CB98;
     objc_copyWeak(&v15, &location);
-    [v7 addCompletion:v14];
+    [fadeOutAnimator addCompletion:v14];
 
-    v8 = [(CFXFaceReticleView *)self fadeOutAnimator];
-    [v8 startAnimation];
+    fadeOutAnimator2 = [(CFXFaceReticleView *)self fadeOutAnimator];
+    [fadeOutAnimator2 startAnimation];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v9 = [(CFXFaceReticleView *)self fadeOutAnimator];
-    v10 = [v9 isRunning];
+    fadeOutAnimator3 = [(CFXFaceReticleView *)self fadeOutAnimator];
+    isRunning = [fadeOutAnimator3 isRunning];
 
-    if (v10)
+    if (isRunning)
     {
-      v11 = [(CFXFaceReticleView *)self fadeOutAnimator];
+      fadeOutAnimator4 = [(CFXFaceReticleView *)self fadeOutAnimator];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_3;
       v12[3] = &unk_278D7A7C0;
-      v13 = v4;
-      [v11 addCompletion:v12];
+      v13 = completionCopy;
+      [fadeOutAnimator4 addCompletion:v12];
     }
 
     else
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -257,33 +257,33 @@ void __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_2(ui
   [v10 setFadeOutAnimator:0];
 }
 
-- (void)fadeOutAndEndHapticWithCompletionBlock:(id)a3
+- (void)fadeOutAndEndHapticWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(CFXFaceReticleView *)self shouldUseHapticFeedback:0];
-  [(CFXFaceReticleView *)self fadeOutAnimationWithCompletion:v4];
+  [(CFXFaceReticleView *)self fadeOutAnimationWithCompletion:blockCopy];
 }
 
-- (void)shouldUseHapticFeedback:(BOOL)a3
+- (void)shouldUseHapticFeedback:(BOOL)feedback
 {
-  if (a3)
+  if (feedback)
   {
-    v4 = [(CFXFaceReticleView *)self feedbackGenerator];
+    feedbackGenerator = [(CFXFaceReticleView *)self feedbackGenerator];
 
-    if (!v4)
+    if (!feedbackGenerator)
     {
       v5 = objc_alloc_init(MEMORY[0x277D75A10]);
       [(CFXFaceReticleView *)self setFeedbackGenerator:v5];
 
-      v6 = [(CFXFaceReticleView *)self feedbackGenerator];
-      [v6 _setOutputMode:5];
+      feedbackGenerator2 = [(CFXFaceReticleView *)self feedbackGenerator];
+      [feedbackGenerator2 _setOutputMode:5];
     }
 
-    v7 = [(CFXFaceReticleView *)self feedbackGenerator];
-    [v7 prepare];
+    feedbackGenerator3 = [(CFXFaceReticleView *)self feedbackGenerator];
+    [feedbackGenerator3 prepare];
 
-    v8 = [(CFXFaceReticleView *)self feedbackGenerator];
-    [v8 selectionChanged];
+    feedbackGenerator4 = [(CFXFaceReticleView *)self feedbackGenerator];
+    [feedbackGenerator4 selectionChanged];
   }
 
   else
@@ -302,8 +302,8 @@ void __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_2(ui
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(CFXFaceReticleView *)self setReticleLayersToAnimate:v6];
 
-  v7 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
-  v8 = [v7 count];
+  reticleLayersToAnimate = [(CFXFaceReticleView *)self reticleLayersToAnimate];
+  v8 = [reticleLayersToAnimate count];
 
   v9 = *MEMORY[0x277CDA780];
   if (v8 <= 7)
@@ -316,25 +316,25 @@ void __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_2(ui
       v12 = [v11 bezierPathWithRoundedRect:? cornerRadius:?];
       v13 = objc_alloc_init(MEMORY[0x277CD9F90]);
       [v13 setStrokeColor:{objc_msgSend(v26, "CGColor")}];
-      v14 = [MEMORY[0x277D75348] clearColor];
-      [v13 setFillColor:{objc_msgSend(v14, "CGColor")}];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v13 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
       [v13 setLineWidth:5.0];
       [v13 setLineCap:v9];
       [v13 setStrokeStart:v3 + 0.045 - v5];
       [v13 setStrokeEnd:v10 + -0.045 - v5];
       [v13 setPath:{objc_msgSend(v12, "CGPath")}];
-      v15 = [(UIImageView *)self->_reticleImageView layer];
-      [v15 addSublayer:v13];
+      layer = [(UIImageView *)self->_reticleImageView layer];
+      [layer addSublayer:v13];
 
-      v16 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
-      [v16 addObject:v13];
+      reticleLayersToAnimate2 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
+      [reticleLayersToAnimate2 addObject:v13];
 
       v3 = v3 + 0.25;
       v10 = v10 + 0.25;
 
-      v17 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
-      v18 = [v17 count];
+      reticleLayersToAnimate3 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
+      v18 = [reticleLayersToAnimate3 count];
     }
 
     while (v18 < 8);
@@ -346,28 +346,28 @@ void __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_2(ui
   v21 = objc_alloc_init(MEMORY[0x277CD9F90]);
   v22 = v26;
   [v21 setStrokeColor:{objc_msgSend(v26, "CGColor")}];
-  v23 = [MEMORY[0x277D75348] clearColor];
-  [v21 setFillColor:{objc_msgSend(v23, "CGColor")}];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v21 setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
   [v21 setLineWidth:5.0];
   [v21 setLineCap:v9];
   [v21 setStrokeStart:0.0];
   [v21 setStrokeEnd:0.08 - v5];
   [v21 setPath:{objc_msgSend(v20, "CGPath")}];
-  v24 = [(UIImageView *)self->_reticleImageView layer];
-  [v24 addSublayer:v21];
+  layer2 = [(UIImageView *)self->_reticleImageView layer];
+  [layer2 addSublayer:v21];
 
-  v25 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
-  [v25 addObject:v21];
+  reticleLayersToAnimate4 = [(CFXFaceReticleView *)self reticleLayersToAnimate];
+  [reticleLayersToAnimate4 addObject:v21];
 }
 
 - (void)animojiFadeInAnimation
 {
-  v3 = [(CFXFaceReticleView *)self reticleImageView];
-  [v3 setHidden:0];
+  reticleImageView = [(CFXFaceReticleView *)self reticleImageView];
+  [reticleImageView setHidden:0];
 
-  v4 = [(CFXFaceReticleView *)self reticleImageView];
-  [v4 setAlpha:0.0];
+  reticleImageView2 = [(CFXFaceReticleView *)self reticleImageView];
+  [reticleImageView2 setAlpha:0.0];
 
   v5 = objc_alloc(MEMORY[0x277D75D40]);
   v18[0] = MEMORY[0x277D85DD0];
@@ -387,13 +387,13 @@ void __53__CFXFaceReticleView_fadeOutAnimationWithCompletion___block_invoke_2(ui
   [(CFXFaceReticleView *)self setAnimojiBounceAnimator:v8];
 
   objc_initWeak(&location, self);
-  v9 = [(CFXFaceReticleView *)self animojiBounceAnimator];
+  animojiBounceAnimator = [(CFXFaceReticleView *)self animojiBounceAnimator];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __44__CFXFaceReticleView_animojiFadeInAnimation__block_invoke_3;
   v14 = &unk_278D7CB98;
   objc_copyWeak(&v15, &location);
-  [v9 addCompletion:&v11];
+  [animojiBounceAnimator addCompletion:&v11];
 
   v10 = [(CFXFaceReticleView *)self animojiBounceAnimator:v11];
   [v10 startAnimation];
@@ -429,17 +429,17 @@ void __44__CFXFaceReticleView_animojiFadeInAnimation__block_invoke_3(uint64_t a1
   [WeakRetained setBounceAnimator:0];
 }
 
-- (void)animojiCloseAnimationWithCompletion:(id)a3
+- (void)animojiCloseAnimationWithCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
   v5 = MEMORY[0x277CD9FF0];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __58__CFXFaceReticleView_animojiCloseAnimationWithCompletion___block_invoke;
   v29[3] = &unk_278D7A168;
-  v22 = v4;
+  v22 = completionCopy;
   v30 = v22;
   [v5 setCompletionBlock:v29];
   v27 = 0u;
@@ -516,19 +516,19 @@ void __44__CFXFaceReticleView_animojiFadeInAnimation__block_invoke_3(uint64_t a1
   dispatch_after(v3, MEMORY[0x277D85CD0], block);
 }
 
-- (void)hideAnimojiFaceReticleAnimatedWithCompletion:(id)a3
+- (void)hideAnimojiFaceReticleAnimatedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CFXFaceReticleView *)self animojiBounceAnimator];
-  [v5 stopAnimation:1];
+  completionCopy = completion;
+  animojiBounceAnimator = [(CFXFaceReticleView *)self animojiBounceAnimator];
+  [animojiBounceAnimator stopAnimation:1];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__CFXFaceReticleView_hideAnimojiFaceReticleAnimatedWithCompletion___block_invoke;
   v7[3] = &unk_278D7A140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CFXFaceReticleView *)self animojiCloseAnimationWithCompletion:v7];
 }
 

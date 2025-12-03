@@ -1,38 +1,38 @@
 @interface AccountFavoritesPickerController
 - (AccountFavoritesPickerControllerDelegate)delegate;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_ntsMailboxesForAccount:(id)a3;
-- (id)indexPathForMailbox:(id)a3;
-- (id)mailboxForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)doneButtonClicked:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_ntsMailboxesForAccount:(id)account;
+- (id)indexPathForMailbox:(id)mailbox;
+- (id)mailboxForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)doneButtonClicked:(id)clicked;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AccountFavoritesPickerController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = AccountFavoritesPickerController;
-  [(MailboxListViewControllerBase *)&v9 viewWillAppear:a3];
-  v4 = [(MailboxListViewControllerBase *)self account];
-  v5 = [v4 displayName];
-  v6 = [(AccountFavoritesPickerController *)self navigationItem];
-  [v6 setTitle:v5];
+  [(MailboxListViewControllerBase *)&v9 viewWillAppear:appear];
+  account = [(MailboxListViewControllerBase *)self account];
+  displayName = [account displayName];
+  navigationItem = [(AccountFavoritesPickerController *)self navigationItem];
+  [navigationItem setTitle:displayName];
 
-  v7 = [(AccountFavoritesPickerController *)self tableView];
-  [v7 reloadData];
+  tableView = [(AccountFavoritesPickerController *)self tableView];
+  [tableView reloadData];
 
-  v8 = [(AccountFavoritesPickerController *)self mf_updatePreferredContentSizeBasedOnTableView];
-  [(AccountFavoritesPickerController *)self setTableViewObserver:v8];
+  mf_updatePreferredContentSizeBasedOnTableView = [(AccountFavoritesPickerController *)self mf_updatePreferredContentSizeBasedOnTableView];
+  [(AccountFavoritesPickerController *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
 }
 
 - (void)viewDidLoad
@@ -45,41 +45,41 @@
   v5 = [v4 localizedStringForKey:@"DONE" value:&stru_100662A88 table:@"Main"];
   v6 = [v3 initWithTitle:v5 style:2 target:self action:"doneButtonClicked:"];
 
-  v7 = [(AccountFavoritesPickerController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem = [(AccountFavoritesPickerController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
-  v8 = [(AccountFavoritesPickerController *)self tableView];
+  tableView = [(AccountFavoritesPickerController *)self tableView];
   +[MailboxTableCell defaultRowHeight];
-  [v8 setEstimatedRowHeight:?];
+  [tableView setEstimatedRowHeight:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = AccountFavoritesPickerController;
-  [(AccountFavoritesPickerController *)&v5 traitCollectionDidChange:v4];
+  [(AccountFavoritesPickerController *)&v5 traitCollectionDidChange:changeCopy];
   [(AccountFavoritesPickerController *)self mf_updateTableViewBackgroundColorForPopover];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MailboxListViewControllerBase *)self sortedMailboxes:a3];
+  v4 = [(MailboxListViewControllerBase *)self sortedMailboxes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)doneButtonClicked:(id)a3
+- (void)doneButtonClicked:(id)clicked
 {
-  v3 = [(AccountFavoritesPickerController *)self delegate];
-  [v3 didFinish];
+  delegate = [(AccountFavoritesPickerController *)self delegate];
+  [delegate didFinish];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -90,29 +90,29 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"AccountFavoritesPickerControllerReuseCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"AccountFavoritesPickerControllerReuseCell"];
   if (!v7)
   {
     v7 = [[MailboxTableCell alloc] initWithStyle:3 reuseIdentifier:@"AccountFavoritesPickerControllerReuseCell"];
   }
 
-  v8 = [(AccountFavoritesPickerController *)self mailboxForIndexPath:v6];
-  v9 = [v8 type];
+  v8 = [(AccountFavoritesPickerController *)self mailboxForIndexPath:pathCopy];
+  type = [v8 type];
   v10 = [NSSet setWithObject:v8];
   [(MailboxTableCell *)v7 setLegacyMailboxes:v10];
 
-  if (v9 == 7)
+  if (type == 7)
   {
     [(MailboxTableCell *)v7 setCellEnabled:0];
   }
 
   else
   {
-    v11 = [(AccountFavoritesPickerController *)self delegate];
-    v12 = [v11 selectedStateForMailbox:v8];
+    delegate = [(AccountFavoritesPickerController *)self delegate];
+    v12 = [delegate selectedStateForMailbox:v8];
 
     if (v12)
     {
@@ -128,15 +128,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AccountFavoritesPickerController *)self mailboxForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(AccountFavoritesPickerController *)self mailboxForIndexPath:pathCopy];
   v7 = v6;
-  v8 = v5;
+  v8 = pathCopy;
   if (v6)
   {
-    v8 = v5;
+    v8 = pathCopy;
     if ([v6 type] == 7)
     {
 
@@ -147,14 +147,14 @@ LABEL_8:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 cellForRowAtIndexPath:v6];
-  v8 = [(AccountFavoritesPickerController *)self mailboxForIndexPath:v6];
-  v9 = [(AccountFavoritesPickerController *)self delegate];
-  v10 = [v9 toggleAndReturnSelectedStateForMailbox:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  v8 = [(AccountFavoritesPickerController *)self mailboxForIndexPath:pathCopy];
+  delegate = [(AccountFavoritesPickerController *)self delegate];
+  v10 = [delegate toggleAndReturnSelectedStateForMailbox:v8];
 
   if (v10)
   {
@@ -167,59 +167,59 @@ LABEL_8:
   }
 
   [v7 setAccessoryType:v11];
-  [v12 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)mailboxForIndexPath:(id)a3
+- (id)mailboxForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v6 = [v5 objectAtIndex:{objc_msgSend(v4, "row")}];
+  pathCopy = path;
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  v6 = [sortedMailboxes objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   return v6;
 }
 
-- (id)indexPathForMailbox:(id)a3
+- (id)indexPathForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v6 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v5 indexOfObject:v4], 0);
+  mailboxCopy = mailbox;
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  v6 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [sortedMailboxes indexOfObject:mailboxCopy], 0);
 
   return v6;
 }
 
-- (id)_ntsMailboxesForAccount:(id)a3
+- (id)_ntsMailboxesForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[MailChangeManager sharedChangeManager];
-  v6 = [v5 allMailboxUidsSortedWithSpecialsAtTopForAccount:v4 includingLocals:1 client:self outbox:0];
+  v6 = [v5 allMailboxUidsSortedWithSpecialsAtTopForAccount:accountCopy includingLocals:1 client:self outbox:0];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 mf_updateBackgroundColorForPopover:{-[AccountFavoritesPickerController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
+  cellCopy = cell;
+  [cellCopy mf_updateBackgroundColorForPopover:{-[AccountFavoritesPickerController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  v7 = [sortedMailboxes objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if (v7)
   {
-    v8 = [v7 mv_isSelectable];
+    mv_isSelectable = [v7 mv_isSelectable];
   }
 
   else
   {
-    v8 = 1;
+    mv_isSelectable = 1;
   }
 
-  return v8;
+  return mv_isSelectable;
 }
 
 - (AccountFavoritesPickerControllerDelegate)delegate

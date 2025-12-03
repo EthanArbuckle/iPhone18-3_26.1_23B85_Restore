@@ -6,7 +6,7 @@
 
 - (id)getView
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.super.isa = ScreenSharingIndicatorView.getView()().super.super.isa;
 
   return v3.super.super.isa;

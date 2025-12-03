@@ -1,27 +1,27 @@
 @interface HomeListLibraryCountsDataProvider
 - (_TtC4Maps33HomeListLibraryCountsDataProvider)init;
-- (void)libraryItemsCountManager:(id)a3 didUpdateCounts:(id)a4;
+- (void)libraryItemsCountManager:(id)manager didUpdateCounts:(id)counts;
 - (void)notifyObserversIfNeeded;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation HomeListLibraryCountsDataProvider
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = self;
-  sub_100228654(a3);
+  selfCopy = self;
+  sub_100228654(active);
 }
 
 - (void)notifyObserversIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002287D8();
 }
 
-- (void)libraryItemsCountManager:(id)a3 didUpdateCounts:(id)a4
+- (void)libraryItemsCountManager:(id)manager didUpdateCounts:(id)counts
 {
-  v4 = self;
+  selfCopy = self;
   sub_1002287D8();
 }
 

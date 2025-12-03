@@ -1,11 +1,11 @@
 @interface _MFDAMSBasicConsumer
-- (_MFDAMSBasicConsumer)initWithMaximumSize:(unsigned int)a3 latency:(double)a4;
+- (_MFDAMSBasicConsumer)initWithMaximumSize:(unsigned int)size latency:(double)latency;
 - (void)dealloc;
 @end
 
 @implementation _MFDAMSBasicConsumer
 
-- (_MFDAMSBasicConsumer)initWithMaximumSize:(unsigned int)a3 latency:(double)a4
+- (_MFDAMSBasicConsumer)initWithMaximumSize:(unsigned int)size latency:(double)latency
 {
   v5.receiver = self;
   v5.super_class = _MFDAMSBasicConsumer;

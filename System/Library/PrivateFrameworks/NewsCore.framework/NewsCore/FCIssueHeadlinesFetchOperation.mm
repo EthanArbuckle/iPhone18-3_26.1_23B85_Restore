@@ -1,9 +1,9 @@
 @interface FCIssueHeadlinesFetchOperation
 - (BOOL)validateOperation;
 - (FCIssueHeadlinesFetchOperation)init;
-- (FCIssueHeadlinesFetchOperation)initWithContext:(id)a3 issueIDs:(id)a4;
-- (FCIssueHeadlinesFetchOperation)initWithContext:(id)a3 issues:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCIssueHeadlinesFetchOperation)initWithContext:(id)context issueIDs:(id)ds;
+- (FCIssueHeadlinesFetchOperation)initWithContext:(id)context issues:(id)issues;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -35,18 +35,18 @@
   objc_exception_throw(v6);
 }
 
-- (FCIssueHeadlinesFetchOperation)initWithContext:(id)a3 issueIDs:(id)a4
+- (FCIssueHeadlinesFetchOperation)initWithContext:(id)context issueIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = FCIssueHeadlinesFetchOperation;
   v9 = [(FCOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_context, context);
+    v11 = [dsCopy copy];
     issueIDs = v10->_issueIDs;
     v10->_issueIDs = v11;
   }
@@ -54,11 +54,11 @@
   return v10;
 }
 
-- (FCIssueHeadlinesFetchOperation)initWithContext:(id)a3 issues:(id)a4
+- (FCIssueHeadlinesFetchOperation)initWithContext:(id)context issues:(id)issues
 {
-  v6 = a3;
-  v7 = [a4 fc_arrayByTransformingWithBlock:&__block_literal_global_102];
-  v8 = [(FCIssueHeadlinesFetchOperation *)self initWithContext:v6 issueIDs:v7];
+  contextCopy = context;
+  v7 = [issues fc_arrayByTransformingWithBlock:&__block_literal_global_102];
+  v8 = [(FCIssueHeadlinesFetchOperation *)self initWithContext:contextCopy issueIDs:v7];
 
   return v8;
 }
@@ -493,15 +493,15 @@ void *__50__FCIssueHeadlinesFetchOperation_performOperation__block_invoke_7(uint
   return v4;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(FCIssueHeadlinesFetchOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCIssueHeadlinesFetchOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCIssueHeadlinesFetchOperation *)self fetchCompletionHandler];
-    v6 = v5;
+    fetchCompletionHandler2 = [(FCIssueHeadlinesFetchOperation *)self fetchCompletionHandler];
+    v6 = fetchCompletionHandler2;
     if (self)
     {
       resultHeadlinesByIssue = self->_resultHeadlinesByIssue;
@@ -512,7 +512,7 @@ void *__50__FCIssueHeadlinesFetchOperation_performOperation__block_invoke_7(uint
       resultHeadlinesByIssue = 0;
     }
 
-    (*(v5 + 16))(v5, resultHeadlinesByIssue, v8);
+    (*(fetchCompletionHandler2 + 16))(fetchCompletionHandler2, resultHeadlinesByIssue, errorCopy);
   }
 }
 

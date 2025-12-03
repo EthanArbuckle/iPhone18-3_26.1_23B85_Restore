@@ -1,21 +1,21 @@
 @interface ICAttachmentInlineDrawingActivityItemSource
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 @end
 
 @implementation ICAttachmentInlineDrawingActivityItemSource
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v8 = objc_autoreleasePoolPush();
   objc_opt_class();
-  v9 = [(ICAttachmentActivityItemSource *)self attachment];
-  v10 = [v9 attachmentModel];
+  attachment = [(ICAttachmentActivityItemSource *)self attachment];
+  attachmentModel = [attachment attachmentModel];
   v11 = ICCheckedDynamicCast();
 
-  v12 = [v11 imageForActivityItem];
-  v13 = UIImagePNGRepresentation(v12);
+  imageForActivityItem = [v11 imageForActivityItem];
+  v13 = UIImagePNGRepresentation(imageForActivityItem);
 
   objc_autoreleasePoolPop(v8);
 

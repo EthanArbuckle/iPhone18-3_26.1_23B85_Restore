@@ -1,27 +1,27 @@
 @interface CKDMMCSEncryptedItemReader
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7;
-- (CKDMMCSEncryptedItemReader)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4;
-- (id)getFileMetadataWithError:(id *)a3;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error;
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error;
+- (CKDMMCSEncryptedItemReader)initWithMMCSItem:(id)item MMCSRequest:(id)request;
+- (id)getFileMetadataWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CKDMMCSEncryptedItemReader
 
-- (CKDMMCSEncryptedItemReader)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4
+- (CKDMMCSEncryptedItemReader)initWithMMCSItem:(id)item MMCSRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = CKDMMCSEncryptedItemReader;
   v9 = [(CKDMMCSEncryptedItemReader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_MMCSItem, a3);
-    objc_storeStrong(&v10->_MMCSRequest, a4);
+    objc_storeStrong(&v9->_MMCSItem, item);
+    objc_storeStrong(&v10->_MMCSRequest, request);
   }
 
   return v10;
@@ -35,10 +35,10 @@
   [(CKDMMCSEncryptedItemReader *)&v3 dealloc];
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v134 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v6 = objc_msgSend_MMCSRequest(self, a2, error);
   v11 = objc_msgSend_MMCSItem(self, v7, v8);
   if (!v11)
   {
@@ -64,7 +64,7 @@
   v27 = v24;
   if (v23)
   {
-    v120 = a3;
+    errorCopy = error;
     v28 = objc_msgSend_fileHandle(v23, v25, v26);
     v31 = objc_msgSend_encryptedFileHandle(v23, v29, v30);
     v34 = v31;
@@ -108,12 +108,12 @@
         v6 = *v117;
       }
 
-      if (v120)
+      if (errorCopy)
       {
         v49 = v47;
         v50 = v47;
         v51 = 0;
-        *v120 = v47;
+        *errorCopy = v47;
         v11 = v119;
         v21 = v121;
       }
@@ -307,13 +307,13 @@ LABEL_22:
       _os_log_error_impl(&dword_22506F000, v83, OS_LOG_TYPE_ERROR, "Failed to dup file descriptors for itemID:%llu, handle:%p, operationID:%{public}@: %@", buf, 0x2Au);
 
       v18 = v114;
-      if (!v120)
+      if (!errorCopy)
       {
         goto LABEL_47;
       }
     }
 
-    else if (!v120)
+    else if (!errorCopy)
     {
 LABEL_47:
       v21 = v121;
@@ -334,15 +334,15 @@ LABEL_47:
     }
 
     v74 = v49;
-    *v120 = v49;
+    *errorCopy = v49;
     goto LABEL_47;
   }
 
-  if (a3)
+  if (error)
   {
     v52 = v24;
     v51 = 0;
-    *a3 = v27;
+    *error = v27;
   }
 
   else
@@ -356,10 +356,10 @@ LABEL_23:
   return v51;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_MMCSItem(self, a2, a3);
+  v4 = objc_msgSend_MMCSItem(self, a2, error);
   v7 = objc_msgSend_handle(self, v5, v6);
   if (v7)
   {
@@ -388,10 +388,10 @@ LABEL_23:
   return 1;
 }
 
-- (id)getFileMetadataWithError:(id *)a3
+- (id)getFileMetadataWithError:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_MMCSItem(self, a2, a3);
+  v7 = objc_msgSend_MMCSItem(self, a2, error);
   if (!v7)
   {
     v23 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
@@ -433,10 +433,10 @@ LABEL_23:
   return v17;
 }
 
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v13 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v13 = objc_msgSend_MMCSRequest(self, a2, offset);
   v18 = objc_msgSend_MMCSItem(self, v14, v15);
   if (!v18)
   {
@@ -476,33 +476,33 @@ LABEL_23:
       v48 = v47 = 2114;
       v37 = v48;
       v49 = 2048;
-      v50 = a3;
+      offsetCopy = offset;
       v51 = 2048;
-      v52 = a5;
+      lengthCopy = length;
       v53 = 2114;
       v54 = v27;
       _os_log_error_impl(&dword_22506F000, loga, OS_LOG_TYPE_ERROR, "MKBBackupPread failed for itemID:%llu, handle:%p, operationID:%{public}@, offset:0x%llx, length:%llu: %{public}@", buf, 0x3Eu);
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
       goto LABEL_13;
     }
 
     v29 = v27;
-    *a7 = v27;
+    *error = v27;
     goto LABEL_13;
   }
 
   v27 = 0;
-  if (a6)
+  if (read)
   {
-    *a6 = v24;
+    *read = v24;
   }
 
 LABEL_13:
@@ -511,14 +511,14 @@ LABEL_13:
   return v26 >= 0;
 }
 
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error
 {
-  v10 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4, a5, a6);
+  v10 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, offset, bytes, length, written);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CKDMMCSEncryptedItemReader.m", 176, @"writing not supported");
 
-  if (a7)
+  if (error)
   {
-    *a7 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 3001, @"write not supported");
+    *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 3001, @"write not supported");
   }
 
   return 0;

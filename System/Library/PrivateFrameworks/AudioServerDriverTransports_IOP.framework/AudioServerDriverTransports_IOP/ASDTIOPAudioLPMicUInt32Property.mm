@@ -1,18 +1,18 @@
 @interface ASDTIOPAudioLPMicUInt32Property
 - (ASDTIOPAudioLPMicDevice)lpMicDevice;
-- (ASDTIOPAudioLPMicUInt32Property)initWithConfig:(id)a3;
-- (BOOL)storePropertyValue:(id)a3;
+- (ASDTIOPAudioLPMicUInt32Property)initWithConfig:(id)config;
+- (BOOL)storePropertyValue:(id)value;
 - (id)retrievePropertyValue;
-- (int)checkPropertyValue:(id)a3;
+- (int)checkPropertyValue:(id)value;
 @end
 
 @implementation ASDTIOPAudioLPMicUInt32Property
 
-- (ASDTIOPAudioLPMicUInt32Property)initWithConfig:(id)a3
+- (ASDTIOPAudioLPMicUInt32Property)initWithConfig:(id)config
 {
   v6.receiver = self;
   v6.super_class = ASDTIOPAudioLPMicUInt32Property;
-  v3 = [(ASDTCustomProperty *)&v6 initWithConfig:a3 propertyDataType:1918990199 qualifierDataType:0];
+  v3 = [(ASDTCustomProperty *)&v6 initWithConfig:config propertyDataType:1918990199 qualifierDataType:0];
   v4 = v3;
   if (v3)
   {
@@ -25,32 +25,32 @@
 
 - (ASDTIOPAudioLPMicDevice)lpMicDevice
 {
-  v3 = [(ASDCustomProperty *)self owner];
+  owner = [(ASDCustomProperty *)self owner];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(ASDCustomProperty *)self owner];
+    owner2 = [(ASDCustomProperty *)self owner];
   }
 
   else
   {
-    v5 = 0;
+    owner2 = 0;
   }
 
-  return v5;
+  return owner2;
 }
 
-- (int)checkPropertyValue:(id)a3
+- (int)checkPropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = ASDTIOPAudioLPMicUInt32Property;
-  v5 = [(ASDTCustomProperty *)&v10 checkPropertyValue:v4];
+  v5 = [(ASDTCustomProperty *)&v10 checkPropertyValue:valueCopy];
   if (!v5)
   {
-    v6 = v4;
+    v6 = valueCopy;
     v7 = [v6 length];
     if (v7 == [(ASDTCustomProperty *)self propertyValueSize])
     {
@@ -72,16 +72,16 @@
   return v5;
 }
 
-- (BOOL)storePropertyValue:(id)a3
+- (BOOL)storePropertyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10 = 0;
-  [v4 getBytes:&v10 length:4];
+  [valueCopy getBytes:&v10 length:4];
   if (-[ASDCustomProperty selector](self, "selector") == 1634690413 && (-[ASDTIOPAudioLPMicUInt32Property lpMicDevice](self, "lpMicDevice"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 setEnabledChannelMask:v10], v5, v6))
   {
     v9.receiver = self;
     v9.super_class = ASDTIOPAudioLPMicUInt32Property;
-    v7 = [(ASDTCustomProperty *)&v9 storePropertyValue:v4];
+    v7 = [(ASDTCustomProperty *)&v9 storePropertyValue:valueCopy];
   }
 
   else
@@ -95,26 +95,26 @@
 - (id)retrievePropertyValue
 {
   v8 = 0;
-  v3 = [(ASDTIOPAudioLPMicUInt32Property *)self lpMicDevice];
-  if (v3)
+  lpMicDevice = [(ASDTIOPAudioLPMicUInt32Property *)self lpMicDevice];
+  if (lpMicDevice)
   {
-    v4 = [(ASDCustomProperty *)self selector];
-    switch(v4)
+    selector = [(ASDCustomProperty *)self selector];
+    switch(selector)
     {
       case 0x616F656Du:
-        if ([v3 getEnabledChannelMask:&v8])
+        if ([lpMicDevice getEnabledChannelMask:&v8])
         {
           goto LABEL_8;
         }
 
         break;
       case 0x646D7064u:
-        v5 = [v3 maximumPastDataFrames];
+        maximumPastDataFrames = [lpMicDevice maximumPastDataFrames];
         goto LABEL_7;
       case 0x64617064u:
-        v5 = [v3 availablePastDataFrames];
+        maximumPastDataFrames = [lpMicDevice availablePastDataFrames];
 LABEL_7:
-        v8 = v5;
+        v8 = maximumPastDataFrames;
 LABEL_8:
         v6 = [MEMORY[0x277CBEA90] dataWithBytes:&v8 length:4];
         goto LABEL_11;

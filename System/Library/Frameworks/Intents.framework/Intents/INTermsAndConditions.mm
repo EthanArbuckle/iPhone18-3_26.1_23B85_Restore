@@ -1,11 +1,11 @@
 @interface INTermsAndConditions
-- (BOOL)isEqual:(id)a3;
-- (INTermsAndConditions)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INTermsAndConditions)initWithCoder:(id)coder;
 - (INTermsAndConditions)initWithLocalizedTermsAndConditionsText:(NSString *)localizedTermsAndConditionsText privacyPolicyURL:(NSURL *)privacyPolicyURL termsAndConditionsURL:(NSURL *)termsAndConditionsURL;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INTermsAndConditions
@@ -15,31 +15,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"localizedTermsAndConditionsText";
   localizedTermsAndConditionsText = self->_localizedTermsAndConditionsText;
-  v4 = localizedTermsAndConditionsText;
+  null = localizedTermsAndConditionsText;
   if (!localizedTermsAndConditionsText)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"privacyPolicyURL";
   privacyPolicyURL = self->_privacyPolicyURL;
-  v6 = privacyPolicyURL;
+  null2 = privacyPolicyURL;
   if (!privacyPolicyURL)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"termsAndConditionsURL";
   termsAndConditionsURL = self->_termsAndConditionsURL;
-  v8 = termsAndConditionsURL;
+  null3 = termsAndConditionsURL;
   if (!termsAndConditionsURL)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (termsAndConditionsURL)
   {
@@ -77,23 +77,23 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INTermsAndConditions;
   v6 = [(INTermsAndConditions *)&v11 description];
-  v7 = [(INTermsAndConditions *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INTermsAndConditions *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
@@ -103,32 +103,32 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(INTermsAndConditions *)v7 privacyPolicyURL];
-      if (v8 || ([(INTermsAndConditions *)self privacyPolicyURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      v7 = equalCopy;
+      privacyPolicyURL = [(INTermsAndConditions *)v7 privacyPolicyURL];
+      if (privacyPolicyURL || ([(INTermsAndConditions *)self privacyPolicyURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v4 = [(INTermsAndConditions *)v7 privacyPolicyURL];
-        v9 = [(INTermsAndConditions *)self privacyPolicyURL];
-        v10 = [v4 isEqual:v9];
+        privacyPolicyURL2 = [(INTermsAndConditions *)v7 privacyPolicyURL];
+        privacyPolicyURL3 = [(INTermsAndConditions *)self privacyPolicyURL];
+        v10 = [privacyPolicyURL2 isEqual:privacyPolicyURL3];
 
-        if (v8)
+        if (privacyPolicyURL)
         {
 LABEL_11:
 
-          v12 = [(INTermsAndConditions *)v7 termsAndConditionsURL];
-          if (v12 || ([(INTermsAndConditions *)self termsAndConditionsURL], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+          termsAndConditionsURL = [(INTermsAndConditions *)v7 termsAndConditionsURL];
+          if (termsAndConditionsURL || ([(INTermsAndConditions *)self termsAndConditionsURL], (privacyPolicyURL2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v13 = [(INTermsAndConditions *)v7 termsAndConditionsURL];
-            v14 = [(INTermsAndConditions *)self termsAndConditionsURL];
-            v15 = [v13 isEqual:v14];
+            termsAndConditionsURL2 = [(INTermsAndConditions *)v7 termsAndConditionsURL];
+            termsAndConditionsURL3 = [(INTermsAndConditions *)self termsAndConditionsURL];
+            v15 = [termsAndConditionsURL2 isEqual:termsAndConditionsURL3];
 
-            if (v12)
+            if (termsAndConditionsURL)
             {
 LABEL_17:
 
-              v16 = [(INTermsAndConditions *)v7 localizedTermsAndConditionsText];
-              v17 = [(INTermsAndConditions *)self localizedTermsAndConditionsText];
-              v11 = [v16 isEqualToString:v17] & v10 & v15;
+              localizedTermsAndConditionsText = [(INTermsAndConditions *)v7 localizedTermsAndConditionsText];
+              localizedTermsAndConditionsText2 = [(INTermsAndConditions *)self localizedTermsAndConditionsText];
+              v11 = [localizedTermsAndConditionsText isEqualToString:localizedTermsAndConditionsText2] & v10 & v15;
 
               goto LABEL_18;
             }
@@ -159,47 +159,47 @@ LABEL_18:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [INTermsAndConditions alloc];
-  v5 = [(INTermsAndConditions *)self localizedTermsAndConditionsText];
-  v6 = [(INTermsAndConditions *)self privacyPolicyURL];
-  v7 = [(INTermsAndConditions *)self termsAndConditionsURL];
-  v8 = [(INTermsAndConditions *)v4 initWithLocalizedTermsAndConditionsText:v5 privacyPolicyURL:v6 termsAndConditionsURL:v7];
+  localizedTermsAndConditionsText = [(INTermsAndConditions *)self localizedTermsAndConditionsText];
+  privacyPolicyURL = [(INTermsAndConditions *)self privacyPolicyURL];
+  termsAndConditionsURL = [(INTermsAndConditions *)self termsAndConditionsURL];
+  v8 = [(INTermsAndConditions *)v4 initWithLocalizedTermsAndConditionsText:localizedTermsAndConditionsText privacyPolicyURL:privacyPolicyURL termsAndConditionsURL:termsAndConditionsURL];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedTermsAndConditionsText = self->_localizedTermsAndConditionsText;
-  v5 = a3;
-  [v5 encodeObject:localizedTermsAndConditionsText forKey:@"localizedTermsAndConditionsText"];
-  [v5 encodeObject:self->_privacyPolicyURL forKey:@"privacyPolicyURL"];
-  [v5 encodeObject:self->_termsAndConditionsURL forKey:@"termsAndConditionsURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localizedTermsAndConditionsText forKey:@"localizedTermsAndConditionsText"];
+  [coderCopy encodeObject:self->_privacyPolicyURL forKey:@"privacyPolicyURL"];
+  [coderCopy encodeObject:self->_termsAndConditionsURL forKey:@"termsAndConditionsURL"];
 }
 
-- (INTermsAndConditions)initWithCoder:(id)a3
+- (INTermsAndConditions)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(INTermsAndConditions *)self init];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTermsAndConditionsText"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTermsAndConditionsText"];
   if (v6)
   {
     localizedTermsAndConditionsText = v5->_localizedTermsAndConditionsText;
     v5->_localizedTermsAndConditionsText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyURL"];
     privacyPolicyURL = v5->_privacyPolicyURL;
     v5->_privacyPolicyURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsAndConditionsURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsAndConditionsURL"];
     termsAndConditionsURL = v5->_termsAndConditionsURL;
     v5->_termsAndConditionsURL = v10;
 

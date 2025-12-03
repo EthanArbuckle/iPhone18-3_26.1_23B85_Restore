@@ -1,7 +1,7 @@
 @interface PXStoryPlayButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)clippingRect;
-- (PXStoryPlayButton)initWithFrame:(CGRect)a3;
+- (PXStoryPlayButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)hitTestEdgeOutsets;
 - (id)accessibilityLabel;
 - (void)_invalidateButton;
@@ -9,9 +9,9 @@
 - (void)_updateButton;
 - (void)_updateProgressIndicator;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setUserData:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setUserData:(id)data;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation PXStoryPlayButton
@@ -44,43 +44,43 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(PXStoryPlayButton *)self buttonConfiguration];
-  v3 = [v2 axLabel];
+  buttonConfiguration = [(PXStoryPlayButton *)self buttonConfiguration];
+  axLabel = [buttonConfiguration axLabel];
 
-  return v3;
+  return axLabel;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v10 = a3;
-  if (ViewModelObservationContext_153218 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ViewModelObservationContext_153218 != context)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryPlayButton.m" lineNumber:293 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPlayButton.m" lineNumber:293 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((*&v6 & 0x200002) != 0)
+  if ((*&changeCopy & 0x200002) != 0)
   {
     [(PXStoryPlayButton *)self _invalidateButton];
   }
 
-  if ((v6 & 4) != 0)
+  if ((changeCopy & 4) != 0)
   {
     [(PXStoryPlayButton *)self _invalidateProgressIndicator];
   }
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_userData != v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (self->_userData != dataCopy)
   {
-    v10 = v4;
-    v6 = [(PXStoryPlayButtonConfiguration *)v4 isEqual:?];
+    v10 = dataCopy;
+    v6 = [(PXStoryPlayButtonConfiguration *)dataCopy isEqual:?];
     v5 = v10;
     if (!v6)
     {
@@ -88,8 +88,8 @@
       userData = self->_userData;
       self->_userData = v7;
 
-      v9 = [(PXStoryPlayButtonConfiguration *)self->_userData viewModel];
-      [(PXStoryPlayButton *)self setViewModel:v9];
+      viewModel = [(PXStoryPlayButtonConfiguration *)self->_userData viewModel];
+      [(PXStoryPlayButton *)self setViewModel:viewModel];
 
       [(PXStoryPlayButton *)self _invalidateButton];
       [(PXStoryPlayButton *)self _invalidateProgressIndicator];
@@ -100,18 +100,18 @@
 
 - (void)_updateProgressIndicator
 {
-  v8 = [(PXStoryPlayButton *)self viewModel];
-  [v8 playbackFractionCompleted];
+  viewModel = [(PXStoryPlayButton *)self viewModel];
+  [viewModel playbackFractionCompleted];
   if (v3 < 0.0)
   {
     v3 = 0.0;
   }
 
   v4 = fmin(v3, 1.0);
-  [v8 isAtPlaybackEnd];
+  [viewModel isAtPlaybackEnd];
   [(PXStoryPlayButton *)self userData];
-  v5 = [objc_claimAutoreleasedReturnValue() spec];
-  [v5 playButtonProgressIndicatorLineWidth];
+  spec = [objc_claimAutoreleasedReturnValue() spec];
+  [spec playButtonProgressIndicatorLineWidth];
   v7 = v6;
 
   [(PXStoryPlayButton *)self bounds];
@@ -121,55 +121,55 @@
 
 - (void)_invalidateProgressIndicator
 {
-  v2 = [(PXStoryPlayButton *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateProgressIndicator];
+  updater = [(PXStoryPlayButton *)self updater];
+  [updater setNeedsUpdateOf:sel__updateProgressIndicator];
 }
 
 - (void)_updateButton
 {
-  v13 = [(PXStoryPlayButton *)self viewModel];
-  if ([v13 isAtPlaybackEnd])
+  viewModel = [(PXStoryPlayButton *)self viewModel];
+  if ([viewModel isAtPlaybackEnd])
   {
     axReplayLabel = self->_axReplayLabel;
-    v4 = [(PXStoryPlayButton *)self buttonConfiguration];
-    [v4 setAxLabel:axReplayLabel];
+    buttonConfiguration = [(PXStoryPlayButton *)self buttonConfiguration];
+    [buttonConfiguration setAxLabel:axReplayLabel];
 
-    v5 = +[PXStorySettings sharedInstance];
-    [v5 playButtonRewindSymbolName];
+    buttonConfiguration2 = +[PXStorySettings sharedInstance];
+    [buttonConfiguration2 playButtonRewindSymbolName];
     objc_claimAutoreleasedReturnValue();
   }
 
   else
   {
-    v6 = [v13 desiredPlayState];
-    if (v6 == 1)
+    desiredPlayState = [viewModel desiredPlayState];
+    if (desiredPlayState == 1)
     {
       axPauseLabel = self->_axPauseLabel;
-      v5 = [(PXStoryPlayButton *)self buttonConfiguration];
-      [v5 setAxLabel:axPauseLabel];
+      buttonConfiguration2 = [(PXStoryPlayButton *)self buttonConfiguration];
+      [buttonConfiguration2 setAxLabel:axPauseLabel];
     }
 
     else
     {
-      if (v6)
+      if (desiredPlayState)
       {
 LABEL_8:
-        v9 = [(PXStoryPlayButton *)self userData];
-        [v9 spec];
+        userData = [(PXStoryPlayButton *)self userData];
+        [userData spec];
         [objc_claimAutoreleasedReturnValue() playButtonProgressIndicatorLineWidth];
-        v10 = [(PXStoryPlayButton *)self buttonConfiguration];
-        v11 = [v10 copy];
+        buttonConfiguration3 = [(PXStoryPlayButton *)self buttonConfiguration];
+        v11 = [buttonConfiguration3 copy];
 
-        v12 = [v9 target];
-        [v11 setTarget:v12];
+        target = [userData target];
+        [v11 setTarget:target];
 
-        [v11 setAction:{objc_msgSend(v9, "action")}];
+        [v11 setAction:{objc_msgSend(userData, "action")}];
         PXEdgeInsetsMake();
       }
 
       axPlayLabel = self->_axPlayLabel;
-      v5 = [(PXStoryPlayButton *)self buttonConfiguration];
-      [v5 setAxLabel:axPlayLabel];
+      buttonConfiguration2 = [(PXStoryPlayButton *)self buttonConfiguration];
+      [buttonConfiguration2 setAxLabel:axPlayLabel];
     }
   }
 
@@ -178,53 +178,53 @@ LABEL_8:
 
 - (void)_invalidateButton
 {
-  v2 = [(PXStoryPlayButton *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateButton];
+  updater = [(PXStoryPlayButton *)self updater];
+  [updater setNeedsUpdateOf:sel__updateButton];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(PXStoryPlayButton *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryPlayButton *)self updater];
+  [updater updateIfNeeded];
 
   v10.receiver = self;
   v10.super_class = PXStoryPlayButton;
   [(PXStoryPlayButton *)&v10 layoutSubviews];
-  v4 = [(PXStoryPlayButton *)self button];
-  v5 = [(PXStoryPlayButton *)self progressIndicator];
+  button = [(PXStoryPlayButton *)self button];
+  progressIndicator = [(PXStoryPlayButton *)self progressIndicator];
   [(PXStoryPlayButton *)self bounds];
-  [v5 setFrame:?];
-  v6 = [(PXStoryPlayButton *)self layer];
-  [v6 zPosition];
+  [progressIndicator setFrame:?];
+  layer = [(PXStoryPlayButton *)self layer];
+  [layer zPosition];
   v8 = v7;
 
-  v9 = [v4 layer];
-  [v9 setZPosition:v8];
+  layer2 = [button layer];
+  [layer2 setZPosition:v8];
 
-  [v5 setZPosition:v8 + 0.1];
+  [progressIndicator setZPosition:v8 + 0.1];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXStoryViewModel *)viewModel unregisterChangeObserver:self context:ViewModelObservationContext_153218];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PXStoryViewModel *)self->_viewModel registerChangeObserver:self context:ViewModelObservationContext_153218];
     [(PXStoryPlayButton *)self _invalidateButton];
     [(PXStoryPlayButton *)self _invalidateProgressIndicator];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = PXStoryPlayButton;
-  v5 = [(PXStoryPlayButton *)&v11 pointInside:a4 withEvent:?];
+  v5 = [(PXStoryPlayButton *)&v11 pointInside:event withEvent:?];
   [(PXStoryPlayButton *)self bounds];
   if (v5)
   {
@@ -240,7 +240,7 @@ LABEL_8:
   return 0;
 }
 
-- (PXStoryPlayButton)initWithFrame:(CGRect)a3
+- (PXStoryPlayButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PXStoryPlayButton;

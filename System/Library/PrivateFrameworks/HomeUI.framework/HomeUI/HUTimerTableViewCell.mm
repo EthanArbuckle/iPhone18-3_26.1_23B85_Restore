@@ -1,47 +1,47 @@
 @interface HUTimerTableViewCell
-+ (id)_stringForDuration:(double)a3;
-- (HUTimerTableViewCell)initWithMobileTimerObject:(id)a3 manager:(id)a4 roomName:(id)a5;
-- (HUTimerTableViewCell)initWithTimer:(id)a3 manager:(id)a4;
++ (id)_stringForDuration:(double)duration;
+- (HUTimerTableViewCell)initWithMobileTimerObject:(id)object manager:(id)manager roomName:(id)name;
+- (HUTimerTableViewCell)initWithTimer:(id)timer manager:(id)manager;
 - (id)_alarmBackgroundColor;
 - (void)_createConstraints;
 - (void)_createSubviews;
 - (void)cancelTimer;
 - (void)layoutSubviews;
 - (void)toggleTimer;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTimerInfo;
 @end
 
 @implementation HUTimerTableViewCell
 
-- (HUTimerTableViewCell)initWithTimer:(id)a3 manager:(id)a4
+- (HUTimerTableViewCell)initWithTimer:(id)timer manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  timerCopy = timer;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HUTimerTableViewCell;
   v9 = [(HUTimerTableViewCell *)&v17 initWithStyle:0 reuseIdentifier:@"kHUTimerCellReuseIdentifier"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timer, a3);
-    objc_storeStrong(&v10->_timerManager, a4);
-    [v7 remainingTime];
+    objc_storeStrong(&v9->_timer, timer);
+    objc_storeStrong(&v10->_timerManager, manager);
+    [timerCopy remainingTime];
     v10->_previousRemainingTime = v11;
     [(HUTimerTableViewCell *)v10 setSelectionStyle:0];
     [(HUTimerTableViewCell *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v12 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
-      [(HUTimerTableViewCell *)v10 setBackgroundView:v12];
+      controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      [(HUTimerTableViewCell *)v10 setBackgroundView:controlCenterTertiaryMaterial];
 
-      v13 = [(HUTimerTableViewCell *)v10 backgroundView];
-      v14 = [v13 layer];
-      [v14 setCornerRadius:8.0];
+      backgroundView = [(HUTimerTableViewCell *)v10 backgroundView];
+      layer = [backgroundView layer];
+      [layer setCornerRadius:8.0];
     }
 
-    v15 = [(HUTimerTableViewCell *)v10 _alarmBackgroundColor];
-    [(HUTimerTableViewCell *)v10 setBackgroundColor:v15];
+    _alarmBackgroundColor = [(HUTimerTableViewCell *)v10 _alarmBackgroundColor];
+    [(HUTimerTableViewCell *)v10 setBackgroundColor:_alarmBackgroundColor];
 
     [(HUTimerTableViewCell *)v10 _createSubviews];
     [(HUTimerTableViewCell *)v10 _createConstraints];
@@ -50,34 +50,34 @@
   return v10;
 }
 
-- (HUTimerTableViewCell)initWithMobileTimerObject:(id)a3 manager:(id)a4 roomName:(id)a5
+- (HUTimerTableViewCell)initWithMobileTimerObject:(id)object manager:(id)manager roomName:(id)name
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 timer];
+  nameCopy = name;
+  managerCopy = manager;
+  objectCopy = object;
+  timer = [objectCopy timer];
 
-  if (!v12)
+  if (!timer)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUTimerTableViewCell.m" lineNumber:86 description:@"HUMobileTimerObject must wrap a timer"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUTimerTableViewCell.m" lineNumber:86 description:@"HUMobileTimerObject must wrap a timer"];
   }
 
-  [(HUTimerTableViewCell *)self setRoomName:v9];
-  v13 = [v11 timer];
+  [(HUTimerTableViewCell *)self setRoomName:nameCopy];
+  timer2 = [objectCopy timer];
 
-  v14 = [(HUTimerTableViewCell *)self initWithTimer:v13 manager:v10];
+  v14 = [(HUTimerTableViewCell *)self initWithTimer:timer2 manager:managerCopy];
   return v14;
 }
 
-+ (id)_stringForDuration:(double)a3
++ (id)_stringForDuration:(double)duration
 {
   if (qword_27C837E18 != -1)
   {
     dispatch_once(&qword_27C837E18, &__block_literal_global_4);
   }
 
-  if (a3 >= 3600.0)
+  if (duration >= 3600.0)
   {
     v4 = 224;
   }
@@ -90,7 +90,7 @@
   [_MergedGlobals_3 setAllowedUnits:v4];
   v5 = _MergedGlobals_3;
 
-  return [v5 stringFromTimeInterval:a3];
+  return [v5 stringFromTimeInterval:duration];
 }
 
 uint64_t __43__HUTimerTableViewCell__stringForDuration___block_invoke()
@@ -111,19 +111,19 @@ uint64_t __43__HUTimerTableViewCell__stringForDuration___block_invoke()
   v3 = objc_alloc_init(MEMORY[0x277D756D0]);
   [(HUTimerTableViewCell *)self setButtonGuide:v3];
 
-  v4 = [(HUTimerTableViewCell *)self contentView];
-  v5 = [(HUTimerTableViewCell *)self buttonGuide];
-  [v4 addLayoutGuide:v5];
+  contentView = [(HUTimerTableViewCell *)self contentView];
+  buttonGuide = [(HUTimerTableViewCell *)self buttonGuide];
+  [contentView addLayoutGuide:buttonGuide];
 
   v6 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUTimerTableViewCell *)self setTimerNameLabel:v6];
 
-  v7 = [(HUTimerTableViewCell *)self timer];
-  v8 = [v7 title];
-  v9 = v8;
-  if (v8)
+  timer = [(HUTimerTableViewCell *)self timer];
+  title = [timer title];
+  v9 = title;
+  if (title)
   {
-    v10 = v8;
+    v10 = title;
   }
 
   else
@@ -133,227 +133,227 @@ uint64_t __43__HUTimerTableViewCell__stringForDuration___block_invoke()
 
   v11 = v10;
 
-  v12 = [(HUTimerTableViewCell *)self roomName];
-  v13 = [v12 length];
+  roomName = [(HUTimerTableViewCell *)self roomName];
+  v13 = [roomName length];
 
   if (v13)
   {
-    v14 = [(HUTimerTableViewCell *)self roomName];
-    v21 = HULocalizedStringWithFormat(@"HUAlarmTextLabelAdditionalInfoFormat", @"%@", v15, v16, v17, v18, v19, v20, v14);
+    roomName2 = [(HUTimerTableViewCell *)self roomName];
+    v21 = HULocalizedStringWithFormat(@"HUAlarmTextLabelAdditionalInfoFormat", @"%@", v15, v16, v17, v18, v19, v20, roomName2);
     v22 = [v11 stringByAppendingString:v21];
 
     v11 = v22;
   }
 
-  v23 = [(HUTimerTableViewCell *)self timerNameLabel];
-  [v23 setText:v11];
+  timerNameLabel = [(HUTimerTableViewCell *)self timerNameLabel];
+  [timerNameLabel setText:v11];
 
   v24 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76968] variant:1024];
-  v25 = [(HUTimerTableViewCell *)self timerNameLabel];
-  [v25 setFont:v24];
+  timerNameLabel2 = [(HUTimerTableViewCell *)self timerNameLabel];
+  [timerNameLabel2 setFont:v24];
 
-  v26 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v27 = [(HUTimerTableViewCell *)self timerNameLabel];
-  [v27 setTextColor:v26];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  timerNameLabel3 = [(HUTimerTableViewCell *)self timerNameLabel];
+  [timerNameLabel3 setTextColor:secondaryLabelColor];
 
   v28 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUTimerTableViewCell *)self setTimerTimeLabel:v28];
 
-  v29 = [(HUTimerTableViewCell *)self timerTimeLabel];
-  v30 = [(HUTimerTableViewCell *)self timer];
-  [v30 remainingTime];
+  timerTimeLabel = [(HUTimerTableViewCell *)self timerTimeLabel];
+  timer2 = [(HUTimerTableViewCell *)self timer];
+  [timer2 remainingTime];
   v31 = [HUTimerTableViewCell _stringForDuration:?];
-  [v29 setText:v31];
+  [timerTimeLabel setText:v31];
 
   v32 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76A08] variant:1024];
   v33 = MEMORY[0x277D180C8];
-  v34 = [v32 fontDescriptor];
-  v35 = [v33 fontDescriptorWithMonospacedDigitsForFontDescriptor:v34];
+  fontDescriptor = [v32 fontDescriptor];
+  v35 = [v33 fontDescriptorWithMonospacedDigitsForFontDescriptor:fontDescriptor];
 
   v36 = [MEMORY[0x277D74300] fontWithDescriptor:v35 size:0.0];
-  v37 = [(HUTimerTableViewCell *)self timerTimeLabel];
-  [v37 setFont:v36];
+  timerTimeLabel2 = [(HUTimerTableViewCell *)self timerTimeLabel];
+  [timerTimeLabel2 setFont:v36];
 
-  v38 = [MEMORY[0x277D75348] labelColor];
-  v39 = [(HUTimerTableViewCell *)self timerTimeLabel];
-  [v39 setTextColor:v38];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  timerTimeLabel3 = [(HUTimerTableViewCell *)self timerTimeLabel];
+  [timerTimeLabel3 setTextColor:labelColor];
 
   v40 = objc_alloc(MEMORY[0x277D75A68]);
-  v41 = [(HUTimerTableViewCell *)self timerNameLabel];
-  v66[0] = v41;
-  v42 = [(HUTimerTableViewCell *)self timerTimeLabel];
-  v66[1] = v42;
+  timerNameLabel4 = [(HUTimerTableViewCell *)self timerNameLabel];
+  v66[0] = timerNameLabel4;
+  timerTimeLabel4 = [(HUTimerTableViewCell *)self timerTimeLabel];
+  v66[1] = timerTimeLabel4;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:2];
   v44 = [v40 initWithArrangedSubviews:v43];
   [(HUTimerTableViewCell *)self setStackView:v44];
 
-  v45 = [(HUTimerTableViewCell *)self stackView];
-  [v45 setAxis:1];
+  stackView = [(HUTimerTableViewCell *)self stackView];
+  [stackView setAxis:1];
 
-  v46 = [(HUTimerTableViewCell *)self stackView];
-  [v46 setAlignment:1];
+  stackView2 = [(HUTimerTableViewCell *)self stackView];
+  [stackView2 setAlignment:1];
 
-  v47 = [(HUTimerTableViewCell *)self stackView];
-  [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView3 = [(HUTimerTableViewCell *)self stackView];
+  [stackView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v48 = [(HUTimerTableViewCell *)self contentView];
-  v49 = [(HUTimerTableViewCell *)self stackView];
-  [v48 addSubview:v49];
+  contentView2 = [(HUTimerTableViewCell *)self contentView];
+  stackView4 = [(HUTimerTableViewCell *)self stackView];
+  [contentView2 addSubview:stackView4];
 
   v50 = [[HUTimerCancelButtonView alloc] initWithDelegate:self];
   [(HUTimerTableViewCell *)self setCancelButtonView:v50];
 
-  v51 = [(HUTimerTableViewCell *)self cancelButtonView];
-  [v51 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cancelButtonView = [(HUTimerTableViewCell *)self cancelButtonView];
+  [cancelButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v52 = [(HUTimerTableViewCell *)self contentView];
-  v53 = [(HUTimerTableViewCell *)self cancelButtonView];
-  [v52 addSubview:v53];
+  contentView3 = [(HUTimerTableViewCell *)self contentView];
+  cancelButtonView2 = [(HUTimerTableViewCell *)self cancelButtonView];
+  [contentView3 addSubview:cancelButtonView2];
 
   v54 = [HUTimerCountdownView alloc];
-  v55 = [(HUTimerTableViewCell *)self timer];
-  [v55 remainingTime];
+  timer3 = [(HUTimerTableViewCell *)self timer];
+  [timer3 remainingTime];
   v57 = v56;
-  v58 = [(HUTimerTableViewCell *)self timer];
-  v59 = [v58 state];
-  v60 = [(HUTimerTableViewCell *)self timer];
-  [v60 duration];
-  v62 = [(HUTimerCountdownView *)v54 initWithRemainingTime:v59 state:self duration:v57 delegate:v61];
+  timer4 = [(HUTimerTableViewCell *)self timer];
+  state = [timer4 state];
+  timer5 = [(HUTimerTableViewCell *)self timer];
+  [timer5 duration];
+  v62 = [(HUTimerCountdownView *)v54 initWithRemainingTime:state state:self duration:v57 delegate:v61];
   [(HUTimerTableViewCell *)self setTimerCountdownView:v62];
 
-  v63 = [(HUTimerTableViewCell *)self timerCountdownView];
-  [v63 setTranslatesAutoresizingMaskIntoConstraints:0];
+  timerCountdownView = [(HUTimerTableViewCell *)self timerCountdownView];
+  [timerCountdownView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v64 = [(HUTimerTableViewCell *)self contentView];
-  v65 = [(HUTimerTableViewCell *)self timerCountdownView];
-  [v64 addSubview:v65];
+  contentView4 = [(HUTimerTableViewCell *)self contentView];
+  timerCountdownView2 = [(HUTimerTableViewCell *)self timerCountdownView];
+  [contentView4 addSubview:timerCountdownView2];
 }
 
 - (void)_createConstraints
 {
   v84 = objc_opt_new();
-  v3 = [(HUTimerTableViewCell *)self buttonGuide];
-  v4 = [v3 topAnchor];
-  v5 = [(HUTimerTableViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:20.0];
+  buttonGuide = [(HUTimerTableViewCell *)self buttonGuide];
+  topAnchor = [buttonGuide topAnchor];
+  contentView = [(HUTimerTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   [v84 addObject:v7];
 
-  v8 = [(HUTimerTableViewCell *)self buttonGuide];
-  v9 = [v8 bottomAnchor];
-  v10 = [(HUTimerTableViewCell *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:-20.0];
+  buttonGuide2 = [(HUTimerTableViewCell *)self buttonGuide];
+  bottomAnchor = [buttonGuide2 bottomAnchor];
+  contentView2 = [(HUTimerTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
   [v84 addObject:v12];
 
-  v13 = [(HUTimerTableViewCell *)self buttonGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [(HUTimerTableViewCell *)self contentView];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:-20.0];
+  buttonGuide3 = [(HUTimerTableViewCell *)self buttonGuide];
+  trailingAnchor = [buttonGuide3 trailingAnchor];
+  contentView3 = [(HUTimerTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   [v84 addObject:v17];
 
-  v18 = [(HUTimerTableViewCell *)self stackView];
-  v19 = [v18 topAnchor];
-  v20 = [(HUTimerTableViewCell *)self contentView];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:20.0];
+  stackView = [(HUTimerTableViewCell *)self stackView];
+  topAnchor3 = [stackView topAnchor];
+  contentView4 = [(HUTimerTableViewCell *)self contentView];
+  topAnchor4 = [contentView4 topAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
   [v84 addObject:v22];
 
-  v23 = [(HUTimerTableViewCell *)self stackView];
-  v24 = [v23 bottomAnchor];
-  v25 = [(HUTimerTableViewCell *)self contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-20.0];
+  stackView2 = [(HUTimerTableViewCell *)self stackView];
+  bottomAnchor3 = [stackView2 bottomAnchor];
+  contentView5 = [(HUTimerTableViewCell *)self contentView];
+  bottomAnchor4 = [contentView5 bottomAnchor];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-20.0];
   [v84 addObject:v27];
 
-  v28 = [(HUTimerTableViewCell *)self stackView];
-  v29 = [v28 leadingAnchor];
-  v30 = [(HUTimerTableViewCell *)self contentView];
-  v31 = [v30 leadingAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:20.0];
+  stackView3 = [(HUTimerTableViewCell *)self stackView];
+  leadingAnchor = [stackView3 leadingAnchor];
+  contentView6 = [(HUTimerTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView6 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   [v84 addObject:v32];
 
-  v33 = [(HUTimerTableViewCell *)self stackView];
-  v34 = [v33 trailingAnchor];
-  v35 = [(HUTimerTableViewCell *)self timerCountdownView];
-  v36 = [v35 leadingAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:-20.0];
+  stackView4 = [(HUTimerTableViewCell *)self stackView];
+  trailingAnchor3 = [stackView4 trailingAnchor];
+  timerCountdownView = [(HUTimerTableViewCell *)self timerCountdownView];
+  leadingAnchor3 = [timerCountdownView leadingAnchor];
+  v37 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-20.0];
   [v84 addObject:v37];
 
-  v38 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v39 = [v38 topAnchor];
-  v40 = [(HUTimerTableViewCell *)self buttonGuide];
-  v41 = [v40 topAnchor];
-  v42 = [v39 constraintGreaterThanOrEqualToAnchor:v41];
+  cancelButtonView = [(HUTimerTableViewCell *)self cancelButtonView];
+  topAnchor5 = [cancelButtonView topAnchor];
+  buttonGuide4 = [(HUTimerTableViewCell *)self buttonGuide];
+  topAnchor6 = [buttonGuide4 topAnchor];
+  v42 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
   [v84 addObject:v42];
 
-  v43 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v44 = [v43 centerYAnchor];
-  v45 = [(HUTimerTableViewCell *)self buttonGuide];
-  v46 = [v45 centerYAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
+  cancelButtonView2 = [(HUTimerTableViewCell *)self cancelButtonView];
+  centerYAnchor = [cancelButtonView2 centerYAnchor];
+  buttonGuide5 = [(HUTimerTableViewCell *)self buttonGuide];
+  centerYAnchor2 = [buttonGuide5 centerYAnchor];
+  v47 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v84 addObject:v47];
 
-  v48 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v49 = [v48 bottomAnchor];
-  v50 = [(HUTimerTableViewCell *)self buttonGuide];
-  v51 = [v50 bottomAnchor];
-  v52 = [v49 constraintLessThanOrEqualToAnchor:v51];
+  cancelButtonView3 = [(HUTimerTableViewCell *)self cancelButtonView];
+  bottomAnchor5 = [cancelButtonView3 bottomAnchor];
+  buttonGuide6 = [(HUTimerTableViewCell *)self buttonGuide];
+  bottomAnchor6 = [buttonGuide6 bottomAnchor];
+  v52 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
   [v84 addObject:v52];
 
-  v53 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v54 = [v53 heightAnchor];
-  v55 = [v54 constraintEqualToConstant:48.0];
+  cancelButtonView4 = [(HUTimerTableViewCell *)self cancelButtonView];
+  heightAnchor = [cancelButtonView4 heightAnchor];
+  v55 = [heightAnchor constraintEqualToConstant:48.0];
   [v84 addObject:v55];
 
-  v56 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v57 = [v56 widthAnchor];
-  v58 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v59 = [v58 heightAnchor];
-  v60 = [v57 constraintEqualToAnchor:v59];
+  cancelButtonView5 = [(HUTimerTableViewCell *)self cancelButtonView];
+  widthAnchor = [cancelButtonView5 widthAnchor];
+  cancelButtonView6 = [(HUTimerTableViewCell *)self cancelButtonView];
+  heightAnchor2 = [cancelButtonView6 heightAnchor];
+  v60 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
   [v84 addObject:v60];
 
-  v61 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v62 = [v61 trailingAnchor];
-  v63 = [(HUTimerTableViewCell *)self contentView];
-  v64 = [v63 trailingAnchor];
-  v65 = [v62 constraintEqualToAnchor:v64 constant:-20.0];
+  cancelButtonView7 = [(HUTimerTableViewCell *)self cancelButtonView];
+  trailingAnchor4 = [cancelButtonView7 trailingAnchor];
+  contentView7 = [(HUTimerTableViewCell *)self contentView];
+  trailingAnchor5 = [contentView7 trailingAnchor];
+  v65 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-20.0];
   [v84 addObject:v65];
 
-  v66 = [(HUTimerTableViewCell *)self timerCountdownView];
-  v67 = [v66 centerYAnchor];
-  v68 = [(HUTimerTableViewCell *)self buttonGuide];
-  v69 = [v68 centerYAnchor];
-  v70 = [v67 constraintEqualToAnchor:v69];
+  timerCountdownView2 = [(HUTimerTableViewCell *)self timerCountdownView];
+  centerYAnchor3 = [timerCountdownView2 centerYAnchor];
+  buttonGuide7 = [(HUTimerTableViewCell *)self buttonGuide];
+  centerYAnchor4 = [buttonGuide7 centerYAnchor];
+  v70 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v84 addObject:v70];
 
-  v71 = [(HUTimerTableViewCell *)self timerCountdownView];
-  v72 = [v71 heightAnchor];
-  v73 = [v72 constraintEqualToConstant:48.0];
+  timerCountdownView3 = [(HUTimerTableViewCell *)self timerCountdownView];
+  heightAnchor3 = [timerCountdownView3 heightAnchor];
+  v73 = [heightAnchor3 constraintEqualToConstant:48.0];
   [v84 addObject:v73];
 
-  v74 = [(HUTimerTableViewCell *)self timerCountdownView];
-  v75 = [v74 widthAnchor];
-  v76 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v77 = [v76 heightAnchor];
-  v78 = [v75 constraintEqualToAnchor:v77];
+  timerCountdownView4 = [(HUTimerTableViewCell *)self timerCountdownView];
+  widthAnchor2 = [timerCountdownView4 widthAnchor];
+  cancelButtonView8 = [(HUTimerTableViewCell *)self cancelButtonView];
+  heightAnchor4 = [cancelButtonView8 heightAnchor];
+  v78 = [widthAnchor2 constraintEqualToAnchor:heightAnchor4];
   [v84 addObject:v78];
 
-  v79 = [(HUTimerTableViewCell *)self timerCountdownView];
-  v80 = [v79 trailingAnchor];
-  v81 = [(HUTimerTableViewCell *)self cancelButtonView];
-  v82 = [v81 leadingAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82 constant:-10.0];
+  timerCountdownView5 = [(HUTimerTableViewCell *)self timerCountdownView];
+  trailingAnchor6 = [timerCountdownView5 trailingAnchor];
+  cancelButtonView9 = [(HUTimerTableViewCell *)self cancelButtonView];
+  leadingAnchor4 = [cancelButtonView9 leadingAnchor];
+  v83 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor4 constant:-10.0];
   [v84 addObject:v83];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v84];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(HUTimerTableViewCell *)self _alarmBackgroundColor];
-  [(HUTimerTableViewCell *)self setBackgroundColor:v4];
+  _alarmBackgroundColor = [(HUTimerTableViewCell *)self _alarmBackgroundColor];
+  [(HUTimerTableViewCell *)self setBackgroundColor:_alarmBackgroundColor];
 }
 
 - (id)_alarmBackgroundColor
@@ -377,45 +377,45 @@ uint64_t __43__HUTimerTableViewCell__stringForDuration___block_invoke()
   v6.receiver = self;
   v6.super_class = HUTimerTableViewCell;
   [(HUTimerTableViewCell *)&v6 layoutSubviews];
-  v3 = [(HUTimerTableViewCell *)self _alarmBackgroundColor];
-  [(HUTimerTableViewCell *)self setBackgroundColor:v3];
+  _alarmBackgroundColor = [(HUTimerTableViewCell *)self _alarmBackgroundColor];
+  [(HUTimerTableViewCell *)self setBackgroundColor:_alarmBackgroundColor];
 
-  v4 = [(HUTimerTableViewCell *)self layer];
-  [v4 setCornerRadius:8.0];
+  layer = [(HUTimerTableViewCell *)self layer];
+  [layer setCornerRadius:8.0];
 
-  v5 = [(HUTimerTableViewCell *)self layer];
-  [v5 setMasksToBounds:1];
+  layer2 = [(HUTimerTableViewCell *)self layer];
+  [layer2 setMasksToBounds:1];
 }
 
 - (void)updateTimerInfo
 {
   [(HUTimerTableViewCell *)self previousRemainingTime];
   v4 = v3;
-  v5 = [(HUTimerTableViewCell *)self timer];
-  [v5 remainingTime];
+  timer = [(HUTimerTableViewCell *)self timer];
+  [timer remainingTime];
   v7 = v6;
 
   if (v4 != v7)
   {
-    v8 = [(HUTimerTableViewCell *)self timer];
-    [v8 remainingTime];
+    timer2 = [(HUTimerTableViewCell *)self timer];
+    [timer2 remainingTime];
     [(HUTimerTableViewCell *)self setPreviousRemainingTime:?];
 
-    v9 = [(HUTimerTableViewCell *)self timerTimeLabel];
-    v10 = [(HUTimerTableViewCell *)self timer];
-    [v10 remainingTime];
+    timerTimeLabel = [(HUTimerTableViewCell *)self timerTimeLabel];
+    timer3 = [(HUTimerTableViewCell *)self timer];
+    [timer3 remainingTime];
     v11 = [HUTimerTableViewCell _stringForDuration:?];
-    [v9 setText:v11];
+    [timerTimeLabel setText:v11];
 
-    v12 = [(HUTimerTableViewCell *)self timerCountdownView];
-    v13 = [(HUTimerTableViewCell *)self timer];
-    [v13 remainingTime];
-    [v12 updateToNewTime:?];
+    timerCountdownView = [(HUTimerTableViewCell *)self timerCountdownView];
+    timer4 = [(HUTimerTableViewCell *)self timer];
+    [timer4 remainingTime];
+    [timerCountdownView updateToNewTime:?];
   }
 
-  v15 = [(HUTimerTableViewCell *)self timerCountdownView];
-  v14 = [(HUTimerTableViewCell *)self timer];
-  [v15 updateToNewState:{objc_msgSend(v14, "state")}];
+  timerCountdownView2 = [(HUTimerTableViewCell *)self timerCountdownView];
+  timer5 = [(HUTimerTableViewCell *)self timer];
+  [timerCountdownView2 updateToNewState:{objc_msgSend(timer5, "state")}];
 }
 
 - (void)toggleTimer
@@ -424,20 +424,20 @@ uint64_t __43__HUTimerTableViewCell__stringForDuration___block_invoke()
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUTimerTableViewCell *)self timer];
+    timer = [(HUTimerTableViewCell *)self timer];
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2080;
     v21 = "[HUTimerTableViewCell toggleTimer]";
     v22 = 2048;
-    v23 = [v4 state];
+    state = [timer state];
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s toggling timer (current state = %lu)", buf, 0x20u);
   }
 
-  v5 = [(HUTimerTableViewCell *)self timer];
-  v6 = [v5 state];
+  timer2 = [(HUTimerTableViewCell *)self timer];
+  state2 = [timer2 state];
 
-  if (v6 == 3)
+  if (state2 == 3)
   {
     v7 = 2;
   }
@@ -447,13 +447,13 @@ uint64_t __43__HUTimerTableViewCell__stringForDuration___block_invoke()
     v7 = 3;
   }
 
-  v8 = [(HUTimerTableViewCell *)self timer];
-  v9 = [v8 timerByUpdatingWithState:v7];
+  timer3 = [(HUTimerTableViewCell *)self timer];
+  v9 = [timer3 timerByUpdatingWithState:v7];
 
-  v10 = [(HUTimerTableViewCell *)self timerManager];
-  v11 = [v10 updateTimer:v9];
-  v12 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v13 = [v11 reschedule:v12];
+  timerManager = [(HUTimerTableViewCell *)self timerManager];
+  v11 = [timerManager updateTimer:v9];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v13 = [v11 reschedule:mainThreadScheduler];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -488,9 +488,9 @@ uint64_t __35__HUTimerTableViewCell_toggleTimer__block_invoke(uint64_t a1)
 
 - (void)cancelTimer
 {
-  v5 = [(HUTimerTableViewCell *)self timerManager];
-  v3 = [(HUTimerTableViewCell *)self timer];
-  v4 = [v5 removeTimer:v3];
+  timerManager = [(HUTimerTableViewCell *)self timerManager];
+  timer = [(HUTimerTableViewCell *)self timer];
+  v4 = [timerManager removeTimer:timer];
 }
 
 @end

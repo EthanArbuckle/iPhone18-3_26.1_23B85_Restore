@@ -1,23 +1,23 @@
 @interface PFTInhibitor
-+ (id)os_transactionInhibitorWithLabel:(id)a3;
-+ (id)runningboardInhibitorWithExplanation:(id)a3;
++ (id)os_transactionInhibitorWithLabel:(id)label;
++ (id)runningboardInhibitorWithExplanation:(id)explanation;
 - (void)dealloc;
 @end
 
 @implementation PFTInhibitor
 
-+ (id)os_transactionInhibitorWithLabel:(id)a3
++ (id)os_transactionInhibitorWithLabel:(id)label
 {
-  v3 = a3;
-  v4 = [[_PFTOSTransactionInhibitor alloc] initWithLabel:v3];
+  labelCopy = label;
+  v4 = [[_PFTOSTransactionInhibitor alloc] initWithLabel:labelCopy];
 
   return v4;
 }
 
-+ (id)runningboardInhibitorWithExplanation:(id)a3
++ (id)runningboardInhibitorWithExplanation:(id)explanation
 {
-  v3 = a3;
-  v4 = [[_PFTRunningBoardInhibitor alloc] initWithExplanation:v3];
+  explanationCopy = explanation;
+  v4 = [[_PFTRunningBoardInhibitor alloc] initWithExplanation:explanationCopy];
 
   return v4;
 }

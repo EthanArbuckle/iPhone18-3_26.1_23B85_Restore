@@ -1,7 +1,7 @@
 @interface MPNowPlayingInfoLyricsItem
-- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)a3 userProvided:(BOOL)a4;
-- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)a3 userProvided:(BOOL)a4 token:(id)a5;
-- (MPNowPlayingInfoLyricsItem)initWithMediaRemoteLyricsItem:(void *)a3;
+- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)lyrics userProvided:(BOOL)provided;
+- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)lyrics userProvided:(BOOL)provided token:(id)token;
+- (MPNowPlayingInfoLyricsItem)initWithMediaRemoteLyricsItem:(void *)item;
 - (MPNowPlayingInfoLyricsItemToken)token;
 - (void)dealloc;
 @end
@@ -28,47 +28,47 @@
   [(MPNowPlayingInfoLyricsItem *)&v4 dealloc];
 }
 
-- (MPNowPlayingInfoLyricsItem)initWithMediaRemoteLyricsItem:(void *)a3
+- (MPNowPlayingInfoLyricsItem)initWithMediaRemoteLyricsItem:(void *)item
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = item;
+  if (item)
   {
     v6.receiver = self;
     v6.super_class = MPNowPlayingInfoLyricsItem;
     v4 = [(MPNowPlayingInfoLyricsItem *)&v6 init];
     if (v4)
     {
-      v4->_mediaRemoteLyricsItem = CFRetain(v3);
+      v4->_mediaRemoteLyricsItem = CFRetain(selfCopy);
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)a3 userProvided:(BOOL)a4 token:(id)a5
+- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)lyrics userProvided:(BOOL)provided token:(id)token
 {
-  v7 = a3;
-  v8 = a5;
+  lyricsCopy = lyrics;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = MPNowPlayingInfoLyricsItem;
   v9 = [(MPNowPlayingInfoLyricsItem *)&v11 init];
   if (v9)
   {
-    [v8 mediaRemoteLyricsItemToken];
+    [tokenCopy mediaRemoteLyricsItemToken];
     v9->_mediaRemoteLyricsItem = MRLyricsItemCreate();
   }
 
   return v9;
 }
 
-- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)a3 userProvided:(BOOL)a4
+- (MPNowPlayingInfoLyricsItem)initWithLyrics:(id)lyrics userProvided:(BOOL)provided
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[MPNowPlayingInfoLyricsItem alloc] initWithLyrics:v6 userProvided:v4 token:0];
+  providedCopy = provided;
+  lyricsCopy = lyrics;
+  v7 = [[MPNowPlayingInfoLyricsItem alloc] initWithLyrics:lyricsCopy userProvided:providedCopy token:0];
 
   return v7;
 }

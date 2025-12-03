@@ -1,13 +1,13 @@
 @interface HMDCameraIDSDeviceConnectionReceiver
 + (id)logCategory;
-- (HMDCameraIDSDeviceConnectionReceiver)initWithSessionID:(id)a3 workQueue:(id)a4 delegate:(id)a5;
+- (HMDCameraIDSDeviceConnectionReceiver)initWithSessionID:(id)d workQueue:(id)queue delegate:(id)delegate;
 - (HMDCameraIDSDeviceConnectionReceiverDelegate)delegate;
 - (id)logIdentifier;
 - (int)remoteAudioSocket;
 - (int)remoteVideoSocket;
-- (void)_callSessionEndedWithError:(id)a3;
-- (void)_socketOpenedWithError:(id)a3;
-- (void)setUpRemoteConnectionWithDevice:(id)a3;
+- (void)_callSessionEndedWithError:(id)error;
+- (void)_socketOpenedWithError:(id)error;
+- (void)setUpRemoteConnectionWithDevice:(id)device;
 @end
 
 @implementation HMDCameraIDSDeviceConnectionReceiver
@@ -21,21 +21,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraIDSDeviceConnection *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraIDSDeviceConnection *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (void)_callSessionEndedWithError:(id)a3
+- (void)_callSessionEndedWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraIDSDeviceConnection *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(HMDCameraIDSDeviceConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -43,29 +43,29 @@
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Calling didEndSession delegate with error %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraIDSDeviceConnectionReceiver *)v7 delegate];
+  delegate = [(HMDCameraIDSDeviceConnectionReceiver *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 deviceConnectionReceiver:v7 didEndSessionWithError:v4];
+    [delegate deviceConnectionReceiver:selfCopy didEndSessionWithError:errorCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_socketOpenedWithError:(id)a3
+- (void)_socketOpenedWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraIDSDeviceConnection *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(HMDCameraIDSDeviceConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -73,15 +73,15 @@
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Calling didSetup delegate with error %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraIDSDeviceConnectionReceiver *)v7 delegate];
+  delegate = [(HMDCameraIDSDeviceConnectionReceiver *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 deviceConnectionReceiver:v7 didSetUpWithError:v4];
+    [delegate deviceConnectionReceiver:selfCopy didSetUpWithError:errorCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -89,59 +89,59 @@
 
 - (int)remoteAudioSocket
 {
-  v3 = [(HMDCameraIDSDeviceConnection *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraIDSDeviceConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraIDSDeviceConnection *)self watchAudioConnection];
-  LODWORD(v3) = [v4 socket];
+  watchAudioConnection = [(HMDCameraIDSDeviceConnection *)self watchAudioConnection];
+  LODWORD(workQueue) = [watchAudioConnection socket];
 
-  return v3;
+  return workQueue;
 }
 
 - (int)remoteVideoSocket
 {
-  v3 = [(HMDCameraIDSDeviceConnection *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraIDSDeviceConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraIDSDeviceConnection *)self watchVideoConnection];
-  LODWORD(v3) = [v4 socket];
+  watchVideoConnection = [(HMDCameraIDSDeviceConnection *)self watchVideoConnection];
+  LODWORD(workQueue) = [watchVideoConnection socket];
 
-  return v3;
+  return workQueue;
 }
 
-- (void)setUpRemoteConnectionWithDevice:(id)a3
+- (void)setUpRemoteConnectionWithDevice:(id)device
 {
-  v5 = a3;
-  v4 = [(HMDCameraIDSDeviceConnection *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  workQueue = [(HMDCameraIDSDeviceConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDCameraIDSDeviceConnection *)self _createStreamSocketWithDevice:v5];
+  [(HMDCameraIDSDeviceConnection *)self _createStreamSocketWithDevice:deviceCopy];
 }
 
-- (HMDCameraIDSDeviceConnectionReceiver)initWithSessionID:(id)a3 workQueue:(id)a4 delegate:(id)a5
+- (HMDCameraIDSDeviceConnectionReceiver)initWithSessionID:(id)d workQueue:(id)queue delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
 LABEL_7:
     v16 = _HMFPreconditionFailure();
     return +[(HMDCameraIDSDeviceConnectionReceiver *)v16];
   }
 
-  v11 = v10;
+  v11 = delegateCopy;
   v12 = +[HMDIDSServiceManager sharedManager];
   v13 = [v12 serviceWithName:@"com.apple.private.alloy.willow.proxy"];
   v18.receiver = self;
   v18.super_class = HMDCameraIDSDeviceConnectionReceiver;
-  v14 = [(HMDCameraIDSDeviceConnection *)&v18 initWithSessionID:v8 workQueue:v9 idsProxyStreamService:v13];
+  v14 = [(HMDCameraIDSDeviceConnection *)&v18 initWithSessionID:dCopy workQueue:queueCopy idsProxyStreamService:v13];
 
   if (v14)
   {

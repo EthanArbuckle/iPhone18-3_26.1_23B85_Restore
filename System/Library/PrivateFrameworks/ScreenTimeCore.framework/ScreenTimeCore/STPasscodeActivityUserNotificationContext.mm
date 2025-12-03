@@ -1,51 +1,51 @@
 @interface STPasscodeActivityUserNotificationContext
-- (STPasscodeActivityUserNotificationContext)initWithCoder:(id)a3;
-- (STPasscodeActivityUserNotificationContext)initWithDeviceName:(id)a3 lastPasscodeUseDate:(id)a4 childDSID:(id)a5;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (STPasscodeActivityUserNotificationContext)initWithCoder:(id)coder;
+- (STPasscodeActivityUserNotificationContext)initWithDeviceName:(id)name lastPasscodeUseDate:(id)date childDSID:(id)d;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STPasscodeActivityUserNotificationContext
 
-- (STPasscodeActivityUserNotificationContext)initWithDeviceName:(id)a3 lastPasscodeUseDate:(id)a4 childDSID:(id)a5
+- (STPasscodeActivityUserNotificationContext)initWithDeviceName:(id)name lastPasscodeUseDate:(id)date childDSID:(id)d
 {
   v18.receiver = self;
   v18.super_class = STPasscodeActivityUserNotificationContext;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  dateCopy = date;
+  nameCopy = name;
   v10 = [(STUserNotificationContext *)&v18 initWithIdentifier:@"passcode_activity"];
-  v11 = [v9 copy];
+  v11 = [nameCopy copy];
 
   deviceName = v10->_deviceName;
   v10->_deviceName = v11;
 
-  v13 = [v8 copy];
+  v13 = [dateCopy copy];
   lastPasscodeUseDate = v10->_lastPasscodeUseDate;
   v10->_lastPasscodeUseDate = v13;
 
-  v15 = [v7 copy];
+  v15 = [dCopy copy];
   childDSID = v10->_childDSID;
   v10->_childDSID = v15;
 
   return v10;
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __94__STPasscodeActivityUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STPasscodeActivityUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 
@@ -106,23 +106,23 @@ void __94__STPasscodeActivityUserNotificationContext_customizeNotificationConten
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (STPasscodeActivityUserNotificationContext)initWithCoder:(id)a3
+- (STPasscodeActivityUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STPasscodeActivityUserNotificationContext;
-  v5 = [(STUserNotificationContext *)&v13 initWithCoder:v4];
+  v5 = [(STUserNotificationContext *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastPasscodeUseDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastPasscodeUseDate"];
     lastPasscodeUseDate = v5->_lastPasscodeUseDate;
     v5->_lastPasscodeUseDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childDSID"];
     childDSID = v5->_childDSID;
     v5->_childDSID = v10;
   }
@@ -130,15 +130,15 @@ void __94__STPasscodeActivityUserNotificationContext_customizeNotificationConten
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STPasscodeActivityUserNotificationContext;
-  v4 = a3;
-  [(STUserNotificationContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_deviceName forKey:{@"deviceName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_lastPasscodeUseDate forKey:@"lastPasscodeUseDate"];
-  [v4 encodeObject:self->_childDSID forKey:@"childDSID"];
+  coderCopy = coder;
+  [(STUserNotificationContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_deviceName forKey:{@"deviceName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_lastPasscodeUseDate forKey:@"lastPasscodeUseDate"];
+  [coderCopy encodeObject:self->_childDSID forKey:@"childDSID"];
 }
 
 @end

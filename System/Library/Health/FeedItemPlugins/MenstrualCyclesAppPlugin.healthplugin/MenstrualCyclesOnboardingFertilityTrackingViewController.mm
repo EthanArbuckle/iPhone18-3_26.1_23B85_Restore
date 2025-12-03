@@ -1,15 +1,15 @@
 @interface MenstrualCyclesOnboardingFertilityTrackingViewController
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5;
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)cancelButtonTapped:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view;
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name;
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)nextButtonTapped:(id)a3;
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4;
+- (void)nextButtonTapped:(id)tapped;
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -19,29 +19,29 @@
 - (void)dealloc
 {
   v2 = *(*(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController_userInfo) + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin18OnboardingUserInfo_observers);
-  v3 = self;
+  selfCopy = self;
   [v2 unregisterObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for MenstrualCyclesOnboardingFertilityTrackingViewController();
   [(MenstrualCyclesOnboardingFertilityTrackingViewController *)&v4 dealloc];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E11D0C8();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E11D324();
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_29E2C43D4();
   swift_unknownObjectRelease();
   sub_29E11D4BC();
@@ -49,47 +49,47 @@
   sub_29DE93B3C(&v5);
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v6 = a3;
-  v8 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
 
-  v7 = sub_29DE9ABAC(a3, sub_29E11FCA4, v5);
+  v7 = sub_29DE9ABAC(tapped, sub_29E11FCA4, v5);
 
-  [(MenstrualCyclesOnboardingFertilityTrackingViewController *)v8 presentViewController:v7 animated:1 completion:0];
+  [(MenstrualCyclesOnboardingFertilityTrackingViewController *)selfCopy presentViewController:v7 animated:1 completion:0];
 }
 
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (_TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin56MenstrualCyclesOnboardingFertilityTrackingViewController_userInfo);
   v4 = sub_29E204168(1u, *(v3 + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin18OnboardingUserInfo_suppressedAnalysisKinds));
@@ -104,37 +104,37 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_29E11E378(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_29E11E378(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E11EA78(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E11EA78(viewCopy, section);
   v9 = v8;
 
   return v9;
 }
 
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value
 {
-  v7 = a3;
-  v8 = self;
-  sub_29E11F008(a3, a4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_29E11F008(changed, value);
 }
 
 @end

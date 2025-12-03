@@ -1,9 +1,9 @@
 @interface FPSpotlightFetchOneBatchFromWorkingSetOperation
-- (FPSpotlightFetchOneBatchFromWorkingSetOperation)initWithIndexer:(id)a3 queue:(id)a4;
+- (FPSpotlightFetchOneBatchFromWorkingSetOperation)initWithIndexer:(id)indexer queue:(id)queue;
 - (id)observerItemID;
-- (void)_indexOneChangesBatchFromChangeToken:(id)a3;
-- (void)_indexOnePageFromPage:(id)a3;
-- (void)handleInsertedItems:(id)a3 deletedItems:(id)a4 needsMoreWork:(BOOL)a5 state:(id)a6 error:(id)a7;
+- (void)_indexOneChangesBatchFromChangeToken:(id)token;
+- (void)_indexOnePageFromPage:(id)page;
+- (void)handleInsertedItems:(id)items deletedItems:(id)deletedItems needsMoreWork:(BOOL)work state:(id)state error:(id)error;
 - (void)main;
 @end
 
@@ -12,7 +12,7 @@
 - (void)main
 {
   v8 = *MEMORY[0x1E69E9840];
-  WeakRetained = objc_loadWeakRetained(a1);
+  WeakRetained = objc_loadWeakRetained(self);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_20();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -24,26 +24,26 @@
 {
   v3 = [FPItemID alloc];
   WeakRetained = objc_loadWeakRetained(&self->_indexer);
-  v5 = [WeakRetained providerDomain];
-  v6 = [v5 identifier];
-  v7 = [(FPItemID *)v3 initWithProviderDomainID:v6 itemIdentifier:@"NSFileProviderWorkingSetContainerItemIdentifier"];
+  providerDomain = [WeakRetained providerDomain];
+  identifier = [providerDomain identifier];
+  v7 = [(FPItemID *)v3 initWithProviderDomainID:identifier itemIdentifier:@"NSFileProviderWorkingSetContainerItemIdentifier"];
 
   return v7;
 }
 
-- (FPSpotlightFetchOneBatchFromWorkingSetOperation)initWithIndexer:(id)a3 queue:(id)a4
+- (FPSpotlightFetchOneBatchFromWorkingSetOperation)initWithIndexer:(id)indexer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  indexerCopy = indexer;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = FPSpotlightFetchOneBatchFromWorkingSetOperation;
   v8 = [(FPOperation *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_indexer, v6);
-    v10 = [v6 domainContext];
-    objc_storeWeak(&v9->_domainContext, v10);
+    objc_storeWeak(&v8->_indexer, indexerCopy);
+    domainContext = [indexerCopy domainContext];
+    objc_storeWeak(&v9->_domainContext, domainContext);
 
     WeakRetained = objc_loadWeakRetained(&v9->_domainContext);
     if (!WeakRetained)
@@ -51,35 +51,35 @@
       [FPSpotlightFetchOneBatchFromWorkingSetOperation initWithIndexer:queue:];
     }
 
-    [(FPOperation *)v9 setCallbackQueue:v7];
+    [(FPOperation *)v9 setCallbackQueue:queueCopy];
   }
 
   return v9;
 }
 
-- (void)handleInsertedItems:(id)a3 deletedItems:(id)a4 needsMoreWork:(BOOL)a5 state:(id)a6 error:(id)a7
+- (void)handleInsertedItems:(id)items deletedItems:(id)deletedItems needsMoreWork:(BOOL)work state:(id)state error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  itemsCopy = items;
+  deletedItemsCopy = deletedItems;
+  stateCopy = state;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_indexer);
-  v17 = [WeakRetained workloop];
+  workloop = [WeakRetained workloop];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __110__FPSpotlightFetchOneBatchFromWorkingSetOperation_handleInsertedItems_deletedItems_needsMoreWork_state_error___block_invoke;
   v22[3] = &unk_1E793D1A8;
   v22[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v27 = a5;
-  v26 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  dispatch_async(v17, v22);
+  v23 = itemsCopy;
+  v24 = deletedItemsCopy;
+  v25 = stateCopy;
+  workCopy = work;
+  v26 = errorCopy;
+  v18 = errorCopy;
+  v19 = stateCopy;
+  v20 = deletedItemsCopy;
+  v21 = itemsCopy;
+  dispatch_async(workloop, v22);
 }
 
 uint64_t __110__FPSpotlightFetchOneBatchFromWorkingSetOperation_handleInsertedItems_deletedItems_needsMoreWork_state_error___block_invoke(uint64_t a1)
@@ -95,20 +95,20 @@ uint64_t __110__FPSpotlightFetchOneBatchFromWorkingSetOperation_handleInsertedIt
   return [v2 completedWithResult:0 error:v3];
 }
 
-- (void)_indexOnePageFromPage:(id)a3
+- (void)_indexOnePageFromPage:(id)page
 {
   v40 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  v31 = [v4 currentPersona];
+  pageCopy = page;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v35 = 0;
-  v5 = [v31 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
   WeakRetained = objc_loadWeakRetained(&self->_domainContext);
-  v7 = [WeakRetained domain];
-  v8 = [v7 personaIdentifier];
-  v9 = v8;
-  if (v5 == v8)
+  domain = [WeakRetained domain];
+  personaIdentifier = [domain personaIdentifier];
+  v9 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
 LABEL_13:
@@ -117,9 +117,9 @@ LABEL_13:
   }
 
   v10 = objc_loadWeakRetained(&self->_domainContext);
-  v11 = [v10 domain];
-  v12 = [v11 personaIdentifier];
-  v13 = [v5 isEqualToString:v12];
+  domain2 = [v10 domain];
+  personaIdentifier2 = [domain2 personaIdentifier];
+  v13 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v13 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -127,7 +127,7 @@ LABEL_13:
   }
 
   v34 = 0;
-  v14 = [v31 copyCurrentPersonaContextWithError:&v34];
+  v14 = [currentPersona copyCurrentPersonaContextWithError:&v34];
   v15 = v34;
   v16 = v35;
   v35 = v14;
@@ -142,9 +142,9 @@ LABEL_13:
   }
 
   v18 = objc_loadWeakRetained(&self->_domainContext);
-  v19 = [v18 domain];
-  v20 = [v19 personaIdentifier];
-  v21 = [v31 generateAndRestorePersonaContextWithPersonaUniqueString:v20];
+  domain3 = [v18 domain];
+  personaIdentifier3 = [domain3 personaIdentifier];
+  v21 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
   if (v21)
   {
@@ -152,10 +152,10 @@ LABEL_13:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v27 = objc_loadWeakRetained(&self->_domainContext);
-      v28 = [v27 domain];
-      v29 = [v28 personaIdentifier];
+      domain4 = [v27 domain];
+      personaIdentifier4 = [domain4 personaIdentifier];
       *buf = 138412546;
-      v37 = v29;
+      v37 = personaIdentifier4;
       v38 = 2112;
       v39 = v21;
       _os_log_error_impl(&dword_1AAAE1000, v22, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
@@ -164,15 +164,15 @@ LABEL_13:
 
 LABEL_14:
   v23 = objc_loadWeakRetained(&self->_indexer);
-  v24 = [v23 vendorEnumerator];
+  vendorEnumerator = [v23 vendorEnumerator];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __73__FPSpotlightFetchOneBatchFromWorkingSetOperation__indexOnePageFromPage___block_invoke;
   v32[3] = &unk_1E793D1F8;
   v32[4] = self;
-  v25 = v30;
+  v25 = pageCopy;
   v33 = v25;
-  [v24 currentSyncAnchorWithCompletionHandler:v32];
+  [vendorEnumerator currentSyncAnchorWithCompletionHandler:v32];
 
   _FPRestorePersona(&v35);
   v26 = *MEMORY[0x1E69E9840];
@@ -276,26 +276,26 @@ void __73__FPSpotlightFetchOneBatchFromWorkingSetOperation__indexOnePageFromPage
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_indexOneChangesBatchFromChangeToken:(id)a3
+- (void)_indexOneChangesBatchFromChangeToken:(id)token
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(FPSpotlightFetchOneBatchFromWorkingSetOperation *)self _indexOneChangesBatchFromChangeToken:v4];
+    [(FPSpotlightFetchOneBatchFromWorkingSetOperation *)self _indexOneChangesBatchFromChangeToken:tokenCopy];
   }
 
-  v6 = [MEMORY[0x1E69DF068] sharedManager];
-  v33 = [v6 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v37 = 0;
-  v34 = [v33 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
   WeakRetained = objc_loadWeakRetained(&self->_domainContext);
-  v8 = [WeakRetained domain];
-  v9 = [v8 personaIdentifier];
-  v10 = v9;
-  if (v34 == v9)
+  domain = [WeakRetained domain];
+  personaIdentifier = [domain personaIdentifier];
+  v10 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
     v22 = 0;
@@ -305,9 +305,9 @@ LABEL_15:
   }
 
   v11 = objc_loadWeakRetained(&self->_domainContext);
-  v12 = [v11 domain];
-  v13 = [v12 personaIdentifier];
-  v14 = [v34 isEqualToString:v13];
+  domain2 = [v11 domain];
+  personaIdentifier2 = [domain2 personaIdentifier];
+  v14 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v14 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -317,7 +317,7 @@ LABEL_15:
   else
   {
     v36 = 0;
-    v15 = [v33 copyCurrentPersonaContextWithError:&v36];
+    v15 = [currentPersona copyCurrentPersonaContextWithError:&v36];
     v16 = v36;
     v17 = v37;
     v37 = v15;
@@ -332,9 +332,9 @@ LABEL_15:
     }
 
     v19 = objc_loadWeakRetained(&self->_domainContext);
-    v20 = [v19 domain];
-    v21 = [v20 personaIdentifier];
-    v22 = [v33 generateAndRestorePersonaContextWithPersonaUniqueString:v21];
+    domain3 = [v19 domain];
+    personaIdentifier3 = [domain3 personaIdentifier];
+    v22 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
     if (v22)
     {
@@ -342,10 +342,10 @@ LABEL_15:
       if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_loadWeakRetained(&self->_domainContext);
-        v24 = [v23 domain];
-        v25 = [v24 personaIdentifier];
+        domain4 = [v23 domain];
+        personaIdentifier4 = [domain4 personaIdentifier];
         *buf = 138412546;
-        v39 = v25;
+        v39 = personaIdentifier4;
         v40 = 2112;
         v41 = v22;
         _os_log_error_impl(&dword_1AAAE1000, WeakRetained, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
@@ -357,9 +357,9 @@ LABEL_15:
 
 LABEL_16:
   v26 = [FPXChangesObserver alloc];
-  v27 = [(FPSpotlightFetchOneBatchFromWorkingSetOperation *)self observerItemID];
+  observerItemID = [(FPSpotlightFetchOneBatchFromWorkingSetOperation *)self observerItemID];
   v28 = objc_loadWeakRetained(&self->_domainContext);
-  v29 = [(FPXChangesObserver *)v26 initWithObservedItemID:v27 domainContext:v28 previousChangeToken:v4 nsFileProviderRequest:0];
+  v29 = [(FPXChangesObserver *)v26 initWithObservedItemID:observerItemID domainContext:v28 previousChangeToken:tokenCopy nsFileProviderRequest:0];
 
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -368,8 +368,8 @@ LABEL_16:
   v35[4] = self;
   [(FPXChangesObserver *)v29 setFinishedBlock:v35];
   v30 = objc_loadWeakRetained(&self->_indexer);
-  v31 = [v30 vendorEnumerator];
-  [v31 enumerateChangesForObserver:v29 fromSyncAnchor:v4];
+  vendorEnumerator = [v30 vendorEnumerator];
+  [vendorEnumerator enumerateChangesForObserver:v29 fromSyncAnchor:tokenCopy];
 
   _FPRestorePersona(&v37);
   v32 = *MEMORY[0x1E69E9840];

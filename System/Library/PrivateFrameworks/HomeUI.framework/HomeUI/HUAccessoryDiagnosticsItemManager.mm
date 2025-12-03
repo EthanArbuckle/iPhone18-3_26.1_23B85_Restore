@@ -1,51 +1,51 @@
 @interface HUAccessoryDiagnosticsItemManager
 - (BOOL)collectionInProgress;
-- (HUAccessoryDiagnosticsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
+- (HUAccessoryDiagnosticsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
 - (NSArray)collectionFailures;
-- (id)_beginMatterDiagnosticCollectionForDevice:(id)a3 type:(int64_t)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (id)_beginMatterDiagnosticCollectionForDevice:(id)device type:(int64_t)type;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)availableLogs;
-- (void)_beginHAPDiagnosticCollection:(id)a3;
+- (void)_beginHAPDiagnosticCollection:(id)collection;
 - (void)_beginMatterDiagnosticCollection;
 - (void)_loadDownloadedLogs;
 - (void)_registerForExternalUpdates;
-- (void)_setLoggingOption:(int64_t)a3 enable:(BOOL)a4;
+- (void)_setLoggingOption:(int64_t)option enable:(BOOL)enable;
 - (void)_unregisterForExternalUpdates;
-- (void)addCollectionFailure:(id)a3;
-- (void)beginDiagnosticCollection:(id)a3;
-- (void)recordDownloadedLog:(id)a3;
-- (void)recordDownloadedMatterLog:(id)a3 forType:(int64_t)a4;
+- (void)addCollectionFailure:(id)failure;
+- (void)beginDiagnosticCollection:(id)collection;
+- (void)recordDownloadedLog:(id)log;
+- (void)recordDownloadedMatterLog:(id)log forType:(int64_t)type;
 - (void)resetCollectionFailures;
-- (void)setAudioClipLoggingEnabled:(BOOL)a3;
-- (void)setCollectionInProgress:(BOOL)a3;
-- (void)setVerboseLoggingEnabled:(BOOL)a3;
+- (void)setAudioClipLoggingEnabled:(BOOL)enabled;
+- (void)setCollectionInProgress:(BOOL)progress;
+- (void)setVerboseLoggingEnabled:(BOOL)enabled;
 @end
 
 @implementation HUAccessoryDiagnosticsItemManager
 
-- (HUAccessoryDiagnosticsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUAccessoryDiagnosticsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  delegateCopy = delegate;
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v67 = [MEMORY[0x277CCA890] currentHandler];
-    [v67 handleFailureInMethod:a2 object:self file:@"HUAccessoryDiagnosticsItemManager.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"sourceItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessoryDiagnosticsItemManager.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"sourceItem"}];
   }
 
-  v9 = [v8 copy];
+  v9 = [itemCopy copy];
   v81.receiver = self;
   v81.super_class = HUAccessoryDiagnosticsItemManager;
-  v10 = [(HFItemManager *)&v81 initWithDelegate:v7 sourceItem:v9];
+  v10 = [(HFItemManager *)&v81 initWithDelegate:delegateCopy sourceItem:v9];
 
   if (v10)
   {
-    v11 = [(HFItemManager *)v10 sourceItem];
-    if ([v11 conformsToProtocol:&unk_28251AF08])
+    sourceItem = [(HFItemManager *)v10 sourceItem];
+    if ([sourceItem conformsToProtocol:&unk_28251AF08])
     {
-      v12 = v11;
+      v12 = sourceItem;
     }
 
     else
@@ -55,22 +55,22 @@
 
     v13 = v12;
 
-    v14 = [v13 accessories];
+    accessories = [v13 accessories];
 
-    v15 = [v14 anyObject];
+    anyObject = [accessories anyObject];
     sourceAccessory = v10->_sourceAccessory;
-    v10->_sourceAccessory = v15;
+    v10->_sourceAccessory = anyObject;
 
     if (!v10->_sourceAccessory)
     {
-      v68 = [MEMORY[0x277CCA890] currentHandler];
-      [v68 handleFailureInMethod:a2 object:v10 file:@"HUAccessoryDiagnosticsItemManager.m" lineNumber:72 description:@"Could not get source accessory!"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"HUAccessoryDiagnosticsItemManager.m" lineNumber:72 description:@"Could not get source accessory!"];
     }
 
-    v17 = [(HUAccessoryDiagnosticsItemManager *)v10 sourceAccessory];
-    v18 = [v17 supportsCHIP];
+    sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)v10 sourceAccessory];
+    supportsCHIP = [sourceAccessory supportsCHIP];
 
-    if ((v18 & 1) == 0)
+    if ((supportsCHIP & 1) == 0)
     {
       v19 = objc_alloc(MEMORY[0x277D14B38]);
       v79[0] = MEMORY[0x277D85DD0];
@@ -97,12 +97,12 @@
 
     if ([MEMORY[0x277D14CE8] isInternalInstall])
     {
-      v71 = v14;
+      v71 = accessories;
       objc_opt_class();
-      v27 = [(HFItemManager *)v24 sourceItem];
+      sourceItem2 = [(HFItemManager *)v24 sourceItem];
       if (objc_opt_isKindOfClass())
       {
-        v28 = v27;
+        v28 = sourceItem2;
       }
 
       else
@@ -112,29 +112,29 @@
 
       v29 = v28;
 
-      v72 = v7;
+      v72 = delegateCopy;
       if (v29)
       {
-        v30 = [v29 accessories];
-        if ([v30 count] != 1)
+        accessories2 = [v29 accessories];
+        if ([accessories2 count] != 1)
         {
-          NSLog(&cfstr_ExpectedOneAcc_0.isa, v30);
+          NSLog(&cfstr_ExpectedOneAcc_0.isa, accessories2);
         }
 
-        v31 = [v30 anyObject];
-        v32 = [v31 services];
-        v33 = [v32 na_firstObjectPassingTest:&__block_literal_global_221];
+        anyObject2 = [accessories2 anyObject];
+        services = [anyObject2 services];
+        v33 = [services na_firstObjectPassingTest:&__block_literal_global_221];
 
-        v34 = [MEMORY[0x277CBEB98] setWithObject:v33];
-        v35 = [v29 valueSource];
+        services2 = [MEMORY[0x277CBEB98] setWithObject:v33];
+        valueSource = [v29 valueSource];
       }
 
       else
       {
-        v36 = [(HFItemManager *)v24 sourceItem];
-        if ([v36 conformsToProtocol:&unk_28251B0C8])
+        sourceItem3 = [(HFItemManager *)v24 sourceItem];
+        if ([sourceItem3 conformsToProtocol:&unk_28251B0C8])
         {
-          v37 = v36;
+          v37 = sourceItem3;
         }
 
         else
@@ -142,19 +142,19 @@
           v37 = 0;
         }
 
-        v30 = v37;
+        accessories2 = v37;
 
-        v35 = [v30 valueSource];
-        v34 = [v30 services];
+        valueSource = [accessories2 valueSource];
+        services2 = [accessories2 services];
       }
 
-      if (v35)
+      if (valueSource)
       {
         v38 = objc_alloc(MEMORY[0x277D14AF8]);
-        v39 = [v34 anyObject];
-        [v39 hf_serviceDescriptor];
+        anyObject3 = [services2 anyObject];
+        [anyObject3 hf_serviceDescriptor];
         v40 = v70 = v29;
-        v69 = [v38 initWithValueSource:v35 services:v34 primaryServiceDescriptor:v40];
+        v69 = [v38 initWithValueSource:valueSource services:services2 primaryServiceDescriptor:v40];
 
         v41 = objc_alloc(MEMORY[0x277D142C0]);
         v82 = *MEMORY[0x277D13FB8];
@@ -179,15 +179,15 @@
         v24->_enableAudioClipLoggingItem = v52;
       }
 
-      v14 = v71;
-      v7 = v72;
+      accessories = v71;
+      delegateCopy = v72;
     }
 
     v54 = HFPreferencesBooleanValueForKey();
-    v55 = [(HUAccessoryDiagnosticsItemManager *)v24 sourceAccessory];
-    v56 = [v55 supportsCHIP];
+    sourceAccessory2 = [(HUAccessoryDiagnosticsItemManager *)v24 sourceAccessory];
+    supportsCHIP2 = [sourceAccessory2 supportsCHIP];
 
-    if (v56)
+    if (supportsCHIP2)
     {
       v57 = dispatch_queue_create("com.apple.Home.MatterLogsQueue", 0);
       v58 = &OBJC_IVAR___HUAccessoryDiagnosticsItemManager__fetchMatterSnapshotButtonItem;
@@ -390,30 +390,30 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
   return v9;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
-  [v4 na_safeAddObject:v5];
+  fetchManufacturerSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
+  [v4 na_safeAddObject:fetchManufacturerSnapshotButtonItem];
 
-  v6 = [(HUAccessoryDiagnosticsItemManager *)self logCollectionFailedItem];
-  [v4 na_safeAddObject:v6];
+  logCollectionFailedItem = [(HUAccessoryDiagnosticsItemManager *)self logCollectionFailedItem];
+  [v4 na_safeAddObject:logCollectionFailedItem];
 
-  v7 = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
-  [v4 na_safeAddObject:v7];
+  fetchADKSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
+  [v4 na_safeAddObject:fetchADKSnapshotButtonItem];
 
-  v8 = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
-  [v4 na_safeAddObject:v8];
+  fetchMatterSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
+  [v4 na_safeAddObject:fetchMatterSnapshotButtonItem];
 
-  v9 = [(HUAccessoryDiagnosticsItemManager *)self diagnosticsModesItem];
-  [v4 na_safeAddObject:v9];
+  diagnosticsModesItem = [(HUAccessoryDiagnosticsItemManager *)self diagnosticsModesItem];
+  [v4 na_safeAddObject:diagnosticsModesItem];
 
-  v10 = [(HUAccessoryDiagnosticsItemManager *)self enableVerboseLoggingItem];
-  [v4 na_safeAddObject:v10];
+  enableVerboseLoggingItem = [(HUAccessoryDiagnosticsItemManager *)self enableVerboseLoggingItem];
+  [v4 na_safeAddObject:enableVerboseLoggingItem];
 
-  v11 = [(HUAccessoryDiagnosticsItemManager *)self enableAudioClipLoggingItem];
-  [v4 na_safeAddObject:v11];
+  enableAudioClipLoggingItem = [(HUAccessoryDiagnosticsItemManager *)self enableAudioClipLoggingItem];
+  [v4 na_safeAddObject:enableAudioClipLoggingItem];
 
   v12 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v4];
   v16[0] = v12;
@@ -424,36 +424,36 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
   return v14;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v37[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v35 = a3;
-  v5 = [v35 allObjects];
-  v6 = [v4 arrayWithArray:v5];
+  itemsCopy = items;
+  allObjects = [itemsCopy allObjects];
+  v6 = [v4 arrayWithArray:allObjects];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
-  [v7 na_safeAddObject:v8];
+  fetchManufacturerSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
+  [v7 na_safeAddObject:fetchManufacturerSnapshotButtonItem];
 
-  v9 = [(HUAccessoryDiagnosticsItemManager *)self logCollectionFailedItem];
-  [v7 na_safeAddObject:v9];
+  logCollectionFailedItem = [(HUAccessoryDiagnosticsItemManager *)self logCollectionFailedItem];
+  [v7 na_safeAddObject:logCollectionFailedItem];
 
-  v10 = [(HUAccessoryDiagnosticsItemManager *)self enableVerboseLoggingItem];
-  [v7 na_safeAddObject:v10];
+  enableVerboseLoggingItem = [(HUAccessoryDiagnosticsItemManager *)self enableVerboseLoggingItem];
+  [v7 na_safeAddObject:enableVerboseLoggingItem];
 
-  v11 = [(HUAccessoryDiagnosticsItemManager *)self enableAudioClipLoggingItem];
-  [v7 na_safeAddObject:v11];
+  enableAudioClipLoggingItem = [(HUAccessoryDiagnosticsItemManager *)self enableAudioClipLoggingItem];
+  [v7 na_safeAddObject:enableAudioClipLoggingItem];
 
-  v12 = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
-  [v7 na_safeAddObject:v12];
+  fetchADKSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
+  [v7 na_safeAddObject:fetchADKSnapshotButtonItem];
 
-  v13 = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
-  [v7 na_safeAddObject:v13];
+  fetchMatterSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
+  [v7 na_safeAddObject:fetchMatterSnapshotButtonItem];
 
   [v6 removeObjectsInArray:v7];
-  v14 = [MEMORY[0x277D14778] defaultItemComparator];
-  [v6 sortUsingComparator:v14];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  [v6 sortUsingComparator:defaultItemComparator];
 
   v15 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"Logs"];
   [v15 setItems:v6];
@@ -462,22 +462,22 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
 
   v17 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"GenerateButton"];
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v19 = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
-  [v18 na_safeAddObject:v19];
+  fetchManufacturerSnapshotButtonItem2 = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
+  [v18 na_safeAddObject:fetchManufacturerSnapshotButtonItem2];
 
-  v20 = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
-  [v18 na_safeAddObject:v20];
+  fetchADKSnapshotButtonItem2 = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
+  [v18 na_safeAddObject:fetchADKSnapshotButtonItem2];
 
-  v21 = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
-  [v18 na_safeAddObject:v21];
+  fetchMatterSnapshotButtonItem2 = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
+  [v18 na_safeAddObject:fetchMatterSnapshotButtonItem2];
 
   [v17 setItems:v18];
   v22 = _HULocalizedStringWithDefaultValue(@"HUAccessoryDiagnosticsGenerateButtonFooter", @"HUAccessoryDiagnosticsGenerateButtonFooter", 1);
   [v17 setFooterTitle:v22];
 
   v23 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"CollectionFailed"];
-  v24 = [(HUAccessoryDiagnosticsItemManager *)self logCollectionFailedItem];
-  v37[0] = v24;
+  logCollectionFailedItem2 = [(HUAccessoryDiagnosticsItemManager *)self logCollectionFailedItem];
+  v37[0] = logCollectionFailedItem2;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
   [v23 setItems:v25];
 
@@ -490,14 +490,14 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
     v28 = _HULocalizedStringWithDefaultValue(@"HUAccessoryDiagnosticsInternalSettingsFooter", @"HUAccessoryDiagnosticsInternalSettingsFooter", 1);
     [v26 setFooterTitle:v28];
 
-    v29 = [MEMORY[0x277CBEB18] array];
-    v30 = [(HUAccessoryDiagnosticsItemManager *)self enableVerboseLoggingItem];
-    [v29 na_safeAddObject:v30];
+    array = [MEMORY[0x277CBEB18] array];
+    enableVerboseLoggingItem2 = [(HUAccessoryDiagnosticsItemManager *)self enableVerboseLoggingItem];
+    [array na_safeAddObject:enableVerboseLoggingItem2];
 
-    v31 = [(HUAccessoryDiagnosticsItemManager *)self enableAudioClipLoggingItem];
-    [v29 na_safeAddObject:v31];
+    enableAudioClipLoggingItem2 = [(HUAccessoryDiagnosticsItemManager *)self enableAudioClipLoggingItem];
+    [array na_safeAddObject:enableAudioClipLoggingItem2];
 
-    [v26 setItems:v29];
+    [v26 setItems:array];
   }
 
   v36[0] = v15;
@@ -505,7 +505,7 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
   v36[2] = v23;
   v36[3] = v26;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:4];
-  v33 = [MEMORY[0x277D14778] filterSections:v32 toDisplayedItems:v35];
+  v33 = [MEMORY[0x277D14778] filterSections:v32 toDisplayedItems:itemsCopy];
 
   return v33;
 }
@@ -515,9 +515,9 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
   v5.receiver = self;
   v5.super_class = HUAccessoryDiagnosticsItemManager;
   [(HFItemManager *)&v5 _registerForExternalUpdates];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  [v3 addObserver:self selector:sel_didChangeNotification_ name:@"HUAccessoryDiagnosticsDidChange" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  [defaultCenter addObserver:self selector:sel_didChangeNotification_ name:@"HUAccessoryDiagnosticsDidChange" object:sourceAccessory];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -525,88 +525,88 @@ id __65__HUAccessoryDiagnosticsItemManager_initWithDelegate_sourceItem___block_i
   v5.receiver = self;
   v5.super_class = HUAccessoryDiagnosticsItemManager;
   [(HFItemManager *)&v5 _unregisterForExternalUpdates];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  [v3 removeObserver:self name:@"HUAccessoryDiagnosticsDidChange" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  [defaultCenter removeObserver:self name:@"HUAccessoryDiagnosticsDidChange" object:sourceAccessory];
 }
 
 - (BOOL)collectionInProgress
 {
-  v2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v3 = objc_getAssociatedObject(v2, "hu_diagnosticLogsInProgress");
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  v3 = objc_getAssociatedObject(sourceAccessory, "hu_diagnosticLogsInProgress");
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(sourceAccessory) = [v3 BOOLValue];
+  return sourceAccessory;
 }
 
-- (void)setCollectionInProgress:(BOOL)a3
+- (void)setCollectionInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   object = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:progressCopy];
   objc_setAssociatedObject(object, "hu_diagnosticLogsInProgress", v4, 0x301);
 }
 
 - (NSArray)collectionFailures
 {
-  v2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v3 = objc_getAssociatedObject(v2, "hu_diagnosticLogsLastDownloadFailed");
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  v3 = objc_getAssociatedObject(sourceAccessory, "hu_diagnosticLogsLastDownloadFailed");
 
   return v3;
 }
 
-- (void)addCollectionFailure:(id)a3
+- (void)addCollectionFailure:(id)failure
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v6 = objc_getAssociatedObject(v5, "hu_diagnosticLogsLastDownloadFailed");
+  failureCopy = failure;
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  v6 = objc_getAssociatedObject(sourceAccessory, "hu_diagnosticLogsLastDownloadFailed");
 
   if (v6)
   {
-    v7 = [v6 arrayByAddingObject:v4];
+    v7 = [v6 arrayByAddingObject:failureCopy];
   }
 
   else
   {
-    v9[0] = v4;
+    v9[0] = failureCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   }
 
-  v8 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  objc_setAssociatedObject(v8, "hu_diagnosticLogsLastDownloadFailed", v7, 0x301);
+  sourceAccessory2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  objc_setAssociatedObject(sourceAccessory2, "hu_diagnosticLogsLastDownloadFailed", v7, 0x301);
 }
 
 - (void)resetCollectionFailures
 {
-  v2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  objc_setAssociatedObject(v2, "hu_diagnosticLogsLastDownloadFailed", 0, 0x301);
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  objc_setAssociatedObject(sourceAccessory, "hu_diagnosticLogsLastDownloadFailed", 0, 0x301);
 }
 
-- (void)beginDiagnosticCollection:(id)a3
+- (void)beginDiagnosticCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
-  if (v6 == v5)
+  collectionCopy = collection;
+  fetchManufacturerSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchManufacturerSnapshotButtonItem];
+  if (fetchManufacturerSnapshotButtonItem == collectionCopy)
   {
     goto LABEL_6;
   }
 
-  v7 = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
-  v8 = v7;
-  if (v7 == v5)
+  fetchADKSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
+  v8 = fetchADKSnapshotButtonItem;
+  if (fetchADKSnapshotButtonItem == collectionCopy)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
+  fetchMatterSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchMatterSnapshotButtonItem];
 
-  if (v9 != v5)
+  if (fetchMatterSnapshotButtonItem != collectionCopy)
   {
     v10 = NSStringFromSelector(a2);
-    NSLog(&cfstr_CalledWithUnex.isa, v10, v5);
+    NSLog(&cfstr_CalledWithUnex.isa, v10, collectionCopy);
 LABEL_10:
 
     goto LABEL_15;
@@ -628,33 +628,33 @@ LABEL_7:
   [(HUAccessoryDiagnosticsItemManager *)self setCollectionInProgress:1];
   v11 = [(HFItemManager *)self reloadAndUpdateAllItemsFromSenderSelector:a2];
   [(HUAccessoryDiagnosticsItemManager *)self resetCollectionFailures];
-  v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v13 = [v12 homeManager];
-  v14 = [v13 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  v15 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  LODWORD(v13) = [v15 supportsCHIP];
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  LODWORD(homeManager) = [sourceAccessory supportsCHIP];
 
-  if (v13 && v14)
+  if (homeManager && hasOptedToHH2)
   {
     [(HUAccessoryDiagnosticsItemManager *)self _beginMatterDiagnosticCollection];
   }
 
   else
   {
-    [(HUAccessoryDiagnosticsItemManager *)self _beginHAPDiagnosticCollection:v5];
+    [(HUAccessoryDiagnosticsItemManager *)self _beginHAPDiagnosticCollection:collectionCopy];
   }
 
 LABEL_15:
 }
 
-- (void)_beginHAPDiagnosticCollection:(id)a3
+- (void)_beginHAPDiagnosticCollection:(id)collection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
+  collectionCopy = collection;
+  fetchADKSnapshotButtonItem = [(HUAccessoryDiagnosticsItemManager *)self fetchADKSnapshotButtonItem];
 
-  if (v5 == v4)
+  if (fetchADKSnapshotButtonItem == collectionCopy)
   {
     v6 = [objc_alloc(MEMORY[0x277CD16E8]) initWithLogSizeBytes:0 delaySeconds:0 snapshotType:2 recordAudio:0 enableAudioClips:0 cloudkitMetadataRequired:0];
   }
@@ -672,13 +672,13 @@ LABEL_15:
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Starting diagnostic collection with options %@", buf, 0xCu);
   }
 
-  v8 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__HUAccessoryDiagnosticsItemManager__beginHAPDiagnosticCollection___block_invoke;
   v9[3] = &unk_277DC1C60;
   v9[4] = self;
-  [v8 initiateDiagnosticsTransferWithOptions:v6 completionHandler:v9];
+  [sourceAccessory initiateDiagnosticsTransferWithOptions:v6 completionHandler:v9];
 }
 
 void __67__HUAccessoryDiagnosticsItemManager__beginHAPDiagnosticCollection___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -717,14 +717,14 @@ void __67__HUAccessoryDiagnosticsItemManager__beginHAPDiagnosticCollection___blo
 {
   v23 = *MEMORY[0x277D85DE8];
   [(HUAccessoryDiagnosticsItemManager *)self setCollectionInProgress:1];
-  v3 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v4 = [v3 home];
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  home = [sourceAccessory home];
 
-  v5 = [v4 hdm_sharedMatterController];
+  hdm_sharedMatterController = [home hdm_sharedMatterController];
   v6 = MEMORY[0x277CD5310];
-  v7 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v8 = [v7 matterNodeID];
-  v9 = [v6 deviceWithNodeID:v8 controller:v5];
+  sourceAccessory2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  matterNodeID = [sourceAccessory2 matterNodeID];
+  v9 = [v6 deviceWithNodeID:matterNodeID controller:hdm_sharedMatterController];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -771,17 +771,17 @@ void __69__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollection__b
   [v3 postNotificationName:@"HUAccessoryDiagnosticsDidChange" object:v2];
 }
 
-- (id)_beginMatterDiagnosticCollectionForDevice:(id)a3 type:(int64_t)a4
+- (id)_beginMatterDiagnosticCollectionForDevice:(id)device type:(int64_t)type
 {
-  v6 = a3;
+  deviceCopy = device;
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D2C900];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionForDevice_type___block_invoke;
   v11[3] = &unk_277DC1CB0;
-  v13[1] = a4;
-  v8 = v6;
+  v13[1] = type;
+  v8 = deviceCopy;
   v12 = v8;
   objc_copyWeak(v13, &location);
   v9 = [v7 lazyFutureWithBlock:v11];
@@ -876,8 +876,8 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
 - (void)_loadDownloadedLogs
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v3 = objc_getAssociatedObject(v2, "hu_diagnosticLogs");
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  v3 = objc_getAssociatedObject(sourceAccessory, "hu_diagnosticLogs");
 
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -887,7 +887,7 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "Loading diagnostic logs: %@.", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -908,13 +908,13 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 snapshotPath];
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
-        v14 = [v13 fileExistsAtPath:v12];
+        snapshotPath = [v11 snapshotPath];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v14 = [defaultManager fileExistsAtPath:snapshotPath];
 
         if (v14)
         {
-          [(NSMutableArray *)v5 addObject:v11];
+          [(NSMutableArray *)array addObject:v11];
         }
 
         else
@@ -923,7 +923,7 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v27 = v12;
+            v27 = snapshotPath;
             _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Removing diagnostic log because it no longer exists: %@", buf, 0xCu);
           }
         }
@@ -936,48 +936,48 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
   }
 
   v16 = [v6 count];
-  if (v16 != [(NSMutableArray *)v5 count])
+  if (v16 != [(NSMutableArray *)array count])
   {
-    v17 = [(NSMutableArray *)v5 copy];
-    v18 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-    objc_setAssociatedObject(v18, "hu_diagnosticLogs", v17, 0x301);
+    v17 = [(NSMutableArray *)array copy];
+    sourceAccessory2 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+    objc_setAssociatedObject(sourceAccessory2, "hu_diagnosticLogs", v17, 0x301);
   }
 
   downloadedLogs = self->_downloadedLogs;
-  self->_downloadedLogs = v5;
+  self->_downloadedLogs = array;
 }
 
-- (void)recordDownloadedMatterLog:(id)a3 forType:(int64_t)a4
+- (void)recordDownloadedMatterLog:(id)log forType:(int64_t)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  logCopy = log;
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v7 setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v7 stringFromDate:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [v7 stringFromDate:date];
 
-  if (a4 > 2)
+  if (type > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = off_277DC1CD0[a4];
+    v10 = off_277DC1CD0[type];
   }
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  v13 = [v12 name];
-  v14 = [v11 stringWithFormat:@"%@-%@-%@.log", v9, v13, v10];
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  name = [sourceAccessory name];
+  v14 = [v11 stringWithFormat:@"%@-%@-%@.log", v9, name, v10];
 
   v15 = NSTemporaryDirectory();
   v16 = [v15 stringByAppendingPathComponent:v14];
 
   v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v16 isDirectory:0];
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v22 = 0;
-  v19 = [v18 copyItemAtURL:v6 toURL:v17 error:&v22];
+  v19 = [defaultManager copyItemAtURL:logCopy toURL:v17 error:&v22];
   v20 = v22;
   if (v19)
   {
@@ -991,7 +991,7 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = v6;
+      v24 = logCopy;
       v25 = 2112;
       v26 = v16;
       v27 = 2112;
@@ -1001,46 +1001,46 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
   }
 }
 
-- (void)recordDownloadedLog:(id)a3
+- (void)recordDownloadedLog:(id)log
 {
-  v4 = a3;
-  v5 = [(HUAccessoryDiagnosticsItemManager *)self downloadedLogs];
-  [v5 addObject:v4];
+  logCopy = log;
+  downloadedLogs = [(HUAccessoryDiagnosticsItemManager *)self downloadedLogs];
+  [downloadedLogs addObject:logCopy];
 
-  v6 = [(HUAccessoryDiagnosticsItemManager *)self downloadedLogs];
-  value = [v6 copy];
+  downloadedLogs2 = [(HUAccessoryDiagnosticsItemManager *)self downloadedLogs];
+  value = [downloadedLogs2 copy];
 
-  v7 = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
-  objc_setAssociatedObject(v7, "hu_diagnosticLogs", value, 0x301);
+  sourceAccessory = [(HUAccessoryDiagnosticsItemManager *)self sourceAccessory];
+  objc_setAssociatedObject(sourceAccessory, "hu_diagnosticLogs", value, 0x301);
 }
 
 - (id)availableLogs
 {
-  v2 = [(HUAccessoryDiagnosticsItemManager *)self downloadedLogs];
-  v3 = [v2 copy];
+  downloadedLogs = [(HUAccessoryDiagnosticsItemManager *)self downloadedLogs];
+  v3 = [downloadedLogs copy];
 
   return v3;
 }
 
-- (void)_setLoggingOption:(int64_t)a3 enable:(BOOL)a4
+- (void)_setLoggingOption:(int64_t)option enable:(BOOL)enable
 {
-  v4 = a4;
+  enableCopy = enable;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = [(HUAccessoryDiagnosticsItemManager *)self diagnosticsModesItem];
-  v8 = [v7 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  diagnosticsModesItem = [(HUAccessoryDiagnosticsItemManager *)self diagnosticsModesItem];
+  latestResults = [diagnosticsModesItem latestResults];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  v10 = [v9 unsignedIntegerValue];
-  if (((a3 & ~v10) == 0) != v4)
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
+  if (((option & ~unsignedIntegerValue) == 0) != enableCopy)
   {
-    if (v4)
+    if (enableCopy)
     {
-      v11 = v10 | a3;
+      v11 = unsignedIntegerValue | option;
     }
 
     else
     {
-      v11 = v10 & ~a3;
+      v11 = unsignedIntegerValue & ~option;
     }
 
     v12 = HFLogForCategory();
@@ -1051,40 +1051,40 @@ void __84__HUAccessoryDiagnosticsItemManager__beginMatterDiagnosticCollectionFor
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "Attempting to write accessory diagnostic options: %lx", &v16, 0xCu);
     }
 
-    v13 = [(HUAccessoryDiagnosticsItemManager *)self diagnosticsModesItem];
+    diagnosticsModesItem2 = [(HUAccessoryDiagnosticsItemManager *)self diagnosticsModesItem];
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-    v15 = [v13 writeValue:v14];
+    v15 = [diagnosticsModesItem2 writeValue:v14];
   }
 }
 
-- (void)setVerboseLoggingEnabled:(BOOL)a3
+- (void)setVerboseLoggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = enabledCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to set accessory diagnostic verbose logging to: %{BOOL}d", v6, 8u);
   }
 
-  [(HUAccessoryDiagnosticsItemManager *)self _setLoggingOption:2 enable:v3];
+  [(HUAccessoryDiagnosticsItemManager *)self _setLoggingOption:2 enable:enabledCopy];
 }
 
-- (void)setAudioClipLoggingEnabled:(BOOL)a3
+- (void)setAudioClipLoggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = enabledCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to set accessory diagnostic audio clip logging to: %{BOOL}d", v6, 8u);
   }
 
-  [(HUAccessoryDiagnosticsItemManager *)self _setLoggingOption:1 enable:v3];
+  [(HUAccessoryDiagnosticsItemManager *)self _setLoggingOption:1 enable:enabledCopy];
 }
 
 @end

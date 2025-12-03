@@ -3,8 +3,8 @@
 - (MXDebugPlatform)init;
 - (void)dealloc;
 - (void)executeSysdiagnoseBlocks;
-- (void)installSysdiagnoseBlock:(id)a3 blockToRun:(id)a4;
-- (void)simulateCrash:(const char *)a3;
+- (void)installSysdiagnoseBlock:(id)block blockToRun:(id)run;
+- (void)simulateCrash:(const char *)crash;
 @end
 
 @implementation MXDebugPlatform
@@ -72,8 +72,8 @@ uint64_t __23__MXDebugPlatform_init__block_invoke(uint64_t a1, uint64_t a2)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(MXDebugPlatform *)self sysdiagnoseBlockRegistry];
-  v4 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sysdiagnoseBlockRegistry = [(MXDebugPlatform *)self sysdiagnoseBlockRegistry];
+  v4 = [(NSMutableDictionary *)sysdiagnoseBlockRegistry countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -84,7 +84,7 @@ uint64_t __23__MXDebugPlatform_init__block_invoke(uint64_t a1, uint64_t a2)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sysdiagnoseBlockRegistry);
         }
 
         v8 = [(NSMutableDictionary *)[(MXDebugPlatform *)self sysdiagnoseBlockRegistry:v11] objectForKey:*(*(&v13 + 1) + 8 * i)];
@@ -101,7 +101,7 @@ uint64_t __23__MXDebugPlatform_init__block_invoke(uint64_t a1, uint64_t a2)
         }
       }
 
-      v5 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [(NSMutableDictionary *)sysdiagnoseBlockRegistry countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -110,11 +110,11 @@ uint64_t __23__MXDebugPlatform_init__block_invoke(uint64_t a1, uint64_t a2)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)installSysdiagnoseBlock:(id)a3 blockToRun:(id)a4
+- (void)installSysdiagnoseBlock:(id)block blockToRun:(id)run
 {
-  if (a4)
+  if (run)
   {
-    v6 = _Block_copy(a4);
+    v6 = _Block_copy(run);
   }
 
   else
@@ -122,15 +122,15 @@ uint64_t __23__MXDebugPlatform_init__block_invoke(uint64_t a1, uint64_t a2)
     v6 = 0;
   }
 
-  v7 = [(MXDebugPlatform *)self sysdiagnoseBlockQueue];
+  sysdiagnoseBlockQueue = [(MXDebugPlatform *)self sysdiagnoseBlockQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__MXDebugPlatform_installSysdiagnoseBlock_blockToRun___block_invoke;
   v8[3] = &unk_1E7AEC788;
-  v8[5] = a3;
+  v8[5] = block;
   v8[6] = v6;
   v8[4] = self;
-  MXDispatchAsync("[MXDebugPlatform installSysdiagnoseBlock:blockToRun:]", "MXDebugPlatform.m", 215, 0, 0, v7, v8);
+  MXDispatchAsync("[MXDebugPlatform installSysdiagnoseBlock:blockToRun:]", "MXDebugPlatform.m", 215, 0, 0, sysdiagnoseBlockQueue, v8);
 }
 
 void __54__MXDebugPlatform_installSysdiagnoseBlock_blockToRun___block_invoke(uint64_t a1)
@@ -153,12 +153,12 @@ void __54__MXDebugPlatform_installSysdiagnoseBlock_blockToRun___block_invoke(uin
   }
 }
 
-- (void)simulateCrash:(const char *)a3
+- (void)simulateCrash:(const char *)crash
 {
-  v4 = [(MXDebugPlatform *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+  logger = [(MXDebugPlatform *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_FAULT))
   {
-    [(MXDebugPlatform *)a3 simulateCrash:v4];
+    [(MXDebugPlatform *)crash simulateCrash:logger];
   }
 }
 

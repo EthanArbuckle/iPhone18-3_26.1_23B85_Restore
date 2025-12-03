@@ -1,30 +1,30 @@
 @interface EKEventDateEditItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilitySetupDateCellForKey:(id)a3;
+- (void)_accessibilitySetupDateCellForKey:(id)key;
 - (void)_axUpdateEndDateCellLabel;
-- (void)_datePickerChanged:(id)a3;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)_datePickerChanged:(id)changed;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
 @end
 
 @implementation EKEventDateEditItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_modernEndDateCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_endDateIsBeforeStartDate" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_datePickerChanged:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"EKEventDateEditItem" isKindOfClass:@"EKEventEditItem"];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_rowForSubitem:" withFullSignature:{"q", "q", 0}];
-  [v3 validateClass:@"EKCalendarItemEditor" hasInstanceMethod:@"tableSectionForEditItem:" withFullSignature:{"Q", "@", 0}];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_startDatePickerCell" withType:"UITableViewCell"];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_endDatePickerCell" withType:"UITableViewCell"];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_startDatePicker" withType:"UIDatePicker"];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_endDatePicker" withType:"UIDatePicker"];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_showInlineControls:forSubitem:includingInlineDatePicker:" withFullSignature:{"v", "q", "q", "B", 0}];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_selectedSubitem" withType:"q"];
-  [v3 validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_currentPickerMode" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_modernEndDateCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_endDateIsBeforeStartDate" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_datePickerChanged:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"EKEventDateEditItem" isKindOfClass:@"EKEventEditItem"];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_rowForSubitem:" withFullSignature:{"q", "q", 0}];
+  [validationsCopy validateClass:@"EKCalendarItemEditor" hasInstanceMethod:@"tableSectionForEditItem:" withFullSignature:{"Q", "@", 0}];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_startDatePickerCell" withType:"UITableViewCell"];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_endDatePickerCell" withType:"UITableViewCell"];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_startDatePicker" withType:"UIDatePicker"];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_endDatePicker" withType:"UIDatePicker"];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceMethod:@"_showInlineControls:forSubitem:includingInlineDatePicker:" withFullSignature:{"v", "q", "q", "B", 0}];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_selectedSubitem" withType:"q"];
+  [validationsCopy validateClass:@"EKEventDateEditItem" hasInstanceVariable:@"_currentPickerMode" withType:"q"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,14 +40,14 @@
   [(EKEventDateEditItemAccessibility *)self _accessibilitySetupDateCellForKey:@"_end"];
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
   v7.receiver = self;
   v7.super_class = EKEventDateEditItemAccessibility;
-  [(EKEventDateEditItemAccessibility *)&v7 editor:a3 didSelectSubitem:?];
+  [(EKEventDateEditItemAccessibility *)&v7 editor:editor didSelectSubitem:?];
   v6 = MEMORY[0x29EDCA5F8];
   AXPerformBlockAsynchronouslyOnMainThread();
-  [(EKEventDateEditItemAccessibility *)self _accessibilitySetupDateCellForKey:@"_start", v6, 3221225472, __60__EKEventDateEditItemAccessibility_editor_didSelectSubitem___block_invoke, &unk_29F2BCB10, self, a4];
+  [(EKEventDateEditItemAccessibility *)self _accessibilitySetupDateCellForKey:@"_start", v6, 3221225472, __60__EKEventDateEditItemAccessibility_editor_didSelectSubitem___block_invoke, &unk_29F2BCB10, self, subitem];
   [(EKEventDateEditItemAccessibility *)self _accessibilitySetupDateCellForKey:@"_end"];
 }
 
@@ -106,11 +106,11 @@ uint64_t __60__EKEventDateEditItemAccessibility_editor_didSelectSubitem___block_
   return result;
 }
 
-- (void)_datePickerChanged:(id)a3
+- (void)_datePickerChanged:(id)changed
 {
   v4.receiver = self;
   v4.super_class = EKEventDateEditItemAccessibility;
-  [(EKEventDateEditItemAccessibility *)&v4 _datePickerChanged:a3];
+  [(EKEventDateEditItemAccessibility *)&v4 _datePickerChanged:changed];
   [(EKEventDateEditItemAccessibility *)self _axUpdateEndDateCellLabel];
 }
 
@@ -130,14 +130,14 @@ uint64_t __60__EKEventDateEditItemAccessibility_editor_didSelectSubitem___block_
   [v4 _accessibilitySetAssignedValue:v3 forKey:@"AXAddendumString"];
 }
 
-- (void)_accessibilitySetupDateCellForKey:(id)a3
+- (void)_accessibilitySetupDateCellForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingString:@"DatePickerCell"];
+  keyCopy = key;
+  v5 = [keyCopy stringByAppendingString:@"DatePickerCell"];
   v9 = [(EKEventDateEditItemAccessibility *)self safeValueForKey:v5];
 
   v6 = objc_opt_new();
-  v7 = [v4 stringByAppendingString:@"DatePicker"];
+  v7 = [keyCopy stringByAppendingString:@"DatePicker"];
 
   v8 = [(EKEventDateEditItemAccessibility *)self safeValueForKey:v7];
   [v6 axSafelyAddObject:v8];

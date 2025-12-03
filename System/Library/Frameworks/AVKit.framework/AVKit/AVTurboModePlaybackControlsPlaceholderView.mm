@@ -1,25 +1,25 @@
 @interface AVTurboModePlaybackControlsPlaceholderView
 - (AVButton)prominentPlayButton;
-- (AVTurboModePlaybackControlsPlaceholderView)initWithFrame:(CGRect)a3 styleSheet:(id)a4;
+- (AVTurboModePlaybackControlsPlaceholderView)initWithFrame:(CGRect)frame styleSheet:(id)sheet;
 - (AVVolumeButtonControl)volumeButton;
 - (BOOL)hasVisibleControls;
 - (CGAffineTransform)overrideTransformForProminentPlayButton;
-- (CGRect)_frameForIncludedViewType:(int64_t)a3;
+- (CGRect)_frameForIncludedViewType:(int64_t)type;
 - (id)_makeProminentPlayButtonAndContainer;
 - (id)_makeVolumeButtonAndContainer;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_makeProminentPlayButtonAndContainerIfNeeded;
 - (void)_makeVolumeButtonAndContainerIfNeeded;
 - (void)_updateFramesAndHitRectInsets;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
-- (void)setIncludedControlType:(int64_t)a3;
-- (void)setOverrideLayoutMarginsWhenEmbeddedInline:(id)a3;
-- (void)setOverrideTransformForProminentPlayButton:(CGAffineTransform *)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setPreferredUnobscuredArea:(int64_t)a3;
-- (void)setVolumeButtonMicaPackageStateName:(id)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIncludedControlType:(int64_t)type;
+- (void)setOverrideLayoutMarginsWhenEmbeddedInline:(id)inline;
+- (void)setOverrideTransformForProminentPlayButton:(CGAffineTransform *)button;
+- (void)setPlayerController:(id)controller;
+- (void)setPreferredUnobscuredArea:(int64_t)area;
+- (void)setVolumeButtonMicaPackageStateName:(id)name;
 @end
 
 @implementation AVTurboModePlaybackControlsPlaceholderView
@@ -57,8 +57,8 @@
   [v5 setImageName:@"play.fill"];
   v6 = MEMORY[0x1E69DB878];
   v7 = *MEMORY[0x1E69DDD58];
-  v8 = [(AVTurboModePlaybackControlsPlaceholderView *)self traitCollection];
-  v9 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:v8];
+  traitCollection = [(AVTurboModePlaybackControlsPlaceholderView *)self traitCollection];
+  v9 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:traitCollection];
   [v5 setInlineFont:v9];
 
   [v5 setTintEffectStyle:0];
@@ -68,27 +68,27 @@
   [(AVTurboModePlaybackControlsPlaceholderView *)self setProminentPlayButtonContainer:v4];
   [(AVView *)v4 setIgnoresTouches:1];
   [(AVTurboModePlaybackControlsPlaceholderView *)self setProminentPlayButton:v5];
-  v10 = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
-  [v10 addSubview:v4];
+  contentView = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
+  [contentView addSubview:v4];
 
-  v11 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+  prominentPlayButton = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
   [(AVTurboModePlaybackControlsPlaceholderView *)self overrideTransformForProminentPlayButton];
-  [v11 setTransform:&v13];
+  [prominentPlayButton setTransform:&v13];
 
   return v4;
 }
 
 - (void)_makeProminentPlayButtonAndContainerIfNeeded
 {
-  v3 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  prominentPlayButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
 
-  if (!v3)
+  if (!prominentPlayButtonContainer)
   {
-    v4 = [(AVTurboModePlaybackControlsPlaceholderView *)self _makeProminentPlayButtonAndContainer];
+    _makeProminentPlayButtonAndContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self _makeProminentPlayButtonAndContainer];
     prominentPlayButtonContainer = self->_prominentPlayButtonContainer;
-    self->_prominentPlayButtonContainer = v4;
+    self->_prominentPlayButtonContainer = _makeProminentPlayButtonAndContainer;
 
-    MEMORY[0x1EEE66BB8](v4, prominentPlayButtonContainer);
+    MEMORY[0x1EEE66BB8](_makeProminentPlayButtonAndContainer, prominentPlayButtonContainer);
   }
 }
 
@@ -103,44 +103,44 @@
   [(AVLayoutView *)v4 addSubview:v6];
   [(AVTurboModePlaybackControlsPlaceholderView *)self setVolumeButtonContainer:v4];
   [(AVTurboModePlaybackControlsPlaceholderView *)self setVolumeButton:v6];
-  v7 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButton];
-  v8 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonMicaPackageStateName];
-  [v7 setMicaPackageStateName:v8];
+  volumeButton = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButton];
+  volumeButtonMicaPackageStateName = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonMicaPackageStateName];
+  [volumeButton setMicaPackageStateName:volumeButtonMicaPackageStateName];
 
-  v9 = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
-  [v9 addSubview:v4];
+  contentView = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
+  [contentView addSubview:v4];
 
   return v4;
 }
 
 - (void)_makeVolumeButtonAndContainerIfNeeded
 {
-  v3 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
+  volumeButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
 
-  if (!v3)
+  if (!volumeButtonContainer)
   {
-    v4 = [(AVTurboModePlaybackControlsPlaceholderView *)self _makeVolumeButtonAndContainer];
+    _makeVolumeButtonAndContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self _makeVolumeButtonAndContainer];
     volumeButtonContainer = self->_volumeButtonContainer;
-    self->_volumeButtonContainer = v4;
+    self->_volumeButtonContainer = _makeVolumeButtonAndContainer;
 
-    MEMORY[0x1EEE66BB8](v4, volumeButtonContainer);
+    MEMORY[0x1EEE66BB8](_makeVolumeButtonAndContainer, volumeButtonContainer);
   }
 }
 
-- (CGRect)_frameForIncludedViewType:(int64_t)a3
+- (CGRect)_frameForIncludedViewType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [(AVTurboModePlaybackControlsPlaceholderView *)self bounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v39 standardPaddingInline];
+    styleSheet = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet standardPaddingInline];
     v41 = v40;
-    v42 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v42 standardPaddingInline];
+    styleSheet2 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet2 standardPaddingInline];
     v44 = v43;
     v85.origin.x = v32;
     v85.origin.y = v34;
@@ -167,8 +167,8 @@
       v49 = v50;
     }
 
-    v51 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v51 maximumProminentPlayButtonDimension];
+    styleSheet3 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet3 maximumProminentPlayButtonDimension];
     v53 = v52;
 
     if (v49 < v53)
@@ -181,8 +181,8 @@
     v89.size.width = v53;
     v89.size.height = height;
     v54 = CGRectGetHeight(v89);
-    v55 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v55 minimumProminentPlayButtonDimension];
+    styleSheet4 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet4 minimumProminentPlayButtonDimension];
     v57 = v56;
 
     if (v54 < v57)
@@ -209,11 +209,11 @@
     v94.size.width = v53;
     v94.size.height = v58;
     v62 = MidY - CGRectGetHeight(v94) * 0.5;
-    v63 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
-    v64 = v63;
-    if (v63)
+    prominentPlayButton = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+    styleSheet10 = prominentPlayButton;
+    if (prominentPlayButton)
     {
-      [v63 transform];
+      [prominentPlayButton transform];
     }
 
     else
@@ -229,7 +229,7 @@
     goto LABEL_31;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_32;
   }
@@ -239,11 +239,11 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-  [v12 standardPaddingInline];
+  styleSheet5 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+  [styleSheet5 standardPaddingInline];
   v14 = v13;
-  v15 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-  [v15 standardPaddingInline];
+  styleSheet6 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+  [styleSheet6 standardPaddingInline];
   v17 = v16;
   v81.origin.x = v5;
   v81.origin.y = v7;
@@ -260,8 +260,8 @@
   v83.size.width = v20;
   v83.size.height = v21;
   v22 = CGRectGetWidth(v83);
-  v23 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-  [v23 defaultItemInlineSize];
+  styleSheet7 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+  [styleSheet7 defaultItemInlineSize];
   if (v22 >= v24)
   {
     v84.origin.x = v18;
@@ -269,8 +269,8 @@
     v84.size.width = v20;
     v84.size.height = v21;
     v25 = CGRectGetHeight(v84);
-    v26 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v26 defaultItemInlineSize];
+    styleSheet8 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet8 defaultItemInlineSize];
     v28 = v27;
 
     if (v25 < v28)
@@ -278,64 +278,64 @@
       goto LABEL_7;
     }
 
-    v23 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v23 defaultItemInlineSize];
+    styleSheet7 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet7 defaultItemInlineSize];
   }
 
 LABEL_7:
-  v29 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
-  if (v29)
+  overrideLayoutMarginsWhenEmbeddedInline = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
+  if (overrideLayoutMarginsWhenEmbeddedInline)
   {
-    v30 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
-    [v30 UIEdgeInsetsValue];
+    overrideLayoutMarginsWhenEmbeddedInline2 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
+    [overrideLayoutMarginsWhenEmbeddedInline2 UIEdgeInsetsValue];
   }
 
   else
   {
-    v30 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v30 standardPaddingInline];
+    overrideLayoutMarginsWhenEmbeddedInline2 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [overrideLayoutMarginsWhenEmbeddedInline2 standardPaddingInline];
   }
 
-  v65 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
-  if (v65)
+  overrideLayoutMarginsWhenEmbeddedInline3 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
+  if (overrideLayoutMarginsWhenEmbeddedInline3)
   {
-    v66 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
-    [v66 UIEdgeInsetsValue];
-  }
-
-  else
-  {
-    v66 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v66 standardPaddingInline];
-  }
-
-  v67 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
-  if (v67)
-  {
-    v68 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
-    [v68 UIEdgeInsetsValue];
+    overrideLayoutMarginsWhenEmbeddedInline4 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
+    [overrideLayoutMarginsWhenEmbeddedInline4 UIEdgeInsetsValue];
   }
 
   else
   {
-    v68 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v68 standardPaddingInline];
+    overrideLayoutMarginsWhenEmbeddedInline4 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [overrideLayoutMarginsWhenEmbeddedInline4 standardPaddingInline];
+  }
+
+  overrideLayoutMarginsWhenEmbeddedInline5 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
+  if (overrideLayoutMarginsWhenEmbeddedInline5)
+  {
+    overrideLayoutMarginsWhenEmbeddedInline6 = [(AVTurboModePlaybackControlsPlaceholderView *)self overrideLayoutMarginsWhenEmbeddedInline];
+    [overrideLayoutMarginsWhenEmbeddedInline6 UIEdgeInsetsValue];
+  }
+
+  else
+  {
+    overrideLayoutMarginsWhenEmbeddedInline6 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [overrideLayoutMarginsWhenEmbeddedInline6 standardPaddingInline];
   }
 
   if ([(AVTurboModePlaybackControlsPlaceholderView *)self effectiveUserInterfaceLayoutDirection]!= 1)
   {
     [(AVTurboModePlaybackControlsPlaceholderView *)self bounds];
     CGRectGetMaxX(v95);
-    v69 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v69 defaultItemInlineSize];
+    styleSheet9 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet9 defaultItemInlineSize];
   }
 
   if ([(AVTurboModePlaybackControlsPlaceholderView *)self preferredUnobscuredArea]== 1)
   {
     [(AVTurboModePlaybackControlsPlaceholderView *)self bounds];
     CGRectGetMaxY(v97);
-    v64 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
-    [v64 defaultItemInlineSize];
+    styleSheet10 = [(AVTurboModePlaybackControlsPlaceholderView *)self styleSheet];
+    [styleSheet10 defaultItemInlineSize];
 LABEL_31:
   }
 
@@ -357,52 +357,52 @@ LABEL_32:
 
 - (void)_updateFramesAndHitRectInsets
 {
-  v3 = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
+  contentView = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
   [(AVTurboModePlaybackControlsPlaceholderView *)self bounds];
-  [v3 setFrame:?];
+  [contentView setFrame:?];
 
-  v4 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  prominentPlayButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
   [(AVTurboModePlaybackControlsPlaceholderView *)self _frameForIncludedViewType:1];
-  [v4 setFrame:?];
+  [prominentPlayButtonContainer setFrame:?];
 
-  v5 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
-  v6 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-  [v6 bounds];
-  [v5 setFrame:?];
+  prominentPlayButton = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+  prominentPlayButtonContainer2 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  [prominentPlayButtonContainer2 bounds];
+  [prominentPlayButton setFrame:?];
 
-  v7 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
-  v8 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-  [v8 frame];
+  prominentPlayButton2 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+  prominentPlayButtonContainer3 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  [prominentPlayButtonContainer3 frame];
   v9 = -CGRectGetMinY(v20);
-  v10 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-  [v10 frame];
+  prominentPlayButtonContainer4 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  [prominentPlayButtonContainer4 frame];
   v11 = -CGRectGetMinX(v21);
-  v12 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-  [v12 frame];
+  prominentPlayButtonContainer5 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  [prominentPlayButtonContainer5 frame];
   v13 = -CGRectGetMinY(v22);
-  v14 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-  [v14 frame];
-  [v7 setHitRectInsets:{v9, v11, v13, -CGRectGetMinX(v23)}];
+  prominentPlayButtonContainer6 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+  [prominentPlayButtonContainer6 frame];
+  [prominentPlayButton2 setHitRectInsets:{v9, v11, v13, -CGRectGetMinX(v23)}];
 
-  v15 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
-  [v15 setClampsHitRectInsetsWhenContainedInScrollableView:1];
+  prominentPlayButton3 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+  [prominentPlayButton3 setClampsHitRectInsetsWhenContainedInScrollableView:1];
 
-  v16 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
+  volumeButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
   [(AVTurboModePlaybackControlsPlaceholderView *)self _frameForIncludedViewType:2];
-  [v16 setFrame:?];
+  [volumeButtonContainer setFrame:?];
 
-  v18 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButton];
-  v17 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
-  [v17 bounds];
-  [v18 setFrame:?];
+  volumeButton = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButton];
+  volumeButtonContainer2 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
+  [volumeButtonContainer2 bounds];
+  [volumeButton setFrame:?];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIView *)self avkit_hitTestControlForPoint:v7 withEvent:x, y];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = [(UIView *)self avkit_hitTestControlForPoint:eventCopy withEvent:x, y];
   v9 = v8;
   if (v8)
   {
@@ -413,7 +413,7 @@ LABEL_32:
   {
     v13.receiver = self;
     v13.super_class = AVTurboModePlaybackControlsPlaceholderView;
-    v10 = [(AVTurboModePlaybackControlsPlaceholderView *)&v13 hitTest:v7 withEvent:x, y];
+    v10 = [(AVTurboModePlaybackControlsPlaceholderView *)&v13 hitTest:eventCopy withEvent:x, y];
   }
 
   v11 = v10;
@@ -429,45 +429,45 @@ LABEL_32:
   [(AVTurboModePlaybackControlsPlaceholderView *)self _updateFramesAndHitRectInsets];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = AVTurboModePlaybackControlsPlaceholderView;
-  [(AVTurboModePlaybackControlsPlaceholderView *)&v4 setHidden:a3];
+  [(AVTurboModePlaybackControlsPlaceholderView *)&v4 setHidden:hidden];
   [(UIView *)self avkit_needsUpdateBackdropCaptureViewHidden];
 }
 
-- (void)setVolumeButtonMicaPackageStateName:(id)a3
+- (void)setVolumeButtonMicaPackageStateName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_volumeButtonMicaPackageStateName isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [nameCopy copy];
     volumeButtonMicaPackageStateName = self->_volumeButtonMicaPackageStateName;
     self->_volumeButtonMicaPackageStateName = v4;
 
-    v6 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButton];
-    [v6 setMicaPackageStateName:v7];
+    volumeButton = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButton];
+    [volumeButton setMicaPackageStateName:nameCopy];
   }
 }
 
-- (void)setOverrideLayoutMarginsWhenEmbeddedInline:(id)a3
+- (void)setOverrideLayoutMarginsWhenEmbeddedInline:(id)inline
 {
-  v5 = a3;
+  inlineCopy = inline;
   if (![(NSValue *)self->_overrideLayoutMarginsWhenEmbeddedInline isEqualToValue:?])
   {
-    objc_storeStrong(&self->_overrideLayoutMarginsWhenEmbeddedInline, a3);
+    objc_storeStrong(&self->_overrideLayoutMarginsWhenEmbeddedInline, inline);
     [(AVTurboModePlaybackControlsPlaceholderView *)self setNeedsLayout];
   }
 }
 
-- (void)setOverrideTransformForProminentPlayButton:(CGAffineTransform *)a3
+- (void)setOverrideTransformForProminentPlayButton:(CGAffineTransform *)button
 {
-  v5 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
-  v6 = v5;
-  if (v5)
+  prominentPlayButton = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+  v6 = prominentPlayButton;
+  if (prominentPlayButton)
   {
-    [v5 transform];
+    [prominentPlayButton transform];
   }
 
   else
@@ -475,68 +475,68 @@ LABEL_32:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v7 = *&a3->c;
-  *&v13.a = *&a3->a;
+  v7 = *&button->c;
+  *&v13.a = *&button->a;
   *&v13.c = v7;
-  *&v13.tx = *&a3->tx;
+  *&v13.tx = *&button->tx;
   v8 = CGAffineTransformEqualToTransform(&t1, &v13);
 
   if (!v8)
   {
-    v10 = *&a3->c;
-    v9 = *&a3->tx;
-    *&self->_overrideTransformForProminentPlayButton.a = *&a3->a;
+    v10 = *&button->c;
+    v9 = *&button->tx;
+    *&self->_overrideTransformForProminentPlayButton.a = *&button->a;
     *&self->_overrideTransformForProminentPlayButton.c = v10;
     *&self->_overrideTransformForProminentPlayButton.tx = v9;
-    v11 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
+    prominentPlayButton2 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButton];
     v12 = *&self->_overrideTransformForProminentPlayButton.c;
     *&t1.a = *&self->_overrideTransformForProminentPlayButton.a;
     *&t1.c = v12;
     *&t1.tx = *&self->_overrideTransformForProminentPlayButton.tx;
-    [v11 setTransform:&t1];
+    [prominentPlayButton2 setTransform:&t1];
 
     [(AVTurboModePlaybackControlsPlaceholderView *)self setNeedsLayout];
   }
 }
 
-- (void)setIncludedControlType:(int64_t)a3
+- (void)setIncludedControlType:(int64_t)type
 {
-  if (self->_includedControlType == a3)
+  if (self->_includedControlType == type)
   {
     return;
   }
 
   v14 = v4;
   v15 = v3;
-  self->_includedControlType = a3;
-  switch(a3)
+  self->_includedControlType = type;
+  switch(type)
   {
     case 0:
-      v13 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
-      [v13 setHidden:1];
+      volumeButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
+      [volumeButtonContainer setHidden:1];
 
-      v9 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-      v11 = v9;
+      prominentPlayButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+      v11 = prominentPlayButtonContainer;
       v12 = 1;
       goto LABEL_9;
     case 2:
-      v10 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
-      [v10 setHidden:1];
+      prominentPlayButtonContainer2 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+      [prominentPlayButtonContainer2 setHidden:1];
 
       [(AVTurboModePlaybackControlsPlaceholderView *)self _makeVolumeButtonAndContainerIfNeeded];
-      v9 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
+      prominentPlayButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
       goto LABEL_7;
     case 1:
-      v8 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
-      [v8 setHidden:1];
+      volumeButtonContainer2 = [(AVTurboModePlaybackControlsPlaceholderView *)self volumeButtonContainer];
+      [volumeButtonContainer2 setHidden:1];
 
       [(AVTurboModePlaybackControlsPlaceholderView *)self _makeProminentPlayButtonAndContainerIfNeeded];
-      v9 = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
+      prominentPlayButtonContainer = [(AVTurboModePlaybackControlsPlaceholderView *)self prominentPlayButtonContainer];
 LABEL_7:
-      v11 = v9;
+      v11 = prominentPlayButtonContainer;
       v12 = 0;
 LABEL_9:
-      [v9 setHidden:{v12, v14, v15, v5}];
+      [prominentPlayButtonContainer setHidden:{v12, v14, v15, v5}];
 
       break;
   }
@@ -544,52 +544,52 @@ LABEL_9:
   [(UIView *)self avkit_needsUpdateBackdropCaptureViewHidden];
 }
 
-- (void)setPreferredUnobscuredArea:(int64_t)a3
+- (void)setPreferredUnobscuredArea:(int64_t)area
 {
-  if (self->_preferredUnobscuredArea != a3)
+  if (self->_preferredUnobscuredArea != area)
   {
-    self->_preferredUnobscuredArea = a3;
+    self->_preferredUnobscuredArea = area;
     [(AVTurboModePlaybackControlsPlaceholderView *)self setNeedsLayout];
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
-  v11 = v5;
-  if (self->_playerController != v5)
+  controllerCopy = controller;
+  v11 = controllerCopy;
+  if (self->_playerController != controllerCopy)
   {
-    objc_storeStrong(&self->_playerController, a3);
-    v6 = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
-    [v6 stopAllObservation];
+    objc_storeStrong(&self->_playerController, controller);
+    observationController = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
+    [observationController stopAllObservation];
 
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
-        v8 = [v7 startObserving:v11 keyPath:@"timeControlStatus" includeInitialValue:1 observationHandler:&__block_literal_global_18061];
+        observationController2 = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
+        v8 = [observationController2 startObserving:v11 keyPath:@"timeControlStatus" includeInitialValue:1 observationHandler:&__block_literal_global_18061];
 
-        v9 = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
-        v10 = [v9 startObserving:v11 keyPath:@"muted" includeInitialValue:1 observationHandler:&__block_literal_global_14_18063];
+        observationController3 = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
+        v10 = [observationController3 startObserving:v11 keyPath:@"muted" includeInitialValue:1 observationHandler:&__block_literal_global_14_18063];
 
         goto LABEL_8;
       }
     }
 
     [(AVTurboModePlaybackControlsPlaceholderView *)self setIncludedControlType:1];
-    v5 = v11;
+    controllerCopy = v11;
   }
 
-  if (v5)
+  if (controllerCopy)
   {
     goto LABEL_9;
   }
 
   [(AVTurboModePlaybackControlsPlaceholderView *)self setIncludedControlType:1];
 LABEL_8:
-  v5 = v11;
+  controllerCopy = v11;
 LABEL_9:
 }
 
@@ -636,40 +636,40 @@ void __66__AVTurboModePlaybackControlsPlaceholderView_setPlayerController___bloc
     return 0;
   }
 
-  v4 = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
-  v3 = ([v4 isHidden] & 1) == 0 && -[AVTurboModePlaybackControlsPlaceholderView includedControlType](self, "includedControlType") != 0;
+  contentView = [(AVTurboModePlaybackControlsPlaceholderView *)self contentView];
+  v3 = ([contentView isHidden] & 1) == 0 && -[AVTurboModePlaybackControlsPlaceholderView includedControlType](self, "includedControlType") != 0;
 
   return v3;
 }
 
 - (void)dealloc
 {
-  v3 = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVTurboModePlaybackControlsPlaceholderView *)self observationController];
+  [observationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVTurboModePlaybackControlsPlaceholderView;
   [(AVTurboModePlaybackControlsPlaceholderView *)&v4 dealloc];
 }
 
-- (AVTurboModePlaybackControlsPlaceholderView)initWithFrame:(CGRect)a3 styleSheet:(id)a4
+- (AVTurboModePlaybackControlsPlaceholderView)initWithFrame:(CGRect)frame styleSheet:(id)sheet
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sheetCopy = sheet;
   v19.receiver = self;
   v19.super_class = AVTurboModePlaybackControlsPlaceholderView;
-  v11 = [(AVTurboModePlaybackControlsPlaceholderView *)&v19 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(AVTurboModePlaybackControlsPlaceholderView *)&v19 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_styleSheet, a4);
+    objc_storeStrong(&height->_styleSheet, sheet);
     v13 = [AVTouchIgnoringView alloc];
-    v14 = [(AVTouchIgnoringView *)v13 initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
+    height2 = [(AVTouchIgnoringView *)v13 initWithFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, height];
     contentView = v12->_contentView;
-    v12->_contentView = v14;
+    v12->_contentView = height2;
 
     v16 = [[AVObservationController alloc] initWithOwner:v12];
     observationController = v12->_observationController;

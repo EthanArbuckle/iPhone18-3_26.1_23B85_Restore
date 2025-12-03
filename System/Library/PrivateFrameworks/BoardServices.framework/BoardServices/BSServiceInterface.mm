@@ -1,19 +1,19 @@
 @interface BSServiceInterface
-+ (BSServiceInterface)interfaceWithIdentifier:(id)a3;
-+ (BSServiceInterface)interfaceWithIdentifier:(id)a3 configurator:(id)a4;
-+ (BSServiceInterface)interfaceWithServer:(id)a3 client:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BSServiceInterface)interfaceWithIdentifier:(id)identifier;
++ (BSServiceInterface)interfaceWithIdentifier:(id)identifier configurator:(id)configurator;
++ (BSServiceInterface)interfaceWithServer:(id)server client:(id)client;
+- (BOOL)isEqual:(id)equal;
 - (BSServiceInterface)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)invertInterface:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)invertInterface:(id)interface;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)clientMessagingExpectation;
 - (unint64_t)hash;
-- (void)_initWithIdentifier:(void *)a3 server:(void *)a4 client:(uint64_t)a5 clientWaitsForActivation:;
-- (void)setIdentifier:(id)a3;
+- (void)_initWithIdentifier:(void *)identifier server:(void *)server client:(uint64_t)client clientWaitsForActivation:;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation BSServiceInterface
@@ -28,8 +28,8 @@
 
   else
   {
-    v5 = [(BSObjCProtocol *)self->_server methods];
-    v4 = [v5 count] == 0;
+    methods = [(BSObjCProtocol *)self->_server methods];
+    v4 = [methods count] == 0;
   }
 
   return v4;
@@ -49,7 +49,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceInterface.m";
     v18 = 1024;
@@ -66,24 +66,24 @@
   return result;
 }
 
-+ (BSServiceInterface)interfaceWithIdentifier:(id)a3
++ (BSServiceInterface)interfaceWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [BSServiceInterface alloc];
   v5 = __emptyProtocol();
   v6 = __emptyProtocol();
-  v7 = [(BSServiceInterface *)v4 _initWithIdentifier:v3 server:v5 client:v6 clientWaitsForActivation:*MEMORY[0x1E695E4D0]];
+  v7 = [(BSServiceInterface *)v4 _initWithIdentifier:identifierCopy server:v5 client:v6 clientWaitsForActivation:*MEMORY[0x1E695E4D0]];
 
   return v7;
 }
 
-- (void)_initWithIdentifier:(void *)a3 server:(void *)a4 client:(uint64_t)a5 clientWaitsForActivation:
+- (void)_initWithIdentifier:(void *)identifier server:(void *)server client:(uint64_t)client clientWaitsForActivation:
 {
   v63 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  identifierCopy = identifier;
+  serverCopy = server;
+  if (self)
   {
     v12 = objc_opt_class();
     if (v12 != objc_opt_class())
@@ -102,7 +102,7 @@
           v53 = 2114;
           v54 = v48;
           v55 = 2048;
-          v56 = a1;
+          selfCopy5 = self;
           v57 = 2114;
           v58 = @"BSServiceInterface.m";
           v59 = 1024;
@@ -120,7 +120,7 @@
       }
     }
 
-    v14 = v10;
+    v14 = identifierCopy;
     NSClassFromString(&cfstr_Bsobjcprotocol.isa);
     if (!v14)
     {
@@ -135,7 +135,7 @@
         v53 = 2114;
         v54 = v28;
         v55 = 2048;
-        v56 = a1;
+        selfCopy5 = self;
         v57 = 2114;
         v58 = @"BSServiceInterface.m";
         v59 = 1024;
@@ -165,7 +165,7 @@
         v53 = 2114;
         v54 = v33;
         v55 = 2048;
-        v56 = a1;
+        selfCopy5 = self;
         v57 = 2114;
         v58 = @"BSServiceInterface.m";
         v59 = 1024;
@@ -182,7 +182,7 @@
       JUMPOUT(0x19A85894CLL);
     }
 
-    v15 = v11;
+    v15 = serverCopy;
     NSClassFromString(&cfstr_Bsobjcprotocol.isa);
     if (!v15)
     {
@@ -197,7 +197,7 @@
         v53 = 2114;
         v54 = v38;
         v55 = 2048;
-        v56 = a1;
+        selfCopy5 = self;
         v57 = 2114;
         v58 = @"BSServiceInterface.m";
         v59 = 1024;
@@ -227,7 +227,7 @@
         v53 = 2114;
         v54 = v43;
         v55 = 2048;
-        v56 = a1;
+        selfCopy5 = self;
         v57 = 2114;
         v58 = @"BSServiceInterface.m";
         v59 = 1024;
@@ -244,7 +244,7 @@
       JUMPOUT(0x19A858B54);
     }
 
-    v50.receiver = a1;
+    v50.receiver = self;
     v50.super_class = BSServiceInterface;
     v16 = objc_msgSendSuper2(&v50, sel_init);
     if (v16)
@@ -261,7 +261,7 @@
       v22 = v16[3];
       v16[3] = v21;
 
-      v16[4] = a5;
+      v16[4] = client;
     }
   }
 
@@ -274,12 +274,12 @@
   return v16;
 }
 
-+ (BSServiceInterface)interfaceWithIdentifier:(id)a3 configurator:(id)a4
++ (BSServiceInterface)interfaceWithIdentifier:(id)identifier configurator:(id)configurator
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  configuratorCopy = configurator;
+  if (!configuratorCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"configurator"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -292,7 +292,7 @@
       v21 = 2114;
       v22 = v17;
       v23 = 2048;
-      v24 = a1;
+      selfCopy = self;
       v25 = 2114;
       v26 = @"BSServiceInterface.m";
       v27 = 1024;
@@ -310,8 +310,8 @@
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [BSMutableServiceInterface interfaceWithIdentifier:v7];
-  v8[2](v8, v10);
+  v10 = [BSMutableServiceInterface interfaceWithIdentifier:identifierCopy];
+  configuratorCopy[2](configuratorCopy, v10);
   v11 = [v10 copy];
 
   objc_autoreleasePoolPop(v9);
@@ -320,13 +320,13 @@
   return v11;
 }
 
-- (id)invertInterface:(id)a3
+- (id)invertInterface:(id)interface
 {
-  v4 = a3;
-  if (v4)
+  interfaceCopy = interface;
+  if (interfaceCopy)
   {
     v5 = [(BSServiceInterface *)[BSMutableServiceInterface alloc] _initWithIdentifier:self->_client server:self->_server client:0 clientWaitsForActivation:?];
-    v4[2](v4, v5);
+    interfaceCopy[2](interfaceCopy, v5);
     v6 = [v5 copy];
   }
 
@@ -338,20 +338,20 @@
   return v6;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  identifierCopy = identifier;
+  v4 = [identifierCopy copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 }
 
-+ (BSServiceInterface)interfaceWithServer:(id)a3 client:(id)a4
++ (BSServiceInterface)interfaceWithServer:(id)server client:(id)client
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  serverCopy = server;
+  clientCopy = client;
+  v9 = serverCopy;
   NSClassFromString(&cfstr_Bsobjcprotocol.isa);
   if (!v9)
   {
@@ -366,7 +366,7 @@
       v44 = 2114;
       v45 = v25;
       v46 = 2048;
-      v47 = a1;
+      selfCopy4 = self;
       v48 = 2114;
       v49 = @"BSServiceInterface.m";
       v50 = 1024;
@@ -396,7 +396,7 @@
       v44 = 2114;
       v45 = v30;
       v46 = 2048;
-      v47 = a1;
+      selfCopy4 = self;
       v48 = 2114;
       v49 = @"BSServiceInterface.m";
       v50 = 1024;
@@ -417,7 +417,7 @@
   v11 = [v9 flattenWithIgnoredInheritedProtocols:v10];
 
   __vetProtocol(v11);
-  v12 = v8;
+  v12 = clientCopy;
   NSClassFromString(&cfstr_Bsobjcprotocol.isa);
   if (!v12)
   {
@@ -432,7 +432,7 @@
       v44 = 2114;
       v45 = v35;
       v46 = 2048;
-      v47 = a1;
+      selfCopy4 = self;
       v48 = 2114;
       v49 = @"BSServiceInterface.m";
       v50 = 1024;
@@ -462,7 +462,7 @@
       v44 = 2114;
       v45 = v40;
       v46 = 2048;
-      v47 = a1;
+      selfCopy4 = self;
       v48 = 2114;
       v49 = @"BSServiceInterface.m";
       v50 = 1024;
@@ -484,8 +484,8 @@
 
   __vetProtocol(v14);
   v15 = [BSServiceInterface alloc];
-  v16 = [v11 methods];
-  v17 = [v16 count];
+  methods = [v11 methods];
+  v17 = [methods count];
   v18 = MEMORY[0x1E695E4D0];
   if (v17)
   {
@@ -499,9 +499,9 @@
   return v19;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [BSMutableServiceInterface allocWithZone:a3];
+  v4 = [BSMutableServiceInterface allocWithZone:zone];
   identifier = self->_identifier;
   server = self->_server;
   client = self->_client;
@@ -512,46 +512,46 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BSServiceInterface *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSServiceInterface *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendString:self->_identifier withName:0];
-  v4 = [(BSObjCProtocol *)self->_server name];
-  [v3 appendString:v4 withName:@"server"];
+  name = [(BSObjCProtocol *)self->_server name];
+  [v3 appendString:name withName:@"server"];
 
-  v5 = [(BSObjCProtocol *)self->_client name];
-  [v3 appendString:v5 withName:@"client"];
+  name2 = [(BSObjCProtocol *)self->_client name];
+  [v3 appendString:name2 withName:@"client"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSServiceInterface *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSServiceInterface *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSServiceInterface *)self succinctDescriptionBuilder];
-  [v5 appendString:self->_identifier withName:0];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSServiceInterface *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendString:self->_identifier withName:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__BSServiceInterface_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E75209E8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -586,10 +586,10 @@ const __CFBoolean *__60__BSServiceInterface_descriptionBuilderWithMultilinePrefi
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -597,10 +597,10 @@ const __CFBoolean *__60__BSServiceInterface_descriptionBuilderWithMultilinePrefi
   else
   {
     v5 = objc_opt_class();
-    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (identifier = self->_identifier, v8 = v4->_identifier, BSEqualStrings()) && (server = self->_server, v10 = v4->_server, BSEqualObjects()) && (client = self->_client, v12 = v4->_client, BSEqualObjects()))
+    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (identifier = self->_identifier, v8 = equalCopy->_identifier, BSEqualStrings()) && (server = self->_server, v10 = equalCopy->_server, BSEqualObjects()) && (client = self->_client, v12 = equalCopy->_client, BSEqualObjects()))
     {
-      v13 = [(BSServiceInterface *)self clientMessagingExpectation];
-      v14 = v13 == [(BSServiceInterface *)v4 clientMessagingExpectation];
+      clientMessagingExpectation = [(BSServiceInterface *)self clientMessagingExpectation];
+      v14 = clientMessagingExpectation == [(BSServiceInterface *)equalCopy clientMessagingExpectation];
     }
 
     else

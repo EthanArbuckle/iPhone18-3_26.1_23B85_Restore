@@ -1,7 +1,7 @@
 @interface MockUITraitEnvironment
 - (UITraitCollection)traitCollection;
 - (_TtC9WorkoutUI22MockUITraitEnvironment)init;
-- (void)setTraitCollection:(id)a3;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation MockUITraitEnvironment
@@ -13,13 +13,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
   v5 = OBJC_IVAR____TtC9WorkoutUI22MockUITraitEnvironment_traitCollection;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = collection;
+  collectionCopy = collection;
 }
 
 - (_TtC9WorkoutUI22MockUITraitEnvironment)init

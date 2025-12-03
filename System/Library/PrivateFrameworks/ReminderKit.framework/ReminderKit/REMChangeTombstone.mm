@@ -1,9 +1,9 @@
 @interface REMChangeTombstone
 + (BOOL)supportsSecureCoding;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSUUID)objectIdentifier;
-- (REMChangeTombstone)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (REMChangeTombstone)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMChangeTombstone
@@ -30,7 +30,7 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -39,7 +39,7 @@
   [v4 raise:v5 format:{@"Abstract method called -[%@ %@]", v6, v7}];
 }
 
-- (REMChangeTombstone)initWithCoder:(id)a3
+- (REMChangeTombstone)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -50,16 +50,16 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
-  v7 = a3;
+  equalCopy = equal;
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(a2);
   [v5 raise:v6 format:{@"Abstract method called -[%@ %@]", v8, v9}];
 
-  return self == v7;
+  return self == equalCopy;
 }
 
 @end

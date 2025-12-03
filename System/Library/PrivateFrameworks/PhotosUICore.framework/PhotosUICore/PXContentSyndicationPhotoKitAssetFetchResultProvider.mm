@@ -1,33 +1,33 @@
 @interface PXContentSyndicationPhotoKitAssetFetchResultProvider
 - (PXContentSyndicationPhotoKitAssetFetchResultProvider)init;
-- (PXContentSyndicationPhotoKitAssetFetchResultProvider)initWithPhotoLibrary:(id)a3 fetchResultBlock:(id)a4;
-- (id)_serialQueue_fetchResultAssetCollection:(id)a3 fetchResultBlock:(id)a4;
-- (id)assetFetchResultForAssetCollection:(id)a3;
-- (void)_didChangeFetchResult:(id)a3 forAssetCollection:(id)a4 withChangeObservers:(id)a5;
+- (PXContentSyndicationPhotoKitAssetFetchResultProvider)initWithPhotoLibrary:(id)library fetchResultBlock:(id)block;
+- (id)_serialQueue_fetchResultAssetCollection:(id)collection fetchResultBlock:(id)block;
+- (id)assetFetchResultForAssetCollection:(id)collection;
+- (void)_didChangeFetchResult:(id)result forAssetCollection:(id)collection withChangeObservers:(id)observers;
 - (void)_serialQueue_invalidateAllAssetFetchResults;
-- (void)_serialQueue_invalidateAssetFetchResultsInAssetCollections:(id)a3;
-- (void)_serialQueue_registerChangeObserver:(id)a3 forAssetCollection:(id)a4 fetchResultBlock:(id)a5;
-- (void)_serialQueue_unregisterChangeObserver:(id)a3 forAssetCollection:(id)a4;
+- (void)_serialQueue_invalidateAssetFetchResultsInAssetCollections:(id)collections;
+- (void)_serialQueue_registerChangeObserver:(id)observer forAssetCollection:(id)collection fetchResultBlock:(id)block;
+- (void)_serialQueue_unregisterChangeObserver:(id)observer forAssetCollection:(id)collection;
 - (void)invalidateAllAssetFetchResults;
-- (void)invalidateAssetFetchResultsInAssetCollections:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)registerChangeObserver:(id)a3 forAssetCollection:(id)a4;
-- (void)unregisterChangeObserver:(id)a3 forAssetCollection:(id)a4;
+- (void)invalidateAssetFetchResultsInAssetCollections:(id)collections;
+- (void)photoLibraryDidChange:(id)change;
+- (void)registerChangeObserver:(id)observer forAssetCollection:(id)collection;
+- (void)unregisterChangeObserver:(id)observer forAssetCollection:(id)collection;
 @end
 
 @implementation PXContentSyndicationPhotoKitAssetFetchResultProvider
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__PXContentSyndicationPhotoKitAssetFetchResultProvider_photoLibraryDidChange___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -179,30 +179,30 @@ void __78__PXContentSyndicationPhotoKitAssetFetchResultProvider_photoLibraryDidC
   [WeakRetained _didChangeFetchResult:v6 forAssetCollection:v7 withChangeObservers:v9];
 }
 
-- (void)_didChangeFetchResult:(id)a3 forAssetCollection:(id)a4 withChangeObservers:(id)a5
+- (void)_didChangeFetchResult:(id)result forAssetCollection:(id)collection withChangeObservers:(id)observers
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  collectionCopy = collection;
+  observersCopy = observers;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v11 = PLAssetFetchResultProviderGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = objc_opt_class();
-    v13 = [v8 count];
+    v13 = [resultCopy count];
     v14 = objc_opt_class();
-    v15 = [v10 componentsJoinedByString:{@", "}];
+    v15 = [observersCopy componentsJoinedByString:{@", "}];
     *buf = 138413570;
     v22 = v12;
     v23 = 2048;
-    v24 = v8;
+    v24 = resultCopy;
     v25 = 2048;
     v26 = v13;
     v27 = 2112;
     v28 = v14;
     v29 = 2048;
-    v30 = v9;
+    v30 = collectionCopy;
     v31 = 2112;
     v32 = v15;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "Did change fetch result: <%@:%p, count:%lu> for asset collection: <%@:%p> with change observers: (%@)", buf, 0x3Eu);
@@ -213,22 +213,22 @@ void __78__PXContentSyndicationPhotoKitAssetFetchResultProvider_photoLibraryDidC
   v18[2] = __117__PXContentSyndicationPhotoKitAssetFetchResultProvider__didChangeFetchResult_forAssetCollection_withChangeObservers___block_invoke;
   v18[3] = &unk_1E773CF38;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v16 = v9;
-  v17 = v8;
-  [v10 enumerateObjectsUsingBlock:v18];
+  v19 = resultCopy;
+  v20 = collectionCopy;
+  v16 = collectionCopy;
+  v17 = resultCopy;
+  [observersCopy enumerateObjectsUsingBlock:v18];
 }
 
-- (void)_serialQueue_unregisterChangeObserver:(id)a3 forAssetCollection:(id)a4
+- (void)_serialQueue_unregisterChangeObserver:(id)observer forAssetCollection:(id)collection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  collectionCopy = collection;
   serialQueue = self->_serialQueue;
-  v8 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(serialQueue);
-  v9 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v6];
-  [v9 removeObject:v8];
+  v9 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:collectionCopy];
+  [v9 removeObject:observerCopy];
 
   if (![v9 count])
   {
@@ -238,40 +238,40 @@ void __78__PXContentSyndicationPhotoKitAssetFetchResultProvider_photoLibraryDidC
       v11 = 138412546;
       v12 = objc_opt_class();
       v13 = 2048;
-      v14 = v6;
+      v14 = collectionCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "No observers for asset collection: <%@:%p>", &v11, 0x16u);
     }
 
-    [(NSMutableDictionary *)self->_fetchResults setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_fetchResults setObject:0 forKeyedSubscript:collectionCopy];
   }
 }
 
-- (void)_serialQueue_registerChangeObserver:(id)a3 forAssetCollection:(id)a4 fetchResultBlock:(id)a5
+- (void)_serialQueue_registerChangeObserver:(id)observer forAssetCollection:(id)collection fetchResultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  collectionCopy = collection;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v11 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v9];
-  if (!v11)
+  weakObjectsHashTable = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:collectionCopy];
+  if (!weakObjectsHashTable)
   {
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(NSMutableDictionary *)self->_observers setObject:v11 forKeyedSubscript:v9];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(NSMutableDictionary *)self->_observers setObject:weakObjectsHashTable forKeyedSubscript:collectionCopy];
   }
 
-  [v11 addObject:v8];
+  [weakObjectsHashTable addObject:observerCopy];
   objc_initWeak(&location, self);
-  v12 = [(PXContentSyndicationPhotoKitAssetFetchResultProvider *)self _serialQueue_fetchResultAssetCollection:v9 fetchResultBlock:v10];
+  v12 = [(PXContentSyndicationPhotoKitAssetFetchResultProvider *)self _serialQueue_fetchResultAssetCollection:collectionCopy fetchResultBlock:blockCopy];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __128__PXContentSyndicationPhotoKitAssetFetchResultProvider__serialQueue_registerChangeObserver_forAssetCollection_fetchResultBlock___block_invoke;
   block[3] = &unk_1E7748228;
   objc_copyWeak(&v20, &location);
   v17 = v12;
-  v18 = v9;
-  v19 = v8;
-  v13 = v8;
-  v14 = v9;
+  v18 = collectionCopy;
+  v19 = observerCopy;
+  v13 = observerCopy;
+  v14 = collectionCopy;
   v15 = v12;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -290,16 +290,16 @@ void __128__PXContentSyndicationPhotoKitAssetFetchResultProvider__serialQueue_re
   [WeakRetained _didChangeFetchResult:v3 forAssetCollection:v4 withChangeObservers:v5];
 }
 
-- (void)_serialQueue_invalidateAssetFetchResultsInAssetCollections:(id)a3
+- (void)_serialQueue_invalidateAssetFetchResultsInAssetCollections:(id)collections
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   dispatch_assert_queue_V2(self->_serialQueue);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = collectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -334,13 +334,13 @@ void __128__PXContentSyndicationPhotoKitAssetFetchResultProvider__serialQueue_re
   [(NSMutableDictionary *)fetchResults removeAllObjects];
 }
 
-- (id)_serialQueue_fetchResultAssetCollection:(id)a3 fetchResultBlock:(id)a4
+- (id)_serialQueue_fetchResultAssetCollection:(id)collection fetchResultBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v9 = [(NSMutableDictionary *)self->_fetchResults objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->_fetchResults objectForKeyedSubscript:collectionCopy];
   if (!v9)
   {
     v10 = PLAssetFetchResultProviderGetLog();
@@ -349,41 +349,41 @@ void __128__PXContentSyndicationPhotoKitAssetFetchResultProvider__serialQueue_re
       *buf = 138412546;
       v16 = objc_opt_class();
       v17 = 2048;
-      v18 = v7;
+      v18 = collectionCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "Add asset collection: <%@:%p>", buf, 0x16u);
     }
 
-    v9 = v8[2](v8, v7);
+    v9 = blockCopy[2](blockCopy, collectionCopy);
     if (!v9)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"fetchResult"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"fetchResult"}];
     }
 
-    v11 = [v9 photoLibrary];
-    if (v11 != self->_photoLibrary)
+    photoLibrary = [v9 photoLibrary];
+    if (photoLibrary != self->_photoLibrary)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary == _photoLibrary"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary == _photoLibrary"}];
     }
 
-    [(NSMutableDictionary *)self->_fetchResults setObject:v9 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_fetchResults setObject:v9 forKeyedSubscript:collectionCopy];
   }
 
   return v9;
 }
 
-- (void)invalidateAssetFetchResultsInAssetCollections:(id)a3
+- (void)invalidateAssetFetchResultsInAssetCollections:(id)collections
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   serialQueue = self->_serialQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __102__PXContentSyndicationPhotoKitAssetFetchResultProvider_invalidateAssetFetchResultsInAssetCollections___block_invoke;
   v8[3] = &unk_1E774C620;
   v8[4] = self;
-  v6 = v4;
+  v6 = collectionsCopy;
   v9 = v6;
   dispatch_sync(serialQueue, v8);
   v7 = PLAssetFetchResultProviderGetLog();
@@ -412,14 +412,14 @@ void __128__PXContentSyndicationPhotoKitAssetFetchResultProvider__serialQueue_re
   }
 }
 
-- (id)assetFetchResultForAssetCollection:(id)a3
+- (id)assetFetchResultForAssetCollection:(id)collection
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  collectionCopy = collection;
+  if (!collectionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
   }
 
   v19 = 0;
@@ -435,7 +435,7 @@ void __128__PXContentSyndicationPhotoKitAssetFetchResultProvider__serialQueue_re
   block[3] = &unk_1E7746448;
   v18 = &v19;
   block[4] = self;
-  v7 = v5;
+  v7 = collectionCopy;
   v17 = v7;
   dispatch_sync(serialQueue, block);
   v8 = PLAssetFetchResultProviderGetLog();
@@ -472,15 +472,15 @@ void __91__PXContentSyndicationPhotoKitAssetFetchResultProvider_assetFetchResult
   *(v3 + 40) = v2;
 }
 
-- (void)unregisterChangeObserver:(id)a3 forAssetCollection:(id)a4
+- (void)unregisterChangeObserver:(id)observer forAssetCollection:(id)collection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  observerCopy = observer;
+  collectionCopy = collection;
+  v9 = collectionCopy;
+  if (observerCopy)
   {
-    if (v8)
+    if (collectionCopy)
     {
       goto LABEL_3;
     }
@@ -488,8 +488,8 @@ void __91__PXContentSyndicationPhotoKitAssetFetchResultProvider_assetFetchResult
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
 
     if (v9)
     {
@@ -497,8 +497,8 @@ void __91__PXContentSyndicationPhotoKitAssetFetchResultProvider_assetFetchResult
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
 
 LABEL_3:
   v10 = PLAssetFetchResultProviderGetLog();
@@ -507,7 +507,7 @@ LABEL_3:
     *buf = 138413058;
     v21 = objc_opt_class();
     v22 = 2048;
-    v23 = v7;
+    v23 = observerCopy;
     v24 = 2112;
     v25 = objc_opt_class();
     v26 = 2048;
@@ -522,10 +522,10 @@ LABEL_3:
   block[2] = __100__PXContentSyndicationPhotoKitAssetFetchResultProvider_unregisterChangeObserver_forAssetCollection___block_invoke;
   block[3] = &unk_1E774B708;
   objc_copyWeak(&v19, buf);
-  v17 = v7;
+  v17 = observerCopy;
   v18 = v9;
   v12 = v9;
-  v13 = v7;
+  v13 = observerCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v19);
@@ -538,15 +538,15 @@ void __100__PXContentSyndicationPhotoKitAssetFetchResultProvider_unregisterChang
   [WeakRetained _serialQueue_unregisterChangeObserver:*(a1 + 32) forAssetCollection:*(a1 + 40)];
 }
 
-- (void)registerChangeObserver:(id)a3 forAssetCollection:(id)a4
+- (void)registerChangeObserver:(id)observer forAssetCollection:(id)collection
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  observerCopy = observer;
+  collectionCopy = collection;
+  v9 = collectionCopy;
+  if (observerCopy)
   {
-    if (v8)
+    if (collectionCopy)
     {
       goto LABEL_3;
     }
@@ -554,8 +554,8 @@ void __100__PXContentSyndicationPhotoKitAssetFetchResultProvider_unregisterChang
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
 
     if (v9)
     {
@@ -563,8 +563,8 @@ void __100__PXContentSyndicationPhotoKitAssetFetchResultProvider_unregisterChang
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
 
 LABEL_3:
   v10 = PLAssetFetchResultProviderGetLog();
@@ -573,7 +573,7 @@ LABEL_3:
     *buf = 138413058;
     v24 = objc_opt_class();
     v25 = 2048;
-    v26 = v7;
+    v26 = observerCopy;
     v27 = 2112;
     v28 = objc_opt_class();
     v29 = 2048;
@@ -589,12 +589,12 @@ LABEL_3:
   block[2] = __98__PXContentSyndicationPhotoKitAssetFetchResultProvider_registerChangeObserver_forAssetCollection___block_invoke;
   block[3] = &unk_1E774B1F8;
   objc_copyWeak(&v22, buf);
-  v19 = v7;
+  v19 = observerCopy;
   v20 = v9;
   v21 = v11;
   v13 = v11;
   v14 = v9;
-  v15 = v7;
+  v15 = observerCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v22);
@@ -607,14 +607,14 @@ void __98__PXContentSyndicationPhotoKitAssetFetchResultProvider_registerChangeOb
   [WeakRetained _serialQueue_registerChangeObserver:*(a1 + 32) forAssetCollection:*(a1 + 40) fetchResultBlock:*(a1 + 48)];
 }
 
-- (PXContentSyndicationPhotoKitAssetFetchResultProvider)initWithPhotoLibrary:(id)a3 fetchResultBlock:(id)a4
+- (PXContentSyndicationPhotoKitAssetFetchResultProvider)initWithPhotoLibrary:(id)library fetchResultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  libraryCopy = library;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (libraryCopy)
   {
-    if (v9)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -622,8 +622,8 @@ void __98__PXContentSyndicationPhotoKitAssetFetchResultProvider_registerChangeOb
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
     if (v10)
     {
@@ -631,8 +631,8 @@ void __98__PXContentSyndicationPhotoKitAssetFetchResultProvider_registerChangeOb
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"fetchResultBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"fetchResultBlock"}];
 
 LABEL_3:
   v24.receiver = self;
@@ -645,7 +645,7 @@ LABEL_3:
     serialQueue = v11->_serialQueue;
     v11->_serialQueue = v13;
 
-    objc_storeStrong(&v11->_photoLibrary, a3);
+    objc_storeStrong(&v11->_photoLibrary, library);
     [(PHPhotoLibrary *)v11->_photoLibrary registerChangeObserver:v11];
     v15 = _Block_copy(v10);
     fetchResultBlock = v11->_fetchResultBlock;
@@ -665,8 +665,8 @@ LABEL_3:
 
 - (PXContentSyndicationPhotoKitAssetFetchResultProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXContentSyndicationPhotoKitAssetFetchResultProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitAssetFetchResultProvider.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXContentSyndicationPhotoKitAssetFetchResultProvider init]"}];
 
   abort();
 }

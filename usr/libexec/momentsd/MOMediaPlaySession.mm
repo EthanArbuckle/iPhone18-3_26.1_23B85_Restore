@@ -1,45 +1,45 @@
 @interface MOMediaPlaySession
-+ (BOOL)isFirstPartyApp:(id)a3;
-+ (BOOL)isValidThirdParty:(id)a3 bundleCategory:(id)a4;
-+ (BOOL)isValidThirdPartyEvent:(id)a3 bundleCategory:(id)a4 mediaTypeString:(id)a5 playTime:(double)a6;
-+ (id)describeCategory:(int)a3;
-+ (id)getMOPlaySessionMediaType:(id)a3 bundleId:(id)a4;
-+ (id)redactString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMediaPlaySession:(id)a3;
-- (MOMediaPlaySession)initWithCoder:(id)a3;
-- (MOMediaPlaySession)initWithTitle:(id)a3 album:(id)a4 bundleId:(id)a5 productId:(id)a6 genre:(id)a7 mediaType:(id)a8 artist:(id)a9 startDate:(id)a10 endDate:(id)a11 duration:(unsigned int)a12 isRemote:(BOOL)a13 deviceSource:(id)a14 bgColor:(id)a15;
++ (BOOL)isFirstPartyApp:(id)app;
++ (BOOL)isValidThirdParty:(id)party bundleCategory:(id)category;
++ (BOOL)isValidThirdPartyEvent:(id)event bundleCategory:(id)category mediaTypeString:(id)string playTime:(double)time;
++ (id)describeCategory:(int)category;
++ (id)getMOPlaySessionMediaType:(id)type bundleId:(id)id;
++ (id)redactString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMediaPlaySession:(id)session;
+- (MOMediaPlaySession)initWithCoder:(id)coder;
+- (MOMediaPlaySession)initWithTitle:(id)title album:(id)album bundleId:(id)id productId:(id)productId genre:(id)genre mediaType:(id)type artist:(id)artist startDate:(id)self0 endDate:(id)self1 duration:(unsigned int)self2 isRemote:(BOOL)self3 deviceSource:(id)self4 bgColor:(id)self5;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOMediaPlaySession
 
-- (MOMediaPlaySession)initWithTitle:(id)a3 album:(id)a4 bundleId:(id)a5 productId:(id)a6 genre:(id)a7 mediaType:(id)a8 artist:(id)a9 startDate:(id)a10 endDate:(id)a11 duration:(unsigned int)a12 isRemote:(BOOL)a13 deviceSource:(id)a14 bgColor:(id)a15
+- (MOMediaPlaySession)initWithTitle:(id)title album:(id)album bundleId:(id)id productId:(id)productId genre:(id)genre mediaType:(id)type artist:(id)artist startDate:(id)self0 endDate:(id)self1 duration:(unsigned int)self2 isRemote:(BOOL)self3 deviceSource:(id)self4 bgColor:(id)self5
 {
-  v46 = a3;
-  v39 = a4;
-  v21 = a4;
-  v22 = self;
-  v45 = v21;
-  v40 = a5;
-  v23 = a5;
-  v41 = a6;
-  v24 = a6;
-  v42 = a7;
-  v25 = a7;
-  v43 = a8;
-  v26 = a8;
-  v47 = a9;
-  v27 = a10;
-  v28 = a11;
-  v29 = a14;
-  v30 = a15;
-  v48 = v28;
-  if (v27)
+  titleCopy = title;
+  albumCopy = album;
+  albumCopy2 = album;
+  selfCopy = self;
+  v45 = albumCopy2;
+  idCopy = id;
+  idCopy2 = id;
+  productIdCopy = productId;
+  productIdCopy2 = productId;
+  genreCopy = genre;
+  genreCopy2 = genre;
+  typeCopy = type;
+  typeCopy2 = type;
+  artistCopy = artist;
+  dateCopy = date;
+  endDateCopy = endDate;
+  sourceCopy = source;
+  colorCopy = color;
+  v48 = endDateCopy;
+  if (dateCopy)
   {
-    if (v28)
+    if (endDateCopy)
     {
       goto LABEL_10;
     }
@@ -54,9 +54,9 @@
   }
 
   v32 = +[NSAssertionHandler currentHandler];
-  [v32 handleFailureInMethod:a2 object:v22 file:@"MOMediaPlaySession.m" lineNumber:33 description:{@"Invalid parameter not satisfying: startDate != nil (in %s:%d)", "-[MOMediaPlaySession initWithTitle:album:bundleId:productId:genre:mediaType:artist:startDate:endDate:duration:isRemote:deviceSource:bgColor:]", 33}];
+  [v32 handleFailureInMethod:a2 object:selfCopy file:@"MOMediaPlaySession.m" lineNumber:33 description:{@"Invalid parameter not satisfying: startDate != nil (in %s:%d)", "-[MOMediaPlaySession initWithTitle:album:bundleId:productId:genre:mediaType:artist:startDate:endDate:duration:isRemote:deviceSource:bgColor:]", 33}];
 
-  v28 = v48;
+  endDateCopy = v48;
   if (!v48)
   {
 LABEL_7:
@@ -67,49 +67,49 @@ LABEL_7:
     }
 
     v34 = +[NSAssertionHandler currentHandler];
-    [v34 handleFailureInMethod:a2 object:v22 file:@"MOMediaPlaySession.m" lineNumber:34 description:{@"Invalid parameter not satisfying: endDate != nil (in %s:%d)", "-[MOMediaPlaySession initWithTitle:album:bundleId:productId:genre:mediaType:artist:startDate:endDate:duration:isRemote:deviceSource:bgColor:]", 34}];
+    [v34 handleFailureInMethod:a2 object:selfCopy file:@"MOMediaPlaySession.m" lineNumber:34 description:{@"Invalid parameter not satisfying: endDate != nil (in %s:%d)", "-[MOMediaPlaySession initWithTitle:album:bundleId:productId:genre:mediaType:artist:startDate:endDate:duration:isRemote:deviceSource:bgColor:]", 34}];
 
-    v28 = v48;
+    endDateCopy = v48;
   }
 
 LABEL_10:
-  v49.receiver = v22;
+  v49.receiver = selfCopy;
   v49.super_class = MOMediaPlaySession;
   v35 = [(MOMediaPlaySession *)&v49 init];
   v36 = v35;
   if (v35)
   {
-    objc_storeStrong(&v35->_title, a3);
-    objc_storeStrong(&v36->_album, v39);
-    objc_storeStrong(&v36->_bundleId, v40);
-    objc_storeStrong(&v36->_productId, v41);
-    objc_storeStrong(&v36->_genre, v42);
-    objc_storeStrong(&v36->_mediaType, v43);
-    objc_storeStrong(&v36->_artist, a9);
-    objc_storeStrong(&v36->_startDate, a10);
-    objc_storeStrong(&v36->_endDate, a11);
-    v36->_duration = a12;
-    v28 = v48;
-    v36->_isRemote = a13;
-    objc_storeStrong(&v36->_deviceSource, a14);
-    objc_storeStrong(&v36->_bgColor, a15);
+    objc_storeStrong(&v35->_title, title);
+    objc_storeStrong(&v36->_album, albumCopy);
+    objc_storeStrong(&v36->_bundleId, idCopy);
+    objc_storeStrong(&v36->_productId, productIdCopy);
+    objc_storeStrong(&v36->_genre, genreCopy);
+    objc_storeStrong(&v36->_mediaType, typeCopy);
+    objc_storeStrong(&v36->_artist, artist);
+    objc_storeStrong(&v36->_startDate, date);
+    objc_storeStrong(&v36->_endDate, endDate);
+    v36->_duration = duration;
+    endDateCopy = v48;
+    v36->_isRemote = remote;
+    objc_storeStrong(&v36->_deviceSource, source);
+    objc_storeStrong(&v36->_bgColor, color);
   }
 
   return v36;
 }
 
-- (BOOL)isEqualToMediaPlaySession:(id)a3
+- (BOOL)isEqualToMediaPlaySession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (!sessionCopy)
   {
     goto LABEL_29;
   }
 
   v6 = self->_title == 0;
-  v7 = [v4 title];
-  v8 = v7 != 0;
+  title = [sessionCopy title];
+  v8 = title != 0;
 
   if (v6 == v8)
   {
@@ -119,8 +119,8 @@ LABEL_10:
   title = self->_title;
   if (title)
   {
-    v10 = [v5 title];
-    v11 = [(NSString *)title isEqual:v10];
+    title2 = [v5 title];
+    v11 = [(NSString *)title isEqual:title2];
 
     if (!v11)
     {
@@ -129,8 +129,8 @@ LABEL_10:
   }
 
   v12 = self->_album == 0;
-  v13 = [v5 album];
-  v14 = v13 != 0;
+  album = [v5 album];
+  v14 = album != 0;
 
   if (v12 == v14)
   {
@@ -140,8 +140,8 @@ LABEL_10:
   album = self->_album;
   if (album)
   {
-    v16 = [v5 album];
-    v17 = [(NSString *)album isEqual:v16];
+    album2 = [v5 album];
+    v17 = [(NSString *)album isEqual:album2];
 
     if (!v17)
     {
@@ -150,8 +150,8 @@ LABEL_10:
   }
 
   v18 = self->_bundleId == 0;
-  v19 = [v5 bundleId];
-  v20 = v19 != 0;
+  bundleId = [v5 bundleId];
+  v20 = bundleId != 0;
 
   if (v18 == v20)
   {
@@ -161,8 +161,8 @@ LABEL_10:
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    v22 = [v5 bundleId];
-    v23 = [(NSString *)bundleId isEqual:v22];
+    bundleId2 = [v5 bundleId];
+    v23 = [(NSString *)bundleId isEqual:bundleId2];
 
     if (!v23)
     {
@@ -171,8 +171,8 @@ LABEL_10:
   }
 
   v24 = self->_productId == 0;
-  v25 = [v5 productId];
-  v26 = v25 != 0;
+  productId = [v5 productId];
+  v26 = productId != 0;
 
   if (v24 == v26)
   {
@@ -182,8 +182,8 @@ LABEL_10:
   productId = self->_productId;
   if (productId)
   {
-    v28 = [v5 productId];
-    v29 = [(NSString *)productId isEqual:v28];
+    productId2 = [v5 productId];
+    v29 = [(NSString *)productId isEqual:productId2];
 
     if (!v29)
     {
@@ -192,8 +192,8 @@ LABEL_10:
   }
 
   v30 = self->_genre == 0;
-  v31 = [v5 genre];
-  v32 = v31 != 0;
+  genre = [v5 genre];
+  v32 = genre != 0;
 
   if (v30 == v32)
   {
@@ -203,8 +203,8 @@ LABEL_10:
   genre = self->_genre;
   if (genre)
   {
-    v34 = [v5 genre];
-    v35 = [(NSString *)genre isEqual:v34];
+    genre2 = [v5 genre];
+    v35 = [(NSString *)genre isEqual:genre2];
 
     if (!v35)
     {
@@ -213,8 +213,8 @@ LABEL_10:
   }
 
   v36 = self->_mediaType == 0;
-  v37 = [v5 mediaType];
-  v38 = v37 != 0;
+  mediaType = [v5 mediaType];
+  v38 = mediaType != 0;
 
   if (v36 == v38)
   {
@@ -224,8 +224,8 @@ LABEL_10:
   mediaType = self->_mediaType;
   if (mediaType)
   {
-    v40 = [v5 mediaType];
-    v41 = [(NSString *)mediaType isEqual:v40];
+    mediaType2 = [v5 mediaType];
+    v41 = [(NSString *)mediaType isEqual:mediaType2];
 
     if (!v41)
     {
@@ -234,8 +234,8 @@ LABEL_10:
   }
 
   v42 = self->_artist == 0;
-  v43 = [v5 artist];
-  v44 = v43 != 0;
+  artist = [v5 artist];
+  v44 = artist != 0;
 
   if (v42 == v44)
   {
@@ -245,8 +245,8 @@ LABEL_10:
   artist = self->_artist;
   if (artist)
   {
-    v46 = [v5 artist];
-    v47 = [(NSString *)artist isEqual:v46];
+    artist2 = [v5 artist];
+    v47 = [(NSString *)artist isEqual:artist2];
 
     if (!v47)
     {
@@ -255,8 +255,8 @@ LABEL_10:
   }
 
   v48 = self->_startDate == 0;
-  v49 = [v5 startDate];
-  v50 = v49 != 0;
+  startDate = [v5 startDate];
+  v50 = startDate != 0;
 
   if (v48 == v50)
   {
@@ -266,8 +266,8 @@ LABEL_10:
   startDate = self->_startDate;
   if (startDate)
   {
-    v52 = [v5 startDate];
-    v53 = [(NSDate *)startDate isEqual:v52];
+    startDate2 = [v5 startDate];
+    v53 = [(NSDate *)startDate isEqual:startDate2];
 
     if (!v53)
     {
@@ -276,8 +276,8 @@ LABEL_10:
   }
 
   v54 = self->_endDate == 0;
-  v55 = [v5 endDate];
-  v56 = v55 != 0;
+  endDate = [v5 endDate];
+  v56 = endDate != 0;
 
   if (v54 == v56)
   {
@@ -290,8 +290,8 @@ LABEL_29:
     endDate = self->_endDate;
     if (endDate)
     {
-      v58 = [v5 endDate];
-      v59 = [(NSDate *)endDate isEqual:v58];
+      endDate2 = [v5 endDate];
+      v59 = [(NSDate *)endDate isEqual:endDate2];
     }
 
     else
@@ -303,16 +303,16 @@ LABEL_29:
   return v59 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(MOMediaPlaySession *)self isEqualToMediaPlaySession:v5];
   }
@@ -338,10 +338,10 @@ LABEL_29:
   return [(NSDate *)self->_endDate hash]+ 32 * v10 - v10;
 }
 
-- (MOMediaPlaySession)initWithCoder:(id)a3
+- (MOMediaPlaySession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   if (v5)
   {
     objc_opt_class();
@@ -356,7 +356,7 @@ LABEL_29:
       v103 = v10;
       v11 = [NSDictionary dictionaryWithObjects:&v103 forKeys:&v102 count:1];
       v12 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 LABEL_4:
       v13 = 0;
 LABEL_43:
@@ -365,7 +365,7 @@ LABEL_43:
     }
 
 LABEL_7:
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"album"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"album"];
     if (v7)
     {
       objc_opt_class();
@@ -380,7 +380,7 @@ LABEL_7:
         v101 = v11;
         v12 = [NSDictionary dictionaryWithObjects:&v101 forKeys:&v100 count:1];
         v17 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v12];
-        [v4 failWithError:v17];
+        [coderCopy failWithError:v17];
         v13 = 0;
 LABEL_42:
 
@@ -390,9 +390,9 @@ LABEL_42:
 
     else
     {
-      v18 = [v4 error];
+      error = [coderCopy error];
 
-      if (v18)
+      if (error)
       {
         v13 = 0;
 LABEL_47:
@@ -401,7 +401,7 @@ LABEL_47:
       }
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
     if (v9)
     {
       objc_opt_class();
@@ -416,7 +416,7 @@ LABEL_47:
         v99 = v12;
         v17 = [NSDictionary dictionaryWithObjects:&v99 forKeys:&v98 count:1];
         v21 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v17];
-        [v4 failWithError:v21];
+        [coderCopy failWithError:v21];
         v22 = v21;
         v13 = 0;
 LABEL_41:
@@ -427,9 +427,9 @@ LABEL_41:
 
     else
     {
-      v23 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v23)
+      if (error2)
       {
         v13 = 0;
 LABEL_46:
@@ -438,7 +438,7 @@ LABEL_46:
       }
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productId"];
     if (v10)
     {
       objc_opt_class();
@@ -453,7 +453,7 @@ LABEL_46:
         v97 = v17;
         v79 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
         v26 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v79];
-        [v4 failWithError:v26];
+        [coderCopy failWithError:v26];
         v27 = v26;
         v13 = 0;
 LABEL_39:
@@ -466,9 +466,9 @@ LABEL_40:
 
     else
     {
-      v28 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v28)
+      if (error3)
       {
         v13 = 0;
 LABEL_45:
@@ -477,13 +477,13 @@ LABEL_45:
       }
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"genre"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"genre"];
     if (v11)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v77 = self;
+        selfCopy5 = self;
         v29 = objc_opt_class();
         v12 = NSStringFromClass(v29);
         v30 = objc_opt_class();
@@ -493,12 +493,12 @@ LABEL_45:
         v79 = v95;
         v78 = [NSDictionary dictionaryWithObjects:&v95 forKeys:&v94 count:1];
         v31 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v78];
-        [v4 failWithError:v31];
+        [coderCopy failWithError:v31];
         v13 = 0;
 LABEL_37:
 
 LABEL_38:
-        self = v77;
+        self = selfCopy5;
         v27 = v78;
         goto LABEL_39;
       }
@@ -506,9 +506,9 @@ LABEL_38:
 
     else
     {
-      v32 = [v4 error];
+      error4 = [coderCopy error];
 
-      if (v32)
+      if (error4)
       {
         v13 = 0;
 LABEL_44:
@@ -517,13 +517,13 @@ LABEL_44:
       }
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
     if (v12)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v77 = self;
+        selfCopy5 = self;
         v33 = objc_opt_class();
         v34 = NSStringFromClass(v33);
         v35 = objc_opt_class();
@@ -534,7 +534,7 @@ LABEL_44:
         v78 = v93;
         v76 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
         v36 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v76];
-        [v4 failWithError:v36];
+        [coderCopy failWithError:v36];
 LABEL_34:
         v13 = 0;
 LABEL_35:
@@ -547,21 +547,21 @@ LABEL_36:
 
     else
     {
-      v37 = [v4 error];
+      error5 = [coderCopy error];
 
-      if (v37)
+      if (error5)
       {
         goto LABEL_4;
       }
     }
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artist"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artist"];
     if (v75)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v77 = self;
+        selfCopy5 = self;
         v38 = objc_opt_class();
         v39 = NSStringFromClass(v38);
         v40 = objc_opt_class();
@@ -573,7 +573,7 @@ LABEL_36:
         v76 = v91;
         v36 = [NSDictionary dictionaryWithObjects:&v91 forKeys:&v90 count:1];
         v41 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v36];
-        [v4 failWithError:v41];
+        [coderCopy failWithError:v41];
 
         goto LABEL_34;
       }
@@ -581,9 +581,9 @@ LABEL_36:
 
     else
     {
-      v43 = [v4 error];
+      error6 = [coderCopy error];
 
-      if (v43)
+      if (error6)
       {
         v13 = 0;
         v17 = 0;
@@ -591,7 +591,7 @@ LABEL_36:
       }
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     if (!v22)
     {
       v13 = 0;
@@ -600,9 +600,9 @@ LABEL_36:
     }
 
     v79 = v22;
-    v44 = [v4 error];
+    error7 = [coderCopy error];
 
-    if (v44)
+    if (error7)
     {
       v13 = 0;
       v17 = v75;
@@ -614,7 +614,7 @@ LABEL_36:
     v46 = objc_opt_class();
     if ((isKindOfClass & 1) == 0)
     {
-      v77 = self;
+      selfCopy5 = self;
       v48 = NSStringFromClass(v46);
       v49 = objc_opt_class();
       v76 = NSStringFromClass(v49);
@@ -624,7 +624,7 @@ LABEL_36:
       v89 = v36;
       v50 = [NSDictionary dictionaryWithObjects:&v89 forKeys:&v88 count:1];
       v51 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v50];
-      [v4 failWithError:v51];
+      [coderCopy failWithError:v51];
 
 LABEL_60:
       v13 = 0;
@@ -632,7 +632,7 @@ LABEL_60:
       goto LABEL_35;
     }
 
-    v27 = [v4 decodeObjectOfClass:v46 forKey:@"endDate"];
+    v27 = [coderCopy decodeObjectOfClass:v46 forKey:@"endDate"];
     if (!v27)
     {
       v13 = 0;
@@ -641,9 +641,9 @@ LABEL_60:
     }
 
     v78 = v27;
-    v47 = [v4 error];
+    error8 = [coderCopy error];
 
-    if (v47)
+    if (error8)
     {
       v13 = 0;
       v17 = v75;
@@ -651,35 +651,35 @@ LABEL_60:
       goto LABEL_39;
     }
 
-    v77 = self;
+    selfCopy5 = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v73 = [v4 decodeInt32ForKey:@"duration"];
-      v70 = [v4 decodeBoolForKey:@"isRemote"];
+      v73 = [coderCopy decodeInt32ForKey:@"duration"];
+      v70 = [coderCopy decodeBoolForKey:@"isRemote"];
       if ((v70 & 1) == 0)
       {
-        v61 = [v4 error];
+        error9 = [coderCopy error];
 
-        if (v61)
+        if (error9)
         {
           v13 = 0;
           v17 = v75;
           goto LABEL_38;
         }
 
-        if (([v4 containsValueForKey:@"isRemote"] & 1) == 0)
+        if (([coderCopy containsValueForKey:@"isRemote"] & 1) == 0)
         {
           v84 = NSLocalizedDescriptionKey;
           v85 = @"Missing serialized value for MOMediaPlay.isRemote";
           v76 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
           v36 = [[NSError alloc] initWithDomain:@"MOMediaPlayOCNTErrorDomain" code:1 userInfo:v76];
-          [v4 failWithError:v36];
+          [coderCopy failWithError:v36];
           goto LABEL_60;
         }
       }
 
-      v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceSource"];
+      v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceSource"];
       if (v76)
       {
         objc_opt_class();
@@ -694,7 +694,7 @@ LABEL_60:
           v83 = v71;
           v54 = [NSDictionary dictionaryWithObjects:&v83 forKeys:&v82 count:1];
           v55 = [[NSError alloc] initWithDomain:@"MOMediaPlayOCNTErrorDomain" code:3 userInfo:v54];
-          [v4 failWithError:v55];
+          [coderCopy failWithError:v55];
 
 LABEL_76:
           goto LABEL_60;
@@ -703,9 +703,9 @@ LABEL_76:
 
       else
       {
-        v62 = [v4 error];
+        error10 = [coderCopy error];
 
-        if (v62)
+        if (error10)
         {
           v13 = 0;
           v17 = v75;
@@ -713,7 +713,7 @@ LABEL_76:
         }
       }
 
-      v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bkColor"];
+      v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bkColor"];
       if (v36)
       {
         objc_opt_class();
@@ -728,7 +728,7 @@ LABEL_76:
           v81 = v69;
           v65 = [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
           v66 = [[NSError alloc] initWithDomain:@"MOMediaPlayOCNTErrorDomain" code:3 userInfo:v65];
-          [v4 failWithError:v66];
+          [coderCopy failWithError:v66];
 
           goto LABEL_76;
         }
@@ -736,9 +736,9 @@ LABEL_76:
 
       else
       {
-        v67 = [v4 error];
+        error11 = [coderCopy error];
 
-        if (v67)
+        if (error11)
         {
           goto LABEL_60;
         }
@@ -747,8 +747,8 @@ LABEL_76:
       v17 = v75;
       BYTE4(v68) = v70;
       LODWORD(v68) = v73;
-      v13 = [(MOMediaPlaySession *)v77 initWithTitle:v5 album:v7 bundleId:v9 productId:v10 genre:v11 mediaType:v12 artist:v75 startDate:v79 endDate:v78 duration:v68 isRemote:v76 deviceSource:v36 bgColor:?];
-      v77 = v13;
+      v13 = [(MOMediaPlaySession *)selfCopy5 initWithTitle:v5 album:v7 bundleId:v9 productId:v10 genre:v11 mediaType:v12 artist:v75 startDate:v79 endDate:v78 duration:v68 isRemote:v76 deviceSource:v36 bgColor:?];
+      selfCopy5 = v13;
       goto LABEL_35;
     }
 
@@ -762,14 +762,14 @@ LABEL_76:
     v87 = v74;
     v59 = [NSDictionary dictionaryWithObjects:&v87 forKeys:&v86 count:1];
     v60 = [[NSError alloc] initWithDomain:@"MOMediaPlaySessionOCNTErrorDomain" code:3 userInfo:v59];
-    [v4 failWithError:v60];
+    [coderCopy failWithError:v60];
 
     goto LABEL_76;
   }
 
-  v14 = [v4 error];
+  error12 = [coderCopy error];
 
-  if (!v14)
+  if (!error12)
   {
     goto LABEL_7;
   }
@@ -780,23 +780,23 @@ LABEL_48:
   return v13;
 }
 
-+ (BOOL)isValidThirdParty:(id)a3 bundleCategory:(id)a4
++ (BOOL)isValidThirdParty:(id)party bundleCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || ([v6 hasPrefix:@"com.apple."] & 1) != 0)
+  partyCopy = party;
+  categoryCopy = category;
+  if (!partyCopy || ([partyCopy hasPrefix:@"com.apple."] & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  v9 = [a1 describeCategory:6011];
-  if ([v7 isEqualToString:v9])
+  v9 = [self describeCategory:6011];
+  if ([categoryCopy isEqualToString:v9])
   {
     goto LABEL_7;
   }
 
-  v10 = [a1 describeCategory:6009];
-  if ([v7 isEqualToString:v10])
+  v10 = [self describeCategory:6009];
+  if ([categoryCopy isEqualToString:v10])
   {
 
 LABEL_7:
@@ -805,8 +805,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [a1 describeCategory:6016];
-  v13 = [v7 isEqualToString:v12];
+  v12 = [self describeCategory:6016];
+  v13 = [categoryCopy isEqualToString:v12];
 
   if (v13)
   {
@@ -820,36 +820,36 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)isValidThirdPartyEvent:(id)a3 bundleCategory:(id)a4 mediaTypeString:(id)a5 playTime:(double)a6
++ (BOOL)isValidThirdPartyEvent:(id)event bundleCategory:(id)category mediaTypeString:(id)string playTime:(double)time
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10 || ([v10 hasPrefix:@"com.apple."] & 1) != 0)
+  eventCopy = event;
+  categoryCopy = category;
+  stringCopy = string;
+  if (!eventCopy || ([eventCopy hasPrefix:@"com.apple."] & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  v15 = [a1 describeCategory:6011];
-  v16 = [v11 isEqualToString:v15];
-  if (a6 >= 90.0 && (v16 & 1) != 0)
+  v15 = [self describeCategory:6011];
+  v16 = [categoryCopy isEqualToString:v15];
+  if (time >= 90.0 && (v16 & 1) != 0)
   {
 
     goto LABEL_8;
   }
 
-  v17 = [a1 describeCategory:6009];
-  v18 = [v11 isEqualToString:v17];
+  v17 = [self describeCategory:6009];
+  v18 = [categoryCopy isEqualToString:v17];
   if (v18)
   {
-    if (a6 < 600.0 || !v12)
+    if (time < 600.0 || !stringCopy)
     {
       goto LABEL_21;
     }
 
 LABEL_16:
-    v20 = [v12 lowercaseString];
-    v21 = [v20 containsString:@"podcast"];
+    lowercaseString = [stringCopy lowercaseString];
+    v21 = [lowercaseString containsString:@"podcast"];
 
     if ((v18 & 1) == 0)
     {
@@ -865,9 +865,9 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  a1 = [a1 describeCategory:6016];
-  v19 = [v11 isEqualToString:a1];
-  if (v12 && a6 >= 600.0 && (v19 & 1) != 0)
+  self = [self describeCategory:6016];
+  v19 = [categoryCopy isEqualToString:self];
+  if (stringCopy && time >= 600.0 && (v19 & 1) != 0)
   {
     goto LABEL_16;
   }
@@ -880,81 +880,81 @@ LABEL_4:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   title = self->_title;
-  v16 = v4;
+  v16 = coderCopy;
   if (title)
   {
-    [v4 encodeObject:title forKey:@"title"];
-    v4 = v16;
+    [coderCopy encodeObject:title forKey:@"title"];
+    coderCopy = v16;
   }
 
   album = self->_album;
   if (album)
   {
     [v16 encodeObject:album forKey:@"album"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   bundleId = self->_bundleId;
   if (bundleId)
   {
     [v16 encodeObject:bundleId forKey:@"bundleId"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   productId = self->_productId;
   if (productId)
   {
     [v16 encodeObject:productId forKey:@"productId"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   genre = self->_genre;
   if (genre)
   {
     [v16 encodeObject:genre forKey:@"genre"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   mediaType = self->_mediaType;
   if (mediaType)
   {
     [v16 encodeObject:mediaType forKey:@"mediaType"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   artist = self->_artist;
   if (artist)
   {
     [v16 encodeObject:artist forKey:@"artist"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   startDate = self->_startDate;
   if (startDate)
   {
     [v16 encodeObject:startDate forKey:@"startDate"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   endDate = self->_endDate;
   if (endDate)
   {
     [v16 encodeObject:endDate forKey:@"endDate"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
   duration = self->_duration;
   if (duration)
   {
     [v16 encodeInt32:duration forKey:@"duration"];
-    v4 = v16;
+    coderCopy = v16;
   }
 
-  [v4 encodeBool:self->_isRemote forKey:@"isRemote"];
+  [coderCopy encodeBool:self->_isRemote forKey:@"isRemote"];
   deviceSource = self->_deviceSource;
   if (deviceSource)
   {
@@ -967,11 +967,11 @@ LABEL_4:
   }
 }
 
-+ (id)redactString:(id)a3
++ (id)redactString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     v5 = [v4 length];
     if (v5 >> 1 >= 5)
@@ -1005,38 +1005,38 @@ LABEL_4:
   v5 = [v4 stringFromDate:self->_startDate];
   v6 = [v4 stringFromDate:self->_endDate];
   v7 = [NSString alloc];
-  v8 = [(MOMediaPlaySession *)self redactedTitle];
-  v9 = [(MOMediaPlaySession *)self redactedAlbum];
+  redactedTitle = [(MOMediaPlaySession *)self redactedTitle];
+  redactedAlbum = [(MOMediaPlaySession *)self redactedAlbum];
   mediaType = self->_mediaType;
-  v11 = [v7 initWithFormat:@"<MOMediaPlaySession | title:%@ album:%@ mediaType:%@ bundleId:%@ startDate:%@ endDate:%@ isRemote:%d deviceSource:%@>", v8, v9, mediaType, self->_bundleId, v5, v6, self->_isRemote, self->_deviceSource];
+  v11 = [v7 initWithFormat:@"<MOMediaPlaySession | title:%@ album:%@ mediaType:%@ bundleId:%@ startDate:%@ endDate:%@ isRemote:%d deviceSource:%@>", redactedTitle, redactedAlbum, mediaType, self->_bundleId, v5, v6, self->_isRemote, self->_deviceSource];
 
   return v11;
 }
 
-+ (id)getMOPlaySessionMediaType:(id)a3 bundleId:(id)a4
++ (id)getMOPlaySessionMediaType:(id)type bundleId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ![v6 hasPrefix:@"com.apple."])
+  typeCopy = type;
+  idCopy = id;
+  v7 = idCopy;
+  if (idCopy && ![idCopy hasPrefix:@"com.apple."])
   {
     v9 = &off_1003693D0;
   }
 
-  else if (v5)
+  else if (typeCopy)
   {
-    v8 = [v5 lowercaseString];
-    if ([v8 containsString:@"music"])
+    lowercaseString = [typeCopy lowercaseString];
+    if ([lowercaseString containsString:@"music"])
     {
       v9 = &off_100369400;
     }
 
-    else if ([v8 containsString:@"podcast"])
+    else if ([lowercaseString containsString:@"podcast"])
     {
       v9 = &off_100369418;
     }
 
-    else if ([v8 containsString:@"video"])
+    else if ([lowercaseString containsString:@"video"])
     {
       v9 = &off_100369430;
     }
@@ -1055,27 +1055,27 @@ LABEL_4:
   return v9;
 }
 
-+ (id)describeCategory:(int)a3
++ (id)describeCategory:(int)category
 {
-  if ((a3 - 6000) >= 0x16)
+  if ((category - 6000) >= 0x16)
   {
-    v4 = [NSString stringWithFormat:@"Unknown (%lu)", a3];
+    category = [NSString stringWithFormat:@"Unknown (%lu)", category];
   }
 
   else
   {
-    v4 = *(&off_100337BB8 + (a3 - 6000));
+    category = *(&off_100337BB8 + (category - 6000));
   }
 
-  return v4;
+  return category;
 }
 
-+ (BOOL)isFirstPartyApp:(id)a3
++ (BOOL)isFirstPartyApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = [NSSet setWithArray:&off_10036DAB8];
   v5 = v4;
-  v6 = v3 && ([v4 containsObject:v3] & 1) != 0;
+  v6 = appCopy && ([v4 containsObject:appCopy] & 1) != 0;
 
   return v6;
 }

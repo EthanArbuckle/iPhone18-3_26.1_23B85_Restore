@@ -8,10 +8,10 @@
 
 - (void)_showLoading
 {
-  v3 = [(SSOBLinkTrayButton *)self titleLabel];
-  v4 = [v3 text];
+  titleLabel = [(SSOBLinkTrayButton *)self titleLabel];
+  text = [titleLabel text];
   normalStateTitle = self->_normalStateTitle;
-  self->_normalStateTitle = v4;
+  self->_normalStateTitle = text;
 
   [(SSOBLinkTrayButton *)self setTitle:@" " forState:0];
   if (!self->_spinner)
@@ -21,14 +21,14 @@
     self->_spinner = v6;
 
     [(SSSpinner *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(SSOBLinkTrayButton *)self spinner];
-    [(SSOBLinkTrayButton *)self addSubview:v8];
+    spinner = [(SSOBLinkTrayButton *)self spinner];
+    [(SSOBLinkTrayButton *)self addSubview:spinner];
 
     [(SSOBLinkTrayButton *)self _centerActivityIndicatorInButton];
   }
 
-  v9 = [(SSOBLinkTrayButton *)self spinner];
-  [v9 startAnimating];
+  spinner2 = [(SSOBLinkTrayButton *)self spinner];
+  [spinner2 startAnimating];
 
   [(SSOBLinkTrayButton *)self setEnabled:0];
 }
@@ -61,16 +61,16 @@ void __34__SSOBLinkTrayButton__hideLoading__block_invoke(uint64_t a1)
 
 - (void)_centerActivityIndicatorInButton
 {
-  v3 = [(SSOBLinkTrayButton *)self spinner];
-  v4 = [v3 centerXAnchor];
-  v5 = [(SSOBLinkTrayButton *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  spinner = [(SSOBLinkTrayButton *)self spinner];
+  centerXAnchor = [spinner centerXAnchor];
+  centerXAnchor2 = [(SSOBLinkTrayButton *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v6 setActive:1];
 
-  v10 = [(SSOBLinkTrayButton *)self spinner];
-  v7 = [v10 centerYAnchor];
-  v8 = [(SSOBLinkTrayButton *)self centerYAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  spinner2 = [(SSOBLinkTrayButton *)self spinner];
+  centerYAnchor = [spinner2 centerYAnchor];
+  centerYAnchor2 = [(SSOBLinkTrayButton *)self centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v9 setActive:1];
 }
 

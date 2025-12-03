@@ -1,47 +1,47 @@
 @interface TRIFetchSingleRolloutNotificationTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithDeployment:(id)a3 taskAttributing:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithDeployment:(id)deployment taskAttributing:(id)attributing;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)tags;
 - (NSString)description;
-- (TRIFetchSingleRolloutNotificationTask)initWithCoder:(id)a3;
-- (TRIFetchSingleRolloutNotificationTask)initWithDeployment:(id)a3 taskAttributing:(id)a4;
+- (TRIFetchSingleRolloutNotificationTask)initWithCoder:(id)coder;
+- (TRIFetchSingleRolloutNotificationTask)initWithDeployment:(id)deployment taskAttributing:(id)attributing;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)encodeWithCoder:(id)a3;
-- (void)runDequeueHandlerUsingContext:(id)a3;
-- (void)runEnqueueHandlerUsingContext:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)runDequeueHandlerUsingContext:(id)context;
+- (void)runEnqueueHandlerUsingContext:(id)context;
 @end
 
 @implementation TRIFetchSingleRolloutNotificationTask
 
 - (NSArray)tags
 {
-  v3 = [(TRIRolloutTaskSupport *)self->_support tags];
-  v4 = v3;
-  if (!v3)
+  tags = [(TRIRolloutTaskSupport *)self->_support tags];
+  v4 = tags;
+  if (!tags)
   {
-    v3 = MEMORY[0x277CBEBF8];
+    tags = MEMORY[0x277CBEBF8];
   }
 
-  v5 = [v3 mutableCopy];
+  v5 = [tags mutableCopy];
 
   [TRITaskUtils addAttribution:self->_taskAttributing toTaskTags:v5];
 
   return v5;
 }
 
-- (TRIFetchSingleRolloutNotificationTask)initWithDeployment:(id)a3 taskAttributing:(id)a4
+- (TRIFetchSingleRolloutNotificationTask)initWithDeployment:(id)deployment taskAttributing:(id)attributing
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  deploymentCopy = deployment;
+  attributingCopy = attributing;
+  v10 = attributingCopy;
+  if (deploymentCopy)
   {
-    if (v9)
+    if (attributingCopy)
     {
       goto LABEL_3;
     }
@@ -49,8 +49,8 @@
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
 
     if (v10)
     {
@@ -58,8 +58,8 @@
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"taskAttributing"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"taskAttributing"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -68,9 +68,9 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_deployment, a3);
-    objc_storeStrong(&v12->_taskAttributing, a4);
-    v13 = [[TRIRolloutTaskSupport alloc] initWithRolloutDeployment:v8];
+    objc_storeStrong(&v11->_deployment, deployment);
+    objc_storeStrong(&v12->_taskAttributing, attributing);
+    v13 = [[TRIRolloutTaskSupport alloc] initWithRolloutDeployment:deploymentCopy];
     support = v12->_support;
     v12->_support = v13;
 
@@ -81,42 +81,42 @@ LABEL_3:
   return v12;
 }
 
-+ (id)taskWithDeployment:(id)a3 taskAttributing:(id)a4
++ (id)taskWithDeployment:(id)deployment taskAttributing:(id)attributing
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDeployment:v7 taskAttributing:v6];
+  attributingCopy = attributing;
+  deploymentCopy = deployment;
+  v8 = [[self alloc] initWithDeployment:deploymentCopy taskAttributing:attributingCopy];
 
   return v8;
 }
 
-- (void)runEnqueueHandlerUsingContext:(id)a3
+- (void)runEnqueueHandlerUsingContext:(id)context
 {
   deployment = self->_deployment;
-  v4 = a3;
+  contextCopy = context;
   v6 = [TRIContentTracker contentIdentifierForRolloutArtifactWithDeployment:deployment];
-  v5 = [v4 contentTracker];
+  contentTracker = [contextCopy contentTracker];
 
-  [v5 addRefWithContentIdentifier:v6];
+  [contentTracker addRefWithContentIdentifier:v6];
 }
 
-- (void)runDequeueHandlerUsingContext:(id)a3
+- (void)runDequeueHandlerUsingContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
   deployment = self->_deployment;
-  v5 = a3;
+  contextCopy = context;
   v6 = [TRIContentTracker contentIdentifierForRolloutArtifactWithDeployment:deployment];
-  v7 = [v5 contentTracker];
+  contentTracker = [contextCopy contentTracker];
 
-  LOBYTE(v5) = [v7 dropRefWithContentIdentifier:v6];
-  if ((v5 & 1) == 0)
+  LOBYTE(contextCopy) = [contentTracker dropRefWithContentIdentifier:v6];
+  if ((contextCopy & 1) == 0)
   {
     v8 = TRILogCategory_Server();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
+      shortDesc = [(TRIRolloutDeployment *)self->_deployment shortDesc];
       v11 = 138543362;
-      v12 = v10;
+      v12 = shortDesc;
       _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Failed to drop reference on artifact for rollout %{public}@", &v11, 0xCu);
     }
   }
@@ -124,57 +124,57 @@ LABEL_3:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
+  contextCopy = context;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   dsema = a2;
   v61 = os_transaction_create();
   v10 = TRILogCategory_Server();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v52 = objc_opt_class();
-    v53 = [(TRIRolloutDeployment *)v9->_deployment shortDesc];
+    shortDesc = [(TRIRolloutDeployment *)selfCopy->_deployment shortDesc];
     *buf = 138543618;
     *&buf[4] = v52;
     *&buf[12] = 2114;
-    *&buf[14] = v53;
+    *&buf[14] = shortDesc;
     _os_log_debug_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEBUG, "starting %{public}@ with rollout %{public}@", buf, 0x16u);
   }
 
-  v11 = [v7 rolloutDatabase];
-  v12 = [v11 recordWithDeployment:v9->_deployment usingTransaction:0];
+  rolloutDatabase = [contextCopy rolloutDatabase];
+  v12 = [rolloutDatabase recordWithDeployment:selfCopy->_deployment usingTransaction:0];
 
   if (!v12)
   {
-    v17 = [v7 keyValueStore];
-    v18 = [TRIFetchDateManager managerWithKeyValueStore:v17];
+    keyValueStore = [contextCopy keyValueStore];
+    v18 = [TRIFetchDateManager managerWithKeyValueStore:keyValueStore];
 
-    v19 = [v7 namespaceDatabase];
-    v20 = [v7 paths];
-    v21 = [v20 namespaceDescriptorsDefaultDir];
-    v22 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v19 defaultDescriptorDirectoryPath:v21];
+    namespaceDatabase = [contextCopy namespaceDatabase];
+    paths = [contextCopy paths];
+    namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+    v22 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
-    v23 = [(TRITaskAttributing *)v9->_taskAttributing triCloudKitContainer];
-    v24 = [(TRITaskAttributing *)v9->_taskAttributing teamIdentifier];
-    v25 = [(TRITaskAttributing *)v9->_taskAttributing applicationBundleIdentifier];
-    v12 = [TRICKNativeArtifactProvider providerForContainer:v23 teamId:v24 bundleId:v25 dateProvider:v18 namespaceDescriptorProvider:v22 serverContext:v7];
+    triCloudKitContainer = [(TRITaskAttributing *)selfCopy->_taskAttributing triCloudKitContainer];
+    teamIdentifier = [(TRITaskAttributing *)selfCopy->_taskAttributing teamIdentifier];
+    applicationBundleIdentifier = [(TRITaskAttributing *)selfCopy->_taskAttributing applicationBundleIdentifier];
+    v12 = [TRICKNativeArtifactProvider providerForContainer:triCloudKitContainer teamId:teamIdentifier bundleId:applicationBundleIdentifier dateProvider:v18 namespaceDescriptorProvider:v22 serverContext:contextCopy];
 
-    v26 = [(TRITaskAttributing *)v9->_taskAttributing networkOptions];
-    if ([v26 allowsCellularAccess])
+    networkOptions = [(TRITaskAttributing *)selfCopy->_taskAttributing networkOptions];
+    if ([networkOptions allowsCellularAccess])
     {
-      support = v9->_support;
-      v28 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(v26, "allowsCellularAccess")}];
+      support = selfCopy->_support;
+      v28 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(networkOptions, "allowsCellularAccess")}];
       [(TRIRolloutTaskSupport *)support addMetric:v28];
     }
 
-    if ([v26 discretionaryBehavior])
+    if ([networkOptions discretionaryBehavior])
     {
-      v29 = [(TRIBaseTask *)v9 stateProvider];
-      v30 = [v29 activeActivityGrantingCapability:{objc_msgSend(v26, "requiredCapability")}];
+      stateProvider = [(TRIBaseTask *)selfCopy stateProvider];
+      v30 = [stateProvider activeActivityGrantingCapability:{objc_msgSend(networkOptions, "requiredCapability")}];
 
       if (!v30)
       {
@@ -189,10 +189,10 @@ LABEL_3:
         goto LABEL_34;
       }
 
-      [v26 setActivity:v30];
+      [networkOptions setActivity:v30];
     }
 
-    v58 = [[TRIFetchOptions alloc] initWithDownloadOptions:v26 cacheDeleteAvailableSpaceClass:&unk_287FC4D50];
+    v58 = [[TRIFetchOptions alloc] initWithDownloadOptions:networkOptions cacheDeleteAvailableSpaceClass:&unk_287FC4D50];
     v31 = dispatch_semaphore_create(0);
     v79 = 0;
     v80 = &v79;
@@ -217,26 +217,26 @@ LABEL_3:
     v35 = v34;
     if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
     {
-      v36 = [(TRIRolloutDeployment *)v9->_deployment rolloutId];
-      v37 = [(TRIRolloutDeployment *)v9->_deployment deploymentId];
+      rolloutId = [(TRIRolloutDeployment *)selfCopy->_deployment rolloutId];
+      deploymentId = [(TRIRolloutDeployment *)selfCopy->_deployment deploymentId];
       *v84 = 138543618;
-      v85 = v36;
+      v85 = rolloutId;
       v86 = 1024;
-      LODWORD(v87) = v37;
+      LODWORD(v87) = deploymentId;
       _os_signpost_emit_with_name_impl(&dword_26F567000, v35, OS_SIGNPOST_INTERVAL_BEGIN, v33, "FetchRolloutNotificationWithDeployment", "r: %{public}@, d: %d", v84, 0x12u);
     }
 
-    deployment = v9->_deployment;
+    deployment = selfCopy->_deployment;
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __71__TRIFetchSingleRolloutNotificationTask_runUsingContext_withTaskQueue___block_invoke;
     v66[3] = &unk_279DE4950;
-    v66[4] = v9;
+    v66[4] = selfCopy;
     v69 = &v79;
     v70 = buf;
     v71 = &v73;
     v72 = dsema;
-    v67 = v7;
+    v67 = contextCopy;
     dsemaa = v31;
     v68 = dsemaa;
     [v12 fetchRolloutNotificationWithDeployment:deployment options:v58 completion:v66];
@@ -245,12 +245,12 @@ LABEL_3:
     v40 = v39;
     if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
     {
-      v41 = [(TRIRolloutDeployment *)v9->_deployment rolloutId];
-      v42 = [(TRIRolloutDeployment *)v9->_deployment deploymentId];
+      rolloutId2 = [(TRIRolloutDeployment *)selfCopy->_deployment rolloutId];
+      deploymentId2 = [(TRIRolloutDeployment *)selfCopy->_deployment deploymentId];
       *v84 = 138543618;
-      v85 = v41;
+      v85 = rolloutId2;
       v86 = 1024;
-      LODWORD(v87) = v42;
+      LODWORD(v87) = deploymentId2;
       _os_signpost_emit_with_name_impl(&dword_26F567000, v40, OS_SIGNPOST_INTERVAL_END, v33, "FetchRolloutNotificationWithDeployment", "r: %{public}@, d: %d", v84, 0x12u);
     }
 
@@ -258,7 +258,7 @@ LABEL_3:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
       v54 = objc_opt_class();
-      v55 = [(TRIRolloutDeployment *)v9->_deployment shortDesc];
+      shortDesc2 = [(TRIRolloutDeployment *)selfCopy->_deployment shortDesc];
       v56 = *(v80 + 6);
       if (v56 >= 5)
       {
@@ -273,7 +273,7 @@ LABEL_3:
       *v84 = 138543874;
       v85 = v54;
       v86 = 2114;
-      v87 = v55;
+      v87 = shortDesc2;
       v88 = 2114;
       v89 = v57;
       _os_log_debug_impl(&dword_26F567000, v43, OS_LOG_TYPE_DEBUG, "Finished %{public}@ with rollout %{public}@: %{public}@", v84, 0x20u);
@@ -281,7 +281,7 @@ LABEL_3:
 
     if (v74[5])
     {
-      v9->wasDeferred = [TRICKNativeArtifactProvider isActivityDeferralError:?];
+      selfCopy->wasDeferred = [TRICKNativeArtifactProvider isActivityDeferralError:?];
       v44 = TRIFetchErrorParseToMetrics(v74[5]);
       if ([v44 count])
       {
@@ -303,7 +303,7 @@ LABEL_3:
                 objc_enumerationMutation(v45);
               }
 
-              [(TRIRolloutTaskSupport *)v9->_support addMetric:*(*(&v62 + 1) + 8 * i)];
+              [(TRIRolloutTaskSupport *)selfCopy->_support addMetric:*(*(&v62 + 1) + 8 * i)];
             }
 
             v46 = [v45 countByEnumeratingWithState:&v62 objects:v83 count:16];
@@ -328,9 +328,9 @@ LABEL_34:
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(TRIRolloutDeployment *)v9->_deployment shortDesc];
+    shortDesc3 = [(TRIRolloutDeployment *)selfCopy->_deployment shortDesc];
     *buf = 138543362;
-    *&buf[4] = v14;
+    *&buf[4] = shortDesc3;
     _os_log_impl(&dword_26F567000, v13, OS_LOG_TYPE_DEFAULT, "Skipping CloudKit fetch of rollout notification for %{public}@: already present.", buf, 0xCu);
   }
 
@@ -338,7 +338,7 @@ LABEL_34:
   v16 = [(TRITaskRunResult *)v15 initWithRunStatus:2 reportResultToServer:0 nextTasks:MEMORY[0x277CBEBF8] earliestRetryDate:0];
 LABEL_35:
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   v50 = *MEMORY[0x277D85DE8];
 
   return v16;
@@ -454,10 +454,10 @@ void __71__TRIFetchSingleRolloutNotificationTask_runUsingContext_withTaskQueue__
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -466,9 +466,9 @@ void __71__TRIFetchSingleRolloutNotificationTask_runUsingContext_withTaskQueue__
   {
     v8.receiver = self;
     v8.super_class = TRIFetchSingleRolloutNotificationTask;
-    if ([(TRIBaseTask *)&v8 isEqual:v4]&& [(TRIFetchSingleRolloutNotificationTask *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(TRIBaseTask *)&v8 isEqual:equalCopy]&& [(TRIFetchSingleRolloutNotificationTask *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(TRIRolloutDeployment *)self->_deployment isEqualToDeployment:v5->_deployment])
       {
         v6 = [(TRITaskAttributing *)self->_taskAttributing isEqual:v5->_taskAttributing];
@@ -501,12 +501,12 @@ void __71__TRIFetchSingleRolloutNotificationTask_runUsingContext_withTaskQueue__
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
-  [v3 setRolloutId:v4];
+  rolloutId = [(TRIRolloutDeployment *)self->_deployment rolloutId];
+  [v3 setRolloutId:rolloutId];
 
   [v3 setDeploymentId:{-[TRIRolloutDeployment deploymentId](self->_deployment, "deploymentId")}];
-  v5 = [(TRITaskAttributing *)self->_taskAttributing asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v5];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttributing asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
   [v3 setRetryCount:{-[TRIFetchSingleRolloutNotificationTask retryCount](self, "retryCount")}];
 
@@ -515,25 +515,25 @@ void __71__TRIFetchSingleRolloutNotificationTask_runUsingContext_withTaskQueue__
 
 - (id)serialize
 {
-  v4 = [(TRIFetchSingleRolloutNotificationTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIFetchSingleRolloutNotificationTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:280 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:280 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
   v25 = 0;
-  v3 = [(TRIPBMessage *)TRIFetchSingleRolloutNotificationPersistedTask parseFromData:a3 error:&v25];
+  v3 = [(TRIPBMessage *)TRIFetchSingleRolloutNotificationPersistedTask parseFromData:data error:&v25];
   v4 = v25;
   if (!v3)
   {
@@ -574,8 +574,8 @@ void __71__TRIFetchSingleRolloutNotificationTask_runUsingContext_withTaskQueue__
     goto LABEL_23;
   }
 
-  v5 = [v3 rolloutId];
-  v6 = [v5 length];
+  rolloutId = [v3 rolloutId];
+  v6 = [rolloutId length];
 
   if (!v6)
   {
@@ -646,14 +646,14 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v7 = [v3 taskAttribution];
-  v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v7];
+  taskAttribution = [v3 taskAttribution];
+  v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D737C8]);
-    v10 = [v3 rolloutId];
-    v11 = [v9 initWithRolloutId:v10 deploymentId:{objc_msgSend(v3, "deploymentId")}];
+    rolloutId2 = [v3 rolloutId];
+    v11 = [v9 initWithRolloutId:rolloutId2 deploymentId:{objc_msgSend(v3, "deploymentId")}];
 
     v12 = [objc_opt_class() taskWithDeployment:v11 taskAttributing:v8];
     [v12 setRetryCount:{objc_msgSend(v3, "retryCount")}];
@@ -679,17 +679,17 @@ LABEL_25:
 
 - (unint64_t)requiredCapabilities
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
-  v4 = [v3 requiredCapability];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
+  requiredCapability = [networkOptions requiredCapability];
 
   if ([(TRIFetchSingleRolloutNotificationTask *)self retryCount])
   {
-    return v4 | 4;
+    return requiredCapability | 4;
   }
 
   else
   {
-    return v4;
+    return requiredCapability;
   }
 }
 
@@ -697,21 +697,21 @@ LABEL_25:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
-  v6 = [v3 stringWithFormat:@"<%@:%@, r:%d>", v4, v5, -[TRIFetchSingleRolloutNotificationTask retryCount](self, "retryCount")];
+  shortDesc = [(TRIRolloutDeployment *)self->_deployment shortDesc];
+  v6 = [v3 stringWithFormat:@"<%@:%@, r:%d>", v4, shortDesc, -[TRIFetchSingleRolloutNotificationTask retryCount](self, "retryCount")];
 
   return v6;
 }
 
-- (TRIFetchSingleRolloutNotificationTask)initWithCoder:(id)a3
+- (TRIFetchSingleRolloutNotificationTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIFetchSingleRolloutNotificationTask;
   v5 = [(TRIFetchSingleRolloutNotificationTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -731,18 +731,18 @@ LABEL_25:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:322 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchSingleRolloutNotificationTask.m" lineNumber:322 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIFetchSingleRolloutNotificationTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIFetchSingleRolloutNotificationTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

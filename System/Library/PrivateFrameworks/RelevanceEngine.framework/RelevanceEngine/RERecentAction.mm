@@ -1,22 +1,22 @@
 @interface RERecentAction
-+ (RERecentAction)actionWithBundleIdentifier:(id)a3 actionIdentifier:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (RERecentAction)actionWithBundleIdentifier:(id)identifier actionIdentifier:(unint64_t)actionIdentifier;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation RERecentAction
 
-+ (RERecentAction)actionWithBundleIdentifier:(id)a3 actionIdentifier:(unint64_t)a4
++ (RERecentAction)actionWithBundleIdentifier:(id)identifier actionIdentifier:(unint64_t)actionIdentifier
 {
-  if (a3)
+  if (identifier)
   {
-    v5 = a3;
+    identifierCopy = identifier;
     v6 = objc_opt_new();
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
 
     v8 = v6[1];
     v6[1] = v7;
 
-    v6[2] = a4;
+    v6[2] = actionIdentifier;
   }
 
   else
@@ -27,10 +27,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       bundleIdentifier = v5->_bundleIdentifier;
       v7 = self->_bundleIdentifier;
       v8 = v7;

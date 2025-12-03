@@ -36,18 +36,18 @@
 
 - (BOOL)shouldShowEmergencyAddress
 {
-  v2 = [(PHSettingsThumperProvisioningController *)self callingCapabilityInfo];
-  if (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") && [v2 provisioningStatus] == 3)
+  callingCapabilityInfo = [(PHSettingsThumperProvisioningController *)self callingCapabilityInfo];
+  if (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") && [callingCapabilityInfo provisioningStatus] == 3)
   {
-    if ([v2 isProvisioningURLInvalid])
+    if ([callingCapabilityInfo isProvisioningURLInvalid])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [v2 provisioningURL];
-      v3 = v5 != 0;
+      provisioningURL = [callingCapabilityInfo provisioningURL];
+      v3 = provisioningURL != 0;
     }
   }
 
@@ -80,7 +80,7 @@
 
 - (BOOL)shouldShowUpgradeToThumperButton
 {
-  v2 = [(PHSettingsThumperProvisioningController *)self callingCapabilityInfo];
+  callingCapabilityInfo = [(PHSettingsThumperProvisioningController *)self callingCapabilityInfo];
   if (+[TUCallCapabilities isRelayCallingEnabled](TUCallCapabilities, "isRelayCallingEnabled") && +[TUCallCapabilities supportsThumperCalling](TUCallCapabilities, "supportsThumperCalling") && (+[TUCallCapabilities isThumperCallingEnabled]& 1) == 0)
   {
     if ((+[TUCallCapabilities supportsPrimaryCalling]& 1) != 0)
@@ -91,7 +91,7 @@
 
     if ((+[TUCallCapabilities supportsPrimaryCalling]& 1) == 0)
     {
-      v3 = [v2 provisioningStatus] != 1;
+      v3 = [callingCapabilityInfo provisioningStatus] != 1;
       goto LABEL_5;
     }
   }
@@ -104,8 +104,8 @@ LABEL_5:
 
 - (BOOL)isThumperProvisioningInProcess
 {
-  v2 = [(PHSettingsThumperProvisioningController *)self callingCapabilityInfo];
-  v3 = [v2 provisioningStatus] == 1;
+  callingCapabilityInfo = [(PHSettingsThumperProvisioningController *)self callingCapabilityInfo];
+  v3 = [callingCapabilityInfo provisioningStatus] == 1;
 
   return v3;
 }

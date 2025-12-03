@@ -14,8 +14,8 @@
 
 - (uint64_t)pr_handlesWakeAnimation
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20713];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20713];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -39,14 +39,14 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)pr_preferredProminentColor
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20719];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20719];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -70,8 +70,8 @@
 
 - (void)pr_averageColor
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20714];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20714];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -95,8 +95,8 @@
 
 - (void)pr_desiredLegibilitySettings
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20717];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20717];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -120,8 +120,8 @@
 
 - (double)pr_contentSize
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20715];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20715];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -160,8 +160,8 @@
 
 - (uint64_t)pr_hideChrome
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20716];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20716];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -185,14 +185,14 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)pr_hideDimmingLayer
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20718];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20718];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -216,14 +216,14 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)pr_requestedRenderingEventTypes
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20720];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20720];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -247,8 +247,8 @@
 
 - (void)pr_requestedRenderingTransitionTypes
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20721];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20721];
 
   v3 = objc_opt_class();
   v4 = v2;

@@ -4,46 +4,46 @@
 - (UIEdgeInsets)preferredContentInsets;
 - (UIView)_backgroundView;
 - (id)_attachedPinningTopBar;
-- (id)_initWithNavigationController:(id)a3 forEdge:(unint64_t)a4;
-- (void)_configureConstraintsForBackground:(id)a3;
+- (id)_initWithNavigationController:(id)controller forEdge:(unint64_t)edge;
+- (void)_configureConstraintsForBackground:(id)background;
 - (void)_configurePaletteConstraintsForBoundary;
 - (void)_disableConstraints;
 - (void)_enableConstraints;
-- (void)_resetConstraintConstants:(double)a3;
+- (void)_resetConstraintConstants:(double)constants;
 - (void)_resetHeightConstraintConstant;
-- (void)_setAttached:(BOOL)a3 didComplete:(BOOL)a4;
-- (void)_setAttachmentIsChanging:(BOOL)a3;
-- (void)_setBackgroundView:(id)a3;
-- (void)_setLeftConstraintConstant:(double)a3;
-- (void)_setRestartPaletteTransitionIfNecessary:(BOOL)a3;
-- (void)_setSize:(CGSize)a3;
-- (void)_setTopConstraintConstant:(double)a3;
-- (void)_setVisualAltitude:(double)a3;
-- (void)_setVisualAltitudeBias:(CGSize)a3;
+- (void)_setAttached:(BOOL)attached didComplete:(BOOL)complete;
+- (void)_setAttachmentIsChanging:(BOOL)changing;
+- (void)_setBackgroundView:(id)view;
+- (void)_setLeftConstraintConstant:(double)constant;
+- (void)_setRestartPaletteTransitionIfNecessary:(BOOL)necessary;
+- (void)_setSize:(CGSize)size;
+- (void)_setTopConstraintConstant:(double)constant;
+- (void)_setVisualAltitude:(double)altitude;
+- (void)_setVisualAltitudeBias:(CGSize)bias;
 - (void)_setupBackgroundViewIfNecessary;
 - (void)_updateBackgroundConstraintsIfNecessary;
 - (void)_updateBackgroundView;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3 isAnimating:(BOOL)a4;
-- (void)setPaletteShadowIsHidden:(BOOL)a3;
-- (void)setPinned:(BOOL)a3;
-- (void)setPinningBarShadowIsHidden:(BOOL)a3;
-- (void)setPinningBarShadowWasHidden:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame isAnimating:(BOOL)animating;
+- (void)setPaletteShadowIsHidden:(BOOL)hidden;
+- (void)setPinned:(BOOL)pinned;
+- (void)setPinningBarShadowIsHidden:(BOOL)hidden;
+- (void)setPinningBarShadowWasHidden:(BOOL)hidden;
 @end
 
 @implementation _UINavigationControllerPalette
 
-- (id)_initWithNavigationController:(id)a3 forEdge:(unint64_t)a4
+- (id)_initWithNavigationController:(id)controller forEdge:(unint64_t)edge
 {
   v7.receiver = self;
   v7.super_class = _UINavigationControllerPalette;
   result = [(UIView *)&v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (result)
   {
-    *(result + 56) = a3;
-    *(result + 55) = a4;
+    *(result + 56) = controller;
+    *(result + 55) = edge;
     *(result + 432) |= 0x18u;
     *(result + 504) = 0u;
     *(result + 520) = 0u;
@@ -74,9 +74,9 @@
   [(UIView *)&v6 dealloc];
 }
 
-- (void)_setAttachmentIsChanging:(BOOL)a3
+- (void)_setAttachmentIsChanging:(BOOL)changing
 {
-  if (a3)
+  if (changing)
   {
     v3 = 2;
   }
@@ -89,9 +89,9 @@
   *&self->_paletteFlags = *&self->_paletteFlags & 0xFD | v3;
 }
 
-- (void)_setRestartPaletteTransitionIfNecessary:(BOOL)a3
+- (void)_setRestartPaletteTransitionIfNecessary:(BOOL)necessary
 {
-  if (a3)
+  if (necessary)
   {
     v3 = 4;
   }
@@ -104,12 +104,12 @@
   *&self->_paletteFlags = *&self->_paletteFlags & 0xFB | v3;
 }
 
-- (void)setPinningBarShadowIsHidden:(BOOL)a3
+- (void)setPinningBarShadowIsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(_UINavigationControllerPalette *)self pinningBarShadowIsHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(_UINavigationControllerPalette *)self pinningBarShadowIsHidden]!= hidden)
   {
-    v5 = v3 ? 16 : 0;
+    v5 = hiddenCopy ? 16 : 0;
     *&self->_paletteFlags = *&self->_paletteFlags & 0xEF | v5;
     if ([(UIView *)self superview])
     {
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)setPinningBarShadowWasHidden:(BOOL)a3
+- (void)setPinningBarShadowWasHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 64;
   }
@@ -146,9 +146,9 @@
     return 1;
   }
 
-  v2 = [(_UINavigationControllerPalette *)self _attachedPinningTopBar];
+  _attachedPinningTopBar = [(_UINavigationControllerPalette *)self _attachedPinningTopBar];
 
-  return [v2 _hidesShadow];
+  return [_attachedPinningTopBar _hidesShadow];
 }
 
 - (id)_attachedPinningTopBar
@@ -166,17 +166,17 @@
 
 - (void)_updateBackgroundView
 {
-  v2 = [(UINavigationController *)self->_navController navigationBar];
+  navigationBar = [(UINavigationController *)self->_navController navigationBar];
 
-  [(UINavigationBar *)v2 _updatePaletteBackgroundIfNecessary];
+  [(UINavigationBar *)navigationBar _updatePaletteBackgroundIfNecessary];
 }
 
-- (void)setPaletteShadowIsHidden:(BOOL)a3
+- (void)setPaletteShadowIsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(_UINavigationControllerPalette *)self paletteShadowIsHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(_UINavigationControllerPalette *)self paletteShadowIsHidden]!= hidden)
   {
-    if (v3)
+    if (hiddenCopy)
     {
       v5 = 32;
     }
@@ -192,12 +192,12 @@
   }
 }
 
-- (void)_setAttached:(BOOL)a3 didComplete:(BOOL)a4
+- (void)_setAttached:(BOOL)attached didComplete:(BOOL)complete
 {
-  v4 = a4;
-  v5 = a3;
+  completeCopy = complete;
+  attachedCopy = attached;
   paletteFlags = self->_paletteFlags;
-  if (a4)
+  if (complete)
   {
     v8 = 0;
   }
@@ -207,10 +207,10 @@
     v8 = 2;
   }
 
-  *&self->_paletteFlags = v8 | a3 | paletteFlags & 0xFC;
-  if (!a3)
+  *&self->_paletteFlags = v8 | attached | paletteFlags & 0xFC;
+  if (!attached)
   {
-    if (!a4 && (paletteFlags & 1) == 0)
+    if (!complete && (paletteFlags & 1) == 0)
     {
       return;
     }
@@ -236,18 +236,18 @@
     *&self->_paletteFlags = *&self->_paletteFlags & 0xBF | v10;
   }
 
-  if (v4 || (paletteFlags & 1) == 0)
+  if (completeCopy || (paletteFlags & 1) == 0)
   {
 LABEL_17:
     v11 = *p_pinningBar;
 
-    [v11 _palette:self isAttaching:v5 didComplete:v4];
+    [v11 _palette:self isAttaching:attachedCopy didComplete:completeCopy];
   }
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  if (a3)
+  if (pinned)
   {
     self->__unpinnedController = 0;
     v4 = *&self->_paletteFlags | 8;
@@ -262,25 +262,25 @@ LABEL_17:
   *&self->_paletteFlags = v4;
 }
 
-- (void)_configureConstraintsForBackground:(id)a3
+- (void)_configureConstraintsForBackground:(id)background
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  if (self->_boundaryEdge != 5 && a3 && !self->_backgroundView)
+  if (self->_boundaryEdge != 5 && background && !self->_backgroundView)
   {
     [(UIView *)self bounds];
     v6 = v5;
     v8 = v7;
     [(UIView *)self _visualAltitudeSensitiveBoundsWithInfiniteEdges:10];
     v10 = v9;
-    v12 = [MEMORY[0x1E69977A0] constraintWithItem:a3 attribute:1 relatedBy:0 toItem:self attribute:1 multiplier:1.0 constant:v11 - v6];
-    v13 = [MEMORY[0x1E69977A0] constraintWithItem:a3 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:v10 - v8];
-    v14 = [MEMORY[0x1E69977A0] constraintWithItem:a3 attribute:8 relatedBy:0 toItem:self attribute:8 multiplier:1.0 constant:0.0];
+    v12 = [MEMORY[0x1E69977A0] constraintWithItem:background attribute:1 relatedBy:0 toItem:self attribute:1 multiplier:1.0 constant:v11 - v6];
+    v13 = [MEMORY[0x1E69977A0] constraintWithItem:background attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:v10 - v8];
+    v14 = [MEMORY[0x1E69977A0] constraintWithItem:background attribute:8 relatedBy:0 toItem:self attribute:8 multiplier:1.0 constant:0.0];
     v15[0] = v12;
-    v15[1] = [MEMORY[0x1E69977A0] constraintWithItem:a3 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
+    v15[1] = [MEMORY[0x1E69977A0] constraintWithItem:background attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
     v15[2] = v13;
     v15[3] = v14;
     -[_UINavigationControllerPalette _setBackgroundConstraints:](self, "_setBackgroundConstraints:", [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:4]);
-    [a3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [background setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self addConstraints:self->__backgroundConstraints];
   }
 }
@@ -330,18 +330,18 @@ LABEL_17:
   boundaryEdge = self->_boundaryEdge;
   if (boundaryEdge == 5)
   {
-    v9 = [(UINavigationController *)self->_navController navigationBar];
-    if ([(UIView *)v9 superview]&& [(UIView *)self superview])
+    navigationBar = [(UINavigationController *)self->_navController navigationBar];
+    if ([(UIView *)navigationBar superview]&& [(UIView *)self superview])
     {
       constraints = self->__constraints;
       if (!constraints)
       {
         height = self->__size.height;
-        v12 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:1 relatedBy:0 toItem:v9 attribute:1 multiplier:1.0 constant:0.0];
-        v13 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:7 relatedBy:0 toItem:v9 attribute:7 multiplier:1.0 constant:0.0];
+        v12 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:1 relatedBy:0 toItem:navigationBar attribute:1 multiplier:1.0 constant:0.0];
+        v13 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:7 relatedBy:0 toItem:navigationBar attribute:7 multiplier:1.0 constant:0.0];
         v14 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:height];
         v23[0] = v12;
-        v23[1] = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:4 relatedBy:0 toItem:v9 attribute:3 multiplier:1.0 constant:0.0];
+        v23[1] = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:4 relatedBy:0 toItem:navigationBar attribute:3 multiplier:1.0 constant:0.0];
         v23[2] = v13;
         v23[3] = v14;
         -[_UINavigationControllerPalette _setConstraints:](self, "_setConstraints:", [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4]);
@@ -476,7 +476,7 @@ LABEL_26:
   }
 }
 
-- (void)_resetConstraintConstants:(double)a3
+- (void)_resetConstraintConstants:(double)constants
 {
   v46 = *MEMORY[0x1E69E9840];
   constraints = self->__constraints;
@@ -627,21 +627,21 @@ LABEL_19:
   }
 
 LABEL_38:
-  if (a3 != 0.0)
+  if (constants != 0.0)
   {
-    [(_UINavigationControllerPalette *)self _setTopConstraintConstant:a3];
+    [(_UINavigationControllerPalette *)self _setTopConstraintConstant:constants];
   }
 }
 
-- (void)setFrame:(CGRect)a3 isAnimating:(BOOL)a4
+- (void)setFrame:(CGRect)frame isAnimating:(BOOL)animating
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatingCopy = animating;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v11 = +[UIView _isInAnimationBlockWithAnimationsEnabled]^ v4;
+  v11 = +[UIView _isInAnimationBlockWithAnimationsEnabled]^ animatingCopy;
   if (has_internal_diagnostics)
   {
     if (v11)
@@ -695,23 +695,23 @@ LABEL_38:
   }
 }
 
-- (void)_setSize:(CGSize)a3
+- (void)_setSize:(CGSize)size
 {
   height = self->__size.height;
-  self->__size = a3;
-  if (height != a3.height)
+  self->__size = size;
+  if (height != size.height)
   {
     [(_UINavigationControllerPalette *)self _resetHeightConstraintConstant];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(_UINavigationControllerPalette *)self _setSize:a3.size.width, a3.size.height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(_UINavigationControllerPalette *)self _setSize:frame.size.width, frame.size.height];
   v8.receiver = self;
   v8.super_class = _UINavigationControllerPalette;
   [(UIView *)&v8 setFrame:x, y, width, height];
@@ -721,7 +721,7 @@ LABEL_38:
   }
 }
 
-- (void)_setTopConstraintConstant:(double)a3
+- (void)_setTopConstraintConstant:(double)constant
 {
   constraints = self->__constraints;
   if (constraints)
@@ -731,16 +731,16 @@ LABEL_38:
     {
       v8 = [(NSArray *)constraints objectAtIndex:1];
       [v8 constant];
-      if (v9 != a3)
+      if (v9 != constant)
       {
 
-        [v8 setConstant:a3];
+        [v8 setConstant:constant];
       }
     }
   }
 }
 
-- (void)_setLeftConstraintConstant:(double)a3
+- (void)_setLeftConstraintConstant:(double)constant
 {
   constraints = self->__constraints;
   if (constraints)
@@ -750,10 +750,10 @@ LABEL_38:
     {
       v8 = [(NSArray *)constraints objectAtIndex:0];
       [v8 constant];
-      if (v9 != a3)
+      if (v9 != constant)
       {
 
-        [v8 setConstant:a3];
+        [v8 setConstant:constant];
       }
     }
   }
@@ -807,12 +807,12 @@ LABEL_38:
   return result;
 }
 
-- (void)_setBackgroundView:(id)a3
+- (void)_setBackgroundView:(id)view
 {
   [(_UINavigationControllerPalette *)self _setupBackgroundViewIfNecessary];
   backgroundView = self->_backgroundView;
 
-  [(_UIBarBackground *)backgroundView setCustomBackgroundView:a3];
+  [(_UIBarBackground *)backgroundView setCustomBackgroundView:view];
 }
 
 - (void)didMoveToSuperview
@@ -835,22 +835,22 @@ LABEL_38:
   }
 }
 
-- (void)_setVisualAltitude:(double)a3
+- (void)_setVisualAltitude:(double)altitude
 {
   v4.receiver = self;
   v4.super_class = _UINavigationControllerPalette;
-  [(UIView *)&v4 _setVisualAltitude:a3];
+  [(UIView *)&v4 _setVisualAltitude:altitude];
   if (self->_backgroundView)
   {
     [(_UINavigationControllerPalette *)self _configureConstraintsForBackground:?];
   }
 }
 
-- (void)_setVisualAltitudeBias:(CGSize)a3
+- (void)_setVisualAltitudeBias:(CGSize)bias
 {
   v4.receiver = self;
   v4.super_class = _UINavigationControllerPalette;
-  [(UIView *)&v4 _setVisualAltitudeBias:a3.width, a3.height];
+  [(UIView *)&v4 _setVisualAltitudeBias:bias.width, bias.height];
   if (self->_backgroundView)
   {
     [(_UINavigationControllerPalette *)self _configureConstraintsForBackground:?];

@@ -4,17 +4,17 @@
 - (double)dataDuration;
 - (double)eventDuration;
 - (double)overlapDuration;
-- (id)_samplePrinterForSampleStore:(id)a3;
+- (id)_samplePrinterForSampleStore:(id)store;
 - (int)numSamples;
 - (int)numSamplesAvoidedDueToAudio;
-- (void)_performSamplePrinterWork:(id)a3;
-- (void)_saveReportToStream:(__sFILE *)a3;
-- (void)_saveReportToStream:(__sFILE *)a3 withSampleStore:(id)a4;
-- (void)_setupSampleStore:(id)a3;
+- (void)_performSamplePrinterWork:(id)work;
+- (void)_saveReportToStream:(__sFILE *)stream;
+- (void)_saveReportToStream:(__sFILE *)stream withSampleStore:(id)store;
+- (void)_setupSampleStore:(id)store;
 - (void)dropTransaction;
-- (void)filterToStartTime:(id)a3 endTime:(id)a4;
-- (void)performSamplePrinterWork:(id)a3;
-- (void)saveReportToStream:(__sFILE *)a3;
+- (void)filterToStartTime:(id)time endTime:(id)endTime;
+- (void)performSamplePrinterWork:(id)work;
+- (void)saveReportToStream:(__sFILE *)stream;
 - (void)takeTransaction;
 @end
 
@@ -100,9 +100,9 @@
     return 0.0;
   }
 
-  v4 = [(SATimeRange *)dataTimeRange startTime];
-  v5 = [(SATimeRange *)self->_dataTimeRange endTime];
-  v6 = sub_100081A04(v4, v5);
+  startTime = [(SATimeRange *)dataTimeRange startTime];
+  endTime = [(SATimeRange *)self->_dataTimeRange endTime];
+  v6 = sub_100081A04(startTime, endTime);
 
   return v6;
 }
@@ -115,9 +115,9 @@
     return 0.0;
   }
 
-  v4 = [(SATimeRange *)eventTimeRange startTime];
-  v5 = [(SATimeRange *)self->_eventTimeRange endTime];
-  v6 = sub_100081A04(v4, v5);
+  startTime = [(SATimeRange *)eventTimeRange startTime];
+  endTime = [(SATimeRange *)self->_eventTimeRange endTime];
+  v6 = sub_100081A04(startTime, endTime);
 
   return v6;
 }
@@ -130,11 +130,11 @@
   if (dataTimeRange)
   {
     p_dataTimeRange = &self->_dataTimeRange;
-    v7 = [(SATimeRange *)dataTimeRange startTime];
+    startTime = [(SATimeRange *)dataTimeRange startTime];
     if (eventTimeRange)
     {
-      v8 = [(SATimeRange *)*p_eventTimeRange startTime];
-      if ([v7 compare:v8] == -1)
+      startTime2 = [(SATimeRange *)*p_eventTimeRange startTime];
+      if ([startTime compare:startTime2] == -1)
       {
         v9 = p_eventTimeRange;
       }
@@ -144,11 +144,11 @@
         v9 = p_dataTimeRange;
       }
 
-      v10 = [*v9 startTime];
+      startTime3 = [*v9 startTime];
 
-      v11 = [(SATimeRange *)*p_dataTimeRange endTime];
-      v12 = [(SATimeRange *)*p_eventTimeRange endTime];
-      if ([v11 compare:v12] == 1)
+      endTime = [(SATimeRange *)*p_dataTimeRange endTime];
+      endTime2 = [(SATimeRange *)*p_eventTimeRange endTime];
+      if ([endTime compare:endTime2] == 1)
       {
         v13 = p_eventTimeRange;
       }
@@ -158,24 +158,24 @@
         v13 = p_dataTimeRange;
       }
 
-      v14 = [*v13 endTime];
+      endTime3 = [*v13 endTime];
 
-      v7 = v10;
+      startTime = startTime3;
       goto LABEL_14;
     }
 
     v15 = *p_dataTimeRange;
 LABEL_13:
-    v14 = [(SATimeRange *)v15 endTime];
+    endTime3 = [(SATimeRange *)v15 endTime];
 LABEL_14:
-    v16 = sub_100081A04(v7, v14);
+    v16 = sub_100081A04(startTime, endTime3);
 
     return v16;
   }
 
   if (eventTimeRange)
   {
-    v7 = [(SATimeRange *)self->_eventTimeRange startTime];
+    startTime = [(SATimeRange *)self->_eventTimeRange startTime];
     v15 = *p_eventTimeRange;
     goto LABEL_13;
   }
@@ -183,24 +183,24 @@ LABEL_14:
   return 0.0;
 }
 
-- (void)filterToStartTime:(id)a3 endTime:(id)a4
+- (void)filterToStartTime:(id)time endTime:(id)endTime
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   reportTimeStart = self->_reportTimeStart;
-  self->_reportTimeStart = v6;
-  v10 = v6;
+  self->_reportTimeStart = timeCopy;
+  v10 = timeCopy;
 
   reportTimeEnd = self->_reportTimeEnd;
-  self->_reportTimeEnd = v7;
+  self->_reportTimeEnd = endTimeCopy;
 }
 
-- (void)_setupSampleStore:(id)a3
+- (void)_setupSampleStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   p_targetProcessId = &self->_targetProcessId;
   targetProcessId = self->_targetProcessId;
-  if (!v4)
+  if (!storeCopy)
   {
     if (targetProcessId < 0)
     {
@@ -370,7 +370,7 @@ LABEL_14:
     abort();
   }
 
-  v11 = v4;
+  v11 = storeCopy;
   if ((targetProcessId & 0x80000000) == 0)
   {
     if (byte_100127EC8)
@@ -549,17 +549,17 @@ LABEL_47:
 
   if (self->_targetProcessAbsolutePath)
   {
-    v38 = [v11 targetProcess];
-    v39 = [v38 mainBinaryPath];
-    v40 = [v39 isAbsolutePath];
+    targetProcess = [v11 targetProcess];
+    mainBinaryPath = [targetProcess mainBinaryPath];
+    isAbsolutePath = [mainBinaryPath isAbsolutePath];
 
-    if ((v40 & 1) == 0)
+    if ((isAbsolutePath & 1) == 0)
     {
-      v41 = [v11 targetProcess];
-      v42 = v41;
-      if (v41)
+      targetProcess2 = [v11 targetProcess];
+      v42 = targetProcess2;
+      if (targetProcess2)
       {
-        [v41 setMainBinaryPath:self->_targetProcessAbsolutePath];
+        [targetProcess2 setMainBinaryPath:self->_targetProcessAbsolutePath];
       }
     }
   }
@@ -605,22 +605,22 @@ LABEL_47:
   }
 
   [v11 postprocess];
-  v48 = [v11 targetProcess];
-  v49 = [v48 bundleName];
+  targetProcess3 = [v11 targetProcess];
+  bundleName = [targetProcess3 bundleName];
   targetProcessBundleName = self->_targetProcessBundleName;
-  self->_targetProcessBundleName = v49;
+  self->_targetProcessBundleName = bundleName;
 
-  v51 = [v11 targetProcess];
-  v52 = [v51 bundleIdentifier];
+  targetProcess4 = [v11 targetProcess];
+  bundleIdentifier = [targetProcess4 bundleIdentifier];
   targetProcessBundleId = self->_targetProcessBundleId;
-  self->_targetProcessBundleId = v52;
+  self->_targetProcessBundleId = bundleIdentifier;
 
-  v54 = [v11 targetProcess];
-  v55 = [v54 bundleShortVersion];
-  v56 = v55;
-  if (v55)
+  targetProcess5 = [v11 targetProcess];
+  bundleShortVersion = [targetProcess5 bundleShortVersion];
+  v56 = bundleShortVersion;
+  if (bundleShortVersion)
   {
-    v57 = v55;
+    v57 = bundleShortVersion;
   }
 
   else
@@ -630,12 +630,12 @@ LABEL_47:
 
   v58 = v57;
 
-  v59 = [v11 targetProcess];
-  v60 = [v59 bundleVersion];
-  v61 = v60;
-  if (v60)
+  targetProcess6 = [v11 targetProcess];
+  bundleVersion = [targetProcess6 bundleVersion];
+  v61 = bundleVersion;
+  if (bundleVersion)
   {
-    v62 = v60;
+    v62 = bundleVersion;
   }
 
   else
@@ -650,45 +650,45 @@ LABEL_47:
   self->_targetProcessVersion = v64;
 
   v66 = [NSString alloc];
-  v67 = [v11 targetProcess];
-  v68 = [v66 initWithFormat:@"%llu", objc_msgSend(v67, "adamID")];
+  targetProcess7 = [v11 targetProcess];
+  v68 = [v66 initWithFormat:@"%llu", objc_msgSend(targetProcess7, "adamID")];
   targetProcessAdamId = self->_targetProcessAdamId;
   self->_targetProcessAdamId = v68;
 
-  v70 = [v11 targetProcess];
-  v71 = [v70 name];
+  targetProcess8 = [v11 targetProcess];
+  name = [targetProcess8 name];
   targetProcessName = self->_targetProcessName;
-  self->_targetProcessName = v71;
+  self->_targetProcessName = name;
 
-  v73 = [v11 targetProcess];
-  v74 = [v73 mainBinary];
-  v75 = [v74 uuid];
+  targetProcess9 = [v11 targetProcess];
+  mainBinary = [targetProcess9 mainBinary];
+  uuid = [mainBinary uuid];
   targetProcessMainBinaryUUID = self->_targetProcessMainBinaryUUID;
-  self->_targetProcessMainBinaryUUID = v75;
+  self->_targetProcessMainBinaryUUID = uuid;
 
-  v77 = [v11 targetProcess];
-  v78 = [v77 mainBinaryPath];
-  if ([v78 isAbsolutePath])
+  targetProcess10 = [v11 targetProcess];
+  mainBinaryPath2 = [targetProcess10 mainBinaryPath];
+  if ([mainBinaryPath2 isAbsolutePath])
   {
-    v79 = [v11 targetProcess];
-    v80 = [v79 mainBinaryPath];
+    targetProcess11 = [v11 targetProcess];
+    mainBinaryPath3 = [targetProcess11 mainBinaryPath];
     targetProcessAbsolutePath = self->_targetProcessAbsolutePath;
-    self->_targetProcessAbsolutePath = v80;
+    self->_targetProcessAbsolutePath = mainBinaryPath3;
   }
 
   else
   {
-    v79 = self->_targetProcessAbsolutePath;
+    targetProcess11 = self->_targetProcessAbsolutePath;
     self->_targetProcessAbsolutePath = 0;
   }
 
-  v82 = [v11 targetProcess];
-  v83 = [v82 isUnresponsive];
+  targetProcess12 = [v11 targetProcess];
+  isUnresponsive = [targetProcess12 isUnresponsive];
 
-  if (v83)
+  if (isUnresponsive)
   {
-    v84 = [v11 targetProcess];
-    [v84 timeOfLastResponse];
+    targetProcess13 = [v11 targetProcess];
+    [targetProcess13 timeOfLastResponse];
     self->_targetProcessTimeOfLastResponse = v85;
   }
 
@@ -697,9 +697,9 @@ LABEL_47:
     self->_targetProcessTimeOfLastResponse = 0.0;
   }
 
-  v86 = [v11 hardwareModel];
+  hardwareModel = [v11 hardwareModel];
   hardwareModel = self->_hardwareModel;
-  self->_hardwareModel = v86;
+  self->_hardwareModel = hardwareModel;
 
   [v11 setEvent:self->_event];
   [v11 setEventNote:self->_eventNote];
@@ -712,11 +712,11 @@ LABEL_47:
   [v11 setCustomOutput:self->_customOutput];
 }
 
-- (id)_samplePrinterForSampleStore:(id)a3
+- (id)_samplePrinterForSampleStore:(id)store
 {
-  v4 = a3;
-  [(SPProcessEvent *)self _setupSampleStore:v4];
-  v5 = [[SASamplePrinter alloc] initWithSampleStore:v4];
+  storeCopy = store;
+  [(SPProcessEvent *)self _setupSampleStore:storeCopy];
+  v5 = [[SASamplePrinter alloc] initWithSampleStore:storeCopy];
 
   if (v5)
   {
@@ -752,12 +752,12 @@ LABEL_3:
 
 LABEL_19:
     headerOnly = self->_headerOnly;
-    v21 = [v5 options];
-    [v21 setPrintTargetThreadOnly:headerOnly];
+    options = [v5 options];
+    [options setPrintTargetThreadOnly:headerOnly];
 
-    LOBYTE(v21) = self->_headerOnly;
-    v22 = [v5 options];
-    [v22 setDisplayFooter:(v21 & 1) == 0];
+    LOBYTE(options) = self->_headerOnly;
+    options2 = [v5 options];
+    [options2 setDisplayFooter:(options & 1) == 0];
 
     [v5 setShareWithAppDevs:AppAnalyticsEnabled()];
     if (*&self->_startTimeIndex == 0)
@@ -774,8 +774,8 @@ LABEL_19:
     }
 
     forceOneBasedTimeIndexes = self->_forceOneBasedTimeIndexes;
-    v24 = [v5 options];
-    [v24 setForceOneBasedTimeIndexes:forceOneBasedTimeIndexes];
+    options3 = [v5 options];
+    [options3 setForceOneBasedTimeIndexes:forceOneBasedTimeIndexes];
 
     if (self->_incidentUUID)
     {
@@ -939,15 +939,15 @@ LABEL_67:
   return v5;
 }
 
-- (void)_saveReportToStream:(__sFILE *)a3 withSampleStore:(id)a4
+- (void)_saveReportToStream:(__sFILE *)stream withSampleStore:(id)store
 {
-  v6 = a4;
+  storeCopy = store;
   v7 = objc_autoreleasePoolPush();
-  [(SPProcessEvent *)self _setupSampleStore:v6];
+  [(SPProcessEvent *)self _setupSampleStore:storeCopy];
   if (self->_includeTextualFormatInReport)
   {
-    v8 = [(SPProcessEvent *)self _samplePrinterForSampleStore:v6];
-    [v8 printToStream:a3];
+    v8 = [(SPProcessEvent *)self _samplePrinterForSampleStore:storeCopy];
+    [v8 printToStream:stream];
   }
 
   if (self->_includeBinaryFormatInReport)
@@ -964,8 +964,8 @@ LABEL_67:
       v10 = 43;
     }
 
-    fwrite(v9, v10, 1uLL, a3);
-    if (([v6 saveBinaryFormatToStream:a3] & 1) == 0)
+    fwrite(v9, v10, 1uLL, stream);
+    if (([storeCopy saveBinaryFormatToStream:stream] & 1) == 0)
     {
       p_targetProcessId = &self->_targetProcessId;
       if (self->_targetProcessId < 0)
@@ -1278,31 +1278,31 @@ LABEL_104:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_saveReportToStream:(__sFILE *)a3
+- (void)_saveReportToStream:(__sFILE *)stream
 {
   v3 = [NSException exceptionWithName:@"_saveReportToStream needs to be subclassed" reason:0 userInfo:0];
   objc_exception_throw(v3);
 }
 
-- (void)saveReportToStream:(__sFILE *)a3
+- (void)saveReportToStream:(__sFILE *)stream
 {
-  [(SPProcessEvent *)self _saveReportToStream:a3];
+  [(SPProcessEvent *)self _saveReportToStream:stream];
 
   [(SPProcessEvent *)self dropTransaction];
 }
 
-- (void)performSamplePrinterWork:(id)a3
+- (void)performSamplePrinterWork:(id)work
 {
-  v5 = a3;
+  workCopy = work;
   v4 = objc_autoreleasePoolPush();
-  [(SPProcessEvent *)self _performSamplePrinterWork:v5];
+  [(SPProcessEvent *)self _performSamplePrinterWork:workCopy];
   [(SPProcessEvent *)self dropTransaction];
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_performSamplePrinterWork:(id)a3
+- (void)_performSamplePrinterWork:(id)work
 {
-  v3 = a3;
+  workCopy = work;
   v4 = [NSException exceptionWithName:@"_performSamplePrinterWork needs to be subclassed" reason:0 userInfo:0];
   objc_exception_throw(v4);
 }

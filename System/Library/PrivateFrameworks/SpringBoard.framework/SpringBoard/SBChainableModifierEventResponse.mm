@@ -1,18 +1,18 @@
 @interface SBChainableModifierEventResponse
-+ (id)responseByAppendingResponse:(id)a3 toResponse:(id)a4;
++ (id)responseByAppendingResponse:(id)response toResponse:(id)toResponse;
 - (BOOL)isValid;
 - (NSArray)childResponses;
-- (id)_initWithChildResponses:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)responseByTransformingResponseWithTransformer:(id)a3;
+- (id)_initWithChildResponses:(id)responses;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)responseByTransformingResponseWithTransformer:(id)transformer;
 - (id)succinctDescription;
 - (uint64_t)setConsumed:(uint64_t)result;
-- (void)consumeWithReason:(id)a3;
-- (void)enumerateChildResponsesUsingBlock:(id)a3;
-- (void)enumerateResponseTreeUsingBlock:(id)a3 stop:(BOOL *)a4;
-- (void)setChildResponses:(id)a3;
-- (void)setDelay:(double)a3 withValidator:(id)a4;
+- (void)consumeWithReason:(id)reason;
+- (void)enumerateChildResponsesUsingBlock:(id)block;
+- (void)enumerateResponseTreeUsingBlock:(id)block stop:(BOOL *)stop;
+- (void)setChildResponses:(id)responses;
+- (void)setDelay:(double)delay withValidator:(id)validator;
 @end
 
 @implementation SBChainableModifierEventResponse
@@ -36,9 +36,9 @@
   }
 }
 
-- (id)_initWithChildResponses:(id)a3
+- (id)_initWithChildResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   v10.receiver = self;
   v10.super_class = SBChainableModifierEventResponse;
   v5 = [(SBChainableModifierEventResponse *)&v10 init];
@@ -47,9 +47,9 @@
   {
     v5->_delay = 0.0;
     v5->_consumed = 0;
-    if (v4)
+    if (responsesCopy)
     {
-      v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
+      v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:responsesCopy];
     }
 
     else
@@ -64,42 +64,42 @@
   return v6;
 }
 
-+ (id)responseByAppendingResponse:(id)a3 toResponse:(id)a4
++ (id)responseByAppendingResponse:(id)response toResponse:(id)toResponse
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!(v6 | v7))
+  responseCopy = response;
+  toResponseCopy = toResponse;
+  v8 = toResponseCopy;
+  if (!(responseCopy | toResponseCopy))
   {
-    v10 = 0;
+    newEventResponse = 0;
     goto LABEL_11;
   }
 
-  if (!v6 && v7)
+  if (!responseCopy && toResponseCopy)
   {
-    v9 = v7;
+    v9 = toResponseCopy;
 LABEL_9:
-    v10 = v9;
+    newEventResponse = v9;
     goto LABEL_11;
   }
 
-  if (v6 && !v7)
+  if (responseCopy && !toResponseCopy)
   {
-    v9 = v6;
+    v9 = responseCopy;
     goto LABEL_9;
   }
 
-  v10 = [a1 newEventResponse];
-  [v10 addChildResponse:v8];
-  [v10 addChildResponse:v6];
+  newEventResponse = [self newEventResponse];
+  [newEventResponse addChildResponse:v8];
+  [newEventResponse addChildResponse:responseCopy];
 LABEL_11:
 
-  return v10;
+  return newEventResponse;
 }
 
-- (void)setChildResponses:(id)a3
+- (void)setChildResponses:(id)responses
 {
-  v4 = [a3 mutableCopy];
+  v4 = [responses mutableCopy];
   childResponses = self->_childResponses;
   self->_childResponses = v4;
 }
@@ -111,10 +111,10 @@ LABEL_11:
   return v2;
 }
 
-- (id)responseByTransformingResponseWithTransformer:(id)a3
+- (id)responseByTransformingResponseWithTransformer:(id)transformer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transformerCopy = transformer;
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_childResponses, "count")}];
   v15 = 0u;
   v16 = 0u;
@@ -135,7 +135,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) responseByTransformingResponseWithTransformer:{v4, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * i) responseByTransformingResponseWithTransformer:{transformerCopy, v15}];
         if (v11)
         {
           [(NSMutableArray *)v5 addObject:v11];
@@ -151,22 +151,22 @@ LABEL_11:
   childResponses = self->_childResponses;
   self->_childResponses = v5;
 
-  v13 = v4[2](v4, self);
+  v13 = transformerCopy[2](transformerCopy, self);
 
   return v13;
 }
 
-- (void)setDelay:(double)a3 withValidator:(id)a4
+- (void)setDelay:(double)delay withValidator:(id)validator
 {
-  self->_delay = a3;
-  v5 = MEMORY[0x223D6F7F0](a4, a2);
+  self->_delay = delay;
+  v5 = MEMORY[0x223D6F7F0](validator, a2);
   validator = self->_validator;
   self->_validator = v5;
 }
 
-- (void)consumeWithReason:(id)a3
+- (void)consumeWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   if (self->_consumed)
   {
     [(SBChainableModifierEventResponse *)a2 consumeWithReason:?];
@@ -176,17 +176,17 @@ LABEL_11:
   validator = self->_validator;
   self->_validator = 0;
 
-  v7 = [(SBChainableModifierEventResponse *)self loggingCategory];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  loggingCategory = [(SBChainableModifierEventResponse *)self loggingCategory];
+  if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEBUG))
   {
-    [(SBChainableModifierEventResponse *)self consumeWithReason:v5, v7];
+    [(SBChainableModifierEventResponse *)self consumeWithReason:reasonCopy, loggingCategory];
   }
 }
 
-- (void)enumerateChildResponsesUsingBlock:(id)a3
+- (void)enumerateChildResponsesUsingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
@@ -209,7 +209,7 @@ LABEL_11:
 
         if ((v14 & 1) == 0)
         {
-          v4[2](v4, *(*(&v10 + 1) + 8 * i), &v14);
+          blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * i), &v14);
         }
       }
 
@@ -220,11 +220,11 @@ LABEL_11:
   }
 }
 
-- (void)enumerateResponseTreeUsingBlock:(id)a3 stop:(BOOL *)a4
+- (void)enumerateResponseTreeUsingBlock:(id)block stop:(BOOL *)stop
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v6[2](v6, self, a4);
+  blockCopy = block;
+  blockCopy[2](blockCopy, self, stop);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -245,9 +245,9 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        if (!*a4)
+        if (!*stop)
         {
-          [*(*(&v12 + 1) + 8 * v11) enumerateResponseTreeUsingBlock:v6 stop:{a4, v12}];
+          [*(*(&v12 + 1) + 8 * v11) enumerateResponseTreeUsingBlock:blockCopy stop:{stop, v12}];
         }
 
         ++v11;
@@ -261,30 +261,30 @@ LABEL_11:
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBChainableModifierEventResponse *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBChainableModifierEventResponse *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBChainableModifierEventResponse *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBChainableModifierEventResponse *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBChainableModifierEventResponse *)self succinctDescriptionBuilder];
-  v6 = [v5 appendBool:self->_consumed withName:@"consumed" ifEqualTo:1];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBChainableModifierEventResponse *)self succinctDescriptionBuilder];
+  v6 = [succinctDescriptionBuilder appendBool:self->_consumed withName:@"consumed" ifEqualTo:1];
   if ((BSFloatIsZero() & 1) == 0)
   {
-    v7 = [v5 appendFloat:@"delay" withName:self->_delay];
+    v7 = [succinctDescriptionBuilder appendFloat:@"delay" withName:self->_delay];
   }
 
   if ([(NSMutableArray *)self->_childResponses count])
@@ -293,13 +293,13 @@ LABEL_11:
     v9[1] = 3221225472;
     v9[2] = __74__SBChainableModifierEventResponse_descriptionBuilderWithMultilinePrefix___block_invoke;
     v9[3] = &unk_2783A8ED8;
-    v10 = v4;
-    v11 = self;
-    v12 = v5;
+    v10 = prefixCopy;
+    selfCopy = self;
+    v12 = succinctDescriptionBuilder;
     [v12 appendBodySectionWithName:0 multilinePrefix:v10 block:v9];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __74__SBChainableModifierEventResponse_descriptionBuilderWithMultilinePrefix___block_invoke(void *a1)

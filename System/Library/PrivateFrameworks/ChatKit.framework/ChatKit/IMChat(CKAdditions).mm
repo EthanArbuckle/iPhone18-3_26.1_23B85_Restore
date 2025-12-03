@@ -12,11 +12,11 @@
 
 - (id)__ck_watermarkDate
 {
-  v2 = [objc_opt_class() waterMarkTimeCache];
-  v3 = [a1 guid];
-  v4 = [v2 objectForKey:v3];
+  waterMarkTimeCache = [objc_opt_class() waterMarkTimeCache];
+  guid = [self guid];
+  v4 = [waterMarkTimeCache objectForKey:guid];
 
-  if ((v4 || ([a1 valueForChatProperty:@"CKChatWatermarkTime"], (v4 = objc_claimAutoreleasedReturnValue()) != 0)) && (objc_msgSend(v4, "doubleValue"), v5 > 0.0))
+  if ((v4 || ([self valueForChatProperty:@"CKChatWatermarkTime"], (v4 = objc_claimAutoreleasedReturnValue()) != 0)) && (objc_msgSend(v4, "doubleValue"), v5 > 0.0))
   {
     v6 = MEMORY[0x1E695DF00];
     [v4 doubleValue];
@@ -57,13 +57,13 @@
 
 - (uint64_t)__ck_watermarkMessageID
 {
-  v2 = [objc_opt_class() waterMarkMessageIDCache];
-  v3 = [a1 guid];
-  v4 = [v2 objectForKey:v3];
+  waterMarkMessageIDCache = [objc_opt_class() waterMarkMessageIDCache];
+  guid = [self guid];
+  v4 = [waterMarkMessageIDCache objectForKey:guid];
 
   if (!v4)
   {
-    result = [a1 valueForChatProperty:@"CKChatWatermarkMessageID"];
+    result = [self valueForChatProperty:@"CKChatWatermarkMessageID"];
     if (!result)
     {
       return result;
@@ -72,34 +72,34 @@
     v4 = result;
   }
 
-  v6 = [v4 longLongValue];
+  longLongValue = [v4 longLongValue];
 
-  return v6;
+  return longLongValue;
 }
 
 - (void)__ck_updateWatermarkToMessageID:()CKAdditions date:
 {
   v18 = a4;
-  v6 = [a1 guid];
+  guid = [self guid];
 
-  if (v6)
+  if (guid)
   {
-    v7 = [a1 __ck_watermarkMessageID];
-    if (v7 > a3)
+    __ck_watermarkMessageID = [self __ck_watermarkMessageID];
+    if (__ck_watermarkMessageID > a3)
     {
-      a3 = v7;
+      a3 = __ck_watermarkMessageID;
     }
 
-    v8 = [objc_opt_class() waterMarkMessageIDCache];
+    waterMarkMessageIDCache = [objc_opt_class() waterMarkMessageIDCache];
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-    v10 = [a1 guid];
-    [v8 setValue:v9 forKey:v10];
+    guid2 = [self guid];
+    [waterMarkMessageIDCache setValue:v9 forKey:guid2];
 
-    v11 = [a1 __ck_watermarkDate];
-    if (v11)
+    __ck_watermarkDate = [self __ck_watermarkDate];
+    if (__ck_watermarkDate)
     {
-      v12 = v11;
-      v13 = [v11 laterDate:v18];
+      v12 = __ck_watermarkDate;
+      v13 = [__ck_watermarkDate laterDate:v18];
 
       if (v13)
       {
@@ -108,9 +108,9 @@ LABEL_6:
         [v13 timeIntervalSince1970];
         v15 = [v14 numberWithDouble:?];
 LABEL_9:
-        v16 = [objc_opt_class() waterMarkTimeCache];
-        v17 = [a1 guid];
-        [v16 setValue:v15 forKey:v17];
+        waterMarkTimeCache = [objc_opt_class() waterMarkTimeCache];
+        guid3 = [self guid];
+        [waterMarkTimeCache setValue:v15 forKey:guid3];
 
         goto LABEL_10;
       }
@@ -134,28 +134,28 @@ LABEL_10:
 
 - (void)__ck_saveWatermark
 {
-  v2 = [objc_opt_class() waterMarkMessageIDCache];
-  v3 = [a1 guid];
-  v11 = [v2 objectForKey:v3];
+  waterMarkMessageIDCache = [objc_opt_class() waterMarkMessageIDCache];
+  guid = [self guid];
+  v11 = [waterMarkMessageIDCache objectForKey:guid];
 
-  v4 = [objc_opt_class() waterMarkTimeCache];
-  v5 = [a1 guid];
-  v6 = [v4 objectForKey:v5];
+  waterMarkTimeCache = [objc_opt_class() waterMarkTimeCache];
+  guid2 = [self guid];
+  v6 = [waterMarkTimeCache objectForKey:guid2];
 
   if (v11)
   {
-    [a1 setValue:v11 forChatProperty:@"CKChatWatermarkMessageID"];
-    v7 = [objc_opt_class() waterMarkMessageIDCache];
-    v8 = [a1 guid];
-    [v7 removeObjectForKey:v8];
+    [self setValue:v11 forChatProperty:@"CKChatWatermarkMessageID"];
+    waterMarkMessageIDCache2 = [objc_opt_class() waterMarkMessageIDCache];
+    guid3 = [self guid];
+    [waterMarkMessageIDCache2 removeObjectForKey:guid3];
   }
 
   if (v6)
   {
-    [a1 setValue:v6 forChatProperty:@"CKChatWatermarkTime"];
-    v9 = [objc_opt_class() waterMarkTimeCache];
-    v10 = [a1 guid];
-    [v9 removeObjectForKey:v10];
+    [self setValue:v6 forChatProperty:@"CKChatWatermarkTime"];
+    waterMarkTimeCache2 = [objc_opt_class() waterMarkTimeCache];
+    guid4 = [self guid];
+    [waterMarkTimeCache2 removeObjectForKey:guid4];
   }
 }
 
@@ -163,19 +163,19 @@ LABEL_10:
 {
   v2 = IMGetDomainBoolForKey();
   v3 = IMGetDomainBoolForKey();
-  v4 = [a1 valueForChatProperty:*MEMORY[0x1E69A6B68]];
+  v4 = [self valueForChatProperty:*MEMORY[0x1E69A6B68]];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = v2 | v3;
+    bOOLValue = v2 | v3;
   }
 
-  return v6 & 1;
+  return bOOLValue & 1;
 }
 
 @end

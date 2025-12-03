@@ -1,24 +1,24 @@
 @interface PGPastSupersetGroup
-+ (id)pastSupersetGroupWithMomentNodes:(id)a3 dateInterval:(id)a4 supersetCityNodeAsCollection:(id)a5 densestCloseLocationNodeAsCollection:(id)a6 locationHelper:(id)a7;
++ (id)pastSupersetGroupWithMomentNodes:(id)nodes dateInterval:(id)interval supersetCityNodeAsCollection:(id)collection densestCloseLocationNodeAsCollection:(id)asCollection locationHelper:(id)helper;
 @end
 
 @implementation PGPastSupersetGroup
 
-+ (id)pastSupersetGroupWithMomentNodes:(id)a3 dateInterval:(id)a4 supersetCityNodeAsCollection:(id)a5 densestCloseLocationNodeAsCollection:(id)a6 locationHelper:(id)a7
++ (id)pastSupersetGroupWithMomentNodes:(id)nodes dateInterval:(id)interval supersetCityNodeAsCollection:(id)collection densestCloseLocationNodeAsCollection:(id)asCollection locationHelper:(id)helper
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  helperCopy = helper;
+  asCollectionCopy = asCollection;
+  collectionCopy = collection;
+  intervalCopy = interval;
+  nodesCopy = nodes;
   v16 = objc_opt_new();
-  [v16 setMomentNodes:v15];
+  [v16 setMomentNodes:nodesCopy];
 
-  [v16 setDateInterval:v14];
-  [v16 setSupersetCityNodes:v13];
-  [v16 setDensestCloseLocationNodes:v12];
+  [v16 setDateInterval:intervalCopy];
+  [v16 setSupersetCityNodes:collectionCopy];
+  [v16 setDensestCloseLocationNodes:asCollectionCopy];
 
-  v17 = [v11 stateNodeFromCityNodeAsCollection:v13];
+  v17 = [helperCopy stateNodeFromCityNodeAsCollection:collectionCopy];
 
   [v16 setStateNodeAsCollection:v17];
 

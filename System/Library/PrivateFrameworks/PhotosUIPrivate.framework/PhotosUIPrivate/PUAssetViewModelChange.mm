@@ -11,10 +11,10 @@
   result = 1;
   if (![(PUAssetViewModelChange *)self visualImageAnalysisChanged])
   {
-    v4 = [MEMORY[0x1E69C3650] sharedInstance];
-    v5 = [v4 enablePhototypes];
+    mEMORY[0x1E69C3650] = [MEMORY[0x1E69C3650] sharedInstance];
+    enablePhototypes = [mEMORY[0x1E69C3650] enablePhototypes];
 
-    if (!v5 || ![(PUAssetViewModelChange *)self hasVisualAnalysisFailedChanged]&& ![(PUAssetViewModelChange *)self phototypeInfoButtonSupportChanged])
+    if (!enablePhototypes || ![(PUAssetViewModelChange *)self hasVisualAnalysisFailedChanged]&& ![(PUAssetViewModelChange *)self phototypeInfoButtonSupportChanged])
     {
       return 0;
     }
@@ -88,9 +88,9 @@
       [v3 addObject:@"assetSyndicationStateChanged"];
     }
 
-    v4 = [(PUAssetViewModelChange *)self videoPlayerChange];
+    videoPlayerChange = [(PUAssetViewModelChange *)self videoPlayerChange];
 
-    if (v4)
+    if (videoPlayerChange)
     {
       [v3 addObject:@"videoPlayerChange"];
     }
@@ -100,9 +100,9 @@
       [v3 addObject:@"forceBadgesVisibleChanged"];
     }
 
-    v5 = [(PUAssetViewModelChange *)self irisPlayerChange];
+    irisPlayerChange = [(PUAssetViewModelChange *)self irisPlayerChange];
 
-    if (v5)
+    if (irisPlayerChange)
     {
       [v3 addObject:@"irisPlayerChange"];
     }
@@ -127,9 +127,9 @@
       [v3 addObject:@"isInEditModeChanged"];
     }
 
-    v6 = [(PUAssetViewModelChange *)self animatedImageChange];
+    animatedImageChange = [(PUAssetViewModelChange *)self animatedImageChange];
 
-    if (v6)
+    if (animatedImageChange)
     {
       [v3 addObject:@"animatedImageChange"];
     }
@@ -346,9 +346,9 @@
     return 1;
   }
 
-  v3 = [(PUAssetViewModelChange *)self videoPlayerChange];
+  videoPlayerChange = [(PUAssetViewModelChange *)self videoPlayerChange];
 
-  if (v3)
+  if (videoPlayerChange)
   {
     return 1;
   }
@@ -358,9 +358,9 @@
     return 1;
   }
 
-  v4 = [(PUAssetViewModelChange *)self irisPlayerChange];
+  irisPlayerChange = [(PUAssetViewModelChange *)self irisPlayerChange];
 
-  if (v4)
+  if (irisPlayerChange)
   {
     return 1;
   }
@@ -385,9 +385,9 @@
     return 1;
   }
 
-  v5 = [(PUAssetViewModelChange *)self animatedImageChange];
+  animatedImageChange = [(PUAssetViewModelChange *)self animatedImageChange];
 
-  return v5 || [(PUAssetViewModelChange *)self revealsGainMapImageChanged]|| [(PUAssetViewModelChange *)self isPresentedForPreviewChanged]|| [(PUAssetViewModelChange *)self visualImageAnalysisChanged]|| [(PUAssetViewModelChange *)self hasVisualAnalysisFailedChanged]|| [(PUAssetViewModelChange *)self phototypeAccessoryViewSupportChanged]|| [(PUAssetViewModelChange *)self phototypeInfoButtonSupportChanged]|| [(PUAssetViewModelChange *)self shazamEventInfoChanged]|| [(PUAssetViewModelChange *)self isBeingDismissedChanged]|| [(PUAssetViewModelChange *)self isIrisPlayingChanged]|| [(PUAssetViewModelChange *)self isVisualSearchCardShowingChanged]|| [(PUAssetViewModelChange *)self statusCornerStateChanged]|| [(PUAssetViewModelChange *)self bestImageChanged]|| [(PUAssetViewModelChange *)self videoPlayerDidChange]|| [(PUAssetViewModelChange *)self irisPlayerChanged]|| [(PUAssetViewModelChange *)self highlightTimeRangesChanged]|| [(PUAssetViewModelChange *)self needsResetVisualImageInteractionChanged]|| [(PUAssetViewModelChange *)self PPT_isDeferredProcessingDoneAndFinalImageDisplayedChanged]|| [(PUAssetViewModelChange *)self isDisplayingSearchQueryLabelChanged]|| [(PUAssetViewModelChange *)self visualIntelligenceAnalyzeRequestIDChanged]|| [(PUAssetViewModelChange *)self isFullyInFocusChanged]|| [(PUAssetViewModelChange *)self isZoomedInChanged]|| [(PUAssetViewModelChange *)self isFullyOutOfFocusChanged]|| [(PUAssetViewModelChange *)self accessoryViewVisibilityFractionChanged]|| [(PUAssetViewModelChange *)self mainImageContentsRectChanged]|| [(PUAssetViewModelChange *)self isDisplayingHDRContentChanged];
+  return animatedImageChange || [(PUAssetViewModelChange *)self revealsGainMapImageChanged]|| [(PUAssetViewModelChange *)self isPresentedForPreviewChanged]|| [(PUAssetViewModelChange *)self visualImageAnalysisChanged]|| [(PUAssetViewModelChange *)self hasVisualAnalysisFailedChanged]|| [(PUAssetViewModelChange *)self phototypeAccessoryViewSupportChanged]|| [(PUAssetViewModelChange *)self phototypeInfoButtonSupportChanged]|| [(PUAssetViewModelChange *)self shazamEventInfoChanged]|| [(PUAssetViewModelChange *)self isBeingDismissedChanged]|| [(PUAssetViewModelChange *)self isIrisPlayingChanged]|| [(PUAssetViewModelChange *)self isVisualSearchCardShowingChanged]|| [(PUAssetViewModelChange *)self statusCornerStateChanged]|| [(PUAssetViewModelChange *)self bestImageChanged]|| [(PUAssetViewModelChange *)self videoPlayerDidChange]|| [(PUAssetViewModelChange *)self irisPlayerChanged]|| [(PUAssetViewModelChange *)self highlightTimeRangesChanged]|| [(PUAssetViewModelChange *)self needsResetVisualImageInteractionChanged]|| [(PUAssetViewModelChange *)self PPT_isDeferredProcessingDoneAndFinalImageDisplayedChanged]|| [(PUAssetViewModelChange *)self isDisplayingSearchQueryLabelChanged]|| [(PUAssetViewModelChange *)self visualIntelligenceAnalyzeRequestIDChanged]|| [(PUAssetViewModelChange *)self isFullyInFocusChanged]|| [(PUAssetViewModelChange *)self isZoomedInChanged]|| [(PUAssetViewModelChange *)self isFullyOutOfFocusChanged]|| [(PUAssetViewModelChange *)self accessoryViewVisibilityFractionChanged]|| [(PUAssetViewModelChange *)self mainImageContentsRectChanged]|| [(PUAssetViewModelChange *)self isDisplayingHDRContentChanged];
 }
 
 @end

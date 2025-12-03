@@ -1,7 +1,7 @@
 @interface AXMOscillator
 - (AXMOscillator)fmTarget;
-- (AXMOscillator)initWithDictionary:(id)a3;
-- (AXMOscillator)initWithParameters:(id)a3 parentSynth:(id)a4;
+- (AXMOscillator)initWithDictionary:(id)dictionary;
+- (AXMOscillator)initWithParameters:(id)parameters parentSynth:(id)synth;
 - (AXMSynth)parentSynth;
 - (BOOL)isBypassed;
 - (NSArray)fmOperatorIdentifiers;
@@ -20,13 +20,13 @@
 - (int64_t)detuning;
 - (int64_t)waveform;
 - (void)dealloc;
-- (void)routeTo:(id)a3;
-- (void)setDetuning:(int64_t)a3;
-- (void)setFrequencyRatio:(float)a3;
-- (void)setGain:(float)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIsBypassed:(BOOL)a3;
-- (void)setWaveform:(int64_t)a3;
+- (void)routeTo:(id)to;
+- (void)setDetuning:(int64_t)detuning;
+- (void)setFrequencyRatio:(float)ratio;
+- (void)setGain:(float)gain;
+- (void)setIdentifier:(id)identifier;
+- (void)setIsBypassed:(BOOL)bypassed;
+- (void)setWaveform:(int64_t)waveform;
 - (void)start;
 - (void)updateCache;
 @end
@@ -36,9 +36,9 @@
 - (void)updateCache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(AXMOscillator *)self fmOperators];
+  fmOperators = [(AXMOscillator *)self fmOperators];
   cachedFMOperators = self->_cachedFMOperators;
-  self->_cachedFMOperators = v3;
+  self->_cachedFMOperators = fmOperators;
 
   [(AXMOscillator *)self sampleRate];
   self->_cachedSampleRate = v5;
@@ -50,8 +50,8 @@
   self->_cachedFrequencyRatio = v8;
   self->_cachedWaveform = [(AXMOscillator *)self waveform];
   self->_cachedIsBypassed = [(AXMOscillator *)self isBypassed];
-  v9 = [(AXMOscillator *)self envelope];
-  self->_cachedEnvelopeIsBypassed = [v9 isBypassed];
+  envelope = [(AXMOscillator *)self envelope];
+  self->_cachedEnvelopeIsBypassed = [envelope isBypassed];
 
   v16 = 0u;
   v17 = 0u;
@@ -83,22 +83,22 @@
   }
 }
 
-- (AXMOscillator)initWithParameters:(id)a3 parentSynth:(id)a4
+- (AXMOscillator)initWithParameters:(id)parameters parentSynth:(id)synth
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  synthCopy = synth;
   v16.receiver = self;
   v16.super_class = AXMOscillator;
   v9 = [(AXMOscillator *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_parentSynth, v8);
-    objc_storeStrong(&v10->_parameters, a3);
+    objc_storeWeak(&v9->_parentSynth, synthCopy);
+    objc_storeStrong(&v10->_parameters, parameters);
     v10->_sampleBuffer = malloc_type_malloc(0x8000uLL, 0x100004000313F17uLL);
     v11 = [AXMOscillatorADSREnvelope alloc];
-    v12 = [v7 envelopeParameters];
-    v13 = [(AXMOscillatorADSREnvelope *)v11 initWithParameters:v12 parentSynth:v8];
+    envelopeParameters = [parametersCopy envelopeParameters];
+    v13 = [(AXMOscillatorADSREnvelope *)v11 initWithParameters:envelopeParameters parentSynth:synthCopy];
     envelope = v10->_envelope;
     v10->_envelope = v13;
   }
@@ -106,72 +106,72 @@
   return v10;
 }
 
-- (AXMOscillator)initWithDictionary:(id)a3
+- (AXMOscillator)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kSynthParameterDetuning"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterDetuning"];
   -[AXMOscillator setDetuning:](self, "setDetuning:", [v5 intValue]);
 
-  v6 = [v4 objectForKeyedSubscript:@"kSynthParameterLowpassCutoff"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterLowpassCutoff"];
   [v6 floatValue];
   [(AXMOscillator *)self setLowpassCutoff:?];
 
-  v7 = [v4 objectForKeyedSubscript:@"kSynthParameterFrequencyRatio"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterFrequencyRatio"];
   [v7 floatValue];
   [(AXMOscillator *)self setFrequencyRatio:?];
 
-  v8 = [v4 objectForKeyedSubscript:@"kSynthParameterWaveform"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterWaveform"];
   -[AXMOscillator setWaveform:](self, "setWaveform:", [v8 intValue]);
 
-  v9 = [v4 objectForKeyedSubscript:@"kSynthParameterIdentifier"];
-  v10 = [v9 stringValue];
-  [(AXMOscillator *)self setIdentifier:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterIdentifier"];
+  stringValue = [v9 stringValue];
+  [(AXMOscillator *)self setIdentifier:stringValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"kSynthParameterBypass"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterBypass"];
   -[AXMOscillator setIsBypassed:](self, "setIsBypassed:", [v11 BOOLValue]);
 
-  v12 = [v4 objectForKeyedSubscript:@"kSynthParameterADSREnvelope"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterADSREnvelope"];
   v13 = [v12 objectForKeyedSubscript:@"kSynthParameterEnvelopeAttackTime"];
   [v13 floatValue];
   v15 = v14;
-  v16 = [(AXMOscillator *)self envelope];
+  envelope = [(AXMOscillator *)self envelope];
   LODWORD(v17) = v15;
-  [v16 setAttackMS:v17];
+  [envelope setAttackMS:v17];
 
   v18 = [v12 objectForKeyedSubscript:@"kSynthParameterEnvelopeAttackLevel"];
   [v18 floatValue];
   v20 = v19;
-  v21 = [(AXMOscillator *)self envelope];
+  envelope2 = [(AXMOscillator *)self envelope];
   LODWORD(v22) = v20;
-  [v21 setAttackLevel:v22];
+  [envelope2 setAttackLevel:v22];
 
   v23 = [v12 objectForKeyedSubscript:@"kSynthParameterEnvelopeReleaseTime"];
   [v23 floatValue];
   v25 = v24;
-  v26 = [(AXMOscillator *)self envelope];
+  envelope3 = [(AXMOscillator *)self envelope];
   LODWORD(v27) = v25;
-  [v26 setReleaseMS:v27];
+  [envelope3 setReleaseMS:v27];
 
   v28 = [v12 objectForKeyedSubscript:@"kSynthParameterEnvelopeSustainLevel"];
   [v28 floatValue];
   v30 = v29;
-  v31 = [(AXMOscillator *)self envelope];
+  envelope4 = [(AXMOscillator *)self envelope];
   LODWORD(v32) = v30;
-  [v31 setSustainLevel:v32];
+  [envelope4 setSustainLevel:v32];
 
   v33 = [v12 objectForKeyedSubscript:@"kSynthParameterEnvelopeDecayTime"];
   [v33 floatValue];
   v35 = v34;
-  v36 = [(AXMOscillator *)self envelope];
+  envelope5 = [(AXMOscillator *)self envelope];
   LODWORD(v37) = v35;
-  [v36 setDecayMS:v37];
+  [envelope5 setDecayMS:v37];
 
-  v38 = [v4 objectForKeyedSubscript:@"kSynthParameterFMOperatorIdentifiers"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"kSynthParameterFMOperatorIdentifiers"];
   if ([v38 count])
   {
-    v39 = [(AXMOscillator *)self parentSynth];
-    v40 = [v38 firstObject];
-    v41 = [v39 oscillatorWithIdentifier:v40];
+    parentSynth = [(AXMOscillator *)self parentSynth];
+    firstObject = [v38 firstObject];
+    v41 = [parentSynth oscillatorWithIdentifier:firstObject];
 
     [v41 routeTo:self];
   }
@@ -181,10 +181,10 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 dictionaryRepresentation];
+  parameters = [(AXMOscillator *)self parameters];
+  dictionaryRepresentation = [parameters dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (void)dealloc
@@ -203,28 +203,28 @@
   [(AXMOscillatorADSREnvelope *)envelope activate];
 }
 
-- (void)routeTo:(id)a3
+- (void)routeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(AXMOscillator *)self parameters];
-  v5 = [v6 parameters];
-  [v4 routeTo:v5];
+  toCopy = to;
+  parameters = [(AXMOscillator *)self parameters];
+  parameters2 = [toCopy parameters];
+  [parameters routeTo:parameters2];
 }
 
 - (NSArray)fmOperators
 {
-  v3 = [(AXMOscillator *)self parentSynth];
-  v4 = [(AXMOscillator *)self fmOperatorIdentifiers];
-  v5 = [v3 oscillatorsWithIdentifiers:v4];
+  parentSynth = [(AXMOscillator *)self parentSynth];
+  fmOperatorIdentifiers = [(AXMOscillator *)self fmOperatorIdentifiers];
+  v5 = [parentSynth oscillatorsWithIdentifiers:fmOperatorIdentifiers];
 
   return v5;
 }
 
 - (AXMOscillator)fmTarget
 {
-  v3 = [(AXMOscillator *)self parentSynth];
-  v4 = [(AXMOscillator *)self fmTargetIdentifier];
-  v5 = [v3 oscillatorWithIdentifier:v4];
+  parentSynth = [(AXMOscillator *)self parentSynth];
+  fmTargetIdentifier = [(AXMOscillator *)self fmTargetIdentifier];
+  v5 = [parentSynth oscillatorWithIdentifier:fmTargetIdentifier];
 
   return v5;
 }
@@ -375,22 +375,22 @@ LABEL_32:
 {
   [(AXMOscillator *)self frequencyRatio];
   v4 = v3;
-  v5 = [(AXMOscillator *)self parameters];
-  v6 = [v5 fmTargetParameters];
+  parameters = [(AXMOscillator *)self parameters];
+  fmTargetParameters = [parameters fmTargetParameters];
 
-  if (v6)
+  if (fmTargetParameters)
   {
     do
     {
-      [v6 frequencyRatio];
+      [fmTargetParameters frequencyRatio];
       v8 = v7;
-      v9 = [v6 fmTargetParameters];
+      v6FmTargetParameters = [fmTargetParameters fmTargetParameters];
       v4 = v4 * v8;
 
-      v6 = v9;
+      fmTargetParameters = v6FmTargetParameters;
     }
 
-    while (v9);
+    while (v6FmTargetParameters);
   }
 
   return v4;
@@ -398,37 +398,37 @@ LABEL_32:
 
 - (NSString)identifier
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 identifier];
+  parameters = [(AXMOscillator *)self parameters];
+  identifier = [parameters identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [(AXMOscillator *)self parameters];
-  [v4 setIdentifier:v5];
+  identifierCopy = identifier;
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters setIdentifier:identifierCopy];
 }
 
 - (int64_t)waveform
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 waveform];
+  parameters = [(AXMOscillator *)self parameters];
+  waveform = [parameters waveform];
 
-  return v3;
+  return waveform;
 }
 
-- (void)setWaveform:(int64_t)a3
+- (void)setWaveform:(int64_t)waveform
 {
-  v4 = [(AXMOscillator *)self parameters];
-  [v4 setWaveform:a3];
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters setWaveform:waveform];
 }
 
 - (float)sampleRate
 {
-  v2 = [(AXMOscillator *)self parameters];
-  [v2 sampleRate];
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters sampleRate];
   v4 = v3;
 
   return v4;
@@ -436,8 +436,8 @@ LABEL_32:
 
 - (float)baseFrequency
 {
-  v2 = [(AXMOscillator *)self parameters];
-  [v2 baseFrequency];
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters baseFrequency];
   v4 = v3;
 
   return v4;
@@ -445,95 +445,95 @@ LABEL_32:
 
 - (float)frequencyRatio
 {
-  v2 = [(AXMOscillator *)self parameters];
-  [v2 frequencyRatio];
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters frequencyRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setFrequencyRatio:(float)a3
+- (void)setFrequencyRatio:(float)ratio
 {
-  v5 = [(AXMOscillator *)self parameters];
-  *&v4 = a3;
-  [v5 setFrequencyRatio:v4];
+  parameters = [(AXMOscillator *)self parameters];
+  *&v4 = ratio;
+  [parameters setFrequencyRatio:v4];
 }
 
 - (NSArray)fmOperatorIdentifiers
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 fmOperatorIdentifiers];
+  parameters = [(AXMOscillator *)self parameters];
+  fmOperatorIdentifiers = [parameters fmOperatorIdentifiers];
 
-  return v3;
+  return fmOperatorIdentifiers;
 }
 
 - (NSString)fmTargetIdentifier
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 fmTargetIdentifier];
+  parameters = [(AXMOscillator *)self parameters];
+  fmTargetIdentifier = [parameters fmTargetIdentifier];
 
-  return v3;
+  return fmTargetIdentifier;
 }
 
 - (float)gain
 {
-  v2 = [(AXMOscillator *)self parameters];
-  [v2 gain];
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters gain];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setGain:(float)a3
+- (void)setGain:(float)gain
 {
-  v5 = [(AXMOscillator *)self parameters];
-  *&v4 = a3;
-  [v5 setGain:v4];
+  parameters = [(AXMOscillator *)self parameters];
+  *&v4 = gain;
+  [parameters setGain:v4];
 }
 
 - (int64_t)detuning
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 detuning];
+  parameters = [(AXMOscillator *)self parameters];
+  detuning = [parameters detuning];
 
-  return v3;
+  return detuning;
 }
 
-- (void)setDetuning:(int64_t)a3
+- (void)setDetuning:(int64_t)detuning
 {
-  v4 = [(AXMOscillator *)self parameters];
-  [v4 setDetuning:a3];
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters setDetuning:detuning];
 }
 
 - (BOOL)isBypassed
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 isBypassed];
+  parameters = [(AXMOscillator *)self parameters];
+  isBypassed = [parameters isBypassed];
 
-  return v3;
+  return isBypassed;
 }
 
-- (void)setIsBypassed:(BOOL)a3
+- (void)setIsBypassed:(BOOL)bypassed
 {
-  v3 = a3;
-  v4 = [(AXMOscillator *)self parameters];
-  [v4 setIsBypassed:v3];
+  bypassedCopy = bypassed;
+  parameters = [(AXMOscillator *)self parameters];
+  [parameters setIsBypassed:bypassedCopy];
 }
 
 - (NSString)displayName
 {
-  v2 = [(AXMOscillator *)self parameters];
-  v3 = [v2 displayName];
+  parameters = [(AXMOscillator *)self parameters];
+  displayName = [parameters displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AXMOscillator *)self displayName];
-  v6 = [v3 stringWithFormat:@"<%@ %p name=%@>", v4, self, v5];
+  displayName = [(AXMOscillator *)self displayName];
+  v6 = [v3 stringWithFormat:@"<%@ %p name=%@>", v4, self, displayName];
 
   return v6;
 }

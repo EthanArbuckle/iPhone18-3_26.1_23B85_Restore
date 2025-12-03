@@ -1,21 +1,21 @@
 @interface SUUIDividerPageComponent
-- (SUUIDividerPageComponent)initWithCustomPageContext:(id)a3;
-- (SUUIDividerPageComponent)initWithDividerTitle:(id)a3;
-- (SUUIDividerPageComponent)initWithViewElement:(id)a3;
+- (SUUIDividerPageComponent)initWithCustomPageContext:(id)context;
+- (SUUIDividerPageComponent)initWithDividerTitle:(id)title;
+- (SUUIDividerPageComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SUUIDividerPageComponent
 
-- (SUUIDividerPageComponent)initWithCustomPageContext:(id)a3
+- (SUUIDividerPageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SUUIDividerPageComponent;
-  v5 = [(SUUIPageComponent *)&v11 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v11 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"title"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (SUUIDividerPageComponent)initWithDividerTitle:(id)a3
+- (SUUIDividerPageComponent)initWithDividerTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = SUUIDividerPageComponent;
   v5 = [(SUUIDividerPageComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
   }
@@ -44,11 +44,11 @@
   return v5;
 }
 
-- (SUUIDividerPageComponent)initWithViewElement:(id)a3
+- (SUUIDividerPageComponent)initWithViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SUUIDividerPageComponent;
-  return [(SUUIPageComponent *)&v4 initWithViewElement:a3];
+  return [(SUUIPageComponent *)&v4 initWithViewElement:element];
 }
 
 @end

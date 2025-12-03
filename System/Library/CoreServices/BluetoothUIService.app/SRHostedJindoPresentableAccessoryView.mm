@@ -1,21 +1,21 @@
 @interface SRHostedJindoPresentableAccessoryView
 - (CGSize)compactSize;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (void)setFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SRHostedJindoPresentableAccessoryView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = SRHostedJindoPresentableAccessoryView;
-  [(SRHostedJindoPresentableAccessoryView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SRHostedJindoPresentableAccessoryView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  [(SRHostedJindoPresentableAccessoryView *)self compactSize:a4];
+  [(SRHostedJindoPresentableAccessoryView *)self compactSize:mode];
   result.height = v5;
   result.width = v4;
   return result;

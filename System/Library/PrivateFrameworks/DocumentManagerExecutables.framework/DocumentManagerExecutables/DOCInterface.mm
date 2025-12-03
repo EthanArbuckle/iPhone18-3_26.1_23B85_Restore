@@ -1,6 +1,6 @@
 @interface DOCInterface
 + (_TtP26DocumentManagerExecutables28DOCInterfaceSystemAppearance_)general;
-+ (void)setGeneral:(id)a3;
++ (void)setGeneral:(id)general;
 - (_TtC26DocumentManagerExecutables12DOCInterface)init;
 @end
 
@@ -19,7 +19,7 @@
   return v2;
 }
 
-+ (void)setGeneral:(id)a3
++ (void)setGeneral:(id)general
 {
   v4 = one-time initialization token for general;
   swift_unknownObjectRetain();
@@ -29,7 +29,7 @@
   }
 
   swift_beginAccess();
-  static DOCInterface.general = a3;
+  static DOCInterface.general = general;
   swift_unknownObjectRelease();
 }
 

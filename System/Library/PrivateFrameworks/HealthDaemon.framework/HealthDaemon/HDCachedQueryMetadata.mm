@@ -1,22 +1,22 @@
 @interface HDCachedQueryMetadata
-- (BOOL)isEqual:(id)a3;
-- (HDCachedQueryMetadata)initWithCachingIdentifier:(id)a3 sourceEntityPersistentID:(int64_t)a4 maxAnchor:(int64_t)a5 queryStartIndex:(id)a6 queryEndIndex:(id)a7 generationNumber:(int64_t)a8 buildVersion:(id)a9 anchorDate:(id)a10 intervalComponents:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (HDCachedQueryMetadata)initWithCachingIdentifier:(id)identifier sourceEntityPersistentID:(int64_t)d maxAnchor:(int64_t)anchor queryStartIndex:(id)index queryEndIndex:(id)endIndex generationNumber:(int64_t)number buildVersion:(id)version anchorDate:(id)self0 intervalComponents:(id)self1;
 @end
 
 @implementation HDCachedQueryMetadata
 
-- (HDCachedQueryMetadata)initWithCachingIdentifier:(id)a3 sourceEntityPersistentID:(int64_t)a4 maxAnchor:(int64_t)a5 queryStartIndex:(id)a6 queryEndIndex:(id)a7 generationNumber:(int64_t)a8 buildVersion:(id)a9 anchorDate:(id)a10 intervalComponents:(id)a11
+- (HDCachedQueryMetadata)initWithCachingIdentifier:(id)identifier sourceEntityPersistentID:(int64_t)d maxAnchor:(int64_t)anchor queryStartIndex:(id)index queryEndIndex:(id)endIndex generationNumber:(int64_t)number buildVersion:(id)version anchorDate:(id)self0 intervalComponents:(id)self1
 {
-  v17 = a3;
-  v34 = a6;
-  v33 = a7;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  if (!v17)
+  identifierCopy = identifier;
+  indexCopy = index;
+  endIndexCopy = endIndex;
+  versionCopy = version;
+  dateCopy = date;
+  componentsCopy = components;
+  if (!identifierCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"HDCachedQueryMetadataEntity.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"cachingIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCachedQueryMetadataEntity.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"cachingIdentifier != nil"}];
   }
 
   v35.receiver = self;
@@ -24,24 +24,24 @@
   v21 = [(HDCachedQueryMetadata *)&v35 init];
   if (v21)
   {
-    v22 = [v17 copy];
+    v22 = [identifierCopy copy];
     cachingIdentifier = v21->_cachingIdentifier;
     v21->_cachingIdentifier = v22;
 
-    v21->_sourceEntityPersistentID = a4;
-    v21->_maxAnchor = a5;
-    objc_storeStrong(&v21->_queryStartIndex, a6);
-    objc_storeStrong(&v21->_queryEndIndex, a7);
-    v21->_generationNumber = a8;
-    v24 = [v18 copy];
+    v21->_sourceEntityPersistentID = d;
+    v21->_maxAnchor = anchor;
+    objc_storeStrong(&v21->_queryStartIndex, index);
+    objc_storeStrong(&v21->_queryEndIndex, endIndex);
+    v21->_generationNumber = number;
+    v24 = [versionCopy copy];
     buildVersion = v21->_buildVersion;
     v21->_buildVersion = v24;
 
-    v26 = [v19 copy];
+    v26 = [dateCopy copy];
     anchorDate = v21->_anchorDate;
     v21->_anchorDate = v26;
 
-    v28 = [v20 copy];
+    v28 = [componentsCopy copy];
     intervalComponents = v21->_intervalComponents;
     v21->_intervalComponents = v28;
   }
@@ -49,10 +49,10 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -62,26 +62,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HDCachedQueryMetadata *)self cachingIdentifier];
-      v7 = [(HDCachedQueryMetadata *)v5 cachingIdentifier];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      cachingIdentifier = [(HDCachedQueryMetadata *)self cachingIdentifier];
+      cachingIdentifier2 = [(HDCachedQueryMetadata *)v5 cachingIdentifier];
+      v8 = cachingIdentifier2;
+      if (cachingIdentifier == cachingIdentifier2)
       {
       }
 
       else
       {
-        v9 = [(HDCachedQueryMetadata *)v5 cachingIdentifier];
-        if (!v9)
+        cachingIdentifier3 = [(HDCachedQueryMetadata *)v5 cachingIdentifier];
+        if (!cachingIdentifier3)
         {
           goto LABEL_37;
         }
 
-        v10 = v9;
-        v11 = [(HDCachedQueryMetadata *)self cachingIdentifier];
-        v12 = [(HDCachedQueryMetadata *)v5 cachingIdentifier];
-        v13 = [v11 isEqual:v12];
+        v10 = cachingIdentifier3;
+        cachingIdentifier4 = [(HDCachedQueryMetadata *)self cachingIdentifier];
+        cachingIdentifier5 = [(HDCachedQueryMetadata *)v5 cachingIdentifier];
+        v13 = [cachingIdentifier4 isEqual:cachingIdentifier5];
 
         if (!v13)
         {
@@ -89,37 +89,37 @@
         }
       }
 
-      v15 = [(HDCachedQueryMetadata *)self sourceEntityPersistentID];
-      if (v15 != [(HDCachedQueryMetadata *)v5 sourceEntityPersistentID])
+      sourceEntityPersistentID = [(HDCachedQueryMetadata *)self sourceEntityPersistentID];
+      if (sourceEntityPersistentID != [(HDCachedQueryMetadata *)v5 sourceEntityPersistentID])
       {
         goto LABEL_38;
       }
 
-      v16 = [(HDCachedQueryMetadata *)self maxAnchor];
-      if (v16 != [(HDCachedQueryMetadata *)v5 maxAnchor])
+      maxAnchor = [(HDCachedQueryMetadata *)self maxAnchor];
+      if (maxAnchor != [(HDCachedQueryMetadata *)v5 maxAnchor])
       {
         goto LABEL_38;
       }
 
-      v6 = [(HDCachedQueryMetadata *)self queryStartIndex];
-      v17 = [(HDCachedQueryMetadata *)v5 queryStartIndex];
-      v8 = v17;
-      if (v6 == v17)
+      cachingIdentifier = [(HDCachedQueryMetadata *)self queryStartIndex];
+      queryStartIndex = [(HDCachedQueryMetadata *)v5 queryStartIndex];
+      v8 = queryStartIndex;
+      if (cachingIdentifier == queryStartIndex)
       {
       }
 
       else
       {
-        v18 = [(HDCachedQueryMetadata *)v5 queryStartIndex];
-        if (!v18)
+        queryStartIndex2 = [(HDCachedQueryMetadata *)v5 queryStartIndex];
+        if (!queryStartIndex2)
         {
           goto LABEL_37;
         }
 
-        v19 = v18;
-        v20 = [(HDCachedQueryMetadata *)self queryStartIndex];
-        v21 = [(HDCachedQueryMetadata *)v5 queryStartIndex];
-        v22 = [v20 isEqual:v21];
+        v19 = queryStartIndex2;
+        queryStartIndex3 = [(HDCachedQueryMetadata *)self queryStartIndex];
+        queryStartIndex4 = [(HDCachedQueryMetadata *)v5 queryStartIndex];
+        v22 = [queryStartIndex3 isEqual:queryStartIndex4];
 
         if (!v22)
         {
@@ -127,25 +127,25 @@
         }
       }
 
-      v6 = [(HDCachedQueryMetadata *)self queryEndIndex];
-      v23 = [(HDCachedQueryMetadata *)v5 queryEndIndex];
-      v8 = v23;
-      if (v6 == v23)
+      cachingIdentifier = [(HDCachedQueryMetadata *)self queryEndIndex];
+      queryEndIndex = [(HDCachedQueryMetadata *)v5 queryEndIndex];
+      v8 = queryEndIndex;
+      if (cachingIdentifier == queryEndIndex)
       {
       }
 
       else
       {
-        v24 = [(HDCachedQueryMetadata *)v5 queryEndIndex];
-        if (!v24)
+        queryEndIndex2 = [(HDCachedQueryMetadata *)v5 queryEndIndex];
+        if (!queryEndIndex2)
         {
           goto LABEL_37;
         }
 
-        v25 = v24;
-        v26 = [(HDCachedQueryMetadata *)self queryEndIndex];
-        v27 = [(HDCachedQueryMetadata *)v5 queryEndIndex];
-        v28 = [v26 isEqual:v27];
+        v25 = queryEndIndex2;
+        queryEndIndex3 = [(HDCachedQueryMetadata *)self queryEndIndex];
+        queryEndIndex4 = [(HDCachedQueryMetadata *)v5 queryEndIndex];
+        v28 = [queryEndIndex3 isEqual:queryEndIndex4];
 
         if (!v28)
         {
@@ -153,31 +153,31 @@
         }
       }
 
-      v29 = [(HDCachedQueryMetadata *)self generationNumber];
-      if (v29 != [(HDCachedQueryMetadata *)v5 generationNumber])
+      generationNumber = [(HDCachedQueryMetadata *)self generationNumber];
+      if (generationNumber != [(HDCachedQueryMetadata *)v5 generationNumber])
       {
         goto LABEL_38;
       }
 
-      v6 = [(HDCachedQueryMetadata *)self buildVersion];
-      v30 = [(HDCachedQueryMetadata *)v5 buildVersion];
-      v8 = v30;
-      if (v6 == v30)
+      cachingIdentifier = [(HDCachedQueryMetadata *)self buildVersion];
+      buildVersion = [(HDCachedQueryMetadata *)v5 buildVersion];
+      v8 = buildVersion;
+      if (cachingIdentifier == buildVersion)
       {
       }
 
       else
       {
-        v31 = [(HDCachedQueryMetadata *)v5 buildVersion];
-        if (!v31)
+        buildVersion2 = [(HDCachedQueryMetadata *)v5 buildVersion];
+        if (!buildVersion2)
         {
           goto LABEL_37;
         }
 
-        v32 = v31;
-        v33 = [(HDCachedQueryMetadata *)self buildVersion];
-        v34 = [(HDCachedQueryMetadata *)v5 buildVersion];
-        v35 = [v33 isEqualToString:v34];
+        v32 = buildVersion2;
+        buildVersion3 = [(HDCachedQueryMetadata *)self buildVersion];
+        buildVersion4 = [(HDCachedQueryMetadata *)v5 buildVersion];
+        v35 = [buildVersion3 isEqualToString:buildVersion4];
 
         if (!v35)
         {
@@ -185,25 +185,25 @@
         }
       }
 
-      v6 = [(HDCachedQueryMetadata *)self anchorDate];
-      v36 = [(HDCachedQueryMetadata *)v5 anchorDate];
-      v8 = v36;
-      if (v6 == v36)
+      cachingIdentifier = [(HDCachedQueryMetadata *)self anchorDate];
+      anchorDate = [(HDCachedQueryMetadata *)v5 anchorDate];
+      v8 = anchorDate;
+      if (cachingIdentifier == anchorDate)
       {
       }
 
       else
       {
-        v37 = [(HDCachedQueryMetadata *)v5 anchorDate];
-        if (!v37)
+        anchorDate2 = [(HDCachedQueryMetadata *)v5 anchorDate];
+        if (!anchorDate2)
         {
           goto LABEL_37;
         }
 
-        v38 = v37;
-        v39 = [(HDCachedQueryMetadata *)self anchorDate];
-        v40 = [(HDCachedQueryMetadata *)v5 anchorDate];
-        v41 = [v39 isEqualToDate:v40];
+        v38 = anchorDate2;
+        anchorDate3 = [(HDCachedQueryMetadata *)self anchorDate];
+        anchorDate4 = [(HDCachedQueryMetadata *)v5 anchorDate];
+        v41 = [anchorDate3 isEqualToDate:anchorDate4];
 
         if (!v41)
         {
@@ -211,10 +211,10 @@
         }
       }
 
-      v6 = [(HDCachedQueryMetadata *)self intervalComponents];
-      v42 = [(HDCachedQueryMetadata *)v5 intervalComponents];
-      v8 = v42;
-      if (v6 == v42)
+      cachingIdentifier = [(HDCachedQueryMetadata *)self intervalComponents];
+      intervalComponents = [(HDCachedQueryMetadata *)v5 intervalComponents];
+      v8 = intervalComponents;
+      if (cachingIdentifier == intervalComponents)
       {
 
 LABEL_42:
@@ -222,13 +222,13 @@ LABEL_42:
         goto LABEL_39;
       }
 
-      v43 = [(HDCachedQueryMetadata *)v5 intervalComponents];
-      if (v43)
+      intervalComponents2 = [(HDCachedQueryMetadata *)v5 intervalComponents];
+      if (intervalComponents2)
       {
-        v44 = v43;
-        v45 = [(HDCachedQueryMetadata *)self intervalComponents];
-        v46 = [(HDCachedQueryMetadata *)v5 intervalComponents];
-        v47 = [v45 isEqual:v46];
+        v44 = intervalComponents2;
+        intervalComponents3 = [(HDCachedQueryMetadata *)self intervalComponents];
+        intervalComponents4 = [(HDCachedQueryMetadata *)v5 intervalComponents];
+        v47 = [intervalComponents3 isEqual:intervalComponents4];
 
         if (v47)
         {

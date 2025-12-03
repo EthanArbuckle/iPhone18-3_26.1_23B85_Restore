@@ -1,16 +1,16 @@
 @interface _UICollectionLayoutListAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setSeparatorVisualEffect:(uint64_t)a1;
+- (void)setSeparatorVisualEffect:(uint64_t)effect;
 @end
 
 @implementation _UICollectionLayoutListAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -38,16 +38,16 @@
   return v2 ^ self->_appearanceStyle;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     p_isa = &v6->super.isa;
@@ -134,11 +134,11 @@
   return v17;
 }
 
-- (void)setSeparatorVisualEffect:(uint64_t)a1
+- (void)setSeparatorVisualEffect:(uint64_t)effect
 {
-  if (a1)
+  if (effect)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((effect + 56), a2);
   }
 }
 

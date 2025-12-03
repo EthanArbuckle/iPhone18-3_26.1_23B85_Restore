@@ -1,12 +1,12 @@
 @interface TTSMagicFirstPartyAudioUnit
-- (id)defaultSettingsForVoice:(id)a3;
+- (id)defaultSettingsForVoice:(id)voice;
 @end
 
 @implementation TTSMagicFirstPartyAudioUnit
 
-- (id)defaultSettingsForVoice:(id)a3
+- (id)defaultSettingsForVoice:(id)voice
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A9397ACC();
 
   sub_1A9387478(0, &qword_1ED96FCD8, 0x1E696AD98);

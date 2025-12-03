@@ -2,7 +2,7 @@
 - (LPLinkSnapshotGenerator)init;
 - (void)connectionWasInvalidated;
 - (void)dealloc;
-- (void)snapshotForMetadata:(id)a3 configurations:(id)a4 completionHandler:(id)a5;
+- (void)snapshotForMetadata:(id)metadata configurations:(id)configurations completionHandler:(id)handler;
 @end
 
 @implementation LPLinkSnapshotGenerator
@@ -93,8 +93,8 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSMutableDictionary *)self->_pendingCompletionHandlers allValues];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allValues = [(NSMutableDictionary *)self->_pendingCompletionHandlers allValues];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = *v11;
@@ -105,7 +105,7 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
@@ -116,7 +116,7 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -127,12 +127,12 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
   }
 }
 
-- (void)snapshotForMetadata:(id)a3 configurations:(id)a4 completionHandler:(id)a5
+- (void)snapshotForMetadata:(id)metadata configurations:(id)configurations completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  configurationsCopy = configurations;
+  handlerCopy = handler;
   if (self->_active)
   {
     nextRequestID = self->_nextRequestID;
@@ -143,7 +143,7 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v12 = v9;
+      v12 = configurationsCopy;
       v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v13)
       {
@@ -175,7 +175,7 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
     aBlock[3] = &unk_1E7A37530;
     aBlock[4] = self;
     v25 = nextRequestID;
-    v24 = v10;
+    v24 = handlerCopy;
     v16 = _Block_copy(aBlock);
     v17 = self->_pendingCompletionHandlers;
     objc_sync_enter(v17);
@@ -185,14 +185,14 @@ void __31__LPLinkSnapshotGenerator_init__block_invoke_6(uint64_t a1)
     [(NSMutableDictionary *)pendingCompletionHandlers setObject:v19 forKey:v20];
 
     objc_sync_exit(v17);
-    v21 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
-    [v21 snapshotForMetadata:v8 configurations:v9 completionHandler:v16];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connectionToService remoteObjectProxy];
+    [remoteObjectProxy snapshotForMetadata:metadataCopy configurations:configurationsCopy completionHandler:v16];
   }
 
   else
   {
     v22 = makeLPError(1, 0);
-    (*(v10 + 2))(v10, v22, 0);
+    (*(handlerCopy + 2))(handlerCopy, v22, 0);
   }
 }
 

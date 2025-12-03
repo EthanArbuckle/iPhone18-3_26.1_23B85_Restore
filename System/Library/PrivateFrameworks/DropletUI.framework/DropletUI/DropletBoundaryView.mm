@@ -1,11 +1,11 @@
 @interface DropletBoundaryView
-- (_TtC9DropletUI19DropletBoundaryView)initWithCoder:(id)a3;
+- (_TtC9DropletUI19DropletBoundaryView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DropletBoundaryView
 
-- (_TtC9DropletUI19DropletBoundaryView)initWithCoder:(id)a3
+- (_TtC9DropletUI19DropletBoundaryView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC9DropletUI19DropletBoundaryView_boundaryReferenceBounds);
   *v3 = 0u;

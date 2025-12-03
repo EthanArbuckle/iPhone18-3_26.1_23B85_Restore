@@ -1,69 +1,69 @@
 @interface WLKPlaybackSummary
-+ (double)playedThresholdTimeForDuration:(double)a3;
-+ (id)EBSSummaryWithBundleID:(id)a3 channelID:(id)a4 externalId:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11;
-+ (id)EBSSummaryWithBundleID:(id)a3 channelID:(id)a4 externalId:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11 playablePassthrough:(id)a12;
-+ (id)VODSummaryWithBundleID:(id)a3 channelID:(id)a4 contentID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 duration:(id)a9 elapsedTime:(id)a10 featureDuration:(id)a11 featureElapsedTime:(id)a12 playbackState:(int64_t)a13 playbackRate:(id)a14 contentTitle:(id)a15 completionState:(int64_t)a16;
-+ (id)VODSummaryWithBundleID:(id)a3 channelID:(id)a4 contentID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 duration:(id)a9 elapsedTime:(id)a10 featureDuration:(id)a11 featureElapsedTime:(id)a12 playbackState:(int64_t)a13 playbackRate:(id)a14 playablePassthrough:(id)a15 contentTitle:(id)a16 completionState:(int64_t)a17;
-+ (id)_debugStringForPlaybackType:(int64_t)a3;
-+ (id)debugStringForCompletionState:(int64_t)a3;
-+ (id)debugStringForPlaybackState:(int64_t)a3;
-+ (id)liveSummaryWithBundleID:(id)a3 channelID:(id)a4 serviceID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11;
-+ (id)liveSummaryWithBundleID:(id)a3 channelID:(id)a4 serviceID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11 playablePassthrough:(id)a12;
-+ (int64_t)completionStateForDuration:(double)a3 elapsedTime:(double)a4;
-- (BOOL)_compareOptional:(id)a3 with:(id)a4;
-- (BOOL)_compareOptionalTemporalValue:(id)a3 with:(id)a4 fuzzy:(BOOL)a5;
++ (double)playedThresholdTimeForDuration:(double)duration;
++ (id)EBSSummaryWithBundleID:(id)d channelID:(id)iD externalId:(id)id accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1;
++ (id)EBSSummaryWithBundleID:(id)d channelID:(id)iD externalId:(id)id accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1 playablePassthrough:(id)self2;
++ (id)VODSummaryWithBundleID:(id)d channelID:(id)iD contentID:(id)contentID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)self0 featureDuration:(id)self1 featureElapsedTime:(id)self2 playbackState:(int64_t)self3 playbackRate:(id)self4 contentTitle:(id)self5 completionState:(int64_t)self6;
++ (id)VODSummaryWithBundleID:(id)d channelID:(id)iD contentID:(id)contentID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)self0 featureDuration:(id)self1 featureElapsedTime:(id)self2 playbackState:(int64_t)self3 playbackRate:(id)self4 playablePassthrough:(id)self5 contentTitle:(id)self6 completionState:(int64_t)self7;
++ (id)_debugStringForPlaybackType:(int64_t)type;
++ (id)debugStringForCompletionState:(int64_t)state;
++ (id)debugStringForPlaybackState:(int64_t)state;
++ (id)liveSummaryWithBundleID:(id)d channelID:(id)iD serviceID:(id)serviceID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1;
++ (id)liveSummaryWithBundleID:(id)d channelID:(id)iD serviceID:(id)serviceID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1 playablePassthrough:(id)self2;
++ (int64_t)completionStateForDuration:(double)duration elapsedTime:(double)time;
+- (BOOL)_compareOptional:(id)optional with:(id)with;
+- (BOOL)_compareOptionalTemporalValue:(id)value with:(id)with fuzzy:(BOOL)fuzzy;
 - (BOOL)_isValid;
-- (BOOL)_validate:(id)a3 identifier:(id)a4 expectedClass:(Class)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSummary:(id)a3;
-- (BOOL)isEquivalentToSummaryExcludingCursor:(id)a3;
-- (BOOL)isEquivalentToSummaryExcludingTimestamp:(id)a3;
-- (BOOL)isSameContent:(id)a3;
+- (BOOL)_validate:(id)_validate identifier:(id)identifier expectedClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSummary:(id)summary;
+- (BOOL)isEquivalentToSummaryExcludingCursor:(id)cursor;
+- (BOOL)isEquivalentToSummaryExcludingTimestamp:(id)timestamp;
+- (BOOL)isSameContent:(id)content;
 - (NSNumber)accountIDAsNumber;
-- (WLKPlaybackSummary)initWithBundleID:(id)a3 timestamp:(id)a4 duration:(id)a5 elapsedTime:(id)a6 featureDuration:(id)a7 featureElapsedTime:(id)a8 externalProfileID:(id)a9 contentID:(id)a10 accountID:(id)a11 playbackState:(int64_t)a12 playbackRate:(id)a13 completionState:(int64_t)a14 isAlwaysLive:(BOOL)a15 serviceID:(id)a16 currentPlaybackDate:(id)a17 playbackType:(int64_t)a18 isTimerDerived:(BOOL)a19 isFromActivePlayerPath:(BOOL)a20 channelID:(id)a21 contentTitle:(id)a22;
-- (WLKPlaybackSummary)initWithBundleID:(id)a3 timestamp:(id)a4 duration:(id)a5 elapsedTime:(id)a6 featureDuration:(id)a7 featureElapsedTime:(id)a8 externalProfileID:(id)a9 contentID:(id)a10 accountID:(id)a11 playbackState:(int64_t)a12 playbackRate:(id)a13 completionState:(int64_t)a14 isAlwaysLive:(BOOL)a15 serviceID:(id)a16 currentPlaybackDate:(id)a17 playbackType:(int64_t)a18 isTimerDerived:(BOOL)a19 isFromActivePlayerPath:(BOOL)a20 playablePassthrough:(id)a21 channelID:(id)a22 contentTitle:(id)a23;
-- (WLKPlaybackSummary)initWithCoder:(id)a3;
-- (WLKPlaybackSummary)initWithMediaRemoteDictionary:(id)a3 bundleID:(id)a4 accountID:(id)a5 isFromActivePlayerPath:(BOOL)a6;
+- (WLKPlaybackSummary)initWithBundleID:(id)d timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)time featureDuration:(id)featureDuration featureElapsedTime:(id)elapsedTime externalProfileID:(id)iD contentID:(id)self0 accountID:(id)self1 playbackState:(int64_t)self2 playbackRate:(id)self3 completionState:(int64_t)self4 isAlwaysLive:(BOOL)self5 serviceID:(id)self6 currentPlaybackDate:(id)self7 playbackType:(int64_t)self8 isTimerDerived:(BOOL)self9 isFromActivePlayerPath:(BOOL)path channelID:(id)channelID contentTitle:(id)title;
+- (WLKPlaybackSummary)initWithBundleID:(id)d timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)time featureDuration:(id)featureDuration featureElapsedTime:(id)elapsedTime externalProfileID:(id)iD contentID:(id)self0 accountID:(id)self1 playbackState:(int64_t)self2 playbackRate:(id)self3 completionState:(int64_t)self4 isAlwaysLive:(BOOL)self5 serviceID:(id)self6 currentPlaybackDate:(id)self7 playbackType:(int64_t)self8 isTimerDerived:(BOOL)self9 isFromActivePlayerPath:(BOOL)path playablePassthrough:(id)passthrough channelID:(id)channelID contentTitle:(id)title;
+- (WLKPlaybackSummary)initWithCoder:(id)coder;
+- (WLKPlaybackSummary)initWithMediaRemoteDictionary:(id)dictionary bundleID:(id)d accountID:(id)iD isFromActivePlayerPath:(BOOL)path;
 - (id)JSONRepresentation;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)elapsedTimeSummaryWithPlaybackState:(int64_t)a3 timerDerived:(BOOL)a4;
+- (id)elapsedTimeSummaryWithPlaybackState:(int64_t)state timerDerived:(BOOL)derived;
 - (id)sanitizedCopy;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)resolveChannelID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)resolveChannelID:(id)d;
 @end
 
 @implementation WLKPlaybackSummary
 
-- (WLKPlaybackSummary)initWithBundleID:(id)a3 timestamp:(id)a4 duration:(id)a5 elapsedTime:(id)a6 featureDuration:(id)a7 featureElapsedTime:(id)a8 externalProfileID:(id)a9 contentID:(id)a10 accountID:(id)a11 playbackState:(int64_t)a12 playbackRate:(id)a13 completionState:(int64_t)a14 isAlwaysLive:(BOOL)a15 serviceID:(id)a16 currentPlaybackDate:(id)a17 playbackType:(int64_t)a18 isTimerDerived:(BOOL)a19 isFromActivePlayerPath:(BOOL)a20 channelID:(id)a21 contentTitle:(id)a22
+- (WLKPlaybackSummary)initWithBundleID:(id)d timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)time featureDuration:(id)featureDuration featureElapsedTime:(id)elapsedTime externalProfileID:(id)iD contentID:(id)self0 accountID:(id)self1 playbackState:(int64_t)self2 playbackRate:(id)self3 completionState:(int64_t)self4 isAlwaysLive:(BOOL)self5 serviceID:(id)self6 currentPlaybackDate:(id)self7 playbackType:(int64_t)self8 isTimerDerived:(BOOL)self9 isFromActivePlayerPath:(BOOL)path channelID:(id)channelID contentTitle:(id)title
 {
-  v27 = a3;
-  v67 = a4;
-  v28 = a5;
-  v72 = a6;
-  v71 = a7;
-  v70 = a8;
-  v69 = a9;
-  v29 = v28;
-  v68 = a10;
-  v30 = a11;
-  v31 = a13;
-  v32 = a16;
-  v33 = a17;
-  v34 = a21;
-  v35 = a22;
+  dCopy = d;
+  timestampCopy = timestamp;
+  durationCopy = duration;
+  timeCopy = time;
+  featureDurationCopy = featureDuration;
+  elapsedTimeCopy = elapsedTime;
+  iDCopy = iD;
+  v29 = durationCopy;
+  contentIDCopy = contentID;
+  accountIDCopy = accountID;
+  rateCopy = rate;
+  serviceIDCopy = serviceID;
+  dateCopy = date;
+  channelIDCopy = channelID;
+  titleCopy = title;
   v73.receiver = self;
   v73.super_class = WLKPlaybackSummary;
   v36 = [(WLKPlaybackSummary *)&v73 init];
   if (v36)
   {
-    v37 = [v27 copy];
+    v37 = [dCopy copy];
     bundleID = v36->_bundleID;
     v36->_bundleID = v37;
 
-    v39 = [v67 copy];
+    v39 = [timestampCopy copy];
     timestamp = v36->_timestamp;
     v36->_timestamp = v39;
 
@@ -71,53 +71,53 @@
     duration = v36->_duration;
     v36->_duration = v41;
 
-    v43 = [v72 copy];
+    v43 = [timeCopy copy];
     elapsedTime = v36->_elapsedTime;
     v36->_elapsedTime = v43;
 
-    v45 = [v71 copy];
+    v45 = [featureDurationCopy copy];
     featureDuration = v36->_featureDuration;
     v36->_featureDuration = v45;
 
-    v47 = [v70 copy];
+    v47 = [elapsedTimeCopy copy];
     featureElapsedTime = v36->_featureElapsedTime;
     v36->_featureElapsedTime = v47;
 
-    v49 = [v69 copy];
+    v49 = [iDCopy copy];
     externalProfileID = v36->_externalProfileID;
     v36->_externalProfileID = v49;
 
-    v51 = [v68 copy];
+    v51 = [contentIDCopy copy];
     contentID = v36->_contentID;
     v36->_contentID = v51;
 
-    v53 = [v30 copy];
+    v53 = [accountIDCopy copy];
     accountID = v36->_accountID;
     v36->_accountID = v53;
 
-    v36->_playbackState = a12;
-    v55 = [v31 copy];
+    v36->_playbackState = state;
+    v55 = [rateCopy copy];
     playbackRate = v36->_playbackRate;
     v36->_playbackRate = v55;
 
-    v36->_completionState = a14;
-    v36->_isAlwaysLive = a15;
-    v57 = [v32 copy];
+    v36->_completionState = completionState;
+    v36->_isAlwaysLive = live;
+    v57 = [serviceIDCopy copy];
     serviceID = v36->_serviceID;
     v36->_serviceID = v57;
 
-    v59 = [v33 copy];
+    v59 = [dateCopy copy];
     currentPlaybackDate = v36->_currentPlaybackDate;
     v36->_currentPlaybackDate = v59;
 
-    v36->_playbackType = a18;
-    v36->_isTimerDerived = a19;
-    v36->_fromActivePlayerPath = a20;
-    v61 = [v34 copy];
+    v36->_playbackType = type;
+    v36->_isTimerDerived = derived;
+    v36->_fromActivePlayerPath = path;
+    v61 = [channelIDCopy copy];
     channelID = v36->_channelID;
     v36->_channelID = v61;
 
-    v63 = [v35 copy];
+    v63 = [titleCopy copy];
     contentTitle = v36->_contentTitle;
     v36->_contentTitle = v63;
   }
@@ -125,91 +125,91 @@
   return v36;
 }
 
-- (WLKPlaybackSummary)initWithBundleID:(id)a3 timestamp:(id)a4 duration:(id)a5 elapsedTime:(id)a6 featureDuration:(id)a7 featureElapsedTime:(id)a8 externalProfileID:(id)a9 contentID:(id)a10 accountID:(id)a11 playbackState:(int64_t)a12 playbackRate:(id)a13 completionState:(int64_t)a14 isAlwaysLive:(BOOL)a15 serviceID:(id)a16 currentPlaybackDate:(id)a17 playbackType:(int64_t)a18 isTimerDerived:(BOOL)a19 isFromActivePlayerPath:(BOOL)a20 playablePassthrough:(id)a21 channelID:(id)a22 contentTitle:(id)a23
+- (WLKPlaybackSummary)initWithBundleID:(id)d timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)time featureDuration:(id)featureDuration featureElapsedTime:(id)elapsedTime externalProfileID:(id)iD contentID:(id)self0 accountID:(id)self1 playbackState:(int64_t)self2 playbackRate:(id)self3 completionState:(int64_t)self4 isAlwaysLive:(BOOL)self5 serviceID:(id)self6 currentPlaybackDate:(id)self7 playbackType:(int64_t)self8 isTimerDerived:(BOOL)self9 isFromActivePlayerPath:(BOOL)path playablePassthrough:(id)passthrough channelID:(id)channelID contentTitle:(id)title
 {
-  v68 = a3;
-  v69 = a4;
-  v75 = a5;
-  v74 = a6;
-  v73 = a7;
-  v72 = a8;
-  v71 = a9;
-  v70 = a10;
-  v29 = a11;
-  v30 = a13;
-  v31 = a16;
-  v32 = a17;
-  v33 = a21;
-  v34 = a22;
-  v35 = a23;
+  dCopy = d;
+  timestampCopy = timestamp;
+  durationCopy = duration;
+  timeCopy = time;
+  featureDurationCopy = featureDuration;
+  elapsedTimeCopy = elapsedTime;
+  iDCopy = iD;
+  contentIDCopy = contentID;
+  accountIDCopy = accountID;
+  rateCopy = rate;
+  serviceIDCopy = serviceID;
+  dateCopy = date;
+  passthroughCopy = passthrough;
+  channelIDCopy = channelID;
+  titleCopy = title;
   v76.receiver = self;
   v76.super_class = WLKPlaybackSummary;
   v36 = [(WLKPlaybackSummary *)&v76 init];
   if (v36)
   {
-    v37 = [v68 copy];
+    v37 = [dCopy copy];
     bundleID = v36->_bundleID;
     v36->_bundleID = v37;
 
-    v39 = [v69 copy];
+    v39 = [timestampCopy copy];
     timestamp = v36->_timestamp;
     v36->_timestamp = v39;
 
-    v41 = [v75 copy];
+    v41 = [durationCopy copy];
     duration = v36->_duration;
     v36->_duration = v41;
 
-    v43 = [v74 copy];
+    v43 = [timeCopy copy];
     elapsedTime = v36->_elapsedTime;
     v36->_elapsedTime = v43;
 
-    v45 = [v73 copy];
+    v45 = [featureDurationCopy copy];
     featureDuration = v36->_featureDuration;
     v36->_featureDuration = v45;
 
-    v47 = [v72 copy];
+    v47 = [elapsedTimeCopy copy];
     featureElapsedTime = v36->_featureElapsedTime;
     v36->_featureElapsedTime = v47;
 
-    v49 = [v71 copy];
+    v49 = [iDCopy copy];
     externalProfileID = v36->_externalProfileID;
     v36->_externalProfileID = v49;
 
-    v51 = [v70 copy];
+    v51 = [contentIDCopy copy];
     contentID = v36->_contentID;
     v36->_contentID = v51;
 
-    v53 = [v29 copy];
+    v53 = [accountIDCopy copy];
     accountID = v36->_accountID;
     v36->_accountID = v53;
 
-    v36->_playbackState = a12;
-    v55 = [v30 copy];
+    v36->_playbackState = state;
+    v55 = [rateCopy copy];
     playbackRate = v36->_playbackRate;
     v36->_playbackRate = v55;
 
-    v36->_completionState = a14;
-    v36->_isAlwaysLive = a15;
-    v57 = [v31 copy];
+    v36->_completionState = completionState;
+    v36->_isAlwaysLive = live;
+    v57 = [serviceIDCopy copy];
     serviceID = v36->_serviceID;
     v36->_serviceID = v57;
 
-    v59 = [v32 copy];
+    v59 = [dateCopy copy];
     currentPlaybackDate = v36->_currentPlaybackDate;
     v36->_currentPlaybackDate = v59;
 
-    v36->_playbackType = a18;
-    v36->_isTimerDerived = a19;
-    v36->_fromActivePlayerPath = a20;
-    v61 = [v33 copy];
+    v36->_playbackType = type;
+    v36->_isTimerDerived = derived;
+    v36->_fromActivePlayerPath = path;
+    v61 = [passthroughCopy copy];
     playablePassthrough = v36->_playablePassthrough;
     v36->_playablePassthrough = v61;
 
-    v63 = [v34 copy];
+    v63 = [channelIDCopy copy];
     channelID = v36->_channelID;
     v36->_channelID = v63;
 
-    v65 = [v35 copy];
+    v65 = [titleCopy copy];
     contentTitle = v36->_contentTitle;
     v36->_contentTitle = v65;
   }
@@ -217,22 +217,22 @@
   return v36;
 }
 
-- (WLKPlaybackSummary)initWithMediaRemoteDictionary:(id)a3 bundleID:(id)a4 accountID:(id)a5 isFromActivePlayerPath:(BOOL)a6
+- (WLKPlaybackSummary)initWithMediaRemoteDictionary:(id)dictionary bundleID:(id)d accountID:(id)iD isFromActivePlayerPath:(BOOL)path
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = *MEMORY[0x277D27BD8];
-  v45 = a5;
-  v44 = a4;
-  v10 = [v8 valueForKey:v9];
-  v11 = [v8 valueForKey:*MEMORY[0x277D27BE0]];
-  v12 = [v8 valueForKey:*MEMORY[0x277D27C80]];
-  v13 = [v8 valueForKey:*MEMORY[0x277D27BF0]];
-  v52 = [v8 valueForKey:*MEMORY[0x277D27BF8]];
-  v14 = [v8 valueForKey:*MEMORY[0x277D27C70]];
-  v15 = [v8 valueForKey:*MEMORY[0x277D27BB8]];
-  v16 = [v8 valueForKey:*MEMORY[0x277D27C10]];
-  v50 = [v8 valueForKey:*MEMORY[0x277D27B98]];
-  v49 = [v8 valueForKey:*MEMORY[0x277D27C88]];
+  iDCopy = iD;
+  dCopy = d;
+  v10 = [dictionaryCopy valueForKey:v9];
+  v11 = [dictionaryCopy valueForKey:*MEMORY[0x277D27BE0]];
+  v12 = [dictionaryCopy valueForKey:*MEMORY[0x277D27C80]];
+  v13 = [dictionaryCopy valueForKey:*MEMORY[0x277D27BF0]];
+  v52 = [dictionaryCopy valueForKey:*MEMORY[0x277D27BF8]];
+  v14 = [dictionaryCopy valueForKey:*MEMORY[0x277D27C70]];
+  v15 = [dictionaryCopy valueForKey:*MEMORY[0x277D27BB8]];
+  v16 = [dictionaryCopy valueForKey:*MEMORY[0x277D27C10]];
+  v50 = [dictionaryCopy valueForKey:*MEMORY[0x277D27B98]];
+  v49 = [dictionaryCopy valueForKey:*MEMORY[0x277D27C88]];
   v48 = v12;
   v51 = v14;
   if ([v16 BOOLValue])
@@ -269,7 +269,7 @@ LABEL_8:
   v42 = 1;
   v19 = 1;
 LABEL_9:
-  v21 = [v8 valueForKey:*MEMORY[0x277D27C40]];
+  v21 = [dictionaryCopy valueForKey:*MEMORY[0x277D27C40]];
   objc_opt_class();
   v47 = v13;
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v21 floatValue], v22 == 0.0))
@@ -292,7 +292,7 @@ LABEL_12:
     }
   }
 
-  v25 = [v8 valueForKey:*MEMORY[0x277D27C38]];
+  v25 = [dictionaryCopy valueForKey:*MEMORY[0x277D27C38]];
   v26 = v25;
   if (!v25)
   {
@@ -325,7 +325,7 @@ LABEL_19:
 LABEL_22:
 
 LABEL_23:
-  v32 = v17;
+  date = v17;
   if (v42 & v19)
   {
     v33 = v48;
@@ -336,15 +336,15 @@ LABEL_23:
     v33 = v48;
     if (!v17)
     {
-      v32 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
   }
 
-  BYTE1(v40) = a6;
+  BYTE1(v40) = path;
   LOBYTE(v40) = 0;
-  v34 = v32;
+  v34 = date;
   LOBYTE(v39) = [v16 BOOLValue];
-  v35 = [(WLKPlaybackSummary *)self initWithBundleID:v44 timestamp:v33 duration:v10 elapsedTime:v11 featureDuration:0 featureElapsedTime:0 externalProfileID:v52 contentID:v47 accountID:v45 playbackState:v23 playbackRate:v21 completionState:v24 isAlwaysLive:v39 serviceID:v51 currentPlaybackDate:v32 playbackType:v41 isTimerDerived:v40 isFromActivePlayerPath:v50 channelID:v49 contentTitle:?];
+  v35 = [(WLKPlaybackSummary *)self initWithBundleID:dCopy timestamp:v33 duration:v10 elapsedTime:v11 featureDuration:0 featureElapsedTime:0 externalProfileID:v52 contentID:v47 accountID:iDCopy playbackState:v23 playbackRate:v21 completionState:v24 isAlwaysLive:v39 serviceID:v51 currentPlaybackDate:date playbackType:v41 isTimerDerived:v40 isFromActivePlayerPath:v50 channelID:v49 contentTitle:?];
 
   v36 = v35;
   v37 = 0;
@@ -356,162 +356,162 @@ LABEL_23:
   return v37;
 }
 
-+ (id)VODSummaryWithBundleID:(id)a3 channelID:(id)a4 contentID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 duration:(id)a9 elapsedTime:(id)a10 featureDuration:(id)a11 featureElapsedTime:(id)a12 playbackState:(int64_t)a13 playbackRate:(id)a14 contentTitle:(id)a15 completionState:(int64_t)a16
++ (id)VODSummaryWithBundleID:(id)d channelID:(id)iD contentID:(id)contentID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)self0 featureDuration:(id)self1 featureElapsedTime:(id)self2 playbackState:(int64_t)self3 playbackRate:(id)self4 contentTitle:(id)self5 completionState:(int64_t)self6
 {
-  v21 = a16;
-  v42 = a3;
-  v22 = a4;
-  v44 = a5;
-  v23 = a6;
-  v24 = a7;
-  v41 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = a12;
-  v29 = a14;
-  v30 = a15;
-  v31 = v30;
-  if (!a16)
+  completionStateCopy = completionState;
+  dCopy = d;
+  iDCopy = iD;
+  contentIDCopy = contentID;
+  accountIDCopy = accountID;
+  profileIDCopy = profileID;
+  timestampCopy = timestamp;
+  durationCopy = duration;
+  timeCopy = time;
+  featureDurationCopy = featureDuration;
+  elapsedTimeCopy = elapsedTime;
+  rateCopy = rate;
+  titleCopy = title;
+  v31 = titleCopy;
+  if (!completionState)
   {
-    v40 = v30;
+    v40 = titleCopy;
     NSLog(&cfstr_Wlkplaybacksum_1.isa);
-    if (v27 && v28)
+    if (featureDurationCopy && elapsedTimeCopy)
     {
-      [v27 doubleValue];
+      [featureDurationCopy doubleValue];
       v33 = v32;
-      v34 = v28;
+      v34 = elapsedTimeCopy;
     }
 
     else
     {
-      [v25 doubleValue];
+      [durationCopy doubleValue];
       v33 = v35;
-      v34 = v26;
+      v34 = timeCopy;
     }
 
     [v34 doubleValue];
-    v21 = [WLKPlaybackSummary completionStateForDuration:v33 elapsedTime:v36];
+    completionStateCopy = [WLKPlaybackSummary completionStateForDuration:v33 elapsedTime:v36];
     v31 = v40;
   }
 
   LOWORD(v39) = 256;
   LOBYTE(v38) = 0;
-  v43 = [[WLKPlaybackSummary alloc] initWithBundleID:v42 timestamp:v41 duration:v25 elapsedTime:v26 featureDuration:v27 featureElapsedTime:v28 externalProfileID:v24 contentID:v44 accountID:v23 playbackState:a13 playbackRate:v29 completionState:v21 isAlwaysLive:v38 serviceID:0 currentPlaybackDate:0 playbackType:0 isTimerDerived:v39 isFromActivePlayerPath:v22 channelID:v31 contentTitle:?];
+  v43 = [[WLKPlaybackSummary alloc] initWithBundleID:dCopy timestamp:timestampCopy duration:durationCopy elapsedTime:timeCopy featureDuration:featureDurationCopy featureElapsedTime:elapsedTimeCopy externalProfileID:profileIDCopy contentID:contentIDCopy accountID:accountIDCopy playbackState:state playbackRate:rateCopy completionState:completionStateCopy isAlwaysLive:v38 serviceID:0 currentPlaybackDate:0 playbackType:0 isTimerDerived:v39 isFromActivePlayerPath:iDCopy channelID:v31 contentTitle:?];
 
   return v43;
 }
 
-+ (id)liveSummaryWithBundleID:(id)a3 channelID:(id)a4 serviceID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11
++ (id)liveSummaryWithBundleID:(id)d channelID:(id)iD serviceID:(id)serviceID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  dateCopy = date;
+  rateCopy = rate;
+  timestampCopy = timestamp;
+  profileIDCopy = profileID;
+  accountIDCopy = accountID;
+  serviceIDCopy = serviceID;
+  iDCopy = iD;
+  dCopy = d;
   LOWORD(v28) = 256;
   LOBYTE(v27) = 1;
-  v25 = [[WLKPlaybackSummary alloc] initWithBundleID:v24 timestamp:v19 duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:v20 contentID:0 accountID:v21 playbackState:a9 playbackRate:v18 completionState:0 isAlwaysLive:v27 serviceID:v22 currentPlaybackDate:v17 playbackType:2 isTimerDerived:v28 isFromActivePlayerPath:v23 channelID:0 contentTitle:?];
+  v25 = [[WLKPlaybackSummary alloc] initWithBundleID:dCopy timestamp:timestampCopy duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:profileIDCopy contentID:0 accountID:accountIDCopy playbackState:state playbackRate:rateCopy completionState:0 isAlwaysLive:v27 serviceID:serviceIDCopy currentPlaybackDate:dateCopy playbackType:2 isTimerDerived:v28 isFromActivePlayerPath:iDCopy channelID:0 contentTitle:?];
 
   return v25;
 }
 
-+ (id)EBSSummaryWithBundleID:(id)a3 channelID:(id)a4 externalId:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11
++ (id)EBSSummaryWithBundleID:(id)d channelID:(id)iD externalId:(id)id accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  dateCopy = date;
+  rateCopy = rate;
+  timestampCopy = timestamp;
+  profileIDCopy = profileID;
+  accountIDCopy = accountID;
+  idCopy = id;
+  iDCopy = iD;
+  dCopy = d;
   LOWORD(v28) = 256;
   LOBYTE(v27) = 1;
-  v25 = [[WLKPlaybackSummary alloc] initWithBundleID:v24 timestamp:v19 duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:v20 contentID:v22 accountID:v21 playbackState:a9 playbackRate:v18 completionState:0 isAlwaysLive:v27 serviceID:0 currentPlaybackDate:v17 playbackType:1 isTimerDerived:v28 isFromActivePlayerPath:v23 channelID:0 contentTitle:?];
+  v25 = [[WLKPlaybackSummary alloc] initWithBundleID:dCopy timestamp:timestampCopy duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:profileIDCopy contentID:idCopy accountID:accountIDCopy playbackState:state playbackRate:rateCopy completionState:0 isAlwaysLive:v27 serviceID:0 currentPlaybackDate:dateCopy playbackType:1 isTimerDerived:v28 isFromActivePlayerPath:iDCopy channelID:0 contentTitle:?];
 
   return v25;
 }
 
-+ (id)liveSummaryWithBundleID:(id)a3 channelID:(id)a4 serviceID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11 playablePassthrough:(id)a12
++ (id)liveSummaryWithBundleID:(id)d channelID:(id)iD serviceID:(id)serviceID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1 playablePassthrough:(id)self2
 {
-  v18 = a12;
-  v19 = a11;
-  v20 = a10;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  passthroughCopy = passthrough;
+  dateCopy = date;
+  rateCopy = rate;
+  timestampCopy = timestamp;
+  profileIDCopy = profileID;
+  accountIDCopy = accountID;
+  serviceIDCopy = serviceID;
+  iDCopy = iD;
+  dCopy = d;
   LOWORD(v30) = 256;
   LOBYTE(v29) = 1;
-  v27 = [[WLKPlaybackSummary alloc] initWithBundleID:v26 timestamp:v21 duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:v22 contentID:0 accountID:v23 playbackState:a9 playbackRate:v20 completionState:0 isAlwaysLive:v29 serviceID:v24 currentPlaybackDate:v19 playbackType:2 isTimerDerived:v30 isFromActivePlayerPath:v18 playablePassthrough:v25 channelID:0 contentTitle:?];
+  v27 = [[WLKPlaybackSummary alloc] initWithBundleID:dCopy timestamp:timestampCopy duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:profileIDCopy contentID:0 accountID:accountIDCopy playbackState:state playbackRate:rateCopy completionState:0 isAlwaysLive:v29 serviceID:serviceIDCopy currentPlaybackDate:dateCopy playbackType:2 isTimerDerived:v30 isFromActivePlayerPath:passthroughCopy playablePassthrough:iDCopy channelID:0 contentTitle:?];
 
   return v27;
 }
 
-+ (id)EBSSummaryWithBundleID:(id)a3 channelID:(id)a4 externalId:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 playbackState:(int64_t)a9 playbackRate:(id)a10 currentPlaybackDate:(id)a11 playablePassthrough:(id)a12
++ (id)EBSSummaryWithBundleID:(id)d channelID:(id)iD externalId:(id)id accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp playbackState:(int64_t)state playbackRate:(id)self0 currentPlaybackDate:(id)self1 playablePassthrough:(id)self2
 {
-  v18 = a12;
-  v19 = a11;
-  v20 = a10;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  passthroughCopy = passthrough;
+  dateCopy = date;
+  rateCopy = rate;
+  timestampCopy = timestamp;
+  profileIDCopy = profileID;
+  accountIDCopy = accountID;
+  idCopy = id;
+  iDCopy = iD;
+  dCopy = d;
   LOWORD(v30) = 256;
   LOBYTE(v29) = 1;
-  v27 = [[WLKPlaybackSummary alloc] initWithBundleID:v26 timestamp:v21 duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:v22 contentID:v24 accountID:v23 playbackState:a9 playbackRate:v20 completionState:0 isAlwaysLive:v29 serviceID:0 currentPlaybackDate:v19 playbackType:1 isTimerDerived:v30 isFromActivePlayerPath:v18 playablePassthrough:v25 channelID:0 contentTitle:?];
+  v27 = [[WLKPlaybackSummary alloc] initWithBundleID:dCopy timestamp:timestampCopy duration:0 elapsedTime:0 featureDuration:0 featureElapsedTime:0 externalProfileID:profileIDCopy contentID:idCopy accountID:accountIDCopy playbackState:state playbackRate:rateCopy completionState:0 isAlwaysLive:v29 serviceID:0 currentPlaybackDate:dateCopy playbackType:1 isTimerDerived:v30 isFromActivePlayerPath:passthroughCopy playablePassthrough:iDCopy channelID:0 contentTitle:?];
 
   return v27;
 }
 
-+ (id)VODSummaryWithBundleID:(id)a3 channelID:(id)a4 contentID:(id)a5 accountID:(id)a6 externalProfileID:(id)a7 timestamp:(id)a8 duration:(id)a9 elapsedTime:(id)a10 featureDuration:(id)a11 featureElapsedTime:(id)a12 playbackState:(int64_t)a13 playbackRate:(id)a14 playablePassthrough:(id)a15 contentTitle:(id)a16 completionState:(int64_t)a17
++ (id)VODSummaryWithBundleID:(id)d channelID:(id)iD contentID:(id)contentID accountID:(id)accountID externalProfileID:(id)profileID timestamp:(id)timestamp duration:(id)duration elapsedTime:(id)self0 featureDuration:(id)self1 featureElapsedTime:(id)self2 playbackState:(int64_t)self3 playbackRate:(id)self4 playablePassthrough:(id)self5 contentTitle:(id)self6 completionState:(int64_t)self7
 {
-  v44 = a3;
-  v22 = a4;
-  v43 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a9;
-  v41 = a10;
-  v27 = a11;
-  v28 = a17;
-  v42 = a12;
-  v29 = a14;
-  v30 = a15;
-  v31 = a16;
-  if (!a17)
+  dCopy = d;
+  iDCopy = iD;
+  contentIDCopy = contentID;
+  accountIDCopy = accountID;
+  profileIDCopy = profileID;
+  timestampCopy = timestamp;
+  durationCopy = duration;
+  timeCopy = time;
+  featureDurationCopy = featureDuration;
+  completionStateCopy = completionState;
+  elapsedTimeCopy = elapsedTime;
+  rateCopy = rate;
+  passthroughCopy = passthrough;
+  titleCopy = title;
+  if (!completionState)
   {
     NSLog(&cfstr_Wlkplaybacksum_1.isa);
-    if (v27 && v42)
+    if (featureDurationCopy && elapsedTimeCopy)
     {
-      [v27 doubleValue];
+      [featureDurationCopy doubleValue];
       v33 = v32;
-      v34 = v42;
+      v34 = elapsedTimeCopy;
     }
 
     else
     {
-      [v26 doubleValue];
+      [durationCopy doubleValue];
       v33 = v35;
-      v34 = v41;
+      v34 = timeCopy;
     }
 
     [v34 doubleValue];
-    v28 = [WLKPlaybackSummary completionStateForDuration:v33 elapsedTime:v36];
+    completionStateCopy = [WLKPlaybackSummary completionStateForDuration:v33 elapsedTime:v36];
   }
 
   LOWORD(v39) = 256;
   LOBYTE(v38) = 0;
-  v40 = [[WLKPlaybackSummary alloc] initWithBundleID:v44 timestamp:v25 duration:v26 elapsedTime:v41 featureDuration:v27 featureElapsedTime:v42 externalProfileID:v24 contentID:v43 accountID:v23 playbackState:a13 playbackRate:v29 completionState:v28 isAlwaysLive:v38 serviceID:0 currentPlaybackDate:0 playbackType:0 isTimerDerived:v39 isFromActivePlayerPath:v30 playablePassthrough:v22 channelID:v31 contentTitle:?];
+  v40 = [[WLKPlaybackSummary alloc] initWithBundleID:dCopy timestamp:timestampCopy duration:durationCopy elapsedTime:timeCopy featureDuration:featureDurationCopy featureElapsedTime:elapsedTimeCopy externalProfileID:profileIDCopy contentID:contentIDCopy accountID:accountIDCopy playbackState:state playbackRate:rateCopy completionState:completionStateCopy isAlwaysLive:v38 serviceID:0 currentPlaybackDate:0 playbackType:0 isTimerDerived:v39 isFromActivePlayerPath:passthroughCopy playablePassthrough:iDCopy channelID:titleCopy contentTitle:?];
 
   return v40;
 }
@@ -519,16 +519,16 @@ LABEL_23:
 - (NSNumber)accountIDAsNumber
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(WLKPlaybackSummary *)self accountID];
-  v4 = [v2 numberWithLongLong:{objc_msgSend(v3, "longLongValue")}];
+  accountID = [(WLKPlaybackSummary *)self accountID];
+  v4 = [v2 numberWithLongLong:{objc_msgSend(accountID, "longLongValue")}];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -536,77 +536,77 @@ LABEL_23:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKPlaybackSummary *)self isEqualToSummary:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKPlaybackSummary *)self isEqualToSummary:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSummary:(id)a3
+- (BOOL)isEqualToSummary:(id)summary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (playbackType = self->_playbackType, playbackType == [v4 playbackType]) && (playbackState = self->_playbackState, playbackState == objc_msgSend(v5, "playbackState")) && (completionState = self->_completionState, completionState == objc_msgSend(v5, "completionState")) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")) && (isTimerDerived = self->_isTimerDerived, isTimerDerived == objc_msgSend(v5, "isTimerDerived")))
+  summaryCopy = summary;
+  v5 = summaryCopy;
+  if (summaryCopy && (playbackType = self->_playbackType, playbackType == [summaryCopy playbackType]) && (playbackState = self->_playbackState, playbackState == objc_msgSend(v5, "playbackState")) && (completionState = self->_completionState, completionState == objc_msgSend(v5, "completionState")) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")) && (isTimerDerived = self->_isTimerDerived, isTimerDerived == objc_msgSend(v5, "isTimerDerived")))
   {
     bundleID = self->_bundleID;
-    v12 = [v5 bundleID];
-    if ([(NSString *)bundleID isEqualToString:v12])
+    bundleID = [v5 bundleID];
+    if ([(NSString *)bundleID isEqualToString:bundleID])
     {
       accountID = self->_accountID;
-      v14 = [v5 accountID];
-      if ([(NSString *)accountID isEqualToString:v14])
+      accountID = [v5 accountID];
+      if ([(NSString *)accountID isEqualToString:accountID])
       {
         timestamp = self->_timestamp;
-        v16 = [v5 timestamp];
-        if ([(NSDate *)timestamp isEqualToDate:v16])
+        timestamp = [v5 timestamp];
+        if ([(NSDate *)timestamp isEqualToDate:timestamp])
         {
           currentPlaybackDate = self->_currentPlaybackDate;
-          v18 = [v5 currentPlaybackDate];
-          if ([(WLKPlaybackSummary *)self _compareOptional:currentPlaybackDate with:v18])
+          currentPlaybackDate = [v5 currentPlaybackDate];
+          if ([(WLKPlaybackSummary *)self _compareOptional:currentPlaybackDate with:currentPlaybackDate])
           {
             duration = self->_duration;
-            v20 = [v5 duration];
-            if ([(WLKPlaybackSummary *)self _compareOptional:duration with:v20])
+            duration = [v5 duration];
+            if ([(WLKPlaybackSummary *)self _compareOptional:duration with:duration])
             {
               elapsedTime = self->_elapsedTime;
-              v22 = [v5 elapsedTime];
-              if ([(WLKPlaybackSummary *)self _compareOptional:elapsedTime with:v22])
+              elapsedTime = [v5 elapsedTime];
+              if ([(WLKPlaybackSummary *)self _compareOptional:elapsedTime with:elapsedTime])
               {
                 featureDuration = self->_featureDuration;
-                v24 = [v5 featureDuration];
-                if ([(WLKPlaybackSummary *)self _compareOptional:featureDuration with:v24])
+                featureDuration = [v5 featureDuration];
+                if ([(WLKPlaybackSummary *)self _compareOptional:featureDuration with:featureDuration])
                 {
                   featureElapsedTime = self->_featureElapsedTime;
-                  v42 = [v5 featureElapsedTime];
+                  featureElapsedTime = [v5 featureElapsedTime];
                   if ([(WLKPlaybackSummary *)self _compareOptional:featureElapsedTime with:?])
                   {
                     externalProfileID = self->_externalProfileID;
-                    v41 = [v5 externalProfileID];
+                    externalProfileID = [v5 externalProfileID];
                     if ([(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:?])
                     {
                       contentID = self->_contentID;
-                      v40 = [v5 contentID];
+                      contentID = [v5 contentID];
                       if ([(WLKPlaybackSummary *)self _compareOptional:contentID with:?])
                       {
                         serviceID = self->_serviceID;
-                        v39 = [v5 serviceID];
+                        serviceID = [v5 serviceID];
                         if ([(WLKPlaybackSummary *)self _compareOptional:serviceID with:?])
                         {
                           channelID = self->_channelID;
-                          v38 = [v5 channelID];
+                          channelID = [v5 channelID];
                           if ([(WLKPlaybackSummary *)self _compareOptional:channelID with:?])
                           {
                             playbackRate = self->_playbackRate;
-                            v37 = [v5 playbackRate];
+                            playbackRate = [v5 playbackRate];
                             if ([(WLKPlaybackSummary *)self _compareOptional:playbackRate with:?])
                             {
                               playablePassthrough = self->_playablePassthrough;
-                              v36 = [v5 playablePassthrough];
+                              playablePassthrough = [v5 playablePassthrough];
                               if ([(WLKPlaybackSummary *)self _compareOptional:playablePassthrough with:?])
                               {
                                 contentTitle = self->_contentTitle;
-                                v32 = [v5 contentTitle];
-                                v33 = [(WLKPlaybackSummary *)self _compareOptional:contentTitle with:v32];
+                                contentTitle = [v5 contentTitle];
+                                v33 = [(WLKPlaybackSummary *)self _compareOptional:contentTitle with:contentTitle];
                               }
 
                               else
@@ -701,55 +701,55 @@ LABEL_23:
   return v33;
 }
 
-- (BOOL)isEquivalentToSummaryExcludingCursor:(id)a3
+- (BOOL)isEquivalentToSummaryExcludingCursor:(id)cursor
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (playbackType = self->_playbackType, playbackType == [v4 playbackType]) && (playbackState = self->_playbackState, playbackState == objc_msgSend(v5, "playbackState")) && (completionState = self->_completionState, completionState == objc_msgSend(v5, "completionState")) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")))
+  cursorCopy = cursor;
+  v5 = cursorCopy;
+  if (cursorCopy && (playbackType = self->_playbackType, playbackType == [cursorCopy playbackType]) && (playbackState = self->_playbackState, playbackState == objc_msgSend(v5, "playbackState")) && (completionState = self->_completionState, completionState == objc_msgSend(v5, "completionState")) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")))
   {
     bundleID = self->_bundleID;
-    v11 = [v5 bundleID];
-    if ([(NSString *)bundleID isEqualToString:v11])
+    bundleID = [v5 bundleID];
+    if ([(NSString *)bundleID isEqualToString:bundleID])
     {
       accountID = self->_accountID;
-      v13 = [v5 accountID];
-      if ([(NSString *)accountID isEqualToString:v13])
+      accountID = [v5 accountID];
+      if ([(NSString *)accountID isEqualToString:accountID])
       {
         duration = self->_duration;
-        v15 = [v5 duration];
-        if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:duration with:v15 fuzzy:1])
+        duration = [v5 duration];
+        if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:duration with:duration fuzzy:1])
         {
           featureDuration = self->_featureDuration;
-          v17 = [v5 featureDuration];
-          if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:featureDuration with:v17 fuzzy:1])
+          featureDuration = [v5 featureDuration];
+          if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:featureDuration with:featureDuration fuzzy:1])
           {
             externalProfileID = self->_externalProfileID;
-            v19 = [v5 externalProfileID];
-            if ([(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:v19])
+            externalProfileID = [v5 externalProfileID];
+            if ([(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:externalProfileID])
             {
               contentID = self->_contentID;
-              v21 = [v5 contentID];
-              if ([(WLKPlaybackSummary *)self _compareOptional:contentID with:v21])
+              contentID = [v5 contentID];
+              if ([(WLKPlaybackSummary *)self _compareOptional:contentID with:contentID])
               {
                 serviceID = self->_serviceID;
-                v23 = [v5 serviceID];
-                if ([(WLKPlaybackSummary *)self _compareOptional:serviceID with:v23])
+                serviceID = [v5 serviceID];
+                if ([(WLKPlaybackSummary *)self _compareOptional:serviceID with:serviceID])
                 {
                   channelID = self->_channelID;
-                  v33 = [v5 channelID];
+                  channelID = [v5 channelID];
                   if ([(WLKPlaybackSummary *)self _compareOptional:channelID with:?])
                   {
                     playbackRate = self->_playbackRate;
-                    v32 = [v5 playbackRate];
+                    playbackRate = [v5 playbackRate];
                     if ([(WLKPlaybackSummary *)self _compareOptional:playbackRate with:?])
                     {
                       playablePassthrough = self->_playablePassthrough;
-                      v31 = [v5 playablePassthrough];
+                      playablePassthrough = [v5 playablePassthrough];
                       if ([(WLKPlaybackSummary *)self _compareOptional:playablePassthrough with:?])
                       {
                         contentTitle = self->_contentTitle;
-                        v27 = [v5 contentTitle];
-                        v28 = [(WLKPlaybackSummary *)self _compareOptional:contentTitle with:v27];
+                        contentTitle = [v5 contentTitle];
+                        v28 = [(WLKPlaybackSummary *)self _compareOptional:contentTitle with:contentTitle];
                       }
 
                       else
@@ -820,63 +820,63 @@ LABEL_23:
   return v28;
 }
 
-- (BOOL)isEquivalentToSummaryExcludingTimestamp:(id)a3
+- (BOOL)isEquivalentToSummaryExcludingTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (playbackType = self->_playbackType, playbackType == [v4 playbackType]) && (playbackState = self->_playbackState, playbackState == objc_msgSend(v5, "playbackState")) && (completionState = self->_completionState, completionState == objc_msgSend(v5, "completionState")) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")) && (isTimerDerived = self->_isTimerDerived, isTimerDerived == objc_msgSend(v5, "isTimerDerived")))
+  timestampCopy = timestamp;
+  v5 = timestampCopy;
+  if (timestampCopy && (playbackType = self->_playbackType, playbackType == [timestampCopy playbackType]) && (playbackState = self->_playbackState, playbackState == objc_msgSend(v5, "playbackState")) && (completionState = self->_completionState, completionState == objc_msgSend(v5, "completionState")) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")) && (isTimerDerived = self->_isTimerDerived, isTimerDerived == objc_msgSend(v5, "isTimerDerived")))
   {
     bundleID = self->_bundleID;
-    v12 = [v5 bundleID];
-    if ([(NSString *)bundleID isEqualToString:v12])
+    bundleID = [v5 bundleID];
+    if ([(NSString *)bundleID isEqualToString:bundleID])
     {
       accountID = self->_accountID;
-      v14 = [v5 accountID];
-      if ([(NSString *)accountID isEqualToString:v14])
+      accountID = [v5 accountID];
+      if ([(NSString *)accountID isEqualToString:accountID])
       {
         duration = self->_duration;
-        v16 = [v5 duration];
-        if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:duration with:v16 fuzzy:1])
+        duration = [v5 duration];
+        if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:duration with:duration fuzzy:1])
         {
           elapsedTime = self->_elapsedTime;
-          v18 = [v5 elapsedTime];
-          if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:elapsedTime with:v18 fuzzy:1])
+          elapsedTime = [v5 elapsedTime];
+          if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:elapsedTime with:elapsedTime fuzzy:1])
           {
             featureDuration = self->_featureDuration;
-            v20 = [v5 featureDuration];
-            if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:featureDuration with:v20 fuzzy:1])
+            featureDuration = [v5 featureDuration];
+            if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:featureDuration with:featureDuration fuzzy:1])
             {
               featureElapsedTime = self->_featureElapsedTime;
-              v22 = [v5 featureElapsedTime];
-              if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:featureElapsedTime with:v22 fuzzy:1])
+              featureElapsedTime = [v5 featureElapsedTime];
+              if ([(WLKPlaybackSummary *)self _compareOptionalTemporalValue:featureElapsedTime with:featureElapsedTime fuzzy:1])
               {
                 externalProfileID = self->_externalProfileID;
-                v24 = [v5 externalProfileID];
-                if ([(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:v24])
+                externalProfileID = [v5 externalProfileID];
+                if ([(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:externalProfileID])
                 {
                   contentID = self->_contentID;
-                  v38 = [v5 contentID];
+                  contentID = [v5 contentID];
                   if ([(WLKPlaybackSummary *)self _compareOptional:contentID with:?])
                   {
                     serviceID = self->_serviceID;
-                    v37 = [v5 serviceID];
+                    serviceID = [v5 serviceID];
                     if ([(WLKPlaybackSummary *)self _compareOptional:serviceID with:?])
                     {
                       channelID = self->_channelID;
-                      v36 = [v5 channelID];
+                      channelID = [v5 channelID];
                       if ([(WLKPlaybackSummary *)self _compareOptional:channelID with:?])
                       {
                         playbackRate = self->_playbackRate;
-                        v35 = [v5 playbackRate];
+                        playbackRate = [v5 playbackRate];
                         if ([(WLKPlaybackSummary *)self _compareOptional:playbackRate with:?])
                         {
                           playablePassthrough = self->_playablePassthrough;
-                          v34 = [v5 playablePassthrough];
+                          playablePassthrough = [v5 playablePassthrough];
                           if ([(WLKPlaybackSummary *)self _compareOptional:playablePassthrough with:?])
                           {
                             contentTitle = self->_contentTitle;
-                            v30 = [v5 contentTitle];
-                            v31 = [(WLKPlaybackSummary *)self _compareOptional:contentTitle with:v30];
+                            contentTitle = [v5 contentTitle];
+                            v31 = [(WLKPlaybackSummary *)self _compareOptional:contentTitle with:contentTitle];
                           }
 
                           else
@@ -959,35 +959,35 @@ LABEL_23:
   return v31;
 }
 
-- (BOOL)isSameContent:(id)a3
+- (BOOL)isSameContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (playbackType = self->_playbackType, playbackType == [v4 playbackType]) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")))
+  contentCopy = content;
+  v5 = contentCopy;
+  if (contentCopy && (playbackType = self->_playbackType, playbackType == [contentCopy playbackType]) && (isAlwaysLive = self->_isAlwaysLive, isAlwaysLive == objc_msgSend(v5, "isAlwaysLive")))
   {
     bundleID = self->_bundleID;
-    v9 = [v5 bundleID];
-    if ([(NSString *)bundleID isEqualToString:v9])
+    bundleID = [v5 bundleID];
+    if ([(NSString *)bundleID isEqualToString:bundleID])
     {
       accountID = self->_accountID;
-      v11 = [v5 accountID];
-      if ([(NSString *)accountID isEqualToString:v11])
+      accountID = [v5 accountID];
+      if ([(NSString *)accountID isEqualToString:accountID])
       {
         contentID = self->_contentID;
-        v13 = [v5 contentID];
-        if ([(WLKPlaybackSummary *)self _compareOptional:contentID with:v13])
+        contentID = [v5 contentID];
+        if ([(WLKPlaybackSummary *)self _compareOptional:contentID with:contentID])
         {
           serviceID = self->_serviceID;
-          v15 = [v5 serviceID];
-          if ([(WLKPlaybackSummary *)self _compareOptional:serviceID with:v15])
+          serviceID = [v5 serviceID];
+          if ([(WLKPlaybackSummary *)self _compareOptional:serviceID with:serviceID])
           {
             channelID = self->_channelID;
-            v17 = [v5 channelID];
-            if ([(WLKPlaybackSummary *)self _compareOptional:channelID with:v17])
+            channelID = [v5 channelID];
+            if ([(WLKPlaybackSummary *)self _compareOptional:channelID with:channelID])
             {
               externalProfileID = self->_externalProfileID;
-              v19 = [v5 externalProfileID];
-              v20 = [(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:v19];
+              externalProfileID = [v5 externalProfileID];
+              v20 = [(WLKPlaybackSummary *)self _compareOptional:externalProfileID with:externalProfileID];
             }
 
             else
@@ -1078,8 +1078,8 @@ LABEL_23:
   v8.receiver = self;
   v8.super_class = WLKPlaybackSummary;
   v4 = [(WLKPlaybackSummary *)&v8 description];
-  v5 = [(WLKPlaybackSummary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WLKPlaybackSummary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -1188,14 +1188,14 @@ LABEL_23:
   v51[10] = serviceID;
   v50[11] = @"currentPlaybackDate";
   currentPlaybackDate = self->_currentPlaybackDate;
-  v16 = currentPlaybackDate;
+  null = currentPlaybackDate;
   if (!currentPlaybackDate)
   {
-    v16 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v27 = v16;
-  v51[11] = v16;
+  v27 = null;
+  v51[11] = null;
   v50[12] = @"isAlwaysLive";
   v38 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAlwaysLive];
   v51[12] = v38;
@@ -1209,31 +1209,31 @@ LABEL_23:
   v51[15] = v18;
   v50[16] = @"channelID";
   channelID = self->_channelID;
-  v20 = channelID;
+  null2 = channelID;
   if (!channelID)
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v51[16] = v20;
+  v51[16] = null2;
   v50[17] = @"playablePassthrough";
   playablePassthrough = self->_playablePassthrough;
-  v22 = playablePassthrough;
+  null3 = playablePassthrough;
   if (!playablePassthrough)
   {
-    v22 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v51[17] = v22;
+  v51[17] = null3;
   v50[18] = @"contentTitle";
   contentTitle = self->_contentTitle;
-  v24 = contentTitle;
+  null4 = contentTitle;
   if (!contentTitle)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v51[18] = v24;
+  v51[18] = null4;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:19];
   if (contentTitle)
   {
@@ -1311,15 +1311,15 @@ LABEL_30:
   return v37;
 }
 
-+ (id)debugStringForPlaybackState:(int64_t)a3
++ (id)debugStringForPlaybackState:(int64_t)state
 {
   v3 = @"Playing";
-  if (a3 == 2)
+  if (state == 2)
   {
     v3 = @"Paused";
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }
@@ -1330,15 +1330,15 @@ LABEL_30:
   }
 }
 
-+ (id)_debugStringForPlaybackType:(int64_t)a3
++ (id)_debugStringForPlaybackType:(int64_t)type
 {
   v3 = @"VOD";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"EBS";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"Live";
   }
@@ -1351,8 +1351,8 @@ LABEL_30:
 
 - (id)JSONRepresentation
 {
-  v3 = [(WLKPlaybackSummary *)self dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(WLKPlaybackSummary *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_completionState];
   [v4 setObject:v5 forKeyedSubscript:@"completionStateValue"];
@@ -1371,37 +1371,37 @@ LABEL_30:
 - (id)sanitizedCopy
 {
   v24 = [WLKPlaybackSummary alloc];
-  v23 = [(WLKPlaybackSummary *)self bundleID];
-  v22 = [(WLKPlaybackSummary *)self timestamp];
-  v21 = [(WLKPlaybackSummary *)self duration];
-  v20 = [(WLKPlaybackSummary *)self elapsedTime];
-  v19 = [(WLKPlaybackSummary *)self featureDuration];
-  v18 = [(WLKPlaybackSummary *)self featureElapsedTime];
-  v26 = [(WLKPlaybackSummary *)self contentID];
-  v17 = [(WLKPlaybackSummary *)self playbackState];
-  v14 = [(WLKPlaybackSummary *)self playbackRate];
-  v16 = [(WLKPlaybackSummary *)self completionState];
-  v15 = [(WLKPlaybackSummary *)self isAlwaysLive];
-  v13 = [(WLKPlaybackSummary *)self serviceID];
-  v3 = [(WLKPlaybackSummary *)self currentPlaybackDate];
-  v4 = [(WLKPlaybackSummary *)self playbackType];
-  v5 = [(WLKPlaybackSummary *)self isTimerDerived];
-  v6 = [(WLKPlaybackSummary *)self isFromActivePlayerPath];
-  v7 = [(WLKPlaybackSummary *)self playablePassthrough];
-  v8 = [(WLKPlaybackSummary *)self channelID];
-  v9 = [(WLKPlaybackSummary *)self contentTitle];
-  BYTE1(v12) = v6;
-  LOBYTE(v12) = v5;
-  LOBYTE(v11) = v15;
-  v25 = [(WLKPlaybackSummary *)v24 initWithBundleID:v23 timestamp:v22 duration:v21 elapsedTime:v20 featureDuration:v19 featureElapsedTime:v18 externalProfileID:0 contentID:v26 accountID:0 playbackState:v17 playbackRate:v14 completionState:v16 isAlwaysLive:v11 serviceID:v13 currentPlaybackDate:v3 playbackType:v4 isTimerDerived:v12 isFromActivePlayerPath:v7 playablePassthrough:v8 channelID:v9 contentTitle:?];
+  bundleID = [(WLKPlaybackSummary *)self bundleID];
+  timestamp = [(WLKPlaybackSummary *)self timestamp];
+  duration = [(WLKPlaybackSummary *)self duration];
+  elapsedTime = [(WLKPlaybackSummary *)self elapsedTime];
+  featureDuration = [(WLKPlaybackSummary *)self featureDuration];
+  featureElapsedTime = [(WLKPlaybackSummary *)self featureElapsedTime];
+  contentID = [(WLKPlaybackSummary *)self contentID];
+  playbackState = [(WLKPlaybackSummary *)self playbackState];
+  playbackRate = [(WLKPlaybackSummary *)self playbackRate];
+  completionState = [(WLKPlaybackSummary *)self completionState];
+  isAlwaysLive = [(WLKPlaybackSummary *)self isAlwaysLive];
+  serviceID = [(WLKPlaybackSummary *)self serviceID];
+  currentPlaybackDate = [(WLKPlaybackSummary *)self currentPlaybackDate];
+  playbackType = [(WLKPlaybackSummary *)self playbackType];
+  isTimerDerived = [(WLKPlaybackSummary *)self isTimerDerived];
+  isFromActivePlayerPath = [(WLKPlaybackSummary *)self isFromActivePlayerPath];
+  playablePassthrough = [(WLKPlaybackSummary *)self playablePassthrough];
+  channelID = [(WLKPlaybackSummary *)self channelID];
+  contentTitle = [(WLKPlaybackSummary *)self contentTitle];
+  BYTE1(v12) = isFromActivePlayerPath;
+  LOBYTE(v12) = isTimerDerived;
+  LOBYTE(v11) = isAlwaysLive;
+  v25 = [(WLKPlaybackSummary *)v24 initWithBundleID:bundleID timestamp:timestamp duration:duration elapsedTime:elapsedTime featureDuration:featureDuration featureElapsedTime:featureElapsedTime externalProfileID:0 contentID:contentID accountID:0 playbackState:playbackState playbackRate:playbackRate completionState:completionState isAlwaysLive:v11 serviceID:serviceID currentPlaybackDate:currentPlaybackDate playbackType:playbackType isTimerDerived:v12 isFromActivePlayerPath:playablePassthrough playablePassthrough:channelID channelID:contentTitle contentTitle:?];
 
   return v25;
 }
 
-- (WLKPlaybackSummary)initWithCoder:(id)a3
+- (WLKPlaybackSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     if (initWithCoder__onceToken != -1)
     {
@@ -1411,84 +1411,84 @@ LABEL_30:
     v5 = [(WLKPlaybackSummary *)self init];
     if (v5)
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.bundleID"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.bundleID"];
       bundleID = v5->_bundleID;
       v5->_bundleID = v6;
 
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.timestamp"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.timestamp"];
       timestamp = v5->_timestamp;
       v5->_timestamp = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.duration"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.duration"];
       duration = v5->_duration;
       v5->_duration = v10;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.elapsedTime"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.elapsedTime"];
       elapsedTime = v5->_elapsedTime;
       v5->_elapsedTime = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.featureDuration"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.featureDuration"];
       featureDuration = v5->_featureDuration;
       v5->_featureDuration = v14;
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.featureElapsedTime"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.featureElapsedTime"];
       featureElapsedTime = v5->_featureElapsedTime;
       v5->_featureElapsedTime = v16;
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.externalContentID"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.externalContentID"];
       contentID = v5->_contentID;
       v5->_contentID = v18;
 
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.externalUserProfileID"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.externalUserProfileID"];
       externalProfileID = v5->_externalProfileID;
       v5->_externalProfileID = v20;
 
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.accountID"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.accountID"];
       accountID = v5->_accountID;
       v5->_accountID = v22;
 
-      v5->_playbackState = [v4 decodeIntegerForKey:@"WLKPlaybackActivity.playbackState"];
-      v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.playbackRate"];
+      v5->_playbackState = [coderCopy decodeIntegerForKey:@"WLKPlaybackActivity.playbackState"];
+      v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.playbackRate"];
       playbackRate = v5->_playbackRate;
       v5->_playbackRate = v24;
 
-      v5->_completionState = [v4 decodeIntegerForKey:@"WLKPlaybackActivity.completionState"];
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.serviceID"];
+      v5->_completionState = [coderCopy decodeIntegerForKey:@"WLKPlaybackActivity.completionState"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.serviceID"];
       serviceID = v5->_serviceID;
       v5->_serviceID = v26;
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.currentPlaybackDate"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.currentPlaybackDate"];
       currentPlaybackDate = v5->_currentPlaybackDate;
       v5->_currentPlaybackDate = v28;
 
-      v5->_isAlwaysLive = [v4 decodeBoolForKey:@"WLKPlaybackActivity.isAlwaysLive"];
-      v5->_playbackType = [v4 decodeIntegerForKey:@"WLKPlaybackActivity.playbackType"];
-      v5->_isTimerDerived = [v4 decodeBoolForKey:@"WLKPlaybackActivity.isTimerDerived"];
-      v5->_fromActivePlayerPath = [v4 decodeBoolForKey:@"WLKPlaybackActivity.fromActivePlayerPath"];
-      v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.channelID"];
+      v5->_isAlwaysLive = [coderCopy decodeBoolForKey:@"WLKPlaybackActivity.isAlwaysLive"];
+      v5->_playbackType = [coderCopy decodeIntegerForKey:@"WLKPlaybackActivity.playbackType"];
+      v5->_isTimerDerived = [coderCopy decodeBoolForKey:@"WLKPlaybackActivity.isTimerDerived"];
+      v5->_fromActivePlayerPath = [coderCopy decodeBoolForKey:@"WLKPlaybackActivity.fromActivePlayerPath"];
+      v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.channelID"];
       channelID = v5->_channelID;
       v5->_channelID = v30;
 
-      v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.playablePassthrough"];
+      v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.playablePassthrough"];
       playablePassthrough = v5->_playablePassthrough;
       v5->_playablePassthrough = v32;
 
-      v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.contentTitle"];
+      v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKPlaybackActivity.contentTitle"];
       contentTitle = v5->_contentTitle;
       v5->_contentTitle = v34;
     }
 
     self = v5;
-    v36 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
-    v36 = 0;
+    selfCopy = 0;
   }
 
-  return v36;
+  return selfCopy;
 }
 
 void __36__WLKPlaybackSummary_initWithCoder___block_invoke()
@@ -1515,84 +1515,84 @@ void __36__WLKPlaybackSummary_initWithCoder___block_invoke()
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeObject:self->_bundleID forKey:@"WLKPlaybackActivity.bundleID"];
-  [v4 encodeObject:self->_timestamp forKey:@"WLKPlaybackActivity.timestamp"];
-  [v4 encodeObject:self->_duration forKey:@"WLKPlaybackActivity.duration"];
-  [v4 encodeObject:self->_elapsedTime forKey:@"WLKPlaybackActivity.elapsedTime"];
-  [v4 encodeObject:self->_featureDuration forKey:@"WLKPlaybackActivity.featureDuration"];
-  [v4 encodeObject:self->_featureElapsedTime forKey:@"WLKPlaybackActivity.featureElapsedTime"];
-  [v4 encodeObject:self->_contentID forKey:@"WLKPlaybackActivity.externalContentID"];
-  [v4 encodeObject:self->_externalProfileID forKey:@"WLKPlaybackActivity.externalUserProfileID"];
-  [v4 encodeObject:self->_accountID forKey:@"WLKPlaybackActivity.accountID"];
-  [v4 encodeInteger:self->_playbackState forKey:@"WLKPlaybackActivity.playbackState"];
-  [v4 encodeObject:self->_playbackRate forKey:@"WLKPlaybackActivity.playbackRate"];
-  [v4 encodeInteger:self->_completionState forKey:@"WLKPlaybackActivity.completionState"];
-  [v4 encodeObject:self->_serviceID forKey:@"WLKPlaybackActivity.serviceID"];
-  [v4 encodeObject:self->_currentPlaybackDate forKey:@"WLKPlaybackActivity.currentPlaybackDate"];
-  [v4 encodeBool:self->_isAlwaysLive forKey:@"WLKPlaybackActivity.isAlwaysLive"];
-  [v4 encodeInteger:self->_playbackType forKey:@"WLKPlaybackActivity.playbackType"];
-  [v4 encodeBool:self->_isTimerDerived forKey:@"WLKPlaybackActivity.isTimerDerived"];
-  [v4 encodeBool:self->_fromActivePlayerPath forKey:@"WLKPlaybackActivity.fromActivePlayerPath"];
-  [v4 encodeObject:self->_channelID forKey:@"WLKPlaybackActivity.channelID"];
-  [v4 encodeObject:self->_playablePassthrough forKey:@"WLKPlaybackActivity.playablePassthrough"];
-  [v4 encodeObject:self->_contentTitle forKey:@"WLKPlaybackActivity.contentTitle"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"WLKPlaybackActivity.bundleID"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"WLKPlaybackActivity.timestamp"];
+  [coderCopy encodeObject:self->_duration forKey:@"WLKPlaybackActivity.duration"];
+  [coderCopy encodeObject:self->_elapsedTime forKey:@"WLKPlaybackActivity.elapsedTime"];
+  [coderCopy encodeObject:self->_featureDuration forKey:@"WLKPlaybackActivity.featureDuration"];
+  [coderCopy encodeObject:self->_featureElapsedTime forKey:@"WLKPlaybackActivity.featureElapsedTime"];
+  [coderCopy encodeObject:self->_contentID forKey:@"WLKPlaybackActivity.externalContentID"];
+  [coderCopy encodeObject:self->_externalProfileID forKey:@"WLKPlaybackActivity.externalUserProfileID"];
+  [coderCopy encodeObject:self->_accountID forKey:@"WLKPlaybackActivity.accountID"];
+  [coderCopy encodeInteger:self->_playbackState forKey:@"WLKPlaybackActivity.playbackState"];
+  [coderCopy encodeObject:self->_playbackRate forKey:@"WLKPlaybackActivity.playbackRate"];
+  [coderCopy encodeInteger:self->_completionState forKey:@"WLKPlaybackActivity.completionState"];
+  [coderCopy encodeObject:self->_serviceID forKey:@"WLKPlaybackActivity.serviceID"];
+  [coderCopy encodeObject:self->_currentPlaybackDate forKey:@"WLKPlaybackActivity.currentPlaybackDate"];
+  [coderCopy encodeBool:self->_isAlwaysLive forKey:@"WLKPlaybackActivity.isAlwaysLive"];
+  [coderCopy encodeInteger:self->_playbackType forKey:@"WLKPlaybackActivity.playbackType"];
+  [coderCopy encodeBool:self->_isTimerDerived forKey:@"WLKPlaybackActivity.isTimerDerived"];
+  [coderCopy encodeBool:self->_fromActivePlayerPath forKey:@"WLKPlaybackActivity.fromActivePlayerPath"];
+  [coderCopy encodeObject:self->_channelID forKey:@"WLKPlaybackActivity.channelID"];
+  [coderCopy encodeObject:self->_playablePassthrough forKey:@"WLKPlaybackActivity.playablePassthrough"];
+  [coderCopy encodeObject:self->_contentTitle forKey:@"WLKPlaybackActivity.contentTitle"];
 }
 
-- (BOOL)_compareOptional:(id)a3 with:(id)a4
+- (BOOL)_compareOptional:(id)optional with:(id)with
 {
-  if (a3 && a4)
+  if (optional && with)
   {
-    return [a3 isEqual:a4];
+    return [optional isEqual:with];
   }
 
   else
   {
-    return (a3 | a4) == 0;
+    return (optional | with) == 0;
   }
 }
 
-- (BOOL)_compareOptionalTemporalValue:(id)a3 with:(id)a4 fuzzy:(BOOL)a5
+- (BOOL)_compareOptionalTemporalValue:(id)value with:(id)with fuzzy:(BOOL)fuzzy
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  fuzzyCopy = fuzzy;
+  valueCopy = value;
+  withCopy = with;
+  if (fuzzyCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v7 floatValue];
+    [valueCopy floatValue];
     v10 = v9;
-    [v8 floatValue];
+    [withCopy floatValue];
     v12 = vabds_f32(v10, v11) <= 0.1;
   }
 
-  else if (v7 && v8)
+  else if (valueCopy && withCopy)
   {
-    v12 = [v7 isEqual:v8];
+    v12 = [valueCopy isEqual:withCopy];
   }
 
   else
   {
-    v12 = (v7 | v8) == 0;
+    v12 = (valueCopy | withCopy) == 0;
   }
 
   return v12;
 }
 
-- (BOOL)_validate:(id)a3 identifier:(id)a4 expectedClass:(Class)a5
+- (BOOL)_validate:(id)_validate identifier:(id)identifier expectedClass:(Class)class
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  _validateCopy = _validate;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (!_validateCopy)
   {
-    NSLog(&cfstr_Wlkplaybacksum_2.isa, v8);
+    NSLog(&cfstr_Wlkplaybacksum_2.isa, identifierCopy);
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
@@ -1600,7 +1600,7 @@ LABEL_6:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = NSStringFromClass(a5);
+    v11 = NSStringFromClass(class);
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     NSLog(&cfstr_Wlkplaybacksum_3.isa, v9, v11, v13);
@@ -1616,24 +1616,24 @@ LABEL_7:
 
 - (BOOL)_isValid
 {
-  v3 = [(WLKPlaybackSummary *)self bundleID];
-  v4 = [(WLKPlaybackSummary *)self _validate:v3 identifier:@"bundleID" expectedClass:objc_opt_class()];
+  bundleID = [(WLKPlaybackSummary *)self bundleID];
+  v4 = [(WLKPlaybackSummary *)self _validate:bundleID identifier:@"bundleID" expectedClass:objc_opt_class()];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(WLKPlaybackSummary *)self accountID];
-  v6 = [(WLKPlaybackSummary *)self _validate:v5 identifier:@"accountID" expectedClass:objc_opt_class()];
+  accountID = [(WLKPlaybackSummary *)self accountID];
+  v6 = [(WLKPlaybackSummary *)self _validate:accountID identifier:@"accountID" expectedClass:objc_opt_class()];
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [(WLKPlaybackSummary *)self timestamp];
-  v8 = [(WLKPlaybackSummary *)self _validate:v7 identifier:@"timestamp" expectedClass:objc_opt_class()];
+  timestamp = [(WLKPlaybackSummary *)self timestamp];
+  v8 = [(WLKPlaybackSummary *)self _validate:timestamp identifier:@"timestamp" expectedClass:objc_opt_class()];
 
   if (!v8)
   {
@@ -1643,32 +1643,32 @@ LABEL_7:
   playbackType = self->_playbackType;
   if (playbackType == 2)
   {
-    v21 = [(WLKPlaybackSummary *)self currentPlaybackDate];
-    v22 = [(WLKPlaybackSummary *)self _validate:v21 identifier:@"currentPlaybackDate" expectedClass:objc_opt_class()];
+    currentPlaybackDate = [(WLKPlaybackSummary *)self currentPlaybackDate];
+    v22 = [(WLKPlaybackSummary *)self _validate:currentPlaybackDate identifier:@"currentPlaybackDate" expectedClass:objc_opt_class()];
 
     if (!v22)
     {
       return 0;
     }
 
-    v23 = [(WLKPlaybackSummary *)self serviceID];
-    v24 = [(WLKPlaybackSummary *)self _validate:v23 identifier:@"serviceID" expectedClass:objc_opt_class()];
+    serviceID = [(WLKPlaybackSummary *)self serviceID];
+    v24 = [(WLKPlaybackSummary *)self _validate:serviceID identifier:@"serviceID" expectedClass:objc_opt_class()];
 
     return v24;
   }
 
   if (playbackType == 1)
   {
-    v17 = [(WLKPlaybackSummary *)self currentPlaybackDate];
-    v18 = [(WLKPlaybackSummary *)self _validate:v17 identifier:@"currentPlaybackDate" expectedClass:objc_opt_class()];
+    currentPlaybackDate2 = [(WLKPlaybackSummary *)self currentPlaybackDate];
+    v18 = [(WLKPlaybackSummary *)self _validate:currentPlaybackDate2 identifier:@"currentPlaybackDate" expectedClass:objc_opt_class()];
 
     if (!v18)
     {
       return 0;
     }
 
-    v19 = [(WLKPlaybackSummary *)self contentID];
-    v20 = [(WLKPlaybackSummary *)self _validate:v19 identifier:@"contentID" expectedClass:objc_opt_class()];
+    contentID = [(WLKPlaybackSummary *)self contentID];
+    v20 = [(WLKPlaybackSummary *)self _validate:contentID identifier:@"contentID" expectedClass:objc_opt_class()];
 
     return v20;
   }
@@ -1678,49 +1678,49 @@ LABEL_7:
     return 1;
   }
 
-  v10 = [(WLKPlaybackSummary *)self duration];
-  v11 = [(WLKPlaybackSummary *)self _validate:v10 identifier:@"duration" expectedClass:objc_opt_class()];
+  duration = [(WLKPlaybackSummary *)self duration];
+  v11 = [(WLKPlaybackSummary *)self _validate:duration identifier:@"duration" expectedClass:objc_opt_class()];
 
   if (!v11)
   {
     return 0;
   }
 
-  v12 = [(WLKPlaybackSummary *)self elapsedTime];
-  v13 = [(WLKPlaybackSummary *)self _validate:v12 identifier:@"elapsedTime" expectedClass:objc_opt_class()];
+  elapsedTime = [(WLKPlaybackSummary *)self elapsedTime];
+  v13 = [(WLKPlaybackSummary *)self _validate:elapsedTime identifier:@"elapsedTime" expectedClass:objc_opt_class()];
 
   if (!v13)
   {
     return 0;
   }
 
-  v14 = [(WLKPlaybackSummary *)self elapsedTime];
-  v15 = [MEMORY[0x277CCA980] notANumber];
-  v16 = [v14 isEqualToNumber:v15];
+  elapsedTime2 = [(WLKPlaybackSummary *)self elapsedTime];
+  notANumber = [MEMORY[0x277CCA980] notANumber];
+  v16 = [elapsedTime2 isEqualToNumber:notANumber];
 
   if (!v16)
   {
-    v26 = [(WLKPlaybackSummary *)self contentID];
-    v27 = [(WLKPlaybackSummary *)self _validate:v26 identifier:@"contentID" expectedClass:objc_opt_class()];
+    contentID2 = [(WLKPlaybackSummary *)self contentID];
+    v27 = [(WLKPlaybackSummary *)self _validate:contentID2 identifier:@"contentID" expectedClass:objc_opt_class()];
 
     if (!v27)
     {
       return 0;
     }
 
-    v28 = [(WLKPlaybackSummary *)self duration];
-    v29 = [v28 unsignedIntegerValue];
+    duration2 = [(WLKPlaybackSummary *)self duration];
+    unsignedIntegerValue = [duration2 unsignedIntegerValue];
 
-    if (v29 <= 0x1D)
+    if (unsignedIntegerValue <= 0x1D)
     {
-      v30 = [(WLKPlaybackSummary *)self duration];
-      NSLog(&cfstr_Wlkplaybacksum_5.isa, v30);
+      duration3 = [(WLKPlaybackSummary *)self duration];
+      NSLog(&cfstr_Wlkplaybacksum_5.isa, duration3);
 
       return 0;
     }
 
-    v31 = [(WLKPlaybackSummary *)self contentID];
-    v32 = [v31 length];
+    contentID3 = [(WLKPlaybackSummary *)self contentID];
+    v32 = [contentID3 length];
 
     if (!v32)
     {
@@ -1735,15 +1735,15 @@ LABEL_7:
   return 0;
 }
 
-- (void)resolveChannelID:(id)a3
+- (void)resolveChannelID:(id)d
 {
-  v4 = a3;
-  v5 = [(WLKPlaybackSummary *)self channelID];
+  dCopy = d;
+  channelID = [(WLKPlaybackSummary *)self channelID];
 
-  if (v5)
+  if (channelID)
   {
-    v6 = [(WLKPlaybackSummary *)self channelID];
-    v4[2](v4, v6, 0);
+    channelID2 = [(WLKPlaybackSummary *)self channelID];
+    dCopy[2](dCopy, channelID2, 0);
   }
 
   else
@@ -1755,9 +1755,9 @@ LABEL_7:
     v8[3] = &unk_279E5F0E8;
     v8[4] = self;
     v9 = v7;
-    v10 = v4;
-    v6 = v7;
-    [v6 loadIfNeededWithCompletion:v8];
+    v10 = dCopy;
+    channelID2 = v7;
+    [channelID2 loadIfNeededWithCompletion:v8];
   }
 }
 
@@ -1791,26 +1791,26 @@ void __50__WLKPlaybackSummary_ChannelID__resolveChannelID___block_invoke(uint64_
   }
 }
 
-+ (double)playedThresholdTimeForDuration:(double)a3
++ (double)playedThresholdTimeForDuration:(double)duration
 {
   v3 = 0.0;
-  if (a3 > 0.0 && a3 != 3.40282347e38)
+  if (duration > 0.0 && duration != 3.40282347e38)
   {
-    if (a3 < 10.0)
+    if (duration < 10.0)
     {
-      return a3;
+      return duration;
     }
 
-    if (a3 >= 900.0)
+    if (duration >= 900.0)
     {
-      if (a3 >= 1800.0)
+      if (duration >= 1800.0)
       {
-        if (a3 >= 3900.0)
+        if (duration >= 3900.0)
         {
-          if (a3 >= 6000.0)
+          if (duration >= 6000.0)
           {
             v4 = -660.0;
-            return a3 + v4;
+            return duration + v4;
           }
 
           v5 = 0xC07E000000000000;
@@ -1835,17 +1835,17 @@ void __50__WLKPlaybackSummary_ChannelID__resolveChannelID___block_invoke(uint64_
       v4 = -10.0;
     }
 
-    return a3 + v4;
+    return duration + v4;
   }
 
   return v3;
 }
 
-+ (int64_t)completionStateForDuration:(double)a3 elapsedTime:(double)a4
++ (int64_t)completionStateForDuration:(double)duration elapsedTime:(double)time
 {
-  [a1 playedThresholdTimeForDuration:a3];
+  [self playedThresholdTimeForDuration:duration];
   v6 = 2;
-  if (v5 > a4)
+  if (v5 > time)
   {
     v6 = 1;
   }
@@ -1861,48 +1861,48 @@ void __50__WLKPlaybackSummary_ChannelID__resolveChannelID___block_invoke(uint64_
   }
 }
 
-+ (id)debugStringForCompletionState:(int64_t)a3
++ (id)debugStringForCompletionState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_279E5FDA0[a3];
+    return off_279E5FDA0[state];
   }
 }
 
-- (id)elapsedTimeSummaryWithPlaybackState:(int64_t)a3 timerDerived:(BOOL)a4
+- (id)elapsedTimeSummaryWithPlaybackState:(int64_t)state timerDerived:(BOOL)derived
 {
   v6 = 0.0;
   if ([(WLKPlaybackSummary *)self playbackState]== 1)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [(WLKPlaybackSummary *)self timestamp];
-    [v7 timeIntervalSinceDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    timestamp = [(WLKPlaybackSummary *)self timestamp];
+    [date timeIntervalSinceDate:timestamp];
     v6 = v9;
   }
 
-  v10 = [(WLKPlaybackSummary *)self elapsedTime];
-  [v10 doubleValue];
+  elapsedTime = [(WLKPlaybackSummary *)self elapsedTime];
+  [elapsedTime doubleValue];
   v12 = v6 + v11;
 
-  v13 = [(WLKPlaybackSummary *)self duration];
-  [v13 doubleValue];
+  duration = [(WLKPlaybackSummary *)self duration];
+  [duration doubleValue];
   v15 = fmin(v12, v14);
 
   v49 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-  v16 = [(WLKPlaybackSummary *)self featureElapsedTime];
-  if (v16 && (v17 = v16, [(WLKPlaybackSummary *)self featureDuration], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+  featureElapsedTime = [(WLKPlaybackSummary *)self featureElapsedTime];
+  if (featureElapsedTime && (v17 = featureElapsedTime, [(WLKPlaybackSummary *)self featureDuration], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
   {
-    v19 = [(WLKPlaybackSummary *)self featureElapsedTime];
-    [v19 doubleValue];
+    featureElapsedTime2 = [(WLKPlaybackSummary *)self featureElapsedTime];
+    [featureElapsedTime2 doubleValue];
     v21 = v6 + v20;
 
-    v22 = [(WLKPlaybackSummary *)self featureDuration];
-    [v22 doubleValue];
+    featureDuration = [(WLKPlaybackSummary *)self featureDuration];
+    [featureDuration doubleValue];
     v24 = fmin(v21, v23);
 
     v48 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
@@ -1913,37 +1913,37 @@ void __50__WLKPlaybackSummary_ChannelID__resolveChannelID___block_invoke(uint64_
     v48 = 0;
   }
 
-  v25 = [(WLKPlaybackSummary *)self duration];
-  [v25 doubleValue];
+  duration2 = [(WLKPlaybackSummary *)self duration];
+  [duration2 doubleValue];
   v47 = [WLKPlaybackSummary completionStateForDuration:"completionStateForDuration:elapsedTime:" elapsedTime:?];
 
   v46 = [WLKPlaybackSummary alloc];
-  v45 = [(WLKPlaybackSummary *)self bundleID];
-  v44 = [MEMORY[0x277CBEAA8] date];
-  v43 = [(WLKPlaybackSummary *)self duration];
-  v42 = [(WLKPlaybackSummary *)self featureDuration];
-  v26 = [(WLKPlaybackSummary *)self externalProfileID];
-  v41 = [(WLKPlaybackSummary *)self contentID];
-  v27 = [(WLKPlaybackSummary *)self accountID];
+  bundleID = [(WLKPlaybackSummary *)self bundleID];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  duration3 = [(WLKPlaybackSummary *)self duration];
+  featureDuration2 = [(WLKPlaybackSummary *)self featureDuration];
+  externalProfileID = [(WLKPlaybackSummary *)self externalProfileID];
+  contentID = [(WLKPlaybackSummary *)self contentID];
+  accountID = [(WLKPlaybackSummary *)self accountID];
   v28 = &unk_288222D58;
-  if (a3 == 1)
+  if (state == 1)
   {
     v28 = &unk_288222D40;
   }
 
   v40 = v28;
-  v29 = a3;
-  v30 = [(WLKPlaybackSummary *)self isAlwaysLive];
-  v39 = [(WLKPlaybackSummary *)self serviceID];
-  v31 = [(WLKPlaybackSummary *)self currentPlaybackDate];
-  v32 = [(WLKPlaybackSummary *)self playbackType];
-  v33 = [(WLKPlaybackSummary *)self isFromActivePlayerPath];
-  v34 = [(WLKPlaybackSummary *)self channelID];
-  v35 = [(WLKPlaybackSummary *)self contentTitle];
-  BYTE1(v38) = v33;
-  LOBYTE(v38) = a4;
-  LOBYTE(v37) = v30;
-  v51 = [(WLKPlaybackSummary *)v46 initWithBundleID:v45 timestamp:v44 duration:v43 elapsedTime:v49 featureDuration:v42 featureElapsedTime:v48 externalProfileID:v26 contentID:v41 accountID:v27 playbackState:v29 playbackRate:v40 completionState:v47 isAlwaysLive:v37 serviceID:v39 currentPlaybackDate:v31 playbackType:v32 isTimerDerived:v38 isFromActivePlayerPath:v34 channelID:v35 contentTitle:?];
+  stateCopy = state;
+  isAlwaysLive = [(WLKPlaybackSummary *)self isAlwaysLive];
+  serviceID = [(WLKPlaybackSummary *)self serviceID];
+  currentPlaybackDate = [(WLKPlaybackSummary *)self currentPlaybackDate];
+  playbackType = [(WLKPlaybackSummary *)self playbackType];
+  isFromActivePlayerPath = [(WLKPlaybackSummary *)self isFromActivePlayerPath];
+  channelID = [(WLKPlaybackSummary *)self channelID];
+  contentTitle = [(WLKPlaybackSummary *)self contentTitle];
+  BYTE1(v38) = isFromActivePlayerPath;
+  LOBYTE(v38) = derived;
+  LOBYTE(v37) = isAlwaysLive;
+  v51 = [(WLKPlaybackSummary *)v46 initWithBundleID:bundleID timestamp:date2 duration:duration3 elapsedTime:v49 featureDuration:featureDuration2 featureElapsedTime:v48 externalProfileID:externalProfileID contentID:contentID accountID:accountID playbackState:stateCopy playbackRate:v40 completionState:v47 isAlwaysLive:v37 serviceID:serviceID currentPlaybackDate:currentPlaybackDate playbackType:playbackType isTimerDerived:v38 isFromActivePlayerPath:channelID channelID:contentTitle contentTitle:?];
 
   return v51;
 }

@@ -1,19 +1,19 @@
 @interface RTEntityDeletionRequestMO
-+ (id)managedObjectWithCloudManagedObjects:(id)a3 context:(id)a4;
-- (id)identifiersByTypeInSubgraphOfEntity:(id)a3 shouldTombstone:(BOOL)a4;
-- (void)buildDeleteRequestFromCloudManagedObject:(id)a3 context:(id)a4;
-- (void)buildDeleteRequestFromCloudManagedObjects:(id)a3 context:(id)a4;
-- (void)mergeEntriesFromDictionary:(id)a3 intoDictionary:(id)a4;
++ (id)managedObjectWithCloudManagedObjects:(id)objects context:(id)context;
+- (id)identifiersByTypeInSubgraphOfEntity:(id)entity shouldTombstone:(BOOL)tombstone;
+- (void)buildDeleteRequestFromCloudManagedObject:(id)object context:(id)context;
+- (void)buildDeleteRequestFromCloudManagedObjects:(id)objects context:(id)context;
+- (void)mergeEntriesFromDictionary:(id)dictionary intoDictionary:(id)intoDictionary;
 @end
 
 @implementation RTEntityDeletionRequestMO
 
-+ (id)managedObjectWithCloudManagedObjects:(id)a3 context:(id)a4
++ (id)managedObjectWithCloudManagedObjects:(id)objects context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  objectsCopy = objects;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (contextCopy)
   {
     *buf = 0;
     v16 = buf;
@@ -26,8 +26,8 @@
     v11[2] = __74__RTEntityDeletionRequestMO_managedObjectWithCloudManagedObjects_context___block_invoke;
     v11[3] = &unk_2788C8DC8;
     v14 = buf;
-    v12 = v6;
-    v13 = v5;
+    v12 = contextCopy;
+    v13 = objectsCopy;
     [v12 performBlockAndWait:v11];
     v8 = *(v16 + 5);
 
@@ -66,12 +66,12 @@ uint64_t __74__RTEntityDeletionRequestMO_managedObjectWithCloudManagedObjects_co
   return [v7 buildDeleteRequestFromCloudManagedObjects:v6 context:v8];
 }
 
-- (void)buildDeleteRequestFromCloudManagedObject:(id)a3 context:(id)a4
+- (void)buildDeleteRequestFromCloudManagedObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  objectCopy = object;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (!objectCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -106,7 +106,7 @@ LABEL_10:
   v11[2] = __78__RTEntityDeletionRequestMO_buildDeleteRequestFromCloudManagedObject_context___block_invoke;
   v11[3] = &unk_2788C76F8;
   v11[4] = self;
-  v12 = v6;
+  v12 = objectCopy;
   v13 = v8;
   [v13 performBlockAndWait:v11];
 
@@ -202,16 +202,16 @@ void __78__RTEntityDeletionRequestMO_buildDeleteRequestFromCloudManagedObject_co
   [*(a1 + 32) setRecordIDs:v12];
 }
 
-- (void)buildDeleteRequestFromCloudManagedObjects:(id)a3 context:(id)a4
+- (void)buildDeleteRequestFromCloudManagedObjects:(id)objects context:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  contextCopy = context;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [objectsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -223,26 +223,26 @@ void __78__RTEntityDeletionRequestMO_buildDeleteRequestFromCloudManagedObject_co
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectsCopy);
         }
 
-        [(RTEntityDeletionRequestMO *)self buildDeleteRequestFromCloudManagedObject:*(*(&v12 + 1) + 8 * v11++) context:v7];
+        [(RTEntityDeletionRequestMO *)self buildDeleteRequestFromCloudManagedObject:*(*(&v12 + 1) + 8 * v11++) context:contextCopy];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [objectsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)identifiersByTypeInSubgraphOfEntity:(id)a3 shouldTombstone:(BOOL)a4
+- (id)identifiersByTypeInSubgraphOfEntity:(id)entity shouldTombstone:(BOOL)tombstone
 {
-  v4 = a4;
+  tombstoneCopy = tombstone;
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  entityCopy = entity;
+  if (!entityCopy)
   {
     v7 = MEMORY[0x277CBEC10];
 LABEL_30:
@@ -251,26 +251,26 @@ LABEL_30:
   }
 
   v7 = objc_opt_new();
-  if (v4)
+  if (tombstoneCopy)
   {
-    [v6 setFlags:{objc_msgSend(v6, "flags") | 1}];
+    [entityCopy setFlags:{objc_msgSend(entityCopy, "flags") | 1}];
   }
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v10 = MEMORY[0x277CBEB58];
-  v11 = [v6 identifier];
-  v12 = [v10 setWithObjects:{v11, 0}];
+  identifier = [entityCopy identifier];
+  v12 = [v10 setWithObjects:{identifier, 0}];
 
   [v7 setValue:v12 forKey:v9];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v6 inbound];
-    v14 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:v13 shouldTombstone:v4];
+    inbound = [entityCopy inbound];
+    v14 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:inbound shouldTombstone:tombstoneCopy];
 
-    v15 = [v6 outbound];
-    v16 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:v15 shouldTombstone:v4];
+    outbound = [entityCopy outbound];
+    v16 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:outbound shouldTombstone:tombstoneCopy];
 
     [(RTEntityDeletionRequestMO *)self mergeEntriesFromDictionary:v14 intoDictionary:v7];
     [(RTEntityDeletionRequestMO *)self mergeEntriesFromDictionary:v16 intoDictionary:v7];
@@ -287,8 +287,8 @@ LABEL_29:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v17 = [v6 visits];
-    v18 = [v17 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    visits = [entityCopy visits];
+    v18 = [visits countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v18)
     {
       v19 = v18;
@@ -299,21 +299,21 @@ LABEL_29:
         {
           if (*v36 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(visits);
           }
 
-          v22 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:*(*(&v35 + 1) + 8 * i) shouldTombstone:v4];
+          v22 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:*(*(&v35 + 1) + 8 * i) shouldTombstone:tombstoneCopy];
           [(RTEntityDeletionRequestMO *)self mergeEntriesFromDictionary:v22 intoDictionary:v7];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v35 objects:v41 count:16];
+        v19 = [visits countByEnumeratingWithState:&v35 objects:v41 count:16];
       }
 
       while (v19);
     }
 
-    v23 = [v6 mapItem];
-    v24 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:v23 shouldTombstone:v4];
+    mapItem = [entityCopy mapItem];
+    v24 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:mapItem shouldTombstone:tombstoneCopy];
 
     [(RTEntityDeletionRequestMO *)self mergeEntriesFromDictionary:v24 intoDictionary:v7];
     v9 = v34;
@@ -323,8 +323,8 @@ LABEL_29:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = [v6 address];
-    v26 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:v25 shouldTombstone:v4];
+    address = [entityCopy address];
+    v26 = [(RTEntityDeletionRequestMO *)self identifiersByTypeInSubgraphOfEntity:address shouldTombstone:tombstoneCopy];
 
     [(RTEntityDeletionRequestMO *)self mergeEntriesFromDictionary:v26 intoDictionary:v7];
     goto LABEL_29;
@@ -363,16 +363,16 @@ LABEL_29:
   return result;
 }
 
-- (void)mergeEntriesFromDictionary:(id)a3 intoDictionary:(id)a4
+- (void)mergeEntriesFromDictionary:(id)dictionary intoDictionary:(id)intoDictionary
 {
-  v5 = a4;
+  intoDictionaryCopy = intoDictionary;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__RTEntityDeletionRequestMO_mergeEntriesFromDictionary_intoDictionary___block_invoke;
   v7[3] = &unk_2788CDC88;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = intoDictionaryCopy;
+  v6 = intoDictionaryCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __71__RTEntityDeletionRequestMO_mergeEntriesFromDictionary_intoDictionary___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -7,35 +7,35 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v3 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityMaskViewColor];
+  _accessibilityMaskViewColor = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityMaskViewColor];
 
-  if (!v3)
+  if (!_accessibilityMaskViewColor)
   {
     objc_opt_class();
     v4 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self safeValueForKey:@"_maskView"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 backgroundColor];
+    backgroundColor = [v5 backgroundColor];
 
-    if (v6)
+    if (backgroundColor)
     {
-      [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _setAccessibilityMaskViewColor:v6];
+      [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _setAccessibilityMaskViewColor:backgroundColor];
     }
   }
 
-  v7 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityTintViewColor];
+  _accessibilityTintViewColor = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityTintViewColor];
 
-  if (!v7)
+  if (!_accessibilityTintViewColor)
   {
     objc_opt_class();
     v8 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self safeValueForKey:@"_tintView"];
     v9 = __UIAccessibilityCastAsClass();
 
-    v10 = [v9 backgroundColor];
+    backgroundColor2 = [v9 backgroundColor];
 
-    if (v10)
+    if (backgroundColor2)
     {
-      [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _setAccessibilityTintViewColor:v10];
+      [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _setAccessibilityTintViewColor:backgroundColor2];
     }
   }
 
@@ -52,11 +52,11 @@
 
   else
   {
-    v15 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityMaskViewColor];
-    v16 = v15;
-    if (v15)
+    _accessibilityMaskViewColor2 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityMaskViewColor];
+    v16 = _accessibilityMaskViewColor2;
+    if (_accessibilityMaskViewColor2)
     {
-      v17 = v15;
+      v17 = _accessibilityMaskViewColor2;
     }
 
     else
@@ -66,11 +66,11 @@
 
     v13 = v17;
 
-    v18 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityTintViewColor];
-    v19 = v18;
-    if (v18)
+    _accessibilityTintViewColor2 = [(SBDashBoardCameraPageViewControllerInvertColorsAccessibility *)self _accessibilityTintViewColor];
+    v19 = _accessibilityTintViewColor2;
+    if (_accessibilityTintViewColor2)
     {
-      v20 = v18;
+      v20 = _accessibilityTintViewColor2;
     }
 
     else

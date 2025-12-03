@@ -1,5 +1,5 @@
 @interface MFMonitoredInvocation
-+ (MFMonitoredInvocation)invocationWithMethodSignature:(id)a3;
++ (MFMonitoredInvocation)invocationWithMethodSignature:(id)signature;
 - (id)description;
 - (void)dealloc;
 - (void)invoke;
@@ -7,11 +7,11 @@
 
 @implementation MFMonitoredInvocation
 
-+ (MFMonitoredInvocation)invocationWithMethodSignature:(id)a3
++ (MFMonitoredInvocation)invocationWithMethodSignature:(id)signature
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___MFMonitoredInvocation;
-  v3 = objc_msgSendSuper2(&v5, sel_invocationWithMethodSignature_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_invocationWithMethodSignature_, signature);
   v3->_monitor = objc_alloc_init(MFActivityMonitor);
   return v3;
 }
@@ -25,9 +25,9 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_258BDA000, v3, OS_LOG_TYPE_DEFAULT, "deallocating %p %@", buf, 0x16u);
     }
   }
@@ -41,7 +41,7 @@
 - (void)invoke
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = a2;
   _os_log_fault_impl(&dword_258BDA000, log, OS_LOG_TYPE_FAULT, "Exception raised during monitored invocation of %{public}@, exception: %{public}@", buf, 0x16u);
@@ -52,8 +52,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(EFPriorityDesignator *)self->_monitor priority];
-  v7 = [(MFMonitoredInvocation *)self target];
+  priority = [(EFPriorityDesignator *)self->_monitor priority];
+  target = [(MFMonitoredInvocation *)self target];
   Name = sel_getName([(MFMonitoredInvocation *)self selector]);
   if (self->_isLowPriority)
   {
@@ -65,7 +65,7 @@
     v9 = @"NO";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p priority: %lu target: %@ selector: %s lowPriority: %@>", v5, self, v6, v7, Name, v9];
+  return [v3 stringWithFormat:@"<%@: %p priority: %lu target: %@ selector: %s lowPriority: %@>", v5, self, priority, target, Name, v9];
 }
 
 @end

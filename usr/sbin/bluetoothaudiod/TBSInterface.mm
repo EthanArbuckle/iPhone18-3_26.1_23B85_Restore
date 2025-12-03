@@ -1,22 +1,22 @@
 @interface TBSInterface
-- (TBSInterface)initWithPeripheral:(id)a3 service:(id)a4;
+- (TBSInterface)initWithPeripheral:(id)peripheral service:(id)service;
 - (void)didRequestCallListRead;
 - (void)handleCallControlPointResultUpdate;
 - (void)handleCallStateUpdate;
 - (void)handleTerminationReasonUpdate;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation TBSInterface
 
-- (TBSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (TBSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v7.receiver = self;
   v7.super_class = TBSInterface;
-  v4 = [(ServiceInterface *)&v7 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v7 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -31,14 +31,14 @@
   v23.receiver = self;
   v23.super_class = TBSInterface;
   [(ServiceInterface *)&v23 start];
-  v3 = [(ServiceInterface *)self peripheral];
-  v4 = [v3 state];
+  peripheral = [(ServiceInterface *)self peripheral];
+  state = [peripheral state];
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    v5 = [(ServiceInterface *)self service];
+    service = [(ServiceInterface *)self service];
 
-    if (v5)
+    if (service)
     {
       v22 = [CBUUID UUIDWithString:CBUUIDBearerProviderNameCharacteristicString];
       v24[0] = v22;
@@ -66,9 +66,9 @@
       v24[11] = v13;
       v14 = [NSArray arrayWithObjects:v24 count:12];
 
-      v15 = [(ServiceInterface *)self peripheral];
-      v16 = [(ServiceInterface *)self service];
-      [v15 discoverCharacteristics:v14 forService:v16];
+      peripheral2 = [(ServiceInterface *)self peripheral];
+      service2 = [(ServiceInterface *)self service];
+      [peripheral2 discoverCharacteristics:v14 forService:service2];
     }
 
     else
@@ -98,16 +98,16 @@
   [(ServiceInterface *)&v2 stop];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  if (!a5)
+  peripheralCopy = peripheral;
+  if (!error)
   {
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v9 = [obj countByEnumeratingWithState:&v80 objects:v88 count:16];
     if (!v9)
     {
@@ -141,16 +141,16 @@
         }
 
         v14 = *(*(&v80 + 1) + 8 * v13);
-        v15 = [(TBSInterface *)self bearerProviderNameCharacteristic];
-        if (v15)
+        bearerProviderNameCharacteristic = [(TBSInterface *)self bearerProviderNameCharacteristic];
+        if (bearerProviderNameCharacteristic)
         {
         }
 
         else
         {
-          v16 = [v14 UUID];
+          uUID = [v14 UUID];
           v17 = [CBUUID UUIDWithString:v78];
-          v18 = [v16 isEqual:v17];
+          v18 = [uUID isEqual:v17];
 
           if (v18)
           {
@@ -159,16 +159,16 @@
           }
         }
 
-        v19 = [(TBSInterface *)self bearerUniformCallerIdentifierCharacteristic];
-        if (v19)
+        bearerUniformCallerIdentifierCharacteristic = [(TBSInterface *)self bearerUniformCallerIdentifierCharacteristic];
+        if (bearerUniformCallerIdentifierCharacteristic)
         {
         }
 
         else
         {
-          v20 = [v14 UUID];
+          uUID2 = [v14 UUID];
           v21 = [CBUUID UUIDWithString:v77];
-          v22 = [v20 isEqual:v21];
+          v22 = [uUID2 isEqual:v21];
 
           if (v22)
           {
@@ -177,16 +177,16 @@
           }
         }
 
-        v23 = [(TBSInterface *)self bearerTechnologyCharacteristic];
-        if (v23)
+        bearerTechnologyCharacteristic = [(TBSInterface *)self bearerTechnologyCharacteristic];
+        if (bearerTechnologyCharacteristic)
         {
         }
 
         else
         {
-          v24 = [v14 UUID];
+          uUID3 = [v14 UUID];
           v25 = [CBUUID UUIDWithString:v76];
-          v26 = [v24 isEqual:v25];
+          v26 = [uUID3 isEqual:v25];
 
           if (v26)
           {
@@ -195,16 +195,16 @@
           }
         }
 
-        v27 = [(TBSInterface *)self bearerUriSchemesSupportedListCharacteristic];
-        if (v27)
+        bearerUriSchemesSupportedListCharacteristic = [(TBSInterface *)self bearerUriSchemesSupportedListCharacteristic];
+        if (bearerUriSchemesSupportedListCharacteristic)
         {
         }
 
         else
         {
-          v28 = [v14 UUID];
+          uUID4 = [v14 UUID];
           v29 = [CBUUID UUIDWithString:v75];
-          v30 = [v28 isEqual:v29];
+          v30 = [uUID4 isEqual:v29];
 
           if (v30)
           {
@@ -213,16 +213,16 @@
           }
         }
 
-        v31 = [(TBSInterface *)self bearerListCurrentCallsCharacteristic];
-        if (v31)
+        bearerListCurrentCallsCharacteristic = [(TBSInterface *)self bearerListCurrentCallsCharacteristic];
+        if (bearerListCurrentCallsCharacteristic)
         {
         }
 
         else
         {
-          v32 = [v14 UUID];
+          uUID5 = [v14 UUID];
           v33 = [CBUUID UUIDWithString:v74];
-          v34 = [v32 isEqual:v33];
+          v34 = [uUID5 isEqual:v33];
 
           if (v34)
           {
@@ -231,16 +231,16 @@
           }
         }
 
-        v35 = [(TBSInterface *)self contentControlIdCharacteristic];
-        if (v35)
+        contentControlIdCharacteristic = [(TBSInterface *)self contentControlIdCharacteristic];
+        if (contentControlIdCharacteristic)
         {
         }
 
         else
         {
-          v36 = [v14 UUID];
+          uUID6 = [v14 UUID];
           v37 = [CBUUID UUIDWithString:v73];
-          v38 = [v36 isEqual:v37];
+          v38 = [uUID6 isEqual:v37];
 
           if (v38)
           {
@@ -249,16 +249,16 @@
           }
         }
 
-        v39 = [(TBSInterface *)self statusFlagsCharacteristic];
-        if (v39)
+        statusFlagsCharacteristic = [(TBSInterface *)self statusFlagsCharacteristic];
+        if (statusFlagsCharacteristic)
         {
         }
 
         else
         {
-          v40 = [v14 UUID];
+          uUID7 = [v14 UUID];
           v41 = [CBUUID UUIDWithString:v72];
-          v42 = [v40 isEqual:v41];
+          v42 = [uUID7 isEqual:v41];
 
           if (v42)
           {
@@ -267,16 +267,16 @@
           }
         }
 
-        v43 = [(TBSInterface *)self callStateCharacteristic];
-        if (v43)
+        callStateCharacteristic = [(TBSInterface *)self callStateCharacteristic];
+        if (callStateCharacteristic)
         {
         }
 
         else
         {
-          v44 = [v14 UUID];
+          uUID8 = [v14 UUID];
           v45 = [CBUUID UUIDWithString:v71];
-          v46 = [v44 isEqual:v45];
+          v46 = [uUID8 isEqual:v45];
 
           if (v46)
           {
@@ -285,16 +285,16 @@
           }
         }
 
-        v47 = [(TBSInterface *)self callControlPointCharacteristic];
-        if (v47)
+        callControlPointCharacteristic = [(TBSInterface *)self callControlPointCharacteristic];
+        if (callControlPointCharacteristic)
         {
         }
 
         else
         {
-          v48 = [v14 UUID];
+          uUID9 = [v14 UUID];
           v49 = [CBUUID UUIDWithString:v70];
-          v50 = [v48 isEqual:v49];
+          v50 = [uUID9 isEqual:v49];
 
           if (v50)
           {
@@ -303,21 +303,21 @@
           }
         }
 
-        v51 = [(TBSInterface *)self callControlPointOptionalOpcodesCharacteristic];
-        if (v51)
+        callControlPointOptionalOpcodesCharacteristic = [(TBSInterface *)self callControlPointOptionalOpcodesCharacteristic];
+        if (callControlPointOptionalOpcodesCharacteristic)
         {
 
 LABEL_49:
-          v55 = [(TBSInterface *)self terminationReasonCharacteristic];
-          if (v55)
+          terminationReasonCharacteristic = [(TBSInterface *)self terminationReasonCharacteristic];
+          if (terminationReasonCharacteristic)
           {
 
             goto LABEL_53;
           }
 
-          v56 = [v14 UUID];
+          uUID10 = [v14 UUID];
           v57 = [CBUUID UUIDWithString:v68];
-          v58 = [v56 isEqual:v57];
+          v58 = [uUID10 isEqual:v57];
 
           if (v58)
           {
@@ -325,15 +325,15 @@ LABEL_49:
 LABEL_59:
             if (([v14 properties] & 0x10) != 0)
             {
-              [v8 setNotifyValue:1 forCharacteristic:v14];
+              [peripheralCopy setNotifyValue:1 forCharacteristic:v14];
             }
 
             goto LABEL_63;
           }
 
 LABEL_53:
-          v59 = [(TBSInterface *)self incomingCallCharacteristic];
-          if (v59)
+          incomingCallCharacteristic = [(TBSInterface *)self incomingCallCharacteristic];
+          if (incomingCallCharacteristic)
           {
 
 LABEL_61:
@@ -341,20 +341,20 @@ LABEL_61:
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
             {
               v64 = v63;
-              v65 = [v14 UUID];
+              uUID11 = [v14 UUID];
               *buf = v66;
               v85 = "[TBSInterface peripheral:didDiscoverCharacteristicsForService:error:]";
               v86 = 2112;
-              v87 = v65;
+              v87 = uUID11;
               _os_log_error_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "%s : not matching characteristic %@ found!", buf, 0x16u);
             }
 
             goto LABEL_63;
           }
 
-          v60 = [v14 UUID];
+          uUID12 = [v14 UUID];
           v61 = [CBUUID UUIDWithString:v67];
-          v62 = [v60 isEqual:v61];
+          v62 = [uUID12 isEqual:v61];
 
           if (!v62)
           {
@@ -365,15 +365,15 @@ LABEL_61:
 LABEL_57:
           if (([v14 properties] & 2) != 0)
           {
-            [v8 readValueForCharacteristic:v14];
+            [peripheralCopy readValueForCharacteristic:v14];
           }
 
           goto LABEL_59;
         }
 
-        v52 = [v14 UUID];
+        uUID13 = [v14 UUID];
         v53 = [CBUUID UUIDWithString:v69];
-        v54 = [v52 isEqual:v53];
+        v54 = [uUID13 isEqual:v53];
 
         if (!v54)
         {
@@ -384,7 +384,7 @@ LABEL_57:
 LABEL_47:
         if (([v14 properties] & 2) != 0)
         {
-          [v8 readValueForCharacteristic:v14];
+          [peripheralCopy readValueForCharacteristic:v14];
         }
 
 LABEL_63:
@@ -404,53 +404,53 @@ LABEL_65:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 name];
-    v14 = [v9 UUID];
+    name = [peripheralCopy name];
+    uUID = [characteristicCopy UUID];
     v19 = 136315650;
     v20 = "[TBSInterface peripheral:didUpdateValueForCharacteristic:error:]";
     v21 = 2112;
-    v22 = v13;
+    v22 = name;
     v23 = 2112;
-    v24 = v14;
+    v24 = uUID;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s : %@ didUpdateValueForCharacteristic called for characteristic %@", &v19, 0x20u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v15 = [(TBSInterface *)self callStateCharacteristic];
+    callStateCharacteristic = [(TBSInterface *)self callStateCharacteristic];
 
-    if (v15 == v9)
+    if (callStateCharacteristic == characteristicCopy)
     {
       [(TBSInterface *)self handleCallStateUpdate];
     }
 
     else
     {
-      v16 = [(TBSInterface *)self callControlPointCharacteristic];
+      callControlPointCharacteristic = [(TBSInterface *)self callControlPointCharacteristic];
 
-      if (v16 == v9)
+      if (callControlPointCharacteristic == characteristicCopy)
       {
         [(TBSInterface *)self handleCallControlPointResultUpdate];
       }
 
       else
       {
-        v17 = [(TBSInterface *)self callControlPointOptionalOpcodesCharacteristic];
+        callControlPointOptionalOpcodesCharacteristic = [(TBSInterface *)self callControlPointOptionalOpcodesCharacteristic];
 
-        if (v17 != v9)
+        if (callControlPointOptionalOpcodesCharacteristic != characteristicCopy)
         {
-          v18 = [(TBSInterface *)self terminationReasonCharacteristic];
+          terminationReasonCharacteristic = [(TBSInterface *)self terminationReasonCharacteristic];
 
-          if (v18 == v9)
+          if (terminationReasonCharacteristic == characteristicCopy)
           {
             [(TBSInterface *)self handleTerminationReasonUpdate];
           }
@@ -467,9 +467,9 @@ LABEL_65:
 
 - (void)handleCallStateUpdate
 {
-  v2 = [(TBSInterface *)self callStateCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  callStateCharacteristic = [(TBSInterface *)self callStateCharacteristic];
+  value = [callStateCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v12 = 0;
   v11 = -1;
@@ -512,9 +512,9 @@ LABEL_65:
 
 - (void)handleTerminationReasonUpdate
 {
-  v2 = [(TBSInterface *)self terminationReasonCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  terminationReasonCharacteristic = [(TBSInterface *)self terminationReasonCharacteristic];
+  value = [terminationReasonCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v6 = 0;
   v5 = -1;
@@ -524,9 +524,9 @@ LABEL_65:
 
 - (void)handleCallControlPointResultUpdate
 {
-  v2 = [(TBSInterface *)self callControlPointCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  callControlPointCharacteristic = [(TBSInterface *)self callControlPointCharacteristic];
+  value = [callControlPointCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v6 = -1;
   [v4 readUint8:&v6];

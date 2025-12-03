@@ -1,76 +1,76 @@
 @interface TSCH3DFill
 + (id)fill;
-+ (id)fillWithIdentifier:(id)a3;
-+ (id)fillWithLightingModel:(id)a3 identifier:(id)a4;
-+ (id)fillWithSageFillData:(id)a3;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)lightingModelWithSageFillData:(id)a3;
++ (id)fillWithIdentifier:(id)identifier;
++ (id)fillWithLightingModel:(id)model identifier:(id)identifier;
++ (id)fillWithSageFillData:(id)data;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)lightingModelWithSageFillData:(id)data;
 - (BOOL)hasCompleteData;
 - (BOOL)identifierReferencesUnavailableLocalBundle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DFill)init;
-- (TSCH3DFill)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCH3DFill)initWithLightingModel:(id)a3 identifier:(id)a4;
+- (TSCH3DFill)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCH3DFill)initWithLightingModel:(id)model identifier:(id)identifier;
 - (TSCH3DLightingModel)lightingModel;
 - (float)percentageValue;
-- (id)convertForChartSeriesType:(id)a3 context:(id)a4;
-- (id)convertToSimpleTSDFillWithSize:(unint64_t)a3 context:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)lightenByPercent:(float)a3;
-- (id)p_convertToTSDFillWithSize:(unint64_t)a3 technique:(unint64_t)a4 context:(id)a5;
-- (id)p_imageFillForRect:(CGRect)a3 context:(CGContext *)a4;
-- (id)p_imageFillForSize:(CGSize)a3 context:(id)a4;
+- (id)convertForChartSeriesType:(id)type context:(id)context;
+- (id)convertToSimpleTSDFillWithSize:(unint64_t)size context:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)lightenByPercent:(float)percent;
+- (id)p_convertToTSDFillWithSize:(unint64_t)size technique:(unint64_t)technique context:(id)context;
+- (id)p_imageFillForRect:(CGRect)rect context:(CGContext *)context;
+- (id)p_imageFillForSize:(CGSize)size context:(id)context;
 - (id)p_lazyLightingModel;
 - (id)referenceColor;
-- (id)renderingLightingModelWithLightings:(id)a3;
+- (id)renderingLightingModelWithLightings:(id)lightings;
 - (id)representativeDiffuseColor;
-- (id)swatchFillWithSize:(CGSize)a3 scaleFactor:(double)a4;
+- (id)swatchFillWithSize:(CGSize)size scaleFactor:(double)factor;
 - (unint64_t)hash;
-- (void)assignQuicklookColorToMaterialDiffuseColorForLightingModel:(id)a3;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)assignQuicklookColorToMaterialDiffuseColorForLightingModel:(id)model;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
 - (void)nonatomicallyClearLightingModel;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4 offset:(CGPoint)a5;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setFallbackFill:(id)a3;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context offset:(CGPoint)offset;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setFallbackFill:(id)fill;
 @end
 
 @implementation TSCH3DFill
 
-- (id)convertForChartSeriesType:(id)a3 context:(id)a4
+- (id)convertForChartSeriesType:(id)type context:(id)context
 {
-  v6 = a4;
-  if (objc_msgSend_sceneObjectClass(a3, v7, v8, v9, v10))
+  contextCopy = context;
+  if (objc_msgSend_sceneObjectClass(type, v7, v8, v9, v10))
   {
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (v6)
+    if (contextCopy)
     {
-      objc_msgSend_convertToSimpleTSDFillWithSize_context_(self, v11, v12, v13, v14, 512, v6);
+      objc_msgSend_convertToSimpleTSDFillWithSize_context_(self, v11, v12, v13, v14, 512, contextCopy);
     }
 
     else
     {
       objc_msgSend_convertToSimpleTSDFillWithSize_context_(self, v11, v12, v13, v14, 256, 0);
     }
-    v15 = ;
+    selfCopy = ;
   }
 
-  v16 = v15;
+  v16 = selfCopy;
 
   return v16;
 }
 
-- (id)swatchFillWithSize:(CGSize)a3 scaleFactor:(double)a4
+- (id)swatchFillWithSize:(CGSize)size scaleFactor:(double)factor
 {
   swatchFill = self->_swatchFill;
   if (!swatchFill)
   {
-    width = a3.width;
+    width = size.width;
     objc_opt_class();
     v12 = objc_msgSend_dataWithFillSetIdentifier_isLowRes_(TSCH3DSageFillData, v8, v9, v10, v11, self->_identifier, 1);
     v13 = TSUCheckedDynamicCast();
@@ -81,7 +81,7 @@
     v20 = TSUCheckedDynamicCast();
 
     objc_opt_class();
-    v24 = objc_msgSend_convertToSimpleTSDFillWithSize_context_(v20, v21, width * a4, v22, v23, (width * a4), 0);
+    v24 = objc_msgSend_convertToSimpleTSDFillWithSize_context_(v20, v21, width * factor, v22, v23, (width * factor), 0);
     v25 = TSUCheckedDynamicCast();
     v26 = self->_swatchFill;
     self->_swatchFill = v25;
@@ -92,19 +92,19 @@
   return swatchFill;
 }
 
-+ (id)fillWithLightingModel:(id)a3 identifier:(id)a4
++ (id)fillWithLightingModel:(id)model identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithLightingModel_identifier_(v8, v9, v10, v11, v12, v6, v7);
+  modelCopy = model;
+  identifierCopy = identifier;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithLightingModel_identifier_(v8, v9, v10, v11, v12, modelCopy, identifierCopy);
 
   return v13;
 }
 
 + (id)fill
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -116,26 +116,26 @@
   return [(TSCH3DFill *)&v3 init];
 }
 
-+ (id)fillWithIdentifier:(id)a3
++ (id)fillWithIdentifier:(id)identifier
 {
-  v7 = objc_msgSend_dataWithFillSetIdentifier_(TSCH3DSageFillData, a2, v3, v4, v5, a3);
-  v12 = objc_msgSend_fillWithSageFillData_(a1, v8, v9, v10, v11, v7);
+  v7 = objc_msgSend_dataWithFillSetIdentifier_(TSCH3DSageFillData, a2, v3, v4, v5, identifier);
+  v12 = objc_msgSend_fillWithSageFillData_(self, v8, v9, v10, v11, v7);
 
   return v12;
 }
 
-- (TSCH3DFill)initWithLightingModel:(id)a3 identifier:(id)a4
+- (TSCH3DFill)initWithLightingModel:(id)model identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = TSCH3DFill;
   v9 = [(TSCH3DFill *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lightingModel, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_lightingModel, model);
+    objc_storeStrong(&v10->_identifier, identifier);
     if (!v10->_lightingModel && !v10->_identifier)
     {
       v15 = MEMORY[0x277D81150];
@@ -150,10 +150,10 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v20 = v15;
   if (v15)
@@ -196,10 +196,10 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_7;
@@ -286,9 +286,9 @@ LABEL_7:
   return hasCompleteData;
 }
 
-- (id)lightenByPercent:(float)a3
+- (id)lightenByPercent:(float)percent
 {
-  objc_msgSend_percentageValue(self, a2, *&a3, v3, v4);
+  objc_msgSend_percentageValue(self, a2, *&percent, v3, v4);
   LODWORD(v10) = 1.0;
   if (*&v8 != 1.0)
   {
@@ -296,13 +296,13 @@ LABEL_7:
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v10, v9, "[TSCH3DFill lightenByPercent:]");
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DFill.mm");
     objc_msgSend_percentageValue(self, v18, v19, v20, v21);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v23, v22, a3, v24, v12, v17, 190, 0, "cannot lighten already lightened fill %f new %f", v22, a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v23, v22, percent, v24, v12, v17, 190, 0, "cannot lighten already lightened fill %f new %f", v22, percent);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
   v29 = objc_msgSend_copy(self, v7, v8, v10, v9);
-  *&v30 = a3;
+  *&v30 = percent;
   v34 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v31, v30, v32, v33);
   objc_msgSend_setPercentage_(v29, v35, v36, v37, v38, v34);
 
@@ -362,38 +362,38 @@ LABEL_7:
 
 - (BOOL)identifierReferencesUnavailableLocalBundle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_lightingModel || (identifier = v2->_identifier) == 0 || (objc_msgSend_isStoredInLocalBundle(identifier, v3, v4, v5, v6) & 1) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_lightingModel || (identifier = selfCopy->_identifier) == 0 || (objc_msgSend_isStoredInLocalBundle(identifier, v3, v4, v5, v6) & 1) != 0)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v7 = objc_msgSend_isOnDemandResource(v2->_identifier, v10, v11, v12, v13) ^ 1;
+    v7 = objc_msgSend_isOnDemandResource(selfCopy->_identifier, v10, v11, v12, v13) ^ 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (TSCH3DLightingModel)lightingModel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7 = objc_msgSend_p_lazyLightingModel(v2, v3, v4, v5, v6);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_p_lazyLightingModel(selfCopy, v3, v4, v5, v6);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)renderingLightingModelWithLightings:(id)a3
+- (id)renderingLightingModelWithLightings:(id)lightings
 {
-  v4 = a3;
+  lightingsCopy = lightings;
   v9 = objc_msgSend_lightingModel(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_lightingModelWithLightings_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_lightingModelWithLightings_(v9, v10, v11, v12, v13, lightingsCopy);
 
   objc_msgSend_assignQuicklookColorToMaterialDiffuseColorForLightingModel_(self, v15, v16, v17, v18, v14);
   percentage = self->_percentage;
@@ -403,23 +403,23 @@ LABEL_7:
   return v29;
 }
 
-- (id)p_convertToTSDFillWithSize:(unint64_t)a3 technique:(unint64_t)a4 context:(id)a5
+- (id)p_convertToTSDFillWithSize:(unint64_t)size technique:(unint64_t)technique context:(id)context
 {
-  v9 = a5;
-  v12 = 512;
-  if (a3 < 0x200)
+  contextCopy = context;
+  sizeCopy = 512;
+  if (size < 0x200)
   {
-    v12 = a3;
+    sizeCopy = size;
   }
 
-  if (v12 <= 1)
+  if (sizeCopy <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v12;
+    v13 = sizeCopy;
   }
 
   __asm { FMOV            V0.4S, #1.0 }
@@ -439,7 +439,7 @@ LABEL_7:
     v148[0] = v146;
   }
 
-  v137 = a4;
+  techniqueCopy = technique;
   objc_opt_class();
   v35 = objc_msgSend_firstTexture(v30, v31, v32, v33, v34);
   v36 = TSUDynamicCast();
@@ -476,7 +476,7 @@ LABEL_12:
       {
         v65 = v55 - 3;
         v140 = vdupq_n_s32(0x437F0000u);
-        v138 = self;
+        selfCopy = self;
         do
         {
           __dst = -16777216;
@@ -499,7 +499,7 @@ LABEL_12:
 
                 objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v81, v82, v83, v84);
                 v65 = v71;
-                self = v138;
+                self = selfCopy;
               }
 
               memcpy(&__dst, v61, v55);
@@ -557,9 +557,9 @@ LABEL_22:
     }
 
     v46 = v135;
-    if (v9)
+    if (contextCopy)
     {
-      objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v126, v127, v128, v129, v94, v118, v9);
+      objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v126, v127, v128, v129, v94, v118, contextCopy);
     }
 
     else
@@ -568,7 +568,7 @@ LABEL_22:
     }
     v130 = ;
     v131 = objc_alloc(MEMORY[0x277D802C0]);
-    v125 = objc_msgSend_initWithImageData_technique_tintColor_size_(v131, v132, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v133, v130, v137, 0);
+    v125 = objc_msgSend_initWithImageData_technique_tintColor_size_(v131, v132, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v133, v130, techniqueCopy, 0);
 
     if (__p[0])
     {
@@ -591,18 +591,18 @@ LABEL_22:
   return v125;
 }
 
-- (id)convertToSimpleTSDFillWithSize:(unint64_t)a3 context:(id)a4
+- (id)convertToSimpleTSDFillWithSize:(unint64_t)size context:(id)context
 {
-  v7 = objc_msgSend_p_convertToTSDFillWithSize_technique_context_(self, a2, v4, v5, v6, a3, 3, a4);
+  v7 = objc_msgSend_p_convertToTSDFillWithSize_technique_context_(self, a2, v4, v5, v6, size, 3, context);
 
   return v7;
 }
 
-- (id)p_imageFillForSize:(CGSize)a3 context:(id)a4
+- (id)p_imageFillForSize:(CGSize)size context:(id)context
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
   v8 = vcvtpd_u64_f64(width);
   v9 = vcvtpd_u64_f64(height);
   if ((v8 & (v8 - 1)) != 0 && v8)
@@ -633,12 +633,12 @@ LABEL_22:
 
   v14 = v8;
   v15 = v9;
-  v16 = self;
-  objc_sync_enter(v16);
-  cachedImageFill = v16->_cachedImageFill;
-  if (!cachedImageFill || (v16->_cachedImageFillSize.width == v14 ? (v18 = v16->_cachedImageFillSize.height == v15) : (v18 = 0), !v18))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedImageFill = selfCopy->_cachedImageFill;
+  if (!cachedImageFill || (selfCopy->_cachedImageFillSize.width == v14 ? (v18 = selfCopy->_cachedImageFillSize.height == v15) : (v18 = 0), !v18))
   {
-    v16->_cachedImageFill = 0;
+    selfCopy->_cachedImageFill = 0;
 
     if (v8 <= v9)
     {
@@ -650,25 +650,25 @@ LABEL_22:
       v23 = v8;
     }
 
-    v16->_cachedImageFillSize.width = v14;
-    v16->_cachedImageFillSize.height = v15;
-    v24 = objc_msgSend_p_convertToTSDFillWithSize_technique_context_(v16, v19, v20, v21, v22, v23, 3, v7);
-    v25 = v16->_cachedImageFill;
-    v16->_cachedImageFill = v24;
+    selfCopy->_cachedImageFillSize.width = v14;
+    selfCopy->_cachedImageFillSize.height = v15;
+    v24 = objc_msgSend_p_convertToTSDFillWithSize_technique_context_(selfCopy, v19, v20, v21, v22, v23, 3, contextCopy);
+    v25 = selfCopy->_cachedImageFill;
+    selfCopy->_cachedImageFill = v24;
 
-    cachedImageFill = v16->_cachedImageFill;
+    cachedImageFill = selfCopy->_cachedImageFill;
   }
 
   v26 = cachedImageFill;
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 
   return v26;
 }
 
-- (id)p_imageFillForRect:(CGRect)a3 context:(CGContext *)a4
+- (id)p_imageFillForRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   TSDCGContextAssociatedScreenScale();
   v11 = v8;
   if (v8 <= 0.0)
@@ -696,48 +696,48 @@ LABEL_22:
   return MEMORY[0x2821F9670](self, sel_p_imageFillForSize_context_, v28, v28, v10);
 }
 
-- (void)setFallbackFill:(id)a3
+- (void)setFallbackFill:(id)fill
 {
-  v5 = a3;
-  if (self->_fallbackFill != v5)
+  fillCopy = fill;
+  if (self->_fallbackFill != fillCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fallbackFill, a3);
-    v5 = v6;
+    v6 = fillCopy;
+    objc_storeStrong(&self->_fallbackFill, fill);
+    fillCopy = v6;
   }
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = objc_msgSend_p_imageFillForRect_context_(self, a2, a3.origin.x, a3.origin.y, a3.size.width);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = objc_msgSend_p_imageFillForRect_context_(self, a2, rect.origin.x, rect.origin.y, rect.size.width);
   objc_msgSend_drawFill_inContext_frame_(TSCHRenderUtilities, v8, x, y, width, height);
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  v12 = objc_msgSend_p_imageFillForRect_context_(self, a2, a4.origin.x, a4.origin.y, a4.size.width, a5, a4.size.height);
-  objc_msgSend_paintPath_inContext_(v12, v8, v9, v10, v11, a3, a5);
+  v12 = objc_msgSend_p_imageFillForRect_context_(self, a2, bounds.origin.x, bounds.origin.y, bounds.size.width, context, bounds.size.height);
+  objc_msgSend_paintPath_inContext_(v12, v8, v9, v10, v11, path, context);
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = objc_msgSend_p_imageFillForRect_context_(self, a2, a3.origin.x, a3.origin.y, a3.size.width);
-  objc_msgSend_drawSwatchInRect_inContext_(v10, v9, x, y, width, a4, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_p_imageFillForRect_context_(self, a2, rect.origin.x, rect.origin.y, rect.size.width);
+  objc_msgSend_drawSwatchInRect_inContext_(v10, v9, x, y, width, context, height);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4 offset:(CGPoint)a5
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context offset:(CGPoint)offset
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
-  v13 = objc_msgSend_p_imageFillForRect_context_(self, v8, BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, a4, BoundingBox.size.height);
-  objc_msgSend_paintPath_inContext_(v13, v9, v10, v11, v12, a3, a4);
+  BoundingBox = CGPathGetBoundingBox(path);
+  v13 = objc_msgSend_p_imageFillForRect_context_(self, v8, BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, context, BoundingBox.size.height);
+  objc_msgSend_paintPath_inContext_(v13, v9, v10, v11, v12, path, context);
 }
 
 - (id)referenceColor
@@ -748,24 +748,24 @@ LABEL_22:
   return v10;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DFill alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DFill)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DFill)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v43.receiver = self;
   v43.super_class = TSCH3DFill;
   v7 = [(TSCH3DFill *)&v43 init];
   if (v7)
   {
-    if (!google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+    if (!google::protobuf::internal::ExtensionSet::Has((archive + 16)))
     {
       lightingModel = v7;
       v7 = 0;
@@ -776,7 +776,7 @@ LABEL_12:
 
     Message = google::protobuf::internal::ExtensionSet::GetMessage();
     v9 = [TSCH3DFillSetIdentifier alloc];
-    v14 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, v11, v12, v13, Message, v6);
+    v14 = objc_msgSend_initWithArchive_unarchiver_(v9, v10, v11, v12, v13, Message, unarchiverCopy);
     identifier = v7->_identifier;
     v7->_identifier = v14;
 
@@ -795,12 +795,12 @@ LABEL_12:
       v35 = [TSCH3DLightingModel alloc];
       if (*(Message + 32))
       {
-        v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, *(Message + 32), v6);
+        v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, *(Message + 32), unarchiverCopy);
       }
 
       else
       {
-        v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, &qword_2812F1278, v6);
+        v40 = objc_msgSend_initWithArchive_unarchiver_(v35, v36, v37, v38, v39, &qword_2812F1278, unarchiverCopy);
       }
 
       lightingModel = v7->_lightingModel;
@@ -814,12 +814,12 @@ LABEL_13:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v40 = a4;
+  archiverCopy = archiver;
   sub_27643A9A8();
   v5 = google::protobuf::internal::ExtensionSet::MutableMessage();
-  objc_msgSend_saveToArchive_archiver_(self->_identifier, v6, v7, v8, v9, v5, v40);
+  objc_msgSend_saveToArchive_archiver_(self->_identifier, v6, v7, v8, v9, v5, archiverCopy);
   if ((objc_msgSend_isStoredInLocalBundle(self->_identifier, v10, v11, v12, v13) & 1) == 0 && (objc_msgSend_isOnDemandResource(self->_identifier, v14, v15, v16, v17) & 1) == 0)
   {
     lightingModel = self->_lightingModel;
@@ -848,46 +848,46 @@ LABEL_13:
       *(v5 + 32) = v38;
     }
 
-    objc_msgSend_saveToArchive_archiver_(lightingModel, v18, v19, v20, v21, v38, v40);
+    objc_msgSend_saveToArchive_archiver_(lightingModel, v18, v19, v20, v21, v38, archiverCopy);
   }
 }
 
-+ (id)fillWithSageFillData:(id)a3
++ (id)fillWithSageFillData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9 = objc_msgSend_fill(TSCH3DFill, v5, v6, v7, v8);
-  v14 = objc_msgSend_lightingModelWithSageFillData_(a1, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_lightingModelWithSageFillData_(self, v10, v11, v12, v13, dataCopy);
   objc_msgSend_nonatomicallySetLightingModel_(v9, v15, v16, v17, v18, v14);
 
-  v23 = objc_msgSend_fillSetIdentifier(v4, v19, v20, v21, v22);
+  v23 = objc_msgSend_fillSetIdentifier(dataCopy, v19, v20, v21, v22);
   objc_msgSend_setIdentifier_(v9, v24, v25, v26, v27, v23);
 
   return v9;
 }
 
-+ (id)lightingModelWithSageFillData:(id)a3
++ (id)lightingModelWithSageFillData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v8 = objc_msgSend_lightingModel(TSCH3DFixedFunctionLightingModel, v4, v5, v6, v7);
   v182 = v8;
   v13 = objc_msgSend_materials(v8, v9, v10, v11, v12);
   v186 = objc_msgSend_diffuse(v13, v14, v15, v16, v17);
-  objc_msgSend_diffuse(v3, v18, v19, v20, v21);
+  objc_msgSend_diffuse(dataCopy, v18, v19, v20, v21);
   v187.i64[0] = __PAIR64__(LODWORD(v23), LODWORD(v22));
   v187.i64[1] = __PAIR64__(v25, LODWORD(v24));
   objc_msgSend_setColor_(v186, v26, v22, v23, v24, &v187);
   v185 = objc_msgSend_specular(v13, v27, v28, v29, v30);
-  objc_msgSend_specular(v3, v31, v32, v33, v34);
+  objc_msgSend_specular(dataCopy, v31, v32, v33, v34);
   v187.i64[0] = __PAIR64__(LODWORD(v36), LODWORD(v35));
   v187.i64[1] = __PAIR64__(v38, LODWORD(v37));
   objc_msgSend_setColor_(v185, v39, v35, v36, v37, &v187);
   v184 = objc_msgSend_emissive(v13, v40, v41, v42, v43);
-  objc_msgSend_emissive(v3, v44, v45, v46, v47);
+  objc_msgSend_emissive(dataCopy, v44, v45, v46, v47);
   v187.i64[0] = __PAIR64__(LODWORD(v49), LODWORD(v48));
   v187.i64[1] = __PAIR64__(v51, LODWORD(v50));
   objc_msgSend_setColor_(v184, v52, v48, v49, v50, &v187);
   v183 = objc_msgSend_shininess(v13, v53, v54, v55, v56);
-  objc_msgSend_shininess(v3, v57, v58, v59, v60);
+  objc_msgSend_shininess(dataCopy, v57, v58, v59, v60);
   __asm { FMOV            V1.4S, #1.0 }
 
   _Q1.i32[0] = LODWORD(v66);
@@ -897,17 +897,17 @@ LABEL_13:
   objc_msgSend_setColor_(v183, v68, v66, *v67.i64, v69, &v187);
   if (objc_msgSend_hasAppAssets(MEMORY[0x277D812E8], v70, v71, v72, v73))
   {
-    v79 = objc_msgSend_layerCount(v3, v74, v75, v76, v77);
+    v79 = objc_msgSend_layerCount(dataCopy, v74, v75, v76, v77);
     if (v79)
     {
       for (i = 0; i != v79; ++i)
       {
-        if (objc_msgSend_isLayerEnabledForIndex_(v3, v78, v80, v81, v82, i))
+        if (objc_msgSend_isLayerEnabledForIndex_(dataCopy, v78, v80, v81, v82, i))
         {
-          v84 = objc_msgSend_textureForIndex_(v3, v78, v80, v81, v82, i);
+          v84 = objc_msgSend_textureForIndex_(dataCopy, v78, v80, v81, v82, i);
           if (v84)
           {
-            v85 = v3;
+            v85 = dataCopy;
             v90 = objc_msgSend_tiling(TSCH3DImageTextureTiling, v86, v87, v88, v89);
             objc_msgSend_layerScaleForIndex_(v85, v91, v92, v93, v94, i);
             v187.i32[0] = LODWORD(v95);
@@ -1010,9 +1010,9 @@ LABEL_13:
   return v84;
 }
 
-- (void)assignQuicklookColorToMaterialDiffuseColorForLightingModel:(id)a3
+- (void)assignQuicklookColorToMaterialDiffuseColorForLightingModel:(id)model
 {
-  v8 = objc_msgSend_materials(a3, a2, v3, v4, v5);
+  v8 = objc_msgSend_materials(model, a2, v3, v4, v5);
   if (v8 && (objc_msgSend_isStoredInLocalBundle(self->_identifier, v7, v9, v10, v11) & 1) == 0)
   {
     v16 = objc_msgSend_diffuse(v8, v12, v13, v14, v15);

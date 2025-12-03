@@ -1,10 +1,10 @@
 @interface HPSUISpatialProfileSingleStepPearlMovieLoopView
-- (HPSUISpatialProfileSingleStepPearlMovieLoopView)initWithFrame:(CGRect)a3;
+- (HPSUISpatialProfileSingleStepPearlMovieLoopView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HPSUISpatialProfileSingleStepPearlMovieLoopView
 
-- (HPSUISpatialProfileSingleStepPearlMovieLoopView)initWithFrame:(CGRect)a3
+- (HPSUISpatialProfileSingleStepPearlMovieLoopView)initWithFrame:(CGRect)frame
 {
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 URLForResource:@"HRTF_Tutorial_A" withExtension:@"mov"];

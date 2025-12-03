@@ -1,17 +1,17 @@
 @interface CSVoiceTriggerPhraseConfigDecoder
-+ (float)adjustTwoShotDelay:(float)a3;
++ (float)adjustTwoShotDelay:(float)delay;
 + (float)defaultTwoShotDelay;
-+ (id)decodeConfigFrom:(id)a3 category:(id)a4;
-+ (id)decodeConfigV1:(id)a3 category:(id)a4;
-+ (id)decodeConfigV2:(id)a3 category:(id)a4;
++ (id)decodeConfigFrom:(id)from category:(id)category;
++ (id)decodeConfigV1:(id)v1 category:(id)category;
++ (id)decodeConfigV2:(id)v2 category:(id)category;
 + (id)twoShotDelayConfigKey;
 @end
 
 @implementation CSVoiceTriggerPhraseConfigDecoder
 
-+ (float)adjustTwoShotDelay:(float)a3
++ (float)adjustTwoShotDelay:(float)delay
 {
-  result = a3 + -0.5;
+  result = delay + -0.5;
   if (result < 0.0)
   {
     return 0.0;
@@ -55,56 +55,56 @@
   return result;
 }
 
-+ (id)decodeConfigV1:(id)a3 category:(id)a4
++ (id)decodeConfigV1:(id)v1 category:(id)category
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 getNumberForKey:@"threshold" category:v6 default:&unk_1F5916B90];
+  categoryCopy = category;
+  v1Copy = v1;
+  v8 = [v1Copy getNumberForKey:@"threshold" category:categoryCopy default:&unk_1F5916B90];
   [v8 floatValue];
   v10 = v9;
 
   LODWORD(v11) = v10;
   v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-  v13 = [v7 getNumberForKey:@"2ndChanceThreshold" category:v6 default:v12];
+  v13 = [v1Copy getNumberForKey:@"2ndChanceThreshold" category:categoryCopy default:v12];
   [v13 floatValue];
   v57 = v14;
 
   v55 = [CSVoiceTriggerPhraseConfig alloc];
-  v59 = [v7 getNumberForKey:@"loggingThreshold" category:v6 default:&unk_1F5916B90];
+  v59 = [v1Copy getNumberForKey:@"loggingThreshold" category:categoryCopy default:&unk_1F5916B90];
   [v59 floatValue];
   v53 = v15;
-  v58 = [v7 getNumberForKey:@"ndapiScaleFactor" category:v6 default:&unk_1F5916BA0];
+  v58 = [v1Copy getNumberForKey:@"ndapiScaleFactor" category:categoryCopy default:&unk_1F5916BA0];
   [v58 floatValue];
   v17 = v16;
-  v56 = [v7 getNumberForKey:@"recognizerThresholdOffset" category:v6 default:&unk_1F5916BB0];
+  v56 = [v1Copy getNumberForKey:@"recognizerThresholdOffset" category:categoryCopy default:&unk_1F5916BB0];
   [v56 floatValue];
   v19 = v18;
-  v54 = [v7 getNumberForKey:@"recognizerScoreScaleFactor" category:v6 default:&unk_1F5916BA0];
+  v54 = [v1Copy getNumberForKey:@"recognizerScoreScaleFactor" category:categoryCopy default:&unk_1F5916BA0];
   [v54 floatValue];
   v21 = v20;
-  v52 = [v7 getStringForKey:@"recognizerToken" category:v6 default:@"hey_Siri"];
-  v22 = [a1 twoShotDelayConfigKey];
+  v52 = [v1Copy getStringForKey:@"recognizerToken" category:categoryCopy default:@"hey_Siri"];
+  twoShotDelayConfigKey = [self twoShotDelayConfigKey];
   v23 = MEMORY[0x1E696AD98];
-  [a1 defaultTwoShotDelay];
+  [self defaultTwoShotDelay];
   v24 = [v23 numberWithFloat:?];
-  v25 = [v7 getNumberForKey:v22 category:v6 default:v24];
+  v25 = [v1Copy getNumberForKey:twoShotDelayConfigKey category:categoryCopy default:v24];
   [v25 floatValue];
-  [a1 adjustTwoShotDelay:?];
+  [self adjustTwoShotDelay:?];
   v27 = v26;
   v28 = MEMORY[0x1E696AD98];
-  [a1 defaultRemoraTwoShotDelay];
+  [self defaultRemoraTwoShotDelay];
   v29 = [v28 numberWithFloat:?];
-  v30 = [v7 getNumberForKey:@"twoShotFeedbackDelayPhaticRemora" category:v6 default:v29];
+  v30 = [v1Copy getNumberForKey:@"twoShotFeedbackDelayPhaticRemora" category:categoryCopy default:v29];
   [v30 floatValue];
-  [a1 adjustTwoShotDelay:?];
+  [self adjustTwoShotDelay:?];
   v32 = v31;
-  v33 = [v7 getNumberForKey:@"rejectLoggingThreshold" category:v6 default:&unk_1F5916B90];
+  v33 = [v1Copy getNumberForKey:@"rejectLoggingThreshold" category:categoryCopy default:&unk_1F5916B90];
   [v33 floatValue];
   v35 = v34;
-  v36 = [v7 getNumberForKey:@"phsRejectLoggingThreshold" category:v6 default:&unk_1F5916B90];
+  v36 = [v1Copy getNumberForKey:@"phsRejectLoggingThreshold" category:categoryCopy default:&unk_1F5916B90];
   [v36 floatValue];
   v38 = v37;
-  v39 = [v7 getNumberForKey:@"preTriggerSilenceOffset" category:v6 default:&unk_1F5916BC0];
+  v39 = [v1Copy getNumberForKey:@"preTriggerSilenceOffset" category:categoryCopy default:&unk_1F5916BC0];
 
   [v39 floatValue];
   LODWORD(v51) = v40;
@@ -121,17 +121,17 @@
   return v49;
 }
 
-+ (id)decodeConfigV2:(id)a3 category:(id)a4
++ (id)decodeConfigV2:(id)v2 category:(id)category
 {
   v99 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getValueForKey:@"phrase" category:v7];
+  v2Copy = v2;
+  categoryCopy = category;
+  v8 = [v2Copy getValueForKey:@"phrase" category:categoryCopy];
   if (v8)
   {
-    v68 = v7;
-    v69 = v6;
-    v73 = [MEMORY[0x1E695DF70] array];
+    v68 = categoryCopy;
+    v69 = v2Copy;
+    array = [MEMORY[0x1E695DF70] array];
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
@@ -142,7 +142,7 @@
     if (v74)
     {
       v71 = *v95;
-      v72 = a1;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v74; ++i)
@@ -246,21 +246,21 @@
           }
 
           v84 = v30;
-          v86 = [a1 twoShotDelayConfigKey];
+          twoShotDelayConfigKey = [self twoShotDelayConfigKey];
           v31 = [v10 objectForKeyedSubscript:?];
           if (v31)
           {
-            v79 = [a1 twoShotDelayConfigKey];
+            twoShotDelayConfigKey2 = [self twoShotDelayConfigKey];
             v75 = [v10 objectForKeyedSubscript:?];
             [v75 floatValue];
           }
 
           else
           {
-            [a1 defaultTwoShotDelay];
+            [self defaultTwoShotDelay];
           }
 
-          [a1 adjustTwoShotDelay:?];
+          [self adjustTwoShotDelay:?];
           v33 = v32;
           v34 = [v10 objectForKeyedSubscript:@"twoShotFeedbackDelayPhaticRemora"];
           if (v34)
@@ -274,7 +274,7 @@
             LODWORD(v35) = 2.0;
           }
 
-          [a1 adjustTwoShotDelay:v35];
+          [self adjustTwoShotDelay:v35];
           v37 = v36;
           v38 = [v10 objectForKeyedSubscript:@"rejectLoggingThreshold"];
           if (v38)
@@ -337,7 +337,7 @@
           {
           }
 
-          a1 = v72;
+          self = selfCopy;
           if (v38)
           {
           }
@@ -366,7 +366,7 @@
           {
           }
 
-          [v73 addObject:v63];
+          [array addObject:v63];
         }
 
         v74 = [obj countByEnumeratingWithState:&v94 objects:v98 count:16];
@@ -375,34 +375,34 @@
       while (v74);
     }
 
-    v7 = v68;
-    v6 = v69;
+    categoryCopy = v68;
+    v2Copy = v69;
     v8 = v67;
   }
 
   else
   {
-    v73 = 0;
+    array = 0;
   }
 
   v64 = *MEMORY[0x1E69E9840];
 
-  return v73;
+  return array;
 }
 
-+ (id)decodeConfigFrom:(id)a3 category:(id)a4
++ (id)decodeConfigFrom:(id)from category:(id)category
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  if ([v7 containsKey:@"phrase" category:v6])
+  categoryCopy = category;
+  fromCopy = from;
+  if ([fromCopy containsKey:@"phrase" category:categoryCopy])
   {
-    v8 = [a1 decodeConfigV2:v7 category:v6];
+    v8 = [self decodeConfigV2:fromCopy category:categoryCopy];
   }
 
   else
   {
-    v9 = [a1 decodeConfigV1:v7 category:v6];
+    v9 = [self decodeConfigV1:fromCopy category:categoryCopy];
 
     v12[0] = v9;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];

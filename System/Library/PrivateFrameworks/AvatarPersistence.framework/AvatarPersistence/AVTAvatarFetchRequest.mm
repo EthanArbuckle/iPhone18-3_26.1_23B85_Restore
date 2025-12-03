@@ -1,16 +1,16 @@
 @interface AVTAvatarFetchRequest
 + (id)requestForAllAvatars;
-+ (id)requestForAllAvatarsExcluding:(id)a3;
-+ (id)requestForAvatarWithIdentifier:(id)a3;
-+ (id)requestForAvatarsWithIdentifiers:(id)a3;
++ (id)requestForAllAvatarsExcluding:(id)excluding;
++ (id)requestForAvatarWithIdentifier:(id)identifier;
++ (id)requestForAvatarsWithIdentifiers:(id)identifiers;
 + (id)requestForCustomAvatars;
-+ (id)requestForCustomAvatarsWithLimit:(int64_t)a3;
++ (id)requestForCustomAvatarsWithLimit:(int64_t)limit;
 + (id)requestForPredefinedAvatars;
-+ (id)requestForPredefinedAvatarsExcluding:(id)a3;
++ (id)requestForPredefinedAvatarsExcluding:(id)excluding;
 + (id)requestForStorePrimaryAvatar;
-- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)a3 identifier:(id)a4;
-- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)a3 identifiers:(id)a4 excludedIdentifiers:(id)a5 fetchLimit:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
+- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)criteria identifier:(id)identifier;
+- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)criteria identifiers:(id)identifiers excludedIdentifiers:(id)excludedIdentifiers fetchLimit:(int64_t)limit;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -18,112 +18,112 @@
 
 + (id)requestForAllAvatars
 {
-  v2 = [[a1 alloc] initWithCriteria:0];
+  v2 = [[self alloc] initWithCriteria:0];
 
   return v2;
 }
 
-+ (id)requestForAllAvatarsExcluding:(id)a3
++ (id)requestForAllAvatarsExcluding:(id)excluding
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCriteria:6 identifiers:0 excludedIdentifiers:v4 fetchLimit:0];
+  excludingCopy = excluding;
+  v5 = [[self alloc] initWithCriteria:6 identifiers:0 excludedIdentifiers:excludingCopy fetchLimit:0];
 
   return v5;
 }
 
-+ (id)requestForAvatarWithIdentifier:(id)a3
++ (id)requestForAvatarWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCriteria:1 identifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithCriteria:1 identifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)requestForAvatarsWithIdentifiers:(id)a3
++ (id)requestForAvatarsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v5 initWithCriteria:2 identifiers:v4 excludedIdentifiers:MEMORY[0x277CBEBF8] fetchLimit:0];
+  identifiersCopy = identifiers;
+  v5 = [self alloc];
+  v6 = [v5 initWithCriteria:2 identifiers:identifiersCopy excludedIdentifiers:MEMORY[0x277CBEBF8] fetchLimit:0];
 
   return v6;
 }
 
 + (id)requestForPredefinedAvatars
 {
-  v2 = [[a1 alloc] initWithCriteria:3];
+  v2 = [[self alloc] initWithCriteria:3];
 
   return v2;
 }
 
-+ (id)requestForPredefinedAvatarsExcluding:(id)a3
++ (id)requestForPredefinedAvatarsExcluding:(id)excluding
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCriteria:7 identifiers:0 excludedIdentifiers:v4 fetchLimit:0];
+  excludingCopy = excluding;
+  v5 = [[self alloc] initWithCriteria:7 identifiers:0 excludedIdentifiers:excludingCopy fetchLimit:0];
 
   return v5;
 }
 
 + (id)requestForCustomAvatars
 {
-  v2 = [[a1 alloc] initWithCriteria:4];
+  v2 = [[self alloc] initWithCriteria:4];
 
   return v2;
 }
 
-+ (id)requestForCustomAvatarsWithLimit:(int64_t)a3
++ (id)requestForCustomAvatarsWithLimit:(int64_t)limit
 {
-  v4 = [a1 alloc];
-  v5 = [v4 initWithCriteria:4 identifiers:0 excludedIdentifiers:MEMORY[0x277CBEBF8] fetchLimit:a3];
+  v4 = [self alloc];
+  v5 = [v4 initWithCriteria:4 identifiers:0 excludedIdentifiers:MEMORY[0x277CBEBF8] fetchLimit:limit];
 
   return v5;
 }
 
 + (id)requestForStorePrimaryAvatar
 {
-  v2 = [[a1 alloc] initWithCriteria:5];
+  v2 = [[self alloc] initWithCriteria:5];
 
   return v2;
 }
 
-- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)a3 identifier:(id)a4
+- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)criteria identifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = [v6 arrayWithObjects:&v12 count:1];
+  identifierCopy2 = identifier;
+  v8 = [v6 arrayWithObjects:&identifierCopy count:1];
 
-  v9 = [(AVTAvatarFetchRequest *)self initWithCriteria:a3 identifiers:v8 excludedIdentifiers:MEMORY[0x277CBEBF8] fetchLimit:0, v12, v13];
+  v9 = [(AVTAvatarFetchRequest *)self initWithCriteria:criteria identifiers:v8 excludedIdentifiers:MEMORY[0x277CBEBF8] fetchLimit:0, identifierCopy, v13];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)a3 identifiers:(id)a4 excludedIdentifiers:(id)a5 fetchLimit:(int64_t)a6
+- (AVTAvatarFetchRequest)initWithCriteria:(int64_t)criteria identifiers:(id)identifiers excludedIdentifiers:(id)excludedIdentifiers fetchLimit:(int64_t)limit
 {
-  v10 = a4;
-  v11 = a5;
+  identifiersCopy = identifiers;
+  excludedIdentifiersCopy = excludedIdentifiers;
   v17.receiver = self;
   v17.super_class = AVTAvatarFetchRequest;
   v12 = [(AVTAvatarFetchRequest *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_criteria = a3;
-    v14 = [v10 copy];
+    v12->_criteria = criteria;
+    v14 = [identifiersCopy copy];
     identifiers = v13->_identifiers;
     v13->_identifiers = v14;
 
-    objc_storeStrong(&v13->_excludingIdentifiers, a5);
-    v13->_fetchLimit = a6;
+    objc_storeStrong(&v13->_excludingIdentifiers, excludedIdentifiers);
+    v13->_fetchLimit = limit;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -131,20 +131,20 @@
       goto LABEL_17;
     }
 
-    v6 = [(AVTAvatarFetchRequest *)self criteria];
-    if (v6 != [(AVTAvatarFetchRequest *)v5 criteria])
+    criteria = [(AVTAvatarFetchRequest *)self criteria];
+    if (criteria != [(AVTAvatarFetchRequest *)equalCopy criteria])
     {
       goto LABEL_17;
     }
 
-    v7 = [(AVTAvatarFetchRequest *)self identifiers];
-    if (v7 || ([(AVTAvatarFetchRequest *)v5 identifiers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    identifiers = [(AVTAvatarFetchRequest *)self identifiers];
+    if (identifiers || ([(AVTAvatarFetchRequest *)equalCopy identifiers], (excludingIdentifiers2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(AVTAvatarFetchRequest *)self identifiers];
-      v9 = [(AVTAvatarFetchRequest *)v5 identifiers];
-      v10 = [v8 isEqual:v9];
+      identifiers2 = [(AVTAvatarFetchRequest *)self identifiers];
+      identifiers3 = [(AVTAvatarFetchRequest *)equalCopy identifiers];
+      v10 = [identifiers2 isEqual:identifiers3];
 
-      if (v7)
+      if (identifiers)
       {
 
         if (!v10)
@@ -163,28 +163,28 @@
       }
     }
 
-    v12 = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
-    if (!v12)
+    excludingIdentifiers = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
+    if (!excludingIdentifiers)
     {
-      v3 = [(AVTAvatarFetchRequest *)v5 excludingIdentifiers];
-      if (!v3)
+      excludingIdentifiers2 = [(AVTAvatarFetchRequest *)equalCopy excludingIdentifiers];
+      if (!excludingIdentifiers2)
       {
         goto LABEL_15;
       }
     }
 
-    v13 = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
-    v14 = [(AVTAvatarFetchRequest *)v5 excludingIdentifiers];
-    v15 = [v13 isEqual:v14];
+    excludingIdentifiers3 = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
+    excludingIdentifiers4 = [(AVTAvatarFetchRequest *)equalCopy excludingIdentifiers];
+    v15 = [excludingIdentifiers3 isEqual:excludingIdentifiers4];
 
-    if (v12)
+    if (excludingIdentifiers)
     {
 
       if (v15)
       {
 LABEL_15:
-        v16 = [(AVTAvatarFetchRequest *)self fetchLimit];
-        v11 = v16 == [(AVTAvatarFetchRequest *)v5 fetchLimit];
+        fetchLimit = [(AVTAvatarFetchRequest *)self fetchLimit];
+        v11 = fetchLimit == [(AVTAvatarFetchRequest *)equalCopy fetchLimit];
         goto LABEL_18;
       }
     }
@@ -211,12 +211,12 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTAvatarFetchRequest *)self identifiers];
-  v4 = [(AVTAvatarFetchRequest *)self identifiers];
-  v5 = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
-  v6 = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
-  *(&v8 + 1) = v5 ^ v3;
-  *&v8 = v6 ^ v4;
+  identifiers = [(AVTAvatarFetchRequest *)self identifiers];
+  identifiers2 = [(AVTAvatarFetchRequest *)self identifiers];
+  excludingIdentifiers = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
+  excludingIdentifiers2 = [(AVTAvatarFetchRequest *)self excludingIdentifiers];
+  *(&v8 + 1) = excludingIdentifiers ^ identifiers;
+  *&v8 = excludingIdentifiers2 ^ identifiers2;
   v7 = v8 >> 43;
   *(&v8 + 1) = [(AVTAvatarFetchRequest *)self fetchLimit];
   *&v8 = [(AVTAvatarFetchRequest *)self fetchLimit];

@@ -1,13 +1,13 @@
 @interface CISaliencyMapKernel
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CISaliencyMapKernel
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v5 = [a4 objectForKeyedSubscript:{@"rect", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"rect", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;
@@ -17,16 +17,16 @@
   return result;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = [objc_msgSend(a3 objectAtIndexedSubscript:{0, a4), "pixelBuffer"}];
+  v8 = [objc_msgSend(inputs objectAtIndexedSubscript:{0, arguments), "pixelBuffer"}];
   if (v8)
   {
     v9 = v8;
     v10 = objc_alloc_init(VNGenerateAttentionBasedSaliencyImageRequest);
     v11 = [[VNImageRequestHandler alloc] initWithCVPixelBuffer:v9 options:&__NSDictionary0__struct];
     v17 = v10;
-    if ([v11 performRequests:+[NSArray arrayWithObjects:count:](NSArray error:{"arrayWithObjects:count:", &v17, 1), a6}])
+    if ([v11 performRequests:+[NSArray arrayWithObjects:count:](NSArray error:{"arrayWithObjects:count:", &v17, 1), error}])
     {
       v12 = [objc_msgSend(objc_msgSend(v10 "results")];
 
@@ -36,12 +36,12 @@
         v16[1] = 3221225472;
         v16[2] = sub_1030;
         v16[3] = &unk_4220;
-        v16[4] = a5;
+        v16[4] = output;
         sub_CE0(v12, v16);
         return 1;
       }
 
-      if (a6)
+      if (error)
       {
         v14 = &off_4550;
         goto LABEL_11;
@@ -55,7 +55,7 @@
     return 0;
   }
 
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
@@ -64,7 +64,7 @@
 LABEL_11:
   v15 = [NSError errorWithDomain:@"CISaliencyMapFilter" code:1 userInfo:v14];
   result = 0;
-  *a6 = v15;
+  *error = v15;
   return result;
 }
 

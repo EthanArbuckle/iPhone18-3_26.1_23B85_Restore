@@ -1,23 +1,23 @@
 @interface FCPurchaseIntegrityChecker
-- (void)isUserEntitledToSubscriptionForPurchaseID:(id)a3 completion:(id)a4;
+- (void)isUserEntitledToSubscriptionForPurchaseID:(id)d completion:(id)completion;
 @end
 
 @implementation FCPurchaseIntegrityChecker
 
-- (void)isUserEntitledToSubscriptionForPurchaseID:(id)a3 completion:(id)a4
+- (void)isUserEntitledToSubscriptionForPurchaseID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E698B560] sharedInstance];
+  dCopy = d;
+  completionCopy = completion;
+  mEMORY[0x1E698B560] = [MEMORY[0x1E698B560] sharedInstance];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__FCPurchaseIntegrityChecker_isUserEntitledToSubscriptionForPurchaseID_completion___block_invoke;
   v10[3] = &unk_1E7C459F0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
-  [v7 getSubscriptionEntitlementsForSegment:0 ignoreCaches:1 withResultHandler:v10];
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [mEMORY[0x1E698B560] getSubscriptionEntitlementsForSegment:0 ignoreCaches:1 withResultHandler:v10];
 }
 
 void __83__FCPurchaseIntegrityChecker_isUserEntitledToSubscriptionForPurchaseID_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

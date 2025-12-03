@@ -1,34 +1,34 @@
 @interface TUIEmojiSearchTextField
 + (double)preferredHeight;
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isActive;
 - (BOOL)isEditing;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
 - (CGRect)visibleRect;
-- (TUIEmojiSearchTextField)initWithFrame:(CGRect)a3 pretendsToBecomeFirstResponder:(BOOL)a4;
+- (TUIEmojiSearchTextField)initWithFrame:(CGRect)frame pretendsToBecomeFirstResponder:(BOOL)responder;
 - (TUIEmojiSearchTextFieldDelegate)searchDelegate;
 - (id)_clearButton;
-- (id)_textAndGlyphColorForRenderConfig:(id)a3;
-- (id)_textAndGlyphCompositingFilterForRenderConfig:(id)a3;
+- (id)_textAndGlyphColorForRenderConfig:(id)config;
+- (id)_textAndGlyphCompositingFilterForRenderConfig:(id)config;
 - (id)portalView;
-- (void)_matchPortalViewFrame:(CGRect)a3;
-- (void)_setCursorVisibleAndBlinks:(BOOL)a3;
-- (void)_setRenderConfig:(id)a3;
+- (void)_matchPortalViewFrame:(CGRect)frame;
+- (void)_setCursorVisibleAndBlinks:(BOOL)blinks;
+- (void)_setRenderConfig:(id)config;
 - (void)_updatePlaceholderPosition;
-- (void)_windowBecameKeyNotificationPosted:(id)a3;
+- (void)_windowBecameKeyNotificationPosted:(id)posted;
 - (void)didMoveToWindow;
-- (void)fieldEditorDidChange:(id)a3;
+- (void)fieldEditorDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)paste:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)paste:(id)paste;
 - (void)postSearchViewNotification;
-- (void)setActive:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TUIEmojiSearchTextField
@@ -40,32 +40,32 @@
   return WeakRetained;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = [(TUIEmojiSearchTextField *)self searchDelegate];
+  searchDelegate = [(TUIEmojiSearchTextField *)self searchDelegate];
 
-  if (v4)
+  if (searchDelegate)
   {
-    v5 = [(TUIEmojiSearchTextField *)self searchDelegate];
-    [v5 emojiSearchTextFieldWillClear:self];
+    searchDelegate2 = [(TUIEmojiSearchTextField *)self searchDelegate];
+    [searchDelegate2 emojiSearchTextFieldWillClear:self];
 
-    v6 = [(TUIEmojiSearchTextField *)self searchDelegate];
-    [v6 emojiSearchTextField:self didChangeSearchString:&stru_1F03BA8F8];
+    searchDelegate3 = [(TUIEmojiSearchTextField *)self searchDelegate];
+    [searchDelegate3 emojiSearchTextField:self didChangeSearchString:&stru_1F03BA8F8];
   }
 
   return 1;
 }
 
-- (void)fieldEditorDidChange:(id)a3
+- (void)fieldEditorDidChange:(id)change
 {
   v14.receiver = self;
   v14.super_class = TUIEmojiSearchTextField;
-  [(TUIEmojiSearchTextField *)&v14 fieldEditorDidChange:a3];
+  [(TUIEmojiSearchTextField *)&v14 fieldEditorDidChange:change];
   if (-[TUIEmojiSearchTextField hasMarkedText](self, "hasMarkedText") && (-[TUIEmojiSearchTextField text](self, "text"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5 == 1))
   {
-    v6 = [(TUIEmojiSearchTextField *)self text];
-    v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    if ([v6 rangeOfCharacterFromSet:v7])
+    text = [(TUIEmojiSearchTextField *)self text];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    if ([text rangeOfCharacterFromSet:whitespaceCharacterSet])
     {
       v9 = 0;
     }
@@ -83,23 +83,23 @@
     v10 = 0;
   }
 
-  v11 = [(TUIEmojiSearchTextField *)self searchDelegate];
+  searchDelegate = [(TUIEmojiSearchTextField *)self searchDelegate];
 
-  if (v11)
+  if (searchDelegate)
   {
     if ((v10 & 1) == 0)
     {
-      v12 = [(TUIEmojiSearchTextField *)self searchDelegate];
-      v13 = [(TUIEmojiSearchTextField *)self text];
-      [v12 emojiSearchTextField:self didChangeSearchString:v13];
+      searchDelegate2 = [(TUIEmojiSearchTextField *)self searchDelegate];
+      text2 = [(TUIEmojiSearchTextField *)self text];
+      [searchDelegate2 emojiSearchTextField:self didChangeSearchString:text2];
     }
   }
 }
 
 - (CGRect)visibleRect
 {
-  v2 = [(TUIEmojiSearchTextField *)self window];
-  [v2 bounds];
+  window = [(TUIEmojiSearchTextField *)self window];
+  [window bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -170,27 +170,27 @@ void __53__TUIEmojiSearchTextField_postSearchViewNotification__block_invoke_2(ui
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(TUIEmojiSearchTextField *)self searchDelegate];
-  [v3 emojiSearchTextFieldWillBecomeInactive:self];
+  searchDelegate = [(TUIEmojiSearchTextField *)self searchDelegate];
+  [searchDelegate emojiSearchTextFieldWillBecomeInactive:self];
 
   if ([(TUIEmojiSearchTextField *)self pretendsToBecomeFirstResponder])
   {
     [(TUIEmojiSearchTextField *)self setActive:0];
-    v4 = 1;
+    resignFirstResponder = 1;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = TUIEmojiSearchTextField;
-    v4 = [(TUIEmojiSearchTextField *)&v7 resignFirstResponder];
+    resignFirstResponder = [(TUIEmojiSearchTextField *)&v7 resignFirstResponder];
   }
 
-  v5 = [(TUIEmojiSearchTextField *)self searchDelegate];
-  [v5 emojiSearchTextFieldDidBecomeInactive:self];
+  searchDelegate2 = [(TUIEmojiSearchTextField *)self searchDelegate];
+  [searchDelegate2 emojiSearchTextFieldDidBecomeInactive:self];
 
   [(TUIEmojiSearchTextField *)self postSearchViewNotification];
-  return v4;
+  return resignFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
@@ -205,14 +205,14 @@ void __53__TUIEmojiSearchTextField_postSearchViewNotification__block_invoke_2(ui
 
   else
   {
-    v3 = [(TUIEmojiSearchTextField *)self searchDelegate];
-    [v3 emojiSearchTextFieldWillBecomeActive:self];
+    searchDelegate = [(TUIEmojiSearchTextField *)self searchDelegate];
+    [searchDelegate emojiSearchTextFieldWillBecomeActive:self];
 
     if ([(TUIEmojiSearchTextField *)self pretendsToBecomeFirstResponder])
     {
       [(TUIEmojiSearchTextField *)self setActive:1];
-      v4 = [(TUIEmojiSearchTextField *)self searchDelegate];
-      [v4 emojiSearchTextFieldDidBecomeActive:self];
+      searchDelegate2 = [(TUIEmojiSearchTextField *)self searchDelegate];
+      [searchDelegate2 emojiSearchTextFieldDidBecomeActive:self];
 
       goto LABEL_8;
     }
@@ -222,8 +222,8 @@ void __53__TUIEmojiSearchTextField_postSearchViewNotification__block_invoke_2(ui
   v9.super_class = TUIEmojiSearchTextField;
   if ([(TUIEmojiSearchTextField *)&v9 becomeFirstResponder])
   {
-    v5 = [(TUIEmojiSearchTextField *)self searchDelegate];
-    [v5 emojiSearchTextFieldDidBecomeActive:self];
+    searchDelegate3 = [(TUIEmojiSearchTextField *)self searchDelegate];
+    [searchDelegate3 emojiSearchTextFieldDidBecomeActive:self];
 
     v6 = 1;
     goto LABEL_9;
@@ -243,7 +243,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)_windowBecameKeyNotificationPosted:(id)a3
+- (void)_windowBecameKeyNotificationPosted:(id)posted
 {
   if ([(TUIEmojiSearchTextField *)self pretendsToBecomeFirstResponder])
   {
@@ -283,59 +283,59 @@ LABEL_9:
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v4 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     [(TUIEmojiSearchTextField *)self _setCursorVisibleAndBlinks:?];
-    if (v4)
+    if (activeCopy)
     {
       [(TUIEmojiSearchTextField *)self _attachFieldEditor];
-      v6 = [(TUIEmojiSearchTextField *)self interactionAssistant];
-      [v6 activateSelection];
+      interactionAssistant = [(TUIEmojiSearchTextField *)self interactionAssistant];
+      [interactionAssistant activateSelection];
     }
 
     else
     {
       [(TUIEmojiSearchTextField *)self _detachFieldEditor];
-      v6 = [(TUIEmojiSearchTextField *)self interactionAssistant];
-      [v6 deactivateSelection];
+      interactionAssistant = [(TUIEmojiSearchTextField *)self interactionAssistant];
+      [interactionAssistant deactivateSelection];
     }
   }
 }
 
-- (void)_setCursorVisibleAndBlinks:(BOOL)a3
+- (void)_setCursorVisibleAndBlinks:(BOOL)blinks
 {
-  v3 = a3;
-  v5 = [(TUIEmojiSearchTextField *)self interactionAssistant];
-  [v5 setCursorVisible:v3];
+  blinksCopy = blinks;
+  interactionAssistant = [(TUIEmojiSearchTextField *)self interactionAssistant];
+  [interactionAssistant setCursorVisible:blinksCopy];
 
-  v6 = [(TUIEmojiSearchTextField *)self interactionAssistant];
+  interactionAssistant2 = [(TUIEmojiSearchTextField *)self interactionAssistant];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(TUIEmojiSearchTextField *)self interactionAssistant];
-  v10 = v8;
+  interactionAssistant3 = [(TUIEmojiSearchTextField *)self interactionAssistant];
+  v10 = interactionAssistant3;
   if (v7)
   {
-    [v8 setCursorBlinkAnimationEnabled:v3];
+    [interactionAssistant3 setCursorBlinkAnimationEnabled:blinksCopy];
   }
 
   else
   {
-    v9 = [v8 selectionView];
-    [v9 setCaretBlinks:v3];
+    selectionView = [interactionAssistant3 selectionView];
+    [selectionView setCaretBlinks:blinksCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v13.receiver = self;
   v13.super_class = TUIEmojiSearchTextField;
   [(TUIEmojiSearchTextField *)&v13 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = [MEMORY[0x1E695DF00] now];
     highlightBeginTime = self->_highlightBeginTime;
@@ -368,15 +368,15 @@ LABEL_9:
   [(TUIEmojiSearchTextFieldBackgroundView *)backgroundView setBackgroundStyle:v8 animated:v9];
 }
 
-- (void)_matchPortalViewFrame:(CGRect)a3
+- (void)_matchPortalViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(TUIEmojiSearchTextField *)self superview];
-  v9 = [(TUIEmojiSearchTextFieldPortalView *)self->_portalView superview];
-  [v8 convertRect:v9 fromView:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  superview = [(TUIEmojiSearchTextField *)self superview];
+  superview2 = [(TUIEmojiSearchTextFieldPortalView *)self->_portalView superview];
+  [superview convertRect:superview2 fromView:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -385,11 +385,11 @@ LABEL_9:
   [(TUIEmojiSearchTextField *)self setFrame:v11, v13, v15, v17];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kFrameChangeContext == a6)
+  if (kFrameChangeContext == context)
   {
-    v7 = [a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4}];
+    v7 = [change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object}];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
@@ -403,15 +403,15 @@ LABEL_9:
   {
     v16.receiver = self;
     v16.super_class = TUIEmojiSearchTextField;
-    [(TUIEmojiSearchTextField *)&v16 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TUIEmojiSearchTextField *)&v16 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
   v17.receiver = self;
   v17.super_class = TUIEmojiSearchTextField;
-  [(TUIEmojiSearchTextField *)&v17 clearButtonRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIEmojiSearchTextField *)&v17 clearButtonRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -434,12 +434,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
+  width = bounds.size.width;
   v8.receiver = self;
   v8.super_class = TUIEmojiSearchTextField;
-  [(TUIEmojiSearchTextField *)&v8 rightViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIEmojiSearchTextField *)&v8 rightViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   UIRectInsetEdges();
   v7 = width - v5 + -10.0;
   result.size.height = v6;
@@ -449,11 +449,11 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
   v15.receiver = self;
   v15.super_class = TUIEmojiSearchTextField;
-  [(TUIEmojiSearchTextField *)&v15 leftViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIEmojiSearchTextField *)&v15 leftViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   UIRectInsetEdges();
   v4 = v3;
   v6 = v5;
@@ -512,8 +512,8 @@ LABEL_9:
     v3 = 0;
   }
 
-  v4 = [(TUIEmojiSearchTextField *)self _placeholderLabel];
-  [v4 setTextAlignment:v3];
+  _placeholderLabel = [(TUIEmojiSearchTextField *)self _placeholderLabel];
+  [_placeholderLabel setTextAlignment:v3];
 }
 
 - (id)portalView
@@ -529,14 +529,14 @@ LABEL_9:
     [(_UIPortalView *)self->_portalView setForwardsClientHitTestingToSourceView:1];
     [(TUIEmojiSearchTextFieldPortalView *)self->_portalView addObserver:self forKeyPath:@"frame" options:1 context:kFrameChangeContext];
     [(TUIEmojiSearchTextFieldPortalView *)self->_portalView addObserver:self forKeyPath:@"bounds" options:1 context:kFrameChangeContext];
-    v5 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-    v6 = v5;
-    if (v5)
+    activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+    v6 = activeKeyboardSceneDelegate;
+    if (activeKeyboardSceneDelegate)
     {
-      v7 = [v5 scene];
-      if (v7)
+      scene = [activeKeyboardSceneDelegate scene];
+      if (scene)
       {
-        v8 = [MEMORY[0x1E69DD0A8] activeTextEffectsWindowForWindowScene:v7];
+        v8 = [MEMORY[0x1E69DD0A8] activeTextEffectsWindowForWindowScene:scene];
         v9 = v8;
         if (v8)
         {
@@ -558,8 +558,8 @@ LABEL_9:
   v4.receiver = self;
   v4.super_class = TUIEmojiSearchTextField;
   [(TUIEmojiSearchTextField *)&v4 didMoveToWindow];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__windowBecameKeyNotificationPosted_ name:*MEMORY[0x1E69DE7B0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__windowBecameKeyNotificationPosted_ name:*MEMORY[0x1E69DE7B0] object:0];
 
   self->_wasRTL = [(TUIEmojiSearchTextField *)self effectiveUserInterfaceLayoutDirection]== 1;
 }
@@ -568,46 +568,46 @@ LABEL_9:
 {
   v9.receiver = self;
   v9.super_class = TUIEmojiSearchTextField;
-  v3 = [(TUIEmojiSearchTextField *)&v9 _clearButton];
-  v4 = [(TUIEmojiSearchTextField *)self _inheritedRenderConfig];
-  v5 = [(TUIEmojiSearchTextField *)self _textAndGlyphCompositingFilterForRenderConfig:v4];
-  v6 = [v3 layer];
-  [v6 setCompositingFilter:v5];
+  _clearButton = [(TUIEmojiSearchTextField *)&v9 _clearButton];
+  _inheritedRenderConfig = [(TUIEmojiSearchTextField *)self _inheritedRenderConfig];
+  v5 = [(TUIEmojiSearchTextField *)self _textAndGlyphCompositingFilterForRenderConfig:_inheritedRenderConfig];
+  layer = [_clearButton layer];
+  [layer setCompositingFilter:v5];
 
-  v7 = [(TUIEmojiSearchTextField *)self _textAndGlyphColorForRenderConfig:v4];
-  [v3 setTintColor:v7];
+  v7 = [(TUIEmojiSearchTextField *)self _textAndGlyphColorForRenderConfig:_inheritedRenderConfig];
+  [_clearButton setTintColor:v7];
 
-  return v3;
+  return _clearButton;
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
   v15.receiver = self;
   v15.super_class = TUIEmojiSearchTextField;
-  v4 = a3;
-  [(TUIEmojiSearchTextField *)&v15 _setRenderConfig:v4];
-  v5 = [(TUIEmojiSearchTextField *)self _textAndGlyphColorForRenderConfig:v4, v15.receiver, v15.super_class];
-  v6 = [(TUIEmojiSearchTextField *)self _textAndGlyphCompositingFilterForRenderConfig:v4];
+  configCopy = config;
+  [(TUIEmojiSearchTextField *)&v15 _setRenderConfig:configCopy];
+  v5 = [(TUIEmojiSearchTextField *)self _textAndGlyphColorForRenderConfig:configCopy, v15.receiver, v15.super_class];
+  v6 = [(TUIEmojiSearchTextField *)self _textAndGlyphCompositingFilterForRenderConfig:configCopy];
   [(UIImageView *)self->_magnifyingGlassView setTintColor:v5];
-  v7 = [(TUIEmojiSearchTextField *)self _placeholderLabel];
-  [v7 setTextColor:v5];
+  _placeholderLabel = [(TUIEmojiSearchTextField *)self _placeholderLabel];
+  [_placeholderLabel setTextColor:v5];
 
-  v8 = [(TUIEmojiSearchTextField *)self _clearButton];
-  [v8 setTintColor:v5];
+  _clearButton = [(TUIEmojiSearchTextField *)self _clearButton];
+  [_clearButton setTintColor:v5];
 
-  v9 = [(UIImageView *)self->_magnifyingGlassView layer];
-  [v9 setCompositingFilter:v6];
+  layer = [(UIImageView *)self->_magnifyingGlassView layer];
+  [layer setCompositingFilter:v6];
 
-  v10 = [(TUIEmojiSearchTextField *)self _placeholderLabel];
-  v11 = [v10 layer];
-  [v11 setCompositingFilter:v6];
+  _placeholderLabel2 = [(TUIEmojiSearchTextField *)self _placeholderLabel];
+  layer2 = [_placeholderLabel2 layer];
+  [layer2 setCompositingFilter:v6];
 
-  v12 = [(TUIEmojiSearchTextField *)self _clearButton];
-  v13 = [v12 layer];
-  [v13 setCompositingFilter:v6];
+  _clearButton2 = [(TUIEmojiSearchTextField *)self _clearButton];
+  layer3 = [_clearButton2 layer];
+  [layer3 setCompositingFilter:v6];
 
-  LOBYTE(v12) = [v4 lightKeyboard];
-  if (v12)
+  LOBYTE(_clearButton2) = [configCopy lightKeyboard];
+  if (_clearButton2)
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -620,11 +620,11 @@ LABEL_9:
   [(TUIEmojiSearchTextField *)self setTextColor:v14];
 }
 
-- (id)_textAndGlyphCompositingFilterForRenderConfig:(id)a3
+- (id)_textAndGlyphCompositingFilterForRenderConfig:(id)config
 {
-  v3 = [a3 lightKeyboard];
+  lightKeyboard = [config lightKeyboard];
   v4 = MEMORY[0x1E6979CE8];
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = MEMORY[0x1E6979CF8];
   }
@@ -634,11 +634,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)_textAndGlyphColorForRenderConfig:(id)a3
+- (id)_textAndGlyphColorForRenderConfig:(id)config
 {
-  v3 = [a3 lightKeyboard];
+  lightKeyboard = [config lightKeyboard];
   v4 = 0.36;
-  if (v3)
+  if (lightKeyboard)
   {
     v4 = 0.6;
   }
@@ -648,48 +648,48 @@ LABEL_9:
   return [v5 colorWithWhite:v4 alpha:1.0];
 }
 
-- (TUIEmojiSearchTextField)initWithFrame:(CGRect)a3 pretendsToBecomeFirstResponder:(BOOL)a4
+- (TUIEmojiSearchTextField)initWithFrame:(CGRect)frame pretendsToBecomeFirstResponder:(BOOL)responder
 {
   v22.receiver = self;
   v22.super_class = TUIEmojiSearchTextField;
-  v5 = [(TUIEmojiSearchTextField *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(TUIEmojiSearchTextField *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_pretendsToBecomeFirstResponder = a4;
+    v5->_pretendsToBecomeFirstResponder = responder;
     v7 = [objc_alloc(objc_opt_class()) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     backgroundView = v6->_backgroundView;
     v6->_backgroundView = v7;
 
     [(TUIEmojiSearchTextField *)v6 insertSubview:v6->_backgroundView atIndex:0];
-    v9 = [(TUIEmojiSearchTextField *)v6 layer];
-    [v9 setAllowsGroupBlending:0];
+    layer = [(TUIEmojiSearchTextField *)v6 layer];
+    [layer setAllowsGroupBlending:0];
 
     [(TUIEmojiSearchTextField *)v6 setClearButtonMode:1];
     [(TUIEmojiSearchTextField *)v6 setAutocapitalizationType:0];
     [(TUIEmojiSearchTextField *)v6 setDelegate:v6];
     v10 = MEMORY[0x1E69DCAD8];
-    v11 = [(TUIEmojiSearchTextField *)v6 font];
-    v12 = [v10 configurationWithFont:v11];
-    v13 = [v12 _configurationIgnoringDynamicType];
+    font = [(TUIEmojiSearchTextField *)v6 font];
+    v12 = [v10 configurationWithFont:font];
+    _configurationIgnoringDynamicType = [v12 _configurationIgnoringDynamicType];
 
-    v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"magnifyingglass" withConfiguration:v13];
+    v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"magnifyingglass" withConfiguration:_configurationIgnoringDynamicType];
     v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v14];
     magnifyingGlassView = v6->_magnifyingGlassView;
     v6->_magnifyingGlassView = v15;
 
     [(UIImageView *)v6->_magnifyingGlassView setContentMode:4];
     v17 = *MEMORY[0x1E6979CE8];
-    v18 = [(TUIEmojiSearchTextField *)v6 _placeholderLabel];
-    v19 = [v18 layer];
-    [v19 setCompositingFilter:v17];
+    _placeholderLabel = [(TUIEmojiSearchTextField *)v6 _placeholderLabel];
+    layer2 = [_placeholderLabel layer];
+    [layer2 setCompositingFilter:v17];
 
     [(UIImageView *)v6->_magnifyingGlassView sizeToFit];
     [(TUIEmojiSearchTextField *)v6 setLeftView:v6->_magnifyingGlassView];
     [(TUIEmojiSearchTextField *)v6 setLeftViewMode:3];
     [(TUIEmojiSearchTextField *)v6 setRightViewMode:3];
-    v20 = [MEMORY[0x1E69DC888] _systemInteractionTintColor];
-    [(TUIEmojiSearchTextField *)v6 setTintColor:v20];
+    _systemInteractionTintColor = [MEMORY[0x1E69DC888] _systemInteractionTintColor];
+    [(TUIEmojiSearchTextField *)v6 setTintColor:_systemInteractionTintColor];
 
     v6->_startTime = CACurrentMediaTime();
   }
@@ -709,35 +709,35 @@ LABEL_9:
   return result;
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   if (self->_pretendsToBecomeFirstResponder)
   {
-    v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v5 = [v4 string];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    string = [generalPasteboard string];
 
-    [(TUIEmojiSearchTextField *)self insertText:v5];
+    [(TUIEmojiSearchTextField *)self insertText:string];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TUIEmojiSearchTextField;
-    [(TUIEmojiSearchTextField *)&v6 paste:a3];
+    [(TUIEmojiSearchTextField *)&v6 paste:paste];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_paste_ == a3)
+  senderCopy = sender;
+  if (sel_paste_ == action)
   {
     if ([(TUIEmojiSearchTextField *)self isEditing])
     {
-      v11 = [MEMORY[0x1E69DCD50] generalPasteboard];
-      v12 = [v11 hasStrings];
+      generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+      hasStrings = [generalPasteboard hasStrings];
 LABEL_20:
-      v10 = v12;
+      v10 = hasStrings;
 
       goto LABEL_23;
     }
@@ -747,32 +747,32 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  if (sel_selectAll_ == a3)
+  if (sel_selectAll_ == action)
   {
     if ([(TUIEmojiSearchTextField *)self isEditing]&& [(TUIEmojiSearchTextField *)self hasText])
     {
-      v11 = [(TUIEmojiSearchTextField *)self selectedTextRange];
-      v12 = [v11 isEmpty];
+      generalPasteboard = [(TUIEmojiSearchTextField *)self selectedTextRange];
+      hasStrings = [generalPasteboard isEmpty];
       goto LABEL_20;
     }
 
     goto LABEL_21;
   }
 
-  if (sel_replace_ == a3)
+  if (sel_replace_ == action)
   {
     v10 = 1;
     goto LABEL_23;
   }
 
-  if (sel__share_ == a3 || sel__define_ == a3 || sel__translate_ == a3 || sel_captureTextFromCamera_ == a3)
+  if (sel__share_ == action || sel__define_ == action || sel__translate_ == action || sel_captureTextFromCamera_ == action)
   {
     goto LABEL_21;
   }
 
   v14.receiver = self;
   v14.super_class = TUIEmojiSearchTextField;
-  v10 = [(TUIEmojiSearchTextField *)&v14 canPerformAction:a3 withSender:v6];
+  v10 = [(TUIEmojiSearchTextField *)&v14 canPerformAction:action withSender:senderCopy];
 LABEL_23:
 
   return v10;

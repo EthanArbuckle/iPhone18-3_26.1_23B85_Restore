@@ -1,27 +1,27 @@
 @interface MXVoiceTriggerInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHardwareSampleRate:(BOOL)a3;
-- (void)setHasRecognizerScore:(BOOL)a3;
-- (void)setHasRecognizerThresholdOffset:(BOOL)a3;
-- (void)setHasSatScore:(BOOL)a3;
-- (void)setHasSatThreshold:(BOOL)a3;
-- (void)setHasTriggerEnd:(BOOL)a3;
-- (void)setHasTriggerScore:(BOOL)a3;
-- (void)setHasTriggerThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHardwareSampleRate:(BOOL)rate;
+- (void)setHasRecognizerScore:(BOOL)score;
+- (void)setHasRecognizerThresholdOffset:(BOOL)offset;
+- (void)setHasSatScore:(BOOL)score;
+- (void)setHasSatThreshold:(BOOL)threshold;
+- (void)setHasTriggerEnd:(BOOL)end;
+- (void)setHasTriggerScore:(BOOL)score;
+- (void)setHasTriggerThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXVoiceTriggerInfo
 
-- (void)setHasTriggerScore:(BOOL)a3
+- (void)setHasTriggerScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 128;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTriggerThreshold:(BOOL)a3
+- (void)setHasTriggerThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 256;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSatScore:(BOOL)a3
+- (void)setHasSatScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSatThreshold:(BOOL)a3
+- (void)setHasSatThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 32;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRecognizerScore:(BOOL)a3
+- (void)setHasRecognizerScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRecognizerThresholdOffset:(BOOL)a3
+- (void)setHasRecognizerThresholdOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 8;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasHardwareSampleRate:(BOOL)a3
+- (void)setHasHardwareSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 2;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTriggerEnd:(BOOL)a3
+- (void)setHasTriggerEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 64;
   }
@@ -145,20 +145,20 @@
   v8.receiver = self;
   v8.super_class = MXVoiceTriggerInfo;
   v4 = [(MXVoiceTriggerInfo *)&v8 description];
-  v5 = [(MXVoiceTriggerInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXVoiceTriggerInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x80) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_triggerScore];
-    [v3 setObject:v10 forKey:@"trigger_score"];
+    [dictionary setObject:v10 forKey:@"trigger_score"];
 
     has = self->_has;
     if ((has & 0x100) == 0)
@@ -179,7 +179,7 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_triggerThreshold];
-  [v3 setObject:v11 forKey:@"trigger_threshold"];
+  [dictionary setObject:v11 forKey:@"trigger_threshold"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -195,7 +195,7 @@ LABEL_4:
 
 LABEL_19:
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_satScore];
-  [v3 setObject:v12 forKey:@"sat_score"];
+  [dictionary setObject:v12 forKey:@"sat_score"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -211,7 +211,7 @@ LABEL_5:
 
 LABEL_20:
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_satThreshold];
-  [v3 setObject:v13 forKey:@"sat_threshold"];
+  [dictionary setObject:v13 forKey:@"sat_threshold"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -227,27 +227,27 @@ LABEL_6:
 
 LABEL_21:
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_recognizerScore];
-  [v3 setObject:v14 forKey:@"recognizer_score"];
+  [dictionary setObject:v14 forKey:@"recognizer_score"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_recognizerThresholdOffset];
-    [v3 setObject:v5 forKey:@"recognizer_threshold_offset"];
+    [dictionary setObject:v5 forKey:@"recognizer_threshold_offset"];
   }
 
 LABEL_8:
   configVersion = self->_configVersion;
   if (configVersion)
   {
-    [v3 setObject:configVersion forKey:@"config_version"];
+    [dictionary setObject:configVersion forKey:@"config_version"];
   }
 
   v7 = self->_has;
   if ((v7 & 2) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_hardwareSampleRate];
-    [v3 setObject:v15 forKey:@"hardware_sample_rate"];
+    [dictionary setObject:v15 forKey:@"hardware_sample_rate"];
 
     v7 = self->_has;
     if ((v7 & 1) == 0)
@@ -268,23 +268,23 @@ LABEL_12:
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_extraSamplesAtStart];
-  [v3 setObject:v16 forKey:@"extra_samples_at_start"];
+  [dictionary setObject:v16 forKey:@"extra_samples_at_start"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_13:
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_triggerEnd];
-    [v3 setObject:v8 forKey:@"trigger_end"];
+    [dictionary setObject:v8 forKey:@"trigger_end"];
   }
 
 LABEL_14:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x80) != 0)
   {
@@ -403,14 +403,14 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x80) != 0)
   {
-    v4[8] = *&self->_triggerScore;
-    *(v4 + 44) |= 0x80u;
+    toCopy[8] = *&self->_triggerScore;
+    *(toCopy + 44) |= 0x80u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -429,8 +429,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[9] = *&self->_triggerThreshold;
-  *(v4 + 44) |= 0x100u;
+  toCopy[9] = *&self->_triggerThreshold;
+  *(toCopy + 44) |= 0x100u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -444,8 +444,8 @@ LABEL_4:
   }
 
 LABEL_19:
-  v4[5] = *&self->_satScore;
-  *(v4 + 44) |= 0x10u;
+  toCopy[5] = *&self->_satScore;
+  *(toCopy + 44) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -459,8 +459,8 @@ LABEL_5:
   }
 
 LABEL_20:
-  v4[6] = *&self->_satThreshold;
-  *(v4 + 44) |= 0x20u;
+  toCopy[6] = *&self->_satThreshold;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -474,28 +474,28 @@ LABEL_6:
   }
 
 LABEL_21:
-  v4[3] = *&self->_recognizerScore;
-  *(v4 + 44) |= 4u;
+  toCopy[3] = *&self->_recognizerScore;
+  *(toCopy + 44) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    v4[4] = *&self->_recognizerThresholdOffset;
-    *(v4 + 44) |= 8u;
+    toCopy[4] = *&self->_recognizerThresholdOffset;
+    *(toCopy + 44) |= 8u;
   }
 
 LABEL_8:
   if (self->_configVersion)
   {
-    v7 = v4;
-    [v4 setConfigVersion:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setConfigVersion:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    v4[2] = *&self->_hardwareSampleRate;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = *&self->_hardwareSampleRate;
+    *(toCopy + 44) |= 2u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -514,21 +514,21 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v4[1] = *&self->_extraSamplesAtStart;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = *&self->_extraSamplesAtStart;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_13:
-    v4[7] = *&self->_triggerEnd;
-    *(v4 + 44) |= 0x40u;
+    toCopy[7] = *&self->_triggerEnd;
+    *(toCopy + 44) |= 0x40u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x80) != 0)
@@ -608,7 +608,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(NSString *)self->_configVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_configVersion copyWithZone:zone];
   v9 = *(v6 + 80);
   *(v6 + 80) = v8;
 
@@ -650,19 +650,19 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_triggerScore != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_triggerScore != *(equalCopy + 8))
     {
       goto LABEL_49;
     }
@@ -675,20 +675,20 @@ LABEL_11:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 44) & 0x100) == 0 || self->_triggerThreshold != *(v4 + 9))
+    if ((*(equalCopy + 44) & 0x100) == 0 || self->_triggerThreshold != *(equalCopy + 9))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 44) & 0x100) != 0)
+  else if ((*(equalCopy + 44) & 0x100) != 0)
   {
     goto LABEL_49;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_satScore != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_satScore != *(equalCopy + 5))
     {
       goto LABEL_49;
     }
@@ -701,7 +701,7 @@ LABEL_11:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_satThreshold != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_satThreshold != *(equalCopy + 6))
     {
       goto LABEL_49;
     }
@@ -714,7 +714,7 @@ LABEL_11:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_recognizerScore != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_recognizerScore != *(equalCopy + 3))
     {
       goto LABEL_49;
     }
@@ -727,7 +727,7 @@ LABEL_11:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_recognizerThresholdOffset != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_recognizerThresholdOffset != *(equalCopy + 4))
     {
       goto LABEL_49;
     }
@@ -739,7 +739,7 @@ LABEL_11:
   }
 
   configVersion = self->_configVersion;
-  if (configVersion | *(v4 + 10))
+  if (configVersion | *(equalCopy + 10))
   {
     if (![(NSString *)configVersion isEqual:?])
     {
@@ -751,10 +751,10 @@ LABEL_49:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_hardwareSampleRate != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_hardwareSampleRate != *(equalCopy + 2))
     {
       goto LABEL_49;
     }
@@ -767,7 +767,7 @@ LABEL_49:
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_extraSamplesAtStart != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_extraSamplesAtStart != *(equalCopy + 1))
     {
       goto LABEL_49;
     }
@@ -781,7 +781,7 @@ LABEL_49:
   v9 = (v8 & 0x40) == 0;
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_triggerEnd != *(v4 + 7))
+    if ((v8 & 0x40) == 0 || self->_triggerEnd != *(equalCopy + 7))
     {
       goto LABEL_49;
     }
@@ -1106,15 +1106,15 @@ LABEL_50:
   return v10 ^ v6 ^ v14 ^ v18 ^ v22 ^ v26 ^ v34 ^ v38 ^ v42 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) != 0)
   {
-    self->_triggerScore = *(v4 + 8);
+    self->_triggerScore = *(fromCopy + 8);
     *&self->_has |= 0x80u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -1127,14 +1127,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 0x100) == 0)
+  else if ((*(fromCopy + 44) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_triggerThreshold = *(v4 + 9);
+  self->_triggerThreshold = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1147,9 +1147,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_satScore = *(v4 + 5);
+  self->_satScore = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -1162,9 +1162,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_satThreshold = *(v4 + 6);
+  self->_satThreshold = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1177,29 +1177,29 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_recognizerScore = *(v4 + 3);
+  self->_recognizerScore = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
 LABEL_7:
-    self->_recognizerThresholdOffset = *(v4 + 4);
+    self->_recognizerThresholdOffset = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_8:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(MXVoiceTriggerInfo *)self setConfigVersion:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 2) != 0)
   {
-    self->_hardwareSampleRate = *(v4 + 2);
+    self->_hardwareSampleRate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
     if ((v6 & 1) == 0)
     {
 LABEL_12:
@@ -1217,12 +1217,12 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_extraSamplesAtStart = *(v4 + 1);
+  self->_extraSamplesAtStart = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 0x40) != 0)
+  if ((*(fromCopy + 44) & 0x40) != 0)
   {
 LABEL_13:
-    self->_triggerEnd = *(v4 + 7);
+    self->_triggerEnd = *(fromCopy + 7);
     *&self->_has |= 0x40u;
   }
 

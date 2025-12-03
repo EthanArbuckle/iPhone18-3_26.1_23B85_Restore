@@ -1,15 +1,15 @@
 @interface HPSpatialProfileManagerWrapper
-+ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)a3;
++ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)device;
 + (id)profileEnrollmentViewController;
 @end
 
 @implementation HPSpatialProfileManagerWrapper
 
-+ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)a3
++ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)device
 {
   v3 = off_10011C418;
-  v4 = a3;
-  LOBYTE(v3) = [(objc_class *)v3() isProxCardEnrollmentSupportedForDevice:v4];
+  deviceCopy = device;
+  LOBYTE(v3) = [(objc_class *)v3() isProxCardEnrollmentSupportedForDevice:deviceCopy];
 
   return v3;
 }

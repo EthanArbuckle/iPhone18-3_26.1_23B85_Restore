@@ -1,27 +1,27 @@
 @interface TSCHChartTitleLayoutItem
-- (BOOL)pointHitsTitleRect:(CGPoint)a3;
-- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)a3 outElementSize:(_NSRange *)a4 outClipRect:(CGSize *)a5 forSubselection:(CGRect *)a6 forSearchSelection:(BOOL)a7;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
+- (BOOL)pointHitsTitleRect:(CGPoint)rect;
+- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)ptr outElementSize:(_NSRange *)size outClipRect:(CGSize *)rect forSubselection:(CGRect *)subselection forSearchSelection:(BOOL)selection;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
 - (CGRect)calcDrawingRect;
 - (CGRect)calcOverhangRect;
 - (CGSize)calcMinSize;
-- (CGSize)calcMinSizeForModel:(id)a3;
-- (TSCHChartTitleLayoutItem)initWithParent:(id)a3;
+- (CGSize)calcMinSizeForModel:(id)model;
+- (TSCHChartTitleLayoutItem)initWithParent:(id)parent;
 - (id)p_titleParagraphStyle;
-- (id)renderersWithRep:(id)a3;
-- (id)subselectionHaloPositionsForSelections:(id)a3;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
+- (id)renderersWithRep:(id)rep;
+- (id)subselectionHaloPositionsForSelections:(id)selections;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
 - (id)titleText;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 @end
 
 @implementation TSCHChartTitleLayoutItem
 
-- (TSCHChartTitleLayoutItem)initWithParent:(id)a3
+- (TSCHChartTitleLayoutItem)initWithParent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = TSCHChartTitleLayoutItem;
-  v3 = [(TSCHChartLayoutItem *)&v5 initWithParent:a3];
+  v3 = [(TSCHChartLayoutItem *)&v5 initWithParent:parent];
   if (v3)
   {
     v3->_minHitSize = sub_276277000();
@@ -61,12 +61,12 @@
   return result;
 }
 
-- (CGSize)calcMinSizeForModel:(id)a3
+- (CGSize)calcMinSizeForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (objc_msgSend_isTitleOn(self, v5, v6, v7, v8))
   {
-    v13 = objc_msgSend_titleTextForModel_(self, v9, v10, v11, v12, v4);
+    v13 = objc_msgSend_titleTextForModel_(self, v9, v10, v11, v12, modelCopy);
     v18 = objc_msgSend_p_titleParagraphStyle(self, v14, v15, v16, v17);
     objc_msgSend_chartBodyWidth(self, v19, v20, v21, v22);
     v24 = v23;
@@ -197,21 +197,21 @@ LABEL_10:
   return result;
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v6 = [TSCHChartTitleRenderer alloc];
-  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, repCopy, self);
 
   objc_msgSend_addObject_(v5, v12, v13, v14, v15, v11);
 
   return v5;
 }
 
-- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)a3 outElementSize:(_NSRange *)a4 outClipRect:(CGSize *)a5 forSubselection:(CGRect *)a6 forSearchSelection:(BOOL)a7
+- (CGAffineTransform)p_transformForRenderingRangePtr:(SEL)ptr outElementSize:(_NSRange *)size outClipRect:(CGSize *)rect forSubselection:(CGRect *)subselection forSearchSelection:(BOOL)selection
 {
-  v10 = a7;
+  selectionCopy = selection;
   v16 = MEMORY[0x277CBF398];
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
@@ -226,9 +226,9 @@ LABEL_10:
   *&retstr->c = v135;
   v137 = *(v23 + 32);
   *&retstr->tx = v137;
-  if (objc_msgSend_isTitleOn(self, a3, *&v137, *&v135, v8))
+  if (objc_msgSend_isTitleOn(self, ptr, *&v137, *&v135, v8))
   {
-    v130 = a4;
+    sizeCopy = size;
     v28 = objc_msgSend_titleText(self, v24, v25, v26, v27);
     v33 = objc_msgSend_p_titleParagraphStyle(self, v29, v30, v31, v32);
     v127 = *(v16 + 16);
@@ -245,8 +245,8 @@ LABEL_10:
     if (shouldPlaceTitleAtCenter)
     {
       v48 = v28;
-      v126 = a5;
-      if (v10 || a8)
+      rectCopy = rect;
+      if (selectionCopy || a8)
       {
         v49 = objc_msgSend_sharedInteriorWrappingText(TSCHText, v44, v45, v46, v47);
       }
@@ -265,7 +265,7 @@ LABEL_10:
       v21 = v78;
       v67 = v79;
 
-      if (v10)
+      if (selectionCopy)
       {
         objc_msgSend_rootedLayoutRect(self, v80, v81, v82, v83);
         x = v84;
@@ -287,7 +287,7 @@ LABEL_10:
         }
 
         v106 = v69;
-        a5 = v126;
+        rect = rectCopy;
         *&v140.a = v136;
         *&v140.c = v135;
         *&v140.tx = v137;
@@ -297,7 +297,7 @@ LABEL_10:
         goto LABEL_29;
       }
 
-      a5 = v126;
+      rect = rectCopy;
     }
 
     else
@@ -322,10 +322,10 @@ LABEL_10:
     {
       v125 = v33;
       v124 = v22;
-      if (v130)
+      if (sizeCopy)
       {
-        location = v130->location;
-        length = v130->length;
+        location = sizeCopy->location;
+        length = sizeCopy->length;
       }
 
       else
@@ -352,7 +352,7 @@ LABEL_10:
       *&v140.c = v103;
       *&v140.tx = *&retstr->tx;
       CGAffineTransformTranslate(retstr, &v140, v101, v102);
-      if (v130 || v100.location || v99 != v100.length)
+      if (sizeCopy || v100.location || v99 != v100.length)
       {
         v139.origin = v128;
         v139.size = v127;
@@ -431,27 +431,27 @@ LABEL_29:
     height = v148.size.height;
   }
 
-  if (a6)
+  if (subselection)
   {
-    a6->origin.x = x;
-    a6->origin.y = y;
-    a6->size.width = width;
-    a6->size.height = height;
+    subselection->origin.x = x;
+    subselection->origin.y = y;
+    subselection->size.width = width;
+    subselection->size.height = height;
   }
 
-  if (a5)
+  if (rect)
   {
-    a5->width = v21;
-    a5->height = v22;
+    rect->width = v21;
+    rect->height = v22;
   }
 
   return result;
 }
 
-- (BOOL)pointHitsTitleRect:(CGPoint)a3
+- (BOOL)pointHitsTitleRect:(CGPoint)rect
 {
-  y = a3.y;
-  point = a3.x;
+  y = rect.y;
+  point = rect.x;
   v5 = *(MEMORY[0x277CBF398] + 16);
   v24.origin = *MEMORY[0x277CBF398];
   v24.size = v5;
@@ -480,26 +480,26 @@ LABEL_29:
   return result;
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v18 = a4;
-  if (v18 && objc_msgSend_isTitleOn(self, v7, v8, v9, v10) && objc_msgSend_pointHitsTitleRect_(self, v11, x, y, v12))
+  y = elements.y;
+  x = elements.x;
+  blockCopy = block;
+  if (blockCopy && objc_msgSend_isTitleOn(self, v7, v8, v9, v10) && objc_msgSend_pointHitsTitleRect_(self, v11, x, y, v12))
   {
     v17 = objc_msgSend_titleSelectionPath(self, v13, v14, v15, v16);
-    v18[2](v18, v17, 0);
+    blockCopy[2](blockCopy, v17, 0);
   }
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v60 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   v73.receiver = self;
   v73.super_class = TSCHChartTitleLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v73 subselectionKnobPositionsForSelection:v4];
+  v5 = [(TSCHChartLayoutItem *)&v73 subselectionKnobPositionsForSelection:selectionCopy];
   v59 = v5;
   if (v5)
   {
@@ -517,7 +517,7 @@ LABEL_29:
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v4;
+  obj = selectionCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, v18, v19, v20, &v69, v74, 16);
   if (v21)
   {
@@ -543,7 +543,7 @@ LABEL_29:
           v66 = v31;
           v63 = 0u;
           v64 = 0u;
-          objc_msgSend_transformForRenderingOutElementSize_outClipRect_forSubselection_(v60, v22, 0.0, *&v31, v25, &v66, &v67, 1);
+          objc_msgSend_transformForRenderingOutElementSize_outClipRect_forSubselection_(selfCopy, v22, 0.0, *&v31, v25, &v66, &v67, 1);
           objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v32, *&v67, *(&v67 + 1), *&v68, *(&v68 + 1), v66);
           v34 = v33;
           v36 = v35;
@@ -573,14 +573,14 @@ LABEL_29:
   return v15;
 }
 
-- (id)subselectionHaloPositionsForSelections:(id)a3
+- (id)subselectionHaloPositionsForSelections:(id)selections
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v60 = self;
+  selectionsCopy = selections;
+  selfCopy = self;
   v73.receiver = self;
   v73.super_class = TSCHChartTitleLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v73 subselectionHaloPositionsForSelections:v4];
+  v5 = [(TSCHChartLayoutItem *)&v73 subselectionHaloPositionsForSelections:selectionsCopy];
   v59 = v5;
   if (v5)
   {
@@ -598,7 +598,7 @@ LABEL_29:
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v4;
+  obj = selectionsCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v17, v18, v19, v20, &v69, v74, 16);
   if (v21)
   {
@@ -624,7 +624,7 @@ LABEL_29:
           v66 = v31;
           v63 = 0u;
           v64 = 0u;
-          objc_msgSend_transformForRenderingOutElementSize_outClipRect_forSubselection_(v60, v22, 0.0, *&v31, v25, &v66, &v67, 1);
+          objc_msgSend_transformForRenderingOutElementSize_outClipRect_forSubselection_(selfCopy, v22, 0.0, *&v31, v25, &v66, &v67, 1);
           objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v32, *&v67, *(&v67 + 1), *&v68, *(&v68 + 1), v66);
           v34 = v33;
           v36 = v35;
@@ -654,14 +654,14 @@ LABEL_29:
   return v15;
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   v42.receiver = self;
   v42.super_class = TSCHChartTitleLayoutItem;
-  Mutable = [(TSCHChartLayoutItem *)&v42 newDragAndDropHighlightPathForSelection:v4];
-  if (objc_msgSend_count(v4, v6, v7, v8, v9))
+  Mutable = [(TSCHChartLayoutItem *)&v42 newDragAndDropHighlightPathForSelection:selectionCopy];
+  if (objc_msgSend_count(selectionCopy, v6, v7, v8, v9))
   {
     if (Mutable)
     {
@@ -679,8 +679,8 @@ LABEL_29:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v37 = v4;
-    v11 = v4;
+    v37 = selectionCopy;
+    v11 = selectionCopy;
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, v13, v14, v15, &v38, v43, 16);
     if (v16)
     {
@@ -717,7 +717,7 @@ LABEL_29:
       while (v21);
     }
 
-    v4 = v37;
+    selectionCopy = v37;
   }
 
   return Mutable;

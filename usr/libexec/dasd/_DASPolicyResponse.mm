@@ -1,10 +1,10 @@
 @interface _DASPolicyResponse
-+ (BOOL)isPolicyDecisionProceedable:(int64_t)a3;
-+ (id)abbreviatedDecision:(int64_t)a3;
-+ (id)policyResponseWithDecision:(int64_t)a3 validityDuration:(double)a4 rationale:(id)a5;
-+ (id)policyResponseWithScore:(double)a3 validityDuration:(double)a4 rationale:(id)a5;
-+ (id)prettyDecisionDescription:(int64_t)a3;
-- (_DASPolicyResponse)initWithScore:(double)a3 decision:(int64_t)a4 validityDuration:(double)a5 rationale:(id)a6;
++ (BOOL)isPolicyDecisionProceedable:(int64_t)proceedable;
++ (id)abbreviatedDecision:(int64_t)decision;
++ (id)policyResponseWithDecision:(int64_t)decision validityDuration:(double)duration rationale:(id)rationale;
++ (id)policyResponseWithScore:(double)score validityDuration:(double)duration rationale:(id)rationale;
++ (id)prettyDecisionDescription:(int64_t)description;
+- (_DASPolicyResponse)initWithScore:(double)score decision:(int64_t)decision validityDuration:(double)duration rationale:(id)rationale;
 - (id)description;
 @end
 
@@ -28,16 +28,16 @@
   return v5;
 }
 
-+ (id)prettyDecisionDescription:(int64_t)a3
++ (id)prettyDecisionDescription:(int64_t)description
 {
-  if (a3 <= 66)
+  if (description <= 66)
   {
-    if (!a3)
+    if (!description)
     {
       return @"Can Proceed";
     }
 
-    if (a3 == 33)
+    if (description == 33)
     {
       return @"Must Not Proceed";
     }
@@ -45,7 +45,7 @@
 
   else
   {
-    switch(a3)
+    switch(description)
     {
       case 67:
         return @"Must Proceed";
@@ -59,16 +59,16 @@
   return @"Unknown Decision (Proceed)";
 }
 
-+ (id)abbreviatedDecision:(int64_t)a3
++ (id)abbreviatedDecision:(int64_t)decision
 {
-  if (a3 <= 66)
+  if (decision <= 66)
   {
-    if (!a3)
+    if (!decision)
     {
       return @"CP";
     }
 
-    if (a3 == 33)
+    if (decision == 33)
     {
       return @"MNP";
     }
@@ -76,7 +76,7 @@
 
   else
   {
-    switch(a3)
+    switch(decision)
     {
       case 67:
         return @"MP";
@@ -90,27 +90,27 @@
   return @"UD(P)";
 }
 
-- (_DASPolicyResponse)initWithScore:(double)a3 decision:(int64_t)a4 validityDuration:(double)a5 rationale:(id)a6
+- (_DASPolicyResponse)initWithScore:(double)score decision:(int64_t)decision validityDuration:(double)duration rationale:(id)rationale
 {
-  v11 = a6;
+  rationaleCopy = rationale;
   v15.receiver = self;
   v15.super_class = _DASPolicyResponse;
   v12 = [(_DASPolicyResponse *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_score = a3;
-    v12->_policyDecision = a4;
-    v12->_validityDuration = a5;
-    objc_storeStrong(&v12->_rationale, a6);
+    v12->_score = score;
+    v12->_policyDecision = decision;
+    v12->_validityDuration = duration;
+    objc_storeStrong(&v12->_rationale, rationale);
   }
 
   return v13;
 }
 
-+ (id)policyResponseWithDecision:(int64_t)a3 validityDuration:(double)a4 rationale:(id)a5
++ (id)policyResponseWithDecision:(int64_t)decision validityDuration:(double)duration rationale:(id)rationale
 {
-  if (a3 == 100 || a3 == 33)
+  if (decision == 100 || decision == 33)
   {
     v8 = 0.0;
   }
@@ -120,17 +120,17 @@
     v8 = 1.0;
   }
 
-  v9 = a5;
-  v10 = [[_DASPolicyResponse alloc] initWithScore:a3 decision:v9 validityDuration:v8 rationale:a4];
+  rationaleCopy = rationale;
+  v10 = [[_DASPolicyResponse alloc] initWithScore:decision decision:rationaleCopy validityDuration:v8 rationale:duration];
 
   return v10;
 }
 
-+ (id)policyResponseWithScore:(double)a3 validityDuration:(double)a4 rationale:(id)a5
++ (id)policyResponseWithScore:(double)score validityDuration:(double)duration rationale:(id)rationale
 {
-  v7 = a5;
+  rationaleCopy = rationale;
   v8 = [_DASPolicyResponse alloc];
-  if (a3 <= 0.0)
+  if (score <= 0.0)
   {
     v9 = 33;
   }
@@ -140,20 +140,20 @@
     v9 = 0;
   }
 
-  v10 = [(_DASPolicyResponse *)v8 initWithScore:v9 decision:v7 validityDuration:a3 rationale:a4];
+  v10 = [(_DASPolicyResponse *)v8 initWithScore:v9 decision:rationaleCopy validityDuration:score rationale:duration];
 
   return v10;
 }
 
-+ (BOOL)isPolicyDecisionProceedable:(int64_t)a3
++ (BOOL)isPolicyDecisionProceedable:(int64_t)proceedable
 {
-  v3 = a3 == 200;
-  if (a3 == 67)
+  v3 = proceedable == 200;
+  if (proceedable == 67)
   {
     v3 = 1;
   }
 
-  return !a3 || v3;
+  return !proceedable || v3;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface BackdropView
 + (Class)layerClass;
-- (_TtC5Music12BackdropView)initWithCoder:(id)a3;
-- (_TtC5Music12BackdropView)initWithFrame:(CGRect)a3;
+- (_TtC5Music12BackdropView)initWithCoder:(id)coder;
+- (_TtC5Music12BackdropView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation BackdropView
 
-- (_TtC5Music12BackdropView)initWithCoder:(id)a3
+- (_TtC5Music12BackdropView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music12BackdropView_gradientMaskType) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music12BackdropView_gradientLayer) = 0;
@@ -28,11 +28,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004537C0();
 }
 
-- (_TtC5Music12BackdropView)initWithFrame:(CGRect)a3
+- (_TtC5Music12BackdropView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

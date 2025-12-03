@@ -1,38 +1,38 @@
 @interface FSFCurareInteractionStream
-+ (id)eventFilterForEventTypes:(id)a3;
-+ (id)getWithStreamId:(id)a3 sourceType:(unint64_t)a4;
++ (id)eventFilterForEventTypes:(id)types;
++ (id)getWithStreamId:(id)id sourceType:(unint64_t)type;
 - (BOOL)deleteCurrentStream;
-- (BOOL)insert:(id)a3 error:(id *)a4;
-- (FSFCurareInteractionStream)initWithStreamId:(id)a3 sourceType:(unint64_t)a4;
-- (id)retrieve:(id)a3;
-- (id)retrieveWithInteractionWrapper:(id)a3;
-- (void)retrieve:(id)a3 completionHandler:(id)a4;
-- (void)retrieveWithInteractionWrapper:(id)a3 completionHandler:(id)a4;
+- (BOOL)insert:(id)insert error:(id *)error;
+- (FSFCurareInteractionStream)initWithStreamId:(id)id sourceType:(unint64_t)type;
+- (id)retrieve:(id)retrieve;
+- (id)retrieveWithInteractionWrapper:(id)wrapper;
+- (void)retrieve:(id)retrieve completionHandler:(id)handler;
+- (void)retrieveWithInteractionWrapper:(id)wrapper completionHandler:(id)handler;
 @end
 
 @implementation FSFCurareInteractionStream
 
-+ (id)getWithStreamId:(id)a3 sourceType:(unint64_t)a4
++ (id)getWithStreamId:(id)id sourceType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [[FSFCurareInteractionStream alloc] initWithStreamId:v5 sourceType:a4];
+  idCopy = id;
+  v6 = [[FSFCurareInteractionStream alloc] initWithStreamId:idCopy sourceType:type];
 
   return v6;
 }
 
-- (FSFCurareInteractionStream)initWithStreamId:(id)a3 sourceType:(unint64_t)a4
+- (FSFCurareInteractionStream)initWithStreamId:(id)id sourceType:(unint64_t)type
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   v16.receiver = self;
   v16.super_class = FSFCurareInteractionStream;
   v7 = [(FSFCurareInteractionStream *)&v16 init];
   if (v7)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v10 = objc_opt_class();
-      v17[0] = v6;
+      v17[0] = idCopy;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
       v9 = [v10 eventFilterForEventTypes:v11];
 
@@ -43,9 +43,9 @@
       goto LABEL_6;
     }
 
-    if (!a4)
+    if (!type)
     {
-      v8 = [[FSFCurareInteractionFeatureStoreStream alloc] initWithStreamId:v6];
+      v8 = [[FSFCurareInteractionFeatureStoreStream alloc] initWithStreamId:idCopy];
       v9 = v7->_stream;
       v7->_stream = v8;
 LABEL_6:
@@ -56,65 +56,65 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)insert:(id)a3 error:(id *)a4
+- (BOOL)insert:(id)insert error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FSFCurareInteractionStream *)self stream];
-  LOBYTE(a4) = [v7 insert:v6 error:a4];
+  insertCopy = insert;
+  stream = [(FSFCurareInteractionStream *)self stream];
+  LOBYTE(error) = [stream insert:insertCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)retrieve:(id)a3
+- (id)retrieve:(id)retrieve
 {
-  v4 = a3;
-  v5 = [(FSFCurareInteractionStream *)self stream];
-  v6 = [v5 retrieve:v4];
+  retrieveCopy = retrieve;
+  stream = [(FSFCurareInteractionStream *)self stream];
+  v6 = [stream retrieve:retrieveCopy];
 
   return v6;
 }
 
-- (void)retrieve:(id)a3 completionHandler:(id)a4
+- (void)retrieve:(id)retrieve completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FSFCurareInteractionStream *)self stream];
-  [v8 retrieve:v7 completionHandler:v6];
+  handlerCopy = handler;
+  retrieveCopy = retrieve;
+  stream = [(FSFCurareInteractionStream *)self stream];
+  [stream retrieve:retrieveCopy completionHandler:handlerCopy];
 }
 
-- (id)retrieveWithInteractionWrapper:(id)a3
+- (id)retrieveWithInteractionWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [(FSFCurareInteractionStream *)self stream];
-  v6 = [v5 retrieveWithInteractionWrapper:v4];
+  wrapperCopy = wrapper;
+  stream = [(FSFCurareInteractionStream *)self stream];
+  v6 = [stream retrieveWithInteractionWrapper:wrapperCopy];
 
   return v6;
 }
 
-- (void)retrieveWithInteractionWrapper:(id)a3 completionHandler:(id)a4
+- (void)retrieveWithInteractionWrapper:(id)wrapper completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FSFCurareInteractionStream *)self stream];
-  [v8 retrieveWithInteractionWrapper:v7 completionHandler:v6];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  stream = [(FSFCurareInteractionStream *)self stream];
+  [stream retrieveWithInteractionWrapper:wrapperCopy completionHandler:handlerCopy];
 }
 
 - (BOOL)deleteCurrentStream
 {
-  v2 = [(FSFCurareInteractionStream *)self stream];
-  v3 = [v2 deleteCurrentStream];
+  stream = [(FSFCurareInteractionStream *)self stream];
+  deleteCurrentStream = [stream deleteCurrentStream];
 
-  return v3;
+  return deleteCurrentStream;
 }
 
-+ (id)eventFilterForEventTypes:(id)a3
++ (id)eventFilterForEventTypes:(id)types
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  typesCopy = types;
+  v4 = typesCopy;
+  if (!typesCopy)
   {
-    v7 = [MEMORY[0x277CE4880] everything];
+    everything = [MEMORY[0x277CE4880] everything];
     goto LABEL_22;
   }
 
@@ -122,17 +122,17 @@ LABEL_6:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v30 = v3;
-  obj = v3;
+  v30 = typesCopy;
+  obj = typesCopy;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (!v5)
   {
-    v7 = 0;
+    everything = 0;
     goto LABEL_21;
   }
 
   v6 = v5;
-  v7 = 0;
+  everything = 0;
   v8 = *v33;
   do
   {
@@ -183,10 +183,10 @@ LABEL_29:
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
         v18 = [v16 someOf:v13 types:v17];
 
-        if (!v7)
+        if (!everything)
         {
 LABEL_13:
-          v7 = v18;
+          everything = v18;
           goto LABEL_16;
         }
       }
@@ -194,15 +194,15 @@ LABEL_13:
       else
       {
         v18 = [MEMORY[0x277CE4880] allOf:v13];
-        if (!v7)
+        if (!everything)
         {
           goto LABEL_13;
         }
       }
 
-      v19 = [v7 combine:v18];
+      v19 = [everything combine:v18];
 
-      v7 = v19;
+      everything = v19;
 LABEL_16:
     }
 
@@ -217,7 +217,7 @@ LABEL_22:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return everything;
 }
 
 @end

@@ -6,21 +6,21 @@
 
 - (BOOL)sa_hasFailed
 {
-  v1 = [a1 disconnectedReason];
+  disconnectedReason = [self disconnectedReason];
   result = 1;
-  if (v1 > 0x34)
+  if (disconnectedReason > 0x34)
   {
-    return v1 - 1000 < 2;
+    return disconnectedReason - 1000 < 2;
   }
 
-  if (((1 << v1) & 0x177FFBF1EF7F20) != 0)
+  if (((1 << disconnectedReason) & 0x177FFBF1EF7F20) != 0)
   {
     return result;
   }
 
-  if (((1 << v1) & 0x880040E0080DFLL) == 0)
+  if (((1 << disconnectedReason) & 0x880040E0080DFLL) == 0)
   {
-    return v1 - 1000 < 2;
+    return disconnectedReason - 1000 < 2;
   }
 
   return 0;

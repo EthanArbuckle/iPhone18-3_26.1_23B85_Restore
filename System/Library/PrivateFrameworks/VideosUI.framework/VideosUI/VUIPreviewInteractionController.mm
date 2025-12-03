@@ -1,40 +1,40 @@
 @interface VUIPreviewInteractionController
-- (BOOL)previewInteractionShouldBegin:(id)a3;
+- (BOOL)previewInteractionShouldBegin:(id)begin;
 - (UIViewController)presentingViewController;
-- (VUIPreviewInteractionController)initWithPresentingViewController:(id)a3 collectionView:(id)a4 controllerToPresent:(id)a5;
+- (VUIPreviewInteractionController)initWithPresentingViewController:(id)controller collectionView:(id)view controllerToPresent:(id)present;
 - (VUIPreviewInteractionControllerDelegate)delegate;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_cleanupPreviewInteraction;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)dealloc;
 - (void)dismissConfirmation;
-- (void)previewInteraction:(id)a3 didUpdatePreviewTransition:(double)a4 ended:(BOOL)a5;
-- (void)previewInteractionDidCancel:(id)a3;
+- (void)previewInteraction:(id)interaction didUpdatePreviewTransition:(double)transition ended:(BOOL)ended;
+- (void)previewInteractionDidCancel:(id)cancel;
 @end
 
 @implementation VUIPreviewInteractionController
 
-- (VUIPreviewInteractionController)initWithPresentingViewController:(id)a3 collectionView:(id)a4 controllerToPresent:(id)a5
+- (VUIPreviewInteractionController)initWithPresentingViewController:(id)controller collectionView:(id)view controllerToPresent:(id)present
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewCopy = view;
+  presentCopy = present;
   v17.receiver = self;
   v17.super_class = VUIPreviewInteractionController;
   v11 = [(VUIPreviewInteractionController *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_collectionView, a4);
-    objc_storeWeak(&v12->_presentingViewController, v8);
-    objc_storeStrong(&v12->_presentedViewController, a5);
+    objc_storeStrong(&v11->_collectionView, view);
+    objc_storeWeak(&v12->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v12->_presentedViewController, present);
     v13 = [objc_alloc(MEMORY[0x1E69DCE10]) initWithView:v12->_collectionView];
     previewInteraction = v12->_previewInteraction;
     v12->_previewInteraction = v13;
 
     [(UIPreviewInteraction *)v12->_previewInteraction setDelegate:v12];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v12 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v12;
@@ -42,8 +42,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 
   v4.receiver = self;
   v4.super_class = VUIPreviewInteractionController;
@@ -71,16 +71,16 @@ uint64_t __54__VUIPreviewInteractionController_dismissConfirmation__block_invoke
   return [v2 _cleanupPreviewInteraction];
 }
 
-- (BOOL)previewInteractionShouldBegin:(id)a3
+- (BOOL)previewInteractionShouldBegin:(id)begin
 {
   v113 = *MEMORY[0x1E69E9840];
-  [a3 locationInCoordinateSpace:0];
+  [begin locationInCoordinateSpace:0];
   v4 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:?];
   v5 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v4];
   stashedCell = self->_stashedCell;
   self->_stashedCell = v5;
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = self->_collectionView;
   if (v8)
   {
@@ -97,25 +97,25 @@ uint64_t __54__VUIPreviewInteractionController_dismissConfirmation__block_invoke
           goto LABEL_25;
         }
 
-        [v7 addObject:v10];
+        [array addObject:v10];
       }
 
-      v11 = [v9 superview];
+      superview = [v9 superview];
 
-      v9 = v11;
+      v9 = superview;
     }
 
-    while (v11);
+    while (superview);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
-  v13 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if (v13)
+  if (navigationController)
   {
-    v14 = [(VUIPreviewInteractionController *)self delegate];
-    v10 = v14;
-    if (v14 && ![v14 interactionController:self shouldInteractionControllerBeginForIndexPath:v4])
+    delegate = [(VUIPreviewInteractionController *)self delegate];
+    v10 = delegate;
+    if (delegate && ![delegate interactionController:self shouldInteractionControllerBeginForIndexPath:v4])
     {
 LABEL_25:
       v38 = 0;
@@ -128,7 +128,7 @@ LABEL_25:
       v111 = 0u;
       v108 = 0u;
       v109 = 0u;
-      v15 = v7;
+      v15 = array;
       v16 = [v15 countByEnumeratingWithState:&v108 objects:v112 count:16];
       if (v16)
       {
@@ -144,11 +144,11 @@ LABEL_25:
             }
 
             v20 = *(*(&v108 + 1) + 8 * i);
-            v21 = [v20 panGestureRecognizer];
-            [v21 setEnabled:0];
+            panGestureRecognizer = [v20 panGestureRecognizer];
+            [panGestureRecognizer setEnabled:0];
 
-            v22 = [v20 panGestureRecognizer];
-            [v22 setEnabled:1];
+            panGestureRecognizer2 = [v20 panGestureRecognizer];
+            [panGestureRecognizer2 setEnabled:1];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v108 objects:v112 count:16];
@@ -166,9 +166,9 @@ LABEL_25:
 
         [(VUIPresentationContainerViewController *)self->_wrapperViewController setTransitioningDelegate:self];
         [(VUIPresentationContainerViewController *)self->_wrapperViewController setModalPresentationStyle:4];
-        v26 = [(VUIPresentationContainerViewController *)self->_wrapperViewController view];
-        v27 = [(UIViewController *)self->_presentedViewController view];
-        [v26 addSubview:v27];
+        view = [(VUIPresentationContainerViewController *)self->_wrapperViewController view];
+        view2 = [(UIViewController *)self->_presentedViewController view];
+        [view addSubview:view2];
 
         [(VUIPresentationContainerViewController *)self->_wrapperViewController addChildViewController:self->_presentedViewController];
         v107[0] = MEMORY[0x1E69E9820];
@@ -177,20 +177,20 @@ LABEL_25:
         v107[3] = &unk_1E872D768;
         v107[4] = self;
         [MEMORY[0x1E69DD258] _performWithoutDeferringTransitions:v107];
-        v28 = [(VUIPresentationContainerViewController *)self->_wrapperViewController presentationController];
-        v29 = [v28 containerView];
-        v30 = [v28 presentedView];
-        [v29 insertSubview:v23 belowSubview:v30];
-        [v29 bounds];
+        presentationController = [(VUIPresentationContainerViewController *)self->_wrapperViewController presentationController];
+        containerView = [presentationController containerView];
+        presentedView = [presentationController presentedView];
+        [containerView insertSubview:v23 belowSubview:presentedView];
+        [containerView bounds];
         Width = CGRectGetWidth(v114);
-        [v29 safeAreaInsets];
+        [containerView safeAreaInsets];
         v33 = Width - v32;
-        [v29 safeAreaInsets];
+        [containerView safeAreaInsets];
         v35 = *(MEMORY[0x1E695F060] + 8);
         v36 = 56.0;
         if (*MEMORY[0x1E695F060] == v33 - v34 + -33.0 && v35 == 56.0)
         {
-          [v29 bounds];
+          [containerView bounds];
           v36 = CGRectGetWidth(v115) + -33.0;
           v89 = v36;
           v92 = 544.0;
@@ -203,20 +203,20 @@ LABEL_25:
         }
 
         v39 = [(VUIPreviewInteractionController *)self presentingViewController:v36];
-        v40 = [v39 view];
+        view3 = [v39 view];
 
         collectionView = self->_collectionView;
         [(UICollectionViewCell *)self->_stashedCell frame];
-        v91 = v40;
-        [(UICollectionView *)collectionView convertRect:v40 toView:?];
-        [v40 convertRect:v29 toView:?];
+        v91 = view3;
+        [(UICollectionView *)collectionView convertRect:view3 toView:?];
+        [view3 convertRect:containerView toView:?];
         v83 = v43;
         v84 = v42;
         v45 = v44;
         v47 = v46;
         [v23 setFrame:?];
         [(UICollectionViewCell *)self->_stashedCell setHidden:1];
-        [v29 bounds];
+        [containerView bounds];
         x = v116.origin.x;
         y = v116.origin.y;
         v50 = v116.size.width;
@@ -249,8 +249,8 @@ LABEL_25:
           v55 = v53;
         }
 
-        [v28 setModalSize:{v54, v55}];
-        [v30 setAlpha:0.0];
+        [presentationController setModalSize:{v54, v55}];
+        [presentedView setAlpha:0.0];
         v118.origin.x = v84;
         v118.origin.y = v83;
         v118.size.width = v45;
@@ -261,7 +261,7 @@ LABEL_25:
         v119.size.width = v45;
         v119.size.height = v47;
         MidY = CGRectGetMidY(v119);
-        [v29 bounds];
+        [containerView bounds];
         v59 = (v58 - v54) * 0.5;
         v61 = (v60 - v55) * 0.5;
         v120.origin.x = v59;
@@ -283,24 +283,24 @@ LABEL_25:
           v65 = v67;
         }
 
-        [v30 setFrame:{(v85 - v54) * 0.5, (height - v55) * 0.5, v54, v55}];
-        v90 = v29;
+        [presentedView setFrame:{(v85 - v54) * 0.5, (height - v55) * 0.5, v54, v55}];
+        v90 = containerView;
         memset(&v106, 0, sizeof(v106));
         CGAffineTransformMakeTranslation(&v106, MidX - v62, MidY - v63);
         v104 = v106;
         CGAffineTransformScale(&v105, &v104, v65, v65);
         v106 = v105;
-        [v30 setTransform:&v105];
-        v68 = [v28 backdropView];
+        [presentedView setTransform:&v105];
+        backdropView = [presentationController backdropView];
         [VUIConfirmationBlurEffect effectWithStyle:1];
-        v69 = v86 = v28;
+        v69 = v86 = presentationController;
         v70 = objc_alloc(MEMORY[0x1E69DD278]);
         v100[0] = MEMORY[0x1E69E9820];
         v100[1] = 3221225472;
         v100[2] = __65__VUIPreviewInteractionController_previewInteractionShouldBegin___block_invoke_2;
         v100[3] = &unk_1E872E008;
-        v71 = v30;
-        v72 = v68;
+        v71 = presentedView;
+        v72 = backdropView;
         v101 = v72;
         v102 = v69;
         v73 = v23;
@@ -395,18 +395,18 @@ uint64_t __65__VUIPreviewInteractionController_previewInteractionShouldBegin___b
   return [v3 setTransform:&v8];
 }
 
-- (void)previewInteraction:(id)a3 didUpdatePreviewTransition:(double)a4 ended:(BOOL)a5
+- (void)previewInteraction:(id)interaction didUpdatePreviewTransition:(double)transition ended:(BOOL)ended
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4 * a4;
-  if (a4 * a4 != 0.0 && v8 <= 1.0)
+  endedCopy = ended;
+  interactionCopy = interaction;
+  v8 = transition * transition;
+  if (transition * transition != 0.0 && v8 <= 1.0)
   {
     [(UIViewPropertyAnimator *)self->_previewPropertyAnimator setFractionComplete:v8];
   }
 
-  self->_previewTransitionEnded = v5;
-  if (v5)
+  self->_previewTransitionEnded = endedCopy;
+  if (endedCopy)
   {
     [(UICollectionViewCell *)self->_stashedCell setHidden:0];
     [(UIViewPropertyAnimator *)self->_commitPropertyAnimator startAnimation];
@@ -416,7 +416,7 @@ uint64_t __65__VUIPreviewInteractionController_previewInteractionShouldBegin___b
   }
 }
 
-- (void)previewInteractionDidCancel:(id)a3
+- (void)previewInteractionDidCancel:(id)cancel
 {
   [(UICollectionViewCell *)self->_stashedCell setHidden:0];
   if (!self->_previewTransitionEnded)
@@ -434,14 +434,14 @@ uint64_t __65__VUIPreviewInteractionController_previewInteractionShouldBegin___b
   }
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   dialogPresentationController = self->_dialogPresentationController;
   if (!dialogPresentationController)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [[VUIDialogPresentationController alloc] initWithPresentedViewController:v9 presentingViewController:v8];
+    viewControllerCopy = viewController;
+    controllerCopy = controller;
+    v10 = [[VUIDialogPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
     v11 = self->_dialogPresentationController;
     self->_dialogPresentationController = v10;
@@ -452,10 +452,10 @@ uint64_t __65__VUIPreviewInteractionController_previewInteractionShouldBegin___b
   return dialogPresentationController;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(VUIPreviewInteractionController *)self transitionDuration:v4];
+  transitionCopy = transition;
+  [(VUIPreviewInteractionController *)self transitionDuration:transitionCopy];
   v6 = v5;
   v7 = MEMORY[0x1E69DD250];
   v12[0] = MEMORY[0x1E69E9820];
@@ -467,9 +467,9 @@ uint64_t __65__VUIPreviewInteractionController_previewInteractionShouldBegin___b
   v9[1] = 3221225472;
   v9[2] = __53__VUIPreviewInteractionController_animateTransition___block_invoke_2;
   v9[3] = &unk_1E872E9C8;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = transitionCopy;
+  selfCopy = self;
+  v8 = transitionCopy;
   [v7 animateWithDuration:0 delay:v12 usingSpringWithDamping:v9 initialSpringVelocity:v6 options:0.0 animations:1.0 completion:0.0];
 }
 
@@ -510,8 +510,8 @@ uint64_t __53__VUIPreviewInteractionController_animateTransition___block_invoke_
 
 - (void)_cleanupPreviewInteraction
 {
-  v3 = [(VUIPreviewInteractionController *)self delegate];
-  [v3 interactionController:self didEndForIndexPath:self->_currentIndexPath];
+  delegate = [(VUIPreviewInteractionController *)self delegate];
+  [delegate interactionController:self didEndForIndexPath:self->_currentIndexPath];
 
   [(UICollectionViewCell *)self->_stashedCell setHidden:0];
   stashedCell = self->_stashedCell;

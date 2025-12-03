@@ -1,10 +1,10 @@
 @interface GKMetrics
-- (void)handleNotification:(id)a3;
+- (void)handleNotification:(id)notification;
 @end
 
 @implementation GKMetrics
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
   v3 = sub_24E342F28();
   v4 = *(v3 - 8);

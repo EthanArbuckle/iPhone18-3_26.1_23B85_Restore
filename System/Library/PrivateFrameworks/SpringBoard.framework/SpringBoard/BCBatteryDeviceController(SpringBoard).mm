@@ -8,7 +8,7 @@
 - (id)sb_deviceInternalBattery
 {
   v12 = *MEMORY[0x277D85DE8];
-  [a1 connectedDevices];
+  [self connectedDevices];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
@@ -52,7 +52,7 @@ LABEL_11:
 - (uint64_t)sb_isConnectedToWirelessCharger
 {
   v11 = *MEMORY[0x277D85DE8];
-  [a1 connectedDevices];
+  [self connectedDevices];
   v6 = 0u;
   v7 = 0u;
   v8 = 0u;

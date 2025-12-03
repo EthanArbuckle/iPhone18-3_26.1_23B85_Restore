@@ -1,13 +1,13 @@
 @interface _BKHIDDeliveryObserverDeprecatedIncomingConnectionHandler
-- (void)handleIncomingDeliveryObserverConnection:(id)a3;
+- (void)handleIncomingDeliveryObserverConnection:(id)connection;
 @end
 
 @implementation _BKHIDDeliveryObserverDeprecatedIncomingConnectionHandler
 
-- (void)handleIncomingDeliveryObserverConnection:(id)a3
+- (void)handleIncomingDeliveryObserverConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  connectionCopy = connection;
   v5 = self->_deliveryObserverServiceProvider;
   if (!v5)
   {
@@ -22,7 +22,7 @@
       v23 = 2114;
       v24 = v13;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BKHIDEventDeliveryObserverServer.m";
       v29 = 1024;
@@ -39,14 +39,14 @@
   }
 
   v6 = v5;
-  v7 = [v20 auditToken];
-  v8 = [(BKHIDEventDeliveryObserverServiceProvider *)v6 deliveryObserverServiceForAuditToken:v7];
+  auditToken = [connectionCopy auditToken];
+  v8 = [(BKHIDEventDeliveryObserverServiceProvider *)v6 deliveryObserverServiceForAuditToken:auditToken];
 
   if (!v8)
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v20 auditToken];
-    v16 = [v14 stringWithFormat:@"failed to provide delivery observer service for auditToken: %@", v15];
+    auditToken2 = [connectionCopy auditToken];
+    v16 = [v14 stringWithFormat:@"failed to provide delivery observer service for auditToken: %@", auditToken2];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -58,7 +58,7 @@
       v23 = 2114;
       v24 = v19;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BKHIDEventDeliveryObserverServer.m";
       v29 = 1024;
@@ -74,7 +74,7 @@
     JUMPOUT(0x223CC9378);
   }
 
-  [v20 acceptConnectionWithMappedObject:v8];
+  [connectionCopy acceptConnectionWithMappedObject:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }

@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __64__NSPersonNameComponents_ContactsPrivate__descriptorForUsedKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (descriptorForUsedKeys_cn_once_token_0 != -1)
   {
     dispatch_once(&descriptorForUsedKeys_cn_once_token_0, block);
@@ -32,7 +32,7 @@
   v12[1] = 3221225472;
   v12[2] = __64__NSPersonNameComponents_ContactsPrivate__componentsForContact___block_invoke;
   v12[3] = &unk_1E7417C28;
-  v15 = a1;
+  selfCopy = self;
   v13 = v4;
   v7 = v5;
   v14 = v7;
@@ -53,7 +53,7 @@
   v7[2] = __71__NSPersonNameComponents_ContactsPrivate__overrideComponentsInContact___block_invoke;
   v7[3] = &unk_1E7417C50;
   v8 = v4;
-  v9 = a1;
+  selfCopy = self;
   v6 = v4;
   [v5 enumerateObjectsUsingBlock:v7];
 }

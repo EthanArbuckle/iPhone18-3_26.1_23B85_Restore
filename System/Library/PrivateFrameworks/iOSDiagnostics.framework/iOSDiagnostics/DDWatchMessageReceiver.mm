@@ -1,32 +1,32 @@
 @interface DDWatchMessageReceiver
 - (BOOL)isDeviceLocked;
-- (BOOL)respondsToMessage:(id)a3;
-- (DDWatchMessageReceiver)initWithDestination:(id)a3;
-- (void)receiveMessage:(id)a3 data:(id)a4 fromDestination:(id)a5 expectsResponse:(BOOL)a6 response:(id)a7;
+- (BOOL)respondsToMessage:(id)message;
+- (DDWatchMessageReceiver)initWithDestination:(id)destination;
+- (void)receiveMessage:(id)message data:(id)data fromDestination:(id)destination expectsResponse:(BOOL)response response:(id)a7;
 @end
 
 @implementation DDWatchMessageReceiver
 
-- (DDWatchMessageReceiver)initWithDestination:(id)a3
+- (DDWatchMessageReceiver)initWithDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = DDWatchMessageReceiver;
   v6 = [(DDWatchMessageReceiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_destination, a3);
+    objc_storeStrong(&v6->_destination, destination);
   }
 
   return v7;
 }
 
-- (void)receiveMessage:(id)a3 data:(id)a4 fromDestination:(id)a5 expectsResponse:(BOOL)a6 response:(id)a7
+- (void)receiveMessage:(id)message data:(id)data fromDestination:(id)destination expectsResponse:(BOOL)response response:(id)a7
 {
-  v10 = a3;
+  messageCopy = message;
   v11 = a7;
-  v12 = a5;
+  destinationCopy = destination;
   v13 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -35,12 +35,12 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[DDWatchMessageReceiver] %s", &v19, 0xCu);
   }
 
-  v14 = [(DDWatchMessageReceiver *)self destination];
-  v15 = [v12 isEqual:v14];
+  destination = [(DDWatchMessageReceiver *)self destination];
+  v15 = [destinationCopy isEqual:destination];
 
   if (v15)
   {
-    if ([v10 isEqualToString:@"wakeDevice"])
+    if ([messageCopy isEqualToString:@"wakeDevice"])
     {
       v16 = @"messageReceived";
       if ([(DDWatchMessageReceiver *)self isDeviceLocked])
@@ -54,7 +54,7 @@
       goto LABEL_10;
     }
 
-    if ([v10 isEqualToString:@"requestDeviceState"])
+    if ([messageCopy isEqualToString:@"requestDeviceState"])
     {
       v16 = objc_alloc_init(DADeviceState);
       v18 = [NSNumber numberWithUnsignedLongLong:mach_absolute_time()];
@@ -80,11 +80,11 @@ LABEL_10:
   return v2 == -1 || (v2 - 1) < 2;
 }
 
-- (BOOL)respondsToMessage:(id)a3
+- (BOOL)respondsToMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSSet setWithObjects:@"wakeDevice", @"requestDeviceState", 0];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:messageCopy];
 
   return v5;
 }

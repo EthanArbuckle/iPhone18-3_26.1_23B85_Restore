@@ -1,6 +1,6 @@
 @interface MGNotificationRegistration
 - (BOOL)start;
-- (MGNotificationRegistration)initWithQueue:(id)global_queue block:(id)a4;
+- (MGNotificationRegistration)initWithQueue:(id)global_queue block:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -109,7 +109,7 @@
   return 1;
 }
 
-- (MGNotificationRegistration)initWithQueue:(id)global_queue block:(id)a4
+- (MGNotificationRegistration)initWithQueue:(id)global_queue block:(id)block
 {
   v12.receiver = self;
   v12.super_class = MGNotificationRegistration;
@@ -124,7 +124,7 @@
 
     v6->_queue = global_queue;
     dispatch_retain(global_queue);
-    v6->_block = objc_msgSend_copy(a4, v7, v8, v9, v10);
+    v6->_block = objc_msgSend_copy(block, v7, v8, v9, v10);
     v6->_requestedRegistrations = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 

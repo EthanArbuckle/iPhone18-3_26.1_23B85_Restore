@@ -1,12 +1,12 @@
 @interface GKChallengeInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)subtitleText;
 - (NSString)titleText;
 - (id)findLocalGameBundleID;
-- (id)serverRepresentationForReceivingPlayer:(id)a3;
+- (id)serverRepresentationForReceivingPlayer:(id)player;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)titleText;
 @end
 
@@ -53,46 +53,46 @@ void __46__GKChallengeInternal_secureCodedPropertyKeys__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GKChallengeInternal;
-  [(GKInternalRepresentation *)&v9 encodeWithCoder:v4];
-  v5 = [(GKPlayerInternal *)self->_issuingPlayer playerID];
+  [(GKInternalRepresentation *)&v9 encodeWithCoder:coderCopy];
+  playerID = [(GKPlayerInternal *)self->_issuingPlayer playerID];
 
-  if (v5)
+  if (playerID)
   {
-    v6 = [(GKPlayerInternal *)self->_issuingPlayer playerID];
-    [v4 encodeObject:v6 forKey:@"issuingPlayerID"];
+    playerID2 = [(GKPlayerInternal *)self->_issuingPlayer playerID];
+    [coderCopy encodeObject:playerID2 forKey:@"issuingPlayerID"];
   }
 
-  v7 = [(GKPlayerInternal *)self->_receivingPlayer playerID];
+  playerID3 = [(GKPlayerInternal *)self->_receivingPlayer playerID];
 
-  if (v7)
+  if (playerID3)
   {
-    v8 = [(GKPlayerInternal *)self->_receivingPlayer playerID];
-    [v4 encodeObject:v8 forKey:@"receivingPlayerID"];
+    playerID4 = [(GKPlayerInternal *)self->_receivingPlayer playerID];
+    [coderCopy encodeObject:playerID4 forKey:@"receivingPlayerID"];
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(GKChallengeInternal *)self challengeID];
-  v3 = [v2 hash];
+  challengeID = [(GKChallengeInternal *)self challengeID];
+  v3 = [challengeID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GKChallengeInternal *)self challengeID];
-    v6 = [v4 challengeID];
-    v7 = [v5 isEqualToString:v6];
+    challengeID = [(GKChallengeInternal *)self challengeID];
+    challengeID2 = [equalCopy challengeID];
+    v7 = [challengeID isEqualToString:challengeID2];
   }
 
   else
@@ -103,26 +103,26 @@ void __46__GKChallengeInternal_secureCodedPropertyKeys__block_invoke()
   return v7;
 }
 
-- (id)serverRepresentationForReceivingPlayer:(id)a3
+- (id)serverRepresentationForReceivingPlayer:(id)player
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  playerCopy = player;
   v6 = [[v4 alloc] initWithCapacity:0];
-  v7 = [(GKChallengeInternal *)self bundleID];
-  [v6 setObject:v7 forKey:@"bundle-id"];
+  bundleID = [(GKChallengeInternal *)self bundleID];
+  [v6 setObject:bundleID forKey:@"bundle-id"];
 
-  v8 = [v5 playerID];
+  playerID = [playerCopy playerID];
 
-  [v6 setObject:v8 forKey:@"receiving-player-id"];
-  v9 = [MEMORY[0x277CBEAA8] _gkServerTimestamp];
-  [v6 setObject:v9 forKey:@"issue-timestamp"];
+  [v6 setObject:playerID forKey:@"receiving-player-id"];
+  _gkServerTimestamp = [MEMORY[0x277CBEAA8] _gkServerTimestamp];
+  [v6 setObject:_gkServerTimestamp forKey:@"issue-timestamp"];
 
-  v10 = [(GKChallengeInternal *)self message];
+  message = [(GKChallengeInternal *)self message];
 
-  if (v10)
+  if (message)
   {
-    v11 = [(GKChallengeInternal *)self message];
-    [v6 setObject:v11 forKey:@"message"];
+    message2 = [(GKChallengeInternal *)self message];
+    [v6 setObject:message2 forKey:@"message"];
   }
 
   return v6;
@@ -197,8 +197,8 @@ LABEL_12:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHORT_FROM_SUBTITLE_FORMAT];
-  v5 = [(GKChallengeInternal *)self issuingPlayer];
-  v6 = [v5 displayNameWithOptions:0];
+  issuingPlayer = [(GKChallengeInternal *)self issuingPlayer];
+  v6 = [issuingPlayer displayNameWithOptions:0];
   v7 = [v3 stringWithFormat:v4, v6];
 
   return v7;
@@ -207,12 +207,12 @@ LABEL_12:
 - (void)titleText
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v5 = 138412290;
   v6 = v3;
-  _os_log_error_impl(&dword_227904000, v1, OS_LOG_TYPE_ERROR, "%@ needs to implement me!", &v5, 0xCu);
+  _os_log_error_impl(&dword_227904000, selfCopy, OS_LOG_TYPE_ERROR, "%@ needs to implement me!", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }

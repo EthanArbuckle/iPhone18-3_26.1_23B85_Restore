@@ -1,36 +1,36 @@
 @interface BMStreamMetadata
-- (BMStreamMetadata)initWithCoder:(id)a3;
-- (BMStreamMetadata)initWithStreamId:(id)a3 eventType:(Class)a4 account:(id)a5 remoteStreamName:(id)a6 pruningPolicy:(id)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMStreamMetadata)initWithCoder:(id)coder;
+- (BMStreamMetadata)initWithStreamId:(id)id eventType:(Class)type account:(id)account remoteStreamName:(id)name pruningPolicy:(id)policy;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMStreamMetadata
 
-- (BMStreamMetadata)initWithStreamId:(id)a3 eventType:(Class)a4 account:(id)a5 remoteStreamName:(id)a6 pruningPolicy:(id)a7
+- (BMStreamMetadata)initWithStreamId:(id)id eventType:(Class)type account:(id)account remoteStreamName:(id)name pruningPolicy:(id)policy
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  idCopy = id;
+  accountCopy = account;
+  nameCopy = name;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = BMStreamMetadata;
   v16 = [(BMStreamMetadata *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [idCopy copy];
     streamId = v16->_streamId;
     v16->_streamId = v17;
 
-    objc_storeStrong(&v16->_eventDataClass, a4);
-    objc_storeStrong(&v16->_account, a5);
-    v19 = [v14 copy];
+    objc_storeStrong(&v16->_eventDataClass, type);
+    objc_storeStrong(&v16->_account, account);
+    v19 = [nameCopy copy];
     remoteStreamName = v16->_remoteStreamName;
     v16->_remoteStreamName = v19;
 
-    objc_storeStrong(&v16->_pruningPolicy, a7);
+    objc_storeStrong(&v16->_pruningPolicy, policy);
   }
 
   return v16;
@@ -45,10 +45,10 @@
   return v6 ^ [(BMPruningPolicy *)self->_pruningPolicy hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -58,13 +58,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       streamId = self->_streamId;
       if ((streamId == v5->_streamId || [(NSString *)streamId isEqual:?]) && (eventDataClass = self->_eventDataClass, eventDataClass == [(BMStreamMetadata *)v5 eventDataClass]) && ((account = self->_account, account == v5->_account) || [(BMAccount *)account isEqual:?]) && ((remoteStreamName = self->_remoteStreamName, remoteStreamName == v5->_remoteStreamName) || [(NSString *)remoteStreamName isEqual:?]))
       {
         pruningPolicy = self->_pruningPolicy;
-        v13 = [(BMStreamMetadata *)v5 pruningPolicy];
-        if (pruningPolicy == v13)
+        pruningPolicy = [(BMStreamMetadata *)v5 pruningPolicy];
+        if (pruningPolicy == pruningPolicy)
         {
           v8 = 1;
         }
@@ -72,8 +72,8 @@
         else
         {
           v14 = self->_pruningPolicy;
-          v15 = [(BMStreamMetadata *)v5 pruningPolicy];
-          v8 = [(BMPruningPolicy *)v14 isEqual:v15];
+          pruningPolicy2 = [(BMStreamMetadata *)v5 pruningPolicy];
+          v8 = [(BMPruningPolicy *)v14 isEqual:pruningPolicy2];
         }
       }
 
@@ -92,32 +92,32 @@
   return v8;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -129,11 +129,11 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeObject:self->_streamId forKey:@"streamId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_streamId forKey:@"streamId"];
   v5 = NSStringFromClass(self->_eventDataClass);
   if (!v5)
   {
@@ -144,7 +144,7 @@ LABEL_7:
     }
   }
 
-  [v4 encodeObject:v5 forKey:@"eventType"];
+  [coderCopy encodeObject:v5 forKey:@"eventType"];
   pruningPolicy = self->_pruningPolicy;
   if (pruningPolicy)
   {
@@ -164,22 +164,22 @@ LABEL_7:
     v16[3] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
 
-    [v4 encodeObject:v13 forKey:@"pruningPolicy"];
+    [coderCopy encodeObject:v13 forKey:@"pruningPolicy"];
   }
 
-  [v4 encodeObject:self->_account forKey:@"account"];
-  [v4 encodeObject:self->_remoteStreamName forKey:@"remoteName"];
+  [coderCopy encodeObject:self->_account forKey:@"account"];
+  [coderCopy encodeObject:self->_remoteStreamName forKey:@"remoteName"];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BMStreamMetadata)initWithCoder:(id)a3
+- (BMStreamMetadata)initWithCoder:(id)coder
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"streamId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventType"];
-  if (![(BMStreamMetadata *)self checkAndReportDecodingFailureIfNeededForid:v6 key:@"eventType" coder:v4 errorDomain:@"com.apple.biome.BMStreamMetadata" errorCode:-1])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"streamId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventType"];
+  if (![(BMStreamMetadata *)self checkAndReportDecodingFailureIfNeededForid:v6 key:@"eventType" coder:coderCopy errorDomain:@"com.apple.biome.BMStreamMetadata" errorCode:-1])
   {
     v8 = NSClassFromString(v6);
     if (!v8)
@@ -190,15 +190,15 @@ LABEL_7:
         [(BMStreamMetadata *)v6 initWithCoder:v15];
       }
 
-      v7 = 0;
+      selfCopy = 0;
       goto LABEL_26;
     }
 
     v9 = v8;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v4 allowedClasses];
-      v11 = [v10 containsObject:v9];
+      allowedClasses = [coderCopy allowedClasses];
+      v11 = [allowedClasses containsObject:v9];
 
       if (v11)
       {
@@ -267,12 +267,12 @@ LABEL_19:
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v15 = [v17 setWithObjects:{v18, v19, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v15 forKey:@"pruningPolicy"];
+    v20 = [coderCopy decodeObjectOfClasses:v15 forKey:@"pruningPolicy"];
     if (v20)
     {
-      if ([(BMStreamMetadata *)self checkAndReportDecodingFailureIfNeededForid:v20 key:@"pruningPolicy" coder:v4 errorDomain:@"com.apple.biome.BMStreamMetadata" errorCode:-1])
+      if ([(BMStreamMetadata *)self checkAndReportDecodingFailureIfNeededForid:v20 key:@"pruningPolicy" coder:coderCopy errorDomain:@"com.apple.biome.BMStreamMetadata" errorCode:-1])
       {
-        v7 = 0;
+        selfCopy = 0;
 LABEL_25:
 
 LABEL_26:
@@ -284,12 +284,12 @@ LABEL_26:
       v32 = [v34 unsignedIntegerValue] != 0;
       [v20 objectForKeyedSubscript:@"filterByAgeOnRead"];
       v22 = v35 = v5;
-      v23 = [v22 BOOLValue];
+      bOOLValue = [v22 BOOLValue];
       v24 = [v20 objectForKeyedSubscript:@"maxAge"];
       [v24 doubleValue];
       v26 = v25;
       v27 = [v20 objectForKeyedSubscript:@"maxStreamSize"];
-      v21 = -[BMPruningPolicy initPruneOnAccess:filterByAgeOnRead:maxAge:maxStreamSize:](v33, "initPruneOnAccess:filterByAgeOnRead:maxAge:maxStreamSize:", v32, v23, [v27 unsignedIntValue], v26);
+      v21 = -[BMPruningPolicy initPruneOnAccess:filterByAgeOnRead:maxAge:maxStreamSize:](v33, "initPruneOnAccess:filterByAgeOnRead:maxAge:maxStreamSize:", v32, bOOLValue, [v27 unsignedIntValue], v26);
 
       v5 = v35;
     }
@@ -299,19 +299,19 @@ LABEL_26:
       v21 = 0;
     }
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteName"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteName"];
     self = [(BMStreamMetadata *)self initWithStreamId:v5 eventType:v9 account:v28 remoteStreamName:v29 pruningPolicy:v21];
 
-    v7 = self;
+    selfCopy = self;
     goto LABEL_25;
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_27:
 
   v30 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy;
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

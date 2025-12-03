@@ -1,23 +1,23 @@
 @interface VUIPlaybackTabInfo
-- (BOOL)isEqual:(id)a3;
-- (VUIPlaybackTabInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)insertTabDetails:(id)a3 atIndex:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUIPlaybackTabInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)insertTabDetails:(id)details atIndex:(unint64_t)index;
 @end
 
 @implementation VUIPlaybackTabInfo
 
-- (VUIPlaybackTabInfo)initWithDictionary:(id)a3
+- (VUIPlaybackTabInfo)initWithDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = VUIPlaybackTabInfo;
   v5 = [(VUIPlaybackTabInfo *)&v41 init];
   if (v5)
   {
-    v36 = [MEMORY[0x1E695DF70] array];
-    v6 = [v4 vui_stringForKey:@"canonicalId"];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [dictionaryCopy vui_stringForKey:@"canonicalId"];
     v7 = v6;
     if (v6)
     {
@@ -31,7 +31,7 @@
 
     objc_storeStrong(&v5->_canonicalId, v8);
 
-    v9 = [v4 vui_stringForKey:@"adamId"];
+    v9 = [dictionaryCopy vui_stringForKey:@"adamId"];
     v10 = v9;
     if (v9)
     {
@@ -45,7 +45,7 @@
 
     objc_storeStrong(&v5->_adamId, v11);
 
-    v12 = [v4 vui_dictionaryForKey:@"multiView"];
+    v12 = [dictionaryCopy vui_dictionaryForKey:@"multiView"];
     v13 = v12;
     if (v12 && [v12 vui_BOOLForKey:@"isMultiViewAllowed" defaultValue:0] && !+[VUIGroupActivitiesManagerObjC isSessionActive](VUIGroupActivitiesManagerObjC, "isSessionActive"))
     {
@@ -54,8 +54,8 @@
       v5->_multiviewTabInfo = v14;
     }
 
-    v34 = v4;
-    v16 = [v4 vui_arrayForKey:{@"tabs", v13}];
+    v34 = dictionaryCopy;
+    v16 = [dictionaryCopy vui_arrayForKey:{@"tabs", v13}];
     v5->_isInfoTabAllowed = 0;
     v37 = 0u;
     v38 = 0u;
@@ -99,15 +99,15 @@
           {
 LABEL_21:
             v27 = [[VUIPlaybackTabDetails alloc] initWithDictionary:v21];
-            [v36 addObject:v27];
+            [array addObject:v27];
             if ([(VUIPlaybackTabDetails *)v27 isSelected]&& !v5->_focusedTabIdOnFirstDisplay)
             {
-              v28 = [(VUIPlaybackTabDetails *)v27 tabId];
+              tabId = [(VUIPlaybackTabDetails *)v27 tabId];
             }
 
             else
             {
-              v28 = @"uts.marker.Spotlight";
+              tabId = @"uts.marker.Spotlight";
               if (!v24)
               {
                 goto LABEL_27;
@@ -115,7 +115,7 @@ LABEL_21:
             }
 
             focusedTabIdOnFirstDisplay = v5->_focusedTabIdOnFirstDisplay;
-            v5->_focusedTabIdOnFirstDisplay = &v28->isa;
+            v5->_focusedTabIdOnFirstDisplay = &tabId->isa;
 
 LABEL_27:
             continue;
@@ -128,29 +128,29 @@ LABEL_27:
       while (v18);
     }
 
-    v30 = [v36 copy];
+    v30 = [array copy];
     tabDetails = v5->_tabDetails;
     v5->_tabDetails = v30;
 
-    v4 = v34;
+    dictionaryCopy = v34;
   }
 
   return v5;
 }
 
-- (void)insertTabDetails:(id)a3 atIndex:(unint64_t)a4
+- (void)insertTabDetails:(id)details atIndex:(unint64_t)index
 {
   tabDetails = self->_tabDetails;
-  v7 = a3;
+  detailsCopy = details;
   v10 = [(NSArray *)tabDetails mutableCopy];
-  [v10 insertObject:v7 atIndex:a4];
+  [v10 insertObject:detailsCopy atIndex:index];
 
   v8 = [v10 copy];
   v9 = self->_tabDetails;
   self->_tabDetails = v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIPlaybackTabInfo);
   v5 = [(NSString *)self->_canonicalId copy];
@@ -174,10 +174,10 @@ LABEL_27:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -187,22 +187,22 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VUIPlaybackTabInfo *)self canonicalId];
-      v7 = [(VUIPlaybackTabInfo *)v5 canonicalId];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      canonicalId = [(VUIPlaybackTabInfo *)self canonicalId];
+      canonicalId2 = [(VUIPlaybackTabInfo *)v5 canonicalId];
+      if ([canonicalId isEqualToString:canonicalId2])
       {
-        v8 = [(VUIPlaybackTabInfo *)self adamId];
-        v9 = [(VUIPlaybackTabInfo *)v5 adamId];
-        if ([v8 isEqualToString:v9] && (v10 = -[VUIPlaybackTabInfo isInfoTabAllowed](self, "isInfoTabAllowed"), v10 == -[VUIPlaybackTabInfo isInfoTabAllowed](v5, "isInfoTabAllowed")))
+        adamId = [(VUIPlaybackTabInfo *)self adamId];
+        adamId2 = [(VUIPlaybackTabInfo *)v5 adamId];
+        if ([adamId isEqualToString:adamId2] && (v10 = -[VUIPlaybackTabInfo isInfoTabAllowed](self, "isInfoTabAllowed"), v10 == -[VUIPlaybackTabInfo isInfoTabAllowed](v5, "isInfoTabAllowed")))
         {
-          v12 = [(VUIPlaybackTabInfo *)self multiviewTabInfo];
-          v13 = [(VUIPlaybackTabInfo *)v5 multiviewTabInfo];
-          if ([v12 isEqual:v13])
+          multiviewTabInfo = [(VUIPlaybackTabInfo *)self multiviewTabInfo];
+          multiviewTabInfo2 = [(VUIPlaybackTabInfo *)v5 multiviewTabInfo];
+          if ([multiviewTabInfo isEqual:multiviewTabInfo2])
           {
-            v16 = [(VUIPlaybackTabInfo *)self tabDetails];
-            v14 = [(VUIPlaybackTabInfo *)v5 tabDetails];
-            v11 = [v16 isEqualToArray:v14];
+            tabDetails = [(VUIPlaybackTabInfo *)self tabDetails];
+            tabDetails2 = [(VUIPlaybackTabInfo *)v5 tabDetails];
+            v11 = [tabDetails isEqualToArray:tabDetails2];
           }
 
           else

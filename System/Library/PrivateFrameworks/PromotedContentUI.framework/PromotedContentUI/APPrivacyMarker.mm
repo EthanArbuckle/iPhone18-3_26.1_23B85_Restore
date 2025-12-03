@@ -1,8 +1,8 @@
 @interface APPrivacyMarker
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (void)sizeCategoryChanged:(id)a3;
-- (void)systemColorStatusChanged:(id)a3;
+- (void)sizeCategoryChanged:(id)changed;
+- (void)systemColorStatusChanged:(id)changed;
 @end
 
 @implementation APPrivacyMarker
@@ -17,32 +17,32 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_1C1A4F3C0(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_1C1A4F3C0(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (void)systemColorStatusChanged:(id)a3
+- (void)systemColorStatusChanged:(id)changed
 {
   v4 = sub_1C1A6D25C();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D24C();
-  v8 = self;
+  selfCopy = self;
   sub_1C1A4F56C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)sizeCategoryChanged:(id)a3
+- (void)sizeCategoryChanged:(id)changed
 {
   v4 = sub_1C1A6D25C();
   v5 = *(v4 - 8);
@@ -51,7 +51,7 @@
   sub_1C1A6D24C();
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR___APPrivacyMarker_adjustsFontForContentSizeCategory) == 1)
   {
-    v8 = self;
+    selfCopy = self;
     sub_1C19970C4();
   }
 

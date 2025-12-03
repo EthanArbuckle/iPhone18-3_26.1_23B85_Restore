@@ -13,23 +13,23 @@
   v47[3] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a5;
-  v10 = [a1 resolveSelectorStrings];
-  if (![v10 count])
+  resolveSelectorStrings = [self resolveSelectorStrings];
+  if (![resolveSelectorStrings count])
   {
 
     goto LABEL_11;
   }
 
-  v11 = [a1 isPrivate];
+  isPrivate = [self isPrivate];
 
-  if (v11)
+  if (isPrivate)
   {
 LABEL_11:
     v32 = v8;
     goto LABEL_12;
   }
 
-  v12 = [a1 valueType];
+  valueType = [self valueType];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -40,11 +40,11 @@ LABEL_11:
   v13 = NSStringFromClass(a4);
   v47[0] = v13;
   v46[1] = @"Key";
-  v14 = [a1 name];
-  v47[1] = v14;
+  name = [self name];
+  v47[1] = name;
   v46[2] = @"Label";
-  v15 = [a1 name];
-  v16 = WFAddSpacesToCamelCaseName(v15);
+  name2 = [self name];
+  v16 = WFAddSpacesToCamelCaseName(name2);
   v17 = WFCapitalizeFirstLetter(v16);
   v47[2] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:3];
@@ -59,7 +59,7 @@ LABEL_11:
   {
     v19 = v37[5];
     v44 = @"AllowsDecimalNumbers";
-    v20 = [MEMORY[0x1E696AD98] numberWithBool:(v12 < 0x36) & (0x20000000200018uLL >> v12)];
+    v20 = [MEMORY[0x1E696AD98] numberWithBool:(valueType < 0x36) & (0x20000000200018uLL >> valueType)];
     v45 = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
     v22 = [v19 definitionByAddingEntriesInDictionary:v21];
@@ -80,8 +80,8 @@ LABEL_11:
 
     v27 = v37[5];
     v42 = @"DisallowedVariableTypes";
-    v28 = [v24 array];
-    v43 = v28;
+    array = [v24 array];
+    v43 = array;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v30 = [v27 definitionByAddingEntriesInDictionary:v29];
     v31 = v37[5];
@@ -100,19 +100,19 @@ LABEL_12:
 
 - (id)wf_parameterClass
 {
-  v1 = [a1 valueType];
+  valueType = [self valueType];
   v2 = 0;
-  if (v1 > 26)
+  if (valueType > 26)
   {
-    if ((v1 - 98) <= 0x33 && ((1 << (v1 - 98)) & 0x82000DFC70001) != 0)
+    if ((valueType - 98) <= 0x33 && ((1 << (valueType - 98)) & 0x82000DFC70001) != 0)
     {
       goto LABEL_6;
     }
 
-    if ((v1 - 30) > 0x37)
+    if ((valueType - 30) > 0x37)
     {
 LABEL_30:
-      if ((v1 - 27) < 2)
+      if ((valueType - 27) < 2)
       {
         v3 = off_1E836EB40;
         goto LABEL_26;
@@ -121,7 +121,7 @@ LABEL_30:
       goto LABEL_27;
     }
 
-    if (((1 << (v1 - 30)) & 0xC0054618000000) != 0)
+    if (((1 << (valueType - 30)) & 0xC0054618000000) != 0)
     {
 LABEL_6:
       v3 = off_1E836F368;
@@ -131,9 +131,9 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (v1 != 30)
+    if (valueType != 30)
     {
-      if (v1 == 53)
+      if (valueType == 53)
       {
         goto LABEL_25;
       }
@@ -146,17 +146,17 @@ LABEL_32:
     goto LABEL_26;
   }
 
-  if (v1 <= 7)
+  if (valueType <= 7)
   {
-    if ((v1 - 3) >= 4)
+    if ((valueType - 3) >= 4)
     {
-      if (v1 == 1)
+      if (valueType == 1)
       {
         v3 = off_1E836F358;
         goto LABEL_26;
       }
 
-      if (v1 != 7)
+      if (valueType != 7)
       {
         goto LABEL_27;
       }
@@ -167,11 +167,11 @@ LABEL_32:
     goto LABEL_25;
   }
 
-  if (v1 <= 15)
+  if (valueType <= 15)
   {
-    if ((v1 - 8) >= 2)
+    if ((valueType - 8) >= 2)
     {
-      if ((v1 - 10) >= 2)
+      if ((valueType - 10) >= 2)
       {
         goto LABEL_27;
       }
@@ -186,15 +186,15 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v1 <= 20)
+  if (valueType <= 20)
   {
-    if (v1 == 16)
+    if (valueType == 16)
     {
       v3 = off_1E836E1E8;
       goto LABEL_26;
     }
 
-    if (v1 != 18)
+    if (valueType != 18)
     {
       goto LABEL_27;
     }
@@ -202,7 +202,7 @@ LABEL_25:
     goto LABEL_19;
   }
 
-  if (v1 == 21 || v1 == 24)
+  if (valueType == 21 || valueType == 24)
   {
     goto LABEL_25;
   }
@@ -214,16 +214,16 @@ LABEL_27:
 
 - (uint64_t)wf_multipleValues
 {
-  if ([a1 valueStyle] == 3)
+  if ([self valueStyle] == 3)
   {
     LOBYTE(v2) = 1;
   }
 
   else
   {
-    v3 = [a1 valueType];
-    v2 = 0x92402800 >> v3;
-    if (v3 > 0x1F)
+    valueType = [self valueType];
+    v2 = 0x92402800 >> valueType;
+    if (valueType > 0x1F)
     {
       LOBYTE(v2) = 0;
     }
@@ -234,38 +234,38 @@ LABEL_27:
 
 - (id)wf_facadeClass
 {
-  v2 = [a1 valueType];
-  if ((v2 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  valueType = [self valueType];
+  if ((valueType & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     goto LABEL_8;
   }
 
-  if (v2 > 17)
+  if (valueType > 17)
   {
-    if (v2 == 53 || v2 == 18)
+    if (valueType == 53 || valueType == 18)
     {
       goto LABEL_8;
     }
   }
 
-  else if ((v2 - 10) < 2 || v2 == 16)
+  else if ((valueType - 10) < 2 || valueType == 16)
   {
 LABEL_8:
-    v3 = objc_opt_class();
+    wf_objectClass = objc_opt_class();
     goto LABEL_9;
   }
 
-  v3 = [a1 wf_objectClass];
+  wf_objectClass = [self wf_objectClass];
 LABEL_9:
 
-  return v3;
+  return wf_objectClass;
 }
 
 - (id)wf_objectClass
 {
-  v1 = [a1 valueType];
+  valueType = [self valueType];
   v2 = 0;
-  switch(v1)
+  switch(valueType)
   {
     case 1:
     case 2:
@@ -374,7 +374,7 @@ LABEL_9:
       _Block_object_dispose(&v6, 8);
       break;
     default:
-      if ((v1 - 98) <= 0x33 && ((1 << (v1 - 98)) & 0x82000DFC70001) != 0)
+      if ((valueType - 98) <= 0x33 && ((1 << (valueType - 98)) & 0x82000DFC70001) != 0)
       {
 LABEL_4:
         v2 = objc_opt_class();

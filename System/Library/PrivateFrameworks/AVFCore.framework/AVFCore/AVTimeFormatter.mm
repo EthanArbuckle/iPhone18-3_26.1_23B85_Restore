@@ -1,17 +1,17 @@
 @interface AVTimeFormatter
 - (AVTimeFormatter)init;
-- (AVTimeFormatter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromTimeInterval:(double)a3;
+- (AVTimeFormatter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromTimeInterval:(double)interval;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCachedDateFormatterFormat:(id)a3;
-- (void)setCachedDateFormatterTemplate:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setNumberFormatterWithOneMinimumIntegerDigits:(id)a3;
-- (void)setNumberFormatterWithTwoMinimumIntegerDigits:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCachedDateFormatterFormat:(id)format;
+- (void)setCachedDateFormatterTemplate:(id)template;
+- (void)setLocale:(id)locale;
+- (void)setNumberFormatterWithOneMinimumIntegerDigits:(id)digits;
+- (void)setNumberFormatterWithTwoMinimumIntegerDigits:(id)digits;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation AVTimeFormatter
@@ -43,16 +43,16 @@
   return v2;
 }
 
-- (AVTimeFormatter)initWithCoder:(id)a3
+- (AVTimeFormatter)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AVTimeFormatter;
   v4 = [(AVTimeFormatter *)&v7 initWithCoder:?];
   if (v4)
   {
-    v4->_internal->style = [a3 decodeIntegerForKey:@"MediaUIStyle"];
-    v4->_internal->isFullWidth = [a3 decodeBoolForKey:@"MediaUIFullWidth"];
-    [a3 decodeDoubleForKey:@"MediaUIFormatTemplate"];
+    v4->_internal->style = [coder decodeIntegerForKey:@"MediaUIStyle"];
+    v4->_internal->isFullWidth = [coder decodeBoolForKey:@"MediaUIFullWidth"];
+    [coder decodeDoubleForKey:@"MediaUIFormatTemplate"];
     v4->_internal->formatTemplate = v5;
   }
 
@@ -73,17 +73,17 @@
   [(AVTimeFormatter *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AVTimeFormatter;
   [(AVTimeFormatter *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:self->_internal->style forKey:@"MediaUIStyle"];
-  [a3 encodeBool:self->_internal->isFullWidth forKey:@"MediaUIFullWidth"];
-  [a3 encodeDouble:@"MediaUIFormatTemplate" forKey:self->_internal->formatTemplate];
+  [coder encodeInteger:self->_internal->style forKey:@"MediaUIStyle"];
+  [coder encodeBool:self->_internal->isFullWidth forKey:@"MediaUIFullWidth"];
+  [coder encodeDouble:@"MediaUIFormatTemplate" forKey:self->_internal->formatTemplate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVTimeFormatter);
   [(AVTimeFormatter *)v4 setStyle:self->_internal->style];
@@ -92,13 +92,13 @@
   return v4;
 }
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
-  v61 = *&a3;
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  if (([(NSLocale *)self->_internal->locale isEqual:v5]& 1) == 0)
+  v61 = *&interval;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  if (([(NSLocale *)self->_internal->locale isEqual:currentLocale]& 1) == 0)
   {
-    [(AVTimeFormatter *)self setLocale:v5];
+    [(AVTimeFormatter *)self setLocale:currentLocale];
     [(AVTimeFormatter *)self setCachedDateFormatterFormat:0];
     [(AVTimeFormatter *)self setCachedDateFormatterTemplate:0];
     [(AVTimeFormatter *)self setNumberFormatterWithOneMinimumIntegerDigits:objc_alloc_init(MEMORY[0x1E696ADA0])];
@@ -110,7 +110,7 @@
     [(NSNumberFormatter *)self->_internal->numberFormatterWithTwoMinimumIntegerDigits setMinimumIntegerDigits:2];
     [(NSNumberFormatter *)self->_internal->numberFormatterWithTwoMinimumIntegerDigits setNumberStyle:0];
     self->_internal->isRightToLeft = 0;
-    [v5 localeIdentifier];
+    [currentLocale localeIdentifier];
     v6 = _CFLocaleCopyNumberingSystemForLocaleIdentifier();
     if (v6)
     {
@@ -122,11 +122,11 @@
 
   [(AVTimeFormatter *)self formatTemplate];
   v60 = v8;
-  v9 = [(AVTimeFormatter *)self style];
-  if (v9 <= 1)
+  style = [(AVTimeFormatter *)self style];
+  if (style <= 1)
   {
     v16 = v61;
-    if (v9 <= 1)
+    if (style <= 1)
     {
       *v15.i64 = ceil(fabs(*v61.i64) + -0.5);
 LABEL_11:
@@ -140,13 +140,13 @@ LABEL_11:
   }
 
   v16 = v61;
-  if (v9 == 2)
+  if (style == 2)
   {
     *v15.i64 = floor(fabs(*v61.i64) + 0.5);
     goto LABEL_11;
   }
 
-  if (v9 != 3)
+  if (style != 3)
   {
 LABEL_9:
     v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"-[AVTimeFormatter stringFromTimeInterval:]: unsupported style", v10, v11, v12, v13, v14, v59), 0}];
@@ -238,17 +238,17 @@ LABEL_12:
   }
 
   v26 = v25 | v22;
-  v27 = [(AVTimeFormatter *)self style];
+  style2 = [(AVTimeFormatter *)self style];
   v28 = 7;
-  if (v27 == 3)
+  if (style2 == 3)
   {
     v28 = 71;
   }
 
   v29 = v28 | v26;
-  v30 = [(AVTimeFormatter *)self isFullWidth];
+  isFullWidth = [(AVTimeFormatter *)self isFullWidth];
   v31 = 2 * v29;
-  if (!v30)
+  if (!isFullWidth)
   {
     v31 = 0;
   }
@@ -274,7 +274,7 @@ LABEL_12:
 
   v36 = [-[__CFString stringByAppendingFormat:](v33 stringByAppendingFormat:@"%@m", v35), "stringByAppendingFormat:", @"%@s", @"s"];
   v37 = v36;
-  if (v27 == 3)
+  if (style2 == 3)
   {
     v37 = [v36 stringByAppendingString:@"SS"];
   }
@@ -346,7 +346,7 @@ LABEL_44:
       v46 = [[(NSString *)v46 stringByReplacingOccurrencesOfString:@"ss" withString:v53] stringByReplacingOccurrencesOfString:@"s" withString:v53];
     }
 
-    if (v27 != 3)
+    if (style2 != 3)
     {
       return v46;
     }
@@ -373,11 +373,11 @@ LABEL_44:
   return [(NSString *)v47 stringByReplacingOccurrencesOfString:v48 withString:v49];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 doubleValue];
+    [value doubleValue];
   }
 
   else
@@ -388,64 +388,64 @@ LABEL_44:
   return [(AVTimeFormatter *)self stringFromTimeInterval:v5];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"-[AVTimeFormatter setStyle:]: unsupported style", v3, v4, v5, v6, v7, v8), 0}];
     objc_exception_throw(v9);
   }
 
-  self->_internal->style = a3;
+  self->_internal->style = style;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   locale = self->_internal->locale;
-  if (locale != a3)
+  if (locale != locale)
   {
 
-    self->_internal->locale = [a3 copy];
+    self->_internal->locale = [locale copy];
   }
 }
 
-- (void)setCachedDateFormatterFormat:(id)a3
+- (void)setCachedDateFormatterFormat:(id)format
 {
   cachedDateFormatterFormat = self->_internal->cachedDateFormatterFormat;
-  if (cachedDateFormatterFormat != a3)
+  if (cachedDateFormatterFormat != format)
   {
 
-    self->_internal->cachedDateFormatterFormat = [a3 copy];
+    self->_internal->cachedDateFormatterFormat = [format copy];
   }
 }
 
-- (void)setCachedDateFormatterTemplate:(id)a3
+- (void)setCachedDateFormatterTemplate:(id)template
 {
   cachedDateFormatterTemplate = self->_internal->cachedDateFormatterTemplate;
-  if (cachedDateFormatterTemplate != a3)
+  if (cachedDateFormatterTemplate != template)
   {
 
-    self->_internal->cachedDateFormatterTemplate = [a3 copy];
+    self->_internal->cachedDateFormatterTemplate = [template copy];
   }
 }
 
-- (void)setNumberFormatterWithOneMinimumIntegerDigits:(id)a3
+- (void)setNumberFormatterWithOneMinimumIntegerDigits:(id)digits
 {
   numberFormatterWithOneMinimumIntegerDigits = self->_internal->numberFormatterWithOneMinimumIntegerDigits;
-  if (numberFormatterWithOneMinimumIntegerDigits != a3)
+  if (numberFormatterWithOneMinimumIntegerDigits != digits)
   {
 
-    self->_internal->numberFormatterWithOneMinimumIntegerDigits = [a3 copy];
+    self->_internal->numberFormatterWithOneMinimumIntegerDigits = [digits copy];
   }
 }
 
-- (void)setNumberFormatterWithTwoMinimumIntegerDigits:(id)a3
+- (void)setNumberFormatterWithTwoMinimumIntegerDigits:(id)digits
 {
   numberFormatterWithTwoMinimumIntegerDigits = self->_internal->numberFormatterWithTwoMinimumIntegerDigits;
-  if (numberFormatterWithTwoMinimumIntegerDigits != a3)
+  if (numberFormatterWithTwoMinimumIntegerDigits != digits)
   {
 
-    self->_internal->numberFormatterWithTwoMinimumIntegerDigits = [a3 copy];
+    self->_internal->numberFormatterWithTwoMinimumIntegerDigits = [digits copy];
   }
 }
 

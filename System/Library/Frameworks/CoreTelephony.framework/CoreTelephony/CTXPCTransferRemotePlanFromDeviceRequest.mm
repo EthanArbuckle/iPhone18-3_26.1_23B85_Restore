@@ -1,20 +1,20 @@
 @interface CTXPCTransferRemotePlanFromDeviceRequest
 + (id)allowedClassesForArguments;
-- (CTXPCTransferRemotePlanFromDeviceRequest)initWithPlanID:(id)a3 fromDevice:(id)a4;
+- (CTXPCTransferRemotePlanFromDeviceRequest)initWithPlanID:(id)d fromDevice:(id)device;
 - (id)deviceIdentifier;
 - (id)planID;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCTransferRemotePlanFromDeviceRequest
 
-- (CTXPCTransferRemotePlanFromDeviceRequest)initWithPlanID:(id)a3 fromDevice:(id)a4
+- (CTXPCTransferRemotePlanFromDeviceRequest)initWithPlanID:(id)d fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  deviceCopy = device;
   v8 = objc_opt_new();
-  [v8 setObject:v6 forKeyedSubscript:@"planID"];
-  [v8 setObject:v7 forKeyedSubscript:@"deviceID"];
+  [v8 setObject:dCopy forKeyedSubscript:@"planID"];
+  [v8 setObject:deviceCopy forKeyedSubscript:@"deviceID"];
   v11.receiver = self;
   v11.super_class = CTXPCTransferRemotePlanFromDeviceRequest;
   v9 = [(CTXPCMessage *)&v11 initWithNamedArguments:v8];
@@ -22,19 +22,19 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCTransferRemotePlanFromDeviceRequest *)self planID];
-  v9 = [(CTXPCTransferRemotePlanFromDeviceRequest *)self deviceIdentifier];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  planID = [(CTXPCTransferRemotePlanFromDeviceRequest *)self planID];
+  deviceIdentifier = [(CTXPCTransferRemotePlanFromDeviceRequest *)self deviceIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__CTXPCTransferRemotePlanFromDeviceRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A460B8;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 transferRemotePlan:v8 fromDevice:v9 completion:v11];
+  [handlerCopy transferRemotePlan:planID fromDevice:deviceIdentifier completion:v11];
 }
 
 void __88__CTXPCTransferRemotePlanFromDeviceRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -48,7 +48,7 @@ void __88__CTXPCTransferRemotePlanFromDeviceRequest_performRequestWithHandler_co
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCTransferRemotePlanFromDeviceRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -63,8 +63,8 @@ void __88__CTXPCTransferRemotePlanFromDeviceRequest_performRequestWithHandler_co
 
 - (id)planID
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"planID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"planID"];
   v4 = CTThrowingCastIfClass<CTRemotePlanIdentifier>(v3);
 
   return v4;
@@ -72,8 +72,8 @@ void __88__CTXPCTransferRemotePlanFromDeviceRequest_performRequestWithHandler_co
 
 - (id)deviceIdentifier
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"deviceID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"deviceID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

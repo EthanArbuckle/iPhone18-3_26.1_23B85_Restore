@@ -1,22 +1,22 @@
 @interface IAMEvaluator
-+ (BOOL)_isMessageWithinDateRange:(id)a3;
-+ (BOOL)applicationContext:(id)a3 allowsPresentationForPolicyGroup:(int64_t)a4 withLastDisplayTime:(id)a5;
-+ (int64_t)_compareCurrentTimeWithMessageTime:(double)a3;
-- (BOOL)_didCacheResourcesForMessageIfRequired:(id)a3;
-- (BOOL)_doesPresentationPolicyAllowPresentationOfMessage:(id)a3;
-- (BOOL)_evaluateCompoundRule:(id)a3 forMessageEntry:(id)a4;
-- (BOOL)_evaluateCondition:(id)a3 forMessageEntry:(id)a4;
-- (BOOL)_evaluateRule:(id)a3 forMessageEntry:(id)a4;
-- (IAMEvaluator)initWithMessageEntries:(id)a3 metadataEntries:(id)a4 applicationContext:(id)a5 hostBundleIdentifier:(id)a6 messageGroups:(id)a7 lastDisplayTimeForRestrictedPresentationPolicyGroup:(id)a8 lastDisplayTimeForNormalPresentationPolicyGroup:(id)a9;
-- (id)_contextPropertyWithName:(id)a3 forMessageGroupIdentifier:(id)a4;
-- (id)_contextPropertyWithName:(id)a3 messageBundleIdentifier:(id)a4 conditionBundleIdentifier:(id)a5;
-- (id)_valueForCondition:(id)a3 messageBundleIdentifier:(id)a4 messageMetadata:(id)a5;
-- (id)computeMessagesCloseToPassingWithProximityThreshold:(unint64_t)a3;
++ (BOOL)_isMessageWithinDateRange:(id)range;
++ (BOOL)applicationContext:(id)context allowsPresentationForPolicyGroup:(int64_t)group withLastDisplayTime:(id)time;
++ (int64_t)_compareCurrentTimeWithMessageTime:(double)time;
+- (BOOL)_didCacheResourcesForMessageIfRequired:(id)required;
+- (BOOL)_doesPresentationPolicyAllowPresentationOfMessage:(id)message;
+- (BOOL)_evaluateCompoundRule:(id)rule forMessageEntry:(id)entry;
+- (BOOL)_evaluateCondition:(id)condition forMessageEntry:(id)entry;
+- (BOOL)_evaluateRule:(id)rule forMessageEntry:(id)entry;
+- (IAMEvaluator)initWithMessageEntries:(id)entries metadataEntries:(id)metadataEntries applicationContext:(id)context hostBundleIdentifier:(id)identifier messageGroups:(id)groups lastDisplayTimeForRestrictedPresentationPolicyGroup:(id)group lastDisplayTimeForNormalPresentationPolicyGroup:(id)policyGroup;
+- (id)_contextPropertyWithName:(id)name forMessageGroupIdentifier:(id)identifier;
+- (id)_contextPropertyWithName:(id)name messageBundleIdentifier:(id)identifier conditionBundleIdentifier:(id)bundleIdentifier;
+- (id)_valueForCondition:(id)condition messageBundleIdentifier:(id)identifier messageMetadata:(id)metadata;
+- (id)computeMessagesCloseToPassingWithProximityThreshold:(unint64_t)threshold;
 - (id)computePassingMessageEntries;
-- (unint64_t)_calculateCompoundRuleProximity:(id)a3 forMessageEntry:(id)a4;
-- (unint64_t)_calculateConditionProximity:(id)a3 forMessageEntry:(id)a4;
-- (unint64_t)_calculateRuleProximity:(id)a3 forMessageEntry:(id)a4;
-- (unint64_t)_messageEntryProximity:(id)a3;
+- (unint64_t)_calculateCompoundRuleProximity:(id)proximity forMessageEntry:(id)entry;
+- (unint64_t)_calculateConditionProximity:(id)proximity forMessageEntry:(id)entry;
+- (unint64_t)_calculateRuleProximity:(id)proximity forMessageEntry:(id)entry;
+- (unint64_t)_messageEntryProximity:(id)proximity;
 @end
 
 @implementation IAMEvaluator
@@ -46,22 +46,22 @@
         }
 
         v8 = *(*(&v26 + 1) + 8 * v7);
-        v9 = [v8 applicationMessage];
-        v10 = [v9 identifier];
+        applicationMessage = [v8 applicationMessage];
+        identifier = [applicationMessage identifier];
 
         metadataEntries = self->_metadataEntries;
         if (metadataEntries)
         {
-          v12 = [(NSDictionary *)metadataEntries objectForKeyedSubscript:v10];
+          v12 = [(NSDictionary *)metadataEntries objectForKeyedSubscript:identifier];
           currentMetadata = self->_currentMetadata;
           self->_currentMetadata = v12;
         }
 
         if ([objc_opt_class() _isMessageWithinDateRange:v8])
         {
-          v14 = [v8 applicationMessage];
-          v15 = [v14 rule];
-          v16 = [(IAMEvaluator *)self _evaluateRule:v15 forMessageEntry:v8];
+          applicationMessage2 = [v8 applicationMessage];
+          rule = [applicationMessage2 rule];
+          v16 = [(IAMEvaluator *)self _evaluateRule:rule forMessageEntry:v8];
 
           if (!v16)
           {
@@ -77,7 +77,7 @@
             }
 
             *buf = 138543362;
-            v31 = v10;
+            v31 = identifier;
             v18 = v17;
             v19 = "Message with identifier = %{public}@ cannot be displayed because its resources aren't cached.";
             goto LABEL_15;
@@ -93,7 +93,7 @@
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v31 = v10;
+            v31 = identifier;
             v18 = v17;
             v19 = "Message with identifier = %{public}@ cannot be displayed because of its presentation policy.";
             goto LABEL_15;
@@ -106,7 +106,7 @@
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v31 = v10;
+            v31 = identifier;
             v18 = v17;
             v19 = "Message with identifier = %{public}@ cannot be displayed because it's not within expected start and end date range.";
 LABEL_15:
@@ -131,26 +131,26 @@ LABEL_17:
   v21 = [v25 copy];
   [(IAMEvaluator *)self setPassingMessageEntries:v21];
 
-  v22 = [(IAMEvaluator *)self passingMessageEntries];
+  passingMessageEntries = [(IAMEvaluator *)self passingMessageEntries];
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return passingMessageEntries;
 }
 
-+ (BOOL)applicationContext:(id)a3 allowsPresentationForPolicyGroup:(int64_t)a4 withLastDisplayTime:(id)a5
++ (BOOL)applicationContext:(id)context allowsPresentationForPolicyGroup:(int64_t)group withLastDisplayTime:(id)time
 {
-  v7 = a3;
-  v8 = a5;
+  contextCopy = context;
+  timeCopy = time;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v7 presentationPolicyForPolicyGroup:a4];
+    v9 = [contextCopy presentationPolicyForPolicyGroup:group];
     v10 = v9;
     v11 = 1;
-    if (v8 && v9)
+    if (timeCopy && v9)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-      [v12 timeIntervalSinceDate:v8];
+      [v12 timeIntervalSinceDate:timeCopy];
       v14 = v13;
       [v10 minimumIntervalBetweenPresentations];
       v11 = v14 > v15;
@@ -165,13 +165,13 @@ LABEL_17:
   return v11;
 }
 
-+ (BOOL)_isMessageWithinDateRange:(id)a3
++ (BOOL)_isMessageWithinDateRange:(id)range
 {
-  v3 = [a3 applicationMessage];
-  if ([v3 hasStartDate] && (objc_msgSend(v3, "startDate"), v4 > 0.0))
+  applicationMessage = [range applicationMessage];
+  if ([applicationMessage hasStartDate] && (objc_msgSend(applicationMessage, "startDate"), v4 > 0.0))
   {
     v5 = objc_opt_class();
-    [v3 startDate];
+    [applicationMessage startDate];
     v6 = [v5 _compareCurrentTimeWithMessageTime:?] == 1;
   }
 
@@ -180,10 +180,10 @@ LABEL_17:
     v6 = 1;
   }
 
-  if ([v3 hasEndDate] && (objc_msgSend(v3, "endDate"), v7 > 0.0))
+  if ([applicationMessage hasEndDate] && (objc_msgSend(applicationMessage, "endDate"), v7 > 0.0))
   {
     v8 = objc_opt_class();
-    [v3 endDate];
+    [applicationMessage endDate];
     v9 = [v8 _compareCurrentTimeWithMessageTime:?] == -1;
   }
 
@@ -195,40 +195,40 @@ LABEL_17:
   return v6 && v9;
 }
 
-+ (int64_t)_compareCurrentTimeWithMessageTime:(double)a3
++ (int64_t)_compareCurrentTimeWithMessageTime:(double)time
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:a3];
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:time];
   v6 = [v4 compare:v5];
 
   return v6;
 }
 
-- (IAMEvaluator)initWithMessageEntries:(id)a3 metadataEntries:(id)a4 applicationContext:(id)a5 hostBundleIdentifier:(id)a6 messageGroups:(id)a7 lastDisplayTimeForRestrictedPresentationPolicyGroup:(id)a8 lastDisplayTimeForNormalPresentationPolicyGroup:(id)a9
+- (IAMEvaluator)initWithMessageEntries:(id)entries metadataEntries:(id)metadataEntries applicationContext:(id)context hostBundleIdentifier:(id)identifier messageGroups:(id)groups lastDisplayTimeForRestrictedPresentationPolicyGroup:(id)group lastDisplayTimeForNormalPresentationPolicyGroup:(id)policyGroup
 {
-  v29 = a3;
-  v28 = a4;
-  v16 = a5;
-  v27 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  entriesCopy = entries;
+  metadataEntriesCopy = metadataEntries;
+  contextCopy = context;
+  identifierCopy = identifier;
+  groupsCopy = groups;
+  groupCopy = group;
+  policyGroupCopy = policyGroup;
   v30.receiver = self;
   v30.super_class = IAMEvaluator;
   v20 = [(IAMEvaluator *)&v30 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_messageEntries, a3);
-    objc_storeWeak(&v21->_applicationContext, v16);
-    objc_storeStrong(&v21->_hostBundleIdentifier, a6);
-    objc_storeStrong(&v21->_messageGroupsByGroupIdentifier, a7);
-    objc_storeStrong(&v21->_metadataEntries, a4);
-    v22 = [v18 copy];
+    objc_storeStrong(&v20->_messageEntries, entries);
+    objc_storeWeak(&v21->_applicationContext, contextCopy);
+    objc_storeStrong(&v21->_hostBundleIdentifier, identifier);
+    objc_storeStrong(&v21->_messageGroupsByGroupIdentifier, groups);
+    objc_storeStrong(&v21->_metadataEntries, metadataEntries);
+    v22 = [groupCopy copy];
     lastDisplayTimeForRestrictedPresentationPolicyGroup = v21->_lastDisplayTimeForRestrictedPresentationPolicyGroup;
     v21->_lastDisplayTimeForRestrictedPresentationPolicyGroup = v22;
 
-    v24 = [v19 copy];
+    v24 = [policyGroupCopy copy];
     lastDisplayTimeForNormalPresentationPolicyGroup = v21->_lastDisplayTimeForNormalPresentationPolicyGroup;
     v21->_lastDisplayTimeForNormalPresentationPolicyGroup = v24;
   }
@@ -236,7 +236,7 @@ LABEL_17:
   return v21;
 }
 
-- (id)computeMessagesCloseToPassingWithProximityThreshold:(unint64_t)a3
+- (id)computeMessagesCloseToPassingWithProximityThreshold:(unint64_t)threshold
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -260,7 +260,7 @@ LABEL_17:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        if ([(IAMEvaluator *)self _messageEntryProximity:v11, v16]>= a3)
+        if ([(IAMEvaluator *)self _messageEntryProximity:v11, v16]>= threshold)
         {
           [v5 addObject:v11];
         }
@@ -275,59 +275,59 @@ LABEL_17:
   v12 = [v5 copy];
   [(IAMEvaluator *)self setMessagesCloseToPassing:v12];
 
-  v13 = [(IAMEvaluator *)self messagesCloseToPassing];
+  messagesCloseToPassing = [(IAMEvaluator *)self messagesCloseToPassing];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return messagesCloseToPassing;
 }
 
-- (BOOL)_didCacheResourcesForMessageIfRequired:(id)a3
+- (BOOL)_didCacheResourcesForMessageIfRequired:(id)required
 {
-  v3 = a3;
-  v4 = [v3 applicationMessage];
-  if (([v4 hasAssetPrefetchStrategy] & 1) == 0)
+  requiredCopy = required;
+  applicationMessage = [requiredCopy applicationMessage];
+  if (([applicationMessage hasAssetPrefetchStrategy] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 applicationMessage];
-  v6 = [v5 assetPrefetchStrategy];
+  applicationMessage2 = [requiredCopy applicationMessage];
+  assetPrefetchStrategy = [applicationMessage2 assetPrefetchStrategy];
 
-  if (v6 == 2)
+  if (assetPrefetchStrategy == 2)
   {
 LABEL_5:
-    v7 = 1;
+    didCacheRequiredResources = 1;
     goto LABEL_6;
   }
 
-  v7 = [v3 didCacheRequiredResources];
+  didCacheRequiredResources = [requiredCopy didCacheRequiredResources];
 LABEL_6:
 
-  return v7;
+  return didCacheRequiredResources;
 }
 
-- (BOOL)_doesPresentationPolicyAllowPresentationOfMessage:(id)a3
+- (BOOL)_doesPresentationPolicyAllowPresentationOfMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 applicationMessage];
-  v6 = [v5 hasGlobalPresentationPolicyGroup];
+  messageCopy = message;
+  applicationMessage = [messageCopy applicationMessage];
+  hasGlobalPresentationPolicyGroup = [applicationMessage hasGlobalPresentationPolicyGroup];
 
-  if (v6)
+  if (hasGlobalPresentationPolicyGroup)
   {
-    v7 = [v4 applicationMessage];
-    v8 = [v7 globalPresentationPolicyGroup];
+    applicationMessage2 = [messageCopy applicationMessage];
+    globalPresentationPolicyGroup = [applicationMessage2 globalPresentationPolicyGroup];
 
-    v9 = [MEMORY[0x277D1B2C8] presentationPolicyGroupForGlobalPresentationPolicyGroup:v8];
-    if (v8 == 1)
+    v9 = [MEMORY[0x277D1B2C8] presentationPolicyGroupForGlobalPresentationPolicyGroup:globalPresentationPolicyGroup];
+    if (globalPresentationPolicyGroup == 1)
     {
       v10 = 40;
     }
 
     else
     {
-      if (v8)
+      if (globalPresentationPolicyGroup)
       {
         v12 = 0;
         goto LABEL_9;
@@ -351,73 +351,73 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_evaluateRule:(id)a3 forMessageEntry:(id)a4
+- (BOOL)_evaluateRule:(id)rule forMessageEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  ruleCopy = rule;
+  entryCopy = entry;
+  if (!ruleCopy)
   {
     goto LABEL_10;
   }
 
-  if ([v7 hasRequiredApplicationContextBundleIdentifier])
+  if ([ruleCopy hasRequiredApplicationContextBundleIdentifier])
   {
-    v4 = [v7 requiredApplicationContextBundleIdentifier];
-    v9 = [v4 isEqualToString:self->_hostBundleIdentifier];
+    requiredApplicationContextBundleIdentifier = [ruleCopy requiredApplicationContextBundleIdentifier];
+    v9 = [requiredApplicationContextBundleIdentifier isEqualToString:self->_hostBundleIdentifier];
 
     if (!v9)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(requiredApplicationContextBundleIdentifier) = 0;
       goto LABEL_13;
     }
   }
 
-  v10 = [v7 triggerCondition];
-  if (v10)
+  triggerCondition = [ruleCopy triggerCondition];
+  if (triggerCondition)
   {
 
     goto LABEL_7;
   }
 
-  v4 = [v7 subrules];
+  requiredApplicationContextBundleIdentifier = [ruleCopy subrules];
 
-  if (!v4)
+  if (!requiredApplicationContextBundleIdentifier)
   {
 LABEL_10:
-    LOBYTE(v4) = 1;
+    LOBYTE(requiredApplicationContextBundleIdentifier) = 1;
     goto LABEL_13;
   }
 
 LABEL_7:
-  v11 = [v7 type];
-  if (v11 == 1)
+  type = [ruleCopy type];
+  if (type == 1)
   {
-    LOBYTE(v4) = [(IAMEvaluator *)self _evaluateCompoundRule:v7 forMessageEntry:v8];
+    LOBYTE(requiredApplicationContextBundleIdentifier) = [(IAMEvaluator *)self _evaluateCompoundRule:ruleCopy forMessageEntry:entryCopy];
   }
 
-  else if (!v11)
+  else if (!type)
   {
-    v12 = [v7 triggerCondition];
-    LOBYTE(v4) = [(IAMEvaluator *)self _evaluateCondition:v12 forMessageEntry:v8];
+    triggerCondition2 = [ruleCopy triggerCondition];
+    LOBYTE(requiredApplicationContextBundleIdentifier) = [(IAMEvaluator *)self _evaluateCondition:triggerCondition2 forMessageEntry:entryCopy];
   }
 
 LABEL_13:
 
-  return v4 & 1;
+  return requiredApplicationContextBundleIdentifier & 1;
 }
 
-- (BOOL)_evaluateCompoundRule:(id)a3 forMessageEntry:(id)a4
+- (BOOL)_evaluateCompoundRule:(id)rule forMessageEntry:(id)entry
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  ruleCopy = rule;
+  entryCopy = entry;
   v8 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v6 subrules];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  subrules = [ruleCopy subrules];
+  v10 = [subrules countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -428,21 +428,21 @@ LABEL_13:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subrules);
         }
 
-        v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[IAMEvaluator _evaluateRule:forMessageEntry:](self, "_evaluateRule:forMessageEntry:", *(*(&v28 + 1) + 8 * i), v7)}];
+        v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[IAMEvaluator _evaluateRule:forMessageEntry:](self, "_evaluateRule:forMessageEntry:", *(*(&v28 + 1) + 8 * i), entryCopy)}];
         [v8 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v11 = [subrules countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [v6 ruleOperator];
-  v16 = v15 == 0;
+  ruleOperator = [ruleCopy ruleOperator];
+  bOOLValue = ruleOperator == 0;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -462,30 +462,30 @@ LABEL_13:
           objc_enumerationMutation(v17);
         }
 
-        if (v15 == 1)
+        if (ruleOperator == 1)
         {
-          if (v16)
+          if (bOOLValue)
           {
-            v16 = 1;
+            bOOLValue = 1;
             continue;
           }
         }
 
         else
         {
-          if (v15)
+          if (ruleOperator)
           {
             continue;
           }
 
-          if ((v16 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
-            v16 = 0;
+            bOOLValue = 0;
             continue;
           }
         }
 
-        v16 = [*(*(&v24 + 1) + 8 * j) BOOLValue];
+        bOOLValue = [*(*(&v24 + 1) + 8 * j) BOOLValue];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -495,17 +495,17 @@ LABEL_13:
   }
 
   v22 = *MEMORY[0x277D85DE8];
-  return v16 & 1;
+  return bOOLValue & 1;
 }
 
-- (id)_contextPropertyWithName:(id)a3 forMessageGroupIdentifier:(id)a4
+- (id)_contextPropertyWithName:(id)name forMessageGroupIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_messageGroupsByGroupIdentifier objectForKeyedSubscript:a4];
+  nameCopy = name;
+  v7 = [(NSDictionary *)self->_messageGroupsByGroupIdentifier objectForKeyedSubscript:identifier];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 contextPropertyWithName:v6];
+    v9 = [v7 contextPropertyWithName:nameCopy];
   }
 
   else
@@ -516,62 +516,62 @@ LABEL_13:
   return v9;
 }
 
-- (id)_contextPropertyWithName:(id)a3 messageBundleIdentifier:(id)a4 conditionBundleIdentifier:(id)a5
+- (id)_contextPropertyWithName:(id)name messageBundleIdentifier:(id)identifier conditionBundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  nameCopy = name;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  v11 = bundleIdentifierCopy;
+  if (bundleIdentifierCopy)
   {
-    if ([v10 isEqualToString:self->_hostBundleIdentifier])
+    if ([bundleIdentifierCopy isEqualToString:self->_hostBundleIdentifier])
     {
       WeakRetained = objc_loadWeakRetained(&self->_applicationContext);
-      v13 = [WeakRetained contextPropertyWithName:v8];
+      v13 = [WeakRetained contextPropertyWithName:nameCopy];
 
       goto LABEL_8;
     }
 
-    v15 = self;
-    v16 = v8;
+    selfCopy2 = self;
+    v16 = nameCopy;
     v17 = v11;
   }
 
   else
   {
     v14 = objc_loadWeakRetained(&self->_applicationContext);
-    v13 = [v14 contextPropertyWithName:v8];
+    v13 = [v14 contextPropertyWithName:nameCopy];
 
     if (v13)
     {
       goto LABEL_8;
     }
 
-    v15 = self;
-    v16 = v8;
-    v17 = v9;
+    selfCopy2 = self;
+    v16 = nameCopy;
+    v17 = identifierCopy;
   }
 
-  v13 = [(IAMEvaluator *)v15 _contextPropertyWithName:v16 forMessageGroupIdentifier:v17];
+  v13 = [(IAMEvaluator *)selfCopy2 _contextPropertyWithName:v16 forMessageGroupIdentifier:v17];
 LABEL_8:
 
   return v13;
 }
 
-- (id)_valueForCondition:(id)a3 messageBundleIdentifier:(id)a4 messageMetadata:(id)a5
+- (id)_valueForCondition:(id)condition messageBundleIdentifier:(id)identifier messageMetadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 hasKind])
+  conditionCopy = condition;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  if ([conditionCopy hasKind])
   {
-    v11 = [v8 kind];
-    if (v11 != 1)
+    kind = [conditionCopy kind];
+    if (kind != 1)
     {
-      if (v11 || !v10)
+      if (kind || !metadataCopy)
       {
 LABEL_10:
-        if ([v8 dataType] == 2 && !objc_msgSend(v8, "triggerConditionType"))
+        if ([conditionCopy dataType] == 2 && !objc_msgSend(conditionCopy, "triggerConditionType"))
         {
           v15 = [MEMORY[0x277CCABB0] numberWithInt:0];
         }
@@ -584,21 +584,21 @@ LABEL_10:
         goto LABEL_13;
       }
 
-      v12 = [v8 identifier];
-      v13 = [v8 bundleIdentifier];
-      v14 = [IAMTriggerKey nameSpacedKeyNameForName:v12 bundleIdentifier:v13];
-      v15 = [v10 metadataValueForKey:v14];
+      identifier = [conditionCopy identifier];
+      bundleIdentifier = [conditionCopy bundleIdentifier];
+      v14 = [IAMTriggerKey nameSpacedKeyNameForName:identifier bundleIdentifier:bundleIdentifier];
+      v15 = [metadataCopy metadataValueForKey:v14];
 
       goto LABEL_9;
     }
   }
 
-  else if (v10)
+  else if (metadataCopy)
   {
-    v16 = [v8 identifier];
-    v17 = [v8 bundleIdentifier];
-    v18 = [IAMTriggerKey nameSpacedKeyNameForName:v16 bundleIdentifier:v17];
-    v15 = [v10 metadataValueForKey:v18];
+    identifier2 = [conditionCopy identifier];
+    bundleIdentifier2 = [conditionCopy bundleIdentifier];
+    v18 = [IAMTriggerKey nameSpacedKeyNameForName:identifier2 bundleIdentifier:bundleIdentifier2];
+    v15 = [metadataCopy metadataValueForKey:v18];
 
     if (v15)
     {
@@ -606,9 +606,9 @@ LABEL_10:
     }
   }
 
-  v12 = [v8 identifier];
-  v13 = [v8 bundleIdentifier];
-  v15 = [(IAMEvaluator *)self _contextPropertyWithName:v12 messageBundleIdentifier:v9 conditionBundleIdentifier:v13];
+  identifier = [conditionCopy identifier];
+  bundleIdentifier = [conditionCopy bundleIdentifier];
+  v15 = [(IAMEvaluator *)self _contextPropertyWithName:identifier messageBundleIdentifier:identifierCopy conditionBundleIdentifier:bundleIdentifier];
 LABEL_9:
 
   if (!v15)
@@ -621,150 +621,150 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)_evaluateCondition:(id)a3 forMessageEntry:(id)a4
+- (BOOL)_evaluateCondition:(id)condition forMessageEntry:(id)entry
 {
-  v6 = a3;
-  v7 = [a4 bundleIdentifier];
-  v8 = [(IAMEvaluator *)self _valueForCondition:v6 messageBundleIdentifier:v7 messageMetadata:self->_currentMetadata];
+  conditionCopy = condition;
+  bundleIdentifier = [entry bundleIdentifier];
+  v8 = [(IAMEvaluator *)self _valueForCondition:conditionCopy messageBundleIdentifier:bundleIdentifier messageMetadata:self->_currentMetadata];
 
-  v9 = [v6 dataType];
-  if ((!v9 || v9 == 2 || v9 == 1) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dataType = [conditionCopy dataType];
+  if ((!dataType || dataType == 2 || dataType == 1) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(bundleIdentifier) = 0;
   }
 
   else
   {
-    v10 = [v6 comparisonType];
-    if (v10 <= 2)
+    comparisonType = [conditionCopy comparisonType];
+    if (comparisonType <= 2)
     {
-      if (v10)
+      if (comparisonType)
       {
-        if (v10 != 1)
+        if (comparisonType != 1)
         {
-          if (v10 != 2)
+          if (comparisonType != 2)
           {
             goto LABEL_31;
           }
 
 LABEL_23:
-          LODWORD(v7) = [v8 intValue];
-          v11 = [v6 triggerValue];
-          LOBYTE(v7) = v7 < [v11 intValue];
+          LODWORD(bundleIdentifier) = [v8 intValue];
+          triggerValue = [conditionCopy triggerValue];
+          LOBYTE(bundleIdentifier) = bundleIdentifier < [triggerValue intValue];
           goto LABEL_30;
         }
       }
 
       else
       {
-        v12 = [v6 dataType];
-        switch(v12)
+        dataType2 = [conditionCopy dataType];
+        switch(dataType2)
         {
           case 0:
-            v15 = [v8 BOOLValue];
-            v11 = [v6 triggerValue];
-            LOBYTE(v7) = v15 ^ [v11 BOOLValue] ^ 1;
+            bOOLValue = [v8 BOOLValue];
+            triggerValue = [conditionCopy triggerValue];
+            LOBYTE(bundleIdentifier) = bOOLValue ^ [triggerValue BOOLValue] ^ 1;
             goto LABEL_30;
           case 2:
-            LODWORD(v7) = [v8 intValue];
-            v11 = [v6 triggerValue];
-            LOBYTE(v7) = v7 == [v11 intValue];
+            LODWORD(bundleIdentifier) = [v8 intValue];
+            triggerValue = [conditionCopy triggerValue];
+            LOBYTE(bundleIdentifier) = bundleIdentifier == [triggerValue intValue];
             goto LABEL_30;
           case 1:
-            v11 = [v6 triggerValue];
-            LOBYTE(v7) = [v8 isEqualToString:v11];
+            triggerValue = [conditionCopy triggerValue];
+            LOBYTE(bundleIdentifier) = [v8 isEqualToString:triggerValue];
             goto LABEL_30;
         }
       }
 
-      v13 = [v6 dataType];
-      if (!v13)
+      dataType3 = [conditionCopy dataType];
+      if (!dataType3)
       {
-        v14 = [v8 BOOLValue];
-        v11 = [v6 triggerValue];
-        LOBYTE(v7) = v14 ^ [v11 BOOLValue];
+        bOOLValue2 = [v8 BOOLValue];
+        triggerValue = [conditionCopy triggerValue];
+        LOBYTE(bundleIdentifier) = bOOLValue2 ^ [triggerValue BOOLValue];
         goto LABEL_30;
       }
 
-      if (v13 == 2)
+      if (dataType3 == 2)
       {
-        LODWORD(v7) = [v8 intValue];
-        v11 = [v6 triggerValue];
-        LOBYTE(v7) = v7 != [v11 intValue];
+        LODWORD(bundleIdentifier) = [v8 intValue];
+        triggerValue = [conditionCopy triggerValue];
+        LOBYTE(bundleIdentifier) = bundleIdentifier != [triggerValue intValue];
         goto LABEL_30;
       }
 
-      if (v13 != 1)
+      if (dataType3 != 1)
       {
         goto LABEL_23;
       }
 
-      v11 = [v6 triggerValue];
-      LOBYTE(v7) = [v8 isEqualToString:v11] ^ 1;
+      triggerValue = [conditionCopy triggerValue];
+      LOBYTE(bundleIdentifier) = [v8 isEqualToString:triggerValue] ^ 1;
 LABEL_30:
 
       goto LABEL_31;
     }
 
-    switch(v10)
+    switch(comparisonType)
     {
       case 3:
-        LODWORD(v7) = [v8 intValue];
-        v11 = [v6 triggerValue];
-        LOBYTE(v7) = v7 <= [v11 intValue];
+        LODWORD(bundleIdentifier) = [v8 intValue];
+        triggerValue = [conditionCopy triggerValue];
+        LOBYTE(bundleIdentifier) = bundleIdentifier <= [triggerValue intValue];
         goto LABEL_30;
       case 4:
-        LODWORD(v7) = [v8 intValue];
-        v11 = [v6 triggerValue];
-        LOBYTE(v7) = v7 > [v11 intValue];
+        LODWORD(bundleIdentifier) = [v8 intValue];
+        triggerValue = [conditionCopy triggerValue];
+        LOBYTE(bundleIdentifier) = bundleIdentifier > [triggerValue intValue];
         goto LABEL_30;
       case 5:
-        LODWORD(v7) = [v8 intValue];
-        v11 = [v6 triggerValue];
-        LOBYTE(v7) = v7 >= [v11 intValue];
+        LODWORD(bundleIdentifier) = [v8 intValue];
+        triggerValue = [conditionCopy triggerValue];
+        LOBYTE(bundleIdentifier) = bundleIdentifier >= [triggerValue intValue];
         goto LABEL_30;
     }
   }
 
 LABEL_31:
 
-  return v7 & 1;
+  return bundleIdentifier & 1;
 }
 
-- (unint64_t)_messageEntryProximity:(id)a3
+- (unint64_t)_messageEntryProximity:(id)proximity
 {
-  v4 = a3;
-  v5 = v4;
+  proximityCopy = proximity;
+  v5 = proximityCopy;
   metadataEntries = self->_metadataEntries;
   if (metadataEntries)
   {
-    v7 = [v4 applicationMessage];
-    v8 = [v7 identifier];
-    v9 = [(NSDictionary *)metadataEntries objectForKeyedSubscript:v8];
+    applicationMessage = [proximityCopy applicationMessage];
+    identifier = [applicationMessage identifier];
+    v9 = [(NSDictionary *)metadataEntries objectForKeyedSubscript:identifier];
     currentProximityMetadata = self->_currentProximityMetadata;
     self->_currentProximityMetadata = v9;
   }
 
-  v11 = [v5 applicationMessage];
-  v12 = [v11 rule];
-  v13 = [(IAMEvaluator *)self _calculateRuleProximity:v12 forMessageEntry:v5];
+  applicationMessage2 = [v5 applicationMessage];
+  rule = [applicationMessage2 rule];
+  v13 = [(IAMEvaluator *)self _calculateRuleProximity:rule forMessageEntry:v5];
 
   return v13;
 }
 
-- (unint64_t)_calculateRuleProximity:(id)a3 forMessageEntry:(id)a4
+- (unint64_t)_calculateRuleProximity:(id)proximity forMessageEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  proximityCopy = proximity;
+  entryCopy = entry;
+  if (!proximityCopy)
   {
     goto LABEL_10;
   }
 
-  if ([v6 hasRequiredApplicationContextBundleIdentifier])
+  if ([proximityCopy hasRequiredApplicationContextBundleIdentifier])
   {
-    v8 = [v6 requiredApplicationContextBundleIdentifier];
-    v9 = [v8 isEqualToString:self->_hostBundleIdentifier];
+    requiredApplicationContextBundleIdentifier = [proximityCopy requiredApplicationContextBundleIdentifier];
+    v9 = [requiredApplicationContextBundleIdentifier isEqualToString:self->_hostBundleIdentifier];
 
     if (!v9)
     {
@@ -774,16 +774,16 @@ LABEL_11:
     }
   }
 
-  v10 = [v6 triggerCondition];
-  if (v10)
+  triggerCondition = [proximityCopy triggerCondition];
+  if (triggerCondition)
   {
 
     goto LABEL_7;
   }
 
-  v11 = [v6 subrules];
+  subrules = [proximityCopy subrules];
 
-  if (!v11)
+  if (!subrules)
   {
 LABEL_10:
     v14 = 100;
@@ -791,30 +791,30 @@ LABEL_10:
   }
 
 LABEL_7:
-  v12 = [v6 type];
-  if (v12 == 1)
+  type = [proximityCopy type];
+  if (type == 1)
   {
-    v14 = [(IAMEvaluator *)self _calculateCompoundRuleProximity:v6 forMessageEntry:v7];
+    v14 = [(IAMEvaluator *)self _calculateCompoundRuleProximity:proximityCopy forMessageEntry:entryCopy];
     goto LABEL_13;
   }
 
-  if (v12)
+  if (type)
   {
     goto LABEL_11;
   }
 
-  v13 = [v6 triggerCondition];
-  v14 = [(IAMEvaluator *)self _calculateConditionProximity:v13 forMessageEntry:v7];
+  triggerCondition2 = [proximityCopy triggerCondition];
+  v14 = [(IAMEvaluator *)self _calculateConditionProximity:triggerCondition2 forMessageEntry:entryCopy];
 
 LABEL_13:
   return v14;
 }
 
-- (unint64_t)_calculateCompoundRuleProximity:(id)a3 forMessageEntry:(id)a4
+- (unint64_t)_calculateCompoundRuleProximity:(id)proximity forMessageEntry:(id)entry
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v30 = a4;
+  proximityCopy = proximity;
+  entryCopy = entry;
   v7 = objc_opt_new();
   v48 = 0;
   v49 = &v48;
@@ -824,23 +824,23 @@ LABEL_13:
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
-  v29 = v6;
-  v8 = [v6 subrules];
+  v29 = proximityCopy;
+  subrules = [proximityCopy subrules];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __64__IAMEvaluator__calculateCompoundRuleProximity_forMessageEntry___block_invoke;
   v43[3] = &unk_2797A7610;
   v43[4] = &v48;
   v43[5] = &v44;
-  [v8 enumerateObjectsUsingBlock:v43];
+  [subrules enumerateObjectsUsingBlock:v43];
 
   v9 = ![v29 ruleOperator] && v49[3] && v45[3] != 0;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = [v29 subrules];
-  v11 = [v10 countByEnumeratingWithState:&v39 objects:v54 count:16];
+  subrules2 = [v29 subrules];
+  v11 = [subrules2 countByEnumeratingWithState:&v39 objects:v54 count:16];
   if (v11)
   {
     v12 = *v40;
@@ -851,13 +851,13 @@ LABEL_13:
       {
         if (*v40 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subrules2);
         }
 
         v14 = *(*(&v39 + 1) + 8 * v13);
         if (!v9 || ([*(*(&v39 + 1) + 8 * v13) isExactMatchRule] & 1) == 0)
         {
-          v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[IAMEvaluator _calculateRuleProximity:forMessageEntry:](self, "_calculateRuleProximity:forMessageEntry:", v14, v30)}];
+          v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[IAMEvaluator _calculateRuleProximity:forMessageEntry:](self, "_calculateRuleProximity:forMessageEntry:", v14, entryCopy)}];
           [v7 addObject:v15];
         }
 
@@ -865,7 +865,7 @@ LABEL_13:
       }
 
       while (v11 != v13);
-      v11 = [v10 countByEnumeratingWithState:&v39 objects:v54 count:16];
+      v11 = [subrules2 countByEnumeratingWithState:&v39 objects:v54 count:16];
     }
 
     while (v11);
@@ -895,10 +895,10 @@ LABEL_13:
               objc_enumerationMutation(v16);
             }
 
-            v21 = [*(*(&v31 + 1) + 8 * v20) unsignedIntegerValue];
-            if (v17 <= v21)
+            unsignedIntegerValue = [*(*(&v31 + 1) + 8 * v20) unsignedIntegerValue];
+            if (v17 <= unsignedIntegerValue)
             {
-              v17 = v21;
+              v17 = unsignedIntegerValue;
             }
 
             ++v20;
@@ -973,14 +973,14 @@ uint64_t __64__IAMEvaluator__calculateCompoundRuleProximity_forMessageEntry___bl
   return result;
 }
 
-- (unint64_t)_calculateConditionProximity:(id)a3 forMessageEntry:(id)a4
+- (unint64_t)_calculateConditionProximity:(id)proximity forMessageEntry:(id)entry
 {
-  v6 = a3;
-  v7 = [a4 bundleIdentifier];
-  v8 = [(IAMEvaluator *)self _valueForCondition:v6 messageBundleIdentifier:v7 messageMetadata:self->_currentProximityMetadata];
+  proximityCopy = proximity;
+  bundleIdentifier = [entry bundleIdentifier];
+  v8 = [(IAMEvaluator *)self _valueForCondition:proximityCopy messageBundleIdentifier:bundleIdentifier messageMetadata:self->_currentProximityMetadata];
 
-  v9 = [v6 dataType];
-  if (!v9 || v9 == 2 || v9 == 1)
+  dataType = [proximityCopy dataType];
+  if (!dataType || dataType == 2 || dataType == 1)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -989,32 +989,32 @@ uint64_t __64__IAMEvaluator__calculateCompoundRuleProximity_forMessageEntry___bl
     }
   }
 
-  v10 = [v6 comparisonType];
+  comparisonType = [proximityCopy comparisonType];
   v11 = 0;
-  if (v10 > 2)
+  if (comparisonType > 2)
   {
-    if (v10 != 3)
+    if (comparisonType != 3)
     {
-      if (v10 == 4)
+      if (comparisonType == 4)
       {
-        v37 = [v8 intValue];
-        v38 = [v6 triggerValue];
-        v39 = [v38 intValue];
+        intValue = [v8 intValue];
+        triggerValue = [proximityCopy triggerValue];
+        intValue2 = [triggerValue intValue];
 
-        if (v37 > v39)
+        if (intValue > intValue2)
         {
           goto LABEL_42;
         }
 
-        v40 = [v8 intValue];
-        v41 = [v6 triggerValue];
-        v42 = [v41 intValue];
+        intValue3 = [v8 intValue];
+        triggerValue2 = [proximityCopy triggerValue];
+        intValue4 = [triggerValue2 intValue];
 
-        if (v40 <= v42)
+        if (intValue3 <= intValue4)
         {
           v51 = 100 * [v8 intValue];
-          v20 = [v6 triggerValue];
-          v52 = v51 / ([v20 intValue] + 1);
+          triggerValue3 = [proximityCopy triggerValue];
+          v52 = v51 / ([triggerValue3 intValue] + 1);
 LABEL_52:
           v11 = v52;
 LABEL_53:
@@ -1025,30 +1025,30 @@ LABEL_53:
 
       else
       {
-        if (v10 != 5)
+        if (comparisonType != 5)
         {
           goto LABEL_54;
         }
 
-        v12 = [v8 intValue];
-        v13 = [v6 triggerValue];
-        v14 = [v13 intValue];
+        intValue5 = [v8 intValue];
+        triggerValue4 = [proximityCopy triggerValue];
+        intValue6 = [triggerValue4 intValue];
 
-        if (v12 >= v14)
+        if (intValue5 >= intValue6)
         {
           goto LABEL_42;
         }
 
-        v15 = [v8 intValue];
-        v16 = [v6 triggerValue];
-        v17 = [v16 intValue];
+        intValue7 = [v8 intValue];
+        triggerValue5 = [proximityCopy triggerValue];
+        intValue8 = [triggerValue5 intValue];
 
-        if (v15 < v17)
+        if (intValue7 < intValue8)
         {
           v18 = 100 * [v8 intValue];
 LABEL_50:
-          v36 = [v6 triggerValue];
-          v20 = v36;
+          triggerValue6 = [proximityCopy triggerValue];
+          triggerValue3 = triggerValue6;
           goto LABEL_51;
         }
       }
@@ -1058,55 +1058,55 @@ LABEL_33:
       goto LABEL_54;
     }
 
-    v30 = [v8 intValue];
-    v31 = [v6 triggerValue];
-    v32 = [v31 intValue];
+    intValue9 = [v8 intValue];
+    triggerValue7 = [proximityCopy triggerValue];
+    intValue10 = [triggerValue7 intValue];
 
-    if (v30 <= v32)
+    if (intValue9 <= intValue10)
     {
       goto LABEL_42;
     }
 
-    v33 = [v8 intValue];
+    intValue11 = [v8 intValue];
 LABEL_29:
-    v34 = [v6 triggerValue];
-    v35 = [v34 intValue];
+    triggerValue8 = [proximityCopy triggerValue];
+    intValue12 = [triggerValue8 intValue];
 
-    if (v33 > v35)
+    if (intValue11 > intValue12)
     {
 LABEL_30:
-      v20 = [v6 triggerValue];
-      v18 = 100 * [v20 intValue];
-      v36 = v8;
+      triggerValue3 = [proximityCopy triggerValue];
+      v18 = 100 * [triggerValue3 intValue];
+      triggerValue6 = v8;
 LABEL_51:
-      v52 = v18 / [v36 intValue];
+      v52 = v18 / [triggerValue6 intValue];
       goto LABEL_52;
     }
 
     goto LABEL_33;
   }
 
-  if (v10)
+  if (comparisonType)
   {
-    if (v10 != 1)
+    if (comparisonType != 1)
     {
-      if (v10 != 2)
+      if (comparisonType != 2)
       {
         goto LABEL_54;
       }
 
 LABEL_24:
-      v24 = [v8 intValue];
-      v25 = [v6 triggerValue];
-      v26 = [v25 intValue];
+      intValue13 = [v8 intValue];
+      triggerValue9 = [proximityCopy triggerValue];
+      intValue14 = [triggerValue9 intValue];
 
-      if (v24 >= v26)
+      if (intValue13 >= intValue14)
       {
-        v27 = [v8 intValue];
-        v28 = [v6 triggerValue];
-        v29 = [v28 intValue];
+        intValue15 = [v8 intValue];
+        triggerValue10 = [proximityCopy triggerValue];
+        intValue16 = [triggerValue10 intValue];
 
-        if (v27 < v29)
+        if (intValue15 < intValue16)
         {
           goto LABEL_33;
         }
@@ -1122,50 +1122,50 @@ LABEL_42:
     goto LABEL_20;
   }
 
-  v19 = [v6 dataType];
-  switch(v19)
+  dataType2 = [proximityCopy dataType];
+  switch(dataType2)
   {
     case 0:
-      v50 = [v8 BOOLValue];
-      v20 = [v6 triggerValue];
-      v23 = v50 == [v20 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
+      triggerValue3 = [proximityCopy triggerValue];
+      v23 = bOOLValue == [triggerValue3 BOOLValue];
       goto LABEL_44;
     case 2:
-      v47 = [v8 intValue];
-      v48 = [v6 triggerValue];
-      v49 = [v48 intValue];
+      intValue17 = [v8 intValue];
+      triggerValue11 = [proximityCopy triggerValue];
+      intValue18 = [triggerValue11 intValue];
 
-      if (v47 == v49)
+      if (intValue17 == intValue18)
       {
         goto LABEL_42;
       }
 
-      v53 = [v8 intValue];
-      v54 = [v6 triggerValue];
-      v55 = [v54 intValue];
+      intValue19 = [v8 intValue];
+      triggerValue12 = [proximityCopy triggerValue];
+      intValue20 = [triggerValue12 intValue];
 
-      v56 = [v8 intValue];
-      v33 = v56;
-      if (v53 < v55)
+      intValue21 = [v8 intValue];
+      intValue11 = intValue21;
+      if (intValue19 < intValue20)
       {
-        v18 = 100 * v56;
+        v18 = 100 * intValue21;
         goto LABEL_50;
       }
 
       goto LABEL_29;
     case 1:
-      v20 = [v6 triggerValue];
-      v21 = [v8 isEqualToString:v20] == 0;
+      triggerValue3 = [proximityCopy triggerValue];
+      v21 = [v8 isEqualToString:triggerValue3] == 0;
       goto LABEL_38;
   }
 
 LABEL_20:
-  v22 = [v6 dataType];
-  if (!v22)
+  dataType3 = [proximityCopy dataType];
+  if (!dataType3)
   {
-    v46 = [v8 BOOLValue];
-    v20 = [v6 triggerValue];
-    v21 = v46 == [v20 BOOLValue];
+    bOOLValue2 = [v8 BOOLValue];
+    triggerValue3 = [proximityCopy triggerValue];
+    v21 = bOOLValue2 == [triggerValue3 BOOLValue];
 LABEL_38:
     if (v21)
     {
@@ -1180,15 +1180,15 @@ LABEL_38:
     goto LABEL_53;
   }
 
-  if (v22 != 2)
+  if (dataType3 != 2)
   {
-    if (v22 != 1)
+    if (dataType3 != 1)
     {
       goto LABEL_24;
     }
 
-    v20 = [v6 triggerValue];
-    v23 = [v8 isEqualToString:v20] == 0;
+    triggerValue3 = [proximityCopy triggerValue];
+    v23 = [v8 isEqualToString:triggerValue3] == 0;
 LABEL_44:
     if (v23)
     {
@@ -1203,11 +1203,11 @@ LABEL_44:
     goto LABEL_53;
   }
 
-  v43 = [v8 intValue];
-  v44 = [v6 triggerValue];
-  v45 = [v44 intValue];
+  intValue22 = [v8 intValue];
+  triggerValue13 = [proximityCopy triggerValue];
+  intValue23 = [triggerValue13 intValue];
 
-  if (v43 == v45)
+  if (intValue22 == intValue23)
   {
     v11 = 0;
   }

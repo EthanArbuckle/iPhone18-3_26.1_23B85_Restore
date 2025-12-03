@@ -1,30 +1,30 @@
 @interface HDAppLauncher
-- (BOOL)unitTest_hasAssertionForBundleIdentifier:(id)a3;
-- (HDAppLauncher)initWithProcessStateManager:(id)a3 openApplicationService:(id)a4;
-- (id)_queue_assertionsForClientBundleIdentifier:(uint64_t)a1;
-- (id)takeKeepAliveAssertionForApplicationBundleIdentifier:(id)a3 processBundleIdentifier:(id)a4 client:(id)a5;
-- (uint64_t)_queue_clientRequiresLaunch:(void *)a3 assertions:;
-- (void)_queue_launchClientIfNeeded:(uint64_t)a1;
-- (void)_queue_scheduleLaunchForClient:(uint64_t)a1;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)processTerminated:(id)a3;
-- (void)unitTest_setBaseLaunchDelay:(double)a3 launchCountResetThreshold:(double)a4 maxLaunchCount:(int64_t)a5;
+- (BOOL)unitTest_hasAssertionForBundleIdentifier:(id)identifier;
+- (HDAppLauncher)initWithProcessStateManager:(id)manager openApplicationService:(id)service;
+- (id)_queue_assertionsForClientBundleIdentifier:(uint64_t)identifier;
+- (id)takeKeepAliveAssertionForApplicationBundleIdentifier:(id)identifier processBundleIdentifier:(id)bundleIdentifier client:(id)client;
+- (uint64_t)_queue_clientRequiresLaunch:(void *)launch assertions:;
+- (void)_queue_launchClientIfNeeded:(uint64_t)needed;
+- (void)_queue_scheduleLaunchForClient:(uint64_t)client;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)processTerminated:(id)terminated;
+- (void)unitTest_setBaseLaunchDelay:(double)delay launchCountResetThreshold:(double)threshold maxLaunchCount:(int64_t)count;
 @end
 
 @implementation HDAppLauncher
 
-- (HDAppLauncher)initWithProcessStateManager:(id)a3 openApplicationService:(id)a4
+- (HDAppLauncher)initWithProcessStateManager:(id)manager openApplicationService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  serviceCopy = service;
   v22.receiver = self;
   v22.super_class = HDAppLauncher;
   v9 = [(HDAppLauncher *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_processStateManager, a3);
-    objc_storeStrong(&v10->_openApplicationService, a4);
+    objc_storeStrong(&v9->_processStateManager, manager);
+    objc_storeStrong(&v10->_openApplicationService, service);
     v11 = HKCreateSerialDispatchQueue();
     queue = v10->_queue;
     v10->_queue = v11;
@@ -55,12 +55,12 @@
   return v10;
 }
 
-- (id)takeKeepAliveAssertionForApplicationBundleIdentifier:(id)a3 processBundleIdentifier:(id)a4 client:(id)a5
+- (id)takeKeepAliveAssertionForApplicationBundleIdentifier:(id)identifier processBundleIdentifier:(id)bundleIdentifier client:(id)client
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 length])
+  identifierCopy = identifier;
+  clientCopy = client;
+  if ([identifierCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -74,8 +74,8 @@
     v14[2] = __101__HDAppLauncher_takeKeepAliveAssertionForApplicationBundleIdentifier_processBundleIdentifier_client___block_invoke;
     v14[3] = &unk_278617558;
     v14[4] = self;
-    v15 = v7;
-    v16 = v8;
+    v15 = identifierCopy;
+    v16 = clientCopy;
     v17 = buf;
     dispatch_sync(queue, v14);
     v10 = *(*&buf[8] + 40);
@@ -92,7 +92,7 @@
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = identifierCopy;
       _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Ignoring attempt to request keep-alive for invalide bundle identifier %{public}@", buf, 0x16u);
     }
 
@@ -279,37 +279,37 @@ LABEL_40:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_assertionsForClientBundleIdentifier:(uint64_t)a1
+- (id)_queue_assertionsForClientBundleIdentifier:(uint64_t)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    v4 = [*(a1 + 32) activeAssertionsForIdentifier:@"HDAppLaunchClientKeepAliveAssertionIdentifier"];
+    dispatch_assert_queue_V2(*(identifier + 24));
+    v4 = [*(identifier + 32) activeAssertionsForIdentifier:@"HDAppLaunchClientKeepAliveAssertionIdentifier"];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__HDAppLauncher__queue_assertionsForClientBundleIdentifier___block_invoke;
     v6[3] = &unk_2786220C8;
     v7 = v3;
-    a1 = [v4 hk_filter:v6];
+    identifier = [v4 hk_filter:v6];
   }
 
-  return a1;
+  return identifier;
 }
 
-- (void)_queue_launchClientIfNeeded:(uint64_t)a1
+- (void)_queue_launchClientIfNeeded:(uint64_t)needed
 {
   v40 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (needed)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    v4 = [(HDAppLauncher *)a1 _queue_assertionsForClientBundleIdentifier:v3];
-    if (([(HDAppLauncher *)a1 _queue_clientRequiresLaunch:v3 assertions:v4]& 1) != 0)
+    dispatch_assert_queue_V2(*(needed + 24));
+    v4 = [(HDAppLauncher *)needed _queue_assertionsForClientBundleIdentifier:v3];
+    if (([(HDAppLauncher *)needed _queue_clientRequiresLaunch:v3 assertions:v4]& 1) != 0)
     {
       v24 = v3;
-      [*(a1 + 56) addObject:v3];
-      v5 = [MEMORY[0x277CBEAA8] date];
+      [*(needed + 56) addObject:v3];
+      date = [MEMORY[0x277CBEAA8] date];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
@@ -333,16 +333,16 @@ LABEL_40:
             v13 = *(*(&v29 + 1) + 8 * i);
             if (v13)
             {
-              objc_setProperty_nonatomic_copy(*(*(&v29 + 1) + 8 * i), v8, v5, 96);
+              objc_setProperty_nonatomic_copy(*(*(&v29 + 1) + 8 * i), v8, date, 96);
               ++*(v13 + 88);
             }
 
-            v14 = [(HDClientKeepAliveAssertion *)v13 weakClient];
-            v15 = [v14 launchPayloadOptions];
+            weakClient = [(HDClientKeepAliveAssertion *)v13 weakClient];
+            launchPayloadOptions = [weakClient launchPayloadOptions];
 
-            if (v15)
+            if (launchPayloadOptions)
             {
-              v16 = v15;
+              v16 = launchPayloadOptions;
 
               v10 = v16;
             }
@@ -359,32 +359,32 @@ LABEL_40:
         v10 = 0;
       }
 
-      v18 = [v6 anyObject];
-      v19 = [v18 ownerIdentifier];
+      anyObject = [v6 anyObject];
+      ownerIdentifier = [anyObject ownerIdentifier];
 
       _HKInitializeLogging();
       v20 = *MEMORY[0x277CCC330];
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v34 = a1;
+        neededCopy3 = needed;
         v35 = 2114;
-        v36 = v19;
+        v36 = ownerIdentifier;
         v37 = 2114;
         v38 = v10;
         _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Attempting to launch %{public}@ with options %{public}@.", buf, 0x20u);
       }
 
-      v21 = *(a1 + 16);
+      v21 = *(needed + 16);
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __45__HDAppLauncher__queue_launchClientIfNeeded___block_invoke;
       v25[3] = &unk_2786220F0;
-      v26 = v19;
-      v27 = a1;
+      v26 = ownerIdentifier;
+      neededCopy2 = needed;
       v3 = v24;
       v28 = v24;
-      v22 = v19;
+      v22 = ownerIdentifier;
       [v21 hd_openApplication:v22 optionsDictionary:v10 completion:v25];
     }
 
@@ -395,7 +395,7 @@ LABEL_40:
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v34 = a1;
+        neededCopy3 = needed;
         v35 = 2114;
         v36 = v3;
         _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Not attempting to launch %{public}@; does not require launch.", buf, 0x16u);
@@ -433,13 +433,13 @@ uint64_t __60__HDAppLauncher__queue_assertionsForClientBundleIdentifier___block_
   return v5;
 }
 
-- (uint64_t)_queue_clientRequiresLaunch:(void *)a3 assertions:
+- (uint64_t)_queue_clientRequiresLaunch:(void *)launch assertions:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  dispatch_assert_queue_V2(*(a1 + 24));
-  if (![v6 count])
+  launchCopy = launch;
+  dispatch_assert_queue_V2(*(self + 24));
+  if (![launchCopy count])
   {
     _HKInitializeLogging();
     v13 = *MEMORY[0x277CCC330];
@@ -449,17 +449,17 @@ uint64_t __60__HDAppLauncher__queue_assertionsForClientBundleIdentifier___block_
     }
 
     v17 = 138543618;
-    v18 = a1;
+    selfCopy3 = self;
     v19 = 2114;
     v20 = v5;
     v10 = "%{public}@: %{public}@ has no active assertions.";
     goto LABEL_10;
   }
 
-  v7 = [*(a1 + 8) processIdentifierForApplicationIdentifier:v5];
+  v7 = [*(self + 8) processIdentifierForApplicationIdentifier:v5];
   if (v7 < 1)
   {
-    if (![*(a1 + 56) containsObject:v5])
+    if (![*(self + 56) containsObject:v5])
     {
       v14 = 1;
       goto LABEL_13;
@@ -473,7 +473,7 @@ uint64_t __60__HDAppLauncher__queue_assertionsForClientBundleIdentifier___block_
     }
 
     v17 = 138543618;
-    v18 = a1;
+    selfCopy3 = self;
     v19 = 2114;
     v20 = v5;
     v10 = "%{public}@: %{public}@ is already being launched.";
@@ -489,7 +489,7 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543874;
-    v18 = a1;
+    selfCopy3 = self;
     v19 = 2114;
     v20 = v5;
     v21 = 1026;
@@ -551,25 +551,25 @@ void __45__HDAppLauncher__queue_launchClientIfNeeded___block_invoke_302(uint64_t
   [(HDAppLauncher *)v2 _queue_scheduleLaunchForClient:v3];
 }
 
-- (void)_queue_scheduleLaunchForClient:(uint64_t)a1
+- (void)_queue_scheduleLaunchForClient:(uint64_t)client
 {
   v48 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!client)
   {
     goto LABEL_38;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 24));
-  v4 = [(HDAppLauncher *)a1 _queue_assertionsForClientBundleIdentifier:v3];
-  if (([(HDAppLauncher *)a1 _queue_clientRequiresLaunch:v3 assertions:v4]& 1) == 0)
+  dispatch_assert_queue_V2(*(client + 24));
+  v4 = [(HDAppLauncher *)client _queue_assertionsForClientBundleIdentifier:v3];
+  if (([(HDAppLauncher *)client _queue_clientRequiresLaunch:v3 assertions:v4]& 1) == 0)
   {
     _HKInitializeLogging();
     v32 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v45 = a1;
+      clientCopy4 = client;
       v46 = 2114;
       v47 = *&v3;
       _os_log_impl(&dword_228986000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: Not scheduling launch %{public}@; does not require launch.", buf, 0x16u);
@@ -578,7 +578,7 @@ void __45__HDAppLauncher__queue_launchClientIfNeeded___block_invoke_302(uint64_t
     goto LABEL_37;
   }
 
-  v36 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -593,7 +593,7 @@ void __45__HDAppLauncher__queue_launchClientIfNeeded___block_invoke_302(uint64_t
   }
 
   v7 = v6;
-  v8 = a1;
+  clientCopy2 = client;
   v9 = 0;
   v10 = *v40;
   v11 = 0x7FFFFFFFFFFFFFFFLL;
@@ -621,9 +621,9 @@ void __45__HDAppLauncher__queue_launchClientIfNeeded___block_invoke_302(uint64_t
       }
 
       v16 = v15;
-      [v36 timeIntervalSinceDate:v16];
+      [date timeIntervalSinceDate:v16];
       v18 = v17;
-      v19 = *(v8 + 64);
+      v19 = *(clientCopy2 + 64);
 
       if (v18 <= v19)
       {
@@ -668,18 +668,18 @@ LABEL_14:
 
   while (v22);
 
-  a1 = v8;
-  if (v11 < *(v8 + 80))
+  client = clientCopy2;
+  if (v11 < *(clientCopy2 + 80))
   {
-    v23 = *(v8 + 72);
+    v23 = *(clientCopy2 + 72);
     v24 = pow(1.5, v11) * v23;
     [v9 timeIntervalSinceReferenceDate];
     v26 = v25 + v24;
-    [v36 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v28 = v26 - v27;
     if (v28 <= 0.0)
     {
-      [(HDAppLauncher *)v8 _queue_launchClientIfNeeded:v3];
+      [(HDAppLauncher *)clientCopy2 _queue_launchClientIfNeeded:v3];
     }
 
     else
@@ -689,19 +689,19 @@ LABEL_14:
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v45 = a1;
+        clientCopy4 = client;
         v46 = 2048;
         v47 = v28;
         _os_log_impl(&dword_228986000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: Scheduling launch in %0.2lfs.", buf, 0x16u);
       }
 
       v30 = dispatch_time(0, (v28 * 1000000000.0));
-      v31 = *(a1 + 24);
+      v31 = *(client + 24);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __48__HDAppLauncher__queue_scheduleLaunchForClient___block_invoke;
       block[3] = &unk_278613920;
-      block[4] = a1;
+      block[4] = client;
       v38 = v3;
       dispatch_after(v30, v31, block);
     }
@@ -715,7 +715,7 @@ LABEL_33:
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v45 = a1;
+    clientCopy4 = client;
     _os_log_impl(&dword_228986000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Too many terminations; not rescheduling a launch.", buf, 0xCu);
   }
 
@@ -727,17 +727,17 @@ LABEL_38:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_queue);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v5)
+    if (invalidatedCopy)
     {
-      v6 = v5[13];
+      v6 = invalidatedCopy[13];
     }
 
     else
@@ -751,7 +751,7 @@ LABEL_38:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
     {
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
       v15 = v7;
       _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_INFO, "%{public}@: Invalidated keep-alive assertion for %{public}@", &v12, 0x16u);
@@ -770,30 +770,30 @@ LABEL_38:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processTerminated:(id)a3
+- (void)processTerminated:(id)terminated
 {
-  v4 = a3;
+  terminatedCopy = terminated;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__HDAppLauncher_processTerminated___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = terminatedCopy;
+  v6 = terminatedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)unitTest_setBaseLaunchDelay:(double)a3 launchCountResetThreshold:(double)a4 maxLaunchCount:(int64_t)a5
+- (void)unitTest_setBaseLaunchDelay:(double)delay launchCountResetThreshold:(double)threshold maxLaunchCount:(int64_t)count
 {
-  self->_launchCountResetThreshold = a4;
-  self->_baseLaunchDelay = a3;
-  self->_maxLaunchCount = a5;
+  self->_launchCountResetThreshold = threshold;
+  self->_baseLaunchDelay = delay;
+  self->_maxLaunchCount = count;
 }
 
-- (BOOL)unitTest_hasAssertionForBundleIdentifier:(id)a3
+- (BOOL)unitTest_hasAssertionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -803,10 +803,10 @@ LABEL_38:
   block[1] = 3221225472;
   block[2] = __58__HDAppLauncher_unitTest_hasAssertionForBundleIdentifier___block_invoke;
   block[3] = &unk_27861F190;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 

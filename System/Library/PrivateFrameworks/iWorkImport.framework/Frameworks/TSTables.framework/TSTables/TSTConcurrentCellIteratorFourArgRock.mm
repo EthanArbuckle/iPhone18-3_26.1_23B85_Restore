@@ -1,38 +1,38 @@
 @interface TSTConcurrentCellIteratorFourArgRock
-+ (id)rockWithFirst:(id)a3 second:(id)a4 third:(id)a5 fourth:(id)a6;
-- (TSTConcurrentCellIteratorFourArgRock)initWithFirst:(id)a3 second:(id)a4 third:(id)a5 fourth:(id)a6;
++ (id)rockWithFirst:(id)first second:(id)second third:(id)third fourth:(id)fourth;
+- (TSTConcurrentCellIteratorFourArgRock)initWithFirst:(id)first second:(id)second third:(id)third fourth:(id)fourth;
 @end
 
 @implementation TSTConcurrentCellIteratorFourArgRock
 
-+ (id)rockWithFirst:(id)a3 second:(id)a4 third:(id)a5 fourth:(id)a6
++ (id)rockWithFirst:(id)first second:(id)second third:(id)third fourth:(id)fourth
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 alloc];
-  second_third_fourth = objc_msgSend_initWithFirst_second_third_fourth_(v14, v15, v10, v11, v12, v13);
+  firstCopy = first;
+  secondCopy = second;
+  thirdCopy = third;
+  fourthCopy = fourth;
+  v14 = [self alloc];
+  second_third_fourth = objc_msgSend_initWithFirst_second_third_fourth_(v14, v15, firstCopy, secondCopy, thirdCopy, fourthCopy);
 
   return second_third_fourth;
 }
 
-- (TSTConcurrentCellIteratorFourArgRock)initWithFirst:(id)a3 second:(id)a4 third:(id)a5 fourth:(id)a6
+- (TSTConcurrentCellIteratorFourArgRock)initWithFirst:(id)first second:(id)second third:(id)third fourth:(id)fourth
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  firstCopy = first;
+  secondCopy = second;
+  thirdCopy = third;
+  fourthCopy = fourth;
   v18.receiver = self;
   v18.super_class = TSTConcurrentCellIteratorFourArgRock;
   v15 = [(TSTConcurrentCellIteratorFourArgRock *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_first, a3);
-    objc_storeStrong(&v16->_second, a4);
-    objc_storeStrong(&v16->_third, a5);
-    objc_storeStrong(&v16->_fourth, a6);
+    objc_storeStrong(&v15->_first, first);
+    objc_storeStrong(&v16->_second, second);
+    objc_storeStrong(&v16->_third, third);
+    objc_storeStrong(&v16->_fourth, fourth);
   }
 
   return v16;

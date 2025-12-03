@@ -1,46 +1,46 @@
 @interface TLKRoundedCornerLabel
-- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)a3;
-- (TLKRoundedCornerLabel)initWithProminence:(unint64_t)a3;
+- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)size;
+- (TLKRoundedCornerLabel)initWithProminence:(unint64_t)prominence;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setSizeConfiguration:(unint64_t)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSizeConfiguration:(unint64_t)configuration;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFont;
 @end
 
 @implementation TLKRoundedCornerLabel
 
-- (TLKRoundedCornerLabel)initWithProminence:(unint64_t)a3
+- (TLKRoundedCornerLabel)initWithProminence:(unint64_t)prominence
 {
   v14.receiver = self;
   v14.super_class = TLKRoundedCornerLabel;
   v4 = [(TLKView *)&v14 init];
   if (v4)
   {
-    v5 = [[TLKLabel alloc] initWithProminence:a3];
+    v5 = [[TLKLabel alloc] initWithProminence:prominence];
     [(TLKRoundedCornerLabel *)v4 setLabel:v5];
 
-    v6 = [(TLKRoundedCornerLabel *)v4 label];
-    [v6 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+    label = [(TLKRoundedCornerLabel *)v4 label];
+    [label setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
-    v7 = [(TLKRoundedCornerLabel *)v4 label];
-    [(TLKRoundedCornerLabel *)v4 addSubview:v7];
+    label2 = [(TLKRoundedCornerLabel *)v4 label];
+    [(TLKRoundedCornerLabel *)v4 addSubview:label2];
 
-    v8 = [(TLKRoundedCornerLabel *)v4 label];
-    [TLKLayoutUtilities requireIntrinsicSizeForView:v8];
+    label3 = [(TLKRoundedCornerLabel *)v4 label];
+    [TLKLayoutUtilities requireIntrinsicSizeForView:label3];
 
     [(TLKRoundedCornerLabel *)v4 setCustomAlignmentRectInsets:0.0, -2.0, 0.0, -2.0];
-    v9 = [(TLKRoundedCornerLabel *)v4 label];
-    [v9 setTextAlignment:1];
+    label4 = [(TLKRoundedCornerLabel *)v4 label];
+    [label4 setTextAlignment:1];
 
     v10 = objc_opt_new();
     [(TLKRoundedCornerLabel *)v4 setBorderView:v10];
-    v11 = [v10 layer];
-    [v11 setBorderWidth:1.0];
+    layer = [v10 layer];
+    [layer setBorderWidth:1.0];
 
-    v12 = [v10 layer];
-    [v12 setCornerRadius:2.0];
+    layer2 = [v10 layer];
+    [layer2 setCornerRadius:2.0];
 
     [(TLKRoundedCornerLabel *)v4 addSubview:v10];
     [(TLKRoundedCornerLabel *)v4 updateFont];
@@ -49,35 +49,35 @@
   return v4;
 }
 
-- (void)setSizeConfiguration:(unint64_t)a3
+- (void)setSizeConfiguration:(unint64_t)configuration
 {
-  if (self->_sizeConfiguration != a3)
+  if (self->_sizeConfiguration != configuration)
   {
-    self->_sizeConfiguration = a3;
+    self->_sizeConfiguration = configuration;
     [(TLKRoundedCornerLabel *)self updateFont];
   }
 }
 
 - (void)updateFont
 {
-  v3 = [(TLKRoundedCornerLabel *)self sizeConfiguration];
+  sizeConfiguration = [(TLKRoundedCornerLabel *)self sizeConfiguration];
   v4 = 0.0;
-  if (v3 <= 2)
+  if (sizeConfiguration <= 2)
   {
-    v4 = dbl_1BBA68008[v3];
+    v4 = dbl_1BBA68008[sizeConfiguration];
   }
 
   v5 = MEMORY[0x1E69DB878];
-  v6 = [(TLKRoundedCornerLabel *)self sizeConfiguration];
+  sizeConfiguration2 = [(TLKRoundedCornerLabel *)self sizeConfiguration];
   v7 = MEMORY[0x1E69DB958];
-  if (v6 != 2)
+  if (sizeConfiguration2 != 2)
   {
     v7 = MEMORY[0x1E69DB970];
   }
 
   v9 = [v5 systemFontOfSize:v4 weight:*v7];
-  v8 = [(TLKRoundedCornerLabel *)self label];
-  [v8 setFont:v9];
+  label = [(TLKRoundedCornerLabel *)self label];
+  [label setFont:v9];
 }
 
 - (void)layoutSubviews
@@ -90,8 +90,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKRoundedCornerLabel *)self label];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  label = [(TLKRoundedCornerLabel *)self label];
+  [label setFrame:{v4, v6, v8, v10}];
 
   [(TLKRoundedCornerLabel *)self bounds];
   if (!CGRectEqualToRect(v18, *MEMORY[0x1E695F058]))
@@ -102,17 +102,17 @@
     y = v20.origin.y;
     width = v20.size.width;
     height = v20.size.height;
-    v16 = [(TLKRoundedCornerLabel *)self borderView];
-    [v16 setFrame:{x, y, width, height}];
+    borderView = [(TLKRoundedCornerLabel *)self borderView];
+    [borderView setFrame:{x, y, width, height}];
   }
 }
 
-- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TLKRoundedCornerLabel *)self label];
-  [v5 effectiveLayoutSizeFittingSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  label = [(TLKRoundedCornerLabel *)self label];
+  [label effectiveLayoutSizeFittingSize:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -123,14 +123,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKRoundedCornerLabel;
-  [(TLKRoundedCornerLabel *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKRoundedCornerLabel *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKRoundedCornerLabel *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKRoundedCornerLabel *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -138,11 +138,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKRoundedCornerLabel *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKRoundedCornerLabel *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -158,21 +158,21 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v11.receiver = self;
   v11.super_class = TLKRoundedCornerLabel;
-  v4 = a3;
-  [(UIView *)&v11 tlk_updateForAppearance:v4];
+  appearanceCopy = appearance;
+  [(UIView *)&v11 tlk_updateForAppearance:appearanceCopy];
   v5 = [(TLKRoundedCornerLabel *)self label:v11.receiver];
-  v6 = [v4 colorForProminence:{objc_msgSend(v5, "prominence")}];
-  v7 = [v6 CGColor];
-  v8 = [(TLKRoundedCornerLabel *)self borderView];
-  v9 = [v8 layer];
-  [v9 setBorderColor:v7];
+  v6 = [appearanceCopy colorForProminence:{objc_msgSend(v5, "prominence")}];
+  cGColor = [v6 CGColor];
+  borderView = [(TLKRoundedCornerLabel *)self borderView];
+  layer = [borderView layer];
+  [layer setBorderColor:cGColor];
 
-  v10 = [(TLKRoundedCornerLabel *)self borderView];
-  [v4 enableAppearanceForView:v10];
+  borderView2 = [(TLKRoundedCornerLabel *)self borderView];
+  [appearanceCopy enableAppearanceForView:borderView2];
 }
 
 @end

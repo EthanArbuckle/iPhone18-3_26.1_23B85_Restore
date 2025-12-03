@@ -1,8 +1,8 @@
 @interface HMFMessageInternal
 - (HMFMessageInternal)init;
 - (HMFMessageTransport)transport;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setQualityOfService:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setQualityOfService:(int64_t)service;
 @end
 
 @implementation HMFMessageInternal
@@ -27,83 +27,83 @@
   return WeakRetained;
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v15 = *MEMORY[0x277D85DE8];
-  if ((a3 + 1) > 0x22 || ((1 << (a3 + 1)) & 0x404040401) == 0)
+  if ((service + 1) > 0x22 || ((1 << (service + 1)) & 0x404040401) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = HMFGetLogIdentifier(v8);
+      v10 = HMFGetLogIdentifier(selfCopy);
       v11 = 138543618;
       v12 = v10;
       v13 = 2048;
-      v14 = v3;
+      v14 = serviceCopy;
       _os_log_impl(&dword_22ADEC000, v9, OS_LOG_TYPE_INFO, "%{public}@Overriding unknown QoS '%tu' to NSQualityOfServiceDefault", &v11, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v3 = -1;
+    serviceCopy = -1;
   }
 
-  self->_qualityOfService = v3;
+  self->_qualityOfService = serviceCopy;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(HMFMessageInternal *)self identifier];
-    v7 = [v6 copyWithZone:a3];
+    identifier = [(HMFMessageInternal *)self identifier];
+    v7 = [identifier copyWithZone:zone];
     v8 = *(v5 + 8);
     *(v5 + 8) = v7;
 
-    v9 = [(HMFMessageInternal *)self name];
-    v10 = [v9 copyWithZone:a3];
+    name = [(HMFMessageInternal *)self name];
+    v10 = [name copyWithZone:zone];
     v11 = *(v5 + 16);
     *(v5 + 16) = v10;
 
     [(HMFMessageInternal *)self timeout];
     *(v5 + 24) = v12;
     *(v5 + 32) = [(HMFMessageInternal *)self qualityOfService];
-    v13 = [(HMFMessageInternal *)self destination];
+    destination = [(HMFMessageInternal *)self destination];
     v14 = *(v5 + 40);
-    *(v5 + 40) = v13;
+    *(v5 + 40) = destination;
 
-    v15 = [(HMFMessageInternal *)self transport];
-    objc_storeWeak((v5 + 48), v15);
+    transport = [(HMFMessageInternal *)self transport];
+    objc_storeWeak((v5 + 48), transport);
 
-    v16 = [(HMFMessageInternal *)self activity];
+    activity = [(HMFMessageInternal *)self activity];
     v17 = *(v5 + 56);
-    *(v5 + 56) = v16;
+    *(v5 + 56) = activity;
 
-    v18 = [(HMFMessageInternal *)self userInfo];
-    v19 = [v18 copyWithZone:a3];
+    userInfo = [(HMFMessageInternal *)self userInfo];
+    v19 = [userInfo copyWithZone:zone];
     v20 = *(v5 + 64);
     *(v5 + 64) = v19;
 
-    v21 = [(HMFMessageInternal *)self headers];
-    v22 = [v21 copyWithZone:a3];
+    headers = [(HMFMessageInternal *)self headers];
+    v22 = [headers copyWithZone:zone];
     v23 = *(v5 + 72);
     *(v5 + 72) = v22;
 
-    v24 = [(HMFMessageInternal *)self messagePayload];
-    v25 = [v24 copyWithZone:a3];
+    messagePayload = [(HMFMessageInternal *)self messagePayload];
+    v25 = [messagePayload copyWithZone:zone];
     v26 = *(v5 + 80);
     *(v5 + 80) = v25;
 
-    v27 = [(HMFMessageInternal *)self logEventSession];
+    logEventSession = [(HMFMessageInternal *)self logEventSession];
     v28 = *(v5 + 88);
-    *(v5 + 88) = v27;
+    *(v5 + 88) = logEventSession;
 
-    v29 = [(HMFMessageInternal *)self responseHandler];
-    v30 = [v29 copyWithZone:a3];
+    responseHandler = [(HMFMessageInternal *)self responseHandler];
+    v30 = [responseHandler copyWithZone:zone];
     v31 = *(v5 + 96);
     *(v5 + 96) = v30;
   }

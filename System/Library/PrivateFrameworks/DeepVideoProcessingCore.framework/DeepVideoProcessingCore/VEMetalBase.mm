@@ -1,26 +1,26 @@
 @interface VEMetalBase
-- (VEMetalBase)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (id)createKernel:(id)a3 constantValues:(id)a4;
-- (id)createRenderKernel:(id)a3 renderTargetFormat:(unint64_t)a4;
-- (id)newTextureCoordinateBufferWithWidth:(double)a3 height:(double)a4;
-- (void)commandBufferWait:(id)a3 flag:(BOOL)a4;
+- (VEMetalBase)initWithDevice:(id)device commmandQueue:(id)queue;
+- (id)createKernel:(id)kernel constantValues:(id)values;
+- (id)createRenderKernel:(id)kernel renderTargetFormat:(unint64_t)format;
+- (id)newTextureCoordinateBufferWithWidth:(double)width height:(double)height;
+- (void)commandBufferWait:(id)wait flag:(BOOL)flag;
 @end
 
 @implementation VEMetalBase
 
-- (id)createKernel:(id)a3 constantValues:(id)a4
+- (id)createKernel:(id)kernel constantValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
+  kernelCopy = kernel;
+  valuesCopy = values;
   mtlLibrary = self->_mtlLibrary;
-  if (v7)
+  if (valuesCopy)
   {
-    v9 = [(MTLLibrary *)mtlLibrary newFunctionWithName:v6 constantValues:v7 error:0];
+    v9 = [(MTLLibrary *)mtlLibrary newFunctionWithName:kernelCopy constantValues:valuesCopy error:0];
   }
 
   else
   {
-    v9 = [(MTLLibrary *)mtlLibrary newFunctionWithName:v6];
+    v9 = [(MTLLibrary *)mtlLibrary newFunctionWithName:kernelCopy];
   }
 
   v10 = v9;
@@ -45,7 +45,7 @@
         v16 = global_logger;
         if (os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
         {
-          [VEMetalBase createKernel:v6 constantValues:v16];
+          [VEMetalBase createKernel:kernelCopy constantValues:v16];
         }
       }
 
@@ -55,26 +55,26 @@
 
   else
   {
-    [VEMetalBase createKernel:v6 constantValues:&v18];
+    [VEMetalBase createKernel:kernelCopy constantValues:&v18];
     v13 = v18;
   }
 
   return v13;
 }
 
-- (id)createRenderKernel:(id)a3 renderTargetFormat:(unint64_t)a4
+- (id)createRenderKernel:(id)kernel renderTargetFormat:(unint64_t)format
 {
   mtlLibrary = self->_mtlLibrary;
-  v7 = a3;
+  kernelCopy = kernel;
   v8 = [(MTLLibrary *)mtlLibrary newFunctionWithName:@"texturedQuadVertex"];
-  v9 = [(MTLLibrary *)self->_mtlLibrary newFunctionWithName:v7];
+  v9 = [(MTLLibrary *)self->_mtlLibrary newFunctionWithName:kernelCopy];
 
   v10 = objc_alloc_init(MEMORY[0x277CD6F78]);
   [v10 setVertexFunction:v8];
   [v10 setFragmentFunction:v9];
-  v11 = [v10 colorAttachments];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  [v12 setPixelFormat:a4];
+  colorAttachments = [v10 colorAttachments];
+  v12 = [colorAttachments objectAtIndexedSubscript:0];
+  [v12 setPixelFormat:format];
 
   device = self->_device;
   v18 = 0;
@@ -92,12 +92,12 @@
   return v14;
 }
 
-- (id)newTextureCoordinateBufferWithWidth:(double)a3 height:(double)a4
+- (id)newTextureCoordinateBufferWithWidth:(double)width height:(double)height
 {
-  *&v4 = a4;
+  *&v4 = height;
   LODWORD(v5) = 0;
   DWORD1(v5) = v4;
-  *&v6 = a3;
+  *&v6 = width;
   *&v7 = __PAIR64__(v4, v6);
   *(&v5 + 1) = COERCE_UNSIGNED_INT(1.0);
   v10 = *MEMORY[0x277D85DE8];
@@ -111,28 +111,28 @@
   return [(MTLDevice *)self->_device newBufferWithBytes:v9 length:64 options:0];
 }
 
-- (void)commandBufferWait:(id)a3 flag:(BOOL)a4
+- (void)commandBufferWait:(id)wait flag:(BOOL)flag
 {
-  if (a4)
+  if (flag)
   {
-    [a3 waitUntilCompleted];
+    [wait waitUntilCompleted];
   }
 
   else
   {
-    [a3 waitUntilScheduled];
+    [wait waitUntilScheduled];
   }
 }
 
-- (VEMetalBase)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (VEMetalBase)initWithDevice:(id)device commmandQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = VEMetalBase;
   v9 = [(VEMetalBase *)&v17 init];
   v10 = v9;
-  if (v9 && (!v7 || !v8 ? (v12 = MTLCreateSystemDefaultDevice(), device = v10->_device, v10->_device = v12, device, v11 = [(MTLDevice *)v10->_device newCommandQueue]) : (objc_storeStrong(&v9->_device, a3), v11 = v8), (commandQueue = v10->_commandQueue, v10->_commandQueue = v11, commandQueue, v10->_device) && v10->_commandQueue))
+  if (v9 && (!deviceCopy || !queueCopy ? (v12 = MTLCreateSystemDefaultDevice(), device = v10->_device, v10->_device = v12, device, v11 = [(MTLDevice *)v10->_device newCommandQueue]) : (objc_storeStrong(&v9->_device, device), v11 = queueCopy), (commandQueue = v10->_commandQueue, v10->_commandQueue = v11, commandQueue, v10->_device) && v10->_commandQueue))
   {
     v10->_EnableGpuWaitForComplete = 0;
     v15 = v10;

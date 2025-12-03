@@ -1,25 +1,25 @@
 @interface NTKPoodleFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
-- (int64_t)_hermesGroupZOrderForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
+- (int64_t)_hermesGroupZOrderForDevice:(id)device;
 @end
 
 @implementation NTKPoodleFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKPoodleFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKPoodleFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_475B0;
   v6 = &off_475C8;
@@ -28,15 +28,15 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v25.receiver = self;
     v25.super_class = NTKPoodleFaceBundle;
-    v6 = [(NTKPoodleFaceBundle *)&v25 galleryFacesForDevice:v4];
+    v6 = [(NTKPoodleFaceBundle *)&v25 galleryFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v6];
 
     v23[0] = _NSConcreteStackBlock;
@@ -44,14 +44,14 @@
     v23[2] = sub_15688;
     v23[3] = &unk_44FE0;
     v23[4] = self;
-    v24 = v4;
+    v24 = deviceCopy;
     [v5 enumerateObjectsUsingBlock:v23];
   }
 
   else
   {
-    v7 = [objc_opt_class() identifier];
-    [NTKPoodleColorEditOption _orderedValuesForDevice:v4];
+    identifier = [objc_opt_class() identifier];
+    [NTKPoodleColorEditOption _orderedValuesForDevice:deviceCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -70,13 +70,13 @@
             objc_enumerationMutation(obj);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) intValue];
-          v13 = [objc_opt_class() analyticsIdentifier];
-          v14 = [NTKPoodleFace bundledFaceWithIdentifier:v7 analyticsIdentifier:v13 forDevice:v4 initCustomization:0];
+          intValue = [*(*(&v19 + 1) + 8 * i) intValue];
+          analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+          v14 = [NTKPoodleFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
           if (v14)
           {
-            v15 = [NTKPoodleColorEditOption optionWithPoodleColor:v12 forDevice:v4];
+            v15 = [NTKPoodleColorEditOption optionWithPoodleColor:intValue forDevice:deviceCopy];
             [v14 selectOption:v15 forCustomEditMode:10 slot:0];
             [v5 addObject:v14];
           }
@@ -94,9 +94,9 @@
   return v16;
 }
 
-- (int64_t)_hermesGroupZOrderForDevice:(id)a3
+- (int64_t)_hermesGroupZOrderForDevice:(id)device
 {
-  if (([a3 deviceCategory] & 0xFFFFFFFFFFFFFFFDLL) == 4)
+  if (([device deviceCategory] & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
     return 8000;
   }
@@ -107,12 +107,12 @@
   }
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
-    if ([v3 deviceCategory] == &dword_4 || objc_msgSend(v3, "deviceCategory") == &dword_4 + 2)
+    if ([deviceCopy deviceCategory] == &dword_4 || objc_msgSend(deviceCopy, "deviceCategory") == &dword_4 + 2)
     {
       v11 = ntk_zeus_fall2025_orangeMangue;
       v4 = &ntk_zeus_fall2025_bleuHydra;
@@ -142,17 +142,17 @@
   return v7;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKPoodleFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKPoodleFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:800];
     v8 = v7;
     if (v7)

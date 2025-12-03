@@ -9,36 +9,36 @@
 - (int64_t)_axNumberOfPages
 {
   v2 = [(UIPageControlCompassAccessibility *)self safeValueForKey:@"numberOfPages"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)_axCurrentPage
 {
   v2 = [(UIPageControlCompassAccessibility *)self safeValueForKey:@"currentPage"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)accessibilityValue
 {
   [(UIPageControlCompassAccessibility *)self _axNumberOfPages];
-  v3 = [(UIPageControlCompassAccessibility *)self _axCurrentPage];
+  _axCurrentPage = [(UIPageControlCompassAccessibility *)self _axCurrentPage];
   v4 = MEMORY[0x29EDBA0F8];
   v5 = accessibilityLocalizedString(@"page.control.format.text");
   v6 = AXFormatInteger();
   v7 = AXFormatInteger();
   v8 = [v4 stringWithFormat:v5, v6, v7];
 
-  if (!v3)
+  if (!_axCurrentPage)
   {
     v9 = @"page.title.compass";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (_axCurrentPage == 1)
   {
     v9 = @"page.title.level";
 LABEL_5:

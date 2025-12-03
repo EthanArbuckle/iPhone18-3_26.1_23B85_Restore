@@ -1,19 +1,19 @@
 @interface CEMSystemRatingsDeclaration
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMSystemRatingsDeclaration
 
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error
 {
   v14 = @"countryCode";
-  v6 = a3;
-  v7 = [(CEMSystemRatingsDeclaration *)self payloadRatingRegion];
-  v8 = v7;
+  contextCopy = context;
+  payloadRatingRegion = [(CEMSystemRatingsDeclaration *)self payloadRatingRegion];
+  v8 = payloadRatingRegion;
   v9 = &stru_1000D0428;
-  if (v7)
+  if (payloadRatingRegion)
   {
-    v9 = v7;
+    v9 = payloadRatingRegion;
   }
 
   v15 = v9;
@@ -21,9 +21,9 @@
 
   CFPreferencesSetAppValue(@"SBParentalControlsMCContentRestrictions", v10, @"com.apple.springboard");
   CFPreferencesAppSynchronize(@"com.apple.springboard");
-  v11 = [v6 assetProvidersByPayloadIdentifier];
+  assetProvidersByPayloadIdentifier = [contextCopy assetProvidersByPayloadIdentifier];
 
-  v12 = [(CEMSystemRatingsDeclaration *)self dmf_installSynthesizedProfileRequestWithAssetProviders:v11 error:a4];
+  v12 = [(CEMSystemRatingsDeclaration *)self dmf_installSynthesizedProfileRequestWithAssetProviders:assetProvidersByPayloadIdentifier error:error];
 
   return v12;
 }

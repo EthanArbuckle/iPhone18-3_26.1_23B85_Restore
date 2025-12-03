@@ -1,86 +1,86 @@
 @interface PGMemoryPhotoKitPersister
-+ (void)setStoryColorGradeKindFromPhotosGraphProperties:(id)a3 onMemoryChangeRequest:(id)a4;
-- (BOOL)_shouldPrefetchAudioForMemoriesInPhotoLibrary:(id)a3 withConfiguration:(id)a4;
-- (BOOL)_shouldPrefetchMetadataForMemoriesInPhotoLibrary:(id)a3 withConfiguration:(id)a4;
-- (BOOL)persistLocalMemoriesFromEnrichedMemories:(id)a3 localMemoriesToDelete:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (BOOL)updateExistingMemories:(id)a3 localMemoryByUniqueIdentifier:(id)a4 progressReporter:(id)a5;
-- (PGMemoryPhotoKitPersister)initWithPhotoLibrary:(id)a3;
-- (id)_encodedFeaturesFromFeatureNodes:(id)a3;
-- (id)_memoryCreationRequestForEnrichedMemory:(id)a3 pendingState:(unsigned __int16)a4 creationDate:(id)a5 photosGraphDataDictionary:(id)a6;
-- (id)_photosGraphDataDictionaryByEnrichedMemoryIdentifierForEnrichedMemories:(id)a3;
-- (id)_photosGraphDataDictionaryForEnrichedMemory:(id)a3;
-- (void)cacheMusicAudioAndArtworkForEnrichedMemories:(id)a3 inflationContext:(id)a4 photoLibrary:(id)a5;
++ (void)setStoryColorGradeKindFromPhotosGraphProperties:(id)properties onMemoryChangeRequest:(id)request;
+- (BOOL)_shouldPrefetchAudioForMemoriesInPhotoLibrary:(id)library withConfiguration:(id)configuration;
+- (BOOL)_shouldPrefetchMetadataForMemoriesInPhotoLibrary:(id)library withConfiguration:(id)configuration;
+- (BOOL)persistLocalMemoriesFromEnrichedMemories:(id)memories localMemoriesToDelete:(id)delete progressReporter:(id)reporter error:(id *)error;
+- (BOOL)updateExistingMemories:(id)memories localMemoryByUniqueIdentifier:(id)identifier progressReporter:(id)reporter;
+- (PGMemoryPhotoKitPersister)initWithPhotoLibrary:(id)library;
+- (id)_encodedFeaturesFromFeatureNodes:(id)nodes;
+- (id)_memoryCreationRequestForEnrichedMemory:(id)memory pendingState:(unsigned __int16)state creationDate:(id)date photosGraphDataDictionary:(id)dictionary;
+- (id)_photosGraphDataDictionaryByEnrichedMemoryIdentifierForEnrichedMemories:(id)memories;
+- (id)_photosGraphDataDictionaryForEnrichedMemory:(id)memory;
+- (void)cacheMusicAudioAndArtworkForEnrichedMemories:(id)memories inflationContext:(id)context photoLibrary:(id)library;
 @end
 
 @implementation PGMemoryPhotoKitPersister
 
-- (BOOL)_shouldPrefetchAudioForMemoriesInPhotoLibrary:(id)a3 withConfiguration:(id)a4
+- (BOOL)_shouldPrefetchAudioForMemoriesInPhotoLibrary:(id)library withConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (a4)
+  libraryCopy = library;
+  if (configuration)
   {
-    v6 = [a4 audioFilePrefetchThresholdInDays];
+    audioFilePrefetchThresholdInDays = [configuration audioFilePrefetchThresholdInDays];
   }
 
   else
   {
-    v6 = 15;
+    audioFilePrefetchThresholdInDays = 15;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v7 dateByAddingTimeInterval:-v6 * 86400.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:-audioFilePrefetchThresholdInDays * 86400.0];
 
-  v9 = [v5 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"lastViewedDate >= %@", v8];
-  [v9 setInternalPredicate:v10];
+  [librarySpecificFetchOptions setInternalPredicate:v10];
 
-  [v9 setFetchLimit:1];
-  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v9];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v12 = [v11 count] != 0;
 
   return v12;
 }
 
-- (BOOL)_shouldPrefetchMetadataForMemoriesInPhotoLibrary:(id)a3 withConfiguration:(id)a4
+- (BOOL)_shouldPrefetchMetadataForMemoriesInPhotoLibrary:(id)library withConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (a4)
+  libraryCopy = library;
+  if (configuration)
   {
-    v6 = [a4 metadataPrefetchThresholdInDays];
+    metadataPrefetchThresholdInDays = [configuration metadataPrefetchThresholdInDays];
   }
 
   else
   {
-    v6 = 60;
+    metadataPrefetchThresholdInDays = 60;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v7 dateByAddingTimeInterval:-v6 * 86400.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:-metadataPrefetchThresholdInDays * 86400.0];
 
-  v9 = [v5 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"lastViewedDate >= %@", v8];
-  [v9 setInternalPredicate:v10];
+  [librarySpecificFetchOptions setInternalPredicate:v10];
 
-  [v9 setFetchLimit:1];
-  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v9];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v12 = [v11 count] != 0;
 
   return v12;
 }
 
-- (void)cacheMusicAudioAndArtworkForEnrichedMemories:(id)a3 inflationContext:(id)a4 photoLibrary:(id)a5
+- (void)cacheMusicAudioAndArtworkForEnrichedMemories:(id)memories inflationContext:(id)context photoLibrary:(id)library
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v37 = a4;
-  v35 = a5;
+  memoriesCopy = memories;
+  contextCopy = context;
+  libraryCopy = library;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v38 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v8;
+  obj = memoriesCopy;
   v10 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v10)
   {
@@ -96,10 +96,10 @@
         }
 
         v14 = *(*(&v44 + 1) + 8 * i);
-        v15 = [v14 flexMusicCuration];
-        v16 = [v15 bestSongSuggestions];
-        v17 = [v16 firstObject];
-        v18 = [v17 uid];
+        flexMusicCuration = [v14 flexMusicCuration];
+        bestSongSuggestions = [flexMusicCuration bestSongSuggestions];
+        firstObject = [bestSongSuggestions firstObject];
+        v18 = [firstObject uid];
 
         if (v18)
         {
@@ -108,12 +108,12 @@
 
         if (self->_isAppleMusicSubscriber)
         {
-          v19 = [v14 musicCuration];
-          v20 = [v19 keySongAdamID];
+          musicCuration = [v14 musicCuration];
+          keySongAdamID = [musicCuration keySongAdamID];
 
-          if (v20)
+          if (keySongAdamID)
           {
-            [v38 addObject:v20];
+            [v38 addObject:keySongAdamID];
           }
         }
       }
@@ -146,14 +146,14 @@
       }
 
       dispatch_group_enter(v22);
-      v26 = [v38 allObjects];
-      v27 = [MEMORY[0x277D22C80] ignoreProgress];
+      allObjects = [v38 allObjects];
+      ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __104__PGMemoryPhotoKitPersister_cacheMusicAudioAndArtworkForEnrichedMemories_inflationContext_photoLibrary___block_invoke;
       v42[3] = &unk_278882840;
       v43 = v22;
-      [PGMusicCurator fetchSongDisplayMetadataJSONForAdamIDs:v26 inflationContext:v37 progressReporter:v27 completionHandler:v42];
+      [PGMusicCurator fetchSongDisplayMetadataJSONForAdamIDs:allObjects inflationContext:contextCopy progressReporter:ignoreProgress completionHandler:v42];
     }
 
     else if (v25)
@@ -176,14 +176,14 @@
       }
 
       dispatch_group_enter(v22);
-      v31 = [v38 allObjects];
-      v32 = [MEMORY[0x277D22C80] ignoreProgress];
+      allObjects2 = [v38 allObjects];
+      ignoreProgress2 = [MEMORY[0x277D22C80] ignoreProgress];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __104__PGMemoryPhotoKitPersister_cacheMusicAudioAndArtworkForEnrichedMemories_inflationContext_photoLibrary___block_invoke_258;
       v40[3] = &unk_278884D38;
       v41 = v22;
-      [PGMusicAudioCacher cacheSongAudioForAdamIDs:v31 progressReporter:v32 completionHandler:v40];
+      [PGMusicAudioCacher cacheSongAudioForAdamIDs:allObjects2 progressReporter:ignoreProgress2 completionHandler:v40];
     }
 
     else if (v30)
@@ -200,13 +200,13 @@
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateExistingMemories:(id)a3 localMemoryByUniqueIdentifier:(id)a4 progressReporter:(id)a5
+- (BOOL)updateExistingMemories:(id)memories localMemoryByUniqueIdentifier:(id)identifier progressReporter:(id)reporter
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  memoriesCopy = memories;
+  identifierCopy = identifier;
+  reporterCopy = reporter;
+  if ([memoriesCopy count])
   {
     v11 = self->_loggingConnection;
     photoLibrary = self->_photoLibrary;
@@ -215,10 +215,10 @@
     v20[2] = __99__PGMemoryPhotoKitPersister_updateExistingMemories_localMemoryByUniqueIdentifier_progressReporter___block_invoke;
     v20[3] = &unk_2788827F0;
     v20[4] = self;
-    v21 = v10;
-    v13 = v8;
+    v21 = reporterCopy;
+    v13 = memoriesCopy;
     v22 = v13;
-    v23 = v9;
+    v23 = identifierCopy;
     v14 = v11;
     v24 = v14;
     v19 = 0;
@@ -539,17 +539,17 @@ LABEL_62:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_encodedFeaturesFromFeatureNodes:(id)a3
+- (id)_encodedFeaturesFromFeatureNodes:(id)nodes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 allFeatures];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allFeatures = [nodesCopy allFeatures];
+  v6 = [allFeatures countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -560,14 +560,14 @@ LABEL_62:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allFeatures);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) encodedFeature];
-        [v4 addObject:v10];
+        encodedFeature = [*(*(&v13 + 1) + 8 * i) encodedFeature];
+        [v4 addObject:encodedFeature];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allFeatures countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -578,33 +578,33 @@ LABEL_62:
   return v4;
 }
 
-- (id)_memoryCreationRequestForEnrichedMemory:(id)a3 pendingState:(unsigned __int16)a4 creationDate:(id)a5 photosGraphDataDictionary:(id)a6
+- (id)_memoryCreationRequestForEnrichedMemory:(id)memory pendingState:(unsigned __int16)state creationDate:(id)date photosGraphDataDictionary:(id)dictionary
 {
-  v26 = a4;
+  stateCopy = state;
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v28 = a6;
+  memoryCopy = memory;
+  dictionaryCopy = dictionary;
   v27 = self->_loggingConnection;
   v10 = MEMORY[0x277CD98E8];
-  v11 = a5;
-  v12 = [v9 title];
-  v13 = [v9 subtitle];
-  v14 = [v9 memoryCategory];
-  v15 = [v9 representativeAssetUUIDs];
-  v16 = [v9 curatedAssetUUIDs];
-  v17 = [v9 extendedCuratedAssetUUIDs];
-  v18 = [v9 keyAssetUUID];
-  v19 = [v10 creationRequestForMemoryWithTitle:v12 subtitle:v13 creationDate:v11 category:v14 subcategory:0 representativeAssetUUIDs:v15 curatedAssetUUIDs:v16 extendedCuratedAssetUUIDs:v17 keyAssetUUID:v18];
+  dateCopy = date;
+  title = [memoryCopy title];
+  subtitle = [memoryCopy subtitle];
+  memoryCategory = [memoryCopy memoryCategory];
+  representativeAssetUUIDs = [memoryCopy representativeAssetUUIDs];
+  curatedAssetUUIDs = [memoryCopy curatedAssetUUIDs];
+  extendedCuratedAssetUUIDs = [memoryCopy extendedCuratedAssetUUIDs];
+  keyAssetUUID = [memoryCopy keyAssetUUID];
+  v19 = [v10 creationRequestForMemoryWithTitle:title subtitle:subtitle creationDate:dateCopy category:memoryCategory subcategory:0 representativeAssetUUIDs:representativeAssetUUIDs curatedAssetUUIDs:curatedAssetUUIDs extendedCuratedAssetUUIDs:extendedCuratedAssetUUIDs keyAssetUUID:keyAssetUUID];
 
-  [v19 setPhotosGraphVersion:{objc_msgSend(v9, "photosGraphVersion")}];
-  [v19 setPendingState:v26];
-  v20 = [v9 uniqueMemoryIdentifier];
-  [v19 setGraphMemoryIdentifier:v20];
+  [v19 setPhotosGraphVersion:{objc_msgSend(memoryCopy, "photosGraphVersion")}];
+  [v19 setPendingState:stateCopy];
+  uniqueMemoryIdentifier = [memoryCopy uniqueMemoryIdentifier];
+  [v19 setGraphMemoryIdentifier:uniqueMemoryIdentifier];
 
-  if (v26 == 2)
+  if (stateCopy == 2)
   {
-    v21 = [MEMORY[0x277CBEAA8] date];
-    [v19 setLastEnrichmentDate:v21];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v19 setLastEnrichmentDate:date];
   }
 
   else
@@ -612,7 +612,7 @@ LABEL_62:
     [v19 setLastEnrichmentDate:0];
   }
 
-  if ([v9 failedEnrichment])
+  if ([memoryCopy failedEnrichment])
   {
     [v19 setRejected:1];
   }
@@ -620,14 +620,14 @@ LABEL_62:
   else
   {
     [v19 setRejected:0];
-    if (v26 != 2)
+    if (stateCopy != 2)
     {
       [v19 setFeaturedState:1];
     }
 
-    [objc_opt_class() setStoryColorGradeKindFromPhotosGraphProperties:v28 onMemoryChangeRequest:v19];
+    [objc_opt_class() setStoryColorGradeKindFromPhotosGraphProperties:dictionaryCopy onMemoryChangeRequest:v19];
     v29 = 0;
-    v22 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v28 requiringSecureCoding:1 error:&v29];
+    v22 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dictionaryCopy requiringSecureCoding:1 error:&v29];
     v23 = v29;
     if (v22)
     {
@@ -637,13 +637,13 @@ LABEL_62:
     else if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138478083;
-      v31 = v28;
+      v31 = dictionaryCopy;
       v32 = 2112;
       v33 = v23;
       _os_log_error_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_ERROR, "Failed to archived feature dictionary for photos graph data %{private}@. Error: %@", buf, 0x16u);
     }
 
-    [v9 score];
+    [memoryCopy score];
     [v19 setScore:?];
   }
 
@@ -868,37 +868,37 @@ LABEL_47:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)persistLocalMemoriesFromEnrichedMemories:(id)a3 localMemoriesToDelete:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)persistLocalMemoriesFromEnrichedMemories:(id)memories localMemoriesToDelete:(id)delete progressReporter:(id)reporter error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  memoriesCopy = memories;
+  deleteCopy = delete;
+  reporterCopy = reporter;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  if (![v10 count] && !objc_msgSend(v11, "count"))
+  if (![memoriesCopy count] && !objc_msgSend(deleteCopy, "count"))
   {
     LOBYTE(v18) = 1;
     goto LABEL_12;
   }
 
-  v13 = [(PGMemoryPhotoKitPersister *)self _photosGraphDataDictionaryByEnrichedMemoryIdentifierForEnrichedMemories:v10];
+  v13 = [(PGMemoryPhotoKitPersister *)self _photosGraphDataDictionaryByEnrichedMemoryIdentifierForEnrichedMemories:memoriesCopy];
   photoLibrary = self->_photoLibrary;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __115__PGMemoryPhotoKitPersister_persistLocalMemoriesFromEnrichedMemories_localMemoriesToDelete_progressReporter_error___block_invoke;
   v31[3] = &unk_2788827F0;
-  v32 = v12;
-  v15 = v11;
+  v32 = reporterCopy;
+  v15 = deleteCopy;
   v33 = v15;
-  v16 = v10;
+  v16 = memoriesCopy;
   v34 = v16;
   v17 = v13;
   v35 = v17;
-  v36 = self;
+  selfCopy = self;
   v30 = 0;
   v18 = [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v31 error:&v30];
   v19 = v30;
@@ -933,7 +933,7 @@ LABEL_47:
     v42 = v19;
     _os_log_error_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_ERROR, "[PGMemoryPhotoKitPersister] Failed to persist %lu and delete %lu enriched local memories. Error: %@", buf, 0x20u);
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -941,11 +941,11 @@ LABEL_47:
     goto LABEL_10;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_10:
     v24 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
 LABEL_11:
@@ -1045,33 +1045,33 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_photosGraphDataDictionaryForEnrichedMemory:(id)a3
+- (id)_photosGraphDataDictionaryForEnrichedMemory:(id)memory
 {
-  v4 = a3;
-  if ([v4 failedEnrichment])
+  memoryCopy = memory;
+  if ([memoryCopy failedEnrichment])
   {
-    v5 = MEMORY[0x277CBEC10];
+    dictionary = MEMORY[0x277CBEC10];
   }
 
   else
   {
-    v6 = [[PGMemoryPhotosGraphProperties alloc] initWithEnrichedMemory:v4 neighborScoreComputer:self->_neighborScoreComputer isAppleMusicSubscriber:self->_isAppleMusicSubscriber photoLibrary:self->_photoLibrary loggingConnection:self->_loggingConnection];
-    v5 = [(PGMemoryPhotosGraphProperties *)v6 dictionary];
+    v6 = [[PGMemoryPhotosGraphProperties alloc] initWithEnrichedMemory:memoryCopy neighborScoreComputer:self->_neighborScoreComputer isAppleMusicSubscriber:self->_isAppleMusicSubscriber photoLibrary:self->_photoLibrary loggingConnection:self->_loggingConnection];
+    dictionary = [(PGMemoryPhotosGraphProperties *)v6 dictionary];
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_photosGraphDataDictionaryByEnrichedMemoryIdentifierForEnrichedMemories:(id)a3
+- (id)_photosGraphDataDictionaryByEnrichedMemoryIdentifierForEnrichedMemories:(id)memories
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  memoriesCopy = memories;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = memoriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1089,8 +1089,8 @@ LABEL_18:
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
         v13 = [(PGMemoryPhotoKitPersister *)self _photosGraphDataDictionaryForEnrichedMemory:v11, v17];
-        v14 = [v11 uniqueMemoryIdentifier];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        uniqueMemoryIdentifier = [v11 uniqueMemoryIdentifier];
+        [v5 setObject:v13 forKeyedSubscript:uniqueMemoryIdentifier];
 
         objc_autoreleasePoolPop(v12);
       }
@@ -1106,16 +1106,16 @@ LABEL_18:
   return v5;
 }
 
-- (PGMemoryPhotoKitPersister)initWithPhotoLibrary:(id)a3
+- (PGMemoryPhotoKitPersister)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v14.receiver = self;
   v14.super_class = PGMemoryPhotoKitPersister;
   v6 = [(PGMemoryPhotoKitPersister *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = os_log_create("com.apple.PhotosGraph", "MemoryPhotoKitPersister");
     loggingConnection = v7->_loggingConnection;
     v7->_loggingConnection = v8;
@@ -1124,27 +1124,27 @@ LABEL_18:
     neighborScoreComputer = v7->_neighborScoreComputer;
     v7->_neighborScoreComputer = v10;
 
-    v12 = [MEMORY[0x277D22C80] ignoreProgress];
-    v7->_isAppleMusicSubscriber = [PGMusicCatalogMonitor checkMusicCatalogEligibilityWithProgressReporter:v12];
+    ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
+    v7->_isAppleMusicSubscriber = [PGMusicCatalogMonitor checkMusicCatalogEligibilityWithProgressReporter:ignoreProgress];
   }
 
   return v7;
 }
 
-+ (void)setStoryColorGradeKindFromPhotosGraphProperties:(id)a3 onMemoryChangeRequest:(id)a4
++ (void)setStoryColorGradeKindFromPhotosGraphProperties:(id)properties onMemoryChangeRequest:(id)request
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 objectForKeyedSubscript:@"storyColorGradeKind"];
-  v7 = [v6 integerValue];
+  propertiesCopy = properties;
+  requestCopy = request;
+  v6 = [propertiesCopy objectForKeyedSubscript:@"storyColorGradeKind"];
+  integerValue = [v6 integerValue];
 
-  if (!v7)
+  if (!integerValue)
   {
-    v8 = [v9 objectForKeyedSubscript:@"storyColorGradeCategory"];
-    v7 = PFStoryColorGradeKindDefaultForColorGradeCategory();
+    v8 = [propertiesCopy objectForKeyedSubscript:@"storyColorGradeCategory"];
+    integerValue = PFStoryColorGradeKindDefaultForColorGradeCategory();
   }
 
-  [v5 setStoryColorGradeKind:v7];
+  [requestCopy setStoryColorGradeKind:integerValue];
 }
 
 @end

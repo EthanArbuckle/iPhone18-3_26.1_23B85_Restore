@@ -1,6 +1,6 @@
 @interface NSSQLOrderIntermediate
-- (NSSQLOrderIntermediate)initWithSortDescriptors:(id)a3 inScope:(id)a4;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLOrderIntermediate)initWithSortDescriptors:(id)descriptors inScope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -13,22 +13,22 @@
   [(NSSQLOrderIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLOrderIntermediate)initWithSortDescriptors:(id)a3 inScope:(id)a4
+- (NSSQLOrderIntermediate)initWithSortDescriptors:(id)descriptors inScope:(id)scope
 {
   v7.receiver = self;
   v7.super_class = NSSQLOrderIntermediate;
-  v5 = [(NSSQLIntermediate *)&v7 initWithScope:a4];
+  v5 = [(NSSQLIntermediate *)&v7 initWithScope:scope];
   if (v5)
   {
-    v5->_sortDescriptors = a3;
+    v5->_sortDescriptors = descriptors;
   }
 
   return v5;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     return 0;
   }
@@ -41,31 +41,31 @@
     return objc_alloc_init(v41);
   }
 
-  v46 = a3;
-  v7 = [(NSSQLIntermediate *)self fetchIntermediate];
+  contextCopy = context;
+  fetchIntermediate = [(NSSQLIntermediate *)self fetchIntermediate];
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"ORDER BY"];
   v8 = 0;
   v45 = *MEMORY[0x1E695D940];
-  v48 = self;
+  selfCopy = self;
   while (1)
   {
     v9 = [(NSArray *)self->_sortDescriptors objectAtIndex:v8];
     v10 = [v9 key];
-    v11 = [v9 ascending];
+    ascending = [v9 ascending];
     if (v8)
     {
       [v5 appendString:{@", "}];
     }
 
-    v49 = v11;
+    v49 = ascending;
     if ([(__CFString *)v10 rangeOfString:@"."]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = 0;
       goto LABEL_39;
     }
 
-    v12 = [v7 governingEntity];
-    if (!v12 || (v13 = [*(v12 + 40) objectForKey:v10]) == 0)
+    governingEntity = [fetchIntermediate governingEntity];
+    if (!governingEntity || (v13 = [*(governingEntity + 40) objectForKey:v10]) == 0)
     {
 LABEL_17:
       v16 = 0;
@@ -83,20 +83,20 @@ LABEL_17:
 
       if ([(NSSQLIntermediate *)self isUpdateScoped])
       {
-        [v46 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v45, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported join (ordering by mtm not allowed in updates): %@", self->_sortDescriptors), 0), @"NSUnderlyingException"}];
+        [contextCopy setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v45, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported join (ordering by mtm not allowed in updates): %@", self->_sortDescriptors), 0), @"NSUnderlyingException"}];
       }
 
       else
       {
-        v18 = [(NSSQLIntermediate *)self fetchIntermediate];
+        fetchIntermediate2 = [(NSSQLIntermediate *)self fetchIntermediate];
         v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{objc_msgSend(v14, "name"), 0}];
-        v20 = [(NSSQLFetchIntermediate *)v18 finalJoinForKeypathWithComponents:v19];
+        v20 = [(NSSQLFetchIntermediate *)fetchIntermediate2 finalJoinForKeypathWithComponents:v19];
         if (!v20)
         {
-          v20 = +[NSSQLJoinIntermediate createJoinIntermediatesForKeypath:startEntity:startAlias:forScope:inStatementIntermediate:inContext:](NSSQLJoinIntermediate, v19, [v14 entity], -[NSSQLIntermediate governingAlias](v48, "governingAlias"), v48, -[NSSQLIntermediate fetchIntermediate](v48, "fetchIntermediate"), v46);
+          v20 = +[NSSQLJoinIntermediate createJoinIntermediatesForKeypath:startEntity:startAlias:forScope:inStatementIntermediate:inContext:](NSSQLJoinIntermediate, v19, [v14 entity], -[NSSQLIntermediate governingAlias](selfCopy, "governingAlias"), selfCopy, -[NSSQLIntermediate fetchIntermediate](selfCopy, "fetchIntermediate"), contextCopy);
         }
 
-        if (![v46 objectForKey:@"NSUnderlyingException"])
+        if (![contextCopy objectForKey:@"NSUnderlyingException"])
         {
           if (v20)
           {
@@ -129,18 +129,18 @@ LABEL_24:
     if (v15 == 7 && (v21 = *(v14 + 56), [v21 isToMany]) && (!v21 ? (v22 = 0) : (v22 = objc_msgSend(v21, "propertyDescription")), objc_msgSend(v22, "isOrdered")))
     {
 
-      if ([(NSSQLIntermediate *)v48 isUpdateScoped])
+      if ([(NSSQLIntermediate *)selfCopy isUpdateScoped])
       {
-        [v46 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v45, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported join (ordering by tm not allowed in updates): %@", v48->_sortDescriptors), 0), @"NSUnderlyingException"}];
+        [contextCopy setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v45, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported join (ordering by tm not allowed in updates): %@", selfCopy->_sortDescriptors), 0), @"NSUnderlyingException"}];
         v17 = 0;
       }
 
       else
       {
-        v24 = [*(v14 + 80) name];
+        name = [*(v14 + 80) name];
         v25 = [NSSQLKeypathExpressionIntermediate alloc];
-        v26 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:](v25, "initWithExpression:allowToMany:inScope:", [MEMORY[0x1E696ABC8] expressionForKeyPath:v24], 0, v48);
-        v17 = [(NSSQLKeypathExpressionIntermediate *)v26 generateSQLStringInContext:v46];
+        v26 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:](v25, "initWithExpression:allowToMany:inScope:", [MEMORY[0x1E696ABC8] expressionForKeyPath:name], 0, selfCopy);
+        v17 = [(NSSQLKeypathExpressionIntermediate *)v26 generateSQLStringInContext:contextCopy];
       }
 
       v16 |= v17 != 0;
@@ -157,7 +157,7 @@ LABEL_32:
       goto LABEL_32;
     }
 
-    self = v48;
+    self = selfCopy;
 LABEL_39:
     v27 = @"_pk";
     if ([(__CFString *)v10 caseInsensitiveCompare:@"self"])
@@ -175,7 +175,7 @@ LABEL_39:
 
     v28 = [NSSQLKeypathExpressionIntermediate alloc];
     v29 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:](v28, "initWithExpression:allowToMany:inScope:", [MEMORY[0x1E696ABC8] expressionForKeyPath:v27], 0, self);
-    v17 = [(NSSQLKeypathExpressionIntermediate *)v29 generateSQLStringInContext:v46];
+    v17 = [(NSSQLKeypathExpressionIntermediate *)v29 generateSQLStringInContext:contextCopy];
 
     if (!v17)
     {
@@ -190,13 +190,13 @@ LABEL_44:
       goto LABEL_73;
     }
 
-    v30 = [objc_msgSend(v7 "governingEntity")];
+    destinationEntity = [objc_msgSend(fetchIntermediate "governingEntity")];
     v31 = [(__CFString *)v10 componentsSeparatedByString:@"."];
     v32 = [v31 count];
     v33 = [v31 objectAtIndex:0];
-    if (v30)
+    if (destinationEntity)
     {
-      v34 = [objc_msgSend(v30 "propertiesByName")];
+      v34 = [objc_msgSend(destinationEntity "propertiesByName")];
     }
 
     else
@@ -206,54 +206,54 @@ LABEL_44:
 
     if ([v34 _propertyType] != 2 && objc_msgSend(v34, "_propertyType") != 6 && objc_msgSend(v34, "_propertyType") != 7)
     {
-      v30 = [v34 destinationEntity];
+      destinationEntity = [v34 destinationEntity];
     }
 
-    v35 = [MEMORY[0x1E695DF70] array];
-    [v35 addObject:v33];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObject:v33];
     if (v32 >= 2)
     {
       for (i = 1; i != v32; ++i)
       {
-        [(NSSQLFetchIntermediate *)v7 promoteToOuterJoinAtKeypathWithComponents:v35];
+        [(NSSQLFetchIntermediate *)fetchIntermediate promoteToOuterJoinAtKeypathWithComponents:array];
         v37 = [v31 objectAtIndex:i];
-        if (v30)
+        if (destinationEntity)
         {
-          v30 = [objc_msgSend(v30 "propertiesByName")];
+          destinationEntity = [objc_msgSend(destinationEntity "propertiesByName")];
         }
 
-        if ([v30 _isAttribute])
+        if ([destinationEntity _isAttribute])
         {
           break;
         }
 
-        [v35 addObject:v37];
-        v30 = [v30 destinationEntity];
+        [array addObject:v37];
+        destinationEntity = [destinationEntity destinationEntity];
       }
     }
 
-    v38 = [v9 selector];
-    if (!v38 || v38 == sel_compare_)
+    selector = [v9 selector];
+    if (!selector || selector == sel_compare_)
     {
       break;
     }
 
-    if (v38 == sel_caseInsensitiveCompare_)
+    if (selector == sel_caseInsensitiveCompare_)
     {
       v39 = @" COLLATE NSCollateNoCase ";
     }
 
-    else if (v38 == sel__caseInsensitiveNumericCompare_)
+    else if (selector == sel__caseInsensitiveNumericCompare_)
     {
       v39 = @" COLLATE NSCollateNumericallyNoCase ";
     }
 
-    else if (v38 == sel_localizedCompare_)
+    else if (selector == sel_localizedCompare_)
     {
       v39 = @" COLLATE NSCollateLocaleSensitive ";
     }
 
-    else if (v38 == sel_localizedCaseInsensitiveCompare_)
+    else if (selector == sel_localizedCaseInsensitiveCompare_)
     {
       v39 = @" COLLATE NSCollateLocaleSensitiveNoCase ";
     }
@@ -261,10 +261,10 @@ LABEL_44:
     else
     {
       v39 = @" COLLATE NSCollateFinderlike ";
-      if (v38 != sel_localizedStandardCompare_)
+      if (selector != sel_localizedStandardCompare_)
       {
         v42 = MEMORY[0x1E695DF30];
-        v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unsupported NSSortDescriptor selector: %@", NSStringFromSelector(v38)];
+        v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unsupported NSSortDescriptor selector: %@", NSStringFromSelector(selector)];
         v44 = v42;
         goto LABEL_89;
       }
@@ -277,7 +277,7 @@ LABEL_73:
       [v5 appendString:@" DESC"];
     }
 
-    self = v48;
+    self = selfCopy;
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 reverseNullOrder])
     {
       if (v49)
@@ -307,7 +307,7 @@ LABEL_73:
   v44 = MEMORY[0x1E695DF30];
   v43 = @"unsupported NSSortDescriptor (comparator blocks are not supported)";
 LABEL_89:
-  [v46 setObject:objc_msgSend(v44 forKey:{"exceptionWithName:reason:userInfo:", v45, v43, 0), @"NSUnderlyingException"}];
+  [contextCopy setObject:objc_msgSend(v44 forKey:{"exceptionWithName:reason:userInfo:", v45, v43, 0), @"NSUnderlyingException"}];
 LABEL_90:
 
   return 0;

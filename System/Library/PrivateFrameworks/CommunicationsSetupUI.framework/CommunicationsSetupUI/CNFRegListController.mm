@@ -1,26 +1,26 @@
 @interface CNFRegListController
-- (BOOL)_handleURLDictionary:(id)a3;
+- (BOOL)_handleURLDictionary:(id)dictionary;
 - (BOOL)_showWiFiAlertIfNecessary;
-- (CNFRegListController)initWithParentController:(id)a3;
-- (CNFRegListController)initWithRegController:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_existingLabelForSpecifier:(id)a3 header:(BOOL)a4;
+- (CNFRegListController)initWithParentController:(id)controller;
+- (CNFRegListController)initWithRegController:(id)controller;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_existingLabelForSpecifier:(id)specifier header:(BOOL)header;
 - (id)specifierList;
 - (id)specifiers;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_performAppearBlock;
 - (void)_setupEventHandlers;
 - (void)_updateTitle;
 - (void)applicationDidResume;
-- (void)changePasswordControllerDidFinish:(id)a3 withAppleID:(id)a4 authID:(id)a5 authToken:(id)a6;
+- (void)changePasswordControllerDidFinish:(id)finish withAppleID:(id)d authID:(id)iD authToken:(id)token;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
+- (void)handleURL:(id)l;
 - (void)loadView;
 - (void)removeAllHandlers;
-- (void)setAppearBlock:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)setAppearBlock:(id)block;
+- (void)setSpecifier:(id)specifier;
 - (void)showAuthKitSignInIfNecessary;
 - (void)systemApplicationDidBecomeActive;
 - (void)systemApplicationDidEnterBackground;
@@ -28,24 +28,24 @@
 - (void)systemApplicationDidSuspend;
 - (void)systemApplicationWillEnterForeground;
 - (void)systemApplicationWillResignActive;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CNFRegListController
 
-- (CNFRegListController)initWithRegController:(id)a3
+- (CNFRegListController)initWithRegController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CNFRegListController;
   v5 = [(CNFRegListController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CNFRegListController *)v5 setRegController:v4];
+    [(CNFRegListController *)v5 setRegController:controllerCopy];
     if ((CNFRegGlobalAppearanceStyle() - 5) <= 1)
     {
       [(CNFRegListController *)v6 setEdgeToEdgeCells:1];
@@ -55,20 +55,20 @@
   return v6;
 }
 
-- (CNFRegListController)initWithParentController:(id)a3
+- (CNFRegListController)initWithParentController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 regController];
-  v6 = [(CNFRegListController *)self initWithRegController:v5];
+  controllerCopy = controller;
+  regController = [controllerCopy regController];
+  v6 = [(CNFRegListController *)self initWithRegController:regController];
 
   if (v6)
   {
-    v7 = [v4 rootController];
-    [(CNFRegListController *)v6 setRootController:v7];
+    rootController = [controllerCopy rootController];
+    [(CNFRegListController *)v6 setRootController:rootController];
 
-    [(CNFRegListController *)v6 setParentController:v4];
-    v8 = [v4 specifier];
-    [(CNFRegListController *)v6 setSpecifier:v8];
+    [(CNFRegListController *)v6 setParentController:controllerCopy];
+    specifier = [controllerCopy specifier];
+    [(CNFRegListController *)v6 setSpecifier:specifier];
   }
 
   return v6;
@@ -77,8 +77,8 @@
 - (void)dealloc
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D192A8] sharedInstance];
-  [v3 removeListener:self];
+  mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+  [mEMORY[0x277D192A8] removeListener:self];
 
   v16 = 0u;
   v17 = 0u;
@@ -118,24 +118,24 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v10.receiver = self;
   v10.super_class = CNFRegListController;
-  [(CNFRegListController *)&v10 setSpecifier:v5];
-  v6 = [(CNFRegListController *)self regController];
+  [(CNFRegListController *)&v10 setSpecifier:specifierCopy];
+  regController = [(CNFRegListController *)self regController];
 
-  if (!v6)
+  if (!regController)
   {
-    v7 = [v5 propertyForKey:@"ft-serviceType"];
+    v7 = [specifierCopy propertyForKey:@"ft-serviceType"];
     v8 = +[CNFRegController controllerForServiceType:](CNFRegController, "controllerForServiceType:", [v7 integerValue]);
     [(CNFRegListController *)self setRegController:v8];
   }
 
-  v9 = [(CNFRegListController *)self regController];
+  regController2 = [(CNFRegListController *)self regController];
 
-  if (!v9)
+  if (!regController2)
   {
     [(CNFRegListController *)a2 setSpecifier:?];
   }
@@ -143,64 +143,64 @@
 
 - (id)specifiers
 {
-  v3 = [(CNFRegListController *)self specifierList];
+  specifierList = [(CNFRegListController *)self specifierList];
   [(CNFRegListController *)self _updateTitle];
 
-  return v3;
+  return specifierList;
 }
 
 - (id)specifierList
 {
   v4.receiver = self;
   v4.super_class = CNFRegListController;
-  v2 = [(CNFRegListController *)&v4 specifiers];
+  specifiers = [(CNFRegListController *)&v4 specifiers];
 
-  return v2;
+  return specifiers;
 }
 
 - (void)_updateTitle
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFRegListController *)self customTitle];
-  if (v3)
+  customTitle = [(CNFRegListController *)self customTitle];
+  if (customTitle)
   {
     v4 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v3;
+      v8 = customTitle;
       _os_log_impl(&dword_243BE5000, v4, OS_LOG_TYPE_DEFAULT, "Setting custom title: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v6 = v3;
+      v6 = customTitle;
       IMLogString();
     }
 
-    [(CNFRegListController *)self setTitle:v3, v6];
+    [(CNFRegListController *)self setTitle:customTitle, v6];
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAppearBlock:(id)a3
+- (void)setAppearBlock:(id)block
 {
-  v4 = a3;
-  if (self->_appearBlock != v4)
+  blockCopy = block;
+  if (self->_appearBlock != blockCopy)
   {
-    v7 = v4;
-    v5 = [v4 copy];
+    v7 = blockCopy;
+    v5 = [blockCopy copy];
     appearBlock = self->_appearBlock;
     self->_appearBlock = v5;
 
-    v4 = v7;
+    blockCopy = v7;
     if (v7)
     {
       if (self->_appeared)
       {
         [(CNFRegListController *)self performSelector:sel__performAppearBlock withObject:0 afterDelay:0.0];
-        v4 = v7;
+        blockCopy = v7;
       }
     }
   }
@@ -208,19 +208,19 @@
 
 - (void)_performAppearBlock
 {
-  v4 = [(CNFRegListController *)self appearBlock];
+  appearBlock = [(CNFRegListController *)self appearBlock];
   [(CNFRegListController *)self setAppearBlock:0];
-  v3 = v4;
-  if (v4)
+  v3 = appearBlock;
+  if (appearBlock)
   {
-    (*(v4 + 16))(v4);
-    v3 = v4;
+    (*(appearBlock + 16))(appearBlock);
+    v3 = appearBlock;
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = CNFRegListController;
@@ -237,18 +237,18 @@
     IMLogString();
   }
 
-  v6 = [MEMORY[0x277D192A8] sharedInstance];
-  if (([v6 isActive] & 1) == 0)
+  mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+  if (([mEMORY[0x277D192A8] isActive] & 1) == 0)
   {
-    [v6 setActive:1];
+    [mEMORY[0x277D192A8] setActive:1];
   }
 
-  [v6 addListener:self];
+  [mEMORY[0x277D192A8] addListener:self];
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = @"not ";
-    if (v3)
+    if (appearCopy)
     {
       v8 = &stru_2856D3978;
     }
@@ -261,7 +261,7 @@
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
     v9 = @"not ";
-    if (v3)
+    if (appearCopy)
     {
       v9 = &stru_2856D3978;
     }
@@ -272,8 +272,8 @@
 
   if (*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) && [(CNFRegListController *)self shouldRerootPreferences])
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:*MEMORY[0x277D400A8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D400A8] object:0];
     [(CNFRegListController *)self setShouldRerootPreferences:0];
   }
 
@@ -283,9 +283,9 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = CNFRegListController;
@@ -302,14 +302,14 @@
     IMLogString();
   }
 
-  v6 = [MEMORY[0x277D192A8] sharedInstance];
-  [v6 removeListener:self];
+  mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+  [mEMORY[0x277D192A8] removeListener:self];
 
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = @"not ";
-    if (v3)
+    if (disappearCopy)
     {
       v8 = &stru_2856D3978;
     }
@@ -322,7 +322,7 @@
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
     v9 = @"not ";
-    if (v3)
+    if (disappearCopy)
     {
       v9 = &stru_2856D3978;
     }
@@ -333,8 +333,8 @@
 
   if ([(CNFRegListController *)self wantsWiFiChooser])
   {
-    v10 = [(CNFRegListController *)self regController];
-    [v10 stopRequiringWifi];
+    regController = [(CNFRegListController *)self regController];
+    [regController stopRequiringWifi];
   }
 
   [(CNFRegListController *)self setAppearBlock:0];
@@ -342,9 +342,9 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v11 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = CNFRegListController;
@@ -353,7 +353,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = @"not ";
-    if (v3)
+    if (disappearCopy)
     {
       v6 = &stru_2856D3978;
     }
@@ -491,10 +491,10 @@
 - (BOOL)_showWiFiAlertIfNecessary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [v3 serviceType];
+  regController = [(CNFRegListController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (!v4 || v4 == 2)
+  if (!serviceType || serviceType == 2)
   {
     v5 = 0;
     v6 = @"com.apple.facetime";
@@ -502,8 +502,8 @@
 
   else
   {
-    v5 = v4 != 1;
-    if (v4 == 1)
+    v5 = serviceType != 1;
+    if (serviceType == 1)
     {
       v6 = @"com.apple.MobileSMS";
     }
@@ -514,8 +514,8 @@
     }
   }
 
-  v7 = [(CNFRegListController *)self regController];
-  if ([v7 deviceCanTakeNetworkAction])
+  regController2 = [(CNFRegListController *)self regController];
+  if ([regController2 deviceCanTakeNetworkAction])
   {
     if (v5)
     {
@@ -524,23 +524,23 @@ LABEL_13:
       goto LABEL_33;
     }
 
-    v8 = [(CNFRegListController *)self regController];
-    if ([v8 serviceType] == 1)
+    regController3 = [(CNFRegListController *)self regController];
+    if ([regController3 serviceType] == 1)
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v9 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v9 nonWifiAvailableForBundleId:v6])
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0] nonWifiAvailableForBundleId:v6])
     {
 
       goto LABEL_12;
     }
 
-    v11 = [MEMORY[0x277D07DB0] sharedInstance];
-    v12 = [v11 wifiAllowedForBundleId:v6];
+    mEMORY[0x277D07DB0]2 = [MEMORY[0x277D07DB0] sharedInstance];
+    v12 = [mEMORY[0x277D07DB0]2 wifiAllowedForBundleId:v6];
 
     if (v12)
     {
@@ -551,8 +551,8 @@ LABEL_12:
   v13 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v14 nonWifiAvailableForBundleId:v6])
+    mEMORY[0x277D07DB0]3 = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0]3 nonWifiAvailableForBundleId:v6])
     {
       v15 = @"YES";
     }
@@ -562,8 +562,8 @@ LABEL_12:
       v15 = @"NO";
     }
 
-    v16 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v16 wifiAllowedForBundleId:v6])
+    mEMORY[0x277D07DB0]4 = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0]4 wifiAllowedForBundleId:v6])
     {
       v17 = @"YES";
     }
@@ -584,8 +584,8 @@ LABEL_12:
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v18 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v18 nonWifiAvailableForBundleId:v6])
+    mEMORY[0x277D07DB0]5 = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0]5 nonWifiAvailableForBundleId:v6])
     {
       v19 = @"YES";
     }
@@ -595,8 +595,8 @@ LABEL_12:
       v19 = @"NO";
     }
 
-    v20 = [MEMORY[0x277D07DB0] sharedInstance];
-    if ([v20 wifiAllowedForBundleId:v6])
+    mEMORY[0x277D07DB0]6 = [MEMORY[0x277D07DB0] sharedInstance];
+    if ([mEMORY[0x277D07DB0]6 wifiAllowedForBundleId:v6])
     {
       v21 = @"YES";
     }
@@ -612,7 +612,7 @@ LABEL_12:
     IMLogString();
   }
 
-  [v7 showNetworkAlert:{self, v24, v25, v26}];
+  [regController2 showNetworkAlert:{self, v24, v25, v26}];
   v10 = 1;
 LABEL_33:
 
@@ -620,22 +620,22 @@ LABEL_33:
   return v10;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  if (![(CNFRegListController *)self _handleURLDictionary:v4])
+  lCopy = l;
+  if (![(CNFRegListController *)self _handleURLDictionary:lCopy])
   {
     v5.receiver = self;
     v5.super_class = CNFRegListController;
-    [(CNFRegListController *)&v5 handleURL:v4];
+    [(CNFRegListController *)&v5 handleURL:lCopy];
   }
 }
 
-- (BOOL)_handleURLDictionary:(id)a3
+- (BOOL)_handleURLDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16 = v4;
+  dictionaryCopy = dictionary;
+  v16 = dictionaryCopy;
   v15 = 0;
   v5 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]);
   if (v5)
@@ -645,10 +645,10 @@ LABEL_33:
     {
       v7 = [WeakRetained methodSignatureForSelector:sel__cnfreg_overrideForController_withDictionary_];
       v8 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v7];
-      v14 = self;
+      selfCopy = self;
       [v8 setTarget:WeakRetained];
       [v8 setSelector:sel__cnfreg_overrideForController_withDictionary_];
-      [v8 setArgument:&v14 atIndex:2];
+      [v8 setArgument:&selfCopy atIndex:2];
       [v8 setArgument:&v16 atIndex:3];
       [v8 invoke];
       [v8 getReturnValue:&v15];
@@ -678,7 +678,7 @@ LABEL_33:
       }
     }
 
-    v4 = v16;
+    dictionaryCopy = v16;
     v11 = v15;
   }
 
@@ -691,23 +691,23 @@ LABEL_33:
   return v11 & 1;
 }
 
-- (void)changePasswordControllerDidFinish:(id)a3 withAppleID:(id)a4 authID:(id)a5 authToken:(id)a6
+- (void)changePasswordControllerDidFinish:(id)finish withAppleID:(id)d authID:(id)iD authToken:(id)token
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v10 length] && objc_msgSend(v11, "length"))
+  dCopy = d;
+  iDCopy = iD;
+  tokenCopy = token;
+  if ([iDCopy length] && objc_msgSend(tokenCopy, "length"))
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = self;
-    v12 = [(CNFRegListController *)self regController];
-    v13 = [v12 appleIDAccounts];
+    selfCopy = self;
+    regController = [(CNFRegListController *)self regController];
+    appleIDAccounts = [regController appleIDAccounts];
 
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v14 = [appleIDAccounts countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -718,26 +718,26 @@ LABEL_33:
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(appleIDAccounts);
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          v19 = [v18 loginDisplayString];
-          v20 = [v19 isEqualToString:v9];
+          loginDisplayString = [v18 loginDisplayString];
+          v20 = [loginDisplayString isEqualToString:dCopy];
 
           if (v20)
           {
-            [v18 updateAuthorizationCredentials:v10 token:v11];
+            [v18 updateAuthorizationCredentials:iDCopy token:tokenCopy];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [appleIDAccounts countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
     }
 
-    self = v22;
+    self = selfCopy;
   }
 
   [(CNFRegListController *)self dismissViewControllerAnimated:1 completion:0];
@@ -753,14 +753,14 @@ LABEL_33:
   v3 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v3 styleUsesCustomTableStyle])
   {
-    v4 = [v3 tableBackgroundColor];
+    tableBackgroundColor = [v3 tableBackgroundColor];
 
     v5 = MEMORY[0x277D3FC60];
-    if (v4)
+    if (tableBackgroundColor)
     {
-      v6 = [v3 tableBackgroundColor];
+      tableBackgroundColor2 = [v3 tableBackgroundColor];
       v7 = *v5;
-      [*(&self->super.super.super.super.super.isa + v7) setBackgroundColor:v6];
+      [*(&self->super.super.super.super.super.isa + v7) setBackgroundColor:tableBackgroundColor2];
 
       [*(&self->super.super.super.super.super.isa + v7) setBackgroundView:0];
     }
@@ -770,61 +770,61 @@ LABEL_33:
       v8 = *v5;
       [*(&self->super.super.super.super.super.isa + v8) _setDrawsTopShadowInGroupedSections:0];
       [*(&self->super.super.super.super.super.isa + v8) setSeparatorStyle:{objc_msgSend(v3, "tableSeparatorStyle")}];
-      v9 = [v3 tableSeparatorColor];
+      tableSeparatorColor = [v3 tableSeparatorColor];
 
-      if (v9)
+      if (tableSeparatorColor)
       {
-        v10 = [v3 tableSeparatorColor];
-        [*(&self->super.super.super.super.super.isa + v8) setSeparatorColor:v10];
+        tableSeparatorColor2 = [v3 tableSeparatorColor];
+        [*(&self->super.super.super.super.super.isa + v8) setSeparatorColor:tableSeparatorColor2];
       }
 
-      v11 = [v3 tableSeparatorTopShadowColor];
+      tableSeparatorTopShadowColor = [v3 tableSeparatorTopShadowColor];
 
-      if (v11)
+      if (tableSeparatorTopShadowColor)
       {
-        v12 = [v3 tableSeparatorTopShadowColor];
-        [*(&self->super.super.super.super.super.isa + v8) setSeparatorTopShadowColor:v12];
+        tableSeparatorTopShadowColor2 = [v3 tableSeparatorTopShadowColor];
+        [*(&self->super.super.super.super.super.isa + v8) setSeparatorTopShadowColor:tableSeparatorTopShadowColor2];
       }
 
-      v13 = [v3 tableSeparatorBottomShadowColor];
+      tableSeparatorBottomShadowColor = [v3 tableSeparatorBottomShadowColor];
 
-      if (v13)
+      if (tableSeparatorBottomShadowColor)
       {
-        v14 = [v3 tableSeparatorBottomShadowColor];
-        [*(&self->super.super.super.super.super.isa + v8) setSeparatorBottomShadowColor:v14];
+        tableSeparatorBottomShadowColor2 = [v3 tableSeparatorBottomShadowColor];
+        [*(&self->super.super.super.super.super.isa + v8) setSeparatorBottomShadowColor:tableSeparatorBottomShadowColor2];
       }
     }
 
-    v15 = [v3 tableSectionBorderColor];
+    tableSectionBorderColor = [v3 tableSectionBorderColor];
 
-    if (v15)
+    if (tableSectionBorderColor)
     {
-      v16 = [v3 tableSectionBorderColor];
-      [*(&self->super.super.super.super.super.isa + *v5) setSectionBorderColor:v16];
+      tableSectionBorderColor2 = [v3 tableSectionBorderColor];
+      [*(&self->super.super.super.super.super.isa + *v5) setSectionBorderColor:tableSectionBorderColor2];
     }
   }
 
-  v17 = [v3 customBackgroundColor];
+  customBackgroundColor = [v3 customBackgroundColor];
 
-  if (v17)
+  if (customBackgroundColor)
   {
-    v18 = [v3 customBackgroundColor];
-    v19 = [(CNFRegListController *)self view];
-    [v19 setBackgroundColor:v18];
+    customBackgroundColor2 = [v3 customBackgroundColor];
+    view = [(CNFRegListController *)self view];
+    [view setBackgroundColor:customBackgroundColor2];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v50 = a4;
-  v6 = a5;
-  v7 = [v50 tag];
+  cellCopy = cell;
+  pathCopy = path;
+  v7 = [cellCopy tag];
   v8 = v7;
   v9 = v7 << 32;
   if (v7 << 32 == 0x800000000)
   {
-    v10 = [v50 editableTextField];
-    [v10 setClearButtonMode:1];
+    editableTextField = [cellCopy editableTextField];
+    [editableTextField setClearButtonMode:1];
   }
 
   v11 = +[CNFRegAppearanceController globalAppearanceController];
@@ -832,139 +832,139 @@ LABEL_33:
   {
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v50 usesStandardBackgroundImage];
+      usesStandardBackgroundImage = [cellCopy usesStandardBackgroundImage];
     }
 
     else
     {
-      v12 = 0;
+      usesStandardBackgroundImage = 0;
     }
 
-    if (v9 != 0xD00000000 || (v12 & 1) != 0)
+    if (v9 != 0xD00000000 || (usesStandardBackgroundImage & 1) != 0)
     {
-      v13 = [v11 tableCellBackgroundColor];
-      [v50 setBackgroundColor:v13];
+      tableCellBackgroundColor = [v11 tableCellBackgroundColor];
+      [cellCopy setBackgroundColor:tableCellBackgroundColor];
     }
 
     else
     {
-      v13 = [v11 tableCellButtonImage];
-      if (v13)
+      tableCellBackgroundColor = [v11 tableCellButtonImage];
+      if (tableCellBackgroundColor)
       {
-        v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v13];
-        [v50 setBackgroundView:v14];
+        v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:tableCellBackgroundColor];
+        [cellCopy setBackgroundView:v14];
       }
 
-      v15 = [v11 tableCellButtonImageSelected];
-      v16 = v50;
-      if (v15)
+      tableCellButtonImageSelected = [v11 tableCellButtonImageSelected];
+      v16 = cellCopy;
+      if (tableCellButtonImageSelected)
       {
-        v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v15];
-        [v50 setSelectedBackgroundView:v17];
+        v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:tableCellButtonImageSelected];
+        [cellCopy setSelectedBackgroundView:v17];
 
-        v16 = v50;
+        v16 = cellCopy;
       }
 
       [v16 setBackgroundColor:0];
     }
 
-    v18 = [v11 tableCellTextLabelColor];
+    tableCellTextLabelColor = [v11 tableCellTextLabelColor];
 
-    if (v18)
+    if (tableCellTextLabelColor)
     {
-      v19 = [v11 tableCellTextLabelColor];
-      v20 = [v50 textLabel];
-      [v20 setTextColor:v19];
+      tableCellTextLabelColor2 = [v11 tableCellTextLabelColor];
+      textLabel = [cellCopy textLabel];
+      [textLabel setTextColor:tableCellTextLabelColor2];
     }
 
-    v21 = [v11 tableCellTextLabelBackgroundColor];
+    tableCellTextLabelBackgroundColor = [v11 tableCellTextLabelBackgroundColor];
 
-    if (v21)
+    if (tableCellTextLabelBackgroundColor)
     {
-      v22 = [v11 tableCellTextLabelBackgroundColor];
-      v23 = [v50 textLabel];
-      [v23 setBackgroundColor:v22];
+      tableCellTextLabelBackgroundColor2 = [v11 tableCellTextLabelBackgroundColor];
+      textLabel2 = [cellCopy textLabel];
+      [textLabel2 setBackgroundColor:tableCellTextLabelBackgroundColor2];
     }
 
-    v24 = [v11 tableCellDetailLabelColor];
+    tableCellDetailLabelColor = [v11 tableCellDetailLabelColor];
 
-    if (v24)
+    if (tableCellDetailLabelColor)
     {
-      v25 = [v11 tableCellDetailLabelColor];
-      v26 = [v50 detailTextLabel];
-      [v26 setTextColor:v25];
+      tableCellDetailLabelColor2 = [v11 tableCellDetailLabelColor];
+      detailTextLabel = [cellCopy detailTextLabel];
+      [detailTextLabel setTextColor:tableCellDetailLabelColor2];
     }
 
     v27 = v8;
-    v28 = [v11 tableCellDetailLabelBackgroundColor];
+    tableCellDetailLabelBackgroundColor = [v11 tableCellDetailLabelBackgroundColor];
 
-    if (v28)
+    if (tableCellDetailLabelBackgroundColor)
     {
-      v29 = [v11 tableCellDetailLabelBackgroundColor];
-      v30 = [v50 detailTextLabel];
-      [v30 setBackgroundColor:v29];
+      tableCellDetailLabelBackgroundColor2 = [v11 tableCellDetailLabelBackgroundColor];
+      detailTextLabel2 = [cellCopy detailTextLabel];
+      [detailTextLabel2 setBackgroundColor:tableCellDetailLabelBackgroundColor2];
     }
 
     if ((v27 | 4) == 0xC)
     {
-      v31 = [v11 tableCellEditableTextPlaceholderColor];
+      tableCellEditableTextPlaceholderColor = [v11 tableCellEditableTextPlaceholderColor];
 
-      if (v31)
+      if (tableCellEditableTextPlaceholderColor)
       {
-        v32 = [v11 tableCellEditableTextPlaceholderColor];
-        v33 = [v50 editableTextField];
-        v34 = [v33 _placeholderLabel];
-        [v34 setTextColor:v32];
+        tableCellEditableTextPlaceholderColor2 = [v11 tableCellEditableTextPlaceholderColor];
+        editableTextField2 = [cellCopy editableTextField];
+        _placeholderLabel = [editableTextField2 _placeholderLabel];
+        [_placeholderLabel setTextColor:tableCellEditableTextPlaceholderColor2];
       }
 
-      v35 = [v11 tableCellEditableTextFieldClearButton];
+      tableCellEditableTextFieldClearButton = [v11 tableCellEditableTextFieldClearButton];
 
-      if (v35)
+      if (tableCellEditableTextFieldClearButton)
       {
-        v36 = [v50 editableTextField];
-        v37 = [v36 _clearButton];
-        v38 = [v11 tableCellEditableTextFieldClearButton];
-        [v37 setImage:v38 forState:0];
+        editableTextField3 = [cellCopy editableTextField];
+        _clearButton = [editableTextField3 _clearButton];
+        tableCellEditableTextFieldClearButton2 = [v11 tableCellEditableTextFieldClearButton];
+        [_clearButton setImage:tableCellEditableTextFieldClearButton2 forState:0];
       }
 
-      v39 = [v11 tableCellEditableTextFieldClearButtonPressed];
+      tableCellEditableTextFieldClearButtonPressed = [v11 tableCellEditableTextFieldClearButtonPressed];
 
-      if (v39)
+      if (tableCellEditableTextFieldClearButtonPressed)
       {
-        v40 = [v50 editableTextField];
-        v41 = [v40 _clearButton];
-        v42 = [v11 tableCellEditableTextFieldClearButtonPressed];
-        [v41 setImage:v42 forState:1];
+        editableTextField4 = [cellCopy editableTextField];
+        _clearButton2 = [editableTextField4 _clearButton];
+        tableCellEditableTextFieldClearButtonPressed2 = [v11 tableCellEditableTextFieldClearButtonPressed];
+        [_clearButton2 setImage:tableCellEditableTextFieldClearButtonPressed2 forState:1];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v43 = v50;
-        v44 = [v11 tableCellEditableTextColor];
+        v43 = cellCopy;
+        tableCellEditableTextColor = [v11 tableCellEditableTextColor];
 
-        if (v44)
+        if (tableCellEditableTextColor)
         {
-          v45 = [v11 tableCellEditableTextColor];
-          v46 = [v43 editableTextField];
-          [v46 setTextColor:v45];
+          tableCellEditableTextColor2 = [v11 tableCellEditableTextColor];
+          editableTextField5 = [v43 editableTextField];
+          [editableTextField5 setTextColor:tableCellEditableTextColor2];
         }
 
-        v47 = [v11 tableCellCheckmarkImage];
-        [v43 setCustomCheckmarkImage:v47];
+        tableCellCheckmarkImage = [v11 tableCellCheckmarkImage];
+        [v43 setCustomCheckmarkImage:tableCellCheckmarkImage];
 
-        v48 = [v11 tableCellCheckmarkImageSelected];
-        [v43 setCustomCheckmarkImageSelected:v48];
+        tableCellCheckmarkImageSelected = [v11 tableCellCheckmarkImageSelected];
+        [v43 setCustomCheckmarkImageSelected:tableCellCheckmarkImageSelected];
 
-        if ([v6 row])
+        if ([pathCopy row])
         {
           [v43 setShadowImage:0];
         }
 
         else
         {
-          v49 = [v11 tableSectionShadowImage];
-          [v43 setShadowImage:v49];
+          tableSectionShadowImage = [v11 tableSectionShadowImage];
+          [v43 setShadowImage:tableSectionShadowImage];
         }
 
         [v43 setNeedsLayout];
@@ -973,20 +973,20 @@ LABEL_33:
   }
 }
 
-- (id)_existingLabelForSpecifier:(id)a3 header:(BOOL)a4
+- (id)_existingLabelForSpecifier:(id)specifier header:(BOOL)header
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v5 && !*&v5[*MEMORY[0x277D3FC90]])
+  headerCopy = header;
+  specifierCopy = specifier;
+  v6 = specifierCopy;
+  if (specifierCopy && !*&specifierCopy[*MEMORY[0x277D3FC90]])
   {
     v8 = MEMORY[0x277D3FFB0];
-    if (!v4)
+    if (!headerCopy)
     {
       v8 = MEMORY[0x277D3FF90];
     }
 
-    v9 = [v5 propertyForKey:*v8];
+    v9 = [specifierCopy propertyForKey:*v8];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = v9;
@@ -1006,27 +1006,27 @@ LABEL_33:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(CNFRegListController *)self _existingLabelForSection:a4 header:1];
-  [(CNFRegListController *)self _updateTableLabel:v7 withTableView:v6 isTopMostHeader:a4 == 0];
+  viewCopy = view;
+  v7 = [(CNFRegListController *)self _existingLabelForSection:section header:1];
+  [(CNFRegListController *)self _updateTableLabel:v7 withTableView:viewCopy isTopMostHeader:section == 0];
   v14.receiver = self;
   v14.super_class = CNFRegListController;
-  [(CNFRegListController *)&v14 tableView:v6 heightForHeaderInSection:a4];
-  if (a4 && v7)
+  [(CNFRegListController *)&v14 tableView:viewCopy heightForHeaderInSection:section];
+  if (section && v7)
   {
     v9 = v8;
   }
 
   else
   {
-    v10 = [(CNFRegListController *)self _existingLabelForSection:a4 header:1];
+    v10 = [(CNFRegListController *)self _existingLabelForSection:section header:1];
 
-    [(CNFRegListController *)self _updateTableLabel:v10 withTableView:v6 isTopMostHeader:a4 == 0];
+    [(CNFRegListController *)self _updateTableLabel:v10 withTableView:viewCopy isTopMostHeader:section == 0];
     v13.receiver = self;
     v13.super_class = CNFRegListController;
-    [(CNFRegListController *)&v13 tableView:v6 heightForHeaderInSection:a4];
+    [(CNFRegListController *)&v13 tableView:viewCopy heightForHeaderInSection:section];
     v9 = v11;
     v7 = v10;
   }
@@ -1034,21 +1034,21 @@ LABEL_33:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(CNFRegListController *)self _existingLabelForSection:a4 header:0];
-  [(CNFRegListController *)self _updateTableLabel:v7 withTableView:v6 isTopMostHeader:0];
+  viewCopy = view;
+  v7 = [(CNFRegListController *)self _existingLabelForSection:section header:0];
+  [(CNFRegListController *)self _updateTableLabel:v7 withTableView:viewCopy isTopMostHeader:0];
   v12.receiver = self;
   v12.super_class = CNFRegListController;
-  [(CNFRegListController *)&v12 tableView:v6 heightForFooterInSection:a4];
+  [(CNFRegListController *)&v12 tableView:viewCopy heightForFooterInSection:section];
   if (!v7)
   {
-    v7 = [(CNFRegListController *)self _existingLabelForSection:a4 header:0];
-    [(CNFRegListController *)self _updateTableLabel:v7 withTableView:v6 isTopMostHeader:0];
+    v7 = [(CNFRegListController *)self _existingLabelForSection:section header:0];
+    [(CNFRegListController *)self _updateTableLabel:v7 withTableView:viewCopy isTopMostHeader:0];
     v11.receiver = self;
     v11.super_class = CNFRegListController;
-    [(CNFRegListController *)&v11 tableView:v6 heightForFooterInSection:a4];
+    [(CNFRegListController *)&v11 tableView:viewCopy heightForFooterInSection:section];
   }
 
   v9 = v8;
@@ -1056,36 +1056,36 @@ LABEL_33:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CNFRegListController;
-  v7 = [(CNFRegListController *)&v9 tableView:v6 viewForHeaderInSection:a4];
+  v7 = [(CNFRegListController *)&v9 tableView:viewCopy viewForHeaderInSection:section];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CNFRegListController *)self _updateTableLabel:v7 withTableView:v6 isTopMostHeader:a4 == 0];
+      [(CNFRegListController *)self _updateTableLabel:v7 withTableView:viewCopy isTopMostHeader:section == 0];
     }
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CNFRegListController;
-  v7 = [(CNFRegListController *)&v9 tableView:v6 viewForFooterInSection:a4];
+  v7 = [(CNFRegListController *)&v9 tableView:viewCopy viewForFooterInSection:section];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CNFRegListController *)self _updateTableLabel:v7 withTableView:v6 isTopMostHeader:0];
+      [(CNFRegListController *)self _updateTableLabel:v7 withTableView:viewCopy isTopMostHeader:0];
     }
   }
 
@@ -1106,19 +1106,19 @@ LABEL_33:
     IMLogString();
   }
 
-  v4 = [(CNFRegListController *)self regController];
-  v5 = [v4 serviceType];
+  regController = [(CNFRegListController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v5 == 2)
+  if (serviceType == 2)
   {
 LABEL_9:
-    v6 = [MEMORY[0x277D18DD8] facetimeService];
+    facetimeService = [MEMORY[0x277D18DD8] facetimeService];
     goto LABEL_11;
   }
 
-  if (v5 != 1)
+  if (serviceType != 1)
   {
-    if (v5)
+    if (serviceType)
     {
       v9 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1138,16 +1138,16 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [MEMORY[0x277D18DD8] iMessageService];
+  facetimeService = [MEMORY[0x277D18DD8] iMessageService];
 LABEL_11:
-  v7 = v6;
-  if (v6)
+  v7 = facetimeService;
+  if (facetimeService)
   {
     v11 = 0;
-    if ([CNFRegAppleIDSplashViewController shouldShowSplashViewForService:v6 inProgressRegisteringNonPhoneAccount:&v11])
+    if ([CNFRegAppleIDSplashViewController shouldShowSplashViewForService:facetimeService inProgressRegisteringNonPhoneAccount:&v11])
     {
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 postNotificationName:@"CNFSettingsViewControllerNeedsContainerUpdate" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"CNFSettingsViewControllerNeedsContainerUpdate" object:0];
     }
 
     return;
@@ -1186,8 +1186,8 @@ LABEL_20:
 
 - (void)removeAllHandlers
 {
-  v2 = [(CNFRegListController *)self regController];
-  [v2 removeAllHandlers];
+  regController = [(CNFRegListController *)self regController];
+  [regController removeAllHandlers];
 }
 
 - (void)setSpecifier:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

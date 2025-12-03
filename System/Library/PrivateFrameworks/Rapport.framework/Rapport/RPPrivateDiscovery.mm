@@ -1,19 +1,19 @@
 @interface RPPrivateDiscovery
 - (RPPrivateDiscovery)init;
-- (RPPrivateDiscovery)initWithCoder:(id)a3;
+- (RPPrivateDiscovery)initWithCoder:(id)coder;
 - (id)description;
 - (void)_activateDirect;
-- (void)_activateXPC:(BOOL)a3;
+- (void)_activateXPC:(BOOL)c;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
+- (void)_updateIfNeededWithBlock:(id)block;
 - (void)activate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation RPPrivateDiscovery
@@ -47,9 +47,9 @@ uint64_t __26__RPPrivateDiscovery_init__block_invoke()
   return result;
 }
 
-- (RPPrivateDiscovery)initWithCoder:(id)a3
+- (RPPrivateDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RPPrivateDiscovery;
   v5 = [(RPPrivateDiscovery *)&v10 init];
@@ -64,7 +64,7 @@ uint64_t __26__RPPrivateDiscovery_init__block_invoke()
       v6->_clientID = v11;
     }
 
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -74,22 +74,22 @@ uint64_t __26__RPPrivateDiscovery_init__block_invoke()
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   clientID = self->_clientID;
-  v7 = v4;
+  v7 = coderCopy;
   if (clientID)
   {
-    [v4 encodeInt64:clientID forKey:@"cid"];
-    v4 = v7;
+    [coderCopy encodeInt64:clientID forKey:@"cid"];
+    coderCopy = v7;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v7 encodeObject:serviceType forKey:@"st"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
@@ -116,32 +116,32 @@ uint64_t __26__RPPrivateDiscovery_init__block_invoke()
   return 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v2->_activateCalled = 1;
-    dispatchQueue = v2->_dispatchQueue;
+    selfCopy->_activateCalled = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __30__RPPrivateDiscovery_activate__block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 int *__30__RPPrivateDiscovery_activate__block_invoke(uint64_t a1)
@@ -263,10 +263,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_activateXPC:(BOOL)a3
+- (void)_activateXPC:(BOOL)c
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (c)
   {
     if (var0 <= 30)
     {
@@ -311,14 +311,14 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __35__RPPrivateDiscovery__activateXPC___block_invoke;
   v14[3] = &unk_1E7C94CD8;
-  v15 = a3;
+  cCopy = c;
   v14[4] = self;
   v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __35__RPPrivateDiscovery__activateXPC___block_invoke_2;
   v12[3] = &unk_1E7C94CD8;
-  v13 = a3;
+  cCopy2 = c;
   v12[4] = self;
   [v8 xpcPrivateDiscoveryActivate:self completion:v12];
 }
@@ -646,37 +646,37 @@ LABEL_6:
   }
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__RPPrivateDiscovery__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_update
 {
   if (!self->_invalidateCalled)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    changesPending = v2->_changesPending;
-    v2->_changesPending = 0;
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    changesPending = selfCopy->_changesPending;
+    selfCopy->_changesPending = 0;
+    objc_sync_exit(selfCopy);
 
-    var0 = v2->_ucat->var0;
+    var0 = selfCopy->_ucat->var0;
     if (changesPending)
     {
       if (var0 <= 30)
@@ -688,27 +688,27 @@ LABEL_6:
             goto LABEL_12;
           }
 
-          ucat = v2->_ucat;
+          ucat = selfCopy->_ucat;
         }
 
-        v9 = v2;
+        v9 = selfCopy;
         LogPrintF();
       }
 
 LABEL_12:
-      xpcCnx = v2->_xpcCnx;
+      xpcCnx = selfCopy->_xpcCnx;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __29__RPPrivateDiscovery__update__block_invoke;
       v11[3] = &unk_1E7C92D58;
-      v11[4] = v2;
+      v11[4] = selfCopy;
       v6 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v11, v9];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __29__RPPrivateDiscovery__update__block_invoke_2;
       v10[3] = &unk_1E7C92D58;
-      v10[4] = v2;
-      [v6 xpcPrivateDiscoveryUpdate:v2 completion:v10];
+      v10[4] = selfCopy;
+      [v6 xpcPrivateDiscoveryUpdate:selfCopy completion:v10];
 
       return;
     }
@@ -725,7 +725,7 @@ LABEL_12:
         return;
       }
 
-      v7 = v2->_ucat;
+      v7 = selfCopy->_ucat;
     }
 
     LogPrintF();

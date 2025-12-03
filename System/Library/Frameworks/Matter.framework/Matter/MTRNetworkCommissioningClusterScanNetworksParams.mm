@@ -1,8 +1,8 @@
 @interface MTRNetworkCommissioningClusterScanNetworksParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRNetworkCommissioningClusterScanNetworksParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterScanNetworksParams);
-  v5 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
-  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setSsid:v5];
+  ssid = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
+  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setSsid:ssid];
 
-  v6 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self breadcrumb];
-  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setBreadcrumb:v6];
+  breadcrumb = [(MTRNetworkCommissioningClusterScanNetworksParams *)self breadcrumb];
+  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setBreadcrumb:breadcrumb];
 
-  v7 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self timedInvokeTimeoutMs];
-  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRNetworkCommissioningClusterScanNetworksParams *)self timedInvokeTimeoutMs];
+  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self serverSideProcessingTimeout];
-  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRNetworkCommissioningClusterScanNetworksParams *)self serverSideProcessingTimeout];
+  [(MTRNetworkCommissioningClusterScanNetworksParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,41 +61,41 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v26[0] = 0;
   v29 = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
+  ssid = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
 
-  if (v5)
+  if (ssid)
   {
     v26[0] = 1;
     v28 = 0;
     v27 = 0uLL;
-    v6 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
+    ssid2 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
 
-    if (v6)
+    if (ssid2)
     {
       v27 = 0uLL;
       LOBYTE(v28) = 1;
-      v7 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
-      sub_238DB6950(v18, [v7 bytes], objc_msgSend(v7, "length"));
+      ssid3 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self ssid];
+      sub_238DB6950(v18, [ssid3 bytes], objc_msgSend(ssid3, "length"));
 
       v27 = v18[0];
     }
   }
 
-  v8 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self breadcrumb];
+  breadcrumb = [(MTRNetworkCommissioningClusterScanNetworksParams *)self breadcrumb];
 
-  if (v8)
+  if (breadcrumb)
   {
     v29 = 1;
-    v30 = 0;
-    v9 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self breadcrumb];
-    v30 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = 0;
+    breadcrumb2 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self breadcrumb];
+    unsignedLongLongValue = [breadcrumb2 unsignedLongLongValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v23);
@@ -117,8 +117,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -146,19 +146,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRNetworkCommissioningClusterScanNetworksParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -169,7 +169,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x158400000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

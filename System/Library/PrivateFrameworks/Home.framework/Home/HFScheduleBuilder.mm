@@ -1,12 +1,12 @@
 @interface HFScheduleBuilder
-+ (id)scheduleBuilderFromHomeAccessSchedule:(id)a3;
-+ (id)scheduleBuilderFromSchedule:(id)a3;
-+ (id)scheduleBuilderFromType:(unint64_t)a3 withDefaultRules:(BOOL)a4;
-+ (id)scheduleBuilderFromYearDayRules:(id)a3 weekDayRules:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)scheduleBuilderFromHomeAccessSchedule:(id)schedule;
++ (id)scheduleBuilderFromSchedule:(id)schedule;
++ (id)scheduleBuilderFromType:(unint64_t)type withDefaultRules:(BOOL)rules;
++ (id)scheduleBuilderFromYearDayRules:(id)rules weekDayRules:(id)dayRules;
+- (BOOL)isEqual:(id)equal;
 - (HFScheduleBuilder)init;
 - (id)build;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)estimatedScheduleType;
 - (unint64_t)hash;
@@ -33,15 +33,15 @@
   return v2;
 }
 
-+ (id)scheduleBuilderFromType:(unint64_t)a3 withDefaultRules:(BOOL)a4
++ (id)scheduleBuilderFromType:(unint64_t)type withDefaultRules:(BOOL)rules
 {
-  v4 = a4;
+  rulesCopy = rules;
   v8 = objc_alloc_init(HFScheduleBuilder);
   v9 = v8;
-  if (a3 == 2)
+  if (type == 2)
   {
     [(HFScheduleBuilder *)v8 setSupportsWeekDayRules:1];
-    if (!v4)
+    if (!rulesCopy)
     {
       goto LABEL_12;
     }
@@ -52,27 +52,27 @@
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3)
+      if (type)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
-        [v10 handleFailureInMethod:a2 object:a1 file:@"HFScheduleBuilder.m" lineNumber:122 description:{@"Unknown schedule type", a3}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleBuilder.m" lineNumber:122 description:{@"Unknown schedule type", type}];
       }
 
       else
       {
         [(HFScheduleBuilder *)v8 setMinNumberOfRules:0];
         [(HFScheduleBuilder *)v9 setMaxNumberOfRules:0];
-        v10 = [MEMORY[0x277CBEB98] set];
-        [(HFScheduleBuilder *)v9 setRules:v10];
+        currentHandler = [MEMORY[0x277CBEB98] set];
+        [(HFScheduleBuilder *)v9 setRules:currentHandler];
       }
 
       goto LABEL_11;
     }
 
     [(HFScheduleBuilder *)v8 setSupportsYearDayRules:1];
-    if (!v4)
+    if (!rulesCopy)
     {
       goto LABEL_12;
     }
@@ -81,8 +81,8 @@
     v12 = 1;
   }
 
-  v10 = [HFScheduleRule defaultRuleForType:v12];
-  v13 = [v11 setWithObject:v10];
+  currentHandler = [HFScheduleRule defaultRuleForType:v12];
+  v13 = [v11 setWithObject:currentHandler];
   [(HFScheduleBuilder *)v9 setRules:v13];
 
 LABEL_11:
@@ -91,24 +91,24 @@ LABEL_12:
   return v9;
 }
 
-+ (id)scheduleBuilderFromHomeAccessSchedule:(id)a3
++ (id)scheduleBuilderFromHomeAccessSchedule:(id)schedule
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  scheduleCopy = schedule;
+  v5 = scheduleCopy;
+  if (scheduleCopy)
   {
-    v6 = [v4 weekDayRules];
-    v7 = [v6 na_map:&__block_literal_global_18_9];
+    weekDayRules = [scheduleCopy weekDayRules];
+    v7 = [weekDayRules na_map:&__block_literal_global_18_9];
 
-    v8 = [v5 yearDayRules];
-    v9 = [v8 na_map:&__block_literal_global_21_5];
+    yearDayRules = [v5 yearDayRules];
+    v9 = [yearDayRules na_map:&__block_literal_global_21_5];
 
-    v10 = [a1 scheduleBuilderFromYearDayRules:v9 weekDayRules:v7];
+    v10 = [self scheduleBuilderFromYearDayRules:v9 weekDayRules:v7];
   }
 
   else
   {
-    v10 = [a1 scheduleBuilderFromType:0 withDefaultRules:0];
+    v10 = [self scheduleBuilderFromType:0 withDefaultRules:0];
   }
 
   return v10;
@@ -130,33 +130,33 @@ HFScheduleRule *__59__HFScheduleBuilder_scheduleBuilderFromHomeAccessSchedule___
   return v3;
 }
 
-+ (id)scheduleBuilderFromSchedule:(id)a3
++ (id)scheduleBuilderFromSchedule:(id)schedule
 {
-  v5 = a3;
-  if (!v5)
+  scheduleCopy = schedule;
+  if (!scheduleCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"HFScheduleBuilder.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"schedule"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleBuilder.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"schedule"}];
   }
 
-  v6 = [v5 allYearDayRules];
-  v7 = [v6 allObjects];
-  v8 = [v5 allWeekDayRules];
-  v9 = [v8 allObjects];
-  v10 = [a1 scheduleBuilderFromYearDayRules:v7 weekDayRules:v9];
+  allYearDayRules = [scheduleCopy allYearDayRules];
+  allObjects = [allYearDayRules allObjects];
+  allWeekDayRules = [scheduleCopy allWeekDayRules];
+  allObjects2 = [allWeekDayRules allObjects];
+  v10 = [self scheduleBuilderFromYearDayRules:allObjects weekDayRules:allObjects2];
 
   return v10;
 }
 
-+ (id)scheduleBuilderFromYearDayRules:(id)a3 weekDayRules:(id)a4
++ (id)scheduleBuilderFromYearDayRules:(id)rules weekDayRules:(id)dayRules
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  rulesCopy = rules;
+  dayRulesCopy = dayRules;
+  v9 = dayRulesCopy;
+  if (!rulesCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"HFScheduleBuilder.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"yearDayRules"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleBuilder.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"yearDayRules"}];
 
     if (v9)
     {
@@ -164,20 +164,20 @@ HFScheduleRule *__59__HFScheduleBuilder_scheduleBuilderFromHomeAccessSchedule___
     }
 
 LABEL_18:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"HFScheduleBuilder.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"weekDayRules"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFScheduleBuilder.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"weekDayRules"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!dayRulesCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_3:
   v10 = objc_alloc_init(HFScheduleBuilder);
-  if ([v9 hmf_isEmpty] && (objc_msgSend(v7, "hmf_isEmpty") & 1) != 0)
+  if ([v9 hmf_isEmpty] && (objc_msgSend(rulesCopy, "hmf_isEmpty") & 1) != 0)
   {
     [(HFScheduleBuilder *)v10 setMinNumberOfRules:0];
     [(HFScheduleBuilder *)v10 setMaxNumberOfRules:0];
@@ -193,17 +193,17 @@ LABEL_3:
       [v11 addObjectsFromArray:v9];
     }
 
-    if (([v7 hmf_isEmpty] & 1) == 0)
+    if (([rulesCopy hmf_isEmpty] & 1) == 0)
     {
       [(HFScheduleBuilder *)v10 setSupportsYearDayRules:1];
-      [v11 addObjectsFromArray:v7];
+      [v11 addObjectsFromArray:rulesCopy];
     }
 
     v12 = [v11 count];
-    v13 = [(HFScheduleBuilder *)v10 maxNumberOfRules];
-    if (v12 <= v13)
+    maxNumberOfRules = [(HFScheduleBuilder *)v10 maxNumberOfRules];
+    if (v12 <= maxNumberOfRules)
     {
-      v14 = v13;
+      v14 = maxNumberOfRules;
     }
 
     else
@@ -221,28 +221,28 @@ LABEL_3:
 
 - (unint64_t)estimatedScheduleType
 {
-  v3 = [(HFScheduleBuilder *)self rules];
-  v4 = [v3 hmf_isEmpty];
+  rules = [(HFScheduleBuilder *)self rules];
+  hmf_isEmpty = [rules hmf_isEmpty];
 
-  if (v4)
+  if (hmf_isEmpty)
   {
     return 0;
   }
 
-  v6 = [(HFScheduleBuilder *)self rules];
-  v7 = [v6 allObjects];
-  v8 = [v7 firstObject];
-  v9 = [v8 isYearDayRule];
+  rules2 = [(HFScheduleBuilder *)self rules];
+  allObjects = [rules2 allObjects];
+  firstObject = [allObjects firstObject];
+  isYearDayRule = [firstObject isYearDayRule];
 
-  if (v9)
+  if (isYearDayRule)
   {
     return 1;
   }
 
-  v10 = [(HFScheduleBuilder *)self rules];
-  v11 = [v10 allObjects];
-  v12 = [v11 firstObject];
-  [v12 isWeekDayRule];
+  rules3 = [(HFScheduleBuilder *)self rules];
+  allObjects2 = [rules3 allObjects];
+  firstObject2 = [allObjects2 firstObject];
+  [firstObject2 isWeekDayRule];
 
   return 2;
 }
@@ -252,8 +252,8 @@ LABEL_3:
   if ([HFScheduleValidator isValid:self])
   {
     v3 = [HFSchedule alloc];
-    v4 = [(HFScheduleBuilder *)self rules];
-    v5 = [v4 copy];
+    rules = [(HFScheduleBuilder *)self rules];
+    v5 = [rules copy];
     v6 = [(HFSchedule *)v3 initWithScheduleRules:v5];
   }
 
@@ -265,11 +265,11 @@ LABEL_3:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HFScheduleBuilder *)self rules];
-  v6 = [v5 copy];
+  rules = [(HFScheduleBuilder *)self rules];
+  v6 = [rules copy];
   v7 = v4[2];
   v4[2] = v6;
 
@@ -280,10 +280,10 @@ LABEL_3:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_8;
   }
@@ -294,18 +294,18 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  v5 = [(HFScheduleBuilder *)v4 rules];
-  v6 = [(HFScheduleBuilder *)self rules];
-  if (![v5 isEqualToSet:v6] || (v7 = -[HFScheduleBuilder supportsWeekDayRules](v4, "supportsWeekDayRules"), v7 != -[HFScheduleBuilder supportsWeekDayRules](self, "supportsWeekDayRules")) || (v8 = -[HFScheduleBuilder supportsYearDayRules](v4, "supportsYearDayRules"), v8 != -[HFScheduleBuilder supportsYearDayRules](self, "supportsYearDayRules")) || (v9 = -[HFScheduleBuilder minNumberOfRules](v4, "minNumberOfRules"), v9 != -[HFScheduleBuilder minNumberOfRules](self, "minNumberOfRules")))
+  rules = [(HFScheduleBuilder *)equalCopy rules];
+  rules2 = [(HFScheduleBuilder *)self rules];
+  if (![rules isEqualToSet:rules2] || (v7 = -[HFScheduleBuilder supportsWeekDayRules](equalCopy, "supportsWeekDayRules"), v7 != -[HFScheduleBuilder supportsWeekDayRules](self, "supportsWeekDayRules")) || (v8 = -[HFScheduleBuilder supportsYearDayRules](equalCopy, "supportsYearDayRules"), v8 != -[HFScheduleBuilder supportsYearDayRules](self, "supportsYearDayRules")) || (v9 = -[HFScheduleBuilder minNumberOfRules](equalCopy, "minNumberOfRules"), v9 != -[HFScheduleBuilder minNumberOfRules](self, "minNumberOfRules")))
   {
 
     goto LABEL_10;
   }
 
-  v10 = [(HFScheduleBuilder *)v4 maxNumberOfRules];
-  v11 = [(HFScheduleBuilder *)self maxNumberOfRules];
+  maxNumberOfRules = [(HFScheduleBuilder *)equalCopy maxNumberOfRules];
+  maxNumberOfRules2 = [(HFScheduleBuilder *)self maxNumberOfRules];
 
-  if (v10 != v11)
+  if (maxNumberOfRules != maxNumberOfRules2)
   {
 LABEL_10:
     v12 = 0;
@@ -321,8 +321,8 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(HFScheduleBuilder *)self rules];
-  v4 = [v3 hash];
+  rules = [(HFScheduleBuilder *)self rules];
+  v4 = [rules hash];
 
   if ([(HFScheduleBuilder *)self supportsWeekDayRules])
   {
@@ -352,16 +352,16 @@ LABEL_11:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFScheduleBuilder *)self rules];
-  v5 = [v3 appendObject:v4 withName:@"rules"];
+  rules = [(HFScheduleBuilder *)self rules];
+  v5 = [v3 appendObject:rules withName:@"rules"];
 
   v6 = [v3 appendBool:-[HFScheduleBuilder supportsWeekDayRules](self withName:{"supportsWeekDayRules"), @"supportsWeekDayRules"}];
   v7 = [v3 appendBool:-[HFScheduleBuilder supportsYearDayRules](self withName:{"supportsYearDayRules"), @"supportsYearDayRules"}];
   v8 = [v3 appendUnsignedInteger:-[HFScheduleBuilder minNumberOfRules](self withName:{"minNumberOfRules"), @"minNumberOfRules"}];
   v9 = [v3 appendUnsignedInteger:-[HFScheduleBuilder maxNumberOfRules](self withName:{"maxNumberOfRules"), @"maxNumberOfRules"}];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

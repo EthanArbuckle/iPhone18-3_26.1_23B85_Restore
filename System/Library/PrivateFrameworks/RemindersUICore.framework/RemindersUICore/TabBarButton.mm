@@ -1,19 +1,19 @@
 @interface TabBarButton
 - (NSString)largeContentTitle;
 - (UIImage)largeContentImage;
-- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithCoder:(id)a3;
-- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithCoder:(id)coder;
+- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TabBarButton
 
 - (NSString)largeContentTitle
 {
-  v2 = self;
-  v3 = [(TabBarButton *)v2 accessibilityLabel];
-  if (v3)
+  selfCopy = self;
+  accessibilityLabel = [(TabBarButton *)selfCopy accessibilityLabel];
+  if (accessibilityLabel)
   {
-    v4 = v3;
+    v4 = accessibilityLabel;
     sub_21DBFA16C();
 
     v5 = sub_21DBFA12C();
@@ -35,12 +35,12 @@
   return v2;
 }
 
-- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = self + OBJC_IVAR____TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton_itemID;
   *v9 = 0u;
@@ -54,7 +54,7 @@
   return [(TTRIQuickBarDragSelectableButton *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithCoder:(id)a3
+- (_TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC15RemindersUICoreP33_F67546AE838D2B2D0B8FE7194B3E29A712TabBarButton_itemID;
@@ -66,8 +66,8 @@
   v7[1] = 0;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(TTRIQuickBarDragSelectableButton *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(TTRIQuickBarDragSelectableButton *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

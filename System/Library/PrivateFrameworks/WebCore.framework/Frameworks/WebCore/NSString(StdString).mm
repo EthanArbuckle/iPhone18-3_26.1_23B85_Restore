@@ -7,11 +7,11 @@
 
 + (void)rtcStdStringForString:()StdString
 {
-  v7 = a1;
-  v3 = [v7 dataUsingEncoding:4];
-  v4 = [v3 bytes];
+  selfCopy = self;
+  v3 = [selfCopy dataUsingEncoding:4];
+  bytes = [v3 bytes];
   v5 = [v3 length];
-  if (!v4 && v5)
+  if (!bytes && v5)
   {
     goto LABEL_15;
   }
@@ -28,7 +28,7 @@
 
   a2[23] = v5;
   v6 = &a2[v5];
-  if (a2 <= v4 && v6 > v4)
+  if (a2 <= bytes && v6 > bytes)
   {
 LABEL_15:
     __break(1u);
@@ -38,7 +38,7 @@ LABEL_15:
   {
     if (v5)
     {
-      memmove(a2, v4, v5);
+      memmove(a2, bytes, v5);
     }
 
     *v6 = 0;

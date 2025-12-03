@@ -1,19 +1,19 @@
 @interface CSEndpointLatencyInfo
-- (CSEndpointLatencyInfo)initWithRequestMHUUID:(id)a3;
-- (void)_emitMHEndpointLatencyInfo:(id)a3 withRequestMHUUID:(id)a4;
-- (void)addPktInfoWithTimestamp:(unint64_t)a3 arrivalTimestamp:(unint64_t)a4 currentMachTime:(unint64_t)a5;
+- (CSEndpointLatencyInfo)initWithRequestMHUUID:(id)d;
+- (void)_emitMHEndpointLatencyInfo:(id)info withRequestMHUUID:(id)d;
+- (void)addPktInfoWithTimestamp:(unint64_t)timestamp arrivalTimestamp:(unint64_t)arrivalTimestamp currentMachTime:(unint64_t)time;
 - (void)report;
 @end
 
 @implementation CSEndpointLatencyInfo
 
-- (void)_emitMHEndpointLatencyInfo:(id)a3 withRequestMHUUID:(id)a4
+- (void)_emitMHEndpointLatencyInfo:(id)info withRequestMHUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [v5 copy];
+    v7 = [infoCopy copy];
     v8 = objc_alloc_init(MHSchemaMHEndpointLatencyInfoReported);
     v9 = [v7 objectForKey:@"FirstPktLatency"];
 
@@ -45,7 +45,7 @@
       [v8 setCoreSpeechTrailingPacketLatency:v19];
     }
 
-    v20 = [CSEndpointLoggingHelper getMHClientEventByMhUUID:v6];
+    v20 = [CSEndpointLoggingHelper getMHClientEventByMhUUID:dCopy];
     [v20 setEndpointLatencyInfoReported:v8];
     v21 = +[AssistantSiriAnalytics sharedStream];
     [v21 emitMessage:v20];
@@ -56,7 +56,7 @@
       v24 = 136315394;
       v25 = "[CSEndpointLatencyInfo _emitMHEndpointLatencyInfo:withRequestMHUUID:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = dCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s Submit MHEndpointLatencyInfoReportedEvent to SELF for MH ID: %@", &v24, 0x16u);
     }
   }
@@ -126,7 +126,7 @@
   }
 }
 
-- (void)addPktInfoWithTimestamp:(unint64_t)a3 arrivalTimestamp:(unint64_t)a4 currentMachTime:(unint64_t)a5
+- (void)addPktInfoWithTimestamp:(unint64_t)timestamp arrivalTimestamp:(unint64_t)arrivalTimestamp currentMachTime:(unint64_t)time
 {
   CSMachAbsoluteTimeGetTimeInterval();
   v10 = v9;
@@ -161,15 +161,15 @@
       v18 = 136315650;
       v19 = "[CSEndpointLatencyInfo addPktInfoWithTimestamp:arrivalTimestamp:currentMachTime:]";
       v20 = 2050;
-      v21 = *&a5;
+      v21 = *&time;
       v22 = 2050;
-      v23 = a3;
+      arrivalTimestampCopy = timestamp;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s Invalid timestamp (currentMachTime: %{public}llu timestamp: %{public}llu)", &v18, 0x20u);
     }
   }
 
   CSMachAbsoluteTimeGetTimeInterval();
-  if (a4 && v15 > 10.0)
+  if (arrivalTimestamp && v15 > 10.0)
   {
     v16 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -177,9 +177,9 @@
       v18 = 136315650;
       v19 = "[CSEndpointLatencyInfo addPktInfoWithTimestamp:arrivalTimestamp:currentMachTime:]";
       v20 = 2050;
-      v21 = *&a5;
+      v21 = *&time;
       v22 = 2050;
-      v23 = a4;
+      arrivalTimestampCopy = arrivalTimestamp;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s Invalid timestamp (currentMachTime: %{public}llu arrivalTimestamp: %{public}llu)", &v18, 0x20u);
     }
   }
@@ -193,15 +193,15 @@
   }
 }
 
-- (CSEndpointLatencyInfo)initWithRequestMHUUID:(id)a3
+- (CSEndpointLatencyInfo)initWithRequestMHUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = CSEndpointLatencyInfo;
   v5 = [(CSEndpointLatencyInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     requestMHUUID = v5->_requestMHUUID;
     v5->_requestMHUUID = v6;
 

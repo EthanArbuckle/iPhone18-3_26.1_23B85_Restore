@@ -1,13 +1,13 @@
 @interface ICToolbarSummaryView
 + (UIFont)subtitleFont;
-+ (id)buttonTitleTextAttributesTransformerWithTextStyle:(id)a3;
-+ (id)iconColorForType:(unint64_t)a3;
-+ (id)lockNowButtonConfigurationForType:(unint64_t)a3;
-+ (id)primaryLabelFontForType:(unint64_t)a3;
-+ (id)secondaryLabelFontForType:(unint64_t)a3;
-+ (id)syncActionButtonConfigurationWithTitle:(id)a3 type:(unint64_t)a4;
++ (id)buttonTitleTextAttributesTransformerWithTextStyle:(id)style;
++ (id)iconColorForType:(unint64_t)type;
++ (id)lockNowButtonConfigurationForType:(unint64_t)type;
++ (id)primaryLabelFontForType:(unint64_t)type;
++ (id)secondaryLabelFontForType:(unint64_t)type;
++ (id)syncActionButtonConfigurationWithTitle:(id)title type:(unint64_t)type;
 - (CGPoint)accessibilityActivationPoint;
-- (ICToolbarSummaryView)initWithFrame:(CGRect)a3 type:(unint64_t)a4;
+- (ICToolbarSummaryView)initWithFrame:(CGRect)frame type:(unint64_t)type;
 - (ICToolbarSummaryViewDelegate)delegate;
 - (NSArray)summaryComponents;
 - (NSString)summary;
@@ -26,13 +26,13 @@
 - (id)accessibilityLabel;
 - (id)buttonElement;
 - (void)checkSubheadingStackViewLayout;
-- (void)dataSourceDataUpdateDidRender:(id)a3;
+- (void)dataSourceDataUpdateDidRender:(id)render;
 - (void)dealloc;
-- (void)enumerateAccessibleSubviewsWithBlock:(id)a3;
+- (void)enumerateAccessibleSubviewsWithBlock:(id)block;
 - (void)layoutSubviews;
 - (void)progressIndicatorTrackerStartAnimation;
 - (void)progressIndicatorTrackerStopAnimation;
-- (void)setAvailableWidth:(double)a3;
+- (void)setAvailableWidth:(double)width;
 - (void)update;
 - (void)updateConstraints;
 - (void)updateSyncActivityIndicator;
@@ -40,22 +40,22 @@
 
 @implementation ICToolbarSummaryView
 
-- (ICToolbarSummaryView)initWithFrame:(CGRect)a3 type:(unint64_t)a4
+- (ICToolbarSummaryView)initWithFrame:(CGRect)frame type:(unint64_t)type
 {
   v45.receiver = self;
   v45.super_class = ICToolbarSummaryView;
-  v5 = [(ICToolbarSummaryView *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(ICToolbarSummaryView *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     v5->_lockNowHidden = 1;
-    v5->_type = a4;
+    v5->_type = type;
     v7 = [[ICICloudProgressIndicatorTracker alloc] initWithDelegate:v5];
     progressIndicatorTracker = v6->_progressIndicatorTracker;
     v6->_progressIndicatorTracker = &v7->super;
 
-    v9 = [(ICToolbarSummaryView *)v6 rootStackView];
-    [(ICToolbarSummaryView *)v6 addSubview:v9];
+    rootStackView = [(ICToolbarSummaryView *)v6 rootStackView];
+    [(ICToolbarSummaryView *)v6 addSubview:rootStackView];
 
     if (_UISolariumEnabled())
     {
@@ -67,45 +67,45 @@
       v10 = 0.0;
     }
 
-    v44 = [(ICToolbarSummaryView *)v6 rootStackView];
-    v43 = [v44 topAnchor];
-    v42 = [(ICToolbarSummaryView *)v6 topAnchor];
-    v11 = [v43 constraintEqualToAnchor:v42 constant:v10];
+    rootStackView2 = [(ICToolbarSummaryView *)v6 rootStackView];
+    topAnchor = [rootStackView2 topAnchor];
+    topAnchor2 = [(ICToolbarSummaryView *)v6 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v10];
     topConstraint = v6->_topConstraint;
     v6->_topConstraint = v11;
 
     v46[0] = v11;
-    v41 = [(ICToolbarSummaryView *)v6 rootStackView];
-    v40 = [v41 bottomAnchor];
-    v39 = [(ICToolbarSummaryView *)v6 bottomAnchor];
-    v13 = [v40 constraintEqualToAnchor:v39 constant:v10];
+    rootStackView3 = [(ICToolbarSummaryView *)v6 rootStackView];
+    bottomAnchor = [rootStackView3 bottomAnchor];
+    bottomAnchor2 = [(ICToolbarSummaryView *)v6 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v10];
     bottomConstraint = v6->_bottomConstraint;
     v6->_bottomConstraint = v13;
 
     v46[1] = v13;
-    v38 = [(ICToolbarSummaryView *)v6 rootStackView];
-    v36 = [v38 leadingAnchor];
-    v37 = [(ICToolbarSummaryView *)v6 safeAreaLayoutGuide];
-    v35 = [v37 leadingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    rootStackView4 = [(ICToolbarSummaryView *)v6 rootStackView];
+    leadingAnchor = [rootStackView4 leadingAnchor];
+    safeAreaLayoutGuide = [(ICToolbarSummaryView *)v6 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v46[2] = v34;
-    v33 = [(ICToolbarSummaryView *)v6 rootStackView];
-    v31 = [v33 trailingAnchor];
-    v32 = [(ICToolbarSummaryView *)v6 safeAreaLayoutGuide];
-    v30 = [v32 trailingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    rootStackView5 = [(ICToolbarSummaryView *)v6 rootStackView];
+    trailingAnchor = [rootStackView5 trailingAnchor];
+    safeAreaLayoutGuide2 = [(ICToolbarSummaryView *)v6 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v46[3] = v29;
-    v28 = [(ICToolbarSummaryView *)v6 activityIndicatorView];
-    v27 = [v28 heightAnchor];
-    v15 = [(ICToolbarSummaryView *)v6 syncTitleLabel];
-    v16 = [v15 heightAnchor];
-    v17 = [v27 constraintEqualToAnchor:v16];
+    activityIndicatorView = [(ICToolbarSummaryView *)v6 activityIndicatorView];
+    heightAnchor = [activityIndicatorView heightAnchor];
+    syncTitleLabel = [(ICToolbarSummaryView *)v6 syncTitleLabel];
+    heightAnchor2 = [syncTitleLabel heightAnchor];
+    v17 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v46[4] = v17;
-    v18 = [(ICToolbarSummaryView *)v6 activityIndicatorView];
-    v19 = [v18 centerYAnchor];
-    v20 = [(ICToolbarSummaryView *)v6 rootStackView];
-    v21 = [v20 centerYAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    activityIndicatorView2 = [(ICToolbarSummaryView *)v6 activityIndicatorView];
+    centerYAnchor = [activityIndicatorView2 centerYAnchor];
+    rootStackView6 = [(ICToolbarSummaryView *)v6 rootStackView];
+    centerYAnchor2 = [rootStackView6 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[5] = v22;
     v23 = [NSArray arrayWithObjects:v46 count:6];
     [NSLayoutConstraint activateConstraints:v23];
@@ -122,19 +122,19 @@
 
 - (void)dealloc
 {
-  v3 = [(ICToolbarSummaryView *)self progressIndicatorTracker];
-  [v3 invalidate];
+  progressIndicatorTracker = [(ICToolbarSummaryView *)self progressIndicatorTracker];
+  [progressIndicatorTracker invalidate];
 
   v4.receiver = self;
   v4.super_class = ICToolbarSummaryView;
   [(ICToolbarSummaryView *)&v4 dealloc];
 }
 
-- (void)setAvailableWidth:(double)a3
+- (void)setAvailableWidth:(double)width
 {
-  if (self->_availableWidth != a3)
+  if (self->_availableWidth != width)
   {
-    self->_availableWidth = a3;
+    self->_availableWidth = width;
     [(ICToolbarSummaryView *)self setNeedsUpdateConstraints];
 
     [(ICToolbarSummaryView *)self checkSubheadingStackViewLayout];
@@ -154,11 +154,11 @@
   v9.receiver = self;
   v9.super_class = ICToolbarSummaryView;
   [(ICToolbarSummaryView *)&v9 updateConstraints];
-  v3 = [(ICToolbarSummaryView *)self isShowingAsFooter];
-  v4 = [(ICToolbarSummaryView *)self topConstraint];
-  v5 = v4;
+  isShowingAsFooter = [(ICToolbarSummaryView *)self isShowingAsFooter];
+  topConstraint = [(ICToolbarSummaryView *)self topConstraint];
+  v5 = topConstraint;
   v6 = 40.0;
-  if (v3)
+  if (isShowingAsFooter)
   {
     v7 = -40.0;
   }
@@ -169,20 +169,20 @@
     v7 = 0.0;
   }
 
-  [v4 setConstant:v6];
+  [topConstraint setConstant:v6];
 
-  v8 = [(ICToolbarSummaryView *)self bottomConstraint];
-  [v8 setConstant:v7];
+  bottomConstraint = [(ICToolbarSummaryView *)self bottomConstraint];
+  [bottomConstraint setConstant:v7];
 }
 
-+ (id)primaryLabelFontForType:(unint64_t)a3
++ (id)primaryLabelFontForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = &UIFontTextStyleHeadline;
   }
 
-  else if (a3 == 3 || a3 == 2)
+  else if (type == 3 || type == 2)
   {
     v3 = &UIFontTextStyleSubheadline;
   }
@@ -200,24 +200,24 @@
   v5 = *v3;
   v6 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:UIContentSizeCategoryMedium];
   v7 = [UIFont preferredFontForTextStyle:v5 compatibleWithTraitCollection:v6];
-  v8 = [v7 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v7 ic_fontWithSingleLineA];
 
-  return v8;
+  return ic_fontWithSingleLineA;
 }
 
 + (UIFont)subtitleFont
 {
   v2 = [UIFont ic_preferredFontForStyle:UIFontTextStyleSubheadline withFontWeight:UIContentSizeCategoryLarge maxContentSizeCategory:UIFontWeightRegular];
-  v3 = [v2 ic_fontWithSingleLineA];
+  ic_fontWithSingleLineA = [v2 ic_fontWithSingleLineA];
 
-  return v3;
+  return ic_fontWithSingleLineA;
 }
 
-+ (id)secondaryLabelFontForType:(unint64_t)a3
++ (id)secondaryLabelFontForType:(unint64_t)type
 {
-  if (a3 - 2 >= 2)
+  if (type - 2 >= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = &UIFontTextStyleSubheadline;
     }
@@ -234,26 +234,26 @@
 
     v6 = *v4;
     v7 = [UIFont preferredFontForTextStyle:v6];
-    v3 = [v7 ic_fontWithSingleLineA];
+    ic_fontWithSingleLineA = [v7 ic_fontWithSingleLineA];
   }
 
   else
   {
-    v3 = [a1 subtitleFont];
+    ic_fontWithSingleLineA = [self subtitleFont];
   }
 
-  return v3;
+  return ic_fontWithSingleLineA;
 }
 
-+ (id)buttonTitleTextAttributesTransformerWithTextStyle:(id)a3
++ (id)buttonTitleTextAttributesTransformerWithTextStyle:(id)style
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B6734;
   v7[3] = &unk_100648378;
-  v8 = a3;
-  v9 = a1;
-  v4 = v8;
+  styleCopy = style;
+  selfCopy = self;
+  v4 = styleCopy;
   v5 = objc_retainBlock(v7);
 
   return v5;
@@ -270,8 +270,8 @@
 
     [(UILabel *)self->_summaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)self->_summaryLabel setAdjustsFontForContentSizeCategory:1];
-    v6 = [(ICToolbarSummaryView *)self summaryComponents];
-    v7 = [v6 count];
+    summaryComponents = [(ICToolbarSummaryView *)self summaryComponents];
+    v7 = [summaryComponents count];
 
     if (v7 >= 2)
     {
@@ -302,7 +302,7 @@
   return summaryLabel;
 }
 
-+ (id)iconColorForType:(unint64_t)a3
++ (id)iconColorForType:(unint64_t)type
 {
   if (_UISolariumEnabled())
   {
@@ -427,11 +427,11 @@
     [(UIButton *)self->_syncActionButton setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v8) = 1148846080;
     [(UIButton *)self->_syncActionButton setContentCompressionResistancePriority:0 forAxis:v8];
-    v9 = [(UIButton *)self->_syncActionButton titleLabel];
-    [v9 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(UIButton *)self->_syncActionButton titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
 
-    v10 = [(UIButton *)self->_syncActionButton titleLabel];
-    [v10 setMaximumContentSizeCategory:UIContentSizeCategoryMedium];
+    titleLabel2 = [(UIButton *)self->_syncActionButton titleLabel];
+    [titleLabel2 setMaximumContentSizeCategory:UIContentSizeCategoryMedium];
 
     [(UIButton *)self->_syncActionButton setShowsLargeContentViewer:1];
     [(UIButton *)self->_syncActionButton setHidden:1];
@@ -444,9 +444,9 @@
   return syncActionButton;
 }
 
-+ (id)syncActionButtonConfigurationWithTitle:(id)a3 type:(unint64_t)a4
++ (id)syncActionButtonConfigurationWithTitle:(id)title type:(unint64_t)type
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = _UISolariumEnabled();
   v7 = &UIFontTextStyleSubheadline;
   if (!v6)
@@ -456,9 +456,9 @@
 
   v8 = *v7;
   v9 = +[UIButtonConfiguration borderlessButtonConfiguration];
-  [v9 setTitle:v5];
+  [v9 setTitle:titleCopy];
 
-  v10 = [a1 buttonTitleTextAttributesTransformerWithTextStyle:v8];
+  v10 = [self buttonTitleTextAttributesTransformerWithTextStyle:v8];
 
   [v9 setTitleTextAttributesTransformer:v10];
   [v9 setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
@@ -488,20 +488,20 @@
   {
     if (_UISolariumEnabled())
     {
-      v4 = [(ICToolbarSummaryView *)self syncStatusIcon];
-      v13[0] = v4;
-      v5 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-      v13[1] = v5;
-      v6 = [(ICToolbarSummaryView *)self syncActionButton];
-      v13[2] = v6;
+      syncStatusIcon = [(ICToolbarSummaryView *)self syncStatusIcon];
+      v13[0] = syncStatusIcon;
+      syncSubtitleLabel = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+      v13[1] = syncSubtitleLabel;
+      syncActionButton = [(ICToolbarSummaryView *)self syncActionButton];
+      v13[2] = syncActionButton;
       v7 = [NSArray arrayWithObjects:v13 count:3];
     }
 
     else
     {
-      v4 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-      v5 = [(ICToolbarSummaryView *)self syncActionButton];
-      v12[1] = v5;
+      syncStatusIcon = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+      syncSubtitleLabel = [(ICToolbarSummaryView *)self syncActionButton];
+      v12[1] = syncSubtitleLabel;
       v7 = [NSArray arrayWithObjects:v12 count:2];
     }
 
@@ -570,11 +570,11 @@
     self->_lockNowButton = v6;
 
     [(UIButton *)self->_lockNowButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(UIButton *)self->_lockNowButton titleLabel];
-    [v8 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(UIButton *)self->_lockNowButton titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
 
-    v9 = [(UIButton *)self->_lockNowButton titleLabel];
-    [v9 setMaximumContentSizeCategory:UIContentSizeCategoryMedium];
+    titleLabel2 = [(UIButton *)self->_lockNowButton titleLabel];
+    [titleLabel2 setMaximumContentSizeCategory:UIContentSizeCategoryMedium];
 
     [(UIButton *)self->_lockNowButton setShowsLargeContentViewer:1];
     [(UIButton *)self->_lockNowButton setHidden:1];
@@ -591,10 +591,10 @@
   return lockNowButton;
 }
 
-+ (id)lockNowButtonConfigurationForType:(unint64_t)a3
++ (id)lockNowButtonConfigurationForType:(unint64_t)type
 {
-  v5 = a3 - 1;
-  if (a3 - 1 > 2)
+  v5 = type - 1;
+  if (type - 1 > 2)
   {
     v7 = 0;
     v6 = &UIFontTextStyleCaption2;
@@ -614,13 +614,13 @@
   v12 = [v11 localizedStringForKey:@"Lock Now" value:&stru_100661CF0 table:0];
   [v10 setTitle:v12];
 
-  v13 = [a1 buttonTitleTextAttributesTransformerWithTextStyle:v9];
+  v13 = [self buttonTitleTextAttributesTransformerWithTextStyle:v9];
   [v10 setTitleTextAttributesTransformer:v13];
 
   v14 = [UIImage systemImageNamed:@"lock.open.fill"];
   [v10 setImage:v14];
 
-  v15 = [a1 primaryLabelFontForType:a3];
+  v15 = [self primaryLabelFontForType:type];
   v16 = [UIImageSymbolConfiguration configurationWithFont:v15 scale:1];
   [v10 setPreferredSymbolConfigurationForImage:v16];
 
@@ -645,32 +645,32 @@
   {
     if (_UISolariumEnabled() && [(ICToolbarSummaryView *)self type]== 3)
     {
-      v4 = [(ICToolbarSummaryView *)self activityIndicatorView];
-      v15[0] = v4;
-      v5 = [(ICToolbarSummaryView *)self summaryLabel];
-      v15[1] = v5;
-      v6 = [(ICToolbarSummaryView *)self syncTitleLabel];
-      v15[2] = v6;
-      v7 = [(ICToolbarSummaryView *)self subheadingStackView];
-      v15[3] = v7;
-      v8 = [(ICToolbarSummaryView *)self lockNowButton];
-      v15[4] = v8;
+      activityIndicatorView = [(ICToolbarSummaryView *)self activityIndicatorView];
+      v15[0] = activityIndicatorView;
+      summaryLabel = [(ICToolbarSummaryView *)self summaryLabel];
+      v15[1] = summaryLabel;
+      syncTitleLabel = [(ICToolbarSummaryView *)self syncTitleLabel];
+      v15[2] = syncTitleLabel;
+      subheadingStackView = [(ICToolbarSummaryView *)self subheadingStackView];
+      v15[3] = subheadingStackView;
+      lockNowButton = [(ICToolbarSummaryView *)self lockNowButton];
+      v15[4] = lockNowButton;
       v9 = [NSArray arrayWithObjects:v15 count:5];
     }
 
     else
     {
-      v4 = [(ICToolbarSummaryView *)self activityIndicatorView];
-      v5 = [(ICToolbarSummaryView *)self summaryLabel];
-      v14[1] = v5;
-      v6 = [(ICToolbarSummaryView *)self syncTitleLabel];
-      v14[2] = v6;
-      v7 = [(ICToolbarSummaryView *)self subheadingStackView];
-      v14[3] = v7;
-      v8 = [(ICToolbarSummaryView *)self lockNowButton];
-      v14[4] = v8;
-      v10 = [(ICToolbarSummaryView *)self spacerView];
-      v14[5] = v10;
+      activityIndicatorView = [(ICToolbarSummaryView *)self activityIndicatorView];
+      summaryLabel = [(ICToolbarSummaryView *)self summaryLabel];
+      v14[1] = summaryLabel;
+      syncTitleLabel = [(ICToolbarSummaryView *)self syncTitleLabel];
+      v14[2] = syncTitleLabel;
+      subheadingStackView = [(ICToolbarSummaryView *)self subheadingStackView];
+      v14[3] = subheadingStackView;
+      lockNowButton = [(ICToolbarSummaryView *)self lockNowButton];
+      v14[4] = lockNowButton;
+      spacerView = [(ICToolbarSummaryView *)self spacerView];
+      v14[5] = spacerView;
       v9 = [NSArray arrayWithObjects:v14 count:6];
     }
 
@@ -711,8 +711,8 @@
 
 - (void)checkSubheadingStackViewLayout
 {
-  v24 = [(ICToolbarSummaryView *)self subheadingStackView];
-  if ([v24 axis])
+  subheadingStackView = [(ICToolbarSummaryView *)self subheadingStackView];
+  if ([subheadingStackView axis])
   {
 LABEL_2:
 
@@ -729,25 +729,25 @@ LABEL_2:
     return;
   }
 
-  v7 = [(ICToolbarSummaryView *)self syncStatusIcon];
-  v8 = [v7 isHidden];
+  syncStatusIcon = [(ICToolbarSummaryView *)self syncStatusIcon];
+  isHidden = [syncStatusIcon isHidden];
 
   v9 = 0.0;
-  if ((v8 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v10 = [(ICToolbarSummaryView *)self syncStatusIcon];
-    [v10 intrinsicContentSize];
+    syncStatusIcon2 = [(ICToolbarSummaryView *)self syncStatusIcon];
+    [syncStatusIcon2 intrinsicContentSize];
     v12 = v11 + 0.0;
 
     v9 = v12 + 6.0;
   }
 
-  v13 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-  [v13 intrinsicContentSize];
+  syncSubtitleLabel = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+  [syncSubtitleLabel intrinsicContentSize];
   v15 = v9 + v14;
 
-  v16 = [(ICToolbarSummaryView *)self syncActionButton];
-  [v16 intrinsicContentSize];
+  syncActionButton = [(ICToolbarSummaryView *)self syncActionButton];
+  [syncActionButton intrinsicContentSize];
   v18 = v15 + v17;
 
   [(ICToolbarSummaryView *)self availableWidth];
@@ -761,15 +761,15 @@ LABEL_2:
   if (v18 > v20)
   {
     [(ICToolbarSummaryView *)self setShouldHideSyncActionButtonDueToCompressedSpace:1];
-    if ((v8 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v22 = [(ICToolbarSummaryView *)self syncStatusIcon];
-      [v22 intrinsicContentSize];
+      syncStatusIcon3 = [(ICToolbarSummaryView *)self syncStatusIcon];
+      [syncStatusIcon3 intrinsicContentSize];
       v20 = v20 - (v23 + 6.0);
     }
 
-    v24 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-    [v24 setPreferredMaxLayoutWidth:v20];
+    subheadingStackView = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+    [subheadingStackView setPreferredMaxLayoutWidth:v20];
     goto LABEL_2;
   }
 
@@ -817,14 +817,14 @@ LABEL_2:
 
 - (NSString)summary
 {
-  v3 = [(ICToolbarSummaryView *)self delegate];
-  if ([v3 isSearchActiveWithQuery])
+  delegate = [(ICToolbarSummaryView *)self delegate];
+  if ([delegate isSearchActiveWithQuery])
   {
-    v4 = [(ICToolbarSummaryView *)self searchSummaryString];
+    searchSummaryString = [(ICToolbarSummaryView *)self searchSummaryString];
 
-    if (v4)
+    if (searchSummaryString)
     {
-      v5 = [(ICToolbarSummaryView *)self searchSummaryString];
+      searchSummaryString2 = [(ICToolbarSummaryView *)self searchSummaryString];
       goto LABEL_6;
     }
   }
@@ -833,24 +833,24 @@ LABEL_2:
   {
   }
 
-  v6 = [(ICToolbarSummaryView *)self summaryComponents];
-  v5 = [v6 componentsJoinedByString:@" · "];
+  summaryComponents = [(ICToolbarSummaryView *)self summaryComponents];
+  searchSummaryString2 = [summaryComponents componentsJoinedByString:@" · "];
 
 LABEL_6:
 
-  return v5;
+  return searchSummaryString2;
 }
 
 - (NSString)summaryAccessibilityLabel
 {
-  v3 = [(ICToolbarSummaryView *)self delegate];
-  if ([v3 isSearchActiveWithQuery])
+  delegate = [(ICToolbarSummaryView *)self delegate];
+  if ([delegate isSearchActiveWithQuery])
   {
-    v4 = [(ICToolbarSummaryView *)self searchSummaryString];
+    searchSummaryString = [(ICToolbarSummaryView *)self searchSummaryString];
 
-    if (v4)
+    if (searchSummaryString)
     {
-      v5 = [(ICToolbarSummaryView *)self searchSummaryString];
+      searchSummaryString2 = [(ICToolbarSummaryView *)self searchSummaryString];
       goto LABEL_6;
     }
   }
@@ -859,12 +859,12 @@ LABEL_6:
   {
   }
 
-  v6 = [(ICToolbarSummaryView *)self summaryComponents];
-  v5 = [v6 componentsJoinedByString:{@", "}];
+  summaryComponents = [(ICToolbarSummaryView *)self summaryComponents];
+  searchSummaryString2 = [summaryComponents componentsJoinedByString:{@", "}];
 
 LABEL_6:
 
-  return v5;
+  return searchSummaryString2;
 }
 
 - (void)update
@@ -872,203 +872,203 @@ LABEL_6:
   [(ICToolbarSummaryView *)self setNeedsUpdateConstraints];
   [(ICToolbarSummaryView *)self updateConstraintsIfNeeded];
   v3 = _UISolariumEnabled();
-  v4 = [(ICToolbarSummaryView *)self type];
-  v5 = [(ICToolbarSummaryView *)self type];
-  v6 = v5 == 3;
+  type = [(ICToolbarSummaryView *)self type];
+  type2 = [(ICToolbarSummaryView *)self type];
+  v6 = type2 == 3;
   v7 = +[UIDevice ic_isiPad];
-  v8 = [(ICToolbarSummaryView *)self summaryLabel];
-  [v8 setHidden:0];
+  summaryLabel = [(ICToolbarSummaryView *)self summaryLabel];
+  [summaryLabel setHidden:0];
 
-  v9 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-  [v9 setHidden:0];
+  syncSubtitleLabel = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+  [syncSubtitleLabel setHidden:0];
 
   v10 = [objc_opt_class() primaryLabelFontForType:{-[ICToolbarSummaryView type](self, "type")}];
-  v11 = [(ICToolbarSummaryView *)self summaryLabel];
-  [v11 setFont:v10];
+  summaryLabel2 = [(ICToolbarSummaryView *)self summaryLabel];
+  [summaryLabel2 setFont:v10];
 
-  v12 = [(ICToolbarSummaryView *)self delegate];
-  LOBYTE(v11) = [v12 isSearchActive];
+  delegate = [(ICToolbarSummaryView *)self delegate];
+  LOBYTE(summaryLabel2) = [delegate isSearchActive];
 
-  if ((v11 & 1) == 0)
+  if ((summaryLabel2 & 1) == 0)
   {
     [(ICToolbarSummaryView *)self setSearchSummaryString:0];
   }
 
   if (![(ICToolbarSummaryView *)self isLockNowHidden]|| ([(ICToolbarSummaryView *)self syncMessage], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
-    v31 = [(ICToolbarSummaryView *)self rootStackView];
-    v32 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v31 setCustomSpacing:v32 afterView:0.0];
+    rootStackView = [(ICToolbarSummaryView *)self rootStackView];
+    summaryLabel3 = [(ICToolbarSummaryView *)self summaryLabel];
+    [rootStackView setCustomSpacing:summaryLabel3 afterView:0.0];
 
-    v33 = [(ICToolbarSummaryView *)self rootStackView];
-    v34 = [(ICToolbarSummaryView *)self activityIndicatorView];
-    [v33 setCustomSpacing:v34 afterView:4.0];
+    rootStackView2 = [(ICToolbarSummaryView *)self rootStackView];
+    activityIndicatorView = [(ICToolbarSummaryView *)self activityIndicatorView];
+    [rootStackView2 setCustomSpacing:activityIndicatorView afterView:4.0];
 
-    v35 = [(ICToolbarSummaryView *)self summary];
-    v36 = v35;
-    if (v3 && [v35 length] && !-[ICToolbarSummaryView isLockNowHidden](self, "isLockNowHidden"))
+    summary = [(ICToolbarSummaryView *)self summary];
+    v36 = summary;
+    if (v3 && [summary length] && !-[ICToolbarSummaryView isLockNowHidden](self, "isLockNowHidden"))
     {
       v52 = [NSString stringWithFormat:@"%@ · ", v36];
-      v53 = [(ICToolbarSummaryView *)self summaryLabel];
-      [v53 setText:v52];
+      summaryLabel4 = [(ICToolbarSummaryView *)self summaryLabel];
+      [summaryLabel4 setText:v52];
 
-      v37 = [(ICToolbarSummaryView *)self summaryLabel];
-      [v37 setLargeContentTitle:v36];
+      summaryLabel5 = [(ICToolbarSummaryView *)self summaryLabel];
+      [summaryLabel5 setLargeContentTitle:v36];
     }
 
     else
     {
-      v37 = [(ICToolbarSummaryView *)self summaryLabel];
-      [v37 setText:v36];
+      summaryLabel5 = [(ICToolbarSummaryView *)self summaryLabel];
+      [summaryLabel5 setText:v36];
       v6 = 0;
     }
 
-    v38 = [(ICToolbarSummaryView *)self summaryAccessibilityLabel];
-    v39 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v39 setAccessibilityLabel:v38];
+    summaryAccessibilityLabel = [(ICToolbarSummaryView *)self summaryAccessibilityLabel];
+    summaryLabel6 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel6 setAccessibilityLabel:summaryAccessibilityLabel];
 
-    v40 = [(ICToolbarSummaryView *)self activityIndicatorView];
-    [v40 setHidden:0];
+    activityIndicatorView2 = [(ICToolbarSummaryView *)self activityIndicatorView];
+    [activityIndicatorView2 setHidden:0];
 
-    v41 = [(ICToolbarSummaryView *)self syncTitleLabel];
-    [v41 setHidden:1];
+    syncTitleLabel = [(ICToolbarSummaryView *)self syncTitleLabel];
+    [syncTitleLabel setHidden:1];
 
-    v42 = [(ICToolbarSummaryView *)self subheadingStackView];
-    [v42 setHidden:1];
+    subheadingStackView = [(ICToolbarSummaryView *)self subheadingStackView];
+    [subheadingStackView setHidden:1];
 
-    v43 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v43 setHidden:v6];
+    summaryLabel7 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel7 setHidden:v6];
 
     v44 = [objc_opt_class() lockNowButtonConfigurationForType:{-[ICToolbarSummaryView type](self, "type")}];
-    v45 = [(ICToolbarSummaryView *)self lockNowButton];
-    [v45 setConfiguration:v44];
+    lockNowButton = [(ICToolbarSummaryView *)self lockNowButton];
+    [lockNowButton setConfiguration:v44];
 
-    v46 = [(ICToolbarSummaryView *)self lockNowButton];
-    v47 = [v46 titleLabel];
-    [v47 setNumberOfLines:1];
+    lockNowButton2 = [(ICToolbarSummaryView *)self lockNowButton];
+    titleLabel = [lockNowButton2 titleLabel];
+    [titleLabel setNumberOfLines:1];
 
-    v48 = [(ICToolbarSummaryView *)self isLockNowHidden];
-    v49 = [(ICToolbarSummaryView *)self lockNowButton];
-    [v49 setHidden:v48];
+    isLockNowHidden = [(ICToolbarSummaryView *)self isLockNowHidden];
+    lockNowButton3 = [(ICToolbarSummaryView *)self lockNowButton];
+    [lockNowButton3 setHidden:isLockNowHidden];
     goto LABEL_49;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
-    v14 = [(ICToolbarSummaryView *)self rootStackView];
-    v15 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v14 setCustomSpacing:v15 afterView:4.0];
+    rootStackView3 = [(ICToolbarSummaryView *)self rootStackView];
+    summaryLabel8 = [(ICToolbarSummaryView *)self summaryLabel];
+    [rootStackView3 setCustomSpacing:summaryLabel8 afterView:4.0];
 
-    v16 = [(ICToolbarSummaryView *)self rootStackView];
-    v17 = [(ICToolbarSummaryView *)self activityIndicatorView];
-    [v16 setCustomSpacing:v17 afterView:0.0];
+    rootStackView4 = [(ICToolbarSummaryView *)self rootStackView];
+    activityIndicatorView3 = [(ICToolbarSummaryView *)self activityIndicatorView];
+    [rootStackView4 setCustomSpacing:activityIndicatorView3 afterView:0.0];
 
-    v18 = [(ICToolbarSummaryView *)self summary];
-    v19 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v19 setText:v18];
+    summary2 = [(ICToolbarSummaryView *)self summary];
+    summaryLabel9 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel9 setText:summary2];
 
-    v20 = [(ICToolbarSummaryView *)self summaryAccessibilityLabel];
-    v21 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v21 setAccessibilityLabel:v20];
+    summaryAccessibilityLabel2 = [(ICToolbarSummaryView *)self summaryAccessibilityLabel];
+    summaryLabel10 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel10 setAccessibilityLabel:summaryAccessibilityLabel2];
 
-    v22 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v22 setHidden:0];
+    summaryLabel11 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel11 setHidden:0];
 
     v23 = [objc_opt_class() secondaryLabelFontForType:{-[ICToolbarSummaryView type](self, "type")}];
-    v24 = [(ICToolbarSummaryView *)self syncTitleLabel];
-    [v24 setFont:v23];
+    syncTitleLabel2 = [(ICToolbarSummaryView *)self syncTitleLabel];
+    [syncTitleLabel2 setFont:v23];
 
-    v25 = [(ICToolbarSummaryView *)self syncMessage];
-    v26 = [v25 title];
-    v27 = [(ICToolbarSummaryView *)self syncTitleLabel];
-    [v27 setText:v26];
+    syncMessage = [(ICToolbarSummaryView *)self syncMessage];
+    title = [syncMessage title];
+    syncTitleLabel3 = [(ICToolbarSummaryView *)self syncTitleLabel];
+    [syncTitleLabel3 setText:title];
 
-    v28 = [(ICToolbarSummaryView *)self syncTitleLabel];
-    v29 = v28;
+    syncTitleLabel4 = [(ICToolbarSummaryView *)self syncTitleLabel];
+    v29 = syncTitleLabel4;
     v30 = 0;
   }
 
   else if (v3)
   {
-    v50 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v50 setHidden:1];
+    summaryLabel12 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel12 setHidden:1];
 
-    v51 = [(ICToolbarSummaryView *)self syncTitleLabel];
-    [v51 setHidden:1];
+    syncTitleLabel5 = [(ICToolbarSummaryView *)self syncTitleLabel];
+    [syncTitleLabel5 setHidden:1];
 
-    v28 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-    v29 = v28;
-    v30 = (v5 == 3) & (v7 ^ 1);
+    syncTitleLabel4 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+    v29 = syncTitleLabel4;
+    v30 = (type2 == 3) & (v7 ^ 1);
   }
 
   else
   {
-    v54 = [(ICToolbarSummaryView *)self rootStackView];
-    v55 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v54 setCustomSpacing:v55 afterView:0.0];
+    rootStackView5 = [(ICToolbarSummaryView *)self rootStackView];
+    summaryLabel13 = [(ICToolbarSummaryView *)self summaryLabel];
+    [rootStackView5 setCustomSpacing:summaryLabel13 afterView:0.0];
 
-    v56 = [(ICToolbarSummaryView *)self syncMessage];
-    v57 = [v56 title];
-    v58 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v58 setText:v57];
+    syncMessage2 = [(ICToolbarSummaryView *)self syncMessage];
+    title2 = [syncMessage2 title];
+    summaryLabel14 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel14 setText:title2];
 
-    v59 = [(ICToolbarSummaryView *)self syncMessage];
-    v60 = [v59 title];
-    v61 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v61 setAccessibilityLabel:v60];
+    syncMessage3 = [(ICToolbarSummaryView *)self syncMessage];
+    title3 = [syncMessage3 title];
+    summaryLabel15 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel15 setAccessibilityLabel:title3];
 
-    v28 = [(ICToolbarSummaryView *)self syncTitleLabel];
-    v29 = v28;
+    syncTitleLabel4 = [(ICToolbarSummaryView *)self syncTitleLabel];
+    v29 = syncTitleLabel4;
     v30 = 1;
   }
 
-  [v28 setHidden:v30];
+  [syncTitleLabel4 setHidden:v30];
 
-  v62 = [(ICToolbarSummaryView *)self summaryLabel];
-  v63 = [v62 isHidden];
+  summaryLabel16 = [(ICToolbarSummaryView *)self summaryLabel];
+  isHidden = [summaryLabel16 isHidden];
 
-  if ((v63 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v64 = [(ICToolbarSummaryView *)self summaryLabel];
-    v65 = [v64 text];
-    v66 = [v65 length] == 0;
-    v67 = [(ICToolbarSummaryView *)self summaryLabel];
-    [v67 setHidden:v66];
+    summaryLabel17 = [(ICToolbarSummaryView *)self summaryLabel];
+    text = [summaryLabel17 text];
+    v66 = [text length] == 0;
+    summaryLabel18 = [(ICToolbarSummaryView *)self summaryLabel];
+    [summaryLabel18 setHidden:v66];
   }
 
-  v68 = [(ICToolbarSummaryView *)self shouldHideSyncActionButtonDueToCompressedSpace];
+  shouldHideSyncActionButtonDueToCompressedSpace = [(ICToolbarSummaryView *)self shouldHideSyncActionButtonDueToCompressedSpace];
   if (([(ICToolbarSummaryView *)self type]!= 3) | v7 & 1)
   {
-    v69 = v68 ^ 1;
+    v69 = shouldHideSyncActionButtonDueToCompressedSpace ^ 1;
   }
 
   else
   {
-    v70 = [(ICToolbarSummaryView *)self syncMessage];
-    v71 = [v70 reason];
+    syncMessage4 = [(ICToolbarSummaryView *)self syncMessage];
+    reason = [syncMessage4 reason];
     v73 = sub_1004E9EA8(v72);
     if (([v75 isEqual:{**(v74 + 16), v73}] & 1) == 0)
     {
       v77 = sub_1004E9E60(v76);
-      if (([v71 isEqual:{**v78, v77}] & 1) == 0)
+      if (([reason isEqual:{**v78, v77}] & 1) == 0)
       {
         v80 = sub_1004E9E84(v79);
-        if (([v71 isEqual:{**(v81 + 8), v80}] & 1) == 0)
+        if (([reason isEqual:{**(v81 + 8), v80}] & 1) == 0)
         {
           v134 = sub_1004E9DF4(v82);
-          if (([v71 isEqual:{**(v135 + 4072), v134}] & 1) == 0)
+          if (([reason isEqual:{**(v135 + 4072), v134}] & 1) == 0)
           {
             v137 = sub_1004E9E3C(v136);
-            if (([v71 isEqual:{**(v138 + 4088), v137}] & 1) == 0)
+            if (([reason isEqual:{**(v138 + 4088), v137}] & 1) == 0)
             {
               v139 = os_log_create("com.apple.notes", "UI");
               if (os_log_type_enabled(v139, OS_LOG_TYPE_DEFAULT))
               {
-                v140 = [v70 title];
+                title4 = [syncMessage4 title];
                 *buf = 138412546;
-                v142 = v71;
+                v142 = reason;
                 v143 = 2112;
-                v144 = v140;
+                v144 = title4;
                 _os_log_impl(&_mh_execute_header, v139, OS_LOG_TYPE_DEFAULT, "ic_titleWantsDisplayInTopScrolledHeader: Didn't special case %@ (%@). Is this intentional?", buf, 0x16u);
               }
             }
@@ -1087,48 +1087,48 @@ LABEL_6:
 
   if ([(ICToolbarSummaryView *)self type]== 2)
   {
-    v83 = [(ICToolbarSummaryView *)self syncMessage];
-    v84 = [v83 title];
+    syncMessage5 = [(ICToolbarSummaryView *)self syncMessage];
+    title5 = [syncMessage5 title];
   }
 
   else
   {
-    v85 = [(ICToolbarSummaryView *)self type];
-    v86 = [(ICToolbarSummaryView *)self syncMessage];
-    v83 = v86;
-    if (v85 == 3)
+    type3 = [(ICToolbarSummaryView *)self type];
+    syncMessage6 = [(ICToolbarSummaryView *)self syncMessage];
+    syncMessage5 = syncMessage6;
+    if (type3 == 3)
     {
-      [v86 conciseTitle];
+      [syncMessage6 conciseTitle];
     }
 
     else
     {
-      [v86 subTitle];
+      [syncMessage6 subTitle];
     }
-    v84 = ;
+    title5 = ;
   }
 
-  v36 = v84;
+  v36 = title5;
 
   v87 = 0;
 LABEL_31:
-  v88 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-  [v88 setHidden:v36 == 0];
+  syncSubtitleLabel2 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+  [syncSubtitleLabel2 setHidden:v36 == 0];
 
   v89 = [objc_opt_class() secondaryLabelFontForType:{-[ICToolbarSummaryView type](self, "type")}];
-  v90 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-  [v90 setFont:v89];
+  syncSubtitleLabel3 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+  [syncSubtitleLabel3 setFont:v89];
 
-  v91 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-  [v91 setText:v36];
+  syncSubtitleLabel4 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+  [syncSubtitleLabel4 setText:v36];
 
-  v92 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-  [v92 setAccessibilityLabel:v36];
+  syncSubtitleLabel5 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+  [syncSubtitleLabel5 setAccessibilityLabel:v36];
 
-  v93 = [(ICToolbarSummaryView *)self syncMessage];
-  v49 = [v93 sfSymbolName];
+  syncMessage7 = [(ICToolbarSummaryView *)self syncMessage];
+  lockNowButton3 = [syncMessage7 sfSymbolName];
 
-  if ((v87 & 1) != 0 || !v49)
+  if ((v87 & 1) != 0 || !lockNowButton3)
   {
     goto LABEL_37;
   }
@@ -1140,23 +1140,23 @@ LABEL_31:
     v95 = &UIFontTextStyleHeadline;
   }
 
-  v96 = [UIImage ic_systemImageNamed:v49 textStyle:*v95 scale:2];
+  v96 = [UIImage ic_systemImageNamed:lockNowButton3 textStyle:*v95 scale:2];
   if (v96)
   {
-    v97 = v96;
-    v98 = [(ICToolbarSummaryView *)self syncStatusIcon];
-    [v98 setImage:v97];
+    subheadingStackView4 = v96;
+    syncStatusIcon = [(ICToolbarSummaryView *)self syncStatusIcon];
+    [syncStatusIcon setImage:subheadingStackView4];
 
     v99 = [objc_opt_class() iconColorForType:{-[ICToolbarSummaryView type](self, "type")}];
-    v100 = [(ICToolbarSummaryView *)self syncStatusIcon];
-    [v100 setTintColor:v99];
+    syncStatusIcon2 = [(ICToolbarSummaryView *)self syncStatusIcon];
+    [syncStatusIcon2 setTintColor:v99];
 
-    v101 = [(ICToolbarSummaryView *)self subheadingStackView];
-    [v101 setAxis:0];
+    subheadingStackView2 = [(ICToolbarSummaryView *)self subheadingStackView];
+    [subheadingStackView2 setAxis:0];
 
-    v102 = [(ICToolbarSummaryView *)self subheadingStackView];
-    v103 = [(ICToolbarSummaryView *)self syncStatusIcon];
-    [v102 setCustomSpacing:v103 afterView:6.0];
+    subheadingStackView3 = [(ICToolbarSummaryView *)self subheadingStackView];
+    syncStatusIcon3 = [(ICToolbarSummaryView *)self syncStatusIcon];
+    [subheadingStackView3 setCustomSpacing:syncStatusIcon3 afterView:6.0];
 
     v104 = 1;
   }
@@ -1164,70 +1164,70 @@ LABEL_31:
   else
   {
 LABEL_37:
-    v97 = [(ICToolbarSummaryView *)self subheadingStackView];
-    v102 = [(ICToolbarSummaryView *)self syncStatusIcon];
-    [v97 setCustomSpacing:v102 afterView:0.0];
+    subheadingStackView4 = [(ICToolbarSummaryView *)self subheadingStackView];
+    subheadingStackView3 = [(ICToolbarSummaryView *)self syncStatusIcon];
+    [subheadingStackView4 setCustomSpacing:subheadingStackView3 afterView:0.0];
     v104 = 0;
   }
 
-  v105 = [(ICToolbarSummaryView *)self syncStatusIcon];
-  [v105 setHidden:v104 ^ 1];
+  syncStatusIcon4 = [(ICToolbarSummaryView *)self syncStatusIcon];
+  [syncStatusIcon4 setHidden:v104 ^ 1];
 
-  v106 = [(ICToolbarSummaryView *)self activityIndicatorView];
-  [v106 setHidden:v104];
+  activityIndicatorView4 = [(ICToolbarSummaryView *)self activityIndicatorView];
+  [activityIndicatorView4 setHidden:v104];
 
-  v107 = [(ICToolbarSummaryView *)self syncMessage];
-  v108 = [v107 actions];
-  v109 = [v108 firstObject];
+  syncMessage8 = [(ICToolbarSummaryView *)self syncMessage];
+  actions = [syncMessage8 actions];
+  firstObject = [actions firstObject];
 
-  if (((v109 != 0) & v69) == 1)
+  if (((firstObject != 0) & v69) == 1)
   {
-    v110 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-    [v110 setNumberOfLines:1];
+    syncSubtitleLabel6 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+    [syncSubtitleLabel6 setNumberOfLines:1];
 
-    v111 = [v109 title];
-    v112 = [objc_opt_class() syncActionButtonConfigurationWithTitle:v111 type:{-[ICToolbarSummaryView type](self, "type")}];
-    v113 = [(ICToolbarSummaryView *)self syncActionButton];
-    [v113 setConfiguration:v112];
+    title6 = [firstObject title];
+    v112 = [objc_opt_class() syncActionButtonConfigurationWithTitle:title6 type:{-[ICToolbarSummaryView type](self, "type")}];
+    syncActionButton = [(ICToolbarSummaryView *)self syncActionButton];
+    [syncActionButton setConfiguration:v112];
 
-    v114 = [(ICToolbarSummaryView *)self syncActionButton];
-    v115 = [v114 titleLabel];
-    [v115 setNumberOfLines:1];
+    syncActionButton2 = [(ICToolbarSummaryView *)self syncActionButton];
+    titleLabel2 = [syncActionButton2 titleLabel];
+    [titleLabel2 setNumberOfLines:1];
 
-    v116 = [(ICToolbarSummaryView *)self syncActionButton];
-    [v116 setHidden:0];
+    syncActionButton3 = [(ICToolbarSummaryView *)self syncActionButton];
+    [syncActionButton3 setHidden:0];
 
-    v117 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-    [v117 intrinsicContentSize];
+    syncSubtitleLabel7 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+    [syncSubtitleLabel7 intrinsicContentSize];
     v119 = v118;
-    v120 = [(ICToolbarSummaryView *)self syncActionButton];
-    [v120 intrinsicContentSize];
+    syncActionButton4 = [(ICToolbarSummaryView *)self syncActionButton];
+    [syncActionButton4 intrinsicContentSize];
     v122 = v121;
 
     if ((v3 & 1) != 0 || ([(ICToolbarSummaryView *)self availableWidth], v119 + v122 <= v123 + -42.0))
     {
       v128 = [NSString stringWithFormat:@"%@ · ", v36];
-      v129 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-      [v129 setText:v128];
+      syncSubtitleLabel8 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+      [syncSubtitleLabel8 setText:v128];
 
-      v130 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-      [v130 setLargeContentTitle:v36];
+      syncSubtitleLabel9 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+      [syncSubtitleLabel9 setLargeContentTitle:v36];
 
-      v131 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-      [v131 setAccessibilityLabel:v36];
+      syncSubtitleLabel10 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+      [syncSubtitleLabel10 setAccessibilityLabel:v36];
 
-      v125 = [(ICToolbarSummaryView *)self subheadingStackView];
-      [v125 setAxis:0];
+      subheadingStackView5 = [(ICToolbarSummaryView *)self subheadingStackView];
+      [subheadingStackView5 setAxis:0];
     }
 
     else
     {
-      v124 = [(ICToolbarSummaryView *)self subheadingStackView];
-      [v124 setAxis:1];
+      subheadingStackView6 = [(ICToolbarSummaryView *)self subheadingStackView];
+      [subheadingStackView6 setAxis:1];
 
-      v125 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+      subheadingStackView5 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
       [(ICToolbarSummaryView *)self availableWidth];
-      [v125 setPreferredMaxLayoutWidth:?];
+      [subheadingStackView5 setPreferredMaxLayoutWidth:?];
     }
   }
 
@@ -1243,18 +1243,18 @@ LABEL_37:
       v126 = 2;
     }
 
-    v127 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
-    [v127 setNumberOfLines:v126];
+    syncSubtitleLabel11 = [(ICToolbarSummaryView *)self syncSubtitleLabel];
+    [syncSubtitleLabel11 setNumberOfLines:v126];
 
-    v111 = [(ICToolbarSummaryView *)self syncActionButton];
-    [v111 setHidden:1];
+    title6 = [(ICToolbarSummaryView *)self syncActionButton];
+    [title6 setHidden:1];
   }
 
-  v132 = [(ICToolbarSummaryView *)self subheadingStackView];
-  [v132 setHidden:0];
+  subheadingStackView7 = [(ICToolbarSummaryView *)self subheadingStackView];
+  [subheadingStackView7 setHidden:0];
 
-  v133 = [(ICToolbarSummaryView *)self lockNowButton];
-  [v133 setHidden:1];
+  lockNowButton4 = [(ICToolbarSummaryView *)self lockNowButton];
+  [lockNowButton4 setHidden:1];
 
   [(ICToolbarSummaryView *)self checkSubheadingStackViewLayout];
 LABEL_49:
@@ -1266,30 +1266,30 @@ LABEL_49:
 {
   if ([(ICToolbarSummaryView *)self isSyncActivityVisible]&& [(ICToolbarSummaryView *)self shouldAnimateSpinner])
   {
-    v3 = [(ICToolbarSummaryView *)self activityIndicatorView];
+    activityIndicatorView = [(ICToolbarSummaryView *)self activityIndicatorView];
     [(ICToolbarSummaryView *)self frame];
-    [v3 sizeThatFits:{v4, v5}];
+    [activityIndicatorView sizeThatFits:{v4, v5}];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(ICToolbarSummaryView *)self activityIndicatorView];
-    [v10 setFrame:{0.0, 0.0, v7, v9}];
+    activityIndicatorView2 = [(ICToolbarSummaryView *)self activityIndicatorView];
+    [activityIndicatorView2 setFrame:{0.0, 0.0, v7, v9}];
 
-    v11 = [(ICToolbarSummaryView *)self activityIndicatorView];
-    [v11 startAnimating];
+    activityIndicatorView3 = [(ICToolbarSummaryView *)self activityIndicatorView];
+    [activityIndicatorView3 startAnimating];
   }
 
   else
   {
-    v11 = [(ICToolbarSummaryView *)self activityIndicatorView];
-    [v11 stopAnimating];
+    activityIndicatorView3 = [(ICToolbarSummaryView *)self activityIndicatorView];
+    [activityIndicatorView3 stopAnimating];
   }
 }
 
-- (void)dataSourceDataUpdateDidRender:(id)a3
+- (void)dataSourceDataUpdateDidRender:(id)render
 {
-  v4 = a3;
-  v5 = [v4 object];
+  renderCopy = render;
+  object = [renderCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1299,8 +1299,8 @@ LABEL_49:
     v7[1] = 3221225472;
     v7[2] = sub_1000B8FB8;
     v7[3] = &unk_100645BA0;
-    v8 = v4;
-    v9 = self;
+    v8 = renderCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, v7);
   }
 }
@@ -1347,19 +1347,19 @@ LABEL_49:
 
 - (id)accessibilityHint
 {
-  v2 = [(ICToolbarSummaryView *)self buttonElement];
-  v3 = [v2 accessibilityHint];
+  buttonElement = [(ICToolbarSummaryView *)self buttonElement];
+  accessibilityHint = [buttonElement accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(ICToolbarSummaryView *)self buttonElement];
-  v4 = v3;
-  if (v3)
+  buttonElement = [(ICToolbarSummaryView *)self buttonElement];
+  v4 = buttonElement;
+  if (buttonElement)
   {
-    [v3 accessibilityActivationPoint];
+    [buttonElement accessibilityActivationPoint];
   }
 
   else
@@ -1405,9 +1405,9 @@ LABEL_49:
   return v2;
 }
 
-- (void)enumerateAccessibleSubviewsWithBlock:(id)a3
+- (void)enumerateAccessibleSubviewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(ICToolbarSummaryView *)self _accessibleSubviews];
   v10 = 0u;
   v11 = 0u;
@@ -1427,7 +1427,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (v4[2](v4, *(*(&v10 + 1) + 8 * v9)))
+      if (blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9)))
       {
         break;
       }

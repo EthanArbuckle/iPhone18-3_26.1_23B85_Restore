@@ -1,26 +1,26 @@
 @interface PRRemoteDevice
-- (BOOL)compareField:(id)a3 to:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PRRemoteDevice)initWithBTAdvAddress:(id)a3;
-- (PRRemoteDevice)initWithBeaconUUID:(id)a3;
-- (PRRemoteDevice)initWithCoder:(id)a3;
-- (PRRemoteDevice)initWithCompanionUUID:(id)a3;
-- (PRRemoteDevice)initWithRoseMACAddress:(id)a3;
-- (PRRemoteDevice)initWithTestCompanionBtAdvAddress:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)compareField:(id)field to:(id)to;
+- (BOOL)isEqual:(id)equal;
+- (PRRemoteDevice)initWithBTAdvAddress:(id)address;
+- (PRRemoteDevice)initWithBeaconUUID:(id)d;
+- (PRRemoteDevice)initWithCoder:(id)coder;
+- (PRRemoteDevice)initWithCompanionUUID:(id)d;
+- (PRRemoteDevice)initWithRoseMACAddress:(id)address;
+- (PRRemoteDevice)initWithTestCompanionBtAdvAddress:(id)address;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRRemoteDevice
 
-- (PRRemoteDevice)initWithBTAdvAddress:(id)a3
+- (PRRemoteDevice)initWithBTAdvAddress:(id)address
 {
-  v6 = a3;
-  if ([v6 length] != 6)
+  addressCopy = address;
+  if ([addressCopy length] != 6)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:22 description:@"btAdvAddress must be kBtAdvAddressByteLength bytes long."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:22 description:@"btAdvAddress must be kBtAdvAddressByteLength bytes long."];
   }
 
   v11.receiver = self;
@@ -29,20 +29,20 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_btAdvAddress, a3);
+    objc_storeStrong(&v7->_btAdvAddress, address);
     v8->_deviceType = 4;
   }
 
   return v8;
 }
 
-- (PRRemoteDevice)initWithTestCompanionBtAdvAddress:(id)a3
+- (PRRemoteDevice)initWithTestCompanionBtAdvAddress:(id)address
 {
-  v6 = a3;
-  if ([v6 length] != 6)
+  addressCopy = address;
+  if ([addressCopy length] != 6)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:34 description:@"btAdvAddress must be kBtAdvAddressByteLength bytes long."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:34 description:@"btAdvAddress must be kBtAdvAddressByteLength bytes long."];
   }
 
   v11.receiver = self;
@@ -51,20 +51,20 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_btAdvAddress, a3);
+    objc_storeStrong(&v7->_btAdvAddress, address);
     v8->_deviceType = 2;
   }
 
   return v8;
 }
 
-- (PRRemoteDevice)initWithCompanionUUID:(id)a3
+- (PRRemoteDevice)initWithCompanionUUID:(id)d
 {
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
   }
 
   v11.receiver = self;
@@ -73,20 +73,20 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_UUID, a3);
+    objc_storeStrong(&v7->_UUID, d);
     v8->_deviceType = 3;
   }
 
   return v8;
 }
 
-- (PRRemoteDevice)initWithBeaconUUID:(id)a3
+- (PRRemoteDevice)initWithBeaconUUID:(id)d
 {
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
   }
 
   v11.receiver = self;
@@ -95,20 +95,20 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_UUID, a3);
+    objc_storeStrong(&v7->_UUID, d);
     v8->_deviceType = 5;
   }
 
   return v8;
 }
 
-- (PRRemoteDevice)initWithRoseMACAddress:(id)a3
+- (PRRemoteDevice)initWithRoseMACAddress:(id)address
 {
-  v6 = a3;
-  if ([v6 length] != 8)
+  addressCopy = address;
+  if ([addressCopy length] != 8)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:70 description:@"roseMACAddress must be kRoseMacAddressLen bytes long."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRRemoteDevice.mm" lineNumber:70 description:@"roseMACAddress must be kRoseMacAddressLen bytes long."];
   }
 
   v11.receiver = self;
@@ -117,31 +117,31 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_roseMACAddress, a3);
+    objc_storeStrong(&v7->_roseMACAddress, address);
     v8->_deviceType = 1;
   }
 
   return v8;
 }
 
-- (PRRemoteDevice)initWithCoder:(id)a3
+- (PRRemoteDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PRRemoteDevice;
   v5 = [(PRRemoteDevice *)&v13 init];
   if (v5)
   {
-    v5->_deviceType = [v4 decodeIntegerForKey:@"deviceTypeKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"btAdvAddressKey"];
+    v5->_deviceType = [coderCopy decodeIntegerForKey:@"deviceTypeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"btAdvAddressKey"];
     btAdvAddress = v5->_btAdvAddress;
     v5->_btAdvAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roseMACAddressKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roseMACAddressKey"];
     roseMACAddress = v5->_roseMACAddress;
     v5->_roseMACAddress = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUIDKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUIDKey"];
     UUID = v5->_UUID;
     v5->_UUID = v10;
   }
@@ -149,18 +149,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_deviceType forKey:@"deviceTypeKey"];
-  [v4 encodeObject:self->_btAdvAddress forKey:@"btAdvAddressKey"];
-  [v4 encodeObject:self->_roseMACAddress forKey:@"roseMACAddressKey"];
-  [v4 encodeObject:self->_UUID forKey:@"UUIDKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_deviceType forKey:@"deviceTypeKey"];
+  [coderCopy encodeObject:self->_btAdvAddress forKey:@"btAdvAddressKey"];
+  [coderCopy encodeObject:self->_roseMACAddress forKey:@"roseMACAddressKey"];
+  [coderCopy encodeObject:self->_UUID forKey:@"UUIDKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PRRemoteDevice allocWithZone:a3];
+  v4 = [PRRemoteDevice allocWithZone:zone];
   [(PRRemoteDevice *)v4 setDeviceType:self->_deviceType];
   [(PRRemoteDevice *)v4 setBtAdvAddress:self->_btAdvAddress];
   [(PRRemoteDevice *)v4 setRoseMACAddress:self->_roseMACAddress];
@@ -186,46 +186,46 @@
   return v6;
 }
 
-- (BOOL)compareField:(id)a3 to:(id)a4
+- (BOOL)compareField:(id)field to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  fieldCopy = field;
+  toCopy = to;
+  v7 = toCopy;
+  if (fieldCopy && toCopy)
   {
-    v8 = [v6 isEqual:v5];
+    v8 = [toCopy isEqual:fieldCopy];
   }
 
   else
   {
-    v8 = (v5 | v6) == 0;
+    v8 = (fieldCopy | toCopy) == 0;
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 deviceType];
-    v7 = [(PRRemoteDevice *)self deviceType];
-    v8 = [v5 btAdvAddress];
-    v9 = [(PRRemoteDevice *)self btAdvAddress];
-    v10 = [(PRRemoteDevice *)self compareField:v8 to:v9];
+    v5 = equalCopy;
+    deviceType = [v5 deviceType];
+    deviceType2 = [(PRRemoteDevice *)self deviceType];
+    btAdvAddress = [v5 btAdvAddress];
+    btAdvAddress2 = [(PRRemoteDevice *)self btAdvAddress];
+    v10 = [(PRRemoteDevice *)self compareField:btAdvAddress to:btAdvAddress2];
 
-    v11 = [v5 roseMACAddress];
-    v12 = [(PRRemoteDevice *)self roseMACAddress];
-    LOBYTE(v9) = [(PRRemoteDevice *)self compareField:v11 to:v12];
+    roseMACAddress = [v5 roseMACAddress];
+    roseMACAddress2 = [(PRRemoteDevice *)self roseMACAddress];
+    LOBYTE(btAdvAddress2) = [(PRRemoteDevice *)self compareField:roseMACAddress to:roseMACAddress2];
 
-    v13 = [v5 UUID];
-    v14 = [(PRRemoteDevice *)self UUID];
-    v15 = [(PRRemoteDevice *)self compareField:v13 to:v14];
+    uUID = [v5 UUID];
+    uUID2 = [(PRRemoteDevice *)self UUID];
+    v15 = [(PRRemoteDevice *)self compareField:uUID to:uUID2];
 
-    v16 = (v6 == v7) & v10 & v9 & v15;
+    v16 = (deviceType == deviceType2) & v10 & btAdvAddress2 & v15;
   }
 
   else

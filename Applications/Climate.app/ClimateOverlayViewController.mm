@@ -1,12 +1,12 @@
 @interface ClimateOverlayViewController
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate28ClimateOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC7Climate28ClimateOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)handleTapOutsidePopoverFrames;
-- (void)requestQuickControl:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)requestQuickControl:(id)control;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -29,8 +29,8 @@
   {
     v10.receiver = self;
     v10.super_class = type metadata accessor for ClimateOverlayViewController(0);
-    v6 = self;
-    v7 = [(ClimateOverlayViewController *)&v10 preferredFocusEnvironments];
+    selfCopy = self;
+    preferredFocusEnvironments = [(ClimateOverlayViewController *)&v10 preferredFocusEnvironments];
     sub_1000040E8(&unk_1001150F0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -41,13 +41,13 @@
   return v8.super.isa;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClimateOverlayViewController(0);
   v4 = v7.receiver;
-  [(ClimateOverlayViewController *)&v7 viewDidDisappear:v3];
+  [(ClimateOverlayViewController *)&v7 viewDidDisappear:disappearCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -56,25 +56,25 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10001CBF8(a3);
+  selfCopy = self;
+  sub_10001CBF8(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001D07C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001D510();
 }
 
-- (_TtC7Climate28ClimateOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Climate28ClimateOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -83,35 +83,35 @@
 
 - (void)handleTapOutsidePopoverFrames
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001F3E0();
 }
 
-- (void)requestQuickControl:(id)a3
+- (void)requestQuickControl:(id)control
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100024C9C(v4, v6);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100026CD0(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_100026CD0(contextCopy, coordinatorCopy);
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 focusHeading];
-  *(&v5->super.super.super.isa + OBJC_IVAR____TtC7Climate28ClimateOverlayViewController_heading) = v6;
-  v9.receiver = v5;
+  contextCopy = context;
+  selfCopy = self;
+  focusHeading = [contextCopy focusHeading];
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7Climate28ClimateOverlayViewController_heading) = focusHeading;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for ClimateOverlayViewController(0);
-  v7 = [(ClimateOverlayViewController *)&v9 shouldUpdateFocusInContext:v4];
+  v7 = [(ClimateOverlayViewController *)&v9 shouldUpdateFocusInContext:contextCopy];
 
   return v7;
 }

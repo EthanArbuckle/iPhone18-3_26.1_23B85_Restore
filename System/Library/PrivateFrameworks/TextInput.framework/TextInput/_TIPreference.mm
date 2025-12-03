@@ -1,5 +1,5 @@
 @interface _TIPreference
-+ (id)preferenceWithKey:(id)a3 domain:(id)a4 defaultValue:(id)a5 fallbackKey:(id)a6 isAnalyzed:(BOOL)a7;
++ (id)preferenceWithKey:(id)key domain:(id)domain defaultValue:(id)value fallbackKey:(id)fallbackKey isAnalyzed:(BOOL)analyzed;
 - (NSString)analyzedAtKey;
 - (NSString)buildAtChangeKey;
 - (NSString)changedAtKey;
@@ -64,21 +64,21 @@
   return v4;
 }
 
-+ (id)preferenceWithKey:(id)a3 domain:(id)a4 defaultValue:(id)a5 fallbackKey:(id)a6 isAnalyzed:(BOOL)a7
++ (id)preferenceWithKey:(id)key domain:(id)domain defaultValue:(id)value fallbackKey:(id)fallbackKey isAnalyzed:(BOOL)analyzed
 {
-  v7 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  analyzedCopy = analyzed;
+  fallbackKeyCopy = fallbackKey;
+  valueCopy = value;
+  domainCopy = domain;
+  keyCopy = key;
   v15 = objc_alloc_init(objc_opt_class());
-  [v15 setKey:v14];
+  [v15 setKey:keyCopy];
 
-  [v15 setDomain:v13];
-  [v15 setDefaultValue:v12];
+  [v15 setDomain:domainCopy];
+  [v15 setDefaultValue:valueCopy];
 
-  [v15 setFallbackKey:v11];
-  [v15 setIsAnalyzed:v7];
+  [v15 setFallbackKey:fallbackKeyCopy];
+  [v15 setIsAnalyzed:analyzedCopy];
 
   return v15;
 }

@@ -1,15 +1,15 @@
 @interface ASDJobManagerOptions
-- (ASDJobManagerOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDJobManagerOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDJobManagerOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDJobManagerOptions allocWithZone:](ASDJobManagerOptions init];
-  v6 = [(NSString *)self->_persistenceIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_persistenceIdentifier copyWithZone:zone];
   persistenceIdentifier = v5->_persistenceIdentifier;
   v5->_persistenceIdentifier = v6;
 
@@ -17,28 +17,28 @@
   return v5;
 }
 
-- (ASDJobManagerOptions)initWithCoder:(id)a3
+- (ASDJobManagerOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASDJobManagerOptions *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistenceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistenceIdentifier"];
     persistenceIdentifier = v5->_persistenceIdentifier;
     v5->_persistenceIdentifier = v6;
 
-    v5->_shouldFilterExternalOriginatedDownloads = [v4 decodeBoolForKey:@"shouldFilterExternalOriginatedDownloads"];
+    v5->_shouldFilterExternalOriginatedDownloads = [coderCopy decodeBoolForKey:@"shouldFilterExternalOriginatedDownloads"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   persistenceIdentifier = self->_persistenceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:persistenceIdentifier forKey:@"persistenceIdentifier"];
-  [v5 encodeBool:self->_shouldFilterExternalOriginatedDownloads forKey:@"shouldFilterExternalOriginatedDownloads"];
+  coderCopy = coder;
+  [coderCopy encodeObject:persistenceIdentifier forKey:@"persistenceIdentifier"];
+  [coderCopy encodeBool:self->_shouldFilterExternalOriginatedDownloads forKey:@"shouldFilterExternalOriginatedDownloads"];
 }
 
 @end

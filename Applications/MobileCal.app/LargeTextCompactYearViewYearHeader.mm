@@ -1,7 +1,7 @@
 @interface LargeTextCompactYearViewYearHeader
-+ (double)headerDaySpacingForWindowSize:(CGSize)a3;
-+ (double)headerYInsetForWindowSize:(CGSize)a3;
-+ (double)middleHeightForWindowSize:(CGSize)a3;
++ (double)headerDaySpacingForWindowSize:(CGSize)size;
++ (double)headerYInsetForWindowSize:(CGSize)size;
++ (double)middleHeightForWindowSize:(CGSize)size;
 - (double)heightBetweenLineAndNumber;
 - (double)overlayLegendLineLength;
 - (double)overlayLegendMonthBaseline;
@@ -12,9 +12,9 @@
 
 @implementation LargeTextCompactYearViewYearHeader
 
-+ (double)headerYInsetForWindowSize:(CGSize)a3
++ (double)headerYInsetForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_100251DA0 != -1)
   {
     sub_100170D3C();
@@ -26,9 +26,9 @@
   return result;
 }
 
-+ (double)middleHeightForWindowSize:(CGSize)a3
++ (double)middleHeightForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_100251DB0 != -1)
   {
     sub_100170D50();
@@ -40,9 +40,9 @@
   return result;
 }
 
-+ (double)headerDaySpacingForWindowSize:(CGSize)a3
++ (double)headerDaySpacingForWindowSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_100251DC0 != -1)
   {
     sub_100170D64();
@@ -121,8 +121,8 @@ LABEL_7:
 - (double)overlayLegendYearBaseline
 {
   [(LargeTextCompactYearViewYearHeader *)self overlayLegendMonthBaseline];
-  v3 = [(LargeTextCompactYearViewYearHeader *)self overlayLegendFont];
-  [v3 _bodyLeading];
+  overlayLegendFont = [(LargeTextCompactYearViewYearHeader *)self overlayLegendFont];
+  [overlayLegendFont _bodyLeading];
   CalRoundToScreenScale();
   v5 = v4;
 

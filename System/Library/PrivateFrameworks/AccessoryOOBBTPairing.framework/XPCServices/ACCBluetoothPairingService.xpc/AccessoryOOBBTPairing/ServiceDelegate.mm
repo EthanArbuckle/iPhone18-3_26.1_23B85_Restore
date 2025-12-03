@@ -1,13 +1,13 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 6;
@@ -41,18 +41,18 @@
   }
 
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCBluetoothPairingServiceProtocol];
-  [v6 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
   v11 = objc_opt_new();
-  [v6 setExportedObject:v11];
-  objc_initWeak(buf, v6);
+  [connectionCopy setExportedObject:v11];
+  objc_initWeak(buf, connectionCopy);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __54__ServiceDelegate_listener_shouldAcceptNewConnection___block_invoke;
   v13[3] = &unk_10000C378;
   objc_copyWeak(&v14, buf);
-  [v6 setInvalidationHandler:v13];
-  [v6 resume];
+  [connectionCopy setInvalidationHandler:v13];
+  [connectionCopy resume];
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 

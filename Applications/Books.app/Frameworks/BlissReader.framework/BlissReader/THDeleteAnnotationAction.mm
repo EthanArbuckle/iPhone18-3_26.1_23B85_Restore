@@ -1,21 +1,21 @@
 @interface THDeleteAnnotationAction
-- (THDeleteAnnotationAction)initWithAnnotation:(id)a3;
-- (void)commitWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5;
+- (THDeleteAnnotationAction)initWithAnnotation:(id)annotation;
+- (void)commitWithChangeList:(id)list annotationHost:(id)host moc:(id)moc;
 - (void)dealloc;
-- (void)redoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5;
-- (void)undoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5;
+- (void)redoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc;
+- (void)undoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc;
 @end
 
 @implementation THDeleteAnnotationAction
 
-- (THDeleteAnnotationAction)initWithAnnotation:(id)a3
+- (THDeleteAnnotationAction)initWithAnnotation:(id)annotation
 {
   v6.receiver = self;
   v6.super_class = THDeleteAnnotationAction;
   v4 = [(THDeleteAnnotationAction *)&v6 init];
   if (v4)
   {
-    v4->_annotationUuid = [objc_msgSend(a3 "annotationUuid")];
+    v4->_annotationUuid = [objc_msgSend(annotation "annotationUuid")];
   }
 
   return v4;
@@ -28,45 +28,45 @@
   [(THDeleteAnnotationAction *)&v3 dealloc];
 }
 
-- (void)commitWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5
+- (void)commitWithChangeList:(id)list annotationHost:(id)host moc:(id)moc
 {
-  v6 = [a4 annotationForUUID:self->_annotationUuid includeDeleted:0 moc:a5];
+  v6 = [host annotationForUUID:self->_annotationUuid includeDeleted:0 moc:moc];
   if (v6)
   {
     v7 = v6;
     [v6 setAnnotationDeleted:1];
-    v8 = [v7 annotationUuid];
-    v9 = [v7 annotationContentNodeID];
+    annotationUuid = [v7 annotationUuid];
+    annotationContentNodeID = [v7 annotationContentNodeID];
 
-    [a3 registerAnnotationDeletedWithUUID:v8 fromContentNodeWithID:v9];
+    [list registerAnnotationDeletedWithUUID:annotationUuid fromContentNodeWithID:annotationContentNodeID];
   }
 }
 
-- (void)undoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5
+- (void)undoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc
 {
-  v6 = [a4 annotationForUUID:self->_annotationUuid includeDeleted:1 moc:a5];
+  v6 = [host annotationForUUID:self->_annotationUuid includeDeleted:1 moc:moc];
   if (v6)
   {
     v7 = v6;
     [v6 setAnnotationDeleted:0];
-    v8 = [v7 annotationUuid];
-    v9 = [v7 annotationContentNodeID];
+    annotationUuid = [v7 annotationUuid];
+    annotationContentNodeID = [v7 annotationContentNodeID];
 
-    [a3 registerAnnotationAddedWithUUID:v8 toContentNodeWithID:v9];
+    [list registerAnnotationAddedWithUUID:annotationUuid toContentNodeWithID:annotationContentNodeID];
   }
 }
 
-- (void)redoWithChangeList:(id)a3 annotationHost:(id)a4 moc:(id)a5
+- (void)redoWithChangeList:(id)list annotationHost:(id)host moc:(id)moc
 {
-  v6 = [a4 annotationForUUID:self->_annotationUuid includeDeleted:1 moc:a5];
+  v6 = [host annotationForUUID:self->_annotationUuid includeDeleted:1 moc:moc];
   if (v6)
   {
     v7 = v6;
     [v6 setAnnotationDeleted:1];
-    v8 = [v7 annotationUuid];
-    v9 = [v7 annotationContentNodeID];
+    annotationUuid = [v7 annotationUuid];
+    annotationContentNodeID = [v7 annotationContentNodeID];
 
-    [a3 registerAnnotationDeletedWithUUID:v8 fromContentNodeWithID:v9];
+    [list registerAnnotationDeletedWithUUID:annotationUuid fromContentNodeWithID:annotationContentNodeID];
   }
 }
 

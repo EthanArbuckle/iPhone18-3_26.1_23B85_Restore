@@ -1,16 +1,16 @@
 @interface ASFriendListRow
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ASFriendListRow
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [a3 friend];
-  v5 = [v4 UUID];
-  v6 = [(ASFriendListRow *)self friend];
-  v7 = [v6 UUID];
-  v8 = [v5 isEqual:v7];
+  friend = [equal friend];
+  uUID = [friend UUID];
+  friend2 = [(ASFriendListRow *)self friend];
+  uUID2 = [friend2 UUID];
+  v8 = [uUID isEqual:uUID2];
 
   return v8;
 }

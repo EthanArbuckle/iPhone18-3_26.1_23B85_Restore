@@ -1,70 +1,70 @@
 @interface PLAssetsdDebugClient
-- (BOOL)allMomentsMetadataWithOutputPath:(id)a3 metadataDictionary:(id *)a4 error:(id *)a5;
-- (BOOL)archiveComputeCacheWithError:(id *)a3;
-- (BOOL)backgroundMigrationWithError:(id *)a3;
-- (BOOL)cleanupEmptyHighlightsWithError:(id *)a3;
-- (BOOL)clearSensitivityStateForAssetsWithUUIDs:(id)a3 error:(id *)a4;
-- (BOOL)debugSidecarFileURLsForAsset:(id)a3 debugSidecarFileURLs:(id *)a4 error:(id *)a5;
-- (BOOL)dumpMetadataForMomentsWithOutputPath:(id)a3 metadataDirectory:(id *)a4 error:(id *)a5;
-- (BOOL)fileTapToRadarWithTitle:(id)a3 description:(id)a4 error:(id *)a5;
-- (BOOL)indexAssetsWithUUIDs:(id)a3 error:(id *)a4;
-- (BOOL)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)a3 state:(signed __int16)a4 error:(id *)a5;
-- (BOOL)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError:(id *)a3;
-- (BOOL)locationOfInterestUpdateWithError:(id *)a3;
-- (BOOL)processRecentHighlightsWithError:(id *)a3;
-- (BOOL)processUnprocessedMomentLocationsWithError:(id *)a3;
-- (BOOL)rebuildHighlightsDeletingExistingHighlights:(BOOL)a3 error:(id *)a4;
-- (BOOL)rebuildMomentsDeletingExistingMoments:(BOOL)a3 error:(id *)a4;
-- (BOOL)rebuildSearchIndexWithError:(id *)a3;
-- (BOOL)resetBackgroundMigrationClassName:(id)a3 error:(id *)a4;
-- (BOOL)resetComputeCacheWithError:(id *)a3;
-- (BOOL)resetDrawAssetPersonEdgesBackgroundMigrationActionWithError:(id *)a3;
-- (BOOL)resetMaintenanceTasksWithError:(id *)a3;
-- (BOOL)restoreComputeCacheWithError:(id *)a3;
-- (BOOL)revertToOriginalForAsset:(id)a3 error:(id *)a4;
-- (BOOL)runMaintenanceTask:(id)a3 error:(id *)a4;
-- (BOOL)signalBackgroundJobServiceForWorkerCodes:(id)a3 error:(id *)a4;
-- (BOOL)updateHighlightTitlesWithError:(id *)a3;
-- (id)backgroundAssetResourceNetworkStatusForBundleID:(id)a3 withLevel:(int64_t)a4;
-- (id)computeCacheStatusWithError:(id *)a3;
-- (id)getCPLStateForDebug:(BOOL)a3;
+- (BOOL)allMomentsMetadataWithOutputPath:(id)path metadataDictionary:(id *)dictionary error:(id *)error;
+- (BOOL)archiveComputeCacheWithError:(id *)error;
+- (BOOL)backgroundMigrationWithError:(id *)error;
+- (BOOL)cleanupEmptyHighlightsWithError:(id *)error;
+- (BOOL)clearSensitivityStateForAssetsWithUUIDs:(id)ds error:(id *)error;
+- (BOOL)debugSidecarFileURLsForAsset:(id)asset debugSidecarFileURLs:(id *)ls error:(id *)error;
+- (BOOL)dumpMetadataForMomentsWithOutputPath:(id)path metadataDirectory:(id *)directory error:(id *)error;
+- (BOOL)fileTapToRadarWithTitle:(id)title description:(id)description error:(id *)error;
+- (BOOL)indexAssetsWithUUIDs:(id)ds error:(id *)error;
+- (BOOL)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)identifier state:(signed __int16)state error:(id *)error;
+- (BOOL)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError:(id *)error;
+- (BOOL)locationOfInterestUpdateWithError:(id *)error;
+- (BOOL)processRecentHighlightsWithError:(id *)error;
+- (BOOL)processUnprocessedMomentLocationsWithError:(id *)error;
+- (BOOL)rebuildHighlightsDeletingExistingHighlights:(BOOL)highlights error:(id *)error;
+- (BOOL)rebuildMomentsDeletingExistingMoments:(BOOL)moments error:(id *)error;
+- (BOOL)rebuildSearchIndexWithError:(id *)error;
+- (BOOL)resetBackgroundMigrationClassName:(id)name error:(id *)error;
+- (BOOL)resetComputeCacheWithError:(id *)error;
+- (BOOL)resetDrawAssetPersonEdgesBackgroundMigrationActionWithError:(id *)error;
+- (BOOL)resetMaintenanceTasksWithError:(id *)error;
+- (BOOL)restoreComputeCacheWithError:(id *)error;
+- (BOOL)revertToOriginalForAsset:(id)asset error:(id *)error;
+- (BOOL)runMaintenanceTask:(id)task error:(id *)error;
+- (BOOL)signalBackgroundJobServiceForWorkerCodes:(id)codes error:(id *)error;
+- (BOOL)updateHighlightTitlesWithError:(id *)error;
+- (id)backgroundAssetResourceNetworkStatusForBundleID:(id)d withLevel:(int64_t)level;
+- (id)computeCacheStatusWithError:(id *)error;
+- (id)getCPLStateForDebug:(BOOL)debug;
 - (id)getTaskConstraintStatus;
 - (id)getXPCTransactionStatus;
 - (id)momentGenerationStatus;
-- (id)requestSearchDebugInformationForAssetUUID:(id)a3 redacted:(BOOL)a4 error:(id *)a5;
-- (id)runAssetContainmentOnAllSocialGroupsWithCompletion:(id)a3;
-- (id)runAssetContainmentOnSocialGroupWithUUID:(id)a3 withCompletion:(id)a4;
-- (id)syndicationIngestMutexStateDescriptionWithError:(id *)a3;
-- (id)updateAndSaveAssetPersonEdgesWithCompletion:(id)a3;
-- (int64_t)removeAllThumbnailsForDryRun:(BOOL)a3 count:(unint64_t *)a4;
+- (id)requestSearchDebugInformationForAssetUUID:(id)d redacted:(BOOL)redacted error:(id *)error;
+- (id)runAssetContainmentOnAllSocialGroupsWithCompletion:(id)completion;
+- (id)runAssetContainmentOnSocialGroupWithUUID:(id)d withCompletion:(id)completion;
+- (id)syndicationIngestMutexStateDescriptionWithError:(id *)error;
+- (id)updateAndSaveAssetPersonEdgesWithCompletion:(id)completion;
+- (int64_t)removeAllThumbnailsForDryRun:(BOOL)run count:(unint64_t *)count;
 - (void)clearPrefetchState;
-- (void)closeSearchIndexWithCompletionHandler:(id)a3;
-- (void)coalesceJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 withChangeJournalOverThreshold:(float)a5 completionHandler:(id)a6;
-- (void)dropSearchIndexWithCompletionHandler:(id)a3;
+- (void)closeSearchIndexWithCompletionHandler:(id)handler;
+- (void)coalesceJournalsForManagerName:(id)name payloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold completionHandler:(id)handler;
+- (void)dropSearchIndexWithCompletionHandler:(id)handler;
 - (void)enqueuePrefetch;
 - (void)identifyAssetsWithInconsistentCloudState;
-- (void)prefetchResourcesForHighlights:(id)a3;
-- (void)prefetchResourcesForMemories:(id)a3;
-- (void)prefetchResourcesWithMode:(int64_t)a3;
-- (void)privateDownloadCloudPhotoLibraryAsset:(id)a3 resourceType:(unint64_t)a4 highPriority:(BOOL)a5 completionHandler:(id)a6;
-- (void)pruneAssets:(id)a3 resourceTypes:(id)a4;
+- (void)prefetchResourcesForHighlights:(id)highlights;
+- (void)prefetchResourcesForMemories:(id)memories;
+- (void)prefetchResourcesWithMode:(int64_t)mode;
+- (void)privateDownloadCloudPhotoLibraryAsset:(id)asset resourceType:(unint64_t)type highPriority:(BOOL)priority completionHandler:(id)handler;
+- (void)pruneAssets:(id)assets resourceTypes:(id)types;
 - (void)rebuildAllThumbnails;
 - (void)rebuildCloudFeed;
 - (void)rebuildTableThumbs;
 - (void)recoverAssetsInInconsistentCloudState;
-- (void)snapshotJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 withCompletionHandler:(id)a5;
-- (void)unloadImageFilesForAsset:(id)a3 minimumFormat:(int)a4 completionHandler:(id)a5;
+- (void)snapshotJournalsForManagerName:(id)name payloadClassIDs:(id)ds withCompletionHandler:(id)handler;
+- (void)unloadImageFilesForAsset:(id)asset minimumFormat:(int)format completionHandler:(id)handler;
 - (void)verifyAssetResourceJobConsistency;
 - (void)waitForMomentGeneration;
 @end
 
 @implementation PLAssetsdDebugClient
 
-- (BOOL)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)a3 state:(signed __int16)a4 error:(id *)a5
+- (BOOL)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)identifier state:(signed __int16)state error:(id *)error
 {
-  v6 = a4;
+  stateCopy = state;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identifierCopy = identifier;
   v28 = 0u;
   *sel = 0u;
   v27 = 0u;
@@ -89,22 +89,22 @@
   v32 = __Block_byref_object_copy__1936;
   v33 = __Block_byref_object_dispose__1937;
   v34 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_190];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_190];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __97__PLAssetsdDebugClient_insertBackgroundResourceJobConfigurationWithBundleIdentifier_state_error___block_invoke_191;
   v22[3] = &unk_1E7932E48;
   v22[4] = &v23;
   v22[5] = &buf;
-  [v13 insertBackgroundResourceJobConfigurationWithBundleIdentifier:v8 state:v6 reply:v22];
+  [v13 insertBackgroundResourceJobConfigurationWithBundleIdentifier:identifierCopy state:stateCopy reply:v22];
 
   v14 = *(v24 + 24);
   v15 = *(*(&buf + 1) + 40);
-  if (a5 && (v14 & 1) == 0)
+  if (error && (v14 & 1) == 0)
   {
     v15 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   v16 = *(v24 + 24);
@@ -176,8 +176,8 @@ void __97__PLAssetsdDebugClient_insertBackgroundResourceJobConfigurationWithBund
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_185];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_185];
   [v11 verifyAssetResourceJobConsistencyWithReply:&__block_literal_global_188];
 
   if (v15 == 1)
@@ -214,10 +214,10 @@ void __57__PLAssetsdDebugClient_verifyAssetResourceJobConsistency__block_invoke(
   }
 }
 
-- (id)backgroundAssetResourceNetworkStatusForBundleID:(id)a3 withLevel:(int64_t)a4
+- (id)backgroundAssetResourceNetworkStatusForBundleID:(id)d withLevel:(int64_t)level
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -252,14 +252,14 @@ void __57__PLAssetsdDebugClient_verifyAssetResourceJobConsistency__block_invoke(
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_182];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_182];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __82__PLAssetsdDebugClient_backgroundAssetResourceNetworkStatusForBundleID_withLevel___block_invoke_183;
   v24[3] = &unk_1E7931EB0;
   v24[4] = &buf;
-  [v17 backgroundAssetResourceNetworkStatusForBundleID:v7 withLevel:a4 reply:v24];
+  [v17 backgroundAssetResourceNetworkStatusForBundleID:dCopy withLevel:level reply:v24];
 
   v18 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&buf, 8);
@@ -301,11 +301,11 @@ void __82__PLAssetsdDebugClient_backgroundAssetResourceNetworkStatusForBundleID_
   }
 }
 
-- (BOOL)fileTapToRadarWithTitle:(id)a3 description:(id)a4 error:(id *)a5
+- (BOOL)fileTapToRadarWithTitle:(id)title description:(id)description error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v29 = 0u;
   *sel = 0u;
   v28 = 0u;
@@ -330,22 +330,22 @@ void __82__PLAssetsdDebugClient_backgroundAssetResourceNetworkStatusForBundleID_
   v33 = __Block_byref_object_copy__1936;
   v34 = __Block_byref_object_dispose__1937;
   v35 = 0;
-  v13 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_179];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v14 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_179];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __66__PLAssetsdDebugClient_fileTapToRadarWithTitle_description_error___block_invoke_180;
   v23[3] = &unk_1E7932E48;
   v23[4] = &v24;
   v23[5] = &buf;
-  [v14 fileTapToRadarWithTitle:v8 description:v9 reply:v23];
+  [v14 fileTapToRadarWithTitle:titleCopy description:descriptionCopy reply:v23];
 
   v15 = *(v25 + 24);
   v16 = *(*(&buf + 1) + 40);
-  if (a5 && (v15 & 1) == 0)
+  if (error && (v15 & 1) == 0)
   {
     v16 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   v17 = *(v25 + 24);
@@ -389,10 +389,10 @@ void __66__PLAssetsdDebugClient_fileTapToRadarWithTitle_description_error___bloc
   }
 }
 
-- (BOOL)signalBackgroundJobServiceForWorkerCodes:(id)a3 error:(id *)a4
+- (BOOL)signalBackgroundJobServiceForWorkerCodes:(id)codes error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  codesCopy = codes;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -417,22 +417,22 @@ void __66__PLAssetsdDebugClient_fileTapToRadarWithTitle_description_error___bloc
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_176];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_176];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __71__PLAssetsdDebugClient_signalBackgroundJobServiceForWorkerCodes_error___block_invoke_177;
   v20[3] = &unk_1E7932E48;
   v20[4] = &v21;
   v20[5] = &buf;
-  [v11 signalBackgroundJobServiceForWorkerCodes:v6 reply:v20];
+  [v11 signalBackgroundJobServiceForWorkerCodes:codesCopy reply:v20];
 
   v12 = *(v22 + 24);
   v13 = *(*(&buf + 1) + 40);
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = *(v22 + 24);
@@ -476,10 +476,10 @@ void __71__PLAssetsdDebugClient_signalBackgroundJobServiceForWorkerCodes_error__
   }
 }
 
-- (BOOL)runMaintenanceTask:(id)a3 error:(id *)a4
+- (BOOL)runMaintenanceTask:(id)task error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  taskCopy = task;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -504,22 +504,22 @@ void __71__PLAssetsdDebugClient_signalBackgroundJobServiceForWorkerCodes_error__
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_173];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_173];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __49__PLAssetsdDebugClient_runMaintenanceTask_error___block_invoke_174;
   v20[3] = &unk_1E7932E48;
   v20[4] = &v21;
   v20[5] = &buf;
-  [v11 runMaintenanceTask:v6 reply:v20];
+  [v11 runMaintenanceTask:taskCopy reply:v20];
 
   v12 = *(v22 + 24);
   v13 = *(*(&buf + 1) + 40);
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = *(v22 + 24);
@@ -563,7 +563,7 @@ void __49__PLAssetsdDebugClient_runMaintenanceTask_error___block_invoke(uint64_t
   }
 }
 
-- (BOOL)resetMaintenanceTasksWithError:(id *)a3
+- (BOOL)resetMaintenanceTasksWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v24 = 0u;
@@ -590,8 +590,8 @@ void __49__PLAssetsdDebugClient_runMaintenanceTask_error___block_invoke(uint64_t
   v28 = __Block_byref_object_copy__1936;
   v29 = __Block_byref_object_dispose__1937;
   v30 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_170];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_170];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __55__PLAssetsdDebugClient_resetMaintenanceTasksWithError___block_invoke_171;
@@ -602,10 +602,10 @@ void __49__PLAssetsdDebugClient_runMaintenanceTask_error___block_invoke(uint64_t
 
   v10 = *(v20 + 24);
   v11 = *(*(&buf + 1) + 40);
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(v20 + 24);
@@ -649,7 +649,7 @@ void __55__PLAssetsdDebugClient_resetMaintenanceTasksWithError___block_invoke(ui
   }
 }
 
-- (BOOL)resetDrawAssetPersonEdgesBackgroundMigrationActionWithError:(id *)a3
+- (BOOL)resetDrawAssetPersonEdgesBackgroundMigrationActionWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v24 = 0u;
@@ -676,8 +676,8 @@ void __55__PLAssetsdDebugClient_resetMaintenanceTasksWithError___block_invoke(ui
   v28 = __Block_byref_object_copy__1936;
   v29 = __Block_byref_object_dispose__1937;
   v30 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_167];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_167];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__PLAssetsdDebugClient_resetDrawAssetPersonEdgesBackgroundMigrationActionWithError___block_invoke_168;
@@ -688,10 +688,10 @@ void __55__PLAssetsdDebugClient_resetMaintenanceTasksWithError___block_invoke(ui
 
   v10 = *(v20 + 24);
   v11 = *(*(&buf + 1) + 40);
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(v20 + 24);
@@ -735,10 +735,10 @@ void __84__PLAssetsdDebugClient_resetDrawAssetPersonEdgesBackgroundMigrationActi
   }
 }
 
-- (BOOL)resetBackgroundMigrationClassName:(id)a3 error:(id *)a4
+- (BOOL)resetBackgroundMigrationClassName:(id)name error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -763,22 +763,22 @@ void __84__PLAssetsdDebugClient_resetDrawAssetPersonEdgesBackgroundMigrationActi
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_164];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_164];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __64__PLAssetsdDebugClient_resetBackgroundMigrationClassName_error___block_invoke_165;
   v20[3] = &unk_1E7932E48;
   v20[4] = &v21;
   v20[5] = &buf;
-  [v11 resetBackgroundMigrationClassName:v6 reply:v20];
+  [v11 resetBackgroundMigrationClassName:nameCopy reply:v20];
 
   v12 = *(v22 + 24);
   v13 = *(*(&buf + 1) + 40);
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = *(v22 + 24);
@@ -822,7 +822,7 @@ void __64__PLAssetsdDebugClient_resetBackgroundMigrationClassName_error___block_
   }
 }
 
-- (BOOL)backgroundMigrationWithError:(id *)a3
+- (BOOL)backgroundMigrationWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v24 = 0u;
@@ -849,8 +849,8 @@ void __64__PLAssetsdDebugClient_resetBackgroundMigrationClassName_error___block_
   v28 = __Block_byref_object_copy__1936;
   v29 = __Block_byref_object_dispose__1937;
   v30 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_161];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_161];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __53__PLAssetsdDebugClient_backgroundMigrationWithError___block_invoke_162;
@@ -861,10 +861,10 @@ void __64__PLAssetsdDebugClient_resetBackgroundMigrationClassName_error___block_
 
   v10 = *(v20 + 24);
   v11 = *(*(&buf + 1) + 40);
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(v20 + 24);
@@ -910,8 +910,8 @@ void __53__PLAssetsdDebugClient_backgroundMigrationWithError___block_invoke(uint
 
 - (void)waitForMomentGeneration
 {
-  v3 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_156];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v2 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_156];
   [v2 waitForMomentGenerationWithReply:&__block_literal_global_159];
 }
 
@@ -930,7 +930,7 @@ void __47__PLAssetsdDebugClient_waitForMomentGeneration__block_invoke(uint64_t a
   }
 }
 
-- (id)syndicationIngestMutexStateDescriptionWithError:(id *)a3
+- (id)syndicationIngestMutexStateDescriptionWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -959,13 +959,13 @@ void __47__PLAssetsdDebugClient_waitForMomentGeneration__block_invoke(uint64_t a
   v22 = __Block_byref_object_copy__1936;
   v23 = __Block_byref_object_dispose__1937;
   v24 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__PLAssetsdDebugClient_syndicationIngestMutexStateDescriptionWithError___block_invoke;
   v18[3] = &unk_1E7932770;
   v18[4] = &v19;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v18];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__PLAssetsdDebugClient_syndicationIngestMutexStateDescriptionWithError___block_invoke_153;
@@ -977,9 +977,9 @@ void __47__PLAssetsdDebugClient_waitForMomentGeneration__block_invoke(uint64_t a
   v10 = *(*(&buf + 1) + 40);
   if (!v10)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v20[5];
+      *error = v20[5];
       v10 = *(*(&buf + 1) + 40);
     }
 
@@ -1045,7 +1045,7 @@ void __72__PLAssetsdDebugClient_syndicationIngestMutexStateDescriptionWithError_
   }
 }
 
-- (id)computeCacheStatusWithError:(id *)a3
+- (id)computeCacheStatusWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   v27 = 0u;
@@ -1074,13 +1074,13 @@ void __72__PLAssetsdDebugClient_syndicationIngestMutexStateDescriptionWithError_
   v23 = __Block_byref_object_copy__1936;
   v24 = __Block_byref_object_dispose__1937;
   v25 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __52__PLAssetsdDebugClient_computeCacheStatusWithError___block_invoke;
   v19[3] = &unk_1E7932770;
   v19[4] = &buf;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52__PLAssetsdDebugClient_computeCacheStatusWithError___block_invoke_151;
@@ -1091,10 +1091,10 @@ void __72__PLAssetsdDebugClient_syndicationIngestMutexStateDescriptionWithError_
 
   v10 = v21[5];
   v11 = *(*(&buf + 1) + 40);
-  if (!v10 && a3)
+  if (!v10 && error)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = v21[5];
@@ -1152,7 +1152,7 @@ void __52__PLAssetsdDebugClient_computeCacheStatusWithError___block_invoke_151(u
   *(v6 + 40) = v5;
 }
 
-- (BOOL)resetComputeCacheWithError:(id *)a3
+- (BOOL)resetComputeCacheWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v25 = 0u;
@@ -1179,13 +1179,13 @@ void __52__PLAssetsdDebugClient_computeCacheStatusWithError___block_invoke_151(u
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __51__PLAssetsdDebugClient_resetComputeCacheWithError___block_invoke;
   v19[3] = &unk_1E7932770;
   v19[4] = &buf;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__PLAssetsdDebugClient_resetComputeCacheWithError___block_invoke_150;
@@ -1196,10 +1196,10 @@ void __52__PLAssetsdDebugClient_computeCacheStatusWithError___block_invoke_151(u
 
   v10 = *(v21 + 24);
   v11 = *(*(&buf + 1) + 40);
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(v21 + 24);
@@ -1257,7 +1257,7 @@ void __51__PLAssetsdDebugClient_resetComputeCacheWithError___block_invoke_150(ui
   }
 }
 
-- (BOOL)archiveComputeCacheWithError:(id *)a3
+- (BOOL)archiveComputeCacheWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v25 = 0u;
@@ -1284,13 +1284,13 @@ void __51__PLAssetsdDebugClient_resetComputeCacheWithError___block_invoke_150(ui
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __53__PLAssetsdDebugClient_archiveComputeCacheWithError___block_invoke;
   v19[3] = &unk_1E7932770;
   v19[4] = &buf;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __53__PLAssetsdDebugClient_archiveComputeCacheWithError___block_invoke_149;
@@ -1301,10 +1301,10 @@ void __51__PLAssetsdDebugClient_resetComputeCacheWithError___block_invoke_150(ui
 
   v10 = *(v21 + 24);
   v11 = *(*(&buf + 1) + 40);
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(v21 + 24);
@@ -1362,7 +1362,7 @@ void __53__PLAssetsdDebugClient_archiveComputeCacheWithError___block_invoke_149(
   }
 }
 
-- (BOOL)restoreComputeCacheWithError:(id *)a3
+- (BOOL)restoreComputeCacheWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v25 = 0u;
@@ -1389,13 +1389,13 @@ void __53__PLAssetsdDebugClient_archiveComputeCacheWithError___block_invoke_149(
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __53__PLAssetsdDebugClient_restoreComputeCacheWithError___block_invoke;
   v19[3] = &unk_1E7932770;
   v19[4] = &buf;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __53__PLAssetsdDebugClient_restoreComputeCacheWithError___block_invoke_148;
@@ -1406,10 +1406,10 @@ void __53__PLAssetsdDebugClient_archiveComputeCacheWithError___block_invoke_149(
 
   v10 = *(v21 + 24);
   v11 = *(*(&buf + 1) + 40);
-  if (a3 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
     v11 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   v12 = *(v21 + 24);
@@ -1467,10 +1467,10 @@ void __53__PLAssetsdDebugClient_restoreComputeCacheWithError___block_invoke_148(
   }
 }
 
-- (id)updateAndSaveAssetPersonEdgesWithCompletion:(id)a3
+- (id)updateAndSaveAssetPersonEdgesWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -1485,14 +1485,14 @@ void __53__PLAssetsdDebugClient_restoreComputeCacheWithError___block_invoke_148(
     os_activity_scope_enter(v6, (&v23 + 8));
   }
 
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __68__PLAssetsdDebugClient_updateAndSaveAssetPersonEdgesWithCompletion___block_invoke;
   v20[3] = &unk_1E7932DA8;
-  v9 = v4;
+  v9 = completionCopy;
   v21 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v20];
+  v10 = [proxyFactory remoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __68__PLAssetsdDebugClient_updateAndSaveAssetPersonEdgesWithCompletion___block_invoke_147;
@@ -1565,11 +1565,11 @@ void __68__PLAssetsdDebugClient_updateAndSaveAssetPersonEdgesWithCompletion___bl
   v5();
 }
 
-- (id)runAssetContainmentOnSocialGroupWithUUID:(id)a3 withCompletion:(id)a4
+- (id)runAssetContainmentOnSocialGroupWithUUID:(id)d withCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -1584,21 +1584,21 @@ void __68__PLAssetsdDebugClient_updateAndSaveAssetPersonEdgesWithCompletion___bl
     os_activity_scope_enter(v9, (&v26 + 8));
   }
 
-  v11 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __80__PLAssetsdDebugClient_runAssetContainmentOnSocialGroupWithUUID_withCompletion___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v12 = v7;
+  v12 = completionCopy;
   v24 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v23];
+  v13 = [proxyFactory remoteObjectProxyWithErrorHandler:v23];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __80__PLAssetsdDebugClient_runAssetContainmentOnSocialGroupWithUUID_withCompletion___block_invoke_146;
   v21[3] = &unk_1E7932DA8;
   v14 = v12;
   v22 = v14;
-  v15 = [v13 runAssetContainmentOnSocialGroup:v6 reply:v21];
+  v15 = [v13 runAssetContainmentOnSocialGroup:dCopy reply:v21];
 
   if (v25 == 1)
   {
@@ -1664,10 +1664,10 @@ void __80__PLAssetsdDebugClient_runAssetContainmentOnSocialGroupWithUUID_withCom
   v5();
 }
 
-- (id)runAssetContainmentOnAllSocialGroupsWithCompletion:(id)a3
+- (id)runAssetContainmentOnAllSocialGroupsWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -1682,14 +1682,14 @@ void __80__PLAssetsdDebugClient_runAssetContainmentOnSocialGroupWithUUID_withCom
     os_activity_scope_enter(v6, (&v23 + 8));
   }
 
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __75__PLAssetsdDebugClient_runAssetContainmentOnAllSocialGroupsWithCompletion___block_invoke;
   v20[3] = &unk_1E7932DA8;
-  v9 = v4;
+  v9 = completionCopy;
   v21 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v20];
+  v10 = [proxyFactory remoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__PLAssetsdDebugClient_runAssetContainmentOnAllSocialGroupsWithCompletion___block_invoke_145;
@@ -1762,12 +1762,12 @@ void __75__PLAssetsdDebugClient_runAssetContainmentOnAllSocialGroupsWithCompleti
   v5();
 }
 
-- (void)coalesceJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 withChangeJournalOverThreshold:(float)a5 completionHandler:(id)a6
+- (void)coalesceJournalsForManagerName:(id)name payloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  dsCopy = ds;
+  handlerCopy = handler;
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
@@ -1782,7 +1782,7 @@ void __75__PLAssetsdDebugClient_runAssetContainmentOnAllSocialGroupsWithCompleti
     os_activity_scope_enter(v15, (&v36 + 8));
   }
 
-  v17 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3254779904;
   v25[2] = __120__PLAssetsdDebugClient_coalesceJournalsForManagerName_payloadClassIDs_withChangeJournalOverThreshold_completionHandler___block_invoke_140;
@@ -1792,14 +1792,14 @@ void __75__PLAssetsdDebugClient_runAssetContainmentOnAllSocialGroupsWithCompleti
   v31 = v36;
   v32 = v37;
   v33 = a2;
-  v18 = v11;
+  v18 = nameCopy;
   v26 = v18;
-  v19 = v12;
+  v19 = dsCopy;
   v27 = v19;
-  v34 = a5;
-  v20 = v13;
+  thresholdCopy = threshold;
+  v20 = handlerCopy;
   v28 = v20;
-  [v17 remoteObjectProxyWithErrorHandler:&__block_literal_global_139 handler:v25];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_139 handler:v25];
 
   if (v35 == 1)
   {
@@ -1884,12 +1884,12 @@ uint64_t __120__PLAssetsdDebugClient_coalesceJournalsForManagerName_payloadClass
   return result;
 }
 
-- (void)snapshotJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 withCompletionHandler:(id)a5
+- (void)snapshotJournalsForManagerName:(id)name payloadClassIDs:(id)ds withCompletionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  dsCopy = ds;
+  handlerCopy = handler;
   v33 = 0u;
   *sel = 0u;
   v32 = 0u;
@@ -1904,7 +1904,7 @@ uint64_t __120__PLAssetsdDebugClient_coalesceJournalsForManagerName_payloadClass
     os_activity_scope_enter(v13, (&v33 + 8));
   }
 
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3254779904;
   v23[2] = __93__PLAssetsdDebugClient_snapshotJournalsForManagerName_payloadClassIDs_withCompletionHandler___block_invoke_135;
@@ -1914,13 +1914,13 @@ uint64_t __120__PLAssetsdDebugClient_coalesceJournalsForManagerName_payloadClass
   v29 = v33;
   v30 = *sel;
   v31 = a2;
-  v16 = v9;
+  v16 = nameCopy;
   v24 = v16;
-  v17 = v10;
+  v17 = dsCopy;
   v25 = v17;
-  v18 = v11;
+  v18 = handlerCopy;
   v26 = v18;
-  [v15 remoteObjectProxyWithErrorHandler:&__block_literal_global_134 handler:v23];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_134 handler:v23];
 
   if (v32 == 1)
   {
@@ -2003,12 +2003,12 @@ uint64_t __93__PLAssetsdDebugClient_snapshotJournalsForManagerName_payloadClassI
   return result;
 }
 
-- (void)privateDownloadCloudPhotoLibraryAsset:(id)a3 resourceType:(unint64_t)a4 highPriority:(BOOL)a5 completionHandler:(id)a6
+- (void)privateDownloadCloudPhotoLibraryAsset:(id)asset resourceType:(unint64_t)type highPriority:(BOOL)priority completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if (v11)
+  assetCopy = asset;
+  handlerCopy = handler;
+  if (assetCopy)
   {
     v32 = 0u;
     v33 = 0u;
@@ -2024,7 +2024,7 @@ uint64_t __93__PLAssetsdDebugClient_snapshotJournalsForManagerName_payloadClassI
       os_activity_scope_enter(v14, (&v32 + 8));
     }
 
-    v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+    proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3254779904;
     v21[2] = __106__PLAssetsdDebugClient_privateDownloadCloudPhotoLibraryAsset_resourceType_highPriority_completionHandler___block_invoke_129;
@@ -2034,11 +2034,11 @@ uint64_t __93__PLAssetsdDebugClient_snapshotJournalsForManagerName_payloadClassI
     v26 = v32;
     v27 = v33;
     v28 = a2;
-    v22 = v11;
-    v29 = a4;
-    v30 = a5;
-    v23 = v12;
-    [v16 remoteObjectProxyWithErrorHandler:&__block_literal_global_128 handler:v21];
+    v22 = assetCopy;
+    typeCopy = type;
+    priorityCopy = priority;
+    v23 = handlerCopy;
+    [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_128 handler:v21];
 
     if (v31 == 1)
     {
@@ -2105,10 +2105,10 @@ void __106__PLAssetsdDebugClient_privateDownloadCloudPhotoLibraryAsset_resourceT
   }
 }
 
-- (BOOL)clearSensitivityStateForAssetsWithUUIDs:(id)a3 error:(id *)a4
+- (BOOL)clearSensitivityStateForAssetsWithUUIDs:(id)ds error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dsCopy = ds;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -2129,26 +2129,26 @@ void __106__PLAssetsdDebugClient_privateDownloadCloudPhotoLibraryAsset_resourceT
   v27 = __Block_byref_object_copy__1936;
   v28 = __Block_byref_object_dispose__1937;
   v29 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __70__PLAssetsdDebugClient_clearSensitivityStateForAssetsWithUUIDs_error___block_invoke;
   v21[3] = &unk_1E7932770;
   v21[4] = &buf;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __70__PLAssetsdDebugClient_clearSensitivityStateForAssetsWithUUIDs_error___block_invoke_126;
   v20[3] = &unk_1E7932770;
   v20[4] = &buf;
-  [v11 clearSensitivityStateForAssetsWithUUIDs:v6 reply:v20];
+  [v11 clearSensitivityStateForAssetsWithUUIDs:dsCopy reply:v20];
 
   v12 = *(*(&buf + 1) + 40);
   v13 = v12;
-  if (v12 && a4)
+  if (v12 && error)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = *(*(&buf + 1) + 40);
@@ -2206,7 +2206,7 @@ void __70__PLAssetsdDebugClient_clearSensitivityStateForAssetsWithUUIDs_error___
   }
 }
 
-- (BOOL)locationOfInterestUpdateWithError:(id *)a3
+- (BOOL)locationOfInterestUpdateWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -2243,21 +2243,21 @@ void __70__PLAssetsdDebugClient_clearSensitivityStateForAssetsWithUUIDs_error___
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __58__PLAssetsdDebugClient_locationOfInterestUpdateWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 locationOfInterestUpdateWithReply:&__block_literal_global_125];
 
   v16 = *(*(&buf + 1) + 40);
   v17 = v16;
-  if (v16 && a3)
+  if (v16 && error)
   {
     v17 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   v18 = *(*(&buf + 1) + 40);
@@ -2304,7 +2304,7 @@ void __58__PLAssetsdDebugClient_locationOfInterestUpdateWithError___block_invoke
   *(v5 + 40) = v3;
 }
 
-- (BOOL)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError:(id *)a3
+- (BOOL)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -2341,21 +2341,21 @@ void __58__PLAssetsdDebugClient_locationOfInterestUpdateWithError___block_invoke
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __90__PLAssetsdDebugClient_invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:&__block_literal_global_122];
 
   v16 = *(*(&buf + 1) + 40);
   v17 = v16;
-  if (v16 && a3)
+  if (v16 && error)
   {
     v17 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   v18 = *(*(&buf + 1) + 40);
@@ -2402,7 +2402,7 @@ void __90__PLAssetsdDebugClient_invalidateHighlightSubtitlesAndRegenerateHighlig
   *(v5 + 40) = v3;
 }
 
-- (BOOL)cleanupEmptyHighlightsWithError:(id *)a3
+- (BOOL)cleanupEmptyHighlightsWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -2439,21 +2439,21 @@ void __90__PLAssetsdDebugClient_invalidateHighlightSubtitlesAndRegenerateHighlig
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __56__PLAssetsdDebugClient_cleanupEmptyHighlightsWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 cleanupEmptyHighlightsWithReply:&__block_literal_global_119];
 
   v16 = *(*(&buf + 1) + 40);
   v17 = v16;
-  if (v16 && a3)
+  if (v16 && error)
   {
     v17 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   v18 = *(*(&buf + 1) + 40);
@@ -2500,7 +2500,7 @@ void __56__PLAssetsdDebugClient_cleanupEmptyHighlightsWithError___block_invoke(u
   *(v5 + 40) = v3;
 }
 
-- (BOOL)updateHighlightTitlesWithError:(id *)a3
+- (BOOL)updateHighlightTitlesWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -2537,21 +2537,21 @@ void __56__PLAssetsdDebugClient_cleanupEmptyHighlightsWithError___block_invoke(u
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __55__PLAssetsdDebugClient_updateHighlightTitlesWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 updateHighlightTitlesWithReply:&__block_literal_global_116];
 
   v16 = *(*(&buf + 1) + 40);
   v17 = v16;
-  if (v16 && a3)
+  if (v16 && error)
   {
     v17 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   v18 = *(*(&buf + 1) + 40);
@@ -2598,7 +2598,7 @@ void __55__PLAssetsdDebugClient_updateHighlightTitlesWithError___block_invoke(ui
   *(v5 + 40) = v3;
 }
 
-- (BOOL)processUnprocessedMomentLocationsWithError:(id *)a3
+- (BOOL)processUnprocessedMomentLocationsWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -2635,21 +2635,21 @@ void __55__PLAssetsdDebugClient_updateHighlightTitlesWithError___block_invoke(ui
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __67__PLAssetsdDebugClient_processUnprocessedMomentLocationsWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 processUnprocessedMomentLocationsWithReply:&__block_literal_global_113];
 
   v16 = *(*(&buf + 1) + 40);
   v17 = v16;
-  if (v16 && a3)
+  if (v16 && error)
   {
     v17 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   v18 = *(*(&buf + 1) + 40);
@@ -2696,7 +2696,7 @@ void __67__PLAssetsdDebugClient_processUnprocessedMomentLocationsWithError___blo
   *(v5 + 40) = v3;
 }
 
-- (BOOL)processRecentHighlightsWithError:(id *)a3
+- (BOOL)processRecentHighlightsWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -2733,21 +2733,21 @@ void __67__PLAssetsdDebugClient_processUnprocessedMomentLocationsWithError___blo
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __57__PLAssetsdDebugClient_processRecentHighlightsWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 processRecentHighlightsWithReply:&__block_literal_global_110];
 
   v16 = *(*(&buf + 1) + 40);
   v17 = v16;
-  if (v16 && a3)
+  if (v16 && error)
   {
     v17 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   v18 = *(*(&buf + 1) + 40);
@@ -2794,7 +2794,7 @@ void __57__PLAssetsdDebugClient_processRecentHighlightsWithError___block_invoke(
   *(v5 + 40) = v3;
 }
 
-- (void)prefetchResourcesWithMode:(int64_t)a3
+- (void)prefetchResourcesWithMode:(int64_t)mode
 {
   v26 = *MEMORY[0x1E69E9840];
   v22 = 0u;
@@ -2825,14 +2825,14 @@ void __57__PLAssetsdDebugClient_processRecentHighlightsWithError___block_invoke(
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_105];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_105];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __50__PLAssetsdDebugClient_prefetchResourcesWithMode___block_invoke_106;
   v20[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v20[4] = a3;
-  [v15 prefetchResourcesWithMode:a3 reply:v20];
+  v20[4] = mode;
+  [v15 prefetchResourcesWithMode:mode reply:v20];
 
   if (v21 == 1)
   {
@@ -2905,10 +2905,10 @@ void __50__PLAssetsdDebugClient_prefetchResourcesWithMode___block_invoke(uint64_
   }
 }
 
-- (void)prefetchResourcesForHighlights:(id)a3
+- (void)prefetchResourcesForHighlights:(id)highlights
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  highlightsCopy = highlights;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
@@ -2937,13 +2937,13 @@ void __50__PLAssetsdDebugClient_prefetchResourcesWithMode___block_invoke(uint64_
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_102];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_102];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __55__PLAssetsdDebugClient_prefetchResourcesForHighlights___block_invoke_103;
   v21[3] = &unk_1E79329F0;
-  v16 = v5;
+  v16 = highlightsCopy;
   v22 = v16;
   [v15 prefetchResourcesForHighlights:v16 reply:v21];
 
@@ -2995,10 +2995,10 @@ void __55__PLAssetsdDebugClient_prefetchResourcesForHighlights___block_invoke(ui
   }
 }
 
-- (void)prefetchResourcesForMemories:(id)a3
+- (void)prefetchResourcesForMemories:(id)memories
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  memoriesCopy = memories;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -3024,9 +3024,9 @@ void __55__PLAssetsdDebugClient_prefetchResourcesForHighlights___block_invoke(ui
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_97];
-  [v13 prefetchResourcesForMemories:v5 reply:&__block_literal_global_100];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_97];
+  [v13 prefetchResourcesForMemories:memoriesCopy reply:&__block_literal_global_100];
 
   if (v17 == 1)
   {
@@ -3062,11 +3062,11 @@ void __53__PLAssetsdDebugClient_prefetchResourcesForMemories___block_invoke(uint
   }
 }
 
-- (void)pruneAssets:(id)a3 resourceTypes:(id)a4
+- (void)pruneAssets:(id)assets resourceTypes:(id)types
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  typesCopy = types;
   v21 = 0u;
   *sel = 0u;
   v20 = 0u;
@@ -3092,9 +3092,9 @@ void __53__PLAssetsdDebugClient_prefetchResourcesForMemories___block_invoke(uint
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_92];
-  [v16 pruneAssetsWithUUID:v7 resourceTypes:v8 reply:&__block_literal_global_95];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v16 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_92];
+  [v16 pruneAssetsWithUUID:assetsCopy resourceTypes:typesCopy reply:&__block_literal_global_95];
 
   if (v20 == 1)
   {
@@ -3130,10 +3130,10 @@ void __50__PLAssetsdDebugClient_pruneAssets_resourceTypes___block_invoke(uint64_
   }
 }
 
-- (BOOL)debugSidecarFileURLsForAsset:(id)a3 debugSidecarFileURLs:(id *)a4 error:(id *)a5
+- (BOOL)debugSidecarFileURLsForAsset:(id)asset debugSidecarFileURLs:(id *)ls error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  assetCopy = asset;
   v42 = 0u;
   *sel = 0u;
   v41 = 0u;
@@ -3162,16 +3162,16 @@ void __50__PLAssetsdDebugClient_pruneAssets_resourceTypes___block_invoke(uint64_
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v8)
+  if (!assetCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  if (!a4)
+  if (!ls)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"sidecarFileURLs"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"sidecarFileURLs"}];
   }
 
   v37 = 0;
@@ -3190,16 +3190,16 @@ void __50__PLAssetsdDebugClient_pruneAssets_resourceTypes___block_invoke(uint64_
   v34 = __Block_byref_object_copy__1936;
   v35 = __Block_byref_object_dispose__1937;
   v36 = 0;
-  v17 = [v8 objectID];
-  v18 = [v17 URIRepresentation];
+  objectID = [assetCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
 
-  v19 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __80__PLAssetsdDebugClient_debugSidecarFileURLsForAsset_debugSidecarFileURLs_error___block_invoke;
   v30[3] = &unk_1E7932770;
   v30[4] = &buf;
-  v20 = [v19 synchronousRemoteObjectProxyWithErrorHandler:v30];
+  v20 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v30];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __80__PLAssetsdDebugClient_debugSidecarFileURLsForAsset_debugSidecarFileURLs_error___block_invoke_84;
@@ -3207,11 +3207,11 @@ void __50__PLAssetsdDebugClient_pruneAssets_resourceTypes___block_invoke(uint64_
   v29[4] = &v31;
   v29[5] = &v37;
   v29[6] = &buf;
-  [v20 debugSidecarURLsWithObjectURI:v18 reply:v29];
+  [v20 debugSidecarURLsWithObjectURI:uRIRepresentation reply:v29];
 
   if (*(v38 + 24) == 1)
   {
-    *a4 = v32[5];
+    *ls = v32[5];
     v21 = *(v38 + 24);
   }
 
@@ -3311,10 +3311,10 @@ void __80__PLAssetsdDebugClient_debugSidecarFileURLsForAsset_debugSidecarFileURL
   }
 }
 
-- (BOOL)revertToOriginalForAsset:(id)a3 error:(id *)a4
+- (BOOL)revertToOriginalForAsset:(id)asset error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  assetCopy = asset;
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
@@ -3343,10 +3343,10 @@ void __80__PLAssetsdDebugClient_debugSidecarFileURLsForAsset_debugSidecarFileURL
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!v7)
+  if (!assetCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:337 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:337 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
   }
 
   v29 = 0;
@@ -3359,28 +3359,28 @@ void __80__PLAssetsdDebugClient_debugSidecarFileURLsForAsset_debugSidecarFileURL
   v38 = __Block_byref_object_copy__1936;
   v39 = __Block_byref_object_dispose__1937;
   v40 = 0;
-  v16 = [v7 URIRepresentation];
-  v17 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __55__PLAssetsdDebugClient_revertToOriginalForAsset_error___block_invoke;
   v28[3] = &unk_1E7932770;
   v28[4] = &buf;
-  v18 = [v17 synchronousRemoteObjectProxyWithErrorHandler:v28];
+  v18 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v28];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __55__PLAssetsdDebugClient_revertToOriginalForAsset_error___block_invoke_77;
   v27[3] = &unk_1E7932360;
   v27[4] = &buf;
   v27[5] = &v29;
-  [v18 revertToOriginalWithObjectURI:v16 reply:v27];
+  [v18 revertToOriginalWithObjectURI:uRIRepresentation reply:v27];
 
-  if (a4)
+  if (error)
   {
     v19 = *(*(&buf + 1) + 40);
     if (v19)
     {
-      *a4 = v19;
+      *error = v19;
     }
   }
 
@@ -3480,8 +3480,8 @@ void __55__PLAssetsdDebugClient_revertToOriginalForAsset_error___block_invoke_77
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_73];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_73];
   [v11 enqueuePrefetch];
 
   if (v15 == 1)
@@ -3546,8 +3546,8 @@ void __39__PLAssetsdDebugClient_enqueuePrefetch__block_invoke(uint64_t a1, void 
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_71];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_71];
   [v11 clearPrefetchState];
 
   if (v15 == 1)
@@ -3584,9 +3584,9 @@ void __42__PLAssetsdDebugClient_clearPrefetchState__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)getCPLStateForDebug:(BOOL)a3
+- (id)getCPLStateForDebug:(BOOL)debug
 {
-  v3 = a3;
+  debugCopy = debug;
   v31 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   *sel = 0u;
@@ -3622,14 +3622,14 @@ void __42__PLAssetsdDebugClient_clearPrefetchState__block_invoke(uint64_t a1, vo
   v28 = __Block_byref_object_copy__1936;
   v29 = __Block_byref_object_dispose__1937;
   v30 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_68];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_68];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __44__PLAssetsdDebugClient_getCPLStateForDebug___block_invoke_69;
   v22[3] = &unk_1E7931EB0;
   v22[4] = &buf;
-  [v15 getCPLStateForDebug:v3 withReply:v22];
+  [v15 getCPLStateForDebug:debugCopy withReply:v22];
 
   v16 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&buf, 8);
@@ -3708,8 +3708,8 @@ void __44__PLAssetsdDebugClient_getCPLStateForDebug___block_invoke(uint64_t a1, 
   v26 = __Block_byref_object_copy__1936;
   v27 = __Block_byref_object_dispose__1937;
   v28 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_65];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_65];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __47__PLAssetsdDebugClient_getTaskConstraintStatus__block_invoke_66;
@@ -3794,8 +3794,8 @@ void __47__PLAssetsdDebugClient_getTaskConstraintStatus__block_invoke(uint64_t a
   v26 = __Block_byref_object_copy__1936;
   v27 = __Block_byref_object_dispose__1937;
   v28 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_62];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_62];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __47__PLAssetsdDebugClient_getXPCTransactionStatus__block_invoke_63;
@@ -3871,8 +3871,8 @@ void __47__PLAssetsdDebugClient_getXPCTransactionStatus__block_invoke(uint64_t a
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_57];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_57];
   [v11 rebuildTableThumbsWithReply:&__block_literal_global_60];
 
   if (v15 == 1)
@@ -3924,9 +3924,9 @@ void __42__PLAssetsdDebugClient_rebuildTableThumbs__block_invoke(uint64_t a1, vo
   }
 }
 
-- (int64_t)removeAllThumbnailsForDryRun:(BOOL)a3 count:(unint64_t *)a4
+- (int64_t)removeAllThumbnailsForDryRun:(BOOL)run count:(unint64_t *)count
 {
-  v5 = a3;
+  runCopy = run;
   v34 = *MEMORY[0x1E69E9840];
   v28 = 0;
   v29 = &v28;
@@ -3960,15 +3960,15 @@ void __42__PLAssetsdDebugClient_rebuildTableThumbs__block_invoke(uint64_t a1, vo
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_53];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_53];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __59__PLAssetsdDebugClient_removeAllThumbnailsForDryRun_count___block_invoke_54;
   v24[3] = &unk_1E792FD30;
   v24[4] = &v28;
-  v24[5] = a4;
-  [v17 removeAllThumbnailsForDryRun:v5 reply:v24];
+  v24[5] = count;
+  [v17 removeAllThumbnailsForDryRun:runCopy reply:v24];
 
   v18 = v29[3];
   if (v25 == 1)
@@ -4049,8 +4049,8 @@ void __59__PLAssetsdDebugClient_removeAllThumbnailsForDryRun_count___block_invok
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_51];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_51];
   [v11 rebuildAllThumbnails];
 
   if (v15 == 1)
@@ -4115,8 +4115,8 @@ void __44__PLAssetsdDebugClient_rebuildAllThumbnails__block_invoke(uint64_t a1, 
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_46_1965];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_46_1965];
   [v11 rebuildCloudFeedWithReply:&__block_literal_global_49_1966];
 
   if (v15 == 1)
@@ -4153,9 +4153,9 @@ void __40__PLAssetsdDebugClient_rebuildCloudFeed__block_invoke(uint64_t a1, void
   }
 }
 
-- (BOOL)indexAssetsWithUUIDs:(id)a3 error:(id *)a4
+- (BOOL)indexAssetsWithUUIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -4166,27 +4166,27 @@ void __40__PLAssetsdDebugClient_rebuildCloudFeed__block_invoke(uint64_t a1, void
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__PLAssetsdDebugClient_indexAssetsWithUUIDs_error___block_invoke;
   v13[3] = &unk_1E7932770;
   v13[4] = &v18;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__PLAssetsdDebugClient_indexAssetsWithUUIDs_error___block_invoke_44;
   v12[3] = &unk_1E7932E48;
   v12[4] = &v14;
   v12[5] = &v18;
-  [v8 indexAssetsWithUUIDs:v6 reply:v12];
+  [v8 indexAssetsWithUUIDs:dsCopy reply:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -4216,10 +4216,10 @@ void __51__PLAssetsdDebugClient_indexAssetsWithUUIDs_error___block_invoke(uint64
   *(v5 + 40) = v3;
 }
 
-- (id)requestSearchDebugInformationForAssetUUID:(id)a3 redacted:(BOOL)a4 error:(id *)a5
+- (id)requestSearchDebugInformationForAssetUUID:(id)d redacted:(BOOL)redacted error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  redactedCopy = redacted;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -4232,26 +4232,26 @@ void __51__PLAssetsdDebugClient_indexAssetsWithUUIDs_error___block_invoke(uint64
   v19 = __Block_byref_object_copy__1936;
   v20 = __Block_byref_object_dispose__1937;
   v21 = 0;
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__PLAssetsdDebugClient_requestSearchDebugInformationForAssetUUID_redacted_error___block_invoke;
   v15[3] = &unk_1E7932770;
   v15[4] = &v16;
-  v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v10 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v15];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__PLAssetsdDebugClient_requestSearchDebugInformationForAssetUUID_redacted_error___block_invoke_43;
   v14[3] = &unk_1E79302A8;
   v14[4] = &v22;
-  [v10 searchAttributesForAssetWithUUID:v8 redacted:v6 reply:v14];
+  [v10 searchAttributesForAssetWithUUID:dCopy redacted:redactedCopy reply:v14];
 
-  if (a5)
+  if (error)
   {
     v11 = v17[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -4282,7 +4282,7 @@ void __81__PLAssetsdDebugClient_requestSearchDebugInformationForAssetUUID_redact
   *(v5 + 40) = v3;
 }
 
-- (BOOL)rebuildSearchIndexWithError:(id *)a3
+- (BOOL)rebuildSearchIndexWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -4319,22 +4319,22 @@ void __81__PLAssetsdDebugClient_requestSearchDebugInformationForAssetUUID_redact
   v30 = __Block_byref_object_copy__1936;
   v31 = __Block_byref_object_dispose__1937;
   v32 = 0;
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __52__PLAssetsdDebugClient_rebuildSearchIndexWithError___block_invoke;
   v24[3] = &unk_1E7932770;
   v24[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v24];
   [v15 rebuildSearchIndexWithReply:&__block_literal_global_42];
 
   v16 = *(&buf + 1);
-  if (a3)
+  if (error)
   {
     v17 = *(*(&buf + 1) + 40);
     if (v17)
     {
-      *a3 = v17;
+      *error = v17;
       v16 = *(&buf + 1);
     }
   }
@@ -4383,10 +4383,10 @@ void __52__PLAssetsdDebugClient_rebuildSearchIndexWithError___block_invoke(uint6
   *(v5 + 40) = v3;
 }
 
-- (void)closeSearchIndexWithCompletionHandler:(id)a3
+- (void)closeSearchIndexWithCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
@@ -4401,18 +4401,18 @@ void __52__PLAssetsdDebugClient_rebuildSearchIndexWithError___block_invoke(uint6
     os_activity_scope_enter(v7, (&v26 + 8));
   }
 
-  if (!v5)
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __62__PLAssetsdDebugClient_closeSearchIndexWithCompletionHandler___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v24 = v5;
+  v24 = handlerCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
   v16[2] = __62__PLAssetsdDebugClient_closeSearchIndexWithCompletionHandler___block_invoke_37;
@@ -4424,7 +4424,7 @@ void __52__PLAssetsdDebugClient_rebuildSearchIndexWithError___block_invoke(uint6
   v22 = a2;
   v10 = v24;
   v17 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v23 handler:v16];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v23 handler:v16];
 
   if (v25 == 1)
   {
@@ -4496,10 +4496,10 @@ void __62__PLAssetsdDebugClient_closeSearchIndexWithCompletionHandler___block_in
   [v3 closeSearchIndexWithReply:v11];
 }
 
-- (void)dropSearchIndexWithCompletionHandler:(id)a3
+- (void)dropSearchIndexWithCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
@@ -4514,18 +4514,18 @@ void __62__PLAssetsdDebugClient_closeSearchIndexWithCompletionHandler___block_in
     os_activity_scope_enter(v7, (&v26 + 8));
   }
 
-  if (!v5)
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __61__PLAssetsdDebugClient_dropSearchIndexWithCompletionHandler___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v24 = v5;
+  v24 = handlerCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
   v16[2] = __61__PLAssetsdDebugClient_dropSearchIndexWithCompletionHandler___block_invoke_33;
@@ -4537,7 +4537,7 @@ void __62__PLAssetsdDebugClient_closeSearchIndexWithCompletionHandler___block_in
   v22 = a2;
   v10 = v24;
   v17 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v23 handler:v16];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v23 handler:v16];
 
   if (v25 == 1)
   {
@@ -4609,10 +4609,10 @@ void __61__PLAssetsdDebugClient_dropSearchIndexWithCompletionHandler___block_inv
   [v3 dropSearchIndexWithReply:v11];
 }
 
-- (BOOL)allMomentsMetadataWithOutputPath:(id)a3 metadataDictionary:(id *)a4 error:(id *)a5
+- (BOOL)allMomentsMetadataWithOutputPath:(id)path metadataDictionary:(id *)dictionary error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  pathCopy = path;
   v37 = 0u;
   *sel = 0u;
   v36 = 0u;
@@ -4641,10 +4641,10 @@ void __61__PLAssetsdDebugClient_dropSearchIndexWithCompletionHandler___block_inv
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PLXPC Sync", "%{public}s", &buf, 0xCu);
   }
 
-  if (!a4)
+  if (!dictionary)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"metadataDictionary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"metadataDictionary"}];
   }
 
   *&buf = 0;
@@ -4659,30 +4659,30 @@ void __61__PLAssetsdDebugClient_dropSearchIndexWithCompletionHandler___block_inv
   v33 = __Block_byref_object_copy__1936;
   v34 = __Block_byref_object_dispose__1937;
   v35 = 0;
-  v18 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __82__PLAssetsdDebugClient_allMomentsMetadataWithOutputPath_metadataDictionary_error___block_invoke;
   v29[3] = &unk_1E7932770;
   v29[4] = &buf;
-  v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v29];
+  v19 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v29];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __82__PLAssetsdDebugClient_allMomentsMetadataWithOutputPath_metadataDictionary_error___block_invoke_32;
   v28[3] = &unk_1E79302A8;
   v28[4] = &v30;
-  [v19 dumpMomentsMetadataToPath:v9 reply:v28];
+  [v19 dumpMomentsMetadataToPath:pathCopy reply:v28];
 
-  if (a5)
+  if (error)
   {
     v20 = *(*(&buf + 1) + 40);
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
-  *a4 = v31[5];
+  *dictionary = v31[5];
   v21 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&v30, 8);
 
@@ -4728,10 +4728,10 @@ void __82__PLAssetsdDebugClient_allMomentsMetadataWithOutputPath_metadataDiction
   *(v5 + 40) = v3;
 }
 
-- (BOOL)dumpMetadataForMomentsWithOutputPath:(id)a3 metadataDirectory:(id *)a4 error:(id *)a5
+- (BOOL)dumpMetadataForMomentsWithOutputPath:(id)path metadataDirectory:(id *)directory error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  pathCopy = path;
   v36 = 0u;
   *sel = 0u;
   v35 = 0u;
@@ -4772,32 +4772,32 @@ void __82__PLAssetsdDebugClient_allMomentsMetadataWithOutputPath_metadataDiction
   v32 = __Block_byref_object_copy__1936;
   v33 = __Block_byref_object_dispose__1937;
   v34 = 0;
-  v18 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __85__PLAssetsdDebugClient_dumpMetadataForMomentsWithOutputPath_metadataDirectory_error___block_invoke;
   v28[3] = &unk_1E7932770;
   v28[4] = &buf;
-  v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v28];
+  v19 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v28];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __85__PLAssetsdDebugClient_dumpMetadataForMomentsWithOutputPath_metadataDirectory_error___block_invoke_27;
   v27[3] = &unk_1E79302A8;
   v27[4] = &v29;
-  [v19 dumpMetadataForMomentsToPath:v9 reply:v27];
+  [v19 dumpMetadataForMomentsToPath:pathCopy reply:v27];
 
-  if (a5)
+  if (error)
   {
     v20 = *(*(&buf + 1) + 40);
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
-  if (a4)
+  if (directory)
   {
-    *a4 = v30[5];
+    *directory = v30[5];
   }
 
   v21 = *(*(&buf + 1) + 40);
@@ -4845,9 +4845,9 @@ void __85__PLAssetsdDebugClient_dumpMetadataForMomentsWithOutputPath_metadataDir
   *(v5 + 40) = v3;
 }
 
-- (BOOL)rebuildHighlightsDeletingExistingHighlights:(BOOL)a3 error:(id *)a4
+- (BOOL)rebuildHighlightsDeletingExistingHighlights:(BOOL)highlights error:(id *)error
 {
-  v5 = a3;
+  highlightsCopy = highlights;
   v40 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   *sel = 0u;
@@ -4887,28 +4887,28 @@ void __85__PLAssetsdDebugClient_dumpMetadataForMomentsWithOutputPath_metadataDir
   v37 = __Block_byref_object_copy__1936;
   v38 = __Block_byref_object_dispose__1937;
   v39 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __74__PLAssetsdDebugClient_rebuildHighlightsDeletingExistingHighlights_error___block_invoke;
   v27[3] = &unk_1E7932770;
   v27[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v27];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v27];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __74__PLAssetsdDebugClient_rebuildHighlightsDeletingExistingHighlights_error___block_invoke_26;
   v25[3] = &unk_1E792FD08;
-  v26 = v5;
+  v26 = highlightsCopy;
   v25[4] = &buf;
   v25[5] = &v28;
-  [v17 rebuildHighlightsDeletingExistingHighlights:v5 reply:v25];
+  [v17 rebuildHighlightsDeletingExistingHighlights:highlightsCopy reply:v25];
 
-  if (a4)
+  if (error)
   {
     v18 = *(*(&buf + 1) + 40);
     if (v18)
     {
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -4983,9 +4983,9 @@ void __74__PLAssetsdDebugClient_rebuildHighlightsDeletingExistingHighlights_erro
   }
 }
 
-- (BOOL)rebuildMomentsDeletingExistingMoments:(BOOL)a3 error:(id *)a4
+- (BOOL)rebuildMomentsDeletingExistingMoments:(BOOL)moments error:(id *)error
 {
-  v5 = a3;
+  momentsCopy = moments;
   v40 = *MEMORY[0x1E69E9840];
   v33 = 0u;
   *sel = 0u;
@@ -5025,28 +5025,28 @@ void __74__PLAssetsdDebugClient_rebuildHighlightsDeletingExistingHighlights_erro
   v37 = __Block_byref_object_copy__1936;
   v38 = __Block_byref_object_dispose__1937;
   v39 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __68__PLAssetsdDebugClient_rebuildMomentsDeletingExistingMoments_error___block_invoke;
   v27[3] = &unk_1E7932770;
   v27[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v27];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v27];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __68__PLAssetsdDebugClient_rebuildMomentsDeletingExistingMoments_error___block_invoke_25;
   v25[3] = &unk_1E792FD08;
-  v26 = v5;
+  v26 = momentsCopy;
   v25[4] = &buf;
   v25[5] = &v28;
-  [v17 rebuildMomentsDeletingExistingMoments:v5 reply:v25];
+  [v17 rebuildMomentsDeletingExistingMoments:momentsCopy reply:v25];
 
-  if (a4)
+  if (error)
   {
     v18 = *(*(&buf + 1) + 40);
     if (v18)
     {
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -5158,8 +5158,8 @@ void __68__PLAssetsdDebugClient_rebuildMomentsDeletingExistingMoments_error___bl
   v26 = __Block_byref_object_copy__1936;
   v27 = __Block_byref_object_dispose__1937;
   v28 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22_2010];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22_2010];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __46__PLAssetsdDebugClient_momentGenerationStatus__block_invoke_23;
@@ -5235,8 +5235,8 @@ void __46__PLAssetsdDebugClient_momentGenerationStatus__block_invoke(uint64_t a1
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20_2016];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20_2016];
   [v11 recoverAssetsInInconsistentCloudState];
 
   if (v15 == 1)
@@ -5301,8 +5301,8 @@ void __61__PLAssetsdDebugClient_recoverAssetsInInconsistentCloudState__block_inv
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2022];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2022];
   [v11 identifyAssetsWithInconsistentCloudState];
 
   if (v15 == 1)
@@ -5339,11 +5339,11 @@ void __64__PLAssetsdDebugClient_identifyAssetsWithInconsistentCloudState__block_
   }
 }
 
-- (void)unloadImageFilesForAsset:(id)a3 minimumFormat:(int)a4 completionHandler:(id)a5
+- (void)unloadImageFilesForAsset:(id)asset minimumFormat:(int)format completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -5358,19 +5358,19 @@ void __64__PLAssetsdDebugClient_identifyAssetsWithInconsistentCloudState__block_
     os_activity_scope_enter(v12, (&v35 + 8));
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdDebugClient.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v14 = [v9 URIRepresentation];
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __81__PLAssetsdDebugClient_unloadImageFilesForAsset_minimumFormat_completionHandler___block_invoke;
   v32[3] = &unk_1E7932DA8;
-  v33 = v10;
+  v33 = handlerCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3254779904;
   v23[2] = __81__PLAssetsdDebugClient_unloadImageFilesForAsset_minimumFormat_completionHandler___block_invoke_15;
@@ -5380,12 +5380,12 @@ void __64__PLAssetsdDebugClient_identifyAssetsWithInconsistentCloudState__block_
   v28 = v35;
   v29 = v36;
   v30 = a2;
-  v16 = v14;
+  v16 = uRIRepresentation;
   v24 = v16;
-  v31 = a4;
+  formatCopy = format;
   v17 = v33;
   v25 = v17;
-  [v15 remoteObjectProxyWithErrorHandler:v32 handler:v23];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v32 handler:v23];
 
   if (v34 == 1)
   {

@@ -1,26 +1,26 @@
 @interface BICMemoryPersistentStoring
-- (BICMemoryPersistentStoring)initWithURL:(id)a3;
-- (id)addNewImageEntryToSet:(id)a3;
-- (id)addNewImageSetWithIdentifier:(id)a3;
+- (BICMemoryPersistentStoring)initWithURL:(id)l;
+- (id)addNewImageEntryToSet:(id)set;
+- (id)addNewImageSetWithIdentifier:(id)identifier;
 - (id)fetchAllImageSets;
-- (id)fetchImageEntriesMatchingAddedEntries:(id)a3;
-- (id)fetchImageEntriesWithLocations:(id)a3;
-- (id)fetchImageSetsWithDescribedImages:(id)a3;
-- (id)fetchImageSetsWithIDs:(id)a3;
-- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)a3;
-- (id)imageSetForIdentifier:(id)a3;
+- (id)fetchImageEntriesMatchingAddedEntries:(id)entries;
+- (id)fetchImageEntriesWithLocations:(id)locations;
+- (id)fetchImageSetsWithDescribedImages:(id)images;
+- (id)fetchImageSetsWithIDs:(id)ds;
+- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)d;
+- (id)imageSetForIdentifier:(id)identifier;
 - (int64_t)totalNumberOfImageEntries;
 - (int64_t)totalNumberOfImageSets;
-- (void)clean:(id)a3;
-- (void)deleteObject:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
-- (void)removeImageSets:(id)a3;
+- (void)clean:(id)clean;
+- (void)deleteObject:(id)object;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
+- (void)removeImageSets:(id)sets;
 @end
 
 @implementation BICMemoryPersistentStoring
 
-- (BICMemoryPersistentStoring)initWithURL:(id)a3
+- (BICMemoryPersistentStoring)initWithURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = BICMemoryPersistentStoring;
@@ -35,38 +35,38 @@
   return v3;
 }
 
-- (id)imageSetForIdentifier:(id)a3
+- (id)imageSetForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BICMemoryPersistentStoring *)self imageSets];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  v6 = [imageSets objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (id)addNewImageSetWithIdentifier:(id)a3
+- (id)addNewImageSetWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(BICMemoryImageSet);
-  [(BICMemoryImageSet *)v5 setIdentifier:v4];
-  v6 = [(BICMemoryPersistentStoring *)self imageSets];
-  [v6 setObject:v5 forKeyedSubscript:v4];
+  [(BICMemoryImageSet *)v5 setIdentifier:identifierCopy];
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  [imageSets setObject:v5 forKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-- (id)addNewImageEntryToSet:(id)a3
+- (id)addNewImageEntryToSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc_init(BICMemoryImageEntry);
-  [v3 addEntry:v4];
+  [setCopy addEntry:v4];
 
   return v4;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v3 = objc_retainBlock(a3);
+  v3 = objc_retainBlock(block);
   if (v3)
   {
     v4 = v3;
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v3 = objc_retainBlock(a3);
+  v3 = objc_retainBlock(wait);
   if (v3)
   {
     v4 = v3;
@@ -86,16 +86,16 @@
   }
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v9 = a3;
+  objectCopy = object;
   objc_opt_class();
   v4 = BUDynamicCast();
   if (v4)
   {
-    v5 = [(BICMemoryPersistentStoring *)self imageSets];
-    v6 = [v4 identifier];
-    [v5 setObject:0 forKeyedSubscript:v6];
+    imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+    identifier = [v4 identifier];
+    [imageSets setObject:0 forKeyedSubscript:identifier];
   }
 
   objc_opt_class();
@@ -109,21 +109,21 @@
 
 - (id)fetchAllImageSets
 {
-  v2 = [(BICMemoryPersistentStoring *)self imageSets];
-  v3 = [v2 allValues];
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  allValues = [imageSets allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)fetchImageSetsWithIDs:(id)a3
+- (id)fetchImageSetsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableSet set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -139,8 +139,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(BICMemoryPersistentStoring *)self imageSets];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+        v13 = [imageSets objectForKeyedSubscript:v11];
 
         if (v13)
         {
@@ -154,27 +154,27 @@
     while (v8);
   }
 
-  v14 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v14;
+  return allObjects;
 }
 
-- (id)fetchImageSetsWithDescribedImages:(id)a3
+- (id)fetchImageSetsWithDescribedImages:(id)images
 {
-  v4 = [a3 valueForKey:@"identifier"];
+  v4 = [images valueForKey:@"identifier"];
   v5 = [(BICMemoryPersistentStoring *)self fetchImageSetsWithIDs:v4];
 
   return v5;
 }
 
-- (void)removeImageSets:(id)a3
+- (void)removeImageSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [setsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,37 +186,37 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(BICMemoryPersistentStoring *)self imageSets];
-        [v10 setObject:0 forKeyedSubscript:v9];
+        imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+        [imageSets setObject:0 forKeyedSubscript:v9];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [setsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)a3
+- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(BICMemoryPersistentStoring *)self imageSets];
-  v7 = [v6 allValues];
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  allValues = [imageSets allValues];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  obj = allValues;
+  v8 = [allValues countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -235,8 +235,8 @@
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v13 = [v12 imageEntries];
-        v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        imageEntries = [v12 imageEntries];
+        v14 = [imageEntries countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v14)
         {
           v15 = v14;
@@ -247,17 +247,17 @@
             {
               if (*v22 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(imageEntries);
               }
 
               v18 = *(*(&v21 + 1) + 8 * j);
-              if ([v18 state] == 3 && objc_msgSend(v18, "level") == v3)
+              if ([v18 state] == 3 && objc_msgSend(v18, "level") == dCopy)
               {
                 [v5 addObject:v18];
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v15 = [imageEntries countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v15);
@@ -273,27 +273,27 @@
   return v5;
 }
 
-- (id)fetchImageEntriesMatchingAddedEntries:(id)a3
+- (id)fetchImageEntriesMatchingAddedEntries:(id)entries
 {
-  v4 = [a3 valueForKey:@"entryLocation"];
+  v4 = [entries valueForKey:@"entryLocation"];
   v5 = [(BICMemoryPersistentStoring *)self fetchImageEntriesWithLocations:v4];
 
   return v5;
 }
 
-- (id)fetchImageEntriesWithLocations:(id)a3
+- (id)fetchImageEntriesWithLocations:(id)locations
 {
-  v4 = [NSSet setWithArray:a3];
+  v4 = [NSSet setWithArray:locations];
   v5 = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(BICMemoryPersistentStoring *)self imageSets];
-  v7 = [v6 allValues];
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  allValues = [imageSets allValues];
 
-  obj = v7;
-  v21 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  obj = allValues;
+  v21 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
     v20 = *v27;
@@ -311,8 +311,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v9 imageEntries];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        imageEntries = [v9 imageEntries];
+        v11 = [imageEntries countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
         {
           v12 = v11;
@@ -323,12 +323,12 @@
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(imageEntries);
               }
 
               v15 = *(*(&v22 + 1) + 8 * j);
-              v16 = [v15 entryLocation];
-              v17 = [v4 containsObject:v16];
+              entryLocation = [v15 entryLocation];
+              v17 = [v4 containsObject:entryLocation];
 
               if (v17)
               {
@@ -336,7 +336,7 @@
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v12 = [imageEntries countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v12);
@@ -352,13 +352,13 @@
   return v5;
 }
 
-- (void)clean:(id)a3
+- (void)clean:(id)clean
 {
-  v4 = a3;
-  v5 = [(BICMemoryPersistentStoring *)self imageSets];
-  [v5 removeAllObjects];
+  cleanCopy = clean;
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  [imageSets removeAllObjects];
 
-  v7 = objc_retainBlock(v4);
+  v7 = objc_retainBlock(cleanCopy);
   v6 = v7;
   if (v7)
   {
@@ -369,8 +369,8 @@
 
 - (int64_t)totalNumberOfImageSets
 {
-  v2 = [(BICMemoryPersistentStoring *)self imageSets];
-  v3 = [v2 count];
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  v3 = [imageSets count];
 
   return v3;
 }
@@ -381,10 +381,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(BICMemoryPersistentStoring *)self imageSets];
-  v3 = [v2 allValues];
+  imageSets = [(BICMemoryPersistentStoring *)self imageSets];
+  allValues = [imageSets allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -396,14 +396,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) imageEntries];
-        v6 += [v9 count];
+        imageEntries = [*(*(&v11 + 1) + 8 * i) imageEntries];
+        v6 += [imageEntries count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

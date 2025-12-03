@@ -1,13 +1,13 @@
 @interface VCEmulatedNetworkDoubleQueue
-- (VCEmulatedNetworkDoubleQueue)initWithPolicies:(id)a3;
+- (VCEmulatedNetworkDoubleQueue)initWithPolicies:(id)policies;
 - (void)dealloc;
-- (void)push:(id)a3;
-- (void)runUntilTime:(double)a3;
+- (void)push:(id)push;
+- (void)runUntilTime:(double)time;
 @end
 
 @implementation VCEmulatedNetworkDoubleQueue
 
-- (VCEmulatedNetworkDoubleQueue)initWithPolicies:(id)a3
+- (VCEmulatedNetworkDoubleQueue)initWithPolicies:(id)policies
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -15,7 +15,7 @@
   v4 = [(VCEmulatedNetwork *)&v14 initWithPolicies:?];
   if (v4)
   {
-    v5 = [a3 objectForKeyedSubscript:@"DoubleQueueImpairments"];
+    v5 = [policies objectForKeyedSubscript:@"DoubleQueueImpairments"];
     v6 = [v5 objectForKeyedSubscript:@"QueueAImpairments"];
     v7 = [v5 objectForKeyedSubscript:@"QueueBImpairments"];
     v4->_networkQueueA = [[VCEmulatedNetworkQueue alloc] initWithPolicies:v6];
@@ -66,16 +66,16 @@
   [(VCEmulatedNetwork *)&v3 dealloc];
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
-  v5 = [a3 packetID];
+  packetID = [push packetID];
   v6 = &OBJC_IVAR___VCEmulatedNetworkDoubleQueue__networkQueueA;
-  if ((v5 & 1) == 0)
+  if ((packetID & 1) == 0)
   {
     v6 = &OBJC_IVAR___VCEmulatedNetworkDoubleQueue__networkQueueB;
   }
 
-  if ([*(&self->super.super.isa + *v6) write:a3])
+  if ([*(&self->super.super.isa + *v6) write:push])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -83,7 +83,7 @@
       v8 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(VCEmulatedNetworkDoubleQueue *)v7 push:a3, v8];
+        [(VCEmulatedNetworkDoubleQueue *)v7 push:push, v8];
       }
     }
   }
@@ -100,12 +100,12 @@
   }
 }
 
-- (void)runUntilTime:(double)a3
+- (void)runUntilTime:(double)time
 {
   [(VCEmulatedNetworkQueue *)self->_networkQueueA runUntilTime:?];
   networkQueueB = self->_networkQueueB;
 
-  [(VCEmulatedNetworkQueue *)networkQueueB runUntilTime:a3];
+  [(VCEmulatedNetworkQueue *)networkQueueB runUntilTime:time];
 }
 
 - (void)initWithPolicies:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

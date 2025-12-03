@@ -1,19 +1,19 @@
 @interface DUXPCClientHelpers
-- (DUXPCClientHelpers)initWithServiceName:(id)a3 whitelistedServerInterface:(id)a4 clientExportedObject:(id)a5 interruptionHandler:(id)a6 invalidationHandler:(id)a7;
+- (DUXPCClientHelpers)initWithServiceName:(id)name whitelistedServerInterface:(id)interface clientExportedObject:(id)object interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 - (id)remoteObjectProxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_locked_establishConnection;
 - (void)dealloc;
 @end
 
 @implementation DUXPCClientHelpers
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_connectionLock);
   [(DUXPCClientHelpers *)self _locked_establishConnection];
-  v5 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   pthread_mutex_unlock(&self->_connectionLock);
 
@@ -24,10 +24,10 @@
 {
   pthread_mutex_lock(&self->_connectionLock);
   [(DUXPCClientHelpers *)self _locked_establishConnection];
-  v3 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
   pthread_mutex_unlock(&self->_connectionLock);
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)_locked_establishConnection
@@ -81,13 +81,13 @@
   [(DUXPCClientHelpers *)&v3 dealloc];
 }
 
-- (DUXPCClientHelpers)initWithServiceName:(id)a3 whitelistedServerInterface:(id)a4 clientExportedObject:(id)a5 interruptionHandler:(id)a6 invalidationHandler:(id)a7
+- (DUXPCClientHelpers)initWithServiceName:(id)name whitelistedServerInterface:(id)interface clientExportedObject:(id)object interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  interfaceCopy = interface;
+  objectCopy = object;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
   v25.receiver = self;
   v25.super_class = DUXPCClientHelpers;
   v18 = [(DUXPCClientHelpers *)&v25 init];
@@ -95,14 +95,14 @@
   if (v18)
   {
     pthread_mutex_init(&v18->_connectionLock, 0);
-    objc_storeStrong(&v19->_serviceName, a3);
-    objc_storeStrong(&v19->_allowListedServerInterface, a4);
-    objc_storeWeak(&v19->_clientExportedObject, v15);
-    v20 = _Block_copy(v16);
+    objc_storeStrong(&v19->_serviceName, name);
+    objc_storeStrong(&v19->_allowListedServerInterface, interface);
+    objc_storeWeak(&v19->_clientExportedObject, objectCopy);
+    v20 = _Block_copy(handlerCopy);
     interruptionHandler = v19->_interruptionHandler;
     v19->_interruptionHandler = v20;
 
-    v22 = _Block_copy(v17);
+    v22 = _Block_copy(invalidationHandlerCopy);
     invalidationHandler = v19->_invalidationHandler;
     v19->_invalidationHandler = v22;
   }

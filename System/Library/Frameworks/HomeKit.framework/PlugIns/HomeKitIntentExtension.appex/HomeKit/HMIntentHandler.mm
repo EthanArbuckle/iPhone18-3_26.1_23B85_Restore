@@ -1,13 +1,13 @@
 @interface HMIntentHandler
 + (id)logCategory;
-- (id)handlerForIntent:(id)a3;
-- (void)_handleRequestForIntent:(id)a3 payload:(id)a4 completion:(id)a5;
-- (void)_reportToResponseHandlerWithOutcome:(id)a3;
+- (id)handlerForIntent:(id)intent;
+- (void)_handleRequestForIntent:(id)intent payload:(id)payload completion:(id)completion;
+- (void)_reportToResponseHandlerWithOutcome:(id)outcome;
 - (void)_resetIntentTimer;
-- (void)_startIntentTimerWithTimeInterval:(double)a3;
-- (void)confirmControlHome:(id)a3 completion:(id)a4;
-- (void)handleControlHome:(id)a3 completion:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)_startIntentTimerWithTimeInterval:(double)interval;
+- (void)confirmControlHome:(id)home completion:(id)completion;
+- (void)handleControlHome:(id)home completion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIntentHandler
@@ -24,73 +24,73 @@
   return v3;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMIntentHandler *)self clientQueue];
+  fireCopy = fire;
+  clientQueue = [(HMIntentHandler *)self clientQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100000FF8;
   v7[3] = &unk_100004258;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = fireCopy;
+  selfCopy = self;
+  v6 = fireCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 - (void)_resetIntentTimer
 {
-  v3 = [(HMIntentHandler *)self intentTimer];
-  [v3 cancel];
+  intentTimer = [(HMIntentHandler *)self intentTimer];
+  [intentTimer cancel];
 
   [(HMIntentHandler *)self setIntentTimer:0];
 }
 
-- (void)_startIntentTimerWithTimeInterval:(double)a3
+- (void)_startIntentTimerWithTimeInterval:(double)interval
 {
-  v4 = [[HMFTimer alloc] initWithTimeInterval:1 options:a3];
+  v4 = [[HMFTimer alloc] initWithTimeInterval:1 options:interval];
   [(HMIntentHandler *)self setIntentTimer:v4];
 
-  v5 = [(HMIntentHandler *)self intentTimer];
-  [v5 setDelegate:self];
+  intentTimer = [(HMIntentHandler *)self intentTimer];
+  [intentTimer setDelegate:self];
 
-  v6 = [(HMIntentHandler *)self intentTimer];
-  [v6 resume];
+  intentTimer2 = [(HMIntentHandler *)self intentTimer];
+  [intentTimer2 resume];
 }
 
-- (void)_reportToResponseHandlerWithOutcome:(id)a3
+- (void)_reportToResponseHandlerWithOutcome:(id)outcome
 {
-  v4 = a3;
-  if ([v4 isEqualToString:HMIntentOutcomeSuccess])
+  outcomeCopy = outcome;
+  if ([outcomeCopy isEqualToString:HMIntentOutcomeSuccess])
   {
     v5 = [INControlHomeIntentResponse alloc];
     v6 = 3;
 LABEL_7:
     v7 = [v5 initWithCode:v6 userActivity:0];
 LABEL_8:
-    v8 = [(HMIntentHandler *)self responseHandler];
+    responseHandler = [(HMIntentHandler *)self responseHandler];
 
-    if (v8)
+    if (responseHandler)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [(HMIntentHandler *)v10 intent];
+        intent = [(HMIntentHandler *)selfCopy intent];
         v26 = 138543874;
         v27 = v12;
         v28 = 2112;
-        v29 = v13;
+        v29 = intent;
         v30 = 2112;
         v31 = v7;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%{public}@Invoking completion for intent %@ with response %@", &v26, 0x20u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v14 = [(HMIntentHandler *)v10 responseHandler];
-      (v14)[2](v14, v7);
+      responseHandler2 = [(HMIntentHandler *)selfCopy responseHandler];
+      (responseHandler2)[2](responseHandler2, v7);
     }
 
     [(HMIntentHandler *)self setIntent:0];
@@ -99,24 +99,24 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:HMIntentOutcomeInProgress])
+  if ([outcomeCopy isEqualToString:HMIntentOutcomeInProgress])
   {
     v5 = [INControlHomeIntentResponse alloc];
     v6 = 2;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:HMIntentOutcomeFailure])
+  if ([outcomeCopy isEqualToString:HMIntentOutcomeFailure])
   {
     v5 = [INControlHomeIntentResponse alloc];
     v6 = 5;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:HMIntentOutcomeUnsecuringUnlockRequired])
+  if ([outcomeCopy isEqualToString:HMIntentOutcomeUnsecuringUnlockRequired])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -132,9 +132,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v19 = [v4 isEqualToString:HMIntentOutcomeUnsecuringNotAllowed];
+  v19 = [outcomeCopy isEqualToString:HMIntentOutcomeUnsecuringNotAllowed];
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy3 = self;
   v22 = HMFGetOSLogHandle();
   v23 = v22;
   if (v19)
@@ -165,28 +165,28 @@ LABEL_8:
 LABEL_13:
 }
 
-- (void)_handleRequestForIntent:(id)a3 payload:(id)a4 completion:(id)a5
+- (void)_handleRequestForIntent:(id)intent payload:(id)payload completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMIntentHandler *)self responseHandler];
+  intentCopy = intent;
+  payloadCopy = payload;
+  completionCopy = completion;
+  responseHandler = [(HMIntentHandler *)self responseHandler];
 
-  if (v11)
+  if (responseHandler)
   {
     v12 = [[INControlHomeIntentResponse alloc] initWithCode:5 userActivity:0];
-    v10[2](v10, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
     v13 = +[HMFProductInfo productInfo];
-    v14 = [v13 productClass];
+    productClass = [v13 productClass];
 
-    if (v14 == 6)
+    if (productClass == 6)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -197,13 +197,13 @@ LABEL_13:
       }
 
       objc_autoreleasePoolPop(v15);
-      [(HMIntentHandler *)v16 _reportToResponseHandlerWithOutcome:HMIntentOutcomeFailure];
+      [(HMIntentHandler *)selfCopy _reportToResponseHandlerWithOutcome:HMIntentOutcomeFailure];
     }
 
     else
     {
-      [(HMIntentHandler *)self setIntent:v8];
-      [(HMIntentHandler *)self setResponseHandler:v10];
+      [(HMIntentHandler *)self setIntent:intentCopy];
+      [(HMIntentHandler *)self setResponseHandler:completionCopy];
       [(HMIntentHandler *)self _startIntentTimer];
       objc_initWeak(buf, self);
       v19 = +[HMClientConnection sharedInstance];
@@ -212,9 +212,9 @@ LABEL_13:
       v20[2] = sub_100001804;
       v20[3] = &unk_100004230;
       objc_copyWeak(&v24, buf);
-      v23 = v10;
-      v21 = v9;
-      v22 = v8;
+      v23 = completionCopy;
+      v21 = payloadCopy;
+      v22 = intentCopy;
       [v19 sendIntentRequestCommand:v22 withPayload:v21 completionHandler:v20];
 
       objc_destroyWeak(&v24);
@@ -223,39 +223,39 @@ LABEL_13:
   }
 }
 
-- (void)handleControlHome:(id)a3 completion:(id)a4
+- (void)handleControlHome:(id)home completion:(id)completion
 {
   v10[0] = kSiriIntentKey;
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  homeCopy = home;
   v8 = encodeRootObject();
   v10[1] = kSiriIntentRequestTypeKey;
   v11[0] = v8;
   v11[1] = &off_100004340;
   v9 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  [(HMIntentHandler *)self _handleRequestForIntent:v7 payload:v9 completion:v6];
+  [(HMIntentHandler *)self _handleRequestForIntent:homeCopy payload:v9 completion:completionCopy];
 }
 
-- (void)confirmControlHome:(id)a3 completion:(id)a4
+- (void)confirmControlHome:(id)home completion:(id)completion
 {
   v10[0] = kSiriIntentKey;
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  homeCopy = home;
   v8 = encodeRootObject();
   v10[1] = kSiriIntentRequestTypeKey;
   v11[0] = v8;
   v11[1] = &off_100004328;
   v9 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  [(HMIntentHandler *)self _handleRequestForIntent:v7 payload:v9 completion:v6];
+  [(HMIntentHandler *)self _handleRequestForIntent:homeCopy payload:v9 completion:completionCopy];
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = [(HMIntentHandler *)self clientQueue];
+  clientQueue = [(HMIntentHandler *)self clientQueue];
 
-  if (!v4)
+  if (!clientQueue)
   {
     v5 = HMDispatchQueueNameString();
     v6 = dispatch_queue_create([v5 UTF8String], 0);

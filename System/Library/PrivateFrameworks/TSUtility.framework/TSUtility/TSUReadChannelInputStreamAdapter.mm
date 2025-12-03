@@ -1,22 +1,22 @@
 @interface TSUReadChannelInputStreamAdapter
-- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)a3;
-- (TSUReadChannelInputStreamAdapter)initWithStreamReadChannel:(id)a3;
-- (id)_initWithReadChannel:(id)a3 streamReadChannel:(id)a4;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)channel;
+- (TSUReadChannelInputStreamAdapter)initWithStreamReadChannel:(id)channel;
+- (id)_initWithReadChannel:(id)channel streamReadChannel:(id)readChannel;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation TSUReadChannelInputStreamAdapter
 
-- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)a3
+- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)channel
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (channel)
   {
-    v3 = [(TSUReadChannelInputStreamAdapter *)self _initWithReadChannel:a3 streamReadChannel:0];
-    v4 = v3;
+    selfCopy = [(TSUReadChannelInputStreamAdapter *)self _initWithReadChannel:channel streamReadChannel:0];
+    v4 = selfCopy;
   }
 
   else
@@ -29,13 +29,13 @@
   return v5;
 }
 
-- (TSUReadChannelInputStreamAdapter)initWithStreamReadChannel:(id)a3
+- (TSUReadChannelInputStreamAdapter)initWithStreamReadChannel:(id)channel
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (channel)
   {
-    v3 = [(TSUReadChannelInputStreamAdapter *)self _initWithReadChannel:0 streamReadChannel:a3];
-    v4 = v3;
+    selfCopy = [(TSUReadChannelInputStreamAdapter *)self _initWithReadChannel:0 streamReadChannel:channel];
+    v4 = selfCopy;
   }
 
   else
@@ -48,12 +48,12 @@
   return v5;
 }
 
-- (id)_initWithReadChannel:(id)a3 streamReadChannel:(id)a4
+- (id)_initWithReadChannel:(id)channel streamReadChannel:(id)readChannel
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  channelCopy = channel;
+  readChannelCopy = readChannel;
+  v9 = readChannelCopy;
+  if (channelCopy && readChannelCopy)
   {
     v10 = +[TSUAssertionHandler currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUReadChannelInputStreamAdapter _initWithReadChannel:streamReadChannel:]"];
@@ -72,8 +72,8 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_streamReadChannel, a4);
-    objc_storeStrong(&v17->_readChannel, a3);
+    objc_storeStrong(&v16->_streamReadChannel, readChannel);
+    objc_storeStrong(&v17->_readChannel, channel);
     v18 = dispatch_queue_create("TSUReadChannelInputStreamAdapter.Read", 0);
     readQueue = v17->_readQueue;
     v17->_readQueue = v18;
@@ -92,19 +92,19 @@
   [(TSUReadChannelInputStreamAdapter *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
-  v44 = a4;
+  sizeCopy = size;
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x2020000000;
-  v40[3] = a3;
+  v40[3] = buffer;
   leftoverData = self->_leftoverData;
   size = dispatch_data_get_size(leftoverData);
-  v8 = a4;
+  sizeCopy2 = size;
   if (size)
   {
     applier[0] = MEMORY[0x277D85DD0];
@@ -125,16 +125,16 @@
     {
       v11 = self->_leftoverData;
       v12 = dispatch_data_get_size(v11);
-      subrange = dispatch_data_create_subrange(v11, a4, v12 - a4);
+      subrange = dispatch_data_create_subrange(v11, size, v12 - size);
     }
 
     v13 = self->_leftoverData;
     self->_leftoverData = subrange;
 
-    v8 = v42[3];
+    sizeCopy2 = v42[3];
   }
 
-  if (v8 && self->_readChannel)
+  if (sizeCopy2 && self->_readChannel)
   {
     v33 = 0;
     v34 = &v33;
@@ -149,7 +149,7 @@
     v27 = &unk_279D669D8;
     v30 = &v41;
     v31 = v40;
-    v28 = self;
+    selfCopy = self;
     v32 = &v33;
     v15 = v14;
     v29 = v15;
@@ -157,7 +157,7 @@
     readChannel = self->_readChannel;
     if (readChannel)
     {
-      [(TSUReadChannel *)readChannel readFromOffset:self->_offset length:v42[3] queue:self->_readQueue handler:v16, v24, v25, v26, v27, v28];
+      [(TSUReadChannel *)readChannel readFromOffset:self->_offset length:v42[3] queue:self->_readQueue handler:v16, v24, v25, v26, v27, selfCopy];
     }
 
     else
@@ -165,7 +165,7 @@
       streamReadChannel = self->_streamReadChannel;
       if (streamReadChannel)
       {
-        [(TSUStreamReadChannel *)streamReadChannel readWithQueue:self->_readQueue handler:v16, v24, v25, v26, v27, v28];
+        [(TSUStreamReadChannel *)streamReadChannel readWithQueue:self->_readQueue handler:v16, v24, v25, v26, v27, selfCopy];
       }
 
       else
@@ -186,10 +186,10 @@
     }
 
     _Block_object_dispose(&v33, 8);
-    v8 = v42[3];
+    sizeCopy2 = v42[3];
   }
 
-  v22 = a4 - v8;
+  v22 = size - sizeCopy2;
   _Block_object_dispose(v40, 8);
   _Block_object_dispose(&v41, 8);
   return v22;
@@ -301,11 +301,11 @@ BOOL __54__TSUReadChannelInputStreamAdapter_readToBuffer_size___block_invoke_2(v
   self->_streamReadChannel = 0;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   if (self->_readChannel)
   {
-    self->_offset = a3;
+    self->_offset = offset;
     v4 = MEMORY[0x277D85CC8];
     v5 = MEMORY[0x277D85CC8];
     leftoverData = self->_leftoverData;

@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTClientAction
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTClientAction)initWithDictionary:(id)a3;
-- (IFTSchemaIFTClientAction)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTClientAction)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTClientAction)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTClientAction
 
-- (IFTSchemaIFTClientAction)initWithDictionary:(id)a3
+- (IFTSchemaIFTClientAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTClientAction;
   v5 = [(IFTSchemaIFTClientAction *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTClientAction setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"statementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFTSchemaIFTClientAction *)v5 setStatementId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"toolId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTClientAction)initWithJSON:(id)a3
+- (IFTSchemaIFTClientAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTClientAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTClientAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTClientAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTClientAction exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_statementId)
   {
-    v5 = [(IFTSchemaIFTClientAction *)self statementId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    statementId = [(IFTSchemaIFTClientAction *)self statementId];
+    dictionaryRepresentation = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"statementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_toolId)
   {
-    v8 = [(IFTSchemaIFTClientAction *)self toolId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"toolId"];
+    toolId = [(IFTSchemaIFTClientAction *)self toolId];
+    v9 = [toolId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"toolId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,15 +136,15 @@
   return v4 ^ [(NSString *)self->_toolId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -152,26 +152,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaIFTClientAction *)self statementId];
-  v7 = [v4 statementId];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTClientAction *)self statementId];
+  statementId2 = [equalCopy statementId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaIFTClientAction *)self statementId];
-  if (v8)
+  statementId3 = [(IFTSchemaIFTClientAction *)self statementId];
+  if (statementId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTClientAction *)self statementId];
-    v11 = [v4 statementId];
-    v12 = [v10 isEqual:v11];
+    v9 = statementId3;
+    statementId4 = [(IFTSchemaIFTClientAction *)self statementId];
+    statementId5 = [equalCopy statementId];
+    v12 = [statementId4 isEqual:statementId5];
 
     if (!v12)
     {
@@ -183,12 +183,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTClientAction *)self toolId];
-  v7 = [v4 toolId];
-  if ((v6 != 0) != (v7 == 0))
+  statementId = [(IFTSchemaIFTClientAction *)self toolId];
+  statementId2 = [equalCopy toolId];
+  if ((statementId != 0) != (statementId2 == 0))
   {
-    v13 = [(IFTSchemaIFTClientAction *)self toolId];
-    if (!v13)
+    toolId = [(IFTSchemaIFTClientAction *)self toolId];
+    if (!toolId)
     {
 
 LABEL_18:
@@ -196,10 +196,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTClientAction *)self toolId];
-    v16 = [v4 toolId];
-    v17 = [v15 isEqual:v16];
+    v14 = toolId;
+    toolId2 = [(IFTSchemaIFTClientAction *)self toolId];
+    toolId3 = [equalCopy toolId];
+    v17 = [toolId2 isEqual:toolId3];
 
     if (v17)
     {
@@ -219,48 +219,48 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTClientAction *)self statementId];
+  statementId = [(IFTSchemaIFTClientAction *)self statementId];
 
-  if (v4)
+  if (statementId)
   {
-    v5 = [(IFTSchemaIFTClientAction *)self statementId];
+    statementId2 = [(IFTSchemaIFTClientAction *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTClientAction *)self toolId];
+  toolId = [(IFTSchemaIFTClientAction *)self toolId];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (toolId)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = IFTSchemaIFTClientAction;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTClientAction *)self deleteToolId];
   }
 
-  v6 = [(IFTSchemaIFTClientAction *)self statementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  statementId = [(IFTSchemaIFTClientAction *)self statementId];
+  v7 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTClientAction *)self deleteStatementId];
   }

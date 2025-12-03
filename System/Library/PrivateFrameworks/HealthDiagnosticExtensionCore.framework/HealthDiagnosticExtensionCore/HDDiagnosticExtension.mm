@@ -3,13 +3,13 @@
 - (HDDiagnosticExtension)init;
 - (id)_currentProtectionStateString;
 - (id)_generateTemporaryAttachmentDirectory;
-- (id)_loadOperationsFromPluginsWithAttachmentDirectoryURL:(id)a3;
-- (id)attachmentsForParameters:(id)a3;
+- (id)_loadOperationsFromPluginsWithAttachmentDirectoryURL:(id)l;
+- (id)attachmentsForParameters:(id)parameters;
 - (void)_beginMonitoringForContentProtectionStatus;
 - (void)_captureLog;
 - (void)_endMonitoringForContentProtectionStatus;
-- (void)_log:(id)a3;
-- (void)diagnosticOperation:(id)a3 logMessage:(id)a4;
+- (void)_log:(id)_log;
+- (void)diagnosticOperation:(id)operation logMessage:(id)message;
 @end
 
 @implementation HDDiagnosticExtension
@@ -34,13 +34,13 @@
   return v3;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v80 = *MEMORY[0x277D85DE8];
   self->_captureStartTime = CFAbsoluteTimeGetCurrent();
-  v4 = [(HDDiagnosticExtension *)self _generateTemporaryAttachmentDirectory];
+  _generateTemporaryAttachmentDirectory = [(HDDiagnosticExtension *)self _generateTemporaryAttachmentDirectory];
   temporaryDirectoryURL = self->_temporaryDirectoryURL;
-  self->_temporaryDirectoryURL = v4;
+  self->_temporaryDirectoryURL = _generateTemporaryAttachmentDirectory;
 
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_captureStartTime];
   [(HDDiagnosticExtension *)self _log:@"Beginning diagnostic capture at %@", v6];
@@ -51,9 +51,9 @@
   {
     v8 = self->_temporaryDirectoryURL;
     v9 = v7;
-    v10 = [(NSURL *)v8 path];
+    path = [(NSURL *)v8 path];
     *buf = 138412290;
-    v79 = v10;
+    v79 = path;
     _os_log_impl(&dword_2515DC000, v9, OS_LOG_TYPE_INFO, "Writing diagnostics to '%@'", buf, 0xCu);
   }
 
@@ -217,8 +217,8 @@
           objc_enumerationMutation(v43);
         }
 
-        v48 = [*(*(&v58 + 1) + 8 * k) attachments];
-        [v42 addObjectsFromArray:v48];
+        attachments = [*(*(&v58 + 1) + 8 * k) attachments];
+        [v42 addObjectsFromArray:attachments];
       }
 
       v45 = [v43 countByEnumeratingWithState:&v58 objects:v74 count:16];
@@ -247,10 +247,10 @@
   return v42;
 }
 
-- (void)diagnosticOperation:(id)a3 logMessage:(id)a4
+- (void)diagnosticOperation:(id)operation logMessage:(id)message
 {
-  v5 = a4;
-  [(HDDiagnosticExtension *)self _log:@"%@: %@", objc_opt_class(), v5];
+  messageCopy = message;
+  [(HDDiagnosticExtension *)self _log:@"%@: %@", objc_opt_class(), messageCopy];
 }
 
 - (id)_currentProtectionStateString
@@ -288,8 +288,8 @@
     handler[3] = &unk_2796C0BB0;
     handler[4] = self;
     notify_register_dispatch(v5, &self->_contentProtectionNotifyToken, MEMORY[0x277D85CD0], handler);
-    v6 = [(HDDiagnosticExtension *)self _currentProtectionStateString];
-    [(HDDiagnosticExtension *)self _log:@"Current content protection state is: %@", v6];
+    _currentProtectionStateString = [(HDDiagnosticExtension *)self _currentProtectionStateString];
+    [(HDDiagnosticExtension *)self _log:@"Current content protection state is: %@", _currentProtectionStateString];
   }
 
   else
@@ -313,14 +313,14 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
     notify_cancel(self->_contentProtectionNotifyToken);
   }
 
-  v3 = [(HDDiagnosticExtension *)self _currentProtectionStateString];
-  [(HDDiagnosticExtension *)self _log:@"Ending content protection state monitoring; final state is %@", v3];
+  _currentProtectionStateString = [(HDDiagnosticExtension *)self _currentProtectionStateString];
+  [(HDDiagnosticExtension *)self _log:@"Ending content protection state monitoring; final state is %@", _currentProtectionStateString];
 }
 
-- (id)_loadOperationsFromPluginsWithAttachmentDirectoryURL:(id)a3
+- (id)_loadOperationsFromPluginsWithAttachmentDirectoryURL:(id)l
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = MEMORY[0x277CBEBC0];
   v6 = [GSSystemRootDirectory() stringByAppendingPathComponent:@"/System/Library/Health/DiagnosticExtensionPlugins/"];
   v7 = [v5 fileURLWithPath:v6];
@@ -335,7 +335,7 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
   if (v10)
   {
     v22 = v7;
-    v23 = self;
+    selfCopy = self;
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = 0u;
     v25 = 0u;
@@ -357,7 +357,7 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
           }
 
           v18 = objc_alloc_init(*(*(&v24 + 1) + 8 * i));
-          v19 = [v18 diagnosticOperationsWithAttachmentDirectoryURL:v4];
+          v19 = [v18 diagnosticOperationsWithAttachmentDirectoryURL:lCopy];
           [v12 addObjectsFromArray:v19];
         }
 
@@ -367,7 +367,7 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
       while (v15);
     }
 
-    -[HDDiagnosticExtension _log:](v23, "_log:", @"Loaded %ld diagnostic operations from %ld plugins", [v12 count], objc_msgSend(v13, "count"));
+    -[HDDiagnosticExtension _log:](selfCopy, "_log:", @"Loaded %ld diagnostic operations from %ld plugins", [v12 count], objc_msgSend(v13, "count"));
     v7 = v22;
   }
 
@@ -382,12 +382,12 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
   return v12;
 }
 
-- (void)_log:(id)a3
+- (void)_log:(id)_log
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  _logCopy = _log;
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v12];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:_logCopy arguments:&v12];
 
   os_unfair_lock_lock(&self->_logLock);
   [(NSMutableString *)self->_collectionLog appendFormat:@"[%0.3lf] %@\n", Current - self->_captureStartTime, v6];
@@ -429,16 +429,16 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
 
 - (id)_generateTemporaryAttachmentDirectory
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 currentDeviceDisplayName];
-  v5 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v4 hk_stringByRemovingCharactersInSet:v6];
-  v8 = [v2 currentDeviceClass];
-  v9 = [v2 currentInternalDeviceModel];
-  v10 = [v2 currentOSBuild];
-  v11 = [v3 stringWithFormat:@"HealthKitDiagnostics_%@_%@_%@_%@.XXXXXX", v7, v8, v9, v10];
+  currentDeviceDisplayName = [mEMORY[0x277CCDD30] currentDeviceDisplayName];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
+  v7 = [currentDeviceDisplayName hk_stringByRemovingCharactersInSet:invertedSet];
+  currentDeviceClass = [mEMORY[0x277CCDD30] currentDeviceClass];
+  currentInternalDeviceModel = [mEMORY[0x277CCDD30] currentInternalDeviceModel];
+  currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
+  v11 = [v3 stringWithFormat:@"HealthKitDiagnostics_%@_%@_%@_%@.XXXXXX", v7, currentDeviceClass, currentInternalDeviceModel, currentOSBuild];
 
   v12 = NSTemporaryDirectory();
   v13 = [v12 stringByAppendingPathComponent:v11];
@@ -454,13 +454,13 @@ void __67__HDDiagnosticExtension__beginMonitoringForContentProtectionStatus__blo
 - (void)_captureLog
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a1;
-  v6 = [a2 path];
+  selfCopy = self;
+  path = [a2 path];
   v8 = 138412546;
-  v9 = v6;
+  v9 = path;
   v10 = 2112;
   v11 = a3;
-  _os_log_error_impl(&dword_2515DC000, v5, OS_LOG_TYPE_ERROR, "Error writing %@: %@", &v8, 0x16u);
+  _os_log_error_impl(&dword_2515DC000, selfCopy, OS_LOG_TYPE_ERROR, "Error writing %@: %@", &v8, 0x16u);
 
   v7 = *MEMORY[0x277D85DE8];
 }

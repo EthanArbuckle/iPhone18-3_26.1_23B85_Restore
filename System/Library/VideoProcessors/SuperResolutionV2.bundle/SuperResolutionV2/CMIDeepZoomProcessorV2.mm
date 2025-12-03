@@ -3,14 +3,14 @@
 - (__n128)tileCount;
 - (__n128)tileOverlap;
 - (__n128)tileSize;
-- (id)_getTuningTypeStringForProcessingType:(unsigned int)a3;
-- (int)clearOutputBuffer:(__CVBuffer *)a3;
-- (int)createInputTiles:(id)a3 atPosition:(id)a4 inputFullPixelBuffers:(id *)a5 cmdBuffer:;
+- (id)_getTuningTypeStringForProcessingType:(unsigned int)type;
+- (int)clearOutputBuffer:(__CVBuffer *)buffer;
+- (int)createInputTiles:(id)tiles atPosition:(id)position inputFullPixelBuffers:(id *)buffers cmdBuffer:;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
 - (int)resetState;
-- (int)writeOutputTiles:(id)a3 atPosition:(__CVBuffer *)a4 outputPixelBuffer:(id)a5 inputTilePixelBuffers:(id)a6 inputFullPixelBuffers:(id *)a7 cmdBuffer:;
+- (int)writeOutputTiles:(id)tiles atPosition:(__CVBuffer *)position outputPixelBuffer:(id)buffer inputTilePixelBuffers:(id)buffers inputFullPixelBuffers:(id *)pixelBuffers cmdBuffer:;
 - (void)dealloc;
 - (void)setZoomFactor:(CMIDeepZoomProcessorV2 *)self;
 @end
@@ -26,16 +26,16 @@
   [(CMIDeepZoomProcessorV2 *)&v3 dealloc];
 }
 
-- (id)_getTuningTypeStringForProcessingType:(unsigned int)a3
+- (id)_getTuningTypeStringForProcessingType:(unsigned int)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_18368 + a3 - 1);
+    return *(&off_18368 + type - 1);
   }
 }
 
@@ -103,8 +103,8 @@
       v29 = 0u;
       v30 = 0u;
       v25 = v12;
-      v13 = [v12 allKeys];
-      v14 = [v13 countByEnumeratingWithState:&v29 objects:v28 count:16];
+      allKeys = [v12 allKeys];
+      v14 = [allKeys countByEnumeratingWithState:&v29 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -115,7 +115,7 @@
           {
             if (*v30 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys);
             }
 
             v18 = *(*(&v29 + 1) + 8 * i);
@@ -124,7 +124,7 @@
             v3 |= [v18 isEqual:@"Transfer"];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v29 objects:v28 count:16];
+          v15 = [allKeys countByEnumeratingWithState:&v29 objects:v28 count:16];
         }
 
         while (v15);
@@ -207,8 +207,8 @@ LABEL_21:
 
 - (__n128)tileSize
 {
-  LOWORD(v1) = *(a1 + 28);
-  WORD2(v1) = *(a1 + 30);
+  LOWORD(v1) = *(self + 28);
+  WORD2(v1) = *(self + 30);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -216,8 +216,8 @@ LABEL_21:
 
 - (__n128)tileOverlap
 {
-  LOWORD(v1) = *(a1 + 32);
-  WORD2(v1) = *(a1 + 34);
+  LOWORD(v1) = *(self + 32);
+  WORD2(v1) = *(self + 34);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -225,8 +225,8 @@ LABEL_21:
 
 - (__n128)tileCount
 {
-  LOWORD(v1) = *(a1 + 36);
-  WORD2(v1) = *(a1 + 38);
+  LOWORD(v1) = *(self + 36);
+  WORD2(v1) = *(self + 38);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -261,9 +261,9 @@ LABEL_21:
   }
 }
 
-- (int)clearOutputBuffer:(__CVBuffer *)a3
+- (int)clearOutputBuffer:(__CVBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return -12780;
   }
@@ -310,7 +310,7 @@ LABEL_21:
         {
           deepZoomMetalStage = self->_deepZoomMetalStage;
 
-          return [(CMIDeepZoomMetalStageV2 *)deepZoomMetalStage clearBuffer:a3];
+          return [(CMIDeepZoomMetalStageV2 *)deepZoomMetalStage clearBuffer:buffer];
         }
 
         v8 = -12782;
@@ -331,27 +331,27 @@ LABEL_23:
 
   if (processingType != 1)
   {
-    return [(CMIDeepZoomMetalStageV2 *)deepZoomMetalStage clearBuffer:a3];
+    return [(CMIDeepZoomMetalStageV2 *)deepZoomMetalStage clearBuffer:buffer];
   }
 
   if (COERCE_FLOAT(*self->_zoomFactor) == 2.0 && COERCE_FLOAT(HIDWORD(*self->_zoomFactor)) == 2.0)
   {
-    return [(CMIDeepZoomMetalStageV2 *)deepZoomMetalStage clearBuffer:a3];
+    return [(CMIDeepZoomMetalStageV2 *)deepZoomMetalStage clearBuffer:buffer];
   }
 
   return -12786;
 }
 
-- (int)createInputTiles:(id)a3 atPosition:(id)a4 inputFullPixelBuffers:(id *)a5 cmdBuffer:
+- (int)createInputTiles:(id)tiles atPosition:(id)position inputFullPixelBuffers:(id *)buffers cmdBuffer:
 {
   v6 = v5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  positionCopy = position;
+  tilesCopy = tiles;
+  buffersCopy = buffers;
   v19 = 0;
-  if ([v10 count])
+  if ([tilesCopy count])
   {
-    v12 = [v11 count];
+    v12 = [buffersCopy count];
     v13 = -12780;
     if (v6)
     {
@@ -365,11 +365,11 @@ LABEL_23:
           *v16.i8 = vceqz_s32(*&vextq_s8(v16, v16, 8uLL));
           if (((v16.i32[0] | v16.i32[1]) & 1) == 0)
           {
-            LODWORD(v19) = v8;
+            LODWORD(v19) = positionCopy;
             v18 = *self->_tileSize;
             v20 = v14;
             v21 = v15;
-            v13 = [(CMIDeepZoomMetalStageV2 *)self->_deepZoomMetalStage cutTilesFrom:v11 to:v10 params:&v18 outCommandBuffer:v6];
+            v13 = [(CMIDeepZoomMetalStageV2 *)self->_deepZoomMetalStage cutTilesFrom:buffersCopy to:tilesCopy params:&v18 outCommandBuffer:v6];
           }
         }
       }
@@ -384,22 +384,22 @@ LABEL_23:
   return v13;
 }
 
-- (int)writeOutputTiles:(id)a3 atPosition:(__CVBuffer *)a4 outputPixelBuffer:(id)a5 inputTilePixelBuffers:(id)a6 inputFullPixelBuffers:(id *)a7 cmdBuffer:
+- (int)writeOutputTiles:(id)tiles atPosition:(__CVBuffer *)position outputPixelBuffer:(id)buffer inputTilePixelBuffers:(id)buffers inputFullPixelBuffers:(id *)pixelBuffers cmdBuffer:
 {
   v8 = v7;
-  v12 = a4;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v14 count];
+  positionCopy = position;
+  tilesCopy = tiles;
+  buffersCopy = buffers;
+  pixelBuffersCopy = pixelBuffers;
+  v17 = [tilesCopy count];
   v18 = -12780;
-  if (a5)
+  if (buffer)
   {
     if (v17)
     {
-      if ([v15 count])
+      if ([buffersCopy count])
       {
-        v19 = [v16 count];
+        v19 = [pixelBuffersCopy count];
         if (v8)
         {
           if (v19)
@@ -412,12 +412,12 @@ LABEL_23:
               v23 = vceqz_s32(*&vextq_s8(v22, v22, 8uLL));
               if (((v23.i32[0] | v23.i32[1]) & 1) == 0)
               {
-                v28 = v12;
+                v28 = positionCopy;
                 v27 = *self->_tileSize;
-                v24 = v12;
-                if (v12)
+                v24 = positionCopy;
+                if (positionCopy)
                 {
-                  if (v12 == *self->_tileCount - 1)
+                  if (positionCopy == *self->_tileCount - 1)
                   {
                     v24 = 2;
                   }
@@ -430,9 +430,9 @@ LABEL_23:
 
                 v23.i32[0] = v24;
                 v23.i16[0] = vmovl_u16(v23).u16[0];
-                if (v12 >= 0x10000)
+                if (positionCopy >= 0x10000)
                 {
-                  if (*&self->_tileCount[2] - 1 == HIWORD(v12))
+                  if (*&self->_tileCount[2] - 1 == HIWORD(positionCopy))
                   {
                     v25 = 2;
                   }
@@ -451,7 +451,7 @@ LABEL_23:
                 v30 = v25;
                 v29 = v23.i16[0];
                 v31 = v21;
-                v18 = [(CMIDeepZoomMetalStageV2 *)self->_deepZoomMetalStage pasteTilesFrom:v15 with:v14 inputFullPixelBuffers:v16 to:a5 params:&v27 outCommandBuffer:v8];
+                v18 = [(CMIDeepZoomMetalStageV2 *)self->_deepZoomMetalStage pasteTilesFrom:buffersCopy with:tilesCopy inputFullPixelBuffers:pixelBuffersCopy to:buffer params:&v27 outCommandBuffer:v8];
               }
             }
           }

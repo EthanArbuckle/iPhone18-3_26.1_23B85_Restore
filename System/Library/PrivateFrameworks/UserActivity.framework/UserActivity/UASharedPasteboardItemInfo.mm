@@ -1,16 +1,16 @@
 @interface UASharedPasteboardItemInfo
-- (BOOL)isEqual:(id)a3;
-- (UASharedPasteboardItemInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UASharedPasteboardItemInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UASharedPasteboardItemInfo
 
-- (UASharedPasteboardItemInfo)initWithCoder:(id)a3
+- (UASharedPasteboardItemInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UASharedPasteboardItemInfo *)self init];
   if (v5)
   {
@@ -18,31 +18,31 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"UASharedPasteboardItemInfoTypesKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"UASharedPasteboardItemInfoTypesKey"];
     [(UASharedPasteboardItemInfo *)v5 setTypes:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardItemInfo *)self types];
-  [v4 encodeObject:v5 forKey:@"UASharedPasteboardItemInfoTypesKey"];
+  coderCopy = coder;
+  types = [(UASharedPasteboardItemInfo *)self types];
+  [coderCopy encodeObject:types forKey:@"UASharedPasteboardItemInfoTypesKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UASharedPasteboardItemInfo *)self types];
-    v7 = [v5 types];
+    v5 = equalCopy;
+    types = [(UASharedPasteboardItemInfo *)self types];
+    types2 = [v5 types];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [types isEqual:types2];
   }
 
   else
@@ -53,11 +53,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(UASharedPasteboardItemInfo);
-  v6 = [(UASharedPasteboardItemInfo *)self types];
-  v7 = [v6 copyWithZone:a3];
+  types = [(UASharedPasteboardItemInfo *)self types];
+  v7 = [types copyWithZone:zone];
   [(UASharedPasteboardItemInfo *)v5 setTypes:v7];
 
   return v5;
@@ -65,9 +65,9 @@
 
 - (id)description
 {
-  v2 = [(UASharedPasteboardItemInfo *)self types];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_4];
+  types = [(UASharedPasteboardItemInfo *)self types];
+  allValues = [types allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_4];
 
   v5 = [v4 description];
 

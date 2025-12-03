@@ -1,24 +1,24 @@
 @interface TISKEvent
-- (BOOL)isValidCandidate:(id)a3;
+- (BOOL)isValidCandidate:(id)candidate;
 - (double)touchDownTimestamp;
 - (double)touchUpTimestamp;
 - (id)downTouchEvent;
-- (id)init:(int)a3 emojiSearchMode:(BOOL)a4 order:(int64_t)a5 tap:(id)a6;
+- (id)init:(int)init emojiSearchMode:(BOOL)mode order:(int64_t)order tap:(id)tap;
 - (id)upTouchEvent;
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4;
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event;
 @end
 
 @implementation TISKEvent
 
-- (BOOL)isValidCandidate:(id)a3
+- (BOOL)isValidCandidate:(id)candidate
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 candidate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v6))
+  candidateCopy = candidate;
+  v4 = candidateCopy;
+  if (candidateCopy && ([candidateCopy candidate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v6))
   {
-    v7 = [v4 candidate];
-    v8 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-    v9 = [v7 rangeOfCharacterFromSet:v8] != 0x7FFFFFFFFFFFFFFFLL;
+    candidate = [v4 candidate];
+    alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+    v9 = [candidate rangeOfCharacterFromSet:alphanumericCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -29,30 +29,30 @@
   return v9;
 }
 
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  timingCopy = timing;
+  eventCopy = event;
+  v7 = eventCopy;
+  if (!eventCopy)
   {
     goto LABEL_11;
   }
 
-  v8 = [v6 type];
+  type = [eventCopy type];
   type = self->_type;
-  if (v8 == 12)
+  if (type == 12)
   {
     if (type != 12)
     {
-      [v17 startTypingTimerWithEvent:self];
+      [timingCopy startTypingTimerWithEvent:self];
       goto LABEL_11;
     }
 
 LABEL_6:
     if ([v7 type] != 12)
     {
-      [v17 haltTypingTimerWithEvent:v7];
+      [timingCopy haltTypingTimerWithEvent:v7];
       goto LABEL_11;
     }
 
@@ -65,7 +65,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  if (([v17 isTypingTimerHalted] & 1) == 0)
+  if (([timingCopy isTypingTimerHalted] & 1) == 0)
   {
     [(TISKEvent *)self touchDownTimestamp];
     v11 = v10;
@@ -73,22 +73,22 @@ LABEL_7:
     v13 = v11 - v12;
     if (v13 <= 5.0)
     {
-      v15 = [v7 type];
-      if (v13 >= 0.0 && v15 == 8)
+      type2 = [v7 type];
+      if (v13 >= 0.0 && type2 == 8)
       {
-        [v17 addToDurationForRateMetric:kTISKTapTypingSpeed forKey:-v13];
-        [v17 addToDurationForRateMetric:kTISKPathTypingSpeed forKey:v13];
+        [timingCopy addToDurationForRateMetric:kTISKTapTypingSpeed forKey:-v13];
+        [timingCopy addToDurationForRateMetric:kTISKPathTypingSpeed forKey:v13];
       }
     }
 
     else
     {
       v14 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-      [v17 addSample:v14 forKey:kTISKTypingPauses];
+      [timingCopy addSample:v14 forKey:kTISKTypingPauses];
 
-      [v17 haltTypingTimerWithEvent:v7];
-      [v17 startTypingTimerWithEvent:self];
-      [v17 addSample:&unk_28400BF10 forKey:kTISKEpisodeCount];
+      [timingCopy haltTypingTimerWithEvent:v7];
+      [timingCopy startTypingTimerWithEvent:self];
+      [timingCopy addSample:&unk_28400BF10 forKey:kTISKEpisodeCount];
     }
   }
 
@@ -103,8 +103,8 @@ LABEL_11:
     return 0.0;
   }
 
-  v4 = [(TISKTap *)self->_tap lastTouch];
-  [v4 timestamp];
+  lastTouch = [(TISKTap *)self->_tap lastTouch];
+  [lastTouch timestamp];
   v6 = v5;
 
   return v6;
@@ -118,8 +118,8 @@ LABEL_11:
     return 0.0;
   }
 
-  v4 = [(TISKTap *)self->_tap firstTouch];
-  [v4 timestamp];
+  firstTouch = [(TISKTap *)self->_tap firstTouch];
+  [firstTouch timestamp];
   v6 = v5;
 
   return v6;
@@ -163,20 +163,20 @@ LABEL_11:
   return tap;
 }
 
-- (id)init:(int)a3 emojiSearchMode:(BOOL)a4 order:(int64_t)a5 tap:(id)a6
+- (id)init:(int)init emojiSearchMode:(BOOL)mode order:(int64_t)order tap:(id)tap
 {
-  v11 = a6;
+  tapCopy = tap;
   v15.receiver = self;
   v15.super_class = TISKEvent;
   v12 = [(TISKEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_type = a3;
-    v12->_emojiSearchMode = a4;
-    v12->_order = a5;
-    objc_storeStrong(&v12->_tap, a6);
-    v13->_hasTimestamp = v11 != 0;
+    v12->_type = init;
+    v12->_emojiSearchMode = mode;
+    v12->_order = order;
+    objc_storeStrong(&v12->_tap, tap);
+    v13->_hasTimestamp = tapCopy != 0;
   }
 
   return v13;

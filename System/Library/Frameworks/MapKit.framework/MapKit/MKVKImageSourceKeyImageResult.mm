@@ -1,26 +1,26 @@
 @interface MKVKImageSourceKeyImageResult
-- (MKVKImageSourceKeyImageResult)initWithParameters:(id)a3;
+- (MKVKImageSourceKeyImageResult)initWithParameters:(id)parameters;
 - (NSArray)fullBleedColors;
 - (NSArray)images;
-- (void)addFullBleedColor:(id)a3;
+- (void)addFullBleedColor:(id)color;
 @end
 
 @implementation MKVKImageSourceKeyImageResult
 
-- (void)addFullBleedColor:(id)a3
+- (void)addFullBleedColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v6 = v4;
+    v6 = colorCopy;
     if (self->_sameFullBleedColors && [(NSMutableArray *)self->_mutableFullBleedColors count])
     {
-      v5 = [(NSMutableArray *)self->_mutableFullBleedColors lastObject];
-      self->_sameFullBleedColors = [v5 isEqual:v6];
+      lastObject = [(NSMutableArray *)self->_mutableFullBleedColors lastObject];
+      self->_sameFullBleedColors = [lastObject isEqual:v6];
     }
 
     [(NSMutableArray *)self->_mutableFullBleedColors addObject:v6];
-    v4 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -38,16 +38,16 @@
   return v2;
 }
 
-- (MKVKImageSourceKeyImageResult)initWithParameters:(id)a3
+- (MKVKImageSourceKeyImageResult)initWithParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v17.receiver = self;
   v17.super_class = MKVKImageSourceKeyImageResult;
   v6 = [(MKVKImageSourceKeyImageResult *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parameters, a3);
+    objc_storeStrong(&v6->_parameters, parameters);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     triedKeys = v7->_triedKeys;
     v7->_triedKeys = v8;

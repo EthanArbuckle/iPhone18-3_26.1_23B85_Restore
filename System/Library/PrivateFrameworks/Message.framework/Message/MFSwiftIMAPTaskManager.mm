@@ -1,33 +1,33 @@
 @interface MFSwiftIMAPTaskManager
-- (BOOL)createMailbox:(id)a3;
-- (BOOL)deleteMailbox:(id)a3;
-- (BOOL)renameMailbox:(id)a3 toMailbox:(id)a4;
-- (id)downloadMessagesForUIDs:(id)a3 inMailbox:(id)a4;
+- (BOOL)createMailbox:(id)mailbox;
+- (BOOL)deleteMailbox:(id)mailbox;
+- (BOOL)renameMailbox:(id)mailbox toMailbox:(id)toMailbox;
+- (id)downloadMessagesForUIDs:(id)ds inMailbox:(id)mailbox;
 - (id)fetchSeparatorChar;
-- (void)accountDidChange:(id)a3;
-- (void)addLocalAction:(id)a3;
+- (void)accountDidChange:(id)change;
+- (void)addLocalAction:(id)action;
 - (void)checkForNewLocalActions;
 - (void)closeAllConnections;
-- (void)fetchNow:(int)a3;
-- (void)fetchNow:(int)a3 withMailboxes:(id)a4 completion:(id)a5;
+- (void)fetchNow:(int)now;
+- (void)fetchNow:(int)now withMailboxes:(id)mailboxes completion:(id)completion;
 - (void)localMailboxesDidChange;
-- (void)startBackFillingMessageBodyDownloadWithRequest:(id)a3;
+- (void)startBackFillingMessageBodyDownloadWithRequest:(id)request;
 - (void)stopBackFillingMessageBodyDownload;
 - (void)test_tearDown;
 @end
 
 @implementation MFSwiftIMAPTaskManager
 
-- (void)fetchNow:(int)a3 withMailboxes:(id)a4 completion:(id)a5
+- (void)fetchNow:(int)now withMailboxes:(id)mailboxes completion:(id)completion
 {
-  MEMORY[0x1E69E5928](a4);
-  v11 = _Block_copy(a5);
+  MEMORY[0x1E69E5928](mailboxes);
+  v11 = _Block_copy(completion);
   MEMORY[0x1E69E5928](self);
-  if (a4)
+  if (mailboxes)
   {
     sub_1B03EE50C();
     v6 = sub_1B0E451B8();
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](mailboxes);
     v7 = v6;
   }
 
@@ -38,7 +38,7 @@
 
   v5 = swift_allocObject();
   *(v5 + 16) = v11;
-  sub_1B03F0810(a3, v7, sub_1B03F0A14, v5);
+  sub_1B03F0810(now, v7, sub_1B03F0A14, v5);
 
   MEMORY[0x1E69E5920](self);
 }
@@ -50,37 +50,37 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
-  v12 = self;
-  v11 = a3;
+  selfCopy = self;
+  changeCopy = change;
   v10 = sub_1B0E42A08();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x1EEE9AC00](v11);
+  MEMORY[0x1EEE9AC00](changeCopy);
   v9 = &v5 - v6;
   MEMORY[0x1E69E5928](v4);
   MEMORY[0x1E69E5928](self);
   sub_1B0E429D8();
   sub_1B0A4E3C0(v9);
   (*(v7 + 8))(v9, v10);
-  MEMORY[0x1E69E5920](v11);
-  MEMORY[0x1E69E5920](v12);
+  MEMORY[0x1E69E5920](changeCopy);
+  MEMORY[0x1E69E5920](selfCopy);
 }
 
-- (void)fetchNow:(int)a3
+- (void)fetchNow:(int)now
 {
   MEMORY[0x1E69E5928](self);
-  sub_1B0A52FE0(a3);
+  sub_1B0A52FE0(now);
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)startBackFillingMessageBodyDownloadWithRequest:(id)a3
+- (void)startBackFillingMessageBodyDownloadWithRequest:(id)request
 {
   swift_unknownObjectRetain();
   MEMORY[0x1E69E5928](self);
-  sub_1B0A5391C(a3);
+  sub_1B0A5391C(request);
   MEMORY[0x1E69E5920](self);
   swift_unknownObjectRelease();
 }
@@ -92,15 +92,15 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (id)downloadMessagesForUIDs:(id)a3 inMailbox:(id)a4
+- (id)downloadMessagesForUIDs:(id)ds inMailbox:(id)mailbox
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](ds);
+  MEMORY[0x1E69E5928](mailbox);
   MEMORY[0x1E69E5928](self);
-  v9 = sub_1B0A53B88(a3, a4);
+  v9 = sub_1B0A53B88(ds, mailbox);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a4);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](mailbox);
+  MEMORY[0x1E69E5920](ds);
 
   return v9;
 }
@@ -112,15 +112,15 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (BOOL)createMailbox:(id)a3
+- (BOOL)createMailbox:(id)mailbox
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](mailbox);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (mailbox)
   {
     v5 = sub_1B0E44AD8();
     v6 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](mailbox);
     v7 = v5;
     v8 = v6;
   }
@@ -137,15 +137,15 @@
   return sub_1B0E43368() & 1;
 }
 
-- (BOOL)deleteMailbox:(id)a3
+- (BOOL)deleteMailbox:(id)mailbox
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](mailbox);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (mailbox)
   {
     v5 = sub_1B0E44AD8();
     v6 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](mailbox);
     v7 = v5;
     v8 = v6;
   }
@@ -162,16 +162,16 @@
   return sub_1B0E43368() & 1;
 }
 
-- (BOOL)renameMailbox:(id)a3 toMailbox:(id)a4
+- (BOOL)renameMailbox:(id)mailbox toMailbox:(id)toMailbox
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](mailbox);
+  MEMORY[0x1E69E5928](toMailbox);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (mailbox)
   {
     v11 = sub_1B0E44AD8();
     v12 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](mailbox);
     v13 = v11;
     v14 = v12;
   }
@@ -182,11 +182,11 @@
     v14 = 0;
   }
 
-  if (a4)
+  if (toMailbox)
   {
     v7 = sub_1B0E44AD8();
     v8 = v5;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](toMailbox);
     v9 = v7;
     v10 = v8;
   }
@@ -231,13 +231,13 @@
   return v5;
 }
 
-- (void)addLocalAction:(id)a3
+- (void)addLocalAction:(id)action
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](action);
   MEMORY[0x1E69E5928](self);
-  sub_1B0A5C690(a3);
+  sub_1B0A5C690(action);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](action);
 }
 
 - (void)checkForNewLocalActions

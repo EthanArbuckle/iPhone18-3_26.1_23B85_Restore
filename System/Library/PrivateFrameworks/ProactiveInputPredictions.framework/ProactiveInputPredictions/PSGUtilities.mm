@@ -1,8 +1,8 @@
 @interface PSGUtilities
 + (id)sharedInstance;
-- (id)localizedStringForKey:(id)a3 withLocale:(id)a4;
-- (id)localizedStringForKey:(id)a3 withLocale:(id)a4 onlyIfCached:(BOOL)a5 wasCached:(BOOL *)a6;
-- (id)prewarmCacheForLocale:(id)a3 usingQueue:(id)a4;
+- (id)localizedStringForKey:(id)key withLocale:(id)locale;
+- (id)localizedStringForKey:(id)key withLocale:(id)locale onlyIfCached:(BOOL)cached wasCached:(BOOL *)wasCached;
+- (id)prewarmCacheForLocale:(id)locale usingQueue:(id)queue;
 @end
 
 @implementation PSGUtilities
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __30__PSGUtilities_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_1000 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_1000, block);
@@ -35,11 +35,11 @@ void __30__PSGUtilities_sharedInstance__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)localizedStringForKey:(id)a3 withLocale:(id)a4 onlyIfCached:(BOOL)a5 wasCached:(BOOL *)a6
+- (id)localizedStringForKey:(id)key withLocale:(id)locale onlyIfCached:(BOOL)cached wasCached:(BOOL *)wasCached
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  cachedCopy = cached;
+  keyCopy = key;
+  localeCopy = locale;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__PSGUtilities_localizedStringForKey_withLocale_onlyIfCached_wasCached___block_invoke;
@@ -65,21 +65,21 @@ void __30__PSGUtilities_sharedInstance__block_invoke(uint64_t a1)
   v20 = 3221225472;
   v21 = __72__PSGUtilities_localizedStringForKey_withLocale_onlyIfCached_wasCached___block_invoke_24;
   v22 = &unk_279ABD178;
-  v13 = v11;
+  v13 = localeCopy;
   v23 = v13;
-  v14 = v10;
+  v14 = keyCopy;
   v24 = v14;
   v25 = &v28;
   v26 = &v32;
-  v27 = v7;
+  v27 = cachedCopy;
   [v12 runWithLockAcquired:&v19];
-  if (a6)
+  if (wasCached)
   {
-    *a6 = *(v29 + 24);
+    *wasCached = *(v29 + 24);
   }
 
   v15 = v33[5];
-  if (v15 || v7)
+  if (v15 || cachedCopy)
   {
     v16 = v15;
   }
@@ -227,28 +227,28 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localizedStringForKey:(id)a3 withLocale:(id)a4
+- (id)localizedStringForKey:(id)key withLocale:(id)locale
 {
-  v6 = [(PSGUtilities *)self localizedStringForKey:a3 withLocale:a4 onlyIfCached:0 wasCached:0];
+  v6 = [(PSGUtilities *)self localizedStringForKey:key withLocale:locale onlyIfCached:0 wasCached:0];
   if (!v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PSGUtilities.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSGUtilities.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"result"}];
   }
 
   return v6;
 }
 
-- (id)prewarmCacheForLocale:(id)a3 usingQueue:(id)a4
+- (id)prewarmCacheForLocale:(id)locale usingQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  queueCopy = queue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __49__PSGUtilities_prewarmCacheForLocale_usingQueue___block_invoke;
   v17[3] = &unk_279ABD100;
   v17[4] = self;
-  v8 = v6;
+  v8 = localeCopy;
   v18 = v8;
   v9 = [&unk_287345588 _pas_filteredArrayWithTest:v17];
   if ([v9 count])
@@ -258,10 +258,10 @@ LABEL_19:
     block[2] = __49__PSGUtilities_prewarmCacheForLocale_usingQueue___block_invoke_2;
     block[3] = &unk_279ABD128;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     v16 = v8;
     v10 = dispatch_block_create(0, block);
-    dispatch_async(v7, v10);
+    dispatch_async(queueCopy, v10);
     v11 = MEMORY[0x2666ED760](v10);
   }
 

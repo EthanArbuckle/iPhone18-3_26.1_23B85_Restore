@@ -1,12 +1,12 @@
 @interface _SFBrowsingAssistantPopUpCell
-- (_SFBrowsingAssistantPopUpCell)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_SFBrowsingAssistantPopUpCell)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)updateActions;
 @end
 
 @implementation _SFBrowsingAssistantPopUpCell
 
-- (_SFBrowsingAssistantPopUpCell)initWithCoder:(id)a3
+- (_SFBrowsingAssistantPopUpCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____SFBrowsingAssistantPopUpCell_title);
   *v3 = 0;
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_18BC1F738();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1F718();
-  v8 = self;
+  selfCopy = self;
   sub_18BB7FE68();
 
   (*(v5 + 8))(v7, v4);
@@ -35,7 +35,7 @@
 
 - (void)updateActions
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB80120();
 }
 

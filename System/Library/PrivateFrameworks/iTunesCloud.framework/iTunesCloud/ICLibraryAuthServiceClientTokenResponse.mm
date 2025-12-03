@@ -1,6 +1,6 @@
 @interface ICLibraryAuthServiceClientTokenResponse
-- (ICLibraryAuthServiceClientTokenResponse)initWithResponseDictionary:(id)a3;
-- (ICLibraryAuthServiceClientTokenResponse)initWithResultCode:(int)a3;
+- (ICLibraryAuthServiceClientTokenResponse)initWithResponseDictionary:(id)dictionary;
+- (ICLibraryAuthServiceClientTokenResponse)initWithResultCode:(int)code;
 - (id)description;
 @end
 
@@ -17,65 +17,65 @@
   return v5;
 }
 
-- (ICLibraryAuthServiceClientTokenResponse)initWithResultCode:(int)a3
+- (ICLibraryAuthServiceClientTokenResponse)initWithResultCode:(int)code
 {
   result = [(ICLibraryAuthServiceClientTokenResponse *)self init];
   if (result)
   {
-    result->_resultCode = a3;
-    result->_success = a3 == 200;
+    result->_resultCode = code;
+    result->_success = code == 200;
   }
 
   return result;
 }
 
-- (ICLibraryAuthServiceClientTokenResponse)initWithResponseDictionary:(id)a3
+- (ICLibraryAuthServiceClientTokenResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICLibraryAuthServiceClientTokenResponse *)self init];
   if (!v5)
   {
     goto LABEL_16;
   }
 
-  v6 = [v4 objectForKey:@"resultCode"];
+  v6 = [dictionaryCopy objectForKey:@"resultCode"];
   if (_NSIsNSNumber())
   {
     v5->_resultCode = [v6 intValue];
   }
 
-  v7 = [v4 objectForKey:@"serverHostName"];
+  v7 = [dictionaryCopy objectForKey:@"serverHostName"];
 
   if (_NSIsNSString())
   {
     objc_storeStrong(&v5->_serverHostName, v7);
   }
 
-  v8 = [v4 objectForKey:@"serverInstance"];
+  v8 = [dictionaryCopy objectForKey:@"serverInstance"];
 
   if (_NSIsNSNumber())
   {
     v5->_serverInstance = [v8 longLongValue];
   }
 
-  v9 = [v4 objectForKey:@"success"];
+  v9 = [dictionaryCopy objectForKey:@"success"];
 
   if (_NSIsNSNumber())
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 LABEL_12:
-    v5->_success = v10;
+    v5->_success = bOOLValue;
     goto LABEL_13;
   }
 
   if (_NSIsNSString())
   {
-    v10 = [v9 isEqualToString:@"true"];
+    bOOLValue = [v9 isEqualToString:@"true"];
     goto LABEL_12;
   }
 
 LABEL_13:
-  v11 = [v4 objectForKey:@"result"];
+  v11 = [dictionaryCopy objectForKey:@"result"];
 
   if (_NSIsNSDictionary())
   {

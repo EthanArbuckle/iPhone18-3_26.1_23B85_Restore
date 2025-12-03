@@ -1,11 +1,11 @@
 @interface PortraitEffetcPrewarm
-- (id)getFaceFeatures:(float)a3;
-- (void)run:(id)a3 withContext:(id)a4 withFaceScales:(id)a5 withProxyRendering:(BOOL)a6;
+- (id)getFaceFeatures:(float)features;
+- (void)run:(id)run withContext:(id)context withFaceScales:(id)scales withProxyRendering:(BOOL)rendering;
 @end
 
 @implementation PortraitEffetcPrewarm
 
-- (id)getFaceFeatures:(float)a3
+- (id)getFaceFeatures:(float)features
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   v29 = 0u;
@@ -54,12 +54,12 @@
               v13 = [v4 objectForKeyedSubscript:v6];
               v36[0] = @"x";
               [objc_msgSend(v12 "objectForKeyedSubscript:"floatValue"")];
-              *&v15 = v14 * a3;
+              *&v15 = v14 * features;
               v16 = [NSNumber numberWithFloat:v15];
               v36[1] = @"y";
               v37[0] = v16;
               [objc_msgSend(v12 "objectForKeyedSubscript:"floatValue"")];
-              *&v18 = v17 * a3;
+              *&v18 = v17 * features;
               v37[1] = [NSNumber numberWithFloat:v18];
               [v13 addObject:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v37, v36, 2)}];
               v11 = v11 + 1;
@@ -86,10 +86,10 @@
   [v4 setValue:&off_7A0C0 forKey:@"faceJunkinessIndex"];
   [v4 setValue:&off_7A0D0 forKey:@"faceOrientationIndex"];
   v34[0] = @"h";
-  v19 = a3;
-  v35[0] = [NSNumber numberWithDouble:v19 * 0.36];
+  featuresCopy = features;
+  v35[0] = [NSNumber numberWithDouble:featuresCopy * 0.36];
   v34[1] = @"w";
-  v35[1] = [NSNumber numberWithDouble:v19 * 0.48];
+  v35[1] = [NSNumber numberWithDouble:featuresCopy * 0.48];
   v35[2] = &off_7A0E0;
   v34[2] = @"x";
   v34[3] = @"y";
@@ -99,11 +99,11 @@
   return [NSArray arrayWithObjects:&v33 count:1];
 }
 
-- (void)run:(id)a3 withContext:(id)a4 withFaceScales:(id)a5 withProxyRendering:(BOOL)a6
+- (void)run:(id)run withContext:(id)context withFaceScales:(id)scales withProxyRendering:(BOOL)rendering
 {
-  if (a4)
+  if (context)
   {
-    v48 = a6;
+    renderingCopy = rendering;
     context = objc_autoreleasePoolPush();
     pixelBufferOut = 0;
     v9 = kCVPixelBufferIOSurfacePropertiesKey;
@@ -125,10 +125,10 @@
     v79 = v12;
     v13 = v12;
     v14 = [CIImage imageWithCVPixelBuffer:texture options:[NSDictionary dictionaryWithObjects:&v79 forKeys:&v78 count:1]];
-    v15 = [CIFilter filterWithName:a3];
-    v16 = [(CIFilter *)v15 inputKeys];
+    v15 = [CIFilter filterWithName:run];
+    inputKeys = [(CIFilter *)v15 inputKeys];
     [(CIFilter *)v15 setValue:v11 forKey:kCIInputImageKey];
-    if (v48)
+    if (renderingCopy)
     {
       [(CIFilter *)v15 setValue:&off_7A878 forKey:@"inputRenderProxy", kCGColorSpaceDisplayP3];
     }
@@ -137,13 +137,13 @@
     if (v14)
     {
       v17 = v9;
-      if ([(NSArray *)v16 containsObject:@"inputDisparity"])
+      if ([(NSArray *)inputKeys containsObject:@"inputDisparity"])
       {
         [(CIFilter *)v15 setValue:v14 forKey:@"inputDisparity"];
       }
 
       v61 = 0;
-      if ([(NSArray *)v16 containsObject:@"inputDepthMap"])
+      if ([(NSArray *)inputKeys containsObject:@"inputDepthMap"])
       {
         v76 = v9;
         v77 = &__NSDictionary0__struct;
@@ -156,7 +156,7 @@
       }
 
       v60 = 0;
-      if ([(NSArray *)v16 containsObject:@"inputBlurMap"])
+      if ([(NSArray *)inputKeys containsObject:@"inputBlurMap"])
       {
         v74 = v9;
         v75 = &__NSDictionary0__struct;
@@ -177,7 +177,7 @@
     }
 
     v59 = 0;
-    if ([(NSArray *)v16 containsObject:@"inputMatte"])
+    if ([(NSArray *)inputKeys containsObject:@"inputMatte"])
     {
       v72 = v17;
       v73 = &__NSDictionary0__struct;
@@ -190,7 +190,7 @@
     }
 
     v58 = 0;
-    if ([(NSArray *)v16 containsObject:@"inputFaceMask"])
+    if ([(NSArray *)inputKeys containsObject:@"inputFaceMask"])
     {
       v70 = v17;
       v71 = &__NSDictionary0__struct;
@@ -203,7 +203,7 @@
     }
 
     v57 = 0;
-    if ([(NSArray *)v16 containsObject:@"inputTeethMask"])
+    if ([(NSArray *)inputKeys containsObject:@"inputTeethMask"])
     {
       v68 = v17;
       v69 = &__NSDictionary0__struct;
@@ -216,7 +216,7 @@
     }
 
     v56 = 0;
-    if ([(NSArray *)v16 containsObject:@"inputHairMask"])
+    if ([(NSArray *)inputKeys containsObject:@"inputHairMask"])
     {
       v66 = v17;
       v67 = &__NSDictionary0__struct;
@@ -228,15 +228,15 @@
       }
     }
 
-    v24 = [(CIFilter *)v15 outputImage];
+    outputImage = [(CIFilter *)v15 outputImage];
 
-    if (v24)
+    if (outputImage)
     {
       space = CGColorSpaceCreateWithName(namea);
-      [(CIImage *)v24 extent];
+      [(CIImage *)outputImage extent];
       v25 = v17;
       v27 = v26;
-      [(CIImage *)v24 extent];
+      [(CIImage *)outputImage extent];
       v29 = v28;
       v64 = 0;
       v86[0] = kCVPixelBufferWidthKey;
@@ -250,7 +250,7 @@
       v31 = v64;
       v32 = [[CIRenderDestination alloc] initWithPixelBuffer:v64];
       [v32 setColorSpace:space];
-      [(CIImage *)v24 extent];
+      [(CIImage *)outputImage extent];
       v34 = v33;
       v36 = v35;
       v38 = v37;
@@ -259,7 +259,7 @@
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v41 = [a5 countByEnumeratingWithState:&v52 objects:v65 count:16];
+      v41 = [scales countByEnumeratingWithState:&v52 objects:v65 count:16];
       if (v41)
       {
         v42 = v41;
@@ -270,15 +270,15 @@
           {
             if (*v53 != v43)
             {
-              objc_enumerationMutation(a5);
+              objc_enumerationMutation(scales);
             }
 
             [*(*(&v52 + 1) + 8 * i) floatValue];
             [(CIFilter *)v15 setValue:[(PortraitEffetcPrewarm *)self getFaceFeatures:?] forKey:@"inputFaceLandmarkArray"];
-            [a4 prepareRender:-[CIFilter outputImage](v15 fromRect:"outputImage") toDestination:v32 atPoint:0 error:{v34, v36, v38, v40, 0.0, 0.0}];
+            [context prepareRender:-[CIFilter outputImage](v15 fromRect:"outputImage") toDestination:v32 atPoint:0 error:{v34, v36, v38, v40, 0.0, 0.0}];
           }
 
-          v42 = [a5 countByEnumeratingWithState:&v52 objects:v65 count:16];
+          v42 = [scales countByEnumeratingWithState:&v52 objects:v65 count:16];
         }
 
         while (v42);

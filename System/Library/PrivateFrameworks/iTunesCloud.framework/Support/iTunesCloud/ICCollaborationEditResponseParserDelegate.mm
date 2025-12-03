@@ -1,25 +1,25 @@
 @interface ICCollaborationEditResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (ICCollaborationEditResponseParserDelegate)initWithResponse:(id)a3;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (ICCollaborationEditResponseParserDelegate)initWithResponse:(id)response;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
 @end
 
 @implementation ICCollaborationEditResponseParserDelegate
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  if (a4 == 1836413042)
+  if (code == 1836413042)
   {
-    [(ICCollaborationEditResponse *)self->_response setUpdateRequired:*a5 != 0];
+    [(ICCollaborationEditResponse *)self->_response setUpdateRequired:*bytes != 0];
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 <= 1835624803)
+  if (code <= 1835624803)
   {
-    if (a4 == 1634354002)
+    if (code == 1634354002)
     {
       return result;
     }
@@ -28,11 +28,11 @@
     goto LABEL_7;
   }
 
-  if (a4 != 1835624804 && a4 != 1835821428)
+  if (code != 1835624804 && code != 1835821428)
   {
     v5 = 1836413042;
 LABEL_7:
-    if (a4 != v5)
+    if (code != v5)
     {
       return 0;
     }
@@ -41,14 +41,14 @@ LABEL_7:
   return result;
 }
 
-- (ICCollaborationEditResponseParserDelegate)initWithResponse:(id)a3
+- (ICCollaborationEditResponseParserDelegate)initWithResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v6 = [(ICCollaborationEditResponseParserDelegate *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_response, a3);
+    objc_storeStrong(&v6->_response, response);
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface SBHRecentDocumentsContextMenuProvider
-- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)a3;
-- (BOOL)canProvideContextMenuSectionsForIconView:(id)a3;
+- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)identifier;
+- (BOOL)canProvideContextMenuSectionsForIconView:(id)view;
 - (SBHRecentDocumentsContextMenuProvider)init;
-- (SBHRecentDocumentsContextMenuProvider)initWithUniqueIdentifier:(id)a3;
+- (SBHRecentDocumentsContextMenuProvider)initWithUniqueIdentifier:(id)identifier;
 - (SBHRecentDocumentsContextMenuProviderDelegate)delegate;
-- (id)applicationBundleIDForIconView:(id)a3;
-- (id)contextMenuSectionsForBundleIdentifier:(id)a3;
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4;
+- (id)applicationBundleIDForIconView:(id)view;
+- (id)contextMenuSectionsForBundleIdentifier:(id)identifier;
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location;
 - (void)dealloc;
 @end
 
@@ -20,21 +20,21 @@
   return v4;
 }
 
-- (SBHRecentDocumentsContextMenuProvider)initWithUniqueIdentifier:(id)a3
+- (SBHRecentDocumentsContextMenuProvider)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBHRecentDocumentsContextMenuProvider;
   v5 = [(SBHRecentDocumentsContextMenuProvider *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
-    v8 = [MEMORY[0x1E699A428] sharedList];
+    mEMORY[0x1E699A428] = [MEMORY[0x1E699A428] sharedList];
     sharedRecentItemsList = v5->_sharedRecentItemsList;
-    v5->_sharedRecentItemsList = v8;
+    v5->_sharedRecentItemsList = mEMORY[0x1E699A428];
 
     [(DOCSBRecentItemsList *)v5->_sharedRecentItemsList startObserving];
   }
@@ -50,12 +50,12 @@
   [(SBHRecentDocumentsContextMenuProvider *)&v3 dealloc];
 }
 
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location
 {
-  v5 = a3;
-  if ([(SBHRecentDocumentsContextMenuProvider *)self canProvideContextMenuSectionsForIconView:v5])
+  viewCopy = view;
+  if ([(SBHRecentDocumentsContextMenuProvider *)self canProvideContextMenuSectionsForIconView:viewCopy])
   {
-    v6 = [(SBHRecentDocumentsContextMenuProvider *)self applicationBundleIDForIconView:v5];
+    v6 = [(SBHRecentDocumentsContextMenuProvider *)self applicationBundleIDForIconView:viewCopy];
     if (v6)
     {
       v7 = [(SBHRecentDocumentsContextMenuProvider *)self contextMenuSectionsForBundleIdentifier:v6];
@@ -75,16 +75,16 @@
   return v7;
 }
 
-- (id)contextMenuSectionsForBundleIdentifier:(id)a3
+- (id)contextMenuSectionsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(SBHRecentDocumentsContextMenuProvider *)self canProvideContextMenuSectionsForBundleIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(SBHRecentDocumentsContextMenuProvider *)self canProvideContextMenuSectionsForBundleIdentifier:identifierCopy])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [(SBHRecentDocumentsContextMenuProvider *)self delegate];
+    delegate = [(SBHRecentDocumentsContextMenuProvider *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 maxNumberOfRecentDocumentsForRecentsDocumentContextMenuProvider:self];
+      v7 = [delegate maxNumberOfRecentDocumentsForRecentsDocumentContextMenuProvider:self];
     }
 
     else
@@ -102,15 +102,15 @@
     v21 = __Block_byref_object_copy__4;
     v22 = __Block_byref_object_dispose__4;
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [(SBHRecentDocumentsContextMenuProvider *)self sharedRecentItemsList];
+    sharedRecentItemsList = [(SBHRecentDocumentsContextMenuProvider *)self sharedRecentItemsList];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __80__SBHRecentDocumentsContextMenuProvider_contextMenuSectionsForBundleIdentifier___block_invoke;
     v14[3] = &unk_1E808AB40;
     v16 = &v24;
-    v15 = v4;
+    v15 = identifierCopy;
     v17 = &v18;
-    [v8 recentsForBundleIdentifier:v15 maxCount:v7 completion:v14];
+    [sharedRecentItemsList recentsForBundleIdentifier:v15 maxCount:v7 completion:v14];
 
     if (v25[3])
     {
@@ -247,13 +247,13 @@ uint64_t __80__SBHRecentDocumentsContextMenuProvider_contextMenuSectionsForBundl
   return result;
 }
 
-- (BOOL)canProvideContextMenuSectionsForIconView:(id)a3
+- (BOOL)canProvideContextMenuSectionsForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  if ([v5 isLeafIcon] && (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if ([icon isLeafIcon] && (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
-    v8 = [(SBHRecentDocumentsContextMenuProvider *)self applicationBundleIDForIconView:v4];
+    v8 = [(SBHRecentDocumentsContextMenuProvider *)self applicationBundleIDForIconView:viewCopy];
     v9 = [(SBHRecentDocumentsContextMenuProvider *)self canProvideContextMenuSectionsForBundleIdentifier:v8];
   }
 
@@ -265,15 +265,15 @@ uint64_t __80__SBHRecentDocumentsContextMenuProvider_contextMenuSectionsForBundl
   return v9;
 }
 
-- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)a3
+- (BOOL)canProvideContextMenuSectionsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && [MEMORY[0x1E699A428] applicationWithBundleIdentifierSupportsRecents:v4])
+  identifierCopy = identifier;
+  if (identifierCopy && [MEMORY[0x1E699A428] applicationWithBundleIdentifierSupportsRecents:identifierCopy])
   {
-    v5 = [(SBHRecentDocumentsContextMenuProvider *)self delegate];
+    delegate = [(SBHRecentDocumentsContextMenuProvider *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 recentDocumentsContextMenuProvider:self canProvideContextMenuSectionsForBundleIdentifier:v4];
+      v6 = [delegate recentDocumentsContextMenuProvider:self canProvideContextMenuSectionsForBundleIdentifier:identifierCopy];
     }
 
     else
@@ -290,13 +290,13 @@ uint64_t __80__SBHRecentDocumentsContextMenuProvider_contextMenuSectionsForBundl
   return v6;
 }
 
-- (id)applicationBundleIDForIconView:(id)a3
+- (id)applicationBundleIDForIconView:(id)view
 {
-  v3 = [a3 icon];
-  if ([v3 isLeafIcon])
+  icon = [view icon];
+  if ([icon isLeafIcon])
   {
     v4 = objc_opt_class();
-    v5 = v3;
+    v5 = icon;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -317,15 +317,15 @@ uint64_t __80__SBHRecentDocumentsContextMenuProvider_contextMenuSectionsForBundl
 
     v8 = v6;
 
-    v7 = [v8 applicationBundleID];
+    applicationBundleID = [v8 applicationBundleID];
   }
 
   else
   {
-    v7 = 0;
+    applicationBundleID = 0;
   }
 
-  return v7;
+  return applicationBundleID;
 }
 
 - (SBHRecentDocumentsContextMenuProviderDelegate)delegate

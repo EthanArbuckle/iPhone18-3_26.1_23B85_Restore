@@ -1,5 +1,5 @@
 @interface SBCaptureApplicationTerminationAlertItem
-- (SBCaptureApplicationTerminationAlertItem)initWithTerminationInfo:(id)a3;
+- (SBCaptureApplicationTerminationAlertItem)initWithTerminationInfo:(id)info;
 - (id)message;
 - (id)radarDescription;
 - (id)radarTitle;
@@ -8,16 +8,16 @@
 
 @implementation SBCaptureApplicationTerminationAlertItem
 
-- (SBCaptureApplicationTerminationAlertItem)initWithTerminationInfo:(id)a3
+- (SBCaptureApplicationTerminationAlertItem)initWithTerminationInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = SBCaptureApplicationTerminationAlertItem;
   v6 = [(SBAlertItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_terminationInfo, a3);
+    objc_storeStrong(&v6->_terminationInfo, info);
   }
 
   return v7;
@@ -25,22 +25,22 @@
 
 - (id)title
 {
-  v3 = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo processName];
-  v4 = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo terminationReason];
-  v5 = [v3 length];
+  processName = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo processName];
+  terminationReason = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo terminationReason];
+  v5 = [processName length];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = v7;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = mainBundle;
   if (v5)
   {
-    v9 = [v7 localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_ALERT_TITLE_WITH_PROCESS_REASON" value:&stru_283094718 table:@"SpringBoard"];
-    [v6 stringWithFormat:v9, v3, v4];
+    v9 = [mainBundle localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_ALERT_TITLE_WITH_PROCESS_REASON" value:&stru_283094718 table:@"SpringBoard"];
+    [v6 stringWithFormat:v9, processName, terminationReason];
   }
 
   else
   {
-    v9 = [v7 localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_ALERT_TITLE_NO_PROCESS_WITH_REASON" value:&stru_283094718 table:@"SpringBoard"];
-    [v6 stringWithFormat:v9, v4, v12];
+    v9 = [mainBundle localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_ALERT_TITLE_NO_PROCESS_WITH_REASON" value:&stru_283094718 table:@"SpringBoard"];
+    [v6 stringWithFormat:v9, terminationReason, v12];
   }
   v10 = ;
 
@@ -50,41 +50,41 @@
 - (id)message
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
-  v6 = [(SBCaptureApplicationTerminationAlertItem *)self radarComponentName];
-  v7 = [(SBCaptureApplicationTerminationAlertItem *)self radarComponentVersion];
-  v8 = [v3 stringWithFormat:v5, v6, v7];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
+  radarComponentName = [(SBCaptureApplicationTerminationAlertItem *)self radarComponentName];
+  radarComponentVersion = [(SBCaptureApplicationTerminationAlertItem *)self radarComponentVersion];
+  v8 = [v3 stringWithFormat:v5, radarComponentName, radarComponentVersion];
 
   return v8;
 }
 
 - (id)radarTitle
 {
-  v3 = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo processName];
-  v4 = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo terminationReason];
-  v5 = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo buildVersion];
+  processName = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo processName];
+  terminationReason = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo terminationReason];
+  buildVersion = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo buildVersion];
   v6 = @"Unknown Process";
-  if (v3)
+  if (processName)
   {
-    v6 = v3;
+    v6 = processName;
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: Capture Application Termination Reported - %@ - %@", v5, v6, v4];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: Capture Application Termination Reported - %@ - %@", buildVersion, v6, terminationReason];
 
   return v7;
 }
 
 - (id)radarDescription
 {
-  v3 = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo terminationReason];
+  terminationReason = [(SBCaptureApplicationTerminationInfo *)self->_terminationInfo terminationReason];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_RADAR_DESCRIPTION" value:&stru_283094718 table:@"SpringBoard"];
-  v7 = [v4 stringWithFormat:v6, v3];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle localizedStringForKey:@"CAPTURE_APPLICATION_TERMINATION_RADAR_DESCRIPTION" value:&stru_283094718 table:@"SpringBoard"];
+  v7 = [v4 stringWithFormat:v6, terminationReason];
 
-  v8 = [(SBDiagnosticRequestAlertItem *)self radarAttachments];
-  v9 = [v8 bs_map:&__block_literal_global_42];
+  radarAttachments = [(SBDiagnosticRequestAlertItem *)self radarAttachments];
+  v9 = [radarAttachments bs_map:&__block_literal_global_42];
 
   if ([v9 count])
   {

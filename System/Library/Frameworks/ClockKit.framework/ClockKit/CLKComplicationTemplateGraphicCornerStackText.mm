@@ -1,7 +1,7 @@
 @interface CLKComplicationTemplateGraphicCornerStackText
 + (CLKComplicationTemplateGraphicCornerStackText)templateWithInnerTextProvider:(CLKTextProvider *)innerTextProvider outerTextProvider:(CLKTextProvider *)outerTextProvider;
 - (CLKComplicationTemplateGraphicCornerStackText)initWithInnerTextProvider:(CLKTextProvider *)innerTextProvider outerTextProvider:(CLKTextProvider *)outerTextProvider;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerStackText
@@ -12,11 +12,11 @@
   v7 = outerTextProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateGraphicCornerStackText;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicCornerStackText *)v8 setInnerTextProvider:v6];
+    [(CLKComplicationTemplateGraphicCornerStackText *)initPrivate setInnerTextProvider:v6];
     [(CLKComplicationTemplateGraphicCornerStackText *)v9 setOuterTextProvider:v7];
   }
 
@@ -27,19 +27,19 @@
 {
   v6 = outerTextProvider;
   v7 = innerTextProvider;
-  v8 = [[a1 alloc] initWithInnerTextProvider:v7 outerTextProvider:v6];
+  v8 = [[self alloc] initWithInnerTextProvider:v7 outerTextProvider:v6];
 
   return v8;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"innerTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"innerTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"outerTextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"outerTextProvider", 0, 1, &v4);
   }
 }
 

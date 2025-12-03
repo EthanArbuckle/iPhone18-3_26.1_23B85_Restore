@@ -6,17 +6,17 @@
 - (id)_metadata;
 - (id)_redactedDictionaryRepresentation;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setEditedContent:(id)a3;
-- (void)setMessageIdentifier:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setEditedContent:(id)content;
+- (void)setMessageIdentifier:(id)identifier;
 @end
 
 @implementation INEditMessageIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INEditMessageIntent *)self _typedBackingStore:a3];
+  v6 = [(INEditMessageIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -25,29 +25,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"messageIdentifier";
-  v3 = [(INEditMessageIntent *)self messageIdentifier];
-  v4 = v3;
-  if (!v3)
+  messageIdentifier = [(INEditMessageIntent *)self messageIdentifier];
+  null = messageIdentifier;
+  if (!messageIdentifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"editedContent";
-  v11[0] = v4;
-  v5 = [(INEditMessageIntent *)self editedContent];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  editedContent = [(INEditMessageIntent *)self editedContent];
+  null2 = editedContent;
+  if (!editedContent)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!editedContent)
   {
   }
 
-  if (!v3)
+  if (!messageIdentifier)
   {
   }
 
@@ -58,42 +58,42 @@
 
 - (id)_redactedDictionaryRepresentation
 {
-  v2 = [(INEditMessageIntent *)self _dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  _dictionaryRepresentation = [(INEditMessageIntent *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation mutableCopy];
 
   [v3 setObject:@"<redacted>" forKey:@"editedContent"];
 
   return v3;
 }
 
-- (void)setEditedContent:(id)a3
+- (void)setEditedContent:(id)content
 {
-  v4 = a3;
-  v5 = [(INEditMessageIntent *)self _typedBackingStore];
-  [v5 setEditedContent:v4];
+  contentCopy = content;
+  _typedBackingStore = [(INEditMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setEditedContent:contentCopy];
 }
 
 - (NSString)editedContent
 {
-  v2 = [(INEditMessageIntent *)self _typedBackingStore];
-  v3 = [v2 editedContent];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INEditMessageIntent *)self _typedBackingStore];
+  editedContent = [_typedBackingStore editedContent];
+  v4 = [editedContent copy];
 
   return v4;
 }
 
-- (void)setMessageIdentifier:(id)a3
+- (void)setMessageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INEditMessageIntent *)self _typedBackingStore];
-  [v5 setMessageIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INEditMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setMessageIdentifier:identifierCopy];
 }
 
 - (NSString)messageIdentifier
 {
-  v2 = [(INEditMessageIntent *)self _typedBackingStore];
-  v3 = [v2 messageIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INEditMessageIntent *)self _typedBackingStore];
+  messageIdentifier = [_typedBackingStore messageIdentifier];
+  v4 = [messageIdentifier copy];
 
   return v4;
 }
@@ -115,28 +115,28 @@
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INEditMessageIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INEditMessageIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INEditMessageIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INEditMessageIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

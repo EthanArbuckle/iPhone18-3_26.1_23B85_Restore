@@ -1,8 +1,8 @@
 @interface RoomInteractionEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (void)setEventName:(id)a3;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (void)setEventName:(id)name;
 @end
 
 @implementation RoomInteractionEvent
@@ -15,15 +15,15 @@
   return v2;
 }
 
-- (void)setEventName:(id)a3
+- (void)setEventName:(id)name
 {
   *(self + 2) = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   *(self + 3) = v4;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
   sub_29DF7B420();
 
@@ -32,11 +32,11 @@
   return v5;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  sub_29DF79B64(v4);
+  sub_29DF79B64(sourceCopy);
 
   v5 = sub_29E2C31F4();
 

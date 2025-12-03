@@ -1,10 +1,10 @@
 @interface IDEGaugeDataProviderService
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4;
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds;
 @end
 
 @implementation IDEGaugeDataProviderService
 
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds
 {
   v11 = @"error";
   v5 = objc_opt_class();

@@ -1,15 +1,15 @@
 @interface CHSScreenshotManager
 + (CHSScreenshotManager)sharedManager;
 + (NSString)basePath;
-- (CHSScreenshotManager)initWithDirectory:(id)a3 fileManager:(id)a4;
-- (id)URLForWidget:(id)a3 metrics:(id)a4 attributes:(id)a5 createIntermediateDirectories:(BOOL)a6;
-- (id)_baseFileNameFromWidget:(uint64_t)a1;
+- (CHSScreenshotManager)initWithDirectory:(id)directory fileManager:(id)manager;
+- (id)URLForWidget:(id)widget metrics:(id)metrics attributes:(id)attributes createIntermediateDirectories:(BOOL)directories;
+- (id)_baseFileNameFromWidget:(uint64_t)widget;
 - (id)allCachedSnapshotURLs;
 - (id)baseURL;
-- (id)baseURLForWidget:(id)a3;
-- (id)finalFileNameForWidget:(void *)a3 metrics:(void *)a4 attributes:;
-- (id)indexingDirectoryNameForWidget:(uint64_t)a1;
-- (id)snapshotContextForWidget:(id)a3 metrics:(id)a4 attributes:(id)a5;
+- (id)baseURLForWidget:(id)widget;
+- (id)finalFileNameForWidget:(void *)widget metrics:(void *)metrics attributes:;
+- (id)indexingDirectoryNameForWidget:(uint64_t)widget;
+- (id)snapshotContextForWidget:(id)widget metrics:(id)metrics attributes:(id)attributes;
 - (void)allCachedSnapshotURLs;
 - (void)deleteAllCachedScreenshots;
 @end
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __37__CHSScreenshotManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken[0] != -1)
   {
     dispatch_once(sharedManager_onceToken, block);
@@ -79,18 +79,18 @@ void __37__CHSScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CHSScreenshotManager)initWithDirectory:(id)a3 fileManager:(id)a4
+- (CHSScreenshotManager)initWithDirectory:(id)directory fileManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  directoryCopy = directory;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = CHSScreenshotManager;
   v9 = [(CHSScreenshotManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_threadSafe_fileManager, a4);
-    objc_storeStrong(&v10->_baseURL, a3);
+    objc_storeStrong(&v9->_threadSafe_fileManager, manager);
+    objc_storeStrong(&v10->_baseURL, directory);
   }
 
   return v10;
@@ -119,8 +119,8 @@ void __37__CHSScreenshotManager_sharedManager__block_invoke(uint64_t a1)
   }
 
   v8 = self->_threadSafe_fileManager;
-  v9 = [(NSURL *)self->_baseURL path];
-  [(NSFileManager *)v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+  path = [(NSURL *)self->_baseURL path];
+  [(NSFileManager *)v8 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -163,8 +163,8 @@ void __37__CHSScreenshotManager_sharedManager__block_invoke(uint64_t a1)
           v14 = CHSLogClientSnapshots();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [v12 path];
-            [(CHSScreenshotManager *)v15 allCachedSnapshotURLs:buf];
+            path = [v12 path];
+            [(CHSScreenshotManager *)path allCachedSnapshotURLs:buf];
           }
 
           [v6 addObject:v12];
@@ -194,37 +194,37 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
   return 1;
 }
 
-- (id)snapshotContextForWidget:(id)a3 metrics:(id)a4 attributes:(id)a5
+- (id)snapshotContextForWidget:(id)widget metrics:(id)metrics attributes:(id)attributes
 {
-  v8 = a5;
-  v9 = [(CHSScreenshotManager *)self URLForWidget:a3 metrics:a4 attributes:v8 createIntermediateDirectories:0];
-  v10 = [[CHSSnapshotContext alloc] initWithURL:v9 attributes:v8 fileManager:self->_threadSafe_fileManager];
+  attributesCopy = attributes;
+  v9 = [(CHSScreenshotManager *)self URLForWidget:widget metrics:metrics attributes:attributesCopy createIntermediateDirectories:0];
+  v10 = [[CHSSnapshotContext alloc] initWithURL:v9 attributes:attributesCopy fileManager:self->_threadSafe_fileManager];
 
   return v10;
 }
 
-- (id)baseURLForWidget:(id)a3
+- (id)baseURLForWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   baseURL = self->_baseURL;
-  v6 = [(CHSScreenshotManager *)self indexingDirectoryNameForWidget:v4];
+  v6 = [(CHSScreenshotManager *)self indexingDirectoryNameForWidget:widgetCopy];
   v7 = [(NSURL *)baseURL URLByAppendingPathComponent:v6 isDirectory:1];
 
-  v8 = [(CHSScreenshotManager *)self _baseFileNameFromWidget:v4];
+  v8 = [(CHSScreenshotManager *)self _baseFileNameFromWidget:widgetCopy];
   v9 = [v7 URLByAppendingPathComponent:v8];
 
   return v9;
 }
 
-- (id)indexingDirectoryNameForWidget:(uint64_t)a1
+- (id)indexingDirectoryNameForWidget:(uint64_t)widget
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (widget)
   {
-    v5 = [v3 kind];
-    v6 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+    kind = [v3 kind];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v7 = [kind stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
     v8 = [v7 length];
     if (v8 <= 50)
@@ -239,9 +239,9 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
 
     v10 = [v7 rangeOfComposedCharacterSequencesForRange:{(v9 - 50), v8 - (v9 - 50)}];
     v12 = [v7 substringWithRange:{v10, v11}];
-    v13 = [v4 extensionIdentity];
-    v14 = [v13 extensionBundleIdentifier];
-    v15 = [v14 stringByAppendingPathComponent:v12];
+    extensionIdentity = [v4 extensionIdentity];
+    extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+    v15 = [extensionBundleIdentifier stringByAppendingPathComponent:v12];
   }
 
   else
@@ -252,19 +252,19 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
   return v15;
 }
 
-- (id)_baseFileNameFromWidget:(uint64_t)a1
+- (id)_baseFileNameFromWidget:(uint64_t)widget
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (widget)
   {
     v5 = CHSWidgetFamilyDescription([v3 family]);
-    v6 = [v4 intentReference];
-    if ([v6 stableHash])
+    intentReference = [v4 intentReference];
+    if ([intentReference stableHash])
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [v4 intentReference];
-      v9 = [v7 stringWithFormat:@"%lld--", objc_msgSend(v8, "stableHash")];
+      intentReference2 = [v4 intentReference];
+      v9 = [v7 stringWithFormat:@"%lld--", objc_msgSend(intentReference2, "stableHash")];
     }
 
     else
@@ -290,48 +290,48 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
   return v2;
 }
 
-- (id)URLForWidget:(id)a3 metrics:(id)a4 attributes:(id)a5 createIntermediateDirectories:(BOOL)a6
+- (id)URLForWidget:(id)widget metrics:(id)metrics attributes:(id)attributes createIntermediateDirectories:(BOOL)directories
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  directoriesCopy = directories;
+  widgetCopy = widget;
+  metricsCopy = metrics;
+  attributesCopy = attributes;
   baseURL = self->_baseURL;
-  v14 = [(CHSScreenshotManager *)self indexingDirectoryNameForWidget:v10];
+  v14 = [(CHSScreenshotManager *)self indexingDirectoryNameForWidget:widgetCopy];
   v15 = [(NSURL *)baseURL URLByAppendingPathComponent:v14 isDirectory:1];
 
-  if (v6)
+  if (directoriesCopy)
   {
     threadSafe_fileManager = self->_threadSafe_fileManager;
-    v17 = [v15 path];
+    path = [v15 path];
     v22 = 0;
-    [(NSFileManager *)threadSafe_fileManager createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v22];
+    [(NSFileManager *)threadSafe_fileManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v22];
   }
 
-  v18 = [(CHSScreenshotManager *)self finalFileNameForWidget:v10 metrics:v11 attributes:v12];
+  v18 = [(CHSScreenshotManager *)self finalFileNameForWidget:widgetCopy metrics:metricsCopy attributes:attributesCopy];
   v19 = [v15 URLByAppendingPathComponent:v18 isDirectory:0];
   v20 = [v19 URLByAppendingPathExtension:@"snapshot"];
 
   return v20;
 }
 
-- (id)finalFileNameForWidget:(void *)a3 metrics:(void *)a4 attributes:
+- (id)finalFileNameForWidget:(void *)widget metrics:(void *)metrics attributes:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v22 = v8;
+  widgetCopy = widget;
+  metricsCopy = metrics;
+  v22 = widgetCopy;
   v23 = v7;
-  if (a1)
+  if (self)
   {
-    v10 = [(CHSScreenshotManager *)a1 _baseFileNameFromWidget:v7];
-    v11 = [v8 _stringKeyRepresentation];
-    v12 = CHSScreenshotColorSchemeDescription([v9 colorScheme]);
-    if ([v9 allowsPrivacySensitiveContent])
+    v10 = [(CHSScreenshotManager *)self _baseFileNameFromWidget:v7];
+    _stringKeyRepresentation = [widgetCopy _stringKeyRepresentation];
+    v12 = CHSScreenshotColorSchemeDescription([metricsCopy colorScheme]);
+    if ([metricsCopy allowsPrivacySensitiveContent])
     {
-      v13 = [v9 userWantsWidgetDataWhenPasscodeLocked];
+      userWantsWidgetDataWhenPasscodeLocked = [metricsCopy userWantsWidgetDataWhenPasscodeLocked];
       v14 = @".private";
-      if (v13)
+      if (userWantsWidgetDataWhenPasscodeLocked)
       {
         v14 = @".private-exception";
       }
@@ -344,10 +344,10 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
       v15 = &stru_1F0A56DE8;
     }
 
-    v16 = [v9 additionalSettingsContext];
-    if (v16)
+    additionalSettingsContext = [metricsCopy additionalSettingsContext];
+    if (additionalSettingsContext)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"--%@", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"--%@", additionalSettingsContext];
     }
 
     else
@@ -355,10 +355,10 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
       v17 = &stru_1F0A56DE8;
     }
 
-    v18 = [v9 tintParameters];
-    v19 = [v18 hash];
+    tintParameters = [metricsCopy tintParameters];
+    v19 = [tintParameters hash];
 
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@--%lu.%@%@", v10, v11, v17, v19, v12, v15, v8, v23];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@--%lu.%@%@", v10, _stringKeyRepresentation, v17, v19, v12, v15, widgetCopy, v23];
   }
 
   else
@@ -372,7 +372,7 @@ uint64_t __45__CHSScreenshotManager_allCachedSnapshotURLs__block_invoke(uint64_t
 - (void)allCachedSnapshotURLs
 {
   *buf = 138543362;
-  *a3 = a1;
+  *a3 = self;
   _os_log_debug_impl(&dword_195EB2000, log, OS_LOG_TYPE_DEBUG, "Existing client snapshot path: %{public}@", buf, 0xCu);
 }
 

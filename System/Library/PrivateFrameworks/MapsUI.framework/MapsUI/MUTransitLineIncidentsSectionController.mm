@@ -1,9 +1,9 @@
 @interface MUTransitLineIncidentsSectionController
 - (BOOL)hasContent;
-- (MUTransitLineIncidentsSectionController)initWithTransitLineItem:(id)a3;
+- (MUTransitLineIncidentsSectionController)initWithTransitLineItem:(id)item;
 - (MUTransitLineIncidentsSectionControllerDelegate)incidentsDelegate;
 - (void)_setupSection;
-- (void)transitLineIncidentsViewController:(id)a3 didSelectDetailsForIncidents:(id)a4;
+- (void)transitLineIncidentsViewController:(id)controller didSelectDetailsForIncidents:(id)incidents;
 @end
 
 @implementation MUTransitLineIncidentsSectionController
@@ -15,18 +15,18 @@
   return WeakRetained;
 }
 
-- (void)transitLineIncidentsViewController:(id)a3 didSelectDetailsForIncidents:(id)a4
+- (void)transitLineIncidentsViewController:(id)controller didSelectDetailsForIncidents:(id)incidents
 {
-  v5 = a4;
-  v6 = [(MUTransitLineIncidentsSectionController *)self incidentsDelegate];
-  [v6 incidentsSectionController:self didSelectDetailsForIncidents:v5];
+  incidentsCopy = incidents;
+  incidentsDelegate = [(MUTransitLineIncidentsSectionController *)self incidentsDelegate];
+  [incidentsDelegate incidentsSectionController:self didSelectDetailsForIncidents:incidentsCopy];
 }
 
 - (BOOL)hasContent
 {
-  v2 = [(MUTransitLineItemSectionController *)self lineItem];
-  v3 = [v2 incidents];
-  v4 = [v3 count] != 0;
+  lineItem = [(MUTransitLineItemSectionController *)self lineItem];
+  incidents = [lineItem incidents];
+  v4 = [incidents count] != 0;
 
   return v4;
 }
@@ -34,34 +34,34 @@
 - (void)_setupSection
 {
   v3 = [MUTransitLineIncidentsViewController alloc];
-  v4 = [(MUTransitLineItemSectionController *)self lineItem];
-  v14 = [(MUTransitLineIncidentsViewController *)v3 initWithLineItem:v4];
+  lineItem = [(MUTransitLineItemSectionController *)self lineItem];
+  v14 = [(MUTransitLineIncidentsViewController *)v3 initWithLineItem:lineItem];
 
   [(MUTransitLineIncidentsViewController *)v14 setIncidentsDelegate:self];
   v5 = [[MUFixedHeightAwareViewController alloc] initWithViewController:v14];
   fixedHeightAwareVC = self->_fixedHeightAwareVC;
   self->_fixedHeightAwareVC = v5;
 
-  v7 = [(MUFixedHeightAwareViewController *)self->_fixedHeightAwareVC view];
-  [v7 _mapsui_setCardCorner];
+  view = [(MUFixedHeightAwareViewController *)self->_fixedHeightAwareVC view];
+  [view _mapsui_setCardCorner];
 
   v8 = [MUPlaceSectionView alloc];
-  v9 = [(MUTransitLineItemSectionController *)self sectionHeaderViewModel];
-  v10 = [(MUPlaceSectionView *)v8 initWithStyle:2 sectionHeaderViewModel:v9];
+  sectionHeaderViewModel = [(MUTransitLineItemSectionController *)self sectionHeaderViewModel];
+  v10 = [(MUPlaceSectionView *)v8 initWithStyle:2 sectionHeaderViewModel:sectionHeaderViewModel];
   sectionView = self->_sectionView;
   self->_sectionView = v10;
 
   [(MUPlaceSectionView *)self->_sectionView configureWithSectionController:self];
   v12 = self->_sectionView;
-  v13 = [(MUFixedHeightAwareViewController *)self->_fixedHeightAwareVC view];
-  [(MUPlaceSectionView *)v12 attachViewToContentView:v13];
+  view2 = [(MUFixedHeightAwareViewController *)self->_fixedHeightAwareVC view];
+  [(MUPlaceSectionView *)v12 attachViewToContentView:view2];
 }
 
-- (MUTransitLineIncidentsSectionController)initWithTransitLineItem:(id)a3
+- (MUTransitLineIncidentsSectionController)initWithTransitLineItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = MUTransitLineIncidentsSectionController;
-  v3 = [(MUTransitLineItemSectionController *)&v6 initWithTransitLineItem:a3];
+  v3 = [(MUTransitLineItemSectionController *)&v6 initWithTransitLineItem:item];
   v4 = v3;
   if (v3)
   {

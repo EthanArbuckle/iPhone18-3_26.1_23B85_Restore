@@ -1,25 +1,25 @@
 @interface CEKSubjectIndicatorView
-+ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)a3 withScale:(double)a4;
-+ (CGSize)fixedSizeWithScale:(double)a3;
++ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)bounds withScale:(double)scale;
++ (CGSize)fixedSizeWithScale:(double)scale;
 - (BOOL)isPulsing;
-- (CEKSubjectIndicatorView)initWithFrame:(CGRect)a3;
+- (CEKSubjectIndicatorView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setInactive:(BOOL)a3;
-- (void)setPulsing:(BOOL)a3;
-- (void)setShape:(int64_t)a3 animated:(BOOL)a4;
-- (void)startScalingWithExpansionWidth:(double)a3 duration:(double)a4 repeatCount:(unint64_t)a5 timingFunction:(id)a6;
-- (void)stopScalingWithDuration:(double)a3;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setInactive:(BOOL)inactive;
+- (void)setPulsing:(BOOL)pulsing;
+- (void)setShape:(int64_t)shape animated:(BOOL)animated;
+- (void)startScalingWithExpansionWidth:(double)width duration:(double)duration repeatCount:(unint64_t)count timingFunction:(id)function;
+- (void)stopScalingWithDuration:(double)duration;
 @end
 
 @implementation CEKSubjectIndicatorView
 
-- (CEKSubjectIndicatorView)initWithFrame:(CGRect)a3
+- (CEKSubjectIndicatorView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = CEKSubjectIndicatorView;
-  v3 = [(CEKSubjectIndicatorView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKSubjectIndicatorView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -79,23 +79,23 @@
   return v3;
 }
 
-- (void)setInactive:(BOOL)a3
+- (void)setInactive:(BOOL)inactive
 {
-  if (self->_inactive != a3)
+  if (self->_inactive != inactive)
   {
-    self->_inactive = a3;
+    self->_inactive = inactive;
     [(CEKSubjectIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)setShape:(int64_t)a3 animated:(BOOL)a4
+- (void)setShape:(int64_t)shape animated:(BOOL)animated
 {
-  if (self->_shape != a3)
+  if (self->_shape != shape)
   {
-    if (a4)
+    if (animated)
     {
       [(CEKSubjectIndicatorView *)self layoutIfNeeded];
-      self->_shape = a3;
+      self->_shape = shape;
       [(CEKSubjectIndicatorView *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -107,21 +107,21 @@
 
     else
     {
-      self->_shape = a3;
+      self->_shape = shape;
 
       [(CEKSubjectIndicatorView *)self setNeedsLayout];
     }
   }
 }
 
-+ (CGSize)fixedSizeWithScale:(double)a3
++ (CGSize)fixedSizeWithScale:(double)scale
 {
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v7 = v6;
   v9 = v8;
 
-  [a1 _fixedSubjectIndicatorSizeForReferenceBounds:v7 withScale:{v9, a3}];
+  [self _fixedSubjectIndicatorSizeForReferenceBounds:v7 withScale:{v9, scale}];
   v11 = v10 + -3.0 + -3.0;
   v13 = v12 + -3.0 + -3.0;
   result.height = v13;
@@ -131,9 +131,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CEKSubjectIndicatorView *)self window];
-  v3 = [v2 screen];
-  [v3 scale];
+  window = [(CEKSubjectIndicatorView *)self window];
+  screen = [window screen];
+  [screen scale];
   v5 = v4;
 
   [CEKSubjectIndicatorView fixedSizeWithScale:v5];
@@ -155,17 +155,17 @@
   UIRectGetCenter();
   v10 = v9;
   v12 = v11;
-  v13 = [(CEKSubjectIndicatorView *)self _containerView];
-  [v13 setBounds:{v7, v8, v4, v6}];
-  [v13 setCenter:{v10, v12}];
-  v14 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
-  v15 = [v14 image];
-  [v15 size];
+  _containerView = [(CEKSubjectIndicatorView *)self _containerView];
+  [_containerView setBounds:{v7, v8, v4, v6}];
+  [_containerView setCenter:{v10, v12}];
+  _topLeftCornerView = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
+  image = [_topLeftCornerView image];
+  [image size];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(CEKSubjectIndicatorView *)self shape];
-  if ((v20 - 1) < 2)
+  shape = [(CEKSubjectIndicatorView *)self shape];
+  if ((shape - 1) < 2)
   {
     if (v4 >= v6)
     {
@@ -188,9 +188,9 @@
       v17 = v30;
     }
 
-    v31 = [(CEKSubjectIndicatorView *)self shape];
+    shape2 = [(CEKSubjectIndicatorView *)self shape];
     v32 = 1.0;
-    if (v31 == 2)
+    if (shape2 == 2)
     {
       v32 = 2.5;
     }
@@ -209,14 +209,14 @@
   v21 = *(MEMORY[0x1E695F058] + 8);
   v23 = *(MEMORY[0x1E695F058] + 16);
   v19 = *(MEMORY[0x1E695F058] + 24);
-  if (v20 == 3)
+  if (shape == 3)
   {
     v26 = 1;
   }
 
   else
   {
-    if (!v20)
+    if (!shape)
     {
       UIRoundToViewScale();
       v23 = v24;
@@ -239,30 +239,30 @@ LABEL_15:
   v27 = *(MEMORY[0x1E695F058] + 8);
   v34 = *MEMORY[0x1E695F058];
 LABEL_19:
-  v35 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
-  [v35 setHidden:v26];
+  _topLeftCornerView2 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
+  [_topLeftCornerView2 setHidden:v26];
 
-  v36 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
-  [v36 setHidden:v26];
+  _topRightCornerView = [(CEKSubjectIndicatorView *)self _topRightCornerView];
+  [_topRightCornerView setHidden:v26];
 
-  v37 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
-  [v37 setHidden:v26];
+  _bottomLeftCornerView = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
+  [_bottomLeftCornerView setHidden:v26];
 
-  v38 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
-  [v38 setHidden:v26];
+  _bottomRightCornerView = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
+  [_bottomRightCornerView setHidden:v26];
 
-  v39 = [(CEKSubjectIndicatorView *)self _fullSizeIndicatorView];
-  [v39 setHidden:v26 ^ 1];
+  _fullSizeIndicatorView = [(CEKSubjectIndicatorView *)self _fullSizeIndicatorView];
+  [_fullSizeIndicatorView setHidden:v26 ^ 1];
 
   if (v26)
   {
-    [v13 bounds];
+    [_containerView bounds];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [(CEKSubjectIndicatorView *)self _fullSizeIndicatorView];
-    v49 = v48;
+    _fullSizeIndicatorView2 = [(CEKSubjectIndicatorView *)self _fullSizeIndicatorView];
+    v49 = _fullSizeIndicatorView2;
     v50 = v41;
     v51 = v43;
     v52 = v45;
@@ -271,37 +271,37 @@ LABEL_19:
 
   else
   {
-    v54 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
-    [v54 setFrame:{v34, v27, v28, v19}];
+    _topLeftCornerView3 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
+    [_topLeftCornerView3 setFrame:{v34, v27, v28, v19}];
 
-    v55 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
-    [v55 setFrame:{v22, v27, v23, v19}];
+    _topRightCornerView2 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
+    [_topRightCornerView2 setFrame:{v22, v27, v23, v19}];
 
-    v56 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
-    [v56 setFrame:{v34, v21, v28, v19}];
+    _bottomLeftCornerView2 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
+    [_bottomLeftCornerView2 setFrame:{v34, v21, v28, v19}];
 
-    v48 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
-    v49 = v48;
+    _fullSizeIndicatorView2 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
+    v49 = _fullSizeIndicatorView2;
     v50 = v22;
     v51 = v21;
     v52 = v28;
     v53 = v19;
   }
 
-  [v48 setFrame:{v50, v51, v52, v53}];
+  [_fullSizeIndicatorView2 setFrame:{v50, v51, v52, v53}];
 
-  v57 = [(CEKSubjectIndicatorView *)self isInactive];
-  v58 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
-  [v58 setHighlighted:v57];
+  isInactive = [(CEKSubjectIndicatorView *)self isInactive];
+  _topLeftCornerView4 = [(CEKSubjectIndicatorView *)self _topLeftCornerView];
+  [_topLeftCornerView4 setHighlighted:isInactive];
 
-  v59 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
-  [v59 setHighlighted:v57];
+  _topRightCornerView3 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
+  [_topRightCornerView3 setHighlighted:isInactive];
 
-  v60 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
-  [v60 setHighlighted:v57];
+  _bottomLeftCornerView3 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
+  [_bottomLeftCornerView3 setHighlighted:isInactive];
 
-  v61 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
-  [v61 setHighlighted:v57];
+  _bottomRightCornerView2 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
+  [_bottomRightCornerView2 setHighlighted:isInactive];
 
   if ([(CEKSubjectIndicatorView *)self isInactive])
   {
@@ -313,37 +313,37 @@ LABEL_19:
     [MEMORY[0x1E69DC888] systemYellowColor];
   }
   v62 = ;
-  v63 = [(CEKSubjectIndicatorView *)self _fullSizeIndicatorView];
-  [v63 setTintColor:v62];
+  _fullSizeIndicatorView3 = [(CEKSubjectIndicatorView *)self _fullSizeIndicatorView];
+  [_fullSizeIndicatorView3 setTintColor:v62];
 
   CGAffineTransformMakeScale(&v70, -1.0, 1.0);
-  v64 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
+  _topRightCornerView4 = [(CEKSubjectIndicatorView *)self _topRightCornerView];
   v69 = v70;
-  [v64 setTransform:&v69];
+  [_topRightCornerView4 setTransform:&v69];
 
   CGAffineTransformMakeScale(&v68, 1.0, -1.0);
-  v65 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
+  _bottomLeftCornerView4 = [(CEKSubjectIndicatorView *)self _bottomLeftCornerView];
   v69 = v68;
-  [v65 setTransform:&v69];
+  [_bottomLeftCornerView4 setTransform:&v69];
 
   CGAffineTransformMakeScale(&v67, -1.0, -1.0);
-  v66 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
+  _bottomRightCornerView3 = [(CEKSubjectIndicatorView *)self _bottomRightCornerView];
   v69 = v67;
-  [v66 setTransform:&v69];
+  [_bottomRightCornerView3 setTransform:&v69];
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = a3;
-  v7 = [(CEKSubjectIndicatorView *)self _containerView];
-  v8 = [(CEKSubjectIndicatorView *)self layer];
-  v9 = [v7 layer];
-  v10 = [v8 animationForKey:@"opacity"];
+  hiddenCopy = hidden;
+  _containerView = [(CEKSubjectIndicatorView *)self _containerView];
+  layer = [(CEKSubjectIndicatorView *)self layer];
+  layer2 = [_containerView layer];
+  v10 = [layer animationForKey:@"opacity"];
 
-  v11 = [v9 animationForKey:@"transform"];
+  v11 = [layer2 animationForKey:@"transform"];
 
   [(CEKSubjectIndicatorView *)self alpha];
-  if (v5)
+  if (hiddenCopy)
   {
     v13 = 0.0;
   }
@@ -353,10 +353,10 @@ LABEL_19:
     v13 = 1.0;
   }
 
-  if (v5 && !a4)
+  if (hiddenCopy && !animated)
   {
-    [v8 removeAnimationForKey:@"opacity"];
-    [v9 removeAnimationForKey:@"transform"];
+    [layer removeAnimationForKey:@"opacity"];
+    [layer2 removeAnimationForKey:@"transform"];
 LABEL_7:
     [(CEKSubjectIndicatorView *)self setAlpha:v13];
     goto LABEL_16;
@@ -367,12 +367,12 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!animated)
   {
     goto LABEL_7;
   }
 
-  if (v5)
+  if (hiddenCopy)
   {
     v14 = MEMORY[0x1E69DD250];
     v24[0] = MEMORY[0x1E69E9820];
@@ -386,7 +386,7 @@ LABEL_7:
     v22[2] = __46__CEKSubjectIndicatorView_setHidden_animated___block_invoke_2;
     v22[3] = &unk_1E7CC6410;
     v22[4] = self;
-    v23 = v9;
+    v23 = layer2;
     [v14 animateWithDuration:6 delay:v24 options:v22 animations:0.25 completion:0.0];
     v15 = v23;
   }
@@ -399,7 +399,7 @@ LABEL_7:
       memset(&v21, 0, sizeof(v21));
       CGAffineTransformMakeScale(&v21, 1.22279793, 1.22279793);
       v20 = v21;
-      [v7 setTransform:&v20];
+      [_containerView setTransform:&v20];
     }
 
     v16 = MEMORY[0x1E69DD250];
@@ -409,7 +409,7 @@ LABEL_7:
     v17[3] = &unk_1E7CC6B38;
     v17[4] = self;
     v19 = (v11 | v10) == 0;
-    v18 = v7;
+    v18 = _containerView;
     [v16 animateWithDuration:131078 delay:v17 options:0 animations:0.233333333 completion:0.0];
     v15 = v18;
   }
@@ -447,13 +447,13 @@ uint64_t __46__CEKSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
   return result;
 }
 
-- (void)startScalingWithExpansionWidth:(double)a3 duration:(double)a4 repeatCount:(unint64_t)a5 timingFunction:(id)a6
+- (void)startScalingWithExpansionWidth:(double)width duration:(double)duration repeatCount:(unint64_t)count timingFunction:(id)function
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [(CEKSubjectIndicatorView *)self _containerView];
-  v12 = [v11 layer];
-  v13 = [v12 animationForKey:@"transform"];
+  functionCopy = function;
+  _containerView = [(CEKSubjectIndicatorView *)self _containerView];
+  layer = [_containerView layer];
+  v13 = [layer animationForKey:@"transform"];
 
   if (v13)
   {
@@ -484,24 +484,24 @@ LABEL_7:
     else
     {
       v17 = v16;
-      if (!v10)
+      if (!functionCopy)
       {
-        v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB0]];
+        functionCopy = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB0]];
       }
 
       v14 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.scale"];
-      [v14 setTimingFunction:v10];
-      [v14 setDuration:a4];
+      [v14 setTimingFunction:functionCopy];
+      [v14 setDuration:duration];
       v26[0] = &unk_1F2FDFE50;
-      v18 = [MEMORY[0x1E696AD98] numberWithDouble:(v17 + a3 * 2.0) / v17];
+      v18 = [MEMORY[0x1E696AD98] numberWithDouble:(v17 + width * 2.0) / v17];
       v26[1] = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
       [v14 setValues:v19];
 
-      *&v20 = a5;
+      *&v20 = count;
       [v14 setRepeatCount:v20];
       [v14 setAutoreverses:1];
-      [v12 addAnimation:v14 forKey:@"transform"];
+      [layer addAnimation:v14 forKey:@"transform"];
       v21 = *(MEMORY[0x1E69792E8] + 80);
       v25[4] = *(MEMORY[0x1E69792E8] + 64);
       v25[5] = v21;
@@ -514,29 +514,29 @@ LABEL_7:
       v24 = *(MEMORY[0x1E69792E8] + 48);
       v25[2] = *(MEMORY[0x1E69792E8] + 32);
       v25[3] = v24;
-      [v12 setTransform:v25];
+      [layer setTransform:v25];
     }
   }
 }
 
-- (void)stopScalingWithDuration:(double)a3
+- (void)stopScalingWithDuration:(double)duration
 {
-  v4 = [(CEKSubjectIndicatorView *)self _containerView];
-  v5 = [v4 layer];
+  _containerView = [(CEKSubjectIndicatorView *)self _containerView];
+  layer = [_containerView layer];
 
   v6 = MEMORY[0x1E69792E8];
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
-    v7 = [v5 presentationLayer];
-    v8 = v7;
-    if (v7)
+    presentationLayer = [layer presentationLayer];
+    v8 = presentationLayer;
+    if (presentationLayer)
     {
-      v9 = v7;
+      v9 = presentationLayer;
     }
 
     else
     {
-      v9 = v5;
+      v9 = layer;
     }
 
     v10 = v9;
@@ -555,7 +555,7 @@ LABEL_7:
     }
 
     v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
-    [v11 setDuration:a3];
+    [v11 setDuration:duration];
     v12 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
     [v11 setTimingFunction:v12];
 
@@ -585,10 +585,10 @@ LABEL_7:
     v18 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v23];
     [v11 setToValue:v18];
 
-    [v5 addAnimation:v11 forKey:@"stopScalingAnimation"];
+    [layer addAnimation:v11 forKey:@"stopScalingAnimation"];
   }
 
-  [v5 removeAnimationForKey:@"transform"];
+  [layer removeAnimationForKey:@"transform"];
   v19 = v6[5];
   v35 = v6[4];
   v36 = v19;
@@ -601,48 +601,48 @@ LABEL_7:
   v22 = v6[3];
   v33 = v6[2];
   v34 = v22;
-  [v5 setTransform:&v31];
+  [layer setTransform:&v31];
 }
 
 - (BOOL)isPulsing
 {
-  v2 = [(CEKSubjectIndicatorView *)self _containerView];
-  v3 = [v2 layer];
-  v4 = [v3 animationForKey:@"opacity"];
+  _containerView = [(CEKSubjectIndicatorView *)self _containerView];
+  layer = [_containerView layer];
+  v4 = [layer animationForKey:@"opacity"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)setPulsing:(BOOL)a3
+- (void)setPulsing:(BOOL)pulsing
 {
-  v3 = a3;
-  if ([(CEKSubjectIndicatorView *)self isPulsing]!= a3)
+  pulsingCopy = pulsing;
+  if ([(CEKSubjectIndicatorView *)self isPulsing]!= pulsing)
   {
-    v5 = [(CEKSubjectIndicatorView *)self _containerView];
-    v6 = [v5 layer];
-    v7 = v6;
-    if (v3)
+    _containerView = [(CEKSubjectIndicatorView *)self _containerView];
+    layer = [_containerView layer];
+    v7 = layer;
+    if (pulsingCopy)
     {
-      [v5 setAlpha:1.0];
+      [_containerView setAlpha:1.0];
       v8 = MEMORY[0x1E69DD250];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __38__CEKSubjectIndicatorView_setPulsing___block_invoke;
       v9[3] = &unk_1E7CC6358;
-      v10 = v5;
+      v10 = _containerView;
       [v8 animateWithDuration:30 delay:v9 options:0 animations:0.25 completion:0.0];
     }
 
     else
     {
-      [v6 removeAnimationForKey:@"opacity"];
-      [v5 setAlpha:1.0];
+      [layer removeAnimationForKey:@"opacity"];
+      [_containerView setAlpha:1.0];
     }
   }
 }
 
-+ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)a3 withScale:(double)a4
++ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)bounds withScale:(double)scale
 {
   UIRoundToScale();
   v5 = v4;

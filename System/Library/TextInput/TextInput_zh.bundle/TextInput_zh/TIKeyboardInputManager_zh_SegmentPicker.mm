@@ -1,37 +1,37 @@
 @interface TIKeyboardInputManager_zh_SegmentPicker
-- (BOOL)closeCandidateGenerationContextWithResults:(id)a3;
+- (BOOL)closeCandidateGenerationContextWithResults:(id)results;
 - (NSString)inputString;
-- (TIKeyboardInputManager_zh_SegmentPicker)initWithConfig:(id)a3 keyboardState:(id)a4 segments:(id)a5 at:(unint64_t)a6 wordSearch:(id)a7;
+- (TIKeyboardInputManager_zh_SegmentPicker)initWithConfig:(id)config keyboardState:(id)state segments:(id)segments at:(unint64_t)at wordSearch:(id)search;
 - (id)candidateResultSet;
 - (id)convertString;
-- (id)didAcceptCandidate:(id)a3;
-- (id)handleKeyboardInput:(id)a3;
+- (id)didAcceptCandidate:(id)candidate;
+- (id)handleKeyboardInput:(id)input;
 - (id)keyboardBehaviors;
 - (id)markedText;
-- (void)openCandidateGenerationContextWithCandidateHandler:(id)a3;
-- (void)selectCandidate:(id)a3;
-- (void)setPhraseBoundary:(unint64_t)a3;
+- (void)openCandidateGenerationContextWithCandidateHandler:(id)handler;
+- (void)selectCandidate:(id)candidate;
+- (void)setPhraseBoundary:(unint64_t)boundary;
 - (void)updateMarkedText;
 @end
 
 @implementation TIKeyboardInputManager_zh_SegmentPicker
 
-- (TIKeyboardInputManager_zh_SegmentPicker)initWithConfig:(id)a3 keyboardState:(id)a4 segments:(id)a5 at:(unint64_t)a6 wordSearch:(id)a7
+- (TIKeyboardInputManager_zh_SegmentPicker)initWithConfig:(id)config keyboardState:(id)state segments:(id)segments at:(unint64_t)at wordSearch:(id)search
 {
-  v12 = a5;
-  v13 = a7;
+  segmentsCopy = segments;
+  searchCopy = search;
   v20.receiver = self;
   v20.super_class = TIKeyboardInputManager_zh_SegmentPicker;
-  v14 = [(TIKeyboardInputManagerMecabra *)&v20 initWithConfig:a3 keyboardState:a4];
+  v14 = [(TIKeyboardInputManagerMecabra *)&v20 initWithConfig:config keyboardState:state];
   if (v14)
   {
-    v15 = [v12 mutableCopy];
+    v15 = [segmentsCopy mutableCopy];
     segments = v14->_segments;
     v14->_segments = v15;
 
-    v14->_index = a6;
-    objc_storeStrong(&v14->_kbws, a7);
-    v17 = [v12 mutableCopy];
+    v14->_index = at;
+    objc_storeStrong(&v14->_kbws, search);
+    v17 = [segmentsCopy mutableCopy];
     originalSegments = v14->_originalSegments;
     v14->_originalSegments = v17;
 
@@ -49,12 +49,12 @@
   return v2;
 }
 
-- (id)handleKeyboardInput:(id)a3
+- (id)handleKeyboardInput:(id)input
 {
-  v4 = [a3 string];
-  v5 = [v4 _isSpace];
+  string = [input string];
+  _isSpace = [string _isSpace];
 
-  if (v5)
+  if (_isSpace)
   {
     [(TIKeyboardInputManager_zh_SegmentPicker *)self setShouldShowCandidateWindow:1];
   }
@@ -70,13 +70,13 @@
 - (NSString)inputString
 {
   v3 = self->_inputString;
-  v4 = [(TIKeyboardInputManager_zh_SegmentPicker *)self alternateDisplayString];
+  alternateDisplayString = [(TIKeyboardInputManager_zh_SegmentPicker *)self alternateDisplayString];
 
-  if (v4)
+  if (alternateDisplayString)
   {
-    v5 = [(TIKeyboardInputManager_zh_SegmentPicker *)self alternateDisplayString];
+    alternateDisplayString2 = [(TIKeyboardInputManager_zh_SegmentPicker *)self alternateDisplayString];
 
-    v3 = v5;
+    v3 = alternateDisplayString2;
   }
 
   return v3;
@@ -87,8 +87,8 @@
   v17 = objc_alloc_init(MEMORY[0x29EDBA050]);
   v3 = objc_alloc_init(MEMORY[0x29EDBA050]);
   v4 = objc_alloc_init(MEMORY[0x29EDBA050]);
-  v5 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-  v6 = [v5 count];
+  segments = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+  v6 = [segments count];
 
   if (v6)
   {
@@ -96,30 +96,30 @@
     v8 = 0;
     do
     {
-      v9 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-      v10 = [v9 objectAtIndexedSubscript:v7];
+      segments2 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+      v10 = [segments2 objectAtIndexedSubscript:v7];
 
-      v11 = [v10 reading];
-      [v17 appendString:v11];
+      reading = [v10 reading];
+      [v17 appendString:reading];
 
-      v12 = [v10 surface];
-      [v3 appendString:v12];
+      surface = [v10 surface];
+      [v3 appendString:surface];
 
       if ([(TIKeyboardInputManager_zh_SegmentPicker *)self index]>= v7)
       {
-        v13 = [v10 surface];
-        v8 = v8 + [v13 length];
+        surface2 = [v10 surface];
+        v8 = v8 + [surface2 length];
       }
 
       if ([(TIKeyboardInputManager_zh_SegmentPicker *)self index]> v7)
       {
-        v14 = [v10 surface];
-        [v4 appendString:v14];
+        surface3 = [v10 surface];
+        [v4 appendString:surface3];
       }
 
       ++v7;
-      v15 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-      v16 = [v15 count];
+      segments3 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+      v16 = [segments3 count];
     }
 
     while (v16 > v7);
@@ -136,21 +136,21 @@
   [(TIKeyboardInputManager_zh_SegmentPicker *)self setAutoCommitString:v4];
 }
 
-- (void)setPhraseBoundary:(unint64_t)a3
+- (void)setPhraseBoundary:(unint64_t)boundary
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x2020000000;
   v7[3] = 0;
-  v5 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+  segments = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __61__TIKeyboardInputManager_zh_SegmentPicker_setPhraseBoundary___block_invoke;
   v6[3] = &unk_29F37D530;
   v6[5] = v7;
-  v6[6] = a3;
+  v6[6] = boundary;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [segments enumerateObjectsUsingBlock:v6];
 
   [(TIKeyboardInputManager_zh_SegmentPicker *)self updateMarkedText];
   _Block_object_dispose(v7, 8);
@@ -159,18 +159,18 @@
 - (id)markedText
 {
   v32 = *MEMORY[0x29EDCA608];
-  v26 = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
-  v25 = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputString];
-  v22 = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputIndex];
-  v24 = [(TIKeyboardInputManager_zh_SegmentPicker *)self searchStringForMarkedText];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  rawInputString = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
+  inputString = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputString];
+  inputIndex = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputIndex];
+  searchStringForMarkedText = [(TIKeyboardInputManager_zh_SegmentPicker *)self searchStringForMarkedText];
+  array = [MEMORY[0x29EDB8DE8] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = self;
-  v4 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  segments = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+  v5 = [segments countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -182,31 +182,31 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(segments);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 surface];
-        v12 = [v11 length];
+        surface = [v10 surface];
+        v12 = [surface length];
 
         v13 = [MEMORY[0x29EDBA168] valueWithRange:{v7, v12}];
-        [v3 addObject:v13];
+        [array addObject:v13];
 
-        v14 = [v10 surface];
-        v7 += [v14 length];
+        surface2 = [v10 surface];
+        v7 += [surface2 length];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [segments countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
   }
 
   v15 = MEMORY[0x29EDC70A0];
-  v16 = [(TIKeyboardInputManager_zh_SegmentPicker *)v23 autoCommitString];
-  v17 = [v16 length];
-  v18 = [v3 copy];
-  v19 = [v15 intermediateTextWithInputString:v26 displayString:v25 selectionLocation:v22 searchString:v24 candidateOffset:v17 liveConversionSegments:v18 highlightSegmentIndex:-[TIKeyboardInputManager_zh_SegmentPicker index](v23 lastInputString:{"index"), 0}];
+  autoCommitString = [(TIKeyboardInputManager_zh_SegmentPicker *)selfCopy autoCommitString];
+  v17 = [autoCommitString length];
+  v18 = [array copy];
+  v19 = [v15 intermediateTextWithInputString:rawInputString displayString:inputString selectionLocation:inputIndex searchString:searchStringForMarkedText candidateOffset:v17 liveConversionSegments:v18 highlightSegmentIndex:-[TIKeyboardInputManager_zh_SegmentPicker index](selfCopy lastInputString:{"index"), 0}];
 
   v20 = *MEMORY[0x29EDCA608];
 
@@ -215,131 +215,131 @@
 
 - (id)convertString
 {
-  v3 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-  v4 = [v3 objectAtIndexedSubscript:{-[TIKeyboardInputManager_zh_SegmentPicker index](self, "index")}];
-  v5 = [v4 reading];
+  segments = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+  v4 = [segments objectAtIndexedSubscript:{-[TIKeyboardInputManager_zh_SegmentPicker index](self, "index")}];
+  reading = [v4 reading];
 
-  return v5;
+  return reading;
 }
 
 - (id)candidateResultSet
 {
-  v3 = [(TIKeyboardInputManager_zh_SegmentPicker *)self index];
-  v4 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-  if (v3 >= [v4 count])
+  index = [(TIKeyboardInputManager_zh_SegmentPicker *)self index];
+  segments = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+  if (index >= [segments count])
   {
     goto LABEL_6;
   }
 
-  v5 = [(TIKeyboardInputManager_zh_SegmentPicker *)self shouldShowCandidateWindow];
+  shouldShowCandidateWindow = [(TIKeyboardInputManager_zh_SegmentPicker *)self shouldShowCandidateWindow];
 
-  if (!v5)
+  if (!shouldShowCandidateWindow)
   {
-    v12 = 0;
+    dummySet = 0;
     goto LABEL_13;
   }
 
-  v4 = [(TIKeyboardInputManager_zh_SegmentPicker *)self convertString];
-  if ([v4 length])
+  segments = [(TIKeyboardInputManager_zh_SegmentPicker *)self convertString];
+  if ([segments length])
   {
-    v6 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-    v7 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
-    v8 = [v7 objectAtIndexedSubscript:{-[TIKeyboardInputManager_zh_SegmentPicker index](self, "index")}];
-    v9 = [v8 surface];
+    composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+    segments2 = [(TIKeyboardInputManager_zh_SegmentPicker *)self segments];
+    v8 = [segments2 objectAtIndexedSubscript:{-[TIKeyboardInputManager_zh_SegmentPicker index](self, "index")}];
+    surface = [v8 surface];
 
-    if ([v9 length] < 2)
+    if ([surface length] < 2)
     {
-      v10 = [MEMORY[0x29EDB8E50] setWithObject:v9];
-      [v6 setAutoSelectCandidates:v10];
+      _lastGrapheme = [MEMORY[0x29EDB8E50] setWithObject:surface];
+      [composingKeyboardInputManager setAutoSelectCandidates:_lastGrapheme];
     }
 
     else
     {
-      v10 = [v9 _lastGrapheme];
-      v11 = [MEMORY[0x29EDB8E50] setWithObjects:{v9, v10, 0}];
-      [v6 setAutoSelectCandidates:v11];
+      _lastGrapheme = [surface _lastGrapheme];
+      v11 = [MEMORY[0x29EDB8E50] setWithObjects:{surface, _lastGrapheme, 0}];
+      [composingKeyboardInputManager setAutoSelectCandidates:v11];
     }
 
-    v13 = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
-    [v6 setSyntheticCandidate:v13];
+    rawInputString = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
+    [composingKeyboardInputManager setSyntheticCandidate:rawInputString];
 
-    v14 = [(TIKeyboardInputManager_zh_SegmentPicker *)self autoCommitString];
-    v15 = [(TIKeyboardInputManagerMecabra *)self geometryDataArray];
-    v16 = [v6 makeCandidatesWithInputString:v4 autoCommitString:v14 predictionEnabled:0 reanalysisMode:1 geometoryModelData:v15];
+    autoCommitString = [(TIKeyboardInputManager_zh_SegmentPicker *)self autoCommitString];
+    geometryDataArray = [(TIKeyboardInputManagerMecabra *)self geometryDataArray];
+    v16 = [composingKeyboardInputManager makeCandidatesWithInputString:segments autoCommitString:autoCommitString predictionEnabled:0 reanalysisMode:1 geometoryModelData:geometryDataArray];
 
-    v12 = [MEMORY[0x29EDC7080] dummySet];
+    dummySet = [MEMORY[0x29EDC7080] dummySet];
     if (v16)
     {
-      v17 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-      v18 = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
-      [(TIKeyboardInputManagerMecabra *)self updateProactiveCandidatesForCandidateResultSet:v17 withInput:v18];
+      wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+      rawInputString2 = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
+      [(TIKeyboardInputManagerMecabra *)self updateProactiveCandidatesForCandidateResultSet:wordSearchCandidateResultSet withInput:rawInputString2];
 
-      v19 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-      v20 = [(TIKeyboardInputManagerMecabra *)self candidateResultSetFromWordSearchCandidateResultSet:v19];
+      wordSearchCandidateResultSet2 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+      v20 = [(TIKeyboardInputManagerMecabra *)self candidateResultSetFromWordSearchCandidateResultSet:wordSearchCandidateResultSet2];
 
-      v12 = v20;
+      dummySet = v20;
     }
   }
 
   else
   {
 LABEL_6:
-    v12 = 0;
+    dummySet = 0;
   }
 
 LABEL_13:
 
-  return v12;
+  return dummySet;
 }
 
-- (void)openCandidateGenerationContextWithCandidateHandler:(id)a3
+- (void)openCandidateGenerationContextWithCandidateHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+  handlerCopy = handler;
+  composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
 
-  if (!v5)
+  if (!composingKeyboardInputManager)
   {
     v6 = [TIKeyboardInputManager_zh_Candidates alloc];
-    v7 = [(TIKeyboardInputManager_zh_SegmentPicker *)self config];
-    v8 = [(TIKeyboardInputManager_zh_SegmentPicker *)self keyboardState];
-    v9 = [(TIKeyboardInputManager_zh_Candidates *)v6 initWithConfig:v7 keyboardState:v8 wordSearch:self->_kbws];
+    config = [(TIKeyboardInputManager_zh_SegmentPicker *)self config];
+    keyboardState = [(TIKeyboardInputManager_zh_SegmentPicker *)self keyboardState];
+    v9 = [(TIKeyboardInputManager_zh_Candidates *)v6 initWithConfig:config keyboardState:keyboardState wordSearch:self->_kbws];
     [(TIKeyboardInputManagerMecabra *)self composeTextWith:v9];
 
-    v10 = [(TIKeyboardInputManager_zh_SegmentPicker *)self candidateRange];
+    candidateRange = [(TIKeyboardInputManager_zh_SegmentPicker *)self candidateRange];
     v12 = v11;
-    v13 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-    [v13 setCandidateRange:{v10, v12}];
+    composingKeyboardInputManager2 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+    [composingKeyboardInputManager2 setCandidateRange:{candidateRange, v12}];
   }
 
-  [v4 open];
-  v14 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+  [handlerCopy open];
+  composingKeyboardInputManager3 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
   v15 = objc_alloc(MEMORY[0x29EDC7200]);
   v18 = MEMORY[0x29EDCA5F8];
   v19 = 3221225472;
   v20 = __94__TIKeyboardInputManager_zh_SegmentPicker_openCandidateGenerationContextWithCandidateHandler___block_invoke;
   v21 = &unk_29F37D558;
-  v22 = self;
-  v23 = v4;
-  v16 = v4;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
   v17 = [v15 initWithWrappedCandidateHandler:v16 resultSetHandlerBlock:&v18];
-  [v14 openCandidateGenerationContextWithCandidateHandler:{v17, v18, v19, v20, v21, v22}];
+  [composingKeyboardInputManager3 openCandidateGenerationContextWithCandidateHandler:{v17, v18, v19, v20, v21, selfCopy}];
 }
 
-- (BOOL)closeCandidateGenerationContextWithResults:(id)a3
+- (BOOL)closeCandidateGenerationContextWithResults:(id)results
 {
-  v3 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-  [v3 cancelComposition];
+  composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+  [composingKeyboardInputManager cancelComposition];
 
   return 1;
 }
 
-- (id)didAcceptCandidate:(id)a3
+- (id)didAcceptCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
-  v6 = [v5 length];
-  v7 = [v4 input];
-  if (v6 <= [v7 length])
+  candidateCopy = candidate;
+  rawInputString = [(TIKeyboardInputManager_zh_SegmentPicker *)self rawInputString];
+  v6 = [rawInputString length];
+  input = [candidateCopy input];
+  if (v6 <= [input length])
   {
     isKindOfClass = 1;
   }
@@ -352,7 +352,7 @@ LABEL_13:
 
   if (![(TIKeyboardInputManager_zh_SegmentPicker *)self shouldShowCandidateWindow]|| (isKindOfClass & 1) != 0)
   {
-    v11 = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputString];
+    inputString = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputString];
     [(NSMutableArray *)self->_segments removeAllObjects];
     [(NSMutableArray *)self->_originalSegments removeAllObjects];
     self->_index = 0;
@@ -361,57 +361,57 @@ LABEL_13:
 
   else
   {
-    [(TIKeyboardInputManager_zh_SegmentPicker *)self selectCandidate:v4];
-    v9 = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputString];
-    v10 = [(TIKeyboardInputManager_zh_SegmentPicker *)self keyboardState];
-    [v10 setInputForMarkedText:v9];
+    [(TIKeyboardInputManager_zh_SegmentPicker *)self selectCandidate:candidateCopy];
+    inputString2 = [(TIKeyboardInputManager_zh_SegmentPicker *)self inputString];
+    keyboardState = [(TIKeyboardInputManager_zh_SegmentPicker *)self keyboardState];
+    [keyboardState setInputForMarkedText:inputString2];
 
     [(TIKeyboardInputManager_zh_SegmentPicker *)self setShouldShowCandidateWindow:0];
-    v11 = &stru_2A252F9A8;
+    inputString = &stru_2A252F9A8;
   }
 
-  return v11;
+  return inputString;
 }
 
-- (void)selectCandidate:(id)a3
+- (void)selectCandidate:(id)candidate
 {
-  v19 = a3;
+  candidateCopy = candidate;
   v4 = objc_alloc_init(MEMORY[0x29EDC7250]);
   [(TIKeyboardInputManager_zh_SegmentPicker *)self setAlternateDisplayString:0];
-  v5 = [v19 candidate];
-  v6 = [v5 _containsBopomofoOnly];
+  candidate = [candidateCopy candidate];
+  _containsBopomofoOnly = [candidate _containsBopomofoOnly];
 
-  if (v6)
+  if (_containsBopomofoOnly)
   {
-    v7 = [v19 candidate];
-    [(TIKeyboardInputManager_zh_SegmentPicker *)self setAlternateDisplayString:v7];
+    candidate2 = [candidateCopy candidate];
+    [(TIKeyboardInputManager_zh_SegmentPicker *)self setAlternateDisplayString:candidate2];
   }
 
-  v8 = [v19 input];
-  v9 = [v8 length];
-  v10 = [(TIKeyboardInputManager_zh_SegmentPicker *)self convertString];
-  v11 = [v10 length];
+  input = [candidateCopy input];
+  v9 = [input length];
+  convertString = [(TIKeyboardInputManager_zh_SegmentPicker *)self convertString];
+  v11 = [convertString length];
 
   if (v9 >= v11)
   {
-    v14 = [v19 label];
-    [v4 setSurface:v14];
+    label = [candidateCopy label];
+    [v4 setSurface:label];
   }
 
   else
   {
-    v12 = [(TIKeyboardInputManager_zh_SegmentPicker *)self originalSegments];
-    v13 = [v12 objectAtIndexedSubscript:{-[TIKeyboardInputManager_zh_SegmentPicker index](self, "index")}];
-    v14 = [v13 surface];
+    originalSegments = [(TIKeyboardInputManager_zh_SegmentPicker *)self originalSegments];
+    v13 = [originalSegments objectAtIndexedSubscript:{-[TIKeyboardInputManager_zh_SegmentPicker index](self, "index")}];
+    label = [v13 surface];
 
-    v15 = [v14 _stringByTrimmingLastCharacter];
-    v16 = [v19 label];
-    v17 = [v15 stringByAppendingString:v16];
+    _stringByTrimmingLastCharacter = [label _stringByTrimmingLastCharacter];
+    label2 = [candidateCopy label];
+    v17 = [_stringByTrimmingLastCharacter stringByAppendingString:label2];
     [v4 setSurface:v17];
   }
 
-  v18 = [(TIKeyboardInputManager_zh_SegmentPicker *)self convertString];
-  [v4 setReading:v18];
+  convertString2 = [(TIKeyboardInputManager_zh_SegmentPicker *)self convertString];
+  [v4 setReading:convertString2];
 
   [(NSMutableArray *)self->_segments replaceObjectAtIndex:[(TIKeyboardInputManager_zh_SegmentPicker *)self index] withObject:v4];
   [(TIKeyboardInputManager_zh_SegmentPicker *)self updateMarkedText];

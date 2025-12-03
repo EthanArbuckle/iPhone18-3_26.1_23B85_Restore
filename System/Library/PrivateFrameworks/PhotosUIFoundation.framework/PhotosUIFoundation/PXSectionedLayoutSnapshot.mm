@@ -1,27 +1,27 @@
 @interface PXSectionedLayoutSnapshot
 + (id)emptyLayoutSnapshot;
-- (CGRect)frameForSectionAtIndex:(unint64_t)a3;
+- (CGRect)frameForSectionAtIndex:(unint64_t)index;
 - (PXSectionedLayoutSnapshot)init;
-- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)a3;
-- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)a3 forSections:(id)a4;
-- (_PXLayoutGeometry)geometryForItem:(SEL)a3;
+- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)rect;
+- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)rect forSections:(id)sections;
+- (_PXLayoutGeometry)geometryForItem:(SEL)item;
 - (id)description;
-- (void)enumerateFramesForSectionsInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateGeometriesForItemsInRect:(CGRect)a3 usingBlock:(id)a4;
+- (void)enumerateFramesForSectionsInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateGeometriesForItemsInRect:(CGRect)rect usingBlock:(id)block;
 @end
 
 @implementation PXSectionedLayoutSnapshot
 
-- (CGRect)frameForSectionAtIndex:(unint64_t)a3
+- (CGRect)frameForSectionAtIndex:(unint64_t)index
 {
   v6 = self->_sections;
-  if ([(NSArray *)v6 count]<= a3)
+  if ([(NSArray *)v6 count]<= index)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutSnapshot.m" lineNumber:106 description:{@"Sectioned snapshot asked for rect for section %lu, but there are only %lu sections:\r%@", a3, -[NSArray count](v6, "count"), v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutSnapshot.m" lineNumber:106 description:{@"Sectioned snapshot asked for rect for section %lu, but there are only %lu sections:\r%@", index, -[NSArray count](v6, "count"), v6}];
   }
 
-  v7 = [(NSArray *)v6 objectAtIndexedSubscript:a3];
+  v7 = [(NSArray *)v6 objectAtIndexedSubscript:index];
   [v7 frame];
   v9 = v8;
   v11 = v10;
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (void)enumerateFramesForSectionsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateFramesForSectionsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  blockCopy = block;
   [(PXLayoutPageMap *)self->_pageMap sourcesFromRect:x, y, width, height];
   v28 = 0;
   v24 = 0u;
@@ -83,7 +83,7 @@ LABEL_3:
       v32.size.height = v23;
       if (CGRectIntersectsRect(v31, v32))
       {
-        v9[2](v9, [v15 index], &v28, v17, v19, v21, v23);
+        blockCopy[2](blockCopy, [v15 index], &v28, v17, v19, v21, v23);
         if (v28)
         {
           break;
@@ -104,20 +104,20 @@ LABEL_3:
   }
 }
 
-- (void)enumerateGeometriesForItemsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateGeometriesForItemsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = [(PXLayoutPageMap *)self->_pageMap sourcesFromRect:x, y, width, height];
+  blockCopy = block;
+  height = [(PXLayoutPageMap *)self->_pageMap sourcesFromRect:x, y, width, height];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v11 = [height countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v11)
   {
     v12 = v11;
@@ -128,7 +128,7 @@ LABEL_3:
       {
         if (*v35 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(height);
         }
 
         v15 = *(*(&v34 + 1) + 8 * i);
@@ -160,12 +160,12 @@ LABEL_3:
           v32 = width;
           v33 = height;
           v24[4] = v15;
-          v25 = v9;
+          v25 = blockCopy;
           [v15 enumerateGeometriesWithBlock:v24];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v12 = [height countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v12);
@@ -207,7 +207,7 @@ void __74__PXSectionedLayoutSnapshot_enumerateGeometriesForItemsInRect_usingBloc
   }
 }
 
-- (_PXLayoutGeometry)geometryForItem:(SEL)a3
+- (_PXLayoutGeometry)geometryForItem:(SEL)item
 {
   v6 = a4;
   retstr->var7.height = 0.0;
@@ -220,17 +220,17 @@ void __74__PXSectionedLayoutSnapshot_enumerateGeometriesForItemsInRect_usingBloc
   *&retstr->var3.ty = unk_1B4075470;
   *&retstr->var0 = PXLayoutGeometryNull;
   *&retstr->var1.y = *algn_1B4075430;
-  v7 = [v6 px_section];
-  if (v7 < [(NSArray *)self->_sections count])
+  px_section = [v6 px_section];
+  if (px_section < [(NSArray *)self->_sections count])
   {
-    v8 = [(NSArray *)self->_sections objectAtIndexedSubscript:v7];
-    v9 = [v6 px_item];
+    v8 = [(NSArray *)self->_sections objectAtIndexedSubscript:px_section];
+    px_item = [v6 px_item];
     v10 = [v8 geometriesWithKind:{objc_msgSend(v6, "px_kind")}];
-    if (v9 < [v10 count])
+    if (px_item < [v10 count])
     {
       if (v10)
       {
-        [v10 geometryAtIndex:v9];
+        [v10 geometryAtIndex:px_item];
       }
 
       else
@@ -276,42 +276,42 @@ void __74__PXSectionedLayoutSnapshot_enumerateGeometriesForItemsInRect_usingBloc
   return v4;
 }
 
-- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)a3 forSections:(id)a4
+- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)rect forSections:(id)sections
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sectionsCopy = sections;
   v16.receiver = self;
   v16.super_class = PXSectionedLayoutSnapshot;
-  v10 = [(PXLayoutSnapshot *)&v16 initWithContentRect:x, y, width, height];
-  if (v10)
+  height = [(PXLayoutSnapshot *)&v16 initWithContentRect:x, y, width, height];
+  if (height)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v9 copyItems:1];
-    sections = v10->_sections;
-    v10->_sections = v11;
+    v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:sectionsCopy copyItems:1];
+    sections = height->_sections;
+    height->_sections = v11;
 
-    v13 = [[PXLayoutPageMap alloc] initWithSources:v10->_sections contentRect:x, y, width, height];
-    pageMap = v10->_pageMap;
-    v10->_pageMap = v13;
+    height2 = [[PXLayoutPageMap alloc] initWithSources:height->_sections contentRect:x, y, width, height];
+    pageMap = height->_pageMap;
+    height->_pageMap = height2;
   }
 
-  return v10;
+  return height;
 }
 
-- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)a3
+- (PXSectionedLayoutSnapshot)initWithContentRect:(CGRect)rect
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutSnapshot.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXSectionedLayoutSnapshot initWithContentRect:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutSnapshot.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXSectionedLayoutSnapshot initWithContentRect:]"}];
 
   abort();
 }
 
 - (PXSectionedLayoutSnapshot)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutSnapshot.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXSectionedLayoutSnapshot init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutSnapshot.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXSectionedLayoutSnapshot init]"}];
 
   abort();
 }

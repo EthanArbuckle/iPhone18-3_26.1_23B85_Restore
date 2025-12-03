@@ -1,5 +1,5 @@
 @interface FMMapDragRadiusViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axInitialHandleState;
 - (void)_axSetUpHandleImageView;
@@ -8,28 +8,28 @@
 
 @implementation FMMapDragRadiusViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"handleImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"initialize" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"isDragging" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"isMinimum" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"isMaximum" withFullSignature:{"B", 0}];
-  [v3 validateProtocol:@"FMMapDragRadiusViewDelegate" hasRequiredInstanceMethod:@"willStartDraggingHandle:"];
-  [v3 validateProtocol:@"FMMapDragRadiusViewDelegate" hasRequiredInstanceMethod:@"didStopDraggingHandle:"];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"setIsDragging:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"setIsMaximum:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"setIsMinimum:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"currentHandleDistance" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"currentHandleDistanceNormalized" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"popAnimateHandle" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"_axSetCustomRadius:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"minPoint" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"maxPoint" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"usesMetric" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"maximumRadiusNormalized" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"minimumRadiusNormalized" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"handleImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"initialize" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"isDragging" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"isMinimum" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"isMaximum" withFullSignature:{"B", 0}];
+  [validationsCopy validateProtocol:@"FMMapDragRadiusViewDelegate" hasRequiredInstanceMethod:@"willStartDraggingHandle:"];
+  [validationsCopy validateProtocol:@"FMMapDragRadiusViewDelegate" hasRequiredInstanceMethod:@"didStopDraggingHandle:"];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"setIsDragging:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"setIsMaximum:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"setIsMinimum:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"currentHandleDistance" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"currentHandleDistanceNormalized" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"popAnimateHandle" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"_axSetCustomRadius:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"minPoint" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"maxPoint" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"usesMetric" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"maximumRadiusNormalized" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"FMMapDragRadiusView" hasInstanceMethod:@"minimumRadiusNormalized" withFullSignature:{"d", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -100,8 +100,8 @@ uint64_t __57__FMMapDragRadiusViewAccessibility__axInitialHandleState__block_inv
   v5 = accessibilityLocalizedString(@"location.range.handle");
   [v4 setAccessibilityLabel:v5];
 
-  v6 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | v6];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | accessibilityTraits];
   objc_initWeak(&location, v4);
   objc_initWeak(&from, self);
   v15[0] = MEMORY[0x29EDCA5F8];

@@ -1,9 +1,9 @@
 @interface ADAudioSessionCoordinator
-- (ADAudioSessionCoordinator)initWithInstanceContext:(id)a3 delegate:(id)a4;
-- (BOOL)_relinquishRemoteAssertionForSenderID:(id)a3 reason:(id)a4 effectiveDate:(id)a5 error:(id *)a6;
+- (ADAudioSessionCoordinator)initWithInstanceContext:(id)context delegate:(id)delegate;
+- (BOOL)_relinquishRemoteAssertionForSenderID:(id)d reason:(id)reason effectiveDate:(id)date error:(id *)error;
 - (BOOL)hasActiveAudioSessionAssertions;
-- (id)_acquireRemoteAssertionForSenderID:(id)a3 reason:(id)a4 effectiveDate:(id)a5 expirationDuration:(double)a6 error:(id *)a7;
-- (id)_deviceWithID:(id)a3;
+- (id)_acquireRemoteAssertionForSenderID:(id)d reason:(id)reason effectiveDate:(id)date expirationDuration:(double)duration error:(id *)error;
+- (id)_deviceWithID:(id)d;
 - (id)_disqualifiedDevices;
 - (id)_qualifiedDeviceIDs;
 - (id)_qualifiedDevices;
@@ -11,91 +11,91 @@
 - (id)_qualifiedInRangeDevices;
 - (id)_qualifiedOutOfRangeDeviceIDs;
 - (id)_qualifiedOutOfRangeDevices;
-- (id)acquireAudioSessionAssertionWithContext:(id)a3 relinquishmentHandler:(id)a4;
-- (void)_addDeviceIDToKeepAliveList:(id)a3 reason:(id)a4;
-- (void)_beginAudioSessionOnInRangeRemoteDevicesForReason:(id)a3 effectiveDate:(id)a4 expirationDuration:(double)a5;
-- (void)_endAudioSessionOnAllRemoteDevicesForReason:(id)a3 effectiveDate:(id)a4;
-- (void)_endAudioSessionOnOutOfRangeRemoteDevicesForReason:(id)a3 effectiveDate:(id)a4;
-- (void)_enumerateKeepAliveListUsingBlock:(id)a3;
-- (void)_handleAcquiredLocalAssertion:(id)a3 isFirst:(BOOL)a4;
-- (void)_handleAcquiredRemoteAssertion:(id)a3 isFirst:(BOOL)a4;
-- (void)_handleAddedLocalAssertion:(id)a3 isFirst:(BOOL)a4;
-- (void)_handleBeginAudioSessionRequest:(id)a3 fromDeviceWithID:(id)a4 responseHandler:(id)a5;
-- (void)_handleDidSetAudioSessionActive:(BOOL)a3;
-- (void)_handleEndAudioSessionRequest:(id)a3 fromDeviceWithID:(id)a4 responseHandler:(id)a5;
-- (void)_handleFoundRemoteDevice:(id)a3;
-- (void)_handleKeepAudioSessionAliveRequest:(id)a3 fromDeviceWithID:(id)a4 responseHandler:(id)a5;
-- (void)_handleLostRemoteDevice:(id)a3;
-- (void)_handleMessage:(id)a3 fromDeviceWithID:(id)a4 replyHandler:(id)a5;
-- (void)_handleRelinquishedLocalAssertion:(id)a3 isLast:(BOOL)a4;
-- (void)_handleRelinquishedRemoteAssertion:(id)a3 isLast:(BOOL)a4;
-- (void)_handleRemovedLocalAssertion:(id)a3 isLast:(BOOL)a4;
-- (void)_handleUpdatedCurrentOrUpNextDateIntervalForReason:(id)a3;
-- (void)_handleUpdatedLocalAssertionsForReason:(id)a3 pendingAssertions:(id)a4 activeAssertions:(id)a5;
-- (void)_handleUpdatedLocalDevice:(id)a3;
-- (void)_handleUpdatedLocalSystemInfoForReason:(id)a3;
-- (void)_handleUpdatedRemoteDevice:(id)a3;
-- (void)_handleWillSetAudioSessionActive:(BOOL)a3;
+- (id)acquireAudioSessionAssertionWithContext:(id)context relinquishmentHandler:(id)handler;
+- (void)_addDeviceIDToKeepAliveList:(id)list reason:(id)reason;
+- (void)_beginAudioSessionOnInRangeRemoteDevicesForReason:(id)reason effectiveDate:(id)date expirationDuration:(double)duration;
+- (void)_endAudioSessionOnAllRemoteDevicesForReason:(id)reason effectiveDate:(id)date;
+- (void)_endAudioSessionOnOutOfRangeRemoteDevicesForReason:(id)reason effectiveDate:(id)date;
+- (void)_enumerateKeepAliveListUsingBlock:(id)block;
+- (void)_handleAcquiredLocalAssertion:(id)assertion isFirst:(BOOL)first;
+- (void)_handleAcquiredRemoteAssertion:(id)assertion isFirst:(BOOL)first;
+- (void)_handleAddedLocalAssertion:(id)assertion isFirst:(BOOL)first;
+- (void)_handleBeginAudioSessionRequest:(id)request fromDeviceWithID:(id)d responseHandler:(id)handler;
+- (void)_handleDidSetAudioSessionActive:(BOOL)active;
+- (void)_handleEndAudioSessionRequest:(id)request fromDeviceWithID:(id)d responseHandler:(id)handler;
+- (void)_handleFoundRemoteDevice:(id)device;
+- (void)_handleKeepAudioSessionAliveRequest:(id)request fromDeviceWithID:(id)d responseHandler:(id)handler;
+- (void)_handleLostRemoteDevice:(id)device;
+- (void)_handleMessage:(id)message fromDeviceWithID:(id)d replyHandler:(id)handler;
+- (void)_handleRelinquishedLocalAssertion:(id)assertion isLast:(BOOL)last;
+- (void)_handleRelinquishedRemoteAssertion:(id)assertion isLast:(BOOL)last;
+- (void)_handleRemovedLocalAssertion:(id)assertion isLast:(BOOL)last;
+- (void)_handleUpdatedCurrentOrUpNextDateIntervalForReason:(id)reason;
+- (void)_handleUpdatedLocalAssertionsForReason:(id)reason pendingAssertions:(id)assertions activeAssertions:(id)activeAssertions;
+- (void)_handleUpdatedLocalDevice:(id)device;
+- (void)_handleUpdatedLocalSystemInfoForReason:(id)reason;
+- (void)_handleUpdatedRemoteDevice:(id)device;
+- (void)_handleWillSetAudioSessionActive:(BOOL)active;
 - (void)_heartBeatFired;
 - (void)_invalidate;
-- (void)_keepAudioSessionAliveOnRemoteDevicesForReason:(id)a3 expirationDuration:(double)a4;
-- (void)_registerRequestID:(id)a3 requestHandler:(id)a4;
-- (void)_removeDeviceIDFromKeepAliveList:(id)a3 reason:(id)a4;
-- (void)_resetKeepAliveListForReason:(id)a3;
-- (void)_resetRapportLinkAndReconnectNow:(BOOL)a3;
-- (void)_sendBeginAudioSessionRequest:(id)a3 toDeviceWithID:(id)a4 responseHandler:(id)a5;
-- (void)_sendEndAudioSessionRequest:(id)a3 toDeviceWithID:(id)a4 responseHandler:(id)a5;
-- (void)_sendKeepAudioSessionAliveRequest:(id)a3 toDeviceWithID:(id)a4 responseHandler:(id)a5;
-- (void)_sendMessage:(id)a3 toDeviceWithID:(id)a4 replyHandler:(id)a5;
-- (void)_sendRequestID:(id)a3 request:(id)a4 recipientID:(id)a5 responseHandler:(id)a6;
+- (void)_keepAudioSessionAliveOnRemoteDevicesForReason:(id)reason expirationDuration:(double)duration;
+- (void)_registerRequestID:(id)d requestHandler:(id)handler;
+- (void)_removeDeviceIDFromKeepAliveList:(id)list reason:(id)reason;
+- (void)_resetKeepAliveListForReason:(id)reason;
+- (void)_resetRapportLinkAndReconnectNow:(BOOL)now;
+- (void)_sendBeginAudioSessionRequest:(id)request toDeviceWithID:(id)d responseHandler:(id)handler;
+- (void)_sendEndAudioSessionRequest:(id)request toDeviceWithID:(id)d responseHandler:(id)handler;
+- (void)_sendKeepAudioSessionAliveRequest:(id)request toDeviceWithID:(id)d responseHandler:(id)handler;
+- (void)_sendMessage:(id)message toDeviceWithID:(id)d replyHandler:(id)handler;
+- (void)_sendRequestID:(id)d request:(id)request recipientID:(id)iD responseHandler:(id)handler;
 - (void)_setUpRapportLink;
 - (void)_setUpRequestHandlers;
-- (void)_startHeartBeatWithEffectiveDate:(id)a3;
+- (void)_startHeartBeatWithEffectiveDate:(id)date;
 - (void)_stopHeartBeat;
 - (void)_tearDownRequestHandlers;
-- (void)_updateCurrentOrUpNextDateInterval:(id)a3 reason:(id)a4;
-- (void)_updateHomeKitMediaSystemIdentifier:(id)a3 reason:(id)a4;
-- (void)_updateHomeKitRoomName:(id)a3 reason:(id)a4;
-- (void)_updateMediaRemoteGroupIdentifier:(id)a3 reason:(id)a4;
-- (void)_updateMediaRemoteRouteIdentifier:(id)a3 reason:(id)a4;
-- (void)assertionCoordinator:(id)a3 didActivateAssertion:(id)a4 isFirstAssertion:(BOOL)a5;
-- (void)assertionCoordinator:(id)a3 didAddAssertion:(id)a4 isFirstAssertion:(BOOL)a5;
-- (void)assertionCoordinator:(id)a3 didDeactivateAssertion:(id)a4 isLastAssertion:(BOOL)a5;
-- (void)assertionCoordinator:(id)a3 didRemoveAssertion:(id)a4 isLastAssertion:(BOOL)a5;
+- (void)_updateCurrentOrUpNextDateInterval:(id)interval reason:(id)reason;
+- (void)_updateHomeKitMediaSystemIdentifier:(id)identifier reason:(id)reason;
+- (void)_updateHomeKitRoomName:(id)name reason:(id)reason;
+- (void)_updateMediaRemoteGroupIdentifier:(id)identifier reason:(id)reason;
+- (void)_updateMediaRemoteRouteIdentifier:(id)identifier reason:(id)reason;
+- (void)assertionCoordinator:(id)coordinator didActivateAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion;
+- (void)assertionCoordinator:(id)coordinator didAddAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion;
+- (void)assertionCoordinator:(id)coordinator didDeactivateAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion;
+- (void)assertionCoordinator:(id)coordinator didRemoveAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion;
 - (void)dealloc;
-- (void)fetchAndUpdateMediaRemoteGroupIdentifierForReason:(id)a3;
-- (void)fetchAndUpdateMediaRemoteRouteIdentifierForReason:(id)a3;
-- (void)getSnapshotWithCompletion:(id)a3;
-- (void)handleDidSetAudioSessionActive:(BOOL)a3;
-- (void)handleWillSetAudioSessionActive:(BOOL)a3;
+- (void)fetchAndUpdateMediaRemoteGroupIdentifierForReason:(id)reason;
+- (void)fetchAndUpdateMediaRemoteRouteIdentifierForReason:(id)reason;
+- (void)getSnapshotWithCompletion:(id)completion;
+- (void)handleDidSetAudioSessionActive:(BOOL)active;
+- (void)handleWillSetAudioSessionActive:(BOOL)active;
 - (void)invalidate;
-- (void)mediaRemoteDeviceInfoGroupIdentifierDidChange:(id)a3;
-- (void)mediaRemoteDeviceInfoRouteIdentifierDidChange:(id)a3;
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4;
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4;
-- (void)rapportLink:(id)a3 didUpdateDevice:(id)a4 changes:(unsigned int)a5;
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4;
-- (void)rapportLinkDidInterrupt:(id)a3;
-- (void)rapportLinkDidInvalidate:(id)a3;
+- (void)mediaRemoteDeviceInfoGroupIdentifierDidChange:(id)change;
+- (void)mediaRemoteDeviceInfoRouteIdentifierDidChange:(id)change;
+- (void)rapportLink:(id)link didFindDevice:(id)device;
+- (void)rapportLink:(id)link didLoseDevice:(id)device;
+- (void)rapportLink:(id)link didUpdateDevice:(id)device changes:(unsigned int)changes;
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device;
+- (void)rapportLinkDidInterrupt:(id)interrupt;
+- (void)rapportLinkDidInvalidate:(id)invalidate;
 - (void)relinquishLocalAssertions;
 @end
 
 @implementation ADAudioSessionCoordinator
 
-- (void)_sendEndAudioSessionRequest:(id)a3 toDeviceWithID:(id)a4 responseHandler:(id)a5
+- (void)_sendEndAudioSessionRequest:(id)request toDeviceWithID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v19 = "[ADAudioSessionCoordinator(Messaging) _sendEndAudioSessionRequest:toDeviceWithID:responseHandler:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = requestCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceID = %@, request = %@", buf, 0x20u);
   }
 
@@ -106,14 +106,14 @@
     v16[1] = 3221225472;
     v16[2] = sub_10028A5C0;
     v16[3] = &unk_100518F70;
-    v17 = v8;
+    v17 = requestCopy;
     v12 = [ADAudioSessionCoordinationMessage newWithBuilder:v16];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10028A62C;
     v14[3] = &unk_100518EF8;
-    v15 = v10;
-    [(ADAudioSessionCoordinator *)self _sendMessage:v12 toDeviceWithID:v9 replyHandler:v14];
+    v15 = handlerCopy;
+    [(ADAudioSessionCoordinator *)self _sendMessage:v12 toDeviceWithID:dCopy replyHandler:v14];
 
     v13 = v17;
 LABEL_7:
@@ -121,30 +121,30 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v13 = [AFError errorWithCode:1015 description:@"Unexpected request for message."];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_sendKeepAudioSessionAliveRequest:(id)a3 toDeviceWithID:(id)a4 responseHandler:(id)a5
+- (void)_sendKeepAudioSessionAliveRequest:(id)request toDeviceWithID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v19 = "[ADAudioSessionCoordinator(Messaging) _sendKeepAudioSessionAliveRequest:toDeviceWithID:responseHandler:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = requestCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceID = %@, request = %@", buf, 0x20u);
   }
 
@@ -155,14 +155,14 @@ LABEL_8:
     v16[1] = 3221225472;
     v16[2] = sub_10028A9C0;
     v16[3] = &unk_100518F70;
-    v17 = v8;
+    v17 = requestCopy;
     v12 = [ADAudioSessionCoordinationMessage newWithBuilder:v16];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10028AA2C;
     v14[3] = &unk_100518EF8;
-    v15 = v10;
-    [(ADAudioSessionCoordinator *)self _sendMessage:v12 toDeviceWithID:v9 replyHandler:v14];
+    v15 = handlerCopy;
+    [(ADAudioSessionCoordinator *)self _sendMessage:v12 toDeviceWithID:dCopy replyHandler:v14];
 
     v13 = v17;
 LABEL_7:
@@ -170,30 +170,30 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v13 = [AFError errorWithCode:1015 description:@"Unexpected request for message."];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_sendBeginAudioSessionRequest:(id)a3 toDeviceWithID:(id)a4 responseHandler:(id)a5
+- (void)_sendBeginAudioSessionRequest:(id)request toDeviceWithID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v19 = "[ADAudioSessionCoordinator(Messaging) _sendBeginAudioSessionRequest:toDeviceWithID:responseHandler:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = requestCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceID = %@, request = %@", buf, 0x20u);
   }
 
@@ -204,14 +204,14 @@ LABEL_8:
     v16[1] = 3221225472;
     v16[2] = sub_10028ADC0;
     v16[3] = &unk_100518F70;
-    v17 = v8;
+    v17 = requestCopy;
     v12 = [ADAudioSessionCoordinationMessage newWithBuilder:v16];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10028AE2C;
     v14[3] = &unk_100518EF8;
-    v15 = v10;
-    [(ADAudioSessionCoordinator *)self _sendMessage:v12 toDeviceWithID:v9 replyHandler:v14];
+    v15 = handlerCopy;
+    [(ADAudioSessionCoordinator *)self _sendMessage:v12 toDeviceWithID:dCopy replyHandler:v14];
 
     v13 = v17;
 LABEL_7:
@@ -219,30 +219,30 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v13 = [AFError errorWithCode:1015 description:@"Unexpected request for message."];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_sendMessage:(id)a3 toDeviceWithID:(id)a4 replyHandler:(id)a5
+- (void)_sendMessage:(id)message toDeviceWithID:(id)d replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     *&buf[4] = "[ADAudioSessionCoordinator(Messaging) _sendMessage:toDeviceWithID:replyHandler:]";
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
-    v33 = v8;
+    v33 = messageCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s %@ <--- %@", buf, 0x20u);
   }
 
@@ -258,34 +258,34 @@ LABEL_8:
   v28[2] = sub_10028B338;
   v28[3] = &unk_100519010;
   v31 = buf;
-  v13 = v9;
+  v13 = dCopy;
   v29 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v30 = v14;
   v15 = [AFError errorWithCode:40];
   v16 = [v12 initWithBlock:v28 defaultValue1:0 defaultValue2:v15];
 
   v17 = [AFWatchdogTimer alloc];
-  v18 = [(ADAudioSessionCoordinator *)self _queue];
+  _queue = [(ADAudioSessionCoordinator *)self _queue];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10028B4E4;
   v26[3] = &unk_10051DFE8;
   v19 = v16;
   v27 = v19;
-  v20 = [v17 initWithTimeoutInterval:v18 onQueue:v26 timeoutHandler:4.0];
+  v20 = [v17 initWithTimeoutInterval:_queue onQueue:v26 timeoutHandler:4.0];
   v21 = *(*&buf[8] + 40);
   *(*&buf[8] + 40) = v20;
 
-  v22 = [v8 buildDictionaryRepresentation];
-  if (v22)
+  buildDictionaryRepresentation = [messageCopy buildDictionaryRepresentation];
+  if (buildDictionaryRepresentation)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10028B548;
     v24[3] = &unk_100519038;
     v25 = v19;
-    [(ADAudioSessionCoordinator *)self _sendRequestID:@"ASC" request:v22 recipientID:v13 responseHandler:v24];
+    [(ADAudioSessionCoordinator *)self _sendRequestID:@"ASC" request:buildDictionaryRepresentation recipientID:v13 responseHandler:v24];
     v23 = v25;
   }
 
@@ -298,28 +298,28 @@ LABEL_8:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_handleEndAudioSessionRequest:(id)a3 fromDeviceWithID:(id)a4 responseHandler:(id)a5
+- (void)_handleEndAudioSessionRequest:(id)request fromDeviceWithID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v20 = "[ADAudioSessionCoordinator(Messaging) _handleEndAudioSessionRequest:fromDeviceWithID:responseHandler:]";
     v21 = 2112;
-    v22 = v9;
+    v22 = dCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = requestCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceID = %@, request = %@", buf, 0x20u);
   }
 
-  if (v9)
+  if (dCopy)
   {
-    v12 = [v8 effectiveDate];
+    effectiveDate = [requestCopy effectiveDate];
     v18 = 0;
-    v13 = [(ADAudioSessionCoordinator *)self _relinquishRemoteAssertionForSenderID:v9 reason:@"End Audio Session" effectiveDate:v12 error:&v18];
+    v13 = [(ADAudioSessionCoordinator *)self _relinquishRemoteAssertionForSenderID:dCopy reason:@"End Audio Session" effectiveDate:effectiveDate error:&v18];
     v14 = v18;
 
     if (!v14)
@@ -334,7 +334,7 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s success = %d", buf, 0x12u);
       }
 
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_15;
       }
@@ -361,7 +361,7 @@ LABEL_17:
       v21 = 2112;
       v22 = v14;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s error = %@", buf, 0x16u);
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_16;
       }
@@ -369,13 +369,13 @@ LABEL_17:
 LABEL_9:
       if (v14)
       {
-        v10[2](v10, 0, v14);
+        handlerCopy[2](handlerCopy, 0, v14);
         goto LABEL_16;
       }
 
 LABEL_14:
       v17 = objc_alloc_init(ADAudioSessionCoordinationMessageEndAudioSessionResponse);
-      (v10)[2](v10, v17, 0);
+      (handlerCopy)[2](handlerCopy, v17, 0);
 
 LABEL_15:
       v14 = 0;
@@ -383,7 +383,7 @@ LABEL_15:
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     goto LABEL_9;
   }
@@ -391,28 +391,28 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_handleKeepAudioSessionAliveRequest:(id)a3 fromDeviceWithID:(id)a4 responseHandler:(id)a5
+- (void)_handleKeepAudioSessionAliveRequest:(id)request fromDeviceWithID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v20 = "[ADAudioSessionCoordinator(Messaging) _handleKeepAudioSessionAliveRequest:fromDeviceWithID:responseHandler:]";
     v21 = 2112;
-    v22 = v9;
+    v22 = dCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = requestCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceID = %@, request = %@", buf, 0x20u);
   }
 
-  if (v9)
+  if (dCopy)
   {
-    [v8 expirationDuration];
+    [requestCopy expirationDuration];
     v18 = 0;
-    v12 = [(ADAudioSessionCoordinator *)self _acquireRemoteAssertionForSenderID:v9 reason:@"Keep Audio Session Alive" effectiveDate:0 expirationDuration:&v18 error:?];
+    v12 = [(ADAudioSessionCoordinator *)self _acquireRemoteAssertionForSenderID:dCopy reason:@"Keep Audio Session Alive" effectiveDate:0 expirationDuration:&v18 error:?];
     v13 = v18;
     if (v12)
     {
@@ -455,44 +455,44 @@ LABEL_16:
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     if (v13)
     {
-      v10[2](v10, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
 
     else
     {
       v17 = objc_alloc_init(ADAudioSessionCoordinationMessageKeepAudioSessionAliveResponse);
-      (v10)[2](v10, v17, 0);
+      (handlerCopy)[2](handlerCopy, v17, 0);
     }
   }
 }
 
-- (void)_handleBeginAudioSessionRequest:(id)a3 fromDeviceWithID:(id)a4 responseHandler:(id)a5
+- (void)_handleBeginAudioSessionRequest:(id)request fromDeviceWithID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v21 = "[ADAudioSessionCoordinator(Messaging) _handleBeginAudioSessionRequest:fromDeviceWithID:responseHandler:]";
     v22 = 2112;
-    v23 = v9;
+    v23 = dCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = requestCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s deviceID = %@, request = %@", buf, 0x20u);
   }
 
-  if (v9)
+  if (dCopy)
   {
-    v12 = [v8 effectiveDate];
-    [v8 expirationDuration];
+    effectiveDate = [requestCopy effectiveDate];
+    [requestCopy expirationDuration];
     v19 = 0;
-    v13 = [(ADAudioSessionCoordinator *)self _acquireRemoteAssertionForSenderID:v9 reason:@"Begin Audio Session" effectiveDate:v12 expirationDuration:&v19 error:?];
+    v13 = [(ADAudioSessionCoordinator *)self _acquireRemoteAssertionForSenderID:dCopy reason:@"Begin Audio Session" effectiveDate:effectiveDate expirationDuration:&v19 error:?];
     v14 = v19;
 
     if (v13)
@@ -536,35 +536,35 @@ LABEL_16:
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     if (v14)
     {
-      v10[2](v10, 0, v14);
+      handlerCopy[2](handlerCopy, 0, v14);
     }
 
     else
     {
       v18 = objc_alloc_init(ADAudioSessionCoordinationMessageBeginAudioSessionResponse);
-      (v10)[2](v10, v18, 0);
+      (handlerCopy)[2](handlerCopy, v18, 0);
     }
   }
 }
 
-- (void)_handleMessage:(id)a3 fromDeviceWithID:(id)a4 replyHandler:(id)a5
+- (void)_handleMessage:(id)message fromDeviceWithID:(id)d replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v30 = "[ADAudioSessionCoordinator(Messaging) _handleMessage:fromDeviceWithID:replyHandler:]";
     v31 = 2112;
-    v32 = v9;
+    v32 = dCopy;
     v33 = 2112;
-    v34 = v8;
+    v34 = messageCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s %@ ---> %@", buf, 0x20u);
   }
 
@@ -573,17 +573,17 @@ LABEL_16:
   v26[1] = 3221225472;
   v26[2] = sub_10028C31C;
   v26[3] = &unk_100518F48;
-  v13 = v9;
+  v13 = dCopy;
   v27 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v28 = v14;
   v15 = [AFError errorWithCode:40];
   v16 = [v12 initWithBlock:v26 defaultValue1:0 defaultValue2:v15];
 
-  v17 = [v8 type];
-  if (v17 == 5)
+  type = [messageCopy type];
+  if (type == 5)
   {
-    v18 = [v8 payloadEndAudioSessionRequest];
+    payloadEndAudioSessionRequest = [messageCopy payloadEndAudioSessionRequest];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -592,15 +592,15 @@ LABEL_16:
       v20[2] = sub_10028C704;
       v20[3] = &unk_100518FE8;
       v21 = v16;
-      [(ADAudioSessionCoordinator *)self _handleEndAudioSessionRequest:v18 fromDeviceWithID:v13 responseHandler:v20];
+      [(ADAudioSessionCoordinator *)self _handleEndAudioSessionRequest:payloadEndAudioSessionRequest fromDeviceWithID:v13 responseHandler:v20];
       v19 = v21;
       goto LABEL_14;
     }
   }
 
-  else if (v17 == 3)
+  else if (type == 3)
   {
-    v18 = [v8 payloadKeepAudioSessionAliveRequest];
+    payloadEndAudioSessionRequest = [messageCopy payloadKeepAudioSessionAliveRequest];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -609,7 +609,7 @@ LABEL_16:
       v22[2] = sub_10028C5D4;
       v22[3] = &unk_100518FC0;
       v23 = v16;
-      [(ADAudioSessionCoordinator *)self _handleKeepAudioSessionAliveRequest:v18 fromDeviceWithID:v13 responseHandler:v22];
+      [(ADAudioSessionCoordinator *)self _handleKeepAudioSessionAliveRequest:payloadEndAudioSessionRequest fromDeviceWithID:v13 responseHandler:v22];
       v19 = v23;
       goto LABEL_14;
     }
@@ -617,14 +617,14 @@ LABEL_16:
 
   else
   {
-    if (v17 != 1)
+    if (type != 1)
     {
-      v18 = [AFError errorWithCode:1014 description:@"Unexpected message type."];
-      [v16 invokeWithValue:0 andValue:v18];
+      payloadEndAudioSessionRequest = [AFError errorWithCode:1014 description:@"Unexpected message type."];
+      [v16 invokeWithValue:0 andValue:payloadEndAudioSessionRequest];
       goto LABEL_16;
     }
 
-    v18 = [v8 payloadBeginAudioSessionRequest];
+    payloadEndAudioSessionRequest = [messageCopy payloadBeginAudioSessionRequest];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -633,7 +633,7 @@ LABEL_16:
       v24[2] = sub_10028C4A4;
       v24[3] = &unk_100518F98;
       v25 = v16;
-      [(ADAudioSessionCoordinator *)self _handleBeginAudioSessionRequest:v18 fromDeviceWithID:v13 responseHandler:v24];
+      [(ADAudioSessionCoordinator *)self _handleBeginAudioSessionRequest:payloadEndAudioSessionRequest fromDeviceWithID:v13 responseHandler:v24];
       v19 = v25;
 LABEL_14:
 
@@ -688,8 +688,8 @@ LABEL_16:
 - (id)_qualifiedOutOfRangeDeviceIDs
 {
   v3 = [NSSet alloc];
-  v4 = [(ADAudioSessionCoordinator *)self _qualifiedOutOfRangeDevices];
-  v5 = sub_1002DB6FC(v4);
+  _qualifiedOutOfRangeDevices = [(ADAudioSessionCoordinator *)self _qualifiedOutOfRangeDevices];
+  v5 = sub_1002DB6FC(_qualifiedOutOfRangeDevices);
   v6 = [v3 initWithArray:v5];
 
   return v6;
@@ -698,8 +698,8 @@ LABEL_16:
 - (id)_qualifiedInRangeDeviceIDs
 {
   v3 = [NSSet alloc];
-  v4 = [(ADAudioSessionCoordinator *)self _qualifiedInRangeDevices];
-  v5 = sub_1002DB6FC(v4);
+  _qualifiedInRangeDevices = [(ADAudioSessionCoordinator *)self _qualifiedInRangeDevices];
+  v5 = sub_1002DB6FC(_qualifiedInRangeDevices);
   v6 = [v3 initWithArray:v5];
 
   return v6;
@@ -708,8 +708,8 @@ LABEL_16:
 - (id)_qualifiedDeviceIDs
 {
   v3 = [NSSet alloc];
-  v4 = [(ADAudioSessionCoordinator *)self _qualifiedDevices];
-  v5 = sub_1002DB6FC(v4);
+  _qualifiedDevices = [(ADAudioSessionCoordinator *)self _qualifiedDevices];
+  v5 = sub_1002DB6FC(_qualifiedDevices);
   v6 = [v3 initWithArray:v5];
 
   return v6;
@@ -718,14 +718,14 @@ LABEL_16:
 - (id)_disqualifiedDevices
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(ADRapportLink *)self->_rapportLink activeDevices];
+  activeDevices = [(ADRapportLink *)self->_rapportLink activeDevices];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1002DBAB8;
   v9[3] = &unk_10051AD00;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [activeDevices enumerateObjectsUsingBlock:v9];
 
   if (![v5 count])
   {
@@ -751,23 +751,23 @@ LABEL_16:
   {
     localSystemInfo = self->_localSystemInfo;
     v11 = v4;
-    v12 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo homeKitRoomName];
+    homeKitRoomName = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo homeKitRoomName];
     *buf = 136315394;
     v20 = "[ADAudioSessionCoordinator _qualifiedOutOfRangeDevices]";
     v21 = 2112;
-    v22 = v12;
+    v22 = homeKitRoomName;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s roomName = %@", buf, 0x16u);
   }
 
-  v5 = [(ADRapportLink *)self->_rapportLink activeDevices];
+  activeDevices = [(ADRapportLink *)self->_rapportLink activeDevices];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1002DC08C;
   v16 = &unk_10051AD28;
-  v17 = self;
+  selfCopy = self;
   v6 = v3;
   v18 = v6;
-  [v5 enumerateObjectsUsingBlock:&v13];
+  [activeDevices enumerateObjectsUsingBlock:&v13];
 
   if (![v6 count])
   {
@@ -793,23 +793,23 @@ LABEL_16:
   {
     localSystemInfo = self->_localSystemInfo;
     v11 = v4;
-    v12 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo homeKitRoomName];
+    homeKitRoomName = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo homeKitRoomName];
     *buf = 136315394;
     v20 = "[ADAudioSessionCoordinator _qualifiedInRangeDevices]";
     v21 = 2112;
-    v22 = v12;
+    v22 = homeKitRoomName;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s roomName = %@", buf, 0x16u);
   }
 
-  v5 = [(ADRapportLink *)self->_rapportLink activeDevices];
+  activeDevices = [(ADRapportLink *)self->_rapportLink activeDevices];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1002DC5B4;
   v16 = &unk_10051AD28;
-  v17 = self;
+  selfCopy = self;
   v6 = v3;
   v18 = v6;
-  [v5 enumerateObjectsUsingBlock:&v13];
+  [activeDevices enumerateObjectsUsingBlock:&v13];
 
   if (![v6 count])
   {
@@ -830,14 +830,14 @@ LABEL_16:
 - (id)_qualifiedDevices
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(ADRapportLink *)self->_rapportLink activeDevices];
+  activeDevices = [(ADRapportLink *)self->_rapportLink activeDevices];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1002DC90C;
   v9[3] = &unk_10051AD00;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [activeDevices enumerateObjectsUsingBlock:v9];
 
   if (![v5 count])
   {
@@ -855,18 +855,18 @@ LABEL_16:
   return v7;
 }
 
-- (id)_deviceWithID:(id)a3
+- (id)_deviceWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v27 = "[ADAudioSessionCoordinator _deviceWithID:]";
     v28 = 2112;
-    v29 = v4;
+    v29 = dCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s deviceID = %@", buf, 0x16u);
-    if (v4)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -876,7 +876,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     goto LABEL_16;
   }
@@ -886,8 +886,8 @@ LABEL_3:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(ADRapportLink *)self->_rapportLink activeDevices];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v38 count:16];
+  activeDevices = [(ADRapportLink *)self->_rapportLink activeDevices];
+  v7 = [activeDevices countByEnumeratingWithState:&v22 objects:v38 count:16];
   if (v7)
   {
     v8 = v7;
@@ -898,12 +898,12 @@ LABEL_5:
     {
       if (*v23 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(activeDevices);
       }
 
       v11 = *(*(&v22 + 1) + 8 * v10);
-      v12 = [v11 identifier];
-      v13 = [v12 isEqualToString:v4];
+      identifier = [v11 identifier];
+      v13 = [identifier isEqualToString:dCopy];
 
       if (v13)
       {
@@ -912,7 +912,7 @@ LABEL_5:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v38 count:16];
+        v8 = [activeDevices countByEnumeratingWithState:&v22 objects:v38 count:16];
         if (v8)
         {
           goto LABEL_5;
@@ -931,19 +931,19 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v17 = [v11 model];
-    v18 = [v11 name];
-    v19 = [v11 roomName];
-    v20 = [v11 proximity];
-    if (v20 > 19)
+    model = [v11 model];
+    name = [v11 name];
+    roomName = [v11 roomName];
+    proximity = [v11 proximity];
+    if (proximity > 19)
     {
-      if (v20 == 20)
+      if (proximity == 20)
       {
         v21 = "Near";
         goto LABEL_30;
       }
 
-      if (v20 == 30)
+      if (proximity == 30)
       {
         v21 = "Far";
         goto LABEL_30;
@@ -952,26 +952,26 @@ LABEL_13:
 
     else
     {
-      if (!v20)
+      if (!proximity)
       {
         v21 = "Unknown";
         goto LABEL_30;
       }
 
-      if (v20 == 10)
+      if (proximity == 10)
       {
         v21 = "Immed";
 LABEL_30:
         *buf = 136316418;
         v27 = "[ADAudioSessionCoordinator _deviceWithID:]";
         v28 = 2112;
-        v29 = v4;
+        v29 = dCopy;
         v30 = 2112;
-        v31 = v17;
+        v31 = model;
         v32 = 2112;
-        v33 = v18;
+        v33 = name;
         v34 = 2112;
-        v35 = v19;
+        v35 = roomName;
         v36 = 2080;
         v37 = v21;
         _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s deviceID = %@, model = %@, name = %@, roomName = %@, proximity = %s", buf, 0x3Eu);
@@ -993,31 +993,31 @@ LABEL_17:
   return v14;
 }
 
-- (void)_handleLostRemoteDevice:(id)a3
+- (void)_handleLostRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v17 = 136315394;
     v18 = "[ADAudioSessionCoordinator _handleLostRemoteDevice:]";
     v19 = 2112;
-    v20 = v4;
+    v20 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s device = %@", &v17, 0x16u);
   }
 
   if (([(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo isSupportedAndEnabled]& 1) != 0)
   {
-    v6 = [v4 identifier];
+    identifier = [deviceCopy identifier];
     v7 = AFSiriLogContextDaemon;
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
 LABEL_19:
 
-      if (v6)
+      if (identifier)
       {
-        [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:v6 reason:@"Remote Device Lost"];
-        [(ADAudioSessionCoordinator *)self _relinquishRemoteAssertionForSenderID:v6 reason:@"Remote Device Lost" effectiveDate:0 error:0];
+        [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:identifier reason:@"Remote Device Lost"];
+        [(ADAudioSessionCoordinator *)self _relinquishRemoteAssertionForSenderID:identifier reason:@"Remote Device Lost" effectiveDate:0 error:0];
       }
 
       else
@@ -1034,20 +1034,20 @@ LABEL_19:
       goto LABEL_24;
     }
 
-    v8 = [v4 model];
-    v9 = [v4 name];
-    v10 = [v4 roomName];
-    v11 = [v4 mediaSystemIdentifier];
-    v12 = [v4 proximity];
-    if (v12 > 19)
+    model = [deviceCopy model];
+    name = [deviceCopy name];
+    roomName = [deviceCopy roomName];
+    mediaSystemIdentifier = [deviceCopy mediaSystemIdentifier];
+    proximity = [deviceCopy proximity];
+    if (proximity > 19)
     {
-      if (v12 == 20)
+      if (proximity == 20)
       {
         v13 = "Near";
         goto LABEL_18;
       }
 
-      if (v12 == 30)
+      if (proximity == 30)
       {
         v13 = "Far";
         goto LABEL_18;
@@ -1056,29 +1056,29 @@ LABEL_19:
 
     else
     {
-      if (!v12)
+      if (!proximity)
       {
         v13 = "Unknown";
         goto LABEL_18;
       }
 
-      if (v12 == 10)
+      if (proximity == 10)
       {
         v13 = "Immed";
 LABEL_18:
-        v15 = sub_1002DBCC4(v4);
+        v15 = sub_1002DBCC4(deviceCopy);
         v17 = 136316930;
         v18 = "[ADAudioSessionCoordinator _handleLostRemoteDevice:]";
         v19 = 2112;
-        v20 = v6;
+        v20 = identifier;
         v21 = 2112;
-        v22 = v8;
+        v22 = model;
         v23 = 2112;
-        v24 = v9;
+        v24 = name;
         v25 = 2112;
-        v26 = v10;
+        v26 = roomName;
         v27 = 2112;
-        v28 = v11;
+        v28 = mediaSystemIdentifier;
         v29 = 2080;
         v30 = v13;
         v31 = 2112;
@@ -1108,30 +1108,30 @@ LABEL_18:
 LABEL_24:
 }
 
-- (void)_handleUpdatedRemoteDevice:(id)a3
+- (void)_handleUpdatedRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v29 = "[ADAudioSessionCoordinator _handleUpdatedRemoteDevice:]";
     v30 = 2112;
-    v31 = v4;
+    v31 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s device = %@", buf, 0x16u);
   }
 
   if (([(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo isSupportedAndEnabled]& 1) != 0)
   {
-    v6 = [v4 identifier];
+    identifier = [deviceCopy identifier];
     v7 = AFSiriLogContextDaemon;
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
 LABEL_19:
 
-      if (v6)
+      if (identifier)
       {
-        v16 = sub_1002DBC8C(v4);
+        v16 = sub_1002DBC8C(deviceCopy);
         v17 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
@@ -1144,7 +1144,7 @@ LABEL_19:
 
         if (v16)
         {
-          v18 = sub_1002DC274(v4, self->_localSystemInfo);
+          v18 = sub_1002DC274(deviceCopy, self->_localSystemInfo);
           v19 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
           {
@@ -1184,16 +1184,16 @@ LABEL_19:
             }
 
             v25 = [[ADAudioSessionCoordinationMessageBeginAudioSessionRequest alloc] initWithEffectiveDate:v22 expirationDuration:0.0];
-            [(ADAudioSessionCoordinator *)self _sendBeginAudioSessionRequest:v25 toDeviceWithID:v6 responseHandler:0];
+            [(ADAudioSessionCoordinator *)self _sendBeginAudioSessionRequest:v25 toDeviceWithID:identifier responseHandler:0];
 
-            [(ADAudioSessionCoordinator *)self _addDeviceIDToKeepAliveList:v6 reason:@"Remote Device Updated"];
+            [(ADAudioSessionCoordinator *)self _addDeviceIDToKeepAliveList:identifier reason:@"Remote Device Updated"];
           }
 
           else
           {
-            [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:v6 reason:@"Remote Device Updated"];
+            [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:identifier reason:@"Remote Device Updated"];
             v27 = [[ADAudioSessionCoordinationMessageEndAudioSessionRequest alloc] initWithEffectiveDate:0];
-            [(ADAudioSessionCoordinator *)self _sendEndAudioSessionRequest:v27 toDeviceWithID:v6 responseHandler:0];
+            [(ADAudioSessionCoordinator *)self _sendEndAudioSessionRequest:v27 toDeviceWithID:identifier responseHandler:0];
           }
         }
       }
@@ -1212,20 +1212,20 @@ LABEL_19:
       goto LABEL_36;
     }
 
-    v8 = [v4 model];
-    v9 = [v4 name];
-    v10 = [v4 roomName];
-    v11 = [v4 mediaSystemIdentifier];
-    v12 = [v4 proximity];
-    if (v12 > 19)
+    model = [deviceCopy model];
+    name = [deviceCopy name];
+    roomName = [deviceCopy roomName];
+    mediaSystemIdentifier = [deviceCopy mediaSystemIdentifier];
+    proximity = [deviceCopy proximity];
+    if (proximity > 19)
     {
-      if (v12 == 20)
+      if (proximity == 20)
       {
         v13 = "Near";
         goto LABEL_18;
       }
 
-      if (v12 == 30)
+      if (proximity == 30)
       {
         v13 = "Far";
         goto LABEL_18;
@@ -1234,29 +1234,29 @@ LABEL_19:
 
     else
     {
-      if (!v12)
+      if (!proximity)
       {
         v13 = "Unknown";
         goto LABEL_18;
       }
 
-      if (v12 == 10)
+      if (proximity == 10)
       {
         v13 = "Immed";
 LABEL_18:
-        v15 = sub_1002DBCC4(v4);
+        v15 = sub_1002DBCC4(deviceCopy);
         *buf = 136316930;
         v29 = "[ADAudioSessionCoordinator _handleUpdatedRemoteDevice:]";
         v30 = 2112;
-        v31 = v6;
+        v31 = identifier;
         v32 = 2112;
-        v33 = v8;
+        v33 = model;
         v34 = 2112;
-        v35 = v9;
+        v35 = name;
         v36 = 2112;
-        v37 = v10;
+        v37 = roomName;
         v38 = 2112;
-        v39 = v11;
+        v39 = mediaSystemIdentifier;
         v40 = 2080;
         v41 = v13;
         v42 = 2112;
@@ -1286,30 +1286,30 @@ LABEL_18:
 LABEL_36:
 }
 
-- (void)_handleFoundRemoteDevice:(id)a3
+- (void)_handleFoundRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v29 = "[ADAudioSessionCoordinator _handleFoundRemoteDevice:]";
     v30 = 2112;
-    v31 = v4;
+    v31 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s device = %@", buf, 0x16u);
   }
 
   if (([(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo isSupportedAndEnabled]& 1) != 0)
   {
-    v6 = [v4 identifier];
+    identifier = [deviceCopy identifier];
     v7 = AFSiriLogContextDaemon;
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
 LABEL_19:
 
-      if (v6)
+      if (identifier)
       {
-        v16 = sub_1002DBC8C(v4);
+        v16 = sub_1002DBC8C(deviceCopy);
         v17 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
@@ -1322,7 +1322,7 @@ LABEL_19:
 
         if (v16)
         {
-          v18 = sub_1002DC274(v4, self->_localSystemInfo);
+          v18 = sub_1002DC274(deviceCopy, self->_localSystemInfo);
           v19 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
           {
@@ -1362,16 +1362,16 @@ LABEL_19:
             }
 
             v25 = [[ADAudioSessionCoordinationMessageBeginAudioSessionRequest alloc] initWithEffectiveDate:v22 expirationDuration:0.0];
-            [(ADAudioSessionCoordinator *)self _sendBeginAudioSessionRequest:v25 toDeviceWithID:v6 responseHandler:0];
+            [(ADAudioSessionCoordinator *)self _sendBeginAudioSessionRequest:v25 toDeviceWithID:identifier responseHandler:0];
 
-            [(ADAudioSessionCoordinator *)self _addDeviceIDToKeepAliveList:v6 reason:@"Remote Device Found"];
+            [(ADAudioSessionCoordinator *)self _addDeviceIDToKeepAliveList:identifier reason:@"Remote Device Found"];
           }
 
           else
           {
-            [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:v6 reason:@"Remote Device Found"];
+            [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:identifier reason:@"Remote Device Found"];
             v27 = [[ADAudioSessionCoordinationMessageEndAudioSessionRequest alloc] initWithEffectiveDate:0];
-            [(ADAudioSessionCoordinator *)self _sendEndAudioSessionRequest:v27 toDeviceWithID:v6 responseHandler:0];
+            [(ADAudioSessionCoordinator *)self _sendEndAudioSessionRequest:v27 toDeviceWithID:identifier responseHandler:0];
           }
         }
       }
@@ -1390,20 +1390,20 @@ LABEL_19:
       goto LABEL_36;
     }
 
-    v8 = [v4 model];
-    v9 = [v4 name];
-    v10 = [v4 roomName];
-    v11 = [v4 mediaSystemIdentifier];
-    v12 = [v4 proximity];
-    if (v12 > 19)
+    model = [deviceCopy model];
+    name = [deviceCopy name];
+    roomName = [deviceCopy roomName];
+    mediaSystemIdentifier = [deviceCopy mediaSystemIdentifier];
+    proximity = [deviceCopy proximity];
+    if (proximity > 19)
     {
-      if (v12 == 20)
+      if (proximity == 20)
       {
         v13 = "Near";
         goto LABEL_18;
       }
 
-      if (v12 == 30)
+      if (proximity == 30)
       {
         v13 = "Far";
         goto LABEL_18;
@@ -1412,29 +1412,29 @@ LABEL_19:
 
     else
     {
-      if (!v12)
+      if (!proximity)
       {
         v13 = "Unknown";
         goto LABEL_18;
       }
 
-      if (v12 == 10)
+      if (proximity == 10)
       {
         v13 = "Immed";
 LABEL_18:
-        v15 = sub_1002DBCC4(v4);
+        v15 = sub_1002DBCC4(deviceCopy);
         *buf = 136316930;
         v29 = "[ADAudioSessionCoordinator _handleFoundRemoteDevice:]";
         v30 = 2112;
-        v31 = v6;
+        v31 = identifier;
         v32 = 2112;
-        v33 = v8;
+        v33 = model;
         v34 = 2112;
-        v35 = v9;
+        v35 = name;
         v36 = 2112;
-        v37 = v10;
+        v37 = roomName;
         v38 = 2112;
-        v39 = v11;
+        v39 = mediaSystemIdentifier;
         v40 = 2080;
         v41 = v13;
         v42 = 2112;
@@ -1464,57 +1464,57 @@ LABEL_18:
 LABEL_36:
 }
 
-- (void)_handleUpdatedLocalDevice:(id)a3
+- (void)_handleUpdatedLocalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[ADAudioSessionCoordinator _handleUpdatedLocalDevice:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s device = %@", &v12, 0x16u);
   }
 
-  v6 = [v4 roomName];
-  v7 = [v4 mediaSystemIdentifier];
+  roomName = [deviceCopy roomName];
+  mediaSystemIdentifier = [deviceCopy mediaSystemIdentifier];
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
-    v10 = [v4 identifier];
-    v11 = [v4 model];
+    identifier = [deviceCopy identifier];
+    model = [deviceCopy model];
     v12 = 136316162;
     v13 = "[ADAudioSessionCoordinator _handleUpdatedLocalDevice:]";
     v14 = 2112;
-    v15 = v10;
+    v15 = identifier;
     v16 = 2112;
-    v17 = v11;
+    v17 = model;
     v18 = 2112;
-    v19 = v6;
+    v19 = roomName;
     v20 = 2112;
-    v21 = v7;
+    v21 = mediaSystemIdentifier;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s deviceID = %@, model = %@, roomName = %@, mediaSystemIdentifier = %@", &v12, 0x34u);
   }
 
-  [(ADAudioSessionCoordinator *)self _updateHomeKitRoomName:v6 reason:@"Local Device Updated"];
-  [(ADAudioSessionCoordinator *)self _updateHomeKitMediaSystemIdentifier:v7 reason:@"Local Device Updated"];
+  [(ADAudioSessionCoordinator *)self _updateHomeKitRoomName:roomName reason:@"Local Device Updated"];
+  [(ADAudioSessionCoordinator *)self _updateHomeKitMediaSystemIdentifier:mediaSystemIdentifier reason:@"Local Device Updated"];
 }
 
-- (void)_handleRelinquishedRemoteAssertion:(id)a3 isLast:(BOOL)a4
+- (void)_handleRelinquishedRemoteAssertion:(id)assertion isLast:(BOOL)last
 {
-  v4 = a4;
-  v6 = a3;
+  lastCopy = last;
+  assertionCopy = assertion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v19 = 136315650;
     v20 = "[ADAudioSessionCoordinator _handleRelinquishedRemoteAssertion:isLast:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = assertionCopy;
     v23 = 1024;
-    LODWORD(v24) = v4;
+    LODWORD(v24) = lastCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s assertion = %@, isLast = %d", &v19, 0x1Cu);
     v7 = AFSiriLogContextDaemon;
   }
@@ -1540,29 +1540,29 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s audioSessionState = %@", &v19, 0x16u);
   }
 
-  v11 = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v19 = 136315394;
     v20 = "[ADAudioSessionCoordinator _handleRelinquishedRemoteAssertion:isLast:]";
     v21 = 2048;
-    v22 = v11;
+    v22 = numberOfActiveAssertions;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (local)", &v19, 0x16u);
   }
 
-  v13 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions2 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v19 = 136315394;
     v20 = "[ADAudioSessionCoordinator _handleRelinquishedRemoteAssertion:isLast:]";
     v21 = 2048;
-    v22 = v13;
+    v22 = numberOfActiveAssertions2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (remote)", &v19, 0x16u);
   }
 
-  if (v4 && !v11)
+  if (lastCopy && !numberOfActiveAssertions)
   {
     v15 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1574,7 +1574,7 @@ LABEL_36:
       v21 = 2112;
       v22 = WeakRetained;
       v23 = 2112;
-      v24 = v6;
+      v24 = assertionCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Asking delegate %@ to release audio session because the last remote assertion %@ is relinquished and no local assertion exists.", &v19, 0x20u);
     }
 
@@ -1583,19 +1583,19 @@ LABEL_36:
   }
 }
 
-- (void)_handleAcquiredRemoteAssertion:(id)a3 isFirst:(BOOL)a4
+- (void)_handleAcquiredRemoteAssertion:(id)assertion isFirst:(BOOL)first
 {
-  v4 = a4;
-  v6 = a3;
+  firstCopy = first;
+  assertionCopy = assertion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v26 = "[ADAudioSessionCoordinator _handleAcquiredRemoteAssertion:isFirst:]";
     v27 = 2112;
-    v28 = v6;
+    v28 = assertionCopy;
     v29 = 1024;
-    LODWORD(v30) = v4;
+    LODWORD(v30) = firstCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s assertion = %@, isFirst = %d", buf, 0x1Cu);
     v7 = AFSiriLogContextDaemon;
   }
@@ -1621,32 +1621,32 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s audioSessionState = %@", buf, 0x16u);
   }
 
-  v11 = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v26 = "[ADAudioSessionCoordinator _handleAcquiredRemoteAssertion:isFirst:]";
     v27 = 2048;
-    v28 = v11;
+    v28 = numberOfActiveAssertions;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (local)", buf, 0x16u);
   }
 
-  v13 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions2 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v26 = "[ADAudioSessionCoordinator _handleAcquiredRemoteAssertion:isFirst:]";
     v27 = 2048;
-    v28 = v13;
+    v28 = numberOfActiveAssertions2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (remote)", buf, 0x16u);
   }
 
-  v15 = [(__CFString *)v6 context];
-  v16 = [v15 userInfo];
-  v17 = [v16 objectForKey:AFAudioSessionAssertionUserInfoKey[3]];
-  v18 = [v17 BOOLValue];
+  context = [(__CFString *)assertionCopy context];
+  userInfo = [context userInfo];
+  v17 = [userInfo objectForKey:AFAudioSessionAssertionUserInfoKey[3]];
+  bOOLValue = [v17 BOOLValue];
 
   v19 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1654,14 +1654,14 @@ LABEL_36:
     *buf = 136315394;
     v26 = "[ADAudioSessionCoordinator _handleAcquiredRemoteAssertion:isFirst:]";
     v27 = 1024;
-    LODWORD(v28) = v18;
+    LODWORD(v28) = bOOLValue;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s suppressesAudioSessionActivation = %d", buf, 0x12u);
   }
 
-  if ((v18 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v20 = v4;
-    if (v11)
+    v20 = firstCopy;
+    if (numberOfActiveAssertions)
     {
       v20 = 0;
     }
@@ -1678,7 +1678,7 @@ LABEL_36:
         v27 = 2112;
         v28 = WeakRetained;
         v29 = 2112;
-        v30 = v6;
+        v30 = assertionCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s Asking delegate %@ to prepare audio session because remote assertion %@ is acquired and audio session is not active.", buf, 0x20u);
       }
 
@@ -1688,20 +1688,20 @@ LABEL_36:
   }
 }
 
-- (void)_handleUpdatedLocalAssertionsForReason:(id)a3 pendingAssertions:(id)a4 activeAssertions:(id)a5
+- (void)_handleUpdatedLocalAssertionsForReason:(id)reason pendingAssertions:(id)assertions activeAssertions:(id)activeAssertions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 count];
-  v12 = [v10 count];
+  reasonCopy = reason;
+  assertionsCopy = assertions;
+  activeAssertionsCopy = activeAssertions;
+  v11 = [assertionsCopy count];
+  v12 = [activeAssertionsCopy count];
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v22 = 136315906;
     v23 = "[ADAudioSessionCoordinator _handleUpdatedLocalAssertionsForReason:pendingAssertions:activeAssertions:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = reasonCopy;
     v26 = 2048;
     v27 = v11;
     v28 = 2048;
@@ -1713,7 +1713,7 @@ LABEL_36:
   if (v14)
   {
     v15 = [[NSMutableArray alloc] initWithCapacity:v14];
-    if ([v9 count])
+    if ([assertionsCopy count])
     {
       v16 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -1721,14 +1721,14 @@ LABEL_36:
         v22 = 136315394;
         v23 = "[ADAudioSessionCoordinator _handleUpdatedLocalAssertionsForReason:pendingAssertions:activeAssertions:]";
         v24 = 2112;
-        v25 = v9;
+        v25 = assertionsCopy;
         _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s pendingAssertions = %@", &v22, 0x16u);
       }
 
-      [v15 addObjectsFromArray:v9];
+      [v15 addObjectsFromArray:assertionsCopy];
     }
 
-    if ([v10 count])
+    if ([activeAssertionsCopy count])
     {
       v17 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -1736,11 +1736,11 @@ LABEL_36:
         v22 = 136315394;
         v23 = "[ADAudioSessionCoordinator _handleUpdatedLocalAssertionsForReason:pendingAssertions:activeAssertions:]";
         v24 = 2112;
-        v25 = v10;
+        v25 = activeAssertionsCopy;
         _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s activeAssertions = %@", &v22, 0x16u);
       }
 
-      [v15 addObjectsFromArray:v10];
+      [v15 addObjectsFromArray:activeAssertionsCopy];
     }
   }
 
@@ -1763,22 +1763,22 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s currentOrUpNextDateInterval = %@", &v22, 0x16u);
   }
 
-  [(ADAudioSessionCoordinator *)self _updateCurrentOrUpNextDateInterval:v20 reason:v8];
+  [(ADAudioSessionCoordinator *)self _updateCurrentOrUpNextDateInterval:v20 reason:reasonCopy];
 }
 
-- (void)_handleRemovedLocalAssertion:(id)a3 isLast:(BOOL)a4
+- (void)_handleRemovedLocalAssertion:(id)assertion isLast:(BOOL)last
 {
-  v4 = a4;
-  v6 = a3;
+  lastCopy = last;
+  assertionCopy = assertion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v11 = "[ADAudioSessionCoordinator _handleRemovedLocalAssertion:isLast:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = assertionCopy;
     v14 = 1024;
-    v15 = v4;
+    v15 = lastCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s assertion = %@, isLast = %d", buf, 0x1Cu);
   }
 
@@ -1791,19 +1791,19 @@ LABEL_36:
   [(AFAssertionCoordinator *)localAssertionCoordinator getPendingAndActiveAssertionsWithCompletion:v9];
 }
 
-- (void)_handleRelinquishedLocalAssertion:(id)a3 isLast:(BOOL)a4
+- (void)_handleRelinquishedLocalAssertion:(id)assertion isLast:(BOOL)last
 {
-  v4 = a4;
-  v6 = a3;
+  lastCopy = last;
+  assertionCopy = assertion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[ADAudioSessionCoordinator _handleRelinquishedLocalAssertion:isLast:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = assertionCopy;
     v25 = 1024;
-    LODWORD(v26) = v4;
+    LODWORD(v26) = lastCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s assertion = %@, isLast = %d", buf, 0x1Cu);
     v7 = AFSiriLogContextDaemon;
   }
@@ -1829,25 +1829,25 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s audioSessionState = %@", buf, 0x16u);
   }
 
-  v11 = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v22 = "[ADAudioSessionCoordinator _handleRelinquishedLocalAssertion:isLast:]";
     v23 = 2048;
-    v24 = v11;
+    v24 = numberOfActiveAssertions;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (local)", buf, 0x16u);
   }
 
-  v13 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions2 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v22 = "[ADAudioSessionCoordinator _handleRelinquishedLocalAssertion:isLast:]";
     v23 = 2048;
-    v24 = v13;
+    v24 = numberOfActiveAssertions2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (remote)", buf, 0x16u);
   }
 
@@ -1858,7 +1858,7 @@ LABEL_36:
   v20[3] = &unk_10051ACD8;
   v20[4] = self;
   [(AFAssertionCoordinator *)localAssertionCoordinator getPendingAndActiveAssertionsWithCompletion:v20];
-  if (v4 && !v13)
+  if (lastCopy && !numberOfActiveAssertions2)
   {
     v16 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1870,7 +1870,7 @@ LABEL_36:
       v23 = 2112;
       v24 = WeakRetained;
       v25 = 2112;
-      v26 = v6;
+      v26 = assertionCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s Asking delegate %@ to release audio session because the last local assertion %@ is relinquished and no remote assertion exists.", buf, 0x20u);
     }
 
@@ -1879,19 +1879,19 @@ LABEL_36:
   }
 }
 
-- (void)_handleAcquiredLocalAssertion:(id)a3 isFirst:(BOOL)a4
+- (void)_handleAcquiredLocalAssertion:(id)assertion isFirst:(BOOL)first
 {
-  v4 = a4;
-  v6 = a3;
+  firstCopy = first;
+  assertionCopy = assertion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v28 = "[ADAudioSessionCoordinator _handleAcquiredLocalAssertion:isFirst:]";
     v29 = 2112;
-    v30 = v6;
+    v30 = assertionCopy;
     v31 = 1024;
-    LODWORD(v32) = v4;
+    LODWORD(v32) = firstCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s assertion = %@, isFirst = %d", buf, 0x1Cu);
     v7 = AFSiriLogContextDaemon;
   }
@@ -1917,32 +1917,32 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s audioSessionState = %@", buf, 0x16u);
   }
 
-  v11 = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v28 = "[ADAudioSessionCoordinator _handleAcquiredLocalAssertion:isFirst:]";
     v29 = 2048;
-    v30 = v11;
+    v30 = numberOfActiveAssertions;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (local)", buf, 0x16u);
   }
 
-  v13 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
+  numberOfActiveAssertions2 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v28 = "[ADAudioSessionCoordinator _handleAcquiredLocalAssertion:isFirst:]";
     v29 = 2048;
-    v30 = v13;
+    v30 = numberOfActiveAssertions2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s numberOfActiveAssertions = %llu (remote)", buf, 0x16u);
   }
 
-  v15 = [(__CFString *)v6 context];
-  v16 = [v15 userInfo];
-  v17 = [v16 objectForKey:AFAudioSessionAssertionUserInfoKey[3]];
-  v18 = [v17 BOOLValue];
+  context = [(__CFString *)assertionCopy context];
+  userInfo = [context userInfo];
+  v17 = [userInfo objectForKey:AFAudioSessionAssertionUserInfoKey[3]];
+  bOOLValue = [v17 BOOLValue];
 
   v19 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1950,7 +1950,7 @@ LABEL_36:
     *buf = 136315394;
     v28 = "[ADAudioSessionCoordinator _handleAcquiredLocalAssertion:isFirst:]";
     v29 = 1024;
-    LODWORD(v30) = v18;
+    LODWORD(v30) = bOOLValue;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s suppressesAudioSessionActivation = %d", buf, 0x12u);
   }
 
@@ -1961,10 +1961,10 @@ LABEL_36:
   v26[3] = &unk_10051ACD8;
   v26[4] = self;
   [(AFAssertionCoordinator *)localAssertionCoordinator getPendingAndActiveAssertionsWithCompletion:v26];
-  if ((v18 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v21 = v4;
-    if (v13)
+    v21 = firstCopy;
+    if (numberOfActiveAssertions2)
     {
       v21 = 0;
     }
@@ -1981,7 +1981,7 @@ LABEL_36:
         v29 = 2112;
         v30 = WeakRetained;
         v31 = 2112;
-        v32 = v6;
+        v32 = assertionCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s Asking delegate %@ to prepare audio session because remote assertion %@ is acquired and audio session is not active.", buf, 0x20u);
       }
 
@@ -1991,19 +1991,19 @@ LABEL_36:
   }
 }
 
-- (void)_handleAddedLocalAssertion:(id)a3 isFirst:(BOOL)a4
+- (void)_handleAddedLocalAssertion:(id)assertion isFirst:(BOOL)first
 {
-  v4 = a4;
-  v6 = a3;
+  firstCopy = first;
+  assertionCopy = assertion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v11 = "[ADAudioSessionCoordinator _handleAddedLocalAssertion:isFirst:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = assertionCopy;
     v14 = 1024;
-    v15 = v4;
+    v15 = firstCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s assertion = %@, isFirst = %d", buf, 0x1Cu);
   }
 
@@ -2111,9 +2111,9 @@ LABEL_36:
   }
 }
 
-- (void)_startHeartBeatWithEffectiveDate:(id)a3
+- (void)_startHeartBeatWithEffectiveDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (!self->_heartBeat)
   {
     v5 = AFSiriLogContextDaemon;
@@ -2132,7 +2132,7 @@ LABEL_36:
     v12[2] = sub_1002DF788;
     v12[3] = &unk_10051AC70;
     objc_copyWeak(&v13, &location);
-    v8 = [v6 initWithIdentifier:@"com.apple.assistant.audio-session-coordination.heart-beat" queue:queue effectiveDate:v4 expirationDuration:v12 heartBeatInterval:&stru_10051ACB0 heartBeatHandler:0.0 invalidationHandler:2.0];
+    v8 = [v6 initWithIdentifier:@"com.apple.assistant.audio-session-coordination.heart-beat" queue:queue effectiveDate:dateCopy expirationDuration:v12 heartBeatInterval:&stru_10051ACB0 heartBeatHandler:0.0 invalidationHandler:2.0];
     heartBeat = self->_heartBeat;
     self->_heartBeat = v8;
 
@@ -2152,32 +2152,32 @@ LABEL_36:
   }
 }
 
-- (void)_endAudioSessionOnAllRemoteDevicesForReason:(id)a3 effectiveDate:(id)a4
+- (void)_endAudioSessionOnAllRemoteDevicesForReason:(id)reason effectiveDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  dateCopy = date;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v29 = "[ADAudioSessionCoordinator _endAudioSessionOnAllRemoteDevicesForReason:effectiveDate:]";
     v30 = 2112;
-    v31 = v7;
+    v31 = dateCopy;
     v32 = 2112;
-    v33 = v6;
+    v33 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s effectiveDate = %@, reason = %@", buf, 0x20u);
   }
 
   if (([(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo isSupportedAndEnabled]& 1) != 0)
   {
-    v9 = [(ADAudioSessionCoordinator *)self _qualifiedDeviceIDs];
+    _qualifiedDeviceIDs = [(ADAudioSessionCoordinator *)self _qualifiedDeviceIDs];
     v10 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v29 = "[ADAudioSessionCoordinator _endAudioSessionOnAllRemoteDevicesForReason:effectiveDate:]";
       v30 = 2112;
-      v31 = v9;
+      v31 = _qualifiedDeviceIDs;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s qualifiedDeviceIDs = %@", buf, 0x16u);
       v10 = AFSiriLogContextDaemon;
     }
@@ -2193,9 +2193,9 @@ LABEL_36:
     }
 
     v12 = objc_alloc_init(NSMutableSet);
-    if ([(NSMutableSet *)v9 count])
+    if ([(NSMutableSet *)_qualifiedDeviceIDs count])
     {
-      [(NSMutableSet *)v12 unionSet:v9];
+      [(NSMutableSet *)v12 unionSet:_qualifiedDeviceIDs];
     }
 
     if ([(NSMutableSet *)self->_keepAliveDeviceIDs count])
@@ -2203,7 +2203,7 @@ LABEL_36:
       [(NSMutableSet *)v12 unionSet:self->_keepAliveDeviceIDs];
     }
 
-    v22 = v9;
+    v22 = _qualifiedDeviceIDs;
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
@@ -2214,7 +2214,7 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s mergedDeviceIDs = %@", buf, 0x16u);
     }
 
-    [(ADAudioSessionCoordinator *)self _resetKeepAliveListForReason:v6];
+    [(ADAudioSessionCoordinator *)self _resetKeepAliveListForReason:reasonCopy];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -2236,7 +2236,7 @@ LABEL_36:
           }
 
           v19 = *(*(&v23 + 1) + 8 * v18);
-          v20 = [[ADAudioSessionCoordinationMessageEndAudioSessionRequest alloc] initWithEffectiveDate:v7];
+          v20 = [[ADAudioSessionCoordinationMessageEndAudioSessionRequest alloc] initWithEffectiveDate:dateCopy];
           [(ADAudioSessionCoordinator *)self _sendEndAudioSessionRequest:v20 toDeviceWithID:v19 responseHandler:0];
 
           v18 = v18 + 1;
@@ -2263,32 +2263,32 @@ LABEL_36:
   }
 }
 
-- (void)_endAudioSessionOnOutOfRangeRemoteDevicesForReason:(id)a3 effectiveDate:(id)a4
+- (void)_endAudioSessionOnOutOfRangeRemoteDevicesForReason:(id)reason effectiveDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  dateCopy = date;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v25 = "[ADAudioSessionCoordinator _endAudioSessionOnOutOfRangeRemoteDevicesForReason:effectiveDate:]";
     v26 = 2112;
-    v27 = v7;
+    v27 = dateCopy;
     v28 = 2112;
-    v29 = v6;
+    v29 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s effectiveDate = %@, reason = %@", buf, 0x20u);
   }
 
   if (([(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo isSupportedAndEnabled]& 1) != 0)
   {
-    v9 = [(ADAudioSessionCoordinator *)self _qualifiedOutOfRangeDeviceIDs];
+    _qualifiedOutOfRangeDeviceIDs = [(ADAudioSessionCoordinator *)self _qualifiedOutOfRangeDeviceIDs];
     v10 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v25 = "[ADAudioSessionCoordinator _endAudioSessionOnOutOfRangeRemoteDevicesForReason:effectiveDate:]";
       v26 = 2112;
-      v27 = v9;
+      v27 = _qualifiedOutOfRangeDeviceIDs;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s qualifiedOutOfRangeDeviceIDs = %@", buf, 0x16u);
     }
 
@@ -2296,7 +2296,7 @@ LABEL_36:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = v9;
+    v11 = _qualifiedOutOfRangeDeviceIDs;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
@@ -2312,8 +2312,8 @@ LABEL_36:
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
-          [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:v16 reason:v6, v19];
-          v17 = [[ADAudioSessionCoordinationMessageEndAudioSessionRequest alloc] initWithEffectiveDate:v7];
+          [(ADAudioSessionCoordinator *)self _removeDeviceIDFromKeepAliveList:v16 reason:reasonCopy, v19];
+          v17 = [[ADAudioSessionCoordinationMessageEndAudioSessionRequest alloc] initWithEffectiveDate:dateCopy];
           [(ADAudioSessionCoordinator *)self _sendEndAudioSessionRequest:v17 toDeviceWithID:v16 responseHandler:0];
         }
 
@@ -2337,18 +2337,18 @@ LABEL_36:
   }
 }
 
-- (void)_keepAudioSessionAliveOnRemoteDevicesForReason:(id)a3 expirationDuration:(double)a4
+- (void)_keepAudioSessionAliveOnRemoteDevicesForReason:(id)reason expirationDuration:(double)duration
 {
-  v6 = a3;
+  reasonCopy = reason;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v13 = "[ADAudioSessionCoordinator _keepAudioSessionAliveOnRemoteDevicesForReason:expirationDuration:]";
     v14 = 2048;
-    v15 = a4;
+    durationCopy = duration;
     v16 = 2112;
-    v17 = v6;
+    v17 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s expirationDuration = %f, reason = %@", buf, 0x20u);
   }
 
@@ -2361,7 +2361,7 @@ LABEL_36:
       *buf = 136315394;
       v13 = "[ADAudioSessionCoordinator _keepAudioSessionAliveOnRemoteDevicesForReason:expirationDuration:]";
       v14 = 2112;
-      v15 = *&keepAliveDeviceIDs;
+      durationCopy = *&keepAliveDeviceIDs;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s keepAliveDeviceIDs = %@", buf, 0x16u);
     }
 
@@ -2370,7 +2370,7 @@ LABEL_36:
     v11[2] = sub_1002E0184;
     v11[3] = &unk_10051AC48;
     v11[4] = self;
-    *&v11[5] = a4;
+    *&v11[5] = duration;
     [(ADAudioSessionCoordinator *)self _enumerateKeepAliveListUsingBlock:v11];
   }
 
@@ -2387,34 +2387,34 @@ LABEL_36:
   }
 }
 
-- (void)_beginAudioSessionOnInRangeRemoteDevicesForReason:(id)a3 effectiveDate:(id)a4 expirationDuration:(double)a5
+- (void)_beginAudioSessionOnInRangeRemoteDevicesForReason:(id)reason effectiveDate:(id)date expirationDuration:(double)duration
 {
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  dateCopy = date;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v28 = "[ADAudioSessionCoordinator _beginAudioSessionOnInRangeRemoteDevicesForReason:effectiveDate:expirationDuration:]";
     v29 = 2112;
-    v30 = v9;
+    v30 = dateCopy;
     v31 = 2048;
-    v32 = a5;
+    durationCopy = duration;
     v33 = 2112;
-    v34 = v8;
+    v34 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s effectiveDate = %@, expirationDuration = %f, reason = %@", buf, 0x2Au);
   }
 
   if (([(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo isSupportedAndEnabled]& 1) != 0)
   {
-    v11 = [(ADAudioSessionCoordinator *)self _qualifiedInRangeDeviceIDs];
+    _qualifiedInRangeDeviceIDs = [(ADAudioSessionCoordinator *)self _qualifiedInRangeDeviceIDs];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v28 = "[ADAudioSessionCoordinator _beginAudioSessionOnInRangeRemoteDevicesForReason:effectiveDate:expirationDuration:]";
       v29 = 2112;
-      v30 = v11;
+      v30 = _qualifiedInRangeDeviceIDs;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s qualifiedInRangeDeviceIDs = %@", buf, 0x16u);
     }
 
@@ -2422,7 +2422,7 @@ LABEL_36:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v11;
+    v13 = _qualifiedInRangeDeviceIDs;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
@@ -2440,10 +2440,10 @@ LABEL_36:
 
           v18 = *(*(&v22 + 1) + 8 * v17);
           v19 = [ADAudioSessionCoordinationMessageBeginAudioSessionRequest alloc];
-          v20 = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)v19 initWithEffectiveDate:v9 expirationDuration:a5, v22];
+          v20 = [(ADAudioSessionCoordinationMessageBeginAudioSessionRequest *)v19 initWithEffectiveDate:dateCopy expirationDuration:duration, v22];
           [(ADAudioSessionCoordinator *)self _sendBeginAudioSessionRequest:v20 toDeviceWithID:v18 responseHandler:0];
 
-          [(ADAudioSessionCoordinator *)self _addDeviceIDToKeepAliveList:v18 reason:v8];
+          [(ADAudioSessionCoordinator *)self _addDeviceIDToKeepAliveList:v18 reason:reasonCopy];
           v17 = v17 + 1;
         }
 
@@ -2468,16 +2468,16 @@ LABEL_36:
   }
 }
 
-- (void)_handleUpdatedCurrentOrUpNextDateIntervalForReason:(id)a3
+- (void)_handleUpdatedCurrentOrUpNextDateIntervalForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v14 = "[ADAudioSessionCoordinator _handleUpdatedCurrentOrUpNextDateIntervalForReason:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s reason = %@", buf, 0x16u);
   }
 
@@ -2506,14 +2506,14 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s effectiveDate = %@ (%f), expirationDuration = %f", buf, 0x2Au);
       }
 
-      [(ADAudioSessionCoordinator *)self _beginAudioSessionOnInRangeRemoteDevicesForReason:v4 effectiveDate:v8 expirationDuration:0.0, 0];
-      [(ADAudioSessionCoordinator *)self _endAudioSessionOnOutOfRangeRemoteDevicesForReason:v4 effectiveDate:0];
+      [(ADAudioSessionCoordinator *)self _beginAudioSessionOnInRangeRemoteDevicesForReason:reasonCopy effectiveDate:v8 expirationDuration:0.0, 0];
+      [(ADAudioSessionCoordinator *)self _endAudioSessionOnOutOfRangeRemoteDevicesForReason:reasonCopy effectiveDate:0];
       [(ADAudioSessionCoordinator *)self _startHeartBeatWithEffectiveDate:v8];
     }
 
     else
     {
-      [(ADAudioSessionCoordinator *)self _endAudioSessionOnAllRemoteDevicesForReason:v4 effectiveDate:0];
+      [(ADAudioSessionCoordinator *)self _endAudioSessionOnAllRemoteDevicesForReason:reasonCopy effectiveDate:0];
     }
   }
 
@@ -2530,34 +2530,34 @@ LABEL_36:
   }
 }
 
-- (void)_handleUpdatedLocalSystemInfoForReason:(id)a3
+- (void)_handleUpdatedLocalSystemInfoForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v17 = "[ADAudioSessionCoordinator _handleUpdatedLocalSystemInfoForReason:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s reason = %@", buf, 0x16u);
   }
 
   localSystemInfo = self->_localSystemInfo;
   if (localSystemInfo)
   {
-    v7 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo buildDictionaryRepresentation];
+    buildDictionaryRepresentation = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo buildDictionaryRepresentation];
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v17 = "[ADAudioSessionCoordinator _handleUpdatedLocalSystemInfoForReason:]";
       v18 = 2112;
-      v19 = v7;
+      v19 = buildDictionaryRepresentation;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Push local system info: %@", buf, 0x16u);
     }
 
-    [ADRapportLink updateSiriInfoWithObject:v7 forKey:@"audio-session-coordination.system-info"];
+    [ADRapportLink updateSiriInfoWithObject:buildDictionaryRepresentation forKey:@"audio-session-coordination.system-info"];
   }
 
   [(ADAudioSessionCoordinator *)self _stopHeartBeat];
@@ -2585,14 +2585,14 @@ LABEL_36:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s effectiveDate = %@ (%f), expirationDuration = %f", buf, 0x2Au);
       }
 
-      [(ADAudioSessionCoordinator *)self _beginAudioSessionOnInRangeRemoteDevicesForReason:v4 effectiveDate:v11 expirationDuration:0.0, 0];
-      [(ADAudioSessionCoordinator *)self _endAudioSessionOnOutOfRangeRemoteDevicesForReason:v4 effectiveDate:0];
+      [(ADAudioSessionCoordinator *)self _beginAudioSessionOnInRangeRemoteDevicesForReason:reasonCopy effectiveDate:v11 expirationDuration:0.0, 0];
+      [(ADAudioSessionCoordinator *)self _endAudioSessionOnOutOfRangeRemoteDevicesForReason:reasonCopy effectiveDate:0];
       [(ADAudioSessionCoordinator *)self _startHeartBeatWithEffectiveDate:v11];
     }
 
     else
     {
-      [(ADAudioSessionCoordinator *)self _endAudioSessionOnAllRemoteDevicesForReason:v4 effectiveDate:0];
+      [(ADAudioSessionCoordinator *)self _endAudioSessionOnAllRemoteDevicesForReason:reasonCopy effectiveDate:0];
     }
   }
 
@@ -2609,24 +2609,24 @@ LABEL_36:
   }
 }
 
-- (void)_updateCurrentOrUpNextDateInterval:(id)a3 reason:(id)a4
+- (void)_updateCurrentOrUpNextDateInterval:(id)interval reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  intervalCopy = interval;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = 136315650;
     v15 = "[ADAudioSessionCoordinator _updateCurrentOrUpNextDateInterval:reason:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = intervalCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s currentOrUpNextDateInterval = %@, reason = %@", &v14, 0x20u);
   }
 
   currentOrUpNextDateInterval = self->_currentOrUpNextDateInterval;
-  if (currentOrUpNextDateInterval != v6 && ![(NSDateInterval *)currentOrUpNextDateInterval isEqualToDateInterval:v6])
+  if (currentOrUpNextDateInterval != intervalCopy && ![(NSDateInterval *)currentOrUpNextDateInterval isEqualToDateInterval:intervalCopy])
   {
     v10 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2637,37 +2637,37 @@ LABEL_36:
       v16 = 2112;
       v17 = v11;
       v18 = 2112;
-      v19 = v6;
+      v19 = intervalCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s currentOrUpNextDateInterval: %@ -> %@", &v14, 0x20u);
     }
 
-    v12 = [(NSDateInterval *)v6 copy];
+    v12 = [(NSDateInterval *)intervalCopy copy];
     v13 = self->_currentOrUpNextDateInterval;
     self->_currentOrUpNextDateInterval = v12;
 
-    [(ADAudioSessionCoordinator *)self _handleUpdatedCurrentOrUpNextDateIntervalForReason:v7];
+    [(ADAudioSessionCoordinator *)self _handleUpdatedCurrentOrUpNextDateIntervalForReason:reasonCopy];
   }
 }
 
-- (void)_updateMediaRemoteRouteIdentifier:(id)a3 reason:(id)a4
+- (void)_updateMediaRemoteRouteIdentifier:(id)identifier reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v18 = "[ADAudioSessionCoordinator _updateMediaRemoteRouteIdentifier:reason:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s mediaRemoteRouteIdentifier = %@, reason = %@", buf, 0x20u);
   }
 
-  v9 = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo mediaRemoteRouteIdentifier];
-  v10 = v9;
-  if (v9 != v6 && ([v9 isEqual:v6] & 1) == 0)
+  mediaRemoteRouteIdentifier = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo mediaRemoteRouteIdentifier];
+  v10 = mediaRemoteRouteIdentifier;
+  if (mediaRemoteRouteIdentifier != identifierCopy && ([mediaRemoteRouteIdentifier isEqual:identifierCopy] & 1) == 0)
   {
     v11 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2677,7 +2677,7 @@ LABEL_36:
       v19 = 2112;
       v20 = v10;
       v21 = 2112;
-      v22 = v6;
+      v22 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s mediaRemoteRouteIdentifier: %@ -> %@", buf, 0x20u);
     }
 
@@ -2686,34 +2686,34 @@ LABEL_36:
     v15[1] = 3221225472;
     v15[2] = sub_1002E0DB0;
     v15[3] = &unk_10051AC20;
-    v16 = v6;
+    v16 = identifierCopy;
     v13 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo mutatedCopyWithMutator:v15];
     v14 = self->_localSystemInfo;
     self->_localSystemInfo = v13;
 
-    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:v7];
+    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:reasonCopy];
   }
 }
 
-- (void)_updateMediaRemoteGroupIdentifier:(id)a3 reason:(id)a4
+- (void)_updateMediaRemoteGroupIdentifier:(id)identifier reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v18 = "[ADAudioSessionCoordinator _updateMediaRemoteGroupIdentifier:reason:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s mediaRemoteGroupIdentifier = %@, reason = %@", buf, 0x20u);
   }
 
-  v9 = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo mediaRemoteGroupIdentifier];
-  v10 = v9;
-  if (v9 != v6 && ([v9 isEqual:v6] & 1) == 0)
+  mediaRemoteGroupIdentifier = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo mediaRemoteGroupIdentifier];
+  v10 = mediaRemoteGroupIdentifier;
+  if (mediaRemoteGroupIdentifier != identifierCopy && ([mediaRemoteGroupIdentifier isEqual:identifierCopy] & 1) == 0)
   {
     v11 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2723,7 +2723,7 @@ LABEL_36:
       v19 = 2112;
       v20 = v10;
       v21 = 2112;
-      v22 = v6;
+      v22 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s mediaRemoteGroupIdentifier: %@ -> %@", buf, 0x20u);
     }
 
@@ -2732,34 +2732,34 @@ LABEL_36:
     v15[1] = 3221225472;
     v15[2] = sub_1002E0FB8;
     v15[3] = &unk_10051AC20;
-    v16 = v6;
+    v16 = identifierCopy;
     v13 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo mutatedCopyWithMutator:v15];
     v14 = self->_localSystemInfo;
     self->_localSystemInfo = v13;
 
-    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:v7];
+    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:reasonCopy];
   }
 }
 
-- (void)_updateHomeKitMediaSystemIdentifier:(id)a3 reason:(id)a4
+- (void)_updateHomeKitMediaSystemIdentifier:(id)identifier reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v18 = "[ADAudioSessionCoordinator _updateHomeKitMediaSystemIdentifier:reason:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s mediaSystemIdentifier = %@, reason = %@", buf, 0x20u);
   }
 
-  v9 = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo homeKitMediaSystemIdentifier];
-  v10 = v9;
-  if (v9 != v6 && ([v9 isEqual:v6] & 1) == 0)
+  homeKitMediaSystemIdentifier = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo homeKitMediaSystemIdentifier];
+  v10 = homeKitMediaSystemIdentifier;
+  if (homeKitMediaSystemIdentifier != identifierCopy && ([homeKitMediaSystemIdentifier isEqual:identifierCopy] & 1) == 0)
   {
     v11 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2769,7 +2769,7 @@ LABEL_36:
       v19 = 2112;
       v20 = v10;
       v21 = 2112;
-      v22 = v6;
+      v22 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s mediaSystemIdentifier: %@ -> %@", buf, 0x20u);
     }
 
@@ -2778,34 +2778,34 @@ LABEL_36:
     v15[1] = 3221225472;
     v15[2] = sub_1002E11C0;
     v15[3] = &unk_10051AC20;
-    v16 = v6;
+    v16 = identifierCopy;
     v13 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo mutatedCopyWithMutator:v15];
     v14 = self->_localSystemInfo;
     self->_localSystemInfo = v13;
 
-    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:v7];
+    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:reasonCopy];
   }
 }
 
-- (void)_updateHomeKitRoomName:(id)a3 reason:(id)a4
+- (void)_updateHomeKitRoomName:(id)name reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v18 = "[ADAudioSessionCoordinator _updateHomeKitRoomName:reason:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = nameCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s roomName = %@, reason = %@", buf, 0x20u);
   }
 
-  v9 = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo homeKitRoomName];
-  v10 = v9;
-  if (v9 != v6 && ([v9 isEqual:v6] & 1) == 0)
+  homeKitRoomName = [(AFAudioSessionCoordinationSystemInfo *)self->_localSystemInfo homeKitRoomName];
+  v10 = homeKitRoomName;
+  if (homeKitRoomName != nameCopy && ([homeKitRoomName isEqual:nameCopy] & 1) == 0)
   {
     v11 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2815,7 +2815,7 @@ LABEL_36:
       v19 = 2112;
       v20 = v10;
       v21 = 2112;
-      v22 = v6;
+      v22 = nameCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s roomName: %@ -> %@", buf, 0x20u);
     }
 
@@ -2824,18 +2824,18 @@ LABEL_36:
     v15[1] = 3221225472;
     v15[2] = sub_1002E13C8;
     v15[3] = &unk_10051AC20;
-    v16 = v6;
+    v16 = nameCopy;
     v13 = [(AFAudioSessionCoordinationSystemInfo *)localSystemInfo mutatedCopyWithMutator:v15];
     v14 = self->_localSystemInfo;
     self->_localSystemInfo = v13;
 
-    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:v7];
+    [(ADAudioSessionCoordinator *)self _handleUpdatedLocalSystemInfoForReason:reasonCopy];
   }
 }
 
-- (void)_handleDidSetAudioSessionActive:(BOOL)a3
+- (void)_handleDidSetAudioSessionActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 3;
   }
@@ -2859,10 +2859,10 @@ LABEL_36:
   }
 }
 
-- (void)_handleWillSetAudioSessionActive:(BOOL)a3
+- (void)_handleWillSetAudioSessionActive:(BOOL)active
 {
   audioSessionState = self->_audioSessionState;
-  if (a3)
+  if (active)
   {
     if (audioSessionState != 3)
     {
@@ -2897,32 +2897,32 @@ LABEL_8:
   }
 }
 
-- (void)_enumerateKeepAliveListUsingBlock:(id)a3
+- (void)_enumerateKeepAliveListUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     keepAliveDeviceIDs = self->_keepAliveDeviceIDs;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1002E169C;
     v7[3] = &unk_10051ABF8;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableSet *)keepAliveDeviceIDs enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (void)_resetKeepAliveListForReason:(id)a3
+- (void)_resetKeepAliveListForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[ADAudioSessionCoordinator _resetKeepAliveListForReason:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s reason = %@", &v8, 0x16u);
   }
 
@@ -2940,32 +2940,32 @@ LABEL_8:
   }
 }
 
-- (void)_removeDeviceIDFromKeepAliveList:(id)a3 reason:(id)a4
+- (void)_removeDeviceIDFromKeepAliveList:(id)list reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
     v12 = "[ADAudioSessionCoordinator _removeDeviceIDFromKeepAliveList:reason:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = listCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s deviceID = %@, reason = %@", &v11, 0x20u);
   }
 
-  if ([(NSMutableSet *)self->_keepAliveDeviceIDs containsObject:v6])
+  if ([(NSMutableSet *)self->_keepAliveDeviceIDs containsObject:listCopy])
   {
-    [(NSMutableSet *)self->_keepAliveDeviceIDs removeObject:v6];
+    [(NSMutableSet *)self->_keepAliveDeviceIDs removeObject:listCopy];
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v11 = 136315394;
       v12 = "[ADAudioSessionCoordinator _removeDeviceIDFromKeepAliveList:reason:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = listCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s keepAliveDeviceIDs -= %@", &v11, 0x16u);
     }
 
@@ -2977,23 +2977,23 @@ LABEL_8:
   }
 }
 
-- (void)_addDeviceIDToKeepAliveList:(id)a3 reason:(id)a4
+- (void)_addDeviceIDToKeepAliveList:(id)list reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  reasonCopy = reason;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v13 = 136315650;
     v14 = "[ADAudioSessionCoordinator _addDeviceIDToKeepAliveList:reason:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = listCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s deviceID = %@, reason = %@", &v13, 0x20u);
   }
 
-  if (([(NSMutableSet *)self->_keepAliveDeviceIDs containsObject:v6]& 1) == 0)
+  if (([(NSMutableSet *)self->_keepAliveDeviceIDs containsObject:listCopy]& 1) == 0)
   {
     keepAliveDeviceIDs = self->_keepAliveDeviceIDs;
     if (!keepAliveDeviceIDs)
@@ -3005,14 +3005,14 @@ LABEL_8:
       keepAliveDeviceIDs = self->_keepAliveDeviceIDs;
     }
 
-    [(NSMutableSet *)keepAliveDeviceIDs addObject:v6];
+    [(NSMutableSet *)keepAliveDeviceIDs addObject:listCopy];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v13 = 136315394;
       v14 = "[ADAudioSessionCoordinator _addDeviceIDToKeepAliveList:reason:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = listCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s keepAliveDeviceIDs += %@", &v13, 0x16u);
     }
   }
@@ -3049,16 +3049,16 @@ LABEL_8:
   self->_remoteAssertionCoordinator = 0;
 }
 
-- (void)mediaRemoteDeviceInfoGroupIdentifierDidChange:(id)a3
+- (void)mediaRemoteDeviceInfoGroupIdentifierDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[ADAudioSessionCoordinator mediaRemoteDeviceInfoGroupIdentifierDidChange:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s notification = %@", buf, 0x16u);
   }
 
@@ -3067,23 +3067,23 @@ LABEL_8:
   v9 = 3221225472;
   v10 = sub_1002E1D58;
   v11 = &unk_10051E010;
-  v12 = v4;
-  v13 = self;
-  v7 = v4;
+  v12 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   dispatch_async(queue, &v8);
   [(ADAudioSessionCoordinator *)self fetchAndUpdateMediaRemoteGroupIdentifierForReason:@"Notification", v8, v9, v10, v11];
 }
 
-- (void)mediaRemoteDeviceInfoRouteIdentifierDidChange:(id)a3
+- (void)mediaRemoteDeviceInfoRouteIdentifierDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[ADAudioSessionCoordinator mediaRemoteDeviceInfoRouteIdentifierDidChange:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s notification = %@", buf, 0x16u);
   }
 
@@ -3092,14 +3092,14 @@ LABEL_8:
   v9 = 3221225472;
   v10 = sub_1002E1F54;
   v11 = &unk_10051E010;
-  v12 = v4;
-  v13 = self;
-  v7 = v4;
+  v12 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   dispatch_async(queue, &v8);
   [(ADAudioSessionCoordinator *)self fetchAndUpdateMediaRemoteRouteIdentifierForReason:@"Notification", v8, v9, v10, v11];
 }
 
-- (void)rapportLinkDidInvalidate:(id)a3
+- (void)rapportLinkDidInvalidate:(id)invalidate
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -3118,7 +3118,7 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)rapportLinkDidInterrupt:(id)a3
+- (void)rapportLinkDidInterrupt:(id)interrupt
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -3137,16 +3137,16 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)_resetRapportLinkAndReconnectNow:(BOOL)a3
+- (void)_resetRapportLinkAndReconnectNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   [(ADRapportLink *)self->_rapportLink removeListener:self];
   [(ADAudioSessionCoordinator *)self _tearDownRequestHandlers];
   [(ADRapportLink *)self->_rapportLink invalidate];
   rapportLink = self->_rapportLink;
   self->_rapportLink = 0;
 
-  if (v3)
+  if (nowCopy)
   {
 
     [(ADAudioSessionCoordinator *)self _setUpRapportLink];
@@ -3165,16 +3165,16 @@ LABEL_8:
   }
 }
 
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4
+- (void)rapportLink:(id)link didLoseDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[ADAudioSessionCoordinator rapportLink:didLoseDevice:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s device = %@", buf, 0x16u);
   }
 
@@ -3184,23 +3184,23 @@ LABEL_8:
   v9[2] = sub_1002E2458;
   v9[3] = &unk_10051E010;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)rapportLink:(id)a3 didUpdateDevice:(id)a4 changes:(unsigned int)a5
+- (void)rapportLink:(id)link didUpdateDevice:(id)device changes:(unsigned int)changes
 {
-  v7 = a4;
+  deviceCopy = device;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v14 = "[ADAudioSessionCoordinator rapportLink:didUpdateDevice:changes:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = deviceCopy;
     v17 = 2048;
-    v18 = a5;
+    changesCopy = changes;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s device = %@, changes = %llu", buf, 0x20u);
   }
 
@@ -3210,21 +3210,21 @@ LABEL_8:
   v11[2] = sub_1002E25AC;
   v11[3] = &unk_10051E010;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = deviceCopy;
+  v10 = deviceCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4
+- (void)rapportLink:(id)link didFindDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[ADAudioSessionCoordinator rapportLink:didFindDevice:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s device = %@", buf, 0x16u);
   }
 
@@ -3234,21 +3234,21 @@ LABEL_8:
   v9[2] = sub_1002E26EC;
   v9[3] = &unk_10051E010;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[ADAudioSessionCoordinator rapportLink:didUpdateLocalDevice:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s localDevice = %@", buf, 0x16u);
   }
 
@@ -3258,35 +3258,35 @@ LABEL_8:
   v9[2] = sub_1002E282C;
   v9[3] = &unk_10051E010;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)assertionCoordinator:(id)a3 didRemoveAssertion:(id)a4 isLastAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didRemoveAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  lastAssertionCopy = lastAssertion;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v33 = "[ADAudioSessionCoordinator assertionCoordinator:didRemoveAssertion:isLastAssertion:]";
     v34 = 2112;
-    v35 = v8;
+    v35 = coordinatorCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = assertionCopy;
     v38 = 1024;
-    v39 = v5;
+    v39 = lastAssertionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s assertionCoordinator = %@, assertion = %@, isLastAssertion = %d", buf, 0x26u);
   }
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
-  if (localAssertionCoordinator == v8)
+  if (localAssertionCoordinator == coordinatorCopy)
   {
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (lastAssertionCopy)
     {
       v17 = &__kCFBooleanTrue;
     }
@@ -3305,13 +3305,13 @@ LABEL_8:
 
   else
   {
-    if (self->_remoteAssertionCoordinator != v8)
+    if (self->_remoteAssertionCoordinator != coordinatorCopy)
     {
       goto LABEL_14;
     }
 
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (lastAssertionCopy)
     {
       v13 = &__kCFBooleanTrue;
     }
@@ -3332,16 +3332,16 @@ LABEL_8:
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
 LABEL_14:
-  if (localAssertionCoordinator == v8)
+  if (localAssertionCoordinator == coordinatorCopy)
   {
-    [(ADAudioSessionCoordinator *)self _handleRemovedLocalAssertion:v9 isLast:v5];
-    if (!v5)
+    [(ADAudioSessionCoordinator *)self _handleRemovedLocalAssertion:assertionCopy isLast:lastAssertionCopy];
+    if (!lastAssertionCopy)
     {
       goto LABEL_24;
     }
   }
 
-  else if (!v5)
+  else if (!lastAssertionCopy)
   {
     goto LABEL_24;
   }
@@ -3366,11 +3366,11 @@ LABEL_14:
       {
         v23 = self->_localSystemInfo;
         v24 = v22;
-        v25 = [(AFAudioSessionCoordinationSystemInfo *)v23 isSupportedAndEnabled];
+        isSupportedAndEnabled = [(AFAudioSessionCoordinationSystemInfo *)v23 isSupportedAndEnabled];
         *buf = 136315394;
         v33 = "[ADAudioSessionCoordinator assertionCoordinator:didRemoveAssertion:isLastAssertion:]";
         v34 = 1024;
-        LODWORD(v35) = v25;
+        LODWORD(v35) = isSupportedAndEnabled;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s isSupportedAndEnabled = %d (updated)", buf, 0x12u);
       }
     }
@@ -3381,30 +3381,30 @@ LABEL_14:
 LABEL_24:
 }
 
-- (void)assertionCoordinator:(id)a3 didDeactivateAssertion:(id)a4 isLastAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didDeactivateAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  lastAssertionCopy = lastAssertion;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v25 = "[ADAudioSessionCoordinator assertionCoordinator:didDeactivateAssertion:isLastAssertion:]";
     v26 = 2112;
-    v27 = v8;
+    v27 = coordinatorCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = assertionCopy;
     v30 = 1024;
-    v31 = v5;
+    v31 = lastAssertionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s assertionCoordinator = %@, assertion = %@, isLastAssertion = %d", buf, 0x26u);
   }
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
-  if (localAssertionCoordinator == v8)
+  if (localAssertionCoordinator == coordinatorCopy)
   {
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (lastAssertionCopy)
     {
       v17 = &__kCFBooleanTrue;
     }
@@ -3423,13 +3423,13 @@ LABEL_24:
 
   else
   {
-    if (self->_remoteAssertionCoordinator != v8)
+    if (self->_remoteAssertionCoordinator != coordinatorCopy)
     {
       goto LABEL_14;
     }
 
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (lastAssertionCopy)
     {
       v13 = &__kCFBooleanTrue;
     }
@@ -3450,48 +3450,48 @@ LABEL_24:
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
 LABEL_14:
-  v18 = [(AFAssertionCoordinator *)localAssertionCoordinator numberOfActiveAssertions];
-  if (!([(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions]+ v18))
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)localAssertionCoordinator numberOfActiveAssertions];
+  if (!([(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions]+ numberOfActiveAssertions))
   {
     v19 = +[AFAnalytics sharedAnalytics];
     [v19 logEventWithType:257 context:0 contextNoCopy:0];
   }
 
-  if (self->_localAssertionCoordinator == v8)
+  if (self->_localAssertionCoordinator == coordinatorCopy)
   {
-    [(ADAudioSessionCoordinator *)self _handleRelinquishedLocalAssertion:v9 isLast:v5];
+    [(ADAudioSessionCoordinator *)self _handleRelinquishedLocalAssertion:assertionCopy isLast:lastAssertionCopy];
   }
 
-  else if (self->_remoteAssertionCoordinator == v8)
+  else if (self->_remoteAssertionCoordinator == coordinatorCopy)
   {
-    [(ADAudioSessionCoordinator *)self _handleRelinquishedRemoteAssertion:v9 isLast:v5];
+    [(ADAudioSessionCoordinator *)self _handleRelinquishedRemoteAssertion:assertionCopy isLast:lastAssertionCopy];
   }
 }
 
-- (void)assertionCoordinator:(id)a3 didActivateAssertion:(id)a4 isFirstAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didActivateAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  firstAssertionCopy = firstAssertion;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v25 = "[ADAudioSessionCoordinator assertionCoordinator:didActivateAssertion:isFirstAssertion:]";
     v26 = 2112;
-    v27 = v8;
+    v27 = coordinatorCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = assertionCopy;
     v30 = 1024;
-    v31 = v5;
+    v31 = firstAssertionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s assertionCoordinator = %@, assertion = %@, isFirstAssertion = %d", buf, 0x26u);
   }
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
-  if (localAssertionCoordinator == v8)
+  if (localAssertionCoordinator == coordinatorCopy)
   {
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (firstAssertionCopy)
     {
       v17 = &__kCFBooleanTrue;
     }
@@ -3510,13 +3510,13 @@ LABEL_14:
 
   else
   {
-    if (self->_remoteAssertionCoordinator != v8)
+    if (self->_remoteAssertionCoordinator != coordinatorCopy)
     {
       goto LABEL_14;
     }
 
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (firstAssertionCopy)
     {
       v13 = &__kCFBooleanTrue;
     }
@@ -3537,48 +3537,48 @@ LABEL_14:
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
 LABEL_14:
-  v18 = [(AFAssertionCoordinator *)localAssertionCoordinator numberOfActiveAssertions];
-  if (&v18[[(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions]] == 1)
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)localAssertionCoordinator numberOfActiveAssertions];
+  if (&numberOfActiveAssertions[[(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions]] == 1)
   {
     v19 = +[AFAnalytics sharedAnalytics];
     [v19 logEventWithType:256 context:0 contextNoCopy:0];
   }
 
-  if (self->_localAssertionCoordinator == v8)
+  if (self->_localAssertionCoordinator == coordinatorCopy)
   {
-    [(ADAudioSessionCoordinator *)self _handleAcquiredLocalAssertion:v9 isFirst:v5];
+    [(ADAudioSessionCoordinator *)self _handleAcquiredLocalAssertion:assertionCopy isFirst:firstAssertionCopy];
   }
 
-  else if (self->_remoteAssertionCoordinator == v8)
+  else if (self->_remoteAssertionCoordinator == coordinatorCopy)
   {
-    [(ADAudioSessionCoordinator *)self _handleAcquiredRemoteAssertion:v9 isFirst:v5];
+    [(ADAudioSessionCoordinator *)self _handleAcquiredRemoteAssertion:assertionCopy isFirst:firstAssertionCopy];
   }
 }
 
-- (void)assertionCoordinator:(id)a3 didAddAssertion:(id)a4 isFirstAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didAddAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  firstAssertionCopy = firstAssertion;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v23 = "[ADAudioSessionCoordinator assertionCoordinator:didAddAssertion:isFirstAssertion:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = coordinatorCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = assertionCopy;
     v28 = 1024;
-    v29 = v5;
+    v29 = firstAssertionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s assertionCoordinator = %@, assertion = %@, isFirstAssertion = %d", buf, 0x26u);
   }
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
-  if (localAssertionCoordinator == v8)
+  if (localAssertionCoordinator == coordinatorCopy)
   {
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (firstAssertionCopy)
     {
       v17 = &__kCFBooleanTrue;
     }
@@ -3597,13 +3597,13 @@ LABEL_14:
 
   else
   {
-    if (self->_remoteAssertionCoordinator != v8)
+    if (self->_remoteAssertionCoordinator != coordinatorCopy)
     {
       goto LABEL_14;
     }
 
     v12 = +[AFAnalytics sharedAnalytics];
-    if (v5)
+    if (firstAssertionCopy)
     {
       v13 = &__kCFBooleanTrue;
     }
@@ -3624,9 +3624,9 @@ LABEL_14:
 
   localAssertionCoordinator = self->_localAssertionCoordinator;
 LABEL_14:
-  if (localAssertionCoordinator == v8)
+  if (localAssertionCoordinator == coordinatorCopy)
   {
-    [(ADAudioSessionCoordinator *)self _handleAddedLocalAssertion:v9 isFirst:v5];
+    [(ADAudioSessionCoordinator *)self _handleAddedLocalAssertion:assertionCopy isFirst:firstAssertionCopy];
   }
 }
 
@@ -3641,16 +3641,16 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)fetchAndUpdateMediaRemoteGroupIdentifierForReason:(id)a3
+- (void)fetchAndUpdateMediaRemoteGroupIdentifierForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[ADAudioSessionCoordinator fetchAndUpdateMediaRemoteGroupIdentifierForReason:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s reason = %@", buf, 0x16u);
   }
 
@@ -3660,23 +3660,23 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_1002E3420;
   v9[3] = &unk_10051ABB0;
-  v10 = v4;
+  v10 = reasonCopy;
   v11 = v6;
   v9[4] = self;
-  v8 = v4;
+  v8 = reasonCopy;
   [v7 getGroupIdentifierWithCompletion:v9];
 }
 
-- (void)fetchAndUpdateMediaRemoteRouteIdentifierForReason:(id)a3
+- (void)fetchAndUpdateMediaRemoteRouteIdentifierForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[ADAudioSessionCoordinator fetchAndUpdateMediaRemoteRouteIdentifierForReason:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s reason = %@", buf, 0x16u);
   }
 
@@ -3686,31 +3686,31 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_1002E36F4;
   v9[3] = &unk_10051ABB0;
-  v10 = v4;
+  v10 = reasonCopy;
   v11 = v6;
   v9[4] = self;
-  v8 = v4;
+  v8 = reasonCopy;
   [v7 getRouteIdentifierWithCompletion:v9];
 }
 
-- (BOOL)_relinquishRemoteAssertionForSenderID:(id)a3 reason:(id)a4 effectiveDate:(id)a5 error:(id *)a6
+- (BOOL)_relinquishRemoteAssertionForSenderID:(id)d reason:(id)reason effectiveDate:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  reasonCopy = reason;
+  dateCopy = date;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    [v12 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     *buf = 136316162;
     *&buf[4] = "[ADAudioSessionCoordinator _relinquishRemoteAssertionForSenderID:reason:effectiveDate:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
-    v39 = v11;
+    v39 = reasonCopy;
     *v40 = 2112;
-    *&v40[2] = v12;
+    *&v40[2] = dateCopy;
     *&v40[10] = 2048;
     *&v40[12] = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s senderID = %@, reason = %@, effectiveDate = %@ (%f seconds)", buf, 0x34u);
@@ -3723,13 +3723,13 @@ LABEL_14:
       *buf = 136315138;
       *&buf[4] = "[ADAudioSessionCoordinator _relinquishRemoteAssertionForSenderID:reason:effectiveDate:error:]";
       _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Audio Session Coordination is NOT supported or enabled. This message will be logged only once.", buf, 0xCu);
-      if (!a6)
+      if (!error)
       {
         goto LABEL_19;
       }
     }
 
-    else if (!a6)
+    else if (!error)
     {
       goto LABEL_19;
     }
@@ -3737,13 +3737,13 @@ LABEL_14:
     v27 = [AFError errorWithCode:1901];
 LABEL_15:
     v28 = 0;
-    *a6 = v27;
+    *error = v27;
     goto LABEL_20;
   }
 
-  if (!v10)
+  if (!dCopy)
   {
-    if (a6)
+    if (error)
     {
       v27 = [AFError errorWithCode:1907 description:@"Sender ID is nil."];
       goto LABEL_15;
@@ -3760,12 +3760,12 @@ LABEL_19:
   v33[2] = sub_1002E3CD8;
   v33[3] = &unk_10051D650;
   v33[4] = self;
-  v17 = v10;
+  v17 = dCopy;
   v34 = v17;
   v37 = v16;
-  v18 = v12;
+  v18 = dateCopy;
   v35 = v18;
-  v36 = v11;
+  v36 = reasonCopy;
   v19 = objc_retainBlock(v33);
   [v18 timeIntervalSinceNow];
   v21 = v20;
@@ -3816,33 +3816,33 @@ LABEL_20:
   return v28;
 }
 
-- (id)_acquireRemoteAssertionForSenderID:(id)a3 reason:(id)a4 effectiveDate:(id)a5 expirationDuration:(double)a6 error:(id *)a7
+- (id)_acquireRemoteAssertionForSenderID:(id)d reason:(id)reason effectiveDate:(id)date expirationDuration:(double)duration error:(id *)error
 {
-  v12 = a3;
-  v53 = a4;
-  v13 = a5;
-  if (a7)
+  dCopy = d;
+  reasonCopy = reason;
+  dateCopy = date;
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    [v13 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     *buf = 136316418;
     *&buf[4] = "[ADAudioSessionCoordinator _acquireRemoteAssertionForSenderID:reason:effectiveDate:expirationDuration:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
-    v81 = v53;
+    v81 = reasonCopy;
     *v82 = 2112;
-    *&v82[2] = v13;
+    *&v82[2] = dateCopy;
     *&v82[10] = 2048;
     *&v82[12] = v16;
     v83 = 2048;
-    v84 = a6;
+    durationCopy = duration;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s senderID = %@, reason = %@, effectiveDate = %@ (%f seconds), expirationDuration = %f", buf, 0x3Eu);
   }
 
@@ -3853,13 +3853,13 @@ LABEL_20:
       *buf = 136315138;
       *&buf[4] = "[ADAudioSessionCoordinator _acquireRemoteAssertionForSenderID:reason:effectiveDate:expirationDuration:error:]";
       _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%s Audio Session Coordination is NOT supported or enabled. This message will be logged only once.", buf, 0xCu);
-      if (!a7)
+      if (!error)
       {
         goto LABEL_43;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
       goto LABEL_43;
     }
@@ -3867,13 +3867,13 @@ LABEL_20:
     v28 = [AFError errorWithCode:1901];
 LABEL_24:
     v29 = 0;
-    *a7 = v28;
+    *error = v28;
     goto LABEL_44;
   }
 
-  if (!v12)
+  if (!dCopy)
   {
-    if (a7)
+    if (error)
     {
       v28 = [AFError errorWithCode:1906 description:@"Sender ID is nil."];
       goto LABEL_24;
@@ -3891,8 +3891,8 @@ LABEL_43:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v17 = [(ADRapportLink *)self->_rapportLink activeDevices];
-    v18 = [v17 countByEnumeratingWithState:&v71 objects:v79 count:16];
+    activeDevices = [(ADRapportLink *)self->_rapportLink activeDevices];
+    v18 = [activeDevices countByEnumeratingWithState:&v71 objects:v79 count:16];
     if (v18)
     {
       v19 = *v72;
@@ -3902,17 +3902,17 @@ LABEL_43:
         {
           if (*v72 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(activeDevices);
           }
 
           v21 = *(*(&v71 + 1) + 8 * i);
-          v22 = [v21 identifier];
-          v23 = [v22 isEqual:v12];
+          identifier = [v21 identifier];
+          v23 = [identifier isEqual:dCopy];
 
           if ((v23 & 1) == 0)
           {
-            v24 = [v21 effectiveIdentifier];
-            v25 = [v24 isEqual:v12];
+            effectiveIdentifier = [v21 effectiveIdentifier];
+            v25 = [effectiveIdentifier isEqual:dCopy];
 
             if ((v25 & 1) == 0)
             {
@@ -3920,12 +3920,12 @@ LABEL_43:
             }
           }
 
-          v26 = [v21 name];
+          name = [v21 name];
           goto LABEL_28;
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v71 objects:v79 count:16];
-        v26 = 0;
+        v18 = [activeDevices countByEnumeratingWithState:&v71 objects:v79 count:16];
+        name = 0;
         if (v18)
         {
           continue;
@@ -3937,7 +3937,7 @@ LABEL_43:
 
     else
     {
-      v26 = 0;
+      name = 0;
     }
 
 LABEL_28:
@@ -3945,26 +3945,26 @@ LABEL_28:
 
   else
   {
-    v26 = 0;
+    name = 0;
   }
 
-  if (v13)
+  if (dateCopy)
   {
     v30 = +[NSDate date];
-    [v13 timeIntervalSinceDate:v30];
+    [dateCopy timeIntervalSinceDate:v30];
     v32 = v31;
     if (v31 <= 0.0 || v31 >= 0.02)
     {
-      v33 = v13;
+      v33 = dateCopy;
     }
 
     else
     {
       v33 = v30;
 
-      if (a6 > 0.0)
+      if (duration > 0.0)
       {
-        a6 = v32 + a6;
+        duration = v32 + duration;
       }
 
       v34 = AFSiriLogContextDaemon;
@@ -3979,7 +3979,7 @@ LABEL_28:
         *&buf[22] = 2048;
         v81 = v36;
         *v82 = 2048;
-        *&v82[2] = a6;
+        *&v82[2] = duration;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "%s effectiveDate = %@ (%f), expirationDuration = %f (Time Drift Mitigation)", buf, 0x2Au);
       }
     }
@@ -4002,14 +4002,14 @@ LABEL_28:
   v64[2] = sub_1002E4888;
   v64[3] = &unk_10051AAC0;
   v69 = v52;
-  v38 = v53;
+  v38 = reasonCopy;
   v65 = v38;
   v39 = v33;
   v66 = v39;
-  v70 = a6;
-  v40 = v26;
+  durationCopy2 = duration;
+  v40 = name;
   v67 = v40;
-  v41 = v12;
+  v41 = dCopy;
   v68 = v41;
   v42 = [AFAssertionContext newWithBuilder:v64];
   v63[0] = _NSConcreteStackBlock;
@@ -4021,7 +4021,7 @@ LABEL_28:
   v44 = *(*&buf[8] + 40);
   *(*&buf[8] + 40) = v43;
 
-  v45 = [*(*&buf[8] + 40) uuid];
+  uuid = [*(*&buf[8] + 40) uuid];
   v46 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -4041,15 +4041,15 @@ LABEL_28:
   v60[2] = sub_1002E4A94;
   v60[3] = &unk_10051AB10;
   v61 = v41;
-  v29 = v45;
+  v29 = uuid;
   v62 = v29;
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = sub_1002E4C2C;
   v54[3] = &unk_10051AB38;
   v59 = v52;
-  v13 = v39;
-  v55 = v13;
+  dateCopy = v39;
+  v55 = dateCopy;
   v56 = v38;
   v57 = v40;
   v58 = v61;
@@ -4062,10 +4062,10 @@ LABEL_44:
   return v29;
 }
 
-- (void)_registerRequestID:(id)a3 requestHandler:(id)a4
+- (void)_registerRequestID:(id)d requestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = self->_queue;
   rapportLink = self->_rapportLink;
   v18 = RPOptionStatusFlags;
@@ -4075,32 +4075,32 @@ LABEL_44:
   v14[1] = 3221225472;
   v14[2] = sub_1002E4EB8;
   v14[3] = &unk_10051AA98;
-  v15 = v6;
+  v15 = dCopy;
   v16 = v8;
-  v17 = v7;
-  v11 = v7;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v8;
-  v13 = v6;
+  v13 = dCopy;
   [(ADRapportLink *)rapportLink registerRequestID:v13 options:v10 handler:v14];
 }
 
-- (void)_sendRequestID:(id)a3 request:(id)a4 recipientID:(id)a5 responseHandler:(id)a6
+- (void)_sendRequestID:(id)d request:(id)request recipientID:(id)iD responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  requestCopy = request;
+  iDCopy = iD;
+  handlerCopy = handler;
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v32 = "[ADAudioSessionCoordinator _sendRequestID:request:recipientID:responseHandler:]";
     v33 = 2112;
-    v34 = v12;
+    v34 = iDCopy;
     v35 = 2112;
-    v36 = v10;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v11;
+    v38 = requestCopy;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s --->>> recipientID = %@, requestID = %@, request = %@", buf, 0x2Au);
   }
 
@@ -4113,30 +4113,30 @@ LABEL_44:
   block[2] = sub_1002E5480;
   block[3] = &unk_10051AA20;
   block[4] = self;
-  v25 = v10;
-  v26 = v11;
-  v27 = v12;
-  v29 = v13;
+  v25 = dCopy;
+  v26 = requestCopy;
+  v27 = iDCopy;
+  v29 = handlerCopy;
   v30 = v16;
   v28 = v15;
-  v19 = v13;
+  v19 = handlerCopy;
   v20 = v15;
-  v21 = v12;
-  v22 = v11;
-  v23 = v10;
+  v21 = iDCopy;
+  v22 = requestCopy;
+  v23 = dCopy;
   dispatch_group_notify(rapportLinkReadyGroup, queue, block);
 }
 
-- (void)handleDidSetAudioSessionActive:(BOOL)a3
+- (void)handleDidSetAudioSessionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[ADAudioSessionCoordinator handleDidSetAudioSessionActive:]";
     v11 = 1024;
-    v12 = v3;
+    v12 = activeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s isActive = %d", buf, 0x12u);
   }
 
@@ -4146,20 +4146,20 @@ LABEL_44:
   v7[2] = sub_1002E58C4;
   v7[3] = &unk_10051CBD8;
   v7[4] = self;
-  v8 = v3;
+  v8 = activeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)handleWillSetAudioSessionActive:(BOOL)a3
+- (void)handleWillSetAudioSessionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[ADAudioSessionCoordinator handleWillSetAudioSessionActive:]";
     v11 = 1024;
-    v12 = v3;
+    v12 = activeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s isActive = %d", buf, 0x12u);
   }
 
@@ -4169,7 +4169,7 @@ LABEL_44:
   v7[2] = sub_1002E59F0;
   v7[3] = &unk_10051CBD8;
   v7[4] = self;
-  v8 = v3;
+  v8 = activeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -4194,10 +4194,10 @@ LABEL_44:
   [(AFAssertionCoordinator *)localAssertionCoordinator relinquishAsertionsPassingTest:&stru_10051A9B0 context:v6];
 }
 
-- (void)getSnapshotWithCompletion:(id)a3
+- (void)getSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_group_create();
     v33[0] = 0;
@@ -4258,7 +4258,7 @@ LABEL_44:
     v14 = v31;
     v15 = v29;
     v16 = v27;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_group_notify(v9, queue, block);
 
     _Block_object_dispose(v27, 8);
@@ -4271,10 +4271,10 @@ LABEL_44:
 
 - (BOOL)hasActiveAudioSessionAssertions
 {
-  v3 = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
-  if (v3)
+  numberOfActiveAssertions = [(AFAssertionCoordinator *)self->_localAssertionCoordinator numberOfActiveAssertions];
+  if (numberOfActiveAssertions)
   {
-    v4 = v3;
+    v4 = numberOfActiveAssertions;
     v5 = AFSiriLogContextDaemon;
     v6 = 1;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -4291,10 +4291,10 @@ LABEL_7:
 
   else
   {
-    v8 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
+    numberOfActiveAssertions2 = [(AFAssertionCoordinator *)self->_remoteAssertionCoordinator numberOfActiveAssertions];
     v5 = AFSiriLogContextDaemon;
     v9 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-    if (v8)
+    if (numberOfActiveAssertions2)
     {
       if (!v9)
       {
@@ -4304,7 +4304,7 @@ LABEL_7:
       v11 = 136315394;
       v12 = "[ADAudioSessionCoordinator hasActiveAudioSessionAssertions]";
       v13 = 2048;
-      v14 = v8;
+      v14 = numberOfActiveAssertions2;
       v7 = "%s numberOfActiveAssertions = %llu (remote)";
       v6 = 1;
       goto LABEL_7;
@@ -4323,25 +4323,25 @@ LABEL_7:
   return v6;
 }
 
-- (id)acquireAudioSessionAssertionWithContext:(id)a3 relinquishmentHandler:(id)a4
+- (id)acquireAudioSessionAssertionWithContext:(id)context relinquishmentHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[ADAudioSessionCoordinator acquireAudioSessionAssertionWithContext:relinquishmentHandler:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s context = %@", buf, 0x16u);
   }
 
-  v9 = [v6 userInfo];
-  v10 = [v9 objectForKey:AFAudioSessionAssertionUserInfoKey[4]];
-  v11 = [v10 BOOLValue];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo objectForKey:AFAudioSessionAssertionUserInfoKey[4]];
+  bOOLValue = [v10 BOOLValue];
 
-  if (!v11)
+  if (!bOOLValue)
   {
     goto LABEL_13;
   }
@@ -4404,20 +4404,20 @@ LABEL_12:
 
 LABEL_13:
   localAssertionCoordinator = self->_localAssertionCoordinator;
-  v19 = [v6 effectiveDate];
-  v20 = v6;
-  if (!v19)
+  effectiveDate = [contextCopy effectiveDate];
+  v20 = contextCopy;
+  if (!effectiveDate)
   {
-    v20 = [v6 mutatedCopyWithMutator:&stru_10051A890];
+    v20 = [contextCopy mutatedCopyWithMutator:&stru_10051A890];
   }
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1002E7148;
   v24[3] = &unk_10051A8B8;
-  v25 = v7;
+  v25 = handlerCopy;
   v21 = [(AFAssertionCoordinator *)localAssertionCoordinator acquireRelinquishableAssertionWithContext:v20 relinquishmentHandler:v24];
-  if (!v19)
+  if (!effectiveDate)
   {
   }
 
@@ -4468,10 +4468,10 @@ LABEL_21:
   [(ADRapportLink *)v10 activateWithCompletion:v11];
 }
 
-- (ADAudioSessionCoordinator)initWithInstanceContext:(id)a3 delegate:(id)a4
+- (ADAudioSessionCoordinator)initWithInstanceContext:(id)context delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v39.receiver = self;
   v39.super_class = ADAudioSessionCoordinator;
   v8 = [(ADAudioSessionCoordinator *)&v39 init];
@@ -4484,9 +4484,9 @@ LABEL_21:
     queue = v8->_queue;
     v8->_queue = v11;
 
-    if (v6)
+    if (contextCopy)
     {
-      v13 = v6;
+      v13 = contextCopy;
     }
 
     else
@@ -4497,7 +4497,7 @@ LABEL_21:
     instanceContext = v8->_instanceContext;
     v8->_instanceContext = v13;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v15 = [[AFAssertionCoordinator alloc] initWithIdentifier:@"com.apple.assistant.audio-session-coordination.assertion-coordinator.local" queue:v8->_queue delegate:v8];
     localAssertionCoordinator = v8->_localAssertionCoordinator;
     v8->_localAssertionCoordinator = v15;
@@ -4515,11 +4515,11 @@ LABEL_21:
     {
       v22 = v8->_localSystemInfo;
       v23 = v21;
-      v24 = [(AFAudioSessionCoordinationSystemInfo *)v22 isSupportedAndEnabled];
+      isSupportedAndEnabled = [(AFAudioSessionCoordinationSystemInfo *)v22 isSupportedAndEnabled];
       *buf = 136315394;
       v41 = "[ADAudioSessionCoordinator initWithInstanceContext:delegate:]";
       v42 = 1024;
-      v43 = v24;
+      v43 = isSupportedAndEnabled;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s isSupportedAndEnabled = %d (initial)", buf, 0x12u);
     }
 

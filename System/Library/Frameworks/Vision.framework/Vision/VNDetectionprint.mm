@@ -1,133 +1,133 @@
 @interface VNDetectionprint
-+ (id)knownTensorKeysForRequestRevision:(unint64_t)a3 error:(id *)a4;
-+ (id)tensorShapeForKey:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (VNDetectionprint)initWithCoder:(id)a3;
-- (VNDetectionprint)initWithTensorsDictionary:(id)a3 originatingRequestSpecifier:(id)a4;
-- (VNDetectionprint)initWithTensorsDictionary:(id)a3 requestRevision:(unint64_t)a4;
-- (id)tensorForKey:(id)a3 error:(id *)a4;
++ (id)knownTensorKeysForRequestRevision:(unint64_t)revision error:(id *)error;
++ (id)tensorShapeForKey:(id)key error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VNDetectionprint)initWithCoder:(id)coder;
+- (VNDetectionprint)initWithTensorsDictionary:(id)dictionary originatingRequestSpecifier:(id)specifier;
+- (VNDetectionprint)initWithTensorsDictionary:(id)dictionary requestRevision:(unint64_t)revision;
+- (id)tensorForKey:(id)key error:(id *)error;
 - (unint64_t)requestRevision;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNDetectionprint
 
 - (unint64_t)requestRevision
 {
-  v2 = [(VNDetectionprint *)self originatingRequestSpecifier];
-  v3 = [v2 requestRevision];
+  originatingRequestSpecifier = [(VNDetectionprint *)self originatingRequestSpecifier];
+  requestRevision = [originatingRequestSpecifier requestRevision];
 
-  return v3;
+  return requestRevision;
 }
 
-- (VNDetectionprint)initWithCoder:(id)a3
+- (VNDetectionprint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x1E695DFD8]);
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 initWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"tensors"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"tensors"];
   if (!v9)
   {
     goto LABEL_6;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"];
   if (v10)
   {
     goto LABEL_3;
   }
 
-  if ([v4 containsValueForKey:@"request"])
+  if ([coderCopy containsValueForKey:@"request"])
   {
 LABEL_6:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v15 = 0;
-  v10 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:objc_msgSend(v4 error:{"decodeIntegerForKey:", @"requestRevision", &v15}];
+  v10 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:objc_msgSend(coderCopy error:{"decodeIntegerForKey:", @"requestRevision", &v15}];
   v14 = v15;
   v11 = v14;
   if (!v10)
   {
-    [v4 failWithError:v14];
-    v12 = 0;
+    [coderCopy failWithError:v14];
+    selfCopy = 0;
     goto LABEL_4;
   }
 
 LABEL_3:
   self = [(VNDetectionprint *)self initWithTensorsDictionary:v9 originatingRequestSpecifier:v10];
   v11 = v10;
-  v12 = self;
+  selfCopy = self;
 LABEL_4:
 
 LABEL_7:
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_tensorsDictionary forKey:@"tensors"];
-  [v4 encodeObject:self->_originatingRequestSpecifier forKey:@"request"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_tensorsDictionary forKey:@"tensors"];
+  [coderCopy encodeObject:self->_originatingRequestSpecifier forKey:@"request"];
 }
 
-- (VNDetectionprint)initWithTensorsDictionary:(id)a3 requestRevision:(unint64_t)a4
+- (VNDetectionprint)initWithTensorsDictionary:(id)dictionary requestRevision:(unint64_t)revision
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0;
-  v7 = [VNRequestSpecifier specifierForRequestClass:objc_opt_class() revision:a4 error:&v12];
+  v7 = [VNRequestSpecifier specifierForRequestClass:objc_opt_class() revision:revision error:&v12];
   v8 = v12;
-  v9 = [v8 localizedDescription];
-  [VNError VNAssert:v7 != 0 log:v9];
+  localizedDescription = [v8 localizedDescription];
+  [VNError VNAssert:v7 != 0 log:localizedDescription];
 
-  v10 = [(VNDetectionprint *)self initWithTensorsDictionary:v6 originatingRequestSpecifier:v7];
+  v10 = [(VNDetectionprint *)self initWithTensorsDictionary:dictionaryCopy originatingRequestSpecifier:v7];
   return v10;
 }
 
-- (VNDetectionprint)initWithTensorsDictionary:(id)a3 originatingRequestSpecifier:(id)a4
+- (VNDetectionprint)initWithTensorsDictionary:(id)dictionary originatingRequestSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = VNDetectionprint;
   v8 = [(VNDetectionprint *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dictionaryCopy copy];
     tensorsDictionary = v8->_tensorsDictionary;
     v8->_tensorsDictionary = v9;
 
-    objc_storeStrong(&v8->_originatingRequestSpecifier, a4);
+    objc_storeStrong(&v8->_originatingRequestSpecifier, specifier);
   }
 
   return v8;
 }
 
-- (id)tensorForKey:(id)a3 error:(id *)a4
+- (id)tensorForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_tensorsDictionary objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSDictionary *)self->_tensorsDictionary objectForKey:keyCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = _unavailableTensorKeyError(v6);
+    *error = _unavailableTensorKeyError(keyCopy);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -137,10 +137,10 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNDetectionprint *)self originatingRequestSpecifier];
-      v7 = [(VNDetectionprint *)v5 originatingRequestSpecifier];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      originatingRequestSpecifier = [(VNDetectionprint *)self originatingRequestSpecifier];
+      originatingRequestSpecifier2 = [(VNDetectionprint *)v5 originatingRequestSpecifier];
+      v8 = [originatingRequestSpecifier isEqual:originatingRequestSpecifier2];
 
       v9 = (v8 & 1) != 0 && [(NSDictionary *)self->_tensorsDictionary isEqualToDictionary:v5->_tensorsDictionary];
     }
@@ -154,24 +154,24 @@ LABEL_7:
   return v9;
 }
 
-+ (id)tensorShapeForKey:(id)a3 error:(id *)a4
++ (id)tensorShapeForKey:(id)key error:(id *)error
 {
-  v5 = a3;
+  keyCopy = key;
   if (+[VNDetectionprint tensorShapeForKey:error:]::onceToken != -1)
   {
     dispatch_once(&+[VNDetectionprint tensorShapeForKey:error:]::onceToken, &__block_literal_global_20201);
   }
 
-  v6 = [+[VNDetectionprint tensorShapeForKey:error:]::tensorShapes objectForKeyedSubscript:v5];
+  v6 = [+[VNDetectionprint tensorShapeForKey:error:]::tensorShapes objectForKeyedSubscript:keyCopy];
   v7 = v6;
   if (v6)
   {
     v8 = v6;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = _unavailableTensorKeyError(v5);
+    *error = _unavailableTensorKeyError(keyCopy);
   }
 
   return v7;
@@ -197,10 +197,10 @@ void __44__VNDetectionprint_tensorShapeForKey_error___block_invoke()
   +[VNDetectionprint tensorShapeForKey:error:]::tensorShapes = v4;
 }
 
-+ (id)knownTensorKeysForRequestRevision:(unint64_t)a3 error:(id *)a4
++ (id)knownTensorKeysForRequestRevision:(unint64_t)revision error:(id *)error
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (revision == 2)
   {
     v11[0] = @"VNDetectionprintTensorKeyStride8FeatureMap";
     v11[1] = @"VNDetectionprintTensorKeyStride16FeatureMap";
@@ -209,7 +209,7 @@ void __44__VNDetectionprint_tensorShapeForKey_error___block_invoke()
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (revision == 1)
   {
     v12[0] = @"VNDetectionprintTensorKeyMixed2";
     v12[1] = @"VNDetectionprintTensorKeyMixed6";
@@ -220,12 +220,12 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
-    v8 = [VNError errorForUnsupportedRevision:a3 ofRequestClass:objc_opt_class()];
+    v8 = [VNError errorForUnsupportedRevision:revision ofRequestClass:objc_opt_class()];
     v9 = v8;
     v6 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else

@@ -1,13 +1,13 @@
 @interface NUAVPlayerView
-- (NUAVPlayerView)initWithCoder:(id)a3;
-- (NUAVPlayerView)initWithFrame:(CGRect)a3;
+- (NUAVPlayerView)initWithCoder:(id)coder;
+- (NUAVPlayerView)initWithFrame:(CGRect)frame;
 - (NUAVPlayerViewDelegate)delegate;
-- (void)_setReadyForDisplay:(BOOL)a3;
-- (void)_updateReadyForDisplayWithID:(int)a3;
+- (void)_setReadyForDisplay:(BOOL)display;
+- (void)_updateReadyForDisplayWithID:(int)d;
 - (void)dealloc;
 - (void)dispose;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPlayer:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation NUAVPlayerView
@@ -19,35 +19,35 @@
   return WeakRetained;
 }
 
-- (void)_setReadyForDisplay:(BOOL)a3
+- (void)_setReadyForDisplay:(BOOL)display
 {
-  if (self->_readyForDisplay != a3)
+  if (self->_readyForDisplay != display)
   {
-    self->_readyForDisplay = a3;
-    v5 = [(NUAVPlayerView *)self delegate];
-    [v5 playerViewReadyForDisplayDidChange:self];
+    self->_readyForDisplay = display;
+    delegate = [(NUAVPlayerView *)self delegate];
+    [delegate playerViewReadyForDisplayDidChange:self];
   }
 }
 
-- (void)_updateReadyForDisplayWithID:(int)a3
+- (void)_updateReadyForDisplayWithID:(int)d
 {
   v4 = atomic_load(&self->_updateReadyForDisplayID);
-  if (v4 == a3)
+  if (v4 == d)
   {
-    v6 = [(NUAVPlayerView *)self layer];
-    -[NUAVPlayerView _setReadyForDisplay:](self, "_setReadyForDisplay:", [v6 isReadyForDisplay]);
+    layer = [(NUAVPlayerView *)self layer];
+    -[NUAVPlayerView _setReadyForDisplay:](self, "_setReadyForDisplay:", [layer isReadyForDisplay]);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (PlayerLayerReadyForDisplayObservationContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (PlayerLayerReadyForDisplayObservationContext == context)
   {
     v13 = atomic_fetch_add(&self->_updateReadyForDisplayID, 1u) + 1;
-    if ([v11 isReadyForDisplay])
+    if ([objectCopy isReadyForDisplay])
     {
       [(NUAVPlayerView *)self _updateReadyForDisplayWithID:v13];
     }
@@ -68,14 +68,14 @@
     }
   }
 
-  else if (PlayerObservationContext == a6)
+  else if (PlayerObservationContext == context)
   {
-    v14 = [(NUAVPlayerView *)self delegate];
-    v15 = [v12 valueForKey:*MEMORY[0x277CCA2F0]];
+    delegate = [(NUAVPlayerView *)self delegate];
+    v15 = [changeCopy valueForKey:*MEMORY[0x277CCA2F0]];
     if (objc_opt_respondsToSelector())
     {
       [v15 floatValue];
-      [v14 playerRateDidChange:self rate:?];
+      [delegate playerRateDidChange:self rate:?];
     }
   }
 
@@ -83,7 +83,7 @@
   {
     v17.receiver = self;
     v17.super_class = NUAVPlayerView;
-    [(NUAVPlayerView *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(NUAVPlayerView *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -107,44 +107,44 @@ void __65__NUAVPlayerView_observeValueForKeyPath_ofObject_change_context___block
   if (!self->_observerDetached)
   {
     self->_observerDetached = 1;
-    v4 = [(NUAVPlayerView *)self layer];
-    [v4 removeObserver:self forKeyPath:@"readyForDisplay" context:PlayerLayerReadyForDisplayObservationContext];
+    layer = [(NUAVPlayerView *)self layer];
+    [layer removeObserver:self forKeyPath:@"readyForDisplay" context:PlayerLayerReadyForDisplayObservationContext];
 
-    v5 = [(NUAVPlayerView *)self player];
-    [v5 removeObserver:self forKeyPath:@"rate" context:PlayerObservationContext];
+    player = [(NUAVPlayerView *)self player];
+    [player removeObserver:self forKeyPath:@"rate" context:PlayerObservationContext];
   }
 }
 
-- (NUAVPlayerView)initWithCoder:(id)a3
+- (NUAVPlayerView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NUAVPlayerView;
-  v3 = [(NUAVPlayerView *)&v5 initWithCoder:a3];
+  v3 = [(NUAVPlayerView *)&v5 initWithCoder:coder];
   _commonInit(v3);
   return v3;
 }
 
-- (NUAVPlayerView)initWithFrame:(CGRect)a3
+- (NUAVPlayerView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = NUAVPlayerView;
-  v3 = [(NUAVPlayerView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NUAVPlayerView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   _commonInit(v3);
   return v3;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_player != v5)
+  playerCopy = player;
+  if (self->_player != playerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_player, a3);
-    v6 = [(NUAVPlayerView *)self layer];
-    [v6 setPlayer:v7];
+    v7 = playerCopy;
+    objc_storeStrong(&self->_player, player);
+    layer = [(NUAVPlayerView *)self layer];
+    [layer setPlayer:v7];
 
     [(AVPlayer *)self->_player addObserver:self forKeyPath:@"rate" options:1 context:PlayerObservationContext];
-    v5 = v7;
+    playerCopy = v7;
   }
 }
 

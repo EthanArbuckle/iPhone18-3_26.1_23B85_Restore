@@ -1,21 +1,21 @@
 @interface UIProgressIndicator
 + (CGSize)size;
-- (void)setAnimating:(BOOL)a3;
+- (void)setAnimating:(BOOL)animating;
 @end
 
 @implementation UIProgressIndicator
 
 + (CGSize)size
 {
-  [a1 defaultSizeForStyle:1];
+  [self defaultSizeForStyle:1];
   result.height = v3;
   result.width = v2;
   return result;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (a3)
+  if (animating)
   {
     [(UIActivityIndicatorView *)self startAnimating];
   }

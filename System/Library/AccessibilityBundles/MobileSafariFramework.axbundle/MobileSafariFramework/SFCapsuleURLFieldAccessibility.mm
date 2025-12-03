@@ -1,6 +1,6 @@
 @interface SFCapsuleURLFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SFCapsuleURLFieldAccessibility)initWithTextField:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SFCapsuleURLFieldAccessibility)initWithTextField:(id)field;
 - (id)accessibilityElements;
 - (int64_t)_accessibilitySortPriority;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,12 +8,12 @@
 
 @implementation SFCapsuleURLFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFCapsuleURLField" hasInstanceVariable:@"_voiceSearchButton" withType:"_SFDimmingButton"];
-  [v3 validateClass:@"SFCapsuleURLField" hasInstanceVariable:@"_clearTextButton" withType:"_SFDimmingButton"];
-  [v3 validateClass:@"SFCapsuleURLField" hasInstanceMethod:@"initWithTextField:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFCapsuleURLField" hasInstanceVariable:@"_voiceSearchButton" withType:"_SFDimmingButton"];
+  [validationsCopy validateClass:@"SFCapsuleURLField" hasInstanceVariable:@"_clearTextButton" withType:"_SFDimmingButton"];
+  [validationsCopy validateClass:@"SFCapsuleURLField" hasInstanceMethod:@"initWithTextField:" withFullSignature:{"@", 0}];
 }
 
 - (int64_t)_accessibilitySortPriority
@@ -42,11 +42,11 @@
   [v6 setAccessibilityLabel:v5];
 }
 
-- (SFCapsuleURLFieldAccessibility)initWithTextField:(id)a3
+- (SFCapsuleURLFieldAccessibility)initWithTextField:(id)field
 {
   v5.receiver = self;
   v5.super_class = SFCapsuleURLFieldAccessibility;
-  v3 = [(SFCapsuleURLFieldAccessibility *)&v5 initWithTextField:a3];
+  v3 = [(SFCapsuleURLFieldAccessibility *)&v5 initWithTextField:field];
   [(SFCapsuleURLFieldAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
@@ -56,9 +56,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _accessibilitySubviews];
+  _accessibilitySubviews = [v2 _accessibilitySubviews];
 
-  v4 = [v3 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+  v4 = [_accessibilitySubviews sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
 
   return v4;
 }

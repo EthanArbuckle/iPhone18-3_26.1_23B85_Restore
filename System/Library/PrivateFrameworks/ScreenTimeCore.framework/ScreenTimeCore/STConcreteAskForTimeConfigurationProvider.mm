@@ -1,12 +1,12 @@
 @interface STConcreteAskForTimeConfigurationProvider
-- (void)shouldDeliverNotificationQuietlyWithCompletion:(id)a3;
+- (void)shouldDeliverNotificationQuietlyWithCompletion:(id)completion;
 @end
 
 @implementation STConcreteAskForTimeConfigurationProvider
 
-- (void)shouldDeliverNotificationQuietlyWithCompletion:(id)a3
+- (void)shouldDeliverNotificationQuietlyWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[STLog ask];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -15,7 +15,7 @@
   }
 
   v5 = objc_opt_new();
-  [v5 canSendFamilyScreenTimeRequestIMessageWithCompletion:v3];
+  [v5 canSendFamilyScreenTimeRequestIMessageWithCompletion:completionCopy];
 }
 
 @end

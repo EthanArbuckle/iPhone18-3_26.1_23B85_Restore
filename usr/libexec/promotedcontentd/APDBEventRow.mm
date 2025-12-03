@@ -1,10 +1,10 @@
 @interface APDBEventRow
 - (NSArray)branch;
 - (NSArray)environment;
-- (id)initImpressionId:(id)a3 timestamp:(id)a4 purpose:(id)a5 event:(id)a6 source:(id)a7 unknownSource:(id)a8 handleSet:(id)a9 eventOrder:(id)a10 trace:(id)a11 branch:(id)a12 environment:(id)a13 propertiesJSON:(id)a14 internalProperties:(id)a15 table:(id)a16;
+- (id)initImpressionId:(id)id timestamp:(id)timestamp purpose:(id)purpose event:(id)event source:(id)source unknownSource:(id)unknownSource handleSet:(id)set eventOrder:(id)self0 trace:(id)self1 branch:(id)self2 environment:(id)self3 propertiesJSON:(id)self4 internalProperties:(id)self5 table:(id)self6;
 - (id)readOnlyColumns;
-- (void)setBranch:(id)a3;
-- (void)setEnvironment:(id)a3;
+- (void)setBranch:(id)branch;
+- (void)setEnvironment:(id)environment;
 @end
 
 @implementation APDBEventRow
@@ -14,57 +14,57 @@
   v3 = [NSSet setWithObjects:@"branch", @"environment", 0];
   v7.receiver = self;
   v7.super_class = APDBEventRow;
-  v4 = [(APDBEventRow *)&v7 readOnlyColumns];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  readOnlyColumns = [(APDBEventRow *)&v7 readOnlyColumns];
+  v5 = [v3 setByAddingObjectsFromSet:readOnlyColumns];
 
   return v5;
 }
 
-- (id)initImpressionId:(id)a3 timestamp:(id)a4 purpose:(id)a5 event:(id)a6 source:(id)a7 unknownSource:(id)a8 handleSet:(id)a9 eventOrder:(id)a10 trace:(id)a11 branch:(id)a12 environment:(id)a13 propertiesJSON:(id)a14 internalProperties:(id)a15 table:(id)a16
+- (id)initImpressionId:(id)id timestamp:(id)timestamp purpose:(id)purpose event:(id)event source:(id)source unknownSource:(id)unknownSource handleSet:(id)set eventOrder:(id)self0 trace:(id)self1 branch:(id)self2 environment:(id)self3 propertiesJSON:(id)self4 internalProperties:(id)self5 table:(id)self6
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v40 = a7;
-  v39 = a8;
-  v25 = v23;
-  v38 = a9;
-  v26 = v22;
-  v37 = a10;
-  v27 = v24;
-  v28 = a11;
-  v29 = a12;
-  v30 = a13;
-  v31 = a14;
-  v32 = a15;
+  idCopy = id;
+  timestampCopy = timestamp;
+  purposeCopy = purpose;
+  eventCopy = event;
+  sourceCopy = source;
+  unknownSourceCopy = unknownSource;
+  v25 = purposeCopy;
+  setCopy = set;
+  v26 = timestampCopy;
+  orderCopy = order;
+  v27 = eventCopy;
+  traceCopy = trace;
+  branchCopy = branch;
+  environmentCopy = environment;
+  nCopy = n;
+  propertiesCopy = properties;
   v41.receiver = self;
   v41.super_class = APDBEventRow;
-  v33 = [(APDBEventRow *)&v41 initAsNewObjectWithTable:a16];
+  v33 = [(APDBEventRow *)&v41 initAsNewObjectWithTable:table];
   v34 = v33;
   if (v33)
   {
-    [v33 setValue:v21 forColumnName:@"impressionId"];
+    [v33 setValue:idCopy forColumnName:@"impressionId"];
     [v34 setValue:v26 forColumnName:@"timestamp"];
     [v34 setValue:v25 forColumnName:@"purpose"];
     [v34 setValue:v27 forColumnName:@"event"];
-    [v34 setValue:v40 forColumnName:@"source"];
-    [v34 setValue:v39 forColumnName:@"unknownSource"];
-    [v34 setValue:v38 forColumnName:@"handleSet"];
-    [v34 setValue:v37 forColumnName:@"eventOrder"];
-    [v34 setValue:v28 forColumnName:@"trace"];
-    [v34 setBranch:v29];
-    [v34 setEnvironment:v30];
-    [v34 setValue:v31 forColumnName:@"propertiesJSON"];
-    [v34 setInternalProperties:v32];
+    [v34 setValue:sourceCopy forColumnName:@"source"];
+    [v34 setValue:unknownSourceCopy forColumnName:@"unknownSource"];
+    [v34 setValue:setCopy forColumnName:@"handleSet"];
+    [v34 setValue:orderCopy forColumnName:@"eventOrder"];
+    [v34 setValue:traceCopy forColumnName:@"trace"];
+    [v34 setBranch:branchCopy];
+    [v34 setEnvironment:environmentCopy];
+    [v34 setValue:nCopy forColumnName:@"propertiesJSON"];
+    [v34 setInternalProperties:propertiesCopy];
   }
 
   return v34;
 }
 
-- (void)setBranch:(id)a3
+- (void)setBranch:(id)branch
 {
-  v4 = [a3 componentsJoinedByString:@"|"];
+  v4 = [branch componentsJoinedByString:@"|"];
   [(APDBEventRow *)self setValue:v4 forColumnName:@"branchString"];
 }
 
@@ -85,9 +85,9 @@
   return v4;
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  v4 = [a3 componentsJoinedByString:@"|"];
+  v4 = [environment componentsJoinedByString:@"|"];
   [(APDBEventRow *)self setValue:v4 forColumnName:@"environmentString"];
 }
 

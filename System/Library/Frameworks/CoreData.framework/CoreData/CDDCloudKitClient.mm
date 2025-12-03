@@ -1,19 +1,19 @@
 @interface CDDCloudKitClient
-- (CDDCloudKitClient)initWithMachServiceName:(id)a3;
+- (CDDCloudKitClient)initWithMachServiceName:(id)name;
 - (void)dealloc;
-- (void)handleMessage:(id)a3 reply:(id)a4;
+- (void)handleMessage:(id)message reply:(id)reply;
 @end
 
 @implementation CDDCloudKitClient
 
-- (CDDCloudKitClient)initWithMachServiceName:(id)a3
+- (CDDCloudKitClient)initWithMachServiceName:(id)name
 {
   v14.receiver = self;
   v14.super_class = CDDCloudKitClient;
   v4 = [(CDDCloudKitClient *)&v14 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:a3 options:0];
+    v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:name options:0];
     v4->_connection = v5;
     -[NSXPCConnection setRemoteObjectInterface:](v5, "setRemoteObjectInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF44F478]);
     objc_initWeak(&location, v4);
@@ -69,7 +69,7 @@ void __45__CDDCloudKitClient_initWithMachServiceName___block_invoke_2(uint64_t a
   [(CDDCloudKitClient *)&v3 dealloc];
 }
 
-- (void)handleMessage:(id)a3 reply:(id)a4
+- (void)handleMessage:(id)message reply:(id)reply
 {
   v11 = 0;
   v12 = &v11;
@@ -84,11 +84,11 @@ void __45__CDDCloudKitClient_initWithMachServiceName___block_invoke_2(uint64_t a
   v10[3] = &unk_1E6EC1DF0;
   v10[4] = &v11;
   v7 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v10];
-  if (!v7 || ([v7 handleMessage:a3 reply:a4], v12[5]))
+  if (!v7 || ([v7 handleMessage:message reply:reply], v12[5]))
   {
     v8 = [CDDCloudKitResponse alloc];
-    v9 = [(CDDCloudKitResponse *)v8 initWithMessage:a3 success:0 error:v12[5]];
-    (*(a4 + 2))(a4, v9);
+    v9 = [(CDDCloudKitResponse *)v8 initWithMessage:message success:0 error:v12[5]];
+    (*(reply + 2))(reply, v9);
   }
 
   v12[5] = 0;

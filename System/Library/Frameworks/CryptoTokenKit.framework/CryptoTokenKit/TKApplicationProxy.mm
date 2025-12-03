@@ -1,24 +1,24 @@
 @interface TKApplicationProxy
 + (id)_displayNamesCache;
-- (id)_coreServicesLocalizedNameForBundleID:(id)a3;
-- (id)displayNameForBundleID:(id)a3;
+- (id)_coreServicesLocalizedNameForBundleID:(id)d;
+- (id)displayNameForBundleID:(id)d;
 @end
 
 @implementation TKApplicationProxy
 
-- (id)displayNameForBundleID:(id)a3
+- (id)displayNameForBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = +[TKApplicationProxy _displayNamesCache];
-    v6 = [v5 objectForKey:v4];
+    v6 = [v5 objectForKey:dCopy];
 
     if (!v6)
     {
-      v6 = [(TKApplicationProxy *)self _coreServicesLocalizedNameForBundleID:v4];
+      v6 = [(TKApplicationProxy *)self _coreServicesLocalizedNameForBundleID:dCopy];
       v7 = +[TKApplicationProxy _displayNamesCache];
-      [v7 setObject:v6 forKey:v4];
+      [v7 setObject:v6 forKey:dCopy];
     }
   }
 
@@ -30,11 +30,11 @@
   return v6;
 }
 
-- (id)_coreServicesLocalizedNameForBundleID:(id)a3
+- (id)_coreServicesLocalizedNameForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v17 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v17];
+  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v17];
   v5 = v17;
   if (!v4)
   {
@@ -46,46 +46,46 @@
     v11 = TK_LOG_appproxy_log;
     if (os_log_type_enabled(TK_LOG_appproxy_log, OS_LOG_TYPE_ERROR))
     {
-      [(TKApplicationProxy *)v3 _coreServicesLocalizedNameForBundleID:v5, v11];
+      [(TKApplicationProxy *)dCopy _coreServicesLocalizedNameForBundleID:v5, v11];
     }
 
-    v12 = v3;
+    bundleIdentifier = dCopy;
     goto LABEL_11;
   }
 
-  v6 = [v4 applicationState];
-  v7 = [v6 isValid];
+  applicationState = [v4 applicationState];
+  isValid = [applicationState isValid];
 
-  if (!v7)
+  if (!isValid)
   {
-    v12 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
 LABEL_11:
-    v10 = v12;
+    v10 = bundleIdentifier;
     goto LABEL_17;
   }
 
-  v8 = [v4 localizedName];
-  v9 = v8;
-  if (v8)
+  localizedName = [v4 localizedName];
+  v9 = localizedName;
+  if (localizedName)
   {
-    v10 = v8;
+    v10 = localizedName;
   }
 
   else
   {
-    v13 = [v4 localizedShortName];
-    v14 = v13;
-    if (v13)
+    localizedShortName = [v4 localizedShortName];
+    v14 = localizedShortName;
+    if (localizedShortName)
     {
-      v15 = v13;
+      bundleIdentifier2 = localizedShortName;
     }
 
     else
     {
-      v15 = [v4 bundleIdentifier];
+      bundleIdentifier2 = [v4 bundleIdentifier];
     }
 
-    v10 = v15;
+    v10 = bundleIdentifier2;
   }
 
 LABEL_17:

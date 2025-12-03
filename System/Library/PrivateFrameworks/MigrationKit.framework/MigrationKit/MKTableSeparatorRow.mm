@@ -1,12 +1,12 @@
 @interface MKTableSeparatorRow
-- (id)asciiRepresentationUsingColumns:(id)a3;
+- (id)asciiRepresentationUsingColumns:(id)columns;
 @end
 
 @implementation MKTableSeparatorRow
 
-- (id)asciiRepresentationUsingColumns:(id)a3
+- (id)asciiRepresentationUsingColumns:(id)columns
 {
-  v3 = [(MKTableRow *)self totalWidthOfColumns:a3];
+  v3 = [(MKTableRow *)self totalWidthOfColumns:columns];
 
   return [&stru_286A8E730 stringByPaddingToLength:v3 withString:@"-" startingAtIndex:0];
 }

@@ -1,13 +1,13 @@
 @interface HMDRemoteLoginReceiverAuthentication
 + (id)logCategory;
-- (HMDRemoteLoginReceiverAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6 delegate:(id)a7;
+- (HMDRemoteLoginReceiverAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender delegate:(id)delegate;
 - (HMDRemoteLoginReceiverAuthenticationDelegate)delegate;
-- (void)_authenticateAccount:(id)a3 targetedAccountType:(unint64_t)a4;
-- (void)_authenticateForAccountType:(unint64_t)a3 usingAuthenticationResults:(id)a4 completionHandler:(id)a5;
-- (void)_authenticateStoreWithAuthenticationResults:(id)a3 completionHandler:(id)a4;
-- (void)_completedAuthenticationRequest:(id)a3 loggedInAccount:(id)a4;
-- (void)_handleAuthenticationResults:(id)a3 error:(id)a4 targetedAccountType:(unint64_t)a5;
-- (void)_saveRemoteVerifiedAccount:(id)a3 completion:(id)a4;
+- (void)_authenticateAccount:(id)account targetedAccountType:(unint64_t)type;
+- (void)_authenticateForAccountType:(unint64_t)type usingAuthenticationResults:(id)results completionHandler:(id)handler;
+- (void)_authenticateStoreWithAuthenticationResults:(id)results completionHandler:(id)handler;
+- (void)_completedAuthenticationRequest:(id)request loggedInAccount:(id)account;
+- (void)_handleAuthenticationResults:(id)results error:(id)error targetedAccountType:(unint64_t)type;
+- (void)_saveRemoteVerifiedAccount:(id)account completion:(id)completion;
 @end
 
 @implementation HMDRemoteLoginReceiverAuthentication
@@ -19,14 +19,14 @@
   return WeakRetained;
 }
 
-- (void)_completedAuthenticationRequest:(id)a3 loggedInAccount:(id)a4
+- (void)_completedAuthenticationRequest:(id)request loggedInAccount:(id)account
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(HMDRemoteLoginReceiverAuthentication *)self delegate];
-  if ([v7 conformsToProtocol:&unk_286732348])
+  requestCopy = request;
+  accountCopy = account;
+  delegate = [(HMDRemoteLoginReceiverAuthentication *)self delegate];
+  if ([delegate conformsToProtocol:&unk_286732348])
   {
-    v8 = v7;
+    v8 = delegate;
   }
 
   else
@@ -39,25 +39,25 @@
   if (objc_opt_respondsToSelector())
   {
     v10 = [HMDRemoteLoginAuthenticationResponse alloc];
-    v11 = [(HMDRemoteLoginAuthentication *)self sessionID];
-    v12 = [(HMRemoteLoginMessage *)v10 initWithSessionID:v11];
+    sessionID = [(HMDRemoteLoginAuthentication *)self sessionID];
+    v12 = [(HMRemoteLoginMessage *)v10 initWithSessionID:sessionID];
 
-    if (v6)
+    if (accountCopy)
     {
-      [(HMDRemoteLoginAuthenticationResponse *)v12 setLoggedInAccount:v6];
+      [(HMDRemoteLoginAuthenticationResponse *)v12 setLoggedInAccount:accountCopy];
     }
 
-    [(HMRemoteLoginMessage *)v12 setError:v13];
+    [(HMRemoteLoginMessage *)v12 setError:requestCopy];
     [v9 didCompleteAuthentication:self response:v12];
   }
 }
 
-- (void)_handleAuthenticationResults:(id)a3 error:(id)a4 targetedAccountType:(unint64_t)a5
+- (void)_handleAuthenticationResults:(id)results error:(id)error targetedAccountType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  resultsCopy = results;
+  errorCopy = error;
+  if (resultsCopy)
   {
     objc_initWeak(location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -65,7 +65,7 @@
     v15[2] = __95__HMDRemoteLoginReceiverAuthentication__handleAuthenticationResults_error_targetedAccountType___block_invoke;
     v15[3] = &unk_27972C658;
     objc_copyWeak(&v16, location);
-    [(HMDRemoteLoginReceiverAuthentication *)self _authenticateForAccountType:a5 usingAuthenticationResults:v8 completionHandler:v15];
+    [(HMDRemoteLoginReceiverAuthentication *)self _authenticateForAccountType:type usingAuthenticationResults:resultsCopy completionHandler:v15];
     objc_destroyWeak(&v16);
     objc_destroyWeak(location);
   }
@@ -73,7 +73,7 @@
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -81,12 +81,12 @@
       *location = 138543618;
       *&location[4] = v13;
       v18 = 2112;
-      v19 = v9;
+      v19 = errorCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_ERROR, "%{public}@Authentication results is not valid, resulted in error %@", location, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMDRemoteLoginReceiverAuthentication *)v11 _completedAuthenticationRequest:v9 loggedInAccount:0];
+    [(HMDRemoteLoginReceiverAuthentication *)selfCopy _completedAuthenticationRequest:errorCopy loggedInAccount:0];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -112,13 +112,13 @@ void __95__HMDRemoteLoginReceiverAuthentication__handleAuthenticationResults_err
   }
 }
 
-- (void)_authenticateAccount:(id)a3 targetedAccountType:(unint64_t)a4
+- (void)_authenticateAccount:(id)account targetedAccountType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  accountCopy = account;
   v7 = objc_alloc_init(MEMORY[0x277CF0178]);
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -126,19 +126,19 @@ void __95__HMDRemoteLoginReceiverAuthentication__handleAuthenticationResults_err
     *buf = 138543618;
     v16 = v11;
     v17 = 2112;
-    v18 = v6;
+    v18 = accountCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Authenticating the account with context: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, selfCopy);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__HMDRemoteLoginReceiverAuthentication__authenticateAccount_targetedAccountType___block_invoke;
   v13[3] = &unk_27972C630;
   objc_copyWeak(v14, buf);
-  v14[1] = a4;
-  [v7 authenticateWithContext:v6 completion:v13];
+  v14[1] = type;
+  [v7 authenticateWithContext:accountCopy completion:v13];
   objc_destroyWeak(v14);
   objc_destroyWeak(buf);
 
@@ -153,17 +153,17 @@ void __81__HMDRemoteLoginReceiverAuthentication__authenticateAccount_targetedAcc
   [WeakRetained _handleAuthenticationResults:v6 error:v5 targetedAccountType:*(a1 + 40)];
 }
 
-- (void)_authenticateStoreWithAuthenticationResults:(id)a3 completionHandler:(id)a4
+- (void)_authenticateStoreWithAuthenticationResults:(id)results completionHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hmf_stringForKey:*MEMORY[0x277CEFFD8]];
-  v9 = [v6 hmf_stringForKey:*MEMORY[0x277CEFF78]];
-  v10 = [v6 hmf_stringForKey:*MEMORY[0x277CEFFC8]];
-  v11 = [v6 hmf_stringForKey:*MEMORY[0x277CEFFD0]];
+  resultsCopy = results;
+  handlerCopy = handler;
+  v8 = [resultsCopy hmf_stringForKey:*MEMORY[0x277CEFFD8]];
+  v9 = [resultsCopy hmf_stringForKey:*MEMORY[0x277CEFF78]];
+  v10 = [resultsCopy hmf_stringForKey:*MEMORY[0x277CEFFC8]];
+  v11 = [resultsCopy hmf_stringForKey:*MEMORY[0x277CEFFD0]];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -183,7 +183,7 @@ void __81__HMDRemoteLoginReceiverAuthentication__authenticateAccount_targetedAcc
 
   objc_autoreleasePoolPop(v12);
   v16 = objc_autoreleasePoolPush();
-  v17 = v13;
+  v17 = selfCopy;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -200,8 +200,8 @@ void __81__HMDRemoteLoginReceiverAuthentication__authenticateAccount_targetedAcc
   objc_autoreleasePoolPop(v16);
   v21 = objc_alloc_init(MEMORY[0x277CEE3D8]);
   [v21 setAuthenticationType:1];
-  v22 = [objc_alloc(MEMORY[0x277CEE3E8]) initWithAuthenticationResults:v6 options:v21];
-  v23 = [v22 performAuthentication];
+  v22 = [objc_alloc(MEMORY[0x277CEE3E8]) initWithAuthenticationResults:resultsCopy options:v21];
+  performAuthentication = [v22 performAuthentication];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __102__HMDRemoteLoginReceiverAuthentication__authenticateStoreWithAuthenticationResults_completionHandler___block_invoke;
@@ -209,9 +209,9 @@ void __81__HMDRemoteLoginReceiverAuthentication__authenticateAccount_targetedAcc
   v33[4] = v17;
   v24 = v8;
   v34 = v24;
-  v25 = v7;
+  v25 = handlerCopy;
   v35 = v25;
-  [v23 addErrorBlock:v33];
+  [performAuthentication addErrorBlock:v33];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __102__HMDRemoteLoginReceiverAuthentication__authenticateStoreWithAuthenticationResults_completionHandler___block_invoke_40;
@@ -221,7 +221,7 @@ void __81__HMDRemoteLoginReceiverAuthentication__authenticateAccount_targetedAcc
   v32 = v25;
   v26 = v25;
   v27 = v24;
-  [v23 addSuccessBlock:v30];
+  [performAuthentication addSuccessBlock:v30];
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -375,18 +375,18 @@ void __102__HMDRemoteLoginReceiverAuthentication__authenticateStoreWithAuthentic
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_authenticateForAccountType:(unint64_t)a3 usingAuthenticationResults:(id)a4 completionHandler:(id)a5
+- (void)_authenticateForAccountType:(unint64_t)type usingAuthenticationResults:(id)results completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  resultsCopy = results;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = HMDRemoteLoginAccountTypeAsString(a3);
+    v14 = HMDRemoteLoginAccountTypeAsString(type);
     v22 = 138543618;
     v23 = v13;
     v24 = 2112;
@@ -395,15 +395,15 @@ void __102__HMDRemoteLoginReceiverAuthentication__authenticateStoreWithAuthentic
   }
 
   objc_autoreleasePoolPop(v10);
-  if (a3)
+  if (type)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v11;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = HMDRemoteLoginAccountTypeAsString(a3);
+      v19 = HMDRemoteLoginAccountTypeAsString(type);
       v22 = 138543874;
       v23 = v18;
       v24 = 2080;
@@ -415,50 +415,50 @@ void __102__HMDRemoteLoginReceiverAuthentication__authenticateStoreWithAuthentic
 
     objc_autoreleasePoolPop(v15);
     v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-    v9[2](v9, v20, 0);
+    handlerCopy[2](handlerCopy, v20, 0);
   }
 
   else
   {
-    [(HMDRemoteLoginReceiverAuthentication *)v11 _authenticateStoreWithAuthenticationResults:v8 completionHandler:v9];
+    [(HMDRemoteLoginReceiverAuthentication *)selfCopy _authenticateStoreWithAuthenticationResults:resultsCopy completionHandler:handlerCopy];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveRemoteVerifiedAccount:(id)a3 completion:(id)a4
+- (void)_saveRemoteVerifiedAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = +[HMDAppleAccountManager sharedManager];
-  v9 = [v8 accountStore];
+  accountStore = [v8 accountStore];
 
-  if (v9)
+  if (accountStore)
   {
     v10 = +[HMDAppleAccountManager sharedManager];
-    v11 = [v10 accountStore];
-    v12 = [v6 accountType];
-    v13 = [v12 identifier];
-    v14 = [v11 accountTypeWithAccountTypeIdentifier:v13];
+    accountStore2 = [v10 accountStore];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
+    v14 = [accountStore2 accountTypeWithAccountTypeIdentifier:identifier];
 
-    [v6 setAccountType:v14];
-    [v6 _setObjectID:0];
-    [v6 markAllPropertiesDirty];
+    [accountCopy setAccountType:v14];
+    [accountCopy _setObjectID:0];
+    [accountCopy markAllPropertiesDirty];
     v15 = +[HMDAppleAccountManager sharedManager];
-    v16 = [v15 accountStore];
+    accountStore3 = [v15 accountStore];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__HMDRemoteLoginReceiverAuthentication__saveRemoteVerifiedAccount_completion___block_invoke;
     v17[3] = &unk_27972F8D8;
     v17[4] = self;
-    v19 = v7;
-    v18 = v6;
-    [v16 saveVerifiedAccount:v18 withCompletionHandler:v17];
+    v19 = completionCopy;
+    v18 = accountCopy;
+    [accountStore3 saveVerifiedAccount:v18 withCompletionHandler:v17];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -522,16 +522,16 @@ void __78__HMDRemoteLoginReceiverAuthentication__saveRemoteVerifiedAccount_compl
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDRemoteLoginReceiverAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6 delegate:(id)a7
+- (HMDRemoteLoginReceiverAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender delegate:(id)delegate
 {
-  v12 = a7;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = HMDRemoteLoginReceiverAuthentication;
-  v13 = [(HMDRemoteLoginAuthentication *)&v16 initWithSessionID:a3 remoteDevice:a4 workQueue:a5 remoteMessageSender:a6];
+  v13 = [(HMDRemoteLoginAuthentication *)&v16 initWithSessionID:d remoteDevice:device workQueue:queue remoteMessageSender:sender];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v12);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v14;

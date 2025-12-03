@@ -1,23 +1,23 @@
 @interface FCConfigHyperlinkText
-- (FCConfigHyperlinkText)initWithConfigDictionary:(id)a3;
-- (FCConfigHyperlinkText)initWithText:(id)a3 links:(id)a4;
+- (FCConfigHyperlinkText)initWithConfigDictionary:(id)dictionary;
+- (FCConfigHyperlinkText)initWithText:(id)text links:(id)links;
 @end
 
 @implementation FCConfigHyperlinkText
 
-- (FCConfigHyperlinkText)initWithConfigDictionary:(id)a3
+- (FCConfigHyperlinkText)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FCConfigHyperlinkText;
   v5 = [(FCConfigHyperlinkText *)&v12 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"text", 0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"text", 0);
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"links", 0);
+    v8 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"links", 0);
     v9 = [v8 fc_arrayByTransformingWithBlock:&__block_literal_global_171];
     links = v5->_links;
     v5->_links = v9;
@@ -34,18 +34,18 @@ FCConfigHyperlinkTextLink *__50__FCConfigHyperlinkText_initWithConfigDictionary_
   return v3;
 }
 
-- (FCConfigHyperlinkText)initWithText:(id)a3 links:(id)a4
+- (FCConfigHyperlinkText)initWithText:(id)text links:(id)links
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  linksCopy = links;
   v12.receiver = self;
   v12.super_class = FCConfigHyperlinkText;
   v9 = [(FCConfigHyperlinkText *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_text, a3);
-    objc_storeStrong(&v10->_links, a4);
+    objc_storeStrong(&v9->_text, text);
+    objc_storeStrong(&v10->_links, links);
   }
 
   return v10;

@@ -3,23 +3,23 @@
 - (NSArray)autoConnectedEndpoints;
 - (NSArray)autoConnectingEndpoints;
 - (id)_init;
-- (void)_connectToAllOutputDevicesForReason:(id)a3 comparator:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)_connectToGroup:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)_connectToOutputDevice:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)_discoverGroup:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)_discoverOutputDevice:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3;
-- (void)_handleEndpointDidInvalidateNotification:(id)a3;
-- (void)_onSerialQueue_addConnectedEndpoint:(id)a3;
-- (void)_onSerialQueue_connectToEndpoint:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)_onSerialQueue_discoverGroup:(id)a3 connect:(BOOL)a4 reason:(id)a5 completion:(id)a6;
-- (void)_onSerialQueue_discoverOutputDevice:(id)a3 connect:(BOOL)a4 reason:(id)a5 completion:(id)a6;
-- (void)_onSerialQueue_removeConnectedEndpoint:(id)a3;
-- (void)connectToAllOutputDevicesForReason:(id)a3 comparator:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)connectToGroup:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)connectToOutputDevice:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)discoverGroup:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)discoverOutputDevice:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6;
+- (void)_connectToAllOutputDevicesForReason:(id)reason comparator:(id)comparator queue:(id)queue completion:(id)completion;
+- (void)_connectToGroup:(id)group reason:(id)reason completion:(id)completion;
+- (void)_connectToOutputDevice:(id)device reason:(id)reason completion:(id)completion;
+- (void)_discoverGroup:(id)group reason:(id)reason completion:(id)completion;
+- (void)_discoverOutputDevice:(id)device reason:(id)reason completion:(id)completion;
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification;
+- (void)_handleEndpointDidInvalidateNotification:(id)notification;
+- (void)_onSerialQueue_addConnectedEndpoint:(id)endpoint;
+- (void)_onSerialQueue_connectToEndpoint:(id)endpoint reason:(id)reason queue:(id)queue completion:(id)completion;
+- (void)_onSerialQueue_discoverGroup:(id)group connect:(BOOL)connect reason:(id)reason completion:(id)completion;
+- (void)_onSerialQueue_discoverOutputDevice:(id)device connect:(BOOL)connect reason:(id)reason completion:(id)completion;
+- (void)_onSerialQueue_removeConnectedEndpoint:(id)endpoint;
+- (void)connectToAllOutputDevicesForReason:(id)reason comparator:(id)comparator queue:(id)queue completion:(id)completion;
+- (void)connectToGroup:(id)group reason:(id)reason queue:(id)queue completion:(id)completion;
+- (void)connectToOutputDevice:(id)device reason:(id)reason queue:(id)queue completion:(id)completion;
+- (void)discoverGroup:(id)group reason:(id)reason queue:(id)queue completion:(id)completion;
+- (void)discoverOutputDevice:(id)device reason:(id)reason queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRDAutoConnectionController
@@ -47,9 +47,9 @@
   }
 
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
+  nowPlayingServer = [v3 nowPlayingServer];
   nowPlayingServer = v2->_nowPlayingServer;
-  v2->_nowPlayingServer = v4;
+  v2->_nowPlayingServer = nowPlayingServer;
 
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v7 = dispatch_queue_create("com.apple.mediaremote.MRDAutoConnectionController", v6);
@@ -57,9 +57,9 @@
   v2->_serialQueue = v7;
 
   v9 = +[MRUserSettings currentSettings];
-  v10 = [v9 connectToAllEndpointsWhenAnyEndpointBeginsPlayback];
+  connectToAllEndpointsWhenAnyEndpointBeginsPlayback = [v9 connectToAllEndpointsWhenAnyEndpointBeginsPlayback];
 
-  if (v10)
+  if (connectToAllEndpointsWhenAnyEndpointBeginsPlayback)
   {
     v11 = +[MRCompanionLinkClient sharedCompanionLinkClient];
     v12 = MRCompanionLinkClientEventIsPlaying;
@@ -75,9 +75,9 @@
   else
   {
     v15 = +[MRUserSettings currentSettings];
-    v16 = [v15 connectToEndpointWhenBeginsPlayback];
+    connectToEndpointWhenBeginsPlayback = [v15 connectToEndpointWhenBeginsPlayback];
 
-    if (!v16)
+    if (!connectToEndpointWhenBeginsPlayback)
     {
       goto LABEL_7;
     }
@@ -97,9 +97,9 @@
 
 LABEL_7:
   v18 = +[MRUserSettings currentSettings];
-  v19 = [v18 connectToUserSelectedEndpoint];
+  connectToUserSelectedEndpoint = [v18 connectToUserSelectedEndpoint];
 
-  if (v19)
+  if (connectToUserSelectedEndpoint)
   {
     v20 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
@@ -157,118 +157,118 @@ LABEL_7:
   return v3;
 }
 
-- (void)connectToAllOutputDevicesForReason:(id)a3 comparator:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)connectToAllOutputDevicesForReason:(id)reason comparator:(id)comparator queue:(id)queue completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  if (!v10)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v10 = &_dispatch_main_q;
+    queueCopy = &_dispatch_main_q;
     v12 = &_dispatch_main_q;
   }
 
-  v13 = a4;
-  v14 = a3;
+  comparatorCopy = comparator;
+  reasonCopy = reason;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10013C30C;
   v19[3] = &unk_1004BE7F0;
-  v21 = v10;
-  v22 = v11;
+  v21 = queueCopy;
+  v22 = completionCopy;
   v20 = [[MSVBlockGuard alloc] initWithDeallocHandler:&stru_1004BE7C8];
-  v15 = v10;
-  v16 = v11;
+  v15 = queueCopy;
+  v16 = completionCopy;
   v17 = v20;
   v18 = objc_retainBlock(v19);
-  [(MRDAutoConnectionController *)self _connectToAllOutputDevicesForReason:v14 comparator:v13 queue:v15 completion:v18];
+  [(MRDAutoConnectionController *)self _connectToAllOutputDevicesForReason:reasonCopy comparator:comparatorCopy queue:v15 completion:v18];
 }
 
-- (void)connectToOutputDevice:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)connectToOutputDevice:(id)device reason:(id)reason queue:(id)queue completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  queueCopy = queue;
+  completionCopy = completion;
+  reasonCopy = reason;
+  deviceCopy = device;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10013C520;
   v18[3] = &unk_1004BE838;
-  v20 = v10;
-  v21 = v11;
+  v20 = queueCopy;
+  v21 = completionCopy;
   v19 = [[MSVBlockGuard alloc] initWithDeallocHandler:&stru_1004BE810];
-  v14 = v10;
-  v15 = v11;
+  v14 = queueCopy;
+  v15 = completionCopy;
   v16 = v19;
   v17 = objc_retainBlock(v18);
-  [(MRDAutoConnectionController *)self _connectToOutputDevice:v13 reason:v12 completion:v17];
+  [(MRDAutoConnectionController *)self _connectToOutputDevice:deviceCopy reason:reasonCopy completion:v17];
 }
 
-- (void)connectToGroup:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)connectToGroup:(id)group reason:(id)reason queue:(id)queue completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  queueCopy = queue;
+  completionCopy = completion;
+  reasonCopy = reason;
+  groupCopy = group;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10013C734;
   v18[3] = &unk_1004BE838;
-  v20 = v10;
-  v21 = v11;
+  v20 = queueCopy;
+  v21 = completionCopy;
   v19 = [[MSVBlockGuard alloc] initWithDeallocHandler:&stru_1004BE858];
-  v14 = v10;
-  v15 = v11;
+  v14 = queueCopy;
+  v15 = completionCopy;
   v16 = v19;
   v17 = objc_retainBlock(v18);
-  [(MRDAutoConnectionController *)self _connectToGroup:v13 reason:v12 completion:v17];
+  [(MRDAutoConnectionController *)self _connectToGroup:groupCopy reason:reasonCopy completion:v17];
 }
 
-- (void)discoverOutputDevice:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)discoverOutputDevice:(id)device reason:(id)reason queue:(id)queue completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  queueCopy = queue;
+  completionCopy = completion;
+  reasonCopy = reason;
+  deviceCopy = device;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10013C948;
   v18[3] = &unk_1004BE838;
-  v20 = v10;
-  v21 = v11;
+  v20 = queueCopy;
+  v21 = completionCopy;
   v19 = [[MSVBlockGuard alloc] initWithDeallocHandler:&stru_1004BE878];
-  v14 = v10;
-  v15 = v11;
+  v14 = queueCopy;
+  v15 = completionCopy;
   v16 = v19;
   v17 = objc_retainBlock(v18);
-  [(MRDAutoConnectionController *)self _discoverOutputDevice:v13 reason:v12 completion:v17];
+  [(MRDAutoConnectionController *)self _discoverOutputDevice:deviceCopy reason:reasonCopy completion:v17];
 }
 
-- (void)discoverGroup:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)discoverGroup:(id)group reason:(id)reason queue:(id)queue completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  queueCopy = queue;
+  completionCopy = completion;
+  reasonCopy = reason;
+  groupCopy = group;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10013CB5C;
   v18[3] = &unk_1004BE838;
-  v20 = v10;
-  v21 = v11;
+  v20 = queueCopy;
+  v21 = completionCopy;
   v19 = [[MSVBlockGuard alloc] initWithDeallocHandler:&stru_1004BE898];
-  v14 = v10;
-  v15 = v11;
+  v14 = queueCopy;
+  v15 = completionCopy;
   v16 = v19;
   v17 = objc_retainBlock(v18);
-  [(MRDAutoConnectionController *)self _discoverGroup:v13 reason:v12 completion:v17];
+  [(MRDAutoConnectionController *)self _discoverGroup:groupCopy reason:reasonCopy completion:v17];
 }
 
-- (void)_connectToAllOutputDevicesForReason:(id)a3 comparator:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_connectToAllOutputDevicesForReason:(id)reason comparator:(id)comparator queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reasonCopy = reason;
+  comparatorCopy = comparator;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = objc_alloc_init(NSMutableArray);
   v15 = [MRAVRoutingDiscoverySession discoverySessionWithEndpointFeatures:8];
   v43[0] = _NSConcreteStackBlock;
@@ -276,21 +276,21 @@ LABEL_7:
   v43[2] = sub_10013CF14;
   v43[3] = &unk_1004BE8E8;
   v43[4] = self;
-  v46 = v11;
-  v16 = v10;
+  v46 = comparatorCopy;
+  v16 = reasonCopy;
   v44 = v16;
   v17 = v14;
   v45 = v17;
-  v18 = v11;
+  v18 = comparatorCopy;
   v19 = [v15 addEndpointsChangedCallback:v43];
   v20 = +[NSUUID UUID];
-  v21 = [v20 UUIDString];
+  uUIDString = [v20 UUIDString];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013D1C0;
   block[3] = &unk_1004B69D0;
-  v22 = v21;
+  v22 = uUIDString;
   v40 = v22;
   v41 = v16;
   v23 = v15;
@@ -306,122 +306,122 @@ LABEL_7:
   v33[3] = &unk_1004B7400;
   v34 = v22;
   v35 = v23;
-  v37 = v12;
-  v38 = v13;
+  v37 = queueCopy;
+  v38 = completionCopy;
   v36 = v17;
-  v28 = v12;
+  v28 = queueCopy;
   v29 = v17;
-  v30 = v13;
+  v30 = completionCopy;
   v31 = v23;
   v32 = v22;
   dispatch_after(v27, &_dispatch_main_q, v33);
 }
 
-- (void)_connectToOutputDevice:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)_connectToOutputDevice:(id)device reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  reasonCopy = reason;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013D4C8;
   v15[3] = &unk_1004B6BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = reasonCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = reasonCopy;
+  v14 = deviceCopy;
   dispatch_async(serialQueue, v15);
 }
 
-- (void)_connectToGroup:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)_connectToGroup:(id)group reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  reasonCopy = reason;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013D5C0;
   v15[3] = &unk_1004B6BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = groupCopy;
+  v17 = reasonCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = reasonCopy;
+  v14 = groupCopy;
   dispatch_async(serialQueue, v15);
 }
 
-- (void)_discoverOutputDevice:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)_discoverOutputDevice:(id)device reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  reasonCopy = reason;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013D6B8;
   v15[3] = &unk_1004B6BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = reasonCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = reasonCopy;
+  v14 = deviceCopy;
   dispatch_async(serialQueue, v15);
 }
 
-- (void)_discoverGroup:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)_discoverGroup:(id)group reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  reasonCopy = reason;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013D7B0;
   v15[3] = &unk_1004B6BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = groupCopy;
+  v17 = reasonCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = reasonCopy;
+  v14 = groupCopy;
   dispatch_async(serialQueue, v15);
 }
 
-- (void)_onSerialQueue_discoverOutputDevice:(id)a3 connect:(BOOL)a4 reason:(id)a5 completion:(id)a6
+- (void)_onSerialQueue_discoverOutputDevice:(id)device connect:(BOOL)connect reason:(id)reason completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
+  deviceCopy = device;
+  reasonCopy = reason;
   serialQueue = self->_serialQueue;
-  v13 = a6;
+  completionCopy = completion;
   dispatch_assert_queue_V2(serialQueue);
-  if (v10)
+  if (deviceCopy)
   {
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_10013DB10;
     v43[3] = &unk_1004BE910;
     v43[4] = self;
-    v14 = v10;
+    v14 = deviceCopy;
     v44 = v14;
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_10013DC54;
     v39[3] = &unk_1004BE938;
     v15 = objc_retainBlock(v43);
-    v42 = a4;
+    connectCopy = connect;
     v41 = v15;
     v39[4] = self;
-    v16 = v11;
+    v16 = reasonCopy;
     v40 = v16;
     v17 = objc_retainBlock(v39);
     pendingReconSessionCompletions = self->_pendingReconSessionCompletions;
@@ -443,7 +443,7 @@ LABEL_7:
     }
 
     v23 = [(NSMutableDictionary *)self->_pendingReconSessionCompletions objectForKeyedSubscript:v14];
-    v24 = [v13 copy];
+    v24 = [completionCopy copy];
 
     v25 = objc_retainBlock(v24);
     [v23 addObject:v25];
@@ -467,47 +467,47 @@ LABEL_7:
       v31 = +[MRUserSettings currentSettings];
       [v31 discoverEndpointTimeoutInterval];
       v33 = v32;
-      v34 = [v16 string];
+      string = [v16 string];
       v35 = self->_serialQueue;
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_10013DDA8;
       v37[3] = &unk_1004BE960;
       v38 = v17;
-      [v27 searchEndpointsForOutputDeviceUID:v14 timeout:v34 reason:v35 queue:v37 completion:v33];
+      [v27 searchEndpointsForOutputDeviceUID:v14 timeout:string reason:v35 queue:v37 completion:v33];
     }
   }
 
   else
   {
     v36 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-    (*(v13 + 2))(v13, v36);
+    (*(completionCopy + 2))(completionCopy, v36);
   }
 }
 
-- (void)_onSerialQueue_discoverGroup:(id)a3 connect:(BOOL)a4 reason:(id)a5 completion:(id)a6
+- (void)_onSerialQueue_discoverGroup:(id)group connect:(BOOL)connect reason:(id)reason completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
+  groupCopy = group;
+  reasonCopy = reason;
   serialQueue = self->_serialQueue;
-  v13 = a6;
+  completionCopy = completion;
   dispatch_assert_queue_V2(serialQueue);
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_10013E0CC;
   v42[3] = &unk_1004BE910;
   v42[4] = self;
-  v14 = v10;
+  v14 = groupCopy;
   v43 = v14;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_10013E210;
   v38[3] = &unk_1004BE938;
   v15 = objc_retainBlock(v42);
-  v41 = a4;
+  connectCopy = connect;
   v40 = v15;
   v38[4] = self;
-  v16 = v11;
+  v16 = reasonCopy;
   v39 = v16;
   v17 = objc_retainBlock(v38);
   pendingGroupReconSessionCompletions = self->_pendingGroupReconSessionCompletions;
@@ -529,7 +529,7 @@ LABEL_7:
   }
 
   v23 = [(NSMutableDictionary *)self->_pendingGroupReconSessionCompletions objectForKeyedSubscript:v14];
-  v24 = [v13 copy];
+  v24 = [completionCopy copy];
 
   v25 = objc_retainBlock(v24);
   [v23 addObject:v25];
@@ -553,42 +553,42 @@ LABEL_7:
     v31 = +[MRUserSettings currentSettings];
     [v31 discoverEndpointTimeoutInterval];
     v33 = v32;
-    v34 = [v16 string];
+    string = [v16 string];
     v35 = self->_serialQueue;
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_10013E364;
     v36[3] = &unk_1004BE960;
     v37 = v17;
-    [v27 searchEndpointsForGroupUID:v14 timeout:v34 reason:v35 queue:v36 completion:v33];
+    [v27 searchEndpointsForGroupUID:v14 timeout:string reason:v35 queue:v36 completion:v33];
   }
 }
 
-- (void)_onSerialQueue_connectToEndpoint:(id)a3 reason:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_onSerialQueue_connectToEndpoint:(id)endpoint reason:(id)reason queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  endpointCopy = endpoint;
+  reasonCopy = reason;
+  queueCopy = queue;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_10013E75C;
   v51[3] = &unk_1004B9DE8;
-  v14 = v13;
+  v14 = completionCopy;
   v53 = v14;
-  v15 = v12;
+  v15 = queueCopy;
   v52 = v15;
   v16 = objc_retainBlock(v51);
-  if (v10)
+  if (endpointCopy)
   {
-    v42 = v11;
+    v42 = reasonCopy;
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_10013E820;
     v49[3] = &unk_1004B9C80;
     v49[4] = self;
-    v17 = v10;
+    v17 = endpointCopy;
     v50 = v17;
     v43 = objc_retainBlock(v49);
     pendingConnectingEndpointCompletions = self->_pendingConnectingEndpointCompletions;
@@ -601,41 +601,41 @@ LABEL_7:
       pendingConnectingEndpointCompletions = self->_pendingConnectingEndpointCompletions;
     }
 
-    v21 = [v17 uniqueIdentifier];
-    v22 = [(NSMutableDictionary *)pendingConnectingEndpointCompletions objectForKeyedSubscript:v21];
+    uniqueIdentifier = [v17 uniqueIdentifier];
+    v22 = [(NSMutableDictionary *)pendingConnectingEndpointCompletions objectForKeyedSubscript:uniqueIdentifier];
 
     if (!v22)
     {
       v23 = objc_alloc_init(NSMutableArray);
       v24 = self->_pendingConnectingEndpointCompletions;
-      v25 = [v17 uniqueIdentifier];
-      [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:v25];
+      uniqueIdentifier2 = [v17 uniqueIdentifier];
+      [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:uniqueIdentifier2];
     }
 
     v26 = self->_pendingConnectingEndpointCompletions;
-    v27 = [v17 uniqueIdentifier];
-    v28 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:v27];
+    uniqueIdentifier3 = [v17 uniqueIdentifier];
+    v28 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:uniqueIdentifier3];
     v29 = [v16 copy];
     v30 = objc_retainBlock(v29);
     [v28 addObject:v30];
 
-    v31 = [v17 externalDevice];
-    if ([v31 connectionState] == 2)
+    externalDevice = [v17 externalDevice];
+    if ([externalDevice connectionState] == 2)
     {
 
-      v11 = v42;
+      reasonCopy = v42;
     }
 
     else
     {
-      v33 = [v17 isLocalEndpoint];
+      isLocalEndpoint = [v17 isLocalEndpoint];
 
-      v11 = v42;
-      if ((v33 & 1) == 0)
+      reasonCopy = v42;
+      if ((isLocalEndpoint & 1) == 0)
       {
         connectingEndpoints = self->_connectingEndpoints;
-        v36 = [v17 uniqueIdentifier];
-        v37 = [(NSMutableDictionary *)connectingEndpoints objectForKey:v36];
+        uniqueIdentifier4 = [v17 uniqueIdentifier];
+        v37 = [(NSMutableDictionary *)connectingEndpoints objectForKey:uniqueIdentifier4];
 
         v34 = v43;
         if (!v37)
@@ -650,8 +650,8 @@ LABEL_7:
             v38 = self->_connectingEndpoints;
           }
 
-          v41 = [v17 uniqueIdentifier];
-          [(NSMutableDictionary *)v38 setObject:v17 forKeyedSubscript:v41];
+          uniqueIdentifier5 = [v17 uniqueIdentifier];
+          [(NSMutableDictionary *)v38 setObject:v17 forKeyedSubscript:uniqueIdentifier5];
 
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -659,7 +659,7 @@ LABEL_7:
           block[3] = &unk_1004B6BB0;
           v45 = v17;
           v46 = v42;
-          v47 = self;
+          selfCopy = self;
           v34 = v43;
           v48 = v43;
           dispatch_async(&_dispatch_main_q, block);
@@ -682,18 +682,18 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_onSerialQueue_addConnectedEndpoint:(id)a3
+- (void)_onSerialQueue_addConnectedEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [v4 externalDevice];
-  if (v5)
+  externalDevice = [endpointCopy externalDevice];
+  if (externalDevice)
   {
-    v24 = v5;
+    v24 = externalDevice;
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = kMRExternalDeviceConnectionStateDidChangeNotification;
-    v8 = [v4 externalDevice];
-    [v6 addObserver:self selector:"_handleEndpointDidInvalidateNotification:" name:v7 object:v8];
+    externalDevice2 = [endpointCopy externalDevice];
+    [v6 addObserver:self selector:"_handleEndpointDidInvalidateNotification:" name:v7 object:externalDevice2];
 
     connectedEndpoints = self->_connectedEndpoints;
     if (!connectedEndpoints)
@@ -714,7 +714,7 @@ LABEL_12:
     if (v28)
     {
       v26 = *v35;
-      v27 = v4;
+      v27 = endpointCopy;
       do
       {
         v12 = 0;
@@ -731,8 +731,8 @@ LABEL_12:
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v14 = [v4 outputDeviceUIDs];
-          v15 = [v14 countByEnumeratingWithState:&v30 objects:v42 count:16];
+          outputDeviceUIDs = [endpointCopy outputDeviceUIDs];
+          v15 = [outputDeviceUIDs countByEnumeratingWithState:&v30 objects:v42 count:16];
           if (v15)
           {
             v16 = v15;
@@ -743,24 +743,24 @@ LABEL_12:
               {
                 if (*v31 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(outputDeviceUIDs);
                 }
 
                 v19 = *(*(&v30 + 1) + 8 * i);
-                v20 = [v13 outputDeviceUIDs];
-                LODWORD(v19) = [v20 containsObject:v19];
+                outputDeviceUIDs2 = [v13 outputDeviceUIDs];
+                LODWORD(v19) = [outputDeviceUIDs2 containsObject:v19];
 
                 if (v19)
                 {
                   v21 = _MRLogForCategory();
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                   {
-                    v22 = [v13 uniqueIdentifier];
-                    v23 = [v13 localizedName];
+                    uniqueIdentifier = [v13 uniqueIdentifier];
+                    localizedName = [v13 localizedName];
                     *buf = 138412546;
-                    v39 = v22;
+                    v39 = uniqueIdentifier;
                     v40 = 2112;
-                    v41 = v23;
+                    v41 = localizedName;
                     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[MRDAutoConnectionController] Removing outdated endpoint <%@> (<%@>)", buf, 0x16u);
                   }
 
@@ -768,14 +768,14 @@ LABEL_12:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v30 objects:v42 count:16];
+              v16 = [outputDeviceUIDs countByEnumeratingWithState:&v30 objects:v42 count:16];
             }
 
             while (v16);
           }
 
           v12 = v29 + 1;
-          v4 = v27;
+          endpointCopy = v27;
         }
 
         while ((v29 + 1) != v28);
@@ -785,15 +785,15 @@ LABEL_12:
       while (v28);
     }
 
-    [(NSMutableSet *)self->_connectedEndpoints addObject:v4];
+    [(NSMutableSet *)self->_connectedEndpoints addObject:endpointCopy];
 
-    v5 = v24;
+    externalDevice = v24;
   }
 }
 
-- (void)_onSerialQueue_removeConnectedEndpoint:(id)a3
+- (void)_onSerialQueue_removeConnectedEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_serialQueue);
   [(NSMutableSet *)self->_connectedEndpoints allObjects];
   v16 = 0u;
@@ -815,24 +815,24 @@ LABEL_12:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 externalDevice];
+        externalDevice = [v10 externalDevice];
 
-        if (v11 == v4)
+        if (externalDevice == endpointCopy)
         {
           v12 = _MRLogForCategory();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v10 uniqueIdentifier];
-            v14 = [v10 localizedName];
+            uniqueIdentifier = [v10 uniqueIdentifier];
+            localizedName = [v10 localizedName];
             *buf = 138412546;
-            v21 = v13;
+            v21 = uniqueIdentifier;
             v22 = 2112;
-            v23 = v14;
+            v23 = localizedName;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MRDAutoConnectionController] Removing endpoint <%@> (<%@>)", buf, 0x16u);
           }
 
           v15 = +[NSNotificationCenter defaultCenter];
-          [v15 removeObserver:self name:kMRExternalDeviceConnectionStateDidChangeNotification object:v4];
+          [v15 removeObserver:self name:kMRExternalDeviceConnectionStateDidChangeNotification object:endpointCopy];
 
           [(NSMutableSet *)self->_connectedEndpoints removeObject:v10];
           goto LABEL_13;
@@ -852,16 +852,16 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_handleEndpointDidInvalidateNotification:(id)a3
+- (void)_handleEndpointDidInvalidateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:kMRExternalDeviceConnectionStateUserInfoKey];
-  v8 = [v7 intValue];
+  v7 = [userInfo objectForKeyedSubscript:kMRExternalDeviceConnectionStateUserInfoKey];
+  intValue = [v7 intValue];
 
-  if (v8 == 3)
+  if (intValue == 3)
   {
     serialQueue = self->_serialQueue;
     v10[0] = _NSConcreteStackBlock;
@@ -869,28 +869,28 @@ LABEL_13:
     v10[2] = sub_10013F60C;
     v10[3] = &unk_1004B68F0;
     v10[4] = self;
-    v11 = v5;
+    v11 = object;
     dispatch_async(serialQueue, v10);
   }
 }
 
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification
 {
-  v13 = a3;
-  v4 = [v13 userInfo];
-  v5 = [v4 objectForKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
-  v6 = [v5 intValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
+  intValue = [v5 intValue];
 
-  if (!v6)
+  if (!intValue)
   {
-    v7 = [v13 userInfo];
-    v8 = [v7 objectForKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
+    userInfo2 = [notificationCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
 
     v9 = [NSString alloc];
     active = MRMediaRemoteActiveEndpointTypeCopyDescription();
-    v11 = [v9 initWithFormat:@"%@ endpoint changed", active];
+    active = [v9 initWithFormat:@"%@ endpoint changed", active];
 
-    v12 = [MRDAutoConnectionControllerReason reasonWithType:2 string:v11];
+    v12 = [MRDAutoConnectionControllerReason reasonWithType:2 string:active];
     [(MRDAutoConnectionController *)self connectToOutputDevice:v8 reason:v12 queue:0 completion:0];
   }
 }

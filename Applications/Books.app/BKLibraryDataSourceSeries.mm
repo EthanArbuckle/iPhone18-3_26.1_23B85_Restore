@@ -1,21 +1,21 @@
 @interface BKLibraryDataSourceSeries
 - (BKLibraryDataSourceSeries)init;
 - (id)_arrayOfAllSeriesContainerAssetIDs;
-- (id)_arrayOfSeriesAssetsFromAdamIDs:(id)a3 insertNullsForMissingAssets:(BOOL)a4;
-- (id)_latestOpenedLibraryAssetForSeriesID:(id)a3 inMOC:(id)a4;
-- (void)_BCCloudStoreAssetManagerChanged:(id)a3;
-- (void)_ownershipDidChange:(id)a3;
-- (void)_seriesUpdated:(id)a3;
-- (void)_storeItemsUpdatedWithCurrentCloudSyncVersions:(id)a3 updated:(id)a4 removed:(id)a5;
+- (id)_arrayOfSeriesAssetsFromAdamIDs:(id)ds insertNullsForMissingAssets:(BOOL)assets;
+- (id)_latestOpenedLibraryAssetForSeriesID:(id)d inMOC:(id)c;
+- (void)_BCCloudStoreAssetManagerChanged:(id)changed;
+- (void)_ownershipDidChange:(id)change;
+- (void)_seriesUpdated:(id)updated;
+- (void)_storeItemsUpdatedWithCurrentCloudSyncVersions:(id)versions updated:(id)updated removed:(id)removed;
 - (void)_updateSeriesManager;
 - (void)applicationDidBecomeActive;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourceSeries
@@ -45,8 +45,8 @@
 
     [(BKLibraryDataSourceSeries *)v4 applicationDidBecomeActive];
     v11 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v12 = [v11 lastObject];
-    v13 = [v12 stringByAppendingPathComponent:@"series-artwork"];
+    lastObject = [v11 lastObject];
+    v13 = [lastObject stringByAppendingPathComponent:@"series-artwork"];
     v14 = +[NSFileManager defaultManager];
     [v14 removeItemAtPath:v13 error:0];
   }
@@ -59,13 +59,13 @@
 {
   [(BKLibraryDataSourceSeries *)self setWantsSeriesUpdated:1];
   v3 = dispatch_time(0, 10000000000);
-  v4 = [(BKLibraryDataSourceSeries *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceSeries *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100139258;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, dispatchQueue, block);
 }
 
 - (void)dealloc
@@ -82,23 +82,23 @@
   [(BKLibraryDataSourceSeries *)&v6 dealloc];
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v7 = a4;
-    v8 = [a3 assetID];
-    v12 = v8;
+    completionCopy = completion;
+    assetID = [asset assetID];
+    v12 = assetID;
     v9 = [NSArray arrayWithObjects:&v12 count:1];
     v10 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:v9 insertNullsForMissingAssets:0];
-    v11 = [v10 lastObject];
-    (*(a4 + 2))(v7, v11, 0);
+    lastObject = [v10 lastObject];
+    (*(completion + 2))(completionCopy, lastObject, 0);
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -107,9 +107,9 @@
   }
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -118,46 +118,46 @@
   }
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v13 = a3;
+  completionCopy = completion;
   kdebug_trace();
   if (!self->_listeningForLibraryUpdates)
   {
     v4 = +[NSNotificationCenter defaultCenter];
     v5 = BKLibraryOwnershipDidChangeNotification;
-    v6 = [(BKLibraryDataSourceSeries *)self libraryManager];
-    [v4 addObserver:self selector:"_ownershipDidChange:" name:v5 object:v6];
+    libraryManager = [(BKLibraryDataSourceSeries *)self libraryManager];
+    [v4 addObserver:self selector:"_ownershipDidChange:" name:v5 object:libraryManager];
 
     self->_listeningForLibraryUpdates = 1;
   }
 
-  v7 = v13;
-  if (v13)
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8 = +[BKSeriesManager sharedManager];
-    v9 = [v8 allSeriesItemAdamIds];
-    v10 = [(BKLibraryDataSourceSeries *)self _arrayOfAllSeriesContainerAssetIDs];
-    v11 = [v9 arrayByAddingObjectsFromArray:v10];
+    allSeriesItemAdamIds = [v8 allSeriesItemAdamIds];
+    _arrayOfAllSeriesContainerAssetIDs = [(BKLibraryDataSourceSeries *)self _arrayOfAllSeriesContainerAssetIDs];
+    v11 = [allSeriesItemAdamIds arrayByAddingObjectsFromArray:_arrayOfAllSeriesContainerAssetIDs];
     v12 = +[BCCacheManager defaultCacheManager];
-    [v12 addProductProfileIDs:v9 priority:3];
+    [v12 addProductProfileIDs:allSeriesItemAdamIds priority:3];
 
     kdebug_trace();
-    (*(v13 + 2))(v13, v11, 0);
+    (*(completionCopy + 2))(completionCopy, v11, 0);
 
-    v7 = v13;
+    v7 = completionCopy;
   }
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   kdebug_trace();
-  v9 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:v7 insertNullsForMissingAssets:1];
+  v9 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:dsCopy insertNullsForMissingAssets:1];
 
   kdebug_trace();
-  v8 = objc_retainBlock(v6);
+  v8 = objc_retainBlock(completionCopy);
 
   if (v8)
   {
@@ -165,16 +165,16 @@
   }
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  assetsCopy = assets;
+  completionCopy = completion;
   v9 = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v7;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -190,26 +190,26 @@
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 storeID];
-        if (v16)
+        storeID = [v15 storeID];
+        if (storeID)
         {
-          v17 = v16;
-          if (a4)
+          v17 = storeID;
+          if (exhaustive)
           {
           }
 
           else
           {
-            v18 = [v15 isOwned];
+            isOwned = [v15 isOwned];
 
-            if (v18)
+            if (isOwned)
             {
               continue;
             }
           }
 
-          v19 = [v15 storeID];
-          [v9 addObject:v19];
+          storeID2 = [v15 storeID];
+          [v9 addObject:storeID2];
         }
       }
 
@@ -222,20 +222,20 @@
   if ([v9 count])
   {
     v20 = +[BCCloudAssetManager sharedManager];
-    v21 = [v20 storeAssetManager];
+    storeAssetManager = [v20 storeAssetManager];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100138004;
     v24[3] = &unk_100A063F0;
-    v25 = v8;
-    [v21 deleteStoreItemsWithStoreIDs:v9 completion:v24];
+    v25 = completionCopy;
+    [storeAssetManager deleteStoreItemsWithStoreIDs:v9 completion:v24];
 
     v22 = v25;
   }
 
   else
   {
-    v23 = objc_retainBlock(v8);
+    v23 = objc_retainBlock(completionCopy);
     v22 = v23;
     if (v23)
     {
@@ -244,35 +244,35 @@
   }
 }
 
-- (void)_ownershipDidChange:(id)a3
+- (void)_ownershipDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceSeries *)self dispatchQueue];
+  changeCopy = change;
+  dispatchQueue = [(BKLibraryDataSourceSeries *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10013812C;
   v7[3] = &unk_100A03440;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_BCCloudStoreAssetManagerChanged:(id)a3
+- (void)_BCCloudStoreAssetManagerChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = _os_activity_create(&_mh_execute_header, "BCCloudStoreAssetManagerChanged Received Notification", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001384EC;
   v7[3] = &unk_100A03440;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   os_activity_apply(v5, v7);
 }
 
-- (void)_storeItemsUpdatedWithCurrentCloudSyncVersions:(id)a3 updated:(id)a4 removed:(id)a5
+- (void)_storeItemsUpdatedWithCurrentCloudSyncVersions:(id)versions updated:(id)updated removed:(id)removed
 {
   v6 = BKLibraryDataSourceSeriesLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -282,19 +282,19 @@
   }
 
   v7 = +[BCCloudAssetManager sharedManager];
-  v8 = [v7 storeAssetManager];
+  storeAssetManager = [v7 storeAssetManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100138AA0;
   v9[3] = &unk_100A081E8;
   v9[4] = self;
-  [v8 fetchStoreItemsIncludingDeleted:0 completion:v9];
+  [storeAssetManager fetchStoreItemsIncludingDeleted:0 completion:v9];
 }
 
 - (void)_updateSeriesManager
 {
-  v3 = [(BKLibraryDataSourceSeries *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(BKLibraryDataSourceSeries *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = BKLibraryDataSourceSeriesLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -311,19 +311,19 @@
     self->_listeningForSeriesUpdates = 1;
   }
 
-  v6 = [(BKLibraryDataSourceSeries *)self libraryManager];
-  v7 = [v6 assetIDsOfStoreBookAssets];
+  libraryManager = [(BKLibraryDataSourceSeries *)self libraryManager];
+  assetIDsOfStoreBookAssets = [libraryManager assetIDsOfStoreBookAssets];
 
-  v8 = [(BKLibraryDataSourceSeries *)self libraryManager];
-  v9 = [v8 assetIDsOfStoreAudiobookAssets];
+  libraryManager2 = [(BKLibraryDataSourceSeries *)self libraryManager];
+  assetIDsOfStoreAudiobookAssets = [libraryManager2 assetIDsOfStoreAudiobookAssets];
 
   v10 = +[BKSeriesManager sharedManager];
   v11 = &__NSArray0__struct;
   v15[0] = BKSeriesManagerAssetTypeBooks;
   v15[1] = BKSeriesManagerAssetTypeAudiobooks;
-  if (v7)
+  if (assetIDsOfStoreBookAssets)
   {
-    v12 = v7;
+    v12 = assetIDsOfStoreBookAssets;
   }
 
   else
@@ -331,9 +331,9 @@
     v12 = &__NSArray0__struct;
   }
 
-  if (v9)
+  if (assetIDsOfStoreAudiobookAssets)
   {
-    v11 = v9;
+    v11 = assetIDsOfStoreAudiobookAssets;
   }
 
   v16[0] = v12;
@@ -343,22 +343,22 @@
   [(BKLibraryDataSourceSeries *)self setWantsSeriesUpdated:0];
 }
 
-- (void)_seriesUpdated:(id)a3
+- (void)_seriesUpdated:(id)updated
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:BKSeriesManagerUpdatesSeriesNotificationUserInfoAdamIDsAddedKey];
+  userInfo = [updated userInfo];
+  v5 = [userInfo objectForKey:BKSeriesManagerUpdatesSeriesNotificationUserInfoAdamIDsAddedKey];
   if ([v5 count])
   {
     v39 = v5;
-    v40 = v4;
+    v40 = userInfo;
     v6 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:v5 insertNullsForMissingAssets:0];
     v7 = [v6 valueForKey:@"assetID"];
-    v8 = [v7 bu_arrayByRemovingNSNulls];
+    bu_arrayByRemovingNSNulls = [v7 bu_arrayByRemovingNSNulls];
 
-    v38 = self;
-    v9 = [(BKLibraryDataSourceSeries *)self libraryManager];
-    v37 = v8;
-    v10 = [v9 existingAssetIDsFromAssetIDs:v8];
+    selfCopy = self;
+    libraryManager = [(BKLibraryDataSourceSeries *)self libraryManager];
+    v37 = bu_arrayByRemovingNSNulls;
+    v10 = [libraryManager existingAssetIDsFromAssetIDs:bu_arrayByRemovingNSNulls];
 
     v11 = +[NSMutableArray array];
     v12 = +[NSMutableArray array];
@@ -383,14 +383,14 @@
           }
 
           v18 = *(*(&v42 + 1) + 8 * i);
-          v19 = [v18 assetID];
-          v20 = [v10 containsObject:v19];
+          assetID = [v18 assetID];
+          v20 = [v10 containsObject:assetID];
 
           if (v20)
           {
             [v12 addObject:v18];
-            v21 = [v18 assetID];
-            [v41 addObject:v21];
+            assetID2 = [v18 assetID];
+            [v41 addObject:assetID2];
           }
 
           else
@@ -409,56 +409,56 @@
     v23 = [v11 valueForKey:@"assetID"];
     [v22 addProductProfileIDs:v23 priority:3];
 
-    self = v38;
-    v24 = [(BKLibraryDataSourceSeries *)v38 libraryManager];
-    [v24 libraryDataSource:v38 addedAssets:v11];
+    self = selfCopy;
+    libraryManager2 = [(BKLibraryDataSourceSeries *)selfCopy libraryManager];
+    [libraryManager2 libraryDataSource:selfCopy addedAssets:v11];
 
-    v25 = [(BKLibraryDataSourceSeries *)v38 libraryManager];
-    [v25 libraryDataSource:v38 updatedAssets:v12];
+    libraryManager3 = [(BKLibraryDataSourceSeries *)selfCopy libraryManager];
+    [libraryManager3 libraryDataSource:selfCopy updatedAssets:v12];
 
     v5 = v39;
-    v4 = v40;
+    userInfo = v40;
   }
 
-  v26 = [v4 objectForKey:BKSeriesManagerUpdatesSeriesNotificationUserInfoAdamIDsRemovedKey];
+  v26 = [userInfo objectForKey:BKSeriesManagerUpdatesSeriesNotificationUserInfoAdamIDsRemovedKey];
   if ([v26 count])
   {
-    v27 = [v26 bu_arrayByRemovingDuplicates];
+    bu_arrayByRemovingDuplicates = [v26 bu_arrayByRemovingDuplicates];
 
-    v28 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:v27 insertNullsForMissingAssets:0];
+    v28 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:bu_arrayByRemovingDuplicates insertNullsForMissingAssets:0];
     if ([v28 count])
     {
       v29 = [v28 valueForKey:@"assetID"];
-      v30 = [v29 bu_arrayByRemovingNSNulls];
+      bu_arrayByRemovingNSNulls2 = [v29 bu_arrayByRemovingNSNulls];
 
-      v31 = [v27 bu_arrayByRemovingObjectsInArray:v30];
+      v31 = [bu_arrayByRemovingDuplicates bu_arrayByRemovingObjectsInArray:bu_arrayByRemovingNSNulls2];
 
-      v27 = v31;
+      bu_arrayByRemovingDuplicates = v31;
     }
 
     else
     {
-      v30 = 0;
+      bu_arrayByRemovingNSNulls2 = 0;
     }
 
-    v26 = v27;
+    v26 = bu_arrayByRemovingDuplicates;
   }
 
   else
   {
-    v30 = 0;
+    bu_arrayByRemovingNSNulls2 = 0;
   }
 
   if ([v26 count])
   {
-    v32 = [(BKLibraryDataSourceSeries *)self libraryManager];
-    [v32 libraryDataSource:self removedAssetsWithAssetIDs:v26 orTemporaryAssetIDs:0];
+    libraryManager4 = [(BKLibraryDataSourceSeries *)self libraryManager];
+    [libraryManager4 libraryDataSource:self removedAssetsWithAssetIDs:v26 orTemporaryAssetIDs:0];
   }
 
-  v33 = [v4 objectForKey:BKSeriesManagerUpdatesSeriesNotificationUserInfoAdamIDsUpdatedKey];
-  if ([v30 count])
+  v33 = [userInfo objectForKey:BKSeriesManagerUpdatesSeriesNotificationUserInfoAdamIDsUpdatedKey];
+  if ([bu_arrayByRemovingNSNulls2 count])
   {
-    v34 = [v33 arrayByAddingObjectsFromArray:v30];
+    v34 = [v33 arrayByAddingObjectsFromArray:bu_arrayByRemovingNSNulls2];
 
     v33 = v34;
   }
@@ -466,20 +466,20 @@
   if ([v33 count])
   {
     v35 = [(BKLibraryDataSourceSeries *)self _arrayOfSeriesAssetsFromAdamIDs:v33 insertNullsForMissingAssets:0];
-    v36 = [(BKLibraryDataSourceSeries *)self libraryManager];
-    [v36 libraryDataSource:self updatedAssets:v35];
+    libraryManager5 = [(BKLibraryDataSourceSeries *)self libraryManager];
+    [libraryManager5 libraryDataSource:self updatedAssets:v35];
   }
 }
 
-- (id)_arrayOfSeriesAssetsFromAdamIDs:(id)a3 insertNullsForMissingAssets:(BOOL)a4
+- (id)_arrayOfSeriesAssetsFromAdamIDs:(id)ds insertNullsForMissingAssets:(BOOL)assets
 {
-  v20 = a4;
-  v5 = a3;
+  assetsCopy = assets;
+  dsCopy = ds;
   v6 = +[BKSeriesManager sharedManager];
   v7 = +[NSMutableArray array];
   v18 = v6;
-  v19 = v5;
-  v8 = [v6 seriesItemsWithAdamIds:v5];
+  v19 = dsCopy;
+  v8 = [v6 seriesItemsWithAdamIds:dsCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -501,7 +501,7 @@
         v13 = [BKSeriesInfo seriesInfoWithDictionary:*(*(&v21 + 1) + 8 * i)];
         if (!v13 || (v14 = [BKSeriesAsset alloc], [(BKLibraryDataSourceSeries *)self identifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = [(BKSeriesAsset *)v14 initWithSeriesInfo:v13 dataSourceIdentifier:v15], v15, !v16))
         {
-          if (!v20)
+          if (!assetsCopy)
           {
             goto LABEL_11;
           }
@@ -526,23 +526,23 @@ LABEL_11:
 - (id)_arrayOfAllSeriesContainerAssetIDs
 {
   v2 = +[BKSeriesManager sharedManager];
-  v3 = [v2 allSeriesContainerIds];
+  allSeriesContainerIds = [v2 allSeriesContainerIds];
 
-  return v3;
+  return allSeriesContainerIds;
 }
 
-- (id)_latestOpenedLibraryAssetForSeriesID:(id)a3 inMOC:(id)a4
+- (id)_latestOpenedLibraryAssetForSeriesID:(id)d inMOC:(id)c
 {
-  v6 = a4;
-  v7 = a3;
+  cCopy = c;
+  dCopy = d;
   v8 = [[NSFetchRequest alloc] initWithEntityName:@"BKLibraryAsset"];
-  v9 = [(BKLibraryDataSourceSeries *)self libraryManager];
-  v10 = [v9 predicateForLibraryAssetsWithSeriesID:v7];
+  libraryManager = [(BKLibraryDataSourceSeries *)self libraryManager];
+  v10 = [libraryManager predicateForLibraryAssetsWithSeriesID:dCopy];
 
   v23[0] = v10;
-  v11 = [(BKLibraryDataSourceSeries *)self libraryManager];
-  v12 = [v11 predicateForLocalLibraryAssets];
-  v23[1] = v12;
+  libraryManager2 = [(BKLibraryDataSourceSeries *)self libraryManager];
+  predicateForLocalLibraryAssets = [libraryManager2 predicateForLocalLibraryAssets];
+  v23[1] = predicateForLocalLibraryAssets;
   v13 = [NSArray arrayWithObjects:v23 count:2];
   v14 = [NSCompoundPredicate andPredicateWithSubpredicates:v13];
   [v8 setPredicate:v14];
@@ -557,19 +557,19 @@ LABEL_11:
   [v8 setFetchLimit:1];
   [v8 setReturnsObjectsAsFaults:0];
   v21 = 0;
-  v18 = [v6 executeFetchRequest:v8 error:&v21];
+  v18 = [cCopy executeFetchRequest:v8 error:&v21];
 
   if (v18)
   {
-    v19 = [v18 lastObject];
+    lastObject = [v18 lastObject];
   }
 
   else
   {
-    v19 = 0;
+    lastObject = 0;
   }
 
-  return v19;
+  return lastObject;
 }
 
 @end

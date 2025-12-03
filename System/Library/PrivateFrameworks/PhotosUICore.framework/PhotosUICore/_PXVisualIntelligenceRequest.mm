@@ -1,10 +1,10 @@
 @interface _PXVisualIntelligenceRequest
 + (id)teardownQueue;
 - (VKCImageAnalyzerRequest)vkImageRequest;
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 cgImage:(CGImage *)a4 orientation:(int64_t)a5 requestID:(int)a6 resultHandler:(id)a7;
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 image:(id)a4 requestID:(int)a5 resultHandler:(id)a6;
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(int64_t)a5 requestID:(int)a6 resultHandler:(id)a7;
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 requestID:(int)a4 resultHandler:(id)a5;
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset cgImage:(CGImage *)image orientation:(int64_t)orientation requestID:(int)d resultHandler:(id)handler;
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset image:(id)image requestID:(int)d resultHandler:(id)handler;
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset pixelBuffer:(__CVBuffer *)buffer orientation:(int64_t)orientation requestID:(int)d resultHandler:(id)handler;
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset requestID:(int)d resultHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
 - (VKCImageAnalyzerRequest)vkImageRequest
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(_PXVisualIntelligenceRequest *)self asset];
-  v4 = [(_PXVisualIntelligenceRequest *)self asset];
-  v5 = [PXVisualIntelligenceManager canRequestVKImageAnalysisForAsset:v4];
+  asset = [(_PXVisualIntelligenceRequest *)self asset];
+  asset2 = [(_PXVisualIntelligenceRequest *)self asset];
+  v5 = [PXVisualIntelligenceManager canRequestVKImageAnalysisForAsset:asset2];
 
   if (v5)
   {
-    v6 = [v3 pixelWidth];
-    v7 = [v3 pixelHeight];
+    pixelWidth = [asset pixelWidth];
+    pixelHeight = [asset pixelHeight];
     if ((PFIsSpotlight() & 1) != 0 || PLIsPeopleViewService())
     {
       v8 = -81;
@@ -31,48 +31,48 @@
       v8 = -65;
     }
 
-    v16 = [v3 localIdentifier];
-    v17 = [v3 photoLibrary];
-    v18 = [v17 photoLibraryURL];
+    localIdentifier = [asset localIdentifier];
+    photoLibrary = [asset photoLibrary];
+    photoLibraryURL = [photoLibrary photoLibraryURL];
 
-    v15 = [objc_alloc(MEMORY[0x1E69DF9F8]) initWithLocalIdentifier:v16 photoLibraryURL:v18 imageSize:v8 requestType:{v6, v7}];
+    v15 = [objc_alloc(MEMORY[0x1E69DF9F8]) initWithLocalIdentifier:localIdentifier photoLibraryURL:photoLibraryURL imageSize:v8 requestType:{pixelWidth, pixelHeight}];
     [v15 setImageSource:0];
 
     goto LABEL_20;
   }
 
-  if ([v3 mediaType] == 2)
+  if ([asset mediaType] == 2)
   {
-    v9 = [(_PXVisualIntelligenceRequest *)self pixelBuffer];
-    if (v9)
+    pixelBuffer = [(_PXVisualIntelligenceRequest *)self pixelBuffer];
+    if (pixelBuffer)
     {
-      v10 = v9;
-      v11 = [(_PXVisualIntelligenceRequest *)self cgImageOrPixelBufferOrientation];
-      v12 = [objc_alloc(MEMORY[0x1E69DF9F8]) initWithCVPixelBuffer:v10 orientation:v11 requestType:-65];
+      v10 = pixelBuffer;
+      cgImageOrPixelBufferOrientation = [(_PXVisualIntelligenceRequest *)self cgImageOrPixelBufferOrientation];
+      v12 = [objc_alloc(MEMORY[0x1E69DF9F8]) initWithCVPixelBuffer:v10 orientation:cgImageOrPixelBufferOrientation requestType:-65];
     }
 
     else
     {
-      v19 = [(_PXVisualIntelligenceRequest *)self cgImage];
-      v20 = [(_PXVisualIntelligenceRequest *)self cgImageOrPixelBufferOrientation];
-      if (v19)
+      cgImage = [(_PXVisualIntelligenceRequest *)self cgImage];
+      cgImageOrPixelBufferOrientation2 = [(_PXVisualIntelligenceRequest *)self cgImageOrPixelBufferOrientation];
+      if (cgImage)
       {
-        v21 = v20;
+        v21 = cgImageOrPixelBufferOrientation2;
       }
 
       else
       {
-        v22 = [(_PXVisualIntelligenceRequest *)self image];
-        v19 = [v22 CGImage];
+        image = [(_PXVisualIntelligenceRequest *)self image];
+        cgImage = [image CGImage];
 
-        if (!v19)
+        if (!cgImage)
         {
           v24 = PLVisualIntelligenceGetLog();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v25 = [(_PXVisualIntelligenceRequest *)self asset];
+            asset3 = [(_PXVisualIntelligenceRequest *)self asset];
             v26 = 138412290;
-            v27 = v25;
+            v27 = asset3;
             _os_log_impl(&dword_1A3C1C000, v24, OS_LOG_TYPE_ERROR, "No video frame to make visual image analyze request, asset: %@", &v26, 0xCu);
           }
 
@@ -83,7 +83,7 @@
         v21 = 0;
       }
 
-      v12 = [objc_alloc(MEMORY[0x1E69DF9F8]) initWithCGImage:v19 orientation:v21 requestType:-65];
+      v12 = [objc_alloc(MEMORY[0x1E69DF9F8]) initWithCGImage:cgImage orientation:v21 requestType:-65];
     }
 
     v15 = v12;
@@ -95,9 +95,9 @@ LABEL_19:
   v13 = PLVisualIntelligenceGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [(_PXVisualIntelligenceRequest *)self asset];
+    asset4 = [(_PXVisualIntelligenceRequest *)self asset];
     v26 = 138412290;
-    v27 = v14;
+    v27 = asset4;
     _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_ERROR, "Must be PHAsset of image (excludes GIF) or LivePhoto to make visual image analyze request, asset: %@", &v26, 0xCu);
   }
 
@@ -119,57 +119,57 @@ LABEL_20:
   [(_PXVisualIntelligenceRequest *)&v4 dealloc];
 }
 
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 cgImage:(CGImage *)a4 orientation:(int64_t)a5 requestID:(int)a6 resultHandler:(id)a7
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset cgImage:(CGImage *)image orientation:(int64_t)orientation requestID:(int)d resultHandler:(id)handler
 {
-  v9 = [(_PXVisualIntelligenceRequest *)self initWithAsset:a3 requestID:*&a6 resultHandler:a7];
+  v9 = [(_PXVisualIntelligenceRequest *)self initWithAsset:asset requestID:*&d resultHandler:handler];
   if (v9)
   {
-    v9->_cgImage = CGImageRetain(a4);
-    v9->_cgImageOrPixelBufferOrientation = a5;
+    v9->_cgImage = CGImageRetain(image);
+    v9->_cgImageOrPixelBufferOrientation = orientation;
   }
 
   return v9;
 }
 
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(int64_t)a5 requestID:(int)a6 resultHandler:(id)a7
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset pixelBuffer:(__CVBuffer *)buffer orientation:(int64_t)orientation requestID:(int)d resultHandler:(id)handler
 {
-  v9 = [(_PXVisualIntelligenceRequest *)self initWithAsset:a3 requestID:*&a6 resultHandler:a7];
+  v9 = [(_PXVisualIntelligenceRequest *)self initWithAsset:asset requestID:*&d resultHandler:handler];
   if (v9)
   {
-    v9->_pixelBuffer = CVPixelBufferRetain(a4);
-    v9->_cgImageOrPixelBufferOrientation = a5;
+    v9->_pixelBuffer = CVPixelBufferRetain(buffer);
+    v9->_cgImageOrPixelBufferOrientation = orientation;
   }
 
   return v9;
 }
 
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 image:(id)a4 requestID:(int)a5 resultHandler:(id)a6
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset image:(id)image requestID:(int)d resultHandler:(id)handler
 {
-  v7 = *&a5;
-  v11 = a4;
-  v12 = [(_PXVisualIntelligenceRequest *)self initWithAsset:a3 requestID:v7 resultHandler:a6];
+  v7 = *&d;
+  imageCopy = image;
+  v12 = [(_PXVisualIntelligenceRequest *)self initWithAsset:asset requestID:v7 resultHandler:handler];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_image, a4);
+    objc_storeStrong(&v12->_image, image);
   }
 
   return v13;
 }
 
-- (_PXVisualIntelligenceRequest)initWithAsset:(id)a3 requestID:(int)a4 resultHandler:(id)a5
+- (_PXVisualIntelligenceRequest)initWithAsset:(id)asset requestID:(int)d resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = _PXVisualIntelligenceRequest;
   v11 = [(_PXVisualIntelligenceRequest *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_asset, a3);
-    v12->_requestID = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_asset, asset);
+    v12->_requestID = d;
+    v13 = [handlerCopy copy];
     resultHandler = v12->_resultHandler;
     v12->_resultHandler = v13;
   }

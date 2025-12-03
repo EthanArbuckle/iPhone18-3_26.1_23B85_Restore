@@ -15,61 +15,61 @@
 - (BOOL)queriedUserToSetPathPrefix;
 - (BOOL)shouldUseGmailLabelStores;
 - (BOOL)shouldUseGmailLabelStoresIsSet;
-- (id)_hostnameFromParentAccount:(id)a3;
+- (id)_hostnameFromParentAccount:(id)account;
 - (id)portNumberObject;
 - (id)usesSSLObject;
 - (int64_t)daysBetweenSyncs;
-- (void)setDaysBetweenSyncs:(int64_t)a3;
+- (void)setDaysBetweenSyncs:(int64_t)syncs;
 @end
 
 @implementation ECIMAPAccount
 
 - (BOOL)compactWhenClosingMailboxes
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"CompactWhenClosingMailboxes"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"CompactWhenClosingMailboxes"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)daysBetweenSyncs
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"DaysBetweenSyncs"];
-  v4 = [v3 integerValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"DaysBetweenSyncs"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setDaysBetweenSyncs:(int64_t)a3
+- (void)setDaysBetweenSyncs:(int64_t)syncs
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:syncs];
   [ECAccount setDataClassProperty:"setDataClassProperty:forKey:" forKey:?];
 }
 
 - (BOOL)queriedUserToSetPathPrefix
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"QueriedUserToSetPathPrefix"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"QueriedUserToSetPathPrefix"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldUseGmailLabelStores
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"ShouldUseGmailLabelStores"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"ShouldUseGmailLabelStores"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldUseGmailLabelStoresIsSet
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"ShouldUseGmailLabelStores"];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"ShouldUseGmailLabelStores"];
   v4 = v3 != 0;
 
   return v4;
@@ -77,115 +77,115 @@
 
 - (BOOL)needsGmailLablesCleanup
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"NeedsGmailLabelsCleanup"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"NeedsGmailLabelsCleanup"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasServerDefinedAllMailMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"HasServerDefinedAllMailMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"HasServerDefinedAllMailMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasServerDefinedArchiveMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"HasServerDefinedArchiveMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"HasServerDefinedArchiveMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasServerDefinedDraftsMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"HasServerDefinedDraftsMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"HasServerDefinedDraftsMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasServerDefinedJunkMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"HasServerDefinedJunkMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"HasServerDefinedJunkMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasServerDefinedSentMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"HasServerDefinedSentMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"HasServerDefinedSentMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasServerDefinedTrashMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"HasServerDefinedTrashMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"HasServerDefinedTrashMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreServerDefinedArchiveMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"IgnoreServerDefinedArchiveMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"IgnoreServerDefinedArchiveMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreServerDefinedDraftsMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"IgnoreServerDefinedDraftsMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"IgnoreServerDefinedDraftsMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreServerDefinedJunkMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"IgnoreServerDefinedJunkMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"IgnoreServerDefinedJunkMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreServerDefinedSentMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"IgnoreServerDefinedSentMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"IgnoreServerDefinedSentMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ignoreServerDefinedTrashMailbox
 {
-  v2 = [(ECAccount *)self dataclassProperties];
-  v3 = [v2 objectForKeyedSubscript:@"IgnoreServerDefinedTrashMailbox"];
-  v4 = [v3 BOOLValue];
+  dataclassProperties = [(ECAccount *)self dataclassProperties];
+  v3 = [dataclassProperties objectForKeyedSubscript:@"IgnoreServerDefinedTrashMailbox"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)_hostnameFromParentAccount:(id)a3
+- (id)_hostnameFromParentAccount:(id)account
 {
-  v3 = [a3 propertiesForDataclass:*MEMORY[0x277CB9150]];
+  v3 = [account propertiesForDataclass:*MEMORY[0x277CB9150]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CB8AD0]];
 
   return v4;
@@ -195,67 +195,67 @@
 {
   v12.receiver = self;
   v12.super_class = ECIMAPAccount;
-  v3 = [(ECAccount *)&v12 portNumberObject];
-  if (!v3)
+  portNumberObject = [(ECAccount *)&v12 portNumberObject];
+  if (!portNumberObject)
   {
-    v4 = [(ECAccount *)self systemAccount];
-    v5 = [v4 parentAccount];
+    systemAccount = [(ECAccount *)self systemAccount];
+    parentAccount = [systemAccount parentAccount];
 
-    v6 = [v5 propertiesForDataclass:*MEMORY[0x277CB9150]];
+    v6 = [parentAccount propertiesForDataclass:*MEMORY[0x277CB9150]];
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CB8AD8]];
 
     if (v7)
     {
-      v8 = [(ECAccount *)self standardPorts];
-      if ([v8 containsObject:v7])
+      standardPorts = [(ECAccount *)self standardPorts];
+      if ([standardPorts containsObject:v7])
       {
       }
 
       else
       {
-        v9 = [(ECAccount *)self standardSSLPorts];
-        v10 = [v9 containsObject:v7];
+        standardSSLPorts = [(ECAccount *)self standardSSLPorts];
+        v10 = [standardSSLPorts containsObject:v7];
 
         if ((v10 & 1) == 0)
         {
-          v3 = v7;
+          portNumberObject = v7;
           goto LABEL_7;
         }
       }
     }
 
-    v3 = 0;
+    portNumberObject = 0;
 LABEL_7:
   }
 
-  return v3;
+  return portNumberObject;
 }
 
 - (id)usesSSLObject
 {
   v9.receiver = self;
   v9.super_class = ECIMAPAccount;
-  v3 = [(ECAccount *)&v9 usesSSLObject];
-  if (!v3)
+  usesSSLObject = [(ECAccount *)&v9 usesSSLObject];
+  if (!usesSSLObject)
   {
-    v4 = [(ECAccount *)self systemAccount];
-    v5 = [v4 parentAccount];
+    systemAccount = [(ECAccount *)self systemAccount];
+    parentAccount = [systemAccount parentAccount];
 
-    v6 = [v5 propertiesForDataclass:*MEMORY[0x277CB9150]];
+    v6 = [parentAccount propertiesForDataclass:*MEMORY[0x277CB9150]];
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CB8AE0]];
 
     if ([v7 BOOLValue])
     {
-      v3 = v7;
+      usesSSLObject = v7;
     }
 
     else
     {
-      v3 = 0;
+      usesSSLObject = 0;
     }
   }
 
-  return v3;
+  return usesSSLObject;
 }
 
 @end

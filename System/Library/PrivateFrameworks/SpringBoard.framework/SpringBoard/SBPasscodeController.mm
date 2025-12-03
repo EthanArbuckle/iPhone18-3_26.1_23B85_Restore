@@ -3,16 +3,16 @@
 - (SBPasscodeController)init;
 - (void)_abort;
 - (void)_activateComplianceAlert;
-- (void)_fetchAndSetUnlockScreenTypeForNewPasscode:(BOOL)a3;
-- (void)_passwordEntered:(id)a3;
-- (void)_presentPasscodeAlertItemWithMode:(int)a3 alertItemErrorString:(id)a4 unlockScreenType:(int)a5;
+- (void)_fetchAndSetUnlockScreenTypeForNewPasscode:(BOOL)passcode;
+- (void)_passwordEntered:(id)entered;
+- (void)_presentPasscodeAlertItemWithMode:(int)mode alertItemErrorString:(id)string unlockScreenType:(int)type;
 - (void)_startListeningToManagedConfigurationNotification;
 - (void)_startListeningToRestoreCompletedAlertStateChangedNotifications;
 - (void)_startListeningToTelephonyNotifications;
 - (void)_stopListeningToManagedConfigurationNotification;
 - (void)_stopListeningToRestoreCompletedAlertStateChangedNotifications;
 - (void)_stopListeningToTelephonyNotifications;
-- (void)_userWantsToComplyNow:(BOOL)a3;
+- (void)_userWantsToComplyNow:(BOOL)now;
 - (void)checkPasscodeCompliance;
 - (void)dealloc;
 - (void)forceUserToChangePasscode;
@@ -73,8 +73,8 @@ void __38__SBPasscodeController_sharedInstance__block_invoke()
 {
   if (self->_telephonyNotificationObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_telephonyNotificationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_telephonyNotificationObserver];
 
     telephonyNotificationObserver = self->_telephonyNotificationObserver;
     self->_telephonyNotificationObserver = 0;
@@ -90,10 +90,10 @@ void __38__SBPasscodeController_sharedInstance__block_invoke()
 {
   if (!self->_passcodeAlertItem)
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [v4 isPasscodeSet];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-    if (v5)
+    if (isPasscodeSet)
     {
       v6 = 0;
     }
@@ -107,7 +107,7 @@ void __38__SBPasscodeController_sharedInstance__block_invoke()
     }
 
     self->_mode = v6;
-    [(SBPasscodeController *)self _fetchAndSetUnlockScreenTypeForNewPasscode:v5 ^ 1u];
+    [(SBPasscodeController *)self _fetchAndSetUnlockScreenTypeForNewPasscode:isPasscodeSet ^ 1u];
     mode = self->_mode;
     unlockScreenType = self->_unlockScreenType;
 
@@ -115,14 +115,14 @@ void __38__SBPasscodeController_sharedInstance__block_invoke()
   }
 }
 
-- (void)_passwordEntered:(id)a3
+- (void)_passwordEntered:(id)entered
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
+  enteredCopy = entered;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   mode = self->_mode;
   if (mode == 2)
   {
-    if (![v5 length] || !-[NSString length](self->_newPasscode, "length") || !objc_msgSend(v5, "isEqualToString:", self->_newPasscode))
+    if (![enteredCopy length] || !-[NSString length](self->_newPasscode, "length") || !objc_msgSend(enteredCopy, "isEqualToString:", self->_newPasscode))
     {
 LABEL_18:
       v13 = 0;
@@ -132,7 +132,7 @@ LABEL_18:
     previousPasscode = self->_previousPasscode;
     newPasscode = self->_newPasscode;
     v37 = 0;
-    v15 = [v6 changePasscodeFrom:previousPasscode to:newPasscode outError:&v37];
+    v15 = [mEMORY[0x277D262A0] changePasscodeFrom:previousPasscode to:newPasscode outError:&v37];
     v16 = v37;
   }
 
@@ -146,19 +146,19 @@ LABEL_18:
         v41 = &v40;
         v42 = 0x2020000000;
         v43 = 0;
-        v8 = [objc_alloc(MEMORY[0x277D65DF0]) initForPasscode:v5 source:0];
-        v9 = [SBApp authenticationController];
+        v8 = [objc_alloc(MEMORY[0x277D65DF0]) initForPasscode:enteredCopy source:0];
+        authenticationController = [SBApp authenticationController];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __41__SBPasscodeController__passwordEntered___block_invoke;
         v39[3] = &unk_2783A9718;
         v39[4] = &v40;
         v10 = [MEMORY[0x277D65FA8] responderWithSuccessHandler:v39 failureHandler:0 invalidHandler:0];
-        [v9 processAuthenticationRequest:v8 responder:v10];
+        [authenticationController processAuthenticationRequest:v8 responder:v10];
 
         if (*(v41 + 24) == 1)
         {
-          v11 = [v5 copy];
+          v11 = [enteredCopy copy];
           v12 = self->_previousPasscode;
           self->_previousPasscode = v11;
 
@@ -173,35 +173,35 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    objc_storeStrong(&self->_newPasscode, a3);
+    objc_storeStrong(&self->_newPasscode, entered);
     if (![(NSString *)self->_newPasscode length])
     {
       v32 = MEMORY[0x277CCA9B8];
       v33 = MEMORY[0x277CBEAC0];
-      v34 = [v6 localizedDescriptionOfDefaultNewPasscodeConstraints];
-      v35 = [v33 dictionaryWithObjectsAndKeys:{v34, *MEMORY[0x277CCA450], 0}];
+      localizedDescriptionOfDefaultNewPasscodeConstraints = [mEMORY[0x277D262A0] localizedDescriptionOfDefaultNewPasscodeConstraints];
+      v35 = [v33 dictionaryWithObjectsAndKeys:{localizedDescriptionOfDefaultNewPasscodeConstraints, *MEMORY[0x277CCA450], 0}];
       v13 = [v32 errorWithDomain:@"EmptyPasscode" code:0 userInfo:v35];
 
 LABEL_19:
-      v23 = [MEMORY[0x277CCA8D8] mainBundle];
-      v24 = v23;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v24 = mainBundle;
       v25 = self->_mode;
       if (v25 == 2)
       {
         self->_mode = 1;
-        if (![v5 isEqualToString:self->_newPasscode])
+        if (![enteredCopy isEqualToString:self->_newPasscode])
         {
           v28 = MEMORY[0x277CCACA8];
-          v29 = [v24 localizedStringForKey:@"CONFIRM_NEW_PASSCODE_MISMATCH" value:&stru_283094718 table:@"SpringBoard"];
-          v30 = [MEMORY[0x277D262A0] sharedConnection];
-          v31 = [v30 localizedDescriptionOfDefaultNewPasscodeConstraints];
-          v26 = [v28 stringWithFormat:v29, v31];
+          mEMORY[0x277D262A0]3 = [v24 localizedStringForKey:@"CONFIRM_NEW_PASSCODE_MISMATCH" value:&stru_283094718 table:@"SpringBoard"];
+          mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+          localizedDescriptionOfDefaultNewPasscodeConstraints2 = [mEMORY[0x277D262A0]2 localizedDescriptionOfDefaultNewPasscodeConstraints];
+          localizedDescription = [v28 stringWithFormat:mEMORY[0x277D262A0]3, localizedDescriptionOfDefaultNewPasscodeConstraints2];
 
 LABEL_33:
           goto LABEL_35;
         }
 
-        v26 = [v13 localizedDescription];
+        localizedDescription = [v13 localizedDescription];
       }
 
       else
@@ -213,17 +213,17 @@ LABEL_33:
             goto LABEL_38;
           }
 
-          v26 = [v23 localizedStringForKey:@"PASSCODE_ALERT_INCORRECT_PASSCODE" value:&stru_283094718 table:@"SpringBoard"];
+          localizedDescription = [mainBundle localizedStringForKey:@"PASSCODE_ALERT_INCORRECT_PASSCODE" value:&stru_283094718 table:@"SpringBoard"];
           v27 = 0;
 LABEL_36:
           [(SBPasscodeController *)self _fetchAndSetUnlockScreenTypeForNewPasscode:v27];
-          if (v26)
+          if (localizedDescription)
           {
             [(SBAlertItem *)self->_passcodeAlertItem deactivate];
             passcodeAlertItem = self->_passcodeAlertItem;
             self->_passcodeAlertItem = 0;
 
-            [(SBPasscodeController *)self _presentPasscodeAlertItemWithMode:self->_mode alertItemErrorString:v26 unlockScreenType:self->_unlockScreenType];
+            [(SBPasscodeController *)self _presentPasscodeAlertItemWithMode:self->_mode alertItemErrorString:localizedDescription unlockScreenType:self->_unlockScreenType];
 LABEL_39:
 
             goto LABEL_40;
@@ -239,23 +239,23 @@ LABEL_38:
           goto LABEL_31;
         }
 
-        v26 = [v13 localizedDescription];
-        if ([v26 isEqualToString:&stru_283094718])
+        localizedDescription = [v13 localizedDescription];
+        if ([localizedDescription isEqualToString:&stru_283094718])
         {
 
 LABEL_31:
           if (!self->_unlockScreenType)
           {
-            v26 = 0;
+            localizedDescription = 0;
             goto LABEL_35;
           }
 
-          v29 = [MEMORY[0x277D262A0] sharedConnection];
-          v26 = [v29 localizedDescriptionOfDefaultNewPasscodeConstraints];
+          mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
+          localizedDescription = [mEMORY[0x277D262A0]3 localizedDescriptionOfDefaultNewPasscodeConstraints];
           goto LABEL_33;
         }
 
-        if (!v26)
+        if (!localizedDescription)
         {
           goto LABEL_31;
         }
@@ -268,7 +268,7 @@ LABEL_35:
 
     v14 = self->_newPasscode;
     v38 = 0;
-    v15 = [v6 passcode:v14 meetsCurrentConstraintsOutError:&v38];
+    v15 = [mEMORY[0x277D262A0] passcode:v14 meetsCurrentConstraintsOutError:&v38];
     v16 = v38;
   }
 
@@ -314,20 +314,20 @@ LABEL_43:
 LABEL_40:
 }
 
-- (void)_fetchAndSetUnlockScreenTypeForNewPasscode:(BOOL)a3
+- (void)_fetchAndSetUnlockScreenTypeForNewPasscode:(BOOL)passcode
 {
-  v3 = a3;
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  v7 = v6;
+  passcodeCopy = passcode;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v7 = mEMORY[0x277D262A0];
   p_simplePasscodeType = &self->_simplePasscodeType;
-  if (v3)
+  if (passcodeCopy)
   {
-    v9 = [v6 defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:p_simplePasscodeType];
+    v9 = [mEMORY[0x277D262A0] defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:p_simplePasscodeType];
   }
 
   else
   {
-    v9 = [v6 unlockScreenTypeWithOutSimplePasscodeType:p_simplePasscodeType];
+    v9 = [mEMORY[0x277D262A0] unlockScreenTypeWithOutSimplePasscodeType:p_simplePasscodeType];
   }
 
   self->_unlockScreenType = v9;
@@ -338,11 +338,11 @@ LABEL_40:
   }
 }
 
-- (void)_presentPasscodeAlertItemWithMode:(int)a3 alertItemErrorString:(id)a4 unlockScreenType:(int)a5
+- (void)_presentPasscodeAlertItemWithMode:(int)mode alertItemErrorString:(id)string unlockScreenType:(int)type
 {
-  v5 = *&a5;
-  v6 = *&a3;
-  v8 = a4;
+  v5 = *&type;
+  v6 = *&mode;
+  stringCopy = string;
   if (self->_passcodeAlertItem)
   {
     v9 = SBLogCommon();
@@ -357,16 +357,16 @@ LABEL_40:
     self->_passcodeAlertItem = 0;
   }
 
-  v11 = [MEMORY[0x277D262A0] sharedConnection];
-  v12 = [v11 isPasscodeModificationAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeModificationAllowed = [mEMORY[0x277D262A0] isPasscodeModificationAllowed];
 
-  if (v12)
+  if (isPasscodeModificationAllowed)
   {
     v13 = [[SBPasscodeAlertItem alloc] initWithPasscodeMode:v6 unlockScreenType:v5 simplePasscodeType:self->_simplePasscodeType];
     v14 = self->_passcodeAlertItem;
     self->_passcodeAlertItem = v13;
 
-    [(SBPasscodeAlertItem *)self->_passcodeAlertItem _setErrorString:v8];
+    [(SBPasscodeAlertItem *)self->_passcodeAlertItem _setErrorString:stringCopy];
     v15 = +[SBAlertItemsController sharedInstance];
     [v15 activateAlertItem:self->_passcodeAlertItem];
   }
@@ -384,10 +384,10 @@ LABEL_40:
 
 - (void)_startListeningToManagedConfigurationNotification
 {
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = *MEMORY[0x277D25CA0];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
-  v5 = [v7 addObserverForName:v3 object:0 queue:v4 usingBlock:&__block_literal_global_189];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  v5 = [defaultCenter addObserverForName:v3 object:0 queue:mainQueue usingBlock:&__block_literal_global_189];
   manageConfigurationEffectiveSettingsObserver = self->_manageConfigurationEffectiveSettingsObserver;
   self->_manageConfigurationEffectiveSettingsObserver = v5;
 }
@@ -414,21 +414,21 @@ void __73__SBPasscodeController__startListeningToManagedConfigurationNotificatio
 {
   if (self->_manageConfigurationEffectiveSettingsObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_manageConfigurationEffectiveSettingsObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_manageConfigurationEffectiveSettingsObserver];
 
     manageConfigurationEffectiveSettingsObserver = self->_manageConfigurationEffectiveSettingsObserver;
     self->_manageConfigurationEffectiveSettingsObserver = 0;
   }
 }
 
-- (void)_userWantsToComplyNow:(BOOL)a3
+- (void)_userWantsToComplyNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   complianceAlertItem = self->_complianceAlertItem;
   self->_complianceAlertItem = 0;
 
-  if (v3)
+  if (nowCopy)
   {
 
     [(SBPasscodeController *)self forceUserToChangePasscode];
@@ -452,8 +452,8 @@ void __73__SBPasscodeController__startListeningToManagedConfigurationNotificatio
 
 - (void)_startListeningToTelephonyNotifications
 {
-  v8 = +[SBTelephonyManager sharedTelephonyManager];
-  if ([v8 hasCellularTelephony])
+  defaultCenter = +[SBTelephonyManager sharedTelephonyManager];
+  if ([defaultCenter hasCellularTelephony])
   {
     telephonyNotificationObserver = self->_telephonyNotificationObserver;
 
@@ -462,10 +462,10 @@ void __73__SBPasscodeController__startListeningToManagedConfigurationNotificatio
       return;
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277D679E0];
-    v5 = [MEMORY[0x277CCABD8] mainQueue];
-    v6 = [v8 addObserverForName:v4 object:0 queue:v5 usingBlock:&__block_literal_global_191];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    v6 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:&__block_literal_global_191];
     v7 = self->_telephonyNotificationObserver;
     self->_telephonyNotificationObserver = v6;
   }
@@ -493,8 +493,8 @@ void __63__SBPasscodeController__startListeningToTelephonyNotifications__block_i
 {
   if (self->_telephonyNotificationObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_telephonyNotificationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_telephonyNotificationObserver];
 
     telephonyNotificationObserver = self->_telephonyNotificationObserver;
     self->_telephonyNotificationObserver = 0;
@@ -506,13 +506,13 @@ void __63__SBPasscodeController__startListeningToTelephonyNotifications__block_i
   p_restoreCompletedAlertStateChangedToken = &self->_restoreCompletedAlertStateChangedToken;
   if (!self->_restoreCompletedAlertStateChangedToken)
   {
-    v4 = [*MEMORY[0x277D28A98] UTF8String];
+    uTF8String = [*MEMORY[0x277D28A98] UTF8String];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __87__SBPasscodeController__startListeningToRestoreCompletedAlertStateChangedNotifications__block_invoke;
     handler[3] = &unk_2783A95E8;
     handler[4] = self;
-    notify_register_dispatch(v4, p_restoreCompletedAlertStateChangedToken, MEMORY[0x277D85CD0], handler);
+    notify_register_dispatch(uTF8String, p_restoreCompletedAlertStateChangedToken, MEMORY[0x277D85CD0], handler);
   }
 }
 
@@ -554,10 +554,10 @@ uint64_t __87__SBPasscodeController__startListeningToRestoreCompletedAlertStateC
   v3 = +[SBAlertItemsController sharedInstance];
   [v3 activateAlertItem:self->_complianceAlertItem];
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [SBApp authenticationController];
-  v6 = [v5 lastRevokedAuthenticationDate];
-  [v4 notifyUserHasSeenComplianceMessageWithLastLockDate:v6];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  authenticationController = [SBApp authenticationController];
+  lastRevokedAuthenticationDate = [authenticationController lastRevokedAuthenticationDate];
+  [mEMORY[0x277D262A0] notifyUserHasSeenComplianceMessageWithLastLockDate:lastRevokedAuthenticationDate];
 
   [(SBPasscodeController *)self _stopListeningToRestoreCompletedAlertStateChangedNotifications];
 }
@@ -583,17 +583,17 @@ uint64_t __87__SBPasscodeController__startListeningToRestoreCompletedAlertStateC
   [(SBPasscodeController *)self _startListeningToTelephonyNotifications];
   self->_delayedComplianceAlertUntilAfterRestoreCompletedAlert = 0;
   [(SBPasscodeController *)self _startListeningToRestoreCompletedAlertStateChangedNotifications];
-  v7 = [SBApp authenticationController];
-  v8 = [v7 lastRevokedAuthenticationDate];
+  authenticationController = [SBApp authenticationController];
+  lastRevokedAuthenticationDate = [authenticationController lastRevokedAuthenticationDate];
 
   passcodeComplianceQueue = self->_passcodeComplianceQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__SBPasscodeController_checkPasscodeCompliance__block_invoke;
   v11[3] = &unk_2783A92D8;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  v12 = lastRevokedAuthenticationDate;
+  selfCopy = self;
+  v10 = lastRevokedAuthenticationDate;
   dispatch_async(passcodeComplianceQueue, v11);
 }
 

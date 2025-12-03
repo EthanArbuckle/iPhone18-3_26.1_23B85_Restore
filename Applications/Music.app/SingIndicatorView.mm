@@ -1,8 +1,8 @@
 @interface SingIndicatorView
-- (_TtC5Music17SingIndicatorView)initWithFrame:(CGRect)a3;
+- (_TtC5Music17SingIndicatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)showSingIndicator;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SingIndicatorView
@@ -15,29 +15,29 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1001F4CB8(0, 0, v5, &unk_100EBF450, v9);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10035CA90();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10035CEF4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10035CEF4(change);
 }
 
-- (_TtC5Music17SingIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC5Music17SingIndicatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

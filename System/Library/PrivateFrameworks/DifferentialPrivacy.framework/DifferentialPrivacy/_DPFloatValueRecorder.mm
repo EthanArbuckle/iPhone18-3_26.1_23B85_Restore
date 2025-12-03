@@ -1,27 +1,27 @@
 @interface _DPFloatValueRecorder
-- (BOOL)recordFloatVectors:(id)a3;
-- (BOOL)recordFloatVectors:(id)a3 metadata:(id)a4;
+- (BOOL)recordFloatVectors:(id)vectors;
+- (BOOL)recordFloatVectors:(id)vectors metadata:(id)metadata;
 - (id)description;
 @end
 
 @implementation _DPFloatValueRecorder
 
-- (BOOL)recordFloatVectors:(id)a3
+- (BOOL)recordFloatVectors:(id)vectors
 {
-  v4 = a3;
+  vectorsCopy = vectors;
   v5 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordFloatVectors:v4];
+  [(_DPDataRecorder *)self->_recorder recordFloatVectors:vectorsCopy];
   objc_autoreleasePoolPop(v5);
 
   return 1;
 }
 
-- (BOOL)recordFloatVectors:(id)a3 metadata:(id)a4
+- (BOOL)recordFloatVectors:(id)vectors metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
   v8 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordFloatVectors:v6 metadata:v7];
+  [(_DPDataRecorder *)self->_recorder recordFloatVectors:vectorsCopy metadata:metadataCopy];
   objc_autoreleasePoolPop(v8);
 
   return 1;

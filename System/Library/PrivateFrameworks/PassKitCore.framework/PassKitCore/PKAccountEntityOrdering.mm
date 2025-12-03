@@ -1,24 +1,24 @@
 @interface PKAccountEntityOrdering
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountEntityOrdering:(id)a3;
-- (PKAccountEntityOrdering)initWithCoder:(id)a3;
-- (PKAccountEntityOrdering)initWithType:(unint64_t)a3 dictionary:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountEntityOrdering:(id)ordering;
+- (PKAccountEntityOrdering)initWithCoder:(id)coder;
+- (PKAccountEntityOrdering)initWithType:(unint64_t)type dictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)orderingAsJSONString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOrderingFromJSONString:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOrderingFromJSONString:(id)string;
 @end
 
 @implementation PKAccountEntityOrdering
 
-- (PKAccountEntityOrdering)initWithType:(unint64_t)a3 dictionary:(id)a4
+- (PKAccountEntityOrdering)initWithType:(unint64_t)type dictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = 0;
-  if (a3 && v6)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  selfCopy = 0;
+  if (type && dictionaryCopy)
   {
     v15.receiver = self;
     v15.super_class = PKAccountEntityOrdering;
@@ -26,9 +26,9 @@
     v10 = v9;
     if (v9)
     {
-      v9->_type = a3;
+      v9->_type = type;
       v11 = [v7 PKStringForKey:@"key"];
-      v10->_context = PKAccountEntityOrderingContextFromString(v11, a3);
+      v10->_context = PKAccountEntityOrderingContextFromString(v11, type);
 
       v12 = [v7 objectForKey:@"ordering"];
       objc_opt_class();
@@ -54,19 +54,19 @@
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)setOrderingFromJSONString:(id)a3
+- (void)setOrderingFromJSONString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [a3 dataUsingEncoding:4];
+    v5 = [string dataUsingEncoding:4];
     v14 = 0;
     v6 = [v4 JSONObjectWithData:v5 options:0 error:&v14];
     v7 = v14;
@@ -212,28 +212,28 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEntityOrdering *)self isEqualToAccountEntityOrdering:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEntityOrdering *)self isEqualToAccountEntityOrdering:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountEntityOrdering:(id)a3
+- (BOOL)isEqualToAccountEntityOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_context == v4[2] && self->_type == v4[1])
+  orderingCopy = ordering;
+  v5 = orderingCopy;
+  if (orderingCopy && self->_context == orderingCopy[2] && self->_type == orderingCopy[1])
   {
     ordering = self->_ordering;
     v7 = v5[3];
@@ -267,15 +267,15 @@ LABEL_12:
   return v6;
 }
 
-- (PKAccountEntityOrdering)initWithCoder:(id)a3
+- (PKAccountEntityOrdering)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKAccountEntityOrdering;
   v5 = [(PKAccountEntityOrdering *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v7 = v6;
     if (v6 != @"promotions")
     {
@@ -305,14 +305,14 @@ LABEL_5:
 LABEL_10:
 
     v5->_type = v9;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     v5->_context = PKAccountEntityOrderingContextFromString(v13, v5->_type);
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"ordering"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"ordering"];
     ordering = v5->_ordering;
     v5->_ordering = v18;
   }
@@ -320,7 +320,7 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
   if (type > 2)
@@ -333,8 +333,8 @@ LABEL_10:
     v5 = off_1E79D8758[type];
   }
 
-  v8 = a3;
-  [v8 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v5 forKey:@"type"];
   context = self->_context;
   if (context <= 1)
   {
@@ -362,13 +362,13 @@ LABEL_10:
 
   v7 = @"rewardsHubList";
 LABEL_12:
-  [v8 encodeObject:v7 forKey:@"key"];
-  [v8 encodeObject:self->_ordering forKey:@"ordering"];
+  [coderCopy encodeObject:v7 forKey:@"key"];
+  [coderCopy encodeObject:self->_ordering forKey:@"ordering"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_type;
   v5[2] = self->_context;
   ordering = self->_ordering;
@@ -376,7 +376,7 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = __40__PKAccountEntityOrdering_copyWithZone___block_invoke;
   v10[3] = &__block_descriptor_40_e8__16__0_8l;
-  v10[4] = a3;
+  v10[4] = zone;
   v7 = [(NSArray *)ordering pk_arrayBySafelyApplyingBlock:v10];
   v8 = v5[3];
   v5[3] = v7;

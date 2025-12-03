@@ -1,6 +1,6 @@
 @interface SMSessionStartMessageSendResultNotification
 - (SMSessionStartMessageSendResultNotification)init;
-- (SMSessionStartMessageSendResultNotification)initWithSessionStartMessage:(id)a3 messageGUID:(id)a4 success:(BOOL)a5 error:(id)a6;
+- (SMSessionStartMessageSendResultNotification)initWithSessionStartMessage:(id)message messageGUID:(id)d success:(BOOL)success error:(id)error;
 @end
 
 @implementation SMSessionStartMessageSendResultNotification
@@ -21,19 +21,19 @@
   return 0;
 }
 
-- (SMSessionStartMessageSendResultNotification)initWithSessionStartMessage:(id)a3 messageGUID:(id)a4 success:(BOOL)a5 error:(id)a6
+- (SMSessionStartMessageSendResultNotification)initWithSessionStartMessage:(id)message messageGUID:(id)d success:(BOOL)success error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  messageCopy = message;
+  dCopy = d;
+  errorCopy = error;
+  if (!messageCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -44,7 +44,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!dCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -63,17 +63,17 @@ LABEL_12:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_message, a3);
-    objc_storeStrong(&v15->_messageGUID, a4);
-    v15->_success = a5;
-    objc_storeStrong(&v15->_error, a6);
+    objc_storeStrong(&v14->_message, message);
+    objc_storeStrong(&v15->_messageGUID, d);
+    v15->_success = success;
+    objc_storeStrong(&v15->_error, error);
   }
 
   self = v15;
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

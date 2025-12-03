@@ -3,7 +3,7 @@
 - (CKCachedAttachmentItem)init;
 - (CKCachedAttachmentItemDelegate)delegate;
 - (void)generatePreview;
-- (void)setAttachmentItem:(id)a3;
+- (void)setAttachmentItem:(id)item;
 @end
 
 @implementation CKCachedAttachmentItem
@@ -23,18 +23,18 @@
   return *(self + v3);
 }
 
-- (void)setAttachmentItem:(id)a3
+- (void)setAttachmentItem:(id)item
 {
   v5 = OBJC_IVAR___CKCachedAttachmentItem_attachmentItem;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = item;
+  itemCopy = item;
 }
 
 - (void)generatePreview
 {
-  v2 = self;
+  selfCopy = self;
   CKCachedAttachmentItem.generatePreview()();
 }
 

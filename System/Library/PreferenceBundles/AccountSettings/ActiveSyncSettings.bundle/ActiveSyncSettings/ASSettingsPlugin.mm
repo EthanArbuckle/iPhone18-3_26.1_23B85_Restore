@@ -1,7 +1,7 @@
 @interface ASSettingsPlugin
-- (Class)controllerClassForCreatingAccountWithType:(id)a3;
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3;
-- (Class)viewControllerClassForViewingAccount:(id)a3;
+- (Class)controllerClassForCreatingAccountWithType:(id)type;
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type;
+- (Class)viewControllerClassForViewingAccount:(id)account;
 - (id)supportedAccountTypeIdentifiers;
 @end
 
@@ -16,10 +16,10 @@
   return v2;
 }
 
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:ACAccountTypeIdentifierExchange])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:ACAccountTypeIdentifierExchange])
   {
     v4 = off_302F0;
 LABEL_5:
@@ -28,7 +28,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:ACAccountTypeIdentifierHotmail])
+  if ([typeCopy isEqualToString:ACAccountTypeIdentifierHotmail])
   {
     v4 = off_30300;
     goto LABEL_5;
@@ -40,12 +40,12 @@ LABEL_7:
   return v6;
 }
 
-- (Class)viewControllerClassForViewingAccount:(id)a3
+- (Class)viewControllerClassForViewingAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 accountType];
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:ACAccountTypeIdentifierExchange];
+  accountCopy = account;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v6 = [identifier isEqualToString:ACAccountTypeIdentifierExchange];
 
   if (v6)
   {
@@ -56,9 +56,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v8 = [v3 accountType];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:ACAccountTypeIdentifierHotmail];
+  accountType2 = [accountCopy accountType];
+  identifier2 = [accountType2 identifier];
+  v10 = [identifier2 isEqualToString:ACAccountTypeIdentifierHotmail];
 
   if (v10)
   {
@@ -72,9 +72,9 @@ LABEL_7:
   return v12;
 }
 
-- (Class)controllerClassForCreatingAccountWithType:(id)a3
+- (Class)controllerClassForCreatingAccountWithType:(id)type
 {
-  if ([a3 isEqualToString:ACAccountTypeIdentifierHotmail])
+  if ([type isEqualToString:ACAccountTypeIdentifierHotmail])
   {
     v3 = objc_opt_class();
   }

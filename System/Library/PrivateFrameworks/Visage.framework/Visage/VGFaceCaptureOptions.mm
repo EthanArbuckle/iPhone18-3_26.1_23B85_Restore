@@ -1,12 +1,12 @@
 @interface VGFaceCaptureOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VGFaceCaptureOptions)init;
-- (VGFaceCaptureOptions)initWithCoder:(id)a3;
-- (VGFaceCaptureOptions)initWithSuiteName:(id)a3;
+- (VGFaceCaptureOptions)initWithCoder:(id)coder;
+- (VGFaceCaptureOptions)initWithSuiteName:(id)name;
 - (id)description;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDefaultsWithSuiteName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDefaultsWithSuiteName:(id)name;
 @end
 
 @implementation VGFaceCaptureOptions
@@ -19,10 +19,10 @@
   if (v2)
   {
     *(v2 + 15) = [objc_opt_class() defaultRequiredYawPoses];
-    v3 = [objc_opt_class() defaultRequiredPitchPoses];
+    defaultRequiredPitchPoses = [objc_opt_class() defaultRequiredPitchPoses];
     v4 = *(v2 + 17);
     v5 = MEMORY[0x277CBEBF8];
-    *(v2 + 16) = v3;
+    *(v2 + 16) = defaultRequiredPitchPoses;
     *(v2 + 17) = v5;
 
     [objc_opt_class() defaultYawLimit];
@@ -83,24 +83,24 @@
   return v2;
 }
 
-- (VGFaceCaptureOptions)initWithSuiteName:(id)a3
+- (VGFaceCaptureOptions)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(VGFaceCaptureOptions *)self init];
   v6 = v5;
   if (v5)
   {
-    [(VGFaceCaptureOptions *)v5 setDefaultsWithSuiteName:v4];
+    [(VGFaceCaptureOptions *)v5 setDefaultsWithSuiteName:nameCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)setDefaultsWithSuiteName:(id)a3
+- (void)setDefaultsWithSuiteName:(id)name
 {
-  v93 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v93];
+  nameCopy = name;
+  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
   v5 = [v4 objectForKey:@"requiredYawPoses"];
 
   if (v5)
@@ -405,7 +405,7 @@
   v69 = self->_bodyPoseGuidanceOptions;
   if (v69)
   {
-    [(VGBodyPoseGuidanceOptions *)v69 setDefaultsWithSuiteName:v93];
+    [(VGBodyPoseGuidanceOptions *)v69 setDefaultsWithSuiteName:nameCopy];
   }
 
   v70 = [v4 objectForKey:@"useVNFilters"];
@@ -801,44 +801,44 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"Yaw Poses %lu (limit %.f) Pitch Poses %lu (limit %.f) Expressions %@ Eyes Forward Sensitivity (yaw %g, pitch %g) Selection Frustum Offsets (non-front poses): { %@ } Selection Frustum Offsets (front pose): { %@ } Use FoV Margin: front pose [%@], non front poses [%@] Margins Head Ratio (left %g, right %g, top %g, bottom %g) Margins Head Ratio Front Pose (left %g, right %g, top %g, bottom %g) Bottom margin front pose delta %g Bottom margin pitch pose delta %g Ensure Eyes Forward On Front Pose %@ (use look-at check: %@) Eyes Open Sensitivity %g Neutral Expression Lower Bound %g Neutral Expression Upper Bound %g Ensure Eyes Open On Front Pose %@ Ensure Eyes Open On Non Front Pose %@ Ensure Almost Neutral Expression On Front Pose %@ Ensure Almost Neutral Expression On Non Front Pose %@ Face Tracking Result Set in VGCaptureData %@ Use FaceKit Tracker internal Face Detector %@ Use FaceKit Force CPU %@ Convert FaceKit tracking dictionary to ARKit tracking dictionary %@ Send Metrics %@ Use simple selector: %@ (min offset: %g, max offset: %g) Use distance filter: %@ (close threshold: %g cm, far threshold: %g cm) Body Pose Guidance Options: { %@ } Use Vision Filters %@ (during Frame Selection) Use Vision Filters %@ (during Enrollment) Vision Front Pose Blink Confidence Threshold %g Use computed depth bounding box %@ Use computed depth bounding box for poses with bad alignment %@ Use ambient light filter %@ (low threshold: %g) Use tracked face identifier filter %@ Use Vision face landmarks filter %@ Use Motion Blur Filter %@ (threshold: %g)", requiredYawPoses, *&yawLimit, self->_requiredPitchPoses, *&v6, self->_requiredExpressions, self->_eyesForwardYawSensitivity, self->_eyesForwardPitchSensitivity, self->_selectionFrustum, self->_frontPoseSelectionFrustum, v8, v9, self->_leftMarginHeadRatio, self->_rightMarginHeadRatio, self->_topMarginHeadRatio, self->_bottomMarginHeadRatio, self->_leftMarginFrontPoseHeadRatio, self->_rightMarginFrontPoseHeadRatio, self->_topMarginHeadRatio, self->_bottomMarginHeadRatio, self->_bottomMarginFrontPoseDelta, self->_bottomMarginPitchPoseDelta, v10, v11, self->_eyesOpenSensitivity, self->_neutralExpressionLowerBound, self->_neutralExpressionUpperBound, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, self->_simpleSelectorMinOffsetAngle, self->_simpleSelectorMaxOffsetAngle, v22, self->_distanceFilterCloseThreshold, self->_distanceFilterFarThreshold, self->_bodyPoseGuidanceOptions, v23, v24, self->_vnFrontPoseBlinkThreshold, v25, v26, v27, self->_ambientLightFilterLowThreshold, v28, v29, v7, self->_motionBlurThreshold];
 }
 
-- (VGFaceCaptureOptions)initWithCoder:(id)a3
+- (VGFaceCaptureOptions)initWithCoder:(id)coder
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VGFaceCaptureOptions *)self init];
   if (v5)
   {
-    v5->_requiredYawPoses = [v4 decodeIntegerForKey:@"requiredYawPoses"];
-    v5->_requiredPitchPoses = [v4 decodeIntegerForKey:@"requiredPitchPoses"];
+    v5->_requiredYawPoses = [coderCopy decodeIntegerForKey:@"requiredYawPoses"];
+    v5->_requiredPitchPoses = [coderCopy decodeIntegerForKey:@"requiredPitchPoses"];
     v6 = MEMORY[0x277CBEB98];
     v72[0] = objc_opt_class();
     v72[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"requiredExpressions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"requiredExpressions"];
     requiredExpressions = v5->_requiredExpressions;
     v5->_requiredExpressions = v9;
 
-    [v4 decodeFloatForKey:@"yawLimit"];
+    [coderCopy decodeFloatForKey:@"yawLimit"];
     v5->_yawLimit = v11;
-    [v4 decodeFloatForKey:@"pitchLimit"];
+    [coderCopy decodeFloatForKey:@"pitchLimit"];
     v5->_pitchLimit = v12;
-    [v4 decodeFloatForKey:@"eyesForwardYawSensitivity"];
+    [coderCopy decodeFloatForKey:@"eyesForwardYawSensitivity"];
     v5->_eyesForwardYawSensitivity = v13;
-    [v4 decodeFloatForKey:@"eyesForwardPitchSensitivity"];
+    [coderCopy decodeFloatForKey:@"eyesForwardPitchSensitivity"];
     v5->_eyesForwardPitchSensitivity = v14;
-    [v4 decodeFloatForKey:@"yawSensitivity"];
+    [coderCopy decodeFloatForKey:@"yawSensitivity"];
     v16 = v15;
     v17 = v15;
-    if ([v4 containsValueForKey:@"yawSensitivityFrontPose"])
+    if ([coderCopy containsValueForKey:@"yawSensitivityFrontPose"])
     {
-      [v4 decodeFloatForKey:@"yawSensitivityFrontPose"];
+      [coderCopy decodeFloatForKey:@"yawSensitivityFrontPose"];
       v17 = v18;
     }
 
-    if ([v4 containsValueForKey:@"selectionFrustum"])
+    if ([coderCopy containsValueForKey:@"selectionFrustum"])
     {
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectionFrustum"];
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectionFrustum"];
       selectionFrustum = v5->_selectionFrustum;
       v5->_selectionFrustum = v19;
     }
@@ -859,9 +859,9 @@
       [(VGFaceSelectionFrustum *)v5->_selectionFrustum setPitchOffsetBottom:v26];
     }
 
-    if ([v4 containsValueForKey:@"frontPoseSelectionFrustum"])
+    if ([coderCopy containsValueForKey:@"frontPoseSelectionFrustum"])
     {
-      v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frontPoseSelectionFrustum"];
+      v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frontPoseSelectionFrustum"];
       frontPoseSelectionFrustum = v5->_frontPoseSelectionFrustum;
       v5->_frontPoseSelectionFrustum = v27;
     }
@@ -882,17 +882,17 @@
       [(VGFaceSelectionFrustum *)v5->_frontPoseSelectionFrustum setPitchOffsetBottom:v34];
     }
 
-    [v4 decodeFloatForKey:@"leftMarginHeadRatio"];
+    [coderCopy decodeFloatForKey:@"leftMarginHeadRatio"];
     v5->_leftMarginHeadRatio = v35;
-    [v4 decodeFloatForKey:@"rightMarginHeadRatio"];
+    [coderCopy decodeFloatForKey:@"rightMarginHeadRatio"];
     v5->_rightMarginHeadRatio = v36;
-    [v4 decodeFloatForKey:@"topMarginHeadRatio"];
+    [coderCopy decodeFloatForKey:@"topMarginHeadRatio"];
     v5->_topMarginHeadRatio = v37;
-    [v4 decodeFloatForKey:@"bottomMarginHeadRatio"];
+    [coderCopy decodeFloatForKey:@"bottomMarginHeadRatio"];
     v5->_bottomMarginHeadRatio = v38;
-    if ([v4 containsValueForKey:@"leftMarginFrontPoseHeadRatio"])
+    if ([coderCopy containsValueForKey:@"leftMarginFrontPoseHeadRatio"])
     {
-      [v4 decodeFloatForKey:@"leftMarginFrontPoseHeadRatio"];
+      [coderCopy decodeFloatForKey:@"leftMarginFrontPoseHeadRatio"];
     }
 
     else
@@ -901,9 +901,9 @@
     }
 
     v5->_leftMarginFrontPoseHeadRatio = leftMarginHeadRatio;
-    if ([v4 containsValueForKey:@"rightMarginFrontPoseHeadRatio"])
+    if ([coderCopy containsValueForKey:@"rightMarginFrontPoseHeadRatio"])
     {
-      [v4 decodeFloatForKey:@"rightMarginFrontPoseHeadRatio"];
+      [coderCopy decodeFloatForKey:@"rightMarginFrontPoseHeadRatio"];
     }
 
     else
@@ -912,25 +912,25 @@
     }
 
     v5->_rightMarginFrontPoseHeadRatio = rightMarginHeadRatio;
-    [v4 decodeFloatForKey:@"bottomMarginFrontPoseDelta"];
+    [coderCopy decodeFloatForKey:@"bottomMarginFrontPoseDelta"];
     v5->_bottomMarginFrontPoseDelta = v41;
-    [v4 decodeFloatForKey:@"bottomMarginPitchPoseDelta"];
+    [coderCopy decodeFloatForKey:@"bottomMarginPitchPoseDelta"];
     v5->_bottomMarginPitchPoseDelta = v42;
-    [v4 decodeFloatForKey:@"eyesOpenSensitivity"];
+    [coderCopy decodeFloatForKey:@"eyesOpenSensitivity"];
     v5->_eyesOpenSensitivity = v43;
-    [v4 decodeFloatForKey:@"neutralExpressionLowerBound"];
+    [coderCopy decodeFloatForKey:@"neutralExpressionLowerBound"];
     v5->_neutralExpressionLowerBound = v44;
-    [v4 decodeFloatForKey:@"neutralExpressionUpperBound"];
+    [coderCopy decodeFloatForKey:@"neutralExpressionUpperBound"];
     v5->_neutralExpressionUpperBound = v45;
-    v5->_writeDebugData = [v4 decodeBoolForKey:@"writeDebugData"];
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"debugDataPath"];
+    v5->_writeDebugData = [coderCopy decodeBoolForKey:@"writeDebugData"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"debugDataPath"];
     debugDataPath = v5->_debugDataPath;
     v5->_debugDataPath = v46;
 
-    v5->_useLookAtForEyesForward = [v4 decodeBoolForKey:@"useLookAtForEyesForward"];
-    v5->_ensureEyesForwardOnFrontPose = [v4 decodeBoolForKey:@"ensureEyesForwardOnFrontPose"];
-    v5->_ensureEyesOpenOnFrontPose = [v4 decodeBoolForKey:@"ensureEyesOpenOnFrontPose"];
-    if ([v4 containsValueForKey:@"ensureEyesOpenOnAllPoses"])
+    v5->_useLookAtForEyesForward = [coderCopy decodeBoolForKey:@"useLookAtForEyesForward"];
+    v5->_ensureEyesForwardOnFrontPose = [coderCopy decodeBoolForKey:@"ensureEyesForwardOnFrontPose"];
+    v5->_ensureEyesOpenOnFrontPose = [coderCopy decodeBoolForKey:@"ensureEyesOpenOnFrontPose"];
+    if ([coderCopy containsValueForKey:@"ensureEyesOpenOnAllPoses"])
     {
       v48 = @"ensureEyesOpenOnAllPoses";
     }
@@ -940,13 +940,13 @@
       v48 = @"ensureEyesOpenOnNonFrontPose";
     }
 
-    v5->_ensureEyesOpenOnNonFrontPose = [v4 decodeBoolForKey:v48];
-    if ([v4 containsValueForKey:@"ensureNeutralExpressionOnFrontPose"])
+    v5->_ensureEyesOpenOnNonFrontPose = [coderCopy decodeBoolForKey:v48];
+    if ([coderCopy containsValueForKey:@"ensureNeutralExpressionOnFrontPose"])
     {
-      v5->_ensureNeutralExpressionOnFrontPose = [v4 decodeBoolForKey:@"ensureNeutralExpressionOnFrontPose"];
+      v5->_ensureNeutralExpressionOnFrontPose = [coderCopy decodeBoolForKey:@"ensureNeutralExpressionOnFrontPose"];
     }
 
-    if ([v4 containsValueForKey:@"ensureAlmostNeutralExpressionOnAllPoses"])
+    if ([coderCopy containsValueForKey:@"ensureAlmostNeutralExpressionOnAllPoses"])
     {
       v49 = @"ensureAlmostNeutralExpressionOnAllPoses";
     }
@@ -956,36 +956,36 @@
       v49 = @"ensureAlmostNeutralExpressionOnNonFrontPose";
     }
 
-    v5->_ensureAlmostNeutralExpressionOnNonFrontPose = [v4 decodeBoolForKey:v49];
-    v5->_useFaceTrackingDictionary = [v4 decodeBoolForKey:@"useFaceTrackingDictionary"];
-    v5->_useFKInternalFaceDetector = [v4 decodeBoolForKey:@"useFKInternalFaceDetector"];
-    v5->_useFKForceCPU = [v4 decodeBoolForKey:@"useFKForceCPU"];
-    v5->_convertFKTrackingDictToARKitDict = [v4 decodeBoolForKey:@"convertFKTrackingDictToARKitDict"];
-    v5->_sendMetrics = [v4 decodeBoolForKey:@"sendMetrics"];
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraImageColorSpaceName"];
+    v5->_ensureAlmostNeutralExpressionOnNonFrontPose = [coderCopy decodeBoolForKey:v49];
+    v5->_useFaceTrackingDictionary = [coderCopy decodeBoolForKey:@"useFaceTrackingDictionary"];
+    v5->_useFKInternalFaceDetector = [coderCopy decodeBoolForKey:@"useFKInternalFaceDetector"];
+    v5->_useFKForceCPU = [coderCopy decodeBoolForKey:@"useFKForceCPU"];
+    v5->_convertFKTrackingDictToARKitDict = [coderCopy decodeBoolForKey:@"convertFKTrackingDictToARKitDict"];
+    v5->_sendMetrics = [coderCopy decodeBoolForKey:@"sendMetrics"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraImageColorSpaceName"];
     cameraImageColorSpaceName = v5->_cameraImageColorSpaceName;
     v5->_cameraImageColorSpaceName = v50;
 
-    v5->_useSimpleSelector = [v4 decodeBoolForKey:@"useSimpleSelector"];
-    [v4 decodeFloatForKey:@"simpleSelectorMinOffsetAngle"];
+    v5->_useSimpleSelector = [coderCopy decodeBoolForKey:@"useSimpleSelector"];
+    [coderCopy decodeFloatForKey:@"simpleSelectorMinOffsetAngle"];
     v5->_simpleSelectorMinOffsetAngle = v52;
-    [v4 decodeFloatForKey:@"simpleSelectorMaxOffsetAngle"];
+    [coderCopy decodeFloatForKey:@"simpleSelectorMaxOffsetAngle"];
     v5->_simpleSelectorMaxOffsetAngle = v53;
-    v5->_useDistanceFilter = [v4 decodeBoolForKey:@"useDistanceFilter"];
-    [v4 decodeFloatForKey:@"distanceFilterCloseThreshold"];
+    v5->_useDistanceFilter = [coderCopy decodeBoolForKey:@"useDistanceFilter"];
+    [coderCopy decodeFloatForKey:@"distanceFilterCloseThreshold"];
     v5->_distanceFilterCloseThreshold = v54;
-    [v4 decodeFloatForKey:@"distanceFilterFarThreshold"];
+    [coderCopy decodeFloatForKey:@"distanceFilterFarThreshold"];
     v5->_distanceFilterFarThreshold = v55;
-    v5->_useAmbientLightFilter = [v4 decodeBoolForKey:@"useAmbientLightFilter"];
-    [v4 decodeFloatForKey:@"ambientLightFilterLowThreshold"];
+    v5->_useAmbientLightFilter = [coderCopy decodeBoolForKey:@"useAmbientLightFilter"];
+    [coderCopy decodeFloatForKey:@"ambientLightFilterLowThreshold"];
     v5->_ambientLightFilterLowThreshold = v56;
-    v5->_useVNFilters = [v4 decodeBoolForKey:@"useVNFilters"];
-    v5->_useVNFiltersEnrollment = [v4 decodeBoolForKey:@"useVNFiltersEnrollment"];
-    [v4 decodeFloatForKey:@"vnFrontPoseBlinkThreshold"];
+    v5->_useVNFilters = [coderCopy decodeBoolForKey:@"useVNFilters"];
+    v5->_useVNFiltersEnrollment = [coderCopy decodeBoolForKey:@"useVNFiltersEnrollment"];
+    [coderCopy decodeFloatForKey:@"vnFrontPoseBlinkThreshold"];
     v5->_vnFrontPoseBlinkThreshold = v57;
-    if ([v4 containsValueForKey:@"bodyPoseGuidanceOptions"])
+    if ([coderCopy containsValueForKey:@"bodyPoseGuidanceOptions"])
     {
-      v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodyPoseGuidanceOptions"];
+      v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodyPoseGuidanceOptions"];
     }
 
     else
@@ -996,9 +996,9 @@
     bodyPoseGuidanceOptions = v5->_bodyPoseGuidanceOptions;
     v5->_bodyPoseGuidanceOptions = v58;
 
-    if ([v4 containsValueForKey:@"useFovMarginsFilterFrontPose"])
+    if ([coderCopy containsValueForKey:@"useFovMarginsFilterFrontPose"])
     {
-      v60 = [v4 decodeBoolForKey:@"useFovMarginsFilterFrontPose"];
+      v60 = [coderCopy decodeBoolForKey:@"useFovMarginsFilterFrontPose"];
     }
 
     else
@@ -1007,9 +1007,9 @@
     }
 
     v5->_useFovMarginsFilterFrontPose = v60;
-    if ([v4 containsValueForKey:@"useFovMarginsFilterNonFrontPose"])
+    if ([coderCopy containsValueForKey:@"useFovMarginsFilterNonFrontPose"])
     {
-      v61 = [v4 decodeBoolForKey:@"useFovMarginsFilterNonFrontPose"];
+      v61 = [coderCopy decodeBoolForKey:@"useFovMarginsFilterNonFrontPose"];
     }
 
     else
@@ -1018,9 +1018,9 @@
     }
 
     v5->_useFovMarginsFilterNonFrontPose = v61;
-    if ([v4 containsValueForKey:@"useDepthFovFilter"])
+    if ([coderCopy containsValueForKey:@"useDepthFovFilter"])
     {
-      v62 = [v4 decodeBoolForKey:@"useDepthFovFilter"];
+      v62 = [coderCopy decodeBoolForKey:@"useDepthFovFilter"];
     }
 
     else
@@ -1029,44 +1029,44 @@
     }
 
     v5->_useDepthFovFilter = v62;
-    v63 = [v4 containsValueForKey:@"useDepthFovFilterForBadAlignment"];
+    v63 = [coderCopy containsValueForKey:@"useDepthFovFilterForBadAlignment"];
     if (v63)
     {
-      LOBYTE(v63) = [v4 decodeBoolForKey:@"useDepthFovFilterForBadAlignment"];
+      LOBYTE(v63) = [coderCopy decodeBoolForKey:@"useDepthFovFilterForBadAlignment"];
     }
 
     v5->_useDepthFovFilterForBadAlignment = v63;
-    v64 = [v4 containsValueForKey:@"useAmbientLightFilter"];
+    v64 = [coderCopy containsValueForKey:@"useAmbientLightFilter"];
     if (v64)
     {
-      LOBYTE(v64) = [v4 decodeBoolForKey:@"useAmbientLightFilter"];
+      LOBYTE(v64) = [coderCopy decodeBoolForKey:@"useAmbientLightFilter"];
     }
 
     v5->_useAmbientLightFilter = v64;
-    v65 = [v4 containsValueForKey:@"useTrackedFaceIdentifierFilter"];
+    v65 = [coderCopy containsValueForKey:@"useTrackedFaceIdentifierFilter"];
     if (v65)
     {
-      LOBYTE(v65) = [v4 decodeBoolForKey:@"useTrackedFaceIdentifierFilter"];
+      LOBYTE(v65) = [coderCopy decodeBoolForKey:@"useTrackedFaceIdentifierFilter"];
     }
 
     v5->_useTrackedFaceIdentifierFilter = v65;
-    v66 = [v4 containsValueForKey:@"useVNFaceLandmarksFilter"];
+    v66 = [coderCopy containsValueForKey:@"useVNFaceLandmarksFilter"];
     if (v66)
     {
-      LOBYTE(v66) = [v4 decodeBoolForKey:@"useVNFaceLandmarksFilter"];
+      LOBYTE(v66) = [coderCopy decodeBoolForKey:@"useVNFaceLandmarksFilter"];
     }
 
     v5->_useVNFaceLandmarksFilter = v66;
-    v67 = [v4 containsValueForKey:@"useMotionBlurFilter"];
+    v67 = [coderCopy containsValueForKey:@"useMotionBlurFilter"];
     if (v67)
     {
-      LOBYTE(v67) = [v4 decodeBoolForKey:@"useMotionBlurFilter"];
+      LOBYTE(v67) = [coderCopy decodeBoolForKey:@"useMotionBlurFilter"];
     }
 
     v5->_useMotionBlurFilter = v67;
-    if ([v4 containsValueForKey:@"motionBlurThreshold"])
+    if ([coderCopy containsValueForKey:@"motionBlurThreshold"])
     {
-      [v4 decodeFloatForKey:@"motionBlurThreshold"];
+      [coderCopy decodeFloatForKey:@"motionBlurThreshold"];
     }
 
     else
@@ -1082,95 +1082,95 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requiredYawPoses = self->_requiredYawPoses;
-  v27 = a3;
-  [v27 encodeInteger:requiredYawPoses forKey:@"requiredYawPoses"];
-  [v27 encodeInteger:self->_requiredPitchPoses forKey:@"requiredPitchPoses"];
-  [v27 encodeObject:self->_requiredExpressions forKey:@"requiredExpressions"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:requiredYawPoses forKey:@"requiredYawPoses"];
+  [coderCopy encodeInteger:self->_requiredPitchPoses forKey:@"requiredPitchPoses"];
+  [coderCopy encodeObject:self->_requiredExpressions forKey:@"requiredExpressions"];
   *&v5 = self->_yawLimit;
-  [v27 encodeFloat:@"yawLimit" forKey:v5];
+  [coderCopy encodeFloat:@"yawLimit" forKey:v5];
   *&v6 = self->_pitchLimit;
-  [v27 encodeFloat:@"pitchLimit" forKey:v6];
+  [coderCopy encodeFloat:@"pitchLimit" forKey:v6];
   *&v7 = self->_eyesForwardYawSensitivity;
-  [v27 encodeFloat:@"eyesForwardYawSensitivity" forKey:v7];
+  [coderCopy encodeFloat:@"eyesForwardYawSensitivity" forKey:v7];
   *&v8 = self->_eyesForwardPitchSensitivity;
-  [v27 encodeFloat:@"eyesForwardPitchSensitivity" forKey:v8];
+  [coderCopy encodeFloat:@"eyesForwardPitchSensitivity" forKey:v8];
   *&v9 = self->_leftMarginHeadRatio;
-  [v27 encodeFloat:@"leftMarginHeadRatio" forKey:v9];
+  [coderCopy encodeFloat:@"leftMarginHeadRatio" forKey:v9];
   *&v10 = self->_rightMarginHeadRatio;
-  [v27 encodeFloat:@"rightMarginHeadRatio" forKey:v10];
+  [coderCopy encodeFloat:@"rightMarginHeadRatio" forKey:v10];
   *&v11 = self->_topMarginHeadRatio;
-  [v27 encodeFloat:@"topMarginHeadRatio" forKey:v11];
+  [coderCopy encodeFloat:@"topMarginHeadRatio" forKey:v11];
   *&v12 = self->_bottomMarginHeadRatio;
-  [v27 encodeFloat:@"bottomMarginHeadRatio" forKey:v12];
+  [coderCopy encodeFloat:@"bottomMarginHeadRatio" forKey:v12];
   *&v13 = self->_leftMarginFrontPoseHeadRatio;
-  [v27 encodeFloat:@"leftMarginFrontPoseHeadRatio" forKey:v13];
+  [coderCopy encodeFloat:@"leftMarginFrontPoseHeadRatio" forKey:v13];
   *&v14 = self->_rightMarginFrontPoseHeadRatio;
-  [v27 encodeFloat:@"rightMarginFrontPoseHeadRatio" forKey:v14];
+  [coderCopy encodeFloat:@"rightMarginFrontPoseHeadRatio" forKey:v14];
   *&v15 = self->_bottomMarginFrontPoseDelta;
-  [v27 encodeFloat:@"bottomMarginFrontPoseDelta" forKey:v15];
+  [coderCopy encodeFloat:@"bottomMarginFrontPoseDelta" forKey:v15];
   *&v16 = self->_bottomMarginPitchPoseDelta;
-  [v27 encodeFloat:@"bottomMarginPitchPoseDelta" forKey:v16];
+  [coderCopy encodeFloat:@"bottomMarginPitchPoseDelta" forKey:v16];
   *&v17 = self->_eyesOpenSensitivity;
-  [v27 encodeFloat:@"eyesOpenSensitivity" forKey:v17];
+  [coderCopy encodeFloat:@"eyesOpenSensitivity" forKey:v17];
   *&v18 = self->_neutralExpressionLowerBound;
-  [v27 encodeFloat:@"neutralExpressionLowerBound" forKey:v18];
+  [coderCopy encodeFloat:@"neutralExpressionLowerBound" forKey:v18];
   *&v19 = self->_neutralExpressionUpperBound;
-  [v27 encodeFloat:@"neutralExpressionUpperBound" forKey:v19];
-  [v27 encodeBool:self->_writeDebugData forKey:@"writeDebugData"];
-  [v27 encodeObject:self->_debugDataPath forKey:@"debugDataPath"];
-  [v27 encodeBool:self->_useLookAtForEyesForward forKey:@"useLookAtForEyesForward"];
-  [v27 encodeBool:self->_ensureEyesForwardOnFrontPose forKey:@"ensureEyesForwardOnFrontPose"];
-  [v27 encodeBool:self->_ensureEyesOpenOnFrontPose forKey:@"ensureEyesOpenOnFrontPose"];
-  [v27 encodeBool:self->_ensureEyesOpenOnNonFrontPose forKey:@"ensureEyesOpenOnNonFrontPose"];
-  [v27 encodeBool:self->_ensureNeutralExpressionOnFrontPose forKey:@"ensureNeutralExpressionOnFrontPose"];
-  [v27 encodeBool:self->_ensureAlmostNeutralExpressionOnNonFrontPose forKey:@"ensureAlmostNeutralExpressionOnNonFrontPose"];
-  [v27 encodeBool:self->_useFaceTrackingDictionary forKey:@"useFaceTrackingDictionary"];
-  [v27 encodeBool:self->_useFKInternalFaceDetector forKey:@"useFKInternalFaceDetector"];
-  [v27 encodeBool:self->_useFKForceCPU forKey:@"useFKForceCPU"];
-  [v27 encodeBool:self->_convertFKTrackingDictToARKitDict forKey:@"convertFKTrackingDictToARKitDict"];
-  [v27 encodeBool:self->_sendMetrics forKey:@"sendMetrics"];
-  [v27 encodeObject:self->_cameraImageColorSpaceName forKey:@"cameraImageColorSpaceName"];
-  [v27 encodeBool:self->_useSimpleSelector forKey:@"useSimpleSelector"];
+  [coderCopy encodeFloat:@"neutralExpressionUpperBound" forKey:v19];
+  [coderCopy encodeBool:self->_writeDebugData forKey:@"writeDebugData"];
+  [coderCopy encodeObject:self->_debugDataPath forKey:@"debugDataPath"];
+  [coderCopy encodeBool:self->_useLookAtForEyesForward forKey:@"useLookAtForEyesForward"];
+  [coderCopy encodeBool:self->_ensureEyesForwardOnFrontPose forKey:@"ensureEyesForwardOnFrontPose"];
+  [coderCopy encodeBool:self->_ensureEyesOpenOnFrontPose forKey:@"ensureEyesOpenOnFrontPose"];
+  [coderCopy encodeBool:self->_ensureEyesOpenOnNonFrontPose forKey:@"ensureEyesOpenOnNonFrontPose"];
+  [coderCopy encodeBool:self->_ensureNeutralExpressionOnFrontPose forKey:@"ensureNeutralExpressionOnFrontPose"];
+  [coderCopy encodeBool:self->_ensureAlmostNeutralExpressionOnNonFrontPose forKey:@"ensureAlmostNeutralExpressionOnNonFrontPose"];
+  [coderCopy encodeBool:self->_useFaceTrackingDictionary forKey:@"useFaceTrackingDictionary"];
+  [coderCopy encodeBool:self->_useFKInternalFaceDetector forKey:@"useFKInternalFaceDetector"];
+  [coderCopy encodeBool:self->_useFKForceCPU forKey:@"useFKForceCPU"];
+  [coderCopy encodeBool:self->_convertFKTrackingDictToARKitDict forKey:@"convertFKTrackingDictToARKitDict"];
+  [coderCopy encodeBool:self->_sendMetrics forKey:@"sendMetrics"];
+  [coderCopy encodeObject:self->_cameraImageColorSpaceName forKey:@"cameraImageColorSpaceName"];
+  [coderCopy encodeBool:self->_useSimpleSelector forKey:@"useSimpleSelector"];
   *&v20 = self->_simpleSelectorMinOffsetAngle;
-  [v27 encodeFloat:@"simpleSelectorMinOffsetAngle" forKey:v20];
+  [coderCopy encodeFloat:@"simpleSelectorMinOffsetAngle" forKey:v20];
   *&v21 = self->_simpleSelectorMaxOffsetAngle;
-  [v27 encodeFloat:@"simpleSelectorMaxOffsetAngle" forKey:v21];
-  [v27 encodeBool:self->_useDistanceFilter forKey:@"useDistanceFilter"];
+  [coderCopy encodeFloat:@"simpleSelectorMaxOffsetAngle" forKey:v21];
+  [coderCopy encodeBool:self->_useDistanceFilter forKey:@"useDistanceFilter"];
   *&v22 = self->_distanceFilterCloseThreshold;
-  [v27 encodeFloat:@"distanceFilterCloseThreshold" forKey:v22];
+  [coderCopy encodeFloat:@"distanceFilterCloseThreshold" forKey:v22];
   *&v23 = self->_distanceFilterFarThreshold;
-  [v27 encodeFloat:@"distanceFilterFarThreshold" forKey:v23];
-  [v27 encodeBool:self->_useVNFilters forKey:@"useVNFilters"];
-  [v27 encodeBool:self->_useVNFiltersEnrollment forKey:@"useVNFiltersEnrollment"];
+  [coderCopy encodeFloat:@"distanceFilterFarThreshold" forKey:v23];
+  [coderCopy encodeBool:self->_useVNFilters forKey:@"useVNFilters"];
+  [coderCopy encodeBool:self->_useVNFiltersEnrollment forKey:@"useVNFiltersEnrollment"];
   *&v24 = self->_vnFrontPoseBlinkThreshold;
-  [v27 encodeFloat:@"vnFrontPoseBlinkThreshold" forKey:v24];
-  [v27 encodeObject:self->_bodyPoseGuidanceOptions forKey:@"bodyPoseGuidanceOptions"];
-  [v27 encodeObject:self->_selectionFrustum forKey:@"selectionFrustum"];
-  [v27 encodeObject:self->_frontPoseSelectionFrustum forKey:@"frontPoseSelectionFrustum"];
-  [v27 encodeBool:self->_useFovMarginsFilterFrontPose forKey:@"useFovMarginsFilterFrontPose"];
-  [v27 encodeBool:self->_useFovMarginsFilterNonFrontPose forKey:@"useFovMarginsFilterNonFrontPose"];
-  [v27 encodeBool:self->_useDepthFovFilter forKey:@"useDepthFovFilter"];
-  [v27 encodeBool:self->_useDepthFovFilterForBadAlignment forKey:@"useDepthFovFilterForBadAlignment"];
-  [v27 encodeBool:self->_useAmbientLightFilter forKey:@"useAmbientLightFilter"];
+  [coderCopy encodeFloat:@"vnFrontPoseBlinkThreshold" forKey:v24];
+  [coderCopy encodeObject:self->_bodyPoseGuidanceOptions forKey:@"bodyPoseGuidanceOptions"];
+  [coderCopy encodeObject:self->_selectionFrustum forKey:@"selectionFrustum"];
+  [coderCopy encodeObject:self->_frontPoseSelectionFrustum forKey:@"frontPoseSelectionFrustum"];
+  [coderCopy encodeBool:self->_useFovMarginsFilterFrontPose forKey:@"useFovMarginsFilterFrontPose"];
+  [coderCopy encodeBool:self->_useFovMarginsFilterNonFrontPose forKey:@"useFovMarginsFilterNonFrontPose"];
+  [coderCopy encodeBool:self->_useDepthFovFilter forKey:@"useDepthFovFilter"];
+  [coderCopy encodeBool:self->_useDepthFovFilterForBadAlignment forKey:@"useDepthFovFilterForBadAlignment"];
+  [coderCopy encodeBool:self->_useAmbientLightFilter forKey:@"useAmbientLightFilter"];
   *&v25 = self->_ambientLightFilterLowThreshold;
-  [v27 encodeFloat:@"ambientLightFilterLowThreshold" forKey:v25];
-  [v27 encodeBool:self->_useTrackedFaceIdentifierFilter forKey:@"useTrackedFaceIdentifierFilter"];
-  [v27 encodeBool:self->_useVNFaceLandmarksFilter forKey:@"useVNFaceLandmarksFilter"];
-  [v27 encodeBool:self->_useMotionBlurFilter forKey:@"useMotionBlurFilter"];
+  [coderCopy encodeFloat:@"ambientLightFilterLowThreshold" forKey:v25];
+  [coderCopy encodeBool:self->_useTrackedFaceIdentifierFilter forKey:@"useTrackedFaceIdentifierFilter"];
+  [coderCopy encodeBool:self->_useVNFaceLandmarksFilter forKey:@"useVNFaceLandmarksFilter"];
+  [coderCopy encodeBool:self->_useMotionBlurFilter forKey:@"useMotionBlurFilter"];
   *&v26 = self->_motionBlurThreshold;
-  [v27 encodeFloat:@"motionBlurThreshold" forKey:v26];
+  [coderCopy encodeFloat:@"motionBlurThreshold" forKey:v26];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     requiredYawPoses = self->_requiredYawPoses;
     if (requiredYawPoses != [v5 requiredYawPoses] || (requiredPitchPoses = self->_requiredPitchPoses, requiredPitchPoses != objc_msgSend(v5, "requiredPitchPoses")))
     {
@@ -1181,8 +1181,8 @@ LABEL_30:
     }
 
     requiredExpressions = self->_requiredExpressions;
-    v9 = [v5 requiredExpressions];
-    if (![requiredExpressions isEqualToArray:v9])
+    requiredExpressions = [v5 requiredExpressions];
+    if (![requiredExpressions isEqualToArray:requiredExpressions])
     {
       goto LABEL_28;
     }
@@ -1341,10 +1341,10 @@ LABEL_50:
     v59 = cameraImageColorSpaceName;
     if (!cameraImageColorSpaceName)
     {
-      v101 = [v5 cameraImageColorSpaceName];
-      if (!v101)
+      cameraImageColorSpaceName = [v5 cameraImageColorSpaceName];
+      if (!cameraImageColorSpaceName)
       {
-        v101 = 0;
+        cameraImageColorSpaceName = 0;
         v102 = 0;
         goto LABEL_56;
       }
@@ -1352,7 +1352,7 @@ LABEL_50:
       v59 = v40->_cameraImageColorSpaceName;
     }
 
-    v103 = [v5 cameraImageColorSpaceName];
+    cameraImageColorSpaceName2 = [v5 cameraImageColorSpaceName];
     if (![(NSString *)v59 isEqualToString:?])
     {
 
@@ -1401,10 +1401,10 @@ LABEL_70:
     v100 = bodyPoseGuidanceOptions;
     if (!bodyPoseGuidanceOptions)
     {
-      v95 = [v5 bodyPoseGuidanceOptions];
-      if (!v95)
+      bodyPoseGuidanceOptions = [v5 bodyPoseGuidanceOptions];
+      if (!bodyPoseGuidanceOptions)
       {
-        v95 = 0;
+        bodyPoseGuidanceOptions = 0;
         v98 = 0;
         goto LABEL_80;
       }
@@ -1412,7 +1412,7 @@ LABEL_70:
       bodyPoseGuidanceOptions = v40->_bodyPoseGuidanceOptions;
     }
 
-    v99 = [v5 bodyPoseGuidanceOptions];
+    bodyPoseGuidanceOptions2 = [v5 bodyPoseGuidanceOptions];
     if (![(VGBodyPoseGuidanceOptions *)bodyPoseGuidanceOptions isEqual:?])
     {
       v45 = 0;
@@ -1425,10 +1425,10 @@ LABEL_80:
     v97 = selectionFrustum;
     if (!selectionFrustum)
     {
-      v91 = [v5 selectionFrustum];
-      if (!v91)
+      selectionFrustum = [v5 selectionFrustum];
+      if (!selectionFrustum)
       {
-        v91 = 0;
+        selectionFrustum = 0;
         v93 = 0;
         goto LABEL_87;
       }
@@ -1436,7 +1436,7 @@ LABEL_80:
       selectionFrustum = v40->_selectionFrustum;
     }
 
-    v96 = [v5 selectionFrustum];
+    selectionFrustum2 = [v5 selectionFrustum];
     if (![(VGFaceSelectionFrustum *)selectionFrustum isEqual:?])
     {
       v45 = 0;
@@ -1449,10 +1449,10 @@ LABEL_87:
     v94 = frontPoseSelectionFrustum;
     if (!frontPoseSelectionFrustum)
     {
-      v89 = [v5 frontPoseSelectionFrustum];
-      if (!v89)
+      frontPoseSelectionFrustum = [v5 frontPoseSelectionFrustum];
+      if (!frontPoseSelectionFrustum)
       {
-        v89 = 0;
+        frontPoseSelectionFrustum = 0;
         v90 = 0;
         goto LABEL_94;
       }
@@ -1460,7 +1460,7 @@ LABEL_87:
       frontPoseSelectionFrustum = v40->_frontPoseSelectionFrustum;
     }
 
-    v92 = [v5 frontPoseSelectionFrustum];
+    frontPoseSelectionFrustum2 = [v5 frontPoseSelectionFrustum];
     if (![(VGFaceSelectionFrustum *)frontPoseSelectionFrustum isEqual:?])
     {
       v45 = 0;
@@ -1680,7 +1680,7 @@ LABEL_31:
   v93[18] = @"writeDebugData";
   v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_writeDebugData];
   debugDataPath = self->_debugDataPath;
-  v22 = @"nil";
+  toDictionary = @"nil";
   if (!debugDataPath)
   {
     debugDataPath = @"nil";
@@ -1761,42 +1761,42 @@ LABEL_31:
   v54 = bodyPoseGuidanceOptions;
   if (bodyPoseGuidanceOptions)
   {
-    v22 = [(VGBodyPoseGuidanceOptions *)bodyPoseGuidanceOptions toDictionary];
+    toDictionary = [(VGBodyPoseGuidanceOptions *)bodyPoseGuidanceOptions toDictionary];
   }
 
-  v94[40] = v22;
+  v94[40] = toDictionary;
   v93[41] = @"selectionFrustum";
   selectionFrustum = self->_selectionFrustum;
   v53 = selectionFrustum;
   if (selectionFrustum)
   {
-    v32 = [(VGFaceSelectionFrustum *)selectionFrustum toDictionary];
+    toDictionary2 = [(VGFaceSelectionFrustum *)selectionFrustum toDictionary];
   }
 
   else
   {
-    v32 = @"nil";
+    toDictionary2 = @"nil";
   }
 
-  v50 = v32;
-  v94[41] = v32;
+  v50 = toDictionary2;
+  v94[41] = toDictionary2;
   v93[42] = @"frontPoseSelectionFrustum";
   frontPoseSelectionFrustum = self->_frontPoseSelectionFrustum;
-  v69 = v22;
+  v69 = toDictionary;
   v52 = frontPoseSelectionFrustum;
   if (frontPoseSelectionFrustum)
   {
-    v34 = [(VGFaceSelectionFrustum *)frontPoseSelectionFrustum toDictionary];
+    toDictionary3 = [(VGFaceSelectionFrustum *)frontPoseSelectionFrustum toDictionary];
   }
 
   else
   {
-    v34 = @"nil";
+    toDictionary3 = @"nil";
   }
 
-  v94[42] = v34;
+  v94[42] = toDictionary3;
   v93[43] = @"useFovMarginsFilterFrontPose";
-  v51 = [MEMORY[0x277CCABB0] numberWithBool:{self->_useFovMarginsFilterFrontPose, v34}];
+  v51 = [MEMORY[0x277CCABB0] numberWithBool:{self->_useFovMarginsFilterFrontPose, toDictionary3}];
   v94[43] = v51;
   v93[44] = @"useFovMarginsFilterNonFrontPose";
   v35 = [MEMORY[0x277CCABB0] numberWithBool:self->_useFovMarginsFilterNonFrontPose];

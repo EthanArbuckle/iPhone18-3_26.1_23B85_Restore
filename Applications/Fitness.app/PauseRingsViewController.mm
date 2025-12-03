@@ -1,12 +1,12 @@
 @interface PauseRingsViewController
-- (_TtC10FitnessApp24PauseRingsViewController)initWithCoder:(id)a3;
-- (_TtC10FitnessApp24PauseRingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10FitnessApp24PauseRingsViewController)initWithCoder:(id)coder;
+- (_TtC10FitnessApp24PauseRingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation PauseRingsViewController
 
-- (_TtC10FitnessApp24PauseRingsViewController)initWithCoder:(id)a3
+- (_TtC10FitnessApp24PauseRingsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp24PauseRingsViewController_hostingController) = 0;
   v3 = self + OBJC_IVAR____TtC10FitnessApp24PauseRingsViewController____lazy_storage___pauseRingsView;
@@ -21,11 +21,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C023C();
 }
 
-- (_TtC10FitnessApp24PauseRingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp24PauseRingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

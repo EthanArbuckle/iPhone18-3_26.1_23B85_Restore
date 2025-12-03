@@ -1,7 +1,7 @@
 @interface ALCityManagerLoc
 + (id)sharedManager;
 - (ALCityManagerLoc)init;
-- (void)setLocaleForCityNames:(id)a3;
+- (void)setLocaleForCityNames:(id)names;
 @end
 
 @implementation ALCityManagerLoc
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (void)setLocaleForCityNames:(id)a3
+- (void)setLocaleForCityNames:(id)names
 {
-  v4 = a3;
-  v5 = [NSLocale componentsFromLocaleIdentifier:v4];
+  namesCopy = names;
+  v5 = [NSLocale componentsFromLocaleIdentifier:namesCopy];
   v6 = [NSBundle bundleWithIdentifier:@"com.apple.AppSupport"];
-  v7 = [v6 pathForResource:@"Localizable_Places" ofType:@"db" inDirectory:0 forLocalization:v4];
+  v7 = [v6 pathForResource:@"Localizable_Places" ofType:@"db" inDirectory:0 forLocalization:namesCopy];
   if (![v7 length])
   {
     v8 = [v5 objectForKeyedSubscript:NSLocaleCountryCode];
@@ -51,33 +51,33 @@
     if ([v9 length])
     {
       v7 = v9;
-      v4 = v8;
+      namesCopy = v8;
     }
 
     else
     {
-      v4 = [v5 objectForKeyedSubscript:NSLocaleLanguageCode];
+      namesCopy = [v5 objectForKeyedSubscript:NSLocaleLanguageCode];
 
-      v7 = [v6 pathForResource:@"Localizable_Places" ofType:@"db" inDirectory:0 forLocalization:v4];
+      v7 = [v6 pathForResource:@"Localizable_Places" ofType:@"db" inDirectory:0 forLocalization:namesCopy];
 
       if (![v7 length])
       {
         v10 = [[NSLocale alloc] initWithLocaleIdentifier:@"en"];
-        v11 = [v10 displayNameForKey:NSLocaleIdentifier value:v4];
+        v11 = [v10 displayNameForKey:NSLocaleIdentifier value:namesCopy];
 
         v12 = [v6 pathForResource:@"Localizable_Places" ofType:@"db" inDirectory:0 forLocalization:v11];
 
         v7 = v12;
-        v4 = v11;
+        namesCopy = v11;
       }
     }
   }
 
   if ([v7 length])
   {
-    v13 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v14 = OBJC_IVAR___ALCityManager__localizedDb;
-    v15 = sqlite3_open_v2(v13, &self->ALCityManager_opaque[OBJC_IVAR___ALCityManager__localizedDb], 1, 0);
+    v15 = sqlite3_open_v2(uTF8String, &self->ALCityManager_opaque[OBJC_IVAR___ALCityManager__localizedDb], 1, 0);
     if (!v15)
     {
       sqlite3_create_function(*&self->ALCityManager_opaque[v14], "CDLIKE", 1, 1, self, sub_100005E0C, 0, 0);

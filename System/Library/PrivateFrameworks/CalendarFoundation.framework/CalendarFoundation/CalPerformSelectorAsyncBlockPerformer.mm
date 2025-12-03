@@ -1,15 +1,15 @@
 @interface CalPerformSelectorAsyncBlockPerformer
-- (id)performAfterDelay:(double)a3 block:(id)a4;
+- (id)performAfterDelay:(double)delay block:(id)block;
 @end
 
 @implementation CalPerformSelectorAsyncBlockPerformer
 
-- (id)performAfterDelay:(double)a3 block:(id)a4
+- (id)performAfterDelay:(double)delay block:(id)block
 {
-  v5 = a4;
-  v6 = [[CalCancelablePerformSelector alloc] initWithBlock:v5];
+  blockCopy = block;
+  v6 = [[CalCancelablePerformSelector alloc] initWithBlock:blockCopy];
 
-  [(CalCancelablePerformSelector *)v6 performAfterDelay:a3];
+  [(CalCancelablePerformSelector *)v6 performAfterDelay:delay];
 
   return v6;
 }

@@ -1,29 +1,29 @@
 @interface ICArchiveWriter
-- (BOOL)finish:(id *)a3;
-- (BOOL)open:(id *)a3;
-- (BOOL)writeURL:(id)a3 isDirectory:(BOOL)a4 error:(id *)a5;
-- (BOOL)writeURLs:(id)a3 error:(id *)a4;
-- (ICArchiveWriter)initWithDestinationURL:(id)a3 baseURL:(id)a4;
+- (BOOL)finish:(id *)finish;
+- (BOOL)open:(id *)open;
+- (BOOL)writeURL:(id)l isDirectory:(BOOL)directory error:(id *)error;
+- (BOOL)writeURLs:(id)ls error:(id *)error;
+- (ICArchiveWriter)initWithDestinationURL:(id)l baseURL:(id)rL;
 - (void)dealloc;
 @end
 
 @implementation ICArchiveWriter
 
-- (ICArchiveWriter)initWithDestinationURL:(id)a3 baseURL:(id)a4
+- (ICArchiveWriter)initWithDestinationURL:(id)l baseURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v15.receiver = self;
   v15.super_class = ICArchiveWriter;
   v9 = [(ICArchiveWriter *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_destinationURL, a3);
-    v11 = [v8 path];
-    v12 = [v11 stringByStandardizingPath];
+    objc_storeStrong(&v9->_destinationURL, l);
+    path = [rLCopy path];
+    stringByStandardizingPath = [path stringByStandardizingPath];
     basePath = v10->_basePath;
-    v10->_basePath = v12;
+    v10->_basePath = stringByStandardizingPath;
   }
 
   return v10;
@@ -41,29 +41,29 @@
   [(ICArchiveWriter *)&v3 dealloc];
 }
 
-- (BOOL)writeURLs:(id)a3 error:(id *)a4
+- (BOOL)writeURLs:(id)ls error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  lsCopy = ls;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if (self->_archive || [(ICArchiveWriter *)self open:a4])
+  if (self->_archive || [(ICArchiveWriter *)self open:error])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v6;
+    obj = lsCopy;
     v7 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
       v24 = *v27;
       v9 = *MEMORY[0x1E695DB78];
-      v22 = v6;
+      v22 = lsCopy;
       while (2)
       {
         for (i = 0; i != v8; ++i)
@@ -75,36 +75,36 @@
 
           v11 = *(*(&v26 + 1) + 8 * i);
           v25 = 0;
-          v12 = [v11 getResourceValue:&v25 forKey:v9 error:{a4, v22}];
+          v12 = [v11 getResourceValue:&v25 forKey:v9 error:{error, v22}];
           v13 = v25;
           if (!v12)
           {
             goto LABEL_24;
           }
 
-          v14 = [v11 path];
-          v15 = [v14 stringByStandardizingPath];
+          path = [v11 path];
+          stringByStandardizingPath = [path stringByStandardizingPath];
 
-          if (![v13 BOOLValue] || (-[ICArchiveWriter basePath](self, "basePath"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v15, "isEqualToString:", v16), v16, (v17 & 1) == 0))
+          if (![v13 BOOLValue] || (-[ICArchiveWriter basePath](self, "basePath"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(stringByStandardizingPath, "isEqualToString:", v16), v16, (v17 & 1) == 0))
           {
-            if (!-[ICArchiveWriter writeURL:isDirectory:error:](self, "writeURL:isDirectory:error:", v11, [v13 BOOLValue], a4))
+            if (!-[ICArchiveWriter writeURL:isDirectory:error:](self, "writeURL:isDirectory:error:", v11, [v13 BOOLValue], error))
             {
 
 LABEL_24:
 LABEL_25:
               v20 = 0;
-              v6 = v22;
+              lsCopy = v22;
               goto LABEL_26;
             }
           }
 
           if ([v13 BOOLValue])
           {
-            v18 = [MEMORY[0x1E696AC08] defaultManager];
-            v19 = [v18 contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:0 options:0 error:a4];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            v19 = [defaultManager contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:0 options:0 error:error];
 
-            LODWORD(v18) = [(ICArchiveWriter *)self writeURLs:v19 error:a4];
-            if (!v18)
+            LODWORD(defaultManager) = [(ICArchiveWriter *)self writeURLs:v19 error:error];
+            if (!defaultManager)
             {
               goto LABEL_25;
             }
@@ -117,7 +117,7 @@ LABEL_25:
 
         v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
         v20 = 1;
-        v6 = v22;
+        lsCopy = v22;
         if (v8)
         {
           continue;
@@ -143,12 +143,12 @@ LABEL_26:
   return v20;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v5 = archive_write_finish();
   v6 = v5;
-  if (a3 && v5)
+  if (finish && v5)
   {
     v7 = MEMORY[0x1E696ABC0];
     v8 = *MEMORY[0x1E696A578];
@@ -157,14 +157,14 @@ LABEL_26:
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", archive_error_string(), v8, v9, @"Unable to create archive"];
     v14[1] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:2];
-    *a3 = [v7 errorWithDomain:@"com.apple.notes" code:v6 userInfo:v11];
+    *finish = [v7 errorWithDomain:@"com.apple.notes" code:v6 userInfo:v11];
   }
 
   self->_archive = 0;
   return v6 == 0;
 }
 
-- (BOOL)open:(id *)a3
+- (BOOL)open:(id *)open
 {
   v17[2] = *MEMORY[0x1E69E9840];
   self->_archive = archive_write_new();
@@ -185,14 +185,14 @@ LABEL_26:
     v6 = v7;
     if (!v7)
     {
-      v8 = [(ICArchiveWriter *)self destinationURL];
-      v9 = [v8 path];
-      [v9 fileSystemRepresentation];
+      destinationURL = [(ICArchiveWriter *)self destinationURL];
+      path = [destinationURL path];
+      [path fileSystemRepresentation];
       v6 = archive_write_open_filename();
     }
   }
 
-  if (a3 && v6)
+  if (open && v6)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
@@ -201,35 +201,35 @@ LABEL_26:
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", archive_error_string(), v11, v12, @"Unable to create archive"];
     v17[1] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:2];
-    *a3 = [v10 errorWithDomain:@"com.apple.notes" code:v6 userInfo:v14];
+    *open = [v10 errorWithDomain:@"com.apple.notes" code:v6 userInfo:v14];
   }
 
   return v6 == 0;
 }
 
-- (BOOL)writeURL:(id)a3 isDirectory:(BOOL)a4 error:(id *)a5
+- (BOOL)writeURL:(id)l isDirectory:(BOOL)directory error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v43 = 0;
-  [v7 getResourceValue:&v43 forKey:*MEMORY[0x1E695DBC8] error:a5];
+  [lCopy getResourceValue:&v43 forKey:*MEMORY[0x1E695DBC8] error:error];
   v8 = v43;
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
   v42 = 0;
-  [v7 getResourceValue:&v42 forKey:*MEMORY[0x1E695DB78] error:a5];
+  [lCopy getResourceValue:&v42 forKey:*MEMORY[0x1E695DB78] error:error];
   v10 = v42;
   if (!-[ICArchiveWriter flatten](self, "flatten") || ([v10 BOOLValue] & 1) == 0)
   {
-    v12 = [v7 path];
-    v13 = [v12 stringByStandardizingPath];
+    path = [lCopy path];
+    stringByStandardizingPath = [path stringByStandardizingPath];
 
     memset(&v41, 0, sizeof(v41));
-    if (lstat([v13 fileSystemRepresentation], &v41))
+    if (lstat([stringByStandardizingPath fileSystemRepresentation], &v41))
     {
-      if (a5)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-        *a5 = v11 = 0;
+        *error = v11 = 0;
 LABEL_29:
 
         goto LABEL_30;
@@ -240,56 +240,56 @@ LABEL_23:
       goto LABEL_29;
     }
 
-    if ([v13 hasPrefix:@"/private/var/folders/"])
+    if ([stringByStandardizingPath hasPrefix:@"/private/var/folders/"])
     {
-      v14 = [v13 substringFromIndex:{objc_msgSend(@"/private/var/folders/", "length")}];
+      v14 = [stringByStandardizingPath substringFromIndex:{objc_msgSend(@"/private/var/folders/", "length")}];
       v15 = [@"/var/folders/" stringByAppendingString:v14];
 
-      v13 = v15;
+      stringByStandardizingPath = v15;
     }
 
     if ([(ICArchiveWriter *)self flatten])
     {
-      v16 = [(ICArchiveWriter *)self flattenFolderName];
-      v17 = [v16 ic_sanitizedFilenameString];
+      flattenFolderName = [(ICArchiveWriter *)self flattenFolderName];
+      ic_sanitizedFilenameString = [flattenFolderName ic_sanitizedFilenameString];
 
-      v18 = [(__CFString *)v17 length];
+      v18 = [(__CFString *)ic_sanitizedFilenameString length];
       v19 = @"archive";
       if (v18)
       {
-        v19 = v17;
+        v19 = ic_sanitizedFilenameString;
       }
 
       v39 = v8;
       v20 = v10;
-      v21 = v9;
+      v21 = bOOLValue;
       v22 = v19;
-      v23 = [v13 lastPathComponent];
-      v24 = [(__CFString *)v22 stringByAppendingPathComponent:v23];
+      lastPathComponent = [stringByStandardizingPath lastPathComponent];
+      v24 = [(__CFString *)v22 stringByAppendingPathComponent:lastPathComponent];
 
-      v9 = v21;
+      bOOLValue = v21;
       v10 = v20;
       v8 = v39;
 
-      v13 = v23;
+      stringByStandardizingPath = lastPathComponent;
     }
 
     else
     {
-      v25 = [(ICArchiveWriter *)self basePath];
-      v26 = [v13 hasPrefix:v25];
+      basePath = [(ICArchiveWriter *)self basePath];
+      v26 = [stringByStandardizingPath hasPrefix:basePath];
 
       if (!v26)
       {
 LABEL_16:
-        [v13 fileSystemRepresentation];
+        [stringByStandardizingPath fileSystemRepresentation];
         archive_entry_new();
         archive_entry_copy_stat();
-        if (v9)
+        if (bOOLValue)
         {
-          v40 = v9;
-          v27 = [v7 path];
-          v28 = readlink([v27 fileSystemRepresentation], v46, 0x3FFuLL);
+          v40 = bOOLValue;
+          path2 = [lCopy path];
+          v28 = readlink([path2 fileSystemRepresentation], v46, 0x3FFuLL);
 
           if (v28 != -1)
           {
@@ -297,17 +297,17 @@ LABEL_16:
             archive_entry_set_symlink();
           }
 
-          LOBYTE(v9) = v40;
+          LOBYTE(bOOLValue) = v40;
         }
 
         archive_entry_set_pathname();
         v29 = archive_write_header();
         if (!v29)
         {
-          if ((v9 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
-            v36 = [v7 path];
-            v37 = open([v36 fileSystemRepresentation], 0);
+            path3 = [lCopy path];
+            v37 = open([path3 fileSystemRepresentation], 0);
 
             if (read(v37, v46, 0x2000uLL) >= 1)
             {
@@ -327,7 +327,7 @@ LABEL_16:
           goto LABEL_29;
         }
 
-        if (a5)
+        if (error)
         {
           v30 = MEMORY[0x1E696ABC0];
           v31 = v29;
@@ -339,17 +339,17 @@ LABEL_16:
           v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", archive_error_string()];
           v45[1] = v34;
           v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
-          *a5 = [v30 errorWithDomain:@"com.apple.notes" code:v31 userInfo:v35];
+          *error = [v30 errorWithDomain:@"com.apple.notes" code:v31 userInfo:v35];
         }
 
         goto LABEL_23;
       }
 
-      v17 = [(ICArchiveWriter *)self basePath];
-      v24 = [v13 substringFromIndex:{-[__CFString length](v17, "length")}];
+      ic_sanitizedFilenameString = [(ICArchiveWriter *)self basePath];
+      v24 = [stringByStandardizingPath substringFromIndex:{-[__CFString length](ic_sanitizedFilenameString, "length")}];
     }
 
-    v13 = v24;
+    stringByStandardizingPath = v24;
     goto LABEL_16;
   }
 

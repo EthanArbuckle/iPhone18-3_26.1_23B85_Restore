@@ -1,6 +1,6 @@
 @interface FigWeakReference
-+ (id)weakReferenceToObject:(id)a3;
-- (FigWeakReference)initWithReferencedObject:(id)a3;
++ (id)weakReferenceToObject:(id)object;
+- (FigWeakReference)initWithReferencedObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -14,14 +14,14 @@
   [(FigWeakReference *)&v3 dealloc];
 }
 
-+ (id)weakReferenceToObject:(id)a3
++ (id)weakReferenceToObject:(id)object
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithReferencedObject:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithReferencedObject:object];
 
   return v3;
 }
 
-- (FigWeakReference)initWithReferencedObject:(id)a3
+- (FigWeakReference)initWithReferencedObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = FigWeakReference;
@@ -29,9 +29,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (object)
     {
-      objc_storeWeak(&v4->_referencedObject, a3);
+      objc_storeWeak(&v4->_referencedObject, object);
     }
 
     else

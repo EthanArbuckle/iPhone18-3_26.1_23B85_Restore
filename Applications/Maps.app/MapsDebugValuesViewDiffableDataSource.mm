@@ -1,28 +1,28 @@
 @interface MapsDebugValuesViewDiffableDataSource
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation MapsDebugValuesViewDiffableDataSource
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_debugVC);
-  v6 = [WeakRetained sectionAtIndex:a4];
+  v6 = [WeakRetained sectionAtIndex:section];
 
-  v7 = [v6 footer];
+  footer = [v6 footer];
 
-  return v7;
+  return footer;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_debugVC);
-  v6 = [WeakRetained sectionAtIndex:a4];
+  v6 = [WeakRetained sectionAtIndex:section];
 
-  v7 = [v6 title];
+  title = [v6 title];
 
-  return v7;
+  return title;
 }
 
 @end

@@ -13,13 +13,13 @@
 
 - (uint64_t)pxg_shiftPosition:()PXGReusableViewAdoption
 {
-  result = [a1 isFloating];
+  result = [self isFloating];
   if ((result & 1) == 0)
   {
-    [a1 position];
+    [self position];
     PXPointAdd();
 
-    return [a1 setPosition:?];
+    return [self setPosition:?];
   }
 
   return result;
@@ -38,18 +38,18 @@
   if (objc_opt_isKindOfClass())
   {
     v24 = v18;
-    v25 = [a1 contents];
-    v26 = [v24 imageRef];
+    contents = [self contents];
+    imageRef = [v24 imageRef];
 
-    if (v25 != v26)
+    if (contents != imageRef)
     {
-      [a1 setContents:{objc_msgSend(v24, "imageRef")}];
+      [self setContents:{objc_msgSend(v24, "imageRef")}];
     }
 
-    [a1 contentsScale];
+    [self contentsScale];
     if (v27 != a6)
     {
-      [a1 setContentsScale:a6];
+      [self setContentsScale:a6];
     }
 
     [v24 alpha];
@@ -58,42 +58,42 @@
 
   v29 = *&v64;
   v30 = v22;
-  [a1 position];
+  [self position];
   if (v32 != v20 || v31 != v21)
   {
-    [a1 setPosition:{v20, v21}];
+    [self setPosition:{v20, v21}];
   }
 
-  [a1 bounds];
+  [self bounds];
   v75.origin.x = 0.0;
   v75.origin.y = 0.0;
   v75.size.width = v29;
   v75.size.height = v30;
   if (!CGRectEqualToRect(v72, v75))
   {
-    [a1 setBounds:{0.0, 0.0, v29, v30}];
+    [self setBounds:{0.0, 0.0, v29, v30}];
   }
 
   v34 = -*(a9 + 16);
-  [a1 zPosition];
+  [self zPosition];
   if (v35 != v34)
   {
-    [a1 setZPosition:v34];
+    [self setZPosition:v34];
   }
 
-  [a1 opacity];
+  [self opacity];
   if (*&v36 != a11->f32[0])
   {
     *&v36 = v23 * a11->f32[0];
-    [a1 setOpacity:v36];
+    [self setOpacity:v36];
   }
 
   v37 = fmaxf(fmaxf(a11[4].f32[1], a11[5].f32[0]), fmaxf(a11[5].f32[1], a11[6].f32[0]));
-  [a1 cornerRadius];
+  [self cornerRadius];
   if (v38 != v37)
   {
-    [a1 setCornerRadius:v37];
-    [a1 setMasksToBounds:v37 != 0.0];
+    [self setCornerRadius:v37];
+    [self setMasksToBounds:v37 != 0.0];
   }
 
   v40 = a11[4].f32[1];
@@ -134,16 +134,16 @@
     }
   }
 
-  if ([a1 maskedCorners] != v44)
+  if ([self maskedCorners] != v44)
   {
-    [a1 setMaskedCorners:v44];
+    [self setMaskedCorners:v44];
   }
 
   v65 = vcvtq_f64_f32(a11[9]);
-  [a1 anchorPoint];
+  [self anchorPoint];
   if (v46 != v65.f64[0] || v45 != v65.f64[1])
   {
-    [a1 setAnchorPoint:{*&v65, v45}];
+    [self setAnchorPoint:{*&v65, v45}];
   }
 
   if (v19)
@@ -175,8 +175,8 @@ LABEL_39:
   CGAffineTransformMakeScale(&v70, a11[7].f32[1], a11[7].f32[1]);
   CGAffineTransformRotate(&v71, &v70, v47);
   v70 = v71;
-  [a1 setAffineTransform:&v70];
-  [a1 setAllowsEdgeAntialiasing:a11[7].f32[0] != 0.0];
+  [self setAffineTransform:&v70];
+  [self setAllowsEdgeAntialiasing:a11[7].f32[0] != 0.0];
   if (v19)
   {
     v19[2] = a11[7].f32[0];
@@ -191,25 +191,25 @@ LABEL_42:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v50 = [v18 imageRef];
-      v29 = CGImageGetWidth(v50) / a6;
-      v30 = CGImageGetHeight(v50) / a6;
+      imageRef2 = [v18 imageRef];
+      v29 = CGImageGetWidth(imageRef2) / a6;
+      v30 = CGImageGetHeight(imageRef2) / a6;
     }
 
     v51 = a3 / v29;
     v52 = a2 / v30;
     v53 = (v29 - a5 - a3) / v29;
     v54 = (v30 - a4 - a2) / v30;
-    [a1 contentsCenter];
+    [self contentsCenter];
     v76.origin.x = v51;
     v76.origin.y = v52;
     v76.size.width = v53;
     v76.size.height = v54;
     if (!CGRectEqualToRect(v73, v76))
     {
-      [a1 setContentsRect:{*MEMORY[0x277D3CFC0], *(MEMORY[0x277D3CFC0] + 8), *(MEMORY[0x277D3CFC0] + 16), *(MEMORY[0x277D3CFC0] + 24)}];
+      [self setContentsRect:{*MEMORY[0x277D3CFC0], *(MEMORY[0x277D3CFC0] + 8), *(MEMORY[0x277D3CFC0] + 16), *(MEMORY[0x277D3CFC0] + 24)}];
 LABEL_51:
-      [a1 setContentsCenter:{v51, v52, v53, v54}];
+      [self setContentsCenter:{v51, v52, v53, v54}];
     }
   }
 
@@ -228,14 +228,14 @@ LABEL_51:
     v58 = v57;
     v60 = v59;
     v62 = v61;
-    [a1 contentsRect];
+    [self contentsRect];
     v77.origin.x = v56;
     v77.origin.y = v58;
     v77.size.width = v60;
     v77.size.height = v62;
     if (!CGRectEqualToRect(v74, v77))
     {
-      [a1 setContentsRect:{v56, v58, v60, v62}];
+      [self setContentsRect:{v56, v58, v60, v62}];
       v51 = *MEMORY[0x277D3CFC0];
       v52 = *(MEMORY[0x277D3CFC0] + 8);
       v53 = *(MEMORY[0x277D3CFC0] + 16);
@@ -247,26 +247,26 @@ LABEL_51:
 
 - (uint64_t)pxg_becomeReusable
 {
-  [a1 setHidden:1];
-  [a1 setContents:0];
-  [a1 setDelegate:0];
+  [self setHidden:1];
+  [self setContents:0];
+  [self setDelegate:0];
   v2 = *(MEMORY[0x277CBF2C0] + 16);
   v8[0] = *MEMORY[0x277CBF2C0];
   v8[1] = v2;
   v8[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [a1 setAffineTransform:v8];
+  [self setAffineTransform:v8];
   v3 = *MEMORY[0x277D3CFC0];
   v4 = *(MEMORY[0x277D3CFC0] + 8);
   v5 = *(MEMORY[0x277D3CFC0] + 16);
   v6 = *(MEMORY[0x277D3CFC0] + 24);
-  [a1 setContentsRect:{*MEMORY[0x277D3CFC0], v4, v5, v6}];
-  return [a1 setContentsCenter:{v3, v4, v5, v6}];
+  [self setContentsRect:{*MEMORY[0x277D3CFC0], v4, v5, v6}];
+  return [self setContentsCenter:{v3, v4, v5, v6}];
 }
 
 - (BOOL)pxg_hasSuperview
 {
-  v1 = [a1 superlayer];
-  v2 = v1 != 0;
+  superlayer = [self superlayer];
+  v2 = superlayer != 0;
 
   return v2;
 }
@@ -274,16 +274,16 @@ LABEL_51:
 - (BOOL)pxg_isChildOfView:()PXGReusableViewAdoption
 {
   v4 = a3;
-  v5 = [a1 superlayer];
-  v6 = [v4 layer];
+  superlayer = [self superlayer];
+  layer = [v4 layer];
 
-  return v5 == v6;
+  return superlayer == layer;
 }
 
 - (void)pxg_insertIntoView:()PXGReusableViewAdoption atIndex:
 {
-  v6 = [a3 layer];
-  [v6 insertSublayer:a1 atIndex:a4];
+  layer = [a3 layer];
+  [layer insertSublayer:self atIndex:a4];
 }
 
 - (void)pxg_addToHostingView:()PXGReusableViewAdoption
@@ -295,9 +295,9 @@ LABEL_51:
     dispatch_once(&_PXGDisabledLayerActions_onceToken, &__block_literal_global_383);
   }
 
-  [a1 setActions:_PXGDisabledLayerActions_disabledActions];
-  [a1 setCornerCurve:*MEMORY[0x277CDA138]];
-  [v5 addHostedLayer:a1];
+  [self setActions:_PXGDisabledLayerActions_disabledActions];
+  [self setCornerCurve:*MEMORY[0x277CDA138]];
+  [v5 addHostedLayer:self];
 }
 
 - (void)pxg_addToScrollViewController:()PXGReusableViewAdoption floatingAxis:
@@ -309,9 +309,9 @@ LABEL_51:
     dispatch_once(&_PXGDisabledLayerActions_onceToken, &__block_literal_global_383);
   }
 
-  [a1 setActions:_PXGDisabledLayerActions_disabledActions];
-  [a1 setCornerCurve:*MEMORY[0x277CDA138]];
-  [v5 addFloatingSublayer:a1 forAxis:1];
+  [self setActions:_PXGDisabledLayerActions_disabledActions];
+  [self setCornerCurve:*MEMORY[0x277CDA138]];
+  [v5 addFloatingSublayer:self forAxis:1];
 }
 
 @end

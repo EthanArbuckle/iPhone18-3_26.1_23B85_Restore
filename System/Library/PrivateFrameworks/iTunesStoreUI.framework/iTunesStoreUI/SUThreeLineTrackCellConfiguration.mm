@@ -1,7 +1,7 @@
 @interface SUThreeLineTrackCellConfiguration
 + (id)copyDefaultContext;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -11,7 +11,7 @@
 
 + (id)copyDefaultContext
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SUThreeLineTrackCellConfiguration;
   v2 = objc_msgSendSuper2(&v6, sel_copyDefaultContext);
   v3 = SUTableCellCopyImageProviderForSize(55.0, 55.0);
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
 LABEL_13:
     v9 = MEMORY[0x1E69DC888];
@@ -33,11 +33,11 @@ LABEL_13:
     return [v9 grayColor];
   }
 
-  if (a4)
+  if (modifiers)
   {
     if ([objc_msgSend(objc_msgSend(self->super.super.super.super.super._representedObject "defaultStoreOffer")])
     {
-      if (a3 == 3)
+      if (index == 3)
       {
 
         return SUTableCellGetHighlightedTextColor();
@@ -46,7 +46,7 @@ LABEL_13:
       else
       {
 
-        return [(SUThreeLineTrackCellConfiguration *)self colorForLabelAtIndex:a3 withModifiers:a4 & 0xFFFFFFFFFFFFFFFCLL];
+        return [(SUThreeLineTrackCellConfiguration *)self colorForLabelAtIndex:index withModifiers:modifiers & 0xFFFFFFFFFFFFFFFCLL];
       }
     }
 
@@ -60,14 +60,14 @@ LABEL_13:
 
   else
   {
-    if (a3 == 3)
+    if (index == 3)
     {
       v7 = MEMORY[0x1E69DC888];
 
       return [v7 blackColor];
     }
 
-    if (a3 - 1 <= 1)
+    if (index - 1 <= 1)
     {
       goto LABEL_13;
     }
@@ -86,11 +86,11 @@ LABEL_13:
   }
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (a3 - 1 >= 2)
+  if (index - 1 >= 2)
   {
-    if (a3 == 3)
+    if (index == 3)
     {
       v7 = MEMORY[0x1E69DB878];
 
@@ -250,59 +250,59 @@ LABEL_14:
   v14.receiver = self;
   v14.super_class = SUThreeLineTrackCellConfiguration;
   [(SUMediaItemCellConfiguration *)&v14 reloadStrings];
-  v3 = [self->super.super.super.super.super._representedObject artistName];
-  v4 = [self->super.super.super.super.super._representedObject title];
+  artistName = [self->super.super.super.super.super._representedObject artistName];
+  title = [self->super.super.super.super.super._representedObject title];
   if ([self->super.super.super.super.super._representedObject itemType] == 1009)
   {
-    v5 = [self->super.super.super.super.super._representedObject containerName];
-    if (v5)
+    containerName = [self->super.super.super.super.super._representedObject containerName];
+    if (containerName)
     {
-      v3 = v5;
+      artistName = containerName;
     }
 
     p_strings = &self->super.super.super.super._strings;
 
-    v7 = [v3 length];
+    v7 = [artistName length];
     if (v7)
     {
-      v7 = v3;
+      v7 = artistName;
     }
 
     (*p_strings)[2] = v7;
 
-    v8 = [v4 length];
+    v8 = [title length];
     if (v8)
     {
-      v8 = v4;
+      v8 = title;
     }
 
     (*p_strings)[3] = v8;
-    v9 = [self->super.super.super.super.super._representedObject secondaryTitle];
+    secondaryTitle = [self->super.super.super.super.super._representedObject secondaryTitle];
   }
 
   else
   {
     p_strings = &self->super.super.super.super._strings;
 
-    v10 = [v3 length];
+    v10 = [artistName length];
     if (v10)
     {
-      v10 = v3;
+      v10 = artistName;
     }
 
     (*p_strings)[2] = v10;
 
-    v11 = [v4 length];
+    v11 = [title length];
     if (v11)
     {
-      v11 = v4;
+      v11 = title;
     }
 
     (*p_strings)[3] = v11;
-    v9 = [self->super.super.super.super.super._representedObject collectionName];
+    secondaryTitle = [self->super.super.super.super.super._representedObject collectionName];
   }
 
-  v12 = v9;
+  v12 = secondaryTitle;
 
   v13 = [v12 length];
   if (v13)

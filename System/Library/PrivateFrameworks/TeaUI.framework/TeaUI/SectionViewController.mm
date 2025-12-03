@@ -1,6 +1,6 @@
 @interface SectionViewController
-- (_TtC5TeaUI21SectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)doSegmentChangeWithSender:(id)a3;
+- (_TtC5TeaUI21SectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)doSegmentChangeWithSender:(id)sender;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -9,31 +9,31 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F62414();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F62C50();
 }
 
-- (void)doSegmentChangeWithSender:(id)a3
+- (void)doSegmentChangeWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D7F64668(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1D7F64668(senderCopy);
 }
 
-- (_TtC5TeaUI21SectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI21SectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SectionViewController.init(nibName:bundle:)();
 }
 

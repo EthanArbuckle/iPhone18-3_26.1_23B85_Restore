@@ -1,12 +1,12 @@
 @interface HMAudioAnalysisLastKnownEventSubscriber
-- (HMAudioAnalysisLastKnownEventSubscriber)initWithContext:(id)a3 subscriptionProvider:(id)a4 dataSource:(id)a5 workQueue:(id)a6;
+- (HMAudioAnalysisLastKnownEventSubscriber)initWithContext:(id)context subscriptionProvider:(id)provider dataSource:(id)source workQueue:(id)queue;
 - (HMAudioAnalysisLastKnownEventSubscriberDelegate)delegate;
 - (HMESubscriptionProviding)subscriptionProvider;
 - (NSUUID)homeIdentifier;
-- (void)_didReceiveEvent:(id)a3;
-- (void)didReceiveCachedEvent:(id)a3 topic:(id)a4 source:(id)a5;
-- (void)didReceiveEvent:(id)a3 topic:(id)a4;
-- (void)subscribeLastKnownEventsForAccessory:(id)a3 completion:(id)a4;
+- (void)_didReceiveEvent:(id)event;
+- (void)didReceiveCachedEvent:(id)event topic:(id)topic source:(id)source;
+- (void)didReceiveEvent:(id)event topic:(id)topic;
+- (void)subscribeLastKnownEventsForAccessory:(id)accessory completion:(id)completion;
 @end
 
 @implementation HMAudioAnalysisLastKnownEventSubscriber
@@ -25,46 +25,46 @@
   return WeakRetained;
 }
 
-- (void)didReceiveCachedEvent:(id)a3 topic:(id)a4 source:(id)a5
+- (void)didReceiveCachedEvent:(id)event topic:(id)topic source:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HMAudioAnalysisLastKnownEventSubscriber *)self workQueue];
+  eventCopy = event;
+  topicCopy = topic;
+  workQueue = [(HMAudioAnalysisLastKnownEventSubscriber *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__HMAudioAnalysisLastKnownEventSubscriber_didReceiveCachedEvent_topic_source___block_invoke;
   block[3] = &unk_1E754E5E8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = eventCopy;
+  v14 = topicCopy;
+  v10 = topicCopy;
+  v11 = eventCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)didReceiveEvent:(id)a3 topic:(id)a4
+- (void)didReceiveEvent:(id)event topic:(id)topic
 {
-  v5 = a3;
-  v6 = [(HMAudioAnalysisLastKnownEventSubscriber *)self workQueue];
+  eventCopy = event;
+  workQueue = [(HMAudioAnalysisLastKnownEventSubscriber *)self workQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__HMAudioAnalysisLastKnownEventSubscriber_didReceiveEvent_topic___block_invoke;
   v8[3] = &unk_1E754E5C0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = eventCopy;
+  v7 = eventCopy;
+  dispatch_async(workQueue, v8);
 }
 
-- (void)_didReceiveEvent:(id)a3
+- (void)_didReceiveEvent:(id)event
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAudioAnalysisLastKnownEventSubscriber *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  workQueue = [(HMAudioAnalysisLastKnownEventSubscriber *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v28 = 0;
-  v6 = [HMAudioAnalysisAggregateEventBulletin decodeBulletinsFromEvent:v4 error:&v28];
+  v6 = [HMAudioAnalysisAggregateEventBulletin decodeBulletinsFromEvent:eventCopy error:&v28];
   v7 = v28;
   if (v7)
   {
@@ -79,7 +79,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -94,36 +94,36 @@
     objc_autoreleasePoolPop(v9);
   }
 
-  v13 = [(HMAudioAnalysisLastKnownEventSubscriber *)self delegate];
+  delegate = [(HMAudioAnalysisLastKnownEventSubscriber *)self delegate];
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v6 bulletins];
+    bulletins = [v6 bulletins];
     *buf = 138543874;
     v30 = v17;
     v31 = 2112;
-    v32 = v18;
+    v32 = bulletins;
     v33 = 2112;
-    v34 = v13;
+    v34 = delegate;
     _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@Notifying client of updates with events: %@ delegate: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v19 = [(HMAudioAnalysisLastKnownEventSubscriber *)v15 context];
-  v20 = [v19 delegateCaller];
+  context = [(HMAudioAnalysisLastKnownEventSubscriber *)selfCopy2 context];
+  delegateCaller = [context delegateCaller];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __60__HMAudioAnalysisLastKnownEventSubscriber__didReceiveEvent___block_invoke;
   v24[3] = &unk_1E754E5E8;
-  v25 = v13;
-  v26 = v15;
+  v25 = delegate;
+  v26 = selfCopy2;
   v27 = v6;
   v21 = v6;
-  v22 = v13;
-  [v20 invokeBlock:v24];
+  v22 = delegate;
+  [delegateCaller invokeBlock:v24];
 
   v23 = *MEMORY[0x1E69E9840];
 }
@@ -140,19 +140,19 @@ void __60__HMAudioAnalysisLastKnownEventSubscriber__didReceiveEvent___block_invo
   }
 }
 
-- (void)subscribeLastKnownEventsForAccessory:(id)a3 completion:(id)a4
+- (void)subscribeLastKnownEventsForAccessory:(id)accessory completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAudioAnalysisLastKnownEventSubscriber *)self dataSource];
-  v9 = [v8 accessoryUUIDForIdentifier:v6];
+  accessoryCopy = accessory;
+  completionCopy = completion;
+  dataSource = [(HMAudioAnalysisLastKnownEventSubscriber *)self dataSource];
+  v9 = [dataSource accessoryUUIDForIdentifier:accessoryCopy];
   if (v9)
   {
-    v10 = [v8 uuid];
-    v11 = [HMAudioAnalysisAggregateEventBulletin topicWithAccessoryUUID:v9 homeUUID:v10];
+    uuid = [dataSource uuid];
+    v11 = [HMAudioAnalysisAggregateEventBulletin topicWithAccessoryUUID:v9 homeUUID:uuid];
 
-    v12 = [(HMAudioAnalysisLastKnownEventSubscriber *)self subscriptionProvider];
+    subscriptionProvider = [(HMAudioAnalysisLastKnownEventSubscriber *)self subscriptionProvider];
     v21 = v11;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v19[0] = MEMORY[0x1E69E9820];
@@ -160,14 +160,14 @@ void __60__HMAudioAnalysisLastKnownEventSubscriber__didReceiveEvent___block_invo
     v19[2] = __91__HMAudioAnalysisLastKnownEventSubscriber_subscribeLastKnownEventsForAccessory_completion___block_invoke;
     v19[3] = &unk_1E7546DA0;
     v19[4] = self;
-    v20 = v7;
-    [v12 registerConsumer:self topicFilters:v13 completion:v19];
+    v20 = completionCopy;
+    [subscriptionProvider registerConsumer:self topicFilters:v13 completion:v19];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -179,7 +179,7 @@ void __60__HMAudioAnalysisLastKnownEventSubscriber__didReceiveEvent___block_invo
 
     objc_autoreleasePoolPop(v14);
     v11 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:3];
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -265,28 +265,28 @@ uint64_t __91__HMAudioAnalysisLastKnownEventSubscriber_subscribeLastKnownEventsF
 
 - (NSUUID)homeIdentifier
 {
-  v2 = [(HMAudioAnalysisLastKnownEventSubscriber *)self dataSource];
-  v3 = [v2 uniqueIdentifier];
+  dataSource = [(HMAudioAnalysisLastKnownEventSubscriber *)self dataSource];
+  uniqueIdentifier = [dataSource uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
-- (HMAudioAnalysisLastKnownEventSubscriber)initWithContext:(id)a3 subscriptionProvider:(id)a4 dataSource:(id)a5 workQueue:(id)a6
+- (HMAudioAnalysisLastKnownEventSubscriber)initWithContext:(id)context subscriptionProvider:(id)provider dataSource:(id)source workQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  providerCopy = provider;
+  sourceCopy = source;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HMAudioAnalysisLastKnownEventSubscriber;
   v15 = [(HMAudioAnalysisLastKnownEventSubscriber *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    objc_storeWeak(&v16->_subscriptionProvider, v12);
-    objc_storeStrong(&v16->_dataSource, a5);
-    objc_storeStrong(&v16->_workQueue, a6);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeWeak(&v16->_subscriptionProvider, providerCopy);
+    objc_storeStrong(&v16->_dataSource, source);
+    objc_storeStrong(&v16->_workQueue, queue);
   }
 
   return v16;

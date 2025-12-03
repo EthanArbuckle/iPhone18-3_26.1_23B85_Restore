@@ -1,15 +1,15 @@
 @interface PLKLegibilityContentDescriptor
-+ (id)contentDescriptorForColor:(id)a3;
++ (id)contentDescriptorForColor:(id)color;
 + (id)defaultContentDescriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PLKLegibilityContentDescriptor)init;
-- (PLKLegibilityContentDescriptor)initWithContentColor:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)filtersForContextType:(int64_t)a3 options:(int64_t)a4;
+- (PLKLegibilityContentDescriptor)initWithContentColor:(id)color;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)filtersForContextType:(int64_t)type options:(int64_t)options;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)configureCALayer:(id)a3 forContentRenderedWithContextType:(int64_t)a4 options:(int64_t)a5;
+- (void)configureCALayer:(id)layer forContentRenderedWithContextType:(int64_t)type options:(int64_t)options;
 @end
 
 @implementation PLKLegibilityContentDescriptor
@@ -35,22 +35,22 @@
   objc_exception_throw(v2);
 }
 
-+ (id)contentDescriptorForColor:(id)a3
++ (id)contentDescriptorForColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContentColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithContentColor:colorCopy];
 
   return v5;
 }
 
-- (PLKLegibilityContentDescriptor)initWithContentColor:(id)a3
+- (PLKLegibilityContentDescriptor)initWithContentColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = [(PLKLegibilityContentDescriptor *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentColor, a3);
+    objc_storeStrong(&v6->_contentColor, color);
   }
 
   return v7;
@@ -58,26 +58,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_compositingFilter];
-  v5 = [v3 appendObject:self->_contentColor];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_compositingFilter];
+  v5 = [builder appendObject:self->_contentColor];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (id)filtersForContextType:(int64_t)a3 options:(int64_t)a4
+- (id)filtersForContextType:(int64_t)type options:(int64_t)options
 {
   v6 = objc_opt_new();
-  if (a3 == 4)
+  if (type == 4)
   {
-    v7 = [(PLKLegibilityContentDescriptor *)self contentColor];
+    contentColor = [(PLKLegibilityContentDescriptor *)self contentColor];
 
-    if (v7)
+    if (contentColor)
     {
       v8 = MEMORY[0x277CD9EA0];
-      v9 = [(PLKLegibilityContentDescriptor *)self contentColor];
-      v10 = [v8 plk_multiplyColor:v9];
+      contentColor2 = [(PLKLegibilityContentDescriptor *)self contentColor];
+      v10 = [v8 plk_multiplyColor:contentColor2];
 
       [v6 addObject:v10];
     }
@@ -86,10 +86,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -101,16 +101,16 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PLKLegibilityContentDescriptor *)self compositingFilter];
-      v9 = [(PLKLegibilityContentDescriptor *)v7 compositingFilter];
+      v7 = equalCopy;
+      compositingFilter = [(PLKLegibilityContentDescriptor *)self compositingFilter];
+      compositingFilter2 = [(PLKLegibilityContentDescriptor *)v7 compositingFilter];
       v10 = BSEqualObjects();
 
       if (v10)
       {
-        v11 = [(PLKLegibilityContentDescriptor *)v7 contentColor];
-        v12 = [(PLKLegibilityContentDescriptor *)self contentColor];
-        v13 = [v11 isEqual:v12];
+        contentColor = [(PLKLegibilityContentDescriptor *)v7 contentColor];
+        contentColor2 = [(PLKLegibilityContentDescriptor *)self contentColor];
+        v13 = [contentColor isEqual:contentColor2];
       }
 
       else
@@ -128,40 +128,40 @@
   return v13;
 }
 
-- (void)configureCALayer:(id)a3 forContentRenderedWithContextType:(int64_t)a4 options:(int64_t)a5
+- (void)configureCALayer:(id)layer forContentRenderedWithContextType:(int64_t)type options:(int64_t)options
 {
-  v8 = a3;
-  v9 = [(PLKLegibilityContentDescriptor *)self allowsGroupBlending];
-  v10 = [(PLKLegibilityContentDescriptor *)self allowsGroupOpacity];
-  v11 = [(PLKLegibilityContentDescriptor *)self filtersForContextType:a4 options:a5];
-  v12 = [(PLKLegibilityContentDescriptor *)self compositingFilter];
-  v13 = v8;
+  layerCopy = layer;
+  allowsGroupBlending = [(PLKLegibilityContentDescriptor *)self allowsGroupBlending];
+  allowsGroupOpacity = [(PLKLegibilityContentDescriptor *)self allowsGroupOpacity];
+  v11 = [(PLKLegibilityContentDescriptor *)self filtersForContextType:type options:options];
+  compositingFilter = [(PLKLegibilityContentDescriptor *)self compositingFilter];
+  v13 = layerCopy;
   if (v13)
   {
     [v13 setFilters:v11];
-    [v13 setCompositingFilter:v12];
-    [v13 setAllowsGroupBlending:v9];
-    [v13 setAllowsGroupOpacity:v10];
+    [v13 setCompositingFilter:compositingFilter];
+    [v13 setAllowsGroupBlending:allowsGroupBlending];
+    [v13 setAllowsGroupOpacity:allowsGroupOpacity];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PLKLegibilityContentDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PLKLegibilityContentDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PLKLegibilityContentDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PLKLegibilityContentDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [v4 appendObject:self->_contentColor withName:@"_contentColor" skipIfNil:1];

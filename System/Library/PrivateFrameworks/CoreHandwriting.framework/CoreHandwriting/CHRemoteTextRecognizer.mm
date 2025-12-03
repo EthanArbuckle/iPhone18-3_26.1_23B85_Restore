@@ -1,51 +1,51 @@
 @interface CHRemoteTextRecognizer
-+ (id)newRemoteRecognizerWithMode:(int)a3 locales:(id)a4;
-+ (int64_t)maxRequestStrokeCountForLocale:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteTextRecognizer:(id)a3;
-- (CHRemoteTextRecognizer)initWithMode:(int)a3 locale:(id)a4;
-- (CHRemoteTextRecognizer)initWithMode:(int)a3 locale:(id)a4 recognizerOptions:(id)a5;
-- (CHRemoteTextRecognizer)initWithMode:(int)a3 locales:(id)a4 activeCharacterSetPerLocale:(id)a5 recognizerOptions:(id)a6;
++ (id)newRemoteRecognizerWithMode:(int)mode locales:(id)locales;
++ (int64_t)maxRequestStrokeCountForLocale:(id)locale;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteTextRecognizer:(id)recognizer;
+- (CHRemoteTextRecognizer)initWithMode:(int)mode locale:(id)locale;
+- (CHRemoteTextRecognizer)initWithMode:(int)mode locale:(id)locale recognizerOptions:(id)options;
+- (CHRemoteTextRecognizer)initWithMode:(int)mode locales:(id)locales activeCharacterSetPerLocale:(id)locale recognizerOptions:(id)options;
 - (NSCharacterSet)activeCharacterSet;
-- (id)textRecognitionResultForDrawing:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)textRecognitionResultForDrawing:(id)a3 options:(id)a4 principalPoints:(id *)a5 error:(id *)a6;
-- (id)transcriptionPathsForTokenizedTextResult:(id)a3 withHistory:(id)a4 scores:(id *)a5 error:(id *)a6;
+- (id)textRecognitionResultForDrawing:(id)drawing options:(id)options error:(id *)error;
+- (id)textRecognitionResultForDrawing:(id)drawing options:(id)options principalPoints:(id *)points error:(id *)error;
+- (id)transcriptionPathsForTokenizedTextResult:(id)result withHistory:(id)history scores:(id *)scores error:(id *)error;
 - (unint64_t)hash;
-- (void)setActiveCharacterSet:(id)a3;
+- (void)setActiveCharacterSet:(id)set;
 @end
 
 @implementation CHRemoteTextRecognizer
 
-- (CHRemoteTextRecognizer)initWithMode:(int)a3 locale:(id)a4
+- (CHRemoteTextRecognizer)initWithMode:(int)mode locale:(id)locale
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&mode;
+  localeCopy = locale;
   v7 = objc_alloc_init(CHRecognizerOptions);
-  v10 = objc_msgSend_initWithMode_locale_recognizerOptions_(self, v8, v4, v6, v7, v9);
+  v10 = objc_msgSend_initWithMode_locale_recognizerOptions_(self, v8, v4, localeCopy, v7, v9);
 
   return v10;
 }
 
-- (CHRemoteTextRecognizer)initWithMode:(int)a3 locale:(id)a4 recognizerOptions:(id)a5
+- (CHRemoteTextRecognizer)initWithMode:(int)mode locale:(id)locale recognizerOptions:(id)options
 {
-  v6 = *&a3;
+  v6 = *&mode;
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v17[0] = v8;
+  localeCopy = locale;
+  optionsCopy = options;
+  v17[0] = localeCopy;
   v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v10, v17, 1, v11, v12);
-  active = objc_msgSend_initWithMode_locales_activeCharacterSetPerLocale_recognizerOptions_(self, v14, v6, v13, MEMORY[0x1E695E0F8], v9);
+  active = objc_msgSend_initWithMode_locales_activeCharacterSetPerLocale_recognizerOptions_(self, v14, v6, v13, MEMORY[0x1E695E0F8], optionsCopy);
 
   return active;
 }
 
-- (CHRemoteTextRecognizer)initWithMode:(int)a3 locales:(id)a4 activeCharacterSetPerLocale:(id)a5 recognizerOptions:(id)a6
+- (CHRemoteTextRecognizer)initWithMode:(int)mode locales:(id)locales activeCharacterSetPerLocale:(id)locale recognizerOptions:(id)options
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!objc_msgSend_count(v10, v13, v14, v15, v16, v17))
+  v8 = *&mode;
+  localesCopy = locales;
+  localeCopy = locale;
+  optionsCopy = options;
+  if (!objc_msgSend_count(localesCopy, v13, v14, v15, v16, v17))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -60,9 +60,9 @@
     }
   }
 
-  if (objc_msgSend_count(v10, v18, v19, v20, v21, v22))
+  if (objc_msgSend_count(localesCopy, v18, v19, v20, v21, v22))
   {
-    if (v12)
+    if (optionsCopy)
     {
       goto LABEL_16;
     }
@@ -82,14 +82,14 @@
     _os_log_impl(&dword_18366B000, v29, OS_LOG_TYPE_FAULT, "CHRemoteRecognizer must be initialized with at least one locale", buf, 2u);
   }
 
-  if (!v12)
+  if (!optionsCopy)
   {
 LABEL_15:
-    v12 = objc_alloc_init(CHRecognizerOptions);
+    optionsCopy = objc_alloc_init(CHRecognizerOptions);
   }
 
 LABEL_16:
-  v30 = objc_msgSend_enableCachingIfAvailable(v12, v24, v25, v26, v27, v28);
+  v30 = objc_msgSend_enableCachingIfAvailable(optionsCopy, v24, v25, v26, v27, v28);
   v71.receiver = self;
   v71.super_class = CHRemoteTextRecognizer;
   v31 = [(CHRemoteRecognizer *)&v71 initWithEnableCachingIfAvailable:v30];
@@ -99,15 +99,15 @@ LABEL_16:
   {
     v31->_recognitionMode = v8;
     v31->_shouldUseTextReplacements = 1;
-    v31->_enableGen2ModelIfAvailable = objc_msgSend_enableGen2ModelIfAvailable(v12, v32, v33, v34, v35, v36);
-    v38->_enableGen2CharacterLMIfAvailable = objc_msgSend_enableGen2CharacterLMIfAvailable(v12, v39, v40, v41, v42, v43);
-    v49 = objc_msgSend_copy(v10, v44, v45, v46, v47, v48);
+    v31->_enableGen2ModelIfAvailable = objc_msgSend_enableGen2ModelIfAvailable(optionsCopy, v32, v33, v34, v35, v36);
+    v38->_enableGen2CharacterLMIfAvailable = objc_msgSend_enableGen2CharacterLMIfAvailable(optionsCopy, v39, v40, v41, v42, v43);
+    v49 = objc_msgSend_copy(localesCopy, v44, v45, v46, v47, v48);
     activeCharacterSetPerLocale = v38->_activeCharacterSetPerLocale;
     v38->_activeCharacterSetPerLocale = v49;
 
-    if (v11)
+    if (localeCopy)
     {
-      v56 = objc_msgSend_copy(v11, v51, v52, v53, v54, v55);
+      v56 = objc_msgSend_copy(localeCopy, v51, v52, v53, v54, v55);
     }
 
     else
@@ -128,13 +128,13 @@ LABEL_16:
   return v38;
 }
 
-+ (id)newRemoteRecognizerWithMode:(int)a3 locales:(id)a4
++ (id)newRemoteRecognizerWithMode:(int)mode locales:(id)locales
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&mode;
+  localesCopy = locales;
   v6 = objc_alloc_init(CHRecognizerOptions);
   v7 = objc_opt_class();
-  v11 = objc_msgSend_effectiveRecognitionLocales_recognitionMode_(v7, v8, v5, v4, v9, v10);
+  v11 = objc_msgSend_effectiveRecognitionLocales_recognitionMode_(v7, v8, localesCopy, v4, v9, v10);
   v12 = objc_opt_class();
   v21 = objc_msgSend_defaultActiveCharacterSetForLocales_(v12, v13, v11, v14, v15, v16);
   switch(v4)
@@ -170,21 +170,21 @@ LABEL_6:
   return v12;
 }
 
-- (void)setActiveCharacterSet:(id)a3
+- (void)setActiveCharacterSet:(id)set
 {
-  v42 = a3;
+  setCopy = set;
   isa = self[1].super.super.isa;
   v10 = objc_msgSend_firstObject(self->_activeCharacterSetPerLocale, v5, v6, v7, v8, v9);
   v15 = objc_msgSend_objectForKeyedSubscript_(isa, v11, v10, v12, v13, v14);
 
-  if (v15 != v42)
+  if (v15 != setCopy)
   {
     v25 = objc_msgSend_mutableCopy(self[1].super.super.isa, v16, v17, v18, v19, v20);
     activeCharacterSetPerLocale = self->_activeCharacterSetPerLocale;
-    if (v42)
+    if (setCopy)
     {
-      v27 = objc_msgSend_firstObject(activeCharacterSetPerLocale, v42, v21, v22, v23, v24);
-      objc_msgSend_setObject_forKeyedSubscript_(v25, v28, v42, v27, v29, v30);
+      v27 = objc_msgSend_firstObject(activeCharacterSetPerLocale, setCopy, v21, v22, v23, v24);
+      objc_msgSend_setObject_forKeyedSubscript_(v25, v28, setCopy, v27, v29, v30);
     }
 
     else
@@ -199,17 +199,17 @@ LABEL_6:
   }
 }
 
-- (id)textRecognitionResultForDrawing:(id)a3 options:(id)a4 error:(id *)a5
+- (id)textRecognitionResultForDrawing:(id)drawing options:(id)options error:(id *)error
 {
-  v5 = objc_msgSend_textRecognitionResultForDrawing_options_principalPoints_error_(self, a2, a3, a4, 0, a5);
+  v5 = objc_msgSend_textRecognitionResultForDrawing_options_principalPoints_error_(self, a2, drawing, options, 0, error);
 
   return v5;
 }
 
-- (id)textRecognitionResultForDrawing:(id)a3 options:(id)a4 principalPoints:(id *)a5 error:(id *)a6
+- (id)textRecognitionResultForDrawing:(id)drawing options:(id)options principalPoints:(id *)points error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  drawingCopy = drawing;
+  optionsCopy = options;
   v17 = objc_msgSend_locale(self, v12, v13, v14, v15, v16);
 
   if (!v17)
@@ -244,7 +244,7 @@ LABEL_6:
     }
   }
 
-  v26 = sub_1836A6854(self, v10, v11);
+  v26 = sub_1836A6854(self, drawingCopy, optionsCopy);
   v32 = v26;
   if (self)
   {
@@ -344,12 +344,12 @@ LABEL_6:
       objc_msgSend_logDrawingsAndResultsForRequest_result_error_(self, v83, v79, 0, v103[5], v84);
     }
 
-    if (a5)
+    if (points)
     {
       v85 = v115[5];
       if (v85)
       {
-        *a5 = v85;
+        *points = v85;
       }
     }
 
@@ -370,7 +370,7 @@ LABEL_6:
 
     _Block_object_dispose(&v120, 8);
     v89 = v86;
-    if (a6)
+    if (error)
     {
       goto LABEL_36;
     }
@@ -381,29 +381,29 @@ LABEL_6:
     v88 = 0;
 
     v89 = 0;
-    if (a6)
+    if (error)
     {
 LABEL_36:
       v89 = v89;
-      *a6 = v89;
+      *error = v89;
     }
   }
 
   return v88;
 }
 
-- (id)transcriptionPathsForTokenizedTextResult:(id)a3 withHistory:(id)a4 scores:(id *)a5 error:(id *)a6
+- (id)transcriptionPathsForTokenizedTextResult:(id)result withHistory:(id)history scores:(id *)scores error:(id *)error
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  resultCopy = result;
+  historyCopy = history;
   v12 = objc_alloc_init(CHDrawing);
   objc_msgSend_addPoint_(v12, v13, v14, v15, v16, v17, 0.0, 0.0);
   objc_msgSend_endStroke(v12, v18, v19, v20, v21, v22);
-  if (v11)
+  if (historyCopy)
   {
     v69 = CHRecognitionOptionTextBefore;
-    v70[0] = v11;
+    v70[0] = historyCopy;
     v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v23, v70, &v69, 1, v24);
   }
 
@@ -452,8 +452,8 @@ LABEL_36:
   v43[4] = &v50;
   v43[5] = &v56;
   v43[6] = &v44;
-  objc_msgSend_transcriptionPathsForTokenizedTextResult_recognitionRequest_withReply_(v37, v38, v10, v26, v43, v39);
-  if (a6)
+  objc_msgSend_transcriptionPathsForTokenizedTextResult_recognitionRequest_withReply_(v37, v38, resultCopy, v26, v43, v39);
+  if (error)
   {
     v40 = v64[5];
     if (!v40)
@@ -461,12 +461,12 @@ LABEL_36:
       v40 = v45[5];
     }
 
-    *a6 = v40;
+    *error = v40;
   }
 
-  if (a5)
+  if (scores)
   {
-    *a5 = v57[5];
+    *scores = v57[5];
   }
 
   v41 = v51[5];
@@ -480,10 +480,10 @@ LABEL_36:
   return v41;
 }
 
-- (BOOL)isEqualToRemoteTextRecognizer:(id)a3
+- (BOOL)isEqualToRemoteTextRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (self == v4)
+  recognizerCopy = recognizer;
+  if (self == recognizerCopy)
   {
     isEqualToDictionary = 1;
     goto LABEL_12;
@@ -491,31 +491,31 @@ LABEL_36:
 
   v193.receiver = self;
   v193.super_class = CHRemoteTextRecognizer;
-  if ([(CHRemoteRecognizer *)&v193 isEqualToRemoteRecognizer:v4])
+  if ([(CHRemoteRecognizer *)&v193 isEqualToRemoteRecognizer:recognizerCopy])
   {
     v10 = objc_msgSend_recognitionMode(self, v5, v6, v7, v8, v9);
-    if (v10 == objc_msgSend_recognitionMode(v4, v11, v12, v13, v14, v15))
+    if (v10 == objc_msgSend_recognitionMode(recognizerCopy, v11, v12, v13, v14, v15))
     {
       v21 = objc_msgSend_contentType(self, v16, v17, v18, v19, v20);
-      if (v21 == objc_msgSend_contentType(v4, v22, v23, v24, v25, v26))
+      if (v21 == objc_msgSend_contentType(recognizerCopy, v22, v23, v24, v25, v26))
       {
         v32 = objc_msgSend_autoCapitalizationMode(self, v27, v28, v29, v30, v31);
-        if (v32 == objc_msgSend_autoCapitalizationMode(v4, v33, v34, v35, v36, v37))
+        if (v32 == objc_msgSend_autoCapitalizationMode(recognizerCopy, v33, v34, v35, v36, v37))
         {
           v43 = objc_msgSend_autoCorrectionMode(self, v38, v39, v40, v41, v42);
-          if (v43 == objc_msgSend_autoCorrectionMode(v4, v44, v45, v46, v47, v48))
+          if (v43 == objc_msgSend_autoCorrectionMode(recognizerCopy, v44, v45, v46, v47, v48))
           {
             v54 = objc_msgSend_baseWritingDirection(self, v49, v50, v51, v52, v53);
-            if (v54 == objc_msgSend_baseWritingDirection(v4, v55, v56, v57, v58, v59))
+            if (v54 == objc_msgSend_baseWritingDirection(recognizerCopy, v55, v56, v57, v58, v59))
             {
               v65 = objc_msgSend_enableGen2ModelIfAvailable(self, v60, v61, v62, v63, v64);
-              if (v65 == objc_msgSend_enableGen2ModelIfAvailable(v4, v66, v67, v68, v69, v70))
+              if (v65 == objc_msgSend_enableGen2ModelIfAvailable(recognizerCopy, v66, v67, v68, v69, v70))
               {
                 v76 = objc_msgSend_enableGen2CharacterLMIfAvailable(self, v71, v72, v73, v74, v75);
-                if (v76 == objc_msgSend_enableGen2CharacterLMIfAvailable(v4, v77, v78, v79, v80, v81))
+                if (v76 == objc_msgSend_enableGen2CharacterLMIfAvailable(recognizerCopy, v77, v78, v79, v80, v81))
                 {
                   v89 = objc_msgSend_locales(self, v82, v83, v84, v85, v86);
-                  v95 = objc_msgSend_locales(v4, v90, v91, v92, v93, v94);
+                  v95 = objc_msgSend_locales(recognizerCopy, v90, v91, v92, v93, v94);
                   v101 = v95;
                   if (v89 == v95)
                   {
@@ -530,14 +530,14 @@ LABEL_36:
                       goto LABEL_33;
                     }
 
-                    v113 = objc_msgSend_locales(v4, v102, v103, v104, v105, v106);
+                    v113 = objc_msgSend_locales(recognizerCopy, v102, v103, v104, v105, v106);
                     if (!v113)
                     {
                       goto LABEL_28;
                     }
 
                     v114 = objc_msgSend_locales(self, v108, v109, v110, v111, v112);
-                    v120 = objc_msgSend_locales(v4, v115, v116, v117, v118, v119);
+                    v120 = objc_msgSend_locales(recognizerCopy, v115, v116, v117, v118, v119);
                     isEqualToArray = objc_msgSend_isEqualToArray_(v114, v121, v120, v122, v123, v124);
 
                     if (!isEqualToArray)
@@ -547,7 +547,7 @@ LABEL_36:
                   }
 
                   v131 = objc_msgSend_declaredVariables(self, v126, v127, v128, v129, v130);
-                  v137 = objc_msgSend_declaredVariables(v4, v132, v133, v134, v135, v136);
+                  v137 = objc_msgSend_declaredVariables(recognizerCopy, v132, v133, v134, v135, v136);
                   v143 = v137;
                   if (v131 == v137)
                   {
@@ -556,7 +556,7 @@ LABEL_36:
                   else
                   {
                     v144 = objc_msgSend_declaredVariables(self, v138, v139, v140, v141, v142);
-                    v150 = objc_msgSend_declaredVariables(v4, v145, v146, v147, v148, v149);
+                    v150 = objc_msgSend_declaredVariables(recognizerCopy, v145, v146, v147, v148, v149);
                     isEqualToSet = objc_msgSend_isEqualToSet_(v144, v151, v150, v152, v153, v154);
 
                     if (!isEqualToSet)
@@ -566,17 +566,17 @@ LABEL_36:
                   }
 
                   v89 = objc_msgSend_activeCharacterSetPerLocale(self, v156, v157, v158, v159, v160);
-                  v101 = objc_msgSend_activeCharacterSetPerLocale(v4, v161, v162, v163, v164, v165);
+                  v101 = objc_msgSend_activeCharacterSetPerLocale(recognizerCopy, v161, v162, v163, v164, v165);
                   if (v89 != v101)
                   {
                     v107 = objc_msgSend_activeCharacterSetPerLocale(self, v166, v167, v168, v169, v170);
                     if (v107)
                     {
-                      v181 = objc_msgSend_activeCharacterSetPerLocale(v4, v171, v172, v173, v174, v175);
+                      v181 = objc_msgSend_activeCharacterSetPerLocale(recognizerCopy, v171, v172, v173, v174, v175);
                       if (v181)
                       {
                         v182 = objc_msgSend_activeCharacterSetPerLocale(self, v176, v177, v178, v179, v180);
-                        v188 = objc_msgSend_activeCharacterSetPerLocale(v4, v183, v184, v185, v186, v187);
+                        v188 = objc_msgSend_activeCharacterSetPerLocale(recognizerCopy, v183, v184, v185, v186, v187);
                         isEqualToDictionary = objc_msgSend_isEqualToDictionary_(v182, v189, v188, v190, v191, v192);
                       }
 
@@ -615,13 +615,13 @@ LABEL_12:
   return isEqualToDictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToRemoteTextRecognizer = objc_msgSend_isEqualToRemoteTextRecognizer_(self, v5, v4, v6, v7, v8);
+    isEqualToRemoteTextRecognizer = objc_msgSend_isEqualToRemoteTextRecognizer_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToRemoteTextRecognizer;
   }
@@ -707,11 +707,11 @@ LABEL_12:
   return v58 ^ v67 ^ v73 ^ v79 ^ v85 ^ v91 ^ objc_msgSend_baseWritingDirection(self, v92, v93, v94, v95, v96) ^ v8 ^ v9;
 }
 
-+ (int64_t)maxRequestStrokeCountForLocale:(id)a3
++ (int64_t)maxRequestStrokeCountForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = objc_opt_class();
-  v9 = objc_msgSend_drawingStrokeLimitForLocale_(v4, v5, v3, v6, v7, v8);
+  v9 = objc_msgSend_drawingStrokeLimitForLocale_(v4, v5, localeCopy, v6, v7, v8);
 
   return v9;
 }

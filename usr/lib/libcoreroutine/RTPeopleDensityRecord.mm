@@ -1,39 +1,39 @@
 @interface RTPeopleDensityRecord
-+ (id)computeEventMetrics:(id)a3;
-+ (id)computeRssiHistogramForAdvs:(id)a3;
-+ (int)_computeMeanOfRssi:(id)a3;
-+ (void)_computeDensityScore:(double *)a3 scanDuration:(double *)a4 forRecords:(id)a5;
-- (RTPeopleDensityRecord)initWithCoder:(id)a3;
-- (RTPeopleDensityRecord)initWithQueue:(id)a3 peopleDensityStore:(id)a4 defaultsManager:(id)a5;
++ (id)computeEventMetrics:(id)metrics;
++ (id)computeRssiHistogramForAdvs:(id)advs;
++ (int)_computeMeanOfRssi:(id)rssi;
++ (void)_computeDensityScore:(double *)score scanDuration:(double *)duration forRecords:(id)records;
+- (RTPeopleDensityRecord)initWithCoder:(id)coder;
+- (RTPeopleDensityRecord)initWithQueue:(id)queue peopleDensityStore:(id)store defaultsManager:(id)manager;
 - (id)computeRssiHistogram;
 - (id)fetchCurrentObservationBundle;
-- (id)fetchOngoingPeopleDensityBundle:(id)a3 endDate:(id)a4;
-- (void)_closeDensityBundle:(id)a3;
+- (id)fetchOngoingPeopleDensityBundle:(id)bundle endDate:(id)date;
+- (void)_closeDensityBundle:(id)bundle;
 - (void)cleanUpOngoingPeopleDensityBundle;
-- (void)closeDensityBundle:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCurrentScoreAndScanDuration:(double *)a3 scanDuration:(double *)a4;
-- (void)mergeWithAnotherDensityRecord:(id)a3;
-- (void)updateRSSIHistogramOnAdvertisementReceived:(id)a3;
-- (void)updateRecordOnFetchComplete:(unint64_t)a3 scanDuration:(double)a4 referenceDate:(id)a5 advertisements:(id)a6;
+- (void)closeDensityBundle:(id)bundle;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCurrentScoreAndScanDuration:(double *)duration scanDuration:(double *)scanDuration;
+- (void)mergeWithAnotherDensityRecord:(id)record;
+- (void)updateRSSIHistogramOnAdvertisementReceived:(id)received;
+- (void)updateRecordOnFetchComplete:(unint64_t)complete scanDuration:(double)duration referenceDate:(id)date advertisements:(id)advertisements;
 @end
 
 @implementation RTPeopleDensityRecord
 
-- (RTPeopleDensityRecord)initWithQueue:(id)a3 peopleDensityStore:(id)a4 defaultsManager:(id)a5
+- (RTPeopleDensityRecord)initWithQueue:(id)queue peopleDensityStore:(id)store defaultsManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10)
+  queueCopy = queue;
+  storeCopy = store;
+  managerCopy = manager;
+  v12 = managerCopy;
+  if (!storeCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v28 = 0;
+      selfCopy = 0;
       goto LABEL_19;
     }
 
@@ -44,7 +44,7 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!managerCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -63,9 +63,9 @@ LABEL_21:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    objc_storeStrong(&v14->_peopleDensityStore, a4);
-    objc_storeStrong(&v14->_defaultsManager, a5);
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeStrong(&v14->_peopleDensityStore, store);
+    objc_storeStrong(&v14->_defaultsManager, manager);
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     records = v14->_records;
     v14->_records = v15;
@@ -74,9 +74,9 @@ LABEL_21:
     runningRecentBundle = v14->_runningRecentBundle;
     v14->_runningRecentBundle = v17;
 
-    v19 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     bundleStartDate = v14->_bundleStartDate;
-    v14->_bundleStartDate = v19;
+    v14->_bundleStartDate = distantPast;
 
     v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
     addressToRssiValues = v14->_addressToRssiValues;
@@ -113,42 +113,42 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [v31 integerValue];
+      integerValue = [v31 integerValue];
     }
 
     else
     {
-      v32 = 28800;
+      integerValue = 28800;
     }
 
-    v14->_maxBackstopDuration = v32;
+    v14->_maxBackstopDuration = integerValue;
   }
 
   self = v14;
-  v28 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v28;
+  return selfCopy;
 }
 
-- (void)updateRecordOnFetchComplete:(unint64_t)a3 scanDuration:(double)a4 referenceDate:(id)a5 advertisements:(id)a6
+- (void)updateRecordOnFetchComplete:(unint64_t)complete scanDuration:(double)duration referenceDate:(id)date advertisements:(id)advertisements
 {
   v52 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  advertisementsCopy = advertisements;
   p_bundleStartDate = &self->_bundleStartDate;
-  [v11 timeIntervalSinceDate:self->_bundleStartDate];
+  [dateCopy timeIntervalSinceDate:self->_bundleStartDate];
   v15 = v14;
   bundleStartDate = self->_bundleStartDate;
-  v17 = [MEMORY[0x277CBEAA8] distantPast];
-  v18 = v17;
-  if (bundleStartDate == v17)
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v18 = distantPast;
+  if (bundleStartDate == distantPast)
   {
 
     goto LABEL_10;
   }
 
-  v19 = [v11 compare:*p_bundleStartDate];
+  v19 = [dateCopy compare:*p_bundleStartDate];
 
   if (v19 == -1)
   {
@@ -158,14 +158,14 @@ LABEL_10:
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v38 = [v11 getFormattedDateString];
+        getFormattedDateString = [dateCopy getFormattedDateString];
         *buf = 138412290;
-        v51 = v38;
+        v51 = getFormattedDateString;
         _os_log_debug_impl(&dword_2304B3000, v22, OS_LOG_TYPE_DEBUG, "#RTPeopleDensityRecord update bundle start time to, %@", buf, 0xCu);
       }
     }
 
-    v23 = v11;
+    v23 = dateCopy;
     v24 = *p_bundleStartDate;
     *p_bundleStartDate = v23;
     goto LABEL_23;
@@ -181,7 +181,7 @@ LABEL_10:
     v47 = 0.0;
     v48 = -1.0;
     [objc_opt_class() _computeDensityScore:&v48 scanDuration:&v47 forRecords:self->_records];
-    v20 = [(RTPeopleDensityRecord *)self computeRssiHistogram];
+    computeRssiHistogram = [(RTPeopleDensityRecord *)self computeRssiHistogram];
     if (v48 >= 0.0 && v47 > 1.0)
     {
       ongoingPeopleDensityEvent = self->_ongoingPeopleDensityEvent;
@@ -197,7 +197,7 @@ LABEL_10:
       v25 = ;
       v26 = objc_alloc(MEMORY[0x277D011C8]);
       v42 = v25;
-      v27 = [v26 initWithBundleUUID:v25 startDate:*p_bundleStartDate endDate:v11 densityScore:v20 scanDuration:v48 rssiHistogram:v47];
+      v27 = [v26 initWithBundleUUID:v25 startDate:*p_bundleStartDate endDate:dateCopy densityScore:computeRssiHistogram scanDuration:v48 rssiHistogram:v47];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         log = _rt_log_facility_get_os_log(RTLogFacilityGathering);
@@ -215,7 +215,7 @@ LABEL_10:
     }
   }
 
-  objc_storeStrong(&self->_bundleStartDate, a5);
+  objc_storeStrong(&self->_bundleStartDate, date);
   [(NSMutableArray *)self->_records removeAllObjects];
   [(NSMutableDictionary *)self->_addressToRssiValues removeAllObjects];
   v24 = self->_ongoingPeopleDensityEvent;
@@ -223,11 +223,11 @@ LABEL_10:
 LABEL_23:
 
 LABEL_24:
-  v28 = [[RTPeopleDensitySingleRecord alloc] initWithStats:a3 scanDuration:a4];
-  [(RTPeopleDensitySingleRecord *)v28 setStartDatetime:v11];
+  v28 = [[RTPeopleDensitySingleRecord alloc] initWithStats:complete scanDuration:duration];
+  [(RTPeopleDensitySingleRecord *)v28 setStartDatetime:dateCopy];
   [(NSMutableArray *)self->_records addObject:v28];
   [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle addRecord:v28];
-  [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle updateHistogramWithAdvs:v12];
+  [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle updateHistogramWithAdvs:advertisementsCopy];
   runningRecentBundle = self->_runningRecentBundle;
   v30 = [MEMORY[0x277CBEAA8] now];
   [(RTPeopleDensityRecordRunningRecentObservation *)runningRecentBundle trimRunningRecordsBeforeRef:v30];
@@ -236,7 +236,7 @@ LABEL_24:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v31 = v12;
+  v31 = advertisementsCopy;
   v32 = [v31 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v32)
   {
@@ -264,18 +264,18 @@ LABEL_24:
   }
 }
 
-- (void)updateRSSIHistogramOnAdvertisementReceived:(id)a3
+- (void)updateRSSIHistogramOnAdvertisementReceived:(id)received
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 rssi] < 0)
+  receivedCopy = received;
+  if ([receivedCopy rssi] < 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v4 description];
+        v18 = [receivedCopy description];
         *buf = 138412290;
         v22 = v18;
         _os_log_debug_impl(&dword_2304B3000, v7, OS_LOG_TYPE_DEBUG, "#RTPeopleDensityRecord update RSSI histogram for advertisement, %@", buf, 0xCu);
@@ -283,18 +283,18 @@ LABEL_24:
     }
 
     addressToRssiValues = self->_addressToRssiValues;
-    v9 = [v4 address];
-    v10 = [(NSMutableDictionary *)addressToRssiValues objectForKey:v9];
+    address = [receivedCopy address];
+    v10 = [(NSMutableDictionary *)addressToRssiValues objectForKey:address];
 
     if (v10)
     {
       v11 = self->_addressToRssiValues;
-      v12 = [v4 address];
-      v5 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:v12];
+      address2 = [receivedCopy address];
+      v5 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:address2];
 
       if (v5)
       {
-        v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "rssi")}];
+        v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(receivedCopy, "rssi")}];
         [v5 addObject:v6];
       }
 
@@ -303,9 +303,9 @@ LABEL_24:
         v6 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v4 address];
+          address3 = [receivedCopy address];
           *buf = 138412290;
-          v22 = v19;
+          v22 = address3;
           _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "#RTPeopleDensityRecord _addressToRssiValues has nil entry at address %@", buf, 0xCu);
         }
       }
@@ -314,14 +314,14 @@ LABEL_24:
     }
 
     v13 = MEMORY[0x277CBEB18];
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "rssi")}];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(receivedCopy, "rssi")}];
     v20 = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
     v5 = [v13 arrayWithArray:v15];
 
     v16 = self->_addressToRssiValues;
-    v17 = [v4 address];
-    [(NSMutableDictionary *)v16 setObject:v5 forKeyedSubscript:v17];
+    address4 = [receivedCopy address];
+    [(NSMutableDictionary *)v16 setObject:v5 forKeyedSubscript:address4];
   }
 
   else
@@ -329,7 +329,7 @@ LABEL_24:
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [v4 description];
+      v6 = [receivedCopy description];
       *buf = 138412290;
       v22 = v6;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "#RTPeopleDensityRecord received invalid RSSI value, adv, %@", buf, 0xCu);
@@ -338,20 +338,20 @@ LABEL_14:
   }
 }
 
-- (void)getCurrentScoreAndScanDuration:(double *)a3 scanDuration:(double *)a4
+- (void)getCurrentScoreAndScanDuration:(double *)duration scanDuration:(double *)scanDuration
 {
   v7 = objc_opt_class();
   records = self->_records;
 
-  [v7 _computeDensityScore:a3 scanDuration:a4 forRecords:records];
+  [v7 _computeDensityScore:duration scanDuration:scanDuration forRecords:records];
 }
 
-- (id)fetchOngoingPeopleDensityBundle:(id)a3 endDate:(id)a4
+- (id)fetchOngoingPeopleDensityBundle:(id)bundle endDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  bundleCopy = bundle;
+  dateCopy = date;
+  v8 = dateCopy;
+  if (!bundleCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -368,7 +368,7 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!dateCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -381,7 +381,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v7 compare:self->_bundleStartDate] == -1)
+  if ([dateCopy compare:self->_bundleStartDate] == -1)
   {
 LABEL_11:
     v13 = 0;
@@ -398,10 +398,10 @@ LABEL_11:
   v17 = 0.0;
   *buf = 0xBFF0000000000000;
   [objc_opt_class() _computeDensityScore:buf scanDuration:&v17 forRecords:self->_records];
-  v10 = [(RTPeopleDensityRecord *)self computeRssiHistogram];
+  computeRssiHistogram = [(RTPeopleDensityRecord *)self computeRssiHistogram];
   v11 = objc_alloc(MEMORY[0x277D011C8]);
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v11 initWithBundleUUID:v12 startDate:self->_bundleStartDate endDate:0 densityScore:v10 scanDuration:*buf rssiHistogram:v17];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v13 = [v11 initWithBundleUUID:uUID startDate:self->_bundleStartDate endDate:0 densityScore:computeRssiHistogram scanDuration:*buf rssiHistogram:v17];
 
   objc_storeStrong(&self->_ongoingPeopleDensityEvent, v13);
 LABEL_12:
@@ -414,17 +414,17 @@ LABEL_12:
   v36 = *MEMORY[0x277D85DE8];
   v26 = 0.0;
   *&v27 = -1.0;
-  v3 = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle runningRecords];
-  v4 = [v3 firstObject];
-  v5 = [v4 startDatetime];
+  runningRecords = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle runningRecords];
+  firstObject = [runningRecords firstObject];
+  startDatetime = [firstObject startDatetime];
 
   v6 = [MEMORY[0x277CBEAA8] now];
-  [v6 timeIntervalSinceDate:v5];
+  [v6 timeIntervalSinceDate:startDatetime];
   v8 = v7;
 
   v9 = objc_opt_class();
-  v10 = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle runningRecords];
-  [v9 _computeDensityScore:&v27 scanDuration:&v26 forRecords:v10];
+  runningRecords2 = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle runningRecords];
+  [v9 _computeDensityScore:&v27 scanDuration:&v26 forRecords:runningRecords2];
 
   v11 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -432,7 +432,7 @@ LABEL_12:
     v12 = v26;
     [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle currentConfidenceThreshold];
     *buf = 138413058;
-    v29 = v5;
+    v29 = startDatetime;
     v30 = 2048;
     v31 = v8;
     v32 = 2048;
@@ -452,28 +452,28 @@ LABEL_12:
   else
   {
     v16 = objc_alloc(MEMORY[0x277D011C8]);
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle runningRecords];
-    v19 = [v18 firstObject];
-    v20 = [v19 startDatetime];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    runningRecords3 = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle runningRecords];
+    firstObject2 = [runningRecords3 firstObject];
+    startDatetime2 = [firstObject2 startDatetime];
     v22 = v26;
     v21 = *&v27;
-    v23 = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle getHistogram];
-    v24 = [v16 initWithBundleUUID:v17 startDate:v20 endDate:0 densityScore:v23 scanDuration:v21 rssiHistogram:v22];
+    getHistogram = [(RTPeopleDensityRecordRunningRecentObservation *)self->_runningRecentBundle getHistogram];
+    v24 = [v16 initWithBundleUUID:uUID startDate:startDatetime2 endDate:0 densityScore:getHistogram scanDuration:v21 rssiHistogram:v22];
   }
 
   return v24;
 }
 
-+ (void)_computeDensityScore:(double *)a3 scanDuration:(double *)a4 forRecords:(id)a5
++ (void)_computeDensityScore:(double *)score scanDuration:(double *)duration forRecords:(id)records
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  recordsCopy = records;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v8 = [recordsCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
@@ -485,25 +485,25 @@ LABEL_12:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(recordsCopy);
         }
 
         [*(*(&v31 + 1) + 8 * i) scanDuration];
         v11 = v11 + v13;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v9 = [recordsCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v9);
     if (v11 != 0.0)
     {
-      *a4 = v11;
+      *duration = v11;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v14 = v7;
+      v14 = recordsCopy;
       v15 = [v14 countByEnumeratingWithState:&v26 objects:v35 count:16];
       if (v15)
       {
@@ -522,9 +522,9 @@ LABEL_12:
             v20 = *(*(&v26 + 1) + 8 * j);
             [v20 scanDuration];
             v22 = 1.0 / (v21 / 900.0 + 1.0);
-            v23 = [v20 advertisementsCount];
+            advertisementsCount = [v20 advertisementsCount];
             [v20 scanDuration];
-            v18 = v18 + v22 * (v24 / v11 * v23);
+            v18 = v18 + v22 * (v24 / v11 * advertisementsCount);
           }
 
           v16 = [v14 countByEnumeratingWithState:&v26 objects:v35 count:16];
@@ -538,7 +538,7 @@ LABEL_12:
         v18 = 0.0;
       }
 
-      *a3 = v18;
+      *score = v18;
       goto LABEL_23;
     }
   }
@@ -555,8 +555,8 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "#RTPeopleDensityRecord receives zero total scan duration when computing scores", buf, 2u);
   }
 
-  *a3 = -1.0;
-  *a4 = v11;
+  *score = -1.0;
+  *duration = v11;
 LABEL_23:
 }
 
@@ -569,9 +569,9 @@ LABEL_23:
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [(NSMutableDictionary *)self->_addressToRssiValues allKeys];
+      allKeys = [(NSMutableDictionary *)self->_addressToRssiValues allKeys];
       *buf = 138412290;
-      v24 = v16;
+      v24 = allKeys;
       _os_log_debug_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEBUG, "#RTPeopleDensityRecord computing RSSI histogram, unique addresses %@", buf, 0xCu);
     }
   }
@@ -604,9 +604,9 @@ LABEL_23:
           if (v11)
           {
             v12 = [v3 objectForKeyedSubscript:v10];
-            v13 = [v12 integerValue];
+            integerValue = [v12 integerValue];
 
-            v14 = [MEMORY[0x277CCABB0] numberWithInteger:v13 + 1];
+            v14 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
             [v3 setObject:v14 forKeyedSubscript:v10];
           }
 
@@ -626,17 +626,17 @@ LABEL_23:
   return v3;
 }
 
-+ (int)_computeMeanOfRssi:(id)a3
++ (int)_computeMeanOfRssi:(id)rssi
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  rssiCopy = rssi;
+  if ([rssiCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = rssiCopy;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -675,7 +675,7 @@ LABEL_23:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v3;
+      v19 = rssiCopy;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "_computeMeanOfRssi divide by 0: %@", buf, 0xCu);
     }
 
@@ -685,17 +685,17 @@ LABEL_23:
   return v11;
 }
 
-+ (id)computeRssiHistogramForAdvs:(id)a3
++ (id)computeRssiHistogramForAdvs:(id)advs
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  advsCopy = advs;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v3;
+  obj = advsCopy;
   v6 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v6)
   {
@@ -711,18 +711,18 @@ LABEL_23:
         }
 
         v10 = *(*(&v37 + 1) + 8 * i);
-        v11 = [v10 address];
-        v12 = [v5 objectForKeyedSubscript:v11];
+        address = [v10 address];
+        v12 = [v5 objectForKeyedSubscript:address];
 
         if (!v12)
         {
           v13 = objc_opt_new();
-          v14 = [v10 address];
-          [v5 setObject:v13 forKeyedSubscript:v14];
+          address2 = [v10 address];
+          [v5 setObject:v13 forKeyedSubscript:address2];
         }
 
-        v15 = [v10 address];
-        v16 = [v5 objectForKeyedSubscript:v15];
+        address3 = [v10 address];
+        v16 = [v5 objectForKeyedSubscript:address3];
         v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "rssi")}];
         [v16 addObject:v17];
       }
@@ -737,8 +737,8 @@ LABEL_23:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = [v5 allKeys];
-  v18 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  allKeys = [v5 allKeys];
+  v18 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v18)
   {
     v19 = v18;
@@ -749,22 +749,22 @@ LABEL_23:
       {
         if (*v34 != v20)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allKeys);
         }
 
         v22 = [v5 objectForKeyedSubscript:*(*(&v33 + 1) + 8 * j)];
         if ([v22 count])
         {
-          v23 = [a1 _computeMeanOfRssi:v22];
+          v23 = [self _computeMeanOfRssi:v22];
           v24 = [MEMORY[0x277CCABB0] numberWithInt:v23];
           v25 = [v4 objectForKey:v24];
 
           if (v25)
           {
             v26 = [v4 objectForKeyedSubscript:v24];
-            v27 = [v26 integerValue];
+            integerValue = [v26 integerValue];
 
-            v28 = [MEMORY[0x277CCABB0] numberWithInteger:v27 + 1];
+            v28 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
             [v4 setObject:v28 forKeyedSubscript:v24];
           }
 
@@ -775,7 +775,7 @@ LABEL_23:
         }
       }
 
-      v19 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v19 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v19);
@@ -784,34 +784,34 @@ LABEL_23:
   return v4;
 }
 
-- (void)closeDensityBundle:(id)a3
+- (void)closeDensityBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [(RTPeopleDensityRecord *)self queue];
+  bundleCopy = bundle;
+  queue = [(RTPeopleDensityRecord *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RTPeopleDensityRecord_closeDensityBundle___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = bundleCopy;
+  v6 = bundleCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_closeDensityBundle:(id)a3
+- (void)_closeDensityBundle:(id)bundle
 {
-  v5 = a3;
-  if (v5)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
-    v6 = [(RTPeopleDensityRecord *)self peopleDensityStore];
+    peopleDensityStore = [(RTPeopleDensityRecord *)self peopleDensityStore];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke;
     v21[3] = &unk_2788C4D10;
     v23 = a2;
-    v7 = v5;
+    v7 = bundleCopy;
     v22 = v7;
-    [v6 storePeopleDensity:v7 handler:v21];
+    [peopleDensityStore storePeopleDensity:v7 handler:v21];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -886,16 +886,16 @@ id __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-+ (id)computeEventMetrics:(id)a3
++ (id)computeEventMetrics:(id)metrics
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 endDate];
-  if (v5)
+  metricsCopy = metrics;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  endDate = [metricsCopy endDate];
+  if (endDate)
   {
-    v6 = [v3 endDate];
-    v7 = [v3 startDate];
-    [v6 timeIntervalSinceDate:v7];
+    endDate2 = [metricsCopy endDate];
+    startDate = [metricsCopy startDate];
+    [endDate2 timeIntervalSinceDate:startDate];
     v9 = v8;
   }
 
@@ -905,27 +905,27 @@ id __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke_2(uint64_t a1)
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-  [v4 setObject:v10 forKeyedSubscript:@"eventDuration"];
+  [dictionary setObject:v10 forKeyedSubscript:@"eventDuration"];
 
   v11 = MEMORY[0x277CCABB0];
-  [v3 densityScore];
+  [metricsCopy densityScore];
   v12 = [v11 numberWithDouble:?];
-  [v4 setObject:v12 forKeyedSubscript:@"densityScore"];
+  [dictionary setObject:v12 forKeyedSubscript:@"densityScore"];
 
   v13 = MEMORY[0x277CCABB0];
-  [v3 scanDuration];
+  [metricsCopy scanDuration];
   v14 = [v13 numberWithDouble:?];
-  [v4 setObject:v14 forKeyedSubscript:@"scanDuration"];
+  [dictionary setObject:v14 forKeyedSubscript:@"scanDuration"];
 
-  return v4;
+  return dictionary;
 }
 
 - (void)cleanUpOngoingPeopleDensityBundle
 {
   [(NSMutableArray *)self->_records removeAllObjects];
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   bundleStartDate = self->_bundleStartDate;
-  self->_bundleStartDate = v3;
+  self->_bundleStartDate = distantPast;
 
   ongoingPeopleDensityEvent = self->_ongoingPeopleDensityEvent;
   self->_ongoingPeopleDensityEvent = 0;
@@ -935,41 +935,41 @@ id __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke_2(uint64_t a1)
   [(NSMutableDictionary *)addressToRssiValues removeAllObjects];
 }
 
-- (void)mergeWithAnotherDensityRecord:(id)a3
+- (void)mergeWithAnotherDensityRecord:(id)record
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    addressToRssiValues2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(addressToRssiValues2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherRecord", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, addressToRssiValues2, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: otherRecord", buf, 2u);
     }
 
     goto LABEL_34;
   }
 
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v4 bundleStartDate];
-  [v5 timeIntervalSinceDate:v6];
+  bundleStartDate = [recordCopy bundleStartDate];
+  [v5 timeIntervalSinceDate:bundleStartDate];
   v8 = v7;
   maxBackstopDuration = self->_maxBackstopDuration;
 
-  v10 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  addressToRssiValues2 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
+  v11 = os_log_type_enabled(addressToRssiValues2, OS_LOG_TYPE_DEFAULT);
   if (v8 >= maxBackstopDuration)
   {
     if (v11)
     {
       v24 = [MEMORY[0x277CBEAA8] now];
-      v25 = [v4 bundleStartDate];
+      bundleStartDate2 = [recordCopy bundleStartDate];
       *buf = 138412546;
       v51 = v24;
       v52 = 2112;
-      v53 = v25;
-      _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEFAULT, "dropping people density records for stale records, current time, %@, bundle start time, %@", buf, 0x16u);
+      v53 = bundleStartDate2;
+      _os_log_impl(&dword_2304B3000, addressToRssiValues2, OS_LOG_TYPE_DEFAULT, "dropping people density records for stale records, current time, %@, bundle start time, %@", buf, 0x16u);
     }
 
     goto LABEL_34;
@@ -977,58 +977,58 @@ id __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke_2(uint64_t a1)
 
   if (v11)
   {
-    v12 = [v4 records];
-    v13 = [v12 count];
-    v14 = [v4 ongoingPeopleDensityEvent];
-    v15 = [v14 description];
-    v16 = [v4 bundleStartDate];
-    v17 = [v4 addressToRssiValues];
+    records = [recordCopy records];
+    v13 = [records count];
+    ongoingPeopleDensityEvent = [recordCopy ongoingPeopleDensityEvent];
+    v15 = [ongoingPeopleDensityEvent description];
+    bundleStartDate3 = [recordCopy bundleStartDate];
+    addressToRssiValues = [recordCopy addressToRssiValues];
     *buf = 134218754;
     v51 = v13;
     v52 = 2112;
     v53 = v15;
     v54 = 2112;
-    v55 = v16;
+    v55 = bundleStartDate3;
     v56 = 2048;
-    v57 = [v17 count];
-    _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEFAULT, "merging density record: number of records, %lu, ongoing density event, %@, bundle start time, %@, number of RSSI records, %lu", buf, 0x2Au);
+    v57 = [addressToRssiValues count];
+    _os_log_impl(&dword_2304B3000, addressToRssiValues2, OS_LOG_TYPE_DEFAULT, "merging density record: number of records, %lu, ongoing density event, %@, bundle start time, %@, number of RSSI records, %lu", buf, 0x2Au);
   }
 
-  v18 = [v4 records];
-  v19 = [v18 count];
+  records2 = [recordCopy records];
+  v19 = [records2 count];
 
   if (v19)
   {
     records = self->_records;
-    v21 = [v4 records];
-    [(NSMutableArray *)records addObjectsFromArray:v21];
+    records3 = [recordCopy records];
+    [(NSMutableArray *)records addObjectsFromArray:records3];
   }
 
   ongoingPeopleDensityEvent = self->_ongoingPeopleDensityEvent;
   if (ongoingPeopleDensityEvent)
   {
-    v23 = ongoingPeopleDensityEvent;
+    ongoingPeopleDensityEvent2 = ongoingPeopleDensityEvent;
   }
 
   else
   {
-    v23 = [v4 ongoingPeopleDensityEvent];
+    ongoingPeopleDensityEvent2 = [recordCopy ongoingPeopleDensityEvent];
   }
 
   v26 = self->_ongoingPeopleDensityEvent;
-  self->_ongoingPeopleDensityEvent = v23;
+  self->_ongoingPeopleDensityEvent = ongoingPeopleDensityEvent2;
 
   bundleStartDate = self->_bundleStartDate;
-  v28 = [MEMORY[0x277CBEAA8] distantPast];
-  if ([(NSDate *)bundleStartDate isEqualToDate:v28])
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  if ([(NSDate *)bundleStartDate isEqualToDate:distantPast])
   {
-    v29 = [v4 bundleStartDate];
+    bundleStartDate4 = [recordCopy bundleStartDate];
 
-    if (v29)
+    if (bundleStartDate4)
     {
-      v30 = [v4 bundleStartDate];
-      v31 = self->_bundleStartDate;
-      self->_bundleStartDate = v30;
+      bundleStartDate5 = [recordCopy bundleStartDate];
+      bundleStartDate6 = self->_bundleStartDate;
+      self->_bundleStartDate = bundleStartDate5;
       goto LABEL_22;
     }
   }
@@ -1037,11 +1037,11 @@ id __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke_2(uint64_t a1)
   {
   }
 
-  v31 = [v4 bundleStartDate];
-  if (v31)
+  bundleStartDate6 = [recordCopy bundleStartDate];
+  if (bundleStartDate6)
   {
-    v32 = [v4 bundleStartDate];
-    v33 = [v32 earlierDate:self->_bundleStartDate];
+    bundleStartDate7 = [recordCopy bundleStartDate];
+    v33 = [bundleStartDate7 earlierDate:self->_bundleStartDate];
     v34 = self->_bundleStartDate;
     self->_bundleStartDate = v33;
   }
@@ -1049,7 +1049,7 @@ id __45__RTPeopleDensityRecord__closeDensityBundle___block_invoke_2(uint64_t a1)
   else
   {
     v35 = self->_bundleStartDate;
-    v32 = self->_bundleStartDate;
+    bundleStartDate7 = self->_bundleStartDate;
     self->_bundleStartDate = v35;
   }
 
@@ -1058,8 +1058,8 @@ LABEL_22:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = [v4 addressToRssiValues];
-  v36 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  addressToRssiValues2 = [recordCopy addressToRssiValues];
+  v36 = [addressToRssiValues2 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v36)
   {
     v37 = v36;
@@ -1070,7 +1070,7 @@ LABEL_22:
       {
         if (*v46 != v38)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(addressToRssiValues2);
         }
 
         v40 = *(*(&v45 + 1) + 8 * i);
@@ -1078,28 +1078,28 @@ LABEL_22:
 
         if (v41)
         {
-          v42 = [(NSMutableDictionary *)self->_addressToRssiValues objectForKeyedSubscript:v40];
-          if (!v42)
+          addressToRssiValues4 = [(NSMutableDictionary *)self->_addressToRssiValues objectForKeyedSubscript:v40];
+          if (!addressToRssiValues4)
           {
             goto LABEL_32;
           }
 
-          v43 = [v4 addressToRssiValues];
-          v44 = [v43 objectForKeyedSubscript:v40];
-          [v42 addObjectsFromArray:v44];
+          addressToRssiValues3 = [recordCopy addressToRssiValues];
+          v44 = [addressToRssiValues3 objectForKeyedSubscript:v40];
+          [addressToRssiValues4 addObjectsFromArray:v44];
         }
 
         else
         {
-          v42 = [v4 addressToRssiValues];
-          v43 = [v42 objectForKeyedSubscript:v40];
-          [(NSMutableDictionary *)self->_addressToRssiValues setObject:v43 forKeyedSubscript:v40];
+          addressToRssiValues4 = [recordCopy addressToRssiValues];
+          addressToRssiValues3 = [addressToRssiValues4 objectForKeyedSubscript:v40];
+          [(NSMutableDictionary *)self->_addressToRssiValues setObject:addressToRssiValues3 forKeyedSubscript:v40];
         }
 
 LABEL_32:
       }
 
-      v37 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v37 = [addressToRssiValues2 countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v37);
@@ -1108,9 +1108,9 @@ LABEL_32:
 LABEL_34:
 }
 
-- (RTPeopleDensityRecord)initWithCoder:(id)a3
+- (RTPeopleDensityRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = RTPeopleDensityRecord;
   v5 = [(RTPeopleDensityRecord *)&v23 init];
@@ -1119,15 +1119,15 @@ LABEL_34:
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"DensityRecord"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"DensityRecord"];
     records = v5->_records;
     v5->_records = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OngoingPeopleDensityEvent"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OngoingPeopleDensityEvent"];
     ongoingPeopleDensityEvent = v5->_ongoingPeopleDensityEvent;
     v5->_ongoingPeopleDensityEvent = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BundleStartDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BundleStartDate"];
     bundleStartDate = v5->_bundleStartDate;
     v5->_bundleStartDate = v13;
 
@@ -1136,7 +1136,7 @@ LABEL_34:
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v15 setWithObjects:{v16, v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"RSSIRecords"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"RSSIRecords"];
     addressToRssiValues = v5->_addressToRssiValues;
     v5->_addressToRssiValues = v20;
   }
@@ -1144,14 +1144,14 @@ LABEL_34:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   records = self->_records;
-  v5 = a3;
-  [v5 encodeObject:records forKey:@"DensityRecord"];
-  [v5 encodeObject:self->_ongoingPeopleDensityEvent forKey:@"OngoingPeopleDensityEvent"];
-  [v5 encodeObject:self->_bundleStartDate forKey:@"BundleStartDate"];
-  [v5 encodeObject:self->_addressToRssiValues forKey:@"RSSIRecords"];
+  coderCopy = coder;
+  [coderCopy encodeObject:records forKey:@"DensityRecord"];
+  [coderCopy encodeObject:self->_ongoingPeopleDensityEvent forKey:@"OngoingPeopleDensityEvent"];
+  [coderCopy encodeObject:self->_bundleStartDate forKey:@"BundleStartDate"];
+  [coderCopy encodeObject:self->_addressToRssiValues forKey:@"RSSIRecords"];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface CMPedestrianGrade
-+ (CLElevationGradeEntry)inputFromPreparedStatement:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMPedestrianGrade)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMPedestrianGrade)initWithCoder:(id)a3;
-- (CMPedestrianGrade)initWithRecordId:(unint64_t)a3 startDate:(id)a4 grade:(float)a5;
-- (CMPedestrianGrade)initWithSample:(CLElevationGradeEntry *)a3;
++ (CLElevationGradeEntry)inputFromPreparedStatement:(SEL)statement;
+- (BOOL)isEqual:(id)equal;
+- (CMPedestrianGrade)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMPedestrianGrade)initWithCoder:(id)coder;
+- (CMPedestrianGrade)initWithRecordId:(unint64_t)id startDate:(id)date grade:(float)grade;
+- (CMPedestrianGrade)initWithSample:(CLElevationGradeEntry *)sample;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMPedestrianGrade
 
-- (CMPedestrianGrade)initWithRecordId:(unint64_t)a3 startDate:(id)a4 grade:(float)a5
+- (CMPedestrianGrade)initWithRecordId:(unint64_t)id startDate:(id)date grade:(float)grade
 {
   v11.receiver = self;
   v11.super_class = CMPedestrianGrade;
@@ -23,15 +23,15 @@
   v9 = v8;
   if (v8)
   {
-    v8->fRecordId = a3;
-    v8->fStartDate = a4;
-    v9->fGrade = a5;
+    v8->fRecordId = id;
+    v8->fStartDate = date;
+    v9->fGrade = grade;
   }
 
   return v9;
 }
 
-- (CMPedestrianGrade)initWithSample:(CLElevationGradeEntry *)a3
+- (CMPedestrianGrade)initWithSample:(CLElevationGradeEntry *)sample
 {
   v11.receiver = self;
   v11.super_class = CMPedestrianGrade;
@@ -39,10 +39,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->fRecordId = a3->var0;
+    v4->fRecordId = sample->var0;
     v6 = objc_alloc(MEMORY[0x1E695DF00]);
-    v5->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, a3->var1);
-    var2 = a3->var2;
+    v5->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, sample->var1);
+    var2 = sample->var2;
     v5->fGrade = var2;
   }
 
@@ -56,18 +56,18 @@
   [(CMPedestrianGrade *)&v3 dealloc];
 }
 
-- (CMPedestrianGrade)initWithCoder:(id)a3
+- (CMPedestrianGrade)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = CMPedestrianGrade;
   v5 = [(CMPedestrianGrade *)&v14 init];
   if (v5)
   {
-    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMPedestrianGradeCodingKeyRecordId");
+    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMPedestrianGradeCodingKeyRecordId");
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v7, v6, @"kCMPedestrianGradeCodingKeyStartDate");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v7, v6, @"kCMPedestrianGradeCodingKeyStartDate");
     v5->fStartDate = objc_msgSend_copy(v8, v9, v10);
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kCMPedestrianGradeCodingKeyGrade");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kCMPedestrianGradeCodingKeyGrade");
     *&v12 = v12;
     v5->fGrade = *&v12;
   }
@@ -75,39 +75,39 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   fRecordId = self->fRecordId;
-  objc_msgSend_timeIntervalSinceReferenceDate(self->fStartDate, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(self->fStartDate, a2, zone);
   v7 = v6;
   fGrade = self->fGrade;
   v9 = objc_opt_class();
-  v11 = objc_msgSend_allocWithZone_(v9, v10, a3);
+  v11 = objc_msgSend_allocWithZone_(v9, v10, zone);
   v14[0] = fRecordId;
   v14[1] = v7;
   *&v14[2] = fGrade;
   return objc_msgSend_initWithSample_(v11, v12, v14);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->fRecordId, @"kCMPedestrianGradeCodingKeyRecordId");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fStartDate, @"kCMPedestrianGradeCodingKeyStartDate");
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->fRecordId, @"kCMPedestrianGradeCodingKeyRecordId");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fStartDate, @"kCMPedestrianGradeCodingKeyStartDate");
   *&v7 = self->fGrade;
 
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"kCMPedestrianGradeCodingKeyGrade", v7);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"kCMPedestrianGradeCodingKeyGrade", v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = objc_msgSend_recordId(self, v5, v6), v7 == objc_msgSend_recordId(a3, v8, v9)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = objc_msgSend_recordId(self, v5, v6), v7 == objc_msgSend_recordId(equal, v8, v9)))
   {
-    if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(a3, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(a3, v15, v16), (isEqualToDate = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
+    if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(equal, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(equal, v15, v16), (isEqualToDate = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
     {
       objc_msgSend_grade(self, v12, v13);
       v21 = v20;
-      objc_msgSend_grade(a3, v22, v23);
+      objc_msgSend_grade(equal, v22, v23);
       LOBYTE(isEqualToDate) = v21 == v24;
     }
   }
@@ -131,7 +131,7 @@
   return objc_msgSend_stringWithFormat_(v3, v15, @"%@, <recordId, %lu, startDate, %@, grade, %f>", v5, v8, started, v14);
 }
 
-+ (CLElevationGradeEntry)inputFromPreparedStatement:(SEL)a3
++ (CLElevationGradeEntry)inputFromPreparedStatement:(SEL)statement
 {
   retstr->var0 = sqlite3_column_int(a4, 0);
   retstr->var1 = sqlite3_column_double(a4, 1);
@@ -148,9 +148,9 @@
   return v5;
 }
 
-- (CMPedestrianGrade)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMPedestrianGrade)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMPedestrianGrade;
@@ -159,7 +159,7 @@
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

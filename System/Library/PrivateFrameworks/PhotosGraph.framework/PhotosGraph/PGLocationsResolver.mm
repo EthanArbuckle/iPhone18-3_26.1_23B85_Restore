@@ -2,11 +2,11 @@
 - (NSArray)resolvedLocationNodes;
 - (NSArray)resolvedMomentNodes;
 - (NSMapTable)resolvedLocationNodesToAddressNodesMapTable;
-- (PGLocationsResolver)initWithMomentNodes:(id)a3 incompleteLocationResolver:(id)a4 locationHelper:(id)a5;
-- (PGLocationsResolver)initWithSortedMomentNodes:(id)a3 incompleteLocationResolver:(id)a4 locationHelper:(id)a5;
+- (PGLocationsResolver)initWithMomentNodes:(id)nodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper;
+- (PGLocationsResolver)initWithSortedMomentNodes:(id)nodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper;
 - (void)_resolve;
-- (void)setCreateLocationToAddressMapTable:(BOOL)a3;
-- (void)setMaximumMissingLocationsThreshold:(float)a3;
+- (void)setCreateLocationToAddressMapTable:(BOOL)table;
+- (void)setMaximumMissingLocationsThreshold:(float)threshold;
 @end
 
 @implementation PGLocationsResolver
@@ -14,9 +14,9 @@
 - (void)_resolve
 {
   v108 = *MEMORY[0x277D85DE8];
-  v82 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v83 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
-  v79 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v81 = 0;
   if (self->_shouldCreateLocationToAddressMapTable)
   {
@@ -46,18 +46,18 @@
 
         v7 = *(*(&v100 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = [v7 numberOfAssets];
-        v10 = [v7 addressEdges];
+        numberOfAssets = [v7 numberOfAssets];
+        addressEdges = [v7 addressEdges];
         v96 = 0u;
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
-        v11 = v10;
+        v11 = addressEdges;
         v12 = [v11 countByEnumeratingWithState:&v96 objects:v106 count:16];
         if (!v12)
         {
 
-          [(NSArray *)v79 addObject:v7];
+          [(NSArray *)array2 addObject:v7];
           goto LABEL_61;
         }
 
@@ -82,42 +82,42 @@
 
             v18 = *(*(&v96 + 1) + 8 * j);
             v19 = objc_autoreleasePoolPush();
-            v20 = [v18 targetNode];
-            if (![(NSSet *)self->_ignoredAddressNodes count]|| ![(NSSet *)self->_ignoredAddressNodes containsObject:v20])
+            targetNode = [v18 targetNode];
+            if (![(NSSet *)self->_ignoredAddressNodes count]|| ![(NSSet *)self->_ignoredAddressNodes containsObject:targetNode])
             {
-              v21 = [(PGGraphLocationHelper *)self->_locationHelper closestLocationNodeFromLocationNode:v20 withDimension:6 reverse:0];
+              v21 = [(PGGraphLocationHelper *)self->_locationHelper closestLocationNodeFromLocationNode:targetNode withDimension:6 reverse:0];
               if (v21)
               {
                 goto LABEL_19;
               }
 
               v22 = +[PGLogging sharedLogging];
-              v23 = [v22 loggingConnection];
+              loggingConnection = [v22 loggingConnection];
 
-              if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                *&buf[4] = v20;
-                _os_log_impl(&dword_22F0FC000, v23, OS_LOG_TYPE_INFO, "Cannot find city node from address node: %@. Will look for inEdges", buf, 0xCu);
+                *&buf[4] = targetNode;
+                _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Cannot find city node from address node: %@. Will look for inEdges", buf, 0xCu);
               }
 
-              v21 = [(PGGraphLocationHelper *)self->_locationHelper closestLocationNodeFromLocationNode:v20 withDimension:6 reverse:1];
+              v21 = [(PGGraphLocationHelper *)self->_locationHelper closestLocationNodeFromLocationNode:targetNode withDimension:6 reverse:1];
               if (v21)
               {
 LABEL_19:
                 v24 = v21;
-                v25 = [v21 label];
-                v26 = [PGCommonTitleUtility dimensionForLabel:v25];
+                label = [v21 label];
+                v26 = [PGCommonTitleUtility dimensionForLabel:label];
 
                 if (v26 <= 6)
                 {
-                  [v20 isOcean];
+                  [targetNode isOcean];
                   v31 = 0;
                   goto LABEL_29;
                 }
 
                 *buf = 0;
-                v27 = [(PGIncompleteLocationResolver *)self->_incompleteLocationResolver resolvedLocationNodeForIncompleteAddressNode:v20 withPreferredTargetDimension:6 resolvedDimension:buf];
+                v27 = [(PGIncompleteLocationResolver *)self->_incompleteLocationResolver resolvedLocationNodeForIncompleteAddressNode:targetNode withPreferredTargetDimension:6 resolvedDimension:buf];
                 v28 = v27;
                 if (v27)
                 {
@@ -138,7 +138,7 @@ LABEL_19:
                 }
 
                 v31 = v26 > 6;
-                if (![v20 isOcean] || v26 <= 6)
+                if (![targetNode isOcean] || v26 <= 6)
                 {
 LABEL_29:
                   if (![(NSSet *)self->_ignoredLocationNodes count]|| ![(NSSet *)self->_ignoredLocationNodes containsObject:v24])
@@ -146,7 +146,7 @@ LABEL_29:
                     [v18 relevance];
                     v33 = v32;
                     [v18 relevance];
-                    v35 = v34 * v9;
+                    v35 = v34 * numberOfAssets;
                     v36 = v14 + v35;
                     v37 = v15 + v35;
                     if (!v31)
@@ -164,22 +164,22 @@ LABEL_29:
                       v14 = v36;
                     }
 
-                    if (![(NSArray *)v82 containsObject:v24])
+                    if (![(NSArray *)array containsObject:v24])
                     {
-                      [(NSArray *)v82 addObject:v24];
+                      [(NSArray *)array addObject:v24];
                     }
 
                     v38 = [v83 objectForKey:v24];
-                    v39 = [v18 universalStartDate];
-                    v40 = v39;
-                    if (!v38 || v39 && [v39 compare:v38] == -1)
+                    universalStartDate = [v18 universalStartDate];
+                    v40 = universalStartDate;
+                    if (!v38 || universalStartDate && [universalStartDate compare:v38] == -1)
                     {
                       [v83 setObject:v40 forKey:v24];
                     }
 
                     if ((v86 & 1) == 0)
                     {
-                      [(NSArray *)v79 addObject:v80];
+                      [(NSArray *)array2 addObject:v80];
                     }
 
                     if (self->_shouldCreateLocationToAddressMapTable)
@@ -191,7 +191,7 @@ LABEL_29:
                         [(NSMapTable *)v81 setObject:v41 forKey:v24];
                       }
 
-                      [v41 addObject:v20];
+                      [v41 addObject:targetNode];
                     }
 
                     v16 = v16 + v33;
@@ -205,7 +205,7 @@ LABEL_29:
               {
                 if ((v86 & 1) == 0)
                 {
-                  [(NSArray *)v79 addObject:v80];
+                  [(NSArray *)array2 addObject:v80];
                 }
 
                 v24 = 0;
@@ -236,7 +236,7 @@ LABEL_52:
         }
 
 LABEL_61:
-        v5 = v5 + v9;
+        v5 = v5 + numberOfAssets;
 
         objc_autoreleasePoolPop(v8);
       }
@@ -260,7 +260,7 @@ LABEL_65:
   v94[3] = &unk_278885298;
   v42 = v83;
   v95 = v42;
-  [(NSArray *)v82 sortUsingComparator:v94];
+  [(NSArray *)array sortUsingComparator:v94];
   if (v4 > 0.0 || v3 > 0.0)
   {
     v85 = v42;
@@ -288,14 +288,14 @@ LABEL_65:
       }
     }
 
-    v51 = [(NSArray *)v82 count];
+    v51 = [(NSArray *)array count];
     v52 = [MEMORY[0x277CBEB18] arrayWithCapacity:v51];
     v53 = [MEMORY[0x277CBEB58] setWithCapacity:v51];
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v89 = v82;
+    v89 = array;
     v54 = [(NSArray *)v89 countByEnumeratingWithState:&v90 objects:v104 count:16];
     if (v54)
     {
@@ -312,8 +312,8 @@ LABEL_65:
           }
 
           v58 = *(*(&v90 + 1) + 8 * k);
-          v59 = [v58 label];
-          v60 = [PGCommonTitleUtility dimensionForLabel:v59];
+          label2 = [v58 label];
+          v60 = [PGCommonTitleUtility dimensionForLabel:label2];
 
           if (v60 == v50)
           {
@@ -338,8 +338,8 @@ LABEL_65:
             v62 = v61;
             if (v61)
             {
-              v63 = [v61 label];
-              v64 = [PGCommonTitleUtility dimensionForLabel:v63];
+              label3 = [v61 label];
+              v64 = [PGCommonTitleUtility dimensionForLabel:label3];
 
               v52 = v87;
               if (v64 == v50 && ([v53 containsObject:v62] & 1) == 0)
@@ -379,12 +379,12 @@ LABEL_65:
 
   else
   {
-    v43 = v82;
+    v43 = array;
   }
 
   resolvedMomentNodes = self->_resolvedMomentNodes;
-  self->_resolvedMomentNodes = v79;
-  v68 = v79;
+  self->_resolvedMomentNodes = array2;
+  v68 = array2;
 
   resolvedLocationNodes = self->_resolvedLocationNodes;
   self->_resolvedLocationNodes = v43;
@@ -425,19 +425,19 @@ uint64_t __31__PGLocationsResolver__resolve__block_invoke(uint64_t a1, uint64_t 
   return v9;
 }
 
-- (void)setMaximumMissingLocationsThreshold:(float)a3
+- (void)setMaximumMissingLocationsThreshold:(float)threshold
 {
-  if (self->_maximumMissingLocationsThreshold != a3)
+  if (self->_maximumMissingLocationsThreshold != threshold)
   {
-    v3 = 0.0;
-    if (a3 >= 0.0)
+    thresholdCopy = 0.0;
+    if (threshold >= 0.0)
     {
-      v3 = a3;
+      thresholdCopy = threshold;
     }
 
-    if (a3 <= 1.0)
+    if (threshold <= 1.0)
     {
-      v4 = v3;
+      v4 = thresholdCopy;
     }
 
     else
@@ -449,11 +449,11 @@ uint64_t __31__PGLocationsResolver__resolve__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)setCreateLocationToAddressMapTable:(BOOL)a3
+- (void)setCreateLocationToAddressMapTable:(BOOL)table
 {
-  if (self->_shouldCreateLocationToAddressMapTable != a3)
+  if (self->_shouldCreateLocationToAddressMapTable != table)
   {
-    self->_shouldCreateLocationToAddressMapTable = a3;
+    self->_shouldCreateLocationToAddressMapTable = table;
     resolvedLocationNodes = self->_resolvedLocationNodes;
     self->_resolvedLocationNodes = 0;
 
@@ -511,11 +511,11 @@ uint64_t __31__PGLocationsResolver__resolve__block_invoke(uint64_t a1, uint64_t 
   return resolvedMomentNodes;
 }
 
-- (PGLocationsResolver)initWithSortedMomentNodes:(id)a3 incompleteLocationResolver:(id)a4 locationHelper:(id)a5
+- (PGLocationsResolver)initWithSortedMomentNodes:(id)nodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nodesCopy = nodes;
+  resolverCopy = resolver;
+  helperCopy = helper;
   v20.receiver = self;
   v20.super_class = PGLocationsResolver;
   v12 = [(PGLocationsResolver *)&v20 init];
@@ -523,21 +523,21 @@ uint64_t __31__PGLocationsResolver__resolve__block_invoke(uint64_t a1, uint64_t 
   if (v12)
   {
     v12->_maximumMissingLocationsThreshold = 0.25;
-    objc_storeStrong(&v12->_sortedMoments, a3);
-    objc_storeStrong(&v13->_locationHelper, a5);
-    if (v10)
+    objc_storeStrong(&v12->_sortedMoments, nodes);
+    objc_storeStrong(&v13->_locationHelper, helper);
+    if (resolverCopy)
     {
-      v14 = v10;
+      v14 = resolverCopy;
       incompleteLocationResolver = v13->_incompleteLocationResolver;
       v13->_incompleteLocationResolver = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB98] setWithArray:v9];
+      v16 = [MEMORY[0x277CBEB98] setWithArray:nodesCopy];
       incompleteLocationResolver = [PGCommonTitleUtility addressNodesFromMomentNodes:v16];
 
-      v17 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:incompleteLocationResolver locationHelper:v11];
+      v17 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:incompleteLocationResolver locationHelper:helperCopy];
       v18 = v13->_incompleteLocationResolver;
       v13->_incompleteLocationResolver = v17;
     }
@@ -546,13 +546,13 @@ uint64_t __31__PGLocationsResolver__resolve__block_invoke(uint64_t a1, uint64_t 
   return v13;
 }
 
-- (PGLocationsResolver)initWithMomentNodes:(id)a3 incompleteLocationResolver:(id)a4 locationHelper:(id)a5
+- (PGLocationsResolver)initWithMomentNodes:(id)nodes incompleteLocationResolver:(id)resolver locationHelper:(id)helper
 {
   v20[3] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCAC98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  helperCopy = helper;
+  resolverCopy = resolver;
+  nodesCopy = nodes;
   v12 = [v8 sortDescriptorWithKey:@"universalStartDate" ascending:1];
   v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalEndDate" ascending:{1, v12}];
   v20[1] = v13;
@@ -560,9 +560,9 @@ uint64_t __31__PGLocationsResolver__resolve__block_invoke(uint64_t a1, uint64_t 
   v20[2] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:3];
 
-  v16 = [v11 sortedArrayUsingDescriptors:v15];
+  v16 = [nodesCopy sortedArrayUsingDescriptors:v15];
 
-  v17 = [(PGLocationsResolver *)self initWithSortedMomentNodes:v16 incompleteLocationResolver:v10 locationHelper:v9];
+  v17 = [(PGLocationsResolver *)self initWithSortedMomentNodes:v16 incompleteLocationResolver:resolverCopy locationHelper:helperCopy];
   v18 = *MEMORY[0x277D85DE8];
   return v17;
 }

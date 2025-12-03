@@ -1,11 +1,11 @@
 @interface PGGraphContactSuggestionEdge
 + (id)filter;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphContactSuggestionEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
-- (id)_readableStringForContactSuggestionProperty:(id)a3;
-- (id)_stringForBiologicalSexMatch:(unint64_t)a3;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphContactSuggestionEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
+- (id)_readableStringForContactSuggestionProperty:(id)property;
+- (id)_stringForBiologicalSexMatch:(unint64_t)match;
 - (id)edgeDescription;
-- (id)initFromPersonNode:(id)a3 toContactNode:(id)a4 confidence:(double)a5 contactScore:(double)a6 numberOfMomentsAtHome:(unint64_t)a7 numberOfMomentsAtMentionedAddress:(unint64_t)a8 numberOfWeakBirthdayMomentsAroundBirthdayDate:(unint64_t)a9 numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate:(unint64_t)a10 numberOfMomentsOverlappingWithCalendarEvents:(unint64_t)a11 numberOfAppearancesInSharedAssets:(unint64_t)a12 numberOfCMMMoments:(unint64_t)a13 facetimeFaceprintConfidence:(double)a14 contactFaceprintMatch:(BOOL)a15 relationshipsDebug:(id)a16 socialGroupsConfidence:(double)a17 socialGroupsDebug:(id)a18 messageGroupsDebug:(id)a19 birthdayScore:(double)a20 potentialBirthdayScore:(double)a21 addressScore:(double)a22 mentionedAddressScore:(double)a23 calendarScore:(double)a24 sharedAssetScore:(double)a25 sharedCMMScore:(double)a26 relationshipScore:(double)a27 scoreAfterMessagePenalty:(double)a28 sexMatch:(unint64_t)a29;
+- (id)initFromPersonNode:(id)node toContactNode:(id)contactNode confidence:(double)confidence contactScore:(double)score numberOfMomentsAtHome:(unint64_t)home numberOfMomentsAtMentionedAddress:(unint64_t)address numberOfWeakBirthdayMomentsAroundBirthdayDate:(unint64_t)date numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate:(unint64_t)self0 numberOfMomentsOverlappingWithCalendarEvents:(unint64_t)self1 numberOfAppearancesInSharedAssets:(unint64_t)self2 numberOfCMMMoments:(unint64_t)self3 facetimeFaceprintConfidence:(double)self4 contactFaceprintMatch:(BOOL)self5 relationshipsDebug:(id)self6 socialGroupsConfidence:(double)self7 socialGroupsDebug:(id)self8 messageGroupsDebug:(id)self9 birthdayScore:(double)birthdayScore potentialBirthdayScore:(double)potentialBirthdayScore addressScore:(double)addressScore mentionedAddressScore:(double)mentionedAddressScore calendarScore:(double)calendarScore sharedAssetScore:(double)assetScore sharedCMMScore:(double)mScore relationshipScore:(double)relationshipScore scoreAfterMessagePenalty:(double)penalty sexMatch:(unint64_t)sexMatch;
 - (id)propertyDictionary;
 - (unint64_t)numberOfMatchedMessageGroups;
 - (unint64_t)numberOfMatchedRelationships;
@@ -13,7 +13,7 @@
 
 @implementation PGGraphContactSuggestionEdge
 
-- (id)_readableStringForContactSuggestionProperty:(id)a3
+- (id)_readableStringForContactSuggestionProperty:(id)property
 {
   v13[23] = *MEMORY[0x277D85DE8];
   v12[0] = @"gwnummmtshome";
@@ -63,9 +63,9 @@
   v12[22] = @"scoremfp";
   v13[22] = @"TotalScoreAfterMessageFrequencyPenalty";
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  propertyCopy = property;
   v5 = [v3 dictionaryWithObjects:v13 forKeys:v12 count:23];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:propertyCopy];
   v7 = v6;
   if (v6)
   {
@@ -74,7 +74,7 @@
 
   else
   {
-    v8 = v4;
+    v8 = propertyCopy;
   }
 
   v9 = v8;
@@ -111,29 +111,29 @@
   return result;
 }
 
-- (id)_stringForBiologicalSexMatch:(unint64_t)a3
+- (id)_stringForBiologicalSexMatch:(unint64_t)match
 {
-  if (a3 > 2)
+  if (match > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278883760[a3];
+    return off_278883760[match];
   }
 }
 
 - (id)edgeDescription
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphContactSuggestionEdge *)self propertyDictionary];
-  v23 = [MEMORY[0x277CBEB18] array];
+  propertyDictionary = [(PGGraphContactSuggestionEdge *)self propertyDictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = v3;
+  v4 = propertyDictionary;
   v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -162,7 +162,7 @@
         }
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", v10, v13];
-        [v23 addObject:v15];
+        [array addObject:v15];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -171,13 +171,13 @@
     while (v6);
   }
 
-  v16 = [v23 sortedArrayUsingSelector:sel_compare_];
+  v16 = [array sortedArrayUsingSelector:sel_compare_];
   v17 = MEMORY[0x277CCACA8];
   v24.receiver = self;
   v24.super_class = PGGraphContactSuggestionEdge;
-  v18 = [(PGGraphOptimizedEdge *)&v24 edgeDescription];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v24 edgeDescription];
   v19 = [v16 componentsJoinedByString:{@", "}];
-  v20 = [v17 stringWithFormat:@"%@ (%@)", v18, v19];
+  v20 = [v17 stringWithFormat:@"%@ (%@)", edgeDescription, v19];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -291,11 +291,11 @@
   return v18;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"confidence"];
     v7 = v6;
@@ -571,135 +571,135 @@ LABEL_53:
   return v45;
 }
 
-- (PGGraphContactSuggestionEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphContactSuggestionEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v9 = a7;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 objectForKeyedSubscript:@"confidence"];
+  propertiesCopy = properties;
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  v12 = [propertiesCopy objectForKeyedSubscript:@"confidence"];
   [v12 doubleValue];
   v74 = v13;
 
-  v14 = [v9 objectForKeyedSubscript:@"gwscore"];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"gwscore"];
   [v14 doubleValue];
   v73 = v15;
 
-  v16 = [v9 objectForKeyedSubscript:@"gwnummmtshome"];
-  v72 = [v16 unsignedIntegerValue];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"gwnummmtshome"];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-  v17 = [v9 objectForKeyedSubscript:@"gwnummentndaddrs"];
-  v71 = [v17 unsignedIntegerValue];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"gwnummentndaddrs"];
+  unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-  v18 = [v9 objectForKeyedSubscript:@"gwnumbdaymmt"];
-  v70 = [v18 unsignedIntegerValue];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"gwnumbdaymmt"];
+  unsignedIntegerValue3 = [v18 unsignedIntegerValue];
 
-  v19 = [v9 objectForKeyedSubscript:@"gwnummbdaymmt"];
-  v69 = [v19 unsignedIntegerValue];
+  v19 = [propertiesCopy objectForKeyedSubscript:@"gwnummbdaymmt"];
+  unsignedIntegerValue4 = [v19 unsignedIntegerValue];
 
-  v20 = [v9 objectForKeyedSubscript:@"gwnummmtsclndrevents"];
-  v68 = [v20 unsignedIntegerValue];
+  v20 = [propertiesCopy objectForKeyedSubscript:@"gwnummmtsclndrevents"];
+  unsignedIntegerValue5 = [v20 unsignedIntegerValue];
 
-  v21 = [v9 objectForKeyedSubscript:@"gwnumassts"];
-  v22 = [v21 unsignedIntegerValue];
+  v21 = [propertiesCopy objectForKeyedSubscript:@"gwnumassts"];
+  unsignedIntegerValue6 = [v21 unsignedIntegerValue];
 
-  v23 = [v9 objectForKeyedSubscript:@"gwnumcmm"];
-  v24 = [v23 unsignedIntegerValue];
+  v23 = [propertiesCopy objectForKeyedSubscript:@"gwnumcmm"];
+  unsignedIntegerValue7 = [v23 unsignedIntegerValue];
 
-  v25 = [v9 objectForKeyedSubscript:@"gwftfprntconf"];
+  v25 = [propertiesCopy objectForKeyedSubscript:@"gwftfprntconf"];
   [v25 doubleValue];
   v67 = v26;
 
-  v27 = [v9 objectForKeyedSubscript:@"gwfprntsmatch"];
-  v28 = [v27 BOOLValue];
+  v27 = [propertiesCopy objectForKeyedSubscript:@"gwfprntsmatch"];
+  bOOLValue = [v27 BOOLValue];
 
-  v29 = [v9 objectForKeyedSubscript:@"gwreldebug"];
-  v30 = [v9 objectForKeyedSubscript:@"gwsocialgrpsconf"];
+  v29 = [propertiesCopy objectForKeyedSubscript:@"gwreldebug"];
+  v30 = [propertiesCopy objectForKeyedSubscript:@"gwsocialgrpsconf"];
   [v30 doubleValue];
   v66 = v31;
 
-  v32 = [v9 objectForKeyedSubscript:@"gwsocialgrps"];
-  v33 = [v9 objectForKeyedSubscript:@"gwmsggrps"];
-  v34 = [v9 objectForKeyedSubscript:@"bdayscore"];
+  v32 = [propertiesCopy objectForKeyedSubscript:@"gwsocialgrps"];
+  v33 = [propertiesCopy objectForKeyedSubscript:@"gwmsggrps"];
+  v34 = [propertiesCopy objectForKeyedSubscript:@"bdayscore"];
   [v34 doubleValue];
   v65 = v35;
 
-  v36 = [v9 objectForKeyedSubscript:@"pbdayscore"];
+  v36 = [propertiesCopy objectForKeyedSubscript:@"pbdayscore"];
   [v36 doubleValue];
   v38 = v37;
 
-  v39 = [v9 objectForKeyedSubscript:@"addscore"];
+  v39 = [propertiesCopy objectForKeyedSubscript:@"addscore"];
   [v39 doubleValue];
   v41 = v40;
 
-  v42 = [v9 objectForKeyedSubscript:@"maddscore"];
+  v42 = [propertiesCopy objectForKeyedSubscript:@"maddscore"];
   [v42 doubleValue];
   v44 = v43;
 
-  v45 = [v9 objectForKeyedSubscript:@"calscore"];
+  v45 = [propertiesCopy objectForKeyedSubscript:@"calscore"];
   [v45 doubleValue];
   v47 = v46;
 
-  v48 = [v9 objectForKeyedSubscript:@"asstscore"];
+  v48 = [propertiesCopy objectForKeyedSubscript:@"asstscore"];
   [v48 doubleValue];
   v50 = v49;
 
-  v51 = [v9 objectForKeyedSubscript:@"cmmscore"];
+  v51 = [propertiesCopy objectForKeyedSubscript:@"cmmscore"];
   [v51 doubleValue];
   v53 = v52;
 
-  v54 = [v9 objectForKeyedSubscript:@"relscore"];
+  v54 = [propertiesCopy objectForKeyedSubscript:@"relscore"];
   [v54 doubleValue];
   v56 = v55;
 
-  v57 = [v9 objectForKeyedSubscript:@"scoremfp"];
+  v57 = [propertiesCopy objectForKeyedSubscript:@"scoremfp"];
   [v57 doubleValue];
   v59 = v58;
 
-  v60 = [v9 objectForKeyedSubscript:@"gwgenmatch"];
+  v60 = [propertiesCopy objectForKeyedSubscript:@"gwgenmatch"];
 
-  v61 = [v60 unsignedIntegerValue];
-  LOBYTE(v64) = v28;
-  v62 = [(PGGraphContactSuggestionEdge *)self initFromPersonNode:v11 toContactNode:v10 confidence:v72 contactScore:v71 numberOfMomentsAtHome:v70 numberOfMomentsAtMentionedAddress:v69 numberOfWeakBirthdayMomentsAroundBirthdayDate:v74 numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate:v73 numberOfMomentsOverlappingWithCalendarEvents:v67 numberOfAppearancesInSharedAssets:v66 numberOfCMMMoments:v65 facetimeFaceprintConfidence:v38 contactFaceprintMatch:v41 relationshipsDebug:v44 socialGroupsConfidence:v68 socialGroupsDebug:v22 messageGroupsDebug:v24 birthdayScore:v64 potentialBirthdayScore:v29 addressScore:v32 mentionedAddressScore:v33 calendarScore:v47 sharedAssetScore:v50 sharedCMMScore:v53 relationshipScore:v56 scoreAfterMessagePenalty:v59 sexMatch:v61];
+  unsignedIntegerValue8 = [v60 unsignedIntegerValue];
+  LOBYTE(v64) = bOOLValue;
+  v62 = [(PGGraphContactSuggestionEdge *)self initFromPersonNode:nodeCopy toContactNode:targetNodeCopy confidence:unsignedIntegerValue contactScore:unsignedIntegerValue2 numberOfMomentsAtHome:unsignedIntegerValue3 numberOfMomentsAtMentionedAddress:unsignedIntegerValue4 numberOfWeakBirthdayMomentsAroundBirthdayDate:v74 numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate:v73 numberOfMomentsOverlappingWithCalendarEvents:v67 numberOfAppearancesInSharedAssets:v66 numberOfCMMMoments:v65 facetimeFaceprintConfidence:v38 contactFaceprintMatch:v41 relationshipsDebug:v44 socialGroupsConfidence:unsignedIntegerValue5 socialGroupsDebug:unsignedIntegerValue6 messageGroupsDebug:unsignedIntegerValue7 birthdayScore:v64 potentialBirthdayScore:v29 addressScore:v32 mentionedAddressScore:v33 calendarScore:v47 sharedAssetScore:v50 sharedCMMScore:v53 relationshipScore:v56 scoreAfterMessagePenalty:v59 sexMatch:unsignedIntegerValue8];
 
   return v62;
 }
 
-- (id)initFromPersonNode:(id)a3 toContactNode:(id)a4 confidence:(double)a5 contactScore:(double)a6 numberOfMomentsAtHome:(unint64_t)a7 numberOfMomentsAtMentionedAddress:(unint64_t)a8 numberOfWeakBirthdayMomentsAroundBirthdayDate:(unint64_t)a9 numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate:(unint64_t)a10 numberOfMomentsOverlappingWithCalendarEvents:(unint64_t)a11 numberOfAppearancesInSharedAssets:(unint64_t)a12 numberOfCMMMoments:(unint64_t)a13 facetimeFaceprintConfidence:(double)a14 contactFaceprintMatch:(BOOL)a15 relationshipsDebug:(id)a16 socialGroupsConfidence:(double)a17 socialGroupsDebug:(id)a18 messageGroupsDebug:(id)a19 birthdayScore:(double)a20 potentialBirthdayScore:(double)a21 addressScore:(double)a22 mentionedAddressScore:(double)a23 calendarScore:(double)a24 sharedAssetScore:(double)a25 sharedCMMScore:(double)a26 relationshipScore:(double)a27 scoreAfterMessagePenalty:(double)a28 sexMatch:(unint64_t)a29
+- (id)initFromPersonNode:(id)node toContactNode:(id)contactNode confidence:(double)confidence contactScore:(double)score numberOfMomentsAtHome:(unint64_t)home numberOfMomentsAtMentionedAddress:(unint64_t)address numberOfWeakBirthdayMomentsAroundBirthdayDate:(unint64_t)date numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate:(unint64_t)self0 numberOfMomentsOverlappingWithCalendarEvents:(unint64_t)self1 numberOfAppearancesInSharedAssets:(unint64_t)self2 numberOfCMMMoments:(unint64_t)self3 facetimeFaceprintConfidence:(double)self4 contactFaceprintMatch:(BOOL)self5 relationshipsDebug:(id)self6 socialGroupsConfidence:(double)self7 socialGroupsDebug:(id)self8 messageGroupsDebug:(id)self9 birthdayScore:(double)birthdayScore potentialBirthdayScore:(double)potentialBirthdayScore addressScore:(double)addressScore mentionedAddressScore:(double)mentionedAddressScore calendarScore:(double)calendarScore sharedAssetScore:(double)assetScore sharedCMMScore:(double)mScore relationshipScore:(double)relationshipScore scoreAfterMessagePenalty:(double)penalty sexMatch:(unint64_t)sexMatch
 {
-  v49 = a16;
-  v48 = a18;
-  v47 = a19;
+  debugCopy = debug;
+  groupsDebugCopy = groupsDebug;
+  messageGroupsDebugCopy = messageGroupsDebug;
   v50.receiver = self;
   v50.super_class = PGGraphContactSuggestionEdge;
-  v44 = [(PGGraphEdge *)&v50 initWithSourceNode:a3 targetNode:a4];
+  v44 = [(PGGraphEdge *)&v50 initWithSourceNode:node targetNode:contactNode];
   v45 = v44;
   if (v44)
   {
-    v44->_confidence = a5;
-    v44->_contactScore = a6;
-    v44->_numberOfMomentsAtHome = a7;
-    v44->_numberOfMomentsAtMentionedAddress = a8;
-    v44->_numberOfWeakBirthdayMomentsAroundBirthdayDate = a9;
-    v44->_numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate = a10;
-    v44->_numberOfMomentsOverlappingWithCalendarEvents = a11;
-    v44->_numberOfAppearancesInSharedAssets = a12;
-    v44->_numberOfCMMMoments = a13;
-    v44->_facetimeFaceprintConfidence = a14;
-    v44->_contactFaceprintMatch = a15;
-    objc_storeStrong(&v44->_relationshipsDebug, a16);
-    v45->_socialGroupsConfidence = a17;
-    objc_storeStrong(&v45->_socialGroupsDebug, a18);
-    objc_storeStrong(&v45->_messageGroupsDebug, a19);
-    v45->_birthdayScore = a20;
-    v45->_potentialBirthdayScore = a21;
-    v45->_addressScore = a22;
-    v45->_mentionedAddressScore = a23;
-    v45->_calendarScore = a24;
-    v45->_sharedAssetScore = a25;
-    v45->_sharedCMMScore = a26;
-    v45->_relationshipScore = a27;
-    v45->_scoreAfterMessagePenalty = a28;
-    v45->_sexMatch = a29;
+    v44->_confidence = confidence;
+    v44->_contactScore = score;
+    v44->_numberOfMomentsAtHome = home;
+    v44->_numberOfMomentsAtMentionedAddress = address;
+    v44->_numberOfWeakBirthdayMomentsAroundBirthdayDate = date;
+    v44->_numberOfWeakBirthdayMomentsAroundPotentialBirthdayDate = birthdayDate;
+    v44->_numberOfMomentsOverlappingWithCalendarEvents = events;
+    v44->_numberOfAppearancesInSharedAssets = assets;
+    v44->_numberOfCMMMoments = moments;
+    v44->_facetimeFaceprintConfidence = faceprintConfidence;
+    v44->_contactFaceprintMatch = match;
+    objc_storeStrong(&v44->_relationshipsDebug, debug);
+    v45->_socialGroupsConfidence = groupsConfidence;
+    objc_storeStrong(&v45->_socialGroupsDebug, groupsDebug);
+    objc_storeStrong(&v45->_messageGroupsDebug, messageGroupsDebug);
+    v45->_birthdayScore = birthdayScore;
+    v45->_potentialBirthdayScore = potentialBirthdayScore;
+    v45->_addressScore = addressScore;
+    v45->_mentionedAddressScore = mentionedAddressScore;
+    v45->_calendarScore = calendarScore;
+    v45->_sharedAssetScore = assetScore;
+    v45->_sharedCMMScore = mScore;
+    v45->_relationshipScore = relationshipScore;
+    v45->_scoreAfterMessagePenalty = penalty;
+    v45->_sexMatch = sexMatch;
   }
 
   return v45;

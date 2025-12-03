@@ -1,29 +1,29 @@
 @interface HMDNetworkRouterICMPTypeList
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-+ (id)typeListFromICMPTypes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
++ (id)typeListFromICMPTypes:(id)types;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterICMPTypeList)init;
-- (HMDNetworkRouterICMPTypeList)initWithTypes:(id)a3;
+- (HMDNetworkRouterICMPTypeList)initWithTypes:(id)types;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterICMPTypeList
 
-+ (id)typeListFromICMPTypes:(id)a3
++ (id)typeListFromICMPTypes:(id)types
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(typesCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = typesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -77,16 +77,16 @@ LABEL_12:
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDNetworkRouterICMPTypeList *)self types];
-  v4 = [v2 stringWithFormat:@"<HMDNetworkRouterICMPTypeList types=%@>", v3];
+  types = [(HMDNetworkRouterICMPTypeList *)self types];
+  v4 = [v2 stringWithFormat:@"<HMDNetworkRouterICMPTypeList types=%@>", types];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -96,19 +96,19 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDNetworkRouterICMPTypeList *)self types];
-      v7 = [(HMDNetworkRouterICMPTypeList *)v5 types];
-      if (v6 == v7)
+      v5 = equalCopy;
+      types = [(HMDNetworkRouterICMPTypeList *)self types];
+      types2 = [(HMDNetworkRouterICMPTypeList *)v5 types];
+      if (types == types2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HMDNetworkRouterICMPTypeList *)self types];
-        v9 = [(HMDNetworkRouterICMPTypeList *)v5 types];
-        v10 = [v8 isEqual:v9];
+        types3 = [(HMDNetworkRouterICMPTypeList *)self types];
+        types4 = [(HMDNetworkRouterICMPTypeList *)v5 types];
+        v10 = [types3 isEqual:types4];
       }
     }
 
@@ -121,16 +121,16 @@ LABEL_12:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterICMPTypeList allocWithZone:a3];
-  v5 = [(HMDNetworkRouterICMPTypeList *)self types];
-  v6 = [(HMDNetworkRouterICMPTypeList *)v4 initWithTypes:v5];
+  v4 = [HMDNetworkRouterICMPTypeList allocWithZone:zone];
+  types = [(HMDNetworkRouterICMPTypeList *)self types];
+  v6 = [(HMDNetworkRouterICMPTypeList *)v4 initWithTypes:types];
 
   return v6;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
   v45 = 0u;
@@ -159,8 +159,8 @@ LABEL_12:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(HMDNetworkRouterICMPTypeList *)self types];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  types = [(HMDNetworkRouterICMPTypeList *)self types];
+  v6 = [types countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -172,7 +172,7 @@ LABEL_3:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(types);
       }
 
       v11 = *(*(&v21 + 1) + 8 * v10);
@@ -191,11 +191,11 @@ LABEL_3:
       {
         v16 = v13;
 
-        if (a3)
+        if (error)
         {
           v17 = v16;
           v15 = 0;
-          *a3 = v16;
+          *error = v16;
           goto LABEL_19;
         }
 
@@ -217,7 +217,7 @@ LABEL_18:
       v8 = 1;
       if (v7 == v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v7 = [types countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -227,11 +227,11 @@ LABEL_18:
       }
     }
 
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v16 = 0;
-      *a3 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_19;
     }
 
@@ -251,22 +251,22 @@ LABEL_19:
   return v15;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v9)
   {
     v11 = 0;
-    v12 = v8 + v9;
+    v12 = bytes + v9;
     while (1)
     {
       v26 = 0;
@@ -276,10 +276,10 @@ LABEL_19:
       v23 = 0;
       if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
       {
-        if (a4)
+        if (error)
         {
           HMErrorFromOSStatus();
-          *a4 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_27;
         }
 
@@ -300,7 +300,7 @@ LABEL_19:
 
         if (!v15)
         {
-          [v10 addObject:v14];
+          [array addObject:v14];
         }
 
         v11 = v15;
@@ -326,11 +326,11 @@ LABEL_19:
       goto LABEL_22;
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v11;
       v16 = 0;
-      *a4 = v11;
+      *error = v11;
       goto LABEL_27;
     }
 
@@ -341,9 +341,9 @@ LABEL_26:
   else
   {
 LABEL_22:
-    if ([v10 count])
+    if ([array count])
     {
-      v19 = v10;
+      v19 = array;
     }
 
     else
@@ -361,16 +361,16 @@ LABEL_27:
   return v16;
 }
 
-- (HMDNetworkRouterICMPTypeList)initWithTypes:(id)a3
+- (HMDNetworkRouterICMPTypeList)initWithTypes:(id)types
 {
-  v5 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = HMDNetworkRouterICMPTypeList;
   v6 = [(HMDNetworkRouterICMPTypeList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_types, a3);
+    objc_storeStrong(&v6->_types, types);
   }
 
   return v7;
@@ -383,24 +383,24 @@ LABEL_27:
   return [(HMDNetworkRouterICMPTypeList *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterICMPTypeList);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterICMPTypeList *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterICMPTypeList *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

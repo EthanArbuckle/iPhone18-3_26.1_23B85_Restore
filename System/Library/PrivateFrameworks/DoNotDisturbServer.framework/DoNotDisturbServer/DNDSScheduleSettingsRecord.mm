@@ -1,52 +1,52 @@
 @interface DNDSScheduleSettingsRecord
-+ (id)_recordWithEncodedInfo:(id)a3 error:(id *)a4;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-+ (id)recordForLegacyBehaviorOverride:(id)a3 lastUpdated:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_recordWithEncodedInfo:(id)info error:(id *)error;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
++ (id)recordForLegacyBehaviorOverride:(id)override lastUpdated:(id)updated;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithLastUpdatedTimestamp:(id)a3 scheduleEnabledSetting:(id)a4 timePeriodStartTimeHour:(id)a5 timePeriodStartTimeMinute:(id)a6 timePeriodEndTimeHour:(id)a7 timePeriodEndTimeMinute:(id)a8 timePeriodWeekdays:(id)a9 bedtimeBehaviorEnabledSetting:(id)a10;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
+- (id)_initWithLastUpdatedTimestamp:(id)timestamp scheduleEnabledSetting:(id)setting timePeriodStartTimeHour:(id)hour timePeriodStartTimeMinute:(id)minute timePeriodEndTimeHour:(id)timeHour timePeriodEndTimeMinute:(id)timeMinute timePeriodWeekdays:(id)weekdays bedtimeBehaviorEnabledSetting:(id)self0;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
 - (id)legacyBehaviorOverride;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSScheduleSettingsRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 lastUpdatedTimestamp];
-  v6 = [v4 scheduleEnabledSetting];
-  v7 = [v4 timePeriodStartTimeHour];
-  v8 = [v4 timePeriodStartTimeMinute];
-  v9 = [v4 timePeriodEndTimeHour];
-  v10 = [v4 timePeriodEndTimeMinute];
-  v11 = [v4 timePeriodWeekdays];
-  v12 = [v4 bedtimeBehaviorEnabledSetting];
+  recordCopy = record;
+  lastUpdatedTimestamp = [recordCopy lastUpdatedTimestamp];
+  scheduleEnabledSetting = [recordCopy scheduleEnabledSetting];
+  timePeriodStartTimeHour = [recordCopy timePeriodStartTimeHour];
+  timePeriodStartTimeMinute = [recordCopy timePeriodStartTimeMinute];
+  timePeriodEndTimeHour = [recordCopy timePeriodEndTimeHour];
+  timePeriodEndTimeMinute = [recordCopy timePeriodEndTimeMinute];
+  timePeriodWeekdays = [recordCopy timePeriodWeekdays];
+  bedtimeBehaviorEnabledSetting = [recordCopy bedtimeBehaviorEnabledSetting];
 
-  v13 = [(DNDSScheduleSettingsRecord *)self _initWithLastUpdatedTimestamp:v5 scheduleEnabledSetting:v6 timePeriodStartTimeHour:v7 timePeriodStartTimeMinute:v8 timePeriodEndTimeHour:v9 timePeriodEndTimeMinute:v10 timePeriodWeekdays:v11 bedtimeBehaviorEnabledSetting:v12];
+  v13 = [(DNDSScheduleSettingsRecord *)self _initWithLastUpdatedTimestamp:lastUpdatedTimestamp scheduleEnabledSetting:scheduleEnabledSetting timePeriodStartTimeHour:timePeriodStartTimeHour timePeriodStartTimeMinute:timePeriodStartTimeMinute timePeriodEndTimeHour:timePeriodEndTimeHour timePeriodEndTimeMinute:timePeriodEndTimeMinute timePeriodWeekdays:timePeriodWeekdays bedtimeBehaviorEnabledSetting:bedtimeBehaviorEnabledSetting];
   return v13;
 }
 
-- (id)_initWithLastUpdatedTimestamp:(id)a3 scheduleEnabledSetting:(id)a4 timePeriodStartTimeHour:(id)a5 timePeriodStartTimeMinute:(id)a6 timePeriodEndTimeHour:(id)a7 timePeriodEndTimeMinute:(id)a8 timePeriodWeekdays:(id)a9 bedtimeBehaviorEnabledSetting:(id)a10
+- (id)_initWithLastUpdatedTimestamp:(id)timestamp scheduleEnabledSetting:(id)setting timePeriodStartTimeHour:(id)hour timePeriodStartTimeMinute:(id)minute timePeriodEndTimeHour:(id)timeHour timePeriodEndTimeMinute:(id)timeMinute timePeriodWeekdays:(id)weekdays bedtimeBehaviorEnabledSetting:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  timestampCopy = timestamp;
+  settingCopy = setting;
+  hourCopy = hour;
+  minuteCopy = minute;
+  timeHourCopy = timeHour;
+  timeMinuteCopy = timeMinute;
+  weekdaysCopy = weekdays;
+  enabledSettingCopy = enabledSetting;
   v51.receiver = self;
   v51.super_class = DNDSScheduleSettingsRecord;
   v24 = [(DNDSScheduleSettingsRecord *)&v51 init];
   if (v24)
   {
-    v25 = [v16 copy];
-    v50 = v16;
+    v25 = [timestampCopy copy];
+    v50 = timestampCopy;
     v26 = v25;
     if (v25)
     {
@@ -60,7 +60,7 @@
 
     objc_storeStrong(&v24->_lastUpdatedTimestamp, v27);
 
-    v28 = [v17 copy];
+    v28 = [settingCopy copy];
     v29 = v28;
     if (v28)
     {
@@ -74,7 +74,7 @@
 
     objc_storeStrong(&v24->_scheduleEnabledSetting, v30);
 
-    v31 = [v18 copy];
+    v31 = [hourCopy copy];
     v32 = v31;
     if (v31)
     {
@@ -88,7 +88,7 @@
 
     objc_storeStrong(&v24->_timePeriodStartTimeHour, v33);
 
-    v34 = [v19 copy];
+    v34 = [minuteCopy copy];
     v35 = v34;
     if (v34)
     {
@@ -102,7 +102,7 @@
 
     objc_storeStrong(&v24->_timePeriodStartTimeMinute, v36);
 
-    v37 = [v20 copy];
+    v37 = [timeHourCopy copy];
     v38 = v37;
     if (v37)
     {
@@ -116,7 +116,7 @@
 
     objc_storeStrong(&v24->_timePeriodEndTimeHour, v39);
 
-    v40 = [v21 copy];
+    v40 = [timeMinuteCopy copy];
     v41 = v40;
     if (v40)
     {
@@ -130,7 +130,7 @@
 
     objc_storeStrong(&v24->_timePeriodEndTimeMinute, v42);
 
-    v43 = [v22 copy];
+    v43 = [weekdaysCopy copy];
     v44 = v43;
     if (v43)
     {
@@ -144,7 +144,7 @@
 
     objc_storeStrong(&v24->_timePeriodWeekdays, v45);
 
-    v46 = [v23 copy];
+    v46 = [enabledSettingCopy copy];
     v47 = v46;
     if (v46)
     {
@@ -158,7 +158,7 @@
 
     objc_storeStrong(&v24->_bedtimeBehaviorEnabledSetting, v48);
 
-    v16 = v50;
+    timestampCopy = v50;
   }
 
   return v24;
@@ -166,30 +166,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
-  v4 = [v3 hash];
-  v5 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-  v8 = [v7 hash];
-  v9 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-  v12 = [v11 hash];
-  v13 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
-  v18 = [v17 hash];
+  lastUpdatedTimestamp = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
+  v4 = [lastUpdatedTimestamp hash];
+  scheduleEnabledSetting = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+  v6 = [scheduleEnabledSetting hash] ^ v4;
+  timePeriodStartTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+  v8 = [timePeriodStartTimeHour hash];
+  timePeriodStartTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+  v10 = v6 ^ v8 ^ [timePeriodStartTimeMinute hash];
+  timePeriodEndTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+  v12 = [timePeriodEndTimeHour hash];
+  timePeriodEndTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+  v14 = v12 ^ [timePeriodEndTimeMinute hash];
+  timePeriodWeekdays = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
+  v16 = v10 ^ v14 ^ [timePeriodWeekdays hash];
+  bedtimeBehaviorEnabledSetting = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
+  v18 = [bedtimeBehaviorEnabledSetting hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
     goto LABEL_126;
@@ -202,17 +202,17 @@
     goto LABEL_126;
   }
 
-  v6 = v5;
-  v7 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
-  v8 = [(DNDSScheduleSettingsRecord *)v6 lastUpdatedTimestamp];
-  v9 = v7 != v8;
-  if (v7 == v8)
+  v6 = equalCopy;
+  lastUpdatedTimestamp = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
+  lastUpdatedTimestamp2 = [(DNDSScheduleSettingsRecord *)v6 lastUpdatedTimestamp];
+  bedtimeBehaviorEnabledSetting4 = lastUpdatedTimestamp != lastUpdatedTimestamp2;
+  if (lastUpdatedTimestamp == lastUpdatedTimestamp2)
   {
     goto LABEL_10;
   }
 
-  v10 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
-  if (!v10)
+  lastUpdatedTimestamp3 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
+  if (!lastUpdatedTimestamp3)
   {
     v93 = 0;
     memset(v94, 0, sizeof(v94));
@@ -228,9 +228,9 @@
     goto LABEL_63;
   }
 
-  v93 = v10;
-  v11 = [(DNDSScheduleSettingsRecord *)v6 lastUpdatedTimestamp];
-  if (!v11)
+  v93 = lastUpdatedTimestamp3;
+  lastUpdatedTimestamp4 = [(DNDSScheduleSettingsRecord *)v6 lastUpdatedTimestamp];
+  if (!lastUpdatedTimestamp4)
   {
     v90 = 0;
     memset(v98, 0, 12);
@@ -248,25 +248,25 @@
     goto LABEL_63;
   }
 
-  v90 = v11;
-  v12 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
+  v90 = lastUpdatedTimestamp4;
+  lastUpdatedTimestamp5 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
   [(DNDSScheduleSettingsRecord *)v6 lastUpdatedTimestamp];
-  v85 = v86 = v12;
-  if ([v12 isEqual:?])
+  v85 = v86 = lastUpdatedTimestamp5;
+  if ([lastUpdatedTimestamp5 isEqual:?])
   {
 LABEL_10:
-    v18 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-    v91 = [(DNDSScheduleSettingsRecord *)v6 scheduleEnabledSetting];
-    v92 = v18;
-    v19 = v18 != v91;
-    HIDWORD(v98[1]) = v7 != v8;
-    if (v18 == v91)
+    scheduleEnabledSetting = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+    scheduleEnabledSetting2 = [(DNDSScheduleSettingsRecord *)v6 scheduleEnabledSetting];
+    v92 = scheduleEnabledSetting;
+    v19 = scheduleEnabledSetting != scheduleEnabledSetting2;
+    HIDWORD(v98[1]) = lastUpdatedTimestamp != lastUpdatedTimestamp2;
+    if (scheduleEnabledSetting == scheduleEnabledSetting2)
     {
       goto LABEL_16;
     }
 
-    v20 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-    if (!v20)
+    scheduleEnabledSetting3 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+    if (!scheduleEnabledSetting3)
     {
       v89 = 0;
       v97 = 0;
@@ -281,18 +281,18 @@ LABEL_10:
       v16 = 0;
       v17 = 0;
       LODWORD(v98[1]) = 0;
-      v98[0] = (v7 != v8) | 0x100000000;
+      v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
       LODWORD(v98[2]) = 1;
       goto LABEL_63;
     }
 
-    v89 = v20;
-    v21 = [(DNDSScheduleSettingsRecord *)v6 scheduleEnabledSetting];
-    if (!v21)
+    v89 = scheduleEnabledSetting3;
+    scheduleEnabledSetting4 = [(DNDSScheduleSettingsRecord *)v6 scheduleEnabledSetting];
+    if (!scheduleEnabledSetting4)
     {
       v84 = 0;
       v13 = 0;
-      v98[0] = (v7 != v8) | 0x100000000;
+      v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
       v96 = 0;
       *(&v98[2] + 4) = 0;
       *(&v98[3] + 4) = 0;
@@ -308,19 +308,19 @@ LABEL_10:
       goto LABEL_63;
     }
 
-    v84 = v21;
-    v22 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-    v79 = [(DNDSScheduleSettingsRecord *)v6 scheduleEnabledSetting];
-    v80 = v22;
-    if ([v22 isEqual:?])
+    v84 = scheduleEnabledSetting4;
+    scheduleEnabledSetting5 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+    scheduleEnabledSetting6 = [(DNDSScheduleSettingsRecord *)v6 scheduleEnabledSetting];
+    v80 = scheduleEnabledSetting5;
+    if ([scheduleEnabledSetting5 isEqual:?])
     {
 LABEL_16:
-      v23 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-      v24 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeHour];
-      v25 = v23;
-      v26 = v23 == v24;
-      v27 = v23 != v24;
-      v87 = v24;
+      timePeriodStartTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+      timePeriodStartTimeHour2 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeHour];
+      v25 = timePeriodStartTimeHour;
+      v26 = timePeriodStartTimeHour == timePeriodStartTimeHour2;
+      v27 = timePeriodStartTimeHour != timePeriodStartTimeHour2;
+      v87 = timePeriodStartTimeHour2;
       v88 = v25;
       LODWORD(v98[2]) = v19;
       if (v26)
@@ -328,8 +328,8 @@ LABEL_16:
         goto LABEL_23;
       }
 
-      v28 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-      if (!v28)
+      timePeriodStartTimeHour3 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+      if (!timePeriodStartTimeHour3)
       {
         v83 = 0;
         v96 = 0;
@@ -340,7 +340,7 @@ LABEL_16:
         v15 = 0;
         v16 = 0;
         v17 = 0;
-        v98[0] = (v7 != v8) | 0x100000000;
+        v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
         v97 = v19 | 0x100000000;
         v13 = v19;
         v14 = 0;
@@ -348,9 +348,9 @@ LABEL_16:
         goto LABEL_63;
       }
 
-      v83 = v28;
-      v29 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeHour];
-      if (!v29)
+      v83 = timePeriodStartTimeHour3;
+      timePeriodStartTimeHour4 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeHour];
+      if (!timePeriodStartTimeHour4)
       {
         v78 = 0;
         *v95 = 0;
@@ -361,7 +361,7 @@ LABEL_16:
         v15 = 0;
         v16 = 0;
         v17 = 0;
-        v98[0] = (v7 != v8) | 0x100000000;
+        v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
         v97 = v19 | 0x100000000;
         v13 = v19;
         v14 = 0;
@@ -370,30 +370,30 @@ LABEL_16:
         goto LABEL_63;
       }
 
-      v78 = v29;
-      v3 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-      v73 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeHour];
-      v74 = v3;
-      if ([v3 isEqual:?])
+      v78 = timePeriodStartTimeHour4;
+      timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+      timePeriodStartTimeHour6 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeHour];
+      v74 = timePeriodStartTimeHour5;
+      if ([timePeriodStartTimeHour5 isEqual:?])
       {
 LABEL_23:
-        v30 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-        v31 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeMinute];
-        v32 = v30;
-        v81 = v31;
-        v26 = v30 == v31;
-        v3 = v30 != v31;
+        timePeriodStartTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+        timePeriodStartTimeMinute2 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeMinute];
+        v32 = timePeriodStartTimeMinute;
+        v81 = timePeriodStartTimeMinute2;
+        v26 = timePeriodStartTimeMinute == timePeriodStartTimeMinute2;
+        timePeriodStartTimeHour5 = timePeriodStartTimeMinute != timePeriodStartTimeMinute2;
         LODWORD(v98[1]) = v27;
         v82 = v32;
         if (v26)
         {
-          LODWORD(v98[4]) = v3;
+          LODWORD(v98[4]) = timePeriodStartTimeHour5;
         }
 
         else
         {
-          v33 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-          if (!v33)
+          timePeriodStartTimeMinute3 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+          if (!timePeriodStartTimeMinute3)
           {
             v77 = 0;
             v98[3] = 0;
@@ -406,7 +406,7 @@ LABEL_23:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -414,9 +414,9 @@ LABEL_23:
             goto LABEL_63;
           }
 
-          v77 = v33;
-          v34 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeMinute];
-          if (!v34)
+          v77 = timePeriodStartTimeMinute3;
+          timePeriodStartTimeMinute4 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeMinute];
+          if (!timePeriodStartTimeMinute4)
           {
             v72 = 0;
             *&v94[24] = 0;
@@ -431,7 +431,7 @@ LABEL_23:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -440,12 +440,12 @@ LABEL_23:
             goto LABEL_63;
           }
 
-          LODWORD(v98[4]) = v3;
-          v72 = v34;
-          v3 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-          v67 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeMinute];
-          v68 = v3;
-          if (![v3 isEqual:?])
+          LODWORD(v98[4]) = timePeriodStartTimeHour5;
+          v72 = timePeriodStartTimeMinute4;
+          timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+          timePeriodStartTimeMinute5 = [(DNDSScheduleSettingsRecord *)v6 timePeriodStartTimeMinute];
+          v68 = timePeriodStartTimeHour5;
+          if (![timePeriodStartTimeHour5 isEqual:?])
           {
             *&v94[24] = 0;
             *&v94[32] = 0;
@@ -459,7 +459,7 @@ LABEL_23:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -469,17 +469,17 @@ LABEL_23:
           }
         }
 
-        v3 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-        v75 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeHour];
-        HIDWORD(v98[3]) = v3 != v75;
-        v76 = v3;
-        if (v3 == v75)
+        timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+        timePeriodEndTimeHour = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeHour];
+        HIDWORD(v98[3]) = timePeriodStartTimeHour5 != timePeriodEndTimeHour;
+        v76 = timePeriodStartTimeHour5;
+        if (timePeriodStartTimeHour5 == timePeriodEndTimeHour)
         {
           goto LABEL_38;
         }
 
-        v35 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-        if (!v35)
+        timePeriodEndTimeHour2 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+        if (!timePeriodEndTimeHour2)
         {
           v71 = 0;
           *v94 = 0;
@@ -493,7 +493,7 @@ LABEL_23:
           v15 = 0;
           v16 = 0;
           v17 = 0;
-          v98[0] = (v7 != v8) | 0x100000000;
+          v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
           v97 = v19 | 0x100000000;
           v13 = v19;
           v14 = 0;
@@ -505,9 +505,9 @@ LABEL_23:
           goto LABEL_63;
         }
 
-        v71 = v35;
-        v36 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeHour];
-        if (!v36)
+        v71 = timePeriodEndTimeHour2;
+        timePeriodEndTimeHour3 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeHour];
+        if (!timePeriodEndTimeHour3)
         {
           v66 = 0;
           *&v94[4] = 0;
@@ -520,7 +520,7 @@ LABEL_23:
           v15 = 0;
           v16 = 0;
           v17 = 0;
-          v98[0] = (v7 != v8) | 0x100000000;
+          v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
           v97 = v19 | 0x100000000;
           v13 = v19;
           v14 = 0;
@@ -534,25 +534,25 @@ LABEL_23:
           goto LABEL_63;
         }
 
-        v66 = v36;
-        v3 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-        v61 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeHour];
-        v62 = v3;
-        if ([v3 isEqual:?])
+        v66 = timePeriodEndTimeHour3;
+        timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+        timePeriodEndTimeHour4 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeHour];
+        v62 = timePeriodStartTimeHour5;
+        if ([timePeriodStartTimeHour5 isEqual:?])
         {
 LABEL_38:
-          v3 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-          v37 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeMinute];
-          LODWORD(v98[3]) = v3 != v37;
-          v69 = v37;
-          v70 = v3;
-          if (v3 == v37)
+          timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+          timePeriodEndTimeMinute = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeMinute];
+          LODWORD(v98[3]) = timePeriodStartTimeHour5 != timePeriodEndTimeMinute;
+          v69 = timePeriodEndTimeMinute;
+          v70 = timePeriodStartTimeHour5;
+          if (timePeriodStartTimeHour5 == timePeriodEndTimeMinute)
           {
             goto LABEL_45;
           }
 
-          v38 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-          if (!v38)
+          timePeriodEndTimeMinute2 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+          if (!timePeriodEndTimeMinute2)
           {
             v65 = 0;
             *&v94[32] = 0x100000000;
@@ -564,7 +564,7 @@ LABEL_38:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -576,9 +576,9 @@ LABEL_38:
             goto LABEL_63;
           }
 
-          v65 = v38;
-          v39 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeMinute];
-          if (!v39)
+          v65 = timePeriodEndTimeMinute2;
+          timePeriodEndTimeMinute3 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeMinute];
+          if (!timePeriodEndTimeMinute3)
           {
             v60 = 0;
             *&v94[32] = 0x100000000;
@@ -590,7 +590,7 @@ LABEL_38:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -603,24 +603,24 @@ LABEL_38:
             goto LABEL_63;
           }
 
-          v60 = v39;
-          v3 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-          v55 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeMinute];
-          v56 = v3;
-          if ([v3 isEqual:?])
+          v60 = timePeriodEndTimeMinute3;
+          timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+          timePeriodEndTimeMinute4 = [(DNDSScheduleSettingsRecord *)v6 timePeriodEndTimeMinute];
+          v56 = timePeriodStartTimeHour5;
+          if ([timePeriodStartTimeHour5 isEqual:?])
           {
 LABEL_45:
-            v3 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
-            v63 = [(DNDSScheduleSettingsRecord *)v6 timePeriodWeekdays];
-            HIDWORD(v98[2]) = v3 != v63;
-            v64 = v3;
-            if (v3 == v63)
+            timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
+            timePeriodWeekdays = [(DNDSScheduleSettingsRecord *)v6 timePeriodWeekdays];
+            HIDWORD(v98[2]) = timePeriodStartTimeHour5 != timePeriodWeekdays;
+            v64 = timePeriodStartTimeHour5;
+            if (timePeriodStartTimeHour5 == timePeriodWeekdays)
             {
               goto LABEL_52;
             }
 
-            v40 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
-            if (!v40)
+            timePeriodWeekdays2 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
+            if (!timePeriodWeekdays2)
             {
               v59 = 0;
               *v95 = 0;
@@ -630,7 +630,7 @@ LABEL_45:
               v15 = 0;
               v16 = 0;
               v17 = 0;
-              v98[0] = (v7 != v8) | 0x100000000;
+              v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
               v97 = v19 | 0x100000000;
               v13 = v19;
               v14 = 0;
@@ -645,9 +645,9 @@ LABEL_45:
               goto LABEL_63;
             }
 
-            v59 = v40;
-            v41 = [(DNDSScheduleSettingsRecord *)v6 timePeriodWeekdays];
-            if (!v41)
+            v59 = timePeriodWeekdays2;
+            timePeriodWeekdays3 = [(DNDSScheduleSettingsRecord *)v6 timePeriodWeekdays];
+            if (!timePeriodWeekdays3)
             {
               v54 = 0;
               *v95 = 0;
@@ -657,7 +657,7 @@ LABEL_45:
               v15 = 0;
               v16 = 0;
               v17 = 0;
-              v98[0] = (v7 != v8) | 0x100000000;
+              v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
               v97 = v19 | 0x100000000;
               v13 = v19;
               v14 = 0;
@@ -672,21 +672,21 @@ LABEL_45:
               goto LABEL_63;
             }
 
-            v54 = v41;
-            v3 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
-            v51 = [(DNDSScheduleSettingsRecord *)v6 timePeriodWeekdays];
-            v52 = v3;
-            if ([v3 isEqual:?])
+            v54 = timePeriodWeekdays3;
+            timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
+            timePeriodWeekdays4 = [(DNDSScheduleSettingsRecord *)v6 timePeriodWeekdays];
+            v52 = timePeriodStartTimeHour5;
+            if ([timePeriodStartTimeHour5 isEqual:?])
             {
 LABEL_52:
-              v3 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
-              v57 = [(DNDSScheduleSettingsRecord *)v6 bedtimeBehaviorEnabledSetting];
-              v58 = v3;
-              if (v3 == v57)
+              timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
+              bedtimeBehaviorEnabledSetting = [(DNDSScheduleSettingsRecord *)v6 bedtimeBehaviorEnabledSetting];
+              v58 = timePeriodStartTimeHour5;
+              if (timePeriodStartTimeHour5 == bedtimeBehaviorEnabledSetting)
               {
                 v15 = 0;
                 v16 = 0;
-                v98[0] = (v7 != v8) | 0x100000000;
+                v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
                 v97 = v19 | 0x100000000;
                 v13 = v19;
                 v14 = 0;
@@ -707,18 +707,18 @@ LABEL_52:
 
               else
               {
-                v42 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
-                if (v42)
+                bedtimeBehaviorEnabledSetting2 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
+                if (bedtimeBehaviorEnabledSetting2)
                 {
-                  v53 = v42;
-                  v43 = [(DNDSScheduleSettingsRecord *)v6 bedtimeBehaviorEnabledSetting];
-                  if (v43)
+                  v53 = bedtimeBehaviorEnabledSetting2;
+                  bedtimeBehaviorEnabledSetting3 = [(DNDSScheduleSettingsRecord *)v6 bedtimeBehaviorEnabledSetting];
+                  if (bedtimeBehaviorEnabledSetting3)
                   {
-                    v50 = v43;
-                    v3 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
-                    v9 = [(DNDSScheduleSettingsRecord *)v6 bedtimeBehaviorEnabledSetting];
-                    v17 = [v3 isEqual:v9];
-                    v98[0] = (v7 != v8) | 0x100000000;
+                    v50 = bedtimeBehaviorEnabledSetting3;
+                    timePeriodStartTimeHour5 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
+                    bedtimeBehaviorEnabledSetting4 = [(DNDSScheduleSettingsRecord *)v6 bedtimeBehaviorEnabledSetting];
+                    v17 = [timePeriodStartTimeHour5 isEqual:bedtimeBehaviorEnabledSetting4];
+                    v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
                     v97 = v19 | 0x100000000;
                     v13 = v19;
                     *&v95[4] = v27;
@@ -740,7 +740,7 @@ LABEL_52:
                     v50 = 0;
                     v16 = 0;
                     v17 = 0;
-                    v98[0] = (v7 != v8) | 0x100000000;
+                    v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
                     v97 = v19 | 0x100000000;
                     v13 = v19;
                     *&v95[4] = v27;
@@ -767,7 +767,7 @@ LABEL_52:
                   v15 = 0;
                   v16 = 0;
                   v17 = 0;
-                  v98[0] = (v7 != v8) | 0x100000000;
+                  v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
                   v97 = v19 | 0x100000000;
                   v13 = v19;
                   *&v95[4] = v27;
@@ -794,7 +794,7 @@ LABEL_52:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -821,7 +821,7 @@ LABEL_52:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -844,7 +844,7 @@ LABEL_52:
           v15 = 0;
           v16 = 0;
           v17 = 0;
-          v98[0] = (v7 != v8) | 0x100000000;
+          v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
           v97 = v19 | 0x100000000;
           v13 = v19;
           v14 = 0;
@@ -867,7 +867,7 @@ LABEL_52:
         v15 = 0;
         v16 = 0;
         v17 = 0;
-        v98[0] = (v7 != v8) | 0x100000000;
+        v98[0] = (lastUpdatedTimestamp != lastUpdatedTimestamp2) | 0x100000000;
         v97 = v19 | 0x100000000;
         v13 = v19;
         v14 = 0;
@@ -879,7 +879,7 @@ LABEL_52:
 
     else
     {
-      LODWORD(v98[0]) = v7 != v8;
+      LODWORD(v98[0]) = lastUpdatedTimestamp != lastUpdatedTimestamp2;
       v96 = 0;
       *(&v98[2] + 4) = 0;
       *(&v98[3] + 4) = 0;
@@ -916,8 +916,8 @@ LABEL_52:
 LABEL_63:
   if (v16)
   {
-    v44 = v8;
-    v45 = v7;
+    v44 = lastUpdatedTimestamp2;
+    v45 = lastUpdatedTimestamp;
     v46 = v14;
     v47 = v13;
     v48 = v15;
@@ -925,8 +925,8 @@ LABEL_63:
     v15 = v48;
     v13 = v47;
     v14 = v46;
-    v7 = v45;
-    v8 = v44;
+    lastUpdatedTimestamp = v45;
+    lastUpdatedTimestamp2 = v44;
   }
 
   if (v15)
@@ -1045,7 +1045,7 @@ LABEL_63:
   {
   }
 
-  if (v7 != v8)
+  if (lastUpdatedTimestamp != lastUpdatedTimestamp2)
   {
   }
 
@@ -1057,100 +1057,100 @@ LABEL_126:
 {
   v14 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
-  v5 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-  v6 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-  v7 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-  v8 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-  v9 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-  v10 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
-  v11 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
-  v12 = [v14 stringWithFormat:@"<%@: %p lastUpdatedTimestamp: %@; scheduleEnabledSetting: %@; timePeriodStartTimeHour: %@; timePeriodStartTimeMinute: %@; timePeriodEndTimeHour: %@; timePeriodEndTimeMinute: %@; timePeriodWeekdays: %@; bedtimeBehaviorEnabledSetting: %@>", v3, self, v4, v5, v6, v7, v8, v9, v10, v11];;
+  lastUpdatedTimestamp = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
+  scheduleEnabledSetting = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+  timePeriodStartTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+  timePeriodStartTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+  timePeriodEndTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+  timePeriodEndTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+  timePeriodWeekdays = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
+  bedtimeBehaviorEnabledSetting = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
+  v12 = [v14 stringWithFormat:@"<%@: %p lastUpdatedTimestamp: %@; scheduleEnabledSetting: %@; timePeriodStartTimeHour: %@; timePeriodStartTimeMinute: %@; timePeriodEndTimeHour: %@; timePeriodEndTimeMinute: %@; timePeriodWeekdays: %@; bedtimeBehaviorEnabledSetting: %@>", v3, self, lastUpdatedTimestamp, scheduleEnabledSetting, timePeriodStartTimeHour, timePeriodStartTimeMinute, timePeriodEndTimeHour, timePeriodEndTimeMinute, timePeriodWeekdays, bedtimeBehaviorEnabledSetting];;
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableScheduleSettingsRecord alloc];
 
   return [(DNDSScheduleSettingsRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 bs_safeObjectForKey:@"lastUpdatedTimestamp" ofType:objc_opt_class()];
-  v7 = [v5 bs_safeObjectForKey:@"scheduleEnabledSetting" ofType:objc_opt_class()];
-  v8 = [v5 bs_safeObjectForKey:@"timePeriodStartTimeHour" ofType:objc_opt_class()];
-  v9 = [v5 bs_safeObjectForKey:@"timePeriodStartTimeMinute" ofType:objc_opt_class()];
-  v10 = [v5 bs_safeObjectForKey:@"timePeriodEndTimeHour" ofType:objc_opt_class()];
-  v11 = [v5 bs_safeObjectForKey:@"timePeriodEndTimeMinute" ofType:objc_opt_class()];
-  v12 = [v5 bs_safeObjectForKey:@"timePeriodWeekdays" ofType:objc_opt_class()];
-  v13 = [v5 bs_safeObjectForKey:@"bedtimeBehaviorEnabledSetting" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v6 = [representationCopy bs_safeObjectForKey:@"lastUpdatedTimestamp" ofType:objc_opt_class()];
+  v7 = [representationCopy bs_safeObjectForKey:@"scheduleEnabledSetting" ofType:objc_opt_class()];
+  v8 = [representationCopy bs_safeObjectForKey:@"timePeriodStartTimeHour" ofType:objc_opt_class()];
+  v9 = [representationCopy bs_safeObjectForKey:@"timePeriodStartTimeMinute" ofType:objc_opt_class()];
+  v10 = [representationCopy bs_safeObjectForKey:@"timePeriodEndTimeHour" ofType:objc_opt_class()];
+  v11 = [representationCopy bs_safeObjectForKey:@"timePeriodEndTimeMinute" ofType:objc_opt_class()];
+  v12 = [representationCopy bs_safeObjectForKey:@"timePeriodWeekdays" ofType:objc_opt_class()];
+  v13 = [representationCopy bs_safeObjectForKey:@"bedtimeBehaviorEnabledSetting" ofType:objc_opt_class()];
 
-  v14 = [[a1 alloc] _initWithLastUpdatedTimestamp:v6 scheduleEnabledSetting:v7 timePeriodStartTimeHour:v8 timePeriodStartTimeMinute:v9 timePeriodEndTimeHour:v10 timePeriodEndTimeMinute:v11 timePeriodWeekdays:v12 bedtimeBehaviorEnabledSetting:v13];
+  v14 = [[self alloc] _initWithLastUpdatedTimestamp:v6 scheduleEnabledSetting:v7 timePeriodStartTimeHour:v8 timePeriodStartTimeMinute:v9 timePeriodEndTimeHour:v10 timePeriodEndTimeMinute:v11 timePeriodWeekdays:v12 bedtimeBehaviorEnabledSetting:v13];
   return v14;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
-  [v4 setObject:v5 forKey:@"lastUpdatedTimestamp"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  lastUpdatedTimestamp = [(DNDSScheduleSettingsRecord *)self lastUpdatedTimestamp];
+  [dictionary setObject:lastUpdatedTimestamp forKey:@"lastUpdatedTimestamp"];
 
-  v6 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-  [v4 setObject:v6 forKey:@"scheduleEnabledSetting"];
+  scheduleEnabledSetting = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+  [dictionary setObject:scheduleEnabledSetting forKey:@"scheduleEnabledSetting"];
 
-  v7 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-  [v4 setObject:v7 forKey:@"timePeriodStartTimeHour"];
+  timePeriodStartTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+  [dictionary setObject:timePeriodStartTimeHour forKey:@"timePeriodStartTimeHour"];
 
-  v8 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-  [v4 setObject:v8 forKey:@"timePeriodStartTimeMinute"];
+  timePeriodStartTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+  [dictionary setObject:timePeriodStartTimeMinute forKey:@"timePeriodStartTimeMinute"];
 
-  v9 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-  [v4 setObject:v9 forKey:@"timePeriodEndTimeHour"];
+  timePeriodEndTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+  [dictionary setObject:timePeriodEndTimeHour forKey:@"timePeriodEndTimeHour"];
 
-  v10 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-  [v4 setObject:v10 forKey:@"timePeriodEndTimeMinute"];
+  timePeriodEndTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+  [dictionary setObject:timePeriodEndTimeMinute forKey:@"timePeriodEndTimeMinute"];
 
-  v11 = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
-  [v4 setObject:v11 forKey:@"timePeriodWeekdays"];
+  timePeriodWeekdays = [(DNDSScheduleSettingsRecord *)self timePeriodWeekdays];
+  [dictionary setObject:timePeriodWeekdays forKey:@"timePeriodWeekdays"];
 
-  v12 = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
-  [v4 setObject:v12 forKey:@"bedtimeBehaviorEnabledSetting"];
+  bedtimeBehaviorEnabledSetting = [(DNDSScheduleSettingsRecord *)self bedtimeBehaviorEnabledSetting];
+  [dictionary setObject:bedtimeBehaviorEnabledSetting forKey:@"bedtimeBehaviorEnabledSetting"];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_recordWithEncodedInfo:(id)a3 error:(id *)a4
++ (id)_recordWithEncodedInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bs_safeObjectForKey:@"overrideStatus" ofType:objc_opt_class()];
-  v8 = [v7 integerValue];
-  v9 = [v6 bs_safeObjectForKey:@"overrideStatusLastCalculatedTime" ofType:objc_opt_class()];
+  infoCopy = info;
+  v7 = [infoCopy bs_safeObjectForKey:@"overrideStatus" ofType:objc_opt_class()];
+  integerValue = [v7 integerValue];
+  v9 = [infoCopy bs_safeObjectForKey:@"overrideStatusLastCalculatedTime" ofType:objc_opt_class()];
   v10 = v9;
-  if (v8 == 2 || v9 == 0)
+  if (integerValue == 2 || v9 == 0)
   {
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
   else
   {
-    v12 = v9;
+    distantPast = v9;
   }
 
-  v13 = v12;
-  v14 = [v6 bs_safeObjectForKey:@"overrides" ofType:objc_opt_class()];
+  v13 = distantPast;
+  v14 = [infoCopy bs_safeObjectForKey:@"overrides" ofType:objc_opt_class()];
   v15 = [v14 bs_firstObjectOfClass:objc_opt_class()];
   if (v15)
   {
-    v16 = [MEMORY[0x277CCAAC8] dnds_secureLegacyUnarchiverForReadingFromData:v15 error:a4];
+    v16 = [MEMORY[0x277CCAAC8] dnds_secureLegacyUnarchiverForReadingFromData:v15 error:error];
     v17 = [v16 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
 
     if (v17)
     {
-      v18 = [a1 recordForLegacyBehaviorOverride:v17 lastUpdated:v13];
+      v18 = [self recordForLegacyBehaviorOverride:v17 lastUpdated:v13];
       goto LABEL_12;
     }
   }
@@ -1166,19 +1166,19 @@ LABEL_12:
   return v18;
 }
 
-+ (id)recordForLegacyBehaviorOverride:(id)a3 lastUpdated:(id)a4
++ (id)recordForLegacyBehaviorOverride:(id)override lastUpdated:(id)updated
 {
-  v5 = a4;
-  v6 = a3;
+  updatedCopy = updated;
+  overrideCopy = override;
   v7 = objc_alloc_init(DNDSMutableScheduleSettingsRecord);
   v8 = MEMORY[0x277CCABB0];
-  [v5 timeIntervalSinceReferenceDate];
+  [updatedCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v11 = [v8 numberWithDouble:v10];
   [(DNDSMutableScheduleSettingsRecord *)v7 setLastUpdatedTimestamp:v11];
 
-  if ([v6 mode] == 3)
+  if ([overrideCopy mode] == 3)
   {
     v12 = 2;
   }
@@ -1191,22 +1191,22 @@ LABEL_12:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
   [(DNDSMutableScheduleSettingsRecord *)v7 setScheduleEnabledSetting:v13];
 
-  v14 = [v6 effectiveIntervals];
+  effectiveIntervals = [overrideCopy effectiveIntervals];
 
-  v15 = [v14 firstObject];
+  firstObject = [effectiveIntervals firstObject];
 
-  v16 = [v15 startComponents];
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v16, "hour")}];
+  startComponents = [firstObject startComponents];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(startComponents, "hour")}];
   [(DNDSMutableScheduleSettingsRecord *)v7 setTimePeriodStartTimeHour:v17];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v16, "minute")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(startComponents, "minute")}];
   [(DNDSMutableScheduleSettingsRecord *)v7 setTimePeriodStartTimeMinute:v18];
 
-  v19 = [v15 endComponents];
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v19, "hour")}];
+  endComponents = [firstObject endComponents];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(endComponents, "hour")}];
   [(DNDSMutableScheduleSettingsRecord *)v7 setTimePeriodEndTimeHour:v20];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v19, "minute")}];
+  v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(endComponents, "minute")}];
   [(DNDSMutableScheduleSettingsRecord *)v7 setTimePeriodEndTimeMinute:v21];
 
   [(DNDSMutableScheduleSettingsRecord *)v7 setBedtimeBehaviorEnabledSetting:&unk_285C53598];
@@ -1218,26 +1218,26 @@ LABEL_12:
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v4 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
-  [v3 setHour:{objc_msgSend(v4, "unsignedIntegerValue")}];
+  timePeriodStartTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeHour];
+  [v3 setHour:{objc_msgSend(timePeriodStartTimeHour, "unsignedIntegerValue")}];
 
-  v5 = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
-  [v3 setMinute:{objc_msgSend(v5, "unsignedIntegerValue")}];
+  timePeriodStartTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodStartTimeMinute];
+  [v3 setMinute:{objc_msgSend(timePeriodStartTimeMinute, "unsignedIntegerValue")}];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v7 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
-  [v6 setHour:{objc_msgSend(v7, "unsignedIntegerValue")}];
+  timePeriodEndTimeHour = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeHour];
+  [v6 setHour:{objc_msgSend(timePeriodEndTimeHour, "unsignedIntegerValue")}];
 
-  v8 = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
-  [v6 setMinute:{objc_msgSend(v8, "unsignedIntegerValue")}];
+  timePeriodEndTimeMinute = [(DNDSScheduleSettingsRecord *)self timePeriodEndTimeMinute];
+  [v6 setMinute:{objc_msgSend(timePeriodEndTimeMinute, "unsignedIntegerValue")}];
 
   v9 = [DNDSLegacyBehaviorOverrideEffectiveInterval alloc];
   v10 = *MEMORY[0x277CBE5C0];
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)v9 initWithStartComponents:v3 endComponents:v6 calendarIdentifier:v10 repeatInterval:16 identifier:v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v12 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)v9 initWithStartComponents:v3 endComponents:v6 calendarIdentifier:v10 repeatInterval:16 identifier:uUID];
 
-  v13 = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
-  [v13 unsignedIntegerValue];
+  scheduleEnabledSetting = [(DNDSScheduleSettingsRecord *)self scheduleEnabledSetting];
+  [scheduleEnabledSetting unsignedIntegerValue];
   v14 = DNDResolvedScheduleEnabledSetting();
 
   if (v14 == 2)

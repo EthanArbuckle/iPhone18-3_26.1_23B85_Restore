@@ -1,5 +1,5 @@
 @interface HDPowerAssertion
-+ (HDPowerAssertion)powerAssertionWithIdentifier:(id)a3 timeout:(double)a4 timeoutHandler:(id)a5;
++ (HDPowerAssertion)powerAssertionWithIdentifier:(id)identifier timeout:(double)timeout timeoutHandler:(id)handler;
 - (HDPowerAssertion)init;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,19 +7,19 @@
 
 @implementation HDPowerAssertion
 
-+ (HDPowerAssertion)powerAssertionWithIdentifier:(id)a3 timeout:(double)a4 timeoutHandler:(id)a5
++ (HDPowerAssertion)powerAssertionWithIdentifier:(id)identifier timeout:(double)timeout timeoutHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (a4 <= 0.0)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (timeout <= 0.0)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"HDPowerAssertion.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"timeout > 0.0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDPowerAssertion.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"timeout > 0.0"}];
   }
 
   AssertionID = 0;
-  v11 = IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", v9, 0, 0, 0, a4 + 60.0, @"TimeoutActionTurnOff", &AssertionID);
+  v11 = IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", identifierCopy, 0, 0, 0, timeout + 60.0, @"TimeoutActionTurnOff", &AssertionID);
   if (v11)
   {
     v12 = v11;
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *handler = 138412546;
-      *&handler[4] = v9;
+      *&handler[4] = identifierCopy;
       *&handler[12] = 1024;
       *&handler[14] = v12;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "Failed to create power assertion %@: %d", handler, 0x12u);
@@ -39,9 +39,9 @@
 
   else
   {
-    v14 = [a1 alloc];
-    v15 = v9;
-    v16 = v10;
+    v14 = [self alloc];
+    v15 = identifierCopy;
+    v16 = handlerCopy;
     if (v14)
     {
       *handler = v14;
@@ -53,7 +53,7 @@
         v18 = *(v14 + 5);
         *(v14 + 5) = v17;
 
-        *(v14 + 6) = a4;
+        *(v14 + 6) = timeout;
         v19 = [v16 copy];
         v20 = *(v14 + 3);
         *(v14 + 3) = v19;
@@ -102,8 +102,8 @@
   v3 = atomic_load(&self->_invalidated);
   if ((v3 & 1) == 0)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"HDPowerAssertion.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"invalidated"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDPowerAssertion.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"invalidated"}];
   }
 
   v6.receiver = self;

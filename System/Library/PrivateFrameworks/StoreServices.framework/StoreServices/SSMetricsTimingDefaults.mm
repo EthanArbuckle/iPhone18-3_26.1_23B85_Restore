@@ -1,8 +1,8 @@
 @interface SSMetricsTimingDefaults
 + (id)sharedInstance;
-+ (id)sharedInstanceWithSessionDelegate:(id)a3;
++ (id)sharedInstanceWithSessionDelegate:(id)delegate;
 - (NSDictionary)values;
-- (SSMetricsTimingDefaults)initWithSessionDelegate:(id)a3;
+- (SSMetricsTimingDefaults)initWithSessionDelegate:(id)delegate;
 - (double)samplingPercentageCachedResponsesLoadURL;
 - (double)samplingPercentageUsersLoadURL;
 - (double)samplingPercentageUsersPageRender;
@@ -32,17 +32,17 @@ void __41__SSMetricsTimingDefaults_sharedInstance__block_invoke()
   sharedInstance_sharedInstance = v0;
 }
 
-+ (id)sharedInstanceWithSessionDelegate:(id)a3
++ (id)sharedInstanceWithSessionDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[SSMetricsTimingDefaults alloc] initWithSessionDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[SSMetricsTimingDefaults alloc] initWithSessionDelegate:delegateCopy];
 
   return v4;
 }
 
-- (SSMetricsTimingDefaults)initWithSessionDelegate:(id)a3
+- (SSMetricsTimingDefaults)initWithSessionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SSMetricsTimingDefaults;
   v5 = [(SSMetricsTimingDefaults *)&v16 init];
@@ -59,7 +59,7 @@ void __41__SSMetricsTimingDefaults_sharedInstance__block_invoke()
     v12[2] = __51__SSMetricsTimingDefaults_initWithSessionDelegate___block_invoke;
     v12[3] = &unk_1E84AD870;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = delegateCopy;
     v9 = [(SSCoalescingQueue *)v8 initWithBlock:v12];
     updateQueue = v5->_updateQueue;
     v5->_updateQueue = v9;
@@ -222,15 +222,15 @@ LABEL_36:
   v11 = __Block_byref_object_copy__58;
   v12 = __Block_byref_object_dispose__58;
   v13 = 0;
-  v3 = [(SSMetricsTimingDefaults *)self updateQueue];
-  v4 = [v3 queue];
+  updateQueue = [(SSMetricsTimingDefaults *)self updateQueue];
+  queue = [updateQueue queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SSMetricsTimingDefaults_values__block_invoke;
   v7[3] = &unk_1E84ABF40;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -249,8 +249,8 @@ void __33__SSMetricsTimingDefaults_values__block_invoke(uint64_t a1)
 
 - (double)sessionDurationLoadURL
 {
-  v2 = [(SSMetricsTimingDefaults *)self values];
-  v3 = [v2 objectForKeyedSubscript:@"sessionDuration"];
+  values = [(SSMetricsTimingDefaults *)self values];
+  v3 = [values objectForKeyedSubscript:@"sessionDuration"];
   [v3 doubleValue];
   v5 = v4 / 1000.0;
 
@@ -259,8 +259,8 @@ void __33__SSMetricsTimingDefaults_values__block_invoke(uint64_t a1)
 
 - (double)samplingPercentageUsersLoadURL
 {
-  v2 = [(SSMetricsTimingDefaults *)self values];
-  v3 = [v2 objectForKeyedSubscript:@"samplingPercentageUsers"];
+  values = [(SSMetricsTimingDefaults *)self values];
+  v3 = [values objectForKeyedSubscript:@"samplingPercentageUsers"];
   [v3 doubleValue];
   v5 = v4;
 
@@ -269,8 +269,8 @@ void __33__SSMetricsTimingDefaults_values__block_invoke(uint64_t a1)
 
 - (double)samplingPercentageCachedResponsesLoadURL
 {
-  v2 = [(SSMetricsTimingDefaults *)self values];
-  v3 = [v2 objectForKeyedSubscript:@"samplingPercentageCachedResponses"];
+  values = [(SSMetricsTimingDefaults *)self values];
+  v3 = [values objectForKeyedSubscript:@"samplingPercentageCachedResponses"];
   [v3 doubleValue];
   v5 = v4;
 
@@ -279,8 +279,8 @@ void __33__SSMetricsTimingDefaults_values__block_invoke(uint64_t a1)
 
 - (double)sessionDurationPageRender
 {
-  v2 = [(SSMetricsTimingDefaults *)self values];
-  v3 = [v2 objectForKeyedSubscript:@"sessionDurationPageRender"];
+  values = [(SSMetricsTimingDefaults *)self values];
+  v3 = [values objectForKeyedSubscript:@"sessionDurationPageRender"];
   [v3 doubleValue];
   v5 = v4 / 1000.0;
 
@@ -289,8 +289,8 @@ void __33__SSMetricsTimingDefaults_values__block_invoke(uint64_t a1)
 
 - (double)samplingPercentageUsersPageRender
 {
-  v2 = [(SSMetricsTimingDefaults *)self values];
-  v3 = [v2 objectForKeyedSubscript:@"samplingPercentageUsersPageRender"];
+  values = [(SSMetricsTimingDefaults *)self values];
+  v3 = [values objectForKeyedSubscript:@"samplingPercentageUsersPageRender"];
   [v3 doubleValue];
   v5 = v4;
 
@@ -301,8 +301,8 @@ void __33__SSMetricsTimingDefaults_values__block_invoke(uint64_t a1)
 {
   if (![(SSMetricsTimingDefaults *)self isRunningTests])
   {
-    v3 = [(SSMetricsTimingDefaults *)self updateQueue];
-    [v3 executeBlock];
+    updateQueue = [(SSMetricsTimingDefaults *)self updateQueue];
+    [updateQueue executeBlock];
   }
 }
 

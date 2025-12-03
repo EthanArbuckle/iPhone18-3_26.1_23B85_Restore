@@ -1,64 +1,64 @@
 @interface RTElevationAdjuster
-- (RTElevationAdjuster)initWithElevationManager:(id)a3;
-- (id)adjustCLLocation:(id)a3 elevation:(double)a4;
-- (id)performElevationInterpolationOn:(id)a3 referenceElevations:(id)a4;
-- (void)adjustElevation:(id)a3 handler:(id)a4;
-- (void)adjustElevationForLocations:(id)a3 handler:(id)a4;
-- (void)adjustElevationForSynthesizedLocations:(id)a3 handler:(id)a4;
-- (void)adjustElevationForTripSegmentLocations:(id)a3 handler:(id)a4;
-- (void)respondWithCLLocation:(id)a3 elevations:(id)a4 error:(id)a5 handler:(id)a6;
-- (void)respondWithSynthesizedLocation:(id)a3 elevations:(id)a4 error:(id)a5 handler:(id)a6;
-- (void)respondWithTripSegmentLocation:(id)a3 elevations:(id)a4 error:(id)a5 handler:(id)a6;
+- (RTElevationAdjuster)initWithElevationManager:(id)manager;
+- (id)adjustCLLocation:(id)location elevation:(double)elevation;
+- (id)performElevationInterpolationOn:(id)on referenceElevations:(id)elevations;
+- (void)adjustElevation:(id)elevation handler:(id)handler;
+- (void)adjustElevationForLocations:(id)locations handler:(id)handler;
+- (void)adjustElevationForSynthesizedLocations:(id)locations handler:(id)handler;
+- (void)adjustElevationForTripSegmentLocations:(id)locations handler:(id)handler;
+- (void)respondWithCLLocation:(id)location elevations:(id)elevations error:(id)error handler:(id)handler;
+- (void)respondWithSynthesizedLocation:(id)location elevations:(id)elevations error:(id)error handler:(id)handler;
+- (void)respondWithTripSegmentLocation:(id)location elevations:(id)elevations error:(id)error handler:(id)handler;
 @end
 
 @implementation RTElevationAdjuster
 
-- (void)respondWithSynthesizedLocation:(id)a3 elevations:(id)a4 error:(id)a5 handler:(id)a6
+- (void)respondWithSynthesizedLocation:(id)location elevations:(id)elevations error:(id)error handler:(id)handler
 {
   v95 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  locationCopy = location;
+  elevationsCopy = elevations;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v14 = [v10 count];
-    if (v14 == [v11 count])
+    v14 = [locationCopy count];
+    if (v14 == [elevationsCopy count])
     {
       aSelector = a2;
-      v72 = v13;
-      v73 = v12;
-      v15 = [MEMORY[0x277CBEB18] array];
-      if ([v10 count])
+      v72 = handlerCopy;
+      v73 = errorCopy;
+      array = [MEMORY[0x277CBEB18] array];
+      if ([locationCopy count])
       {
         v16 = 0;
-        v74 = v15;
+        v74 = array;
         do
         {
-          v17 = [v10 objectAtIndexedSubscript:v16];
-          v18 = [v17 locationType];
+          v17 = [locationCopy objectAtIndexedSubscript:v16];
+          locationType = [v17 locationType];
 
-          v19 = [v10 objectAtIndexedSubscript:v16];
+          v19 = [locationCopy objectAtIndexedSubscript:v16];
           [v19 verticalAccuracy];
           v21 = v20;
 
-          v22 = [v11 objectAtIndexedSubscript:v16];
+          v22 = [elevationsCopy objectAtIndexedSubscript:v16];
           [v22 elevation];
           v24 = v23;
-          v25 = [v10 objectAtIndexedSubscript:v16];
+          v25 = [locationCopy objectAtIndexedSubscript:v16];
           [v25 altitude];
           v27 = v26;
 
           if (v24 != v27)
           {
-            v28 = [v10 objectAtIndexedSubscript:v16];
-            v18 = [v28 locationType] | 0x10;
+            v28 = [locationCopy objectAtIndexedSubscript:v16];
+            locationType = [v28 locationType] | 0x10;
 
             v21 = 10.0;
           }
 
           v83 = v21;
-          v84 = v18;
+          v84 = locationType;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
             v29 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -67,12 +67,12 @@
               v55 = objc_opt_class();
               v56 = NSStringFromClass(v55);
               v57 = NSStringFromSelector(aSelector);
-              v58 = [v10 objectAtIndexedSubscript:v16];
+              v58 = [locationCopy objectAtIndexedSubscript:v16];
               v59 = [v58 description];
-              v60 = [v10 objectAtIndexedSubscript:v16];
+              v60 = [locationCopy objectAtIndexedSubscript:v16];
               [v60 altitude];
               v62 = v61;
-              v63 = [v11 objectAtIndexedSubscript:v16];
+              v63 = [elevationsCopy objectAtIndexedSubscript:v16];
               [v63 elevation];
               *buf = 138413315;
               v86 = v56;
@@ -89,50 +89,50 @@
           }
 
           v78 = [RTSynthesizedLocation alloc];
-          v82 = [v10 objectAtIndexedSubscript:v16];
+          v82 = [locationCopy objectAtIndexedSubscript:v16];
           [v82 coordinate];
           v31 = v30;
           v33 = v32;
-          v81 = [v11 objectAtIndexedSubscript:v16];
+          v81 = [elevationsCopy objectAtIndexedSubscript:v16];
           [v81 elevation];
           v35 = v34;
-          v80 = [v10 objectAtIndexedSubscript:v16];
+          v80 = [locationCopy objectAtIndexedSubscript:v16];
           [v80 horizontalAccuracy];
           v37 = v36;
-          v79 = [v10 objectAtIndexedSubscript:v16];
+          v79 = [locationCopy objectAtIndexedSubscript:v16];
           [v79 course];
           v39 = v38;
-          v77 = [v10 objectAtIndexedSubscript:v16];
+          v77 = [locationCopy objectAtIndexedSubscript:v16];
           [v77 courseAccuracy];
           v41 = v40;
-          v76 = [v10 objectAtIndexedSubscript:v16];
+          v76 = [locationCopy objectAtIndexedSubscript:v16];
           [v76 speed];
           v43 = v42;
-          v75 = [v10 objectAtIndexedSubscript:v16];
+          v75 = [locationCopy objectAtIndexedSubscript:v16];
           [v75 speedAccuracy];
           v45 = v44;
-          v46 = [v10 objectAtIndexedSubscript:v16];
-          v47 = [v46 geoRoadClass];
-          v48 = [v10 objectAtIndexedSubscript:v16];
-          v49 = [v48 geoFormOfWay];
-          v50 = [v10 objectAtIndexedSubscript:v16];
-          v51 = [v50 timestamp];
-          [v10 objectAtIndexedSubscript:v16];
-          v53 = v52 = v11;
-          v54 = -[RTSynthesizedLocation initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:course:courseAccuracy:speed:speedAccuracy:geoRoadClass:geoFormOfWay:locationType:timestamp:clRoadID:](v78, "initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:course:courseAccuracy:speed:speedAccuracy:geoRoadClass:geoFormOfWay:locationType:timestamp:clRoadID:", v47, v49, v84, v51, [v53 clRoadID], v31, v33, v35, v37, v83, v39, v41, v43, v45);
+          v46 = [locationCopy objectAtIndexedSubscript:v16];
+          geoRoadClass = [v46 geoRoadClass];
+          v48 = [locationCopy objectAtIndexedSubscript:v16];
+          geoFormOfWay = [v48 geoFormOfWay];
+          v50 = [locationCopy objectAtIndexedSubscript:v16];
+          timestamp = [v50 timestamp];
+          [locationCopy objectAtIndexedSubscript:v16];
+          v53 = v52 = elevationsCopy;
+          v54 = -[RTSynthesizedLocation initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:course:courseAccuracy:speed:speedAccuracy:geoRoadClass:geoFormOfWay:locationType:timestamp:clRoadID:](v78, "initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:course:courseAccuracy:speed:speedAccuracy:geoRoadClass:geoFormOfWay:locationType:timestamp:clRoadID:", geoRoadClass, geoFormOfWay, v84, timestamp, [v53 clRoadID], v31, v33, v35, v37, v83, v39, v41, v43, v45);
 
-          v11 = v52;
-          v15 = v74;
+          elevationsCopy = v52;
+          array = v74;
           [v74 addObject:v54];
 
           ++v16;
         }
 
-        while (v16 < [v10 count]);
+        while (v16 < [locationCopy count]);
       }
 
-      v13 = v72;
-      v12 = v73;
+      handlerCopy = v72;
+      errorCopy = v73;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v65 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -140,9 +140,9 @@
         {
           v66 = objc_opt_class();
           NSStringFromClass(v66);
-          v68 = v67 = v11;
+          v68 = v67 = elevationsCopy;
           v69 = NSStringFromSelector(aSelector);
-          v70 = [v10 count];
+          v70 = [locationCopy count];
           *buf = 138412802;
           v86 = v68;
           v87 = 2112;
@@ -151,59 +151,59 @@
           v90 = v70;
           _os_log_debug_impl(&dword_2304B3000, v65, OS_LOG_TYPE_DEBUG, "%@ %@, adjusted %tu locations", buf, 0x20u);
 
-          v11 = v67;
+          elevationsCopy = v67;
         }
       }
 
-      (*(v72 + 2))(v72, v15, v73);
+      (*(v72 + 2))(v72, array, v73);
     }
 
     else
     {
-      v15 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+      array = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+      if (os_log_type_enabled(array, OS_LOG_TYPE_FAULT))
       {
         *buf = 134218240;
-        v86 = [v11 count];
+        v86 = [elevationsCopy count];
         v87 = 2048;
-        v88 = [v10 count];
-        _os_log_fault_impl(&dword_2304B3000, v15, OS_LOG_TYPE_FAULT, "Number of elements (%tu) in elevations is not equal to number of elements in locations (%tu)", buf, 0x16u);
+        v88 = [locationCopy count];
+        _os_log_fault_impl(&dword_2304B3000, array, OS_LOG_TYPE_FAULT, "Number of elements (%tu) in elevations is not equal to number of elements in locations (%tu)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)adjustElevationForSynthesizedLocations:(id)a3 handler:(id)a4
+- (void)adjustElevationForSynthesizedLocations:(id)locations handler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  locationsCopy = locations;
+  handlerCopy = handler;
+  if (locationsCopy && [locationsCopy count])
   {
-    v24 = self;
-    v8 = [MEMORY[0x277CBEB18] array];
-    if ([v6 count])
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
+    if ([locationsCopy count])
     {
       v9 = 0;
       do
       {
         v10 = objc_alloc(MEMORY[0x277CCA970]);
-        v11 = [v6 objectAtIndexedSubscript:v9];
-        v12 = [v11 timestamp];
-        v13 = [v6 objectAtIndexedSubscript:v9];
-        v14 = [v13 timestamp];
-        v15 = [v10 initWithStartDate:v12 endDate:v14];
+        v11 = [locationsCopy objectAtIndexedSubscript:v9];
+        timestamp = [v11 timestamp];
+        v13 = [locationsCopy objectAtIndexedSubscript:v9];
+        timestamp2 = [v13 timestamp];
+        v15 = [v10 initWithStartDate:timestamp endDate:timestamp2];
 
         v16 = objc_alloc(MEMORY[0x277D010E0]);
-        v17 = [v6 objectAtIndexedSubscript:v9];
+        v17 = [locationsCopy objectAtIndexedSubscript:v9];
         [v17 altitude];
         v18 = [v16 initWithElevation:v15 dateInterval:?];
-        [v8 addObject:v18];
+        [array addObject:v18];
 
         ++v9;
       }
 
-      while (v9 < [v6 count]);
+      while (v9 < [locationsCopy count]);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -212,7 +212,7 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v30 = [v6 count];
+        v30 = [locationsCopy count];
         _os_log_debug_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEBUG, "Invoked adjustElevationForLocations for %tu RTSynthesizedLocation values", buf, 0xCu);
       }
     }
@@ -221,10 +221,10 @@
     v25[1] = 3221225472;
     v25[2] = __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesizedLocations_handler___block_invoke;
     v25[3] = &unk_2788C55A8;
-    v26 = v6;
-    v27 = v24;
-    v28 = v7;
-    [(RTElevationAdjuster *)v24 adjustElevation:v8 handler:v25];
+    v26 = locationsCopy;
+    v27 = selfCopy;
+    v28 = handlerCopy;
+    [(RTElevationAdjuster *)selfCopy adjustElevation:array handler:v25];
 
     v20 = v26;
   }
@@ -234,11 +234,11 @@
     v21 = objc_alloc(MEMORY[0x277CCA9B8]);
     v22 = *MEMORY[0x277D01448];
     v31 = *MEMORY[0x277CCA450];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Received empty location array"];
-    v32[0] = v8;
+    array = [MEMORY[0x277CCACA8] stringWithFormat:@"Received empty location array"];
+    v32[0] = array;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v23 = [v21 initWithDomain:v22 code:7 userInfo:v20];
-    (*(v7 + 2))(v7, v6, v23);
+    (*(handlerCopy + 2))(handlerCopy, locationsCopy, v23);
   }
 }
 
@@ -257,9 +257,9 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
   }
 }
 
-- (id)adjustCLLocation:(id)a3 elevation:(double)a4
+- (id)adjustCLLocation:(id)location elevation:(double)elevation
 {
-  if (a3)
+  if (location)
   {
     v17 = 0u;
     memset(v18, 0, 28);
@@ -269,8 +269,8 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
     v14 = 0u;
     memset(v12, 0, sizeof(v12));
     *buf = 0u;
-    [a3 clientLocation];
-    *(v12 + 12) = a4;
+    [location clientLocation];
+    *(v12 + 12) = elevation;
     v5 = objc_alloc(MEMORY[0x277CE41F8]);
     v9[6] = v16;
     v9[7] = v17;
@@ -300,23 +300,23 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
   return v6;
 }
 
-- (void)respondWithCLLocation:(id)a3 elevations:(id)a4 error:(id)a5 handler:(id)a6
+- (void)respondWithCLLocation:(id)location elevations:(id)elevations error:(id)error handler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  locationCopy = location;
+  elevationsCopy = elevations;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v15 = [v11 count];
-    if (v15 == [v12 count])
+    v15 = [locationCopy count];
+    if (v15 == [elevationsCopy count])
     {
       aSelector = a2;
-      v40 = v14;
-      v41 = v13;
-      v16 = [MEMORY[0x277CBEB18] array];
-      if ([v11 count])
+      v40 = handlerCopy;
+      v41 = errorCopy;
+      array = [MEMORY[0x277CBEB18] array];
+      if ([locationCopy count])
       {
         v17 = 0;
         v18 = MEMORY[0x277D86220];
@@ -331,12 +331,12 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
               v24 = objc_opt_class();
               v39 = NSStringFromClass(v24);
               v38 = NSStringFromSelector(aSelector);
-              v36 = [v11 objectAtIndexedSubscript:v17];
+              v36 = [locationCopy objectAtIndexedSubscript:v17];
               v25 = [v36 description];
-              v35 = [v11 objectAtIndexedSubscript:v17];
+              v35 = [locationCopy objectAtIndexedSubscript:v17];
               [v35 altitude];
               v27 = v26;
-              v28 = [v12 objectAtIndexedSubscript:v17];
+              v28 = [elevationsCopy objectAtIndexedSubscript:v17];
               [v28 elevation];
               *buf = 138413315;
               v43 = v39;
@@ -352,21 +352,21 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
             }
           }
 
-          v21 = [v11 objectAtIndexedSubscript:v17];
-          v22 = [v12 objectAtIndexedSubscript:v17];
+          v21 = [locationCopy objectAtIndexedSubscript:v17];
+          v22 = [elevationsCopy objectAtIndexedSubscript:v17];
           [v22 elevation];
           v23 = [(RTElevationAdjuster *)self adjustCLLocation:v21 elevation:?];
 
-          [v16 addObject:v23];
+          [array addObject:v23];
           objc_autoreleasePoolPop(v19);
           ++v17;
         }
 
-        while (v17 < [v11 count]);
+        while (v17 < [locationCopy count]);
       }
 
-      v14 = v40;
-      v13 = v41;
+      handlerCopy = v40;
+      errorCopy = v41;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v30 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -375,7 +375,7 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
           v33 = NSStringFromSelector(aSelector);
-          v34 = [v11 count];
+          v34 = [locationCopy count];
           *buf = 138412802;
           v43 = v32;
           v44 = 2112;
@@ -386,40 +386,40 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
         }
       }
 
-      (*(v40 + 2))(v40, v16, v41);
+      (*(v40 + 2))(v40, array, v41);
     }
 
     else
     {
-      v16 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+      array = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+      if (os_log_type_enabled(array, OS_LOG_TYPE_FAULT))
       {
         *buf = 134218240;
-        v43 = [v12 count];
+        v43 = [elevationsCopy count];
         v44 = 2048;
-        v45 = [v11 count];
-        _os_log_fault_impl(&dword_2304B3000, v16, OS_LOG_TYPE_FAULT, "Number of elements (%tu) in elevations is not equal to number of elements in locations (%tu)", buf, 0x16u);
+        v45 = [locationCopy count];
+        _os_log_fault_impl(&dword_2304B3000, array, OS_LOG_TYPE_FAULT, "Number of elements (%tu) in elevations is not equal to number of elements in locations (%tu)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)adjustElevationForLocations:(id)a3 handler:(id)a4
+- (void)adjustElevationForLocations:(id)locations handler:(id)handler
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  locationsCopy = locations;
+  handlerCopy = handler;
+  if (locationsCopy && [locationsCopy count])
   {
-    v27 = self;
+    selfCopy = self;
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler___block_invoke;
     v32[3] = &unk_2788C8170;
-    v8 = v6;
+    v8 = locationsCopy;
     v33 = v8;
     [v8 enumerateObjectsUsingBlock:v32];
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([v8 count])
     {
       v10 = 0;
@@ -427,16 +427,16 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
       {
         v11 = objc_alloc(MEMORY[0x277CCA970]);
         v12 = [v8 objectAtIndexedSubscript:v10];
-        v13 = [v12 timestamp];
+        timestamp = [v12 timestamp];
         v14 = [v8 objectAtIndexedSubscript:v10];
-        v15 = [v14 timestamp];
-        v16 = [v11 initWithStartDate:v13 endDate:v15];
+        timestamp2 = [v14 timestamp];
+        v16 = [v11 initWithStartDate:timestamp endDate:timestamp2];
 
         v17 = objc_alloc(MEMORY[0x277D010E0]);
         v18 = [v8 objectAtIndexedSubscript:v10];
         [v18 altitude];
         v19 = [v17 initWithElevation:v16 dateInterval:?];
-        [v9 addObject:v19];
+        [array addObject:v19];
 
         ++v10;
       }
@@ -461,9 +461,9 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
     v28[2] = __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler___block_invoke_8;
     v28[3] = &unk_2788C55A8;
     v29 = v8;
-    v30 = v27;
-    v31 = v7;
-    [(RTElevationAdjuster *)v27 adjustElevation:v9 handler:v28];
+    v30 = selfCopy;
+    v31 = handlerCopy;
+    [(RTElevationAdjuster *)selfCopy adjustElevation:array handler:v28];
 
     v21 = v33;
   }
@@ -477,7 +477,7 @@ void __93__RTElevationAdjuster_RTSynthesizedLocation__adjustElevationForSynthesi
     v37[0] = v21;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v25 = [v22 initWithDomain:v23 code:7 userInfo:v24];
-    (*(v7 + 2))(v7, v6, v25);
+    (*(handlerCopy + 2))(handlerCopy, locationsCopy, v25);
   }
 }
 
@@ -516,26 +516,26 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
   }
 }
 
-- (void)respondWithTripSegmentLocation:(id)a3 elevations:(id)a4 error:(id)a5 handler:(id)a6
+- (void)respondWithTripSegmentLocation:(id)location elevations:(id)elevations error:(id)error handler:(id)handler
 {
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  locationCopy = location;
+  elevationsCopy = elevations;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v14 = [v10 count];
-    if (v14 == [v11 count])
+    v14 = [locationCopy count];
+    if (v14 == [elevationsCopy count])
     {
       aSelector = a2;
-      v62 = v13;
-      v63 = v12;
-      v15 = [MEMORY[0x277CBEB18] array];
-      if ([v10 count])
+      v62 = handlerCopy;
+      v63 = errorCopy;
+      array = [MEMORY[0x277CBEB18] array];
+      if ([locationCopy count])
       {
         v16 = 0;
-        v64 = v15;
+        v64 = array;
         do
         {
           context = objc_autoreleasePoolPush();
@@ -547,12 +547,12 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
               v45 = objc_opt_class();
               v46 = NSStringFromClass(v45);
               v47 = NSStringFromSelector(aSelector);
-              v48 = [v10 objectAtIndexedSubscript:v16];
+              v48 = [locationCopy objectAtIndexedSubscript:v16];
               v49 = [v48 description];
-              v50 = [v10 objectAtIndexedSubscript:v16];
+              v50 = [locationCopy objectAtIndexedSubscript:v16];
               [v50 altitude];
               v52 = v51;
-              v53 = [v11 objectAtIndexedSubscript:v16];
+              v53 = [elevationsCopy objectAtIndexedSubscript:v16];
               [v53 elevation];
               *buf = 138413315;
               v72 = v46;
@@ -569,43 +569,43 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
           }
 
           v18 = objc_alloc(MEMORY[0x277CBFC98]);
-          v69 = [v10 objectAtIndexedSubscript:v16];
-          v19 = [v69 timestamp];
-          v68 = [v10 objectAtIndexedSubscript:v16];
+          v69 = [locationCopy objectAtIndexedSubscript:v16];
+          timestamp = [v69 timestamp];
+          v68 = [locationCopy objectAtIndexedSubscript:v16];
           [v68 latitude];
           v21 = v20;
-          v67 = [v10 objectAtIndexedSubscript:v16];
+          v67 = [locationCopy objectAtIndexedSubscript:v16];
           [v67 longitude];
           v23 = v22;
-          v66 = [v10 objectAtIndexedSubscript:v16];
+          v66 = [locationCopy objectAtIndexedSubscript:v16];
           [v66 horizontalAccuracy];
           v25 = v24;
-          v65 = [v10 objectAtIndexedSubscript:v16];
+          v65 = [locationCopy objectAtIndexedSubscript:v16];
           [v65 course];
           v27 = v26;
-          v28 = [v10 objectAtIndexedSubscript:v16];
+          v28 = [locationCopy objectAtIndexedSubscript:v16];
           [v28 courseAccuracy];
           v30 = v29;
-          v31 = [v10 objectAtIndexedSubscript:v16];
+          v31 = [locationCopy objectAtIndexedSubscript:v16];
           [v31 speed];
           v33 = v32;
-          v34 = [v10 objectAtIndexedSubscript:v16];
+          v34 = [locationCopy objectAtIndexedSubscript:v16];
           [v34 speedAccuracy];
           v36 = v35;
-          v37 = [v11 objectAtIndexedSubscript:v16];
+          v37 = [elevationsCopy objectAtIndexedSubscript:v16];
           [v37 elevation];
           v39 = v38;
-          [v10 objectAtIndexedSubscript:v16];
-          v41 = v40 = v11;
-          v42 = [v18 initWithTime:v19 latitude:objc_msgSend(v41 longitude:"locType") horizontalAccuracy:v21 course:v23 courseAccuracy:v25 speed:v27 speedAccuracy:v30 altitude:v33 altitudeAccuracy:v36 locType:{v39, 0x4024000000000000}];
-          v43 = v10;
+          [locationCopy objectAtIndexedSubscript:v16];
+          v41 = v40 = elevationsCopy;
+          v42 = [v18 initWithTime:timestamp latitude:objc_msgSend(v41 longitude:"locType") horizontalAccuracy:v21 course:v23 courseAccuracy:v25 speed:v27 speedAccuracy:v30 altitude:v33 altitudeAccuracy:v36 locType:{v39, 0x4024000000000000}];
+          v43 = locationCopy;
           v44 = v42;
 
-          v11 = v40;
-          v15 = v64;
+          elevationsCopy = v40;
+          array = v64;
           [v64 addObject:v44];
 
-          v10 = v43;
+          locationCopy = v43;
           objc_autoreleasePoolPop(context);
           ++v16;
         }
@@ -613,8 +613,8 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
         while (v16 < [v43 count]);
       }
 
-      v13 = v62;
-      v12 = v63;
+      handlerCopy = v62;
+      errorCopy = v63;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v55 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -622,9 +622,9 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
         {
           v56 = objc_opt_class();
           NSStringFromClass(v56);
-          v58 = v57 = v11;
+          v58 = v57 = elevationsCopy;
           v59 = NSStringFromSelector(aSelector);
-          v60 = [v10 count];
+          v60 = [locationCopy count];
           *buf = 138412802;
           v72 = v58;
           v73 = 2112;
@@ -633,61 +633,61 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
           v76 = v60;
           _os_log_debug_impl(&dword_2304B3000, v55, OS_LOG_TYPE_DEBUG, "%@ %@, adjusted %tu locations", buf, 0x20u);
 
-          v11 = v57;
+          elevationsCopy = v57;
         }
       }
 
-      (*(v62 + 2))(v62, v15, v63);
+      (*(v62 + 2))(v62, array, v63);
     }
 
     else
     {
-      v15 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+      array = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+      if (os_log_type_enabled(array, OS_LOG_TYPE_FAULT))
       {
         *buf = 134218240;
-        v72 = [v11 count];
+        v72 = [elevationsCopy count];
         v73 = 2048;
-        v74 = [v10 count];
-        _os_log_fault_impl(&dword_2304B3000, v15, OS_LOG_TYPE_FAULT, "Number of elements (%tu) in elevations is not equal to number of elements in locations (%tu)", buf, 0x16u);
+        v74 = [locationCopy count];
+        _os_log_fault_impl(&dword_2304B3000, array, OS_LOG_TYPE_FAULT, "Number of elements (%tu) in elevations is not equal to number of elements in locations (%tu)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)adjustElevationForTripSegmentLocations:(id)a3 handler:(id)a4
+- (void)adjustElevationForTripSegmentLocations:(id)locations handler:(id)handler
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  locationsCopy = locations;
+  handlerCopy = handler;
+  if (locationsCopy && [locationsCopy count])
   {
-    v25 = self;
-    v8 = [MEMORY[0x277CBEB18] array];
-    if ([v6 count])
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
+    if ([locationsCopy count])
     {
       v9 = 0;
       do
       {
         v10 = objc_autoreleasePoolPush();
         v11 = objc_alloc(MEMORY[0x277CCA970]);
-        v12 = [v6 objectAtIndexedSubscript:v9];
-        v13 = [v12 timestamp];
-        v14 = [v6 objectAtIndexedSubscript:v9];
-        v15 = [v14 timestamp];
-        v16 = [v11 initWithStartDate:v13 endDate:v15];
+        v12 = [locationsCopy objectAtIndexedSubscript:v9];
+        timestamp = [v12 timestamp];
+        v14 = [locationsCopy objectAtIndexedSubscript:v9];
+        timestamp2 = [v14 timestamp];
+        v16 = [v11 initWithStartDate:timestamp endDate:timestamp2];
 
         v17 = objc_alloc(MEMORY[0x277D010E0]);
-        v18 = [v6 objectAtIndexedSubscript:v9];
+        v18 = [locationsCopy objectAtIndexedSubscript:v9];
         [v18 altitude];
         v19 = [v17 initWithElevation:v16 dateInterval:?];
-        [v8 addObject:v19];
+        [array addObject:v19];
 
         objc_autoreleasePoolPop(v10);
         ++v9;
       }
 
-      while (v9 < [v6 count]);
+      while (v9 < [locationsCopy count]);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -696,7 +696,7 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v31 = [v6 count];
+        v31 = [locationsCopy count];
         _os_log_debug_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEBUG, "Invoked adjustElevationForLocations for %tu CLLocation values", buf, 0xCu);
       }
     }
@@ -705,10 +705,10 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
     v26[1] = 3221225472;
     v26[2] = __93__RTElevationAdjuster_CLTripSegmentLocation__adjustElevationForTripSegmentLocations_handler___block_invoke;
     v26[3] = &unk_2788C55A8;
-    v27 = v6;
-    v28 = v25;
-    v29 = v7;
-    [(RTElevationAdjuster *)v25 adjustElevation:v8 handler:v26];
+    v27 = locationsCopy;
+    v28 = selfCopy;
+    v29 = handlerCopy;
+    [(RTElevationAdjuster *)selfCopy adjustElevation:array handler:v26];
 
     v21 = v27;
   }
@@ -718,11 +718,11 @@ void __71__RTElevationAdjuster_CLLocation__adjustElevationForLocations_handler__
     v22 = objc_alloc(MEMORY[0x277CCA9B8]);
     v23 = *MEMORY[0x277D01448];
     v32 = *MEMORY[0x277CCA450];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Received empty location array"];
-    v33[0] = v8;
+    array = [MEMORY[0x277CCACA8] stringWithFormat:@"Received empty location array"];
+    v33[0] = array;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v24 = [v22 initWithDomain:v23 code:7 userInfo:v21];
-    (*(v7 + 2))(v7, v6, v24);
+    (*(handlerCopy + 2))(handlerCopy, locationsCopy, v24);
   }
 }
 
@@ -741,33 +741,33 @@ void __93__RTElevationAdjuster_CLTripSegmentLocation__adjustElevationForTripSegm
   }
 }
 
-- (RTElevationAdjuster)initWithElevationManager:(id)a3
+- (RTElevationAdjuster)initWithElevationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = RTElevationAdjuster;
   v6 = [(RTElevationAdjuster *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elevationManager, a3);
+    objc_storeStrong(&v6->_elevationManager, manager);
   }
 
   return v7;
 }
 
-- (id)performElevationInterpolationOn:(id)a3 referenceElevations:(id)a4
+- (id)performElevationInterpolationOn:(id)on referenceElevations:(id)elevations
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ![v5 count])
+  onCopy = on;
+  elevationsCopy = elevations;
+  if (!onCopy || ![onCopy count])
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
 LABEL_20:
 
-      v33 = v5;
+      v33 = onCopy;
       goto LABEL_21;
     }
 
@@ -779,7 +779,7 @@ LABEL_46:
     goto LABEL_20;
   }
 
-  if (!v6 || ![v6 count])
+  if (!elevationsCopy || ![elevationsCopy count])
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -793,23 +793,23 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if ([v6 count] >= 2)
+  if ([elevationsCopy count] >= 2)
   {
     v7 = 1;
     while (1)
     {
-      v8 = [v6 objectAtIndexedSubscript:v7 - 1];
-      v9 = [v8 endDate];
-      v10 = [v6 objectAtIndexedSubscript:v7];
-      v11 = [v10 endDate];
-      v12 = [v9 isOnOrAfter:v11];
+      v8 = [elevationsCopy objectAtIndexedSubscript:v7 - 1];
+      endDate = [v8 endDate];
+      v10 = [elevationsCopy objectAtIndexedSubscript:v7];
+      endDate2 = [v10 endDate];
+      v12 = [endDate isOnOrAfter:endDate2];
 
       if (v12)
       {
         break;
       }
 
-      if (++v7 >= [v6 count])
+      if (++v7 >= [elevationsCopy count])
       {
         goto LABEL_9;
       }
@@ -828,23 +828,23 @@ LABEL_46:
   }
 
 LABEL_9:
-  if ([v5 count] >= 2)
+  if ([onCopy count] >= 2)
   {
     v13 = 1;
     while (1)
     {
-      v14 = [v5 objectAtIndexedSubscript:v13 - 1];
-      v15 = [v14 endDate];
-      v16 = [v5 objectAtIndexedSubscript:v13];
-      v17 = [v16 endDate];
-      v18 = [v15 isOnOrAfter:v17];
+      v14 = [onCopy objectAtIndexedSubscript:v13 - 1];
+      endDate3 = [v14 endDate];
+      v16 = [onCopy objectAtIndexedSubscript:v13];
+      endDate4 = [v16 endDate];
+      v18 = [endDate3 isOnOrAfter:endDate4];
 
       if (v18)
       {
         break;
       }
 
-      if (++v13 >= [v5 count])
+      if (++v13 >= [onCopy count])
       {
         goto LABEL_13;
       }
@@ -863,42 +863,42 @@ LABEL_9:
   }
 
 LABEL_13:
-  v86 = v6;
-  v19 = [v6 count];
-  v20 = [v5 count];
-  v21 = [MEMORY[0x277CBEB18] array];
+  v86 = elevationsCopy;
+  v19 = [elevationsCopy count];
+  v20 = [onCopy count];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0;
   v82 = v20;
   v23 = v20 - 1;
   while (1)
   {
-    v24 = [v5 objectAtIndexedSubscript:v22];
-    v25 = [v24 endDate];
+    v24 = [onCopy objectAtIndexedSubscript:v22];
+    endDate5 = [v24 endDate];
     v26 = [v86 objectAtIndexedSubscript:0];
-    v27 = [v26 endDate];
-    v28 = [v25 compare:v27];
+    endDate6 = [v26 endDate];
+    v28 = [endDate5 compare:endDate6];
 
     if (v28 != -1 || v22 >= v23)
     {
       break;
     }
 
-    v29 = [v5 objectAtIndexedSubscript:v22];
-    [v21 addObject:v29];
+    v29 = [onCopy objectAtIndexedSubscript:v22];
+    [array addObject:v29];
 
     ++v22;
   }
 
   v35 = v82;
-  v83 = v21;
+  v83 = array;
   if (v22 >= v82)
   {
-    v6 = v86;
+    elevationsCopy = v86;
   }
 
   else
   {
-    v6 = v86;
+    elevationsCopy = v86;
     if (v19 >= 2)
     {
       v36 = 0;
@@ -907,19 +907,19 @@ LABEL_13:
       {
         context = objc_autoreleasePoolPush();
         v37 = objc_alloc(MEMORY[0x277CCA970]);
-        v38 = [v6 objectAtIndexedSubscript:v36];
-        v39 = [v38 endDate];
+        v38 = [elevationsCopy objectAtIndexedSubscript:v36];
+        endDate7 = [v38 endDate];
         v84 = v36;
         v85 = v36 + 1;
-        v40 = [v6 objectAtIndexedSubscript:?];
-        v41 = [v40 endDate];
-        v42 = [v37 initWithStartDate:v39 endDate:v41];
+        v40 = [elevationsCopy objectAtIndexedSubscript:?];
+        endDate8 = [v40 endDate];
+        v42 = [v37 initWithStartDate:endDate7 endDate:endDate8];
 
         do
         {
-          v43 = [v5 objectAtIndexedSubscript:v22];
-          v44 = [v43 endDate];
-          v45 = [v42 containsDate:v44];
+          v43 = [onCopy objectAtIndexedSubscript:v22];
+          endDate9 = [v43 endDate];
+          v45 = [v42 containsDate:endDate9];
 
           if (!v45)
           {
@@ -927,28 +927,28 @@ LABEL_13:
           }
 
           v46 = objc_autoreleasePoolPush();
-          v47 = [v5 objectAtIndexedSubscript:v22];
-          v48 = [v47 endDate];
-          v49 = [v6 objectAtIndexedSubscript:v84];
-          v50 = [v49 endDate];
-          [v48 timeIntervalSinceDate:v50];
+          v47 = [onCopy objectAtIndexedSubscript:v22];
+          endDate10 = [v47 endDate];
+          v49 = [elevationsCopy objectAtIndexedSubscript:v84];
+          endDate11 = [v49 endDate];
+          [endDate10 timeIntervalSinceDate:endDate11];
           v52 = v51;
 
-          v53 = [v6 objectAtIndexedSubscript:v85];
+          v53 = [elevationsCopy objectAtIndexedSubscript:v85];
           [v53 elevation];
           v55 = v54;
-          v56 = [v6 objectAtIndexedSubscript:v84];
+          v56 = [elevationsCopy objectAtIndexedSubscript:v84];
           [v56 elevation];
           v58 = v57;
 
-          v59 = [v5 objectAtIndexedSubscript:v22];
+          v59 = [onCopy objectAtIndexedSubscript:v22];
           [v59 elevation];
           v61 = v60;
 
           [v42 duration];
           if (v62 > 0.0)
           {
-            v63 = [v6 objectAtIndexedSubscript:v84];
+            v63 = [elevationsCopy objectAtIndexedSubscript:v84];
             [v63 elevation];
             v65 = v64;
             [v42 duration];
@@ -956,24 +956,24 @@ LABEL_13:
           }
 
           v67 = objc_alloc(MEMORY[0x277CCA970]);
-          v68 = [v5 objectAtIndexedSubscript:v22];
-          v69 = [v68 startDate];
-          v70 = [v5 objectAtIndexedSubscript:v22];
-          v71 = [v70 endDate];
-          v72 = [v67 initWithStartDate:v69 endDate:v71];
+          v68 = [onCopy objectAtIndexedSubscript:v22];
+          startDate = [v68 startDate];
+          v70 = [onCopy objectAtIndexedSubscript:v22];
+          endDate12 = [v70 endDate];
+          v72 = [v67 initWithStartDate:startDate endDate:endDate12];
 
           v73 = objc_alloc(MEMORY[0x277D010E0]);
-          v74 = [v5 objectAtIndexedSubscript:v22];
+          v74 = [onCopy objectAtIndexedSubscript:v22];
           [v74 elevationUncertainty];
           v76 = v75;
-          v77 = [v5 objectAtIndexedSubscript:v22];
+          v77 = [onCopy objectAtIndexedSubscript:v22];
           v78 = [v73 initWithElevation:v72 dateInterval:objc_msgSend(v77 elevationUncertainty:"estimationStatus") estimationStatus:{v61, v76}];
           [v83 addObject:v78];
 
           ++v22;
           objc_autoreleasePoolPop(v46);
           v35 = v82;
-          v6 = v86;
+          elevationsCopy = v86;
         }
 
         while (v22 < v82);
@@ -1001,14 +1001,14 @@ LABEL_13:
     v33 = v83;
     do
     {
-      v79 = [v5 objectAtIndexedSubscript:v22];
+      v79 = [onCopy objectAtIndexedSubscript:v22];
       [v83 addObject:v79];
 
       ++v22;
     }
 
     while (v35 != v22);
-    v6 = v86;
+    elevationsCopy = v86;
   }
 
 LABEL_21:
@@ -1016,22 +1016,22 @@ LABEL_21:
   return v33;
 }
 
-- (void)adjustElevation:(id)a3 handler:(id)a4
+- (void)adjustElevation:(id)elevation handler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  elevationCopy = elevation;
+  handlerCopy = handler;
+  if (elevationCopy && [elevationCopy count])
   {
     v8 = objc_alloc(MEMORY[0x277CCA970]);
     v9 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v10 = [v6 firstObject];
-    v11 = [v10 endDate];
-    v12 = [v9 initWithTimeInterval:v11 sinceDate:-10.0];
+    firstObject = [elevationCopy firstObject];
+    endDate = [firstObject endDate];
+    v12 = [v9 initWithTimeInterval:endDate sinceDate:-10.0];
     v13 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v14 = [v6 lastObject];
-    v15 = [v14 endDate];
-    v16 = [v13 initWithTimeInterval:v15 sinceDate:10.0];
+    lastObject = [elevationCopy lastObject];
+    endDate2 = [lastObject endDate];
+    v16 = [v13 initWithTimeInterval:endDate2 sinceDate:10.0];
     v17 = [v8 initWithStartDate:v12 endDate:v16];
 
     v18 = [objc_alloc(MEMORY[0x277D01308]) initWithDateInterval:v17 batchSize:0];
@@ -1040,9 +1040,9 @@ LABEL_21:
     v23[1] = 3221225472;
     v23[2] = __47__RTElevationAdjuster_adjustElevation_handler___block_invoke;
     v23[3] = &unk_2788C6468;
-    v26 = v7;
-    v24 = v6;
-    v25 = self;
+    v26 = handlerCopy;
+    v24 = elevationCopy;
+    selfCopy = self;
     [(RTElevationManager *)elevationManager fetchElevationsWithOptions:v18 handler:v23];
 
     v20 = v26;
@@ -1057,7 +1057,7 @@ LABEL_21:
     v28[0] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v20 = [v21 initWithDomain:v22 code:7 userInfo:v18];
-    (*(v7 + 2))(v7, v6, v20);
+    (*(handlerCopy + 2))(handlerCopy, elevationCopy, v20);
   }
 }
 

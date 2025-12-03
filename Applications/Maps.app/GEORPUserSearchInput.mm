@@ -1,33 +1,33 @@
 @interface GEORPUserSearchInput
-- (id)initWithRAPUserSearchInput:(id)a3;
+- (id)initWithRAPUserSearchInput:(id)input;
 @end
 
 @implementation GEORPUserSearchInput
 
-- (id)initWithRAPUserSearchInput:(id)a3
+- (id)initWithRAPUserSearchInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v13.receiver = self;
   v13.super_class = GEORPUserSearchInput;
   v5 = [(GEORPUserSearchInput *)&v13 init];
   if (v5)
   {
-    v6 = [v4 searchString];
-    [(GEORPUserSearchInput *)v5 setSearchString:v6];
+    searchString = [inputCopy searchString];
+    [(GEORPUserSearchInput *)v5 setSearchString:searchString];
 
-    v7 = [v4 singleLineAddressString];
-    [(GEORPUserSearchInput *)v5 setSingleLineAddressString:v7];
+    singleLineAddressString = [inputCopy singleLineAddressString];
+    [(GEORPUserSearchInput *)v5 setSingleLineAddressString:singleLineAddressString];
 
-    -[GEORPUserSearchInput setOrigin:](v5, "setOrigin:", [v4 origin]);
-    v8 = [v4 coordinate];
-    [(GEORPUserSearchInput *)v5 setCoordinate:v8];
+    -[GEORPUserSearchInput setOrigin:](v5, "setOrigin:", [inputCopy origin]);
+    coordinate = [inputCopy coordinate];
+    [(GEORPUserSearchInput *)v5 setCoordinate:coordinate];
 
-    v9 = [v4 placeMapItemStorage];
-    v10 = [v9 placeData];
-    [(GEORPUserSearchInput *)v5 setPlace:v10];
+    placeMapItemStorage = [inputCopy placeMapItemStorage];
+    placeData = [placeMapItemStorage placeData];
+    [(GEORPUserSearchInput *)v5 setPlace:placeData];
 
-    v11 = [v4 completionStorage];
-    [v11 applyToUserSearchInput:v5];
+    completionStorage = [inputCopy completionStorage];
+    [completionStorage applyToUserSearchInput:v5];
   }
 
   return v5;

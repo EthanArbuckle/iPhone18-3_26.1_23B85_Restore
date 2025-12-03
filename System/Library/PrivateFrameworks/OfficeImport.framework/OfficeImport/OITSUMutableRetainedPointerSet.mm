@@ -1,6 +1,6 @@
 @interface OITSUMutableRetainedPointerSet
 - (OITSUMutableRetainedPointerSet)init;
-- (OITSUMutableRetainedPointerSet)initWithCapacity:(unint64_t)a3;
+- (OITSUMutableRetainedPointerSet)initWithCapacity:(unint64_t)capacity;
 - (id)allObjects;
 @end
 
@@ -22,7 +22,7 @@
   }
 }
 
-- (OITSUMutableRetainedPointerSet)initWithCapacity:(unint64_t)a3
+- (OITSUMutableRetainedPointerSet)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = OITSUMutableRetainedPointerSet;
@@ -35,7 +35,7 @@
     v7.equal = 0;
     v7.hash = 0;
     v7.copyDescription = v5;
-    v4->super.mSet = CFSetCreateMutable(0, a3, &v7);
+    v4->super.mSet = CFSetCreateMutable(0, capacity, &v7);
   }
 
   return v4;

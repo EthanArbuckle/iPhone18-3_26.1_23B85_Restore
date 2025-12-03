@@ -1,21 +1,21 @@
 @interface MIXPCConnection
-- (MIXPCConnection)initWithXPCConnection:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)sendData:(id)a3;
+- (MIXPCConnection)initWithXPCConnection:(id)connection;
+- (void)handleEvent:(id)event;
+- (void)sendData:(id)data;
 @end
 
 @implementation MIXPCConnection
 
-- (MIXPCConnection)initWithXPCConnection:(id)a3
+- (MIXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = MIXPCConnection;
   v6 = [(MIConnection *)&v12 initWithType:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     connection = v7->_connection;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
@@ -28,17 +28,17 @@
   return v7;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v8 = a3;
-  type = xpc_get_type(v8);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_dictionary)
   {
-    v6 = _CFXPCCreateCFObjectFromXPCMessage();
-    v7 = [(MIConnection *)self delegate];
-    [v7 connection:self didRecieveData:v6];
+    delegate2 = _CFXPCCreateCFObjectFromXPCMessage();
+    delegate = [(MIConnection *)self delegate];
+    [delegate connection:self didRecieveData:delegate2];
 
-    CFRelease(v6);
+    CFRelease(delegate2);
   }
 
   else
@@ -52,23 +52,23 @@
     connection = self->_connection;
     self->_connection = 0;
 
-    v6 = [(MIConnection *)self delegate];
-    [v6 connection:self didCloseConnection:0];
+    delegate2 = [(MIConnection *)self delegate];
+    [delegate2 connection:self didCloseConnection:0];
   }
 
 LABEL_6:
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
   if (self->_connection)
   {
-    v5 = a3;
-    v6 = a3;
-    v7 = [v6 bytes];
-    v8 = [v6 length];
+    dataCopy = data;
+    dataCopy2 = data;
+    bytes = [dataCopy2 bytes];
+    v8 = [dataCopy2 length];
 
-    v9 = CFDataCreate(0, v7, v8);
+    v9 = CFDataCreate(0, bytes, v8);
     v10 = _CFXPCCreateXPCMessageWithCFObject();
     xpc_connection_send_message(self->_connection, v10);
 

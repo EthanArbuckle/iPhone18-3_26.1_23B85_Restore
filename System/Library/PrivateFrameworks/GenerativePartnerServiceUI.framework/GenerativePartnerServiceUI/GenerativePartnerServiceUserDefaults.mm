@@ -1,24 +1,24 @@
 @interface GenerativePartnerServiceUserDefaults
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GenerativePartnerServiceUserDefaults
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     sub_1BE54C70C();
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v13, 0, sizeof(v13));
-    v11 = a5;
-    v12 = self;
-    if (!a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (!change)
     {
       goto LABEL_7;
     }
@@ -26,18 +26,18 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_1BE54CA3C();
   swift_unknownObjectRelease();
-  if (a5)
+  if (change)
   {
 LABEL_4:
     type metadata accessor for NSKeyValueChangeKey();

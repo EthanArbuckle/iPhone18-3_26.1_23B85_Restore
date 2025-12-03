@@ -1,33 +1,33 @@
 @interface NEVPNProtocolL2TP
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)needToUpdateKeychain;
-- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)a3;
-- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)a3;
+- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)service;
+- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)service;
 - (NEVPNProtocolL2TP)init;
-- (NEVPNProtocolL2TP)initWithCoder:(id)a3;
+- (NEVPNProtocolL2TP)initWithCoder:(id)coder;
 - (NSData)machineIdentityReference;
 - (NSData)sharedSecretReference;
 - (__SCNetworkInterface)createInterface;
 - (id)copyLegacyIPSecDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)migratePasswordsFromPreferences:(__SCPreferences *)a3;
-- (void)setIPSecSettingsFromLegacyDictionary:(id)a3;
-- (void)setMachineIdentityReference:(id)a3;
-- (void)setSharedSecretReference:(id)a3;
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)migratePasswordsFromPreferences:(__SCPreferences *)preferences;
+- (void)setIPSecSettingsFromLegacyDictionary:(id)dictionary;
+- (void)setMachineIdentityReference:(id)reference;
+- (void)setSharedSecretReference:(id)reference;
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix;
 @end
 
 @implementation NEVPNProtocolL2TP
 
-- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)a3
+- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)service
 {
   v9.receiver = self;
   v9.super_class = NEVPNProtocolL2TP;
   v5 = [(NEVPNProtocolPPP *)&v9 updateWithServiceProtocolsFromService:?];
   if (v5)
   {
-    Interface = SCNetworkServiceGetInterface(a3);
+    Interface = SCNetworkServiceGetInterface(service);
     if (Interface)
     {
       ExtendedConfiguration = SCNetworkInterfaceGetExtendedConfiguration(Interface, *MEMORY[0x1E6982378]);
@@ -41,7 +41,7 @@
   return v5;
 }
 
-- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)a3
+- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)service
 {
   v21 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -49,13 +49,13 @@
   v5 = [(NEVPNProtocolPPP *)&v18 setServiceProtocolsInService:?];
   if (v5)
   {
-    Interface = SCNetworkServiceGetInterface(a3);
+    Interface = SCNetworkServiceGetInterface(service);
     if (Interface)
     {
       v7 = Interface;
       v8 = *MEMORY[0x1E6982378];
-      v9 = [(NEVPNProtocolL2TP *)self copyLegacyIPSecDictionary];
-      LODWORD(v7) = SCNetworkInterfaceSetExtendedConfiguration(v7, v8, v9);
+      copyLegacyIPSecDictionary = [(NEVPNProtocolL2TP *)self copyLegacyIPSecDictionary];
+      LODWORD(v7) = SCNetworkInterfaceSetExtendedConfiguration(v7, v8, copyLegacyIPSecDictionary);
 
       if (v7)
       {
@@ -118,12 +118,12 @@ LABEL_9:
   return result;
 }
 
-- (void)setIPSecSettingsFromLegacyDictionary:(id)a3
+- (void)setIPSecSettingsFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = *MEMORY[0x1E6982430];
-  v29 = v4;
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982430]];
+  v29 = dictionaryCopy;
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982430]];
   v7 = isa_nsstring(v6);
 
   if (v7)
@@ -212,9 +212,9 @@ LABEL_17:
 - (id)copyLegacyIPSecDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NEVPNProtocolL2TP *)self machineIdentityReference];
+  machineIdentityReference = [(NEVPNProtocolL2TP *)self machineIdentityReference];
 
-  if (v4)
+  if (machineIdentityReference)
   {
     if (self)
     {
@@ -226,8 +226,8 @@ LABEL_17:
       Property = 0;
     }
 
-    v7 = [Property persistentReference];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6982410]];
+    persistentReference = [Property persistentReference];
+    [v3 setObject:persistentReference forKeyedSubscript:*MEMORY[0x1E6982410]];
 
     v8 = MEMORY[0x1E6982868];
   }
@@ -238,34 +238,34 @@ LABEL_17:
   }
 
   [v3 setObject:*v8 forKeyedSubscript:*MEMORY[0x1E6982408]];
-  v9 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
 
-  if (v9)
+  if (sharedSecretKeychainItem)
   {
-    v10 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-    v11 = [v10 password];
+    sharedSecretKeychainItem2 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+    password = [sharedSecretKeychainItem2 password];
 
-    v12 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-    v13 = v12;
-    if (v11)
+    sharedSecretKeychainItem3 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+    sharedSecretKeychainItem4 = sharedSecretKeychainItem3;
+    if (password)
     {
-      v14 = [v12 password];
+      password2 = [sharedSecretKeychainItem3 password];
     }
 
     else
     {
-      v15 = [v12 identifier];
+      identifier = [sharedSecretKeychainItem3 identifier];
 
-      if (!v15)
+      if (!identifier)
       {
         goto LABEL_13;
       }
 
-      v13 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-      v14 = [v13 identifier];
+      sharedSecretKeychainItem4 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+      password2 = [sharedSecretKeychainItem4 identifier];
     }
 
-    v16 = v14;
+    v16 = password2;
 
     if (v16)
     {
@@ -275,12 +275,12 @@ LABEL_17:
   }
 
 LABEL_13:
-  v17 = [(NEVPNProtocolL2TP *)self localIdentifier];
+  localIdentifier = [(NEVPNProtocolL2TP *)self localIdentifier];
 
-  if (v17)
+  if (localIdentifier)
   {
-    v18 = [(NEVPNProtocolL2TP *)self localIdentifier];
-    [v3 setObject:v18 forKeyedSubscript:*MEMORY[0x1E6982418]];
+    localIdentifier2 = [(NEVPNProtocolL2TP *)self localIdentifier];
+    [v3 setObject:localIdentifier2 forKeyedSubscript:*MEMORY[0x1E6982418]];
 
     [v3 setObject:*MEMORY[0x1E6982878] forKeyedSubscript:*MEMORY[0x1E6982420]];
   }
@@ -288,13 +288,13 @@ LABEL_13:
   return v3;
 }
 
-- (void)migratePasswordsFromPreferences:(__SCPreferences *)a3
+- (void)migratePasswordsFromPreferences:(__SCPreferences *)preferences
 {
   v6.receiver = self;
   v6.super_class = NEVPNProtocolL2TP;
   [(NEVPNProtocol *)&v6 migratePasswordsFromPreferences:?];
-  v5 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-  [v5 migrateFromPreferences:a3];
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+  [sharedSecretKeychainItem migrateFromPreferences:preferences];
 }
 
 - (BOOL)needToUpdateKeychain
@@ -306,16 +306,16 @@ LABEL_13:
     return 1;
   }
 
-  v4 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-  if (v4)
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+  if (sharedSecretKeychainItem)
   {
-    v5 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-    v6 = [v5 password];
-    if (v6)
+    sharedSecretKeychainItem2 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+    password = [sharedSecretKeychainItem2 password];
+    if (password)
     {
-      v7 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-      v8 = [v7 password];
-      v3 = [v8 length] != 0;
+      sharedSecretKeychainItem3 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+      password2 = [sharedSecretKeychainItem3 password];
+      v3 = [password2 length] != 0;
     }
 
     else
@@ -332,14 +332,14 @@ LABEL_13:
   return v3;
 }
 
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  configurationCopy = configuration;
+  suffixCopy = suffix;
+  v10 = suffixCopy;
+  if (suffixCopy)
   {
-    v11 = [v9 stringByAppendingString:@".SS"];
+    v11 = [suffixCopy stringByAppendingString:@".SS"];
   }
 
   else
@@ -349,7 +349,7 @@ LABEL_13:
 
   v35.receiver = self;
   v35.super_class = NEVPNProtocolL2TP;
-  [(NEVPNProtocol *)&v35 syncWithKeychainInDomain:a3 configuration:v8 suffix:v10];
+  [(NEVPNProtocol *)&v35 syncWithKeychainInDomain:domain configuration:configurationCopy suffix:v10];
   if (self)
   {
     v13 = objc_getProperty(self, v12, 248, 1);
@@ -358,7 +358,7 @@ LABEL_13:
       v15 = v13;
       v16 = [objc_getProperty(self v14];
 
-      if (v16 == a3)
+      if (v16 == domain)
       {
         [objc_getProperty(self v17];
       }
@@ -367,14 +367,14 @@ LABEL_13:
 
   if ([(NEVPNProtocolL2TP *)self machineAuthenticationMethod]== 1)
   {
-    v18 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+    sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
 
-    if (!v18)
+    if (!sharedSecretKeychainItem)
     {
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [v8 identifier];
-      v21 = [v20 UUIDString];
-      v22 = [v19 stringWithFormat:@"%@.%@", v21, v11];
+      identifier = [configurationCopy identifier];
+      uUIDString = [identifier UUIDString];
+      v22 = [v19 stringWithFormat:@"%@.%@", uUIDString, v11];
 
       v24 = [NEKeychainItem alloc];
       if (self)
@@ -395,62 +395,62 @@ LABEL_13:
     }
   }
 
-  v29 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-  if (v29)
+  sharedSecretKeychainItem2 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+  if (sharedSecretKeychainItem2)
   {
-    v30 = v29;
-    v31 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-    v32 = [v31 domain];
+    v30 = sharedSecretKeychainItem2;
+    sharedSecretKeychainItem3 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+    domain = [sharedSecretKeychainItem3 domain];
 
-    if (v32 == a3)
+    if (domain == domain)
     {
-      v33 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-      v34 = [(NEVPNProtocolL2TP *)self localIdentifier];
-      [v33 syncUsingConfiguration:v8 accountName:v34 passwordType:2 identifierSuffix:v11];
+      sharedSecretKeychainItem4 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+      localIdentifier = [(NEVPNProtocolL2TP *)self localIdentifier];
+      [sharedSecretKeychainItem4 syncUsingConfiguration:configurationCopy accountName:localIdentifier passwordType:2 identifierSuffix:v11];
     }
   }
 }
 
 - (NSData)machineIdentityReference
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2 && objc_getProperty(v2, v3, 248, 1))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && objc_getProperty(selfCopy, v3, 248, 1))
   {
-    v5 = objc_getProperty(v2, v4, 248, 1);
-    v6 = [v5 persistentReference];
+    v5 = objc_getProperty(selfCopy, v4, 248, 1);
+    persistentReference = [v5 persistentReference];
   }
 
   else
   {
-    v6 = 0;
+    persistentReference = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return persistentReference;
 }
 
-- (void)setMachineIdentityReference:(id)a3
+- (void)setMachineIdentityReference:(id)reference
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v14)
+  referenceCopy = reference;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (referenceCopy)
   {
-    if (v4 && objc_getProperty(v4, v5, 248, 1))
+    if (selfCopy && objc_getProperty(selfCopy, v5, 248, 1))
     {
-      v7 = objc_getProperty(v4, v6, 248, 1);
-      [v7 setPersistentReference:v14];
+      v7 = objc_getProperty(selfCopy, v6, 248, 1);
+      [v7 setPersistentReference:referenceCopy];
     }
 
     else
     {
       v9 = [NEIdentityKeychainItem alloc];
-      if (v4)
+      if (selfCopy)
       {
-        keychainDomain = v4->super.super._keychainDomain;
-        Property = objc_getProperty(v4, v8, 88, 1);
+        keychainDomain = selfCopy->super.super._keychainDomain;
+        Property = objc_getProperty(selfCopy, v8, 88, 1);
       }
 
       else
@@ -460,59 +460,59 @@ LABEL_13:
       }
 
       v7 = Property;
-      v13 = [(NEKeychainItem *)v9 initWithPersistentReference:v14 domain:keychainDomain accessGroup:v7];
-      if (v4)
+      v13 = [(NEKeychainItem *)v9 initWithPersistentReference:referenceCopy domain:keychainDomain accessGroup:v7];
+      if (selfCopy)
       {
-        objc_setProperty_atomic(v4, v12, v13, 248);
+        objc_setProperty_atomic(selfCopy, v12, v13, 248);
       }
     }
   }
 
-  else if (v4)
+  else if (selfCopy)
   {
-    objc_setProperty_atomic(v4, v5, 0, 248);
+    objc_setProperty_atomic(selfCopy, v5, 0, 248);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSData)sharedSecretReference
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNProtocolL2TP *)v2 sharedSecretKeychainItem];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)selfCopy sharedSecretKeychainItem];
 
-  if (v3)
+  if (sharedSecretKeychainItem)
   {
-    v4 = [(NEVPNProtocolL2TP *)v2 sharedSecretKeychainItem];
-    v3 = [v4 persistentReference];
+    sharedSecretKeychainItem2 = [(NEVPNProtocolL2TP *)selfCopy sharedSecretKeychainItem];
+    sharedSecretKeychainItem = [sharedSecretKeychainItem2 persistentReference];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return sharedSecretKeychainItem;
 }
 
-- (void)setSharedSecretReference:(id)a3
+- (void)setSharedSecretReference:(id)reference
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEVPNProtocolL2TP *)v4 sharedSecretKeychainItem];
+  referenceCopy = reference;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)selfCopy sharedSecretKeychainItem];
 
-  if (v5)
+  if (sharedSecretKeychainItem)
   {
-    v6 = [(NEVPNProtocolL2TP *)v4 sharedSecretKeychainItem];
-    [v6 setPersistentReference:v12];
+    sharedSecretKeychainItem2 = [(NEVPNProtocolL2TP *)selfCopy sharedSecretKeychainItem];
+    [sharedSecretKeychainItem2 setPersistentReference:referenceCopy];
   }
 
   else
   {
     v8 = [NEKeychainItem alloc];
-    if (v4)
+    if (selfCopy)
     {
-      keychainDomain = v4->super.super._keychainDomain;
-      Property = objc_getProperty(v4, v7, 88, 1);
+      keychainDomain = selfCopy->super.super._keychainDomain;
+      Property = objc_getProperty(selfCopy, v7, 88, 1);
     }
 
     else
@@ -521,28 +521,28 @@ LABEL_13:
       Property = 0;
     }
 
-    v6 = Property;
-    v11 = [(NEKeychainItem *)v8 initWithPersistentReference:v12 domain:keychainDomain accessGroup:v6];
-    [(NEVPNProtocolL2TP *)v4 setSharedSecretKeychainItem:v11];
+    sharedSecretKeychainItem2 = Property;
+    v11 = [(NEKeychainItem *)v8 initWithPersistentReference:referenceCopy domain:keychainDomain accessGroup:sharedSecretKeychainItem2];
+    [(NEVPNProtocolL2TP *)selfCopy setSharedSecretKeychainItem:v11];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   v20.receiver = self;
   v20.super_class = NEVPNProtocolL2TP;
-  v6 = [(NEVPNProtocolPPP *)&v20 checkValidityAndCollectErrors:v4];
+  v6 = [(NEVPNProtocolPPP *)&v20 checkValidityAndCollectErrors:errorsCopy];
   if (self && ((v7 = objc_getProperty(self, v5, 248, 1)) != 0 || (v7 = objc_getProperty(self, v8, 256, 1)) != 0))
   {
   }
 
   else if ([(NEVPNProtocolL2TP *)self machineAuthenticationMethod]== 2)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v6 = 0;
   }
 
@@ -550,8 +550,8 @@ LABEL_13:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(NEVPNProtocolL2TP *)self userPreferences];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  userPreferences = [(NEVPNProtocolL2TP *)self userPreferences];
+  v10 = [userPreferences countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -562,13 +562,13 @@ LABEL_13:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(userPreferences);
         }
 
-        v6 &= [*(*(&v16 + 1) + 8 * i) checkValidityAndCollectErrors:v4];
+        v6 &= [*(*(&v16 + 1) + 8 * i) checkValidityAndCollectErrors:errorsCopy];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v11 = [userPreferences countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v11);
@@ -578,14 +578,14 @@ LABEL_13:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = NEVPNProtocolL2TP;
-  v4 = [(NEVPNProtocolPPP *)&v13 copyWithZone:a3];
+  v4 = [(NEVPNProtocolPPP *)&v13 copyWithZone:zone];
   [v4 setMachineAuthenticationMethod:{-[NEVPNProtocolL2TP machineAuthenticationMethod](self, "machineAuthenticationMethod")}];
-  v5 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-  [v4 setSharedSecretKeychainItem:v5];
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+  [v4 setSharedSecretKeychainItem:sharedSecretKeychainItem];
 
   if (self)
   {
@@ -644,67 +644,67 @@ LABEL_9:
   }
 
 LABEL_10:
-  v10 = [(NEVPNProtocolL2TP *)self localIdentifier];
-  [v4 setLocalIdentifier:v10];
+  localIdentifier = [(NEVPNProtocolL2TP *)self localIdentifier];
+  [v4 setLocalIdentifier:localIdentifier];
 
-  v11 = [(NEVPNProtocolL2TP *)self userPreferences];
-  [v4 setUserPreferences:v11];
+  userPreferences = [(NEVPNProtocolL2TP *)self userPreferences];
+  [v4 setUserPreferences:userPreferences];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NEVPNProtocolL2TP;
-  [(NEVPNProtocolPPP *)&v10 encodeWithCoder:v4];
-  [v4 encodeInt32:-[NEVPNProtocolL2TP machineAuthenticationMethod](self forKey:{"machineAuthenticationMethod"), @"MachineAuthenticationMethod"}];
-  v5 = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
-  [v4 encodeObject:v5 forKey:@"SharedSecret"];
+  [(NEVPNProtocolPPP *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:-[NEVPNProtocolL2TP machineAuthenticationMethod](self forKey:{"machineAuthenticationMethod"), @"MachineAuthenticationMethod"}];
+  sharedSecretKeychainItem = [(NEVPNProtocolL2TP *)self sharedSecretKeychainItem];
+  [coderCopy encodeObject:sharedSecretKeychainItem forKey:@"SharedSecret"];
 
   if (self)
   {
-    [v4 encodeObject:objc_getProperty(self forKey:{v6, 248, 1), @"MachineIdentity"}];
-    [v4 encodeObject:objc_getProperty(self forKey:{v7, 256, 1), @"MachineIdentityData"}];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v6, 248, 1), @"MachineIdentity"}];
+    [coderCopy encodeObject:objc_getProperty(self forKey:{v7, 256, 1), @"MachineIdentityData"}];
     machineIdentityDataImported = self->_machineIdentityDataImported;
   }
 
   else
   {
-    [v4 encodeObject:0 forKey:@"MachineIdentity"];
-    [v4 encodeObject:0 forKey:@"MachineIdentityData"];
+    [coderCopy encodeObject:0 forKey:@"MachineIdentity"];
+    [coderCopy encodeObject:0 forKey:@"MachineIdentityData"];
     machineIdentityDataImported = 0;
   }
 
-  [v4 encodeBool:machineIdentityDataImported forKey:@"MachineIdentityDataImported"];
-  v9 = [(NEVPNProtocolL2TP *)self localIdentifier];
-  [v4 encodeObject:v9 forKey:@"LocalIdentifier"];
+  [coderCopy encodeBool:machineIdentityDataImported forKey:@"MachineIdentityDataImported"];
+  localIdentifier = [(NEVPNProtocolL2TP *)self localIdentifier];
+  [coderCopy encodeObject:localIdentifier forKey:@"LocalIdentifier"];
 }
 
-- (NEVPNProtocolL2TP)initWithCoder:(id)a3
+- (NEVPNProtocolL2TP)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEVPNProtocolL2TP;
-  v5 = [(NEVPNProtocolPPP *)&v15 initWithCoder:v4];
+  v5 = [(NEVPNProtocolPPP *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_machineAuthenticationMethod = [v4 decodeInt32ForKey:@"MachineAuthenticationMethod"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SharedSecret"];
+    v5->_machineAuthenticationMethod = [coderCopy decodeInt32ForKey:@"MachineAuthenticationMethod"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SharedSecret"];
     sharedSecretKeychainItem = v5->_sharedSecretKeychainItem;
     v5->_sharedSecretKeychainItem = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MachineIdentity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MachineIdentity"];
     machineIdentity = v5->_machineIdentity;
     v5->_machineIdentity = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MachineIdentityData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MachineIdentityData"];
     machineIdentityDataInternal = v5->_machineIdentityDataInternal;
     v5->_machineIdentityDataInternal = v10;
 
-    v5->_machineIdentityDataImported = [v4 decodeBoolForKey:@"MachineIdentityDataImported"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LocalIdentifier"];
+    v5->_machineIdentityDataImported = [coderCopy decodeBoolForKey:@"MachineIdentityDataImported"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LocalIdentifier"];
     localIdentifier = v5->_localIdentifier;
     v5->_localIdentifier = v12;
   }

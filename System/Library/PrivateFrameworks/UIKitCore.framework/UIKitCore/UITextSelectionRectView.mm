@@ -2,34 +2,34 @@
 - (BOOL)hasPath;
 - (id)path;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)setPath:(id)a3;
-- (void)setSelectionBorderColor:(id)a3;
-- (void)setSelectionBorderWidth:(double)a3;
-- (void)setSelectionColor:(id)a3;
-- (void)setSelectionCornerRadius:(double)a3;
+- (void)setPath:(id)path;
+- (void)setSelectionBorderColor:(id)color;
+- (void)setSelectionBorderWidth:(double)width;
+- (void)setSelectionColor:(id)color;
+- (void)setSelectionCornerRadius:(double)radius;
 @end
 
 @implementation UITextSelectionRectView
 
 - (BOOL)hasPath
 {
-  v2 = [(UITextSelectionRectView *)self pathLayer];
-  v3 = [v2 path] != 0;
+  pathLayer = [(UITextSelectionRectView *)self pathLayer];
+  v3 = [pathLayer path] != 0;
 
   return v3;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v7 = [(UITextSelectionRectView *)self pathLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  pathLayer = [(UITextSelectionRectView *)self pathLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v7 setPath:v5];
-  if (!v4)
+  [pathLayer setPath:cGPath];
+  if (!pathCopy)
   {
-    v6 = [(UITextSelectionRectView *)self selectionColor];
-    [(UIView *)self setBackgroundColor:v6];
+    selectionColor = [(UITextSelectionRectView *)self selectionColor];
+    [(UIView *)self setBackgroundColor:selectionColor];
   }
 
   [(UITextSelectionRectView *)self setSelectionColor:self->_selectionColor];
@@ -39,12 +39,12 @@
 
 - (id)path
 {
-  v2 = [(UITextSelectionRectView *)self pathLayer];
-  v3 = [v2 path];
+  pathLayer = [(UITextSelectionRectView *)self pathLayer];
+  path = [pathLayer path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [UIBezierPath bezierPathWithCGPath:v3];
+    v4 = [UIBezierPath bezierPathWithCGPath:path];
   }
 
   else
@@ -55,67 +55,67 @@
   return v4;
 }
 
-- (void)setSelectionColor:(id)a3
+- (void)setSelectionColor:(id)color
 {
-  v8 = a3;
-  objc_storeStrong(&self->_selectionColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_selectionColor, color);
   if ([(UITextSelectionRectView *)self hasPath])
   {
-    v5 = [v8 CGColor];
-    v6 = [(UITextSelectionRectView *)self pathLayer];
-    [v6 setFillColor:v5];
+    cGColor = [colorCopy CGColor];
+    pathLayer = [(UITextSelectionRectView *)self pathLayer];
+    [pathLayer setFillColor:cGColor];
 
     [(UIView *)self setBackgroundColor:0];
   }
 
   else
   {
-    [(UIView *)self setBackgroundColor:v8];
-    v7 = [(UITextSelectionRectView *)self pathLayer];
-    [v7 setFillColor:0];
+    [(UIView *)self setBackgroundColor:colorCopy];
+    pathLayer2 = [(UITextSelectionRectView *)self pathLayer];
+    [pathLayer2 setFillColor:0];
   }
 }
 
-- (void)setSelectionCornerRadius:(double)a3
+- (void)setSelectionCornerRadius:(double)radius
 {
-  self->_selectionCornerRadius = a3;
-  v4 = [(UIView *)self layer];
-  [v4 setCornerRadius:a3];
+  self->_selectionCornerRadius = radius;
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setSelectionBorderColor:(id)a3
+- (void)setSelectionBorderColor:(id)color
 {
-  v9 = a3;
-  objc_storeStrong(&self->_selectionBorderColor, a3);
-  v5 = [(UITextSelectionRectView *)self hasPath];
-  v6 = v9;
-  v7 = [v9 CGColor];
-  if (v5)
+  colorCopy = color;
+  objc_storeStrong(&self->_selectionBorderColor, color);
+  hasPath = [(UITextSelectionRectView *)self hasPath];
+  v6 = colorCopy;
+  cGColor = [colorCopy CGColor];
+  if (hasPath)
   {
-    v8 = [(UITextSelectionRectView *)self pathLayer];
-    [v8 setStrokeColor:v7];
+    pathLayer = [(UITextSelectionRectView *)self pathLayer];
+    [pathLayer setStrokeColor:cGColor];
   }
 
   else
   {
-    v8 = [(UIView *)self layer];
-    [v8 setBorderColor:v7];
+    pathLayer = [(UIView *)self layer];
+    [pathLayer setBorderColor:cGColor];
   }
 }
 
-- (void)setSelectionBorderWidth:(double)a3
+- (void)setSelectionBorderWidth:(double)width
 {
-  self->_selectionBorderWidth = a3;
+  self->_selectionBorderWidth = width;
   if ([(UITextSelectionRectView *)self hasPath])
   {
-    v5 = [(UITextSelectionRectView *)self pathLayer];
-    [v5 setLineWidth:a3];
+    pathLayer = [(UITextSelectionRectView *)self pathLayer];
+    [pathLayer setLineWidth:width];
   }
 
   else
   {
-    v5 = [(UIView *)self layer];
-    [v5 setBorderWidth:a3];
+    pathLayer = [(UIView *)self layer];
+    [pathLayer setBorderWidth:width];
   }
 }
 
@@ -126,15 +126,15 @@
   [(UIView *)&v9 _dynamicUserInterfaceTraitDidChange];
   if ([(UITextSelectionRectView *)self hasPath])
   {
-    v3 = [(UITextSelectionRectView *)self selectionColor];
-    v4 = [v3 CGColor];
-    v5 = [(UITextSelectionRectView *)self pathLayer];
-    [v5 setFillColor:v4];
+    selectionColor = [(UITextSelectionRectView *)self selectionColor];
+    cGColor = [selectionColor CGColor];
+    pathLayer = [(UITextSelectionRectView *)self pathLayer];
+    [pathLayer setFillColor:cGColor];
 
-    v6 = [(UITextSelectionRectView *)self selectionBorderColor];
-    v7 = [v6 CGColor];
-    v8 = [(UITextSelectionRectView *)self pathLayer];
-    [v8 setStrokeColor:v7];
+    selectionBorderColor = [(UITextSelectionRectView *)self selectionBorderColor];
+    cGColor2 = [selectionBorderColor CGColor];
+    pathLayer2 = [(UITextSelectionRectView *)self pathLayer];
+    [pathLayer2 setStrokeColor:cGColor2];
   }
 }
 

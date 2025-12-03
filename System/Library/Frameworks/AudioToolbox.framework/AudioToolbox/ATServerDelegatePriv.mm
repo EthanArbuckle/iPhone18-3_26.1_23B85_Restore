@@ -3,9 +3,9 @@
 - (BOOL)dolbyDigitalEncoderAvailable;
 - (BOOL)waitForConclaveLaunch;
 - (id).cxx_construct;
-- (id)setIOPropertiesForSession:(unsigned int)a3 values:(id)a4;
-- (int)refreshMicrophoneInjectionPermissions:(id *)a3;
-- (int)refreshRecordPermissions:(id *)a3;
+- (id)setIOPropertiesForSession:(unsigned int)session values:(id)values;
+- (int)refreshMicrophoneInjectionPermissions:(id *)permissions;
+- (int)refreshRecordPermissions:(id *)permissions;
 - (void)conclaveLaunched;
 @end
 
@@ -189,10 +189,10 @@ LABEL_12:
   return 0;
 }
 
-- (id)setIOPropertiesForSession:(unsigned int)a3 values:(id)a4
+- (id)setIOPropertiesForSession:(unsigned int)session values:(id)values
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  valuesCopy = values;
   if (gAQMELogScope)
   {
     v5 = *gAQMELogScope;
@@ -214,26 +214,26 @@ LABEL_12:
     v30 = 1024;
     v31 = 864;
     v32 = 1024;
-    v33 = a3;
+    sessionCopy = session;
     _os_log_impl(&dword_1B9A08000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AudioToolboxServerSetIOPropertiesForSession; session id: 0x%x", buf, 0x18u);
   }
 
 LABEL_7:
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = v4;
-  v8 = [v7 keyEnumerator];
-  v9 = [v8 nextObject];
-  if (v9)
+  v7 = valuesCopy;
+  keyEnumerator = [v7 keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
     v11 = *MEMORY[0x1E698D9C8];
     *&v10 = 136315906;
     v26 = v10;
-    while (![v9 isEqualToString:v11])
+    while (![nextObject isEqualToString:v11])
     {
-      [v6 setObject:&unk_1F37D4168 forKeyedSubscript:v9];
+      [v6 setObject:&unk_1F37D4168 forKeyedSubscript:nextObject];
 LABEL_37:
-      v9 = [v8 nextObject];
-      if (!v9)
+      nextObject = [keyEnumerator nextObject];
+      if (!nextObject)
       {
         goto LABEL_40;
       }
@@ -250,7 +250,7 @@ LABEL_37:
       v13 = 0;
     }
 
-    if (v13 != a3)
+    if (v13 != session)
     {
       if (gAQMELogScope)
       {
@@ -273,15 +273,15 @@ LABEL_37:
         v30 = 1024;
         v31 = 881;
         v32 = 1024;
-        v33 = v13;
+        sessionCopy = v13;
         v34 = 1024;
-        v35 = a3;
+        sessionCopy2 = session;
         _os_log_impl(&dword_1B9A08000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AudioToolboxServerSetIOPropertiesForSession; gAQME's call session=0x%x != inSessionID=0x%x", buf, 0x1Eu);
       }
     }
 
 LABEL_21:
-    v15 = [v7 objectForKey:{v9, v26}];
+    v15 = [v7 objectForKey:{nextObject, v26}];
     if (v15)
     {
       v15 = CFRetain(v15);
@@ -321,7 +321,7 @@ LABEL_30:
       if (!*gAQMELogScope)
       {
 LABEL_36:
-        [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v21), v9}];
+        [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v21), nextObject}];
         goto LABEL_37;
       }
     }
@@ -338,7 +338,7 @@ LABEL_36:
       v30 = 1024;
       v31 = 887;
       v32 = 1024;
-      v33 = v21;
+      sessionCopy = v21;
       _os_log_impl(&dword_1B9A08000, v22, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AudioToolboxServerSetIOPropertiesForSession; set call translation properties. status: %i", buf, 0x18u);
     }
 
@@ -361,11 +361,11 @@ LABEL_40:
   return v23;
 }
 
-- (int)refreshMicrophoneInjectionPermissions:(id *)a3
+- (int)refreshMicrophoneInjectionPermissions:(id *)permissions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v14 = *a3;
-  *atoken.val = *a3->var0;
+  v14 = *permissions;
+  *atoken.val = *permissions->var0;
   *&atoken.val[4] = *&v14.val[4];
   v3 = audit_token_to_pid(&atoken);
   v4 = v3;
@@ -422,14 +422,14 @@ LABEL_7:
   return 0;
 }
 
-- (int)refreshRecordPermissions:(id *)a3
+- (int)refreshRecordPermissions:(id *)permissions
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = *&a3->var0[4];
-  v30 = *a3->var0;
+  v3 = *&permissions->var0[4];
+  v30 = *permissions->var0;
   v31 = v3;
-  v4 = *&a3->var0[4];
-  *&atoken.mProcessID = *a3->var0;
+  v4 = *&permissions->var0[4];
+  *&atoken.mProcessID = *permissions->var0;
   *&atoken.mSubsessionRef.mCFObject = v4;
   v5 = audit_token_to_pid(&atoken);
   v6 = v5;

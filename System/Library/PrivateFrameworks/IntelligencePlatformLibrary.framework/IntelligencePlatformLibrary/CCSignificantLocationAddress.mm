@@ -1,7 +1,7 @@
 @interface CCSignificantLocationAddress
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCSignificantLocationAddress)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCSignificantLocationAddress)initWithThoroughfare:(id)a3 subLocality:(id)a4 locality:(id)a5 country:(id)a6 subPremises:(id)a7 subThoroughfare:(id)a8 subAministrativeArea:(id)a9 administrativeArea:(id)a10 administrativeAreaCode:(id)a11 postalCode:(id)a12 countryCode:(id)a13 inlandWater:(id)a14 ocean:(id)a15 areasOfInterest:(id)a16 isIsland:(id)a17 iso3166CountryCode:(id)a18 iso3166SubdivisionCode:(id)a19 mergedThoroughfare:(id)a20 error:(id *)a21;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCSignificantLocationAddress)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCSignificantLocationAddress)initWithThoroughfare:(id)thoroughfare subLocality:(id)locality locality:(id)a5 country:(id)country subPremises:(id)premises subThoroughfare:(id)subThoroughfare subAministrativeArea:(id)area administrativeArea:(id)self0 administrativeAreaCode:(id)self1 postalCode:(id)self2 countryCode:(id)self3 inlandWater:(id)self4 ocean:(id)self5 areasOfInterest:(id)self6 isIsland:(id)self7 iso3166CountryCode:(id)self8 iso3166SubdivisionCode:(id)self9 mergedThoroughfare:(id)mergedThoroughfare error:(id *)error;
 - (NSArray)areasOfInterest;
 - (NSArray)subPremises;
 - (NSString)administrativeArea;
@@ -20,26 +20,26 @@
 - (NSString)subThoroughfare;
 - (NSString)thoroughfare;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCSignificantLocationAddress
 
-- (CCSignificantLocationAddress)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCSignificantLocationAddress)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v58 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"thoroughfare"];
-    v10 = [v6 objectForKeyedSubscript:@"subLocality"];
-    v11 = [v6 objectForKeyedSubscript:@"locality"];
-    v12 = [v6 objectForKeyedSubscript:@"country"];
-    v13 = [v6 objectForKeyedSubscript:@"subPremises"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"thoroughfare"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subLocality"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"locality"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"country"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"subPremises"];
     v51 = v9;
     if (v13)
     {
@@ -64,7 +64,7 @@ LABEL_22:
       v43 = v11;
       v50 = v12;
       v44 = v10;
-      v45 = self;
+      selfCopy2 = self;
       v17 = objc_opt_new();
       v53 = 0u;
       v54 = 0u;
@@ -106,7 +106,7 @@ LABEL_22:
               CCSetError();
 
               v31 = 0;
-              self = v45;
+              self = selfCopy2;
               v12 = v50;
               v32 = v51;
               v11 = v43;
@@ -122,41 +122,41 @@ LABEL_22:
         while (v19);
       }
 
-      v41 = a4;
+      errorCopy2 = error;
     }
 
     else
     {
-      v41 = a4;
+      errorCopy2 = error;
       v42 = v8;
       v50 = v12;
       v43 = v11;
       v44 = v10;
-      v45 = self;
+      selfCopy2 = self;
       v17 = 0;
     }
 
-    v40 = [v6 objectForKeyedSubscript:@"subThoroughfare"];
-    v49 = [v6 objectForKeyedSubscript:@"subAministrativeArea"];
-    v48 = [v6 objectForKeyedSubscript:@"administrativeArea"];
-    v47 = [v6 objectForKeyedSubscript:@"administrativeAreaCode"];
-    v46 = [v6 objectForKeyedSubscript:@"postalCode"];
-    v39 = [v6 objectForKeyedSubscript:@"countryCode"];
-    v38 = [v6 objectForKeyedSubscript:@"inlandWater"];
-    v37 = [v6 objectForKeyedSubscript:@"ocean"];
-    v36 = [v6 objectForKeyedSubscript:@"areasOfInterest"];
-    v35 = [v6 objectForKeyedSubscript:@"isIsland"];
-    v27 = [v6 objectForKeyedSubscript:@"iso3166CountryCode"];
-    v28 = [v6 objectForKeyedSubscript:@"iso3166SubdivisionCode"];
-    v29 = [v6 objectForKeyedSubscript:@"mergedThoroughfare"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"subThoroughfare"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"subAministrativeArea"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"administrativeArea"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"administrativeAreaCode"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"inlandWater"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"ocean"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"areasOfInterest"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isIsland"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"iso3166CountryCode"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"iso3166SubdivisionCode"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"mergedThoroughfare"];
     v32 = v51;
     v11 = v43;
     v10 = v44;
-    v31 = [[CCSignificantLocationAddress alloc] initWithThoroughfare:v51 subLocality:v44 locality:v43 country:v50 subPremises:v17 subThoroughfare:v40 subAministrativeArea:v49 administrativeArea:v48 administrativeAreaCode:v47 postalCode:v46 countryCode:v39 inlandWater:v38 ocean:v37 areasOfInterest:v36 isIsland:v35 iso3166CountryCode:v27 iso3166SubdivisionCode:v28 mergedThoroughfare:v29 error:v41];
+    v31 = [[CCSignificantLocationAddress alloc] initWithThoroughfare:v51 subLocality:v44 locality:v43 country:v50 subPremises:v17 subThoroughfare:v40 subAministrativeArea:v49 administrativeArea:v48 administrativeAreaCode:v47 postalCode:v46 countryCode:v39 inlandWater:v38 ocean:v37 areasOfInterest:v36 isIsland:v35 iso3166CountryCode:v27 iso3166SubdivisionCode:v28 mergedThoroughfare:v29 error:errorCopy2];
 
     v14 = v17;
     v12 = v50;
-    self = v45;
+    self = selfCopy2;
 LABEL_21:
     v8 = v42;
     goto LABEL_22;
@@ -176,26 +176,26 @@ LABEL_23:
   v3 = objc_opt_new();
   if (self->_thoroughfare)
   {
-    v4 = [(CCSignificantLocationAddress *)self thoroughfare];
-    [v3 setObject:v4 forKeyedSubscript:@"thoroughfare"];
+    thoroughfare = [(CCSignificantLocationAddress *)self thoroughfare];
+    [v3 setObject:thoroughfare forKeyedSubscript:@"thoroughfare"];
   }
 
   if (self->_subLocality)
   {
-    v5 = [(CCSignificantLocationAddress *)self subLocality];
-    [v3 setObject:v5 forKeyedSubscript:@"subLocality"];
+    subLocality = [(CCSignificantLocationAddress *)self subLocality];
+    [v3 setObject:subLocality forKeyedSubscript:@"subLocality"];
   }
 
   if (self->_locality)
   {
-    v6 = [(CCSignificantLocationAddress *)self locality];
-    [v3 setObject:v6 forKeyedSubscript:@"locality"];
+    locality = [(CCSignificantLocationAddress *)self locality];
+    [v3 setObject:locality forKeyedSubscript:@"locality"];
   }
 
   if (self->_country)
   {
-    v7 = [(CCSignificantLocationAddress *)self country];
-    [v3 setObject:v7 forKeyedSubscript:@"country"];
+    country = [(CCSignificantLocationAddress *)self country];
+    [v3 setObject:country forKeyedSubscript:@"country"];
   }
 
   if (self->_subPremises)
@@ -205,8 +205,8 @@ LABEL_23:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = [(CCSignificantLocationAddress *)self subPremises];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    subPremises = [(CCSignificantLocationAddress *)self subPremises];
+    v10 = [subPremises countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -217,14 +217,14 @@ LABEL_23:
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subPremises);
           }
 
-          v14 = [*(*(&v31 + 1) + 8 * i) jsonDictionary];
-          [v8 addObject:v14];
+          jsonDictionary = [*(*(&v31 + 1) + 8 * i) jsonDictionary];
+          [v8 addObject:jsonDictionary];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v11 = [subPremises countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v11);
@@ -235,56 +235,56 @@ LABEL_23:
 
   if (self->_subThoroughfare)
   {
-    v15 = [(CCSignificantLocationAddress *)self subThoroughfare];
-    [v3 setObject:v15 forKeyedSubscript:@"subThoroughfare"];
+    subThoroughfare = [(CCSignificantLocationAddress *)self subThoroughfare];
+    [v3 setObject:subThoroughfare forKeyedSubscript:@"subThoroughfare"];
   }
 
   if (self->_subAministrativeArea)
   {
-    v16 = [(CCSignificantLocationAddress *)self subAministrativeArea];
-    [v3 setObject:v16 forKeyedSubscript:@"subAministrativeArea"];
+    subAministrativeArea = [(CCSignificantLocationAddress *)self subAministrativeArea];
+    [v3 setObject:subAministrativeArea forKeyedSubscript:@"subAministrativeArea"];
   }
 
   if (self->_administrativeArea)
   {
-    v17 = [(CCSignificantLocationAddress *)self administrativeArea];
-    [v3 setObject:v17 forKeyedSubscript:@"administrativeArea"];
+    administrativeArea = [(CCSignificantLocationAddress *)self administrativeArea];
+    [v3 setObject:administrativeArea forKeyedSubscript:@"administrativeArea"];
   }
 
   if (self->_administrativeAreaCode)
   {
-    v18 = [(CCSignificantLocationAddress *)self administrativeAreaCode];
-    [v3 setObject:v18 forKeyedSubscript:@"administrativeAreaCode"];
+    administrativeAreaCode = [(CCSignificantLocationAddress *)self administrativeAreaCode];
+    [v3 setObject:administrativeAreaCode forKeyedSubscript:@"administrativeAreaCode"];
   }
 
   if (self->_postalCode)
   {
-    v19 = [(CCSignificantLocationAddress *)self postalCode];
-    [v3 setObject:v19 forKeyedSubscript:@"postalCode"];
+    postalCode = [(CCSignificantLocationAddress *)self postalCode];
+    [v3 setObject:postalCode forKeyedSubscript:@"postalCode"];
   }
 
   if (self->_countryCode)
   {
-    v20 = [(CCSignificantLocationAddress *)self countryCode];
-    [v3 setObject:v20 forKeyedSubscript:@"countryCode"];
+    countryCode = [(CCSignificantLocationAddress *)self countryCode];
+    [v3 setObject:countryCode forKeyedSubscript:@"countryCode"];
   }
 
   if (self->_inlandWater)
   {
-    v21 = [(CCSignificantLocationAddress *)self inlandWater];
-    [v3 setObject:v21 forKeyedSubscript:@"inlandWater"];
+    inlandWater = [(CCSignificantLocationAddress *)self inlandWater];
+    [v3 setObject:inlandWater forKeyedSubscript:@"inlandWater"];
   }
 
   if (self->_ocean)
   {
-    v22 = [(CCSignificantLocationAddress *)self ocean];
-    [v3 setObject:v22 forKeyedSubscript:@"ocean"];
+    ocean = [(CCSignificantLocationAddress *)self ocean];
+    [v3 setObject:ocean forKeyedSubscript:@"ocean"];
   }
 
   if (self->_areasOfInterest)
   {
-    v23 = [(CCSignificantLocationAddress *)self areasOfInterest];
-    [v3 setObject:v23 forKeyedSubscript:@"areasOfInterest"];
+    areasOfInterest = [(CCSignificantLocationAddress *)self areasOfInterest];
+    [v3 setObject:areasOfInterest forKeyedSubscript:@"areasOfInterest"];
   }
 
   if (self->_hasIsIsland)
@@ -295,20 +295,20 @@ LABEL_23:
 
   if (self->_iso3166CountryCode)
   {
-    v25 = [(CCSignificantLocationAddress *)self iso3166CountryCode];
-    [v3 setObject:v25 forKeyedSubscript:@"iso3166CountryCode"];
+    iso3166CountryCode = [(CCSignificantLocationAddress *)self iso3166CountryCode];
+    [v3 setObject:iso3166CountryCode forKeyedSubscript:@"iso3166CountryCode"];
   }
 
   if (self->_iso3166SubdivisionCode)
   {
-    v26 = [(CCSignificantLocationAddress *)self iso3166SubdivisionCode];
-    [v3 setObject:v26 forKeyedSubscript:@"iso3166SubdivisionCode"];
+    iso3166SubdivisionCode = [(CCSignificantLocationAddress *)self iso3166SubdivisionCode];
+    [v3 setObject:iso3166SubdivisionCode forKeyedSubscript:@"iso3166SubdivisionCode"];
   }
 
   if (self->_mergedThoroughfare)
   {
-    v27 = [(CCSignificantLocationAddress *)self mergedThoroughfare];
-    [v3 setObject:v27 forKeyedSubscript:@"mergedThoroughfare"];
+    mergedThoroughfare = [(CCSignificantLocationAddress *)self mergedThoroughfare];
+    [v3 setObject:mergedThoroughfare forKeyedSubscript:@"mergedThoroughfare"];
   }
 
   v28 = [v3 copy];
@@ -318,118 +318,118 @@ LABEL_23:
   return v28;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v24 = a3;
+  blockCopy = block;
   if (self->_thoroughfare)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15770 stringValue:self->_thoroughfare];
-    v24[2](v24, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_subLocality)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15771 stringValue:self->_subLocality];
-    v24[2](v24, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_locality)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15772 stringValue:self->_locality];
-    v24[2](v24, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_country)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15773 stringValue:self->_country];
-    v24[2](v24, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_subPremises)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15774 repeatedSubMessageValue:self->_subPremises];
-    v24[2](v24, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_subThoroughfare)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15777 stringValue:self->_subThoroughfare];
-    v24[2](v24, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_subAministrativeArea)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15778 stringValue:self->_subAministrativeArea];
-    v24[2](v24, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_administrativeArea)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15779 stringValue:self->_administrativeArea];
-    v24[2](v24, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_administrativeAreaCode)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15780 stringValue:self->_administrativeAreaCode];
-    v24[2](v24, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_postalCode)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15781 stringValue:self->_postalCode];
-    v24[2](v24, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_countryCode)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15782 stringValue:self->_countryCode];
-    v24[2](v24, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_inlandWater)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15783 stringValue:self->_inlandWater];
-    v24[2](v24, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_ocean)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15784 stringValue:self->_ocean];
-    v24[2](v24, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_areasOfInterest)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15785 repeatedStringValue:self->_areasOfInterest];
-    v24[2](v24, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_hasIsIsland)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15786 BOOLValue:self->_isIsland];
-    v24[2](v24, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_iso3166CountryCode)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15787 stringValue:self->_iso3166CountryCode];
-    v24[2](v24, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if (self->_iso3166SubdivisionCode)
   {
     v21 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15788 stringValue:self->_iso3166SubdivisionCode];
-    v24[2](v24, v21);
+    blockCopy[2](blockCopy, v21);
   }
 
-  v22 = v24;
+  v22 = blockCopy;
   if (self->_mergedThoroughfare)
   {
     v23 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:15789 stringValue:self->_mergedThoroughfare];
-    v24[2](v24, v23);
+    blockCopy[2](blockCopy, v23);
 
-    v22 = v24;
+    v22 = blockCopy;
   }
 }
 
@@ -552,10 +552,10 @@ LABEL_23:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] >= *&v7[*MEMORY[0x1E6993AB0]])
@@ -662,8 +662,8 @@ LABEL_21:
           v24 = 48;
           goto LABEL_58;
         case 5u:
-          v53 = a4;
-          v32 = v6;
+          errorCopy2 = error;
+          v32 = dataCopy;
           v33 = CCPBReaderReadDataNoCopy();
           if (!v54)
           {
@@ -757,14 +757,14 @@ LABEL_59:
           {
             v37 = objc_opt_class();
             NSStringFromClass(v37);
-            v53 = a4;
-            v33 = v32 = v6;
+            errorCopy2 = error;
+            v33 = v32 = dataCopy;
             v38 = *&v7[*v11];
             v10 = CCSkipFieldErrorForMessage();
 LABEL_55:
 
-            v6 = v32;
-            a4 = v53;
+            dataCopy = v32;
+            error = errorCopy2;
           }
 
           continue;
@@ -835,10 +835,10 @@ LABEL_69:
     v47 = NSStringFromClass(v46);
     v48 = *&v7[*v45];
     CCInvalidBufferErrorForMessage();
-    v50 = v49 = v6;
+    v50 = v49 = dataCopy;
     CCSetError();
 
-    v6 = v49;
+    dataCopy = v49;
   }
 
   v51 = 0;
@@ -847,30 +847,30 @@ LABEL_77:
   return v51;
 }
 
-- (CCSignificantLocationAddress)initWithThoroughfare:(id)a3 subLocality:(id)a4 locality:(id)a5 country:(id)a6 subPremises:(id)a7 subThoroughfare:(id)a8 subAministrativeArea:(id)a9 administrativeArea:(id)a10 administrativeAreaCode:(id)a11 postalCode:(id)a12 countryCode:(id)a13 inlandWater:(id)a14 ocean:(id)a15 areasOfInterest:(id)a16 isIsland:(id)a17 iso3166CountryCode:(id)a18 iso3166SubdivisionCode:(id)a19 mergedThoroughfare:(id)a20 error:(id *)a21
+- (CCSignificantLocationAddress)initWithThoroughfare:(id)thoroughfare subLocality:(id)locality locality:(id)a5 country:(id)country subPremises:(id)premises subThoroughfare:(id)subThoroughfare subAministrativeArea:(id)area administrativeArea:(id)self0 administrativeAreaCode:(id)self1 postalCode:(id)self2 countryCode:(id)self3 inlandWater:(id)self4 ocean:(id)self5 areasOfInterest:(id)self6 isIsland:(id)self7 iso3166CountryCode:(id)self8 iso3166SubdivisionCode:(id)self9 mergedThoroughfare:(id)mergedThoroughfare error:(id *)error
 {
   v115 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v27 = a4;
+  thoroughfareCopy = thoroughfare;
+  localityCopy = locality;
   v28 = a5;
-  v29 = a6;
-  v30 = a7;
-  v90 = a8;
-  v31 = a9;
-  v89 = a10;
-  v88 = a11;
-  v87 = a12;
-  v86 = a13;
-  v85 = a14;
-  v84 = a15;
-  v83 = a16;
-  v82 = a17;
-  v81 = a18;
-  v80 = a19;
-  v79 = a20;
+  countryCopy = country;
+  premisesCopy = premises;
+  subThoroughfareCopy = subThoroughfare;
+  areaCopy = area;
+  administrativeAreaCopy = administrativeArea;
+  codeCopy = code;
+  postalCodeCopy = postalCode;
+  countryCodeCopy = countryCode;
+  waterCopy = water;
+  oceanCopy = ocean;
+  interestCopy = interest;
+  islandCopy = island;
+  iso3166CountryCodeCopy = iso3166CountryCode;
+  subdivisionCodeCopy = subdivisionCode;
+  mergedThoroughfareCopy = mergedThoroughfare;
   v32 = objc_opt_new();
-  v77 = v30;
-  if (v26)
+  v77 = premisesCopy;
+  if (thoroughfareCopy)
   {
     objc_opt_class();
     v112 = 0;
@@ -881,7 +881,7 @@ LABEL_77:
 LABEL_75:
       CCSetError();
       v50 = 0;
-      v51 = self;
+      selfCopy3 = self;
       goto LABEL_83;
     }
 
@@ -893,8 +893,8 @@ LABEL_75:
     v34 = 0;
   }
 
-  v76 = v31;
-  if (v27)
+  v76 = areaCopy;
+  if (localityCopy)
   {
     objc_opt_class();
     v111 = v34;
@@ -911,7 +911,7 @@ LABEL_75:
     {
 LABEL_8:
       v34 = v36;
-      if (v29)
+      if (countryCopy)
       {
         goto LABEL_9;
       }
@@ -940,7 +940,7 @@ LABEL_8:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v29)
+  if (countryCopy)
   {
 LABEL_9:
     objc_opt_class();
@@ -954,7 +954,7 @@ LABEL_9:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v30)
+    if (!premisesCopy)
     {
       goto LABEL_11;
     }
@@ -964,7 +964,7 @@ LABEL_9:
 
 LABEL_15:
   v36 = v34;
-  if (!v30)
+  if (!premisesCopy)
   {
 LABEL_11:
     v34 = v36;
@@ -982,12 +982,12 @@ LABEL_16:
     goto LABEL_80;
   }
 
-  v72 = v26;
+  v72 = thoroughfareCopy;
   v106 = 0u;
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v40 = v30;
+  v40 = premisesCopy;
   v41 = [v40 countByEnumeratingWithState:&v104 objects:v114 count:16];
   if (v41)
   {
@@ -1002,7 +1002,7 @@ LABEL_16:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v104 + 1) + 8 * i) data];
+        data = [*(*(&v104 + 1) + 8 * i) data];
         CCPBDataWriterWriteDataField();
       }
 
@@ -1012,9 +1012,9 @@ LABEL_16:
     while (v42);
   }
 
-  v26 = v72;
+  thoroughfareCopy = v72;
 LABEL_25:
-  if (v90)
+  if (subThoroughfareCopy)
   {
     objc_opt_class();
     v103 = v34;
@@ -1027,14 +1027,14 @@ LABEL_25:
     }
 
     v73 = v28;
-    v47 = v29;
+    v47 = countryCopy;
     CCPBDataWriterWriteStringField();
   }
 
   else
   {
     v73 = v28;
-    v47 = v29;
+    v47 = countryCopy;
     v36 = v34;
   }
 
@@ -1053,8 +1053,8 @@ LABEL_25:
   {
     CCPBDataWriterWriteStringField();
 LABEL_33:
-    v29 = v47;
-    if (v89)
+    countryCopy = v47;
+    if (administrativeAreaCopy)
     {
       objc_opt_class();
       v101 = v34;
@@ -1076,7 +1076,7 @@ LABEL_33:
       v28 = v73;
     }
 
-    if (v88)
+    if (codeCopy)
     {
       objc_opt_class();
       v100 = v36;
@@ -1096,7 +1096,7 @@ LABEL_33:
       v34 = v36;
     }
 
-    if (v87)
+    if (postalCodeCopy)
     {
       objc_opt_class();
       v99 = v34;
@@ -1116,7 +1116,7 @@ LABEL_33:
       v36 = v34;
     }
 
-    if (v86)
+    if (countryCodeCopy)
     {
       objc_opt_class();
       v98 = v36;
@@ -1136,7 +1136,7 @@ LABEL_33:
       v34 = v36;
     }
 
-    if (v85)
+    if (waterCopy)
     {
       objc_opt_class();
       v97 = v34;
@@ -1156,7 +1156,7 @@ LABEL_33:
       v36 = v34;
     }
 
-    if (v84)
+    if (oceanCopy)
     {
       objc_opt_class();
       v96 = v36;
@@ -1176,7 +1176,7 @@ LABEL_33:
       v34 = v36;
     }
 
-    if (v83)
+    if (interestCopy)
     {
       objc_opt_class();
       v95 = v34;
@@ -1189,12 +1189,12 @@ LABEL_33:
       }
 
       v34 = v36;
-      v74 = v26;
+      v74 = thoroughfareCopy;
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v58 = v83;
+      v58 = interestCopy;
       v59 = [v58 countByEnumeratingWithState:&v91 objects:v113 count:16];
       if (v59)
       {
@@ -1219,11 +1219,11 @@ LABEL_33:
         while (v60);
       }
 
-      v26 = v74;
+      thoroughfareCopy = v74;
     }
 
-    v31 = v76;
-    if (!v82)
+    areaCopy = v76;
+    if (!islandCopy)
     {
       goto LABEL_71;
     }
@@ -1235,10 +1235,10 @@ LABEL_33:
 
     if (v75)
     {
-      [v82 BOOLValue];
+      [islandCopy BOOLValue];
       CCPBDataWriterWriteBOOLField();
 LABEL_71:
-      if (!v81)
+      if (!iso3166CountryCodeCopy)
       {
         v36 = v34;
         goto LABEL_77;
@@ -1252,7 +1252,7 @@ LABEL_71:
       {
         CCPBDataWriterWriteStringField();
 LABEL_77:
-        if (!v80)
+        if (!subdivisionCodeCopy)
         {
           v34 = v36;
           goto LABEL_85;
@@ -1266,13 +1266,13 @@ LABEL_77:
         {
           CCPBDataWriterWriteStringField();
 LABEL_85:
-          if (!v79)
+          if (!mergedThoroughfareCopy)
           {
 LABEL_88:
-            v71 = [v32 immutableData];
-            v51 = [(CCItemMessage *)self initWithData:v71 error:a21];
+            immutableData = [v32 immutableData];
+            selfCopy3 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-            v50 = v51;
+            v50 = selfCopy3;
             goto LABEL_82;
           }
 
@@ -1291,9 +1291,9 @@ LABEL_88:
           v50 = 0;
           v34 = v70;
 LABEL_81:
-          v51 = self;
+          selfCopy3 = self;
 LABEL_82:
-          v31 = v76;
+          areaCopy = v76;
           goto LABEL_83;
         }
 
@@ -1315,9 +1315,9 @@ LABEL_74:
 
   CCSetError();
   v50 = 0;
-  v51 = self;
-  v31 = v76;
-  v29 = v47;
+  selfCopy3 = self;
+  areaCopy = v76;
+  countryCopy = v47;
   v28 = v73;
 LABEL_83:
 

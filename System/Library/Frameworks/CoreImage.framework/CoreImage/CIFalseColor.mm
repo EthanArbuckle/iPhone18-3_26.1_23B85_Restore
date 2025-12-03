@@ -14,9 +14,9 @@
   }
 
   v3 = +[CIColor clearColor];
-  v4 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-  v5 = [(CIFalseColor *)self _kernel];
-  [(CIImage *)v4 extent];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+  _kernel = [(CIFalseColor *)self _kernel];
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -28,7 +28,7 @@
   }
 
   inputColor1 = self->inputColor1;
-  v19 = v4;
+  v19 = imageByUnpremultiplyingAlpha;
   v20 = inputColor0;
   if (inputColor1)
   {
@@ -42,7 +42,7 @@
 
   v21 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:3];
-  return [v5 applyWithExtent:v17 arguments:{v7, v9, v11, v13, v19, v20}];
+  return [_kernel applyWithExtent:v17 arguments:{v7, v9, v11, v13, v19, v20}];
 }
 
 + (id)customAttributes

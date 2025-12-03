@@ -65,9 +65,9 @@
 
   [v4 setInputTargetHeadroom:inputDisplayHeadroom];
   [v4 setInputPreferredDynamicRange:self->inputPreferredDynamicRange];
-  v6 = [v4 outputImage];
+  outputImage = [v4 outputImage];
 
-  return v6;
+  return outputImage;
 }
 
 @end

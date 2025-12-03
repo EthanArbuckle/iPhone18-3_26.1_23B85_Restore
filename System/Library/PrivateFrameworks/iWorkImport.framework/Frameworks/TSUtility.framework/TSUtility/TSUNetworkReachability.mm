@@ -2,38 +2,38 @@
 + (__SCNetworkReachability)newNetworkReachabilityRefForInternetConnection;
 + (id)internetReachabilityStatusQueue;
 + (id)networkReachabilityForInternetConnection;
-+ (id)networkReachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)networkReachabilityWithHostName:(id)a3;
-+ (id)networkReachabilityWithNetworkReachabilityRef:(__SCNetworkReachability *)a3 hostNameOrNil:(id)a4;
-+ (id)p_stringForNetworkReachabilityFlags:(unsigned int)a3;
-+ (id)p_stringForNetworkReachabilityStatus:(int64_t)a3;
-+ (int64_t)networkStatusForFlags:(unsigned int)a3;
-+ (void)internetReachabilityStatusWithQueue:(id)a3 completion:(id)a4;
-- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)a3;
++ (id)networkReachabilityWithAddress:(const sockaddr_in *)address;
++ (id)networkReachabilityWithHostName:(id)name;
++ (id)networkReachabilityWithNetworkReachabilityRef:(__SCNetworkReachability *)ref hostNameOrNil:(id)nil;
++ (id)p_stringForNetworkReachabilityFlags:(unsigned int)flags;
++ (id)p_stringForNetworkReachabilityStatus:(int64_t)status;
++ (int64_t)networkStatusForFlags:(unsigned int)flags;
++ (void)internetReachabilityStatusWithQueue:(id)queue completion:(id)completion;
+- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)ref;
 - (int64_t)lastKnownStatus;
-- (int64_t)statusFromFlags:(unsigned int)a3;
+- (int64_t)statusFromFlags:(unsigned int)flags;
 - (sockaddr_in)hostAddress;
 - (void)dealloc;
 - (void)disableNotifier;
 - (void)enableNotifier;
-- (void)p_reachabilityFlagsDidChange:(unsigned int)a3;
+- (void)p_reachabilityFlagsDidChange:(unsigned int)change;
 - (void)p_startNotifier;
 - (void)p_stopNotifier;
-- (void)p_updateCachedStatus:(int64_t)a3;
-- (void)reachabilityStatusWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)updateCachedStatus:(int64_t)a3;
+- (void)p_updateCachedStatus:(int64_t)status;
+- (void)reachabilityStatusWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)updateCachedStatus:(int64_t)status;
 @end
 
 @implementation TSUNetworkReachability
 
-- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)a3
+- (TSUNetworkReachability)initWithReachabilityRef:(__SCNetworkReachability *)ref
 {
   v14.receiver = self;
   v14.super_class = TSUNetworkReachability;
   v4 = [(TSUNetworkReachability *)&v14 init];
   if (v4)
   {
-    v5 = [[TSUSCNetworkReachabilityCore alloc] initWithReachabilityRef:a3];
+    v5 = [[TSUSCNetworkReachabilityCore alloc] initWithReachabilityRef:ref];
     core = v4->_core;
     v4->_core = v5;
 
@@ -78,13 +78,13 @@
   v3[2] = *MEMORY[0x277D85DE8];
   v3[1] = 0;
   v3[0] = 528;
-  return [a1 newNetworkReachabilityRefWithAddress:v3];
+  return [self newNetworkReachabilityRefWithAddress:v3];
 }
 
-+ (id)networkReachabilityWithNetworkReachabilityRef:(__SCNetworkReachability *)a3 hostNameOrNil:(id)a4
++ (id)networkReachabilityWithNetworkReachabilityRef:(__SCNetworkReachability *)ref hostNameOrNil:(id)nil
 {
-  v5 = a4;
-  if (!a3)
+  nilCopy = nil;
+  if (!ref)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNetworkReachability networkReachabilityWithNetworkReachabilityRef:hostNameOrNil:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUNetworkReachability.m"];
@@ -93,24 +93,24 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v8 = [[TSUNetworkReachability alloc] initWithReachabilityRef:a3];
+  v8 = [[TSUNetworkReachability alloc] initWithReachabilityRef:ref];
   v9 = v8;
-  if (v5)
+  if (nilCopy)
   {
-    [(TSUNetworkReachability *)v8 setHostName:v5];
+    [(TSUNetworkReachability *)v8 setHostName:nilCopy];
   }
 
   return v9;
 }
 
-+ (id)networkReachabilityWithHostName:(id)a3
++ (id)networkReachabilityWithHostName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 newNetworkReachabilityRefWithHostName:{objc_msgSend(v4, "UTF8String")}];
+  nameCopy = name;
+  v5 = [self newNetworkReachabilityRefWithHostName:{objc_msgSend(nameCopy, "UTF8String")}];
   if (v5)
   {
     v6 = v5;
-    v7 = [a1 networkReachabilityWithNetworkReachabilityRef:v5 hostNameOrNil:v4];
+    v7 = [self networkReachabilityWithNetworkReachabilityRef:v5 hostNameOrNil:nameCopy];
     CFRelease(v6);
   }
 
@@ -122,13 +122,13 @@
   return v7;
 }
 
-+ (id)networkReachabilityWithAddress:(const sockaddr_in *)a3
++ (id)networkReachabilityWithAddress:(const sockaddr_in *)address
 {
-  v4 = [a1 newNetworkReachabilityRefWithAddress:a3];
+  v4 = [self newNetworkReachabilityRefWithAddress:address];
   if (v4)
   {
     v5 = v4;
-    v6 = [a1 networkReachabilityWithNetworkReachabilityRef:v4 hostNameOrNil:0];
+    v6 = [self networkReachabilityWithNetworkReachabilityRef:v4 hostNameOrNil:0];
     CFRelease(v5);
   }
 
@@ -142,11 +142,11 @@
 
 + (id)networkReachabilityForInternetConnection
 {
-  v3 = [a1 newNetworkReachabilityRefForInternetConnection];
-  if (v3)
+  newNetworkReachabilityRefForInternetConnection = [self newNetworkReachabilityRefForInternetConnection];
+  if (newNetworkReachabilityRefForInternetConnection)
   {
-    v4 = v3;
-    v5 = [a1 networkReachabilityWithNetworkReachabilityRef:v3 hostNameOrNil:0];
+    v4 = newNetworkReachabilityRefForInternetConnection;
+    v5 = [self networkReachabilityWithNetworkReachabilityRef:newNetworkReachabilityRefForInternetConnection hostNameOrNil:0];
     CFRelease(v4);
   }
 
@@ -170,29 +170,29 @@
   return v3;
 }
 
-+ (void)internetReachabilityStatusWithQueue:(id)a3 completion:(id)a4
++ (void)internetReachabilityStatusWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [a1 internetReachabilityStatusQueue];
+    internetReachabilityStatusQueue = [self internetReachabilityStatusQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_2770E61BC;
     block[3] = &unk_27A702DA8;
-    v12 = a1;
-    v11 = v7;
-    v10 = v6;
-    dispatch_async(v8, block);
+    selfCopy = self;
+    v11 = completionCopy;
+    v10 = queueCopy;
+    dispatch_async(internetReachabilityStatusQueue, block);
   }
 }
 
-+ (int64_t)networkStatusForFlags:(unsigned int)a3
++ (int64_t)networkStatusForFlags:(unsigned int)flags
 {
   if (TSUCollaborationNetworkHealthCat_init_token == -1)
   {
-    if ((a3 & 2) == 0)
+    if ((flags & 2) == 0)
     {
       return 0;
     }
@@ -201,19 +201,19 @@
   else
   {
     sub_27711506C();
-    if ((a3 & 2) == 0)
+    if ((flags & 2) == 0)
     {
       return 0;
     }
   }
 
-  LODWORD(v5) = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  LODWORD(v5) = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     LODWORD(v5) = 0;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v5 = v5;
   }
@@ -223,7 +223,7 @@
     v5 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     return 2;
   }
@@ -234,15 +234,15 @@
   }
 }
 
-- (int64_t)statusFromFlags:(unsigned int)a3
+- (int64_t)statusFromFlags:(unsigned int)flags
 {
-  v3 = *&a3;
+  v3 = *&flags;
   v4 = objc_opt_class();
 
   return [v4 networkStatusForFlags:v3];
 }
 
-- (void)updateCachedStatus:(int64_t)a3
+- (void)updateCachedStatus:(int64_t)status
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -250,20 +250,20 @@
   v4[2] = sub_2770E65EC;
   v4[3] = &unk_27A7025D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = status;
   dispatch_async(accessQueue, v4);
 }
 
-- (void)p_updateCachedStatus:(int64_t)a3
+- (void)p_updateCachedStatus:(int64_t)status
 {
-  if (self->_cachedStatus != a3)
+  if (self->_cachedStatus != status)
   {
     if (TSUCollaborationNetworkHealthCat_init_token != -1)
     {
       sub_277115080();
     }
 
-    self->_cachedStatus = a3;
+    self->_cachedStatus = status;
   }
 }
 
@@ -308,44 +308,44 @@
   return v5;
 }
 
-- (void)reachabilityStatusWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)reachabilityStatusWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = objc_opt_class();
   accessQueue = self->_accessQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2770E6908;
   v12[3] = &unk_27A703380;
-  v13 = v6;
-  v14 = v7;
+  v13 = queueCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = queueCopy;
+  v11 = handlerCopy;
   [v8 internetReachabilityStatusWithQueue:accessQueue completion:v12];
 }
 
-- (void)p_reachabilityFlagsDidChange:(unsigned int)a3
+- (void)p_reachabilityFlagsDidChange:(unsigned int)change
 {
-  v3 = *&a3;
-  v5 = [objc_opt_class() networkStatusForFlags:*&a3];
+  v3 = *&change;
+  v5 = [objc_opt_class() networkStatusForFlags:*&change];
   [(TSUNetworkReachability *)self updateCachedStatus:v5];
-  v6 = [(TSUNetworkReachability *)self notificationQueue];
+  notificationQueue = [(TSUNetworkReachability *)self notificationQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2770E6B00;
   v9[3] = &unk_27A7025D0;
   v9[4] = self;
   v9[5] = v5;
-  dispatch_async(v6, v9);
+  dispatch_async(notificationQueue, v9);
 
-  v7 = [(TSUNetworkReachability *)self reachabilityUpdatedBlock];
+  reachabilityUpdatedBlock = [(TSUNetworkReachability *)self reachabilityUpdatedBlock];
 
-  if (v7)
+  if (reachabilityUpdatedBlock)
   {
-    v8 = [(TSUNetworkReachability *)self reachabilityUpdatedBlock];
-    v8[2](v8, v5, v3);
+    reachabilityUpdatedBlock2 = [(TSUNetworkReachability *)self reachabilityUpdatedBlock];
+    reachabilityUpdatedBlock2[2](reachabilityUpdatedBlock2, v5, v3);
   }
 }
 
@@ -423,11 +423,11 @@
   dispatch_async(accessQueue, block);
 }
 
-+ (id)p_stringForNetworkReachabilityStatus:(int64_t)a3
++ (id)p_stringForNetworkReachabilityStatus:(int64_t)status
 {
-  if (a3 < 4)
+  if (status < 4)
   {
-    return off_27A7033C8[a3];
+    return off_27A7033C8[status];
   }
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUNetworkReachability p_stringForNetworkReachabilityStatus:]"];
@@ -438,10 +438,10 @@
   return 0;
 }
 
-+ (id)p_stringForNetworkReachabilityFlags:(unsigned int)a3
++ (id)p_stringForNetworkReachabilityFlags:(unsigned int)flags
 {
   v3 = 45;
-  if ((a3 & 0x20000) != 0)
+  if ((flags & 0x20000) != 0)
   {
     v4 = 100;
   }
@@ -452,13 +452,13 @@
   }
 
   v5 = 108;
-  if ((a3 & 0x10000) == 0)
+  if ((flags & 0x10000) == 0)
   {
     v5 = 45;
   }
 
   v6 = 68;
-  if ((a3 & 0x20) == 0)
+  if ((flags & 0x20) == 0)
   {
     v6 = 45;
   }
@@ -466,13 +466,13 @@
   v17 = v5;
   v16 = v6;
   v7 = 105;
-  if ((a3 & 0x10) == 0)
+  if ((flags & 0x10) == 0)
   {
     v7 = 45;
   }
 
   v8 = 67;
-  if ((a3 & 8) == 0)
+  if ((flags & 8) == 0)
   {
     v8 = 45;
   }
@@ -480,25 +480,25 @@
   v14 = v8;
   v15 = v7;
   v9 = 99;
-  if ((a3 & 4) == 0)
+  if ((flags & 4) == 0)
   {
     v9 = 45;
   }
 
   v10 = 116;
-  if ((a3 & 1) == 0)
+  if ((flags & 1) == 0)
   {
     v10 = 45;
   }
 
   v13 = v9;
   v11 = 82;
-  if ((a3 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     v11 = 45;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     v3 = 87;
   }

@@ -8,21 +8,21 @@
 - (uint64_t)isEqualToRPDevice:()TVRemoteCore
 {
   v4 = a3;
-  v5 = [a1 idsDeviceIdentifier];
-  if (v5 && (v6 = v5, [v4 idsDeviceIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  idsDeviceIdentifier = [self idsDeviceIdentifier];
+  if (idsDeviceIdentifier && (v6 = idsDeviceIdentifier, [v4 idsDeviceIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [a1 idsDeviceIdentifier];
-    v9 = [v4 idsDeviceIdentifier];
+    idsDeviceIdentifier2 = [self idsDeviceIdentifier];
+    idsDeviceIdentifier3 = [v4 idsDeviceIdentifier];
   }
 
   else
   {
-    v8 = [a1 identifier];
-    v9 = [v4 identifier];
+    idsDeviceIdentifier2 = [self identifier];
+    idsDeviceIdentifier3 = [v4 identifier];
   }
 
-  v10 = v9;
-  v11 = v8;
+  v10 = idsDeviceIdentifier3;
+  v11 = idsDeviceIdentifier2;
   v12 = v10;
   v13 = v12;
   if (v11 == v12)
@@ -46,42 +46,42 @@
 - (id)relevantIdentifiers
 {
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 mediaRemoteIdentifier];
-  v4 = [a1 mediaRouteIdentifier];
-  v5 = [a1 name];
-  v6 = [a1 idsDeviceIdentifier];
-  v7 = [a1 effectiveIdentifier];
-  v8 = [a1 homeKitIdentifier];
-  v9 = [v8 UUIDString];
+  mediaRemoteIdentifier = [self mediaRemoteIdentifier];
+  mediaRouteIdentifier = [self mediaRouteIdentifier];
+  name = [self name];
+  idsDeviceIdentifier = [self idsDeviceIdentifier];
+  effectiveIdentifier = [self effectiveIdentifier];
+  homeKitIdentifier = [self homeKitIdentifier];
+  uUIDString = [homeKitIdentifier UUIDString];
 
-  if (v3)
+  if (mediaRemoteIdentifier)
   {
-    [v2 addObject:v3];
+    [v2 addObject:mediaRemoteIdentifier];
   }
 
-  if (v4)
+  if (mediaRouteIdentifier)
   {
-    [v2 addObject:v4];
+    [v2 addObject:mediaRouteIdentifier];
   }
 
-  if (v5)
+  if (name)
   {
-    [v2 addObject:v5];
+    [v2 addObject:name];
   }
 
-  if (v6)
+  if (idsDeviceIdentifier)
   {
-    [v2 addObject:v6];
+    [v2 addObject:idsDeviceIdentifier];
   }
 
-  if (v7)
+  if (effectiveIdentifier)
   {
-    [v2 addObject:v7];
+    [v2 addObject:effectiveIdentifier];
   }
 
-  if (v9)
+  if (uUIDString)
   {
-    [v2 addObject:v9];
+    [v2 addObject:uUIDString];
   }
 
   return v2;

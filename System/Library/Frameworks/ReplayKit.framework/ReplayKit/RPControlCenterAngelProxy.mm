@@ -1,18 +1,18 @@
 @interface RPControlCenterAngelProxy
 + (id)sharedInstance;
-- (BOOL)showReactionsTipForApplication:(id)a3 bundleID:(id)a4;
+- (BOOL)showReactionsTipForApplication:(id)application bundleID:(id)d;
 - (RPControlCenterAngelProxy)init;
 - (id)connectionManagerQueue;
 - (id)getBSServiceInterface;
 - (void)cancelRecordingCountdown;
-- (void)countdownInterruptWithStatus:(id)a3;
+- (void)countdownInterruptWithStatus:(id)status;
 - (void)hideAndStopRecordingBanner;
 - (void)requestToCancelReadyToRecord;
-- (void)setCountdownState:(id)a3;
+- (void)setCountdownState:(id)state;
 - (void)setupConnection;
 - (void)showRecordingBanner;
 - (void)startReadyToRecord;
-- (void)startRecordingCountdownWithSessionType:(id)a3;
+- (void)startRecordingCountdownWithSessionType:(id)type;
 - (void)stopCurrentSession;
 - (void)stopReadyToRecord;
 - (void)stopRecordingCalled;
@@ -247,10 +247,10 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startRecordingCountdownWithSessionType:(id)a3
+- (void)startRecordingCountdownWithSessionType:(id)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -268,7 +268,7 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
 
   if (v8)
   {
-    [v8 startRecordingCountdownWithSessionType:v4];
+    [v8 startRecordingCountdownWithSessionType:typeCopy];
   }
 
   else if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -283,10 +283,10 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCountdownState:(id)a3
+- (void)setCountdownState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -304,7 +304,7 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
 
   if (v8)
   {
-    [v8 setCountdownState:v4];
+    [v8 setCountdownState:stateCopy];
   }
 
   else if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -459,11 +459,11 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)showReactionsTipForApplication:(id)a3 bundleID:(id)a4
+- (BOOL)showReactionsTipForApplication:(id)application bundleID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  dCopy = d;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -481,7 +481,7 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
 
   if (v11)
   {
-    [v11 showReactionsTipForApplication:v6 bundleID:v7];
+    [v11 showReactionsTipForApplication:applicationCopy bundleID:dCopy];
   }
 
   else if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -609,10 +609,10 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)countdownInterruptWithStatus:(id)a3
+- (void)countdownInterruptWithStatus:(id)status
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
@@ -625,7 +625,7 @@ void __44__RPControlCenterAngelProxy_setupConnection__block_invoke_97(uint64_t a
   delegate = self->_delegate;
   if (delegate)
   {
-    [(RPControlCenterAngelProxyDelegate *)delegate countdownInterruptWithStatus:v4];
+    [(RPControlCenterAngelProxyDelegate *)delegate countdownInterruptWithStatus:statusCopy];
   }
 
   v6 = *MEMORY[0x277D85DE8];

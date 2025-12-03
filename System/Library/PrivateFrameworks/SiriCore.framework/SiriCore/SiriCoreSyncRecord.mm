@@ -1,6 +1,6 @@
 @interface SiriCoreSyncRecord
-+ (id)syncRecordWithKey:(id)a3 identifier:(id)a4;
-- (SiriCoreSyncRecord)initWithKey:(id)a3 identifier:(id)a4 priority:(int)a5 debugValue:(id)a6 dataValue:(id)a7 addedValue:(id)a8 appMeta:(id)a9;
++ (id)syncRecordWithKey:(id)key identifier:(id)identifier;
+- (SiriCoreSyncRecord)initWithKey:(id)key identifier:(id)identifier priority:(int)priority debugValue:(id)value dataValue:(id)dataValue addedValue:(id)addedValue appMeta:(id)meta;
 - (id)description;
 - (void)setUpdateTimeToNow;
 - (void)updateHash;
@@ -20,8 +20,8 @@
 
 - (void)setUpdateTimeToNow
 {
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   self->_updateTime = v3;
 }
 
@@ -31,9 +31,9 @@
   CC_SHA256(&self->_itemPriority, 4u, md);
   if (self->_identifier)
   {
-    v3 = [(NSString *)self->_key UTF8String];
-    v4 = strlen(v3);
-    CC_SHA256(v3, v4, md);
+    uTF8String = [(NSString *)self->_key UTF8String];
+    v4 = strlen(uTF8String);
+    CC_SHA256(uTF8String, v4, md);
   }
 
   dataValue = self->_dataValue;
@@ -60,27 +60,27 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (SiriCoreSyncRecord)initWithKey:(id)a3 identifier:(id)a4 priority:(int)a5 debugValue:(id)a6 dataValue:(id)a7 addedValue:(id)a8 appMeta:(id)a9
+- (SiriCoreSyncRecord)initWithKey:(id)key identifier:(id)identifier priority:(int)priority debugValue:(id)value dataValue:(id)dataValue addedValue:(id)addedValue appMeta:(id)meta
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  keyCopy = key;
+  identifierCopy = identifier;
+  valueCopy = value;
+  dataValueCopy = dataValue;
+  addedValueCopy = addedValue;
+  metaCopy = meta;
   v25.receiver = self;
   v25.super_class = SiriCoreSyncRecord;
   v18 = [(SiriCoreSyncRecord *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a4);
-    v19->_itemPriority = a5;
-    objc_storeStrong(&v19->_key, a3);
-    objc_storeStrong(&v19->_debugValue, a6);
-    objc_storeStrong(&v19->_dataValue, a7);
-    objc_storeStrong(&v19->_addedValue, a8);
-    objc_storeStrong(&v19->_metaValue, a9);
+    objc_storeStrong(&v18->_identifier, identifier);
+    v19->_itemPriority = priority;
+    objc_storeStrong(&v19->_key, key);
+    objc_storeStrong(&v19->_debugValue, value);
+    objc_storeStrong(&v19->_dataValue, dataValue);
+    objc_storeStrong(&v19->_addedValue, addedValue);
+    objc_storeStrong(&v19->_metaValue, meta);
     [(SiriCoreSyncRecord *)v19 setUpdateTimeToNow];
     [(SiriCoreSyncRecord *)v19 updateHash];
   }
@@ -88,11 +88,11 @@
   return v19;
 }
 
-+ (id)syncRecordWithKey:(id)a3 identifier:(id)a4
++ (id)syncRecordWithKey:(id)key identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSyncRecord alloc] initWithKey:v6 identifier:v5 priority:0 debugValue:0 dataValue:0 addedValue:0 appMeta:0];
+  identifierCopy = identifier;
+  keyCopy = key;
+  v7 = [[SiriCoreSyncRecord alloc] initWithKey:keyCopy identifier:identifierCopy priority:0 debugValue:0 dataValue:0 addedValue:0 appMeta:0];
 
   return v7;
 }

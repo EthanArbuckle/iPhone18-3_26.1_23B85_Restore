@@ -1,24 +1,24 @@
 @interface NTKParmesanShuffleSelectionViewController
 - (void)loadView;
-- (void)passiveContentDataSourceAvailableTypesDidChange:(id)a3;
-- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)a3;
-- (void)passiveContentPeoplePickerDataSourceChanged:(id)a3;
+- (void)passiveContentDataSourceAvailableTypesDidChange:(id)change;
+- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)change;
+- (void)passiveContentPeoplePickerDataSourceChanged:(id)changed;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NTKParmesanShuffleSelectionViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BF3D468();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23BF3E00C(a3);
+  selfCopy = self;
+  sub_23BF3E00C(appear);
 }
 
 - (void)viewDidLayoutSubviews
@@ -30,25 +30,25 @@
   sub_23BF42B40();
 }
 
-- (void)passiveContentDataSourceAvailableTypesDidChange:(id)a3
+- (void)passiveContentDataSourceAvailableTypesDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_23BF4BAD4(&unk_284EBF378, sub_23BF4BF38, &unk_284EBF390);
 }
 
-- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)a3
+- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_23BF4BAD4(&unk_284EBF328, sub_23BF4BDBC, &unk_284EBF340);
 }
 
-- (void)passiveContentPeoplePickerDataSourceChanged:(id)a3
+- (void)passiveContentPeoplePickerDataSourceChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_23BF49414(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_23BF49414(changedCopy);
 }
 
 @end

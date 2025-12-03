@@ -1,19 +1,19 @@
 @interface IPXPCEventSubscriptionBlackhole
-- (IPXPCEventSubscriptionBlackhole)initWithStreamName:(id)a3;
+- (IPXPCEventSubscriptionBlackhole)initWithStreamName:(id)name;
 - (void)resume;
 @end
 
 @implementation IPXPCEventSubscriptionBlackhole
 
-- (IPXPCEventSubscriptionBlackhole)initWithStreamName:(id)a3
+- (IPXPCEventSubscriptionBlackhole)initWithStreamName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = IPXPCEventSubscriptionBlackhole;
   v5 = [(IPXPCEventSubscriptionBlackhole *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     streamName = v5->_streamName;
     v5->_streamName = v6;
 

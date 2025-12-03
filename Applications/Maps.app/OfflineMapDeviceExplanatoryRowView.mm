@@ -1,26 +1,26 @@
 @interface OfflineMapDeviceExplanatoryRowView
-- (OfflineMapDeviceExplanatoryRowView)initWithFrame:(CGRect)a3;
+- (OfflineMapDeviceExplanatoryRowView)initWithFrame:(CGRect)frame;
 - (void)_configureSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation OfflineMapDeviceExplanatoryRowView
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = a3;
-  if (([v9 isEqualToString:self->_text] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_text] & 1) == 0)
   {
-    v4 = [(UILabel *)self->_reasonLabel isHidden];
-    v5 = [v9 copy];
+    isHidden = [(UILabel *)self->_reasonLabel isHidden];
+    v5 = [textCopy copy];
     text = self->_text;
     self->_text = v5;
 
     [(UILabel *)self->_reasonLabel setText:self->_text];
     [(UILabel *)self->_reasonLabel setHidden:[(NSString *)self->_text length]== 0];
-    if (v4 != [(UILabel *)self->_reasonLabel isHidden])
+    if (isHidden != [(UILabel *)self->_reasonLabel isHidden])
     {
-      if (v4)
+      if (isHidden)
       {
         v7 = &OBJC_IVAR___OfflineMapDeviceExplanatoryRowView__noValueConstraints;
       }
@@ -30,7 +30,7 @@
         v7 = &OBJC_IVAR___OfflineMapDeviceExplanatoryRowView__valueConstraints;
       }
 
-      if (v4)
+      if (isHidden)
       {
         v8 = &OBJC_IVAR___OfflineMapDeviceExplanatoryRowView__valueConstraints;
       }
@@ -82,45 +82,45 @@
   [(OfflineMapDeviceExplanatoryRowView *)self addSubview:self->_reasonLabel];
   LODWORD(v13) = 1148846080;
   [(UILabel *)self->_reasonLabel setContentCompressionResistancePriority:1 forAxis:v13];
-  v43 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v42 = [(OfflineMapDeviceExplanatoryRowView *)self leadingAnchor];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(OfflineMapDeviceExplanatoryRowView *)self leadingAnchor];
   v14 = kMUPlacePlatterPadding;
-  v41 = [v43 constraintEqualToAnchor:v42 constant:kMUPlacePlatterPadding];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:kMUPlacePlatterPadding];
   v46[0] = v41;
-  v40 = [(UILabel *)self->_titleLabel topAnchor];
-  v39 = [(OfflineMapDeviceExplanatoryRowView *)self topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:12.0];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(OfflineMapDeviceExplanatoryRowView *)self topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
   v46[1] = v38;
-  v37 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v36 = [(OfflineMapDeviceExplanatoryRowView *)self trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:-v14];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor2 = [(OfflineMapDeviceExplanatoryRowView *)self trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v14];
   v46[2] = v35;
-  v34 = [(UILabel *)self->_reasonLabel leadingAnchor];
-  v33 = [(OfflineMapDeviceExplanatoryRowView *)self leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:v14];
+  leadingAnchor3 = [(UILabel *)self->_reasonLabel leadingAnchor];
+  leadingAnchor4 = [(OfflineMapDeviceExplanatoryRowView *)self leadingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v14];
   v46[3] = v32;
-  v15 = [(UILabel *)self->_reasonLabel topAnchor];
-  v16 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:2.0];
+  topAnchor3 = [(UILabel *)self->_reasonLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v17 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
   v46[4] = v17;
-  v18 = [(UILabel *)self->_reasonLabel trailingAnchor];
-  v19 = [(OfflineMapDeviceExplanatoryRowView *)self trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:-v14];
+  trailingAnchor3 = [(UILabel *)self->_reasonLabel trailingAnchor];
+  trailingAnchor4 = [(OfflineMapDeviceExplanatoryRowView *)self trailingAnchor];
+  v20 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v14];
   v46[5] = v20;
   v21 = [NSArray arrayWithObjects:v46 count:6];
   [NSLayoutConstraint activateConstraints:v21];
 
-  v22 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v23 = [(OfflineMapDeviceExplanatoryRowView *)self bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:-12.0];
+  bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
+  bottomAnchor3 = [(OfflineMapDeviceExplanatoryRowView *)self bottomAnchor];
+  v24 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-12.0];
   v45 = v24;
   v25 = [NSArray arrayWithObjects:&v45 count:1];
   noValueConstraints = self->_noValueConstraints;
   self->_noValueConstraints = v25;
 
-  v27 = [(UILabel *)self->_reasonLabel bottomAnchor];
-  v28 = [(OfflineMapDeviceExplanatoryRowView *)self bottomAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:-12.0];
+  bottomAnchor4 = [(UILabel *)self->_reasonLabel bottomAnchor];
+  bottomAnchor5 = [(OfflineMapDeviceExplanatoryRowView *)self bottomAnchor];
+  v29 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-12.0];
   v44 = v29;
   v30 = [NSArray arrayWithObjects:&v44 count:1];
   valueConstraints = self->_valueConstraints;
@@ -129,7 +129,7 @@
   [NSLayoutConstraint activateConstraints:self->_noValueConstraints];
 }
 
-- (OfflineMapDeviceExplanatoryRowView)initWithFrame:(CGRect)a3
+- (OfflineMapDeviceExplanatoryRowView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = OfflineMapDeviceExplanatoryRowView;

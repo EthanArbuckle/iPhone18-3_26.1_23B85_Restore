@@ -1,40 +1,40 @@
 @interface SFClearProactiveCategoryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFClearProactiveCategoryCommand)initWithCoder:(id)a3;
-- (SFClearProactiveCategoryCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFClearProactiveCategoryCommand)initWithCoder:(id)coder;
+- (SFClearProactiveCategoryCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFClearProactiveCategoryCommand
 
-- (SFClearProactiveCategoryCommand)initWithProtobuf:(id)a3
+- (SFClearProactiveCategoryCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFClearProactiveCategoryCommand;
   v5 = [(SFClearProactiveCategoryCommand *)&v10 init];
   if (v5)
   {
-    if ([v4 category])
+    if ([protobufCopy category])
     {
-      -[SFClearProactiveCategoryCommand setCategory:](v5, "setCategory:", [v4 category]);
+      -[SFClearProactiveCategoryCommand setCategory:](v5, "setCategory:", [protobufCopy category]);
     }
 
-    if ([v4 shouldClearWholeSection])
+    if ([protobufCopy shouldClearWholeSection])
     {
-      -[SFClearProactiveCategoryCommand setShouldClearWholeSection:](v5, "setShouldClearWholeSection:", [v4 shouldClearWholeSection]);
+      -[SFClearProactiveCategoryCommand setShouldClearWholeSection:](v5, "setShouldClearWholeSection:", [protobufCopy shouldClearWholeSection]);
     }
 
-    v6 = [v4 proactiveIdentifier];
+    proactiveIdentifier = [protobufCopy proactiveIdentifier];
 
-    if (v6)
+    if (proactiveIdentifier)
     {
-      v7 = [v4 proactiveIdentifier];
-      [(SFClearProactiveCategoryCommand *)v5 setProactiveIdentifier:v7];
+      proactiveIdentifier2 = [protobufCopy proactiveIdentifier];
+      [(SFClearProactiveCategoryCommand *)v5 setProactiveIdentifier:proactiveIdentifier2];
     }
 
     v8 = v5;
@@ -48,43 +48,43 @@
   v9.receiver = self;
   v9.super_class = SFClearProactiveCategoryCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFClearProactiveCategoryCommand *)self category];
-  v5 = v4 ^ [(SFClearProactiveCategoryCommand *)self shouldClearWholeSection];
-  v6 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
-  v7 = v5 ^ [v6 hash];
+  category = [(SFClearProactiveCategoryCommand *)self category];
+  v5 = category ^ [(SFClearProactiveCategoryCommand *)self shouldClearWholeSection];
+  proactiveIdentifier = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
+  v7 = v5 ^ [proactiveIdentifier hash];
 
   return v3 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(SFClearProactiveCategoryCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v15.receiver = self, v15.super_class = SFClearProactiveCategoryCommand, [(SFCommand *)&v15 isEqual:v4]))
+  else if ([(SFClearProactiveCategoryCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v15.receiver = self, v15.super_class = SFClearProactiveCategoryCommand, [(SFCommand *)&v15 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFClearProactiveCategoryCommand *)self category];
-    if (v6 == [(SFClearProactiveCategoryCommand *)v5 category]&& (v7 = [(SFClearProactiveCategoryCommand *)self shouldClearWholeSection], v7 == [(SFClearProactiveCategoryCommand *)v5 shouldClearWholeSection]))
+    v5 = equalCopy;
+    category = [(SFClearProactiveCategoryCommand *)self category];
+    if (category == [(SFClearProactiveCategoryCommand *)v5 category]&& (v7 = [(SFClearProactiveCategoryCommand *)self shouldClearWholeSection], v7 == [(SFClearProactiveCategoryCommand *)v5 shouldClearWholeSection]))
     {
-      v9 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
-      v10 = [(SFClearProactiveCategoryCommand *)v5 proactiveIdentifier];
-      if ((v9 != 0) == (v10 == 0))
+      proactiveIdentifier = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
+      proactiveIdentifier2 = [(SFClearProactiveCategoryCommand *)v5 proactiveIdentifier];
+      if ((proactiveIdentifier != 0) == (proactiveIdentifier2 == 0))
       {
         v8 = 0;
       }
 
       else
       {
-        v11 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
-        if (v11)
+        proactiveIdentifier3 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
+        if (proactiveIdentifier3)
         {
-          v12 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
-          v13 = [(SFClearProactiveCategoryCommand *)v5 proactiveIdentifier];
-          v8 = [v12 isEqual:v13];
+          proactiveIdentifier4 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
+          proactiveIdentifier5 = [(SFClearProactiveCategoryCommand *)v5 proactiveIdentifier];
+          v8 = [proactiveIdentifier4 isEqual:proactiveIdentifier5];
         }
 
         else
@@ -108,15 +108,15 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFClearProactiveCategoryCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
   [v4 setCategory:{-[SFClearProactiveCategoryCommand category](self, "category")}];
   [v4 setShouldClearWholeSection:{-[SFClearProactiveCategoryCommand shouldClearWholeSection](self, "shouldClearWholeSection")}];
-  v5 = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
-  v6 = [v5 copy];
+  proactiveIdentifier = [(SFClearProactiveCategoryCommand *)self proactiveIdentifier];
+  v6 = [proactiveIdentifier copy];
   [v4 setProactiveIdentifier:v6];
 
   return v4;
@@ -125,31 +125,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBClearProactiveCategoryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBClearProactiveCategoryCommand *)v2 jsonData];
+  jsonData = [(_SFPBClearProactiveCategoryCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBClearProactiveCategoryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBClearProactiveCategoryCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBClearProactiveCategoryCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFClearProactiveCategoryCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFClearProactiveCategoryCommand)initWithCoder:(id)a3
+- (SFClearProactiveCategoryCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFClearProactiveCategoryCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
@@ -158,20 +158,20 @@
   {
     [(SFClearProactiveCategoryCommand *)v5 setCategory:[(SFCommand *)v8 category]];
     [(SFClearProactiveCategoryCommand *)v5 setShouldClearWholeSection:[(SFCommand *)v8 shouldClearWholeSection]];
-    v9 = [(SFCommand *)v8 proactiveIdentifier];
-    [(SFClearProactiveCategoryCommand *)v5 setProactiveIdentifier:v9];
+    proactiveIdentifier = [(SFCommand *)v8 proactiveIdentifier];
+    [(SFClearProactiveCategoryCommand *)v5 setProactiveIdentifier:proactiveIdentifier];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

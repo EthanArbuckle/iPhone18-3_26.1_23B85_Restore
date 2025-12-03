@@ -1,58 +1,58 @@
 @interface _DPPrioPlusPlusAlgorithm
-+ (id)initializeWithSigma:(double)a3 secretSharingSigma:(double)a4 dimensionality:(unint64_t)a5;
-- (_DPPrioPlusPlusAlgorithm)initWithSigma:(double)a3 secretSharingSigma:(double)a4 dimensionality:(unint64_t)a5;
-- (id)randomize:(id)a3;
++ (id)initializeWithSigma:(double)sigma secretSharingSigma:(double)sharingSigma dimensionality:(unint64_t)dimensionality;
+- (_DPPrioPlusPlusAlgorithm)initWithSigma:(double)sigma secretSharingSigma:(double)sharingSigma dimensionality:(unint64_t)dimensionality;
+- (id)randomize:(id)randomize;
 @end
 
 @implementation _DPPrioPlusPlusAlgorithm
 
-+ (id)initializeWithSigma:(double)a3 secretSharingSigma:(double)a4 dimensionality:(unint64_t)a5
++ (id)initializeWithSigma:(double)sigma secretSharingSigma:(double)sharingSigma dimensionality:(unint64_t)dimensionality
 {
-  v5 = [[a1 alloc] initWithSigma:a5 secretSharingSigma:a3 dimensionality:a4];
+  v5 = [[self alloc] initWithSigma:dimensionality secretSharingSigma:sigma dimensionality:sharingSigma];
 
   return v5;
 }
 
-- (_DPPrioPlusPlusAlgorithm)initWithSigma:(double)a3 secretSharingSigma:(double)a4 dimensionality:(unint64_t)a5
+- (_DPPrioPlusPlusAlgorithm)initWithSigma:(double)sigma secretSharingSigma:(double)sharingSigma dimensionality:(unint64_t)dimensionality
 {
-  if ([_DPPrioPlusPlusNoiseGenerator isValidSigma:?]&& [_DPPrioPlusPlusNoiseGenerator isValidSigma:a4]&& [_DPPrioPlusPlusNoiseGenerator isValidDimension:a5])
+  if ([_DPPrioPlusPlusNoiseGenerator isValidSigma:?]&& [_DPPrioPlusPlusNoiseGenerator isValidSigma:sharingSigma]&& [_DPPrioPlusPlusNoiseGenerator isValidDimension:dimensionality])
   {
     v12.receiver = self;
     v12.super_class = _DPPrioPlusPlusAlgorithm;
     v9 = [(_DPPrioPlusPlusAlgorithm *)&v12 init];
     if (v9)
     {
-      v9->_sigma = a3;
-      v9->_secretSharingSigma = a4;
-      v9->_dimension = a5;
+      v9->_sigma = sigma;
+      v9->_secretSharingSigma = sharingSigma;
+      v9->_dimension = dimensionality;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)randomize:(id)a3
+- (id)randomize:(id)randomize
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB28] dataWithData:v4];
+  randomizeCopy = randomize;
+  v5 = [MEMORY[0x277CBEB28] dataWithData:randomizeCopy];
   _DPClipNorm([v5 mutableBytes], objc_msgSend(v5, "length") >> 2, 1.0);
   v6 = objc_autoreleasePoolPush();
-  v7 = [(_DPPrioPlusPlusAlgorithm *)self dimension];
+  dimension = [(_DPPrioPlusPlusAlgorithm *)self dimension];
   [(_DPPrioPlusPlusAlgorithm *)self sigma];
-  v8 = [_DPPrioPlusPlusNoiseGenerator randomize:v5 dimension:v7 stddev:?];
+  v8 = [_DPPrioPlusPlusNoiseGenerator randomize:v5 dimension:dimension stddev:?];
   v9 = [MEMORY[0x277CBEA90] dataWithData:v5];
-  v10 = [(_DPPrioPlusPlusAlgorithm *)self dimension];
+  dimension2 = [(_DPPrioPlusPlusAlgorithm *)self dimension];
   [(_DPPrioPlusPlusAlgorithm *)self secretSharingSigma];
-  v11 = [_DPPrioPlusPlusNoiseGenerator randomize:v5 dimension:v10 stddev:?];
+  v11 = [_DPPrioPlusPlusNoiseGenerator randomize:v5 dimension:dimension2 stddev:?];
   v16[0] = @"NoisedData";
   v16[1] = @"share1";
   v17[0] = v9;

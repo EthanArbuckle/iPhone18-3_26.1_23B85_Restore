@@ -1,81 +1,81 @@
 @interface CBFloatArray
-- (CBFloatArray)initWithCount:(unint64_t)a3;
-- (CBFloatArray)initWithValues:(float *)a3 andCount:(unint64_t)a4;
-- (const)at:(unint64_t)a3;
+- (CBFloatArray)initWithCount:(unint64_t)count;
+- (CBFloatArray)initWithValues:(float *)values andCount:(unint64_t)count;
+- (const)at:(unint64_t)at;
 - (float)dataCopy;
-- (float)get:(unint64_t)a3;
+- (float)get:(unint64_t)get;
 - (float)mutableData;
 - (id)copyNSArray;
 - (id)description;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
 @end
 
 @implementation CBFloatArray
 
-- (CBFloatArray)initWithValues:(float *)a3 andCount:(unint64_t)a4
+- (CBFloatArray)initWithValues:(float *)values andCount:(unint64_t)count
 {
-  v6 = [(CBFloatArray *)self initWithCount:a4, a4];
+  v6 = [(CBFloatArray *)self initWithCount:count, count];
   if (v6)
   {
-    memcpy(v6->_data, a3, v6->_size);
+    memcpy(v6->_data, values, v6->_size);
   }
 
   return v6;
 }
 
-- (CBFloatArray)initWithCount:(unint64_t)a3
+- (CBFloatArray)initWithCount:(unint64_t)count
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  countCopy = count;
   v5.receiver = self;
   v5.super_class = CBFloatArray;
-  v8 = [(CBFloatArray *)&v5 init];
-  if (v8)
+  selfCopy = [(CBFloatArray *)&v5 init];
+  if (selfCopy)
   {
-    v8->_size = 4 * v6;
-    v8->_count = v6;
-    v3 = malloc_type_malloc(v8->_size, 0x100004052888210uLL);
-    v8->_data = v3;
-    if (!v8->_data)
+    selfCopy->_size = 4 * countCopy;
+    selfCopy->_count = countCopy;
+    v3 = malloc_type_malloc(selfCopy->_size, 0x100004052888210uLL);
+    selfCopy->_data = v3;
+    if (!selfCopy->_data)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA18] reason:0 userInfo:?]);
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_data)
   {
-    free(v4->_data);
-    v4->_data = 0;
+    free(selfCopy->_data);
+    selfCopy->_data = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBFloatArray;
   [(CBFloatArray *)&v2 dealloc];
 }
 
-- (float)get:(unint64_t)a3
+- (float)get:(unint64_t)get
 {
-  if (a3 >= self->_count)
+  if (get >= self->_count)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:0 userInfo:?]);
   }
 
-  return self->_data[a3];
+  return self->_data[get];
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   v4 = MEMORY[0x1E696AD98];
-  [(CBFloatArray *)self get:a3];
+  [(CBFloatArray *)self get:subscript];
   return [v4 numberWithFloat:?];
 }
 
@@ -90,14 +90,14 @@
   return __dst;
 }
 
-- (const)at:(unint64_t)a3
+- (const)at:(unint64_t)at
 {
-  if (a3 >= self->_count)
+  if (at >= self->_count)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:0 userInfo:?]);
   }
 
-  return &self->_data[a3];
+  return &self->_data[at];
 }
 
 - (float)mutableData

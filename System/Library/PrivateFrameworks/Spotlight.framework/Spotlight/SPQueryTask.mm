@@ -5,9 +5,9 @@
 - (unint64_t)queryIdForFeedback;
 - (void)disableUpdates;
 - (void)enableUpdates;
-- (void)postSearchAgentUpdatedResultsToDelegate:(id)a3;
+- (void)postSearchAgentUpdatedResultsToDelegate:(id)delegate;
 - (void)pushAndPostUpdates;
-- (void)updateResultsThroughDelegate:(BOOL)a3 state:(unint64_t)a4 unchanged:(BOOL)a5 sections:(id)a6;
+- (void)updateResultsThroughDelegate:(BOOL)delegate state:(unint64_t)state unchanged:(BOOL)unchanged sections:(id)sections;
 @end
 
 @implementation SPQueryTask
@@ -59,11 +59,11 @@
 
 - (unint64_t)queryIdForFeedback
 {
-  v2 = [(SPQueryTask *)self query];
-  v3 = [v2 queryContext];
-  v4 = [v3 queryIdent];
+  query = [(SPQueryTask *)self query];
+  queryContext = [query queryContext];
+  queryIdent = [queryContext queryIdent];
 
-  return v4;
+  return queryIdent;
 }
 
 - (SPQueryTaskDelegate)delegate
@@ -75,16 +75,16 @@
 
 - (void)pushAndPostUpdates
 {
-  v2 = self;
+  selfCopy = self;
   v87 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (!atomic_load(&v2->_updatesDisabled))
+  if (!atomic_load(&selfCopy->_updatesDisabled))
   {
     do
     {
-      v11 = atomic_load(&v2->_deferredUpdate);
+      v11 = atomic_load(&selfCopy->_deferredUpdate);
       v12 = v11;
-      atomic_compare_exchange_strong(&v2->_deferredUpdate, &v12, 0);
+      atomic_compare_exchange_strong(&selfCopy->_deferredUpdate, &v12, 0);
     }
 
     while (v12 != v11);
@@ -105,34 +105,34 @@
       goto LABEL_4;
     }
 
-    v4 = [[SPQueryResponse alloc] initWithTask:v2];
+    v4 = [[SPQueryResponse alloc] initWithTask:selfCopy];
     v13 = v11[1];
     if (v13)
     {
-      sections = v2->_sections;
-      v2->_sections = v13;
+      sections = selfCopy->_sections;
+      selfCopy->_sections = v13;
     }
 
     if (*v11)
     {
-      sessionEntityString = v2->_sessionEntityString;
-      v2->_sessionEntityString = *v11;
+      sessionEntityString = selfCopy->_sessionEntityString;
+      selfCopy->_sessionEntityString = *v11;
     }
 
-    v16 = [(NSArray *)v2->_sections copy];
+    v16 = [(NSArray *)selfCopy->_sections copy];
     [(SPQueryResponse *)v4 setResultSections:v16];
 
-    [(SPQueryResponse *)v4 setSessionEntityString:v2->_sessionEntityString];
-    v17 = [(SPQueryTask *)v2 query];
-    v18 = [v17 queryContext];
-    v19 = [v18 queryUnderstandingOutput];
+    [(SPQueryResponse *)v4 setSessionEntityString:selfCopy->_sessionEntityString];
+    query = [(SPQueryTask *)selfCopy query];
+    queryContext = [query queryContext];
+    queryUnderstandingOutput = [queryContext queryUnderstandingOutput];
 
-    if (!v19)
+    if (!queryUnderstandingOutput)
     {
 LABEL_46:
       v58 = v11[3];
       [(SPQueryResponse *)v4 setState:v58, v66];
-      v2->_state = v58;
+      selfCopy->_state = v58;
       v59 = *(v11 + 16);
       v60 = SPLogForSPLogCategoryDefault();
       v61 = *MEMORY[0x277D4BF50];
@@ -145,10 +145,10 @@ LABEL_46:
           _os_log_impl(&dword_26B71B000, v60, ((v61 & 1) == 0), "Post clear", buf, 2u);
         }
 
-        WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-        [WeakRetained resultsDidBecomeInvalid:v2];
-        v64 = [MEMORY[0x277CC3468] sharedInstance];
-        [v64 logWithBundleID:@"com.apple.SpotlightUI" indexOperation:4 itemCount:1 reason:@"UserInput"];
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+        [WeakRetained resultsDidBecomeInvalid:selfCopy];
+        mEMORY[0x277CC3468] = [MEMORY[0x277CC3468] sharedInstance];
+        [mEMORY[0x277CC3468] logWithBundleID:@"com.apple.SpotlightUI" indexOperation:4 itemCount:1 reason:@"UserInput"];
       }
 
       else
@@ -160,8 +160,8 @@ LABEL_46:
         }
 
         [(SPQueryResponse *)v4 setKind:*(v11 + 32)];
-        [(SPQueryTask *)v2 postSearchAgentUpdatedResultsToDelegate:v4];
-        if (v2->_state - 1 > 1)
+        [(SPQueryTask *)selfCopy postSearchAgentUpdatedResultsToDelegate:v4];
+        if (selfCopy->_state - 1 > 1)
         {
           goto LABEL_55;
         }
@@ -175,10 +175,10 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v20 = [(SPQueryTask *)v2 query];
-    v21 = [v20 queryContext];
-    v22 = [v21 queryUnderstandingOutput];
-    v23 = [v22 objectForKey:@"kQPParseResultEcrGroundedOutput"];
+    query2 = [(SPQueryTask *)selfCopy query];
+    queryContext2 = [query2 queryContext];
+    queryUnderstandingOutput2 = [queryContext2 queryUnderstandingOutput];
+    v23 = [queryUnderstandingOutput2 objectForKey:@"kQPParseResultEcrGroundedOutput"];
     v24 = v23;
     v25 = MEMORY[0x277CBEC10];
     if (v23)
@@ -197,7 +197,7 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v67 = v2;
+    v67 = selfCopy;
     v68 = v11;
     v66 = v26;
     v28 = v26;
@@ -303,15 +303,15 @@ LABEL_45:
     v4 = v69;
     [(SPQueryResponse *)v69 setEcrGroundedPersons:v30];
 
-    v51 = [(SPQueryResponse *)v69 ecrGroundedOutput];
-    v52 = [v51 count];
+    ecrGroundedOutput = [(SPQueryResponse *)v69 ecrGroundedOutput];
+    v52 = [ecrGroundedOutput count];
 
     v53 = SPLogForSPLogCategoryDefault();
     v54 = *MEMORY[0x277D4BF50];
     v55 = os_log_type_enabled(v53, ((*MEMORY[0x277D4BF50] & 1) == 0));
     if (v52)
     {
-      v2 = v67;
+      selfCopy = v67;
       v11 = v68;
       if (v55)
       {
@@ -324,7 +324,7 @@ LABEL_43:
 
     else
     {
-      v2 = v67;
+      selfCopy = v67;
       v11 = v68;
       if (v55)
       {
@@ -342,7 +342,7 @@ LABEL_43:
   v5 = *MEMORY[0x277D4BF50];
   if (os_log_type_enabled(&v4->super, ((*MEMORY[0x277D4BF50] & 1) == 0)))
   {
-    v6 = atomic_load(&v2->_updatesDisabled);
+    v6 = atomic_load(&selfCopy->_updatesDisabled);
     *buf = 67109120;
     v86 = v6;
     v7 = "Skip posting; updates disabled %d.";
@@ -422,33 +422,33 @@ void __29__SPQueryTask_disableUpdates__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postSearchAgentUpdatedResultsToDelegate:(id)a3
+- (void)postSearchAgentUpdatedResultsToDelegate:(id)delegate
 {
-  v11 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v11 sessionEntityString];
-  v6 = [v5 length];
+  sessionEntityString = [delegateCopy sessionEntityString];
+  v6 = [sessionEntityString length];
 
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277D0EDB8]);
-    v8 = [v11 sessionEntityString];
-    v9 = [v7 initWithSessionEntityString:v8];
+    sessionEntityString2 = [delegateCopy sessionEntityString];
+    v9 = [v7 initWithSessionEntityString:sessionEntityString2];
 
-    v10 = [MEMORY[0x277D0EDB0] sharedInstance];
-    [v10 setSharedMapsUserSessionEntity:v9 shareSessionIDWithMaps:1];
+    mEMORY[0x277D0EDB0] = [MEMORY[0x277D0EDB0] sharedInstance];
+    [mEMORY[0x277D0EDB0] setSharedMapsUserSessionEntity:v9 shareSessionIDWithMaps:1];
   }
 
-  [WeakRetained didReceiveResponse:v11];
+  [WeakRetained didReceiveResponse:delegateCopy];
 }
 
-- (void)updateResultsThroughDelegate:(BOOL)a3 state:(unint64_t)a4 unchanged:(BOOL)a5 sections:(id)a6
+- (void)updateResultsThroughDelegate:(BOOL)delegate state:(unint64_t)state unchanged:(BOOL)unchanged sections:(id)sections
 {
-  v6 = a5;
+  unchangedCopy = unchanged;
   queryProcessor = self->_queryProcessor;
-  v11 = a6;
+  sectionsCopy = sections;
   dispatch_assert_queue_V2(queryProcessor);
-  v12 = [(SPQueryTask *)self retainAndMergeSections:v11 forState:a4];
+  v12 = [(SPQueryTask *)self retainAndMergeSections:sectionsCopy forState:state];
 
   if ([(SPQueryTask *)self readyToUpdate])
   {
@@ -457,24 +457,24 @@ void __29__SPQueryTask_disableUpdates__block_invoke(uint64_t a1)
 
     if (v14)
     {
-      v15 = [(SPQueryTask *)self unsafeSessionEntityString];
+      unsafeSessionEntityString = [(SPQueryTask *)self unsafeSessionEntityString];
       v16 = malloc_type_malloc(0x28uLL, 0x10600402A2A81BBuLL);
-      if (v15)
+      if (unsafeSessionEntityString)
       {
-        v17 = v15;
+        v17 = unsafeSessionEntityString;
       }
 
-      *v16 = v15;
+      *v16 = unsafeSessionEntityString;
       if (v12)
       {
         v18 = v12;
       }
 
       v16[1] = v12;
-      *(v16 + 16) = a3;
-      v16[3] = a4;
-      *(v16 + 32) = v6;
-      if (v6)
+      *(v16 + 16) = delegate;
+      v16[3] = state;
+      *(v16 + 32) = unchangedCopy;
+      if (unchangedCopy)
       {
         do
         {

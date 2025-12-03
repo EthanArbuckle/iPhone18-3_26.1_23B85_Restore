@@ -1,12 +1,12 @@
 @interface INDaemonConnectionProvider
-- (void)renewCredentialsWithCompletion:(id)a3;
+- (void)renewCredentialsWithCompletion:(id)completion;
 @end
 
 @implementation INDaemonConnectionProvider
 
-- (void)renewCredentialsWithCompletion:(id)a3
+- (void)renewCredentialsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -30,8 +30,8 @@
   v8[1] = 3221225472;
   v8[2] = __61__INDaemonConnectionProvider_renewCredentialsWithCompletion___block_invoke;
   v8[3] = &unk_278DE02E8;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 renewCredentialsWithCompletion:v8];
 }
 

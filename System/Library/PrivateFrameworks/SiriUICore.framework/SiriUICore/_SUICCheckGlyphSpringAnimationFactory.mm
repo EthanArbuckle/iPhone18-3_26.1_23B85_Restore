@@ -1,17 +1,17 @@
 @interface _SUICCheckGlyphSpringAnimationFactory
 + (double)defaultDuration;
-+ (id)springAnimationWithKeyPath:(id)a3 velocity:(double)a4;
-- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 velocity:(double)a6;
-- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 velocity:(double)a6 timing:(id)a7;
-- (_SUICCheckGlyphSpringAnimationFactory)initWithVelocity:(double)a3;
-- (id)_springAnimationWithKeyPath:(id)a3;
-- (id)springAnimationWithKeyPath:(id)a3;
++ (id)springAnimationWithKeyPath:(id)path velocity:(double)velocity;
+- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping velocity:(double)velocity;
+- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping velocity:(double)velocity timing:(id)timing;
+- (_SUICCheckGlyphSpringAnimationFactory)initWithVelocity:(double)velocity;
+- (id)_springAnimationWithKeyPath:(id)path;
+- (id)springAnimationWithKeyPath:(id)path;
 - (void)_updateDurationIfNecessary;
 - (void)dealloc;
-- (void)setDamping:(double)a3;
-- (void)setMass:(double)a3;
-- (void)setStiffness:(double)a3;
-- (void)setVelocity:(double)a3;
+- (void)setDamping:(double)damping;
+- (void)setMass:(double)mass;
+- (void)setStiffness:(double)stiffness;
+- (void)setVelocity:(double)velocity;
 @end
 
 @implementation _SUICCheckGlyphSpringAnimationFactory
@@ -26,9 +26,9 @@
   return *&_SUICDefaultSpringAnimationDuration;
 }
 
-+ (id)springAnimationWithKeyPath:(id)a3 velocity:(double)a4
++ (id)springAnimationWithKeyPath:(id)path velocity:(double)velocity
 {
-  v5 = a3;
+  pathCopy = path;
   if (_SUICInitializeStaticVariables_onceToken != -1)
   {
     _SUICSpringAnimationSolveForInput_cold_1();
@@ -45,10 +45,10 @@
   block[1] = 3221225472;
   block[2] = __77___SUICCheckGlyphSpringAnimationFactory_springAnimationWithKeyPath_velocity___block_invoke;
   block[3] = &unk_1E81E7AE0;
-  v13 = a4;
-  v11 = v5;
+  velocityCopy = velocity;
+  v11 = pathCopy;
   v12 = &v14;
-  v7 = v5;
+  v7 = pathCopy;
   dispatch_sync(v6, block);
   v8 = v15[5];
 
@@ -57,36 +57,36 @@
   return v8;
 }
 
-- (_SUICCheckGlyphSpringAnimationFactory)initWithVelocity:(double)a3
+- (_SUICCheckGlyphSpringAnimationFactory)initWithVelocity:(double)velocity
 {
-  v5 = [objc_opt_class() defaultTimingFunction];
-  v6 = [(_SUICCheckGlyphSpringAnimationFactory *)self initWithVelocity:v5 timing:a3];
+  defaultTimingFunction = [objc_opt_class() defaultTimingFunction];
+  v6 = [(_SUICCheckGlyphSpringAnimationFactory *)self initWithVelocity:defaultTimingFunction timing:velocity];
 
   return v6;
 }
 
-- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 velocity:(double)a6
+- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping velocity:(double)velocity
 {
-  v11 = [objc_opt_class() defaultTimingFunction];
-  v12 = [(_SUICCheckGlyphSpringAnimationFactory *)self initWithMass:v11 stiffness:a3 damping:a4 velocity:a5 timing:a6];
+  defaultTimingFunction = [objc_opt_class() defaultTimingFunction];
+  v12 = [(_SUICCheckGlyphSpringAnimationFactory *)self initWithMass:defaultTimingFunction stiffness:mass damping:stiffness velocity:damping timing:velocity];
 
   return v12;
 }
 
-- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 velocity:(double)a6 timing:(id)a7
+- (_SUICCheckGlyphSpringAnimationFactory)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping velocity:(double)velocity timing:(id)timing
 {
-  v13 = a7;
+  timingCopy = timing;
   v17.receiver = self;
   v17.super_class = _SUICCheckGlyphSpringAnimationFactory;
   v14 = [(_SUICCheckGlyphSpringAnimationFactory *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_mass = a3;
-    v14->_stiffness = a4;
-    v14->_damping = a5;
-    v14->_velocity = a6;
-    objc_storeStrong(&v14->_timing, a7);
+    v14->_mass = mass;
+    v14->_stiffness = stiffness;
+    v14->_damping = damping;
+    v14->_velocity = velocity;
+    objc_storeStrong(&v14->_timing, timing);
     v15->_needsDurationUpdate = 1;
   }
 
@@ -100,17 +100,17 @@
   [(_SUICCheckGlyphSpringAnimationFactory *)&v2 dealloc];
 }
 
-- (id)springAnimationWithKeyPath:(id)a3
+- (id)springAnimationWithKeyPath:(id)path
 {
-  v3 = [(_SUICCheckGlyphSpringAnimationFactory *)self _springAnimationWithKeyPath:a3];
+  v3 = [(_SUICCheckGlyphSpringAnimationFactory *)self _springAnimationWithKeyPath:path];
   [v3 setAdditive:1];
 
   return v3;
 }
 
-- (id)_springAnimationWithKeyPath:(id)a3
+- (id)_springAnimationWithKeyPath:(id)path
 {
-  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:a3];
+  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v4 setMass:self->_mass];
   [v4 setStiffness:self->_stiffness];
   [v4 setDamping:self->_damping];
@@ -135,38 +135,38 @@
   }
 }
 
-- (void)setMass:(double)a3
+- (void)setMass:(double)mass
 {
-  if (self->_mass != a3)
+  if (self->_mass != mass)
   {
-    self->_mass = a3;
+    self->_mass = mass;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setStiffness:(double)a3
+- (void)setStiffness:(double)stiffness
 {
-  if (self->_stiffness != a3)
+  if (self->_stiffness != stiffness)
   {
-    self->_stiffness = a3;
+    self->_stiffness = stiffness;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setDamping:(double)a3
+- (void)setDamping:(double)damping
 {
-  if (self->_damping != a3)
+  if (self->_damping != damping)
   {
-    self->_damping = a3;
+    self->_damping = damping;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setVelocity:(double)a3
+- (void)setVelocity:(double)velocity
 {
-  if (self->_velocity != a3)
+  if (self->_velocity != velocity)
   {
-    self->_velocity = a3;
+    self->_velocity = velocity;
     self->_needsDurationUpdate = 1;
   }
 }

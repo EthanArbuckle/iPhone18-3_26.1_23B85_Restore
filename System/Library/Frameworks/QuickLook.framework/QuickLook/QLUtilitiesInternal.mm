@@ -2,7 +2,7 @@
 + (BOOL)currentAppIsAppleApp;
 + (BOOL)deviceIsLocked;
 + (NSString)applicationIdentifierEntitlementKey;
-+ (id)appIdentifierFromTeamAppTuple:(id)a3 processName:(id)a4;
++ (id)appIdentifierFromTeamAppTuple:(id)tuple processName:(id)name;
 + (id)getCurrentApplicationBundleIdentifier;
 + (id)getCurrentApplicationBundleIdentifierUsingEntitlement;
 @end
@@ -29,11 +29,11 @@ void __58__QLUtilitiesInternal_applicationIdentifierEntitlementKey__block_invoke
 
 + (id)getCurrentApplicationBundleIdentifier
 {
-  v2 = +[QLUtilitiesInternal getCurrentApplicationBundleIdentifierUsingEntitlement];
-  if (!v2)
+  bundleIdentifier = +[QLUtilitiesInternal getCurrentApplicationBundleIdentifierUsingEntitlement];
+  if (!bundleIdentifier)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v2 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v4 = MEMORY[0x277D43EF8];
     v5 = *MEMORY[0x277D43EF8];
@@ -50,7 +50,7 @@ void __58__QLUtilitiesInternal_applicationIdentifierEntitlementKey__block_invoke
     }
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
 + (id)getCurrentApplicationBundleIdentifierUsingEntitlement
@@ -58,9 +58,9 @@ void __58__QLUtilitiesInternal_applicationIdentifierEntitlementKey__block_invoke
   v2 = _QLGetStringEntitlement(@"application-identifier");
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 processName];
-    v5 = [QLUtilitiesInternal appIdentifierFromTeamAppTuple:v2 processName:v4];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v5 = [QLUtilitiesInternal appIdentifierFromTeamAppTuple:v2 processName:processName];
   }
 
   else
@@ -82,28 +82,28 @@ void __58__QLUtilitiesInternal_applicationIdentifierEntitlementKey__block_invoke
 + (BOOL)deviceIsLocked
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)appIdentifierFromTeamAppTuple:(id)a3 processName:(id)a4
++ (id)appIdentifierFromTeamAppTuple:(id)tuple processName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  tupleCopy = tuple;
+  nameCopy = name;
   if (appIdentifierFromTeamAppTuple_processName__onceToken != -1)
   {
     +[QLUtilitiesInternal appIdentifierFromTeamAppTuple:processName:];
   }
 
-  if ([v5 hasPrefix:@"com.apple."])
+  if ([tupleCopy hasPrefix:@"com.apple."])
   {
-    v7 = v5;
+    v7 = tupleCopy;
   }
 
   else
   {
-    v8 = [appIdentifierFromTeamAppTuple_processName____regex matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+    v8 = [appIdentifierFromTeamAppTuple_processName____regex matchesInString:tupleCopy options:0 range:{0, objc_msgSend(tupleCopy, "length")}];
     v7 = 0;
     if ([v8 count] == 1)
     {
@@ -112,7 +112,7 @@ void __58__QLUtilitiesInternal_applicationIdentifierEntitlementKey__block_invoke
       if ([v9 numberOfRanges] == 2)
       {
         v10 = [v9 rangeAtIndex:1];
-        v7 = [v5 substringWithRange:{v10, v11}];
+        v7 = [tupleCopy substringWithRange:{v10, v11}];
       }
     }
   }

@@ -1,25 +1,25 @@
 @interface AVCRTTSessionDelegate
-- (AVCRTTSessionDelegate)initWithOwner:(shared_ptr<AVCRTTSession>)a3 andStackController:(shared_ptr<AVCRTPStackController>)a4;
+- (AVCRTTSessionDelegate)initWithOwner:(shared_ptr<AVCRTTSession>)owner andStackController:(shared_ptr<AVCRTPStackController>)controller;
 - (id).cxx_construct;
 - (shared_ptr<AVCRTPStackController>)stackController;
-- (void)setOwner:(weak_ptr<AVCRTTSession>)a3;
-- (void)setStackController:(shared_ptr<AVCRTPStackController>)a3;
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)streamDidRTCPTimeOut:(id)a3;
-- (void)streamDidRTPTimeOut:(id)a3;
-- (void)streamDidServerDie:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)setOwner:(weak_ptr<AVCRTTSession>)owner;
+- (void)setStackController:(shared_ptr<AVCRTPStackController>)controller;
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error;
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error;
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error;
+- (void)streamDidRTCPTimeOut:(id)out;
+- (void)streamDidRTPTimeOut:(id)out;
+- (void)streamDidServerDie:(id)die;
+- (void)streamDidStop:(id)stop;
 - (weak_ptr<AVCRTTSession>)owner;
 @end
 
 @implementation AVCRTTSessionDelegate
 
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  errorCopy = error;
   v10 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.rtt.delegate");
   v19[0] = 0;
   v22 = 0;
@@ -42,12 +42,12 @@
   v14[1] = 3221225472;
   v14[2] = __47__AVCRTTSessionDelegate_stream_didStart_error___block_invoke;
   v14[3] = &unk_1E8769840;
-  v12 = v9;
+  v12 = errorCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = streamCopy;
   v16 = v13;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  startCopy = start;
   ims::performBlock(v14);
 }
 
@@ -278,9 +278,9 @@ LABEL_45:
   }
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.rtt.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -435,9 +435,9 @@ LABEL_32:
   }
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
-  v4 = a3;
+  dieCopy = die;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.rtt.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -565,10 +565,10 @@ LABEL_24:
   }
 }
 
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  errorCopy = error;
   v10 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.rtt.delegate");
   v19[0] = 0;
   v22 = 0;
@@ -591,12 +591,12 @@ LABEL_24:
   v14[1] = 3221225472;
   v14[2] = __47__AVCRTTSessionDelegate_stream_didPause_error___block_invoke;
   v14[3] = &unk_1E8769840;
-  v12 = v9;
+  v12 = errorCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = streamCopy;
   v16 = v13;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  pauseCopy = pause;
   ims::performBlock(v14);
 }
 
@@ -786,10 +786,10 @@ LABEL_44:
   }
 }
 
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  errorCopy = error;
   v10 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.rtt.delegate");
   v19[0] = 0;
   v22 = 0;
@@ -812,12 +812,12 @@ LABEL_44:
   v14[1] = 3221225472;
   v14[2] = __48__AVCRTTSessionDelegate_stream_didResume_error___block_invoke;
   v14[3] = &unk_1E8769840;
-  v12 = v9;
+  v12 = errorCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = streamCopy;
   v16 = v13;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  resumeCopy = resume;
   ims::performBlock(v14);
 }
 
@@ -980,9 +980,9 @@ LABEL_38:
   }
 }
 
-- (void)streamDidRTPTimeOut:(id)a3
+- (void)streamDidRTPTimeOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.rtt.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -1127,9 +1127,9 @@ LABEL_29:
   }
 }
 
-- (void)streamDidRTCPTimeOut:(id)a3
+- (void)streamDidRTCPTimeOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.rtt.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -1274,10 +1274,10 @@ LABEL_29:
   }
 }
 
-- (AVCRTTSessionDelegate)initWithOwner:(shared_ptr<AVCRTTSession>)a3 andStackController:(shared_ptr<AVCRTPStackController>)a4
+- (AVCRTTSessionDelegate)initWithOwner:(shared_ptr<AVCRTTSession>)owner andStackController:(shared_ptr<AVCRTPStackController>)controller
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = owner.var1;
+  var0 = owner.var0;
   v7 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.rtt.sessiondelegate");
   v19[0] = 0;
   v22 = 0;
@@ -1351,10 +1351,10 @@ LABEL_29:
   return result;
 }
 
-- (void)setOwner:(weak_ptr<AVCRTTSession>)a3
+- (void)setOwner:(weak_ptr<AVCRTTSession>)owner
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *owner.__ptr_;
+  v3 = *(owner.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 16), 1uLL, memory_order_relaxed);
@@ -1384,10 +1384,10 @@ LABEL_29:
   return result;
 }
 
-- (void)setStackController:(shared_ptr<AVCRTPStackController>)a3
+- (void)setStackController:(shared_ptr<AVCRTPStackController>)controller
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *controller.__ptr_;
+  v3 = *(controller.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

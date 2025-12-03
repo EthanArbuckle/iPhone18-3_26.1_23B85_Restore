@@ -1,10 +1,10 @@
 @interface AVAsset
-+ (AVAsset)assetWithData:(id)a3 contentType:(id)a4 options:(id)a5;
++ (AVAsset)assetWithData:(id)data contentType:(id)type options:(id)options;
 + (AVAsset)assetWithURL:(NSURL *)URL;
-+ (AVAsset)assetWithURL:(id)a3 figPlaybackItem:(OpaqueFigPlaybackItem *)a4 trackIDs:(id)a5 dynamicBehavior:(BOOL)a6;
-+ (BOOL)_assetCreationOptionsPrefersSandboxedOption:(id)a3;
-+ (id)inspectionOnlyAssetWithFigAsset:(OpaqueFigAsset *)a3;
-+ (id)inspectionOnlyAssetWithStreamDataParser:(id)a3 tracks:(id)a4;
++ (AVAsset)assetWithURL:(id)l figPlaybackItem:(OpaqueFigPlaybackItem *)item trackIDs:(id)ds dynamicBehavior:(BOOL)behavior;
++ (BOOL)_assetCreationOptionsPrefersSandboxedOption:(id)option;
++ (id)inspectionOnlyAssetWithFigAsset:(OpaqueFigAsset *)asset;
++ (id)inspectionOnlyAssetWithStreamDataParser:(id)parser tracks:(id)tracks;
 + (id)makeAssetLoggingIdentifier;
 + (void)initialize;
 - (AVAsset)init;
@@ -19,11 +19,11 @@
 - (BOOL)containsFragments;
 - (BOOL)hasProtectedContent;
 - (BOOL)isCompatibleWithAirPlayVideo;
-- (BOOL)isCompatibleWithPhotosTranscodingServiceWithOptions:(id)a3;
+- (BOOL)isCompatibleWithPhotosTranscodingServiceWithOptions:(id)options;
 - (BOOL)isCompatibleWithSavedPhotosAlbum;
 - (BOOL)isComposable;
 - (BOOL)isDefunct;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExportable;
 - (BOOL)isPlayable;
 - (BOOL)isReadable;
@@ -62,43 +62,43 @@
 - (id)_assetAnalysisMessages;
 - (id)_assetInspector;
 - (id)_assetInspectorLoader;
-- (id)_chapterDataTypeForMediaSubType:(int)a3;
-- (id)_chapterMetadataGroupsBestMatchingPreferredLanguages:(id)a3 containingItemsWithCommonKeys:(id)a4;
-- (id)_chapterMetadataGroupsWithFigChapterGroups:(id)a3 titleLanguage:(id)a4 containingItemsWithCommonKeys:(id)a5;
-- (id)_chapterMetadataGroupsWithTitleLanguage:(id)a3 containingItemsWithCommonKeys:(id)a4;
+- (id)_chapterDataTypeForMediaSubType:(int)type;
+- (id)_chapterMetadataGroupsBestMatchingPreferredLanguages:(id)languages containingItemsWithCommonKeys:(id)keys;
+- (id)_chapterMetadataGroupsWithFigChapterGroups:(id)groups titleLanguage:(id)language containingItemsWithCommonKeys:(id)keys;
+- (id)_chapterMetadataGroupsWithTitleLanguage:(id)language containingItemsWithCommonKeys:(id)keys;
 - (id)_chapterTracks;
 - (id)_commonLoggingIdentifier;
 - (id)_comparisonToken;
 - (id)_customMediaSelectionScheme;
-- (id)_firstTrackGroupWithMediaTypes:(id)a3;
+- (id)_firstTrackGroupWithMediaTypes:(id)types;
 - (id)_localizedMediaSelectionOptionDisplayNames;
 - (id)_mediaSelectionGroupDictionaries;
 - (id)_nameForLogging;
-- (id)_tracksWithClass:(Class)a3;
+- (id)_tracksWithClass:(Class)class;
 - (id)alternateTrackGroups;
 - (id)audioAlternatesTrackGroup;
 - (id)availableVideoDynamicRanges;
-- (id)compatibleTrackForCompositionTrack:(id)a3;
-- (id)makePropertyListForProxyWithOptions:(id)a3;
-- (id)mediaSelectionGroupForPropertyList:(id)a3 mediaSelectionOption:(id *)a4;
+- (id)compatibleTrackForCompositionTrack:(id)track;
+- (id)makePropertyListForProxyWithOptions:(id)options;
+- (id)mediaSelectionGroupForPropertyList:(id)list mediaSelectionOption:(id *)option;
 - (id)propertyListForProxy;
 - (id)subtitleAlternatesTrackGroup;
 - (id)trackReferences;
-- (id)tracksWithMediaCharacteristics:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)tracksWithMediaCharacteristics:(id)characteristics;
+- (id)valueForUndefinedKey:(id)key;
 - (int)naturalTimeScale;
 - (int64_t)moovAtomSize;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
-- (unint64_t)_addChapterMetadataItem:(id)a3 timeRange:(id *)a4 toChapters:(id)a5 fromIndex:(unint64_t)a6;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
+- (unint64_t)_addChapterMetadataItem:(id)item timeRange:(id *)range toChapters:(id)chapters fromIndex:(unint64_t)index;
 - (unint64_t)hash;
 - (void)_loadChapterInfo;
-- (void)_loadValuesSynchronouslyForKeys:(id)a3 trackKeys:(id)a4;
+- (void)_loadValuesSynchronouslyForKeys:(id)keys trackKeys:(id)trackKeys;
 - (void)_serverHasDied;
-- (void)_setFragmentMindingInterval:(double)a3;
-- (void)_setIsAssociatedWithFragmentMinder:(BOOL)a3;
+- (void)_setFragmentMindingInterval:(double)interval;
+- (void)_setIsAssociatedWithFragmentMinder:(BOOL)minder;
 - (void)cancelLoading;
 - (void)dealloc;
-- (void)findCompatibleTrackForCompositionTrack:(id)a3 completionHandler:(id)a4;
+- (void)findCompatibleTrackForCompositionTrack:(id)track completionHandler:(id)handler;
 - (void)findUnusedTrackIDWithCompletionHandler:(void *)completionHandler;
 - (void)loadChapterMetadataGroupsBestMatchingPreferredLanguages:(NSArray *)preferredLanguages completionHandler:(void *)completionHandler;
 - (void)loadChapterMetadataGroupsWithTitleLocale:(NSLocale *)locale containingItemsWithCommonKeys:(NSArray *)commonKeys completionHandler:(void *)completionHandler;
@@ -107,15 +107,15 @@
 - (void)loadTrackWithTrackID:(CMPersistentTrackID)trackID completionHandler:(void *)completionHandler;
 - (void)loadTracksWithMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic completionHandler:(void *)completionHandler;
 - (void)loadTracksWithMediaType:(AVMediaType)mediaType completionHandler:(void *)completionHandler;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 keysForCollectionKeys:(id)a4 completionHandler:(id)a5;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys keysForCollectionKeys:(id)collectionKeys completionHandler:(id)handler;
 @end
 
 @implementation AVAsset
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     FigKTraceInit();
@@ -148,9 +148,9 @@
 
 - (OpaqueFigAsset)_figAsset
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 _figAsset];
+  return [_assetInspectorLoader _figAsset];
 }
 
 + (id)makeAssetLoggingIdentifier
@@ -209,21 +209,21 @@
 
 - (BOOL)_isStreaming
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 _isStreaming];
+  return [_assetInspectorLoader _isStreaming];
 }
 
 - (BOOL)_prefersNominalDurations
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 _prefersNominalDurations];
+  return [_assetInspectorLoader _prefersNominalDurations];
 }
 
 + (AVAsset)assetWithURL:(NSURL *)URL
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     return [AVURLAsset URLAssetWithURL:URL options:0];
@@ -237,9 +237,9 @@
   }
 }
 
-+ (AVAsset)assetWithData:(id)a3 contentType:(id)a4 options:(id)a5
++ (AVAsset)assetWithData:(id)data contentType:(id)type options:(id)options
 {
-  if (!a4)
+  if (!type)
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = *MEMORY[0x1E695D940];
@@ -247,22 +247,22 @@
     goto LABEL_10;
   }
 
-  if (![a3 length])
+  if (![data length])
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = *MEMORY[0x1E695D940];
     v17 = "[data length] > 0";
 LABEL_10:
-    v18 = [v15 exceptionWithName:v16 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", a4, a5, v5, v6, v7, v17), 0}];
+    v18 = [v15 exceptionWithName:v16 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", type, options, v5, v6, v7, v17), 0}];
     objc_exception_throw(v18);
   }
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  v13 = [[a1 alloc] initWithData:a3 contentType:a4 options:a5];
+  v13 = [[self alloc] initWithData:data contentType:type options:options];
 
   return v13;
 }
@@ -310,7 +310,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -318,60 +318,60 @@ LABEL_10:
     return 0;
   }
 
-  v5 = [(AVAsset *)self _assetInspectorLoader];
-  v6 = [a3 _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader2 = [equal _assetInspectorLoader];
 
-  return [v5 isEqual:v6];
+  return [_assetInspectorLoader isEqual:_assetInspectorLoader2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 hash];
+  return [_assetInspectorLoader hash];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"streaming"])
+  if ([key isEqualToString:@"streaming"])
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(AVAsset *)self _isStreaming];
+    _isStreaming = [(AVAsset *)self _isStreaming];
 
-    return [v5 numberWithBool:v6];
+    return [v5 numberWithBool:_isStreaming];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AVAsset;
-    return [(AVAsset *)&v8 valueForUndefinedKey:a3];
+    return [(AVAsset *)&v8 valueForUndefinedKey:key];
   }
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
-  v6 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v6 statusOfValueForKey:a3 error:a4];
+  return [_assetInspectorLoader statusOfValueForKey:key error:error];
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  [v6 loadValuesAsynchronouslyForKeys:a3 completionHandler:a4];
+  [_assetInspectorLoader loadValuesAsynchronouslyForKeys:keys completionHandler:handler];
 }
 
-- (void)_loadValuesSynchronouslyForKeys:(id)a3 trackKeys:(id)a4
+- (void)_loadValuesSynchronouslyForKeys:(id)keys trackKeys:(id)trackKeys
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
-  if (a4)
+  if (trackKeys)
   {
     v10 = @"tracks";
-    v11[0] = a4;
+    v11[0] = trackKeys;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -385,23 +385,23 @@ LABEL_10:
   v9[2] = __53__AVAsset__loadValuesSynchronouslyForKeys_trackKeys___block_invoke;
   v9[3] = &unk_1E7460C00;
   v9[4] = v7;
-  [(AVAsset *)self loadValuesAsynchronouslyForKeys:a3 keysForCollectionKeys:v8 completionHandler:v9];
+  [(AVAsset *)self loadValuesAsynchronouslyForKeys:keys keysForCollectionKeys:v8 completionHandler:v9];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v7);
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 keysForCollectionKeys:(id)a4 completionHandler:(id)a5
+- (void)loadValuesAsynchronouslyForKeys:(id)keys keysForCollectionKeys:(id)collectionKeys completionHandler:(id)handler
 {
-  v8 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  [v8 loadValuesAsynchronouslyForKeys:a3 keysForCollectionKeys:a4 completionHandler:a5];
+  [_assetInspectorLoader loadValuesAsynchronouslyForKeys:keys keysForCollectionKeys:collectionKeys completionHandler:handler];
 }
 
 - (void)cancelLoading
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  [v2 cancelLoading];
+  [_assetInspectorLoader cancelLoading];
 }
 
 - (OpaqueFigFormatReader)_copyFormatReader
@@ -413,9 +413,9 @@ LABEL_10:
 
 - (OpaqueFigPlaybackItem)_playbackItem
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 _playbackItem];
+  return [_assetInspectorLoader _playbackItem];
 }
 
 - (Class)_classForTrackInspectors
@@ -432,54 +432,54 @@ LABEL_10:
     return 0.0;
   }
 
-  v3 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  [v3 _fragmentMindingInterval];
+  [_assetInspectorLoader _fragmentMindingInterval];
   return result;
 }
 
-- (void)_setFragmentMindingInterval:(double)a3
+- (void)_setFragmentMindingInterval:(double)interval
 {
   if ([(AVAsset *)self _mindsFragments])
   {
-    v5 = [(AVAsset *)self _assetInspectorLoader];
+    _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-    [v5 _setFragmentMindingInterval:a3];
+    [_assetInspectorLoader _setFragmentMindingInterval:interval];
   }
 }
 
-- (void)_setIsAssociatedWithFragmentMinder:(BOOL)a3
+- (void)_setIsAssociatedWithFragmentMinder:(BOOL)minder
 {
-  v3 = a3;
+  minderCopy = minder;
   if ([(AVAsset *)self _mindsFragments])
   {
-    v5 = [(AVAsset *)self _assetInspectorLoader];
+    _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-    [v5 _setIsAssociatedWithFragmentMinder:v3];
+    [_assetInspectorLoader _setIsAssociatedWithFragmentMinder:minderCopy];
   }
 }
 
 - (float)preferredRate
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  [v2 preferredRate];
+  [_assetInspector preferredRate];
   return result;
 }
 
 - (float)preferredVolume
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  [v2 preferredVolume];
+  [_assetInspector preferredVolume];
   return result;
 }
 
 - (float)preferredSoundCheckVolumeNormalization
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  [v2 preferredSoundCheckVolumeNormalization];
+  [_assetInspector preferredSoundCheckVolumeNormalization];
   return result;
 }
 
@@ -504,9 +504,9 @@ LABEL_10:
 
 - (CGSize)maximumVideoResolution
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  [v2 maximumVideoResolution];
+  [_assetInspector maximumVideoResolution];
   result.height = v4;
   result.width = v3;
   return result;
@@ -525,9 +525,9 @@ LABEL_10:
 
 - (AVDisplayCriteria)preferredDisplayCriteria
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 preferredDisplayCriteria];
+  return [_assetInspector preferredDisplayCriteria];
 }
 
 - (CMTime)minimumTimeOffsetFromLive
@@ -571,28 +571,28 @@ LABEL_10:
 
 - (int)naturalTimeScale
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 naturalTimeScale];
+  return [_assetInspector naturalTimeScale];
 }
 
 - (BOOL)providesPreciseDurationAndTiming
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 providesPreciseDurationAndTiming];
+  return [_assetInspector providesPreciseDurationAndTiming];
 }
 
 - (NSArray)trackGroups
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAsset *)self alternateTrackGroups];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  alternateTrackGroups = [(AVAsset *)self alternateTrackGroups];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(alternateTrackGroups, "count")}];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [alternateTrackGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -604,14 +604,14 @@ LABEL_10:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(alternateTrackGroups);
         }
 
         [(NSArray *)v4 addObject:[[AVAssetTrackGroup alloc] initWithAsset:self trackIDs:*(*(&v10 + 1) + 8 * v8++)]];
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [alternateTrackGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -620,15 +620,15 @@ LABEL_10:
   return v4;
 }
 
-- (id)_firstTrackGroupWithMediaTypes:(id)a3
+- (id)_firstTrackGroupWithMediaTypes:(id)types
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(AVAsset *)self trackGroups];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  trackGroups = [(AVAsset *)self trackGroups];
+  v6 = [(NSArray *)trackGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v6)
   {
     return 0;
@@ -642,14 +642,14 @@ LABEL_3:
   {
     if (*v14 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(trackGroups);
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
-    v11 = [v10 trackIDs];
-    if ([v11 count])
+    trackIDs = [v10 trackIDs];
+    if ([trackIDs count])
     {
-      if ([a3 containsObject:{-[AVAssetTrack mediaType](-[AVAsset trackWithTrackID:](self, "trackWithTrackID:", objc_msgSend(objc_msgSend(v11, "objectAtIndex:", 0), "intValue")), "mediaType")}])
+      if ([types containsObject:{-[AVAssetTrack mediaType](-[AVAsset trackWithTrackID:](self, "trackWithTrackID:", objc_msgSend(objc_msgSend(trackIDs, "objectAtIndex:", 0), "intValue")), "mediaType")}])
       {
         return v10;
       }
@@ -657,7 +657,7 @@ LABEL_3:
 
     if (v7 == ++v9)
     {
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [(NSArray *)trackGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -686,31 +686,31 @@ LABEL_3:
 
 - (id)alternateTrackGroups
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 alternateTrackGroups];
+  return [_assetInspector alternateTrackGroups];
 }
 
 - (id)_mediaSelectionGroupDictionaries
 {
   [-[AVAsset _assetInspectorLoader](self "_assetInspectorLoader")];
-  v3 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v3 _mediaSelectionGroupDictionaries];
+  return [_assetInspector _mediaSelectionGroupDictionaries];
 }
 
 - (id)_localizedMediaSelectionOptionDisplayNames
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 _localizedMediaSelectionOptionDisplayNames];
+  return [_assetInspector _localizedMediaSelectionOptionDisplayNames];
 }
 
 - (id)_customMediaSelectionScheme
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 _customMediaSelectionScheme];
+  return [_assetInspector _customMediaSelectionScheme];
 }
 
 - (NSArray)availableMediaCharacteristicsWithMediaSelectionOptions
@@ -850,12 +850,12 @@ LABEL_8:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(AVAsset *)self _mediaSelectionGroupDictionaries];
-  result = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  _mediaSelectionGroupDictionaries = [(AVAsset *)self _mediaSelectionGroupDictionaries];
+  result = [_mediaSelectionGroupDictionaries countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (result)
   {
     v10 = result;
-    v18 = self;
+    selfCopy = self;
     v11 = *v21;
     v12 = *MEMORY[0x1E6973750];
     v13 = *MEMORY[0x1E6973748];
@@ -865,27 +865,27 @@ LABEL_8:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_mediaSelectionGroupDictionaries);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 objectForKey:{v12, v18}];
+        v16 = [v15 objectForKey:{v12, selfCopy}];
         if (v16)
         {
           v17 = v16;
           if ([v16 isEqualToString:v5] & 1) != 0 || (objc_msgSend(v17, "isEqualToString:", v19))
           {
-            return [AVMediaSelectionGroup mediaSelectionGroupWithAsset:v18 dictionary:v15];
+            return [AVMediaSelectionGroup mediaSelectionGroupWithAsset:selfCopy dictionary:v15];
           }
         }
 
         if ([objc_msgSend(v15 objectForKey:{v13), "containsObject:", v7}])
         {
-          return [AVMediaSelectionGroup mediaSelectionGroupWithAsset:v18 dictionary:v15];
+          return [AVMediaSelectionGroup mediaSelectionGroupWithAsset:selfCopy dictionary:v15];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [_mediaSelectionGroupDictionaries countByEnumeratingWithState:&v20 objects:v24 count:16];
       result = 0;
       if (v10)
       {
@@ -923,7 +923,7 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
   return v3();
 }
 
-- (id)mediaSelectionGroupForPropertyList:(id)a3 mediaSelectionOption:(id *)a4
+- (id)mediaSelectionGroupForPropertyList:(id)list mediaSelectionOption:(id *)option
 {
   v31 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -944,8 +944,8 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
   }
 
   v8 = v7;
-  v22 = a4;
-  v23 = self;
+  optionCopy = option;
+  selfCopy = self;
   v25 = *v27;
   v9 = *MEMORY[0x1E6973750];
   v10 = *MEMORY[0x1E6973740];
@@ -959,8 +959,8 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
       }
 
       v12 = *(*(&v26 + 1) + 8 * i);
-      v13 = [v12 objectForKey:{v9, v22}];
-      v14 = [a3 objectForKey:v9];
+      v13 = [v12 objectForKey:{v9, optionCopy}];
+      v14 = [list objectForKey:v9];
       if (v14)
       {
         objc_opt_class();
@@ -971,7 +971,7 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
       }
 
       v15 = [v12 objectForKey:v10];
-      v16 = [a3 objectForKey:v10];
+      v16 = [list objectForKey:v10];
       if (v13)
       {
         v17 = v14 == 0;
@@ -991,12 +991,12 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
         }
       }
 
-      v19 = [AVMediaSelectionGroup mediaSelectionGroupWithAsset:v23 dictionary:v12];
+      v19 = [AVMediaSelectionGroup mediaSelectionGroupWithAsset:selfCopy dictionary:v12];
       if (v19)
       {
-        if ([AVMediaSelectionOption _plistHasOptionIdentifier:a3])
+        if ([AVMediaSelectionOption _plistHasOptionIdentifier:list])
         {
-          v21 = [(AVMediaSelectionGroup *)v19 mediaSelectionOptionWithPropertyListMatchToMediaSelectionArray:a3];
+          v21 = [(AVMediaSelectionGroup *)v19 mediaSelectionOptionWithPropertyListMatchToMediaSelectionArray:list];
           if (!v21)
           {
             v19 = 0;
@@ -1008,9 +1008,9 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
           v21 = 0;
         }
 
-        if (v22)
+        if (optionCopy)
         {
-          *v22 = v21;
+          *optionCopy = v21;
         }
       }
 
@@ -1040,13 +1040,13 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
 - (NSArray)allMediaSelections
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVAsset *)self preferredMediaSelection];
+  array = [MEMORY[0x1E695DF70] array];
+  preferredMediaSelection = [(AVAsset *)self preferredMediaSelection];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = self;
+  selfCopy = self;
   obj = [(AVAsset *)self availableMediaCharacteristicsWithMediaSelectionOptions];
   v18 = [(NSArray *)obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v18)
@@ -1062,13 +1062,13 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
           objc_enumerationMutation(obj);
         }
 
-        v6 = [(AVAsset *)v17 mediaSelectionGroupForMediaCharacteristic:*(*(&v23 + 1) + 8 * v5)];
+        v6 = [(AVAsset *)selfCopy mediaSelectionGroupForMediaCharacteristic:*(*(&v23 + 1) + 8 * v5)];
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v7 = [(AVMediaSelectionGroup *)v6 options];
-        v8 = [(NSArray *)v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        options = [(AVMediaSelectionGroup *)v6 options];
+        v8 = [(NSArray *)options countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1080,19 +1080,19 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(options);
               }
 
               v12 = *(*(&v19 + 1) + 8 * v11);
-              v13 = [(AVMediaSelection *)v4 mutableCopy];
+              v13 = [(AVMediaSelection *)preferredMediaSelection mutableCopy];
               [v13 selectMediaOption:v12 inMediaSelectionGroup:v6];
-              [v3 addObject:v13];
+              [array addObject:v13];
 
               ++v11;
             }
 
             while (v9 != v11);
-            v9 = [(NSArray *)v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v9 = [(NSArray *)options countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v9);
@@ -1108,35 +1108,35 @@ uint64_t __75__AVAsset_loadMediaSelectionGroupForMediaCharacteristic_completionH
     while (v18);
   }
 
-  return [v3 copy];
+  return [array copy];
 }
 
 - (id)trackReferences
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 trackReferences];
+  return [_assetInspector trackReferences];
 }
 
 - (AVMetadataItem)creationDate
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 creationDate];
+  return [_assetInspector creationDate];
 }
 
 - (NSString)lyrics
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 lyrics];
+  return [_assetInspectorLoader lyrics];
 }
 
 - (NSArray)commonMetadata
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 commonMetadata];
+  return [_assetInspector commonMetadata];
 }
 
 - (NSArray)availableMetadataFormats
@@ -1191,13 +1191,13 @@ uint64_t __51__AVAsset_loadMetadataForFormat_completionHandler___block_invoke(ui
 - (NSArray)metadata
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAsset *)self availableMetadataFormats];
-  v4 = [MEMORY[0x1E695DF70] array];
+  availableMetadataFormats = [(AVAsset *)self availableMetadataFormats];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [(NSArray *)availableMetadataFormats countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1209,32 +1209,32 @@ uint64_t __51__AVAsset_loadMetadataForFormat_completionHandler___block_invoke(ui
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableMetadataFormats);
         }
 
-        [(NSArray *)v4 addObjectsFromArray:[(AVAsset *)self metadataForFormat:*(*(&v10 + 1) + 8 * v8++)]];
+        [(NSArray *)array addObjectsFromArray:[(AVAsset *)self metadataForFormat:*(*(&v10 + 1) + 8 * v8++)]];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)availableMetadataFormats countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 - (id)_ID3Metadata
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 metadataForFormat:@"AVMetadataFormatTypedID3Metadata"];
+  return [_assetInspector metadataForFormat:@"AVMetadataFormatTypedID3Metadata"];
 }
 
-- (id)_tracksWithClass:(Class)a3
+- (id)_tracksWithClass:(Class)class
 {
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [-[AVAsset _assetInspector](self "_assetInspector")];
   v7 = v6;
   if (v6)
@@ -1258,19 +1258,19 @@ uint64_t __51__AVAsset_loadMetadataForFormat_completionHandler___block_invoke(ui
         v11 = [v7 objectAtIndex:v10];
         valuePtr = 0;
         CFNumberGetValue(v11, kCFNumberSInt32Type, &valuePtr);
-        v12 = [a3 alloc];
+        v12 = [class alloc];
         v13 = [v12 _initWithAsset:self trackID:valuePtr];
       }
 
       else
       {
-        v13 = [[a3 alloc] _initWithAsset:self trackIndex:v10];
+        v13 = [[class alloc] _initWithAsset:self trackIndex:v10];
       }
 
       v14 = v13;
       if (v14)
       {
-        [v5 addObject:v14];
+        [array addObject:v14];
       }
 
       ++v10;
@@ -1279,7 +1279,7 @@ uint64_t __51__AVAsset_loadMetadataForFormat_completionHandler___block_invoke(ui
     while (v9 != v10);
   }
 
-  return v5;
+  return array;
 }
 
 - (NSArray)tracks
@@ -1298,8 +1298,8 @@ uint64_t __51__AVAsset_loadMetadataForFormat_completionHandler___block_invoke(ui
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AVAsset *)self tracks];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tracks = [(AVAsset *)self tracks];
+  v5 = [(NSArray *)tracks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -1313,7 +1313,7 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(tracks);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
@@ -1324,7 +1324,7 @@ LABEL_3:
 
     if (v6 == ++v8)
     {
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)tracks countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -1362,9 +1362,9 @@ uint64_t __50__AVAsset_loadTrackWithTrackID_completionHandler___block_invoke(uin
 - (NSArray)tracksWithMediaType:(AVMediaType)mediaType
 {
   v3 = [[AVAssetTrackEnumerator alloc] initWithAsset:self mediaType:mediaType];
-  v4 = [(AVAssetTrackEnumerator *)v3 allObjects];
+  allObjects = [(AVAssetTrackEnumerator *)v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (void)loadTracksWithMediaType:(AVMediaType)mediaType completionHandler:(void *)completionHandler
@@ -1422,22 +1422,22 @@ uint64_t __63__AVAsset_loadTracksWithMediaCharacteristic_completionHandler___blo
   return v3();
 }
 
-- (id)tracksWithMediaCharacteristics:(id)a3
+- (id)tracksWithMediaCharacteristics:(id)characteristics
 {
-  v3 = [[AVAssetTrackEnumerator alloc] initWithAsset:self mediaCharacteristics:a3];
-  v4 = [(AVAssetTrackEnumerator *)v3 allObjects];
+  v3 = [[AVAssetTrackEnumerator alloc] initWithAsset:self mediaCharacteristics:characteristics];
+  allObjects = [(AVAssetTrackEnumerator *)v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (id)compatibleTrackForCompositionTrack:(id)a3
+- (id)compatibleTrackForCompositionTrack:(id)track
 {
-  if (!a3)
+  if (!track)
   {
     return 0;
   }
 
-  v3 = -[AVAsset tracksWithMediaType:](self, "tracksWithMediaType:", [a3 mediaType]);
+  v3 = -[AVAsset tracksWithMediaType:](self, "tracksWithMediaType:", [track mediaType]);
   if (![(NSArray *)v3 count])
   {
     return 0;
@@ -1446,15 +1446,15 @@ uint64_t __63__AVAsset_loadTracksWithMediaCharacteristic_completionHandler___blo
   return [(NSArray *)v3 objectAtIndex:0];
 }
 
-- (void)findCompatibleTrackForCompositionTrack:(id)a3 completionHandler:(id)a4
+- (void)findCompatibleTrackForCompositionTrack:(id)track completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__AVAsset_findCompatibleTrackForCompositionTrack_completionHandler___block_invoke;
   v4[3] = &unk_1E7462078;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = track;
+  v4[6] = handler;
   AVLoadValueAsynchronously(self, @"tracks", v4);
 }
 
@@ -1470,88 +1470,88 @@ uint64_t __68__AVAsset_findCompatibleTrackForCompositionTrack_completionHandler_
   return v3();
 }
 
-+ (BOOL)_assetCreationOptionsPrefersSandboxedOption:(id)a3
++ (BOOL)_assetCreationOptionsPrefersSandboxedOption:(id)option
 {
-  v3 = [a3 objectForKey:@"AVAssetPrefersSandboxedParsingOptionKey"];
+  v3 = [option objectForKey:@"AVAssetPrefersSandboxedParsingOptionKey"];
 
   return [v3 BOOLValue];
 }
 
 - (void)_serverHasDied
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  [v2 _serverHasDied];
+  [_assetInspectorLoader _serverHasDied];
 }
 
 - (BOOL)hasProtectedContent
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 hasProtectedContent];
+  return [_assetInspectorLoader hasProtectedContent];
 }
 
 - (BOOL)isPlayable
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 isPlayable];
+  return [_assetInspectorLoader isPlayable];
 }
 
 - (BOOL)isExportable
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 isExportable];
+  return [_assetInspectorLoader isExportable];
 }
 
 - (BOOL)isReadable
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 isReadable];
+  return [_assetInspectorLoader isReadable];
 }
 
 - (BOOL)isComposable
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 isComposable];
+  return [_assetInspectorLoader isComposable];
 }
 
-- (BOOL)isCompatibleWithPhotosTranscodingServiceWithOptions:(id)a3
+- (BOOL)isCompatibleWithPhotosTranscodingServiceWithOptions:(id)options
 {
-  v4 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v4 isCompatibleWithPhotosTranscodingServiceWithOptions:a3];
+  return [_assetInspector isCompatibleWithPhotosTranscodingServiceWithOptions:options];
 }
 
 - (BOOL)isCompatibleWithSavedPhotosAlbum
 {
-  v2 = [(AVAsset *)self _assetInspectorLoader];
+  _assetInspectorLoader = [(AVAsset *)self _assetInspectorLoader];
 
-  return [v2 isCompatibleWithSavedPhotosAlbum];
+  return [_assetInspectorLoader isCompatibleWithSavedPhotosAlbum];
 }
 
 - (BOOL)isCompatibleWithAirPlayVideo
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 isCompatibleWithAirPlayVideo];
+  return [_assetInspector isCompatibleWithAirPlayVideo];
 }
 
 - (BOOL)canContainFragments
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 canContainFragments];
+  return [_assetInspector canContainFragments];
 }
 
 - (BOOL)containsFragments
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 containsFragments];
+  return [_assetInspector containsFragments];
 }
 
 - (CMTime)overallDurationHint
@@ -1575,23 +1575,23 @@ uint64_t __68__AVAsset_findCompatibleTrackForCompositionTrack_completionHandler_
 
 - (BOOL)supportsAnalysisReporting
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 supportsAnalysisReporting];
+  return [_assetInspector supportsAnalysisReporting];
 }
 
 - (id)_assetAnalysisMessages
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 _assetAnalysisMessages];
+  return [_assetInspector _assetAnalysisMessages];
 }
 
 - (int64_t)moovAtomSize
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 _moovAtomSize];
+  return [_assetInspector _moovAtomSize];
 }
 
 - (void)_loadChapterInfo
@@ -1945,16 +1945,16 @@ LABEL_72:
   return result;
 }
 
-- (unint64_t)_addChapterMetadataItem:(id)a3 timeRange:(id *)a4 toChapters:(id)a5 fromIndex:(unint64_t)a6
+- (unint64_t)_addChapterMetadataItem:(id)item timeRange:(id *)range toChapters:(id)chapters fromIndex:(unint64_t)index
 {
-  v10 = [a5 count];
-  if (v10 > a6)
+  v10 = [chapters count];
+  if (v10 > index)
   {
     v11 = v10;
     v12 = MEMORY[0x1E6960CC0];
-    for (i = a6; v11 != i; ++i)
+    for (i = index; v11 != i; ++i)
     {
-      v14 = [a5 objectAtIndex:i];
+      v14 = [chapters objectAtIndex:i];
       v15 = v14;
       memset(&v24, 0, sizeof(v24));
       if (v14)
@@ -1964,33 +1964,33 @@ LABEL_72:
 
       range = v24;
       memset(&v23, 0, sizeof(v23));
-      v16 = *&a4->var0.var3;
-      *&otherRange.start.value = *&a4->var0.var0;
+      v16 = *&range->var0.var3;
+      *&otherRange.start.value = *&range->var0.var0;
       *&otherRange.start.epoch = v16;
-      *&otherRange.duration.timescale = *&a4->var1.var1;
+      *&otherRange.duration.timescale = *&range->var1.var1;
       CMTimeRangeGetIntersection(&v23, &range, &otherRange);
       if ((v23.start.flags & 1) == 0 || (v23.duration.flags & 1) == 0 || v23.duration.epoch || v23.duration.value < 0 || (range.start = v23.duration, *&otherRange.start.value = *v12, otherRange.start.epoch = *(v12 + 16), CMTimeCompare(&range.start, &otherRange.start)))
       {
         v17 = [objc_msgSend(v15 "items")];
-        [v17 addObject:a3];
+        [v17 addObject:item];
         [v15 setItems:v17];
-        a6 = i;
+        index = i;
       }
 
       else
       {
         memset(&otherRange, 0, 24);
-        v18 = *&a4->var0.var3;
-        *&range.start.value = *&a4->var0.var0;
+        v18 = *&range->var0.var3;
+        *&range.start.value = *&range->var0.var0;
         *&range.start.epoch = v18;
-        *&range.duration.timescale = *&a4->var1.var1;
+        *&range.duration.timescale = *&range->var1.var1;
         CMTimeRangeGetEnd(&otherRange.start, &range);
         *&range.start.value = *&v24.start.value;
         range.start.epoch = v24.start.epoch;
         start = otherRange.start;
         if (CMTimeCompare(&range.start, &start) < 1)
         {
-          a6 = i;
+          index = i;
         }
 
         *&range.start.value = *&v24.start.value;
@@ -1998,28 +1998,28 @@ LABEL_72:
         start = otherRange.start;
         if ((CMTimeCompare(&range.start, &start) & 0x80000000) == 0)
         {
-          return a6;
+          return index;
         }
       }
     }
   }
 
-  return a6;
+  return index;
 }
 
-- (id)_chapterDataTypeForMediaSubType:(int)a3
+- (id)_chapterDataTypeForMediaSubType:(int)type
 {
   result = 0;
-  if (a3 > 1785750886)
+  if (type > 1785750886)
   {
-    if (a3 == 1785750887)
+    if (type == 1785750887)
     {
       v4 = MEMORY[0x1E6960220];
     }
 
     else
     {
-      if (a3 != 1886283552)
+      if (type != 1886283552)
       {
         return result;
       }
@@ -2028,14 +2028,14 @@ LABEL_72:
     }
   }
 
-  else if (a3 == 1465011269)
+  else if (type == 1465011269)
   {
     v4 = MEMORY[0x1E69601F0];
   }
 
   else
   {
-    if (a3 != 1734960672)
+    if (type != 1734960672)
     {
       return result;
     }
@@ -2046,7 +2046,7 @@ LABEL_72:
   return *v4;
 }
 
-- (id)_chapterMetadataGroupsWithTitleLanguage:(id)a3 containingItemsWithCommonKeys:(id)a4
+- (id)_chapterMetadataGroupsWithTitleLanguage:(id)language containingItemsWithCommonKeys:(id)keys
 {
   v52 = *MEMORY[0x1E69E9840];
   [(AVAsset *)self _loadChapterInfo];
@@ -2054,7 +2054,7 @@ LABEL_72:
   v8 = [-[AVAsset _assetInspectorLoader](self "_assetInspectorLoader")];
   if ([v7 count])
   {
-    result = [(AVAsset *)self _chapterMetadataGroupsWithFigChapterGroups:v7 titleLanguage:a3 containingItemsWithCommonKeys:a4];
+    result = [(AVAsset *)self _chapterMetadataGroupsWithFigChapterGroups:v7 titleLanguage:language containingItemsWithCommonKeys:keys];
   }
 
   else
@@ -2064,8 +2064,8 @@ LABEL_72:
     {
       if ([-[AVAsset _availableCanonicalizedChapterLanguages](self "_availableCanonicalizedChapterLanguages")])
       {
-        v10 = [(AVAsset *)self _absoluteURL];
-        v11 = [(AVAsset *)self referenceRestrictions];
+        _absoluteURL = [(AVAsset *)self _absoluteURL];
+        referenceRestrictions = [(AVAsset *)self referenceRestrictions];
         v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
         v46 = 0u;
         v47 = 0u;
@@ -2074,7 +2074,7 @@ LABEL_72:
         v36 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
         if (v36)
         {
-          v12 = 2 * (v11 & 0xFu);
+          v12 = 2 * (referenceRestrictions & 0xFu);
           v34 = *MEMORY[0x1E69718B0];
           v35 = *v47;
           v32 = *MEMORY[0x1E69718A0];
@@ -2114,7 +2114,7 @@ LABEL_72:
                       objc_enumerationMutation(v15);
                     }
 
-                    v21 = [AVMetadataItem _metadataItemWithFigMetadataDictionary:*(*(&v42 + 1) + 8 * j) containerURL:v10 securityOptions:v12];
+                    v21 = [AVMetadataItem _metadataItemWithFigMetadataDictionary:*(*(&v42 + 1) + 8 * j) containerURL:_absoluteURL securityOptions:v12];
                     if (v21)
                     {
                       [v16 addObject:v21];
@@ -2180,15 +2180,15 @@ LABEL_72:
   return result;
 }
 
-- (id)_chapterMetadataGroupsBestMatchingPreferredLanguages:(id)a3 containingItemsWithCommonKeys:(id)a4
+- (id)_chapterMetadataGroupsBestMatchingPreferredLanguages:(id)languages containingItemsWithCommonKeys:(id)keys
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(languages, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v8 = [languages countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2199,7 +2199,7 @@ LABEL_72:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(languages);
         }
 
         v12 = [MEMORY[0x1E695DF58] canonicalLocaleIdentifierFromString:*(*(&v24 + 1) + 8 * i)];
@@ -2209,7 +2209,7 @@ LABEL_72:
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v9 = [languages countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v9);
@@ -2239,7 +2239,7 @@ LABEL_12:
       objc_enumerationMutation(v13);
     }
 
-    result = [(AVAsset *)self _chapterMetadataGroupsWithTitleLanguage:*(*(&v20 + 1) + 8 * v18) containingItemsWithCommonKeys:a4];
+    result = [(AVAsset *)self _chapterMetadataGroupsWithTitleLanguage:*(*(&v20 + 1) + 8 * v18) containingItemsWithCommonKeys:keys];
     if (result)
     {
       return result;
@@ -2350,9 +2350,9 @@ uint64_t __126__AVAsset_AVAssetChapterInspection__loadChapterMetadataGroupsWithT
 
 - (BOOL)isDefunct
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 _isDefunct];
+  return [_assetInspector _isDefunct];
 }
 
 - (NSArray)fragments
@@ -2365,19 +2365,19 @@ uint64_t __126__AVAsset_AVAssetChapterInspection__loadChapterMetadataGroupsWithT
 - (CMPersistentTrackID)unusedTrackID
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(AVAsset *)self tracks];
+  tracks = [(AVAsset *)self tracks];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [(NSArray *)tracks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v3)
   {
     return 2;
   }
 
   v4 = v3;
-  v5 = 0;
+  trackID = 0;
   v6 = *v11;
   do
   {
@@ -2385,21 +2385,21 @@ uint64_t __126__AVAsset_AVAssetChapterInspection__loadChapterMetadataGroupsWithT
     {
       if (*v11 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(tracks);
       }
 
       v8 = *(*(&v10 + 1) + 8 * i);
-      if ([v8 trackID] > v5)
+      if ([v8 trackID] > trackID)
       {
-        v5 = [v8 trackID];
+        trackID = [v8 trackID];
       }
     }
 
-    v4 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v4 = [(NSArray *)tracks countByEnumeratingWithState:&v10 objects:v14 count:16];
   }
 
   while (v4);
-  return v5 + 2;
+  return trackID + 2;
 }
 
 - (void)findUnusedTrackIDWithCompletionHandler:(void *)completionHandler
@@ -2427,49 +2427,49 @@ uint64_t __82__AVAsset_AVAssetVideoCompositionUtility__findUnusedTrackIDWithComp
 
 - (id)propertyListForProxy
 {
-  v2 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v2 propertyListForProxy];
+  return [_assetInspector propertyListForProxy];
 }
 
-- (id)makePropertyListForProxyWithOptions:(id)a3
+- (id)makePropertyListForProxyWithOptions:(id)options
 {
-  v4 = [(AVAsset *)self _assetInspector];
+  _assetInspector = [(AVAsset *)self _assetInspector];
 
-  return [v4 makePropertyListForProxyWithOptions:a3];
+  return [_assetInspector makePropertyListForProxyWithOptions:options];
 }
 
-+ (id)inspectionOnlyAssetWithFigAsset:(OpaqueFigAsset *)a3
++ (id)inspectionOnlyAssetWithFigAsset:(OpaqueFigAsset *)asset
 {
-  v3 = [[AVStreamDataInspectionOnlyAsset alloc] initWithFigAsset:a3];
+  v3 = [[AVStreamDataInspectionOnlyAsset alloc] initWithFigAsset:asset];
 
   return v3;
 }
 
-+ (id)inspectionOnlyAssetWithStreamDataParser:(id)a3 tracks:(id)a4
++ (id)inspectionOnlyAssetWithStreamDataParser:(id)parser tracks:(id)tracks
 {
-  v4 = [[AVStreamDataAsset alloc] initWithParser:a3 tracks:a4];
+  v4 = [[AVStreamDataAsset alloc] initWithParser:parser tracks:tracks];
 
   return v4;
 }
 
-+ (AVAsset)assetWithURL:(id)a3 figPlaybackItem:(OpaqueFigPlaybackItem *)a4 trackIDs:(id)a5 dynamicBehavior:(BOOL)a6
++ (AVAsset)assetWithURL:(id)l figPlaybackItem:(OpaqueFigPlaybackItem *)item trackIDs:(id)ds dynamicBehavior:(BOOL)behavior
 {
-  v7 = [[AVPlaybackItemInspectorLoader alloc] initWithURL:a3 playbackItem:a4 trackIDs:a5 dynamicBehavior:a6];
+  v7 = [[AVPlaybackItemInspectorLoader alloc] initWithURL:l playbackItem:item trackIDs:ds dynamicBehavior:behavior];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"AVURLAssetInspectorLoaderKey", 0}];
   if (!v7 || !v8)
   {
     return 0;
   }
 
-  return [AVURLAsset URLAssetWithURL:a3 options:v8];
+  return [AVURLAsset URLAssetWithURL:l options:v8];
 }
 
-- (id)_chapterMetadataGroupsWithFigChapterGroups:(id)a3 titleLanguage:(id)a4 containingItemsWithCommonKeys:(id)a5
+- (id)_chapterMetadataGroupsWithFigChapterGroups:(id)groups titleLanguage:(id)language containingItemsWithCommonKeys:(id)keys
 {
-  v129 = a5;
-  v115 = a4;
-  v105 = a3;
+  keysCopy = keys;
+  languageCopy = language;
+  groupsCopy = groups;
   v162 = *MEMORY[0x1E69E9840];
   theArray = 0;
   v6 = *(MEMORY[0x1E6960C98] + 32);
@@ -2489,7 +2489,7 @@ uint64_t __82__AVAsset_AVAssetVideoCompositionUtility__findUnusedTrackIDWithComp
   }
 
   v9 = v8;
-  v108 = self;
+  selfCopy = self;
   v10 = 0.0;
   v11 = *v155;
 LABEL_3:
@@ -2510,9 +2510,9 @@ LABEL_3:
     v17 = [v126 valueForKey:@"AVChapterGroupLanguageCodeKey"];
     v18 = v17 ? [MEMORY[0x1E695DF58] canonicalLanguageIdentifierFromString:v17] : 0;
     v19 = [v126 valueForKey:@"AVChapterGroupPerChapterInfoKey"];
-    if ([v14 isEqualToString:v108->_asset->anchorChapterType])
+    if ([v14 isEqualToString:selfCopy->_asset->anchorChapterType])
     {
-      if (([v115 isEqualToString:v16] & 1) != 0 || objc_msgSend(v115, "isEqualToString:", v18))
+      if (([languageCopy isEqualToString:v16] & 1) != 0 || objc_msgSend(languageCopy, "isEqualToString:", v18))
       {
         break;
       }
@@ -2532,12 +2532,12 @@ LABEL_3:
     }
   }
 
-  v21 = [v126 valueForKey:@"AVChapterGroupChaptersKey"];
+  array = [v126 valueForKey:@"AVChapterGroupChaptersKey"];
   v22 = MEMORY[0x1E69718A8];
   v23 = 0x1E695D000;
-  if (!v21)
+  if (!array)
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (FCSupport_CopyChapterTimeRangesForChapterGroup())
     {
       return 0;
@@ -2560,24 +2560,24 @@ LABEL_3:
             v28 = [v19 objectAtIndex:v26];
             LODWORD(valuePtr.start.value) = 0;
             CFNumberGetValue([v28 objectForKey:obja], kCFNumberSInt32Type, &valuePtr);
-            v29 = v108;
-            *&v30 = COERCE_DOUBLE([(AVAsset *)v108 _chapterDataTypeForMediaSubType:LODWORD(valuePtr.start.value)]);
+            v29 = selfCopy;
+            *&v30 = COERCE_DOUBLE([(AVAsset *)selfCopy _chapterDataTypeForMediaSubType:LODWORD(valuePtr.start.value)]);
           }
 
           else
           {
             *&v30 = 0.0;
-            v29 = v108;
+            v29 = selfCopy;
           }
 
           v31 = [AVChapterMetadataItem alloc];
-          v40 = OUTLINED_FUNCTION_0_0(v32, v33, v34, v35, v36, v37, v38, v39, v97, v99, v102, *&v105, *&v108, *&v111, *&v115, v118, v122, *&v126, *&v129, v132, v136, *&obja, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value);
+          v40 = OUTLINED_FUNCTION_0_0(v32, v33, v34, v35, v36, v37, v38, v39, v97, v99, v102, *&groupsCopy, *&selfCopy, *&v111, *&languageCopy, v118, v122, *&v126, *&keysCopy, v132, v136, *&obja, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value);
           v98 = *&v30;
           v100 = v41;
           v43 = [v42 _initWithAsset:v29 chapterGroupIndex:*&v10 chapterIndex:v26 chapterType:v14 extendedLanguageTag:v15 languageCode:v17 chapterDataType:v40 time:? duration:?];
           v44 = [AVTimedMetadataGroup alloc];
           [MEMORY[0x1E695DEC8] arrayWithObject:v43];
-          [v21 addObject:{-[AVTimedMetadataGroup initWithItems:timeRange:](v44, "initWithItems:timeRange:", OUTLINED_FUNCTION_1_0(v45, v46, v47, v48, v49, v50, v51, v52, v98, v100, v103, v106, v109, v112, v116, v119, v123, v127, v130, v133, v137, objc, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value, *&v158.duration.timescale))}];
+          [array addObject:{-[AVTimedMetadataGroup initWithItems:timeRange:](v44, "initWithItems:timeRange:", OUTLINED_FUNCTION_1_0(v45, v46, v47, v48, v49, v50, v51, v52, v98, v100, v103, v106, v109, v112, v116, v119, v123, v127, v130, v133, v137, objc, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value, *&v158.duration.timescale))}];
           ++v26;
         }
 
@@ -2593,14 +2593,14 @@ LABEL_3:
       }
     }
 
-    [v126 setObject:v21 forKey:@"AVChapterGroupChaptersKey"];
-    if (!v21)
+    [v126 setObject:array forKey:@"AVChapterGroupChaptersKey"];
+    if (!array)
     {
       return 0;
     }
   }
 
-  v20 = [v21 mutableCopy];
+  v20 = [array mutableCopy];
   v53 = [v20 count];
   if (v53)
   {
@@ -2616,7 +2616,7 @@ LABEL_3:
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  chapterGroupInfo = v108->_asset->chapterGroupInfo;
+  chapterGroupInfo = selfCopy->_asset->chapterGroupInfo;
   v124 = COERCE_DOUBLE([(NSArray *)chapterGroupInfo countByEnumeratingWithState:&v145 objects:v160 count:16]);
   if (v124 != 0.0)
   {
@@ -2660,11 +2660,11 @@ LABEL_3:
         }
 
         v65 = [v59 valueForKey:@"AVChapterGroupPerChapterInfoKey"];
-        v66 = [v129 containsObject:v60];
+        v66 = [keysCopy containsObject:v60];
         if (v59 != v126)
         {
           v67 = v66;
-          if (([v115 isEqualToString:v62] & 1) != 0 || ((objc_msgSend(v115, "isEqualToString:", v64) | v67)) && ((objc_msgSend(v129, "containsObject:", v60) & 1) != 0 || objc_msgSend(v60, "isEqualToString:", v108->_asset->anchorChapterType)))
+          if (([languageCopy isEqualToString:v62] & 1) != 0 || ((objc_msgSend(languageCopy, "isEqualToString:", v64) | v67)) && ((objc_msgSend(keysCopy, "containsObject:", v60) & 1) != 0 || objc_msgSend(v60, "isEqualToString:", selfCopy->_asset->anchorChapterType)))
           {
             if (FCSupport_CopyChapterTimeRangesForChapterGroup())
             {
@@ -2674,7 +2674,7 @@ LABEL_3:
             if (theArray)
             {
               v68 = CFArrayGetCount(theArray);
-              v69 = v108;
+              v69 = selfCopy;
               if (v68)
               {
                 v70 = v68;
@@ -2697,7 +2697,7 @@ LABEL_3:
                   }
 
                   v75 = [AVChapterMetadataItem alloc];
-                  v84 = OUTLINED_FUNCTION_0_0(v76, v77, v78, v79, v80, v81, v82, v83, v97, v99, v102, *&v105, *&v108, *&chapterGroupInfo, *&v115, v120, v124, *&v126, *&v129, v134, v138, *&objb, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value);
+                  v84 = OUTLINED_FUNCTION_0_0(v76, v77, v78, v79, v80, v81, v82, v83, v97, v99, v102, *&groupsCopy, *&selfCopy, *&chapterGroupInfo, *&languageCopy, v120, v124, *&v126, *&keysCopy, v134, v138, *&objb, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value);
                   v101 = v85;
                   v87 = [v86 _initWithAsset:v69 chapterGroupIndex:v57 chapterIndex:j chapterType:v60 extendedLanguageTag:v61 languageCode:v63 chapterDataType:v84 time:? duration:?];
                   [(AVAsset *)v69 _addChapterMetadataItem:OUTLINED_FUNCTION_1_0(v88 timeRange:v89 toChapters:v90 fromIndex:v91, v92, v93, v94, v95, v74, v101, v104, v107, v110, v114, v117, v121, v125, v128, v131, v135, v139, objd, *&v145, *(&v145 + 1), *&v146, *(&v146 + 1), *&v147, *(&v147 + 1), *&v148, *(&v148 + 1), *&valuePtr.start.value, *&valuePtr.start.timescale, *&valuePtr.start.epoch, *&valuePtr.duration.value, *&valuePtr.duration.timescale, *&valuePtr.duration.epoch, v150, v151, v152, v153, *&v154, *(&v154 + 1), *&v155, *(&v155 + 1), *&v156, *(&v156 + 1), *&v157, *(&v157 + 1), *&v158.start.value, *&v158.start.timescale, *&v158.start.epoch, *&v158.duration.value, *&v158.duration.timescale)];

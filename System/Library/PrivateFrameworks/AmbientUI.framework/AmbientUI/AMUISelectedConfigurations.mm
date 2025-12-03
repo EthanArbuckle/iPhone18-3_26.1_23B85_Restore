@@ -1,22 +1,22 @@
 @interface AMUISelectedConfigurations
-+ (id)lastUpdatedDateFromDictionaryRepresentation:(id)a3;
-+ (id)lastUsedDateFromDictionaryRepresentation:(id)a3;
++ (id)lastUpdatedDateFromDictionaryRepresentation:(id)representation;
++ (id)lastUsedDateFromDictionaryRepresentation:(id)representation;
 - (AMUISelectedConfigurations)init;
-- (AMUISelectedConfigurations)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AMUISelectedConfigurations)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (id)_initWithLastUseDate:(void *)a3 lastUpdateDate:(void *)a4 selections:;
-- (id)lastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)a3;
-- (void)setLastSelectedConfigurationUUID:(id)a3 forProviderBundleIdentifier:(id)a4;
+- (id)_initWithLastUseDate:(void *)date lastUpdateDate:(void *)updateDate selections:;
+- (id)lastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)identifier;
+- (void)setLastSelectedConfigurationUUID:(id)d forProviderBundleIdentifier:(id)identifier;
 @end
 
 @implementation AMUISelectedConfigurations
 
 - (AMUISelectedConfigurations)init
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEAC0] dictionary];
-  v5 = [(AMUISelectedConfigurations *)&self->super.isa _initWithLastUseDate:v3 lastUpdateDate:v3 selections:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v5 = [(AMUISelectedConfigurations *)&self->super.isa _initWithLastUseDate:date lastUpdateDate:date selections:dictionary];
 
   return v5;
 }
@@ -79,47 +79,47 @@ void __63__AMUISelectedConfigurations_initWithDictionaryRepresentation___block_i
   }
 }
 
-+ (id)lastUsedDateFromDictionaryRepresentation:(id)a3
++ (id)lastUsedDateFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 bs_safeObjectForKey:@"lastUseDate" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v4 = [representationCopy bs_safeObjectForKey:@"lastUseDate" ofType:objc_opt_class()];
 
   return v4;
 }
 
-+ (id)lastUpdatedDateFromDictionaryRepresentation:(id)a3
++ (id)lastUpdatedDateFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 bs_safeObjectForKey:@"lastUpdateDate" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v4 = [representationCopy bs_safeObjectForKey:@"lastUpdateDate" ofType:objc_opt_class()];
 
   return v4;
 }
 
-- (id)lastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)a3
+- (id)lastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
+  identifierCopy = identifier;
+  date = [v4 date];
   lastUseDate = self->_lastUseDate;
-  self->_lastUseDate = v6;
+  self->_lastUseDate = date;
 
-  v8 = [(NSMutableDictionary *)self->_selections objectForKeyedSubscript:v5];
+  v8 = [(NSMutableDictionary *)self->_selections objectForKeyedSubscript:identifierCopy];
 
   return v8;
 }
 
-- (void)setLastSelectedConfigurationUUID:(id)a3 forProviderBundleIdentifier:(id)a4
+- (void)setLastSelectedConfigurationUUID:(id)d forProviderBundleIdentifier:(id)identifier
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v11 = a3;
-  v8 = [v6 date];
-  objc_storeStrong(&self->_lastUpdateDate, v8);
+  identifierCopy = identifier;
+  dCopy = d;
+  date = [v6 date];
+  objc_storeStrong(&self->_lastUpdateDate, date);
   lastUseDate = self->_lastUseDate;
-  self->_lastUseDate = v8;
-  v10 = v8;
+  self->_lastUseDate = date;
+  v10 = date;
 
-  [(NSMutableDictionary *)self->_selections setObject:v11 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_selections setObject:dCopy forKeyedSubscript:identifierCopy];
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -155,16 +155,16 @@ void __54__AMUISelectedConfigurations_dictionaryRepresentation__block_invoke(uin
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   lastUseDate = self->_lastUseDate;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __38__AMUISelectedConfigurations_isEqual___block_invoke;
   v20[3] = &unk_278C761D0;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:lastUseDate counterpart:v20];
   lastUpdateDate = self->_lastUpdateDate;
@@ -188,36 +188,36 @@ void __54__AMUISelectedConfigurations_dictionaryRepresentation__block_invoke(uin
   return selections;
 }
 
-- (id)_initWithLastUseDate:(void *)a3 lastUpdateDate:(void *)a4 selections:
+- (id)_initWithLastUseDate:(void *)date lastUpdateDate:(void *)updateDate selections:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  dateCopy = date;
+  updateDateCopy = updateDate;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = AMUISelectedConfigurations;
     v11 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      v12 = [v10 mutableCopy];
-      v13 = a1[3];
-      a1[3] = v12;
+      objc_storeStrong(self + 2, date);
+      v12 = [updateDateCopy mutableCopy];
+      v13 = self[3];
+      self[3] = v12;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (AMUISelectedConfigurations)initWithDictionaryRepresentation:(id)a3
+- (AMUISelectedConfigurations)initWithDictionaryRepresentation:(id)representation
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [v5 bs_safeObjectForKey:@"lastUseDate" ofType:objc_opt_class()];
+  representationCopy = representation;
+  date = [v4 date];
+  v7 = [representationCopy bs_safeObjectForKey:@"lastUseDate" ofType:objc_opt_class()];
   v8 = v7;
   if (v7)
   {
@@ -226,12 +226,12 @@ void __54__AMUISelectedConfigurations_dictionaryRepresentation__block_invoke(uin
 
   else
   {
-    v9 = v6;
+    v9 = date;
   }
 
   v10 = v9;
 
-  v11 = [v5 bs_safeObjectForKey:@"lastUpdateDate" ofType:objc_opt_class()];
+  v11 = [representationCopy bs_safeObjectForKey:@"lastUpdateDate" ofType:objc_opt_class()];
   v12 = v11;
   if (v11)
   {
@@ -240,20 +240,20 @@ void __54__AMUISelectedConfigurations_dictionaryRepresentation__block_invoke(uin
 
   else
   {
-    v13 = v6;
+    v13 = date;
   }
 
   v14 = v13;
 
-  v15 = [v5 bs_safeDictionaryForKey:@"selections"];
+  v15 = [representationCopy bs_safeDictionaryForKey:@"selections"];
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__AMUISelectedConfigurations_initWithDictionaryRepresentation___block_invoke;
   v20[3] = &unk_278C76180;
-  v21 = v16;
-  v17 = v16;
+  v21 = dictionary;
+  v17 = dictionary;
   [v15 enumerateKeysAndObjectsUsingBlock:v20];
   v18 = [(AMUISelectedConfigurations *)&self->super.isa _initWithLastUseDate:v10 lastUpdateDate:v14 selections:v17];
 

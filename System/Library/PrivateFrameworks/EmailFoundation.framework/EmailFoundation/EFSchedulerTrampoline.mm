@@ -1,38 +1,38 @@
 @interface EFSchedulerTrampoline
-+ (id)trampolineWithScheduler:(id)a3 object:(id)a4;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)_initWithScheduler:(id)a3 object:(id)a4;
++ (id)trampolineWithScheduler:(id)scheduler object:(id)object;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)_initWithScheduler:(id)scheduler object:(id)object;
 - (id)debugDescription;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation EFSchedulerTrampoline
 
-+ (id)trampolineWithScheduler:(id)a3 object:(id)a4
++ (id)trampolineWithScheduler:(id)scheduler object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  objectCopy = object;
   if (trampolineWithScheduler_object__onceToken != -1)
   {
     +[EFSchedulerTrampoline trampolineWithScheduler:object:];
   }
 
   os_unfair_lock_lock(&trampolineWithScheduler_object__sTrampolineLock);
-  v8 = [trampolineWithScheduler_object__schedulerTrampolines objectForKey:v6];
-  if (!v8)
+  weakToWeakObjectsMapTable = [trampolineWithScheduler_object__schedulerTrampolines objectForKey:schedulerCopy];
+  if (!weakToWeakObjectsMapTable)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     [trampolineWithScheduler_object__schedulerTrampolines setObject:? forKey:?];
   }
 
-  v9 = [v8 objectForKey:v7];
+  v9 = [weakToWeakObjectsMapTable objectForKey:objectCopy];
   if (!v9)
   {
-    v9 = [[a1 alloc] _initWithScheduler:v6 object:v7];
-    [v8 setObject:v9 forKey:v7];
+    v9 = [[self alloc] _initWithScheduler:schedulerCopy object:objectCopy];
+    [weakToWeakObjectsMapTable setObject:v9 forKey:objectCopy];
   }
 
   os_unfair_lock_unlock(&trampolineWithScheduler_object__sTrampolineLock);
@@ -47,14 +47,14 @@ void __56__EFSchedulerTrampoline_trampolineWithScheduler_object___block_invoke()
   trampolineWithScheduler_object__schedulerTrampolines = v0;
 }
 
-- (id)_initWithScheduler:(id)a3 object:(id)a4
+- (id)_initWithScheduler:(id)scheduler object:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  schedulerCopy = scheduler;
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EFSchedulerTrampoline.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSchedulerTrampoline.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"object"}];
   }
 
   v14.receiver = self;
@@ -63,8 +63,8 @@ void __56__EFSchedulerTrampoline_trampolineWithScheduler_object___block_invoke()
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_scheduler, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_scheduler, scheduler);
+    objc_storeStrong(p_isa + 2, object);
   }
 
   return p_isa;
@@ -91,25 +91,25 @@ void __56__EFSchedulerTrampoline_trampolineWithScheduler_object___block_invoke()
   return v6;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v7.receiver = self;
   v7.super_class = EFSchedulerTrampoline;
-  if ([(EFSchedulerTrampoline *)&v7 conformsToProtocol:v4])
+  if ([(EFSchedulerTrampoline *)&v7 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [self->_object conformsToProtocol:v4];
+    v5 = [self->_object conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = EFSchedulerTrampoline;
@@ -127,7 +127,7 @@ void __56__EFSchedulerTrampoline_trampolineWithScheduler_object___block_invoke()
   return v4 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = EFSchedulerTrampoline;
@@ -140,7 +140,7 @@ void __56__EFSchedulerTrampoline_trampolineWithScheduler_object___block_invoke()
 
   else
   {
-    v7 = [self->_object methodSignatureForSelector:a3];
+    v7 = [self->_object methodSignatureForSelector:selector];
   }
 
   v8 = v7;
@@ -148,17 +148,17 @@ void __56__EFSchedulerTrampoline_trampolineWithScheduler_object___block_invoke()
   return v8;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 setTarget:self->_object];
-  [v4 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy setTarget:self->_object];
+  [invocationCopy retainArguments];
   scheduler = self->_scheduler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__EFSchedulerTrampoline_forwardInvocation___block_invoke;
   v7[3] = &unk_1E8248580;
-  v6 = v4;
+  v6 = invocationCopy;
   v8 = v6;
   [(EFScheduler *)scheduler performBlock:v7];
 }

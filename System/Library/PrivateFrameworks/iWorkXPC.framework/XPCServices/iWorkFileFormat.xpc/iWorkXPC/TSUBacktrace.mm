@@ -3,16 +3,16 @@
 + (id)callee;
 + (id)caller;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
-- (TSUBacktrace)initWithAdjustment:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSUBacktrace)initWithAdjustment:(int)adjustment;
 - (id)backtraceString;
-- (id)callerAtIndex:(int64_t)a3;
+- (id)callerAtIndex:(int64_t)index;
 - (void)dealloc;
 @end
 
 @implementation TSUBacktrace
 
-- (TSUBacktrace)initWithAdjustment:(int)a3
+- (TSUBacktrace)initWithAdjustment:(int)adjustment
 {
   v8.receiver = self;
   v8.super_class = TSUBacktrace;
@@ -56,7 +56,7 @@
     v6 = malloc_type_calloc(v5, 8uLL, 0x80040B8603338uLL);
     v4->_callstack = v6;
     memcpy(v6, __src, 8 * v4->_frames);
-    v4->_initAdjustment = a3;
+    v4->_initAdjustment = adjustment;
   }
 
   return v4;
@@ -72,30 +72,30 @@
 
 + (id)backtrace
 {
-  v2 = [[a1 alloc] initWithAdjustment:2];
+  v2 = [[self alloc] initWithAdjustment:2];
 
   return v2;
 }
 
 + (id)new
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return [v2 initWithAdjustment:2];
 }
 
 + (id)caller
 {
-  v2 = [a1 backtrace];
+  backtrace = [self backtrace];
 
-  return [v2 callerAtIndex:2];
+  return [backtrace callerAtIndex:2];
 }
 
 + (id)callee
 {
-  v2 = [a1 backtrace];
+  backtrace = [self backtrace];
 
-  return [v2 callerAtIndex:1];
+  return [backtrace callerAtIndex:1];
 }
 
 - (id)backtraceString
@@ -121,24 +121,24 @@
   return v5;
 }
 
-- (id)callerAtIndex:(int64_t)a3
+- (id)callerAtIndex:(int64_t)index
 {
   memset(&v6, 0, sizeof(v6));
-  if (dladdr(*(&self->_callstack[self->_initAdjustment] + a3), &v6))
+  if (dladdr(*(&self->_callstack[self->_initAdjustment] + index), &v6))
   {
     return [NSString stringWithUTF8String:v6.dli_sname];
   }
 
   else
   {
-    return [NSString stringWithFormat:@"(%s @ %p)", v6.dli_fname, *(&self->_callstack[self->_initAdjustment] + a3)];
+    return [NSString stringWithFormat:@"(%s @ %p)", v6.dli_fname, *(&self->_callstack[self->_initAdjustment] + index)];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, a3);
+  v6 = TSUDynamicCast(v5, equal);
   frames = self->_frames;
   LODWORD(v7) = self->_initAdjustment;
   v9 = *(v6 + 16) - *(v6 + 20);

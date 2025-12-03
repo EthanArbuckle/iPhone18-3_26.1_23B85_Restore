@@ -1,20 +1,20 @@
 @interface PPScoreInterpreterCoreMLModel
-+ (double)scoreForOutputValue:(id)a3 outputIndexedSubscript:(int64_t)a4;
-- (PPScoreInterpreterCoreMLModel)initWithModelPath:(id)a3 features:(id)a4 outputSpecification:(id)a5;
-- (double)predictionForEvaluatedFeatures:(id)a3 withOutputIndexedSubscript:(int64_t)a4;
++ (double)scoreForOutputValue:(id)value outputIndexedSubscript:(int64_t)subscript;
+- (PPScoreInterpreterCoreMLModel)initWithModelPath:(id)path features:(id)features outputSpecification:(id)specification;
+- (double)predictionForEvaluatedFeatures:(id)features withOutputIndexedSubscript:(int64_t)subscript;
 - (void)loadCoreMLModelIfNotAlreadyLoaded;
-- (void)loadInstanceVariablesFromFeatures:(id)a3 outputSpecification:(id)a4;
+- (void)loadInstanceVariablesFromFeatures:(id)features outputSpecification:(id)specification;
 @end
 
 @implementation PPScoreInterpreterCoreMLModel
 
-- (double)predictionForEvaluatedFeatures:(id)a3 withOutputIndexedSubscript:(int64_t)a4
+- (double)predictionForEvaluatedFeatures:(id)features withOutputIndexedSubscript:(int64_t)subscript
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  featuresCopy = features;
   [(PPScoreInterpreterCoreMLModel *)self loadCoreMLModelIfNotAlreadyLoaded];
   v18 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v6 error:&v18];
+  v7 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:featuresCopy error:&v18];
   v8 = v18;
   if (v7)
   {
@@ -37,7 +37,7 @@
     else
     {
       v13 = [v10 featureValueForName:self->_coreMLModelOutputName];
-      [PPScoreInterpreterCoreMLModel scoreForOutputValue:v13 outputIndexedSubscript:a4];
+      [PPScoreInterpreterCoreMLModel scoreForOutputValue:v13 outputIndexedSubscript:subscript];
       v12 = v14;
     }
 
@@ -59,10 +59,10 @@
   return v12;
 }
 
-- (void)loadInstanceVariablesFromFeatures:(id)a3 outputSpecification:(id)a4
+- (void)loadInstanceVariablesFromFeatures:(id)features outputSpecification:(id)specification
 {
-  v6 = a3;
-  v7 = a4;
+  featuresCopy = features;
+  specificationCopy = specification;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v22 = MEMORY[0x277D85DD0];
@@ -73,16 +73,16 @@
   v26 = v10;
   v11 = v8;
   v27 = v11;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v22];
+  [featuresCopy enumerateKeysAndObjectsUsingBlock:&v22];
   v12 = [v11 copy];
   coreMLInputFeatures = self->_coreMLInputFeatures;
   self->_coreMLInputFeatures = v12;
 
-  v14 = [v7 objectForKeyedSubscript:@"outputName"];
+  v14 = [specificationCopy objectForKeyedSubscript:@"outputName"];
   coreMLModelOutputName = self->_coreMLModelOutputName;
   self->_coreMLModelOutputName = v14;
 
-  v16 = [v7 objectForKeyedSubscript:@"outputIndexedSubscript"];
+  v16 = [specificationCopy objectForKeyedSubscript:@"outputIndexedSubscript"];
   v17 = [v10 mutableCopy];
   v18 = v17;
   if (v16)
@@ -148,72 +148,72 @@ void __87__PPScoreInterpreterCoreMLModel_loadInstanceVariablesFromFeatures_outpu
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (PPScoreInterpreterCoreMLModel)initWithModelPath:(id)a3 features:(id)a4 outputSpecification:(id)a5
+- (PPScoreInterpreterCoreMLModel)initWithModelPath:(id)path features:(id)features outputSpecification:(id)specification
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  featuresCopy = features;
+  specificationCopy = specification;
   v15.receiver = self;
   v15.super_class = PPScoreInterpreterCoreMLModel;
   v12 = [(PPScoreInterpreterCoreMLModel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_coreMLModelPath, a3);
-    [(PPScoreInterpreterCoreMLModel *)v13 loadInstanceVariablesFromFeatures:v10 outputSpecification:v11];
+    objc_storeStrong(&v12->_coreMLModelPath, path);
+    [(PPScoreInterpreterCoreMLModel *)v13 loadInstanceVariablesFromFeatures:featuresCopy outputSpecification:specificationCopy];
   }
 
   return v13;
 }
 
-+ (double)scoreForOutputValue:(id)a3 outputIndexedSubscript:(int64_t)a4
++ (double)scoreForOutputValue:(id)value outputIndexedSubscript:(int64_t)subscript
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = v6;
-  if (v6 > 4)
+  valueCopy = value;
+  type = [valueCopy type];
+  v7 = type;
+  if (type > 4)
   {
-    if (v6 == 5)
+    if (type == 5)
     {
-      v10 = [v5 multiArrayValue];
-      v11 = [v10 objectAtIndexedSubscript:a4];
+      multiArrayValue = [valueCopy multiArrayValue];
+      v11 = [multiArrayValue objectAtIndexedSubscript:subscript];
       [v11 doubleValue];
-      v9 = v14;
+      int64Value = v14;
     }
 
     else
     {
-      if (v6 != 6)
+      if (type != 6)
       {
         goto LABEL_8;
       }
 
-      v10 = [v5 dictionaryValue];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-      v12 = [v10 objectForKeyedSubscript:v11];
+      multiArrayValue = [valueCopy dictionaryValue];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:subscript];
+      v12 = [multiArrayValue objectForKeyedSubscript:v11];
       [v12 doubleValue];
-      v9 = v13;
+      int64Value = v13;
     }
 
     goto LABEL_13;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v9 = [v5 int64Value];
+    int64Value = [valueCopy int64Value];
     goto LABEL_13;
   }
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    [v5 doubleValue];
-    v9 = v8;
+    [valueCopy doubleValue];
+    int64Value = v8;
     goto LABEL_13;
   }
 
 LABEL_8:
-  v9 = -31337.0;
+  int64Value = -31337.0;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v17 = 134217984;
@@ -224,7 +224,7 @@ LABEL_8:
 LABEL_13:
 
   v15 = *MEMORY[0x277D85DE8];
-  return v9;
+  return int64Value;
 }
 
 @end

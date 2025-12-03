@@ -1,41 +1,41 @@
 @interface WFDatabaseWorkflowStorage
-- (BOOL)reloadRecord:(id)a3 withReference:(id)a4 error:(id *)a5;
-- (BOOL)saveRecord:(id)a3 withReference:(id)a4 error:(id *)a5;
-- (WFDatabaseWorkflowStorage)initWithDatabase:(id)a3;
+- (BOOL)reloadRecord:(id)record withReference:(id)reference error:(id *)error;
+- (BOOL)saveRecord:(id)record withReference:(id)reference error:(id *)error;
+- (WFDatabaseWorkflowStorage)initWithDatabase:(id)database;
 @end
 
 @implementation WFDatabaseWorkflowStorage
 
-- (BOOL)reloadRecord:(id)a3 withReference:(id)a4 error:(id *)a5
+- (BOOL)reloadRecord:(id)record withReference:(id)reference error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(WFDatabaseWorkflowStorage *)self database];
-  LOBYTE(a5) = [v10 reloadRecord:v9 withDescriptor:v8 error:a5];
+  referenceCopy = reference;
+  recordCopy = record;
+  database = [(WFDatabaseWorkflowStorage *)self database];
+  LOBYTE(error) = [database reloadRecord:recordCopy withDescriptor:referenceCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)saveRecord:(id)a3 withReference:(id)a4 error:(id *)a5
+- (BOOL)saveRecord:(id)record withReference:(id)reference error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(WFDatabaseWorkflowStorage *)self database];
-  LOBYTE(a5) = [v10 saveRecord:v9 withDescriptor:v8 error:a5];
+  referenceCopy = reference;
+  recordCopy = record;
+  database = [(WFDatabaseWorkflowStorage *)self database];
+  LOBYTE(error) = [database saveRecord:recordCopy withDescriptor:referenceCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (WFDatabaseWorkflowStorage)initWithDatabase:(id)a3
+- (WFDatabaseWorkflowStorage)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v10.receiver = self;
   v10.super_class = WFDatabaseWorkflowStorage;
   v6 = [(WFDatabaseWorkflowStorage *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = v7;
   }
 

@@ -1,75 +1,75 @@
 @interface NIServerFindingService
 - (BOOL)_isAnyClientRunning;
-- (NIServerFindingService)initWithLabel:(id)a3;
+- (NIServerFindingService)initWithLabel:(id)label;
 - (basic_string<char,)uniqueIdentifierForEngine:(std::allocator<char>> *__return_ptr)retstr;
 - (id)_getCommonConfiguration;
 - (id)_startService;
-- (id)addClient:(id)a3 identifier:(id)a4 configuration:(id)a5;
-- (id)objectFromIdentifier:(unint64_t)a3;
+- (id)addClient:(id)client identifier:(id)identifier configuration:(id)configuration;
+- (id)objectFromIdentifier:(unint64_t)identifier;
 - (id)printableState;
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3;
-- (void)DataCallback:(id)a3;
-- (void)_addAlgorithmOutputFlagsToPeerTrackingState:(unsigned __int8)a3;
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token;
+- (void)DataCallback:(id)callback;
+- (void)_addAlgorithmOutputFlagsToPeerTrackingState:(unsigned __int8)state;
 - (void)_configureAdvertisementOOBRefreshTimer;
-- (void)_generateShareableConfigurationDataForAllListenersUsingAdvertisement:(id)a3;
-- (void)_handleRangingTerminatedCallbackForPeer:(id)a3;
+- (void)_generateShareableConfigurationDataForAllListenersUsingAdvertisement:(id)advertisement;
+- (void)_handleRangingTerminatedCallbackForPeer:(id)peer;
 - (void)_logSessionSummary;
-- (void)_logSuccessfulRange:(double)a3;
+- (void)_logSuccessfulRange:(double)range;
 - (void)_logUnsuccessfulRange;
-- (void)_pauseServiceDueToClientTimeout:(BOOL)a3;
+- (void)_pauseServiceDueToClientTimeout:(BOOL)timeout;
 - (void)_processUpdatedCommonConfigurationIfNecessary;
-- (void)_removeAlgorithmOutputFlagsFromPeerTrackingState:(unsigned __int8)a3;
-- (void)_resetServiceStateForOperation:(int)a3;
+- (void)_removeAlgorithmOutputFlagsFromPeerTrackingState:(unsigned __int8)state;
+- (void)_resetServiceStateForOperation:(int)operation;
 - (void)_resetUpdatesEngine;
 - (void)_startAltitudeUpdates;
 - (void)_startDeviceMotionUpdates;
 - (void)_startDevicePDRUpdates;
 - (void)_startOrUpdateAdvertising;
 - (void)_submitToUsageAnalyticsAggregator;
-- (void)_tryToStartRangingWithPeerAdvertisement:(id)a3;
-- (void)_updatePeerTrackingOOBRefreshPeriod:(id)a3;
-- (void)_updatePeerTrackingOverallState:(id)a3;
+- (void)_tryToStartRangingWithPeerAdvertisement:(id)advertisement;
+- (void)_updatePeerTrackingOOBRefreshPeriod:(id)period;
+- (void)_updatePeerTrackingOverallState:(id)state;
 - (void)bluetoothDiscoveryBecameAvailable;
 - (void)bluetoothDiscoveryBecameUnavailable;
 - (void)bluetoothDiscoveryFinishedActivating;
-- (void)clientWithIdentifier:(id)a3 updatedStateToRunning:(BOOL)a4 dueToTimeout:(BOOL)a5;
+- (void)clientWithIdentifier:(id)identifier updatedStateToRunning:(BOOL)running dueToTimeout:(BOOL)timeout;
 - (void)dealloc;
-- (void)didAttemptRangingWithPeer:(id)a3 unsuccessfulSolution:(const void *)a4;
-- (void)didLosePeer:(id)a3;
-- (void)didRangeWithPeer:(id)a3 newSolution:(const void *)a4;
-- (void)didRangingAuthorizationFailForPeer:(id)a3;
-- (void)didReceiveRangingDataForPeer:(id)a3 algorithmAidingData:(const void *)a4 signallingData:(const void *)a5;
-- (void)didStopAdvertisingToPeer:(id)a3;
-- (void)didStopRangingWithPeer:(id)a3;
-- (void)didUpdateAdvertisement:(id)a3 toSendOOBToPeer:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)processClientDiscoveryEventWithSharedConfigurationData:(id)a3;
+- (void)didAttemptRangingWithPeer:(id)peer unsuccessfulSolution:(const void *)solution;
+- (void)didLosePeer:(id)peer;
+- (void)didRangeWithPeer:(id)peer newSolution:(const void *)solution;
+- (void)didRangingAuthorizationFailForPeer:(id)peer;
+- (void)didReceiveRangingDataForPeer:(id)peer algorithmAidingData:(const void *)data signallingData:(const void *)signallingData;
+- (void)didStopAdvertisingToPeer:(id)peer;
+- (void)didStopRangingWithPeer:(id)peer;
+- (void)didUpdateAdvertisement:(id)advertisement toSendOOBToPeer:(id)peer;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)processClientDiscoveryEventWithSharedConfigurationData:(id)data;
 - (void)processClientRemovePeerEvent;
-- (void)processPeerLocation:(id)a3 forPeer:(id)a4;
-- (void)processSelfHeading:(id)a3;
-- (void)processSelfLocation:(id)a3;
-- (void)processUpdatedConfiguration:(id)a3 forClientIdentifier:(id)a4;
-- (void)processVisionInput:(id)a3;
-- (void)relayInfoToNewObserver:(id)a3;
-- (void)removeClientWithIdentifier:(id)a3 dueToTimeout:(BOOL)a4;
-- (void)updatesEngine:(id)a3 didUpdateAlgorithmConvergenceState:(id)a4 forObject:(id)a5;
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4;
+- (void)processPeerLocation:(id)location forPeer:(id)peer;
+- (void)processSelfHeading:(id)heading;
+- (void)processSelfLocation:(id)location;
+- (void)processUpdatedConfiguration:(id)configuration forClientIdentifier:(id)identifier;
+- (void)processVisionInput:(id)input;
+- (void)relayInfoToNewObserver:(id)observer;
+- (void)removeClientWithIdentifier:(id)identifier dueToTimeout:(BOOL)timeout;
+- (void)updatesEngine:(id)engine didUpdateAlgorithmConvergenceState:(id)state forObject:(id)object;
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation NIServerFindingService
 
-- (NIServerFindingService)initWithLabel:(id)a3
+- (NIServerFindingService)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v30.receiver = self;
   v30.super_class = NIServerFindingService;
   v5 = [(NIServerFindingService *)&v30 init];
   if (v5)
   {
-    v6 = v4;
-    v7 = [v4 cStringUsingEncoding:4];
+    v6 = labelCopy;
+    v7 = [labelCopy cStringUsingEncoding:4];
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, -2);
     v9 = dispatch_queue_create(v7, v8);
     queue = v5->_queue;
@@ -139,12 +139,12 @@
   [(NIServerFindingService *)&v5 dealloc];
 }
 
-- (id)addClient:(id)a3 identifier:(id)a4 configuration:(id)a5
+- (id)addClient:(id)client identifier:(id)identifier configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  clientCopy = client;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  if (clientCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -158,9 +158,9 @@
     v15[2] = sub_1002422B0;
     v15[3] = &unk_1009A0328;
     v15[4] = self;
-    v16 = v9;
-    v17 = v8;
-    v18 = v10;
+    v16 = identifierCopy;
+    v17 = clientCopy;
+    v18 = configurationCopy;
     v19 = &v20;
     dispatch_sync(queue, v15);
     v12 = v21[5];
@@ -179,92 +179,92 @@
   return v12;
 }
 
-- (void)clientWithIdentifier:(id)a3 updatedStateToRunning:(BOOL)a4 dueToTimeout:(BOOL)a5
+- (void)clientWithIdentifier:(id)identifier updatedStateToRunning:(BOOL)running dueToTimeout:(BOOL)timeout
 {
-  v8 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100242670;
   block[3] = &unk_1009A0350;
-  v12 = v8;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v10 = v8;
+  v12 = identifierCopy;
+  selfCopy = self;
+  runningCopy = running;
+  timeoutCopy = timeout;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)removeClientWithIdentifier:(id)a3 dueToTimeout:(BOOL)a4
+- (void)removeClientWithIdentifier:(id)identifier dueToTimeout:(BOOL)timeout
 {
-  v6 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024295C;
   block[3] = &unk_10099BAD8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = identifierCopy;
+  selfCopy = self;
+  timeoutCopy = timeout;
+  v8 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)relayInfoToNewObserver:(id)a3
+- (void)relayInfoToNewObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100242C7C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)processUpdatedConfiguration:(id)a3 forClientIdentifier:(id)a4
+- (void)processUpdatedConfiguration:(id)configuration forClientIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100242E3C;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = configurationCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100242F18;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = inputCopy;
+  v6 = inputCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)processClientDiscoveryEventWithSharedConfigurationData:(id)a3
+- (void)processClientDiscoveryEventWithSharedConfigurationData:(id)data
 {
-  v4 = a3;
-  v5 = [NIServerFindingAdvertisement advertisementFromByteRepresentation:v4];
+  dataCopy = data;
+  v5 = [NIServerFindingAdvertisement advertisementFromByteRepresentation:dataCopy];
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
     *buf = 138478083;
-    v12 = v7;
+    v12 = descriptionInternal;
     v13 = 2113;
     v14 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#find-ses,Service processClientDiscoveryEvent [%{private}@]. Adv: %{private}@", buf, 0x16u);
@@ -288,9 +288,9 @@
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
     *buf = 138477827;
-    v8 = v4;
+    v8 = descriptionInternal;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#find-ses,Service processClientRemovePeerEvent [%{private}@]", buf, 0xCu);
   }
 
@@ -303,14 +303,14 @@
   dispatch_sync(queue, block);
 }
 
-- (void)processSelfLocation:(id)a3
+- (void)processSelfLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-    sub_1004AFCF0(v6, v4, buf, v5);
+    descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    sub_1004AFCF0(descriptionInternal, locationCopy, buf, v5);
   }
 
   if (!self->_enableLocalLocationManager)
@@ -320,20 +320,20 @@
     v8[1] = 3221225472;
     v8[2] = sub_100243408;
     v8[3] = &unk_10098A2E8;
-    v9 = v4;
-    v10 = self;
+    v9 = locationCopy;
+    selfCopy = self;
     dispatch_sync(queue, v8);
   }
 }
 
-- (void)processSelfHeading:(id)a3
+- (void)processSelfHeading:(id)heading
 {
-  v4 = a3;
+  headingCopy = heading;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-    sub_1004AFD58(v6, v4, buf, v5);
+    descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    sub_1004AFD58(descriptionInternal, headingCopy, buf, v5);
   }
 
   if (!self->_enableLocalLocationManager)
@@ -343,26 +343,26 @@
     v8[1] = 3221225472;
     v8[2] = sub_100243684;
     v8[3] = &unk_10098A2E8;
-    v9 = v4;
-    v10 = self;
+    v9 = headingCopy;
+    selfCopy = self;
     dispatch_sync(queue, v8);
   }
 }
 
-- (void)processPeerLocation:(id)a3 forPeer:(id)a4
+- (void)processPeerLocation:(id)location forPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  peerCopy = peer;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
     *buf = 138478339;
-    v18 = v12;
+    v18 = descriptionInternal;
     v19 = 2113;
-    v20 = v7;
+    v20 = peerCopy;
     v21 = 2117;
-    v22 = v6;
+    v22 = locationCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "#find-ses,Service processPeerLocationForPeer [%{private}@]: %{private}@. Location: %{sensitive}@", buf, 0x20u);
   }
 
@@ -371,11 +371,11 @@
   block[1] = 3221225472;
   block[2] = sub_1002438C4;
   block[3] = &unk_10099BB28;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = locationCopy;
+  selfCopy = self;
+  v16 = peerCopy;
+  v10 = peerCopy;
+  v11 = locationCopy;
   dispatch_sync(queue, block);
 }
 
@@ -409,9 +409,9 @@
     v3 = qword_1009F9820;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+      descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
       *buf = 138543362;
-      *&buf[4] = v4;
+      *&buf[4] = descriptionInternal;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#find-ses,Service [%{public}@] canceled pending pause", buf, 0xCu);
     }
 
@@ -432,8 +432,8 @@
     }
 
     v8 = +[NIServerFindingServicePool sharedInstance];
-    v9 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-    v10 = [NSString stringWithFormat:@"%@: SessionResumed", v9];
+    descriptionInternal2 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    v10 = [NSString stringWithFormat:@"%@: SessionResumed", descriptionInternal2];
     [v8 logSessionEvent:v10];
 
     v11 = +[NSDate now];
@@ -442,9 +442,9 @@
 
   else
   {
-    v12 = [(NIServerFindingService *)self _getCommonConfiguration];
+    _getCommonConfiguration = [(NIServerFindingService *)self _getCommonConfiguration];
     configuration = self->_configuration;
-    self->_configuration = v12;
+    self->_configuration = _getCommonConfiguration;
 
     v14 = qword_1009F9820;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -458,8 +458,8 @@
     }
 
     v18 = +[NIServerFindingServicePool sharedInstance];
-    v19 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-    v20 = [NSString stringWithFormat:@"%@: SessionStarted", v19];
+    descriptionInternal3 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    v20 = [NSString stringWithFormat:@"%@: SessionStarted", descriptionInternal3];
     [v18 logSessionEvent:v20];
 
     v11 = +[NSDate now];
@@ -467,11 +467,11 @@
   }
 
   [(DetailsViewAnalytics *)self->_detailsViewAnalytics setEnteredFromActiveFindingUI:[(NIFindingConfiguration *)self->_configuration preferredUpdateRate]== 2];
-  v21 = [(NIFindingConfiguration *)self->_configuration debugParameters];
-  v22 = [v21 objectForKey:@"DisableBTDiscovery"];
-  v23 = [v22 BOOLValue];
+  debugParameters = [(NIFindingConfiguration *)self->_configuration debugParameters];
+  v22 = [debugParameters objectForKey:@"DisableBTDiscovery"];
+  bOOLValue = [v22 BOOLValue];
 
-  if (v23)
+  if (bOOLValue)
   {
     v24 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -508,9 +508,9 @@ LABEL_19:
 LABEL_21:
   v29 = sub_100346034(@"FindingBTDiscoveryTimeoutSecondsOverride", 120.0);
   v30 = [NIServerFindingDiscoveryProvider alloc];
-  v31 = [(NSUUID *)self->_serviceIdentifier UUIDString];
-  v32 = v31;
-  sub_100004A08(buf, [v31 UTF8String]);
+  uUIDString = [(NSUUID *)self->_serviceIdentifier UUIDString];
+  v32 = uUIDString;
+  sub_100004A08(buf, [uUIDString UTF8String]);
   v33 = [(NIServerFindingDiscoveryProvider *)v30 initWithIdentifier:buf isFinder:1 enableBluetooth:v28 launchOnDemand:0 scanRate:50 discoveryTimeout:self consumer:v29 queue:self->_queue];
   discoveryProvider = self->_discoveryProvider;
   self->_discoveryProvider = v33;
@@ -521,9 +521,9 @@ LABEL_21:
   }
 
   v35 = [NIServerFindingRangingProvider alloc];
-  v36 = [(NSUUID *)self->_serviceIdentifier UUIDString];
-  v37 = v36;
-  sub_100004A08(buf, [v36 UTF8String]);
+  uUIDString2 = [(NSUUID *)self->_serviceIdentifier UUIDString];
+  v37 = uUIDString2;
+  sub_100004A08(buf, [uUIDString2 UTF8String]);
   queue = self->_queue;
   v95 = 0;
   v96 = 0;
@@ -547,8 +547,8 @@ LABEL_21:
     [(NIServerFindingDiscoveryProvider *)v41 activate];
     [(NIServerFindingRangingProvider *)self->_rangingProvider activate];
     v42 = self->_rangingProvider;
-    v43 = [(NIFindingConfiguration *)self->_configuration debugParameters];
-    [(NIServerFindingRangingProvider *)v42 setDebugParameters:v43];
+    debugParameters2 = [(NIFindingConfiguration *)self->_configuration debugParameters];
+    [(NIServerFindingRangingProvider *)v42 setDebugParameters:debugParameters2];
 
     v44 = +[NIServerFindingPeerTracking peerTrackingInitialState];
     peerTracking = self->_peerTracking;
@@ -574,11 +574,11 @@ LABEL_21:
     v50 = [NSSet setWithObject:self->_findingToken];
     v51 = [(NIServerFindingDiscoveryProvider *)v49 setPeersEligibleForDiscovery:v50 requestScan:1];
 
-    v52 = [(NIServerFindingRangingProvider *)self->_rangingProvider rangingTriggerType];
+    rangingTriggerType = [(NIServerFindingRangingProvider *)self->_rangingProvider rangingTriggerType];
     v53 = qword_1009F9820;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = v52 ? "TriggerRequired" : "NoTriggerRequired";
+      v54 = rangingTriggerType ? "TriggerRequired" : "NoTriggerRequired";
       sub_100004A08(buf, v54);
       v55 = (buf[23] & 0x80u) == 0 ? buf : *buf;
       *v97 = 136315138;
@@ -590,7 +590,7 @@ LABEL_21:
       }
     }
 
-    if (!v52)
+    if (!rangingTriggerType)
     {
       v56 = [NIServerFindingAdvertisement alloc];
       *&buf[4] = 0;
@@ -803,17 +803,17 @@ LABEL_21:
   return v61;
 }
 
-- (void)_pauseServiceDueToClientTimeout:(BOOL)a3
+- (void)_pauseServiceDueToClientTimeout:(BOOL)timeout
 {
-  v3 = a3;
+  timeoutCopy = timeout;
   dispatch_assert_queue_V2(self->_queue);
-  if (v3)
+  if (timeoutCopy)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
 LABEL_5:
 
-    [(NIServerFindingService *)v5 _resetServiceStateForOperation:v6];
+    [(NIServerFindingService *)selfCopy2 _resetServiceStateForOperation:v6];
     return;
   }
 
@@ -822,7 +822,7 @@ LABEL_5:
 
   if (v8)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
     goto LABEL_5;
   }
@@ -878,22 +878,22 @@ LABEL_5:
 {
   if (self->_serviceState == 1)
   {
-    v3 = [(NIServerFindingService *)self _getCommonConfiguration];
+    _getCommonConfiguration = [(NIServerFindingService *)self _getCommonConfiguration];
     p_configuration = &self->_configuration;
-    if (![(NIFindingConfiguration *)self->_configuration isEqual:v3])
+    if (![(NIFindingConfiguration *)self->_configuration isEqual:_getCommonConfiguration])
     {
       v5 = qword_1009F9820;
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         findingToken = self->_findingToken;
-        v7 = [NSString stringWithFormat:@"Old: %@. New: %@", self->_configuration, v3];
+        v7 = [NSString stringWithFormat:@"Old: %@. New: %@", self->_configuration, _getCommonConfiguration];
         v8 = sub_1003464D4("UpdateConfig", 1, findingToken, v7);
         *buf = 138543362;
         v12 = v8;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-ses,%{public}@", buf, 0xCu);
       }
 
-      objc_storeStrong(&self->_configuration, v3);
+      objc_storeStrong(&self->_configuration, _getCommonConfiguration);
       [(NIServerFindingService *)self _updatePeerTrackingClientWantsUpdates:[(NIFindingConfiguration *)*p_configuration preferredUpdateRate]!= 3];
       if ([(NIFindingConfiguration *)*p_configuration preferredUpdateRate]== 3)
       {
@@ -901,8 +901,8 @@ LABEL_5:
       }
 
       [(NIServerFindingService *)self _startOrUpdateAdvertising];
-      v9 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider discoveredPeers];
-      v10 = [v9 objectForKey:self->_findingToken];
+      discoveredPeers = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider discoveredPeers];
+      v10 = [discoveredPeers objectForKey:self->_findingToken];
 
       if (v10)
       {
@@ -916,36 +916,36 @@ LABEL_5:
 {
   v3 = [[NIFindingConfiguration alloc] initWithRole:0 discoveryToken:self->_findingToken preferredUpdateRate:3];
   [(NIFindingConfiguration *)v3 setPreferredDiscoveryPriority:1];
-  v4 = [(NSMutableDictionary *)self->_findingConfigurations objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->_findingConfigurations objectEnumerator];
   v5 = 0;
   while (1)
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    if ([v6 preferredUpdateRate] != 3)
+    if ([nextObject preferredUpdateRate] != 3)
     {
       [(NIFindingConfiguration *)v3 setPreferredUpdateRate:2];
     }
 
-    if ([v6 preferredDiscoveryPriority] != 1)
+    if ([nextObject preferredDiscoveryPriority] != 1)
     {
       [(NIFindingConfiguration *)v3 setPreferredDiscoveryPriority:0];
     }
 
-    v7 = [v6 debugParameters];
+    debugParameters = [nextObject debugParameters];
 
-    v5 = v6;
-    if (v7)
+    v5 = nextObject;
+    if (debugParameters)
     {
-      v8 = [v6 debugParameters];
-      [(NIFindingConfiguration *)v3 setDebugParameters:v8];
+      debugParameters2 = [nextObject debugParameters];
+      [(NIFindingConfiguration *)v3 setDebugParameters:debugParameters2];
 
-      v5 = v6;
+      v5 = nextObject;
     }
   }
 
@@ -972,7 +972,7 @@ LABEL_5:
   return v3;
 }
 
-- (void)_resetServiceStateForOperation:(int)a3
+- (void)_resetServiceStateForOperation:(int)operation
 {
   dispatch_assert_queue_V2(self->_queue);
   pauseDelayTimer = self->_pauseDelayTimer;
@@ -983,9 +983,9 @@ LABEL_5:
     self->_pauseDelayTimer = 0;
   }
 
-  if ((a3 - 2) >= 2)
+  if ((operation - 2) >= 2)
   {
-    if (a3 == 1)
+    if (operation == 1)
     {
       [(NIServerFindingService *)self _removeAlgorithmOutputFlagsFromPeerTrackingState:255];
       v19 = qword_1009F9820;
@@ -998,8 +998,8 @@ LABEL_5:
       }
 
       v21 = +[NIServerFindingServicePool sharedInstance];
-      v22 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-      v23 = [NSString stringWithFormat:@"%@: SessionTimeout", v22];
+      descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+      v23 = [NSString stringWithFormat:@"%@: SessionTimeout", descriptionInternal];
       [v21 logSessionEvent:v23];
 
       v24 = +[NSDate now];
@@ -1019,8 +1019,8 @@ LABEL_5:
       }
 
       v27 = +[NIServerFindingServicePool sharedInstance];
-      v28 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-      v29 = [NSString stringWithFormat:@"%@: SessionPaused", v28];
+      descriptionInternal2 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+      v29 = [NSString stringWithFormat:@"%@: SessionPaused", descriptionInternal2];
       [v27 logSessionEvent:v29];
 
       v24 = +[NSDate now];
@@ -1050,8 +1050,8 @@ LABEL_5:
       }
 
       v9 = +[NIServerFindingServicePool sharedInstance];
-      v10 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-      v11 = [NSString stringWithFormat:@"%@: SessionStopped", v10];
+      descriptionInternal3 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+      v11 = [NSString stringWithFormat:@"%@: SessionStopped", descriptionInternal3];
       [v9 logSessionEvent:v11];
 
       v12 = +[NSDate now];
@@ -1222,15 +1222,15 @@ LABEL_5:
   }
 
   v12 = +[NIServerFindingServicePool sharedInstance];
-  v13 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-  v14 = [NSString stringWithFormat:@"%@\n%@", v13, self->_sessionSummary];
+  descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+  v14 = [NSString stringWithFormat:@"%@\n%@", descriptionInternal, self->_sessionSummary];
   [v12 logSessionSummary:v14];
 }
 
 - (void)_submitToUsageAnalyticsAggregator
 {
-  v3 = [(NIServerFindingService *)self _useCase];
-  if (v3 == 1)
+  _useCase = [(NIServerFindingService *)self _useCase];
+  if (_useCase == 1)
   {
     v21 = [(NSMutableDictionary *)self->_sessionSummary objectForKeyedSubscript:@"[A1|SES] Start"];
     v11 = [(NSMutableDictionary *)self->_sessionSummary objectForKeyedSubscript:@"[E3|RNG] First"];
@@ -1266,7 +1266,7 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  if (v3)
+  if (_useCase)
   {
     return;
   }
@@ -1419,11 +1419,11 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)didLosePeer:(id)a3
+- (void)didLosePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v4])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:peerCopy])
   {
     v5 = qword_1009F9820;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1438,16 +1438,16 @@ LABEL_12:
   }
 }
 
-- (void)didStopAdvertisingToPeer:(id)a3
+- (void)didStopAdvertisingToPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v4])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:peerCopy])
   {
     v5 = qword_1009F9820;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = sub_1003464D4("NotifyStopAdv", 1, v4, 0);
+      v6 = sub_1003464D4("NotifyStopAdv", 1, peerCopy, 0);
       v7 = 138543362;
       v8 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-ses,%{public}@", &v7, 0xCu);
@@ -1457,25 +1457,25 @@ LABEL_12:
   }
 }
 
-- (void)didUpdateAdvertisement:(id)a3 toSendOOBToPeer:(id)a4
+- (void)didUpdateAdvertisement:(id)advertisement toSendOOBToPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  advertisementCopy = advertisement;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v7])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:peerCopy])
   {
     v8 = qword_1009F9820;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       findingToken = self->_findingToken;
-      v10 = [NSString stringWithFormat:@"SelfAdv: %@", v6];
-      v11 = sub_1003464D4("UpdatedAdv", 1, findingToken, v10);
+      advertisementCopy = [NSString stringWithFormat:@"SelfAdv: %@", advertisementCopy];
+      v11 = sub_1003464D4("UpdatedAdv", 1, findingToken, advertisementCopy);
       *buf = 138543362;
       v13 = v11;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#find-ses,%{public}@", buf, 0xCu);
     }
 
-    [(NIServerFindingService *)self _generateShareableConfigurationDataForAllListenersUsingAdvertisement:v6];
+    [(NIServerFindingService *)self _generateShareableConfigurationDataForAllListenersUsingAdvertisement:advertisementCopy];
   }
 }
 
@@ -1521,20 +1521,20 @@ LABEL_12:
   dispatch_assert_queue_V2(self->_queue);
 }
 
-- (void)didRangeWithPeer:(id)a3 newSolution:(const void *)a4
+- (void)didRangeWithPeer:(id)peer newSolution:(const void *)solution
 {
-  v6 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v6])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:peerCopy])
   {
-    v8 = (a4 + 32);
-    v7 = *(a4 + 8);
+    v8 = (solution + 32);
+    v7 = *(solution + 8);
     if ((v7 - 2) < 5 || v7 == 0)
     {
       v10 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
-        sub_1004B0290(v8, v6, v10);
+        sub_1004B0290(v8, peerCopy, v10);
       }
     }
 
@@ -1543,22 +1543,22 @@ LABEL_12:
       v11 = 0.0;
       if (v7 == 1)
       {
-        if ((*(a4 + 600) & 1) == 0)
+        if ((*(solution + 600) & 1) == 0)
         {
           __assert_rtn("[NIServerFindingService didRangeWithPeer:newSolution:]", "NIServerFindingSession.mm", 1797, "solution.raw_rose_measurement.has_value()");
         }
 
-        v11 = *(a4 + 44);
+        v11 = *(solution + 44);
       }
 
-      if (*(a4 + 24))
+      if (*(solution + 24))
       {
         [(DetailsViewAnalytics *)self->_detailsViewAnalytics updateWithMostRecentRawDistance:v11];
         [(NIServerFindingService *)self _logSuccessfulRange:v11];
         [(NIServerFindingService *)self _updatePeerTrackingRangingState:3];
-        self->_cachedSolutionMacAddr = *(a4 + 5);
+        self->_cachedSolutionMacAddr = *(solution + 5);
         sub_100224EF8();
-        [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:a4];
+        [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:solution];
       }
 
       else
@@ -1578,25 +1578,25 @@ LABEL_12:
   }
 }
 
-- (void)didAttemptRangingWithPeer:(id)a3 unsuccessfulSolution:(const void *)a4
+- (void)didAttemptRangingWithPeer:(id)peer unsuccessfulSolution:(const void *)solution
 {
-  v6 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v6])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:peerCopy])
   {
-    if ((*(a4 + 600) & 1) == 0)
+    if ((*(solution + 600) & 1) == 0)
     {
       __assert_rtn("[NIServerFindingService didAttemptRangingWithPeer:unsuccessfulSolution:]", "NIServerFindingSession.mm", 1836, "solution.raw_rose_measurement.has_value()");
     }
 
     [(NIServerFindingService *)self _logUnsuccessfulRange];
-    if (*(a4 + 600) == 1 && *(a4 + 72) == 96)
+    if (*(solution + 600) == 1 && *(solution + 72) == 96)
     {
       [(NIServerFindingService *)self _updatePeerTrackingRangingState:2];
     }
 
     sub_100224EF8();
-    [(NINearbyUpdatesEngine *)self->_updatesEngine acceptUnsuccessfulRoseSolution:a4];
+    [(NINearbyUpdatesEngine *)self->_updatesEngine acceptUnsuccessfulRoseSolution:solution];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -1605,11 +1605,11 @@ LABEL_12:
   }
 }
 
-- (void)_logSuccessfulRange:(double)a3
+- (void)_logSuccessfulRange:(double)range
 {
   v5 = sub_100005288();
   findingToken = self->_findingToken;
-  v7 = [NSString stringWithFormat:@"Range: %0.2f m", *&a3];
+  v7 = [NSString stringWithFormat:@"Range: %0.2f m", *&range];
   v8 = sub_1003464D4("RangeSuccess", 1, findingToken, v7);
 
   v9 = qword_1009F9820;
@@ -1642,36 +1642,36 @@ LABEL_12:
 
   if (v10)
   {
-    v13 = [NSNumber numberWithDouble:a3];
+    v13 = [NSNumber numberWithDouble:range];
     [(NSMutableDictionary *)self->_sessionSummary setObject:v13 forKeyedSubscript:@"[E3|RNG] First"];
 
-    v14 = [NSNumber numberWithDouble:a3];
+    v14 = [NSNumber numberWithDouble:range];
     [(NSMutableDictionary *)self->_sessionSummary setObject:v14 forKeyedSubscript:@"[E5|RNG] Max  "];
 
-    v15 = [NSNumber numberWithDouble:a3];
+    v15 = [NSNumber numberWithDouble:range];
     [(NSMutableDictionary *)self->_sessionSummary setObject:v15 forKeyedSubscript:@"[E6|RNG] Min  "];
   }
 
-  v16 = [NSNumber numberWithDouble:a3];
+  v16 = [NSNumber numberWithDouble:range];
   [(NSMutableDictionary *)self->_sessionSummary setObject:v16 forKeyedSubscript:@"[E4|RNG] Last "];
 
   v17 = [(NSMutableDictionary *)self->_sessionSummary objectForKeyedSubscript:@"[E5|RNG] Max  "];
   [v17 doubleValue];
-  v19 = v18 < a3;
+  v19 = v18 < range;
 
   if (v19)
   {
-    v20 = [NSNumber numberWithDouble:a3];
+    v20 = [NSNumber numberWithDouble:range];
     [(NSMutableDictionary *)self->_sessionSummary setObject:v20 forKeyedSubscript:@"[E5|RNG] Max  "];
   }
 
   v21 = [(NSMutableDictionary *)self->_sessionSummary objectForKeyedSubscript:@"[E6|RNG] Min  "];
   [v21 doubleValue];
-  v23 = v22 > a3;
+  v23 = v22 > range;
 
   if (v23)
   {
-    v24 = [NSNumber numberWithDouble:a3];
+    v24 = [NSNumber numberWithDouble:range];
     [(NSMutableDictionary *)self->_sessionSummary setObject:v24 forKeyedSubscript:@"[E6|RNG] Min  "];
   }
 }
@@ -1690,43 +1690,43 @@ LABEL_12:
   [(NSMutableDictionary *)self->_sessionSummary setObject:v6 forKeyedSubscript:@"[E2|RNG] Miss "];
 }
 
-- (void)didStopRangingWithPeer:(id)a3
+- (void)didStopRangingWithPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1003464D4("NotifyStopRange", 1, v4, 0);
+    v6 = sub_1003464D4("NotifyStopRange", 1, peerCopy, 0);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-ses,%{public}@", &v7, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NIServerFindingService *)self _handleRangingTerminatedCallbackForPeer:v4];
+  [(NIServerFindingService *)self _handleRangingTerminatedCallbackForPeer:peerCopy];
 }
 
-- (void)didRangingAuthorizationFailForPeer:(id)a3
+- (void)didRangingAuthorizationFailForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1003464D4("NotifyAuthFail", 1, v4, 0);
+    v6 = sub_1003464D4("NotifyAuthFail", 1, peerCopy, 0);
     v7 = 138543362;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-ses,%{public}@", &v7, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NIServerFindingService *)self _handleRangingTerminatedCallbackForPeer:v4];
+  [(NIServerFindingService *)self _handleRangingTerminatedCallbackForPeer:peerCopy];
 }
 
-- (void)_handleRangingTerminatedCallbackForPeer:(id)a3
+- (void)_handleRangingTerminatedCallbackForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NIDiscoveryToken *)self->_findingToken isEqual:v4])
+  if ([(NIDiscoveryToken *)self->_findingToken isEqual:peerCopy])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
     [v5 doubleForKey:@"FindingServiceRangingTriggerTimeLimitOverrideSeconds"];
@@ -1757,7 +1757,7 @@ LABEL_12:
       }
 
       [(NIServerFindingService *)self _updatePeerTrackingDiscoveryState:4];
-      v11 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider stopAdvertisingToPeer:v4];
+      v11 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider stopAdvertisingToPeer:peerCopy];
       if (v11 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
         sub_1004B053C();
@@ -1766,7 +1766,7 @@ LABEL_12:
       [(NIServerFindingService *)self _updatePeerTrackingAdvertisingState:2];
     }
 
-    v12 = [(NIServerFindingRangingProvider *)self->_rangingProvider stopRangingWithPeer:v4];
+    v12 = [(NIServerFindingRangingProvider *)self->_rangingProvider stopRangingWithPeer:peerCopy];
     if (v12 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
       sub_1004B05A4();
@@ -1781,50 +1781,50 @@ LABEL_12:
   }
 }
 
-- (void)didReceiveRangingDataForPeer:(id)a3 algorithmAidingData:(const void *)a4 signallingData:(const void *)a5
+- (void)didReceiveRangingDataForPeer:(id)peer algorithmAidingData:(const void *)data signallingData:(const void *)signallingData
 {
-  [(NINearbyUpdatesEngine *)self->_updatesEngine acceptPeerData:a4 fromPeer:a3];
+  [(NINearbyUpdatesEngine *)self->_updatesEngine acceptPeerData:data fromPeer:peer];
   updatesEngine = self->_updatesEngine;
   if (updatesEngine)
   {
-    v8 = *(a5 + 8);
+    v8 = *(signallingData + 8);
 
     [(NINearbyUpdatesEngine *)updatesEngine acceptPeerDeviceType:v8];
   }
 }
 
-- (void)_addAlgorithmOutputFlagsToPeerTrackingState:(unsigned __int8)a3
+- (void)_addAlgorithmOutputFlagsToPeerTrackingState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [(NIServerFindingPeerTracking *)self->_peerTracking copy];
-  [v5 setAlgorithmOutputFlags:{objc_msgSend(v5, "algorithmOutputFlags") | v3}];
+  [v5 setAlgorithmOutputFlags:{objc_msgSend(v5, "algorithmOutputFlags") | stateCopy}];
   [(NIServerFindingService *)self _updatePeerTrackingOverallState:v5];
 }
 
-- (void)_removeAlgorithmOutputFlagsFromPeerTrackingState:(unsigned __int8)a3
+- (void)_removeAlgorithmOutputFlagsFromPeerTrackingState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [(NIServerFindingPeerTracking *)self->_peerTracking copy];
-  [v5 setAlgorithmOutputFlags:{objc_msgSend(v5, "algorithmOutputFlags") & ~v3}];
+  [v5 setAlgorithmOutputFlags:{objc_msgSend(v5, "algorithmOutputFlags") & ~stateCopy}];
   [(NIServerFindingService *)self _updatePeerTrackingOverallState:v5];
 }
 
-- (void)_updatePeerTrackingOOBRefreshPeriod:(id)a3
+- (void)_updatePeerTrackingOOBRefreshPeriod:(id)period
 {
-  v5 = a3;
+  periodCopy = period;
   dispatch_assert_queue_V2(self->_queue);
   v4 = [(NIServerFindingPeerTracking *)self->_peerTracking copy];
-  [v4 setOobRefreshPeriodSeconds:v5];
+  [v4 setOobRefreshPeriodSeconds:periodCopy];
   [(NIServerFindingService *)self _updatePeerTrackingOverallState:v4];
 }
 
-- (void)_updatePeerTrackingOverallState:(id)a3
+- (void)_updatePeerTrackingOverallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 copy];
+  v5 = [stateCopy copy];
   v6 = [(NIServerFindingPeerTracking *)self->_peerTracking copy];
   v7 = v6;
   if (!v6 || !v5)
@@ -1887,8 +1887,8 @@ LABEL_17:
     }
 
     v14 = +[NIServerFindingServicePool sharedInstance];
-    v15 = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
-    v16 = [NSString stringWithFormat:@"%@: %@", v15, v5];
+    descriptionInternal = [(NIDiscoveryToken *)self->_findingToken descriptionInternal];
+    v16 = [NSString stringWithFormat:@"%@: %@", descriptionInternal, v5];
     [v14 logSessionEvent:v16];
 
     if (!self->_findingToken)
@@ -1915,13 +1915,13 @@ LABEL_17:
 
     if ([v5 advertisingState] == 1)
     {
-      v18 = [v5 oobRefreshPeriodSeconds];
-      v19 = v18 == 0;
+      oobRefreshPeriodSeconds = [v5 oobRefreshPeriodSeconds];
+      v19 = oobRefreshPeriodSeconds == 0;
 
       if (!v19)
       {
-        v20 = [v7 oobRefreshPeriodSeconds];
-        v21 = v20 == 0;
+        oobRefreshPeriodSeconds2 = [v7 oobRefreshPeriodSeconds];
+        v21 = oobRefreshPeriodSeconds2 == 0;
 
         if (v21)
         {
@@ -1929,8 +1929,8 @@ LABEL_17:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             v36 = self->_findingToken;
-            v37 = [v5 oobRefreshPeriodSeconds];
-            [v37 doubleValue];
+            oobRefreshPeriodSeconds3 = [v5 oobRefreshPeriodSeconds];
+            [oobRefreshPeriodSeconds3 doubleValue];
             v39 = [NSString stringWithFormat:@"Configure. Period: [Default] -> %0.1f s", v38];
             v40 = sub_1003464D4("OOBRefresh", 1, v36, v39);
             *buf = 138412290;
@@ -1941,11 +1941,11 @@ LABEL_17:
 
         else
         {
-          v22 = [v5 oobRefreshPeriodSeconds];
-          [v22 doubleValue];
+          oobRefreshPeriodSeconds4 = [v5 oobRefreshPeriodSeconds];
+          [oobRefreshPeriodSeconds4 doubleValue];
           v24 = v23;
-          v25 = [v7 oobRefreshPeriodSeconds];
-          [v25 doubleValue];
+          oobRefreshPeriodSeconds5 = [v7 oobRefreshPeriodSeconds];
+          [oobRefreshPeriodSeconds5 doubleValue];
           v27 = v24 != v26;
 
           if (!v27)
@@ -1957,11 +1957,11 @@ LABEL_17:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             v29 = self->_findingToken;
-            v89 = [v7 oobRefreshPeriodSeconds];
-            [v89 doubleValue];
+            oobRefreshPeriodSeconds6 = [v7 oobRefreshPeriodSeconds];
+            [oobRefreshPeriodSeconds6 doubleValue];
             v31 = v30;
-            v32 = [v5 oobRefreshPeriodSeconds];
-            [v32 doubleValue];
+            oobRefreshPeriodSeconds7 = [v5 oobRefreshPeriodSeconds];
+            [oobRefreshPeriodSeconds7 doubleValue];
             v34 = [NSString stringWithFormat:@"Reconfigure. Period: %0.1f s -> %0.1f s", v31, v33];
             v35 = sub_1003464D4("OOBRefresh", 1, v29, v34);
             *buf = 138412290;
@@ -2013,19 +2013,19 @@ LABEL_47:
         }
 
         v51 = [[NINearbyObject alloc] initWithToken:self->_findingToken];
-        v52 = [(NSMapTable *)self->_findingClients objectEnumerator];
+        objectEnumerator = [(NSMapTable *)self->_findingClients objectEnumerator];
         v53 = 0;
         while (1)
         {
-          v54 = [v52 nextObject];
+          nextObject = [objectEnumerator nextObject];
 
-          if (!v54)
+          if (!nextObject)
           {
             break;
           }
 
-          v53 = v54;
-          [v54 serviceDidDiscoverNearbyObject:v51];
+          v53 = nextObject;
+          [nextObject serviceDidDiscoverNearbyObject:v51];
         }
 
         [(DetailsViewAnalytics *)self->_detailsViewAnalytics updateDistanceAnalytics:1];
@@ -2083,19 +2083,19 @@ LABEL_47:
             }
 
             v65 = [[NINearbyObject alloc] initWithToken:self->_findingToken];
-            v66 = [(NSMapTable *)self->_findingClients objectEnumerator];
+            objectEnumerator2 = [(NSMapTable *)self->_findingClients objectEnumerator];
             v67 = 0;
             while (1)
             {
-              v68 = [v66 nextObject];
+              nextObject2 = [objectEnumerator2 nextObject];
 
-              if (!v68)
+              if (!nextObject2)
               {
                 break;
               }
 
-              v67 = v68;
-              [v68 serviceDidRemoveNearbyObject:v65];
+              v67 = nextObject2;
+              [nextObject2 serviceDidRemoveNearbyObject:v65];
             }
           }
         }
@@ -2185,9 +2185,9 @@ LABEL_104:
 - (void)_startOrUpdateAdvertising
 {
   v3 = [NIServerFindingAdvertisement alloc];
-  v4 = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider advertisingAddress];
-  v21 = v4;
-  v22 = WORD2(v4);
+  advertisingAddress = [(NIServerFindingDiscoveryProvider *)self->_discoveryProvider advertisingAddress];
+  v21 = advertisingAddress;
+  v22 = WORD2(advertisingAddress);
   v5 = [(NIServerFindingAdvertisement *)v3 initForFinder:1 address:&v21];
   [v5 setCanRange:{-[NIServerFindingService _sessionConfiguredToRange](self, "_sessionConfiguredToRange")}];
   [v5 setUseCase:{-[NIServerFindingService _useCase](self, "_useCase")}];
@@ -2262,8 +2262,8 @@ LABEL_104:
 - (void)_configureAdvertisementOOBRefreshTimer
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NIServerFindingPeerTracking *)self->_peerTracking oobRefreshPeriodSeconds];
-  [v3 doubleValue];
+  oobRefreshPeriodSeconds = [(NIServerFindingPeerTracking *)self->_peerTracking oobRefreshPeriodSeconds];
+  [oobRefreshPeriodSeconds doubleValue];
   if (v4 == 0.0)
   {
     v7 = sub_100345FD4([(NIServerFindingService *)self _useCase], 1);
@@ -2271,8 +2271,8 @@ LABEL_104:
 
   else
   {
-    v5 = [(NIServerFindingPeerTracking *)self->_peerTracking oobRefreshPeriodSeconds];
-    [v5 doubleValue];
+    oobRefreshPeriodSeconds2 = [(NIServerFindingPeerTracking *)self->_peerTracking oobRefreshPeriodSeconds];
+    [oobRefreshPeriodSeconds2 doubleValue];
     v7 = v6;
   }
 
@@ -2307,27 +2307,27 @@ LABEL_104:
   }
 }
 
-- (void)_generateShareableConfigurationDataForAllListenersUsingAdvertisement:(id)a3
+- (void)_generateShareableConfigurationDataForAllListenersUsingAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  v5 = v4;
+  advertisementCopy = advertisement;
+  v5 = advertisementCopy;
   if (self->_findingToken)
   {
-    v6 = [v4 byteRepresentation];
+    byteRepresentation = [advertisementCopy byteRepresentation];
     v7 = [[NINearbyObject alloc] initWithToken:self->_findingToken];
-    v8 = [(NSMapTable *)self->_findingClients objectEnumerator];
+    objectEnumerator = [(NSMapTable *)self->_findingClients objectEnumerator];
     v9 = 0;
     while (1)
     {
-      v10 = [v8 nextObject];
+      nextObject = [objectEnumerator nextObject];
 
-      if (!v10)
+      if (!nextObject)
       {
         break;
       }
 
-      v9 = v10;
-      [v10 serviceDidGenerateShareableConfigurationData:v6 forObject:v7];
+      v9 = nextObject;
+      [nextObject serviceDidGenerateShareableConfigurationData:byteRepresentation forObject:v7];
     }
 
     v11 = +[NIServerFindingServiceObserverRelay sharedInstance];
@@ -2336,7 +2336,7 @@ LABEL_104:
     v15[1] = 3221225472;
     v15[2] = sub_10024A748;
     v15[3] = &unk_1009A03F0;
-    v13 = v6;
+    v13 = byteRepresentation;
     v16 = v13;
     v14 = v7;
     v17 = v14;
@@ -2344,13 +2344,13 @@ LABEL_104:
   }
 }
 
-- (void)_tryToStartRangingWithPeerAdvertisement:(id)a3
+- (void)_tryToStartRangingWithPeerAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  v5 = [v4 selectedTechnology];
-  v6 = [v4 canRange];
-  v7 = [(NIServerFindingService *)self _sessionConfiguredToRange];
-  v8 = [(NIServerFindingRangingProvider *)self->_rangingProvider canRangeWithPeer:self->_findingToken technology:v5];
+  advertisementCopy = advertisement;
+  selectedTechnology = [advertisementCopy selectedTechnology];
+  canRange = [advertisementCopy canRange];
+  _sessionConfiguredToRange = [(NIServerFindingService *)self _sessionConfiguredToRange];
+  v8 = [(NIServerFindingRangingProvider *)self->_rangingProvider canRangeWithPeer:self->_findingToken technology:selectedTechnology];
   rangingProvider = self->_rangingProvider;
   if (rangingProvider)
   {
@@ -2362,19 +2362,19 @@ LABEL_104:
     memset(__p, 0, sizeof(__p));
   }
 
-  v10 = sub_100346F20(__p, v5);
+  v10 = sub_100346F20(__p, selectedTechnology);
   if (__p[0])
   {
     __p[1] = __p[0];
     operator delete(__p[0]);
   }
 
-  if (v6 & v7 & v10 & v8)
+  if (canRange & _sessionConfiguredToRange & v10 & v8)
   {
     [(NIServerFindingService *)self _updatePeerTrackingRangingState:1];
-    if ([v4 narrowBandMask])
+    if ([advertisementCopy narrowBandMask])
     {
-      v11 = [v4 narrowBandMask];
+      narrowBandMask = [advertisementCopy narrowBandMask];
     }
 
     else
@@ -2384,7 +2384,7 @@ LABEL_104:
       v27 = 0;
       v25 = 0;
       sub_10019ECC8(&v25, __p, __p + 1, 1);
-      v11 = sub_100428064(&v25);
+      narrowBandMask = sub_100428064(&v25);
       if (v25)
       {
         v26 = v25;
@@ -2396,23 +2396,23 @@ LABEL_104:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(__p[0]) = 67109120;
-      HIDWORD(__p[0]) = v11;
+      HIDWORD(__p[0]) = narrowBandMask;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#find-ses,Negotiated nb_mask %hu", __p, 8u);
     }
 
-    v15 = [v4 mmsNumFragmentsOOB];
+    mmsNumFragmentsOOB = [advertisementCopy mmsNumFragmentsOOB];
     v16 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(__p[0]) = 67109120;
-      HIDWORD(__p[0]) = v15;
+      HIDWORD(__p[0]) = mmsNumFragmentsOOB;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#find-ses,Negotiated mms_num_fragments_oob %hu", __p, 8u);
     }
 
-    v17 = [v4 nbUwbAcquisitionChannelIdx];
-    v24[0] = [v17 intValue];
-    v24[1] = v11;
-    v24[2] = v15;
+    nbUwbAcquisitionChannelIdx = [advertisementCopy nbUwbAcquisitionChannelIdx];
+    v24[0] = [nbUwbAcquisitionChannelIdx intValue];
+    v24[1] = narrowBandMask;
+    v24[2] = mmsNumFragmentsOOB;
     if ([(NIFindingConfiguration *)self->_configuration preferredDiscoveryPriority]== 1)
     {
       v18 = ![(NIServerFindingPeerTracking *)self->_peerTracking hasReceivedRangingData];
@@ -2425,7 +2425,7 @@ LABEL_104:
 
     v24[3] = v18;
 
-    v19 = [(NIServerFindingRangingProvider *)self->_rangingProvider startRangingWithPeer:self->_findingToken technology:v5 peerAdvertisement:v4 OOBRangingParameters:v24];
+    v19 = [(NIServerFindingRangingProvider *)self->_rangingProvider startRangingWithPeer:self->_findingToken technology:selectedTechnology peerAdvertisement:advertisementCopy OOBRangingParameters:v24];
     if (v19)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -2464,13 +2464,13 @@ LABEL_104:
     v12 = qword_1009F9820;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = sub_100346EF4(v5);
+      v13 = sub_100346EF4(selectedTechnology);
       LODWORD(__p[0]) = 136316162;
       *(__p + 4) = v13;
       WORD2(__p[1]) = 1024;
-      *(&__p[1] + 6) = v6;
+      *(&__p[1] + 6) = canRange;
       WORD1(__p[2]) = 1024;
-      HIDWORD(__p[2]) = v7;
+      HIDWORD(__p[2]) = _sessionConfiguredToRange;
       v29 = 1024;
       v30 = v8;
       v31 = 1024;
@@ -2480,11 +2480,11 @@ LABEL_104:
   }
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_updatesEngine != v6)
+  engineCopy = engine;
+  objectsCopy = objects;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerFindingService updatesEngine:didUpdateNearbyObjects:]", "NIServerFindingSession.mm", 2398, "engine == _updatesEngine");
   }
@@ -2495,57 +2495,57 @@ LABEL_104:
   v13[2] = sub_10024AD58;
   v13[3] = &unk_1009A0418;
   v13[4] = self;
-  [v7 enumerateObjectsUsingBlock:v13];
+  [objectsCopy enumerateObjectsUsingBlock:v13];
   v8 = +[NSUserDefaults standardUserDefaults];
   v9 = [v8 BOOLForKey:@"FindingGateObjectUpdatesOnDiscovery"];
 
   if (!v9 || [(NIServerFindingPeerTracking *)self->_peerTracking discoveryState]== 2 || [(NIServerFindingPeerTracking *)self->_peerTracking discoveryState]== 3)
   {
-    v10 = [(NSMapTable *)self->_findingClients objectEnumerator];
+    objectEnumerator = [(NSMapTable *)self->_findingClients objectEnumerator];
     v11 = 0;
     while (1)
     {
-      v12 = [v10 nextObject];
+      nextObject = [objectEnumerator nextObject];
 
-      if (!v12)
+      if (!nextObject)
       {
         break;
       }
 
-      v11 = v12;
-      [v12 serviceDidUpdateNearbyObjects:v7];
+      v11 = nextObject;
+      [nextObject serviceDidUpdateNearbyObjects:objectsCopy];
     }
   }
 }
 
-- (void)updatesEngine:(id)a3 didUpdateAlgorithmConvergenceState:(id)a4 forObject:(id)a5
+- (void)updatesEngine:(id)engine didUpdateAlgorithmConvergenceState:(id)state forObject:(id)object
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (self->_updatesEngine != v13)
+  engineCopy = engine;
+  stateCopy = state;
+  objectCopy = object;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerFindingService updatesEngine:didUpdateAlgorithmConvergenceState:forObject:]", "NIServerFindingSession.mm", 2429, "engine == _updatesEngine");
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v10 = [(NSMapTable *)self->_findingClients objectEnumerator];
+  objectEnumerator = [(NSMapTable *)self->_findingClients objectEnumerator];
   v11 = 0;
   while (1)
   {
-    v12 = [v10 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v12)
+    if (!nextObject)
     {
       break;
     }
 
-    v11 = v12;
-    [v12 serviceDidUpdateAlgorithmConvergenceState:v8 forObject:v9];
+    v11 = nextObject;
+    [nextObject serviceDidUpdateAlgorithmConvergenceState:stateCopy forObject:objectCopy];
   }
 }
 
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token
 {
   cachedSolutionMacAddr = self->_cachedSolutionMacAddr;
   v4 = 1;
@@ -2554,7 +2554,7 @@ LABEL_104:
   return result;
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
   if (self->_findingToken)
   {
@@ -2579,51 +2579,51 @@ LABEL_104:
     __assert_rtn("[NIServerFindingService uniqueIdentifierForEngine:]", "NIServerFindingSession.mm", 2458, "_algorithmsIdentifier != nil");
   }
 
-  v6 = [v5 UUIDString];
-  sub_100004A08(retstr, [v6 UTF8String]);
+  uUIDString = [v5 UUIDString];
+  sub_100004A08(retstr, [uUIDString UTF8String]);
 
   return result;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   dispatch_assert_queue_V2(self->_queue);
-  if (v5)
+  if (locationsCopy)
   {
-    v6 = [v5 lastObject];
+    lastObject = [locationsCopy lastObject];
     v7 = qword_1009F9820;
-    if (v6)
+    if (lastObject)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
       {
         sub_1004B067C();
       }
 
-      [v6 coordinate];
+      [lastObject coordinate];
       v31 = v8;
-      [v6 coordinate];
+      [lastObject coordinate];
       v30 = v9;
-      v10 = [v6 timestamp];
-      [v10 timeIntervalSinceReferenceDate];
+      timestamp = [lastObject timestamp];
+      [timestamp timeIntervalSinceReferenceDate];
       v29 = v11;
-      [v6 course];
+      [lastObject course];
       v13 = v12;
-      [v6 courseAccuracy];
+      [lastObject courseAccuracy];
       v15 = v14;
-      [v6 speed];
+      [lastObject speed];
       v17 = v16;
-      [v6 speedAccuracy];
+      [lastObject speedAccuracy];
       v19 = v18;
-      [v6 horizontalAccuracy];
+      [lastObject horizontalAccuracy];
       v21 = v20;
-      [v6 verticalAccuracy];
+      [lastObject verticalAccuracy];
       v23 = v22;
-      [v6 altitude];
+      [lastObject altitude];
       v25 = v24;
-      [v6 ellipsoidalAltitude];
+      [lastObject ellipsoidalAltitude];
       v27 = v26;
-      v28 = [v6 floor];
+      floor = [lastObject floor];
       *buf = v31;
       v33 = v30;
       v34 = v29;
@@ -2635,9 +2635,9 @@ LABEL_104:
       v40 = v23;
       v41 = v25;
       v42 = v27;
-      v43 = [v28 level];
-      v44 = [v6 type];
-      v45 = [v6 signalEnvironmentType];
+      level = [floor level];
+      type = [lastObject type];
+      signalEnvironmentType = [lastObject signalEnvironmentType];
 
       [(NINearbyUpdatesEngine *)self->_updatesEngine acceptSelfLocationData:buf];
     }
@@ -2655,30 +2655,30 @@ LABEL_104:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading
 {
-  v5 = a4;
+  headingCopy = heading;
   dispatch_assert_queue_V2(self->_queue);
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
     sub_1004B072C();
-    if (v5)
+    if (headingCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v5)
+  else if (headingCopy)
   {
 LABEL_3:
-    [v5 magneticHeading];
+    [headingCopy magneticHeading];
     v7 = v6;
-    [v5 trueHeading];
+    [headingCopy trueHeading];
     v9 = v8;
-    [v5 headingAccuracy];
+    [headingCopy headingAccuracy];
     v11 = v10;
-    v12 = [v5 timestamp];
-    [v12 timeIntervalSinceReferenceDate];
+    timestamp = [headingCopy timestamp];
+    [timestamp timeIntervalSinceReferenceDate];
     v14[0] = v7;
     v14[1] = v9;
     v14[2] = v11;
@@ -2696,14 +2696,14 @@ LABEL_3:
 LABEL_7:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [v5 code];
+  errorCopy = error;
+  code = [errorCopy code];
   v7 = qword_1009F9820;
-  if (v6)
+  if (code)
   {
-    if (v6 == 1)
+    if (code == 1)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
       {
@@ -2711,7 +2711,7 @@ LABEL_7:
       }
     }
 
-    else if (v6 == 3)
+    else if (code == 3)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -2740,10 +2740,10 @@ LABEL_7:
   }
 }
 
-- (void)DataCallback:(id)a3
+- (void)DataCallback:(id)callback
 {
   updatesEngine = self->_updatesEngine;
-  [NIGnssExtensionsManager getGnssSatelliteDataVecFromDict:a3];
+  [NIGnssExtensionsManager getGnssSatelliteDataVecFromDict:callback];
   [(NINearbyUpdatesEngine *)updatesEngine acceptGnssSatelliteData:__p];
   if (__p[0])
   {

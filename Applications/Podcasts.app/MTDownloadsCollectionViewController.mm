@@ -1,60 +1,60 @@
 @interface MTDownloadsCollectionViewController
-+ (id)defaultViewControllerWithLibraryActionControllerBridge:(id)a3;
++ (id)defaultViewControllerWithLibraryActionControllerBridge:(id)bridge;
 - (CGSize)calculatedCellSize;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (MTDownloadsCollectionViewController)initWithCollectionViewLayout:(id)a3 libraryActionControllerBridge:(id)a4;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (MTDownloadsCollectionViewController)initWithCollectionViewLayout:(id)layout libraryActionControllerBridge:(id)bridge;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (id)_downloadDataSource;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)episodeForDownloadAtIndex:(unint64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)calculateCellWidth:(double)a3;
-- (void)cancelDownloads:(id)a3;
-- (void)cellDidPressDelete:(id)a3;
-- (void)cellDidPressToggleDownload:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)episodeForDownloadAtIndex:(unint64_t)index;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)calculateCellWidth:(double)width;
+- (void)cancelDownloads:(id)downloads;
+- (void)cellDidPressDelete:(id)delete;
+- (void)cellDidPressToggleDownload:(id)download;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 - (void)configureBarButtonItems;
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4;
+- (void)configureCell:(id)cell atIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)done:(id)a3;
-- (void)downloadManagerDidAddDownload:(id)a3;
-- (void)downloadManagerDidRemoveDownloads:(id)a3;
-- (void)downloadManagerDidUpdateDownload:(id)a3;
-- (void)downloadManagerWillRemoveDownload:(id)a3;
-- (void)setCalculatedCellSize:(CGSize)a3;
-- (void)toggleDownloadForIndex:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)done:(id)done;
+- (void)downloadManagerDidAddDownload:(id)download;
+- (void)downloadManagerDidRemoveDownloads:(id)downloads;
+- (void)downloadManagerDidUpdateDownload:(id)download;
+- (void)downloadManagerWillRemoveDownload:(id)download;
+- (void)setCalculatedCellSize:(CGSize)size;
+- (void)toggleDownloadForIndex:(id)index;
+- (void)traitCollectionDidChange:(id)change;
 - (void)tuckHeader;
 - (void)updateCellSizes;
 - (void)updateDownloadCount;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTDownloadsCollectionViewController
 
-- (MTDownloadsCollectionViewController)initWithCollectionViewLayout:(id)a3 libraryActionControllerBridge:(id)a4
+- (MTDownloadsCollectionViewController)initWithCollectionViewLayout:(id)layout libraryActionControllerBridge:(id)bridge
 {
-  v6 = a4;
+  bridgeCopy = bridge;
   v13.receiver = self;
   v13.super_class = MTDownloadsCollectionViewController;
-  v7 = [(MTDownloadsCollectionViewController *)&v13 initWithCollectionViewLayout:a3];
+  v7 = [(MTDownloadsCollectionViewController *)&v13 initWithCollectionViewLayout:layout];
   v8 = v7;
   if (v7)
   {
-    [(MTDownloadsCollectionViewController *)v7 setLibraryActionControllerBridge:v6];
+    [(MTDownloadsCollectionViewController *)v7 setLibraryActionControllerBridge:bridgeCopy];
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v8 selector:"sizeCategoryChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
     [(MTDownloadsCollectionViewController *)v8 updateDownloadCount];
     v10 = +[MTLegacyDownloadManagerProvider sharedInstance];
-    v11 = [v10 downloadsNotifier];
-    [v11 registerForUpdates:v8];
+    downloadsNotifier = [v10 downloadsNotifier];
+    [downloadsNotifier registerForUpdates:v8];
   }
 
   return v8;
@@ -63,16 +63,16 @@
 - (id)_downloadDataSource
 {
   v2 = +[MTLegacyDownloadManagerProvider sharedInstance];
-  v3 = [v2 downloadManager];
+  downloadManager = [v2 downloadManager];
 
-  return v3;
+  return downloadManager;
 }
 
-+ (id)defaultViewControllerWithLibraryActionControllerBridge:(id)a3
++ (id)defaultViewControllerWithLibraryActionControllerBridge:(id)bridge
 {
-  v3 = a3;
+  bridgeCopy = bridge;
   v4 = objc_alloc_init(MTDownloadsCollectionViewFlowLayout);
-  v5 = [[MTDownloadsCollectionViewController alloc] initWithCollectionViewLayout:v4 libraryActionControllerBridge:v3];
+  v5 = [[MTDownloadsCollectionViewController alloc] initWithCollectionViewLayout:v4 libraryActionControllerBridge:bridgeCopy];
 
   return v5;
 }
@@ -92,56 +92,56 @@
   v23.receiver = self;
   v23.super_class = MTDownloadsCollectionViewController;
   [(MTDownloadsCollectionViewController *)&v23 viewDidLoad];
-  v3 = [(MTDownloadsCollectionViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [(MTDownloadsCollectionViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Downloads" value:&stru_1004F3018 table:0];
   [(MTDownloadsCollectionViewController *)self setTitle:v5];
 
   v6 = [MTDownloadsCollectionView alloc];
-  v7 = [(MTDownloadsCollectionViewController *)self view];
-  [v7 bounds];
+  view = [(MTDownloadsCollectionViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(MTDownloadsCollectionViewController *)self collectionViewLayout];
-  v17 = [(MTDownloadsCollectionView *)v6 initWithFrame:v16 collectionViewLayout:v9, v11, v13, v15];
+  collectionViewLayout = [(MTDownloadsCollectionViewController *)self collectionViewLayout];
+  v17 = [(MTDownloadsCollectionView *)v6 initWithFrame:collectionViewLayout collectionViewLayout:v9, v11, v13, v15];
   [(MTDownloadsCollectionViewController *)self setCollectionView:v17];
 
-  v18 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v18 setPreservesSuperviewLayoutMargins:1];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView setPreservesSuperviewLayoutMargins:1];
 
-  v19 = [(MTDownloadsCollectionViewController *)self collectionView];
+  collectionView2 = [(MTDownloadsCollectionViewController *)self collectionView];
   v20 = objc_opt_class();
   v21 = +[(MTGenericCollectionCell *)MTEpisodeDownloadCell];
-  [v19 registerClass:v20 forCellWithReuseIdentifier:v21];
+  [collectionView2 registerClass:v20 forCellWithReuseIdentifier:v21];
 
-  v22 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v22 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"DownloadHeader"];
+  collectionView3 = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"DownloadHeader"];
 
   [(MTDownloadsCollectionViewController *)self configureBarButtonItems];
   [(MTDownloadsCollectionViewController *)self updateDownloadCount];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTDownloadsCollectionViewController;
-  [(MTDownloadsCollectionViewController *)&v4 viewWillAppear:a3];
+  [(MTDownloadsCollectionViewController *)&v4 viewWillAppear:appear];
   [(MTDownloadsCollectionViewController *)self setVisible:1];
   [(MTDownloadsCollectionViewController *)self configureBarButtonItems];
   [(MTDownloadsCollectionViewController *)self updateDownloadCount];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MTDownloadsCollectionViewController *)self setVisible:0];
   v5.receiver = self;
   v5.super_class = MTDownloadsCollectionViewController;
-  [(MTDownloadsCollectionViewController *)&v5 viewWillDisappear:v3];
+  [(MTDownloadsCollectionViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -149,103 +149,103 @@
   v6.receiver = self;
   v6.super_class = MTDownloadsCollectionViewController;
   [(MTDownloadsCollectionViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v3 frame];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView frame];
   v5 = v4;
 
   [(MTDownloadsCollectionViewController *)self calculateCellWidth:v5];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MTDownloadsCollectionViewController;
-  v7 = a4;
-  [(MTDownloadsCollectionViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MTDownloadsCollectionViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(MTDownloadsCollectionViewController *)self calculateCellWidth:width];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000C3460;
   v8[3] = &unk_1004DB448;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7.receiver = self;
   v7.super_class = MTDownloadsCollectionViewController;
-  [(MTDownloadsCollectionViewController *)&v7 traitCollectionDidChange:v4];
-  v5 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v5 bounds];
+  [(MTDownloadsCollectionViewController *)&v7 traitCollectionDidChange:changeCopy];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView bounds];
   Width = CGRectGetWidth(v8);
 
   [(MTDownloadsCollectionViewController *)self calculateCellWidth:Width];
   [(MTDownloadsCollectionViewController *)self configureBarButtonItems];
-  if (-[MTDownloadsCollectionViewController isHorizontallyCompact](self, "isHorizontallyCompact") && [v4 horizontalSizeClass] != 1)
+  if (-[MTDownloadsCollectionViewController isHorizontallyCompact](self, "isHorizontallyCompact") && [changeCopy horizontalSizeClass] != 1)
   {
     [(MTDownloadsCollectionViewController *)self tuckHeader];
   }
 }
 
-- (void)setCalculatedCellSize:(CGSize)a3
+- (void)setCalculatedCellSize:(CGSize)size
 {
-  if (self->_calculatedCellSize.width != a3.width || self->_calculatedCellSize.height != a3.height)
+  if (self->_calculatedCellSize.width != size.width || self->_calculatedCellSize.height != size.height)
   {
-    self->_calculatedCellSize = a3;
-    v6 = [(MTDownloadsCollectionViewController *)self collectionViewLayout];
-    [v6 invalidateLayout];
+    self->_calculatedCellSize = size;
+    collectionViewLayout = [(MTDownloadsCollectionViewController *)self collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
-    v7 = [(MTDownloadsCollectionViewController *)self collectionView];
-    [v7 reloadData];
+    collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(MTDownloadsCollectionViewController *)self _downloadDataSource:a3];
-  v5 = [v4 numberOfDownloads];
+  v4 = [(MTDownloadsCollectionViewController *)self _downloadDataSource:view];
+  numberOfDownloads = [v4 numberOfDownloads];
 
-  return v5;
+  return numberOfDownloads;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[(MTGenericCollectionCell *)MTEpisodeDownloadCell];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   [(MTDownloadsCollectionViewController *)self configureCell:v9 atIndex:v10];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v7 = [a4 cancelAllButton];
-  [v7 addTarget:self action:"cancelDownloads:" forControlEvents:64];
+  cancelAllButton = [supplementaryView cancelAllButton];
+  [cancelAllButton addTarget:self action:"cancelDownloads:" forControlEvents:64];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = [a4 cancelAllButton];
-  [v7 removeTarget:self action:"cancelDownloads:" forControlEvents:64];
+  cancelAllButton = [supplementaryView cancelAllButton];
+  [cancelAllButton removeTarget:self action:"cancelDownloads:" forControlEvents:64];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [(MTDownloadsCollectionViewController *)self calculatedCellSize:a3];
+  [(MTDownloadsCollectionViewController *)self calculatedCellSize:view];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 0.0;
   v6 = 0.0;
@@ -258,12 +258,12 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(MTDownloadsCollectionViewController *)self isHorizontallyCompact])
   {
-    [v6 bounds];
+    [viewCopy bounds];
     Width = CGRectGetWidth(v12);
     height = 44.0;
   }
@@ -281,61 +281,61 @@
   return result;
 }
 
-- (void)downloadManagerDidAddDownload:(id)a3
+- (void)downloadManagerDidAddDownload:(id)download
 {
-  v4 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(MTDownloadsCollectionViewController *)self updateDownloadCount];
 }
 
-- (void)downloadManagerWillRemoveDownload:(id)a3
+- (void)downloadManagerWillRemoveDownload:(id)download
 {
-  v4 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-  v5 = [v4 numberOfDownloads];
+  _downloadDataSource = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+  numberOfDownloads = [_downloadDataSource numberOfDownloads];
 
-  if (!v5)
+  if (!numberOfDownloads)
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"done:" object:0];
     [(MTDownloadsCollectionViewController *)self performSelector:"done:" withObject:0 afterDelay:1.0];
   }
 
-  v6 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v6 reloadData];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(MTDownloadsCollectionViewController *)self updateDownloadCount];
 }
 
-- (void)downloadManagerDidRemoveDownloads:(id)a3
+- (void)downloadManagerDidRemoveDownloads:(id)downloads
 {
-  v4 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-  v5 = [v4 numberOfDownloads];
+  _downloadDataSource = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+  numberOfDownloads = [_downloadDataSource numberOfDownloads];
 
-  if (!v5)
+  if (!numberOfDownloads)
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"done:" object:0];
     [(MTDownloadsCollectionViewController *)self performSelector:"done:" withObject:0 afterDelay:1.0];
   }
 
-  v6 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v6 reloadData];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(MTDownloadsCollectionViewController *)self updateDownloadCount];
 }
 
-- (void)downloadManagerDidUpdateDownload:(id)a3
+- (void)downloadManagerDidUpdateDownload:(id)download
 {
-  v9 = a3;
-  if (v9)
+  downloadCopy = download;
+  if (downloadCopy)
   {
-    v4 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-    v5 = [v4 indexForDownload:v9];
+    _downloadDataSource = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+    v5 = [_downloadDataSource indexForDownload:downloadCopy];
 
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = [NSIndexPath indexPathForRow:v5 inSection:0];
-      v7 = [(MTDownloadsCollectionViewController *)self collectionView];
-      v8 = [v7 cellForItemAtIndexPath:v6];
+      collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+      v8 = [collectionView cellForItemAtIndexPath:v6];
 
       [(MTDownloadsCollectionViewController *)self configureCell:v8 atIndex:v5];
     }
@@ -344,52 +344,52 @@
   [(MTDownloadsCollectionViewController *)self updateDownloadCount];
 }
 
-- (void)cellDidPressDelete:(id)a3
+- (void)cellDidPressDelete:(id)delete
 {
-  v4 = a3;
-  v5 = [(MTDownloadsCollectionViewController *)self collectionView];
-  v9 = [v5 indexPathForCell:v4];
+  deleteCopy = delete;
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  v9 = [collectionView indexPathForCell:deleteCopy];
 
   v6 = -[MTDownloadsCollectionViewController episodeForDownloadAtIndex:](self, "episodeForDownloadAtIndex:", [v9 row]);
   if (v6)
   {
-    v7 = [(MTDownloadsCollectionViewController *)self libraryActionControllerBridge];
-    v8 = [v6 uuid];
-    [v7 cancelDownloadForEpisodeUuid:v8];
+    libraryActionControllerBridge = [(MTDownloadsCollectionViewController *)self libraryActionControllerBridge];
+    uuid = [v6 uuid];
+    [libraryActionControllerBridge cancelDownloadForEpisodeUuid:uuid];
   }
 }
 
-- (void)cellDidPressToggleDownload:(id)a3
+- (void)cellDidPressToggleDownload:(id)download
 {
-  v4 = a3;
-  v5 = [(MTDownloadsCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  downloadCopy = download;
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:downloadCopy];
 
   [(MTDownloadsCollectionViewController *)self toggleDownloadForIndex:v6];
 }
 
-- (id)episodeForDownloadAtIndex:(unint64_t)a3
+- (id)episodeForDownloadAtIndex:(unint64_t)index
 {
-  v5 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-  v6 = [v5 numberOfDownloads];
+  _downloadDataSource = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+  numberOfDownloads = [_downloadDataSource numberOfDownloads];
 
-  if (v6 <= a3)
+  if (numberOfDownloads <= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v7 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-    v8 = [v7 downloadAtIndex:a3];
+    _downloadDataSource2 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+    v8 = [_downloadDataSource2 downloadAtIndex:index];
 
     if (v8)
     {
       v9 = +[MTDB sharedInstance];
-      v10 = [v9 mainQueueContext];
+      mainQueueContext = [v9 mainQueueContext];
 
-      v11 = [v8 episodeUuid];
-      v12 = [v10 episodeForUuid:v11];
+      episodeUuid = [v8 episodeUuid];
+      v12 = [mainQueueContext episodeForUuid:episodeUuid];
     }
 
     else
@@ -401,20 +401,20 @@
   return v12;
 }
 
-- (void)cancelDownloads:(id)a3
+- (void)cancelDownloads:(id)downloads
 {
-  v3 = [(MTDownloadsCollectionViewController *)self libraryActionControllerBridge];
-  [v3 cancelAllDownloadsUserInitiated:1];
+  libraryActionControllerBridge = [(MTDownloadsCollectionViewController *)self libraryActionControllerBridge];
+  [libraryActionControllerBridge cancelAllDownloadsUserInitiated:1];
 }
 
 - (void)updateDownloadCount
 {
-  v3 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-  v4 = [v3 numberOfDownloads];
+  _downloadDataSource = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+  numberOfDownloads = [_downloadDataSource numberOfDownloads];
 
-  if (v4)
+  if (numberOfDownloads)
   {
-    v5 = [NSNumber numberWithUnsignedInteger:v4];
+    v5 = [NSNumber numberWithUnsignedInteger:numberOfDownloads];
     v9 = IMAccessibilityLocalizedNumber();
   }
 
@@ -423,54 +423,54 @@
     v9 = 0;
   }
 
-  v6 = [(MTDownloadsCollectionViewController *)self tabBarItem];
-  [v6 setBadgeValue:v9];
+  tabBarItem = [(MTDownloadsCollectionViewController *)self tabBarItem];
+  [tabBarItem setBadgeValue:v9];
 
-  v7 = [(MTDownloadsCollectionViewController *)self navigationController];
-  v8 = [v7 tabBarItem];
-  [v8 setBadgeValue:v9];
+  navigationController = [(MTDownloadsCollectionViewController *)self navigationController];
+  tabBarItem2 = [navigationController tabBarItem];
+  [tabBarItem2 setBadgeValue:v9];
 }
 
-- (void)toggleDownloadForIndex:(id)a3
+- (void)toggleDownloadForIndex:(id)index
 {
-  v4 = -[MTDownloadsCollectionViewController episodeForDownloadAtIndex:](self, "episodeForDownloadAtIndex:", [a3 row]);
+  v4 = -[MTDownloadsCollectionViewController episodeForDownloadAtIndex:](self, "episodeForDownloadAtIndex:", [index row]);
   if (v4)
   {
     v7 = v4;
-    v5 = [(MTDownloadsCollectionViewController *)self libraryActionControllerBridge];
-    v6 = [v7 uuid];
-    [v5 resumeOrPauseEpisodeDownloadWithUuid:v6];
+    libraryActionControllerBridge = [(MTDownloadsCollectionViewController *)self libraryActionControllerBridge];
+    uuid = [v7 uuid];
+    [libraryActionControllerBridge resumeOrPauseEpisodeDownloadWithUuid:uuid];
 
     v4 = v7;
   }
 }
 
-- (void)calculateCellWidth:(double)a3
+- (void)calculateCellWidth:(double)width
 {
-  v3 = a3;
-  if (a3 >= 703.0)
+  widthCopy = width;
+  if (width >= 703.0)
   {
     +[(MTGenericCollectionCell *)MTEpisodeDownloadCell];
-    v3 = floor(v3 / ceil(v3 / v5));
+    widthCopy = floor(widthCopy / ceil(widthCopy / v5));
   }
 
-  [(MTGenericCollectionCell *)MTEpisodeDownloadCell heightForWidth:v3];
+  [(MTGenericCollectionCell *)MTEpisodeDownloadCell heightForWidth:widthCopy];
 
-  [(MTDownloadsCollectionViewController *)self setCalculatedCellSize:v3, v6];
+  [(MTDownloadsCollectionViewController *)self setCalculatedCellSize:widthCopy, v6];
 }
 
-- (void)configureCell:(id)a3 atIndex:(unint64_t)a4
+- (void)configureCell:(id)cell atIndex:(unint64_t)index
 {
-  v10 = a3;
-  v6 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-  v7 = [v6 numberOfDownloads];
+  cellCopy = cell;
+  _downloadDataSource = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+  numberOfDownloads = [_downloadDataSource numberOfDownloads];
 
-  if (v7 > a4)
+  if (numberOfDownloads > index)
   {
-    v8 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
-    v9 = [v8 downloadAtIndex:a4];
+    _downloadDataSource2 = [(MTDownloadsCollectionViewController *)self _downloadDataSource];
+    v9 = [_downloadDataSource2 downloadAtIndex:index];
 
-    [v10 updateWithObject:v9];
+    [cellCopy updateWithObject:v9];
   }
 }
 
@@ -489,96 +489,96 @@
     v12 = 0;
   }
 
-  v6 = [(MTDownloadsCollectionViewController *)self navigationController];
-  v7 = [v6 presentingViewController];
+  navigationController = [(MTDownloadsCollectionViewController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
 
-  v8 = [(MTDownloadsCollectionViewController *)self navigationItem];
-  v9 = v8;
-  if (v7)
+  navigationItem = [(MTDownloadsCollectionViewController *)self navigationItem];
+  v9 = navigationItem;
+  if (presentingViewController)
   {
-    [v8 setLeftBarButtonItem:v12];
+    [navigationItem setLeftBarButtonItem:v12];
 
-    v10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"done:"];
-    v11 = [(MTDownloadsCollectionViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    navigationItem3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"done:"];
+    navigationItem2 = [(MTDownloadsCollectionViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:navigationItem3];
   }
 
   else
   {
-    [v8 setRightBarButtonItem:v12];
+    [navigationItem setRightBarButtonItem:v12];
 
-    v10 = [(MTDownloadsCollectionViewController *)self navigationItem];
-    [v10 setLeftBarButtonItem:0];
+    navigationItem3 = [(MTDownloadsCollectionViewController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:0];
   }
 }
 
 - (void)tuckHeader
 {
-  v3 = [(MTDownloadsCollectionViewController *)self collectionView];
-  v4 = [(MTDownloadsCollectionViewController *)self collectionViewLayout];
-  [(MTDownloadsCollectionViewController *)self collectionView:v3 layout:v4 referenceSizeForHeaderInSection:0];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  collectionViewLayout = [(MTDownloadsCollectionViewController *)self collectionViewLayout];
+  [(MTDownloadsCollectionViewController *)self collectionView:collectionView layout:collectionViewLayout referenceSizeForHeaderInSection:0];
   v6 = v5;
 
-  v7 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v7 adjustedContentInset];
+  collectionView2 = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView2 adjustedContentInset];
   v9 = v8;
 
-  v10 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v10 setContentOffset:0 animated:{0.0, v6 - v9}];
+  collectionView3 = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView3 setContentOffset:0 animated:{0.0, v6 - v9}];
 }
 
 - (void)updateCellSizes
 {
-  v3 = [(MTDownloadsCollectionViewController *)self collectionView];
-  [v3 bounds];
+  collectionView = [(MTDownloadsCollectionViewController *)self collectionView];
+  [collectionView bounds];
   Width = CGRectGetWidth(v6);
 
   [(MTDownloadsCollectionViewController *)self calculateCellWidth:Width];
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"done:" object:0];
-  v4 = self;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
-      v20 = v4;
-      v5 = [(MTDownloadsCollectionViewController *)v4 presentingViewController];
+      v20 = selfCopy;
+      presentingViewController = [(MTDownloadsCollectionViewController *)selfCopy presentingViewController];
 
-      if (v5)
+      if (presentingViewController)
       {
-        v14 = [(MTDownloadsCollectionViewController *)v20 presentingViewController];
-        [v14 dismissViewControllerAnimated:1 completion:0];
+        presentingViewController2 = [(MTDownloadsCollectionViewController *)v20 presentingViewController];
+        [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
 
         goto LABEL_13;
       }
 
-      v6 = [(MTDownloadsCollectionViewController *)v20 navigationController];
-      if (v6)
+      navigationController = [(MTDownloadsCollectionViewController *)v20 navigationController];
+      if (navigationController)
       {
-        v7 = v6;
-        v8 = [(MTDownloadsCollectionViewController *)v20 navigationController];
-        v9 = [v8 viewControllers];
-        if ([v9 count] <= 1)
+        v7 = navigationController;
+        navigationController2 = [(MTDownloadsCollectionViewController *)v20 navigationController];
+        viewControllers = [navigationController2 viewControllers];
+        if ([viewControllers count] <= 1)
         {
         }
 
         else
         {
-          v10 = [(MTDownloadsCollectionViewController *)v20 navigationController];
-          v11 = [v10 viewControllers];
-          v12 = [v11 indexOfObject:v20];
+          navigationController3 = [(MTDownloadsCollectionViewController *)v20 navigationController];
+          viewControllers2 = [navigationController3 viewControllers];
+          v12 = [viewControllers2 indexOfObject:v20];
 
           if (v12)
           {
-            v15 = [(MTDownloadsCollectionViewController *)v20 navigationController];
-            v16 = [v15 viewControllers];
+            navigationController4 = [(MTDownloadsCollectionViewController *)v20 navigationController];
+            viewControllers3 = [navigationController4 viewControllers];
 
-            v17 = [v16 objectAtIndex:{objc_msgSend(v16, "indexOfObject:", v20) - 1}];
-            v18 = [(MTDownloadsCollectionViewController *)v20 navigationController];
-            v19 = [v18 popToViewController:v17 animated:1];
+            v17 = [viewControllers3 objectAtIndex:{objc_msgSend(viewControllers3, "indexOfObject:", v20) - 1}];
+            navigationController5 = [(MTDownloadsCollectionViewController *)v20 navigationController];
+            v19 = [navigationController5 popToViewController:v17 animated:1];
 
             goto LABEL_13;
           }
@@ -590,10 +590,10 @@
         break;
       }
 
-      v13 = [(MTDownloadsCollectionViewController *)v20 parentViewController];
+      parentViewController = [(MTDownloadsCollectionViewController *)v20 parentViewController];
 
-      v4 = v13;
-      if (!v13)
+      selfCopy = parentViewController;
+      if (!parentViewController)
       {
         return;
       }

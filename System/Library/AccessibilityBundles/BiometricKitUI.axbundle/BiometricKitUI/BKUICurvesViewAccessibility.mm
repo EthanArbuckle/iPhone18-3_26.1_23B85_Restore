@@ -12,17 +12,17 @@
     return 0;
   }
 
-  v4 = [(BKUICurvesViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(BKUICurvesViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v4)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v5 = [(BKUICurvesViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v6 = [v5 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(BKUICurvesViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)accessibilityValue

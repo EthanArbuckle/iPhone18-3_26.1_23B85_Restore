@@ -1,5 +1,5 @@
 @interface PULayerAnimationGroup
-- (PULayerAnimationGroup)initWithReferenceLayer:(id)a3;
+- (PULayerAnimationGroup)initWithReferenceLayer:(id)layer;
 - (double)currentTime;
 - (void)updateAnimations;
 @end
@@ -12,7 +12,7 @@
   v22.receiver = self;
   v22.super_class = PULayerAnimationGroup;
   [(PUTimedAnimationGroup *)&v22 updateAnimations];
-  v3 = [(PUAnimationGroup *)self isPaused];
+  isPaused = [(PUAnimationGroup *)self isPaused];
   [(PUTimedAnimationGroup *)self elapsedTime];
   v5 = v4;
   [(PUTimedAnimationGroup *)self beginTime];
@@ -21,8 +21,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(PUAnimationGroup *)self subAnimationGroups];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+  v9 = [subAnimationGroups countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -34,14 +34,14 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subAnimationGroups);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (v3)
+          if (isPaused)
           {
             v14 = 0.0;
             v15 = 0.0;
@@ -64,7 +64,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v10 = [subAnimationGroups countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v10);
@@ -73,20 +73,20 @@
 
 - (double)currentTime
 {
-  v2 = [(PULayerAnimationGroup *)self referenceLayer];
-  [v2 convertTime:0 fromLayer:CACurrentMediaTime()];
+  referenceLayer = [(PULayerAnimationGroup *)self referenceLayer];
+  [referenceLayer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
 
   return v4;
 }
 
-- (PULayerAnimationGroup)initWithReferenceLayer:(id)a3
+- (PULayerAnimationGroup)initWithReferenceLayer:(id)layer
 {
-  v6 = a3;
-  if (!v6)
+  layerCopy = layer;
+  if (!layerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PULayerAnimationGroup.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"referenceLayer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PULayerAnimationGroup.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"referenceLayer != nil"}];
   }
 
   v11.receiver = self;
@@ -95,7 +95,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_referenceLayer, a3);
+    objc_storeStrong(&v7->_referenceLayer, layer);
     [(PULayerAnimationGroup *)v8 currentTime];
     [(PUTimedAnimationGroup *)v8 setBeginTime:?];
   }

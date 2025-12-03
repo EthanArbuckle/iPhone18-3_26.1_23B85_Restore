@@ -1,23 +1,23 @@
 @interface TSDImageDataHelper
-+ (id)thumbnailImageDataForImageData:(id)a3;
++ (id)thumbnailImageDataForImageData:(id)data;
 - (BOOL)prefersHDRRendering;
 - (CGSize)naturalSize;
-- (TSDImageDataHelper)initWithImageData:(id)a3;
-- (void)generateThumbnailImageDataWithCompletionHandler:(id)a3;
+- (TSDImageDataHelper)initWithImageData:(id)data;
+- (void)generateThumbnailImageDataWithCompletionHandler:(id)handler;
 @end
 
 @implementation TSDImageDataHelper
 
-- (TSDImageDataHelper)initWithImageData:(id)a3
+- (TSDImageDataHelper)initWithImageData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = TSDImageDataHelper;
   v6 = [(TSDImageDataHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageData, a3);
+    objc_storeStrong(&v6->_imageData, data);
   }
 
   return v7;
@@ -81,9 +81,9 @@
   return v7;
 }
 
-- (void)generateThumbnailImageDataWithCompletionHandler:(id)a3
+- (void)generateThumbnailImageDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_imageData(self, v5, v6);
   v10 = objc_msgSend_context(v7, v8, v9);
   v13 = objc_msgSend_documentObject(v10, v11, v12);
@@ -98,7 +98,7 @@
     v18 = objc_opt_class();
     v20 = objc_msgSend_thumbnailImageDataForImageData_(v18, v19, v7);
 LABEL_7:
-    v4[2](v4, v20);
+    handlerCopy[2](handlerCopy, v20);
     goto LABEL_8;
   }
 
@@ -113,18 +113,18 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = sub_2767C0194;
   v22[3] = &unk_27A6CDEE0;
-  v23 = v4;
+  v23 = handlerCopy;
   objc_msgSend_tsck_addDownloadObserver_lockMode_options_completionHandler_(v7, v21, self, 2, 2, v22);
   v20 = v23;
 LABEL_8:
 }
 
-+ (id)thumbnailImageDataForImageData:(id)a3
++ (id)thumbnailImageDataForImageData:(id)data
 {
-  v3 = a3;
-  v4 = TSDResampleImageData(v3, 131, 256.0, 256.0);
+  dataCopy = data;
+  v4 = TSDResampleImageData(dataCopy, 131, 256.0, 256.0);
 
-  if (v4 == v3)
+  if (v4 == dataCopy)
   {
 
     v4 = 0;

@@ -1,13 +1,13 @@
 @interface STUIStatusBarIndicatorLocationItem
-+ (id)groupWithPriority:(int64_t)a3;
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
++ (id)groupWithPriority:(int64_t)priority;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (STUIStatusBarImageView)prominentImageView;
-- (STUIStatusBarIndicatorLocationItem)initWithIdentifier:(id)a3 statusBar:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
-- (id)overriddenStyleAttributesForData:(id)a3 identifier:(id)a4;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (STUIStatusBarIndicatorLocationItem)initWithIdentifier:(id)identifier statusBar:(id)bar;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
+- (id)overriddenStyleAttributesForData:(id)data identifier:(id)identifier;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_prominentImageView;
 @end
 
@@ -33,11 +33,11 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (STUIStatusBarIndicatorLocationItem)initWithIdentifier:(id)a3 statusBar:(id)a4
+- (STUIStatusBarIndicatorLocationItem)initWithIdentifier:(id)identifier statusBar:(id)bar
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarIndicatorLocationItem;
-  result = [(STUIStatusBarItem *)&v5 initWithIdentifier:a3 statusBar:a4];
+  result = [(STUIStatusBarItem *)&v5 initWithIdentifier:identifier statusBar:bar];
   if (result)
   {
     result->_previousType = -1;
@@ -46,13 +46,13 @@
   return result;
 }
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 locationEntry];
-  v5 = [v4 type];
+  data = [update data];
+  locationEntry = [data locationEntry];
+  type = [locationEntry type];
 
-  if (v5 == 1)
+  if (type == 1)
   {
     return @"location";
   }
@@ -63,15 +63,15 @@
   }
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = STUIStatusBarIndicatorLocationItem;
-  v4 = a3;
-  v5 = [(STUIStatusBarItem *)&v12 createDisplayItemForIdentifier:v4];
-  v6 = [objc_opt_class() prominentDisplayIdentifier];
+  identifierCopy = identifier;
+  v5 = [(STUIStatusBarItem *)&v12 createDisplayItemForIdentifier:identifierCopy];
+  prominentDisplayIdentifier = [objc_opt_class() prominentDisplayIdentifier];
 
-  if (v6 == v4)
+  if (prominentDisplayIdentifier == identifierCopy)
   {
     v7 = [MEMORY[0x277D755B8] _systemImageNamed:@"location.circle.fill"];
     v8 = [v7 imageWithRenderingMode:1];
@@ -80,49 +80,49 @@
     UIEdgeInsetsAdd();
     v9 = [v8 imageWithAlignmentRectInsets:?];
 
-    v10 = [(STUIStatusBarIndicatorLocationItem *)self prominentImageView];
-    [v10 setImage:v9];
+    prominentImageView = [(STUIStatusBarIndicatorLocationItem *)self prominentImageView];
+    [prominentImageView setImage:v9];
   }
 
   return v5;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() prominentDisplayIdentifier];
+  identifierCopy = identifier;
+  prominentDisplayIdentifier = [objc_opt_class() prominentDisplayIdentifier];
 
-  if (v5 == v4)
+  if (prominentDisplayIdentifier == identifierCopy)
   {
-    v6 = [(STUIStatusBarIndicatorLocationItem *)self prominentImageView];
+    prominentImageView = [(STUIStatusBarIndicatorLocationItem *)self prominentImageView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = STUIStatusBarIndicatorLocationItem;
-    v6 = [(STUIStatusBarIndicatorItem *)&v9 viewForIdentifier:v4];
+    prominentImageView = [(STUIStatusBarIndicatorItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = prominentImageView;
 
   return v7;
 }
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [objc_opt_class() prominentDisplayIdentifier];
+  itemCopy = item;
+  dataCopy = data;
+  identifier = [itemCopy identifier];
+  prominentDisplayIdentifier = [objc_opt_class() prominentDisplayIdentifier];
 
-  if (v8 == v9)
+  if (identifier == prominentDisplayIdentifier)
   {
-    v11 = [v7 locationEntry];
-    if ([v11 isEnabled])
+    locationEntry = [dataCopy locationEntry];
+    if ([locationEntry isEnabled])
     {
-      v12 = [v7 locationEntry];
-      v10 = [v12 type] == 2;
+      locationEntry2 = [dataCopy locationEntry];
+      v10 = [locationEntry2 type] == 2;
     }
 
     else
@@ -135,20 +135,20 @@
   {
     v14.receiver = self;
     v14.super_class = STUIStatusBarIndicatorLocationItem;
-    v10 = [(STUIStatusBarItem *)&v14 canEnableDisplayItem:v6 fromData:v7];
+    v10 = [(STUIStatusBarItem *)&v14 canEnableDisplayItem:itemCopy fromData:dataCopy];
   }
 
   return v10;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [objc_opt_class() defaultDisplayIdentifier];
-  v10 = v9;
-  if (v8 != v9)
+  updateCopy = update;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
+  v10 = defaultDisplayIdentifier;
+  if (identifier != defaultDisplayIdentifier)
   {
 
 LABEL_18:
@@ -156,24 +156,24 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = [v6 dataChanged];
+  dataChanged = [updateCopy dataChanged];
 
-  if (!v11)
+  if (!dataChanged)
   {
     goto LABEL_18;
   }
 
-  v12 = [v6 data];
-  v13 = [v12 locationEntry];
-  v14 = [v13 type];
+  data = [updateCopy data];
+  locationEntry = [data locationEntry];
+  type = [locationEntry type];
 
   previousType = self->_previousType;
-  v16 = previousType == 2 && v14 == 0;
-  if (v16 || (!previousType ? (v17 = v14 == 2) : (v17 = 0), !v17 ? (v18 = 0) : (v18 = 1), v14 == previousType || previousType == -1 || (v18 & 1) != 0))
+  v16 = previousType == 2 && type == 0;
+  if (v16 || (!previousType ? (v17 = type == 2) : (v17 = 0), !v17 ? (v18 = 0) : (v18 = 1), type == previousType || previousType == -1 || (v18 & 1) != 0))
   {
     v21.receiver = self;
     v21.super_class = STUIStatusBarIndicatorLocationItem;
-    v19 = [(STUIStatusBarIndicatorItem *)&v21 applyUpdate:v6 toDisplayItem:v7];
+    v19 = [(STUIStatusBarIndicatorItem *)&v21 applyUpdate:updateCopy toDisplayItem:itemCopy];
   }
 
   else
@@ -182,12 +182,12 @@ LABEL_18:
     v22[1] = 3221225472;
     v22[2] = __64__STUIStatusBarIndicatorLocationItem_applyUpdate_toDisplayItem___block_invoke;
     v22[3] = &unk_279D38740;
-    v23 = v6;
-    v24 = self;
+    v23 = updateCopy;
+    selfCopy = self;
     v19 = [STUIStatusBarAnimation animationWithBlock:v22];
   }
 
-  self->_previousType = v14;
+  self->_previousType = type;
 LABEL_19:
 
   return v19;
@@ -262,12 +262,12 @@ uint64_t __64__STUIStatusBarIndicatorLocationItem_applyUpdate_toDisplayItem___bl
   return [*(a1 + 32) setAlpha:1.0];
 }
 
-- (id)overriddenStyleAttributesForData:(id)a3 identifier:(id)a4
+- (id)overriddenStyleAttributesForData:(id)data identifier:(id)identifier
 {
-  v4 = a4;
-  v5 = [objc_opt_class() prominentDisplayIdentifier];
+  identifierCopy = identifier;
+  prominentDisplayIdentifier = [objc_opt_class() prominentDisplayIdentifier];
 
-  if (v5 == v4)
+  if (prominentDisplayIdentifier == identifierCopy)
   {
     v6 = +[STUIStatusBarStyleAttributes overriddenStyleAttributes];
     [v6 setSymbolScale:2];
@@ -281,14 +281,14 @@ uint64_t __64__STUIStatusBarIndicatorLocationItem_applyUpdate_toDisplayItem___bl
   return v6;
 }
 
-+ (id)groupWithPriority:(int64_t)a3
++ (id)groupWithPriority:(int64_t)priority
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = [a1 defaultDisplayIdentifier];
-  v6 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v5 priority:1];
+  defaultDisplayIdentifier = [self defaultDisplayIdentifier];
+  v6 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:defaultDisplayIdentifier priority:1];
 
-  v7 = [a1 prominentDisplayIdentifier];
-  v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:2];
+  prominentDisplayIdentifier = [self prominentDisplayIdentifier];
+  v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:prominentDisplayIdentifier priority:2];
   v15[0] = v6;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v10 = [v8 excludingPlacements:v9];
@@ -296,7 +296,7 @@ uint64_t __64__STUIStatusBarIndicatorLocationItem_applyUpdate_toDisplayItem___bl
   v14[0] = v6;
   v14[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  v12 = [(STUIStatusBarDisplayItemPlacementGroup *)STUIStatusBarDisplayItemPlacementLocationGroup groupWithPriority:a3 placements:v11];
+  v12 = [(STUIStatusBarDisplayItemPlacementGroup *)STUIStatusBarDisplayItemPlacementLocationGroup groupWithPriority:priority placements:v11];
 
   [v12 setRegularPlacement:v6];
   [v12 setProminentPlacement:v10];

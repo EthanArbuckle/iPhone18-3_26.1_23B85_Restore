@@ -1,11 +1,11 @@
 @interface MPAVRoutingViewItem
-+ (id)itemWithActionTitle:(id)a3 subtitle:(id)a4 enabled:(BOOL)a5 identifier:(id)a6 image:(id)a7;
-+ (id)itemWithLeader:(id)a3 members:(id)a4;
-+ (id)itemWithRoute:(id)a3;
-+ (id)itemWithVendorSpecificCustomRowTitle:(id)a3 icon:(id)a4 identifier:(id)a5;
-+ (id)itemWithVendorSpecificLeader:(id)a3 members:(id)a4;
-+ (id)itemWithVendorSpecificRoute:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)itemWithActionTitle:(id)title subtitle:(id)subtitle enabled:(BOOL)enabled identifier:(id)identifier image:(id)image;
++ (id)itemWithLeader:(id)leader members:(id)members;
++ (id)itemWithRoute:(id)route;
++ (id)itemWithVendorSpecificCustomRowTitle:(id)title icon:(id)icon identifier:(id)identifier;
++ (id)itemWithVendorSpecificLeader:(id)leader members:(id)members;
++ (id)itemWithVendorSpecificRoute:(id)route;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpandable;
 - (BOOL)isPickable;
 - (MPAVRoute)mainRoute;
@@ -39,8 +39,8 @@
     }
 
 LABEL_10:
-    v5 = [(NSArray *)self->_routes firstObject];
-    v6 = [v5 debugDescription];
+    firstObject = [(NSArray *)self->_routes firstObject];
+    v6 = [firstObject debugDescription];
     v7 = v6;
     v8 = @"<NONE>";
     if (v6)
@@ -62,7 +62,7 @@ LABEL_10:
   {
 LABEL_13:
     v9 = [(NSArray *)self->_routes debugDescription];
-    v5 = v9;
+    firstObject = v9;
     v10 = @"<NONE>";
     if (v9)
     {
@@ -116,8 +116,8 @@ LABEL_21:
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) routeUID];
-        v6 ^= [v9 hash];
+        routeUID = [*(*(&v11 + 1) + 8 * i) routeUID];
+        v6 ^= [routeUID hash];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -134,10 +134,10 @@ LABEL_21:
   return [(NSString *)self->_actionIdentifier hash]^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
   }
@@ -147,40 +147,40 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MPAVRoutingViewItem *)v5 type];
-      if (v6 != [(MPAVRoutingViewItem *)self type])
+      v5 = equalCopy;
+      type = [(MPAVRoutingViewItem *)v5 type];
+      if (type != [(MPAVRoutingViewItem *)self type])
       {
         LOBYTE(self) = 0;
         goto LABEL_11;
       }
 
-      v7 = [(MPAVRoutingViewItem *)self type];
-      if (v7 > 7)
+      type2 = [(MPAVRoutingViewItem *)self type];
+      if (type2 > 7)
       {
         goto LABEL_11;
       }
 
-      if (((1 << v7) & 0xBB) != 0)
+      if (((1 << type2) & 0xBB) != 0)
       {
         self = self->_routes;
-        v8 = [(MPAVRoutingViewItem *)v5 routes];
-        LOBYTE(self) = [(MPAVRoutingViewItem *)self isEqual:v8];
+        routes = [(MPAVRoutingViewItem *)v5 routes];
+        LOBYTE(self) = [(MPAVRoutingViewItem *)self isEqual:routes];
 LABEL_7:
 
 LABEL_11:
         goto LABEL_12;
       }
 
-      if (v7 == 2)
+      if (type2 == 2)
       {
         actionIdentifier = self->_actionIdentifier;
-        v8 = [(MPAVRoutingViewItem *)v5 actionIdentifier];
-        if ([(NSString *)actionIdentifier isEqualToString:v8])
+        routes = [(MPAVRoutingViewItem *)v5 actionIdentifier];
+        if ([(NSString *)actionIdentifier isEqualToString:routes])
         {
           localizedSubtitle = self->_localizedSubtitle;
-          v12 = [(MPAVRoutingViewItem *)v5 localizedSubtitle];
-          if (localizedSubtitle == v12 || [(NSString *)localizedSubtitle isEqual:v12])
+          localizedSubtitle = [(MPAVRoutingViewItem *)v5 localizedSubtitle];
+          if (localizedSubtitle == localizedSubtitle || [(NSString *)localizedSubtitle isEqual:localizedSubtitle])
           {
             LODWORD(self) = self->_enabled;
             LOBYTE(self) = self == [(MPAVRoutingViewItem *)v5 enabled];
@@ -198,12 +198,12 @@ LABEL_11:
       else
       {
         vendorSpecificCustomRowIdentifier = self->_vendorSpecificCustomRowIdentifier;
-        v8 = [(MPAVRoutingViewItem *)v5 vendorSpecificCustomRowIdentifier];
-        if ([(NSString *)vendorSpecificCustomRowIdentifier isEqualToString:v8])
+        routes = [(MPAVRoutingViewItem *)v5 vendorSpecificCustomRowIdentifier];
+        if ([(NSString *)vendorSpecificCustomRowIdentifier isEqualToString:routes])
         {
           self = self->_localizedTitle;
-          v12 = [(MPAVRoutingViewItem *)v5 localizedTitle];
-          LOBYTE(self) = [(MPAVRoutingViewItem *)self isEqualToString:v12];
+          localizedSubtitle = [(MPAVRoutingViewItem *)v5 localizedTitle];
+          LOBYTE(self) = [(MPAVRoutingViewItem *)self isEqualToString:localizedSubtitle];
 LABEL_23:
 
           goto LABEL_7;
@@ -224,42 +224,42 @@ LABEL_12:
 
 - (unint64_t)nestedLevel
 {
-  v2 = [(MPAVRoutingViewItem *)self mainRoute];
-  v3 = [v2 parentRoute];
+  mainRoute = [(MPAVRoutingViewItem *)self mainRoute];
+  parentRoute = [mainRoute parentRoute];
 
-  if (v3)
+  if (parentRoute)
   {
-    v3 = 0;
-    v4 = v2;
+    parentRoute = 0;
+    v4 = mainRoute;
     do
     {
-      ++v3;
-      v2 = [v4 parentRoute];
+      ++parentRoute;
+      mainRoute = [v4 parentRoute];
 
-      v5 = [v2 parentRoute];
+      parentRoute2 = [mainRoute parentRoute];
 
-      v4 = v2;
+      v4 = mainRoute;
     }
 
-    while (v5);
+    while (parentRoute2);
   }
 
-  return v3;
+  return parentRoute;
 }
 
 - (BOOL)isPickable
 {
-  v2 = [(MPAVRoutingViewItem *)self mainRoute];
-  v3 = [v2 isPickable];
+  mainRoute = [(MPAVRoutingViewItem *)self mainRoute];
+  isPickable = [mainRoute isPickable];
 
-  return v3;
+  return isPickable;
 }
 
 - (BOOL)isExpandable
 {
-  v3 = [(MPAVRoutingViewItem *)self mainRoute];
-  v4 = [v3 subRoutes];
-  if ([v4 count])
+  mainRoute = [(MPAVRoutingViewItem *)self mainRoute];
+  subRoutes = [mainRoute subRoutes];
+  if ([subRoutes count])
   {
     v5 = 1;
   }
@@ -277,53 +277,53 @@ LABEL_12:
   leader = self->_leader;
   if (leader)
   {
-    v3 = leader;
+    firstObject = leader;
   }
 
   else
   {
-    v3 = [(NSArray *)self->_routes firstObject];
+    firstObject = [(NSArray *)self->_routes firstObject];
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (NSString)localizedTitle
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(MPAVRoutingViewItem *)self type];
+  type = [(MPAVRoutingViewItem *)self type];
   v4 = &stru_1F149ECA8;
-  if (v3 > 2)
+  if (type > 2)
   {
-    if (v3 <= 5)
+    if (type <= 5)
     {
-      if ((v3 - 3) >= 2)
+      if ((type - 3) >= 2)
       {
-        if (v3 != 5)
+        if (type != 5)
         {
           goto LABEL_26;
         }
 
-        v5 = [(MPAVRoutingViewItem *)self routes];
-        v6 = [v5 firstObject];
-        v7 = [v6 protocolName];
+        routes = [(MPAVRoutingViewItem *)self routes];
+        firstObject = [routes firstObject];
+        protocolName = [firstObject protocolName];
         goto LABEL_11;
       }
 
 LABEL_10:
-      v5 = [(MPAVRoutingViewItem *)self routes];
-      v6 = [v5 firstObject];
-      v7 = [v6 routeName];
+      routes = [(MPAVRoutingViewItem *)self routes];
+      firstObject = [routes firstObject];
+      protocolName = [firstObject routeName];
 LABEL_11:
-      v4 = v7;
+      v4 = protocolName;
 
 LABEL_25:
       goto LABEL_26;
     }
 
-    if (v3 != 7)
+    if (type != 7)
     {
-      if (v3 != 6)
+      if (type != 6)
       {
         goto LABEL_26;
       }
@@ -333,15 +333,15 @@ LABEL_25:
 
 LABEL_15:
     v8 = MEMORY[0x1E695DF70];
-    v9 = [(MPAVRoutingViewItem *)self routes];
-    v5 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    routes2 = [(MPAVRoutingViewItem *)self routes];
+    routes = [v8 arrayWithCapacity:{objc_msgSend(routes2, "count")}];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(MPAVRoutingViewItem *)self routes];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    routes3 = [(MPAVRoutingViewItem *)self routes];
+    v11 = [routes3 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -352,30 +352,30 @@ LABEL_15:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(routes3);
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 routeName];
+          routeName = [v15 routeName];
 
-          if (v16)
+          if (routeName)
           {
-            v17 = [v15 routeName];
-            [v5 addObject:v17];
+            routeName2 = [v15 routeName];
+            [routes addObject:routeName2];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [routes3 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
     }
 
-    v4 = [v5 componentsJoinedByString:@" + "];
+    v4 = [routes componentsJoinedByString:@" + "];
     goto LABEL_25;
   }
 
-  switch(v3)
+  switch(type)
   {
     case 0:
       goto LABEL_10;
@@ -392,22 +392,22 @@ LABEL_26:
   return v4;
 }
 
-+ (id)itemWithVendorSpecificCustomRowTitle:(id)a3 icon:(id)a4 identifier:(id)a5
++ (id)itemWithVendorSpecificCustomRowTitle:(id)title icon:(id)icon identifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  iconCopy = icon;
+  identifierCopy = identifier;
+  titleCopy = title;
   v10 = objc_alloc_init(MPAVRoutingViewItem);
-  v11 = [v9 copy];
+  v11 = [titleCopy copy];
 
   localizedTitle = v10->_localizedTitle;
   v10->_localizedTitle = v11;
 
   image = v10->_image;
-  v10->_image = v7;
-  v14 = v7;
+  v10->_image = iconCopy;
+  v14 = iconCopy;
 
-  v15 = [v8 copy];
+  v15 = [identifierCopy copy];
   vendorSpecificCustomRowIdentifier = v10->_vendorSpecificCustomRowIdentifier;
   v10->_vendorSpecificCustomRowIdentifier = v15;
 
@@ -417,17 +417,17 @@ LABEL_26:
   return v10;
 }
 
-+ (id)itemWithVendorSpecificLeader:(id)a3 members:(id)a4
++ (id)itemWithVendorSpecificLeader:(id)leader members:(id)members
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  leaderCopy = leader;
+  membersCopy = members;
   v7 = objc_alloc_init(MPAVRoutingViewItem);
-  v8 = [v6 copy];
+  v8 = [membersCopy copy];
 
-  if (![(NSArray *)v8 containsObject:v5])
+  if (![(NSArray *)v8 containsObject:leaderCopy])
   {
-    v20[0] = v5;
+    v20[0] = leaderCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     v10 = [v9 arrayByAddingObjectsFromArray:v8];
 
@@ -439,14 +439,14 @@ LABEL_26:
   v12 = v8;
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-  v15 = [v14 localizedStringForKey:@"ROUTING_GROUP_SUBTITLE_COUNT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+  mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+  v15 = [mediaPlayerBundle localizedStringForKey:@"ROUTING_GROUP_SUBTITLE_COUNT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
   v16 = [v13 stringWithFormat:v15, -[NSArray count](v12, "count")];
   localizedSubtitle = v7->_localizedSubtitle;
   v7->_localizedSubtitle = v16;
 
   leader = v7->_leader;
-  v7->_leader = v5;
+  v7->_leader = leaderCopy;
 
   v7->_enabled = 1;
   v7->_type = 7;
@@ -454,23 +454,23 @@ LABEL_26:
   return v7;
 }
 
-+ (id)itemWithVendorSpecificRoute:(id)a3
++ (id)itemWithVendorSpecificRoute:(id)route
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  routeCopy = route;
   v4 = objc_alloc_init(MPAVRoutingViewItem);
-  v9[0] = v3;
+  v9[0] = routeCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   routes = v4->_routes;
   v4->_routes = v5;
 
   v4->_enabled = 1;
-  if ([v3 isGroup])
+  if ([routeCopy isGroup])
   {
     v7 = 4;
   }
 
-  else if ([v3 isSubRoute])
+  else if ([routeCopy isSubRoute])
   {
     v7 = 5;
   }
@@ -485,46 +485,46 @@ LABEL_26:
   return v4;
 }
 
-+ (id)itemWithActionTitle:(id)a3 subtitle:(id)a4 enabled:(BOOL)a5 identifier:(id)a6 image:(id)a7
++ (id)itemWithActionTitle:(id)title subtitle:(id)subtitle enabled:(BOOL)enabled identifier:(id)identifier image:(id)image
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  imageCopy = image;
+  identifierCopy = identifier;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v15 = objc_alloc_init(MPAVRoutingViewItem);
-  v16 = [v14 copy];
+  v16 = [titleCopy copy];
 
   localizedTitle = v15->_localizedTitle;
   v15->_localizedTitle = v16;
 
-  v18 = [v13 copy];
+  v18 = [subtitleCopy copy];
   localizedSubtitle = v15->_localizedSubtitle;
   v15->_localizedSubtitle = v18;
 
-  v15->_enabled = a5;
-  v20 = [v12 copy];
+  v15->_enabled = enabled;
+  v20 = [identifierCopy copy];
 
   actionIdentifier = v15->_actionIdentifier;
   v15->_actionIdentifier = v20;
 
   image = v15->_image;
-  v15->_image = v11;
+  v15->_image = imageCopy;
 
   v15->_type = 2;
 
   return v15;
 }
 
-+ (id)itemWithLeader:(id)a3 members:(id)a4
++ (id)itemWithLeader:(id)leader members:(id)members
 {
-  v5 = a3;
-  v6 = a4;
+  leaderCopy = leader;
+  membersCopy = members;
   v7 = objc_alloc_init(MPAVRoutingViewItem);
-  v8 = [v6 copy];
+  v8 = [membersCopy copy];
 
-  if (![(NSArray *)v8 containsObject:v5])
+  if (![(NSArray *)v8 containsObject:leaderCopy])
   {
-    v9 = [(NSArray *)v8 arrayByAddingObject:v5];
+    v9 = [(NSArray *)v8 arrayByAddingObject:leaderCopy];
 
     v8 = v9;
   }
@@ -534,14 +534,14 @@ LABEL_26:
   v11 = v8;
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-  v14 = [v13 localizedStringForKey:@"ROUTING_GROUP_SUBTITLE_COUNT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+  mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+  v14 = [mediaPlayerBundle localizedStringForKey:@"ROUTING_GROUP_SUBTITLE_COUNT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
   v15 = [v12 stringWithFormat:v14, -[NSArray count](v11, "count")];
   localizedSubtitle = v7->_localizedSubtitle;
   v7->_localizedSubtitle = v15;
 
   leader = v7->_leader;
-  v7->_leader = v5;
+  v7->_leader = leaderCopy;
 
   v7->_enabled = 1;
   v7->_type = 1;
@@ -549,12 +549,12 @@ LABEL_26:
   return v7;
 }
 
-+ (id)itemWithRoute:(id)a3
++ (id)itemWithRoute:(id)route
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  routeCopy = route;
   v4 = objc_alloc_init(MPAVRoutingViewItem);
-  v8[0] = v3;
+  v8[0] = routeCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   routes = v4->_routes;
   v4->_routes = v5;

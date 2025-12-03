@@ -1,9 +1,9 @@
 @interface SearchHomeCategoriesViewCell
 + (NSString)reuseIdentifier;
 - (_TtC4Maps28SearchHomeCategoriesViewCell)init;
-- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithCoder:(id)a3;
-- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithFrame:(CGRect)a3;
-- (void)configureWithCategories:(id)a3 delegate:(id)a4 singleColumnLayout:(BOOL)a5 searchAlongRoute:(BOOL)a6;
+- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithCoder:(id)coder;
+- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithFrame:(CGRect)frame;
+- (void)configureWithCategories:(id)categories delegate:(id)delegate singleColumnLayout:(BOOL)layout searchAlongRoute:(BOOL)route;
 - (void)layoutSubviews;
 @end
 
@@ -16,19 +16,19 @@
   return v2;
 }
 
-- (void)configureWithCategories:(id)a3 delegate:(id)a4 singleColumnLayout:(BOOL)a5 searchAlongRoute:(BOOL)a6
+- (void)configureWithCategories:(id)categories delegate:(id)delegate singleColumnLayout:(BOOL)layout searchAlongRoute:(BOOL)route
 {
   sub_1004A37CC();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_1004D0FF8(v10, a4, a5, a6);
+  selfCopy = self;
+  sub_1004D0FF8(v10, delegate, layout, route);
   swift_unknownObjectRelease();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004D1128();
 }
 
@@ -50,12 +50,12 @@
   return [(SearchHomeCategoriesViewCell *)&v8 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC4Maps28SearchHomeCategoriesViewCell_scrollIndex;
   *v8 = 0;
   v8[8] = 1;
@@ -72,7 +72,7 @@
   return [(SearchHomeCategoriesViewCell *)&v13 initWithFrame:x, y, width, height];
 }
 
-- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithCoder:(id)a3
+- (_TtC4Maps28SearchHomeCategoriesViewCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC4Maps28SearchHomeCategoriesViewCell_scrollIndex;
   *v4 = 0;

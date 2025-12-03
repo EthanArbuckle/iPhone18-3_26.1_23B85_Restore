@@ -1,43 +1,43 @@
 @interface BSXPCCoder
-+ (id)_testEncodeAndDecodeObject:(id)a3 ofClass:(Class)a4;
++ (id)_testEncodeAndDecodeObject:(id)object ofClass:(Class)class;
 + (id)coder;
-+ (id)coderWithMessage:(id)a3;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (BOOL)decodeStruct:(void *)a3 withObjCType:(const char *)a4 forKey:(id)a5;
-- (BSXPCCoder)initWithBSXPCCoder:(id)a3;
-- (BSXPCCoder)initWithMessage:(id)a3;
-- (CGPoint)decodeCGPointForKey:(id)a3;
-- (CGRect)decodeCGRectForKey:(id)a3;
-- (CGSize)decodeCGSizeForKey:(id)a3;
-- (double)decodeDoubleForKey:(id)a3;
++ (id)coderWithMessage:(id)message;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (BOOL)decodeStruct:(void *)struct withObjCType:(const char *)type forKey:(id)key;
+- (BSXPCCoder)initWithBSXPCCoder:(id)coder;
+- (BSXPCCoder)initWithMessage:(id)message;
+- (CGPoint)decodeCGPointForKey:(id)key;
+- (CGRect)decodeCGRectForKey:(id)key;
+- (CGSize)decodeCGSizeForKey:(id)key;
+- (double)decodeDoubleForKey:(id)key;
 - (id)_finishCoding;
-- (id)_implicitDecodeXPCObjectForKey:(id)a3;
-- (id)decodeDictionaryOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeStringForKey:(id)a3;
-- (id)decodeValueWithObjCType:(const char *)a3 forKey:(id)a4;
-- (id)decodeXPCObjectOfType:(_xpc_type_s *)a3 forKey:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_implicitDecodeXPCObjectForKey:(id)key;
+- (id)decodeDictionaryOfClass:(Class)class forKey:(id)key;
+- (id)decodeStringForKey:(id)key;
+- (id)decodeValueWithObjCType:(const char *)type forKey:(id)key;
+- (id)decodeXPCObjectOfType:(_xpc_type_s *)type forKey:(id)key;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (unint64_t)decodeUInt64ForKey:(id)a3;
-- (void)_appendXPCObject:(uint64_t)a3 withName:(void *)a4 toBuilder:;
-- (void)_removeValueForKey:(id)a3;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (unint64_t)decodeUInt64ForKey:(id)key;
+- (void)_appendXPCObject:(uint64_t)object withName:(void *)name toBuilder:;
+- (void)_removeValueForKey:(id)key;
 - (void)dealloc;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeCGPoint:(CGPoint)a3 forKey:(id)a4;
-- (void)encodeCGRect:(CGRect)a3 forKey:(id)a4;
-- (void)encodeCGSize:(CGSize)a3 forKey:(id)a4;
-- (void)encodeCollection:(id)a3 forKey:(id)a4;
-- (void)encodeDictionary:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeStruct:(const void *)a3 withObjCType:(const char *)a4 forKey:(id)a5;
-- (void)encodeUInt64:(unint64_t)a3 forKey:(id)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeCGPoint:(CGPoint)point forKey:(id)key;
+- (void)encodeCGRect:(CGRect)rect forKey:(id)key;
+- (void)encodeCGSize:(CGSize)size forKey:(id)key;
+- (void)encodeCollection:(id)collection forKey:(id)key;
+- (void)encodeDictionary:(id)dictionary forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeStruct:(const void *)struct withObjCType:(const char *)type forKey:(id)key;
+- (void)encodeUInt64:(unint64_t)int64 forKey:(id)key;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation BSXPCCoder
@@ -46,8 +46,8 @@
 {
   if (self->_codingContext)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:185 description:@"cannot dealloc while the coding context is in flight"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:185 description:@"cannot dealloc while the coding context is in flight"];
   }
 
   v5.receiver = self;
@@ -64,24 +64,24 @@
 
 + (id)coder
 {
-  v2 = [[a1 alloc] initWithMessage:0];
+  v2 = [[self alloc] initWithMessage:0];
 
   return v2;
 }
 
-+ (id)coderWithMessage:(id)a3
++ (id)coderWithMessage:(id)message
 {
-  v3 = [[a1 alloc] initWithMessage:a3];
+  v3 = [[self alloc] initWithMessage:message];
 
   return v3;
 }
 
-- (BSXPCCoder)initWithMessage:(id)a3
+- (BSXPCCoder)initWithMessage:(id)message
 {
-  if (a3 && object_getClass(a3) != MEMORY[0x1E69E9E80])
+  if (message && object_getClass(message) != MEMORY[0x1E69E9E80])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"!message || (xpc_get_type(message) == XPC_TYPE_DICTIONARY)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"!message || (xpc_get_type(message) == XPC_TYPE_DICTIONARY)"}];
   }
 
   v13.receiver = self;
@@ -91,10 +91,10 @@
   if (v6)
   {
     v6->_finalized = 0;
-    if (a3)
+    if (message)
     {
-      objc_storeStrong(&v6->_message, a3);
-      v8 = xpc_dictionary_get_remote_connection(a3);
+      objc_storeStrong(&v6->_message, message);
+      v8 = xpc_dictionary_get_remote_connection(message);
       v9 = 16;
     }
 
@@ -111,22 +111,22 @@
   return v7;
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
   v8 = 1;
   atomic_compare_exchange_strong_explicit(&self->_finalized, &v8, v8, memory_order_relaxed, memory_order_relaxed);
   if (v8 != 1)
   {
-    if (a4)
+    if (key)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-    if (!a3)
+    if (!object)
     {
       return;
     }
@@ -134,66 +134,66 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:209 description:@"cannot continue encoding after finalizing"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:209 description:@"cannot continue encoding after finalizing"];
 
-  if (!a4)
+  if (!key)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (!a3)
+  if (!object)
   {
     return;
   }
 
 LABEL_4:
 
-  _BSXPCEncodeObjectForKey(self, a3, a4);
+  _BSXPCEncodeObjectForKey(self, object, key);
 }
 
-- (void)encodeCollection:(id)a3 forKey:(id)a4
+- (void)encodeCollection:(id)collection forKey:(id)key
 {
-  if (a3 && ([a3 isNSArray] & 1) == 0 && (objc_msgSend(a3, "isNSSet") & 1) == 0 && (objc_msgSend(a3, "isNSOrderedSet") & 1) == 0)
+  if (collection && ([collection isNSArray] & 1) == 0 && (objc_msgSend(collection, "isNSSet") & 1) == 0 && (objc_msgSend(collection, "isNSOrderedSet") & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:218 description:{@"Collection class %@ not supported", objc_msgSend(a3, "classForCoder")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:218 description:{@"Collection class %@ not supported", objc_msgSend(collection, "classForCoder")}];
   }
 
-  [(BSXPCCoder *)self encodeObject:a3 forKey:a4];
+  [(BSXPCCoder *)self encodeObject:collection forKey:key];
 }
 
-- (void)encodeDictionary:(id)a3 forKey:(id)a4
+- (void)encodeDictionary:(id)dictionary forKey:(id)key
 {
-  if (a3 && ([a3 isNSDictionary] & 1) == 0)
+  if (dictionary && ([dictionary isNSDictionary] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:223 description:@"Object is not an NSDictionary"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:223 description:@"Object is not an NSDictionary"];
   }
 
-  [(BSXPCCoder *)self encodeObject:a3 forKey:a4];
+  [(BSXPCCoder *)self encodeObject:dictionary forKey:key];
 }
 
-- (void)encodeCGPoint:(CGPoint)a3 forKey:(id)a4
+- (void)encodeCGPoint:(CGPoint)point forKey:(id)key
 {
-  v5 = [MEMORY[0x1E696B098] bs_valueWithCGPoint:{a3.x, a3.y}];
+  v5 = [MEMORY[0x1E696B098] bs_valueWithCGPoint:{point.x, point.y}];
   [BSXPCCoder encodeObject:"encodeObject:forKey:" forKey:?];
 }
 
-- (void)encodeCGSize:(CGSize)a3 forKey:(id)a4
+- (void)encodeCGSize:(CGSize)size forKey:(id)key
 {
-  v5 = [MEMORY[0x1E696B098] bs_valueWithCGSize:{a3.width, a3.height}];
+  v5 = [MEMORY[0x1E696B098] bs_valueWithCGSize:{size.width, size.height}];
   [BSXPCCoder encodeObject:"encodeObject:forKey:" forKey:?];
 }
 
-- (void)encodeCGRect:(CGRect)a3 forKey:(id)a4
+- (void)encodeCGRect:(CGRect)rect forKey:(id)key
 {
-  v5 = [MEMORY[0x1E696B098] bs_valueWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v5 = [MEMORY[0x1E696B098] bs_valueWithCGRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   [BSXPCCoder encodeObject:"encodeObject:forKey:" forKey:?];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -202,66 +202,66 @@ LABEL_4:
   }
 
   v7 = codingContext;
-  BSSerializeDoubleToXPCDictionaryWithKey(v7, [a4 UTF8String], a3);
+  BSSerializeDoubleToXPCDictionaryWithKey(v7, [key UTF8String], double);
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a4 UTF8String];
-  if (v8)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
+    v9 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
       codingContext = self->_message;
     }
 
-    xpc_dictionary_set_BOOL(codingContext, v9, a3);
+    xpc_dictionary_set_BOOL(codingContext, v9, bool);
   }
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a4 UTF8String];
-  if (v8)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
+    v9 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
       codingContext = self->_message;
     }
 
-    xpc_dictionary_set_int64(codingContext, v9, a3);
+    xpc_dictionary_set_int64(codingContext, v9, int64);
   }
 }
 
-- (void)encodeUInt64:(unint64_t)a3 forKey:(id)a4
+- (void)encodeUInt64:(unint64_t)int64 forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a4 UTF8String];
-  if (v8)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
+    v9 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
       codingContext = self->_message;
     }
 
-    xpc_dictionary_set_uint64(codingContext, v9, a3);
+    xpc_dictionary_set_uint64(codingContext, v9, int64);
   }
 }
 
-- (void)encodeStruct:(const void *)a3 withObjCType:(const char *)a4 forKey:(id)a5
+- (void)encodeStruct:(const void *)struct withObjCType:(const char *)type forKey:(id)key
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!struct)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", a4, a5, @"bytes"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", type, key, @"bytes"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v9 = NSStringFromSelector(a2);
@@ -272,7 +272,7 @@ LABEL_4:
       v21 = 2114;
       v22 = v11;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSXPCCoder.m";
       v27 = 1024;
@@ -288,9 +288,9 @@ LABEL_4:
     JUMPOUT(0x18FF8F4D8);
   }
 
-  if (!a4)
+  if (!type)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", 0, a5, @"encoding"];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", 0, key, @"encoding"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v14 = NSStringFromSelector(a2);
@@ -301,7 +301,7 @@ LABEL_4:
       v21 = 2114;
       v22 = v16;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSXPCCoder.m";
       v27 = 1024;
@@ -318,10 +318,10 @@ LABEL_4:
   }
 
   v18 = [MEMORY[0x1E696B098] valueWithBytes:? objCType:?];
-  [(BSXPCCoder *)self encodeObject:v18 forKey:a5];
+  [(BSXPCCoder *)self encodeObject:v18 forKey:key];
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -330,20 +330,20 @@ LABEL_4:
   }
 
   v5 = codingContext;
-  v6 = [a3 UTF8String];
+  uTF8String = [key UTF8String];
   v7 = v5;
-  if (!v6)
+  if (!uTF8String)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"xpc_object_t  _Nullable BSXPCDictionaryGetValue(xpc_object_t  _Nullable __strong, const char * _Nonnull, xpc_type_t _Nullable)"}];
-    [v14 handleFailureInFunction:v15 file:@"BSXPCObjectUtilities.h" lineNumber:50 description:@"key must not be nil"];
+    [currentHandler handleFailureInFunction:v15 file:@"BSXPCObjectUtilities.h" lineNumber:50 description:@"key must not be nil"];
   }
 
   v8 = v7;
   v9 = v8;
   if (v8 && (Class = object_getClass(v8), v11 = MEMORY[0x1E69E9E80], v9, v9, Class == v11))
   {
-    v12 = xpc_dictionary_get_value(v9, v6);
+    v12 = xpc_dictionary_get_value(v9, uTF8String);
   }
 
   else
@@ -354,16 +354,16 @@ LABEL_4:
   return v12 != 0;
 }
 
-- (id)decodeDictionaryOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeDictionaryOfClass:(Class)class forKey:(id)key
 {
   v7 = objc_opt_class();
 
-  return _BSXPCDecodeObjectForKey(self, a4, v7, a3);
+  return _BSXPCDecodeObjectForKey(self, key, v7, class);
 }
 
-- (id)decodeXPCObjectOfType:(_xpc_type_s *)a3 forKey:(id)a4
+- (id)decodeXPCObjectOfType:(_xpc_type_s *)type forKey:(id)key
 {
-  if (a3)
+  if (type)
   {
     class4NSXPC = xpc_get_class4NSXPC();
   }
@@ -373,10 +373,10 @@ LABEL_4:
     class4NSXPC = BSXPCObjectBaseClass();
   }
 
-  return [(BSXPCCoder *)self decodeObjectOfClass:class4NSXPC forKey:a4];
+  return [(BSXPCCoder *)self decodeObjectOfClass:class4NSXPC forKey:key];
 }
 
-- (id)decodeStringForKey:(id)a3
+- (id)decodeStringForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -385,20 +385,20 @@ LABEL_4:
   }
 
   v5 = codingContext;
-  v6 = [a3 UTF8String];
+  uTF8String = [key UTF8String];
   v7 = v5;
-  if (!v6)
+  if (!uTF8String)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"xpc_object_t  _Nullable BSXPCDictionaryGetValue(xpc_object_t  _Nullable __strong, const char * _Nonnull, xpc_type_t _Nullable)"}];
-    [v20 handleFailureInFunction:v21 file:@"BSXPCObjectUtilities.h" lineNumber:50 description:@"key must not be nil"];
+    [currentHandler handleFailureInFunction:v21 file:@"BSXPCObjectUtilities.h" lineNumber:50 description:@"key must not be nil"];
   }
 
   v8 = v7;
   v9 = v8;
   if (v8 && (v10 = object_getClass(v8), v11 = MEMORY[0x1E69E9E80], v9, v9, v10 == v11))
   {
-    v17 = xpc_dictionary_get_value(v9, v6);
+    v17 = xpc_dictionary_get_value(v9, uTF8String);
     v12 = v17;
     if (v17)
     {
@@ -441,9 +441,9 @@ LABEL_9:
   return v15;
 }
 
-- (CGPoint)decodeCGPointForKey:(id)a3
+- (CGPoint)decodeCGPointForKey:(id)key
 {
-  v3 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:a3];
+  v3 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:key];
   [v3 bs_CGPointValue];
   v5 = v4;
   v7 = v6;
@@ -455,9 +455,9 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)decodeCGSizeForKey:(id)a3
+- (CGSize)decodeCGSizeForKey:(id)key
 {
-  v3 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:a3];
+  v3 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:key];
   [v3 bs_CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -469,9 +469,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)decodeCGRectForKey:(id)a3
+- (CGRect)decodeCGRectForKey:(id)key
 {
-  v3 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:a3];
+  v3 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:key];
   [v3 bs_CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -489,7 +489,7 @@ LABEL_9:
   return result;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -498,34 +498,34 @@ LABEL_9:
   }
 
   v5 = codingContext;
-  v6 = BSDeserializeDoubleFromXPCDictionaryWithKey(v5, [a3 UTF8String]);
+  v6 = BSDeserializeDoubleFromXPCDictionaryWithKey(v5, [key UTF8String]);
 
   return v6;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (v6)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v7 = v6;
+    v7 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
       codingContext = self->_message;
     }
 
-    LOBYTE(v6) = xpc_dictionary_get_BOOL(codingContext, v7);
+    LOBYTE(uTF8String) = xpc_dictionary_get_BOOL(codingContext, v7);
   }
 
-  return v6;
+  return uTF8String;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v5 = a3;
-  result = [a3 UTF8String];
+  keyCopy = key;
+  result = [key UTF8String];
   if (result)
   {
     v7 = result;
@@ -541,10 +541,10 @@ LABEL_9:
   return result;
 }
 
-- (unint64_t)decodeUInt64ForKey:(id)a3
+- (unint64_t)decodeUInt64ForKey:(id)key
 {
-  v5 = a3;
-  result = [a3 UTF8String];
+  keyCopy = key;
+  result = [key UTF8String];
   if (result)
   {
     v7 = result;
@@ -560,47 +560,47 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)decodeStruct:(void *)a3 withObjCType:(const char *)a4 forKey:(id)a5
+- (BOOL)decodeStruct:(void *)struct withObjCType:(const char *)type forKey:(id)key
 {
-  if (!a3)
+  if (!struct)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"bytes != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"bytes != NULL"}];
   }
 
-  v9 = [(BSXPCCoder *)self decodeValueWithObjCType:a4 forKey:a5];
+  v9 = [(BSXPCCoder *)self decodeValueWithObjCType:type forKey:key];
   if (v9)
   {
     sizep = 0;
-    NSGetSizeAndAlignment(a4, &sizep, 0);
-    [v9 getValue:a3 size:sizep];
+    NSGetSizeAndAlignment(type, &sizep, 0);
+    [v9 getValue:struct size:sizep];
   }
 
   return v9 != 0;
 }
 
-- (id)decodeValueWithObjCType:(const char *)a3 forKey:(id)a4
+- (id)decodeValueWithObjCType:(const char *)type forKey:(id)key
 {
-  if (!a3)
+  if (!type)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"encoding != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"encoding != NULL"}];
   }
 
-  v8 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:a4];
+  v8 = [(BSXPCCoder *)self decodeObjectOfClass:objc_opt_class() forKey:key];
   v9 = v8;
-  if (v8 && strcmp(a3, [v8 objCType]))
+  if (v8 && strcmp(type, [v8 objCType]))
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:375 description:{@"Decoded NSValue for %@ does not match expected encoding %s", a4, a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSXPCCoder.m" lineNumber:375 description:{@"Decoded NSValue for %@ does not match expected encoding %s", key, type}];
   }
 
   return v9;
 }
 
-- (void)_removeValueForKey:(id)a3
+- (void)_removeValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     codingContext = self->_codingContext;
     if (!codingContext)
@@ -609,32 +609,32 @@ LABEL_9:
     }
 
     v5 = codingContext;
-    v6 = [a3 UTF8String];
+    uTF8String = [key UTF8String];
     v7 = v5;
     xdict = v7;
-    if (v6)
+    if (uTF8String)
     {
       if (v7)
       {
-        v8 = xpc_dictionary_get_value(v7, v6);
+        v8 = xpc_dictionary_get_value(v7, uTF8String);
 
         if (v8)
         {
-          xpc_dictionary_set_value(xdict, v6, 0);
+          xpc_dictionary_set_value(xdict, uTF8String, 0);
         }
       }
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void BSXPCDictionarySetValue(xpc_object_t  _Nullable __strong, const char * _Nonnull, xpc_object_t  _Nullable __strong, xpc_type_t _Nullable)"}];
-      [v9 handleFailureInFunction:v10 file:@"BSXPCObjectUtilities.h" lineNumber:61 description:@"key must not be nil"];
+      [currentHandler handleFailureInFunction:v10 file:@"BSXPCObjectUtilities.h" lineNumber:61 description:@"key must not be nil"];
     }
   }
 }
 
-- (id)_implicitDecodeXPCObjectForKey:(id)a3
+- (id)_implicitDecodeXPCObjectForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -643,20 +643,20 @@ LABEL_9:
   }
 
   v5 = codingContext;
-  v6 = [a3 UTF8String];
+  uTF8String = [key UTF8String];
   v7 = v5;
-  if (!v6)
+  if (!uTF8String)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"xpc_object_t  _Nullable BSXPCDictionaryGetValue(xpc_object_t  _Nullable __strong, const char * _Nonnull, xpc_type_t _Nullable)"}];
-    [v15 handleFailureInFunction:v16 file:@"BSXPCObjectUtilities.h" lineNumber:50 description:@"key must not be nil"];
+    [currentHandler handleFailureInFunction:v16 file:@"BSXPCObjectUtilities.h" lineNumber:50 description:@"key must not be nil"];
   }
 
   v8 = v7;
   v9 = v8;
   if (v8 && (Class = object_getClass(v8), v11 = MEMORY[0x1E69E9E80], v9, v9, Class == v11))
   {
-    v12 = xpc_dictionary_get_value(v9, v6);
+    v12 = xpc_dictionary_get_value(v9, uTF8String);
   }
 
   else
@@ -677,37 +677,37 @@ LABEL_9:
   return v13;
 }
 
-+ (id)_testEncodeAndDecodeObject:(id)a3 ofClass:(Class)a4
++ (id)_testEncodeAndDecodeObject:(id)object ofClass:(Class)class
 {
   v6 = +[BSXPCCoder coder];
-  [v6 encodeObject:a3 forKey:@"test"];
-  v7 = [v6 createMessage];
-  v8 = [BSXPCCoder coderWithMessage:v7];
+  [v6 encodeObject:object forKey:@"test"];
+  createMessage = [v6 createMessage];
+  v8 = [BSXPCCoder coderWithMessage:createMessage];
 
-  v9 = [v8 decodeObjectOfClass:a4 forKey:@"test"];
+  v9 = [v8 decodeObjectOfClass:class forKey:@"test"];
 
   return v9;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = [(BSXPCCoder *)self createMessage];
-  [a3 encodeXPCObject:? forKey:?];
+  createMessage = [(BSXPCCoder *)self createMessage];
+  [coder encodeXPCObject:? forKey:?];
 }
 
-- (BSXPCCoder)initWithBSXPCCoder:(id)a3
+- (BSXPCCoder)initWithBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"message"];
+  v4 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"message"];
   v5 = [(BSXPCCoder *)self initWithMessage:v4];
 
   return v5;
 }
 
-- (void)_appendXPCObject:(uint64_t)a3 withName:(void *)a4 toBuilder:
+- (void)_appendXPCObject:(uint64_t)object withName:(void *)name toBuilder:
 {
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (object)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
     }
@@ -729,15 +729,15 @@ LABEL_9:
 
     if (Class == v11)
     {
-      v13 = [a4 activeMultilinePrefix];
+      activeMultilinePrefix = [name activeMultilinePrefix];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __50__BSXPCCoder__appendXPCObject_withName_toBuilder___block_invoke;
       v15[3] = &unk_1E72CC4A8;
       v15[4] = v9;
-      v15[5] = a1;
-      v15[6] = a4;
-      [a4 appendBodySectionWithName:v7 multilinePrefix:v13 block:v15];
+      v15[5] = self;
+      v15[6] = name;
+      [name appendBodySectionWithName:v7 multilinePrefix:activeMultilinePrefix block:v15];
     }
 
     else
@@ -745,21 +745,21 @@ LABEL_9:
       if (object_getClass(v9) != MEMORY[0x1E69E9E50])
       {
 LABEL_8:
-        v12 = [a4 appendObject:v9 withName:v7 skipIfNil:0];
+        v12 = [name appendObject:v9 withName:v7 skipIfNil:0];
 LABEL_12:
 
         return;
       }
 
-      v13 = [a4 activeMultilinePrefix];
+      activeMultilinePrefix = [name activeMultilinePrefix];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __50__BSXPCCoder__appendXPCObject_withName_toBuilder___block_invoke_3;
       v14[3] = &unk_1E72CC4A8;
       v14[4] = v9;
-      v14[5] = a1;
-      v14[6] = a4;
-      [a4 appendBodySectionWithName:v7 multilinePrefix:v13 block:v14];
+      v14[5] = self;
+      v14[6] = name;
+      [name appendBodySectionWithName:v7 multilinePrefix:activeMultilinePrefix block:v14];
     }
 
     goto LABEL_12;
@@ -799,10 +799,10 @@ uint64_t __50__BSXPCCoder__appendXPCObject_withName_toBuilder___block_invoke_4(u
 
 - (id)succinctDescription
 {
-  v2 = [(BSXPCCoder *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSXPCCoder *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -813,23 +813,23 @@ uint64_t __50__BSXPCCoder__appendXPCObject_withName_toBuilder___block_invoke_4(u
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSXPCCoder *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSXPCCoder *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BSXPCCoder *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSXPCCoder *)self succinctDescriptionBuilder];
   if (xpc_dictionary_get_count(self->_message))
   {
-    [(BSXPCCoder *)self _appendXPCObject:0 withName:v4 toBuilder:?];
+    [(BSXPCCoder *)self _appendXPCObject:0 withName:succinctDescriptionBuilder toBuilder:?];
   }
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

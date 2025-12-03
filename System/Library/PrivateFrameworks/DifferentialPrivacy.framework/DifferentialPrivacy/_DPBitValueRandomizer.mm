@@ -1,17 +1,17 @@
 @interface _DPBitValueRandomizer
-+ (id)bitValueRandomizerWithDimensionality:(unint64_t)a3 epsilon:(double)a4;
++ (id)bitValueRandomizerWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon;
 - (NSString)description;
-- (_DPBitValueRandomizer)initWithDimensionality:(unint64_t)a3 epsilon:(double)a4;
-- (id)randomize:(id)a3;
-- (id)randomizeBitValues:(id)a3 forKey:(id)a4;
-- (id)randomizeStrings:(id)a3 forKey:(id)a4;
+- (_DPBitValueRandomizer)initWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon;
+- (id)randomize:(id)randomize;
+- (id)randomizeBitValues:(id)values forKey:(id)key;
+- (id)randomizeStrings:(id)strings forKey:(id)key;
 @end
 
 @implementation _DPBitValueRandomizer
 
-- (_DPBitValueRandomizer)initWithDimensionality:(unint64_t)a3 epsilon:(double)a4
+- (_DPBitValueRandomizer)initWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon
 {
-  if (isInvalidEpsilon(a4))
+  if (isInvalidEpsilon(epsilon))
   {
     goto LABEL_2;
   }
@@ -25,53 +25,53 @@
     goto LABEL_5;
   }
 
-  v8->_p = a3;
-  v8->_epsilon = a4;
-  v9 = [_DPBiasedCoin coinWithBias:(1.0 / (exp(a4 * 0.5) + 1.0))];
+  v8->_p = dimensionality;
+  v8->_epsilon = epsilon;
+  v9 = [_DPBiasedCoin coinWithBias:(1.0 / (exp(epsilon * 0.5) + 1.0))];
   epsilonCoin = self->_epsilonCoin;
   self->_epsilonCoin = v9;
 
   if (!self->_epsilonCoin)
   {
 LABEL_2:
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
 LABEL_5:
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)bitValueRandomizerWithDimensionality:(unint64_t)a3 epsilon:(double)a4
++ (id)bitValueRandomizerWithDimensionality:(unint64_t)dimensionality epsilon:(double)epsilon
 {
-  v4 = [[a1 alloc] initWithDimensionality:a3 epsilon:a4];
+  v4 = [[self alloc] initWithDimensionality:dimensionality epsilon:epsilon];
 
   return v4;
 }
 
-- (id)randomize:(id)a3
+- (id)randomize:(id)randomize
 {
-  v4 = [a3 unsignedLongValue];
-  if (v4 >= self->_p)
+  unsignedLongValue = [randomize unsignedLongValue];
+  if (unsignedLongValue >= self->_p)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = unsignedLongValue;
     v6 = [&stru_2839671C8 mutableCopy];
     if (self->_p)
     {
       v7 = 0;
       do
       {
-        v8 = [(_DPBiasedCoin *)self->_epsilonCoin generateByte];
+        generateByte = [(_DPBiasedCoin *)self->_epsilonCoin generateByte];
         if ((v7 ^ v5) >= 8)
         {
           v9 = 0;
@@ -82,7 +82,7 @@ LABEL_5:
           v9 = 1 << (v5 & 7);
         }
 
-        [v6 appendFormat:@"%02X", v8 ^ v9];
+        [v6 appendFormat:@"%02X", generateByte ^ v9];
         v7 += 8;
       }
 
@@ -103,12 +103,12 @@ LABEL_5:
   return v6;
 }
 
-- (id)randomizeStrings:(id)a3 forKey:(id)a4
+- (id)randomizeStrings:(id)strings forKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [_DPBitValueMap bitValueMapForKey:v6];
+  stringsCopy = strings;
+  keyCopy = key;
+  v7 = [_DPBitValueMap bitValueMapForKey:keyCopy];
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -118,7 +118,7 @@ LABEL_5:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v5;
+  v11 = stringsCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -137,7 +137,7 @@ LABEL_5:
         if (([v16 isEqualToNumber:&unk_283975F40] & 1) == 0)
         {
           v17 = [(_DPBitValueRandomizer *)self randomize:v16];
-          v18 = -[_DPBitValueRecord initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:]([_DPBitValueRecord alloc], "initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:", v6, [v16 shortValue], v17, 0, 0, v10);
+          v18 = -[_DPBitValueRecord initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:]([_DPBitValueRecord alloc], "initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:", keyCopy, [v16 shortValue], v17, 0, 0, v10);
           if (v18)
           {
             [v21 addObject:v18];
@@ -156,11 +156,11 @@ LABEL_5:
   return v21;
 }
 
-- (id)randomizeBitValues:(id)a3 forKey:(id)a4
+- (id)randomizeBitValues:(id)values forKey:(id)key
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  keyCopy = key;
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -170,7 +170,7 @@ LABEL_5:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v6;
+  v11 = valuesCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -189,7 +189,7 @@ LABEL_5:
         if (([v16 isEqualToNumber:&unk_283975F40] & 1) == 0)
         {
           v17 = [(_DPBitValueRandomizer *)self randomize:v16];
-          v18 = -[_DPBitValueRecord initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:]([_DPBitValueRecord alloc], "initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:", v7, [v16 shortValue], v17, 0, 0, v10);
+          v18 = -[_DPBitValueRecord initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:]([_DPBitValueRecord alloc], "initWithKey:clearBitValue:privateBitValueStr:creationDate:submitted:objectId:", keyCopy, [v16 shortValue], v17, 0, 0, v10);
           if (v18)
           {
             [v21 addObject:v18];

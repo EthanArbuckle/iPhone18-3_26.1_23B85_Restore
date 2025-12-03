@@ -1,20 +1,20 @@
 @interface CAFMediaSourceObservable
 - (NSString)description;
-- (void)mediaSourceService:(id)a3 didUpdateCurrentFrequency:(unsigned int)a4;
-- (void)mediaSourceService:(id)a3 didUpdateDisabled:(BOOL)a4;
-- (void)mediaSourceService:(id)a3 didUpdateMediaItemImages:(id)a4;
-- (void)mediaSourceService:(id)a3 didUpdateMediaItems:(id)a4;
-- (void)mediaSourceService:(id)a3 didUpdateMediaSourceSemanticType:(unsigned __int8)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)mediaSourceService:(id)service didUpdateCurrentFrequency:(unsigned int)frequency;
+- (void)mediaSourceService:(id)service didUpdateDisabled:(BOOL)disabled;
+- (void)mediaSourceService:(id)service didUpdateMediaItemImages:(id)images;
+- (void)mediaSourceService:(id)service didUpdateMediaItems:(id)items;
+- (void)mediaSourceService:(id)service didUpdateMediaSourceSemanticType:(unsigned __int8)type;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFMediaSourceObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFMediaSourceObservable.description.getter();
   v5 = v4;
 
@@ -23,62 +23,62 @@
   return v6;
 }
 
-- (void)mediaSourceService:(id)a3 didUpdateCurrentFrequency:(unsigned int)a4
+- (void)mediaSourceService:(id)service didUpdateCurrentFrequency:(unsigned int)frequency
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFMediaSourceObservable.mediaSourceService(_:didUpdateCurrentFrequency:)();
 }
 
-- (void)mediaSourceService:(id)a3 didUpdateMediaItems:(id)a4
+- (void)mediaSourceService:(id)service didUpdateMediaItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFMediaSourceObservable.mediaSourceService(_:didUpdateMediaItems:)(v8, a4);
+  serviceCopy = service;
+  itemsCopy = items;
+  selfCopy = self;
+  CAFMediaSourceObservable.mediaSourceService(_:didUpdateMediaItems:)(selfCopy, items);
 }
 
-- (void)mediaSourceService:(id)a3 didUpdateMediaSourceSemanticType:(unsigned __int8)a4
+- (void)mediaSourceService:(id)service didUpdateMediaSourceSemanticType:(unsigned __int8)type
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFMediaSourceObservable.mediaSourceService(_:didUpdateMediaSourceSemanticType:)();
 }
 
-- (void)mediaSourceService:(id)a3 didUpdateDisabled:(BOOL)a4
+- (void)mediaSourceService:(id)service didUpdateDisabled:(BOOL)disabled
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFMediaSourceObservable.mediaSourceService(_:didUpdateDisabled:)();
 }
 
-- (void)mediaSourceService:(id)a3 didUpdateMediaItemImages:(id)a4
+- (void)mediaSourceService:(id)service didUpdateMediaItemImages:(id)images
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFMediaSourceObservable.mediaSourceService(_:didUpdateMediaItemImages:)(v8, a4);
+  serviceCopy = service;
+  imagesCopy = images;
+  selfCopy = self;
+  CAFMediaSourceObservable.mediaSourceService(_:didUpdateMediaItemImages:)(selfCopy, images);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFMediaSourceObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFMediaSourceObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFMediaSourceObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFMediaSourceObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFMediaSourceObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

@@ -1,7 +1,7 @@
 @interface SBDashBoardThermalStatusProvider
-+ (id)thermometerGlyphForThermalStatus:(int64_t)a3;
++ (id)thermometerGlyphForThermalStatus:(int64_t)status;
 - (SBDashBoardThermalStatusProvider)init;
-- (SBDashBoardThermalStatusProvider)initWithThermalController:(id)a3;
+- (SBDashBoardThermalStatusProvider)initWithThermalController:(id)controller;
 - (int64_t)thermalStatus;
 @end
 
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (SBDashBoardThermalStatusProvider)initWithThermalController:(id)a3
+- (SBDashBoardThermalStatusProvider)initWithThermalController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBDashBoardThermalStatusProvider;
   v6 = [(SBDashBoardThermalStatusProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_thermalController, a3);
+    objc_storeStrong(&v6->_thermalController, controller);
   }
 
   return v7;
@@ -32,28 +32,28 @@
 
 - (int64_t)thermalStatus
 {
-  v2 = [(SBThermalController *)self->_thermalController level];
-  if (v2 > 3)
+  level = [(SBThermalController *)self->_thermalController level];
+  if (level > 3)
   {
     return -1;
   }
 
   else
   {
-    return qword_21F8A6080[v2];
+    return qword_21F8A6080[level];
   }
 }
 
-+ (id)thermometerGlyphForThermalStatus:(int64_t)a3
++ (id)thermometerGlyphForThermalStatus:(int64_t)status
 {
-  if ((a3 + 1) > 2)
+  if ((status + 1) > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v4 = off_2783AFE58[a3 + 1];
+    v4 = off_2783AFE58[status + 1];
     v5 = MEMORY[0x277D755D0];
     v6 = __sb__runningInSpringBoard();
     v7 = v6;
@@ -64,8 +64,8 @@
 
     else
     {
-      v3 = [MEMORY[0x277D75418] currentDevice];
-      v8 = [v3 userInterfaceIdiom] == 1;
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      v8 = [currentDevice userInterfaceIdiom] == 1;
     }
 
     v10 = 58.0;
@@ -75,8 +75,8 @@
     }
 
     v11 = [v5 configurationWithPointSize:3 weight:v10];
-    v12 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
-    v13 = [v11 configurationByApplyingConfiguration:v12];
+    configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+    v13 = [v11 configurationByApplyingConfiguration:configurationPreferringMulticolor];
 
     if ((v7 & 1) == 0)
     {

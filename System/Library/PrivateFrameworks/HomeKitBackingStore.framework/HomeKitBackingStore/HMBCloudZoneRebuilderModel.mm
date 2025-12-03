@@ -8,11 +8,11 @@
 
 - (HMBCloudZoneRebuilderModel)init
 {
-  v3 = [objc_opt_class() sentinelUUID];
-  v4 = [objc_opt_class() sentinelUUID];
+  sentinelUUID = [objc_opt_class() sentinelUUID];
+  sentinelUUID2 = [objc_opt_class() sentinelUUID];
   v7.receiver = self;
   v7.super_class = HMBCloudZoneRebuilderModel;
-  v5 = [(HMBModel *)&v7 initWithModelID:v3 parentModelID:v4];
+  v5 = [(HMBModel *)&v7 initWithModelID:sentinelUUID parentModelID:sentinelUUID2];
 
   return v5;
 }

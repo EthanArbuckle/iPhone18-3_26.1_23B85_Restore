@@ -1,5 +1,5 @@
 @interface PlaybackControlTransitionView
-- (_TtC9SeymourUI29PlaybackControlTransitionView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI29PlaybackControlTransitionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -11,12 +11,12 @@
   v4.super_class = type metadata accessor for PlaybackControlTransitionView();
   v2 = v4.receiver;
   [(PlaybackControlTransitionView *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (_TtC9SeymourUI29PlaybackControlTransitionView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI29PlaybackControlTransitionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

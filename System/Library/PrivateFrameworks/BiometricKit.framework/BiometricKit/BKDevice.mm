@@ -1,34 +1,34 @@
 @interface BKDevice
-+ (BKDevice)deviceWithDescriptor:(id)a3 error:(id *)a4;
-+ (BOOL)biometryAvailabilityInfo:(int64_t *)a3 fromDeviceInfo:(int64_t)a4 error:(id *)a5;
-+ (BOOL)deviceAvailableWithFailure:(BOOL *)a3;
-+ (BOOL)extendedLockoutState:(int64_t *)a3 fromDeviceLockoutState:(int64_t)a4 error:(id *)a5;
-+ (BOOL)lockoutState:(int64_t *)a3 fromDeviceLockoutState:(int64_t)a4 error:(id *)a5;
++ (BKDevice)deviceWithDescriptor:(id)descriptor error:(id *)error;
++ (BOOL)biometryAvailabilityInfo:(int64_t *)info fromDeviceInfo:(int64_t)deviceInfo error:(id *)error;
++ (BOOL)deviceAvailableWithFailure:(BOOL *)failure;
++ (BOOL)extendedLockoutState:(int64_t *)state fromDeviceLockoutState:(int64_t)lockoutState error:(id *)error;
++ (BOOL)lockoutState:(int64_t *)state fromDeviceLockoutState:(int64_t)lockoutState error:(id *)error;
 - (BKDeviceDelegate)delegate;
-- (BOOL)deviceHardwareState:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)dropAllUnlockTokensWithError:(id *)a3;
-- (BOOL)forceBioLockoutForAllUsersWithError:(id *)a3;
+- (BOOL)deviceHardwareState:(unint64_t *)state error:(id *)error;
+- (BOOL)dropAllUnlockTokensWithError:(id *)error;
+- (BOOL)forceBioLockoutForAllUsersWithError:(id *)error;
 - (BOOL)isDelegate;
-- (BOOL)removeIdentity:(id)a3 error:(id *)a4;
-- (BOOL)setSystemProtectedConfiguration:(id)a3 credentialSet:(id)a4 error:(id *)a5;
-- (BOOL)updateIdentity:(id)a3 error:(id *)a4;
-- (id)accessoriesWithError:(id *)a3;
-- (id)accessoryGroupsWithError:(id *)a3;
-- (id)connectedAccessoriesWithError:(id *)a3;
-- (id)createEnrollOperationWithError:(id *)a3;
-- (id)createMatchOperationWithError:(id *)a3;
-- (id)createPresenceDetectOperationWithError:(id *)a3;
+- (BOOL)removeIdentity:(id)identity error:(id *)error;
+- (BOOL)setSystemProtectedConfiguration:(id)configuration credentialSet:(id)set error:(id *)error;
+- (BOOL)updateIdentity:(id)identity error:(id *)error;
+- (id)accessoriesWithError:(id *)error;
+- (id)accessoryGroupsWithError:(id *)error;
+- (id)connectedAccessoriesWithError:(id *)error;
+- (id)createEnrollOperationWithError:(id *)error;
+- (id)createMatchOperationWithError:(id *)error;
+- (id)createPresenceDetectOperationWithError:(id *)error;
 - (id)dispatchQueue;
-- (id)identitiesWithError:(id *)a3;
-- (id)identityForUUID:(id)a3 error:(id *)a4;
-- (id)lastMatchEventWithError:(id *)a3;
-- (id)maxIdentityCountWithError:(id *)a3;
-- (id)systemProtectedConfigurationWithError:(id *)a3;
+- (id)identitiesWithError:(id *)error;
+- (id)identityForUUID:(id)d error:(id *)error;
+- (id)lastMatchEventWithError:(id *)error;
+- (id)maxIdentityCountWithError:(id *)error;
+- (id)systemProtectedConfigurationWithError:(id *)error;
 - (void)dealloc;
-- (void)removeIdentity:(id)a3 reply:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setSystemProtectedConfiguration:(id)a3 credentialSet:(id)a4 reply:(id)a5;
-- (void)updateIdentity:(id)a3 reply:(id)a4;
+- (void)removeIdentity:(id)identity reply:(id)reply;
+- (void)setDelegate:(id)delegate;
+- (void)setSystemProtectedConfiguration:(id)configuration credentialSet:(id)set reply:(id)reply;
+- (void)updateIdentity:(id)identity reply:(id)reply;
 @end
 
 @implementation BKDevice
@@ -87,7 +87,7 @@
   [(BKDevice *)&v7 dealloc];
 }
 
-+ (BOOL)deviceAvailableWithFailure:(BOOL *)a3
++ (BOOL)deviceAvailableWithFailure:(BOOL *)failure
 {
   v16 = *MEMORY[0x1E69E9840];
   if (__osLog)
@@ -119,10 +119,10 @@
   return 0;
 }
 
-+ (BKDevice)deviceWithDescriptor:(id)a3 error:(id *)a4
++ (BKDevice)deviceWithDescriptor:(id)descriptor error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptorCopy = descriptor;
   kdebug_trace();
   v7 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
@@ -138,17 +138,17 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *v26 = 138412290;
-    *&v26[4] = v6;
+    *&v26[4] = descriptorCopy;
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevice::deviceWithDescriptor: %@\n", v26, 0xCu);
   }
 
-  if (!v6)
+  if (!descriptorCopy)
   {
     [BKDevice deviceWithDescriptor:v26 error:?];
     goto LABEL_43;
   }
 
-  v9 = -[BiometricKitXPCClient initWithDeviceType:clientType:]([BiometricKitXPCClient alloc], "initWithDeviceType:clientType:", [v6 type], 2);
+  v9 = -[BiometricKitXPCClient initWithDeviceType:clientType:]([BiometricKitXPCClient alloc], "initWithDeviceType:clientType:", [descriptorCopy type], 2);
   if (!v9)
   {
     [BKDevice deviceWithDescriptor:v26 error:?];
@@ -156,8 +156,8 @@
   }
 
   v10 = v9;
-  v11 = [v6 type];
-  if (v11 == 2)
+  type = [descriptorCopy type];
+  if (type == 2)
   {
     v12 = off_1E8303950;
     if (![BKDevicePearl deviceAvailableWithFailure:0])
@@ -169,7 +169,7 @@
 
   else
   {
-    if (v11 != 1)
+    if (type != 1)
     {
       if (__osLog)
       {
@@ -206,7 +206,7 @@
 LABEL_43:
       v10 = *v26;
 LABEL_25:
-      setError(1, a4);
+      setError(1, error);
       goto LABEL_26;
     }
   }
@@ -228,10 +228,10 @@ LABEL_26:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = v20;
-      v22 = [(BiometricKitXPCClient *)v10 connectionId];
-      if (a4)
+      connectionId = [(BiometricKitXPCClient *)v10 connectionId];
+      if (error)
       {
-        v23 = *a4;
+        v23 = *error;
       }
 
       else
@@ -242,7 +242,7 @@ LABEL_26:
       *v26 = 138412802;
       *&v26[4] = 0;
       v27 = 2048;
-      v28 = v22;
+      v28 = connectionId;
       v29 = 2112;
       v30 = v23;
       _os_log_impl(&dword_1C82AD000, v21, OS_LOG_TYPE_ERROR, "BKDevice::deviceWithDescriptor: -> %@ (_cid:%lu) %@\n", v26, 0x20u);
@@ -255,7 +255,7 @@ LABEL_26:
   v14 = v13;
   [(BiometricKitXPCClient *)v10 setDelegate:v13];
   objc_storeStrong(v14 + 1, v10);
-  objc_storeStrong(v14 + 4, a3);
+  objc_storeStrong(v14 + 4, descriptor);
   if (__osLogTrace)
   {
     v15 = __osLogTrace;
@@ -269,10 +269,10 @@ LABEL_26:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [(BiometricKitXPCClient *)v10 connectionId];
-    if (a4)
+    connectionId2 = [(BiometricKitXPCClient *)v10 connectionId];
+    if (error)
     {
-      v18 = *a4;
+      v18 = *error;
     }
 
     else
@@ -283,7 +283,7 @@ LABEL_26:
     *v26 = 138412802;
     *&v26[4] = v14;
     v27 = 2048;
-    v28 = v17;
+    v28 = connectionId2;
     v29 = 2112;
     v30 = v18;
     _os_log_impl(&dword_1C82AD000, v16, OS_LOG_TYPE_DEFAULT, "BKDevice::deviceWithDescriptor: -> %@ (_cid:%lu) %@\n", v26, 0x20u);
@@ -297,10 +297,10 @@ LABEL_37:
   return v14;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -315,16 +315,16 @@ LABEL_37:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = delegateCopy;
     _os_log_impl(&dword_1C82AD000, v6, OS_LOG_TYPE_DEFAULT, "BKDevice::setDelegate: %@\n", &v10, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v4);
-    [(BiometricKitXPCClient *)self->_xpcClient registerDelegate:v4 != 0];
+    objc_storeWeak(&self->_delegate, delegateCopy);
+    [(BiometricKitXPCClient *)self->_xpcClient registerDelegate:delegateCopy != 0];
   }
 
   if (__osLogTrace)
@@ -346,7 +346,7 @@ LABEL_37:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createEnrollOperationWithError:(id *)a3
+- (id)createEnrollOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -382,9 +382,9 @@ LABEL_37:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -402,7 +402,7 @@ LABEL_37:
 
   else
   {
-    [BKDevice createEnrollOperationWithError:a3];
+    [BKDevice createEnrollOperationWithError:error];
   }
 
   kdebug_trace();
@@ -411,7 +411,7 @@ LABEL_37:
   return v7;
 }
 
-- (id)createMatchOperationWithError:(id *)a3
+- (id)createMatchOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -447,9 +447,9 @@ LABEL_37:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -467,7 +467,7 @@ LABEL_37:
 
   else
   {
-    [BKDevice createMatchOperationWithError:a3];
+    [BKDevice createMatchOperationWithError:error];
   }
 
   kdebug_trace();
@@ -476,7 +476,7 @@ LABEL_37:
   return v7;
 }
 
-- (id)createPresenceDetectOperationWithError:(id *)a3
+- (id)createPresenceDetectOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -512,9 +512,9 @@ LABEL_37:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -532,7 +532,7 @@ LABEL_37:
 
   else
   {
-    [BKDevice createPresenceDetectOperationWithError:a3];
+    [BKDevice createPresenceDetectOperationWithError:error];
   }
 
   kdebug_trace();
@@ -541,7 +541,7 @@ LABEL_37:
   return v7;
 }
 
-- (id)systemProtectedConfigurationWithError:(id *)a3
+- (id)systemProtectedConfigurationWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -560,14 +560,14 @@ LABEL_37:
     xpcClient = self->_xpcClient;
     v8 = v6;
     v18 = 134217984;
-    v19 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevice::systemProtectedConfiguration (_cid:%lu)\n", &v18, 0xCu);
   }
 
-  v9 = [(BiometricKitXPCClient *)self->_xpcClient getSystemProtectedConfiguration];
-  if (v9)
+  getSystemProtectedConfiguration = [(BiometricKitXPCClient *)self->_xpcClient getSystemProtectedConfiguration];
+  if (getSystemProtectedConfiguration)
   {
-    v10 = [[BKSystemProtectedConfiguration alloc] initWithDictionary:v9];
+    v10 = [[BKSystemProtectedConfiguration alloc] initWithDictionary:getSystemProtectedConfiguration];
     if (v10)
     {
       v11 = v10;
@@ -583,9 +583,9 @@ LABEL_37:
 
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (error)
         {
-          v13 = *a3;
+          v13 = *error;
         }
 
         else
@@ -594,7 +594,7 @@ LABEL_37:
         }
 
         v18 = 138543618;
-        v19 = v11;
+        connectionId = v11;
         v20 = 2112;
         v21 = v13;
         _os_log_impl(&dword_1C82AD000, v12, OS_LOG_TYPE_DEFAULT, "BKDevice::systemProtectedConfiguration: -> %{public}@, error:%@\n", &v18, 0x16u);
@@ -621,9 +621,9 @@ LABEL_37:
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (error)
     {
-      v15 = *a3;
+      v15 = *error;
     }
 
     else
@@ -632,7 +632,7 @@ LABEL_37:
     }
 
     v18 = 138543618;
-    v19 = 0;
+    connectionId = 0;
     v20 = 2112;
     v21 = v15;
     _os_log_impl(&dword_1C82AD000, v14, OS_LOG_TYPE_ERROR, "BKDevice::systemProtectedConfiguration: -> %{public}@, error:%@\n", &v18, 0x16u);
@@ -772,10 +772,10 @@ void __70__BKDevice_setSystemProtectedConfiguration_credentialSet_async_reply___
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setSystemProtectedConfiguration:(id)a3 credentialSet:(id)a4 error:(id *)a5
+- (BOOL)setSystemProtectedConfiguration:(id)configuration credentialSet:(id)set error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  setCopy = set;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -792,10 +792,10 @@ void __70__BKDevice_setSystemProtectedConfiguration_credentialSet_async_reply___
   v12[3] = &unk_1E8304308;
   v12[4] = &v19;
   v12[5] = &v13;
-  [(BKDevice *)self setSystemProtectedConfiguration:v8 credentialSet:v9 async:0 reply:v12];
-  if (a5)
+  [(BKDevice *)self setSystemProtectedConfiguration:configurationCopy credentialSet:setCopy async:0 reply:v12];
+  if (error)
   {
-    *a5 = v14[5];
+    *error = v14[5];
   }
 
   v10 = *(v20 + 24);
@@ -805,16 +805,16 @@ void __70__BKDevice_setSystemProtectedConfiguration_credentialSet_async_reply___
   return v10;
 }
 
-- (void)setSystemProtectedConfiguration:(id)a3 credentialSet:(id)a4 reply:(id)a5
+- (void)setSystemProtectedConfiguration:(id)configuration credentialSet:(id)set reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_invoke;
   v10[3] = &unk_1E8304358;
-  v11 = v8;
-  v9 = v8;
-  [(BKDevice *)self setSystemProtectedConfiguration:a3 credentialSet:a4 async:1 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [(BKDevice *)self setSystemProtectedConfiguration:configuration credentialSet:set async:1 reply:v10];
 }
 
 void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_invoke(uint64_t a1, char a2, void *a3)
@@ -833,7 +833,7 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
   dispatch_async(v6, block);
 }
 
-- (BOOL)dropAllUnlockTokensWithError:(id *)a3
+- (BOOL)dropAllUnlockTokensWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -856,8 +856,8 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevice::dropAllUnlockTokens (_cid:%lu)\n", &v19, 0xCu);
   }
 
-  v9 = [(BiometricKitXPCClient *)self->_xpcClient dropUnlockToken];
-  if (v9)
+  dropUnlockToken = [(BiometricKitXPCClient *)self->_xpcClient dropUnlockToken];
+  if (dropUnlockToken)
   {
     if (__osLog)
     {
@@ -874,7 +874,7 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
       v19 = 136316162;
       *v20 = "err == 0 ";
       *&v20[8] = 2048;
-      *v21 = v9;
+      *v21 = dropUnlockToken;
       *&v21[8] = 2080;
       v22 = &unk_1C82F52EE;
       v23 = 2080;
@@ -884,7 +884,7 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
       _os_log_impl(&dword_1C82AD000, v16, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v19, 0x30u);
     }
 
-    setErrorWithOSStatus(v9, a3);
+    setErrorWithOSStatus(dropUnlockToken, error);
     if (__osLogTrace)
     {
       v17 = __osLogTrace;
@@ -897,9 +897,9 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (error)
       {
-        v18 = *a3;
+        v18 = *error;
       }
 
       else
@@ -910,7 +910,7 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
       v19 = 67109634;
       *v20 = 0;
       *&v20[4] = 1024;
-      *&v20[6] = v9;
+      *&v20[6] = dropUnlockToken;
       *v21 = 2112;
       *&v21[2] = v18;
       v12 = v17;
@@ -933,9 +933,9 @@ void __64__BKDevice_setSystemProtectedConfiguration_credentialSet_reply___block_
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v11 = *a3;
+        v11 = *error;
       }
 
       else
@@ -956,12 +956,12 @@ LABEL_15:
     }
   }
 
-  result = v9 == 0;
+  result = dropUnlockToken == 0;
   v15 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)forceBioLockoutForAllUsersWithError:(id *)a3
+- (BOOL)forceBioLockoutForAllUsersWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -1012,7 +1012,7 @@ LABEL_15:
       _os_log_impl(&dword_1C82AD000, v16, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v19, 0x30u);
     }
 
-    setErrorWithOSStatus(v9, a3);
+    setErrorWithOSStatus(v9, error);
     if (__osLogTrace)
     {
       v17 = __osLogTrace;
@@ -1025,9 +1025,9 @@ LABEL_15:
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (error)
       {
-        v18 = *a3;
+        v18 = *error;
       }
 
       else
@@ -1061,9 +1061,9 @@ LABEL_15:
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v11 = *a3;
+        v11 = *error;
       }
 
       else
@@ -1089,10 +1089,10 @@ LABEL_15:
   return result;
 }
 
-- (id)identityForUUID:(id)a3 error:(id *)a4
+- (id)identityForUUID:(id)d error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -1109,13 +1109,13 @@ LABEL_15:
     xpcClient = self->_xpcClient;
     v10 = v8;
     v20 = 138412546;
-    v21 = v6;
+    v21 = dCopy;
     v22 = 2048;
-    v23 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_DEFAULT, "BKDevice::identityForUUID: %@ (_cid:%lu)\n", &v20, 0x16u);
   }
 
-  v11 = [(BiometricKitXPCClient *)self->_xpcClient getIdentityFromUUID:v6];
+  v11 = [(BiometricKitXPCClient *)self->_xpcClient getIdentityFromUUID:dCopy];
   if (v11)
   {
     v12 = [[BKIdentity alloc] initWithServerIdentity:v11 device:self];
@@ -1134,9 +1134,9 @@ LABEL_15:
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (error)
         {
-          v15 = *a4;
+          v15 = *error;
         }
 
         else
@@ -1147,7 +1147,7 @@ LABEL_15:
         v20 = 138412546;
         v21 = v13;
         v22 = 2112;
-        v23 = v15;
+        connectionId = v15;
         _os_log_impl(&dword_1C82AD000, v14, OS_LOG_TYPE_DEFAULT, "BKDevice::identityForUUID: -> %@, error:%@\n", &v20, 0x16u);
       }
 
@@ -1172,9 +1172,9 @@ LABEL_15:
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    if (a4)
+    if (error)
     {
-      v17 = *a4;
+      v17 = *error;
     }
 
     else
@@ -1185,7 +1185,7 @@ LABEL_15:
     v20 = 138412546;
     v21 = 0;
     v22 = 2112;
-    v23 = v17;
+    connectionId = v17;
     _os_log_impl(&dword_1C82AD000, v16, OS_LOG_TYPE_ERROR, "BKDevice::identityForUUID: -> %@, error:%@\n", &v20, 0x16u);
   }
 
@@ -1252,9 +1252,9 @@ void __39__BKDevice_updateIdentity_async_reply___block_invoke(uint64_t a1, uint6
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateIdentity:(id)a3 error:(id *)a4
+- (BOOL)updateIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1271,10 +1271,10 @@ void __39__BKDevice_updateIdentity_async_reply___block_invoke(uint64_t a1, uint6
   v9[3] = &unk_1E8304308;
   v9[4] = &v16;
   v9[5] = &v10;
-  [(BKDevice *)self updateIdentity:v6 async:0 reply:v9];
-  if (a4)
+  [(BKDevice *)self updateIdentity:identityCopy async:0 reply:v9];
+  if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   v7 = *(v17 + 24);
@@ -1284,16 +1284,16 @@ void __39__BKDevice_updateIdentity_async_reply___block_invoke(uint64_t a1, uint6
   return v7;
 }
 
-- (void)updateIdentity:(id)a3 reply:(id)a4
+- (void)updateIdentity:(id)identity reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__BKDevice_updateIdentity_reply___block_invoke;
   v8[3] = &unk_1E8304358;
-  v9 = v6;
-  v7 = v6;
-  [(BKDevice *)self updateIdentity:a3 async:1 reply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(BKDevice *)self updateIdentity:identity async:1 reply:v8];
 }
 
 void __33__BKDevice_updateIdentity_reply___block_invoke(uint64_t a1, char a2, void *a3)
@@ -1367,9 +1367,9 @@ void __39__BKDevice_removeIdentity_async_reply___block_invoke(uint64_t a1, uint6
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeIdentity:(id)a3 error:(id *)a4
+- (BOOL)removeIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1386,10 +1386,10 @@ void __39__BKDevice_removeIdentity_async_reply___block_invoke(uint64_t a1, uint6
   v9[3] = &unk_1E8304308;
   v9[4] = &v16;
   v9[5] = &v10;
-  [(BKDevice *)self removeIdentity:v6 async:0 reply:v9];
-  if (a4)
+  [(BKDevice *)self removeIdentity:identityCopy async:0 reply:v9];
+  if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   v7 = *(v17 + 24);
@@ -1399,16 +1399,16 @@ void __39__BKDevice_removeIdentity_async_reply___block_invoke(uint64_t a1, uint6
   return v7;
 }
 
-- (void)removeIdentity:(id)a3 reply:(id)a4
+- (void)removeIdentity:(id)identity reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__BKDevice_removeIdentity_reply___block_invoke;
   v8[3] = &unk_1E8304358;
-  v9 = v6;
-  v7 = v6;
-  [(BKDevice *)self removeIdentity:a3 async:1 reply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(BKDevice *)self removeIdentity:identity async:1 reply:v8];
 }
 
 void __33__BKDevice_removeIdentity_reply___block_invoke(uint64_t a1, char a2, void *a3)
@@ -1498,7 +1498,7 @@ void __45__BKDevice_removeAllIdentitiesForUser_reply___block_invoke(uint64_t a1,
   dispatch_async(v6, block);
 }
 
-- (id)identitiesWithError:(id *)a3
+- (id)identitiesWithError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9C10];
@@ -1517,14 +1517,14 @@ void __45__BKDevice_removeAllIdentitiesForUser_reply___block_invoke(uint64_t a1,
     xpcClient = self->_xpcClient;
     v7 = v5;
     *buf = 134217984;
-    v32 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v7, OS_LOG_TYPE_DEFAULT, "BKDevice::identities (_cid:%lu)\n", buf, 0xCu);
   }
 
   v8 = [(BiometricKitXPCClient *)self->_xpcClient identities:0];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -1545,7 +1545,7 @@ void __45__BKDevice_removeAllIdentitiesForUser_reply___block_invoke(uint64_t a1,
           }
 
           v15 = [[BKIdentity alloc] initWithServerIdentity:*(*(&v27 + 1) + 8 * i) device:self];
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v27 objects:v37 count:16];
@@ -1554,7 +1554,7 @@ void __45__BKDevice_removeAllIdentitiesForUser_reply___block_invoke(uint64_t a1,
       while (v12);
     }
 
-    if (v9)
+    if (array)
     {
       if (__osLogTrace)
       {
@@ -1569,19 +1569,19 @@ void __45__BKDevice_removeAllIdentitiesForUser_reply___block_invoke(uint64_t a1,
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v9 count];
-        v19 = a3;
-        if (a3)
+        v18 = [array count];
+        errorCopy = error;
+        if (error)
         {
-          v19 = *a3;
+          errorCopy = *error;
         }
 
         *buf = 134218498;
-        v32 = v18;
+        connectionId = v18;
         v33 = 2114;
-        v34 = v9;
+        v34 = array;
         v35 = 2112;
-        v36 = v19;
+        v36 = errorCopy;
         _os_log_impl(&dword_1C82AD000, v17, OS_LOG_TYPE_DEFAULT, "BKDevice::identities -> %lu: %{public}@, error:%@\n", buf, 0x20u);
       }
 
@@ -1608,30 +1608,30 @@ void __45__BKDevice_removeAllIdentitiesForUser_reply___block_invoke(uint64_t a1,
   {
     v21 = v20;
     v22 = [0 count];
-    v23 = a3;
-    if (a3)
+    errorCopy2 = error;
+    if (error)
     {
-      v23 = *a3;
+      errorCopy2 = *error;
     }
 
     *buf = 134218498;
-    v32 = v22;
+    connectionId = v22;
     v33 = 2114;
     v34 = 0;
     v35 = 2112;
-    v36 = v23;
+    v36 = errorCopy2;
     _os_log_impl(&dword_1C82AD000, v21, OS_LOG_TYPE_ERROR, "BKDevice::identities -> %lu: %{public}@, error:%@\n", buf, 0x20u);
   }
 
-  v9 = 0;
+  array = 0;
 LABEL_31:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return array;
 }
 
-- (id)maxIdentityCountWithError:(id *)a3
+- (id)maxIdentityCountWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -1650,7 +1650,7 @@ LABEL_31:
     xpcClient = self->_xpcClient;
     v8 = v6;
     v21 = 134217984;
-    v22 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevice::maxIdentityCount (_cid:%lu)\n", &v21, 0xCu);
   }
 
@@ -1674,10 +1674,10 @@ LABEL_31:
     }
 
     v12 = v11;
-    v13 = [v10 integerValue];
-    if (a3)
+    integerValue = [v10 integerValue];
+    if (error)
     {
-      v14 = *a3;
+      v14 = *error;
     }
 
     else
@@ -1686,7 +1686,7 @@ LABEL_31:
     }
 
     v21 = 134218242;
-    v22 = v13;
+    connectionId = integerValue;
     v23 = 2112;
     v24 = v14;
     v17 = v12;
@@ -1701,10 +1701,10 @@ LABEL_31:
     }
 
     v12 = v11;
-    v15 = [0 integerValue];
-    if (a3)
+    integerValue2 = [0 integerValue];
+    if (error)
     {
-      v16 = *a3;
+      v16 = *error;
     }
 
     else
@@ -1713,7 +1713,7 @@ LABEL_31:
     }
 
     v21 = 134218242;
-    v22 = v15;
+    connectionId = integerValue2;
     v23 = 2112;
     v24 = v16;
     v17 = v12;
@@ -1728,7 +1728,7 @@ LABEL_21:
   return v10;
 }
 
-- (id)lastMatchEventWithError:(id *)a3
+- (id)lastMatchEventWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69E9C10];
@@ -1747,7 +1747,7 @@ LABEL_21:
     xpcClient = self->_xpcClient;
     v8 = v6;
     *buf = 134217984;
-    v22 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDevice::lastMatchEvent (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -1762,7 +1762,7 @@ LABEL_21:
 
   else
   {
-    v12 = [BKMatchEvent matchEventWithDictionary:v11 device:self error:a3];
+    v12 = [BKMatchEvent matchEventWithDictionary:v11 device:self error:error];
     if (v12)
     {
       v13 = v12;
@@ -1778,9 +1778,9 @@ LABEL_21:
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (error)
         {
-          v15 = *a3;
+          v15 = *error;
         }
 
         else
@@ -1789,7 +1789,7 @@ LABEL_21:
         }
 
         *buf = 138412546;
-        v22 = v13;
+        connectionId = v13;
         v23 = 2112;
         v24 = v15;
         _os_log_impl(&dword_1C82AD000, v14, OS_LOG_TYPE_DEFAULT, "BKDevice::lastMatchEvent -> %@, error:%@\n", buf, 0x16u);
@@ -1813,9 +1813,9 @@ LABEL_21:
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (error)
     {
-      v19 = *a3;
+      v19 = *error;
     }
 
     else
@@ -1824,7 +1824,7 @@ LABEL_21:
     }
 
     *buf = 138412546;
-    v22 = 0;
+    connectionId = 0;
     v23 = 2112;
     v24 = v19;
     _os_log_impl(&dword_1C82AD000, v18, OS_LOG_TYPE_ERROR, "BKDevice::lastMatchEvent -> %@, error:%@\n", buf, 0x16u);
@@ -1838,7 +1838,7 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)deviceHardwareState:(unint64_t *)a3 error:(id *)a4
+- (BOOL)deviceHardwareState:(unint64_t *)state error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69E9C10];
@@ -1857,20 +1857,20 @@ LABEL_16:
     xpcClient = self->_xpcClient;
     v10 = v8;
     *buf = 134218240;
-    *v22 = a3;
+    *v22 = state;
     *&v22[8] = 2048;
     *&v22[10] = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_DEFAULT, "BKDevice::deviceHardwareState: %p (_cid:%lu)\n", buf, 0x16u);
   }
 
   v20 = 0;
-  if (a3)
+  if (state)
   {
     if (![(BiometricKitXPCClient *)self->_xpcClient getDeviceHardwareState:&v20])
     {
       if (v20 < 3)
       {
-        *a3 = v20;
+        *state = v20;
       }
 
       if (__osLogTrace)
@@ -1885,10 +1885,10 @@ LABEL_16:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = *a3;
-        if (a4)
+        v12 = *state;
+        if (error)
         {
-          v13 = *a4;
+          v13 = *error;
         }
 
         else
@@ -1934,9 +1934,9 @@ LABEL_16:
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (state)
     {
-      v18 = *a3;
+      v18 = *state;
     }
 
     else
@@ -1944,9 +1944,9 @@ LABEL_16:
       v18 = 0;
     }
 
-    if (a4)
+    if (error)
     {
-      v19 = *a4;
+      v19 = *error;
     }
 
     else
@@ -1969,7 +1969,7 @@ LABEL_19:
   return v14;
 }
 
-- (id)accessoryGroupsWithError:(id *)a3
+- (id)accessoryGroupsWithError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9C10];
@@ -1988,7 +1988,7 @@ LABEL_19:
     xpcClient = self->_xpcClient;
     v7 = v5;
     *buf = 134217984;
-    v35 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v7, OS_LOG_TYPE_DEFAULT, "BKDevice::accessoryGroups (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -2025,8 +2025,8 @@ LABEL_19:
 
           v17 = *(*(&v29 + 1) + 8 * i);
           v18 = [BKAccessoryGroup alloc];
-          v19 = [v17 group];
-          v20 = [(BKAccessoryGroup *)v18 initWithServerAccessoryGroup:v19 device:self];
+          group = [v17 group];
+          v20 = [(BKAccessoryGroup *)v18 initWithServerAccessoryGroup:group device:self];
           [v11 addObject:v20];
         }
 
@@ -2051,16 +2051,16 @@ LABEL_19:
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = a3;
-        if (a3)
+        errorCopy = error;
+        if (error)
         {
-          v22 = *a3;
+          errorCopy = *error;
         }
 
         *buf = 138412546;
-        v35 = v11;
+        connectionId = v11;
         v36 = 2112;
-        v37 = v22;
+        v37 = errorCopy;
         _os_log_impl(&dword_1C82AD000, v21, OS_LOG_TYPE_DEFAULT, "BKDevice::accessoryGroups -> %@, error:%@\n", buf, 0x16u);
       }
 
@@ -2080,29 +2080,29 @@ LABEL_19:
 
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = a3;
-    if (a3)
+    errorCopy2 = error;
+    if (error)
     {
-      v24 = *a3;
+      errorCopy2 = *error;
     }
 
     *buf = 138412546;
-    v35 = 0;
+    connectionId = 0;
     v36 = 2112;
-    v37 = v24;
+    v37 = errorCopy2;
     _os_log_impl(&dword_1C82AD000, v23, OS_LOG_TYPE_ERROR, "BKDevice::accessoryGroups -> %@, error:%@\n", buf, 0x16u);
   }
 
   v11 = 0;
 LABEL_31:
-  v25 = [v11 allObjects];
+  allObjects = [v11 allObjects];
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return allObjects;
 }
 
-- (id)accessoriesWithError:(id *)a3
+- (id)accessoriesWithError:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9C10];
@@ -2121,7 +2121,7 @@ LABEL_31:
     xpcClient = self->_xpcClient;
     v7 = v5;
     *buf = 134217984;
-    v31 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v7, OS_LOG_TYPE_DEFAULT, "BKDevice::accessories (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -2136,7 +2136,7 @@ LABEL_31:
 
   else
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -2157,7 +2157,7 @@ LABEL_31:
           }
 
           v17 = [[BKAccessory alloc] initWithServerAccessory:*(*(&v25 + 1) + 8 * i) device:self];
-          [v11 addObject:v17];
+          [array addObject:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
@@ -2166,7 +2166,7 @@ LABEL_31:
       while (v14);
     }
 
-    if (v11)
+    if (array)
     {
       if (__osLogTrace)
       {
@@ -2180,16 +2180,16 @@ LABEL_31:
 
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = a3;
-        if (a3)
+        errorCopy = error;
+        if (error)
         {
-          v19 = *a3;
+          errorCopy = *error;
         }
 
         *buf = 138412546;
-        v31 = v11;
+        connectionId = array;
         v32 = 2112;
-        v33 = v19;
+        v33 = errorCopy;
         _os_log_impl(&dword_1C82AD000, v18, OS_LOG_TYPE_DEFAULT, "BKDevice::accessories -> %@, error:%@\n", buf, 0x16u);
       }
 
@@ -2209,28 +2209,28 @@ LABEL_31:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    v21 = a3;
-    if (a3)
+    errorCopy2 = error;
+    if (error)
     {
-      v21 = *a3;
+      errorCopy2 = *error;
     }
 
     *buf = 138412546;
-    v31 = 0;
+    connectionId = 0;
     v32 = 2112;
-    v33 = v21;
+    v33 = errorCopy2;
     _os_log_impl(&dword_1C82AD000, v20, OS_LOG_TYPE_ERROR, "BKDevice::accessories -> %@, error:%@\n", buf, 0x16u);
   }
 
-  v11 = 0;
+  array = 0;
 LABEL_31:
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return array;
 }
 
-- (id)connectedAccessoriesWithError:(id *)a3
+- (id)connectedAccessoriesWithError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69E9C10];
@@ -2249,7 +2249,7 @@ LABEL_31:
     xpcClient = self->_xpcClient;
     v7 = v5;
     *buf = 134217984;
-    v32 = [(BiometricKitXPCClient *)xpcClient connectionId];
+    connectionId = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v7, OS_LOG_TYPE_DEFAULT, "BKDevice::connectedAccessories (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -2264,7 +2264,7 @@ LABEL_31:
 
   else
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -2288,7 +2288,7 @@ LABEL_31:
           if (([v17 flags] & 2) != 0)
           {
             v18 = [[BKAccessory alloc] initWithServerAccessory:v17 device:self];
-            [v11 addObject:v18];
+            [array addObject:v18];
           }
         }
 
@@ -2298,7 +2298,7 @@ LABEL_31:
       while (v14);
     }
 
-    if (v11)
+    if (array)
     {
       if (__osLogTrace)
       {
@@ -2312,16 +2312,16 @@ LABEL_31:
 
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = a3;
-        if (a3)
+        errorCopy = error;
+        if (error)
         {
-          v20 = *a3;
+          errorCopy = *error;
         }
 
         *buf = 138412546;
-        v32 = v11;
+        connectionId = array;
         v33 = 2112;
-        v34 = v20;
+        v34 = errorCopy;
         _os_log_impl(&dword_1C82AD000, v19, OS_LOG_TYPE_DEFAULT, "BKDevice::connectedAccessories -> %@, error:%@\n", buf, 0x16u);
       }
 
@@ -2341,25 +2341,25 @@ LABEL_31:
 
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    v22 = a3;
-    if (a3)
+    errorCopy2 = error;
+    if (error)
     {
-      v22 = *a3;
+      errorCopy2 = *error;
     }
 
     *buf = 138412546;
-    v32 = 0;
+    connectionId = 0;
     v33 = 2112;
-    v34 = v22;
+    v34 = errorCopy2;
     _os_log_impl(&dword_1C82AD000, v21, OS_LOG_TYPE_ERROR, "BKDevice::connectedAccessories -> %@, error:%@\n", buf, 0x16u);
   }
 
-  v11 = 0;
+  array = 0;
 LABEL_33:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return array;
 }
 
 void __41__BKDevice_statusMessage_details_client___block_invoke(uint64_t a1)
@@ -2368,41 +2368,41 @@ void __41__BKDevice_statusMessage_details_client___block_invoke(uint64_t a1)
   [v2 device:*(a1 + 32) matchEventOccurred:*(a1 + 40)];
 }
 
-+ (BOOL)lockoutState:(int64_t *)a3 fromDeviceLockoutState:(int64_t)a4 error:(id *)a5
++ (BOOL)lockoutState:(int64_t *)state fromDeviceLockoutState:(int64_t)lockoutState error:(id *)error
 {
-  if (a3)
+  if (state)
   {
-    if ((a4 & 0x40) != 0)
+    if ((lockoutState & 0x40) != 0)
     {
       v6 = 6;
     }
 
-    else if ((a4 & 0x100) != 0)
+    else if ((lockoutState & 0x100) != 0)
     {
       v6 = 7;
     }
 
-    else if ((a4 & 0x10) != 0)
+    else if ((lockoutState & 0x10) != 0)
     {
       v6 = 2;
     }
 
-    else if ((a4 & 2) != 0)
+    else if ((lockoutState & 2) != 0)
     {
       v6 = 3;
     }
 
-    else if ((a4 & 4) != 0)
+    else if ((lockoutState & 4) != 0)
     {
       v6 = 4;
     }
 
-    else if ((a4 & 8) != 0)
+    else if ((lockoutState & 8) != 0)
     {
       v6 = 1;
     }
 
-    else if ((a4 & 0x800) != 0)
+    else if ((lockoutState & 0x800) != 0)
     {
       v6 = 8;
     }
@@ -2412,7 +2412,7 @@ void __41__BKDevice_statusMessage_details_client___block_invoke(uint64_t a1)
       v6 = 5;
     }
 
-    *a3 = v6;
+    *state = v6;
   }
 
   else
@@ -2420,30 +2420,30 @@ void __41__BKDevice_statusMessage_details_client___block_invoke(uint64_t a1)
     +[BKDevice lockoutState:fromDeviceLockoutState:error:];
   }
 
-  return a3 != 0;
+  return state != 0;
 }
 
-+ (BOOL)extendedLockoutState:(int64_t *)a3 fromDeviceLockoutState:(int64_t)a4 error:(id *)a5
++ (BOOL)extendedLockoutState:(int64_t *)state fromDeviceLockoutState:(int64_t)lockoutState error:(id *)error
 {
-  if (a3)
+  if (state)
   {
-    v6 = (a4 >> 3) & 8 | (a4 >> 2) & 0x40 | (a4 >> 4) & 1 | a4 & 6;
-    *a3 = v6;
+    v6 = (lockoutState >> 3) & 8 | (lockoutState >> 2) & 0x40 | (lockoutState >> 4) & 1 | lockoutState & 6;
+    *state = v6;
     v7 = v6;
-    if ((a4 & 8) == 0)
+    if ((lockoutState & 8) == 0)
     {
       v7 = v6 | 0x10;
-      *a3 = v6 | 0x10;
-      if ((a4 & 0x800) != 0)
+      *state = v6 | 0x10;
+      if ((lockoutState & 0x800) != 0)
       {
         v7 = v6 | 0x90;
-        *a3 = v6 | 0x90;
+        *state = v6 | 0x90;
       }
     }
 
-    if ((a4 & 0x200) == 0)
+    if ((lockoutState & 0x200) == 0)
     {
-      *a3 = v7 | 0x20;
+      *state = v7 | 0x20;
     }
   }
 
@@ -2452,13 +2452,13 @@ void __41__BKDevice_statusMessage_details_client___block_invoke(uint64_t a1)
     +[BKDevice extendedLockoutState:fromDeviceLockoutState:error:];
   }
 
-  return a3 != 0;
+  return state != 0;
 }
 
-+ (BOOL)biometryAvailabilityInfo:(int64_t *)a3 fromDeviceInfo:(int64_t)a4 error:(id *)a5
++ (BOOL)biometryAvailabilityInfo:(int64_t *)info fromDeviceInfo:(int64_t)deviceInfo error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!info)
   {
     +[BKDevice biometryAvailabilityInfo:fromDeviceInfo:error:];
 LABEL_15:
@@ -2466,22 +2466,22 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a4 == 3)
+  if (deviceInfo == 3)
   {
     v7 = 3;
     goto LABEL_8;
   }
 
-  if (a4 == 2)
+  if (deviceInfo == 2)
   {
     v7 = 2;
 LABEL_8:
-    *a3 = v7;
+    *info = v7;
     result = 1;
     goto LABEL_16;
   }
 
-  if (a4 != 1)
+  if (deviceInfo != 1)
   {
     if (__osLog)
     {
@@ -2508,12 +2508,12 @@ LABEL_8:
       _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v10, 0x30u);
     }
 
-    setError(1, a5);
+    setError(1, error);
     goto LABEL_15;
   }
 
   result = 1;
-  *a3 = 1;
+  *info = 1;
 LABEL_16:
   v9 = *MEMORY[0x1E69E9840];
   return result;

@@ -1,25 +1,25 @@
 @interface SBWidgetIconResizeTransitionViewController
 - (CGRect)visibleBounds;
-- (SBWidgetIconResizeTransitionViewController)initWithLeafIcon:(id)a3 allowedGridSizeClasses:(id)a4 gridSizeClassDomain:(id)a5 viewHelper:(id)a6 options:(unint64_t)a7;
+- (SBWidgetIconResizeTransitionViewController)initWithLeafIcon:(id)icon allowedGridSizeClasses:(id)classes gridSizeClassDomain:(id)domain viewHelper:(id)helper options:(unint64_t)options;
 - (SBWidgetIconResizeTransitionViewControllerDelegate)delegate;
-- (id)blurViewWithInputRadius:(double)a3;
+- (id)blurViewWithInputRadius:(double)radius;
 - (id)effectiveGridSizeClassDomain;
-- (id)replacementIconDataSourceForIconDataSource:(id)a3 gridSizeClass:(id)a4;
-- (id)replacementIconForIcon:(id)a3 gridSizeClass:(id)a4;
+- (id)replacementIconDataSourceForIconDataSource:(id)source gridSizeClass:(id)class;
+- (id)replacementIconForIcon:(id)icon gridSizeClass:(id)class;
 - (id)succinctDescription;
-- (id)viewControllerForGridSizeClass:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (id)viewControllerForGridSizeClass:(id)class;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)gatherViewControllers;
 - (void)invalidate;
 - (void)loadView;
-- (void)setEndingCornerRadius:(double)a3;
-- (void)setEndingGridSizeClass:(id)a3 animated:(BOOL)a4;
-- (void)setEndingViewController:(id)a3 animated:(BOOL)a4;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setStartingCornerRadius:(double)a3;
-- (void)setStartingGridSizeClass:(id)a3;
-- (void)setStartingViewController:(id)a3;
-- (void)setTransitionProgress:(double)a3;
+- (void)setEndingCornerRadius:(double)radius;
+- (void)setEndingGridSizeClass:(id)class animated:(BOOL)animated;
+- (void)setEndingViewController:(id)controller animated:(BOOL)animated;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setStartingCornerRadius:(double)radius;
+- (void)setStartingGridSizeClass:(id)class;
+- (void)setStartingViewController:(id)controller;
+- (void)setTransitionProgress:(double)progress;
 - (void)swapViewControllersAndClearEnding;
 - (void)updateCornerRadius;
 - (void)updateTransitionProgress;
@@ -29,53 +29,53 @@
 
 @implementation SBWidgetIconResizeTransitionViewController
 
-- (SBWidgetIconResizeTransitionViewController)initWithLeafIcon:(id)a3 allowedGridSizeClasses:(id)a4 gridSizeClassDomain:(id)a5 viewHelper:(id)a6 options:(unint64_t)a7
+- (SBWidgetIconResizeTransitionViewController)initWithLeafIcon:(id)icon allowedGridSizeClasses:(id)classes gridSizeClassDomain:(id)domain viewHelper:(id)helper options:(unint64_t)options
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  iconCopy = icon;
+  classesCopy = classes;
+  domainCopy = domain;
+  helperCopy = helper;
   v38.receiver = self;
   v38.super_class = SBWidgetIconResizeTransitionViewController;
   v17 = [(SBWidgetIconResizeTransitionViewController *)&v38 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_leafIcon, a3);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_leafIcon, icon);
+    v19 = [classesCopy copy];
     allowedGridSizeClasses = v18->_allowedGridSizeClasses;
     v18->_allowedGridSizeClasses = v19;
 
-    objc_storeStrong(&v18->_gridSizeClassDomain, a5);
-    objc_storeStrong(&v18->_viewHelper, a6);
-    v18->_options = a7;
-    if (a7)
+    objc_storeStrong(&v18->_gridSizeClassDomain, domain);
+    objc_storeStrong(&v18->_viewHelper, helper);
+    v18->_options = options;
+    if (options)
     {
-      v24 = [v14 copy];
+      v24 = [classesCopy copy];
       effectiveAllowedGridSizeClasses = v18->_effectiveAllowedGridSizeClasses;
       v18->_effectiveAllowedGridSizeClasses = v24;
     }
 
     else
     {
-      effectiveAllowedGridSizeClasses = [v13 supportedGridSizeClasses];
-      v22 = [effectiveAllowedGridSizeClasses gridSizeClassSetByIntersectingWithGridSizeClassSet:v14];
+      effectiveAllowedGridSizeClasses = [iconCopy supportedGridSizeClasses];
+      v22 = [effectiveAllowedGridSizeClasses gridSizeClassSetByIntersectingWithGridSizeClassSet:classesCopy];
       v23 = v18->_effectiveAllowedGridSizeClasses;
       v18->_effectiveAllowedGridSizeClasses = v22;
     }
 
-    v25 = [v16 listLayout];
+    listLayout = [helperCopy listLayout];
     listLayout = v18->_listLayout;
-    v18->_listLayout = v25;
+    v18->_listLayout = listLayout;
 
-    v27 = [v16 orientation];
-    v28 = SBHIconListLayoutIconGridSizeClassSizes(v18->_listLayout, v27);
+    orientation = [helperCopy orientation];
+    v28 = SBHIconListLayoutIconGridSizeClassSizes(v18->_listLayout, orientation);
     v29 = [v28 copy];
     iconGridSizeClassSizes = v18->_iconGridSizeClassSizes;
     v18->_iconGridSizeClassSizes = v29;
 
-    v31 = [v13 gridSizeClass];
-    v32 = [v31 copy];
+    gridSizeClass = [iconCopy gridSizeClass];
+    v32 = [gridSizeClass copy];
     startingGridSizeClass = v18->_startingGridSizeClass;
     v18->_startingGridSizeClass = v32;
 
@@ -83,7 +83,7 @@
     startingViewController = v18->_startingViewController;
     v18->_startingViewController = v34;
 
-    SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(v18->_listLayout, v27, v18->_startingGridSizeClass);
+    SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(v18->_listLayout, orientation, v18->_startingGridSizeClass);
     v18->_startingCornerRadius = v36;
   }
 
@@ -103,51 +103,51 @@
   v14.super_class = SBWidgetIconResizeTransitionViewController;
   [(SBWidgetIconResizeTransitionViewController *)&v14 viewDidLoad];
   [(SBWidgetIconResizeTransitionViewController *)self gatherViewControllers];
-  v3 = [(SBWidgetIconResizeTransitionViewController *)self view];
+  view = [(SBWidgetIconResizeTransitionViewController *)self view];
   v4 = [[SBWidgetIconResizeContainerView alloc] initWithBlurRadius:15.0];
   endingContainerView = self->_endingContainerView;
   self->_endingContainerView = v4;
 
-  [v3 addSubview:self->_endingContainerView];
+  [view addSubview:self->_endingContainerView];
   v6 = [[SBWidgetIconResizeContainerView alloc] initWithBlurRadius:0.0];
   startingContainerView = self->_startingContainerView;
   self->_startingContainerView = v6;
 
-  [v3 addSubview:self->_startingContainerView];
-  v8 = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
-  v9 = [(SBWidgetIconResizeTransitionViewController *)self endingViewController];
-  if (v9)
+  [view addSubview:self->_startingContainerView];
+  startingViewController = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
+  endingViewController = [(SBWidgetIconResizeTransitionViewController *)self endingViewController];
+  if (endingViewController)
   {
-    [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:v9 withSuperview:self->_endingContainerView];
+    [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:endingViewController withSuperview:self->_endingContainerView];
     v10 = self->_endingContainerView;
-    v11 = [v9 view];
-    [(SBWidgetIconResizeContainerView *)v10 setContentView:v11];
+    view2 = [endingViewController view];
+    [(SBWidgetIconResizeContainerView *)v10 setContentView:view2];
   }
 
-  if (v8)
+  if (startingViewController)
   {
-    [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:v8 withSuperview:self->_startingContainerView];
+    [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:startingViewController withSuperview:self->_startingContainerView];
     v12 = self->_startingContainerView;
-    v13 = [v8 view];
-    [(SBWidgetIconResizeContainerView *)v12 setContentView:v13];
+    view3 = [startingViewController view];
+    [(SBWidgetIconResizeContainerView *)v12 setContentView:view3];
   }
 
   else
   {
-    v13 = [(SBWidgetIconResizeTransitionViewController *)self startingGridSizeClass];
-    v8 = [(SBWidgetIconResizeTransitionViewController *)self viewControllerForGridSizeClass:v13];
-    [(SBWidgetIconResizeTransitionViewController *)self setStartingViewController:v8];
+    view3 = [(SBWidgetIconResizeTransitionViewController *)self startingGridSizeClass];
+    startingViewController = [(SBWidgetIconResizeTransitionViewController *)self viewControllerForGridSizeClass:view3];
+    [(SBWidgetIconResizeTransitionViewController *)self setStartingViewController:startingViewController];
   }
 
   [(SBWidgetIconResizeTransitionViewController *)self updateCornerRadius];
 }
 
-- (void)setStartingGridSizeClass:(id)a3
+- (void)setStartingGridSizeClass:(id)class
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_startingGridSizeClass != v4 && ![(NSString *)v4 isEqualToString:?])
+  classCopy = class;
+  v5 = classCopy;
+  if (self->_startingGridSizeClass != classCopy && ![(NSString *)classCopy isEqualToString:?])
   {
     v6 = SBLogWidgetResizing();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -163,33 +163,33 @@
 
     v9 = [(SBWidgetIconResizeTransitionViewController *)self viewControllerForGridSizeClass:v5];
     [(SBWidgetIconResizeTransitionViewController *)self setStartingViewController:v9];
-    v10 = [(SBWidgetIconResizeTransitionViewController *)self listLayout];
-    v11 = [(SBWidgetIconResizeTransitionViewController *)self viewHelper];
-    SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(v10, [v11 orientation], v5);
+    listLayout = [(SBWidgetIconResizeTransitionViewController *)self listLayout];
+    viewHelper = [(SBWidgetIconResizeTransitionViewController *)self viewHelper];
+    SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(listLayout, [viewHelper orientation], v5);
     [(SBWidgetIconResizeTransitionViewController *)self setStartingCornerRadius:v12];
   }
 }
 
-- (void)setStartingViewController:(id)a3
+- (void)setStartingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   startingViewController = self->_startingViewController;
-  if (startingViewController != v5)
+  if (startingViewController != controllerCopy)
   {
-    v8 = v5;
+    v8 = controllerCopy;
     if (startingViewController)
     {
       [(SBWidgetIconResizeTransitionViewController *)self bs_removeChildViewController:startingViewController animated:0 transitionBlock:0];
     }
 
-    objc_storeStrong(&self->_startingViewController, a3);
+    objc_storeStrong(&self->_startingViewController, controller);
     if (v8)
     {
-      v7 = [(UIViewController *)v8 view];
+      view = [(UIViewController *)v8 view];
       if ([(SBWidgetIconResizeTransitionViewController *)self isViewLoaded])
       {
         [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:v8 withSuperview:self->_startingContainerView];
-        [(SBWidgetIconResizeContainerView *)self->_startingContainerView setContentView:v7];
+        [(SBWidgetIconResizeContainerView *)self->_startingContainerView setContentView:view];
       }
 
       [(SBWidgetIconResizeTransitionViewController *)self updateTransitionProgress];
@@ -200,26 +200,26 @@
       [(SBWidgetIconResizeContainerView *)self->_startingContainerView setContentView:0];
     }
 
-    v5 = v8;
+    controllerCopy = v8;
   }
 }
 
-- (void)setStartingCornerRadius:(double)a3
+- (void)setStartingCornerRadius:(double)radius
 {
-  if (self->_startingCornerRadius != a3)
+  if (self->_startingCornerRadius != radius)
   {
-    self->_startingCornerRadius = a3;
+    self->_startingCornerRadius = radius;
     [(SBWidgetIconResizeTransitionViewController *)self updateCornerRadius];
   }
 }
 
-- (void)setEndingGridSizeClass:(id)a3 animated:(BOOL)a4
+- (void)setEndingGridSizeClass:(id)class animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (self->_endingGridSizeClass != v6 && ![(NSString *)v6 isEqualToString:?])
+  classCopy = class;
+  v7 = classCopy;
+  if (self->_endingGridSizeClass != classCopy && ![(NSString *)classCopy isEqualToString:?])
   {
     v8 = SBLogWidgetResizing();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -236,9 +236,9 @@
     if (v7)
     {
       v11 = [(SBWidgetIconResizeTransitionViewController *)self viewControllerForGridSizeClass:v7];
-      v12 = [(SBWidgetIconResizeTransitionViewController *)self listLayout];
-      v13 = [(SBWidgetIconResizeTransitionViewController *)self viewHelper];
-      SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(v12, [v13 orientation], v7);
+      listLayout = [(SBWidgetIconResizeTransitionViewController *)self listLayout];
+      viewHelper = [(SBWidgetIconResizeTransitionViewController *)self viewHelper];
+      SBHIconListLayoutIconImageInfoForGridSizeClassAndOrientation(listLayout, [viewHelper orientation], v7);
       v15 = v14;
     }
 
@@ -248,52 +248,52 @@
       v15 = 0.0;
     }
 
-    [(SBWidgetIconResizeTransitionViewController *)self setEndingViewController:v11 animated:v4];
+    [(SBWidgetIconResizeTransitionViewController *)self setEndingViewController:v11 animated:animatedCopy];
     [(SBWidgetIconResizeTransitionViewController *)self setEndingCornerRadius:v15];
   }
 }
 
-- (void)setEndingViewController:(id)a3 animated:(BOOL)a4
+- (void)setEndingViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   endingViewController = self->_endingViewController;
-  if (endingViewController != v7)
+  if (endingViewController != controllerCopy)
   {
     v9 = endingViewController;
-    v10 = [(UIViewController *)self->_endingViewController viewIfLoaded];
-    objc_storeStrong(&self->_endingViewController, a3);
-    if (v7)
+    viewIfLoaded = [(UIViewController *)self->_endingViewController viewIfLoaded];
+    objc_storeStrong(&self->_endingViewController, controller);
+    if (controllerCopy)
     {
-      v11 = [(UIViewController *)v7 view];
+      view = [(UIViewController *)controllerCopy view];
       if ([(SBWidgetIconResizeTransitionViewController *)self isViewLoaded])
       {
-        [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:v7 withSuperview:self->_endingContainerView];
-        [(SBWidgetIconResizeContainerView *)self->_endingContainerView setContentView:v11];
+        [(SBWidgetIconResizeTransitionViewController *)self bs_addChildViewController:controllerCopy withSuperview:self->_endingContainerView];
+        [(SBWidgetIconResizeContainerView *)self->_endingContainerView setContentView:view];
       }
 
-      if (v4)
+      if (animatedCopy)
       {
         v12 = MEMORY[0x1E69DD250];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __79__SBWidgetIconResizeTransitionViewController_setEndingViewController_animated___block_invoke;
         v18[3] = &unk_1E8088C90;
-        v19 = v10;
+        v19 = viewIfLoaded;
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __79__SBWidgetIconResizeTransitionViewController_setEndingViewController_animated___block_invoke_2;
         v15[3] = &unk_1E80893F0;
         v16 = v9;
-        v17 = self;
+        selfCopy = self;
         [v12 animateWithDuration:v18 animations:v15 completion:0.2];
       }
 
       else if (v9)
       {
-        v14 = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
+        startingViewController = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
 
-        if (v9 != v14)
+        if (v9 != startingViewController)
         {
           [(SBWidgetIconResizeTransitionViewController *)self bs_removeChildViewController:v9 animated:0 transitionBlock:0];
         }
@@ -304,9 +304,9 @@
 
     else if (v9)
     {
-      v13 = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
+      startingViewController2 = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
 
-      if (v9 != v13)
+      if (v9 != startingViewController2)
       {
         [(SBWidgetIconResizeTransitionViewController *)self bs_removeChildViewController:v9 animated:0 transitionBlock:0];
       }
@@ -343,37 +343,37 @@ void __79__SBWidgetIconResizeTransitionViewController_setEndingViewController_an
   }
 }
 
-- (void)setEndingCornerRadius:(double)a3
+- (void)setEndingCornerRadius:(double)radius
 {
-  if (self->_endingCornerRadius != a3)
+  if (self->_endingCornerRadius != radius)
   {
-    self->_endingCornerRadius = a3;
+    self->_endingCornerRadius = radius;
     [(SBWidgetIconResizeTransitionViewController *)self updateCornerRadius];
   }
 }
 
-- (void)setTransitionProgress:(double)a3
+- (void)setTransitionProgress:(double)progress
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_transitionProgress != a3)
+  if (self->_transitionProgress != progress)
   {
     v5 = SBLogWidgetResizing();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = a3;
+      progressCopy = progress;
       _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "setting resize transition progress to %f", &v6, 0xCu);
     }
 
-    self->_transitionProgress = a3;
+    self->_transitionProgress = progress;
     [(SBWidgetIconResizeTransitionViewController *)self updateCornerRadius];
     [(SBWidgetIconResizeTransitionViewController *)self updateTransitionProgress];
   }
 }
 
-- (id)blurViewWithInputRadius:(double)a3
+- (id)blurViewWithInputRadius:(double)radius
 {
-  v3 = [[SBWidgetIconResizeBackdropView alloc] initWithBlurRadius:a3];
+  v3 = [[SBWidgetIconResizeBackdropView alloc] initWithBlurRadius:radius];
 
   return v3;
 }
@@ -382,47 +382,47 @@ void __79__SBWidgetIconResizeTransitionViewController_setEndingViewController_an
 {
   [(SBWidgetIconResizeTransitionViewController *)self transitionProgress];
   v4 = v3;
-  v14 = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
-  v5 = [(SBWidgetIconResizeTransitionViewController *)self startingContainerView];
-  [v5 setAlpha:1.0 - v4];
-  v6 = [(SBWidgetIconResizeTransitionViewController *)self endingViewController];
-  v7 = [(SBWidgetIconResizeTransitionViewController *)self endingContainerView];
-  [v7 setAlpha:1.0];
-  v8 = [v5 blurView];
-  v9 = [v14 isContentReady];
+  startingViewController = [(SBWidgetIconResizeTransitionViewController *)self startingViewController];
+  startingContainerView = [(SBWidgetIconResizeTransitionViewController *)self startingContainerView];
+  [startingContainerView setAlpha:1.0 - v4];
+  endingViewController = [(SBWidgetIconResizeTransitionViewController *)self endingViewController];
+  endingContainerView = [(SBWidgetIconResizeTransitionViewController *)self endingContainerView];
+  [endingContainerView setAlpha:1.0];
+  blurView = [startingContainerView blurView];
+  isContentReady = [startingViewController isContentReady];
   v10 = v4 * 15.0 + (1.0 - v4) * 0.0;
-  if (!v9)
+  if (!isContentReady)
   {
     v10 = 15.0;
   }
 
-  [v8 setBlurRadius:v10];
-  v11 = [v7 blurView];
-  v12 = [v6 isContentReady];
+  [blurView setBlurRadius:v10];
+  blurView2 = [endingContainerView blurView];
+  isContentReady2 = [endingViewController isContentReady];
   v13 = (1.0 - v4) * 15.0 + (1.0 - (1.0 - v4)) * 0.0;
-  if (!v12)
+  if (!isContentReady2)
   {
     v13 = 15.0;
   }
 
-  [v11 setBlurRadius:v13];
+  [blurView2 setBlurRadius:v13];
 }
 
 - (void)updateCornerRadius
 {
-  v8 = [(SBWidgetIconResizeTransitionViewController *)self viewIfLoaded];
+  viewIfLoaded = [(SBWidgetIconResizeTransitionViewController *)self viewIfLoaded];
   [(SBWidgetIconResizeTransitionViewController *)self startingCornerRadius];
   v4 = v3;
   [(SBWidgetIconResizeTransitionViewController *)self endingCornerRadius];
   v6 = v5;
   [(SBWidgetIconResizeTransitionViewController *)self transitionProgress];
-  [v8 _setContinuousCornerRadius:v6 * v7 + (1.0 - v7) * v4];
+  [viewIfLoaded _setContinuousCornerRadius:v6 * v7 + (1.0 - v7) * v4];
 }
 
 - (void)swapViewControllersAndClearEnding
 {
-  v3 = [(SBWidgetIconResizeTransitionViewController *)self endingGridSizeClass];
-  [(SBWidgetIconResizeTransitionViewController *)self setStartingGridSizeClass:v3];
+  endingGridSizeClass = [(SBWidgetIconResizeTransitionViewController *)self endingGridSizeClass];
+  [(SBWidgetIconResizeTransitionViewController *)self setStartingGridSizeClass:endingGridSizeClass];
   [(SBWidgetIconResizeTransitionViewController *)self setEndingGridSizeClass:0];
   [(SBWidgetIconResizeTransitionViewController *)self setTransitionProgress:0.0];
 }
@@ -432,8 +432,8 @@ void __79__SBWidgetIconResizeTransitionViewController_setEndingViewController_an
   v18.receiver = self;
   v18.super_class = SBWidgetIconResizeTransitionViewController;
   [(SBWidgetIconResizeTransitionViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(SBWidgetIconResizeTransitionViewController *)self view];
-  [v3 bounds];
+  view = [(SBWidgetIconResizeTransitionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -441,61 +441,61 @@ void __79__SBWidgetIconResizeTransitionViewController_setEndingViewController_an
   UIRectGetCenter();
   v13 = v12;
   v15 = v14;
-  v16 = [(SBWidgetIconResizeTransitionViewController *)self startingContainerView];
-  [v16 setCenter:{v13, v15}];
-  [v16 setBounds:{v5, v7, v9, v11}];
-  v17 = [(SBWidgetIconResizeTransitionViewController *)self endingContainerView];
-  [v17 setCenter:{v13, v15}];
-  [v17 setBounds:{v5, v7, v9, v11}];
+  startingContainerView = [(SBWidgetIconResizeTransitionViewController *)self startingContainerView];
+  [startingContainerView setCenter:{v13, v15}];
+  [startingContainerView setBounds:{v5, v7, v9, v11}];
+  endingContainerView = [(SBWidgetIconResizeTransitionViewController *)self endingContainerView];
+  [endingContainerView setCenter:{v13, v15}];
+  [endingContainerView setBounds:{v5, v7, v9, v11}];
 }
 
 - (id)effectiveGridSizeClassDomain
 {
-  v2 = [(SBWidgetIconResizeTransitionViewController *)self gridSizeClassDomain];
-  v3 = [SBHIconGridSizeClassDomain effectiveGridSizeClassDomainForDomain:v2];
+  gridSizeClassDomain = [(SBWidgetIconResizeTransitionViewController *)self gridSizeClassDomain];
+  v3 = [SBHIconGridSizeClassDomain effectiveGridSizeClassDomainForDomain:gridSizeClassDomain];
 
   return v3;
 }
 
-- (id)viewControllerForGridSizeClass:(id)a3
+- (id)viewControllerForGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(SBWidgetIconResizeTransitionViewController *)self viewControllers];
-  if (![v5 count])
+  classCopy = class;
+  viewControllers = [(SBWidgetIconResizeTransitionViewController *)self viewControllers];
+  if (![viewControllers count])
   {
     [(SBWidgetIconResizeTransitionViewController *)self gatherViewControllers];
-    v6 = [(SBWidgetIconResizeTransitionViewController *)self viewControllers];
+    viewControllers2 = [(SBWidgetIconResizeTransitionViewController *)self viewControllers];
 
-    v5 = v6;
+    viewControllers = viewControllers2;
   }
 
-  v7 = [v5 objectForKey:v4];
+  v7 = [viewControllers objectForKey:classCopy];
 
   return v7;
 }
 
 - (void)gatherViewControllers
 {
-  v3 = [(SBWidgetIconResizeTransitionViewController *)self leafIcon];
-  v4 = [v3 activeDataSource];
+  leafIcon = [(SBWidgetIconResizeTransitionViewController *)self leafIcon];
+  activeDataSource = [leafIcon activeDataSource];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(SBWidgetIconResizeTransitionViewController *)self effectiveGridSizeClassDomain];
-  v7 = [(SBWidgetIconResizeTransitionViewController *)self viewHelper];
-  v8 = [(SBWidgetIconResizeTransitionViewController *)self effectiveAllowedGridSizeClasses];
+  effectiveGridSizeClassDomain = [(SBWidgetIconResizeTransitionViewController *)self effectiveGridSizeClassDomain];
+  viewHelper = [(SBWidgetIconResizeTransitionViewController *)self viewHelper];
+  effectiveAllowedGridSizeClasses = [(SBWidgetIconResizeTransitionViewController *)self effectiveAllowedGridSizeClasses];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__SBWidgetIconResizeTransitionViewController_gatherViewControllers__block_invoke;
   v13[3] = &unk_1E80915C8;
   v13[4] = self;
-  v14 = v3;
-  v15 = v4;
-  v16 = v7;
+  v14 = leafIcon;
+  v15 = activeDataSource;
+  v16 = viewHelper;
   v17 = v5;
   v9 = v5;
-  v10 = v7;
-  v11 = v4;
-  v12 = v3;
-  [v8 enumerateGridSizeClassesInDomain:v6 usingBlock:v13];
+  v10 = viewHelper;
+  v11 = activeDataSource;
+  v12 = leafIcon;
+  [effectiveAllowedGridSizeClasses enumerateGridSizeClassesInDomain:effectiveGridSizeClassDomain usingBlock:v13];
   [(SBWidgetIconResizeTransitionViewController *)self setViewControllers:v9];
 }
 
@@ -511,40 +511,40 @@ void __67__SBWidgetIconResizeTransitionViewController_gatherViewControllers__blo
   [*(a1 + 64) setObject:v7 forKey:v5];
 }
 
-- (id)replacementIconForIcon:(id)a3 gridSizeClass:(id)a4
+- (id)replacementIconForIcon:(id)icon gridSizeClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWidgetIconResizeTransitionViewController *)self delegate];
+  iconCopy = icon;
+  classCopy = class;
+  delegate = [(SBWidgetIconResizeTransitionViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconResizeTransitionViewController:self willUseIcon:v6 forViewControllerForGridSizeClass:v7];
+    v9 = [delegate iconResizeTransitionViewController:self willUseIcon:iconCopy forViewControllerForGridSizeClass:classCopy];
 
-    v6 = v9;
+    iconCopy = v9;
   }
 
-  return v6;
+  return iconCopy;
 }
 
-- (id)replacementIconDataSourceForIconDataSource:(id)a3 gridSizeClass:(id)a4
+- (id)replacementIconDataSourceForIconDataSource:(id)source gridSizeClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBWidgetIconResizeTransitionViewController *)self delegate];
+  sourceCopy = source;
+  classCopy = class;
+  delegate = [(SBWidgetIconResizeTransitionViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconResizeTransitionViewController:self willUseIconDataSource:v6 forViewControllerForGridSizeClass:v7];
+    v9 = [delegate iconResizeTransitionViewController:self willUseIconDataSource:sourceCopy forViewControllerForGridSizeClass:classCopy];
 
-    v6 = v9;
+    sourceCopy = v9;
   }
 
-  return v6;
+  return sourceCopy;
 }
 
 - (CGRect)visibleBounds
 {
-  v2 = [(SBWidgetIconResizeTransitionViewController *)self view];
-  [v2 bounds];
+  view = [(SBWidgetIconResizeTransitionViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -563,32 +563,32 @@ void __67__SBWidgetIconResizeTransitionViewController_gatherViewControllers__blo
 
 - (void)invalidate
 {
-  v2 = [(SBWidgetIconResizeTransitionViewController *)self viewControllers];
-  [v2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_78];
+  viewControllers = [(SBWidgetIconResizeTransitionViewController *)self viewControllers];
+  [viewControllers enumerateKeysAndObjectsUsingBlock:&__block_literal_global_78];
 }
 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(SBWidgetIconResizeTransitionViewController *)self effectiveGridSizeClassDomain];
+  streamCopy = stream;
+  effectiveGridSizeClassDomain = [(SBWidgetIconResizeTransitionViewController *)self effectiveGridSizeClassDomain];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__SBWidgetIconResizeTransitionViewController_appendDescriptionToStream___block_invoke;
   v8[3] = &unk_1E8088F88;
-  v9 = v4;
-  v10 = v5;
-  v11 = self;
-  v6 = v5;
-  v7 = v4;
+  v9 = streamCopy;
+  v10 = effectiveGridSizeClassDomain;
+  selfCopy = self;
+  v6 = effectiveGridSizeClassDomain;
+  v7 = streamCopy;
   [v7 appendProem:self block:v8];
 }
 
@@ -611,7 +611,7 @@ id __72__SBWidgetIconResizeTransitionViewController_appendDescriptionToStream___
   return [v10 appendFloat:@"transitionProgress" withName:?];
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   self->_iconImageInfo.size.width = v3;
   self->_iconImageInfo.size.height = v4;

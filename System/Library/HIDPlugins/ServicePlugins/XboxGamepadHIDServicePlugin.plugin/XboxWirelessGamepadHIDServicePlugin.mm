@@ -1,8 +1,8 @@
 @interface XboxWirelessGamepadHIDServicePlugin
 - (void)activate;
 - (void)cancel;
-- (void)dispatchPowerOnMessageCompletion:(id)a3;
-- (void)handleVirtualKeyPayload:(int64_t)a3 withData:(id)a4 timestamp:(unint64_t)a5;
+- (void)dispatchPowerOnMessageCompletion:(id)completion;
+- (void)handleVirtualKeyPayload:(int64_t)payload withData:(id)data timestamp:(unint64_t)timestamp;
 - (void)setupRawReportHandling;
 @end
 
@@ -17,13 +17,13 @@
   v6.receiver = self;
   v6.super_class = XboxWirelessGamepadHIDServicePlugin;
   [(GCGamepadHIDServicePlugin *)&v6 activate];
-  v4 = [(GCGamepadHIDServicePlugin *)self dispatchQueue];
+  dispatchQueue = [(GCGamepadHIDServicePlugin *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_222C;
   block[3] = &unk_10560;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
 }
@@ -43,24 +43,24 @@
 - (void)setupRawReportHandling
 {
   objc_initWeak(&location, self);
-  v3 = [(GCGamepadHIDServicePlugin *)self device];
+  device = [(GCGamepadHIDServicePlugin *)self device];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_23A4;
   v4[3] = &unk_10588;
   objc_copyWeak(&v5, &location);
-  [v3 setInputReportHandler:v4];
+  [device setInputReportHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)handleVirtualKeyPayload:(int64_t)a3 withData:(id)a4 timestamp:(unint64_t)a5
+- (void)handleVirtualKeyPayload:(int64_t)payload withData:(id)data timestamp:(unint64_t)timestamp
 {
-  v8 = a4;
-  v9 = a4;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
   if (v11 <= 5)
   {
@@ -69,20 +69,20 @@
 
   else
   {
-    [(GCGamepadHIDServicePlugin *)self dispatchHomeButtonEventWithValue:v10[4] != 0 timestamp:a5];
+    [(GCGamepadHIDServicePlugin *)self dispatchHomeButtonEventWithValue:bytes[4] != 0 timestamp:timestamp];
     v17 = 0;
     v16 = 0;
     v13 = 8193;
-    v14 = v10[2];
+    v14 = bytes[2];
     v15 = 9;
     *(&v16 + 1) = 139271;
     sub_808C(self, &v13, 13, v12, 0);
   }
 }
 
-- (void)dispatchPowerOnMessageCompletion:(id)a3
+- (void)dispatchPowerOnMessageCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_10F8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -101,7 +101,7 @@
   self->_sequence = v14 + 1;
   BYTE5(v16) = v14;
   HIWORD(v16) = 1;
-  sub_808C(self, &v16 + 3, 5, v12, v4);
+  sub_808C(self, &v16 + 3, 5, v12, completionCopy);
 }
 
 @end

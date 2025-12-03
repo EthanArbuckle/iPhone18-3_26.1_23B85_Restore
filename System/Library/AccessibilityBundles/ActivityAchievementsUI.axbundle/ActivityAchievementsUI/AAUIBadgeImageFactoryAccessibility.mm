@@ -1,41 +1,41 @@
 @interface AAUIBadgeImageFactoryAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)thumbnailImageForAchievement:(id)a3 size:(CGSize)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)thumbnailImageForAchievement:(id)achievement size:(CGSize)size;
 @end
 
 @implementation AAUIBadgeImageFactoryAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AAUIBadgeImageFactory" hasInstanceMethod:@"thumbnailImageForAchievement:size:" withFullSignature:{"@", "{CGSize=dd}", 0}];
-  [v3 validateClass:@"ACHAchievement" hasInstanceMethod:@"earnedInstanceCount" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AAUIBadgeImageFactory" hasInstanceMethod:@"thumbnailImageForAchievement:size:" withFullSignature:{"@", "{CGSize=dd}", 0}];
+  [validationsCopy validateClass:@"ACHAchievement" hasInstanceMethod:@"earnedInstanceCount" withFullSignature:{"Q", 0}];
 }
 
-- (id)thumbnailImageForAchievement:(id)a3 size:(CGSize)a4
+- (id)thumbnailImageForAchievement:(id)achievement size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = AAUIBadgeImageFactoryAccessibility;
-  v6 = a3;
-  v7 = [(AAUIBadgeImageFactoryAccessibility *)&v12 thumbnailImageForAchievement:v6 size:width, height];
-  v8 = [v6 safeUnsignedIntegerForKey:@"earnedInstanceCount"];
+  achievementCopy = achievement;
+  height = [(AAUIBadgeImageFactoryAccessibility *)&v12 thumbnailImageForAchievement:achievementCopy size:width, height];
+  v8 = [achievementCopy safeUnsignedIntegerForKey:@"earnedInstanceCount"];
 
   if (v8)
   {
     v9 = accessibilityLocalizedString(@"achievement.earn.count");
     v10 = [NSString localizedStringWithFormat:v9, v8];
-    [v7 setAccessibilityValue:v10];
+    [height setAccessibilityValue:v10];
   }
 
   else
   {
     v9 = accessibilityLocalizedString(@"achievement.unearned");
-    [v7 setAccessibilityValue:v9];
+    [height setAccessibilityValue:v9];
   }
 
-  return v7;
+  return height;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface KNMovieRenderer
-+ (id)movieInfoForMovieTimelineMovieIdentifier:(id)a3;
-+ (id)movieTimelineMovieIdentifierForMovieInfo:(id)a3;
-- (BOOL)addAnimationsAtLayerTime:(double)a3;
++ (id)movieInfoForMovieTimelineMovieIdentifier:(id)identifier;
++ (id)movieTimelineMovieIdentifierForMovieInfo:(id)info;
+- (BOOL)addAnimationsAtLayerTime:(double)time;
 - (CALayer)offscreenVideoLayer;
 - (CGImage)p_copyCurrentVideoFrameImage;
-- (KNMovieRenderer)initWithAnimatedBuild:(id)a3 info:(id)a4 buildStage:(id)a5 animatedSlideView:(id)a6;
+- (KNMovieRenderer)initWithAnimatedBuild:(id)build info:(id)info buildStage:(id)stage animatedSlideView:(id)view;
 - (NSCopying)movieTimelineMovieIdentifier;
 - (TSDMovieInfo)movieInfo;
 - (void)animate;
-- (void)applyMovieControl:(int64_t)a3;
+- (void)applyMovieControl:(int64_t)control;
 - (void)dealloc;
 - (void)interruptAndReset;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_applyActionEffect:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_applyActionEffect:(id)effect;
 - (void)p_cancelPlaybackAtStartTime;
 - (void)p_didEndMoviePlayback;
 - (void)p_didStartMoviePlayback;
-- (void)p_playbackDidFailWithError:(id)a3;
+- (void)p_playbackDidFailWithError:(id)error;
 - (void)p_schedulePlaybackAtStartTime;
 - (void)p_setupPlayerController;
-- (void)p_setupReflectionAndMaskingOnMovieTexture:(id)a3 strokeTexture:(id)a4 reflectionMaskTexture:(id)a5 frameMaskTexture:(id)a6;
+- (void)p_setupReflectionAndMaskingOnMovieTexture:(id)texture strokeTexture:(id)strokeTexture reflectionMaskTexture:(id)maskTexture frameMaskTexture:(id)frameMaskTexture;
 - (void)p_showVideoLayer;
 - (void)p_startPlaybackAtStartTime;
-- (void)p_teardownUpdatingTexture:(BOOL)a3;
+- (void)p_teardownUpdatingTexture:(BOOL)texture;
 - (void)pauseAnimations;
-- (void)playbackDidStopForPlayerController:(id)a3;
-- (void)registerForAmbientBuildStartCallback:(SEL)a3 target:(id)a4;
+- (void)playbackDidStopForPlayerController:(id)controller;
+- (void)registerForAmbientBuildStartCallback:(SEL)callback target:(id)target;
 - (void)resumeAnimationsIfPaused;
-- (void)setBuildInRenderer:(id)a3;
-- (void)updateAnimationsForLayerTime:(double)a3;
+- (void)setBuildInRenderer:(id)renderer;
+- (void)updateAnimationsForLayerTime:(double)time;
 @end
 
 @implementation KNMovieRenderer
 
-- (KNMovieRenderer)initWithAnimatedBuild:(id)a3 info:(id)a4 buildStage:(id)a5 animatedSlideView:(id)a6
+- (KNMovieRenderer)initWithAnimatedBuild:(id)build info:(id)info buildStage:(id)stage animatedSlideView:(id)view
 {
   v7.receiver = self;
   v7.super_class = KNMovieRenderer;
-  result = [(KNBuildRenderer *)&v7 initWithAnimatedBuild:a3 info:a4 buildStage:a5 animatedSlideView:a6];
+  result = [(KNBuildRenderer *)&v7 initWithAnimatedBuild:build info:info buildStage:stage animatedSlideView:view];
   if (result)
   {
     *(result + 312) |= 0x80u;
@@ -77,13 +77,13 @@
   return TSUCheckedDynamicCast();
 }
 
-- (void)setBuildInRenderer:(id)a3
+- (void)setBuildInRenderer:(id)renderer
 {
-  if (objc_msgSend_buildInRenderer(self, a2, a3) != a3)
+  if (objc_msgSend_buildInRenderer(self, a2, renderer) != renderer)
   {
 
     v5 = objc_alloc(MEMORY[0x277D81370]);
-    self->_buildInRendererReference = objc_msgSend_initWithObject_(v5, v6, a3);
+    self->_buildInRendererReference = objc_msgSend_initWithObject_(v5, v6, renderer);
   }
 }
 
@@ -106,7 +106,7 @@
   }
 }
 
-- (BOOL)addAnimationsAtLayerTime:(double)a3
+- (BOOL)addAnimationsAtLayerTime:(double)time
 {
   v6 = objc_msgSend_movieInfo(self, a2, v3);
   v9 = objc_msgSend_movieData(v6, v7, v8);
@@ -115,7 +115,7 @@
     isReadable = objc_msgSend_isReadable(v9, v10, v11);
     if (isReadable)
     {
-      self->_startTime = a3;
+      self->_startTime = time;
       objc_msgSend_p_setupVideoLayer(self, v13, v14);
       LOBYTE(isReadable) = 1;
     }
@@ -129,9 +129,9 @@
   return isReadable;
 }
 
-- (void)updateAnimationsForLayerTime:(double)a3
+- (void)updateAnimationsForLayerTime:(double)time
 {
-  if (self->_startTime <= a3)
+  if (self->_startTime <= time)
   {
     objc_msgSend_p_startMoviePlaybackIfNeeded(self, a2, v3);
   }
@@ -243,20 +243,20 @@
   }
 }
 
-- (void)registerForAmbientBuildStartCallback:(SEL)a3 target:(id)a4
+- (void)registerForAmbientBuildStartCallback:(SEL)callback target:(id)target
 {
-  self->_movieStartCallbackTarget = a4;
-  if (a3)
+  self->_movieStartCallbackTarget = target;
+  if (callback)
   {
-    v4 = a3;
+    callbackCopy = callback;
   }
 
   else
   {
-    v4 = 0;
+    callbackCopy = 0;
   }
 
-  self->_movieStartCallbackSelector = v4;
+  self->_movieStartCallbackSelector = callbackCopy;
 }
 
 - (void)p_didStartMoviePlayback
@@ -398,7 +398,7 @@
 
 - (void)p_showVideoLayer
 {
-  v3 = self;
+  selfCopy = self;
   v157 = *MEMORY[0x277D85DE8];
   if (!self->_videoLayer)
   {
@@ -412,17 +412,17 @@
   v11 = 0x277CD9000uLL;
   objc_msgSend_begin(MEMORY[0x277CD9FF0], a2, v2);
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v12, 1);
-  objc_msgSend_setSublayers_(v3->super._parentLayer, v13, 0);
-  parentLayer = v3->super._parentLayer;
-  v17 = objc_msgSend_layer(v3->super._textureSet, v15, v16);
+  objc_msgSend_setSublayers_(selfCopy->super._parentLayer, v13, 0);
+  parentLayer = selfCopy->super._parentLayer;
+  v17 = objc_msgSend_layer(selfCopy->super._textureSet, v15, v16);
   objc_msgSend_addSublayer_(parentLayer, v18, v17);
-  objc_msgSend_textureAngle(v3->super._textureSet, v19, v20);
+  objc_msgSend_textureAngle(selfCopy->super._textureSet, v19, v20);
   v24 = fabs(v23) < 0.00999999978 || v23 == 0.0;
   v152 = 0u;
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
-  obj = objc_msgSend_visibleTexturesIncludingCaptions(v3->super._textureSet, v21, v22);
+  obj = objc_msgSend_visibleTexturesIncludingCaptions(selfCopy->super._textureSet, v21, v22);
   v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v25, &v152, v156, 16);
   if (!v28)
   {
@@ -440,7 +440,7 @@ LABEL_51:
   }
 
   v146 = 0;
-  v29 = v3;
+  v29 = selfCopy;
   v148 = 0;
   v149 = 0;
   v147 = 0;
@@ -636,7 +636,7 @@ LABEL_39:
   v100 = v146;
   if (!v146)
   {
-    v3 = v29;
+    selfCopy = v29;
     v11 = 0x277CD9000uLL;
     v102 = v147;
     v28 = v148;
@@ -644,55 +644,55 @@ LABEL_39:
   }
 
   v101 = 0;
-  v3 = v29;
+  selfCopy = v29;
   v11 = 0x277CD9000;
   v102 = v147;
   v28 = v148;
 LABEL_52:
   v110 = objc_msgSend_layer(v100, v26, v27);
   objc_msgSend_setHidden_(v110, v111, 1);
-  v114 = objc_msgSend_layer(v3->super._textureSet, v112, v113);
+  v114 = objc_msgSend_layer(selfCopy->super._textureSet, v112, v113);
   v115 = MEMORY[0x277CCAE60];
   v118 = objc_msgSend_layer(v100, v116, v117);
   v120 = objc_msgSend_valueWithNonretainedObject_(v115, v119, v118);
   objc_msgSend_setValue_forKey_(v114, v121, v120, *MEMORY[0x277D805E0]);
-  if (v102 | v28 && objc_msgSend_shouldShowVideoReflectionsAndMasks(v3->super.super._session, v122, v123))
+  if (v102 | v28 && objc_msgSend_shouldShowVideoReflectionsAndMasks(selfCopy->super.super._session, v122, v123))
   {
-    objc_msgSend_p_setupReflectionAndMaskingOnMovieTexture_strokeTexture_reflectionMaskTexture_frameMaskTexture_(v3, v122, v100, v28, v102, v149);
+    objc_msgSend_p_setupReflectionAndMaskingOnMovieTexture_strokeTexture_reflectionMaskTexture_frameMaskTexture_(selfCopy, v122, v100, v28, v102, v149);
   }
 
   else if ((v101 & 1) == 0)
   {
-    v124 = objc_msgSend_layer(v3->super._textureSet, v122, v123);
-    videoLayer = v3->_videoLayer;
+    v124 = objc_msgSend_layer(selfCopy->super._textureSet, v122, v123);
+    videoLayer = selfCopy->_videoLayer;
     v128 = objc_msgSend_layer(v100, v126, v127);
     objc_msgSend_insertSublayer_above_(v124, v129, videoLayer, v128);
     v132 = objc_msgSend_layer(v100, v130, v131);
     objc_msgSend_setHidden_(v132, v133, 1);
   }
 
-  v134 = objc_msgSend_layer(v3->super._textureSet, v122, v123);
-  v136 = objc_msgSend_valueWithNonretainedObject_(MEMORY[0x277CCAE60], v135, v3->_videoLayer);
+  v134 = objc_msgSend_layer(selfCopy->super._textureSet, v122, v123);
+  v136 = objc_msgSend_valueWithNonretainedObject_(MEMORY[0x277CCAE60], v135, selfCopy->_videoLayer);
   objc_msgSend_setValue_forKey_(v134, v137, v136, *MEMORY[0x277D805E8]);
   objc_msgSend_commit(*(v11 + 4080), v138, v139);
-  v142 = objc_msgSend_layer(v3->super._textureSet, v140, v141);
-  objc_msgSend_setAlternateLayer_(v3->super._textureSet, v143, v142);
-  objc_msgSend_p_didStartMoviePlayback(v3, v144, v145);
+  v142 = objc_msgSend_layer(selfCopy->super._textureSet, v140, v141);
+  objc_msgSend_setAlternateLayer_(selfCopy->super._textureSet, v143, v142);
+  objc_msgSend_p_didStartMoviePlayback(selfCopy, v144, v145);
 }
 
-- (void)p_setupReflectionAndMaskingOnMovieTexture:(id)a3 strokeTexture:(id)a4 reflectionMaskTexture:(id)a5 frameMaskTexture:(id)a6
+- (void)p_setupReflectionAndMaskingOnMovieTexture:(id)texture strokeTexture:(id)strokeTexture reflectionMaskTexture:(id)maskTexture frameMaskTexture:(id)frameMaskTexture
 {
-  v11 = objc_msgSend_layer(self->super._textureSet, a2, a3);
+  v11 = objc_msgSend_layer(self->super._textureSet, a2, texture);
   objc_msgSend_frame(v11, v12, v13);
-  if (a5)
+  if (maskTexture)
   {
-    v16 = objc_msgSend_layer(a5, v14, v15);
+    v16 = objc_msgSend_layer(maskTexture, v14, v15);
     objc_msgSend_frame(v16, v17, v18);
-    v21 = objc_msgSend_layer(a5, v19, v20);
+    v21 = objc_msgSend_layer(maskTexture, v19, v20);
     objc_msgSend_frame(v21, v22, v23);
   }
 
-  v24 = (a5 | a6);
+  v24 = (maskTexture | frameMaskTexture);
   v25 = objc_msgSend_layer(self->super._textureSet, v14, v15);
   objc_msgSend_frame(v25, v26, v27);
   TSURectWithOriginAndSize();
@@ -700,11 +700,11 @@ LABEL_52:
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  if (a5 | a6 && (v24 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v28, v29), objc_msgSend_setFrame_(v24, v38, v39, v31, v33, v35, v37), v24))
+  if (maskTexture | frameMaskTexture && (v24 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v28, v29), objc_msgSend_setFrame_(v24, v38, v39, v31, v33, v35, v37), v24))
   {
-    if (a6)
+    if (frameMaskTexture)
     {
-      v40 = objc_msgSend_layer(a6, v28, v29);
+      v40 = objc_msgSend_layer(frameMaskTexture, v28, v29);
       objc_msgSend_addSublayer_(v24, v41, v40);
     }
 
@@ -733,11 +733,11 @@ LABEL_52:
       objc_msgSend_addSublayer_(v24, v63, v45);
     }
 
-    if (a5)
+    if (maskTexture)
     {
-      v64 = objc_msgSend_layer(a5, v42, v43);
+      v64 = objc_msgSend_layer(maskTexture, v42, v43);
       objc_msgSend_addSublayer_(v24, v65, v64);
-      v68 = objc_msgSend_layer(a5, v66, v67);
+      v68 = objc_msgSend_layer(maskTexture, v66, v67);
       objc_msgSend_setHidden_(v68, v69, 0);
     }
 
@@ -750,7 +750,7 @@ LABEL_52:
     v44 = 1;
   }
 
-  v70 = objc_msgSend_layer(a3, v28, v29);
+  v70 = objc_msgSend_layer(texture, v28, v29);
   objc_msgSend_setHidden_(v70, v71, 1);
   v74 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v72, v73);
   objc_msgSend_setFrame_(v74, v75, v76, v31, v33, v35, v37);
@@ -759,16 +759,16 @@ LABEL_52:
     objc_msgSend_setMask_(v74, v77, v24);
   }
 
-  if (a5)
+  if (maskTexture)
   {
     v79 = objc_msgSend_layer(MEMORY[0x277CD9F48], v77, v78);
     v82 = objc_msgSend_layer(self->super._textureSet, v80, v81);
     objc_msgSend_bounds(v82, v83, v84);
     objc_msgSend_setFrame_(v79, v85, v86);
     objc_msgSend_addSublayer_(v79, v87, self->_videoLayer);
-    if (a4)
+    if (strokeTexture)
     {
-      v90 = objc_msgSend_layer(a4, v88, v89);
+      v90 = objc_msgSend_layer(strokeTexture, v88, v89);
       objc_msgSend_addSublayer_(v79, v91, v90);
     }
 
@@ -804,17 +804,17 @@ LABEL_52:
   }
 
   v129 = objc_msgSend_layer(self->super._textureSet, v127, v128);
-  v132 = objc_msgSend_layer(a3, v130, v131);
+  v132 = objc_msgSend_layer(texture, v130, v131);
   objc_msgSend_insertSublayer_above_(v129, v133, v74, v132);
 }
 
-- (void)p_teardownUpdatingTexture:(BOOL)a3
+- (void)p_teardownUpdatingTexture:(BOOL)texture
 {
   v124 = *MEMORY[0x277D85DE8];
   if ((*(self + 313) & 2) == 0)
   {
-    v3 = a3;
-    objc_msgSend_p_cancelPlaybackAtStartTime(self, a2, a3);
+    textureCopy = texture;
+    objc_msgSend_p_cancelPlaybackAtStartTime(self, a2, texture);
     if ((*(self + 312) & 8) != 0)
     {
       objc_msgSend_removeObserver_forKeyPath_context_(self->_videoLayer, v5, self, @"readyForDisplay", qword_280A3B740);
@@ -833,7 +833,7 @@ LABEL_52:
     v21 = sub_275DB197C;
     v119 = sub_275DB197C;
     v120 = &unk_27A698A70;
-    v121 = self;
+    selfCopy = self;
     if (v18)
     {
       v22 = v18;
@@ -848,7 +848,7 @@ LABEL_52:
         v35 = objc_msgSend_repForInfo_onCanvas_(session, v32, info, v31);
         v36 = 0;
         v37 = 0;
-        if (v3 && v35)
+        if (textureCopy && v35)
         {
           if ((objc_msgSend_isAudioOnly(v26, v33, v34) & 1) != 0 || (objc_msgSend_isStreaming(v26, v33, v34) & 1) != 0 || !objc_msgSend_isShowLayerVisible(self->super.super._session, v33, v34))
           {
@@ -1021,9 +1021,9 @@ LABEL_52:
   }
 }
 
-- (void)applyMovieControl:(int64_t)a3
+- (void)applyMovieControl:(int64_t)control
 {
-  if (a3 == 1)
+  if (control == 1)
   {
     objc_msgSend_p_cancelPlaybackAtStartTime(self, a2, 1);
     if (self->_playerController)
@@ -1049,19 +1049,19 @@ LABEL_52:
     return;
   }
 
-  objc_msgSend_p_startMoviePlaybackIfNeeded(self, a2, a3);
-  if (a3 > 5)
+  objc_msgSend_p_startMoviePlaybackIfNeeded(self, a2, control);
+  if (control > 5)
   {
-    if (a3 != 6)
+    if (control != 6)
     {
-      if (a3 == 7)
+      if (control == 7)
       {
         v21 = self->_playerController;
 
         MEMORY[0x2821F9670](v21, sel_seekToBeginning, v13);
       }
 
-      else if (a3 == 8)
+      else if (control == 8)
       {
         *(self + 312) &= ~0x80u;
         v14 = self->_playerController;
@@ -1078,7 +1078,7 @@ LABEL_52:
     goto LABEL_28;
   }
 
-  if (a3 == 4)
+  if (control == 4)
   {
     isPlaying = objc_msgSend_isPlaying(self->_playerController, v12, v13);
     v19 = self->_playerController;
@@ -1094,7 +1094,7 @@ LABEL_28:
     MEMORY[0x2821F9670](v19, sel_seekBackwardByOneFrame, v22);
   }
 
-  else if (a3 == 5)
+  else if (control == 5)
   {
     v17 = objc_msgSend_isPlaying(self->_playerController, v12, v13);
     v18 = self->_playerController;
@@ -1112,7 +1112,7 @@ LABEL_28:
   }
 }
 
-- (void)p_playbackDidFailWithError:(id)a3
+- (void)p_playbackDidFailWithError:(id)error
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1122,11 +1122,11 @@ LABEL_28:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (qword_280A3B740 == a6)
+  if (qword_280A3B740 == context)
   {
-    v7 = objc_msgSend_objectForKey_(a5, a2, *MEMORY[0x277CCA2F0], a4);
+    v7 = objc_msgSend_objectForKey_(change, a2, *MEMORY[0x277CCA2F0], object);
     if (objc_msgSend_BOOLValue(v7, v8, v9))
     {
       objc_msgSend_removeObserver_forKeyPath_context_(self->_videoLayer, v10, self, @"readyForDisplay", qword_280A3B740);
@@ -1144,15 +1144,15 @@ LABEL_28:
   {
     v19.receiver = self;
     v19.super_class = KNMovieRenderer;
-    [(KNMovieRenderer *)&v19 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(KNMovieRenderer *)&v19 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)p_applyActionEffect:(id)a3
+- (void)p_applyActionEffect:(id)effect
 {
-  if (a3)
+  if (effect)
   {
-    v5 = objc_msgSend_valueForKey_(a3, a2, *MEMORY[0x277D80110]);
+    v5 = objc_msgSend_valueForKey_(effect, a2, *MEMORY[0x277D80110]);
     if (v5)
     {
       objc_msgSend_floatValue(v5, v6, v7);
@@ -1161,7 +1161,7 @@ LABEL_28:
       objc_msgSend_setValue_forKeyPath_(videoLayer, v12, v11, @"transform.scale.xy");
     }
 
-    v13 = objc_msgSend_valueForKey_(a3, v6, *MEMORY[0x277D80100]);
+    v13 = objc_msgSend_valueForKey_(effect, v6, *MEMORY[0x277D80100]);
     if (v13)
     {
       objc_msgSend_doubleValue(v13, v14, v15);
@@ -1173,9 +1173,9 @@ LABEL_28:
   }
 }
 
-- (void)playbackDidStopForPlayerController:(id)a3
+- (void)playbackDidStopForPlayerController:(id)controller
 {
-  v4 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, a3);
+  v4 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], a2, controller);
   v6 = objc_msgSend_BOOLForKey_(v4, v5, @"KNShowMovieHUDWhenMouseOver");
   if (*(self + 312) < 0 && (v6 & 1) == 0)
   {
@@ -1205,11 +1205,11 @@ LABEL_28:
   return MEMORY[0x2821F9670](v4, sel_movieTimelineMovieIdentifierForMovieInfo_, v3);
 }
 
-+ (id)movieTimelineMovieIdentifierForMovieInfo:(id)a3
++ (id)movieTimelineMovieIdentifierForMovieInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    return objc_msgSend_valueWithNonretainedObject_(MEMORY[0x277CCAE60], a2, a3);
+    return objc_msgSend_valueWithNonretainedObject_(MEMORY[0x277CCAE60], a2, info);
   }
 
   else
@@ -1218,7 +1218,7 @@ LABEL_28:
   }
 }
 
-+ (id)movieInfoForMovieTimelineMovieIdentifier:(id)a3
++ (id)movieInfoForMovieTimelineMovieIdentifier:(id)identifier
 {
   objc_opt_class();
   result = TSUDynamicCast();

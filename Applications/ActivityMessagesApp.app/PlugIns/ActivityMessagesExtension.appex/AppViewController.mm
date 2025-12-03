@@ -1,20 +1,20 @@
 @interface AppViewController
-- (CGSize)contentSizeThatFits:(CGSize)a3;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
 - (UIColor)messageTintColor;
-- (_TtC25ActivityMessagesExtension17AppViewController)initWithCoder:(id)a3;
-- (_TtC25ActivityMessagesExtension17AppViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC25ActivityMessagesExtension17AppViewController)initWithCoder:(id)coder;
+- (_TtC25ActivityMessagesExtension17AppViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willBecomeActiveWithConversation:(id)a3;
+- (void)willBecomeActiveWithConversation:(id)conversation;
 @end
 
 @implementation AppViewController
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  AppViewController.willBecomeActive(with:)(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  AppViewController.willBecomeActive(with:)(conversationCopy);
 }
 
 - (void)viewDidLoad
@@ -28,15 +28,15 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AppViewController.viewDidLayoutSubviews()();
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = AppViewController.contentSizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -53,37 +53,37 @@
   return v2;
 }
 
-- (_TtC25ActivityMessagesExtension17AppViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25ActivityMessagesExtension17AppViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_10000FA3C();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC25ActivityMessagesExtension17AppViewController_bubbleView) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_10000FA0C();
   }
 
   else
   {
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC25ActivityMessagesExtension17AppViewController_bubbleView) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AppViewController();
-  v9 = [(AppViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AppViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC25ActivityMessagesExtension17AppViewController)initWithCoder:(id)a3
+- (_TtC25ActivityMessagesExtension17AppViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC25ActivityMessagesExtension17AppViewController_bubbleView) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AppViewController();
-  v4 = a3;
-  v5 = [(AppViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AppViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

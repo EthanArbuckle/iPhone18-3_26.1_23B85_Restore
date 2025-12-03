@@ -52,8 +52,8 @@ LABEL_8:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = [v3 pointsOfInterest];
-  v6 = [v5 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  pointsOfInterest = [v3 pointsOfInterest];
+  v6 = [pointsOfInterest countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -64,7 +64,7 @@ LABEL_8:
       {
         if (*v40 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pointsOfInterest);
         }
 
         v10 = [MEMORY[0x277D011F0] createWithManagedObject:*(*(&v39 + 1) + 8 * i)];
@@ -74,7 +74,7 @@ LABEL_8:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v7 = [pointsOfInterest countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v7);
@@ -85,8 +85,8 @@ LABEL_8:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = [v3 models];
-  v13 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  models = [v3 models];
+  v13 = [models countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
@@ -97,7 +97,7 @@ LABEL_8:
       {
         if (*v36 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(models);
         }
 
         v17 = [MEMORY[0x277D010B0] createWithManagedObject:*(*(&v35 + 1) + 8 * j)];
@@ -107,29 +107,29 @@ LABEL_8:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v14 = [models countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v14);
   }
 
   v29 = objc_alloc(MEMORY[0x277D010B8]);
-  v34 = [v3 identifier];
-  v27 = [v3 apToModelMapping];
-  v32 = [v3 date];
-  v31 = [v3 downloadKey];
-  v28 = [v3 geoCacheInfo];
-  v33 = [v3 tileKey];
-  v26 = [v33 unsignedLongLongValue];
-  v25 = [v3 hashedApToModelMapping];
-  v24 = [v3 hashSalt];
-  v23 = [v3 modelCalibrationParameters];
-  v18 = [v3 modelURLs];
-  v19 = [v3 singlePOIMuid];
-  v20 = [v19 unsignedLongLongValue];
+  identifier = [v3 identifier];
+  apToModelMapping = [v3 apToModelMapping];
+  date = [v3 date];
+  downloadKey = [v3 downloadKey];
+  geoCacheInfo = [v3 geoCacheInfo];
+  tileKey = [v3 tileKey];
+  unsignedLongLongValue = [tileKey unsignedLongLongValue];
+  hashedApToModelMapping = [v3 hashedApToModelMapping];
+  hashSalt = [v3 hashSalt];
+  modelCalibrationParameters = [v3 modelCalibrationParameters];
+  modelURLs = [v3 modelURLs];
+  singlePOIMuid = [v3 singlePOIMuid];
+  unsignedLongLongValue2 = [singlePOIMuid unsignedLongLongValue];
   v21 = [v3 size];
   [v21 doubleValue];
-  v30 = [v29 initWithIdentifier:v34 apToModelMapping:v27 date:v32 downloadKey:v31 geoCacheInfo:v28 geoTileKey:v26 hashedApToModelMapping:v25 hashSalt:v24 modelCalibrationParameters:v23 models:v11 modelURLs:v18 pointsOfInterest:v4 singlePOIMuid:v20 size:?];
+  v30 = [v29 initWithIdentifier:identifier apToModelMapping:apToModelMapping date:date downloadKey:downloadKey geoCacheInfo:geoCacheInfo geoTileKey:unsignedLongLongValue hashedApToModelMapping:hashedApToModelMapping hashSalt:hashSalt modelCalibrationParameters:modelCalibrationParameters models:v11 modelURLs:modelURLs pointsOfInterest:v4 singlePOIMuid:unsignedLongLongValue2 size:?];
 
   return v30;
 }
@@ -138,7 +138,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTBluePOITileMO managedObjectWithBluePOITile:a1 inManagedObjectContext:a3];
+    v3 = [RTBluePOITileMO managedObjectWithBluePOITile:self inManagedObjectContext:a3];
   }
 
   else

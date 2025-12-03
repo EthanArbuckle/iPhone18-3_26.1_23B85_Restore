@@ -1,111 +1,111 @@
 @interface CAPContactFillerContactEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsTimeSinceLastContactViaIncomingCall:(id)a3;
-- (int)StringAsTimeSinceLastContactViaIncomingText:(id)a3;
-- (int)StringAsTimeSinceLastContactViaOutgoingCall:(id)a3;
-- (int)StringAsTimeSinceLastContactViaOutgoingText:(id)a3;
-- (int)StringAsTimeSinceLastContactViaShare:(id)a3;
+- (int)StringAsTimeSinceLastContactViaIncomingCall:(id)call;
+- (int)StringAsTimeSinceLastContactViaIncomingText:(id)text;
+- (int)StringAsTimeSinceLastContactViaOutgoingCall:(id)call;
+- (int)StringAsTimeSinceLastContactViaOutgoingText:(id)text;
+- (int)StringAsTimeSinceLastContactViaShare:(id)share;
 - (int)timeSinceLastContactViaIncomingCall;
 - (int)timeSinceLastContactViaOutgoingCall;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAverageBehavioralRuleConviction:(BOOL)a3;
-- (void)setHasAverageBehavioralRuleLift:(BOOL)a3;
-- (void)setHasAverageBehavioralRuleMLScore:(BOOL)a3;
-- (void)setHasAverageBehavioralRulePowerFactor:(BOOL)a3;
-- (void)setHasAverageBehavioralRuleSupport:(BOOL)a3;
-- (void)setHasInteractionModelScore:(BOOL)a3;
-- (void)setHasMaximumBehavioralRuleConfidence:(BOOL)a3;
-- (void)setHasMaximumBehavioralRuleConviction:(BOOL)a3;
-- (void)setHasMaximumBehavioralRuleLift:(BOOL)a3;
-- (void)setHasMaximumBehavioralRuleMLScore:(BOOL)a3;
-- (void)setHasMaximumBehavioralRulePowerFactor:(BOOL)a3;
-- (void)setHasMaximumBehavioralRuleSupport:(BOOL)a3;
-- (void)setHasMinimumBehavioralRuleConfidence:(BOOL)a3;
-- (void)setHasMinimumBehavioralRuleConviction:(BOOL)a3;
-- (void)setHasMinimumBehavioralRuleLift:(BOOL)a3;
-- (void)setHasMinimumBehavioralRuleMLScore:(BOOL)a3;
-- (void)setHasMinimumBehavioralRulePowerFactor:(BOOL)a3;
-- (void)setHasMinimumBehavioralRuleSupport:(BOOL)a3;
-- (void)setHasNormalizedIncomingCallFrequency:(BOOL)a3;
-- (void)setHasNormalizedOutgoingCallFrequency:(BOOL)a3;
-- (void)setHasNumberOfBehavioralRulesAdvocating:(BOOL)a3;
-- (void)setHasStdevBehavioralRuleConfidence:(BOOL)a3;
-- (void)setHasStdevBehavioralRuleConviction:(BOOL)a3;
-- (void)setHasStdevBehavioralRuleLift:(BOOL)a3;
-- (void)setHasStdevBehavioralRuleMLScore:(BOOL)a3;
-- (void)setHasStdevBehavioralRulePowerFactor:(BOOL)a3;
-- (void)setHasStdevBehavioralRuleSupport:(BOOL)a3;
-- (void)setHasTimeSinceLastContactViaIncomingCall:(BOOL)a3;
-- (void)setHasTimeSinceLastContactViaOutgoingCall:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAverageBehavioralRuleConviction:(BOOL)conviction;
+- (void)setHasAverageBehavioralRuleLift:(BOOL)lift;
+- (void)setHasAverageBehavioralRuleMLScore:(BOOL)score;
+- (void)setHasAverageBehavioralRulePowerFactor:(BOOL)factor;
+- (void)setHasAverageBehavioralRuleSupport:(BOOL)support;
+- (void)setHasInteractionModelScore:(BOOL)score;
+- (void)setHasMaximumBehavioralRuleConfidence:(BOOL)confidence;
+- (void)setHasMaximumBehavioralRuleConviction:(BOOL)conviction;
+- (void)setHasMaximumBehavioralRuleLift:(BOOL)lift;
+- (void)setHasMaximumBehavioralRuleMLScore:(BOOL)score;
+- (void)setHasMaximumBehavioralRulePowerFactor:(BOOL)factor;
+- (void)setHasMaximumBehavioralRuleSupport:(BOOL)support;
+- (void)setHasMinimumBehavioralRuleConfidence:(BOOL)confidence;
+- (void)setHasMinimumBehavioralRuleConviction:(BOOL)conviction;
+- (void)setHasMinimumBehavioralRuleLift:(BOOL)lift;
+- (void)setHasMinimumBehavioralRuleMLScore:(BOOL)score;
+- (void)setHasMinimumBehavioralRulePowerFactor:(BOOL)factor;
+- (void)setHasMinimumBehavioralRuleSupport:(BOOL)support;
+- (void)setHasNormalizedIncomingCallFrequency:(BOOL)frequency;
+- (void)setHasNormalizedOutgoingCallFrequency:(BOOL)frequency;
+- (void)setHasNumberOfBehavioralRulesAdvocating:(BOOL)advocating;
+- (void)setHasStdevBehavioralRuleConfidence:(BOOL)confidence;
+- (void)setHasStdevBehavioralRuleConviction:(BOOL)conviction;
+- (void)setHasStdevBehavioralRuleLift:(BOOL)lift;
+- (void)setHasStdevBehavioralRuleMLScore:(BOOL)score;
+- (void)setHasStdevBehavioralRulePowerFactor:(BOOL)factor;
+- (void)setHasStdevBehavioralRuleSupport:(BOOL)support;
+- (void)setHasTimeSinceLastContactViaIncomingCall:(BOOL)call;
+- (void)setHasTimeSinceLastContactViaOutgoingCall:(BOOL)call;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAPContactFillerContactEvent
 
-- (int)StringAsTimeSinceLastContactViaShare:(id)a3
+- (int)StringAsTimeSinceLastContactViaShare:(id)share
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFTIME_LESSTHAN2mins"])
+  shareCopy = share;
+  if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN2mins"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN5mins"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN5mins"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN10mins"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN10mins"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN30mins"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN30mins"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN1hr"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN1hr"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN2hrs"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN2hrs"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN4hrs"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN4hrs"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN6hrs"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN6hrs"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN12hrs"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN12hrs"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN24hrs"])
+  else if ([shareCopy isEqualToString:@"CFTIME_LESSTHAN24hrs"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_OTHER"])
+  else if ([shareCopy isEqualToString:@"CAPTIME_OTHER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_UNKNOWN"])
+  else if ([shareCopy isEqualToString:@"CAPTIME_UNKNOWN"])
   {
     v4 = 11;
   }
@@ -118,65 +118,65 @@
   return v4;
 }
 
-- (int)StringAsTimeSinceLastContactViaIncomingText:(id)a3
+- (int)StringAsTimeSinceLastContactViaIncomingText:(id)text
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFTIME_LESSTHAN2mins"])
+  textCopy = text;
+  if ([textCopy isEqualToString:@"CFTIME_LESSTHAN2mins"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN5mins"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN5mins"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN10mins"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN10mins"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN30mins"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN30mins"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN1hr"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN1hr"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN2hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN2hrs"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN4hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN4hrs"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN6hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN6hrs"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN12hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN12hrs"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN24hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN24hrs"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_OTHER"])
+  else if ([textCopy isEqualToString:@"CAPTIME_OTHER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_UNKNOWN"])
+  else if ([textCopy isEqualToString:@"CAPTIME_UNKNOWN"])
   {
     v4 = 11;
   }
@@ -189,65 +189,65 @@
   return v4;
 }
 
-- (int)StringAsTimeSinceLastContactViaOutgoingText:(id)a3
+- (int)StringAsTimeSinceLastContactViaOutgoingText:(id)text
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFTIME_LESSTHAN2mins"])
+  textCopy = text;
+  if ([textCopy isEqualToString:@"CFTIME_LESSTHAN2mins"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN5mins"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN5mins"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN10mins"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN10mins"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN30mins"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN30mins"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN1hr"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN1hr"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN2hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN2hrs"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN4hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN4hrs"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN6hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN6hrs"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN12hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN12hrs"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN24hrs"])
+  else if ([textCopy isEqualToString:@"CFTIME_LESSTHAN24hrs"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_OTHER"])
+  else if ([textCopy isEqualToString:@"CAPTIME_OTHER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_UNKNOWN"])
+  else if ([textCopy isEqualToString:@"CAPTIME_UNKNOWN"])
   {
     v4 = 11;
   }
@@ -273,9 +273,9 @@
   }
 }
 
-- (void)setHasTimeSinceLastContactViaIncomingCall:(BOOL)a3
+- (void)setHasTimeSinceLastContactViaIncomingCall:(BOOL)call
 {
-  if (a3)
+  if (call)
   {
     v3 = 0x10000000;
   }
@@ -288,65 +288,65 @@
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (int)StringAsTimeSinceLastContactViaIncomingCall:(id)a3
+- (int)StringAsTimeSinceLastContactViaIncomingCall:(id)call
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFTIME_LESSTHAN2mins"])
+  callCopy = call;
+  if ([callCopy isEqualToString:@"CFTIME_LESSTHAN2mins"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN5mins"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN5mins"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN10mins"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN10mins"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN30mins"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN30mins"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN1hr"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN1hr"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN2hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN2hrs"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN4hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN4hrs"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN6hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN6hrs"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN12hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN12hrs"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN24hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN24hrs"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_OTHER"])
+  else if ([callCopy isEqualToString:@"CAPTIME_OTHER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_UNKNOWN"])
+  else if ([callCopy isEqualToString:@"CAPTIME_UNKNOWN"])
   {
     v4 = 11;
   }
@@ -372,9 +372,9 @@
   }
 }
 
-- (void)setHasTimeSinceLastContactViaOutgoingCall:(BOOL)a3
+- (void)setHasTimeSinceLastContactViaOutgoingCall:(BOOL)call
 {
-  if (a3)
+  if (call)
   {
     v3 = 0x20000000;
   }
@@ -387,65 +387,65 @@
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (int)StringAsTimeSinceLastContactViaOutgoingCall:(id)a3
+- (int)StringAsTimeSinceLastContactViaOutgoingCall:(id)call
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFTIME_LESSTHAN2mins"])
+  callCopy = call;
+  if ([callCopy isEqualToString:@"CFTIME_LESSTHAN2mins"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN5mins"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN5mins"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN10mins"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN10mins"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN30mins"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN30mins"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN1hr"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN1hr"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN2hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN2hrs"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN4hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN4hrs"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN6hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN6hrs"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN12hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN12hrs"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CFTIME_LESSTHAN24hrs"])
+  else if ([callCopy isEqualToString:@"CFTIME_LESSTHAN24hrs"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_OTHER"])
+  else if ([callCopy isEqualToString:@"CAPTIME_OTHER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"CAPTIME_UNKNOWN"])
+  else if ([callCopy isEqualToString:@"CAPTIME_UNKNOWN"])
   {
     v4 = 11;
   }
@@ -458,9 +458,9 @@
   return v4;
 }
 
-- (void)setHasNormalizedIncomingCallFrequency:(BOOL)a3
+- (void)setHasNormalizedIncomingCallFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 0x2000000;
   }
@@ -473,9 +473,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasNormalizedOutgoingCallFrequency:(BOOL)a3
+- (void)setHasNormalizedOutgoingCallFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 0x4000000;
   }
@@ -488,9 +488,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasNumberOfBehavioralRulesAdvocating:(BOOL)a3
+- (void)setHasNumberOfBehavioralRulesAdvocating:(BOOL)advocating
 {
-  if (a3)
+  if (advocating)
   {
     v3 = 0x8000000;
   }
@@ -503,9 +503,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasAverageBehavioralRuleSupport:(BOOL)a3
+- (void)setHasAverageBehavioralRuleSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 32;
   }
@@ -518,9 +518,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasAverageBehavioralRuleLift:(BOOL)a3
+- (void)setHasAverageBehavioralRuleLift:(BOOL)lift
 {
-  if (a3)
+  if (lift)
   {
     v3 = 4;
   }
@@ -533,9 +533,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasAverageBehavioralRuleConviction:(BOOL)a3
+- (void)setHasAverageBehavioralRuleConviction:(BOOL)conviction
 {
-  if (a3)
+  if (conviction)
   {
     v3 = 2;
   }
@@ -548,9 +548,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasAverageBehavioralRulePowerFactor:(BOOL)a3
+- (void)setHasAverageBehavioralRulePowerFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 16;
   }
@@ -563,9 +563,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasAverageBehavioralRuleMLScore:(BOOL)a3
+- (void)setHasAverageBehavioralRuleMLScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -578,9 +578,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasMinimumBehavioralRuleSupport:(BOOL)a3
+- (void)setHasMinimumBehavioralRuleSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x40000;
   }
@@ -593,9 +593,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasMinimumBehavioralRuleConfidence:(BOOL)a3
+- (void)setHasMinimumBehavioralRuleConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 0x2000;
   }
@@ -608,9 +608,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasMinimumBehavioralRuleLift:(BOOL)a3
+- (void)setHasMinimumBehavioralRuleLift:(BOOL)lift
 {
-  if (a3)
+  if (lift)
   {
     v3 = 0x8000;
   }
@@ -623,9 +623,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasMinimumBehavioralRuleConviction:(BOOL)a3
+- (void)setHasMinimumBehavioralRuleConviction:(BOOL)conviction
 {
-  if (a3)
+  if (conviction)
   {
     v3 = 0x4000;
   }
@@ -638,9 +638,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasMinimumBehavioralRulePowerFactor:(BOOL)a3
+- (void)setHasMinimumBehavioralRulePowerFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 0x20000;
   }
@@ -653,9 +653,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasMinimumBehavioralRuleMLScore:(BOOL)a3
+- (void)setHasMinimumBehavioralRuleMLScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 0x10000;
   }
@@ -668,9 +668,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasMaximumBehavioralRuleSupport:(BOOL)a3
+- (void)setHasMaximumBehavioralRuleSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 4096;
   }
@@ -683,9 +683,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasMaximumBehavioralRuleConfidence:(BOOL)a3
+- (void)setHasMaximumBehavioralRuleConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 128;
   }
@@ -698,9 +698,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasMaximumBehavioralRuleLift:(BOOL)a3
+- (void)setHasMaximumBehavioralRuleLift:(BOOL)lift
 {
-  if (a3)
+  if (lift)
   {
     v3 = 512;
   }
@@ -713,9 +713,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasMaximumBehavioralRuleConviction:(BOOL)a3
+- (void)setHasMaximumBehavioralRuleConviction:(BOOL)conviction
 {
-  if (a3)
+  if (conviction)
   {
     v3 = 256;
   }
@@ -728,9 +728,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasMaximumBehavioralRulePowerFactor:(BOOL)a3
+- (void)setHasMaximumBehavioralRulePowerFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 2048;
   }
@@ -743,9 +743,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasMaximumBehavioralRuleMLScore:(BOOL)a3
+- (void)setHasMaximumBehavioralRuleMLScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 1024;
   }
@@ -758,9 +758,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasStdevBehavioralRuleSupport:(BOOL)a3
+- (void)setHasStdevBehavioralRuleSupport:(BOOL)support
 {
-  if (a3)
+  if (support)
   {
     v3 = 0x1000000;
   }
@@ -773,9 +773,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasStdevBehavioralRuleConfidence:(BOOL)a3
+- (void)setHasStdevBehavioralRuleConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 0x80000;
   }
@@ -788,9 +788,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasStdevBehavioralRuleLift:(BOOL)a3
+- (void)setHasStdevBehavioralRuleLift:(BOOL)lift
 {
-  if (a3)
+  if (lift)
   {
     v3 = 0x200000;
   }
@@ -803,9 +803,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasStdevBehavioralRuleConviction:(BOOL)a3
+- (void)setHasStdevBehavioralRuleConviction:(BOOL)conviction
 {
-  if (a3)
+  if (conviction)
   {
     v3 = 0x100000;
   }
@@ -818,9 +818,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasStdevBehavioralRulePowerFactor:(BOOL)a3
+- (void)setHasStdevBehavioralRulePowerFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 0x800000;
   }
@@ -833,9 +833,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasStdevBehavioralRuleMLScore:(BOOL)a3
+- (void)setHasStdevBehavioralRuleMLScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 0x400000;
   }
@@ -848,9 +848,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasInteractionModelScore:(BOOL)a3
+- (void)setHasInteractionModelScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 64;
   }
@@ -869,15 +869,15 @@
   v8.receiver = self;
   v8.super_class = CAPContactFillerContactEvent;
   v4 = [(CAPContactFillerContactEvent *)&v8 description];
-  v5 = [(CAPContactFillerContactEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CAPContactFillerContactEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeSinceLastContactViaShare = self->_timeSinceLastContactViaShare;
   if (timeSinceLastContactViaShare >= 0xC)
   {
@@ -889,7 +889,7 @@
     v5 = off_1E7C269F8[timeSinceLastContactViaShare];
   }
 
-  [v3 setObject:v5 forKey:@"timeSinceLastContactViaShare"];
+  [dictionary setObject:v5 forKey:@"timeSinceLastContactViaShare"];
 
   timeSinceLastContactViaIncomingText = self->_timeSinceLastContactViaIncomingText;
   if (timeSinceLastContactViaIncomingText >= 0xC)
@@ -902,7 +902,7 @@
     v7 = off_1E7C269F8[timeSinceLastContactViaIncomingText];
   }
 
-  [v3 setObject:v7 forKey:@"timeSinceLastContactViaIncomingText"];
+  [dictionary setObject:v7 forKey:@"timeSinceLastContactViaIncomingText"];
 
   timeSinceLastContactViaOutgoingText = self->_timeSinceLastContactViaOutgoingText;
   if (timeSinceLastContactViaOutgoingText >= 0xC)
@@ -915,7 +915,7 @@
     v9 = off_1E7C269F8[timeSinceLastContactViaOutgoingText];
   }
 
-  [v3 setObject:v9 forKey:@"timeSinceLastContactViaOutgoingText"];
+  [dictionary setObject:v9 forKey:@"timeSinceLastContactViaOutgoingText"];
 
   has = self->_has;
   if ((*&has & 0x10000000) != 0)
@@ -931,7 +931,7 @@
       v12 = off_1E7C269F8[timeSinceLastContactViaIncomingCall];
     }
 
-    [v3 setObject:v12 forKey:@"timeSinceLastContactViaIncomingCall"];
+    [dictionary setObject:v12 forKey:@"timeSinceLastContactViaIncomingCall"];
 
     has = self->_has;
   }
@@ -949,23 +949,23 @@
       v14 = off_1E7C269F8[timeSinceLastContactViaOutgoingCall];
     }
 
-    [v3 setObject:v14 forKey:@"timeSinceLastContactViaOutgoingCall"];
+    [dictionary setObject:v14 forKey:@"timeSinceLastContactViaOutgoingCall"];
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_normalizedShareFrequency];
-  [v3 setObject:v15 forKey:@"normalizedShareFrequency"];
+  [dictionary setObject:v15 forKey:@"normalizedShareFrequency"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_normalizedIncomingTextFrequency];
-  [v3 setObject:v16 forKey:@"normalizedIncomingTextFrequency"];
+  [dictionary setObject:v16 forKey:@"normalizedIncomingTextFrequency"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_normalizedOutgoingTextFrequency];
-  [v3 setObject:v17 forKey:@"normalizedOutgoingTextFrequency"];
+  [dictionary setObject:v17 forKey:@"normalizedOutgoingTextFrequency"];
 
   v18 = self->_has;
   if ((*&v18 & 0x2000000) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_normalizedIncomingCallFrequency];
-    [v3 setObject:v23 forKey:@"normalizedIncomingCallFrequency"];
+    [dictionary setObject:v23 forKey:@"normalizedIncomingCallFrequency"];
 
     v18 = self->_has;
     if ((*&v18 & 0x4000000) == 0)
@@ -986,7 +986,7 @@ LABEL_22:
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_normalizedOutgoingCallFrequency];
-  [v3 setObject:v24 forKey:@"normalizedOutgoingCallFrequency"];
+  [dictionary setObject:v24 forKey:@"normalizedOutgoingCallFrequency"];
 
   v18 = self->_has;
   if ((*&v18 & 0x8000000) == 0)
@@ -1002,7 +1002,7 @@ LABEL_23:
 
 LABEL_52:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numberOfBehavioralRulesAdvocating];
-  [v3 setObject:v25 forKey:@"numberOfBehavioralRulesAdvocating"];
+  [dictionary setObject:v25 forKey:@"numberOfBehavioralRulesAdvocating"];
 
   v18 = self->_has;
   if ((*&v18 & 0x20) == 0)
@@ -1018,7 +1018,7 @@ LABEL_24:
 
 LABEL_53:
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:self->_averageBehavioralRuleSupport];
-  [v3 setObject:v26 forKey:@"averageBehavioralRuleSupport"];
+  [dictionary setObject:v26 forKey:@"averageBehavioralRuleSupport"];
 
   v18 = self->_has;
   if ((*&v18 & 1) == 0)
@@ -1034,7 +1034,7 @@ LABEL_25:
 
 LABEL_54:
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:self->_averageBehavioralRuleConfidence];
-  [v3 setObject:v27 forKey:@"averageBehavioralRuleConfidence"];
+  [dictionary setObject:v27 forKey:@"averageBehavioralRuleConfidence"];
 
   v18 = self->_has;
   if ((*&v18 & 4) == 0)
@@ -1050,7 +1050,7 @@ LABEL_26:
 
 LABEL_55:
   v28 = [MEMORY[0x1E696AD98] numberWithDouble:self->_averageBehavioralRuleLift];
-  [v3 setObject:v28 forKey:@"averageBehavioralRuleLift"];
+  [dictionary setObject:v28 forKey:@"averageBehavioralRuleLift"];
 
   v18 = self->_has;
   if ((*&v18 & 2) == 0)
@@ -1066,7 +1066,7 @@ LABEL_27:
 
 LABEL_56:
   v29 = [MEMORY[0x1E696AD98] numberWithDouble:self->_averageBehavioralRuleConviction];
-  [v3 setObject:v29 forKey:@"averageBehavioralRuleConviction"];
+  [dictionary setObject:v29 forKey:@"averageBehavioralRuleConviction"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10) == 0)
@@ -1082,7 +1082,7 @@ LABEL_28:
 
 LABEL_57:
   v30 = [MEMORY[0x1E696AD98] numberWithDouble:self->_averageBehavioralRulePowerFactor];
-  [v3 setObject:v30 forKey:@"averageBehavioralRulePowerFactor"];
+  [dictionary setObject:v30 forKey:@"averageBehavioralRulePowerFactor"];
 
   v18 = self->_has;
   if ((*&v18 & 8) == 0)
@@ -1098,7 +1098,7 @@ LABEL_29:
 
 LABEL_58:
   v31 = [MEMORY[0x1E696AD98] numberWithDouble:self->_averageBehavioralRuleMLScore];
-  [v3 setObject:v31 forKey:@"averageBehavioralRuleMLScore"];
+  [dictionary setObject:v31 forKey:@"averageBehavioralRuleMLScore"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40000) == 0)
@@ -1114,7 +1114,7 @@ LABEL_30:
 
 LABEL_59:
   v32 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumBehavioralRuleSupport];
-  [v3 setObject:v32 forKey:@"minimumBehavioralRuleSupport"];
+  [dictionary setObject:v32 forKey:@"minimumBehavioralRuleSupport"];
 
   v18 = self->_has;
   if ((*&v18 & 0x2000) == 0)
@@ -1130,7 +1130,7 @@ LABEL_31:
 
 LABEL_60:
   v33 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumBehavioralRuleConfidence];
-  [v3 setObject:v33 forKey:@"minimumBehavioralRuleConfidence"];
+  [dictionary setObject:v33 forKey:@"minimumBehavioralRuleConfidence"];
 
   v18 = self->_has;
   if ((*&v18 & 0x8000) == 0)
@@ -1146,7 +1146,7 @@ LABEL_32:
 
 LABEL_61:
   v34 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumBehavioralRuleLift];
-  [v3 setObject:v34 forKey:@"minimumBehavioralRuleLift"];
+  [dictionary setObject:v34 forKey:@"minimumBehavioralRuleLift"];
 
   v18 = self->_has;
   if ((*&v18 & 0x4000) == 0)
@@ -1162,7 +1162,7 @@ LABEL_33:
 
 LABEL_62:
   v35 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumBehavioralRuleConviction];
-  [v3 setObject:v35 forKey:@"minimumBehavioralRuleConviction"];
+  [dictionary setObject:v35 forKey:@"minimumBehavioralRuleConviction"];
 
   v18 = self->_has;
   if ((*&v18 & 0x20000) == 0)
@@ -1178,7 +1178,7 @@ LABEL_34:
 
 LABEL_63:
   v36 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumBehavioralRulePowerFactor];
-  [v3 setObject:v36 forKey:@"minimumBehavioralRulePowerFactor"];
+  [dictionary setObject:v36 forKey:@"minimumBehavioralRulePowerFactor"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10000) == 0)
@@ -1194,7 +1194,7 @@ LABEL_35:
 
 LABEL_64:
   v37 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumBehavioralRuleMLScore];
-  [v3 setObject:v37 forKey:@"minimumBehavioralRuleMLScore"];
+  [dictionary setObject:v37 forKey:@"minimumBehavioralRuleMLScore"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000) == 0)
@@ -1210,7 +1210,7 @@ LABEL_36:
 
 LABEL_65:
   v38 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumBehavioralRuleSupport];
-  [v3 setObject:v38 forKey:@"maximumBehavioralRuleSupport"];
+  [dictionary setObject:v38 forKey:@"maximumBehavioralRuleSupport"];
 
   v18 = self->_has;
   if ((*&v18 & 0x80) == 0)
@@ -1226,7 +1226,7 @@ LABEL_37:
 
 LABEL_66:
   v39 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumBehavioralRuleConfidence];
-  [v3 setObject:v39 forKey:@"maximumBehavioralRuleConfidence"];
+  [dictionary setObject:v39 forKey:@"maximumBehavioralRuleConfidence"];
 
   v18 = self->_has;
   if ((*&v18 & 0x200) == 0)
@@ -1242,7 +1242,7 @@ LABEL_38:
 
 LABEL_67:
   v40 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumBehavioralRuleLift];
-  [v3 setObject:v40 forKey:@"maximumBehavioralRuleLift"];
+  [dictionary setObject:v40 forKey:@"maximumBehavioralRuleLift"];
 
   v18 = self->_has;
   if ((*&v18 & 0x100) == 0)
@@ -1258,7 +1258,7 @@ LABEL_39:
 
 LABEL_68:
   v41 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumBehavioralRuleConviction];
-  [v3 setObject:v41 forKey:@"maximumBehavioralRuleConviction"];
+  [dictionary setObject:v41 forKey:@"maximumBehavioralRuleConviction"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800) == 0)
@@ -1274,7 +1274,7 @@ LABEL_40:
 
 LABEL_69:
   v42 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumBehavioralRulePowerFactor];
-  [v3 setObject:v42 forKey:@"maximumBehavioralRulePowerFactor"];
+  [dictionary setObject:v42 forKey:@"maximumBehavioralRulePowerFactor"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400) == 0)
@@ -1290,7 +1290,7 @@ LABEL_41:
 
 LABEL_70:
   v43 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumBehavioralRuleMLScore];
-  [v3 setObject:v43 forKey:@"maximumBehavioralRuleMLScore"];
+  [dictionary setObject:v43 forKey:@"maximumBehavioralRuleMLScore"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000000) == 0)
@@ -1306,7 +1306,7 @@ LABEL_42:
 
 LABEL_71:
   v44 = [MEMORY[0x1E696AD98] numberWithDouble:self->_stdevBehavioralRuleSupport];
-  [v3 setObject:v44 forKey:@"stdevBehavioralRuleSupport"];
+  [dictionary setObject:v44 forKey:@"stdevBehavioralRuleSupport"];
 
   v18 = self->_has;
   if ((*&v18 & 0x80000) == 0)
@@ -1322,7 +1322,7 @@ LABEL_43:
 
 LABEL_72:
   v45 = [MEMORY[0x1E696AD98] numberWithDouble:self->_stdevBehavioralRuleConfidence];
-  [v3 setObject:v45 forKey:@"stdevBehavioralRuleConfidence"];
+  [dictionary setObject:v45 forKey:@"stdevBehavioralRuleConfidence"];
 
   v18 = self->_has;
   if ((*&v18 & 0x200000) == 0)
@@ -1338,7 +1338,7 @@ LABEL_44:
 
 LABEL_73:
   v46 = [MEMORY[0x1E696AD98] numberWithDouble:self->_stdevBehavioralRuleLift];
-  [v3 setObject:v46 forKey:@"stdevBehavioralRuleLift"];
+  [dictionary setObject:v46 forKey:@"stdevBehavioralRuleLift"];
 
   v18 = self->_has;
   if ((*&v18 & 0x100000) == 0)
@@ -1354,7 +1354,7 @@ LABEL_45:
 
 LABEL_74:
   v47 = [MEMORY[0x1E696AD98] numberWithDouble:self->_stdevBehavioralRuleConviction];
-  [v3 setObject:v47 forKey:@"stdevBehavioralRuleConviction"];
+  [dictionary setObject:v47 forKey:@"stdevBehavioralRuleConviction"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800000) == 0)
@@ -1367,7 +1367,7 @@ LABEL_46:
 
 LABEL_76:
     v49 = [MEMORY[0x1E696AD98] numberWithDouble:self->_stdevBehavioralRuleMLScore];
-    [v3 setObject:v49 forKey:@"stdevBehavioralRuleMLScore"];
+    [dictionary setObject:v49 forKey:@"stdevBehavioralRuleMLScore"];
 
     if ((*&self->_has & 0x40) == 0)
     {
@@ -1379,7 +1379,7 @@ LABEL_76:
 
 LABEL_75:
   v48 = [MEMORY[0x1E696AD98] numberWithDouble:self->_stdevBehavioralRulePowerFactor];
-  [v3 setObject:v48 forKey:@"stdevBehavioralRulePowerFactor"];
+  [dictionary setObject:v48 forKey:@"stdevBehavioralRulePowerFactor"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400000) != 0)
@@ -1392,20 +1392,20 @@ LABEL_47:
   {
 LABEL_48:
     v19 = [MEMORY[0x1E696AD98] numberWithDouble:self->_interactionModelScore];
-    [v3 setObject:v19 forKey:@"interactionModelScore"];
+    [dictionary setObject:v19 forKey:@"interactionModelScore"];
   }
 
 LABEL_49:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_wasShareRecipient];
-  [v3 setObject:v20 forKey:@"wasShareRecipient"];
+  [dictionary setObject:v20 forKey:@"wasShareRecipient"];
 
-  v21 = v3;
-  return v3;
+  v21 = dictionary;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v43 = a3;
+  toCopy = to;
   timeSinceLastContactViaShare = self->_timeSinceLastContactViaShare;
   PBDataWriterWriteInt32Field();
   timeSinceLastContactViaIncomingText = self->_timeSinceLastContactViaIncomingText;
@@ -1844,33 +1844,33 @@ LABEL_34:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 62) = self->_timeSinceLastContactViaShare;
-  *(a3 + 59) = self->_timeSinceLastContactViaIncomingText;
-  *(a3 + 61) = self->_timeSinceLastContactViaOutgoingText;
+  *(to + 62) = self->_timeSinceLastContactViaShare;
+  *(to + 59) = self->_timeSinceLastContactViaIncomingText;
+  *(to + 61) = self->_timeSinceLastContactViaOutgoingText;
   has = self->_has;
   if ((*&has & 0x10000000) != 0)
   {
-    *(a3 + 58) = self->_timeSinceLastContactViaIncomingCall;
-    *(a3 + 64) |= 0x10000000u;
+    *(to + 58) = self->_timeSinceLastContactViaIncomingCall;
+    *(to + 64) |= 0x10000000u;
     has = self->_has;
   }
 
   if ((*&has & 0x20000000) != 0)
   {
-    *(a3 + 60) = self->_timeSinceLastContactViaOutgoingCall;
-    *(a3 + 64) |= 0x20000000u;
+    *(to + 60) = self->_timeSinceLastContactViaOutgoingCall;
+    *(to + 64) |= 0x20000000u;
   }
 
-  *(a3 + 56) = self->_normalizedShareFrequency;
-  *(a3 + 53) = self->_normalizedIncomingTextFrequency;
-  *(a3 + 55) = self->_normalizedOutgoingTextFrequency;
+  *(to + 56) = self->_normalizedShareFrequency;
+  *(to + 53) = self->_normalizedIncomingTextFrequency;
+  *(to + 55) = self->_normalizedOutgoingTextFrequency;
   v4 = self->_has;
   if ((*&v4 & 0x2000000) != 0)
   {
-    *(a3 + 52) = self->_normalizedIncomingCallFrequency;
-    *(a3 + 64) |= 0x2000000u;
+    *(to + 52) = self->_normalizedIncomingCallFrequency;
+    *(to + 64) |= 0x2000000u;
     v4 = self->_has;
     if ((*&v4 & 0x4000000) == 0)
     {
@@ -1889,8 +1889,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 54) = self->_normalizedOutgoingCallFrequency;
-  *(a3 + 64) |= 0x4000000u;
+  *(to + 54) = self->_normalizedOutgoingCallFrequency;
+  *(to + 64) |= 0x4000000u;
   v4 = self->_has;
   if ((*&v4 & 0x8000000) == 0)
   {
@@ -1904,8 +1904,8 @@ LABEL_8:
   }
 
 LABEL_37:
-  *(a3 + 57) = self->_numberOfBehavioralRulesAdvocating;
-  *(a3 + 64) |= 0x8000000u;
+  *(to + 57) = self->_numberOfBehavioralRulesAdvocating;
+  *(to + 64) |= 0x8000000u;
   v4 = self->_has;
   if ((*&v4 & 0x20) == 0)
   {
@@ -1919,8 +1919,8 @@ LABEL_9:
   }
 
 LABEL_38:
-  *(a3 + 6) = *&self->_averageBehavioralRuleSupport;
-  *(a3 + 64) |= 0x20u;
+  *(to + 6) = *&self->_averageBehavioralRuleSupport;
+  *(to + 64) |= 0x20u;
   v4 = self->_has;
   if ((*&v4 & 1) == 0)
   {
@@ -1934,8 +1934,8 @@ LABEL_10:
   }
 
 LABEL_39:
-  *(a3 + 1) = *&self->_averageBehavioralRuleConfidence;
-  *(a3 + 64) |= 1u;
+  *(to + 1) = *&self->_averageBehavioralRuleConfidence;
+  *(to + 64) |= 1u;
   v4 = self->_has;
   if ((*&v4 & 4) == 0)
   {
@@ -1949,8 +1949,8 @@ LABEL_11:
   }
 
 LABEL_40:
-  *(a3 + 3) = *&self->_averageBehavioralRuleLift;
-  *(a3 + 64) |= 4u;
+  *(to + 3) = *&self->_averageBehavioralRuleLift;
+  *(to + 64) |= 4u;
   v4 = self->_has;
   if ((*&v4 & 2) == 0)
   {
@@ -1964,8 +1964,8 @@ LABEL_12:
   }
 
 LABEL_41:
-  *(a3 + 2) = *&self->_averageBehavioralRuleConviction;
-  *(a3 + 64) |= 2u;
+  *(to + 2) = *&self->_averageBehavioralRuleConviction;
+  *(to + 64) |= 2u;
   v4 = self->_has;
   if ((*&v4 & 0x10) == 0)
   {
@@ -1979,8 +1979,8 @@ LABEL_13:
   }
 
 LABEL_42:
-  *(a3 + 5) = *&self->_averageBehavioralRulePowerFactor;
-  *(a3 + 64) |= 0x10u;
+  *(to + 5) = *&self->_averageBehavioralRulePowerFactor;
+  *(to + 64) |= 0x10u;
   v4 = self->_has;
   if ((*&v4 & 8) == 0)
   {
@@ -1994,8 +1994,8 @@ LABEL_14:
   }
 
 LABEL_43:
-  *(a3 + 4) = *&self->_averageBehavioralRuleMLScore;
-  *(a3 + 64) |= 8u;
+  *(to + 4) = *&self->_averageBehavioralRuleMLScore;
+  *(to + 64) |= 8u;
   v4 = self->_has;
   if ((*&v4 & 0x40000) == 0)
   {
@@ -2009,8 +2009,8 @@ LABEL_15:
   }
 
 LABEL_44:
-  *(a3 + 19) = *&self->_minimumBehavioralRuleSupport;
-  *(a3 + 64) |= 0x40000u;
+  *(to + 19) = *&self->_minimumBehavioralRuleSupport;
+  *(to + 64) |= 0x40000u;
   v4 = self->_has;
   if ((*&v4 & 0x2000) == 0)
   {
@@ -2024,8 +2024,8 @@ LABEL_16:
   }
 
 LABEL_45:
-  *(a3 + 14) = *&self->_minimumBehavioralRuleConfidence;
-  *(a3 + 64) |= 0x2000u;
+  *(to + 14) = *&self->_minimumBehavioralRuleConfidence;
+  *(to + 64) |= 0x2000u;
   v4 = self->_has;
   if ((*&v4 & 0x8000) == 0)
   {
@@ -2039,8 +2039,8 @@ LABEL_17:
   }
 
 LABEL_46:
-  *(a3 + 16) = *&self->_minimumBehavioralRuleLift;
-  *(a3 + 64) |= 0x8000u;
+  *(to + 16) = *&self->_minimumBehavioralRuleLift;
+  *(to + 64) |= 0x8000u;
   v4 = self->_has;
   if ((*&v4 & 0x4000) == 0)
   {
@@ -2054,8 +2054,8 @@ LABEL_18:
   }
 
 LABEL_47:
-  *(a3 + 15) = *&self->_minimumBehavioralRuleConviction;
-  *(a3 + 64) |= 0x4000u;
+  *(to + 15) = *&self->_minimumBehavioralRuleConviction;
+  *(to + 64) |= 0x4000u;
   v4 = self->_has;
   if ((*&v4 & 0x20000) == 0)
   {
@@ -2069,8 +2069,8 @@ LABEL_19:
   }
 
 LABEL_48:
-  *(a3 + 18) = *&self->_minimumBehavioralRulePowerFactor;
-  *(a3 + 64) |= 0x20000u;
+  *(to + 18) = *&self->_minimumBehavioralRulePowerFactor;
+  *(to + 64) |= 0x20000u;
   v4 = self->_has;
   if ((*&v4 & 0x10000) == 0)
   {
@@ -2084,8 +2084,8 @@ LABEL_20:
   }
 
 LABEL_49:
-  *(a3 + 17) = *&self->_minimumBehavioralRuleMLScore;
-  *(a3 + 64) |= 0x10000u;
+  *(to + 17) = *&self->_minimumBehavioralRuleMLScore;
+  *(to + 64) |= 0x10000u;
   v4 = self->_has;
   if ((*&v4 & 0x1000) == 0)
   {
@@ -2099,8 +2099,8 @@ LABEL_21:
   }
 
 LABEL_50:
-  *(a3 + 13) = *&self->_maximumBehavioralRuleSupport;
-  *(a3 + 64) |= 0x1000u;
+  *(to + 13) = *&self->_maximumBehavioralRuleSupport;
+  *(to + 64) |= 0x1000u;
   v4 = self->_has;
   if ((*&v4 & 0x80) == 0)
   {
@@ -2114,8 +2114,8 @@ LABEL_22:
   }
 
 LABEL_51:
-  *(a3 + 8) = *&self->_maximumBehavioralRuleConfidence;
-  *(a3 + 64) |= 0x80u;
+  *(to + 8) = *&self->_maximumBehavioralRuleConfidence;
+  *(to + 64) |= 0x80u;
   v4 = self->_has;
   if ((*&v4 & 0x200) == 0)
   {
@@ -2129,8 +2129,8 @@ LABEL_23:
   }
 
 LABEL_52:
-  *(a3 + 10) = *&self->_maximumBehavioralRuleLift;
-  *(a3 + 64) |= 0x200u;
+  *(to + 10) = *&self->_maximumBehavioralRuleLift;
+  *(to + 64) |= 0x200u;
   v4 = self->_has;
   if ((*&v4 & 0x100) == 0)
   {
@@ -2144,8 +2144,8 @@ LABEL_24:
   }
 
 LABEL_53:
-  *(a3 + 9) = *&self->_maximumBehavioralRuleConviction;
-  *(a3 + 64) |= 0x100u;
+  *(to + 9) = *&self->_maximumBehavioralRuleConviction;
+  *(to + 64) |= 0x100u;
   v4 = self->_has;
   if ((*&v4 & 0x800) == 0)
   {
@@ -2159,8 +2159,8 @@ LABEL_25:
   }
 
 LABEL_54:
-  *(a3 + 12) = *&self->_maximumBehavioralRulePowerFactor;
-  *(a3 + 64) |= 0x800u;
+  *(to + 12) = *&self->_maximumBehavioralRulePowerFactor;
+  *(to + 64) |= 0x800u;
   v4 = self->_has;
   if ((*&v4 & 0x400) == 0)
   {
@@ -2174,8 +2174,8 @@ LABEL_26:
   }
 
 LABEL_55:
-  *(a3 + 11) = *&self->_maximumBehavioralRuleMLScore;
-  *(a3 + 64) |= 0x400u;
+  *(to + 11) = *&self->_maximumBehavioralRuleMLScore;
+  *(to + 64) |= 0x400u;
   v4 = self->_has;
   if ((*&v4 & 0x1000000) == 0)
   {
@@ -2189,8 +2189,8 @@ LABEL_27:
   }
 
 LABEL_56:
-  *(a3 + 25) = *&self->_stdevBehavioralRuleSupport;
-  *(a3 + 64) |= 0x1000000u;
+  *(to + 25) = *&self->_stdevBehavioralRuleSupport;
+  *(to + 64) |= 0x1000000u;
   v4 = self->_has;
   if ((*&v4 & 0x80000) == 0)
   {
@@ -2204,8 +2204,8 @@ LABEL_28:
   }
 
 LABEL_57:
-  *(a3 + 20) = *&self->_stdevBehavioralRuleConfidence;
-  *(a3 + 64) |= 0x80000u;
+  *(to + 20) = *&self->_stdevBehavioralRuleConfidence;
+  *(to + 64) |= 0x80000u;
   v4 = self->_has;
   if ((*&v4 & 0x200000) == 0)
   {
@@ -2219,8 +2219,8 @@ LABEL_29:
   }
 
 LABEL_58:
-  *(a3 + 22) = *&self->_stdevBehavioralRuleLift;
-  *(a3 + 64) |= 0x200000u;
+  *(to + 22) = *&self->_stdevBehavioralRuleLift;
+  *(to + 64) |= 0x200000u;
   v4 = self->_has;
   if ((*&v4 & 0x100000) == 0)
   {
@@ -2234,8 +2234,8 @@ LABEL_30:
   }
 
 LABEL_59:
-  *(a3 + 21) = *&self->_stdevBehavioralRuleConviction;
-  *(a3 + 64) |= 0x100000u;
+  *(to + 21) = *&self->_stdevBehavioralRuleConviction;
+  *(to + 64) |= 0x100000u;
   v4 = self->_has;
   if ((*&v4 & 0x800000) == 0)
   {
@@ -2246,8 +2246,8 @@ LABEL_31:
     }
 
 LABEL_61:
-    *(a3 + 23) = *&self->_stdevBehavioralRuleMLScore;
-    *(a3 + 64) |= 0x400000u;
+    *(to + 23) = *&self->_stdevBehavioralRuleMLScore;
+    *(to + 64) |= 0x400000u;
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_34;
@@ -2257,8 +2257,8 @@ LABEL_61:
   }
 
 LABEL_60:
-  *(a3 + 24) = *&self->_stdevBehavioralRulePowerFactor;
-  *(a3 + 64) |= 0x800000u;
+  *(to + 24) = *&self->_stdevBehavioralRulePowerFactor;
+  *(to + 64) |= 0x800000u;
   v4 = self->_has;
   if ((*&v4 & 0x400000) != 0)
   {
@@ -2269,17 +2269,17 @@ LABEL_32:
   if ((*&v4 & 0x40) != 0)
   {
 LABEL_33:
-    *(a3 + 7) = *&self->_interactionModelScore;
-    *(a3 + 64) |= 0x40u;
+    *(to + 7) = *&self->_interactionModelScore;
+    *(to + 64) |= 0x40u;
   }
 
 LABEL_34:
-  *(a3 + 252) = self->_wasShareRecipient;
+  *(to + 252) = self->_wasShareRecipient;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 62) = self->_timeSinceLastContactViaShare;
   *(result + 59) = self->_timeSinceLastContactViaIncomingText;
   *(result + 61) = self->_timeSinceLastContactViaOutgoingText;
@@ -2712,19 +2712,19 @@ LABEL_34:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_timeSinceLastContactViaShare != *(v4 + 62) || self->_timeSinceLastContactViaIncomingText != *(v4 + 59) || self->_timeSinceLastContactViaOutgoingText != *(v4 + 61))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_timeSinceLastContactViaShare != *(equalCopy + 62) || self->_timeSinceLastContactViaIncomingText != *(equalCopy + 59) || self->_timeSinceLastContactViaOutgoingText != *(equalCopy + 61))
   {
     goto LABEL_159;
   }
 
   has = self->_has;
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_timeSinceLastContactViaIncomingCall != *(v4 + 58))
+    if ((v6 & 0x10000000) == 0 || self->_timeSinceLastContactViaIncomingCall != *(equalCopy + 58))
     {
       goto LABEL_159;
     }
@@ -2739,7 +2739,7 @@ LABEL_159:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v6 & 0x20000000) == 0 || self->_timeSinceLastContactViaOutgoingCall != *(v4 + 60))
+    if ((v6 & 0x20000000) == 0 || self->_timeSinceLastContactViaOutgoingCall != *(equalCopy + 60))
     {
       goto LABEL_159;
     }
@@ -2750,14 +2750,14 @@ LABEL_159:
     goto LABEL_159;
   }
 
-  if (self->_normalizedShareFrequency != *(v4 + 56) || self->_normalizedIncomingTextFrequency != *(v4 + 53) || self->_normalizedOutgoingTextFrequency != *(v4 + 55))
+  if (self->_normalizedShareFrequency != *(equalCopy + 56) || self->_normalizedIncomingTextFrequency != *(equalCopy + 53) || self->_normalizedOutgoingTextFrequency != *(equalCopy + 55))
   {
     goto LABEL_159;
   }
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_normalizedIncomingCallFrequency != *(v4 + 52))
+    if ((v6 & 0x2000000) == 0 || self->_normalizedIncomingCallFrequency != *(equalCopy + 52))
     {
       goto LABEL_159;
     }
@@ -2770,7 +2770,7 @@ LABEL_159:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_normalizedOutgoingCallFrequency != *(v4 + 54))
+    if ((v6 & 0x4000000) == 0 || self->_normalizedOutgoingCallFrequency != *(equalCopy + 54))
     {
       goto LABEL_159;
     }
@@ -2783,7 +2783,7 @@ LABEL_159:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_numberOfBehavioralRulesAdvocating != *(v4 + 57))
+    if ((v6 & 0x8000000) == 0 || self->_numberOfBehavioralRulesAdvocating != *(equalCopy + 57))
     {
       goto LABEL_159;
     }
@@ -2796,7 +2796,7 @@ LABEL_159:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_averageBehavioralRuleSupport != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_averageBehavioralRuleSupport != *(equalCopy + 6))
     {
       goto LABEL_159;
     }
@@ -2809,7 +2809,7 @@ LABEL_159:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_averageBehavioralRuleConfidence != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_averageBehavioralRuleConfidence != *(equalCopy + 1))
     {
       goto LABEL_159;
     }
@@ -2822,7 +2822,7 @@ LABEL_159:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_averageBehavioralRuleLift != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_averageBehavioralRuleLift != *(equalCopy + 3))
     {
       goto LABEL_159;
     }
@@ -2835,7 +2835,7 @@ LABEL_159:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_averageBehavioralRuleConviction != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_averageBehavioralRuleConviction != *(equalCopy + 2))
     {
       goto LABEL_159;
     }
@@ -2848,7 +2848,7 @@ LABEL_159:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_averageBehavioralRulePowerFactor != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_averageBehavioralRulePowerFactor != *(equalCopy + 5))
     {
       goto LABEL_159;
     }
@@ -2861,7 +2861,7 @@ LABEL_159:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_averageBehavioralRuleMLScore != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_averageBehavioralRuleMLScore != *(equalCopy + 4))
     {
       goto LABEL_159;
     }
@@ -2874,7 +2874,7 @@ LABEL_159:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_minimumBehavioralRuleSupport != *(v4 + 19))
+    if ((v6 & 0x40000) == 0 || self->_minimumBehavioralRuleSupport != *(equalCopy + 19))
     {
       goto LABEL_159;
     }
@@ -2887,7 +2887,7 @@ LABEL_159:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_minimumBehavioralRuleConfidence != *(v4 + 14))
+    if ((v6 & 0x2000) == 0 || self->_minimumBehavioralRuleConfidence != *(equalCopy + 14))
     {
       goto LABEL_159;
     }
@@ -2900,7 +2900,7 @@ LABEL_159:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_minimumBehavioralRuleLift != *(v4 + 16))
+    if ((v6 & 0x8000) == 0 || self->_minimumBehavioralRuleLift != *(equalCopy + 16))
     {
       goto LABEL_159;
     }
@@ -2913,7 +2913,7 @@ LABEL_159:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_minimumBehavioralRuleConviction != *(v4 + 15))
+    if ((v6 & 0x4000) == 0 || self->_minimumBehavioralRuleConviction != *(equalCopy + 15))
     {
       goto LABEL_159;
     }
@@ -2926,7 +2926,7 @@ LABEL_159:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_minimumBehavioralRulePowerFactor != *(v4 + 18))
+    if ((v6 & 0x20000) == 0 || self->_minimumBehavioralRulePowerFactor != *(equalCopy + 18))
     {
       goto LABEL_159;
     }
@@ -2939,7 +2939,7 @@ LABEL_159:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_minimumBehavioralRuleMLScore != *(v4 + 17))
+    if ((v6 & 0x10000) == 0 || self->_minimumBehavioralRuleMLScore != *(equalCopy + 17))
     {
       goto LABEL_159;
     }
@@ -2952,7 +2952,7 @@ LABEL_159:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_maximumBehavioralRuleSupport != *(v4 + 13))
+    if ((v6 & 0x1000) == 0 || self->_maximumBehavioralRuleSupport != *(equalCopy + 13))
     {
       goto LABEL_159;
     }
@@ -2965,7 +2965,7 @@ LABEL_159:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_maximumBehavioralRuleConfidence != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_maximumBehavioralRuleConfidence != *(equalCopy + 8))
     {
       goto LABEL_159;
     }
@@ -2978,7 +2978,7 @@ LABEL_159:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_maximumBehavioralRuleLift != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_maximumBehavioralRuleLift != *(equalCopy + 10))
     {
       goto LABEL_159;
     }
@@ -2991,7 +2991,7 @@ LABEL_159:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_maximumBehavioralRuleConviction != *(v4 + 9))
+    if ((v6 & 0x100) == 0 || self->_maximumBehavioralRuleConviction != *(equalCopy + 9))
     {
       goto LABEL_159;
     }
@@ -3004,7 +3004,7 @@ LABEL_159:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_maximumBehavioralRulePowerFactor != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_maximumBehavioralRulePowerFactor != *(equalCopy + 12))
     {
       goto LABEL_159;
     }
@@ -3017,7 +3017,7 @@ LABEL_159:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_maximumBehavioralRuleMLScore != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_maximumBehavioralRuleMLScore != *(equalCopy + 11))
     {
       goto LABEL_159;
     }
@@ -3030,7 +3030,7 @@ LABEL_159:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_stdevBehavioralRuleSupport != *(v4 + 25))
+    if ((v6 & 0x1000000) == 0 || self->_stdevBehavioralRuleSupport != *(equalCopy + 25))
     {
       goto LABEL_159;
     }
@@ -3043,7 +3043,7 @@ LABEL_159:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_stdevBehavioralRuleConfidence != *(v4 + 20))
+    if ((v6 & 0x80000) == 0 || self->_stdevBehavioralRuleConfidence != *(equalCopy + 20))
     {
       goto LABEL_159;
     }
@@ -3056,7 +3056,7 @@ LABEL_159:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_stdevBehavioralRuleLift != *(v4 + 22))
+    if ((v6 & 0x200000) == 0 || self->_stdevBehavioralRuleLift != *(equalCopy + 22))
     {
       goto LABEL_159;
     }
@@ -3069,7 +3069,7 @@ LABEL_159:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_stdevBehavioralRuleConviction != *(v4 + 21))
+    if ((v6 & 0x100000) == 0 || self->_stdevBehavioralRuleConviction != *(equalCopy + 21))
     {
       goto LABEL_159;
     }
@@ -3082,7 +3082,7 @@ LABEL_159:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_stdevBehavioralRulePowerFactor != *(v4 + 24))
+    if ((v6 & 0x800000) == 0 || self->_stdevBehavioralRulePowerFactor != *(equalCopy + 24))
     {
       goto LABEL_159;
     }
@@ -3095,7 +3095,7 @@ LABEL_159:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_stdevBehavioralRuleMLScore != *(v4 + 23))
+    if ((v6 & 0x400000) == 0 || self->_stdevBehavioralRuleMLScore != *(equalCopy + 23))
     {
       goto LABEL_159;
     }
@@ -3108,7 +3108,7 @@ LABEL_159:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_interactionModelScore != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_interactionModelScore != *(equalCopy + 7))
     {
       goto LABEL_159;
     }
@@ -3119,7 +3119,7 @@ LABEL_159:
     goto LABEL_159;
   }
 
-  v7 = self->_wasShareRecipient == v4[252];
+  v7 = self->_wasShareRecipient == equalCopy[252];
 LABEL_160:
 
   return v7;
@@ -4069,34 +4069,34 @@ LABEL_17:
   return (2654435761 * self->_timeSinceLastContactViaIncomingText) ^ (2654435761 * self->_timeSinceLastContactViaShare) ^ (2654435761 * self->_timeSinceLastContactViaOutgoingText) ^ v123 ^ v122 ^ (2654435761 * self->_normalizedShareFrequency) ^ (2654435761 * self->_normalizedIncomingTextFrequency) ^ (2654435761 * self->_normalizedOutgoingTextFrequency) ^ v121 ^ v120 ^ v119 ^ v85 ^ v95 ^ v94 ^ v93 ^ v92 ^ v25 ^ v29 ^ v101 ^ v91 ^ v41 ^ v118 ^ v49 ^ v53 ^ v57 ^ v90 ^ v117 ^ v116 ^ v100 ^ v115 ^ v81 ^ v86 ^ v96 ^ v102 ^ v106 ^ v110 ^ (2654435761 * self->_wasShareRecipient);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_timeSinceLastContactViaShare = *(a3 + 62);
-  self->_timeSinceLastContactViaIncomingText = *(a3 + 59);
-  self->_timeSinceLastContactViaOutgoingText = *(a3 + 61);
-  v3 = *(a3 + 64);
+  self->_timeSinceLastContactViaShare = *(from + 62);
+  self->_timeSinceLastContactViaIncomingText = *(from + 59);
+  self->_timeSinceLastContactViaOutgoingText = *(from + 61);
+  v3 = *(from + 64);
   if ((v3 & 0x10000000) != 0)
   {
-    self->_timeSinceLastContactViaIncomingCall = *(a3 + 58);
+    self->_timeSinceLastContactViaIncomingCall = *(from + 58);
     *&self->_has |= 0x10000000u;
-    v3 = *(a3 + 64);
+    v3 = *(from + 64);
   }
 
   if ((v3 & 0x20000000) != 0)
   {
-    self->_timeSinceLastContactViaOutgoingCall = *(a3 + 60);
+    self->_timeSinceLastContactViaOutgoingCall = *(from + 60);
     *&self->_has |= 0x20000000u;
   }
 
-  self->_normalizedShareFrequency = *(a3 + 56);
-  self->_normalizedIncomingTextFrequency = *(a3 + 53);
-  self->_normalizedOutgoingTextFrequency = *(a3 + 55);
-  v4 = *(a3 + 64);
+  self->_normalizedShareFrequency = *(from + 56);
+  self->_normalizedIncomingTextFrequency = *(from + 53);
+  self->_normalizedOutgoingTextFrequency = *(from + 55);
+  v4 = *(from + 64);
   if ((v4 & 0x2000000) != 0)
   {
-    self->_normalizedIncomingCallFrequency = *(a3 + 52);
+    self->_normalizedIncomingCallFrequency = *(from + 52);
     *&self->_has |= 0x2000000u;
-    v4 = *(a3 + 64);
+    v4 = *(from + 64);
     if ((v4 & 0x4000000) == 0)
     {
 LABEL_7:
@@ -4114,9 +4114,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_normalizedOutgoingCallFrequency = *(a3 + 54);
+  self->_normalizedOutgoingCallFrequency = *(from + 54);
   *&self->_has |= 0x4000000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x8000000) == 0)
   {
 LABEL_8:
@@ -4129,9 +4129,9 @@ LABEL_8:
   }
 
 LABEL_37:
-  self->_numberOfBehavioralRulesAdvocating = *(a3 + 57);
+  self->_numberOfBehavioralRulesAdvocating = *(from + 57);
   *&self->_has |= 0x8000000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x20) == 0)
   {
 LABEL_9:
@@ -4144,9 +4144,9 @@ LABEL_9:
   }
 
 LABEL_38:
-  self->_averageBehavioralRuleSupport = *(a3 + 6);
+  self->_averageBehavioralRuleSupport = *(from + 6);
   *&self->_has |= 0x20u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 1) == 0)
   {
 LABEL_10:
@@ -4159,9 +4159,9 @@ LABEL_10:
   }
 
 LABEL_39:
-  self->_averageBehavioralRuleConfidence = *(a3 + 1);
+  self->_averageBehavioralRuleConfidence = *(from + 1);
   *&self->_has |= 1u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 4) == 0)
   {
 LABEL_11:
@@ -4174,9 +4174,9 @@ LABEL_11:
   }
 
 LABEL_40:
-  self->_averageBehavioralRuleLift = *(a3 + 3);
+  self->_averageBehavioralRuleLift = *(from + 3);
   *&self->_has |= 4u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 2) == 0)
   {
 LABEL_12:
@@ -4189,9 +4189,9 @@ LABEL_12:
   }
 
 LABEL_41:
-  self->_averageBehavioralRuleConviction = *(a3 + 2);
+  self->_averageBehavioralRuleConviction = *(from + 2);
   *&self->_has |= 2u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x10) == 0)
   {
 LABEL_13:
@@ -4204,9 +4204,9 @@ LABEL_13:
   }
 
 LABEL_42:
-  self->_averageBehavioralRulePowerFactor = *(a3 + 5);
+  self->_averageBehavioralRulePowerFactor = *(from + 5);
   *&self->_has |= 0x10u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 8) == 0)
   {
 LABEL_14:
@@ -4219,9 +4219,9 @@ LABEL_14:
   }
 
 LABEL_43:
-  self->_averageBehavioralRuleMLScore = *(a3 + 4);
+  self->_averageBehavioralRuleMLScore = *(from + 4);
   *&self->_has |= 8u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x40000) == 0)
   {
 LABEL_15:
@@ -4234,9 +4234,9 @@ LABEL_15:
   }
 
 LABEL_44:
-  self->_minimumBehavioralRuleSupport = *(a3 + 19);
+  self->_minimumBehavioralRuleSupport = *(from + 19);
   *&self->_has |= 0x40000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x2000) == 0)
   {
 LABEL_16:
@@ -4249,9 +4249,9 @@ LABEL_16:
   }
 
 LABEL_45:
-  self->_minimumBehavioralRuleConfidence = *(a3 + 14);
+  self->_minimumBehavioralRuleConfidence = *(from + 14);
   *&self->_has |= 0x2000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x8000) == 0)
   {
 LABEL_17:
@@ -4264,9 +4264,9 @@ LABEL_17:
   }
 
 LABEL_46:
-  self->_minimumBehavioralRuleLift = *(a3 + 16);
+  self->_minimumBehavioralRuleLift = *(from + 16);
   *&self->_has |= 0x8000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x4000) == 0)
   {
 LABEL_18:
@@ -4279,9 +4279,9 @@ LABEL_18:
   }
 
 LABEL_47:
-  self->_minimumBehavioralRuleConviction = *(a3 + 15);
+  self->_minimumBehavioralRuleConviction = *(from + 15);
   *&self->_has |= 0x4000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x20000) == 0)
   {
 LABEL_19:
@@ -4294,9 +4294,9 @@ LABEL_19:
   }
 
 LABEL_48:
-  self->_minimumBehavioralRulePowerFactor = *(a3 + 18);
+  self->_minimumBehavioralRulePowerFactor = *(from + 18);
   *&self->_has |= 0x20000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x10000) == 0)
   {
 LABEL_20:
@@ -4309,9 +4309,9 @@ LABEL_20:
   }
 
 LABEL_49:
-  self->_minimumBehavioralRuleMLScore = *(a3 + 17);
+  self->_minimumBehavioralRuleMLScore = *(from + 17);
   *&self->_has |= 0x10000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x1000) == 0)
   {
 LABEL_21:
@@ -4324,9 +4324,9 @@ LABEL_21:
   }
 
 LABEL_50:
-  self->_maximumBehavioralRuleSupport = *(a3 + 13);
+  self->_maximumBehavioralRuleSupport = *(from + 13);
   *&self->_has |= 0x1000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x80) == 0)
   {
 LABEL_22:
@@ -4339,9 +4339,9 @@ LABEL_22:
   }
 
 LABEL_51:
-  self->_maximumBehavioralRuleConfidence = *(a3 + 8);
+  self->_maximumBehavioralRuleConfidence = *(from + 8);
   *&self->_has |= 0x80u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x200) == 0)
   {
 LABEL_23:
@@ -4354,9 +4354,9 @@ LABEL_23:
   }
 
 LABEL_52:
-  self->_maximumBehavioralRuleLift = *(a3 + 10);
+  self->_maximumBehavioralRuleLift = *(from + 10);
   *&self->_has |= 0x200u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x100) == 0)
   {
 LABEL_24:
@@ -4369,9 +4369,9 @@ LABEL_24:
   }
 
 LABEL_53:
-  self->_maximumBehavioralRuleConviction = *(a3 + 9);
+  self->_maximumBehavioralRuleConviction = *(from + 9);
   *&self->_has |= 0x100u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x800) == 0)
   {
 LABEL_25:
@@ -4384,9 +4384,9 @@ LABEL_25:
   }
 
 LABEL_54:
-  self->_maximumBehavioralRulePowerFactor = *(a3 + 12);
+  self->_maximumBehavioralRulePowerFactor = *(from + 12);
   *&self->_has |= 0x800u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x400) == 0)
   {
 LABEL_26:
@@ -4399,9 +4399,9 @@ LABEL_26:
   }
 
 LABEL_55:
-  self->_maximumBehavioralRuleMLScore = *(a3 + 11);
+  self->_maximumBehavioralRuleMLScore = *(from + 11);
   *&self->_has |= 0x400u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x1000000) == 0)
   {
 LABEL_27:
@@ -4414,9 +4414,9 @@ LABEL_27:
   }
 
 LABEL_56:
-  self->_stdevBehavioralRuleSupport = *(a3 + 25);
+  self->_stdevBehavioralRuleSupport = *(from + 25);
   *&self->_has |= 0x1000000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x80000) == 0)
   {
 LABEL_28:
@@ -4429,9 +4429,9 @@ LABEL_28:
   }
 
 LABEL_57:
-  self->_stdevBehavioralRuleConfidence = *(a3 + 20);
+  self->_stdevBehavioralRuleConfidence = *(from + 20);
   *&self->_has |= 0x80000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x200000) == 0)
   {
 LABEL_29:
@@ -4444,9 +4444,9 @@ LABEL_29:
   }
 
 LABEL_58:
-  self->_stdevBehavioralRuleLift = *(a3 + 22);
+  self->_stdevBehavioralRuleLift = *(from + 22);
   *&self->_has |= 0x200000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x100000) == 0)
   {
 LABEL_30:
@@ -4459,9 +4459,9 @@ LABEL_30:
   }
 
 LABEL_59:
-  self->_stdevBehavioralRuleConviction = *(a3 + 21);
+  self->_stdevBehavioralRuleConviction = *(from + 21);
   *&self->_has |= 0x100000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x800000) == 0)
   {
 LABEL_31:
@@ -4471,9 +4471,9 @@ LABEL_31:
     }
 
 LABEL_61:
-    self->_stdevBehavioralRuleMLScore = *(a3 + 23);
+    self->_stdevBehavioralRuleMLScore = *(from + 23);
     *&self->_has |= 0x400000u;
-    if ((*(a3 + 64) & 0x40) == 0)
+    if ((*(from + 64) & 0x40) == 0)
     {
       goto LABEL_34;
     }
@@ -4482,9 +4482,9 @@ LABEL_61:
   }
 
 LABEL_60:
-  self->_stdevBehavioralRulePowerFactor = *(a3 + 24);
+  self->_stdevBehavioralRulePowerFactor = *(from + 24);
   *&self->_has |= 0x800000u;
-  v4 = *(a3 + 64);
+  v4 = *(from + 64);
   if ((v4 & 0x400000) != 0)
   {
     goto LABEL_61;
@@ -4494,12 +4494,12 @@ LABEL_32:
   if ((v4 & 0x40) != 0)
   {
 LABEL_33:
-    self->_interactionModelScore = *(a3 + 7);
+    self->_interactionModelScore = *(from + 7);
     *&self->_has |= 0x40u;
   }
 
 LABEL_34:
-  self->_wasShareRecipient = *(a3 + 252);
+  self->_wasShareRecipient = *(from + 252);
 }
 
 @end

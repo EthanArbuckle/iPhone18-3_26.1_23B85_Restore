@@ -1,21 +1,21 @@
 @interface CDMXPCClient
-- (BOOL)areAssetsAvailable:(id)a3;
-- (BOOL)registerWithAssetsDelegate:(id)a3 withType:(int64_t)a4;
+- (BOOL)areAssetsAvailable:(id)available;
+- (BOOL)registerWithAssetsDelegate:(id)delegate withType:(int64_t)type;
 - (CDMXPCClient)init;
-- (CDMXPCClient)initWithCallingBundleId:(id)a3;
-- (CDMXPCClient)initWithConnection:(id)a3 delegate:(id)a4 wakeOnInit:(BOOL)a5;
-- (CDMXPCClient)initWithDelegate:(id)a3;
-- (CDMXPCClient)initWithDelegate:(id)a3 withCallingBundleId:(id)a4;
+- (CDMXPCClient)initWithCallingBundleId:(id)id;
+- (CDMXPCClient)initWithConnection:(id)connection delegate:(id)delegate wakeOnInit:(BOOL)init;
+- (CDMXPCClient)initWithDelegate:(id)delegate;
+- (CDMXPCClient)initWithDelegate:(id)delegate withCallingBundleId:(id)id;
 - (id)connection;
 - (void)dealloc;
-- (void)doHandleCommand:(id)a3 forCallback:(id)a4;
+- (void)doHandleCommand:(id)command forCallback:(id)callback;
 - (void)invalidateConnection;
-- (void)processCDMNluRequest:(id)a3 nullableCompletionHandler:(id)a4;
-- (void)setup:(id)a3 nullableCompletionHandler:(id)a4;
+- (void)processCDMNluRequest:(id)request nullableCompletionHandler:(id)handler;
+- (void)setup:(id)setup nullableCompletionHandler:(id)handler;
 - (void)sharedInitTasks;
 - (void)waitForDataDispatcherCompletion;
 - (void)wake;
-- (void)warmupWithCompletionHandler:(id)a3;
+- (void)warmupWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDMXPCClient
@@ -31,8 +31,8 @@
 
 - (void)wake
 {
-  v2 = [(CDMXPCClient *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_27];
+  connection = [(CDMXPCClient *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_27];
 
   [v3 wake];
 }
@@ -132,39 +132,39 @@ void __26__CDMXPCClient_connection__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)doHandleCommand:(id)a3 forCallback:(id)a4
+- (void)doHandleCommand:(id)command forCallback:(id)callback
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  callbackCopy = callback;
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v23 = "[CDMXPCClient doHandleCommand:forCallback:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = commandCopy;
     _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s Sending over XPC -> command=%@", buf, 0x16u);
   }
 
-  v9 = [(CDMXPCClient *)self connection];
+  connection = [(CDMXPCClient *)self connection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __44__CDMXPCClient_doHandleCommand_forCallback___block_invoke;
   v20[3] = &unk_1E862E5E8;
-  v10 = v7;
+  v10 = callbackCopy;
   v21 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v20];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v20];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v6 locale];
+    locale = [commandCopy locale];
 
-    if (!v12)
+    if (!locale)
     {
-      v13 = [(CDMClientInterface *)self localeFromLastSuccessfulSetup];
-      [v6 setLocale:v13];
+      localeFromLastSuccessfulSetup = [(CDMClientInterface *)self localeFromLastSuccessfulSetup];
+      [commandCopy setLocale:localeFromLastSuccessfulSetup];
     }
 
     v14 = CDMOSLoggerForCategory(0);
@@ -173,7 +173,7 @@ void __26__CDMXPCClient_connection__block_invoke(uint64_t a1)
       *buf = 136315394;
       v23 = "[CDMXPCClient doHandleCommand:forCallback:]";
       v24 = 2112;
-      v25 = v6;
+      v25 = commandCopy;
       _os_log_debug_impl(&dword_1DC287000, v14, OS_LOG_TYPE_DEBUG, "%s Sending over XPC a command that isKindOfClass CDMServiceGraphCommand -> command=%@", buf, 0x16u);
     }
 
@@ -182,14 +182,14 @@ void __26__CDMXPCClient_connection__block_invoke(uint64_t a1)
     v18[2] = __44__CDMXPCClient_doHandleCommand_forCallback___block_invoke_453;
     v18[3] = &unk_1E862E6D0;
     v19 = v10;
-    [v11 processRequestWithServiceGraphCommand:v6 completionHandler:v18];
-    v15 = v19;
+    [v11 processRequestWithServiceGraphCommand:commandCopy completionHandler:v18];
+    commandCopy = v19;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"This command not supported: command=%@", v6];
-    v16 = [(CDMClientInterface *)self createNSError:v15 errorCode:1];
+    commandCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"This command not supported: command=%@", commandCopy];
+    v16 = [(CDMClientInterface *)self createNSError:commandCopy errorCode:1];
     if (v10)
     {
       (*(v10 + 2))(v10, 0, v16);
@@ -249,8 +249,8 @@ void __44__CDMXPCClient_doHandleCommand_forCallback___block_invoke_453(uint64_t 
 
 - (void)waitForDataDispatcherCompletion
 {
-  v2 = [(CDMXPCClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_448];
+  connection = [(CDMXPCClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_448];
 
   [v3 waitForDataDispatcherCompletionWithCompletionHandler:&__block_literal_global_451];
 }
@@ -286,18 +286,18 @@ void __47__CDMXPCClient_waitForDataDispatcherCompletion__block_invoke(uint64_t a
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processCDMNluRequest:(id)a3 nullableCompletionHandler:(id)a4
+- (void)processCDMNluRequest:(id)request nullableCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v32 = "[CDMXPCClient processCDMNluRequest:nullableCompletionHandler:]";
     v33 = 2112;
-    v34 = v6;
+    v34 = requestCopy;
     _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s Sending XPC Nlu request to service -> %@", buf, 0x16u);
   }
 
@@ -319,17 +319,17 @@ void __47__CDMXPCClient_waitForDataDispatcherCompletion__block_invoke(uint64_t a
       _os_log_error_impl(&dword_1DC287000, v12, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
     }
 
     else if (self->_delegate)
     {
       v19 = [CDMNluRequestID alloc];
-      v20 = [v6 objcProto];
-      v21 = [v20 requestId];
-      v22 = [(CDMNluRequestID *)v19 initWithObjcProto:v21];
+      objcProto = [requestCopy objcProto];
+      requestId = [objcProto requestId];
+      v22 = [(CDMNluRequestID *)v19 initWithObjcProto:requestId];
 
       [(CDMClientDelegate *)self->_delegate processCDMNluRequestErrorCallback:v22 error:v11];
     }
@@ -337,19 +337,19 @@ void __47__CDMXPCClient_waitForDataDispatcherCompletion__block_invoke(uint64_t a
 
   else
   {
-    v13 = [(CDMXPCClient *)self connection];
+    connection = [(CDMXPCClient *)self connection];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __63__CDMXPCClient_processCDMNluRequest_nullableCompletionHandler___block_invoke;
     v26[3] = &unk_1E862E680;
-    v14 = v7;
+    v14 = handlerCopy;
     v28 = v14;
     v26[4] = self;
-    v15 = v6;
+    v15 = requestCopy;
     v27 = v15;
-    v16 = [v13 remoteObjectProxyWithErrorHandler:v26];
+    v16 = [connection remoteObjectProxyWithErrorHandler:v26];
 
-    v17 = [v15 objcProto];
+    objcProto2 = [v15 objcProto];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __63__CDMXPCClient_processCDMNluRequest_nullableCompletionHandler___block_invoke_444;
@@ -357,7 +357,7 @@ void __47__CDMXPCClient_waitForDataDispatcherCompletion__block_invoke(uint64_t a
     v25 = v14;
     v23[4] = self;
     v24 = v15;
-    [v16 processCDMNluRequestWithCdmNluRequest:v17 completionHandler:v23];
+    [v16 processCDMNluRequestWithCdmNluRequest:objcProto2 completionHandler:v23];
 
     v11 = v28;
   }
@@ -459,10 +459,10 @@ void __63__CDMXPCClient_processCDMNluRequest_nullableCompletionHandler___block_i
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setup:(id)a3 nullableCompletionHandler:(id)a4
+- (void)setup:(id)setup nullableCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  setupCopy = setup;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   if ([(CDMClientInterface *)self daemonKilled])
   {
@@ -470,23 +470,23 @@ void __63__CDMXPCClient_processCDMNluRequest_nullableCompletionHandler___block_i
     [(CDMXPCClient *)self setValue:v8 forKey:@"daemonKilled"];
   }
 
-  [v6 createSandboxExtensionForXPC];
-  v9 = [(CDMXPCClient *)self connection];
+  [setupCopy createSandboxExtensionForXPC];
+  connection = [(CDMXPCClient *)self connection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __48__CDMXPCClient_setup_nullableCompletionHandler___block_invoke;
   v18[3] = &unk_1E862E630;
   objc_copyWeak(&v20, &location);
-  v10 = v7;
+  v10 = handlerCopy;
   v19 = v10;
-  v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v18];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__CDMXPCClient_setup_nullableCompletionHandler___block_invoke_2;
   v14[3] = &unk_1E862E658;
   objc_copyWeak(&v17, &location);
-  v12 = v6;
+  v12 = setupCopy;
   v15 = v12;
   v13 = v10;
   v16 = v13;
@@ -554,10 +554,10 @@ void __20__CDMXPCClient_wake__block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)warmupWithCompletionHandler:(id)a3
+- (void)warmupWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -566,14 +566,14 @@ void __20__CDMXPCClient_wake__block_invoke(uint64_t a1, void *a2)
     _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s ", buf, 0xCu);
   }
 
-  v6 = [(CDMXPCClient *)self connection];
+  connection = [(CDMXPCClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__CDMXPCClient_warmupWithCompletionHandler___block_invoke;
   v13[3] = &unk_1E862E5E8;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -643,10 +643,10 @@ void __44__CDMXPCClient_warmupWithCompletionHandler___block_invoke_437(uint64_t 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)registerWithAssetsDelegate:(id)a3 withType:(int64_t)a4
+- (BOOL)registerWithAssetsDelegate:(id)delegate withType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -658,26 +658,26 @@ void __44__CDMXPCClient_warmupWithCompletionHandler___block_invoke_437(uint64_t 
     _os_log_debug_impl(&dword_1DC287000, v7, OS_LOG_TYPE_DEBUG, "%s Register assets delegate for CDMXPCClient for locale: %@", &v12, 0x16u);
   }
 
-  v8 = [CDMAssetsUtils registerWithAssetsDelegate:v6 withType:a4 withLocale:self->_assetsLocaleIdentifier];
+  v8 = [CDMAssetsUtils registerWithAssetsDelegate:delegateCopy withType:type withLocale:self->_assetsLocaleIdentifier];
   v9 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (BOOL)areAssetsAvailable:(id)a3
+- (BOOL)areAssetsAvailable:(id)available
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  availableCopy = available;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(CDMXPCClient *)self connection];
+  connection = [(CDMXPCClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __35__CDMXPCClient_areAssetsAvailable___block_invoke;
   v17[3] = &unk_1E862E598;
   v17[4] = &v18;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v17];
+  v6 = [connection remoteObjectProxyWithErrorHandler:v17];
 
   v7 = dispatch_semaphore_create(0);
   v14[0] = MEMORY[0x1E69E9820];
@@ -687,7 +687,7 @@ void __44__CDMXPCClient_warmupWithCompletionHandler___block_invoke_437(uint64_t 
   v16 = &v18;
   v8 = v7;
   v15 = v8;
-  [v6 areAssetsAvailableWithLocale:v4 completionHandler:v14];
+  [v6 areAssetsAvailableWithLocale:availableCopy completionHandler:v14];
   v9 = dispatch_time(0, 1000000000 * +[CDMUserDefaultsUtils readXPCCallbackDefaultTimeout]);
   if (dispatch_semaphore_wait(v8, v9))
   {
@@ -730,47 +730,47 @@ void __35__CDMXPCClient_areAssetsAvailable___block_invoke(uint64_t a1, void *a2)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (CDMXPCClient)initWithDelegate:(id)a3 withCallingBundleId:(id)a4
+- (CDMXPCClient)initWithDelegate:(id)delegate withCallingBundleId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CDMDataDispatcherContext alloc] initWithCallingBundleId:v6];
+  idCopy = id;
+  delegateCopy = delegate;
+  v8 = [[CDMDataDispatcherContext alloc] initWithCallingBundleId:idCopy];
 
   dataDispatcherContext = self->_dataDispatcherContext;
   self->_dataDispatcherContext = v8;
 
-  v10 = [(CDMXPCClient *)self initWithDelegate:v7];
+  v10 = [(CDMXPCClient *)self initWithDelegate:delegateCopy];
   return v10;
 }
 
-- (CDMXPCClient)initWithDelegate:(id)a3
+- (CDMXPCClient)initWithDelegate:(id)delegate
 {
   self->_wakeOnInit = 1;
-  objc_storeStrong(&self->_delegate, a3);
+  objc_storeStrong(&self->_delegate, delegate);
   [(CDMXPCClient *)self sharedInitTasks];
   return self;
 }
 
-- (CDMXPCClient)initWithConnection:(id)a3 delegate:(id)a4 wakeOnInit:(BOOL)a5
+- (CDMXPCClient)initWithConnection:(id)connection delegate:(id)delegate wakeOnInit:(BOOL)init
 {
-  v8 = a3;
-  v9 = a4;
-  self->_wakeOnInit = a5;
+  connectionCopy = connection;
+  delegateCopy = delegate;
+  self->_wakeOnInit = init;
   connection = self->_connection;
-  self->_connection = v8;
-  v11 = v8;
+  self->_connection = connectionCopy;
+  v11 = connectionCopy;
 
   delegate = self->_delegate;
-  self->_delegate = v9;
+  self->_delegate = delegateCopy;
 
   [(CDMXPCClient *)self sharedInitTasks];
   return self;
 }
 
-- (CDMXPCClient)initWithCallingBundleId:(id)a3
+- (CDMXPCClient)initWithCallingBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [[CDMDataDispatcherContext alloc] initWithCallingBundleId:v4];
+  idCopy = id;
+  v5 = [[CDMDataDispatcherContext alloc] initWithCallingBundleId:idCopy];
 
   dataDispatcherContext = self->_dataDispatcherContext;
   self->_dataDispatcherContext = v5;

@@ -1,9 +1,9 @@
 @interface ARPlaneExtent
 - (ARPlaneExtent)init;
-- (ARPlaneExtent)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ARPlaneExtent)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPlaneExtent
@@ -22,38 +22,38 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rotationOnYAxis = self->_rotationOnYAxis;
-  v8 = a3;
+  coderCopy = coder;
   *&v5 = rotationOnYAxis;
-  [v8 encodeFloat:@"rotationOnYAxis" forKey:v5];
+  [coderCopy encodeFloat:@"rotationOnYAxis" forKey:v5];
   *&v6 = self->_width;
-  [v8 encodeFloat:@"width" forKey:v6];
+  [coderCopy encodeFloat:@"width" forKey:v6];
   *&v7 = self->_height;
-  [v8 encodeFloat:@"height" forKey:v7];
+  [coderCopy encodeFloat:@"height" forKey:v7];
 }
 
-- (ARPlaneExtent)initWithCoder:(id)a3
+- (ARPlaneExtent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"rotationOnYAxis"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"rotationOnYAxis"];
   self->_rotationOnYAxis = v5;
-  [v4 decodeFloatForKey:@"width"];
+  [coderCopy decodeFloatForKey:@"width"];
   self->_width = v6;
-  [v4 decodeFloatForKey:@"height"];
+  [coderCopy decodeFloatForKey:@"height"];
   v8 = v7;
 
   self->_height = v8;
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = vabds_f32(self->_rotationOnYAxis, v5[2]) < 0.00000011921 && vabds_f32(self->_width, v5[3]) < 0.00000011921 && vabds_f32(self->_height, v5[4]) < 0.00000011921;
   }
 
@@ -65,9 +65,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(ARPlaneExtent *)self rotationOnYAxis];
   v4[2] = v5;
   [(ARPlaneExtent *)self width];

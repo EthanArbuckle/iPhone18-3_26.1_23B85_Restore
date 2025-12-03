@@ -1,17 +1,17 @@
 @interface CalDAVCalendarServerChangedPropertyItem
-- (CalDAVCalendarServerChangedPropertyItem)initWithNameSpace:(id)a3 andName:(id)a4;
+- (CalDAVCalendarServerChangedPropertyItem)initWithNameSpace:(id)space andName:(id)name;
 - (id)copyParseRules;
-- (void)addChangedParameter:(id)a3;
-- (void)parserFoundAttributes:(id)a3;
+- (void)addChangedParameter:(id)parameter;
+- (void)parserFoundAttributes:(id)attributes;
 @end
 
 @implementation CalDAVCalendarServerChangedPropertyItem
 
-- (CalDAVCalendarServerChangedPropertyItem)initWithNameSpace:(id)a3 andName:(id)a4
+- (CalDAVCalendarServerChangedPropertyItem)initWithNameSpace:(id)space andName:(id)name
 {
   v8.receiver = self;
   v8.super_class = CalDAVCalendarServerChangedPropertyItem;
-  v4 = [(CoreDAVItem *)&v8 initWithNameSpace:a3 andName:a4];
+  v4 = [(CoreDAVItem *)&v8 initWithNameSpace:space andName:name];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -22,15 +22,15 @@
   return v4;
 }
 
-- (void)parserFoundAttributes:(id)a3
+- (void)parserFoundAttributes:(id)attributes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -42,30 +42,30 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v8];
+        name = [v10 name];
+        v12 = [name isEqualToString:v8];
 
         if (v12)
         {
-          v13 = [v10 value];
-          [(CalDAVCalendarServerChangedPropertyItem *)self setNameAttribute:v13];
+          value = [v10 value];
+          [(CalDAVCalendarServerChangedPropertyItem *)self setNameAttribute:value];
         }
 
-        v14 = [v10 name];
-        v15 = [v14 isEqualToString:@"change-type"];
+        name2 = [v10 name];
+        v15 = [name2 isEqualToString:@"change-type"];
 
         if (v15)
         {
-          v16 = [v10 value];
-          [(CalDAVCalendarServerChangedPropertyItem *)self setTypeAttribute:v16];
+          value2 = [v10 value];
+          [(CalDAVCalendarServerChangedPropertyItem *)self setTypeAttribute:value2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -74,11 +74,11 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addChangedParameter:(id)a3
+- (void)addChangedParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerChangedPropertyItem *)self changedParameters];
-  [v5 addObject:v4];
+  parameterCopy = parameter;
+  changedParameters = [(CalDAVCalendarServerChangedPropertyItem *)self changedParameters];
+  [changedParameters addObject:parameterCopy];
 }
 
 - (id)copyParseRules

@@ -1,21 +1,21 @@
 @interface CRKDmdBackedInstructordTransportProvider
-- (void)fetchTransportWithCompletion:(id)a3;
+- (void)fetchTransportWithCompletion:(id)completion;
 @end
 
 @implementation CRKDmdBackedInstructordTransportProvider
 
-- (void)fetchTransportWithCompletion:(id)a3
+- (void)fetchTransportWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D04BF8] currentUserConnection];
+  completionCopy = completion;
+  currentUserConnection = [MEMORY[0x277D04BF8] currentUserConnection];
   v5 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__CRKDmdBackedInstructordTransportProvider_fetchTransportWithCompletion___block_invoke;
   v7[3] = &unk_278DC32B0;
-  v8 = v3;
-  v6 = v3;
-  [v4 performRequest:v5 completion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [currentUserConnection performRequest:v5 completion:v7];
 }
 
 void __73__CRKDmdBackedInstructordTransportProvider_fetchTransportWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,36 +1,36 @@
 @interface NSFileProviderKernelMaterializationInfo
-+ (NSFileProviderKernelMaterializationInfo)kernelMaterializationInfoWithOperation:(unsigned int)a3;
-+ (id)fileMaterializationInfoWithOperation:(unsigned int)a3 size:(int64_t)a4 offset:(int64_t)a5;
-+ (id)partialFolderMaterializationInfoWithOperation:(unsigned int)a3 fileName:(const char *)a4;
-- (NSFileProviderKernelMaterializationInfo)initWithCoder:(id)a3;
++ (NSFileProviderKernelMaterializationInfo)kernelMaterializationInfoWithOperation:(unsigned int)operation;
++ (id)fileMaterializationInfoWithOperation:(unsigned int)operation size:(int64_t)size offset:(int64_t)offset;
++ (id)partialFolderMaterializationInfoWithOperation:(unsigned int)operation fileName:(const char *)name;
+- (NSFileProviderKernelMaterializationInfo)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFileProviderKernelMaterializationInfo
 
-+ (NSFileProviderKernelMaterializationInfo)kernelMaterializationInfoWithOperation:(unsigned int)a3
++ (NSFileProviderKernelMaterializationInfo)kernelMaterializationInfoWithOperation:(unsigned int)operation
 {
   v4 = objc_alloc_init(NSFileProviderKernelMaterializationInfo);
-  v4->operation = a3;
+  v4->operation = operation;
 
   return v4;
 }
 
-+ (id)fileMaterializationInfoWithOperation:(unsigned int)a3 size:(int64_t)a4 offset:(int64_t)a5
++ (id)fileMaterializationInfoWithOperation:(unsigned int)operation size:(int64_t)size offset:(int64_t)offset
 {
   v8 = objc_alloc_init(NSFileProviderKernelMaterializationInfo);
-  v8->operation = a3;
-  v8->fileMaterializationInfo = [[NSFileProviderKernelFileMaterializationInfo alloc] initWithSize:a4 offset:a5];
+  v8->operation = operation;
+  v8->fileMaterializationInfo = [[NSFileProviderKernelFileMaterializationInfo alloc] initWithSize:size offset:offset];
 
   return v8;
 }
 
-+ (id)partialFolderMaterializationInfoWithOperation:(unsigned int)a3 fileName:(const char *)a4
++ (id)partialFolderMaterializationInfoWithOperation:(unsigned int)operation fileName:(const char *)name
 {
   v6 = objc_alloc_init(NSFileProviderKernelMaterializationInfo);
-  v6->operation = a3;
-  v6->partialFolderMaterializationInfo = [[NSFileProviderKernelPartialFolderMaterializationInfo alloc] initWithFileName:[NSString stringWithUTF8String:a4]];
+  v6->operation = operation;
+  v6->partialFolderMaterializationInfo = [[NSFileProviderKernelPartialFolderMaterializationInfo alloc] initWithFileName:[NSString stringWithUTF8String:name]];
 
   return v6;
 }
@@ -44,21 +44,21 @@
   [(NSFileProviderKernelMaterializationInfo *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileProviderKernelMaterializationInfo instances should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInt:](NSNumber forKey:{"numberWithUnsignedInt:", self->operation), @"fileop"}];
-  [a3 encodeObject:self->fileMaterializationInfo forKey:@"fileinfo"];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInt:](NSNumber forKey:{"numberWithUnsignedInt:", self->operation), @"fileop"}];
+  [coder encodeObject:self->fileMaterializationInfo forKey:@"fileinfo"];
   partialFolderMaterializationInfo = self->partialFolderMaterializationInfo;
 
-  [a3 encodeObject:partialFolderMaterializationInfo forKey:@"folderinfo"];
+  [coder encodeObject:partialFolderMaterializationInfo forKey:@"folderinfo"];
 }
 
-- (NSFileProviderKernelMaterializationInfo)initWithCoder:(id)a3
+- (NSFileProviderKernelMaterializationInfo)initWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -66,9 +66,9 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileProviderKernelMaterializationInfo should only ever be decoded by XPC" userInfo:0]);
   }
 
-  self->operation = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"fileop", "unsignedIntValue"}];
-  self->fileMaterializationInfo = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"fileinfo"];
-  self->partialFolderMaterializationInfo = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"folderinfo"];
+  self->operation = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"fileop", "unsignedIntValue"}];
+  self->fileMaterializationInfo = [coder decodeObjectOfClass:objc_opt_class() forKey:@"fileinfo"];
+  self->partialFolderMaterializationInfo = [coder decodeObjectOfClass:objc_opt_class() forKey:@"folderinfo"];
   return self;
 }
 

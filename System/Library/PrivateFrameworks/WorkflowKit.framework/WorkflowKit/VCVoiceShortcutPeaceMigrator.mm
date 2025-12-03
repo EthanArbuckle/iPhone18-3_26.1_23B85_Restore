@@ -1,29 +1,29 @@
 @interface VCVoiceShortcutPeaceMigrator
-+ (void)migrateFromCloudKitIntoDatabaseIfNecessary:(id)a3;
-- (BOOL)migrateObject:(id)a3 error:(id *)a4;
-- (BOOL)migrateWithError:(id *)a3;
-- (BOOL)saveRecord:(id)a3 withIdentifier:(id)a4 error:(id *)a5;
-- (VCVoiceShortcutPeaceMigrator)initWithDatabase:(id)a3;
++ (void)migrateFromCloudKitIntoDatabaseIfNecessary:(id)necessary;
+- (BOOL)migrateObject:(id)object error:(id *)error;
+- (BOOL)migrateWithError:(id *)error;
+- (BOOL)saveRecord:(id)record withIdentifier:(id)identifier error:(id *)error;
+- (VCVoiceShortcutPeaceMigrator)initWithDatabase:(id)database;
 @end
 
 @implementation VCVoiceShortcutPeaceMigrator
 
-- (BOOL)saveRecord:(id)a3 withIdentifier:(id)a4 error:(id *)a5
+- (BOOL)saveRecord:(id)record withIdentifier:(id)identifier error:(id *)error
 {
   v80 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VCVoiceShortcutPeaceMigrator *)self database];
-  v11 = [v8 name];
+  recordCopy = record;
+  identifierCopy = identifier;
+  database = [(VCVoiceShortcutPeaceMigrator *)self database];
+  name = [recordCopy name];
 
-  if (v11)
+  if (name)
   {
     v71 = 0;
-    v12 = [[WFWorkflow alloc] initWithRecord:v8 reference:0 storageProvider:0 error:&v71];
+    v12 = [[WFWorkflow alloc] initWithRecord:recordCopy reference:0 storageProvider:0 error:&v71];
     v13 = v71;
     if (v12)
     {
-      v14 = [v9 length];
+      v14 = [identifierCopy length];
       v15 = getWFPeaceMigrationLogObject();
       v16 = v15;
       if (v14)
@@ -33,14 +33,14 @@
           *buf = 136315394;
           v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
           v74 = 2114;
-          v75 = v9;
+          v75 = identifierCopy;
           _os_log_impl(&dword_1CA256000, v16, OS_LOG_TYPE_INFO, "%s Migrating voice shortcut with identifier %{public}@", buf, 0x16u);
         }
 
-        v17 = [(WFWorkflow *)v12 actions];
-        v18 = [v17 firstObject];
+        actions = [(WFWorkflow *)v12 actions];
+        firstObject = [actions firstObject];
 
-        v19 = v18;
+        v19 = firstObject;
         if (v19)
         {
           objc_opt_class();
@@ -62,15 +62,15 @@
 
         v24 = v20;
 
-        v25 = [v24 intent];
+        intent = [v24 intent];
 
-        if (!v25 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+        if (!intent || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
 
-          v32 = [v10 referenceForWorkflowID:v9];
+          v32 = [database referenceForWorkflowID:identifierCopy];
           if (v32)
           {
-            v25 = v32;
+            intent = v32;
             v27 = getWFPeaceMigrationLogObject();
             v21 = 1;
             if (os_log_type_enabled(&v27->super, OS_LOG_TYPE_INFO))
@@ -78,7 +78,7 @@
               *buf = 136315394;
               v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
               v74 = 2114;
-              v75 = v9;
+              v75 = identifierCopy;
               _os_log_impl(&dword_1CA256000, &v27->super, OS_LOG_TYPE_INFO, "%s Voice shortcut (%{public}@) was migrated previously", buf, 0x16u);
             }
           }
@@ -86,11 +86,11 @@
           else
           {
             v67 = v19;
-            v27 = [[WFWorkflowCreationOptions alloc] initWithRecord:v8];
-            [(WFWorkflowCreationOptions *)v27 setIdentifier:v9];
-            [v8 addWatchWorkflowTypeIfEligible];
+            v27 = [[WFWorkflowCreationOptions alloc] initWithRecord:recordCopy];
+            [(WFWorkflowCreationOptions *)v27 setIdentifier:identifierCopy];
+            [recordCopy addWatchWorkflowTypeIfEligible];
             v69 = 0;
-            v33 = [v10 createWorkflowWithOptions:v27 error:&v69];
+            v33 = [database createWorkflowWithOptions:v27 error:&v69];
             v34 = v69;
             v21 = v33 != 0;
 
@@ -103,45 +103,45 @@
                 *buf = 136315650;
                 v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
                 v74 = 2114;
-                v75 = v9;
+                v75 = identifierCopy;
                 v76 = 2114;
                 v77 = v34;
                 _os_log_impl(&dword_1CA256000, v36, OS_LOG_TYPE_FAULT, "%s Failed to save new shortcut for voice shortcut (%{public}@): %{public}@", buf, 0x20u);
               }
 
               v27 = v35;
-              if (a5)
+              if (error)
               {
                 v37 = v34;
-                *a5 = v34;
+                *error = v34;
               }
             }
 
-            v25 = 0;
+            intent = 0;
             v19 = v67;
           }
 
           goto LABEL_52;
         }
 
-        v26 = [v25 workflowForIntentInDatabase:v10];
+        v26 = [intent workflowForIntentInDatabase:database];
         v27 = v26;
         if (!v26)
         {
           v31 = getWFPeaceMigrationLogObject();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
-            v68 = [v25 workflow];
-            v38 = [v68 spokenPhrase];
-            v63 = [v25 workflow];
-            [v63 vocabularyIdentifier];
+            workflow = [intent workflow];
+            spokenPhrase = [workflow spokenPhrase];
+            workflow2 = [intent workflow];
+            [workflow2 vocabularyIdentifier];
             v40 = v39 = v31;
             *buf = 136315906;
             v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
             v74 = 2114;
-            v75 = v9;
+            v75 = identifierCopy;
             v76 = 2112;
-            v77 = v38;
+            v77 = spokenPhrase;
             v78 = 2114;
             v79 = v40;
             _os_log_impl(&dword_1CA256000, v39, OS_LOG_TYPE_ERROR, "%s Voice shortcut (%{public}@) references a nonexistent shortcut %@, with identifier %{public}@", buf, 0x2Au);
@@ -157,8 +157,8 @@
         v66 = v19;
         [(WFWorkflowCreationOptions *)v26 name];
         v28 = v65 = v27;
-        v29 = [v8 name];
-        v30 = [v28 isEqualToString:v29];
+        name2 = [recordCopy name];
+        v30 = [v28 isEqualToString:name2];
 
         if (v30)
         {
@@ -170,7 +170,7 @@
             *buf = 136315394;
             v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
             v74 = 2114;
-            v75 = v9;
+            v75 = identifierCopy;
             _os_log_impl(&dword_1CA256000, v31, OS_LOG_TYPE_INFO, "%s Voice shortcut (%{public}@) references a shortcut of the same name", buf, 0x16u);
           }
 
@@ -181,7 +181,7 @@
         [MEMORY[0x1E695DFD8] setWithObjects:{@"name", @"legacyName", 0}];
         v70[1] = 0;
         v62 = v27 = v65;
-        v41 = [v10 recordWithDescriptor:v65 properties:? error:?];
+        v41 = [database recordWithDescriptor:v65 properties:? error:?];
         v64 = 0;
         v61 = v41;
         if (!v41)
@@ -189,16 +189,16 @@
           v46 = getWFPeaceMigrationLogObject();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
           {
-            v47 = [(WFWorkflowCreationOptions *)v65 name];
-            v48 = [(WFWorkflowCreationOptions *)v65 identifier];
+            name3 = [(WFWorkflowCreationOptions *)v65 name];
+            identifier = [(WFWorkflowCreationOptions *)v65 identifier];
             *buf = 136315906;
             v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
             v74 = 2114;
-            v75 = v9;
+            v75 = identifierCopy;
             v76 = 2112;
-            v77 = v47;
+            v77 = name3;
             v78 = 2114;
-            v79 = v48;
+            v79 = identifier;
             _os_log_impl(&dword_1CA256000, v46, OS_LOG_TYPE_FAULT, "%s Voice shortcut (%{public}@) failed to load existing shortcut %@, with identifier %{public}@", buf, 0x2Au);
 
             v27 = v65;
@@ -210,8 +210,8 @@
           goto LABEL_49;
         }
 
-        v42 = [v41 legacyName];
-        v43 = [v42 length];
+        legacyName = [v41 legacyName];
+        v43 = [legacyName length];
 
         if (v43)
         {
@@ -222,7 +222,7 @@
             *buf = 136315394;
             v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
             v74 = 2114;
-            v75 = v9;
+            v75 = identifierCopy;
             _os_log_impl(&dword_1CA256000, v44, OS_LOG_TYPE_INFO, "%s Voice shortcut (%{public}@) references a shortcut that already has a legacy name", buf, 0x16u);
           }
 
@@ -232,33 +232,33 @@
           goto LABEL_49;
         }
 
-        v51 = [v41 name];
-        [v41 setLegacyName:v51];
+        name4 = [v41 name];
+        [v41 setLegacyName:name4];
 
-        v52 = [v8 name];
-        [v41 setName:v52];
+        name5 = [recordCopy name];
+        [v41 setName:name5];
 
         getWFPeaceMigrationLogObject();
         v54 = v53 = v41;
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
-          v59 = [v53 name];
-          v55 = [v53 legacyName];
+          name6 = [v53 name];
+          legacyName2 = [v53 legacyName];
           *buf = 136315906;
           v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
           v74 = 2114;
-          v75 = v9;
+          v75 = identifierCopy;
           v76 = 2112;
-          v77 = v59;
+          v77 = name6;
           v78 = 2112;
-          v79 = v55;
-          v56 = v55;
+          v79 = legacyName2;
+          v56 = legacyName2;
           _os_log_impl(&dword_1CA256000, v54, OS_LOG_TYPE_INFO, "%s Voice shortcut (%{public}@) references a shortcut with a different name. Swapping the name to %@ and moving %@ to the legacyName", buf, 0x2Au);
         }
 
         v70[0] = 0;
         v27 = v65;
-        v57 = [v10 saveRecord:v53 withDescriptor:v65 error:v70];
+        v57 = [database saveRecord:v53 withDescriptor:v65 error:v70];
         v60 = v70[0];
         if (v57)
         {
@@ -274,18 +274,18 @@
             *buf = 136315650;
             v73 = "[VCVoiceShortcutPeaceMigrator saveRecord:withIdentifier:error:]";
             v74 = 2114;
-            v75 = v9;
+            v75 = identifierCopy;
             v76 = 2114;
             v77 = v60;
             _os_log_impl(&dword_1CA256000, v58, OS_LOG_TYPE_FAULT, "%s Failed to save existing shortcut for voice shortcut (%{public}@): %{public}@", buf, 0x20u);
           }
 
           v19 = v66;
-          if (a5)
+          if (error)
           {
             v45 = v60;
             v21 = 0;
-            *a5 = v45;
+            *error = v45;
 LABEL_49:
             v31 = v64;
 LABEL_50:
@@ -324,11 +324,11 @@ LABEL_52:
         _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_FAULT, "%s Voice shortcut workflow data failed to open: %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v23 = v13;
         v21 = 0;
-        *a5 = v13;
+        *error = v13;
 LABEL_53:
 
         goto LABEL_54;
@@ -354,17 +354,17 @@ LABEL_54:
   return v21;
 }
 
-- (BOOL)migrateObject:(id)a3 error:(id *)a4
+- (BOOL)migrateObject:(id)object error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 entity];
-  v8 = [v7 name];
-  v9 = [v8 isEqualToString:@"VCVoiceShortcutManagedObject"];
+  objectCopy = object;
+  entity = [objectCopy entity];
+  name = [entity name];
+  v9 = [name isEqualToString:@"VCVoiceShortcutManagedObject"];
 
   if (v9)
   {
-    v10 = [v6 valueForKey:@"identifier"];
+    v10 = [objectCopy valueForKey:@"identifier"];
     v11 = objc_opt_class();
     v12 = v10;
     if (v12 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -393,13 +393,13 @@ LABEL_54:
     }
 
     v31 = 0;
-    v17 = [[WFWorkflowRecord alloc] initWithPeaceCoreDataModel:v6 error:&v31];
+    v17 = [[WFWorkflowRecord alloc] initWithPeaceCoreDataModel:objectCopy error:&v31];
     v18 = v31;
     if (v17)
     {
-      v19 = [v13 UUIDString];
+      uUIDString = [v13 UUIDString];
       v30 = 0;
-      v14 = [(VCVoiceShortcutPeaceMigrator *)self saveRecord:v17 withIdentifier:v19 error:&v30];
+      v14 = [(VCVoiceShortcutPeaceMigrator *)self saveRecord:v17 withIdentifier:uUIDString error:&v30];
       v20 = v30;
 
       v21 = getWFPeaceMigrationLogObject();
@@ -408,11 +408,11 @@ LABEL_54:
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v23 = [v13 UUIDString];
+          uUIDString2 = [v13 UUIDString];
           *buf = 136315394;
           v33 = "[VCVoiceShortcutPeaceMigrator migrateObject:error:]";
           v34 = 2114;
-          v35 = v23;
+          v35 = uUIDString2;
           _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_INFO, "%s Successfully saved voice shortcut (%{public}@) to database", buf, 0x16u);
         }
       }
@@ -424,16 +424,16 @@ LABEL_54:
           *buf = 136315650;
           v33 = "[VCVoiceShortcutPeaceMigrator migrateObject:error:]";
           v34 = 2112;
-          v35 = v6;
+          v35 = objectCopy;
           v36 = 2114;
           v37 = v18;
           _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_FAULT, "%s Failed to convert %@ to a workflow record: %{public}@", buf, 0x20u);
         }
 
-        if (a4)
+        if (error)
         {
           v27 = v20;
-          *a4 = v20;
+          *error = v20;
         }
       }
     }
@@ -443,21 +443,21 @@ LABEL_54:
       v24 = getWFPeaceMigrationLogObject();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
-        v25 = [v13 UUIDString];
+        uUIDString3 = [v13 UUIDString];
         *buf = 136315650;
         v33 = "[VCVoiceShortcutPeaceMigrator migrateObject:error:]";
         v34 = 2114;
-        v35 = v25;
+        v35 = uUIDString3;
         v36 = 2114;
         v37 = v18;
         _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_FAULT, "%s Failed to convert voice shortcut (%{public}@) to a workflow record: %{public}@", buf, 0x20u);
       }
 
-      if (a4)
+      if (error)
       {
         v26 = v18;
         v14 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -476,12 +476,12 @@ LABEL_54:
   return v14;
 }
 
-- (BOOL)migrateWithError:(id *)a3
+- (BOOL)migrateWithError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
   v5 = os_transaction_create();
-  v6 = [(VCVoiceShortcutPeaceMigrator *)self database];
-  v7 = [v6 context];
+  database = [(VCVoiceShortcutPeaceMigrator *)self database];
+  context = [database context];
 
   v32 = 0;
   v33 = &v32;
@@ -497,20 +497,20 @@ LABEL_54:
   aBlock[1] = 3221225472;
   aBlock[2] = __49__VCVoiceShortcutPeaceMigrator_migrateWithError___block_invoke;
   aBlock[3] = &unk_1E83764D8;
-  v8 = v7;
+  v8 = context;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v24 = &v26;
   v25 = &v32;
   v9 = _Block_copy(aBlock);
-  v10 = [(VCVoiceShortcutPeaceMigrator *)self database];
+  database2 = [(VCVoiceShortcutPeaceMigrator *)self database];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __49__VCVoiceShortcutPeaceMigrator_migrateWithError___block_invoke_205;
   v19[3] = &unk_1E8376500;
   v11 = v9;
   v20 = v11;
-  [v10 performTransactionWithReason:@"peace migration" block:v19 error:0];
+  [database2 performTransactionWithReason:@"peace migration" block:v19 error:0];
 
   if (v27[5])
   {
@@ -550,9 +550,9 @@ LABEL_54:
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v27[5];
+    *error = v27[5];
   }
 
   v16 = v27[5] == 0;
@@ -752,13 +752,13 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (VCVoiceShortcutPeaceMigrator)initWithDatabase:(id)a3
+- (VCVoiceShortcutPeaceMigrator)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutPeaceMigrator.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutPeaceMigrator.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v12.receiver = self;
@@ -767,17 +767,17 @@ LABEL_6:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_database, a3);
+    objc_storeStrong(&v7->_database, database);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (void)migrateFromCloudKitIntoDatabaseIfNecessary:(id)a3
++ (void)migrateFromCloudKitIntoDatabaseIfNecessary:(id)necessary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  necessaryCopy = necessary;
   if (+[WFCloudKitSyncSession voiceShortcutMigrationDidRun])
   {
     v4 = getWFPeaceMigrationLogObject();
@@ -793,13 +793,13 @@ LABEL_6:
   {
     v5 = objc_alloc(MEMORY[0x1E69635F8]);
     v4 = [v5 initWithBundleIdentifier:*MEMORY[0x1E69E0FB0] allowPlaceholder:0 error:0];
-    v6 = [v4 applicationState];
-    v7 = [v6 isInstalled];
+    applicationState = [v4 applicationState];
+    isInstalled = [applicationState isInstalled];
 
-    if (v7)
+    if (isInstalled)
     {
       v8 = os_transaction_create();
-      v9 = [[VCVoiceShortcutPeaceMigrator alloc] initWithDatabase:v3];
+      v9 = [[VCVoiceShortcutPeaceMigrator alloc] initWithDatabase:necessaryCopy];
       v10 = [VCCKVoiceShortcutFetcher alloc];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;

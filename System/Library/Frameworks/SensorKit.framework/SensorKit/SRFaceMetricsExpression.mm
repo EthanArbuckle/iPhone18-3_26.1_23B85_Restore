@@ -1,16 +1,16 @@
 @interface SRFaceMetricsExpression
-+ (id)partialFaceMetricsExpressionWithIdentifier:(id)a3 value:(double)a4;
-+ (id)wholeFaceMetricsExpressionWithIdentifier:(id)a3 value:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)partialFaceMetricsExpressionWithIdentifier:(id)identifier value:(double)value;
++ (id)wholeFaceMetricsExpressionWithIdentifier:(id)identifier value:(double)value;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SRFaceMetricsExpression)init;
-- (SRFaceMetricsExpression)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRFaceMetricsExpression)initWithCoder:(id)a3;
-- (SRFaceMetricsExpression)initWithIdentifier:(id)a3 value:(double)a4;
+- (SRFaceMetricsExpression)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRFaceMetricsExpression)initWithCoder:(id)coder;
+- (SRFaceMetricsExpression)initWithIdentifier:(id)identifier value:(double)value;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRFaceMetricsExpression
@@ -22,30 +22,30 @@
   return 0;
 }
 
-- (SRFaceMetricsExpression)initWithIdentifier:(id)a3 value:(double)a4
+- (SRFaceMetricsExpression)initWithIdentifier:(id)identifier value:(double)value
 {
   v8.receiver = self;
   v8.super_class = SRFaceMetricsExpression;
   v6 = [(SRFaceMetricsExpression *)&v8 init];
   if (v6)
   {
-    v6->_identifier = [a3 copy];
-    v6->_value = a4;
+    v6->_identifier = [identifier copy];
+    v6->_value = value;
   }
 
   return v6;
 }
 
-+ (id)wholeFaceMetricsExpressionWithIdentifier:(id)a3 value:(double)a4
++ (id)wholeFaceMetricsExpressionWithIdentifier:(id)identifier value:(double)value
 {
-  v4 = [[SRFaceMetricsExpression alloc] initWithIdentifier:a3 value:a4];
+  v4 = [[SRFaceMetricsExpression alloc] initWithIdentifier:identifier value:value];
 
   return v4;
 }
 
-+ (id)partialFaceMetricsExpressionWithIdentifier:(id)a3 value:(double)a4
++ (id)partialFaceMetricsExpressionWithIdentifier:(id)identifier value:(double)value
 {
-  v4 = [[SRFaceMetricsExpression alloc] initWithIdentifier:a3 value:a4];
+  v4 = [[SRFaceMetricsExpression alloc] initWithIdentifier:identifier value:value];
 
   return v4;
 }
@@ -57,28 +57,28 @@
   [(SRFaceMetricsExpression *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRFaceMetricsExpression identifier](self forKey:{"identifier"), @"identifier"}];
+  [coder encodeObject:-[SRFaceMetricsExpression identifier](self forKey:{"identifier"), @"identifier"}];
   [(SRFaceMetricsExpression *)self value];
 
-  [a3 encodeDouble:@"value" forKey:?];
+  [coder encodeDouble:@"value" forKey:?];
 }
 
-- (SRFaceMetricsExpression)initWithCoder:(id)a3
+- (SRFaceMetricsExpression)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  [a3 decodeDoubleForKey:@"value"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  [coder decodeDoubleForKey:@"value"];
 
   return [(SRFaceMetricsExpression *)self initWithIdentifier:v6 value:?];
 }
@@ -104,9 +104,9 @@
   return v2;
 }
 
-- (SRFaceMetricsExpression)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRFaceMetricsExpression)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if ([a3 length])
+  if ([representation length])
   {
     v11.receiver = self;
     v11.super_class = SRFaceMetricsExpression;
@@ -118,7 +118,7 @@
 
     v8 = result;
     v10 = 0;
-    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v10];
+    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v10];
 
     if (v9)
     {
@@ -138,14 +138,14 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SRFaceMetricsExpression *)self identifier];
+  identifier = [(SRFaceMetricsExpression *)self identifier];
   [(SRFaceMetricsExpression *)self value];
-  return [v3 stringWithFormat:@"%@ (%p) {identifier: %@, value: %f}", v5, self, v6, v7];
+  return [v3 stringWithFormat:@"%@ (%p) {identifier: %@, value: %f}", v5, self, identifier, v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -155,12 +155,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSString isEqualToString:](-[SRFaceMetricsExpression identifier](self, "identifier"), "isEqualToString:", [a3 identifier]);
+      v5 = -[NSString isEqualToString:](-[SRFaceMetricsExpression identifier](self, "identifier"), "isEqualToString:", [equal identifier]);
       if (v5)
       {
         [(SRFaceMetricsExpression *)self value];
         v7 = v6;
-        [a3 value];
+        [equal value];
         LOBYTE(v5) = v7 == v8;
       }
     }

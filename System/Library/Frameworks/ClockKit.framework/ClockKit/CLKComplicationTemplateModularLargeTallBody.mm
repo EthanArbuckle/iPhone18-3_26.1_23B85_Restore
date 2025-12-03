@@ -1,12 +1,12 @@
 @interface CLKComplicationTemplateModularLargeTallBody
 + (CLKComplicationTemplateModularLargeTallBody)templateWithHeaderTextProvider:(CLKTextProvider *)headerTextProvider bodyTextProvider:(CLKTextProvider *)bodyTextProvider;
-+ (id)templateWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5;
-- (CLKComplicationTemplateModularLargeTallBody)initWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5;
++ (id)templateWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider;
+- (CLKComplicationTemplateModularLargeTallBody)initWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider;
 - (CLKComplicationTemplateModularLargeTallBody)initWithHeaderTextProvider:(CLKTextProvider *)headerTextProvider bodyTextProvider:(CLKTextProvider *)bodyTextProvider;
 - (NSDate)contentDate;
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
-- (void)setContentDate:(id)a3;
+- (void)_enumerateImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
+- (void)setContentDate:(id)date;
 @end
 
 @implementation CLKComplicationTemplateModularLargeTallBody
@@ -17,31 +17,31 @@
   v7 = bodyTextProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateModularLargeTallBody;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateModularLargeTallBody *)v8 setHeaderTextProvider:v6];
+    [(CLKComplicationTemplateModularLargeTallBody *)initPrivate setHeaderTextProvider:v6];
     [(CLKComplicationTemplateModularLargeTallBody *)v9 setBodyTextProvider:v7];
   }
 
   return v9;
 }
 
-- (CLKComplicationTemplateModularLargeTallBody)initWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5
+- (CLKComplicationTemplateModularLargeTallBody)initWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  textProviderCopy = textProvider;
+  bodyTextProviderCopy = bodyTextProvider;
   v14.receiver = self;
   v14.super_class = CLKComplicationTemplateModularLargeTallBody;
-  v11 = [(CLKComplicationTemplate *)&v14 initPrivate];
-  v12 = v11;
-  if (v11)
+  initPrivate = [(CLKComplicationTemplate *)&v14 initPrivate];
+  v12 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateModularLargeTallBody *)v11 setHeaderImageProvider:v8];
-    [(CLKComplicationTemplateModularLargeTallBody *)v12 setHeaderTextProvider:v9];
-    [(CLKComplicationTemplateModularLargeTallBody *)v12 setBodyTextProvider:v10];
+    [(CLKComplicationTemplateModularLargeTallBody *)initPrivate setHeaderImageProvider:providerCopy];
+    [(CLKComplicationTemplateModularLargeTallBody *)v12 setHeaderTextProvider:textProviderCopy];
+    [(CLKComplicationTemplateModularLargeTallBody *)v12 setBodyTextProvider:bodyTextProviderCopy];
   }
 
   return v12;
@@ -51,71 +51,71 @@
 {
   v6 = bodyTextProvider;
   v7 = headerTextProvider;
-  v8 = [[a1 alloc] initWithHeaderTextProvider:v7 bodyTextProvider:v6];
+  v8 = [[self alloc] initWithHeaderTextProvider:v7 bodyTextProvider:v6];
 
   return v8;
 }
 
-+ (id)templateWithHeaderImageProvider:(id)a3 headerTextProvider:(id)a4 bodyTextProvider:(id)a5
++ (id)templateWithHeaderImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithHeaderImageProvider:v10 headerTextProvider:v9 bodyTextProvider:v8];
+  bodyTextProviderCopy = bodyTextProvider;
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v11 = [[self alloc] initWithHeaderImageProvider:providerCopy headerTextProvider:textProviderCopy bodyTextProvider:bodyTextProviderCopy];
 
   return v11;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"headerTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"headerTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"headerTrailingTextProvider", 1, 1, &v4);
+    blockCopy[2](blockCopy, @"headerTrailingTextProvider", 1, 1, &v4);
     if ((v4 & 1) == 0)
     {
-      v3[2](v3, @"bodyTextProvider", 0, 1, &v4);
+      blockCopy[2](blockCopy, @"bodyTextProvider", 0, 1, &v4);
     }
   }
 }
 
-- (void)_enumerateImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateImageProviderKeysWithBlock:(id)block
 {
   v9 = 0;
   v7 = 0.0;
   v8 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
-  v4 = a3;
+  blockCopy = block;
   _ModularLargeImageSize([(CLKComplicationTemplate *)self sdkVersion], &v7, &v5);
-  (*(v4 + 2))(v4, @"headerImageProvider", 1, 1, 0, 4, 0, &v9, v7, v8, v5, v6);
+  (*(blockCopy + 2))(blockCopy, @"headerImageProvider", 1, 1, 0, 4, 0, &v9, v7, v8, v5, v6);
 }
 
 - (NSDate)contentDate
 {
-  v2 = [(CLKComplicationTemplateModularLargeTallBody *)self additionalContentAttributes];
-  v3 = [v2 objectForKeyedSubscript:@"NTKUpNextEventBeginDateKey"];
+  additionalContentAttributes = [(CLKComplicationTemplateModularLargeTallBody *)self additionalContentAttributes];
+  v3 = [additionalContentAttributes objectForKeyedSubscript:@"NTKUpNextEventBeginDateKey"];
 
   return v3;
 }
 
-- (void)setContentDate:(id)a3
+- (void)setContentDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CLKComplicationTemplateModularLargeTallBody *)self additionalContentAttributes];
-  v6 = v5;
+  dateCopy = date;
+  additionalContentAttributes = [(CLKComplicationTemplateModularLargeTallBody *)self additionalContentAttributes];
+  v6 = additionalContentAttributes;
   v7 = MEMORY[0x277CBEC10];
-  if (v5)
+  if (additionalContentAttributes)
   {
-    v7 = v5;
+    v7 = additionalContentAttributes;
   }
 
   v8 = v7;
 
   v11 = [v8 mutableCopy];
-  v9 = [v4 copy];
+  v9 = [dateCopy copy];
 
   [v11 setObject:v9 forKeyedSubscript:@"NTKUpNextEventBeginDateKey"];
   v10 = [v11 copy];

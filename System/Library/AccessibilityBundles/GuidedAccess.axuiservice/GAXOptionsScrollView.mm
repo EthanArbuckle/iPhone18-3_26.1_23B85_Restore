@@ -1,17 +1,17 @@
 @interface GAXOptionsScrollView
-- (BOOL)_targetView:(id)a3 hasGrandparentViewOfType:(Class)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_targetView:(id)view hasGrandparentViewOfType:(Class)type;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation GAXOptionsScrollView
 
-- (BOOL)_targetView:(id)a3 hasGrandparentViewOfType:(Class)a4
+- (BOOL)_targetView:(id)view hasGrandparentViewOfType:(Class)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v6 = v4;
+    v6 = viewCopy;
     do
     {
       isKindOfClass = objc_opt_isKindOfClass();
@@ -20,12 +20,12 @@
         break;
       }
 
-      v8 = [v6 superview];
+      superview = [v6 superview];
 
-      v6 = v8;
+      v6 = superview;
     }
 
-    while (v8);
+    while (superview);
   }
 
   else
@@ -36,11 +36,11 @@
   return isKindOfClass & 1;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = GAXOptionsScrollView;
-  v5 = [(GAXOptionsScrollView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(GAXOptionsScrollView *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([(GAXOptionsScrollView *)self _targetView:v5 hasGrandparentViewOfType:objc_opt_class()])
   {
     v6 = 0;

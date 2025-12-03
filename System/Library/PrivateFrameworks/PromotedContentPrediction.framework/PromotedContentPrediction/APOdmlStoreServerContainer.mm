@@ -1,8 +1,8 @@
 @interface APOdmlStoreServerContainer
 + (id)sharedInstance;
 - (APOdmlStoreServerContainer)init;
-- (id)storeServerForModelURL:(id)a3;
-- (void)_startListening:(id)a3;
+- (id)storeServerForModelURL:(id)l;
+- (void)_startListening:(id)listening;
 - (void)startListening;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_260EF1028;
   block[3] = &unk_279AC5E98;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280CCF560 != -1)
   {
     dispatch_once(&qword_280CCF560, block);
@@ -77,7 +77,7 @@
   return v2;
 }
 
-- (id)storeServerForModelURL:(id)a3
+- (id)storeServerForModelURL:(id)l
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CBE210];
@@ -91,12 +91,12 @@
   v18[2] = MEMORY[0x277CBEC38];
   v18[3] = @"com.apple.ap.adprivacyd.store";
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  lCopy = l;
   v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v5, v7, v18, v17, 4);
   v10 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v9, @"/private/var/mobile/Library/Application Support/com.apple.ap.adprivacyd/FeatureModel.sqlite");
   v11 = objc_alloc(MEMORY[0x277CBE510]);
   v12 = objc_alloc_init(APOdmlStoreServerPolicy);
-  v14 = objc_msgSend_initForStoreWithURL_usingModelAtURL_options_policy_(v11, v13, v10, v6, v8, v12);
+  v14 = objc_msgSend_initForStoreWithURL_usingModelAtURL_options_policy_(v11, v13, v10, lCopy, v8, v12);
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -114,10 +114,10 @@
   dispatch_async(v3, block);
 }
 
-- (void)_startListening:(id)a3
+- (void)_startListening:(id)listening
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listeningCopy = listening;
   v5 = objc_alloc(MEMORY[0x277CBE450]);
   v8 = objc_msgSend_modelURL(self, v6, v7);
   v10 = objc_msgSend_initWithContentsOfURL_(v5, v9, v8);
@@ -142,8 +142,8 @@
   v31[2] = sub_260EF19E8;
   v31[3] = &unk_279AC69C0;
   v31[4] = self;
-  v32 = v4;
-  v28 = v4;
+  v32 = listeningCopy;
+  v28 = listeningCopy;
   objc_msgSend_loadPersistentStoresWithCompletionHandler_(v13, v29, v31);
 
   v30 = *MEMORY[0x277D85DE8];

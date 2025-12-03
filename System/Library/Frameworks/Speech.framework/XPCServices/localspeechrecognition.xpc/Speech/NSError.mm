@@ -1,17 +1,17 @@
 @interface NSError
-+ (id)lsr_errorWithCode:(int64_t)a3 description:(id)a4;
++ (id)lsr_errorWithCode:(int64_t)code description:(id)description;
 @end
 
 @implementation NSError
 
-+ (id)lsr_errorWithCode:(int64_t)a3 description:(id)a4
++ (id)lsr_errorWithCode:(int64_t)code description:(id)description
 {
-  v5 = a4;
+  descriptionCopy = description;
   v6 = [[NSMutableDictionary alloc] initWithCapacity:1];
   v7 = v6;
-  if (v5)
+  if (descriptionCopy)
   {
-    [v6 setObject:v5 forKey:NSLocalizedDescriptionKey];
+    [v6 setObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
   }
 
   if ([v7 count])
@@ -24,7 +24,7 @@
     v8 = 0;
   }
 
-  v9 = [NSError errorWithDomain:@"kLSRErrorDomain" code:a3 userInfo:v8];
+  v9 = [NSError errorWithDomain:@"kLSRErrorDomain" code:code userInfo:v8];
 
   return v9;
 }

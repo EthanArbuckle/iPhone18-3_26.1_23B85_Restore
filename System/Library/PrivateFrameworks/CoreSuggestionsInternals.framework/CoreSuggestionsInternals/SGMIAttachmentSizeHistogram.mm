@@ -1,8 +1,8 @@
 @interface SGMIAttachmentSizeHistogram
-- (SGMIAttachmentSizeHistogram)initWithNumberArray:(id)a3;
+- (SGMIAttachmentSizeHistogram)initWithNumberArray:(id)array;
 - (id)description;
 - (id)numberArray;
-- (void)bucketizeWithSize:(unint64_t)a3;
+- (void)bucketizeWithSize:(unint64_t)size;
 @end
 
 @implementation SGMIAttachmentSizeHistogram
@@ -16,32 +16,32 @@
   return v5;
 }
 
-- (void)bucketizeWithSize:(unint64_t)a3
+- (void)bucketizeWithSize:(unint64_t)size
 {
   v3 = 8;
   v4 = 16;
   v5 = 48;
-  if (a3 < 0x200001)
+  if (size < 0x200001)
   {
     v5 = 40;
   }
 
-  if (a3 < 0x80001)
+  if (size < 0x80001)
   {
     v5 = 32;
   }
 
-  if (a3 <= 0x20000)
+  if (size <= 0x20000)
   {
     v5 = 24;
   }
 
-  if (a3 > 0x8000)
+  if (size > 0x8000)
   {
     v4 = v5;
   }
 
-  if (a3 > 0x2000)
+  if (size > 0x2000)
   {
     v3 = v4;
   }
@@ -49,17 +49,17 @@
   ++*(&self->super.isa + v3);
 }
 
-- (SGMIAttachmentSizeHistogram)initWithNumberArray:(id)a3
+- (SGMIAttachmentSizeHistogram)initWithNumberArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] != 6)
+  arrayCopy = array;
+  if ([arrayCopy count] != 6)
   {
     v5 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = arrayCopy;
       _os_log_fault_impl(&dword_231E60000, v5, OS_LOG_TYPE_FAULT, "Error initializing SGMIAttachmentSizeHistogram with numberArray: %@", buf, 0xCu);
     }
   }
@@ -69,22 +69,22 @@
   v6 = [(SGMIAttachmentSizeHistogram *)&v15 init];
   if (v6)
   {
-    v7 = [v4 objectAtIndexedSubscript:0];
+    v7 = [arrayCopy objectAtIndexedSubscript:0];
     v6->_countUpTo8KB = [v7 unsignedIntegerValue];
 
-    v8 = [v4 objectAtIndexedSubscript:1];
+    v8 = [arrayCopy objectAtIndexedSubscript:1];
     v6->_count8KBTo32KB = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectAtIndexedSubscript:2];
+    v9 = [arrayCopy objectAtIndexedSubscript:2];
     v6->_count32KBTo128KB = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectAtIndexedSubscript:3];
+    v10 = [arrayCopy objectAtIndexedSubscript:3];
     v6->_count128KBTo512KB = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectAtIndexedSubscript:4];
+    v11 = [arrayCopy objectAtIndexedSubscript:4];
     v6->_count512KBTo2MB = [v11 unsignedIntegerValue];
 
-    v12 = [v4 objectAtIndexedSubscript:5];
+    v12 = [arrayCopy objectAtIndexedSubscript:5];
     v6->_countOver2MB = [v12 unsignedIntegerValue];
   }
 

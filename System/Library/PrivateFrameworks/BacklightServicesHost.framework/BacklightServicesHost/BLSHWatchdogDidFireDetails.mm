@@ -1,22 +1,22 @@
 @interface BLSHWatchdogDidFireDetails
-- (BLSHWatchdogDidFireDetails)initWithWatchdogDidFireDictionary:(id)a3;
+- (BLSHWatchdogDidFireDetails)initWithWatchdogDidFireDictionary:(id)dictionary;
 @end
 
 @implementation BLSHWatchdogDidFireDetails
 
-- (BLSHWatchdogDidFireDetails)initWithWatchdogDidFireDictionary:(id)a3
+- (BLSHWatchdogDidFireDetails)initWithWatchdogDidFireDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = BLSHWatchdogDidFireDetails;
   v5 = [(BLSHWatchdogDidFireDetails *)&v24 init];
   if (v5)
   {
-    v6 = [v4 bs_safeObjectForKey:@"BLSHWatchdogDidFireDate" ofType:objc_opt_class()];
-    v7 = [v4 objectForKeyedSubscript:@"BLSHWatchdogDidFireBuildVersion"];
-    v8 = [v4 bs_safeStringForKey:@"BLSHWatchdogDidFireExplanation"];
-    v9 = [v4 bs_safeStringForKey:@"BLSHWatchdogDidFireAbortReason"];
-    v10 = [v4 bs_safeStringForKey:@"BLSHWatchdogDidFireDeviceType"];
+    v6 = [dictionaryCopy bs_safeObjectForKey:@"BLSHWatchdogDidFireDate" ofType:objc_opt_class()];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"BLSHWatchdogDidFireBuildVersion"];
+    v8 = [dictionaryCopy bs_safeStringForKey:@"BLSHWatchdogDidFireExplanation"];
+    v9 = [dictionaryCopy bs_safeStringForKey:@"BLSHWatchdogDidFireAbortReason"];
+    v10 = [dictionaryCopy bs_safeStringForKey:@"BLSHWatchdogDidFireDeviceType"];
     if ([v10 hasSuffix:@"AP"])
     {
       v11 = [v10 substringToIndex:{objc_msgSend(v10, "length") - objc_msgSend(@"AP", "length")}];

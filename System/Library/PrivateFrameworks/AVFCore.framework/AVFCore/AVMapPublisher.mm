@@ -1,24 +1,24 @@
 @interface AVMapPublisher
-+ (id)mapPublisherWithUpstream:(id)a3 transform:(id)a4;
-- (AVMapPublisher)initWithUpstream:(id)a3 transform:(id)a4;
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4;
++ (id)mapPublisherWithUpstream:(id)upstream transform:(id)transform;
+- (AVMapPublisher)initWithUpstream:(id)upstream transform:(id)transform;
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation AVMapPublisher
 
-- (AVMapPublisher)initWithUpstream:(id)a3 transform:(id)a4
+- (AVMapPublisher)initWithUpstream:(id)upstream transform:(id)transform
 {
   v9.receiver = self;
   v9.super_class = AVMapPublisher;
   v6 = [(AVPublisher *)&v9 init];
   v7 = v6;
-  if (a4)
+  if (transform)
   {
     if (v6)
     {
-      v6->_upstream = a3;
-      v7->_transform = [a4 copy];
+      v6->_upstream = upstream;
+      v7->_transform = [transform copy];
     }
   }
 
@@ -31,9 +31,9 @@
   return v7;
 }
 
-+ (id)mapPublisherWithUpstream:(id)a3 transform:(id)a4
++ (id)mapPublisherWithUpstream:(id)upstream transform:(id)transform
 {
-  v4 = [[AVMapPublisher alloc] initWithUpstream:a3 transform:a4];
+  v4 = [[AVMapPublisher alloc] initWithUpstream:upstream transform:transform];
 
   return v4;
 }
@@ -45,7 +45,7 @@
   [(AVPublisher *)&v3 dealloc];
 }
 
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block
 {
   upstream = self->_upstream;
   v6[0] = MEMORY[0x1E69E9820];
@@ -53,8 +53,8 @@
   v6[2] = __56__AVMapPublisher_subscribeRequestingInitialValue_block___block_invoke;
   v6[3] = &unk_1E74635B8;
   v6[4] = self;
-  v6[5] = a4;
-  return [(AVPublisher *)upstream subscribeRequestingInitialValue:a3 block:v6];
+  v6[5] = block;
+  return [(AVPublisher *)upstream subscribeRequestingInitialValue:value block:v6];
 }
 
 uint64_t __56__AVMapPublisher_subscribeRequestingInitialValue_block___block_invoke(uint64_t a1)

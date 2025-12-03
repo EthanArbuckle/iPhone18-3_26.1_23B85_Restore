@@ -1,19 +1,19 @@
 @interface GKTextView
 + (void)initialize;
-- (GKTextView)initWithFrame:(CGRect)a3;
+- (GKTextView)initWithFrame:(CGRect)frame;
 - (NSAttributedString)attributedPlaceholderText;
 - (NSString)placeholderText;
 - (id)insertDictationResultPlaceholder;
-- (void)applyTextStyle:(id)a3;
+- (void)applyTextStyle:(id)style;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4;
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result;
 - (void)replayAndApplyStyle;
-- (void)setAttributedPlaceholderText:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setPlaceholderText:(id)a3;
-- (void)setText:(id)a3;
-- (void)set_baseStyle:(id)a3;
+- (void)setAttributedPlaceholderText:(id)text;
+- (void)setAttributedText:(id)text;
+- (void)setPlaceholderText:(id)text;
+- (void)setText:(id)text;
+- (void)set_baseStyle:(id)style;
 - (void)updatePlaceholderVisibility;
 @end
 
@@ -31,17 +31,17 @@
   [v4 set_baseStyle:v5];
 }
 
-- (GKTextView)initWithFrame:(CGRect)a3
+- (GKTextView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = GKTextView;
-  v3 = [(GKTextView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKTextView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1 || (v6 = 0x277D0C8B8, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v6 = 0x277D0C8B8, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v6 = 0x277D0C8C0;
     }
@@ -55,8 +55,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKTextView;
@@ -65,74 +65,74 @@
 
 - (void)updatePlaceholderVisibility
 {
-  v5 = [(GKTextView *)self text];
-  v3 = [v5 length] != 0;
-  v4 = [(GKTextView *)self placeholderLabel];
-  [v4 setHidden:v3];
+  text = [(GKTextView *)self text];
+  v3 = [text length] != 0;
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  [placeholderLabel setHidden:v3];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = GKTextView;
-  [(GKTextView *)&v4 setText:a3];
+  [(GKTextView *)&v4 setText:text];
   [(GKTextView *)self replayAndApplyStyle];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4.receiver = self;
   v4.super_class = GKTextView;
-  [(GKTextView *)&v4 setAttributedText:a3];
+  [(GKTextView *)&v4 setAttributedText:text];
   [(GKTextView *)self replayAndApplyStyle];
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
   v4 = MEMORY[0x277D0C8B0];
-  v5 = a3;
-  v6 = [v4 textStyle];
-  v8 = [v6 composeMessage];
+  textCopy = text;
+  textStyle = [v4 textStyle];
+  composeMessage = [textStyle composeMessage];
 
-  v7 = [v5 _gkAttributedStringByApplyingStyle:v8];
+  v7 = [textCopy _gkAttributedStringByApplyingStyle:composeMessage];
 
   [(GKTextView *)self setAttributedPlaceholderText:v7];
 }
 
-- (void)setAttributedPlaceholderText:(id)a3
+- (void)setAttributedPlaceholderText:(id)text
 {
-  v8 = a3;
-  v4 = [(GKTextView *)self placeholderLabel];
-  if (v8 && !v4)
+  textCopy = text;
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  if (textCopy && !placeholderLabel)
   {
-    v4 = objc_alloc_init(GKLabel);
-    [(GKTextView *)self addSubview:v4];
-    [(GKTextView *)self setPlaceholderLabel:v4];
+    placeholderLabel = objc_alloc_init(GKLabel);
+    [(GKTextView *)self addSubview:placeholderLabel];
+    [(GKTextView *)self setPlaceholderLabel:placeholderLabel];
     [(GKTextView *)self updatePlaceholderVisibility];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D741D8];
-    v7 = [(GKTextView *)self textStorage];
-    [v5 addObserver:self selector:sel_textStorageDidChangeNotification_ name:v6 object:v7];
+    textStorage = [(GKTextView *)self textStorage];
+    [defaultCenter addObserver:self selector:sel_textStorageDidChangeNotification_ name:v6 object:textStorage];
   }
 
-  [(GKLabel *)v4 setAttributedText:v8];
+  [(GKLabel *)placeholderLabel setAttributedText:textCopy];
   [(GKTextView *)self setNeedsLayout];
 }
 
 - (NSString)placeholderText
 {
-  v2 = [(GKTextView *)self placeholderLabel];
-  v3 = [v2 text];
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  text = [placeholderLabel text];
 
-  return v3;
+  return text;
 }
 
 - (NSAttributedString)attributedPlaceholderText
 {
-  v2 = [(GKTextView *)self placeholderLabel];
-  v3 = [v2 attributedText];
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  attributedText = [placeholderLabel attributedText];
 
-  return v3;
+  return attributedText;
 }
 
 - (void)layoutSubviews
@@ -140,16 +140,16 @@
   v17.receiver = self;
   v17.super_class = GKTextView;
   [(GKTextView *)&v17 layoutSubviews];
-  v3 = [(GKTextView *)self placeholderLabel];
-  if (v3)
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  if (placeholderLabel)
   {
     [(GKTextView *)self bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [v3 text];
-    if ([v12 _gkIsNaturallyRTL])
+    text = [placeholderLabel text];
+    if ([text _gkIsNaturallyRTL])
     {
       v13 = 2;
     }
@@ -159,37 +159,37 @@
       v13 = 0;
     }
 
-    [v3 setTextAlignment:v13];
+    [placeholderLabel setTextAlignment:v13];
 
-    [v3 setNumberOfLines:0];
-    [v3 setOpaque:0];
-    [v3 setBackgroundColor:0];
+    [placeholderLabel setNumberOfLines:0];
+    [placeholderLabel setOpaque:0];
+    [placeholderLabel setBackgroundColor:0];
     [(GKTextView *)self textContainerInset];
     v15 = v7 + v14;
-    [v3 sizeThatFits:{v9, v11}];
-    [v3 setFrame:{v5 + 5.0, v15, v9 + -12.0, v16}];
+    [placeholderLabel sizeThatFits:{v9, v11}];
+    [placeholderLabel setFrame:{v5 + 5.0, v15, v9 + -12.0, v16}];
   }
 }
 
-- (void)set_baseStyle:(id)a3
+- (void)set_baseStyle:(id)style
 {
-  v5 = a3;
-  if (self->__baseStyle != v5)
+  styleCopy = style;
+  if (self->__baseStyle != styleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__baseStyle, a3);
+    v6 = styleCopy;
+    objc_storeStrong(&self->__baseStyle, style);
     [(GKTextView *)self replayAndApplyStyle];
-    v5 = v6;
+    styleCopy = v6;
   }
 }
 
-- (void)applyTextStyle:(id)a3
+- (void)applyTextStyle:(id)style
 {
-  appliedStyle = a3;
+  appliedStyle = style;
   v6 = appliedStyle;
   if (self->_appliedStyle != appliedStyle)
   {
-    objc_storeStrong(&self->_appliedStyle, a3);
+    objc_storeStrong(&self->_appliedStyle, style);
     appliedStyle = self->_appliedStyle;
   }
 
@@ -213,8 +213,8 @@
 
   if (v3)
   {
-    v6 = [(GKTextStyle *)v3 attributes];
-    [(GKTextView *)self setTypingAttributes:v6];
+    attributes = [(GKTextStyle *)v3 attributes];
+    [(GKTextView *)self setTypingAttributes:attributes];
   }
 
   MEMORY[0x2821F96F8]();
@@ -222,26 +222,26 @@
 
 - (id)insertDictationResultPlaceholder
 {
-  v3 = [(GKTextView *)self placeholderLabel];
-  [v3 setAlpha:0.0];
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  [placeholderLabel setAlpha:0.0];
 
   v6.receiver = self;
   v6.super_class = GKTextView;
-  v4 = [(GKTextView *)&v6 insertDictationResultPlaceholder];
+  insertDictationResultPlaceholder = [(GKTextView *)&v6 insertDictationResultPlaceholder];
 
-  return v4;
+  return insertDictationResultPlaceholder;
 }
 
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(GKTextView *)self placeholderLabel];
-  [v7 setAlpha:1.0];
+  resultCopy = result;
+  placeholderCopy = placeholder;
+  placeholderLabel = [(GKTextView *)self placeholderLabel];
+  [placeholderLabel setAlpha:1.0];
 
   v8.receiver = self;
   v8.super_class = GKTextView;
-  [(GKTextView *)&v8 removeDictationResultPlaceholder:v6 willInsertResult:v4];
+  [(GKTextView *)&v8 removeDictationResultPlaceholder:placeholderCopy willInsertResult:resultCopy];
 }
 
 @end

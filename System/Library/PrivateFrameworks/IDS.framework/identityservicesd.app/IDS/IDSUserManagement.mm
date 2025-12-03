@@ -24,18 +24,18 @@
 
   v3 = v2;
   _Block_object_dispose(&v9, 8);
-  v4 = [v2 currentPersona];
-  v5 = [v4 isDataSeparatedPersona];
-  if (v5 && os_variant_allows_internal_security_policies())
+  currentPersona = [v2 currentPersona];
+  isDataSeparatedPersona = [currentPersona isDataSeparatedPersona];
+  if (isDataSeparatedPersona && os_variant_allows_internal_security_policies())
   {
     v6 = +[IMIDSLog daemon];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_100933148(v4, v6);
+      sub_100933148(currentPersona, v6);
     }
   }
 
-  return v5;
+  return isDataSeparatedPersona;
 }
 
 @end

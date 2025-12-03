@@ -20,10 +20,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFSoftwareUpdate *)self accessory];
-  v3 = [v2 home];
+  accessory = [(_MKFSoftwareUpdate *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (MKFSoftwareUpdateDatabaseID)databaseID

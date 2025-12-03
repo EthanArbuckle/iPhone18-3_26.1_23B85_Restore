@@ -1,67 +1,67 @@
 @interface BBAction
-+ (BBAction)actionWithActivatePluginName:(id)a3 activationContext:(id)a4;
-+ (BBAction)actionWithAppearance:(id)a3;
-+ (BBAction)actionWithCallblock:(id)a3;
-+ (BBAction)actionWithIdentifier:(id)a3;
-+ (BBAction)actionWithIdentifier:(id)a3 title:(id)a4;
-+ (BBAction)actionWithLaunchBundleID:(id)a3 callblock:(id)a4;
-+ (BBAction)actionWithLaunchURL:(id)a3 callblock:(id)a4;
++ (BBAction)actionWithActivatePluginName:(id)name activationContext:(id)context;
++ (BBAction)actionWithAppearance:(id)appearance;
++ (BBAction)actionWithCallblock:(id)callblock;
++ (BBAction)actionWithIdentifier:(id)identifier;
++ (BBAction)actionWithIdentifier:(id)identifier title:(id)title;
++ (BBAction)actionWithLaunchBundleID:(id)d callblock:(id)callblock;
++ (BBAction)actionWithLaunchURL:(id)l callblock:(id)callblock;
 + (id)action;
 - (BBAction)init;
-- (BBAction)initWithCoder:(id)a3;
-- (BBAction)initWithIdentifier:(id)a3;
-- (BOOL)deliverResponse:(id)a3;
+- (BBAction)initWithCoder:(id)coder;
+- (BBAction)initWithIdentifier:(id)identifier;
+- (BOOL)deliverResponse:(id)response;
 - (BOOL)hasLaunchAction;
 - (BOOL)hasPluginAction;
 - (BOOL)hasRemoteViewAction;
-- (BOOL)isEqual:(id)a3;
-- (id)_nameForActionType:(int64_t)a3;
-- (id)awakeAfterUsingCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_nameForActionType:(int64_t)type;
+- (id)awakeAfterUsingCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)partialDescription;
-- (id)replacementObjectForCoder:(id)a3;
+- (id)replacementObjectForCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallblock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallblock:(id)callblock;
 @end
 
 @implementation BBAction
 
 - (unint64_t)hash
 {
-  v3 = [(BBAction *)self identifier];
-  v29 = v3 != 0;
+  identifier = [(BBAction *)self identifier];
+  v29 = identifier != 0;
 
-  v4 = [(BBAction *)self appearance];
-  v28 = v4 != 0;
+  appearance = [(BBAction *)self appearance];
+  v28 = appearance != 0;
 
-  v26 = [(BBAction *)self actionType];
-  v25 = [(BBAction *)self canBypassPinLock];
-  v31 = [(BBAction *)self launchURL];
-  v23 = [v31 hash];
-  v30 = [(BBAction *)self launchBundleID];
-  v21 = [v30 hash];
-  v27 = [(BBAction *)self activatePluginName];
-  v20 = [v27 hash];
-  v24 = [(BBAction *)self activatePluginContext];
-  v19 = [v24 hash];
-  v22 = [(BBAction *)self launchBundleID];
-  v18 = [v22 hash];
-  v5 = [(BBAction *)self internalBlock];
-  v17 = [v5 hash];
-  v6 = [(BBAction *)self remoteViewControllerClassName];
-  v16 = [v6 hash];
-  v7 = [(BBAction *)self remoteServiceBundleIdentifier];
-  v8 = [v7 hash];
-  v9 = [(BBAction *)self activationMode];
-  v10 = [(BBAction *)self behavior];
-  v11 = [(BBAction *)self behaviorParameters];
-  v12 = [v11 hash];
-  v13 = [(BBAction *)self isAuthenticationRequired];
-  v14 = v9 ^ v10 ^ v12 ^ v13 ^ [(BBAction *)self shouldDismissBulletin];
+  actionType = [(BBAction *)self actionType];
+  canBypassPinLock = [(BBAction *)self canBypassPinLock];
+  launchURL = [(BBAction *)self launchURL];
+  v23 = [launchURL hash];
+  launchBundleID = [(BBAction *)self launchBundleID];
+  v21 = [launchBundleID hash];
+  activatePluginName = [(BBAction *)self activatePluginName];
+  v20 = [activatePluginName hash];
+  activatePluginContext = [(BBAction *)self activatePluginContext];
+  v19 = [activatePluginContext hash];
+  launchBundleID2 = [(BBAction *)self launchBundleID];
+  v18 = [launchBundleID2 hash];
+  internalBlock = [(BBAction *)self internalBlock];
+  v17 = [internalBlock hash];
+  remoteViewControllerClassName = [(BBAction *)self remoteViewControllerClassName];
+  v16 = [remoteViewControllerClassName hash];
+  remoteServiceBundleIdentifier = [(BBAction *)self remoteServiceBundleIdentifier];
+  v8 = [remoteServiceBundleIdentifier hash];
+  activationMode = [(BBAction *)self activationMode];
+  behavior = [(BBAction *)self behavior];
+  behaviorParameters = [(BBAction *)self behaviorParameters];
+  v12 = [behaviorParameters hash];
+  isAuthenticationRequired = [(BBAction *)self isAuthenticationRequired];
+  v14 = activationMode ^ behavior ^ v12 ^ isAuthenticationRequired ^ [(BBAction *)self shouldDismissBulletin];
 
-  return v26 ^ v25 ^ v23 ^ v21 ^ v28 ^ v29 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v8 ^ v14;
+  return actionType ^ canBypassPinLock ^ v23 ^ v21 ^ v28 ^ v29 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v8 ^ v14;
 }
 
 - (BBAction)init
@@ -79,102 +79,102 @@
 
 + (id)action
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (BBAction)actionWithAppearance:(id)a3
++ (BBAction)actionWithAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [a1 action];
-  [v5 setAppearance:v4];
+  appearanceCopy = appearance;
+  action = [self action];
+  [action setAppearance:appearanceCopy];
+
+  return action;
+}
+
++ (BBAction)actionWithCallblock:(id)callblock
+{
+  callblockCopy = callblock;
+  action = [self action];
+  [action setCallblock:callblockCopy];
+
+  return action;
+}
+
++ (BBAction)actionWithIdentifier:(id)identifier
+{
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (BBAction)actionWithCallblock:(id)a3
++ (BBAction)actionWithIdentifier:(id)identifier title:(id)title
 {
-  v4 = a3;
-  v5 = [a1 action];
-  [v5 setCallblock:v4];
-
-  return v5;
-}
-
-+ (BBAction)actionWithIdentifier:(id)a3
-{
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
-
-  return v5;
-}
-
-+ (BBAction)actionWithIdentifier:(id)a3 title:(id)a4
-{
-  v6 = a4;
-  v7 = [a1 actionWithIdentifier:a3];
-  v8 = [BBAppearance appearanceWithTitle:v6];
+  titleCopy = title;
+  v7 = [self actionWithIdentifier:identifier];
+  v8 = [BBAppearance appearanceWithTitle:titleCopy];
 
   [v7 setAppearance:v8];
 
   return v7;
 }
 
-+ (BBAction)actionWithLaunchURL:(id)a3 callblock:(id)a4
++ (BBAction)actionWithLaunchURL:(id)l callblock:(id)callblock
 {
-  v6 = a3;
-  v7 = [a1 actionWithCallblock:a4];
-  [v7 setLaunchURL:v6];
+  lCopy = l;
+  v7 = [self actionWithCallblock:callblock];
+  [v7 setLaunchURL:lCopy];
 
   return v7;
 }
 
-+ (BBAction)actionWithLaunchBundleID:(id)a3 callblock:(id)a4
++ (BBAction)actionWithLaunchBundleID:(id)d callblock:(id)callblock
 {
-  v6 = a3;
-  v7 = [a1 actionWithCallblock:a4];
-  [v7 setLaunchBundleID:v6];
+  dCopy = d;
+  v7 = [self actionWithCallblock:callblock];
+  [v7 setLaunchBundleID:dCopy];
 
   return v7;
 }
 
-+ (BBAction)actionWithActivatePluginName:(id)a3 activationContext:(id)a4
++ (BBAction)actionWithActivatePluginName:(id)name activationContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 action];
-  [v8 setActivatePluginName:v7];
+  contextCopy = context;
+  nameCopy = name;
+  action = [self action];
+  [action setActivatePluginName:nameCopy];
 
-  [v8 setActivatePluginContext:v6];
+  [action setActivatePluginContext:contextCopy];
 
-  return v8;
+  return action;
 }
 
-- (BBAction)initWithIdentifier:(id)a3
+- (BBAction)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(BBAction *)self init];
   v6 = v5;
   if (v5)
   {
-    [(BBAction *)v5 setIdentifier:v4];
+    [(BBAction *)v5 setIdentifier:identifierCopy];
   }
 
   return v6;
 }
 
-- (void)setCallblock:(id)a3
+- (void)setCallblock:(id)callblock
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  callblockCopy = callblock;
+  v5 = callblockCopy;
+  if (callblockCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __25__BBAction_setCallblock___block_invoke;
     v7[3] = &unk_278D2B4C0;
-    v8 = v4;
+    v8 = callblockCopy;
     v6 = MEMORY[0x245D05D40](v7);
   }
 
@@ -188,16 +188,16 @@
 
 - (BOOL)hasLaunchAction
 {
-  v3 = [(BBAction *)self launchBundleID];
-  if (v3)
+  launchBundleID = [(BBAction *)self launchBundleID];
+  if (launchBundleID)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BBAction *)self launchURL];
-    v4 = v5 != 0;
+    launchURL = [(BBAction *)self launchURL];
+    v4 = launchURL != 0;
   }
 
   return v4;
@@ -205,19 +205,19 @@
 
 - (BOOL)hasPluginAction
 {
-  v2 = [(BBAction *)self activatePluginName];
-  v3 = v2 != 0;
+  activatePluginName = [(BBAction *)self activatePluginName];
+  v3 = activatePluginName != 0;
 
   return v3;
 }
 
 - (BOOL)hasRemoteViewAction
 {
-  v3 = [(BBAction *)self remoteServiceBundleIdentifier];
-  if (v3)
+  remoteServiceBundleIdentifier = [(BBAction *)self remoteServiceBundleIdentifier];
+  if (remoteServiceBundleIdentifier)
   {
-    v4 = [(BBAction *)self remoteViewControllerClassName];
-    v5 = v4 != 0;
+    remoteViewControllerClassName = [(BBAction *)self remoteViewControllerClassName];
+    v5 = remoteViewControllerClassName != 0;
   }
 
   else
@@ -228,17 +228,17 @@
   return v5;
 }
 
-- (BOOL)deliverResponse:(id)a3
+- (BOOL)deliverResponse:(id)response
 {
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
-    v5 = [(BBAction *)self internalBlock];
-    v6 = v5;
-    v7 = v5 != 0;
-    if (v5)
+    internalBlock = [(BBAction *)self internalBlock];
+    v6 = internalBlock;
+    v7 = internalBlock != 0;
+    if (internalBlock)
     {
-      (*(v5 + 16))(v5, v4);
+      (*(internalBlock + 16))(internalBlock, responseCopy);
     }
   }
 
@@ -252,86 +252,86 @@
   return v7;
 }
 
-- (id)_nameForActionType:(int64_t)a3
+- (id)_nameForActionType:(int64_t)type
 {
-  if ((a3 - 1) > 0xA)
+  if ((type - 1) > 0xA)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_278D2B4E0[a3 - 1];
+    return off_278D2B4E0[type - 1];
   }
 }
 
 - (id)partialDescription
 {
-  v3 = [(BBAction *)self launchURL];
+  launchURL = [(BBAction *)self launchURL];
 
-  if (v3)
+  if (launchURL)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(BBAction *)self launchURL];
-    v6 = [(BBAction *)self canBypassPinLock];
+    launchURL2 = [(BBAction *)self launchURL];
+    canBypassPinLock = [(BBAction *)self canBypassPinLock];
     v7 = @"no";
-    if (v6)
+    if (canBypassPinLock)
     {
       v7 = @"yes";
     }
 
-    [v4 stringWithFormat:@"[url] %@; bypassPin: %@", v5, v7];
+    [v4 stringWithFormat:@"[url] %@; bypassPin: %@", launchURL2, v7];
     v12 = LABEL_9:;
 
     goto LABEL_10;
   }
 
-  v8 = [(BBAction *)self launchBundleID];
+  launchBundleID = [(BBAction *)self launchBundleID];
 
-  if (v8)
+  if (launchBundleID)
   {
     v9 = MEMORY[0x277CCACA8];
-    v5 = [(BBAction *)self launchBundleID];
-    v10 = [(BBAction *)self canBypassPinLock];
+    launchURL2 = [(BBAction *)self launchBundleID];
+    canBypassPinLock2 = [(BBAction *)self canBypassPinLock];
     v11 = @"no";
-    if (v10)
+    if (canBypassPinLock2)
     {
       v11 = @"yes";
     }
 
-    [v9 stringWithFormat:@"[bundleID] %@; bypassPin: %@", v5, v11];
+    [v9 stringWithFormat:@"[bundleID] %@; bypassPin: %@", launchURL2, v11];
     goto LABEL_9;
   }
 
   v12 = &stru_28541A970;
 LABEL_10:
-  v13 = [(BBAction *)self activatePluginName];
+  activatePluginName = [(BBAction *)self activatePluginName];
 
-  if (v13)
+  if (activatePluginName)
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(BBAction *)self activatePluginName];
-    v16 = [(BBAction *)self activatePluginContext];
-    v17 = [v14 stringWithFormat:@"[plugin] %@ (context: %@)", v15, v16];
+    activatePluginName2 = [(BBAction *)self activatePluginName];
+    activatePluginContext = [(BBAction *)self activatePluginContext];
+    v17 = [v14 stringWithFormat:@"[plugin] %@ (context: %@)", activatePluginName2, activatePluginContext];
 
     v12 = v17;
   }
 
-  v18 = [(BBAction *)self remoteViewControllerClassName];
+  remoteViewControllerClassName = [(BBAction *)self remoteViewControllerClassName];
 
-  if (v18)
+  if (remoteViewControllerClassName)
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = [(BBAction *)self remoteViewControllerClassName];
-    v21 = [(BBAction *)self remoteServiceBundleIdentifier];
-    v22 = [v19 stringWithFormat:@"[view service] %@ inBundle: %@", v20, v21];;
+    remoteViewControllerClassName2 = [(BBAction *)self remoteViewControllerClassName];
+    remoteServiceBundleIdentifier = [(BBAction *)self remoteServiceBundleIdentifier];
+    v22 = [v19 stringWithFormat:@"[view service] %@ inBundle: %@", remoteViewControllerClassName2, remoteServiceBundleIdentifier];;
 
     v12 = v22;
   }
 
-  v23 = [(BBAction *)self internalBlock];
+  internalBlock = [(BBAction *)self internalBlock];
 
-  if (v23)
+  if (internalBlock)
   {
     v24 = [MEMORY[0x277CCAE60] valueWithPointer:{-[BBAction internalBlock](self, "internalBlock")}];
     v25 = [v24 description];
@@ -348,17 +348,17 @@ LABEL_10:
   }
 
   v28 = MEMORY[0x277CCACA8];
-  v29 = [(BBAction *)self identifier];
+  identifier = [(BBAction *)self identifier];
   v30 = [(BBAction *)self _nameForActionType:[(BBAction *)self actionType]];
-  v31 = [v28 stringWithFormat:@"ID: %@ type: %@; action: %@", v29, v30, v12];;
+  v31 = [v28 stringWithFormat:@"ID: %@ type: %@; action: %@", identifier, v30, v12];;
 
   return v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -371,9 +371,9 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
-        v6 = [(BBAction *)v5 canBypassPinLock];
-        if (v6 != [(BBAction *)self canBypassPinLock]|| (v7 = [(BBAction *)v5 actionType], v7 != [(BBAction *)self actionType]))
+        v5 = equalCopy;
+        canBypassPinLock = [(BBAction *)v5 canBypassPinLock];
+        if (canBypassPinLock != [(BBAction *)self canBypassPinLock]|| (v7 = [(BBAction *)v5 actionType], v7 != [(BBAction *)self actionType]))
         {
           LOBYTE(v10) = 0;
 LABEL_44:
@@ -381,9 +381,9 @@ LABEL_44:
           goto LABEL_45;
         }
 
-        v8 = [(BBAction *)v5 internalBlock];
-        v9 = [(BBAction *)self internalBlock];
-        if (v8 != v9)
+        internalBlock = [(BBAction *)v5 internalBlock];
+        internalBlock2 = [(BBAction *)self internalBlock];
+        if (internalBlock != internalBlock2)
         {
           LOBYTE(v10) = 0;
 LABEL_43:
@@ -391,8 +391,8 @@ LABEL_43:
           goto LABEL_44;
         }
 
-        v11 = [(BBAction *)self identifier];
-        v12 = [(BBAction *)v5 identifier];
+        identifier = [(BBAction *)self identifier];
+        identifier2 = [(BBAction *)v5 identifier];
         if (!BSEqualObjects())
         {
           LOBYTE(v10) = 0;
@@ -401,8 +401,8 @@ LABEL_42:
           goto LABEL_43;
         }
 
-        v13 = [(BBAction *)self appearance];
-        v14 = [(BBAction *)v5 appearance];
+        appearance = [(BBAction *)self appearance];
+        appearance2 = [(BBAction *)v5 appearance];
         if (!BSEqualObjects())
         {
           LOBYTE(v10) = 0;
@@ -411,9 +411,9 @@ LABEL_41:
           goto LABEL_42;
         }
 
-        v15 = [(BBAction *)self launchURL];
+        launchURL = [(BBAction *)self launchURL];
         [(BBAction *)v5 launchURL];
-        v16 = v45 = v15;
+        v16 = v45 = launchURL;
         if (!BSEqualObjects())
         {
           LOBYTE(v10) = 0;
@@ -423,9 +423,9 @@ LABEL_40:
         }
 
         v43 = v16;
-        v17 = [(BBAction *)self launchBundleID];
+        launchBundleID = [(BBAction *)self launchBundleID];
         [(BBAction *)v5 launchBundleID];
-        v18 = v44 = v17;
+        v18 = v44 = launchBundleID;
         if (!BSEqualObjects())
         {
           LOBYTE(v10) = 0;
@@ -436,9 +436,9 @@ LABEL_39:
         }
 
         v42 = v18;
-        v19 = [(BBAction *)self activatePluginName];
+        activatePluginName = [(BBAction *)self activatePluginName];
         [(BBAction *)v5 activatePluginName];
-        v20 = v41 = v19;
+        v20 = v41 = activatePluginName;
         if (!BSEqualObjects())
         {
           LOBYTE(v10) = 0;
@@ -449,12 +449,12 @@ LABEL_38:
         }
 
         v39 = v20;
-        v40 = [(BBAction *)self activatePluginName];
-        if (v40)
+        activatePluginName2 = [(BBAction *)self activatePluginName];
+        if (activatePluginName2)
         {
-          v21 = [(BBAction *)self activatePluginContext];
+          activatePluginContext = [(BBAction *)self activatePluginContext];
           [(BBAction *)v5 activatePluginContext];
-          v22 = v37 = v21;
+          v22 = v37 = activatePluginContext;
           if (!BSEqualObjects())
           {
             LOBYTE(v10) = 0;
@@ -468,23 +468,23 @@ LABEL_37:
           v36 = v22;
         }
 
-        v23 = [(BBAction *)self remoteViewControllerClassName];
+        remoteViewControllerClassName = [(BBAction *)self remoteViewControllerClassName];
         [(BBAction *)v5 remoteViewControllerClassName];
-        v24 = v38 = v23;
+        v24 = v38 = remoteViewControllerClassName;
         if (BSEqualObjects())
         {
           v35 = v24;
-          v25 = [(BBAction *)self remoteServiceBundleIdentifier];
+          remoteServiceBundleIdentifier = [(BBAction *)self remoteServiceBundleIdentifier];
           [(BBAction *)v5 remoteServiceBundleIdentifier];
-          v26 = v34 = v25;
+          v26 = v34 = remoteServiceBundleIdentifier;
           if (BSEqualObjects() && (v31 = [(BBAction *)v5 activationMode], v31 == [(BBAction *)self activationMode]) && (v32 = [(BBAction *)v5 behavior], v32 == [(BBAction *)self behavior]))
           {
-            v33 = [(BBAction *)self behaviorParameters];
-            v30 = [(BBAction *)v5 behaviorParameters];
+            behaviorParameters = [(BBAction *)self behaviorParameters];
+            behaviorParameters2 = [(BBAction *)v5 behaviorParameters];
             if (BSEqualObjects() && (v28 = [(BBAction *)v5 isAuthenticationRequired], v28 == [(BBAction *)self isAuthenticationRequired]))
             {
-              v29 = [(BBAction *)v5 shouldDismissBulletin];
-              v10 = v29 ^ [(BBAction *)self shouldDismissBulletin]^ 1;
+              shouldDismissBulletin = [(BBAction *)v5 shouldDismissBulletin];
+              v10 = shouldDismissBulletin ^ [(BBAction *)self shouldDismissBulletin]^ 1;
             }
 
             else
@@ -506,7 +506,7 @@ LABEL_37:
         }
 
         v22 = v36;
-        if (!v40)
+        if (!activatePluginName2)
         {
           goto LABEL_37;
         }
@@ -523,146 +523,146 @@ LABEL_45:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(BBAction *)self appearance];
-  [v4 setAppearance:v5];
+  appearance = [(BBAction *)self appearance];
+  [v4 setAppearance:appearance];
 
-  v6 = [(BBAction *)self launchURL];
-  [v4 setLaunchURL:v6];
+  launchURL = [(BBAction *)self launchURL];
+  [v4 setLaunchURL:launchURL];
 
-  v7 = [(BBAction *)self identifier];
-  [v4 setIdentifier:v7];
+  identifier = [(BBAction *)self identifier];
+  [v4 setIdentifier:identifier];
 
   [v4 setActionType:{-[BBAction actionType](self, "actionType")}];
-  v8 = [(BBAction *)self internalBlock];
-  [v4 setInternalBlock:v8];
+  internalBlock = [(BBAction *)self internalBlock];
+  [v4 setInternalBlock:internalBlock];
 
-  v9 = [(BBAction *)self launchBundleID];
-  [v4 setLaunchBundleID:v9];
+  launchBundleID = [(BBAction *)self launchBundleID];
+  [v4 setLaunchBundleID:launchBundleID];
 
   [v4 setCanBypassPinLock:{-[BBAction canBypassPinLock](self, "canBypassPinLock")}];
-  v10 = [(BBAction *)self activatePluginName];
-  [v4 setActivatePluginName:v10];
+  activatePluginName = [(BBAction *)self activatePluginName];
+  [v4 setActivatePluginName:activatePluginName];
 
-  v11 = [(BBAction *)self activatePluginContext];
-  [v4 setActivatePluginContext:v11];
+  activatePluginContext = [(BBAction *)self activatePluginContext];
+  [v4 setActivatePluginContext:activatePluginContext];
 
-  v12 = [(BBAction *)self remoteViewControllerClassName];
-  [v4 setRemoteViewControllerClassName:v12];
+  remoteViewControllerClassName = [(BBAction *)self remoteViewControllerClassName];
+  [v4 setRemoteViewControllerClassName:remoteViewControllerClassName];
 
-  v13 = [(BBAction *)self remoteServiceBundleIdentifier];
-  [v4 setRemoteServiceBundleIdentifier:v13];
+  remoteServiceBundleIdentifier = [(BBAction *)self remoteServiceBundleIdentifier];
+  [v4 setRemoteServiceBundleIdentifier:remoteServiceBundleIdentifier];
 
   [v4 setActivationMode:{-[BBAction activationMode](self, "activationMode")}];
   [v4 setBehavior:{-[BBAction behavior](self, "behavior")}];
-  v14 = [(BBAction *)self behaviorParameters];
-  [v4 setBehaviorParameters:v14];
+  behaviorParameters = [(BBAction *)self behaviorParameters];
+  [v4 setBehaviorParameters:behaviorParameters];
 
   [v4 setAuthenticationRequired:{-[BBAction isAuthenticationRequired](self, "isAuthenticationRequired")}];
   [v4 setShouldDismissBulletin:{-[BBAction shouldDismissBulletin](self, "shouldDismissBulletin")}];
   return v4;
 }
 
-- (BBAction)initWithCoder:(id)a3
+- (BBAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = BBAction;
   v5 = [(BBAction *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(BBAction *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appearance"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appearance"];
     [(BBAction *)v5 setAppearance:v7];
 
-    -[BBAction setActionType:](v5, "setActionType:", [v4 decodeIntegerForKey:@"actionType"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchURL"];
+    -[BBAction setActionType:](v5, "setActionType:", [coderCopy decodeIntegerForKey:@"actionType"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchURL"];
     [(BBAction *)v5 setLaunchURL:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchBundleID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchBundleID"];
     [(BBAction *)v5 setLaunchBundleID:v9];
 
-    -[BBAction setLaunchCanBypassPinLock:](v5, "setLaunchCanBypassPinLock:", [v4 decodeBoolForKey:@"launchCanBypassPinLock"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activatePluginName"];
+    -[BBAction setLaunchCanBypassPinLock:](v5, "setLaunchCanBypassPinLock:", [coderCopy decodeBoolForKey:@"launchCanBypassPinLock"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activatePluginName"];
     [(BBAction *)v5 setActivatePluginName:v10];
 
     v11 = BBAllowedClasses();
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"activatePluginContext"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"activatePluginContext"];
     [(BBAction *)v5 setActivatePluginContext:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteClassName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteClassName"];
     [(BBAction *)v5 setRemoteViewControllerClassName:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteBundleID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteBundleID"];
     [(BBAction *)v5 setRemoteServiceBundleIdentifier:v14];
 
-    -[BBAction setActivationMode:](v5, "setActivationMode:", [v4 decodeIntegerForKey:@"activation"]);
-    -[BBAction setBehavior:](v5, "setBehavior:", [v4 decodeIntegerForKey:@"behavior"]);
+    -[BBAction setActivationMode:](v5, "setActivationMode:", [coderCopy decodeIntegerForKey:@"activation"]);
+    -[BBAction setBehavior:](v5, "setBehavior:", [coderCopy decodeIntegerForKey:@"behavior"]);
     v15 = BBAllowedClasses();
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"behaviorParameters"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"behaviorParameters"];
     [(BBAction *)v5 setBehaviorParameters:v16];
 
-    -[BBAction setAuthenticationRequired:](v5, "setAuthenticationRequired:", [v4 decodeBoolForKey:@"secure"]);
-    -[BBAction setShouldDismissBulletin:](v5, "setShouldDismissBulletin:", [v4 decodeBoolForKey:@"dismiss"]);
+    -[BBAction setAuthenticationRequired:](v5, "setAuthenticationRequired:", [coderCopy decodeBoolForKey:@"secure"]);
+    -[BBAction setShouldDismissBulletin:](v5, "setShouldDismissBulletin:", [coderCopy decodeBoolForKey:@"dismiss"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(BBAction *)self identifier];
-  [v13 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(BBAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(BBAction *)self appearance];
-  [v13 encodeObject:v5 forKey:@"appearance"];
+  appearance = [(BBAction *)self appearance];
+  [coderCopy encodeObject:appearance forKey:@"appearance"];
 
-  [v13 encodeInteger:-[BBAction actionType](self forKey:{"actionType"), @"actionType"}];
-  v6 = [(BBAction *)self launchURL];
-  [v13 encodeObject:v6 forKey:@"launchURL"];
+  [coderCopy encodeInteger:-[BBAction actionType](self forKey:{"actionType"), @"actionType"}];
+  launchURL = [(BBAction *)self launchURL];
+  [coderCopy encodeObject:launchURL forKey:@"launchURL"];
 
-  v7 = [(BBAction *)self launchBundleID];
-  [v13 encodeObject:v7 forKey:@"launchBundleID"];
+  launchBundleID = [(BBAction *)self launchBundleID];
+  [coderCopy encodeObject:launchBundleID forKey:@"launchBundleID"];
 
-  [v13 encodeBool:-[BBAction launchCanBypassPinLock](self forKey:{"launchCanBypassPinLock"), @"launchCanBypassPinLock"}];
-  v8 = [(BBAction *)self activatePluginName];
-  [v13 encodeObject:v8 forKey:@"activatePluginName"];
+  [coderCopy encodeBool:-[BBAction launchCanBypassPinLock](self forKey:{"launchCanBypassPinLock"), @"launchCanBypassPinLock"}];
+  activatePluginName = [(BBAction *)self activatePluginName];
+  [coderCopy encodeObject:activatePluginName forKey:@"activatePluginName"];
 
-  v9 = [(BBAction *)self activatePluginContext];
-  [v13 encodeObject:v9 forKey:@"activatePluginContext"];
+  activatePluginContext = [(BBAction *)self activatePluginContext];
+  [coderCopy encodeObject:activatePluginContext forKey:@"activatePluginContext"];
 
-  v10 = [(BBAction *)self remoteViewControllerClassName];
-  [v13 encodeObject:v10 forKey:@"remoteClassName"];
+  remoteViewControllerClassName = [(BBAction *)self remoteViewControllerClassName];
+  [coderCopy encodeObject:remoteViewControllerClassName forKey:@"remoteClassName"];
 
-  v11 = [(BBAction *)self remoteServiceBundleIdentifier];
-  [v13 encodeObject:v11 forKey:@"remoteBundleID"];
+  remoteServiceBundleIdentifier = [(BBAction *)self remoteServiceBundleIdentifier];
+  [coderCopy encodeObject:remoteServiceBundleIdentifier forKey:@"remoteBundleID"];
 
-  [v13 encodeInteger:-[BBAction activationMode](self forKey:{"activationMode"), @"activation"}];
-  [v13 encodeInteger:-[BBAction behavior](self forKey:{"behavior"), @"behavior"}];
-  v12 = [(BBAction *)self behaviorParameters];
-  [v13 encodeObject:v12 forKey:@"behaviorParameters"];
+  [coderCopy encodeInteger:-[BBAction activationMode](self forKey:{"activationMode"), @"activation"}];
+  [coderCopy encodeInteger:-[BBAction behavior](self forKey:{"behavior"), @"behavior"}];
+  behaviorParameters = [(BBAction *)self behaviorParameters];
+  [coderCopy encodeObject:behaviorParameters forKey:@"behaviorParameters"];
 
-  [v13 encodeBool:-[BBAction isAuthenticationRequired](self forKey:{"isAuthenticationRequired"), @"secure"}];
-  [v13 encodeBool:-[BBAction shouldDismissBulletin](self forKey:{"shouldDismissBulletin"), @"dismiss"}];
+  [coderCopy encodeBool:-[BBAction isAuthenticationRequired](self forKey:{"isAuthenticationRequired"), @"secure"}];
+  [coderCopy encodeBool:-[BBAction shouldDismissBulletin](self forKey:{"shouldDismissBulletin"), @"dismiss"}];
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }
@@ -671,8 +671,8 @@ LABEL_45:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(BBAction *)self partialDescription];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];;
+  partialDescription = [(BBAction *)self partialDescription];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, partialDescription];;
 
   return v6;
 }

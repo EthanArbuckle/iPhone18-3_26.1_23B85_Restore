@@ -1,59 +1,59 @@
 @interface SingleVehicleOnboardingController
-- (BOOL)_validateStateTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (SingleVehicleOnboardingController)initWithUnpairedVehicle:(id)a3 isLastUnpairedVehicle:(BOOL)a4 isSoleUnpairedVehicle:(BOOL)a5 navigationController:(id)a6 delegate:(id)a7;
-- (id)_viewControllerForState:(int64_t)a3;
+- (BOOL)_validateStateTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (SingleVehicleOnboardingController)initWithUnpairedVehicle:(id)vehicle isLastUnpairedVehicle:(BOOL)unpairedVehicle isSoleUnpairedVehicle:(BOOL)soleUnpairedVehicle navigationController:(id)controller delegate:(id)delegate;
+- (id)_viewControllerForState:(int64_t)state;
 - (void)_cleanUp;
 - (void)_proceedToNextState;
-- (void)didCancelConfiguringLPRForVehicle:(id)a3;
-- (void)didFinishConfiguringLPRForVehicle:(id)a3;
-- (void)networksOfferViewControllerDidSelectSetupLater:(id)a3;
-- (void)networksOfferViewControllerDidSelectSetupNow:(id)a3;
-- (void)networksSelectionViewController:(id)a3 didSelectNetworks:(id)a4 forVehicle:(id)a5;
-- (void)onboardingViewControllerWillMoveFromParentViewController:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)vehicleAddedViewControllerDidSelectDone:(id)a3;
-- (void)vehicleAddedViewControllerDidSelectNext:(id)a3;
+- (void)didCancelConfiguringLPRForVehicle:(id)vehicle;
+- (void)didFinishConfiguringLPRForVehicle:(id)vehicle;
+- (void)networksOfferViewControllerDidSelectSetupLater:(id)later;
+- (void)networksOfferViewControllerDidSelectSetupNow:(id)now;
+- (void)networksSelectionViewController:(id)controller didSelectNetworks:(id)networks forVehicle:(id)vehicle;
+- (void)onboardingViewControllerWillMoveFromParentViewController:(id)controller;
+- (void)setState:(int64_t)state;
+- (void)vehicleAddedViewControllerDidSelectDone:(id)done;
+- (void)vehicleAddedViewControllerDidSelectNext:(id)next;
 @end
 
 @implementation SingleVehicleOnboardingController
 
-- (void)didFinishConfiguringLPRForVehicle:(id)a3
+- (void)didFinishConfiguringLPRForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = sub_100798370();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VGVehicle *)self->_vehicle displayName];
+    displayName = [(VGVehicle *)self->_vehicle displayName];
     v8 = 138412290;
-    v9 = v6;
+    v9 = displayName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "didFinishConfiguringLPRForVehicle: %@", &v8, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained onboardingController:self didFinishSettingUpLPRForVehicle:v4];
+  [WeakRetained onboardingController:self didFinishSettingUpLPRForVehicle:vehicleCopy];
 
   [(SingleVehicleOnboardingController *)self _cleanUp];
 }
 
-- (void)didCancelConfiguringLPRForVehicle:(id)a3
+- (void)didCancelConfiguringLPRForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = sub_100798370();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VGVehicle *)self->_vehicle displayName];
+    displayName = [(VGVehicle *)self->_vehicle displayName];
     v8 = 138412290;
-    v9 = v6;
+    v9 = displayName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "didCancelConfiguringLPRForVehicle: %@", &v8, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained onboardingController:self didFinishSettingUpLPRForVehicle:v4];
+  [WeakRetained onboardingController:self didFinishSettingUpLPRForVehicle:vehicleCopy];
 
   [(SingleVehicleOnboardingController *)self _cleanUp];
 }
 
-- (void)vehicleAddedViewControllerDidSelectNext:(id)a3
+- (void)vehicleAddedViewControllerDidSelectNext:(id)next
 {
   if ([(SingleVehicleOnboardingController *)self state]!= 3)
   {
@@ -94,9 +94,9 @@
   {
     if (v7)
     {
-      v8 = [(VGVehicle *)self->_vehicle displayName];
+      displayName = [(VGVehicle *)self->_vehicle displayName];
       *buf = 138412290;
-      v17 = v8;
+      v17 = displayName;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "vehicleAddedViewControllerDidSelectNext: LPR is enabled, did onboarding in VGService and will continue setting up vehicle: %@", buf, 0xCu);
     }
 
@@ -120,7 +120,7 @@
   }
 }
 
-- (void)vehicleAddedViewControllerDidSelectDone:(id)a3
+- (void)vehicleAddedViewControllerDidSelectDone:(id)done
 {
   if ([(SingleVehicleOnboardingController *)self state]!= 3)
   {
@@ -183,9 +183,9 @@
   v4 = sub_100798370();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(VGVehicle *)self->_vehicle displayName];
+    displayName = [(VGVehicle *)self->_vehicle displayName];
     v14 = 138412290;
-    v15 = v5;
+    v15 = displayName;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "vehicleAddedViewControllerDidSelectDone: LPR is not enabled, will finish onboarding for vehicle: %@", &v14, 0xCu);
   }
 
@@ -198,10 +198,10 @@
   [(SingleVehicleOnboardingController *)self _cleanUp];
 }
 
-- (void)networksSelectionViewController:(id)a3 didSelectNetworks:(id)a4 forVehicle:(id)a5
+- (void)networksSelectionViewController:(id)controller didSelectNetworks:(id)networks forVehicle:(id)vehicle
 {
-  v7 = a4;
-  v8 = a5;
+  networksCopy = networks;
+  vehicleCopy = vehicle;
   if ([(SingleVehicleOnboardingController *)self state]!= 2)
   {
     v28 = sub_10006D178();
@@ -234,16 +234,16 @@
   v9 = sub_100798370();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = v7;
+    v10 = networksCopy;
     v11 = v10;
     if (v10)
     {
       if ([v10 count])
       {
         v32 = v9;
-        v33 = v8;
-        v34 = self;
-        v35 = v7;
+        v33 = vehicleCopy;
+        selfCopy = self;
+        v35 = networksCopy;
         v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
         v36 = 0u;
         v37 = 0u;
@@ -313,10 +313,10 @@ LABEL_22:
             v25 = [v13 componentsJoinedByString:{@", "}];
             v26 = [NSString stringWithFormat:@"<%p> [%@]", v13, v25];
 
-            self = v34;
-            v7 = v35;
+            self = selfCopy;
+            networksCopy = v35;
             v9 = v32;
-            v8 = v33;
+            vehicleCopy = v33;
             v11 = v31;
             goto LABEL_25;
           }
@@ -336,18 +336,18 @@ LABEL_25:
     *buf = 138412546;
     v41 = v26;
     v42 = 2112;
-    v43 = v8;
+    v43 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "networksSelectionViewController:didSelectNetworks: %@ forVehicle: %@. will call into VGService", buf, 0x16u);
   }
 
-  v27 = [[NSSet alloc] initWithArray:v7];
-  [v8 setPreferredChargingNetworks:v27];
+  v27 = [[NSSet alloc] initWithArray:networksCopy];
+  [vehicleCopy setPreferredChargingNetworks:v27];
 
-  [v8 setUsesPreferredNetworksForRouting:{objc_msgSend(v7, "count") != 0}];
+  [vehicleCopy setUsesPreferredNetworksForRouting:{objc_msgSend(networksCopy, "count") != 0}];
   [(SingleVehicleOnboardingController *)self _proceedToNextState];
 }
 
-- (void)networksOfferViewControllerDidSelectSetupLater:(id)a3
+- (void)networksOfferViewControllerDidSelectSetupLater:(id)later
 {
   if ([(SingleVehicleOnboardingController *)self state]!= 1)
   {
@@ -390,7 +390,7 @@ LABEL_25:
   [(UINavigationController *)self->_navigationController pushViewController:v5 animated:1];
 }
 
-- (void)networksOfferViewControllerDidSelectSetupNow:(id)a3
+- (void)networksOfferViewControllerDidSelectSetupNow:(id)now
 {
   if ([(SingleVehicleOnboardingController *)self state]!= 1)
   {
@@ -431,12 +431,12 @@ LABEL_25:
   [(SingleVehicleOnboardingController *)self _proceedToNextState];
 }
 
-- (void)onboardingViewControllerWillMoveFromParentViewController:(id)a3
+- (void)onboardingViewControllerWillMoveFromParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(SingleVehicleOnboardingController *)self _viewControllerForState:[(SingleVehicleOnboardingController *)self state]];
 
-  if (v5 != v4)
+  if (v5 != controllerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -465,9 +465,9 @@ LABEL_25:
     }
   }
 
-  v6 = [v4 navigationController];
-  v7 = [v6 childViewControllers];
-  v8 = [v7 lastObject];
+  navigationController = [controllerCopy navigationController];
+  childViewControllers = [navigationController childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
   v9 = sub_100798370();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -505,7 +505,7 @@ LABEL_25:
         v19 = *(*(&v24 + 1) + 8 * i);
         v20 = [(NSMutableDictionary *)self->_viewControllersByState objectForKeyedSubscript:v19, v24];
 
-        if (v20 == v8)
+        if (v20 == lastObject)
         {
           -[SingleVehicleOnboardingController setState:](self, "setState:", [v19 integerValue]);
         }
@@ -540,7 +540,7 @@ LABEL_25:
   self->_vehicle = 0;
 }
 
-- (id)_viewControllerForState:(int64_t)a3
+- (id)_viewControllerForState:(int64_t)state
 {
   viewControllersByState = self->_viewControllersByState;
   v6 = [NSNumber numberWithInteger:?];
@@ -548,9 +548,9 @@ LABEL_25:
 
   if (!v7)
   {
-    if (a3 > 2)
+    if (state > 2)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         if (self->_isLPREnabled)
         {
@@ -562,41 +562,41 @@ LABEL_25:
           v15 = self->_isSoleUnpairedVehicle || self->_isLastUnpairedVehicle;
         }
 
-        v8 = [[EVOnboardingVehicleAddedViewController alloc] initWithVehicle:self->_vehicle isLastPresentedController:v15 delegate:self];
+        combinedDisplayName = [[EVOnboardingVehicleAddedViewController alloc] initWithVehicle:self->_vehicle isLastPresentedController:v15 delegate:self];
         v9 = self->_viewControllersByState;
         v10 = 3;
         goto LABEL_29;
       }
 
-      if (a3 == 4)
+      if (state == 4)
       {
-        v8 = [[LPROnboardingPageViewController alloc] initWithScenario:2 vehicle:self->_vehicle delegate:self];
+        combinedDisplayName = [[LPROnboardingPageViewController alloc] initWithScenario:2 vehicle:self->_vehicle delegate:self];
         v9 = self->_viewControllersByState;
         v10 = 4;
         goto LABEL_29;
       }
 
-      if (a3 != 5)
+      if (state != 5)
       {
         goto LABEL_31;
       }
     }
 
-    else if (a3)
+    else if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         if (self->_isSoleUnpairedVehicle)
         {
-          v8 = 0;
+          combinedDisplayName = 0;
         }
 
         else
         {
-          v8 = [(VGVehicle *)self->_vehicle combinedDisplayName];
+          combinedDisplayName = [(VGVehicle *)self->_vehicle combinedDisplayName];
         }
 
-        v16 = [[EVOnboardingNetworksOfferViewController alloc] initWithDelegate:self vehicleName:v8];
+        v16 = [[EVOnboardingNetworksOfferViewController alloc] initWithDelegate:self vehicleName:combinedDisplayName];
         v17 = self->_viewControllersByState;
         v18 = [NSNumber numberWithInteger:1];
         [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v18];
@@ -604,17 +604,17 @@ LABEL_25:
         goto LABEL_30;
       }
 
-      if (a3 != 2)
+      if (state != 2)
       {
         goto LABEL_31;
       }
 
-      v8 = [[EVOnboardingNetworksSelectionViewController alloc] initWithVehicle:self->_vehicle delegate:self];
+      combinedDisplayName = [[EVOnboardingNetworksSelectionViewController alloc] initWithVehicle:self->_vehicle delegate:self];
       v9 = self->_viewControllersByState;
       v10 = 2;
 LABEL_29:
       v19 = [NSNumber numberWithInteger:v10];
-      [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v19];
+      [(NSMutableDictionary *)v9 setObject:combinedDisplayName forKeyedSubscript:v19];
 
 LABEL_30:
       goto LABEL_31;
@@ -646,13 +646,13 @@ LABEL_30:
       }
     }
 
-    v8 = sub_100798370();
-    if (os_log_type_enabled(&v8->super.super.super.super, OS_LOG_TYPE_FAULT))
+    combinedDisplayName = sub_100798370();
+    if (os_log_type_enabled(&combinedDisplayName->super.super.super.super, OS_LOG_TYPE_FAULT))
     {
-      v14 = off_10165CBF8[a3];
+      v14 = off_10165CBF8[state];
       v30 = 138412290;
       v31 = v14;
-      _os_log_impl(&_mh_execute_header, &v8->super.super.super.super, OS_LOG_TYPE_FAULT, "Tried to get a VC for %@ state", &v30, 0xCu);
+      _os_log_impl(&_mh_execute_header, &combinedDisplayName->super.super.super.super, OS_LOG_TYPE_FAULT, "Tried to get a VC for %@ state", &v30, 0xCu);
     }
 
     goto LABEL_30;
@@ -660,7 +660,7 @@ LABEL_30:
 
 LABEL_31:
   v20 = self->_viewControllersByState;
-  v21 = [NSNumber numberWithInteger:a3];
+  v21 = [NSNumber numberWithInteger:state];
   v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v21];
 
   if (!v22)
@@ -693,7 +693,7 @@ LABEL_31:
   }
 
   v23 = self->_viewControllersByState;
-  v24 = [NSNumber numberWithInteger:a3];
+  v24 = [NSNumber numberWithInteger:state];
   v25 = [(NSMutableDictionary *)v23 objectForKeyedSubscript:v24];
 
   return v25;
@@ -701,9 +701,9 @@ LABEL_31:
 
 - (void)_proceedToNextState
 {
-  v3 = [(SingleVehicleOnboardingController *)self state];
-  v4 = v3;
-  if (v3 >= 4)
+  state = [(SingleVehicleOnboardingController *)self state];
+  v4 = state;
+  if (state >= 4)
   {
     v5 = sub_10006D178();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -783,35 +783,35 @@ LABEL_31:
 
   else
   {
-    [(SingleVehicleOnboardingController *)self setState:v3 + 1];
+    [(SingleVehicleOnboardingController *)self setState:state + 1];
     v14 = [(SingleVehicleOnboardingController *)self _viewControllerForState:[(SingleVehicleOnboardingController *)self state]];
     [UINavigationController pushViewController:"pushViewController:animated:" animated:?];
   }
 }
 
-- (BOOL)_validateStateTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (BOOL)_validateStateTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  v4 = a4 - a3;
-  if (a4 - a3 < 0)
+  v4 = toState - state;
+  if (toState - state < 0)
   {
-    v4 = a3 - a4;
+    v4 = state - toState;
   }
 
   result = 1;
-  if (a4 != 5 && v4 != 1 && (a3 != 1 || a4 != 3))
+  if (toState != 5 && v4 != 1 && (state != 1 || toState != 3))
   {
-    return a3 == 3 && a4 == 1;
+    return state == 3 && toState == 1;
   }
 
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    if ([(SingleVehicleOnboardingController *)self _validateStateTransitionFromState:state toState:a3])
+    if ([(SingleVehicleOnboardingController *)self _validateStateTransitionFromState:state toState:state])
     {
       v6 = sub_100798370();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -851,7 +851,7 @@ LABEL_31:
           v8 = off_10165CBF8[v7];
         }
 
-        if (a3 >= 6)
+        if (state >= 6)
         {
           v23 = sub_10006D178();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -882,7 +882,7 @@ LABEL_31:
 
         else
         {
-          v18 = off_10165CBF8[a3];
+          v18 = off_10165CBF8[state];
         }
 
         v29 = 138412546;
@@ -892,7 +892,7 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Setting state from: %@, to: %@", &v29, 0x16u);
       }
 
-      self->_state = a3;
+      self->_state = state;
     }
 
     else
@@ -959,7 +959,7 @@ LABEL_31:
           v14 = off_10165CBF8[v13];
         }
 
-        if (a3 >= 6)
+        if (state >= 6)
         {
           v26 = sub_10006D178();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -990,7 +990,7 @@ LABEL_31:
 
         else
         {
-          v22 = off_10165CBF8[a3];
+          v22 = off_10165CBF8[state];
         }
 
         v29 = 138412546;
@@ -1003,22 +1003,22 @@ LABEL_31:
   }
 }
 
-- (SingleVehicleOnboardingController)initWithUnpairedVehicle:(id)a3 isLastUnpairedVehicle:(BOOL)a4 isSoleUnpairedVehicle:(BOOL)a5 navigationController:(id)a6 delegate:(id)a7
+- (SingleVehicleOnboardingController)initWithUnpairedVehicle:(id)vehicle isLastUnpairedVehicle:(BOOL)unpairedVehicle isSoleUnpairedVehicle:(BOOL)soleUnpairedVehicle navigationController:(id)controller delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  vehicleCopy = vehicle;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = SingleVehicleOnboardingController;
   v16 = [(SingleVehicleOnboardingController *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_vehicle, a3);
-    v17->_isLastUnpairedVehicle = a4;
-    v17->_isSoleUnpairedVehicle = a5;
-    objc_storeStrong(&v17->_navigationController, a6);
-    objc_storeWeak(&v17->_delegate, v15);
+    objc_storeStrong(&v16->_vehicle, vehicle);
+    v17->_isLastUnpairedVehicle = unpairedVehicle;
+    v17->_isSoleUnpairedVehicle = soleUnpairedVehicle;
+    objc_storeStrong(&v17->_navigationController, controller);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
     v17->_isLPREnabled = MapsFeature_IsEnabled_Alberta();
     v17->_state = 1;
     v18 = objc_opt_new();

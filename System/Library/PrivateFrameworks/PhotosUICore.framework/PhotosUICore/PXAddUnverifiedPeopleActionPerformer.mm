@@ -1,38 +1,38 @@
 @interface PXAddUnverifiedPeopleActionPerformer
-- (PXAddUnverifiedPeopleActionPerformer)initWithPresentationEnvironment:(id)a3 photoLibrary:(id)a4;
-- (void)_createPersonWithPickerResults:(id)a3;
+- (PXAddUnverifiedPeopleActionPerformer)initWithPresentationEnvironment:(id)environment photoLibrary:(id)library;
+- (void)_createPersonWithPickerResults:(id)results;
 - (void)performUserInteractionTask;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 @end
 
 @implementation PXAddUnverifiedPeopleActionPerformer
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  pickingCopy = picking;
   v8 = objc_initWeak(&location, self);
-  [(PXAddUnverifiedPeopleActionPerformer *)self _createPersonWithPickerResults:v7];
+  [(PXAddUnverifiedPeopleActionPerformer *)self _createPersonWithPickerResults:pickingCopy];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__PXAddUnverifiedPeopleActionPerformer_picker_didFinishPicking___block_invoke;
   v9[3] = &unk_1E774C648;
   v9[4] = self;
-  [v6 dismissViewControllerAnimated:1 completion:v9];
+  [pickerCopy dismissViewControllerAnimated:1 completion:v9];
   objc_destroyWeak(&location);
 }
 
-- (void)_createPersonWithPickerResults:(id)a3
+- (void)_createPersonWithPickerResults:(id)results
 {
-  v4 = a3;
-  if ([v4 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
-    v5 = [(PXAddUnverifiedPeopleActionPerformer *)self photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    photoLibrary = [(PXAddUnverifiedPeopleActionPerformer *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v7 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-    [v6 setIncludedDetectionTypes:v7];
+    px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
     PXMap();
   }
@@ -142,8 +142,8 @@ LABEL_6:
 - (void)performUserInteractionTask
 {
   v3 = *MEMORY[0x1E69E9840];
-  v2 = [(PXAddUnverifiedPeopleActionPerformer *)self photoLibrary];
-  [PXPeopleSwiftUtilities fetchAddPeopleCandidatesIn:v2];
+  photoLibrary = [(PXAddUnverifiedPeopleActionPerformer *)self photoLibrary];
+  [PXPeopleSwiftUtilities fetchAddPeopleCandidatesIn:photoLibrary];
   objc_claimAutoreleasedReturnValue();
 
   PXMap();
@@ -159,18 +159,18 @@ void __66__PXAddUnverifiedPeopleActionPerformer_performUserInteractionTask__bloc
   }
 }
 
-- (PXAddUnverifiedPeopleActionPerformer)initWithPresentationEnvironment:(id)a3 photoLibrary:(id)a4
+- (PXAddUnverifiedPeopleActionPerformer)initWithPresentationEnvironment:(id)environment photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = PXAddUnverifiedPeopleActionPerformer;
   v8 = [(PXActionPerformer *)&v11 initWithActionType:@"PXActionAddUnverifiedPeople"];
   v9 = v8;
   if (v8)
   {
-    [(PXActionPerformer *)v8 setPresentationEnvironment:v6];
-    [(PXAddUnverifiedPeopleActionPerformer *)v9 setPhotoLibrary:v7];
+    [(PXActionPerformer *)v8 setPresentationEnvironment:environmentCopy];
+    [(PXAddUnverifiedPeopleActionPerformer *)v9 setPhotoLibrary:libraryCopy];
   }
 
   return v9;

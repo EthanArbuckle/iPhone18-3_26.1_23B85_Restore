@@ -1,19 +1,19 @@
 @interface SXIdentifiableItemProvider
-- (SXIdentifiableItemProvider)initWithObject:(id)a3 identifier:(id)a4;
+- (SXIdentifiableItemProvider)initWithObject:(id)object identifier:(id)identifier;
 @end
 
 @implementation SXIdentifiableItemProvider
 
-- (SXIdentifiableItemProvider)initWithObject:(id)a3 identifier:(id)a4
+- (SXIdentifiableItemProvider)initWithObject:(id)object identifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SXIdentifiableItemProvider;
-  v8 = [(SXIdentifiableItemProvider *)&v11 initWithObject:a3];
+  v8 = [(SXIdentifiableItemProvider *)&v11 initWithObject:object];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a4);
+    objc_storeStrong(&v8->_identifier, identifier);
   }
 
   return v9;

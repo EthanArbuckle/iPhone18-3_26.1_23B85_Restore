@@ -1,25 +1,25 @@
 @interface PHChangeBuilder
-+ (id)changeWithManagedObjectContext:(id)a3 library:(id)a4 options:(id)a5 transaction:(id)a6;
-+ (id)persistentChangeWithManagedObjectContext:(id)a3 library:(id)a4 options:(id)a5 transaction:(id)a6 enumerationContext:(id)a7;
-- (BOOL)changeCountExeedsThreshold:(unint64_t)a3;
-- (PHChangeBuilder)initWithManagedObjectContext:(id)a3 library:(id)a4 options:(id)a5 enumerationContext:(id)a6;
-- (id)_uuidForDeleteChange:(id)a3 uniquedObjectID:(id)a4;
++ (id)changeWithManagedObjectContext:(id)context library:(id)library options:(id)options transaction:(id)transaction;
++ (id)persistentChangeWithManagedObjectContext:(id)context library:(id)library options:(id)options transaction:(id)transaction enumerationContext:(id)enumerationContext;
+- (BOOL)changeCountExeedsThreshold:(unint64_t)threshold;
+- (PHChangeBuilder)initWithManagedObjectContext:(id)context library:(id)library options:(id)options enumerationContext:(id)enumerationContext;
+- (id)_uuidForDeleteChange:(id)change uniquedObjectID:(id)d;
 - (id)buildChange;
 - (id)buildPersistentChange;
-- (void)_recordChangedProperties:(id)a3 forObjectID:(id)a4;
-- (void)_recordDeleteChange:(id)a3 withUniquedObjectID:(id)a4;
-- (void)_recordUpdateChange:(id)a3 withUniquedObjectID:(id)a4;
-- (void)recordChange:(id)a3;
-- (void)recordChangesInTransaction:(id)a3;
-- (void)recordTransaction:(id)a3;
+- (void)_recordChangedProperties:(id)properties forObjectID:(id)d;
+- (void)_recordDeleteChange:(id)change withUniquedObjectID:(id)d;
+- (void)_recordUpdateChange:(id)change withUniquedObjectID:(id)d;
+- (void)recordChange:(id)change;
+- (void)recordChangesInTransaction:(id)transaction;
+- (void)recordTransaction:(id)transaction;
 @end
 
 @implementation PHChangeBuilder
 
 - (id)buildPersistentChange
 {
-  v2 = [(PHChangeBuilder *)self buildChange];
-  v3 = [[PHPersistentChange alloc] initWithChange:v2];
+  buildChange = [(PHChangeBuilder *)self buildChange];
+  v3 = [[PHPersistentChange alloc] initWithChange:buildChange];
 
   return v3;
 }
@@ -33,101 +33,101 @@
   return v4;
 }
 
-- (id)_uuidForDeleteChange:(id)a3 uniquedObjectID:(id)a4
+- (id)_uuidForDeleteChange:(id)change uniquedObjectID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 entity];
-  v8 = [v7 name];
+  changeCopy = change;
+  dCopy = d;
+  entity = [dCopy entity];
+  name = [entity name];
 
-  v9 = [MEMORY[0x1E69BE470] entityName];
-  v10 = [v8 isEqualToString:v9];
+  entityName = [MEMORY[0x1E69BE470] entityName];
+  v10 = [name isEqualToString:entityName];
 
   if (v10)
   {
-    v11 = [v5 tombstone];
-    v12 = [v11 objectForKeyedSubscript:@"uuid"];
+    tombstone = [changeCopy tombstone];
+    v12 = [tombstone objectForKeyedSubscript:@"uuid"];
   }
 
   else
   {
-    v11 = [(objc_class *)[PHPhotoLibrary PHObjectClassForOID:?], "entityKeyForPropertyKey:", @"uuid"];
-    v13 = [v5 tombstone];
-    v12 = [v13 objectForKeyedSubscript:v11];
+    tombstone = [(objc_class *)[PHPhotoLibrary PHObjectClassForOID:?], "entityKeyForPropertyKey:", @"uuid"];
+    tombstone2 = [changeCopy tombstone];
+    v12 = [tombstone2 objectForKeyedSubscript:tombstone];
   }
 
   return v12;
 }
 
-- (void)_recordDeleteChange:(id)a3 withUniquedObjectID:(id)a4
+- (void)_recordDeleteChange:(id)change withUniquedObjectID:(id)d
 {
-  v14 = a3;
-  v6 = a4;
-  [(NSMutableSet *)self->_deletedObjectIDs addObject:v6];
-  v7 = [(PHChangeBuilder *)self _uuidForDeleteChange:v14 uniquedObjectID:v6];
-  [(NSMutableDictionary *)self->_deletedUuidsByObjectId _pl_setNonNilObject:v7 forKey:v6];
-  v8 = [v6 entity];
-  v9 = [v8 name];
+  changeCopy = change;
+  dCopy = d;
+  [(NSMutableSet *)self->_deletedObjectIDs addObject:dCopy];
+  v7 = [(PHChangeBuilder *)self _uuidForDeleteChange:changeCopy uniquedObjectID:dCopy];
+  [(NSMutableDictionary *)self->_deletedUuidsByObjectId _pl_setNonNilObject:v7 forKey:dCopy];
+  entity = [dCopy entity];
+  name = [entity name];
 
-  v10 = [MEMORY[0x1E69BE470] entityName];
-  v11 = [v9 isEqualToString:v10];
+  entityName = [MEMORY[0x1E69BE470] entityName];
+  v11 = [name isEqualToString:entityName];
 
   if (v11)
   {
-    v12 = [v14 tombstone];
-    v13 = [v12 valueForKey:@"primaryLabelCode"];
+    tombstone = [changeCopy tombstone];
+    v13 = [tombstone valueForKey:@"primaryLabelCode"];
 
     if ([v13 unsignedIntValue])
     {
-      [(NSMutableDictionary *)self->_deletedPrimaryLabelCodesByObjectId _pl_setNonNilObject:v13 forKey:v6];
+      [(NSMutableDictionary *)self->_deletedPrimaryLabelCodesByObjectId _pl_setNonNilObject:v13 forKey:dCopy];
     }
   }
 }
 
-- (void)_recordChangedProperties:(id)a3 forObjectID:(id)a4
+- (void)_recordChangedProperties:(id)properties forObjectID:(id)d
 {
-  v6 = a4;
-  v8 = [a3 allObjects];
-  v7 = [v8 _pl_map:&__block_literal_global_31345];
-  [MEMORY[0x1E69BE6F8] recordChangedKeys:v7 forObjectID:v6 inAttributesByOID:self->_attributesByOID relationshipsByOID:self->_relationshipsByOID];
+  dCopy = d;
+  allObjects = [properties allObjects];
+  v7 = [allObjects _pl_map:&__block_literal_global_31345];
+  [MEMORY[0x1E69BE6F8] recordChangedKeys:v7 forObjectID:dCopy inAttributesByOID:self->_attributesByOID relationshipsByOID:self->_relationshipsByOID];
 }
 
-- (void)_recordUpdateChange:(id)a3 withUniquedObjectID:(id)a4
+- (void)_recordUpdateChange:(id)change withUniquedObjectID:(id)d
 {
   updatedObjectIDs = self->_updatedObjectIDs;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableSet *)updatedObjectIDs addObject:v7];
-  v9 = [v8 updatedProperties];
+  dCopy = d;
+  changeCopy = change;
+  [(NSMutableSet *)updatedObjectIDs addObject:dCopy];
+  updatedProperties = [changeCopy updatedProperties];
 
-  [(PHChangeBuilder *)self _recordChangedProperties:v9 forObjectID:v7];
+  [(PHChangeBuilder *)self _recordChangedProperties:updatedProperties forObjectID:dCopy];
 }
 
-- (void)recordChange:(id)a3
+- (void)recordChange:(id)change
 {
-  v7 = a3;
-  v4 = [v7 changedObjectID];
-  v5 = [PHPhotoLibrary uniquedOID:v4];
-  v6 = [v7 changeType];
-  switch(v6)
+  changeCopy = change;
+  changedObjectID = [changeCopy changedObjectID];
+  v5 = [PHPhotoLibrary uniquedOID:changedObjectID];
+  changeType = [changeCopy changeType];
+  switch(changeType)
   {
     case 2:
-      [(PHChangeBuilder *)self _recordDeleteChange:v7 withUniquedObjectID:v5];
+      [(PHChangeBuilder *)self _recordDeleteChange:changeCopy withUniquedObjectID:v5];
       break;
     case 1:
-      [(PHChangeBuilder *)self _recordUpdateChange:v7 withUniquedObjectID:v5];
+      [(PHChangeBuilder *)self _recordUpdateChange:changeCopy withUniquedObjectID:v5];
       break;
     case 0:
-      [(PHChangeBuilder *)self _recordInsertChange:v7 withUniquedObjectID:v5];
+      [(PHChangeBuilder *)self _recordInsertChange:changeCopy withUniquedObjectID:v5];
       break;
   }
 }
 
-- (void)recordChangesInTransaction:(id)a3
+- (void)recordChangesInTransaction:(id)transaction
 {
   v25 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  [v15 changes];
+  transactionCopy = transaction;
+  [transactionCopy changes];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -148,8 +148,8 @@
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 changedObjectID];
-        if (v11)
+        changedObjectID = [v9 changedObjectID];
+        if (changedObjectID)
         {
           [(PHChangeBuilder *)self recordChange:v9];
         }
@@ -159,10 +159,10 @@
           v12 = PLBackendGetLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
           {
-            v13 = [v9 _pl_prettyDescription];
-            v14 = [v15 _pl_prettyDescriptionWithIndent:1];
+            _pl_prettyDescription = [v9 _pl_prettyDescription];
+            v14 = [transactionCopy _pl_prettyDescriptionWithIndent:1];
             *buf = 138412546;
-            v21 = v13;
+            v21 = _pl_prettyDescription;
             v22 = 2112;
             v23 = v14;
             _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_FAULT, "PHChangeBuilder: changedObjectID is nil\n%@%@", buf, 0x16u);
@@ -179,15 +179,15 @@
   }
 }
 
-- (BOOL)changeCountExeedsThreshold:(unint64_t)a3
+- (BOOL)changeCountExeedsThreshold:(unint64_t)threshold
 {
-  v5 = [(PHPersistentChangeFetchOptions *)self->_fetchOptions maximumChangeThreshold];
-  if (v5)
+  maximumChangeThreshold = [(PHPersistentChangeFetchOptions *)self->_fetchOptions maximumChangeThreshold];
+  if (maximumChangeThreshold)
   {
-    v6 = [(PHPersistentChangeFetchOptions *)self->_fetchOptions maximumChangeThreshold];
-    if (v6)
+    maximumChangeThreshold2 = [(PHPersistentChangeFetchOptions *)self->_fetchOptions maximumChangeThreshold];
+    if (maximumChangeThreshold2)
     {
-      v7 = v6 >= a3;
+      v7 = maximumChangeThreshold2 >= threshold;
     }
 
     else
@@ -195,23 +195,23 @@
       v7 = 1;
     }
 
-    LOBYTE(v5) = !v7;
+    LOBYTE(maximumChangeThreshold) = !v7;
   }
 
-  return v5;
+  return maximumChangeThreshold;
 }
 
-- (void)recordTransaction:(id)a3
+- (void)recordTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   context = self->_context;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__PHChangeBuilder_recordTransaction___block_invoke;
   v7[3] = &unk_1E75AAEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   [(NSManagedObjectContext *)context performBlockAndWait:v7];
 }
 
@@ -237,22 +237,22 @@ void __37__PHChangeBuilder_recordTransaction___block_invoke(uint64_t a1)
   }
 }
 
-- (PHChangeBuilder)initWithManagedObjectContext:(id)a3 library:(id)a4 options:(id)a5 enumerationContext:(id)a6
+- (PHChangeBuilder)initWithManagedObjectContext:(id)context library:(id)library options:(id)options enumerationContext:(id)enumerationContext
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  libraryCopy = library;
+  optionsCopy = options;
+  enumerationContextCopy = enumerationContext;
   v33.receiver = self;
   v33.super_class = PHChangeBuilder;
   v15 = [(PHChangeBuilder *)&v33 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    objc_storeStrong(&v16->_library, a4);
-    objc_storeStrong(&v16->_fetchOptions, a5);
-    objc_storeStrong(&v16->_enumerationContext, a6);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v16->_library, library);
+    objc_storeStrong(&v16->_fetchOptions, options);
+    objc_storeStrong(&v16->_enumerationContext, enumerationContext);
     v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     insertedObjectIDs = v16->_insertedObjectIDs;
     v16->_insertedObjectIDs = v17;
@@ -287,37 +287,37 @@ void __37__PHChangeBuilder_recordTransaction___block_invoke(uint64_t a1)
   return v16;
 }
 
-+ (id)persistentChangeWithManagedObjectContext:(id)a3 library:(id)a4 options:(id)a5 transaction:(id)a6 enumerationContext:(id)a7
++ (id)persistentChangeWithManagedObjectContext:(id)context library:(id)library options:(id)options transaction:(id)transaction enumerationContext:(id)enumerationContext
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v16)
+  contextCopy = context;
+  libraryCopy = library;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  enumerationContextCopy = enumerationContext;
+  if (!transactionCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PHChangeBuilder.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHChangeBuilder.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"transaction"}];
   }
 
-  v18 = [v16 token];
+  token = [transactionCopy token];
 
-  if (!v18)
+  if (!token)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PHChangeBuilder.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"transaction.token"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHChangeBuilder.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"transaction.token"}];
   }
 
-  v28 = v13;
-  v29 = v14;
-  v30 = v15;
-  v31 = v17;
-  v32 = v16;
-  v19 = v16;
-  v20 = v17;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v28 = contextCopy;
+  v29 = libraryCopy;
+  v30 = optionsCopy;
+  v31 = enumerationContextCopy;
+  v32 = transactionCopy;
+  v19 = transactionCopy;
+  v20 = enumerationContextCopy;
+  v21 = optionsCopy;
+  v22 = libraryCopy;
+  v23 = contextCopy;
   v24 = pl_result_with_autoreleasepool();
 
   return v24;
@@ -332,16 +332,16 @@ id __107__PHChangeBuilder_persistentChangeWithManagedObjectContext_library_optio
   return v3;
 }
 
-+ (id)changeWithManagedObjectContext:(id)a3 library:(id)a4 options:(id)a5 transaction:(id)a6
++ (id)changeWithManagedObjectContext:(id)context library:(id)library options:(id)options transaction:(id)transaction
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v9 = v18;
-  v10 = v17;
-  v11 = v16;
-  v12 = v15;
+  contextCopy = context;
+  libraryCopy = library;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  v9 = transactionCopy;
+  v10 = optionsCopy;
+  v11 = libraryCopy;
+  v12 = contextCopy;
   v13 = pl_result_with_autoreleasepool();
 
   return v13;

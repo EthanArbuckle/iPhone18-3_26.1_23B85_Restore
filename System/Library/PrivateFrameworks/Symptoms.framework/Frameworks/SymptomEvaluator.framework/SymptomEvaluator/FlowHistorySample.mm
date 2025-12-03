@@ -8,7 +8,7 @@
 - (unint64_t)rxThroughputBps;
 - (unint64_t)txBytes;
 - (unint64_t)txThroughputBps;
-- (void)noteCurent:(id *)a3 previous:(id *)a4;
+- (void)noteCurent:(id *)curent previous:(id *)previous;
 @end
 
 @implementation FlowHistorySample
@@ -18,14 +18,14 @@
   v22 = MEMORY[0x277CCACA8];
   v3 = dateStringMillisecondsFromReferenceInterval(self->_startTimeIntervalSinceReferenceDate);
   elapsedTime = self->_elapsedTime;
-  v20 = [(FlowHistorySample *)self rxBytes];
-  v19 = [(FlowHistorySample *)self rxAppleStackBytes];
-  v18 = [(FlowHistorySample *)self rxNonAppleStackBytes];
-  v17 = [(FlowHistorySample *)self rxSISBytes];
-  v16 = [(FlowHistorySample *)self txBytes];
-  v15 = [(FlowHistorySample *)self txAppleStackBytes];
-  v14 = [(FlowHistorySample *)self txNonAppleStackBytes];
-  v4 = [(FlowHistorySample *)self txSISBytes];
+  rxBytes = [(FlowHistorySample *)self rxBytes];
+  rxAppleStackBytes = [(FlowHistorySample *)self rxAppleStackBytes];
+  rxNonAppleStackBytes = [(FlowHistorySample *)self rxNonAppleStackBytes];
+  rxSISBytes = [(FlowHistorySample *)self rxSISBytes];
+  txBytes = [(FlowHistorySample *)self txBytes];
+  txAppleStackBytes = [(FlowHistorySample *)self txAppleStackBytes];
+  txNonAppleStackBytes = [(FlowHistorySample *)self txNonAppleStackBytes];
+  txSISBytes = [(FlowHistorySample *)self txSISBytes];
   v5 = mbpsThroughput([(FlowHistorySample *)self rxBytes], self->_elapsedTime);
   v6 = mbpsThroughput([(FlowHistorySample *)self rxAppleStackBytes], self->_elapsedTime);
   v7 = mbpsThroughput([(FlowHistorySample *)self rxNonAppleStackBytes], self->_elapsedTime);
@@ -33,7 +33,7 @@
   v9 = mbpsThroughput([(FlowHistorySample *)self txBytes], self->_elapsedTime);
   v10 = mbpsThroughput([(FlowHistorySample *)self txAppleStackBytes], self->_elapsedTime);
   v11 = mbpsThroughput([(FlowHistorySample *)self txNonAppleStackBytes], self->_elapsedTime);
-  v12 = [v22 stringWithFormat:@"Sample from %@ interval %2.3f total/apple/non-apple/sis rx-bytes %lld %lld %lld %lld tx-bytes %lld %lld %lld %lld rx-tput %.6f %.6f %.6f %.6f Mbps tx-tput %.6f %.6f %.6f %.6f Mbps new flows %lld %lld %lld %lld closed %lld %lld %lld %lld", v3, *&elapsedTime, v20, v19, v18, v17, v16, v15, v14, v4, *&v5, *&v6, *&v7, *&v8, *&v9, *&v10, *&v11, mbpsThroughput(-[FlowHistorySample txSISBytes](self, "txSISBytes"), self->_elapsedTime), -[FlowHistorySample openedFlows](self, "openedFlows"), -[FlowHistorySample openedAppleStackFlows](self, "openedAppleStackFlows"), -[FlowHistorySample openedNonAppleStackFlows](self, "openedNonAppleStackFlows"), -[FlowHistorySample openedSISFlows](self, "openedSISFlows"), -[FlowHistorySample closedFlows](self, "closedFlows"), -[FlowHistorySample closedAppleStackFlows](self, "closedAppleStackFlows"), -[FlowHistorySample closedNonAppleStackFlows](self, "closedNonAppleStackFlows"), -[FlowHistorySample closedSISFlows](self, "closedSISFlows")];
+  v12 = [v22 stringWithFormat:@"Sample from %@ interval %2.3f total/apple/non-apple/sis rx-bytes %lld %lld %lld %lld tx-bytes %lld %lld %lld %lld rx-tput %.6f %.6f %.6f %.6f Mbps tx-tput %.6f %.6f %.6f %.6f Mbps new flows %lld %lld %lld %lld closed %lld %lld %lld %lld", v3, *&elapsedTime, rxBytes, rxAppleStackBytes, rxNonAppleStackBytes, rxSISBytes, txBytes, txAppleStackBytes, txNonAppleStackBytes, txSISBytes, *&v5, *&v6, *&v7, *&v8, *&v9, *&v10, *&v11, mbpsThroughput(-[FlowHistorySample txSISBytes](self, "txSISBytes"), self->_elapsedTime), -[FlowHistorySample openedFlows](self, "openedFlows"), -[FlowHistorySample openedAppleStackFlows](self, "openedAppleStackFlows"), -[FlowHistorySample openedNonAppleStackFlows](self, "openedNonAppleStackFlows"), -[FlowHistorySample openedSISFlows](self, "openedSISFlows"), -[FlowHistorySample closedFlows](self, "closedFlows"), -[FlowHistorySample closedAppleStackFlows](self, "closedAppleStackFlows"), -[FlowHistorySample closedNonAppleStackFlows](self, "closedNonAppleStackFlows"), -[FlowHistorySample closedSISFlows](self, "closedSISFlows")];
 
   return v12;
 }
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (void)noteCurent:(id *)a3 previous:(id *)a4
+- (void)noteCurent:(id *)curent previous:(id *)previous
 {
   p_openedFlows = &self->_flowCountArray.counts[0].openedFlows;
-  p_var2 = &a3->var0[0].var2;
-  v6 = &a4->var0[0].var2;
+  p_var2 = &curent->var0[0].var2;
+  v6 = &previous->var0[0].var2;
   v7 = 8;
   do
   {
@@ -121,18 +121,18 @@
 
 - (double)rxThroughput
 {
-  v3 = [(FlowHistorySample *)self rxBytes];
+  rxBytes = [(FlowHistorySample *)self rxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(rxBytes, elapsedTime);
 }
 
 - (double)txThroughput
 {
-  v3 = [(FlowHistorySample *)self txBytes];
+  txBytes = [(FlowHistorySample *)self txBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(txBytes, elapsedTime);
 }
 
 - (unint64_t)rxThroughputBps

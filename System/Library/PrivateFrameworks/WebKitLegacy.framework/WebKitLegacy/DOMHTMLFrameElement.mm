@@ -529,9 +529,9 @@ LABEL_13:
 
 - (WebFrame)contentFrame
 {
-  v2 = [(DOMHTMLFrameElement *)self contentDocument];
+  contentDocument = [(DOMHTMLFrameElement *)self contentDocument];
 
-  return [(DOMDocument *)v2 webFrame];
+  return [(DOMDocument *)contentDocument webFrame];
 }
 
 @end

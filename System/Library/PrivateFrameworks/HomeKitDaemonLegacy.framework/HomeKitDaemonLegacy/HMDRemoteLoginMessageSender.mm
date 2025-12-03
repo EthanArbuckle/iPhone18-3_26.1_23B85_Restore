@@ -1,9 +1,9 @@
 @interface HMDRemoteLoginMessageSender
 + (id)logCategory;
 - (HMDAppleMediaAccessory)accessory;
-- (HMDRemoteLoginMessageSender)initWithTarget:(id)a3 accessory:(id)a4 device:(id)a5 workQueue:(id)a6 messageDispatcher:(id)a7;
+- (HMDRemoteLoginMessageSender)initWithTarget:(id)target accessory:(id)accessory device:(id)device workQueue:(id)queue messageDispatcher:(id)dispatcher;
 - (id)logIdentifier;
-- (void)sendRemoteMessageWithName:(id)a3 payload:(id)a4 responseHandler:(id)a5;
+- (void)sendRemoteMessageWithName:(id)name payload:(id)payload responseHandler:(id)handler;
 @end
 
 @implementation HMDRemoteLoginMessageSender
@@ -15,17 +15,17 @@
   return WeakRetained;
 }
 
-- (void)sendRemoteMessageWithName:(id)a3 payload:(id)a4 responseHandler:(id)a5
+- (void)sendRemoteMessageWithName:(id)name payload:(id)payload responseHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDRemoteLoginMessageSender *)self device];
-  if (v11 || (-[HMDRemoteLoginMessageSender accessory](self, "accessory"), v12 = objc_claimAutoreleasedReturnValue(), [v12 device], v11 = objc_claimAutoreleasedReturnValue(), v12, v11))
+  nameCopy = name;
+  payloadCopy = payload;
+  handlerCopy = handler;
+  device = [(HMDRemoteLoginMessageSender *)self device];
+  if (device || (-[HMDRemoteLoginMessageSender accessory](self, "accessory"), v12 = objc_claimAutoreleasedReturnValue(), [v12 device], device = objc_claimAutoreleasedReturnValue(), v12, device))
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -33,27 +33,27 @@
       *buf = 138543874;
       v34 = v16;
       v35 = 2112;
-      v36 = v8;
+      v36 = nameCopy;
       v37 = 2112;
-      v38 = v11;
+      v38 = device;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Sending message %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
     v17 = [HMDRemoteDeviceMessageDestination alloc];
-    v18 = [(HMDRemoteLoginMessageSender *)v14 target];
-    v19 = [(HMDRemoteDeviceMessageDestination *)v17 initWithTarget:v18 device:v11];
+    target = [(HMDRemoteLoginMessageSender *)selfCopy target];
+    v19 = [(HMDRemoteDeviceMessageDestination *)v17 initWithTarget:target device:device];
 
-    v20 = [HMDRemoteMessage secureMessageWithName:v8 destination:v19 messagePayload:v9];
-    objc_initWeak(buf, v14);
+    v20 = [HMDRemoteMessage secureMessageWithName:nameCopy destination:v19 messagePayload:payloadCopy];
+    objc_initWeak(buf, selfCopy);
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __81__HMDRemoteLoginMessageSender_sendRemoteMessageWithName_payload_responseHandler___block_invoke;
     v30 = &unk_2797355F8;
     objc_copyWeak(&v32, buf);
-    v31 = v10;
+    v31 = handlerCopy;
     [v20 setResponseHandler:&v27];
-    v21 = [(HMDRemoteLoginMessageSender *)v14 messageDispatcher:v27];
+    v21 = [(HMDRemoteLoginMessageSender *)selfCopy messageDispatcher:v27];
     [v21 sendMessage:v20 completionHandler:0];
 
     objc_destroyWeak(&v32);
@@ -63,7 +63,7 @@
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy2 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
@@ -74,10 +74,10 @@
   }
 
   objc_autoreleasePoolPop(v23);
-  if (v10)
+  if (handlerCopy)
   {
-    v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
-    (*(v10 + 2))(v10, v11, 0);
+    device = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
+    (*(handlerCopy + 2))(handlerCopy, device, 0);
 LABEL_6:
   }
 
@@ -117,30 +117,30 @@ uint64_t __81__HMDRemoteLoginMessageSender_sendRemoteMessageWithName_payload_res
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRemoteLoginMessageSender *)self target];
-  v3 = [v2 UUIDString];
+  target = [(HMDRemoteLoginMessageSender *)self target];
+  uUIDString = [target UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMDRemoteLoginMessageSender)initWithTarget:(id)a3 accessory:(id)a4 device:(id)a5 workQueue:(id)a6 messageDispatcher:(id)a7
+- (HMDRemoteLoginMessageSender)initWithTarget:(id)target accessory:(id)accessory device:(id)device workQueue:(id)queue messageDispatcher:(id)dispatcher
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  targetCopy = target;
+  accessoryCopy = accessory;
+  deviceCopy = device;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
   v21.receiver = self;
   v21.super_class = HMDRemoteLoginMessageSender;
   v18 = [(HMDRemoteLoginMessageSender *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_target, a3);
-    objc_storeStrong(&v19->_device, a5);
-    objc_storeWeak(&v19->_accessory, v14);
-    objc_storeStrong(&v19->_workQueue, a6);
-    objc_storeStrong(&v19->_messageDispatcher, a7);
+    objc_storeStrong(&v18->_target, target);
+    objc_storeStrong(&v19->_device, device);
+    objc_storeWeak(&v19->_accessory, accessoryCopy);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeStrong(&v19->_messageDispatcher, dispatcher);
   }
 
   return v19;

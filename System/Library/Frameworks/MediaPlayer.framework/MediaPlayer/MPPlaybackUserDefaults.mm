@@ -2,8 +2,8 @@
 + (MPPlaybackUserDefaults)standardUserDefaults;
 - (BOOL)allowScreenRecording;
 - (BOOL)archiveSessionArtwork;
-- (BOOL)areTransitionsEnabledForUserWithCatalogPlaybackCapability:(BOOL)a3;
-- (BOOL)autoPlayEnabledForUserIdentity:(id)a3;
+- (BOOL)areTransitionsEnabledForUserWithCatalogPlaybackCapability:(BOOL)capability;
+- (BOOL)autoPlayEnabledForUserIdentity:(id)identity;
 - (BOOL)disableAssetCaching;
 - (BOOL)disableAudioAnalysis;
 - (BOOL)disableAudioProcessing;
@@ -54,30 +54,30 @@
 - (int64_t)preferredVideoHighBandwidthResolution;
 - (int64_t)preferredVideoLowBandwidthResolution;
 - (int64_t)spatialAudioPreference;
-- (int64_t)transitionStyleForUserWithCatalogPlaybackCapability:(BOOL)a3;
+- (int64_t)transitionStyleForUserWithCatalogPlaybackCapability:(BOOL)capability;
 - (unint64_t)audioAnalysisRefreshRate;
-- (void)_accountStoreChangedNotification:(id)a3;
+- (void)_accountStoreChangedNotification:(id)notification;
 - (void)_loadAccountProperties;
 - (void)_migrateUserDefaults;
 - (void)dealloc;
 - (void)resetAllInternalSettings;
-- (void)setAutoPlayEnabled:(BOOL)a3 forUserIdentity:(id)a4;
-- (void)setCrossFadeDuration:(double)a3;
-- (void)setCrossFadeEnabled:(BOOL)a3;
-- (void)setFocusModePrivateListeningEnabled:(id)a3;
-- (void)setMusicRepeatType:(int64_t)a3;
-- (void)setMusicShuffleType:(int64_t)a3;
-- (void)setPlaybackRate:(float)a3;
-- (void)setPreferredMusicDownloadResolution:(int64_t)a3;
-- (void)setPreferredMusicHighBandwidthResolution:(int64_t)a3;
-- (void)setPreferredMusicLowBandwidthResolution:(int64_t)a3;
-- (void)setPrefersSpatialAudio:(BOOL)a3;
-- (void)setPrefersSpatialDownloads:(BOOL)a3;
-- (void)setPrivateListeningEnabled:(id)a3;
-- (void)setSoundCheckEnabled:(BOOL)a3;
-- (void)setSpatialAudioPreference:(int64_t)a3;
-- (void)setTransitionStyle:(int64_t)a3;
-- (void)setTransitionsEnabled:(BOOL)a3;
+- (void)setAutoPlayEnabled:(BOOL)enabled forUserIdentity:(id)identity;
+- (void)setCrossFadeDuration:(double)duration;
+- (void)setCrossFadeEnabled:(BOOL)enabled;
+- (void)setFocusModePrivateListeningEnabled:(id)enabled;
+- (void)setMusicRepeatType:(int64_t)type;
+- (void)setMusicShuffleType:(int64_t)type;
+- (void)setPlaybackRate:(float)rate;
+- (void)setPreferredMusicDownloadResolution:(int64_t)resolution;
+- (void)setPreferredMusicHighBandwidthResolution:(int64_t)resolution;
+- (void)setPreferredMusicLowBandwidthResolution:(int64_t)resolution;
+- (void)setPrefersSpatialAudio:(BOOL)audio;
+- (void)setPrefersSpatialDownloads:(BOOL)downloads;
+- (void)setPrivateListeningEnabled:(id)enabled;
+- (void)setSoundCheckEnabled:(BOOL)enabled;
+- (void)setSpatialAudioPreference:(int64_t)preference;
+- (void)setTransitionStyle:(int64_t)style;
+- (void)setTransitionsEnabled:(BOOL)enabled;
 @end
 
 @implementation MPPlaybackUserDefaults
@@ -258,11 +258,11 @@ void __46__MPPlaybackUserDefaults_standardUserDefaults__block_invoke()
 
     if (MSVDeviceIsAudioAccessory())
     {
-      v20 = [MEMORY[0x1E695E000] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
       v40 = @"MPUnloadingPlaybackAssetsOnIdleDuration";
       v41 = &unk_1F15098F8;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-      [v20 registerDefaults:v21];
+      [standardUserDefaults registerDefaults:v21];
     }
 
     if (MSVDeviceIsAudioAccessory())
@@ -298,8 +298,8 @@ void __46__MPPlaybackUserDefaults_standardUserDefaults__block_invoke()
       notify_register_dispatch("com.apple.airplay.prefsChanged", v28 + 18, v29, &__block_literal_global_263);
     }
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v28 selector:sel__accountStoreChangedNotification_ name:*MEMORY[0x1E69E4380] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v28 selector:sel__accountStoreChangedNotification_ name:*MEMORY[0x1E69E4380] object:0];
 
     [v28 _loadAccountProperties];
   }
@@ -317,8 +317,8 @@ void __46__MPPlaybackUserDefaults_standardUserDefaults__block_invoke()
   v8 = [(NSUserDefaults *)self->_iPodUserDefaults objectForKey:@"MusicAllowsCellularData"];
   if (v8)
   {
-    v3 = [v8 BOOLValue];
-    if (v3 && ![(MPPlaybackUserDefaults *)self preferredMusicLowBandwidthResolution])
+    bOOLValue = [v8 BOOLValue];
+    if (bOOLValue && ![(MPPlaybackUserDefaults *)self preferredMusicLowBandwidthResolution])
     {
       [(MPPlaybackUserDefaults *)self setPreferredMusicLowBandwidthResolution:64];
     }
@@ -328,7 +328,7 @@ void __46__MPPlaybackUserDefaults_standardUserDefaults__block_invoke()
     v5 = v4;
     if (v4)
     {
-      if ((v3 & [v4 BOOLValue]) == 1 && -[MPPlaybackUserDefaults preferredMusicLowBandwidthResolution](self, "preferredMusicLowBandwidthResolution") <= 255)
+      if ((bOOLValue & [v4 BOOLValue]) == 1 && -[MPPlaybackUserDefaults preferredMusicLowBandwidthResolution](self, "preferredMusicLowBandwidthResolution") <= 255)
       {
         [(MPPlaybackUserDefaults *)self setPreferredMusicLowBandwidthResolution:256];
       }
@@ -532,7 +532,7 @@ void __46__MPPlaybackUserDefaults_standardUserDefaults__block_invoke()
   return [(NSUserDefaults *)iPodUserDefaults integerForKey:@"QHOMaximumSize"];
 }
 
-- (void)_accountStoreChangedNotification:(id)a3
+- (void)_accountStoreChangedNotification:(id)notification
 {
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_autoplaySettingCache removeAllObjects];
@@ -591,8 +591,8 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
   [(NSUserDefaults *)self->_iPodUserDefaults removeObjectForKey:@"_MPCSkipNextStateRestoration"];
   [(NSUserDefaults *)self->_iPodUserDefaults removeObjectForKey:@"SonicHijack"];
   [(NSUserDefaults *)self->_mediaPlaybackCoreUserDefaults removeObjectForKey:@"MPCRewrittenAssetInfo"];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 removeObjectForKey:@"MPUnloadingPlaybackAssetsOnIdleDuration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"MPUnloadingPlaybackAssetsOnIdleDuration"];
 }
 
 - (NSDictionary)rewrittenAssetInfo
@@ -621,8 +621,8 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
 
 - (double)unloadingPlaybackAssetsOnIdleDuration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"MPUnloadingPlaybackAssetsOnIdleDuration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"MPUnloadingPlaybackAssetsOnIdleDuration"];
   v4 = v3;
 
   return v4;
@@ -1118,22 +1118,22 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
   return v5;
 }
 
-- (void)setPrefersSpatialDownloads:(BOOL)a3
+- (void)setPrefersSpatialDownloads:(BOOL)downloads
 {
-  v3 = a3;
-  if ([(MPPlaybackUserDefaults *)self prefersSpatialDownloads]!= a3)
+  downloadsCopy = downloads;
+  if ([(MPPlaybackUserDefaults *)self prefersSpatialDownloads]!= downloads)
   {
-    [(NSUserDefaults *)self->_iPodUserDefaults setBool:v3 forKey:@"PrefersSpatialDownloads"];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
+    [(NSUserDefaults *)self->_iPodUserDefaults setBool:downloadsCopy forKey:@"PrefersSpatialDownloads"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
 }
 
-- (void)setPrefersSpatialAudio:(BOOL)a3
+- (void)setPrefersSpatialAudio:(BOOL)audio
 {
-  if (a3)
+  if (audio)
   {
     v3 = 2;
   }
@@ -1146,16 +1146,16 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
   [(MPPlaybackUserDefaults *)self setSpatialAudioPreference:v3];
 }
 
-- (void)setSpatialAudioPreference:(int64_t)a3
+- (void)setSpatialAudioPreference:(int64_t)preference
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([(MPPlaybackUserDefaults *)self spatialAudioPreference]!= a3)
+  if ([(MPPlaybackUserDefaults *)self spatialAudioPreference]!= preference)
   {
     iPodUserDefaults = self->_iPodUserDefaults;
-    if (a3)
+    if (preference)
     {
       v6 = &v13 + 1;
-      quot = a3;
+      quot = preference;
       do
       {
         v8 = ldiv(quot, 10);
@@ -1176,7 +1176,7 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
       }
 
       while (v8.quot);
-      if (a3 < 0)
+      if (preference < 0)
       {
         *(v6 - 2) = 45;
         v10 = (v6 - 2);
@@ -1192,23 +1192,23 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
 
     [(NSUserDefaults *)iPodUserDefaults setObject:v11 forKey:@"SpatialAudioPreference"];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
 }
 
-- (void)setPreferredMusicDownloadResolution:(int64_t)a3
+- (void)setPreferredMusicDownloadResolution:(int64_t)resolution
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([(MPPlaybackUserDefaults *)self preferredMusicDownloadResolution]!= a3)
+  if ([(MPPlaybackUserDefaults *)self preferredMusicDownloadResolution]!= resolution)
   {
     iPodUserDefaults = self->_iPodUserDefaults;
-    if (a3)
+    if (resolution)
     {
       v6 = &v13 + 1;
-      quot = a3;
+      quot = resolution;
       do
       {
         v8 = ldiv(quot, 10);
@@ -1229,7 +1229,7 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
       }
 
       while (v8.quot);
-      if (a3 < 0)
+      if (resolution < 0)
       {
         *(v6 - 2) = 45;
         v10 = (v6 - 2);
@@ -1245,23 +1245,23 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
 
     [(NSUserDefaults *)iPodUserDefaults setObject:v11 forKey:@"MusicDownloadResolution"];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
 }
 
-- (void)setPreferredMusicHighBandwidthResolution:(int64_t)a3
+- (void)setPreferredMusicHighBandwidthResolution:(int64_t)resolution
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([(MPPlaybackUserDefaults *)self preferredMusicHighBandwidthResolution]!= a3)
+  if ([(MPPlaybackUserDefaults *)self preferredMusicHighBandwidthResolution]!= resolution)
   {
     iPodUserDefaults = self->_iPodUserDefaults;
-    if (a3)
+    if (resolution)
     {
       v6 = &v13 + 1;
-      quot = a3;
+      quot = resolution;
       do
       {
         v8 = ldiv(quot, 10);
@@ -1282,7 +1282,7 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
       }
 
       while (v8.quot);
-      if (a3 < 0)
+      if (resolution < 0)
       {
         *(v6 - 2) = 45;
         v10 = (v6 - 2);
@@ -1298,8 +1298,8 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
 
     [(NSUserDefaults *)iPodUserDefaults setObject:v11 forKey:@"MusicHighBandwidthResolution"];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
@@ -1317,16 +1317,16 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
   return [(NSUserDefaults *)iPodUserDefaults integerForKey:@"MusicHighBandwidthResolution"];
 }
 
-- (void)setPreferredMusicLowBandwidthResolution:(int64_t)a3
+- (void)setPreferredMusicLowBandwidthResolution:(int64_t)resolution
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([(MPPlaybackUserDefaults *)self preferredMusicLowBandwidthResolution]!= a3)
+  if ([(MPPlaybackUserDefaults *)self preferredMusicLowBandwidthResolution]!= resolution)
   {
     iPodUserDefaults = self->_iPodUserDefaults;
-    if (a3)
+    if (resolution)
     {
       v6 = &v13 + 1;
-      quot = a3;
+      quot = resolution;
       do
       {
         v8 = ldiv(quot, 10);
@@ -1347,7 +1347,7 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
       }
 
       while (v8.quot);
-      if (a3 < 0)
+      if (resolution < 0)
       {
         *(v6 - 2) = 45;
         v10 = (v6 - 2);
@@ -1363,8 +1363,8 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
 
     [(NSUserDefaults *)iPodUserDefaults setObject:v11 forKey:@"MusicLowBandwidthResolution"];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPreferredResolutionsDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
@@ -1382,11 +1382,11 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
   return [(NSUserDefaults *)iPodUserDefaults integerForKey:@"MusicLowBandwidthResolution"];
 }
 
-- (void)setFocusModePrivateListeningEnabled:(id)a3
+- (void)setFocusModePrivateListeningEnabled:(id)enabled
 {
-  [(NSUserDefaults *)self->_mediaPlaybackCoreUserDefaults setObject:a3 forKey:@"MPCPlaybackFocusModePrivateListeningEnabled"];
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 postNotificationName:@"MPPlaybackUserDefaultsPrivateListeningEnabledDidChangeNotification" object:0];
+  [(NSUserDefaults *)self->_mediaPlaybackCoreUserDefaults setObject:enabled forKey:@"MPCPlaybackFocusModePrivateListeningEnabled"];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPrivateListeningEnabledDidChangeNotification" object:0];
 }
 
 - (NSNumber)isDevicePrivateListeningEnabled
@@ -1397,20 +1397,20 @@ void __48__MPPlaybackUserDefaults__loadAccountProperties__block_invoke_282(uint6
   return [v2 numberWithBool:v3];
 }
 
-- (void)setPrivateListeningEnabled:(id)a3
+- (void)setPrivateListeningEnabled:(id)enabled
 {
-  v4 = a3;
-  [(NSUserDefaults *)self->_mediaPlaybackCoreUserDefaults setObject:v4 forKey:@"MPCPlaybackPrivateListeningEnabled"];
-  v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v5 postNotificationName:@"MPPlaybackUserDefaultsPrivateListeningEnabledDidChangeNotification" object:0];
+  enabledCopy = enabled;
+  [(NSUserDefaults *)self->_mediaPlaybackCoreUserDefaults setObject:enabledCopy forKey:@"MPCPlaybackPrivateListeningEnabled"];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsPrivateListeningEnabledDidChangeNotification" object:0];
 
   accountsQueue = self->_accountsQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke;
   block[3] = &unk_1E7682518;
-  v9 = v4;
-  v7 = v4;
+  v9 = enabledCopy;
+  v7 = enabledCopy;
   dispatch_async(accountsQueue, block);
 }
 
@@ -1426,12 +1426,12 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
   [v2 updatePropertiesForUserIdentity:v3 usingBlock:v4];
 }
 
-- (void)setTransitionsEnabled:(BOOL)a3
+- (void)setTransitionsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = [(NSUserDefaults *)self->_iPodUserDefaults objectForKey:@"TransitionsEnabled"];
-  if (!v5 || (v6 = v5, v7 = [(MPPlaybackUserDefaults *)self areTransitionsEnabled], v6, v7 != v3))
+  if (!v5 || (v6 = v5, v7 = [(MPPlaybackUserDefaults *)self areTransitionsEnabled], v6, v7 != enabledCopy))
   {
     v8 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1439,72 +1439,72 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
       v10[0] = 67109376;
       v10[1] = [(MPPlaybackUserDefaults *)self areTransitionsEnabled];
       v11 = 1024;
-      v12 = v3;
+      v12 = enabledCopy;
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "[PlaybackUserDefaults] setTransitionsEnabled: %{BOOL}u -> %{BOOL}u", v10, 0xEu);
     }
 
-    [(NSUserDefaults *)self->_iPodUserDefaults setBool:v3 forKey:@"TransitionsEnabled"];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MPPlaybackUserDefaultsTransitionsEnabledDidChangeNotification" object:self];
+    [(NSUserDefaults *)self->_iPodUserDefaults setBool:enabledCopy forKey:@"TransitionsEnabled"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsTransitionsEnabledDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
 }
 
-- (BOOL)areTransitionsEnabledForUserWithCatalogPlaybackCapability:(BOOL)a3
+- (BOOL)areTransitionsEnabledForUserWithCatalogPlaybackCapability:(BOOL)capability
 {
   v5 = [(NSUserDefaults *)self->_iPodUserDefaults objectForKey:@"TransitionsEnabled"];
 
   if (!v5)
   {
-    return a3;
+    return capability;
   }
 
   return [(MPPlaybackUserDefaults *)self areTransitionsEnabled];
 }
 
-- (void)setTransitionStyle:(int64_t)a3
+- (void)setTransitionStyle:(int64_t)style
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = [(NSUserDefaults *)self->_iPodUserDefaults objectForKey:@"TransitionStyle"];
-  if (!v5 || (v6 = v5, v7 = [(MPPlaybackUserDefaults *)self transitionStyle], v6, v7 != a3))
+  if (!v5 || (v6 = v5, v7 = [(MPPlaybackUserDefaults *)self transitionStyle], v6, v7 != style))
   {
     v8 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218240;
-      v11 = [(MPPlaybackUserDefaults *)self transitionStyle];
+      transitionStyle = [(MPPlaybackUserDefaults *)self transitionStyle];
       v12 = 2048;
-      v13 = a3;
+      styleCopy = style;
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "[PlaybackUserDefaults] setTransitionStyle: %ld -> %ld", &v10, 0x16u);
     }
 
-    [(NSUserDefaults *)self->_iPodUserDefaults setInteger:a3 forKey:@"TransitionStyle"];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MPPlaybackUserDefaultsTransitionStyleDidChangeNotification" object:self];
+    [(NSUserDefaults *)self->_iPodUserDefaults setInteger:style forKey:@"TransitionStyle"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsTransitionStyleDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
 }
 
-- (int64_t)transitionStyleForUserWithCatalogPlaybackCapability:(BOOL)a3
+- (int64_t)transitionStyleForUserWithCatalogPlaybackCapability:(BOOL)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   v5 = [(NSUserDefaults *)self->_iPodUserDefaults objectForKey:@"TransitionStyle"];
 
   if (!v5)
   {
-    return v3;
+    return capabilityCopy;
   }
 
   return [(MPPlaybackUserDefaults *)self transitionStyle];
 }
 
-- (void)setCrossFadeDuration:(double)a3
+- (void)setCrossFadeDuration:(double)duration
 {
   v12 = *MEMORY[0x1E69E9840];
   [(MPPlaybackUserDefaults *)self crossFadeDuration];
-  if (v5 != a3)
+  if (v5 != duration)
   {
     v6 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1513,19 +1513,19 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
       v8 = 134218240;
       v9 = v7;
       v10 = 2048;
-      v11 = a3;
+      durationCopy = duration;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "[PlaybackUserDefaults] setCrossFadeDuration: %2.1fs -> %2.1fs", &v8, 0x16u);
     }
 
-    [(NSUserDefaults *)self->_iPodUserDefaults setDouble:@"CrossFadeDuration" forKey:a3];
+    [(NSUserDefaults *)self->_iPodUserDefaults setDouble:@"CrossFadeDuration" forKey:duration];
   }
 }
 
-- (void)setCrossFadeEnabled:(BOOL)a3
+- (void)setCrossFadeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9 = *MEMORY[0x1E69E9840];
-  if ([(MPPlaybackUserDefaults *)self isCrossFadeEnabled]!= a3)
+  if ([(MPPlaybackUserDefaults *)self isCrossFadeEnabled]!= enabled)
   {
     v5 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1533,19 +1533,19 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
       v6[0] = 67109376;
       v6[1] = [(MPPlaybackUserDefaults *)self isCrossFadeEnabled];
       v7 = 1024;
-      v8 = v3;
+      v8 = enabledCopy;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "[PlaybackUserDefaults] setCrossFadeEnabled: %{BOOL}u -> %{BOOL}u", v6, 0xEu);
     }
 
-    [(NSUserDefaults *)self->_iPodUserDefaults setBool:v3 forKey:@"CrossFadeEnabled"];
+    [(NSUserDefaults *)self->_iPodUserDefaults setBool:enabledCopy forKey:@"CrossFadeEnabled"];
   }
 }
 
-- (void)setSoundCheckEnabled:(BOOL)a3
+- (void)setSoundCheckEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x1E69E9840];
-  if ([(MPPlaybackUserDefaults *)self soundCheckEnabled]!= a3)
+  if ([(MPPlaybackUserDefaults *)self soundCheckEnabled]!= enabled)
   {
     v5 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1553,27 +1553,27 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
       v8[0] = 67109376;
       v8[1] = [(MPPlaybackUserDefaults *)self soundCheckEnabled];
       v9 = 1024;
-      v10 = v3;
+      v10 = enabledCopy;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "[PlaybackUserDefaults] setSoundCheckEnable: %{BOOL}u -> %{BOOL}u", v8, 0xEu);
     }
 
-    [(NSUserDefaults *)self->_iPodUserDefaults setBool:v3 forKey:@"MusicSoundCheckEnabledSetting"];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"MPPlaybackUserDefaultsSoundCheckEnabledDidChangeNotification" object:self];
+    [(NSUserDefaults *)self->_iPodUserDefaults setBool:enabledCopy forKey:@"MusicSoundCheckEnabledSetting"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsSoundCheckEnabledDidChangeNotification" object:self];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileipod-prefsChanged", 0, 0, 1u);
   }
 }
 
-- (void)setMusicShuffleType:(int64_t)a3
+- (void)setMusicShuffleType:(int64_t)type
 {
-  if (a3 != 1000)
+  if (type != 1000)
   {
-    v6 = MPNSStringFromShuffleType(a3);
+    v6 = MPNSStringFromShuffleType(type);
     [(NSUserDefaults *)self->_iPodUserDefaults setObject:v6 forKey:@"MusicShuffleSetting"];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MPPlaybackUserDefaultsMusicShuffleTypeDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsMusicShuffleTypeDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
@@ -1587,26 +1587,26 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
   return v3;
 }
 
-- (void)setMusicRepeatType:(int64_t)a3
+- (void)setMusicRepeatType:(int64_t)type
 {
-  if (a3 != 3)
+  if (type != 3)
   {
-    v6 = MPNSStringFromRepeatType(a3);
+    v6 = MPNSStringFromRepeatType(type);
     [(NSUserDefaults *)self->_iPodUserDefaults setObject:v6 forKey:@"MusicRepeatSetting"];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MPPlaybackUserDefaultsMusicRepeatTypeDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPPlaybackUserDefaultsMusicRepeatTypeDidChangeNotification" object:self];
 
     notify_post("com.apple.mobileipod-prefsChanged");
   }
 }
 
-- (void)setPlaybackRate:(float)a3
+- (void)setPlaybackRate:(float)rate
 {
   [(MPPlaybackUserDefaults *)self playbackRate];
-  if (*&v5 != a3)
+  if (*&v5 != rate)
   {
     iPodUserDefaults = self->_iPodUserDefaults;
-    *&v5 = a3;
+    *&v5 = rate;
 
     [(NSUserDefaults *)iPodUserDefaults setFloat:@"PodcastsPlaybackRate" forKey:v5];
   }
@@ -1628,43 +1628,43 @@ void __53__MPPlaybackUserDefaults_setPrivateListeningEnabled___block_invoke(uint
   return v3;
 }
 
-- (void)setAutoPlayEnabled:(BOOL)a3 forUserIdentity:(id)a4
+- (void)setAutoPlayEnabled:(BOOL)enabled forUserIdentity:(id)identity
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (identityCopy)
   {
-    v8 = v6;
+    activeAccount = identityCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  v9 = v8;
+  v9 = activeAccount;
   v10 = os_log_create("com.apple.amp.mediaplayer", "Playback");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *v25 = v4;
+    *v25 = enabledCopy;
     *&v25[4] = 2114;
     *&v25[6] = v9;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "[PlaybackUserDefaults] setAutoPlayEnabled:forUserIdentity: %{BOOL}u userIdentity=%{public}@", buf, 0x12u);
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_autoplaySettingCache setObject:v11 forKey:v9];
   os_unfair_lock_unlock(&self->_lock);
   v12 = v9;
   if (!v12)
   {
-    v14 = [MEMORY[0x1E69E4470] sharedAccountStore];
+    mEMORY[0x1E69E4470] = [MEMORY[0x1E69E4470] sharedAccountStore];
     v23 = 0;
-    v17 = [v14 activeStoreAccountWithError:&v23];
+    v17 = [mEMORY[0x1E69E4470] activeStoreAccountWithError:&v23];
     v15 = v23;
 LABEL_10:
 
@@ -1676,16 +1676,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v13 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   v23 = 0;
-  v14 = [v13 DSIDForUserIdentity:v12 outError:&v23];
+  mEMORY[0x1E69E4470] = [defaultIdentityStore DSIDForUserIdentity:v12 outError:&v23];
   v15 = v23;
 
-  if (v14)
+  if (mEMORY[0x1E69E4470])
   {
-    v16 = [MEMORY[0x1E69E4470] sharedAccountStore];
+    mEMORY[0x1E69E4470]2 = [MEMORY[0x1E69E4470] sharedAccountStore];
     v22 = v15;
-    v17 = [v16 storeAccountForDSID:v14 error:&v22];
+    v17 = [mEMORY[0x1E69E4470]2 storeAccountForDSID:mEMORY[0x1E69E4470] error:&v22];
     v18 = v22;
 
     v15 = v18;
@@ -1707,27 +1707,27 @@ LABEL_11:
 LABEL_14:
 
   [v17 ams_setAccountFlagValue:v11 forAccountFlag:*MEMORY[0x1E698C4A0]];
-  v20 = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
-  v21 = [v20 ams_saveAccount:v17];
+  ic_sharedAccountStore = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
+  v21 = [ic_sharedAccountStore ams_saveAccount:v17];
 }
 
-- (BOOL)autoPlayEnabledForUserIdentity:(id)a3
+- (BOOL)autoPlayEnabledForUserIdentity:(id)identity
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  if (v4)
+  if (identityCopy)
   {
-    v5 = v4;
+    activeAccount = identityCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  v6 = v5;
-  v7 = [(NSMutableDictionary *)self->_autoplaySettingCache objectForKey:v5];
+  v6 = activeAccount;
+  v7 = [(NSMutableDictionary *)self->_autoplaySettingCache objectForKey:activeAccount];
   if (v7)
   {
     goto LABEL_18;
@@ -1736,12 +1736,12 @@ LABEL_14:
   v8 = v6;
   if (v8)
   {
-    v9 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
     v22 = 0;
-    v10 = [v9 DSIDForUserIdentity:v8 outError:&v22];
+    mEMORY[0x1E69E4470]2 = [defaultIdentityStore DSIDForUserIdentity:v8 outError:&v22];
     v11 = v22;
 
-    if (!v10)
+    if (!mEMORY[0x1E69E4470]2)
     {
 LABEL_10:
       v15 = os_log_create("com.apple.amp.mediaplayer", "Playback");
@@ -1758,9 +1758,9 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v12 = [MEMORY[0x1E69E4470] sharedAccountStore];
+    mEMORY[0x1E69E4470] = [MEMORY[0x1E69E4470] sharedAccountStore];
     v21 = v11;
-    v13 = [v12 storeAccountForDSID:v10 error:&v21];
+    v13 = [mEMORY[0x1E69E4470] storeAccountForDSID:mEMORY[0x1E69E4470]2 error:&v21];
     v14 = v21;
 
     v11 = v14;
@@ -1768,9 +1768,9 @@ LABEL_10:
 
   else
   {
-    v10 = [MEMORY[0x1E69E4470] sharedAccountStore];
+    mEMORY[0x1E69E4470]2 = [MEMORY[0x1E69E4470] sharedAccountStore];
     v22 = 0;
-    v13 = [v10 activeStoreAccountWithError:&v22];
+    v13 = [mEMORY[0x1E69E4470]2 activeStoreAccountWithError:&v22];
     v11 = v22;
   }
 
@@ -1801,22 +1801,22 @@ LABEL_18:
   v17 = os_log_create("com.apple.amp.mediaplayer", "Playback");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     *buf = 67109378;
-    *v24 = v18;
+    *v24 = bOOLValue;
     *&v24[4] = 2114;
     *&v24[6] = v6;
     _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_INFO, "[PlaybackUserDefaults] autoPlayEnabledForUserIdentity: %{BOOL}u userIdentity=%{public}@", buf, 0x12u);
   }
 
-  v19 = [v7 BOOLValue];
-  return v19;
+  bOOLValue2 = [v7 BOOLValue];
+  return bOOLValue2;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4380] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4380] object:0];
 
   notify_cancel(self->_notifyTokens.mobileiPodPrefsChanged);
   notify_cancel(self->_notifyTokens.videoPrefsChanged);

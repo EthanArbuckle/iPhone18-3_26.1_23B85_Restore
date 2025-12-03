@@ -1,8 +1,8 @@
 @interface VCPImageSaliencyAnalyzerFullEspresso
-+ (id)sharedModel:(id)a3;
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6;
-- (int)getSalientRegions:(id)a3;
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4;
++ (id)sharedModel:(id)model;
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth;
+- (int)getSalientRegions:(id)regions;
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height;
 - (void)dealloc;
 @end
 
@@ -21,12 +21,12 @@
   [(VCPImageSaliencyAnalyzerFullEspresso *)&v4 dealloc];
 }
 
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height
 {
-  v7 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v8 = [v7 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v9 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_saliency.espresso.net" relativeToURL:v8];
+  v9 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_saliency.espresso.net" relativeToURL:resourceURL];
   if (!self->_modelEspresso)
   {
     v10 = [objc_opt_class() sharedModel:v9];
@@ -39,13 +39,13 @@
     }
   }
 
-  if (self->_srcWidth == a3 && self->_srcHeight == a4)
+  if (self->_srcWidth == width && self->_srcHeight == height)
   {
     v12 = 0;
     goto LABEL_26;
   }
 
-  if (a4 == a3)
+  if (height == width)
   {
     resConfig = self->_resConfig;
     v14 = @"res_0";
@@ -54,7 +54,7 @@
   else
   {
     resConfig = self->_resConfig;
-    if (a4 >= a3)
+    if (height >= width)
     {
       v14 = @"res_2";
     }
@@ -115,8 +115,8 @@ LABEL_20:
     if (v23)
     {
       v12 = 0;
-      self->_srcWidth = a3;
-      self->_srcHeight = a4;
+      self->_srcWidth = width;
+      self->_srcHeight = height;
       goto LABEL_26;
     }
 
@@ -129,15 +129,15 @@ LABEL_26:
   return v12;
 }
 
-+ (id)sharedModel:(id)a3
++ (id)sharedModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___block_invoke;
   v8[3] = &unk_1E834CF10;
-  v5 = v3;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v4 sharedInstanceWithIdentifier:@"VCPSaliencyFullEspresso" andCreationBlock:v8];
 
@@ -151,12 +151,12 @@ VCPCNNModelEspresso *__52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___bl
   return v1;
 }
 
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth
 {
   modelEspresso = self->_modelEspresso;
   if (modelEspresso)
   {
-    [(VCPCNNModelEspresso *)modelEspresso inputBlob:*&a3];
+    [(VCPCNNModelEspresso *)modelEspresso inputBlob:*&buffer];
     v10 = v15;
   }
 
@@ -165,7 +165,7 @@ VCPCNNModelEspresso *__52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___bl
     v10 = 0;
   }
 
-  *a5 = v10;
+  *height = v10;
   v11 = self->_modelEspresso;
   if (v11)
   {
@@ -178,13 +178,13 @@ VCPCNNModelEspresso *__52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___bl
     v12 = 0;
   }
 
-  *a6 = v12;
+  *inputWidth = v12;
   return self->_inputData;
 }
 
-- (int)getSalientRegions:(id)a3
+- (int)getSalientRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   modelEspresso = self->_modelEspresso;
   if (modelEspresso)
   {
@@ -195,7 +195,7 @@ VCPCNNModelEspresso *__52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___bl
     {
       [(VCPCNNModelEspresso *)v6 outputBlob];
       v8 = v18;
-      if (!v4)
+      if (!regionsCopy)
       {
         goto LABEL_10;
       }
@@ -204,7 +204,7 @@ VCPCNNModelEspresso *__52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___bl
     else
     {
       v8 = 0;
-      if (!v4)
+      if (!regionsCopy)
       {
         goto LABEL_10;
       }
@@ -215,13 +215,13 @@ VCPCNNModelEspresso *__52__VCPImageSaliencyAnalyzerFullEspresso_sharedModel___bl
   {
     v8 = 0;
     v7 = 0;
-    if (!v4)
+    if (!regionsCopy)
     {
       goto LABEL_10;
     }
   }
 
-  if (v4[2](v4))
+  if (regionsCopy[2](regionsCopy))
   {
     v9 = -128;
     goto LABEL_15;

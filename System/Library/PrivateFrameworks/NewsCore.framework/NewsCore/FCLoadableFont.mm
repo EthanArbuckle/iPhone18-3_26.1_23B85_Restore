@@ -1,37 +1,37 @@
 @interface FCLoadableFont
-+ (FCLoadableFont)loadableFontWithName:(id)a3 url:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (FCLoadableFont)loadableFontWithName:(id)name url:(id)url;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation FCLoadableFont
 
-+ (FCLoadableFont)loadableFontWithName:(id)a3 url:(id)a4
++ (FCLoadableFont)loadableFontWithName:(id)name url:(id)url
 {
-  v4 = a3;
-  if (a3)
+  nameCopy = name;
+  if (name)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = objc_alloc_init(FCLoadableFont);
-    [(FCLoadableFont *)v4 setFontName:v6];
+    urlCopy = url;
+    v6 = nameCopy;
+    nameCopy = objc_alloc_init(FCLoadableFont);
+    [(FCLoadableFont *)nameCopy setFontName:v6];
 
-    [(FCLoadableFont *)v4 setFontURL:v5];
+    [(FCLoadableFont *)nameCopy setFontURL:urlCopy];
   }
 
-  return v4;
+  return nameCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -47,14 +47,14 @@
 
   v6 = v5;
 
-  v7 = [(FCLoadableFont *)self fontName];
-  v8 = [v6 fontName];
-  if ([v7 isEqualToString:v8])
+  fontName = [(FCLoadableFont *)self fontName];
+  fontName2 = [v6 fontName];
+  if ([fontName isEqualToString:fontName2])
   {
     v9 = MEMORY[0x1E69E58C0];
-    v10 = [(FCLoadableFont *)self fontURL];
-    v11 = [v6 fontURL];
-    v12 = [v9 nf_object:v10 isEqualToObject:v11];
+    fontURL = [(FCLoadableFont *)self fontURL];
+    fontURL2 = [v6 fontURL];
+    v12 = [v9 nf_object:fontURL isEqualToObject:fontURL2];
   }
 
   else
@@ -67,10 +67,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FCLoadableFont *)self fontName];
-  v4 = [v3 hash];
-  v5 = [(FCLoadableFont *)self fontURL];
-  v6 = [v5 hash];
+  fontName = [(FCLoadableFont *)self fontName];
+  v4 = [fontName hash];
+  fontURL = [(FCLoadableFont *)self fontURL];
+  v6 = [fontURL hash];
 
   return v6 ^ v4;
 }
@@ -78,16 +78,16 @@
 - (id)description
 {
   v3 = [[FCDescription alloc] initWithObject:self];
-  v4 = [(FCLoadableFont *)self fontName];
-  [(FCDescription *)v3 addField:@"fontName" value:v4];
+  fontName = [(FCLoadableFont *)self fontName];
+  [(FCDescription *)v3 addField:@"fontName" value:fontName];
 
-  v5 = [(FCLoadableFont *)self fontURL];
-  v6 = [v5 absoluteString];
-  [(FCDescription *)v3 addField:@"fontURL" value:v6];
+  fontURL = [(FCLoadableFont *)self fontURL];
+  absoluteString = [fontURL absoluteString];
+  [(FCDescription *)v3 addField:@"fontURL" value:absoluteString];
 
-  v7 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v7;
+  return descriptionString;
 }
 
 @end

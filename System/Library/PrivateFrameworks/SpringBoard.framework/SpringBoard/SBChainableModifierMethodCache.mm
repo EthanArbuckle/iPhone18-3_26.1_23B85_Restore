@@ -1,6 +1,6 @@
 @interface SBChainableModifierMethodCache
-- (SBChainableModifierMethodCache)initWithIMPs:(void *)a3 selectorList:(id)a4 subsequentMethodCacheFunc:(void *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBChainableModifierMethodCache)initWithIMPs:(void *)ps selectorList:(id)list subsequentMethodCacheFunc:(void *)func;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -14,28 +14,28 @@
   [(SBChainableModifierMethodCache *)&v3 dealloc];
 }
 
-- (SBChainableModifierMethodCache)initWithIMPs:(void *)a3 selectorList:(id)a4 subsequentMethodCacheFunc:(void *)a5
+- (SBChainableModifierMethodCache)initWithIMPs:(void *)ps selectorList:(id)list subsequentMethodCacheFunc:(void *)func
 {
   v14.receiver = self;
   v14.super_class = SBChainableModifierMethodCache;
-  v7 = a4;
+  listCopy = list;
   v8 = [(SBChainableModifierMethodCache *)&v14 init];
   v9 = objc_alloc_init(SBModifierCacheCoordinator);
   cacheCoordinator = v8->_cacheCoordinator;
   v8->_cacheCoordinator = v9;
 
-  v8->_imps = a3;
-  v11 = v7[1];
-  v12 = v7[2];
+  v8->_imps = ps;
+  v11 = listCopy[1];
+  v12 = listCopy[2];
   v8->_selectorCount = v11;
 
   v8->_selectors = v12;
   v8->_dispatchCache = malloc_type_calloc(v11, 0x10uLL, 0x80040803F642BuLL);
-  v8->_nextFunc = a5;
+  v8->_nextFunc = func;
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   imps = self->_imps;

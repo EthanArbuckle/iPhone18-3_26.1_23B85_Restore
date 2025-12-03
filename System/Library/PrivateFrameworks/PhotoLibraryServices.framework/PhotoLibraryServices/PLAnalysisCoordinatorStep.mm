@@ -1,21 +1,21 @@
 @interface PLAnalysisCoordinatorStep
-- (PLAnalysisCoordinatorStep)initWithLibraryServicesManager:(id)a3 parentTaskID:(id)a4;
+- (PLAnalysisCoordinatorStep)initWithLibraryServicesManager:(id)manager parentTaskID:(id)d;
 @end
 
 @implementation PLAnalysisCoordinatorStep
 
-- (PLAnalysisCoordinatorStep)initWithLibraryServicesManager:(id)a3 parentTaskID:(id)a4
+- (PLAnalysisCoordinatorStep)initWithLibraryServicesManager:(id)manager parentTaskID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = PLAnalysisCoordinatorStep;
   v9 = [(PLAnalysisCoordinatorStep *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_libraryServicesManager, a3);
-    objc_storeStrong(&v10->_parentTaskID, a4);
+    objc_storeStrong(&v9->_libraryServicesManager, manager);
+    objc_storeStrong(&v10->_parentTaskID, d);
   }
 
   return v10;

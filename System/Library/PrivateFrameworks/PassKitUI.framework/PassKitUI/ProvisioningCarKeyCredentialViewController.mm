@@ -1,18 +1,18 @@
 @interface ProvisioningCarKeyCredentialViewController
-- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (id)defaultFields;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (id)visibleFieldIdentifiers;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ProvisioningCarKeyCredentialViewController
 
-- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI42ProvisioningCarKeyCredentialViewController_coordinator) = 0;
   result = sub_1BE053994();
@@ -20,18 +20,18 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ProvisioningCarKeyCredentialViewController();
   v4 = v10.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v10 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(PKPaymentSetupFieldsViewController *)&v10 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [v5 viewControllers];
+    v6 = navigationController;
+    viewControllers = [navigationController viewControllers];
 
     sub_1BD0E5E8C(0, &qword_1EBD43450);
     v8 = sub_1BE052744();
@@ -55,11 +55,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD5AB67C();
 }
 
-- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUI42ProvisioningCarKeyCredentialViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -68,14 +68,14 @@
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = self;
-  result = [(PKPaymentSetupFieldsViewController *)v2 fieldsModel];
+  selfCopy = self;
+  result = [(PKPaymentSetupFieldsViewController *)selfCopy fieldsModel];
   if (result)
   {
     v4 = result;
-    v5 = [result visibleSetupFieldIdentifiers];
+    visibleSetupFieldIdentifiers = [result visibleSetupFieldIdentifiers];
 
-    if (v5)
+    if (visibleSetupFieldIdentifiers)
     {
       sub_1BE052744();
 
@@ -99,12 +99,12 @@
   return result;
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (tapped)
   {
-    v4 = self;
+    selfCopy2 = self;
     swift_unknownObjectRetain();
     sub_1BE053624();
     swift_unknownObjectRelease();
@@ -113,23 +113,23 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v5 = self;
+    selfCopy3 = self;
   }
 
-  v6 = *(&v3->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI42ProvisioningCarKeyCredentialViewController_coordinator);
+  v6 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI42ProvisioningCarKeyCredentialViewController_coordinator);
   if (!v6)
   {
     goto LABEL_7;
   }
 
   v7 = v6;
-  v8 = [(PKPaymentSetupFieldsViewController *)v3 fieldsModel];
-  if (v8)
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)selfCopy fieldsModel];
+  if (fieldsModel)
   {
-    v9 = v8;
-    sub_1BD317B18(v8);
+    v9 = fieldsModel;
+    sub_1BD317B18(fieldsModel);
 
-    v3 = v9;
+    selfCopy = v9;
 LABEL_7:
 
     sub_1BD14EC0C(v10);
@@ -141,7 +141,7 @@ LABEL_7:
 
 - (id)defaultHeaderViewTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD5AC694();
 
   v3 = sub_1BE052404();
@@ -151,7 +151,7 @@ LABEL_7:
 
 - (id)defaultHeaderViewSubTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD5AC694();
   v4 = v3;
 

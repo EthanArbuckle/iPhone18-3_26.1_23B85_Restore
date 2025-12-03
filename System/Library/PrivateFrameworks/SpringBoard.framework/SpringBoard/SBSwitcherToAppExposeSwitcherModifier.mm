@@ -1,9 +1,9 @@
 @interface SBSwitcherToAppExposeSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBSwitcherToAppExposeSwitcherModifier)initWithTransitionID:(id)a3 bundleIdentifier:(id)a4 appExposeModifier:(id)a5;
-- (double)_offsetForPushingCardsOffscreenAtIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBSwitcherToAppExposeSwitcherModifier)initWithTransitionID:(id)d bundleIdentifier:(id)identifier appExposeModifier:(id)modifier;
+- (double)_offsetForPushingCardsOffscreenAtIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleTimerEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (id)visibleAppLayouts;
@@ -11,24 +11,24 @@
 
 @implementation SBSwitcherToAppExposeSwitcherModifier
 
-- (SBSwitcherToAppExposeSwitcherModifier)initWithTransitionID:(id)a3 bundleIdentifier:(id)a4 appExposeModifier:(id)a5
+- (SBSwitcherToAppExposeSwitcherModifier)initWithTransitionID:(id)d bundleIdentifier:(id)identifier appExposeModifier:(id)modifier
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  modifierCopy = modifier;
   v16.receiver = self;
   v16.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v11 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:v9];
+  v11 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:dCopy];
   if (v11)
   {
-    if (a4)
+    if (identifier)
     {
-      if (v10)
+      if (modifierCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v11->_appExposeModifier, a5);
+        objc_storeStrong(&v11->_appExposeModifier, modifier);
         v12 = [SBRouteToAppExposeSwitcherModifier alloc];
-        v13 = [(SBSwitcherToAppExposeSwitcherModifier *)v11 _newAppExposeModifier];
-        v14 = [(SBRouteToAppExposeSwitcherModifier *)v12 initWithTransitionID:v9 appExposeModifier:v13];
+        _newAppExposeModifier = [(SBSwitcherToAppExposeSwitcherModifier *)v11 _newAppExposeModifier];
+        v14 = [(SBRouteToAppExposeSwitcherModifier *)v12 initWithTransitionID:dCopy appExposeModifier:_newAppExposeModifier];
 
         [(SBChainableModifier *)v11 addChildModifier:v14 atLevel:0 key:0];
         goto LABEL_5;
@@ -38,7 +38,7 @@ LABEL_4:
     else
     {
       [SBSwitcherToAppExposeSwitcherModifier initWithTransitionID:a2 bundleIdentifier:v11 appExposeModifier:?];
-      if (v10)
+      if (modifierCopy)
       {
         goto LABEL_4;
       }
@@ -57,16 +57,16 @@ LABEL_5:
 {
   v12.receiver = self;
   v12.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
   v11.receiver = self;
   v11.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v4 = [(SBSwitcherToAppExposeSwitcherModifier *)&v11 visibleAppLayouts];
+  visibleAppLayouts = [(SBSwitcherToAppExposeSwitcherModifier *)&v11 visibleAppLayouts];
   appLayoutsVisibleBeforeTransition = self->_appLayoutsVisibleBeforeTransition;
-  self->_appLayoutsVisibleBeforeTransition = v4;
+  self->_appLayoutsVisibleBeforeTransition = visibleAppLayouts;
 
   [(SBChainableModifier *)self addChildModifier:self->_appExposeModifier atLevel:1 key:0];
   v6 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v6];
+  v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionWillBegin toResponse:v6];
 
   v8 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"Switcher to App Expose did begin" reason:0.0];
   v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:v7];
@@ -74,25 +74,25 @@ LABEL_5:
   return v9;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v25.receiver = self;
   v25.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v25 handleTimerEvent:v4];
-  v6 = [v4 reason];
-  v7 = [v6 isEqualToString:@"Switcher to App Expose did begin"];
+  v5 = [(SBTransitionSwitcherModifier *)&v25 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
+  v7 = [reason isEqualToString:@"Switcher to App Expose did begin"];
 
   if (v7)
   {
-    v8 = [(SBSwitcherToAppExposeSwitcherModifier *)self appLayouts];
-    v9 = [v8 firstObject];
+    appLayouts = [(SBSwitcherToAppExposeSwitcherModifier *)self appLayouts];
+    firstObject = [appLayouts firstObject];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v8;
+    v10 = appLayouts;
     v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v11)
     {
@@ -101,7 +101,7 @@ LABEL_5:
       while (2)
       {
         v14 = 0;
-        v15 = v9;
+        v15 = firstObject;
         do
         {
           if (*v22 != v13)
@@ -112,14 +112,14 @@ LABEL_5:
           v16 = *(*(&v21 + 1) + 8 * v14);
           if ([v16 environment] == 1)
           {
-            v9 = v15;
+            firstObject = v15;
             goto LABEL_12;
           }
 
-          v9 = v16;
+          firstObject = v16;
 
           ++v14;
-          v15 = v9;
+          v15 = firstObject;
         }
 
         while (v12 != v14);
@@ -135,9 +135,9 @@ LABEL_5:
 
 LABEL_12:
 
-    if (v9)
+    if (firstObject)
     {
-      v17 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v9 alignment:0 animated:0];
+      v17 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:firstObject alignment:0 animated:0];
       v18 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v17 toResponse:v5];
 
       v19 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
@@ -156,12 +156,12 @@ LABEL_12:
 
   v6.receiver = self;
   v6.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v6 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v6 transitionWillUpdate];
 
-  return v4;
+  return transitionWillUpdate;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v19.receiver = self;
   v19.super_class = SBSwitcherToAppExposeSwitcherModifier;
@@ -172,7 +172,7 @@ LABEL_12:
   height = v11;
   if (self->_appExposeModifier)
   {
-    [(SBSwitcherToAppExposeSwitcherModifier *)self _offsetForPushingCardsOffscreenAtIndex:a3];
+    [(SBSwitcherToAppExposeSwitcherModifier *)self _offsetForPushingCardsOffscreenAtIndex:index];
     v14 = v13;
     v20.origin.x = x;
     v20.origin.y = y;
@@ -200,36 +200,36 @@ LABEL_12:
 {
   v6.receiver = self;
   v6.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v3 = [(SBSwitcherToAppExposeSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObjectsFromSet:self->_appLayoutsVisibleBeforeTransition];
+  visibleAppLayouts = [(SBSwitcherToAppExposeSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObjectsFromSet:self->_appLayoutsVisibleBeforeTransition];
 
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBSwitcherToAppExposeSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBSwitcherToAppExposeSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 toggleAppSwitcherSettings];
-  [v5 setLayoutSettings:v8];
+  switcherSettings = [(SBSwitcherToAppExposeSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  toggleAppSwitcherSettings = [animationSettings toggleAppSwitcherSettings];
+  [v5 setLayoutSettings:toggleAppSwitcherSettings];
 
   return v5;
 }
 
-- (double)_offsetForPushingCardsOffscreenAtIndex:(unint64_t)a3
+- (double)_offsetForPushingCardsOffscreenAtIndex:(unint64_t)index
 {
-  v5 = [(SBSwitcherToAppExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBSwitcherToAppExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LODWORD(v5) = [v6 environment] != 2;
+  LODWORD(appLayouts) = [v6 environment] != 2;
   [(SBSwitcherToAppExposeSwitcherModifier *)self switcherViewBounds];
   v8 = v7;
-  if ([(SBSwitcherToAppExposeSwitcherModifier *)self isRTLEnabled]!= v5)
+  if ([(SBSwitcherToAppExposeSwitcherModifier *)self isRTLEnabled]!= appLayouts)
   {
     v8 = -v8;
   }

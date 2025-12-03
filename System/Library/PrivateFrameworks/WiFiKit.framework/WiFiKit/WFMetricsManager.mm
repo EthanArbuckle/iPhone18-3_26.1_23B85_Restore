@@ -1,8 +1,8 @@
 @interface WFMetricsManager
 + (id)sharedManager;
 - (WFMetricsManager)init;
-- (void)_submitCAEvent:(id)a3;
-- (void)processEvent:(id)a3;
+- (void)_submitCAEvent:(id)event;
+- (void)processEvent:(id)event;
 @end
 
 @implementation WFMetricsManager
@@ -26,14 +26,14 @@ uint64_t __33__WFMetricsManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    if ([v4 conformsToProtocol:&unk_28831F170])
+    if ([eventCopy conformsToProtocol:&unk_28831F170])
     {
       [(WFMetricsManager *)self _submitCAEvent:v5];
     }
@@ -54,18 +54,18 @@ uint64_t __33__WFMetricsManager_sharedManager__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitCAEvent:(id)a3
+- (void)_submitCAEvent:(id)event
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 eventName];
+  eventCopy = event;
+  eventName = [eventCopy eventName];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
-  v21 = [v3 eventDictionary];
-  if (!v4)
+  eventDictionary = [eventCopy eventDictionary];
+  if (!eventName)
   {
     v9 = WFLogForCategory(0);
     v10 = OSLogForWFLogLevel(1uLL);
@@ -95,7 +95,7 @@ uint64_t __33__WFMetricsManager_sharedManager__block_invoke()
     *buf = 136315394;
     v23 = "[WFMetricsManager _submitCAEvent:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = eventName;
     v11 = "%s: event is nil for event %@";
     v12 = v9;
     v13 = v15;
@@ -115,7 +115,7 @@ LABEL_18:
     *buf = 136315650;
     v23 = "[WFMetricsManager _submitCAEvent:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = eventName;
     v26 = 2112;
     v27 = v7;
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: submitting %@ with dictionary %@", buf, 0x20u);
@@ -158,9 +158,9 @@ LABEL_8:
       }
     }
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     ssidHashes = v2->_ssidHashes;
-    v2->_ssidHashes = v7;
+    v2->_ssidHashes = dictionary;
 
     if (v4)
     {

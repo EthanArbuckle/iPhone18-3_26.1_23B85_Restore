@@ -1,32 +1,32 @@
 @interface _UIDiffableDataSourceDiffer
-+ (id)differWithBeforeDataSourceState:(void *)a3 afterDataSourceState:;
-+ (id)differWithBeforeDataSourceState:(void *)a3 afterDataSourceState:(void *)a4 itemIdentifierDiffer:;
-- (BOOL)_verifyForUpdates:(id)a3;
++ (id)differWithBeforeDataSourceState:(void *)state afterDataSourceState:;
++ (id)differWithBeforeDataSourceState:(void *)state afterDataSourceState:(void *)sourceState itemIdentifierDiffer:;
+- (BOOL)_verifyForUpdates:(id)updates;
 - (id)description;
-- (id)initWithBeforeDataSource:(void *)a3 afterDataSource:(void *)a4 itemIdentifierDiffer:;
+- (id)initWithBeforeDataSource:(void *)source afterDataSource:(void *)dataSource itemIdentifierDiffer:;
 @end
 
 @implementation _UIDiffableDataSourceDiffer
 
-- (id)initWithBeforeDataSource:(void *)a3 afterDataSource:(void *)a4 itemIdentifierDiffer:
+- (id)initWithBeforeDataSource:(void *)source afterDataSource:(void *)dataSource itemIdentifierDiffer:
 {
   v149 = *MEMORY[0x1E69E9840];
   v112 = a2;
-  v113 = a3;
-  v114 = a4;
-  if (a1 && (v129.receiver = a1, v129.super_class = _UIDiffableDataSourceDiffer, v8 = objc_msgSendSuper2(&v129, sel_init), (v119 = v8) != 0))
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  if (self && (v129.receiver = self, v129.super_class = _UIDiffableDataSourceDiffer, v8 = objc_msgSendSuper2(&v129, sel_init), (v119 = v8) != 0))
   {
     objc_storeStrong(v8 + 2, a2);
-    objc_storeStrong(v119 + 3, a3);
-    objc_storeStrong(v119 + 4, a4);
+    objc_storeStrong(v119 + 3, source);
+    objc_storeStrong(v119 + 4, dataSource);
     v9 = v119[4];
     if (!v9)
     {
       v10 = [_UIIdentifierDiffer alloc];
       v11 = v119[2];
-      v12 = [v11 identifiers];
-      v13 = [v119[3] identifiers];
-      v9 = [(_UIIdentifierDiffer *)&v10->super.isa initWithBeforeIdentifiers:v12 afterIdentifiers:v13];
+      identifiers = [v11 identifiers];
+      identifiers2 = [v119[3] identifiers];
+      v9 = [(_UIIdentifierDiffer *)&v10->super.isa initWithBeforeIdentifiers:identifiers afterIdentifiers:identifiers2];
 
       if (v9)
       {
@@ -41,13 +41,13 @@
     v16 = v119[2];
     v17 = [(_UIDiffableSectionBoundaryMoveDetector *)v14 initWithItemDiffer:v127 beforeDataSourceState:v16 afterDataSourceState:v15];
 
-    v121 = [(_UIDiffableSectionBoundaryMoveDetector *)v17 movePairs];
+    movePairs = [(_UIDiffableSectionBoundaryMoveDetector *)v17 movePairs];
 
     v18 = [_UIIdentifierDiffer alloc];
     v19 = v119[2];
-    v20 = [v19 sections];
-    v21 = [v119[3] sections];
-    v116 = [(_UIIdentifierDiffer *)&v18->super.isa initWithBeforeIdentifiers:v20 afterIdentifiers:v21];
+    sections = [v19 sections];
+    sections2 = [v119[3] sections];
+    v116 = [(_UIIdentifierDiffer *)&v18->super.isa initWithBeforeIdentifiers:sections afterIdentifiers:sections2];
 
     if (v116)
     {
@@ -60,15 +60,15 @@
     v25 = v22;
     v26 = v23;
     v118 = v24;
-    v27 = [(_UIIdentifierDiffer *)v24 insertedIndexes];
-    v28 = [v27 count];
-    v29 = [(_UIIdentifierDiffer *)v24 deletedIndexes];
-    v30 = [v29 count];
-    v31 = [(_UIIdentifierDiffer *)v24 movePairs];
-    v32 = [v31 count];
+    insertedIndexes = [(_UIIdentifierDiffer *)v24 insertedIndexes];
+    v28 = [insertedIndexes count];
+    deletedIndexes = [(_UIIdentifierDiffer *)v24 deletedIndexes];
+    v30 = [deletedIndexes count];
+    movePairs2 = [(_UIIdentifierDiffer *)v24 movePairs];
+    v32 = [movePairs2 count];
 
     v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v30 + v28 + v32];
-    v34 = [(_UIIdentifierDiffer *)v24 insertedIndexes];
+    insertedIndexes2 = [(_UIIdentifierDiffer *)v24 insertedIndexes];
     v134 = MEMORY[0x1E69E9820];
     v135 = 3221225472;
     v136 = __94___UIDiffableDataSourceDiffer__sectionUpdatesForDiffResults_deletedSections_insertedSections___block_invoke;
@@ -77,9 +77,9 @@
     v138 = v35;
     v123 = v26;
     v139 = v123;
-    [v34 enumerateIndexesUsingBlock:&v134];
+    [insertedIndexes2 enumerateIndexesUsingBlock:&v134];
 
-    v36 = [(_UIIdentifierDiffer *)v24 deletedIndexes];
+    deletedIndexes2 = [(_UIIdentifierDiffer *)v24 deletedIndexes];
     *&v130 = MEMORY[0x1E69E9820];
     *(&v130 + 1) = 3221225472;
     *&v131 = __94___UIDiffableDataSourceDiffer__sectionUpdatesForDiffResults_deletedSections_insertedSections___block_invoke_2;
@@ -88,14 +88,14 @@
     *&v132 = v37;
     v125 = v25;
     *(&v132 + 1) = v125;
-    [v36 enumerateIndexesUsingBlock:&v130];
+    [deletedIndexes2 enumerateIndexesUsingBlock:&v130];
 
     v145 = 0u;
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    v38 = [(_UIIdentifierDiffer *)v24 movePairs];
-    v39 = [v38 countByEnumeratingWithState:&v143 objects:v148 count:16];
+    movePairs3 = [(_UIIdentifierDiffer *)v24 movePairs];
+    v39 = [movePairs3 countByEnumeratingWithState:&v143 objects:v148 count:16];
     if (v39)
     {
       v40 = *v144;
@@ -105,7 +105,7 @@
         {
           if (*v144 != v40)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(movePairs3);
           }
 
           v42 = *(*(&v143 + 1) + 8 * i);
@@ -154,7 +154,7 @@ LABEL_18:
 LABEL_23:
         }
 
-        v39 = [v38 countByEnumeratingWithState:&v143 objects:v148 count:16];
+        v39 = [movePairs3 countByEnumeratingWithState:&v143 objects:v148 count:16];
       }
 
       while (v39);
@@ -164,38 +164,38 @@ LABEL_23:
     v115 = v37;
 
     v128 = v127;
-    v117 = v121;
+    v117 = movePairs;
     v50 = v125;
     v51 = v123;
     v52 = v119[2];
-    v53 = [v52 dataSourceSnapshot];
+    dataSourceSnapshot = [v52 dataSourceSnapshot];
 
     v54 = v119[3];
-    v55 = [v54 dataSourceSnapshot];
+    dataSourceSnapshot2 = [v54 dataSourceSnapshot];
 
     LOBYTE(v54) = [v117 count] == 0;
-    v56 = [(_UIIdentifierDiffer *)v128 movePairs];
-    v57 = v56;
+    movePairs4 = [(_UIIdentifierDiffer *)v128 movePairs];
+    v57 = movePairs4;
     if ((v54 & 1) == 0)
     {
-      v58 = [v56 setByAddingObjectsFromSet:v117];
+      v58 = [movePairs4 setByAddingObjectsFromSet:v117];
 
       v57 = v58;
     }
 
-    v59 = [(_UIIdentifierDiffer *)v128 insertedIndexes];
-    v60 = [v59 count];
-    v61 = [(_UIIdentifierDiffer *)v128 deletedIndexes];
-    v62 = [v61 count];
+    insertedIndexes3 = [(_UIIdentifierDiffer *)v128 insertedIndexes];
+    v60 = [insertedIndexes3 count];
+    deletedIndexes3 = [(_UIIdentifierDiffer *)v128 deletedIndexes];
+    v62 = [deletedIndexes3 count];
     v63 = [v57 count];
 
     v64 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v62 + v60 + v63];
-    v65 = [(_UIIdentifierDiffer *)v128 insertedIndexes];
+    insertedIndexes4 = [(_UIIdentifierDiffer *)v128 insertedIndexes];
     *&v143 = MEMORY[0x1E69E9820];
     *(&v143 + 1) = 3221225472;
     *&v144 = __112___UIDiffableDataSourceDiffer__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections___block_invoke;
     *(&v144 + 1) = &unk_1E70FCF90;
-    v66 = v55;
+    v66 = dataSourceSnapshot2;
     v147 = sel__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections_;
     v124 = v66;
     *&v145 = v66;
@@ -204,14 +204,14 @@ LABEL_23:
     *&v146 = v67;
     v68 = v64;
     *(&v146 + 1) = v68;
-    [v65 enumerateIndexesUsingBlock:&v143];
+    [insertedIndexes4 enumerateIndexesUsingBlock:&v143];
 
-    v69 = [(_UIIdentifierDiffer *)v128 deletedIndexes];
+    deletedIndexes4 = [(_UIIdentifierDiffer *)v128 deletedIndexes];
     v134 = MEMORY[0x1E69E9820];
     v135 = 3221225472;
     v136 = __112___UIDiffableDataSourceDiffer__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections___block_invoke_2;
     v137 = &unk_1E70FCF90;
-    v70 = v53;
+    v70 = dataSourceSnapshot;
     v142 = sel__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections_;
     v126 = v70;
     v138 = v70;
@@ -220,7 +220,7 @@ LABEL_23:
     v140 = v71;
     v122 = v68;
     v141 = v122;
-    [v69 enumerateIndexesUsingBlock:&v134];
+    [deletedIndexes4 enumerateIndexesUsingBlock:&v134];
 
     v132 = 0u;
     v133 = 0u;
@@ -257,22 +257,22 @@ LABEL_23:
           v78 = [v124 indexPathForGlobalIndex:v77];
           if (!v76)
           {
-            v92 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v92 handleFailureInMethod:sel__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections_ object:v119 file:@"_UIDiffableDataSourceDiffer.m" lineNumber:202 description:@"Failed to convert global index to indexPath."];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:sel__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections_ object:v119 file:@"_UIDiffableDataSourceDiffer.m" lineNumber:202 description:@"Failed to convert global index to indexPath."];
           }
 
           if (!v78)
           {
-            v93 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v93 handleFailureInMethod:sel__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections_ object:v119 file:@"_UIDiffableDataSourceDiffer.m" lineNumber:203 description:@"Failed to convert global index to indexPath."];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel__itemUpdatesForDiffResults_sectionBoundaryMoves_deletedSections_insertedSections_ object:v119 file:@"_UIDiffableDataSourceDiffer.m" lineNumber:203 description:@"Failed to convert global index to indexPath."];
           }
 
           v79 = [v71 containsIndex:{objc_msgSend(v76, "section")}];
           v80 = [v67 containsIndex:{objc_msgSend(v78, "section")}];
           if ((dyld_program_sdk_at_least() & 1) != 0 || ![v76 isEqual:v78])
           {
-            v83 = [(_UIIdentifierDiffer *)v128 insertedIndexes];
-            v84 = v83;
+            insertedIndexes5 = [(_UIIdentifierDiffer *)v128 insertedIndexes];
+            v84 = insertedIndexes5;
             if (v75)
             {
               v85 = *(v75 + 16);
@@ -283,7 +283,7 @@ LABEL_23:
               v85 = 0;
             }
 
-            v86 = [v83 containsIndex:v85];
+            v86 = [insertedIndexes5 containsIndex:v85];
 
             if (!v86)
             {
@@ -291,8 +291,8 @@ LABEL_23:
               goto LABEL_52;
             }
 
-            v87 = [(_UIIdentifierDiffer *)v128 deletedIndexes];
-            v88 = v87;
+            deletedIndexes5 = [(_UIIdentifierDiffer *)v128 deletedIndexes];
+            v88 = deletedIndexes5;
             if (v75)
             {
               v89 = *(v75 + 8);
@@ -303,7 +303,7 @@ LABEL_23:
               v89 = 0;
             }
 
-            v90 = [v87 containsIndex:v89];
+            v90 = [deletedIndexes5 containsIndex:v89];
 
             if ((v90 & 1) == 0)
             {
@@ -350,8 +350,8 @@ LABEL_52:
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    v98 = [(_UIIdentifierDiffer *)v118 movePairs];
-    v99 = [v98 countByEnumeratingWithState:&v143 objects:v148 count:16];
+    movePairs5 = [(_UIIdentifierDiffer *)v118 movePairs];
+    v99 = [movePairs5 countByEnumeratingWithState:&v143 objects:v148 count:16];
     if (v99)
     {
       v100 = *v144;
@@ -362,7 +362,7 @@ LABEL_52:
         {
           if (*v144 != v100)
           {
-            objc_enumerationMutation(v98);
+            objc_enumerationMutation(movePairs5);
           }
 
           v102 = *(*(&v143 + 1) + 8 * v101);
@@ -384,7 +384,7 @@ LABEL_52:
         }
 
         while (v99 != v101);
-        v105 = [v98 countByEnumeratingWithState:&v143 objects:v148 count:16];
+        v105 = [movePairs5 countByEnumeratingWithState:&v143 objects:v148 count:16];
         v99 = v105;
       }
 
@@ -428,11 +428,11 @@ LABEL_52:
   }
 
   v8 = beforeDataSourceState;
-  v9 = [(_UIDiffableDataSourceState *)v8 dataSourceSnapshot];
+  dataSourceSnapshot = [(_UIDiffableDataSourceState *)v8 dataSourceSnapshot];
   if (self)
   {
-    v10 = [(_UIDiffableDataSourceState *)self->_afterDataSourceState dataSourceSnapshot];
-    [v6 appendFormat:@"before: %@; after:%@;", v9, v10];
+    dataSourceSnapshot2 = [(_UIDiffableDataSourceState *)self->_afterDataSourceState dataSourceSnapshot];
+    [v6 appendFormat:@"before: %@; after:%@;", dataSourceSnapshot, dataSourceSnapshot2];
 
     [v6 appendString:@"\n\nBefore:\n"];
     v11 = self->_beforeDataSourceState;
@@ -440,15 +440,15 @@ LABEL_52:
 
   else
   {
-    v30 = [0 dataSourceSnapshot];
-    [v6 appendFormat:@"before: %@; after:%@;", v9, v30];
+    dataSourceSnapshot3 = [0 dataSourceSnapshot];
+    [v6 appendFormat:@"before: %@; after:%@;", dataSourceSnapshot, dataSourceSnapshot3];
 
     [v6 appendString:@"\n\nBefore:\n"];
     v11 = 0;
   }
 
-  v12 = [(_UIDiffableDataSourceState *)v11 dataSourceSnapshot];
-  if ([v12 numberOfSections] >= 1)
+  dataSourceSnapshot4 = [(_UIDiffableDataSourceState *)v11 dataSourceSnapshot];
+  if ([dataSourceSnapshot4 numberOfSections] >= 1)
   {
     v13 = 0;
     do
@@ -463,8 +463,8 @@ LABEL_52:
         v14 = 0;
       }
 
-      v15 = [(_UIDiffableDataSourceState *)v14 sections];
-      v16 = [v15 objectAtIndexedSubscript:v13];
+      sections = [(_UIDiffableDataSourceState *)v14 sections];
+      v16 = [sections objectAtIndexedSubscript:v13];
 
       if (self)
       {
@@ -476,14 +476,14 @@ LABEL_52:
         v17 = 0;
       }
 
-      v18 = [(_UIDiffableDataSourceState *)v17 identifiers];
-      v19 = __42___UIDiffableDataSourceDiffer_description__block_invoke(v12, v18, v13, v16);
+      identifiers = [(_UIDiffableDataSourceState *)v17 identifiers];
+      v19 = __42___UIDiffableDataSourceDiffer_description__block_invoke(dataSourceSnapshot4, identifiers, v13, v16);
 
       [v6 appendString:v19];
       ++v13;
     }
 
-    while (v13 < [v12 numberOfSections]);
+    while (v13 < [dataSourceSnapshot4 numberOfSections]);
   }
 
   [v6 appendString:@"\n\nAfter:\n"];
@@ -497,8 +497,8 @@ LABEL_52:
     afterDataSourceState = 0;
   }
 
-  v21 = [(_UIDiffableDataSourceState *)afterDataSourceState dataSourceSnapshot];
-  if ([v21 numberOfSections] >= 1)
+  dataSourceSnapshot5 = [(_UIDiffableDataSourceState *)afterDataSourceState dataSourceSnapshot];
+  if ([dataSourceSnapshot5 numberOfSections] >= 1)
   {
     v22 = 0;
     do
@@ -513,8 +513,8 @@ LABEL_52:
         v23 = 0;
       }
 
-      v24 = [(_UIDiffableDataSourceState *)v23 sections];
-      v25 = [v24 objectAtIndexedSubscript:v22];
+      sections2 = [(_UIDiffableDataSourceState *)v23 sections];
+      v25 = [sections2 objectAtIndexedSubscript:v22];
 
       if (self)
       {
@@ -526,14 +526,14 @@ LABEL_52:
         v26 = 0;
       }
 
-      v27 = [(_UIDiffableDataSourceState *)v26 identifiers];
-      v28 = __42___UIDiffableDataSourceDiffer_description__block_invoke(v21, v27, v22, v25);
+      identifiers2 = [(_UIDiffableDataSourceState *)v26 identifiers];
+      v28 = __42___UIDiffableDataSourceDiffer_description__block_invoke(dataSourceSnapshot5, identifiers2, v22, v25);
 
       [v6 appendString:v28];
       ++v22;
     }
 
-    while (v22 < [v21 numberOfSections]);
+    while (v22 < [dataSourceSnapshot5 numberOfSections]);
   }
 
   [v6 appendFormat:@"\nidentifierDiffer: %@", self->_itemIdentifierDiffer];
@@ -542,38 +542,38 @@ LABEL_52:
   return v6;
 }
 
-+ (id)differWithBeforeDataSourceState:(void *)a3 afterDataSourceState:
++ (id)differWithBeforeDataSourceState:(void *)state afterDataSourceState:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   objc_opt_self();
-  v6 = [[_UIDiffableDataSourceDiffer alloc] initWithBeforeDataSource:v5 afterDataSource:v4 itemIdentifierDiffer:0];
+  v6 = [[_UIDiffableDataSourceDiffer alloc] initWithBeforeDataSource:v5 afterDataSource:stateCopy itemIdentifierDiffer:0];
 
   return v6;
 }
 
-+ (id)differWithBeforeDataSourceState:(void *)a3 afterDataSourceState:(void *)a4 itemIdentifierDiffer:
++ (id)differWithBeforeDataSourceState:(void *)state afterDataSourceState:(void *)sourceState itemIdentifierDiffer:
 {
-  v6 = a4;
-  v7 = a3;
+  sourceStateCopy = sourceState;
+  stateCopy = state;
   v8 = a2;
   objc_opt_self();
-  v9 = [[_UIDiffableDataSourceDiffer alloc] initWithBeforeDataSource:v8 afterDataSource:v7 itemIdentifierDiffer:v6];
+  v9 = [[_UIDiffableDataSourceDiffer alloc] initWithBeforeDataSource:v8 afterDataSource:stateCopy itemIdentifierDiffer:sourceStateCopy];
 
   return v9;
 }
 
-- (BOOL)_verifyForUpdates:(id)a3
+- (BOOL)_verifyForUpdates:(id)updates
 {
   v80 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  updatesCopy = updates;
   v50 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v51 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v4 = v3;
+  v4 = updatesCopy;
   v5 = [v4 countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (v5)
   {
@@ -644,18 +644,18 @@ LABEL_52:
       v17 = *(*(&v69 + 1) + 8 * v16);
       if (!v17)
       {
-        v19 = [0 indexPathAfterUpdate];
+        indexPathAfterUpdate = [0 indexPathAfterUpdate];
         goto LABEL_30;
       }
 
       v18 = v17[10];
       if (!v18)
       {
-        v19 = [*(*(&v69 + 1) + 8 * v16) indexPathAfterUpdate];
+        indexPathAfterUpdate = [*(*(&v69 + 1) + 8 * v16) indexPathAfterUpdate];
         if (v17[6] != 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_30:
-          if ([v51 containsIndex:{objc_msgSend(v19, "section")}])
+          if ([v51 containsIndex:{objc_msgSend(indexPathAfterUpdate, "section")}])
           {
             goto LABEL_37;
           }
@@ -668,9 +668,9 @@ LABEL_28:
 
       if (v18 == 1)
       {
-        v21 = [*(*(&v69 + 1) + 8 * v16) indexPathBeforeUpdate];
-        v19 = v21;
-        if (v17[6] != 0x7FFFFFFFFFFFFFFFLL && ([v50 containsIndex:{objc_msgSend(v21, "section")}] & 1) != 0)
+        indexPathBeforeUpdate = [*(*(&v69 + 1) + 8 * v16) indexPathBeforeUpdate];
+        indexPathAfterUpdate = indexPathBeforeUpdate;
+        if (v17[6] != 0x7FFFFFFFFFFFFFFFLL && ([v50 containsIndex:{objc_msgSend(indexPathBeforeUpdate, "section")}] & 1) != 0)
         {
           goto LABEL_37;
         }
@@ -683,8 +683,8 @@ LABEL_28:
         goto LABEL_38;
       }
 
-      v19 = [*(*(&v69 + 1) + 8 * v16) indexPathBeforeUpdate];
-      v20 = [v17 indexPathAfterUpdate];
+      indexPathAfterUpdate = [*(*(&v69 + 1) + 8 * v16) indexPathBeforeUpdate];
+      indexPathAfterUpdate2 = [v17 indexPathAfterUpdate];
       if (v17[6] == 0x7FFFFFFFFFFFFFFFLL)
       {
         [v12 addObject:v17];
@@ -692,15 +692,15 @@ LABEL_28:
 
       else
       {
-        if (([v50 containsIndex:{objc_msgSend(v19, "section")}] & 1) == 0)
+        if (([v50 containsIndex:{objc_msgSend(indexPathAfterUpdate, "section")}] & 1) == 0)
         {
-          v22 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:v19 finalIndexPath:0 updateAction:1];
+          v22 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:indexPathAfterUpdate finalIndexPath:0 updateAction:1];
           [v12 addObject:v22];
         }
 
-        if (([v51 containsIndex:{objc_msgSend(v20, "section")}] & 1) == 0)
+        if (([v51 containsIndex:{objc_msgSend(indexPathAfterUpdate2, "section")}] & 1) == 0)
         {
-          v23 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:0 finalIndexPath:v20 updateAction:0];
+          v23 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:0 finalIndexPath:indexPathAfterUpdate2 updateAction:0];
           [v12 addObject:v23];
         }
       }
@@ -813,8 +813,8 @@ LABEL_54:
   }
 
   v39 = beforeDataSourceState;
-  v40 = [v39 dataSourceSnapshot];
-  v41 = [off_1E70ECC48 snapshotterForSnapshot:v40];
+  dataSourceSnapshot = [v39 dataSourceSnapshot];
+  v41 = [off_1E70ECC48 snapshotterForSnapshot:dataSourceSnapshot];
 
   v59 = v41;
   v53[0] = MEMORY[0x1E69E9820];
@@ -841,8 +841,8 @@ LABEL_54:
   }
 
   v43 = afterDataSourceState;
-  v44 = [(_UIDiffableDataSourceState *)v43 dataSourceSnapshot];
-  v45 = [off_1E70ECC48 snapshotterForSnapshot:v44];
+  dataSourceSnapshot2 = [(_UIDiffableDataSourceState *)v43 dataSourceSnapshot];
+  v45 = [off_1E70ECC48 snapshotterForSnapshot:dataSourceSnapshot2];
 
   LOBYTE(v43) = [v55[5] isEqual:v45];
   _Block_object_dispose(&v54, 8);

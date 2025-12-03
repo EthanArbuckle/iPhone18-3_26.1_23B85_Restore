@@ -1,17 +1,17 @@
 @interface SCDAAccessoryMessage
-+ (BOOL)isMyriadRequestMessage:(id)a3;
-+ (id)myriadRequestTypeAsString:(unint64_t)a3;
-- (SCDAAccessoryMessage)initWithAccessoryMessage:(id)a3 accessoryId:(id)a4;
-- (SCDAAccessoryMessage)initWithAccessoryMessageAsDictionary:(id)a3 accessoryId:(id)a4;
-- (SCDAAccessoryMessage)initWithRequestType:(unint64_t)a3 session:(unint64_t)a4 voiceTriggerEndTime:(double)a5 audioHash:(unsigned __int16)a6 goodnessScore:(unsigned __int8)a7 userConfidenceScore:(unsigned __int8)a8 tieBreaker:(unsigned __int8)a9 deviceClass:(unsigned __int8)a10 deviceGroup:(unsigned __int8)a11 productType:(unsigned __int8)a12 electionDecision:(unsigned __int8)a13 emergencyHandled:(unsigned __int8)a14 ack:(unsigned __int8)a15 accessoryId:(id)a16;
++ (BOOL)isMyriadRequestMessage:(id)message;
++ (id)myriadRequestTypeAsString:(unint64_t)string;
+- (SCDAAccessoryMessage)initWithAccessoryMessage:(id)message accessoryId:(id)id;
+- (SCDAAccessoryMessage)initWithAccessoryMessageAsDictionary:(id)dictionary accessoryId:(id)id;
+- (SCDAAccessoryMessage)initWithRequestType:(unint64_t)type session:(unint64_t)session voiceTriggerEndTime:(double)time audioHash:(unsigned __int16)hash goodnessScore:(unsigned __int8)score userConfidenceScore:(unsigned __int8)confidenceScore tieBreaker:(unsigned __int8)breaker deviceClass:(unsigned __int8)self0 deviceGroup:(unsigned __int8)self1 productType:(unsigned __int8)self2 electionDecision:(unsigned __int8)self3 emergencyHandled:(unsigned __int8)self4 ack:(unsigned __int8)self5 accessoryId:(id)self6;
 - (id)description;
-- (id)initElectionDecisionMessageWithSessionId:(unint64_t)a3 decision:(BOOL)a4 accessoryId:(id)a5;
-- (id)initPreheatMessageWithSessionId:(unint64_t)a3 accessoryId:(id)a4;
-- (id)initResetMessageWithSessionId:(unint64_t)a3 accessoryId:(id)a4;
+- (id)initElectionDecisionMessageWithSessionId:(unint64_t)id decision:(BOOL)decision accessoryId:(id)accessoryId;
+- (id)initPreheatMessageWithSessionId:(unint64_t)id accessoryId:(id)accessoryId;
+- (id)initResetMessageWithSessionId:(unint64_t)id accessoryId:(id)accessoryId;
 - (id)messageAsData;
-- (void)_initWithMessage:(const scdaAccessoryMessage *)a3;
-- (void)_initializeMessageObj:(id)a3;
-- (void)_initializeMessageObjFromDictionary:(id)a3;
+- (void)_initWithMessage:(const scdaAccessoryMessage *)message;
+- (void)_initializeMessageObj:(id)obj;
+- (void)_initializeMessageObjFromDictionary:(id)dictionary;
 @end
 
 @implementation SCDAAccessoryMessage
@@ -102,49 +102,49 @@
   return v3;
 }
 
-- (SCDAAccessoryMessage)initWithAccessoryMessageAsDictionary:(id)a3 accessoryId:(id)a4
+- (SCDAAccessoryMessage)initWithAccessoryMessageAsDictionary:(id)dictionary accessoryId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = SCDAAccessoryMessage;
   v8 = [(SCDAAccessoryMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accessoryId, a4);
+    objc_storeStrong(&v8->_accessoryId, id);
     *&v9->_message.audioHash = 0u;
     *&v9->_message.session = 0u;
     *&v9->_message.version = 0u;
-    [(SCDAAccessoryMessage *)v9 _initializeMessageObjFromDictionary:v6];
+    [(SCDAAccessoryMessage *)v9 _initializeMessageObjFromDictionary:dictionaryCopy];
   }
 
   return v9;
 }
 
-- (SCDAAccessoryMessage)initWithAccessoryMessage:(id)a3 accessoryId:(id)a4
+- (SCDAAccessoryMessage)initWithAccessoryMessage:(id)message accessoryId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = SCDAAccessoryMessage;
   v8 = [(SCDAAccessoryMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accessoryId, a4);
+    objc_storeStrong(&v8->_accessoryId, id);
     *&v9->_message.audioHash = 0u;
     *&v9->_message.session = 0u;
     *&v9->_message.version = 0u;
-    [(SCDAAccessoryMessage *)v9 _initializeMessageObj:v6];
+    [(SCDAAccessoryMessage *)v9 _initializeMessageObj:messageCopy];
   }
 
   return v9;
 }
 
-- (id)initResetMessageWithSessionId:(unint64_t)a3 accessoryId:(id)a4
+- (id)initResetMessageWithSessionId:(unint64_t)id accessoryId:(id)accessoryId
 {
-  v7 = a4;
+  accessoryIdCopy = accessoryId;
   v11.receiver = self;
   v11.super_class = SCDAAccessoryMessage;
   v8 = [(SCDAAccessoryMessage *)&v11 init];
@@ -156,8 +156,8 @@
     *(v8 + 40) = 0u;
     v8[8] = 1;
     *(v8 + 2) = 1;
-    *(v8 + 3) = a3;
-    objc_storeStrong(v8 + 12, a4);
+    *(v8 + 3) = id;
+    objc_storeStrong(v8 + 12, accessoryId);
     v9[33] = 257;
     [v9 _initWithMessage:v9 + 4];
   }
@@ -165,9 +165,9 @@
   return v9;
 }
 
-- (id)initElectionDecisionMessageWithSessionId:(unint64_t)a3 decision:(BOOL)a4 accessoryId:(id)a5
+- (id)initElectionDecisionMessageWithSessionId:(unint64_t)id decision:(BOOL)decision accessoryId:(id)accessoryId
 {
-  v9 = a5;
+  accessoryIdCopy = accessoryId;
   v13.receiver = self;
   v13.super_class = SCDAAccessoryMessage;
   v10 = [(SCDAAccessoryMessage *)&v13 init];
@@ -179,9 +179,9 @@
     *(v10 + 40) = 0u;
     v10[8] = 1;
     *(v10 + 2) = 10;
-    *(v10 + 3) = a3;
-    v10[48] = a4;
-    objc_storeStrong(v10 + 12, a5);
+    *(v10 + 3) = id;
+    v10[48] = decision;
+    objc_storeStrong(v10 + 12, accessoryId);
     v11[33] = 257;
     [v11 _initWithMessage:v11 + 4];
   }
@@ -189,9 +189,9 @@
   return v11;
 }
 
-- (id)initPreheatMessageWithSessionId:(unint64_t)a3 accessoryId:(id)a4
+- (id)initPreheatMessageWithSessionId:(unint64_t)id accessoryId:(id)accessoryId
 {
-  v7 = a4;
+  accessoryIdCopy = accessoryId;
   v11.receiver = self;
   v11.super_class = SCDAAccessoryMessage;
   v8 = [(SCDAAccessoryMessage *)&v11 init];
@@ -203,8 +203,8 @@
     *(v8 + 40) = 0u;
     v8[8] = 1;
     *(v8 + 2) = 6;
-    *(v8 + 3) = a3;
-    objc_storeStrong(v8 + 12, a4);
+    *(v8 + 3) = id;
+    objc_storeStrong(v8 + 12, accessoryId);
     v9[33] = 257;
     [v9 _initWithMessage:v9 + 4];
   }
@@ -212,9 +212,9 @@
   return v9;
 }
 
-- (SCDAAccessoryMessage)initWithRequestType:(unint64_t)a3 session:(unint64_t)a4 voiceTriggerEndTime:(double)a5 audioHash:(unsigned __int16)a6 goodnessScore:(unsigned __int8)a7 userConfidenceScore:(unsigned __int8)a8 tieBreaker:(unsigned __int8)a9 deviceClass:(unsigned __int8)a10 deviceGroup:(unsigned __int8)a11 productType:(unsigned __int8)a12 electionDecision:(unsigned __int8)a13 emergencyHandled:(unsigned __int8)a14 ack:(unsigned __int8)a15 accessoryId:(id)a16
+- (SCDAAccessoryMessage)initWithRequestType:(unint64_t)type session:(unint64_t)session voiceTriggerEndTime:(double)time audioHash:(unsigned __int16)hash goodnessScore:(unsigned __int8)score userConfidenceScore:(unsigned __int8)confidenceScore tieBreaker:(unsigned __int8)breaker deviceClass:(unsigned __int8)self0 deviceGroup:(unsigned __int8)self1 productType:(unsigned __int8)self2 electionDecision:(unsigned __int8)self3 emergencyHandled:(unsigned __int8)self4 ack:(unsigned __int8)self5 accessoryId:(id)self6
 {
-  v24 = a16;
+  idCopy = id;
   v28.receiver = self;
   v28.super_class = SCDAAccessoryMessage;
   v25 = [(SCDAAccessoryMessage *)&v28 init];
@@ -225,20 +225,20 @@
     *(v25 + 25) = 0u;
     *(v25 + 40) = 0u;
     v25[8] = 1;
-    *(v25 + 2) = a3;
-    *(v25 + 3) = a4;
-    *(v25 + 4) = a5;
-    *(v25 + 20) = a6;
-    v25[42] = a7;
-    v25[43] = a8;
-    v25[44] = a9;
-    v25[45] = a10;
-    v25[46] = a11;
-    v25[47] = a12;
-    v25[48] = a13;
-    v25[49] = a14;
-    v25[50] = a15;
-    objc_storeStrong(v25 + 12, a16);
+    *(v25 + 2) = type;
+    *(v25 + 3) = session;
+    *(v25 + 4) = time;
+    *(v25 + 20) = hash;
+    v25[42] = score;
+    v25[43] = confidenceScore;
+    v25[44] = breaker;
+    v25[45] = class;
+    v25[46] = group;
+    v25[47] = productType;
+    v25[48] = decision;
+    v25[49] = handled;
+    v25[50] = ack;
+    objc_storeStrong(v25 + 12, id);
     *(v26 + 33) = 257;
     [v26 _initWithMessage:v26 + 8];
   }
@@ -246,42 +246,42 @@
   return v26;
 }
 
-- (void)_initWithMessage:(const scdaAccessoryMessage *)a3
+- (void)_initWithMessage:(const scdaAccessoryMessage *)message
 {
-  if (a3)
+  if (message)
   {
-    self->_version = a3->version;
-    self->_requestType = a3->requestType;
-    self->_session = a3->session;
-    self->_voiceTriggerEndTime = a3->voiceTriggerEndTime;
-    self->_audioHash = a3->audioHash;
-    self->_goodnessScore = a3->goodnessScore;
-    self->_userConfidenceScore = a3->userConfidenceScore;
-    self->_tieBreaker = a3->tieBreaker;
-    self->_deviceClass = a3->deviceClass;
-    self->_deviceGroup = a3->deviceGroup;
-    self->_productType = a3->productType;
-    self->_electionDecision = a3->electionDecision;
-    self->_emergencyHandled = a3->emergencyHandled;
-    self->_ack = a3->ack;
+    self->_version = message->version;
+    self->_requestType = message->requestType;
+    self->_session = message->session;
+    self->_voiceTriggerEndTime = message->voiceTriggerEndTime;
+    self->_audioHash = message->audioHash;
+    self->_goodnessScore = message->goodnessScore;
+    self->_userConfidenceScore = message->userConfidenceScore;
+    self->_tieBreaker = message->tieBreaker;
+    self->_deviceClass = message->deviceClass;
+    self->_deviceGroup = message->deviceGroup;
+    self->_productType = message->productType;
+    self->_electionDecision = message->electionDecision;
+    self->_emergencyHandled = message->emergencyHandled;
+    self->_ack = message->ack;
   }
 }
 
-- (void)_initializeMessageObjFromDictionary:(id)a3
+- (void)_initializeMessageObjFromDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[SCDAAccessoryMessage acknowledgeRequestKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [dictionaryCopy objectForKeyedSubscript:v5];
 
   v7 = +[SCDAAccessoryMessage sessionIdKey];
-  v8 = [v4 objectForKeyedSubscript:v7];
+  v8 = [dictionaryCopy objectForKeyedSubscript:v7];
 
   v9 = +[SCDAAccessoryMessage requestTypeKey];
-  v10 = [v4 objectForKeyedSubscript:v9];
+  v10 = [dictionaryCopy objectForKeyedSubscript:v9];
 
   v11 = +[SCDAAccessoryMessage messageKey];
-  v12 = [v4 objectForKeyedSubscript:v11];
+  v12 = [dictionaryCopy objectForKeyedSubscript:v11];
 
   if (v12)
   {
@@ -322,42 +322,42 @@ LABEL_30:
 
       if (v14)
       {
-        v17 = [v14 intValue];
-        switch(v17)
+        intValue = [v14 intValue];
+        switch(intValue)
         {
           case 10:
             self->_isSane = 1;
             v22 = +[SCDAAccessoryMessage electionDecisionKey];
-            v20 = [v4 objectForKeyedSubscript:v22];
+            v20 = [dictionaryCopy objectForKeyedSubscript:v22];
 
             if (v20)
             {
-              v23 = [v20 unsignedIntValue];
+              unsignedIntValue = [v20 unsignedIntValue];
             }
 
             else
             {
-              v23 = 0;
+              unsignedIntValue = 0;
             }
 
-            self->_message.electionDecision = v23;
+            self->_message.electionDecision = unsignedIntValue;
             break;
           case 9:
             self->_isSane = 1;
             v19 = +[SCDAAccessoryMessage emergencyHandledKey];
-            v20 = [v4 objectForKeyedSubscript:v19];
+            v20 = [dictionaryCopy objectForKeyedSubscript:v19];
 
             if (v20)
             {
-              v21 = [v20 unsignedIntValue];
+              unsignedIntValue2 = [v20 unsignedIntValue];
             }
 
             else
             {
-              v21 = 0;
+              unsignedIntValue2 = 0;
             }
 
-            self->_message.emergencyHandled = v21;
+            self->_message.emergencyHandled = unsignedIntValue2;
             break;
           case 8:
             self->_isSane = 1;
@@ -398,7 +398,7 @@ LABEL_18:
     v26 = 136315906;
     v27 = "[SCDAAccessoryMessage _initializeMessageObjFromDictionary:]";
     v28 = 2112;
-    v29 = v4;
+    v29 = dictionaryCopy;
     v30 = 2112;
     v31 = v8;
     v32 = 2112;
@@ -412,15 +412,15 @@ LABEL_31:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initializeMessageObj:(id)a3
+- (void)_initializeMessageObj:(id)obj
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  objCopy = obj;
+  v5 = objCopy;
   self->_serializedProtocol = 1;
-  if (v4)
+  if (objCopy)
   {
-    if ([v4 length])
+    if ([objCopy length])
     {
       v15 = 0;
       [v5 getBytes:&v15 range:{0, 1}];
@@ -431,9 +431,9 @@ LABEL_31:
         v8 = v15;
         if (v15 && v6 >= 0x30)
         {
-          v9 = [v5 bytes];
+          bytes = [v5 bytes];
           p_message = &self->_message;
-          v11 = self;
+          selfCopy2 = self;
           v12 = 48;
         }
 
@@ -457,13 +457,13 @@ LABEL_31:
             goto LABEL_13;
           }
 
-          v9 = [v5 bytes];
+          bytes = [v5 bytes];
           p_message = &self->_message;
-          v11 = self;
+          selfCopy2 = self;
           v12 = v7;
         }
 
-        [(SCDAAccessoryMessage *)v11 _copyRawBytesFromSource:v9 toDest:p_message length:v12];
+        [(SCDAAccessoryMessage *)selfCopy2 _copyRawBytesFromSource:bytes toDest:p_message length:v12];
         self->_isSane = 1;
 LABEL_13:
         [(SCDAAccessoryMessage *)self _initWithMessage:&self->_message];
@@ -474,24 +474,24 @@ LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)myriadRequestTypeAsString:(unint64_t)a3
++ (id)myriadRequestTypeAsString:(unint64_t)string
 {
-  if (a3 - 1 > 9)
+  if (string - 1 > 9)
   {
     return @"scdaRequestTypeUnknown";
   }
 
   else
   {
-    return off_1E85D3040[a3 - 1];
+    return off_1E85D3040[string - 1];
   }
 }
 
-+ (BOOL)isMyriadRequestMessage:(id)a3
++ (BOOL)isMyriadRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[SCDAAccessoryMessage acknowledgeRequestKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [messageCopy objectForKeyedSubscript:v4];
   if (v5)
   {
     v6 = 1;
@@ -500,7 +500,7 @@ LABEL_13:
   else
   {
     v7 = +[SCDAAccessoryMessage requestTypeKey];
-    v8 = [v3 objectForKeyedSubscript:v7];
+    v8 = [messageCopy objectForKeyedSubscript:v7];
     if (v8)
     {
       v6 = 1;
@@ -509,7 +509,7 @@ LABEL_13:
     else
     {
       v9 = +[SCDAAccessoryMessage messageKey];
-      v10 = [v3 objectForKeyedSubscript:v9];
+      v10 = [messageCopy objectForKeyedSubscript:v9];
       v6 = v10 != 0;
     }
   }

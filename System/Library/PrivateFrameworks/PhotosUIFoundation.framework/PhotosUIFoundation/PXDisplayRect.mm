@@ -1,25 +1,25 @@
 @interface PXDisplayRect
-- (BOOL)isEqual:(id)a3;
-- (CGRect)rectInCoordinateSpace:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)rectInCoordinateSpace:(id)space;
 - (UICoordinateSpace)coordinateSpace;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation PXDisplayRect
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3FCB040();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B405DAF4();
     swift_unknownObjectRelease();
@@ -28,7 +28,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PXDisplayRect.isEqual(_:)(v8);
@@ -37,11 +37,11 @@
   return v6 & 1;
 }
 
-- (CGRect)rectInCoordinateSpace:(id)a3
+- (CGRect)rectInCoordinateSpace:(id)space
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1B3FCB498(a3);
+  selfCopy = self;
+  sub_1B3FCB498(space);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -59,7 +59,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   sub_1B3FCB630(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

@@ -1,15 +1,15 @@
 @interface AAAmplificationCell
-- (AAAmplificationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AAAmplificationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityValue;
 @end
 
 @implementation AAAmplificationCell
 
-- (AAAmplificationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AAAmplificationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = AAAmplificationCell;
-  v4 = [(HearingSettingsValueSliderCell *)&v12 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(HearingSettingsValueSliderCell *)&v12 initWithStyle:1 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor systemGrayColor];
@@ -19,10 +19,10 @@
     v8 = [UIImage _systemImageNamed:@"speaker.wave.3.fill"];
     v9 = [v8 imageWithTintColor:v5 renderingMode:1];
 
-    v10 = [(HearingSettingsValueSliderCell *)v4 slider];
-    [v10 setMinimumValueImage:v7];
-    [v10 setMaximumValueImage:v9];
-    [v10 setSegmentCount:1];
+    slider = [(HearingSettingsValueSliderCell *)v4 slider];
+    [slider setMinimumValueImage:v7];
+    [slider setMaximumValueImage:v9];
+    [slider setSegmentCount:1];
   }
 
   return v4;

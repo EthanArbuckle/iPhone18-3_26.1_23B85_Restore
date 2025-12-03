@@ -3,8 +3,8 @@
 - (BOOL)useContentShapeForSelectionHighlight;
 - (UIShape)contentShape;
 - (_UIContextMenuCellContentView)contentView;
-- (_UIContextMenuLargeCellLayout)initWithContentView:(id)a3;
-- (id)preferredIconFontUsingBoldFont:(BOOL)a3;
+- (_UIContextMenuLargeCellLayout)initWithContentView:(id)view;
+- (id)preferredIconFontUsingBoldFont:(BOOL)font;
 - (void)installConstraints;
 - (void)removeConstraints;
 - (void)updateConstraints;
@@ -21,48 +21,48 @@
 
 - (BOOL)useContentShapeForSelectionHighlight
 {
-  v2 = [(_UIContextMenuLargeCellLayout *)self contentView];
-  v3 = [v2 traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuLargeCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  LOBYTE(v2) = [v4 largeItemUsesContentShapeForSelectionHighlight];
-  return v2;
+  LOBYTE(contentView) = [v4 largeItemUsesContentShapeForSelectionHighlight];
+  return contentView;
 }
 
 - (void)removeConstraints
 {
   v3 = MEMORY[0x1E69977A0];
-  v4 = [(_UIContextMenuLargeCellLayout *)self managedConstraints];
-  [v3 deactivateConstraints:v4];
+  managedConstraints = [(_UIContextMenuLargeCellLayout *)self managedConstraints];
+  [v3 deactivateConstraints:managedConstraints];
 
   managedConstraints = self->_managedConstraints;
   self->_managedConstraints = 0;
 }
 
-- (_UIContextMenuLargeCellLayout)initWithContentView:(id)a3
+- (_UIContextMenuLargeCellLayout)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _UIContextMenuLargeCellLayout;
   v5 = [(_UIContextMenuLargeCellLayout *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIContextMenuLargeCellLayout *)v5 setContentView:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(_UIContextMenuLargeCellLayout *)v6 setManagedConstraints:v7];
+    [(_UIContextMenuLargeCellLayout *)v5 setContentView:viewCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(_UIContextMenuLargeCellLayout *)v6 setManagedConstraints:array];
   }
 
   return v6;
 }
 
-- (id)preferredIconFontUsingBoldFont:(BOOL)a3
+- (id)preferredIconFontUsingBoldFont:(BOOL)font
 {
-  v4 = [(_UIContextMenuLargeCellLayout *)self contentView];
-  v5 = [v4 traitCollection];
-  v6 = _UIContextMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuLargeCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v6 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
   v7 = v6;
-  if (a3)
+  if (font)
   {
     [v6 iconEmphasizedSymbolFont];
   }
@@ -72,89 +72,89 @@
     [v6 iconSymbolFont];
   }
   v8 = ;
-  v9 = [v8 _fontAdjustedForCurrentContentSizeCategory];
+  _fontAdjustedForCurrentContentSizeCategory = [v8 _fontAdjustedForCurrentContentSizeCategory];
 
-  return v9;
+  return _fontAdjustedForCurrentContentSizeCategory;
 }
 
 - (UIShape)contentShape
 {
-  v2 = [(_UIContextMenuLargeCellLayout *)self contentView];
-  v3 = [v2 traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuLargeCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 largeItemContentShape];
+  largeItemContentShape = [v4 largeItemContentShape];
 
-  return v5;
+  return largeItemContentShape;
 }
 
 - (void)installConstraints
 {
   v96[2] = *MEMORY[0x1E69E9840];
   [(_UIContextMenuLargeCellLayout *)self removeConstraints];
-  v3 = [(_UIContextMenuLargeCellLayout *)self contentView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  contentView = [(_UIContextMenuLargeCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v7 = [v3 labelStackView];
-  v8 = [v3 decorationView];
-  v9 = [v3 iconView];
-  v10 = [v3 keyShortcutView];
+  labelStackView = [contentView labelStackView];
+  decorationView = [contentView decorationView];
+  iconView = [contentView iconView];
+  keyShortcutView = [contentView keyShortcutView];
   [MEMORY[0x1E695DF70] array];
-  v93 = v92 = v8;
-  if (v8)
+  v93 = v92 = decorationView;
+  if (decorationView)
   {
-    v90 = v10;
-    v11 = v9;
-    v12 = v7;
-    [v3 addSubview:v8];
-    v13 = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory];
-    v14 = [v8 centerXAnchor];
-    if (v13)
+    v90 = keyShortcutView;
+    v11 = iconView;
+    v12 = labelStackView;
+    [contentView addSubview:decorationView];
+    _hasTrailingAccessory = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory];
+    centerXAnchor = [decorationView centerXAnchor];
+    if (_hasTrailingAccessory)
     {
-      [v3 trailingAnchor];
+      [contentView trailingAnchor];
     }
 
     else
     {
-      [v3 leadingAnchor];
+      [contentView leadingAnchor];
     }
     v15 = ;
-    v16 = [v14 constraintEqualToAnchor:v15];
+    v16 = [centerXAnchor constraintEqualToAnchor:v15];
     [(_UIContextMenuLargeCellLayout *)self setDecorationViewCenterX:v16];
 
-    v17 = [(_UIContextMenuLargeCellLayout *)self decorationViewCenterX];
-    v96[0] = v17;
-    v18 = [v8 centerYAnchor];
-    v19 = [v3 centerYAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    decorationViewCenterX = [(_UIContextMenuLargeCellLayout *)self decorationViewCenterX];
+    v96[0] = decorationViewCenterX;
+    centerYAnchor = [decorationView centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v96[1] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:2];
     [v93 addObjectsFromArray:v21];
 
-    v7 = v12;
-    v9 = v11;
-    v10 = v90;
+    labelStackView = v12;
+    iconView = v11;
+    keyShortcutView = v90;
   }
 
-  if (v9 == 0 || IsAccessibilityCategory)
+  if (iconView == 0 || IsAccessibilityCategory)
   {
-    [v9 removeFromSuperview];
-    if (v10)
+    [iconView removeFromSuperview];
+    if (keyShortcutView)
     {
 LABEL_8:
-      [v3 addSubview:v10];
-      v22 = [v10 trailingAnchor];
-      v23 = [v3 trailingAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      [contentView addSubview:keyShortcutView];
+      trailingAnchor = [keyShortcutView trailingAnchor];
+      trailingAnchor2 = [contentView trailingAnchor];
+      v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [(_UIContextMenuLargeCellLayout *)self setKeyboardShortcutTrailingToTrailing:v24];
 
-      v25 = [(_UIContextMenuLargeCellLayout *)self keyboardShortcutTrailingToTrailing];
-      v95[0] = v25;
-      v26 = [v10 centerYAnchor];
-      v27 = [v3 centerYAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      keyboardShortcutTrailingToTrailing = [(_UIContextMenuLargeCellLayout *)self keyboardShortcutTrailingToTrailing];
+      v95[0] = keyboardShortcutTrailingToTrailing;
+      centerYAnchor3 = [keyShortcutView centerYAnchor];
+      centerYAnchor4 = [contentView centerYAnchor];
+      v28 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v95[1] = v28;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:2];
       [v93 addObjectsFromArray:v29];
@@ -165,21 +165,21 @@ LABEL_8:
 
   else
   {
-    [v3 addSubview:v9];
-    v30 = [v9 centerYAnchor];
-    v31 = [v3 centerYAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    [contentView addSubview:iconView];
+    centerYAnchor5 = [iconView centerYAnchor];
+    centerYAnchor6 = [contentView centerYAnchor];
+    v32 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v93 addObject:v32];
 
-    v33 = [v9 centerXAnchor];
-    v34 = [v3 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    centerXAnchor2 = [iconView centerXAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    v35 = [centerXAnchor2 constraintEqualToAnchor:trailingAnchor3];
     [(_UIContextMenuLargeCellLayout *)self setIconViewCenterXToTrailing:v35];
 
-    v36 = [(_UIContextMenuLargeCellLayout *)self iconViewCenterXToTrailing];
-    [v93 addObject:v36];
+    iconViewCenterXToTrailing = [(_UIContextMenuLargeCellLayout *)self iconViewCenterXToTrailing];
+    [v93 addObject:iconViewCenterXToTrailing];
 
-    if (v10)
+    if (keyShortcutView)
     {
       goto LABEL_8;
     }
@@ -187,126 +187,126 @@ LABEL_8:
 
   [0 removeFromSuperview];
 LABEL_11:
-  v37 = [v3 titleLabel];
-  v38 = [v37 text];
-  if ([v38 length])
+  titleLabel = [contentView titleLabel];
+  text = [titleLabel text];
+  if ([text length])
   {
   }
 
   else
   {
-    v39 = [v3 subtitleLabel];
-    v40 = [v39 text];
-    v41 = [v40 length];
+    subtitleLabel = [contentView subtitleLabel];
+    text2 = [subtitleLabel text];
+    v41 = [text2 length];
 
     if (!v41)
     {
-      v72 = [v3 traitCollection];
-      v73 = [v72 userInterfaceIdiom];
+      traitCollection2 = [contentView traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-      v74 = _UIContextMenuGetPlatformMetrics(v73);
+      v74 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
       [v74 itemTopToFirstBaseline];
       v76 = v75;
 
-      v77 = _UIContextMenuGetPlatformMetrics(v73);
+      v77 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
       [v77 itemLastBaselineToBottom];
       v79 = v78;
 
-      v80 = [v3 heightAnchor];
-      v81 = [v80 constraintGreaterThanOrEqualToConstant:v76 + v79];
+      heightAnchor = [contentView heightAnchor];
+      v81 = [heightAnchor constraintGreaterThanOrEqualToConstant:v76 + v79];
       [(_UIContextMenuLargeCellLayout *)self setMinHeightConstraint:v81];
 
-      v66 = [(_UIContextMenuLargeCellLayout *)self minHeightConstraint];
+      minHeightConstraint = [(_UIContextMenuLargeCellLayout *)self minHeightConstraint];
       v71 = v93;
-      [v93 addObject:v66];
+      [v93 addObject:minHeightConstraint];
       goto LABEL_20;
     }
   }
 
-  [v3 addSubview:v7];
-  v42 = [v3 traitCollection];
-  v43 = _UIContextMenuGetPlatformMetrics([v42 userInterfaceIdiom]);
+  [contentView addSubview:labelStackView];
+  traitCollection3 = [contentView traitCollection];
+  v43 = _UIContextMenuGetPlatformMetrics([traitCollection3 userInterfaceIdiom]);
   [v43 menuItemInternalPadding];
   v45 = v44;
   v47 = v46;
 
-  v48 = [v7 firstBaselineAnchor];
-  v49 = [v3 topAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  firstBaselineAnchor = [labelStackView firstBaselineAnchor];
+  topAnchor = [contentView topAnchor];
+  v50 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   [(_UIContextMenuLargeCellLayout *)self setTopToFirstBaseline:v50];
 
-  v51 = [v7 lastBaselineAnchor];
-  v52 = [v3 bottomAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  lastBaselineAnchor = [labelStackView lastBaselineAnchor];
+  bottomAnchor = [contentView bottomAnchor];
+  v53 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor];
   [(_UIContextMenuLargeCellLayout *)self setLastBaselineToBottom:v53];
 
-  v54 = [v7 leadingAnchor];
-  v55 = [v3 leadingAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55 constant:v45];
+  leadingAnchor = [labelStackView leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v45];
   [(_UIContextMenuLargeCellLayout *)self setLeadingToLabelStackViewLeading:v56];
 
-  v57 = [v10 superview];
+  superview = [keyShortcutView superview];
 
-  v91 = v9;
-  if (v57)
+  v91 = iconView;
+  if (superview)
   {
-    v58 = [v7 trailingAnchor];
-    v59 = [v10 leadingAnchor];
-    v60 = [v58 constraintLessThanOrEqualToAnchor:v59];
+    trailingAnchor4 = [labelStackView trailingAnchor];
+    leadingAnchor3 = [keyShortcutView leadingAnchor];
+    v60 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:leadingAnchor3];
     [(_UIContextMenuLargeCellLayout *)self setLabelStackViewTrailingToKeyboardShortcutLeading:v60];
 
-    v61 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToKeyboardShortcutLeading];
+    labelStackViewTrailingToKeyboardShortcutLeading = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToKeyboardShortcutLeading];
   }
 
   else
   {
-    v62 = [v9 superview];
+    superview2 = [iconView superview];
 
-    if (v62)
+    if (superview2)
     {
-      v63 = [v7 trailingAnchor];
-      v64 = [v9 centerXAnchor];
-      v65 = [v63 constraintLessThanOrEqualToAnchor:v64];
+      trailingAnchor5 = [labelStackView trailingAnchor];
+      centerXAnchor3 = [iconView centerXAnchor];
+      v65 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:centerXAnchor3];
       [(_UIContextMenuLargeCellLayout *)self setLabelStackViewTrailingToiconViewCenterX:v65];
 
-      v61 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToiconViewCenterX];
+      labelStackViewTrailingToKeyboardShortcutLeading = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToiconViewCenterX];
     }
 
     else
     {
-      v82 = [v92 superview];
-      if (!v82 || (v83 = v82, v84 = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory], v83, !v84))
+      superview3 = [v92 superview];
+      if (!superview3 || (v83 = superview3, v84 = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory], v83, !v84))
       {
-        v88 = [v7 trailingAnchor];
-        v89 = [v3 trailingAnchor];
-        v66 = [v88 constraintEqualToAnchor:v89 constant:-v47];
+        trailingAnchor6 = [labelStackView trailingAnchor];
+        trailingAnchor7 = [contentView trailingAnchor];
+        minHeightConstraint = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-v47];
 
         goto LABEL_19;
       }
 
-      v85 = [v7 trailingAnchor];
-      v86 = [v92 leadingAnchor];
-      v87 = [v85 constraintLessThanOrEqualToAnchor:v86];
+      trailingAnchor8 = [labelStackView trailingAnchor];
+      leadingAnchor4 = [v92 leadingAnchor];
+      v87 = [trailingAnchor8 constraintLessThanOrEqualToAnchor:leadingAnchor4];
       [(_UIContextMenuLargeCellLayout *)self setLabelStackViewTrailingToDecorationViewLeading:v87];
 
-      v61 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToDecorationViewLeading];
+      labelStackViewTrailingToKeyboardShortcutLeading = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToDecorationViewLeading];
     }
   }
 
-  v66 = v61;
+  minHeightConstraint = labelStackViewTrailingToKeyboardShortcutLeading;
 LABEL_19:
-  v67 = [(_UIContextMenuLargeCellLayout *)self topToFirstBaseline];
-  v94[0] = v67;
-  v68 = [(_UIContextMenuLargeCellLayout *)self lastBaselineToBottom];
-  v94[1] = v68;
-  v69 = [(_UIContextMenuLargeCellLayout *)self leadingToLabelStackViewLeading];
-  v94[2] = v69;
-  v94[3] = v66;
+  topToFirstBaseline = [(_UIContextMenuLargeCellLayout *)self topToFirstBaseline];
+  v94[0] = topToFirstBaseline;
+  lastBaselineToBottom = [(_UIContextMenuLargeCellLayout *)self lastBaselineToBottom];
+  v94[1] = lastBaselineToBottom;
+  leadingToLabelStackViewLeading = [(_UIContextMenuLargeCellLayout *)self leadingToLabelStackViewLeading];
+  v94[2] = leadingToLabelStackViewLeading;
+  v94[3] = minHeightConstraint;
   v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:4];
   v71 = v93;
   [v93 addObjectsFromArray:v70];
 
-  v9 = v91;
+  iconView = v91;
 LABEL_20:
 
   [MEMORY[0x1E69977A0] activateConstraints:v71];
@@ -315,35 +315,35 @@ LABEL_20:
 
 - (void)updateConstraints
 {
-  v94 = [(_UIContextMenuLargeCellLayout *)self contentView];
-  v3 = [v94 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  contentView = [(_UIContextMenuLargeCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v5 = _UIContextMenuGetPlatformMetrics(v4);
-  v6 = [v94 traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  v5 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+  traitCollection2 = [contentView traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v9 = [v94 subtitleLabel];
-  v10 = [v9 text];
-  v11 = [v10 length];
+  subtitleLabel = [contentView subtitleLabel];
+  text = [subtitleLabel text];
+  v11 = [text length];
 
-  v12 = [v94 traitCollection];
-  v13 = _UIContextMenuGetPlatformMetrics([v12 userInterfaceIdiom]);
-  v14 = [v13 titleFont];
-  v15 = [v14 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v12];
+  traitCollection3 = [contentView traitCollection];
+  v13 = _UIContextMenuGetPlatformMetrics([traitCollection3 userInterfaceIdiom]);
+  titleFont = [v13 titleFont];
+  v15 = [titleFont _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection3];
 
-  v16 = _UIContextMenuGetPlatformMetrics(v4);
+  v16 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v16 itemBaselineToBaseline];
   v18 = v17;
 
   [v15 _scaledValueForValue:1 useLanguageAwareScaling:v18];
-  UIRoundToViewScale(v94);
+  UIRoundToViewScale(contentView);
   v20 = v19;
-  v21 = [v94 labelStackView];
-  [v21 setSpacing:v20];
+  labelStackView = [contentView labelStackView];
+  [labelStackView setSpacing:v20];
 
-  v22 = _UIContextMenuGetPlatformMetrics(v4);
+  v22 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   v23 = v22;
   if (v11)
   {
@@ -357,7 +357,7 @@ LABEL_20:
 
   v25 = v24;
 
-  v26 = _UIContextMenuGetPlatformMetrics(v4);
+  v26 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   v27 = v26;
   if (v11)
   {
@@ -372,148 +372,148 @@ LABEL_20:
   v29 = v28;
 
   [v15 _scaledValueForValue:v25];
-  UIRoundToViewScale(v94);
+  UIRoundToViewScale(contentView);
   v31 = v30;
   [v15 _scaledValueForValue:v29];
-  UIRoundToViewScale(v94);
+  UIRoundToViewScale(contentView);
   v33 = v32;
-  v34 = [(_UIContextMenuLargeCellLayout *)self topToFirstBaseline];
-  [v34 setConstant:v31];
+  topToFirstBaseline = [(_UIContextMenuLargeCellLayout *)self topToFirstBaseline];
+  [topToFirstBaseline setConstant:v31];
 
-  v35 = [(_UIContextMenuLargeCellLayout *)self lastBaselineToBottom];
-  [v35 setConstant:-v33];
+  lastBaselineToBottom = [(_UIContextMenuLargeCellLayout *)self lastBaselineToBottom];
+  [lastBaselineToBottom setConstant:-v33];
 
-  [v94 directionalLayoutMargins];
+  [contentView directionalLayoutMargins];
   v37 = v36;
-  v38 = [v94 decorationView];
-  if (v38)
+  decorationView = [contentView decorationView];
+  if (decorationView)
   {
-    v39 = v38;
-    v40 = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory];
+    v39 = decorationView;
+    _hasTrailingAccessory = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory];
 
-    if (!v40)
+    if (!_hasTrailingAccessory)
     {
       [v5 leadingDecorationViewOffset];
       [v15 _scaledValueForValue:?];
-      UIRoundToViewScale(v94);
+      UIRoundToViewScale(contentView);
       v42 = v41;
-      v43 = [(_UIContextMenuLargeCellLayout *)self decorationViewCenterX];
-      [v43 setConstant:v42];
+      decorationViewCenterX = [(_UIContextMenuLargeCellLayout *)self decorationViewCenterX];
+      [decorationViewCenterX setConstant:v42];
     }
   }
 
-  v44 = [(_UIContextMenuLargeCellLayout *)self leadingToLabelStackViewLeading];
-  [v44 setConstant:v37];
+  leadingToLabelStackViewLeading = [(_UIContextMenuLargeCellLayout *)self leadingToLabelStackViewLeading];
+  [leadingToLabelStackViewLeading setConstant:v37];
 
-  v45 = [v94 keyShortcutView];
+  keyShortcutView = [contentView keyShortcutView];
 
-  if (v45)
+  if (keyShortcutView)
   {
-    v46 = _UIContextMenuGetPlatformMetrics(v4);
+    v46 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v46 minIntraItemSpacing];
     v48 = v47;
 
-    [v94 directionalLayoutMargins];
+    [contentView directionalLayoutMargins];
     v50 = v49;
-    v51 = [v94 iconView];
-    LOBYTE(v46) = v51 == 0 || IsAccessibilityCategory;
+    iconView = [contentView iconView];
+    LOBYTE(v46) = iconView == 0 || IsAccessibilityCategory;
 
     if ((v46 & 1) == 0)
     {
-      v52 = _UIContextMenuGetPlatformMetrics(v4);
+      v52 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
       [v52 dynamicImageBoxWidth];
       v54 = v53;
 
       [v15 _scaledValueForValue:v54];
-      UIRoundToViewScale(v94);
+      UIRoundToViewScale(contentView);
       v50 = v50 + v48 + v55;
     }
 
-    v56 = [(_UIContextMenuLargeCellLayout *)self keyboardShortcutTrailingToTrailing];
-    [v56 setConstant:-v50];
+    keyboardShortcutTrailingToTrailing = [(_UIContextMenuLargeCellLayout *)self keyboardShortcutTrailingToTrailing];
+    [keyboardShortcutTrailingToTrailing setConstant:-v50];
 
-    v57 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToKeyboardShortcutLeading];
-    [v57 setConstant:-v48];
+    labelStackViewTrailingToKeyboardShortcutLeading = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToKeyboardShortcutLeading];
+    [labelStackViewTrailingToKeyboardShortcutLeading setConstant:-v48];
   }
 
-  v58 = [v94 iconView];
-  v59 = v58 == 0 || IsAccessibilityCategory;
+  iconView2 = [contentView iconView];
+  v59 = iconView2 == 0 || IsAccessibilityCategory;
 
   if (!v59)
   {
-    v60 = _UIContextMenuGetPlatformMetrics(v4);
+    v60 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v60 dynamicImageBoxWidth];
     v62 = v61;
 
     [v15 _scaledValueForValue:v62];
-    UIRoundToViewScale(v94);
+    UIRoundToViewScale(contentView);
     v64 = v63;
-    [v94 directionalLayoutMargins];
+    [contentView directionalLayoutMargins];
     v65 = v64 * 0.5;
     v67 = v64 * 0.5 + v66;
-    v68 = _UIContextMenuGetPlatformMetrics(v4);
+    v68 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     [v68 minIntraItemSpacing];
     v70 = v69;
 
-    v71 = [(_UIContextMenuLargeCellLayout *)self iconViewCenterXToTrailing];
-    [v71 setConstant:-v67];
+    iconViewCenterXToTrailing = [(_UIContextMenuLargeCellLayout *)self iconViewCenterXToTrailing];
+    [iconViewCenterXToTrailing setConstant:-v67];
 
-    v72 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToiconViewCenterX];
-    [v72 setConstant:-(v65 + v70)];
+    labelStackViewTrailingToiconViewCenterX = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToiconViewCenterX];
+    [labelStackViewTrailingToiconViewCenterX setConstant:-(v65 + v70)];
   }
 
-  v73 = [v94 decorationView];
-  if (v73)
+  decorationView2 = [contentView decorationView];
+  if (decorationView2)
   {
-    v74 = v73;
-    v75 = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory];
+    v74 = decorationView2;
+    _hasTrailingAccessory2 = [(_UIContextMenuLargeCellLayout *)self _hasTrailingAccessory];
 
-    if (v75)
+    if (_hasTrailingAccessory2)
     {
       [v5 trailingDecorationViewOffset];
       [v15 _scaledValueForValue:?];
-      v76 = _UIContextMenuGetPlatformMetrics(v4);
+      v76 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
       [v76 menuItemInternalPadding];
 
-      _UIContextMenuGutterWidth(v4);
-      UIRoundToViewScale(v94);
+      _UIContextMenuGutterWidth(userInterfaceIdiom);
+      UIRoundToViewScale(contentView);
       v78 = -v77;
-      v79 = [(_UIContextMenuLargeCellLayout *)self decorationViewCenterX];
-      [v79 setConstant:v78];
+      decorationViewCenterX2 = [(_UIContextMenuLargeCellLayout *)self decorationViewCenterX];
+      [decorationViewCenterX2 setConstant:v78];
 
-      v80 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToDecorationViewLeading];
+      labelStackViewTrailingToDecorationViewLeading = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToDecorationViewLeading];
 
-      if (v80)
+      if (labelStackViewTrailingToDecorationViewLeading)
       {
-        v81 = _UIContextMenuGetPlatformMetrics(v4);
+        v81 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
         [v81 minIntraItemSpacing];
         v83 = v82;
 
-        v84 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToDecorationViewLeading];
-        [v84 setConstant:-v83];
+        labelStackViewTrailingToDecorationViewLeading2 = [(_UIContextMenuLargeCellLayout *)self labelStackViewTrailingToDecorationViewLeading];
+        [labelStackViewTrailingToDecorationViewLeading2 setConstant:-v83];
       }
     }
   }
 
-  v85 = _UIContextMenuGetPlatformMetrics(v4);
+  v85 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v85 itemTopToFirstBaseline];
   v87 = v86;
 
-  v88 = _UIContextMenuGetPlatformMetrics(v4);
+  v88 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v88 itemLastBaselineToBottom];
   v90 = v89;
 
   [v15 _scaledValueForValue:v87 + v90];
-  UIRoundToViewScale(v94);
+  UIRoundToViewScale(contentView);
   v92 = v91;
-  v93 = [(_UIContextMenuLargeCellLayout *)self minHeightConstraint];
-  [v93 setConstant:v92];
+  minHeightConstraint = [(_UIContextMenuLargeCellLayout *)self minHeightConstraint];
+  [minHeightConstraint setConstant:v92];
 }
 
 - (BOOL)_hasTrailingAccessory
 {
-  v2 = [(_UIContextMenuLargeCellLayout *)self contentView];
-  v3 = ~[v2 options];
+  contentView = [(_UIContextMenuLargeCellLayout *)self contentView];
+  v3 = ~[contentView options];
 
   return (v3 & 0x30) == 0;
 }

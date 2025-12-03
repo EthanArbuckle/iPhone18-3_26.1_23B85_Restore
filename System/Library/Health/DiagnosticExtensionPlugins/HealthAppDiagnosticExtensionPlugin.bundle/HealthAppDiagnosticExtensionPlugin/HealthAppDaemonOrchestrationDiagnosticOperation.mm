@@ -1,12 +1,12 @@
 @interface HealthAppDaemonOrchestrationDiagnosticOperation
 - (NSString)reportFilename;
-- (_TtC34HealthAppDiagnosticExtensionPluginP33_11F9AD07514107A6A0C1146F6D81808E47HealthAppDaemonOrchestrationDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3;
+- (_TtC34HealthAppDiagnosticExtensionPluginP33_11F9AD07514107A6A0C1146F6D81808E47HealthAppDaemonOrchestrationDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l;
 - (void)run;
 @end
 
 @implementation HealthAppDaemonOrchestrationDiagnosticOperation
 
-- (_TtC34HealthAppDiagnosticExtensionPluginP33_11F9AD07514107A6A0C1146F6D81808E47HealthAppDaemonOrchestrationDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3
+- (_TtC34HealthAppDiagnosticExtensionPluginP33_11F9AD07514107A6A0C1146F6D81808E47HealthAppDaemonOrchestrationDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l
 {
   ObjectType = swift_getObjectType();
   v5 = sub_1B10();
@@ -34,7 +34,7 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   sub_12D0();
 }
 

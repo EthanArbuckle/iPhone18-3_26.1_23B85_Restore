@@ -1,42 +1,42 @@
 @interface TSUExponentialRegressionModel
-- (TSUExponentialRegressionModel)initWithMappings:(int)a3 xs:(double *)a4 ys:(double *)a5 xDimension:(int)a6 makeAffine:(BOOL)a7 desiredIntercept:(double)a8;
-- (_NSRange)superscriptRangeAtIndex:(int)a3;
-- (double)estimateForX:(double *)a3;
-- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)a3;
+- (TSUExponentialRegressionModel)initWithMappings:(int)mappings xs:(double *)xs ys:(double *)ys xDimension:(int)dimension makeAffine:(BOOL)affine desiredIntercept:(double)intercept;
+- (_NSRange)superscriptRangeAtIndex:(int)index;
+- (double)estimateForX:(double *)x;
+- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)array;
 - (void)dealloc;
 @end
 
 @implementation TSUExponentialRegressionModel
 
-- (TSUExponentialRegressionModel)initWithMappings:(int)a3 xs:(double *)a4 ys:(double *)a5 xDimension:(int)a6 makeAffine:(BOOL)a7 desiredIntercept:(double)a8
+- (TSUExponentialRegressionModel)initWithMappings:(int)mappings xs:(double *)xs ys:(double *)ys xDimension:(int)dimension makeAffine:(BOOL)affine desiredIntercept:(double)intercept
 {
-  v9 = a7;
+  affineCopy = affine;
   v62.receiver = self;
   v62.super_class = TSUExponentialRegressionModel;
   v14 = [(TSUExponentialRegressionModel *)&v62 init];
   v15 = v14;
   if (v14)
   {
-    v58 = a5;
+    ysCopy = ys;
     v14->super.mErrorType = 0;
-    v14->mAffine = v9;
-    if (v9)
+    v14->mAffine = affineCopy;
+    if (affineCopy)
     {
-      a8 = 1.0;
+      intercept = 1.0;
     }
 
-    v14->mIntercept = a8;
-    v16 = v9 + a6;
-    v60 = v9 + a6;
-    v61 = a3;
-    v17 = 8 * a3;
+    v14->mIntercept = intercept;
+    v16 = affineCopy + dimension;
+    v60 = affineCopy + dimension;
+    mappingsCopy = mappings;
+    v17 = 8 * mappings;
     v18 = malloc_type_malloc(v17, 0x100004000313F17uLL);
     if (v18)
     {
       v19 = v18;
-      if (a3 >= 1)
+      if (mappings >= 1)
       {
-        memset_pattern16(v18, &unk_277133D00, 8 * a3);
+        memset_pattern16(v18, &unk_277133D00, 8 * mappings);
       }
 
       __src = v19;
@@ -51,13 +51,13 @@ LABEL_62:
       }
 
       v21 = v20;
-      if (v9)
+      if (affineCopy)
       {
-        memcpy(v20, v19, 8 * a3);
-        v20 = &v21[8 * a3];
+        memcpy(v20, v19, 8 * mappings);
+        v20 = &v21[8 * mappings];
       }
 
-      memcpy(v20, a4, 8 * a3 * a6);
+      memcpy(v20, xs, 8 * mappings * dimension);
       v22 = malloc_type_malloc(v17 * v16, 0x100004000313F17uLL);
       if (!v22)
       {
@@ -70,7 +70,7 @@ LABEL_61:
 
       v23 = v22;
       memcpy(v22, v21, v17 * v16);
-      v24 = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+      v24 = malloc_type_malloc(8 * mappings, 0x100004000313F17uLL);
       if (!v24)
       {
         v28 = v19;
@@ -81,15 +81,15 @@ LABEL_60:
       }
 
       v57 = v24;
-      if (a3 >= 1)
+      if (mappings >= 1)
       {
-        v25 = a3;
-        v26 = a5;
+        mappingsCopy2 = mappings;
+        ysCopy2 = ys;
         v27 = v24;
-        while (*v26 > 0.0)
+        while (*ysCopy2 > 0.0)
         {
-          *v27++ = log(*v26++);
-          if (!--v25)
+          *v27++ = log(*ysCopy2++);
+          if (!--mappingsCopy2)
           {
             goto LABEL_16;
           }
@@ -102,51 +102,51 @@ LABEL_60:
 
 LABEL_16:
       v28 = __src;
-      if (a8 != 1.0)
+      if (intercept != 1.0)
       {
-        if (a8 <= 0.0)
+        if (intercept <= 0.0)
         {
           v37 = 2;
           goto LABEL_38;
         }
 
-        if (a3 >= 1)
+        if (mappings >= 1)
         {
-          v29 = log(a8);
-          v30 = a3;
+          v29 = log(intercept);
+          mappingsCopy3 = mappings;
           v31 = v57;
           do
           {
             *v31 = *v31 - v29;
             ++v31;
-            --v30;
+            --mappingsCopy3;
           }
 
-          while (v30);
+          while (mappingsCopy3);
         }
       }
 
-      if (a3 >= v16)
+      if (mappings >= v16)
       {
-        v32 = v16;
+        mappingsCopy4 = v16;
       }
 
       else
       {
-        v32 = a3;
+        mappingsCopy4 = mappings;
       }
 
-      if (v32 <= 1)
+      if (mappingsCopy4 <= 1)
       {
         v33 = 1;
       }
 
       else
       {
-        v33 = v32;
+        v33 = mappingsCopy4;
       }
 
-      v34 = v33 + v32;
+      v34 = v33 + mappingsCopy4;
       if (v34 <= 1)
       {
         v34 = 1;
@@ -164,10 +164,10 @@ LABEL_16:
           v56 = v21;
           memcpy(v38, v57, 8 * v60);
           v15->mNumCoefficients = v60;
-          v39 = v58;
-          if (v61 >= 1)
+          v39 = ysCopy;
+          if (mappingsCopy >= 1)
           {
-            v40 = v61;
+            v40 = mappingsCopy;
             v41 = v57;
             do
             {
@@ -181,22 +181,22 @@ LABEL_16:
 
           cblas_ddot_NEWLAPACK();
           v44 = v43;
-          v45 = malloc_type_malloc(8 * v61, 0x100004000313F17uLL);
+          v45 = malloc_type_malloc(8 * mappingsCopy, 0x100004000313F17uLL);
           if (v45)
           {
             v46 = v45;
-            memcpy(v45, v57, 8 * v61);
+            memcpy(v45, v57, 8 * mappingsCopy);
             v28 = __src;
             cblas_ddot_NEWLAPACK();
             cblas_daxpy_NEWLAPACK();
             v47 = v44;
-            if (v9)
+            if (affineCopy)
             {
               cblas_ddot_NEWLAPACK();
               v47 = v48;
             }
 
-            v49 = malloc_type_malloc(8 * v61, 0x100004000313F17uLL);
+            v49 = malloc_type_malloc(8 * mappingsCopy, 0x100004000313F17uLL);
             if (v49)
             {
               v50 = v49;
@@ -279,7 +279,7 @@ LABEL_59:
   [(TSUExponentialRegressionModel *)&v4 dealloc];
 }
 
-- (double)estimateForX:(double *)a3
+- (double)estimateForX:(double *)x
 {
   if (self->mAffine)
   {
@@ -292,7 +292,7 @@ LABEL_59:
       v9 = mNumCoefficients - 1;
       do
       {
-        v10 = *a3++;
+        v10 = *x++;
         v11 = v10;
         v12 = *v8++;
         v6 = v6 * exp(v11 * v12);
@@ -317,7 +317,7 @@ LABEL_59:
       v6 = 1.0;
       do
       {
-        v15 = *a3++;
+        v15 = *x++;
         v16 = v15;
         v17 = *v14++;
         v6 = v6 * exp(v16 * v17);
@@ -331,9 +331,9 @@ LABEL_59:
   return v6 * self->mIntercept;
 }
 
-- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)a3
+- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if (!self->mAffine)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUExponentialRegressionModel getEquationStringAndBuildSuperscriptRangesArray:]"];
@@ -352,7 +352,7 @@ LABEL_59:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v4)
+  if (!arrayCopy)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUExponentialRegressionModel getEquationStringAndBuildSuperscriptRangesArray:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUExponentialRegressionModel.m"];
@@ -371,9 +371,9 @@ LABEL_59:
   v50 = [v14 localizedStringForKey:@"e" value:&stru_28862C2A0 table:@"TSUtility"];
 
   LOBYTE(v43) = 0;
-  v15 = [v4 numberFormatterStringFromDouble:@"#" withFormat:0 useDecimalPlaces:0 minDecimalPlaces:0 decimalPlaces:0 showThousandsSeparator:0 currencyCode:0.0 suppressMinusSign:v43];
+  v15 = [arrayCopy numberFormatterStringFromDouble:@"#" withFormat:0 useDecimalPlaces:0 minDecimalPlaces:0 decimalPlaces:0 showThousandsSeparator:0 currencyCode:0.0 suppressMinusSign:v43];
   LOBYTE(v44) = 0;
-  v16 = [v4 numberFormatterStringFromDouble:@"#" withFormat:0 useDecimalPlaces:0 minDecimalPlaces:0 decimalPlaces:0 showThousandsSeparator:0 currencyCode:1.0 suppressMinusSign:v44];
+  v16 = [arrayCopy numberFormatterStringFromDouble:@"#" withFormat:0 useDecimalPlaces:0 minDecimalPlaces:0 decimalPlaces:0 showThousandsSeparator:0 currencyCode:1.0 suppressMinusSign:v44];
   v47 = v13;
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ = ", v13];
   self->mNumSuperscriptRanges = 0;
@@ -382,8 +382,8 @@ LABEL_59:
   self->mSuperscriptRangesArray = v18;
 
   v20 = exp(*self->mCoefficients);
-  v21 = [(TSURegressionModel *)self formattedStringWithCoefficient:v4 locale:?];
-  v49 = [(TSURegressionModel *)self formattedStringWithCoefficient:v4 locale:1.0];
+  v21 = [(TSURegressionModel *)self formattedStringWithCoefficient:arrayCopy locale:?];
+  v49 = [(TSURegressionModel *)self formattedStringWithCoefficient:arrayCopy locale:1.0];
   v22 = [v21 isEqualToString:?];
   if ((v22 & 1) == 0)
   {
@@ -398,18 +398,18 @@ LABEL_59:
     }
 
     [v17 stringByAppendingString:v21];
-    v45 = v4;
+    v45 = arrayCopy;
     v26 = v16;
     v28 = v27 = v15;
 
     v17 = v28;
     v15 = v27;
     v16 = v26;
-    v4 = v45;
+    arrayCopy = v45;
   }
 
   v29 = self->mCoefficients[1];
-  v24 = [(TSURegressionModel *)self formattedStringWithCoefficient:v4 locale:v29];
+  v24 = [(TSURegressionModel *)self formattedStringWithCoefficient:arrayCopy locale:v29];
 
   if (fabs(v29) <= 1.0e-14)
   {
@@ -464,13 +464,13 @@ LABEL_18:
   return v17;
 }
 
-- (_NSRange)superscriptRangeAtIndex:(int)a3
+- (_NSRange)superscriptRangeAtIndex:(int)index
 {
-  v3 = [(NSMutableArray *)self->mSuperscriptRangesArray objectAtIndex:a3];
-  v4 = [v3 rangeValue];
+  v3 = [(NSMutableArray *)self->mSuperscriptRangesArray objectAtIndex:index];
+  rangeValue = [v3 rangeValue];
   v6 = v5;
 
-  v7 = v4;
+  v7 = rangeValue;
   v8 = v6;
   result.length = v8;
   result.location = v7;

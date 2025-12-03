@@ -1,15 +1,15 @@
 @interface FMSettingsUpdateViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation FMSettingsUpdateViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FindMy.FMSettingsUpdateViewController" hasInstanceMethod:@"accessibilityButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FindMy.FMSettingsUpdateViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FindMy.FMSettingsUpdateViewController" hasInstanceMethod:@"accessibilityButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FindMy.FMSettingsUpdateViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)viewDidLoad
@@ -21,8 +21,8 @@
   v3 = [(FMSettingsUpdateViewControllerAccessibility *)self safeValueForKey:@"accessibilityButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7500] | v5];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7500] | accessibilityTraits];
 }
 
 @end

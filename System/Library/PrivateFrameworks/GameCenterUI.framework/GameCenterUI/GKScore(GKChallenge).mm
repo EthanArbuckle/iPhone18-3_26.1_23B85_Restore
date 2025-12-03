@@ -13,18 +13,18 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [MEMORY[0x277D0C048] currentGame];
-  v12 = [v11 internal];
-  v13 = [v12 supportsChallenges];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  internal = [currentGame internal];
+  supportsChallenges = [internal supportsChallenges];
 
-  if (v13)
+  if (supportsChallenges)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __88__GKScore_GKChallenge__challengeComposeControllerWithMessage_players_completionHandler___block_invoke;
     v19[3] = &unk_27966D7E0;
     v20 = v10;
-    v14 = [a1 challengeComposeControllerWithMessage:v8 players:v9 completion:v19];
+    challengesNotSupportedAlertController = [self challengeComposeControllerWithMessage:v8 players:v9 completion:v19];
   }
 
   else
@@ -50,14 +50,14 @@
       [GKScore(GKChallenge) challengeComposeControllerWithMessage:players:completionHandler:];
     }
 
-    v14 = [MEMORY[0x277D0BFF0] challengesNotSupportedAlertController];
+    challengesNotSupportedAlertController = [MEMORY[0x277D0BFF0] challengesNotSupportedAlertController];
     if (v10)
     {
-      (*(v10 + 2))(v10, v14, 0, 0);
+      (*(v10 + 2))(v10, challengesNotSupportedAlertController, 0, 0);
     }
   }
 
-  return v14;
+  return challengesNotSupportedAlertController;
 }
 
 - (id)challengeComposeControllerWithMessage:()GKChallenge players:completion:
@@ -65,18 +65,18 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [MEMORY[0x277D0C048] currentGame];
-  v12 = [v11 internal];
-  v13 = [v12 supportsChallenges];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  internal = [currentGame internal];
+  supportsChallenges = [internal supportsChallenges];
 
-  if (v13)
+  if (supportsChallenges)
   {
     v14 = MEMORY[0x277D0BFF0];
-    v15 = [a1 game];
-    v16 = [MEMORY[0x277D0C138] localPlayer];
-    v17 = [v14 challengeForGame:v15 andPlayer:v16 withScore:a1];
+    game = [self game];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    v17 = [v14 challengeForGame:game andPlayer:localPlayer withScore:self];
 
-    v18 = [GKHostedChallengeIssueController hostedIssueControllerWithChallenge:v17 players:v9 defaultMessage:v8 completionHandler:v10];
+    challengesNotSupportedAlertController = [GKHostedChallengeIssueController hostedIssueControllerWithChallenge:v17 players:v9 defaultMessage:v8 completionHandler:v10];
   }
 
   else
@@ -102,14 +102,14 @@
       [GKScore(GKChallenge) challengeComposeControllerWithMessage:players:completionHandler:];
     }
 
-    v18 = [MEMORY[0x277D0BFF0] challengesNotSupportedAlertController];
+    challengesNotSupportedAlertController = [MEMORY[0x277D0BFF0] challengesNotSupportedAlertController];
     if (v10)
     {
-      (*(v10 + 2))(v10, v18, 0, 0);
+      (*(v10 + 2))(v10, challengesNotSupportedAlertController, 0, 0);
     }
   }
 
-  return v18;
+  return challengesNotSupportedAlertController;
 }
 
 - (uint64_t)challengeComposeControllerWithPlayers:()GKChallenge message:completionHandler:

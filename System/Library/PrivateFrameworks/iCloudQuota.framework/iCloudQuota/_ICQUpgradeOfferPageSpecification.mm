@@ -1,38 +1,38 @@
 @interface _ICQUpgradeOfferPageSpecification
-+ (id)upgradeOfferPageSpecificationSampleForLevel:(int64_t)a3;
-- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)a3;
-- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)a3 pageIdentifier:(id)a4;
++ (id)upgradeOfferPageSpecificationSampleForLevel:(int64_t)level;
+- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)dictionary;
+- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)dictionary pageIdentifier:(id)identifier;
 - (id)copy;
-- (id)copyWithBindings:(id)a3;
+- (id)copyWithBindings:(id)bindings;
 - (id)debugDescription;
 @end
 
 @implementation _ICQUpgradeOfferPageSpecification
 
-- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)a3
+- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
+  dictionaryCopy = dictionary;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [(_ICQUpgradeOfferPageSpecification *)self initWithServerDictionary:v5 pageIdentifier:v7];
+  v8 = [(_ICQUpgradeOfferPageSpecification *)self initWithServerDictionary:dictionaryCopy pageIdentifier:uUIDString];
   return v8;
 }
 
-- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)a3 pageIdentifier:(id)a4
+- (_ICQUpgradeOfferPageSpecification)initWithServerDictionary:(id)dictionary pageIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v48.receiver = self;
   v48.super_class = _ICQUpgradeOfferPageSpecification;
   v9 = [(_ICQUpgradeOfferPageSpecification *)&v48 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serverDict, a3);
-    [(_ICQPageSpecification *)v10 setPageIdentifier:v8];
-    v11 = v7;
+    objc_storeStrong(&v9->_serverDict, dictionary);
+    [(_ICQPageSpecification *)v10 setPageIdentifier:identifierCopy];
+    v11 = dictionaryCopy;
     v12 = [v11 objectForKeyedSubscript:@"appId"];
     if (!v12)
     {
@@ -118,18 +118,18 @@
 
       v28 = v31;
 
-      v32 = [(_ICQPageSpecification *)v10 pageIdentifier];
-      if ([v32 isEqualToString:@"UpgradeOffer"])
+      pageIdentifier = [(_ICQPageSpecification *)v10 pageIdentifier];
+      if ([pageIdentifier isEqualToString:@"UpgradeOffer"])
       {
         v33 = 4;
       }
 
-      else if ([v32 isEqualToString:@"UpgradeComplete"])
+      else if ([pageIdentifier isEqualToString:@"UpgradeComplete"])
       {
         v33 = 5;
       }
 
-      else if ([v32 isEqualToString:@"UpgradeSuccessWiFi"])
+      else if ([pageIdentifier isEqualToString:@"UpgradeSuccessWiFi"])
       {
         v33 = 5;
       }
@@ -171,16 +171,16 @@
   v16.receiver = self;
   v16.super_class = _ICQUpgradeOfferPageSpecification;
   v14 = [(_ICQPageSpecification *)&v16 debugDescription];
-  v3 = [(_ICQUpgradeOfferPageSpecification *)self title];
-  v4 = [(_ICQUpgradeOfferPageSpecification *)self message];
-  v5 = [(_ICQUpgradeOfferPageSpecification *)self purchaseLink];
-  v6 = [v5 text];
-  v7 = [(_ICQUpgradeOfferPageSpecification *)self purchase2Link];
-  v8 = [v7 text];
-  v9 = [(_ICQUpgradeOfferPageSpecification *)self bottomLink];
-  v10 = [v9 text];
-  v11 = [(_ICQUpgradeOfferPageSpecification *)self fineprintFormat];
-  v12 = [v15 stringWithFormat:@"%@: title:%@ message:%@ purchase:%@ purchase2:%@ bottom:%@ fine:%@", v14, v3, v4, v6, v8, v10, v11];
+  title = [(_ICQUpgradeOfferPageSpecification *)self title];
+  message = [(_ICQUpgradeOfferPageSpecification *)self message];
+  purchaseLink = [(_ICQUpgradeOfferPageSpecification *)self purchaseLink];
+  text = [purchaseLink text];
+  purchase2Link = [(_ICQUpgradeOfferPageSpecification *)self purchase2Link];
+  text2 = [purchase2Link text];
+  bottomLink = [(_ICQUpgradeOfferPageSpecification *)self bottomLink];
+  text3 = [bottomLink text];
+  fineprintFormat = [(_ICQUpgradeOfferPageSpecification *)self fineprintFormat];
+  v12 = [v15 stringWithFormat:@"%@: title:%@ message:%@ purchase:%@ purchase2:%@ bottom:%@ fine:%@", v14, title, message, text, text2, text3, fineprintFormat];
 
   return v12;
 }
@@ -188,23 +188,23 @@
 - (id)copy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(_ICQUpgradeOfferPageSpecification *)self serverDict];
-  v5 = [(_ICQPageSpecification *)self pageIdentifier];
-  v6 = [v3 initWithServerDictionary:v4 pageIdentifier:v5];
+  serverDict = [(_ICQUpgradeOfferPageSpecification *)self serverDict];
+  pageIdentifier = [(_ICQPageSpecification *)self pageIdentifier];
+  v6 = [v3 initWithServerDictionary:serverDict pageIdentifier:pageIdentifier];
 
   return v6;
 }
 
-- (id)copyWithBindings:(id)a3
+- (id)copyWithBindings:(id)bindings
 {
-  v4 = a3;
+  bindingsCopy = bindings;
   v5 = [(_ICQUpgradeOfferPageSpecification *)self copy];
-  v6 = [v5 purchase2LinkVisibleKey];
+  purchase2LinkVisibleKey = [v5 purchase2LinkVisibleKey];
 
-  if (v6)
+  if (purchase2LinkVisibleKey)
   {
-    v7 = [v5 purchase2LinkVisibleKey];
-    v8 = [v4 objectForKeyedSubscript:v7];
+    purchase2LinkVisibleKey2 = [v5 purchase2LinkVisibleKey];
+    v8 = [bindingsCopy objectForKeyedSubscript:purchase2LinkVisibleKey2];
     v9 = _ICQBooleanForServerObjectDefault(v8, 0);
 
     if ((v9 & 1) == 0)
@@ -213,12 +213,12 @@
     }
   }
 
-  v10 = [v5 bottomLinkVisibleKey];
+  bottomLinkVisibleKey = [v5 bottomLinkVisibleKey];
 
-  if (v10)
+  if (bottomLinkVisibleKey)
   {
-    v11 = [v5 bottomLinkVisibleKey];
-    v12 = [v4 objectForKeyedSubscript:v11];
+    bottomLinkVisibleKey2 = [v5 bottomLinkVisibleKey];
+    v12 = [bindingsCopy objectForKeyedSubscript:bottomLinkVisibleKey2];
     v13 = _ICQBooleanForServerObjectDefault(v12, 0);
 
     if ((v13 & 1) == 0)
@@ -230,14 +230,14 @@
   return v5;
 }
 
-+ (id)upgradeOfferPageSpecificationSampleForLevel:(int64_t)a3
++ (id)upgradeOfferPageSpecificationSampleForLevel:(int64_t)level
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   [v3 setTitle:@"Upgrade your iCloud Storage"];
   [v3 setMessage:@"Add more storage to continue using iCloud and keep the most important things on your iPhone safe."];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Buy 50 GB for $0.99%C/%Cmo", 8288, 8288];
-  v5 = [ICQLink linkWithText:v4 action:4 parameters:MEMORY[0x277CBEC10]];
+  8288 = [MEMORY[0x277CCACA8] stringWithFormat:@"Buy 50 GB for $0.99%C/%Cmo", 8288, 8288];
+  v5 = [ICQLink linkWithText:8288 action:4 parameters:MEMORY[0x277CBEC10]];
   [v3 setPurchaseLink:v5];
 
   v17 = @"URL";
@@ -257,9 +257,9 @@
   [v3 setFineprintLinks:v10];
 
   [v3 setHasCancelButtonForBack:1];
-  v11 = [v3 pageIdentifier];
+  pageIdentifier = [v3 pageIdentifier];
 
-  if (!v11)
+  if (!pageIdentifier)
   {
     [v3 setPageIdentifier:&stru_288431E38];
   }

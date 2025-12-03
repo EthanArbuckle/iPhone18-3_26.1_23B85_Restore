@@ -6,8 +6,8 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(STSMailComposeViewController *)self view];
-  [v3 bounds];
+  view = [(STSMailComposeViewController *)self view];
+  [view bounds];
   v5 = v4;
   v6 = +[UIScreen mainScreen];
   [v6 bounds];

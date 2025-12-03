@@ -1,37 +1,37 @@
 @interface TSDBezierPathSource
-+ (id)pathSourceWithBezierPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)pathSourceWithBezierPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transformToNaturalSize;
 - (CGSize)naturalSize;
-- (TSDBezierPathSource)initWithBezierPath:(id)a3;
-- (TSDBezierPathSource)initWithNaturalSize:(CGSize)a3;
+- (TSDBezierPathSource)initWithBezierPath:(id)path;
+- (TSDBezierPathSource)initWithNaturalSize:(CGSize)size;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)p_setBezierPath:(id)a3;
+- (void)p_setBezierPath:(id)path;
 @end
 
 @implementation TSDBezierPathSource
 
-+ (id)pathSourceWithBezierPath:(id)a3
++ (id)pathSourceWithBezierPath:(id)path
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithBezierPath:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithBezierPath:path];
 
   return v3;
 }
 
-- (TSDBezierPathSource)initWithBezierPath:(id)a3
+- (TSDBezierPathSource)initWithBezierPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = TSDBezierPathSource;
   v4 = [(TSDBezierPathSource *)&v9 init];
   if (v4)
   {
-    if ([a3 elementCount] < 1)
+    if ([path elementCount] < 1)
     {
       v5 = *(MEMORY[0x277CBF398] + 16);
       v6 = *(MEMORY[0x277CBF398] + 24);
@@ -39,20 +39,20 @@
 
     else
     {
-      [a3 controlPointBounds];
+      [path controlPointBounds];
     }
 
     v7 = v5 == *MEMORY[0x277CBF3A8] && v6 == *(MEMORY[0x277CBF3A8] + 8);
     if (v7 || TSDRectHasNaNComponents())
     {
-      a3 = +[TSDBezierPath bezierPath];
-      [a3 moveToPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
-      [a3 lineToPoint:{100.0, 100.0}];
+      path = +[TSDBezierPath bezierPath];
+      [path moveToPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+      [path lineToPoint:{100.0, 100.0}];
     }
 
-    if (a3)
+    if (path)
     {
-      [(TSDBezierPathSource *)v4 p_setBezierPath:a3];
+      [(TSDBezierPathSource *)v4 p_setBezierPath:path];
     }
 
     else
@@ -65,9 +65,9 @@
   return v4;
 }
 
-- (TSDBezierPathSource)initWithNaturalSize:(CGSize)a3
+- (TSDBezierPathSource)initWithNaturalSize:(CGSize)size
 {
-  v4 = [TSDBezierPath bezierPathWithRect:0.0, 0.0, a3.width, a3.height];
+  v4 = [TSDBezierPath bezierPathWithRect:0.0, 0.0, size.width, size.height];
 
   return [(TSDBezierPathSource *)self initWithBezierPath:v4];
 }
@@ -79,10 +79,10 @@
   [(TSDBezierPathSource *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(TSDBezierPath *)self->mPath copy];
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithBezierPath:", v5}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithBezierPath:", v5}];
 
   [v6 setHasHorizontalFlip:{-[TSDPathSource hasHorizontalFlip](self, "hasHorizontalFlip")}];
   [v6 setHasVerticalFlip:{-[TSDPathSource hasVerticalFlip](self, "hasVerticalFlip")}];
@@ -91,9 +91,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -109,7 +109,7 @@
       v8 = v7;
       v11.receiver = self;
       v11.super_class = TSDBezierPathSource;
-      LODWORD(v7) = [(TSDPathSource *)&v11 isEqual:a3];
+      LODWORD(v7) = [(TSDPathSource *)&v11 isEqual:equal];
       if (v7)
       {
         mPath = self->mPath;
@@ -195,15 +195,15 @@
   return v3;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__TSDBezierPathSource_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __44__TSDBezierPathSource_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -228,16 +228,16 @@ uint64_t __44__TSDBezierPathSource_mixingTypeWithObject___block_invoke(uint64_t 
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__TSDBezierPathSource_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDBezierPathSource *__56__TSDBezierPathSource_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -255,28 +255,28 @@ TSDBezierPathSource *__56__TSDBezierPathSource_mixedObjectWithFraction_ofObject_
   return v12;
 }
 
-- (void)p_setBezierPath:(id)a3
+- (void)p_setBezierPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBezierPathSource p_setBezierPath:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBezierPathSource.m"), 207, @"invalid nil value for '%s'", "path"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBezierPathSource.m"), 207, @"invalid nil value for '%s'", "path"}];
   }
 
-  [a3 bounds];
+  [path bounds];
   v8 = v7;
   v10 = v9;
   if (!TSDNearlyEqualPoints(v7, v9, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)))
   {
     CGAffineTransformMakeTranslation(&v14, -v8, -v10);
-    [a3 transformUsingAffineTransform:&v14];
+    [path transformUsingAffineTransform:&v14];
   }
 
-  v11 = a3;
+  pathCopy = path;
 
-  self->mPath = a3;
-  [a3 bounds];
+  self->mPath = path;
+  [path bounds];
   self->mNaturalSize.width = v12;
   self->mNaturalSize.height = v13;
   self->mIsRectangular = [(TSDBezierPath *)self->mPath isRectangular];

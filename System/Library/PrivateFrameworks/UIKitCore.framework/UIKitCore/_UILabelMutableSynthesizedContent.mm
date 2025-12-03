@@ -1,47 +1,47 @@
 @interface _UILabelMutableSynthesizedContent
-- (_UILabelMutableSynthesizedContent)initWithContent:(id)a3;
+- (_UILabelMutableSynthesizedContent)initWithContent:(id)content;
 - (void)_resetSynthesizedResults;
-- (void)setContent:(id)a3;
-- (void)setDisableLinkHypenation:(BOOL)a3;
-- (void)setOverallWritingDirectionFollowsLayoutDirection:(BOOL)a3;
-- (void)setOverrideTextColor:(id)a3;
-- (void)setTextEncapsulation:(id)a3;
+- (void)setContent:(id)content;
+- (void)setDisableLinkHypenation:(BOOL)hypenation;
+- (void)setOverallWritingDirectionFollowsLayoutDirection:(BOOL)direction;
+- (void)setOverrideTextColor:(id)color;
+- (void)setTextEncapsulation:(id)encapsulation;
 @end
 
 @implementation _UILabelMutableSynthesizedContent
 
-- (_UILabelMutableSynthesizedContent)initWithContent:(id)a3
+- (_UILabelMutableSynthesizedContent)initWithContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = _UILabelMutableSynthesizedContent;
   v6 = [(_UILabelMutableSynthesizedContent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._content, a3);
+    objc_storeStrong(&v6->super._content, content);
   }
 
   return v7;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  objc_storeStrong(&self->super._content, a3);
+  objc_storeStrong(&self->super._content, content);
 
   [(_UILabelMutableSynthesizedContent *)self _resetSynthesizedResults];
 }
 
-- (void)setOverrideTextColor:(id)a3
+- (void)setOverrideTextColor:(id)color
 {
-  objc_storeStrong(&self->super._overrideTextColor, a3);
+  objc_storeStrong(&self->super._overrideTextColor, color);
 
   [(_UILabelMutableSynthesizedContent *)self _resetSynthesizedResults];
 }
 
-- (void)setOverallWritingDirectionFollowsLayoutDirection:(BOOL)a3
+- (void)setOverallWritingDirectionFollowsLayoutDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v3 = 2;
   }
@@ -55,9 +55,9 @@
   [(_UILabelMutableSynthesizedContent *)self _resetSynthesizedResults];
 }
 
-- (void)setDisableLinkHypenation:(BOOL)a3
+- (void)setDisableLinkHypenation:(BOOL)hypenation
 {
-  if (a3)
+  if (hypenation)
   {
     v3 = 4;
   }
@@ -71,9 +71,9 @@
   [(_UILabelMutableSynthesizedContent *)self _resetSynthesizedResults];
 }
 
-- (void)setTextEncapsulation:(id)a3
+- (void)setTextEncapsulation:(id)encapsulation
 {
-  objc_storeStrong(&self->super._textEncapsulation, a3);
+  objc_storeStrong(&self->super._textEncapsulation, encapsulation);
 
   [(_UILabelMutableSynthesizedContent *)self _resetSynthesizedResults];
 }

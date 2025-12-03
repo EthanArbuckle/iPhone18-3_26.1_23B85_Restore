@@ -1,21 +1,21 @@
 @interface SUScriptAuthenticationOperation
-- (SUScriptAuthenticationOperation)initWithAccountIdentifier:(id)a3;
+- (SUScriptAuthenticationOperation)initWithAccountIdentifier:(id)identifier;
 - (void)run;
-- (void)sendCompletionCallback:(id)a3;
-- (void)setScriptOptions:(id)a3;
+- (void)sendCompletionCallback:(id)callback;
+- (void)setScriptOptions:(id)options;
 @end
 
 @implementation SUScriptAuthenticationOperation
 
-- (SUScriptAuthenticationOperation)initWithAccountIdentifier:(id)a3
+- (SUScriptAuthenticationOperation)initWithAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SUScriptAuthenticationOperation;
   v5 = [(SUScriptAuthenticationOperation *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69D4968]) initWithAccountIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69D4968]) initWithAccountIdentifier:identifierCopy];
     authenticationContext = v5->_authenticationContext;
     v5->_authenticationContext = v6;
   }
@@ -26,20 +26,20 @@
 - (void)run
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -49,11 +49,11 @@
     v7 = objc_opt_class();
     authenticationContext = self->_authenticationContext;
     v9 = v7;
-    v10 = [(SSMutableAuthenticationContext *)authenticationContext requiredUniqueIdentifier];
+    requiredUniqueIdentifier = [(SSMutableAuthenticationContext *)authenticationContext requiredUniqueIdentifier];
     v28 = 138412546;
     v29 = v7;
     v30 = 2112;
-    v31 = v10;
+    v31 = requiredUniqueIdentifier;
     LODWORD(v26) = 22;
     v25 = &v28;
     v11 = _os_log_send_and_compose_impl();
@@ -63,21 +63,21 @@
       goto LABEL_10;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v28, v26}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v28, v26}];
     free(v11);
-    v25 = v6;
+    v25 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_10:
   [(SSMutableAuthenticationContext *)self->_authenticationContext setForceDaemonAuthentication:1];
   v12 = [objc_alloc(MEMORY[0x1E69E47D8]) initWithAuthenticationContext:self->_authenticationContext];
-  v13 = [(SUScriptAuthenticationOperation *)self presentingViewController];
+  presentingViewController = [(SUScriptAuthenticationOperation *)self presentingViewController];
 
-  if (v13)
+  if (presentingViewController)
   {
-    v14 = [(SUScriptAuthenticationOperation *)self presentingViewController];
-    [v12 setParentViewController:v14];
+    presentingViewController2 = [(SUScriptAuthenticationOperation *)self presentingViewController];
+    [v12 setParentViewController:presentingViewController2];
   }
 
   v27 = 0;
@@ -85,20 +85,20 @@ LABEL_10:
   v16 = v27;
   if (!v15)
   {
-    v18 = [MEMORY[0x1E69D4938] sharedConfig];
-    v19 = [v18 shouldLog];
-    if ([v18 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog2 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog2;
     }
 
-    v21 = [v18 OSLogObject];
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v20 &= 2u;
     }
@@ -122,7 +122,7 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v21 = [MEMORY[0x1E696AEC0] stringWithCString:v24 encoding:{4, &v28, v26}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v24 encoding:{4, &v28, v26}];
       free(v24);
       SSFileLog();
     }
@@ -130,17 +130,17 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v17 = [v12 authenticatedAccountDSID];
-  [(SUScriptAuthenticationOperation *)self setAuthenticatedDSID:v17];
+  authenticatedAccountDSID = [v12 authenticatedAccountDSID];
+  [(SUScriptAuthenticationOperation *)self setAuthenticatedDSID:authenticatedAccountDSID];
 
   [(SUScriptAuthenticationOperation *)self setSuccess:1];
 LABEL_24:
 }
 
-- (void)sendCompletionCallback:(id)a3
+- (void)sendCompletionCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(SUScriptAuthenticationOperation *)self error];
+  callbackCopy = callback;
+  error = [(SUScriptAuthenticationOperation *)self error];
   IsEqual = ISErrorIsEqual();
 
   if (IsEqual)
@@ -152,8 +152,8 @@ LABEL_24:
   else if ([(SUScriptAuthenticationOperation *)self success])
   {
     v9 = [SUScriptAccountManager beginAccountManagerSessionForObject:self];
-    v10 = [(SUScriptAuthenticationOperation *)self authenticatedAccountDSID];
-    v7 = [v9 accountForDSID:v10];
+    authenticatedAccountDSID = [(SUScriptAuthenticationOperation *)self authenticatedAccountDSID];
+    v7 = [v9 accountForDSID:authenticatedAccountDSID];
 
     [SUScriptAccountManager endAccountManagerSessionForObject:self];
     v8 = @"success";
@@ -165,10 +165,10 @@ LABEL_24:
     v8 = @"fail";
   }
 
-  v13 = v4;
+  v13 = callbackCopy;
   v14 = v8;
   v11 = v7;
-  v12 = v4;
+  v12 = callbackCopy;
   WebThreadRun();
 }
 
@@ -195,17 +195,17 @@ void __58__SUScriptAuthenticationOperation_sendCompletionCallback___block_invoke
   v8 = [a1[4] callWebScriptMethod:@"call" withArguments:v6];
 }
 
-- (void)setScriptOptions:(id)a3
+- (void)setScriptOptions:(id)options
 {
-  v11 = a3;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v11 safeValueForKey:@"additionalQueryParameters"];
+    v4 = [optionsCopy safeValueForKey:@"additionalQueryParameters"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [v11 safeValueForKey:@"additionalQueryParamters"];
+      v5 = [optionsCopy safeValueForKey:@"additionalQueryParamters"];
 
       v4 = v5;
     }
@@ -217,14 +217,14 @@ void __58__SUScriptAuthenticationOperation_sendCompletionCallback___block_invoke
       [(SSMutableAuthenticationContext *)self->_authenticationContext setRequestParameters:v6];
     }
 
-    v7 = [v11 safeValueForKey:@"forced"];
+    v7 = [optionsCopy safeValueForKey:@"forced"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 BOOLValue])
     {
       [(SSMutableAuthenticationContext *)self->_authenticationContext setPromptStyle:1];
     }
 
-    v8 = [v11 safeValueForKey:@"reason"];
+    v8 = [optionsCopy safeValueForKey:@"reason"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -232,7 +232,7 @@ void __58__SUScriptAuthenticationOperation_sendCompletionCallback___block_invoke
       [(SSMutableAuthenticationContext *)self->_authenticationContext setReasonDescription:v8];
     }
 
-    v9 = [v11 safeValueForKey:@"username"];
+    v9 = [optionsCopy safeValueForKey:@"username"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -240,7 +240,7 @@ void __58__SUScriptAuthenticationOperation_sendCompletionCallback___block_invoke
       [(SSMutableAuthenticationContext *)self->_authenticationContext setAccountName:v9];
     }
 
-    v10 = [v11 safeValueForKey:@"password"];
+    v10 = [optionsCopy safeValueForKey:@"password"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

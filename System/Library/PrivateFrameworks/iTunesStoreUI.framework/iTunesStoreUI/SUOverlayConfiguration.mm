@@ -1,15 +1,15 @@
 @interface SUOverlayConfiguration
-- (BOOL)matchesURL:(id)a3;
+- (BOOL)matchesURL:(id)l;
 - (CGSize)size;
-- (SUOverlayConfiguration)initWithDictionary:(id)a3;
+- (SUOverlayConfiguration)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation SUOverlayConfiguration
 
-- (SUOverlayConfiguration)initWithDictionary:(id)a3
+- (SUOverlayConfiguration)initWithDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     [(SUOverlayConfiguration *)a2 initWithDictionary:?];
   }
@@ -19,46 +19,46 @@
   v5 = [(SUOverlayConfiguration *)&v14 init];
   if (v5)
   {
-    v6 = [a3 objectForKey:@"bag-key-pattern"];
+    v6 = [dictionary objectForKey:@"bag-key-pattern"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5->_bagKeyPattern = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v6 options:1 error:0];
     }
 
-    v7 = [a3 objectForKey:@"corner-radius"];
+    v7 = [dictionary objectForKey:@"corner-radius"];
     if (objc_opt_respondsToSelector())
     {
       v5->_cornerRadius = [v7 intValue];
     }
 
-    v8 = [a3 objectForKey:@"height"];
+    v8 = [dictionary objectForKey:@"height"];
     if (objc_opt_respondsToSelector())
     {
       v5->_size.height = [v8 intValue];
     }
 
-    v9 = [a3 objectForKey:@"show-navigation-bar"];
+    v9 = [dictionary objectForKey:@"show-navigation-bar"];
     if (objc_opt_respondsToSelector())
     {
       v5->_shouldShowNavigationBar = [v9 BOOLValue];
     }
 
-    v10 = [a3 objectForKey:@"transition"];
+    v10 = [dictionary objectForKey:@"transition"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5->_transitionName = v10;
     }
 
-    v11 = [a3 objectForKey:@"url-pattern"];
+    v11 = [dictionary objectForKey:@"url-pattern"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5->_urlPattern = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v11 options:1 error:0];
     }
 
-    v12 = [a3 objectForKey:@"width"];
+    v12 = [dictionary objectForKey:@"width"];
     if (objc_opt_respondsToSelector())
     {
       v5->_size.width = [v12 intValue];
@@ -81,15 +81,15 @@
   [(SUOverlayConfiguration *)&v3 dealloc];
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
   if (!self->_urlPattern)
   {
     return 0;
   }
 
-  v4 = [a3 absoluteString];
-  return -[NSRegularExpression rangeOfFirstMatchInString:options:range:](self->_urlPattern, "rangeOfFirstMatchInString:options:range:", v4, 0, 0, [v4 length]) != 0x7FFFFFFFFFFFFFFFLL;
+  absoluteString = [l absoluteString];
+  return -[NSRegularExpression rangeOfFirstMatchInString:options:range:](self->_urlPattern, "rangeOfFirstMatchInString:options:range:", absoluteString, 0, 0, [absoluteString length]) != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (CGSize)size

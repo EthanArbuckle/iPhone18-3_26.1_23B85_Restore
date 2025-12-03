@@ -1,17 +1,17 @@
 @interface DebugFormatUploadViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (_TtC8NewsFeed31DebugFormatUploadViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (_TtC8NewsFeed31DebugFormatUploadViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)doNext;
-- (void)doTocWithSender:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)doTocWithSender:(id)sender;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -19,22 +19,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D67B77E8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(DebugFormatUploadViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(DebugFormatUploadViewController *)&v7 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    [v5 setToolbarHidden:0 animated:0];
+    v6 = navigationController;
+    [navigationController setToolbarHidden:0 animated:0];
   }
 }
 
@@ -45,11 +45,11 @@
   v2 = v14.receiver;
   [(DebugFormatUploadViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed31DebugFormatUploadViewController_tableView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -65,7 +65,7 @@
   }
 }
 
-- (_TtC8NewsFeed31DebugFormatUploadViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed31DebugFormatUploadViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -74,20 +74,20 @@
 
 - (void)doNext
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D67B9544();
 }
 
-- (void)doTocWithSender:(id)a3
+- (void)doTocWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D67B9A68(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1D67B9A68(senderCopy);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
   }
@@ -95,9 +95,9 @@
   else
   {
     v4 = *(self + OBJC_IVAR____TtC8NewsFeed31DebugFormatUploadViewController_filteredSections);
-    if (*(v4 + 16) > a4)
+    if (*(v4 + 16) > section)
     {
-      return *(*(v4 + 32 * a4 + 56) + 16);
+      return *(*(v4 + 32 * section + 56) + 16);
     }
   }
 
@@ -105,15 +105,15 @@
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_1D67BA6B8();
 
   (*(v7 + 8))(v10, v6);
@@ -121,33 +121,33 @@
   return v13;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D67BB454(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D67BB454(viewCopy, section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
   v5 = *(self + OBJC_IVAR____TtC8NewsFeed31DebugFormatUploadViewController_filteredSections);
-  if (*(v5 + 16) <= a4)
+  if (*(v5 + 16) <= section)
   {
 LABEL_10:
     __break(1u);
     return self;
   }
 
-  if (*(v5 + 32 * a4 + 48))
+  if (*(v5 + 32 * section + 48))
   {
 
     v6 = sub_1D726203C();
@@ -161,22 +161,22 @@ LABEL_10:
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_1D7258DBC();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8, v10);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_1D67BF214(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_1D67BF214(viewCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
@@ -186,8 +186,8 @@ LABEL_10:
   MEMORY[0x1EEE9AC00](v11 - 8, v12);
   v14 = &v22 - v13;
   sub_1D7258D6C();
-  v15 = a3;
-  v16 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1D67BBB3C(v10, v14);
 
   v17 = *(v7 + 8);
@@ -204,26 +204,26 @@ LABEL_10:
   return v19;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_1D67BF3F0();
 
   (*(v7 + 8))(v10, v6);
   return self & 1;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D67BC3CC(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1D67BC3CC(controllerCopy);
 }
 
 @end

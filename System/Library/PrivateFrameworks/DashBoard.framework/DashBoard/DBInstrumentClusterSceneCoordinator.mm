@@ -1,10 +1,10 @@
 @interface DBInstrumentClusterSceneCoordinator
 - (_TtC9DashBoard35DBInstrumentClusterSceneCoordinator)init;
 - (void)invalidate;
-- (void)navigationStateProvider:(id)a3 frontmostIdentifierDidChange:(id)a4;
-- (void)navigationStateProvider:(id)a3 navigatingIdentifiersDidChange:(id)a4;
-- (void)processMonitor:(id)a3 didHandleDeathOfBundleIdentifier:(id)a4;
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5;
+- (void)navigationStateProvider:(id)provider frontmostIdentifierDidChange:(id)change;
+- (void)navigationStateProvider:(id)provider navigatingIdentifiersDidChange:(id)change;
+- (void)processMonitor:(id)monitor didHandleDeathOfBundleIdentifier:(id)identifier;
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash;
 @end
 
 @implementation DBInstrumentClusterSceneCoordinator
@@ -18,40 +18,40 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_2482CF574();
 }
 
-- (void)navigationStateProvider:(id)a3 navigatingIdentifiersDidChange:(id)a4
+- (void)navigationStateProvider:(id)provider navigatingIdentifiersDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2482D3B40(v5);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_2482D3B40(providerCopy);
 }
 
-- (void)navigationStateProvider:(id)a3 frontmostIdentifierDidChange:(id)a4
+- (void)navigationStateProvider:(id)provider frontmostIdentifierDidChange:(id)change
 {
   v6 = sub_248383960();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_2482D01C8(v9, v6, v8);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_2482D01C8(providerCopy, v6, v8);
 }
 
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash
 {
   v8 = sub_248383960();
   v10 = v9;
-  v11 = a3;
-  v12 = self;
-  sub_2482D3C58(v8, v10, a5);
+  monitorCopy = monitor;
+  selfCopy = self;
+  sub_2482D3C58(v8, v10, crash);
 }
 
-- (void)processMonitor:(id)a3 didHandleDeathOfBundleIdentifier:(id)a4
+- (void)processMonitor:(id)monitor didHandleDeathOfBundleIdentifier:(id)identifier
 {
   sub_248383960();
-  v6 = a3;
-  v7 = self;
+  monitorCopy = monitor;
+  selfCopy = self;
   sub_2482D41D8();
 }
 

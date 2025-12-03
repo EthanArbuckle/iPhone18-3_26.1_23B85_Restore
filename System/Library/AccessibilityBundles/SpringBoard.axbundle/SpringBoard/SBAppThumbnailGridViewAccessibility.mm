@@ -1,11 +1,11 @@
 @interface SBAppThumbnailGridViewAccessibility
 - (BOOL)isAccessibilityElement;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (id)accessibilityLabel;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
-- (void)_layoutSubviews:(BOOL)a3;
-- (void)removeViewAtIndex:(int64_t)a3 animate:(BOOL)a4;
+- (int64_t)indexOfAccessibilityElement:(id)element;
+- (void)_layoutSubviews:(BOOL)subviews;
+- (void)removeViewAtIndex:(int64_t)index animate:(BOOL)animate;
 @end
 
 @implementation SBAppThumbnailGridViewAccessibility
@@ -21,9 +21,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(SBAppThumbnailGridViewAccessibility *)self safeValueForKey:@"_emptyLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (int64_t)accessibilityElementCount
@@ -34,53 +34,53 @@
   return v3;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
   v4 = [(SBAppThumbnailGridViewAccessibility *)self safeValueForKey:@"_appThumbnails"];
-  if ([v4 count] <= a3)
+  if ([v4 count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
+    v5 = [v4 objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = [(SBAppThumbnailGridViewAccessibility *)self safeValueForKey:@"_appThumbnails"];
-  v6 = [v5 indexOfObject:v4];
+  v6 = [v5 indexOfObject:elementCopy];
 
   return v6;
 }
 
-- (void)removeViewAtIndex:(int64_t)a3 animate:(BOOL)a4
+- (void)removeViewAtIndex:(int64_t)index animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   v7 = [(SBAppThumbnailGridViewAccessibility *)self safeValueForKey:@"_appThumbnails"];
   v8 = [v7 count];
   v9.receiver = self;
   v9.super_class = SBAppThumbnailGridViewAccessibility;
-  [(SBAppThumbnailGridViewAccessibility *)&v9 removeViewAtIndex:a3 animate:v4];
+  [(SBAppThumbnailGridViewAccessibility *)&v9 removeViewAtIndex:index animate:animateCopy];
   if ([v7 count] != v8)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
 }
 
-- (void)_layoutSubviews:(BOOL)a3
+- (void)_layoutSubviews:(BOOL)subviews
 {
-  v3 = a3;
+  subviewsCopy = subviews;
   v5 = [(SBAppThumbnailGridViewAccessibility *)self safeValueForKey:@"_appThumbnails"];
   v6 = [v5 count];
   v7.receiver = self;
   v7.super_class = SBAppThumbnailGridViewAccessibility;
-  [(SBAppThumbnailGridViewAccessibility *)&v7 _layoutSubviews:v3];
+  [(SBAppThumbnailGridViewAccessibility *)&v7 _layoutSubviews:subviewsCopy];
   if ([v5 count] != v6)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);

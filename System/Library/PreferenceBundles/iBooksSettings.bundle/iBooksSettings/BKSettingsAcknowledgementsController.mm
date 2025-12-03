@@ -1,16 +1,16 @@
 @interface BKSettingsAcknowledgementsController
-- (id)_stringFromBundle:(id)a3;
+- (id)_stringFromBundle:(id)bundle;
 - (id)specifiers;
 @end
 
 @implementation BKSettingsAcknowledgementsController
 
-- (id)_stringFromBundle:(id)a3
+- (id)_stringFromBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[PSSpecifier emptyGroupSpecifier];
-  v6 = [(BKSettingsAcknowledgementsController *)self bundle];
-  v7 = [v6 localizedStringForKey:v4 value:v4 table:@"Acknowledgements"];
+  bundle = [(BKSettingsAcknowledgementsController *)self bundle];
+  v7 = [bundle localizedStringForKey:bundleCopy value:bundleCopy table:@"Acknowledgements"];
 
   [v5 setObject:v7 forKeyedSubscript:PSFooterTextGroupKey];
 

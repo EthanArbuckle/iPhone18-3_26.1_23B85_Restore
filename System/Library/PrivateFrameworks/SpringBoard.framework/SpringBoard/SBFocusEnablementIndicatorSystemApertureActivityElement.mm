@@ -1,20 +1,20 @@
 @interface SBFocusEnablementIndicatorSystemApertureActivityElement
-- (SBFocusEnablementIndicatorSystemApertureActivityElement)initWithActivityDescription:(id)a3 enabled:(BOOL)a4;
+- (SBFocusEnablementIndicatorSystemApertureActivityElement)initWithActivityDescription:(id)description enabled:(BOOL)enabled;
 - (SBSystemAperturePlatformElementHosting)platformElementHost;
-- (void)setExpanding:(BOOL)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setPreviewing:(BOOL)a3;
-- (void)setProminent:(BOOL)a3;
-- (void)setUrgent:(BOOL)a3;
+- (void)setExpanding:(BOOL)expanding;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setPreviewing:(BOOL)previewing;
+- (void)setProminent:(BOOL)prominent;
+- (void)setUrgent:(BOOL)urgent;
 @end
 
 @implementation SBFocusEnablementIndicatorSystemApertureActivityElement
 
-- (SBFocusEnablementIndicatorSystemApertureActivityElement)initWithActivityDescription:(id)a3 enabled:(BOOL)a4
+- (SBFocusEnablementIndicatorSystemApertureActivityElement)initWithActivityDescription:(id)description enabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = SBFocusEnablementIndicatorSystemApertureActivityElement;
-  v4 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)&v8 initWithActivityDescription:a3 enabled:a4];
+  v4 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)&v8 initWithActivityDescription:description enabled:enabled];
   if (v4)
   {
     v5 = [[SBSystemActionElementPreviewingCoordinator alloc] initWithElement:v4];
@@ -25,53 +25,53 @@
   return v4;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   v8.receiver = self;
   v8.super_class = SBFocusEnablementIndicatorSystemApertureActivityElement;
-  if ([(FCUIFocusEnablementIndicatorSystemApertureElement *)&v8 layoutMode]!= a3)
+  if ([(FCUIFocusEnablementIndicatorSystemApertureElement *)&v8 layoutMode]!= mode)
   {
     v7.receiver = self;
     v7.super_class = SBFocusEnablementIndicatorSystemApertureActivityElement;
-    [(FCUIFocusEnablementIndicatorSystemApertureElement *)&v7 setLayoutMode:a3 reason:a4];
+    [(FCUIFocusEnablementIndicatorSystemApertureElement *)&v7 setLayoutMode:mode reason:reason];
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setPreviewing:(BOOL)a3
+- (void)setPreviewing:(BOOL)previewing
 {
-  if (self->_previewing != a3)
+  if (self->_previewing != previewing)
   {
-    self->_previewing = a3;
+    self->_previewing = previewing;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setUrgent:(BOOL)a3
+- (void)setUrgent:(BOOL)urgent
 {
-  if (self->_urgent != a3)
+  if (self->_urgent != urgent)
   {
-    self->_urgent = a3;
+    self->_urgent = urgent;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setExpanding:(BOOL)a3
+- (void)setExpanding:(BOOL)expanding
 {
-  if (self->_expanding != a3)
+  if (self->_expanding != expanding)
   {
-    self->_expanding = a3;
+    self->_expanding = expanding;
     [(SBSystemActionElementPreviewingCoordinator *)self->_previewingCoordinator elementInvalidatedProperties];
   }
 }
 
-- (void)setProminent:(BOOL)a3
+- (void)setProminent:(BOOL)prominent
 {
-  if (self->_prominent != a3)
+  if (self->_prominent != prominent)
   {
-    self->_prominent = a3;
-    v5 = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self layoutHost];
-    [v5 preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
+    self->_prominent = prominent;
+    layoutHost = [(FCUIFocusEnablementIndicatorSystemApertureElement *)self layoutHost];
+    [layoutHost preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
   }
 }
 

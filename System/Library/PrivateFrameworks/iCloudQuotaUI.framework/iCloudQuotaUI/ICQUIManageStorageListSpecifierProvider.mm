@@ -1,43 +1,43 @@
 @interface ICQUIManageStorageListSpecifierProvider
-- (ICQUIManageStorageListSpecifierProvider)initWithAccountManager:(id)a3 navigationItem:(id)a4;
+- (ICQUIManageStorageListSpecifierProvider)initWithAccountManager:(id)manager navigationItem:(id)item;
 - (ICQUIManageStorageSpecifierProviderDelegate)delegate;
 - (NSArray)specifiers;
 - (UINavigationItem)navigationItem;
 - (id)account;
-- (id)nativeSpecifierForAppInfo:(id)a3;
-- (id)serverUISpecifierForAppInfo:(id)a3;
+- (id)nativeSpecifierForAppInfo:(id)info;
+- (id)serverUISpecifierForAppInfo:(id)info;
 - (void)_refreshAppList;
 - (void)_reloadSpecifiers;
-- (void)addDecorationToSpecifier:(id)a3 usingAppInfo:(id)a4;
+- (void)addDecorationToSpecifier:(id)specifier usingAppInfo:(id)info;
 - (void)dealloc;
-- (void)loadDrilldownFromSpecifier:(id)a3;
-- (void)setSpecifiers:(id)a3;
+- (void)loadDrilldownFromSpecifier:(id)specifier;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation ICQUIManageStorageListSpecifierProvider
 
-- (ICQUIManageStorageListSpecifierProvider)initWithAccountManager:(id)a3 navigationItem:(id)a4
+- (ICQUIManageStorageListSpecifierProvider)initWithAccountManager:(id)manager navigationItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = ICQUIManageStorageListSpecifierProvider;
   v9 = [(ICQUIManageStorageListSpecifierProvider *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_navigationItem, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_navigationItem, itemCopy);
     [(ICQUIManageStorageListSpecifierProvider *)v10 _refreshAppList];
     objc_initWeak(&location, v10);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    v12 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __81__ICQUIManageStorageListSpecifierProvider_initWithAccountManager_navigationItem___block_invoke;
     v15[3] = &unk_27A65ACB0;
     objc_copyWeak(&v16, &location);
-    v13 = [v11 addObserverForName:@"QuotaDidChange" object:0 queue:v12 usingBlock:v15];
+    v13 = [defaultCenter addObserverForName:@"QuotaDidChange" object:0 queue:mainQueue usingBlock:v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -64,8 +64,8 @@ void __81__ICQUIManageStorageListSpecifierProvider_initWithAccountManager_naviga
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -83,21 +83,21 @@ void __81__ICQUIManageStorageListSpecifierProvider_initWithAccountManager_naviga
 
   else
   {
-    v4 = [(ICQUIManageStorageListSpecifierProvider *)self storageApps];
-    v5 = [v4 apps];
-    v6 = [v5 count];
+    storageApps = [(ICQUIManageStorageListSpecifierProvider *)self storageApps];
+    apps = [storageApps apps];
+    v6 = [apps count];
 
     if (v6)
     {
-      v7 = [(ICQUIManageStorageListSpecifierProvider *)self navigationItem];
-      [v7 icqui_showNavigationBarSpinner];
+      navigationItem = [(ICQUIManageStorageListSpecifierProvider *)self navigationItem];
+      [navigationItem icqui_showNavigationBarSpinner];
     }
 
     [(ICQUIManageStorageListSpecifierProvider *)self setIsFetching:1];
     [(ICQUIManageStorageListSpecifierProvider *)self setFailedToFetchAppList:0];
     v8 = objc_alloc(MEMORY[0x277D7F338]);
-    v9 = [(ICQUIManageStorageListSpecifierProvider *)self account];
-    v3 = [v8 initWithAccount:v9];
+    account = [(ICQUIManageStorageListSpecifierProvider *)self account];
+    v3 = [v8 initWithAccount:account];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -171,8 +171,8 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
   specifiers = self->_specifiers;
   self->_specifiers = 0;
 
-  v4 = [(ICQUIManageStorageListSpecifierProvider *)self delegate];
-  [v4 reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
+  delegate = [(ICQUIManageStorageListSpecifierProvider *)self delegate];
+  [delegate reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
 }
 
 - (NSArray)specifiers
@@ -189,9 +189,9 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"MANAGE_STORAGE_APP_LIST"];
     [v5 addObject:v6];
-    v7 = [(ICQUIManageStorageListSpecifierProvider *)self storageApps];
-    v8 = [v7 apps];
-    v9 = [v8 count];
+    storageApps = [(ICQUIManageStorageListSpecifierProvider *)self storageApps];
+    apps = [storageApps apps];
+    v9 = [apps count];
 
     if (v9)
     {
@@ -200,10 +200,10 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v10 = [(ICQUIManageStorageListSpecifierProvider *)self storageApps];
-      v11 = [v10 apps];
+      storageApps2 = [(ICQUIManageStorageListSpecifierProvider *)self storageApps];
+      apps2 = [storageApps2 apps];
 
-      v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v12 = [apps2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v12)
       {
         v13 = v12;
@@ -214,15 +214,15 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
           {
             if (*v27 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(apps2);
             }
 
             v16 = *(*(&v26 + 1) + 8 * i);
-            v17 = [v16 action];
-            v18 = [v17 icqLink];
-            v19 = [v18 action];
+            action = [v16 action];
+            icqLink = [action icqLink];
+            action2 = [icqLink action];
 
-            if (v19 == 126)
+            if (action2 == 126)
             {
               [(ICQUIManageStorageListSpecifierProvider *)self nativeSpecifierForAppInfo:v16];
             }
@@ -238,7 +238,7 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v13 = [apps2 countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v13);
@@ -270,13 +270,13 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
   return v3;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v7 = a3;
+  specifiersCopy = specifiers;
   v5 = [(NSArray *)self->_specifiers copy];
-  if (v7)
+  if (specifiersCopy)
   {
-    objc_storeStrong(&self->_specifiers, a3);
+    objc_storeStrong(&self->_specifiers, specifiers);
   }
 
   else
@@ -284,16 +284,16 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
     [(ICQUIManageStorageListSpecifierProvider *)self _refreshAppList];
   }
 
-  v6 = [(ICQUIManageStorageListSpecifierProvider *)self delegate];
-  [v6 reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
+  delegate = [(ICQUIManageStorageListSpecifierProvider *)self delegate];
+  [delegate reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
 }
 
-- (id)serverUISpecifierForAppInfo:(id)a3
+- (id)serverUISpecifierForAppInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 action];
-  v6 = [v5 actionURL];
-  if (v6)
+  infoCopy = info;
+  action = [infoCopy action];
+  actionURL = [action actionURL];
+  if (actionURL)
   {
     v7 = 1;
   }
@@ -304,22 +304,22 @@ uint64_t __58__ICQUIManageStorageListSpecifierProvider__refreshAppList__block_in
   }
 
   v8 = MEMORY[0x277D3FAD8];
-  v9 = [v4 label];
-  v10 = [v8 preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:v7 edit:0];
+  label = [infoCopy label];
+  v10 = [v8 preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:v7 edit:0];
 
-  [(ICQUIManageStorageListSpecifierProvider *)self addDecorationToSpecifier:v10 usingAppInfo:v4];
+  [(ICQUIManageStorageListSpecifierProvider *)self addDecorationToSpecifier:v10 usingAppInfo:infoCopy];
   [v10 setControllerLoadAction:sel_loadDrilldownFromSpecifier_];
 
   return v10;
 }
 
-- (id)nativeSpecifierForAppInfo:(id)a3
+- (id)nativeSpecifierForAppInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 action];
-  v6 = [v5 icqLink];
-  v7 = [v6 parameters];
-  v8 = [v7 objectForKeyedSubscript:@"identifier"];
+  infoCopy = info;
+  action = [infoCopy action];
+  icqLink = [action icqLink];
+  parameters = [icqLink parameters];
+  v8 = [parameters objectForKeyedSubscript:@"identifier"];
 
   if ([v8 isEqualToString:@"afuiSettings"])
   {
@@ -349,59 +349,59 @@ LABEL_7:
 
   v10 = 0;
 LABEL_8:
-  [(ICQUIManageStorageListSpecifierProvider *)self addDecorationToSpecifier:v10 usingAppInfo:v4];
+  [(ICQUIManageStorageListSpecifierProvider *)self addDecorationToSpecifier:v10 usingAppInfo:infoCopy];
 
   return v10;
 }
 
-- (void)addDecorationToSpecifier:(id)a3 usingAppInfo:(id)a4
+- (void)addDecorationToSpecifier:(id)specifier usingAppInfo:(id)info
 {
-  v17 = a3;
-  v5 = a4;
-  if (v17)
+  specifierCopy = specifier;
+  infoCopy = info;
+  if (specifierCopy)
   {
-    [v17 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
+    [specifierCopy setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v5 bundleIds];
-    v8 = [v7 firstObject];
-    v9 = v8;
-    if (!v8)
+    bundleIds = [infoCopy bundleIds];
+    firstObject = [bundleIds firstObject];
+    label = firstObject;
+    if (!firstObject)
     {
-      v9 = [v5 label];
+      label = [infoCopy label];
     }
 
-    v10 = [v6 stringWithFormat:@"APP_LIST_CELL_%@", v9];
-    [v17 setIdentifier:v10];
+    v10 = [v6 stringWithFormat:@"APP_LIST_CELL_%@", label];
+    [specifierCopy setIdentifier:v10];
 
-    if (!v8)
+    if (!firstObject)
     {
     }
 
-    [v17 setObject:v5 forKeyedSubscript:@"DRILLDOWN_APP_INFO"];
-    v11 = [v5 label];
-    [v17 setObject:v11 forKeyedSubscript:*MEMORY[0x277D40170]];
+    [specifierCopy setObject:infoCopy forKeyedSubscript:@"DRILLDOWN_APP_INFO"];
+    label2 = [infoCopy label];
+    [specifierCopy setObject:label2 forKeyedSubscript:*MEMORY[0x277D40170]];
 
-    v12 = [v5 detailLabel];
-    [v17 setObject:v12 forKeyedSubscript:*MEMORY[0x277D40160]];
+    detailLabel = [infoCopy detailLabel];
+    [specifierCopy setObject:detailLabel forKeyedSubscript:*MEMORY[0x277D40160]];
 
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
-    [v17 setObject:v13 forKeyedSubscript:*MEMORY[0x277D40140]];
+    [specifierCopy setObject:v13 forKeyedSubscript:*MEMORY[0x277D40140]];
 
     v14 = MEMORY[0x277CBEC38];
-    [v17 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
-    v15 = [v5 iconURL];
-    v16 = [_ICQUIHelperFunctions scaledImageURL:v15];
-    [v17 setObject:v16 forKeyedSubscript:*MEMORY[0x277D40030]];
+    [specifierCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
+    iconURL = [infoCopy iconURL];
+    v16 = [_ICQUIHelperFunctions scaledImageURL:iconURL];
+    [specifierCopy setObject:v16 forKeyedSubscript:*MEMORY[0x277D40030]];
 
-    [v17 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FD80]];
+    [specifierCopy setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FD80]];
   }
 }
 
-- (void)loadDrilldownFromSpecifier:(id)a3
+- (void)loadDrilldownFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICQUIManageStorageListSpecifierProvider *)self delegate];
-  [v5 provider:self loadActionFromSpecifier:v4];
+  specifierCopy = specifier;
+  delegate = [(ICQUIManageStorageListSpecifierProvider *)self delegate];
+  [delegate provider:self loadActionFromSpecifier:specifierCopy];
 }
 
 - (ICQUIManageStorageSpecifierProviderDelegate)delegate

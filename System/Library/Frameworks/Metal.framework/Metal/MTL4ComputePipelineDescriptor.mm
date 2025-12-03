@@ -1,13 +1,13 @@
 @interface MTL4ComputePipelineDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4ComputePipelineDescriptor)init;
 - (MTL4StaticLinkingDescriptor)staticLinkingDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3;
-- (void)setStaticLinkingDescriptor:(id)a3;
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup;
+- (void)setStaticLinkingDescriptor:(id)descriptor;
 @end
 
 @implementation MTL4ComputePipelineDescriptor
@@ -28,16 +28,16 @@
   [(MTL4PipelineDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MTL4ComputePipelineDescriptor;
   v5 = [(MTL4PipelineDescriptor *)&v8 copyWithZone:?];
-  v5[8] = [(MTL4FunctionDescriptor *)self->_computeFunctionDescriptor copyWithZone:a3];
+  v5[8] = [(MTL4FunctionDescriptor *)self->_computeFunctionDescriptor copyWithZone:zone];
   *(v5 + 40) = self->_threadGroupSizeIsMultipleOfThreadExecutionWidth;
   v5[9] = self->_maxTotalThreadsPerThreadgroup;
   *(v5 + 41) = self->_supportBinaryLinking;
-  v5[6] = [(MTL4StaticLinkingDescriptor *)self->_staticLinkingDescriptor copyWithZone:a3];
+  v5[6] = [(MTL4StaticLinkingDescriptor *)self->_staticLinkingDescriptor copyWithZone:zone];
   v6 = *&self->_requiredThreadsPerThreadgroup.width;
   v5[12] = self->_requiredThreadsPerThreadgroup.depth;
   *(v5 + 5) = v6;
@@ -45,9 +45,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -56,25 +56,25 @@
   v13 = v3;
   v14 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v12.receiver = self;
   v12.super_class = MTL4ComputePipelineDescriptor;
-  v8 = [(MTL4PipelineDescriptor *)&v12 isEqual:a3];
+  v8 = [(MTL4PipelineDescriptor *)&v12 isEqual:equal];
   if (v8)
   {
     staticLinkingDescriptor = self->_staticLinkingDescriptor;
-    if (staticLinkingDescriptor == *(a3 + 6) || (v8 = [(MTL4StaticLinkingDescriptor *)staticLinkingDescriptor isEqual:?]) != 0)
+    if (staticLinkingDescriptor == *(equal + 6) || (v8 = [(MTL4StaticLinkingDescriptor *)staticLinkingDescriptor isEqual:?]) != 0)
     {
       computeFunctionDescriptor = self->_computeFunctionDescriptor;
-      if (computeFunctionDescriptor == *(a3 + 8) || (v8 = [(MTL4FunctionDescriptor *)computeFunctionDescriptor isEqual:?]) != 0)
+      if (computeFunctionDescriptor == *(equal + 8) || (v8 = [(MTL4FunctionDescriptor *)computeFunctionDescriptor isEqual:?]) != 0)
       {
-        if (*(a3 + 40) == self->_threadGroupSizeIsMultipleOfThreadExecutionWidth && *(a3 + 9) == self->_maxTotalThreadsPerThreadgroup && *(a3 + 41) == self->_supportBinaryLinking && *(a3 + 10) == self->_requiredThreadsPerThreadgroup.width && *(a3 + 11) == self->_requiredThreadsPerThreadgroup.height && *(a3 + 12) == self->_requiredThreadsPerThreadgroup.depth)
+        if (*(equal + 40) == self->_threadGroupSizeIsMultipleOfThreadExecutionWidth && *(equal + 9) == self->_maxTotalThreadsPerThreadgroup && *(equal + 41) == self->_supportBinaryLinking && *(equal + 10) == self->_requiredThreadsPerThreadgroup.width && *(equal + 11) == self->_requiredThreadsPerThreadgroup.height && *(equal + 12) == self->_requiredThreadsPerThreadgroup.depth)
         {
-          LOBYTE(v8) = *(a3 + 7) == self->_supportIndirectCommandBuffers;
+          LOBYTE(v8) = *(equal + 7) == self->_supportIndirectCommandBuffers;
           return v8;
         }
 
@@ -147,9 +147,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setStaticLinkingDescriptor:(id)a3
+- (void)setStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -159,17 +159,17 @@ LABEL_3:
     }
   }
 
-  if (self->_staticLinkingDescriptor != a3)
+  if (self->_staticLinkingDescriptor != descriptor)
   {
     staticLinkingDescriptor = self->_staticLinkingDescriptor;
-    self->_staticLinkingDescriptor = [a3 copy];
+    self->_staticLinkingDescriptor = [descriptor copy];
   }
 }
 
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_requiredThreadsPerThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_requiredThreadsPerThreadgroup.width = *&threadgroup->var0;
   self->_requiredThreadsPerThreadgroup.depth = var2;
 }
 

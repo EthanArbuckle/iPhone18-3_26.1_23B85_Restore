@@ -6,14 +6,14 @@
 
 - (uint64_t)asc_isCanceledOrPending
 {
-  if ([a1 isCancelled])
+  if ([self isCancelled])
   {
     return 1;
   }
 
   else
   {
-    return [a1 isFinished] ^ 1;
+    return [self isFinished] ^ 1;
   }
 }
 

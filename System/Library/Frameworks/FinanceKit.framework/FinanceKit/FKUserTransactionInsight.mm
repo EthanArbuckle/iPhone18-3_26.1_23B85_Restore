@@ -1,23 +1,23 @@
 @interface FKUserTransactionInsight
-- (BOOL)isEqual:(id)a3;
-- (FKUserTransactionInsight)initWithTransactionCategory:(int64_t)a3 updatedAt:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKUserTransactionInsight)initWithTransactionCategory:(int64_t)category updatedAt:(id)at;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKUserTransactionInsight
 
-- (FKUserTransactionInsight)initWithTransactionCategory:(int64_t)a3 updatedAt:(id)a4
+- (FKUserTransactionInsight)initWithTransactionCategory:(int64_t)category updatedAt:(id)at
 {
-  v6 = a4;
+  atCopy = at;
   v12.receiver = self;
   v12.super_class = FKUserTransactionInsight;
   v7 = [(FKUserTransactionInsight *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_transactionCategory = a3;
-    v9 = [v6 copy];
+    v7->_transactionCategory = category;
+    v9 = [atCopy copy];
     updatedAt = v8->_updatedAt;
     v8->_updatedAt = v9;
   }
@@ -25,11 +25,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   v5[1] = self->_transactionCategory;
-  v6 = [(NSDate *)self->_updatedAt copyWithZone:a3];
+  v6 = [(NSDate *)self->_updatedAt copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -48,16 +48,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_transactionCategory == v5->_transactionCategory)
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_transactionCategory == v5->_transactionCategory)
   {
     v6 = FKEqualObjects(self->_updatedAt, v5->_updatedAt);
   }

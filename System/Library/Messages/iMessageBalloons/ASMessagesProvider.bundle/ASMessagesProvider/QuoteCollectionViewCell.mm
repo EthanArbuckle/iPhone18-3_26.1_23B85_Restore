@@ -1,11 +1,11 @@
 @interface QuoteCollectionViewCell
-- (_TtC18ASMessagesProvider23QuoteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider23QuoteCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation QuoteCollectionViewCell
 
-- (_TtC18ASMessagesProvider23QuoteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider23QuoteCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider23QuoteCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -25,7 +25,7 @@
   v2 = v13.receiver;
   [(QuoteCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC18ASMessagesProvider23QuoteCollectionViewCell_quoteView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_2630C();
   sub_75D650();
   v6 = v5;

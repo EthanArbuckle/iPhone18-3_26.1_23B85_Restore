@@ -1,5 +1,5 @@
 @interface TVSettingsListMonitorController
-- (TVSettingsListMonitorController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TVSettingsListMonitorController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)externalPreferencesDidUpdate;
 @end
@@ -16,11 +16,11 @@
   [(TVSettingsListMonitorController *)&v4 dealloc];
 }
 
-- (TVSettingsListMonitorController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVSettingsListMonitorController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = TVSettingsListMonitorController;
-  v4 = [(TVSettingsListMonitorController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(TVSettingsListMonitorController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [TVSettingsListMonitorUtilities subscribeToNotifications:v4 token:&v4->_preferencesDidChangeNotificationToken];

@@ -1,37 +1,37 @@
 @interface AVHapticEvent
-+ (id)eventWithEventType:(unint64_t)a3 time:(double)a4 duration:(double)a5;
-+ (id)eventWithEventType:(unint64_t)a3 time:(double)a4 parameters:(const AVHapticPlayerFixedParameter *)a5 count:(int64_t)a6 duration:(double)a7;
-+ (id)eventWithParameter:(unint64_t)a3 value:(float)a4 time:(double)a5;
-+ (id)eventWithParameterCurve:(id)a3;
-- (AVHapticEvent)initWithCoder:(id)a3;
-- (AVHapticEvent)initWithEventType:(unint64_t)a3 time:(double)a4 duration:(double)a5;
-- (AVHapticEvent)initWithEventType:(unint64_t)a3 time:(double)a4 parameters:(const AVHapticPlayerFixedParameter *)a5 count:(int64_t)a6 duration:(double)a7;
-- (AVHapticEvent)initWithParameter:(unint64_t)a3 value:(float)a4 time:(double)a5;
-- (AVHapticEvent)initWithParameterCurve:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)eventWithEventType:(unint64_t)type time:(double)time duration:(double)duration;
++ (id)eventWithEventType:(unint64_t)type time:(double)time parameters:(const AVHapticPlayerFixedParameter *)parameters count:(int64_t)count duration:(double)duration;
++ (id)eventWithParameter:(unint64_t)parameter value:(float)value time:(double)time;
++ (id)eventWithParameterCurve:(id)curve;
+- (AVHapticEvent)initWithCoder:(id)coder;
+- (AVHapticEvent)initWithEventType:(unint64_t)type time:(double)time duration:(double)duration;
+- (AVHapticEvent)initWithEventType:(unint64_t)type time:(double)time parameters:(const AVHapticPlayerFixedParameter *)parameters count:(int64_t)count duration:(double)duration;
+- (AVHapticEvent)initWithParameter:(unint64_t)parameter value:(float)value time:(double)time;
+- (AVHapticEvent)initWithParameterCurve:(id)curve;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVHapticEvent
 
-- (AVHapticEvent)initWithCoder:(id)a3
+- (AVHapticEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"time"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"time"];
   self->_time = v5;
-  self->_eventCategory = [v4 decodeInt32ForKey:@"eventCategory"];
-  v6 = [(AVHapticEvent *)self eventCategory];
-  if (v6)
+  self->_eventCategory = [coderCopy decodeInt32ForKey:@"eventCategory"];
+  eventCategory = [(AVHapticEvent *)self eventCategory];
+  if (eventCategory)
   {
-    if (v6 == 1)
+    if (eventCategory == 1)
     {
-      self->_u._eventType = [v4 decodeIntegerForKey:@"paramType"];
-      [v4 decodeFloatForKey:@"value"];
+      self->_u._eventType = [coderCopy decodeIntegerForKey:@"paramType"];
+      [coderCopy decodeFloatForKey:@"value"];
       self->_value = v9;
     }
 
-    else if (v6 == 2)
+    else if (eventCategory == 2)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterCurve"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterCurve"];
       paramCurve = self->_paramCurve;
       self->_paramCurve = v7;
     }
@@ -39,10 +39,10 @@
 
   else
   {
-    [v4 decodeDoubleForKey:@"duration"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     self->_duration = v10;
-    self->_u._eventType = [v4 decodeIntegerForKey:@"eventType"];
-    v11 = [v4 decodeIntegerForKey:@"fixedParamCount"];
+    self->_u._eventType = [coderCopy decodeIntegerForKey:@"eventType"];
+    v11 = [coderCopy decodeIntegerForKey:@"fixedParamCount"];
     v12 = 8;
     if (v11 < 8)
     {
@@ -57,10 +57,10 @@
       do
       {
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"fixedParam%dType", v13];
-        *(p_value - 1) = [v4 decodeIntegerForKey:v15];
+        *(p_value - 1) = [coderCopy decodeIntegerForKey:v15];
 
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"fixedParam%dValue", v13];
-        [v4 decodeFloatForKey:v16];
+        [coderCopy decodeFloatForKey:v16];
         *p_value = v17;
         p_value += 4;
 
@@ -74,31 +74,31 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeDouble:@"time" forKey:self->_time];
-  [v13 encodeInt32:LODWORD(self->_eventCategory) forKey:@"eventCategory"];
-  v4 = [(AVHapticEvent *)self eventCategory];
-  if (v4)
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"time" forKey:self->_time];
+  [coderCopy encodeInt32:LODWORD(self->_eventCategory) forKey:@"eventCategory"];
+  eventCategory = [(AVHapticEvent *)self eventCategory];
+  if (eventCategory)
   {
-    if (v4 == 1)
+    if (eventCategory == 1)
     {
-      [v13 encodeInteger:self->_u._eventType forKey:@"paramType"];
+      [coderCopy encodeInteger:self->_u._eventType forKey:@"paramType"];
       *&v5 = self->_value;
-      [v13 encodeFloat:@"value" forKey:v5];
+      [coderCopy encodeFloat:@"value" forKey:v5];
     }
 
-    else if (v4 == 2)
+    else if (eventCategory == 2)
     {
-      [v13 encodeObject:self->_paramCurve forKey:@"parameterCurve"];
+      [coderCopy encodeObject:self->_paramCurve forKey:@"parameterCurve"];
     }
   }
 
   else
   {
-    [v13 encodeDouble:@"duration" forKey:self->_duration];
-    [v13 encodeInteger:self->_u._eventType forKey:@"eventType"];
+    [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+    [coderCopy encodeInteger:self->_u._eventType forKey:@"eventType"];
     if (self->_fixedParamCount >= 1)
     {
       v6 = 0;
@@ -107,12 +107,12 @@
       {
         v8 = *(p_value - 1);
         v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"fixedParam%dType", v6];
-        [v13 encodeInteger:v8 forKey:v9];
+        [coderCopy encodeInteger:v8 forKey:v9];
 
         v10 = *p_value;
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"fixedParam%dValue", v6];
         LODWORD(v12) = v10;
-        [v13 encodeFloat:v11 forKey:v12];
+        [coderCopy encodeFloat:v11 forKey:v12];
 
         ++v6;
         p_value += 4;
@@ -121,32 +121,32 @@
       while (v6 < self->_fixedParamCount);
     }
 
-    [v13 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 }
 
-- (AVHapticEvent)initWithParameterCurve:(id)a3
+- (AVHapticEvent)initWithParameterCurve:(id)curve
 {
-  v5 = a3;
+  curveCopy = curve;
   v9.receiver = self;
   v9.super_class = AVHapticEvent;
   v6 = [(AVHapticEvent *)&v9 init];
   if (v6)
   {
-    [v5 time];
+    [curveCopy time];
     v6->_time = v7;
     v6->_duration = 0.0;
     v6->_eventCategory = 2;
-    v6->_u._eventType = [v5 type];
+    v6->_u._eventType = [curveCopy type];
     v6->_value = 0.0;
     v6->_fixedParamCount = 0;
-    objc_storeStrong(&v6->_paramCurve, a3);
+    objc_storeStrong(&v6->_paramCurve, curve);
   }
 
   return v6;
 }
 
-- (AVHapticEvent)initWithParameter:(unint64_t)a3 value:(float)a4 time:(double)a5
+- (AVHapticEvent)initWithParameter:(unint64_t)parameter value:(float)value time:(double)time
 {
   v12.receiver = self;
   v12.super_class = AVHapticEvent;
@@ -154,11 +154,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_time = fmax(a5, 0.0);
+    v8->_time = fmax(time, 0.0);
     v8->_duration = 0.0;
     v8->_eventCategory = 1;
-    v8->_u._eventType = a3;
-    v8->_value = a4;
+    v8->_u._eventType = parameter;
+    v8->_value = value;
     paramCurve = v8->_paramCurve;
     v8->_paramCurve = 0;
   }
@@ -166,7 +166,7 @@
   return v9;
 }
 
-- (AVHapticEvent)initWithEventType:(unint64_t)a3 time:(double)a4 parameters:(const AVHapticPlayerFixedParameter *)a5 count:(int64_t)a6 duration:(double)a7
+- (AVHapticEvent)initWithEventType:(unint64_t)type time:(double)time parameters:(const AVHapticPlayerFixedParameter *)parameters count:(int64_t)count duration:(double)duration
 {
   v23.receiver = self;
   v23.super_class = AVHapticEvent;
@@ -174,25 +174,25 @@
   v13 = v12;
   if (v12)
   {
-    v14 = 0.0;
-    v15 = fmax(a4, 0.0);
-    if (a7 >= 0.0)
+    durationCopy = 0.0;
+    v15 = fmax(time, 0.0);
+    if (duration >= 0.0)
     {
-      v14 = a7;
+      durationCopy = duration;
     }
 
     v12->_time = v15;
-    v12->_duration = v14;
+    v12->_duration = durationCopy;
     v12->_eventCategory = 0;
-    v12->_u._eventType = a3;
+    v12->_u._eventType = type;
     paramCurve = v12->_paramCurve;
     v12->_paramCurve = 0;
 
     v17 = 0;
-    if (a5)
+    if (parameters)
     {
-      v18 = a6 - 1;
-      if (a6 >= 1)
+      v18 = count - 1;
+      if (count >= 1)
       {
         fixedParams = v13->_fixedParams;
         if (v18 >= 7)
@@ -203,7 +203,7 @@
         v20 = v18 + 1;
         do
         {
-          v21 = *a5++;
+          v21 = *parameters++;
           *fixedParams++ = v21;
           --v20;
         }
@@ -219,7 +219,7 @@
   return v13;
 }
 
-- (AVHapticEvent)initWithEventType:(unint64_t)a3 time:(double)a4 duration:(double)a5
+- (AVHapticEvent)initWithEventType:(unint64_t)type time:(double)time duration:(double)duration
 {
   v14.receiver = self;
   v14.super_class = AVHapticEvent;
@@ -227,17 +227,17 @@
   v9 = v8;
   if (v8)
   {
-    v10 = 0.0;
-    v11 = fmax(a4, 0.0);
-    if (a5 >= 0.0)
+    durationCopy = 0.0;
+    v11 = fmax(time, 0.0);
+    if (duration >= 0.0)
     {
-      v10 = a5;
+      durationCopy = duration;
     }
 
     v8->_time = v11;
-    v8->_duration = v10;
+    v8->_duration = durationCopy;
     v8->_eventCategory = 0;
-    v8->_u._eventType = a3;
+    v8->_u._eventType = type;
     paramCurve = v8->_paramCurve;
     v8->_paramCurve = 0;
     v8->_fixedParamCount = 0;
@@ -246,33 +246,33 @@
   return v9;
 }
 
-+ (id)eventWithParameterCurve:(id)a3
++ (id)eventWithParameterCurve:(id)curve
 {
-  v3 = a3;
-  v4 = [[AVHapticEvent alloc] initWithParameterCurve:v3];
+  curveCopy = curve;
+  v4 = [[AVHapticEvent alloc] initWithParameterCurve:curveCopy];
 
   return v4;
 }
 
-+ (id)eventWithParameter:(unint64_t)a3 value:(float)a4 time:(double)a5
++ (id)eventWithParameter:(unint64_t)parameter value:(float)value time:(double)time
 {
   v8 = [AVHapticEvent alloc];
-  *&v9 = a4;
-  v10 = [(AVHapticEvent *)v8 initWithParameter:a3 value:v9 time:a5];
+  *&v9 = value;
+  v10 = [(AVHapticEvent *)v8 initWithParameter:parameter value:v9 time:time];
 
   return v10;
 }
 
-+ (id)eventWithEventType:(unint64_t)a3 time:(double)a4 parameters:(const AVHapticPlayerFixedParameter *)a5 count:(int64_t)a6 duration:(double)a7
++ (id)eventWithEventType:(unint64_t)type time:(double)time parameters:(const AVHapticPlayerFixedParameter *)parameters count:(int64_t)count duration:(double)duration
 {
-  v7 = [[AVHapticEvent alloc] initWithEventType:a3 time:a5 parameters:a6 count:a4 duration:a7];
+  v7 = [[AVHapticEvent alloc] initWithEventType:type time:parameters parameters:count count:time duration:duration];
 
   return v7;
 }
 
-+ (id)eventWithEventType:(unint64_t)a3 time:(double)a4 duration:(double)a5
++ (id)eventWithEventType:(unint64_t)type time:(double)time duration:(double)duration
 {
-  v5 = [[AVHapticEvent alloc] initWithEventType:a3 time:a4 duration:a5];
+  v5 = [[AVHapticEvent alloc] initWithEventType:type time:time duration:duration];
 
   return v5;
 }

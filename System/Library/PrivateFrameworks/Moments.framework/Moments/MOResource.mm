@@ -1,25 +1,25 @@
 @interface MOResource
-+ (id)describeType:(unint64_t)a3;
-+ (id)evergreenTypeStringFromEvergreenType:(unint64_t)a3;
-+ (id)getDedupeKeyForResourceData:(id)a3 type:(unint64_t)a4 error:(id *)a5;
-+ (id)getDictionaryForData:(id)a3 error:(id *)a4;
-+ (unint64_t)evergreenTypeFromEvergreenTypeString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MOResource)initWithCoder:(id)a3;
-- (MOResource)initWithEvergreenTypeName:(id)a3 promptIndex:(unint64_t)a4;
-- (MOResource)initWithEvergreenTypeName:(id)a3 promptIndexes:(id)a4;
-- (MOResource)initWithIdentifier:(id)a3;
-- (MOResource)initWithIdentifier:(id)a3 name:(id)a4 type:(unint64_t)a5 assets:(id)a6 data:(id)a7 value:(double)a8 priorityScore:(double)a9 photoCurationScore:(id)a10 photoFaceCount:(unint64_t)a11 photoAssetMediaType:(unint64_t)a12;
-- (MOResource)initWithIdentifier:(id)a3 name:(id)a4 type:(unint64_t)a5 assets:(id)a6 data:(id)a7 value:(double)a8 priorityScore:(double)a9 photoCurationScore:(id)a10 photoFaceCount:(unint64_t)a11 photoAssetMediaType:(unint64_t)a12 photoAssetCloudIdentifier:(id)a13;
-- (MOResource)initWithName:(id)a3 mapItemHandle:(id)a4 priorityScore:(double)a5;
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4;
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4 assets:(id)a5;
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4 dict:(id)a5 value:(double)a6;
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4 photoAssetCloudIdentifier:(id)a5;
-- (MOResource)initWithName:(id)a3 value:(double)a4;
-- (MOResource)initWithPerson:(id)a3;
-- (MOResource)initWithPlace:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (MOResource)initWithWeather:(id)a3;
++ (id)describeType:(unint64_t)type;
++ (id)evergreenTypeStringFromEvergreenType:(unint64_t)type;
++ (id)getDedupeKeyForResourceData:(id)data type:(unint64_t)type error:(id *)error;
++ (id)getDictionaryForData:(id)data error:(id *)error;
++ (unint64_t)evergreenTypeFromEvergreenTypeString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (MOResource)initWithCoder:(id)coder;
+- (MOResource)initWithEvergreenTypeName:(id)name promptIndex:(unint64_t)index;
+- (MOResource)initWithEvergreenTypeName:(id)name promptIndexes:(id)indexes;
+- (MOResource)initWithIdentifier:(id)identifier;
+- (MOResource)initWithIdentifier:(id)identifier name:(id)name type:(unint64_t)type assets:(id)assets data:(id)data value:(double)value priorityScore:(double)score photoCurationScore:(id)self0 photoFaceCount:(unint64_t)self1 photoAssetMediaType:(unint64_t)self2;
+- (MOResource)initWithIdentifier:(id)identifier name:(id)name type:(unint64_t)type assets:(id)assets data:(id)data value:(double)value priorityScore:(double)score photoCurationScore:(id)self0 photoFaceCount:(unint64_t)self1 photoAssetMediaType:(unint64_t)self2 photoAssetCloudIdentifier:(id)self3;
+- (MOResource)initWithName:(id)name mapItemHandle:(id)handle priorityScore:(double)score;
+- (MOResource)initWithName:(id)name type:(unint64_t)type;
+- (MOResource)initWithName:(id)name type:(unint64_t)type assets:(id)assets;
+- (MOResource)initWithName:(id)name type:(unint64_t)type dict:(id)dict value:(double)value;
+- (MOResource)initWithName:(id)name type:(unint64_t)type photoAssetCloudIdentifier:(id)identifier;
+- (MOResource)initWithName:(id)name value:(double)value;
+- (MOResource)initWithPerson:(id)person;
+- (MOResource)initWithPlace:(id)place startDate:(id)date endDate:(id)endDate;
+- (MOResource)initWithWeather:(id)weather;
 - (double)endDate;
 - (double)startDate;
 - (id)bundleSourceType;
@@ -27,7 +27,7 @@
 - (id)describeType;
 - (id)description;
 - (id)enclosingArea;
-- (id)getDedupeKeyError:(id *)a3;
+- (id)getDedupeKeyError:(id *)error;
 - (id)getDictionary;
 - (id)location;
 - (id)metaData;
@@ -39,22 +39,22 @@
 - (id)weatherSummary;
 - (id)weatherSymbolName;
 - (id)windSpeed;
-- (unint64_t)dataAccessTypeFromResourceType:(unint64_t)a3;
+- (unint64_t)dataAccessTypeFromResourceType:(unint64_t)type;
 - (unint64_t)evergreenType;
 - (unint64_t)hash;
 - (unint64_t)placeType;
 - (unint64_t)placeUserType;
 - (unint64_t)promptCount;
 - (unint64_t)promptIndex;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOResource
 
-- (MOResource)initWithIdentifier:(id)a3
+- (MOResource)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v6 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -62,64 +62,64 @@
       [MOResource initWithIdentifier:v6];
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MOResource.m" lineNumber:29 description:{@"Invalid parameter not satisfying: identifier (in %s:%d)", "-[MOResource initWithIdentifier:]", 29}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MOResource.m" lineNumber:29 description:{@"Invalid parameter not satisfying: identifier (in %s:%d)", "-[MOResource initWithIdentifier:]", 29}];
   }
 
-  v8 = [(MOResource *)self initWithIdentifier:v5 name:@"Resource" type:0 assets:0 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
+  v8 = [(MOResource *)self initWithIdentifier:identifierCopy name:@"Resource" type:0 assets:0 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
 
   return v8;
 }
 
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4 assets:(id)a5
+- (MOResource)initWithName:(id)name type:(unint64_t)type assets:(id)assets
 {
   v8 = MEMORY[0x277CCAD78];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [(MOResource *)self initWithIdentifier:v11 name:v10 type:a4 assets:v9 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
+  assetsCopy = assets;
+  nameCopy = name;
+  uUID = [v8 UUID];
+  v12 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:type assets:assetsCopy data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
 
   return v12;
 }
 
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4 photoAssetCloudIdentifier:(id)a5
+- (MOResource)initWithName:(id)name type:(unint64_t)type photoAssetCloudIdentifier:(id)identifier
 {
   v8 = MEMORY[0x277CCAD78];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [(MOResource *)self initWithIdentifier:v11 name:v10 type:a4 assets:0 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:v9];
+  identifierCopy = identifier;
+  nameCopy = name;
+  uUID = [v8 UUID];
+  v12 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:type assets:0 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:identifierCopy];
 
   return v12;
 }
 
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4
+- (MOResource)initWithName:(id)name type:(unint64_t)type
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a3;
-  v8 = [v6 UUID];
-  v9 = [(MOResource *)self initWithIdentifier:v8 name:v7 type:a4 assets:0 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
+  nameCopy = name;
+  uUID = [v6 UUID];
+  v9 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:type assets:0 data:0 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
 
   return v9;
 }
 
-- (MOResource)initWithName:(id)a3 value:(double)a4
+- (MOResource)initWithName:(id)name value:(double)value
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a3;
-  v8 = [v6 UUID];
-  v9 = [(MOResource *)self initWithIdentifier:v8 name:v7 type:1 assets:0 data:0 value:0 priorityScore:a4 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
+  nameCopy = name;
+  uUID = [v6 UUID];
+  v9 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:1 assets:0 data:0 value:0 priorityScore:value photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
 
   return v9;
 }
 
-- (MOResource)initWithName:(id)a3 type:(unint64_t)a4 dict:(id)a5 value:(double)a6
+- (MOResource)initWithName:(id)name type:(unint64_t)type dict:(id)dict value:(double)value
 {
-  v10 = a3;
-  if (a5)
+  nameCopy = name;
+  if (dict)
   {
     v17 = 0;
-    a5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a5 options:0 error:&v17];
+    dict = [MEMORY[0x277CCAAA0] dataWithJSONObject:dict options:0 error:&v17];
     v11 = v17;
     if (v11)
     {
@@ -128,7 +128,7 @@
 
     else
     {
-      v12 = a5 == 0;
+      v12 = dict == 0;
     }
 
     if (v12)
@@ -141,77 +141,77 @@
     }
   }
 
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [(MOResource *)self initWithIdentifier:v14 name:v10 type:a4 assets:0 data:a5 value:0 priorityScore:a6 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v15 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:type assets:0 data:dict value:0 priorityScore:value photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0 photoAssetCloudIdentifier:0];
 
   return v15;
 }
 
-- (MOResource)initWithIdentifier:(id)a3 name:(id)a4 type:(unint64_t)a5 assets:(id)a6 data:(id)a7 value:(double)a8 priorityScore:(double)a9 photoCurationScore:(id)a10 photoFaceCount:(unint64_t)a11 photoAssetMediaType:(unint64_t)a12
+- (MOResource)initWithIdentifier:(id)identifier name:(id)name type:(unint64_t)type assets:(id)assets data:(id)data value:(double)value priorityScore:(double)score photoCurationScore:(id)self0 photoFaceCount:(unint64_t)self1 photoAssetMediaType:(unint64_t)self2
 {
   v19 = MEMORY[0x277CCAD78];
-  v20 = a10;
-  v21 = a7;
-  v22 = a6;
-  v23 = a4;
-  v24 = [v19 UUID];
-  v25 = [(MOResource *)self initWithIdentifier:v24 name:v23 type:a5 assets:v22 data:v21 value:v20 priorityScore:a8 photoCurationScore:a9 photoFaceCount:a11 photoAssetMediaType:a12 photoAssetCloudIdentifier:0];
+  curationScoreCopy = curationScore;
+  dataCopy = data;
+  assetsCopy = assets;
+  nameCopy = name;
+  uUID = [v19 UUID];
+  v25 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:type assets:assetsCopy data:dataCopy value:curationScoreCopy priorityScore:value photoCurationScore:score photoFaceCount:count photoAssetMediaType:mediaType photoAssetCloudIdentifier:0];
 
   return v25;
 }
 
-- (MOResource)initWithIdentifier:(id)a3 name:(id)a4 type:(unint64_t)a5 assets:(id)a6 data:(id)a7 value:(double)a8 priorityScore:(double)a9 photoCurationScore:(id)a10 photoFaceCount:(unint64_t)a11 photoAssetMediaType:(unint64_t)a12 photoAssetCloudIdentifier:(id)a13
+- (MOResource)initWithIdentifier:(id)identifier name:(id)name type:(unint64_t)type assets:(id)assets data:(id)data value:(double)value priorityScore:(double)score photoCurationScore:(id)self0 photoFaceCount:(unint64_t)self1 photoAssetMediaType:(unint64_t)self2 photoAssetCloudIdentifier:(id)self3
 {
-  v22 = a3;
-  v23 = a4;
-  v30 = a6;
-  v29 = a7;
-  v28 = a10;
-  v27 = a13;
+  identifierCopy = identifier;
+  nameCopy = name;
+  assetsCopy = assets;
+  dataCopy = data;
+  curationScoreCopy = curationScore;
+  cloudIdentifierCopy = cloudIdentifier;
   v31.receiver = self;
   v31.super_class = MOResource;
   v24 = [(MOResource *)&v31 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_identifier, a3);
-    objc_storeStrong(&v25->_name, a4);
-    v25->_type = a5;
-    objc_storeStrong(&v25->_assets, a6);
-    objc_storeStrong(&v25->_data, a7);
-    v25->_value = a8;
-    v25->_priorityScore = a9;
-    objc_storeStrong(&v25->_photoCurationScore, a10);
-    v25->_photoFaceCount = a11;
-    v25->_photoAssetMediaType = a12;
-    objc_storeStrong(&v25->_photoAssetCloudIdentifier, a13);
-    v25->_sourceEventAccessType = [(MOResource *)v25 dataAccessTypeFromResourceType:a5];
+    objc_storeStrong(&v24->_identifier, identifier);
+    objc_storeStrong(&v25->_name, name);
+    v25->_type = type;
+    objc_storeStrong(&v25->_assets, assets);
+    objc_storeStrong(&v25->_data, data);
+    v25->_value = value;
+    v25->_priorityScore = score;
+    objc_storeStrong(&v25->_photoCurationScore, curationScore);
+    v25->_photoFaceCount = count;
+    v25->_photoAssetMediaType = mediaType;
+    objc_storeStrong(&v25->_photoAssetCloudIdentifier, cloudIdentifier);
+    v25->_sourceEventAccessType = [(MOResource *)v25 dataAccessTypeFromResourceType:type];
   }
 
   return v25;
 }
 
-- (unint64_t)dataAccessTypeFromResourceType:(unint64_t)a3
+- (unint64_t)dataAccessTypeFromResourceType:(unint64_t)type
 {
-  if (a3 > 0x11)
+  if (type > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return qword_22D931C30[a3];
+    return qword_22D931C30[type];
   }
 }
 
-+ (id)getDictionaryForData:(id)a3 error:(id *)a4
++ (id)getDictionaryForData:(id)data error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     v14 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v5 options:0 error:&v14];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v14];
     v7 = v14;
     if (v7)
     {
@@ -248,11 +248,11 @@ LABEL_10:
     [MOResource getDictionaryForData:v7 error:v10];
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v7;
     v9 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
   else
@@ -270,8 +270,8 @@ LABEL_15:
 - (id)getDictionary
 {
   v3 = objc_opt_class();
-  v4 = [(MOResource *)self data];
-  v5 = [v3 getDictionaryForData:v4 error:0];
+  data = [(MOResource *)self data];
+  v5 = [v3 getDictionaryForData:data error:0];
 
   return v5;
 }
@@ -279,152 +279,152 @@ LABEL_15:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MOResource *)self identifier];
-  v5 = [(MOResource *)self name];
-  v6 = [v5 mask];
-  v7 = [(MOResource *)self type];
-  v8 = [(MOResource *)self assets];
-  v9 = [(MOResource *)self photoAssetCloudIdentifier];
-  v10 = [(MOResource *)self data];
-  v11 = [v10 length];
+  identifier = [(MOResource *)self identifier];
+  name = [(MOResource *)self name];
+  mask = [name mask];
+  type = [(MOResource *)self type];
+  assets = [(MOResource *)self assets];
+  photoAssetCloudIdentifier = [(MOResource *)self photoAssetCloudIdentifier];
+  data = [(MOResource *)self data];
+  v11 = [data length];
   [(MOResource *)self value];
-  v13 = [v3 stringWithFormat:@"<MOResource identifier, %@, name, %@, type, %lu, assets, %@, photoAssetCloudIdentifier, %@, data.length, %lu, value, %f", v4, v6, v7, v8, v9, v11, v12];
+  v13 = [v3 stringWithFormat:@"<MOResource identifier, %@, name, %@, type, %lu, assets, %@, photoAssetCloudIdentifier, %@, data.length, %lu, value, %f", identifier, mask, type, assets, photoAssetCloudIdentifier, v11, v12];
 
   return v13;
 }
 
-+ (id)describeType:(unint64_t)a3
++ (id)describeType:(unint64_t)type
 {
-  if (a3 > 0x11)
+  if (type > 0x11)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_278773130[a3];
+    return off_278773130[type];
   }
 }
 
 - (id)describeType
 {
-  v2 = [(MOResource *)self type];
+  type = [(MOResource *)self type];
 
-  return [MOResource describeType:v2];
+  return [MOResource describeType:type];
 }
 
-- (MOResource)initWithCoder:(id)a3
+- (MOResource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
     v6 = [(MOResource *)self initWithIdentifier:v5];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
       name = v6->_name;
       v6->_name = v7;
 
-      v6->_type = [v4 decodeInt64ForKey:@"type"];
-      [v4 decodeDoubleForKey:@"value"];
+      v6->_type = [coderCopy decodeInt64ForKey:@"type"];
+      [coderCopy decodeDoubleForKey:@"value"];
       v6->_value = v9;
-      [v4 decodeDoubleForKey:@"priorityScore"];
+      [coderCopy decodeDoubleForKey:@"priorityScore"];
       v6->_priorityScore = v10;
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoCurationScore"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoCurationScore"];
       photoCurationScore = v6->_photoCurationScore;
       v6->_photoCurationScore = v11;
 
-      v6->_photoFaceCount = [v4 decodeInt64ForKey:@"photoFaceCount"];
-      v6->_photoAssetMediaType = [v4 decodeInt64ForKey:@"photoAssetMediaType"];
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoCreationDate"];
+      v6->_photoFaceCount = [coderCopy decodeInt64ForKey:@"photoFaceCount"];
+      v6->_photoAssetMediaType = [coderCopy decodeInt64ForKey:@"photoAssetMediaType"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoCreationDate"];
       photoCreationDate = v6->_photoCreationDate;
       v6->_photoCreationDate = v13;
 
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PhotoAssetCloudIdentifier"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PhotoAssetCloudIdentifier"];
       photoAssetCloudIdentifier = v6->_photoAssetCloudIdentifier;
       v6->_photoAssetCloudIdentifier = v15;
 
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Assets"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Assets"];
       assets = v6->_assets;
       v6->_assets = v17;
 
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
       data = v6->_data;
       v6->_data = v19;
 
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
       sourceEventIdentifier = v6->_sourceEventIdentifier;
       v6->_sourceEventIdentifier = v21;
 
-      v6->_sourceEventAccessType = [v4 decodeInt64ForKey:@"sourceEventAccessType"];
+      v6->_sourceEventAccessType = [coderCopy decodeInt64ForKey:@"sourceEventAccessType"];
     }
 
     self = v6;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeInt64:self->_type forKey:@"type"];
-  [v5 encodeDouble:@"value" forKey:self->_value];
-  [v5 encodeDouble:@"priorityScore" forKey:self->_priorityScore];
-  [v5 encodeObject:self->_photoCurationScore forKey:@"photoCurationScore"];
-  [v5 encodeInt64:self->_photoFaceCount forKey:@"photoFaceCount"];
-  [v5 encodeInt64:self->_photoAssetMediaType forKey:@"photoAssetMediaType"];
-  [v5 encodeObject:self->_photoCreationDate forKey:@"photoCreationDate"];
-  [v5 encodeObject:self->_photoAssetCloudIdentifier forKey:@"PhotoAssetCloudIdentifier"];
-  [v5 encodeObject:self->_assets forKey:@"Assets"];
-  [v5 encodeObject:self->_data forKey:@"data"];
-  [v5 encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
-  [v5 encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInt64:self->_type forKey:@"type"];
+  [coderCopy encodeDouble:@"value" forKey:self->_value];
+  [coderCopy encodeDouble:@"priorityScore" forKey:self->_priorityScore];
+  [coderCopy encodeObject:self->_photoCurationScore forKey:@"photoCurationScore"];
+  [coderCopy encodeInt64:self->_photoFaceCount forKey:@"photoFaceCount"];
+  [coderCopy encodeInt64:self->_photoAssetMediaType forKey:@"photoAssetMediaType"];
+  [coderCopy encodeObject:self->_photoCreationDate forKey:@"photoCreationDate"];
+  [coderCopy encodeObject:self->_photoAssetCloudIdentifier forKey:@"PhotoAssetCloudIdentifier"];
+  [coderCopy encodeObject:self->_assets forKey:@"Assets"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
+  [coderCopy encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MOResource *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MOResource *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOResource *)self identifier];
-        if (v8 || ([(MOResource *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(MOResource *)self identifier];
+        if (identifier || ([(MOResource *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOResource *)self identifier];
-          v10 = [(MOResource *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(MOResource *)self identifier];
+          identifier3 = [(MOResource *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 
@@ -449,89 +449,89 @@ LABEL_13:
   return v11;
 }
 
-+ (id)getDedupeKeyForResourceData:(id)a3 type:(unint64_t)a4 error:(id *)a5
++ (id)getDedupeKeyForResourceData:(id)data type:(unint64_t)type error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    a4 = 0;
+    type = 0;
     goto LABEL_20;
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
     v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v34 = [v7 length];
+      typeCopy = [dataCopy length];
       _os_log_impl(&dword_22D8C5000, v8, OS_LOG_TYPE_INFO, "Using for the dedupe key the map item handler , %lu", buf, 0xCu);
     }
 
-    a4 = v7;
+    type = dataCopy;
     v9 = 0;
     goto LABEL_6;
   }
 
   v32 = 0;
-  v9 = [MOResource getDictionaryForData:v7 error:&v32];
+  v9 = [MOResource getDictionaryForData:dataCopy error:&v32];
   v10 = v32;
   if (v10 || ![v9 count])
   {
-    if (a5)
+    if (error)
     {
       v11 = v10;
-      a4 = 0;
-      *a5 = v10;
+      type = 0;
+      *error = v10;
       goto LABEL_19;
     }
 
 LABEL_18:
-    a4 = 0;
+    type = 0;
     goto LABEL_19;
   }
 
-  if (a4 > 0x11)
+  if (type > 0x11)
   {
     goto LABEL_31;
   }
 
-  if (((1 << a4) & 0x3DBB8) != 0)
+  if (((1 << type) & 0x3DBB8) != 0)
   {
     goto LABEL_14;
   }
 
-  if (a4 != 10)
+  if (type != 10)
   {
-    if (a4 == 13)
+    if (type == 13)
     {
-      v15 = [v9 allKeys];
-      if ([v15 containsObject:@"MOActivityMetaDataMotionType"])
+      allKeys = [v9 allKeys];
+      if ([allKeys containsObject:@"MOActivityMetaDataMotionType"])
       {
-        v16 = [v9 allKeys];
-        if ([v16 containsObject:@"MOActivityMetaDataKeyStartDate"])
+        allKeys2 = [v9 allKeys];
+        if ([allKeys2 containsObject:@"MOActivityMetaDataKeyStartDate"])
         {
-          v17 = [v9 allKeys];
-          v18 = [v17 containsObject:@"MOActivityMetaDataKeyEndDate"];
+          allKeys3 = [v9 allKeys];
+          v18 = [allKeys3 containsObject:@"MOActivityMetaDataKeyEndDate"];
 
           if (v18)
           {
-            a4 = [MEMORY[0x277CBEB38] dictionary];
+            type = [MEMORY[0x277CBEB38] dictionary];
             v19 = [v9 objectForKeyedSubscript:@"MOActivityMetaDataMotionType"];
-            [a4 setObject:v19 forKey:@"MOActivityMetaDataMotionType"];
+            [type setObject:v19 forKey:@"MOActivityMetaDataMotionType"];
 
             v20 = [v9 objectForKeyedSubscript:@"MOActivityMetaDataKeyStartDate"];
-            [a4 setObject:v20 forKey:@"MOActivityMetaDataKeyStartDate"];
+            [type setObject:v20 forKey:@"MOActivityMetaDataKeyStartDate"];
 
             v21 = [v9 objectForKeyedSubscript:@"MOActivityMetaDataKeyEndDate"];
-            [a4 setObject:v21 forKey:@"MOActivityMetaDataKeyEndDate"];
+            [type setObject:v21 forKey:@"MOActivityMetaDataKeyEndDate"];
 
             v22 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v34 = a4;
+              typeCopy = type;
               _os_log_impl(&dword_22D8C5000, v22, OS_LOG_TYPE_INFO, "Using for the dedupe key the dictionary, %@", buf, 0xCu);
             }
 
@@ -553,13 +553,13 @@ LABEL_48:
     }
 
 LABEL_31:
-    if (a4 < 2)
+    if (type < 2)
     {
 LABEL_14:
       v12 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [MOResource getDedupeKeyForResourceData:a4 type:? error:?];
+        [MOResource getDedupeKeyForResourceData:type type:? error:?];
       }
 
 LABEL_16:
@@ -569,15 +569,15 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (a4 != 2)
+    if (type != 2)
     {
       v10 = 0;
       goto LABEL_19;
     }
 
-    v23 = [v9 allKeys];
+    allKeys4 = [v9 allKeys];
     v24 = @"MOPhotoResourceLocalIdentifier";
-    v25 = [v23 containsObject:@"MOPhotoResourceLocalIdentifier"];
+    v25 = [allKeys4 containsObject:@"MOPhotoResourceLocalIdentifier"];
 
     v26 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     v12 = v26;
@@ -595,7 +595,7 @@ LABEL_17:
     {
       v27 = [v9 objectForKeyedSubscript:@"MOPhotoResourceLocalIdentifier"];
       *buf = 138412290;
-      v34 = v27;
+      typeCopy = v27;
 LABEL_40:
       _os_log_impl(&dword_22D8C5000, v12, OS_LOG_TYPE_INFO, "Using for the dedupe key, %@", buf, 0xCu);
 
@@ -605,9 +605,9 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v28 = [v9 allKeys];
+  allKeys5 = [v9 allKeys];
   v24 = @"MOWorkoutMetaDataKeyWorkoutID";
-  v29 = [v28 containsObject:@"MOWorkoutMetaDataKeyWorkoutID"];
+  v29 = [allKeys5 containsObject:@"MOWorkoutMetaDataKeyWorkoutID"];
 
   v30 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   v12 = v30;
@@ -625,13 +625,13 @@ LABEL_40:
   {
     v27 = [v9 objectForKeyedSubscript:@"MOWorkoutMetaDataKeyWorkoutID"];
     *buf = 138412290;
-    v34 = v27;
+    typeCopy = v27;
     goto LABEL_40;
   }
 
 LABEL_41:
 
-  a4 = [v9 objectForKeyedSubscript:v24];
+  type = [v9 objectForKeyedSubscript:v24];
 LABEL_6:
   v10 = 0;
 LABEL_19:
@@ -639,52 +639,52 @@ LABEL_19:
 LABEL_20:
   v13 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return type;
 }
 
-- (id)getDedupeKeyError:(id *)a3
+- (id)getDedupeKeyError:(id *)error
 {
   v5 = objc_opt_class();
-  v6 = [(MOResource *)self data];
-  v7 = [v5 getDedupeKeyForResourceData:v6 type:-[MOResource type](self error:{"type"), a3}];
+  data = [(MOResource *)self data];
+  v7 = [v5 getDedupeKeyForResourceData:data type:-[MOResource type](self error:{"type"), error}];
 
   return v7;
 }
 
-- (MOResource)initWithPerson:(id)a3
+- (MOResource)initWithPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = MEMORY[0x277CCAD78];
-  v6 = [v4 contactIdentifier];
-  v7 = [v5 uuidFromString:v6];
+  contactIdentifier = [personCopy contactIdentifier];
+  v7 = [v5 uuidFromString:contactIdentifier];
 
   v8 = _mo_log_facility_get_os_log(MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(MOResource(MOPerson) *)v7 initWithPerson:v4, v8];
+    [(MOResource(MOPerson) *)v7 initWithPerson:personCopy, v8];
   }
 
-  v9 = [v4 name];
-  v10 = [v4 contactIdentifier];
-  [v4 priorityScore];
-  v12 = [(MOResource *)self initWithIdentifier:v7 name:v9 type:11 assets:v10 data:0 value:0 priorityScore:0.0 photoCurationScore:v11 photoFaceCount:0 photoAssetMediaType:0];
+  name = [personCopy name];
+  contactIdentifier2 = [personCopy contactIdentifier];
+  [personCopy priorityScore];
+  v12 = [(MOResource *)self initWithIdentifier:v7 name:name type:11 assets:contactIdentifier2 data:0 value:0 priorityScore:0.0 photoCurationScore:v11 photoFaceCount:0 photoAssetMediaType:0];
 
   return v12;
 }
 
 - (id)sourceAppBundleIds
 {
-  v3 = [(MOResource *)self type];
-  if (v3 == 17)
+  type = [(MOResource *)self type];
+  if (type == 17)
   {
-    v11 = [(MOResource *)self data];
+    data = [(MOResource *)self data];
 
-    if (v11)
+    if (data)
     {
       v12 = MEMORY[0x277CCAAA0];
-      v13 = [(MOResource *)self data];
+      data2 = [(MOResource *)self data];
       v16 = 0;
-      v7 = [v12 JSONObjectWithData:v13 options:0 error:&v16];
+      v7 = [v12 JSONObjectWithData:data2 options:0 error:&v16];
       v8 = v16;
 
       if (v8 || !v7)
@@ -726,20 +726,20 @@ LABEL_28:
 
   else
   {
-    if (v3 != 3)
+    if (type != 3)
     {
       v14 = 0;
       goto LABEL_30;
     }
 
-    v4 = [(MOResource *)self data];
+    data3 = [(MOResource *)self data];
 
-    if (v4)
+    if (data3)
     {
       v5 = MEMORY[0x277CCAAA0];
-      v6 = [(MOResource *)self data];
+      data4 = [(MOResource *)self data];
       v17 = 0;
-      v7 = [v5 JSONObjectWithData:v6 options:0 error:&v17];
+      v7 = [v5 JSONObjectWithData:data4 options:0 error:&v17];
       v8 = v17;
 
       if (v8 || !v7)
@@ -805,8 +805,8 @@ LABEL_30:
 
 - (id)photoLocalDate
 {
-  v2 = [(MOResource *)self data];
-  v3 = [MODictionaryEncoder decodeToDictionary:v2];
+  data = [(MOResource *)self data];
+  v3 = [MODictionaryEncoder decodeToDictionary:data];
 
   v4 = [v3 objectForKeyedSubscript:@"MOPhotoResourceLocalTime"];
   [v4 doubleValue];
@@ -817,78 +817,78 @@ LABEL_30:
   return v7;
 }
 
-- (MOResource)initWithWeather:(id)a3
+- (MOResource)initWithWeather:(id)weather
 {
-  v4 = a3;
+  weatherCopy = weather;
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 startDate];
-  [v7 timeIntervalSinceReferenceDate];
+  startDate = [weatherCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v8 = [v6 numberWithDouble:?];
   [v5 setObject:v8 forKeyedSubscript:@"MOWeatherMetaDataKeyStartDate"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v4 endDate];
-  [v10 timeIntervalSinceReferenceDate];
+  endDate = [weatherCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v11 = [v9 numberWithDouble:?];
   [v5 setObject:v11 forKeyedSubscript:@"MOWeatherMetaDataKeyEndDate"];
 
-  v12 = [v4 weatherSummary];
-  [v5 setObject:v12 forKeyedSubscript:@"MOWeatherMetaDataKeyWeatherSummary"];
+  weatherSummary = [weatherCopy weatherSummary];
+  [v5 setObject:weatherSummary forKeyedSubscript:@"MOWeatherMetaDataKeyWeatherSummary"];
 
-  v13 = [v4 weatherSymbolName];
-  [v5 setObject:v13 forKeyedSubscript:@"MOWeatherMetaDataKeySymbolName"];
+  weatherSymbolName = [weatherCopy weatherSymbolName];
+  [v5 setObject:weatherSymbolName forKeyedSubscript:@"MOWeatherMetaDataKeySymbolName"];
 
-  v14 = [v4 temperature];
+  temperature = [weatherCopy temperature];
 
-  if (v14)
+  if (temperature)
   {
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v4 temperature];
-    [v16 doubleValue];
+    temperature2 = [weatherCopy temperature];
+    [temperature2 doubleValue];
     v17 = [v15 numberWithDouble:?];
     [v5 setObject:v17 forKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureValue"];
 
-    v18 = [v4 temperature];
-    v19 = [v18 unit];
-    v20 = [v19 symbol];
-    [v5 setObject:v20 forKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureUnitSymbol"];
+    temperature3 = [weatherCopy temperature];
+    unit = [temperature3 unit];
+    symbol = [unit symbol];
+    [v5 setObject:symbol forKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureUnitSymbol"];
   }
 
-  v21 = [v4 windSpeed];
+  windSpeed = [weatherCopy windSpeed];
 
-  if (v21)
+  if (windSpeed)
   {
     v22 = MEMORY[0x277CCABB0];
-    v23 = [v4 windSpeed];
-    [v23 doubleValue];
+    windSpeed2 = [weatherCopy windSpeed];
+    [windSpeed2 doubleValue];
     v24 = [v22 numberWithDouble:?];
     [v5 setObject:v24 forKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedValue"];
 
-    v25 = [v4 windSpeed];
-    v26 = [v25 unit];
-    v27 = [v26 symbol];
-    [v5 setObject:v27 forKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedUnitSymbol"];
+    windSpeed3 = [weatherCopy windSpeed];
+    unit2 = [windSpeed3 unit];
+    symbol2 = [unit2 symbol];
+    [v5 setObject:symbol2 forKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedUnitSymbol"];
   }
 
   v28 = [MODictionaryEncoder encodeDictionary:v5];
-  v29 = [MEMORY[0x277CCAD78] UUID];
-  v30 = [(MOResource *)self initWithIdentifier:v29 name:@"Weather" type:14 assets:0 data:v28 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v30 = [(MOResource *)self initWithIdentifier:uUID name:@"Weather" type:14 assets:0 data:v28 value:0 priorityScore:0.0 photoCurationScore:-1.0 photoFaceCount:0 photoAssetMediaType:0];
 
   return v30;
 }
 
 - (double)endDate
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (!v3)
+  if (!metaData)
   {
     return 0.0;
   }
 
-  v4 = [(MOResource *)self metaData];
-  v5 = [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyEndDate"];
+  metaData2 = [(MOResource *)self metaData];
+  v5 = [metaData2 objectForKeyedSubscript:@"MOWeatherMetaDataKeyEndDate"];
   [v5 doubleValue];
   v7 = v6;
 
@@ -897,15 +897,15 @@ LABEL_30:
 
 - (double)startDate
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (!v3)
+  if (!metaData)
   {
     return 0.0;
   }
 
-  v4 = [(MOResource *)self metaData];
-  v5 = [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyStartDate"];
+  metaData2 = [(MOResource *)self metaData];
+  v5 = [metaData2 objectForKeyedSubscript:@"MOWeatherMetaDataKeyStartDate"];
   [v5 doubleValue];
   v7 = v6;
 
@@ -914,18 +914,18 @@ LABEL_30:
 
 - (id)temperature
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3 && (-[MOResource metaData](self, "metaData"), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureValue"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  if (metaData && (-[MOResource metaData](self, "metaData"), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureValue"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_alloc(MEMORY[0x277CCAB10]);
-    v7 = [(MOResource *)self metaData];
-    v8 = [v7 objectForKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureValue"];
+    metaData2 = [(MOResource *)self metaData];
+    v8 = [metaData2 objectForKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureValue"];
     [v8 doubleValue];
     v10 = v9;
     v11 = objc_alloc(MEMORY[0x277CCAE48]);
-    v12 = [(MOResource *)self metaData];
-    v13 = [v12 objectForKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureUnitSymbol"];
+    metaData3 = [(MOResource *)self metaData];
+    v13 = [metaData3 objectForKeyedSubscript:@"MOWeatherMetaDataKeyTemperatureUnitSymbol"];
     v14 = [v11 initWithSymbol:v13];
     v15 = [v6 initWithDoubleValue:v14 unit:v10];
   }
@@ -940,12 +940,12 @@ LABEL_30:
 
 - (id)weatherSummary
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOResource *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWeatherSummary"];
+    metaData2 = [(MOResource *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWeatherSummary"];
   }
 
   else
@@ -958,12 +958,12 @@ LABEL_30:
 
 - (id)weatherSymbolName
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOResource *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeySymbolName"];
+    metaData2 = [(MOResource *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"MOWeatherMetaDataKeySymbolName"];
   }
 
   else
@@ -976,18 +976,18 @@ LABEL_30:
 
 - (id)windSpeed
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3 && (-[MOResource metaData](self, "metaData"), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedValue"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  if (metaData && (-[MOResource metaData](self, "metaData"), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedValue"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_alloc(MEMORY[0x277CCAB10]);
-    v7 = [(MOResource *)self metaData];
-    v8 = [v7 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedValue"];
+    metaData2 = [(MOResource *)self metaData];
+    v8 = [metaData2 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedValue"];
     [v8 doubleValue];
     v10 = v9;
     v11 = objc_alloc(MEMORY[0x277CCAD98]);
-    v12 = [(MOResource *)self metaData];
-    v13 = [v12 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedUnitSymbol"];
+    metaData3 = [(MOResource *)self metaData];
+    v13 = [metaData3 objectForKeyedSubscript:@"MOWeatherMetaDataKeyWindSpeedUnitSymbol"];
     v14 = [v11 initWithSymbol:v13];
     v15 = [v6 initWithDoubleValue:v14 unit:v10];
   }
@@ -1000,88 +1000,88 @@ LABEL_30:
   return v15;
 }
 
-- (MOResource)initWithPlace:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (MOResource)initWithPlace:(id)place startDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeCopy = place;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "placeType")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(placeCopy, "placeType")}];
   [v11 setObject:v12 forKeyedSubscript:@"placeType"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "placeUserType")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(placeCopy, "placeUserType")}];
   [v11 setObject:v13 forKeyedSubscript:@"placeUserType"];
 
-  v14 = [v8 location];
-  v15 = [v14 dictionary];
-  [v11 setObject:v15 forKeyedSubscript:@"location"];
+  location = [placeCopy location];
+  dictionary = [location dictionary];
+  [v11 setObject:dictionary forKeyedSubscript:@"location"];
 
-  v16 = [v8 poiCategory];
-  [v11 setObject:v16 forKeyedSubscript:@"poiCategory"];
+  poiCategory = [placeCopy poiCategory];
+  [v11 setObject:poiCategory forKeyedSubscript:@"poiCategory"];
 
-  if ([v8 placeType] != 101 && objc_msgSend(v8, "placeType") != 102)
+  if ([placeCopy placeType] != 101 && objc_msgSend(placeCopy, "placeType") != 102)
   {
-    v17 = [v8 enclosingArea];
-    [v11 setObject:v17 forKeyedSubscript:@"cityName"];
+    enclosingArea = [placeCopy enclosingArea];
+    [v11 setObject:enclosingArea forKeyedSubscript:@"cityName"];
   }
 
-  v18 = [v8 enclosingArea];
-  [v11 setObject:v18 forKeyedSubscript:@"enclosingArea"];
+  enclosingArea2 = [placeCopy enclosingArea];
+  [v11 setObject:enclosingArea2 forKeyedSubscript:@"enclosingArea"];
 
-  if (v9)
+  if (dateCopy)
   {
     v19 = MEMORY[0x277CCABB0];
-    [v9 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v20 = [v19 numberWithDouble:?];
     [v11 setObject:v20 forKeyedSubscript:@"startDate"];
   }
 
-  if (v10)
+  if (endDateCopy)
   {
     v21 = MEMORY[0x277CCABB0];
-    [v10 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     v22 = [v21 numberWithDouble:?];
     [v11 setObject:v22 forKeyedSubscript:@"endDate"];
   }
 
   v23 = [MODictionaryEncoder encodeDictionary:v11];
-  v24 = [v8 identifier];
-  v25 = [v8 placeName];
-  [v8 placeNameConfidence];
+  identifier = [placeCopy identifier];
+  placeName = [placeCopy placeName];
+  [placeCopy placeNameConfidence];
   v27 = v26;
-  [v8 priorityScore];
-  v29 = [(MOResource *)self initWithIdentifier:v24 name:v25 type:12 assets:0 data:v23 value:0 priorityScore:v27 photoCurationScore:v28 photoFaceCount:0 photoAssetMediaType:0];
+  [placeCopy priorityScore];
+  v29 = [(MOResource *)self initWithIdentifier:identifier name:placeName type:12 assets:0 data:v23 value:0 priorityScore:v27 photoCurationScore:v28 photoFaceCount:0 photoAssetMediaType:0];
 
   return v29;
 }
 
-- (MOResource)initWithName:(id)a3 mapItemHandle:(id)a4 priorityScore:(double)a5
+- (MOResource)initWithName:(id)name mapItemHandle:(id)handle priorityScore:(double)score
 {
   v8 = MEMORY[0x277CCAD78];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [(MOResource *)self initWithIdentifier:v11 name:v10 type:6 assets:0 data:v9 value:0 priorityScore:0.0 photoCurationScore:a5 photoFaceCount:0 photoAssetMediaType:0];
+  handleCopy = handle;
+  nameCopy = name;
+  uUID = [v8 UUID];
+  v12 = [(MOResource *)self initWithIdentifier:uUID name:nameCopy type:6 assets:0 data:handleCopy value:0 priorityScore:0.0 photoCurationScore:score photoFaceCount:0 photoAssetMediaType:0];
 
   return v12;
 }
 
 - (id)metaData
 {
-  v2 = [(MOResource *)self data];
-  v3 = [MODictionaryEncoder decodeToDictionary:v2];
+  data = [(MOResource *)self data];
+  v3 = [MODictionaryEncoder decodeToDictionary:data];
 
   return v3;
 }
 
 - (id)cityName
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOResource *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"cityName"];
+    metaData2 = [(MOResource *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"cityName"];
   }
 
   else
@@ -1094,12 +1094,12 @@ LABEL_30:
 
 - (id)enclosingArea
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOResource *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"enclosingArea"];
+    metaData2 = [(MOResource *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"enclosingArea"];
   }
 
   else
@@ -1112,44 +1112,44 @@ LABEL_30:
 
 - (unint64_t)placeUserType
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (!v3)
+  if (!metaData)
   {
     return 0;
   }
 
-  v4 = [(MOResource *)self metaData];
-  v5 = [v4 objectForKeyedSubscript:@"placeUserType"];
-  v6 = [v5 intValue];
+  metaData2 = [(MOResource *)self metaData];
+  v5 = [metaData2 objectForKeyedSubscript:@"placeUserType"];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (unint64_t)placeType
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (!v3)
+  if (!metaData)
   {
     return 0;
   }
 
-  v4 = [(MOResource *)self metaData];
-  v5 = [v4 objectForKeyedSubscript:@"placeType"];
-  v6 = [v5 intValue];
+  metaData2 = [(MOResource *)self metaData];
+  v5 = [metaData2 objectForKeyedSubscript:@"placeType"];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (id)location
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOResource *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"location"];
+    metaData2 = [(MOResource *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"location"];
 
     v6 = [MEMORY[0x277D01160] locationFromDictionary:v5];
   }
@@ -1164,12 +1164,12 @@ LABEL_30:
 
 - (id)poiCategory
 {
-  v3 = [(MOResource *)self metaData];
+  metaData = [(MOResource *)self metaData];
 
-  if (v3)
+  if (metaData)
   {
-    v4 = [(MOResource *)self metaData];
-    v5 = [v4 objectForKeyedSubscript:@"poiCategory"];
+    metaData2 = [(MOResource *)self metaData];
+    v5 = [metaData2 objectForKeyedSubscript:@"poiCategory"];
   }
 
   else
@@ -1180,70 +1180,70 @@ LABEL_30:
   return v5;
 }
 
-- (MOResource)initWithEvergreenTypeName:(id)a3 promptIndex:(unint64_t)a4
+- (MOResource)initWithEvergreenTypeName:(id)name promptIndex:(unint64_t)index
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MOResource evergreenTypeFromEvergreenTypeString:v6];
+  nameCopy = name;
+  v7 = [MOResource evergreenTypeFromEvergreenTypeString:nameCopy];
   v14[0] = @"evergreen_type";
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
   v15[0] = v8;
   v14[1] = @"evergreen_index";
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v15[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v11 = [(MOResource *)self initWithName:v6 type:9 dict:v10 value:a4];
+  v11 = [(MOResource *)self initWithName:nameCopy type:9 dict:v10 value:index];
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (MOResource)initWithEvergreenTypeName:(id)a3 promptIndexes:(id)a4
+- (MOResource)initWithEvergreenTypeName:(id)name promptIndexes:(id)indexes
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [MOResource evergreenTypeFromEvergreenTypeString:v7];
+  indexesCopy = indexes;
+  nameCopy = name;
+  v8 = [MOResource evergreenTypeFromEvergreenTypeString:nameCopy];
   v15[0] = @"evergreen_type";
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
   v16[0] = v9;
-  v16[1] = v6;
+  v16[1] = indexesCopy;
   v15[1] = @"evergreen_indexes";
   v15[2] = @"evergreen_count";
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(indexesCopy, "count")}];
   v16[2] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
-  v12 = [(MOResource *)self initWithName:v7 type:9 dict:v11 value:0.0];
+  v12 = [(MOResource *)self initWithName:nameCopy type:9 dict:v11 value:0.0];
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
 - (unint64_t)evergreenType
 {
-  v3 = [(MOResource *)self getDictionary];
+  getDictionary = [(MOResource *)self getDictionary];
 
-  if (!v3)
+  if (!getDictionary)
   {
     return 0;
   }
 
-  v4 = [(MOResource *)self getDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"evergreen_type"];
-  v6 = [v5 intValue];
+  getDictionary2 = [(MOResource *)self getDictionary];
+  v5 = [getDictionary2 objectForKeyedSubscript:@"evergreen_type"];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (unint64_t)promptIndex
 {
-  v3 = [(MOResource *)self getDictionary];
+  getDictionary = [(MOResource *)self getDictionary];
 
-  if (v3)
+  if (getDictionary)
   {
-    v4 = [(MOResource *)self getDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"evergreen_index"];
-    v6 = [v5 intValue];
+    getDictionary2 = [(MOResource *)self getDictionary];
+    v5 = [getDictionary2 objectForKeyedSubscript:@"evergreen_index"];
+    intValue = [v5 intValue];
   }
 
   else
@@ -1252,17 +1252,17 @@ LABEL_30:
     return v7;
   }
 
-  return v6;
+  return intValue;
 }
 
 - (id)promptIndexes
 {
-  v3 = [(MOResource *)self getDictionary];
+  getDictionary = [(MOResource *)self getDictionary];
 
-  if (v3)
+  if (getDictionary)
   {
-    v4 = [(MOResource *)self getDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"evergreen_indexes"];
+    getDictionary2 = [(MOResource *)self getDictionary];
+    v5 = [getDictionary2 objectForKeyedSubscript:@"evergreen_indexes"];
   }
 
   else
@@ -1275,13 +1275,13 @@ LABEL_30:
 
 - (unint64_t)promptCount
 {
-  v3 = [(MOResource *)self getDictionary];
+  getDictionary = [(MOResource *)self getDictionary];
 
-  if (v3)
+  if (getDictionary)
   {
-    v4 = [(MOResource *)self getDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"evergreen_count"];
-    v6 = [v5 intValue];
+    getDictionary2 = [(MOResource *)self getDictionary];
+    v5 = [getDictionary2 objectForKeyedSubscript:@"evergreen_count"];
+    intValue = [v5 intValue];
   }
 
   else
@@ -1290,53 +1290,53 @@ LABEL_30:
     return v7;
   }
 
-  return v6;
+  return intValue;
 }
 
-+ (id)evergreenTypeStringFromEvergreenType:(unint64_t)a3
++ (id)evergreenTypeStringFromEvergreenType:(unint64_t)type
 {
-  if (a3 - 1 > 5)
+  if (type - 1 > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_278775E40[a3 - 1];
+    v4 = *off_278775E40[type - 1];
   }
 
   return v4;
 }
 
-+ (unint64_t)evergreenTypeFromEvergreenTypeString:(id)a3
++ (unint64_t)evergreenTypeFromEvergreenTypeString:(id)string
 {
-  v3 = a3;
-  if ([@"WISDOM" isEqualToString:v3])
+  stringCopy = string;
+  if ([@"WISDOM" isEqualToString:stringCopy])
   {
     v4 = 1;
   }
 
-  else if ([@"PURPOSE" isEqualToString:v3])
+  else if ([@"PURPOSE" isEqualToString:stringCopy])
   {
     v4 = 4;
   }
 
-  else if ([@"KINDNESS" isEqualToString:v3])
+  else if ([@"KINDNESS" isEqualToString:stringCopy])
   {
     v4 = 3;
   }
 
-  else if ([@"GRATITUDE" isEqualToString:v3])
+  else if ([@"GRATITUDE" isEqualToString:stringCopy])
   {
     v4 = 2;
   }
 
-  else if ([@"CREATIVITY" isEqualToString:v3])
+  else if ([@"CREATIVITY" isEqualToString:stringCopy])
   {
     v4 = 6;
   }
 
-  else if ([@"RESILIENCE" isEqualToString:v3])
+  else if ([@"RESILIENCE" isEqualToString:stringCopy])
   {
     v4 = 5;
   }

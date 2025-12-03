@@ -1,30 +1,30 @@
 @interface MISystemAppMigrator
-- (BOOL)_getLSEligiblityKey:(id)a3 appliesTo:(BOOL *)a4 forBundleID:(id)a5 withAppInfo:(id)a6 withEvaluator:(id)a7;
-- (BOOL)appInstalledSuccessfullyWithBundleID:(id)a3;
-- (BOOL)demoteAppWithBundleID:(id)a3 demotionReason:(unint64_t)a4;
-- (BOOL)demoteAppWithBundleID:(id)a3 desiredAppState:(int)a4 isInstalled:(BOOL)a5;
-- (BOOL)existsUnusedDataContainerWithBundleID:(id)a3;
-- (BOOL)firstTimeEncounteringDeletableSystemAppWithBundleId:(id)a3;
-- (BOOL)installDemotedPlaceholderWithBundleID:(id)a3 installType:(unint64_t)a4;
-- (BOOL)installOrUpdateAppWithBundleID:(id)a3 appURL:(id)a4 isInstalled:(BOOL)a5;
-- (BOOL)isCurrentlyInstalledAppInTrustCacheForBundleID:(id)a3;
+- (BOOL)_getLSEligiblityKey:(id)key appliesTo:(BOOL *)to forBundleID:(id)d withAppInfo:(id)info withEvaluator:(id)evaluator;
+- (BOOL)appInstalledSuccessfullyWithBundleID:(id)d;
+- (BOOL)demoteAppWithBundleID:(id)d demotionReason:(unint64_t)reason;
+- (BOOL)demoteAppWithBundleID:(id)d desiredAppState:(int)state isInstalled:(BOOL)installed;
+- (BOOL)existsUnusedDataContainerWithBundleID:(id)d;
+- (BOOL)firstTimeEncounteringDeletableSystemAppWithBundleId:(id)id;
+- (BOOL)installDemotedPlaceholderWithBundleID:(id)d installType:(unint64_t)type;
+- (BOOL)installOrUpdateAppWithBundleID:(id)d appURL:(id)l isInstalled:(BOOL)installed;
+- (BOOL)isCurrentlyInstalledAppInTrustCacheForBundleID:(id)d;
 - (BOOL)isRegulatedForChina;
 - (BOOL)isiPad;
 - (BOOL)performMigration;
-- (BOOL)setInstallOptionsForCoordinator:(id)a3 bundleID:(id)a4 error:(id *)a5;
-- (BOOL)setPlaceholderPromiseForCoordinator:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 error:(id *)a6;
+- (BOOL)setInstallOptionsForCoordinator:(id)coordinator bundleID:(id)d error:(id *)error;
+- (BOOL)setPlaceholderPromiseForCoordinator:(id)coordinator bundleID:(id)d installType:(unint64_t)type error:(id *)error;
 - (BOOL)shouldIgnoreAppsNotInTrustCache;
 - (BOOL)waitForSystemAppInstallDispatchGroup;
 - (MISystemAppMigrator)init;
 - (NSString)previousBuildVersion;
 - (NSURL)ignoreAppsNotInTrustCacheSentinelFileURL;
-- (id)_removeNotAllowedAppsFromSystemAppState:(id)a3;
+- (id)_removeNotAllowedAppsFromSystemAppState:(id)state;
 - (id)currentlyInstalledSystemAppBundleIdentifiers;
-- (id)lookupSystemAppStateWithOptions:(id)a3;
+- (id)lookupSystemAppStateWithOptions:(id)options;
 - (void)capturePreferencesToMigrate;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4;
-- (void)enterSystemAppInstallDispatchGroupForBundleID:(id)a3;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record;
+- (void)enterSystemAppInstallDispatchGroupForBundleID:(id)d;
 - (void)finalizePreferencesToMigrate;
 - (void)handleAppEligibilityRequirements;
 - (void)handleAppFeatureFlagRequirements;
@@ -35,12 +35,12 @@
 - (void)handleSpecialAppActivity;
 - (void)handleSpecialAppNews;
 - (void)handleSupersededSystemApps;
-- (void)leaveSystemAppInstallDispatchGroupForBundleID:(id)a3;
-- (void)markAppAsNotAllowed:(id)a3;
-- (void)markAppAsUninstalled:(id)a3;
-- (void)markAppSuccessfullyInstalledWithBundleID:(id)a3;
+- (void)leaveSystemAppInstallDispatchGroupForBundleID:(id)d;
+- (void)markAppAsNotAllowed:(id)allowed;
+- (void)markAppAsUninstalled:(id)uninstalled;
+- (void)markAppSuccessfullyInstalledWithBundleID:(id)d;
 - (void)synchronouslyCancelAllAppStoreRequests;
-- (void)usingAppStoreInstallSystemAppAppWithBundleID:(id)a3;
+- (void)usingAppStoreInstallSystemAppAppWithBundleID:(id)d;
 @end
 
 @implementation MISystemAppMigrator
@@ -81,13 +81,13 @@
     v17 = +[MIFileManager defaultManager];
     v18 = &MISValidateSignature_ptr;
     v19 = +[MIDaemonConfiguration sharedInstance];
-    v20 = [v19 systemAppPlaceholdersDirectory];
-    v21 = [v17 itemDoesNotExistAtURL:v20];
+    systemAppPlaceholdersDirectory = [v19 systemAppPlaceholdersDirectory];
+    v21 = [v17 itemDoesNotExistAtURL:systemAppPlaceholdersDirectory];
 
     if (v21)
     {
       v22 = +[MIDaemonConfiguration sharedInstance];
-      v23 = [v22 systemAppPlaceholdersDirectory];
+      systemAppPlaceholdersDirectory2 = [v22 systemAppPlaceholdersDirectory];
       _DMLogFunc();
 LABEL_30:
 
@@ -101,11 +101,11 @@ LABEL_30:
     v70 = 0u;
     v71 = 0u;
     v24 = +[MIDaemonConfiguration sharedInstance];
-    v25 = [v24 systemAppPlaceholderBundleIDToInfoMap];
-    v26 = [v25 allKeys];
+    systemAppPlaceholderBundleIDToInfoMap = [v24 systemAppPlaceholderBundleIDToInfoMap];
+    allKeys = [systemAppPlaceholderBundleIDToInfoMap allKeys];
 
-    obj = v26;
-    v27 = [v26 countByEnumeratingWithState:&v68 objects:v73 count:16];
+    obj = allKeys;
+    v27 = [allKeys countByEnumeratingWithState:&v68 objects:v73 count:16];
     if (v27)
     {
       v28 = v27;
@@ -123,21 +123,21 @@ LABEL_30:
           v31 = *(*(&v68 + 1) + 8 * i);
           v32 = objc_opt_new();
           v33 = v18;
-          v34 = [v18[109] sharedInstance];
-          v35 = [v34 stagedSystemAppBundleIDToInfoMap];
-          v36 = [v35 objectForKeyedSubscript:v31];
+          sharedInstance = [v18[109] sharedInstance];
+          stagedSystemAppBundleIDToInfoMap = [sharedInstance stagedSystemAppBundleIDToInfoMap];
+          v36 = [stagedSystemAppBundleIDToInfoMap objectForKeyedSubscript:v31];
           v37 = [v36 objectForKeyedSubscript:@"com.apple.MobileInstallation.bundleURL"];
 
           if (!v37)
           {
-            v38 = [v33[109] sharedInstance];
-            v39 = [v38 stagedSystemAppsDirectory];
-            v40 = [v39 URLByAppendingPathComponent:v31];
+            sharedInstance2 = [v33[109] sharedInstance];
+            stagedSystemAppsDirectory = [sharedInstance2 stagedSystemAppsDirectory];
+            v40 = [stagedSystemAppsDirectory URLByAppendingPathComponent:v31];
 
             v41 = +[MIFileManager defaultManager];
-            LODWORD(v39) = [v41 itemExistsAtURL:v40];
+            LODWORD(stagedSystemAppsDirectory) = [v41 itemExistsAtURL:v40];
 
-            if (v39)
+            if (stagedSystemAppsDirectory)
             {
               v37 = v40;
             }
@@ -196,9 +196,9 @@ LABEL_30:
       v64->_itemsToInstall = 0;
     }
 
-    v23 = [NSURL fileURLWithPath:@"/private/var/preferences/com.apple.demo.SADForceInstall.plist", v63];
+    systemAppPlaceholdersDirectory2 = [NSURL fileURLWithPath:@"/private/var/preferences/com.apple.demo.SADForceInstall.plist", v63];
     v67 = 0;
-    v54 = [NSArray arrayWithContentsOfURL:v23 error:&v67];
+    v54 = [NSArray arrayWithContentsOfURL:systemAppPlaceholdersDirectory2 error:&v67];
     v55 = v67;
     v56 = v55;
     if (v54)
@@ -221,12 +221,12 @@ LABEL_29:
 
     else
     {
-      v59 = [v55 domain];
-      if ([v59 isEqualToString:NSCocoaErrorDomain])
+      domain = [v55 domain];
+      if ([domain isEqualToString:NSCocoaErrorDomain])
       {
-        v60 = [v56 code];
+        code = [v56 code];
 
-        if (v60 == &stru_B8.reserved3)
+        if (code == &stru_B8.reserved3)
         {
           goto LABEL_29;
         }
@@ -237,7 +237,7 @@ LABEL_29:
       }
     }
 
-    forceInstallBundleIDs = [v23 path];
+    forceInstallBundleIDs = [systemAppPlaceholdersDirectory2 path];
     _DMLogFunc();
     goto LABEL_28;
   }
@@ -245,32 +245,32 @@ LABEL_29:
   return v3;
 }
 
-- (void)enterSystemAppInstallDispatchGroupForBundleID:(id)a3
+- (void)enterSystemAppInstallDispatchGroupForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
+  dCopy = d;
+  pendingAppInstallListQueue = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1FF4;
   v7[3] = &unk_104A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(pendingAppInstallListQueue, v7);
 }
 
-- (void)leaveSystemAppInstallDispatchGroupForBundleID:(id)a3
+- (void)leaveSystemAppInstallDispatchGroupForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
+  dCopy = d;
+  pendingAppInstallListQueue = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2114;
   v7[3] = &unk_104A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(pendingAppInstallListQueue, v7);
 }
 
 - (BOOL)waitForSystemAppInstallDispatchGroup
@@ -279,45 +279,45 @@ LABEL_29:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
+  pendingAppInstallListQueue = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2304;
   block[3] = &unk_104C8;
   block[4] = self;
   block[5] = &v11;
-  dispatch_sync(v3, block);
+  dispatch_sync(pendingAppInstallListQueue, block);
 
-  v4 = [(MISystemAppMigrator *)self systemAppInstallGroup];
+  systemAppInstallGroup = [(MISystemAppMigrator *)self systemAppInstallGroup];
   v5 = dispatch_time(0, 1000000000 * v12[3]);
-  v6 = dispatch_group_wait(v4, v5);
+  v6 = dispatch_group_wait(systemAppInstallGroup, v5);
 
   if (v6)
   {
-    v7 = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
+    pendingAppInstallListQueue2 = [(MISystemAppMigrator *)self pendingAppInstallListQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_2368;
     v9[3] = &unk_104F0;
     v9[4] = self;
     v9[5] = &v11;
-    dispatch_sync(v7, v9);
+    dispatch_sync(pendingAppInstallListQueue2, v9);
   }
 
   _Block_object_dispose(&v11, 8);
   return v6 == 0;
 }
 
-- (BOOL)firstTimeEncounteringDeletableSystemAppWithBundleId:(id)a3
+- (BOOL)firstTimeEncounteringDeletableSystemAppWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[MIDaemonConfiguration sharedInstance];
-  v6 = [v5 systemAppPlaceholderBundleIDToInfoMap];
-  v7 = [v6 objectForKey:v4];
+  systemAppPlaceholderBundleIDToInfoMap = [v5 systemAppPlaceholderBundleIDToInfoMap];
+  v7 = [systemAppPlaceholderBundleIDToInfoMap objectForKey:idCopy];
   if (v7)
   {
-    v8 = [(MISystemAppMigrator *)self startingSystemAppState];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    startingSystemAppState = [(MISystemAppMigrator *)self startingSystemAppState];
+    v9 = [startingSystemAppState objectForKeyedSubscript:idCopy];
     v10 = v9 == 0;
   }
 
@@ -329,26 +329,26 @@ LABEL_29:
   return v10;
 }
 
-- (id)lookupSystemAppStateWithOptions:(id)a3
+- (id)lookupSystemAppStateWithOptions:(id)options
 {
   v3 = MobileInstallationLookupSystemAppState();
 
   return v3;
 }
 
-- (id)_removeNotAllowedAppsFromSystemAppState:(id)a3
+- (id)_removeNotAllowedAppsFromSystemAppState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = a3;
+    stateCopy = state;
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_260C;
     v11 = &unk_10518;
-    v12 = self;
+    selfCopy = self;
     v13 = objc_opt_new();
     v5 = v13;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+    [stateCopy enumerateKeysAndObjectsUsingBlock:&v8];
 
     v6 = [v5 copy];
   }
@@ -361,21 +361,21 @@ LABEL_29:
   return v6;
 }
 
-- (void)markAppAsNotAllowed:(id)a3
+- (void)markAppAsNotAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   _DMLogFunc();
-  if (![(MISystemAppMigrator *)self setSystemAppState:6 forBundleID:v4, v4])
+  if (![(MISystemAppMigrator *)self setSystemAppState:6 forBundleID:allowedCopy, allowedCopy])
   {
     _DMLogFunc();
   }
 }
 
-- (void)markAppAsUninstalled:(id)a3
+- (void)markAppAsUninstalled:(id)uninstalled
 {
-  v4 = a3;
+  uninstalledCopy = uninstalled;
   _DMLogFunc();
-  if (![(MISystemAppMigrator *)self setSystemAppState:2 forBundleID:v4, v4])
+  if (![(MISystemAppMigrator *)self setSystemAppState:2 forBundleID:uninstalledCopy, uninstalledCopy])
   {
     _DMLogFunc();
   }
@@ -422,18 +422,18 @@ LABEL_29:
 
 - (BOOL)isiPad
 {
-  v2 = [(MISystemAppMigrator *)self deviceClass];
-  v3 = [v2 isEqualToString:@"iPad"];
+  deviceClass = [(MISystemAppMigrator *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPad"];
 
   return v3;
 }
 
 - (void)handleSpecialAppActivity
 {
-  v3 = [(MISystemAppMigrator *)self isiPad];
+  isiPad = [(MISystemAppMigrator *)self isiPad];
   if ([(MISystemAppMigrator *)self firstTimeEncounteringDeletableSystemAppWithBundleId:@"com.apple.Fitness"])
   {
-    if (v3)
+    if (isiPad)
     {
 
       [(MISystemAppMigrator *)self markAppAsUninstalled:@"com.apple.Fitness"];
@@ -445,20 +445,20 @@ LABEL_13:
     return;
   }
 
-  v4 = [(MISystemAppMigrator *)self startingSystemAppState];
-  v5 = [v4 valueForKey:@"com.apple.Fitness"];
-  v6 = [v5 unsignedIntegerValue];
+  startingSystemAppState = [(MISystemAppMigrator *)self startingSystemAppState];
+  v5 = [startingSystemAppState valueForKey:@"com.apple.Fitness"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 == 1)
+  if (unsignedIntegerValue == 1)
   {
     return;
   }
 
-  if (v3)
+  if (isiPad)
   {
-    if (v6 != 6)
+    if (unsignedIntegerValue != 6)
     {
-      if (v6 == 2)
+      if (unsignedIntegerValue == 2)
       {
 LABEL_26:
 
@@ -466,7 +466,7 @@ LABEL_26:
         return;
       }
 
-      if (v6)
+      if (unsignedIntegerValue)
       {
         goto LABEL_13;
       }
@@ -480,14 +480,14 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (v6 > 6 || ((1 << v6) & 0x45) == 0)
+  if (unsignedIntegerValue > 6 || ((1 << unsignedIntegerValue) & 0x45) == 0)
   {
     goto LABEL_13;
   }
 
-  v7 = [(MISystemAppMigrator *)self previousBuildVersion];
-  v8 = v7;
-  if (!v7 || [@"20" compare:v7 options:64] == &dword_0 + 1 && !-[MISystemAppMigrator setSystemAppState:forBundleID:](self, "setSystemAppState:forBundleID:", 1, @"com.apple.Fitness"))
+  previousBuildVersion = [(MISystemAppMigrator *)self previousBuildVersion];
+  v8 = previousBuildVersion;
+  if (!previousBuildVersion || [@"20" compare:previousBuildVersion options:64] == &dword_0 + 1 && !-[MISystemAppMigrator setSystemAppState:forBundleID:](self, "setSystemAppState:forBundleID:", 1, @"com.apple.Fitness"))
   {
     _DMLogFunc();
   }
@@ -497,50 +497,50 @@ LABEL_26:
 {
   v3 = [(MISystemAppMigrator *)self lookupSystemAppStateWithOptions:0];
   v4 = +[MIDaemonConfiguration sharedInstance];
-  v5 = [v4 systemAppPlaceholderBundleIDToInfoMap];
+  systemAppPlaceholderBundleIDToInfoMap = [v4 systemAppPlaceholderBundleIDToInfoMap];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2C84;
   v7[3] = &unk_10540;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [systemAppPlaceholderBundleIDToInfoMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (void)handleAppsNotCompatibleWithDeviceFamily
 {
   v3 = +[MIDaemonConfiguration sharedInstance];
-  v4 = [v3 systemAppPlaceholderBundleIDToInfoMap];
+  systemAppPlaceholderBundleIDToInfoMap = [v3 systemAppPlaceholderBundleIDToInfoMap];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_2ECC;
   v5[3] = &unk_10568;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [systemAppPlaceholderBundleIDToInfoMap enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 - (void)handleAppFeatureFlagRequirements
 {
   v3 = [(MISystemAppMigrator *)self lookupSystemAppStateWithOptions:0];
   v4 = +[MIDaemonConfiguration sharedInstance];
-  v5 = [v4 systemAppPlaceholderBundleIDToInfoMap];
+  systemAppPlaceholderBundleIDToInfoMap = [v4 systemAppPlaceholderBundleIDToInfoMap];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_30B4;
   v7[3] = &unk_10540;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [systemAppPlaceholderBundleIDToInfoMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (BOOL)_getLSEligiblityKey:(id)a3 appliesTo:(BOOL *)a4 forBundleID:(id)a5 withAppInfo:(id)a6 withEvaluator:(id)a7
+- (BOOL)_getLSEligiblityKey:(id)key appliesTo:(BOOL *)to forBundleID:(id)d withAppInfo:(id)info withEvaluator:(id)evaluator
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = [a6 objectForKeyedSubscript:v11];
+  keyCopy = key;
+  dCopy = d;
+  evaluatorCopy = evaluator;
+  v14 = [info objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   v15 = v14;
   if (objc_opt_isKindOfClass())
@@ -562,14 +562,14 @@ LABEL_26:
     if (v17)
     {
       v24 = v18;
-      v20 = [v13 evaluatePredicate:v17 error:&v24];
+      v20 = [evaluatorCopy evaluatePredicate:v17 error:&v24];
       v21 = v24;
 
       if (v20)
       {
-        if (a4)
+        if (to)
         {
-          *a4 = [v20 BOOLValue];
+          *to = [v20 BOOLValue];
         }
 
         v22 = 1;
@@ -611,44 +611,44 @@ LABEL_26:
 
   v6 = [(MISystemAppMigrator *)self lookupSystemAppStateWithOptions:0];
   v7 = +[MIDaemonConfiguration sharedInstance];
-  v8 = [v7 systemAppPlaceholderBundleIDToInfoMap];
+  systemAppPlaceholderBundleIDToInfoMap = [v7 systemAppPlaceholderBundleIDToInfoMap];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_3798;
   v11[3] = &unk_105B8;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v9 = v5;
   v10 = v6;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  [systemAppPlaceholderBundleIDToInfoMap enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 - (void)handleDefaultInstall
 {
   v3 = [(MISystemAppMigrator *)self lookupSystemAppStateWithOptions:0];
   v4 = +[MIDaemonConfiguration sharedInstance];
-  v5 = [v4 systemAppPlaceholderBundleIDToInfoMap];
+  systemAppPlaceholderBundleIDToInfoMap = [v4 systemAppPlaceholderBundleIDToInfoMap];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_39F8;
   v7[3] = &unk_10540;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [systemAppPlaceholderBundleIDToInfoMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (void)handleForceInstalledApps
 {
-  v3 = [(MISystemAppMigrator *)self forceInstallBundleIDs];
-  v4 = v3;
-  if (v3 && [v3 count])
+  forceInstallBundleIDs = [(MISystemAppMigrator *)self forceInstallBundleIDs];
+  v4 = forceInstallBundleIDs;
+  if (forceInstallBundleIDs && [forceInstallBundleIDs count])
   {
     _DMLogFunc();
     v5 = +[MIDaemonConfiguration sharedInstance];
-    v6 = [v5 systemAppPlaceholderBundleIDToInfoMap];
-    v7 = [v6 allKeys];
+    systemAppPlaceholderBundleIDToInfoMap = [v5 systemAppPlaceholderBundleIDToInfoMap];
+    allKeys = [systemAppPlaceholderBundleIDToInfoMap allKeys];
 
     v17 = 0u;
     v18 = 0u;
@@ -670,7 +670,7 @@ LABEL_26:
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([v7 containsObject:{v13, v14}])
+          if ([allKeys containsObject:{v13, v14}])
           {
             _DMLogFunc();
             if ([(MISystemAppMigrator *)self setSystemAppState:1 forBundleID:v13, v13])
@@ -721,9 +721,9 @@ LABEL_26:
     v31 = v8;
     v32 = v4;
     _DMLogFunc();
-    v29 = self;
-    v11 = [(MISystemAppMigrator *)self itemsToInstall];
-    v12 = [v11 mutableCopy];
+    selfCopy = self;
+    itemsToInstall = [(MISystemAppMigrator *)self itemsToInstall];
+    v12 = [itemsToInstall mutableCopy];
 
     v38 = 0u;
     v39 = 0u;
@@ -746,12 +746,12 @@ LABEL_26:
           }
 
           v16 = *(*(&v36 + 1) + 8 * i);
-          v17 = [v12 objectForKeyedSubscript:{v16, v24, v25, v27}];
+          v17 = [v12 objectForKeyedSubscript:{v16, v24, path2, v27}];
           v18 = [v17 objectForKeyedSubscript:@"com.apple.MobileInstallation.stagedAppURL"];
-          v26 = [v18 path];
+          path = [v18 path];
           _DMLogFunc();
 
-          [v12 removeObjectForKey:{v16, v16, v26}];
+          [v12 removeObjectForKey:{v16, v16, path}];
           if (v18)
           {
             v19 = +[MIFileManager defaultManager];
@@ -761,7 +761,7 @@ LABEL_26:
 
             if ((v20 & 1) == 0)
             {
-              v25 = [v18 path];
+              path2 = [v18 path];
               v27 = v21;
               v24 = v16;
               _DMLogFunc();
@@ -778,12 +778,12 @@ LABEL_26:
     if ([v12 count])
     {
       v22 = [v12 copy];
-      [(MISystemAppMigrator *)v29 setItemsToInstall:v22];
+      [(MISystemAppMigrator *)selfCopy setItemsToInstall:v22];
     }
 
     else
     {
-      [(MISystemAppMigrator *)v29 setItemsToInstall:0];
+      [(MISystemAppMigrator *)selfCopy setItemsToInstall:0];
     }
 
     v8 = v31;
@@ -822,31 +822,31 @@ LABEL_26:
         }
 
         v6 = *(*(&v29 + 1) + 8 * v5);
-        v7 = [v6 sourceBundleID];
-        v8 = [v6 destinationBundleID];
+        sourceBundleID = [v6 sourceBundleID];
+        destinationBundleID = [v6 destinationBundleID];
         v9 = [LSApplicationRecord alloc];
         v28 = 0;
-        v10 = [v9 initWithBundleIdentifier:v7 allowPlaceholder:1 error:&v28];
+        v10 = [v9 initWithBundleIdentifier:sourceBundleID allowPlaceholder:1 error:&v28];
         v11 = v28;
         if (v10)
         {
-          v12 = [v10 dataContainerURL];
-          v13 = [v12 path];
+          dataContainerURL = [v10 dataContainerURL];
+          path = [dataContainerURL path];
 
-          if (v13)
+          if (path)
           {
             v14 = v4;
             v15 = objc_opt_new();
-            v16 = [v6 keyMappings];
+            keyMappings = [v6 keyMappings];
             v24[0] = _NSConcreteStackBlock;
             v24[1] = 3221225472;
             v24[2] = sub_48C0;
             v24[3] = &unk_10630;
-            v25 = v7;
-            v26 = v13;
+            v25 = sourceBundleID;
+            v26 = path;
             v17 = v15;
             v27 = v17;
-            [v16 enumerateKeysAndObjectsUsingBlock:v24];
+            [keyMappings enumerateKeysAndObjectsUsingBlock:v24];
 
             if ([v17 count])
             {
@@ -860,16 +860,16 @@ LABEL_26:
 
           else
           {
-            v19 = v7;
+            v19 = sourceBundleID;
             _DMLogFunc();
           }
         }
 
         else
         {
-          v20 = v8;
+          v20 = destinationBundleID;
           v21 = v11;
-          v19 = v7;
+          v19 = sourceBundleID;
           _DMLogFunc();
         }
 
@@ -890,13 +890,13 @@ LABEL_26:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v2 = [(MISystemAppMigrator *)self preferencesToMigrate];
-  v3 = [v2 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  preferencesToMigrate = [(MISystemAppMigrator *)self preferencesToMigrate];
+  v3 = [preferencesToMigrate countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v3)
   {
     v4 = v3;
     v5 = *v31;
-    v23 = v2;
+    v23 = preferencesToMigrate;
     v24 = *v31;
     do
     {
@@ -906,53 +906,53 @@ LABEL_26:
       {
         if (*v31 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(preferencesToMigrate);
         }
 
         v7 = *(*(&v30 + 1) + 8 * v6);
-        v8 = [v7 capturedPreferences];
-        if (v8)
+        capturedPreferences = [v7 capturedPreferences];
+        if (capturedPreferences)
         {
-          v9 = [v7 sourceBundleID];
-          v10 = [v7 destinationBundleID];
+          sourceBundleID = [v7 sourceBundleID];
+          destinationBundleID = [v7 destinationBundleID];
           v11 = [LSApplicationRecord alloc];
           v29 = 0;
-          v12 = [v11 initWithBundleIdentifier:v10 allowPlaceholder:1 error:&v29];
+          v12 = [v11 initWithBundleIdentifier:destinationBundleID allowPlaceholder:1 error:&v29];
           v13 = v29;
           if (v12)
           {
-            v14 = [v12 dataContainerURL];
-            v15 = [v14 path];
+            dataContainerURL = [v12 dataContainerURL];
+            path = [dataContainerURL path];
 
-            if (v15)
+            if (path)
             {
               v26[0] = _NSConcreteStackBlock;
               v26[1] = 3221225472;
               v26[2] = sub_4C6C;
               v26[3] = &unk_10658;
-              v16 = v10;
+              v16 = destinationBundleID;
               v27 = v16;
-              v17 = v15;
+              v17 = path;
               v28 = v17;
-              [v8 enumerateKeysAndObjectsUsingBlock:v26];
+              [capturedPreferences enumerateKeysAndObjectsUsingBlock:v26];
               _CFPreferencesAppSynchronizeWithContainer();
               v21 = v16;
               v22 = v17;
-              v20 = v9;
+              v20 = sourceBundleID;
               _DMLogFunc();
-              v18 = [v7 completion];
-              v19 = v18;
-              if (v18)
+              completion = [v7 completion];
+              v19 = completion;
+              if (completion)
               {
-                (*(v18 + 16))(v18);
+                (*(completion + 16))(completion);
               }
 
-              v2 = v23;
+              preferencesToMigrate = v23;
             }
 
             else
             {
-              v20 = v10;
+              v20 = destinationBundleID;
               _DMLogFunc();
             }
 
@@ -963,9 +963,9 @@ LABEL_26:
 
           else
           {
-            v21 = v9;
+            v21 = sourceBundleID;
             v22 = v13;
-            v20 = v10;
+            v20 = destinationBundleID;
             _DMLogFunc();
           }
         }
@@ -974,80 +974,80 @@ LABEL_26:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v4 = [preferencesToMigrate countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)markAppSuccessfullyInstalledWithBundleID:(id)a3
+- (void)markAppSuccessfullyInstalledWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MISystemAppMigrator *)self installedAppListQueue];
+  dCopy = d;
+  installedAppListQueue = [(MISystemAppMigrator *)self installedAppListQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4DC0;
   v7[3] = &unk_104A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(installedAppListQueue, v7);
 }
 
-- (BOOL)appInstalledSuccessfullyWithBundleID:(id)a3
+- (BOOL)appInstalledSuccessfullyWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(MISystemAppMigrator *)self installedAppListQueue];
+  installedAppListQueue = [(MISystemAppMigrator *)self installedAppListQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4F14;
   block[3] = &unk_10680;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(installedAppListQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record
 {
-  v5 = a3;
+  successfullyCopy = successfully;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = [v5 identity];
-  v12 = v7;
+  identity = [successfullyCopy identity];
+  v12 = identity;
   v8 = &stru_112E0;
   if (isKindOfClass)
   {
     v8 = @"(placeholder) ";
   }
 
-  v10 = v7;
+  v10 = identity;
   v11 = v8;
   _DMLogFunc();
-  v9 = [v12 bundleID];
-  [(MISystemAppMigrator *)self markAppSuccessfullyInstalledWithBundleID:v9];
-  [(MISystemAppMigrator *)self leaveSystemAppInstallDispatchGroupForBundleID:v9];
-  [v5 setObserver:0];
+  bundleID = [v12 bundleID];
+  [(MISystemAppMigrator *)self markAppSuccessfullyInstalledWithBundleID:bundleID];
+  [(MISystemAppMigrator *)self leaveSystemAppInstallDispatchGroupForBundleID:bundleID];
+  [successfullyCopy setObserver:0];
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v7 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  coordinatorCopy = coordinator;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v13 = [v8 identity];
-  v10 = [v13 bundleID];
+  identity = [coordinatorCopy identity];
+  bundleID = [identity bundleID];
   v11 = &stru_112E0;
   if (isKindOfClass)
   {
@@ -1057,43 +1057,43 @@ LABEL_26:
   v12 = v11;
   _DMLogFunc();
 
-  [(MISystemAppMigrator *)self leaveSystemAppInstallDispatchGroupForBundleID:v10, v13, v12, v7];
-  [v8 setObserver:0];
+  [(MISystemAppMigrator *)self leaveSystemAppInstallDispatchGroupForBundleID:bundleID, identity, v12, reasonCopy];
+  [coordinatorCopy setObserver:0];
 }
 
-- (BOOL)demoteAppWithBundleID:(id)a3 demotionReason:(unint64_t)a4
+- (BOOL)demoteAppWithBundleID:(id)d demotionReason:(unint64_t)reason
 {
-  v5 = a3;
-  v6 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v5];
+  dCopy = d;
+  v6 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:dCopy];
   _DMLogFunc();
   v10 = 0;
-  v7 = [IXAppInstallCoordinator demoteAppToPlaceholderWithApplicationIdentity:v6 forReason:a4 waitForDeletion:0 ignoreRemovability:1 error:&v10, v5, a4];
+  reason = [IXAppInstallCoordinator demoteAppToPlaceholderWithApplicationIdentity:v6 forReason:reason waitForDeletion:0 ignoreRemovability:1 error:&v10, dCopy, reason];
   v8 = v10;
-  if ((v7 & 1) == 0)
+  if ((reason & 1) == 0)
   {
     _DMLogFunc();
   }
 
-  return v7;
+  return reason;
 }
 
-- (BOOL)setPlaceholderPromiseForCoordinator:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 error:(id *)a6
+- (BOOL)setPlaceholderPromiseForCoordinator:(id)coordinator bundleID:(id)d installType:(unint64_t)type error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  coordinatorCopy = coordinator;
+  dCopy = d;
   v27 = 0;
-  v11 = [IXPlaceholder placeholderForRemovableSystemAppWithBundleID:v10 client:10 installType:a5 error:&v27];
+  v11 = [IXPlaceholder placeholderForRemovableSystemAppWithBundleID:dCopy client:10 installType:type error:&v27];
   v12 = v27;
   v13 = v12;
   if (!v11)
   {
     _DMLogFunc();
-    if (a6)
+    if (error)
     {
 LABEL_12:
       v20 = v13;
       v17 = 0;
-      *a6 = v13;
+      *error = v13;
       goto LABEL_13;
     }
 
@@ -1103,12 +1103,12 @@ LABEL_6:
   }
 
   v26 = v12;
-  v14 = [v9 setPlaceholderPromise:v11 error:&v26];
+  v14 = [coordinatorCopy setPlaceholderPromise:v11 error:&v26];
   v15 = v26;
 
   if ((v14 & 1) == 0)
   {
-    v22 = v10;
+    v22 = dCopy;
     v23 = v15;
     _DMLogFunc();
     v13 = v15;
@@ -1121,7 +1121,7 @@ LABEL_6:
 
   if ((v16 & 1) == 0)
   {
-    v22 = v10;
+    v22 = dCopy;
     v23 = v13;
     _DMLogFunc();
 LABEL_9:
@@ -1133,7 +1133,7 @@ LABEL_9:
       _DMLogFunc();
     }
 
-    if (a6)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -1147,40 +1147,40 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)setInstallOptionsForCoordinator:(id)a3 bundleID:(id)a4 error:(id *)a5
+- (BOOL)setInstallOptionsForCoordinator:(id)coordinator bundleID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  dCopy = d;
   v9 = objc_alloc_init(MIInstallOptions);
   [v9 setInstallTargetType:1];
   [v9 setLsInstallType:6];
   [v9 setSystemAppInstall:1];
   [v9 setPerformAPFSClone:0];
   v14 = 0;
-  v10 = [v7 setInstallOptions:v9 error:&v14];
+  v10 = [coordinatorCopy setInstallOptions:v9 error:&v14];
   v11 = v14;
   if ((v10 & 1) == 0)
   {
     _DMLogFunc();
-    if (a5)
+    if (error)
     {
       v12 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
   return v10;
 }
 
-- (BOOL)installDemotedPlaceholderWithBundleID:(id)a3 installType:(unint64_t)a4
+- (BOOL)installDemotedPlaceholderWithBundleID:(id)d installType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v6];
+  dCopy = d;
+  v7 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:dCopy];
   _DMLogFunc();
   v34 = 0;
-  v8 = [IXRestoringDemotedAppInstallCoordinator processScopedCoordinatorForAppWithIdentity:v7 withClientID:10 createIfNotExisting:1 created:0 error:&v34, v6, a4];
+  type = [IXRestoringDemotedAppInstallCoordinator processScopedCoordinatorForAppWithIdentity:v7 withClientID:10 createIfNotExisting:1 created:0 error:&v34, dCopy, type];
   v9 = v34;
-  if (!v8)
+  if (!type)
   {
     _DMLogFunc();
 LABEL_18:
@@ -1188,21 +1188,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [(MISystemAppMigrator *)self enterSystemAppInstallDispatchGroupForBundleID:v6];
-  [v8 setObserver:self];
+  [(MISystemAppMigrator *)self enterSystemAppInstallDispatchGroupForBundleID:dCopy];
+  [type setObserver:self];
   v33 = v9;
-  v10 = [v8 setImportance:3 error:&v33];
+  v10 = [type setImportance:3 error:&v33];
   v11 = v33;
 
   if ((v10 & 1) == 0)
   {
-    v27 = v6;
+    v27 = dCopy;
     v28 = v11;
     _DMLogFunc();
     v9 = v11;
 LABEL_15:
     v29 = 0;
-    v23 = [v8 cancelForReason:v9 client:10 error:{&v29, v27, v28}];
+    v23 = [type cancelForReason:v9 client:10 error:{&v29, v27, v28}];
     v24 = v29;
     if ((v23 & 1) == 0)
     {
@@ -1215,7 +1215,7 @@ LABEL_15:
   v12 = [[IXPromisedOutOfBandTransfer alloc] initWithName:@"User data" client:10 diskSpaceNeeded:0];
   if (!v12)
   {
-    v9 = _CreateError("[MISystemAppMigrator installDemotedPlaceholderWithBundleID:installType:]", 1108, MIInstallerErrorDomain, 128, 0, 0, @"Failed to create IXPromisedOutOfBandTransfer for %@", v13, v6);
+    v9 = _CreateError("[MISystemAppMigrator installDemotedPlaceholderWithBundleID:installType:]", 1108, MIInstallerErrorDomain, 128, 0, 0, @"Failed to create IXPromisedOutOfBandTransfer for %@", v13, dCopy);
 
     v27 = v9;
     _DMLogFunc();
@@ -1224,12 +1224,12 @@ LABEL_15:
 
   v14 = v12;
   v32 = v11;
-  v15 = [v8 setUserDataPromise:v12 error:&v32];
+  v15 = [type setUserDataPromise:v12 error:&v32];
   v9 = v32;
 
   if ((v15 & 1) == 0)
   {
-    v26 = v6;
+    v26 = dCopy;
     v28 = v9;
     _DMLogFunc();
 LABEL_12:
@@ -1239,7 +1239,7 @@ LABEL_12:
     v22 = v21;
     if ((v20 & 1) == 0)
     {
-      v27 = v6;
+      v27 = dCopy;
       v28 = v21;
       _DMLogFunc();
     }
@@ -1248,7 +1248,7 @@ LABEL_12:
   }
 
   v31 = v9;
-  v16 = [(MISystemAppMigrator *)self setPlaceholderPromiseForCoordinator:v8 bundleID:v6 installType:a4 error:&v31];
+  v16 = [(MISystemAppMigrator *)self setPlaceholderPromiseForCoordinator:type bundleID:dCopy installType:type error:&v31];
   v17 = v31;
 
   if (!v16)
@@ -1257,8 +1257,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v18 = [(MISystemAppMigrator *)self currentlyInstallingCoordinators];
-  [v18 addObject:v8];
+  currentlyInstallingCoordinators = [(MISystemAppMigrator *)self currentlyInstallingCoordinators];
+  [currentlyInstallingCoordinators addObject:type];
 
   v19 = 1;
   [v14 setComplete:1];
@@ -1269,19 +1269,19 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)demoteAppWithBundleID:(id)a3 desiredAppState:(int)a4 isInstalled:(BOOL)a5
+- (BOOL)demoteAppWithBundleID:(id)d desiredAppState:(int)state isInstalled:(BOOL)installed
 {
-  v5 = a5;
-  v8 = a3;
-  if (!v5)
+  installedCopy = installed;
+  dCopy = d;
+  if (!installedCopy)
   {
     v12 = 7;
-    if (a4 == 5)
+    if (state == 5)
     {
       v12 = 9;
     }
 
-    if (a4 == 4)
+    if (state == 4)
     {
       v13 = 8;
     }
@@ -1291,7 +1291,7 @@ LABEL_19:
       v13 = v12;
     }
 
-    if (![(MISystemAppMigrator *)self installDemotedPlaceholderWithBundleID:v8 installType:v13])
+    if (![(MISystemAppMigrator *)self installDemotedPlaceholderWithBundleID:dCopy installType:v13])
     {
       goto LABEL_8;
     }
@@ -1302,12 +1302,12 @@ LABEL_15:
   }
 
   v9 = 3;
-  if (a4 != 5)
+  if (state != 5)
   {
     v9 = 1;
   }
 
-  if (a4 == 4)
+  if (state == 4)
   {
     v10 = 2;
   }
@@ -1317,7 +1317,7 @@ LABEL_15:
     v10 = v9;
   }
 
-  if ([(MISystemAppMigrator *)self demoteAppWithBundleID:v8 demotionReason:v10])
+  if ([(MISystemAppMigrator *)self demoteAppWithBundleID:dCopy demotionReason:v10])
   {
     goto LABEL_15;
   }
@@ -1329,13 +1329,13 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)installOrUpdateAppWithBundleID:(id)a3 appURL:(id)a4 isInstalled:(BOOL)a5
+- (BOOL)installOrUpdateAppWithBundleID:(id)d appURL:(id)l isInstalled:(BOOL)installed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v8];
-  if (v5)
+  installedCopy = installed;
+  dCopy = d;
+  lCopy = l;
+  v10 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:dCopy];
+  if (installedCopy)
   {
     v11 = @"Updating";
   }
@@ -1345,14 +1345,14 @@ LABEL_16:
     v11 = @"Initiating";
   }
 
-  v40 = [v9 path];
+  path = [lCopy path];
   _DMLogFunc();
 
-  if (v5)
+  if (installedCopy)
   {
     v51 = 0;
     v12 = &v51;
-    v13 = [IXUpdatingAppInstallCoordinator processScopedCoordinatorForAppWithIdentity:v10 withClientID:10 createIfNotExisting:1 created:0 error:&v51, v11, v10, v40];
+    v13 = [IXUpdatingAppInstallCoordinator processScopedCoordinatorForAppWithIdentity:v10 withClientID:10 createIfNotExisting:1 created:0 error:&v51, v11, v10, path];
     v14 = 5;
   }
 
@@ -1360,14 +1360,14 @@ LABEL_16:
   {
     v50 = 0;
     v12 = &v50;
-    v13 = [IXInitiatingAppInstallCoordinator processScopedCoordinatorForAppWithIdentity:v10 withClientID:10 createIfNotExisting:1 created:0 error:&v50, v11, v10, v40];
+    v13 = [IXInitiatingAppInstallCoordinator processScopedCoordinatorForAppWithIdentity:v10 withClientID:10 createIfNotExisting:1 created:0 error:&v50, v11, v10, path];
     v14 = 6;
   }
 
   v16 = *v12;
   if (!v13)
   {
-    v18 = _CreateError("[MISystemAppMigrator installOrUpdateAppWithBundleID:appURL:isInstalled:]", 1202, MIInstallerErrorDomain, 128, 0, 0, @"Failed to create AppInstallCoordinator for %@: %@", v15, v8);
+    v18 = _CreateError("[MISystemAppMigrator installOrUpdateAppWithBundleID:appURL:isInstalled:]", 1202, MIInstallerErrorDomain, 128, 0, 0, @"Failed to create AppInstallCoordinator for %@: %@", v15, dCopy);
 
     _DMLogFunc();
 LABEL_22:
@@ -1375,7 +1375,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  [(MISystemAppMigrator *)self enterSystemAppInstallDispatchGroupForBundleID:v8];
+  [(MISystemAppMigrator *)self enterSystemAppInstallDispatchGroupForBundleID:dCopy];
   [v13 setObserver:self];
   v49 = v16;
   v17 = [v13 setImportance:3 error:&v49];
@@ -1383,7 +1383,7 @@ LABEL_22:
 
   if ((v17 & 1) == 0)
   {
-    v38 = v8;
+    v38 = dCopy;
     v39 = v18;
 LABEL_17:
     _DMLogFunc();
@@ -1396,7 +1396,7 @@ LABEL_17:
 
   if ((v19 & 1) == 0)
   {
-    v38 = v8;
+    v38 = dCopy;
     v39 = v20;
     _DMLogFunc();
     v18 = v20;
@@ -1404,7 +1404,7 @@ LABEL_17:
   }
 
   v47 = v20;
-  v21 = [(MISystemAppMigrator *)self setPlaceholderPromiseForCoordinator:v13 bundleID:v8 installType:v14 error:&v47];
+  v21 = [(MISystemAppMigrator *)self setPlaceholderPromiseForCoordinator:v13 bundleID:dCopy installType:v14 error:&v47];
   v18 = v47;
 
   if (!v21)
@@ -1422,15 +1422,15 @@ LABEL_19:
   }
 
   v22 = [IXPromisedTransferToPath alloc];
-  v23 = [v9 lastPathComponent];
-  v24 = [v10 location];
+  lastPathComponent = [lCopy lastPathComponent];
+  location = [v10 location];
   v46 = v18;
-  v25 = [v22 initWithName:v23 client:10 transferPath:v9 diskSpaceNeeded:0 location:v24 error:&v46];
+  v25 = [v22 initWithName:lastPathComponent client:10 transferPath:lCopy diskSpaceNeeded:0 location:location error:&v46];
   v41 = v46;
 
   if (!v25)
   {
-    v18 = _CreateError("[MISystemAppMigrator installOrUpdateAppWithBundleID:appURL:isInstalled:]", 1228, MIInstallerErrorDomain, 128, v41, 0, @"Failed to create IXPromisedTransferToPath for %@", v26, v8);
+    v18 = _CreateError("[MISystemAppMigrator installOrUpdateAppWithBundleID:appURL:isInstalled:]", 1228, MIInstallerErrorDomain, 128, v41, 0, @"Failed to create IXPromisedTransferToPath for %@", v26, dCopy);
 
     v38 = v18;
     goto LABEL_17;
@@ -1442,7 +1442,7 @@ LABEL_19:
 
   if ((v27 & 1) == 0)
   {
-    v38 = v8;
+    v38 = dCopy;
     v39 = v18;
     _DMLogFunc();
 LABEL_27:
@@ -1452,7 +1452,7 @@ LABEL_27:
     v37 = v36;
     if ((v35 & 1) == 0)
     {
-      v38 = v8;
+      v38 = dCopy;
       v39 = v36;
       _DMLogFunc();
     }
@@ -1461,7 +1461,7 @@ LABEL_27:
   }
 
   v44 = v18;
-  v28 = [(MISystemAppMigrator *)self setInstallOptionsForCoordinator:v13 bundleID:v8 error:&v44];
+  v28 = [(MISystemAppMigrator *)self setInstallOptionsForCoordinator:v13 bundleID:dCopy error:&v44];
   v29 = v44;
 
   if (!v28)
@@ -1470,8 +1470,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v30 = [(MISystemAppMigrator *)self currentlyInstallingCoordinators];
-  [v30 addObject:v13];
+  currentlyInstallingCoordinators = [(MISystemAppMigrator *)self currentlyInstallingCoordinators];
+  [currentlyInstallingCoordinators addObject:v13];
 
   v31 = 1;
   [v25 setComplete:1];
@@ -1482,10 +1482,10 @@ LABEL_23:
   return v31;
 }
 
-- (void)usingAppStoreInstallSystemAppAppWithBundleID:(id)a3
+- (void)usingAppStoreInstallSystemAppAppWithBundleID:(id)d
 {
-  v3 = a3;
-  v5 = [[ASDSystemAppRequest alloc] initWithBundleID:v3];
+  dCopy = d;
+  v5 = [[ASDSystemAppRequest alloc] initWithBundleID:dCopy];
   _DMLogFunc();
 
   v6[0] = _NSConcreteStackBlock;
@@ -1494,7 +1494,7 @@ LABEL_23:
   v6[3] = &unk_106A8;
   v7 = v5;
   v4 = v5;
-  [v4 startWithErrorHandler:{v6, v3, v5}];
+  [v4 startWithErrorHandler:{v6, dCopy, v5}];
 }
 
 - (void)synchronouslyCancelAllAppStoreRequests
@@ -1526,8 +1526,8 @@ LABEL_23:
 - (NSURL)ignoreAppsNotInTrustCacheSentinelFileURL
 {
   v2 = +[MIDaemonConfiguration sharedInstance];
-  v3 = [v2 installdPath];
-  v4 = [v3 URLByAppendingPathComponent:@"SystemAppMigratorIgnoreAppsNotInTrustCache" isDirectory:0];
+  installdPath = [v2 installdPath];
+  v4 = [installdPath URLByAppendingPathComponent:@"SystemAppMigratorIgnoreAppsNotInTrustCache" isDirectory:0];
 
   return v4;
 }
@@ -1535,25 +1535,25 @@ LABEL_23:
 - (BOOL)shouldIgnoreAppsNotInTrustCache
 {
   v3 = +[MIDaemonConfiguration sharedInstance];
-  v4 = [v3 codeSigningEnforcementIsDisabled];
+  codeSigningEnforcementIsDisabled = [v3 codeSigningEnforcementIsDisabled];
 
-  if (!v4)
+  if (!codeSigningEnforcementIsDisabled)
   {
     return 0;
   }
 
   v5 = +[MIFileManager defaultManager];
-  v6 = [(MISystemAppMigrator *)self ignoreAppsNotInTrustCacheSentinelFileURL];
-  v7 = [v5 itemExistsAtURL:v6];
+  ignoreAppsNotInTrustCacheSentinelFileURL = [(MISystemAppMigrator *)self ignoreAppsNotInTrustCacheSentinelFileURL];
+  v7 = [v5 itemExistsAtURL:ignoreAppsNotInTrustCacheSentinelFileURL];
 
   return v7;
 }
 
-- (BOOL)isCurrentlyInstalledAppInTrustCacheForBundleID:(id)a3
+- (BOOL)isCurrentlyInstalledAppInTrustCacheForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v14 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v14];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v14];
   v5 = v14;
   if (!v4)
   {
@@ -1561,7 +1561,7 @@ LABEL_23:
   }
 
   v6 = [v4 URL];
-  v7 = [v6 path];
+  path = [v6 path];
   v15[0] = kMISValidationOptionAllowAdHocSigning;
   v15[1] = kMISValidationOptionValidateSignatureOnly;
   v16[0] = &__kCFBooleanTrue;
@@ -1585,7 +1585,7 @@ LABEL_7:
   if (v8)
   {
     v10 = [v4 URL];
-    v11 = [v10 path];
+    path2 = [v10 path];
     v13 = MIErrorStringForMISError();
     _DMLogFunc();
 
@@ -1599,13 +1599,13 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)existsUnusedDataContainerWithBundleID:(id)a3
+- (BOOL)existsUnusedDataContainerWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MIGlobalConfiguration sharedInstance];
-  v5 = [v4 primaryPersonaString];
+  primaryPersonaString = [v4 primaryPersonaString];
   v17 = 0;
-  v6 = [MIMCMContainer containerForIdentifier:v3 contentClass:2 forPersona:v5 create:0 error:&v17];
+  v6 = [MIMCMContainer containerForIdentifier:dCopy contentClass:2 forPersona:primaryPersonaString create:0 error:&v17];
   v7 = v17;
 
   if (v6)
@@ -1621,12 +1621,12 @@ LABEL_8:
 
     else
     {
-      v12 = [v9 domain];
-      if ([v12 isEqualToString:MIContainerManagerErrorDomain])
+      domain = [v9 domain];
+      if ([domain isEqualToString:MIContainerManagerErrorDomain])
       {
-        v13 = [v9 code];
+        code = [v9 code];
 
-        if (v13 == &dword_18)
+        if (code == &dword_18)
         {
           v14 = 1;
 LABEL_16:
@@ -1646,12 +1646,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [v7 domain];
-  if ([v10 isEqualToString:MIContainerManagerErrorDomain])
+  domain2 = [v7 domain];
+  if ([domain2 isEqualToString:MIContainerManagerErrorDomain])
   {
-    v11 = [v7 code];
+    code2 = [v7 code];
 
-    if (v11 == &dword_14 + 1)
+    if (code2 == &dword_14 + 1)
     {
       goto LABEL_12;
     }
@@ -1693,20 +1693,20 @@ LABEL_17:
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 typeForInstallMachinery];
-        if ([v9 isEqualToString:v6])
+        typeForInstallMachinery = [v8 typeForInstallMachinery];
+        if ([typeForInstallMachinery isEqualToString:v6])
         {
           v10 = [v8 URL];
-          v11 = [v10 path];
-          v12 = [v11 containsString:@"/Applications"];
+          path = [v10 path];
+          v12 = [path containsString:@"/Applications"];
 
           if (v12)
           {
             continue;
           }
 
-          v9 = [v8 bundleIdentifier];
-          [v15 addObject:v9];
+          typeForInstallMachinery = [v8 bundleIdentifier];
+          [v15 addObject:typeForInstallMachinery];
         }
       }
 
@@ -1725,13 +1725,13 @@ LABEL_17:
 {
   if (qword_151F0 == -1)
   {
-    v2 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     sub_8A60();
-    v2 = self;
+    selfCopy2 = self;
   }
 
   v3 = qword_151E8;
@@ -1746,9 +1746,9 @@ LABEL_17:
   v132 = 0x2020000000;
   v133 = 1;
   v4 = clock_gettime_nsec_np(_CLOCK_REALTIME);
-  v5 = [(MISystemAppMigrator *)v2 itemsToInstall];
+  itemsToInstall = [(MISystemAppMigrator *)selfCopy2 itemsToInstall];
 
-  if (v5)
+  if (itemsToInstall)
   {
     *buf = 0;
     v125 = buf;
@@ -1756,7 +1756,7 @@ LABEL_17:
     v127 = sub_7A6C;
     v128 = sub_7A7C;
     v129 = 0;
-    v6 = self;
+    selfCopy4 = self;
     if ([(MISystemAppMigrator *)self didUpgrade])
     {
       v7 = @"YES";
@@ -1777,9 +1777,9 @@ LABEL_17:
       v8 = @"NO";
     }
 
-    v9 = [(MISystemAppMigrator *)self didRestoreFromCloudBackup];
-    v10 = [(MISystemAppMigrator *)self didMigrateBackupFromDifferentDevice];
-    if (v9)
+    didRestoreFromCloudBackup = [(MISystemAppMigrator *)self didRestoreFromCloudBackup];
+    didMigrateBackupFromDifferentDevice = [(MISystemAppMigrator *)self didMigrateBackupFromDifferentDevice];
+    if (didRestoreFromCloudBackup)
     {
       v11 = @"YES";
     }
@@ -1789,7 +1789,7 @@ LABEL_17:
       v11 = @"NO";
     }
 
-    if (v10)
+    if (didMigrateBackupFromDifferentDevice)
     {
       v12 = @"YES";
     }
@@ -1804,14 +1804,14 @@ LABEL_17:
     _DMLogFunc();
     if ([(MISystemAppMigrator *)self shouldIgnoreAppsNotInTrustCache:v7])
     {
-      v13 = [(MISystemAppMigrator *)self ignoreAppsNotInTrustCacheSentinelFileURL];
-      v73 = [v13 path];
+      ignoreAppsNotInTrustCacheSentinelFileURL = [(MISystemAppMigrator *)self ignoreAppsNotInTrustCacheSentinelFileURL];
+      path = [ignoreAppsNotInTrustCacheSentinelFileURL path];
       _DMLogFunc();
 
-      v6 = self;
+      selfCopy4 = self;
     }
 
-    if ([(MISystemAppMigrator *)v6 didRestoreFromBackup])
+    if ([(MISystemAppMigrator *)selfCopy4 didRestoreFromBackup])
     {
       _DMLogFunc();
       v138 = @"RestoreBackupAppState";
@@ -1825,9 +1825,9 @@ LABEL_17:
     }
 
     v85 = v14;
-    v16 = [(MISystemAppMigrator *)v6 lookupSystemAppStateWithOptions:?];
-    v17 = [(MISystemAppMigrator *)v6 _removeNotAllowedAppsFromSystemAppState:v16];
-    [(MISystemAppMigrator *)v6 setStartingSystemAppState:v17];
+    v16 = [(MISystemAppMigrator *)selfCopy4 lookupSystemAppStateWithOptions:?];
+    v17 = [(MISystemAppMigrator *)selfCopy4 _removeNotAllowedAppsFromSystemAppState:v16];
+    [(MISystemAppMigrator *)selfCopy4 setStartingSystemAppState:v17];
     v84 = v16;
 
     v83 = +[MCProfileConnection sharedConnection];
@@ -1873,16 +1873,16 @@ LABEL_17:
     [(MISystemAppMigrator *)self handleAppEligibilityRequirements];
     [(MISystemAppMigrator *)self handleForceInstalledApps];
     [(MISystemAppMigrator *)self synchronouslyCancelAllAppStoreRequests];
-    v23 = [(MISystemAppMigrator *)self currentlyInstalledSystemAppBundleIdentifiers];
+    currentlyInstalledSystemAppBundleIdentifiers = [(MISystemAppMigrator *)self currentlyInstalledSystemAppBundleIdentifiers];
     v24 = *(v125 + 5);
-    *(v125 + 5) = v23;
+    *(v125 + 5) = currentlyInstalledSystemAppBundleIdentifiers;
 
-    v25 = self;
+    selfCopy6 = self;
     v26 = [(MISystemAppMigrator *)self lookupSystemAppStateWithOptions:0];
     if (qword_151F0 != -1)
     {
       sub_8A74();
-      v25 = self;
+      selfCopy6 = self;
     }
 
     v27 = qword_151E8;
@@ -1892,19 +1892,19 @@ LABEL_17:
       _os_signpost_emit_with_name_impl(&dword_0, v27, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SystemAppInstall", "Start installation", v111, 2u);
     }
 
-    v28 = [(MISystemAppMigrator *)v25 itemsToInstall];
+    itemsToInstall2 = [(MISystemAppMigrator *)selfCopy6 itemsToInstall];
     v115[0] = _NSConcreteStackBlock;
     v115[1] = 3221225472;
     v115[2] = sub_7A84;
     v115[3] = &unk_106D0;
     v29 = v26;
     v116 = v29;
-    v117 = v25;
+    v117 = selfCopy6;
     v118 = buf;
     v119 = &v130;
-    [v28 enumerateKeysAndObjectsUsingBlock:v115];
+    [itemsToInstall2 enumerateKeysAndObjectsUsingBlock:v115];
 
-    v30 = self;
+    selfCopy8 = self;
     if ([(MISystemAppMigrator *)self waitForSystemAppInstallDispatchGroup])
     {
       v74 = (clock_gettime_nsec_np(_CLOCK_REALTIME) - v4) / 0x3B9ACA00;
@@ -1920,7 +1920,7 @@ LABEL_17:
     if (qword_151F0 != -1)
     {
       sub_8A74();
-      v30 = self;
+      selfCopy8 = self;
     }
 
     v31 = qword_151E8;
@@ -1930,19 +1930,19 @@ LABEL_17:
       _os_signpost_emit_with_name_impl(&dword_0, v31, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SystemAppInstall", "End installation", v111, 2u);
     }
 
-    v32 = [(MISystemAppMigrator *)v30 currentlyInstallingCoordinators];
-    [v32 removeAllObjects];
+    currentlyInstallingCoordinators = [(MISystemAppMigrator *)selfCopy8 currentlyInstallingCoordinators];
+    [currentlyInstallingCoordinators removeAllObjects];
 
-    v33 = [(MISystemAppMigrator *)self currentlyInstalledSystemAppBundleIdentifiers];
+    currentlyInstalledSystemAppBundleIdentifiers2 = [(MISystemAppMigrator *)self currentlyInstalledSystemAppBundleIdentifiers];
     v34 = *(v125 + 5);
-    *(v125 + 5) = v33;
+    *(v125 + 5) = currentlyInstalledSystemAppBundleIdentifiers2;
 
     _DMLogFunc();
-    v35 = self;
+    selfCopy10 = self;
     if (qword_151F0 != -1)
     {
       sub_8A74();
-      v35 = self;
+      selfCopy10 = self;
     }
 
     v36 = qword_151E8;
@@ -1956,7 +1956,7 @@ LABEL_17:
     v112 = v111;
     v113 = 0x2020000000;
     v114 = 0;
-    v37 = [(MISystemAppMigrator *)v35 itemsToInstall];
+    itemsToInstall3 = [(MISystemAppMigrator *)selfCopy10 itemsToInstall];
     v105[0] = _NSConcreteStackBlock;
     v105[1] = 3221225472;
     v105[2] = sub_7B50;
@@ -1966,10 +1966,10 @@ LABEL_17:
     v110 = v111;
     v82 = v29;
     v106 = v82;
-    v107 = v35;
-    [v37 enumerateKeysAndObjectsUsingBlock:v105];
+    v107 = selfCopy10;
+    [itemsToInstall3 enumerateKeysAndObjectsUsingBlock:v105];
 
-    v38 = self;
+    selfCopy12 = self;
     if (*(v112 + 3))
     {
       v75 = *(v112 + 3);
@@ -1989,7 +1989,7 @@ LABEL_17:
     if (qword_151F0 != -1)
     {
       sub_8A74();
-      v38 = self;
+      selfCopy12 = self;
     }
 
     v39 = qword_151E8;
@@ -1999,16 +1999,16 @@ LABEL_17:
       _os_signpost_emit_with_name_impl(&dword_0, v39, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SystemAppValidation", "End validation", v100, 2u);
     }
 
-    v40 = [(MISystemAppMigrator *)v38 currentlyInstallingCoordinators];
-    [v40 removeAllObjects];
+    currentlyInstallingCoordinators2 = [(MISystemAppMigrator *)selfCopy12 currentlyInstallingCoordinators];
+    [currentlyInstallingCoordinators2 removeAllObjects];
 
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v41 = [(MISystemAppMigrator *)self appBundleIDsToUninstall];
+    appBundleIDsToUninstall = [(MISystemAppMigrator *)self appBundleIDsToUninstall];
     v15 = 0;
-    v42 = [v41 countByEnumeratingWithState:&v101 objects:v136 count:16];
+    v42 = [appBundleIDsToUninstall countByEnumeratingWithState:&v101 objects:v136 count:16];
     if (v42)
     {
       v43 = *v102;
@@ -2020,7 +2020,7 @@ LABEL_17:
         {
           if (*v102 != v43)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(appBundleIDsToUninstall);
           }
 
           v46 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:*(*(&v101 + 1) + 8 * v44)];
@@ -2061,7 +2061,7 @@ LABEL_66:
         }
 
         while (v42 != v44);
-        v42 = [v41 countByEnumeratingWithState:&v101 objects:v136 count:16];
+        v42 = [appBundleIDsToUninstall countByEnumeratingWithState:&v101 objects:v136 count:16];
       }
 
       while (v42);
@@ -2072,8 +2072,8 @@ LABEL_66:
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v49 = [(MISystemAppMigrator *)self appBundleIDsRequestingStoreDownload];
-    v50 = [v49 countByEnumeratingWithState:&v95 objects:v135 count:16];
+    appBundleIDsRequestingStoreDownload = [(MISystemAppMigrator *)self appBundleIDsRequestingStoreDownload];
+    v50 = [appBundleIDsRequestingStoreDownload countByEnumeratingWithState:&v95 objects:v135 count:16];
     if (v50)
     {
       v51 = *v96;
@@ -2083,13 +2083,13 @@ LABEL_66:
         {
           if (*v96 != v51)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(appBundleIDsRequestingStoreDownload);
           }
 
           [(MISystemAppMigrator *)self usingAppStoreInstallSystemAppAppWithBundleID:*(*(&v95 + 1) + 8 * j), v72, v79];
         }
 
-        v50 = [v49 countByEnumeratingWithState:&v95 objects:v135 count:16];
+        v50 = [appBundleIDsRequestingStoreDownload countByEnumeratingWithState:&v95 objects:v135 count:16];
       }
 
       while (v50);
@@ -2106,9 +2106,9 @@ LABEL_66:
 
   v53 = +[MIFileManager defaultManager];
   v54 = +[MIDaemonConfiguration sharedInstance];
-  v55 = [v54 stagedSystemAppsDirectory];
+  stagedSystemAppsDirectory = [v54 stagedSystemAppsDirectory];
   v94 = v15;
-  v87 = [v53 urlsForItemsInDirectoryAtURL:v55 ignoringSymlinks:1 error:&v94];
+  v87 = [v53 urlsForItemsInDirectoryAtURL:stagedSystemAppsDirectory ignoringSymlinks:1 error:&v94];
   v56 = v94;
 
   if (v87)
@@ -2132,7 +2132,7 @@ LABEL_66:
           }
 
           v60 = *(*(&v90 + 1) + 8 * k);
-          v77 = [v60 path];
+          path2 = [v60 path];
           _DMLogFunc();
 
           v61 = +[MIFileManager defaultManager];
@@ -2143,7 +2143,7 @@ LABEL_66:
           v56 = v63;
           if ((v62 & 1) == 0)
           {
-            v76 = [v60 path];
+            path3 = [v60 path];
             v79 = v63;
             _DMLogFunc();
           }
@@ -2158,8 +2158,8 @@ LABEL_66:
     goto LABEL_92;
   }
 
-  v64 = [v56 domain];
-  if (![v64 isEqualToString:NSPOSIXErrorDomain])
+  domain = [v56 domain];
+  if (![domain isEqualToString:NSPOSIXErrorDomain])
   {
 
     goto LABEL_91;
@@ -2171,8 +2171,8 @@ LABEL_66:
   {
 LABEL_91:
     obj = +[MIDaemonConfiguration sharedInstance];
-    v66 = [obj stagedSystemAppsDirectory];
-    v78 = [v66 path];
+    stagedSystemAppsDirectory2 = [obj stagedSystemAppsDirectory];
+    path4 = [stagedSystemAppsDirectory2 path];
     _DMLogFunc();
 
 LABEL_92:

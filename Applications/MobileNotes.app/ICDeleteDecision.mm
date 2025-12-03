@@ -1,35 +1,35 @@
 @interface ICDeleteDecision
 + (BOOL)didShowMoveToRecentlyDeletedFolderAlert;
-+ (BOOL)isHTMLFolder:(id)a3;
-+ (BOOL)isHTMLNote:(id)a3;
-+ (id)decisionObjectsForFolder:(id)a3;
-+ (void)setDidShowMoveToRecentlyDeletedFolderAlert:(BOOL)a3;
-- (ICDeleteDecision)initWithSourceObjects:(id)a3 options:(unint64_t)a4;
++ (BOOL)isHTMLFolder:(id)folder;
++ (BOOL)isHTMLNote:(id)note;
++ (id)decisionObjectsForFolder:(id)folder;
++ (void)setDidShowMoveToRecentlyDeletedFolderAlert:(BOOL)alert;
+- (ICDeleteDecision)initWithSourceObjects:(id)objects options:(unint64_t)options;
 - (id)description;
 - (void)makeDecisionForDeletingHTMLSourceObjects;
 - (void)makeDecisionForDeletingModernSourceObjects;
-- (void)setDecisionWithType:(unint64_t)a3 additionalStep:(unint64_t)a4 guiltyObjects:(id)a5;
+- (void)setDecisionWithType:(unint64_t)type additionalStep:(unint64_t)step guiltyObjects:(id)objects;
 @end
 
 @implementation ICDeleteDecision
 
-- (ICDeleteDecision)initWithSourceObjects:(id)a3 options:(unint64_t)a4
+- (ICDeleteDecision)initWithSourceObjects:(id)objects options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  objectsCopy = objects;
   v24.receiver = self;
   v24.super_class = ICDeleteDecision;
   v7 = [(ICDeleteDecision *)&v24 init];
   v8 = v7;
   if (v7)
   {
-    v7->_allowsRecentlyDeletedFolderAlert = (v4 & 1) == 0;
-    v7->_alwaysConfirmDeletion = (v4 & 2) != 0;
-    v9 = [v6 ic_compactMap:&stru_100648C48];
+    v7->_allowsRecentlyDeletedFolderAlert = (optionsCopy & 1) == 0;
+    v7->_alwaysConfirmDeletion = (optionsCopy & 2) != 0;
+    v9 = [objectsCopy ic_compactMap:&stru_100648C48];
     modernNotes = v8->_modernNotes;
     v8->_modernNotes = v9;
 
-    v11 = [v6 ic_compactMap:&stru_100648C68];
+    v11 = [objectsCopy ic_compactMap:&stru_100648C68];
     modernFolders = v8->_modernFolders;
     v8->_modernFolders = v11;
 
@@ -40,11 +40,11 @@
     modernSourceObjects = v8->_modernSourceObjects;
     v8->_modernSourceObjects = v14;
 
-    v16 = [v6 ic_compactMap:&stru_100648C88];
+    v16 = [objectsCopy ic_compactMap:&stru_100648C88];
     htmlNotes = v8->_htmlNotes;
     v8->_htmlNotes = v16;
 
-    v18 = [v6 ic_compactMap:&stru_100648CA8];
+    v18 = [objectsCopy ic_compactMap:&stru_100648CA8];
     htmlFolders = v8->_htmlFolders;
     v8->_htmlFolders = v18;
 
@@ -82,43 +82,43 @@ LABEL_7:
   v11.receiver = self;
   v11.super_class = ICDeleteDecision;
   v3 = [(ICDeleteDecision *)&v11 description];
-  v4 = [(ICDeleteDecision *)self type];
+  type = [(ICDeleteDecision *)self type];
   v5 = @"ICDeleteDecisionTypeAllow";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"ICDeleteDecisionTypeAllowWithAdditionalStep";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"ICDeleteDecisionTypePrevent";
   }
 
   v6 = v5;
   v7 = sub_1000CC62C([(ICDeleteDecision *)self additionalStep]);
-  v8 = [(ICDeleteDecision *)self guiltyObjects];
-  v9 = [NSString stringWithFormat:@"%@: type = %@, additionalStep = %@, guiltyObjects = %@", v3, v6, v7, v8];
+  guiltyObjects = [(ICDeleteDecision *)self guiltyObjects];
+  v9 = [NSString stringWithFormat:@"%@: type = %@, additionalStep = %@, guiltyObjects = %@", v3, v6, v7, guiltyObjects];
 
   return v9;
 }
 
-+ (id)decisionObjectsForFolder:(id)a3
++ (id)decisionObjectsForFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = +[NSMutableArray array];
-  v6 = [v4 isSharedViaICloud];
-  [v5 addObject:v4];
-  if ((v6 & 1) == 0)
+  isSharedViaICloud = [folderCopy isSharedViaICloud];
+  [v5 addObject:folderCopy];
+  if ((isSharedViaICloud & 1) == 0)
   {
-    v7 = [v4 visibleNotes];
-    [v5 addObjectsFromArray:v7];
+    visibleNotes = [folderCopy visibleNotes];
+    [v5 addObjectsFromArray:visibleNotes];
 
-    v8 = [v4 visibleNoteContainerChildrenUnsorted];
+    visibleNoteContainerChildrenUnsorted = [folderCopy visibleNoteContainerChildrenUnsorted];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [visibleNoteContainerChildrenUnsorted countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -129,14 +129,14 @@ LABEL_7:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(visibleNoteContainerChildrenUnsorted);
           }
 
-          v13 = [a1 decisionObjectsForFolder:*(*(&v16 + 1) + 8 * i)];
+          v13 = [self decisionObjectsForFolder:*(*(&v16 + 1) + 8 * i)];
           [v5 addObjectsFromArray:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [visibleNoteContainerChildrenUnsorted countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -156,25 +156,25 @@ LABEL_7:
   return v3;
 }
 
-+ (void)setDidShowMoveToRecentlyDeletedFolderAlert:(BOOL)a3
++ (void)setDidShowMoveToRecentlyDeletedFolderAlert:(BOOL)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"didShowMoveToRecentyDeletedFolderAlert"];
+  [v4 setBool:alertCopy forKey:@"didShowMoveToRecentyDeletedFolderAlert"];
 }
 
-+ (BOOL)isHTMLNote:(id)a3
++ (BOOL)isHTMLNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isHTMLFolder:(id)a3
++ (BOOL)isHTMLFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -186,17 +186,17 @@ LABEL_7:
   if ([(ICDeleteDecision *)self shouldContinueDecisionMaking])
   {
     v3 = [NSMutableSet alloc];
-    v4 = [(ICDeleteDecision *)self modernSourceObjects];
-    v5 = [v3 initWithArray:v4];
+    modernSourceObjects = [(ICDeleteDecision *)self modernSourceObjects];
+    v5 = [v3 initWithArray:modernSourceObjects];
 
-    v6 = [(ICDeleteDecision *)self modernSourceObjects];
+    modernSourceObjects2 = [(ICDeleteDecision *)self modernSourceObjects];
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
     v59[2] = sub_1000CD18C;
     v59[3] = &unk_100648CD0;
     v7 = v5;
     v60 = v7;
-    [v6 enumerateObjectsUsingBlock:v59];
+    [modernSourceObjects2 enumerateObjectsUsingBlock:v59];
 
     if ([v7 count])
     {
@@ -205,21 +205,21 @@ LABEL_7:
       v57[1] = 3221225472;
       v57[2] = sub_1000CD210;
       v58 = v57[3] = &unk_100648CF8;
-      v8 = v58;
+      modernSourceObjects3 = v58;
       [v7 enumerateObjectsUsingBlock:v57];
-      [v7 minusSet:v8];
+      [v7 minusSet:modernSourceObjects3];
       v55[0] = _NSConcreteStackBlock;
       v55[1] = 3221225472;
       v55[2] = sub_1000CD288;
       v55[3] = &unk_100648CF8;
       v56 = v7;
-      [v8 enumerateObjectsUsingBlock:v55];
+      [modernSourceObjects3 enumerateObjectsUsingBlock:v55];
     }
 
     else
     {
-      v8 = [(ICDeleteDecision *)self modernSourceObjects];
-      [(ICDeleteDecision *)self setDecisionWithType:2 guiltyObjects:v8];
+      modernSourceObjects3 = [(ICDeleteDecision *)self modernSourceObjects];
+      [(ICDeleteDecision *)self setDecisionWithType:2 guiltyObjects:modernSourceObjects3];
     }
 
     v34 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -267,8 +267,8 @@ LABEL_7:
     {
       v23 = v22;
 LABEL_7:
-      v24 = [v23 allObjects];
-      [(ICDeleteDecision *)self setDecisionWithType:2 guiltyObjects:v24];
+      allObjects = [v23 allObjects];
+      [(ICDeleteDecision *)self setDecisionWithType:2 guiltyObjects:allObjects];
 LABEL_11:
 
       goto LABEL_12;
@@ -276,8 +276,8 @@ LABEL_11:
 
     if ([v20 count])
     {
-      v24 = [v20 allObjects];
-      v25 = self;
+      allObjects = [v20 allObjects];
+      selfCopy12 = self;
       v26 = 12;
     }
 
@@ -291,43 +291,43 @@ LABEL_11:
 
       if ([v41 count])
       {
-        v24 = [v41 allObjects];
-        v25 = self;
+        allObjects = [v41 allObjects];
+        selfCopy12 = self;
         v26 = 1;
       }
 
       else if ([v39 count])
       {
-        v24 = [v41 allObjects];
-        v25 = self;
+        allObjects = [v41 allObjects];
+        selfCopy12 = self;
         v26 = 2;
       }
 
       else if ([v37 count])
       {
-        v24 = [v37 allObjects];
-        v25 = self;
+        allObjects = [v37 allObjects];
+        selfCopy12 = self;
         v26 = 3;
       }
 
       else if ([v16 count])
       {
-        v24 = [v16 allObjects];
-        v25 = self;
+        allObjects = [v16 allObjects];
+        selfCopy12 = self;
         v26 = 4;
       }
 
       else if ([v18 count])
       {
-        v24 = [v18 allObjects];
-        v25 = self;
+        allObjects = [v18 allObjects];
+        selfCopy12 = self;
         v26 = 5;
       }
 
       else if ([v19 count])
       {
-        v24 = [v19 allObjects];
-        v25 = self;
+        allObjects = [v19 allObjects];
+        selfCopy12 = self;
         v26 = 6;
       }
 
@@ -336,17 +336,17 @@ LABEL_11:
         if ([v21 count])
         {
           v27 = [v21 ic_containsObjectPassingTest:&stru_100648D60];
-          v28 = [v21 allObjects];
-          v29 = self;
-          v30 = v28;
+          allObjects2 = [v21 allObjects];
+          selfCopy8 = self;
+          v30 = allObjects2;
           if (v27)
           {
-            [(ICDeleteDecision *)v29 setDecisionWithType:2 guiltyObjects:v28];
+            [(ICDeleteDecision *)selfCopy8 setDecisionWithType:2 guiltyObjects:allObjects2];
           }
 
           else
           {
-            [(ICDeleteDecision *)v29 setDecisionWithType:1 additionalStep:7 guiltyObjects:v28];
+            [(ICDeleteDecision *)selfCopy8 setDecisionWithType:1 additionalStep:7 guiltyObjects:allObjects2];
           }
 
           goto LABEL_12;
@@ -354,8 +354,8 @@ LABEL_11:
 
         if ([v35 count])
         {
-          v24 = [v36 allObjects];
-          v25 = self;
+          allObjects = [v36 allObjects];
+          selfCopy12 = self;
           v26 = 10;
         }
 
@@ -375,7 +375,7 @@ LABEL_11:
                 v31 = 9;
               }
 
-              v32 = self;
+              selfCopy11 = self;
             }
 
             else
@@ -386,24 +386,24 @@ LABEL_11:
                 goto LABEL_12;
               }
 
-              v32 = self;
+              selfCopy11 = self;
               v31 = 11;
             }
 
-            [(ICDeleteDecision *)v32 setDecisionWithType:1 additionalStep:v31 guiltyObjects:&__NSArray0__struct, v33];
+            [(ICDeleteDecision *)selfCopy11 setDecisionWithType:1 additionalStep:v31 guiltyObjects:&__NSArray0__struct, v33];
 LABEL_12:
 
             return;
           }
 
-          v24 = [v36 allObjects];
-          v25 = self;
+          allObjects = [v36 allObjects];
+          selfCopy12 = self;
           v26 = 13;
         }
       }
     }
 
-    [(ICDeleteDecision *)v25 setDecisionWithType:1 additionalStep:v26 guiltyObjects:v24, v33];
+    [(ICDeleteDecision *)selfCopy12 setDecisionWithType:1 additionalStep:v26 guiltyObjects:allObjects, v33];
     goto LABEL_11;
   }
 }
@@ -413,14 +413,14 @@ LABEL_12:
   if ([(ICDeleteDecision *)self shouldContinueDecisionMaking])
   {
     v3 = [NSMutableSet alloc];
-    v4 = [(ICDeleteDecision *)self htmlSourceObjects];
-    v5 = [v3 initWithArray:v4];
+    htmlSourceObjects = [(ICDeleteDecision *)self htmlSourceObjects];
+    v5 = [v3 initWithArray:htmlSourceObjects];
 
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 0;
-    v6 = [(ICDeleteDecision *)self htmlSourceObjects];
+    htmlSourceObjects2 = [(ICDeleteDecision *)self htmlSourceObjects];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000CD750;
@@ -428,7 +428,7 @@ LABEL_12:
     v16 = &v17;
     v7 = v5;
     v15 = v7;
-    [v6 enumerateObjectsUsingBlock:&v11];
+    [htmlSourceObjects2 enumerateObjectsUsingBlock:&v11];
 
     if ([v7 count])
     {
@@ -441,7 +441,7 @@ LABEL_10:
       }
 
       v8 = [v7 count];
-      v9 = [v7 allObjects];
+      allObjects = [v7 allObjects];
       if (v8 > 1)
       {
         v10 = 8;
@@ -452,29 +452,29 @@ LABEL_10:
         v10 = 9;
       }
 
-      [(ICDeleteDecision *)self setDecisionWithType:1 additionalStep:v10 guiltyObjects:v9];
+      [(ICDeleteDecision *)self setDecisionWithType:1 additionalStep:v10 guiltyObjects:allObjects];
     }
 
     else
     {
-      v9 = [v7 allObjects];
-      [(ICDeleteDecision *)self setDecisionWithType:2 guiltyObjects:v9];
+      allObjects = [v7 allObjects];
+      [(ICDeleteDecision *)self setDecisionWithType:2 guiltyObjects:allObjects];
     }
 
     goto LABEL_10;
   }
 }
 
-- (void)setDecisionWithType:(unint64_t)a3 additionalStep:(unint64_t)a4 guiltyObjects:(id)a5
+- (void)setDecisionWithType:(unint64_t)type additionalStep:(unint64_t)step guiltyObjects:(id)objects
 {
-  v9 = a5;
-  if (self->_type < a3)
+  objectsCopy = objects;
+  if (self->_type < type)
   {
-    self->_type = a3;
-    self->_additionalStep = a4;
-    v10 = v9;
-    objc_storeStrong(&self->_guiltyObjects, a5);
-    v9 = v10;
+    self->_type = type;
+    self->_additionalStep = step;
+    v10 = objectsCopy;
+    objc_storeStrong(&self->_guiltyObjects, objects);
+    objectsCopy = v10;
   }
 }
 

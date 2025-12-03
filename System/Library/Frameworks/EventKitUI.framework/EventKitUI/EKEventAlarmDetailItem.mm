@@ -1,52 +1,52 @@
 @interface EKEventAlarmDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)_createRealPopupMenuForIndex:(int64_t)a3 popupCell:(id)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)_createRealPopupMenuForIndex:(int64_t)index popupCell:(id)cell;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (unint64_t)numberOfSubitems;
 - (void)_setAlarmsAreEditable;
 - (void)_updateAlarms;
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5;
-- (void)ttlLocationStatusChanged:(id)a3;
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store;
+- (void)ttlLocationStatusChanged:(id)changed;
 @end
 
 @implementation EKEventAlarmDetailItem
 
 - (void)_updateAlarms
 {
-  v3 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
-  [v3 setNeedsUpdate];
+  alarmsViewModel = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+  [alarmsViewModel setNeedsUpdate];
 
-  v4 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
-  v5 = [v4 uiAlarms];
+  alarmsViewModel2 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+  uiAlarms = [alarmsViewModel2 uiAlarms];
 
   alarms = self->_alarms;
-  self->_alarms = v5;
-  v8 = v5;
+  self->_alarms = uiAlarms;
+  v8 = uiAlarms;
 
   alarmPopupMenus = self->_alarmPopupMenus;
   self->_alarmPopupMenus = 0;
 }
 
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store
 {
-  v8 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = EKEventAlarmDetailItem;
-  [(EKEventDetailItem *)&v15 setEvent:v8 reminder:a4 store:a5];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  [(EKEventDetailItem *)&v15 setEvent:eventCopy reminder:reminder store:store];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = *MEMORY[0x1E69932B0];
-  v11 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
-  [v9 removeObserver:self name:v10 object:v11];
+  alarmsViewModel = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+  [defaultCenter removeObserver:self name:v10 object:alarmsViewModel];
 
-  if (v8)
+  if (eventCopy)
   {
-    v12 = [objc_alloc(MEMORY[0x1E6993378]) initWithCalendarItem:v8];
+    v12 = [objc_alloc(MEMORY[0x1E6993378]) initWithCalendarItem:eventCopy];
     [(EKEventAlarmDetailItem *)self setAlarmsViewModel:v12];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    v14 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
-    [v13 addObserver:self selector:sel_ttlLocationStatusChanged_ name:v10 object:v14];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    alarmsViewModel2 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+    [defaultCenter2 addObserver:self selector:sel_ttlLocationStatusChanged_ name:v10 object:alarmsViewModel2];
   }
 
   else
@@ -59,74 +59,74 @@
 
 - (void)_setAlarmsAreEditable
 {
-  v3 = [(EKEvent *)self->super._event calendar];
-  v4 = [v3 allowsContentModifications];
+  calendar = [(EKEvent *)self->super._event calendar];
+  allowsContentModifications = [calendar allowsContentModifications];
 
-  if (!v4 || [(EKEvent *)self->super._event status]== EKEventStatusCanceled)
+  if (!allowsContentModifications || [(EKEvent *)self->super._event status]== EKEventStatusCanceled)
   {
     goto LABEL_3;
   }
 
-  v6 = [(EKEvent *)self->super._event calendar];
-  v7 = [v6 source];
-  v8 = [v7 constraints];
-  v5 = [v8 maxAlarmsAllowed];
+  calendar2 = [(EKEvent *)self->super._event calendar];
+  source = [calendar2 source];
+  constraints = [source constraints];
+  maxAlarmsAllowed = [constraints maxAlarmsAllowed];
 
-  if (!v5)
+  if (!maxAlarmsAllowed)
   {
     goto LABEL_4;
   }
 
-  v9 = [(EKEvent *)self->super._event calendar];
-  v10 = [v9 source];
-  v11 = [v10 constraints];
-  if (![v11 supportsAlarmTriggerIntervals] || -[EKEventDetailItem isPrivateEvent](self, "isPrivateEvent"))
+  calendar3 = [(EKEvent *)self->super._event calendar];
+  source2 = [calendar3 source];
+  constraints2 = [source2 constraints];
+  if (![constraints2 supportsAlarmTriggerIntervals] || -[EKEventDetailItem isPrivateEvent](self, "isPrivateEvent"))
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(maxAlarmsAllowed) = 0;
 LABEL_9:
 
     goto LABEL_4;
   }
 
-  v12 = [(EKEventDetailItem *)self isReadOnlyDelegateCalendar];
+  isReadOnlyDelegateCalendar = [(EKEventDetailItem *)self isReadOnlyDelegateCalendar];
 
-  if (!v12)
+  if (!isReadOnlyDelegateCalendar)
   {
     if (![(EKEvent *)self->super._event isExternallyOrganizedInvitation])
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(maxAlarmsAllowed) = 1;
       goto LABEL_4;
     }
 
-    v9 = [(EKEvent *)self->super._event calendar];
-    v10 = [v9 source];
-    v11 = [v10 constraints];
-    LOBYTE(v5) = [v11 supportsInvitationModifications];
+    calendar3 = [(EKEvent *)self->super._event calendar];
+    source2 = [calendar3 source];
+    constraints2 = [source2 constraints];
+    LOBYTE(maxAlarmsAllowed) = [constraints2 supportsInvitationModifications];
     goto LABEL_9;
   }
 
 LABEL_3:
-  LOBYTE(v5) = 0;
+  LOBYTE(maxAlarmsAllowed) = 0;
 LABEL_4:
-  self->_alarmsAreEditable = v5;
+  self->_alarmsAreEditable = maxAlarmsAllowed;
 }
 
-- (void)ttlLocationStatusChanged:(id)a3
+- (void)ttlLocationStatusChanged:(id)changed
 {
-  v4 = [(EKEventDetailItem *)self delegate];
-  [v4 eventDetailItemWantsRefresh:self];
+  delegate = [(EKEventDetailItem *)self delegate];
+  [delegate eventDetailItemWantsRefresh:self];
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  [(EKEventAlarmDetailItem *)self _setAlarmsAreEditable:a3];
+  [(EKEventAlarmDetailItem *)self _setAlarmsAreEditable:event];
   if (![(NSArray *)self->_alarms count]&& !self->_alarmsAreEditable)
   {
     return 0;
   }
 
-  v6 = [(EKEvent *)self->super._event externalID];
-  if (v6)
+  externalID = [(EKEvent *)self->super._event externalID];
+  if (externalID)
   {
     v7 = 1;
   }
@@ -141,10 +141,10 @@ LABEL_4:
 
 - (unint64_t)numberOfSubitems
 {
-  v3 = [(EKEvent *)self->super._event calendar];
-  v4 = [v3 source];
-  v5 = [v4 constraints];
-  v6 = [v5 maxAlarmsAllowed];
+  calendar = [(EKEvent *)self->super._event calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  maxAlarmsAllowed = [constraints maxAlarmsAllowed];
 
   alarmsAreEditable = self->_alarmsAreEditable;
   v8 = [(NSArray *)self->_alarms count];
@@ -165,13 +165,13 @@ LABEL_4:
     v9 = v10;
   }
 
-  v11 = v6;
-  if (v9 < v6)
+  v11 = maxAlarmsAllowed;
+  if (v9 < maxAlarmsAllowed)
   {
     v11 = v9;
   }
 
-  if (v6 >= 0)
+  if (maxAlarmsAllowed >= 0)
   {
     return v11;
   }
@@ -182,32 +182,32 @@ LABEL_4:
   }
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = EKEventAlarmDetailItem;
-  [(EKEventDetailItem *)&v5 defaultCellHeightForSubitemAtIndex:a3 forWidth:a4];
+  [(EKEventDetailItem *)&v5 defaultCellHeightForSubitemAtIndex:index forWidth:width];
   return result;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v47[4] = *MEMORY[0x1E69E9840];
-  if ([(NSArray *)self->_alarms count]<= a3)
+  if ([(NSArray *)self->_alarms count]<= index)
   {
-    v6 = EventKitUIBundle();
-    v38 = [v6 localizedStringForKey:@"None alert - event alarm detail item" value:@"None" table:0];
+    alarmsViewModel = EventKitUIBundle();
+    v38 = [alarmsViewModel localizedStringForKey:@"None alert - event alarm detail item" value:@"None" table:0];
     v7 = 0;
     v5 = 0;
     goto LABEL_5;
   }
 
-  v5 = [(NSArray *)self->_alarms objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_alarms objectAtIndexedSubscript:index];
   v38 = [v5 localizedDescriptionAllDay:{-[EKEvent isAllDay](self->super._event, "isAllDay")}];
   if (v5)
   {
-    v6 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
-    v7 = [v6 isAlarmEffectivelyDisabled:v5];
+    alarmsViewModel = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+    v7 = [alarmsViewModel isAlarmEffectivelyDisabled:v5];
 LABEL_5:
 
     goto LABEL_6;
@@ -228,45 +228,45 @@ LABEL_6:
       v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
       v47[1] = v14;
       v46[2] = *MEMORY[0x1E69DB650];
-      v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v47[2] = v15;
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v47[2] = secondaryLabelColor;
       v46[3] = *MEMORY[0x1E69DB6B0];
-      v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v17 = [v16 colorWithAlphaComponent:0.75];
+      secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v17 = [secondaryLabelColor2 colorWithAlphaComponent:0.75];
       v47[3] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:4];
 
-      v19 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
+      detailTextLabel = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
       v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v38 attributes:v18];
-      [v19 setAttributedText:v20];
+      [detailTextLabel setAttributedText:v20];
     }
 
     else
     {
       v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-      v22 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
-      [v22 setFont:v21];
+      detailTextLabel2 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
+      [detailTextLabel2 setFont:v21];
 
-      v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v24 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
-      [v24 setTextColor:v23];
+      secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      detailTextLabel3 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
+      [detailTextLabel3 setTextColor:secondaryLabelColor3];
 
-      v25 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
-      [v25 setText:v38];
+      detailTextLabel4 = [(EKUIPopupTableViewCell *)v10 detailTextLabel];
+      [detailTextLabel4 setText:v38];
     }
 
     goto LABEL_26;
   }
 
-  if ([(NSMutableArray *)self->_alarmPopupMenus count]<= a3)
+  if ([(NSMutableArray *)self->_alarmPopupMenus count]<= index)
   {
     goto LABEL_10;
   }
 
-  v8 = [(NSMutableArray *)self->_alarmPopupMenus objectAtIndexedSubscript:a3];
-  v9 = [MEMORY[0x1E695DFB0] null];
+  v8 = [(NSMutableArray *)self->_alarmPopupMenus objectAtIndexedSubscript:index];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v8 == v9)
+  if (v8 == null)
   {
 
 LABEL_10:
@@ -276,7 +276,7 @@ LABEL_10:
   v10 = [[EKUIPopupTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
   if (EKUICatalyst())
   {
-    v11 = [(EKEventAlarmDetailItem *)self _createRealPopupMenuForIndex:a3 popupCell:v10];
+    v11 = [(EKEventAlarmDetailItem *)self _createRealPopupMenuForIndex:index popupCell:v10];
     [(EKUIPopupTableViewCell *)v10 setPopupMenu:v11];
   }
 
@@ -284,8 +284,8 @@ LABEL_10:
   {
     if (!v8)
     {
-      v26 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
-      v8 = [v26 placeholderMenuForAlarmAtIndex:a3];
+      alarmsViewModel2 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+      v8 = [alarmsViewModel2 placeholderMenuForAlarmAtIndex:index];
     }
 
     [(EKUIPopupTableViewCell *)v10 setPopupMenu:v8];
@@ -304,7 +304,7 @@ LABEL_10:
     objc_copyWeak(&v40, &from);
     objc_copyWeak(v41, &location);
     v39[4] = v42;
-    v41[1] = a3;
+    v41[1] = index;
     [(EKUIPopupTableViewCell *)v10 setPopupMenuProvider:v39];
     objc_destroyWeak(v41);
     objc_destroyWeak(&v40);
@@ -326,34 +326,34 @@ LABEL_10:
       alarmPopupMenus = self->_alarmPopupMenus;
     }
 
-    if ([(NSMutableArray *)alarmPopupMenus count]<= a3)
+    if ([(NSMutableArray *)alarmPopupMenus count]<= index)
     {
       do
       {
         v30 = self->_alarmPopupMenus;
-        v31 = [MEMORY[0x1E695DFB0] null];
-        [(NSMutableArray *)v30 addObject:v31];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        [(NSMutableArray *)v30 addObject:null2];
       }
 
-      while ([(NSMutableArray *)self->_alarmPopupMenus count]<= a3);
+      while ([(NSMutableArray *)self->_alarmPopupMenus count]<= index);
     }
 
-    [(NSMutableArray *)self->_alarmPopupMenus setObject:v8 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_alarmPopupMenus setObject:v8 atIndexedSubscript:index];
   }
 
   [(EKUIPopupTableViewCell *)v10 setTitleStrikethrough:v7];
 
 LABEL_26:
-  v32 = [MEMORY[0x1E6993378] labelTextForIndex:a3];
-  v33 = [(EKUIPopupTableViewCell *)v10 textLabel];
-  [v33 setText:v32];
+  v32 = [MEMORY[0x1E6993378] labelTextForIndex:index];
+  textLabel = [(EKUIPopupTableViewCell *)v10 textLabel];
+  [textLabel setText:v32];
 
-  v34 = [MEMORY[0x1E6993378] accessibilityIdentifierForIndex:a3];
+  v34 = [MEMORY[0x1E6993378] accessibilityIdentifierForIndex:index];
   [(EKUIPopupTableViewCell *)v10 setAccessibilityIdentifier:v34];
 
-  v35 = [MEMORY[0x1E69DC888] labelColor];
-  v36 = [(EKUIPopupTableViewCell *)v10 textLabel];
-  [v36 setTextColor:v35];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textLabel2 = [(EKUIPopupTableViewCell *)v10 textLabel];
+  [textLabel2 setTextColor:labelColor];
 
   return v10;
 }
@@ -398,20 +398,20 @@ id __48__EKEventAlarmDetailItem_cellForSubitemAtIndex___block_invoke(uint64_t a1
   return v9;
 }
 
-- (id)_createRealPopupMenuForIndex:(int64_t)a3 popupCell:(id)a4
+- (id)_createRealPopupMenuForIndex:(int64_t)index popupCell:(id)cell
 {
-  v6 = a4;
+  cellCopy = cell;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
-  v7 = [(EKEventAlarmDetailItem *)self alarmsViewModel];
+  objc_initWeak(&from, cellCopy);
+  alarmsViewModel = [(EKEventAlarmDetailItem *)self alarmsViewModel];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__EKEventAlarmDetailItem__createRealPopupMenuForIndex_popupCell___block_invoke;
   v10[3] = &unk_1E8440018;
   objc_copyWeak(&v11, &location);
-  v12[1] = a3;
+  v12[1] = index;
   objc_copyWeak(v12, &from);
-  v8 = [v7 menuForAlarmAtIndex:a3 actionHandler:v10];
+  v8 = [alarmsViewModel menuForAlarmAtIndex:index actionHandler:v10];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&v11);

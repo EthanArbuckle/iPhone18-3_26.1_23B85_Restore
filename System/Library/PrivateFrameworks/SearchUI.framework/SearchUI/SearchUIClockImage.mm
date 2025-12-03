@@ -1,40 +1,40 @@
 @interface SearchUIClockImage
-- (BOOL)isEqual:(id)a3;
-- (SearchUIClockImage)initWithClockImage:(id)a3 variant:(unint64_t)a4;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SearchUIClockImage)initWithClockImage:(id)image variant:(unint64_t)variant;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUIClockImage
 
-- (SearchUIClockImage)initWithClockImage:(id)a3 variant:(unint64_t)a4
+- (SearchUIClockImage)initWithClockImage:(id)image variant:(unint64_t)variant
 {
-  v6 = a3;
+  imageCopy = image;
   v7 = [SearchUIUtilities bundleIdentifierForApp:24];
   v10.receiver = self;
   v10.super_class = SearchUIClockImage;
-  v8 = [(SearchUIAppIconImage *)&v10 initWithBundleIdentifier:v7 isOnenessApp:0 variant:a4 contentType:0];
+  v8 = [(SearchUIAppIconImage *)&v10 initWithBundleIdentifier:v7 isOnenessApp:0 variant:variant contentType:0];
 
   if (v8)
   {
-    [(SearchUIImage *)v8 setSfImage:v6];
+    [(SearchUIImage *)v8 setSfImage:imageCopy];
   }
 
   return v8;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v7 = a5;
-  v25 = [(SearchUIImage *)self sfImage];
+  handlerCopy = handler;
+  sfImage = [(SearchUIImage *)self sfImage];
   v8 = objc_opt_new();
-  v9 = [v25 hour];
-  [v8 setHour:{objc_msgSend(v9, "integerValue")}];
+  hour = [sfImage hour];
+  [v8 setHour:{objc_msgSend(hour, "integerValue")}];
 
-  v10 = [v25 minute];
-  [v8 setMinute:{objc_msgSend(v10, "integerValue")}];
+  minute = [sfImage minute];
+  [v8 setMinute:{objc_msgSend(minute, "integerValue")}];
 
-  v11 = [v25 second];
-  [v8 setSecond:{objc_msgSend(v11, "integerValue")}];
+  second = [sfImage second];
+  [v8 setSecond:{objc_msgSend(second, "integerValue")}];
 
   v12 = [v8 hour] > 11;
   v13 = objc_opt_new();
@@ -45,17 +45,17 @@
   [v14 overrideAppearanceForView:v13];
 
   [v13 updateTraitsIfNeeded];
-  v15 = [MEMORY[0x1E69D4078] overrideDate];
-  v16 = [MEMORY[0x1E69D4078] hidesSecondsHand];
-  v17 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-  v18 = [v17 dateFromComponents:v8];
+  overrideDate = [MEMORY[0x1E69D4078] overrideDate];
+  hidesSecondsHand = [MEMORY[0x1E69D4078] hidesSecondsHand];
+  autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+  v18 = [autoupdatingCurrentCalendar dateFromComponents:v8];
   [MEMORY[0x1E69D4078] setOverrideDate:v18];
 
-  v19 = [v25 second];
-  if (v19)
+  second2 = [sfImage second];
+  if (second2)
   {
-    v20 = [v25 second];
-    [v20 doubleValue];
+    second3 = [sfImage second];
+    [second3 doubleValue];
     [MEMORY[0x1E69D4078] setHidesSecondsHand:v21 < 0.0];
   }
 
@@ -68,48 +68,48 @@
   [v13 setIcon:v22 location:&stru_1F55BC4E8 animated:0];
 
   [(SearchUIImage *)self size];
-  UIGraphicsBeginImageContextWithOptions(v27, 1, a3);
-  v23 = [v13 layer];
-  [v23 renderInContext:UIGraphicsGetCurrentContext()];
+  UIGraphicsBeginImageContextWithOptions(v27, 1, scale);
+  layer = [v13 layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
   v24 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  [MEMORY[0x1E69D4078] setOverrideDate:v15];
-  [MEMORY[0x1E69D4078] setHidesSecondsHand:v16];
-  v7[2](v7, v24, 1);
+  [MEMORY[0x1E69D4078] setOverrideDate:overrideDate];
+  [MEMORY[0x1E69D4078] setHidesSecondsHand:hidesSecondsHand];
+  handlerCopy[2](handlerCopy, v24, 1);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if ([(SearchUIClockImage *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SearchUIClockImage *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SearchUIImage *)self sfImage];
-    if (v5)
+    sfImage = [(SearchUIImage *)self sfImage];
+    if (sfImage)
     {
     }
 
     else
     {
-      v7 = [(SearchUIImage *)v4 sfImage];
+      sfImage2 = [(SearchUIImage *)equalCopy sfImage];
 
-      if (!v7)
+      if (!sfImage2)
       {
         v11.receiver = self;
         v11.super_class = SearchUIClockImage;
-        v6 = [(SearchUIAppIconImage *)&v11 isEqual:v4];
+        v6 = [(SearchUIAppIconImage *)&v11 isEqual:equalCopy];
         goto LABEL_9;
       }
     }
 
-    v8 = [(SearchUIImage *)self sfImage];
-    v9 = [(SearchUIImage *)v4 sfImage];
-    v6 = [v8 isEqual:v9];
+    sfImage3 = [(SearchUIImage *)self sfImage];
+    sfImage4 = [(SearchUIImage *)equalCopy sfImage];
+    v6 = [sfImage3 isEqual:sfImage4];
   }
 
   else

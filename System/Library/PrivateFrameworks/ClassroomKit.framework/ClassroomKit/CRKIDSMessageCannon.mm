@@ -1,21 +1,21 @@
 @interface CRKIDSMessageCannon
-- (CRKIDSMessageCannon)initWithIDSPrimitives:(id)a3;
-- (void)sendIDSMessage:(id)a3 destinationAddress:(id)a4 sourceAppleID:(id)a5 completion:(id)a6;
-- (void)sendIDSMessage:(id)a3 destinationAddress:(id)a4 sourceAppleID:(id)a5 options:(id)a6 completion:(id)a7;
+- (CRKIDSMessageCannon)initWithIDSPrimitives:(id)primitives;
+- (void)sendIDSMessage:(id)message destinationAddress:(id)address sourceAppleID:(id)d completion:(id)completion;
+- (void)sendIDSMessage:(id)message destinationAddress:(id)address sourceAppleID:(id)d options:(id)options completion:(id)completion;
 @end
 
 @implementation CRKIDSMessageCannon
 
-- (CRKIDSMessageCannon)initWithIDSPrimitives:(id)a3
+- (CRKIDSMessageCannon)initWithIDSPrimitives:(id)primitives
 {
-  v5 = a3;
+  primitivesCopy = primitives;
   v11.receiver = self;
   v11.super_class = CRKIDSMessageCannon;
   v6 = [(CRKIDSMessageCannon *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_IDSPrimitives, a3);
+    objc_storeStrong(&v6->_IDSPrimitives, primitives);
     v8 = objc_opt_new();
     messageFormatter = v7->_messageFormatter;
     v7->_messageFormatter = v8;
@@ -24,35 +24,35 @@
   return v7;
 }
 
-- (void)sendIDSMessage:(id)a3 destinationAddress:(id)a4 sourceAppleID:(id)a5 completion:(id)a6
+- (void)sendIDSMessage:(id)message destinationAddress:(id)address sourceAppleID:(id)d completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  addressCopy = address;
+  messageCopy = message;
   v14 = objc_opt_new();
-  [(CRKIDSMessageCannon *)self sendIDSMessage:v13 destinationAddress:v12 sourceAppleID:v11 options:v14 completion:v10];
+  [(CRKIDSMessageCannon *)self sendIDSMessage:messageCopy destinationAddress:addressCopy sourceAppleID:dCopy options:v14 completion:completionCopy];
 }
 
-- (void)sendIDSMessage:(id)a3 destinationAddress:(id)a4 sourceAppleID:(id)a5 options:(id)a6 completion:(id)a7
+- (void)sendIDSMessage:(id)message destinationAddress:(id)address sourceAppleID:(id)d options:(id)options completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(CRKIDSMessageCannon *)self messageFormatter];
-  v18 = [v17 formatMessageForSending:v16];
+  completionCopy = completion;
+  optionsCopy = options;
+  dCopy = d;
+  addressCopy = address;
+  messageCopy = message;
+  messageFormatter = [(CRKIDSMessageCannon *)self messageFormatter];
+  v18 = [messageFormatter formatMessageForSending:messageCopy];
 
-  v19 = [(CRKIDSMessageCannon *)self IDSPrimitives];
+  iDSPrimitives = [(CRKIDSMessageCannon *)self IDSPrimitives];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90__CRKIDSMessageCannon_sendIDSMessage_destinationAddress_sourceAppleID_options_completion___block_invoke;
   v21[3] = &unk_278DC19D0;
   v21[4] = self;
-  v22 = v12;
-  v20 = v12;
-  [v19 sendMessage:v18 destinationAddress:v15 sourceAppleID:v14 options:v13 completion:v21];
+  v22 = completionCopy;
+  v20 = completionCopy;
+  [iDSPrimitives sendMessage:v18 destinationAddress:addressCopy sourceAppleID:dCopy options:optionsCopy completion:v21];
 }
 
 void __90__CRKIDSMessageCannon_sendIDSMessage_destinationAddress_sourceAppleID_options_completion___block_invoke(uint64_t a1, void *a2)

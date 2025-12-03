@@ -1,18 +1,18 @@
 @interface CKPhotosSearchResultsModeHeaderReusableView
-- (CKPhotosSearchResultsModeHeaderReusableView)initWithFrame:(CGRect)a3;
+- (CKPhotosSearchResultsModeHeaderReusableView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation CKPhotosSearchResultsModeHeaderReusableView
 
-- (CKPhotosSearchResultsModeHeaderReusableView)initWithFrame:(CGRect)a3
+- (CKPhotosSearchResultsModeHeaderReusableView)initWithFrame:(CGRect)frame
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = CKPhotosSearchResultsModeHeaderReusableView;
-  v3 = [(CKPhotosSearchResultsModeHeaderReusableView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKPhotosSearchResultsModeHeaderReusableView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCF38]);
@@ -46,10 +46,10 @@
   v30.receiver = self;
   v30.super_class = CKPhotosSearchResultsModeHeaderReusableView;
   [(CKPhotosSearchResultsModeHeaderReusableView *)&v30 layoutSubviews];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isSearchRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchRefreshEnabled = [mEMORY[0x1E69A8070] isSearchRefreshEnabled];
 
-  if (v4)
+  if (isSearchRefreshEnabled)
   {
     [(CKPhotosSearchResultsModeHeaderReusableView *)self setBackgroundColor:0];
   }
@@ -57,9 +57,9 @@
   else
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 spotlightSearchSegmentedControlBackgroundColor];
-    [(CKPhotosSearchResultsModeHeaderReusableView *)self setBackgroundColor:v7];
+    theme = [v5 theme];
+    spotlightSearchSegmentedControlBackgroundColor = [theme spotlightSearchSegmentedControlBackgroundColor];
+    [(CKPhotosSearchResultsModeHeaderReusableView *)self setBackgroundColor:spotlightSearchSegmentedControlBackgroundColor];
   }
 
   [(CKPhotosSearchResultsModeHeaderReusableView *)self bounds];
@@ -72,8 +72,8 @@
   [(CKPhotosSearchResultsModeHeaderReusableView *)self marginInsets];
   v17 = v16;
   v19 = v18;
-  v20 = [(CKPhotosSearchResultsModeHeaderReusableView *)self control];
-  [v20 frame];
+  control = [(CKPhotosSearchResultsModeHeaderReusableView *)self control];
+  [control frame];
   v22 = v21;
 
   if (CKMainScreenScale_once_4 != -1)
@@ -100,19 +100,19 @@
   v32.size.width = v23;
   v32.size.height = v22;
   v28 = MidY + CGRectGetHeight(v32) * -0.5;
-  v29 = [(CKPhotosSearchResultsModeHeaderReusableView *)self control];
-  [v29 setFrame:{v25, v28, v23, v22}];
+  control2 = [(CKPhotosSearchResultsModeHeaderReusableView *)self control];
+  [control2 setFrame:{v25, v28, v23, v22}];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 size];
+  attributesCopy = attributes;
+  [attributesCopy size];
   v6 = v5;
   [(CKPhotosSearchResultsModeHeaderReusableView *)self bottomPadding];
-  [v4 setSize:{v6, v7 + 44.0}];
+  [attributesCopy setSize:{v6, v7 + 44.0}];
 
-  return v4;
+  return attributesCopy;
 }
 
 - (UIEdgeInsets)marginInsets

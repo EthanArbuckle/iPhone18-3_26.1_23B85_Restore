@@ -1,10 +1,10 @@
 @interface FPSystemMem
-- (id)gatherData:(unint64_t)a3 error:(id *)a4;
+- (id)gatherData:(unint64_t)data error:(id *)error;
 @end
 
 @implementation FPSystemMem
 
-- (id)gatherData:(unint64_t)a3 error:(id *)a4
+- (id)gatherData:(unint64_t)data error:(id *)error
 {
   host_info64_outCnt = 40;
   v34 = 0u;
@@ -25,7 +25,7 @@
   v8 = host_statistics64(v6, 4, host_info64_out, &host_info64_outCnt);
   if (v8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -37,15 +37,15 @@
     v11 = &v39;
 LABEL_7:
     v14 = [NSDictionary dictionaryWithObjects:v10 forKeys:v11 count:1];
-    *a4 = [NSError errorWithDomain:@"FPFootprintError" code:0 userInfo:v14];
+    *error = [NSError errorWithDomain:@"FPFootprintError" code:0 userInfo:v14];
 
-    a4 = 0;
+    error = 0;
     goto LABEL_11;
   }
 
   if (sysctlbyname("vm.swapusage", &v24, &v23, 0, 0))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -68,20 +68,20 @@ LABEL_7:
   v18 = [[FPAuxData alloc] initWithValue:v15 shouldAggregate:1];
   [v7 setObject:v18 forKeyedSubscript:@"sys_wired"];
 
-  if (a3)
+  if (data)
   {
-    v19 = v15 + a3;
-    v20 = [[FPAuxData alloc] initWithValue:a3 shouldAggregate:1];
+    v19 = v15 + data;
+    v20 = [[FPAuxData alloc] initWithValue:data shouldAggregate:1];
     [v7 setObject:v20 forKeyedSubscript:@"boot_carveout"];
 
     v21 = [[FPAuxData alloc] initWithValue:v19 + v16 shouldAggregate:1];
     [v7 setObject:v21 forKeyedSubscript:@"sys_footprint"];
   }
 
-  a4 = v7;
+  error = v7;
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
 @end

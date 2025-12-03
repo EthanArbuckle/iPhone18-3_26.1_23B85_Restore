@@ -1,48 +1,48 @@
 @interface MFDeliveryQueue
 + (id)log;
-+ (id)newDeliveryObjectFactoryForMessage:(id)a3;
++ (id)newDeliveryObjectFactoryForMessage:(id)message;
 + (id)sharedDeliveryQueue;
 + (id)signpostLog;
-- (BOOL)_shouldSend:(id)a3 options:(id)a4;
+- (BOOL)_shouldSend:(id)send options:(id)options;
 - (BOOL)cancelLastDelayedMessage;
 - (EDMessageDeliveryHookResponder)deliveryHookResponder;
 - (EDMessagePersistence)messagePersistence;
 - (MFDeliveryQueue)init;
-- (id)_append:(id)a3 flags:(id)a4;
-- (id)_deliverSynchronously:(id)a3 outboxCopy:(id)a4;
+- (id)_append:(id)_append flags:(id)flags;
+- (id)_deliverSynchronously:(id)synchronously outboxCopy:(id)copy;
 - (id)_deliveryResultIfNotHasAdequateFreeSpace;
 - (id)_messagesInProgress;
-- (id)_outboxCopyFromMessageDelivery:(id)a3;
+- (id)_outboxCopyFromMessageDelivery:(id)delivery;
 - (id)_outboxStore;
 - (id)_sortedMessages;
-- (id)append:(id)a3;
+- (id)append:(id)append;
 - (id)copyDiagnosticInformation;
-- (id)deliverSynchronously:(id)a3;
-- (id)lastErrorForMessage:(id)a3;
+- (id)deliverSynchronously:(id)synchronously;
+- (id)lastErrorForMessage:(id)message;
 - (unint64_t)signpostID;
-- (void)_flagsChanged:(id)a3;
-- (void)_freeSpaceStatusDidChange:(id)a3;
-- (void)_logDeliveryResult:(id)a3 forMessage:(id)a4 account:(id)a5;
-- (void)_mailAccountsChanged:(id)a3;
-- (void)_messagesAdded:(id)a3;
-- (void)_messagesCompacted:(id)a3;
-- (void)_processQueueWithOptions:(id)a3;
-- (void)_queueProcessingDidFinish:(id)a3;
-- (void)_reachabilityChanged:(id)a3;
-- (void)_sendProcessingStartedNotification:(id)a3;
-- (void)_setErrorForMessage:(id)a3 error:(id)a4;
-- (void)_setErrorForMessageLibraryID:(id)a3 error:(id)a4;
+- (void)_flagsChanged:(id)changed;
+- (void)_freeSpaceStatusDidChange:(id)change;
+- (void)_logDeliveryResult:(id)result forMessage:(id)message account:(id)account;
+- (void)_mailAccountsChanged:(id)changed;
+- (void)_messagesAdded:(id)added;
+- (void)_messagesCompacted:(id)compacted;
+- (void)_processQueueWithOptions:(id)options;
+- (void)_queueProcessingDidFinish:(id)finish;
+- (void)_reachabilityChanged:(id)changed;
+- (void)_sendProcessingStartedNotification:(id)notification;
+- (void)_setErrorForMessage:(id)message error:(id)error;
+- (void)_setErrorForMessageLibraryID:(id)d error:(id)error;
 - (void)_updateCounts;
-- (void)_updateDeliveryInfoFromResult:(id)a3 forMessage:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_updateDeliveryInfoFromResult:(id)result forMessage:(id)message;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)deliverAsynchronously:(id)a3 completion:(id)a4;
-- (void)notifyObserversOfDelayedMessagesDidChange:(BOOL)a3;
-- (void)notifyObserversOfUpdatedPendingMessageCount:(unint64_t)a3;
-- (void)processQueueAndPlaySoundOnSuccess:(BOOL)a3 forceAll:(BOOL)a4 isUserRequested:(BOOL)a5;
-- (void)removeObserver:(id)a3;
+- (void)deliverAsynchronously:(id)asynchronously completion:(id)completion;
+- (void)notifyObserversOfDelayedMessagesDidChange:(BOOL)change;
+- (void)notifyObserversOfUpdatedPendingMessageCount:(unint64_t)count;
+- (void)processQueueAndPlaySoundOnSuccess:(BOOL)success forceAll:(BOOL)all isUserRequested:(BOOL)requested;
+- (void)removeObserver:(id)observer;
 - (void)resume;
-- (void)setPercentDone:(double)a3;
+- (void)setPercentDone:(double)done;
 - (void)suspend;
 - (void)test_waitForObservers;
 @end
@@ -55,7 +55,7 @@
   block[1] = 3221225472;
   block[2] = sub_100057F74;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185808 != -1)
   {
     dispatch_once(&qword_100185808, block);
@@ -142,13 +142,13 @@
         }
 
         [oslog deleteMessages:v3 moveToTrash:0];
-        v12 = self;
+        selfCopy3 = self;
         v13 = v20;
       }
 
       else
       {
-        v12 = self;
+        selfCopy3 = self;
         v13 = v20;
       }
     }
@@ -159,16 +159,16 @@
       v13 = 0;
       v21 = 0;
       v3 = 0;
-      v12 = self;
+      selfCopy3 = self;
     }
 
-    if (v13 != v12->_messagesFromActiveAccounts)
+    if (v13 != selfCopy3->_messagesFromActiveAccounts)
     {
-      v12->_messagesFromActiveAccounts = v13;
-      [(MFDeliveryQueue *)v12 notifyObserversOfUpdatedPendingMessageCount:?];
+      selfCopy3->_messagesFromActiveAccounts = v13;
+      [(MFDeliveryQueue *)selfCopy3 notifyObserversOfUpdatedPendingMessageCount:?];
     }
 
-    [(MFDeliveryQueue *)v12 mf_unlock];
+    [(MFDeliveryQueue *)selfCopy3 mf_unlock];
     v16 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -202,9 +202,9 @@
     goto LABEL_9;
   }
 
-  v3 = [qword_100185818 mailbox];
-  v4 = v3;
-  if (!v3 || ([v3 isValid] & 1) == 0)
+  mailbox = [qword_100185818 mailbox];
+  v4 = mailbox;
+  if (!mailbox || ([mailbox isValid] & 1) == 0)
   {
     v5 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -250,7 +250,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_100057598;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001857F0 != -1)
   {
     dispatch_once(&qword_1001857F0, block);
@@ -267,7 +267,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_1000576BC;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185800 != -1)
   {
     dispatch_once(&qword_100185800, block);
@@ -280,8 +280,8 @@ LABEL_9:
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -327,14 +327,14 @@ LABEL_9:
     delayedMessageScheduler = v3->_delayedMessageScheduler;
     v3->_delayedMessageScheduler = v15;
 
-    v17 = [(MFDeliveryQueue *)v3 _outboxStore];
-    v18 = [(MFDeliveryQueue *)v3 _messagesInProgress];
-    if ([v18 count])
+    _outboxStore = [(MFDeliveryQueue *)v3 _outboxStore];
+    _messagesInProgress = [(MFDeliveryQueue *)v3 _messagesInProgress];
+    if ([_messagesInProgress count])
     {
       v19 = +[MFDeliveryQueue log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v18 count];
+        v20 = [_messagesInProgress count];
         *buf = 67109120;
         v43 = v20;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Resetting delivery state for %d messages", buf, 8u);
@@ -345,7 +345,7 @@ LABEL_9:
       v41[0] = &__kCFBooleanFalse;
       v41[1] = &__kCFBooleanTrue;
       v21 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
-      v22 = [v17 setFlagsFromDictionary:v21 forMessages:v18];
+      v22 = [_outboxStore setFlagsFromDictionary:v21 forMessages:_messagesInProgress];
     }
 
     v23 = +[CPNetworkObserver sharedNetworkObserver];
@@ -374,14 +374,14 @@ LABEL_9:
     [v28 addDiagnosticsGenerator:v3];
 
     v29 = +[UMUserManager sharedManager];
-    v30 = [v29 currentUser];
-    v31 = [v30 uid];
+    currentUser = [v29 currentUser];
+    v31 = [currentUser uid];
     LOBYTE(v31) = v31 == getuid();
 
     if (v31)
     {
-      v32 = [(MFDeliveryQueue *)v3 freeSpaceMonitor];
-      [v25 addObserver:v3 selector:"_freeSpaceStatusDidChange:" name:@"MFDiskFreeSpaceMonitorDidChangeNotification" object:v32];
+      freeSpaceMonitor = [(MFDeliveryQueue *)v3 freeSpaceMonitor];
+      [v25 addObserver:v3 selector:"_freeSpaceStatusDidChange:" name:@"MFDiskFreeSpaceMonitorDidChangeNotification" object:freeSpaceMonitor];
 
       v33 = +[MFDeliveryQueue log];
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -390,13 +390,13 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Checking free space status", buf, 2u);
       }
 
-      v34 = [(MFDeliveryQueue *)v3 freeSpaceMonitor];
+      freeSpaceMonitor2 = [(MFDeliveryQueue *)v3 freeSpaceMonitor];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_100057E28;
       v37[3] = &unk_100158308;
       v38 = v3;
-      [v34 getFreeSpaceStatusWithCompletionHandler:v37];
+      [freeSpaceMonitor2 getFreeSpaceStatusWithCompletionHandler:v37];
     }
 
     else
@@ -423,13 +423,13 @@ LABEL_9:
 - (EDMessagePersistence)messagePersistence
 {
   v2 = +[MFMailMessageLibrary defaultInstance];
-  v3 = [v2 persistence];
-  v4 = [v3 messagePersistence];
+  persistence = [v2 persistence];
+  messagePersistence = [persistence messagePersistence];
 
-  return v4;
+  return messagePersistence;
 }
 
-- (void)processQueueAndPlaySoundOnSuccess:(BOOL)a3 forceAll:(BOOL)a4 isUserRequested:(BOOL)a5
+- (void)processQueueAndPlaySoundOnSuccess:(BOOL)success forceAll:(BOOL)all isUserRequested:(BOOL)requested
 {
   stateQueue = self->_stateQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -437,9 +437,9 @@ LABEL_9:
   v6[2] = sub_100058134;
   v6[3] = &unk_100158330;
   v6[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  successCopy = success;
+  allCopy = all;
+  requestedCopy = requested;
   dispatch_async(stateQueue, v6);
 }
 
@@ -465,14 +465,14 @@ LABEL_9:
   dispatch_async(stateQueue, block);
 }
 
-- (void)_freeSpaceStatusDidChange:(id)a3
+- (void)_freeSpaceStatusDidChange:(id)change
 {
-  v4 = [(MFDeliveryQueue *)self freeSpaceMonitor];
-  v5 = [v4 isFreeSpaceCritical];
+  freeSpaceMonitor = [(MFDeliveryQueue *)self freeSpaceMonitor];
+  isFreeSpaceCritical = [freeSpaceMonitor isFreeSpaceCritical];
 
   v6 = +[MFDeliveryQueue log];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isFreeSpaceCritical)
   {
     if (v7)
     {
@@ -497,31 +497,31 @@ LABEL_9:
   }
 }
 
-- (id)append:(id)a3
+- (id)append:(id)append
 {
-  v4 = a3;
+  appendCopy = append;
   v8 = MessageQueuedForDelivery;
   v9 = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v6 = [(MFDeliveryQueue *)self _append:v4 flags:v5];
+  v6 = [(MFDeliveryQueue *)self _append:appendCopy flags:v5];
 
   return v6;
 }
 
-- (id)deliverSynchronously:(id)a3
+- (id)deliverSynchronously:(id)synchronously
 {
-  v4 = a3;
-  v5 = [(MFDeliveryQueue *)self _deliveryResultIfNotHasAdequateFreeSpace];
-  v6 = v5;
-  if (v5)
+  synchronouslyCopy = synchronously;
+  _deliveryResultIfNotHasAdequateFreeSpace = [(MFDeliveryQueue *)self _deliveryResultIfNotHasAdequateFreeSpace];
+  v6 = _deliveryResultIfNotHasAdequateFreeSpace;
+  if (_deliveryResultIfNotHasAdequateFreeSpace)
   {
-    v7 = v5;
+    v7 = _deliveryResultIfNotHasAdequateFreeSpace;
   }
 
   else
   {
-    v8 = [(MFDeliveryQueue *)self _outboxCopyFromMessageDelivery:v4];
-    v7 = [(MFDeliveryQueue *)self _deliverSynchronously:v4 outboxCopy:v8];
+    v8 = [(MFDeliveryQueue *)self _outboxCopyFromMessageDelivery:synchronouslyCopy];
+    v7 = [(MFDeliveryQueue *)self _deliverSynchronously:synchronouslyCopy outboxCopy:v8];
   }
 
   return v7;
@@ -555,44 +555,44 @@ LABEL_9:
   return v5;
 }
 
-- (id)_outboxCopyFromMessageDelivery:(id)a3
+- (id)_outboxCopyFromMessageDelivery:(id)delivery
 {
-  v4 = [a3 message];
+  message = [delivery message];
   v8 = MessageIsBeingDelivered;
   v9 = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v6 = [(MFDeliveryQueue *)self _append:v4 flags:v5];
+  v6 = [(MFDeliveryQueue *)self _append:message flags:v5];
 
   return v6;
 }
 
-- (id)_deliverSynchronously:(id)a3 outboxCopy:(id)a4
+- (id)_deliverSynchronously:(id)synchronously outboxCopy:(id)copy
 {
-  v6 = a3;
-  v63 = a4;
+  synchronouslyCopy = synchronously;
+  copyCopy = copy;
   ++self->_numberOfCurrentSynchronousDeliveries;
-  v59 = [(MFDeliveryQueue *)self _outboxStore];
-  v7 = [v6 message];
-  v62 = v7;
-  v61 = [MailAccount accountThatMessageIsFrom:v7 includingInactive:1];
+  _outboxStore = [(MFDeliveryQueue *)self _outboxStore];
+  message = [synchronouslyCopy message];
+  v62 = message;
+  v61 = [MailAccount accountThatMessageIsFrom:message includingInactive:1];
   v8 = +[MFDeliveryQueue signpostLog];
-  v9 = [(MFDeliveryQueue *)self signpostID];
-  if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+  signpostID = [(MFDeliveryQueue *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 138412290;
-    v71 = v7;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, v9, "EMAIL DELIVERY", "Begin Delivery Message : %@", buf, 0xCu);
+    v71 = message;
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "EMAIL DELIVERY", "Begin Delivery Message : %@", buf, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v10 = v6;
+    v10 = synchronouslyCopy;
   }
 
   else
   {
-    v10 = [MFMailDropMailDeliveryUI newWithMessage:v63];
+    v10 = [MFMailDropMailDeliveryUI newWithMessage:copyCopy];
 
     [v10 setDelegate:self];
     [v10 setIsUserRequested:1];
@@ -603,15 +603,15 @@ LABEL_9:
   v11 = +[MFActivityMonitor currentMonitor];
   v77[1] = @"MFDeliveryQueueMailboxKey";
   v78[0] = v11;
-  v12 = [v59 mailbox];
-  v78[1] = v12;
+  mailbox = [_outboxStore mailbox];
+  v78[1] = mailbox;
   v60 = [NSDictionary dictionaryWithObjects:v78 forKeys:v77 count:2];
 
   v13 = +[NSNotificationCenter defaultCenter];
   [v13 postNotificationName:@"MFDeliveryQueueDeliverSynchronouslyStartNotification" object:v60];
 
   [v10 setIsUserRequested:1];
-  if (!v63)
+  if (!copyCopy)
   {
     v14 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -635,9 +635,9 @@ LABEL_9:
   v65[1] = 3221225472;
   v65[2] = sub_1000597F8;
   v65[3] = &unk_100158358;
-  v16 = v63;
+  v16 = copyCopy;
   v66 = v16;
-  v58 = v59;
+  v58 = _outboxStore;
   v67 = v58;
   v64 = [v10 deliverSynchronouslyWithCompletion:v65];
   objc_opt_class();
@@ -649,67 +649,67 @@ LABEL_9:
       [v17 setMailDropState:{objc_msgSend(v64, "attributes")}];
     }
 
-    v18 = [v17 mailDropState];
-    v19 = [(MFDeliveryQueue *)self messagePersistence];
-    [v19 setMailDropDeliveryState:v18 forMessage:v16];
+    mailDropState = [v17 mailDropState];
+    messagePersistence = [(MFDeliveryQueue *)self messagePersistence];
+    [messagePersistence setMailDropDeliveryState:mailDropState forMessage:v16];
   }
 
   [(MFDeliveryQueue *)self _logDeliveryResult:v64 forMessage:v62 account:v61];
-  v20 = [v64 status];
-  if (v63)
+  status = [v64 status];
+  if (copyCopy)
   {
     [(MFDeliveryQueue *)self _setDeliveryFlag:v16 state:0];
   }
 
   if ([v61 supportsThreadOperations] && objc_msgSend(v10, "conversationFlags"))
   {
-    v21 = [v10 originalConversationId];
-    if (!v21)
+    originalConversationId = [v10 originalConversationId];
+    if (!originalConversationId)
     {
-      v22 = [v10 message];
-      v21 = [v22 messageIDHash];
+      message2 = [v10 message];
+      originalConversationId = [message2 messageIDHash];
     }
 
     v23 = +[MFMailMessageLibrary defaultInstance];
-    v24 = [v23 persistence];
-    v25 = [v24 conversationPersistence];
-    v26 = [v10 conversationFlags];
-    v27 = [NSNumber numberWithLongLong:v21];
+    persistence = [v23 persistence];
+    conversationPersistence = [persistence conversationPersistence];
+    conversationFlags = [v10 conversationFlags];
+    v27 = [NSNumber numberWithLongLong:originalConversationId];
     v76 = v27;
     v28 = [NSArray arrayWithObjects:&v76 count:1];
-    [v25 setPersistenceConversationFlags:v26 forConversationIDs:v28 reason:4];
+    [conversationPersistence setPersistenceConversationFlags:conversationFlags forConversationIDs:v28 reason:4];
   }
 
   v29 = +[NSNotificationCenter defaultCenter];
   [v29 postNotificationName:@"MFDeliveryQueueDeliverSynchronouslyFinishNotification" object:v60];
 
-  if (v20 == 9)
+  if (status == 9)
   {
-    v32 = [v10 retryCount];
-    if (v32 <= 0)
+    retryCount = [v10 retryCount];
+    if (retryCount <= 0)
     {
-      v20 = 9;
+      status = 9;
     }
 
     else
     {
-      v20 = 2;
+      status = 2;
     }
 
-    if (v63 && v32 <= 0)
+    if (copyCopy && retryCount <= 0)
     {
       v75 = v16;
       v33 = [NSArray arrayWithObjects:&v75 count:1];
       [v58 deleteMessages:v33 moveToTrash:0];
 
-      v31 = 0;
+      error = 0;
       [v58 doCompact];
-      v20 = 9;
+      status = 9;
       goto LABEL_48;
     }
   }
 
-  else if (!v20)
+  else if (!status)
   {
     v30 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -718,18 +718,18 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Message delivery succeeded", buf, 2u);
     }
 
-    if (v63)
+    if (copyCopy)
     {
       [v58 doCompact];
     }
 
-    v31 = 0;
-    v20 = 0;
+    error = 0;
+    status = 0;
     goto LABEL_48;
   }
 
-  v31 = 0;
-  if (v20 != 4 && v20 != 9)
+  error = 0;
+  if (status != 4 && status != 9)
   {
     v34 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -739,42 +739,42 @@ LABEL_9:
     }
 
     v35 = +[MFActivityMonitor currentMonitor];
-    v31 = [v35 error];
+    error = [v35 error];
 
-    if (!v31)
+    if (!error)
     {
       v36 = MFLookupLocalizedString();
-      v37 = [v10 account];
-      v38 = [v37 hostname];
-      v39 = [NSString stringWithFormat:v36, v38];
+      account = [v10 account];
+      hostname = [account hostname];
+      v39 = [NSString stringWithFormat:v36, hostname];
 
       v40 = MFLookupLocalizedString();
-      v31 = [MFError errorWithDomain:MFMessageErrorDomain code:1030 localizedDescription:v39 title:v40 userInfo:&off_1001637D8];
+      error = [MFError errorWithDomain:MFMessageErrorDomain code:1030 localizedDescription:v39 title:v40 userInfo:&off_1001637D8];
     }
 
-    if (v63)
+    if (copyCopy)
     {
       v74 = v16;
       v41 = [NSArray arrayWithObjects:&v74 count:1];
       [v58 setFlag:MessageQueuedForDelivery state:1 forMessages:v41];
 
-      v42 = [v10 account];
-      [v31 setUserInfoObject:v42 forKey:@"account"];
+      account2 = [v10 account];
+      [error setUserInfoObject:account2 forKey:@"account"];
 
       [(MFDeliveryQueue *)self _updateDeliveryInfoFromResult:v64 forMessage:v16];
       v43 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v16 libraryID]);
-      [(MFDeliveryQueue *)self _setErrorForMessageLibraryID:v43 error:v31];
+      [(MFDeliveryQueue *)self _setErrorForMessageLibraryID:v43 error:error];
 
       [(MFDeliveryQueue *)self _updateCounts];
-      v20 = 6;
+      status = 6;
     }
   }
 
 LABEL_48:
   --self->_numberOfCurrentSynchronousDeliveries;
   v44 = +[MFDeliveryQueue signpostLog];
-  v45 = [(MFDeliveryQueue *)self signpostID];
-  if (v45 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
+  signpostID2 = [(MFDeliveryQueue *)self signpostID];
+  if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
   {
     [v64 status];
     v46 = MFMessageDeliveryStatusString();
@@ -782,14 +782,14 @@ LABEL_48:
     v71 = v62;
     v72 = 2112;
     v73 = v46;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v44, OS_SIGNPOST_INTERVAL_END, v45, "EMAIL DELIVERY", "Delivered Message : %@ with result %@", buf, 0x16u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v44, OS_SIGNPOST_INTERVAL_END, signpostID2, "EMAIL DELIVERY", "Delivered Message : %@ with result %@", buf, 0x16u);
   }
 
-  if (v31)
+  if (error)
   {
-    v47 = [v31 userInfo];
+    userInfo = [error userInfo];
     v48 = MFInvalidRecipientEmailAddresses;
-    v49 = [v47 objectForKeyedSubscript:MFInvalidRecipientEmailAddresses];
+    v49 = [userInfo objectForKeyedSubscript:MFInvalidRecipientEmailAddresses];
 
     if ([v49 count])
     {
@@ -803,15 +803,15 @@ LABEL_48:
       v50 = 0;
     }
 
-    v52 = [v31 domain];
-    v53 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v52, [v31 code], v50);
+    domain = [error domain];
+    v53 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [error code], v50);
 
-    v54 = [v31 localizedDescription];
+    localizedDescription = [error localizedDescription];
     v55 = objc_alloc_init(NSMutableDictionary);
     [v55 setObject:v53 forKeyedSubscript:NSUnderlyingErrorKey];
-    if (v54)
+    if (localizedDescription)
     {
-      [v55 setObject:v54 forKeyedSubscript:NSLocalizedDescriptionKey];
+      [v55 setObject:localizedDescription forKeyedSubscript:NSLocalizedDescriptionKey];
     }
 
     v51 = [NSError em_internalErrorWithReason:@"Message delivery failed with underlying error" userInfo:v55];
@@ -822,28 +822,28 @@ LABEL_48:
     v51 = 0;
   }
 
-  v56 = [[EMMessageDeliveryResult alloc] initWithStatus:v20 error:v51];
+  v56 = [[EMMessageDeliveryResult alloc] initWithStatus:status error:v51];
 
   return v56;
 }
 
-- (void)deliverAsynchronously:(id)a3 completion:(id)a4
+- (void)deliverAsynchronously:(id)asynchronously completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFDeliveryQueue *)self _deliveryResultIfNotHasAdequateFreeSpace];
-  if (v8)
+  asynchronouslyCopy = asynchronously;
+  completionCopy = completion;
+  _deliveryResultIfNotHasAdequateFreeSpace = [(MFDeliveryQueue *)self _deliveryResultIfNotHasAdequateFreeSpace];
+  if (_deliveryResultIfNotHasAdequateFreeSpace)
   {
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, _deliveryResultIfNotHasAdequateFreeSpace);
   }
 
   else
   {
-    v9 = [(MFDeliveryQueue *)self _outboxCopyFromMessageDelivery:v6];
+    v9 = [(MFDeliveryQueue *)self _outboxCopyFromMessageDelivery:asynchronouslyCopy];
     if (v9)
     {
       v10 = objc_alloc_init(DelayedMessage);
-      [(DelayedMessage *)v10 setCompletion:v7];
+      [(DelayedMessage *)v10 setCompletion:completionCopy];
       [(DelayedMessage *)v10 setOutboxCopy:v9];
       v11 = +[MFPowerController sharedInstance];
       [v11 retainAssertionWithIdentifier:@"com.apple.message.delivery"];
@@ -858,7 +858,7 @@ LABEL_48:
       }
 
       objc_initWeak(buf, self);
-      v14 = [(MFDeliveryQueue *)self delayedMessageScheduler];
+      delayedMessageScheduler = [(MFDeliveryQueue *)self delayedMessageScheduler];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_100059DF4;
@@ -866,10 +866,10 @@ LABEL_48:
       objc_copyWeak(&v30, buf);
       v15 = v10;
       v26 = v15;
-      v27 = v6;
+      v27 = asynchronouslyCopy;
       v28 = v9;
-      v29 = v7;
-      v16 = [v14 afterDelay:v25 performBlock:v12];
+      v29 = completionCopy;
+      v16 = [delayedMessageScheduler afterDelay:v25 performBlock:v12];
       [(DelayedMessage *)v15 setToken:v16];
 
       v20 = _NSConcreteStackBlock;
@@ -889,7 +889,7 @@ LABEL_48:
     {
       v18 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
       v19 = [[EMMessageDeliveryResult alloc] initWithStatus:2 error:v18];
-      v7[2](v7, v19);
+      completionCopy[2](completionCopy, v19);
     }
   }
 }
@@ -916,18 +916,18 @@ LABEL_48:
   v3 = v14[5];
   if (v3)
   {
-    v4 = [v3 token];
-    [v4 cancel];
+    token = [v3 token];
+    [token cancel];
 
-    v5 = [(MFDeliveryQueue *)self _outboxStore];
-    v6 = [v14[5] outboxCopy];
-    v23 = v6;
+    _outboxStore = [(MFDeliveryQueue *)self _outboxStore];
+    outboxCopy = [v14[5] outboxCopy];
+    v23 = outboxCopy;
     v7 = [NSArray arrayWithObjects:&v23 count:1];
-    [v5 deleteMessages:v7 moveToTrash:0];
+    [_outboxStore deleteMessages:v7 moveToTrash:0];
 
     v8 = [[EMMessageDeliveryResult alloc] initWithStatus:4 error:0];
-    v9 = [v14[5] completion];
-    (v9)[2](v9, v8);
+    completion = [v14[5] completion];
+    (completion)[2](completion, v8);
 
     [(MFDeliveryQueue *)self notifyObserversOfDelayedMessagesDidChange:(v20[3] & 1) == 0];
     v10 = v14[5] != 0;
@@ -944,10 +944,10 @@ LABEL_48:
   return v10;
 }
 
-- (id)lastErrorForMessage:(id)a3
+- (id)lastErrorForMessage:(id)message
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v5 = [v4 libraryID], lastErrorForMessage = self->_lastErrorForMessage, +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", v5), v7 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](lastErrorForMessage, "objectForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  messageCopy = message;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v5 = [messageCopy libraryID], lastErrorForMessage = self->_lastErrorForMessage, +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", v5), v7 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](lastErrorForMessage, "objectForKey:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v9 = [NSBundle bundleForClass:NSClassFromString(@"MailAppController")];
     v10 = [v9 localizedStringForKey:@"GENERIC_DELIVERY_ERROR_MESSAGE" value:&stru_10015BEC8 table:@"Main"];
@@ -960,20 +960,20 @@ LABEL_48:
 
 - (id)_messagesInProgress
 {
-  v2 = [(MFDeliveryQueue *)self _outboxStore];
-  v3 = [v2 copyOfAllMessagesWithOptions:0];
+  _outboxStore = [(MFDeliveryQueue *)self _outboxStore];
+  v3 = [_outboxStore copyOfAllMessagesWithOptions:0];
 
   v4 = [v3 ef_filter:&stru_1001583F0];
 
   return v4;
 }
 
-- (void)_setErrorForMessageLibraryID:(id)a3 error:(id)a4
+- (void)_setErrorForMessageLibraryID:(id)d error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  dCopy = d;
+  errorCopy = error;
   lastErrorForMessage = self->_lastErrorForMessage;
-  if (v6)
+  if (errorCopy)
   {
     if (!lastErrorForMessage)
     {
@@ -984,55 +984,55 @@ LABEL_48:
       lastErrorForMessage = self->_lastErrorForMessage;
     }
 
-    [(NSMutableDictionary *)lastErrorForMessage setObject:v6 forKey:v10];
+    [(NSMutableDictionary *)lastErrorForMessage setObject:errorCopy forKey:dCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)lastErrorForMessage removeObjectForKey:v10];
+    [(NSMutableDictionary *)lastErrorForMessage removeObjectForKey:dCopy];
   }
 }
 
-- (void)_setErrorForMessage:(id)a3 error:(id)a4
+- (void)_setErrorForMessage:(id)message error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  messageCopy = message;
+  errorCopy = error;
   if (objc_opt_respondsToSelector())
   {
-    v7 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 libraryID]);
-    [(MFDeliveryQueue *)self _setErrorForMessageLibraryID:v7 error:v6];
+    v7 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [messageCopy libraryID]);
+    [(MFDeliveryQueue *)self _setErrorForMessageLibraryID:v7 error:errorCopy];
   }
 }
 
-- (void)_sendProcessingStartedNotification:(id)a3
+- (void)_sendProcessingStartedNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v6 = @"MFDeliveryQueueMonitorKey";
-  v7 = v3;
+  v7 = notificationCopy;
   v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"MFDeliveryQueueProcessingStartedNotification" object:v4];
 }
 
-- (id)_append:(id)a3 flags:(id)a4
+- (id)_append:(id)_append flags:(id)flags
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  _appendCopy = _append;
+  flagsCopy = flags;
+  if (_appendCopy)
   {
-    v8 = [(MFDeliveryQueue *)self _outboxStore];
+    _outboxStore = [(MFDeliveryQueue *)self _outboxStore];
     v9 = +[MFActivityMonitor currentMonitor];
     [v9 setCanBeCancelled:0];
 
     [(MFDeliveryQueue *)self mf_lock];
     v10 = +[MFMailMessageLibrary defaultInstance];
-    v25 = [v10 messageChangeManager];
+    messageChangeManager = [v10 messageChangeManager];
 
-    v29 = v6;
+    v29 = _appendCopy;
     v11 = [NSArray arrayWithObjects:&v29 count:1];
-    v12 = [v8 mailbox];
-    v13 = [v12 URL];
-    v14 = [v25 addNewMessages:v11 mailboxURL:v13 userInitiated:0];
+    mailbox = [_outboxStore mailbox];
+    v13 = [mailbox URL];
+    v14 = [messageChangeManager addNewMessages:v11 mailboxURL:v13 userInitiated:0];
 
     v15 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1045,19 +1045,19 @@ LABEL_48:
     v16 = [v14 objectAtIndex:0];
     v26 = v16;
     v17 = [NSArray arrayWithObjects:&v26 count:1];
-    v18 = [v8 setFlagsFromDictionary:v7 forMessages:v17];
+    v18 = [_outboxStore setFlagsFromDictionary:flagsCopy forMessages:v17];
 
     v19 = objc_alloc_init(MessageDeliveryInfo);
     -[MessageDeliveryInfo setMessageSize:](v19, "setMessageSize:", [v16 messageSize]);
-    v20 = [(MFDeliveryQueue *)self messagePersistence];
-    [v20 setDeliveryInfo:v19 forMessage:v16];
+    messagePersistence = [(MFDeliveryQueue *)self messagePersistence];
+    [messagePersistence setDeliveryInfo:v19 forMessage:v16];
 
     v21 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v16 libraryID];
+      libraryID = [v16 libraryID];
       *buf = 134217984;
-      v28 = v22;
+      v28 = libraryID;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Saved message to outbox (libraryId: %lld)", buf, 0xCu);
     }
 
@@ -1074,11 +1074,11 @@ LABEL_48:
   return v16;
 }
 
-- (BOOL)_shouldSend:(id)a3 options:(id)a4
+- (BOOL)_shouldSend:(id)send options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 messageFlags] & 2) != 0)
+  sendCopy = send;
+  optionsCopy = options;
+  if (([sendCopy messageFlags] & 2) != 0)
   {
     v9 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1090,7 +1090,7 @@ LABEL_48:
     goto LABEL_7;
   }
 
-  if (([v6 messageFlags] & 0x2000000000) != 0)
+  if (([sendCopy messageFlags] & 0x2000000000) != 0)
   {
     v9 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1106,10 +1106,10 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (([v7 forceAll] & 1) == 0)
+  if (([optionsCopy forceAll] & 1) == 0)
   {
-    v10 = [(MFDeliveryQueue *)self messagePersistence];
-    v11 = [v10 deliveryInfoForMessage:v6];
+    messagePersistence = [(MFDeliveryQueue *)self messagePersistence];
+    v11 = [messagePersistence deliveryInfoForMessage:sendCopy];
 
     if (v11)
     {
@@ -1169,7 +1169,7 @@ LABEL_20:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 134217984;
-        v20[0] = [v6 libraryID];
+        v20[0] = [sendCopy libraryID];
         v13 = "skipping message as no deliveryInfo metadata not found for libraryId: %lld";
         v14 = v12;
         v15 = 12;
@@ -1192,9 +1192,9 @@ LABEL_24:
 
 - (id)_sortedMessages
 {
-  v3 = [(MFDeliveryQueue *)self _outboxStore];
+  _outboxStore = [(MFDeliveryQueue *)self _outboxStore];
   [(MFDeliveryQueue *)self mf_lock];
-  v4 = [v3 copyOfAllMessagesWithOptions:2048];
+  v4 = [_outboxStore copyOfAllMessagesWithOptions:2048];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10005B590;
@@ -1209,22 +1209,22 @@ LABEL_24:
   return v8;
 }
 
-- (void)_updateDeliveryInfoFromResult:(id)a3 forMessage:(id)a4
+- (void)_updateDeliveryInfoFromResult:(id)result forMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFDeliveryQueue *)self messagePersistence];
-  v9 = [v8 deliveryInfoForMessage:v7];
+  resultCopy = result;
+  messageCopy = message;
+  messagePersistence = [(MFDeliveryQueue *)self messagePersistence];
+  v9 = [messagePersistence deliveryInfoForMessage:messageCopy];
 
   v10 = +[NSDate now];
   [v9 setLastAttempt:v10];
 
-  [v9 setLastStatus:{objc_msgSend(v6, "status")}];
+  [v9 setLastStatus:{objc_msgSend(resultCopy, "status")}];
   [v9 setNumberOfFailures:{objc_msgSend(v9, "numberOfFailures") + 1}];
   if ([v9 lastStatus] == 2)
   {
-    [v6 duration];
-    if (v11 > 0.0 && ([v6 isWifi] & 1) == 0)
+    [resultCopy duration];
+    if (v11 > 0.0 && ([resultCopy isWifi] & 1) == 0)
     {
       [v9 setFailedCellularAttempts:{objc_msgSend(v9, "failedCellularAttempts") + 1}];
     }
@@ -1234,98 +1234,98 @@ LABEL_24:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v7;
+    v15 = messageCopy;
     v16 = 2112;
     v17 = v9;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "delivery info for %@: %@", &v14, 0x16u);
   }
 
-  v13 = [(MFDeliveryQueue *)self messagePersistence];
-  [v13 setDeliveryInfo:v9 forMessage:v7];
+  messagePersistence2 = [(MFDeliveryQueue *)self messagePersistence];
+  [messagePersistence2 setDeliveryInfo:v9 forMessage:messageCopy];
 }
 
-- (void)_logDeliveryResult:(id)a3 forMessage:(id)a4 account:(id)a5
+- (void)_logDeliveryResult:(id)result forMessage:(id)message account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  messageCopy = message;
+  accountCopy = account;
   v10 = +[MFDeliveryQueue log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v8;
+    v26 = messageCopy;
     v27 = 2112;
-    v28 = v7;
+    v28 = resultCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "delivery result for %@: %@", buf, 0x16u);
   }
 
-  v11 = [v9 loggingIdentifier];
-  v12 = v11;
+  loggingIdentifier = [accountCopy loggingIdentifier];
+  v12 = loggingIdentifier;
   v13 = @"nil";
-  if (v11)
+  if (loggingIdentifier)
   {
-    v13 = v11;
+    v13 = loggingIdentifier;
   }
 
   v24[0] = v13;
   v23[0] = @"account";
   v23[1] = @"status";
-  [v7 status];
+  [resultCopy status];
   v14 = MFMessageDeliveryStatusString();
   v24[1] = v14;
   v23[2] = @"duration";
-  [v7 duration];
+  [resultCopy duration];
   v16 = [NSString stringWithFormat:@"%.2fs", v15];
   v24[2] = v16;
   v23[3] = @"tx";
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 bytesSent]);
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resultCopy bytesSent]);
   v24[3] = v17;
   v23[4] = @"wifi";
-  [v7 isWifi];
+  [resultCopy isWifi];
   v18 = NSStringFromBOOL();
   v24[4] = v18;
   v19 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:5];
   v20 = [NSMutableDictionary dictionaryWithDictionary:v19];
 
   [MFPowerController powerlog:@"DELIVER" eventData:v20];
-  if (![v7 status])
+  if (![resultCopy status])
   {
-    v21 = [(MFDeliveryQueue *)self deliveryHookResponder];
-    [v21 deliveredMessage:v8 account:v9];
+    deliveryHookResponder = [(MFDeliveryQueue *)self deliveryHookResponder];
+    [deliveryHookResponder deliveredMessage:messageCopy account:accountCopy];
   }
 }
 
 - (EDMessageDeliveryHookResponder)deliveryHookResponder
 {
   v2 = +[MFMailMessageLibrary defaultInstance];
-  v3 = [v2 persistence];
-  v4 = [v3 hookRegistry];
+  persistence = [v2 persistence];
+  hookRegistry = [persistence hookRegistry];
 
-  return v4;
+  return hookRegistry;
 }
 
-+ (id)newDeliveryObjectFactoryForMessage:(id)a3
++ (id)newDeliveryObjectFactoryForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[MFMailMessageLibrary defaultInstance];
-  v5 = [v4 persistence];
-  v6 = [v5 messagePersistence];
+  persistence = [v4 persistence];
+  messagePersistence = [persistence messagePersistence];
 
-  if ([v6 mailDropDeliveryStateForMessage:v3])
+  if ([messagePersistence mailDropDeliveryStateForMessage:messageCopy])
   {
     goto LABEL_4;
   }
 
-  v7 = [v3 mailDropDeliveryState];
-  if (v7)
+  mailDropDeliveryState = [messageCopy mailDropDeliveryState];
+  if (mailDropDeliveryState)
   {
-    [v6 setMailDropDeliveryState:v7 forMessage:v3];
+    [messagePersistence setMailDropDeliveryState:mailDropDeliveryState forMessage:messageCopy];
 LABEL_4:
     v8 = MFMailDropMailDeliveryUI_ptr;
     goto LABEL_5;
   }
 
-  if ([MFAttachmentPlaceholder hasPlaceholderRepresentation:v3])
+  if ([MFAttachmentPlaceholder hasPlaceholderRepresentation:messageCopy])
   {
     v11 = +[MFDeliveryQueue log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1350,25 +1350,25 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [*v8 newWithMessage:v3];
+  v9 = [*v8 newWithMessage:messageCopy];
 
   return v9;
 }
 
-- (void)_processQueueWithOptions:(id)a3
+- (void)_processQueueWithOptions:(id)options
 {
-  v55 = a3;
+  optionsCopy = options;
   v50 = +[NSMutableArray array];
   v51 = +[NSMutableArray array];
-  v54 = [(MFDeliveryQueue *)self _outboxStore];
+  _outboxStore = [(MFDeliveryQueue *)self _outboxStore];
   v57 = +[MFActivityMonitor currentMonitor];
   [(MFDeliveryQueue *)self _sendProcessingStartedNotification:?];
-  v56 = [(MFDeliveryQueue *)self _sortedMessages];
+  _sortedMessages = [(MFDeliveryQueue *)self _sortedMessages];
   v4 = +[MFDeliveryQueue log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v56 count];
-    v6 = [v56 count];
+    v5 = [_sortedMessages count];
+    v6 = [_sortedMessages count];
     v7 = @"messages";
     *buf = 67109890;
     *v64 = v5;
@@ -1380,9 +1380,9 @@ LABEL_5:
 
     *&v64[6] = v7;
     *&v64[14] = 2112;
-    *&v64[16] = v55;
+    *&v64[16] = optionsCopy;
     v65 = 2112;
-    v66 = v56;
+    v66 = _sortedMessages;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "processing %d outbox %@ (%@): %@", buf, 0x26u);
   }
 
@@ -1392,7 +1392,7 @@ LABEL_5:
 
   v9 = 1;
   v48 = MFMessageErrorDomain;
-  while (([v56 ef_isEmpty] & 1) == 0 && (*(self + 56) & 3) == 0)
+  while (([_sortedMessages ef_isEmpty] & 1) == 0 && (*(self + 56) & 3) == 0)
   {
     if ([v57 shouldCancel])
     {
@@ -1435,42 +1435,42 @@ LABEL_42:
 
     if (v9 == 1)
     {
-      v12 = [v54 mailbox];
-      [v57 setMailbox:v12];
+      mailbox = [_outboxStore mailbox];
+      [v57 setMailbox:mailbox];
 
       v13 = MFLookupLocalizedString();
-      [v57 setDisplayName:v13 maxCount:{objc_msgSend(v56, "count")}];
+      [v57 setDisplayName:v13 maxCount:{objc_msgSend(_sortedMessages, "count")}];
     }
 
-    v14 = [v56 ef_popElement];
+    ef_popElement = [_sortedMessages ef_popElement];
     [v57 setCurrentCount:v9];
-    if ([(MFDeliveryQueue *)self _shouldSend:v14 options:v55])
+    if ([(MFDeliveryQueue *)self _shouldSend:ef_popElement options:optionsCopy])
     {
-      [(MFDeliveryQueue *)self _setDeliveryFlag:v14 state:1];
-      v15 = [MailAccount accountThatMessageIsFrom:v14 includingInactive:1];
+      [(MFDeliveryQueue *)self _setDeliveryFlag:ef_popElement state:1];
+      v15 = [MailAccount accountThatMessageIsFrom:ef_popElement includingInactive:1];
       if ([v15 isActive])
       {
-        v16 = [v15 deliveryAccount];
-        v17 = [v16 identifier];
-        v18 = [v49 objectForKey:v17];
+        deliveryAccount = [v15 deliveryAccount];
+        identifier = [deliveryAccount identifier];
+        v18 = [v49 objectForKey:identifier];
 
         if (!v18)
         {
-          v18 = v16;
+          v18 = deliveryAccount;
         }
 
         v52 = v18;
-        v19 = [objc_opt_class() newDeliveryObjectFactoryForMessage:v14];
+        v19 = [objc_opt_class() newDeliveryObjectFactoryForMessage:ef_popElement];
         [v19 setAccount:v18];
         [v19 setDelegate:self];
         [v19 setArchiveAccount:v15];
-        [v19 setIsUserRequested:{objc_msgSend(v55, "isUserRequested")}];
+        [v19 setIsUserRequested:{objc_msgSend(optionsCopy, "isUserRequested")}];
         v20 = +[MFDeliveryQueue log];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v21 = objc_opt_class();
           *buf = 138412546;
-          *v64 = v14;
+          *v64 = ef_popElement;
           *&v64[8] = 2112;
           *&v64[10] = v21;
           v22 = v21;
@@ -1481,39 +1481,39 @@ LABEL_42:
         v58[1] = 3221225472;
         v58[2] = sub_10005CAB8;
         v58[3] = &unk_100158358;
-        v59 = v54;
-        v23 = v14;
+        v59 = _outboxStore;
+        v23 = ef_popElement;
         v60 = v23;
         v24 = [v19 deliverSynchronouslyWithCompletion:v58];
         [(MFDeliveryQueue *)self _logDeliveryResult:v24 forMessage:v23 account:v15];
-        v53 = [v19 account];
+        account = [v19 account];
         if ([v24 status])
         {
           [v51 addObject:v23];
-          v25 = [v57 error];
+          error = [v57 error];
           [(MFDeliveryQueue *)self _updateDeliveryInfoFromResult:v24 forMessage:v23];
-          if (!v25)
+          if (!error)
           {
             v26 = MFLookupLocalizedString();
-            v27 = [v16 hostname];
-            v28 = [NSString stringWithFormat:v26, v27];
+            hostname = [deliveryAccount hostname];
+            v28 = [NSString stringWithFormat:v26, hostname];
 
             v29 = MFLookupLocalizedString();
-            v25 = [MFError errorWithDomain:v48 code:1030 localizedDescription:v28 title:v29 userInfo:0];
+            error = [MFError errorWithDomain:v48 code:1030 localizedDescription:v28 title:v29 userInfo:0];
           }
 
-          v30 = +[MFDeliveryQueue log];
-          if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+          identifier2 = +[MFDeliveryQueue log];
+          if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v25 ef_publicDescription];
-            sub_1000D3F50(v31, v61, &v62, v30);
+            ef_publicDescription = [error ef_publicDescription];
+            sub_1000D3F50(ef_publicDescription, v61, &v62, identifier2);
           }
 
           goto LABEL_33;
         }
 
         [v50 addObject:v23];
-        if (v53 == v52 || ([v52 identifier], v35 = objc_claimAutoreleasedReturnValue(), v36 = v35 == 0, v35, v36))
+        if (account == v52 || ([v52 identifier], v35 = objc_claimAutoreleasedReturnValue(), v36 = v35 == 0, v35, v36))
         {
           v34 = 0;
         }
@@ -1523,24 +1523,24 @@ LABEL_42:
           v37 = +[MFDeliveryQueue log];
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v38 = [v53 ef_publicDescription];
-            v39 = [v52 ef_publicDescription];
+            ef_publicDescription2 = [account ef_publicDescription];
+            ef_publicDescription3 = [v52 ef_publicDescription];
             *buf = 138412546;
-            *v64 = v38;
+            *v64 = ef_publicDescription2;
             *&v64[8] = 2112;
-            *&v64[10] = v39;
+            *&v64[10] = ef_publicDescription3;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "account %@{public} became an alternate for %@{public}", buf, 0x16u);
           }
 
-          v30 = [v52 identifier];
-          [v49 setValue:v53 forKey:v30];
-          v25 = 0;
+          identifier2 = [v52 identifier];
+          [v49 setValue:account forKey:identifier2];
+          error = 0;
 LABEL_33:
 
-          v34 = v25;
+          v34 = error;
         }
 
-        [v34 setUserInfoObject:v53 forKey:@"account"];
+        [v34 setUserInfoObject:account forKey:@"account"];
       }
 
       else
@@ -1550,17 +1550,17 @@ LABEL_33:
         v34 = [MFError errorWithDomain:v48 code:1051 localizedDescription:v32 title:v33 userInfo:0];
 
         [v34 setUserInfoObject:v15 forKey:@"account"];
-        v16 = +[MFDeliveryQueue log];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        deliveryAccount = +[MFDeliveryQueue log];
+        if (os_log_type_enabled(deliveryAccount, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "skipping message from  inactive account", buf, 2u);
+          _os_log_impl(&_mh_execute_header, deliveryAccount, OS_LOG_TYPE_DEFAULT, "skipping message from  inactive account", buf, 2u);
         }
       }
 
       usleep(0x7A120u);
-      [(MFDeliveryQueue *)self _setDeliveryFlag:v14 state:0];
-      [(MFDeliveryQueue *)self _setErrorForMessage:v14 error:v34];
+      [(MFDeliveryQueue *)self _setDeliveryFlag:ef_popElement state:0];
+      [(MFDeliveryQueue *)self _setErrorForMessage:ef_popElement error:v34];
       [v57 setError:0];
     }
 
@@ -1583,8 +1583,8 @@ LABEL_33:
   }
 
   [v57 reset];
-  [v54 doCompact];
-  if ([v55 playSound])
+  [_outboxStore doCompact];
+  if ([optionsCopy playSound])
   {
     v47 = [v50 count] != 0;
   }
@@ -1597,13 +1597,13 @@ LABEL_33:
   [(MFDeliveryQueue *)self _sendProcessingFinishedNotificationWithSentMessages:v50 failedMessages:v51 playSound:v47];
 }
 
-- (void)setPercentDone:(double)a3
+- (void)setPercentDone:(double)done
 {
   v4 = +[MFActivityMonitor currentMonitor];
-  [v4 setPercentDoneOfCurrentItem:a3];
+  [v4 setPercentDoneOfCurrentItem:done];
 }
 
-- (void)_queueProcessingDidFinish:(id)a3
+- (void)_queueProcessingDidFinish:(id)finish
 {
   stateQueue = self->_stateQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1614,35 +1614,35 @@ LABEL_33:
   dispatch_async(stateQueue, block);
 }
 
-- (void)_mailAccountsChanged:(id)a3
+- (void)_mailAccountsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005CDA0;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)_flagsChanged:(id)a3
+- (void)_flagsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005CEF8;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)_messagesAdded:(id)a3
+- (void)_messagesAdded:(id)added
 {
   stateQueue = self->_stateQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1653,11 +1653,11 @@ LABEL_33:
   dispatch_async(stateQueue, block);
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:CPNetworkObserverNetworkReachableNotification];
+  changedCopy = changed;
+  name = [changedCopy name];
+  v6 = [name isEqualToString:CPNetworkObserverNetworkReachableNotification];
 
   if (v6)
   {
@@ -1667,15 +1667,15 @@ LABEL_33:
     v8[2] = sub_10005D1E4;
     v8[3] = &unk_1001563D8;
     v8[4] = self;
-    v9 = v4;
+    v9 = changedCopy;
     dispatch_async(stateQueue, v8);
   }
 }
 
-- (void)_messagesCompacted:(id)a3
+- (void)_messagesCompacted:(id)compacted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:MailMessageStoreMessageKey];
+  userInfo = [compacted userInfo];
+  v5 = [userInfo objectForKey:MailMessageStoreMessageKey];
   if ([v5 ef_any:&stru_1001584B8])
   {
     stateQueue = self->_stateQueue;
@@ -1688,56 +1688,56 @@ LABEL_33:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MFDeliveryQueue *)self observationScheduler];
+  observerCopy = observer;
+  observationScheduler = [(MFDeliveryQueue *)self observationScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005D530;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v6 = v4;
+  v6 = observerCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [observationScheduler performBlock:v7];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MFDeliveryQueue *)self observationScheduler];
+  observerCopy = observer;
+  observationScheduler = [(MFDeliveryQueue *)self observationScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005D670;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v6 = v4;
+  v6 = observerCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [observationScheduler performBlock:v7];
 }
 
-- (void)notifyObserversOfUpdatedPendingMessageCount:(unint64_t)a3
+- (void)notifyObserversOfUpdatedPendingMessageCount:(unint64_t)count
 {
-  v5 = [(MFDeliveryQueue *)self observationScheduler];
+  observationScheduler = [(MFDeliveryQueue *)self observationScheduler];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10005D77C;
   v6[3] = &unk_100156360;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 performBlock:v6];
+  v6[5] = count;
+  [observationScheduler performBlock:v6];
 }
 
-- (void)notifyObserversOfDelayedMessagesDidChange:(BOOL)a3
+- (void)notifyObserversOfDelayedMessagesDidChange:(BOOL)change
 {
-  v5 = [(MFDeliveryQueue *)self observationScheduler];
+  observationScheduler = [(MFDeliveryQueue *)self observationScheduler];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10005D93C;
   v6[3] = &unk_100157148;
   v6[4] = self;
-  v7 = a3;
-  [v5 performBlock:v6];
+  changeCopy = change;
+  [observationScheduler performBlock:v6];
 }
 
 - (void)test_waitForObservers
@@ -1748,8 +1748,8 @@ LABEL_33:
     [v5 handleFailureInMethod:a2 object:self file:@"MFDeliveryQueue.m" lineNumber:1234 description:{@"%s can only be called from unit tests", "-[MFDeliveryQueue test_waitForObservers]"}];
   }
 
-  v4 = [(MFDeliveryQueue *)self observationScheduler];
-  [v4 performSyncBlock:&stru_1001584D8];
+  observationScheduler = [(MFDeliveryQueue *)self observationScheduler];
+  [observationScheduler performSyncBlock:&stru_1001584D8];
 }
 
 - (id)copyDiagnosticInformation
@@ -1780,13 +1780,13 @@ LABEL_33:
   [v3 addObject:v8];
 
   [v3 addObject:@"==== Pending Messages (Sorted by Size) ===="];
-  v9 = [(MFDeliveryQueue *)self _sortedMessages];
+  _sortedMessages = [(MFDeliveryQueue *)self _sortedMessages];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10005DCEC;
   v13[3] = &unk_100158500;
   v13[4] = self;
-  v10 = [v9 ef_map:v13];
+  v10 = [_sortedMessages ef_map:v13];
   [v3 addObjectsFromArray:v10];
 
   v11 = [v3 componentsJoinedByString:@"\n"];

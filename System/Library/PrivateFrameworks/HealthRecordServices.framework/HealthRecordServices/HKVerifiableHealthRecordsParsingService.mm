@@ -1,8 +1,8 @@
 @interface HKVerifiableHealthRecordsParsingService
 - (HKVerifiableHealthRecordsParsingService)init;
-- (HKVerifiableHealthRecordsParsingService)initWithConnection:(id)a3;
+- (HKVerifiableHealthRecordsParsingService)initWithConnection:(id)connection;
 - (id)exportedInterface;
-- (void)parseDataSource:(id)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)parseDataSource:(id)source options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HKVerifiableHealthRecordsParsingService
@@ -15,15 +15,15 @@
   return v4;
 }
 
-- (HKVerifiableHealthRecordsParsingService)initWithConnection:(id)a3
+- (HKVerifiableHealthRecordsParsingService)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = HKVerifiableHealthRecordsParsingService;
   v5 = [(HKVerifiableHealthRecordsParsingService *)&v9 init];
   if (v5)
   {
-    v6 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:v4 serviceIdentifier:@"VerifiableHealthRecordsParsingService" exportedObject:v5];
+    v6 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:connectionCopy serviceIdentifier:@"VerifiableHealthRecordsParsingService" exportedObject:v5];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = &v6->super;
   }
@@ -31,16 +31,16 @@
   return v5;
 }
 
-- (void)parseDataSource:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)parseDataSource:(id)source options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  sourceCopy = source;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__HKVerifiableHealthRecordsParsingService_parseDataSource_options_completion___block_invoke;
   v14[3] = &unk_2796DD0C0;
-  v15 = v8;
-  v17 = a4;
+  v15 = sourceCopy;
+  optionsCopy = options;
   v16 = v9;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -48,7 +48,7 @@
   v12[3] = &unk_2796DBFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = sourceCopy;
   [(HKVerifiableHealthRecordsParsingService *)self _fetchProxyWithHandler:v14 errorHandler:v12];
 }
 

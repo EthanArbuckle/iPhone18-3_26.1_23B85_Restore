@@ -1,14 +1,14 @@
 @interface PSGAboutController
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3;
+- (BOOL)shouldDeferPushForSpecifierID:(id)d;
 - (PSGAboutController)init;
-- (id)contextMenuConfiguration:(id)a3 handler:(id)a4;
-- (id)deviceName:(id)a3;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
+- (id)contextMenuConfiguration:(id)configuration handler:(id)handler;
+- (id)deviceName:(id)name;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
 - (void)dealloc;
-- (void)handleResourceDictionaryWhenAlreadyPresented:(id)a3;
-- (void)remoteLaunchHelper:(id)a3 flowtype:(unint64_t)a4 reason:(id)a5;
-- (void)setDeviceName:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)handleResourceDictionaryWhenAlreadyPresented:(id)presented;
+- (void)remoteLaunchHelper:(id)helper flowtype:(unint64_t)flowtype reason:(id)reason;
+- (void)setDeviceName:(id)name specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateDeviceNameSpecifierIfNeeded;
 - (void)viewDidLoad;
 - (void)willBecomeActive;
@@ -34,8 +34,8 @@
 - (void)dealloc
 {
   v3 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-  v4 = [v3 systemHealthUIClient];
-  [v4 setParentViewController:0];
+  systemHealthUIClient = [v3 systemHealthUIClient];
+  [systemHealthUIClient setParentViewController:0];
 
   v5.receiver = self;
   v5.super_class = PSGAboutController;
@@ -48,18 +48,18 @@
   [v2 reloadDeviceName];
 }
 
-- (id)contextMenuConfiguration:(id)a3 handler:(id)a4
+- (id)contextMenuConfiguration:(id)configuration handler:(id)handler
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSGAboutController *)self specifierAtIndex:[(PSGAboutController *)self indexForIndexPath:v6]];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  v8 = [(PSGAboutController *)self specifierAtIndex:[(PSGAboutController *)self indexForIndexPath:configurationCopy]];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __55__PSGAboutController_contextMenuConfiguration_handler___block_invoke;
   v38[3] = &unk_278324DF8;
   v38[4] = self;
-  v35 = v6;
+  v35 = configurationCopy;
   v39 = v35;
   v34 = v8;
   v40 = v34;
@@ -72,8 +72,8 @@
   v14 = MEMORY[0x277D750C8];
   v15 = PSG_LocalizedStringForGeneral(@"BARCODE");
   v16 = [MEMORY[0x277D755B8] systemImageNamed:@"barcode"];
-  v17 = v7;
-  v18 = [v14 actionWithTitle:v15 image:v16 identifier:@"barcode" handler:v7];
+  v17 = handlerCopy;
+  v18 = [v14 actionWithTitle:v15 image:v16 identifier:@"barcode" handler:handlerCopy];
 
   v19 = MEMORY[0x277CBEB18];
   v41[0] = v13;
@@ -84,9 +84,9 @@
   v22 = objc_alloc(MEMORY[0x277CC37B0]);
   v23 = [v22 initWithQueue:MEMORY[0x277D85CD0]];
   v24 = [v23 isSharingIdentitySupportedWithError:0];
-  LODWORD(v7) = [v24 BOOLValue];
+  LODWORD(handlerCopy) = [v24 BOOLValue];
 
-  if (v7)
+  if (handlerCopy)
   {
     v25 = MEMORY[0x277D750C8];
     v26 = PSG_LocalizedStringForGeneral(@"SHARE_IDENTITY");
@@ -126,17 +126,17 @@ void __55__PSGAboutController_contextMenuConfiguration_handler___block_invoke(ui
   [v5 setString:v3];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = a4;
-  v7 = [(PSGAboutController *)self specifierAtIndex:[(PSGAboutController *)self indexForIndexPath:v6]];
-  v8 = [v7 identifier];
-  v9 = [v8 hasPrefix:@"EID"];
+  pathCopy = path;
+  v7 = [(PSGAboutController *)self specifierAtIndex:[(PSGAboutController *)self indexForIndexPath:pathCopy]];
+  identifier = [v7 identifier];
+  v9 = [identifier hasPrefix:@"EID"];
 
   if (!v9)
   {
-    v11 = [v7 identifier];
-    v12 = [v11 hasPrefix:@"ModemIMEI"];
+    identifier2 = [v7 identifier];
+    v12 = [identifier2 hasPrefix:@"ModemIMEI"];
 
     if (!v12)
     {
@@ -148,7 +148,7 @@ void __55__PSGAboutController_contextMenuConfiguration_handler___block_invoke(ui
     v15[2] = __80__PSGAboutController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke_2;
     v15[3] = &unk_278324E70;
     v16 = v7;
-    v17 = self;
+    selfCopy = self;
     v10 = MEMORY[0x223D38F60](v15);
 
     if (!v10)
@@ -157,7 +157,7 @@ void __55__PSGAboutController_contextMenuConfiguration_handler___block_invoke(ui
     }
 
 LABEL_6:
-    v13 = [(PSGAboutController *)self contextMenuConfiguration:v6 handler:v10];
+    v13 = [(PSGAboutController *)self contextMenuConfiguration:pathCopy handler:v10];
 
     goto LABEL_8;
   }
@@ -326,20 +326,20 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteLaunchHelper:(id)a3 flowtype:(unint64_t)a4 reason:(id)a5
+- (void)remoteLaunchHelper:(id)helper flowtype:(unint64_t)flowtype reason:(id)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  helperCopy = helper;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a5;
+  reasonCopy = reason;
   v10 = objc_alloc_init(v8);
   v11 = v10;
-  if (v7)
+  if (helperCopy)
   {
-    [v10 addEntriesFromDictionary:v7];
+    [v10 addEntriesFromDictionary:helperCopy];
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:flowtype];
   [v11 setValue:v12 forKey:@"FlowTypeKey"];
 
   v13 = _PSGLoggingFacility();
@@ -357,23 +357,23 @@ LABEL_15:
   [v15 setUserInfo:v11];
   v16 = [MEMORY[0x277D66BF0] newHandleWithDefinition:v14 configurationContext:v15];
   v17 = objc_alloc_init(MEMORY[0x277D66BC0]);
-  [v17 setReason:v9];
+  [v17 setReason:reasonCopy];
 
   [v16 activateWithContext:v17];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = PSGAboutController;
-  v6 = a4;
-  [(PSGAboutController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(PSGAboutController *)self indexForIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  [(PSGAboutController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(PSGAboutController *)self indexForIndexPath:pathCopy, v14.receiver, v14.super_class];
 
   v8 = [(PSGAboutController *)self specifierAtIndex:v7];
-  v9 = [v8 identifier];
-  v10 = [v9 hasPrefix:@"CARRIER_VERSION"];
+  identifier = [v8 identifier];
+  v10 = [identifier hasPrefix:@"CARRIER_VERSION"];
 
   if (v10)
   {
@@ -384,8 +384,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [v8 identifier];
-  v13 = [v12 isEqualToString:@"ProductModel"];
+  identifier2 = [v8 identifier];
+  v13 = [identifier2 isEqualToString:@"ProductModel"];
 
   if (v13)
   {
@@ -440,10 +440,10 @@ void __36__PSGAboutController_viewDidAppear___block_invoke()
   [(PSGAboutController *)&v4 willResignActive];
 }
 
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3
+- (BOOL)shouldDeferPushForSpecifierID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -463,7 +463,7 @@ void __36__PSGAboutController_viewDidAppear___block_invoke()
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        if ([v4 isEqualToString:v9])
+        if ([dCopy isEqualToString:v9])
         {
           v10 = [(PSGAboutController *)self specifierForID:v9];
 
@@ -501,32 +501,32 @@ LABEL_12:
   [(PSGAboutController *)self setTitle:v3];
 
   v4 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-  v5 = [v4 sharedNDOController];
-  [v5 setParentViewController:self];
+  sharedNDOController = [v4 sharedNDOController];
+  [sharedNDOController setParentViewController:self];
 
   v6 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-  v7 = [v6 sharedNDOController];
+  sharedNDOController2 = [v6 sharedNDOController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __33__PSGAboutController_viewDidLoad__block_invoke;
   v13[3] = &unk_278324EE0;
   v13[4] = self;
-  [v7 updateSpecifiersWithCompletionHandler:v13];
+  [sharedNDOController2 updateSpecifiersWithCompletionHandler:v13];
 
   if (objc_opt_class())
   {
     v8 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-    v9 = [v8 systemHealthUIClient];
-    [v9 setParentViewController:self];
+    systemHealthUIClient = [v8 systemHealthUIClient];
+    [systemHealthUIClient setParentViewController:self];
 
     v10 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-    v11 = [v10 systemHealthUIClient];
+    systemHealthUIClient2 = [v10 systemHealthUIClient];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __33__PSGAboutController_viewDidLoad__block_invoke_419;
     v12[3] = &unk_278324EE0;
     v12[4] = self;
-    [v11 updateSpecifiersWithCompletionHandler:v12];
+    [systemHealthUIClient2 updateSpecifiersWithCompletionHandler:v12];
   }
 }
 
@@ -614,19 +614,19 @@ void __33__PSGAboutController_viewDidLoad__block_invoke_2_420(uint64_t a1)
   }
 }
 
-- (void)setDeviceName:(id)a3 specifier:(id)a4
+- (void)setDeviceName:(id)name specifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
+  specifierCopy = specifier;
+  nameCopy = name;
   v7 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-  [v7 setDeviceName:v6 specifier:v5];
+  [v7 setDeviceName:nameCopy specifier:specifierCopy];
 }
 
-- (id)deviceName:(id)a3
+- (id)deviceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(PSSpecifierDataSource *)PSGAboutDataSource];
-  v5 = [v4 deviceName:v3];
+  v5 = [v4 deviceName:nameCopy];
 
   return v5;
 }
@@ -634,9 +634,9 @@ void __33__PSGAboutController_viewDidLoad__block_invoke_2_420(uint64_t a1)
 - (void)updateDeviceNameSpecifierIfNeeded
 {
   v7 = [(PSGAboutController *)self specifierForID:@"NAME_CELL_ID"];
-  v3 = [v7 detailControllerClass];
+  detailControllerClass = [v7 detailControllerClass];
   v4 = PSGIsDeviceNameSettable();
-  if ((((v3 == 0) ^ v4) & 1) == 0)
+  if ((((detailControllerClass == 0) ^ v4) & 1) == 0)
   {
     if (v4)
     {
@@ -657,7 +657,7 @@ void __33__PSGAboutController_viewDidLoad__block_invoke_2_420(uint64_t a1)
   [(PSGAboutController *)self reloadSpecifierID:@"NAME_CELL_ID" animated:1];
 }
 
-- (void)handleResourceDictionaryWhenAlreadyPresented:(id)a3
+- (void)handleResourceDictionaryWhenAlreadyPresented:(id)presented
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _PSGLoggingFacility();

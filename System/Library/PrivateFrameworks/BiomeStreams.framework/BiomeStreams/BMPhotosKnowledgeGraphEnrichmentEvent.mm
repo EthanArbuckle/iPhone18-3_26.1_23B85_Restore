@@ -1,34 +1,34 @@
 @interface BMPhotosKnowledgeGraphEnrichmentEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithCoder:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProto:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProtoData:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithUniqueId:(id)a3 personaId:(id)a4 absoluteTimestamp:(double)a5 topics:(id)a6 entities:(id)a7 locations:(id)a8 contentProtection:(id)a9;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithCoder:(id)coder;
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProto:(id)proto;
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProtoData:(id)data;
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithUniqueId:(id)id personaId:(id)personaId absoluteTimestamp:(double)timestamp topics:(id)topics entities:(id)entities locations:(id)locations contentProtection:(id)protection;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMPhotosKnowledgeGraphEnrichmentEvent
 
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithUniqueId:(id)a3 personaId:(id)a4 absoluteTimestamp:(double)a5 topics:(id)a6 entities:(id)a7 locations:(id)a8 contentProtection:(id)a9
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithUniqueId:(id)id personaId:(id)personaId absoluteTimestamp:(double)timestamp topics:(id)topics entities:(id)entities locations:(id)locations contentProtection:(id)protection
 {
-  v17 = a3;
-  v28 = a4;
-  v18 = a6;
-  v19 = a7;
-  obj = a8;
-  v20 = a8;
-  v27 = a9;
-  v21 = a9;
-  if (v17)
+  idCopy = id;
+  personaIdCopy = personaId;
+  topicsCopy = topics;
+  entitiesCopy = entities;
+  obj = locations;
+  locationsCopy = locations;
+  protectionCopy = protection;
+  protectionCopy2 = protection;
+  if (idCopy)
   {
-    if (v18)
+    if (topicsCopy)
     {
       goto LABEL_3;
     }
@@ -37,17 +37,17 @@
   else
   {
     [BMPhotosKnowledgeGraphEnrichmentEvent initWithUniqueId:personaId:absoluteTimestamp:topics:entities:locations:contentProtection:];
-    if (v18)
+    if (topicsCopy)
     {
 LABEL_3:
-      if (v19)
+      if (entitiesCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [BMPhotosKnowledgeGraphEnrichmentEvent initWithUniqueId:personaId:absoluteTimestamp:topics:entities:locations:contentProtection:];
-      if (v20)
+      if (locationsCopy)
       {
         goto LABEL_5;
       }
@@ -57,13 +57,13 @@ LABEL_10:
   }
 
   [BMPhotosKnowledgeGraphEnrichmentEvent initWithUniqueId:personaId:absoluteTimestamp:topics:entities:locations:contentProtection:];
-  if (!v19)
+  if (!entitiesCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v20)
+  if (locationsCopy)
   {
     goto LABEL_5;
   }
@@ -77,24 +77,24 @@ LABEL_5:
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_uniqueId, a3);
-    objc_storeStrong(&v23->_personaId, a4);
-    v23->_absoluteTimestamp = a5;
-    objc_storeStrong(&v23->_topics, a6);
-    objc_storeStrong(&v23->_entities, a7);
+    objc_storeStrong(&v22->_uniqueId, id);
+    objc_storeStrong(&v23->_personaId, personaId);
+    v23->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v23->_topics, topics);
+    objc_storeStrong(&v23->_entities, entities);
     objc_storeStrong(&v23->_locations, obj);
-    objc_storeStrong(&v23->_contentProtection, v27);
+    objc_storeStrong(&v23->_contentProtection, protectionCopy);
   }
 
   return v23;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -113,27 +113,27 @@ LABEL_5:
 
 - (id)jsonDict
 {
-  v3 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
-  v4 = [v3 dictionaryRepresentation];
+  proto = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  v5 = [v4 objectForKeyedSubscript:@"locations"];
+  v5 = [dictionaryRepresentation objectForKeyedSubscript:@"locations"];
   v6 = [v5 count];
 
   if (v6)
   {
-    v7 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
-    v8 = [v7 dictionaryRepresentation];
-    v9 = [v8 mutableCopy];
+    proto2 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
+    dictionaryRepresentation2 = [proto2 dictionaryRepresentation];
+    v9 = [dictionaryRepresentation2 mutableCopy];
 
     v10 = v9;
     v11 = [v10 objectForKeyedSubscript:@"locations"];
     v12 = [v11 _pas_mappedArrayWithTransform:&__block_literal_global_6];
     [v10 setObject:v12 forKeyedSubscript:@"locations"];
 
-    v4 = v10;
+    dictionaryRepresentation = v10;
   }
 
-  return v4;
+  return dictionaryRepresentation;
 }
 
 id __49__BMPhotosKnowledgeGraphEnrichmentEvent_jsonDict__block_invoke(uint64_t a1, void *a2)
@@ -155,9 +155,9 @@ id __49__BMPhotosKnowledgeGraphEnrichmentEvent_jsonDict__block_invoke(uint64_t a
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self jsonDict];
+  jsonDict = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -172,66 +172,66 @@ id __49__BMPhotosKnowledgeGraphEnrichmentEvent_jsonDict__block_invoke(uint64_t a
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithCoder:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProto:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId]&& ([v5 hasAbsoluteTimestamp]& 1) != 0)
       {
-        v6 = [v5 uniqueId];
-        v7 = [v5 personaId];
+        uniqueId = [v5 uniqueId];
+        personaId = [v5 personaId];
         [v5 absoluteTimestamp];
         v9 = v8;
-        v19 = [v5 topics];
-        v10 = [v19 _pas_mappedArrayWithTransform:&__block_literal_global_223];
-        v18 = [v5 entities];
-        v11 = [v18 _pas_mappedArrayWithTransform:&__block_literal_global_226];
-        v12 = [v5 locations];
-        v13 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_229];
-        v14 = [v5 contentProtection];
-        self = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self initWithUniqueId:v6 personaId:v7 absoluteTimestamp:v10 topics:v11 entities:v13 locations:v14 contentProtection:v9];
+        topics = [v5 topics];
+        v10 = [topics _pas_mappedArrayWithTransform:&__block_literal_global_223];
+        entities = [v5 entities];
+        v11 = [entities _pas_mappedArrayWithTransform:&__block_literal_global_226];
+        locations = [v5 locations];
+        v13 = [locations _pas_mappedArrayWithTransform:&__block_literal_global_229];
+        contentProtection = [v5 contentProtection];
+        self = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self initWithUniqueId:uniqueId personaId:personaId absoluteTimestamp:v10 topics:v11 entities:v13 locations:contentProtection contentProtection:v9];
 
-        v15 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -253,14 +253,14 @@ LABEL_13:
       }
     }
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v15;
+  return selfCopy;
 }
 
 BMPhotosKnowledgeGraphEnrichmentTopic *__55__BMPhotosKnowledgeGraphEnrichmentEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -287,53 +287,53 @@ BMPhotosKnowledgeGraphEnrichmentLocation *__55__BMPhotosKnowledgeGraphEnrichment
   return v3;
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProtoData:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBPhotosKnowledgeGraphEnrichmentEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBPhotosKnowledgeGraphEnrichmentEvent alloc] initWithData:dataCopy];
 
     self = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v5 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self personaId];
-  [v3 setPersonaId:v5];
+  personaId = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
   [(BMPhotosKnowledgeGraphEnrichmentEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v6 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self topics];
-  v7 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_232];
+  topics = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self topics];
+  v7 = [topics _pas_mappedArrayWithTransform:&__block_literal_global_232];
   v8 = [v7 mutableCopy];
   [v3 setTopics:v8];
 
-  v9 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self entities];
-  v10 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global_235];
+  entities = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self entities];
+  v10 = [entities _pas_mappedArrayWithTransform:&__block_literal_global_235];
   v11 = [v10 mutableCopy];
   [v3 setEntities:v11];
 
-  v12 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self locations];
-  v13 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_238];
+  locations = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self locations];
+  v13 = [locations _pas_mappedArrayWithTransform:&__block_literal_global_238];
   v14 = [v13 mutableCopy];
   [v3 setLocations:v14];
 
-  v15 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self contentProtection];
-  [v3 setContentProtection:v15];
+  contentProtection = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
   return v3;
 }
@@ -347,17 +347,17 @@ BMPhotosKnowledgeGraphEnrichmentLocation *__55__BMPhotosKnowledgeGraphEnrichment
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMPhotosKnowledgeGraphEnrichmentEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -368,10 +368,10 @@ BMPhotosKnowledgeGraphEnrichmentLocation *__55__BMPhotosKnowledgeGraphEnrichment
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -391,7 +391,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      if (![*(*(&v31 + 1) + 8 * v11) isCompleteWithContext:v6 error:a4])
+      if (![*(*(&v31 + 1) + 8 * v11) isCompleteWithContext:contextCopy error:error])
       {
         goto LABEL_27;
       }
@@ -428,7 +428,7 @@ LABEL_11:
         objc_enumerationMutation(v7);
       }
 
-      if (![*(*(&v27 + 1) + 8 * v15) isCompleteWithContext:v6 error:a4])
+      if (![*(*(&v27 + 1) + 8 * v15) isCompleteWithContext:contextCopy error:error])
       {
         goto LABEL_27;
       }
@@ -465,7 +465,7 @@ LABEL_19:
         objc_enumerationMutation(v7);
       }
 
-      if (![*(*(&v23 + 1) + 8 * v19) isCompleteWithContext:v6 error:{a4, v23}])
+      if (![*(*(&v23 + 1) + 8 * v19) isCompleteWithContext:contextCopy error:{error, v23}])
       {
         break;
       }
@@ -493,10 +493,10 @@ LABEL_25:
 
   if (!self->_uniqueId)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-      *a4 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_29;
     }
 

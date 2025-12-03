@@ -1,16 +1,16 @@
 @interface PKPassSemanticTileFactoryCachedExploreGuidesItem
 - (BOOL)beginContentAccess;
-- (PKPassSemanticTileFactoryCachedExploreGuidesItem)initWithResponse:(id)a3;
+- (PKPassSemanticTileFactoryCachedExploreGuidesItem)initWithResponse:(id)response;
 - (void)discardContentIfPossible;
 - (void)endContentAccess;
 @end
 
 @implementation PKPassSemanticTileFactoryCachedExploreGuidesItem
 
-- (PKPassSemanticTileFactoryCachedExploreGuidesItem)initWithResponse:(id)a3
+- (PKPassSemanticTileFactoryCachedExploreGuidesItem)initWithResponse:(id)response
 {
-  v5 = a3;
-  if (v5)
+  responseCopy = response;
+  if (responseCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassSemanticTileFactoryCachedExploreGuidesItem;
@@ -18,19 +18,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_response, a3);
+      objc_storeStrong(&v6->_response, response);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)beginContentAccess

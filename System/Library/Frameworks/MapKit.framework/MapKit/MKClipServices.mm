@@ -1,19 +1,19 @@
 @interface MKClipServices
 + (id)sharedInstance;
 - (MKClipServices)init;
-- (void)_validateAppClipBasedQuickLinks:(id)a3 completion:(id)a4;
-- (void)appClipWithQuickLink:(id)a3 completion:(id)a4;
-- (void)appClipsFromQuickLinks:(id)a3 completion:(id)a4;
-- (void)quickLinksCopyByRemovingNonAvailableAppClipLinks:(id)a3 completion:(id)a4;
-- (void)requestAppClip:(id)a3 completion:(id)a4;
+- (void)_validateAppClipBasedQuickLinks:(id)links completion:(id)completion;
+- (void)appClipWithQuickLink:(id)link completion:(id)completion;
+- (void)appClipsFromQuickLinks:(id)links completion:(id)completion;
+- (void)quickLinksCopyByRemovingNonAvailableAppClipLinks:(id)links completion:(id)completion;
+- (void)requestAppClip:(id)clip completion:(id)completion;
 @end
 
 @implementation MKClipServices
 
-- (void)requestAppClip:(id)a3 completion:(id)a4
+- (void)requestAppClip:(id)clip completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  clipCopy = clip;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -33,29 +33,29 @@
   v8 = v7;
   _Block_object_dispose(&v13, 8);
   v9 = [v8 alloc];
-  v10 = [v6 appClipURL];
+  appClipURL = [clipCopy appClipURL];
 
-  v11 = [v9 initWithURL:v10];
-  [v11 requestClipWithCompletion:v5];
+  v11 = [v9 initWithURL:appClipURL];
+  [v11 requestClipWithCompletion:completionCopy];
 }
 
-- (void)_validateAppClipBasedQuickLinks:(id)a3 completion:(id)a4
+- (void)_validateAppClipBasedQuickLinks:(id)links completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v28 = v5;
-  if ([v5 count])
+  linksCopy = links;
+  completionCopy = completion;
+  v28 = linksCopy;
+  if ([linksCopy count])
   {
-    v27 = v6;
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-    v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v27 = completionCopy;
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(linksCopy, "count")}];
+    v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(linksCopy, "count")}];
+    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(linksCopy, "count")}];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = v5;
+    v9 = linksCopy;
     v10 = [v9 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v10)
     {
@@ -71,12 +71,12 @@
 
           v13 = *(*(&v34 + 1) + 8 * i);
           v14 = MEMORY[0x1E695DFF8];
-          v15 = [v13 URLString];
-          v16 = [v14 URLWithString:v15];
+          uRLString = [v13 URLString];
+          v16 = [v14 URLWithString:uRLString];
 
           [v7 addObject:v16];
-          v17 = [v13 bundleID];
-          [v29 addObject:v17];
+          bundleID = [v13 bundleID];
+          [v29 addObject:bundleID];
 
           [v8 setObject:v13 forKey:v16];
         }
@@ -131,12 +131,12 @@
     v26 = v7;
     [v24 validateWithCompletion:v30];
 
-    v6 = v27;
+    completionCopy = v27;
   }
 
   else
   {
-    (*(v6 + 2))(v6, MEMORY[0x1E695E0F0]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -209,13 +209,13 @@ void __61__MKClipServices__validateAppClipBasedQuickLinks_completion___block_inv
   (*(v18 + 16))(v18, v19);
 }
 
-- (void)appClipsFromQuickLinks:(id)a3 completion:(id)a4
+- (void)appClipsFromQuickLinks:(id)links completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E696AE18];
-  v8 = a3;
+  linksCopy = links;
   v9 = [v7 predicateWithBlock:&__block_literal_global_695];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  v10 = [linksCopy filteredArrayUsingPredicate:v9];
 
   requestAppClipMetadataQueue = self->_requestAppClipMetadataQueue;
   v14[0] = MEMORY[0x1E69E9820];
@@ -223,8 +223,8 @@ void __61__MKClipServices__validateAppClipBasedQuickLinks_completion___block_inv
   v14[2] = __52__MKClipServices_appClipsFromQuickLinks_completion___block_invoke_2;
   v14[3] = &unk_1E76CDA20;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
   dispatch_async(requestAppClipMetadataQueue, v14);
 }
@@ -397,17 +397,17 @@ void __52__MKClipServices_appClipsFromQuickLinks_completion___block_invoke_21(ui
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)quickLinksCopyByRemovingNonAvailableAppClipLinks:(id)a3 completion:(id)a4
+- (void)quickLinksCopyByRemovingNonAvailableAppClipLinks:(id)links completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  linksCopy = links;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = linksCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -441,8 +441,8 @@ void __52__MKClipServices_appClipsFromQuickLinks_completion___block_invoke_21(ui
   v18[2] = __78__MKClipServices_quickLinksCopyByRemovingNonAvailableAppClipLinks_completion___block_invoke;
   v18[3] = &unk_1E76C6420;
   v19 = v9;
-  v20 = v7;
-  v16 = v7;
+  v20 = completionCopy;
+  v16 = completionCopy;
   v17 = v9;
   [(MKClipServices *)self _validateAppClipBasedQuickLinks:v15 completion:v18];
 }
@@ -537,15 +537,15 @@ void __78__MKClipServices_quickLinksCopyByRemovingNonAvailableAppClipLinks_compl
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)appClipWithQuickLink:(id)a3 completion:(id)a4
+- (void)appClipWithQuickLink:(id)link completion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  linkCopy = link;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (linkCopy)
   {
-    v12[0] = v6;
+    v12[0] = linkCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -557,7 +557,7 @@ void __78__MKClipServices_quickLinksCopyByRemovingNonAvailableAppClipLinks_compl
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -590,7 +590,7 @@ void __50__MKClipServices_appClipWithQuickLink_completion___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __32__MKClipServices_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_711 != -1)
   {
     dispatch_once(&sharedInstance_once_711, block);

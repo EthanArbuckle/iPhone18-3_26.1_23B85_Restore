@@ -1,7 +1,7 @@
 @interface _CNAutocompleteQueryCacheMissOSLogging
 - (_CNAutocompleteQueryCacheMissOSLogging)init;
-- (void)didReturnCacheFalseNegatives:(id)a3;
-- (void)didReturnCacheFalsePositives:(id)a3;
+- (void)didReturnCacheFalseNegatives:(id)negatives;
+- (void)didReturnCacheFalsePositives:(id)positives;
 @end
 
 @implementation _CNAutocompleteQueryCacheMissOSLogging
@@ -23,23 +23,23 @@
   return v2;
 }
 
-- (void)didReturnCacheFalseNegatives:(id)a3
+- (void)didReturnCacheFalseNegatives:(id)negatives
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteQueryCacheMissOSLogging *)self os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  negativesCopy = negatives;
+  os_log = [(_CNAutocompleteQueryCacheMissOSLogging *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
-    [_CNAutocompleteQueryCacheMissOSLogging didReturnCacheFalseNegatives:v4];
+    [_CNAutocompleteQueryCacheMissOSLogging didReturnCacheFalseNegatives:negativesCopy];
   }
 }
 
-- (void)didReturnCacheFalsePositives:(id)a3
+- (void)didReturnCacheFalsePositives:(id)positives
 {
-  v4 = a3;
-  v5 = [(_CNAutocompleteQueryCacheMissOSLogging *)self os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  positivesCopy = positives;
+  os_log = [(_CNAutocompleteQueryCacheMissOSLogging *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
   {
-    [_CNAutocompleteQueryCacheMissOSLogging didReturnCacheFalsePositives:v4];
+    [_CNAutocompleteQueryCacheMissOSLogging didReturnCacheFalsePositives:positivesCopy];
   }
 }
 

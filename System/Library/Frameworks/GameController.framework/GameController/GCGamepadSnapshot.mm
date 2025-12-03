@@ -24,26 +24,26 @@
     v6 = self->snapshotData;
     self->snapshotData = v5;
 
-    v7 = [(GCGamepad *)self dpad];
-    [(GCPhysicalInputProfile *)self setDpad:v7 x:v14.dpadX y:v14.dpadY];
+    dpad = [(GCGamepad *)self dpad];
+    [(GCPhysicalInputProfile *)self setDpad:dpad x:v14.dpadX y:v14.dpadY];
 
-    v8 = [(GCGamepad *)self buttonA];
-    [(GCPhysicalInputProfile *)self setButton:v8 value:v14.buttonA];
+    buttonA = [(GCGamepad *)self buttonA];
+    [(GCPhysicalInputProfile *)self setButton:buttonA value:v14.buttonA];
 
-    v9 = [(GCGamepad *)self buttonB];
-    [(GCPhysicalInputProfile *)self setButton:v9 value:v14.buttonB];
+    buttonB = [(GCGamepad *)self buttonB];
+    [(GCPhysicalInputProfile *)self setButton:buttonB value:v14.buttonB];
 
-    v10 = [(GCGamepad *)self buttonX];
-    [(GCPhysicalInputProfile *)self setButton:v10 value:v14.buttonX];
+    buttonX = [(GCGamepad *)self buttonX];
+    [(GCPhysicalInputProfile *)self setButton:buttonX value:v14.buttonX];
 
-    v11 = [(GCGamepad *)self buttonY];
-    [(GCPhysicalInputProfile *)self setButton:v11 value:v14.buttonY];
+    buttonY = [(GCGamepad *)self buttonY];
+    [(GCPhysicalInputProfile *)self setButton:buttonY value:v14.buttonY];
 
-    v12 = [(GCGamepad *)self leftShoulder];
-    [(GCPhysicalInputProfile *)self setButton:v12 value:v14.leftShoulder];
+    leftShoulder = [(GCGamepad *)self leftShoulder];
+    [(GCPhysicalInputProfile *)self setButton:leftShoulder value:v14.leftShoulder];
 
-    v13 = [(GCGamepad *)self rightShoulder];
-    [(GCPhysicalInputProfile *)self setButton:v13 value:v14.rightShoulder];
+    rightShoulder = [(GCGamepad *)self rightShoulder];
+    [(GCPhysicalInputProfile *)self setButton:rightShoulder value:v14.rightShoulder];
   }
 }
 
@@ -71,15 +71,15 @@
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

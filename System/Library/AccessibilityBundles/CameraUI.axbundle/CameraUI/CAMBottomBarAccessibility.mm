@@ -16,12 +16,12 @@
     return 1;
   }
 
-  v4 = [(CAMBottomBarAccessibility *)self _accessibilityWindow];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  _accessibilityWindow = [(CAMBottomBarAccessibility *)self _accessibilityWindow];
+  window = [_accessibilityWindow window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return (v7 - 1) < 2;
+  return (interfaceOrientation - 1) < 2;
 }
 
 @end

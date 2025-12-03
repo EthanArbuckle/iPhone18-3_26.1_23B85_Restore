@@ -1,6 +1,6 @@
 @interface NPTOServerDeviceController
 - (NPTOServerDeviceController)init;
-- (void)controllerDidInvalidateContent:(id)a3;
+- (void)controllerDidInvalidateContent:(id)content;
 @end
 
 @implementation NPTOServerDeviceController
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (void)controllerDidInvalidateContent:(id)a3
+- (void)controllerDidInvalidateContent:(id)content
 {
   v4 = sub_100004180(&qword_100098AE0);
   __chkstk_darwin(v4 - 8);

@@ -1,22 +1,22 @@
 @interface PXMemoriesFeedEntryLayoutGenerator
 - (CGSize)estimatedSize;
 - (CGSize)size;
-- (PXMemoriesFeedEntryLayoutGenerator)initWithMetrics:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)numberOfGeometriesWithKind:(int64_t)a3;
+- (PXMemoriesFeedEntryLayoutGenerator)initWithMetrics:(id)metrics;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)numberOfGeometriesWithKind:(int64_t)kind;
 - (void)_prepareLayoutIfNeeded;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 - (void)invalidate;
-- (void)setLayoutAxis:(int64_t)a3;
+- (void)setLayoutAxis:(int64_t)axis;
 @end
 
 @implementation PXMemoriesFeedEntryLayoutGenerator
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = PXMemoriesFeedEntryLayoutGenerator;
-  result = [(PXMemoriesFeedEntryLayoutGenerator *)&v5 copyWithZone:a3];
+  result = [(PXMemoriesFeedEntryLayoutGenerator *)&v5 copyWithZone:zone];
   *(result + 16) = self->_layoutAxis;
   return result;
 }
@@ -30,8 +30,8 @@
     [(PXMemoriesFeedEntryLayoutGenerator *)self itemCount];
     [(PXMemoriesSpec *)self->_spec feedInteritemSpacing];
     [(PXMemoriesSpec *)self->_spec feedEntryEdgeInsets];
-    v4 = [(PXMemoriesFeedEntryLayoutGenerator *)self metrics];
-    [v4 referenceSize];
+    metrics = [(PXMemoriesFeedEntryLayoutGenerator *)self metrics];
+    [metrics referenceSize];
 
     PXEdgeInsetsInsetSize();
   }
@@ -146,23 +146,23 @@ void __60__PXMemoriesFeedEntryLayoutGenerator__prepareLayoutIfNeeded__block_invo
   self->_isPrepared = 0;
 }
 
-- (void)setLayoutAxis:(int64_t)a3
+- (void)setLayoutAxis:(int64_t)axis
 {
-  if (self->_layoutAxis != a3)
+  if (self->_layoutAxis != axis)
   {
-    self->_layoutAxis = a3;
+    self->_layoutAxis = axis;
     [(PXMemoriesFeedEntryLayoutGenerator *)self invalidate];
   }
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(PXMemoriesFeedEntryLayoutGenerator *)self _prepareLayoutIfNeeded];
-  if (a5)
+  if (kind)
   {
-    if (a5 == 2 && !location && length)
+    if (kind == 2 && !location && length)
     {
       if ([(PXMemoriesFeedLayoutGenerator *)self includeDateHeader])
       {
@@ -173,19 +173,19 @@ void __60__PXMemoriesFeedEntryLayoutGenerator__prepareLayoutIfNeeded__block_invo
 
   else
   {
-    v9 = [(PXMemoriesFeedEntryLayoutGenerator *)self itemCount];
+    itemCount = [(PXMemoriesFeedEntryLayoutGenerator *)self itemCount];
     rectsByIndexByKind = self->_rectsByIndexByKind;
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:0];
     v14 = [(NSDictionary *)rectsByIndexByKind objectForKeyedSubscript:v11];
 
-    if (v9 >= location + length)
+    if (itemCount >= location + length)
     {
       v12 = location + length;
     }
 
     else
     {
-      v12 = v9;
+      v12 = itemCount;
     }
 
     if (location <= (v12 - 1))
@@ -198,15 +198,15 @@ void __60__PXMemoriesFeedEntryLayoutGenerator__prepareLayoutIfNeeded__block_invo
   }
 }
 
-- (unint64_t)numberOfGeometriesWithKind:(int64_t)a3
+- (unint64_t)numberOfGeometriesWithKind:(int64_t)kind
 {
   [(PXMemoriesFeedEntryLayoutGenerator *)self _prepareLayoutIfNeeded];
-  if (a3 == 2)
+  if (kind == 2)
   {
     return [(PXMemoriesFeedLayoutGenerator *)self includeDateHeader];
   }
 
-  if (a3)
+  if (kind)
   {
     return 0;
   }
@@ -234,17 +234,17 @@ void __60__PXMemoriesFeedEntryLayoutGenerator__prepareLayoutIfNeeded__block_invo
   return result;
 }
 
-- (PXMemoriesFeedEntryLayoutGenerator)initWithMetrics:(id)a3
+- (PXMemoriesFeedEntryLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v11.receiver = self;
   v11.super_class = PXMemoriesFeedEntryLayoutGenerator;
-  v5 = [(PXMemoriesFeedLayoutGenerator *)&v11 initWithMetrics:v4];
+  v5 = [(PXMemoriesFeedLayoutGenerator *)&v11 initWithMetrics:metricsCopy];
   if (v5)
   {
-    v6 = [v4 spec];
+    spec = [metricsCopy spec];
     spec = v5->_spec;
-    v5->_spec = v6;
+    v5->_spec = spec;
 
     v8 = [MEMORY[0x1E696AD50] indexSetWithIndex:0];
     [(NSIndexSet *)v8 addIndex:2];

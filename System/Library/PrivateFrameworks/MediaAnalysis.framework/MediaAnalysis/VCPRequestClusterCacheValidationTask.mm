@@ -1,25 +1,25 @@
 @interface VCPRequestClusterCacheValidationTask
-+ (id)taskWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5;
++ (id)taskWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestClusterCacheValidationTask)initWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5;
+- (VCPRequestClusterCacheValidationTask)initWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestClusterCacheValidationTask
 
-- (VCPRequestClusterCacheValidationTask)initWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5
+- (VCPRequestClusterCacheValidationTask)initWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  replyCopy = reply;
   v15.receiver = self;
   v15.super_class = VCPRequestClusterCacheValidationTask;
   v10 = [(VCPRequestClusterCacheValidationTask *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photoLibraryURL, a3);
-    v12 = objc_retainBlock(v9);
+    objc_storeStrong(&v10->_photoLibraryURL, l);
+    v12 = objc_retainBlock(replyCopy);
     reply = v11->_reply;
     v11->_reply = v12;
   }
@@ -27,12 +27,12 @@
   return v11;
 }
 
-+ (id)taskWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5
++ (id)taskWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithPhotoLibraryURL:v7 andProgressHandler:v8 andReply:v9];
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v10 = [objc_alloc(objc_opt_class()) initWithPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v10;
 }

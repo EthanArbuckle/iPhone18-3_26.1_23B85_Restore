@@ -1,32 +1,32 @@
 @interface ATXSpotlightClientEncodedToolAction
 - (ATXSpotlightClientEncodedToolAction)init;
-- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)a3 encodedCustomIcon:(id)a4 toolID:(id)a5 bundleID:(id)a6 title:(id)a7 uuidString:(id)a8 encodedSummary:(id)a9;
-- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)a3 toolID:(id)a4 bundleID:(id)a5 title:(id)a6 uuidString:(id)a7;
-- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)a3 toolID:(id)a4 bundleID:(id)a5 title:(id)a6 uuidString:(id)a7 encodedSummary:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)tool encodedCustomIcon:(id)icon toolID:(id)d bundleID:(id)iD title:(id)title uuidString:(id)string encodedSummary:(id)summary;
+- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)tool toolID:(id)d bundleID:(id)iD title:(id)title uuidString:(id)string;
+- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)tool toolID:(id)d bundleID:(id)iD title:(id)title uuidString:(id)string encodedSummary:(id)summary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSpotlightClientEncodedToolAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SpotlightClientEncodedToolAction.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SpotlightClientEncodedToolAction.encode(with:)(coderCopy);
 }
 
-- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)a3 encodedCustomIcon:(id)a4 toolID:(id)a5 bundleID:(id)a6 title:(id)a7 uuidString:(id)a8 encodedSummary:(id)a9
+- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)tool encodedCustomIcon:(id)icon toolID:(id)d bundleID:(id)iD title:(id)title uuidString:(id)string encodedSummary:(id)summary
 {
   ObjectType = swift_getObjectType();
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (a3)
+  iconCopy = icon;
+  dCopy = d;
+  iDCopy = iD;
+  titleCopy = title;
+  stringCopy = string;
+  summaryCopy = summary;
+  if (tool)
   {
-    v22 = a3;
+    toolCopy = tool;
     v23 = sub_260DF53B4();
     v48 = v24;
     v49 = v23;
@@ -51,7 +51,7 @@
   v33 = sub_260DF59C4();
   v35 = v34;
 
-  if (a9)
+  if (summary)
   {
     v36 = sub_260DF53B4();
     v38 = v37;
@@ -66,7 +66,7 @@
   v39 = (self + OBJC_IVAR___ATXSpotlightClientEncodedToolAction_encodedTool);
   *v39 = v49;
   v39[1] = v48;
-  *(self + OBJC_IVAR___ATXSpotlightClientEncodedToolAction_encodedCustomIcon) = a4;
+  *(self + OBJC_IVAR___ATXSpotlightClientEncodedToolAction_encodedCustomIcon) = icon;
   v40 = (self + OBJC_IVAR___ATXSpotlightClientEncodedToolAction_toolID);
   *v40 = v47;
   v40[1] = v46;
@@ -87,25 +87,25 @@
   return [(ATXSpotlightClientEncodedToolAction *)&v52 init:v46];
 }
 
-- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)a3 toolID:(id)a4 bundleID:(id)a5 title:(id)a6 uuidString:(id)a7
+- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)tool toolID:(id)d bundleID:(id)iD title:(id)title uuidString:(id)string
 {
-  if (a3)
+  if (tool)
   {
-    v12 = a4;
-    v13 = a5;
-    v14 = a6;
-    v15 = a7;
-    v16 = a3;
+    dCopy = d;
+    iDCopy = iD;
+    titleCopy = title;
+    stringCopy = string;
+    toolCopy = tool;
     v24 = sub_260DF53B4();
     v18 = v17;
   }
 
   else
   {
-    v19 = a4;
-    v20 = a5;
-    v21 = a6;
-    v22 = a7;
+    dCopy2 = d;
+    iDCopy2 = iD;
+    titleCopy2 = title;
+    stringCopy2 = string;
     v24 = 0;
     v18 = 0xF000000000000000;
   }
@@ -119,16 +119,16 @@
   return SpotlightClientEncodedToolAction.init(encodedTool:toolID:bundleID:title:uuidString:)(v24, v18);
 }
 
-- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)a3 toolID:(id)a4 bundleID:(id)a5 title:(id)a6 uuidString:(id)a7 encodedSummary:(id)a8
+- (ATXSpotlightClientEncodedToolAction)initWithEncodedTool:(id)tool toolID:(id)d bundleID:(id)iD title:(id)title uuidString:(id)string encodedSummary:(id)summary
 {
-  if (a3)
+  if (tool)
   {
-    v14 = a4;
-    v15 = a5;
-    v16 = a6;
-    v17 = a7;
-    v18 = a8;
-    v19 = a3;
+    dCopy = d;
+    iDCopy = iD;
+    titleCopy = title;
+    stringCopy = string;
+    summaryCopy = summary;
+    toolCopy = tool;
     v20 = sub_260DF53B4();
     v43 = v21;
     v44 = v20;
@@ -136,11 +136,11 @@
 
   else
   {
-    v22 = a4;
-    v23 = a5;
-    v24 = a6;
-    v25 = a7;
-    v26 = a8;
+    dCopy2 = d;
+    iDCopy2 = iD;
+    titleCopy2 = title;
+    stringCopy2 = string;
+    summaryCopy2 = summary;
     v43 = 0xF000000000000000;
     v44 = 0;
   }
@@ -157,7 +157,7 @@
   v35 = sub_260DF59C4();
   v37 = v36;
 
-  if (a8)
+  if (summary)
   {
     v38 = sub_260DF53B4();
     v40 = v39;

@@ -1,9 +1,9 @@
 @interface DMFReportingRequirements
 - (DMFReportingRequirements)init;
-- (DMFReportingRequirements)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DMFReportingRequirements)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFReportingRequirements
@@ -35,50 +35,50 @@
   return v4;
 }
 
-- (DMFReportingRequirements)initWithCoder:(id)a3
+- (DMFReportingRequirements)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = DMFReportingRequirements;
   v5 = [(DMFReportingRequirements *)&v13 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"reachableHostName"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"reachableHostName"];
     reachableHostName = v5->_reachableHostName;
     v5->_reachableHostName = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateCoalescenceInterval"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateCoalescenceInterval"];
     [v9 doubleValue];
     v5->_updateCoalescenceInterval = v10;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requireActiveConnection"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requireActiveConnection"];
     v5->_requireActiveConnection = [v11 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DMFReportingRequirements *)self reachableHostName];
-  [v4 encodeObject:v5 forKey:@"reachableHostName"];
+  coderCopy = coder;
+  reachableHostName = [(DMFReportingRequirements *)self reachableHostName];
+  [coderCopy encodeObject:reachableHostName forKey:@"reachableHostName"];
 
   v6 = MEMORY[0x1E696AD98];
   [(DMFReportingRequirements *)self updateCoalescenceInterval];
   v7 = [v6 numberWithDouble:?];
-  [v4 encodeObject:v7 forKey:@"updateCoalescenceInterval"];
+  [coderCopy encodeObject:v7 forKey:@"updateCoalescenceInterval"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFReportingRequirements requireActiveConnection](self, "requireActiveConnection")}];
-  [v4 encodeObject:v8 forKey:@"requireActiveConnection"];
+  [coderCopy encodeObject:v8 forKey:@"requireActiveConnection"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(DMFReportingRequirements *)self reachableHostName];
-  [v4 setReachableHostName:v5];
+  reachableHostName = [(DMFReportingRequirements *)self reachableHostName];
+  [v4 setReachableHostName:reachableHostName];
 
   [(DMFReportingRequirements *)self updateCoalescenceInterval];
   [v4 setUpdateCoalescenceInterval:?];

@@ -1,15 +1,15 @@
 @interface MTLDynamicLibraryDescriptorSPI
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation MTLDynamicLibraryDescriptorSPI
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -20,16 +20,16 @@
     v18 = v4;
     v19 = v3;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       library = self->_library;
-      if (library == [a3 library] || (v12 = -[MTLLibrary isEqual:](self->_library, "isEqual:", objc_msgSend(a3, "library"))) != 0)
+      if (library == [equal library] || (v12 = -[MTLLibrary isEqual:](self->_library, "isEqual:", objc_msgSend(equal, "library"))) != 0)
       {
         url = self->_url;
-        if (url == [a3 url] || (v12 = -[NSURL isEqual:](self->_url, "isEqual:", objc_msgSend(a3, "url"))) != 0)
+        if (url == [equal url] || (v12 = -[NSURL isEqual:](self->_url, "isEqual:", objc_msgSend(equal, "url"))) != 0)
         {
           options = self->_options;
-          LOBYTE(v12) = options == [a3 options];
+          LOBYTE(v12) = options == [equal options];
         }
       }
     }
@@ -59,14 +59,14 @@
   return _MTLHashState(v4, 0x18uLL);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
   {
     [v5 setLibrary:self->_library];
-    v6[1] = [(NSURL *)self->_url copyWithZone:a3];
+    v6[1] = [(NSURL *)self->_url copyWithZone:zone];
     v6[3] = self->_options;
   }
 

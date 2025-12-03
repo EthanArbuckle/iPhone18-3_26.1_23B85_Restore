@@ -1,23 +1,23 @@
 @interface NUEmbedConfigurationOperation
-- (NUEmbedConfigurationOperation)initWithAppConfigManager:(id)a3 flintResourceManager:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (NUEmbedConfigurationOperation)initWithAppConfigManager:(id)manager flintResourceManager:(id)resourceManager;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation NUEmbedConfigurationOperation
 
-- (NUEmbedConfigurationOperation)initWithAppConfigManager:(id)a3 flintResourceManager:(id)a4
+- (NUEmbedConfigurationOperation)initWithAppConfigManager:(id)manager flintResourceManager:(id)resourceManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  resourceManagerCopy = resourceManager;
   v12.receiver = self;
   v12.super_class = NUEmbedConfigurationOperation;
   v9 = [(FCOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appConfigurationManager, a3);
-    objc_storeStrong(&v10->_flintResourceManager, a4);
+    objc_storeStrong(&v9->_appConfigurationManager, manager);
+    objc_storeStrong(&v10->_flintResourceManager, resourceManager);
   }
 
   return v10;
@@ -27,7 +27,7 @@
 {
   [(NUEmbedConfigurationOperation *)self qualityOfService];
   v3 = FCDispatchQueueForQualityOfService();
-  v4 = [(NUEmbedConfigurationOperation *)self appConfigurationManager];
+  appConfigurationManager = [(NUEmbedConfigurationOperation *)self appConfigurationManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__NUEmbedConfigurationOperation_performOperation__block_invoke;
@@ -35,7 +35,7 @@
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  [v4 fetchAppConfigurationIfNeededWithCompletionQueue:v5 completion:v6];
+  [appConfigurationManager fetchAppConfigurationIfNeededWithCompletionQueue:v5 completion:v6];
 }
 
 void __49__NUEmbedConfigurationOperation_performOperation__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -111,16 +111,16 @@ void __49__NUEmbedConfigurationOperation_performOperation__block_invoke_6(uint64
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(NUEmbedConfigurationOperation *)self completion];
+  errorCopy = error;
+  completion = [(NUEmbedConfigurationOperation *)self completion];
 
-  if (v4)
+  if (completion)
   {
-    v5 = [(NUEmbedConfigurationOperation *)self completion];
-    v6 = [(NUEmbedConfigurationOperation *)self result];
-    (v5)[2](v5, v6, v7);
+    completion2 = [(NUEmbedConfigurationOperation *)self completion];
+    result = [(NUEmbedConfigurationOperation *)self result];
+    (completion2)[2](completion2, result, errorCopy);
   }
 }
 

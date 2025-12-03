@@ -1,11 +1,11 @@
 @interface ICTableCellMergeableStringDelegate
 - (BOOL)wantsUndoCommands;
 - (ICTableCellMergeableStringDelegate)init;
-- (ICTableCellMergeableStringDelegate)initWithTableCellChangeObserver:(id)a3 columnID:(id)a4 rowID:(id)a5;
+- (ICTableCellMergeableStringDelegate)initWithTableCellChangeObserver:(id)observer columnID:(id)d rowID:(id)iD;
 - (ICTableCellMergeableStringObserving)changeObserver;
-- (void)addUndoCommand:(id)a3;
+- (void)addUndoCommand:(id)command;
 - (void)beginEditing;
-- (void)edited:(unint64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5;
+- (void)edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length;
 - (void)endEditing;
 @end
 
@@ -18,23 +18,23 @@
   return 0;
 }
 
-- (ICTableCellMergeableStringDelegate)initWithTableCellChangeObserver:(id)a3 columnID:(id)a4 rowID:(id)a5
+- (ICTableCellMergeableStringDelegate)initWithTableCellChangeObserver:(id)observer columnID:(id)d rowID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = ICTableCellMergeableStringDelegate;
   v11 = [(ICTableCellMergeableStringDelegate *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_changeObserver, v8);
-    objc_storeStrong(&v12->_columnID, a4);
-    objc_storeStrong(&v12->_rowID, a5);
-    v13 = [MEMORY[0x1E695DF70] array];
+    objc_storeWeak(&v11->_changeObserver, observerCopy);
+    objc_storeStrong(&v12->_columnID, d);
+    objc_storeStrong(&v12->_rowID, iD);
+    array = [MEMORY[0x1E695DF70] array];
     undoCommands = v12->_undoCommands;
-    v12->_undoCommands = v13;
+    v12->_undoCommands = array;
   }
 
   return v12;
@@ -57,55 +57,55 @@
 
   if (![(ICTableCellMergeableStringDelegate *)self editingCount])
   {
-    v3 = [(ICTableCellMergeableStringDelegate *)self undoCommands];
-    v4 = [v3 count];
+    undoCommands = [(ICTableCellMergeableStringDelegate *)self undoCommands];
+    v4 = [undoCommands count];
 
     if (v4)
     {
-      v5 = [(ICTableCellMergeableStringDelegate *)self changeObserver];
-      v6 = [v5 undoHelper];
+      changeObserver = [(ICTableCellMergeableStringDelegate *)self changeObserver];
+      undoHelper = [changeObserver undoHelper];
 
-      v7 = [v6 coalescingUndoGroupForStringDelegate];
-      v8 = [v7 objectForKey:self];
+      coalescingUndoGroupForStringDelegate = [undoHelper coalescingUndoGroupForStringDelegate];
+      v8 = [coalescingUndoGroupForStringDelegate objectForKey:self];
 
       if (!v8)
       {
-        v9 = [v6 tableSelection];
-        if ([v9 type] == 1)
+        tableSelection = [undoHelper tableSelection];
+        if ([tableSelection type] == 1)
         {
           v10 = objc_alloc_init(ICTableAttachmentSelection);
 
-          v11 = [(ICTableCellMergeableStringDelegate *)self columnID];
-          v12 = [(ICTableCellMergeableStringDelegate *)self rowID];
-          [(ICTableAttachmentSelection *)v10 selectCellAtColumn:v11 row:v12];
+          columnID = [(ICTableCellMergeableStringDelegate *)self columnID];
+          rowID = [(ICTableCellMergeableStringDelegate *)self rowID];
+          [(ICTableAttachmentSelection *)v10 selectCellAtColumn:columnID row:rowID];
 
-          v9 = v10;
+          tableSelection = v10;
         }
 
         v13 = [ICTableCellEditingUndoGroup alloc];
-        v14 = [(ICTableCellMergeableStringDelegate *)self columnID];
-        v15 = [(ICTableCellMergeableStringDelegate *)self rowID];
-        v16 = [v6 undoTarget];
-        v8 = [(ICTableCellEditingUndoGroup *)v13 initWithColumn:v14 row:v15 selection:v9 undoTarget:v16];
+        columnID2 = [(ICTableCellMergeableStringDelegate *)self columnID];
+        rowID2 = [(ICTableCellMergeableStringDelegate *)self rowID];
+        undoTarget = [undoHelper undoTarget];
+        v8 = [(ICTableCellEditingUndoGroup *)v13 initWithColumn:columnID2 row:rowID2 selection:tableSelection undoTarget:undoTarget];
 
-        v17 = [v6 coalescingUndoGroupForStringDelegate];
-        [v17 setObject:v8 forKey:self];
+        coalescingUndoGroupForStringDelegate2 = [undoHelper coalescingUndoGroupForStringDelegate];
+        [coalescingUndoGroupForStringDelegate2 setObject:v8 forKey:self];
 
-        v18 = [v6 undoManager];
-        v19 = [v6 undoTarget];
-        [v18 registerUndoWithTarget:v19 selector:sel_applyUndoGroup_ object:v8];
+        undoManager = [undoHelper undoManager];
+        undoTarget2 = [undoHelper undoTarget];
+        [undoManager registerUndoWithTarget:undoTarget2 selector:sel_applyUndoGroup_ object:v8];
 
-        v20 = [v6 undoManager];
+        undoManager2 = [undoHelper undoManager];
         v21 = __ICLocalizedFrameworkString_impl(@"Typing", @"Typing", 0, 1);
-        [v20 setActionName:v21];
+        [undoManager2 setActionName:v21];
       }
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v22 = [(ICTableCellMergeableStringDelegate *)self undoCommands];
-      v23 = [v22 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      undoCommands2 = [(ICTableCellMergeableStringDelegate *)self undoCommands];
+      v23 = [undoCommands2 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v23)
       {
         v24 = v23;
@@ -117,59 +117,59 @@
           {
             if (*v29 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(undoCommands2);
             }
 
             [(ICTTMergeableStringUndoGroup *)v8 addCommand:*(*(&v28 + 1) + 8 * v26++)];
           }
 
           while (v24 != v26);
-          v24 = [v22 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v24 = [undoCommands2 countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v24);
       }
 
-      v27 = [(ICTableCellMergeableStringDelegate *)self undoCommands];
-      [v27 removeAllObjects];
+      undoCommands3 = [(ICTableCellMergeableStringDelegate *)self undoCommands];
+      [undoCommands3 removeAllObjects];
     }
   }
 }
 
-- (void)edited:(unint64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5
+- (void)edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = [(ICTableCellMergeableStringDelegate *)self changeObserver];
-  v10 = [(ICTableCellMergeableStringDelegate *)self columnID];
-  v11 = [(ICTableCellMergeableStringDelegate *)self rowID];
-  [v12 tableCellWasEditedAtColumnID:v10 rowID:v11 edited:a3 range:location changeInLength:{length, a5}];
+  length = range.length;
+  location = range.location;
+  changeObserver = [(ICTableCellMergeableStringDelegate *)self changeObserver];
+  columnID = [(ICTableCellMergeableStringDelegate *)self columnID];
+  rowID = [(ICTableCellMergeableStringDelegate *)self rowID];
+  [changeObserver tableCellWasEditedAtColumnID:columnID rowID:rowID edited:edited range:location changeInLength:{length, length}];
 }
 
-- (void)addUndoCommand:(id)a3
+- (void)addUndoCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   [(ICTableCellMergeableStringDelegate *)self beginEditing];
-  v5 = [(ICTableCellMergeableStringDelegate *)self undoCommands];
-  [v5 addObject:v4];
+  undoCommands = [(ICTableCellMergeableStringDelegate *)self undoCommands];
+  [undoCommands addObject:commandCopy];
 
   [(ICTableCellMergeableStringDelegate *)self endEditing];
 }
 
 - (BOOL)wantsUndoCommands
 {
-  v3 = [(ICTableCellMergeableStringDelegate *)self changeObserver];
-  v4 = [v3 undoHelper];
+  changeObserver = [(ICTableCellMergeableStringDelegate *)self changeObserver];
+  undoHelper = [changeObserver undoHelper];
 
-  if ([v4 shouldPreventUndoCommands])
+  if ([undoHelper shouldPreventUndoCommands])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(ICTableCellMergeableStringDelegate *)self changeObserver];
-    v5 = [v6 shouldPreventUndoCommands] ^ 1;
+    changeObserver2 = [(ICTableCellMergeableStringDelegate *)self changeObserver];
+    v5 = [changeObserver2 shouldPreventUndoCommands] ^ 1;
   }
 
   return v5;

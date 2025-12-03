@@ -1,24 +1,24 @@
 @interface HMIUpdatedFaceprintsResult
-- (HMIUpdatedFaceprintsResult)initWithExistingAtCurrentVersion:(id)a3 createdAtCurrentVersion:(id)a4 existingAtOtherVersions:(id)a5;
+- (HMIUpdatedFaceprintsResult)initWithExistingAtCurrentVersion:(id)version createdAtCurrentVersion:(id)currentVersion existingAtOtherVersions:(id)versions;
 - (NSSet)allAtCurrentVersion;
 @end
 
 @implementation HMIUpdatedFaceprintsResult
 
-- (HMIUpdatedFaceprintsResult)initWithExistingAtCurrentVersion:(id)a3 createdAtCurrentVersion:(id)a4 existingAtOtherVersions:(id)a5
+- (HMIUpdatedFaceprintsResult)initWithExistingAtCurrentVersion:(id)version createdAtCurrentVersion:(id)currentVersion existingAtOtherVersions:(id)versions
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  versionCopy = version;
+  currentVersionCopy = currentVersion;
+  versionsCopy = versions;
   v15.receiver = self;
   v15.super_class = HMIUpdatedFaceprintsResult;
   v12 = [(HMIUpdatedFaceprintsResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_existingAtCurrentVersion, a3);
-    objc_storeStrong(&v13->_createdAtCurrentVersion, a4);
-    objc_storeStrong(&v13->_existingAtOtherVersions, a5);
+    objc_storeStrong(&v12->_existingAtCurrentVersion, version);
+    objc_storeStrong(&v13->_createdAtCurrentVersion, currentVersion);
+    objc_storeStrong(&v13->_existingAtOtherVersions, versions);
   }
 
   return v13;
@@ -27,7 +27,7 @@
 - (NSSet)allAtCurrentVersion
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMIUpdatedFaceprintsResult *)self existingAtCurrentVersion];
+  existingAtCurrentVersion = [(HMIUpdatedFaceprintsResult *)self existingAtCurrentVersion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__HMIUpdatedFaceprintsResult_allAtCurrentVersion__block_invoke;
@@ -35,17 +35,17 @@
   v16[4] = self;
   v5 = v3;
   v17 = v5;
-  [v4 na_each:v16];
+  [existingAtCurrentVersion na_each:v16];
 
-  v6 = [(HMIUpdatedFaceprintsResult *)self createdAtCurrentVersion];
+  createdAtCurrentVersion = [(HMIUpdatedFaceprintsResult *)self createdAtCurrentVersion];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __49__HMIUpdatedFaceprintsResult_allAtCurrentVersion__block_invoke_149;
   v13 = &unk_278753D48;
-  v14 = self;
+  selfCopy = self;
   v15 = v5;
   v7 = v5;
-  [v6 na_each:&v10];
+  [createdAtCurrentVersion na_each:&v10];
 
   v8 = [v7 copy];
 

@@ -1,10 +1,10 @@
 @interface XPCSubscription
-- (void)modelStatesDidUpdate:(id)a3;
+- (void)modelStatesDidUpdate:(id)update;
 @end
 
 @implementation XPCSubscription
 
-- (void)modelStatesDidUpdate:(id)a3
+- (void)modelStatesDidUpdate:(id)update
 {
   v3 = sub_253148C94();
 

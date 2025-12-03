@@ -1,19 +1,19 @@
 @interface WiFi3BarsTileCacheObserver
-- (WiFi3BarsTileCacheObserver)initWithDataSourceMediator:(id)a3;
+- (WiFi3BarsTileCacheObserver)initWithDataSourceMediator:(id)mediator;
 - (void)_scheduleXPCActivity;
 - (void)_submitCacheAvailabilityMetric;
 @end
 
 @implementation WiFi3BarsTileCacheObserver
 
-- (WiFi3BarsTileCacheObserver)initWithDataSourceMediator:(id)a3
+- (WiFi3BarsTileCacheObserver)initWithDataSourceMediator:(id)mediator
 {
-  v4 = a3;
+  mediatorCopy = mediator;
   v8.receiver = self;
   v8.super_class = WiFi3BarsTileCacheObserver;
   v5 = [(WiFi3BarsTileCacheObserver *)&v8 init];
   dataSourceMediator = v5->_dataSourceMediator;
-  v5->_dataSourceMediator = v4;
+  v5->_dataSourceMediator = mediatorCopy;
 
   [(WiFi3BarsTileCacheObserver *)v5 _scheduleXPCActivity];
   return v5;
@@ -49,16 +49,16 @@ uint64_t __50__WiFi3BarsTileCacheObserver__scheduleXPCActivity__block_invoke(uin
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = +[WiFiLocationManager sharedWiFiLocationManager];
-  v4 = [v3 latestLocation];
+  latestLocation = [v3 latestLocation];
 
-  if (v4)
+  if (latestLocation)
   {
-    if ([WiFiLocationManager isLocationValid:v4 uptoSeconds:900.0 requiredAccuracy:2000.0])
+    if ([WiFiLocationManager isLocationValid:latestLocation uptoSeconds:900.0 requiredAccuracy:2000.0])
     {
       v5 = [TBGloriaTile alloc];
-      [v4 coordinate];
+      [latestLocation coordinate];
       v7 = v6;
-      [v4 coordinate];
+      [latestLocation coordinate];
       v9 = [(TBGloriaTile *)v5 initWithLat:+[TBGloriaTile lng:"defaultZoomLevel"]zoom:v7, v8];
       if ([(TBGloriaTile *)v9 key])
       {
@@ -75,8 +75,8 @@ uint64_t __50__WiFi3BarsTileCacheObserver__scheduleXPCActivity__block_invoke(uin
           _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: Fetching tile key at key: %@ zoom: %hhu", buf, 0x1Cu);
         }
 
-        v12 = [MEMORY[0x277CBEAA8] date];
-        v24 = [v12 dateByAddingDays:-7];
+        date = [MEMORY[0x277CBEAA8] date];
+        v24 = [date dateByAddingDays:-7];
 
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v10];
         v14 = [TBTileItemDescriptor tileItemDescriptorWithKey:v13];
@@ -98,8 +98,8 @@ uint64_t __50__WiFi3BarsTileCacheObserver__scheduleXPCActivity__block_invoke(uin
         v25[3] = &__block_descriptor_40_e39_v28__0___TBFetchResponse__8___v___16B24l;
         v25[4] = v10;
         [(TBTileFetchRequest *)v17 setResultsHandler:v25];
-        v20 = [(WiFi3BarsTileCacheObserver *)self dataSourceMediator];
-        [v20 executeFetchRequest:v17];
+        dataSourceMediator = [(WiFi3BarsTileCacheObserver *)self dataSourceMediator];
+        [dataSourceMediator executeFetchRequest:v17];
       }
 
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))

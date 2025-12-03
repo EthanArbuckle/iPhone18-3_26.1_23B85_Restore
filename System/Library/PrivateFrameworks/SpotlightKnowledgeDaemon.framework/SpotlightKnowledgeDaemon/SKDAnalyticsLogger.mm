@@ -1,29 +1,29 @@
 @interface SKDAnalyticsLogger
-- (BOOL)supportedEvent:(id)a3;
-- (BOOL)supportedTrackingEvent:(id)a3;
-- (SKDAnalyticsLogger)initWithDomain:(id)a3 analyticsProvider:(id)a4;
+- (BOOL)supportedEvent:(id)event;
+- (BOOL)supportedTrackingEvent:(id)event;
+- (SKDAnalyticsLogger)initWithDomain:(id)domain analyticsProvider:(id)provider;
 - (id)logs;
-- (id)trackingEventBeginWithName:(id)a3 event:(id)a4;
+- (id)trackingEventBeginWithName:(id)name event:(id)event;
 - (void)dealloc;
 - (void)flush;
-- (void)logEvent:(id)a3 level:(unint64_t)a4;
-- (void)trackingEventEnd:(id)a3;
+- (void)logEvent:(id)event level:(unint64_t)level;
+- (void)trackingEventEnd:(id)end;
 @end
 
 @implementation SKDAnalyticsLogger
 
-- (SKDAnalyticsLogger)initWithDomain:(id)a3 analyticsProvider:(id)a4
+- (SKDAnalyticsLogger)initWithDomain:(id)domain analyticsProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = SKDAnalyticsLogger;
-  v8 = [(SKDEventLogger *)&v11 initWithDomain:a3];
+  v8 = [(SKDEventLogger *)&v11 initWithDomain:domain];
   v9 = v8;
   if (v8)
   {
     v8->_maxLogCount = 100;
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_analyticsProvider, a4);
+    objc_storeStrong(&v8->_analyticsProvider, provider);
   }
 
   return v9;
@@ -67,15 +67,15 @@
   return v4;
 }
 
-- (BOOL)supportedEvent:(id)a3
+- (BOOL)supportedEvent:(id)event
 {
-  v3 = a3;
-  if (([v3 status] == 4 || objc_msgSend(v3, "status") == 2) && objc_msgSend(v3, "type") == 7)
+  eventCopy = event;
+  if (([eventCopy status] == 4 || objc_msgSend(eventCopy, "status") == 2) && objc_msgSend(eventCopy, "type") == 7)
   {
-    if ([v3 status] != 4 || (objc_msgSend(v3, "info"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+    if ([eventCopy status] != 4 || (objc_msgSend(eventCopy, "info"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
     {
-      v5 = [v3 feedback];
-      v6 = [v5 objectForKey:@"pipeline"];
+      feedback = [eventCopy feedback];
+      v6 = [feedback objectForKey:@"pipeline"];
       LOBYTE(v4) = v6 != 0;
     }
   }
@@ -88,32 +88,32 @@
   return v4;
 }
 
-- (void)logEvent:(id)a3 level:(unint64_t)a4
+- (void)logEvent:(id)event level:(unint64_t)level
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(SKDAnalyticsLogger *)self supportedEvent:v5])
+  eventCopy = event;
+  if (![(SKDAnalyticsLogger *)self supportedEvent:eventCopy])
   {
     goto LABEL_50;
   }
 
-  if ([v5 status] == 4)
+  if ([eventCopy status] == 4)
   {
-    v6 = [v5 info];
+    info = [eventCopy info];
 
-    if (!v6)
+    if (!info)
     {
       goto LABEL_48;
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v8 = [v5 info];
-    v9 = [v8 domain];
-    [v7 setObject:v9 forKey:@"errorDomain"];
+    info2 = [eventCopy info];
+    domain = [info2 domain];
+    [v7 setObject:domain forKey:@"errorDomain"];
 
     v10 = MEMORY[0x277CCABB0];
-    v11 = [v5 info];
-    v12 = [v10 numberWithInteger:{objc_msgSend(v11, "code")}];
+    info3 = [eventCopy info];
+    v12 = [v10 numberWithInteger:{objc_msgSend(info3, "code")}];
     [v7 setObject:v12 forKey:@"errorDomain"];
 
     if (!v7)
@@ -134,7 +134,7 @@ LABEL_44:
       logs = self->_logs;
     }
 
-    [(NSMutableArray *)logs addObject:v7, v42];
+    [(NSMutableArray *)logs addObject:v7, selfCopy];
     v39 = [(NSMutableArray *)self->_logs count];
     maxLogCount = self->_maxLogCount;
     os_unfair_lock_unlock(&self->_lock);
@@ -146,7 +146,7 @@ LABEL_44:
     goto LABEL_49;
   }
 
-  if ([v5 status] != 2)
+  if ([eventCopy status] != 2)
   {
     goto LABEL_48;
   }
@@ -157,20 +157,20 @@ LABEL_44:
   }
 
   v13 = getAnalyticsAliases_sAnalyticsAliases;
-  v42 = self;
+  selfCopy = self;
   if (getAnalyticsKeys_onceToken != -1)
   {
     [SKDAnalyticsLogger logEvent:level:];
   }
 
   v45 = getAnalyticsKeys_sAnalyticsKeys;
-  v43 = v5;
-  v14 = [v5 feedback];
+  v43 = eventCopy;
+  feedback = [eventCopy feedback];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  v15 = [feedback countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (!v15)
   {
     v47 = 0;
@@ -190,11 +190,11 @@ LABEL_44:
     {
       if (*v49 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(feedback);
       }
 
       v20 = *(*(&v48 + 1) + 8 * v19);
-      v21 = [v14 objectForKeyedSubscript:{v14, v42}];
+      v21 = [feedback objectForKeyedSubscript:{feedback, selfCopy}];
 
       if (v21 != v18)
       {
@@ -203,17 +203,17 @@ LABEL_44:
         if (v22)
         {
           v23 = [v13 objectForKeyedSubscript:v20];
-          v24 = [v14 objectForKeyedSubscript:v20];
+          v24 = [feedback objectForKeyedSubscript:v20];
           if (v24)
           {
             v25 = v24;
             v26 = v18;
             v27 = v17;
-            v28 = [v14 objectForKeyedSubscript:v20];
+            v28 = [feedback objectForKeyedSubscript:v20];
             v29 = [v45 objectForKeyedSubscript:v23];
             if (objc_opt_isKindOfClass())
             {
-              v30 = [v14 objectForKeyedSubscript:v20];
+              v30 = [feedback objectForKeyedSubscript:v20];
             }
 
             else
@@ -226,18 +226,18 @@ LABEL_44:
               v17 = v27;
               if ([v20 isEqualToString:@"textContentLength"])
               {
-                v31 = [v30 unsignedIntValue];
+                unsignedIntValue = [v30 unsignedIntValue];
                 v18 = v26;
-                if (v31 <= 0x63)
+                if (unsignedIntValue <= 0x63)
                 {
 
                   v30 = &unk_2846E79C8;
                   goto LABEL_28;
                 }
 
-                v33 = v31;
+                v33 = unsignedIntValue;
                 v16 = v46;
-                if (v31 > 0x12B)
+                if (unsignedIntValue > 0x12B)
                 {
 
                   if (v33 >> 3 >= 0x271)
@@ -292,15 +292,15 @@ LABEL_28:
     }
 
     while (v16 != v19);
-    v34 = [v14 countByEnumeratingWithState:&v48 objects:v52 count:16];
+    v34 = [feedback countByEnumeratingWithState:&v48 objects:v52 count:16];
     v16 = v34;
   }
 
   while (v34);
 LABEL_43:
 
-  self = v42;
-  v5 = v43;
+  self = selfCopy;
+  eventCopy = v43;
   v7 = v47;
   if (v47)
   {
@@ -318,7 +318,7 @@ LABEL_50:
 - (void)flush
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SKDAnalyticsLogger *)self logs];
+  logs = [(SKDAnalyticsLogger *)self logs];
   os_unfair_lock_lock(&self->_lock);
   logs = self->_logs;
   self->_logs = 0;
@@ -328,7 +328,7 @@ LABEL_50:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v3;
+  v5 = logs;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -357,14 +357,14 @@ LABEL_50:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)supportedTrackingEvent:(id)a3
+- (BOOL)supportedTrackingEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 event];
-    v5 = [v4 type] == 6;
+    event = [eventCopy event];
+    v5 = [event type] == 6;
   }
 
   else
@@ -375,32 +375,32 @@ LABEL_50:
   return v5;
 }
 
-- (id)trackingEventBeginWithName:(id)a3 event:(id)a4
+- (id)trackingEventBeginWithName:(id)name event:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  nameCopy = name;
   v8 = [SKDAnalyticsTrackingEvent alloc];
-  v9 = [(SKDEventLogger *)self domain];
-  v10 = [(SKDAnalyticsTrackingEvent *)v8 initWithName:v7 event:v6 domain:v9];
+  domain = [(SKDEventLogger *)self domain];
+  v10 = [(SKDAnalyticsTrackingEvent *)v8 initWithName:nameCopy event:eventCopy domain:domain];
 
   return v10;
 }
 
-- (void)trackingEventEnd:(id)a3
+- (void)trackingEventEnd:(id)end
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v4;
-    v28 = v4;
-    v5 = [(SKDAnalyticsLogger *)self logs];
+    v26 = endCopy;
+    v28 = endCopy;
+    logs = [(SKDAnalyticsLogger *)self logs];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    v6 = [logs countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v6)
     {
       v7 = v6;
@@ -412,7 +412,7 @@ LABEL_50:
         {
           if (*v34 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(logs);
           }
 
           v11 = *(*(&v33 + 1) + 8 * i);
@@ -435,7 +435,7 @@ LABEL_50:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v7 = [logs countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v7);
@@ -446,13 +446,13 @@ LABEL_50:
       v8 = 0;
     }
 
-    v15 = [v28 logs];
+    logs2 = [v28 logs];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = v15;
+    v16 = logs2;
     v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v17)
     {
@@ -498,7 +498,7 @@ LABEL_50:
       [(SKDAnalyticsLogger *)self flush];
     }
 
-    v4 = v27;
+    endCopy = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];

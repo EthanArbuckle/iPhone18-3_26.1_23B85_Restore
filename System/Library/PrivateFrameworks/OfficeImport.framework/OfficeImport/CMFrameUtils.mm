@@ -1,30 +1,30 @@
 @interface CMFrameUtils
-+ (id)copyFramesetElement:(int)a3 isOnTop:(BOOL)a4;
-+ (id)copyFramesetPageForDocument:(id)a3 navPage:(id)a4 firstPage:(id)a5 isOnTop:(BOOL)a6;
++ (id)copyFramesetElement:(int)element isOnTop:(BOOL)top;
++ (id)copyFramesetPageForDocument:(id)document navPage:(id)page firstPage:(id)firstPage isOnTop:(BOOL)top;
 @end
 
 @implementation CMFrameUtils
 
-+ (id)copyFramesetPageForDocument:(id)a3 navPage:(id)a4 firstPage:(id)a5 isOnTop:(BOOL)a6
++ (id)copyFramesetPageForDocument:(id)document navPage:(id)page firstPage:(id)firstPage isOnTop:(BOOL)top
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a5;
-  [v9 pageSizeForDevice];
+  topCopy = top;
+  documentCopy = document;
+  firstPageCopy = firstPage;
+  [documentCopy pageSizeForDevice];
   v12 = v11;
   v13 = +[CMXmlUtils copyXhtmlDocument];
-  v14 = [v9 documentTitle];
-  v15 = [CMXmlUtils copyHeadElementWithTitle:v14 deviceWidth:v12];
+  documentTitle = [documentCopy documentTitle];
+  v15 = [CMXmlUtils copyHeadElementWithTitle:documentTitle deviceWidth:v12];
 
-  v16 = [v13 rootElement];
-  [v16 addChild:v15];
+  rootElement = [v13 rootElement];
+  [rootElement addChild:v15];
 
-  v17 = [a1 copyFramesetElement:18 isOnTop:v6];
-  v18 = [v13 rootElement];
-  [v18 addChild:v17];
+  v17 = [self copyFramesetElement:18 isOnTop:topCopy];
+  rootElement2 = [v13 rootElement];
+  [rootElement2 addChild:v17];
 
   v19 = [[OIXMLElement alloc] initWithType:4 stringValue:0];
-  v20 = [OIXMLAttribute attributeWithName:@"src" stringValue:v10];
+  v20 = [OIXMLAttribute attributeWithName:@"src" stringValue:firstPageCopy];
   [(OIXMLElement *)v19 addAttribute:v20];
 
   v21 = [OIXMLAttribute attributeWithName:@"name" stringValue:@"content"];
@@ -37,7 +37,7 @@
   [(OIXMLElement *)v19 addAttribute:v23];
 
   v24 = [[OIXMLElement alloc] initWithType:4 stringValue:0];
-  v25 = [OIXMLAttribute attributeWithName:@"src" stringValue:v10];
+  v25 = [OIXMLAttribute attributeWithName:@"src" stringValue:firstPageCopy];
   [(OIXMLElement *)v24 addAttribute:v25];
 
   v26 = [OIXMLAttribute attributeWithName:@"name" stringValue:@"content"];
@@ -49,7 +49,7 @@
   v28 = [OIXMLAttribute attributeWithName:@"marginheight" stringValue:@"0"];
   [(OIXMLElement *)v24 addAttribute:v28];
 
-  if (v6)
+  if (topCopy)
   {
     [v17 addChild:v24];
     v29 = v19;
@@ -66,15 +66,15 @@
   return v13;
 }
 
-+ (id)copyFramesetElement:(int)a3 isOnTop:(BOOL)a4
++ (id)copyFramesetElement:(int)element isOnTop:(BOOL)top
 {
   v4 = @"*,%d";
-  if (a4)
+  if (top)
   {
     v4 = @"%d,*";
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:v4, *&a3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:v4, *&element];
   v6 = [[OIXMLElement alloc] initWithType:5 stringValue:0];
   v7 = [OIXMLAttribute attributeWithName:@"rows" stringValue:v5];
   [(OIXMLElement *)v6 addAttribute:v7];

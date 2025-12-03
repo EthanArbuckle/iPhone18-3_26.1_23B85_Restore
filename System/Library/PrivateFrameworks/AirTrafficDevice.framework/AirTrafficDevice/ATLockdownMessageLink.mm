@@ -1,5 +1,5 @@
 @interface ATLockdownMessageLink
-- (ATLockdownMessageLink)initWithSocket:(id)a3;
+- (ATLockdownMessageLink)initWithSocket:(id)socket;
 - (BOOL)isWifiConnection;
 @end
 
@@ -7,17 +7,17 @@
 
 - (BOOL)isWifiConnection
 {
-  v2 = [(ATConcreteMessageLink *)self socket];
-  v3 = [v2 isWifi];
+  socket = [(ATConcreteMessageLink *)self socket];
+  isWifi = [socket isWifi];
 
-  return v3;
+  return isWifi;
 }
 
-- (ATLockdownMessageLink)initWithSocket:(id)a3
+- (ATLockdownMessageLink)initWithSocket:(id)socket
 {
   v6.receiver = self;
   v6.super_class = ATLockdownMessageLink;
-  v3 = [(ATConcreteMessageLink *)&v6 initWithSocket:a3];
+  v3 = [(ATConcreteMessageLink *)&v6 initWithSocket:socket];
   v4 = v3;
   if (v3)
   {

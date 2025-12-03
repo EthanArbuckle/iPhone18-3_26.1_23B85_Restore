@@ -1,9 +1,9 @@
 @interface _DKThermalPressureMonitor
 - (void)deactivate;
 - (void)dealloc;
-- (void)getPeakPowerPressureLevelWithToken:(int)a3;
-- (void)getThermalPressureLevelWithToken:(int)a3;
-- (void)setCurrentPeakPowerPressureLevel:(unsigned int)a3;
+- (void)getPeakPowerPressureLevelWithToken:(int)token;
+- (void)getThermalPressureLevelWithToken:(int)token;
+- (void)setCurrentPeakPowerPressureLevel:(unsigned int)level;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
@@ -19,16 +19,16 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-- (void)setCurrentPeakPowerPressureLevel:(unsigned int)a3
+- (void)setCurrentPeakPowerPressureLevel:(unsigned int)level
 {
-  if (self->_peakPowerPressureLevel != a3)
+  if (self->_peakPowerPressureLevel != level)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
-    v6 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     v7 = [MEMORY[0x277CFE358] ephemeralKeyPathWithKey:@"/system/peakPowerPressureLevel"];
-    [v6 setObject:v5 forKeyedSubscript:v7];
+    [userContext setObject:v5 forKeyedSubscript:v7];
 
-    self->_peakPowerPressureLevel = a3 != 0;
+    self->_peakPowerPressureLevel = level != 0;
   }
 }
 
@@ -39,13 +39,13 @@
   if ([(_DKMonitor *)&v5 instantMonitorNeedsActivation])
   {
     self->_initialized = 0;
-    v3 = [(_DKMonitor *)self queue];
+    queue = [(_DKMonitor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34___DKThermalPressureMonitor_start__block_invoke;
     block[3] = &unk_27856F060;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(queue, block);
 
     [(_DKThermalPressureMonitor *)self synchronouslyReflectCurrentValue];
   }
@@ -80,10 +80,10 @@
   self->_initialized = 0;
 }
 
-- (void)getThermalPressureLevelWithToken:(int)a3
+- (void)getThermalPressureLevelWithToken:(int)token
 {
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     v4 = 0;
   }
@@ -96,10 +96,10 @@
   [(_DKThermalPressureMonitor *)self setCurrentThermalLevel:v4];
 }
 
-- (void)getPeakPowerPressureLevelWithToken:(int)a3
+- (void)getPeakPowerPressureLevelWithToken:(int)token
 {
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     v4 = 0;
   }

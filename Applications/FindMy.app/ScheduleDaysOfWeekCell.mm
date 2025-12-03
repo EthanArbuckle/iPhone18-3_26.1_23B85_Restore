@@ -1,23 +1,23 @@
 @interface ScheduleDaysOfWeekCell
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithCoder:(id)a3;
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)dayButtonPressed:(id)a3;
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithCoder:(id)coder;
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)dayButtonPressed:(id)pressed;
 @end
 
 @implementation ScheduleDaysOfWeekCell
 
-- (void)dayButtonPressed:(id)a3
+- (void)dayButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000B7C04(v4);
+  pressedCopy = pressed;
+  selfCopy = self;
+  sub_1000B7C04(pressedCopy);
 }
 
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -26,10 +26,10 @@
     v6 = 0;
   }
 
-  return sub_1000B82D4(a3, a4, v6);
+  return sub_1000B82D4(style, identifier, v6);
 }
 
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithCoder:(id)a3
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F22ScheduleDaysOfWeekCell_delegate] = 0;
   swift_unknownObjectWeakInit();

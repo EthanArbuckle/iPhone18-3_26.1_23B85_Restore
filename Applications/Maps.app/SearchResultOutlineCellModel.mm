@@ -1,45 +1,45 @@
 @interface SearchResultOutlineCellModel
-- (BOOL)isEqual:(id)a3;
-- (SearchResultOutlineCellModel)initWithSearchResult:(id)a3 currentLocation:(id)a4 searchCategory:(id)a5 displayDistance:(BOOL)a6 distanceUnit:(int64_t)a7 prefersAddressOverCategory:(BOOL)a8 placeContextViewModel:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (SearchResultOutlineCellModel)initWithSearchResult:(id)result currentLocation:(id)location searchCategory:(id)category displayDistance:(BOOL)distance distanceUnit:(int64_t)unit prefersAddressOverCategory:(BOOL)overCategory placeContextViewModel:(id)model;
 - (unint64_t)hash;
 @end
 
 @implementation SearchResultOutlineCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(SearchResultOutlineCellModel *)v6 searchResult];
-    v8 = v7;
-    if (v7 == self->_searchResult || [(SearchResult *)v7 isEqual:?])
+    searchResult = [(SearchResultOutlineCellModel *)v6 searchResult];
+    v8 = searchResult;
+    if (searchResult == self->_searchResult || [(SearchResult *)searchResult isEqual:?])
     {
-      v9 = [(SearchResultOutlineCellModel *)v6 currentLocation];
-      v10 = v9;
-      if (v9 == self->_currentLocation || [(GEOLocation *)v9 isEqual:?])
+      currentLocation = [(SearchResultOutlineCellModel *)v6 currentLocation];
+      v10 = currentLocation;
+      if (currentLocation == self->_currentLocation || [(GEOLocation *)currentLocation isEqual:?])
       {
-        v11 = [(SearchResultOutlineCellModel *)v6 searchCategory];
-        v12 = v11;
-        if ((v11 == self->_searchCategory || [(GEOSearchCategory *)v11 isEqual:?]) && self->_displayDistance == [(SearchResultOutlineCellModel *)v6 displayDistance]&& [(SearchResultOutlineCellModel *)v6 distanceUnit]== self->_distanceUnit && self->_prefersAddressOverCategory == [(SearchResultOutlineCellModel *)v6 prefersAddressOverCategory])
+        searchCategory = [(SearchResultOutlineCellModel *)v6 searchCategory];
+        v12 = searchCategory;
+        if ((searchCategory == self->_searchCategory || [(GEOSearchCategory *)searchCategory isEqual:?]) && self->_displayDistance == [(SearchResultOutlineCellModel *)v6 displayDistance]&& [(SearchResultOutlineCellModel *)v6 distanceUnit]== self->_distanceUnit && self->_prefersAddressOverCategory == [(SearchResultOutlineCellModel *)v6 prefersAddressOverCategory])
         {
-          v13 = [(SearchResultOutlineCellModel *)v6 placeContextViewModel];
-          v14 = v13;
-          if (v13 == self->_placeContextViewModel)
+          placeContextViewModel = [(SearchResultOutlineCellModel *)v6 placeContextViewModel];
+          v14 = placeContextViewModel;
+          if (placeContextViewModel == self->_placeContextViewModel)
           {
             v15 = 1;
           }
 
           else
           {
-            v15 = [(PlaceContextViewModel *)v13 isEqual:?];
+            v15 = [(PlaceContextViewModel *)placeContextViewModel isEqual:?];
           }
         }
 
@@ -76,25 +76,25 @@
   return v4 ^ [(GEOSearchCategory *)self->_searchCategory hash];
 }
 
-- (SearchResultOutlineCellModel)initWithSearchResult:(id)a3 currentLocation:(id)a4 searchCategory:(id)a5 displayDistance:(BOOL)a6 distanceUnit:(int64_t)a7 prefersAddressOverCategory:(BOOL)a8 placeContextViewModel:(id)a9
+- (SearchResultOutlineCellModel)initWithSearchResult:(id)result currentLocation:(id)location searchCategory:(id)category displayDistance:(BOOL)distance distanceUnit:(int64_t)unit prefersAddressOverCategory:(BOOL)overCategory placeContextViewModel:(id)model
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a9;
+  resultCopy = result;
+  locationCopy = location;
+  categoryCopy = category;
+  modelCopy = model;
   v23.receiver = self;
   v23.super_class = SearchResultOutlineCellModel;
   v18 = [(SearchResultOutlineCellModel *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_searchResult, a3);
-    objc_storeStrong(&v19->_currentLocation, a4);
-    objc_storeStrong(&v19->_searchCategory, a5);
-    v19->_displayDistance = a6;
-    v19->_distanceUnit = a7;
-    v19->_prefersAddressOverCategory = a8;
-    objc_storeStrong(&v19->_placeContextViewModel, a9);
+    objc_storeStrong(&v18->_searchResult, result);
+    objc_storeStrong(&v19->_currentLocation, location);
+    objc_storeStrong(&v19->_searchCategory, category);
+    v19->_displayDistance = distance;
+    v19->_distanceUnit = unit;
+    v19->_prefersAddressOverCategory = overCategory;
+    objc_storeStrong(&v19->_placeContextViewModel, model);
   }
 
   return v19;

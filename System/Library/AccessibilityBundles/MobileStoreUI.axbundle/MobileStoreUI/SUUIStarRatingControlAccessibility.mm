@@ -10,17 +10,17 @@
 - (void)accessibilityDecrement
 {
   v3 = [(SUUIStarRatingControlAccessibility *)self safeValueForKey:@"userRating"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  [(SUUIStarRatingControlAccessibility *)self _axSetRating:v4 - 1];
+  [(SUUIStarRatingControlAccessibility *)self _axSetRating:integerValue - 1];
 }
 
 - (void)accessibilityIncrement
 {
   v3 = [(SUUIStarRatingControlAccessibility *)self safeValueForKey:@"userRating"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  [(SUUIStarRatingControlAccessibility *)self _axSetRating:v4 + 1];
+  [(SUUIStarRatingControlAccessibility *)self _axSetRating:integerValue + 1];
 }
 
 void __51__SUUIStarRatingControlAccessibility__axSetRating___block_invoke(uint64_t a1)

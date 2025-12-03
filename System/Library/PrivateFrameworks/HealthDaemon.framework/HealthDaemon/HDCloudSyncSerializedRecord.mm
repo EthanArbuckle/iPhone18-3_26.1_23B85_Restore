@@ -1,23 +1,23 @@
 @interface HDCloudSyncSerializedRecord
-- (HDCloudSyncSerializedRecord)initWithEncodedSystemData:(id)a3 unprotectedDBData:(id)a4 protectedDBData:(id)a5;
+- (HDCloudSyncSerializedRecord)initWithEncodedSystemData:(id)data unprotectedDBData:(id)bData protectedDBData:(id)dBData;
 @end
 
 @implementation HDCloudSyncSerializedRecord
 
-- (HDCloudSyncSerializedRecord)initWithEncodedSystemData:(id)a3 unprotectedDBData:(id)a4 protectedDBData:(id)a5
+- (HDCloudSyncSerializedRecord)initWithEncodedSystemData:(id)data unprotectedDBData:(id)bData protectedDBData:(id)dBData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  bDataCopy = bData;
+  dBDataCopy = dBData;
   v15.receiver = self;
   v15.super_class = HDCloudSyncSerializedRecord;
   v12 = [(HDCloudSyncSerializedRecord *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_systemData, a3);
-    objc_storeStrong(&v13->_unprotectedDBData, a4);
-    objc_storeStrong(&v13->_protectedDBData, a5);
+    objc_storeStrong(&v12->_systemData, data);
+    objc_storeStrong(&v13->_unprotectedDBData, bData);
+    objc_storeStrong(&v13->_protectedDBData, dBData);
   }
 
   return v13;

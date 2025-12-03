@@ -1,41 +1,41 @@
 @interface AFOutputVoiceColorDescriptor
-+ (id)newWithBuilder:(id)a3;
-- (AFOutputVoiceColorDescriptor)initWithCoder:(id)a3;
-- (AFOutputVoiceColorDescriptor)initWithHexColor:(id)a3 colorName:(id)a4 alpha:(float)a5 localizedOutputVoiceColor:(id)a6 localizedOutputVoice:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFOutputVoiceColorDescriptor)initWithCoder:(id)coder;
+- (AFOutputVoiceColorDescriptor)initWithHexColor:(id)color colorName:(id)name alpha:(float)alpha localizedOutputVoiceColor:(id)voiceColor localizedOutputVoice:(id)voice;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFOutputVoiceColorDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hexColor = self->_hexColor;
-  v7 = a3;
-  [v7 encodeObject:hexColor forKey:@"AFOutputVoiceColorDescriptor::hexColor"];
-  [v7 encodeObject:self->_colorName forKey:@"AFOutputVoiceColorDescriptor::colorName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hexColor forKey:@"AFOutputVoiceColorDescriptor::hexColor"];
+  [coderCopy encodeObject:self->_colorName forKey:@"AFOutputVoiceColorDescriptor::colorName"];
   *&v5 = self->_alpha;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-  [v7 encodeObject:v6 forKey:@"AFOutputVoiceColorDescriptor::alpha"];
+  [coderCopy encodeObject:v6 forKey:@"AFOutputVoiceColorDescriptor::alpha"];
 
-  [v7 encodeObject:self->_localizedOutputVoiceColor forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoiceColor"];
-  [v7 encodeObject:self->_localizedOutputVoice forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoice"];
+  [coderCopy encodeObject:self->_localizedOutputVoiceColor forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoiceColor"];
+  [coderCopy encodeObject:self->_localizedOutputVoice forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoice"];
 }
 
-- (AFOutputVoiceColorDescriptor)initWithCoder:(id)a3
+- (AFOutputVoiceColorDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::hexColor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::colorName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::alpha"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::hexColor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::colorName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::alpha"];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoiceColor"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoice"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoiceColor"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceColorDescriptor::localizedOutputVoice"];
 
   LODWORD(v12) = v9;
   v13 = [(AFOutputVoiceColorDescriptor *)self initWithHexColor:v5 colorName:v6 alpha:v10 localizedOutputVoiceColor:v11 localizedOutputVoice:v12];
@@ -43,10 +43,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -56,26 +56,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       alpha = self->_alpha;
       [(AFOutputVoiceColorDescriptor *)v5 alpha];
       if (alpha == v7)
       {
-        v9 = [(AFOutputVoiceColorDescriptor *)v5 hexColor];
+        hexColor = [(AFOutputVoiceColorDescriptor *)v5 hexColor];
         hexColor = self->_hexColor;
-        if (hexColor == v9 || [(NSString *)hexColor isEqual:v9])
+        if (hexColor == hexColor || [(NSString *)hexColor isEqual:hexColor])
         {
-          v11 = [(AFOutputVoiceColorDescriptor *)v5 colorName];
+          colorName = [(AFOutputVoiceColorDescriptor *)v5 colorName];
           colorName = self->_colorName;
-          if (colorName == v11 || [(NSString *)colorName isEqual:v11])
+          if (colorName == colorName || [(NSString *)colorName isEqual:colorName])
           {
-            v13 = [(AFOutputVoiceColorDescriptor *)v5 localizedOutputVoiceColor];
+            localizedOutputVoiceColor = [(AFOutputVoiceColorDescriptor *)v5 localizedOutputVoiceColor];
             localizedOutputVoiceColor = self->_localizedOutputVoiceColor;
-            if (localizedOutputVoiceColor == v13 || [(NSString *)localizedOutputVoiceColor isEqual:v13])
+            if (localizedOutputVoiceColor == localizedOutputVoiceColor || [(NSString *)localizedOutputVoiceColor isEqual:localizedOutputVoiceColor])
             {
-              v15 = [(AFOutputVoiceColorDescriptor *)v5 localizedOutputVoice];
+              localizedOutputVoice = [(AFOutputVoiceColorDescriptor *)v5 localizedOutputVoice];
               localizedOutputVoice = self->_localizedOutputVoice;
-              v8 = localizedOutputVoice == v15 || [(NSString *)localizedOutputVoice isEqual:v15];
+              v8 = localizedOutputVoice == localizedOutputVoice || [(NSString *)localizedOutputVoice isEqual:localizedOutputVoice];
             }
 
             else
@@ -124,7 +124,7 @@
   return v8 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v28[5] = *MEMORY[0x1E69E9840];
   v24 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -161,31 +161,31 @@
   return v19;
 }
 
-- (AFOutputVoiceColorDescriptor)initWithHexColor:(id)a3 colorName:(id)a4 alpha:(float)a5 localizedOutputVoiceColor:(id)a6 localizedOutputVoice:(id)a7
+- (AFOutputVoiceColorDescriptor)initWithHexColor:(id)color colorName:(id)name alpha:(float)alpha localizedOutputVoiceColor:(id)voiceColor localizedOutputVoice:(id)voice
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  colorCopy = color;
+  nameCopy = name;
+  voiceColorCopy = voiceColor;
+  voiceCopy = voice;
   v26.receiver = self;
   v26.super_class = AFOutputVoiceColorDescriptor;
   v16 = [(AFOutputVoiceColorDescriptor *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [colorCopy copy];
     hexColor = v16->_hexColor;
     v16->_hexColor = v17;
 
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     colorName = v16->_colorName;
     v16->_colorName = v19;
 
-    v16->_alpha = a5;
-    v21 = [v14 copy];
+    v16->_alpha = alpha;
+    v21 = [voiceColorCopy copy];
     localizedOutputVoiceColor = v16->_localizedOutputVoiceColor;
     v16->_localizedOutputVoiceColor = v21;
 
-    v23 = [v15 copy];
+    v23 = [voiceCopy copy];
     localizedOutputVoice = v16->_localizedOutputVoice;
     v16->_localizedOutputVoice = v23;
   }
@@ -193,36 +193,36 @@
   return v16;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFOutputVoiceColorDescriptorMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_AFOutputVoiceColorDescriptorMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_AFOutputVoiceColorDescriptorMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(AFOutputVoiceColorDescriptor *)self copy];
+    generate = [(AFOutputVoiceColorDescriptor *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_AFOutputVoiceColorDescriptorMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_AFOutputVoiceColorDescriptorMutation *)v4 generate];
+  generate = [(_AFOutputVoiceColorDescriptorMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

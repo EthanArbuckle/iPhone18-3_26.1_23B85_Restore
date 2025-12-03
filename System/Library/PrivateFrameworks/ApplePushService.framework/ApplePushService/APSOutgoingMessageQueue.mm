@@ -1,42 +1,42 @@
 @interface APSOutgoingMessageQueue
-- (APSOutgoingMessageQueue)initWithDelegate:(id)a3 environment:(id)a4;
-- (BOOL)_outgoingMessageIsLateCriticalMessage:(id)a3;
+- (APSOutgoingMessageQueue)initWithDelegate:(id)delegate environment:(id)environment;
+- (BOOL)_outgoingMessageIsLateCriticalMessage:(id)message;
 - (BOOL)hasEagerMessages;
-- (BOOL)shouldReportLastReversePushRTTOnInterface:(id)a3;
-- (id)lastReversePushRTTMillisecondsOnInterface:(id)a3;
+- (BOOL)shouldReportLastReversePushRTTOnInterface:(id)interface;
+- (id)lastReversePushRTTMillisecondsOnInterface:(id)interface;
 - (id)outgoingMessagesToSend;
 - (void)_clearCriticalMessageKeepAliveTimer;
 - (void)_clearCriticalMessageKeepAliveTimerIfAppropriate;
 - (void)_criticalMessageKeepAliveTimerFired;
-- (void)_deliverResult:(id)a3 forMessage:(id)a4;
+- (void)_deliverResult:(id)result forMessage:(id)message;
 - (void)_queueChanged;
 - (void)_recalculateDisableFastDormancy;
 - (void)_recalculatePowerAssertion;
 - (void)_recalculateTimer;
 - (void)_startCriticalMessageFlushTimerSendingFlush;
-- (void)_timerFired:(id)a3;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3;
-- (void)cancelOutgoingMessageWithID:(unint64_t)a3;
+- (void)_timerFired:(id)fired;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer;
+- (void)cancelOutgoingMessageWithID:(unint64_t)d;
 - (void)dealloc;
-- (void)enqueueOutgoingMessage:(id)a3 forOriginator:(id)a4;
-- (void)handleConnectionClosedOnInterface:(id)a3;
-- (void)handleConnectionOpenedOnInterface:(id)a3;
-- (void)handleErrorSendingOutgoingMessage:(id)a3 error:(id)a4;
-- (void)handleSentOutgoingMessage:(id)a3 onInterface:(id)a4;
-- (void)setCriticalMessageKeepAliveTimerDuration:(id)a3;
-- (void)setCriticalMessageTimeout:(id)a3;
-- (void)setForcedShortTimeoutInterval:(id)a3;
-- (void)setNumberOfCriticalMessageFlushesBeforeDisconnecting:(id)a3;
-- (void)transferOwnershipOfPendingMessagesToHandler:(id)a3;
+- (void)enqueueOutgoingMessage:(id)message forOriginator:(id)originator;
+- (void)handleConnectionClosedOnInterface:(id)interface;
+- (void)handleConnectionOpenedOnInterface:(id)interface;
+- (void)handleErrorSendingOutgoingMessage:(id)message error:(id)error;
+- (void)handleSentOutgoingMessage:(id)message onInterface:(id)interface;
+- (void)setCriticalMessageKeepAliveTimerDuration:(id)duration;
+- (void)setCriticalMessageTimeout:(id)timeout;
+- (void)setForcedShortTimeoutInterval:(id)interval;
+- (void)setNumberOfCriticalMessageFlushesBeforeDisconnecting:(id)disconnecting;
+- (void)transferOwnershipOfPendingMessagesToHandler:(id)handler;
 @end
 
 @implementation APSOutgoingMessageQueue
 
 - (void)_recalculatePowerAssertion
 {
-  v3 = [(APSOutgoingMessageQueue *)self hasEagerMessages];
+  hasEagerMessages = [(APSOutgoingMessageQueue *)self hasEagerMessages];
   powerAssertion = self->_powerAssertion;
-  if (v3)
+  if (hasEagerMessages)
   {
     if (!powerAssertion)
     {
@@ -46,14 +46,14 @@
         {
           v7 = [(NSMutableArray *)self->_queue count];
           *buf = 138412546;
-          v12 = self;
+          selfCopy3 = self;
           v13 = 2048;
           v14 = v7;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Creating power assertion - pending message count %lu", buf, 0x16u);
         }
 
-        v8 = [NSString stringWithFormat:@"%@-outgoingmessage", APSBundleIdentifier];
-        v9 = [[APSPowerAssertion alloc] initWithName:v8 category:206 holdDuration:300.0];
+        aPSBundleIdentifier = [NSString stringWithFormat:@"%@-outgoingmessage", APSBundleIdentifier];
+        v9 = [[APSPowerAssertion alloc] initWithName:aPSBundleIdentifier category:206 holdDuration:300.0];
         v10 = self->_powerAssertion;
         self->_powerAssertion = v9;
       }
@@ -61,7 +61,7 @@
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Not taking power assertion for eager outgoing message, interfaces are expensive to use", buf, 0xCu);
       }
     }
@@ -73,7 +73,7 @@
     {
       v5 = [(NSMutableArray *)self->_queue count];
       *buf = 138412546;
-      v12 = self;
+      selfCopy3 = self;
       v13 = 2048;
       v14 = v5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Releasing power assertion - pending message count %lu", buf, 0x16u);
@@ -92,7 +92,7 @@
     {
       criticalMessageKeepAliveTimer = self->_criticalMessageKeepAliveTimer;
       v5 = 138412546;
-      v6 = self;
+      selfCopy = self;
       v7 = 2112;
       v8 = criticalMessageKeepAliveTimer;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ clearingCriticalMessageKeepAliveTimer %@", &v5, 0x16u);
@@ -124,14 +124,14 @@
 
 - (void)_recalculateDisableFastDormancy
 {
-  v3 = [(APSOutgoingMessageQueue *)self hasEagerMessages];
+  hasEagerMessages = [(APSOutgoingMessageQueue *)self hasEagerMessages];
   v4 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (hasEagerMessages)
   {
     if (v4)
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: disabling fast dormancy.", &v6, 0xCu);
     }
 
@@ -144,7 +144,7 @@
     if (v4)
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: un-disabling fast dormancy.", &v6, 0xCu);
     }
 
@@ -217,21 +217,21 @@
 
 - (void)_recalculateTimer
 {
-  v2 = self;
-  if ([(APSOutgoingMessageQueueDelegate *)self->_delegate shouldForceShortTimeouts]&& [(NSMutableArray *)v2->_queue count])
+  selfCopy2 = self;
+  if ([(APSOutgoingMessageQueueDelegate *)self->_delegate shouldForceShortTimeouts]&& [(NSMutableArray *)selfCopy2->_queue count])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      forcedShortTimeoutDuration = v2->_forcedShortTimeoutDuration;
+      forcedShortTimeoutDuration = selfCopy2->_forcedShortTimeoutDuration;
       *buf = 138412546;
-      v32 = v2;
+      v32 = selfCopy2;
       v33 = 2048;
       v34 = forcedShortTimeoutDuration;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ shouldForceShortTimeouts, enforcing maximum %f pending outgoing message duration", buf, 0x16u);
     }
 
-    v4 = [NSDate dateWithTimeIntervalSinceNow:v2->_forcedShortTimeoutDuration];
-    v2 = self;
+    v4 = [NSDate dateWithTimeIntervalSinceNow:selfCopy2->_forcedShortTimeoutDuration];
+    selfCopy2 = self;
   }
 
   else
@@ -243,7 +243,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v2->_queue;
+  v5 = selfCopy2->_queue;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
@@ -265,15 +265,15 @@
           if (!self->_criticalMessageKeepAliveTimer && [v9 wasSent] && objc_msgSend(v9, "isCritical"))
           {
             criticalMessageTimeout = self->_criticalMessageTimeout;
-            v12 = [NSDate dateWithTimeIntervalSinceReferenceDate:self->_lastReceivedAckOrReconnect + criticalMessageTimeout];
-            v13 = [v9 timestamp];
-            v14 = [v13 dateByAddingTimeInterval:criticalMessageTimeout];
+            criticalMessageTimeout = [NSDate dateWithTimeIntervalSinceReferenceDate:self->_lastReceivedAckOrReconnect + criticalMessageTimeout];
+            timestamp = [v9 timestamp];
+            sendTimeoutTime = [timestamp dateByAddingTimeInterval:criticalMessageTimeout];
 
-            if ([v12 compare:v14] == -1)
+            if ([criticalMessageTimeout compare:sendTimeoutTime] == -1)
             {
-              v14 = v14;
+              sendTimeoutTime = sendTimeoutTime;
 
-              v12 = v14;
+              criticalMessageTimeout = sendTimeoutTime;
             }
 
 LABEL_23:
@@ -281,38 +281,38 @@ LABEL_23:
 
           else
           {
-            v14 = [v9 sendTimeoutTime];
+            sendTimeoutTime = [v9 sendTimeoutTime];
             if ([v9 isEager])
             {
-              v15 = [v9 eagernessTimeoutTime];
-              v16 = [v15 compare:v14] == -1;
+              eagernessTimeoutTime = [v9 eagernessTimeoutTime];
+              v16 = [eagernessTimeoutTime compare:sendTimeoutTime] == -1;
 
               if (v16)
               {
-                v12 = [v9 eagernessTimeoutTime];
+                criticalMessageTimeout = [v9 eagernessTimeoutTime];
                 goto LABEL_23;
               }
             }
 
-            v12 = v14;
+            criticalMessageTimeout = sendTimeoutTime;
           }
 
           if (v4)
           {
-            if ([v12 compare:v4] != -1 || v4 == v12)
+            if ([criticalMessageTimeout compare:v4] != -1 || v4 == criticalMessageTimeout)
             {
               goto LABEL_31;
             }
 
 LABEL_29:
-            v17 = v12;
+            v17 = criticalMessageTimeout;
 
             v4 = v17;
           }
 
           else
           {
-            if (v12)
+            if (criticalMessageTimeout)
             {
               goto LABEL_29;
             }
@@ -334,25 +334,25 @@ LABEL_31:
     while (v6);
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
+  selfCopy3 = self;
+  objc_sync_enter(selfCopy3);
   if (v4)
   {
     v19 = [v4 dateByAddingTimeInterval:1.0];
-    timer = v18->_timer;
+    timer = selfCopy3->_timer;
     v21 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
     if (timer)
     {
       if (v21)
       {
         *buf = 138412546;
-        v32 = v18;
+        v32 = selfCopy3;
         v33 = 2112;
         v34 = *&v19;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Setting outgoing message timer fire date %@", buf, 0x16u);
       }
 
-      [(NSTimer *)v18->_timer setFireDate:v19];
+      [(NSTimer *)selfCopy3->_timer setFireDate:v19];
     }
 
     else
@@ -360,18 +360,18 @@ LABEL_31:
       if (v21)
       {
         *buf = 138412546;
-        v32 = v18;
+        v32 = selfCopy3;
         v33 = 2112;
         v34 = *&v19;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Creating outgoing message timer with fire date %@", buf, 0x16u);
       }
 
-      v22 = [[NSTimer alloc] initWithFireDate:v19 interval:v18 target:"_timerFired:" selector:0 userInfo:0 repeats:0.0];
-      v23 = v18->_timer;
-      v18->_timer = v22;
+      v22 = [[NSTimer alloc] initWithFireDate:v19 interval:selfCopy3 target:"_timerFired:" selector:0 userInfo:0 repeats:0.0];
+      v23 = selfCopy3->_timer;
+      selfCopy3->_timer = v22;
 
       v24 = +[NSRunLoop currentRunLoop];
-      [v24 addTimer:v18->_timer forMode:NSDefaultRunLoopMode];
+      [v24 addTimer:selfCopy3->_timer forMode:NSDefaultRunLoopMode];
     }
 
 LABEL_46:
@@ -379,23 +379,23 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if (v18->_timer)
+  if (selfCopy3->_timer)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = v18;
+      v32 = selfCopy3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Invalidating outgoing message timer", buf, 0xCu);
     }
 
-    [(NSTimer *)v18->_timer invalidate];
-    v19 = v18->_timer;
-    v18->_timer = 0;
+    [(NSTimer *)selfCopy3->_timer invalidate];
+    v19 = selfCopy3->_timer;
+    selfCopy3->_timer = 0;
     goto LABEL_46;
   }
 
 LABEL_47:
-  objc_sync_exit(v18);
+  objc_sync_exit(selfCopy3);
 }
 
 - (id)outgoingMessagesToSend
@@ -436,18 +436,18 @@ LABEL_47:
   return v3;
 }
 
-- (APSOutgoingMessageQueue)initWithDelegate:(id)a3 environment:(id)a4
+- (APSOutgoingMessageQueue)initWithDelegate:(id)delegate environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  environmentCopy = environment;
   v16.receiver = self;
   v16.super_class = APSOutgoingMessageQueue;
   v9 = [(APSOutgoingMessageQueue *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_delegate, a3);
-    objc_storeStrong(&v10->_environment, a4);
+    objc_storeStrong(&v9->_delegate, delegate);
+    objc_storeStrong(&v10->_environment, environment);
     v10->_criticalMessageTimeout = 10.0;
     v10->_criticalMessageKeepAliveTimerDuration = 10.0;
     *&v10->_criticalMessageFlushCount = xmmword_10015CD80;
@@ -467,32 +467,32 @@ LABEL_47:
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSTimer *)v2->_timer invalidate];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSTimer *)selfCopy->_timer invalidate];
+  objc_sync_exit(selfCopy);
 
-  [(APSOutgoingMessageQueue *)v2 _clearCriticalMessageKeepAliveTimer];
-  v2->_criticalMessageFlushCount = 0;
-  v2->_criticalMessageFlushSize = 0;
-  v3.receiver = v2;
+  [(APSOutgoingMessageQueue *)selfCopy _clearCriticalMessageKeepAliveTimer];
+  selfCopy->_criticalMessageFlushCount = 0;
+  selfCopy->_criticalMessageFlushSize = 0;
+  v3.receiver = selfCopy;
   v3.super_class = APSOutgoingMessageQueue;
   [(APSOutgoingMessageQueue *)&v3 dealloc];
 }
 
-- (void)enqueueOutgoingMessage:(id)a3 forOriginator:(id)a4
+- (void)enqueueOutgoingMessage:(id)message forOriginator:(id)originator
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  originatorCopy = originator;
   if ([(NSMutableArray *)self->_queue count]> 0x63)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_10010A6F8(self, v6);
+      sub_10010A6F8(self, messageCopy);
     }
 
     v12 = APSError();
-    [v7 handleResult:v12 forSendingOutgoingMessage:v6];
+    [originatorCopy handleResult:v12 forSendingOutgoingMessage:messageCopy];
   }
 
   else
@@ -507,7 +507,7 @@ LABEL_47:
       queue = self->_queue;
     }
 
-    [(NSMutableArray *)queue addObject:v6];
+    [(NSMutableArray *)queue addObject:messageCopy];
     ++self->_numberQueued;
     +[NSDate timeIntervalSinceReferenceDate];
     self->_lastNotificationQueued = v11;
@@ -515,7 +515,7 @@ LABEL_47:
   }
 }
 
-- (void)cancelOutgoingMessageWithID:(unint64_t)a3
+- (void)cancelOutgoingMessageWithID:(unint64_t)d
 {
   v5 = [(NSMutableArray *)self->_queue count];
   if (v5)
@@ -525,7 +525,7 @@ LABEL_47:
     while (1)
     {
       v8 = [(NSMutableArray *)self->_queue objectAtIndex:v7];
-      if ([v8 messageID] == a3)
+      if ([v8 messageID] == d)
       {
         break;
       }
@@ -541,9 +541,9 @@ LABEL_47:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412546;
-        v13 = self;
+        selfCopy4 = self;
         v14 = 2048;
-        v15 = a3;
+        dCopy4 = d;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Cancelled outgoing message %lu was already cancelled or timed out", &v12, 0x16u);
       }
     }
@@ -554,16 +554,16 @@ LABEL_47:
       [(APSOutgoingMessageQueue *)self _deliverResult:v9 forMessage:v8];
     }
 
-    v10 = [v8 wasSent];
+    wasSent = [v8 wasSent];
     v11 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (wasSent)
     {
       if (v11)
       {
         v12 = 138412546;
-        v13 = self;
+        selfCopy4 = self;
         v14 = 2048;
-        v15 = a3;
+        dCopy4 = d;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Cancelled outgoing message %lu was already sent", &v12, 0x16u);
       }
 
@@ -575,9 +575,9 @@ LABEL_47:
       if (v11)
       {
         v12 = 138412546;
-        v13 = self;
+        selfCopy4 = self;
         v14 = 2048;
-        v15 = a3;
+        dCopy4 = d;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Removing cancelled outgoing message %lu from queue", &v12, 0x16u);
       }
 
@@ -591,9 +591,9 @@ LABEL_5:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 2048;
-      v15 = a3;
+      dCopy4 = d;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Cancelled outgoing message %lu not found in queue", &v12, 0x16u);
     }
   }
@@ -601,10 +601,10 @@ LABEL_5:
   [(APSOutgoingMessageQueue *)self _queueChanged];
 }
 
-- (void)transferOwnershipOfPendingMessagesToHandler:(id)a3
+- (void)transferOwnershipOfPendingMessagesToHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -626,8 +626,8 @@ LABEL_5:
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 originator];
-          v4[2](v4, v10, v11);
+          originator = [v10 originator];
+          handlerCopy[2](handlerCopy, v10, originator);
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -643,42 +643,42 @@ LABEL_5:
   }
 }
 
-- (void)handleSentOutgoingMessage:(id)a3 onInterface:(id)a4
+- (void)handleSentOutgoingMessage:(id)message onInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  interfaceCopy = interface;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = messageCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = interfaceCopy;
     v16 = 2048;
-    v17 = [v6 identifier];
+    identifier = [messageCopy identifier];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ handleSentOutgoingMessage: %@ onInterface %@ identifier %lu", buf, 0x2Au);
   }
 
-  if ([v6 wasSent] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
+  if ([messageCopy wasSent] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
     sub_10010A798(self);
   }
 
-  [v6 setSent:1];
+  [messageCopy setSent:1];
   v8 = +[NSDate date];
-  [v6 setSentTimestamp:v8];
+  [messageCopy setSentTimestamp:v8];
 
-  [v6 setSendInterfaceIdentifier:v7];
-  v9 = [v6 messageID];
+  [messageCopy setSendInterfaceIdentifier:interfaceCopy];
+  messageID = [messageCopy messageID];
   APSAlert();
   [(APSOutgoingMessageQueue *)self _queueChanged];
 }
 
-- (void)handleErrorSendingOutgoingMessage:(id)a3 error:(id)a4
+- (void)handleErrorSendingOutgoingMessage:(id)message error:(id)error
 {
-  v6 = a4;
-  v7 = [a3 messageID];
+  errorCopy = error;
+  messageID = [message messageID];
   v8 = [(NSMutableArray *)self->_queue count];
   if (v8)
   {
@@ -689,17 +689,17 @@ LABEL_5:
     while (1)
     {
       v12 = [(NSMutableArray *)self->_queue objectAtIndex:v11, v14];
-      if ([v12 messageID] == v7 && !objc_msgSend(v12, "wasSent"))
+      if ([v12 messageID] == messageID && !objc_msgSend(v12, "wasSent"))
       {
         break;
       }
 
-      if ([v12 messageID] == v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+      if ([v12 messageID] == messageID && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v14;
-        v16 = self;
+        selfCopy = self;
         v17 = 2048;
-        v18 = v7;
+        v18 = messageID;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Message %lu may have already been sent, not removing message...", buf, 0x16u);
       }
 
@@ -709,8 +709,8 @@ LABEL_5:
       }
     }
 
-    v13 = [v12 originator];
-    [v13 handleResult:v6 forSendingOutgoingMessage:v12];
+    originator = [v12 originator];
+    [originator handleResult:errorCopy forSendingOutgoingMessage:v12];
     [(NSMutableArray *)self->_queue removeObjectAtIndex:v11];
   }
 
@@ -719,40 +719,40 @@ LABEL_5:
 LABEL_9:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
-      sub_10010A848(self, v7);
+      sub_10010A848(self, messageID);
     }
   }
 
   [(APSOutgoingMessageQueue *)self _queueChanged];
 }
 
-- (BOOL)shouldReportLastReversePushRTTOnInterface:(id)a3
+- (BOOL)shouldReportLastReversePushRTTOnInterface:(id)interface
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  interfaceCopy = interface;
+  if (!interfaceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to return shouldReportLastReversePushRTT on invalid interface %@", &v8, 0x16u);
   }
 
-  v5 = [(NSMutableDictionary *)self->_shouldReportLastReversePushRTT objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_shouldReportLastReversePushRTT objectForKeyedSubscript:interfaceCopy];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)lastReversePushRTTMillisecondsOnInterface:(id)a3
+- (id)lastReversePushRTTMillisecondsOnInterface:(id)interface
 {
-  v4 = a3;
-  if (!v4)
+  interfaceCopy = interface;
+  if (!interfaceCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
       v12 = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to get  _lastReversePushRTTMilliseconds on invalid interface %@", &v9, 0x16u);
@@ -761,7 +761,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v5 = [(NSMutableDictionary *)self->_shouldReportLastReversePushRTT objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_shouldReportLastReversePushRTT objectForKeyedSubscript:interfaceCopy];
 
   if (!v5)
   {
@@ -772,25 +772,25 @@ LABEL_8:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSMutableDictionary *)self->_lastReversePushRTTMilliseconds objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_lastReversePushRTTMilliseconds objectForKeyedSubscript:interfaceCopy];
     v9 = 138412802;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 2112;
     v12 = v6;
     v13 = 2112;
-    v14 = v4;
+    v14 = interfaceCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to get  _lastReversePushRTTMilliseconds %@ on interface %@", &v9, 0x20u);
   }
 
-  v7 = [(NSMutableDictionary *)self->_lastReversePushRTTMilliseconds objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_lastReversePushRTTMilliseconds objectForKeyedSubscript:interfaceCopy];
 LABEL_9:
 
   return v7;
 }
 
-- (void)handleConnectionOpenedOnInterface:(id)a3
+- (void)handleConnectionOpenedOnInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   +[NSDate timeIntervalSinceReferenceDate];
   self->_lastReceivedAckOrReconnect = v5;
   v6 = objc_alloc_init(NSMutableArray);
@@ -820,24 +820,24 @@ LABEL_9:
         {
           if ([v13 isCritical])
           {
-            v14 = [v13 timestamp];
-            [v14 timeIntervalSinceNow];
+            timestamp = [v13 timestamp];
+            [timestamp timeIntervalSinceNow];
             v16 = v15 + self->_criticalMessageTimeout;
 
             if (v16 < 0.0 && ([v13 sendRetried] & 1) == 0)
             {
-              v17 = [v13 sendInterfaceIdentifier];
-              v18 = [v17 isEqualToString:v4];
+              sendInterfaceIdentifier = [v13 sendInterfaceIdentifier];
+              v18 = [sendInterfaceIdentifier isEqualToString:interfaceCopy];
 
               if ((v18 & 1) == 0)
               {
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
                 {
-                  v19 = [v13 guid];
+                  guid = [v13 guid];
                   *buf = v20;
-                  v26 = self;
+                  selfCopy = self;
                   v27 = 2112;
-                  v28 = v19;
+                  v28 = guid;
                   _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ informed of reconnect, retry late critical message %@ sent on another interface", buf, 0x16u);
                 }
 
@@ -861,9 +861,9 @@ LABEL_9:
   [(NSMutableArray *)self->_queue addObjectsFromArray:v6];
 }
 
-- (void)handleConnectionClosedOnInterface:(id)a3
+- (void)handleConnectionClosedOnInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = [(NSMutableArray *)self->_queue count];
   if (v6 >= 1)
@@ -875,8 +875,8 @@ LABEL_9:
     do
     {
       v10 = [(NSMutableArray *)self->_queue objectAtIndex:v9, v16];
-      v11 = [v10 sendInterfaceIdentifier];
-      v12 = [v11 isEqualToString:v4];
+      sendInterfaceIdentifier = [v10 sendInterfaceIdentifier];
+      v12 = [sendInterfaceIdentifier isEqualToString:interfaceCopy];
 
       if (v12)
       {
@@ -884,11 +884,11 @@ LABEL_9:
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v10 messageID];
+            messageID = [v10 messageID];
             *buf = 138412546;
-            v18 = self;
+            selfCopy3 = self;
             v19 = 2048;
-            v20 = v13;
+            v20 = messageID;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Removing cancelled or timed out outgoing message %lu from queue", buf, 0x16u);
           }
 
@@ -902,13 +902,13 @@ LABEL_12:
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v10 messageID];
+            messageID2 = [v10 messageID];
             *buf = v16;
-            v18 = self;
+            selfCopy3 = self;
             v19 = 2048;
-            v20 = v14;
+            v20 = messageID2;
             v21 = 2112;
-            v22 = v4;
+            v22 = interfaceCopy;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Clearing sent flag for outgoing message %lu that had been sent on %@", buf, 0x20u);
           }
 
@@ -931,7 +931,7 @@ LABEL_13:
   {
     v15 = [v5 count];
     *buf = 138412546;
-    v18 = self;
+    selfCopy3 = self;
     v19 = 2048;
     v20 = v15;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Moving %lu unsent messages to the end of queue", buf, 0x16u);
@@ -941,44 +941,44 @@ LABEL_13:
   [(APSOutgoingMessageQueue *)self _queueChanged];
 }
 
-- (void)_deliverResult:(id)a3 forMessage:(id)a4
+- (void)_deliverResult:(id)result forMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  messageCopy = message;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138413058;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = resultCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = messageCopy;
     v15 = 1024;
-    v16 = [v7 priority];
+    priority = [messageCopy priority];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ asked to deliver result %@ for message %@ with priority %d", &v9, 0x26u);
   }
 
-  v8 = [v7 originator];
-  [v8 handleResult:v6 forSendingOutgoingMessage:v7];
+  originator = [messageCopy originator];
+  [originator handleResult:resultCopy forSendingOutgoingMessage:messageCopy];
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Outgoing message timer fired", buf, 0xCu);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  timer = v5->_timer;
-  v5->_timer = 0;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  timer = selfCopy2->_timer;
+  selfCopy2->_timer = 0;
 
-  objc_sync_exit(v5);
-  v7 = [NSArray arrayWithArray:v5->_queue];
+  objc_sync_exit(selfCopy2);
+  v7 = [NSArray arrayWithArray:selfCopy2->_queue];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -987,7 +987,7 @@ LABEL_13:
   if (v8)
   {
     v9 = v8;
-    v32 = v4;
+    v32 = firedCopy;
     v33 = 0;
     v10 = &fputc_ptr;
     v11 = *v36;
@@ -1003,33 +1003,33 @@ LABEL_13:
         }
 
         v13 = *(*(&v35 + 1) + 8 * v12);
-        v14 = [v13 sentTimestamp];
-        v15 = [v10[474] date];
-        [v15 timeIntervalSinceDate:v14];
+        sentTimestamp = [v13 sentTimestamp];
+        date = [v10[474] date];
+        [date timeIntervalSinceDate:sentTimestamp];
         v17 = v16;
 
         if (([v13 wasCancelled] & 1) == 0 && (objc_msgSend(v13, "hasTimedOut") & 1) == 0)
         {
           v18 = v11;
-          v19 = v5;
+          v19 = selfCopy2;
           v20 = v10;
           v21 = v7;
-          v22 = [v13 sendTimeoutTime];
+          sendTimeoutTime = [v13 sendTimeoutTime];
           v23 = v20;
-          v24 = [v20[474] date];
-          v25 = [v22 compare:v24];
+          date2 = [v20[474] date];
+          v25 = [sendTimeoutTime compare:date2];
 
           if (v25 == -1)
           {
             APSAlert();
-            v5 = v19;
+            selfCopy2 = v19;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v13 messageID];
+              messageID = [v13 messageID];
               *buf = 138412546;
-              v40 = v19;
+              selfCopy = v19;
               v41 = 2048;
-              v42 = v27;
+              v42 = messageID;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Outgoing message %lu timed out", buf, 0x16u);
             }
 
@@ -1045,36 +1045,36 @@ LABEL_13:
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
-                v29 = [v13 messageID];
+                messageID2 = [v13 messageID];
                 *buf = 138412546;
-                v40 = v5;
+                selfCopy = selfCopy2;
                 v41 = 2048;
-                v42 = v29;
+                v42 = messageID2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Removing unsent timed out message %lu from queue", buf, 0x16u);
               }
 
-              [(NSMutableArray *)v5->_queue removeObject:v13];
+              [(NSMutableArray *)selfCopy2->_queue removeObject:v13];
             }
 
             if ([v13 isCritical] && objc_msgSend(v13, "timeout") >= 0x14)
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
-                v30 = [v13 timeout];
+                timeout = [v13 timeout];
                 *buf = 138412546;
-                v40 = v5;
+                selfCopy = selfCopy2;
                 v41 = 2048;
-                v42 = v30;
+                v42 = timeout;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Critical message has timed out. Timeout = %lu. Alerting the delegate.", buf, 0x16u);
               }
 
-              [(APSOutgoingMessageQueueDelegate *)v5->_delegate outgoingMessageQueue:v5 lateAcknowledgmentForCriticalOutgoingMessage:v13];
+              [(APSOutgoingMessageQueueDelegate *)selfCopy2->_delegate outgoingMessageQueue:selfCopy2 lateAcknowledgmentForCriticalOutgoingMessage:v13];
             }
           }
 
           else
           {
-            v5 = v19;
+            selfCopy2 = v19;
             if ([(APSOutgoingMessageQueue *)v19 _outgoingMessageIsLateCriticalMessage:v13])
             {
               APSAlert();
@@ -1082,15 +1082,15 @@ LABEL_13:
               v11 = v18;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
-                v26 = [v13 messageID];
+                messageID3 = [v13 messageID];
                 *buf = 138412546;
-                v40 = v5;
+                selfCopy = selfCopy2;
                 v41 = 2048;
-                v42 = v26;
+                v42 = messageID3;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Acknowledgment for critical outgoing message %lu is late", buf, 0x16u);
               }
 
-              [(APSOutgoingMessageQueue *)v5 _startCriticalMessageFlushTimerSendingFlush];
+              [(APSOutgoingMessageQueue *)selfCopy2 _startCriticalMessageFlushTimerSendingFlush];
 LABEL_33:
               v10 = v23;
               v9 = v34;
@@ -1099,24 +1099,24 @@ LABEL_33:
 
             v7 = v21;
             v11 = v18;
-            if (!v14)
+            if (!sentTimestamp)
             {
               goto LABEL_33;
             }
 
             v10 = v23;
             v9 = v34;
-            if (v17 > v5->_forcedShortTimeoutDuration && [(APSOutgoingMessageQueueDelegate *)v5->_delegate shouldForceShortTimeouts])
+            if (v17 > selfCopy2->_forcedShortTimeoutDuration && [(APSOutgoingMessageQueueDelegate *)selfCopy2->_delegate shouldForceShortTimeouts])
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
-                forcedShortTimeoutDuration = v5->_forcedShortTimeoutDuration;
+                forcedShortTimeoutDuration = selfCopy2->_forcedShortTimeoutDuration;
                 *buf = 138413314;
-                v40 = v5;
+                selfCopy = selfCopy2;
                 v41 = 2112;
                 v42 = v13;
                 v43 = 2112;
-                v44 = v14;
+                v44 = sentTimestamp;
                 v45 = 2048;
                 v46 = v17;
                 v47 = 2048;
@@ -1138,10 +1138,10 @@ LABEL_34:
       v9 = [v7 countByEnumeratingWithState:&v35 objects:v49 count:16];
       if (!v9)
       {
-        v4 = v32;
+        firedCopy = v32;
         if (v33)
         {
-          [(APSOutgoingMessageQueueDelegate *)v5->_delegate outgoingMessageQueueShortMessageTimeoutExceeded:v5];
+          [(APSOutgoingMessageQueueDelegate *)selfCopy2->_delegate outgoingMessageQueueShortMessageTimeoutExceeded:selfCopy2];
         }
 
         break;
@@ -1149,27 +1149,27 @@ LABEL_34:
     }
   }
 
-  [(APSOutgoingMessageQueue *)v5 _queueChanged];
+  [(APSOutgoingMessageQueue *)selfCopy2 _queueChanged];
 }
 
-- (BOOL)_outgoingMessageIsLateCriticalMessage:(id)a3
+- (BOOL)_outgoingMessageIsLateCriticalMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:self->_lastReceivedAckOrReconnect];
   [v5 timeIntervalSinceNow];
   v7 = v6;
   criticalMessageTimeout = self->_criticalMessageTimeout;
 
-  if (([(__CFString *)v4 wasCancelled]& 1) != 0 || ([(__CFString *)v4 hasTimedOut]& 1) != 0)
+  if (([(__CFString *)messageCopy wasCancelled]& 1) != 0 || ([(__CFString *)messageCopy hasTimedOut]& 1) != 0)
   {
     goto LABEL_3;
   }
 
   v9 = 0;
-  if ([(__CFString *)v4 isCritical]&& v7 + criticalMessageTimeout < 0.0)
+  if ([(__CFString *)messageCopy isCritical]&& v7 + criticalMessageTimeout < 0.0)
   {
-    v11 = [(__CFString *)v4 timestamp];
-    [v11 timeIntervalSinceNow];
+    timestamp = [(__CFString *)messageCopy timestamp];
+    [timestamp timeIntervalSinceNow];
     v13 = v12 + self->_criticalMessageTimeout;
 
     if (v13 >= 0.0)
@@ -1182,7 +1182,7 @@ LABEL_3:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v4;
+      v17 = messageCopy;
       v18 = 2112;
       v19 = @"YES";
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ isLateCriticalMessage ? %@", &v16, 0x16u);
@@ -1240,7 +1240,7 @@ LABEL_4:
     {
       criticalMessageFlushCount = self->_criticalMessageFlushCount;
       *buf = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
       v14 = criticalMessageFlushCount;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ _criticalMessageFlushCount is now %lu", buf, 0x16u);
@@ -1313,44 +1313,44 @@ LABEL_4:
   }
 }
 
-- (void)setNumberOfCriticalMessageFlushesBeforeDisconnecting:(id)a3
+- (void)setNumberOfCriticalMessageFlushesBeforeDisconnecting:(id)disconnecting
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  disconnectingCopy = disconnecting;
+  v5 = disconnectingCopy;
+  if (disconnectingCopy)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [disconnectingCopy unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 3;
+    unsignedIntegerValue = 3;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     numberOfCriticalMessageFlushesBeforeDisconnecting = self->_numberOfCriticalMessageFlushesBeforeDisconnecting;
     v8 = 138413058;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = numberOfCriticalMessageFlushesBeforeDisconnecting;
     v12 = 2048;
-    v13 = v6;
+    v13 = unsignedIntegerValue;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ setNumberOfCriticalMessageFlushesBeforeDisconnecting: changing from %lu to %lu (got number %@)", &v8, 0x2Au);
   }
 
-  self->_numberOfCriticalMessageFlushesBeforeDisconnecting = v6;
+  self->_numberOfCriticalMessageFlushesBeforeDisconnecting = unsignedIntegerValue;
 }
 
-- (void)setCriticalMessageKeepAliveTimerDuration:(id)a3
+- (void)setCriticalMessageKeepAliveTimerDuration:(id)duration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  durationCopy = duration;
+  v5 = durationCopy;
+  if (durationCopy)
   {
-    [v4 doubleValue];
+    [durationCopy doubleValue];
     if (v6 < 2.0)
     {
       v7 = 2.0;
@@ -1371,7 +1371,7 @@ LABEL_4:
   {
     criticalMessageKeepAliveTimerDuration = self->_criticalMessageKeepAliveTimerDuration;
     v9 = 138413058;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = criticalMessageKeepAliveTimerDuration;
     v13 = 2048;
@@ -1384,13 +1384,13 @@ LABEL_4:
   self->_criticalMessageKeepAliveTimerDuration = v7;
 }
 
-- (void)setCriticalMessageTimeout:(id)a3
+- (void)setCriticalMessageTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  timeoutCopy = timeout;
+  v5 = timeoutCopy;
+  if (timeoutCopy)
   {
-    [v4 doubleValue];
+    [timeoutCopy doubleValue];
     if (v6 < 2.0)
     {
       v7 = 2.0;
@@ -1411,7 +1411,7 @@ LABEL_4:
   {
     criticalMessageTimeout = self->_criticalMessageTimeout;
     v9 = 138413058;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = criticalMessageTimeout;
     v13 = 2048;
@@ -1424,13 +1424,13 @@ LABEL_4:
   self->_criticalMessageTimeout = v7;
 }
 
-- (void)setForcedShortTimeoutInterval:(id)a3
+- (void)setForcedShortTimeoutInterval:(id)interval
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  intervalCopy = interval;
+  v5 = intervalCopy;
+  if (intervalCopy)
   {
-    [v4 doubleValue];
+    [intervalCopy doubleValue];
     if (v6 < 2.0)
     {
       v7 = 2.0;
@@ -1451,7 +1451,7 @@ LABEL_4:
   {
     forcedShortTimeoutDuration = self->_forcedShortTimeoutDuration;
     v9 = 138413058;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = forcedShortTimeoutDuration;
     v13 = 2048;
@@ -1464,9 +1464,9 @@ LABEL_4:
   self->_forcedShortTimeoutDuration = v7;
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3
+- (void)appendPrettyStatusToStatusPrinter:(id)printer
 {
-  v10 = a3;
+  printerCopy = printer;
   if ([(NSMutableArray *)self->_queue count]|| self->_numberQueued || self->_numberAcked)
   {
     numberQueued = self->_numberQueued;
@@ -1497,21 +1497,21 @@ LABEL_4:
       v8 = @"Unable to send reverse pushes";
     }
 
-    [v10 appendDescription:@"reverse push send queue status" stringValue:v8];
-    [v10 pushIndent];
-    [v10 appendDescription:@"last reverse push queued" timeIntervalValue:self->_lastNotificationQueued];
+    [printerCopy appendDescription:@"reverse push send queue status" stringValue:v8];
+    [printerCopy pushIndent];
+    [printerCopy appendDescription:@"last reverse push queued" timeIntervalValue:self->_lastNotificationQueued];
     v9 = self->_numberQueued;
     if (v9)
     {
-      [v10 appendDescription:@"send success rate" successRateWithSuccessCount:self->_numberAcked failureCount:v9 - self->_numberAcked];
+      [printerCopy appendDescription:@"send success rate" successRateWithSuccessCount:self->_numberAcked failureCount:v9 - self->_numberAcked];
     }
 
     if (self->_numberAcked)
     {
-      [v10 appendDescription:@"last reverse push acknowledged" timeIntervalValue:self->_lastNotificationAcked];
+      [printerCopy appendDescription:@"last reverse push acknowledged" timeIntervalValue:self->_lastNotificationAcked];
     }
 
-    [v10 popIndent];
+    [printerCopy popIndent];
   }
 }
 

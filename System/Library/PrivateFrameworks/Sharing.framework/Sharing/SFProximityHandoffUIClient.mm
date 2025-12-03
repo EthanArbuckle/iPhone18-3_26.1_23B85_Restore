@@ -1,6 +1,6 @@
 @interface SFProximityHandoffUIClient
 - (void)dealloc;
-- (void)registerForProximityHandoffInteractionUpdatesWithCompletion:(id)a3;
+- (void)registerForProximityHandoffInteractionUpdatesWithCompletion:(id)completion;
 @end
 
 @implementation SFProximityHandoffUIClient
@@ -8,19 +8,19 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_1A9811A04();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(SFProximityHandoffUIClient *)&v5 dealloc];
 }
 
-- (void)registerForProximityHandoffInteractionUpdatesWithCompletion:(id)a3
+- (void)registerForProximityHandoffInteractionUpdatesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1A9813050(v5, v4);
+  selfCopy = self;
+  sub_1A9813050(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

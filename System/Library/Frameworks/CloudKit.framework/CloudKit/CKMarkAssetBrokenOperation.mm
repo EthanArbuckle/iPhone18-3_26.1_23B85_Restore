@@ -1,18 +1,18 @@
 @interface CKMarkAssetBrokenOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKMarkAssetBrokenOperation)initWithNoRecord;
-- (CKMarkAssetBrokenOperation)initWithRecordID:(id)a3 field:(id)a4 listIndex:(int64_t)a5;
+- (CKMarkAssetBrokenOperation)initWithRecordID:(id)d field:(id)field listIndex:(int64_t)index;
 - (CKUploadRequestConfiguration)resolvedUploadRequestConfiguration;
 - (id)activityCreate;
 - (id)markAssetBrokenCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)setMarkAssetBrokenCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)setMarkAssetBrokenCompletionBlock:(id)block;
 @end
 
 @implementation CKMarkAssetBrokenOperation
@@ -25,34 +25,34 @@
   return v2;
 }
 
-- (CKMarkAssetBrokenOperation)initWithRecordID:(id)a3 field:(id)a4 listIndex:(int64_t)a5
+- (CKMarkAssetBrokenOperation)initWithRecordID:(id)d field:(id)field listIndex:(int64_t)index
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  fieldCopy = field;
   v19.receiver = self;
   v19.super_class = CKMarkAssetBrokenOperation;
   v14 = [(CKOperation *)&v19 init];
   if (v14)
   {
-    if ((v10 == 0) != (v11 == 0))
+    if ((dCopy == 0) != (fieldCopy == 0))
     {
       v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v12, v13);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, v14, @"CKMarkAssetBrokenOperation.m", 51, @"Expected both or none of recordID and field to be nil");
     }
 
-    objc_storeStrong(&v14->_recordID, a3);
-    objc_storeStrong(&v14->_field, a4);
-    if (a5 < 0)
+    objc_storeStrong(&v14->_recordID, d);
+    objc_storeStrong(&v14->_field, field);
+    if (index < 0)
     {
-      v15 = -1;
+      indexCopy = -1;
     }
 
     else
     {
-      v15 = a5;
+      indexCopy = index;
     }
 
-    v14->_listIndex = v15;
+    v14->_listIndex = indexCopy;
     v14->_touchRepairZone = 1;
     v14->_bypassPCSEncryptionForTouchRepairZone = 0;
     v14->_simulateCorruptAsset = 1;
@@ -72,9 +72,9 @@
   return v12;
 }
 
-- (void)setMarkAssetBrokenCompletionBlock:(id)a3
+- (void)setMarkAssetBrokenCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -88,16 +88,16 @@
     v12[2] = sub_1885D2978;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     markAssetBrokenCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_markAssetBrokenCompletionBlock != v6)
+  if (self->_markAssetBrokenCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     markAssetBrokenCompletionBlock = self->_markAssetBrokenCompletionBlock;
     self->_markAssetBrokenCompletionBlock = v9;
 LABEL_9:
@@ -140,56 +140,56 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordID(self, v5, v6);
-  objc_msgSend_setRecordID_(v4, v8, v7);
+  objc_msgSend_setRecordID_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_field(self, v9, v10);
-  objc_msgSend_setField_(v4, v12, v11);
+  objc_msgSend_setField_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_listIndex(self, v13, v14);
-  objc_msgSend_setListIndex_(v4, v16, v15);
+  objc_msgSend_setListIndex_(infoCopy, v16, v15);
   v19 = objc_msgSend_touchRepairZone(self, v17, v18);
-  objc_msgSend_setTouchRepairZone_(v4, v20, v19);
+  objc_msgSend_setTouchRepairZone_(infoCopy, v20, v19);
   v23 = objc_msgSend_simulateCorruptAsset(self, v21, v22);
-  objc_msgSend_setSimulateCorruptAsset_(v4, v24, v23);
+  objc_msgSend_setSimulateCorruptAsset_(infoCopy, v24, v23);
   v27 = objc_msgSend_bypassPCSEncryptionForTouchRepairZone(self, v25, v26);
-  objc_msgSend_setBypassPCSEncryptionForTouchRepairZone_(v4, v28, v27);
+  objc_msgSend_setBypassPCSEncryptionForTouchRepairZone_(infoCopy, v28, v27);
   v31 = objc_msgSend_writeRepairRecord(self, v29, v30);
-  objc_msgSend_setWriteRepairRecord_(v4, v32, v31);
+  objc_msgSend_setWriteRepairRecord_(infoCopy, v32, v31);
   v35 = objc_msgSend_resolvedUploadRequestConfiguration(self, v33, v34);
-  objc_msgSend_setUploadRequestConfiguration_(v4, v36, v35);
+  objc_msgSend_setUploadRequestConfiguration_(infoCopy, v36, v35);
 
   v37.receiver = self;
   v37.super_class = CKMarkAssetBrokenOperation;
-  [(CKDatabaseOperation *)&v37 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v37 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v37.receiver = self;
   v37.super_class = CKMarkAssetBrokenOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v37 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordID(v4, v5, v6, v37.receiver, v37.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v37 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordID(infoCopy, v5, v6, v37.receiver, v37.super_class);
   objc_msgSend_setRecordID_(self, v8, v7);
 
-  v11 = objc_msgSend_field(v4, v9, v10);
+  v11 = objc_msgSend_field(infoCopy, v9, v10);
   objc_msgSend_setField_(self, v12, v11);
 
-  v15 = objc_msgSend_listIndex(v4, v13, v14);
+  v15 = objc_msgSend_listIndex(infoCopy, v13, v14);
   objc_msgSend_setListIndex_(self, v16, v15);
-  v19 = objc_msgSend_touchRepairZone(v4, v17, v18);
+  v19 = objc_msgSend_touchRepairZone(infoCopy, v17, v18);
   objc_msgSend_setTouchRepairZone_(self, v20, v19);
-  v23 = objc_msgSend_simulateCorruptAsset(v4, v21, v22);
+  v23 = objc_msgSend_simulateCorruptAsset(infoCopy, v21, v22);
   objc_msgSend_setSimulateCorruptAsset_(self, v24, v23);
-  v27 = objc_msgSend_bypassPCSEncryptionForTouchRepairZone(v4, v25, v26);
+  v27 = objc_msgSend_bypassPCSEncryptionForTouchRepairZone(infoCopy, v25, v26);
   objc_msgSend_setBypassPCSEncryptionForTouchRepairZone_(self, v28, v27);
-  v31 = objc_msgSend_writeRepairRecord(v4, v29, v30);
+  v31 = objc_msgSend_writeRepairRecord(infoCopy, v29, v30);
   objc_msgSend_setWriteRepairRecord_(self, v32, v31);
-  v35 = objc_msgSend_uploadRequestConfiguration(v4, v33, v34);
+  v35 = objc_msgSend_uploadRequestConfiguration(infoCopy, v33, v34);
 
   objc_msgSend_setUploadRequestConfiguration_(self, v36, v35);
 }
@@ -209,41 +209,41 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v5 = objc_msgSend_database(self, a2, a3);
+  v5 = objc_msgSend_database(self, a2, run);
   v8 = objc_msgSend_scope(v5, v6, v7);
 
   if (v8 == 2)
   {
     v11 = objc_msgSend_recordID(self, v9, v10);
     v14 = objc_msgSend_zoneID(v11, v12, v13);
-    v16 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v15, v14, a3);
+    v16 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v15, v14, run);
 
     if (v16)
     {
       v20.receiver = self;
       v20.super_class = CKMarkAssetBrokenOperation;
-      return [(CKDatabaseOperation *)&v20 CKOperationShouldRun:a3];
+      return [(CKDatabaseOperation *)&v20 CKOperationShouldRun:run];
     }
   }
 
-  else if (a3)
+  else if (run)
   {
     v18 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v9, @"CKInternalErrorDomain", 1019, @"This operation should only be called on the private database");
     v19 = v18;
     result = 0;
-    *a3 = v18;
+    *run = v18;
     return result;
   }
 
   return 0;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -291,7 +291,7 @@ LABEL_9:
     }
   }
 
-  v19 = objc_msgSend_CKClientSuitableError(v4, v7, v8);
+  v19 = objc_msgSend_CKClientSuitableError(errorCopy, v7, v8);
   v22 = objc_msgSend_markAssetBrokenCompletionBlock(self, v20, v21);
 
   if (v22)
@@ -311,7 +311,7 @@ LABEL_9:
       *buf = 138544130;
       v64 = v58;
       v65 = 2048;
-      v66 = self;
+      selfCopy = self;
       v67 = 2114;
       v68 = v61;
       v69 = 2112;
@@ -345,7 +345,7 @@ LABEL_9:
 
   v62.receiver = self;
   v62.super_class = CKMarkAssetBrokenOperation;
-  [(CKOperation *)&v62 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v62 _finishOnCallbackQueueWithError:errorCopy];
 
   v55 = *MEMORY[0x1E69E9840];
 }
@@ -424,10 +424,10 @@ LABEL_9:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -471,7 +471,7 @@ LABEL_9:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKMarkAssetBrokenOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -486,15 +486,15 @@ LABEL_9:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleMarkAssetBrokenCompletionWithRepairRecordID_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleMarkAssetBrokenCompletionWithRepairRecordID_error_, 1, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKMarkAssetBrokenOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface FormatVideoPlayerViewController
-- (_TtC8NewsFeed31FormatVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8NewsFeed31FormatVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FormatVideoPlayerViewController
@@ -13,31 +13,31 @@
 {
   ObjectType = swift_getObjectType();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v5 = self;
+  selfCopy = self;
   if (Strong)
   {
     sub_1D6AF44B0();
     swift_unknownObjectRelease();
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(FormatVideoPlayerViewController *)&v6 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6B4B70C();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(FormatVideoPlayerViewController *)&v5 viewWillDisappear:v3];
+  [(FormatVideoPlayerViewController *)&v5 viewWillDisappear:disappearCopy];
   if (swift_unknownObjectWeakLoadStrong())
   {
     sub_1D6AF40A0();
@@ -45,23 +45,23 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1D6B4BA94(a4, width, height);
+  selfCopy = self;
+  sub_1D6B4BA94(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6B4BBEC();
 }
 
-- (_TtC8NewsFeed31FormatVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed31FormatVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

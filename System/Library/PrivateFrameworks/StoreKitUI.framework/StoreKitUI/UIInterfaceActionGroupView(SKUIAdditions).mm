@@ -6,10 +6,10 @@
 
 - (uint64_t)newActionSeparatorView
 {
-  v2 = [a1 visualStyle];
-  v3 = [a1 visualStyle];
-  v4 = [v3 groupViewState];
-  v5 = [v2 newActionSeparatorViewForGroupViewState:v4];
+  visualStyle = [self visualStyle];
+  visualStyle2 = [self visualStyle];
+  groupViewState = [visualStyle2 groupViewState];
+  v5 = [visualStyle newActionSeparatorViewForGroupViewState:groupViewState];
 
   return v5;
 }

@@ -1,8 +1,8 @@
 @interface BTSDeviceLE
-+ (id)deviceWithPeripheral:(id)a3 manager:(id)a4;
++ (id)deviceWithPeripheral:(id)peripheral manager:(id)manager;
 - (BOOL)cloudPaired;
 - (BOOL)connect;
-- (BOOL)isApplePencil:(int *)a3;
+- (BOOL)isApplePencil:(int *)pencil;
 - (BOOL)isHIDDevice;
 - (BOOL)isManagedByAliroWallet;
 - (BOOL)isManagedByDeviceAccess;
@@ -10,7 +10,7 @@
 - (BOOL)isMyDevice;
 - (BOOL)paired;
 - (BOOL)supportsANCS;
-- (BTSDeviceLE)initWithPeripheral:(id)a3 manager:(id)a4;
+- (BTSDeviceLE)initWithPeripheral:(id)peripheral manager:(id)manager;
 - (NSString)description;
 - (id)classicDevice;
 - (id)healthDeviceType;
@@ -20,28 +20,28 @@
 - (id)relatedFutureRadioAddress;
 - (int)userSelectedHealthDataSyncConfig;
 - (void)openChannelSoundingL2CAP;
-- (void)sendChannelSoundingResults:(id)a3;
+- (void)sendChannelSoundingResults:(id)results;
 - (void)sendNextChannelSoundingMessage;
-- (void)setANCSAuthorization:(BOOL)a3;
-- (void)setChannelSoundingL2CAP:(id)a3;
-- (void)setDenyIncomingClassicConnection:(BOOL)a3;
-- (void)setUserSelectedHealthDataSyncConfig:(int)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)setANCSAuthorization:(BOOL)authorization;
+- (void)setChannelSoundingL2CAP:(id)p;
+- (void)setDenyIncomingClassicConnection:(BOOL)connection;
+- (void)setUserSelectedHealthDataSyncConfig:(int)config;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 - (void)unpair;
 @end
 
 @implementation BTSDeviceLE
 
-- (BTSDeviceLE)initWithPeripheral:(id)a3 manager:(id)a4
+- (BTSDeviceLE)initWithPeripheral:(id)peripheral manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  peripheralCopy = peripheral;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = BTSDeviceLE;
   v9 = [(BTSDeviceLE *)&v11 init];
   if (v9)
   {
-    if ([v7 hasTag:@"IsHearingAid"])
+    if ([peripheralCopy hasTag:@"IsHearingAid"])
     {
 
       v9 = 0;
@@ -49,19 +49,19 @@
 
     else
     {
-      objc_storeStrong(&v9->_peripheral, a3);
-      objc_storeStrong(&v9->_centralManager, a4);
+      objc_storeStrong(&v9->_peripheral, peripheral);
+      objc_storeStrong(&v9->_centralManager, manager);
     }
   }
 
   return v9;
 }
 
-+ (id)deviceWithPeripheral:(id)a3 manager:(id)a4
++ (id)deviceWithPeripheral:(id)peripheral manager:(id)manager
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BTSDeviceLE alloc] initWithPeripheral:v6 manager:v5];
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  v7 = [[BTSDeviceLE alloc] initWithPeripheral:peripheralCopy manager:managerCopy];
 
   return v7;
 }
@@ -107,50 +107,50 @@
 
 - (id)identifier
 {
-  v2 = [(CBPeripheral *)self->_peripheral identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(CBPeripheral *)self->_peripheral identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)name
 {
-  v3 = [self->_underlyingDADevice name];
+  name = [self->_underlyingDADevice name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [self->_underlyingDADevice name];
+    name2 = [self->_underlyingDADevice name];
   }
 
   else
   {
-    v5 = [(BTSDeviceLE *)self healthDeviceType];
+    healthDeviceType = [(BTSDeviceLE *)self healthDeviceType];
 
-    if (v5)
+    if (healthDeviceType)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(CBPeripheral *)self->_peripheral name];
-      v4 = [v6 stringWithFormat:@"GHSS %@", v7];
+      name3 = [(CBPeripheral *)self->_peripheral name];
+      name2 = [v6 stringWithFormat:@"GHSS %@", name3];
     }
 
     else
     {
-      v8 = [(CBPeripheral *)self->_peripheral name];
-      v9 = v8;
-      if (v8)
+      name4 = [(CBPeripheral *)self->_peripheral name];
+      v9 = name4;
+      if (name4)
       {
-        v4 = v8;
+        name2 = name4;
       }
 
       else
       {
         v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v4 = [v10 localizedStringForKey:@"ACCESSORY" value:&stru_286339F58 table:@"Devices"];
+        name2 = [v10 localizedStringForKey:@"ACCESSORY" value:&stru_286339F58 table:@"Devices"];
       }
     }
   }
 
-  return v4;
+  return name2;
 }
 
 - (id)healthDeviceType
@@ -186,40 +186,40 @@
 
 - (BOOL)paired
 {
-  v2 = self;
-  v3 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-  LOBYTE(v2) = [v3 isPeerPaired:v2->_peripheral];
+  selfCopy = self;
+  sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+  LOBYTE(selfCopy) = [sharedPairingAgent isPeerPaired:selfCopy->_peripheral];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)cloudPaired
 {
-  v2 = self;
-  v3 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-  LOBYTE(v2) = [v3 isPeerCloudPaired:v2->_peripheral];
+  selfCopy = self;
+  sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+  LOBYTE(selfCopy) = [sharedPairingAgent isPeerCloudPaired:selfCopy->_peripheral];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)classicDevice
 {
   if ([(BTSDeviceLE *)self supportsCTKD])
   {
-    v3 = [MEMORY[0x277CF3248] sharedInstance];
-    v4 = [(CBPeripheral *)self->_peripheral identifier];
-    v5 = [v3 deviceFromIdentifier:v4];
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    identifier = [(CBPeripheral *)self->_peripheral identifier];
+    v5 = [mEMORY[0x277CF3248] deviceFromIdentifier:identifier];
 
     v6 = [BTSDeviceClassic deviceWithDevice:v5];
-    v7 = [v6 classicDevice];
+    classicDevice = [v6 classicDevice];
   }
 
   else
   {
-    v7 = 0;
+    classicDevice = 0;
   }
 
-  return v7;
+  return classicDevice;
 }
 
 - (BOOL)isMyDevice
@@ -234,13 +234,13 @@
 
 - (BOOL)connect
 {
-  v3 = [(CBPeripheral *)self->_peripheral isConnectedToSystem];
-  if ((v3 & 1) == 0)
+  isConnectedToSystem = [(CBPeripheral *)self->_peripheral isConnectedToSystem];
+  if ((isConnectedToSystem & 1) == 0)
   {
     [(CBCentralManager *)self->_centralManager connectPeripheral:self->_peripheral options:0];
   }
 
-  return v3 ^ 1;
+  return isConnectedToSystem ^ 1;
 }
 
 - (void)unpair
@@ -259,8 +259,8 @@
     }
   }
 
-  v5 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-  [v5 unpairPeer:self->_peripheral];
+  sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+  [sharedPairingAgent unpairPeer:self->_peripheral];
 }
 
 - (BOOL)supportsANCS
@@ -347,13 +347,13 @@
   return v3;
 }
 
-- (void)setDenyIncomingClassicConnection:(BOOL)a3
+- (void)setDenyIncomingClassicConnection:(BOOL)connection
 {
-  v3 = a3;
-  v5 = [(BTSDeviceLE *)self shouldDenyIncomingClassicConnection];
-  if (v3)
+  connectionCopy = connection;
+  shouldDenyIncomingClassicConnection = [(BTSDeviceLE *)self shouldDenyIncomingClassicConnection];
+  if (connectionCopy)
   {
-    if (!v5)
+    if (!shouldDenyIncomingClassicConnection)
     {
       peripheral = self->_peripheral;
 
@@ -361,7 +361,7 @@
     }
   }
 
-  else if (v5)
+  else if (shouldDenyIncomingClassicConnection)
   {
     v7 = self->_peripheral;
 
@@ -369,11 +369,11 @@
   }
 }
 
-- (void)setANCSAuthorization:(BOOL)a3
+- (void)setANCSAuthorization:(BOOL)authorization
 {
   peripheral = self->_peripheral;
-  v5 = !a3;
-  if (a3)
+  v5 = !authorization;
+  if (authorization)
   {
     v6 = @"ANCSAuthorized";
   }
@@ -401,9 +401,9 @@
 
 - (int)userSelectedHealthDataSyncConfig
 {
-  v3 = [(BTSDeviceLE *)self healthDeviceType];
+  healthDeviceType = [(BTSDeviceLE *)self healthDeviceType];
 
-  if (!v3)
+  if (!healthDeviceType)
   {
     return 2;
   }
@@ -428,22 +428,22 @@
   return v5;
 }
 
-- (void)setUserSelectedHealthDataSyncConfig:(int)a3
+- (void)setUserSelectedHealthDataSyncConfig:(int)config
 {
-  v5 = [(BTSDeviceLE *)self healthDeviceType];
+  healthDeviceType = [(BTSDeviceLE *)self healthDeviceType];
 
-  if (v5)
+  if (healthDeviceType)
   {
     v6 = @"0";
     v7 = @"HealthDataSyncNever";
-    if (!a3)
+    if (!config)
     {
       v7 = @"HealthDataSyncAlways";
       v6 = @"1";
     }
 
-    v8 = a3 == 1;
-    if (a3 == 1)
+    v8 = config == 1;
+    if (config == 1)
     {
       v9 = @"HealthDataSyncWithUserConfirm";
     }
@@ -476,7 +476,7 @@
   }
 }
 
-- (BOOL)isApplePencil:(int *)a3
+- (BOOL)isApplePencil:(int *)pencil
 {
   if (([(CBPeripheral *)self->_peripheral hasTag:@"A1603"]& 1) != 0)
   {
@@ -507,7 +507,7 @@ LABEL_2:
   }
 
 LABEL_5:
-  *a3 = v5;
+  *pencil = v5;
   LOBYTE(v6) = 1;
   return v6;
 }
@@ -524,21 +524,21 @@ LABEL_5:
   return [(CBPeripheral *)peripheral hasTag:@"IsXboxBLEController"];
 }
 
-- (void)setChannelSoundingL2CAP:(id)a3
+- (void)setChannelSoundingL2CAP:(id)p
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pCopy = p;
+  v5 = pCopy;
+  if (pCopy)
   {
-    v6 = [(CBL2CAPChannel *)v4 outputStream];
-    [v6 setDelegate:self];
+    outputStream = [(CBL2CAPChannel *)pCopy outputStream];
+    [outputStream setDelegate:self];
 
-    v7 = [(CBL2CAPChannel *)v5 outputStream];
-    v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v7 scheduleInRunLoop:v8 forMode:*MEMORY[0x277CBE640]];
+    outputStream2 = [(CBL2CAPChannel *)v5 outputStream];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [outputStream2 scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    v9 = [(CBL2CAPChannel *)v5 outputStream];
-    [v9 open];
+    outputStream3 = [(CBL2CAPChannel *)v5 outputStream];
+    [outputStream3 open];
   }
 
   else
@@ -546,12 +546,12 @@ LABEL_5:
     channelSoundingL2CAP = self->_channelSoundingL2CAP;
     if (channelSoundingL2CAP)
     {
-      v11 = [(CBL2CAPChannel *)channelSoundingL2CAP outputStream];
-      v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v11 removeFromRunLoop:v12 forMode:*MEMORY[0x277CBE640]];
+      outputStream4 = [(CBL2CAPChannel *)channelSoundingL2CAP outputStream];
+      currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+      [outputStream4 removeFromRunLoop:currentRunLoop2 forMode:*MEMORY[0x277CBE640]];
 
-      v13 = [(CBL2CAPChannel *)self->_channelSoundingL2CAP outputStream];
-      [v13 close];
+      outputStream5 = [(CBL2CAPChannel *)self->_channelSoundingL2CAP outputStream];
+      [outputStream5 close];
     }
   }
 
@@ -561,9 +561,9 @@ LABEL_5:
 
 - (void)openChannelSoundingL2CAP
 {
-  v3 = [(BTSDeviceLE *)self channelSoundingL2CAP];
+  channelSoundingL2CAP = [(BTSDeviceLE *)self channelSoundingL2CAP];
 
-  if (!v3)
+  if (!channelSoundingL2CAP)
   {
     peripheral = self->_peripheral;
 
@@ -571,30 +571,30 @@ LABEL_5:
   }
 }
 
-- (void)sendChannelSoundingResults:(id)a3
+- (void)sendChannelSoundingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if ([(CBPeripheral *)self->_peripheral state]== CBPeripheralStateConnected)
   {
-    v5 = [(BTSDeviceLE *)self channelSoundingL2CAP];
+    channelSoundingL2CAP = [(BTSDeviceLE *)self channelSoundingL2CAP];
 
-    if (v5)
+    if (channelSoundingL2CAP)
     {
-      v6 = [(BTSDeviceLE *)self channelSoundingL2CAP];
-      v7 = [v6 outputStream];
-      [v7 setDelegate:self];
+      channelSoundingL2CAP2 = [(BTSDeviceLE *)self channelSoundingL2CAP];
+      outputStream = [channelSoundingL2CAP2 outputStream];
+      [outputStream setDelegate:self];
 
-      v8 = [DKMessage sendEntireProcedure:v4 withMTU:[(CBPeripheral *)self->_peripheral maximumWriteValueLengthForType:1]- 4];
-      v9 = [(BTSDeviceLE *)self channelSoundingTXQueue];
+      v8 = [DKMessage sendEntireProcedure:resultsCopy withMTU:[(CBPeripheral *)self->_peripheral maximumWriteValueLengthForType:1]- 4];
+      channelSoundingTXQueue = [(BTSDeviceLE *)self channelSoundingTXQueue];
 
-      if (!v9)
+      if (!channelSoundingTXQueue)
       {
         v10 = objc_opt_new();
         [(BTSDeviceLE *)self setChannelSoundingTXQueue:v10];
       }
 
-      v11 = [(BTSDeviceLE *)self channelSoundingTXQueue];
-      [v11 addObjectsFromArray:v8];
+      channelSoundingTXQueue2 = [(BTSDeviceLE *)self channelSoundingTXQueue];
+      [channelSoundingTXQueue2 addObjectsFromArray:v8];
 
       [(BTSDeviceLE *)self sendNextChannelSoundingMessage];
     }
@@ -622,37 +622,37 @@ LABEL_5:
 - (void)sendNextChannelSoundingMessage
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [a1 channelSoundingL2CAP];
-  v4 = [v3 outputStream];
-  v5 = [v4 streamError];
-  v6 = [v5 localizedDescription];
+  channelSoundingL2CAP = [self channelSoundingL2CAP];
+  outputStream = [channelSoundingL2CAP outputStream];
+  streamError = [outputStream streamError];
+  localizedDescription = [streamError localizedDescription];
   v8 = 138412290;
-  v9 = v6;
+  v9 = localizedDescription;
   _os_log_error_impl(&dword_251143000, a2, OS_LOG_TYPE_ERROR, "Error sending channel sounding data: %@", &v8, 0xCu);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 > 3)
+  streamCopy = stream;
+  if (event > 3)
   {
-    if (a4 != 4)
+    if (event != 4)
     {
-      if (a4 == 8)
+      if (event == 8)
       {
         v7 = sharedBluetoothSettingsLogComponent();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [BTSDeviceLE stream:v6 handleEvent:v7];
+          [BTSDeviceLE stream:streamCopy handleEvent:v7];
         }
 
         goto LABEL_25;
       }
 
-      if (a4 == 16)
+      if (event == 16)
       {
         v9 = sharedBluetoothSettingsLogComponent();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -673,8 +673,8 @@ LABEL_5:
     {
 LABEL_21:
 
-      v12 = [(BTSDeviceLE *)self channelSoundingTXQueue];
-      v13 = [v12 count];
+      channelSoundingTXQueue = [(BTSDeviceLE *)self channelSoundingTXQueue];
+      v13 = [channelSoundingTXQueue count];
 
       if (v13)
       {
@@ -692,7 +692,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  switch(a4)
+  switch(event)
   {
     case 0uLL:
       v7 = sharedBluetoothSettingsLogComponent();

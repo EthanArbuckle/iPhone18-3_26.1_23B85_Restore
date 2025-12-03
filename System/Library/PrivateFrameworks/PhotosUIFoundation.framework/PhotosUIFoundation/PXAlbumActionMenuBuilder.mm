@@ -2,24 +2,24 @@
 + (NSArray)internalActionTypes;
 + (NSArray)primaryActionTypes;
 + (NSArray)secondaryActionTypes;
-+ (id)_createMenuWithActionManager:(id)a3 actionTypes:(id)a4 overrideActions:(id)a5;
-+ (id)contextMenuWithActionManager:(id)a3 overrideActions:(id)a4;
++ (id)_createMenuWithActionManager:(id)manager actionTypes:(id)types overrideActions:(id)actions;
++ (id)contextMenuWithActionManager:(id)manager overrideActions:(id)actions;
 @end
 
 @implementation PXAlbumActionMenuBuilder
 
-+ (id)_createMenuWithActionManager:(id)a3 actionTypes:(id)a4 overrideActions:(id)a5
++ (id)_createMenuWithActionManager:(id)manager actionTypes:(id)types overrideActions:(id)actions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
+  managerCopy = manager;
+  typesCopy = types;
+  actionsCopy = actions;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v8;
+  v11 = typesCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -35,18 +35,18 @@
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        v17 = [v9 objectForKeyedSubscript:{v16, v21}];
+        v17 = [actionsCopy objectForKeyedSubscript:{v16, v21}];
         if (v17)
         {
-          [v10 addObject:v17];
+          [array addObject:v17];
         }
 
         else
         {
-          v18 = [v7 standardActionForActionType:v16];
+          v18 = [managerCopy standardActionForActionType:v16];
           if (v18)
           {
-            [v10 addObject:v18];
+            [array addObject:v18];
           }
         }
       }
@@ -57,9 +57,9 @@
     while (v13);
   }
 
-  if ([v10 count])
+  if ([array count])
   {
-    v19 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F2B87EE0 image:0 identifier:0 options:1 children:v10];
+    v19 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F2B87EE0 image:0 identifier:0 options:1 children:array];
   }
 
   else
@@ -70,31 +70,31 @@
   return v19;
 }
 
-+ (id)contextMenuWithActionManager:(id)a3 overrideActions:(id)a4
++ (id)contextMenuWithActionManager:(id)manager overrideActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  managerCopy = manager;
+  actionsCopy = actions;
+  if (managerCopy)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __73__PXAlbumActionMenuBuilder_contextMenuWithActionManager_overrideActions___block_invoke;
     v19 = &unk_1E7BB8808;
-    v23 = a1;
-    v20 = v6;
-    v21 = v7;
-    v9 = v8;
+    selfCopy = self;
+    v20 = managerCopy;
+    v21 = actionsCopy;
+    v9 = array;
     v22 = v9;
     v10 = _Block_copy(&v16);
-    v11 = [a1 primaryActionTypes];
-    v10[2](v10, v11);
+    primaryActionTypes = [self primaryActionTypes];
+    v10[2](v10, primaryActionTypes);
 
-    v12 = [a1 secondaryActionTypes];
-    v10[2](v10, v12);
+    secondaryActionTypes = [self secondaryActionTypes];
+    v10[2](v10, secondaryActionTypes);
 
-    v13 = [a1 internalActionTypes];
-    v10[2](v10, v13);
+    internalActionTypes = [self internalActionTypes];
+    v10[2](v10, internalActionTypes);
 
     if ([v9 count])
     {

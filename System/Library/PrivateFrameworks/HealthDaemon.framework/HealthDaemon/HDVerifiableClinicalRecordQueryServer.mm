@@ -1,59 +1,59 @@
 @interface HDVerifiableClinicalRecordQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
-- (HDVerifiableClinicalRecordQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
+- (HDVerifiableClinicalRecordQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDVerifiableClinicalRecordQueryServer
 
-- (HDVerifiableClinicalRecordQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDVerifiableClinicalRecordQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = HDVerifiableClinicalRecordQueryServer;
-  v11 = [(HDQueryServer *)&v17 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v17 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 recordTypes];
+    recordTypes = [configurationCopy recordTypes];
     recordTypes = v11->_recordTypes;
-    v11->_recordTypes = v12;
+    v11->_recordTypes = recordTypes;
 
-    v14 = [v10 sourceTypes];
+    sourceTypes = [configurationCopy sourceTypes];
     sourceTypes = v11->_sourceTypes;
-    v11->_sourceTypes = v14;
+    v11->_sourceTypes = sourceTypes;
   }
 
   return v11;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 entitlements];
+  configurationCopy = configuration;
+  entitlements = [client entitlements];
   v9 = *MEMORY[0x277CCC1A0];
-  v10 = [v8 hasAccessEntitlementWithIdentifier:*MEMORY[0x277CCC1A0]];
+  v10 = [entitlements hasAccessEntitlementWithIdentifier:*MEMORY[0x277CCC1A0]];
 
   if ((v10 & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:4 format:{@"Missing required entitlement identifier: %@", v9}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:4 format:{@"Missing required entitlement identifier: %@", v9}];
     LOBYTE(v12) = 0;
     goto LABEL_11;
   }
 
-  v11 = [v7 recordTypes];
-  v12 = [v11 count];
+  recordTypes = [configurationCopy recordTypes];
+  v12 = [recordTypes count];
 
   if (!v12)
   {
     v19 = MEMORY[0x277CCA9B8];
     v20 = @"recordTypes must contain at least one type";
 LABEL_10:
-    [v19 hk_assignError:a5 code:3 description:v20];
+    [v19 hk_assignError:error code:3 description:v20];
     goto LABEL_11;
   }
 
-  v13 = [v7 sourceTypes];
-  v12 = [v13 count];
+  sourceTypes = [configurationCopy sourceTypes];
+  v12 = [sourceTypes count];
 
   if (!v12)
   {
@@ -63,8 +63,8 @@ LABEL_10:
   }
 
   v14 = MEMORY[0x277CBEB58];
-  v15 = [v7 recordTypes];
-  v16 = [v14 setWithArray:v15];
+  recordTypes2 = [configurationCopy recordTypes];
+  v16 = [v14 setWithArray:recordTypes2];
 
   v17 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277CCCEA0], *MEMORY[0x277CCCEA8], *MEMORY[0x277CCCEB0], 0}];
   v12 = [v16 hk_intersection:v17];
@@ -73,7 +73,7 @@ LABEL_10:
   LOBYTE(v12) = v18 == 1;
   if (v18 != 1)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"recordTypes must contain exactly one clinical type"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"recordTypes must contain exactly one clinical type"];
   }
 
 LABEL_11:
@@ -127,7 +127,7 @@ uint64_t __78__HDVerifiableClinicalRecordQueryServer__samplesBeforeAuthorization
   v32.receiver = self;
   v32.super_class = HDVerifiableClinicalRecordQueryServer;
   [(HDQueryServer *)&v32 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
   v31 = 0;
   if (self)
   {
@@ -137,13 +137,13 @@ uint64_t __78__HDVerifiableClinicalRecordQueryServer__samplesBeforeAuthorization
     v37 = __Block_byref_object_copy__133;
     v38 = __Block_byref_object_dispose__133;
     v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v4 = [MEMORY[0x277CCDBC0] verifiableClinicalRecordType];
-    v5 = [(HDQueryServer *)self profile];
-    v6 = [HDSampleEntity entityEnumeratorWithType:v4 profile:v5];
+    verifiableClinicalRecordType = [MEMORY[0x277CCDBC0] verifiableClinicalRecordType];
+    profile = [(HDQueryServer *)self profile];
+    v6 = [HDSampleEntity entityEnumeratorWithType:verifiableClinicalRecordType profile:profile];
 
-    v7 = [(HDQueryServer *)self filter];
-    v8 = [(HDQueryServer *)self profile];
-    v9 = [v7 predicateWithProfile:v8];
+    filter = [(HDQueryServer *)self filter];
+    profile2 = [(HDQueryServer *)self profile];
+    v9 = [filter predicateWithProfile:profile2];
     [v6 setPredicate:v9];
 
     v10 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"relevant_date" entityClass:objc_opt_class() ascending:0];
@@ -190,8 +190,8 @@ uint64_t __78__HDVerifiableClinicalRecordQueryServer__samplesBeforeAuthorization
 
   if (v15)
   {
-    v18 = [(HDQueryServer *)self queryUUID];
-    [v3 client_deliverError:v15 forQuery:v18];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v15 forQuery:queryUUID];
   }
 
   else
@@ -200,27 +200,27 @@ uint64_t __78__HDVerifiableClinicalRecordQueryServer__samplesBeforeAuthorization
     v28[1] = 3221225472;
     v28[2] = __53__HDVerifiableClinicalRecordQueryServer__queue_start__block_invoke;
     v28[3] = &unk_278625AC8;
-    v29 = v3;
-    v30 = self;
+    v29 = clientProxy;
+    selfCopy = self;
     if (self)
     {
       v19 = MEMORY[0x277CCD708];
       v20 = v28;
       v21 = v17;
       v22 = [v19 alloc];
-      v23 = [MEMORY[0x277CCDBC0] verifiableClinicalRecordType];
-      v24 = [v22 initWithExpectedObjectType:v23];
+      verifiableClinicalRecordType2 = [MEMORY[0x277CCDBC0] verifiableClinicalRecordType];
+      v24 = [v22 initWithExpectedObjectType:verifiableClinicalRecordType2];
 
       [v24 setRecordTypes:self->_recordTypes];
       v25 = [[HDObjectAuthorizationRequestContext alloc] initWithSamples:v21 metadata:v24];
 
       [(HDObjectAuthorizationRequestContext *)v25 setPersistSession:1];
       [(HDObjectAuthorizationRequestContext *)v25 setPromptWithNoSamples:1];
-      v26 = [(HDQueryServer *)self delegate];
-      [v26 queryServer:self requestsAuthorizationWithContext:v25 completion:v20];
+      delegate = [(HDQueryServer *)self delegate];
+      [delegate queryServer:self requestsAuthorizationWithContext:v25 completion:v20];
     }
 
-    v18 = 0;
+    queryUUID = 0;
     v15 = v29;
   }
 

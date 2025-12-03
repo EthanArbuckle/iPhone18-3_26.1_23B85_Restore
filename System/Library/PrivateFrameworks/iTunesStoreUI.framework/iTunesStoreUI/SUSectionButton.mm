@@ -1,62 +1,62 @@
 @interface SUSectionButton
-- (SUSectionButton)initWithSectionButtonDictionary:(id)a3;
+- (SUSectionButton)initWithSectionButtonDictionary:(id)dictionary;
 - (UIEdgeInsets)imageInsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyToBarButtonItem:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyToBarButtonItem:(id)item;
 - (void)dealloc;
 @end
 
 @implementation SUSectionButton
 
-- (SUSectionButton)initWithSectionButtonDictionary:(id)a3
+- (SUSectionButton)initWithSectionButtonDictionary:(id)dictionary
 {
   v20.receiver = self;
   v20.super_class = SUSectionButton;
   v4 = [(SUSectionButton *)&v20 init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"accessibility-title"];
+    v5 = [dictionary objectForKey:@"accessibility-title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_accessibilityTitle = v5;
     }
 
-    v6 = [a3 objectForKey:@"title"];
+    v6 = [dictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_displayTitle = v6;
     }
 
-    v7 = [a3 objectForKey:@"tag"];
+    v7 = [dictionary objectForKey:@"tag"];
     if (objc_opt_respondsToSelector())
     {
       v4->_tag = [v7 integerValue];
     }
 
-    v8 = [a3 objectForKey:@"inset-bottom"];
+    v8 = [dictionary objectForKey:@"inset-bottom"];
     if (objc_opt_respondsToSelector())
     {
       [v8 floatValue];
       v4->_imageInsets.bottom = v9;
     }
 
-    v10 = [a3 objectForKey:@"inset-left"];
+    v10 = [dictionary objectForKey:@"inset-left"];
     if (objc_opt_respondsToSelector())
     {
       [v10 floatValue];
       v4->_imageInsets.left = v11;
     }
 
-    v12 = [a3 objectForKey:@"inset-right"];
+    v12 = [dictionary objectForKey:@"inset-right"];
     if (objc_opt_respondsToSelector())
     {
       [v12 floatValue];
       v4->_imageInsets.right = v13;
     }
 
-    v14 = [a3 objectForKey:@"inset-top"];
+    v14 = [dictionary objectForKey:@"inset-top"];
     if (objc_opt_respondsToSelector())
     {
       [v14 floatValue];
@@ -66,7 +66,7 @@
     [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
     if (v16 == 2.0)
     {
-      v17 = [a3 objectForKey:@"image-url@2x"];
+      v17 = [dictionary objectForKey:@"image-url@2x"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -77,7 +77,7 @@
 
     if (!v4->_imageURL)
     {
-      v18 = [a3 objectForKey:@"image-url"];
+      v18 = [dictionary objectForKey:@"image-url"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -98,37 +98,37 @@
   [(SUSectionButton *)&v3 dealloc];
 }
 
-- (void)applyToBarButtonItem:(id)a3
+- (void)applyToBarButtonItem:(id)item
 {
-  [a3 setAccessibilityLabel:{-[SUSectionButton accessibilityTitle](self, "accessibilityTitle")}];
+  [item setAccessibilityLabel:{-[SUSectionButton accessibilityTitle](self, "accessibilityTitle")}];
   [(SUSectionButton *)self imageInsets];
-  [a3 setImageInsets:?];
-  v5 = [(SUSectionButton *)self image];
-  if (v5)
+  [item setImageInsets:?];
+  image = [(SUSectionButton *)self image];
+  if (image)
   {
-    [a3 setImage:v5];
+    [item setImage:image];
   }
 
   else
   {
-    [a3 setTitle:{-[SUSectionButton displayTitle](self, "displayTitle")}];
+    [item setTitle:{-[SUSectionButton displayTitle](self, "displayTitle")}];
   }
 
   v6 = [(SUSectionButton *)self tag];
 
-  [a3 setTag:v6];
+  [item setTag:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(NSString *)self->_accessibilityTitle copyWithZone:a3];
-  *(v5 + 16) = [(NSString *)self->_displayTitle copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(NSString *)self->_accessibilityTitle copyWithZone:zone];
+  *(v5 + 16) = [(NSString *)self->_displayTitle copyWithZone:zone];
   *(v5 + 24) = self->_image;
   v6 = *&self->_imageInsets.bottom;
   *(v5 + 32) = *&self->_imageInsets.top;
   *(v5 + 48) = v6;
-  *(v5 + 64) = [(NSURL *)self->_imageURL copyWithZone:a3];
+  *(v5 + 64) = [(NSURL *)self->_imageURL copyWithZone:zone];
   *(v5 + 72) = self->_imageURLScale;
   *(v5 + 80) = self->_tag;
   return v5;

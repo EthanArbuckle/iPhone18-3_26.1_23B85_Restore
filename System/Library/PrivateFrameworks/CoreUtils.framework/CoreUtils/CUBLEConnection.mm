@@ -1,44 +1,44 @@
 @interface CUBLEConnection
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4;
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error;
 - (BOOL)_processReadStatus;
 - (BOOL)_runConnectStart;
 - (BOOL)_runSetupChannel;
-- (BOOL)_setupIOAndReturnError:(id *)a3;
-- (BOOL)_startConnectingAndReturnError:(id *)a3;
-- (BOOL)activateDirectAndReturnError:(id *)a3;
+- (BOOL)_setupIOAndReturnError:(id *)error;
+- (BOOL)_startConnectingAndReturnError:(id *)error;
+- (BOOL)activateDirectAndReturnError:(id *)error;
 - (CUBLEConnection)init;
 - (NSString)description;
-- (void)_abortReadsWithError:(id)a3;
-- (void)_abortWritesWithError:(id)a3;
-- (void)_completeReadRequest:(id)a3 error:(id)a4;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
+- (void)_abortReadsWithError:(id)error;
+- (void)_abortWritesWithError:(id)error;
+- (void)_completeReadRequest:(id)request error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_prepareReadRequest:(id)a3;
-- (void)_processReads:(BOOL)a3;
+- (void)_prepareReadRequest:(id)request;
+- (void)_processReads:(BOOL)reads;
 - (void)_processWrites;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_run;
-- (void)activateWithCompletion:(id)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)invalidate;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)readWithRequest:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)writeEndOfDataWithCompletion:(id)a3;
-- (void)writeWithRequest:(id)a3;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)readWithRequest:(id)request;
+- (void)setLabel:(id)label;
+- (void)writeEndOfDataWithCompletion:(id)completion;
+- (void)writeWithRequest:(id)request;
 @end
 
 @implementation CUBLEConnection
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v56 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  channelCopy = channel;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
@@ -47,9 +47,9 @@
 
   if (!self->_l2capChannel)
   {
-    v15 = [v56 identifier];
+    identifier = [peripheralCopy identifier];
     destinationUUID = self->_destinationUUID;
-    v17 = v15;
+    v17 = identifier;
     v18 = destinationUUID;
     v19 = v18;
     if (v17 == v18)
@@ -78,8 +78,8 @@ LABEL_17:
           ucat = self->_ucat;
         }
 
-        v27 = [v56 identifier];
-        LogPrintF(ucat, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x3Cu, "### DidOpenL2CAPChannel wrong peer: peer %@ (not %@), channel %@, error %{error}\n", v28, v29, v30, v31, v27);
+        identifier2 = [peripheralCopy identifier];
+        LogPrintF(ucat, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x3Cu, "### DidOpenL2CAPChannel wrong peer: peer %@ (not %@), channel %@, error %{error}\n", v28, v29, v30, v31, identifier2);
         goto LABEL_37;
       }
 
@@ -97,7 +97,7 @@ LABEL_17:
       if (v25->var0 != -1)
       {
 LABEL_13:
-        LogPrintF(v25, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x1Eu, "DidOpenL2CAPChannel %@, error %{error}\n", v21, v22, v23, v24, v8);
+        LogPrintF(v25, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x1Eu, "DidOpenL2CAPChannel %@, error %{error}\n", v21, v22, v23, v24, channelCopy);
         goto LABEL_22;
       }
 
@@ -109,21 +109,21 @@ LABEL_13:
     }
 
 LABEL_22:
-    if (v9)
+    if (errorCopy)
     {
-      v32 = NSErrorNestedF(*MEMORY[0x1E696A768], 4294960541, v9, "L2CAP open channel failed", v21, v22, v23, v24, v53);
+      v32 = NSErrorNestedF(*MEMORY[0x1E696A768], 4294960541, errorCopy, "L2CAP open channel failed", v21, v22, v23, v24, v53);
       [(CUBLEConnection *)self _reportError:v32];
 
       goto LABEL_38;
     }
 
-    v33 = v8;
-    v27 = v33;
+    v33 = channelCopy;
+    identifier2 = v33;
     if (v33)
     {
       if ([v33 PSM] == self->_destinationPSM)
       {
-        objc_storeStrong(&self->_l2capChannel, a4);
+        objc_storeStrong(&self->_l2capChannel, channel);
         v40 = self->_ucat;
         if (v40->var0 <= 30)
         {
@@ -137,9 +137,9 @@ LABEL_22:
             v40 = self->_ucat;
           }
 
-          v41 = [v27 PSM];
-          v42 = [v27 peer];
-          v55 = [v42 identifier];
+          v41 = [identifier2 PSM];
+          peer = [identifier2 peer];
+          identifier3 = [peer identifier];
           LogPrintF(v40, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x1Eu, "Connection started PSM 0x%04X, peer %@\n", v43, v44, v45, v46, v41);
         }
 
@@ -161,7 +161,7 @@ LABEL_36:
           v48 = self->_ucat;
         }
 
-        v54 = [v27 PSM];
+        v54 = [identifier2 PSM];
         LogPrintF(v48, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x3Cu, "### DidOpenL2CAPChannel wrong PSM: 0x%04X (not 0x%04X)\n", v49, v50, v51, v52, v54);
       }
     }
@@ -192,25 +192,25 @@ LABEL_37:
   {
     v14 = self->_ucat;
 LABEL_5:
-    LogPrintF(v14, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x3Cu, "### DidOpenL2CAPChannel already open: channel %@, error %{error}\n", v10, v11, v12, v13, v8);
+    LogPrintF(v14, "[CUBLEConnection peripheral:didOpenL2CAPChannel:error:]", 0x3Cu, "### DidOpenL2CAPChannel already open: channel %@, error %{error}\n", v10, v11, v12, v13, channelCopy);
   }
 
 LABEL_38:
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v35 = a4;
-  v7 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
     goto LABEL_19;
   }
 
-  v8 = [v35 identifier];
+  identifier = [peripheralCopy identifier];
   destinationUUID = self->_destinationUUID;
-  v10 = v8;
+  v10 = identifier;
   v11 = destinationUUID;
   v12 = v11;
   if (v10 == v11)
@@ -235,15 +235,15 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    v21 = v35;
+    v21 = peripheralCopy;
     if (ucat->var0 == -1)
     {
       if (!_LogCategory_Initialize(self->_ucat, 0x5Au))
       {
 LABEL_15:
-        if (v7)
+        if (errorCopy)
         {
-          [(CUBLEConnection *)self _reportError:v7];
+          [(CUBLEConnection *)self _reportError:errorCopy];
         }
 
         else
@@ -256,11 +256,11 @@ LABEL_15:
       }
 
       ucat = self->_ucat;
-      v21 = v35;
+      v21 = peripheralCopy;
     }
 
-    v22 = [v21 identifier];
-    LogPrintF(ucat, "[CUBLEConnection centralManager:didFailToConnectPeripheral:error:]", 0x5Au, "### DidFailToConnectPeripheral %@, error %{error}\n", v23, v24, v25, v26, v22);
+    identifier2 = [v21 identifier];
+    LogPrintF(ucat, "[CUBLEConnection centralManager:didFailToConnectPeripheral:error:]", 0x5Au, "### DidFailToConnectPeripheral %@, error %{error}\n", v23, v24, v25, v26, identifier2);
 
     goto LABEL_15;
   }
@@ -281,26 +281,26 @@ LABEL_11:
   {
     v27 = self->_ucat;
 LABEL_13:
-    v28 = [v35 identifier];
-    LogPrintF(v27, "[CUBLEConnection centralManager:didFailToConnectPeripheral:error:]", 0x3Cu, "### DidFailToConnectPeripheral wrong peripheral: %@ (not %@), error %{error}\n", v29, v30, v31, v32, v28);
+    identifier3 = [peripheralCopy identifier];
+    LogPrintF(v27, "[CUBLEConnection centralManager:didFailToConnectPeripheral:error:]", 0x3Cu, "### DidFailToConnectPeripheral wrong peripheral: %@ (not %@), error %{error}\n", v29, v30, v31, v32, identifier3);
   }
 
 LABEL_19:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v33 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
     goto LABEL_28;
   }
 
-  v7 = [v6 identifier];
+  identifier = [peripheralCopy identifier];
   destinationUUID = self->_destinationUUID;
-  v9 = v7;
+  v9 = identifier;
   v10 = destinationUUID;
   v11 = v10;
   if (v9 == v10)
@@ -362,20 +362,20 @@ LABEL_27:
             v27 = self->_ucat;
           }
 
-          v28 = [v6 identifier];
-          LogPrintF(v27, "[CUBLEConnection centralManager:didConnectPeripheral:]", 0x1Eu, "Setting connection latency %@, %s (BT %d)\n", v29, v30, v31, v32, v28);
+          identifier2 = [peripheralCopy identifier];
+          LogPrintF(v27, "[CUBLEConnection centralManager:didConnectPeripheral:]", 0x1Eu, "Setting connection latency %@, %s (BT %d)\n", v29, v30, v31, v32, identifier2);
         }
 
 LABEL_26:
-        [v33 setDesiredConnectionLatency:v26 forPeripheral:v6];
+        [managerCopy setDesiredConnectionLatency:v26 forPeripheral:peripheralCopy];
         goto LABEL_27;
       }
 
       ucat = self->_ucat;
     }
 
-    v14 = [v6 identifier];
-    LogPrintF(ucat, "[CUBLEConnection centralManager:didConnectPeripheral:]", 0x1Eu, "DidConnectPeripheral %@\n", v15, v16, v17, v18, v14);
+    identifier3 = [peripheralCopy identifier];
+    LogPrintF(ucat, "[CUBLEConnection centralManager:didConnectPeripheral:]", 0x1Eu, "DidConnectPeripheral %@\n", v15, v16, v17, v18, identifier3);
 
     goto LABEL_15;
   }
@@ -396,23 +396,23 @@ LABEL_11:
   {
     v19 = self->_ucat;
 LABEL_13:
-    v20 = [v6 identifier];
-    LogPrintF(v19, "[CUBLEConnection centralManager:didConnectPeripheral:]", 0x3Cu, "### DidConnectPeripheral wrong peripheral: %@ (not %@)\n", v21, v22, v23, v24, v20);
+    identifier4 = [peripheralCopy identifier];
+    LogPrintF(v19, "[CUBLEConnection centralManager:didConnectPeripheral:]", 0x3Cu, "### DidConnectPeripheral wrong peripheral: %@ (not %@)\n", v21, v22, v23, v24, identifier4);
   }
 
 LABEL_28:
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v17 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
     goto LABEL_19;
   }
 
-  v10 = [v17 state];
+  state = [stateCopy state];
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
@@ -426,23 +426,23 @@ LABEL_28:
       ucat = self->_ucat;
     }
 
-    if (v10 > 0xA)
+    if (state > 0xA)
     {
       v12 = "?";
     }
 
     else
     {
-      v12 = off_1E73A3018[v10];
+      v12 = off_1E73A3018[state];
     }
 
     LogPrintF(ucat, "[CUBLEConnection centralManagerDidUpdateState:]", 0x1Eu, "Bluetooth state changed: %s\n", v6, v7, v8, v9, v12);
   }
 
 LABEL_10:
-  if (v10 > 4)
+  if (state > 4)
   {
-    if (v10 == 10 || v10 == 5)
+    if (state == 10 || state == 5)
     {
       [(CUBLEConnection *)self _run];
     }
@@ -450,7 +450,7 @@ LABEL_10:
 
   else
   {
-    if (v10 == 1)
+    if (state == 1)
     {
       v13 = "Bluetooth reset";
       v14 = 4294896145;
@@ -458,7 +458,7 @@ LABEL_10:
 
     else
     {
-      if (v10 != 4)
+      if (state != 4)
       {
         goto LABEL_19;
       }
@@ -474,17 +474,17 @@ LABEL_10:
 LABEL_19:
 }
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v14 = a3;
-  v10 = a4;
+  requestCopy = request;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 10)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUBLEConnection _completeWriteRequest:error:]", 0xAu, "Write completed: %{error}\n", v6, v7, v8, v9, v10);
+      LogPrintF(ucat, "[CUBLEConnection _completeWriteRequest:error:]", 0xAu, "Write completed: %{error}\n", v6, v7, v8, v9, errorCopy);
       goto LABEL_5;
     }
 
@@ -496,21 +496,21 @@ LABEL_3:
   }
 
 LABEL_5:
-  v12 = v14[1];
-  v14[1] = v10;
+  v12 = requestCopy[1];
+  requestCopy[1] = errorCopy;
 
-  v13 = [v14 completion];
-  [v14 setCompletion:0];
-  if (v13)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v13[2](v13);
+    completion[2](completion);
   }
 }
 
-- (void)_abortWritesWithError:(id)a3
+- (void)_abortWritesWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   if (self->_writeRequestCurrent || [(NSMutableArray *)self->_writeRequests count])
   {
     ucat = self->_ucat;
@@ -519,7 +519,7 @@ LABEL_5:
       if (ucat->var0 != -1)
       {
 LABEL_5:
-        LogPrintF(ucat, "[CUBLEConnection _abortWritesWithError:]", 0x1Eu, "Abort writes: %{error}\n", v4, v5, v6, v7, v8);
+        LogPrintF(ucat, "[CUBLEConnection _abortWritesWithError:]", 0x1Eu, "Abort writes: %{error}\n", v4, v5, v6, v7, errorCopy);
         goto LABEL_7;
       }
 
@@ -538,7 +538,7 @@ LABEL_7:
     writeRequestCurrent = self->_writeRequestCurrent;
     self->_writeRequestCurrent = 0;
 
-    [(CUBLEConnection *)self _completeWriteRequest:v10 error:v8];
+    [(CUBLEConnection *)self _completeWriteRequest:v10 error:errorCopy];
   }
 
   v23 = 0u;
@@ -564,7 +564,7 @@ LABEL_7:
 
         v10 = *(*(&v21 + 1) + 8 * v16);
 
-        [(CUBLEConnection *)self _completeWriteRequest:v10 error:v8];
+        [(CUBLEConnection *)self _completeWriteRequest:v10 error:errorCopy];
         ++v16;
         v17 = v10;
       }
@@ -590,41 +590,41 @@ LABEL_7:
 
   if (v19)
   {
-    v19[2](v19, v8);
+    v19[2](v19, errorCopy);
   }
 
   [(CUBLEConnection *)self _invalidated];
 }
 
-- (BOOL)_prepareWriteRequest:(id)a3 error:(id *)a4
+- (BOOL)_prepareWriteRequest:(id)request error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 dataArray];
-  v8 = v7;
-  if (!v7)
+  requestCopy = request;
+  dataArray = [requestCopy dataArray];
+  v8 = dataArray;
+  if (!dataArray)
   {
-    *(v6 + 34) = v6 + 16;
-    LODWORD(v18) = [v6 bytesIOCount];
+    *(requestCopy + 34) = requestCopy + 16;
+    LODWORD(v18) = [requestCopy bytesIOCount];
     goto LABEL_14;
   }
 
-  v9 = [v7 count];
-  if (v9 <= [v6 bytesIOMaxCount])
+  v9 = [dataArray count];
+  if (v9 <= [requestCopy bytesIOMaxCount])
   {
-    v19 = v6 + 16;
+    v19 = requestCopy + 16;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
     v20 = v8;
     v21 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
-    v22 = v6 + 16;
+    v22 = requestCopy + 16;
     if (v21)
     {
       v23 = v21;
       v24 = *v40;
-      v22 = v6 + 16;
+      v22 = requestCopy + 16;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -646,25 +646,25 @@ LABEL_7:
       while (v23);
     }
 
-    *(v6 + 34) = v19;
+    *(requestCopy + 34) = v19;
     v18 = (v22 - v19) >> 4;
 LABEL_14:
-    *(v6 + 70) = v18;
-    *(v6 + 36) = 0;
-    v27 = *(v6 + 1);
-    *(v6 + 1) = 0;
+    *(requestCopy + 70) = v18;
+    *(requestCopy + 36) = 0;
+    v27 = *(requestCopy + 1);
+    *(requestCopy + 1) = 0;
 
     if (gLogCategory_CUBLEConnection > 10 || gLogCategory_CUBLEConnection == -1 && !_LogCategory_Initialize(&gLogCategory_CUBLEConnection, 0xAu))
     {
       goto LABEL_27;
     }
 
-    v32 = *(v6 + 70);
+    v32 = *(requestCopy + 70);
     if (v32)
     {
       v33 = 0;
       v34 = 16 * v32;
-      v35 = (*(v6 + 34) + 8);
+      v35 = (*(requestCopy + 34) + 8);
       do
       {
         v36 = *v35;
@@ -690,7 +690,7 @@ LABEL_14:
       }
 
       ucat = self->_ucat;
-      v32 = *(v6 + 70);
+      v32 = *(requestCopy + 70);
     }
 
     LogPrintF(ucat, "[CUBLEConnection _prepareWriteRequest:error:]", 0xAu, "Write prepared (%d iov, %zu total)\n", v28, v29, v30, v31, v32);
@@ -699,11 +699,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
-    v10 = [v6 bytesIOMaxCount];
-    NSErrorWithOSStatusF(4294960532, "Too many write elements (%zu max)", v11, v12, v13, v14, v15, v16, v10);
-    *a4 = v17 = 0;
+    bytesIOMaxCount = [requestCopy bytesIOMaxCount];
+    NSErrorWithOSStatusF(4294960532, "Too many write elements (%zu max)", v11, v12, v13, v14, v15, v16, bytesIOMaxCount);
+    *error = v17 = 0;
   }
 
   else
@@ -724,8 +724,8 @@ LABEL_28:
     v4 = self->_writeRequestCurrent;
     if (!v4)
     {
-      v13 = [(NSMutableArray *)self->_writeRequests firstObject];
-      if (!v13)
+      firstObject = [(NSMutableArray *)self->_writeRequests firstObject];
+      if (!firstObject)
       {
         if (!self->_writeSuspended)
         {
@@ -737,7 +737,7 @@ LABEL_28:
         goto LABEL_37;
       }
 
-      v4 = v13;
+      v4 = firstObject;
       [(NSMutableArray *)self->_writeRequests removeObjectAtIndex:0];
       v31 = 0;
       [(CUBLEConnection *)self _prepareWriteRequest:v4 error:&v31];
@@ -848,18 +848,18 @@ LABEL_24:
   }
 }
 
-- (void)writeEndOfDataWithCompletion:(id)a3
+- (void)writeEndOfDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(CUWriteRequest);
   [(CUWriteRequest *)v5 setEndOfData:1];
-  if (v4)
+  if (completionCopy)
   {
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __48__CUBLEConnection_writeEndOfDataWithCompletion___block_invoke;
     v9 = &unk_1E73A49A0;
-    v11 = v4;
+    v11 = completionCopy;
     v10 = v5;
     [(CUWriteRequest *)v10 setCompletion:&v6];
   }
@@ -874,17 +874,17 @@ void __48__CUBLEConnection_writeEndOfDataWithCompletion___block_invoke(uint64_t 
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)writeWithRequest:(id)a3
+- (void)writeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CUBLEConnection_writeWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -910,14 +910,14 @@ void __36__CUBLEConnection_writeWithRequest___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)_completeReadRequest:(id)a3 error:(id)a4
+- (void)_completeReadRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 10)
   {
-    v8 = v16;
+    v8 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
@@ -929,20 +929,20 @@ LABEL_3:
     if (_LogCategory_Initialize(self->_ucat, 0xAu))
     {
       ucat = self->_ucat;
-      v8 = v16;
+      v8 = requestCopy;
       goto LABEL_3;
     }
   }
 
 LABEL_5:
-  v14 = v16[2];
-  v16[2] = v6;
+  v14 = requestCopy[2];
+  requestCopy[2] = errorCopy;
 
-  v15 = [v16 completion];
-  [v16 setCompletion:0];
-  if (v15)
+  completion = [requestCopy completion];
+  [requestCopy setCompletion:0];
+  if (completion)
   {
-    v15[2](v15);
+    completion[2](completion);
   }
 }
 
@@ -1006,10 +1006,10 @@ LABEL_12:
   return 1;
 }
 
-- (void)_abortReadsWithError:(id)a3
+- (void)_abortReadsWithError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   if (self->_readRequestCurrent || [(NSMutableArray *)self->_readRequests count])
   {
     ucat = self->_ucat;
@@ -1018,7 +1018,7 @@ LABEL_12:
       if (ucat->var0 != -1)
       {
 LABEL_5:
-        LogPrintF(ucat, "[CUBLEConnection _abortReadsWithError:]", 0x1Eu, "Abort reads: %{error}\n", v4, v5, v6, v7, v8);
+        LogPrintF(ucat, "[CUBLEConnection _abortReadsWithError:]", 0x1Eu, "Abort reads: %{error}\n", v4, v5, v6, v7, errorCopy);
         goto LABEL_7;
       }
 
@@ -1037,7 +1037,7 @@ LABEL_7:
     readRequestCurrent = self->_readRequestCurrent;
     self->_readRequestCurrent = 0;
 
-    [(CUBLEConnection *)self _completeReadRequest:v10 error:v8];
+    [(CUBLEConnection *)self _completeReadRequest:v10 error:errorCopy];
   }
 
   v23 = 0u;
@@ -1063,7 +1063,7 @@ LABEL_7:
 
         v10 = *(*(&v21 + 1) + 8 * v16);
 
-        [(CUBLEConnection *)self _completeReadRequest:v10 error:v8];
+        [(CUBLEConnection *)self _completeReadRequest:v10 error:errorCopy];
         ++v16;
         v17 = v10;
       }
@@ -1089,73 +1089,73 @@ LABEL_7:
 
   if (v19)
   {
-    v19[2](v19, v8);
+    v19[2](v19, errorCopy);
   }
 
   [(CUBLEConnection *)self _invalidated];
 }
 
-- (void)_prepareReadRequest:(id)a3
+- (void)_prepareReadRequest:(id)request
 {
-  v21 = a3;
-  if ([v21 bufferBytes])
+  requestCopy = request;
+  if ([requestCopy bufferBytes])
   {
-    v21[1] = [v21 bufferBytes];
-    [v21 setData:0];
+    requestCopy[1] = [requestCopy bufferBytes];
+    [requestCopy setData:0];
   }
 
   else
   {
-    v4 = [v21 bufferData];
+    bufferData = [requestCopy bufferData];
 
-    if (v4)
+    if (bufferData)
     {
-      v5 = [v21 bufferData];
-      v6 = [v5 length];
-      v7 = [v21 maxLength];
+      bufferData2 = [requestCopy bufferData];
+      v6 = [bufferData2 length];
+      maxLength = [requestCopy maxLength];
 
-      if (v6 < v7)
+      if (v6 < maxLength)
       {
-        v8 = [v21 maxLength];
-        v9 = [v21 bufferData];
-        [v9 setLength:v8];
+        maxLength2 = [requestCopy maxLength];
+        bufferData3 = [requestCopy bufferData];
+        [bufferData3 setLength:maxLength2];
       }
     }
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v21, "maxLength")}];
-      [v21 setBufferData:v10];
+      v10 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(requestCopy, "maxLength")}];
+      [requestCopy setBufferData:v10];
     }
 
-    v11 = [v21 bufferData];
-    v21[1] = [v11 mutableBytes];
+    bufferData4 = [requestCopy bufferData];
+    requestCopy[1] = [bufferData4 mutableBytes];
 
-    v12 = [v21 bufferData];
-    [v21 setData:v12];
+    bufferData5 = [requestCopy bufferData];
+    [requestCopy setData:bufferData5];
   }
 
-  v13 = v21[2];
-  v21[2] = 0;
-  v21[3] = 0;
+  v13 = requestCopy[2];
+  requestCopy[2] = 0;
+  requestCopy[3] = 0;
 
   ucat = self->_ucat;
   if (ucat->var0 <= 10)
   {
-    v15 = v21;
+    v15 = requestCopy;
     if (ucat->var0 != -1)
     {
 LABEL_10:
-      v16 = [v15 minLength];
-      [v21 maxLength];
-      LogPrintF(ucat, "[CUBLEConnection _prepareReadRequest:]", 0xAu, "Read prepared (%zu min, %zu max)\n", v17, v18, v19, v20, v16);
+      minLength = [v15 minLength];
+      [requestCopy maxLength];
+      LogPrintF(ucat, "[CUBLEConnection _prepareReadRequest:]", 0xAu, "Read prepared (%zu min, %zu max)\n", v17, v18, v19, v20, minLength);
       goto LABEL_12;
     }
 
     if (_LogCategory_Initialize(self->_ucat, 0xAu))
     {
       ucat = self->_ucat;
-      v15 = v21;
+      v15 = requestCopy;
       goto LABEL_10;
     }
   }
@@ -1163,9 +1163,9 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_processReads:(BOOL)a3
+- (void)_processReads:(BOOL)reads
 {
-  v3 = a3;
+  readsCopy = reads;
   v5 = 0;
   while (1)
   {
@@ -1175,10 +1175,10 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    v7 = [(NSMutableArray *)self->_readRequests firstObject];
-    if (!v7)
+    firstObject = [(NSMutableArray *)self->_readRequests firstObject];
+    if (!firstObject)
     {
-      if (v3)
+      if (readsCopy)
       {
         if (v5)
         {
@@ -1187,9 +1187,9 @@ LABEL_12:
 
         else
         {
-          v27 = [(CUBLEConnection *)self _processReadStatus];
+          _processReadStatus = [(CUBLEConnection *)self _processReadStatus];
           readSuspended = self->_readSuspended;
-          if (v27)
+          if (_processReadStatus)
           {
             if (!self->_readSuspended)
             {
@@ -1213,7 +1213,7 @@ LABEL_37:
       goto LABEL_21;
     }
 
-    obja = v7;
+    obja = firstObject;
     [(NSMutableArray *)self->_readRequests removeObjectAtIndex:0];
     [(CUBLEConnection *)self _prepareReadRequest:obja];
     objc_storeStrong(&self->_readRequestCurrent, obja);
@@ -1295,17 +1295,17 @@ LABEL_9:
 LABEL_21:
 }
 
-- (void)readWithRequest:(id)a3
+- (void)readWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CUBLEConnection_readWithRequest___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1365,10 +1365,10 @@ void __35__CUBLEConnection_readWithRequest___block_invoke(uint64_t a1, uint64_t 
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
   v6 = [(CBCentralManager *)centralManager retrievePeripheralsWithIdentifiers:v5];
 
-  v13 = [v6 firstObject];
-  if (v13)
+  firstObject = [v6 firstObject];
+  if (firstObject)
   {
-    objc_storeStrong(&self->_peripheral, v13);
+    objc_storeStrong(&self->_peripheral, firstObject);
     [(CBPeripheral *)self->_peripheral setDelegate:self];
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v15 = getCBConnectPeripheralOptionClientBundleID();
@@ -1412,7 +1412,7 @@ void __35__CUBLEConnection_readWithRequest___block_invoke(uint64_t a1, uint64_t 
 
     LogPrintF(ucat, "[CUBLEConnection _runConnectStart]", 0x1Eu, "Connecting to %@, %##@\n", v21, v22, v23, v24, v3);
 LABEL_13:
-    [(CBCentralManager *)self->_centralManager connectPeripheral:v13 options:v14];
+    [(CBCentralManager *)self->_centralManager connectPeripheral:firstObject options:v14];
     goto LABEL_14;
   }
 
@@ -1420,7 +1420,7 @@ LABEL_13:
   [(CUBLEConnection *)self _reportError:v14];
 LABEL_14:
 
-  return v13 != 0;
+  return firstObject != 0;
 }
 
 - (void)_run
@@ -1480,8 +1480,8 @@ LABEL_28:
 
       if (state == 10)
       {
-        v8 = [(CBCentralManager *)self->_centralManager state];
-        if (v8 == 10 || v8 == 5)
+        state = [(CBCentralManager *)self->_centralManager state];
+        if (state == 10 || state == 5)
         {
           goto LABEL_27;
         }
@@ -1541,13 +1541,13 @@ LABEL_32:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v14 = a3;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 90)
   {
-    v9 = v14;
+    v9 = errorCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
@@ -1558,7 +1558,7 @@ LABEL_3:
     if (_LogCategory_Initialize(ucat, 0x5Au))
     {
       ucat = self->_ucat;
-      v9 = v14;
+      v9 = errorCopy;
       goto LABEL_3;
     }
   }
@@ -1571,7 +1571,7 @@ LABEL_5:
 
   if (v10)
   {
-    v10[2](v10, v14);
+    v10[2](v10, errorCopy);
   }
 
   else
@@ -1582,20 +1582,20 @@ LABEL_5:
 
     if (v12)
     {
-      v12[2](v12, v14);
+      v12[2](v12, errorCopy);
     }
   }
 
-  [(CUBLEConnection *)self _abortReadsWithError:v14];
-  [(CUBLEConnection *)self _abortWritesWithError:v14];
+  [(CUBLEConnection *)self _abortReadsWithError:errorCopy];
+  [(CUBLEConnection *)self _abortWritesWithError:errorCopy];
 }
 
-- (BOOL)_setupIOAndReturnError:(id *)a3
+- (BOOL)_setupIOAndReturnError:(id *)error
 {
-  v5 = [(CBL2CAPChannel *)self->_l2capChannel socketFD];
-  if (v5 < 0)
+  socketFD = [(CBL2CAPChannel *)self->_l2capChannel socketFD];
+  if (socketFD < 0)
   {
-    if (a3)
+    if (error)
     {
       NSErrorWithOSStatusF(4294960596, "No socket for L2CAP channel: %@", v6, v7, v8, v9, v10, v11, self->_l2capChannel);
       v21 = LABEL_15:;
@@ -1606,15 +1606,15 @@ LABEL_5:
     return 0;
   }
 
-  v12 = v5;
-  self->_socketFD = v5;
+  v12 = socketFD;
+  self->_socketFD = socketFD;
   v43 = 1;
-  if (setsockopt(v5, 0xFFFF, 4130, &v43, 4u))
+  if (setsockopt(socketFD, 0xFFFF, 4130, &v43, 4u))
   {
     if (!*__error())
     {
       v19 = 4294960596;
-      if (a3)
+      if (error)
       {
 LABEL_13:
         v20 = "Set SO_NOSIGPIPE failed";
@@ -1627,7 +1627,7 @@ LABEL_13:
     v19 = *__error();
     if (v19)
     {
-      if (!a3)
+      if (!error)
       {
         return 0;
       }
@@ -1639,7 +1639,7 @@ LABEL_13:
   v19 = SocketSetNonBlocking(v12, 1);
   if (v19)
   {
-    if (a3)
+    if (error)
     {
       v20 = "Make non-blocking failed";
 LABEL_14:
@@ -1657,7 +1657,7 @@ LABEL_14:
   v25 = self->_readSource;
   if (!v25)
   {
-    if (a3)
+    if (error)
     {
       v20 = "Create read source failed";
       v19 = 4294960550;
@@ -1706,14 +1706,14 @@ LABEL_14:
     return v22;
   }
 
-  if (!a3)
+  if (!error)
   {
     return v22;
   }
 
   v21 = NSErrorWithOSStatusF(4294960549, "Create write source failed", v29, v30, v31, v32, v33, v34, v38);
 LABEL_16:
-  *a3 = v21;
+  *error = v21;
   return v22;
 }
 
@@ -1739,12 +1739,12 @@ uint64_t __42__CUBLEConnection__setupIOAndReturnError___block_invoke_4(uint64_t 
   return [v4 _invalidated];
 }
 
-- (BOOL)_startConnectingAndReturnError:(id *)a3
+- (BOOL)_startConnectingAndReturnError:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
   if (!self->_destinationUUID)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -1753,16 +1753,16 @@ uint64_t __42__CUBLEConnection__setupIOAndReturnError___block_invoke_4(uint64_t 
 LABEL_9:
     v18 = 4294960591;
 LABEL_10:
-    v19 = NSErrorWithOSStatusF(v18, v17, a3, v3, v4, v5, v6, v7, v21);
+    v19 = NSErrorWithOSStatusF(v18, v17, error, v3, v4, v5, v6, v7, v21);
     v20 = v19;
     result = 0;
-    *a3 = v19;
+    *error = v19;
     return result;
   }
 
   if (!self->_destinationPSM)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -1787,7 +1787,7 @@ LABEL_10:
     return 1;
   }
 
-  if (a3)
+  if (error)
   {
     v17 = "Create CBCentralManager failed";
     v18 = 4294960596;
@@ -1923,7 +1923,7 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)activateDirectAndReturnError:(id *)a3
+- (BOOL)activateDirectAndReturnError:(id *)error
 {
   l2capChannel = self->_l2capChannel;
   ucat = self->_ucat;
@@ -1975,12 +1975,12 @@ LABEL_15:
         }
 
 LABEL_23:
-        if (a3)
+        if (error)
         {
 LABEL_24:
           v37 = writeRequests;
           v35 = 0;
-          *a3 = writeRequests;
+          *error = writeRequests;
           goto LABEL_28;
         }
 
@@ -1994,8 +1994,8 @@ LABEL_27:
     }
 
     v12 = [(CBL2CAPChannel *)l2capChannel PSM];
-    v13 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-    v39 = [v13 identifier];
+    peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+    identifier = [peer identifier];
     LogPrintF(ucat, "[CUBLEConnection activateDirectAndReturnError:]", 0x1Eu, "Activate incoming PSM 0x%04X, peer %@\n", v14, v15, v16, v17, v12);
 
     goto LABEL_9;
@@ -2034,7 +2034,7 @@ LABEL_17:
       if (!_LogCategory_Initialize(v36, 0x5Au))
       {
 LABEL_26:
-        if (a3)
+        if (error)
         {
           goto LABEL_24;
         }
@@ -2064,17 +2064,17 @@ LABEL_28:
   return v35;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CUBLEConnection_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -2099,13 +2099,13 @@ void __42__CUBLEConnection_activateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE91B8;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
@@ -2125,20 +2125,20 @@ void __42__CUBLEConnection_activateWithCompletion___block_invoke(uint64_t a1)
   destinationUUID = self->_destinationUUID;
   if (destinationUUID)
   {
-    v17 = destinationUUID;
+    identifier = destinationUUID;
 LABEL_6:
     v25 = v10;
-    CUAppendF(&v25, &v27, "Peer %@", v12, v13, v14, v15, v16, v17);
+    CUAppendF(&v25, &v27, "Peer %@", v12, v13, v14, v15, v16, identifier);
     v19 = v25;
 
     v10 = v19;
     goto LABEL_7;
   }
 
-  v18 = [(CBL2CAPChannel *)self->_l2capChannel peer];
-  v17 = [v18 identifier];
+  peer = [(CBL2CAPChannel *)self->_l2capChannel peer];
+  identifier = [peer identifier];
 
-  if (v17)
+  if (identifier)
   {
     goto LABEL_6;
   }

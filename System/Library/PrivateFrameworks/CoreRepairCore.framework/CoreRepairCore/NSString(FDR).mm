@@ -7,13 +7,13 @@
 
 - (id)dataKey
 {
-  v2 = [a1 rangeOfString:@"-"];
+  v2 = [self rangeOfString:@"-"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = handleForCategory(0);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      [(NSString(FDR) *)a1 dataKey];
+      [(NSString(FDR) *)self dataKey];
     }
 
     v4 = 0;
@@ -21,7 +21,7 @@
 
   else
   {
-    v4 = [a1 substringToIndex:v2];
+    v4 = [self substringToIndex:v2];
   }
 
   return v4;
@@ -29,13 +29,13 @@
 
 - (id)dataIdentifier
 {
-  v2 = [a1 rangeOfString:@"-"];
+  v2 = [self rangeOfString:@"-"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = handleForCategory(0);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      [(NSString(FDR) *)a1 dataIdentifier];
+      [(NSString(FDR) *)self dataIdentifier];
     }
 
     v4 = 0;
@@ -43,7 +43,7 @@
 
   else
   {
-    v4 = [a1 substringFromIndex:v2 + 1];
+    v4 = [self substringFromIndex:v2 + 1];
   }
 
   return v4;

@@ -1,81 +1,81 @@
 @interface CLKCompoundTextProvider
-+ (id)compoundProviderWithLocalizedFormat:(id)a3 localizedTextProviders:(id)a4;
++ (id)compoundProviderWithLocalizedFormat:(id)format localizedTextProviders:(id)providers;
 + (id)compoundTextProviderCurrentlyFormattingOnThisThread;
 - (BOOL)_validate;
-- (BOOL)isEqual:(id)a3;
-- (CLKCompoundTextProvider)initWithCoder:(id)a3;
-- (CLKCompoundTextProvider)initWithFormat:(id)a3 arguments:(char *)a4;
-- (CLKCompoundTextProvider)initWithSegments:(id)a3 textProviders:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CLKCompoundTextProvider)initWithCoder:(id)coder;
+- (CLKCompoundTextProvider)initWithFormat:(id)format arguments:(char *)arguments;
+- (CLKCompoundTextProvider)initWithSegments:(id)segments textProviders:(id)providers;
 - (id)JSONObjectRepresentation;
 - (id)_arrayOfTextProviderJSONObjectRepresentations;
-- (id)_attributedStringForSegment:(id)a3 withStyle:(id)a4;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_replacementForTextProvider:(id)a3 index:(unint64_t)a4 withStyle:(id)a5;
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
+- (id)_attributedStringForSegment:(id)segment withStyle:(id)style;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_replacementForTextProvider:(id)provider index:(unint64_t)index withStyle:(id)style;
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
 - (id)_sessionCacheKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)_updateFrequency;
 - (int64_t)timeTravelUpdateFrequency;
 - (unint64_t)hash;
 - (void)_endSession;
-- (void)_processFormat:(id)a3 arguments:(char *)a4;
-- (void)_startSessionWithDate:(id)a3;
-- (void)addTextProvider:(id)a3 andGetPlaceholderString:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_processFormat:(id)format arguments:(char *)arguments;
+- (void)_startSessionWithDate:(id)date;
+- (void)addTextProvider:(id)provider andGetPlaceholderString:(id *)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKCompoundTextProvider
 
-- (CLKCompoundTextProvider)initWithFormat:(id)a3 arguments:(char *)a4
+- (CLKCompoundTextProvider)initWithFormat:(id)format arguments:(char *)arguments
 {
-  v6 = a3;
+  formatCopy = format;
   v13.receiver = self;
   v13.super_class = CLKCompoundTextProvider;
-  v7 = [(CLKTextProvider *)&v13 initPrivate];
-  if (v7)
+  initPrivate = [(CLKTextProvider *)&v13 initPrivate];
+  if (initPrivate)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    textProviders = v7->_textProviders;
-    v7->_textProviders = v8;
+    textProviders = initPrivate->_textProviders;
+    initPrivate->_textProviders = v8;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    segments = v7->_segments;
-    v7->_segments = v10;
+    segments = initPrivate->_segments;
+    initPrivate->_segments = v10;
 
-    [(CLKCompoundTextProvider *)v7 _processFormat:v6 arguments:a4];
+    [(CLKCompoundTextProvider *)initPrivate _processFormat:formatCopy arguments:arguments];
   }
 
-  return v7;
+  return initPrivate;
 }
 
-- (CLKCompoundTextProvider)initWithSegments:(id)a3 textProviders:(id)a4
+- (CLKCompoundTextProvider)initWithSegments:(id)segments textProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  segmentsCopy = segments;
+  providersCopy = providers;
   v14.receiver = self;
   v14.super_class = CLKCompoundTextProvider;
-  v8 = [(CLKTextProvider *)&v14 initPrivate];
-  if (v8)
+  initPrivate = [(CLKTextProvider *)&v14 initPrivate];
+  if (initPrivate)
   {
-    v9 = [v7 mutableCopy];
-    textProviders = v8->_textProviders;
-    v8->_textProviders = v9;
+    v9 = [providersCopy mutableCopy];
+    textProviders = initPrivate->_textProviders;
+    initPrivate->_textProviders = v9;
 
-    v11 = [v6 mutableCopy];
-    segments = v8->_segments;
-    v8->_segments = v11;
+    v11 = [segmentsCopy mutableCopy];
+    segments = initPrivate->_segments;
+    initPrivate->_segments = v11;
   }
 
-  return v8;
+  return initPrivate;
 }
 
-+ (id)compoundProviderWithLocalizedFormat:(id)a3 localizedTextProviders:(id)a4
++ (id)compoundProviderWithLocalizedFormat:(id)format localizedTextProviders:(id)providers
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAC80] localizedScannerWithString:v6];
+  formatCopy = format;
+  providersCopy = providers;
+  v8 = [MEMORY[0x277CCAC80] localizedScannerWithString:formatCopy];
   [v8 setCharactersToBeSkipped:0];
   v9 = objc_opt_new();
   v10 = objc_opt_new();
@@ -85,8 +85,8 @@
     goto LABEL_33;
   }
 
-  v33 = a1;
-  v34 = v6;
+  selfCopy = self;
+  v34 = formatCopy;
   v13 = 0;
   v12 = &stru_284A20458;
   *&v11 = 138412546;
@@ -112,7 +112,7 @@ LABEL_21:
 
     if ([v8 scanString:@"@" intoString:0])
     {
-      if ([v7 count] <= v13)
+      if ([providersCopy count] <= v13)
       {
         v21 = CLKLoggingObjectForDomain(4);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -127,7 +127,7 @@ LABEL_21:
 
       [v9 addObject:v12];
 
-      v16 = v7;
+      v16 = providersCopy;
       v17 = v13;
     }
 
@@ -169,7 +169,7 @@ LABEL_23:
       }
 
       v22 = v35;
-      if (v35 < 1 || [v7 count] < v22)
+      if (v35 < 1 || [providersCopy count] < v22)
       {
         v21 = CLKLoggingObjectForDomain(4);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -190,7 +190,7 @@ LABEL_23:
       [v9 addObject:v12];
 
       v17 = v35 - 1;
-      v16 = v7;
+      v16 = providersCopy;
     }
 
     v18 = [v16 objectAtIndexedSubscript:v17];
@@ -206,12 +206,12 @@ LABEL_24:
   if (v19)
   {
     v26 = 0;
-    v6 = v34;
+    formatCopy = v34;
     goto LABEL_40;
   }
 
-  v6 = v34;
-  a1 = v33;
+  formatCopy = v34;
+  self = selfCopy;
 LABEL_33:
   [v9 addObject:v12];
   v27 = [v9 count];
@@ -223,7 +223,7 @@ LABEL_33:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v38 = v6;
+      v38 = formatCopy;
       v39 = 2112;
       v40 = v9;
       v41 = 2112;
@@ -231,7 +231,7 @@ LABEL_33:
       _os_log_impl(&dword_23702D000, v30, OS_LOG_TYPE_DEFAULT, "Will create compound provider for '%@' with segments: %@ textProviders: %@", buf, 0x20u);
     }
 
-    v26 = [[a1 alloc] initWithSegments:v9 textProviders:v10];
+    v26 = [[self alloc] initWithSegments:v9 textProviders:v10];
   }
 
   else
@@ -239,7 +239,7 @@ LABEL_33:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = v6;
+      v38 = formatCopy;
       v39 = 2112;
       v40 = v9;
       v41 = 2112;
@@ -267,21 +267,21 @@ LABEL_40:
   return pthread_getspecific(v3);
 }
 
-- (void)addTextProvider:(id)a3 andGetPlaceholderString:(id *)a4
+- (void)addTextProvider:(id)provider andGetPlaceholderString:(id *)string
 {
   textProviders = self->_textProviders;
-  v7 = a3;
+  providerCopy = provider;
   v8 = [(NSMutableArray *)textProviders count];
   v9 = self->_textProviders;
-  v10 = [v7 finalizedCopy];
+  finalizedCopy = [providerCopy finalizedCopy];
 
-  [(NSMutableArray *)v9 addObject:v10];
+  [(NSMutableArray *)v9 addObject:finalizedCopy];
   v11 = MEMORY[0x277CCACA8];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
   v13 = [v11 stringWithFormat:@"%@%@%@", @"Ω-♨︎-Д-⚽︎-猫", v12, @"止"];
 
   v14 = v13;
-  *a4 = v13;
+  *string = v13;
 }
 
 - (id)description
@@ -316,10 +316,10 @@ LABEL_40:
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) timeTravelUpdateFrequency];
-        if (v5 <= v8)
+        timeTravelUpdateFrequency = [*(*(&v10 + 1) + 8 * i) timeTravelUpdateFrequency];
+        if (v5 <= timeTravelUpdateFrequency)
         {
-          v5 = v8;
+          v5 = timeTravelUpdateFrequency;
         }
       }
 
@@ -337,10 +337,10 @@ LABEL_40:
   return v5;
 }
 
-- (void)_startSessionWithDate:(id)a3
+- (void)_startSessionWithDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -361,7 +361,7 @@ LABEL_40:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _startSessionWithDate:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) _startSessionWithDate:{dateCopy, v10}];
       }
 
       while (v7 != v9);
@@ -398,18 +398,18 @@ LABEL_40:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * v8) _sessionCacheKey];
-          if (v9)
+          _sessionCacheKey = [*(*(&v14 + 1) + 8 * v8) _sessionCacheKey];
+          if (_sessionCacheKey)
           {
             v10 = self->_sessionCacheKey;
             if (v10)
             {
-              v11 = [(NSString *)v10 stringByAppendingFormat:@"--%@", v9];
+              v11 = [(NSString *)v10 stringByAppendingFormat:@"--%@", _sessionCacheKey];
             }
 
             else
             {
-              v11 = v9;
+              v11 = _sessionCacheKey;
             }
 
             v12 = self->_sessionCacheKey;
@@ -432,10 +432,10 @@ LABEL_40:
   return sessionCacheKey;
 }
 
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  styleCopy = style;
   if ([(NSMutableArray *)self->_textProviders count])
   {
     v29 = 0u;
@@ -457,7 +457,7 @@ LABEL_40:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v27 + 1) + 8 * i) sessionAttributedTextForIndex:a3 withStyle:{v6, v27}];
+          v12 = [*(*(&v27 + 1) + 8 * i) sessionAttributedTextForIndex:index withStyle:{styleCopy, v27}];
 
           if (v12)
           {
@@ -469,28 +469,28 @@ LABEL_40:
               for (j = 0; j != v14; ++j)
               {
                 v16 = [(NSMutableArray *)self->_segments objectAtIndex:j];
-                v17 = [(CLKCompoundTextProvider *)self _attributedStringForSegment:v16 withStyle:v6];
+                v17 = [(CLKCompoundTextProvider *)self _attributedStringForSegment:v16 withStyle:styleCopy];
                 [v13 appendAttributedString:v17];
 
                 v18 = [(NSMutableArray *)self->_textProviders objectAtIndex:j];
-                v19 = [(CLKCompoundTextProvider *)self _replacementForTextProvider:v18 index:a3 withStyle:v6];
+                v19 = [(CLKCompoundTextProvider *)self _replacementForTextProvider:v18 index:index withStyle:styleCopy];
                 [v13 appendAttributedString:v19];
               }
             }
 
-            v20 = [(NSMutableArray *)self->_segments lastObject];
-            v21 = [(CLKCompoundTextProvider *)self _attributedStringForSegment:v20 withStyle:v6];
+            lastObject = [(NSMutableArray *)self->_segments lastObject];
+            v21 = [(CLKCompoundTextProvider *)self _attributedStringForSegment:lastObject withStyle:styleCopy];
             [v13 appendAttributedString:v21];
 
-            if ([v6 shouldEmbedTintColors])
+            if ([styleCopy shouldEmbedTintColors])
             {
-              v22 = [(CLKTextProvider *)self tintColor];
+              tintColor = [(CLKTextProvider *)self tintColor];
 
-              if (v22)
+              if (tintColor)
               {
                 v31 = *MEMORY[0x277D740C0];
-                v23 = [(CLKTextProvider *)self tintColor];
-                v32 = v23;
+                tintColor2 = [(CLKTextProvider *)self tintColor];
+                v32 = tintColor2;
                 v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
                 [v13 addAttributesPreservingOriginals:v24 range:{0, objc_msgSend(v13, "length")}];
               }
@@ -515,15 +515,15 @@ LABEL_40:
 
   else
   {
-    v25 = [(NSMutableArray *)self->_segments firstObject];
-    if (a3)
+    firstObject = [(NSMutableArray *)self->_segments firstObject];
+    if (index)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [(CLKCompoundTextProvider *)self _attributedStringForSegment:v25 withStyle:v6];
+      v13 = [(CLKCompoundTextProvider *)self _attributedStringForSegment:firstObject withStyle:styleCopy];
     }
   }
 
@@ -532,27 +532,27 @@ LABEL_21:
   return v13;
 }
 
-- (id)_attributedStringForSegment:(id)a3 withStyle:(id)a4
+- (id)_attributedStringForSegment:(id)segment withStyle:(id)style
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 uppercase])
+  segmentCopy = segment;
+  styleCopy = style;
+  if ([styleCopy uppercase])
   {
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v5 uppercaseStringWithLocale:v7];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v8 = [segmentCopy uppercaseStringWithLocale:currentLocale];
 
-    v5 = v8;
+    segmentCopy = v8;
   }
 
   v9 = objc_alloc(MEMORY[0x277CCA898]);
   v15 = *MEMORY[0x277D740A8];
-  v10 = [v6 font];
-  v16[0] = v10;
+  font = [styleCopy font];
+  v16[0] = font;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v12 = [v9 initWithString:v5 attributes:v11];
+  v12 = [v9 initWithString:segmentCopy attributes:v11];
 
-  v13 = [v12 _attributedStringWithOtherAttributesFromStyle:v6];
+  v13 = [v12 _attributedStringWithOtherAttributesFromStyle:styleCopy];
 
   if (!v13)
   {
@@ -562,11 +562,11 @@ LABEL_21:
   return v13;
 }
 
-- (id)_replacementForTextProvider:(id)a3 index:(unint64_t)a4 withStyle:(id)a5
+- (id)_replacementForTextProvider:(id)provider index:(unint64_t)index withStyle:(id)style
 {
-  v7 = a3;
-  v8 = a5;
-  if ((a4 & 0x8000000000000000) != 0)
+  providerCopy = provider;
+  styleCopy = style;
+  if ((index & 0x8000000000000000) != 0)
   {
     v10 = 0;
   }
@@ -575,15 +575,15 @@ LABEL_21:
   {
     do
     {
-      v9 = [v7 sessionAttributedTextForIndex:a4 withStyle:v8];
+      v9 = [providerCopy sessionAttributedTextForIndex:index withStyle:styleCopy];
       v10 = v9;
-      v11 = a4-- != 0;
+      v11 = index-- != 0;
     }
 
     while (v11 && !v9);
   }
 
-  v12 = [v10 _attributedStringWithOtherAttributesFromStyle:v8];
+  v12 = [v10 _attributedStringWithOtherAttributesFromStyle:styleCopy];
   if (!v12)
   {
     v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_284A20458];
@@ -704,10 +704,10 @@ LABEL_13:
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) _updateFrequency];
-        if (v5 <= v8)
+        _updateFrequency = [*(*(&v10 + 1) + 8 * i) _updateFrequency];
+        if (v5 <= _updateFrequency)
         {
-          v5 = v8;
+          v5 = _updateFrequency;
         }
       }
 
@@ -725,11 +725,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CLKCompoundTextProvider;
-  v4 = [(CLKTextProvider *)&v10 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v10 copyWithZone:zone];
   if (v4 != self)
   {
     v5 = [(NSMutableArray *)self->_textProviders copy];
@@ -744,14 +744,14 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKCompoundTextProvider;
-  if ([(CLKTextProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_textProviders, v4[16]))
+  if ([(CLKTextProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_textProviders, equalCopy[16]))
   {
-    v5 = CLKEqualObjects(self->_segments, v4[17]);
+    v5 = CLKEqualObjects(self->_segments, equalCopy[17]);
   }
 
   else
@@ -771,28 +771,28 @@ LABEL_13:
   return &v4[4 * [(NSMutableArray *)self->_segments hash]];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKCompoundTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_textProviders forKey:{@"_textProviders", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_segments forKey:@"_segments"];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_textProviders forKey:{@"_textProviders", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_segments forKey:@"_segments"];
 }
 
-- (CLKCompoundTextProvider)initWithCoder:(id)a3
+- (CLKCompoundTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CLKCompoundTextProvider;
-  v5 = [(CLKTextProvider *)&v21 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_textProviders"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_textProviders"];
     textProviders = v5->_textProviders;
     v5->_textProviders = v9;
 
@@ -802,7 +802,7 @@ LABEL_13:
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_segments"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_segments"];
     segments = v5->_segments;
     v5->_segments = v16;
 
@@ -814,16 +814,16 @@ LABEL_13:
   return v5;
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
   v33 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = CLKCompoundTextProvider;
-  v20 = a3;
+  representationCopy = representation;
   v3 = [(CLKTextProvider *)&v30 _initWithJSONObjectRepresentation:?];
   if (v3)
   {
-    v4 = [v20 objectForKeyedSubscript:?];
+    v4 = [representationCopy objectForKeyedSubscript:?];
     if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"key in '%@' dictionary must be an array - invalid value: %@", @"textProviders", v4}];
@@ -861,7 +861,7 @@ LABEL_13:
       while (v7);
     }
 
-    v11 = [v20 objectForKeyedSubscript:@"format segments"];
+    v11 = [representationCopy objectForKeyedSubscript:@"format segments"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"key in '%@' dictionary must be an array - invalid value: %@", @"format segments", v11}];
@@ -911,14 +911,14 @@ LABEL_13:
 {
   v7.receiver = self;
   v7.super_class = CLKCompoundTextProvider;
-  v3 = [(CLKTextProvider *)&v7 JSONObjectRepresentation];
-  v4 = [(CLKCompoundTextProvider *)self _arrayOfTextProviderJSONObjectRepresentations];
-  [v3 setObject:v4 forKeyedSubscript:@"textProviders"];
+  jSONObjectRepresentation = [(CLKTextProvider *)&v7 JSONObjectRepresentation];
+  _arrayOfTextProviderJSONObjectRepresentations = [(CLKCompoundTextProvider *)self _arrayOfTextProviderJSONObjectRepresentations];
+  [jSONObjectRepresentation setObject:_arrayOfTextProviderJSONObjectRepresentations forKeyedSubscript:@"textProviders"];
 
   v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:self->_segments];
-  [v3 setObject:v5 forKeyedSubscript:@"format segments"];
+  [jSONObjectRepresentation setObject:v5 forKeyedSubscript:@"format segments"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 - (id)_arrayOfTextProviderJSONObjectRepresentations
@@ -944,8 +944,8 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) JSONObjectRepresentation];
-        [v3 addObject:v9];
+        jSONObjectRepresentation = [*(*(&v11 + 1) + 8 * i) JSONObjectRepresentation];
+        [v3 addObject:jSONObjectRepresentation];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -957,9 +957,9 @@ LABEL_13:
   return v3;
 }
 
-- (void)_processFormat:(id)a3 arguments:(char *)a4
+- (void)_processFormat:(id)format arguments:(char *)arguments
 {
-  v21 = a3;
+  formatCopy = format;
   if (_PthreadKey_onceToken != -1)
   {
     +[CLKCompoundTextProvider compoundTextProviderCurrentlyFormattingOnThisThread];
@@ -973,8 +973,8 @@ LABEL_13:
 
   pthread_setspecific(_PthreadKey_key, self);
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v7 initWithFormat:v21 locale:v8 arguments:a4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [v7 initWithFormat:formatCopy locale:currentLocale arguments:arguments];
 
   if (_PthreadKey_onceToken != -1)
   {

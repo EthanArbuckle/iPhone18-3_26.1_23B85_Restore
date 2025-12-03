@@ -8,7 +8,7 @@
 - (void)drawSwatchInRect:()TSDPathPainter inContext:
 {
   CGContextSaveGState(c);
-  CGContextSetFillColorWithColor(c, [a1 CGColor]);
+  CGContextSetFillColorWithColor(c, [self CGColor]);
   v14.origin.x = a4;
   v14.origin.y = a5;
   v14.size.width = a6;
@@ -21,7 +21,7 @@
 - (void)paintPath:()TSDPathPainter inContext:
 {
   CGContextSaveGState(c);
-  CGContextSetFillColorWithColor(c, [a1 CGColor]);
+  CGContextSetFillColorWithColor(c, [self CGColor]);
   CGContextBeginPath(c);
   CGContextAddPath(c, a3);
   CGContextFillPath(c);

@@ -1,45 +1,45 @@
 @interface ATXBestTimeToInteractWithContactDataSource
-- (ATXBestTimeToInteractWithContactDataSource)initWithDevice:(id)a3;
-- (void)hourOfDayInteractionProbabilitiesWithContact:(id)a3 callback:(id)a4;
+- (ATXBestTimeToInteractWithContactDataSource)initWithDevice:(id)device;
+- (void)hourOfDayInteractionProbabilitiesWithContact:(id)contact callback:(id)callback;
 @end
 
 @implementation ATXBestTimeToInteractWithContactDataSource
 
-- (ATXBestTimeToInteractWithContactDataSource)initWithDevice:(id)a3
+- (ATXBestTimeToInteractWithContactDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXBestTimeToInteractWithContactDataSource;
   v6 = [(ATXBestTimeToInteractWithContactDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)hourOfDayInteractionProbabilitiesWithContact:(id)a3 callback:(id)a4
+- (void)hourOfDayInteractionProbabilitiesWithContact:(id)contact callback:(id)callback
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA2D8))
   {
     v7 = objc_opt_new();
-    v13[0] = v5;
+    v13[0] = contactCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v9 = [v7 hourOfDayProbabilitiesToInteractWithContacts:v8];
 
-    v10 = [v9 allValues];
-    v11 = [v10 firstObject];
-    v6[2](v6, v11, 0);
+    allValues = [v9 allValues];
+    firstObject = [allValues firstObject];
+    callbackCopy[2](callbackCopy, firstObject, 0);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x277CBEC10], 0);
+    callbackCopy[2](callbackCopy, MEMORY[0x277CBEC10], 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];

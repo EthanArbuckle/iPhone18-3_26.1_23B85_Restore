@@ -6,21 +6,21 @@
 - (NSString)destinationId;
 - (NSString)displayName;
 - (TUProxyAutocompleteResult)init;
-- (TUProxyAutocompleteResult)initWithAutocompleteResult:(id)a3;
+- (TUProxyAutocompleteResult)initWithAutocompleteResult:(id)result;
 @end
 
 @implementation TUProxyAutocompleteResult
 
-- (TUProxyAutocompleteResult)initWithAutocompleteResult:(id)a3
+- (TUProxyAutocompleteResult)initWithAutocompleteResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = TUProxyAutocompleteResult;
   v5 = [(TUProxyAutocompleteResult *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TUProxyAutocompleteResult *)v5 setAutocompleteResult:v4];
+    [(TUProxyAutocompleteResult *)v5 setAutocompleteResult:resultCopy];
   }
 
   return v6;
@@ -35,9 +35,9 @@
 
   if (_TUAssertShouldCrashApplication())
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[TUProxyAutocompleteResult init]"];
-    [v7 handleFailureInMethod:a2 object:self file:@"TUProxyAutocompleteResult.m" lineNumber:41 description:{@"Don't call %@, call designated initializer instead.", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TUProxyAutocompleteResult.m" lineNumber:41 description:{@"Don't call %@, call designated initializer instead.", v8}];
   }
 
   return 0;
@@ -45,73 +45,73 @@
 
 - (NSString)displayName
 {
-  v3 = [(TUProxyAutocompleteResult *)self autocompleteResult];
-  v4 = [v3 displayName];
+  autocompleteResult = [(TUProxyAutocompleteResult *)self autocompleteResult];
+  displayName = [autocompleteResult displayName];
 
-  if (!v4)
+  if (!displayName)
   {
-    v4 = [(TUProxyAutocompleteResult *)self destinationId];
+    displayName = [(TUProxyAutocompleteResult *)self destinationId];
   }
 
-  return v4;
+  return displayName;
 }
 
 - (CNContact)backingContact
 {
   v3 = +[TUSearchController sharedInstance];
-  v4 = [v3 contactStore];
+  contactStore = [v3 contactStore];
 
-  v5 = [(TUProxyAutocompleteResult *)self autocompleteResult];
-  v6 = [v5 identifier];
-  v7 = [v4 contactForIdentifier:v6];
+  autocompleteResult = [(TUProxyAutocompleteResult *)self autocompleteResult];
+  identifier = [autocompleteResult identifier];
+  v7 = [contactStore contactForIdentifier:identifier];
 
   return v7;
 }
 
 - (NSString)backingContactIdentifier
 {
-  v2 = [(TUProxyAutocompleteResult *)self autocompleteResult];
-  v3 = [v2 identifier];
+  autocompleteResult = [(TUProxyAutocompleteResult *)self autocompleteResult];
+  identifier = [autocompleteResult identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)destinationId
 {
-  v3 = [(TUProxyAutocompleteResult *)self autocompleteResult];
-  v4 = [v3 value];
-  v5 = [v4 address];
+  autocompleteResult = [(TUProxyAutocompleteResult *)self autocompleteResult];
+  value = [autocompleteResult value];
+  address = [value address];
 
-  if (!v5)
+  if (!address)
   {
-    v6 = [(TUProxyAutocompleteResult *)self backingContact];
-    v5 = [v6 anyDestinationID];
+    backingContact = [(TUProxyAutocompleteResult *)self backingContact];
+    address = [backingContact anyDestinationID];
   }
 
-  return v5;
+  return address;
 }
 
 - (NSArray)handles
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUProxyAutocompleteResult *)self backingContact];
-  v4 = v3;
-  if (v3)
+  backingContact = [(TUProxyAutocompleteResult *)self backingContact];
+  v4 = backingContact;
+  if (backingContact)
   {
-    v5 = [v3 phoneNumberStrings];
-    v6 = [v4 emailAddressStrings];
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    phoneNumberStrings = [backingContact phoneNumberStrings];
+    emailAddressStrings = [v4 emailAddressStrings];
+    v7 = [phoneNumberStrings arrayByAddingObjectsFromArray:emailAddressStrings];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [(TUProxyAutocompleteResult *)self destinationId];
+  destinationId = [(TUProxyAutocompleteResult *)self destinationId];
 
-  if (v8)
+  if (destinationId)
   {
-    v5 = [(TUProxyAutocompleteResult *)self destinationId];
-    v11[0] = v5;
+    phoneNumberStrings = [(TUProxyAutocompleteResult *)self destinationId];
+    v11[0] = phoneNumberStrings;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     goto LABEL_5;
   }
@@ -127,26 +127,26 @@ LABEL_6:
 - (NSArray)idsCanonicalDestinations
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(TUProxyAutocompleteResult *)self destinationId];
-  v5 = [v4 IDSFormattedDestinationID];
+  destinationId = [(TUProxyAutocompleteResult *)self destinationId];
+  iDSFormattedDestinationID = [destinationId IDSFormattedDestinationID];
 
-  if (v5)
+  if (iDSFormattedDestinationID)
   {
-    [v3 addObject:v5];
+    [v3 addObject:iDSFormattedDestinationID];
   }
 
-  v6 = [(TUProxyAutocompleteResult *)self backingContact];
+  backingContact = [(TUProxyAutocompleteResult *)self backingContact];
 
-  if (v6)
+  if (backingContact)
   {
-    v7 = [(TUProxyAutocompleteResult *)self backingContact];
-    v8 = [v7 allIDSDestinations];
-    [v3 addObjectsFromArray:v8];
+    backingContact2 = [(TUProxyAutocompleteResult *)self backingContact];
+    allIDSDestinations = [backingContact2 allIDSDestinations];
+    [v3 addObjectsFromArray:allIDSDestinations];
   }
 
-  v9 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
 @end

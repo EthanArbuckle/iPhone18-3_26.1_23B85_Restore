@@ -19,32 +19,32 @@
   v12 = objc_opt_class();
   v13 = *MEMORY[0x1E69DDC90];
 
-  return [v12 _fontFromTextStyle:a4 maximumContentSizeCategory:v13 fontWeight:a5 fontSize:a6 fontWidth:a7 symbolicTraits:0 fontFeature:a1];
+  return [v12 _fontFromTextStyle:a4 maximumContentSizeCategory:v13 fontWeight:a5 fontSize:a6 fontWidth:a7 symbolicTraits:0 fontFeature:self];
 }
 
 + (id)vui_fontFromTextLayout:()VideosUI
 {
   v48[2] = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 textStyle];
-  v5 = [v3 maximumContentSizeCategory];
-  v6 = [MEMORY[0x1E69DF6D0] uiContentSizeCategoryFor:v5];
-  v7 = [v3 fontWeight];
-  v8 = [v3 fontWidth];
+  textStyle = [v3 textStyle];
+  maximumContentSizeCategory = [v3 maximumContentSizeCategory];
+  v6 = [MEMORY[0x1E69DF6D0] uiContentSizeCategoryFor:maximumContentSizeCategory];
+  fontWeight = [v3 fontWeight];
+  fontWidth = [v3 fontWidth];
   [v3 fontSize];
   v10 = v9;
-  v11 = [v3 fontTraits];
-  v12 = [objc_opt_class() _fontFromTextStyle:v4 maximumContentSizeCategory:v6 fontWeight:v7 fontSize:v8 fontWidth:v11 symbolicTraits:objc_msgSend(v3 fontFeature:{"fontFeature"), v10}];
+  fontTraits = [v3 fontTraits];
+  v12 = [objc_opt_class() _fontFromTextStyle:textStyle maximumContentSizeCategory:v6 fontWeight:fontWeight fontSize:fontWidth fontWidth:fontTraits symbolicTraits:objc_msgSend(v3 fontFeature:{"fontFeature"), v10}];
   if (v12)
   {
     goto LABEL_24;
   }
 
-  v13 = [v3 fontFamily];
-  v14 = [objc_opt_class() uifontWeightFromFontWeight:v7];
+  fontFamily = [v3 fontFamily];
+  v14 = [objc_opt_class() uifontWeightFromFontWeight:fontWeight];
   [v14 floatValue];
   v16 = v15;
-  v17 = [objc_opt_class() uifontWidthFromFontWidth:v8];
+  v17 = [objc_opt_class() uifontWidthFromFontWidth:fontWidth];
   [v17 floatValue];
   v19 = v18;
   v20 = 0x1E69DB000uLL;
@@ -55,18 +55,18 @@
   }
 
   v22 = v16;
-  if ([v13 length] && objc_msgSend(v13, "isEqualToString:", @"SFRounded"))
+  if ([fontFamily length] && objc_msgSend(fontFamily, "isEqualToString:", @"SFRounded"))
   {
     v23 = MEMORY[0x1E69DB878];
     v24 = @"NSCTFontUIFontDesignRounded";
 LABEL_14:
     v26 = [v23 systemFontOfSize:v24 weight:v10 design:v22];
-    v27 = [v26 fontDescriptor];
+    fontDescriptor = [v26 fontDescriptor];
 
     goto LABEL_15;
   }
 
-  if ([v13 length] && objc_msgSend(v13, "isEqualToString:", @"SFCompactRounded"))
+  if ([fontFamily length] && objc_msgSend(fontFamily, "isEqualToString:", @"SFCompactRounded"))
   {
     v23 = MEMORY[0x1E69DB878];
     v25 = MEMORY[0x1E69658A8];
@@ -75,20 +75,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v13 length] && objc_msgSend(v13, "isEqualToString:", @"SFPro"))
+  if ([fontFamily length] && objc_msgSend(fontFamily, "isEqualToString:", @"SFPro"))
   {
     v23 = MEMORY[0x1E69DB878];
     v25 = MEMORY[0x1E69658B8];
     goto LABEL_13;
   }
 
-  if (![v13 length])
+  if (![fontFamily length])
   {
 LABEL_31:
     v36 = [*(v20 + 2168) systemFontOfSize:v10 weight:v22];
-    v27 = [v36 fontDescriptor];
+    fontDescriptor = [v36 fontDescriptor];
 
-    if (!v11)
+    if (!fontTraits)
     {
       goto LABEL_18;
     }
@@ -98,7 +98,7 @@ LABEL_31:
 
   if (!v14 || *MEMORY[0x1E69DB978] == v22)
   {
-    v27 = [MEMORY[0x1E69DB880] fontDescriptorWithName:v13 size:v10];
+    fontDescriptor = [MEMORY[0x1E69DB880] fontDescriptorWithName:fontFamily size:v10];
   }
 
   else
@@ -111,17 +111,17 @@ LABEL_31:
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v47[1] = *MEMORY[0x1E69DB8A8];
     v48[0] = v34;
-    v48[1] = v13;
+    v48[1] = fontFamily;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-    v27 = [v32 initWithFontAttributes:v35];
+    fontDescriptor = [v32 initWithFontAttributes:v35];
 
     v20 = 0x1E69DB000;
   }
 
-  if (v17 && v27 && *MEMORY[0x1E69DB9B8] != v19)
+  if (v17 && fontDescriptor && *MEMORY[0x1E69DB9B8] != v19)
   {
     v41 = *MEMORY[0x1E69DB8F0];
-    v37 = [v27 objectForKey:{v19, *MEMORY[0x1E69DB9B8]}];
+    v37 = [fontDescriptor objectForKey:{v19, *MEMORY[0x1E69DB9B8]}];
     v38 = [v37 mutableCopy];
 
     v42 = v38;
@@ -129,38 +129,38 @@ LABEL_31:
     v43 = v41;
     v44 = v38;
     v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-    v40 = [v27 fontDescriptorByAddingAttributes:v39];
+    v40 = [fontDescriptor fontDescriptorByAddingAttributes:v39];
 
-    v27 = v40;
+    fontDescriptor = v40;
     v20 = 0x1E69DB000;
   }
 
 LABEL_15:
-  if (!v27)
+  if (!fontDescriptor)
   {
     goto LABEL_31;
   }
 
-  if (v11)
+  if (fontTraits)
   {
 LABEL_17:
-    v28 = [v27 fontDescriptorWithSymbolicTraits:{objc_msgSend(v27, "symbolicTraits") | v11}];
+    v28 = [fontDescriptor fontDescriptorWithSymbolicTraits:{objc_msgSend(fontDescriptor, "symbolicTraits") | fontTraits}];
 
-    v27 = v28;
+    fontDescriptor = v28;
   }
 
 LABEL_18:
   v29 = [objc_opt_class() _uiFontAttributesForFeature:{objc_msgSend(v3, "fontFeature")}];
   if (v29)
   {
-    v30 = [v27 fontDescriptorByAddingAttributes:v29];
+    v30 = [fontDescriptor fontDescriptorByAddingAttributes:v29];
 
-    v27 = v30;
+    fontDescriptor = v30;
   }
 
-  if (v27)
+  if (fontDescriptor)
   {
-    v12 = [*(v20 + 2168) fontWithDescriptor:v27 size:v10];
+    v12 = [*(v20 + 2168) fontWithDescriptor:fontDescriptor size:v10];
   }
 
   else
@@ -177,7 +177,7 @@ LABEL_24:
 {
   v45[1] = *MEMORY[0x1E69E9840];
   v16 = a5;
-  v17 = [a1 uiFontTextStyleFromTextStyle:a4];
+  v17 = [self uiFontTextStyleFromTextStyle:a4];
   v18 = v17;
   if (a4 == 24 || a4 == 18)
   {
@@ -207,41 +207,41 @@ LABEL_23:
     goto LABEL_33;
   }
 
-  v21 = [v19 fontDescriptor];
+  fontDescriptor = [v19 fontDescriptor];
   [objc_opt_class() uifontWeightFromFontWeight:a6];
   v41 = v40 = v16;
   v39 = a9;
-  if (v41 && v21)
+  if (v41 && fontDescriptor)
   {
     v22 = *MEMORY[0x1E69DB8F0];
-    v23 = [v21 objectForKey:*MEMORY[0x1E69DB8F0]];
+    v23 = [fontDescriptor objectForKey:*MEMORY[0x1E69DB8F0]];
     v24 = [v23 mutableCopy];
 
     [v24 setObject:v41 forKey:*MEMORY[0x1E69DB990]];
     v44 = v22;
     v45[0] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
-    v26 = [v21 fontDescriptorByAddingAttributes:v25];
+    v26 = [fontDescriptor fontDescriptorByAddingAttributes:v25];
 
     a9 = v39;
-    v21 = v26;
+    fontDescriptor = v26;
     v16 = v40;
   }
 
   v27 = [objc_opt_class() uifontWidthFromFontWidth:a7];
-  if (v27 && v21)
+  if (v27 && fontDescriptor)
   {
     v28 = *MEMORY[0x1E69DB8F0];
-    v29 = [v21 objectForKey:*MEMORY[0x1E69DB8F0]];
+    v29 = [fontDescriptor objectForKey:*MEMORY[0x1E69DB8F0]];
     v30 = [v29 mutableCopy];
 
     [v30 setObject:v27 forKey:*MEMORY[0x1E69DB9C0]];
     v42 = v28;
     v43 = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-    v32 = [v21 fontDescriptorByAddingAttributes:v31];
+    v32 = [fontDescriptor fontDescriptorByAddingAttributes:v31];
 
-    v21 = v32;
+    fontDescriptor = v32;
     a9 = v39;
     v16 = v40;
   }
@@ -274,25 +274,25 @@ LABEL_23:
     }
   }
 
-  if (v21)
+  if (fontDescriptor)
   {
-    v35 = [v21 fontDescriptorWithSymbolicTraits:{objc_msgSend(v21, "symbolicTraits") | v33}];
+    v35 = [fontDescriptor fontDescriptorWithSymbolicTraits:{objc_msgSend(fontDescriptor, "symbolicTraits") | v33}];
 
-    v21 = v35;
+    fontDescriptor = v35;
   }
 
 LABEL_27:
   v36 = [objc_opt_class() _uiFontAttributesForFeature:a9];
   if (v36)
   {
-    v37 = [v21 fontDescriptorByAddingAttributes:v36];
+    v37 = [fontDescriptor fontDescriptorByAddingAttributes:v36];
 
-    v21 = v37;
+    fontDescriptor = v37;
   }
 
-  if (v21)
+  if (fontDescriptor)
   {
-    v34 = [MEMORY[0x1E69DB878] fontWithDescriptor:v21 size:a2];
+    v34 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:a2];
   }
 
   else
@@ -424,7 +424,7 @@ LABEL_4:
 
 - (uint64_t)baselineHeight
 {
-  [a1 ascender];
+  [self ascender];
 
   return VUIRoundValue();
 }
@@ -432,7 +432,7 @@ LABEL_4:
 - (uint64_t)topMarginWithBaselineMargin:()VideosUI traitCollection:
 {
   [VUIUtilities scaleContentSizeValue:"scaleContentSizeValue:forTraitCollection:" forTraitCollection:?];
-  [a1 ascender];
+  [self ascender];
 
   return VUIRoundValue();
 }
@@ -440,7 +440,7 @@ LABEL_4:
 - (uint64_t)bottomMarginWithBaselineMargin:()VideosUI traitCollection:
 {
   [VUIUtilities scaleContentSizeValue:"scaleContentSizeValue:forTraitCollection:" forTraitCollection:?];
-  [a1 descender];
+  [self descender];
 
   return VUIRoundValue();
 }
@@ -449,7 +449,7 @@ LABEL_4:
 {
   v8 = a4;
   [VUIUtilities scaleContentSizeValue:a5 forTraitCollection:a2];
-  [a1 ascender];
+  [self ascender];
   [v8 descender];
 
   return VUIRoundValue();

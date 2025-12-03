@@ -1,54 +1,54 @@
 @interface CRKDeviceDisplay
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frame;
-- (CRKDeviceDisplay)initWithCoder:(id)a3;
-- (CRKDeviceDisplay)initWithDictionary:(id)a3;
-- (CRKDeviceDisplay)initWithScaleFactor:(double)a3 frame:(CGRect)a4 orientation:(unint64_t)a5;
+- (CRKDeviceDisplay)initWithCoder:(id)coder;
+- (CRKDeviceDisplay)initWithDictionary:(id)dictionary;
+- (CRKDeviceDisplay)initWithScaleFactor:(double)factor frame:(CGRect)frame orientation:(unint64_t)orientation;
 - (NSDictionary)dictionaryValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKDeviceDisplay
 
-- (CRKDeviceDisplay)initWithScaleFactor:(double)a3 frame:(CGRect)a4 orientation:(unint64_t)a5
+- (CRKDeviceDisplay)initWithScaleFactor:(double)factor frame:(CGRect)frame orientation:(unint64_t)orientation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = CRKDeviceDisplay;
   result = [(CRKDeviceDisplay *)&v12 init];
   if (result)
   {
-    result->_scaleFactor = a3;
+    result->_scaleFactor = factor;
     result->_frame.origin.x = x;
     result->_frame.origin.y = y;
     result->_frame.size.width = width;
     result->_frame.size.height = height;
-    result->_orientation = a5;
+    result->_orientation = orientation;
   }
 
   return result;
 }
 
-- (CRKDeviceDisplay)initWithDictionary:(id)a3
+- (CRKDeviceDisplay)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"scaleFactor"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"scaleFactor"];
   [v5 floatValue];
   v7 = v6;
 
-  v8 = CRKRectFromDictionary(v4);
+  v8 = CRKRectFromDictionary(dictionaryCopy);
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v4 objectForKeyedSubscript:@"orientation"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"orientation"];
 
-  v16 = [v15 unsignedIntegerValue];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-  return [(CRKDeviceDisplay *)self initWithScaleFactor:v16 frame:v7 orientation:v8, v10, v12, v14];
+  return [(CRKDeviceDisplay *)self initWithScaleFactor:unsignedIntegerValue frame:v7 orientation:v8, v10, v12, v14];
 }
 
 - (NSDictionary)dictionaryValue
@@ -71,33 +71,33 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKDeviceDisplay *)self dictionaryValue];
-  [v4 encodeObject:v5 forKey:@"dictionaryValue"];
+  coderCopy = coder;
+  dictionaryValue = [(CRKDeviceDisplay *)self dictionaryValue];
+  [coderCopy encodeObject:dictionaryValue forKey:@"dictionaryValue"];
 }
 
-- (CRKDeviceDisplay)initWithCoder:(id)a3
+- (CRKDeviceDisplay)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = CRKFoundationClasses();
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"dictionaryValue"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"dictionaryValue"];
 
   v7 = [(CRKDeviceDisplay *)self initWithDictionary:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v22 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     objc_opt_class();
@@ -122,8 +122,8 @@
     v25.size.height = v14;
     if (CGRectEqualToRect(v25, v26) && ([(CRKDeviceDisplay *)self scaleFactor], v20 = v19, [(CRKDeviceDisplay *)v6 scaleFactor], vabdd_f64(v20, v21) <= 2.22044605e-16))
     {
-      v23 = [(CRKDeviceDisplay *)self orientation];
-      v22 = v23 == [(CRKDeviceDisplay *)v6 orientation];
+      orientation = [(CRKDeviceDisplay *)self orientation];
+      v22 = orientation == [(CRKDeviceDisplay *)v6 orientation];
     }
 
     else

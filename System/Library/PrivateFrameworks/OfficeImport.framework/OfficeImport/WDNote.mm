@@ -1,5 +1,5 @@
 @interface WDNote
-- (WDNote)initWithParagraph:(id)a3 footnote:(BOOL)a4;
+- (WDNote)initWithParagraph:(id)paragraph footnote:(BOOL)footnote;
 - (id)description;
 - (int)runType;
 @end
@@ -19,20 +19,20 @@
   }
 }
 
-- (WDNote)initWithParagraph:(id)a3 footnote:(BOOL)a4
+- (WDNote)initWithParagraph:(id)paragraph footnote:(BOOL)footnote
 {
-  v4 = a4;
-  v6 = a3;
+  footnoteCopy = footnote;
+  paragraphCopy = paragraph;
   v17.receiver = self;
   v17.super_class = WDNote;
-  v7 = [(WDRun *)&v17 initWithParagraph:v6];
+  v7 = [(WDRun *)&v17 initWithParagraph:paragraphCopy];
   v8 = v7;
   if (v7)
   {
     v7->mAutomaticNumbering = 1;
-    v9 = [v6 document];
+    document = [paragraphCopy document];
     v10 = [WDText alloc];
-    if (v4)
+    if (footnoteCopy)
     {
       v11 = 1;
     }
@@ -42,11 +42,11 @@
       v11 = 5;
     }
 
-    v12 = [(WDText *)v10 initWithDocument:v9 textType:v11];
+    v12 = [(WDText *)v10 initWithDocument:document textType:v11];
     mText = v8->mText;
     v8->mText = v12;
 
-    v14 = [[WDCharacterRun alloc] initWithParagraph:v6];
+    v14 = [[WDCharacterRun alloc] initWithParagraph:paragraphCopy];
     mReference = v8->mReference;
     v8->mReference = v14;
   }

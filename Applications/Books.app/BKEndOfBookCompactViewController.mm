@@ -1,57 +1,57 @@
 @interface BKEndOfBookCompactViewController
-- (BKEndOfBookCompactViewController)initWithOptions:(id)a3;
+- (BKEndOfBookCompactViewController)initWithOptions:(id)options;
 - (BKEndOfBookCompactViewControllerDelegate)delegate;
-- (BOOL)_shouldUseCoverAnimationWhenPresenting:(BOOL)a3;
+- (BOOL)_shouldUseCoverAnimationWhenPresenting:(BOOL)presenting;
 - (BOOL)isPresentingCard;
 - (BOOL)isToolbarVisible;
 - (BSUIFeedViewController)feedViewController;
-- (CGRect)preferredFrameInViewController:(id)a3 isPresented:(BOOL)a4;
-- (CGRect)preferredFrameInViewController:(id)a3 newSize:(CGSize)a4 isPresented:(BOOL)a5;
+- (CGRect)preferredFrameInViewController:(id)controller isPresented:(BOOL)presented;
+- (CGRect)preferredFrameInViewController:(id)controller newSize:(CGSize)size isPresented:(BOOL)presented;
 - (UIView)contentView;
 - (UIView)dropShadowView;
 - (UIViewController)cardViewController;
-- (id)_additionalInfoForClickEvent:(id)a3;
-- (id)animationControllerForCompactViewController:(id)a3 cardViewController:(id)a4 isPresenting:(BOOL)a5;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_additionalInfoForClickEvent:(id)event;
+- (id)animationControllerForCompactViewController:(id)controller cardViewController:(id)viewController isPresenting:(BOOL)presenting;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)ba_analyticsTracker;
-- (void)_anchorGripperView:(id)a3 toView:(id)a4;
-- (void)_animateScaleForPressed:(BOOL)a3;
-- (void)_closeAllCardsIncludingEOB:(id)a3 cardStackViewController:(id)a4 completion:(id)a5;
+- (void)_anchorGripperView:(id)view toView:(id)toView;
+- (void)_animateScaleForPressed:(BOOL)pressed;
+- (void)_closeAllCardsIncludingEOB:(id)b cardStackViewController:(id)controller completion:(id)completion;
 - (void)_contentTapCompleted;
-- (void)_forceOrientationBackToPortraitOrientation:(id)a3;
-- (void)_gripperTapped:(id)a3;
-- (void)_presentCardWithReason:(id)a3 completion:(id)a4;
-- (void)_reportFigaroCloseClickEventWithReason:(id)a3;
-- (void)_reportFigaroOpenClickEventWithReason:(id)a3;
+- (void)_forceOrientationBackToPortraitOrientation:(id)orientation;
+- (void)_gripperTapped:(id)tapped;
+- (void)_presentCardWithReason:(id)reason completion:(id)completion;
+- (void)_reportFigaroCloseClickEventWithReason:(id)reason;
+- (void)_reportFigaroOpenClickEventWithReason:(id)reason;
 - (void)_trackInteractiveDismissal;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_willDismissCardWithReason:(int64_t)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_willDismissCardWithReason:(int64_t)reason;
 - (void)dismiss;
-- (void)endOfBookCardViewControllerDidFinish:(id)a3;
-- (void)endOfBookCardViewControllerWantsToCloseAsset:(id)a3 cardStackViewController:(id)a4 completion:(id)a5;
-- (void)endOfBookCardViewControllerWantsToCloseToAsset:(id)a3 cardStackViewController:(id)a4 completion:(id)a5;
-- (void)preloadContentWithViewController:(id)a3 completion:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setCardViewController:(id)a3;
+- (void)endOfBookCardViewControllerDidFinish:(id)finish;
+- (void)endOfBookCardViewControllerWantsToCloseAsset:(id)asset cardStackViewController:(id)controller completion:(id)completion;
+- (void)endOfBookCardViewControllerWantsToCloseToAsset:(id)asset cardStackViewController:(id)controller completion:(id)completion;
+- (void)preloadContentWithViewController:(id)controller completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setCardViewController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKEndOfBookCompactViewController
 
-- (BKEndOfBookCompactViewController)initWithOptions:(id)a3
+- (BKEndOfBookCompactViewController)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = BKEndOfBookCompactViewController;
   v5 = [(BKEndOfBookCompactViewController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(BKEndOfBookCompactViewController *)v5 setOptions:v4];
+    [(BKEndOfBookCompactViewController *)v5 setOptions:optionsCopy];
     v7 = +[NSMutableArray array];
     presentationCompletionBlocks = v6->_presentationCompletionBlocks;
     v6->_presentationCompletionBlocks = v7;
@@ -68,31 +68,31 @@
   v32.receiver = self;
   v32.super_class = BKEndOfBookCompactViewController;
   [(BKEndOfBookCompactViewController *)&v32 viewDidLoad];
-  v3 = [(BKEndOfBookCompactViewController *)self view];
-  [v3 setAutoresizingMask:0];
+  view = [(BKEndOfBookCompactViewController *)self view];
+  [view setAutoresizingMask:0];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  [v3 setFrame:{CGRectZero.origin.x, y, width, height}];
-  [v3 setShouldGroupAccessibilityChildren:1];
-  [v3 setAccessibilityContainerType:4];
+  [view setFrame:{CGRectZero.origin.x, y, width, height}];
+  [view setShouldGroupAccessibilityChildren:1];
+  [view setAccessibilityContainerType:4];
   v7 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(UIView *)v7 setAutoresizingMask:34];
-  v8 = [(UIView *)v7 layer];
-  [v8 setCornerCurve:kCACornerCurveContinuous];
-  [v8 setCornerRadius:22.0];
-  [v8 setShadowOffset:{0.0, 8.0}];
-  [v8 setShadowRadius:18.0];
+  layer = [(UIView *)v7 layer];
+  [layer setCornerCurve:kCACornerCurveContinuous];
+  [layer setCornerRadius:22.0];
+  [layer setShadowOffset:{0.0, 8.0}];
+  [layer setShadowRadius:18.0];
   v9 = +[UIColor blackColor];
-  [v8 setShadowColor:{objc_msgSend(v9, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v9, "CGColor")}];
 
   LODWORD(v10) = 1041865114;
-  [v8 setShadowOpacity:v10];
-  [v8 setShadowPathIsBounds:1];
-  v31 = v3;
-  [v3 bounds];
+  [layer setShadowOpacity:v10];
+  [layer setShadowPathIsBounds:1];
+  v31 = view;
+  [view bounds];
   [(UIView *)v7 setFrame:?];
-  [v3 addSubview:v7];
+  [view addSubview:v7];
   dropShadowView = self->_dropShadowView;
   self->_dropShadowView = v7;
   v12 = v7;
@@ -100,9 +100,9 @@
   v13 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(UIView *)v13 setAutoresizingMask:18];
   [(UIView *)v13 setClipsToBounds:1];
-  v30 = [(UIView *)v13 layer];
-  [v30 setCornerCurve:kCACornerCurveContinuous];
-  [v30 setCornerRadius:22.0];
+  layer2 = [(UIView *)v13 layer];
+  [layer2 setCornerCurve:kCACornerCurveContinuous];
+  [layer2 setCornerRadius:22.0];
   v29 = v12;
   [(UIView *)v12 bounds];
   [(UIView *)v13 setFrame:?];
@@ -123,23 +123,23 @@
   [v17 addTarget:self action:"_contentTapBegan" forControlEvents:17];
   [v17 addTarget:self action:"_contentTapCancelled" forControlEvents:288];
   [v17 addTarget:self action:"_contentTapCompleted" forControlEvents:64];
-  v18 = [(BKEndOfBookCompactViewController *)self options];
-  v19 = [v18 mutableCopy];
+  options = [(BKEndOfBookCompactViewController *)self options];
+  v19 = [options mutableCopy];
 
   [v19 setObject:&__kCFBooleanTrue forKeyedSubscript:@"end-of-book-compact"];
   v20 = +[BKContextMenuProvider sharedProvider];
   [v19 setObject:v20 forKeyedSubscript:BSUIFeedOptionsKeyContextMenuProvider];
 
   v21 = [[BSUIFeedViewController alloc] initWithOptions:v19];
-  v22 = [v21 view];
-  [v22 setUserInteractionEnabled:0];
+  view2 = [v21 view];
+  [view2 setUserInteractionEnabled:0];
 
   [(BKEndOfBookCompactViewController *)self addChildViewController:v21];
-  v23 = [v21 view];
+  view3 = [v21 view];
   [v17 bounds];
-  [v23 setFrame:?];
-  [v23 setAutoresizingMask:18];
-  [v17 addSubview:v23];
+  [view3 setFrame:?];
+  [view3 setAutoresizingMask:18];
+  [v17 addSubview:view3];
   [v21 didMoveToParentViewController:self];
   feedViewController = self->_feedViewController;
   self->_feedViewController = v21;
@@ -155,11 +155,11 @@
   self->_closeButton = v26;
 }
 
-- (void)setCardViewController:(id)a3
+- (void)setCardViewController:(id)controller
 {
-  obj = a3;
-  v4 = [(BKEndOfBookCompactViewController *)self traitCollection];
-  [obj setOverrideUserInterfaceStyle:{objc_msgSend(v4, "userInterfaceStyle")}];
+  obj = controller;
+  traitCollection = [(BKEndOfBookCompactViewController *)self traitCollection];
+  [obj setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   objc_storeWeak(&self->_cardViewController, obj);
 }
@@ -191,7 +191,7 @@
 - (BOOL)isPresentingCard
 {
   objc_opt_class();
-  v3 = [(BKEndOfBookCompactViewController *)self presentedViewController];
+  presentedViewController = [(BKEndOfBookCompactViewController *)self presentedViewController];
   v4 = BUDynamicCast();
   v5 = v4 != 0;
 
@@ -200,12 +200,12 @@
 
 - (BOOL)isToolbarVisible
 {
-  v2 = [(BKEndOfBookCompactViewController *)self parentViewController];
-  v3 = [v2 navigationController];
+  parentViewController = [(BKEndOfBookCompactViewController *)self parentViewController];
+  navigationController = [parentViewController navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    v4 = [v3 isToolbarHidden] ^ 1;
+    v4 = [navigationController isToolbarHidden] ^ 1;
   }
 
   else
@@ -216,22 +216,22 @@
   return v4;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v7 = [(BKEndOfBookCompactViewController *)self traitCollection:a3];
-  v5 = [v7 userInterfaceStyle];
-  v6 = [(BKEndOfBookCompactViewController *)self cardViewController];
-  [v6 setOverrideUserInterfaceStyle:v5];
+  v7 = [(BKEndOfBookCompactViewController *)self traitCollection:change];
+  userInterfaceStyle = [v7 userInterfaceStyle];
+  cardViewController = [(BKEndOfBookCompactViewController *)self cardViewController];
+  [cardViewController setOverrideUserInterfaceStyle:userInterfaceStyle];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = BKEndOfBookCompactViewController;
-  v7 = a4;
-  [(BKEndOfBookCompactViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BKEndOfBookCompactViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100169808;
@@ -239,7 +239,7 @@
   v8[4] = self;
   *&v8[5] = width;
   *&v8[6] = height;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -247,18 +247,18 @@
   v17.receiver = self;
   v17.super_class = BKEndOfBookCompactViewController;
   [(BKEndOfBookCompactViewController *)&v17 viewSafeAreaInsetsDidChange];
-  v3 = [(BKEndOfBookCompactViewController *)self isToolbarVisible];
-  if (v3 != [(BKEndOfBookCompactViewController *)self wasToolbarVisible])
+  isToolbarVisible = [(BKEndOfBookCompactViewController *)self isToolbarVisible];
+  if (isToolbarVisible != [(BKEndOfBookCompactViewController *)self wasToolbarVisible])
   {
-    [(BKEndOfBookCompactViewController *)self setWasToolbarVisible:v3];
+    [(BKEndOfBookCompactViewController *)self setWasToolbarVisible:isToolbarVisible];
     if ([(BKEndOfBookCompactViewController *)self isPresented])
     {
       v4 = [[UISpringTimingParameters alloc] initWithMass:1.0 stiffness:200.0 damping:20.0 initialVelocity:{0.0, 0.0}];
       v5 = [UIViewPropertyAnimator alloc];
       [v4 settlingDuration];
       v6 = [v5 initWithDuration:v4 timingParameters:?];
-      v7 = [(BKEndOfBookCompactViewController *)self parentViewController];
-      [(BKEndOfBookCompactViewController *)self preferredFrameInViewController:v7 isPresented:[(BKEndOfBookCompactViewController *)self isPresented]];
+      parentViewController = [(BKEndOfBookCompactViewController *)self parentViewController];
+      [(BKEndOfBookCompactViewController *)self preferredFrameInViewController:parentViewController isPresented:[(BKEndOfBookCompactViewController *)self isPresented]];
       v9 = v8;
       v11 = v10;
       v13 = v12;
@@ -279,38 +279,38 @@
   }
 }
 
-- (void)preloadContentWithViewController:(id)a3 completion:(id)a4
+- (void)preloadContentWithViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v19 = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v6;
+    v22 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@: preloadContentWithViewController %@", &v19, 0x16u);
   }
 
-  [(BKEndOfBookCompactViewController *)self preferredFrameInViewController:v6 isPresented:0];
+  [(BKEndOfBookCompactViewController *)self preferredFrameInViewController:controllerCopy isPresented:0];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(BKEndOfBookCompactViewController *)self view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view = [(BKEndOfBookCompactViewController *)self view];
+  [view setFrame:{v10, v12, v14, v16}];
 
-  v18 = [(BKEndOfBookCompactViewController *)self feedViewController];
-  [v18 preloadAugmentedExperienceContentWithViewController:v6 numEntries:1 completion:v7];
+  feedViewController = [(BKEndOfBookCompactViewController *)self feedViewController];
+  [feedViewController preloadAugmentedExperienceContentWithViewController:controllerCopy numEntries:1 completion:completionCopy];
 }
 
-- (void)_forceOrientationBackToPortraitOrientation:(id)a3
+- (void)_forceOrientationBackToPortraitOrientation:(id)orientation
 {
-  v4 = a3;
+  orientationCopy = orientation;
   objc_opt_class();
-  v5 = [(BKEndOfBookCompactViewController *)self bc_windowForViewController];
-  v6 = [v5 windowScene];
+  bc_windowForViewController = [(BKEndOfBookCompactViewController *)self bc_windowForViewController];
+  windowScene = [bc_windowForViewController windowScene];
   v7 = BUDynamicCast();
 
   if (v7)
@@ -320,26 +320,26 @@
     v8[2] = sub_100169D10;
     v8[3] = &unk_100A04978;
     v8[4] = self;
-    v9 = v4;
+    v9 = orientationCopy;
     [v7 attemptRotateToPortraitWithCompletion:v8];
   }
 
   else
   {
-    v4[2](v4);
+    orientationCopy[2](orientationCopy);
   }
 }
 
-- (CGRect)preferredFrameInViewController:(id)a3 isPresented:(BOOL)a4
+- (CGRect)preferredFrameInViewController:(id)controller isPresented:(BOOL)presented
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 viewIfLoaded];
-  v8 = v7;
-  if (v7)
+  presentedCopy = presented;
+  controllerCopy = controller;
+  viewIfLoaded = [controllerCopy viewIfLoaded];
+  v8 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v7 bounds];
-    [(BKEndOfBookCompactViewController *)self preferredFrameInViewController:v6 newSize:v4 isPresented:v9, v10];
+    [viewIfLoaded bounds];
+    [(BKEndOfBookCompactViewController *)self preferredFrameInViewController:controllerCopy newSize:presentedCopy isPresented:v9, v10];
     x = v11;
     y = v13;
     width = v15;
@@ -365,20 +365,20 @@
   return result;
 }
 
-- (CGRect)preferredFrameInViewController:(id)a3 newSize:(CGSize)a4 isPresented:(BOOL)a5
+- (CGRect)preferredFrameInViewController:(id)controller newSize:(CGSize)size isPresented:(BOOL)presented
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = [v8 viewIfLoaded];
-  if (v9)
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  viewIfLoaded = [controllerCopy viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v10 = [v8 traitCollection];
-    v11 = [v10 horizontalSizeClass];
+    traitCollection = [controllerCopy traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
     v12 = 8.0;
     v13 = 8.0;
-    if (v11 == 1 || (v13 = 16.0, isPhone()))
+    if (horizontalSizeClass == 1 || (v13 = 16.0, isPhone()))
     {
       v14 = 1;
     }
@@ -389,10 +389,10 @@
       v12 = 16.0;
     }
 
-    v19 = [v8 navigationController];
-    if (v19 && (v20 = v19, [v8 navigationController], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isToolbarHidden"), v21, v20, (v22 & 1) == 0) || (objc_msgSend(v9, "safeAreaInsets"), v23 > v12))
+    navigationController = [controllerCopy navigationController];
+    if (navigationController && (v20 = navigationController, [controllerCopy navigationController], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isToolbarHidden"), v21, v20, (v22 & 1) == 0) || (objc_msgSend(viewIfLoaded, "safeAreaInsets"), v23 > v12))
     {
-      [v9 safeAreaInsets];
+      [viewIfLoaded safeAreaInsets];
     }
 
     v36.origin.x = 0.0;
@@ -454,9 +454,9 @@
   return result;
 }
 
-- (void)_gripperTapped:(id)a3
+- (void)_gripperTapped:(id)tapped
 {
-  if ([a3 state] == 3)
+  if ([tapped state] == 3)
   {
     [(BKEndOfBookCompactViewController *)self _reportFigaroCloseClickEventWithReason:@"buttonTap"];
 
@@ -464,12 +464,12 @@
   }
 }
 
-- (void)_animateScaleForPressed:(BOOL)a3
+- (void)_animateScaleForPressed:(BOOL)pressed
 {
-  v3 = a3;
-  v4 = [(BKEndOfBookCompactViewController *)self dropShadowView];
+  pressedCopy = pressed;
+  dropShadowView = [(BKEndOfBookCompactViewController *)self dropShadowView];
   memset(&v16, 0, sizeof(v16));
-  if (v3)
+  if (pressedCopy)
   {
     CGAffineTransformMakeScale(&v16, 0.96, 0.96);
   }
@@ -494,8 +494,8 @@
   v15 = v16;
   v13[2] = sub_10016A240;
   v13[3] = &unk_100A091F8;
-  v14 = v4;
-  v12 = v4;
+  v14 = dropShadowView;
+  v12 = dropShadowView;
   [v11 addAnimations:v13];
   [v11 startAnimation];
 }
@@ -507,66 +507,66 @@
   [(BKEndOfBookCompactViewController *)self _animateScaleForPressed:0];
 }
 
-- (void)_anchorGripperView:(id)a3 toView:(id)a4
+- (void)_anchorGripperView:(id)view toView:(id)toView
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 topAnchor];
-  v8 = [v5 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:15.0];
+  toViewCopy = toView;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [toViewCopy topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
   v14[0] = v9;
-  v10 = [v6 trailingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
 
-  v11 = [v5 trailingAnchor];
+  trailingAnchor2 = [toViewCopy trailingAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-14.5];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-14.5];
   v14[1] = v12;
   v13 = [NSArray arrayWithObjects:v14 count:2];
   [NSLayoutConstraint activateConstraints:v13];
 }
 
-- (void)_willDismissCardWithReason:(int64_t)a3
+- (void)_willDismissCardWithReason:(int64_t)reason
 {
   objc_opt_class();
-  v5 = [(BKEndOfBookCompactViewController *)self cardViewController];
+  cardViewController = [(BKEndOfBookCompactViewController *)self cardViewController];
   v8 = BUDynamicCast();
 
-  v6 = [v8 cardNavigationController];
-  v7 = [v6 currentFeedViewController];
-  [v7 cardStackViewController:0 parentCardWillDismissWithReason:a3 targetViewController:self];
+  cardNavigationController = [v8 cardNavigationController];
+  currentFeedViewController = [cardNavigationController currentFeedViewController];
+  [currentFeedViewController cardStackViewController:0 parentCardWillDismissWithReason:reason targetViewController:self];
 }
 
-- (void)_presentCardWithReason:(id)a3 completion:(id)a4
+- (void)_presentCardWithReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKEndOfBookCompactViewController *)self cardViewController];
-  if (v8 && ![(BKEndOfBookCompactViewController *)self isPresentingCard])
+  reasonCopy = reason;
+  completionCopy = completion;
+  cardViewController = [(BKEndOfBookCompactViewController *)self cardViewController];
+  if (cardViewController && ![(BKEndOfBookCompactViewController *)self isPresentingCard])
   {
-    v11 = [(BKEndOfBookCompactViewController *)self presentedViewController];
+    presentedViewController = [(BKEndOfBookCompactViewController *)self presentedViewController];
 
-    if (v11)
+    if (presentedViewController)
     {
-      v12 = [(BKEndOfBookCompactViewController *)self presentedViewController];
-      [v12 dismissViewControllerAnimated:1 completion:0];
+      presentedViewController2 = [(BKEndOfBookCompactViewController *)self presentedViewController];
+      [presentedViewController2 dismissViewControllerAnimated:1 completion:0];
     }
 
-    [(BKEndOfBookCompactViewController *)self _reportFigaroOpenClickEventWithReason:v6];
-    if (v7)
+    [(BKEndOfBookCompactViewController *)self _reportFigaroOpenClickEventWithReason:reasonCopy];
+    if (completionCopy)
     {
-      v13 = [(BKEndOfBookCompactViewController *)self presentationCompletionBlocks];
-      v14 = objc_retainBlock(v7);
-      [v13 addObject:v14];
+      presentationCompletionBlocks = [(BKEndOfBookCompactViewController *)self presentationCompletionBlocks];
+      v14 = objc_retainBlock(completionCopy);
+      [presentationCompletionBlocks addObject:v14];
     }
 
-    v15 = [(BKEndOfBookCompactViewController *)self transitionAnimationController];
+    transitionAnimationController = [(BKEndOfBookCompactViewController *)self transitionAnimationController];
 
-    if (!v15)
+    if (!transitionAnimationController)
     {
-      [v8 setTransitioningDelegate:self];
-      v16 = [v8 presentationController];
-      [v16 setDelegate:self];
+      [cardViewController setTransitioningDelegate:self];
+      presentationController = [cardViewController presentationController];
+      [presentationController setDelegate:self];
 
       objc_opt_class();
       v17 = BUDynamicCast();
@@ -579,12 +579,12 @@
       objc_copyWeak(&v33, location);
       v18 = objc_retainBlock(v32);
       objc_opt_class();
-      v19 = [v8 presentationController];
+      presentationController2 = [cardViewController presentationController];
       v20 = BUDynamicCast();
 
-      v21 = [(BKEndOfBookCompactViewController *)self dropShadowView];
-      v22 = [v21 layer];
-      [v22 cornerRadius];
+      dropShadowView = [(BKEndOfBookCompactViewController *)self dropShadowView];
+      layer = [dropShadowView layer];
+      [layer cornerRadius];
       [v20 _setCornerRadiusForPresentationAndDismissal:?];
 
       [v20 _setShouldDismissWhenTappedOutside:1];
@@ -596,7 +596,7 @@
       v28[2] = sub_10016AA14;
       v28[3] = &unk_100A074A8;
       objc_copyWeak(&v31, location);
-      v29 = v8;
+      v29 = cardViewController;
       v24 = v18;
       v30 = v24;
       v25 = objc_retainBlock(v28);
@@ -624,7 +624,7 @@
 
   else
   {
-    v9 = objc_retainBlock(v7);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -633,25 +633,25 @@
   }
 }
 
-- (id)animationControllerForCompactViewController:(id)a3 cardViewController:(id)a4 isPresenting:(BOOL)a5
+- (id)animationControllerForCompactViewController:(id)controller cardViewController:(id)viewController isPresenting:(BOOL)presenting
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  presentingCopy = presenting;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   v10 = BUDynamicCast();
   v11 = objc_alloc_init(_UISheetAnimationController);
-  [v11 setIsReversed:!v5];
-  v12 = [v10 dropShadowView];
-  v13 = [v10 dropShadowView];
-  [v13 bounds];
+  [v11 setIsReversed:!presentingCopy];
+  dropShadowView = [v10 dropShadowView];
+  dropShadowView2 = [v10 dropShadowView];
+  [dropShadowView2 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [v10 view];
-  v23 = [v22 superview];
-  [v12 convertRect:v23 toView:{v15, v17, v19, v21}];
+  view = [v10 view];
+  superview = [view superview];
+  [dropShadowView convertRect:superview toView:{v15, v17, v19, v21}];
   [v11 setSourceFrame:?];
 
   objc_initWeak(&location, self);
@@ -660,14 +660,14 @@
   v28[2] = sub_10016AE54;
   v28[3] = &unk_100A03BB0;
   objc_copyWeak(&v29, &location);
-  v30 = v5;
+  v30 = presentingCopy;
   [v11 addNoninteractiveAnimations:v28];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10016AEC8;
   v25[3] = &unk_100A063A0;
   objc_copyWeak(&v26, &location);
-  v27 = v5;
+  v27 = presentingCopy;
   [v11 addNoninteractiveCompletion:v25];
   objc_destroyWeak(&v26);
   objc_destroyWeak(&v29);
@@ -678,17 +678,17 @@
 
 - (void)dismiss
 {
-  v3 = [(BKEndOfBookCompactViewController *)self delegate];
-  [v3 endOfBookCompactViewControllerWantsToDismiss:self];
+  delegate = [(BKEndOfBookCompactViewController *)self delegate];
+  [delegate endOfBookCompactViewControllerWantsToDismiss:self];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  sourceControllerCopy = sourceController;
   if ([(BKEndOfBookCompactViewController *)self _shouldUseCoverAnimationWhenPresenting:1])
   {
-    v9 = [(BKEndOfBookCompactViewController *)self animationControllerForCompactViewController:v8 cardViewController:v7 isPresenting:1];
+    v9 = [(BKEndOfBookCompactViewController *)self animationControllerForCompactViewController:sourceControllerCopy cardViewController:controllerCopy isPresenting:1];
   }
 
   else
@@ -699,12 +699,12 @@
   return v9;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(BKEndOfBookCompactViewController *)self _shouldUseCoverAnimationWhenPresenting:0])
   {
-    v5 = [(BKEndOfBookCompactViewController *)self animationControllerForCompactViewController:self cardViewController:v4 isPresenting:0];
+    v5 = [(BKEndOfBookCompactViewController *)self animationControllerForCompactViewController:self cardViewController:controllerCopy isPresenting:0];
   }
 
   else
@@ -715,11 +715,11 @@
   return v5;
 }
 
-- (BOOL)_shouldUseCoverAnimationWhenPresenting:(BOOL)a3
+- (BOOL)_shouldUseCoverAnimationWhenPresenting:(BOOL)presenting
 {
-  v5 = [(BKEndOfBookCompactViewController *)self isPresented];
-  v6 = a3 & v5;
-  if (!a3 && (v5 & 1) != 0)
+  isPresented = [(BKEndOfBookCompactViewController *)self isPresented];
+  v6 = presenting & isPresented;
+  if (!presenting && (isPresented & 1) != 0)
   {
     v6 = !self->_closingBook;
   }
@@ -727,30 +727,30 @@
   return v6 & 1;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v8 = [(BKEndOfBookCompactViewController *)self transitionCoordinator];
-  if (([v8 isInteractive] & 1) == 0 && (objc_msgSend(v8, "isCancelled") & 1) == 0)
+  transitionCoordinator = [(BKEndOfBookCompactViewController *)self transitionCoordinator];
+  if (([transitionCoordinator isInteractive] & 1) == 0 && (objc_msgSend(transitionCoordinator, "isCancelled") & 1) == 0)
   {
     [(BKEndOfBookCompactViewController *)self _willDismissCardWithReason:2];
     if ([(BKEndOfBookCompactViewController *)self _shouldUseCoverAnimationWhenPresenting:0])
     {
       objc_opt_class();
-      v4 = [(BKEndOfBookCompactViewController *)self cardViewController];
+      cardViewController = [(BKEndOfBookCompactViewController *)self cardViewController];
       v5 = BUDynamicCast();
 
       v6 = [[BKEndOfBookCardTransitionAnimationController alloc] initWithCompactViewController:self cardViewController:v5];
       [(BKEndOfBookCompactViewController *)self setTransitionAnimationController:v6];
 
-      v7 = [(BKEndOfBookCompactViewController *)self transitionAnimationController];
-      [v7 prepareForDismissal];
+      transitionAnimationController = [(BKEndOfBookCompactViewController *)self transitionAnimationController];
+      [transitionAnimationController prepareForDismissal];
     }
   }
 
   [(BKEndOfBookCompactViewController *)self _trackInteractiveDismissal];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   if (isPhone())
   {
@@ -764,13 +764,13 @@
   v3 = [(BKEndOfBookCompactViewController *)self _shouldUseCoverAnimationWhenPresenting:0];
   if ([(BKEndOfBookCompactViewController *)self isPresentingCard])
   {
-    v4 = [(BKEndOfBookCompactViewController *)self transitionCoordinator];
+    transitionCoordinator = [(BKEndOfBookCompactViewController *)self transitionCoordinator];
   }
 
   else
   {
-    v5 = [(BKEndOfBookCompactViewController *)self cardViewController];
-    v4 = [v5 transitionCoordinator];
+    cardViewController = [(BKEndOfBookCompactViewController *)self cardViewController];
+    transitionCoordinator = [cardViewController transitionCoordinator];
   }
 
   v6[0] = _NSConcreteStackBlock;
@@ -779,43 +779,43 @@
   v6[3] = &unk_100A06F50;
   v6[4] = self;
   v7 = v3;
-  [v4 notifyWhenInteractionChangesUsingBlock:v6];
+  [transitionCoordinator notifyWhenInteractionChangesUsingBlock:v6];
 }
 
-- (void)endOfBookCardViewControllerDidFinish:(id)a3
+- (void)endOfBookCardViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(BKEndOfBookCompactViewController *)self cardViewController];
+  finishCopy = finish;
+  cardViewController = [(BKEndOfBookCompactViewController *)self cardViewController];
 
-  if (v5 == v4)
+  if (cardViewController == finishCopy)
   {
     [(BKEndOfBookCompactViewController *)self _willDismissCardWithReason:1];
     if ([(BKEndOfBookCompactViewController *)self _shouldUseCoverAnimationWhenPresenting:0])
     {
       objc_opt_class();
-      v6 = [(BKEndOfBookCompactViewController *)self cardViewController];
+      cardViewController2 = [(BKEndOfBookCompactViewController *)self cardViewController];
       v7 = BUDynamicCast();
 
       v8 = [[BKEndOfBookCardTransitionAnimationController alloc] initWithCompactViewController:self cardViewController:v7];
       [(BKEndOfBookCompactViewController *)self setTransitionAnimationController:v8];
 
-      v9 = [(BKEndOfBookCompactViewController *)self transitionAnimationController];
-      [v9 prepareForDismissal];
+      transitionAnimationController = [(BKEndOfBookCompactViewController *)self transitionAnimationController];
+      [transitionAnimationController prepareForDismissal];
     }
 
-    v10 = [(BKEndOfBookCompactViewController *)self cardViewController];
-    v11 = [v10 presentingViewController];
-    [v11 dismissViewControllerAnimated:1 completion:0];
+    cardViewController3 = [(BKEndOfBookCompactViewController *)self cardViewController];
+    presentingViewController = [cardViewController3 presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
     [(BKEndOfBookCompactViewController *)self _trackInteractiveDismissal];
   }
 }
 
-- (void)_closeAllCardsIncludingEOB:(id)a3 cardStackViewController:(id)a4 completion:(id)a5
+- (void)_closeAllCardsIncludingEOB:(id)b cardStackViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  bCopy = b;
+  completionCopy = completion;
+  controllerCopy = controller;
   v11 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -827,41 +827,41 @@
   v19[1] = 3221225472;
   v19[2] = sub_10016B734;
   v19[3] = &unk_100A03788;
-  v12 = v8;
+  v12 = bCopy;
   v20 = v12;
-  v21 = v9;
-  v13 = v9;
-  [v10 popAllCardsAnimated:1 completion:v19];
+  v21 = completionCopy;
+  v13 = completionCopy;
+  [controllerCopy popAllCardsAnimated:1 completion:v19];
   [(BKEndOfBookCompactViewController *)self _willDismissCardWithReason:1];
-  v14 = [v10 transitionCoordinator];
+  transitionCoordinator = [controllerCopy transitionCoordinator];
 
-  v15 = [v12 view];
+  view = [v12 view];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10016B744;
   v17[3] = &unk_100A04410;
   v18 = v12;
   v16 = v12;
-  [v14 animateAlongsideTransitionInView:v15 animation:v17 completion:0];
+  [transitionCoordinator animateAlongsideTransitionInView:view animation:v17 completion:0];
 }
 
-- (void)endOfBookCardViewControllerWantsToCloseToAsset:(id)a3 cardStackViewController:(id)a4 completion:(id)a5
+- (void)endOfBookCardViewControllerWantsToCloseToAsset:(id)asset cardStackViewController:(id)controller completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10016B85C;
   v8[3] = &unk_100A03788;
-  v9 = self;
-  v10 = a5;
-  v7 = v10;
-  [(BKEndOfBookCompactViewController *)v9 _closeAllCardsIncludingEOB:a3 cardStackViewController:a4 completion:v8];
+  selfCopy = self;
+  completionCopy = completion;
+  v7 = completionCopy;
+  [(BKEndOfBookCompactViewController *)selfCopy _closeAllCardsIncludingEOB:asset cardStackViewController:controller completion:v8];
 }
 
-- (void)endOfBookCardViewControllerWantsToCloseAsset:(id)a3 cardStackViewController:(id)a4 completion:(id)a5
+- (void)endOfBookCardViewControllerWantsToCloseAsset:(id)asset cardStackViewController:(id)controller completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
+  assetCopy = asset;
   v11 = [(BKEndOfBookCompactViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKPrimaryScenePresenting];
   v12 = +[BKRootBarItemsProvider HomeIdentifier];
   [v11 presenterSelectTabWithIdentifier:v12];
@@ -872,42 +872,42 @@
   v14[2] = sub_10016B9E0;
   v14[3] = &unk_100A03788;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
-  [(BKEndOfBookCompactViewController *)self _closeAllCardsIncludingEOB:v10 cardStackViewController:v9 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(BKEndOfBookCompactViewController *)self _closeAllCardsIncludingEOB:assetCopy cardStackViewController:controllerCopy completion:v14];
 }
 
 - (id)ba_analyticsTracker
 {
   v8.receiver = self;
   v8.super_class = BKEndOfBookCompactViewController;
-  v3 = [(BKEndOfBookCompactViewController *)&v8 ba_analyticsTracker];
-  v4 = v3;
-  if (v3)
+  ba_analyticsTracker = [(BKEndOfBookCompactViewController *)&v8 ba_analyticsTracker];
+  v4 = ba_analyticsTracker;
+  if (ba_analyticsTracker)
   {
-    v5 = v3;
+    ba_analyticsTracker2 = ba_analyticsTracker;
   }
 
   else
   {
-    v6 = [(BKEndOfBookCompactViewController *)self feedViewController];
-    v5 = [v6 ba_analyticsTracker];
+    feedViewController = [(BKEndOfBookCompactViewController *)self feedViewController];
+    ba_analyticsTracker2 = [feedViewController ba_analyticsTracker];
   }
 
-  return v5;
+  return ba_analyticsTracker2;
 }
 
-- (void)_reportFigaroOpenClickEventWithReason:(id)a3
+- (void)_reportFigaroOpenClickEventWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v15 = objc_alloc_init(NSMutableDictionary);
   [v15 setObject:JSARecordEventTypeClick forKeyedSubscript:JSARecordKeyEventType];
   [v15 setObject:JSARecordActionTypeNavigate forKeyedSubscript:JSARecordKeyActionType];
-  v5 = [(BKEndOfBookCompactViewController *)self contentView];
-  v6 = [v5 superview];
-  v7 = [(BKEndOfBookCompactViewController *)self contentView];
-  [v7 center];
-  [v6 convertPoint:0 toView:?];
+  contentView = [(BKEndOfBookCompactViewController *)self contentView];
+  superview = [contentView superview];
+  contentView2 = [(BKEndOfBookCompactViewController *)self contentView];
+  [contentView2 center];
+  [superview convertPoint:0 toView:?];
   v9 = v8;
   v11 = v10;
 
@@ -917,22 +917,22 @@
   v13 = [NSNumber numberWithDouble:v11];
   [v15 setObject:v13 forKeyedSubscript:JSARecordKeyPositionY];
 
-  v14 = [(BKEndOfBookCompactViewController *)self _additionalInfoForClickEvent:v4];
+  v14 = [(BKEndOfBookCompactViewController *)self _additionalInfoForClickEvent:reasonCopy];
 
   [JSAApplication recordNativeEvent:v15 additionalInfo:v14];
 }
 
-- (void)_reportFigaroCloseClickEventWithReason:(id)a3
+- (void)_reportFigaroCloseClickEventWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v15 = objc_alloc_init(NSMutableDictionary);
   [v15 setObject:JSARecordEventTypeClick forKeyedSubscript:JSARecordKeyEventType];
   [v15 setObject:JSARecordActionTypeDismiss forKeyedSubscript:JSARecordKeyActionType];
-  v5 = [(BKEndOfBookCompactViewController *)self closeButton];
-  v6 = [v5 superview];
-  v7 = [(BKEndOfBookCompactViewController *)self closeButton];
-  [v7 center];
-  [v6 convertPoint:0 toView:?];
+  closeButton = [(BKEndOfBookCompactViewController *)self closeButton];
+  superview = [closeButton superview];
+  closeButton2 = [(BKEndOfBookCompactViewController *)self closeButton];
+  [closeButton2 center];
+  [superview convertPoint:0 toView:?];
   v9 = v8;
   v11 = v10;
 
@@ -942,41 +942,41 @@
   v13 = [NSNumber numberWithDouble:v11];
   [v15 setObject:v13 forKeyedSubscript:JSARecordKeyPositionY];
 
-  v14 = [(BKEndOfBookCompactViewController *)self _additionalInfoForClickEvent:v4];
+  v14 = [(BKEndOfBookCompactViewController *)self _additionalInfoForClickEvent:reasonCopy];
 
   [JSAApplication recordNativeEvent:v15 additionalInfo:v14];
 }
 
-- (id)_additionalInfoForClickEvent:(id)a3
+- (id)_additionalInfoForClickEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(BKEndOfBookCompactViewController *)self ba_effectiveAnalyticsTracker];
+  eventCopy = event;
+  ba_effectiveAnalyticsTracker = [(BKEndOfBookCompactViewController *)self ba_effectiveAnalyticsTracker];
   v12[0] = @"tracker";
-  v6 = v5;
-  if (!v5)
+  v6 = ba_effectiveAnalyticsTracker;
+  if (!ba_effectiveAnalyticsTracker)
   {
     v6 = +[NSNull null];
   }
 
   v13[0] = v6;
   v12[1] = @"feed";
-  v7 = [(BKEndOfBookCompactViewController *)self feedViewController];
-  v8 = [v7 feed];
-  v9 = v8;
-  if (!v8)
+  feedViewController = [(BKEndOfBookCompactViewController *)self feedViewController];
+  feed = [feedViewController feed];
+  v9 = feed;
+  if (!feed)
   {
     v9 = +[NSNull null];
   }
 
   v12[2] = @"reason";
   v13[1] = v9;
-  v13[2] = v4;
+  v13[2] = eventCopy;
   v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v8)
+  if (!feed)
   {
   }
 
-  if (!v5)
+  if (!ba_effectiveAnalyticsTracker)
   {
   }
 

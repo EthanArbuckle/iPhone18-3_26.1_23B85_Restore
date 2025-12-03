@@ -8,26 +8,26 @@
 
 - (NSUUID)deviceIdentifier
 {
-  v3 = [(SFDevice *)self bleDevice];
-  v4 = [v3 advertisementFields];
+  bleDevice = [(SFDevice *)self bleDevice];
+  advertisementFields = [bleDevice advertisementFields];
 
   Int64Ranged = CFDictionaryGetInt64Ranged();
-  v6 = [(SFDevice *)self model];
-  if (([v6 isEqual:{@"AirPods1, 1"}] & 1) != 0 || (objc_msgSend(v6, "isEqual:", @"AirPods1,3") & 1) != 0 || objc_msgSend(v6, "isEqual:", @"AirPodsPro1,1"))
+  model = [(SFDevice *)self model];
+  if (([model isEqual:{@"AirPods1, 1"}] & 1) != 0 || (objc_msgSend(model, "isEqual:", @"AirPods1,3") & 1) != 0 || objc_msgSend(model, "isEqual:", @"AirPodsPro1,1"))
   {
   }
 
   else
   {
-    v9 = [[SFHeadphoneProduct alloc] initWithBluetoothModel:v6];
-    v10 = [v9 isAirPods];
+    v9 = [[SFHeadphoneProduct alloc] initWithBluetoothModel:model];
+    isAirPods = [v9 isAirPods];
 
-    if ((v10 & 1) == 0 && Int64Ranged)
+    if ((isAirPods & 1) == 0 && Int64Ranged)
     {
-      v11 = [(SFDevice *)self identifier];
-      v12 = [v11 UUIDString];
+      identifier = [(SFDevice *)self identifier];
+      uUIDString = [identifier UUIDString];
 
-      v13 = [v12 length] - 4;
+      v13 = [uUIDString length] - 4;
       if ((Int64Ranged & 0x80) != 0)
       {
         v14 = @"1EF7";
@@ -38,31 +38,31 @@
         v14 = @"0010";
       }
 
-      v15 = [v12 stringByReplacingCharactersInRange:v13 withString:{4, v14}];
-      v7 = [[NSUUID alloc] initWithUUIDString:v15];
+      v15 = [uUIDString stringByReplacingCharactersInRange:v13 withString:{4, v14}];
+      identifier2 = [[NSUUID alloc] initWithUUIDString:v15];
 
       goto LABEL_6;
     }
   }
 
-  v7 = [(SFDevice *)self identifier];
+  identifier2 = [(SFDevice *)self identifier];
 LABEL_6:
 
-  return v7;
+  return identifier2;
 }
 
 - (int)rssi
 {
-  v2 = [(SFDevice *)self bleDevice];
-  v3 = [v2 rssi];
+  bleDevice = [(SFDevice *)self bleDevice];
+  rssi = [bleDevice rssi];
 
-  return v3;
+  return rssi;
 }
 
 - (char)channel
 {
-  v2 = [(SFDevice *)self bleDevice];
-  v3 = [v2 advertisementFields];
+  bleDevice = [(SFDevice *)self bleDevice];
+  advertisementFields = [bleDevice advertisementFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   return Int64Ranged;

@@ -1,17 +1,17 @@
 @interface NUMediaAVBuilder
-- (BOOL)buildAVObjectsWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)buildAVObjectsWithOptions:(id)options error:(id *)error;
 - (NUMediaAVBuilder)init;
-- (NUMediaAVBuilder)initWithContainer:(id)a3;
+- (NUMediaAVBuilder)initWithContainer:(id)container;
 @end
 
 @implementation NUMediaAVBuilder
 
-- (BOOL)buildAVObjectsWithOptions:(id)a3 error:(id *)a4
+- (BOOL)buildAVObjectsWithOptions:(id)options error:(id *)error
 {
   v155 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v121 = a4;
-  if (!a4)
+  optionsCopy = options;
+  errorCopy = error;
+  if (!error)
   {
     v68 = NUAssertLogger_2109();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v75 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v76 = MEMORY[0x1E696AF00];
         v77 = v75;
-        v78 = [v76 callStackSymbols];
-        v79 = [v78 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v76 callStackSymbols];
+        v79 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v75;
         *&buf[12] = 2114;
@@ -44,8 +44,8 @@
 
     else if (v72)
     {
-      v73 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v74 = [v73 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v74 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v74;
       _os_log_error_impl(&dword_1C0184000, v71, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,18 +54,18 @@
     _NUAssertFailHandler("[NUMediaAVBuilder buildAVObjectsWithOptions:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUMedia.m", 476, @"Invalid parameter not satisfying: %s", v80, v81, v82, v83, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [(NUContainerMedia *)self->_container containerFormat];
-  if ([v8 containerMediaType] != 2)
+  v7 = optionsCopy;
+  containerFormat = [(NUContainerMedia *)self->_container containerFormat];
+  if ([containerFormat containerMediaType] != 2)
   {
-    [NUError errorWithCode:2 reason:@"invalid container media type" object:v8];
-    *v121 = v52 = 0;
+    [NUError errorWithCode:2 reason:@"invalid container media type" object:containerFormat];
+    *errorCopy = v52 = 0;
     goto LABEL_72;
   }
 
-  v9 = [v7 channelToRender];
-  v10 = [v9 name];
-  v11 = [v10 isEqualToString:@"primary"];
+  channelToRender = [v7 channelToRender];
+  name = [channelToRender name];
+  v11 = [name isEqualToString:@"primary"];
 
   if ((v11 & 1) == 0)
   {
@@ -88,8 +88,8 @@
         v91 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v92 = MEMORY[0x1E696AF00];
         v93 = v91;
-        v94 = [v92 callStackSymbols];
-        v95 = [v94 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v92 callStackSymbols];
+        v95 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v91;
         *&buf[12] = 2114;
@@ -100,8 +100,8 @@
 
     else if (v88)
     {
-      v89 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v90 = [v89 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v90 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v90;
       _os_log_error_impl(&dword_1C0184000, v87, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -111,13 +111,13 @@
   }
 
   container = self->_container;
-  v13 = [v7 channelToRender];
-  v14 = [(NUContainerMedia *)container mediaForChannel:v13];
+  channelToRender2 = [v7 channelToRender];
+  v14 = [(NUContainerMedia *)container mediaForChannel:channelToRender2];
 
   if (!v14)
   {
-    v53 = [v7 channelToRender];
-    *v121 = [NUError missingError:@"Missing media for channel" object:v53];
+    channelToRender3 = [v7 channelToRender];
+    *errorCopy = [NUError missingError:@"Missing media for channel" object:channelToRender3];
 
     v52 = 0;
     goto LABEL_71;
@@ -132,8 +132,8 @@
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
-  v16 = [v8 components];
-  v105 = [v16 countByEnumeratingWithState:&v146 objects:v154 count:16];
+  components = [containerFormat components];
+  v105 = [components countByEnumeratingWithState:&v146 objects:v154 count:16];
   if (!v105)
   {
 
@@ -144,11 +144,11 @@
   v17 = 0;
   v18 = *v147;
   v110 = v14;
-  v111 = v8;
+  v111 = containerFormat;
   v118 = v15;
   v103 = *v147;
-  v104 = self;
-  v109 = v16;
+  selfCopy = self;
+  v109 = components;
   do
   {
     v19 = 0;
@@ -156,19 +156,19 @@
     {
       if (*v147 != v18)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(components);
       }
 
       v108 = v19;
       v20 = *(*(&v146 + 1) + 8 * v19);
-      v21 = [(NUContainerMedia *)self->_container components];
+      components2 = [(NUContainerMedia *)self->_container components];
       v114 = v20;
-      v22 = [v21 objectForKeyedSubscript:v20];
+      v22 = [components2 objectForKeyedSubscript:v20];
 
-      v23 = [v22 requiredSourceMedias];
-      if (![v23 count])
+      requiredSourceMedias = [v22 requiredSourceMedias];
+      if (![requiredSourceMedias count])
       {
-        *v121 = [NUError missingError:@"missing source media" object:v22];
+        *errorCopy = [NUError missingError:@"missing source media" object:v22];
 LABEL_50:
 
         v52 = 0;
@@ -180,12 +180,12 @@ LABEL_69:
 
       v112 = v22;
       v107 = v17;
-      v106 = [v23 count] > 1;
+      v106 = [requiredSourceMedias count] > 1;
       v142 = 0u;
       v143 = 0u;
       v144 = 0u;
       v145 = 0u;
-      v24 = v23;
+      v24 = requiredSourceMedias;
       v25 = [v24 countByEnumeratingWithState:&v142 objects:v153 count:16];
       v15 = v118;
       if (!v25)
@@ -207,58 +207,58 @@ LABEL_69:
           }
 
           v29 = *(*(&v142 + 1) + 8 * v28);
-          v30 = [v29 format];
-          if ([v30 mediaType])
+          format = [v29 format];
+          if ([format mediaType])
           {
-            v31 = [v29 asset];
-            v32 = [v31 type];
+            asset = [v29 asset];
+            type = [asset type];
 
-            if (v32 == 2)
+            if (type == 2)
             {
               v33 = v27;
               v34 = v24;
-              v35 = [v29 asset];
-              v36 = [v29 resourceID];
-              v37 = [v35 avAssetTrackForResourceID:v36 error:v121];
+              asset2 = [v29 asset];
+              resourceID = [v29 resourceID];
+              resourceID2 = [asset2 avAssetTrackForResourceID:resourceID error:errorCopy];
 
-              if (!v37)
+              if (!resourceID2)
               {
-                v37 = [v29 resourceID];
-                *v121 = [NUError missingError:@"missing asset track for resource" object:v37];
+                resourceID2 = [v29 resourceID];
+                *errorCopy = [NUError missingError:@"missing asset track for resource" object:resourceID2];
 LABEL_49:
 
-                v23 = v34;
+                requiredSourceMedias = v34;
                 v14 = v110;
-                v8 = v111;
-                v16 = v109;
+                containerFormat = v111;
+                components = v109;
                 v22 = v112;
                 goto LABEL_50;
               }
 
-              if (![v122 containsIndex:{objc_msgSend(v37, "trackID")}])
+              if (![v122 containsIndex:{objc_msgSend(resourceID2, "trackID")}])
               {
-                v38 = [v37 mediaType];
-                if (v38)
+                mediaType = [resourceID2 mediaType];
+                if (mediaType)
                 {
-                  v39 = v38;
-                  v40 = [v15 addMutableTrackWithMediaType:v38 preferredTrackID:{objc_msgSend(v37, "trackID")}];
-                  [v37 timeRange];
+                  v39 = mediaType;
+                  v40 = [v15 addMutableTrackWithMediaType:mediaType preferredTrackID:{objc_msgSend(resourceID2, "trackID")}];
+                  [resourceID2 timeRange];
                   if (v141)
                   {
-                    [v37 timeRange];
+                    [resourceID2 timeRange];
                     if (v140)
                     {
-                      [v37 timeRange];
+                      [resourceID2 timeRange];
                       if (!v139)
                       {
-                        [v37 timeRange];
+                        [resourceID2 timeRange];
                         if ((v138 & 0x8000000000000000) == 0)
                         {
-                          [v37 timeRange];
+                          [resourceID2 timeRange];
                           time2 = **&MEMORY[0x1E6960CC0];
-                          if (![v40 insertTimeRange:buf ofTrack:v37 atTime:&time2 error:v121])
+                          if (![v40 insertTimeRange:buf ofTrack:resourceID2 atTime:&time2 error:errorCopy])
                           {
-                            *v121 = [NUError failureError:@"failed to insert track" object:v37];
+                            *errorCopy = [NUError failureError:@"failed to insert track" object:resourceID2];
 
                             goto LABEL_49;
                           }
@@ -268,17 +268,17 @@ LABEL_49:
                   }
 
                   v119 = v39;
-                  [v122 addIndex:{objc_msgSend(v37, "trackID")}];
+                  [v122 addIndex:{objc_msgSend(resourceID2, "trackID")}];
                   [v116 addObject:v29];
                   v41 = v40;
                   v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v40, "trackID")}];
-                  v43 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v37, "trackID")}];
+                  v43 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(resourceID2, "trackID")}];
                   [v115 setObject:v42 forKeyedSubscript:v43];
 
                   v44 = v7;
-                  v45 = [v7 channelToRender];
-                  v46 = [v45 name];
-                  v47 = [v114 isEqualToString:v46];
+                  channelToRender4 = [v7 channelToRender];
+                  name2 = [channelToRender4 name];
+                  v47 = [v114 isEqualToString:name2];
 
                   if (v47)
                   {
@@ -302,8 +302,8 @@ LABEL_49:
                 {
                   v101 = MEMORY[0x1E696AD98];
                   log = v50;
-                  v120 = [v29 format];
-                  v51 = [v101 numberWithInteger:{objc_msgSend(v120, "mediaType")}];
+                  format2 = [v29 format];
+                  v51 = [v101 numberWithInteger:{objc_msgSend(format2, "mediaType")}];
                   *buf = 138412290;
                   *&buf[4] = v51;
                   _os_log_error_impl(&dword_1C0184000, log, OS_LOG_TYPE_ERROR, "Unsupported media type %@, skipping", buf, 0xCu);
@@ -351,11 +351,11 @@ LABEL_40:
 LABEL_42:
       v17 = v106 | v107;
 
-      v16 = v109;
+      components = v109;
       v19 = v108 + 1;
-      self = v104;
+      self = selfCopy;
       v14 = v110;
-      v8 = v111;
+      containerFormat = v111;
       v18 = v103;
     }
 
@@ -365,7 +365,7 @@ LABEL_42:
 
   while (v105);
 
-  objc_storeStrong(&v104->_videoAsset, v15);
+  objc_storeStrong(&selfCopy->_videoAsset, v15);
   if (v17)
   {
 LABEL_53:
@@ -376,9 +376,9 @@ LABEL_53:
     v135 = &unk_1E8109720;
     v136 = v7;
     v54 = PFFind();
-    v55 = [v54 asset];
-    v56 = [v54 resourceID];
-    v57 = [v55 avAssetTrackForResourceID:v56 error:v121];
+    asset3 = [v54 asset];
+    resourceID3 = [v54 resourceID];
+    v57 = [asset3 avAssetTrackForResourceID:resourceID3 error:errorCopy];
 
     if (v57)
     {
@@ -428,16 +428,16 @@ LABEL_53:
 
         [(NUVideoCompositionInstruction *)v62 setRequiredSourceTrackIDs:v113];
         [(NUVideoCompositionInstruction *)v62 setVideoMedia:self->_container];
-        v64 = [(NUContainerMedia *)self->_container renderNode];
-        [(NUVideoCompositionInstruction *)v62 setVideoRenderPrepareNode:v64];
+        renderNode = [(NUContainerMedia *)self->_container renderNode];
+        [(NUVideoCompositionInstruction *)v62 setVideoRenderPrepareNode:renderNode];
 
         v150 = v62;
         v52 = 1;
         v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
         [v58 setInstructions:v65];
 
-        v66 = [(NUVideoCompositionInstruction *)v62 requiredSourceSampleDataTrackIDs];
-        [v58 setSourceSampleDataTrackIDs:v66];
+        requiredSourceSampleDataTrackIDs = [(NUVideoCompositionInstruction *)v62 requiredSourceSampleDataTrackIDs];
+        [v58 setSourceSampleDataTrackIDs:requiredSourceSampleDataTrackIDs];
 
         [v58 setCustomVideoCompositorClass:objc_opt_class()];
         objc_storeStrong(&self->_videoComposition, v58);
@@ -446,7 +446,7 @@ LABEL_53:
       else
       {
         [NUError invalidError:@"Invalid frame duration for video track" object:v57];
-        *v121 = v52 = 0;
+        *errorCopy = v52 = 0;
       }
     }
 
@@ -455,7 +455,7 @@ LABEL_53:
       v52 = 0;
     }
 
-    v16 = v136;
+    components = v136;
     goto LABEL_69;
   }
 
@@ -484,11 +484,11 @@ uint64_t __52__NUMediaAVBuilder_buildAVObjectsWithOptions_error___block_invoke(u
   return v6;
 }
 
-- (NUMediaAVBuilder)initWithContainer:(id)a3
+- (NUMediaAVBuilder)initWithContainer:(id)container
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  containerCopy = container;
+  if (!containerCopy)
   {
     v9 = NUAssertLogger_2109();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -509,8 +509,8 @@ uint64_t __52__NUMediaAVBuilder_buildAVObjectsWithOptions_error___block_invoke(u
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -521,8 +521,8 @@ uint64_t __52__NUMediaAVBuilder_buildAVObjectsWithOptions_error___block_invoke(u
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -531,7 +531,7 @@ uint64_t __52__NUMediaAVBuilder_buildAVObjectsWithOptions_error___block_invoke(u
     _NUAssertFailHandler("[NUMediaAVBuilder initWithContainer:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUMedia.m", 468, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "container != nil");
   }
 
-  v5 = v4;
+  v5 = containerCopy;
   v25.receiver = self;
   v25.super_class = NUMediaAVBuilder;
   v6 = [(NUMediaAVBuilder *)&v25 init];
@@ -587,8 +587,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -604,8 +604,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

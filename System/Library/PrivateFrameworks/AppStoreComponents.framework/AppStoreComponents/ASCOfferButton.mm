@@ -1,23 +1,23 @@
 @interface ASCOfferButton
-+ (id)indeterminateProgressImageFittingSize:(void *)a3 forTheme:;
-+ (id)progressImageWithPercent:(void *)a3 fittingSize:(void *)a4 forTheme:(char)a5 cancellable:;
-+ (id)progressStateImageFittingSize:(id)a3 forTheme:(id)a4 startPercent:(double)a5 endPercent:(double)a6 useFullImageSize:(BOOL)a7;
-+ (id)progressTransitionImageFittingSize:(void *)a3 forTheme:;
-+ (id)smallTitleFontForText:(id)a3 compatibleWithTraitCollection:(id)a4;
++ (id)indeterminateProgressImageFittingSize:(void *)size forTheme:;
++ (id)progressImageWithPercent:(void *)percent fittingSize:(void *)size forTheme:(char)theme cancellable:;
++ (id)progressStateImageFittingSize:(id)size forTheme:(id)theme startPercent:(double)percent endPercent:(double)endPercent useFullImageSize:(BOOL)imageSize;
++ (id)progressTransitionImageFittingSize:(void *)size forTheme:;
++ (id)smallTitleFontForText:(id)text compatibleWithTraitCollection:(id)collection;
 + (id)subtitleFontFittingSize:forTheme:compatibleWithTraitCollection:;
-+ (id)textBackgroundImageFittingSize:(void *)a3 forTheme:;
-+ (id)titleFontForText:(void *)a3 fittingSize:(void *)a4 representingMetadata:(void *)a5 compatibleWithTraitCollection:;
-- (ASCOfferButton)initWithCoder:(id)a3;
-- (ASCOfferButton)initWithFrame:(CGRect)a3;
++ (id)textBackgroundImageFittingSize:(void *)size forTheme:;
++ (id)titleFontForText:(void *)text fittingSize:(void *)size representingMetadata:(void *)metadata compatibleWithTraitCollection:;
+- (ASCOfferButton)initWithCoder:(id)coder;
+- (ASCOfferButton)initWithFrame:(CGRect)frame;
 - (ASCOfferButtonDelegate)delegate;
 - (BOOL)accessibilityActivate;
-- (BOOL)canTransitionToMetadata:(id)a3;
-- (BOOL)chainTransitionToMetadata:(id)a3 scalingDurationBy:(double)a4 withCompletion:(id)a5;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)shouldTransitionImageViewFromMetadata:(id)a3 toMetadata:(id)a4;
+- (BOOL)canTransitionToMetadata:(id)metadata;
+- (BOOL)chainTransitionToMetadata:(id)metadata scalingDurationBy:(double)by withCompletion:(id)completion;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)shouldTransitionImageViewFromMetadata:(id)metadata toMetadata:(id)toMetadata;
 - (CAAnimation)imageAnimation;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UILabel)subtitleLabel;
 - (UILabel)titleLabel;
@@ -27,30 +27,30 @@
 - (id)description;
 - (id)focusEffect;
 - (id)makeLayout;
-- (id)transitionColorForMetadata:(id)a3;
-- (id)transitionImageForMetadata:(id)a3;
+- (id)transitionColorForMetadata:(id)metadata;
+- (id)transitionImageForMetadata:(id)metadata;
 - (unint64_t)accessibilityTraits;
-- (void)beginModalStateWithCancelBlock:(id)a3;
+- (void)beginModalStateWithCancelBlock:(id)block;
 - (void)endModalState;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
 - (void)onTraitCollectionChange;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setCurrentTransition:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageAnimation:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setSize:(id)a3;
-- (void)setSubtitleLabelIfLoaded:(id)a3;
-- (void)setSubtitlePosition:(int64_t)a3;
-- (void)setTheme:(id)a3;
-- (void)setTitleLabelIfLoaded:(id)a3;
-- (void)transitionToMetadata:(id)a3 scalingDurationBy:(double)a4 withCompletion:(id)a5;
-- (void)transitionToMetadata:(id)a3 withCompletion:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setCurrentTransition:(id)transition;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageAnimation:(id)animation;
+- (void)setMetadata:(id)metadata;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setSize:(id)size;
+- (void)setSubtitleLabelIfLoaded:(id)loaded;
+- (void)setSubtitlePosition:(int64_t)position;
+- (void)setTheme:(id)theme;
+- (void)setTitleLabelIfLoaded:(id)loaded;
+- (void)transitionToMetadata:(id)metadata scalingDurationBy:(double)by withCompletion:(id)completion;
+- (void)transitionToMetadata:(id)metadata withCompletion:(id)completion;
 - (void)updateImageStyleProperties;
 - (void)updateLabelStyleProperties;
 - (void)updateVisualEffects;
@@ -63,9 +63,9 @@
   v7.receiver = self;
   v7.super_class = ASCOfferButton;
   v3 = *MEMORY[0x277D76548] | [(ASCOfferButton *)&v7 accessibilityTraits]| *MEMORY[0x277D765D0];
-  v4 = [(ASCOfferButton *)self isEnabled];
+  isEnabled = [(ASCOfferButton *)self isEnabled];
   v5 = *MEMORY[0x277D76580];
-  if (v4)
+  if (isEnabled)
   {
     v5 = 0;
   }
@@ -75,61 +75,61 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ASCOfferButton *)self metadata];
-  if ([v3 isEmpty])
+  metadata = [(ASCOfferButton *)self metadata];
+  if ([metadata isEmpty])
   {
     goto LABEL_2;
   }
 
-  if (![v3 isIcon])
+  if (![metadata isIcon])
   {
-    if ([v3 isProgress])
+    if ([metadata isProgress])
     {
       v11 = @"AX_OFFER_BUTTON_LABEL_LOADING";
     }
 
     else
     {
-      if ([v3 isText])
+      if ([metadata isText])
       {
         v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-        v12 = [(ASCOfferButton *)self titleLabelIfLoaded];
+        titleLabelIfLoaded = [(ASCOfferButton *)self titleLabelIfLoaded];
 
-        if (v12)
+        if (titleLabelIfLoaded)
         {
-          v13 = [(ASCOfferButton *)self titleLabelIfLoaded];
-          [v5 addObject:v13];
+          titleLabelIfLoaded2 = [(ASCOfferButton *)self titleLabelIfLoaded];
+          [v5 addObject:titleLabelIfLoaded2];
         }
 
-        v14 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+        subtitleLabelIfLoaded = [(ASCOfferButton *)self subtitleLabelIfLoaded];
 
-        if (v14)
+        if (subtitleLabelIfLoaded)
         {
-          v15 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-          [v5 addObject:v15];
+          subtitleLabelIfLoaded2 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+          [v5 addObject:subtitleLabelIfLoaded2];
         }
 
         v9 = ASCAXLabelForElements(v5);
         goto LABEL_16;
       }
 
-      if ([v3 isPlaceholder])
+      if ([metadata isPlaceholder])
       {
 LABEL_2:
         v4 = 0;
         goto LABEL_18;
       }
 
-      if ([v3 isDeeplink])
+      if ([metadata isDeeplink])
       {
         v11 = @"AX_OFFER_BUTTON_LABEL_DEEPLINK";
       }
 
       else
       {
-        if (![v3 isViewInAppStore])
+        if (![metadata isViewInAppStore])
         {
-          ASCUnknownEnumCase(@"ASCOfferMetadata", v3);
+          ASCUnknownEnumCase(@"ASCOfferMetadata", metadata);
         }
 
         v11 = @"AX_OFFER_BUTTON_LABEL_VIEW_IN_APP_STORE";
@@ -140,7 +140,7 @@ LABEL_2:
     goto LABEL_18;
   }
 
-  v5 = v3;
+  v5 = metadata;
   v6 = +[ASCOfferMetadata redownloadMetadata];
   v7 = [v5 isEqual:v6];
 
@@ -162,8 +162,8 @@ LABEL_18:
 
 - (id)accessibilityHint
 {
-  v2 = [(ASCOfferButton *)self metadata];
-  if ([v2 isProgress])
+  metadata = [(ASCOfferButton *)self metadata];
+  if ([metadata isProgress])
   {
     v3 = ASCLocalizedPlatformString(@"AX_OFFER_BUTTON_HINT_CANCEL");
   }
@@ -178,10 +178,10 @@ LABEL_18:
 
 - (id)accessibilityValue
 {
-  v2 = [(ASCOfferButton *)self metadata];
-  if ([v2 isProgress])
+  metadata = [(ASCOfferButton *)self metadata];
+  if ([metadata isProgress])
   {
-    v3 = v2;
+    v3 = metadata;
     if ([v3 isIndeterminate])
     {
       v4 = 0;
@@ -205,23 +205,23 @@ LABEL_18:
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ASCOfferButton *)self isEnabled];
-  if (v3)
+  isEnabled = [(ASCOfferButton *)self isEnabled];
+  if (isEnabled)
   {
     [(ASCOfferButton *)self sendActionsForControlEvents:64];
   }
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setSize:(id)a3
+- (void)setSize:(id)size
 {
-  v7 = a3;
+  sizeCopy = size;
   v5 = self->_size;
-  if (!v7 || !v5)
+  if (!sizeCopy || !v5)
   {
 
-    if (v5 == v7)
+    if (v5 == sizeCopy)
     {
       goto LABEL_7;
     }
@@ -229,12 +229,12 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  v6 = [(NSString *)v5 isEqual:v7];
+  v6 = [(NSString *)v5 isEqual:sizeCopy];
 
   if ((v6 & 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(&self->_size, a3);
+    objc_storeStrong(&self->_size, size);
     [(ASCOfferButton *)self updateImageStyleProperties];
     [(ASCOfferButton *)self updateLabelStyleProperties];
     [(ASCOfferButton *)self invalidateIntrinsicContentSize];
@@ -244,10 +244,10 @@ LABEL_6:
 LABEL_7:
 }
 
-+ (id)smallTitleFontForText:(id)a3 compatibleWithTraitCollection:(id)a4
++ (id)smallTitleFontForText:(id)text compatibleWithTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [a3 length];
+  collectionCopy = collection;
+  v6 = [text length];
   v7 = 0.0;
   if (v6 > 7)
   {
@@ -264,7 +264,7 @@ LABEL_7:
     v8 = -6.0;
   }
 
-  v9 = ASCFontPointSizesResolve(v5, v8 + 13.0, v8 + 15.0, v8 + 18.0, v8 + 18.0);
+  v9 = ASCFontPointSizesResolve(collectionCopy, v8 + 13.0, v8 + 15.0, v8 + 18.0, v8 + 18.0);
 
   if (!smallTitleFontForText_compatibleWithTraitCollection__titleFont || ([smallTitleFontForText_compatibleWithTraitCollection__titleFont pointSize], v10 != v9))
   {
@@ -278,31 +278,31 @@ LABEL_7:
   return v13;
 }
 
-+ (id)titleFontForText:(void *)a3 fittingSize:(void *)a4 representingMetadata:(void *)a5 compatibleWithTraitCollection:
++ (id)titleFontForText:(void *)text fittingSize:(void *)size representingMetadata:(void *)metadata compatibleWithTraitCollection:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  sizeCopy = size;
+  metadataCopy = metadata;
   v12 = objc_opt_self();
-  if ([v10 isViewInAppStore])
+  if ([sizeCopy isViewInAppStore])
   {
-    v13 = [v12 viewInAppStoreTitleFontForText:v8 compatibleWithTraitCollection:v11];
+    v13 = [v12 viewInAppStoreTitleFontForText:v8 compatibleWithTraitCollection:metadataCopy];
   }
 
-  else if ([v9 isEqualToString:0x2827A3EB8])
+  else if ([textCopy isEqualToString:0x2827A3EB8])
   {
-    v13 = [v12 mediumTitleFontForText:v8 compatibleWithTraitCollection:v11];
+    v13 = [v12 mediumTitleFontForText:v8 compatibleWithTraitCollection:metadataCopy];
   }
 
   else
   {
-    if (![v9 isEqualToString:0x2827A3E98])
+    if (![textCopy isEqualToString:0x2827A3E98])
     {
-      ASCUnknownEnumCase(@"ASCOfferButtonSize", v9);
+      ASCUnknownEnumCase(@"ASCOfferButtonSize", textCopy);
     }
 
-    v13 = [v12 smallTitleFontForText:v8 compatibleWithTraitCollection:v11];
+    v13 = [v12 smallTitleFontForText:v8 compatibleWithTraitCollection:metadataCopy];
   }
 
   v14 = v13;
@@ -330,11 +330,11 @@ uint64_t __81__ASCOfferButton_subtitleFontFittingSize_forTheme_compatibleWithTra
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)textBackgroundImageFittingSize:(void *)a3 forTheme:
++ (id)textBackgroundImageFittingSize:(void *)size forTheme:
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  sizeCopy = size;
   objc_opt_self();
   if (textBackgroundImageFittingSize_forTheme__onceToken != -1)
   {
@@ -342,8 +342,8 @@ uint64_t __81__ASCOfferButton_subtitleFontFittingSize_forTheme_compatibleWithTra
   }
 
   v19[0] = v4;
-  v6 = [v5 backgroundStyle];
-  v19[1] = v6;
+  backgroundStyle = [sizeCopy backgroundStyle];
+  v19[1] = backgroundStyle;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
 
   v8 = [textBackgroundImageFittingSize_forTheme__cache objectForKey:v7];
@@ -357,8 +357,8 @@ uint64_t __81__ASCOfferButton_subtitleFontFittingSize_forTheme_compatibleWithTra
   {
     [__ASCLayoutProxy offerButtonHeightForSize:v4];
     v12 = v11 + 1.0;
-    v13 = [v5 backgroundStyle];
-    [v13 cornerRadiusForImageSize:v12 stretchableArea:{v12, 1.0}];
+    backgroundStyle2 = [sizeCopy backgroundStyle];
+    [backgroundStyle2 cornerRadiusForImageSize:v12 stretchableArea:{v12, 1.0}];
     v15 = v14;
 
     v16 = [[ASCImageRenderer alloc] initWithSize:1 capInsets:v12 renderingMode:v12, v15, v15, v15, v15];
@@ -396,31 +396,31 @@ void __58__ASCOfferButton_textBackgroundImageFittingSize_forTheme___block_invoke
   CGPathRelease(v7);
 }
 
-+ (id)progressStateImageFittingSize:(id)a3 forTheme:(id)a4 startPercent:(double)a5 endPercent:(double)a6 useFullImageSize:(BOOL)a7
++ (id)progressStateImageFittingSize:(id)size forTheme:(id)theme startPercent:(double)percent endPercent:(double)endPercent useFullImageSize:(BOOL)imageSize
 {
-  v7 = a7;
+  imageSizeCopy = imageSize;
   v36[7] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  sizeCopy = size;
+  themeCopy = theme;
   if (progressStateImageFittingSize_forTheme_startPercent_endPercent_useFullImageSize__onceToken != -1)
   {
     +[ASCOfferButton progressStateImageFittingSize:forTheme:startPercent:endPercent:useFullImageSize:];
   }
 
-  v36[0] = v11;
+  v36[0] = sizeCopy;
   v13 = MEMORY[0x277CCABB0];
-  [v12 progressLineWidth];
+  [themeCopy progressLineWidth];
   v14 = [v13 numberWithDouble:?];
   v36[1] = v14;
-  v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v12, "progressLineCap")}];
+  v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(themeCopy, "progressLineCap")}];
   v36[2] = v15;
-  v16 = [v12 progressColor];
-  v36[3] = v16;
-  v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  progressColor = [themeCopy progressColor];
+  v36[3] = progressColor;
+  v17 = [MEMORY[0x277CCABB0] numberWithDouble:percent];
   v36[4] = v17;
-  v18 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+  v18 = [MEMORY[0x277CCABB0] numberWithDouble:endPercent];
   v36[5] = v18;
-  v19 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:imageSizeCopy];
   v36[6] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:7];
 
@@ -433,9 +433,9 @@ void __58__ASCOfferButton_textBackgroundImageFittingSize_forTheme___block_invoke
 
   else
   {
-    [__ASCLayoutProxy offerProgressDiameterForSize:v11];
+    [__ASCLayoutProxy offerProgressDiameterForSize:sizeCopy];
     v25 = floor((v24 + 1.0 + -1.0) * 0.5);
-    if (v7)
+    if (imageSizeCopy)
     {
       v26 = v24 + 1.0;
     }
@@ -450,9 +450,9 @@ void __58__ASCOfferButton_textBackgroundImageFittingSize_forTheme___block_invoke
     v30 = 3221225472;
     v31 = __98__ASCOfferButton_progressStateImageFittingSize_forTheme_startPercent_endPercent_useFullImageSize___block_invoke_2;
     v32 = &unk_2781CC920;
-    v33 = v12;
-    v34 = a5;
-    v35 = a6;
+    v33 = themeCopy;
+    percentCopy = percent;
+    endPercentCopy = endPercent;
     v23 = [(ASCImageRenderer *)v27 imageWithActions:&v29];
     [progressStateImageFittingSize_forTheme_startPercent_endPercent_useFullImageSize__cache setObject:v23 forKey:{v20, v29, v30, v31, v32}];
   }
@@ -488,30 +488,30 @@ void __98__ASCOfferButton_progressStateImageFittingSize_forTheme_startPercent_en
   CGPathRelease(ProgressRing);
 }
 
-+ (id)progressTransitionImageFittingSize:(void *)a3 forTheme:
++ (id)progressTransitionImageFittingSize:(void *)size forTheme:
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = a2;
-  v6 = [objc_opt_self() progressStateImageFittingSize:v5 forTheme:v4 startPercent:0 endPercent:0.0 useFullImageSize:1.0];
+  v6 = [objc_opt_self() progressStateImageFittingSize:v5 forTheme:sizeCopy startPercent:0 endPercent:0.0 useFullImageSize:1.0];
 
   return v6;
 }
 
-+ (id)indeterminateProgressImageFittingSize:(void *)a3 forTheme:
++ (id)indeterminateProgressImageFittingSize:(void *)size forTheme:
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = a2;
-  v6 = [objc_opt_self() progressStateImageFittingSize:v5 forTheme:v4 startPercent:1 endPercent:0.1 useFullImageSize:0.9];
+  v6 = [objc_opt_self() progressStateImageFittingSize:v5 forTheme:sizeCopy startPercent:1 endPercent:0.1 useFullImageSize:0.9];
 
   return v6;
 }
 
-+ (id)progressImageWithPercent:(void *)a3 fittingSize:(void *)a4 forTheme:(char)a5 cancellable:
++ (id)progressImageWithPercent:(void *)percent fittingSize:(void *)size forTheme:(char)theme cancellable:
 {
-  v8 = a4;
-  v9 = a3;
+  sizeCopy = size;
+  percentCopy = percent;
   objc_opt_self();
-  [__ASCLayoutProxy offerProgressDiameterForSize:v9];
+  [__ASCLayoutProxy offerProgressDiameterForSize:percentCopy];
   v11 = v10;
 
   v12 = [[ASCImageRenderer alloc] initWithSize:v11, v11];
@@ -519,10 +519,10 @@ void __98__ASCOfferButton_progressStateImageFittingSize_forTheme_startPercent_en
   v16[1] = 3221225472;
   v16[2] = __76__ASCOfferButton_progressImageWithPercent_fittingSize_forTheme_cancellable___block_invoke;
   v16[3] = &unk_2781CC948;
-  v17 = v8;
-  v18 = a1;
-  v19 = a5;
-  v13 = v8;
+  v17 = sizeCopy;
+  selfCopy = self;
+  themeCopy = theme;
+  v13 = sizeCopy;
   v14 = [(ASCImageRenderer *)v12 imageWithActions:v16];
 
   return v14;
@@ -678,11 +678,11 @@ LABEL_10:
   CGContextRestoreGState(a2);
 }
 
-- (ASCOfferButton)initWithFrame:(CGRect)a3
+- (ASCOfferButton)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = ASCOfferButton;
-  v3 = [(ASCOfferButton *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCOfferButton *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -710,12 +710,12 @@ LABEL_10:
     [(ASCOfferButton *)v4 setPreservesSuperviewLayoutMargins:0];
     [(ASCOfferButtonBackgroundImageView *)v4->_imageView setInsetsLayoutMarginsFromSafeArea:0];
     [(ASCOfferButtonBackgroundImageView *)v4->_imageView setPreservesSuperviewLayoutMargins:0];
-    v12 = [(ASCOfferButton *)v4 imageView];
-    [(ASCOfferButton *)v4 addSubview:v12];
+    imageView = [(ASCOfferButton *)v4 imageView];
+    [(ASCOfferButton *)v4 addSubview:imageView];
 
-    v13 = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
     v14 = objc_opt_self();
-    v15 = [v13 arrayByAddingObject:v14];
+    v15 = [systemTraitsAffectingColorAppearance arrayByAddingObject:v14];
 
     v16 = [(ASCOfferButton *)v4 registerForTraitChanges:v15 withAction:sel_onTraitCollectionChange];
   }
@@ -723,18 +723,18 @@ LABEL_10:
   return v4;
 }
 
-- (ASCOfferButton)initWithCoder:(id)a3
+- (ASCOfferButton)initWithCoder:(id)coder
 {
   [(ASCOfferButton *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setTitleLabelIfLoaded:(id)a3
+- (void)setTitleLabelIfLoaded:(id)loaded
 {
-  v5 = a3;
+  loadedCopy = loaded;
   [(UILabel *)self->_titleLabelIfLoaded removeFromSuperview];
-  objc_storeStrong(&self->_titleLabelIfLoaded, a3);
+  objc_storeStrong(&self->_titleLabelIfLoaded, loaded);
   if (self->_titleLabelIfLoaded)
   {
     [(ASCOfferButton *)self addSubview:?];
@@ -746,11 +746,11 @@ LABEL_10:
 
 - (UILabel)titleLabel
 {
-  v3 = [(ASCOfferButton *)self titleLabelIfLoaded];
-  v4 = v3;
-  if (v3)
+  titleLabelIfLoaded = [(ASCOfferButton *)self titleLabelIfLoaded];
+  v4 = titleLabelIfLoaded;
+  if (titleLabelIfLoaded)
   {
-    v5 = v3;
+    v5 = titleLabelIfLoaded;
   }
 
   else
@@ -768,11 +768,11 @@ LABEL_10:
   return v5;
 }
 
-- (void)setSubtitleLabelIfLoaded:(id)a3
+- (void)setSubtitleLabelIfLoaded:(id)loaded
 {
-  v5 = a3;
+  loadedCopy = loaded;
   [(UILabel *)self->_subtitleLabelIfLoaded removeFromSuperview];
-  objc_storeStrong(&self->_subtitleLabelIfLoaded, a3);
+  objc_storeStrong(&self->_subtitleLabelIfLoaded, loaded);
   if (self->_subtitleLabelIfLoaded)
   {
     [(ASCOfferButton *)self addSubview:?];
@@ -784,11 +784,11 @@ LABEL_10:
 
 - (UILabel)subtitleLabel
 {
-  v3 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-  v4 = v3;
-  if (v3)
+  subtitleLabelIfLoaded = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+  v4 = subtitleLabelIfLoaded;
+  if (subtitleLabelIfLoaded)
   {
-    v5 = v3;
+    v5 = subtitleLabelIfLoaded;
   }
 
   else
@@ -796,13 +796,13 @@ LABEL_10:
     v6 = objc_alloc(MEMORY[0x277D756B8]);
     v5 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     v7 = [(ASCOfferButton *)self size];
-    v8 = [(ASCOfferButton *)self theme];
-    v9 = [(ASCOfferButton *)self traitCollection];
+    theme = [(ASCOfferButton *)self theme];
+    traitCollection = [(ASCOfferButton *)self traitCollection];
     v10 = +[ASCOfferButton subtitleFontFittingSize:forTheme:compatibleWithTraitCollection:];
     [v5 setFont:v10];
 
-    v11 = [v5 font];
-    [v5 set_fontForShortcutBaselineCalculation:v11];
+    font = [v5 font];
+    [v5 set_fontForShortcutBaselineCalculation:font];
 
     [v5 setNumberOfLines:3];
     [v5 setLineBreakMode:0];
@@ -823,195 +823,195 @@ LABEL_10:
     v3 = 0.6;
   }
 
-  v4 = [(ASCOfferButton *)self imageView];
-  [v4 setAlpha:v3];
+  imageView = [(ASCOfferButton *)self imageView];
+  [imageView setAlpha:v3];
 
-  v5 = [(ASCOfferButton *)self metadata];
-  v6 = [v5 isEmpty];
+  metadata = [(ASCOfferButton *)self metadata];
+  isEmpty = [metadata isEmpty];
 
-  if (v6)
+  if (isEmpty)
   {
     goto LABEL_4;
   }
 
-  v7 = [(ASCOfferButton *)self metadata];
-  v8 = [v7 isIcon];
+  metadata2 = [(ASCOfferButton *)self metadata];
+  isIcon = [metadata2 isIcon];
 
-  if (v8)
+  if (isIcon)
   {
-    v9 = [(ASCOfferButton *)self theme];
-    v10 = [v9 iconTintColor];
-    v11 = [(ASCOfferButton *)self imageView];
-    [v11 setTintColor:v10];
+    theme = [(ASCOfferButton *)self theme];
+    iconTintColor = [theme iconTintColor];
+    imageView2 = [(ASCOfferButton *)self imageView];
+    [imageView2 setTintColor:iconTintColor];
 
     v12 = self->_metadata;
-    v46 = [(ASCOfferButton *)self size];
-    v13 = [(ASCOfferMetadata *)v12 imageNameForSize:v46];
+    imageView6 = [(ASCOfferButton *)self size];
+    v13 = [(ASCOfferMetadata *)v12 imageNameForSize:imageView6];
 
-    v14 = [(ASCOfferButton *)self traitCollection];
-    v15 = [ASCImageRenderer bundleImageNamed:v13 compatibleWithTraitCollection:v14];
-    v16 = [(ASCOfferButton *)self imageView];
-    [v16 setImage:v15];
+    traitCollection = [(ASCOfferButton *)self traitCollection];
+    v15 = [ASCImageRenderer bundleImageNamed:v13 compatibleWithTraitCollection:traitCollection];
+    imageView3 = [(ASCOfferButton *)self imageView];
+    [imageView3 setImage:v15];
 
     goto LABEL_21;
   }
 
-  v17 = [(ASCOfferButton *)self metadata];
-  v18 = [v17 isProgress];
+  metadata3 = [(ASCOfferButton *)self metadata];
+  isProgress = [metadata3 isProgress];
 
-  if (v18)
+  if (isProgress)
   {
-    v46 = self->_metadata;
-    v19 = [(ASCOfferButton *)self theme];
-    v20 = [v19 iconTintColor];
-    v21 = [(ASCOfferButton *)self imageView];
-    [v21 setTintColor:v20];
+    imageView6 = self->_metadata;
+    theme2 = [(ASCOfferButton *)self theme];
+    iconTintColor2 = [theme2 iconTintColor];
+    imageView4 = [(ASCOfferButton *)self imageView];
+    [imageView4 setTintColor:iconTintColor2];
 
-    if ([(ASCOfferMetadata *)v46 isIndeterminate])
+    if ([(ASCOfferMetadata *)imageView6 isIndeterminate])
     {
       v22 = [(ASCOfferButton *)self size];
-      v23 = [(ASCOfferButton *)self theme];
-      [ASCOfferButton indeterminateProgressImageFittingSize:v22 forTheme:v23];
+      theme3 = [(ASCOfferButton *)self theme];
+      [ASCOfferButton indeterminateProgressImageFittingSize:v22 forTheme:theme3];
     }
 
     else
     {
-      [(ASCOfferMetadata *)v46 percent];
+      [(ASCOfferMetadata *)imageView6 percent];
       v26 = v25;
       v22 = [(ASCOfferButton *)self size];
-      v23 = [(ASCOfferButton *)self theme];
-      [(ASCOfferButton *)v26 progressImageWithPercent:v22 fittingSize:v23 forTheme:[(ASCOfferMetadata *)v46 cancellable] cancellable:?];
+      theme3 = [(ASCOfferButton *)self theme];
+      [(ASCOfferButton *)v26 progressImageWithPercent:v22 fittingSize:theme3 forTheme:[(ASCOfferMetadata *)imageView6 cancellable] cancellable:?];
     }
-    v27 = ;
-    v28 = [(ASCOfferButton *)self imageView];
-    [v28 setImage:v27];
+    secondaryLabelColor = ;
+    imageView5 = [(ASCOfferButton *)self imageView];
+    [imageView5 setImage:secondaryLabelColor];
 LABEL_14:
 
     goto LABEL_21;
   }
 
-  v24 = [(ASCOfferButton *)self metadata];
-  if ([v24 isText])
+  metadata4 = [(ASCOfferButton *)self metadata];
+  if ([metadata4 isText])
   {
   }
 
   else
   {
-    v29 = [(ASCOfferButton *)self metadata];
-    v30 = [v29 isPlaceholder];
+    metadata5 = [(ASCOfferButton *)self metadata];
+    isPlaceholder = [metadata5 isPlaceholder];
 
-    if (!v30)
+    if (!isPlaceholder)
     {
-      v40 = [(ASCOfferButton *)self metadata];
-      v41 = [v40 isDeeplink];
+      metadata6 = [(ASCOfferButton *)self metadata];
+      isDeeplink = [metadata6 isDeeplink];
 
-      if (!v41)
+      if (!isDeeplink)
       {
-        v43 = [(ASCOfferButton *)self metadata];
-        v44 = [v43 isViewInAppStore];
+        metadata7 = [(ASCOfferButton *)self metadata];
+        isViewInAppStore = [metadata7 isViewInAppStore];
 
-        if (!v44)
+        if (!isViewInAppStore)
         {
-          v45 = [(ASCOfferButton *)self metadata];
-          ASCUnknownEnumCase(@"ASCOfferMetadata", v45);
+          metadata8 = [(ASCOfferButton *)self metadata];
+          ASCUnknownEnumCase(@"ASCOfferMetadata", metadata8);
         }
 
 LABEL_4:
-        v46 = [(ASCOfferButton *)self imageView];
-        [(ASCOfferMetadata *)v46 setTintColor:0];
+        imageView6 = [(ASCOfferButton *)self imageView];
+        [(ASCOfferMetadata *)imageView6 setTintColor:0];
         goto LABEL_21;
       }
 
-      v46 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.forward.app.fill"];
+      imageView6 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.forward.app.fill"];
       v22 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918]];
-      v23 = [(ASCOfferMetadata *)v46 imageWithSymbolConfiguration:v22];
-      v42 = [(ASCOfferButton *)self imageView];
-      [v42 setImage:v23];
+      theme3 = [(ASCOfferMetadata *)imageView6 imageWithSymbolConfiguration:v22];
+      imageView7 = [(ASCOfferButton *)self imageView];
+      [imageView7 setImage:theme3];
 
-      v27 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v28 = [(ASCOfferButton *)self imageView];
-      [v28 setTintColor:v27];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      imageView5 = [(ASCOfferButton *)self imageView];
+      [imageView5 setTintColor:secondaryLabelColor];
       goto LABEL_14;
     }
   }
 
-  v31 = [(ASCOfferButton *)self isHighlighted];
-  v32 = [(ASCOfferButton *)self theme];
-  v33 = [v32 titleBackgroundColor];
-  v34 = v33;
-  v35 = v33;
-  if (v31)
+  isHighlighted = [(ASCOfferButton *)self isHighlighted];
+  theme4 = [(ASCOfferButton *)self theme];
+  titleBackgroundColor = [theme4 titleBackgroundColor];
+  v34 = titleBackgroundColor;
+  asc_highlightedColor = titleBackgroundColor;
+  if (isHighlighted)
   {
-    v35 = [v33 asc_highlightedColor];
+    asc_highlightedColor = [titleBackgroundColor asc_highlightedColor];
   }
 
-  v36 = [(ASCOfferButton *)self imageView];
-  [v36 setTintColor:v35];
+  imageView8 = [(ASCOfferButton *)self imageView];
+  [imageView8 setTintColor:asc_highlightedColor];
 
-  if (v31)
+  if (isHighlighted)
   {
   }
 
-  v46 = [(ASCOfferButton *)self size];
-  v37 = [(ASCOfferButton *)self theme];
-  v38 = [ASCOfferButton textBackgroundImageFittingSize:v46 forTheme:v37];
-  v39 = [(ASCOfferButton *)self imageView];
-  [v39 setImage:v38];
+  imageView6 = [(ASCOfferButton *)self size];
+  theme5 = [(ASCOfferButton *)self theme];
+  v38 = [ASCOfferButton textBackgroundImageFittingSize:imageView6 forTheme:theme5];
+  imageView9 = [(ASCOfferButton *)self imageView];
+  [imageView9 setImage:v38];
 
 LABEL_21:
 }
 
 - (void)updateLabelStyleProperties
 {
-  v3 = [a1 subtitleLabelIfLoaded];
-  [v3 setTextAlignment:a2];
+  subtitleLabelIfLoaded = [self subtitleLabelIfLoaded];
+  [subtitleLabelIfLoaded setTextAlignment:a2];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = ASCOfferButton;
-  [(ASCOfferButton *)&v4 setEnabled:a3];
+  [(ASCOfferButton *)&v4 setEnabled:enabled];
   [(ASCOfferButton *)self updateImageStyleProperties];
   [(ASCOfferButton *)self updateLabelStyleProperties];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = ASCOfferButton;
-  [(ASCOfferButton *)&v4 setHighlighted:a3];
+  [(ASCOfferButton *)&v4 setHighlighted:highlighted];
   [(ASCOfferButton *)self updateImageStyleProperties];
   [(ASCOfferButton *)self updateLabelStyleProperties];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v8.receiver = self;
   v8.super_class = ASCOfferButton;
   [(ASCOfferButton *)&v8 setSemanticContentAttribute:?];
-  v5 = [(ASCOfferButton *)self imageView];
-  [v5 setSemanticContentAttribute:a3];
+  imageView = [(ASCOfferButton *)self imageView];
+  [imageView setSemanticContentAttribute:attribute];
 
-  v6 = [(ASCOfferButton *)self titleLabelIfLoaded];
-  [v6 setSemanticContentAttribute:a3];
+  titleLabelIfLoaded = [(ASCOfferButton *)self titleLabelIfLoaded];
+  [titleLabelIfLoaded setSemanticContentAttribute:attribute];
 
-  v7 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-  [v7 setSemanticContentAttribute:a3];
+  subtitleLabelIfLoaded = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+  [subtitleLabelIfLoaded setSemanticContentAttribute:attribute];
 }
 
 - (void)updateVisualEffects
 {
-  v3 = [(ASCOfferButton *)self focusEffect];
-  [(ASCOfferButton *)self setFocusEffect:v3];
+  focusEffect = [(ASCOfferButton *)self focusEffect];
+  [(ASCOfferButton *)self setFocusEffect:focusEffect];
 
   [(ASCOfferButton *)self updateFocusIfNeeded];
 }
 
 - (id)focusEffect
 {
-  v2 = [(ASCOfferButton *)self imageView];
-  [v2 frame];
+  imageView = [(ASCOfferButton *)self imageView];
+  [imageView frame];
   v4 = v3 + -1.0;
   v6 = v5 + -1.0;
   v8 = v7 + 2.0;
@@ -1024,13 +1024,13 @@ LABEL_21:
   return [v12 effectWithRoundedRect:v13 cornerRadius:v4 curve:{v6, v8, v10, v11}];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = ASCOfferButton;
-  v6 = a3;
-  [(ASCOfferButton *)&v8 pressesBegan:v6 withEvent:a4];
-  v7 = [v6 objectsPassingTest:{&__block_literal_global_52, v8.receiver, v8.super_class}];
+  beganCopy = began;
+  [(ASCOfferButton *)&v8 pressesBegan:beganCopy withEvent:event];
+  v7 = [beganCopy objectsPassingTest:{&__block_literal_global_52, v8.receiver, v8.super_class}];
 
   if ([v7 count])
   {
@@ -1038,13 +1038,13 @@ LABEL_21:
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = ASCOfferButton;
-  v6 = a3;
-  [(ASCOfferButton *)&v8 pressesEnded:v6 withEvent:a4];
-  v7 = [v6 objectsPassingTest:{&__block_literal_global_56, v8.receiver, v8.super_class}];
+  endedCopy = ended;
+  [(ASCOfferButton *)&v8 pressesEnded:endedCopy withEvent:event];
+  v7 = [endedCopy objectsPassingTest:{&__block_literal_global_56, v8.receiver, v8.super_class}];
 
   if ([v7 count])
   {
@@ -1056,13 +1056,13 @@ LABEL_21:
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = ASCOfferButton;
-  v6 = a3;
-  [(ASCOfferButton *)&v8 pressesCancelled:v6 withEvent:a4];
-  v7 = [v6 objectsPassingTest:{&__block_literal_global_60, v8.receiver, v8.super_class}];
+  cancelledCopy = cancelled;
+  [(ASCOfferButton *)&v8 pressesCancelled:cancelledCopy withEvent:event];
+  v7 = [cancelledCopy objectsPassingTest:{&__block_literal_global_60, v8.receiver, v8.super_class}];
 
   if ([v7 count])
   {
@@ -1070,11 +1070,11 @@ LABEL_21:
   }
 }
 
-- (void)setSubtitlePosition:(int64_t)a3
+- (void)setSubtitlePosition:(int64_t)position
 {
-  if (self->_subtitlePosition != a3)
+  if (self->_subtitlePosition != position)
   {
-    self->_subtitlePosition = a3;
+    self->_subtitlePosition = position;
     [(ASCOfferButton *)self updateLabelStyleProperties];
     [(ASCOfferButton *)self invalidateIntrinsicContentSize];
 
@@ -1082,41 +1082,41 @@ LABEL_21:
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   if (![(ASCOfferTheme *)self->_theme isEqual:?])
   {
-    objc_storeStrong(&self->_theme, a3);
+    objc_storeStrong(&self->_theme, theme);
     [(ASCOfferButton *)self updateImageStyleProperties];
     [(ASCOfferButton *)self updateLabelStyleProperties];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v54 = a3;
+  metadataCopy = metadata;
   if (([(ASCOfferMetadata *)self->_metadata isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_metadata, a3);
+    objc_storeStrong(&self->_metadata, metadata);
     if ([(ASCOfferMetadata *)self->_metadata isEmpty])
     {
-      v5 = [(ASCOfferButton *)self titleLabelIfLoaded];
-      [v5 setText:0];
+      titleLabelIfLoaded = [(ASCOfferButton *)self titleLabelIfLoaded];
+      [titleLabelIfLoaded setText:0];
 
-      v6 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-      [v6 setText:0];
+      subtitleLabelIfLoaded = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+      [subtitleLabelIfLoaded setText:0];
 
       [(ASCOfferButton *)self setImageAnimation:0];
-      v7 = [(ASCOfferButton *)self imageView];
-      [v7 setImage:0];
+      imageView = [(ASCOfferButton *)self imageView];
+      [imageView setImage:0];
 LABEL_4:
 
-      v8 = [(ASCOfferButton *)self imageView];
-      v9 = v8;
+      imageView2 = [(ASCOfferButton *)self imageView];
+      metadataCopy2 = imageView2;
       v10 = 0;
 LABEL_5:
-      [(ASCOfferMetadata *)v8 setIsBackgroundForText:v10];
+      [(ASCOfferMetadata *)imageView2 setIsBackgroundForText:v10];
 LABEL_21:
 
       [(ASCOfferButton *)self updateImageStyleProperties];
@@ -1127,81 +1127,81 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v11 = [(ASCOfferMetadata *)self->_metadata isText];
+    isText = [(ASCOfferMetadata *)self->_metadata isText];
     metadata = self->_metadata;
-    if (v11)
+    if (isText)
     {
-      v9 = metadata;
+      metadataCopy2 = metadata;
       v13 = MEMORY[0x277CCA898];
-      v14 = [(ASCOfferMetadata *)v9 title];
-      v15 = [(ASCOfferButton *)self traitCollection];
-      v16 = [v13 asc_attributedStringWithLockupTextContainingSymbols:v14 compatibleWithTraitCollection:v15];
-      v17 = [(ASCOfferButton *)self titleLabel];
-      [v17 setAttributedText:v16];
+      title = [(ASCOfferMetadata *)metadataCopy2 title];
+      traitCollection = [(ASCOfferButton *)self traitCollection];
+      v16 = [v13 asc_attributedStringWithLockupTextContainingSymbols:title compatibleWithTraitCollection:traitCollection];
+      titleLabel = [(ASCOfferButton *)self titleLabel];
+      [titleLabel setAttributedText:v16];
 
-      v18 = [(ASCOfferMetadata *)v9 subtitle];
+      subtitle = [(ASCOfferMetadata *)metadataCopy2 subtitle];
 
-      if (v18)
+      if (subtitle)
       {
-        v19 = [(ASCOfferMetadata *)v9 subtitle];
-        v20 = [(ASCOfferButton *)self subtitleLabel];
-        [v20 setText:v19];
+        subtitle2 = [(ASCOfferMetadata *)metadataCopy2 subtitle];
+        subtitleLabel = [(ASCOfferButton *)self subtitleLabel];
+        [subtitleLabel setText:subtitle2];
       }
 
       else
       {
-        v19 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-        [v19 setText:0];
+        subtitle2 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+        [subtitle2 setText:0];
       }
 
       [(ASCOfferButton *)self setImageAnimation:0];
-      v40 = [(ASCOfferButton *)self imageView];
-      [v40 setContentMode:0];
+      imageView3 = [(ASCOfferButton *)self imageView];
+      [imageView3 setContentMode:0];
 
-      v37 = [(ASCOfferButton *)self imageView];
-      v38 = v37;
+      imageView4 = [(ASCOfferButton *)self imageView];
+      v38 = imageView4;
       v39 = 1;
 LABEL_20:
-      [v37 setIsBackgroundForText:v39];
+      [imageView4 setIsBackgroundForText:v39];
 
       goto LABEL_21;
     }
 
-    v21 = [(ASCOfferMetadata *)metadata isIcon];
+    isIcon = [(ASCOfferMetadata *)metadata isIcon];
     v22 = self->_metadata;
-    if (v21)
+    if (isIcon)
     {
       v23 = v22;
-      v24 = [(ASCOfferButton *)self titleLabelIfLoaded];
-      [v24 setText:0];
+      titleLabelIfLoaded2 = [(ASCOfferButton *)self titleLabelIfLoaded];
+      [titleLabelIfLoaded2 setText:0];
 
-      v25 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-      [v25 setText:0];
+      subtitleLabelIfLoaded2 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+      [subtitleLabelIfLoaded2 setText:0];
 
-      v26 = [(ASCOfferMetadata *)v23 animationName];
+      animationName = [(ASCOfferMetadata *)v23 animationName];
 
-      v27 = ASCOfferMetadataAnimationForName(v26);
+      v27 = ASCOfferMetadataAnimationForName(animationName);
       [(ASCOfferButton *)self setImageAnimation:v27];
 
-      v7 = [(ASCOfferButton *)self imageView];
-      [v7 setContentMode:4];
+      imageView = [(ASCOfferButton *)self imageView];
+      [imageView setContentMode:4];
       goto LABEL_4;
     }
 
-    v28 = [(ASCOfferMetadata *)v22 isProgress];
+    isProgress = [(ASCOfferMetadata *)v22 isProgress];
     v29 = self->_metadata;
-    if (v28)
+    if (isProgress)
     {
-      v9 = v29;
-      v30 = [(ASCOfferButton *)self titleLabelIfLoaded];
-      [v30 setText:0];
+      metadataCopy2 = v29;
+      titleLabelIfLoaded3 = [(ASCOfferButton *)self titleLabelIfLoaded];
+      [titleLabelIfLoaded3 setText:0];
 
-      v31 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-      [v31 setText:0];
+      subtitleLabelIfLoaded3 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+      [subtitleLabelIfLoaded3 setText:0];
 
-      v32 = [(ASCOfferMetadata *)v9 isIndeterminate];
+      isIndeterminate = [(ASCOfferMetadata *)metadataCopy2 isIndeterminate];
       v33 = &ASCOfferMetadataAnimationNameRotate;
-      if (!v32)
+      if (!isIndeterminate)
       {
         v33 = ASCOfferMetadataAnimationNameNone;
       }
@@ -1209,7 +1209,7 @@ LABEL_20:
       v34 = ASCOfferMetadataAnimationForName(*v33);
       [(ASCOfferButton *)self setImageAnimation:v34];
 
-      if ([(ASCOfferMetadata *)v9 isIndeterminate])
+      if ([(ASCOfferMetadata *)metadataCopy2 isIndeterminate])
       {
         v35 = 0;
       }
@@ -1219,26 +1219,26 @@ LABEL_20:
         v35 = 4;
       }
 
-      v36 = [(ASCOfferButton *)self imageView];
-      [v36 setContentMode:v35];
+      imageView5 = [(ASCOfferButton *)self imageView];
+      [imageView5 setContentMode:v35];
 
-      v37 = [(ASCOfferButton *)self imageView];
-      v38 = v37;
+      imageView4 = [(ASCOfferButton *)self imageView];
+      v38 = imageView4;
       v39 = 0;
       goto LABEL_20;
     }
 
     if ([(ASCOfferMetadata *)v29 isPlaceholder])
     {
-      v41 = [(ASCOfferButton *)self titleLabel];
-      [v41 setText:0];
+      titleLabel2 = [(ASCOfferButton *)self titleLabel];
+      [titleLabel2 setText:0];
 
-      v42 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-      [v42 setText:0];
+      subtitleLabelIfLoaded4 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+      [subtitleLabelIfLoaded4 setText:0];
 
       [(ASCOfferButton *)self setImageAnimation:0];
-      v43 = [(ASCOfferButton *)self imageView];
-      v44 = v43;
+      imageView6 = [(ASCOfferButton *)self imageView];
+      imageView7 = imageView6;
       v45 = 0;
     }
 
@@ -1248,42 +1248,42 @@ LABEL_20:
       {
         if (![(ASCOfferMetadata *)self->_metadata isViewInAppStore])
         {
-          ASCUnknownEnumCase(@"ASCOfferMetadata", v54);
+          ASCUnknownEnumCase(@"ASCOfferMetadata", metadataCopy);
         }
 
         v48 = MEMORY[0x277CCA898];
-        v49 = [(ASCOfferMetadata *)self->_metadata title];
-        v50 = [(ASCOfferButton *)self traitCollection];
-        v51 = [v48 asc_attributedStringWithLockupTextContainingSymbols:v49 compatibleWithTraitCollection:v50];
-        v52 = [(ASCOfferButton *)self titleLabel];
-        [v52 setAttributedText:v51];
+        title2 = [(ASCOfferMetadata *)self->_metadata title];
+        traitCollection2 = [(ASCOfferButton *)self traitCollection];
+        v51 = [v48 asc_attributedStringWithLockupTextContainingSymbols:title2 compatibleWithTraitCollection:traitCollection2];
+        titleLabel3 = [(ASCOfferButton *)self titleLabel];
+        [titleLabel3 setAttributedText:v51];
 
-        v53 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-        [v53 setText:0];
+        subtitleLabelIfLoaded5 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+        [subtitleLabelIfLoaded5 setText:0];
 
         [(ASCOfferButton *)self setImageAnimation:0];
-        v44 = [(ASCOfferButton *)self imageView];
-        [v44 setImage:0];
+        imageView7 = [(ASCOfferButton *)self imageView];
+        [imageView7 setImage:0];
         goto LABEL_32;
       }
 
-      v46 = [(ASCOfferButton *)self titleLabel];
-      [v46 setText:0];
+      titleLabel4 = [(ASCOfferButton *)self titleLabel];
+      [titleLabel4 setText:0];
 
-      v47 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-      [v47 setText:0];
+      subtitleLabelIfLoaded6 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+      [subtitleLabelIfLoaded6 setText:0];
 
       [(ASCOfferButton *)self setImageAnimation:0];
-      v43 = [(ASCOfferButton *)self imageView];
-      v44 = v43;
+      imageView6 = [(ASCOfferButton *)self imageView];
+      imageView7 = imageView6;
       v45 = 4;
     }
 
-    [v43 setContentMode:v45];
+    [imageView6 setContentMode:v45];
 LABEL_32:
 
-    v8 = [(ASCOfferButton *)self imageView];
-    v9 = v8;
+    imageView2 = [(ASCOfferButton *)self imageView];
+    metadataCopy2 = imageView2;
     v10 = 1;
     goto LABEL_5;
   }
@@ -1291,54 +1291,54 @@ LABEL_32:
 LABEL_22:
 }
 
-- (void)beginModalStateWithCancelBlock:(id)a3
+- (void)beginModalStateWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [[ASCModalViewInteraction alloc] initWithView:self];
   [(ASCOfferButton *)self setModalInteraction:v5];
 
-  v6 = [(ASCOfferButton *)self modalInteraction];
-  [v6 installWithCancelBlock:v4];
+  modalInteraction = [(ASCOfferButton *)self modalInteraction];
+  [modalInteraction installWithCancelBlock:blockCopy];
 }
 
 - (void)endModalState
 {
-  v3 = [(ASCOfferButton *)self modalInteraction];
-  [v3 invalidate];
+  modalInteraction = [(ASCOfferButton *)self modalInteraction];
+  [modalInteraction invalidate];
 
   [(ASCOfferButton *)self setModalInteraction:0];
 }
 
 - (CAAnimation)imageAnimation
 {
-  v2 = [(ASCOfferButton *)self imageView];
-  v3 = [v2 layer];
+  imageView = [(ASCOfferButton *)self imageView];
+  layer = [imageView layer];
   objc_opt_self();
-  v4 = [v3 animationForKey:@"ASCOfferButton.imageAnimation"];
+  v4 = [layer animationForKey:@"ASCOfferButton.imageAnimation"];
 
   return v4;
 }
 
-- (void)setImageAnimation:(id)a3
+- (void)setImageAnimation:(id)animation
 {
-  v8 = a3;
-  v4 = [(ASCOfferButton *)self imageView];
-  v5 = [v4 layer];
+  animationCopy = animation;
+  imageView = [(ASCOfferButton *)self imageView];
+  layer = [imageView layer];
   objc_opt_self();
-  [v5 removeAnimationForKey:@"ASCOfferButton.imageAnimation"];
+  [layer removeAnimationForKey:@"ASCOfferButton.imageAnimation"];
 
-  if (v8)
+  if (animationCopy)
   {
-    v6 = [(ASCOfferButton *)self imageView];
-    v7 = [v6 layer];
+    imageView2 = [(ASCOfferButton *)self imageView];
+    layer2 = [imageView2 layer];
     objc_opt_self();
-    [v7 addAnimation:v8 forKey:@"ASCOfferButton.imageAnimation"];
+    [layer2 addAnimation:animationCopy forKey:@"ASCOfferButton.imageAnimation"];
   }
 }
 
-- (void)setCurrentTransition:(id)a3
+- (void)setCurrentTransition:(id)transition
 {
-  v7 = a3;
+  transitionCopy = transition;
   currentTransition = self->_currentTransition;
   if (currentTransition && [(UIViewPropertyAnimator *)currentTransition state]== 1)
   {
@@ -1346,7 +1346,7 @@ LABEL_22:
     [(UIViewPropertyAnimator *)self->_currentTransition finishAnimationAtPosition:0];
   }
 
-  objc_storeStrong(&self->_currentTransition, a3);
+  objc_storeStrong(&self->_currentTransition, transition);
   v6 = self->_currentTransition;
   if (v6)
   {
@@ -1354,44 +1354,44 @@ LABEL_22:
   }
 }
 
-- (BOOL)canTransitionToMetadata:(id)a3
+- (BOOL)canTransitionToMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if ([MEMORY[0x277D75D18] areAnimationsEnabled] && (-[ASCOfferButton isHidden](self, "isHidden") & 1) == 0)
   {
-    v6 = [(ASCOfferButton *)self metadata];
-    if ([v6 isEqual:v4])
+    metadata = [(ASCOfferButton *)self metadata];
+    if ([metadata isEqual:metadataCopy])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v7 = [(ASCOfferButton *)self metadata];
-      if ([v7 isEmpty] & 1) != 0 || (objc_msgSend(v4, "isEmpty"))
+      metadata2 = [(ASCOfferButton *)self metadata];
+      if ([metadata2 isEmpty] & 1) != 0 || (objc_msgSend(metadataCopy, "isEmpty"))
       {
         LOBYTE(v5) = 0;
       }
 
       else
       {
-        v8 = [(ASCOfferButton *)self metadata];
-        if ([v8 isProgress] && (objc_msgSend(v4, "isProgress") & 1) != 0)
+        metadata3 = [(ASCOfferButton *)self metadata];
+        if ([metadata3 isProgress] && (objc_msgSend(metadataCopy, "isProgress") & 1) != 0)
         {
           LOBYTE(v5) = 0;
         }
 
         else
         {
-          v9 = [(ASCOfferButton *)self metadata];
-          if ([v9 isPlaceholder])
+          metadata4 = [(ASCOfferButton *)self metadata];
+          if ([metadata4 isPlaceholder])
           {
             LOBYTE(v5) = 0;
           }
 
           else
           {
-            v5 = [v4 isPlaceholder] ^ 1;
+            v5 = [metadataCopy isPlaceholder] ^ 1;
           }
         }
       }
@@ -1406,29 +1406,29 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)shouldTransitionImageViewFromMetadata:(id)a3 toMetadata:(id)a4
+- (BOOL)shouldTransitionImageViewFromMetadata:(id)metadata toMetadata:(id)toMetadata
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEmpty] && (objc_msgSend(v6, "isEmpty") & 1) != 0 || objc_msgSend(v5, "isText") && (objc_msgSend(v6, "isText") & 1) != 0)
+  metadataCopy = metadata;
+  toMetadataCopy = toMetadata;
+  if ([metadataCopy isEmpty] && (objc_msgSend(toMetadataCopy, "isEmpty") & 1) != 0 || objc_msgSend(metadataCopy, "isText") && (objc_msgSend(toMetadataCopy, "isText") & 1) != 0)
   {
     LOBYTE(v7) = 0;
   }
 
-  else if ([v5 isIcon] && objc_msgSend(v6, "isIcon"))
+  else if ([metadataCopy isIcon] && objc_msgSend(toMetadataCopy, "isIcon"))
   {
-    v8 = v6;
-    v9 = [v5 animationName];
-    v10 = [v8 animationName];
-    v11 = v10;
-    if (v9 && v10)
+    v8 = toMetadataCopy;
+    animationName = [metadataCopy animationName];
+    animationName2 = [v8 animationName];
+    v11 = animationName2;
+    if (animationName && animationName2)
     {
-      v12 = [v9 isEqual:v10];
+      v12 = [animationName isEqual:animationName2];
     }
 
     else
     {
-      v12 = v9 == v10;
+      v12 = animationName == animationName2;
     }
 
     LOBYTE(v7) = v12 ^ 1;
@@ -1436,37 +1436,37 @@ LABEL_22:
 
   else
   {
-    v7 = [v6 isViewInAppStore] ^ 1;
+    v7 = [toMetadataCopy isViewInAppStore] ^ 1;
   }
 
   return v7;
 }
 
-- (BOOL)chainTransitionToMetadata:(id)a3 scalingDurationBy:(double)a4 withCompletion:(id)a5
+- (BOOL)chainTransitionToMetadata:(id)metadata scalingDurationBy:(double)by withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ASCOfferButton *)self currentTransition];
-  if (v10 && (v11 = v10, -[ASCOfferButton currentTransition](self, "currentTransition"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 state], v12, v11, v13 == 1))
+  metadataCopy = metadata;
+  completionCopy = completion;
+  currentTransition = [(ASCOfferButton *)self currentTransition];
+  if (currentTransition && (v11 = currentTransition, -[ASCOfferButton currentTransition](self, "currentTransition"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 state], v12, v11, v13 == 1))
   {
     v14 = [objc_alloc(MEMORY[0x277D753D0]) initWithAnimationCurve:1];
-    v15 = [(ASCOfferButton *)self currentTransition];
-    [v15 pauseAnimation];
+    currentTransition2 = [(ASCOfferButton *)self currentTransition];
+    [currentTransition2 pauseAnimation];
 
     objc_initWeak(&location, self);
-    v16 = [(ASCOfferButton *)self currentTransition];
+    currentTransition3 = [(ASCOfferButton *)self currentTransition];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __77__ASCOfferButton_chainTransitionToMetadata_scalingDurationBy_withCompletion___block_invoke;
     v20[3] = &unk_2781CC990;
     objc_copyWeak(v23, &location);
-    v21 = v8;
-    *&v23[1] = a4 * 0.7;
-    v22 = v9;
-    [v16 addCompletion:v20];
+    v21 = metadataCopy;
+    *&v23[1] = by * 0.7;
+    v22 = completionCopy;
+    [currentTransition3 addCompletion:v20];
 
-    v17 = [(ASCOfferButton *)self currentTransition];
-    [v17 continueAnimationWithTimingParameters:v14 durationFactor:a4 * 0.3];
+    currentTransition4 = [(ASCOfferButton *)self currentTransition];
+    [currentTransition4 continueAnimationWithTimingParameters:v14 durationFactor:by * 0.3];
 
     objc_destroyWeak(v23);
     objc_destroyWeak(&location);
@@ -1491,44 +1491,44 @@ void __77__ASCOfferButton_chainTransitionToMetadata_scalingDurationBy_withComple
   }
 }
 
-- (id)transitionImageForMetadata:(id)a3
+- (id)transitionImageForMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(ASCOfferButton *)self metadata];
-  if ([v5 isProgress] && objc_msgSend(v4, "isText") || objc_msgSend(v5, "isText") && objc_msgSend(v4, "isProgress") && (objc_msgSend(v4, "isIndeterminate") & 1) == 0)
+  metadataCopy = metadata;
+  metadata = [(ASCOfferButton *)self metadata];
+  if ([metadata isProgress] && objc_msgSend(metadataCopy, "isText") || objc_msgSend(metadata, "isText") && objc_msgSend(metadataCopy, "isProgress") && (objc_msgSend(metadataCopy, "isIndeterminate") & 1) == 0)
   {
-    v6 = [(ASCOfferButton *)self size];
-    v8 = [(ASCOfferButton *)self theme];
-    v7 = [ASCOfferButton progressTransitionImageFittingSize:v6 forTheme:v8];
+    imageView = [(ASCOfferButton *)self size];
+    theme = [(ASCOfferButton *)self theme];
+    image = [ASCOfferButton progressTransitionImageFittingSize:imageView forTheme:theme];
   }
 
   else
   {
-    v6 = [(ASCOfferButton *)self imageView];
-    v7 = [v6 image];
+    imageView = [(ASCOfferButton *)self imageView];
+    image = [imageView image];
   }
 
-  return v7;
+  return image;
 }
 
-- (id)transitionColorForMetadata:(id)a3
+- (id)transitionColorForMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(ASCOfferButton *)self metadata];
-  if (([v5 isText] & 1) != 0 || objc_msgSend(v4, "isText"))
+  metadataCopy = metadata;
+  metadata = [(ASCOfferButton *)self metadata];
+  if (([metadata isText] & 1) != 0 || objc_msgSend(metadataCopy, "isText"))
   {
-    v6 = [(ASCOfferButton *)self theme];
-    v7 = [v6 titleBackgroundColor];
+    theme = [(ASCOfferButton *)self theme];
+    titleBackgroundColor = [theme titleBackgroundColor];
 LABEL_9:
-    v8 = v7;
+    v8 = titleBackgroundColor;
 
     goto LABEL_10;
   }
 
-  if (([v5 isIcon] & 1) != 0 || (objc_msgSend(v4, "isIcon") & 1) != 0 || (objc_msgSend(v5, "isProgress") & 1) != 0 || objc_msgSend(v4, "isProgress"))
+  if (([metadata isIcon] & 1) != 0 || (objc_msgSend(metadataCopy, "isIcon") & 1) != 0 || (objc_msgSend(metadata, "isProgress") & 1) != 0 || objc_msgSend(metadataCopy, "isProgress"))
   {
-    v6 = [(ASCOfferButton *)self theme];
-    v7 = [v6 iconTintColor];
+    theme = [(ASCOfferButton *)self theme];
+    titleBackgroundColor = [theme iconTintColor];
     goto LABEL_9;
   }
 
@@ -1538,48 +1538,48 @@ LABEL_10:
   return v8;
 }
 
-- (void)transitionToMetadata:(id)a3 scalingDurationBy:(double)a4 withCompletion:(id)a5
+- (void)transitionToMetadata:(id)metadata scalingDurationBy:(double)by withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(ASCOfferButton *)self canTransitionToMetadata:v8])
+  metadataCopy = metadata;
+  completionCopy = completion;
+  if ([(ASCOfferButton *)self canTransitionToMetadata:metadataCopy])
   {
-    if (![(ASCOfferButton *)self chainTransitionToMetadata:v8 scalingDurationBy:v9 withCompletion:a4])
+    if (![(ASCOfferButton *)self chainTransitionToMetadata:metadataCopy scalingDurationBy:completionCopy withCompletion:by])
     {
-      v10 = [(ASCOfferButton *)self imageView];
-      v11 = [(ASCOfferButton *)self transitionImageForMetadata:v8];
+      imageView = [(ASCOfferButton *)self imageView];
+      v11 = [(ASCOfferButton *)self transitionImageForMetadata:metadataCopy];
       v12 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];
-      [v10 alpha];
+      [imageView alpha];
       [v12 setAlpha:?];
       [v12 setContentMode:0];
-      [v10 frame];
+      [imageView frame];
       [v12 setFrame:?];
-      v13 = [(ASCOfferButton *)self transitionColorForMetadata:v8];
+      v13 = [(ASCOfferButton *)self transitionColorForMetadata:metadataCopy];
       [v12 setTintColor:v13];
 
       [v12 setSemanticContentAttribute:{-[ASCOfferButton semanticContentAttribute](self, "semanticContentAttribute")}];
       [(ASCOfferButton *)self addSubview:v12];
       v14 = objc_alloc(MEMORY[0x277D75D40]);
       v15 = [objc_alloc(MEMORY[0x277D753D0]) initWithAnimationCurve:0];
-      v16 = [v14 initWithDuration:v15 timingParameters:a4 * 0.3];
+      v16 = [v14 initWithDuration:v15 timingParameters:by * 0.3];
 
-      v17 = [(ASCOfferButton *)self metadata];
-      [(ASCOfferButton *)self setMetadata:v8];
+      metadata = [(ASCOfferButton *)self metadata];
+      [(ASCOfferButton *)self setMetadata:metadataCopy];
       [(ASCOfferButton *)self layoutIfNeeded];
-      v18 = [(ASCOfferButton *)self imageAnimation];
+      imageAnimation = [(ASCOfferButton *)self imageAnimation];
       [(ASCOfferButton *)self setImageAnimation:0];
-      if ([(ASCOfferButton *)self shouldTransitionImageViewFromMetadata:v17 toMetadata:v8])
+      if ([(ASCOfferButton *)self shouldTransitionImageViewFromMetadata:metadata toMetadata:metadataCopy])
       {
-        [v10 alpha];
+        [imageView alpha];
         v20 = v19;
-        [v10 setAlpha:0.0];
-        [v10 frame];
+        [imageView setAlpha:0.0];
+        [imageView frame];
         v22 = v21;
         v24 = v23;
         v26 = v25;
         v28 = v27;
         [v12 frame];
-        [v10 setFrame:?];
+        [imageView setFrame:?];
         [(ASCOfferButton *)self updateVisualEffects];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
@@ -1590,8 +1590,8 @@ LABEL_10:
         v47 = v24;
         v48 = v26;
         v49 = v28;
-        v43 = v10;
-        v44 = self;
+        v43 = imageView;
+        selfCopy = self;
         [v16 addAnimations:v42];
       }
 
@@ -1601,23 +1601,23 @@ LABEL_10:
       v38[3] = &unk_2781CB9D8;
       v29 = v12;
       v39 = v29;
-      v40 = v10;
-      v41 = self;
-      v30 = v10;
+      v40 = imageView;
+      selfCopy2 = self;
+      v30 = imageView;
       [v16 addAnimations:v38];
-      v31 = [(ASCOfferButton *)self delegate];
-      [v31 offerButton:self willTransitionToMetadata:v8 usingAnimator:v16];
+      delegate = [(ASCOfferButton *)self delegate];
+      [delegate offerButton:self willTransitionToMetadata:metadataCopy usingAnimator:v16];
 
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __72__ASCOfferButton_transitionToMetadata_scalingDurationBy_withCompletion___block_invoke_3;
       v34[3] = &unk_2781CC9E0;
       v34[4] = self;
-      v35 = v18;
+      v35 = imageAnimation;
       v36 = v29;
-      v37 = v9;
+      v37 = completionCopy;
       v32 = v29;
-      v33 = v18;
+      v33 = imageAnimation;
       [v16 addCompletion:v34];
       [(ASCOfferButton *)self setCurrentTransition:v16];
     }
@@ -1625,10 +1625,10 @@ LABEL_10:
 
   else
   {
-    [(ASCOfferButton *)self setMetadata:v8];
-    if (v9)
+    [(ASCOfferButton *)self setMetadata:metadataCopy];
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1668,19 +1668,19 @@ uint64_t __72__ASCOfferButton_transitionToMetadata_scalingDurationBy_withComplet
   return result;
 }
 
-- (void)transitionToMetadata:(id)a3 withCompletion:(id)a4
+- (void)transitionToMetadata:(id)metadata withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke;
   v13 = &unk_2781CCA08;
-  v14 = self;
-  v15 = v6;
-  v7 = v6;
-  v8 = a3;
+  selfCopy = self;
+  v15 = completionCopy;
+  v7 = completionCopy;
+  metadataCopy = metadata;
   v9 = MEMORY[0x216070C30](&v10);
-  [(ASCOfferButton *)self transitionToMetadata:v8 scalingDurationBy:v9 withCompletion:1.0, v10, v11, v12, v13, v14];
+  [(ASCOfferButton *)self transitionToMetadata:metadataCopy scalingDurationBy:v9 withCompletion:1.0, v10, v11, v12, v13, selfCopy];
 }
 
 uint64_t __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke(uint64_t a1)
@@ -1699,19 +1699,19 @@ uint64_t __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke
 
 - (void)onTraitCollectionChange
 {
-  v3 = [(ASCOfferButton *)self metadata];
-  v4 = [v3 isProgress];
+  metadata = [(ASCOfferButton *)self metadata];
+  isProgress = [metadata isProgress];
 
-  v5 = [(ASCOfferButton *)self metadata];
-  v18 = v5;
-  if (v4)
+  metadata2 = [(ASCOfferButton *)self metadata];
+  v18 = metadata2;
+  if (isProgress)
   {
-    v6 = [v5 cancellable];
+    cancellable = [metadata2 cancellable];
     if ([v18 isIndeterminate])
     {
       v7 = [(ASCOfferButton *)self size];
-      v8 = [(ASCOfferButton *)self theme];
-      [ASCOfferButton indeterminateProgressImageFittingSize:v7 forTheme:v8];
+      theme = [(ASCOfferButton *)self theme];
+      [ASCOfferButton indeterminateProgressImageFittingSize:v7 forTheme:theme];
     }
 
     else
@@ -1719,34 +1719,34 @@ uint64_t __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke
       [v18 percent];
       v10 = v9;
       v7 = [(ASCOfferButton *)self size];
-      v8 = [(ASCOfferButton *)self theme];
-      [(ASCOfferButton *)v10 progressImageWithPercent:v7 fittingSize:v8 forTheme:v6 cancellable:?];
+      theme = [(ASCOfferButton *)self theme];
+      [(ASCOfferButton *)v10 progressImageWithPercent:v7 fittingSize:theme forTheme:cancellable cancellable:?];
     }
     v11 = ;
-    v12 = [(ASCOfferButton *)self imageView];
-    [v12 setImage:v11];
+    imageView = [(ASCOfferButton *)self imageView];
+    [imageView setImage:v11];
 
-    v13 = [(ASCOfferButton *)self imageView];
-    [v13 setIsBackgroundForText:0];
+    imageView2 = [(ASCOfferButton *)self imageView];
+    [imageView2 setIsBackgroundForText:0];
   }
 
   else
   {
-    if ([v5 isText])
+    if ([metadata2 isText])
     {
     }
 
     else
     {
-      v14 = [(ASCOfferButton *)self metadata];
-      v15 = [v14 isPlaceholder];
+      metadata3 = [(ASCOfferButton *)self metadata];
+      isPlaceholder = [metadata3 isPlaceholder];
 
-      if (!v15)
+      if (!isPlaceholder)
       {
-        v16 = [(ASCOfferButton *)self metadata];
-        v17 = [v16 isViewInAppStore];
+        metadata4 = [(ASCOfferButton *)self metadata];
+        isViewInAppStore = [metadata4 isViewInAppStore];
 
-        if (!v17)
+        if (!isViewInAppStore)
         {
           return;
         }
@@ -1759,11 +1759,11 @@ uint64_t __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
-  v5 = v4;
+  v5 = beginCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -1786,8 +1786,8 @@ uint64_t __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke
 
   if (v7)
   {
-    v8 = [v7 view];
-    v9 = v8 == self || [v7 numberOfTouchesRequired] != 1 || objc_msgSend(v7, "numberOfTapsRequired") != 1;
+    view = [v7 view];
+    v9 = view == self || [v7 numberOfTouchesRequired] != 1 || objc_msgSend(v7, "numberOfTapsRequired") != 1;
   }
 
   else
@@ -1800,78 +1800,78 @@ uint64_t __54__ASCOfferButton_transitionToMetadata_withCompletion___block_invoke
 
 - (id)makeLayout
 {
-  v3 = [(ASCOfferButton *)self metadata];
-  v4 = [v3 isEmpty];
+  metadata = [(ASCOfferButton *)self metadata];
+  isEmpty = [metadata isEmpty];
 
-  if (v4)
+  if (isEmpty)
   {
-    v5 = [(ASCOfferButton *)self imageView];
-    v6 = [(ASCOfferButton *)self titleLabelIfLoaded];
-    v7 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-    v8 = [__ASCLayoutProxy offerEmptyLayoutWithImageView:v5 titleView:v6 subtitleView:v7];
+    imageView = [(ASCOfferButton *)self imageView];
+    titleLabelIfLoaded = [(ASCOfferButton *)self titleLabelIfLoaded];
+    subtitleLabelIfLoaded = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+    v8 = [__ASCLayoutProxy offerEmptyLayoutWithImageView:imageView titleView:titleLabelIfLoaded subtitleView:subtitleLabelIfLoaded];
 
     goto LABEL_16;
   }
 
-  v9 = [(ASCOfferButton *)self metadata];
-  if ([v9 isText])
+  metadata2 = [(ASCOfferButton *)self metadata];
+  if ([metadata2 isText])
   {
 
 LABEL_6:
     v12 = [(ASCOfferButton *)self subtitlePosition]== 1;
-    v5 = [(ASCOfferButton *)self size];
-    v13 = [(ASCOfferButton *)self imageView];
-    v14 = [(ASCOfferButton *)self titleLabel];
-    v15 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-    v16 = [(ASCOfferButton *)self shouldTopAlign];
+    imageView = [(ASCOfferButton *)self size];
+    imageView2 = [(ASCOfferButton *)self imageView];
+    titleLabel = [(ASCOfferButton *)self titleLabel];
+    subtitleLabelIfLoaded2 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+    shouldTopAlign = [(ASCOfferButton *)self shouldTopAlign];
     [(ASCOfferButton *)self topPadding];
     v18 = v17;
     LOBYTE(v31) = [(ASCOfferButton *)self shouldExpandBackground];
-    v19 = [__ASCLayoutProxy offerTextLayoutForSize:v5 titleBackgroundView:v13 titleView:v14 subtitleView:v15 hasTrailingSubtitle:v12 shouldTopAlign:v16 topPadding:v18 shouldExpandBackground:v31];
+    v19 = [__ASCLayoutProxy offerTextLayoutForSize:imageView titleBackgroundView:imageView2 titleView:titleLabel subtitleView:subtitleLabelIfLoaded2 hasTrailingSubtitle:v12 shouldTopAlign:shouldTopAlign topPadding:v18 shouldExpandBackground:v31];
 LABEL_15:
     v8 = v19;
 
     goto LABEL_16;
   }
 
-  v10 = [(ASCOfferButton *)self metadata];
-  v11 = [v10 isPlaceholder];
+  metadata3 = [(ASCOfferButton *)self metadata];
+  isPlaceholder = [metadata3 isPlaceholder];
 
-  if (v11)
+  if (isPlaceholder)
   {
     goto LABEL_6;
   }
 
-  v20 = [(ASCOfferButton *)self metadata];
-  if ([v20 isIcon])
+  metadata4 = [(ASCOfferButton *)self metadata];
+  if ([metadata4 isIcon])
   {
 
 LABEL_10:
     v23 = [(ASCOfferButton *)self subtitlePosition]== 1 || [(ASCOfferButton *)self subtitlePosition]== 2;
-    v5 = [(ASCOfferButton *)self size];
-    v13 = [(ASCOfferButton *)self imageView];
-    v14 = [(ASCOfferButton *)self titleLabelIfLoaded];
-    v15 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-    v24 = [(ASCOfferButton *)self shouldTopAlign];
+    imageView = [(ASCOfferButton *)self size];
+    imageView2 = [(ASCOfferButton *)self imageView];
+    titleLabel = [(ASCOfferButton *)self titleLabelIfLoaded];
+    subtitleLabelIfLoaded2 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+    shouldTopAlign2 = [(ASCOfferButton *)self shouldTopAlign];
     [(ASCOfferButton *)self topPadding];
     LOBYTE(v31) = 0;
 LABEL_14:
-    v19 = [__ASCLayoutProxy offerIconLayoutForSize:v5 imageView:v13 titleView:v14 subtitleView:v15 hasTrailingSubtitle:v23 shouldTopAlign:v24 topPadding:v31 shouldTrailingAlign:?];
+    v19 = [__ASCLayoutProxy offerIconLayoutForSize:imageView imageView:imageView2 titleView:titleLabel subtitleView:subtitleLabelIfLoaded2 hasTrailingSubtitle:v23 shouldTopAlign:shouldTopAlign2 topPadding:v31 shouldTrailingAlign:?];
     goto LABEL_15;
   }
 
-  v21 = [(ASCOfferButton *)self metadata];
-  v22 = [v21 isProgress];
+  metadata5 = [(ASCOfferButton *)self metadata];
+  isProgress = [metadata5 isProgress];
 
-  if (v22)
+  if (isProgress)
   {
     goto LABEL_10;
   }
 
-  v26 = [(ASCOfferButton *)self metadata];
-  v27 = [v26 isDeeplink];
+  metadata6 = [(ASCOfferButton *)self metadata];
+  isDeeplink = [metadata6 isDeeplink];
 
-  if (v27)
+  if (isDeeplink)
   {
     v23 = 1;
     if ([(ASCOfferButton *)self subtitlePosition]!= 1)
@@ -1879,27 +1879,27 @@ LABEL_14:
       v23 = [(ASCOfferButton *)self subtitlePosition]== 2;
     }
 
-    v5 = [(ASCOfferButton *)self size];
-    v13 = [(ASCOfferButton *)self imageView];
-    v14 = [(ASCOfferButton *)self titleLabelIfLoaded];
-    v15 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
-    v24 = [(ASCOfferButton *)self shouldTopAlign];
+    imageView = [(ASCOfferButton *)self size];
+    imageView2 = [(ASCOfferButton *)self imageView];
+    titleLabel = [(ASCOfferButton *)self titleLabelIfLoaded];
+    subtitleLabelIfLoaded2 = [(ASCOfferButton *)self subtitleLabelIfLoaded];
+    shouldTopAlign2 = [(ASCOfferButton *)self shouldTopAlign];
     [(ASCOfferButton *)self topPadding];
     LOBYTE(v31) = 1;
     goto LABEL_14;
   }
 
-  v28 = [(ASCOfferButton *)self metadata];
-  v29 = [v28 isViewInAppStore];
+  metadata7 = [(ASCOfferButton *)self metadata];
+  isViewInAppStore = [metadata7 isViewInAppStore];
 
-  if (!v29)
+  if (!isViewInAppStore)
   {
-    v30 = [(ASCOfferButton *)self metadata];
-    ASCUnknownEnumCase(@"ASCOfferMetadata", v30);
+    metadata8 = [(ASCOfferButton *)self metadata];
+    ASCUnknownEnumCase(@"ASCOfferMetadata", metadata8);
   }
 
-  v5 = [(ASCOfferButton *)self titleLabel];
-  v8 = [__ASCLayoutProxy offerDisclosureLayoutWithDisclosureIndicator:v5];
+  imageView = [(ASCOfferButton *)self titleLabel];
+  v8 = [__ASCLayoutProxy offerDisclosureLayoutWithDisclosureIndicator:imageView];
 LABEL_16:
 
   return v8;
@@ -1912,8 +1912,8 @@ LABEL_16:
   [(ASCOfferButton *)&v4 invalidateIntrinsicContentSize];
   if ([(ASCOfferButton *)self translatesAutoresizingMaskIntoConstraints])
   {
-    v3 = [(ASCOfferButton *)self superview];
-    [v3 invalidateIntrinsicContentSize];
+    superview = [(ASCOfferButton *)self superview];
+    [superview invalidateIntrinsicContentSize];
   }
 }
 
@@ -1925,13 +1925,13 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCOfferButton *)self makeLayout];
-  v7 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v6 measuredSizeFittingSize:v7 inTraitEnvironment:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  makeLayout = [(ASCOfferButton *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout measuredSizeFittingSize:asc_layoutTraitEnvironment inTraitEnvironment:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -1951,9 +1951,9 @@ LABEL_16:
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(ASCOfferButton *)self makeLayout];
-  v4 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v3 alignmentInsetsInTraitEnvironment:v4];
+  makeLayout = [(ASCOfferButton *)self makeLayout];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout alignmentInsetsInTraitEnvironment:asc_layoutTraitEnvironment];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1975,7 +1975,7 @@ LABEL_16:
   v21.receiver = self;
   v21.super_class = ASCOfferButton;
   [(ASCOfferButton *)&v21 layoutSubviews];
-  v3 = [(ASCOfferButton *)self makeLayout];
+  makeLayout = [(ASCOfferButton *)self makeLayout];
   [(ASCOfferButton *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -1986,22 +1986,22 @@ LABEL_16:
   v15 = v7 + v14;
   v17 = v9 - (v12 + v16);
   v19 = v11 - (v14 + v18);
-  v20 = [(UIView *)self asc_layoutTraitEnvironment];
-  [v3 placeChildrenRelativeToRect:v20 inTraitEnvironment:{v13, v15, v17, v19}];
+  asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
+  [makeLayout placeChildrenRelativeToRect:asc_layoutTraitEnvironment inTraitEnvironment:{v13, v15, v17, v19}];
 }
 
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCOfferButton *)self theme];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"theme"];
+  theme = [(ASCOfferButton *)self theme];
+  [(ASCDescriber *)v3 addObject:theme withName:@"theme"];
 
-  v5 = [(ASCOfferButton *)self metadata];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"metadata"];
+  metadata = [(ASCOfferButton *)self metadata];
+  [(ASCDescriber *)v3 addObject:metadata withName:@"metadata"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 - (ASCOfferButtonDelegate)delegate

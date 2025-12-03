@@ -1,17 +1,17 @@
 @interface PLIntensiveResourceTaskManager
 - (PLIntensiveResourceTaskManager)init;
-- (id)submitTask:(id)a3 completionHandler:(id)a4;
+- (id)submitTask:(id)task completionHandler:(id)handler;
 - (unint64_t)pendingTasksCount;
-- (void)resourceTaskDidFinish:(id)a3;
-- (void)resourceTaskWillCancel:(id)a3;
+- (void)resourceTaskDidFinish:(id)finish;
+- (void)resourceTaskWillCancel:(id)cancel;
 @end
 
 @implementation PLIntensiveResourceTaskManager
 
-- (void)resourceTaskDidFinish:(id)a3
+- (void)resourceTaskDidFinish:(id)finish
 {
-  v4 = a3;
-  v3 = v4;
+  finishCopy = finish;
+  v3 = finishCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -33,10 +33,10 @@ void __56__PLIntensiveResourceTaskManager_resourceTaskDidFinish___block_invoke(u
   }
 }
 
-- (void)resourceTaskWillCancel:(id)a3
+- (void)resourceTaskWillCancel:(id)cancel
 {
-  v4 = a3;
-  v3 = v4;
+  cancelCopy = cancel;
+  v3 = cancelCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -58,13 +58,13 @@ void __57__PLIntensiveResourceTaskManager_resourceTaskWillCancel___block_invoke(
   }
 }
 
-- (id)submitTask:(id)a3 completionHandler:(id)a4
+- (id)submitTask:(id)task completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v7 = [PLIntensiveResourceTaskResponder alloc];
-  v8 = [v5 trackingIdentifier];
-  v9 = [(PLIntensiveResourceTaskResponder *)v7 initWithTrackingIdentifier:v8 completionHandler:v6];
+  trackingIdentifier = [taskCopy trackingIdentifier];
+  v9 = [(PLIntensiveResourceTaskResponder *)v7 initWithTrackingIdentifier:trackingIdentifier completionHandler:handlerCopy];
 
   v19 = 0;
   v20 = &v19;
@@ -74,7 +74,7 @@ void __57__PLIntensiveResourceTaskManager_resourceTaskWillCancel___block_invoke(
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v10 = v5;
+  v10 = taskCopy;
   v11 = v9;
   PLSafeRunWithUnfairLock();
   v12 = v16;
@@ -86,18 +86,18 @@ void __57__PLIntensiveResourceTaskManager_resourceTaskWillCancel___block_invoke(
 
   if (*(v12 + 24) == 1)
   {
-    v13 = [(PLIntensiveResourceTaskResponder *)v11 progress];
+    progress = [(PLIntensiveResourceTaskResponder *)v11 progress];
   }
 
   else
   {
-    v13 = 0;
+    progress = 0;
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v19, 8);
 
-  return v13;
+  return progress;
 }
 
 void __63__PLIntensiveResourceTaskManager_submitTask_completionHandler___block_invoke(uint64_t a1)

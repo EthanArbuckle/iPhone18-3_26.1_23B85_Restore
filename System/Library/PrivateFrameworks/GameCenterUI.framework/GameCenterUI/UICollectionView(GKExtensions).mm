@@ -12,8 +12,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a1 visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  visibleCells = [self visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -23,16 +23,16 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 _layoutAttributes];
-        v11 = v10;
-        if (v10)
+        _layoutAttributes = [v9 _layoutAttributes];
+        v11 = _layoutAttributes;
+        if (_layoutAttributes)
         {
-          v12 = [v10 indexPath];
-          v13 = [v12 isEqual:v4];
+          indexPath = [_layoutAttributes indexPath];
+          v13 = [indexPath isEqual:v4];
 
           if (v13)
           {
@@ -43,7 +43,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;

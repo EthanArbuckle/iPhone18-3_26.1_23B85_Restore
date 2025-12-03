@@ -1,5 +1,5 @@
 @interface UPResultNode
-- (UPResultNode)initWithLabel:(id)a3;
+- (UPResultNode)initWithLabel:(id)label;
 - (id)_dictionaryRepresentation;
 @end
 
@@ -9,16 +9,16 @@
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"label";
-  v2 = [(UPResultNode *)self label];
-  v3 = v2;
-  if (!v2)
+  label = [(UPResultNode *)self label];
+  null = label;
+  if (!label)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!label)
   {
   }
 
@@ -27,16 +27,16 @@
   return v4;
 }
 
-- (UPResultNode)initWithLabel:(id)a3
+- (UPResultNode)initWithLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = UPResultNode;
   v6 = [(UPResultNode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_label, a3);
+    objc_storeStrong(&v6->_label, label);
   }
 
   return v7;

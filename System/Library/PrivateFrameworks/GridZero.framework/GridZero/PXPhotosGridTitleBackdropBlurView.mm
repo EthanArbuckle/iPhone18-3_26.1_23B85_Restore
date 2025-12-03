@@ -1,8 +1,8 @@
 @interface PXPhotosGridTitleBackdropBlurView
 - (CGRect)clippingRect;
-- (PXPhotosGridTitleBackdropBlurView)initWithFrame:(CGRect)a3;
+- (PXPhotosGridTitleBackdropBlurView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXPhotosGridTitleBackdropBlurView
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   userData = self->_userData;
-  if (userData != v4)
+  if (userData != dataCopy)
   {
-    v8 = v4;
-    if (![(NSString *)userData isEqualToString:v4])
+    v8 = dataCopy;
+    if (![(NSString *)userData isEqualToString:dataCopy])
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->_userData;
@@ -49,11 +49,11 @@
   [(PXPhotosGridTitleBackdropBlurView *)&v3 layoutSubviews];
 }
 
-- (PXPhotosGridTitleBackdropBlurView)initWithFrame:(CGRect)a3
+- (PXPhotosGridTitleBackdropBlurView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXPhotosGridTitleBackdropBlurView;
-  v3 = [(PXPhotosGridTitleBackdropBlurView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPhotosGridTitleBackdropBlurView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75210] effectWithStyle:10];

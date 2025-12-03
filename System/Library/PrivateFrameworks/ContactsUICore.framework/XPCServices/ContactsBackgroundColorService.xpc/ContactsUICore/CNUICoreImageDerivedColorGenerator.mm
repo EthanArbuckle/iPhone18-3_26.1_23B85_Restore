@@ -1,38 +1,38 @@
 @interface CNUICoreImageDerivedColorGenerator
-+ (id)colorsForImageRef:(CGImage *)a3;
-+ (id)colorsForUIImage:(id)a3;
++ (id)colorsForImageRef:(CGImage *)ref;
++ (id)colorsForUIImage:(id)image;
 + (id)defaultDarkGrayColors;
 + (id)defaultGrayColors;
-+ (id)resizeImageForPerformance:(id)a3;
++ (id)resizeImageForPerformance:(id)performance;
 + (id)scheduler;
-+ (id)tintedUIColorsFromUIColors:(id)a3 isLight:(BOOL)a4;
-+ (void)fetchColorsForImage:(id)a3 ciContext:(id)a4 withCompletionHandler:(id)a5;
++ (id)tintedUIColorsFromUIColors:(id)colors isLight:(BOOL)light;
++ (void)fetchColorsForImage:(id)image ciContext:(id)context withCompletionHandler:(id)handler;
 @end
 
 @implementation CNUICoreImageDerivedColorGenerator
 
-+ (id)colorsForUIImage:(id)a3
++ (id)colorsForUIImage:(id)image
 {
-  v4 = a3;
-  if ([v4 ioSurface])
+  imageCopy = image;
+  if ([imageCopy ioSurface])
   {
     v5 = UICreateCGImageFromIOSurface();
-    v6 = [a1 colorsForImageRef:v5];
+    v6 = [self colorsForImageRef:v5];
     CGImageRelease(v5);
   }
 
   else
   {
-    v6 = [a1 colorsForImageRef:{objc_msgSend(v4, "CGImage")}];
+    v6 = [self colorsForImageRef:{objc_msgSend(imageCopy, "CGImage")}];
   }
 
   return v6;
 }
 
-+ (id)colorsForImageRef:(CGImage *)a3
++ (id)colorsForImageRef:(CGImage *)ref
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(ref);
+  Height = CGImageGetHeight(ref);
   if (Width && Height)
   {
     if (Height <= 160.0)
@@ -53,7 +53,7 @@
     v32.origin.y = 0.0;
     v32.size.width = 1.0;
     v32.size.height = v7;
-    CGContextDrawImage(v11, v32, a3);
+    CGContextDrawImage(v11, v32, ref);
     CGContextRelease(v11);
     CGColorSpaceRelease(DeviceRGB);
     v12 = 0;
@@ -129,15 +129,15 @@ LABEL_27:
     free(v9);
     if ([v18 count] >= 5)
     {
-      v29 = v18;
+      defaultGrayColors = v18;
     }
 
     else
     {
-      v29 = [a1 defaultGrayColors];
+      defaultGrayColors = [self defaultGrayColors];
     }
 
-    v17 = v29;
+    defaultGrayColors2 = defaultGrayColors;
   }
 
   else
@@ -148,10 +148,10 @@ LABEL_27:
       sub_100003690(v16);
     }
 
-    v17 = [a1 defaultGrayColors];
+    defaultGrayColors2 = [self defaultGrayColors];
   }
 
-  return v17;
+  return defaultGrayColors2;
 }
 
 + (id)scheduler
@@ -166,30 +166,30 @@ LABEL_27:
   return v3;
 }
 
-+ (void)fetchColorsForImage:(id)a3 ciContext:(id)a4 withCompletionHandler:(id)a5
++ (void)fetchColorsForImage:(id)image ciContext:(id)context withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  imageCopy = image;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (imageCopy)
   {
-    v11 = [a1 scheduler];
+    scheduler = [self scheduler];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000016F8;
     v12[3] = &unk_100008450;
-    v13 = v8;
-    v16 = a1;
-    v14 = v9;
-    v15 = v10;
-    [v11 performBlock:v12];
+    v13 = imageCopy;
+    selfCopy = self;
+    v14 = contextCopy;
+    v15 = handlerCopy;
+    [scheduler performBlock:v12];
   }
 }
 
-+ (id)resizeImageForPerformance:(id)a3
++ (id)resizeImageForPerformance:(id)performance
 {
-  v3 = a3;
-  [v3 extent];
+  performanceCopy = performance;
+  [performanceCopy extent];
   if (v4 > 100.0 || v5 > 100.0)
   {
     v7 = 100.0 / v5;
@@ -202,12 +202,12 @@ LABEL_27:
     *&v12.a = 0uLL;
     CGAffineTransformMakeScale(&v12, v7, v7);
     v11 = v12;
-    v8 = [v3 imageByApplyingTransform:&v11];
+    v8 = [performanceCopy imageByApplyingTransform:&v11];
   }
 
   else
   {
-    v8 = v3;
+    v8 = performanceCopy;
   }
 
   v9 = v8;
@@ -247,17 +247,17 @@ LABEL_27:
   return v7;
 }
 
-+ (id)tintedUIColorsFromUIColors:(id)a3 isLight:(BOOL)a4
++ (id)tintedUIColorsFromUIColors:(id)colors isLight:(BOOL)light
 {
-  v5 = a3;
+  colorsCopy = colors;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000022B4;
   v8[3] = &unk_100008478;
-  v10 = a4;
+  lightCopy = light;
   v6 = objc_opt_new();
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [colorsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }

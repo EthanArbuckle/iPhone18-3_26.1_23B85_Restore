@@ -1,18 +1,18 @@
 @interface CRLWPSmartFieldAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CRLTextRepAccessibility)crlaxParentTextRep;
 - (_NSRange)crlaxFieldRange;
-- (void)crlaxSetParentInteractiveCanvasController:(id)a3;
+- (void)crlaxSetParentInteractiveCanvasController:(id)controller;
 - (void)dealloc;
 @end
 
 @implementation CRLWPSmartFieldAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -27,23 +27,23 @@
 
 - (_NSRange)crlaxFieldRange
 {
-  v2 = [(CRLWPSmartFieldAccessibility *)self crlaxTarget];
-  v3 = [v2 range];
+  crlaxTarget = [(CRLWPSmartFieldAccessibility *)self crlaxTarget];
+  range = [crlaxTarget range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (void)crlaxSetParentInteractiveCanvasController:(id)a3
+- (void)crlaxSetParentInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLWPSmartFieldAccessibility *)self _crlaxParentInteractiveCanvasController];
+  controllerCopy = controller;
+  _crlaxParentInteractiveCanvasController = [(CRLWPSmartFieldAccessibility *)self _crlaxParentInteractiveCanvasController];
   v10 = 0;
-  v6 = v4;
+  v6 = controllerCopy;
   v7 = objc_opt_class();
   v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 1, &v10);
   if (v10 == 1)
@@ -53,9 +53,9 @@
 
   v9 = v8;
 
-  if (v5 != v9)
+  if (_crlaxParentInteractiveCanvasController != v9)
   {
-    [v5 crlaxUnregisterLinkedTextElement:self];
+    [_crlaxParentInteractiveCanvasController crlaxUnregisterLinkedTextElement:self];
     [(CRLWPSmartFieldAccessibility *)self _crlaxSetParentInteractiveCanvasController:v9];
     [v9 crlaxRegisterLinkedTextElement:self];
   }
@@ -63,8 +63,8 @@
 
 - (CRLTextRepAccessibility)crlaxParentTextRep
 {
-  v3 = [(CRLWPSmartFieldAccessibility *)self crlaxParentInteractiveCanvasController];
-  if (CRLAccessibilityShouldPerformValidationChecks() && !v3)
+  crlaxParentInteractiveCanvasController = [(CRLWPSmartFieldAccessibility *)self crlaxParentInteractiveCanvasController];
+  if (CRLAccessibilityShouldPerformValidationChecks() && !crlaxParentInteractiveCanvasController)
   {
     ShouldCrashOnValidationErrorAfterLaunch = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
     if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"Can't find interactive canvas controller even though we're asked for the parent text rep of an attachment.", v5, v6, v7, v8, v9, v32))
@@ -76,7 +76,7 @@ LABEL_31:
     goto LABEL_24;
   }
 
-  if (!v3)
+  if (!crlaxParentInteractiveCanvasController)
   {
 LABEL_24:
     v16 = 0;
@@ -84,11 +84,11 @@ LABEL_24:
   }
 
   v38 = 0;
-  v10 = [(CRLWPSmartFieldAccessibility *)self crlaxTarget];
-  v11 = [v10 parentStorage];
+  crlaxTarget = [(CRLWPSmartFieldAccessibility *)self crlaxTarget];
+  parentStorage = [crlaxTarget parentStorage];
 
   v12 = objc_opt_class();
-  v13 = __CRLAccessibilityCastAsSafeCategory(v12, v11, 1, &v38);
+  v13 = __CRLAccessibilityCastAsSafeCategory(v12, parentStorage, 1, &v38);
   if (v38 == 1)
   {
     goto LABEL_31;
@@ -96,15 +96,15 @@ LABEL_24:
 
   v14 = v13;
 
-  v15 = [(CRLWPSmartFieldAccessibility *)self crlaxFieldRange];
+  crlaxFieldRange = [(CRLWPSmartFieldAccessibility *)self crlaxFieldRange];
   v16 = 0;
   if (v14)
   {
-    v17 = v15;
-    if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+    v17 = crlaxFieldRange;
+    if (crlaxFieldRange != 0x7FFFFFFFFFFFFFFFLL)
     {
       v33 = v14;
-      [v3 crlaxTextRepsForStorage:v14];
+      [crlaxParentInteractiveCanvasController crlaxTextRepsForStorage:v14];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
@@ -140,8 +140,8 @@ LABEL_24:
 
             if (v16)
             {
-              v28 = [v16 crlaxStorageRangeOfRep];
-              if (v17 >= v28 && v17 - v28 < v29)
+              crlaxStorageRangeOfRep = [v16 crlaxStorageRangeOfRep];
+              if (v17 >= crlaxStorageRangeOfRep && v17 - crlaxStorageRangeOfRep < v29)
               {
                 goto LABEL_26;
               }

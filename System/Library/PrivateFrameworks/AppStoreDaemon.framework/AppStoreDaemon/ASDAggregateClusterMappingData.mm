@@ -1,18 +1,18 @@
 @interface ASDAggregateClusterMappingData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)clusterAppCountAtIndex:(unint64_t)a3;
-- (int)clusterIDAtIndex:(unint64_t)a3;
-- (int)clusterVersionAtIndex:(unint64_t)a3;
-- (int)weightedAppForgroundUsageAtIndex:(unint64_t)a3;
-- (int)weightedAppLaunchesAtIndex:(unint64_t)a3;
+- (int)clusterAppCountAtIndex:(unint64_t)index;
+- (int)clusterIDAtIndex:(unint64_t)index;
+- (int)clusterVersionAtIndex:(unint64_t)index;
+- (int)weightedAppForgroundUsageAtIndex:(unint64_t)index;
+- (int)weightedAppLaunchesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASDAggregateClusterMappingData
@@ -29,84 +29,84 @@
   [(ASDAggregateClusterMappingData *)&v3 dealloc];
 }
 
-- (int)clusterIDAtIndex:(unint64_t)a3
+- (int)clusterIDAtIndex:(unint64_t)index
 {
   p_clusterIDs = &self->_clusterIDs;
   count = self->_clusterIDs.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_clusterIDs->list[a3];
+  return p_clusterIDs->list[index];
 }
 
-- (int)clusterVersionAtIndex:(unint64_t)a3
+- (int)clusterVersionAtIndex:(unint64_t)index
 {
   p_clusterVersions = &self->_clusterVersions;
   count = self->_clusterVersions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_clusterVersions->list[a3];
+  return p_clusterVersions->list[index];
 }
 
-- (int)clusterAppCountAtIndex:(unint64_t)a3
+- (int)clusterAppCountAtIndex:(unint64_t)index
 {
   p_clusterAppCounts = &self->_clusterAppCounts;
   count = self->_clusterAppCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_clusterAppCounts->list[a3];
+  return p_clusterAppCounts->list[index];
 }
 
-- (int)weightedAppLaunchesAtIndex:(unint64_t)a3
+- (int)weightedAppLaunchesAtIndex:(unint64_t)index
 {
   p_weightedAppLaunches = &self->_weightedAppLaunches;
   count = self->_weightedAppLaunches.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_weightedAppLaunches->list[a3];
+  return p_weightedAppLaunches->list[index];
 }
 
-- (int)weightedAppForgroundUsageAtIndex:(unint64_t)a3
+- (int)weightedAppForgroundUsageAtIndex:(unint64_t)index
 {
   p_weightedAppForgroundUsages = &self->_weightedAppForgroundUsages;
   count = self->_weightedAppForgroundUsages.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_weightedAppForgroundUsages->list[a3];
+  return p_weightedAppForgroundUsages->list[index];
 }
 
 - (id)description
@@ -115,39 +115,39 @@
   v8.receiver = self;
   v8.super_class = ASDAggregateClusterMappingData;
   v4 = [(ASDAggregateClusterMappingData *)&v8 description];
-  v5 = [(ASDAggregateClusterMappingData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASDAggregateClusterMappingData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_encodingVersion];
-  [v3 setObject:v4 forKey:@"encodingVersion"];
+  [dictionary setObject:v4 forKey:@"encodingVersion"];
 
   v5 = PBRepeatedInt32NSArray();
-  [v3 setObject:v5 forKey:@"clusterID"];
+  [dictionary setObject:v5 forKey:@"clusterID"];
 
   v6 = PBRepeatedInt32NSArray();
-  [v3 setObject:v6 forKey:@"clusterVersion"];
+  [dictionary setObject:v6 forKey:@"clusterVersion"];
 
   v7 = PBRepeatedInt32NSArray();
-  [v3 setObject:v7 forKey:@"clusterAppCount"];
+  [dictionary setObject:v7 forKey:@"clusterAppCount"];
 
   v8 = PBRepeatedInt32NSArray();
-  [v3 setObject:v8 forKey:@"weightedAppLaunches"];
+  [dictionary setObject:v8 forKey:@"weightedAppLaunches"];
 
   v9 = PBRepeatedInt32NSArray();
-  [v3 setObject:v9 forKey:@"weightedAppForgroundUsage"];
+  [dictionary setObject:v9 forKey:@"weightedAppForgroundUsage"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   encodingVersion = self->_encodingVersion;
   PBDataWriterWriteInt32Field();
   if (self->_clusterIDs.count)
@@ -247,84 +247,84 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v19 = a3;
-  v19[32] = self->_encodingVersion;
+  toCopy = to;
+  toCopy[32] = self->_encodingVersion;
   if ([(ASDAggregateClusterMappingData *)self clusterIDsCount])
   {
-    [v19 clearClusterIDs];
-    v4 = [(ASDAggregateClusterMappingData *)self clusterIDsCount];
-    if (v4)
+    [toCopy clearClusterIDs];
+    clusterIDsCount = [(ASDAggregateClusterMappingData *)self clusterIDsCount];
+    if (clusterIDsCount)
     {
-      v5 = v4;
+      v5 = clusterIDsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v19 addClusterID:{-[ASDAggregateClusterMappingData clusterIDAtIndex:](self, "clusterIDAtIndex:", i)}];
+        [toCopy addClusterID:{-[ASDAggregateClusterMappingData clusterIDAtIndex:](self, "clusterIDAtIndex:", i)}];
       }
     }
   }
 
   if ([(ASDAggregateClusterMappingData *)self clusterVersionsCount])
   {
-    [v19 clearClusterVersions];
-    v7 = [(ASDAggregateClusterMappingData *)self clusterVersionsCount];
-    if (v7)
+    [toCopy clearClusterVersions];
+    clusterVersionsCount = [(ASDAggregateClusterMappingData *)self clusterVersionsCount];
+    if (clusterVersionsCount)
     {
-      v8 = v7;
+      v8 = clusterVersionsCount;
       for (j = 0; j != v8; ++j)
       {
-        [v19 addClusterVersion:{-[ASDAggregateClusterMappingData clusterVersionAtIndex:](self, "clusterVersionAtIndex:", j)}];
+        [toCopy addClusterVersion:{-[ASDAggregateClusterMappingData clusterVersionAtIndex:](self, "clusterVersionAtIndex:", j)}];
       }
     }
   }
 
   if ([(ASDAggregateClusterMappingData *)self clusterAppCountsCount])
   {
-    [v19 clearClusterAppCounts];
-    v10 = [(ASDAggregateClusterMappingData *)self clusterAppCountsCount];
-    if (v10)
+    [toCopy clearClusterAppCounts];
+    clusterAppCountsCount = [(ASDAggregateClusterMappingData *)self clusterAppCountsCount];
+    if (clusterAppCountsCount)
     {
-      v11 = v10;
+      v11 = clusterAppCountsCount;
       for (k = 0; k != v11; ++k)
       {
-        [v19 addClusterAppCount:{-[ASDAggregateClusterMappingData clusterAppCountAtIndex:](self, "clusterAppCountAtIndex:", k)}];
+        [toCopy addClusterAppCount:{-[ASDAggregateClusterMappingData clusterAppCountAtIndex:](self, "clusterAppCountAtIndex:", k)}];
       }
     }
   }
 
   if ([(ASDAggregateClusterMappingData *)self weightedAppLaunchesCount])
   {
-    [v19 clearWeightedAppLaunches];
-    v13 = [(ASDAggregateClusterMappingData *)self weightedAppLaunchesCount];
-    if (v13)
+    [toCopy clearWeightedAppLaunches];
+    weightedAppLaunchesCount = [(ASDAggregateClusterMappingData *)self weightedAppLaunchesCount];
+    if (weightedAppLaunchesCount)
     {
-      v14 = v13;
+      v14 = weightedAppLaunchesCount;
       for (m = 0; m != v14; ++m)
       {
-        [v19 addWeightedAppLaunches:{-[ASDAggregateClusterMappingData weightedAppLaunchesAtIndex:](self, "weightedAppLaunchesAtIndex:", m)}];
+        [toCopy addWeightedAppLaunches:{-[ASDAggregateClusterMappingData weightedAppLaunchesAtIndex:](self, "weightedAppLaunchesAtIndex:", m)}];
       }
     }
   }
 
   if ([(ASDAggregateClusterMappingData *)self weightedAppForgroundUsagesCount])
   {
-    [v19 clearWeightedAppForgroundUsages];
-    v16 = [(ASDAggregateClusterMappingData *)self weightedAppForgroundUsagesCount];
-    if (v16)
+    [toCopy clearWeightedAppForgroundUsages];
+    weightedAppForgroundUsagesCount = [(ASDAggregateClusterMappingData *)self weightedAppForgroundUsagesCount];
+    if (weightedAppForgroundUsagesCount)
     {
-      v17 = v16;
+      v17 = weightedAppForgroundUsagesCount;
       for (n = 0; n != v17; ++n)
       {
-        [v19 addWeightedAppForgroundUsage:{-[ASDAggregateClusterMappingData weightedAppForgroundUsageAtIndex:](self, "weightedAppForgroundUsageAtIndex:", n)}];
+        [toCopy addWeightedAppForgroundUsage:{-[ASDAggregateClusterMappingData weightedAppForgroundUsageAtIndex:](self, "weightedAppForgroundUsageAtIndex:", n)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v4[32] = self->_encodingVersion;
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
@@ -334,10 +334,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_encodingVersion == v4[32] && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_encodingVersion == equalCopy[32] && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual())
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -360,55 +360,55 @@
   return v2 ^ v6 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_encodingVersion = v4[32];
-  v20 = v4;
-  v5 = [v4 clusterIDsCount];
-  if (v5)
+  fromCopy = from;
+  self->_encodingVersion = fromCopy[32];
+  v20 = fromCopy;
+  clusterIDsCount = [fromCopy clusterIDsCount];
+  if (clusterIDsCount)
   {
-    v6 = v5;
+    v6 = clusterIDsCount;
     for (i = 0; i != v6; ++i)
     {
       -[ASDAggregateClusterMappingData addClusterID:](self, "addClusterID:", [v20 clusterIDAtIndex:i]);
     }
   }
 
-  v8 = [v20 clusterVersionsCount];
-  if (v8)
+  clusterVersionsCount = [v20 clusterVersionsCount];
+  if (clusterVersionsCount)
   {
-    v9 = v8;
+    v9 = clusterVersionsCount;
     for (j = 0; j != v9; ++j)
     {
       -[ASDAggregateClusterMappingData addClusterVersion:](self, "addClusterVersion:", [v20 clusterVersionAtIndex:j]);
     }
   }
 
-  v11 = [v20 clusterAppCountsCount];
-  if (v11)
+  clusterAppCountsCount = [v20 clusterAppCountsCount];
+  if (clusterAppCountsCount)
   {
-    v12 = v11;
+    v12 = clusterAppCountsCount;
     for (k = 0; k != v12; ++k)
     {
       -[ASDAggregateClusterMappingData addClusterAppCount:](self, "addClusterAppCount:", [v20 clusterAppCountAtIndex:k]);
     }
   }
 
-  v14 = [v20 weightedAppLaunchesCount];
-  if (v14)
+  weightedAppLaunchesCount = [v20 weightedAppLaunchesCount];
+  if (weightedAppLaunchesCount)
   {
-    v15 = v14;
+    v15 = weightedAppLaunchesCount;
     for (m = 0; m != v15; ++m)
     {
       -[ASDAggregateClusterMappingData addWeightedAppLaunches:](self, "addWeightedAppLaunches:", [v20 weightedAppLaunchesAtIndex:m]);
     }
   }
 
-  v17 = [v20 weightedAppForgroundUsagesCount];
-  if (v17)
+  weightedAppForgroundUsagesCount = [v20 weightedAppForgroundUsagesCount];
+  if (weightedAppForgroundUsagesCount)
   {
-    v18 = v17;
+    v18 = weightedAppForgroundUsagesCount;
     for (n = 0; n != v18; ++n)
     {
       -[ASDAggregateClusterMappingData addWeightedAppForgroundUsage:](self, "addWeightedAppForgroundUsage:", [v20 weightedAppForgroundUsageAtIndex:n]);

@@ -1,32 +1,32 @@
 @interface MediaControlsLanguageOptionsViewController
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (CGSize)preferredContentSize;
-- (MediaControlsLanguageOptionsViewController)initWithRouteUID:(id)a3;
+- (MediaControlsLanguageOptionsViewController)initWithRouteUID:(id)d;
 - (MediaControlsLanguageOptionsViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
-- (void)setLanguageOptionGroups:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
+- (void)setLanguageOptionGroups:(id)groups;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation MediaControlsLanguageOptionsViewController
 
-- (MediaControlsLanguageOptionsViewController)initWithRouteUID:(id)a3
+- (MediaControlsLanguageOptionsViewController)initWithRouteUID:(id)d
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MediaControlsLanguageOptionsViewController;
   v5 = [(MediaControlsLanguageOptionsViewController *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (dCopy && v5)
   {
-    v10[0] = v4;
+    v10[0] = dCopy;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     MRAVReconnaissanceSessionCreateWithEndpointFeatures();
     v8 = v6;
@@ -92,23 +92,23 @@ void __63__MediaControlsLanguageOptionsViewController_initWithRouteUID___block_i
   [(MediaControlsLanguageOptionsViewController *)&v23 viewDidLoad];
   CCUIExpandedModuleContinuousCornerRadius();
   v4 = v3;
-  v5 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v5 setClipsToBounds:1];
+  view = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  v7 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view2 = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view2 setBackgroundColor:clearColor];
 
-  v8 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v8 _setContinuousCornerRadius:v4];
+  view3 = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view3 _setContinuousCornerRadius:v4];
 
-  v9 = [MEMORY[0x1E6997268] controlCenterDarkMaterial];
-  [v9 _setContinuousCornerRadius:v4];
-  [(MediaControlsLanguageOptionsViewController *)self setMaterialView:v9];
-  v10 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v10 addSubview:v9];
+  controlCenterDarkMaterial = [MEMORY[0x1E6997268] controlCenterDarkMaterial];
+  [controlCenterDarkMaterial _setContinuousCornerRadius:v4];
+  [(MediaControlsLanguageOptionsViewController *)self setMaterialView:controlCenterDarkMaterial];
+  view4 = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view4 addSubview:controlCenterDarkMaterial];
 
-  v11 = [v9 visualStylingProviderForCategory:1];
+  v11 = [controlCenterDarkMaterial visualStylingProviderForCategory:1];
   [(MediaControlsLanguageOptionsViewController *)self setVisualStylingProvider:v11];
 
   v12 = objc_alloc(MEMORY[0x1E6970448]);
@@ -118,14 +118,14 @@ void __63__MediaControlsLanguageOptionsViewController_initWithRouteUID___block_i
   v16 = *(MEMORY[0x1E695F058] + 24);
   v17 = [v12 initWithFrame:0 style:{*MEMORY[0x1E695F058], v14, v15, v16}];
   [v17 setSeparatorInset:{0.0, 20.0, 0.0, 0.0}];
-  v18 = [MEMORY[0x1E69DC888] clearColor];
-  [v17 setBackgroundColor:v18];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [v17 setBackgroundColor:clearColor2];
 
-  v19 = [v17 headerBackgroundView];
-  [v19 setHidden:1];
+  headerBackgroundView = [v17 headerBackgroundView];
+  [headerBackgroundView setHidden:1];
 
-  v20 = [v17 footerBackgroundView];
-  [v20 setHidden:1];
+  footerBackgroundView = [v17 footerBackgroundView];
+  [footerBackgroundView setHidden:1];
 
   [v17 setContentInset:{0.0, 0.0, 24.0, 0.0}];
   [v17 setDataSource:self];
@@ -140,17 +140,17 @@ void __63__MediaControlsLanguageOptionsViewController_initWithRouteUID___block_i
   [v17 registerClass:objc_opt_class() forCellReuseIdentifier:@"_LanguageOptionsCellIdentifier"];
   [v17 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"_LanguageOptionsHeaderIdentifier"];
   [(MediaControlsLanguageOptionsViewController *)self setTableView:v17];
-  v22 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v22 addSubview:v17];
+  view5 = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view5 addSubview:v17];
 }
 
-- (void)setLanguageOptionGroups:(id)a3
+- (void)setLanguageOptionGroups:(id)groups
 {
-  objc_storeStrong(&self->_languageOptionGroups, a3);
+  objc_storeStrong(&self->_languageOptionGroups, groups);
   if ([(MediaControlsLanguageOptionsViewController *)self isViewLoaded])
   {
-    v4 = [(MediaControlsLanguageOptionsViewController *)self tableView];
-    [v4 reloadData];
+    tableView = [(MediaControlsLanguageOptionsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -159,12 +159,12 @@ void __63__MediaControlsLanguageOptionsViewController_initWithRouteUID___block_i
   v5.receiver = self;
   v5.super_class = MediaControlsLanguageOptionsViewController;
   [(MediaControlsLanguageOptionsViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v3 bounds];
+  view = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view bounds];
   [(UIView *)self->_materialView setFrame:?];
 
-  v4 = [(MediaControlsLanguageOptionsViewController *)self view];
-  [v4 bounds];
+  view2 = [(MediaControlsLanguageOptionsViewController *)self view];
+  [view2 bounds];
   [(MPAVClippingTableView *)self->_tableView setFrame:?];
 }
 
@@ -184,19 +184,19 @@ void __63__MediaControlsLanguageOptionsViewController_initWithRouteUID___block_i
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"_LanguageOptionsCellIdentifier" forIndexPath:v6];
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_languageOptionGroups, "objectAtIndexedSubscript:", [v6 section]);
-  v9 = [v8 localizedTitleForOptionAtIndex:{objc_msgSend(v6, "row")}];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"_LanguageOptionsCellIdentifier" forIndexPath:pathCopy];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_languageOptionGroups, "objectAtIndexedSubscript:", [pathCopy section]);
+  v9 = [v8 localizedTitleForOptionAtIndex:{objc_msgSend(pathCopy, "row")}];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v9];
 
-  v11 = [v8 indexOfSelectedOption];
-  v12 = [v6 row];
+  indexOfSelectedOption = [v8 indexOfSelectedOption];
+  v12 = [pathCopy row];
 
-  if (v11 == v12)
+  if (indexOfSelectedOption == v12)
   {
     v13 = 3;
   }
@@ -208,91 +208,91 @@ void __63__MediaControlsLanguageOptionsViewController_initWithRouteUID___block_i
 
   [v7 setAccessoryType:v13];
   v14 = [(MTVisualStylingProvider *)self->_visualStylingProvider _visualStylingForStyle:0];
-  v15 = [v7 textLabel];
-  [v15 mt_replaceVisualStyling:v14];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 mt_replaceVisualStyling:v14];
 
-  v16 = [v14 color];
-  [v7 setTintColor:v16];
+  color = [v14 color];
+  [v7 setTintColor:color];
 
   v17 = [(MTVisualStylingProvider *)self->_visualStylingProvider _visualStylingForStyle:5];
-  v18 = [v7 topSeparatorView];
-  [v18 mt_replaceVisualStyling:v17];
+  topSeparatorView = [v7 topSeparatorView];
+  [topSeparatorView mt_replaceVisualStyling:v17];
 
-  v19 = [v7 bottomSeparatorView];
-  [v19 mt_replaceVisualStyling:v17];
+  bottomSeparatorView = [v7 bottomSeparatorView];
+  [bottomSeparatorView mt_replaceVisualStyling:v17];
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_languageOptionGroups objectAtIndexedSubscript:a4];
-  v5 = [v4 numberOfOptions];
+  v4 = [(NSArray *)self->_languageOptionGroups objectAtIndexedSubscript:section];
+  numberOfOptions = [v4 numberOfOptions];
 
-  return v5;
+  return numberOfOptions;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  [v14 deselectRowAtIndexPath:v6 animated:0];
-  v7 = [v14 cellForRowAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v7 setAccessoryType:3];
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_languageOptionGroups, "objectAtIndexedSubscript:", [v6 section]);
-  v9 = [v8 indexOfSelectedOption];
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_languageOptionGroups, "objectAtIndexedSubscript:", [pathCopy section]);
+  indexOfSelectedOption = [v8 indexOfSelectedOption];
+  if (indexOfSelectedOption != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:{objc_msgSend(v6, "section")}];
-    v11 = [v14 cellForRowAtIndexPath:v10];
+    v10 = [MEMORY[0x1E696AC88] indexPathForRow:indexOfSelectedOption inSection:{objc_msgSend(pathCopy, "section")}];
+    v11 = [viewCopy cellForRowAtIndexPath:v10];
     [v11 setAccessoryType:0];
   }
 
   v12 = MEMORY[0x1E69B0848];
-  v13 = [v8 changeRequestForOptionAtIndex:{objc_msgSend(v6, "row")}];
+  v13 = [v8 changeRequestForOptionAtIndex:{objc_msgSend(pathCopy, "row")}];
   [v12 performRequest:v13 completion:0];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   languageOptionGroups = self->_languageOptionGroups;
-  v5 = a4;
-  v6 = -[NSArray objectAtIndexedSubscript:](languageOptionGroups, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v6 indexOfSelectedOption];
-  v8 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](languageOptionGroups, "objectAtIndexedSubscript:", [pathCopy section]);
+  indexOfSelectedOption = [v6 indexOfSelectedOption];
+  v8 = [pathCopy row];
 
-  return v7 != v8;
+  return indexOfSelectedOption != v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:@"_LanguageOptionsHeaderIdentifier"];
-  v7 = [(NSArray *)self->_languageOptionGroups objectAtIndexedSubscript:a4];
-  v8 = [v7 localizedTitle];
-  v9 = [v6 titleLabel];
-  [v9 setText:v8];
+  v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"_LanguageOptionsHeaderIdentifier"];
+  v7 = [(NSArray *)self->_languageOptionGroups objectAtIndexedSubscript:section];
+  localizedTitle = [v7 localizedTitle];
+  titleLabel = [v6 titleLabel];
+  [titleLabel setText:localizedTitle];
 
   v10 = [(MTVisualStylingProvider *)self->_visualStylingProvider _visualStylingForStyle:0];
-  v11 = [v6 titleLabel];
-  [v11 mt_replaceVisualStyling:v10];
+  titleLabel2 = [v6 titleLabel];
+  [titleLabel2 mt_replaceVisualStyling:v10];
 
   return v6;
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  replacementCopy = replacement;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__MediaControlsLanguageOptionsViewController_controller_defersResponseReplacement___block_invoke;
   block[3] = &unk_1E7664FC0;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = replacementCopy;
+  v11 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = replacementCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -312,7 +312,7 @@ void __83__MediaControlsLanguageOptionsViewController_controller_defersResponseR
   }
 }
 
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

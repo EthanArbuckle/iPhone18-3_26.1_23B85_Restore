@@ -1,30 +1,30 @@
 @interface ASReportAConcernDetailsCell
-- (ASReportAConcernDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ASReportAConcernDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)text;
 - (void)layoutSubviews;
-- (void)setPlaceholderText:(id)a3;
-- (void)updatePlaceholderText:(BOOL)a3;
+- (void)setPlaceholderText:(id)text;
+- (void)updatePlaceholderText:(BOOL)text;
 @end
 
 @implementation ASReportAConcernDetailsCell
 
-- (ASReportAConcernDetailsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ASReportAConcernDetailsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = ASReportAConcernDetailsCell;
-  v4 = [(ASReportAConcernDetailsCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ASReportAConcernDetailsCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[UITextView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     textView = v4->_textView;
     v4->_textView = v5;
 
-    v7 = [(ASReportAConcernDetailsCell *)v4 textLabel];
-    v8 = [v7 font];
-    [(UITextView *)v4->_textView setFont:v8];
+    textLabel = [(ASReportAConcernDetailsCell *)v4 textLabel];
+    font = [textLabel font];
+    [(UITextView *)v4->_textView setFont:font];
 
-    v9 = [(ASReportAConcernDetailsCell *)v4 contentView];
-    [v9 addSubview:v4->_textView];
+    contentView = [(ASReportAConcernDetailsCell *)v4 contentView];
+    [contentView addSubview:v4->_textView];
   }
 
   return v4;
@@ -35,29 +35,29 @@
   v38.receiver = self;
   v38.super_class = ASReportAConcernDetailsCell;
   [(ASReportAConcernDetailsCell *)&v38 layoutSubviews];
-  v3 = [(ASReportAConcernDetailsCell *)self contentView];
-  v4 = [v3 readableContentGuide];
-  [v4 layoutFrame];
+  contentView = [(ASReportAConcernDetailsCell *)self contentView];
+  readableContentGuide = [contentView readableContentGuide];
+  [readableContentGuide layoutFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ASReportAConcernDetailsCell *)self textView];
-  v14 = [v13 textContainer];
-  [v14 lineFragmentPadding];
+  textView = [(ASReportAConcernDetailsCell *)self textView];
+  textContainer = [textView textContainer];
+  [textContainer lineFragmentPadding];
   v37 = v15;
 
-  v16 = [(ASReportAConcernDetailsCell *)self contentView];
-  [v16 bounds];
+  contentView2 = [(ASReportAConcernDetailsCell *)self contentView];
+  [contentView2 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   rect_8 = v21;
   v24 = v23;
 
-  v25 = [(ASReportAConcernDetailsCell *)self textView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  textView2 = [(ASReportAConcernDetailsCell *)self textView];
+  [textView2 setFrame:{v18, v20, v22, v24}];
 
   v34 = v6;
   v39.origin.x = v6;
@@ -100,17 +100,17 @@
   v46.size.width = v10;
   v46.size.height = v12;
   v31 = MaxX - CGRectGetMaxX(v46) - v37;
-  v32 = [(ASReportAConcernDetailsCell *)self textView];
-  [v32 setTextContainerInset:{v36, v35, v29, v31}];
+  textView3 = [(ASReportAConcernDetailsCell *)self textView];
+  [textView3 setTextContainerInset:{v36, v35, v29, v31}];
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  objc_storeStrong(&self->_placeholderText, a3);
-  if (a3)
+  objc_storeStrong(&self->_placeholderText, text);
+  if (text)
   {
-    v5 = [(ASReportAConcernDetailsCell *)self textView];
-    [v5 setDelegate:self];
+    textView = [(ASReportAConcernDetailsCell *)self textView];
+    [textView setDelegate:self];
 
     [(ASReportAConcernDetailsCell *)self updatePlaceholderText:0];
   }
@@ -118,66 +118,66 @@
 
 - (NSString)text
 {
-  v3 = [(ASReportAConcernDetailsCell *)self textView];
-  v4 = [v3 text];
-  v5 = [(ASReportAConcernDetailsCell *)self placeholderText];
-  v6 = [v4 isEqualToString:v5];
+  textView = [(ASReportAConcernDetailsCell *)self textView];
+  text = [textView text];
+  placeholderText = [(ASReportAConcernDetailsCell *)self placeholderText];
+  v6 = [text isEqualToString:placeholderText];
 
   if (v6)
   {
-    v7 = 0;
+    text2 = 0;
   }
 
   else
   {
-    v8 = [(ASReportAConcernDetailsCell *)self textView];
-    v7 = [v8 text];
+    textView2 = [(ASReportAConcernDetailsCell *)self textView];
+    text2 = [textView2 text];
   }
 
-  return v7;
+  return text2;
 }
 
-- (void)updatePlaceholderText:(BOOL)a3
+- (void)updatePlaceholderText:(BOOL)text
 {
-  v3 = a3;
-  v5 = [(ASReportAConcernDetailsCell *)self textView];
-  v6 = [v5 text];
-  v7 = v6;
-  if (v3)
+  textCopy = text;
+  textView = [(ASReportAConcernDetailsCell *)self textView];
+  text = [textView text];
+  v7 = text;
+  if (textCopy)
   {
-    v8 = [(ASReportAConcernDetailsCell *)self placeholderText];
-    v9 = [v7 isEqualToString:v8];
+    placeholderText = [(ASReportAConcernDetailsCell *)self placeholderText];
+    v9 = [v7 isEqualToString:placeholderText];
 
     if (!v9)
     {
       return;
     }
 
-    v10 = [(ASReportAConcernDetailsCell *)self textView];
-    [v10 setText:&stru_89FC30];
+    textView2 = [(ASReportAConcernDetailsCell *)self textView];
+    [textView2 setText:&stru_89FC30];
 
-    v16 = [(ASReportAConcernDetailsCell *)self textLabel];
-    v11 = [v16 textColor];
-    v12 = [(ASReportAConcernDetailsCell *)self textView];
-    [v12 setTextColor:v11];
+    textLabel = [(ASReportAConcernDetailsCell *)self textLabel];
+    textColor = [textLabel textColor];
+    textView3 = [(ASReportAConcernDetailsCell *)self textView];
+    [textView3 setTextColor:textColor];
   }
 
   else
   {
-    v13 = [v6 length];
+    v13 = [text length];
 
     if (v13)
     {
       return;
     }
 
-    v14 = [(ASReportAConcernDetailsCell *)self placeholderText];
-    v15 = [(ASReportAConcernDetailsCell *)self textView];
-    [v15 setText:v14];
+    placeholderText2 = [(ASReportAConcernDetailsCell *)self placeholderText];
+    textView4 = [(ASReportAConcernDetailsCell *)self textView];
+    [textView4 setText:placeholderText2];
 
-    v16 = +[UIColor lightGrayColor];
-    v11 = [(ASReportAConcernDetailsCell *)self textView];
-    [v11 setTextColor:v16];
+    textLabel = +[UIColor lightGrayColor];
+    textColor = [(ASReportAConcernDetailsCell *)self textView];
+    [textColor setTextColor:textLabel];
   }
 }
 

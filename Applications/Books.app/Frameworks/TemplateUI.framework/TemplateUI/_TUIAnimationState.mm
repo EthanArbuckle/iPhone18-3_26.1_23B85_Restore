@@ -1,11 +1,11 @@
 @interface _TUIAnimationState
-+ (id)animationForLayer:(id)a3 forKey:(id)a4;
++ (id)animationForLayer:(id)layer forKey:(id)key;
 + (id)currentState;
 + (void)popState;
-+ (void)pushState:(id)a3;
++ (void)pushState:(id)state;
 - (BOOL)shouldCaptureCALayerAnimations;
-- (_TUIAnimationState)initWithDuration:(double)a3 timingParameters:(id)a4;
-- (id)animationForKeyPath:(id)a3;
+- (_TUIAnimationState)initWithDuration:(double)duration timingParameters:(id)parameters;
+- (id)animationForKeyPath:(id)path;
 - (id)customAnimationForContentOffset;
 @end
 
@@ -20,9 +20,9 @@
   return v2;
 }
 
-+ (void)pushState:(id)a3
++ (void)pushState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   os_unfair_lock_lock_with_options();
   if (qword_2E6368)
   {
@@ -40,7 +40,7 @@
   }
 
   v7 = qword_2E6368;
-  qword_2E6368 = v3;
+  qword_2E6368 = stateCopy;
 
   os_unfair_lock_unlock(&unk_2E6378);
 }
@@ -51,9 +51,9 @@
   if ([qword_2E6370 count])
   {
     v2 = &qword_2E6370;
-    v3 = [qword_2E6370 lastObject];
+    lastObject = [qword_2E6370 lastObject];
     v4 = qword_2E6368;
-    qword_2E6368 = v3;
+    qword_2E6368 = lastObject;
 
     [qword_2E6370 removeLastObject];
     if ([qword_2E6370 count])
@@ -75,48 +75,48 @@ LABEL_6:
   os_unfair_lock_unlock(&unk_2E6378);
 }
 
-- (_TUIAnimationState)initWithDuration:(double)a3 timingParameters:(id)a4
+- (_TUIAnimationState)initWithDuration:(double)duration timingParameters:(id)parameters
 {
-  v7 = a4;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = _TUIAnimationState;
   v8 = [(_TUIAnimationState *)&v11 init];
   if (v8)
   {
     UIAnimationDragCoefficient();
-    v8->_duration = v9 * a3;
-    objc_storeStrong(&v8->_timingParameters, a4);
+    v8->_duration = v9 * duration;
+    objc_storeStrong(&v8->_timingParameters, parameters);
   }
 
   return v8;
 }
 
-- (id)animationForKeyPath:(id)a3
+- (id)animationForKeyPath:(id)path
 {
   timingParameters = self->_timingParameters;
-  v5 = a3;
-  v6 = [(UITimingCurveProvider *)timingParameters springTimingParameters];
-  if (v6)
+  pathCopy = path;
+  springTimingParameters = [(UITimingCurveProvider *)timingParameters springTimingParameters];
+  if (springTimingParameters)
   {
-    v7 = [CASpringAnimation animationWithKeyPath:v5];
+    v7 = [CASpringAnimation animationWithKeyPath:pathCopy];
 
-    [v6 mass];
+    [springTimingParameters mass];
     [v7 setMass:?];
-    [v6 stiffness];
+    [springTimingParameters stiffness];
     [v7 setStiffness:?];
-    [v6 damping];
+    [springTimingParameters damping];
     [v7 setDamping:?];
     [v7 setDuration:self->_duration];
     v8 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     [v7 setTimingFunction:v8];
 
-    [v6 initialVelocity];
+    [springTimingParameters initialVelocity];
     [v7 setInitialVelocity:?];
   }
 
   else
   {
-    v7 = [CABasicAnimation animationWithKeyPath:v5];
+    v7 = [CABasicAnimation animationWithKeyPath:pathCopy];
 
     [v7 setDuration:self->_duration];
     v9 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -128,21 +128,21 @@ LABEL_6:
 
 - (id)customAnimationForContentOffset
 {
-  v3 = [(UITimingCurveProvider *)self->_timingParameters springTimingParameters];
-  if (v3)
+  springTimingParameters = [(UITimingCurveProvider *)self->_timingParameters springTimingParameters];
+  if (springTimingParameters)
   {
     v4 = [CASpringAnimation animationWithKeyPath:@"bounds.origin"];
-    [v3 mass];
+    [springTimingParameters mass];
     [v4 setMass:?];
-    [v3 stiffness];
+    [springTimingParameters stiffness];
     [v4 setStiffness:?];
-    [v3 damping];
+    [springTimingParameters damping];
     [v4 setDamping:?];
     [v4 setDuration:self->_duration];
     v5 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     [v4 setTimingFunction:v5];
 
-    [v3 initialVelocity];
+    [springTimingParameters initialVelocity];
     [v4 setInitialVelocity:?];
   }
 
@@ -154,16 +154,16 @@ LABEL_6:
   return v4;
 }
 
-+ (id)animationForLayer:(id)a3 forKey:(id)a4
++ (id)animationForLayer:(id)layer forKey:(id)key
 {
   if (qword_2E6368)
   {
-    [qword_2E6368 animationForKeyPath:a4];
+    [qword_2E6368 animationForKeyPath:key];
   }
 
   else
   {
-    [NSNull null:a3];
+    [NSNull null:layer];
   }
   v4 = ;
 

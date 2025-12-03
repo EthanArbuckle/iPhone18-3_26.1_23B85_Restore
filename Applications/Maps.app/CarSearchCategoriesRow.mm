@@ -2,12 +2,12 @@
 - (BOOL)_shouldHideSecondRow;
 - (BOOL)isAnyCategoryFocused;
 - (CGSize)intrinsicContentSize;
-- (CarSearchCategoriesRow)initWithDelegate:(id)a3;
-- (void)_buttonTapped:(id)a3;
+- (CarSearchCategoriesRow)initWithDelegate:(id)delegate;
+- (void)_buttonTapped:(id)tapped;
 - (void)_reloadButtons;
 - (void)_reloadCategories;
 - (void)didMoveToSuperview;
-- (void)setShowSecondRowIfPossible:(BOOL)a3;
+- (void)setShowSecondRowIfPossible:(BOOL)possible;
 @end
 
 @implementation CarSearchCategoriesRow
@@ -20,9 +20,9 @@
   [(CarSearchCategoriesRow *)self _reloadCategories];
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
     v4 = [(NSMapTable *)self->_categoriesByButton objectForKey:?];
     if (v4)
@@ -38,21 +38,21 @@
 
 - (void)_reloadButtons
 {
-  v3 = [(CarSearchCategoriesRow *)self superview];
+  superview = [(CarSearchCategoriesRow *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(BrowseManager *)self->_browseManager cachedCategories];
+    cachedCategories = [(BrowseManager *)self->_browseManager cachedCategories];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v29 = [WeakRetained traitsForSearchCategoriesRow:self];
 
-    v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(cachedCategories, "count")}];
     v30 = +[NSMapTable weakToWeakObjectsMapTable];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v4;
+    obj = cachedCategories;
     v6 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v6)
     {
@@ -71,30 +71,30 @@
           }
 
           v13 = *(*(&v31 + 1) + 8 * i);
-          v14 = [v13 alternativeName];
-          v15 = v14;
-          if (v14)
+          alternativeName = [v13 alternativeName];
+          v15 = alternativeName;
+          if (alternativeName)
           {
-            v16 = v14;
+            alternativeName2 = alternativeName;
           }
 
           else
           {
-            v16 = [v13 alternativeName];
+            alternativeName2 = [v13 alternativeName];
           }
 
-          v17 = v16;
+          v17 = alternativeName2;
 
-          v18 = [(BrowseManager *)self->_browseManager imageManager];
-          v19 = [(CarSearchCategoriesRow *)self traitCollection];
-          [v19 displayScale];
-          v20 = [v18 synchronousImageForCategory:v13 scale:v29 traits:1 isCarplay:?];
+          imageManager = [(BrowseManager *)self->_browseManager imageManager];
+          traitCollection = [(CarSearchCategoriesRow *)self traitCollection];
+          [traitCollection displayScale];
+          v20 = [imageManager synchronousImageForCategory:v13 scale:v29 traits:1 isCarplay:?];
 
-          v21 = [[CarSearchCategoryButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-          [(CarSearchCategoryButton *)v21 setTitle:v17 image:v20];
-          [(CarSearchCategoryButton *)v21 addTarget:self action:"_buttonTapped:" forControlEvents:64];
-          [v28 addObject:v21];
-          [v30 setObject:v13 forKey:v21];
+          height = [[CarSearchCategoryButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+          [(CarSearchCategoryButton *)height setTitle:v17 image:v20];
+          [(CarSearchCategoryButton *)height addTarget:self action:"_buttonTapped:" forControlEvents:64];
+          [v28 addObject:height];
+          [v30 setObject:v13 forKey:height];
         }
 
         v7 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -158,23 +158,23 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(UIStackView *)self->_firstRow arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->_firstRow arrangedSubviews];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100F855FC;
   v8[3] = &unk_10165F268;
   v8[4] = &v9;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [arrangedSubviews enumerateObjectsUsingBlock:v8];
 
   if ((v10[3] & 1) == 0 && ([(UIStackView *)self->_secondRow isHidden]& 1) == 0)
   {
-    v4 = [(UIStackView *)self->_secondRow arrangedSubviews];
+    arrangedSubviews2 = [(UIStackView *)self->_secondRow arrangedSubviews];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100F85640;
     v7[3] = &unk_10165F268;
     v7[4] = &v9;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [arrangedSubviews2 enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -182,22 +182,22 @@
   return v5;
 }
 
-- (void)setShowSecondRowIfPossible:(BOOL)a3
+- (void)setShowSecondRowIfPossible:(BOOL)possible
 {
-  if (self->_showSecondRowIfPossible != a3)
+  if (self->_showSecondRowIfPossible != possible)
   {
-    self->_showSecondRowIfPossible = a3;
-    v5 = [(CarSearchCategoriesRow *)self _shouldHideSecondRow];
+    self->_showSecondRowIfPossible = possible;
+    _shouldHideSecondRow = [(CarSearchCategoriesRow *)self _shouldHideSecondRow];
     secondRow = self->_secondRow;
 
-    [(UIStackView *)secondRow setHidden:v5];
+    [(UIStackView *)secondRow setHidden:_shouldHideSecondRow];
   }
 }
 
 - (BOOL)_shouldHideSecondRow
 {
-  v3 = [(UIStackView *)self->_secondRow arrangedSubviews];
-  if ([v3 count])
+  arrangedSubviews = [(UIStackView *)self->_secondRow arrangedSubviews];
+  if ([arrangedSubviews count])
   {
     v4 = ![(CarSearchCategoriesRow *)self showSecondRowIfPossible];
   }
@@ -227,24 +227,24 @@
   return result;
 }
 
-- (CarSearchCategoriesRow)initWithDelegate:(id)a3
+- (CarSearchCategoriesRow)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v49.receiver = self;
   v49.super_class = CarSearchCategoriesRow;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(CarSearchCategoriesRow *)&v49 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(CarSearchCategoriesRow *)&v49 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    objc_storeWeak(&v8->_delegate, v4);
+    objc_storeWeak(&height->_delegate, delegateCopy);
     v10 = [[BrowseManager alloc] initWithCacheKey:@"Stark"];
     browseManager = v9->_browseManager;
     v9->_browseManager = v10;
 
-    v47 = v4;
+    v47 = delegateCopy;
     v12 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v12 setAccessibilityIdentifier:@"CarSearchCategoriesRow"];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -289,42 +289,42 @@
     [(UIStackView *)v9->_stackView setDistribution:1];
     [v12 addSubview:v9->_stackView];
     v48 = objc_alloc_init(NSMutableArray);
-    v46 = [(UIStackView *)v9->_firstRow heightAnchor];
-    v45 = [v46 constraintEqualToConstant:40.0];
+    heightAnchor = [(UIStackView *)v9->_firstRow heightAnchor];
+    v45 = [heightAnchor constraintEqualToConstant:40.0];
     v50[0] = v45;
-    v44 = [(UIStackView *)v9->_secondRow heightAnchor];
-    v43 = [v44 constraintEqualToConstant:40.0];
+    heightAnchor2 = [(UIStackView *)v9->_secondRow heightAnchor];
+    v43 = [heightAnchor2 constraintEqualToConstant:40.0];
     v50[1] = v43;
-    v42 = [v12 centerXAnchor];
-    v41 = [(CarSearchCategoriesRow *)v9 centerXAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    centerXAnchor = [v12 centerXAnchor];
+    centerXAnchor2 = [(CarSearchCategoriesRow *)v9 centerXAnchor];
+    v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v50[2] = v40;
-    v39 = [v12 leadingAnchor];
-    v38 = [(CarSearchCategoriesRow *)v9 leadingAnchor];
-    v37 = [v39 constraintGreaterThanOrEqualToAnchor:v38 constant:4.0];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [(CarSearchCategoriesRow *)v9 leadingAnchor];
+    v37 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:4.0];
     v50[3] = v37;
-    v36 = [(CarSearchCategoriesRow *)v9 trailingAnchor];
-    v35 = [v12 trailingAnchor];
-    v34 = [v36 constraintGreaterThanOrEqualToAnchor:v35 constant:4.0];
+    trailingAnchor = [(CarSearchCategoriesRow *)v9 trailingAnchor];
+    trailingAnchor2 = [v12 trailingAnchor];
+    v34 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:4.0];
     v50[4] = v34;
-    v23 = [v12 topAnchor];
-    v24 = [(CarSearchCategoriesRow *)v9 topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:2.0];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [(CarSearchCategoriesRow *)v9 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
     v50[5] = v25;
-    v26 = [(CarSearchCategoriesRow *)v9 bottomAnchor];
-    v27 = [v12 bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:2.0];
+    bottomAnchor = [(CarSearchCategoriesRow *)v9 bottomAnchor];
+    bottomAnchor2 = [v12 bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
     v50[6] = v28;
     v29 = [NSArray arrayWithObjects:v50 count:7];
     [v48 addObjectsFromArray:v29];
 
     LODWORD(v30) = 1148846080;
     v31 = [(UIStackView *)v9->_stackView _maps_constraintsEqualToEdgesOfView:v12 insets:6.0 priority:8.0, 6.0, 8.0, v30];
-    v32 = [v31 allConstraints];
-    [v48 addObjectsFromArray:v32];
+    allConstraints = [v31 allConstraints];
+    [v48 addObjectsFromArray:allConstraints];
 
     [NSLayoutConstraint activateConstraints:v48];
-    v4 = v47;
+    delegateCopy = v47;
   }
 
   return v9;

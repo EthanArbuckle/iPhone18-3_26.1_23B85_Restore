@@ -2,8 +2,8 @@
 - (ANAnalyticsDailyMessaging)init;
 - (BOOL)isDeviceAnalyticsCoordinator;
 - (NSDictionary)devicesCountingAnnouncements;
-- (void)registerDailyRequest:(id)a3;
-- (void)sendDailyRequest:(id)a3 handler:(id)a4;
+- (void)registerDailyRequest:(id)request;
+- (void)sendDailyRequest:(id)request handler:(id)handler;
 @end
 
 @implementation ANAnalyticsDailyMessaging
@@ -25,29 +25,29 @@
 
 - (NSDictionary)devicesCountingAnnouncements
 {
-  v2 = [(ANAnalyticsDailyMessaging *)self rapportConnection];
-  v3 = [v2 devices];
-  v4 = [v3 activeAccessoryDevicesSupportingAnnounce];
+  rapportConnection = [(ANAnalyticsDailyMessaging *)self rapportConnection];
+  devices = [rapportConnection devices];
+  activeAccessoryDevicesSupportingAnnounce = [devices activeAccessoryDevicesSupportingAnnounce];
 
-  return v4;
+  return activeAccessoryDevicesSupportingAnnounce;
 }
 
 - (BOOL)isDeviceAnalyticsCoordinator
 {
-  v3 = [(ANAnalyticsDailyMessaging *)self devicesCountingAnnouncements];
-  v4 = [(ANAnalyticsDailyMessaging *)self rapportConnection];
-  v5 = [v4 localDevice];
+  devicesCountingAnnouncements = [(ANAnalyticsDailyMessaging *)self devicesCountingAnnouncements];
+  rapportConnection = [(ANAnalyticsDailyMessaging *)self rapportConnection];
+  localDevice = [rapportConnection localDevice];
 
-  v6 = [v3 allKeys];
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_25];
+  allKeys = [devicesCountingAnnouncements allKeys];
+  v7 = [allKeys sortedArrayUsingComparator:&__block_literal_global_25];
 
-  if ([v3 count])
+  if ([devicesCountingAnnouncements count])
   {
-    v8 = [v5 homeKitIdentifier];
-    v9 = [v8 UUIDString];
+    homeKitIdentifier = [localDevice homeKitIdentifier];
+    uUIDString = [homeKitIdentifier UUIDString];
     v10 = [v7 objectAtIndexedSubscript:0];
-    v11 = [v10 UUIDString];
-    v12 = [v9 compare:v11] == -1;
+    uUIDString2 = [v10 UUIDString];
+    v12 = [uUIDString compare:uUIDString2] == -1;
   }
 
   else
@@ -68,19 +68,19 @@ uint64_t __57__ANAnalyticsDailyMessaging_isDeviceAnalyticsCoordinator__block_inv
   return v7;
 }
 
-- (void)registerDailyRequest:(id)a3
+- (void)registerDailyRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
-  v5 = [(ANAnalyticsDailyMessaging *)self rapportConnection];
+  rapportConnection = [(ANAnalyticsDailyMessaging *)self rapportConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ANAnalyticsDailyMessaging_registerDailyRequest___block_invoke;
   v7[3] = &unk_278C87078;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = requestCopy;
   v8 = v6;
-  [v5 activateLinkWithOptions:2 completion:v7];
+  [rapportConnection activateLinkWithOptions:2 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -93,12 +93,12 @@ void __50__ANAnalyticsDailyMessaging_registerDailyRequest___block_invoke(uint64_
   [v2 registerDailyRequest:*(a1 + 32)];
 }
 
-- (void)sendDailyRequest:(id)a3 handler:(id)a4
+- (void)sendDailyRequest:(id)request handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ANAnalyticsDailyMessaging *)self rapportConnection];
-  [v8 sendDailyRequest:v7 handler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  rapportConnection = [(ANAnalyticsDailyMessaging *)self rapportConnection];
+  [rapportConnection sendDailyRequest:requestCopy handler:handlerCopy];
 }
 
 @end

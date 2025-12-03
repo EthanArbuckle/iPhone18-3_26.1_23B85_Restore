@@ -1,13 +1,13 @@
 @interface MFMailboxFilterBarButtonItem
-- (MFMailboxFilterBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)setFilterEnabled:(BOOL)a3;
+- (MFMailboxFilterBarButtonItem)initWithTarget:(id)target action:(SEL)action;
+- (void)setFilterEnabled:(BOOL)enabled;
 @end
 
 @implementation MFMailboxFilterBarButtonItem
 
-- (MFMailboxFilterBarButtonItem)initWithTarget:(id)a3 action:(SEL)a4
+- (MFMailboxFilterBarButtonItem)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v7 = MUISolariumFeatureEnabled();
   if (v7)
   {
@@ -24,7 +24,7 @@
   notSelectedImage = self->_notSelectedImage;
   v15.receiver = self;
   v15.super_class = MFMailboxFilterBarButtonItem;
-  v10 = [(MFMailboxFilterBarButtonItem *)&v15 initWithImage:notSelectedImage style:0 target:v6 action:a4];
+  v10 = [(MFMailboxFilterBarButtonItem *)&v15 initWithImage:notSelectedImage style:0 target:targetCopy action:action];
   if (v10)
   {
     v11 = +[NSBundle mainBundle];
@@ -47,19 +47,19 @@
   return v10;
 }
 
-- (void)setFilterEnabled:(BOOL)a3
+- (void)setFilterEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_filterEnabled = a3;
+  enabledCopy = enabled;
+  self->_filterEnabled = enabled;
   if (MUISolariumFeatureEnabled())
   {
 
-    [(MFMailboxFilterBarButtonItem *)self setSelected:v3];
+    [(MFMailboxFilterBarButtonItem *)self setSelected:enabledCopy];
   }
 
   else
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(MFMailboxFilterBarButtonItem *)self selectedImage];
     }

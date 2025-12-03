@@ -15,16 +15,16 @@
 - (BOOL)sourceIsInstalled
 {
   v4 = objc_alloc(MEMORY[0x277CC1E70]);
-  v5 = [(WDSourceStoredDataViewController *)self source];
-  v6 = [v5 bundleIdentifier];
+  source = [(WDSourceStoredDataViewController *)self source];
+  bundleIdentifier = [source bundleIdentifier];
   v13 = 0;
-  v7 = [v4 initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v13];
+  v7 = [v4 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:&v13];
   v8 = v13;
 
   if (v7)
   {
-    v9 = [v7 applicationState];
-    v10 = [v9 isInstalled];
+    applicationState = [v7 applicationState];
+    isInstalled = [applicationState isInstalled];
   }
 
   else
@@ -39,16 +39,16 @@
       }
     }
 
-    v10 = 0;
+    isInstalled = 0;
   }
 
-  return v10;
+  return isInstalled;
 }
 
 - (BOOL)sourceHasData
 {
-  v2 = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
-  v3 = [v2 count] != 0;
+  capturedSampleTypes = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
+  v3 = [capturedSampleTypes count] != 0;
 
   return v3;
 }
@@ -56,28 +56,28 @@
 - (id)storedDataPredicate
 {
   v2 = MEMORY[0x277CCD838];
-  v3 = [(WDSourceStoredDataViewController *)self source];
-  v4 = [v2 predicateForObjectsFromSource:v3];
+  source = [(WDSourceStoredDataViewController *)self source];
+  v4 = [v2 predicateForObjectsFromSource:source];
 
   return v4;
 }
 
 - (id)storedDataDisplayName
 {
-  v2 = [(WDSourceStoredDataViewController *)self source];
-  v3 = [v2 name];
+  source = [(WDSourceStoredDataViewController *)self source];
+  name = [source name];
 
-  return v3;
+  return name;
 }
 
 - (BOOL)shouldShowDeleteAllDataButton
 {
-  v3 = [(WDStoredDataByCategoryViewController *)self profile];
-  v4 = [v3 healthStore];
-  v5 = [v4 profileIdentifier];
-  v6 = [v5 type];
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v6 == 3)
+  if (type == 3)
   {
     return 0;
   }
@@ -111,18 +111,18 @@
 - (void)deleteSource
 {
   v3 = objc_alloc(MEMORY[0x277CCDA20]);
-  v4 = [(WDStoredDataByCategoryViewController *)self profile];
-  v5 = [v4 healthStore];
-  v6 = [v3 initWithHealthStore:v5];
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  v6 = [v3 initWithHealthStore:healthStore];
 
-  v7 = [(WDSourceStoredDataViewController *)self source];
-  v8 = [v7 bundleIdentifier];
+  source = [(WDSourceStoredDataViewController *)self source];
+  bundleIdentifier = [source bundleIdentifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__WDSourceStoredDataViewController_deleteSource__block_invoke;
   v9[3] = &unk_2796E6CC8;
   v9[4] = self;
-  [v6 deleteSourceWithBundleIdentifier:v8 completion:v9];
+  [v6 deleteSourceWithBundleIdentifier:bundleIdentifier completion:v9];
 }
 
 void __48__WDSourceStoredDataViewController_deleteSource__block_invoke(uint64_t a1, char a2, void *a3)
@@ -141,17 +141,17 @@ void __48__WDSourceStoredDataViewController_deleteSource__block_invoke(uint64_t 
 
 - (void)deleteAllSourceData
 {
-  v4 = [(WDStoredDataByCategoryViewController *)self profile];
-  v5 = [v4 healthStore];
-  v6 = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
-  v7 = [(WDSourceStoredDataViewController *)self source];
-  v8 = [v7 bundleIdentifier];
+  profile = [(WDStoredDataByCategoryViewController *)self profile];
+  healthStore = [profile healthStore];
+  capturedSampleTypes = [(WDStoredDataByCategoryViewController *)self capturedSampleTypes];
+  source = [(WDSourceStoredDataViewController *)self source];
+  bundleIdentifier = [source bundleIdentifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__WDSourceStoredDataViewController_deleteAllSourceData__block_invoke;
   v9[3] = &__block_descriptor_40_e20_v20__0B8__NSError_12l;
   v9[4] = a2;
-  [v5 deleteAllSamplesWithTypes:v6 sourceBundleIdentifier:v8 options:2 completion:v9];
+  [healthStore deleteAllSamplesWithTypes:capturedSampleTypes sourceBundleIdentifier:bundleIdentifier options:2 completion:v9];
 }
 
 void __55__WDSourceStoredDataViewController_deleteAllSourceData__block_invoke(uint64_t a1, char a2, void *a3)
@@ -171,7 +171,7 @@ void __55__WDSourceStoredDataViewController_deleteAllSourceData__block_invoke(ui
 - (void)sourceIsInstalled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = NSStringFromSelector(a2);
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_1(&dword_251E85000, v5, v6, "%@ sourceIsInstalled: %@", v7, v8, v9, v10, v12);

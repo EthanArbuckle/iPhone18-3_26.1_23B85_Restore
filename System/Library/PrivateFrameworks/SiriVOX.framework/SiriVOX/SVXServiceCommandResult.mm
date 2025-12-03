@@ -1,11 +1,11 @@
 @interface SVXServiceCommandResult
-+ (SVXServiceCommandResult)resultWithCommand:(id)a3;
-+ (SVXServiceCommandResult)resultWithResults:(id)a3;
-+ (id)resultFailureWithErrorCode:(int64_t)a3 reason:(id)a4;
++ (SVXServiceCommandResult)resultWithCommand:(id)command;
++ (SVXServiceCommandResult)resultWithResults:(id)results;
++ (id)resultFailureWithErrorCode:(int64_t)code reason:(id)reason;
 + (id)resultIgnored;
 + (id)resultSuccess;
-- (BOOL)handleResultUsingIgnoredBlock:(id)a3 successBlock:(id)a4 failureBlock:(id)a5 commandBlock:(id)a6;
-- (id)_initWithType:(int64_t)a3 failureErrorCode:(int64_t)a4 failureReason:(id)a5 command:(id)a6 results:(id)a7;
+- (BOOL)handleResultUsingIgnoredBlock:(id)block successBlock:(id)successBlock failureBlock:(id)failureBlock commandBlock:(id)commandBlock;
+- (id)_initWithType:(int64_t)type failureErrorCode:(int64_t)code failureReason:(id)reason command:(id)command results:(id)results;
 - (id)_optimalResult;
 @end
 
@@ -16,15 +16,15 @@
   v20 = *MEMORY[0x277D85DE8];
   if (self->_type != 4)
   {
-    v12 = self;
+    selfCopy = self;
 LABEL_16:
-    v6 = v12;
+    v6 = selfCopy;
     goto LABEL_19;
   }
 
   if (![(NSArray *)self->_results count])
   {
-    v12 = +[SVXServiceCommandResult resultIgnored];
+    selfCopy = +[SVXServiceCommandResult resultIgnored];
     goto LABEL_16;
   }
 
@@ -48,11 +48,11 @@ LABEL_16:
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) _optimalResult];
-        v10 = v9;
-        if (!v6 || v9[1] > v6->_type)
+        _optimalResult = [*(*(&v15 + 1) + 8 * i) _optimalResult];
+        v10 = _optimalResult;
+        if (!v6 || _optimalResult[1] > v6->_type)
         {
-          v11 = v9;
+          v11 = _optimalResult;
 
           v6 = v11;
         }
@@ -75,28 +75,28 @@ LABEL_19:
   return v6;
 }
 
-- (id)_initWithType:(int64_t)a3 failureErrorCode:(int64_t)a4 failureReason:(id)a5 command:(id)a6 results:(id)a7
+- (id)_initWithType:(int64_t)type failureErrorCode:(int64_t)code failureReason:(id)reason command:(id)command results:(id)results
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  reasonCopy = reason;
+  commandCopy = command;
+  resultsCopy = results;
   v24.receiver = self;
   v24.super_class = SVXServiceCommandResult;
   v15 = [(SVXServiceCommandResult *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    v15->_type = a3;
-    v15->_failureErrorCode = a4;
-    v17 = [v12 copy];
+    v15->_type = type;
+    v15->_failureErrorCode = code;
+    v17 = [reasonCopy copy];
     failureReason = v16->_failureReason;
     v16->_failureReason = v17;
 
-    v19 = [v13 copy];
+    v19 = [commandCopy copy];
     command = v16->_command;
     v16->_command = v19;
 
-    v21 = [v14 copy];
+    v21 = [resultsCopy copy];
     results = v16->_results;
     v16->_results = v21;
   }
@@ -104,22 +104,22 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)handleResultUsingIgnoredBlock:(id)a3 successBlock:(id)a4 failureBlock:(id)a5 commandBlock:(id)a6
+- (BOOL)handleResultUsingIgnoredBlock:(id)block successBlock:(id)successBlock failureBlock:(id)failureBlock commandBlock:(id)commandBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  blockCopy = block;
+  successBlockCopy = successBlock;
+  failureBlockCopy = failureBlock;
+  commandBlockCopy = commandBlock;
+  v14 = commandBlockCopy;
   v15 = 0;
   type = self->_type;
   if (type <= 1)
   {
     if (!type)
     {
-      if (v10)
+      if (blockCopy)
       {
-        v10[2](v10);
+        blockCopy[2](blockCopy);
       }
 
       goto LABEL_16;
@@ -127,9 +127,9 @@ LABEL_19:
 
     if (type == 1)
     {
-      if (v12)
+      if (failureBlockCopy)
       {
-        v12[2](v12, self->_failureErrorCode, self->_failureReason);
+        failureBlockCopy[2](failureBlockCopy, self->_failureErrorCode, self->_failureReason);
       }
 
       goto LABEL_16;
@@ -141,22 +141,22 @@ LABEL_19:
     switch(type)
     {
       case 2:
-        if (v11)
+        if (successBlockCopy)
         {
-          v11[2](v11);
+          successBlockCopy[2](successBlockCopy);
         }
 
         goto LABEL_16;
       case 3:
-        if (v13)
+        if (commandBlockCopy)
         {
-          (*(v13 + 2))(v13, self->_command);
+          (*(commandBlockCopy + 2))(commandBlockCopy, self->_command);
         }
 
         goto LABEL_16;
       case 4:
-        v17 = [(SVXServiceCommandResult *)self _optimalResult];
-        [v17 handleResultUsingIgnoredBlock:v10 successBlock:v11 failureBlock:v12 commandBlock:v14];
+        _optimalResult = [(SVXServiceCommandResult *)self _optimalResult];
+        [_optimalResult handleResultUsingIgnoredBlock:blockCopy successBlock:successBlockCopy failureBlock:failureBlockCopy commandBlock:v14];
 
 LABEL_16:
         v15 = 1;
@@ -167,26 +167,26 @@ LABEL_16:
   return v15;
 }
 
-+ (SVXServiceCommandResult)resultWithResults:(id)a3
++ (SVXServiceCommandResult)resultWithResults:(id)results
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithType:4 failureErrorCode:0 failureReason:0 command:0 results:v3];
+  resultsCopy = results;
+  v4 = [objc_alloc(objc_opt_class()) _initWithType:4 failureErrorCode:0 failureReason:0 command:0 results:resultsCopy];
 
   return v4;
 }
 
-+ (SVXServiceCommandResult)resultWithCommand:(id)a3
++ (SVXServiceCommandResult)resultWithCommand:(id)command
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithType:3 failureErrorCode:0 failureReason:0 command:v3 results:0];
+  commandCopy = command;
+  v4 = [objc_alloc(objc_opt_class()) _initWithType:3 failureErrorCode:0 failureReason:0 command:commandCopy results:0];
 
   return v4;
 }
 
-+ (id)resultFailureWithErrorCode:(int64_t)a3 reason:(id)a4
++ (id)resultFailureWithErrorCode:(int64_t)code reason:(id)reason
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) _initWithType:1 failureErrorCode:a3 failureReason:v5 command:0 results:0];
+  reasonCopy = reason;
+  v6 = [objc_alloc(objc_opt_class()) _initWithType:1 failureErrorCode:code failureReason:reasonCopy command:0 results:0];
 
   return v6;
 }

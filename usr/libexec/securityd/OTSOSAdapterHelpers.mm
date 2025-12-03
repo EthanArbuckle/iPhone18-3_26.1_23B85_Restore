@@ -1,15 +1,15 @@
 @interface OTSOSAdapterHelpers
-+ (id)peerPublicSigningKeySPKIs:(id)a3;
-+ (id)peerPublicSigningKeySPKIsForCircle:(id)a3 error:(id *)a4;
++ (id)peerPublicSigningKeySPKIs:(id)is;
++ (id)peerPublicSigningKeySPKIsForCircle:(id)circle error:(id *)error;
 @end
 
 @implementation OTSOSAdapterHelpers
 
-+ (id)peerPublicSigningKeySPKIsForCircle:(id)a3 error:(id *)a4
++ (id)peerPublicSigningKeySPKIsForCircle:(id)circle error:(id *)error
 {
-  v6 = a3;
+  circleCopy = circle;
   v21 = 0;
-  v7 = [v6 circleStatus:&v21];
+  v7 = [circleCopy circleStatus:&v21];
   v8 = v21;
   v9 = v8;
   if (v7 || v8)
@@ -34,11 +34,11 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "octagon-sos: Not in circle; not preapproving keys: %@ (%@)", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v9;
       v13 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -50,7 +50,7 @@
   else
   {
     v20 = 0;
-    v10 = [v6 fetchTrustedPeers:&v20];
+    v10 = [circleCopy fetchTrustedPeers:&v20];
     v11 = v20;
     v12 = v11;
     if (!v10 || v11)
@@ -63,11 +63,11 @@
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "octagon-sos: Can't fetch trusted peer SPKIs: %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v17 = v12;
         v13 = 0;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -78,22 +78,22 @@
 
     else
     {
-      v13 = [a1 peerPublicSigningKeySPKIs:v10];
+      v13 = [self peerPublicSigningKeySPKIs:v10];
     }
   }
 
   return v13;
 }
 
-+ (id)peerPublicSigningKeySPKIs:(id)a3
++ (id)peerPublicSigningKeySPKIs:(id)is
 {
-  v3 = a3;
+  isCopy = is;
   v4 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = isCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -111,12 +111,12 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 publicSigningKey];
-        v13 = [v12 encodeSubjectPublicKeyInfo];
+        publicSigningKey = [v11 publicSigningKey];
+        encodeSubjectPublicKeyInfo = [publicSigningKey encodeSubjectPublicKeyInfo];
 
         v14 = sub_100006274("SecError");
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-        if (v13)
+        if (encodeSubjectPublicKeyInfo)
         {
           if (v15)
           {
@@ -125,7 +125,7 @@
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "octagon-sos: Created SPKI for peer: %@", buf, 0xCu);
           }
 
-          [v4 addObject:v13];
+          [v4 addObject:encodeSubjectPublicKeyInfo];
         }
 
         else

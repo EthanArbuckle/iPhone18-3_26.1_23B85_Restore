@@ -1,5 +1,5 @@
 @interface NviDirectionalitySignalData
-- (NviDirectionalitySignalData)initWithStartSample:(unint64_t)a3 endSample:(unint64_t)a4 confidence:(float)a5 azimuth:(float)a6 estimatedAzimuth:(float)a7;
+- (NviDirectionalitySignalData)initWithStartSample:(unint64_t)sample endSample:(unint64_t)endSample confidence:(float)confidence azimuth:(float)azimuth estimatedAzimuth:(float)estimatedAzimuth;
 - (float)mostSampledAzimuth;
 - (id)_spatialSpectrumLogStr;
 - (id)description;
@@ -46,9 +46,9 @@
 - (id)stringForLogging
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NviSignalData *)self sigGenTs];
+  sigGenTs = [(NviSignalData *)self sigGenTs];
   startSample = self->_startSample;
-  return [v3 stringWithFormat:@"%llu, %f, %lu, %lu, %f, %f, %f, ", v4, *&self->_processedAudioDurMs, startSample, self->_endSample, self->_azimuth, self->_estimatedAzimuth, self->_confidence];
+  return [v3 stringWithFormat:@"%llu, %f, %lu, %lu, %f, %f, %f, ", sigGenTs, *&self->_processedAudioDurMs, startSample, self->_endSample, self->_azimuth, self->_estimatedAzimuth, self->_confidence];
 }
 
 - (float)mostSampledAzimuth
@@ -77,13 +77,13 @@
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(NSDictionary *)self->_azDistribution objectForKeyedSubscript:v10, v16];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-        if (v12 > v6)
+        if (unsignedIntegerValue > v6)
         {
           [v10 floatValue];
           v8 = v13;
-          v6 = v12;
+          v6 = unsignedIntegerValue;
         }
       }
 
@@ -102,7 +102,7 @@
   return v8;
 }
 
-- (NviDirectionalitySignalData)initWithStartSample:(unint64_t)a3 endSample:(unint64_t)a4 confidence:(float)a5 azimuth:(float)a6 estimatedAzimuth:(float)a7
+- (NviDirectionalitySignalData)initWithStartSample:(unint64_t)sample endSample:(unint64_t)endSample confidence:(float)confidence azimuth:(float)azimuth estimatedAzimuth:(float)estimatedAzimuth
 {
   v13 = mach_absolute_time();
   v19.receiver = self;
@@ -111,11 +111,11 @@
   v15 = v14;
   if (v14)
   {
-    v14->_startSample = a3;
-    v14->_endSample = a4;
-    v14->_confidence = a5;
-    v14->_azimuth = a6;
-    v14->_estimatedAzimuth = a7;
+    v14->_startSample = sample;
+    v14->_endSample = endSample;
+    v14->_confidence = confidence;
+    v14->_azimuth = azimuth;
+    v14->_estimatedAzimuth = estimatedAzimuth;
     v16 = objc_alloc_init(MEMORY[0x277CBEA60]);
     spatialSpectrumData = v15->_spatialSpectrumData;
     v15->_spatialSpectrumData = v16;

@@ -10,19 +10,19 @@
 - (int64_t)_fallbackInterfaceOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostedAppVCBackReference);
-  v3 = [WeakRetained contentInterfaceOrientation];
+  contentInterfaceOrientation = [WeakRetained contentInterfaceOrientation];
 
-  return v3;
+  return contentInterfaceOrientation;
 }
 
 - (double)_statusBarAlpha
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostedAppVCBackReference);
-  v4 = [WeakRetained _appViewController];
+  _appViewController = [WeakRetained _appViewController];
 
-  if (v4)
+  if (_appViewController)
   {
-    [v4 statusBarAlpha];
+    [_appViewController statusBarAlpha];
   }
 
   else

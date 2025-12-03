@@ -1,7 +1,7 @@
 @interface WatchControlSecureIntentEnrollmentController
 - (void)_continueEnrollment;
-- (void)connectedDevicesDidChange:(id)a3;
-- (void)didReceiveIncomingData:(id)a3;
+- (void)connectedDevicesDidChange:(id)change;
+- (void)didReceiveIncomingData:(id)data;
 - (void)viewDidLoad;
 @end
 
@@ -19,17 +19,17 @@
   welcomeController = self->_welcomeController;
   self->_welcomeController = v6;
 
-  v8 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   continueButton = self->_continueButton;
-  self->_continueButton = v8;
+  self->_continueButton = boldButton;
 
   v10 = self->_continueButton;
   v11 = settingsLocString(@"SIDE_BUTTON_ALERT_BUTTON_CONTINUE", @"AccessibilitySettings-watchcontrol");
   [(OBTrayButton *)v10 setTitle:v11 forState:0];
 
   [(OBTrayButton *)self->_continueButton addTarget:self action:sel__continueEnrollment forEvents:64];
-  v12 = [(OBWelcomeController *)self->_welcomeController buttonTray];
-  [v12 addButton:self->_continueButton];
+  buttonTray = [(OBWelcomeController *)self->_welcomeController buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   v13 = [MEMORY[0x277D37690] buttonWithType:1];
   notNowButton = self->_notNowButton;
@@ -40,16 +40,16 @@
   [(OBTrayButton *)v15 setTitle:v16 forState:0];
 
   [(OBTrayButton *)self->_notNowButton addTarget:self action:sel__cancelEnrollment forEvents:64];
-  v17 = [(OBWelcomeController *)self->_welcomeController buttonTray];
-  [v17 addButton:self->_notNowButton];
+  buttonTray2 = [(OBWelcomeController *)self->_welcomeController buttonTray];
+  [buttonTray2 addButton:self->_notNowButton];
 
   v18 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelEnrollment];
-  v19 = [(OBWelcomeController *)self->_welcomeController navigationItem];
-  [v19 setLeftBarButtonItem:v18];
+  navigationItem = [(OBWelcomeController *)self->_welcomeController navigationItem];
+  [navigationItem setLeftBarButtonItem:v18];
 
   [(OBNavigationController *)self pushViewController:self->_welcomeController animated:1];
-  v20 = [MEMORY[0x277CE6A88] sharedInstance];
-  [v20 registerForIncomingData:self];
+  mEMORY[0x277CE6A88] = [MEMORY[0x277CE6A88] sharedInstance];
+  [mEMORY[0x277CE6A88] registerForIncomingData:self];
 }
 
 - (void)_continueEnrollment
@@ -57,8 +57,8 @@
   [AccessibilityBridgeBaseController setGizmoAccessibilityPref:MEMORY[0x277CBEC38] forKey:@"WatchControlRequestEnrollmentAlert"];
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(OBWelcomeController *)self->_welcomeController navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(OBWelcomeController *)self->_welcomeController navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   [v5 startAnimating];
   [(OBTrayButton *)self->_continueButton setEnabled:0];
@@ -90,21 +90,21 @@ uint64_t __66__WatchControlSecureIntentEnrollmentController__dismissEnrollment__
   return [v3 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)didReceiveIncomingData:(id)a3
+- (void)didReceiveIncomingData:(id)data
 {
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x277CE6A78]];
+  v6 = [data objectForKeyedSubscript:*MEMORY[0x277CE6A78]];
   v4 = [v6 objectForKeyedSubscript:@"ASTDoubleClickAlertDismissed"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     [(WatchControlSecureIntentEnrollmentController *)self _dismissEnrollment];
   }
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
-  if (![a3 count])
+  if (![change count])
   {
 
     [(WatchControlSecureIntentEnrollmentController *)self _cancelEnrollment];

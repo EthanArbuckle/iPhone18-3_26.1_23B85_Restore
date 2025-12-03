@@ -1,9 +1,9 @@
 @interface ATXAppDirectoryServer
 + (id)sharedInstance;
 - (ATXAppDirectoryServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)appLaunchDatesWithReply:(id)a3;
-- (void)categoriesWithReply:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)appLaunchDatesWithReply:(id)reply;
+- (void)categoriesWithReply:(id)reply;
 - (void)notifyBookmarksDidChange;
 - (void)requestNotificationWhenCategoriesAreReady;
 @end
@@ -58,18 +58,18 @@ void __39__ATXAppDirectoryServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)categoriesWithReply:(id)a3
+- (void)categoriesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[ATXAppDirectoryOrderingProvider sharedInstance];
-  [v4 categoriesWithReply:v3];
+  [v4 categoriesWithReply:replyCopy];
 }
 
-- (void)appLaunchDatesWithReply:(id)a3
+- (void)appLaunchDatesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[ATXAppDirectoryOrderingProvider sharedInstance];
-  [v4 appLaunchDatesWithReply:v3];
+  [v4 appLaunchDatesWithReply:replyCopy];
 }
 
 - (void)notifyBookmarksDidChange
@@ -84,9 +84,9 @@ void __39__ATXAppDirectoryServer_sharedInstance__block_invoke()
   [v2 requestNotificationWhenCategoriesAreReady];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -95,16 +95,16 @@ void __39__ATXAppDirectoryServer_sharedInstance__block_invoke()
   }
 
   v7 = *MEMORY[0x277CEBA28];
-  v8 = [v5 valueForEntitlement:*MEMORY[0x277CEBA28]];
+  v8 = [connectionCopy valueForEntitlement:*MEMORY[0x277CEBA28]];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && ([v8 BOOLValue] & 1) != 0)
   {
     v9 = ATXAppDirectoryInterface();
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_25_4];
-    [v5 setInvalidationHandler:&__block_literal_global_28_0];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_25_4];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_28_0];
+    [connectionCopy resume];
     v10 = 1;
   }
 
@@ -113,7 +113,7 @@ void __39__ATXAppDirectoryServer_sharedInstance__block_invoke()
     v11 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ATXAppDirectoryServer *)v5 listener:v7 shouldAcceptNewConnection:v11];
+      [(ATXAppDirectoryServer *)connectionCopy listener:v7 shouldAcceptNewConnection:v11];
     }
 
     v10 = 0;

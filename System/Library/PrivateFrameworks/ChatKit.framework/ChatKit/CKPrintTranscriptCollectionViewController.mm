@@ -1,22 +1,22 @@
 @interface CKPrintTranscriptCollectionViewController
-- (CKPrintTranscriptCollectionViewController)initWithConversation:(id)a3 delegate:(id)a4 balloonMaxWidth:(double)a5 marginInsets:(UIEdgeInsets)a6;
+- (CKPrintTranscriptCollectionViewController)initWithConversation:(id)conversation delegate:(id)delegate balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets;
 - (void)updateUIContents;
 @end
 
 @implementation CKPrintTranscriptCollectionViewController
 
-- (CKPrintTranscriptCollectionViewController)initWithConversation:(id)a3 delegate:(id)a4 balloonMaxWidth:(double)a5 marginInsets:(UIEdgeInsets)a6
+- (CKPrintTranscriptCollectionViewController)initWithConversation:(id)conversation delegate:(id)delegate balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets
 {
   v7.receiver = self;
   v7.super_class = CKPrintTranscriptCollectionViewController;
-  return [(CKTranscriptCollectionViewController *)&v7 initWithConversation:a3 delegate:a4 notifications:MEMORY[0x1E695E0F0] balloonMaxWidth:a5 marginInsets:a6.top, a6.left, a6.bottom, a6.right];
+  return [(CKTranscriptCollectionViewController *)&v7 initWithConversation:conversation delegate:delegate notifications:MEMORY[0x1E695E0F0] balloonMaxWidth:width marginInsets:insets.top, insets.left, insets.bottom, insets.right];
 }
 
 - (void)updateUIContents
 {
-  v2 = [(CKTranscriptCollectionViewController *)self collectionView];
-  [v2 setShowsVerticalScrollIndicator:0];
-  [v2 setUserInteractionEnabled:0];
+  collectionView = [(CKTranscriptCollectionViewController *)self collectionView];
+  [collectionView setShowsVerticalScrollIndicator:0];
+  [collectionView setUserInteractionEnabled:0];
 }
 
 @end

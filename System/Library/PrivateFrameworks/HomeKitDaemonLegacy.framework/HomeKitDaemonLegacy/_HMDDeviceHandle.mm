@@ -1,56 +1,56 @@
 @interface _HMDDeviceHandle
-+ (BOOL)isValidDestination:(id)a3;
++ (BOOL)isValidDestination:(id)destination;
 + (NSUUID)identifierNamespace;
 - (NSString)destination;
 - (_HMDDeviceHandle)init;
-- (_HMDDeviceHandle)initWithCoder:(id)a3;
-- (_HMDDeviceHandle)initWithDestination:(id)a3;
-- (_HMDDeviceHandle)initWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_HMDDeviceHandle)initWithCoder:(id)coder;
+- (_HMDDeviceHandle)initWithDestination:(id)destination;
+- (_HMDDeviceHandle)initWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HMDDeviceHandle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_HMDDeviceHandle *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HM.identifier"];
+  coderCopy = coder;
+  identifier = [(_HMDDeviceHandle *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 }
 
-- (_HMDDeviceHandle)initWithCoder:(id)a3
+- (_HMDDeviceHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
 
   v6 = [(_HMDDeviceHandle *)self initWithIdentifier:v5];
   return v6;
 }
 
-- (_HMDDeviceHandle)initWithIdentifier:(id)a3
+- (_HMDDeviceHandle)initWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15.receiver = self;
     v15.super_class = _HMDDeviceHandle;
     v5 = [(_HMDDeviceHandle *)&v15 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
       identifier = v5->_identifier;
       v5->_identifier = v6;
     }
 
-    v8 = v5;
-    v9 = v8;
+    selfCopy = v5;
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -68,9 +68,9 @@
   return v9;
 }
 
-- (_HMDDeviceHandle)initWithDestination:(id)a3
+- (_HMDDeviceHandle)initWithDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   NSStringFromSelector(a2);
   objc_claimAutoreleasedReturnValue();
   v5 = _HMFPreconditionFailureWithFormat();
@@ -115,9 +115,9 @@
   return v3;
 }
 
-+ (BOOL)isValidDestination:(id)a3
++ (BOOL)isValidDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

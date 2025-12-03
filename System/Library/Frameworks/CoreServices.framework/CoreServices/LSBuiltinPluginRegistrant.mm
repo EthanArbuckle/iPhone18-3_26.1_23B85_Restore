@@ -1,24 +1,24 @@
 @interface LSBuiltinPluginRegistrant
-- (LSBuiltinPluginRegistrant)initWithStrategy:(id)a3 operationUUID:(id)a4 itemInfoDict:(id)a5;
-- (void)runWithCompletion:(id)a3;
+- (LSBuiltinPluginRegistrant)initWithStrategy:(id)strategy operationUUID:(id)d itemInfoDict:(id)dict;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation LSBuiltinPluginRegistrant
 
-- (LSBuiltinPluginRegistrant)initWithStrategy:(id)a3 operationUUID:(id)a4 itemInfoDict:(id)a5
+- (LSBuiltinPluginRegistrant)initWithStrategy:(id)strategy operationUUID:(id)d itemInfoDict:(id)dict
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  strategyCopy = strategy;
+  dCopy = d;
+  dictCopy = dict;
   v17.receiver = self;
   v17.super_class = LSBuiltinPluginRegistrant;
   v12 = [(LSBuiltinPluginRegistrant *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_strategy, a3);
-    objc_storeStrong(&v13->_uuid, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_strategy, strategy);
+    objc_storeStrong(&v13->_uuid, d);
+    v14 = [dictCopy copy];
     miDict = v13->_miDict;
     v13->_miDict = v14;
   }
@@ -26,22 +26,22 @@
   return v13;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v23 = [(NSDictionary *)self->_miDict objectForKey:@"Path"];
   if (v23)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v23 isDirectory:1];
     v22 = [(NSDictionary *)self->_miDict objectForKey:*MEMORY[0x1E695E4F0]];
-    v6 = [v5 pathComponents];
+    pathComponents = [v5 pathComponents];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = v6;
+    v8 = pathComponents;
     v9 = [v8 countByEnumeratingWithState:&v31 objects:&v39 count:16];
     v10 = v9;
     if (v9)
@@ -117,7 +117,7 @@
         }
       }
 
-      v4[2](v4, *(*(&v31 + 1) + 40), v40[5]);
+      completionCopy[2](completionCopy, *(*(&v31 + 1) + 40), v40[5]);
       _Block_object_dispose(&v31, 8);
 
       _Block_object_dispose(&v39, 8);
@@ -129,7 +129,7 @@
       v36 = @"plugin is in an app";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v16 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[LSBuiltinPluginRegistrant runWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Info/LSRegistrants.mm", 630);
-      v4[2](v4, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
   }
 
@@ -139,7 +139,7 @@
     v38 = @"Missing path";
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v22 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v5, "[LSBuiltinPluginRegistrant runWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Info/LSRegistrants.mm", 622);
-    (v4[2])(v4, 0);
+    (completionCopy[2])(completionCopy, 0);
   }
 
   v21 = *MEMORY[0x1E69E9840];

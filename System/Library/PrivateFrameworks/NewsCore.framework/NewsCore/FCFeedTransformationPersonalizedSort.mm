@@ -1,60 +1,60 @@
 @interface FCFeedTransformationPersonalizedSort
-+ (id)transformationWithPersonalizer:(id)a3 feedItemScores:(id)a4 sortOptions:(int64_t)a5 configurationSet:(int64_t)a6;
-- (id)personalizedHeadlines:(id)a3;
-- (id)transformFeedItems:(id)a3;
-- (id)transformHeadlines:(id)a3;
++ (id)transformationWithPersonalizer:(id)personalizer feedItemScores:(id)scores sortOptions:(int64_t)options configurationSet:(int64_t)set;
+- (id)personalizedHeadlines:(id)headlines;
+- (id)transformFeedItems:(id)items;
+- (id)transformHeadlines:(id)headlines;
 @end
 
 @implementation FCFeedTransformationPersonalizedSort
 
-+ (id)transformationWithPersonalizer:(id)a3 feedItemScores:(id)a4 sortOptions:(int64_t)a5 configurationSet:(int64_t)a6
++ (id)transformationWithPersonalizer:(id)personalizer feedItemScores:(id)scores sortOptions:(int64_t)options configurationSet:(int64_t)set
 {
-  v9 = a4;
-  v10 = a3;
+  scoresCopy = scores;
+  personalizerCopy = personalizer;
   v11 = objc_opt_new();
-  [v11 setFeedPersonalizer:v10];
+  [v11 setFeedPersonalizer:personalizerCopy];
 
-  [v11 setFeedItemScores:v9];
-  [v11 setSortOptions:a5];
-  [v11 setConfigurationSet:a6];
+  [v11 setFeedItemScores:scoresCopy];
+  [v11 setSortOptions:options];
+  [v11 setConfigurationSet:set];
 
   return v11;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = NewsCoreUserDefaults();
   if ([v5 BOOLForKey:@"personalization_disabled"])
   {
 
 LABEL_6:
-    v8 = v4;
+    v8 = itemsCopy;
     goto LABEL_7;
   }
 
-  v6 = [(FCFeedTransformationPersonalizedSort *)self feedPersonalizer];
+  feedPersonalizer = [(FCFeedTransformationPersonalizedSort *)self feedPersonalizer];
 
-  if (!v6)
+  if (!feedPersonalizer)
   {
     goto LABEL_6;
   }
 
-  v7 = [(FCFeedTransformationPersonalizedSort *)self feedItemScores];
+  feedItemScores = [(FCFeedTransformationPersonalizedSort *)self feedItemScores];
 
-  if (v7)
+  if (feedItemScores)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__FCFeedTransformationPersonalizedSort_transformFeedItems___block_invoke;
     v11[3] = &unk_1E7C3B4F0;
     v11[4] = self;
-    v8 = [v4 sortedArrayUsingComparator:v11];
+    v8 = [itemsCopy sortedArrayUsingComparator:v11];
   }
 
   else
   {
-    v8 = [(FCFeedTransformationPersonalizedSort *)self personalizedHeadlines:v4];
+    v8 = [(FCFeedTransformationPersonalizedSort *)self personalizedHeadlines:itemsCopy];
   }
 
 LABEL_7:
@@ -123,9 +123,9 @@ uint64_t __59__FCFeedTransformationPersonalizedSort_transformFeedItems___block_i
   return v15;
 }
 
-- (id)transformHeadlines:(id)a3
+- (id)transformHeadlines:(id)headlines
 {
-  v4 = a3;
+  headlinesCopy = headlines;
   v5 = NewsCoreUserDefaults();
   if ([v5 BOOLForKey:@"personalization_disabled"])
   {
@@ -133,31 +133,31 @@ uint64_t __59__FCFeedTransformationPersonalizedSort_transformFeedItems___block_i
 
   else
   {
-    v6 = [(FCFeedTransformationPersonalizedSort *)self feedPersonalizer];
+    feedPersonalizer = [(FCFeedTransformationPersonalizedSort *)self feedPersonalizer];
 
-    if (v6)
+    if (feedPersonalizer)
     {
-      v7 = [(FCFeedTransformationPersonalizedSort *)self personalizedHeadlines:v4];
+      v7 = [(FCFeedTransformationPersonalizedSort *)self personalizedHeadlines:headlinesCopy];
       goto LABEL_6;
     }
   }
 
-  v7 = v4;
+  v7 = headlinesCopy;
 LABEL_6:
   v8 = v7;
 
   return v8;
 }
 
-- (id)personalizedHeadlines:(id)a3
+- (id)personalizedHeadlines:(id)headlines
 {
-  v4 = a3;
-  v5 = [(FCFeedTransformationPersonalizedSort *)self feedPersonalizer];
-  v6 = [v5 sortItems:v4 options:-[FCFeedTransformationPersonalizedSort sortOptions](self configurationSet:{"sortOptions"), -[FCFeedTransformationPersonalizedSort configurationSet](self, "configurationSet")}];
+  headlinesCopy = headlines;
+  feedPersonalizer = [(FCFeedTransformationPersonalizedSort *)self feedPersonalizer];
+  v6 = [feedPersonalizer sortItems:headlinesCopy options:-[FCFeedTransformationPersonalizedSort sortOptions](self configurationSet:{"sortOptions"), -[FCFeedTransformationPersonalizedSort configurationSet](self, "configurationSet")}];
 
-  v7 = [v6 sortedItems];
+  sortedItems = [v6 sortedItems];
 
-  return v7;
+  return sortedItems;
 }
 
 @end

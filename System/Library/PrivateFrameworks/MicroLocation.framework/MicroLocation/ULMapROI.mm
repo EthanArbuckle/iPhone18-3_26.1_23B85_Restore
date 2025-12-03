@@ -1,60 +1,60 @@
 @interface ULMapROI
-- (BOOL)isEqual:(id)a3;
-- (ULMapROI)initWithCoder:(id)a3;
-- (ULMapROI)initWithMapPoints:(id)a3 roomIndex:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULMapROI)initWithCoder:(id)coder;
+- (ULMapROI)initWithMapPoints:(id)points roomIndex:(id)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULMapROI
 
-- (ULMapROI)initWithMapPoints:(id)a3 roomIndex:(id)a4
+- (ULMapROI)initWithMapPoints:(id)points roomIndex:(id)index
 {
-  v6 = a3;
-  v7 = a4;
+  pointsCopy = points;
+  indexCopy = index;
   v11.receiver = self;
   v11.super_class = ULMapROI;
   v8 = [(ULMapROI *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ULMapROI *)v8 setMapPoints:v6];
-    [(ULMapROI *)v9 setRoomIndex:v7];
+    [(ULMapROI *)v8 setMapPoints:pointsCopy];
+    [(ULMapROI *)v9 setRoomIndex:indexCopy];
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(ULMapROI *)self mapPoints];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(ULMapROI *)self roomIndex];
-  v9 = [v8 copyWithZone:a3];
+  mapPoints = [(ULMapROI *)self mapPoints];
+  v7 = [mapPoints copyWithZone:zone];
+  roomIndex = [(ULMapROI *)self roomIndex];
+  v9 = [roomIndex copyWithZone:zone];
   v10 = [v5 initWithMapPoints:v7 roomIndex:v9];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapPoints = self->_mapPoints;
-  v5 = a3;
-  [v5 encodeObject:mapPoints forKey:@"mapPoints"];
-  [v5 encodeObject:self->_roomIndex forKey:@"roomIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapPoints forKey:@"mapPoints"];
+  [coderCopy encodeObject:self->_roomIndex forKey:@"roomIndex"];
 }
 
-- (ULMapROI)initWithCoder:(id)a3
+- (ULMapROI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ULMapROI;
   v5 = [(ULMapROI *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapPoints"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapPoints"];
     if (v6)
     {
       v7 = objc_opt_self();
@@ -62,7 +62,7 @@
       mapPoints = v5->_mapPoints;
       v5->_mapPoints = v7;
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roomIndex"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roomIndex"];
       v10 = objc_opt_self();
 
       roomIndex = v5->_roomIndex;
@@ -87,36 +87,36 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [(ULMapROI *)self mapPoints];
-  [v6 appendFormat:@", mapPoints: %@", v7];
+  mapPoints = [(ULMapROI *)self mapPoints];
+  [v6 appendFormat:@", mapPoints: %@", mapPoints];
 
-  v8 = [(ULMapROI *)self roomIndex];
-  [v6 appendFormat:@", roomIndex: %@", v8];
+  roomIndex = [(ULMapROI *)self roomIndex];
+  [v6 appendFormat:@", roomIndex: %@", roomIndex];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULMapROI *)self mapPoints];
-    v7 = [v5 mapPoints];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    mapPoints = [(ULMapROI *)self mapPoints];
+    mapPoints2 = [v5 mapPoints];
+    if ([mapPoints isEqual:mapPoints2])
     {
     }
 
     else
     {
-      v9 = [(ULMapROI *)self mapPoints];
-      v10 = [v5 mapPoints];
+      mapPoints3 = [(ULMapROI *)self mapPoints];
+      mapPoints4 = [v5 mapPoints];
 
-      if (v9 != v10)
+      if (mapPoints3 != mapPoints4)
       {
         v8 = 0;
 LABEL_10:
@@ -125,9 +125,9 @@ LABEL_10:
       }
     }
 
-    v11 = [(ULMapROI *)self roomIndex];
-    v12 = [v5 roomIndex];
-    if ([v11 isEqual:v12])
+    roomIndex = [(ULMapROI *)self roomIndex];
+    roomIndex2 = [v5 roomIndex];
+    if ([roomIndex isEqual:roomIndex2])
     {
 
       v8 = 1;
@@ -135,9 +135,9 @@ LABEL_10:
 
     else
     {
-      v13 = [(ULMapROI *)self roomIndex];
-      v14 = [v5 roomIndex];
-      v8 = v13 == v14;
+      roomIndex3 = [(ULMapROI *)self roomIndex];
+      roomIndex4 = [v5 roomIndex];
+      v8 = roomIndex3 == roomIndex4;
     }
 
     goto LABEL_10;

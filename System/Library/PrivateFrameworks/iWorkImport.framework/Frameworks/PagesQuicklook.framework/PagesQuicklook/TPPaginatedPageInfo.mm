@@ -4,22 +4,22 @@
 - (NSArray)floatingDrawableInfos;
 - (TPDrawablesZOrder)drawablesZOrder;
 - (TPPageLayoutInfoProvider)layoutInfoProvider;
-- (TPPaginatedPageInfo)initWithPageIndex:(unint64_t)a3 documentRoot:(id)a4 layoutInfoProvider:(id)a5;
-- (id)orderedDrawables:(id)a3;
+- (TPPaginatedPageInfo)initWithPageIndex:(unint64_t)index documentRoot:(id)root layoutInfoProvider:(id)provider;
+- (id)orderedDrawables:(id)drawables;
 - (id)pageController;
 @end
 
 @implementation TPPaginatedPageInfo
 
-- (TPPaginatedPageInfo)initWithPageIndex:(unint64_t)a3 documentRoot:(id)a4 layoutInfoProvider:(id)a5
+- (TPPaginatedPageInfo)initWithPageIndex:(unint64_t)index documentRoot:(id)root layoutInfoProvider:(id)provider
 {
-  v8 = a5;
+  providerCopy = provider;
   v34.receiver = self;
   v34.super_class = TPPaginatedPageInfo;
-  v10 = [(TPPageInfo *)&v34 initWithPageIndex:a3 documentRoot:a4];
+  v10 = [(TPPageInfo *)&v34 initWithPageIndex:index documentRoot:root];
   if (v10)
   {
-    if (!v8)
+    if (!providerCopy)
     {
       v15 = MEMORY[0x277D81150];
       v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, v14, "[TPPaginatedPageInfo initWithPageIndex:documentRoot:layoutInfoProvider:]");
@@ -29,7 +29,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31, v32);
     }
 
-    objc_storeWeak(&v10->_layoutInfoProvider, v8);
+    objc_storeWeak(&v10->_layoutInfoProvider, providerCopy);
   }
 
   return v10;
@@ -68,12 +68,12 @@
   return objc_msgSend_isDocSetupPageIndex_(TPPageInfo, v6, v8, v9, v10, v11, v7);
 }
 
-- (id)orderedDrawables:(id)a3
+- (id)orderedDrawables:(id)drawables
 {
-  v4 = a3;
+  drawablesCopy = drawables;
   v10 = objc_msgSend_documentRoot(self, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_drawablesZOrder(v10, v11, v12, v13, v14, v15);
-  v22 = objc_msgSend_orderedDrawables_(v16, v17, v18, v19, v20, v21, v4);
+  v22 = objc_msgSend_orderedDrawables_(v16, v17, v18, v19, v20, v21, drawablesCopy);
 
   return v22;
 }

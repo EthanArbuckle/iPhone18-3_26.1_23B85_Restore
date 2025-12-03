@@ -1,28 +1,28 @@
 @interface ESDClientDelegate
 - (ESDClient)client;
-- (ESDClientDelegate)initWithAccountID:(id)a3 client:(id)a4;
+- (ESDClientDelegate)initWithAccountID:(id)d client:(id)client;
 - (void)dealloc;
 - (void)disable;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)userRequestsCancel;
 @end
 
 @implementation ESDClientDelegate
 
-- (ESDClientDelegate)initWithAccountID:(id)a3 client:(id)a4
+- (ESDClientDelegate)initWithAccountID:(id)d client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = ESDClientDelegate;
   v8 = [(ESDClientDelegate *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(ESDClientDelegate *)v8 setAccountID:v6];
-    [(ESDClientDelegate *)v9 setClient:v7];
-    v10 = [MEMORY[0x277CCACA8] da_newGUID];
-    [(ESDClientDelegate *)v9 setDelegateID:v10];
+    [(ESDClientDelegate *)v8 setAccountID:dCopy];
+    [(ESDClientDelegate *)v9 setClient:clientCopy];
+    da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
+    [(ESDClientDelegate *)v9 setDelegateID:da_newGUID];
   }
 
   return v9;
@@ -56,10 +56,10 @@
   [(ESDClientDelegate *)self finishWithError:v3];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"ESDClientDelegate.m" lineNumber:46 description:@"finishWithError: should be implemented in the subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ESDClientDelegate.m" lineNumber:46 description:@"finishWithError: should be implemented in the subclass"];
 }
 
 - (ESDClient)client

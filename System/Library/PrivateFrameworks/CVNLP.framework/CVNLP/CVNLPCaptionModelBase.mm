@@ -1,19 +1,19 @@
 @interface CVNLPCaptionModelBase
-- (CVNLPCaptionModelBase)initWithOptions:(id)a3 runTimeParams:(id)a4;
+- (CVNLPCaptionModelBase)initWithOptions:(id)options runTimeParams:(id)params;
 @end
 
 @implementation CVNLPCaptionModelBase
 
-- (CVNLPCaptionModelBase)initWithOptions:(id)a3 runTimeParams:(id)a4
+- (CVNLPCaptionModelBase)initWithOptions:(id)options runTimeParams:(id)params
 {
-  v7 = a4;
+  paramsCopy = params;
   v11.receiver = self;
   v11.super_class = CVNLPCaptionModelBase;
-  v8 = [(CVNLPModelBase *)&v11 initWithOptions:a3];
+  v8 = [(CVNLPModelBase *)&v11 initWithOptions:options];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_runTimeParams, a4);
+    objc_storeStrong(&v8->_runTimeParams, params);
   }
 
   return v9;

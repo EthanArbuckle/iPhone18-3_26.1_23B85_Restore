@@ -1,33 +1,33 @@
 @interface BRCRequestData
-- (BRCRequestData)initWithProgress:(id)a3 requestType:(signed __int16)a4 finishBlock:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BRCRequestData)initWithProgress:(id)progress requestType:(signed __int16)type finishBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation BRCRequestData
 
-- (BRCRequestData)initWithProgress:(id)a3 requestType:(signed __int16)a4 finishBlock:(id)a5
+- (BRCRequestData)initWithProgress:(id)progress requestType:(signed __int16)type finishBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  progressCopy = progress;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = BRCRequestData;
   v11 = [(BRCRequestData *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_progress, a3);
-    v13 = MEMORY[0x22AA4A310](v10);
+    objc_storeStrong(&v11->_progress, progress);
+    v13 = MEMORY[0x22AA4A310](blockCopy);
     finishBlock = v12->_finishBlock;
     v12->_finishBlock = v13;
 
-    v12->_requestType = a4;
+    v12->_requestType = type;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BRCRequestData alloc];
   progress = self->_progress;

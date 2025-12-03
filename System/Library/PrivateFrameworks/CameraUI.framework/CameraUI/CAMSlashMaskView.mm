@@ -1,26 +1,26 @@
 @interface CAMSlashMaskView
-- (CAMSlashMaskView)initWithFrame:(CGRect)a3;
+- (CAMSlashMaskView)initWithFrame:(CGRect)frame;
 - (CGRect)slashBounds;
-- (void)_updateShapeLayerAnimated:(BOOL)a3;
-- (void)setSlashBounds:(CGRect)a3 animated:(BOOL)a4;
+- (void)_updateShapeLayerAnimated:(BOOL)animated;
+- (void)setSlashBounds:(CGRect)bounds animated:(BOOL)animated;
 @end
 
 @implementation CAMSlashMaskView
 
-- (CAMSlashMaskView)initWithFrame:(CGRect)a3
+- (CAMSlashMaskView)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = CAMSlashMaskView;
-  v3 = [(CAMSlashMaskView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSlashMaskView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CAMSlashMaskView *)v3 _shapeLayer];
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    _shapeLayer = [(CAMSlashMaskView *)v3 _shapeLayer];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [_shapeLayer setFillColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-    [v5 setFillRule:*MEMORY[0x1E69797F8]];
+    [_shapeLayer setFillRule:*MEMORY[0x1E69797F8]];
     v11[0] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v8 = [(CAMSlashMaskView *)v4 registerForTraitChanges:v7 withAction:sel__legibilityWeightChanged];
@@ -29,28 +29,28 @@
   return v4;
 }
 
-- (void)setSlashBounds:(CGRect)a3 animated:(BOOL)a4
+- (void)setSlashBounds:(CGRect)bounds animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_slashBounds = &self->_slashBounds;
-  if (!CGRectEqualToRect(a3, self->_slashBounds))
+  if (!CGRectEqualToRect(bounds, self->_slashBounds))
   {
     p_slashBounds->origin.x = x;
     p_slashBounds->origin.y = y;
     p_slashBounds->size.width = width;
     p_slashBounds->size.height = height;
 
-    [(CAMSlashMaskView *)self _updateShapeLayerAnimated:v4];
+    [(CAMSlashMaskView *)self _updateShapeLayerAnimated:animatedCopy];
   }
 }
 
-- (void)_updateShapeLayerAnimated:(BOOL)a3
+- (void)_updateShapeLayerAnimated:(BOOL)animated
 {
-  v36 = [(CAMSlashMaskView *)self _shapeLayer];
+  _shapeLayer = [(CAMSlashMaskView *)self _shapeLayer];
   [(CAMSlashMaskView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -68,10 +68,10 @@
   v39.size.height = height;
   MaxY = CGRectGetMaxY(v39);
   v18 = [MEMORY[0x1E69DC728] bezierPathWithRect:{v6, v8, v10, v12}];
-  v19 = [(CAMSlashMaskView *)self traitCollection];
-  v20 = [v19 legibilityWeight];
+  traitCollection = [(CAMSlashMaskView *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
 
-  if (v20 == 1)
+  if (legibilityWeight == 1)
   {
     v21 = 2.0;
   }
@@ -85,40 +85,40 @@
   [v18 addLineToPoint:{x + v21, y - v21}];
   [v18 addLineToPoint:{v35 + v21, MaxY - v21}];
   [v18 addLineToPoint:{v35 - v21, MaxY + v21}];
-  v22 = [v36 animationForKey:@"slashMask"];
+  v22 = [_shapeLayer animationForKey:@"slashMask"];
   v27 = v22;
-  if (a3 || v22)
+  if (animated || v22)
   {
     LODWORD(v23) = 1045220557;
     LODWORD(v25) = 1041865114;
     LODWORD(v26) = 1.0;
     LODWORD(v24) = 1045220557;
     v28 = [MEMORY[0x1E69793D0] functionWithControlPoints:v23 :v24 :v25 :v26];
-    v29 = [v36 presentationLayer];
-    v30 = v29;
-    if (!v29)
+    presentationLayer = [_shapeLayer presentationLayer];
+    v30 = presentationLayer;
+    if (!presentationLayer)
     {
       if (v27)
       {
-        v31 = [v27 fromValue];
+        fromValue = [v27 fromValue];
         goto LABEL_10;
       }
 
-      v29 = v36;
+      presentationLayer = _shapeLayer;
     }
 
-    v31 = [v29 path];
+    fromValue = [presentationLayer path];
 LABEL_10:
-    v32 = v31;
+    v32 = fromValue;
     v33 = [MEMORY[0x1E6979318] animationWithKeyPath:@"path"];
     [v33 setFromValue:v32];
     [v33 setToValue:{objc_msgSend(v18, "CGPath")}];
     [v33 setTimingFunction:v28];
     [v33 setDuration:0.4];
-    [v36 addAnimation:v33 forKey:@"slashMask"];
+    [_shapeLayer addAnimation:v33 forKey:@"slashMask"];
   }
 
-  [v36 setPath:{objc_msgSend(v18, "CGPath")}];
+  [_shapeLayer setPath:{objc_msgSend(v18, "CGPath")}];
 }
 
 - (CGRect)slashBounds

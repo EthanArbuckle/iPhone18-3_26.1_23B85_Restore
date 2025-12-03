@@ -1,12 +1,12 @@
 @interface SFWebProcessPlugInCertificateWarningController
-- (SFWebProcessPlugInCertificateWarningController)initWithPageController:(id)a3;
+- (SFWebProcessPlugInCertificateWarningController)initWithPageController:(id)controller;
 - (id)_certificateWarningPageHandlerProxy;
 - (void)_clearCertificateWarningPagePresenterInterface;
 - (void)_setUpCertificateWarningPagePresenterInterface;
 - (void)certificateWarningPageLoaded;
 - (void)dealloc;
 - (void)goBackSelected;
-- (void)injectCertificateWarningBindingsForFrame:(id)a3 inScriptWorld:(id)a4;
+- (void)injectCertificateWarningBindingsForFrame:(id)frame inScriptWorld:(id)world;
 - (void)openClockSettings;
 - (void)showCertificateInformation;
 - (void)visitInsecureWebsite;
@@ -16,16 +16,16 @@
 
 @implementation SFWebProcessPlugInCertificateWarningController
 
-- (SFWebProcessPlugInCertificateWarningController)initWithPageController:(id)a3
+- (SFWebProcessPlugInCertificateWarningController)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SFWebProcessPlugInCertificateWarningController;
   v5 = [(SFWebProcessPlugInCertificateWarningController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pageController, v4);
+    objc_storeWeak(&v5->_pageController, controllerCopy);
     [(SFWebProcessPlugInCertificateWarningController *)v6 _setUpCertificateWarningPagePresenterInterface];
     v7 = v6;
   }
@@ -48,36 +48,36 @@
   self->_certificateWarningPagePresenterInterface = v3;
 
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v5 = [WeakRetained browserContextController];
-  v6 = [v5 _remoteObjectRegistry];
-  [v6 registerExportedObject:self interface:self->_certificateWarningPagePresenterInterface];
+  browserContextController = [WeakRetained browserContextController];
+  _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_certificateWarningPagePresenterInterface];
 }
 
 - (void)_clearCertificateWarningPagePresenterInterface
 {
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v4 = [WeakRetained browserContextController];
-  v6 = [v4 _remoteObjectRegistry];
+  browserContextController = [WeakRetained browserContextController];
+  _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
 
-  [v6 unregisterExportedObject:self interface:self->_certificateWarningPagePresenterInterface];
+  [_remoteObjectRegistry unregisterExportedObject:self interface:self->_certificateWarningPagePresenterInterface];
   certificateWarningPagePresenterInterface = self->_certificateWarningPagePresenterInterface;
   self->_certificateWarningPagePresenterInterface = 0;
 }
 
-- (void)injectCertificateWarningBindingsForFrame:(id)a3 inScriptWorld:(id)a4
+- (void)injectCertificateWarningBindingsForFrame:(id)frame inScriptWorld:(id)world
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 URL];
+  frameCopy = frame;
+  worldCopy = world;
+  v7 = [frameCopy URL];
   if ([v7 isFileURL] && self->_warningPageContext)
   {
-    v8 = [v13 jsContextForWorld:v6];
-    v9 = [v8 globalObject];
+    v8 = [frameCopy jsContextForWorld:worldCopy];
+    globalObject = [v8 globalObject];
     v10 = MEMORY[0x1E696EB58];
     v11 = [[SFCertificateWarningJSController alloc] initWithCertificateWarningController:self];
     v12 = [v10 valueWithObject:v11 inContext:v8];
 
-    [v9 setValue:v12 forProperty:@"CertificateWarningController"];
+    [globalObject setValue:v12 forProperty:@"CertificateWarningController"];
   }
 }
 
@@ -85,21 +85,21 @@
 {
   v37[6] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v4 = [WeakRetained browserContextController];
-  v5 = [v4 mainFrame];
+  browserContextController = [WeakRetained browserContextController];
+  mainFrame = [browserContextController mainFrame];
 
-  v6 = [MEMORY[0x1E6985398] normalWorld];
-  v7 = [v5 jsContextForWorld:v6];
+  normalWorld = [MEMORY[0x1E6985398] normalWorld];
+  v7 = [mainFrame jsContextForWorld:normalWorld];
 
-  v8 = [v7 globalObject];
-  v9 = [v8 valueForProperty:@"CertificateWarning"];
+  globalObject = [v7 globalObject];
+  v9 = [globalObject valueForProperty:@"CertificateWarning"];
   v10 = v9;
   if (v9 && ([v9 isUndefined] & 1) == 0)
   {
     v11 = MEMORY[0x1E696EB58];
-    v12 = [(WBSCertificateWarningPageContext *)self->_warningPageContext failingURL];
-    v13 = [v12 host];
-    v35 = [v11 valueWithObject:v13 inContext:v7];
+    failingURL = [(WBSCertificateWarningPageContext *)self->_warningPageContext failingURL];
+    host = [failingURL host];
+    v35 = [v11 valueWithObject:host inContext:v7];
 
     v14 = MEMORY[0x1E696EB58];
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WBSCertificateWarningPageContext warningCategory](self->_warningPageContext, "warningCategory")}];
@@ -114,8 +114,8 @@
     v21 = [v19 valueWithObject:v20 inContext:v7];
 
     v22 = MEMORY[0x1E696EB58];
-    v23 = [(WBSCertificateWarningPageContext *)self->_warningPageContext expiredCerticateDescription];
-    v24 = [v22 valueWithObject:v23 inContext:v7];
+    expiredCerticateDescription = [(WBSCertificateWarningPageContext *)self->_warningPageContext expiredCerticateDescription];
+    v24 = [v22 valueWithObject:expiredCerticateDescription inContext:v7];
 
     v25 = MEMORY[0x1E696EB58];
     [(WBSCertificateWarningPageContext *)self->_warningPageContext clockSkew];
@@ -132,8 +132,8 @@
     warningPageContext = self->_warningPageContext;
     self->_warningPageContext = 0;
 
-    v30 = [MEMORY[0x1E69DC668] sharedApplication];
-    LODWORD(v27) = [v30 safari_prefersRTLLayout];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    LODWORD(v27) = [mEMORY[0x1E69DC668] safari_prefersRTLLayout];
 
     if (v27)
     {
@@ -151,10 +151,10 @@
   if (!certificateWarningPageHandlerProxy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pageController);
-    v5 = [WeakRetained browserContextController];
-    v6 = [v5 _remoteObjectRegistry];
+    browserContextController = [WeakRetained browserContextController];
+    _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
     v7 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F5046A38];
-    v8 = [v6 remoteObjectProxyWithInterface:v7];
+    v8 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v7];
     v9 = self->_certificateWarningPageHandlerProxy;
     self->_certificateWarningPageHandlerProxy = v8;
 
@@ -166,38 +166,38 @@
 
 - (void)visitInsecureWebsite
 {
-  v2 = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
-  [v2 visitInsecureWebsite];
+  _certificateWarningPageHandlerProxy = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
+  [_certificateWarningPageHandlerProxy visitInsecureWebsite];
 }
 
 - (void)visitInsecureWebsiteWithTemporaryBypass
 {
-  v2 = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
-  [v2 visitInsecureWebsiteWithTemporaryBypass];
+  _certificateWarningPageHandlerProxy = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
+  [_certificateWarningPageHandlerProxy visitInsecureWebsiteWithTemporaryBypass];
 }
 
 - (void)showCertificateInformation
 {
-  v2 = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
-  [v2 showCertificateInformation];
+  _certificateWarningPageHandlerProxy = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
+  [_certificateWarningPageHandlerProxy showCertificateInformation];
 }
 
 - (void)openClockSettings
 {
-  v2 = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
-  [v2 openClockSettings];
+  _certificateWarningPageHandlerProxy = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
+  [_certificateWarningPageHandlerProxy openClockSettings];
 }
 
 - (void)goBackSelected
 {
-  v2 = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
-  [v2 goBackButtonClicked];
+  _certificateWarningPageHandlerProxy = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
+  [_certificateWarningPageHandlerProxy goBackButtonClicked];
 }
 
 - (void)visitWebsiteWithoutPrivateRelay
 {
-  v2 = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
-  [v2 visitWebsiteWithoutPrivateRelay];
+  _certificateWarningPageHandlerProxy = [(SFWebProcessPlugInCertificateWarningController *)self _certificateWarningPageHandlerProxy];
+  [_certificateWarningPageHandlerProxy visitWebsiteWithoutPrivateRelay];
 }
 
 @end

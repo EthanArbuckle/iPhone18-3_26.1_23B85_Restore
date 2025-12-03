@@ -1,72 +1,72 @@
 @interface THThreadNetworkCredentialsActiveDataSetRecord
-- (THThreadNetworkCredentialsActiveDataSetRecord)initWithBorderAgent:(id)a3 credentialsDataSet:(id)a4 network:(id)a5 credentials:(id)a6 uniqueIdentifier:(id)a7 keychainAccessGroup:(id)a8 creationDate:(id)a9 lastModificationDate:(id)a10;
-- (THThreadNetworkCredentialsActiveDataSetRecord)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (THThreadNetworkCredentialsActiveDataSetRecord)initWithBorderAgent:(id)agent credentialsDataSet:(id)set network:(id)network credentials:(id)credentials uniqueIdentifier:(id)identifier keychainAccessGroup:(id)group creationDate:(id)date lastModificationDate:(id)self0;
+- (THThreadNetworkCredentialsActiveDataSetRecord)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation THThreadNetworkCredentialsActiveDataSetRecord
 
-- (THThreadNetworkCredentialsActiveDataSetRecord)initWithBorderAgent:(id)a3 credentialsDataSet:(id)a4 network:(id)a5 credentials:(id)a6 uniqueIdentifier:(id)a7 keychainAccessGroup:(id)a8 creationDate:(id)a9 lastModificationDate:(id)a10
+- (THThreadNetworkCredentialsActiveDataSetRecord)initWithBorderAgent:(id)agent credentialsDataSet:(id)set network:(id)network credentials:(id)credentials uniqueIdentifier:(id)identifier keychainAccessGroup:(id)group creationDate:(id)date lastModificationDate:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  obj = a8;
-  v23 = a8;
-  v17 = a9;
-  v18 = a10;
+  agentCopy = agent;
+  setCopy = set;
+  networkCopy = network;
+  credentialsCopy = credentials;
+  identifierCopy = identifier;
+  obj = group;
+  groupCopy = group;
+  dateCopy = date;
+  modificationDateCopy = modificationDate;
   v29.receiver = self;
   v29.super_class = THThreadNetworkCredentialsActiveDataSetRecord;
   v19 = [(THThreadNetworkCredentialsActiveDataSetRecord *)&v29 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_borderAgent, a3);
-    objc_storeStrong(&v20->_credentialsDataSet, a4);
-    objc_storeStrong(&v20->_network, a5);
-    objc_storeStrong(&v20->_credentials, a6);
-    objc_storeStrong(&v20->_uniqueIdentifier, a7);
-    objc_storeStrong(&v20->_creationDate, a9);
-    objc_storeStrong(&v20->_lastModificationDate, a10);
+    objc_storeStrong(&v19->_borderAgent, agent);
+    objc_storeStrong(&v20->_credentialsDataSet, set);
+    objc_storeStrong(&v20->_network, network);
+    objc_storeStrong(&v20->_credentials, credentials);
+    objc_storeStrong(&v20->_uniqueIdentifier, identifier);
+    objc_storeStrong(&v20->_creationDate, date);
+    objc_storeStrong(&v20->_lastModificationDate, modificationDate);
     objc_storeStrong(&v20->_keychainAccessGroup, obj);
   }
 
   return v20;
 }
 
-- (THThreadNetworkCredentialsActiveDataSetRecord)initWithCoder:(id)a3
+- (THThreadNetworkCredentialsActiveDataSetRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   if (v5)
   {
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ba"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"net"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cred"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cr"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lm"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"grp"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ba"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"net"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cred"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cr"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lm"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"grp"];
     v12 = v11;
     v13 = 0;
     v19 = v5;
     if (v7 && v8 && v11)
     {
-      v14 = self;
+      selfCopy = self;
       v15 = v20;
-      v13 = [(THThreadNetworkCredentialsActiveDataSetRecord *)v14 initWithBorderAgent:v20 credentialsDataSet:v6 network:v7 credentials:v8 uniqueIdentifier:v5 keychainAccessGroup:v12 creationDate:v9 lastModificationDate:v10];
-      v16 = v13;
+      v13 = [(THThreadNetworkCredentialsActiveDataSetRecord *)selfCopy initWithBorderAgent:v20 credentialsDataSet:v6 network:v7 credentials:v8 uniqueIdentifier:v5 keychainAccessGroup:v12 creationDate:v9 lastModificationDate:v10];
+      selfCopy2 = v13;
     }
 
     else
     {
-      v16 = self;
+      selfCopy2 = self;
       v15 = v20;
     }
 
-    self = v16;
+    self = selfCopy2;
     v5 = v19;
   }
 
@@ -84,32 +84,32 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self uniqueIdentifier];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uniqueIdentifier = [(THThreadNetworkCredentialsActiveDataSetRecord *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uuid"];
 
-  v6 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
-  [v4 encodeObject:v6 forKey:@"ba"];
+  borderAgent = [(THThreadNetworkCredentialsActiveDataSetRecord *)self borderAgent];
+  [coderCopy encodeObject:borderAgent forKey:@"ba"];
 
-  v7 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self credentialsDataSet];
-  [v4 encodeObject:v7 forKey:@"ds"];
+  credentialsDataSet = [(THThreadNetworkCredentialsActiveDataSetRecord *)self credentialsDataSet];
+  [coderCopy encodeObject:credentialsDataSet forKey:@"ds"];
 
-  v8 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
-  [v4 encodeObject:v8 forKey:@"net"];
+  network = [(THThreadNetworkCredentialsActiveDataSetRecord *)self network];
+  [coderCopy encodeObject:network forKey:@"net"];
 
-  v9 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self credentials];
-  [v4 encodeObject:v9 forKey:@"cred"];
+  credentials = [(THThreadNetworkCredentialsActiveDataSetRecord *)self credentials];
+  [coderCopy encodeObject:credentials forKey:@"cred"];
 
-  v10 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self creationDate];
-  [v4 encodeObject:v10 forKey:@"cr"];
+  creationDate = [(THThreadNetworkCredentialsActiveDataSetRecord *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"cr"];
 
-  v11 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self lastModificationDate];
-  [v4 encodeObject:v11 forKey:@"lm"];
+  lastModificationDate = [(THThreadNetworkCredentialsActiveDataSetRecord *)self lastModificationDate];
+  [coderCopy encodeObject:lastModificationDate forKey:@"lm"];
 
-  v12 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
-  [v4 encodeObject:v12 forKey:@"grp"];
+  keychainAccessGroup = [(THThreadNetworkCredentialsActiveDataSetRecord *)self keychainAccessGroup];
+  [coderCopy encodeObject:keychainAccessGroup forKey:@"grp"];
 }
 
 - (void)initWithCoder:(os_log_t)log .cold.1(os_log_t log)

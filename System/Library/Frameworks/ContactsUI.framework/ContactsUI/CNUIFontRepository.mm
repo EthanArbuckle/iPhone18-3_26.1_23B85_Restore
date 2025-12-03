@@ -8,20 +8,20 @@
 + (UIFont)contactStyleDefaultItalicTextFont;
 + (UIFont)groupHeaderWrappedTitleFont;
 + (UIFont)visualIdentityEditorTextFont;
-+ (id)boldFontWithFontDescriptor:(id)a3;
-+ (id)carPlayFontWithBoldWeightStyle:(id)a3;
-+ (id)carPlayFontWithMediumWeightStyle:(id)a3;
-+ (id)carPlayFontWithStyle:(id)a3;
-+ (id)fontWithBoldWeightStyle:(id)a3;
++ (id)boldFontWithFontDescriptor:(id)descriptor;
++ (id)carPlayFontWithBoldWeightStyle:(id)style;
++ (id)carPlayFontWithMediumWeightStyle:(id)style;
++ (id)carPlayFontWithStyle:(id)style;
++ (id)fontWithBoldWeightStyle:(id)style;
 @end
 
 @implementation CNUIFontRepository
 
 + (UIFont)contactListBannerTitleFontPrimary
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   v6 = MEMORY[0x1E69DDD40];
   if (!v5)
@@ -29,16 +29,16 @@
     v6 = MEMORY[0x1E69DDDC8];
   }
 
-  v7 = [a1 fontWithBoldWeightStyle:*v6];
+  v7 = [self fontWithBoldWeightStyle:*v6];
 
   return v7;
 }
 
 + (UIFont)contactListBannerFootnoteFontPrimary
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   v5 = MEMORY[0x1E69DDD28];
   if (v4)
@@ -53,26 +53,26 @@
 
 + (UIFont)contactStyleDefaultBoldTextFont
 {
-  v3 = [a1 contactStyleDefaultTextFont];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:2];
+  contactStyleDefaultTextFont = [self contactStyleDefaultTextFont];
+  fontDescriptor = [contactStyleDefaultTextFont fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v6 = MEMORY[0x1E69DB878];
-  v7 = [a1 contactStyleDefaultTextFont];
-  [v7 pointSize];
+  contactStyleDefaultTextFont2 = [self contactStyleDefaultTextFont];
+  [contactStyleDefaultTextFont2 pointSize];
   v8 = [v6 fontWithDescriptor:v5 size:?];
 
   return v8;
 }
 
-+ (id)carPlayFontWithBoldWeightStyle:(id)a3
++ (id)carPlayFontWithBoldWeightStyle:(id)style
 {
   v3 = MEMORY[0x1E69DB880];
   v4 = MEMORY[0x1E69DCEB0];
-  v5 = a3;
-  v6 = [v4 _carScreen];
-  v7 = [v6 traitCollection];
-  v8 = [v3 preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:v7];
+  styleCopy = style;
+  _carScreen = [v4 _carScreen];
+  traitCollection = [_carScreen traitCollection];
+  v8 = [v3 preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:traitCollection];
 
   v9 = [v8 fontDescriptorWithSymbolicTraits:2];
 
@@ -81,15 +81,15 @@
   return v10;
 }
 
-+ (id)carPlayFontWithMediumWeightStyle:(id)a3
++ (id)carPlayFontWithMediumWeightStyle:(id)style
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DB880];
   v4 = MEMORY[0x1E69DCEB0];
-  v5 = a3;
-  v6 = [v4 _carScreen];
-  v7 = [v6 traitCollection];
-  v8 = [v3 preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:v7];
+  styleCopy = style;
+  _carScreen = [v4 _carScreen];
+  traitCollection = [_carScreen traitCollection];
+  v8 = [v3 preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:traitCollection];
 
   v14 = *MEMORY[0x1E69DB990];
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB970]];
@@ -102,31 +102,31 @@
   return v12;
 }
 
-+ (id)carPlayFontWithStyle:(id)a3
++ (id)carPlayFontWithStyle:(id)style
 {
   v3 = MEMORY[0x1E69DB880];
   v4 = MEMORY[0x1E69DCEB0];
-  v5 = a3;
-  v6 = [v4 _carScreen];
-  v7 = [v6 traitCollection];
-  v8 = [v3 preferredFontDescriptorWithTextStyle:v5 compatibleWithTraitCollection:v7];
+  styleCopy = style;
+  _carScreen = [v4 _carScreen];
+  traitCollection = [_carScreen traitCollection];
+  v8 = [v3 preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:traitCollection];
 
   v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
 
   return v9;
 }
 
-+ (id)boldFontWithFontDescriptor:(id)a3
++ (id)boldFontWithFontDescriptor:(id)descriptor
 {
-  v3 = [a3 fontDescriptorWithSymbolicTraits:2];
+  v3 = [descriptor fontDescriptorWithSymbolicTraits:2];
   v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v3 size:0.0];
 
   return v4;
 }
 
-+ (id)fontWithBoldWeightStyle:(id)a3
++ (id)fontWithBoldWeightStyle:(id)style
 {
-  v3 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:a3];
+  v3 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:style];
   v4 = [v3 fontDescriptorWithSymbolicTraits:2];
 
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
@@ -139,8 +139,8 @@
   v12[2] = *MEMORY[0x1E69E9840];
   v2 = *MEMORY[0x1E69DB980];
   v3 = [MEMORY[0x1E69DB878] systemFontOfSize:120.0 weight:*MEMORY[0x1E69DB980]];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
+  fontDescriptor = [v3 fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
 
   v11[0] = *MEMORY[0x1E69DB990];
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:v2];
@@ -168,10 +168,10 @@
 
 + (UIFont)contactCardStaticHeaderNicknameTaglineFont
 {
-  v2 = [a1 contactCardStaticHeaderDefaultTaglineFont];
-  v3 = [v2 fontDescriptor];
+  contactCardStaticHeaderDefaultTaglineFont = [self contactCardStaticHeaderDefaultTaglineFont];
+  fontDescriptor = [contactCardStaticHeaderDefaultTaglineFont fontDescriptor];
 
-  v4 = [v3 fontDescriptorWithSymbolicTraits:3];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:3];
 
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
 
@@ -190,13 +190,13 @@
 
 + (UIFont)contactStyleDefaultItalicTextFont
 {
-  v3 = [a1 contactStyleDefaultTextFont];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 fontDescriptorWithSymbolicTraits:1];
+  contactStyleDefaultTextFont = [self contactStyleDefaultTextFont];
+  fontDescriptor = [contactStyleDefaultTextFont fontDescriptor];
+  v5 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
 
   v6 = MEMORY[0x1E69DB878];
-  v7 = [a1 contactStyleDefaultTextFont];
-  [v7 pointSize];
+  contactStyleDefaultTextFont2 = [self contactStyleDefaultTextFont];
+  [contactStyleDefaultTextFont2 pointSize];
   v8 = [v6 fontWithDescriptor:v5 size:?];
 
   return v8;
@@ -204,13 +204,13 @@
 
 + (UIFont)contactListContactCountFont
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:16];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:16];
 
   if (v5)
   {
-    [a1 fontWithBoldWeightStyle:*MEMORY[0x1E69DDCF8]];
+    [self fontWithBoldWeightStyle:*MEMORY[0x1E69DDCF8]];
   }
 
   else

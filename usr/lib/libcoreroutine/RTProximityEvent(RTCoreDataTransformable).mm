@@ -55,14 +55,14 @@ LABEL_8:
     v15 = __Block_byref_object_copy__34;
     v16 = __Block_byref_object_dispose__34;
     v17 = 0;
-    v5 = [v3 managedObjectContext];
+    managedObjectContext = [v3 managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __72__RTProximityEvent_RTCoreDataTransformable__createWithProximityEventMO___block_invoke;
     v9[3] = &unk_2788C7FB0;
     v11 = buf;
     v10 = v4;
-    [v5 performBlockAndWait:v9];
+    [managedObjectContext performBlockAndWait:v9];
 
     v6 = *(v13 + 5);
     _Block_object_dispose(buf, 8);
@@ -87,7 +87,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTProximityEventMO managedObjectWithProximityEvent:a1 inManagedObjectContext:a3];
+    v3 = [RTProximityEventMO managedObjectWithProximityEvent:self inManagedObjectContext:a3];
   }
 
   else

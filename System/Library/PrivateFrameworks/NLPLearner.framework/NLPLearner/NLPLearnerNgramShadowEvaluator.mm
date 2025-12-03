@@ -1,13 +1,13 @@
 @interface NLPLearnerNgramShadowEvaluator
 + (void)initialize;
-- (id)evaluateModel:(id)a3 onRecords:(id)a4 options:(id)a5 completion:(id)a6 error:(id *)a7;
+- (id)evaluateModel:(id)model onRecords:(id)records options:(id)options completion:(id)completion error:(id *)error;
 @end
 
 @implementation NLPLearnerNgramShadowEvaluator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog_4 = os_log_create("com.apple.NLPLearner", "NLPLearnerNgramShadowEvaluator");
 
@@ -15,21 +15,21 @@
   }
 }
 
-- (id)evaluateModel:(id)a3 onRecords:(id)a4 options:(id)a5 completion:(id)a6 error:(id *)a7
+- (id)evaluateModel:(id)model onRecords:(id)records options:(id)options completion:(id)completion error:(id *)error
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(NLPLearnerShadowEvaluator *)self prepareDataFromRecords:v12];
+  modelCopy = model;
+  recordsCopy = records;
+  optionsCopy = options;
+  completionCopy = completion;
+  v15 = [(NLPLearnerShadowEvaluator *)self prepareDataFromRecords:recordsCopy];
   if ([v15 numSamples])
   {
     v47[0] = *MEMORY[0x277D230E0];
-    v16 = [(NLPLearnerShadowEvaluator *)self locale];
-    v17 = [v16 languageCode];
+    locale = [(NLPLearnerShadowEvaluator *)self locale];
+    languageCode = [locale languageCode];
     v47[1] = *MEMORY[0x277D23078];
-    v48[0] = v17;
+    v48[0] = languageCode;
     v48[1] = MEMORY[0x277CBEC28];
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
@@ -44,7 +44,7 @@
       v36 = &v35;
       v37 = 0x2020000000;
       v38 = 0;
-      v20 = [v15 getSamples];
+      getSamples = [v15 getSamples];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __83__NLPLearnerNgramShadowEvaluator_evaluateModel_onRecords_options_completion_error___block_invoke;
@@ -53,7 +53,7 @@
       v34[5] = &v39;
       v34[6] = &v35;
       v34[7] = v19;
-      [v20 enumerateObjectsUsingBlock:v34];
+      [getSamples enumerateObjectsUsingBlock:v34];
 
       v22 = v36[3];
       if (v22)
@@ -83,17 +83,17 @@
       v25 = sLog_4;
       if (os_log_type_enabled(sLog_4, OS_LOG_TYPE_ERROR))
       {
-        [NLPLearnerCoreNLPShadowEvaluator evaluateModel:v33 onRecords:v25 options:? completion:? error:?];
+        [NLPLearnerCoreNLPShadowEvaluator evaluateModel:modelCopy onRecords:v25 options:? completion:? error:?];
       }
 
-      if (a7)
+      if (error)
       {
         v26 = MEMORY[0x277CCA9B8];
         v45 = *MEMORY[0x277CCA450];
         v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"error loading static lm model"];
         v46 = v27;
         v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-        *a7 = [v26 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:6 userInfo:v28];
+        *error = [v26 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:6 userInfo:v28];
       }
 
       v24 = 0;
@@ -102,14 +102,14 @@
     goto LABEL_14;
   }
 
-  if (a7)
+  if (error)
   {
     v23 = MEMORY[0x277CCA9B8];
     v49 = *MEMORY[0x277CCA450];
     v50[0] = @"missing evaluation data for PFL";
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
     [v23 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:9 userInfo:v18];
-    *a7 = v24 = 0;
+    *error = v24 = 0;
 LABEL_14:
 
     goto LABEL_15;

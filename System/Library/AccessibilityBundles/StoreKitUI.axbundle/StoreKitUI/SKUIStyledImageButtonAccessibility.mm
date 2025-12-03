@@ -8,35 +8,35 @@
 {
   v3 = [(SKUIStyledImageButtonAccessibility *)self safeValueForKey:@"imageView"];
   v4 = [v3 safeValueForKey:@"image"];
-  v5 = [v4 accessibilityIdentifier];
-  v6 = [v5 hasPrefix:@"UIButtonBarAction"];
+  accessibilityIdentifier = [v4 accessibilityIdentifier];
+  v6 = [accessibilityIdentifier hasPrefix:@"UIButtonBarAction"];
 
   if (v6)
   {
-    v7 = UIKitAccessibilityLocalizedString();
+    accessibilityLabel = UIKitAccessibilityLocalizedString();
   }
 
   else
   {
     v8 = [(SKUIStyledImageButtonAccessibility *)self safeValueForKey:@"imageView"];
     v9 = [v8 safeValueForKey:@"image"];
-    v10 = [v9 accessibilityIdentifier];
-    v11 = [v10 hasPrefix:@"UniversalActionControl"];
+    accessibilityIdentifier2 = [v9 accessibilityIdentifier];
+    v11 = [accessibilityIdentifier2 hasPrefix:@"UniversalActionControl"];
 
     if (v11)
     {
-      v7 = accessibilitySKUILocalizedString(@"more.button");
+      accessibilityLabel = accessibilitySKUILocalizedString(@"more.button");
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = SKUIStyledImageButtonAccessibility;
-      v7 = [(SKUIStyledImageButtonAccessibility *)&v13 accessibilityLabel];
+      accessibilityLabel = [(SKUIStyledImageButtonAccessibility *)&v13 accessibilityLabel];
     }
   }
 
-  return v7;
+  return accessibilityLabel;
 }
 
 @end

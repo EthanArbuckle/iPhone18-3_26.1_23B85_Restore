@@ -1,6 +1,6 @@
 @interface HKElectrocardiogramChartTableViewCell
 - (CGSize)gridSize;
-- (HKElectrocardiogramChartTableViewCell)initWithGridSize:(CGSize)a3 reuseIdentifier:(id)a4;
+- (HKElectrocardiogramChartTableViewCell)initWithGridSize:(CGSize)size reuseIdentifier:(id)identifier;
 - (void)_setUpScrollViewContent;
 - (void)_setUpUI;
 - (void)_updateMargins;
@@ -9,13 +9,13 @@
 
 @implementation HKElectrocardiogramChartTableViewCell
 
-- (HKElectrocardiogramChartTableViewCell)initWithGridSize:(CGSize)a3 reuseIdentifier:(id)a4
+- (HKElectrocardiogramChartTableViewCell)initWithGridSize:(CGSize)size reuseIdentifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v26.receiver = self;
   v26.super_class = HKElectrocardiogramChartTableViewCell;
-  v6 = [(HKElectrocardiogramChartTableViewCell *)&v26 initWithStyle:0 reuseIdentifier:a4];
+  v6 = [(HKElectrocardiogramChartTableViewCell *)&v26 initWithStyle:0 reuseIdentifier:identifier];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69DCEF8]);
@@ -23,20 +23,20 @@
     scrollView = v6->_scrollView;
     v6->_scrollView = v8;
 
-    v10 = [[HKElectrocardiogramChartView alloc] initWithGridSize:width, height];
+    height = [[HKElectrocardiogramChartView alloc] initWithGridSize:width, height];
     chartView = v6->_chartView;
-    v6->_chartView = v10;
+    v6->_chartView = height;
 
     v12 = [HKElectrocardiogramAxisView alloc];
     [(HKElectrocardiogramChartView *)v6->_chartView pointsPerSecond];
     v14 = v13;
-    v15 = [(HKElectrocardiogramChartView *)v6->_chartView gridOptions];
-    v16 = [v15 firstObject];
-    v17 = [v16 lineColor];
-    v18 = [(HKElectrocardiogramChartView *)v6->_chartView gridOptions];
-    v19 = [v18 firstObject];
-    [v19 lineWidth];
-    v21 = [(HKElectrocardiogramAxisView *)v12 initWithAxisSpacing:v17 lineColor:v14 lineWidth:v20];
+    gridOptions = [(HKElectrocardiogramChartView *)v6->_chartView gridOptions];
+    firstObject = [gridOptions firstObject];
+    lineColor = [firstObject lineColor];
+    gridOptions2 = [(HKElectrocardiogramChartView *)v6->_chartView gridOptions];
+    firstObject2 = [gridOptions2 firstObject];
+    [firstObject2 lineWidth];
+    v21 = [(HKElectrocardiogramAxisView *)v12 initWithAxisSpacing:lineColor lineColor:v14 lineWidth:v20];
     axisView = v6->_axisView;
     v6->_axisView = v21;
 
@@ -54,61 +54,61 @@
 {
   v47[7] = *MEMORY[0x1E69E9840];
   [(HKElectrocardiogramChartTableViewCell *)self _setUpScrollViewContent];
-  v3 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  infoView = [(HKElectrocardiogramChartTableViewCell *)self infoView];
+  [infoView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v5 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v4 addSubview:v5];
+  contentView = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  scrollView = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [contentView addSubview:scrollView];
 
-  v6 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v7 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
-  [v6 addSubview:v7];
+  contentView2 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  infoView2 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
+  [contentView2 addSubview:infoView2];
 
   v30 = MEMORY[0x1E696ACD8];
-  v46 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v44 = [v46 topAnchor];
-  v45 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v43 = [v45 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43 constant:20.0];
+  scrollView2 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  topAnchor = [scrollView2 topAnchor];
+  contentView3 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v47[0] = v42;
-  v41 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v39 = [v41 bottomAnchor];
-  v40 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
-  v38 = [v40 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  scrollView3 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  bottomAnchor = [scrollView3 bottomAnchor];
+  infoView3 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
+  topAnchor3 = [infoView3 topAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v47[1] = v37;
-  v36 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
-  v34 = [v36 bottomAnchor];
-  v35 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v33 = [v35 bottomAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  infoView4 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
+  bottomAnchor2 = [infoView4 bottomAnchor];
+  contentView4 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  bottomAnchor3 = [contentView4 bottomAnchor];
+  v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v47[2] = v32;
-  v31 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v28 = [v31 leftAnchor];
-  v29 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v27 = [v29 leftAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  scrollView4 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  leftAnchor = [scrollView4 leftAnchor];
+  contentView5 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  leftAnchor2 = [contentView5 leftAnchor];
+  v26 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v47[3] = v26;
-  v25 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v23 = [v25 rightAnchor];
-  v24 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v22 = [v24 rightAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  scrollView5 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  rightAnchor = [scrollView5 rightAnchor];
+  contentView6 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  rightAnchor2 = [contentView6 rightAnchor];
+  v21 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v47[4] = v21;
-  v20 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v19 = [v20 layoutMarginsGuide];
-  v17 = [v19 leadingAnchor];
-  v18 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
-  v8 = [v18 leadingAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8];
+  contentView7 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView7 layoutMarginsGuide];
+  leadingAnchor = [layoutMarginsGuide leadingAnchor];
+  infoView5 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
+  leadingAnchor2 = [infoView5 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[5] = v9;
-  v10 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  v13 = [v12 layoutMarginsGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
+  infoView6 = [(HKElectrocardiogramChartTableViewCell *)self infoView];
+  trailingAnchor = [infoView6 trailingAnchor];
+  contentView8 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView8 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[6] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:7];
   [v30 activateConstraints:v16];
@@ -119,115 +119,115 @@
 
 - (void)_setUpScrollViewContent
 {
-  v3 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v4 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  [v3 addSubview:v4];
+  scrollView = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  chartView = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  [scrollView addSubview:chartView];
 
-  v5 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v6 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
-  [v5 addSubview:v6];
+  scrollView2 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  axisView = [(HKElectrocardiogramChartTableViewCell *)self axisView];
+  [scrollView2 addSubview:axisView];
 
-  v7 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v7 setClipsToBounds:0];
+  scrollView3 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [scrollView3 setClipsToBounds:0];
 
-  v8 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView4 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [scrollView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  chartView2 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  [chartView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  axisView2 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
+  [axisView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v11 setShowsHorizontalScrollIndicator:0];
+  scrollView5 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [scrollView5 setShowsHorizontalScrollIndicator:0];
 
-  v12 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v12 setShowsVerticalScrollIndicator:0];
+  scrollView6 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [scrollView6 setShowsVerticalScrollIndicator:0];
 
-  v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v14 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  [v14 setBackgroundColor:v13];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  chartView3 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  [chartView3 setBackgroundColor:systemBackgroundColor];
 
-  v15 = [MEMORY[0x1E69DC888] hk_appTintColor];
-  v16 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  [v16 setTintColor:v15];
+  hk_appTintColor = [MEMORY[0x1E69DC888] hk_appTintColor];
+  chartView4 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  [chartView4 setTintColor:hk_appTintColor];
 
-  v17 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  [v17 gridSize];
+  chartView5 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  [chartView5 gridSize];
   v19 = v18;
-  v20 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  v21 = [v20 gridOptions];
-  v22 = [v21 firstObject];
-  v23 = v19 * [v22 unitMultiple];
+  chartView6 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  gridOptions = [chartView6 gridOptions];
+  firstObject = [gridOptions firstObject];
+  v23 = v19 * [firstObject unitMultiple];
 
-  v24 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  v25 = [v24 heightAnchor];
-  v26 = [v25 constraintEqualToConstant:v23];
+  chartView7 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  heightAnchor = [chartView7 heightAnchor];
+  v26 = [heightAnchor constraintEqualToConstant:v23];
   [v26 setActive:1];
 
-  v27 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  v28 = [v27 topAnchor];
-  v29 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v30 = [v29 frameLayoutGuide];
-  v31 = [v30 topAnchor];
-  v32 = [v28 constraintEqualToAnchor:v31];
+  chartView8 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  topAnchor = [chartView8 topAnchor];
+  scrollView7 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  frameLayoutGuide = [scrollView7 frameLayoutGuide];
+  topAnchor2 = [frameLayoutGuide topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v32 setActive:1];
 
-  v33 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  v34 = [v33 leftAnchor];
-  v35 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v36 = [v35 contentLayoutGuide];
-  v37 = [v36 leftAnchor];
-  v38 = [v34 constraintEqualToAnchor:v37];
+  chartView9 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  leftAnchor = [chartView9 leftAnchor];
+  scrollView8 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  contentLayoutGuide = [scrollView8 contentLayoutGuide];
+  leftAnchor2 = [contentLayoutGuide leftAnchor];
+  v38 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v38 setActive:1];
 
-  v39 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  v40 = [v39 rightAnchor];
-  v41 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v42 = [v41 contentLayoutGuide];
-  v43 = [v42 rightAnchor];
-  v44 = [v40 constraintEqualToAnchor:v43];
+  chartView10 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  rightAnchor = [chartView10 rightAnchor];
+  scrollView9 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  contentLayoutGuide2 = [scrollView9 contentLayoutGuide];
+  rightAnchor2 = [contentLayoutGuide2 rightAnchor];
+  v44 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v44 setActive:1];
 
-  v45 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
-  v46 = [v45 topAnchor];
-  v47 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  v48 = [v47 bottomAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
+  axisView3 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
+  topAnchor3 = [axisView3 topAnchor];
+  chartView11 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  bottomAnchor = [chartView11 bottomAnchor];
+  v49 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v49 setActive:1];
 
-  v50 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v51 = [v50 frameLayoutGuide];
-  v52 = [v51 bottomAnchor];
-  v53 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
-  v54 = [v53 bottomAnchor];
-  v55 = [v52 constraintEqualToAnchor:v54];
+  scrollView10 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  frameLayoutGuide2 = [scrollView10 frameLayoutGuide];
+  bottomAnchor2 = [frameLayoutGuide2 bottomAnchor];
+  axisView4 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
+  bottomAnchor3 = [axisView4 bottomAnchor];
+  v55 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v55 setActive:1];
 
-  v56 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
-  v57 = [v56 leftAnchor];
-  v58 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v59 = [v58 contentLayoutGuide];
-  v60 = [v59 leftAnchor];
-  v61 = [v57 constraintEqualToAnchor:v60];
+  axisView5 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
+  leftAnchor3 = [axisView5 leftAnchor];
+  scrollView11 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  contentLayoutGuide3 = [scrollView11 contentLayoutGuide];
+  leftAnchor4 = [contentLayoutGuide3 leftAnchor];
+  v61 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   [v61 setActive:1];
 
-  v62 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
-  v63 = [v62 rightAnchor];
-  v64 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v65 = [v64 contentLayoutGuide];
-  v66 = [v65 rightAnchor];
-  v67 = [v63 constraintEqualToAnchor:v66];
+  axisView6 = [(HKElectrocardiogramChartTableViewCell *)self axisView];
+  rightAnchor3 = [axisView6 rightAnchor];
+  scrollView12 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  contentLayoutGuide4 = [scrollView12 contentLayoutGuide];
+  rightAnchor4 = [contentLayoutGuide4 rightAnchor];
+  v67 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   [v67 setActive:1];
 
-  v74 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v68 = [v74 contentLayoutGuide];
-  v69 = [v68 heightAnchor];
-  v70 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  v71 = [v70 frameLayoutGuide];
-  v72 = [v71 heightAnchor];
-  v73 = [v69 constraintEqualToAnchor:v72 multiplier:1.0];
+  scrollView13 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  contentLayoutGuide5 = [scrollView13 contentLayoutGuide];
+  heightAnchor2 = [contentLayoutGuide5 heightAnchor];
+  scrollView14 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  frameLayoutGuide3 = [scrollView14 frameLayoutGuide];
+  heightAnchor3 = [frameLayoutGuide3 heightAnchor];
+  v73 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 multiplier:1.0];
   [v73 setActive:1];
 }
 
@@ -241,27 +241,27 @@
 
 - (void)_updateMargins
 {
-  v3 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [scrollView contentInset];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  [v8 directionalLayoutMargins];
+  contentView = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  [contentView directionalLayoutMargins];
   v10 = v9;
 
-  v11 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
-  [v11 directionalLayoutMargins];
+  contentView2 = [(HKElectrocardiogramChartTableViewCell *)self contentView];
+  [contentView2 directionalLayoutMargins];
   v13 = v12;
 
-  v14 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
-  [v14 setContentInset:{v5, v10, v7, v13}];
+  scrollView2 = [(HKElectrocardiogramChartTableViewCell *)self scrollView];
+  [scrollView2 setContentInset:{v5, v10, v7, v13}];
 }
 
 - (CGSize)gridSize
 {
-  v2 = [(HKElectrocardiogramChartTableViewCell *)self chartView];
-  [v2 gridSize];
+  chartView = [(HKElectrocardiogramChartTableViewCell *)self chartView];
+  [chartView gridSize];
   v4 = v3;
   v6 = v5;
 

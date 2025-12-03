@@ -1,19 +1,19 @@
 @interface MOSpotlightManager
-- (MOSpotlightManager)initWithUniverse:(id)a3;
-- (id)_createNewEventFromEntityInvite:(id)a3;
-- (id)_createResultsWithStoredEvents:(id)a3 withEventEntityinvites:(id)a4;
-- (void)_fetchInviteEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_rehydrateInviteEvents:(id)a3 handler:(id)a4;
-- (void)_setDynamicPropertiesForEvent:(id)a3 withEntityInvite:(id)a4;
-- (void)fetchInviteEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)rehydrateInviteEvents:(id)a3 handler:(id)a4;
+- (MOSpotlightManager)initWithUniverse:(id)universe;
+- (id)_createNewEventFromEntityInvite:(id)invite;
+- (id)_createResultsWithStoredEvents:(id)events withEventEntityinvites:(id)entityinvites;
+- (void)_fetchInviteEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_rehydrateInviteEvents:(id)events handler:(id)handler;
+- (void)_setDynamicPropertiesForEvent:(id)event withEntityInvite:(id)invite;
+- (void)fetchInviteEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)rehydrateInviteEvents:(id)events handler:(id)handler;
 @end
 
 @implementation MOSpotlightManager
 
-- (MOSpotlightManager)initWithUniverse:(id)a3
+- (MOSpotlightManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v16.receiver = self;
   v16.super_class = MOSpotlightManager;
   v5 = [(MOSpotlightManager *)&v16 init];
@@ -30,7 +30,7 @@
 
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v4 getService:v12];
+    v13 = [universeCopy getService:v12];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v13;
   }
@@ -38,42 +38,42 @@
   return v5;
 }
 
-- (void)fetchInviteEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchInviteEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOSpotlightManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOSpotlightManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __89__MOSpotlightManager_fetchInviteEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchInviteEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchInviteEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v40 = a3;
-  v41 = a4;
-  v37 = a5;
-  v33 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v40;
+    *&buf[4] = dateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v41;
+    *&buf[14] = endDateCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "spotlight invite fetchInviteEventsBetweenStartDate, %@, endDate, %@", buf, 0x16u);
   }
 
@@ -84,7 +84,7 @@
   v10 = [NSArray arrayWithObjects:v74 count:2];
   v36 = [NSCompoundPredicate andPredicateWithSubpredicates:v10];
 
-  v32 = [v37 filteredArrayUsingPredicate:v36];
+  v32 = [eventsCopy filteredArrayUsingPredicate:v36];
   v11 = [NSArray arrayWithObjects:@"com.apple.rsvp", @"com.apple.rsvp.liveon", 0];
   *buf = 0;
   *&buf[8] = buf;
@@ -181,7 +181,7 @@ LABEL_16:
   v54[3] = __Block_byref_object_copy__42;
   v54[4] = __Block_byref_object_dispose__42;
   v55 = 0;
-  v26 = [(MOSpotlightManager *)self eventEntityInviteProvider];
+  eventEntityInviteProvider = [(MOSpotlightManager *)self eventEntityInviteProvider];
   v27 = *(*&buf[8] + 40);
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
@@ -191,12 +191,12 @@ LABEL_16:
   v52 = v54;
   v53 = v56;
   v49 = v28;
-  v50 = self;
+  selfCopy = self;
   v29 = v25;
   v51 = v29;
-  [v26 fetchEventEntityPropertiesWithSpotlightIdentifiers:v27 startDateFetch:v40 endDateFetch:v41 bundleIdentifier:v13 completion:v48];
+  [eventEntityInviteProvider fetchEventEntityPropertiesWithSpotlightIdentifiers:v27 startDateFetch:dateCopy endDateFetch:endDateCopy bundleIdentifier:v13 completion:v48];
 
-  v30 = [(MOSpotlightManager *)self queue];
+  queue = [(MOSpotlightManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __90__MOSpotlightManager__fetchInviteEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke_144;
@@ -204,10 +204,10 @@ LABEL_16:
   v45 = v54;
   v46 = v56;
   block[4] = self;
-  v44 = v33;
+  v44 = handlerCopy;
   v47 = a2;
-  v31 = v33;
-  dispatch_group_notify(v29, v30, block);
+  v31 = handlerCopy;
+  dispatch_group_notify(v29, queue, block);
 
   _Block_object_dispose(v54, 8);
   _Block_object_dispose(v56, 8);
@@ -344,28 +344,28 @@ void __90__MOSpotlightManager__fetchInviteEventsBetweenStartDate_endDate_withSto
   }
 }
 
-- (void)rehydrateInviteEvents:(id)a3 handler:(id)a4
+- (void)rehydrateInviteEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOSpotlightManager *)self queue];
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOSpotlightManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __52__MOSpotlightManager_rehydrateInviteEvents_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateInviteEvents:(id)a3 handler:(id)a4
+- (void)_rehydrateInviteEvents:(id)events handler:(id)handler
 {
-  v5 = a3;
-  v24 = a4;
-  v6 = [v5 getDurationOfMOEventArray];
+  eventsCopy = events;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -376,7 +376,7 @@ void __90__MOSpotlightManager__fetchInviteEventsBetweenStartDate_endDate_withSto
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v5;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v51 count:16];
   if (v8)
   {
@@ -391,19 +391,19 @@ void __90__MOSpotlightManager__fetchInviteEventsBetweenStartDate_endDate_withSto
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
-        v12 = [v11 identifierFromProvider];
+        identifierFromProvider = [v11 identifierFromProvider];
 
-        if (v12)
+        if (identifierFromProvider)
         {
           v13 = v44[5];
-          v14 = [v11 identifierFromProvider];
-          [v13 addObject:v14];
+          identifierFromProvider2 = [v11 identifierFromProvider];
+          [v13 addObject:identifierFromProvider2];
 
           v15 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v11 identifierFromProvider];
-            [(MOSpotlightManager *)v16 _rehydrateInviteEvents:buf handler:&v50, v15];
+            identifierFromProvider3 = [v11 identifierFromProvider];
+            [(MOSpotlightManager *)identifierFromProvider3 _rehydrateInviteEvents:buf handler:&v50, v15];
           }
         }
       }
@@ -426,10 +426,10 @@ void __90__MOSpotlightManager__fetchInviteEventsBetweenStartDate_endDate_withSto
   v35[3] = __Block_byref_object_copy__42;
   v35[4] = __Block_byref_object_dispose__42;
   v36 = 0;
-  v17 = [(MOSpotlightManager *)self eventEntityInviteProvider];
+  eventEntityInviteProvider = [(MOSpotlightManager *)self eventEntityInviteProvider];
   v18 = v44[5];
-  v19 = [v6 startDate];
-  v20 = [v6 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __53__MOSpotlightManager__rehydrateInviteEvents_handler___block_invoke;
@@ -437,15 +437,15 @@ void __90__MOSpotlightManager__fetchInviteEventsBetweenStartDate_endDate_withSto
   v31 = v35;
   v27[4] = self;
   v32 = &v43;
-  v21 = v6;
+  v21 = getDurationOfMOEventArray;
   v28 = v21;
   v22 = v7;
   v29 = v22;
   v33 = v37;
   v34 = a2;
-  v23 = v24;
+  v23 = handlerCopy;
   v30 = v23;
-  [v17 fetchEventEntityPropertiesWithSpotlightIdentifiers:v18 startDateFetch:v19 endDateFetch:v20 bundleIdentifier:@"com.apple.rsvp" completion:v27];
+  [eventEntityInviteProvider fetchEventEntityPropertiesWithSpotlightIdentifiers:v18 startDateFetch:startDate endDateFetch:endDate bundleIdentifier:@"com.apple.rsvp" completion:v27];
 
   _Block_object_dispose(v35, 8);
   _Block_object_dispose(v37, 8);
@@ -774,15 +774,15 @@ void __53__MOSpotlightManager__rehydrateInviteEvents_handler___block_invoke_145(
   }
 }
 
-- (id)_createResultsWithStoredEvents:(id)a3 withEventEntityinvites:(id)a4
+- (id)_createResultsWithStoredEvents:(id)events withEventEntityinvites:(id)entityinvites
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  eventsCopy = events;
+  entityinvitesCopy = entityinvites;
+  if ([entityinvitesCopy count])
   {
     v8 = objc_opt_new();
     v9 = objc_opt_new();
-    if ([v6 count])
+    if ([eventsCopy count])
     {
       v54 = v9;
       v10 = objc_opt_new();
@@ -791,8 +791,8 @@ void __53__MOSpotlightManager__rehydrateInviteEvents_handler___block_invoke_145(
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v52 = v6;
-      obj = v6;
+      v52 = eventsCopy;
+      obj = eventsCopy;
       v12 = [obj countByEnumeratingWithState:&v62 objects:v78 count:16];
       if (v12)
       {
@@ -808,11 +808,11 @@ void __53__MOSpotlightManager__rehydrateInviteEvents_handler___block_invoke_145(
             }
 
             v16 = *(*(&v62 + 1) + 8 * i);
-            v17 = [v16 startDate];
-            [v10 setObject:v16 forKey:v17];
+            startDate = [v16 startDate];
+            [v10 setObject:v16 forKey:startDate];
 
-            v18 = [v16 startDate];
-            [v11 addObject:v18];
+            startDate2 = [v16 startDate];
+            [v11 addObject:startDate2];
           }
 
           v13 = [obj countByEnumeratingWithState:&v62 objects:v78 count:16];
@@ -827,8 +827,8 @@ void __53__MOSpotlightManager__rehydrateInviteEvents_handler___block_invoke_145(
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v51 = v7;
-      v19 = v7;
+      v51 = entityinvitesCopy;
+      v19 = entityinvitesCopy;
       v20 = [v19 countByEnumeratingWithState:&v58 objects:v77 count:16];
       if (v20)
       {
@@ -844,13 +844,13 @@ void __53__MOSpotlightManager__rehydrateInviteEvents_handler___block_invoke_145(
             }
 
             v24 = *(*(&v58 + 1) + 8 * j);
-            v25 = [v24 startDate];
-            v26 = [v11 containsObject:v25];
+            startDate3 = [v24 startDate];
+            v26 = [v11 containsObject:startDate3];
 
             if (v26)
             {
-              v27 = [v24 startDate];
-              v28 = [v10 objectForKey:v27];
+              startDate4 = [v24 startDate];
+              v28 = [v10 objectForKey:startDate4];
 
               [(MOSpotlightManager *)self _setDynamicPropertiesForEvent:v28 withEntityInvite:v24];
               v29 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
@@ -889,17 +889,17 @@ LABEL_22:
       }
 
       v32 = [MORehydrationMetrics alloc];
-      v33 = [obj firstObject];
-      v34 = [v33 category];
-      v35 = [obj firstObject];
+      firstObject = [obj firstObject];
+      category = [firstObject category];
+      firstObject2 = [obj firstObject];
       v8 = v55;
-      v36 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v32, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v34, [v35 provider], 1, 0, objc_msgSend(obj, "count"), 3, (objc_msgSend(obj, "count") - -[MORehydrationMetrics count](v55, "count")), 0.0);
+      v36 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v32, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(obj, "count"), 3, (objc_msgSend(obj, "count") - -[MORehydrationMetrics count](v55, "count")), 0.0);
 
       v57 = 0;
       [(MORehydrationMetrics *)v36 submitMetricsWithError:&v57];
 
-      v7 = v51;
-      v6 = v52;
+      entityinvitesCopy = v51;
+      eventsCopy = v52;
       v9 = v54;
     }
 
@@ -918,7 +918,7 @@ LABEL_22:
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v10 = v7;
+      v10 = entityinvitesCopy;
       v41 = [v10 countByEnumeratingWithState:&v66 objects:v79 count:16];
       if (v41)
       {
@@ -952,7 +952,7 @@ LABEL_22:
     {
       v47 = [(MORehydrationMetrics *)v8 count];
       v48 = [(MORehydrationMetrics *)v9 count];
-      v49 = [v6 count];
+      v49 = [eventsCopy count];
       *buf = 134218496;
       v72 = v47;
       v73 = 2048;
@@ -982,7 +982,7 @@ LABEL_22:
       [MOSpotlightManager _createResultsWithStoredEvents:a2 withEventEntityinvites:?];
     }
 
-    v8 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 25, 12, 1, 0, [v6 count], 3, objc_msgSend(v6, "count"), 0.0);
+    v8 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 25, 12, 1, 0, [eventsCopy count], 3, objc_msgSend(eventsCopy, "count"), 0.0);
     v70 = 0;
     [(MORehydrationMetrics *)v8 submitMetricsWithError:&v70];
     v38 = 0;
@@ -991,22 +991,22 @@ LABEL_22:
   return v38;
 }
 
-- (id)_createNewEventFromEntityInvite:(id)a3
+- (id)_createNewEventFromEntityInvite:(id)invite
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  if (v5 && (v6 = v5, [v4 title], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  inviteCopy = invite;
+  startDate = [inviteCopy startDate];
+  if (startDate && (v6 = startDate, [inviteCopy title], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [v4 endDate];
+    endDate = [inviteCopy endDate];
 
-    if (v8)
+    if (endDate)
     {
-      v9 = [v4 endDate];
+      endDate2 = [inviteCopy endDate];
     }
 
     else
     {
-      v9 = [v4 startDate];
+      endDate2 = [inviteCopy startDate];
       v11 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -1017,16 +1017,16 @@ LABEL_22:
 
     v12 = [MOEvent alloc];
     v13 = +[NSUUID UUID];
-    v14 = [v4 startDate];
+    startDate2 = [inviteCopy startDate];
     v15 = +[NSDate date];
-    v10 = [(MOEvent *)v12 initWithEventIdentifier:v13 startDate:v14 endDate:v9 creationDate:v15 provider:12 category:25];
+    v10 = [(MOEvent *)v12 initWithEventIdentifier:v13 startDate:startDate2 endDate:endDate2 creationDate:v15 provider:12 category:25];
 
-    v16 = [v4 endDate];
-    v17 = [v16 dateByAddingTimeInterval:2419200.0];
+    endDate3 = [inviteCopy endDate];
+    v17 = [endDate3 dateByAddingTimeInterval:2419200.0];
     [(MOEvent *)v10 setExpirationDate:v17];
 
-    v18 = [v4 identifier];
-    [(MOEvent *)v10 setIdentifierFromProvider:v18];
+    identifier = [inviteCopy identifier];
+    [(MOEvent *)v10 setIdentifierFromProvider:identifier];
 
     v19 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1036,16 +1036,16 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "spotlight invite: new event created, %@", &v21, 0xCu);
     }
 
-    [(MOSpotlightManager *)self _setDynamicPropertiesForEvent:v10 withEntityInvite:v4];
+    [(MOSpotlightManager *)self _setDynamicPropertiesForEvent:v10 withEntityInvite:inviteCopy];
   }
 
   else
   {
-    v9 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    endDate2 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
+    if (os_log_type_enabled(endDate2, OS_LOG_TYPE_INFO))
     {
       LOWORD(v21) = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "spotlight invite: the entity event is missing startDate or title so skip creating new event", &v21, 2u);
+      _os_log_impl(&_mh_execute_header, endDate2, OS_LOG_TYPE_INFO, "spotlight invite: the entity event is missing startDate or title so skip creating new event", &v21, 2u);
     }
 
     v10 = 0;
@@ -1054,37 +1054,37 @@ LABEL_22:
   return v10;
 }
 
-- (void)_setDynamicPropertiesForEvent:(id)a3 withEntityInvite:(id)a4
+- (void)_setDynamicPropertiesForEvent:(id)event withEntityInvite:(id)invite
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  inviteCopy = invite;
   v7 = objc_alloc_init(MOEventInvite);
-  v8 = [v6 title];
+  title = [inviteCopy title];
 
-  if (v8)
+  if (title)
   {
-    v9 = [v6 title];
-    [(MOEventInvite *)v7 setInviteEventTitle:v9];
+    title2 = [inviteCopy title];
+    [(MOEventInvite *)v7 setInviteEventTitle:title2];
   }
 
-  v10 = [v6 location];
+  location = [inviteCopy location];
 
-  if (v10)
+  if (location)
   {
-    v11 = [v6 location];
-    [(MOEventInvite *)v7 setInviteEventLocation:v11];
+    location2 = [inviteCopy location];
+    [(MOEventInvite *)v7 setInviteEventLocation:location2];
   }
 
-  v12 = [v6 placeName];
+  placeName = [inviteCopy placeName];
 
-  if (v12)
+  if (placeName)
   {
-    v13 = [v6 placeName];
-    [(MOEventInvite *)v7 setInviteEventPlaceName:v13];
+    placeName2 = [inviteCopy placeName];
+    [(MOEventInvite *)v7 setInviteEventPlaceName:placeName2];
   }
 
-  v14 = [v6 organizers];
-  v15 = [v14 count];
+  organizers = [inviteCopy organizers];
+  v15 = [organizers count];
 
   v41 = v7;
   if (v15)
@@ -1094,8 +1094,8 @@ LABEL_22:
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v17 = [v6 organizers];
-    v18 = [v17 countByEnumeratingWithState:&v46 objects:v53 count:16];
+    organizers2 = [inviteCopy organizers];
+    v18 = [organizers2 countByEnumeratingWithState:&v46 objects:v53 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1106,22 +1106,22 @@ LABEL_22:
         {
           if (*v47 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(organizers2);
           }
 
           v22 = *(*(&v46 + 1) + 8 * i);
           v23 = objc_alloc_init(MOInvitePerson);
-          v24 = [v22 displayName];
-          [(MOInvitePerson *)v23 setDisplayName:v24];
+          displayName = [v22 displayName];
+          [(MOInvitePerson *)v23 setDisplayName:displayName];
 
-          v25 = [v22 rsvpStatus];
-          [(MOInvitePerson *)v23 setRsvpStatus:v25];
+          rsvpStatus = [v22 rsvpStatus];
+          [(MOInvitePerson *)v23 setRsvpStatus:rsvpStatus];
 
           -[MOInvitePerson setIsMe:](v23, "setIsMe:", [v22 isMe]);
           [v16 addObject:v23];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v46 objects:v53 count:16];
+        v19 = [organizers2 countByEnumeratingWithState:&v46 objects:v53 count:16];
       }
 
       while (v19);
@@ -1131,8 +1131,8 @@ LABEL_22:
     [(MOEventInvite *)v41 setInviteEventOrganizers:v16];
   }
 
-  v26 = [v6 attendees];
-  v27 = [v26 count];
+  attendees = [inviteCopy attendees];
+  v27 = [attendees count];
 
   if (v27)
   {
@@ -1141,8 +1141,8 @@ LABEL_22:
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v29 = [v6 attendees];
-    v30 = [v29 countByEnumeratingWithState:&v42 objects:v52 count:16];
+    attendees2 = [inviteCopy attendees];
+    v30 = [attendees2 countByEnumeratingWithState:&v42 objects:v52 count:16];
     if (v30)
     {
       v31 = v30;
@@ -1153,22 +1153,22 @@ LABEL_22:
         {
           if (*v43 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(attendees2);
           }
 
           v34 = *(*(&v42 + 1) + 8 * j);
           v35 = objc_alloc_init(MOInvitePerson);
-          v36 = [v34 displayName];
-          [(MOInvitePerson *)v35 setDisplayName:v36];
+          displayName2 = [v34 displayName];
+          [(MOInvitePerson *)v35 setDisplayName:displayName2];
 
-          v37 = [v34 rsvpStatus];
-          [(MOInvitePerson *)v35 setRsvpStatus:v37];
+          rsvpStatus2 = [v34 rsvpStatus];
+          [(MOInvitePerson *)v35 setRsvpStatus:rsvpStatus2];
 
           -[MOInvitePerson setIsMe:](v35, "setIsMe:", [v34 isMe]);
           [v28 addObject:v35];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v42 objects:v52 count:16];
+        v31 = [attendees2 countByEnumeratingWithState:&v42 objects:v52 count:16];
       }
 
       while (v31);
@@ -1179,8 +1179,8 @@ LABEL_22:
   }
 
   [v40 setInviteEvent:v7];
-  v38 = [v6 appBundle];
-  [v40 setAppBundle:v38];
+  appBundle = [inviteCopy appBundle];
+  [v40 setAppBundle:appBundle];
 
   v39 = _mo_log_facility_get_os_log(&MOLogFacilitySpotlight);
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))

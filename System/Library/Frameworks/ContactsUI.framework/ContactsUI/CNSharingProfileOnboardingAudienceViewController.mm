@@ -1,25 +1,25 @@
 @interface CNSharingProfileOnboardingAudienceViewController
 + (id)descriptorForRequiredKeys;
 + (id)headerText;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CNSharingProfileOnboardingAudienceControllerDelegate)delegate;
-- (CNSharingProfileOnboardingAudienceViewController)initWithContact:(id)a3 selectedSharingAudience:(unint64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)cellForNameInTableView:(id)a3;
+- (CNSharingProfileOnboardingAudienceViewController)initWithContact:(id)contact selectedSharingAudience:(unint64_t)audience;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)cellForNameInTableView:(id)view;
 - (id)confirmButtonTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
-- (void)familyNameDidChange:(id)a3;
-- (void)givenNameDidChange:(id)a3;
-- (void)handleConfirmButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)familyNameDidChange:(id)change;
+- (void)givenNameDidChange:(id)change;
+- (void)handleConfirmButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConfirmButtonEnabledState;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -34,21 +34,21 @@
   return WeakRetained;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [(UITextField *)self->_givenNameField text];
-  [(CNMutableContact *)self->_contact setGivenName:v4];
+  text = [(UITextField *)self->_givenNameField text];
+  [(CNMutableContact *)self->_contact setGivenName:text];
 
-  v5 = [(UITextField *)self->_familyNameField text];
-  [(CNMutableContact *)self->_contact setFamilyName:v5];
+  text2 = [(UITextField *)self->_familyNameField text];
+  [(CNMutableContact *)self->_contact setFamilyName:text2];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = v4;
+  returnCopy = return;
+  v5 = returnCopy;
   nameOrder = self->_nameOrder;
-  if ((nameOrder != 2 || self->_familyNameField == v4) && self->_givenNameField == v4)
+  if ((nameOrder != 2 || self->_familyNameField == returnCopy) && self->_givenNameField == returnCopy)
   {
     if (nameOrder == 2)
     {
@@ -65,48 +65,48 @@
 
   else
   {
-    [(UITextField *)v4 resignFirstResponder];
+    [(UITextField *)returnCopy resignFirstResponder];
   }
 
   return 0;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
-  -[CNSharingProfileAudienceDataSource didSelectItemAtIndex:](self->_sharingAudienceDataSource, "didSelectItemAtIndex:", [v6 row]);
-  v8 = [MEMORY[0x1E696AC88] indexPathForRow:v7 inSection:{objc_msgSend(v6, "section")}];
-  LOBYTE(v7) = [v8 isEqual:v6];
-  [v10 deselectRowAtIndexPath:v6 animated:0];
-  if ((v7 & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  selectedIndex = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
+  -[CNSharingProfileAudienceDataSource didSelectItemAtIndex:](self->_sharingAudienceDataSource, "didSelectItemAtIndex:", [pathCopy row]);
+  v8 = [MEMORY[0x1E696AC88] indexPathForRow:selectedIndex inSection:{objc_msgSend(pathCopy, "section")}];
+  LOBYTE(selectedIndex) = [v8 isEqual:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  if ((selectedIndex & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(v6, "section")}];
-    [v10 reloadSections:v9 withRowAnimation:0];
+    v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+    [viewCopy reloadSections:v9 withRowAnimation:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
 
-    v7 = -[CNSharingProfileAudienceDataSource itemForIndex:](self->_sharingAudienceDataSource, "itemForIndex:", [v6 row]);
-    v9 = [v7 label];
-    v10 = [v8 textLabel];
-    [v10 setText:v9];
+    viewCopy = -[CNSharingProfileAudienceDataSource itemForIndex:](self->_sharingAudienceDataSource, "itemForIndex:", [pathCopy row]);
+    label = [viewCopy label];
+    textLabel = [v8 textLabel];
+    [textLabel setText:label];
 
     [v8 setSelectionStyle:0];
-    v11 = [v7 accessoryView];
+    accessoryView = [viewCopy accessoryView];
 
-    if (v11)
+    if (accessoryView)
     {
-      v12 = [v7 accessoryView];
-      [v8 setAccessoryView:v12];
+      accessoryView2 = [viewCopy accessoryView];
+      [v8 setAccessoryView:accessoryView2];
     }
 
     else
@@ -114,7 +114,7 @@
       [v8 setAccessoryView:0];
     }
 
-    if ([v7 isSelected])
+    if ([viewCopy isSelected])
     {
       v13 = 3;
     }
@@ -129,41 +129,41 @@
 
   else
   {
-    v8 = [(CNSharingProfileOnboardingAudienceViewController *)self cellForNameInTableView:v7];
+    v8 = [(CNSharingProfileOnboardingAudienceViewController *)self cellForNameInTableView:viewCopy];
   }
 
   return v8;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
-  if (v6 == [v5 row])
+  pathCopy = path;
+  selectedIndex = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
+  if (selectedIndex == [pathCopy row])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] || objc_msgSend(v5, "row"))
+  pathCopy = path;
+  if ([pathCopy section] || objc_msgSend(pathCopy, "row"))
   {
     v6 = *MEMORY[0x1E69DE3D0];
   }
 
   else
   {
-    v8 = [(UITextField *)self->_givenNameField font];
-    [v8 lineHeight];
+    font = [(UITextField *)self->_givenNameField font];
+    [font lineHeight];
     v6 = v9 * 2.0 + 20.0;
 
     +[CNSharingProfileOnboardingNameCell desiredMinimumCellHeight];
@@ -176,39 +176,39 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 < 1)
+  if (section < 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionFooterLabel:a3];
+    v6 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionFooterLabel:view];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 < 1)
+  if (section < 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionHeaderLabel:a3];
+    v6 = [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource sectionHeaderLabel:view];
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return [(CNSharingProfileAudienceDataSource *)self->_sharingAudienceDataSource numberOfItems];
   }
@@ -219,33 +219,33 @@
   }
 }
 
-- (id)cellForNameInTableView:(id)a3
+- (id)cellForNameInTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[CNSharingProfileOnboardingNameCell cellIdentifier];
-  v6 = [v4 dequeueReusableCellWithIdentifier:v5];
+  v6 = [viewCopy dequeueReusableCellWithIdentifier:v5];
 
   [v6 setGivenNameField:self->_givenNameField familyNameField:self->_familyNameField];
-  v7 = [(CNMutableContact *)self->_contact givenName];
-  [v6 setGivenName:v7];
+  givenName = [(CNMutableContact *)self->_contact givenName];
+  [v6 setGivenName:givenName];
 
-  v8 = [(CNMutableContact *)self->_contact familyName];
-  [v6 setFamilyName:v8];
+  familyName = [(CNMutableContact *)self->_contact familyName];
+  [v6 setFamilyName:familyName];
 
   [v6 setNameOrder:self->_nameOrder];
   v9 = objc_alloc(MEMORY[0x1E69DCAB8]);
-  v10 = [(CNMutableContact *)self->_contact thumbnailImageData];
-  v11 = [v9 initWithData:v10];
+  thumbnailImageData = [(CNMutableContact *)self->_contact thumbnailImageData];
+  v11 = [v9 initWithData:thumbnailImageData];
 
   [v6 setAvatarImage:v11];
 
   return v6;
 }
 
-- (void)handleConfirmButtonTapped:(id)a3
+- (void)handleConfirmButtonTapped:(id)tapped
 {
-  v4 = [(CNSharingProfileOnboardingAudienceViewController *)self delegate];
-  [v4 audienceController:self didFinishWithContact:self->_contact sharingAudience:{-[CNSharingProfileAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
+  delegate = [(CNSharingProfileOnboardingAudienceViewController *)self delegate];
+  [delegate audienceController:self didFinishWithContact:self->_contact sharingAudience:{-[CNSharingProfileAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
 }
 
 - (id)confirmButtonTitle
@@ -256,34 +256,34 @@
   return v3;
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 
-  v5 = [(CNSharingProfileOnboardingAudienceViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(CNSharingProfileOnboardingAudienceViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = CNSharingProfileOnboardingAudienceViewController;
-  [(CNSharingProfileOnboardingAudienceViewController *)&v6 traitCollectionDidChange:a3];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  [(CNSharingProfileOnboardingAudienceViewController *)&v6 traitCollectionDidChange:change];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(CNSharingProfileOnboardingAudienceViewController *)self setShouldAdjustButtonTrayForKeyboard:(v5 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [(CNSharingProfileOnboardingAudienceViewController *)self setShouldAdjustButtonTrayForKeyboard:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
 }
 
 - (void)updateConfirmButtonEnabledState
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNMutableContact *)self->_contact givenName];
-  if ((*(v3 + 16))(v3, v4))
+  givenName = [(CNMutableContact *)self->_contact givenName];
+  if ((*(v3 + 16))(v3, givenName))
   {
-    v5 = [(CNMutableContact *)self->_contact familyName];
-    v6 = (*(v3 + 16))(v3, v5) ^ 1;
+    familyName = [(CNMutableContact *)self->_contact familyName];
+    v6 = (*(v3 + 16))(v3, familyName) ^ 1;
   }
 
   else
@@ -296,37 +296,37 @@
   [(OBBoldTrayButton *)confirmButton setEnabled:v6];
 }
 
-- (void)familyNameDidChange:(id)a3
+- (void)familyNameDidChange:(id)change
 {
-  v4 = [a3 text];
-  [(CNMutableContact *)self->_contact setFamilyName:v4];
+  text = [change text];
+  [(CNMutableContact *)self->_contact setFamilyName:text];
 
   [(CNSharingProfileOnboardingAudienceViewController *)self updateConfirmButtonEnabledState];
 }
 
-- (void)givenNameDidChange:(id)a3
+- (void)givenNameDidChange:(id)change
 {
-  v4 = [a3 text];
-  [(CNMutableContact *)self->_contact setGivenName:v4];
+  text = [change text];
+  [(CNMutableContact *)self->_contact setGivenName:text];
 
   [(CNSharingProfileOnboardingAudienceViewController *)self updateConfirmButtonEnabledState];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 window];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  window = [tableView window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(CNSharingProfileOnboardingAudienceViewController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(CNSharingProfileOnboardingAudienceViewController *)self view];
+    [view layoutIfNeeded];
 
-    v6 = [(OBTableWelcomeController *)self tableView];
-    [v6 contentSize];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 contentSize];
     v8 = v7;
-    v9 = [(CNSharingProfileOnboardingAudienceViewController *)self tableViewHeightConstraint];
-    [v9 setConstant:v8];
+    tableViewHeightConstraint = [(CNSharingProfileOnboardingAudienceViewController *)self tableViewHeightConstraint];
+    [tableViewHeightConstraint setConstant:v8];
   }
 
   v10.receiver = self;
@@ -340,67 +340,67 @@
   v62.super_class = CNSharingProfileOnboardingAudienceViewController;
   [(OBTableWelcomeController *)&v62 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DD020]);
-  v4 = [(CNSharingProfileOnboardingAudienceViewController *)self view];
-  [v4 bounds];
+  view = [(CNSharingProfileOnboardingAudienceViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:1 style:?];
   [(OBTableWelcomeController *)self setTableView:v5];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setShowsVerticalScrollIndicator:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setShowsVerticalScrollIndicator:0];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setScrollEnabled:0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setScrollEnabled:0];
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setBackgroundColor:clearColor];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setKeyboardDismissMode:2];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setKeyboardDismissMode:2];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
   v14 = objc_opt_class();
   v15 = +[CNSharingProfileOnboardingNameCell cellIdentifier];
-  [v13 registerClass:v14 forCellReuseIdentifier:v15];
+  [tableView7 registerClass:v14 forCellReuseIdentifier:v15];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setDelegate:self];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setDelegate:self];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 setDataSource:self];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 setDataSource:self];
 
-  v18 = [MEMORY[0x1E69B7CF8] boldButton];
+  boldButton = [MEMORY[0x1E69B7CF8] boldButton];
   confirmButton = self->_confirmButton;
-  self->_confirmButton = v18;
+  self->_confirmButton = boldButton;
 
   v20 = self->_confirmButton;
-  v21 = [(CNSharingProfileOnboardingAudienceViewController *)self confirmButtonTitle];
-  [(OBBoldTrayButton *)v20 setTitle:v21 forState:0];
+  confirmButtonTitle = [(CNSharingProfileOnboardingAudienceViewController *)self confirmButtonTitle];
+  [(OBBoldTrayButton *)v20 setTitle:confirmButtonTitle forState:0];
 
   [(OBBoldTrayButton *)self->_confirmButton addTarget:self action:sel_handleConfirmButtonTapped_ forControlEvents:64];
   [(CNSharingProfileOnboardingAudienceViewController *)self updateConfirmButtonEnabledState];
-  v22 = [(CNSharingProfileOnboardingAudienceViewController *)self buttonTray];
-  [v22 addButton:self->_confirmButton];
+  buttonTray = [(CNSharingProfileOnboardingAudienceViewController *)self buttonTray];
+  [buttonTray addButton:self->_confirmButton];
 
   [(CNSharingProfileOnboardingAudienceViewController *)self setShouldAdjustScrollViewInsetForKeyboard:1];
-  v23 = [MEMORY[0x1E69DC938] currentDevice];
-  v24 = [v23 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(CNSharingProfileOnboardingAudienceViewController *)self setShouldAdjustButtonTrayForKeyboard:(v24 & 0xFFFFFFFFFFFFFFFBLL) != 1];
-  v25 = [(OBTableWelcomeController *)self tableView];
-  v26 = [v25 heightAnchor];
-  v27 = [v26 constraintEqualToConstant:400.0];
+  [(CNSharingProfileOnboardingAudienceViewController *)self setShouldAdjustButtonTrayForKeyboard:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  heightAnchor = [tableView10 heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:400.0];
   [(CNSharingProfileOnboardingAudienceViewController *)self setTableViewHeightConstraint:v27];
 
-  v28 = [(OBTableWelcomeController *)self tableView];
-  v29 = [(CNSharingProfileOnboardingAudienceViewController *)self tableViewHeightConstraint];
-  [v28 addConstraint:v29];
+  tableView11 = [(OBTableWelcomeController *)self tableView];
+  tableViewHeightConstraint = [(CNSharingProfileOnboardingAudienceViewController *)self tableViewHeightConstraint];
+  [tableView11 addConstraint:tableViewHeightConstraint];
 
   v30 = objc_alloc(MEMORY[0x1E69DD0B0]);
   v31 = *MEMORY[0x1E695F058];
@@ -411,8 +411,8 @@
   givenNameField = self->_givenNameField;
   self->_givenNameField = v35;
 
-  v37 = [(CNMutableContact *)self->_contact givenName];
-  [(UITextField *)self->_givenNameField setText:v37];
+  givenName = [(CNMutableContact *)self->_contact givenName];
+  [(UITextField *)self->_givenNameField setText:givenName];
 
   v38 = *MEMORY[0x1E69DDCF8];
   v39 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -430,8 +430,8 @@
   familyNameField = self->_familyNameField;
   self->_familyNameField = v42;
 
-  v44 = [(CNMutableContact *)self->_contact familyName];
-  [(UITextField *)self->_familyNameField setText:v44];
+  familyName = [(CNMutableContact *)self->_contact familyName];
+  [(UITextField *)self->_familyNameField setText:familyName];
 
   v45 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v38];
   [(UITextField *)self->_familyNameField setFont:v45];
@@ -445,30 +445,30 @@
   [(UITextField *)self->_familyNameField addTarget:self action:sel_familyNameDidChange_ forControlEvents:0x20000];
   [(UITextField *)self->_familyNameField setDelegate:self];
   v48 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v49 = [(CNMutableContact *)self->_contact givenName];
-  if (!v49 || (v50 = v49, [(CNMutableContact *)self->_contact familyName], v51 = objc_claimAutoreleasedReturnValue(), v51, v50, !v51))
+  givenName2 = [(CNMutableContact *)self->_contact givenName];
+  if (!givenName2 || (v50 = givenName2, [(CNMutableContact *)self->_contact familyName], v51 = objc_claimAutoreleasedReturnValue(), v51, v50, !v51))
   {
     v52 = objc_alloc_init(MEMORY[0x1E696ADF0]);
 
-    v53 = [(CNMutableContact *)self->_contact givenName];
-    [v52 setGivenName:v53];
+    givenName3 = [(CNMutableContact *)self->_contact givenName];
+    [v52 setGivenName:givenName3];
 
-    v54 = [(CNMutableContact *)self->_contact familyName];
-    [v52 setFamilyName:v54];
+    familyName2 = [(CNMutableContact *)self->_contact familyName];
+    [v52 setFamilyName:familyName2];
 
     v48 = v52;
   }
 
   self->_nameOrder = [MEMORY[0x1E696ADF8] _nameOrderWithOverridesForComponents:v48 options:0];
   objc_initWeak(&location, self);
-  v55 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v56 = *MEMORY[0x1E69DDC48];
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = __63__CNSharingProfileOnboardingAudienceViewController_viewDidLoad__block_invoke;
   v59[3] = &unk_1E74E45D0;
   objc_copyWeak(&v60, &location);
-  v57 = [v55 addObserverForName:v56 object:0 queue:0 usingBlock:v59];
+  v57 = [defaultCenter addObserverForName:v56 object:0 queue:0 usingBlock:v59];
   traitCollectionChangeToken = self->_traitCollectionChangeToken;
   self->_traitCollectionChangeToken = v57;
 
@@ -485,29 +485,29 @@ void __63__CNSharingProfileOnboardingAudienceViewController_viewDidLoad__block_i
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNSharingProfileOnboardingAudienceViewController;
   [(CNSharingProfileOnboardingAudienceViewController *)&v4 dealloc];
 }
 
-- (CNSharingProfileOnboardingAudienceViewController)initWithContact:(id)a3 selectedSharingAudience:(unint64_t)a4
+- (CNSharingProfileOnboardingAudienceViewController)initWithContact:(id)contact selectedSharingAudience:(unint64_t)audience
 {
-  v6 = a3;
-  v7 = [objc_opt_class() headerText];
+  contactCopy = contact;
+  headerText = [objc_opt_class() headerText];
   v15.receiver = self;
   v15.super_class = CNSharingProfileOnboardingAudienceViewController;
-  v8 = [(OBTableWelcomeController *)&v15 initWithTitle:v7 detailText:0 icon:0 adoptTableViewScrollView:0];
+  v8 = [(OBTableWelcomeController *)&v15 initWithTitle:headerText detailText:0 icon:0 adoptTableViewScrollView:0];
 
   if (v8)
   {
-    v9 = [[CNSharingProfileAudienceDataSource alloc] initWithSelectedSharingAudience:a4];
+    v9 = [[CNSharingProfileAudienceDataSource alloc] initWithSelectedSharingAudience:audience];
     sharingAudienceDataSource = v8->_sharingAudienceDataSource;
     v8->_sharingAudienceDataSource = v9;
 
-    v11 = [v6 mutableCopy];
+    v11 = [contactCopy mutableCopy];
     contact = v8->_contact;
     v8->_contact = v11;
 

@@ -1,21 +1,21 @@
 @interface PUSlideshowSettingsViewController
 - (BOOL)_needsUpdate;
-- (PUSlideshowSettingsViewController)initWithSession:(id)a3;
+- (PUSlideshowSettingsViewController)initWithSession:(id)session;
 - (PUSlideshowSettingsViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)PUSlideshowSpeedCell:(id)a3 stepDurationDidChange:(double)a4;
-- (void)_didTapDoneButton:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)PUSlideshowSpeedCell:(id)cell stepDurationDidChange:(double)change;
+- (void)_didTapDoneButton:(id)button;
 - (void)_invalidateMediaItem;
 - (void)_invalidateMusicOn;
 - (void)_invalidateNavigationBar;
 - (void)_invalidatePreset;
 - (void)_invalidateSpec;
 - (void)_invalidateTableView;
-- (void)_setPendingMediaItem:(id)a3;
-- (void)_setPendingPreset:(id)a3;
+- (void)_setPendingMediaItem:(id)item;
+- (void)_setPendingPreset:(id)preset;
 - (void)_synchronizedChangedSettings;
-- (void)_toggleMusic:(id)a3;
-- (void)_toggleRepeat:(id)a3;
+- (void)_toggleMusic:(id)music;
+- (void)_toggleRepeat:(id)repeat;
 - (void)_updateIfNeeded;
 - (void)_updateMediaItemIfNeeded;
 - (void)_updateMusicOnIfNeeded;
@@ -24,20 +24,20 @@
 - (void)_updateSpecIfNeeded;
 - (void)_updateTableViewIfNeeded;
 - (void)dealloc;
-- (void)musicPicker:(id)a3 didPickMediaItem:(id)a4;
-- (void)musicPickerDidFinish:(id)a3;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)themePicker:(id)a3 didPickPreset:(id)a4;
-- (void)themePickerDidFinish:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4;
+- (void)musicPicker:(id)picker didPickMediaItem:(id)item;
+- (void)musicPickerDidFinish:(id)finish;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)themePicker:(id)picker didPickPreset:(id)preset;
+- (void)themePickerDidFinish:(id)finish;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewControllerSpec:(id)spec didChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewModel:(id)model didChange:(id)change;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PUSlideshowSettingsViewController
@@ -49,7 +49,7 @@
   return WeakRetained;
 }
 
-- (void)PUSlideshowSpeedCell:(id)a3 stepDurationDidChange:(double)a4
+- (void)PUSlideshowSpeedCell:(id)cell stepDurationDidChange:(double)change
 {
   settingsViewModel = self->_settingsViewModel;
   v5[0] = MEMORY[0x1E69E9820];
@@ -57,21 +57,21 @@
   v5[2] = __80__PUSlideshowSettingsViewController_PUSlideshowSpeedCell_stepDurationDidChange___block_invoke;
   v5[3] = &unk_1E7B7FF70;
   v5[4] = self;
-  *&v5[5] = a4;
+  *&v5[5] = change;
   [(PUViewModel *)settingsViewModel performChanges:v5];
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __111__PUSlideshowSettingsViewController_presentationController_willPresentWithAdaptiveStyle_transitionCoordinator___block_invoke;
   v9[3] = &unk_1E7B7E238;
   objc_copyWeak(&v10, &location);
-  [v8 animateAlongsideTransition:0 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
@@ -85,16 +85,16 @@ void __111__PUSlideshowSettingsViewController_presentationController_willPresent
   [v3 _updateIfNeeded];
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v4 = a3;
+  popoverCopy = popover;
   [(PUSlideshowSettingsViewController *)self _synchronizedChangedSettings];
-  [v4 setDelegate:0];
+  [popoverCopy setDelegate:0];
 }
 
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4
+- (void)viewControllerSpec:(id)spec didChange:(id)change
 {
-  if ([a4 traitCollectionChanged])
+  if ([change traitCollectionChanged])
   {
     [(PUSlideshowSettingsViewController *)self _invalidateTableView];
     [(PUSlideshowSettingsViewController *)self _invalidateNavigationBar];
@@ -103,49 +103,49 @@ void __111__PUSlideshowSettingsViewController_presentationController_willPresent
   }
 }
 
-- (void)musicPickerDidFinish:(id)a3
+- (void)musicPickerDidFinish:(id)finish
 {
-  v4 = [(PUSlideshowSettingsViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(PUSlideshowSettingsViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)musicPicker:(id)a3 didPickMediaItem:(id)a4
+- (void)musicPicker:(id)picker didPickMediaItem:(id)item
 {
-  v5 = a4;
-  [(PUSlideshowSettingsViewController *)self _setPendingMediaItem:v5];
+  itemCopy = item;
+  [(PUSlideshowSettingsViewController *)self _setPendingMediaItem:itemCopy];
   settingsViewModel = self->_settingsViewModel;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__PUSlideshowSettingsViewController_musicPicker_didPickMediaItem___block_invoke;
   v8[3] = &unk_1E7B80C38;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = itemCopy;
+  v7 = itemCopy;
   [(PUViewModel *)settingsViewModel performChanges:v8];
 }
 
-- (void)themePickerDidFinish:(id)a3
+- (void)themePickerDidFinish:(id)finish
 {
-  v4 = [(PUSlideshowSettingsViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(PUSlideshowSettingsViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)themePicker:(id)a3 didPickPreset:(id)a4
+- (void)themePicker:(id)picker didPickPreset:(id)preset
 {
-  v7 = a4;
-  v5 = [(PUSlideshowSettingsViewModel *)self->_settingsViewModel mediaItem];
-  if ([v5 type] == 2)
+  presetCopy = preset;
+  mediaItem = [(PUSlideshowSettingsViewModel *)self->_settingsViewModel mediaItem];
+  if ([mediaItem type] == 2)
   {
-    v6 = [[PUSlideshowMediaItem alloc] initWitPreset:v7];
+    v6 = [[PUSlideshowMediaItem alloc] initWitPreset:presetCopy];
     [(PUSlideshowSettingsViewController *)self _setPendingMediaItem:v6];
   }
 
-  [(PUSlideshowSettingsViewController *)self _setPendingPreset:v7];
+  [(PUSlideshowSettingsViewController *)self _setPendingPreset:presetCopy];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if (self->_settingsViewModel == a3 && [a4 musicOnDidChange])
+  if (self->_settingsViewModel == model && [change musicOnDidChange])
   {
     [(PUSlideshowSettingsViewController *)self _invalidateMusicOn];
 
@@ -153,16 +153,16 @@ void __111__PUSlideshowSettingsViewController_presentationController_willPresent
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v6 section];
-  if (v7 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
     v8 = objc_alloc_init(PUSlideshowMusicViewController);
-    v11 = [(PUSlideshowSettingsViewController *)self _pendingMediaItem];
-    [(PUSlideshowMusicViewController *)v8 setCurrentMediaItem:v11];
+    _pendingMediaItem = [(PUSlideshowSettingsViewController *)self _pendingMediaItem];
+    [(PUSlideshowMusicViewController *)v8 setCurrentMediaItem:_pendingMediaItem];
 
     [(PUSlideshowMusicViewController *)v8 setDelegate:self];
     if (![(PUSlideshowSettingsViewControllerSpec *)self->_spec shouldUseBlurredBackground])
@@ -173,14 +173,14 @@ void __111__PUSlideshowSettingsViewController_presentationController_willPresent
     goto LABEL_4;
   }
 
-  if (v7)
+  if (section)
   {
     goto LABEL_6;
   }
 
   v8 = objc_alloc_init(PUSlideshowThemeViewController);
-  v9 = [(PUSlideshowSettingsViewController *)self _pendingPreset];
-  [(PUSlideshowMusicViewController *)v8 setCurrentPreset:v9];
+  _pendingPreset = [(PUSlideshowSettingsViewController *)self _pendingPreset];
+  [(PUSlideshowMusicViewController *)v8 setCurrentPreset:_pendingPreset];
 
   [(PUSlideshowMusicViewController *)v8 setDelegate:self];
   if ([(PUSlideshowSettingsViewControllerSpec *)self->_spec shouldUseBlurredBackground])
@@ -190,128 +190,128 @@ LABEL_4:
   }
 
 LABEL_5:
-  v10 = [(PUSlideshowSettingsViewController *)self navigationController];
-  [v10 pushViewController:v8 animated:1];
+  navigationController = [(PUSlideshowSettingsViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 
 LABEL_6:
-  [v12 deselectRowAtIndexPath:v6 animated:0];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 section];
-  v10 = [(PUSlideshowSettingsViewController *)self _pendingPreset];
-  if (v9 <= 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  _pendingPreset = [(PUSlideshowSettingsViewController *)self _pendingPreset];
+  if (section <= 1)
   {
-    if (!v9)
+    if (!section)
     {
-      v11 = [v7 dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerSubtitleCellIdentifier"];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerSubtitleCellIdentifier"];
       if (!v11)
       {
         v11 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"SlideshowSettingsViewControllerSubtitleCellIdentifier"];
         [v11 setAccessoryType:1];
-        v20 = [v11 detailTextLabel];
-        v21 = [v11 textLabel];
-        v22 = [v21 textColor];
-        [v20 setTextColor:v22];
+        detailTextLabel = [v11 detailTextLabel];
+        textLabel = [v11 textLabel];
+        textColor = [textLabel textColor];
+        [detailTextLabel setTextColor:textColor];
       }
 
-      v23 = [v11 textLabel];
+      textLabel2 = [v11 textLabel];
       v24 = PULocalizedString(@"SLIDESHOW_SETTINGS_THEME");
-      [v23 setText:v24];
+      [textLabel2 setText:v24];
 
       v17 = 1040;
       goto LABEL_14;
     }
 
-    if (v9 == 1)
+    if (section == 1)
     {
-      v11 = [v7 dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerSubtitleCellIdentifier"];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerSubtitleCellIdentifier"];
       if (!v11)
       {
         v11 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"SlideshowSettingsViewControllerSubtitleCellIdentifier"];
         [v11 setAccessoryType:1];
-        v12 = [v11 detailTextLabel];
-        v13 = [v11 textLabel];
-        v14 = [v13 textColor];
-        [v12 setTextColor:v14];
+        detailTextLabel2 = [v11 detailTextLabel];
+        textLabel3 = [v11 textLabel];
+        textColor2 = [textLabel3 textColor];
+        [detailTextLabel2 setTextColor:textColor2];
       }
 
-      v15 = [v11 textLabel];
+      textLabel4 = [v11 textLabel];
       v16 = PULocalizedString(@"SLIDESHOW_SETTINGS_SELECTED_MUSIC");
-      [v15 setText:v16];
+      [textLabel4 setText:v16];
 
       v17 = 1048;
 LABEL_14:
-      v19 = [*(&self->super.super.super.isa + v17) localizedName];
-      v25 = [v11 detailTextLabel];
-      [v25 setText:v19];
+      localizedName = [*(&self->super.super.super.isa + v17) localizedName];
+      detailTextLabel3 = [v11 detailTextLabel];
+      [detailTextLabel3 setText:localizedName];
 LABEL_19:
 
       goto LABEL_23;
     }
 
 LABEL_29:
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:408 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:408 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v9 == 2)
+  if (section == 2)
   {
-    v26 = [v7 dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerRepeatCellIdentifier"];
+    v26 = [viewCopy dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerRepeatCellIdentifier"];
     if (v26)
     {
       v11 = v26;
-      v19 = [v26 accessoryView];
+      localizedName = [v26 accessoryView];
     }
 
     else
     {
       v11 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"SlideshowSettingsViewControllerRepeatCellIdentifier"];
-      v19 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-      [(PUSlideshowSpeedCell *)v19 setOn:[(PUSlideshowSettingsViewModel *)self->_settingsViewModel shouldRepeat]];
-      [(PUSlideshowSpeedCell *)v19 addTarget:self action:sel__toggleRepeat_ forControlEvents:4096];
-      [v11 setAccessoryView:v19];
+      localizedName = objc_alloc_init(MEMORY[0x1E69DCFD0]);
+      [(PUSlideshowSpeedCell *)localizedName setOn:[(PUSlideshowSettingsViewModel *)self->_settingsViewModel shouldRepeat]];
+      [(PUSlideshowSpeedCell *)localizedName addTarget:self action:sel__toggleRepeat_ forControlEvents:4096];
+      [v11 setAccessoryView:localizedName];
       [v11 setSelectionStyle:0];
     }
 
-    -[PUSlideshowSpeedCell setEnabled:](v19, "setEnabled:", [v10 supportsSettingType:1]);
-    v25 = [v11 textLabel];
+    -[PUSlideshowSpeedCell setEnabled:](localizedName, "setEnabled:", [_pendingPreset supportsSettingType:1]);
+    detailTextLabel3 = [v11 textLabel];
     v27 = PULocalizedString(@"SLIDESHOW_SETTINGS_REPEAT");
-    [v25 setText:v27];
+    [detailTextLabel3 setText:v27];
 
     goto LABEL_19;
   }
 
-  if (v9 != 3)
+  if (section != 3)
   {
     goto LABEL_29;
   }
 
-  v18 = [v7 dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerSpeedCellIdentifier"];
+  v18 = [viewCopy dequeueReusableCellWithIdentifier:@"SlideshowSettingsViewControllerSpeedCellIdentifier"];
   if (v18)
   {
-    v19 = v18;
+    localizedName = v18;
   }
 
   else
   {
     v28 = [[PUSlideshowSpeedCell alloc] initWithStyle:0 reuseIdentifier:@"SlideshowSettingsViewControllerSpeedCellIdentifier"];
-    v29 = [MEMORY[0x1E69DC888] clearColor];
-    [(PUSlideshowSpeedCell *)v28 setBackgroundColor:v29];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PUSlideshowSpeedCell *)v28 setBackgroundColor:clearColor];
 
     [(PUSlideshowSpeedCell *)v28 setDelegate:self];
-    v19 = v28;
-    if (!v19)
+    localizedName = v28;
+    if (!localizedName)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
-      [v32 handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:397 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"cell", v34}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:397 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"cell", v34}];
 LABEL_28:
 
       goto LABEL_22;
@@ -321,26 +321,26 @@ LABEL_28:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v35 = objc_opt_class();
     v34 = NSStringFromClass(v35);
-    v36 = [(PUSlideshowSpeedCell *)v19 px_descriptionForAssertionMessage];
-    [v32 handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:397 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"cell", v34, v36}];
+    px_descriptionForAssertionMessage = [(PUSlideshowSpeedCell *)localizedName px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:397 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"cell", v34, px_descriptionForAssertionMessage}];
 
     goto LABEL_28;
   }
 
 LABEL_22:
   [(PUSlideshowSettingsViewModel *)self->_settingsViewModel stepDuration];
-  [(PUSlideshowSpeedCell *)v19 setStepDuration:?];
-  -[PUSlideshowSpeedCell setEnabled:](v19, "setEnabled:", [v10 supportsSettingType:2]);
-  [(PUSlideshowSpeedCell *)v19 setNeedsUpdateConstraints];
-  [(PUSlideshowSpeedCell *)v19 updateConstraintsIfNeeded];
-  v11 = v19;
+  [(PUSlideshowSpeedCell *)localizedName setStepDuration:?];
+  -[PUSlideshowSpeedCell setEnabled:](localizedName, "setEnabled:", [_pendingPreset supportsSettingType:2]);
+  [(PUSlideshowSpeedCell *)localizedName setNeedsUpdateConstraints];
+  [(PUSlideshowSpeedCell *)localizedName updateConstraintsIfNeeded];
+  v11 = localizedName;
 LABEL_23:
 
-  v30 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec cellBackgroundColor];
-  [v11 setBackgroundColor:v30];
+  cellBackgroundColor = [(PUSlideshowSettingsViewControllerSpec *)self->_spec cellBackgroundColor];
+  [v11 setBackgroundColor:cellBackgroundColor];
 
   [v11 setNeedsLayout];
   [v11 layoutIfNeeded];
@@ -348,33 +348,33 @@ LABEL_23:
   return v11;
 }
 
-- (void)_toggleMusic:(id)a3
+- (void)_toggleMusic:(id)music
 {
-  v4 = [a3 isOn];
+  isOn = [music isOn];
   settingsViewModel = self->_settingsViewModel;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PUSlideshowSettingsViewController__toggleMusic___block_invoke;
   v6[3] = &unk_1E7B7FF98;
   v6[4] = self;
-  v7 = v4;
+  v7 = isOn;
   [(PUViewModel *)settingsViewModel performChanges:v6];
 }
 
-- (void)_toggleRepeat:(id)a3
+- (void)_toggleRepeat:(id)repeat
 {
-  v4 = [a3 isOn];
+  isOn = [repeat isOn];
   settingsViewModel = self->_settingsViewModel;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__PUSlideshowSettingsViewController__toggleRepeat___block_invoke;
   v6[3] = &unk_1E7B7FF98;
   v6[4] = self;
-  v7 = v4;
+  v7 = isOn;
   [(PUViewModel *)settingsViewModel performChanges:v6];
 }
 
-- (void)_didTapDoneButton:(id)a3
+- (void)_didTapDoneButton:(id)button
 {
   [(PUSlideshowSettingsViewController *)self _synchronizedChangedSettings];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -397,24 +397,24 @@ LABEL_23:
   pendingPreset = self->__pendingPreset;
   if (pendingPreset)
   {
-    v4 = [(PUSlideshowSettingsViewModel *)self->_settingsViewModel preset];
-    v5 = [(OKProducerPreset *)pendingPreset isEqual:v4];
+    preset = [(PUSlideshowSettingsViewModel *)self->_settingsViewModel preset];
+    v5 = [(OKProducerPreset *)pendingPreset isEqual:preset];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(PUSlideshowSession *)self->_session viewModel];
+      viewModel = [(PUSlideshowSession *)self->_session viewModel];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__block_invoke;
       v13[3] = &unk_1E7B80DD0;
-      v7 = v6;
+      v7 = viewModel;
       v14 = v7;
       [v7 performChanges:v13];
       pendingMediaItem = self->__pendingMediaItem;
       if (pendingMediaItem)
       {
-        v9 = [(PUSlideshowSettingsViewModel *)self->_settingsViewModel mediaItem];
-        LOBYTE(pendingMediaItem) = ![(PUSlideshowMediaItem *)pendingMediaItem isEqual:v9];
+        mediaItem = [(PUSlideshowSettingsViewModel *)self->_settingsViewModel mediaItem];
+        LOBYTE(pendingMediaItem) = ![(PUSlideshowMediaItem *)pendingMediaItem isEqual:mediaItem];
       }
 
       settingsViewModel = self->_settingsViewModel;
@@ -480,9 +480,9 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   if ([(PUSlideshowSettingsViewController *)self _needsUpdateNavigationBar])
   {
     [(PUSlideshowSettingsViewController *)self _setNeedsUpdateNavigationBar:0];
-    v3 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec shouldShowNavigationBar];
-    v4 = [(PUSlideshowSettingsViewController *)self navigationController];
-    [v4 setNavigationBarHidden:!v3];
+    shouldShowNavigationBar = [(PUSlideshowSettingsViewControllerSpec *)self->_spec shouldShowNavigationBar];
+    navigationController = [(PUSlideshowSettingsViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:!shouldShowNavigationBar];
   }
 }
 
@@ -492,12 +492,12 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   {
     [(PUSlideshowSettingsViewController *)self _setNeedsUpdateTableView:0];
     tableView = self->_tableView;
-    v4 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewBackgroundColor];
-    [(UITableView *)tableView setBackgroundColor:v4];
+    tableViewBackgroundColor = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewBackgroundColor];
+    [(UITableView *)tableView setBackgroundColor:tableViewBackgroundColor];
 
     v5 = self->_tableView;
-    v6 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewHeaderView];
-    [(UITableView *)v5 setTableHeaderView:v6];
+    tableViewHeaderView = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewHeaderView];
+    [(UITableView *)v5 setTableHeaderView:tableViewHeaderView];
 
     v7 = self->_tableView;
 
@@ -510,8 +510,8 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   if ([(PUSlideshowSettingsViewController *)self _needsUpdateSpec])
   {
     [(PUSlideshowSettingsViewController *)self _setNeedsUpdateSpec:0];
-    v3 = [(PUSlideshowSettingsViewController *)self presentingViewController];
-    v4 = [v3 traitCollection];
+    presentingViewController = [(PUSlideshowSettingsViewController *)self presentingViewController];
+    traitCollection = [presentingViewController traitCollection];
 
     spec = self->_spec;
     v7[0] = MEMORY[0x1E69E9820];
@@ -519,8 +519,8 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
     v7[2] = __56__PUSlideshowSettingsViewController__updateSpecIfNeeded__block_invoke;
     v7[3] = &unk_1E7B80C38;
     v7[4] = self;
-    v8 = v4;
-    v6 = v4;
+    v8 = traitCollection;
+    v6 = traitCollection;
     [(PUViewControllerSpec *)spec performChanges:v7];
   }
 }
@@ -537,8 +537,8 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
     [(PUSlideshowSettingsViewController *)self _updateMusicOnIfNeeded];
     if ([(PUSlideshowSettingsViewController *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:213 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowSettingsViewController.m" lineNumber:213 description:@"updates still needed after an update cycle"];
     }
   }
 }
@@ -595,33 +595,33 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   return [(PUSlideshowSettingsViewController *)self _needsUpdateMusicOn];
 }
 
-- (void)_setPendingMediaItem:(id)a3
+- (void)_setPendingMediaItem:(id)item
 {
-  v5 = a3;
-  if (([v5 isEqual:self->__pendingMediaItem] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isEqual:self->__pendingMediaItem] & 1) == 0)
   {
-    objc_storeStrong(&self->__pendingMediaItem, a3);
+    objc_storeStrong(&self->__pendingMediaItem, item);
     [(PUSlideshowSettingsViewController *)self _invalidateMediaItem];
     [(PUSlideshowSettingsViewController *)self _updateIfNeeded];
   }
 }
 
-- (void)_setPendingPreset:(id)a3
+- (void)_setPendingPreset:(id)preset
 {
-  v5 = a3;
-  if (([v5 isEqual:self->__pendingPreset] & 1) == 0)
+  presetCopy = preset;
+  if (([presetCopy isEqual:self->__pendingPreset] & 1) == 0)
   {
-    objc_storeStrong(&self->__pendingPreset, a3);
+    objc_storeStrong(&self->__pendingPreset, preset);
     [(PUSlideshowSettingsViewController *)self _invalidatePreset];
     [(PUSlideshowSettingsViewController *)self _updateIfNeeded];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowSettingsViewController;
-  [(PUSlideshowSettingsViewController *)&v4 traitCollectionDidChange:a3];
+  [(PUSlideshowSettingsViewController *)&v4 traitCollectionDidChange:change];
   [(PUSlideshowSettingsViewController *)self _invalidateSpec];
   [(PUSlideshowSettingsViewController *)self _updateIfNeeded];
 }
@@ -635,25 +635,25 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   [(PUSlideshowSettingsViewController *)self setPreferredContentSize:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowSettingsViewController;
-  [(PUSlideshowSettingsViewController *)&v4 viewWillDisappear:a3];
+  [(PUSlideshowSettingsViewController *)&v4 viewWillDisappear:disappear];
   [(UITableView *)self->_tableView setHidden:self->_shouldHideTableViewWhenViewWillDisappear];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PUSlideshowSettingsViewController;
-  [(PUSlideshowSettingsViewController *)&v6 viewWillAppear:a3];
+  [(PUSlideshowSettingsViewController *)&v6 viewWillAppear:appear];
   self->_shouldHideTableViewWhenViewWillDisappear = 0;
   [(UITableView *)self->_tableView setHidden:0];
-  v4 = [(PUSlideshowSettingsViewController *)self navigationController];
-  v5 = [v4 popoverPresentationController];
+  navigationController = [(PUSlideshowSettingsViewController *)self navigationController];
+  popoverPresentationController = [navigationController popoverPresentationController];
 
-  [v5 setDelegate:self];
+  [popoverPresentationController setDelegate:self];
   [(PUSlideshowSettingsViewController *)self _invalidateSpec];
   [(PUSlideshowSettingsViewController *)self _invalidateNavigationBar];
   [(PUSlideshowSettingsViewController *)self _updateIfNeeded];
@@ -664,17 +664,17 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   v12.receiver = self;
   v12.super_class = PUSlideshowSettingsViewController;
   [(PUSlideshowSettingsViewController *)&v12 viewDidLoad];
-  v3 = [(PUSlideshowSettingsViewController *)self navigationItem];
+  navigationItem = [(PUSlideshowSettingsViewController *)self navigationItem];
   v4 = PULocalizedString(@"SLIDESHOW_SETTINGS_NAVBAR_TITLE");
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__didTapDoneButton_];
-  v6 = [(PUSlideshowSettingsViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem2 = [(PUSlideshowSettingsViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 
   v7 = objc_alloc(MEMORY[0x1E69DD020]);
-  v8 = [(PUSlideshowSettingsViewController *)self view];
-  [v8 bounds];
+  view = [(PUSlideshowSettingsViewController *)self view];
+  [view bounds];
   v9 = [v7 initWithFrame:?];
   tableView = self->_tableView;
   self->_tableView = v9;
@@ -682,8 +682,8 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   [(UITableView *)self->_tableView setAutoresizingMask:18];
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setDataSource:self];
-  v11 = [(PUSlideshowSettingsViewController *)self view];
-  [v11 addSubview:self->_tableView];
+  view2 = [(PUSlideshowSettingsViewController *)self view];
+  [view2 addSubview:self->_tableView];
 }
 
 - (void)dealloc
@@ -695,19 +695,19 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
   [(PUSlideshowSettingsViewController *)&v3 dealloc];
 }
 
-- (PUSlideshowSettingsViewController)initWithSession:(id)a3
+- (PUSlideshowSettingsViewController)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = PUSlideshowSettingsViewController;
   v6 = [(PUSlideshowSettingsViewController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
-    v8 = [(PUSlideshowSession *)v7->_session settingsViewModel];
+    objc_storeStrong(&v6->_session, session);
+    settingsViewModel = [(PUSlideshowSession *)v7->_session settingsViewModel];
     settingsViewModel = v7->_settingsViewModel;
-    v7->_settingsViewModel = v8;
+    v7->_settingsViewModel = settingsViewModel;
 
     [(PUSlideshowSettingsViewModel *)v7->_settingsViewModel registerChangeObserver:v7];
     v10 = objc_alloc_init(PUSlideshowSettingsViewControllerSpec);
@@ -715,11 +715,11 @@ uint64_t __65__PUSlideshowSettingsViewController__synchronizedChangedSettings__b
     v7->_spec = v10;
 
     [(PUViewControllerSpec *)v7->_spec registerChangeObserver:v7];
-    v12 = [(PUSlideshowSettingsViewModel *)v7->_settingsViewModel preset];
-    [(PUSlideshowSettingsViewController *)v7 _setPendingPreset:v12];
+    preset = [(PUSlideshowSettingsViewModel *)v7->_settingsViewModel preset];
+    [(PUSlideshowSettingsViewController *)v7 _setPendingPreset:preset];
 
-    v13 = [(PUSlideshowSettingsViewModel *)v7->_settingsViewModel mediaItem];
-    [(PUSlideshowSettingsViewController *)v7 _setPendingMediaItem:v13];
+    mediaItem = [(PUSlideshowSettingsViewModel *)v7->_settingsViewModel mediaItem];
+    [(PUSlideshowSettingsViewController *)v7 _setPendingMediaItem:mediaItem];
   }
 
   return v7;

@@ -2,9 +2,9 @@
 - (UIEdgeInsets)edgeInsetsForBatteryInsides;
 - (UIEdgeInsets)edgeInsetsForBluetoothBatteryInsides;
 - (double)scale;
-- (id)makeTextFontForStyle:(int64_t)a3;
-- (id)textForNetworkType:(int)a3;
-- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)a3;
+- (id)makeTextFontForStyle:(int64_t)style;
+- (id)textForNetworkType:(int)type;
+- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)activity;
 @end
 
 @implementation UIStatusBarExternalForegroundStyleAttributes
@@ -15,15 +15,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    mainScreen = v2;
   }
 
   else
   {
-    v4 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
-  v5 = v4;
+  v5 = mainScreen;
 
   [v5 scale];
   v7 = v6;
@@ -67,9 +67,9 @@
   return result;
 }
 
-- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)a3
+- (int64_t)activityIndicatorStyleWithSyncActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     return 18;
   }
@@ -80,17 +80,17 @@
   }
 }
 
-- (id)makeTextFontForStyle:(int64_t)a3
+- (id)makeTextFontForStyle:(int64_t)style
 {
-  if (a3 <= 3)
+  if (style <= 3)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v6 = 12.0;
       goto LABEL_10;
     }
 
-    if (a3 == 3)
+    if (style == 3)
     {
       v6 = 16.0;
 LABEL_10:
@@ -99,14 +99,14 @@ LABEL_10:
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIStatusBarExternalForegroundStyleAttributes.m" lineNumber:99 description:{@"font requested for style %ld but font size was not determined", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStatusBarExternalForegroundStyleAttributes.m" lineNumber:99 description:{@"font requested for style %ld but font size was not determined", style}];
 
     v6 = 0.0;
     goto LABEL_10;
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     v7 = off_1E70ECC18;
     v8 = *off_1E70ECD28;
@@ -115,7 +115,7 @@ LABEL_8:
 
   else
   {
-    if (a3 != 5)
+    if (style != 5)
     {
       goto LABEL_8;
     }
@@ -131,15 +131,15 @@ LABEL_13:
   return v11;
 }
 
-- (id)textForNetworkType:(int)a3
+- (id)textForNetworkType:(int)type
 {
-  if (!a3)
+  if (!type)
   {
     v3 = @"GPRS";
     goto LABEL_5;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v3 = @"LTE";
 LABEL_5:

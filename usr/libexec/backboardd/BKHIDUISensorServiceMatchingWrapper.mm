@@ -1,28 +1,28 @@
 @interface BKHIDUISensorServiceMatchingWrapper
 - (BKHIDUISensorServiceMatchingWrapper)init;
-- (BKHIDUISensorServiceMatchingWrapper)initWithMatchingDictionary:(id)a3 instantiateWrapperUsingBlock:(id)a4;
+- (BKHIDUISensorServiceMatchingWrapper)initWithMatchingDictionary:(id)dictionary instantiateWrapperUsingBlock:(id)block;
 - (BOOL)supportsProximityLPAEventTransitions;
-- (void)_lock_applyUIMode:(id)a3 toWrappers:(id)a4;
-- (void)applyUIMode:(id)a3;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
+- (void)_lock_applyUIMode:(id)mode toWrappers:(id)wrappers;
+- (void)applyUIMode:(id)mode;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
 - (void)proximityDidUnoccludeAfterScreenWake;
 - (void)resetCalibration;
-- (void)serviceDidDisappear:(id)a3;
-- (void)updateCharacteristics:(id)a3;
+- (void)serviceDidDisappear:(id)disappear;
+- (void)updateCharacteristics:(id)characteristics;
 @end
 
 @implementation BKHIDUISensorServiceMatchingWrapper
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSArray *)self->_lock_serviceWrappers mutableCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = self;
+  selfCopy = self;
   v6 = self->_lock_serviceWrappers;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
@@ -39,8 +39,8 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 service];
-        v13 = [v12 isEqual:v4];
+        service = [v11 service];
+        v13 = [service isEqual:disappearCopy];
 
         if (v13)
         {
@@ -50,7 +50,7 @@
             *buf = 138543618;
             v23 = v11;
             v24 = 2114;
-            v25 = v4;
+            v25 = disappearCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "removed %{public}@ for service:%{public}@", buf, 0x16u);
           }
 
@@ -65,22 +65,22 @@
   }
 
   v15 = [v5 copy];
-  lock_serviceWrappers = v17->_lock_serviceWrappers;
-  v17->_lock_serviceWrappers = v15;
+  lock_serviceWrappers = selfCopy->_lock_serviceWrappers;
+  selfCopy->_lock_serviceWrappers = v15;
 
-  os_unfair_lock_unlock(&v17->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
-  v5 = a4;
+  matchCopy = match;
   os_unfair_lock_lock(&self->_lock);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000771E0;
   v12[3] = &unk_1000FC568;
   v12[4] = self;
-  v6 = [v5 bs_map:v12];
+  v6 = [matchCopy bs_map:v12];
 
   lock_serviceWrappers = self->_lock_serviceWrappers;
   if (lock_serviceWrappers)
@@ -106,16 +106,16 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_applyUIMode:(id)a3 toWrappers:(id)a4
+- (void)_lock_applyUIMode:(id)mode toWrappers:(id)wrappers
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  wrappersCopy = wrappers;
   os_unfair_lock_assert_owner(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v7;
+  v8 = wrappersCopy;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -131,7 +131,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) applyUIMode:{v6, v13}];
+        [*(*(&v13 + 1) + 8 * v12) applyUIMode:{modeCopy, v13}];
         v12 = v12 + 1;
       }
 
@@ -187,9 +187,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)updateCharacteristics:(id)a3
+- (void)updateCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   os_unfair_lock_lock(&self->_lock);
   v12 = 0u;
   v13 = 0u;
@@ -211,7 +211,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) updateCharacteristics:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) updateCharacteristics:{characteristicsCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -225,13 +225,13 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)applyUIMode:(id)a3
+- (void)applyUIMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->_lock);
   lock_activeMode = self->_lock_activeMode;
-  self->_lock_activeMode = v4;
-  v6 = v4;
+  self->_lock_activeMode = modeCopy;
+  v6 = modeCopy;
 
   [(BKHIDUISensorServiceMatchingWrapper *)self _lock_applyUIMode:v6 toWrappers:self->_lock_serviceWrappers];
 
@@ -312,10 +312,10 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BKHIDUISensorServiceMatchingWrapper)initWithMatchingDictionary:(id)a3 instantiateWrapperUsingBlock:(id)a4
+- (BKHIDUISensorServiceMatchingWrapper)initWithMatchingDictionary:(id)dictionary instantiateWrapperUsingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = BKHIDUISensorServiceMatchingWrapper;
   v8 = [(BKHIDUISensorServiceMatchingWrapper *)&v17 init];
@@ -323,13 +323,13 @@ LABEL_11:
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v7 copy];
+    v10 = [blockCopy copy];
     instantiateWrapperBlock = v9->_instantiateWrapperBlock;
     v9->_instantiateWrapperBlock = v10;
 
     v12 = [BKIOHIDServiceMatcher alloc];
     v13 = +[BKHIDSystemInterface sharedInstance];
-    v14 = [v12 initWithMatchingDictionary:v6 dataProvider:v13];
+    v14 = [v12 initWithMatchingDictionary:dictionaryCopy dataProvider:v13];
     serviceMatcher = v9->_serviceMatcher;
     v9->_serviceMatcher = v14;
 
@@ -352,7 +352,7 @@ LABEL_11:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKHIDUISensorServiceMatchingWrapper.m";
     v17 = 1024;

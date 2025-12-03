@@ -1,20 +1,20 @@
 @interface MTSXPCServerProxy
 + (id)logCategory;
 - (MTSXPCConnection)connection;
-- (MTSXPCServerProxy)initWithConnectionFactory:(id)a3;
+- (MTSXPCServerProxy)initWithConnectionFactory:(id)factory;
 - (id)logIdentifier;
-- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a3;
+- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)a3;
+- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)a3 duration:(double)a4 completionHandler:(id)a5;
-- (void)performDeviceSetupUsingRequest:(id)a3 completionHandler:(id)a4;
-- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeDevicePairingWithUUID:(id)a3 forSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5;
-- (void)removeSystemCommissionerPairingWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4;
+- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler;
+- (void)performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler;
+- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler;
+- (void)removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler;
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler;
 - (void)showRestrictedCharacteristicsAccessWarningAlert;
 @end
 
@@ -22,21 +22,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(MTSXPCServerProxy *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(MTSXPCServerProxy *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)showRestrictedCharacteristicsAccessWarningAlert
 {
-  v3 = [(MTSXPCServerProxy *)self connection];
+  connection = [(MTSXPCServerProxy *)self connection];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__MTSXPCServerProxy_showRestrictedCharacteristicsAccessWarningAlert__block_invoke;
   v5[3] = &unk_278AA1AF8;
   v5[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v5];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v5];
 
   [v4 showRestrictedCharacteristicsAccessWarningAlert];
 }
@@ -62,20 +62,20 @@ void __68__MTSXPCServerProxy_showRestrictedCharacteristicsAccessWarningAlert__bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a3
+- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  connection = [(MTSXPCServerProxy *)self connection];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __86__MTSXPCServerProxy_checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler___block_invoke;
   v11 = &unk_278AA1AD0;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&v8];
+  selfCopy = self;
+  v13 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:&v8];
 
-  [v7 checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:{v6, v8, v9, v10, v11, v12}];
+  [v7 checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:{v6, v8, v9, v10, v11, selfCopy}];
 }
 
 void __86__MTSXPCServerProxy_checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -101,21 +101,21 @@ void __86__MTSXPCServerProxy_checkRestrictedCharacteristicsAccessAllowedWithComp
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  datasetCopy = dataset;
+  connection = [(MTSXPCServerProxy *)self connection];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __93__MTSXPCServerProxy_retrievePreferredThreadCredentialsOrCreateWithDataset_completionHandler___block_invoke;
   v14 = &unk_278AA1AD0;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:&v11];
 
-  [v10 retrievePreferredThreadCredentialsOrCreateWithDataset:v7 completionHandler:{v9, v11, v12, v13, v14, v15}];
+  [v10 retrievePreferredThreadCredentialsOrCreateWithDataset:datasetCopy completionHandler:{v9, v11, v12, v13, v14, selfCopy}];
 }
 
 void __93__MTSXPCServerProxy_retrievePreferredThreadCredentialsOrCreateWithDataset_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -164,21 +164,21 @@ void __112__MTSXPCServerProxy_updateThreadCredentialManagementEnabled_forSystemC
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSystemCommissionerPairingWithUUID:(id)a3 completionHandler:(id)a4
+- (void)removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(MTSXPCServerProxy *)self connection];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __79__MTSXPCServerProxy_removeSystemCommissionerPairingWithUUID_completionHandler___block_invoke;
   v14 = &unk_278AA1AD0;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:&v11];
 
-  [v10 removeSystemCommissionerPairingWithUUID:v7 completionHandler:{v9, v11, v12, v13, v14, v15}];
+  [v10 removeSystemCommissionerPairingWithUUID:dCopy completionHandler:{v9, v11, v12, v13, v14, selfCopy}];
 }
 
 void __79__MTSXPCServerProxy_removeSystemCommissionerPairingWithUUID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -204,20 +204,20 @@ void __79__MTSXPCServerProxy_removeSystemCommissionerPairingWithUUID_completionH
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)a3
+- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  connection = [(MTSXPCServerProxy *)self connection];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __74__MTSXPCServerProxy_fetchSystemCommissionerPairingsWithCompletionHandler___block_invoke;
   v11 = &unk_278AA1AD0;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:&v8];
+  selfCopy = self;
+  v13 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:&v8];
 
-  [v7 fetchSystemCommissionerPairingsWithCompletionHandler:{v6, v8, v9, v10, v11, v12}];
+  [v7 fetchSystemCommissionerPairingsWithCompletionHandler:{v6, v8, v9, v10, v11, selfCopy}];
 }
 
 void __74__MTSXPCServerProxy_fetchSystemCommissionerPairingsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -243,21 +243,21 @@ void __74__MTSXPCServerProxy_fetchSystemCommissionerPairingsWithCompletionHandle
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDeviceSetupUsingRequest:(id)a3 completionHandler:(id)a4
+- (void)performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  requestCopy = request;
+  connection = [(MTSXPCServerProxy *)self connection];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __70__MTSXPCServerProxy_performDeviceSetupUsingRequest_completionHandler___block_invoke;
   v14 = &unk_278AA1AD0;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:&v11];
 
-  [v10 performDeviceSetupUsingRequest:v7 completionHandler:{v9, v11, v12, v13, v14, v15}];
+  [v10 performDeviceSetupUsingRequest:requestCopy completionHandler:{v9, v11, v12, v13, v14, selfCopy}];
 }
 
 void __70__MTSXPCServerProxy_performDeviceSetupUsingRequest_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -283,21 +283,21 @@ void __70__MTSXPCServerProxy_performDeviceSetupUsingRequest_completionHandler___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(MTSXPCServerProxy *)self connection];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __101__MTSXPCServerProxy_readCommissioningWindowStatusForSystemCommissionerPairingUUID_completionHandler___block_invoke;
   v14 = &unk_278AA1AD0;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:&v11];
 
-  [v10 readCommissioningWindowStatusForSystemCommissionerPairingUUID:v7 completionHandler:{v9, v11, v12, v13, v14, v15}];
+  [v10 readCommissioningWindowStatusForSystemCommissionerPairingUUID:dCopy completionHandler:{v9, v11, v12, v13, v14, selfCopy}];
 }
 
 void __101__MTSXPCServerProxy_readCommissioningWindowStatusForSystemCommissionerPairingUUID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -323,21 +323,21 @@ void __101__MTSXPCServerProxy_readCommissioningWindowStatusForSystemCommissioner
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)a3 duration:(double)a4 completionHandler:(id)a5
+- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(MTSXPCServerProxy *)self connection];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __104__MTSXPCServerProxy_openCommissioningWindowForSystemCommissionerPairingUUID_duration_completionHandler___block_invoke;
   v16 = &unk_278AA1AD0;
-  v17 = self;
-  v18 = v8;
-  v11 = v8;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:&v13];
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = [connection remoteObjectProxyWithErrorHandler:&v13];
 
-  [v12 openCommissioningWindowForSystemCommissionerPairingUUID:v9 duration:v11 completionHandler:{a4, v13, v14, v15, v16, v17}];
+  [v12 openCommissioningWindowForSystemCommissionerPairingUUID:dCopy duration:v11 completionHandler:{duration, v13, v14, v15, v16, selfCopy}];
 }
 
 void __104__MTSXPCServerProxy_openCommissioningWindowForSystemCommissionerPairingUUID_duration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -363,21 +363,21 @@ void __104__MTSXPCServerProxy_openCommissioningWindowForSystemCommissionerPairin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(MTSXPCServerProxy *)self connection];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __95__MTSXPCServerProxy_removeAllDevicePairingsForSystemCommissionerPairingUUID_completionHandler___block_invoke;
   v14 = &unk_278AA1AD0;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:&v11];
 
-  [v10 removeAllDevicePairingsForSystemCommissionerPairingUUID:v7 completionHandler:{v9, v11, v12, v13, v14, v15}];
+  [v10 removeAllDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:{v9, v11, v12, v13, v14, selfCopy}];
 }
 
 void __95__MTSXPCServerProxy_removeAllDevicePairingsForSystemCommissionerPairingUUID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -403,22 +403,22 @@ void __95__MTSXPCServerProxy_removeAllDevicePairingsForSystemCommissionerPairing
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDevicePairingWithUUID:(id)a3 forSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5
+- (void)removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  iDCopy = iD;
+  dCopy = d;
+  connection = [(MTSXPCServerProxy *)self connection];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __100__MTSXPCServerProxy_removeDevicePairingWithUUID_forSystemCommissionerPairingUUID_completionHandler___block_invoke;
   v17 = &unk_278AA1AD0;
-  v18 = self;
-  v19 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:&v14];
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:&v14];
 
-  [v13 removeDevicePairingWithUUID:v10 forSystemCommissionerPairingUUID:v9 completionHandler:{v12, v14, v15, v16, v17, v18}];
+  [v13 removeDevicePairingWithUUID:dCopy forSystemCommissionerPairingUUID:iDCopy completionHandler:{v12, v14, v15, v16, v17, selfCopy}];
 }
 
 void __100__MTSXPCServerProxy_removeDevicePairingWithUUID_forSystemCommissionerPairingUUID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -444,21 +444,21 @@ void __100__MTSXPCServerProxy_removeDevicePairingWithUUID_forSystemCommissionerP
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTSXPCServerProxy *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(MTSXPCServerProxy *)self connection];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __91__MTSXPCServerProxy_fetchDevicePairingsForSystemCommissionerPairingUUID_completionHandler___block_invoke;
   v14 = &unk_278AA1AD0;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:&v11];
 
-  [v10 fetchDevicePairingsForSystemCommissionerPairingUUID:v7 completionHandler:{v9, v11, v12, v13, v14, v15}];
+  [v10 fetchDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:{v9, v11, v12, v13, v14, selfCopy}];
 }
 
 void __91__MTSXPCServerProxy_fetchDevicePairingsForSystemCommissionerPairingUUID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -495,15 +495,15 @@ void __91__MTSXPCServerProxy_fetchDevicePairingsForSystemCommissionerPairingUUID
 
   else
   {
-    v5 = [(MTSXPCServerProxy *)self connectionFactory];
-    v4 = v5[2]();
+    connectionFactory = [(MTSXPCServerProxy *)self connectionFactory];
+    v4 = connectionFactory[2]();
 
-    v6 = [MEMORY[0x277CCAE90] mts_clientInterface];
-    [(MTSXPCConnection *)v4 setExportedInterface:v6];
+    mts_clientInterface = [MEMORY[0x277CCAE90] mts_clientInterface];
+    [(MTSXPCConnection *)v4 setExportedInterface:mts_clientInterface];
 
     [(MTSXPCConnection *)v4 setExportedObject:self];
-    v7 = [MEMORY[0x277CCAE90] mts_serverInterface];
-    [(MTSXPCConnection *)v4 setRemoteObjectInterface:v7];
+    mts_serverInterface = [MEMORY[0x277CCAE90] mts_serverInterface];
+    [(MTSXPCConnection *)v4 setRemoteObjectInterface:mts_serverInterface];
 
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x277D85DD0];
@@ -597,12 +597,12 @@ void __31__MTSXPCServerProxy_connection__block_invoke_8(uint64_t a1)
   [(MTSXPCServerProxy *)&v3 dealloc];
 }
 
-- (MTSXPCServerProxy)initWithConnectionFactory:(id)a3
+- (MTSXPCServerProxy)initWithConnectionFactory:(id)factory
 {
-  v4 = a3;
-  if (v4)
+  factoryCopy = factory;
+  if (factoryCopy)
   {
-    v5 = v4;
+    v5 = factoryCopy;
     v15.receiver = self;
     v15.super_class = MTSXPCServerProxy;
     v6 = [(MTSXPCServerProxy *)&v15 init];
@@ -610,9 +610,9 @@ void __31__MTSXPCServerProxy_connection__block_invoke_8(uint64_t a1)
     if (v6)
     {
       v6->_lock._os_unfair_lock_opaque = 0;
-      v8 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       UUID = v7->_UUID;
-      v7->_UUID = v8;
+      v7->_UUID = uUID;
 
       v10 = _Block_copy(v5);
       connectionFactory = v7->_connectionFactory;

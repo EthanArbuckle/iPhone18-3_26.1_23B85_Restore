@@ -1,54 +1,54 @@
 @interface RTWorkoutDistanceStore
-+ (id)fetchRequestForWorkoutDistanceEnumerationOptions:(id)a3 error:(id *)a4;
-+ (id)predicateForObjectIDs:(id)a3;
-+ (id)propertyDictionaryForIsVisited:(BOOL)a3;
-- (id)_getCrossJoinPredicateForClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_deleteWorkoutDistanceWithWorkoutUUID:(id)a3 handler:(id)a4;
-- (void)_fetchTotalWorkoutDistancesCountWithClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6 handler:(id)a7;
-- (void)_fetchTotalWorkoutDistancesCountWithHandler:(id)a3;
-- (void)_fetchUniqueWorkoutUUIDsWithHandler:(id)a3;
-- (void)_fetchWorkoutDistanceWithFirstWorkout:(id)a3 secondWorkout:(id)a4 handler:(id)a5;
-- (void)_fetchWorkoutDistancesWithWorkout:(id)a3 handler:(id)a4;
-- (void)_fetchWorkoutsWithOffset:(unint64_t)a3 limit:(unint64_t)a4 maxDistanceThreshold:(double)a5 includeVisitedRecords:(BOOL)a6 handler:(id)a7;
-- (void)_updateWorkoutDistancesWithPredicate:(id)a3 propertiesDictionary:(id)a4 handler:(id)a5;
-- (void)clearWithHandler:(id)a3;
-- (void)deleteWorkoutDistanceWithWorkoutUUID:(id)a3 handler:(id)a4;
-- (void)enumerateStoredWorkoutDistancesWithOptions:(id)a3 usingBlock:(id)a4;
-- (void)fetchTotalWorkoutDistancesCountWithClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6 handler:(id)a7;
-- (void)fetchTotalWorkoutDistancesCountWithHandler:(id)a3;
-- (void)fetchUniqueWorkoutUUIDsWithHandler:(id)a3;
-- (void)fetchWorkoutDistanceWithFirstWorkout:(id)a3 secondWorkout:(id)a4 handler:(id)a5;
-- (void)fetchWorkoutDistancesWithOffset:(unint64_t)a3 limit:(unint64_t)a4 maxDistanceThreshold:(double)a5 includeVisitedRecords:(BOOL)a6 handler:(id)a7;
-- (void)fetchWorkoutDistancesWithWorkout:(id)a3 handler:(id)a4;
-- (void)storeWorkoutDistances:(id)a3 handler:(id)a4;
-- (void)updateWorkoutDistancesWithObjectIDs:(id)a3 isVisited:(BOOL)a4 handler:(id)a5;
++ (id)fetchRequestForWorkoutDistanceEnumerationOptions:(id)options error:(id *)error;
++ (id)predicateForObjectIDs:(id)ds;
++ (id)propertyDictionaryForIsVisited:(BOOL)visited;
+- (id)_getCrossJoinPredicateForClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_deleteWorkoutDistanceWithWorkoutUUID:(id)d handler:(id)handler;
+- (void)_fetchTotalWorkoutDistancesCountWithClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold handler:(id)handler;
+- (void)_fetchTotalWorkoutDistancesCountWithHandler:(id)handler;
+- (void)_fetchUniqueWorkoutUUIDsWithHandler:(id)handler;
+- (void)_fetchWorkoutDistanceWithFirstWorkout:(id)workout secondWorkout:(id)secondWorkout handler:(id)handler;
+- (void)_fetchWorkoutDistancesWithWorkout:(id)workout handler:(id)handler;
+- (void)_fetchWorkoutsWithOffset:(unint64_t)offset limit:(unint64_t)limit maxDistanceThreshold:(double)threshold includeVisitedRecords:(BOOL)records handler:(id)handler;
+- (void)_updateWorkoutDistancesWithPredicate:(id)predicate propertiesDictionary:(id)dictionary handler:(id)handler;
+- (void)clearWithHandler:(id)handler;
+- (void)deleteWorkoutDistanceWithWorkoutUUID:(id)d handler:(id)handler;
+- (void)enumerateStoredWorkoutDistancesWithOptions:(id)options usingBlock:(id)block;
+- (void)fetchTotalWorkoutDistancesCountWithClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold handler:(id)handler;
+- (void)fetchTotalWorkoutDistancesCountWithHandler:(id)handler;
+- (void)fetchUniqueWorkoutUUIDsWithHandler:(id)handler;
+- (void)fetchWorkoutDistanceWithFirstWorkout:(id)workout secondWorkout:(id)secondWorkout handler:(id)handler;
+- (void)fetchWorkoutDistancesWithOffset:(unint64_t)offset limit:(unint64_t)limit maxDistanceThreshold:(double)threshold includeVisitedRecords:(BOOL)records handler:(id)handler;
+- (void)fetchWorkoutDistancesWithWorkout:(id)workout handler:(id)handler;
+- (void)storeWorkoutDistances:(id)distances handler:(id)handler;
+- (void)updateWorkoutDistancesWithObjectIDs:(id)ds isVisited:(BOOL)visited handler:(id)handler;
 @end
 
 @implementation RTWorkoutDistanceStore
 
-- (void)storeWorkoutDistances:(id)a3 handler:(id)a4
+- (void)storeWorkoutDistances:(id)distances handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  distancesCopy = distances;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTWorkoutDistanceStore_storeWorkoutDistances_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = distancesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = distancesCopy;
+  dispatch_async(queue, block);
 }
 
-+ (id)predicateForObjectIDs:(id)a3
++ (id)predicateForObjectIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
-    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self in %@", a3];
+    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self in %@", ds];
   }
 
   else
@@ -66,12 +66,12 @@
   return v3;
 }
 
-+ (id)propertyDictionaryForIsVisited:(BOOL)a3
++ (id)propertyDictionaryForIsVisited:(BOOL)visited
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = @"isVisited";
   v3 = MEMORY[0x277CCA9C0];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:visited];
   v5 = [v3 expressionForConstantValue:v4];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
@@ -79,22 +79,22 @@
   return v6;
 }
 
-- (void)updateWorkoutDistancesWithObjectIDs:(id)a3 isVisited:(BOOL)a4 handler:(id)a5
+- (void)updateWorkoutDistancesWithObjectIDs:(id)ds isVisited:(BOOL)visited handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dsCopy = ds;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__RTWorkoutDistanceStore_updateWorkoutDistancesWithObjectIDs_isVisited_handler___block_invoke;
   v13[3] = &unk_2788C4690;
-  v14 = v8;
-  v15 = self;
-  v17 = a4;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dsCopy;
+  selfCopy = self;
+  visitedCopy = visited;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dsCopy;
+  dispatch_async(queue, v13);
 }
 
 void __80__RTWorkoutDistanceStore_updateWorkoutDistancesWithObjectIDs_isVisited_handler___block_invoke(uint64_t a1)
@@ -125,25 +125,25 @@ LABEL_5:
   v6();
 }
 
-- (void)_updateWorkoutDistancesWithPredicate:(id)a3 propertiesDictionary:(id)a4 handler:(id)a5
+- (void)_updateWorkoutDistancesWithPredicate:(id)predicate propertiesDictionary:(id)dictionary handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  predicateCopy = predicate;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v10 && [v10 count])
+    if (dictionaryCopy && [dictionaryCopy count])
     {
       v12 = objc_autoreleasePoolPush();
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __92__RTWorkoutDistanceStore__updateWorkoutDistancesWithPredicate_propertiesDictionary_handler___block_invoke;
       aBlock[3] = &unk_2788CB520;
-      v18 = v9;
-      v19 = self;
+      v18 = predicateCopy;
+      selfCopy = self;
       v22 = a2;
-      v20 = v10;
-      v13 = v11;
+      v20 = dictionaryCopy;
+      v13 = handlerCopy;
       v21 = v13;
       v14 = _Block_copy(aBlock);
       v15[0] = MEMORY[0x277D85DD0];
@@ -158,7 +158,7 @@ LABEL_5:
 
     else
     {
-      (*(v11 + 2))(v11, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -259,48 +259,48 @@ void __92__RTWorkoutDistanceStore__updateWorkoutDistancesWithPredicate_propertie
   }
 }
 
-- (void)clearWithHandler:(id)a3
+- (void)clearWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)deleteWorkoutDistanceWithWorkoutUUID:(id)a3 handler:(id)a4
+- (void)deleteWorkoutDistanceWithWorkoutUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTWorkoutDistanceStore_deleteWorkoutDistanceWithWorkoutUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteWorkoutDistanceWithWorkoutUUID:(id)a3 handler:(id)a4
+- (void)_deleteWorkoutDistanceWithWorkoutUUID:(id)d handler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
       v16 = __72__RTWorkoutDistanceStore__deleteWorkoutDistanceWithWorkoutUUID_handler___block_invoke;
       v17 = &unk_2788C4F38;
-      v18 = v6;
-      v19 = self;
-      v8 = v7;
+      v18 = dCopy;
+      selfCopy = self;
+      v8 = handlerCopy;
       v20 = v8;
       v9 = _Block_copy(&v14);
       [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8, v14, v15, v16, v17];
@@ -316,7 +316,7 @@ void __92__RTWorkoutDistanceStore__updateWorkoutDistancesWithPredicate_propertie
       v22[0] = @"requires valid workouts.";
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v13 = [v11 errorWithDomain:v12 code:0 userInfo:v10];
-      (*(v7 + 2))(v7, v13);
+      (*(handlerCopy + 2))(handlerCopy, v13);
     }
   }
 }
@@ -337,30 +337,30 @@ void __72__RTWorkoutDistanceStore__deleteWorkoutDistanceWithWorkoutUUID_handler_
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)fetchUniqueWorkoutUUIDsWithHandler:(id)a3
+- (void)fetchUniqueWorkoutUUIDsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__RTWorkoutDistanceStore_fetchUniqueWorkoutUUIDsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchUniqueWorkoutUUIDsWithHandler:(id)a3
+- (void)_fetchUniqueWorkoutUUIDsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__RTWorkoutDistanceStore__fetchUniqueWorkoutUUIDsWithHandler___block_invoke;
   aBlock[3] = &unk_2788C4FB0;
   aBlock[4] = self;
   v13 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x277D85DD0];
@@ -430,30 +430,30 @@ void __62__RTWorkoutDistanceStore__fetchUniqueWorkoutUUIDsWithHandler___block_in
   (*(v12 + 16))(v12, v13, v7);
 }
 
-- (void)fetchTotalWorkoutDistancesCountWithHandler:(id)a3
+- (void)fetchTotalWorkoutDistancesCountWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__RTWorkoutDistanceStore_fetchTotalWorkoutDistancesCountWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchTotalWorkoutDistancesCountWithHandler:(id)a3
+- (void)_fetchTotalWorkoutDistancesCountWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithHandler___block_invoke;
   aBlock[3] = &unk_2788C4FB0;
   aBlock[4] = self;
   v13 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x277D85DD0];
@@ -499,34 +499,34 @@ void __70__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithHandler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchTotalWorkoutDistancesCountWithClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6 handler:(id)a7
+- (void)fetchTotalWorkoutDistancesCountWithClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(RTNotifier *)self queue];
+  set1Copy = set1;
+  set2Copy = set2;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __134__RTWorkoutDistanceStore_fetchTotalWorkoutDistancesCountWithClusterSet1_clusterSet2_workoutActivityType_maxDistanceThreshold_handler___block_invoke;
   v19[3] = &unk_2788C54B8;
   v19[4] = self;
-  v20 = v12;
-  v22 = v14;
-  v23 = a5;
-  v24 = a6;
-  v21 = v13;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, v19);
+  v20 = set1Copy;
+  v22 = handlerCopy;
+  typeCopy = type;
+  thresholdCopy = threshold;
+  v21 = set2Copy;
+  v16 = handlerCopy;
+  v17 = set2Copy;
+  v18 = set1Copy;
+  dispatch_async(queue, v19);
 }
 
-- (void)_fetchTotalWorkoutDistancesCountWithClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6 handler:(id)a7
+- (void)_fetchTotalWorkoutDistancesCountWithClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if ([v13 count] && objc_msgSend(v14, "count"))
+  set1Copy = set1;
+  set2Copy = set2;
+  handlerCopy = handler;
+  if ([set1Copy count] && objc_msgSend(set2Copy, "count"))
   {
     v16 = objc_autoreleasePoolPush();
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -534,12 +534,12 @@ void __70__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithHandler___
     aBlock[2] = __135__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithClusterSet1_clusterSet2_workoutActivityType_maxDistanceThreshold_handler___block_invoke;
     aBlock[3] = &unk_2788CD970;
     aBlock[4] = self;
-    v22 = v13;
-    v23 = v14;
-    v25 = a5;
-    v26 = a6;
+    v22 = set1Copy;
+    v23 = set2Copy;
+    typeCopy = type;
+    thresholdCopy = threshold;
     v27 = a2;
-    v17 = v15;
+    v17 = handlerCopy;
     v24 = v17;
     v18 = _Block_copy(aBlock);
     v19[0] = MEMORY[0x277D85DD0];
@@ -554,7 +554,7 @@ void __70__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithHandler___
 
   else
   {
-    (*(v15 + 2))(v15, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -614,19 +614,19 @@ void __135__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithClusterSe
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)_getCrossJoinPredicateForClusterSet1:(id)a3 clusterSet2:(id)a4 workoutActivityType:(int64_t)a5 maxDistanceThreshold:(double)a6
+- (id)_getCrossJoinPredicateForClusterSet1:(id)set1 clusterSet2:(id)set2 workoutActivityType:(int64_t)type maxDistanceThreshold:(double)threshold
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v33 = a4;
+  set1Copy = set1;
+  set2Copy = set2;
   v30 = objc_autoreleasePoolPush();
-  v29 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %lu AND %K <= %f", @"workoutActivityType", a5, @"distance", *&a6];
+  v29 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %lu AND %K <= %f", @"workoutActivityType", type, @"distance", *&threshold];
   v10 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v9;
+  obj = set1Copy;
   v34 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v34)
   {
@@ -648,7 +648,7 @@ void __135__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithClusterSe
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v13 = v33;
+        v13 = set2Copy;
         v14 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
         if (v14)
         {
@@ -711,39 +711,39 @@ void __135__RTWorkoutDistanceStore__fetchTotalWorkoutDistancesCountWithClusterSe
   return v27;
 }
 
-- (void)fetchWorkoutDistancesWithOffset:(unint64_t)a3 limit:(unint64_t)a4 maxDistanceThreshold:(double)a5 includeVisitedRecords:(BOOL)a6 handler:(id)a7
+- (void)fetchWorkoutDistancesWithOffset:(unint64_t)offset limit:(unint64_t)limit maxDistanceThreshold:(double)threshold includeVisitedRecords:(BOOL)records handler:(id)handler
 {
-  v12 = a7;
-  v13 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __115__RTWorkoutDistanceStore_fetchWorkoutDistancesWithOffset_limit_maxDistanceThreshold_includeVisitedRecords_handler___block_invoke;
   v15[3] = &unk_2788CD998;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
+  offsetCopy = offset;
+  limitCopy = limit;
+  thresholdCopy = threshold;
+  recordsCopy = records;
   v15[4] = self;
-  v16 = v12;
-  v14 = v12;
-  dispatch_async(v13, v15);
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_fetchWorkoutsWithOffset:(unint64_t)a3 limit:(unint64_t)a4 maxDistanceThreshold:(double)a5 includeVisitedRecords:(BOOL)a6 handler:(id)a7
+- (void)_fetchWorkoutsWithOffset:(unint64_t)offset limit:(unint64_t)limit maxDistanceThreshold:(double)threshold includeVisitedRecords:(BOOL)records handler:(id)handler
 {
-  v13 = a7;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __108__RTWorkoutDistanceStore__fetchWorkoutsWithOffset_limit_maxDistanceThreshold_includeVisitedRecords_handler___block_invoke;
   aBlock[3] = &unk_2788CD9C0;
-  v22 = a5;
-  v26 = a6;
-  v23 = a4;
-  v24 = a3;
+  thresholdCopy = threshold;
+  recordsCopy = records;
+  limitCopy = limit;
+  offsetCopy = offset;
   aBlock[4] = self;
   v25 = a2;
-  v15 = v13;
+  v15 = handlerCopy;
   v21 = v15;
   v16 = _Block_copy(aBlock);
   v18[0] = MEMORY[0x277D85DD0];
@@ -851,45 +851,45 @@ void __108__RTWorkoutDistanceStore__fetchWorkoutsWithOffset_limit_maxDistanceThr
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchWorkoutDistanceWithFirstWorkout:(id)a3 secondWorkout:(id)a4 handler:(id)a5
+- (void)fetchWorkoutDistanceWithFirstWorkout:(id)workout secondWorkout:(id)secondWorkout handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  workoutCopy = workout;
+  secondWorkoutCopy = secondWorkout;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__RTWorkoutDistanceStore_fetchWorkoutDistanceWithFirstWorkout_secondWorkout_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = workoutCopy;
+  v17 = secondWorkoutCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = secondWorkoutCopy;
+  v14 = workoutCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_fetchWorkoutDistanceWithFirstWorkout:(id)a3 secondWorkout:(id)a4 handler:(id)a5
+- (void)_fetchWorkoutDistanceWithFirstWorkout:(id)workout secondWorkout:(id)secondWorkout handler:(id)handler
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  workoutCopy = workout;
+  secondWorkoutCopy = secondWorkout;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9 && v10)
+    if (workoutCopy && secondWorkoutCopy)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __86__RTWorkoutDistanceStore__fetchWorkoutDistanceWithFirstWorkout_secondWorkout_handler___block_invoke;
       aBlock[3] = &unk_2788CB520;
-      v21 = v9;
-      v22 = v10;
-      v23 = self;
+      v21 = workoutCopy;
+      v22 = secondWorkoutCopy;
+      selfCopy = self;
       v25 = a2;
-      v12 = v11;
+      v12 = handlerCopy;
       v24 = v12;
       v13 = _Block_copy(aBlock);
       v18[0] = MEMORY[0x277D85DD0];
@@ -910,7 +910,7 @@ void __108__RTWorkoutDistanceStore__fetchWorkoutsWithOffset_limit_maxDistanceThr
       v27[0] = @"requires valid workouts.";
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
       v17 = [v15 errorWithDomain:v16 code:0 userInfo:v14];
-      (*(v11 + 2))(v11, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, v17);
     }
   }
 }
@@ -972,40 +972,40 @@ void __86__RTWorkoutDistanceStore__fetchWorkoutDistanceWithFirstWorkout_secondWo
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchWorkoutDistancesWithWorkout:(id)a3 handler:(id)a4
+- (void)fetchWorkoutDistancesWithWorkout:(id)workout handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  workoutCopy = workout;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTWorkoutDistanceStore_fetchWorkoutDistancesWithWorkout_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = workoutCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = workoutCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchWorkoutDistancesWithWorkout:(id)a3 handler:(id)a4
+- (void)_fetchWorkoutDistancesWithWorkout:(id)workout handler:(id)handler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  workoutCopy = workout;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v7)
+    if (workoutCopy)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __68__RTWorkoutDistanceStore__fetchWorkoutDistancesWithWorkout_handler___block_invoke;
       aBlock[3] = &unk_2788C4910;
-      v18 = v7;
-      v19 = self;
+      v18 = workoutCopy;
+      selfCopy = self;
       v21 = a2;
-      v9 = v8;
+      v9 = handlerCopy;
       v20 = v9;
       v10 = _Block_copy(aBlock);
       v15[0] = MEMORY[0x277D85DD0];
@@ -1026,7 +1026,7 @@ void __86__RTWorkoutDistanceStore__fetchWorkoutDistanceWithFirstWorkout_secondWo
       v23[0] = @"requires valid workouts.";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       v14 = [v12 errorWithDomain:v13 code:0 userInfo:v11];
-      (*(v8 + 2))(v8, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 }
@@ -1111,22 +1111,22 @@ void __68__RTWorkoutDistanceStore__fetchWorkoutDistancesWithWorkout_handler___bl
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)enumerateStoredWorkoutDistancesWithOptions:(id)a3 usingBlock:(id)a4
+- (void)enumerateStoredWorkoutDistancesWithOptions:(id)options usingBlock:(id)block
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  blockCopy = block;
+  if (blockCopy)
   {
     v26 = 0;
-    if (v7)
+    if (optionsCopy)
     {
       v25 = 0;
-      v9 = [objc_opt_class() fetchRequestForWorkoutDistanceEnumerationOptions:v7 error:&v25];
+      v9 = [objc_opt_class() fetchRequestForWorkoutDistanceEnumerationOptions:optionsCopy error:&v25];
       v10 = v25;
       if (v10)
       {
-        v8[2](v8, 0, v10, &v26);
+        blockCopy[2](blockCopy, 0, v10, &v26);
       }
 
       *buf = 0;
@@ -1138,7 +1138,7 @@ void __68__RTWorkoutDistanceStore__fetchWorkoutDistancesWithWorkout_handler___bl
       v21 = __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usingBlock___block_invoke;
       v22 = &unk_2788CD9E8;
       v24 = buf;
-      v23 = v8;
+      v23 = blockCopy;
       v11 = _Block_copy(&v19);
       [(RTStore *)self enumerateType:objc_opt_class() fetchRequest:v9 enumerationBlock:v11, v19, v20, v21, v22];
 
@@ -1168,7 +1168,7 @@ void __68__RTWorkoutDistanceStore__fetchWorkoutDistancesWithWorkout_handler___bl
         _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@, %@, error, %@", buf, 0x20u);
       }
 
-      v8[2](v8, 0, v10, &v26);
+      blockCopy[2](blockCopy, 0, v10, &v26);
     }
   }
 
@@ -1194,10 +1194,10 @@ void __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usi
   *(*(*(a1 + 40) + 8) + 24) += v7;
 }
 
-+ (id)fetchRequestForWorkoutDistanceEnumerationOptions:(id)a3 error:(id *)a4
++ (id)fetchRequestForWorkoutDistanceEnumerationOptions:(id)options error:(id *)error
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[RTWorkoutDistanceMO fetchRequest];
   v6 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"workoutActivityType" ascending:1];
   v7 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"distance" ascending:{1, v6}];
@@ -1207,28 +1207,28 @@ void __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usi
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
   [v5 setSortDescriptors:v9];
 
-  if ([v4 batchSize])
+  if ([optionsCopy batchSize])
   {
-    v10 = [v4 batchSize];
+    batchSize = [optionsCopy batchSize];
   }
 
   else
   {
-    v10 = 200;
+    batchSize = 200;
   }
 
-  [v5 setFetchBatchSize:v10];
-  if ([v4 batchSize])
+  [v5 setFetchBatchSize:batchSize];
+  if ([optionsCopy batchSize])
   {
-    v11 = [v4 batchSize];
-    if (v11 >= 0xC8)
+    batchSize2 = [optionsCopy batchSize];
+    if (batchSize2 >= 0xC8)
     {
       v12 = 200;
     }
 
     else
     {
-      v12 = v11;
+      v12 = batchSize2;
     }
   }
 
@@ -1242,12 +1242,12 @@ void __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usi
   return v5;
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (!a5)
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (!error)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1259,7 +1259,7 @@ void __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usi
     goto LABEL_13;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     v9 = objc_opt_class();
     if (![v9 isEqual:objc_opt_class()])
@@ -1277,7 +1277,7 @@ void __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usi
       v22 = [v19 errorWithDomain:v20 code:7 userInfo:v21];
 
       v23 = v22;
-      *a5 = v22;
+      *error = v22;
 
       goto LABEL_13;
     }
@@ -1288,14 +1288,14 @@ void __80__RTWorkoutDistanceStore_enumerateStoredWorkoutDistancesWithOptions_usi
     if (v11)
     {
       v12 = v11;
-      *a5 = v12;
+      *error = v12;
 
 LABEL_13:
       v10 = 0;
       goto LABEL_14;
     }
 
-    [v10 setFetchOffset:a4];
+    [v10 setFetchOffset:offset];
   }
 
   else
@@ -1308,7 +1308,7 @@ LABEL_13:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_14:

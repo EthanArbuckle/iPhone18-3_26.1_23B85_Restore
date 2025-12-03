@@ -1,15 +1,15 @@
 @interface CLSCalendarEventsCacheYear
-- (BOOL)isEqual:(id)a3;
-- (CLSCalendarEventsCacheYear)initWithYear:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLSCalendarEventsCacheYear)initWithYear:(int64_t)year;
 - (id)debugDescription;
 @end
 
 @implementation CLSCalendarEventsCacheYear
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -19,8 +19,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CLSCalendarEventsCacheYear *)v4 year];
-      v6 = v5 == [(CLSCalendarEventsCacheYear *)self year];
+      year = [(CLSCalendarEventsCacheYear *)equalCopy year];
+      v6 = year == [(CLSCalendarEventsCacheYear *)self year];
     }
 
     else
@@ -44,7 +44,7 @@
   return v8;
 }
 
-- (CLSCalendarEventsCacheYear)initWithYear:(int64_t)a3
+- (CLSCalendarEventsCacheYear)initWithYear:(int64_t)year
 {
   v8.receiver = self;
   v8.super_class = CLSCalendarEventsCacheYear;
@@ -55,7 +55,7 @@
     months = v4->_months;
     v4->_months = v5;
 
-    v4->_year = a3;
+    v4->_year = year;
   }
 
   return v4;

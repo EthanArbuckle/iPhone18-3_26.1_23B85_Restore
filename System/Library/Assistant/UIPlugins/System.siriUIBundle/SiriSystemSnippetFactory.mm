@@ -1,19 +1,19 @@
 @interface SiriSystemSnippetFactory
-- (id)disambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4;
-- (id)filteredDisambiguationListItems:(id)a3;
-- (id)viewControllerForAceObject:(id)a3;
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)disambiguationItemForListItem:(id)item disambiguationKey:(id)key;
+- (id)filteredDisambiguationListItems:(id)items;
+- (id)viewControllerForAceObject:(id)object;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 @end
 
 @implementation SiriSystemSnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v5 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[ACAssistantAlternateProviderController alloc] initWithAlternateProviderSnippet:v5];
+    v6 = [[ACAssistantAlternateProviderController alloc] initWithAlternateProviderSnippet:snippetCopy];
 LABEL_8:
     v8 = v6;
     goto LABEL_9;
@@ -35,10 +35,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:100 userInfo:0];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -51,9 +51,9 @@ LABEL_9:
   return v8;
 }
 
-- (id)viewControllerForAceObject:(id)a3
+- (id)viewControllerForAceObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -104,25 +104,25 @@ LABEL_11:
   return v5;
 }
 
-- (id)filteredDisambiguationListItems:(id)a3
+- (id)filteredDisambiguationListItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 object];
+  itemsCopy = items;
+  firstObject = [itemsCopy firstObject];
+  object = [firstObject object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = v3;
+  v7 = itemsCopy;
   if (isKindOfClass)
   {
-    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v26 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v25 = v3;
-    v8 = v3;
+    v25 = itemsCopy;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (!v9)
     {
@@ -142,19 +142,19 @@ LABEL_11:
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
-        v14 = [v13 object];
-        v15 = [v14 appIdentifyingInfo];
-        v16 = [v15 bundleId];
+        object2 = [v13 object];
+        appIdentifyingInfo = [object2 appIdentifyingInfo];
+        bundleId = [appIdentifyingInfo bundleId];
 
         v27 = 0;
-        if (!v16)
+        if (!bundleId)
         {
           goto LABEL_11;
         }
 
-        v17 = [v13 object];
-        v18 = [v17 appIdentifyingInfo];
-        if ([v18 sruif_isSurfAppInfo])
+        object3 = [v13 object];
+        appIdentifyingInfo2 = [object3 appIdentifyingInfo];
+        if ([appIdentifyingInfo2 sruif_isSurfAppInfo])
         {
 
 LABEL_11:
@@ -162,7 +162,7 @@ LABEL_11:
           goto LABEL_12;
         }
 
-        v19 = [v26 canOpenApplication:v16 reason:&v27];
+        v19 = [v26 canOpenApplication:bundleId reason:&v27];
 
         if (v19)
         {
@@ -177,7 +177,7 @@ LABEL_11:
           *buf = 136315650;
           v33 = "[SiriSystemSnippetFactory filteredDisambiguationListItems:]";
           v34 = 2112;
-          v35 = v16;
+          v35 = bundleId;
           v36 = 2112;
           v37 = v22;
           _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "%s Filtering app %@ for reason %@", buf, 0x20u);
@@ -195,7 +195,7 @@ LABEL_12:
       {
 LABEL_17:
 
-        v3 = v25;
+        itemsCopy = v25;
         break;
       }
     }
@@ -204,28 +204,28 @@ LABEL_17:
   return v7;
 }
 
-- (id)disambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4
+- (id)disambiguationItemForListItem:(id)item disambiguationKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 object];
+  itemCopy = item;
+  object = [itemCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v7 = +[SiriUIDisambiguationItem disambiguationItem];
-    v8 = [v4 title];
-    [v7 setTitle:v8];
+    title = [itemCopy title];
+    [v7 setTitle:title];
 
-    v9 = [v4 object];
-    v10 = [v9 appIdentifyingInfo];
-    v11 = [v10 bundleId];
+    object2 = [itemCopy object];
+    appIdentifyingInfo = [object2 appIdentifyingInfo];
+    bundleId = [appIdentifyingInfo bundleId];
 
-    v12 = [v4 object];
-    v13 = [v12 appIdentifyingInfo];
-    v14 = [v13 sruif_isSurfAppInfo];
+    object3 = [itemCopy object];
+    appIdentifyingInfo2 = [object3 appIdentifyingInfo];
+    sruif_isSurfAppInfo = [appIdentifyingInfo2 sruif_isSurfAppInfo];
 
-    if (v14)
+    if (sruif_isSurfAppInfo)
     {
       v15 = [NSBundle bundleForClass:objc_opt_class()];
       v16 = [UIImage imageNamed:@"ApplePay" inBundle:v15];
@@ -238,7 +238,7 @@ LABEL_17:
     {
       v15 = +[UIScreen mainScreen];
       [v15 scale];
-      v18 = [UIImage _applicationIconImageForBundleIdentifier:v11 format:2 scale:?];
+      v18 = [UIImage _applicationIconImageForBundleIdentifier:bundleId format:2 scale:?];
     }
 
     v19 = [[UIImageView alloc] initWithImage:v18];

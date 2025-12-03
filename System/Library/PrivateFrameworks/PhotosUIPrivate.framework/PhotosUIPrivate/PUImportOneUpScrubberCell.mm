@@ -1,18 +1,18 @@
 @interface PUImportOneUpScrubberCell
 + (id)emptyThumbnailBackgroundColor;
-- (PUImportOneUpScrubberCell)initWithCoder:(id)a3;
-- (PUImportOneUpScrubberCell)initWithFrame:(CGRect)a3;
+- (PUImportOneUpScrubberCell)initWithCoder:(id)coder;
+- (PUImportOneUpScrubberCell)initWithFrame:(CGRect)frame;
 - (PUImportOneUpScrubberCellDisplayDelegate)displayDelegate;
 - (void)_commonPUImportOneUpScrubberCellInitialization;
 - (void)_createSpinnerIfNecessary;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
 - (void)refreshThumbnail;
-- (void)setImportItem:(id)a3;
+- (void)setImportItem:(id)item;
 - (void)updateBadgeUIIfNeeded;
-- (void)updateToThumbnail:(id)a3;
+- (void)updateToThumbnail:(id)thumbnail;
 @end
 
 @implementation PUImportOneUpScrubberCell
@@ -24,44 +24,44 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
+  changeCopy = change;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUImportOneUpScrubberCell.m" lineNumber:203 description:@"Expecting main thread only for cell signals"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportOneUpScrubberCell.m" lineNumber:203 description:@"Expecting main thread only for cell signals"];
   }
 
-  if (PXImportItemViewModelOneUpScrubberCellContext == a5)
+  if (PXImportItemViewModelOneUpScrubberCellContext == context)
   {
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v9 = [(PUImportOneUpScrubberCell *)self importItem];
-      -[PUImportOneUpScrubberCell setSelectable:](self, "setSelectable:", [v9 isSelectable]);
+      importItem = [(PUImportOneUpScrubberCell *)self importItem];
+      -[PUImportOneUpScrubberCell setSelectable:](self, "setSelectable:", [importItem isSelectable]);
     }
 
-    v10 = (v6 & 5) != 0;
-    if ((v6 & 8) != 0)
+    v10 = (changeCopy & 5) != 0;
+    if ((changeCopy & 8) != 0)
     {
-      v11 = [(PUImportOneUpScrubberCell *)self importItem];
-      v12 = [v11 isDuplicate];
+      importItem2 = [(PUImportOneUpScrubberCell *)self importItem];
+      isDuplicate = [importItem2 isDuplicate];
 
-      if ((v6 & 5) != 0)
+      if ((changeCopy & 5) != 0)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = v12;
+        v10 = isDuplicate;
       }
     }
 
-    if ((v6 & 0x12) != 0 || v10)
+    if ((changeCopy & 0x12) != 0 || v10)
     {
-      v13 = [(PUImportOneUpScrubberCell *)self importItem];
-      -[PUImportOneUpScrubberCell setBadgeType:](self, "setBadgeType:", [v13 badgeType]);
+      importItem3 = [(PUImportOneUpScrubberCell *)self importItem];
+      -[PUImportOneUpScrubberCell setBadgeType:](self, "setBadgeType:", [importItem3 badgeType]);
 
       [(PUImportOneUpScrubberCell *)self updateBadgeUIIfNeeded];
     }
@@ -76,13 +76,13 @@
     spinner = self->_spinner;
     self->_spinner = v3;
 
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)self->_spinner setColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)self->_spinner setColor:whiteColor];
 
     [(UIActivityIndicatorView *)self->_spinner sizeToFit];
     v6 = self->_spinner;
-    v7 = [(PUReviewScrubberCell *)self _checkmarkImageView];
-    [(PUImportOneUpScrubberCell *)self insertSubview:v6 aboveSubview:v7];
+    _checkmarkImageView = [(PUReviewScrubberCell *)self _checkmarkImageView];
+    [(PUImportOneUpScrubberCell *)self insertSubview:v6 aboveSubview:_checkmarkImageView];
 
     v8 = *(MEMORY[0x1E695EFD0] + 16);
     *&v10.a = *MEMORY[0x1E695EFD0];
@@ -95,10 +95,10 @@
   }
 }
 
-- (void)updateToThumbnail:(id)a3
+- (void)updateToThumbnail:(id)thumbnail
 {
   [(PUReviewScrubberCell *)self setImage:?];
-  if (a3)
+  if (thumbnail)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -108,32 +108,32 @@
     +[PUImportOneUpScrubberCell emptyThumbnailBackgroundColor];
   }
   v6 = ;
-  v5 = [(PUReviewScrubberCell *)self _thumbnailImageView];
-  [v5 setBackgroundColor:v6];
+  _thumbnailImageView = [(PUReviewScrubberCell *)self _thumbnailImageView];
+  [_thumbnailImageView setBackgroundColor:v6];
 }
 
 - (void)refreshThumbnail
 {
-  v4 = [(PUImportOneUpScrubberCell *)self displayDelegate];
+  displayDelegate = [(PUImportOneUpScrubberCell *)self displayDelegate];
 
-  if (!v4)
+  if (!displayDelegate)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUImportOneUpScrubberCell.m" lineNumber:159 description:@"Missing thumbnail provider"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportOneUpScrubberCell.m" lineNumber:159 description:@"Missing thumbnail provider"];
   }
 
-  v5 = [(PUImportOneUpScrubberCell *)self importItem];
+  importItem = [(PUImportOneUpScrubberCell *)self importItem];
   objc_initWeak(&location, self);
-  v6 = [(PUImportOneUpScrubberCell *)self displayDelegate];
-  v7 = [(PUImportOneUpScrubberCell *)self importItem];
+  displayDelegate2 = [(PUImportOneUpScrubberCell *)self displayDelegate];
+  importItem2 = [(PUImportOneUpScrubberCell *)self importItem];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__PUImportOneUpScrubberCell_refreshThumbnail__block_invoke;
   v10[3] = &unk_1E7B77848;
   objc_copyWeak(&v12, &location);
-  v8 = v5;
+  v8 = importItem;
   v11 = v8;
-  -[PUImportOneUpScrubberCell setThumbnailRequestID:](self, "setThumbnailRequestID:", [v6 importOneUpScrubberCell:self requestedThumbnailForImportItem:v7 completion:v10]);
+  -[PUImportOneUpScrubberCell setThumbnailRequestID:](self, "setThumbnailRequestID:", [displayDelegate2 importOneUpScrubberCell:self requestedThumbnailForImportItem:importItem2 completion:v10]);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -173,10 +173,10 @@ void __45__PUImportOneUpScrubberCell_refreshThumbnail__block_invoke(uint64_t a1,
   }
 
   [(PUImportOneUpScrubberCell *)self setNeedsBadgeUpdate:0];
-  v3 = [MEMORY[0x1E69DC888] systemBlueColor];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   badgeType = self->_badgeType;
   v5 = 1;
-  v10 = v3;
+  v10 = systemBlueColor;
   if (badgeType <= 2)
   {
     if (badgeType)
@@ -204,7 +204,7 @@ void __45__PUImportOneUpScrubberCell_refreshThumbnail__block_invoke(uint64_t a1,
 
   if (badgeType == 3)
   {
-    v7 = [MEMORY[0x1E69DC888] systemGreenColor];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
   }
 
   else
@@ -215,16 +215,16 @@ void __45__PUImportOneUpScrubberCell_refreshThumbnail__block_invoke(uint64_t a1,
       goto LABEL_15;
     }
 
-    v7 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemRedColor];
   }
 
-  v8 = v7;
+  v8 = systemGreenColor;
 
   v6 = 0;
   v10 = v8;
 LABEL_15:
-  v9 = [(PUReviewScrubberCell *)self _checkmarkImageView];
-  [v9 setTintColor:v10];
+  _checkmarkImageView = [(PUReviewScrubberCell *)self _checkmarkImageView];
+  [_checkmarkImageView setTintColor:v10];
 
   [(PUReviewScrubberCell *)self setFavorite:v5];
   if (v6)
@@ -241,21 +241,21 @@ LABEL_15:
   [(PUImportOneUpScrubberCell *)self setNeedsLayout];
 }
 
-- (void)setImportItem:(id)a3
+- (void)setImportItem:(id)item
 {
-  v5 = a3;
-  if (self->_importItem != v5)
+  itemCopy = item;
+  if (self->_importItem != itemCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_importItem, a3);
-    v6 = [(PUImportOneUpScrubberCell *)self importItem];
-    -[PUImportOneUpScrubberCell setSelectable:](self, "setSelectable:", [v6 isSelectable]);
+    v7 = itemCopy;
+    objc_storeStrong(&self->_importItem, item);
+    importItem = [(PUImportOneUpScrubberCell *)self importItem];
+    -[PUImportOneUpScrubberCell setSelectable:](self, "setSelectable:", [importItem isSelectable]);
 
     [(PUImportOneUpScrubberCell *)self setBadgeType:[(PXImportItemViewModel *)v7 badgeType]];
     [(PUImportOneUpScrubberCell *)self updateBadgeUIIfNeeded];
     [(PUImportOneUpScrubberCell *)self updateToThumbnail:0];
     [(PXImportItemViewModel *)self->_importItem registerChangeObserver:self context:PXImportItemViewModelOneUpScrubberCellContext];
-    v5 = v7;
+    itemCopy = v7;
   }
 }
 
@@ -267,8 +267,8 @@ LABEL_15:
   [(PXImportItemViewModel *)self->_importItem unregisterChangeObserver:self context:PXImportItemViewModelOneUpScrubberCellContext];
   if ([(PUImportOneUpScrubberCell *)self thumbnailRequestID])
   {
-    v3 = [(PUImportOneUpScrubberCell *)self displayDelegate];
-    [v3 importOneUpScrubberCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpScrubberCell thumbnailRequestID](self, "thumbnailRequestID")}];
+    displayDelegate = [(PUImportOneUpScrubberCell *)self displayDelegate];
+    [displayDelegate importOneUpScrubberCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpScrubberCell thumbnailRequestID](self, "thumbnailRequestID")}];
 
     [(PUImportOneUpScrubberCell *)self setThumbnailRequestID:0];
   }
@@ -300,8 +300,8 @@ LABEL_15:
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
   if ([(PUImportOneUpScrubberCell *)self thumbnailRequestID])
   {
-    v3 = [(PUImportOneUpScrubberCell *)self displayDelegate];
-    [v3 importOneUpScrubberCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpScrubberCell thumbnailRequestID](self, "thumbnailRequestID")}];
+    displayDelegate = [(PUImportOneUpScrubberCell *)self displayDelegate];
+    [displayDelegate importOneUpScrubberCell:self didRequestCancellationOfThumbnailRequestWithID:{-[PUImportOneUpScrubberCell thumbnailRequestID](self, "thumbnailRequestID")}];
 
     [(PUImportOneUpScrubberCell *)self setThumbnailRequestID:0];
   }
@@ -311,11 +311,11 @@ LABEL_15:
   [(PUImportOneUpScrubberCell *)&v4 dealloc];
 }
 
-- (PUImportOneUpScrubberCell)initWithCoder:(id)a3
+- (PUImportOneUpScrubberCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PUImportOneUpScrubberCell;
-  v3 = [(PUReviewScrubberCell *)&v7 initWithCoder:a3];
+  v3 = [(PUReviewScrubberCell *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -326,11 +326,11 @@ LABEL_15:
   return v4;
 }
 
-- (PUImportOneUpScrubberCell)initWithFrame:(CGRect)a3
+- (PUImportOneUpScrubberCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUImportOneUpScrubberCell;
-  v3 = [(PUReviewScrubberCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUReviewScrubberCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

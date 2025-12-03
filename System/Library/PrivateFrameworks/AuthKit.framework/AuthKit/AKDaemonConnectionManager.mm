@@ -1,24 +1,24 @@
 @interface AKDaemonConnectionManager
 + (id)sharedInstance;
 - (AKDaemonConnectionManager)init;
-- (BOOL)_isBiometricRatchetStatusChangeDarwinNotification:(id)a3;
-- (BOOL)_isDeviceScreenUnlockNotification:(id)a3;
-- (BOOL)_isKeychainSharingGroupUpdateDarwinNotification:(id)a3;
-- (BOOL)_isPasscodeChangeNotification:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAllowClient:(id)a3 logging:(id *)a4;
+- (BOOL)_isBiometricRatchetStatusChangeDarwinNotification:(id)notification;
+- (BOOL)_isDeviceScreenUnlockNotification:(id)notification;
+- (BOOL)_isKeychainSharingGroupUpdateDarwinNotification:(id)notification;
+- (BOOL)_isPasscodeChangeNotification:(id)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAllowClient:(id)client logging:(id *)logging;
 - (id)passwordResetPresenter;
 - (void)_beginObservingBluetoothPairingNotification;
 - (void)_beginObservingInputNeededNotification;
 - (void)_beginObservingLocaleChangeNotification;
 - (void)_beginObservingRegulatoryEligibilityChangeNotification;
 - (void)_checkKeybagUnlockState;
-- (void)_checkScreenUnlockStateFromNotificationDictionary:(id)a3;
+- (void)_checkScreenUnlockStateFromNotificationDictionary:(id)dictionary;
 - (void)_enrollPasskeyIfEligible;
 - (void)_exitForSIGTERM;
 - (void)_handleKeychainSharingGroupUpdateNotification;
 - (void)_monitorXPCEvents;
-- (void)_performPasskeyCleanupWithPasskeyValidator:(id)a3 authenticationController:(id)a4 accountManager:(id)a5;
+- (void)_performPasskeyCleanupWithPasskeyValidator:(id)validator authenticationController:(id)controller accountManager:(id)manager;
 - (void)_setupServices;
 - (void)_startListeningForMessagesFromPairedDevice;
 - (void)_startMonitoringPushEvents;
@@ -26,7 +26,7 @@
 - (void)_stopObservingInputNeededNotification;
 - (void)_stopObservingLocaleChangeNotification;
 - (void)_stopObservingRegulatoryEligibilityChangeNotification;
-- (void)_updatePasskeyKeychainStatusForAccount:(id)a3;
+- (void)_updatePasskeyKeychainStatusForAccount:(id)account;
 - (void)_updateRestrictedSharingMode;
 - (void)dealloc;
 - (void)start;
@@ -40,9 +40,9 @@
   obj = _objc_retain(self);
   objc_sync_enter(obj);
   v5 = +[AKFeatureManager sharedManager];
-  v6 = [v5 isForgotPasswordNativeTakeoverEnabled];
+  isForgotPasswordNativeTakeoverEnabled = [v5 isForgotPasswordNativeTakeoverEnabled];
   _objc_release(v5);
-  if (v6)
+  if (isForgotPasswordNativeTakeoverEnabled)
   {
     if (!self->_passwordResetPresenter)
     {
@@ -82,9 +82,9 @@
 
   objc_storeStrong(location, 0);
   v2 = +[AKDevice currentDevice];
-  v3 = [v2 isUnlocked];
+  isUnlocked = [v2 isUnlocked];
   _objc_release(v2);
-  if (v3)
+  if (isUnlocked)
   {
     [AKAppleIDCheckInHelperService setCheckInAllowedForAllAccountsToValue:1];
   }
@@ -92,11 +92,11 @@
 
 - (void)_enrollPasskeyIfEligible
 {
-  v43 = self;
+  selfCopy = self;
   v42[1] = a2;
   v42[0] = +[AKAccountManager sharedInstance];
-  v41 = [v42[0] primaryAuthKitAccount];
-  if (v41)
+  primaryAuthKitAccount = [v42[0] primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
     v36 = _AKLogPasskey();
     v35 = 2;
@@ -109,16 +109,16 @@
     }
 
     objc_storeStrong(&v36, 0);
-    v33 = [v42[0] altDSIDForAccount:v41];
+    v33 = [v42[0] altDSIDForAccount:primaryAuthKitAccount];
     v32 = [[AKAppleIDPasskeySetupContext alloc] initWithAltDSID:v33];
     v4 = [AKAppleIDPasskeyValidator alloc];
-    v2 = v41;
+    v2 = primaryAuthKitAccount;
     v3 = v42[0];
     v8 = +[AKFeatureManager sharedManager];
     v7 = objc_opt_new();
     v6 = +[AKDevice currentDevice];
     v5 = objc_opt_new();
-    v31 = [(AKAppleIDPasskeyValidator *)v4 initWithAccount:v2 accountManager:v3 featureManager:v8 configuration:v7 device:v6 cdpFactory:v43->_passkeyAuthenticationController authenticationController:?];
+    v31 = [(AKAppleIDPasskeyValidator *)v4 initWithAccount:v2 accountManager:v3 featureManager:v8 configuration:v7 device:v6 cdpFactory:selfCopy->_passkeyAuthenticationController authenticationController:?];
     _objc_release(v5);
     _objc_release(v6);
     _objc_release(v7);
@@ -130,7 +130,7 @@
     v28 = [(AKAppleIDPasskeyCredentialProvider *)v9 initWithAuthorizationController:?];
     _objc_release(v10);
     v27 = [[AKAppleIDPasskeyEnrollController alloc] initWithPasskeyValidator:v31 challengeProvider:v30 credentialProvider:v28 registrationProvider:v29];
-    objc_initWeak(&v26, v43);
+    objc_initWeak(&v26, selfCopy);
     v12 = v27;
     v11 = v32;
     v17 = _NSConcreteStackBlock;
@@ -139,7 +139,7 @@
     v20 = sub_10016BF4C;
     v21 = &unk_100324FF8;
     objc_copyWeak(&v25, &v26);
-    v22 = _objc_retain(v41);
+    v22 = _objc_retain(primaryAuthKitAccount);
     v23 = _objc_retain(v31);
     v24 = _objc_retain(v42[0]);
     [v12 setupPasskeyWithContext:v11 forced:0 completion:&v17];
@@ -174,7 +174,7 @@
     v37 = 1;
   }
 
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(v42, 0);
 }
 
@@ -196,88 +196,88 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_authServiceListener)
   {
-    [(NSXPCListener *)v4->_authServiceListener invalidate];
-    [(NSXPCListener *)v4->_authServiceListener setDelegate:?];
-    objc_storeStrong(&v4->_authServiceListener, 0);
+    [(NSXPCListener *)selfCopy->_authServiceListener invalidate];
+    [(NSXPCListener *)selfCopy->_authServiceListener setDelegate:?];
+    objc_storeStrong(&selfCopy->_authServiceListener, 0);
   }
 
-  if (v4->_anisetteServiceListener)
+  if (selfCopy->_anisetteServiceListener)
   {
-    [(NSXPCListener *)v4->_anisetteServiceListener invalidate];
-    [(NSXPCListener *)v4->_anisetteServiceListener setDelegate:?];
-    objc_storeStrong(&v4->_anisetteServiceListener, 0);
+    [(NSXPCListener *)selfCopy->_anisetteServiceListener invalidate];
+    [(NSXPCListener *)selfCopy->_anisetteServiceListener setDelegate:?];
+    objc_storeStrong(&selfCopy->_anisetteServiceListener, 0);
   }
 
-  if (v4->_authorizationServiceListener)
+  if (selfCopy->_authorizationServiceListener)
   {
-    [(NSXPCListener *)v4->_authorizationServiceListener invalidate];
-    [(NSXPCListener *)v4->_authorizationServiceListener setDelegate:?];
-    objc_storeStrong(&v4->_authorizationServiceListener, 0);
+    [(NSXPCListener *)selfCopy->_authorizationServiceListener invalidate];
+    [(NSXPCListener *)selfCopy->_authorizationServiceListener setDelegate:?];
+    objc_storeStrong(&selfCopy->_authorizationServiceListener, 0);
   }
 
-  if (v4->_authorizationEndorserRapportClient)
+  if (selfCopy->_authorizationEndorserRapportClient)
   {
-    [(AKAuthorizationEndorserRapportClient *)v4->_authorizationEndorserRapportClient setDelegate:?];
-    objc_storeStrong(&v4->_authorizationEndorserRapportClient, 0);
+    [(AKAuthorizationEndorserRapportClient *)selfCopy->_authorizationEndorserRapportClient setDelegate:?];
+    objc_storeStrong(&selfCopy->_authorizationEndorserRapportClient, 0);
   }
 
-  if (v4->_privateEmailServiceListener)
+  if (selfCopy->_privateEmailServiceListener)
   {
-    [(NSXPCListener *)v4->_privateEmailServiceListener invalidate];
-    [(NSXPCListener *)v4->_privateEmailServiceListener setDelegate:?];
-    objc_storeStrong(&v4->_privateEmailServiceListener, 0);
+    [(NSXPCListener *)selfCopy->_privateEmailServiceListener invalidate];
+    [(NSXPCListener *)selfCopy->_privateEmailServiceListener setDelegate:?];
+    objc_storeStrong(&selfCopy->_privateEmailServiceListener, 0);
   }
 
-  if (v4->_custodianServiceListener)
+  if (selfCopy->_custodianServiceListener)
   {
-    [(NSXPCListener *)v4->_custodianServiceListener invalidate];
-    [(NSXPCListener *)v4->_custodianServiceListener setDelegate:?];
-    objc_storeStrong(&v4->_custodianServiceListener, 0);
+    [(NSXPCListener *)selfCopy->_custodianServiceListener invalidate];
+    [(NSXPCListener *)selfCopy->_custodianServiceListener setDelegate:?];
+    objc_storeStrong(&selfCopy->_custodianServiceListener, 0);
   }
 
-  if (v4->_symmetricKeyServiceListener)
+  if (selfCopy->_symmetricKeyServiceListener)
   {
-    [(NSXPCListener *)v4->_symmetricKeyServiceListener invalidate];
-    [(NSXPCListener *)v4->_symmetricKeyServiceListener setDelegate:?];
-    objc_storeStrong(&v4->_symmetricKeyServiceListener, 0);
+    [(NSXPCListener *)selfCopy->_symmetricKeyServiceListener invalidate];
+    [(NSXPCListener *)selfCopy->_symmetricKeyServiceListener setDelegate:?];
+    objc_storeStrong(&selfCopy->_symmetricKeyServiceListener, 0);
   }
 
-  if (v4->_inheritanceDaemonService)
+  if (selfCopy->_inheritanceDaemonService)
   {
-    objc_storeStrong(&v4->_inheritanceDaemonService, 0);
+    objc_storeStrong(&selfCopy->_inheritanceDaemonService, 0);
   }
 
-  if (v4->_walrusDaemonService)
+  if (selfCopy->_walrusDaemonService)
   {
-    objc_storeStrong(&v4->_walrusDaemonService, 0);
+    objc_storeStrong(&selfCopy->_walrusDaemonService, 0);
   }
 
-  if (v4->_appleIDPasskeyDaemonService)
+  if (selfCopy->_appleIDPasskeyDaemonService)
   {
-    objc_storeStrong(&v4->_appleIDPasskeyDaemonService, 0);
+    objc_storeStrong(&selfCopy->_appleIDPasskeyDaemonService, 0);
   }
 
-  if (v4->_passkeyAuthenticationController)
+  if (selfCopy->_passkeyAuthenticationController)
   {
-    objc_storeStrong(&v4->_passkeyAuthenticationController, 0);
+    objc_storeStrong(&selfCopy->_passkeyAuthenticationController, 0);
   }
 
-  if (v4->_signInWithAppleDaemonService)
+  if (selfCopy->_signInWithAppleDaemonService)
   {
-    objc_storeStrong(&v4->_signInWithAppleDaemonService, 0);
+    objc_storeStrong(&selfCopy->_signInWithAppleDaemonService, 0);
   }
 
-  [(AKDaemonConnectionManager *)v4 _stopObservingLanguageChangeNotification];
-  [(AKDaemonConnectionManager *)v4 _stopObservingSharingModePolicyChangeNotfication];
-  [(AKDaemonConnectionManager *)v4 _stopObservingRegulatoryEligibilityChangeNotification];
-  [(AKDaemonConnectionManager *)v4 _stopObservingBluetoothPairingNotification];
-  [(AKDaemonConnectionManager *)v4 _stopObservingInputNeededNotification];
-  [(AKDaemonConnectionManager *)v4 _stopObservingLocaleChangeNotification];
-  v2.receiver = v4;
+  [(AKDaemonConnectionManager *)selfCopy _stopObservingLanguageChangeNotification];
+  [(AKDaemonConnectionManager *)selfCopy _stopObservingSharingModePolicyChangeNotfication];
+  [(AKDaemonConnectionManager *)selfCopy _stopObservingRegulatoryEligibilityChangeNotification];
+  [(AKDaemonConnectionManager *)selfCopy _stopObservingBluetoothPairingNotification];
+  [(AKDaemonConnectionManager *)selfCopy _stopObservingInputNeededNotification];
+  [(AKDaemonConnectionManager *)selfCopy _stopObservingLocaleChangeNotification];
+  v2.receiver = selfCopy;
   v2.super_class = AKDaemonConnectionManager;
   [(AKDaemonConnectionManager *)&v2 dealloc];
 }
@@ -402,149 +402,149 @@
 
 - (void)_setupServices
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v29 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(NSXPCListener *)v31->_authServiceListener serviceName];
-    sub_1000194D4(v41, v11);
+    serviceName = [(NSXPCListener *)selfCopy->_authServiceListener serviceName];
+    sub_1000194D4(v41, serviceName);
     _os_log_debug_impl(&_mh_execute_header, location[0], v29, "Resuming XPC listener for Mach service %@...", v41, 0xCu);
-    _objc_release(v11);
+    _objc_release(serviceName);
   }
 
   objc_storeStrong(location, 0);
-  [(NSXPCListener *)v31->_authServiceListener setDelegate:v31];
-  [(NSXPCListener *)v31->_authServiceListener resume];
+  [(NSXPCListener *)selfCopy->_authServiceListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_authServiceListener resume];
   v28 = _AKLogSystem();
   v27 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(NSXPCListener *)v31->_anisetteServiceListener serviceName];
-    sub_1000194D4(v40, v10);
+    serviceName2 = [(NSXPCListener *)selfCopy->_anisetteServiceListener serviceName];
+    sub_1000194D4(v40, serviceName2);
     _os_log_debug_impl(&_mh_execute_header, v28, v27, "Resuming XPC listener for Mach service %@...", v40, 0xCu);
-    _objc_release(v10);
+    _objc_release(serviceName2);
   }
 
   objc_storeStrong(&v28, 0);
-  [(NSXPCListener *)v31->_anisetteServiceListener setDelegate:v31];
-  [(NSXPCListener *)v31->_anisetteServiceListener resume];
+  [(NSXPCListener *)selfCopy->_anisetteServiceListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_anisetteServiceListener resume];
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(NSXPCListener *)v31->_authorizationServiceListener serviceName];
-    sub_1000194D4(v39, v9);
+    serviceName3 = [(NSXPCListener *)selfCopy->_authorizationServiceListener serviceName];
+    sub_1000194D4(v39, serviceName3);
     _os_log_debug_impl(&_mh_execute_header, v26, v25, "Resuming XPC listener for Mach service %@...", v39, 0xCu);
-    _objc_release(v9);
+    _objc_release(serviceName3);
   }
 
   objc_storeStrong(&v26, 0);
-  [(NSXPCListener *)v31->_authorizationServiceListener setDelegate:v31];
-  [(NSXPCListener *)v31->_authorizationServiceListener resume];
+  [(NSXPCListener *)selfCopy->_authorizationServiceListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_authorizationServiceListener resume];
   oslog = _AKLogSystem();
   v23 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(NSXPCListener *)v31->_custodianServiceListener serviceName];
-    sub_1000194D4(v38, v8);
+    serviceName4 = [(NSXPCListener *)selfCopy->_custodianServiceListener serviceName];
+    sub_1000194D4(v38, serviceName4);
     _os_log_debug_impl(&_mh_execute_header, oslog, v23, "Resuming XPC listener for Mach service %@...", v38, 0xCu);
-    _objc_release(v8);
+    _objc_release(serviceName4);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(NSXPCListener *)v31->_custodianServiceListener setDelegate:v31];
-  [(NSXPCListener *)v31->_custodianServiceListener resume];
+  [(NSXPCListener *)selfCopy->_custodianServiceListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_custodianServiceListener resume];
   v22 = _AKLogSystem();
   v21 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(AAFService *)v31->_inheritanceDaemonService serviceName];
-    sub_1000194D4(v37, v7);
+    serviceName5 = [(AAFService *)selfCopy->_inheritanceDaemonService serviceName];
+    sub_1000194D4(v37, serviceName5);
     _os_log_debug_impl(&_mh_execute_header, v22, v21, "Resuming XPC listener for Mach service %@...", v37, 0xCu);
-    _objc_release(v7);
+    _objc_release(serviceName5);
   }
 
   objc_storeStrong(&v22, 0);
-  [(AAFService *)v31->_inheritanceDaemonService startup];
+  [(AAFService *)selfCopy->_inheritanceDaemonService startup];
   v20 = _AKLogSystem();
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(NSXPCListener *)v31->_privateEmailServiceListener serviceName];
-    sub_1000194D4(v36, v6);
+    serviceName6 = [(NSXPCListener *)selfCopy->_privateEmailServiceListener serviceName];
+    sub_1000194D4(v36, serviceName6);
     _os_log_debug_impl(&_mh_execute_header, v20, v19, "Resuming XPC listener for Mach service %@...", v36, 0xCu);
-    _objc_release(v6);
+    _objc_release(serviceName6);
   }
 
   objc_storeStrong(&v20, 0);
-  [(NSXPCListener *)v31->_privateEmailServiceListener setDelegate:v31];
-  [(NSXPCListener *)v31->_privateEmailServiceListener resume];
+  [(NSXPCListener *)selfCopy->_privateEmailServiceListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_privateEmailServiceListener resume];
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(NSXPCListener *)v31->_symmetricKeyServiceListener serviceName];
-    sub_1000194D4(v35, v5);
+    serviceName7 = [(NSXPCListener *)selfCopy->_symmetricKeyServiceListener serviceName];
+    sub_1000194D4(v35, serviceName7);
     _os_log_debug_impl(&_mh_execute_header, v18, v17, "Resuming XPC listener for Mach service %@...", v35, 0xCu);
-    _objc_release(v5);
+    _objc_release(serviceName7);
   }
 
   objc_storeStrong(&v18, 0);
-  [(NSXPCListener *)v31->_symmetricKeyServiceListener setDelegate:v31];
-  [(NSXPCListener *)v31->_symmetricKeyServiceListener resume];
+  [(NSXPCListener *)selfCopy->_symmetricKeyServiceListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_symmetricKeyServiceListener resume];
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(AAFService *)v31->_fidoDaemonService serviceName];
-    sub_1000194D4(v34, v4);
+    serviceName8 = [(AAFService *)selfCopy->_fidoDaemonService serviceName];
+    sub_1000194D4(v34, serviceName8);
     _os_log_debug_impl(&_mh_execute_header, v16, v15, "Resuming XPC listener for Mach service %@...", v34, 0xCu);
-    _objc_release(v4);
+    _objc_release(serviceName8);
   }
 
   objc_storeStrong(&v16, 0);
-  [(AAFService *)v31->_fidoDaemonService startup];
+  [(AAFService *)selfCopy->_fidoDaemonService startup];
   v14 = _AKLogSystem();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v3 = [(AAFService *)v31->_walrusDaemonService serviceName];
-    sub_1000194D4(v33, v3);
+    serviceName9 = [(AAFService *)selfCopy->_walrusDaemonService serviceName];
+    sub_1000194D4(v33, serviceName9);
     _os_log_debug_impl(&_mh_execute_header, v14, v13, "Resuming XPC listener for Mach service %@...", v33, 0xCu);
-    _objc_release(v3);
+    _objc_release(serviceName9);
   }
 
   objc_storeStrong(&v14, 0);
-  [(AAFService *)v31->_walrusDaemonService startup];
+  [(AAFService *)selfCopy->_walrusDaemonService startup];
   v12 = _AKLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v2 = [(AAFService *)v31->_appleIDPasskeyDaemonService serviceName];
-    sub_1000194D4(v32, v2);
+    serviceName10 = [(AAFService *)selfCopy->_appleIDPasskeyDaemonService serviceName];
+    sub_1000194D4(v32, serviceName10);
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Resuming XPC listener for Mach service %@...", v32, 0xCu);
-    _objc_release(v2);
+    _objc_release(serviceName10);
   }
 
   objc_storeStrong(&v12, 0);
-  [(AAFService *)v31->_appleIDPasskeyDaemonService startup];
-  [(AAFService *)v31->_signInWithAppleDaemonService startup];
+  [(AAFService *)selfCopy->_appleIDPasskeyDaemonService startup];
+  [(AAFService *)selfCopy->_signInWithAppleDaemonService startup];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v51 = 0;
-  objc_storeStrong(&v51, a4);
+  objc_storeStrong(&v51, connection);
   v4 = [AKClient alloc];
   v50 = [(AKClient *)v4 initWithConnection:v51];
   v49 = 0;
   v48 = 0;
-  if (location[0] == v53->_authorizationServiceListener)
+  if (location[0] == selfCopy->_authorizationServiceListener)
   {
     v48 = 1;
   }
@@ -552,20 +552,20 @@
   else
   {
     v47 = v49;
-    v34 = [(AKDaemonConnectionManager *)v53 shouldAllowClient:v50 logging:&v47];
+    v34 = [(AKDaemonConnectionManager *)selfCopy shouldAllowClient:v50 logging:&v47];
     objc_storeStrong(&v49, v47);
     v48 = v34;
   }
 
   if (v48)
   {
-    if (location[0] == v53->_authServiceListener)
+    if (location[0] == selfCopy->_authServiceListener)
     {
       v28 = [AKAppleIDAuthenticationService alloc];
       v27 = v50;
-      v29 = [(AKDaemonConnectionManager *)v53 passwordResetPresenter];
+      passwordResetPresenter = [(AKDaemonConnectionManager *)selfCopy passwordResetPresenter];
       v45 = [(AKAppleIDAuthenticationService *)v28 initWithClient:v27 passwordResetPresenter:?];
-      _objc_release(v29);
+      _objc_release(passwordResetPresenter);
       [v51 setExportedObject:v45];
       v30 = v51;
       v31 = +[AKAppleIDAuthenticationDaemonInterface XPCInterface];
@@ -578,7 +578,7 @@
       objc_storeStrong(&v45, 0);
     }
 
-    else if (location[0] == v53->_anisetteServiceListener)
+    else if (location[0] == selfCopy->_anisetteServiceListener)
     {
       v44 = _AKTrafficLogSubsystem();
       v43 = OS_LOG_TYPE_DEBUG;
@@ -603,7 +603,7 @@
       objc_storeStrong(&v42, 0);
     }
 
-    else if (location[0] == v53->_authorizationServiceListener)
+    else if (location[0] == selfCopy->_authorizationServiceListener)
     {
       v6 = [AKAuthorizationDaemonService alloc];
       v41 = [(AKAuthorizationDaemonService *)v6 initWithClient:v50];
@@ -619,7 +619,7 @@
       objc_storeStrong(&v41, 0);
     }
 
-    else if (location[0] == v53->_custodianServiceListener)
+    else if (location[0] == selfCopy->_custodianServiceListener)
     {
       v7 = [AKCustodianDaemonService alloc];
       v40 = [(AKCustodianDaemonService *)v7 initWithClient:v50];
@@ -631,7 +631,7 @@
       objc_storeStrong(&v40, 0);
     }
 
-    else if (location[0] == v53->_privateEmailServiceListener)
+    else if (location[0] == selfCopy->_privateEmailServiceListener)
     {
       v39 = +[AKPrivateEmailStoreManager sharedInstance];
       v8 = [AKPrivateEmailDaemonService alloc];
@@ -649,7 +649,7 @@
       objc_storeStrong(&v39, 0);
     }
 
-    else if (location[0] == v53->_symmetricKeyServiceListener)
+    else if (location[0] == selfCopy->_symmetricKeyServiceListener)
     {
       v9 = [AKSymmetricKeyDaemonService alloc];
       v37 = [(AKSymmetricKeyDaemonService *)v9 initWithClient:v50];
@@ -691,13 +691,13 @@
   return v54 & 1;
 }
 
-- (BOOL)shouldAllowClient:(id)a3 logging:(id *)a4
+- (BOOL)shouldAllowClient:(id)client logging:(id *)logging
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, client);
+  loggingCopy = logging;
   v23 = 0;
   v22 = 0;
   if ([location[0] hasWriteAccess])
@@ -762,10 +762,10 @@
     _objc_release(v17);
   }
 
-  if (v24)
+  if (loggingCopy)
   {
     v18 = v22;
-    *v24 = v22;
+    *loggingCopy = v22;
   }
 
   v20 = v23;
@@ -826,7 +826,7 @@
 
 - (void)_monitorXPCEvents
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v2 = &_dispatch_main_q;
   targetq = &_dispatch_main_q;
@@ -835,7 +835,7 @@
   v15 = 0;
   v16 = sub_100016050;
   v17 = &unk_100320E78;
-  v18[0] = _objc_retain(v19);
+  v18[0] = _objc_retain(selfCopy);
   xpc_set_event_stream_handler("com.apple.notifyd.matching", targetq, &v13);
   _objc_release(targetq);
   v3 = &_dispatch_main_q;
@@ -844,7 +844,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_10016AC28;
   v11[3] = &unk_100320E78;
-  v12 = _objc_retain(v19);
+  v12 = _objc_retain(selfCopy);
   xpc_set_event_stream_handler("com.apple.rapport.matching", v7, v11);
   _objc_release(v7);
   oslog = _AKLogSystem();
@@ -862,34 +862,34 @@
   objc_storeStrong(v18, 0);
 }
 
-- (BOOL)_isPasscodeChangeNotification:(id)a3
+- (BOOL)_isPasscodeChangeNotification:(id)notification
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v4 = [location[0] isEqual:MCPasscodeChangedNotification];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (BOOL)_isBiometricRatchetStatusChangeDarwinNotification:(id)a3
+- (BOOL)_isBiometricRatchetStatusChangeDarwinNotification:(id)notification
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v4 = [location[0] isEqualToString:@"com.apple.LocalAuthentication.ratchet.StateDidChange"];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (BOOL)_isDeviceScreenUnlockNotification:(id)a3
+- (BOOL)_isDeviceScreenUnlockNotification:(id)notification
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v4 = location[0];
   v5 = [NSString stringWithUTF8String:kSBSLockStateNotifyKey];
   v6 = [v4 isEqual:?];
@@ -898,12 +898,12 @@
   return v6;
 }
 
-- (void)_checkScreenUnlockStateFromNotificationDictionary:(id)a3
+- (void)_checkScreenUnlockStateFromNotificationDictionary:(id)dictionary
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   uint64 = xpc_dictionary_get_uint64(location[0], "_State");
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -918,7 +918,7 @@
   if (!uint64)
   {
     [AKAppleIDCheckInHelperService setCheckInAllowedForAllAccountsToValue:1];
-    [(AKDaemonConnectionManager *)v7 _enrollPasskeyIfEligible];
+    [(AKDaemonConnectionManager *)selfCopy _enrollPasskeyIfEligible];
   }
 
   objc_storeStrong(location, 0);
@@ -978,7 +978,7 @@
 
 - (void)_beginObservingRegulatoryEligibilityChangeNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -992,12 +992,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(center, v8, sub_10016B5FC, @"com.apple.os-eligibility-domain.change", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(center, selfCopy, sub_10016B5FC, @"com.apple.os-eligibility-domain.change", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_stopObservingRegulatoryEligibilityChangeNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1011,12 +1011,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(center, v8, @"com.apple.os-eligibility-domain.change", 0);
+  CFNotificationCenterRemoveObserver(center, selfCopy, @"com.apple.os-eligibility-domain.change", 0);
 }
 
 - (void)_beginObservingBluetoothPairingNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1030,12 +1030,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(center, v8, sub_10016B83C, @"com.apple.bluetooth.pairingWithReason", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(center, selfCopy, sub_10016B83C, @"com.apple.bluetooth.pairingWithReason", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_stopObservingBluetoothPairingNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1049,12 +1049,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(center, v8, @"com.apple.bluetooth.pairingWithReason", 0);
+  CFNotificationCenterRemoveObserver(center, selfCopy, @"com.apple.bluetooth.pairingWithReason", 0);
 }
 
 - (void)_beginObservingInputNeededNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1068,12 +1068,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(center, v8, sub_10016BA90, @"com.apple.os-eligibility-domain.input-needed", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(center, selfCopy, sub_10016BA90, @"com.apple.os-eligibility-domain.input-needed", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_stopObservingInputNeededNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1087,12 +1087,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(center, v8, @"com.apple.os-eligibility-domain.input-needed", 0);
+  CFNotificationCenterRemoveObserver(center, selfCopy, @"com.apple.os-eligibility-domain.input-needed", 0);
 }
 
 - (void)_beginObservingLocaleChangeNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1106,12 +1106,12 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(center, v8, sub_10016BCE0, @"NSCurrentLocaleDidChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(center, selfCopy, sub_10016BCE0, @"NSCurrentLocaleDidChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_stopObservingLocaleChangeNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -1125,7 +1125,7 @@
 
   objc_storeStrong(location, 0);
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(center, v8, @"NSCurrentLocaleDidChangeNotification", 0);
+  CFNotificationCenterRemoveObserver(center, selfCopy, @"NSCurrentLocaleDidChangeNotification", 0);
 }
 
 - (void)_updateRestrictedSharingMode
@@ -1148,26 +1148,26 @@
   _objc_release(v2);
 }
 
-- (void)_updatePasskeyKeychainStatusForAccount:(id)a3
+- (void)_updatePasskeyKeychainStatusForAccount:(id)account
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAppleIDPasskeyAuthenticationController *)v4->_passkeyAuthenticationController appleIDPasskeyStatusForAccount:location[0] withCompletion:&stru_100325018];
+  objc_storeStrong(location, account);
+  [(AKAppleIDPasskeyAuthenticationController *)selfCopy->_passkeyAuthenticationController appleIDPasskeyStatusForAccount:location[0] withCompletion:&stru_100325018];
   objc_storeStrong(location, 0);
 }
 
-- (void)_performPasskeyCleanupWithPasskeyValidator:(id)a3 authenticationController:(id)a4 accountManager:(id)a5
+- (void)_performPasskeyCleanupWithPasskeyValidator:(id)validator authenticationController:(id)controller accountManager:(id)manager
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validator);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, manager);
   v5 = [AKAppleIDPasskeyCleanupController alloc];
   v8 = [(AKAppleIDPasskeyCleanupController *)v5 initWithPasskeyValidator:location[0] authenticationController:v10 accountManager:v9];
   [(AKAppleIDPasskeyCleanupController *)v8 cleanupPasskeysFromKeychainWithcompletion:&stru_100325038];
@@ -1177,12 +1177,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_isKeychainSharingGroupUpdateDarwinNotification:(id)a3
+- (BOOL)_isKeychainSharingGroupUpdateDarwinNotification:(id)notification
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v4 = [location[0] isEqualToString:@"com.apple.security.kcsharing.groupsupdated"];
   objc_storeStrong(location, 0);
   return v4;
@@ -1204,8 +1204,8 @@
 
   objc_storeStrong(location, 0);
   v25 = +[AKAccountManager sharedInstance];
-  v24 = [v25 primaryAuthKitAccount];
-  if (v24)
+  primaryAuthKitAccount = [v25 primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
     v19 = _AKLogSiwa();
     v18 = 2;
@@ -1224,7 +1224,7 @@
     _objc_release(v5);
     v16 = 0;
     v15 = 0;
-    [v25 saveAccount:v24 error:&v15];
+    [v25 saveAccount:primaryAuthKitAccount error:&v15];
     objc_storeStrong(&v16, v15);
     if (v16)
     {
@@ -1261,7 +1261,7 @@
     v20 = 1;
   }
 
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(&v25, 0);
 }
 

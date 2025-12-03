@@ -1,27 +1,27 @@
 @interface VideoObserver
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playbackErrorOccurredWithNotification:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playbackErrorOccurredWithNotification:(id)notification;
 - (void)videoDidPlayToEnd;
 - (void)videoPlaybackDidStall;
 @end
 
 @implementation VideoObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     sub_1CA19C118();
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v13, 0, sizeof(v13));
-    v11 = a5;
-    v12 = self;
-    if (!a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (!change)
     {
       goto LABEL_7;
     }
@@ -29,18 +29,18 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_1CA19C768();
   swift_unknownObjectRelease();
-  if (a5)
+  if (change)
   {
 LABEL_4:
     type metadata accessor for NSKeyValueChangeKey(0);
@@ -56,20 +56,20 @@ LABEL_7:
 
 - (void)videoDidPlayToEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA1834B8();
 }
 
 - (void)videoPlaybackDidStall
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA1835B4();
 }
 
-- (void)playbackErrorOccurredWithNotification:(id)a3
+- (void)playbackErrorOccurredWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1CA1838CC();
 }
 

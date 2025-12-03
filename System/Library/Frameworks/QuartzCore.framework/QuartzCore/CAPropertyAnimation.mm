@@ -1,11 +1,11 @@
 @interface CAPropertyAnimation
 + (CAPropertyAnimation)animationWithKeyPath:(NSString *)path;
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (BOOL)isAdditive;
 - (BOOL)isCumulative;
 - (CAValueFunction)valueFunction;
 - (NSString)keyPath;
-- (unsigned)_propertyFlagsForLayer:(id)a3;
+- (unsigned)_propertyFlagsForLayer:(id)layer;
 - (void)setAdditive:(BOOL)additive;
 - (void)setCumulative:(BOOL)cumulative;
 - (void)setKeyPath:(NSString *)keyPath;
@@ -74,19 +74,19 @@
   CAAnimation_setter(self, 3, 7, &v3);
 }
 
-- (unsigned)_propertyFlagsForLayer:(id)a3
+- (unsigned)_propertyFlagsForLayer:(id)layer
 {
-  v4 = [(CAPropertyAnimation *)self keyPath];
+  keyPath = [(CAPropertyAnimation *)self keyPath];
 
-  return animation_property_flags(v4, a3);
+  return animation_property_flags(keyPath, layer);
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v21[0] = 0;
-  v7 = [(CAPropertyAnimation *)self keyPath];
-  CA::Render::key_path_set(v21, v7, v8);
+  keyPath = [(CAPropertyAnimation *)self keyPath];
+  CA::Render::key_path_set(v21, keyPath, v8);
   v10 = v21[0];
   if (!v21[0])
   {
@@ -108,17 +108,17 @@ LABEL_5:
 
   v11 = LODWORD(v21[0]) >> 1;
 LABEL_7:
-  CA::Render::key_path_free(*(a3 + 12), v9);
-  *(a3 + 12) = v10;
-  if (a4)
+  CA::Render::key_path_free(*(animation + 12), v9);
+  *(animation + 12) = v10;
+  if (layer)
   {
-    v12 = [a4 _renderLayerDefinesProperty:v11];
+    v12 = [layer _renderLayerDefinesProperty:v11];
     if (!v12)
     {
       return v12;
     }
 
-    v13 = [a4 _renderLayerPropertyAnimationFlags:v11];
+    v13 = [layer _renderLayerPropertyAnimationFlags:v11];
   }
 
   else
@@ -128,7 +128,7 @@ LABEL_7:
 
   v20.receiver = self;
   v20.super_class = CAPropertyAnimation;
-  v12 = [(CAAnimation *)&v20 _setCARenderAnimation:a3 layer:a4];
+  v12 = [(CAAnimation *)&v20 _setCARenderAnimation:animation layer:layer];
   if (v12)
   {
     if (key_path_affects_container(v10))
@@ -151,25 +151,25 @@ LABEL_7:
       v14 |= 4u;
     }
 
-    v15 = [(CAPropertyAnimation *)self valueFunction];
-    if (v15)
+    valueFunction = [(CAPropertyAnimation *)self valueFunction];
+    if (valueFunction)
     {
-      v16 = [(CAValueFunction *)v15 CA_copyRenderValue];
-      v17 = *(a3 + 13);
-      if (v17 != v16)
+      cA_copyRenderValue = [(CAValueFunction *)valueFunction CA_copyRenderValue];
+      v17 = *(animation + 13);
+      if (v17 != cA_copyRenderValue)
       {
         if (v17 && atomic_fetch_add(v17 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v17 + 16))(v17);
         }
 
-        if (v16)
+        if (cA_copyRenderValue)
         {
-          v18 = v16;
-          if (!atomic_fetch_add(v16 + 2, 1u))
+          v18 = cA_copyRenderValue;
+          if (!atomic_fetch_add(cA_copyRenderValue + 2, 1u))
           {
             v18 = 0;
-            atomic_fetch_add(v16 + 2, 0xFFFFFFFF);
+            atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF);
           }
         }
 
@@ -178,18 +178,18 @@ LABEL_7:
           v18 = 0;
         }
 
-        *(a3 + 13) = v18;
+        *(animation + 13) = v18;
       }
 
-      if (v16 && atomic_fetch_add(v16 + 2, 0xFFFFFFFF) == 1)
+      if (cA_copyRenderValue && atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF) == 1)
       {
-        (*(*v16 + 16))(v16);
+        (*(*cA_copyRenderValue + 16))(cA_copyRenderValue);
       }
     }
 
     if (v14)
     {
-      *(a3 + 3) |= v14 << 8;
+      *(animation + 3) |= v14 << 8;
     }
 
     LOBYTE(v12) = 1;
@@ -200,7 +200,7 @@ LABEL_7:
 
 + (CAPropertyAnimation)animationWithKeyPath:(NSString *)path
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 setKeyPath:path];
 
   return v4;

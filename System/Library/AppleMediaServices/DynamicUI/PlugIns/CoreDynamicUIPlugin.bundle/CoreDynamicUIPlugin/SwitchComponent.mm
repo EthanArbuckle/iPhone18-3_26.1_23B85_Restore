@@ -7,13 +7,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_85DF8();
 }
 
 - (void)switchAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_86140();
 }
 

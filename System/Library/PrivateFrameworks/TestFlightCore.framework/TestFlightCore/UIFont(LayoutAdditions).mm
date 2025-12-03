@@ -7,9 +7,9 @@
 
 - (double)tf_estimatedFirstBaseline
 {
-  [a1 lineHeight];
+  [self lineHeight];
   v3 = v2;
-  [a1 descender];
+  [self descender];
   return v3 + v4;
 }
 
@@ -17,7 +17,7 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = *MEMORY[0x277D740A8];
-  v11[0] = a1;
+  v11[0] = self;
   v1 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   [&stru_287EAC508 boundingRectWithSize:3 options:v1 attributes:0 context:{1.79769313e308, 1.79769313e308}];
   v3 = v2;

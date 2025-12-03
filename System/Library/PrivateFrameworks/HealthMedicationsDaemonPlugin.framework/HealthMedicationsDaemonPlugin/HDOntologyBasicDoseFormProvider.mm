@@ -1,15 +1,15 @@
 @interface HDOntologyBasicDoseFormProvider
-+ (id)basicDoseFormsForConceptWithIdentifier:(id)a3 ontologyTransaction:(id)a4 error:(id *)a5;
++ (id)basicDoseFormsForConceptWithIdentifier:(id)identifier ontologyTransaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDOntologyBasicDoseFormProvider
 
-+ (id)basicDoseFormsForConceptWithIdentifier:(id)a3 ontologyTransaction:(id)a4 error:(id *)a5
++ (id)basicDoseFormsForConceptWithIdentifier:(id)identifier ontologyTransaction:(id)transaction error:(id *)error
 {
   v5 = *MEMORY[0x277D10398];
   v12 = 0;
   v13 = v5;
-  v6 = [MEMORY[0x277D103B8] followRelationshipsWithTypes:&unk_2863C2C00 startingIdentifier:a3 options:12 ontologyTransaction:a4 conceptOut:&v12 deletedRelationshipVersionOut:&v13 error:a5];
+  v6 = [MEMORY[0x277D103B8] followRelationshipsWithTypes:&unk_2863C2C00 startingIdentifier:identifier options:12 ontologyTransaction:transaction conceptOut:&v12 deletedRelationshipVersionOut:&v13 error:error];
   v7 = v12;
   v8 = 0;
   if (v6)

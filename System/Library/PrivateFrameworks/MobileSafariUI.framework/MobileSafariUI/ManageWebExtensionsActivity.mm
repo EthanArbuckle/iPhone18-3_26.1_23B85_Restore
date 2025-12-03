@@ -5,8 +5,8 @@
 - (void)_formatBadgeText;
 - (void)_reloadBadgeCount;
 - (void)dealloc;
-- (void)extensionsControllerExtensionListDidChange:(id)a3;
-- (void)setBrowserDocument:(id)a3;
+- (void)extensionsControllerExtensionListDidChange:(id)change;
+- (void)setBrowserDocument:(id)document;
 @end
 
 @implementation ManageWebExtensionsActivity
@@ -38,9 +38,9 @@
   else
   {
     numberOfNewlyInstalledExtensions = [(_SFBrowserDocument *)v9 webExtensionsController];
-    v4 = [numberOfNewlyInstalledExtensions recentlyInstalledExtensionCount];
-    v5 = [(_SFBrowserDocument *)v9 contentBlockerManager];
-    v6 = [v5 recentlyInstalledExtensionCount] + v4;
+    recentlyInstalledExtensionCount = [numberOfNewlyInstalledExtensions recentlyInstalledExtensionCount];
+    contentBlockerManager = [(_SFBrowserDocument *)v9 contentBlockerManager];
+    v6 = [contentBlockerManager recentlyInstalledExtensionCount] + recentlyInstalledExtensionCount;
 
     if (v6)
     {
@@ -64,25 +64,25 @@
 LABEL_9:
 }
 
-- (void)setBrowserDocument:(id)a3
+- (void)setBrowserDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(_SFBrowserDocument *)self->_browserDocument webExtensionsController];
-  [v5 removeObserver:self];
+  documentCopy = document;
+  webExtensionsController = [(_SFBrowserDocument *)self->_browserDocument webExtensionsController];
+  [webExtensionsController removeObserver:self];
 
   browserDocument = self->_browserDocument;
-  self->_browserDocument = v4;
-  v7 = v4;
+  self->_browserDocument = documentCopy;
+  v7 = documentCopy;
 
-  v8 = [(_SFBrowserDocument *)self->_browserDocument webExtensionsController];
+  webExtensionsController2 = [(_SFBrowserDocument *)self->_browserDocument webExtensionsController];
 
-  [v8 addObserver:self];
+  [webExtensionsController2 addObserver:self];
 }
 
 - (void)dealloc
 {
-  v3 = [(_SFBrowserDocument *)self->_browserDocument webExtensionsController];
-  [v3 removeObserver:self];
+  webExtensionsController = [(_SFBrowserDocument *)self->_browserDocument webExtensionsController];
+  [webExtensionsController removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ManageWebExtensionsActivity;
@@ -111,7 +111,7 @@ LABEL_9:
   [WeakRetained _reloadActivity:self];
 }
 
-- (void)extensionsControllerExtensionListDidChange:(id)a3
+- (void)extensionsControllerExtensionListDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

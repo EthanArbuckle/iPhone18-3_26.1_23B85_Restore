@@ -1,13 +1,13 @@
 @interface CoverIssueView
 - (NSString)accessibilityValue;
-- (void)setAccessibilityValue:(id)a3;
+- (void)setAccessibilityValue:(id)value;
 @end
 
 @implementation CoverIssueView
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   CoverIssueView.accessibilityValue.getter();
   v4 = v3;
 
@@ -24,24 +24,24 @@
   return v5;
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (value)
   {
     sub_1D726207C();
-    v6 = self;
-    a3 = sub_1D726203C();
+    selfCopy = self;
+    value = sub_1D726203C();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(CoverIssueView *)&v8 setAccessibilityValue:a3];
+  [(CoverIssueView *)&v8 setAccessibilityValue:value];
 }
 
 @end

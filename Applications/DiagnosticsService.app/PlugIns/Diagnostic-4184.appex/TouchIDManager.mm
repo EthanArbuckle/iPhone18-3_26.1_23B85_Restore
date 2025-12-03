@@ -1,32 +1,32 @@
 @interface TouchIDManager
-+ (id)convertKey:(id)a3 toJSON:(BOOL)a4;
++ (id)convertKey:(id)key toJSON:(BOOL)n;
 @end
 
 @implementation TouchIDManager
 
-+ (id)convertKey:(id)a3 toJSON:(BOOL)a4
++ (id)convertKey:(id)key toJSON:(BOOL)n
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 mutableCopy];
-  v7 = [v5 characterAtIndex:0];
+  nCopy = n;
+  keyCopy = key;
+  v6 = [keyCopy mutableCopy];
+  v7 = [keyCopy characterAtIndex:0];
 
-  if (v4)
+  if (nCopy)
   {
     if (v7 == 107)
     {
       [v6 deleteCharactersInRange:{0, 1}];
       v8 = [v6 substringWithRange:{0, 1}];
-      v9 = [v8 lowercaseString];
-      [v6 replaceCharactersInRange:0 withString:{1, v9}];
+      lowercaseString = [v8 lowercaseString];
+      [v6 replaceCharactersInRange:0 withString:{1, lowercaseString}];
     }
   }
 
   else if (v7 != 107)
   {
     v10 = [v6 substringWithRange:{0, 1}];
-    v11 = [v10 uppercaseString];
-    [v6 replaceCharactersInRange:0 withString:{1, v11}];
+    uppercaseString = [v10 uppercaseString];
+    [v6 replaceCharactersInRange:0 withString:{1, uppercaseString}];
 
     [v6 insertString:@"k" atIndex:0];
   }

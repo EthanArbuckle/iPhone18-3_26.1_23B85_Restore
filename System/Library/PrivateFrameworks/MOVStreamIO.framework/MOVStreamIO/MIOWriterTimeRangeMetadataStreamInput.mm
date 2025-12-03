@@ -1,8 +1,8 @@
 @interface MIOWriterTimeRangeMetadataStreamInput
-- (BOOL)appendTimeCode:(CVSMPTETime *)a3 rangeStart:(unint64_t)a4 rangeEnd:(unint64_t)a5 withTimeStamp:(id *)a6 error:(id *)a7;
-- (BOOL)appendTimeCode:(CVSMPTETime *)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 withTimeStamp:(id *)a6 error:(id *)a7;
+- (BOOL)appendTimeCode:(CVSMPTETime *)code rangeStart:(unint64_t)start rangeEnd:(unint64_t)end withTimeStamp:(id *)stamp error:(id *)error;
+- (BOOL)appendTimeCode:(CVSMPTETime *)code startTime:(unint64_t)time endTime:(unint64_t)endTime withTimeStamp:(id *)stamp error:(id *)error;
 - (MIOWriterTimeRangeMetadataStreamInput)init;
-- (MIOWriterTimeRangeMetadataStreamInput)initWithStreamId:(id)a3;
+- (MIOWriterTimeRangeMetadataStreamInput)initWithStreamId:(id)id;
 - (id)inputSpecificTrackMetadataItems;
 @end
 
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (MIOWriterTimeRangeMetadataStreamInput)initWithStreamId:(id)a3
+- (MIOWriterTimeRangeMetadataStreamInput)initWithStreamId:(id)id
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE6520] createMIOTimeRangeMetadataStreamFormatDescription];
-  if (v5)
+  idCopy = id;
+  createMIOTimeRangeMetadataStreamFormatDescription = [MEMORY[0x277CE6520] createMIOTimeRangeMetadataStreamFormatDescription];
+  if (createMIOTimeRangeMetadataStreamFormatDescription)
   {
     v10.receiver = self;
     v10.super_class = MIOWriterTimeRangeMetadataStreamInput;
-    v6 = [(MIOWriterMetadataStreamInput *)&v10 initWithStreamId:v4 format:v5];
-    CFRelease(v5);
+    v6 = [(MIOWriterMetadataStreamInput *)&v10 initWithStreamId:idCopy format:createMIOTimeRangeMetadataStreamFormatDescription];
+    CFRelease(createMIOTimeRangeMetadataStreamFormatDescription);
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -40,61 +40,61 @@
       _os_log_impl(&dword_257883000, v8, OS_LOG_TYPE_ERROR, "Cannot create format description for time range metadata track.", buf, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)appendTimeCode:(CVSMPTETime *)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 withTimeStamp:(id *)a6 error:(id *)a7
+- (BOOL)appendTimeCode:(CVSMPTETime *)code startTime:(unint64_t)time endTime:(unint64_t)endTime withTimeStamp:(id *)stamp error:(id *)error
 {
-  v9 = *a3;
-  v8 = *a6;
-  return [(MIOWriterTimeRangeMetadataStreamInput *)self appendTimeCode:&v9 rangeStart:a4 rangeEnd:a5 withTimeStamp:&v8 error:a7];
+  v9 = *code;
+  v8 = *stamp;
+  return [(MIOWriterTimeRangeMetadataStreamInput *)self appendTimeCode:&v9 rangeStart:time rangeEnd:endTime withTimeStamp:&v8 error:error];
 }
 
-- (BOOL)appendTimeCode:(CVSMPTETime *)a3 rangeStart:(unint64_t)a4 rangeEnd:(unint64_t)a5 withTimeStamp:(id *)a6 error:(id *)a7
+- (BOOL)appendTimeCode:(CVSMPTETime *)code rangeStart:(unint64_t)start rangeEnd:(unint64_t)end withTimeStamp:(id *)stamp error:(id *)error
 {
-  v11 = self;
-  location = *a6;
-  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:a7])
+  selfCopy = self;
+  location = *stamp;
+  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:error])
   {
-    objc_initWeak(&location, v11);
+    objc_initWeak(&location, selfCopy);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __96__MIOWriterTimeRangeMetadataStreamInput_appendTimeCode_rangeStart_rangeEnd_withTimeStamp_error___block_invoke;
     v19[3] = &unk_2798481C8;
     objc_copyWeak(v20, &location);
-    v20[1] = a4;
-    v20[2] = a5;
-    v21 = *&a3->subframes;
-    v12 = *&a3->hours;
-    v23 = *&a6->var0;
-    var3 = a6->var3;
+    v20[1] = start;
+    v20[2] = end;
+    v21 = *&code->subframes;
+    v12 = *&code->hours;
+    v23 = *&stamp->var0;
+    var3 = stamp->var3;
     v22 = v12;
     v24 = var3;
-    v19[4] = v11;
+    v19[4] = selfCopy;
     v14 = MEMORY[0x259C68980](v19);
-    v15 = [v11 threadingOption];
-    if (v15)
+    threadingOption = [selfCopy threadingOption];
+    if (threadingOption)
     {
-      if (v15 == 1)
+      if (threadingOption == 1)
       {
-        LOBYTE(v11) = v14[2](v14);
+        LOBYTE(selfCopy) = v14[2](v14);
       }
     }
 
     else
     {
-      v11 = [v11 processingQueue];
+      selfCopy = [selfCopy processingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __96__MIOWriterTimeRangeMetadataStreamInput_appendTimeCode_rangeStart_rangeEnd_withTimeStamp_error___block_invoke_207;
       block[3] = &unk_279847DC8;
       v18 = v14;
-      dispatch_async(v11, block);
+      dispatch_async(selfCopy, block);
 
-      LOBYTE(v11) = 1;
+      LOBYTE(selfCopy) = 1;
     }
 
     objc_destroyWeak(v20);
@@ -103,10 +103,10 @@
 
   else
   {
-    LOBYTE(v11) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
-  return v11 & 1;
+  return selfCopy & 1;
 }
 
 id __96__MIOWriterTimeRangeMetadataStreamInput_appendTimeCode_rangeStart_rangeEnd_withTimeStamp_error___block_invoke(uint64_t a1)

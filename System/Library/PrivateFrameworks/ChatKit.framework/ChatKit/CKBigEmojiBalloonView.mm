@@ -1,7 +1,7 @@
 @interface CKBigEmojiBalloonView
 - (CKBalloonDescriptor_t)balloonDescriptorForAbsentBalloonShape;
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3;
-- (void)addFilter:(id)a3;
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size;
+- (void)addFilter:(id)filter;
 - (void)attachInvisibleInkEffectView;
 - (void)clearFilters;
 - (void)detachInvisibleInkEffectView;
@@ -10,9 +10,9 @@
 
 @implementation CKBigEmojiBalloonView
 
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size
 {
-  v3 = [CKUIBehavior sharedBehaviors:a3.width];
+  v3 = [CKUIBehavior sharedBehaviors:size.width];
   [v3 bigEmojiAlignmentRectInsets];
   v5 = v4;
   v7 = v6;
@@ -42,77 +42,77 @@
   return result;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v6 = a3;
-  v7 = [v6 balloonFilters];
+  filterCopy = filter;
+  balloonFilters = [filterCopy balloonFilters];
 
-  if (v7)
+  if (balloonFilters)
   {
-    v8 = [(CKTextBalloonView *)self textView];
-    v9 = [v8 layer];
-    v10 = [v9 filters];
-    if (v10)
+    textView = [(CKTextBalloonView *)self textView];
+    layer = [textView layer];
+    filters = [layer filters];
+    if (filters)
     {
-      v23 = [(CKTextBalloonView *)self textView];
-      v22 = [v23 layer];
-      v3 = [v22 filters];
-      v4 = [v6 balloonFilters];
-      [v3 arrayByAddingObjectsFromArray:v4];
+      textView2 = [(CKTextBalloonView *)self textView];
+      layer2 = [textView2 layer];
+      filters2 = [layer2 filters];
+      balloonFilters2 = [filterCopy balloonFilters];
+      [filters2 arrayByAddingObjectsFromArray:balloonFilters2];
     }
 
     else
     {
-      [v6 balloonFilters];
+      [filterCopy balloonFilters];
     }
     v11 = ;
-    v12 = [(CKTextBalloonView *)self textView];
-    v13 = [v12 layer];
-    [v13 setFilters:v11];
+    textView3 = [(CKTextBalloonView *)self textView];
+    layer3 = [textView3 layer];
+    [layer3 setFilters:v11];
 
-    if (v10)
+    if (filters)
     {
 
-      v11 = v23;
+      v11 = textView2;
     }
   }
 
-  [v6 contentAlpha];
+  [filterCopy contentAlpha];
   if (v14 != 0.0)
   {
-    [v6 contentAlpha];
+    [filterCopy contentAlpha];
     v16 = v15;
-    v17 = [(CKTextBalloonView *)self textView];
-    [v17 setAlpha:v16];
+    textView4 = [(CKTextBalloonView *)self textView];
+    [textView4 setAlpha:v16];
   }
 
-  v18 = [v6 textCompositingFilter];
+  textCompositingFilter = [filterCopy textCompositingFilter];
 
-  if (v18)
+  if (textCompositingFilter)
   {
-    v19 = [v6 textCompositingFilter];
-    v20 = [(CKTextBalloonView *)self textView];
-    v21 = [v20 layer];
-    [v21 setCompositingFilter:v19];
+    textCompositingFilter2 = [filterCopy textCompositingFilter];
+    textView5 = [(CKTextBalloonView *)self textView];
+    layer4 = [textView5 layer];
+    [layer4 setCompositingFilter:textCompositingFilter2];
   }
 
   v24.receiver = self;
   v24.super_class = CKBigEmojiBalloonView;
-  [(CKTextBalloonView *)&v24 addFilter:v6];
+  [(CKTextBalloonView *)&v24 addFilter:filterCopy];
 }
 
 - (void)clearFilters
 {
-  v3 = [(CKTextBalloonView *)self textView];
-  v4 = [v3 layer];
-  [v4 setFilters:0];
+  textView = [(CKTextBalloonView *)self textView];
+  layer = [textView layer];
+  [layer setFilters:0];
 
-  v5 = [(CKTextBalloonView *)self textView];
-  v6 = [v5 layer];
-  [v6 setCompositingFilter:0];
+  textView2 = [(CKTextBalloonView *)self textView];
+  layer2 = [textView2 layer];
+  [layer2 setCompositingFilter:0];
 
-  v7 = [(CKTextBalloonView *)self textView];
-  [v7 setAlpha:1.0];
+  textView3 = [(CKTextBalloonView *)self textView];
+  [textView3 setAlpha:1.0];
 
   v8.receiver = self;
   v8.super_class = CKBigEmojiBalloonView;
@@ -121,27 +121,27 @@
 
 - (void)invisibleInkEffectViewWasUncovered
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  [v2 suspendForTimeInterval:5.0];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  [invisibleInkEffectController suspendForTimeInterval:5.0];
 }
 
 - (void)attachInvisibleInkEffectView
 {
-  v3 = [(CKBalloonView *)self invisibleInkEffectController];
-  v5 = [v3 effectView];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  [v5 attachToBalloonView:self];
-  v4 = [(CKTextBalloonView *)self textView];
-  [(CKBigEmojiBalloonView *)self insertSubview:v5 aboveSubview:v4];
+  [effectView attachToBalloonView:self];
+  textView = [(CKTextBalloonView *)self textView];
+  [(CKBigEmojiBalloonView *)self insertSubview:effectView aboveSubview:textView];
 }
 
 - (void)detachInvisibleInkEffectView
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  v3 = [v2 effectView];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  [v3 detachFromBalloonView];
-  [v3 removeFromSuperview];
+  [effectView detachFromBalloonView];
+  [effectView removeFromSuperview];
 }
 
 @end

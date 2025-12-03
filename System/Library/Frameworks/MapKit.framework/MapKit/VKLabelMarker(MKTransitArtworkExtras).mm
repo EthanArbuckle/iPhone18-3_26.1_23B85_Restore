@@ -6,10 +6,10 @@
 
 - (id)shieldDataSource
 {
-  v1 = [a1 shields];
-  v2 = [v1 firstObject];
+  shields = [self shields];
+  firstObject = [shields firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface ClarityUIAppSetupCoordinator
 + (id)sharedInstance;
-- (BOOL)_bundleIdentifierProvidesOwnSettings:(id)a3;
-- (BOOL)bundleIdentifierHasClaritySettings:(id)a3 includingSystem:(BOOL)a4;
+- (BOOL)_bundleIdentifierProvidesOwnSettings:(id)settings;
+- (BOOL)bundleIdentifierHasClaritySettings:(id)settings includingSystem:(BOOL)system;
 - (ClarityUIAppSetupCoordinator)init;
-- (id)_dataSourceForBundleIdentifier:(id)a3;
-- (id)_detailTextForApplicationIdentifier:(id)a3;
-- (id)_iconForApplicationIdentifier:(id)a3;
-- (id)clarityBundleNameForBundleIdentifier:(id)a3;
-- (id)createPrivacyDisclosureControllerForBundleIdentifier:(id)a3;
-- (id)createSettingsControllerForBundleIdentifier:(id)a3;
-- (id)createSetupControllerForBundleIdentifier:(id)a3;
-- (id)createSetupNavigationControllerForBundleIdentifier:(id)a3;
+- (id)_dataSourceForBundleIdentifier:(id)identifier;
+- (id)_detailTextForApplicationIdentifier:(id)identifier;
+- (id)_iconForApplicationIdentifier:(id)identifier;
+- (id)clarityBundleNameForBundleIdentifier:(id)identifier;
+- (id)createPrivacyDisclosureControllerForBundleIdentifier:(id)identifier;
+- (id)createSettingsControllerForBundleIdentifier:(id)identifier;
+- (id)createSetupControllerForBundleIdentifier:(id)identifier;
+- (id)createSetupNavigationControllerForBundleIdentifier:(id)identifier;
 @end
 
 @implementation ClarityUIAppSetupCoordinator
@@ -53,20 +53,20 @@ void __46__ClarityUIAppSetupCoordinator_sharedInstance__block_invoke(id a1)
   _objc_release_x1(v1, v2);
 }
 
-- (id)createPrivacyDisclosureControllerForBundleIdentifier:(id)a3
+- (id)createPrivacyDisclosureControllerForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [ClarityUIAppPrivacyDisclosureController alloc];
-  v6 = [(ClarityUIAppSetupCoordinator *)self _displayNameForApplicationIdentifier:v4];
-  v7 = [(ClarityUIAppSetupCoordinator *)self _iconForApplicationIdentifier:v4];
-  v8 = [(ClarityUIAppPrivacyDisclosureController *)v5 initWithApplicationTitle:v6 icon:v7 bundleIdentifier:v4];
+  v6 = [(ClarityUIAppSetupCoordinator *)self _displayNameForApplicationIdentifier:identifierCopy];
+  v7 = [(ClarityUIAppSetupCoordinator *)self _iconForApplicationIdentifier:identifierCopy];
+  v8 = [(ClarityUIAppPrivacyDisclosureController *)v5 initWithApplicationTitle:v6 icon:v7 bundleIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)createSetupNavigationControllerForBundleIdentifier:(id)a3
+- (id)createSetupNavigationControllerForBundleIdentifier:(id)identifier
 {
-  v3 = [(ClarityUIAppSetupCoordinator *)self createSetupControllerForBundleIdentifier:a3];
+  v3 = [(ClarityUIAppSetupCoordinator *)self createSetupControllerForBundleIdentifier:identifier];
   if (v3)
   {
     v4 = [[ClarityAppSetupNavigationController alloc] initWithSetupController:v3];
@@ -81,15 +81,15 @@ void __46__ClarityUIAppSetupCoordinator_sharedInstance__block_invoke(id a1)
   return v4;
 }
 
-- (id)createSetupControllerForBundleIdentifier:(id)a3
+- (id)createSetupControllerForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ClarityUIAppSetupCoordinator *)self _displayNameForApplicationIdentifier:v4];
-  v6 = [(ClarityUIAppSetupCoordinator *)self _iconForApplicationIdentifier:v4];
-  v7 = [(ClarityUIAppSetupCoordinator *)self _detailTextForApplicationIdentifier:v4];
-  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:v4])
+  identifierCopy = identifier;
+  v5 = [(ClarityUIAppSetupCoordinator *)self _displayNameForApplicationIdentifier:identifierCopy];
+  v6 = [(ClarityUIAppSetupCoordinator *)self _iconForApplicationIdentifier:identifierCopy];
+  v7 = [(ClarityUIAppSetupCoordinator *)self _detailTextForApplicationIdentifier:identifierCopy];
+  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:identifierCopy])
   {
-    v8 = [(ClarityUIAppSetupCoordinator *)self clarityBundleNameForBundleIdentifier:v4];
+    v8 = [(ClarityUIAppSetupCoordinator *)self clarityBundleNameForBundleIdentifier:identifierCopy];
     v9 = PSBundlePathForPreferenceBundle();
     v10 = SFRuntimeAbsoluteFilePathForPath();
     v11 = [NSBundle bundleWithPath:v10];
@@ -97,7 +97,7 @@ void __46__ClarityUIAppSetupCoordinator_sharedInstance__block_invoke(id a1)
     v12 = objc_alloc_init([v11 principalClass]);
     if (v12)
     {
-      v13 = [[ClarityUIAppSetupController alloc] initWithTitle:v5 detailText:v7 icon:v6 controller:v12 identifier:v4];
+      v13 = [[ClarityUIAppSetupController alloc] initWithTitle:v5 detailText:v7 icon:v6 controller:v12 identifier:identifierCopy];
     }
 
     else
@@ -114,7 +114,7 @@ void __46__ClarityUIAppSetupCoordinator_sharedInstance__block_invoke(id a1)
 
   else
   {
-    v14 = [(ClarityUIAppSetupCoordinator *)self _dataSourceForBundleIdentifier:v4];
+    v14 = [(ClarityUIAppSetupCoordinator *)self _dataSourceForBundleIdentifier:identifierCopy];
     v12 = v14;
     if (v14)
     {
@@ -142,16 +142,16 @@ LABEL_15:
   return v13;
 }
 
-- (id)createSettingsControllerForBundleIdentifier:(id)a3
+- (id)createSettingsControllerForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:v4])
+  identifierCopy = identifier;
+  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:identifierCopy])
   {
     v5 = 0;
     goto LABEL_11;
   }
 
-  v6 = [(ClarityUIAppSetupCoordinator *)self _dataSourceForBundleIdentifier:v4];
+  v6 = [(ClarityUIAppSetupCoordinator *)self _dataSourceForBundleIdentifier:identifierCopy];
   v7 = v6;
   if (!v6)
   {
@@ -179,22 +179,22 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)bundleIdentifierHasClaritySettings:(id)a3 includingSystem:(BOOL)a4
+- (BOOL)bundleIdentifierHasClaritySettings:(id)settings includingSystem:(BOOL)system
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:v6])
+  systemCopy = system;
+  settingsCopy = settings;
+  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:settingsCopy])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(ClarityUIAppSetupCoordinator *)self _dataSourceForBundleIdentifier:v6];
+    v8 = [(ClarityUIAppSetupCoordinator *)self _dataSourceForBundleIdentifier:settingsCopy];
     v9 = v8;
     if (v8)
     {
-      v7 = [v8 hasClaritySettingsIncludingSystem:v4];
+      v7 = [v8 hasClaritySettingsIncludingSystem:systemCopy];
     }
 
     else
@@ -212,41 +212,41 @@ LABEL_11:
   return v7;
 }
 
-- (id)_iconForApplicationIdentifier:(id)a3
+- (id)_iconForApplicationIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[UIScreen mainScreen];
   [v4 scale];
-  v5 = [UIImage _applicationIconImageForBundleIdentifier:v3 format:2 scale:?];
+  v5 = [UIImage _applicationIconImageForBundleIdentifier:identifierCopy format:2 scale:?];
 
   return v5;
 }
 
-- (id)_detailTextForApplicationIdentifier:(id)a3
+- (id)_detailTextForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (([v4 isEqualToString:AX_MobilePhoneBundleName] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", AX_FaceTimeBundleName) || objc_msgSend(v4, "isEqualToString:", AX_MobileSMSBundleName))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:AX_MobilePhoneBundleName] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", AX_FaceTimeBundleName) || objc_msgSend(identifierCopy, "isEqualToString:", AX_MobileSMSBundleName))
   {
     v5 = AXLocStringKeyForModel();
     v6 = settingsLocString(v5, @"ClarityUISettings");
     goto LABEL_4;
   }
 
-  if (![v4 isEqualToString:AX_ClarityCameraBundleName])
+  if (![identifierCopy isEqualToString:AX_ClarityCameraBundleName])
   {
-    if ([v4 isEqualToString:AX_ClarityPhotosBundleName])
+    if ([identifierCopy isEqualToString:AX_ClarityPhotosBundleName])
     {
       v8 = @"CONFIGURE_SETTINGS_FOR_PHOTOS";
       goto LABEL_19;
     }
 
-    if ([v4 isEqualToString:AX_MusicBundleName])
+    if ([identifierCopy isEqualToString:AX_MusicBundleName])
     {
       v8 = @"CONFIGURE_SETTINGS_FOR_MUSIC";
       goto LABEL_19;
     }
 
-    if ([v4 isEqualToString:AX_AppleTVAppBundleName])
+    if ([identifierCopy isEqualToString:AX_AppleTVAppBundleName])
     {
       if (WLKIsRegulatedSKU())
       {
@@ -261,7 +261,7 @@ LABEL_11:
       goto LABEL_19;
     }
 
-    v5 = [(ClarityUIAppSetupCoordinator *)self _displayNameForApplicationIdentifier:v4];
+    v5 = [(ClarityUIAppSetupCoordinator *)self _displayNameForApplicationIdentifier:identifierCopy];
     v9 = settingsLocString(@"CONFIGURE_SETTINGS_FOR_APP", @"ClarityUISettings");
     v6 = [NSString localizedStringWithFormat:v9, v5];
 
@@ -277,16 +277,16 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_bundleIdentifierProvidesOwnSettings:(id)a3
+- (BOOL)_bundleIdentifierProvidesOwnSettings:(id)settings
 {
   v3 = _bundleIdentifierProvidesOwnSettings__onceToken;
-  v4 = a3;
+  settingsCopy = settings;
   if (v3 != -1)
   {
     [ClarityUIAppSetupCoordinator _bundleIdentifierProvidesOwnSettings:];
   }
 
-  v5 = [_bundleIdentifierProvidesOwnSettings__bundleIdentifiers containsObject:v4];
+  v5 = [_bundleIdentifierProvidesOwnSettings__bundleIdentifiers containsObject:settingsCopy];
 
   return v5;
 }
@@ -307,18 +307,18 @@ void __69__ClarityUIAppSetupCoordinator__bundleIdentifierProvidesOwnSettings___b
   _bundleIdentifierProvidesOwnSettings__bundleIdentifiers = v3;
 }
 
-- (id)clarityBundleNameForBundleIdentifier:(id)a3
+- (id)clarityBundleNameForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 isEqualToString:AX_MobilePhoneBundleName];
-  v5 = [v3 isEqualToString:AX_FaceTimeBundleName];
+  identifierCopy = identifier;
+  v4 = [identifierCopy isEqualToString:AX_MobilePhoneBundleName];
+  v5 = [identifierCopy isEqualToString:AX_FaceTimeBundleName];
   v6 = &CLFPhoneSettingsBundleName;
   if (v4 & 1) != 0 || (v5)
   {
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:AX_MusicBundleName])
+  if ([identifierCopy isEqualToString:AX_MusicBundleName])
   {
     v6 = &CLFMusicSettingsBundleName;
 LABEL_13:
@@ -326,25 +326,25 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:AX_MobileSMSBundleName])
+  if ([identifierCopy isEqualToString:AX_MobileSMSBundleName])
   {
     v6 = &CLFMessagesSettingsBundleName;
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:AX_ClarityCameraBundleName])
+  if ([identifierCopy isEqualToString:AX_ClarityCameraBundleName])
   {
     v6 = &CLFCameraSettingsBundleName;
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:AX_ClarityPhotosBundleName])
+  if ([identifierCopy isEqualToString:AX_ClarityPhotosBundleName])
   {
     v6 = &CLFPhotosSettingsBundleName;
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:AX_AppleTVAppBundleName])
+  if ([identifierCopy isEqualToString:AX_AppleTVAppBundleName])
   {
     v6 = &CLFTVSettingsBundleName;
     goto LABEL_13;
@@ -356,10 +356,10 @@ LABEL_14:
   return v7;
 }
 
-- (id)_dataSourceForBundleIdentifier:(id)a3
+- (id)_dataSourceForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:v4])
+  identifierCopy = identifier;
+  if ([(ClarityUIAppSetupCoordinator *)self _bundleIdentifierProvidesOwnSettings:identifierCopy])
   {
     v5 = 0;
   }
@@ -367,16 +367,16 @@ LABEL_14:
   else
   {
     os_unfair_lock_lock(&self->_applicationIdentifiersToDataSourcesLock);
-    v6 = [(ClarityUIAppSetupCoordinator *)self applicationIdentifiersToDataSources];
-    v5 = [v6 objectForKey:v4];
+    applicationIdentifiersToDataSources = [(ClarityUIAppSetupCoordinator *)self applicationIdentifiersToDataSources];
+    v5 = [applicationIdentifiersToDataSources objectForKey:identifierCopy];
 
     os_unfair_lock_unlock(&self->_applicationIdentifiersToDataSourcesLock);
     if (!v5)
     {
-      v5 = [[ClarityUISettingsDataSource alloc] initWithBundleIdentifier:v4];
+      v5 = [[ClarityUISettingsDataSource alloc] initWithBundleIdentifier:identifierCopy];
       os_unfair_lock_lock(&self->_applicationIdentifiersToDataSourcesLock);
-      v7 = [(ClarityUIAppSetupCoordinator *)self applicationIdentifiersToDataSources];
-      [v7 setObject:v5 forKey:v4];
+      applicationIdentifiersToDataSources2 = [(ClarityUIAppSetupCoordinator *)self applicationIdentifiersToDataSources];
+      [applicationIdentifiersToDataSources2 setObject:v5 forKey:identifierCopy];
 
       os_unfair_lock_unlock(&self->_applicationIdentifiersToDataSourcesLock);
     }

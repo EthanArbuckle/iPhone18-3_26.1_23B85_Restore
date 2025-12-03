@@ -1,24 +1,24 @@
 @interface JavaLangSystem
 + (id)getSecurityManager;
 + (id)lineSeparator;
-+ (int)identityHashCodeWithId:(id)a3;
++ (int)identityHashCodeWithId:(id)id;
 + (uint64_t)setTimeInfoConsts;
 + (void)initialize;
 + (void)runFinalization;
-+ (void)runFinalizersOnExitWithBoolean:(BOOL)a3;
++ (void)runFinalizersOnExitWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaLangSystem
 
-+ (int)identityHashCodeWithId:(id)a3
++ (int)identityHashCodeWithId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   if ((atomic_load_explicit(JavaLangSystem__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10014019C();
   }
 
-  return v3;
+  return idCopy;
 }
 
 + (id)getSecurityManager
@@ -49,7 +49,7 @@
   }
 }
 
-+ (void)runFinalizersOnExitWithBoolean:(BOOL)a3
++ (void)runFinalizersOnExitWithBoolean:(BOOL)boolean
 {
   if ((atomic_load_explicit(JavaLangSystem__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -59,7 +59,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaIoFileDescriptor__initialized, memory_order_acquire) & 1) == 0)
     {

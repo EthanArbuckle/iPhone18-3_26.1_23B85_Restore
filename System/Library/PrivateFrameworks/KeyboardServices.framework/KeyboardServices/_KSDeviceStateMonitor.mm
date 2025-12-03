@@ -74,8 +74,8 @@
 
 - (void)handleKeyBagLockNotification
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"KSDeviceProtectionClassDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"KSDeviceProtectionClassDidChange" object:0];
 }
 
 - (BOOL)deviceIsPasswordConfigured

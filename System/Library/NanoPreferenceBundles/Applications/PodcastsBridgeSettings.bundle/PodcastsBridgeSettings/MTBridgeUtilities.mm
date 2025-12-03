@@ -12,7 +12,7 @@
 + (id)localizedSettingsString;
 + (id)localizedSignInMessage;
 + (id)localizedSignInString;
-+ (id)localizedStringForEpisodeCount:(int64_t)a3;
++ (id)localizedStringForEpisodeCount:(int64_t)count;
 + (id)localizedUpNextString;
 @end
 
@@ -42,12 +42,12 @@
   return v3;
 }
 
-+ (id)localizedStringForEpisodeCount:(int64_t)a3
++ (id)localizedStringForEpisodeCount:(int64_t)count
 {
   v4 = +[NSBundle podcastsFoundationBundle];
   v5 = [v4 localizedStringForKey:@"SYNC_SETTINGS_CONTENT_SUMMARY_HEADER_EPISODE_COUNT" value:&stru_1CB88 table:0];
 
-  v6 = [NSString localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%ld" error:0, a3];
+  v6 = [NSString localizedStringWithValidatedFormat:v5 validFormatSpecifiers:@"%ld" error:0, count];
 
   return v6;
 }

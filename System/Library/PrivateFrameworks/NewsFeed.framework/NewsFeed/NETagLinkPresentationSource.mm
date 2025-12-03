@@ -1,28 +1,28 @@
 @interface NETagLinkPresentationSource
-+ (id)linkMetadataFromTag:(id)a3 title:(id)a4 url:(id)a5;
++ (id)linkMetadataFromTag:(id)tag title:(id)title url:(id)url;
 - (LPLinkMetadata)linkMetadata;
-- (NETagLinkPresentationSource)initWithTag:(id)a3 image:(id)a4;
-- (NETagLinkPresentationSource)initWithTag:(id)a3 title:(id)a4 url:(id)a5;
-- (NETagLinkPresentationSource)initWithTitle:(id)a3 url:(id)a4 image:(id)a5;
+- (NETagLinkPresentationSource)initWithTag:(id)tag image:(id)image;
+- (NETagLinkPresentationSource)initWithTag:(id)tag title:(id)title url:(id)url;
+- (NETagLinkPresentationSource)initWithTitle:(id)title url:(id)url image:(id)image;
 @end
 
 @implementation NETagLinkPresentationSource
 
-- (NETagLinkPresentationSource)initWithTag:(id)a3 image:(id)a4
+- (NETagLinkPresentationSource)initWithTag:(id)tag image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  tagCopy = tag;
+  imageCopy = image;
   v17.receiver = self;
   v17.super_class = NETagLinkPresentationSource;
   v8 = [(NETagLinkPresentationSource *)&v17 init];
   if (v8)
   {
     v9 = [NELinkMetadataSource alloc];
-    v10 = [v6 name];
+    name = [tagCopy name];
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [v6 identifier];
-    v13 = [v11 nss_NewsURLForTagID:v12];
-    v14 = [(NELinkMetadataSource *)v9 initWithTitle:v10 url:v13 image:v7];
+    identifier = [tagCopy identifier];
+    v13 = [v11 nss_NewsURLForTagID:identifier];
+    v14 = [(NELinkMetadataSource *)v9 initWithTitle:name url:v13 image:imageCopy];
     linkMetadataSource = v8->_linkMetadataSource;
     v8->_linkMetadataSource = v14;
   }
@@ -30,17 +30,17 @@
   return v8;
 }
 
-- (NETagLinkPresentationSource)initWithTitle:(id)a3 url:(id)a4 image:(id)a5
+- (NETagLinkPresentationSource)initWithTitle:(id)title url:(id)url image:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  urlCopy = url;
+  imageCopy = image;
   v15.receiver = self;
   v15.super_class = NETagLinkPresentationSource;
   v11 = [(NETagLinkPresentationSource *)&v15 init];
   if (v11)
   {
-    v12 = [[NELinkMetadataSource alloc] initWithTitle:v8 url:v9 image:v10];
+    v12 = [[NELinkMetadataSource alloc] initWithTitle:titleCopy url:urlCopy image:imageCopy];
     linkMetadataSource = v11->_linkMetadataSource;
     v11->_linkMetadataSource = v12;
   }
@@ -48,17 +48,17 @@
   return v11;
 }
 
-- (NETagLinkPresentationSource)initWithTag:(id)a3 title:(id)a4 url:(id)a5
+- (NETagLinkPresentationSource)initWithTag:(id)tag title:(id)title url:(id)url
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tagCopy = tag;
+  titleCopy = title;
+  urlCopy = url;
   v15.receiver = self;
   v15.super_class = NETagLinkPresentationSource;
   v11 = [(NETagLinkPresentationSource *)&v15 init];
   if (v11)
   {
-    v12 = [NETagLinkPresentationSource linkMetadataFromTag:v8 title:v9 url:v10];
+    v12 = [NETagLinkPresentationSource linkMetadataFromTag:tagCopy title:titleCopy url:urlCopy];
     linkMetadataSource = v11->_linkMetadataSource;
     v11->_linkMetadataSource = v12;
   }
@@ -68,41 +68,41 @@
 
 - (LPLinkMetadata)linkMetadata
 {
-  v2 = [(NETagLinkPresentationSource *)self linkMetadataSource];
-  v3 = [v2 linkMetadata];
+  linkMetadataSource = [(NETagLinkPresentationSource *)self linkMetadataSource];
+  linkMetadata = [linkMetadataSource linkMetadata];
 
-  return v3;
+  return linkMetadata;
 }
 
-+ (id)linkMetadataFromTag:(id)a3 title:(id)a4 url:(id)a5
++ (id)linkMetadataFromTag:(id)tag title:(id)title url:(id)url
 {
-  v7 = a3;
+  tagCopy = tag;
   v8 = MEMORY[0x1E696ACA0];
-  v9 = a5;
-  v10 = a4;
+  urlCopy = url;
+  titleCopy = title;
   v11 = objc_alloc_init(v8);
   v12 = *MEMORY[0x1E6982F28];
-  v13 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __61__NETagLinkPresentationSource_linkMetadataFromTag_title_url___block_invoke;
   v26[3] = &unk_1E84CD0B8;
-  v14 = v7;
+  v14 = tagCopy;
   v27 = v14;
-  [v11 registerItemForTypeIdentifier:v13 loadHandler:v26];
+  [v11 registerItemForTypeIdentifier:identifier loadHandler:v26];
 
   v15 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v16 = [v12 identifier];
+  identifier2 = [v12 identifier];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __61__NETagLinkPresentationSource_linkMetadataFromTag_title_url___block_invoke_3;
   v24 = &unk_1E84CD0B8;
   v25 = v14;
   v17 = v14;
-  [v15 registerItemForTypeIdentifier:v16 loadHandler:&v21];
+  [v15 registerItemForTypeIdentifier:identifier2 loadHandler:&v21];
 
   v18 = [NELinkMetadataSource alloc];
-  v19 = [(NELinkMetadataSource *)v18 initWithTitle:v10 url:v9 imageProvider:v15 iconProvider:v11, v21, v22, v23, v24];
+  v19 = [(NELinkMetadataSource *)v18 initWithTitle:titleCopy url:urlCopy imageProvider:v15 iconProvider:v11, v21, v22, v23, v24];
 
   return v19;
 }

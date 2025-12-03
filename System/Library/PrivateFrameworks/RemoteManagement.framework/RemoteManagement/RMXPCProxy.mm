@@ -1,16 +1,16 @@
 @interface RMXPCProxy
 + (id)newAgentConnection;
-+ (id)newConnectionWithListenerEndpoint:(id)a3;
-+ (id)newConnectionWithScope:(int64_t)a3;
++ (id)newConnectionWithListenerEndpoint:(id)endpoint;
++ (id)newConnectionWithScope:(int64_t)scope;
 + (id)newDaemonConnection;
 + (id)newInterface;
 @end
 
 @implementation RMXPCProxy
 
-+ (id)newConnectionWithScope:(int64_t)a3
++ (id)newConnectionWithScope:(int64_t)scope
 {
-  if (a3 == 1)
+  if (scope == 1)
   {
     return +[RMXPCProxy newDaemonConnection];
   }
@@ -24,8 +24,8 @@
 + (id)newAgentConnection
 {
   v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.RemoteManagementAgent" options:0];
-  v4 = [a1 newInterface];
-  [v3 setRemoteObjectInterface:v4];
+  newInterface = [self newInterface];
+  [v3 setRemoteObjectInterface:newInterface];
 
   return v3;
 }
@@ -33,20 +33,20 @@
 + (id)newDaemonConnection
 {
   v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.remotemanagementd" options:4096];
-  v4 = [a1 newInterface];
-  [v3 setRemoteObjectInterface:v4];
+  newInterface = [self newInterface];
+  [v3 setRemoteObjectInterface:newInterface];
 
   return v3;
 }
 
-+ (id)newConnectionWithListenerEndpoint:(id)a3
++ (id)newConnectionWithListenerEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithListenerEndpoint:v5];
+  endpointCopy = endpoint;
+  v6 = [[v4 alloc] initWithListenerEndpoint:endpointCopy];
 
-  v7 = [a1 newInterface];
-  [v6 setRemoteObjectInterface:v7];
+  newInterface = [self newInterface];
+  [v6 setRemoteObjectInterface:newInterface];
 
   return v6;
 }

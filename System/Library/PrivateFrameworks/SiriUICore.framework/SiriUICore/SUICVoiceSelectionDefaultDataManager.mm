@@ -1,14 +1,14 @@
 @interface SUICVoiceSelectionDefaultDataManager
-- (BOOL)isVoiceSelected:(id)a3;
+- (BOOL)isVoiceSelected:(id)selected;
 - (SUICVoiceSelectionDataProviderObserving)voiceSelectionDataProviderObserver;
 - (SUICVoiceSelectionDefaultDataManager)init;
-- (id)dialectLanguageCodeForLanguage:(id)a3;
-- (id)voicesForRecognitionLanguageCode:(id)a3 outputLanguageCode:(id)a4;
-- (void)changeSiriDialectLanguageToLanguageIdentifiedByLanguageCode:(id)a3 completion:(id)a4;
-- (void)changeSiriVoiceToVoice:(id)a3 completion:(id)a4;
-- (void)regenerateVoiceCollectionForRecognitionLanguageCode:(id)a3 outputLanguageCode:(id)a4;
-- (void)setRecognitionLanguageCode:(id)a3;
-- (void)setVoiceSelectionVoiceCollection:(id)a3;
+- (id)dialectLanguageCodeForLanguage:(id)language;
+- (id)voicesForRecognitionLanguageCode:(id)code outputLanguageCode:(id)languageCode;
+- (void)changeSiriDialectLanguageToLanguageIdentifiedByLanguageCode:(id)code completion:(id)completion;
+- (void)changeSiriVoiceToVoice:(id)voice completion:(id)completion;
+- (void)regenerateVoiceCollectionForRecognitionLanguageCode:(id)code outputLanguageCode:(id)languageCode;
+- (void)setRecognitionLanguageCode:(id)code;
+- (void)setVoiceSelectionVoiceCollection:(id)collection;
 @end
 
 @implementation SUICVoiceSelectionDefaultDataManager
@@ -20,16 +20,16 @@
   v2 = [(SUICVoiceSelectionDefaultDataManager *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF20] dictionary];
-    [(SUICVoiceSelectionDefaultDataManager *)v2 setCurrentVoiceSelectionForOutputLanguage:v3];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
+    [(SUICVoiceSelectionDefaultDataManager *)v2 setCurrentVoiceSelectionForOutputLanguage:dictionary];
   }
 
   return v2;
 }
 
-- (void)setRecognitionLanguageCode:(id)a3
+- (void)setRecognitionLanguageCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   recognitionLanguageCode = self->_recognitionLanguageCode;
   self->_recognitionLanguageCode = v4;
 
@@ -43,51 +43,51 @@
   [(SUICVoiceSelectionDefaultDataManager *)self regenerateVoiceCollectionForRecognitionLanguageCode:v8 outputLanguageCode:v9];
 }
 
-- (void)changeSiriVoiceToVoice:(id)a3 completion:(id)a4
+- (void)changeSiriVoiceToVoice:(id)voice completion:(id)completion
 {
-  v14 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E695DF90];
   currentVoiceSelectionForOutputLanguage = self->_currentVoiceSelectionForOutputLanguage;
-  v8 = a3;
+  voiceCopy = voice;
   v9 = [v6 dictionaryWithDictionary:currentVoiceSelectionForOutputLanguage];
-  v10 = [MEMORY[0x1E698D178] sharedInstance];
-  v11 = [v8 languageCode];
-  v12 = [v10 getBaseLocale:v11];
-  [v9 setObject:v8 forKey:v12];
+  mEMORY[0x1E698D178] = [MEMORY[0x1E698D178] sharedInstance];
+  languageCode = [voiceCopy languageCode];
+  v12 = [mEMORY[0x1E698D178] getBaseLocale:languageCode];
+  [v9 setObject:voiceCopy forKey:v12];
 
   v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v9];
   [(SUICVoiceSelectionDefaultDataManager *)self setCurrentVoiceSelectionForOutputLanguage:v13];
 
   [(SUICVoiceSelectionDefaultDataManager *)self regenerateVoiceCollectionForRecognitionLanguageCode:self->_recognitionLanguageCode outputLanguageCode:self->_outputLanguage];
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)changeSiriDialectLanguageToLanguageIdentifiedByLanguageCode:(id)a3 completion:(id)a4
+- (void)changeSiriDialectLanguageToLanguageIdentifiedByLanguageCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v7 = a4;
-  if (![(NSString *)self->_outputLanguage isEqualToString:v8])
+  codeCopy = code;
+  completionCopy = completion;
+  if (![(NSString *)self->_outputLanguage isEqualToString:codeCopy])
   {
-    objc_storeStrong(&self->_outputLanguage, a3);
+    objc_storeStrong(&self->_outputLanguage, code);
     [(SUICVoiceSelectionDefaultDataManager *)self regenerateVoiceCollectionForRecognitionLanguageCode:self->_recognitionLanguageCode outputLanguageCode:self->_outputLanguage];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)regenerateVoiceCollectionForRecognitionLanguageCode:(id)a3 outputLanguageCode:(id)a4
+- (void)regenerateVoiceCollectionForRecognitionLanguageCode:(id)code outputLanguageCode:(id)languageCode
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  languageCodeCopy = languageCode;
   v8 = [MEMORY[0x1E695DFA8] set];
-  v9 = [(SUICVoiceSelectionDefaultDataManager *)self voicesForRecognitionLanguageCode:v6 outputLanguageCode:v7];
+  v9 = [(SUICVoiceSelectionDefaultDataManager *)self voicesForRecognitionLanguageCode:codeCopy outputLanguageCode:languageCodeCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -133,35 +133,35 @@
   }
 
   v17 = [SUICVoiceSelectionVoiceCollection alloc];
-  v18 = [(SUICVoiceSelectionDefaultDataManager *)self dialectLanguageCodeForLanguage:v7];
-  v19 = [(SUICVoiceSelectionVoiceCollection *)v17 initWithLanguageCode:v7 dialectLanguageCodes:v18 currentVoice:v12 alternativeVoices:v8];
+  v18 = [(SUICVoiceSelectionDefaultDataManager *)self dialectLanguageCodeForLanguage:languageCodeCopy];
+  v19 = [(SUICVoiceSelectionVoiceCollection *)v17 initWithLanguageCode:languageCodeCopy dialectLanguageCodes:v18 currentVoice:v12 alternativeVoices:v8];
 
   [(SUICVoiceSelectionDefaultDataManager *)self setVoiceSelectionVoiceCollection:v19];
 }
 
-- (BOOL)isVoiceSelected:(id)a3
+- (BOOL)isVoiceSelected:(id)selected
 {
   currentVoiceSelectionForOutputLanguage = self->_currentVoiceSelectionForOutputLanguage;
   v4 = MEMORY[0x1E698D178];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v5 languageCode];
-  v8 = [v6 getBaseLocale:v7];
+  selectedCopy = selected;
+  sharedInstance = [v4 sharedInstance];
+  languageCode = [selectedCopy languageCode];
+  v8 = [sharedInstance getBaseLocale:languageCode];
   v9 = [(NSDictionary *)currentVoiceSelectionForOutputLanguage objectForKey:v8];
-  v10 = [v9 name];
+  name = [v9 name];
 
-  v11 = [v5 name];
+  name2 = [selectedCopy name];
 
-  LOBYTE(v6) = [v10 isEqualToString:v11];
-  return v6;
+  LOBYTE(sharedInstance) = [name isEqualToString:name2];
+  return sharedInstance;
 }
 
-- (id)voicesForRecognitionLanguageCode:(id)a3 outputLanguageCode:(id)a4
+- (id)voicesForRecognitionLanguageCode:(id)code outputLanguageCode:(id)languageCode
 {
   v26 = *MEMORY[0x1E69E9840];
-  v20 = a4;
-  v5 = [MEMORY[0x1E698D270] allVoicesForSiriSessionLanguage:a3];
-  v17 = [MEMORY[0x1E695DF70] array];
+  languageCodeCopy = languageCode;
+  v5 = [MEMORY[0x1E698D270] allVoicesForSiriSessionLanguage:code];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -182,16 +182,16 @@
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [MEMORY[0x1E698D178] sharedInstance];
-        v11 = [v9 languageCode];
-        v12 = [v10 getBaseLocale:v11];
-        v13 = [MEMORY[0x1E698D178] sharedInstance];
-        v14 = [v13 getBaseLocale:v20];
+        mEMORY[0x1E698D178] = [MEMORY[0x1E698D178] sharedInstance];
+        languageCode = [v9 languageCode];
+        v12 = [mEMORY[0x1E698D178] getBaseLocale:languageCode];
+        mEMORY[0x1E698D178]2 = [MEMORY[0x1E698D178] sharedInstance];
+        v14 = [mEMORY[0x1E698D178]2 getBaseLocale:languageCodeCopy];
         v15 = [v12 isEqualToString:v14];
 
         if (v15)
         {
-          [v17 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -201,19 +201,19 @@
     while (v7);
   }
 
-  return v17;
+  return array;
 }
 
-- (id)dialectLanguageCodeForLanguage:(id)a3
+- (id)dialectLanguageCodeForLanguage:(id)language
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languageCopy = language;
   v4 = [MEMORY[0x1E695DFA8] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [MEMORY[0x1E698D270] allVoicesForSiriSessionLanguage:{v3, 0}];
+  v5 = [MEMORY[0x1E698D270] allVoicesForSiriSessionLanguage:{languageCopy, 0}];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -228,8 +228,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) languageCode];
-        [v4 addObject:v10];
+        languageCode = [*(*(&v13 + 1) + 8 * i) languageCode];
+        [v4 addObject:languageCode];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -238,20 +238,20 @@
     while (v7);
   }
 
-  [v4 removeObject:v3];
-  v11 = [v4 allObjects];
+  [v4 removeObject:languageCopy];
+  allObjects = [v4 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
-- (void)setVoiceSelectionVoiceCollection:(id)a3
+- (void)setVoiceSelectionVoiceCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   voiceSelectionVoiceCollection = self->_voiceSelectionVoiceCollection;
   self->_voiceSelectionVoiceCollection = v4;
 
-  v6 = [(SUICVoiceSelectionDefaultDataManager *)self voiceSelectionDataProviderObserver];
-  [v6 voiceSelectionDataProviderVoiceCollectionDidChange:self];
+  voiceSelectionDataProviderObserver = [(SUICVoiceSelectionDefaultDataManager *)self voiceSelectionDataProviderObserver];
+  [voiceSelectionDataProviderObserver voiceSelectionDataProviderVoiceCollectionDidChange:self];
 }
 
 - (SUICVoiceSelectionDataProviderObserving)voiceSelectionDataProviderObserver

@@ -1,14 +1,14 @@
 @interface PLAssetTransactionReason
-+ (id)transactionReason:(id)a3;
++ (id)transactionReason:(id)reason;
 @end
 
 @implementation PLAssetTransactionReason
 
-+ (id)transactionReason:(id)a3
++ (id)transactionReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = objc_alloc_init(PLAssetTransactionReason);
-  [(PLAssetTransactionReason *)v4 setReason:v3];
+  [(PLAssetTransactionReason *)v4 setReason:reasonCopy];
 
   return v4;
 }

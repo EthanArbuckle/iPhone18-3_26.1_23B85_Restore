@@ -1,14 +1,14 @@
 @interface ActionBar
-- (_TtC10MapsDesign9ActionBar)initWithCoder:(id)a3;
-- (_TtC10MapsDesign9ActionBar)initWithFrame:(CGRect)a3;
-- (void)buttonSelectedWithSender:(id)a3;
-- (void)directionSelectedWithSender:(id)a3;
+- (_TtC10MapsDesign9ActionBar)initWithCoder:(id)coder;
+- (_TtC10MapsDesign9ActionBar)initWithFrame:(CGRect)frame;
+- (void)buttonSelectedWithSender:(id)sender;
+- (void)directionSelectedWithSender:(id)sender;
 - (void)layoutSubviews;
 @end
 
 @implementation ActionBar
 
-- (_TtC10MapsDesign9ActionBar)initWithCoder:(id)a3
+- (_TtC10MapsDesign9ActionBar)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10MapsDesign9ActionBar_lastWidth) = 0xBFF0000000000000;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC10MapsDesign9ActionBar_onSelect);
@@ -38,21 +38,21 @@
   }
 }
 
-- (void)buttonSelectedWithSender:(id)a3
+- (void)buttonSelectedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_213E13364(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_213E13364(senderCopy);
 }
 
-- (void)directionSelectedWithSender:(id)a3
+- (void)directionSelectedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_213E13728(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_213E13728(senderCopy);
 }
 
-- (_TtC10MapsDesign9ActionBar)initWithFrame:(CGRect)a3
+- (_TtC10MapsDesign9ActionBar)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

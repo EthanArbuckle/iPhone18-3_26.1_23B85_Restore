@@ -1,11 +1,11 @@
 @interface DEExtensionProvider
 - (DEExtensionProvider)init;
 - (id)_getHostname;
-- (id)filesInDir:(id)a3 matchingPattern:(id)a4 excludingPattern:(id)a5;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)a3;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (id)filesInDir:(id)dir matchingPattern:(id)pattern excludingPattern:(id)excludingPattern;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)handler;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation DEExtensionProvider
@@ -27,20 +27,20 @@
   return v3;
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[DELogging fwHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = contextCopy;
     _os_log_impl(&dword_248AB3000, v5, OS_LOG_TYPE_INFO, "Started extension with context: %@", buf, 0xCu);
   }
 
-  v6 = [v4 _auxiliaryConnection];
-  v7 = [v6 valueForEntitlement:@"com.apple.DiagnosticExtensions.extensionHost"];
+  _auxiliaryConnection = [contextCopy _auxiliaryConnection];
+  v7 = [_auxiliaryConnection valueForEntitlement:@"com.apple.DiagnosticExtensions.extensionHost"];
 
   if (!v7 || ([v7 BOOLValue] & 1) == 0)
   {
@@ -56,13 +56,13 @@
     v15 = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v12 = [v9 errorWithDomain:@"DEExtensionErrorDomain" code:-1 userInfo:v11];
-    [v4 cancelRequestWithError:v12];
+    [contextCopy cancelRequestWithError:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = +[DELogging fwHandle];
@@ -77,7 +77,7 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = +[DELogging fwHandle];
@@ -92,10 +92,10 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)a3
+- (void)isExtensionEnhancedLoggingStateOnWithHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[DELogging fwHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,18 +104,18 @@
     _os_log_impl(&dword_248AB3000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v4[2](v4, [(DEExtensionProvider *)self isEnhancedLoggingStateOn]);
+  handlerCopy[2](handlerCopy, [(DEExtensionProvider *)self isEnhancedLoggingStateOn]);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filesInDir:(id)a3 matchingPattern:(id)a4 excludingPattern:(id)a5
+- (id)filesInDir:(id)dir matchingPattern:(id)pattern excludingPattern:(id)excludingPattern
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dirCopy = dir;
+  patternCopy = pattern;
+  excludingPatternCopy = excludingPattern;
   v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = v8;
+  v10 = patternCopy;
   v11 = v10;
   if (!v10)
   {
@@ -123,22 +123,22 @@
   }
 
   v54 = 0;
-  v12 = [v7 checkResourceIsReachableAndReturnError:&v54];
+  v12 = [dirCopy checkResourceIsReachableAndReturnError:&v54];
   v13 = v54;
   v14 = v13;
   if (v12)
   {
     v36 = v13;
     v37 = v10;
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v16 = *MEMORY[0x277CBE8E8];
     v17 = *MEMORY[0x277CBE868];
     v60[0] = *MEMORY[0x277CBE8E8];
     v60[1] = v17;
     v44 = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
-    v38 = v7;
-    v19 = [v15 enumeratorAtURL:v7 includingPropertiesForKeys:v18 options:5 errorHandler:0];
+    v38 = dirCopy;
+    v19 = [defaultManager enumeratorAtURL:dirCopy includingPropertiesForKeys:v18 options:5 errorHandler:0];
 
     v52 = 0u;
     v53 = 0u;
@@ -175,7 +175,7 @@
           {
             if (!v11 || ([v11 firstMatchInString:v23 options:0 range:{0, objc_msgSend(v23, "length")}], v26 = objc_claimAutoreleasedReturnValue(), v26, v26))
             {
-              if (!v9 || ([v9 firstMatchInString:v23 options:0 range:{0, objc_msgSend(v23, "length")}], v27 = objc_claimAutoreleasedReturnValue(), v27, !v27))
+              if (!excludingPatternCopy || ([excludingPatternCopy firstMatchInString:v23 options:0 range:{0, objc_msgSend(v23, "length")}], v27 = objc_claimAutoreleasedReturnValue(), v27, !v27))
               {
                 v46 = 0;
                 [v22 getResourceValue:&v46 forKey:v39 error:0];
@@ -183,11 +183,11 @@
                 [v22 lastPathComponent];
                 v29 = v20;
                 v30 = v11;
-                v32 = v31 = v9;
+                v32 = v31 = excludingPatternCopy;
                 v33 = [DEAttachmentItem attachmentWithPath:v22 withDisplayName:v32 modificationDate:v28 andFilesize:v25];
 
                 [v41 addObject:v33];
-                v9 = v31;
+                excludingPatternCopy = v31;
                 v11 = v30;
                 v20 = v29;
                 v16 = v40;
@@ -203,7 +203,7 @@
     }
 
     v10 = v37;
-    v7 = v38;
+    dirCopy = v38;
     v14 = v36;
   }
 
@@ -213,7 +213,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v56 = v7;
+      v56 = dirCopy;
       v57 = 2112;
       v58 = v14;
       _os_log_impl(&dword_248AB3000, v20, OS_LOG_TYPE_DEFAULT, "Unable to reach %@. Reason: %@", buf, 0x16u);

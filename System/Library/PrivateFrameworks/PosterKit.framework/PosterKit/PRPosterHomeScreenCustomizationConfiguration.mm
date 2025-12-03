@@ -1,48 +1,48 @@
 @interface PRPosterHomeScreenCustomizationConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PRPosterHomeScreenCustomizationConfiguration)init;
-- (PRPosterHomeScreenCustomizationConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterHomeScreenCustomizationConfiguration)initWithCoder:(id)a3;
-- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)a3 suggestedTintColor:(id)a4 iconTintSource:(id)a5 isDimmed:(BOOL)a6 iconUserInterfaceSize:(id)a7 iconUserInterfaceStyleType:(id)a8;
-- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)a3 suggestedTintColor:(id)a4 iconTintSource:(id)a5 isDimmed:(BOOL)a6 iconUserInterfaceSize:(id)a7 iconUserInterfaceStyleType:(id)a8 iconUserInterfaceStyleVariant:(id)a9 userSelectedVariantsForStyleTypes:(id)a10;
+- (PRPosterHomeScreenCustomizationConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterHomeScreenCustomizationConfiguration)initWithCoder:(id)coder;
+- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)style suggestedTintColor:(id)color iconTintSource:(id)source isDimmed:(BOOL)dimmed iconUserInterfaceSize:(id)size iconUserInterfaceStyleType:(id)type;
+- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)style suggestedTintColor:(id)color iconTintSource:(id)source isDimmed:(BOOL)dimmed iconUserInterfaceSize:(id)size iconUserInterfaceStyleType:(id)type iconUserInterfaceStyleVariant:(id)variant userSelectedVariantsForStyleTypes:(id)self0;
 - (id)_defaultIconUserInterfaceStyleType;
 - (id)_defaultVariantsForStyleTypeOptions;
-- (id)_sanitizedIconUserInterfaceStyleTypeForType:(id)a3;
-- (id)_sanitizedIconUserInterfaceStyleVariantForType:(id)a3 variant:(id)a4;
-- (id)configurationUpdatingDimmed:(BOOL)a3;
-- (id)configurationUpdatingIconTintSource:(id)a3;
-- (id)configurationUpdatingIconUserInterfaceSize:(id)a3;
-- (id)configurationUpdatingIconUserInterfaceStyle:(id)a3;
-- (id)configurationUpdatingIconUserInterfaceStyleVariant:(id)a3;
-- (id)configurationUpdatingSuggestedTintColor:(id)a3;
-- (id)configurationUpdatingTintColorStyle:(id)a3;
-- (id)configurationUpdatingUserSelectedVariantsForStyleTypes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_sanitizedIconUserInterfaceStyleTypeForType:(id)type;
+- (id)_sanitizedIconUserInterfaceStyleVariantForType:(id)type variant:(id)variant;
+- (id)configurationUpdatingDimmed:(BOOL)dimmed;
+- (id)configurationUpdatingIconTintSource:(id)source;
+- (id)configurationUpdatingIconUserInterfaceSize:(id)size;
+- (id)configurationUpdatingIconUserInterfaceStyle:(id)style;
+- (id)configurationUpdatingIconUserInterfaceStyleVariant:(id)variant;
+- (id)configurationUpdatingSuggestedTintColor:(id)color;
+- (id)configurationUpdatingTintColorStyle:(id)style;
+- (id)configurationUpdatingUserSelectedVariantsForStyleTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterHomeScreenCustomizationConfiguration
 
-- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)a3 suggestedTintColor:(id)a4 iconTintSource:(id)a5 isDimmed:(BOOL)a6 iconUserInterfaceSize:(id)a7 iconUserInterfaceStyleType:(id)a8 iconUserInterfaceStyleVariant:(id)a9 userSelectedVariantsForStyleTypes:(id)a10
+- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)style suggestedTintColor:(id)color iconTintSource:(id)source isDimmed:(BOOL)dimmed iconUserInterfaceSize:(id)size iconUserInterfaceStyleType:(id)type iconUserInterfaceStyleVariant:(id)variant userSelectedVariantsForStyleTypes:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  styleCopy = style;
+  colorCopy = color;
+  sourceCopy = source;
+  sizeCopy = size;
+  typeCopy = type;
+  variantCopy = variant;
+  typesCopy = types;
   v40.receiver = self;
   v40.super_class = PRPosterHomeScreenCustomizationConfiguration;
   v23 = [(PRPosterHomeScreenCustomizationConfiguration *)&v40 init];
   if (v23)
   {
-    v24 = v16;
-    v25 = a6;
+    v24 = styleCopy;
+    dimmedCopy = dimmed;
     v39 = v24;
     v26 = [v24 copy];
     v27 = v26;
@@ -59,13 +59,13 @@
     tintColorStyle = v23->_tintColorStyle;
     v23->_tintColorStyle = v28;
 
-    v30 = [v17 copy];
+    v30 = [colorCopy copy];
     suggestedTintColor = v23->_suggestedTintColor;
     v23->_suggestedTintColor = v30;
 
-    if (v18)
+    if (sourceCopy)
     {
-      v32 = v18;
+      v32 = sourceCopy;
     }
 
     else
@@ -74,10 +74,10 @@
     }
 
     objc_storeStrong(&v23->_iconTintSource, v32);
-    v23->_dimmed = v25;
-    if (v19)
+    v23->_dimmed = dimmedCopy;
+    if (sizeCopy)
     {
-      v33 = v19;
+      v33 = sizeCopy;
     }
 
     else
@@ -86,32 +86,32 @@
     }
 
     objc_storeStrong(&v23->_iconUserInterfaceSize, v33);
-    v34 = [(PRPosterHomeScreenCustomizationConfiguration *)v23 _sanitizedIconUserInterfaceStyleTypeForType:v20];
+    v34 = [(PRPosterHomeScreenCustomizationConfiguration *)v23 _sanitizedIconUserInterfaceStyleTypeForType:typeCopy];
     iconUserInterfaceStyleType = v23->_iconUserInterfaceStyleType;
     v23->_iconUserInterfaceStyleType = v34;
 
-    v36 = [(PRPosterHomeScreenCustomizationConfiguration *)v23 _sanitizedIconUserInterfaceStyleVariantForType:v20 variant:v21];
+    v36 = [(PRPosterHomeScreenCustomizationConfiguration *)v23 _sanitizedIconUserInterfaceStyleVariantForType:typeCopy variant:variantCopy];
     iconUserInterfaceStyleVariant = v23->_iconUserInterfaceStyleVariant;
     v23->_iconUserInterfaceStyleVariant = v36;
 
-    objc_storeStrong(&v23->_userSelectedVariantsForStyleTypes, a10);
+    objc_storeStrong(&v23->_userSelectedVariantsForStyleTypes, types);
     v23->_hash = 0x7FFFFFFFFFFFFFFFLL;
-    v16 = v39;
+    styleCopy = v39;
   }
 
   return v23;
 }
 
-- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)a3 suggestedTintColor:(id)a4 iconTintSource:(id)a5 isDimmed:(BOOL)a6 iconUserInterfaceSize:(id)a7 iconUserInterfaceStyleType:(id)a8
+- (PRPosterHomeScreenCustomizationConfiguration)initWithTintColorStyle:(id)style suggestedTintColor:(id)color iconTintSource:(id)source isDimmed:(BOOL)dimmed iconUserInterfaceSize:(id)size iconUserInterfaceStyleType:(id)type
 {
-  v9 = a6;
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultVariantsForStyleTypeOptions];
-  v20 = [(PRPosterHomeScreenCustomizationConfiguration *)self initWithTintColorStyle:v18 suggestedTintColor:v17 iconTintSource:v16 isDimmed:v9 iconUserInterfaceSize:v15 iconUserInterfaceStyleType:v14 iconUserInterfaceStyleVariant:@"light" userSelectedVariantsForStyleTypes:v19];
+  dimmedCopy = dimmed;
+  typeCopy = type;
+  sizeCopy = size;
+  sourceCopy = source;
+  colorCopy = color;
+  styleCopy = style;
+  _defaultVariantsForStyleTypeOptions = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultVariantsForStyleTypeOptions];
+  v20 = [(PRPosterHomeScreenCustomizationConfiguration *)self initWithTintColorStyle:styleCopy suggestedTintColor:colorCopy iconTintSource:sourceCopy isDimmed:dimmedCopy iconUserInterfaceSize:sizeCopy iconUserInterfaceStyleType:typeCopy iconUserInterfaceStyleVariant:@"light" userSelectedVariantsForStyleTypes:_defaultVariantsForStyleTypeOptions];
 
   return v20;
 }
@@ -120,23 +120,23 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E69C5558]);
   v4 = kPRPosterHomeScreenCustomizationConfigurationDefaultDimmed;
-  v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
-  v6 = [(PRPosterHomeScreenCustomizationConfiguration *)self initWithTintColorStyle:v3 suggestedTintColor:0 iconTintSource:@"wallpaperSuggestion" isDimmed:v4 iconUserInterfaceSize:@"SMALL" iconUserInterfaceStyleType:v5];
+  _defaultIconUserInterfaceStyleType = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
+  v6 = [(PRPosterHomeScreenCustomizationConfiguration *)self initWithTintColorStyle:v3 suggestedTintColor:0 iconTintSource:@"wallpaperSuggestion" isDimmed:v4 iconUserInterfaceSize:@"SMALL" iconUserInterfaceStyleType:_defaultIconUserInterfaceStyleType];
 
   return v6;
 }
 
-- (id)configurationUpdatingIconUserInterfaceSize:(id)a3
+- (id)configurationUpdatingIconUserInterfaceSize:(id)size
 {
-  v4 = a3;
-  if (([(__CFString *)v4 isEqualToString:@"LARGE"]& 1) == 0 && ([(__CFString *)v4 isEqualToString:@"SMALL"]& 1) == 0)
+  sizeCopy = size;
+  if (([(__CFString *)sizeCopy isEqualToString:@"LARGE"]& 1) == 0 && ([(__CFString *)sizeCopy isEqualToString:@"SMALL"]& 1) == 0)
   {
 
-    v4 = @"SMALL";
+    sizeCopy = @"SMALL";
   }
 
   v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v6 = [(__CFString *)v4 copy];
+  v6 = [(__CFString *)sizeCopy copy];
   v7 = v6;
   if (v6)
   {
@@ -153,18 +153,18 @@
   return v5;
 }
 
-- (id)configurationUpdatingIconUserInterfaceStyle:(id)a3
+- (id)configurationUpdatingIconUserInterfaceStyle:(id)style
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"auto"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"dark") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"light") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"accent") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"clear") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"color") & 1) == 0)
+  styleCopy = style;
+  if (([styleCopy isEqualToString:@"auto"] & 1) == 0 && (objc_msgSend(styleCopy, "isEqualToString:", @"dark") & 1) == 0 && (objc_msgSend(styleCopy, "isEqualToString:", @"light") & 1) == 0 && (objc_msgSend(styleCopy, "isEqualToString:", @"accent") & 1) == 0 && (objc_msgSend(styleCopy, "isEqualToString:", @"clear") & 1) == 0 && (objc_msgSend(styleCopy, "isEqualToString:", @"color") & 1) == 0)
   {
-    v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
+    _defaultIconUserInterfaceStyleType = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
 
-    v4 = v5;
+    styleCopy = _defaultIconUserInterfaceStyleType;
   }
 
   v6 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v7 = [v4 copy];
+  v7 = [styleCopy copy];
   v8 = [(PRPosterHomeScreenCustomizationConfiguration *)self _sanitizedIconUserInterfaceStyleTypeForType:v7];
   v9 = v6[4];
   v6[4] = v8;
@@ -172,46 +172,46 @@
   return v6;
 }
 
-- (id)configurationUpdatingIconUserInterfaceStyleVariant:(id)a3
+- (id)configurationUpdatingIconUserInterfaceStyleVariant:(id)variant
 {
-  v4 = a3;
-  if (([(__CFString *)v4 isEqualToString:@"auto"]& 1) == 0 && ([(__CFString *)v4 isEqualToString:@"dark"]& 1) == 0 && ([(__CFString *)v4 isEqualToString:@"light"]& 1) == 0)
+  variantCopy = variant;
+  if (([(__CFString *)variantCopy isEqualToString:@"auto"]& 1) == 0 && ([(__CFString *)variantCopy isEqualToString:@"dark"]& 1) == 0 && ([(__CFString *)variantCopy isEqualToString:@"light"]& 1) == 0)
   {
 
-    v4 = @"light";
+    variantCopy = @"light";
   }
 
   v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v6 = [(PRPosterHomeScreenCustomizationConfiguration *)self _sanitizedIconUserInterfaceStyleVariantForType:v5[4] variant:v4];
+  v6 = [(PRPosterHomeScreenCustomizationConfiguration *)self _sanitizedIconUserInterfaceStyleVariantForType:v5[4] variant:variantCopy];
   v7 = v5[5];
   v5[5] = v6;
 
   return v5;
 }
 
-- (id)configurationUpdatingUserSelectedVariantsForStyleTypes:(id)a3
+- (id)configurationUpdatingUserSelectedVariantsForStyleTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
   v6 = v5[6];
-  v5[6] = v4;
+  v5[6] = typesCopy;
 
   return v5;
 }
 
-- (id)configurationUpdatingDimmed:(BOOL)a3
+- (id)configurationUpdatingDimmed:(BOOL)dimmed
 {
   v4 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v4[16] = a3;
+  v4[16] = dimmed;
 
   return v4;
 }
 
-- (id)configurationUpdatingTintColorStyle:(id)a3
+- (id)configurationUpdatingTintColorStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
 
   if (v6)
   {
@@ -229,11 +229,11 @@
   return v5;
 }
 
-- (id)configurationUpdatingSuggestedTintColor:(id)a3
+- (id)configurationUpdatingSuggestedTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v6 = [v4 copy];
+  v6 = [colorCopy copy];
 
   v7 = v5[8];
   v5[8] = v6;
@@ -241,11 +241,11 @@
   return v5;
 }
 
-- (id)configurationUpdatingIconTintSource:(id)a3
+- (id)configurationUpdatingIconTintSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self copy];
-  v6 = [v4 copy];
+  v6 = [sourceCopy copy];
 
   v7 = v5[9];
   v5[9] = v6;
@@ -253,26 +253,26 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRPosterHomeScreenCustomizationConfiguration alloc];
-  v5 = [(PRPosterHomeScreenCustomizationConfiguration *)self tintColorStyle];
-  v6 = [(PRPosterHomeScreenCustomizationConfiguration *)self suggestedTintColor];
-  v7 = [(PRPosterHomeScreenCustomizationConfiguration *)self iconTintSource];
-  v8 = [(PRPosterHomeScreenCustomizationConfiguration *)self isDimmed];
-  v9 = [(PRPosterHomeScreenCustomizationConfiguration *)self iconUserInterfaceSize];
-  v10 = [(PRPosterHomeScreenCustomizationConfiguration *)self iconUserInterfaceStyleType];
-  v11 = [(PRPosterHomeScreenCustomizationConfiguration *)self iconUserInterfaceStyleVariant];
-  v12 = [(PRPosterHomeScreenCustomizationConfiguration *)self userSelectedVariantsForStyleTypes];
-  v13 = [(PRPosterHomeScreenCustomizationConfiguration *)v4 initWithTintColorStyle:v5 suggestedTintColor:v6 iconTintSource:v7 isDimmed:v8 iconUserInterfaceSize:v9 iconUserInterfaceStyleType:v10 iconUserInterfaceStyleVariant:v11 userSelectedVariantsForStyleTypes:v12];
+  tintColorStyle = [(PRPosterHomeScreenCustomizationConfiguration *)self tintColorStyle];
+  suggestedTintColor = [(PRPosterHomeScreenCustomizationConfiguration *)self suggestedTintColor];
+  iconTintSource = [(PRPosterHomeScreenCustomizationConfiguration *)self iconTintSource];
+  isDimmed = [(PRPosterHomeScreenCustomizationConfiguration *)self isDimmed];
+  iconUserInterfaceSize = [(PRPosterHomeScreenCustomizationConfiguration *)self iconUserInterfaceSize];
+  iconUserInterfaceStyleType = [(PRPosterHomeScreenCustomizationConfiguration *)self iconUserInterfaceStyleType];
+  iconUserInterfaceStyleVariant = [(PRPosterHomeScreenCustomizationConfiguration *)self iconUserInterfaceStyleVariant];
+  userSelectedVariantsForStyleTypes = [(PRPosterHomeScreenCustomizationConfiguration *)self userSelectedVariantsForStyleTypes];
+  v13 = [(PRPosterHomeScreenCustomizationConfiguration *)v4 initWithTintColorStyle:tintColorStyle suggestedTintColor:suggestedTintColor iconTintSource:iconTintSource isDimmed:isDimmed iconUserInterfaceSize:iconUserInterfaceSize iconUserInterfaceStyleType:iconUserInterfaceStyleType iconUserInterfaceStyleVariant:iconUserInterfaceStyleVariant userSelectedVariantsForStyleTypes:userSelectedVariantsForStyleTypes];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -301,16 +301,16 @@
   hash = self->_hash;
   if (hash == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x1E698E6B8] builder];
-    v5 = [v4 appendObject:self->_tintColorStyle];
-    v6 = [v4 appendObject:self->_suggestedTintColor];
-    v7 = [v4 appendObject:self->_iconTintSource];
-    v8 = [v4 appendBool:self->_dimmed];
-    v9 = [v4 appendObject:self->_iconUserInterfaceSize];
-    v10 = [v4 appendObject:self->_iconUserInterfaceStyleType];
-    v11 = [v4 appendObject:self->_iconUserInterfaceStyleVariant];
-    v12 = [v4 appendObject:self->_userSelectedVariantsForStyleTypes];
-    hash = [v4 hash];
+    builder = [MEMORY[0x1E698E6B8] builder];
+    v5 = [builder appendObject:self->_tintColorStyle];
+    v6 = [builder appendObject:self->_suggestedTintColor];
+    v7 = [builder appendObject:self->_iconTintSource];
+    v8 = [builder appendBool:self->_dimmed];
+    v9 = [builder appendObject:self->_iconUserInterfaceSize];
+    v10 = [builder appendObject:self->_iconUserInterfaceStyleType];
+    v11 = [builder appendObject:self->_iconUserInterfaceStyleVariant];
+    v12 = [builder appendObject:self->_userSelectedVariantsForStyleTypes];
+    hash = [builder hash];
     self->_hash = hash;
   }
 
@@ -324,7 +324,7 @@
   v8 = 3221225472;
   v9 = __59__PRPosterHomeScreenCustomizationConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -333,25 +333,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tintColorStyle = self->_tintColorStyle;
-  v5 = a3;
-  [v5 encodeObject:tintColorStyle forKey:@"_tintColorStyle"];
-  [v5 encodeObject:self->_suggestedTintColor forKey:@"_suggestedTintColor"];
-  [v5 encodeObject:self->_iconTintSource forKey:@"_iconTintSource"];
-  [v5 encodeBool:self->_dimmed forKey:@"_dimmed"];
-  [v5 encodeObject:self->_iconUserInterfaceSize forKey:@"_iconUserInterfaceSize"];
-  [v5 encodeObject:self->_iconUserInterfaceStyleType forKey:@"_iconUserInterfaceStyleType"];
-  [v5 encodeObject:self->_iconUserInterfaceStyleVariant forKey:@"_iconUserInterfaceStyleVariant"];
-  [v5 encodeObject:self->_userSelectedVariantsForStyleTypes forKey:@"_userSelectedVariantsForStyleTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tintColorStyle forKey:@"_tintColorStyle"];
+  [coderCopy encodeObject:self->_suggestedTintColor forKey:@"_suggestedTintColor"];
+  [coderCopy encodeObject:self->_iconTintSource forKey:@"_iconTintSource"];
+  [coderCopy encodeBool:self->_dimmed forKey:@"_dimmed"];
+  [coderCopy encodeObject:self->_iconUserInterfaceSize forKey:@"_iconUserInterfaceSize"];
+  [coderCopy encodeObject:self->_iconUserInterfaceStyleType forKey:@"_iconUserInterfaceStyleType"];
+  [coderCopy encodeObject:self->_iconUserInterfaceStyleVariant forKey:@"_iconUserInterfaceStyleVariant"];
+  [coderCopy encodeObject:self->_userSelectedVariantsForStyleTypes forKey:@"_userSelectedVariantsForStyleTypes"];
 }
 
-- (PRPosterHomeScreenCustomizationConfiguration)initWithCoder:(id)a3
+- (PRPosterHomeScreenCustomizationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_tintColorStyle"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_tintColorStyle"];
   v7 = v6;
   if (v6)
   {
@@ -366,14 +366,14 @@
   v9 = v8;
 
   v10 = objc_opt_self();
-  v40 = [v4 decodeObjectOfClass:v10 forKey:@"_suggestedTintColor"];
+  v40 = [coderCopy decodeObjectOfClass:v10 forKey:@"_suggestedTintColor"];
 
   v11 = objc_opt_self();
-  v12 = [v4 decodeObjectOfClass:v11 forKey:@"_iconTintSource"];
+  v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"_iconTintSource"];
 
-  v39 = [v4 decodeBoolForKey:@"_dimmed"];
+  v39 = [coderCopy decodeBoolForKey:@"_dimmed"];
   v13 = objc_opt_self();
-  v14 = [v4 decodeObjectOfClass:v13 forKey:@"_iconUserInterfaceSize"];
+  v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"_iconUserInterfaceSize"];
   v15 = v14;
   v16 = @"SMALL";
   if (v14)
@@ -384,23 +384,23 @@
   v17 = v16;
 
   v18 = objc_opt_self();
-  v19 = [v4 decodeObjectOfClass:v18 forKey:@"_iconUserInterfaceStyleType"];
+  v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"_iconUserInterfaceStyleType"];
   v20 = v19;
-  v21 = self;
+  selfCopy = self;
   if (v19)
   {
-    v22 = v19;
+    _defaultIconUserInterfaceStyleType = v19;
   }
 
   else
   {
-    v22 = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
+    _defaultIconUserInterfaceStyleType = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
   }
 
-  v23 = v22;
+  v23 = _defaultIconUserInterfaceStyleType;
 
   v24 = objc_opt_self();
-  v25 = [v4 decodeObjectOfClass:v24 forKey:@"_iconUserInterfaceStyleVariant"];
+  v25 = [coderCopy decodeObjectOfClass:v24 forKey:@"_iconUserInterfaceStyleVariant"];
   v26 = v25;
   v27 = @"light";
   if (v25)
@@ -413,19 +413,19 @@
   v29 = MEMORY[0x1E695DFD8];
   v30 = objc_opt_class();
   v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-  v32 = [v4 decodeObjectOfClasses:v31 forKey:@"_userSelectedVariantsForStyleTypes"];
+  v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"_userSelectedVariantsForStyleTypes"];
   v33 = v32;
   if (v32)
   {
-    v34 = v32;
+    _defaultVariantsForStyleTypeOptions = v32;
   }
 
   else
   {
-    v34 = [(PRPosterHomeScreenCustomizationConfiguration *)v21 _defaultVariantsForStyleTypeOptions];
+    _defaultVariantsForStyleTypeOptions = [(PRPosterHomeScreenCustomizationConfiguration *)selfCopy _defaultVariantsForStyleTypeOptions];
   }
 
-  v35 = v34;
+  v35 = _defaultVariantsForStyleTypeOptions;
   v36 = @"custom";
   if (!v9)
   {
@@ -437,31 +437,31 @@
     v12 = v36;
   }
 
-  v37 = [(PRPosterHomeScreenCustomizationConfiguration *)v21 initWithTintColorStyle:v9 suggestedTintColor:v40 iconTintSource:v12 isDimmed:v39 iconUserInterfaceSize:v17 iconUserInterfaceStyleType:v23 iconUserInterfaceStyleVariant:v28 userSelectedVariantsForStyleTypes:v35];
+  v37 = [(PRPosterHomeScreenCustomizationConfiguration *)selfCopy initWithTintColorStyle:v9 suggestedTintColor:v40 iconTintSource:v12 isDimmed:v39 iconUserInterfaceSize:v17 iconUserInterfaceStyleType:v23 iconUserInterfaceStyleVariant:v28 userSelectedVariantsForStyleTypes:v35];
   return v37;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   tintColorStyle = self->_tintColorStyle;
-  v5 = a3;
-  [v5 encodeObject:tintColorStyle forKey:@"_tintColorStyle"];
-  [v5 encodeObject:self->_suggestedTintColor forKey:@"_suggestedTintColor"];
-  [v5 encodeObject:self->_iconTintSource forKey:@"_iconTintSource"];
-  [v5 encodeBool:self->_dimmed forKey:@"_dimmed"];
-  [v5 encodeObject:self->_iconUserInterfaceSize forKey:@"_iconUserInterfaceSize"];
-  [v5 encodeObject:self->_iconUserInterfaceStyleType forKey:@"_iconUserInterfaceStyleType"];
-  [v5 encodeObject:self->_iconUserInterfaceStyleVariant forKey:@"_iconUserInterfaceStyleVariant"];
-  [v5 encodeObject:self->_userSelectedVariantsForStyleTypes forKey:@"_userSelectedVariantsForStyleTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tintColorStyle forKey:@"_tintColorStyle"];
+  [coderCopy encodeObject:self->_suggestedTintColor forKey:@"_suggestedTintColor"];
+  [coderCopy encodeObject:self->_iconTintSource forKey:@"_iconTintSource"];
+  [coderCopy encodeBool:self->_dimmed forKey:@"_dimmed"];
+  [coderCopy encodeObject:self->_iconUserInterfaceSize forKey:@"_iconUserInterfaceSize"];
+  [coderCopy encodeObject:self->_iconUserInterfaceStyleType forKey:@"_iconUserInterfaceStyleType"];
+  [coderCopy encodeObject:self->_iconUserInterfaceStyleVariant forKey:@"_iconUserInterfaceStyleVariant"];
+  [coderCopy encodeObject:self->_userSelectedVariantsForStyleTypes forKey:@"_userSelectedVariantsForStyleTypes"];
 }
 
-- (PRPosterHomeScreenCustomizationConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterHomeScreenCustomizationConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_tintColorStyle"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_tintColorStyle"];
   v7 = v6;
-  v35 = self;
+  selfCopy = self;
   if (v6)
   {
     v8 = v6;
@@ -475,14 +475,14 @@
   v9 = v8;
 
   v10 = objc_opt_self();
-  v11 = [v4 decodeObjectOfClass:v10 forKey:@"_suggestedTintColor"];
+  v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"_suggestedTintColor"];
 
   v12 = objc_opt_self();
-  v13 = [v4 decodeObjectOfClass:v12 forKey:@"_iconTintSource"];
+  v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"_iconTintSource"];
 
-  v34 = [v4 decodeBoolForKey:@"_dimmed"];
+  v34 = [coderCopy decodeBoolForKey:@"_dimmed"];
   v14 = objc_opt_self();
-  v15 = [v4 decodeObjectOfClass:v14 forKey:@"_iconUserInterfaceSize"];
+  v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"_iconUserInterfaceSize"];
   v16 = v15;
   v17 = @"SMALL";
   if (v15)
@@ -493,18 +493,18 @@
   v18 = v17;
 
   v19 = objc_opt_self();
-  v20 = [v4 decodeObjectOfClass:v19 forKey:@"_iconUserInterfaceStyleType"];
+  v20 = [coderCopy decodeObjectOfClass:v19 forKey:@"_iconUserInterfaceStyleType"];
   v21 = v20;
   if (v20)
   {
-    v22 = v20;
-    v23 = v35;
+    _defaultIconUserInterfaceStyleType = v20;
+    v23 = selfCopy;
   }
 
   else
   {
-    v23 = v35;
-    v22 = [(PRPosterHomeScreenCustomizationConfiguration *)v35 _defaultIconUserInterfaceStyleType];
+    v23 = selfCopy;
+    _defaultIconUserInterfaceStyleType = [(PRPosterHomeScreenCustomizationConfiguration *)selfCopy _defaultIconUserInterfaceStyleType];
   }
 
   v24 = @"custom";
@@ -519,7 +519,7 @@
   }
 
   v25 = objc_opt_self();
-  v26 = [v4 decodeObjectOfClass:v25 forKey:@"_iconUserInterfaceStyleVariant"];
+  v26 = [coderCopy decodeObjectOfClass:v25 forKey:@"_iconUserInterfaceStyleVariant"];
   v27 = v26;
   v28 = @"light";
   if (v26)
@@ -530,23 +530,23 @@
   v29 = v28;
 
   v30 = objc_opt_self();
-  v31 = [v4 decodeObjectOfClass:v30 forKey:@"_userSelectedVariantsForStyleTypes"];
+  v31 = [coderCopy decodeObjectOfClass:v30 forKey:@"_userSelectedVariantsForStyleTypes"];
 
-  v32 = [(PRPosterHomeScreenCustomizationConfiguration *)v23 initWithTintColorStyle:v9 suggestedTintColor:v11 iconTintSource:v13 isDimmed:v34 iconUserInterfaceSize:v18 iconUserInterfaceStyleType:v22 iconUserInterfaceStyleVariant:v29 userSelectedVariantsForStyleTypes:v31];
+  v32 = [(PRPosterHomeScreenCustomizationConfiguration *)v23 initWithTintColorStyle:v9 suggestedTintColor:v11 iconTintSource:v13 isDimmed:v34 iconUserInterfaceSize:v18 iconUserInterfaceStyleType:_defaultIconUserInterfaceStyleType iconUserInterfaceStyleVariant:v29 userSelectedVariantsForStyleTypes:v31];
   return v32;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v12 = a3;
-  v4 = [v12 appendObject:self->_tintColorStyle withName:@"_tintColorStyle"];
-  v5 = [v12 appendObject:self->_suggestedTintColor withName:@"_suggestedTintColor"];
-  v6 = [v12 appendObject:self->_iconTintSource withName:@"_iconTintSource"];
-  v7 = [v12 appendBool:self->_dimmed withName:@"_dimmed"];
-  v8 = [v12 appendObject:self->_iconUserInterfaceSize withName:@"_iconUserInterfaceSize"];
-  v9 = [v12 appendObject:self->_iconUserInterfaceStyleType withName:@"_iconUserInterfaceStyleType"];
-  v10 = [v12 appendObject:self->_iconUserInterfaceStyleVariant withName:@"_iconUserInterfaceStyleVariant"];
-  v11 = [v12 appendObject:self->_userSelectedVariantsForStyleTypes withName:@"_userSelectedVariantsForStyleTypes"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendObject:self->_tintColorStyle withName:@"_tintColorStyle"];
+  v5 = [formatterCopy appendObject:self->_suggestedTintColor withName:@"_suggestedTintColor"];
+  v6 = [formatterCopy appendObject:self->_iconTintSource withName:@"_iconTintSource"];
+  v7 = [formatterCopy appendBool:self->_dimmed withName:@"_dimmed"];
+  v8 = [formatterCopy appendObject:self->_iconUserInterfaceSize withName:@"_iconUserInterfaceSize"];
+  v9 = [formatterCopy appendObject:self->_iconUserInterfaceStyleType withName:@"_iconUserInterfaceStyleType"];
+  v10 = [formatterCopy appendObject:self->_iconUserInterfaceStyleVariant withName:@"_iconUserInterfaceStyleVariant"];
+  v11 = [formatterCopy appendObject:self->_userSelectedVariantsForStyleTypes withName:@"_userSelectedVariantsForStyleTypes"];
 }
 
 - (id)_defaultIconUserInterfaceStyleType
@@ -564,48 +564,48 @@
   return v2;
 }
 
-- (id)_sanitizedIconUserInterfaceStyleTypeForType:(id)a3
+- (id)_sanitizedIconUserInterfaceStyleTypeForType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"dark"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"light") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"auto"))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"dark"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"light") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"auto"))
   {
     v5 = @"color";
   }
 
   else
   {
-    if (v4)
+    if (typeCopy)
     {
-      v7 = v4;
+      _defaultIconUserInterfaceStyleType = typeCopy;
     }
 
     else
     {
-      v7 = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
+      _defaultIconUserInterfaceStyleType = [(PRPosterHomeScreenCustomizationConfiguration *)self _defaultIconUserInterfaceStyleType];
     }
 
-    v5 = v7;
+    v5 = _defaultIconUserInterfaceStyleType;
   }
 
   return v5;
 }
 
-- (id)_sanitizedIconUserInterfaceStyleVariantForType:(id)a3 variant:(id)a4
+- (id)_sanitizedIconUserInterfaceStyleVariantForType:(id)type variant:(id)variant
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  variantCopy = variant;
   v7 = @"dark";
-  if (([v5 isEqualToString:@"dark"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"dark"] & 1) == 0)
   {
     v7 = @"light";
-    if (([v5 isEqualToString:@"light"] & 1) == 0)
+    if (([typeCopy isEqualToString:@"light"] & 1) == 0)
     {
       v7 = @"auto";
-      if (([v5 isEqualToString:@"auto"] & 1) == 0)
+      if (([typeCopy isEqualToString:@"auto"] & 1) == 0)
       {
-        if (v6)
+        if (variantCopy)
         {
-          v8 = v6;
+          v8 = variantCopy;
         }
 
         else

@@ -1,26 +1,26 @@
 @interface WFDictionaryValueVariableAggrandizement
 - (NSString)dictionaryKey;
-- (WFDictionaryValueVariableAggrandizement)initWithDictionary:(id)a3;
-- (WFDictionaryValueVariableAggrandizement)initWithDictionaryKey:(id)a3;
-- (id)processedContentClasses:(id)a3;
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4;
+- (WFDictionaryValueVariableAggrandizement)initWithDictionary:(id)dictionary;
+- (WFDictionaryValueVariableAggrandizement)initWithDictionaryKey:(id)key;
+- (id)processedContentClasses:(id)classes;
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler;
 @end
 
 @implementation WFDictionaryValueVariableAggrandizement
 
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  collectionCopy = collection;
   v8 = objc_opt_class();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__WFDictionaryValueVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke;
   v10[3] = &unk_1E8378930;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 generateCollectionByCoercingToItemClass:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [collectionCopy generateCollectionByCoercingToItemClass:v8 completionHandler:v10];
 }
 
 void __86__WFDictionaryValueVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -73,7 +73,7 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)processedContentClasses:(id)a3
+- (id)processedContentClasses:(id)classes
 {
   v3 = MEMORY[0x1E695DFB8];
   v4 = objc_opt_class();
@@ -85,17 +85,17 @@ LABEL_8:
 
 - (NSString)dictionaryKey
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"DictionaryKey"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"DictionaryKey"];
 
   return v3;
 }
 
-- (WFDictionaryValueVariableAggrandizement)initWithDictionary:(id)a3
+- (WFDictionaryValueVariableAggrandizement)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"DictionaryKey"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"DictionaryKey"];
   v6 = objc_opt_class();
   v7 = v5;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -127,26 +127,26 @@ LABEL_8:
   {
     v14.receiver = self;
     v14.super_class = WFDictionaryValueVariableAggrandizement;
-    self = [(WFVariableAggrandizement *)&v14 initWithDictionary:v4];
-    v11 = self;
+    self = [(WFVariableAggrandizement *)&v14 initWithDictionary:dictionaryCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (WFDictionaryValueVariableAggrandizement)initWithDictionaryKey:(id)a3
+- (WFDictionaryValueVariableAggrandizement)initWithDictionaryKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = @"DictionaryKey";
-  v11[0] = a3;
+  v11[0] = key;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  keyCopy = key;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [(WFDictionaryValueVariableAggrandizement *)self initWithDictionary:v6];

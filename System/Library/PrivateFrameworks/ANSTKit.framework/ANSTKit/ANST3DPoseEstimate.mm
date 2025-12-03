@@ -1,10 +1,10 @@
 @interface ANST3DPoseEstimate
 + (id)new;
 - (ANST3DPoseEstimate)init;
-- (ANST3DPoseEstimate)initWithCoder:(id)a3;
-- (ANST3DPoseEstimate)initWithYaw:(int64_t)a3 roll:(int64_t)a4 refinedYaw:(int64_t)a5 refinedRoll:(int64_t)a6 refinedPitch:(int64_t)a7;
+- (ANST3DPoseEstimate)initWithCoder:(id)coder;
+- (ANST3DPoseEstimate)initWithYaw:(int64_t)yaw roll:(int64_t)roll refinedYaw:(int64_t)refinedYaw refinedRoll:(int64_t)refinedRoll refinedPitch:(int64_t)pitch;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANST3DPoseEstimate
@@ -18,31 +18,31 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANST3DPoseEstimate)initWithYaw:(int64_t)a3 roll:(int64_t)a4 refinedYaw:(int64_t)a5 refinedRoll:(int64_t)a6 refinedPitch:(int64_t)a7
+- (ANST3DPoseEstimate)initWithYaw:(int64_t)yaw roll:(int64_t)roll refinedYaw:(int64_t)refinedYaw refinedRoll:(int64_t)refinedRoll refinedPitch:(int64_t)pitch
 {
   v13.receiver = self;
   v13.super_class = ANST3DPoseEstimate;
   result = [(ANST3DPoseEstimate *)&v13 init];
-  result->_yaw = a3;
-  result->_roll = a4;
-  result->_refinedYaw = a5;
-  result->_refinedRoll = a6;
-  result->_refinedPitch = a7;
+  result->_yaw = yaw;
+  result->_roll = roll;
+  result->_refinedYaw = refinedYaw;
+  result->_refinedRoll = refinedRoll;
+  result->_refinedPitch = pitch;
   return result;
 }
 
-- (ANST3DPoseEstimate)initWithCoder:(id)a3
+- (ANST3DPoseEstimate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = ANST3DPoseEstimate;
   v5 = [(ANST3DPoseEstimate *)&v41 init];
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector("yaw");
   v10 = objc_msgSend_decodeObjectOfClass_forKey_(v6, v9, v7, v8);
@@ -107,16 +107,16 @@ LABEL_7:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v5, self->_yaw);
   v7 = NSStringFromSelector("yaw");
-  objc_msgSend_encodeObject_forKey_(v4, v8, v6, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v6, v7);
 
   roll = self->_roll;
   v10 = MEMORY[0x277CCABB0];
-  v11 = v4;
+  v11 = coderCopy;
   v13 = objc_msgSend_numberWithInteger_(v10, v12, roll);
   v14 = NSStringFromSelector(sel_roll);
   objc_msgSend_encodeObject_forKey_(v11, v15, v13, v14);

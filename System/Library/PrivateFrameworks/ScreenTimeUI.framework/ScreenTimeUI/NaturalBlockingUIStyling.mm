@@ -1,51 +1,51 @@
 @interface NaturalBlockingUIStyling
 + (UIButtonConfiguration)primaryButtonConfiguration;
 + (UIButtonConfiguration)secondaryButtonConfiguration;
-+ (void)applyButtonGroupStyle:(id)a3;
-+ (void)applyPrimaryButtonStyle:(id)a3;
-+ (void)applyPrimaryLabelStyle:(id)a3;
-+ (void)applySecondaryButtonStyle:(id)a3;
-+ (void)applySecondaryLabelStyle:(id)a3;
++ (void)applyButtonGroupStyle:(id)style;
++ (void)applyPrimaryButtonStyle:(id)style;
++ (void)applyPrimaryLabelStyle:(id)style;
++ (void)applySecondaryButtonStyle:(id)style;
++ (void)applySecondaryLabelStyle:(id)style;
 - (_TtC12ScreenTimeUI24NaturalBlockingUIStyling)init;
 @end
 
 @implementation NaturalBlockingUIStyling
 
-+ (void)applyPrimaryLabelStyle:(id)a3
++ (void)applyPrimaryLabelStyle:(id)style
 {
   v4 = objc_opt_self();
   v5 = *MEMORY[0x277D76A20];
-  v6 = a3;
-  v10 = [v4 preferredFontDescriptorWithTextStyle_];
-  v7 = [v10 fontDescriptorWithSymbolicTraits_];
-  if (v7)
+  styleCopy = style;
+  preferredFontDescriptorWithTextStyle_ = [v4 preferredFontDescriptorWithTextStyle_];
+  fontDescriptorWithSymbolicTraits_ = [preferredFontDescriptorWithTextStyle_ fontDescriptorWithSymbolicTraits_];
+  if (fontDescriptorWithSymbolicTraits_)
   {
-    v8 = v7;
+    v8 = fontDescriptorWithSymbolicTraits_;
 
-    v10 = v8;
+    preferredFontDescriptorWithTextStyle_ = v8;
   }
 
-  v9 = [objc_opt_self() fontWithDescriptor:v10 size:0.0];
-  [v6 setFont_];
+  v9 = [objc_opt_self() fontWithDescriptor:preferredFontDescriptorWithTextStyle_ size:0.0];
+  [styleCopy setFont_];
 }
 
-+ (void)applySecondaryLabelStyle:(id)a3
++ (void)applySecondaryLabelStyle:(id)style
 {
   v4 = objc_opt_self();
   v5 = *MEMORY[0x277D76A20];
-  v6 = a3;
-  v7 = [v4 preferredFontDescriptorWithTextStyle_];
-  v8 = [objc_opt_self() fontWithDescriptor:v7 size:0.0];
-  [v6 setFont_];
+  styleCopy = style;
+  preferredFontDescriptorWithTextStyle_ = [v4 preferredFontDescriptorWithTextStyle_];
+  v8 = [objc_opt_self() fontWithDescriptor:preferredFontDescriptorWithTextStyle_ size:0.0];
+  [styleCopy setFont_];
 
-  v9 = [objc_opt_self() secondaryLabelColor];
-  [v6 setTextColor_];
+  secondaryLabelColor = [objc_opt_self() secondaryLabelColor];
+  [styleCopy setTextColor_];
 }
 
-+ (void)applyPrimaryButtonStyle:(id)a3
++ (void)applyPrimaryButtonStyle:(id)style
 {
-  v3 = a3;
-  _s12ScreenTimeUI24NaturalBlockingUIStylingC23applyPrimaryButtonStyleyySo8UIButtonCFZ_0(v3);
+  styleCopy = style;
+  _s12ScreenTimeUI24NaturalBlockingUIStylingC23applyPrimaryButtonStyleyySo8UIButtonCFZ_0(styleCopy);
 }
 
 + (UIButtonConfiguration)primaryButtonConfiguration
@@ -85,10 +85,10 @@
   return v17;
 }
 
-+ (void)applySecondaryButtonStyle:(id)a3
++ (void)applySecondaryButtonStyle:(id)style
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
+  styleCopy = style;
   static NaturalBlockingUIStyling.applySecondaryButtonStyle(_:)();
 }
 
@@ -105,9 +105,9 @@
   return v6;
 }
 
-+ (void)applyButtonGroupStyle:(id)a3
++ (void)applyButtonGroupStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   if (_UISolariumEnabled())
   {
     v4[3] = sub_21DDBD650();

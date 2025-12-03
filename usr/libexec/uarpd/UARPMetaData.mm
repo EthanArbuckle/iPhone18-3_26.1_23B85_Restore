@@ -1,21 +1,21 @@
 @interface UARPMetaData
 + (id)metaDataTable;
-+ (id)tlvFromType:(unsigned int)a3 length:(unsigned int)a4 value:(void *)a5;
-+ (id)tlvNameForType:(id)a3;
-+ (id)tlvsFromKey:(id)a3 value:(id)a4 relativeURL:(id)a5;
++ (id)tlvFromType:(unsigned int)type length:(unsigned int)length value:(void *)value;
++ (id)tlvNameForType:(id)type;
++ (id)tlvsFromKey:(id)key value:(id)value relativeURL:(id)l;
 - (UARPMetaData)init;
-- (id)componentVersionWithLength:(unint64_t)a3 value:(void *)a4;
-- (id)dataFromPlistValue:(id)a3;
+- (id)componentVersionWithLength:(unint64_t)length value:(void *)value;
+- (id)dataFromPlistValue:(id)value;
 - (id)generateTLV;
-- (id)numberFromPlistValue:(id)a3;
-- (id)numberWithLength:(unint64_t)a3 value:(void *)a4;
-- (id)stringFromPlistValue:(id)a3;
-- (id)tlvValueWithComponentVersion:(id)a3;
-- (id)tlvValueWithString:(id)a3;
-- (id)tlvValueWithUInt16:(unsigned __int16)a3;
-- (id)tlvValueWithUInt32:(unsigned int)a3;
-- (id)tlvValueWithUInt64:(unint64_t)a3;
-- (id)tlvValueWithUInt8:(unsigned __int8)a3;
+- (id)numberFromPlistValue:(id)value;
+- (id)numberWithLength:(unint64_t)length value:(void *)value;
+- (id)stringFromPlistValue:(id)value;
+- (id)tlvValueWithComponentVersion:(id)version;
+- (id)tlvValueWithString:(id)string;
+- (id)tlvValueWithUInt16:(unsigned __int16)int16;
+- (id)tlvValueWithUInt32:(unsigned int)int32;
+- (id)tlvValueWithUInt64:(unint64_t)int64;
+- (id)tlvValueWithUInt8:(unsigned __int8)int8;
 @end
 
 @implementation UARPMetaData
@@ -32,24 +32,24 @@
   v3 = objc_alloc_init(NSMutableData);
   v9 = uarpHtonl([(UARPMetaData *)self tlvType]);
   [v3 appendBytes:&v9 length:4];
-  v4 = [(UARPMetaData *)self tlvValue];
-  v8 = uarpHtonl([v4 length]);
+  tlvValue = [(UARPMetaData *)self tlvValue];
+  v8 = uarpHtonl([tlvValue length]);
   [v3 appendBytes:&v8 length:4];
-  v5 = [(UARPMetaData *)self tlvValue];
-  [v3 appendData:v5];
+  tlvValue2 = [(UARPMetaData *)self tlvValue];
+  [v3 appendData:tlvValue2];
 
   v6 = [NSData dataWithData:v3];
 
   return v6;
 }
 
-- (id)stringFromPlistValue:(id)a3
+- (id)stringFromPlistValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 copy];
+    v4 = [valueCopy copy];
   }
 
   else
@@ -60,13 +60,13 @@
   return v4;
 }
 
-- (id)dataFromPlistValue:(id)a3
+- (id)dataFromPlistValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 copy];
+    v4 = [valueCopy copy];
   }
 
   else
@@ -77,13 +77,13 @@
   return v4;
 }
 
-- (id)numberFromPlistValue:(id)a3
+- (id)numberFromPlistValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   else
@@ -94,44 +94,44 @@
   return v4;
 }
 
-- (id)numberWithLength:(unint64_t)a3 value:(void *)a4
+- (id)numberWithLength:(unint64_t)length value:(void *)value
 {
   v4 = 0;
-  if (a3 > 3)
+  if (length > 3)
   {
-    if (a3 == 4)
+    if (length == 4)
     {
-      v4 = [NSNumber numberWithUnsignedLong:uarpNtohl(*a4)];
+      v4 = [NSNumber numberWithUnsignedLong:uarpNtohl(*value)];
     }
 
-    else if (a3 == 8)
+    else if (length == 8)
     {
-      v4 = [NSNumber numberWithUnsignedLongLong:uarpNtohll(*a4)];
+      v4 = [NSNumber numberWithUnsignedLongLong:uarpNtohll(*value)];
     }
   }
 
-  else if (a3 == 1)
+  else if (length == 1)
   {
-    v4 = [NSNumber numberWithUnsignedChar:*a4];
+    v4 = [NSNumber numberWithUnsignedChar:*value];
   }
 
-  else if (a3 == 2)
+  else if (length == 2)
   {
-    v4 = [NSNumber numberWithUnsignedShort:uarpNtohs(*a4)];
+    v4 = [NSNumber numberWithUnsignedShort:uarpNtohs(*value)];
   }
 
   return v4;
 }
 
-- (id)componentVersionWithLength:(unint64_t)a3 value:(void *)a4
+- (id)componentVersionWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 16)
+  if (length == 16)
   {
     v6 = [UARPComponentVersion alloc];
-    v7 = uarpNtohl(*a4);
-    v8 = uarpNtohl(*(a4 + 1));
-    v9 = uarpNtohl(*(a4 + 2));
-    v10 = [(UARPComponentVersion *)v6 initWithMajorVersion:v7 minorVersion:v8 releaseVersion:v9 buildVersion:uarpNtohl(*(a4 + 3))];
+    v7 = uarpNtohl(*value);
+    v8 = uarpNtohl(*(value + 1));
+    v9 = uarpNtohl(*(value + 2));
+    v10 = [(UARPComponentVersion *)v6 initWithMajorVersion:v7 minorVersion:v8 releaseVersion:v9 buildVersion:uarpNtohl(*(value + 3))];
   }
 
   else
@@ -142,75 +142,75 @@
   return v10;
 }
 
-- (id)tlvValueWithUInt8:(unsigned __int8)a3
+- (id)tlvValueWithUInt8:(unsigned __int8)int8
 {
-  v5 = a3;
-  v3 = [[NSData alloc] initWithBytes:&v5 length:1];
+  int8Copy = int8;
+  v3 = [[NSData alloc] initWithBytes:&int8Copy length:1];
 
   return v3;
 }
 
-- (id)tlvValueWithUInt16:(unsigned __int16)a3
+- (id)tlvValueWithUInt16:(unsigned __int16)int16
 {
-  v5 = uarpHtons(a3);
+  v5 = uarpHtons(int16);
   v3 = [[NSData alloc] initWithBytes:&v5 length:2];
 
   return v3;
 }
 
-- (id)tlvValueWithUInt32:(unsigned int)a3
+- (id)tlvValueWithUInt32:(unsigned int)int32
 {
-  v5 = uarpHtonl(a3);
+  v5 = uarpHtonl(int32);
   v3 = [[NSData alloc] initWithBytes:&v5 length:4];
 
   return v3;
 }
 
-- (id)tlvValueWithUInt64:(unint64_t)a3
+- (id)tlvValueWithUInt64:(unint64_t)int64
 {
-  v5 = uarpHtonll(a3);
+  v5 = uarpHtonll(int64);
   v3 = [[NSData alloc] initWithBytes:&v5 length:8];
 
   return v3;
 }
 
-- (id)tlvValueWithString:(id)a3
+- (id)tlvValueWithString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = [v3 length];
+  stringCopy = string;
+  uTF8String = [stringCopy UTF8String];
+  v5 = [stringCopy length];
 
-  return [NSData dataWithBytes:v4 length:v5];
+  return [NSData dataWithBytes:uTF8String length:v5];
 }
 
-- (id)tlvValueWithComponentVersion:(id)a3
+- (id)tlvValueWithComponentVersion:(id)version
 {
-  v3 = a3;
-  LODWORD(v7) = uarpHtonl([v3 majorVersion]);
-  HIDWORD(v7) = uarpHtonl([v3 minorVersion]);
-  v8 = uarpHtonl([v3 releaseVersion]);
-  v4 = [v3 buildVersion];
+  versionCopy = version;
+  LODWORD(v7) = uarpHtonl([versionCopy majorVersion]);
+  HIDWORD(v7) = uarpHtonl([versionCopy minorVersion]);
+  v8 = uarpHtonl([versionCopy releaseVersion]);
+  buildVersion = [versionCopy buildVersion];
 
-  v9 = uarpHtonl(v4);
+  v9 = uarpHtonl(buildVersion);
   v5 = [[NSData alloc] initWithBytes:&v7 length:16];
 
   return v5;
 }
 
-+ (id)tlvFromType:(unsigned int)a3 length:(unsigned int)a4 value:(void *)a5
++ (id)tlvFromType:(unsigned int)type length:(unsigned int)length value:(void *)value
 {
   v5 = 0;
-  if (a3 > -1003827195)
+  if (type > -1003827195)
   {
-    if (a3 > -252806657)
+    if (type > -252806657)
     {
-      if (a3 <= 12)
+      if (type <= 12)
       {
-        if (a3 > 3)
+        if (type > 3)
         {
-          if (a3 > 8)
+          if (type > 8)
           {
-            switch(a3)
+            switch(type)
             {
               case 9u:
                 v6 = off_1000B8650;
@@ -228,7 +228,7 @@
 
           else
           {
-            switch(a3)
+            switch(type)
             {
               case 4u:
                 v6 = off_1000B8660;
@@ -245,14 +245,14 @@
           }
         }
 
-        else if (a3 > 0)
+        else if (type > 0)
         {
-          if (a3 == 1)
+          if (type == 1)
           {
             v6 = off_1000B8668;
           }
 
-          else if (a3 == 2)
+          else if (type == 2)
           {
             v6 = off_1000B8670;
           }
@@ -265,7 +265,7 @@
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0xF0EE7A00:
               v6 = off_1000B8500;
@@ -282,16 +282,16 @@
         }
       }
 
-      else if (a3 <= 1619725826)
+      else if (type <= 1619725826)
       {
-        if (a3 > 1619725823)
+        if (type > 1619725823)
         {
-          if (a3 == 1619725824)
+          if (type == 1619725824)
           {
             v6 = off_1000B85D8;
           }
 
-          else if (a3 == 1619725825)
+          else if (type == 1619725825)
           {
             v6 = off_1000B85C0;
           }
@@ -304,7 +304,7 @@
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0xDu:
               v6 = off_1000B8648;
@@ -321,14 +321,14 @@
         }
       }
 
-      else if (a3 <= 1619725829)
+      else if (type <= 1619725829)
       {
-        if (a3 == 1619725827)
+        if (type == 1619725827)
         {
           v6 = off_1000B85C8;
         }
 
-        else if (a3 == 1619725828)
+        else if (type == 1619725828)
         {
           v6 = off_1000B85A0;
         }
@@ -339,16 +339,16 @@
         }
       }
 
-      else if (a3 > 1619725831)
+      else if (type > 1619725831)
       {
-        if (a3 == 1619725832)
+        if (type == 1619725832)
         {
           v6 = off_1000B85A8;
         }
 
         else
         {
-          if (a3 != 1619725833)
+          if (type != 1619725833)
           {
             goto LABEL_155;
           }
@@ -357,7 +357,7 @@
         }
       }
 
-      else if (a3 == 1619725830)
+      else if (type == 1619725830)
       {
         v6 = off_1000B8598;
       }
@@ -368,16 +368,16 @@
       }
     }
 
-    else if (a3 <= -1003827189)
+    else if (type <= -1003827189)
     {
-      if (a3 > -1003827192)
+      if (type > -1003827192)
       {
-        if (a3 == -1003827191)
+        if (type == -1003827191)
         {
           v6 = off_1000B8630;
         }
 
-        else if (a3 == -1003827190)
+        else if (type == -1003827190)
         {
           v6 = off_1000B85F0;
         }
@@ -388,12 +388,12 @@
         }
       }
 
-      else if (a3 == -1003827194)
+      else if (type == -1003827194)
       {
         v6 = off_1000B8608;
       }
 
-      else if (a3 == -1003827193)
+      else if (type == -1003827193)
       {
         v6 = off_1000B8610;
       }
@@ -406,7 +406,7 @@
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 0xCCD28102:
           v6 = off_1000B8538;
@@ -473,14 +473,14 @@
           v6 = off_1000B8588;
           goto LABEL_154;
         default:
-          if (a3 == -1003827188)
+          if (type == -1003827188)
           {
             v6 = off_1000B85E0;
           }
 
           else
           {
-            if (a3 != -1003827187)
+            if (type != -1003827187)
             {
               goto LABEL_155;
             }
@@ -495,13 +495,13 @@
     goto LABEL_154;
   }
 
-  if (a3 > -1128766721)
+  if (type > -1128766721)
   {
-    if (a3 <= -1128766714)
+    if (type <= -1128766714)
     {
-      if (a3 > -1128766716)
+      if (type > -1128766716)
       {
-        if (a3 == -1128766715)
+        if (type == -1128766715)
         {
           v6 = off_1000B84F0;
         }
@@ -512,14 +512,14 @@
         }
       }
 
-      else if (a3 == -1128766720)
+      else if (type == -1128766720)
       {
         v6 = off_1000B84D8;
       }
 
       else
       {
-        if (a3 != -1128766717)
+        if (type != -1128766717)
         {
           goto LABEL_155;
         }
@@ -528,9 +528,9 @@
       }
     }
 
-    else if (a3 <= -1128766712)
+    else if (type <= -1128766712)
     {
-      if (a3 == -1128766713)
+      if (type == -1128766713)
       {
         v6 = off_1000B84E0;
       }
@@ -543,7 +543,7 @@
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 0xBCB86309:
           v6 = off_1000B84E8;
@@ -560,11 +560,11 @@
     }
 
 LABEL_154:
-    v5 = [objc_alloc(*v6) initWithLength:a4 value:a5];
+    v5 = [objc_alloc(*v6) initWithLength:length value:value];
     goto LABEL_155;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0x88B29100:
       v6 = off_1000B8790;
@@ -701,13 +701,13 @@ LABEL_155:
   return v5;
 }
 
-+ (id)tlvsFromKey:(id)a3 value:(id)a4 relativeURL:(id)a5
++ (id)tlvsFromKey:(id)key value:(id)value relativeURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  lCopy = l;
   v10 = +[UARPMetaData metaDataTable];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v11 = [v10 objectForKeyedSubscript:keyCopy];
   if (!v11)
   {
     v16 = 0;
@@ -715,19 +715,19 @@ LABEL_155:
   }
 
   v12 = objc_opt_new();
-  v13 = [v11 unsignedLongValue];
+  unsignedLongValue = [v11 unsignedLongValue];
   v14 = &AMAuthInstallApCreatePersonalizedResponse_ptr;
-  if (v13 > 3166200575)
+  if (unsignedLongValue > 3166200575)
   {
-    if (v13 <= 3436347649)
+    if (unsignedLongValue <= 3436347649)
     {
-      if (v13 <= 3291140100)
+      if (unsignedLongValue <= 3291140100)
       {
-        if (v13 > 3166200582)
+        if (unsignedLongValue > 3166200582)
         {
-          if (v13 <= 3166200584)
+          if (unsignedLongValue <= 3166200584)
           {
-            if (v13 == 3166200583)
+            if (unsignedLongValue == 3166200583)
             {
               v15 = UARPMetaDataComposePropertyListPayload;
             }
@@ -740,13 +740,13 @@ LABEL_155:
             goto LABEL_167;
           }
 
-          if (v13 == 3166200585)
+          if (unsignedLongValue == 3166200585)
           {
             v15 = UARPMetaDataComposeSimpleBVERStringFile;
             goto LABEL_167;
           }
 
-          if (v13 == 3291140096)
+          if (unsignedLongValue == 3291140096)
           {
             v15 = UARPMetaDataHostMinimumBatteryLevel;
             goto LABEL_167;
@@ -755,9 +755,9 @@ LABEL_155:
           goto LABEL_170;
         }
 
-        if (v13 > 3166200580)
+        if (unsignedLongValue > 3166200580)
         {
-          if (v13 == 3166200581)
+          if (unsignedLongValue == 3166200581)
           {
             v15 = UARPMetaDataComposeVersionStringFile;
           }
@@ -770,13 +770,13 @@ LABEL_155:
           goto LABEL_167;
         }
 
-        if (v13 == 3166200576)
+        if (unsignedLongValue == 3166200576)
         {
           v15 = UARPMetaDataComposePayloadHashAlgorithm;
           goto LABEL_167;
         }
 
-        if (v13 != 3166200579)
+        if (unsignedLongValue != 3166200579)
         {
           goto LABEL_170;
         }
@@ -786,11 +786,11 @@ LABEL_155:
 
       else
       {
-        if (v13 <= 3291140104)
+        if (unsignedLongValue <= 3291140104)
         {
-          if (v13 > 3291140102)
+          if (unsignedLongValue > 3291140102)
           {
-            if (v13 == 3291140103)
+            if (unsignedLongValue == 3291140103)
             {
               v15 = UARPMetaDataHostMinimumVersion_tvOS;
             }
@@ -801,7 +801,7 @@ LABEL_155:
             }
           }
 
-          else if (v13 == 3291140101)
+          else if (unsignedLongValue == 3291140101)
           {
             v15 = UARPMetaDataHostMinimumVersion_iOS;
           }
@@ -814,16 +814,16 @@ LABEL_155:
           goto LABEL_167;
         }
 
-        if (v13 <= 3291140106)
+        if (unsignedLongValue <= 3291140106)
         {
-          if (v13 != 3291140105)
+          if (unsignedLongValue != 3291140105)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v25 = v8;
-              v26 = v7;
-              v17 = v8;
+              v25 = valueCopy;
+              v26 = keyCopy;
+              v17 = valueCopy;
               v27 = 0u;
               v28 = 0u;
               v29 = 0u;
@@ -842,7 +842,7 @@ LABEL_155:
                       objc_enumerationMutation(v17);
                     }
 
-                    v22 = [[UARPMetaDataHostExcludedHwVersion alloc] initWithPropertyListValue:*(*(&v27 + 1) + 8 * i) relativeURL:v9];
+                    v22 = [[UARPMetaDataHostExcludedHwVersion alloc] initWithPropertyListValue:*(*(&v27 + 1) + 8 * i) relativeURL:lCopy];
                     if (v22)
                     {
                       [v12 addObject:v22];
@@ -855,7 +855,7 @@ LABEL_155:
                 while (v19);
               }
 
-              v7 = v26;
+              keyCopy = v26;
               v14 = &AMAuthInstallApCreatePersonalizedResponse_ptr;
             }
 
@@ -866,19 +866,19 @@ LABEL_155:
           goto LABEL_167;
         }
 
-        if (v13 == 3291140107)
+        if (unsignedLongValue == 3291140107)
         {
           v15 = UARPMetaDataHostDeploymentRulePercentage;
           goto LABEL_167;
         }
 
-        if (v13 == 3291140108)
+        if (unsignedLongValue == 3291140108)
         {
           v15 = UARPMetaDataHostDeploymentRuleCountry;
           goto LABEL_167;
         }
 
-        if (v13 != 3291140109)
+        if (unsignedLongValue != 3291140109)
         {
           goto LABEL_170;
         }
@@ -889,9 +889,9 @@ LABEL_155:
 
     else
     {
-      if (v13 <= 4042160639)
+      if (unsignedLongValue <= 4042160639)
       {
-        switch(v13)
+        switch(unsignedLongValue)
         {
           case 3436347650:
             v15 = UARPMetaDataDeviceMinimumRequiredVersion;
@@ -951,19 +951,19 @@ LABEL_155:
         goto LABEL_170;
       }
 
-      if (v13 == 4042160640)
+      if (unsignedLongValue == 4042160640)
       {
         v15 = UARPMetaDataCrashAnalyticsCoreName;
         goto LABEL_167;
       }
 
-      if (v13 == 4042160641)
+      if (unsignedLongValue == 4042160641)
       {
         v15 = UARPMetaDataCrashAnalyticsAppleModelNumber;
         goto LABEL_167;
       }
 
-      if (v13 != 4042160643)
+      if (unsignedLongValue != 4042160643)
       {
         goto LABEL_170;
       }
@@ -974,9 +974,9 @@ LABEL_155:
     goto LABEL_167;
   }
 
-  if (v13 > 1619725831)
+  if (unsignedLongValue > 1619725831)
   {
-    switch(v13)
+    switch(unsignedLongValue)
     {
       case 2293403904:
         v15 = UARPMetaDataPersonalizationRequired;
@@ -1124,14 +1124,14 @@ LABEL_155:
         v15 = UARPMetaDataPersonalizationEnableFutureFWVersion;
         goto LABEL_167;
       default:
-        if (v13 == 1619725832)
+        if (unsignedLongValue == 1619725832)
         {
           v15 = UARPMetaDataHeySiriModelEngineType;
         }
 
         else
         {
-          if (v13 != 1619725833)
+          if (unsignedLongValue != 1619725833)
           {
             goto LABEL_170;
           }
@@ -1145,13 +1145,13 @@ LABEL_155:
     goto LABEL_167;
   }
 
-  if (v13 > 538280447)
+  if (unsignedLongValue > 538280447)
   {
-    if (v13 > 1619725826)
+    if (unsignedLongValue > 1619725826)
     {
-      if (v13 <= 1619725828)
+      if (unsignedLongValue <= 1619725828)
       {
-        if (v13 == 1619725827)
+        if (unsignedLongValue == 1619725827)
         {
           v15 = UARPMetaDataHeySiriModelRole;
         }
@@ -1162,12 +1162,12 @@ LABEL_155:
         }
       }
 
-      else if (v13 == 1619725829)
+      else if (unsignedLongValue == 1619725829)
       {
         v15 = UARPMetaDataHeySiriModelSignature;
       }
 
-      else if (v13 == 1619725830)
+      else if (unsignedLongValue == 1619725830)
       {
         v15 = UARPMetaDataHeySiriModelCertificate;
       }
@@ -1180,14 +1180,14 @@ LABEL_155:
       goto LABEL_167;
     }
 
-    if (v13 > 1619725823)
+    if (unsignedLongValue > 1619725823)
     {
-      if (v13 == 1619725824)
+      if (unsignedLongValue == 1619725824)
       {
         v15 = UARPMetaDataHeySiriModelType;
       }
 
-      else if (v13 == 1619725825)
+      else if (unsignedLongValue == 1619725825)
       {
         v15 = UARPMetaDataHeySiriModelLocale;
       }
@@ -1200,13 +1200,13 @@ LABEL_155:
       goto LABEL_167;
     }
 
-    if (v13 == 538280448)
+    if (unsignedLongValue == 538280448)
     {
       v15 = UARPMetaDataMappedAnalyticsAppleModelNumber;
       goto LABEL_167;
     }
 
-    if (v13 == 538280449)
+    if (unsignedLongValue == 538280449)
     {
       v15 = UARPMetaDataMappedAnalyticsEventID;
       goto LABEL_167;
@@ -1215,17 +1215,17 @@ LABEL_155:
     goto LABEL_170;
   }
 
-  if (v13 > 5)
+  if (unsignedLongValue > 5)
   {
-    if (v13 <= 9)
+    if (unsignedLongValue <= 9)
     {
-      if (v13 == 6)
+      if (unsignedLongValue == 6)
       {
         v15 = UARPMetaDataInformationStagedFirmwareVersion;
         goto LABEL_167;
       }
 
-      if (v13 == 9)
+      if (unsignedLongValue == 9)
       {
         v15 = UARPMetaDataInformationFriendlyName;
         goto LABEL_167;
@@ -1234,26 +1234,26 @@ LABEL_155:
       goto LABEL_170;
     }
 
-    if (v13 == 10)
+    if (unsignedLongValue == 10)
     {
       v15 = UARPMetaDataInformationHardwareFusing;
       goto LABEL_167;
     }
 
-    if (v13 == 11)
+    if (unsignedLongValue == 11)
     {
       v15 = UARPMetaDataInformationAppleModelNumber;
       goto LABEL_167;
     }
 
-    if (v13 != 13)
+    if (unsignedLongValue != 13)
     {
       goto LABEL_170;
     }
 
     v15 = UARPMetaDataInformationAssetIdentifier;
 LABEL_167:
-    v23 = [[v15 alloc] initWithPropertyListValue:v8 relativeURL:v9];
+    v23 = [[v15 alloc] initWithPropertyListValue:valueCopy relativeURL:lCopy];
     if (v23)
     {
       [v12 addObject:v23];
@@ -1262,14 +1262,14 @@ LABEL_167:
     goto LABEL_170;
   }
 
-  if (v13 > 2)
+  if (unsignedLongValue > 2)
   {
-    if (v13 == 3)
+    if (unsignedLongValue == 3)
     {
       v15 = UARPMetaDataInformationSerialNumber;
     }
 
-    else if (v13 == 4)
+    else if (unsignedLongValue == 4)
     {
       v15 = UARPMetaDataInformationHardwareVersion;
     }
@@ -1282,13 +1282,13 @@ LABEL_167:
     goto LABEL_167;
   }
 
-  if (v13 == 1)
+  if (unsignedLongValue == 1)
   {
     v15 = UARPMetaDataInformationManufacturerName;
     goto LABEL_167;
   }
 
-  if (v13 == 2)
+  if (unsignedLongValue == 2)
   {
     v15 = UARPMetaDataInformationModelName;
     goto LABEL_167;
@@ -1314,9 +1314,9 @@ LABEL_171:
   return [NSDictionary dictionaryWithDictionary:v3];
 }
 
-+ (id)tlvNameForType:(id)a3
++ (id)tlvNameForType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[UARPMetaData metaDataTable];
   v11 = 0;
   v12 = &v11;
@@ -1328,7 +1328,7 @@ LABEL_171:
   v8[1] = 3221225472;
   v8[2] = sub_100057450;
   v8[3] = &unk_1000B9610;
-  v5 = v3;
+  v5 = typeCopy;
   v9 = v5;
   v10 = &v11;
   [v4 enumerateKeysAndObjectsUsingBlock:v8];

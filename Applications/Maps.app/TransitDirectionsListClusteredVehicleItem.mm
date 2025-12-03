@@ -1,12 +1,12 @@
 @interface TransitDirectionsListClusteredVehicleItem
-- (TransitDirectionsListClusteredVehicleItem)initWithClusteredRouteSegment:(id)a3;
+- (TransitDirectionsListClusteredVehicleItem)initWithClusteredRouteSegment:(id)segment;
 @end
 
 @implementation TransitDirectionsListClusteredVehicleItem
 
-- (TransitDirectionsListClusteredVehicleItem)initWithClusteredRouteSegment:(id)a3
+- (TransitDirectionsListClusteredVehicleItem)initWithClusteredRouteSegment:(id)segment
 {
-  v5 = a3;
+  segmentCopy = segment;
   v10.receiver = self;
   v10.super_class = TransitDirectionsListClusteredVehicleItem;
   v6 = [(TransitDirectionsListItem *)&v10 initWithInstructions:0];
@@ -14,7 +14,7 @@
   if (v6)
   {
     [(TransitDirectionsListItem *)v6 setType:4];
-    objc_storeStrong(&v7->_clusteredSegment, a3);
+    objc_storeStrong(&v7->_clusteredSegment, segment);
     v8 = v7;
   }
 

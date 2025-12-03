@@ -1,15 +1,15 @@
 @interface KmlEntitlementChecker
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation KmlEntitlementChecker
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[KmlEntitlementChecker allocWithZone:](KmlEntitlementChecker init];
   if (v5)
   {
-    v6 = [(NSString *)self->_clientName copyWithZone:a3];
+    v6 = [(NSString *)self->_clientName copyWithZone:zone];
     clientName = v5->_clientName;
     v5->_clientName = v6;
 

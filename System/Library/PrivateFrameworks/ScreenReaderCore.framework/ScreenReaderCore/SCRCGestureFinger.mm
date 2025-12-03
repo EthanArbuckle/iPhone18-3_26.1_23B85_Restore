@@ -1,23 +1,23 @@
 @interface SCRCGestureFinger
 - (CGPoint)location;
-- (SCRCGestureFinger)initWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5;
+- (SCRCGestureFinger)initWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure;
 @end
 
 @implementation SCRCGestureFinger
 
-- (SCRCGestureFinger)initWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5
+- (SCRCGestureFinger)initWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v10.receiver = self;
   v10.super_class = SCRCGestureFinger;
   result = [(SCRCGestureFinger *)&v10 init];
   if (result)
   {
-    result->_identifier = a3;
+    result->_identifier = identifier;
     result->_location.x = x;
     result->_location.y = y;
-    result->_pressure = a5;
+    result->_pressure = pressure;
   }
 
   return result;

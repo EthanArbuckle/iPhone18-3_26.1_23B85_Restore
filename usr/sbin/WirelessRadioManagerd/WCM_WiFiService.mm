@@ -11,25 +11,25 @@
 - (float)getCalculatedAvailableRxPhyBandwidth;
 - (float)getCalculatedAvailableTxPhyBandwidth;
 - (float)getEstimatedAvailableRxPhyBandwidth;
-- (float)getL3Bandwidth:(float)a3 :(float)a4;
+- (float)getL3Bandwidth:(float)bandwidth :(float)a4;
 - (int)getConnectedStationCount;
 - (void)dealloc;
-- (void)getMinMaxAvailableRxBandwidth:(id *)a3;
+- (void)getMinMaxAvailableRxBandwidth:(id *)bandwidth;
 - (void)initializeiRATMetrics;
 - (void)resetCumulativeCounters;
 - (void)resetWiFiBWEstimationState;
-- (void)setRSSI:(int64_t)a3;
-- (void)setSNR:(int64_t)a3;
-- (void)updateCCA:(int64_t)a3;
+- (void)setRSSI:(int64_t)i;
+- (void)setSNR:(int64_t)r;
+- (void)updateCCA:(int64_t)a;
 - (void)updateFwTxPer;
-- (void)updateFwTxStats:(int64_t)a3 :(int64_t)a4 :(int64_t)a5;
-- (void)updatePhyRates:(int64_t)a3 :(int64_t)a4 :(int64_t)a5;
+- (void)updateFwTxStats:(int64_t)stats :(int64_t)a4 :(int64_t)a5;
+- (void)updatePhyRates:(int64_t)rates :(int64_t)a4 :(int64_t)a5;
 - (void)updateRxBeaconPer;
-- (void)updateRxBeacons:(int64_t)a3 :(int64_t)a4;
+- (void)updateRxBeacons:(int64_t)beacons :(int64_t)a4;
 - (void)updateRxRatio;
-- (void)updateRxStats:(int64_t)a3 :(int64_t)a4;
+- (void)updateRxStats:(int64_t)stats :(int64_t)a4;
 - (void)updateTxPer;
-- (void)updateTxStats:(int64_t)a3 :(int64_t)a4 :(int64_t)a5;
+- (void)updateTxStats:(int64_t)stats :(int64_t)a4 :(int64_t)a5;
 @end
 
 @implementation WCM_WiFiService
@@ -261,15 +261,15 @@
   v6 = v5;
   [(WCM_WiFiService *)self getTxRetryPercent];
   v8 = v7;
-  v9 = [(WCM_WiFiService *)self getRxPacket];
-  v10 = [(WCM_WiFiService *)self getStationCountWithPendingData];
-  if (v10 >= 2)
+  getRxPacket = [(WCM_WiFiService *)self getRxPacket];
+  getStationCountWithPendingData = [(WCM_WiFiService *)self getStationCountWithPendingData];
+  if (getStationCountWithPendingData >= 2)
   {
-    v4 = v4 / v10;
+    v4 = v4 / getStationCountWithPendingData;
   }
 
-  [WCM_Logging logLevel:28 message:@"getEstimatedAvailableRxPhyBandwidth: RX PER %.2f, TX PER : %.2f, RX Packet Count: %lld, Station Count: %d", *&v6, *&v8, v9, v10];
-  if (v9)
+  [WCM_Logging logLevel:28 message:@"getEstimatedAvailableRxPhyBandwidth: RX PER %.2f, TX PER : %.2f, RX Packet Count: %lld, Station Count: %d", *&v6, *&v8, getRxPacket, getStationCountWithPendingData];
+  if (getRxPacket)
   {
     v11 = v6;
   }
@@ -292,15 +292,15 @@
   v8 = v7;
   [(WCM_WiFiService *)self getTxRetryPercent];
   v10 = v9;
-  v11 = [(WCM_WiFiService *)self getRxPacket];
-  v12 = [(WCM_WiFiService *)self getConnectedStationCount];
-  if (v12 >= 2)
+  getRxPacket = [(WCM_WiFiService *)self getRxPacket];
+  getConnectedStationCount = [(WCM_WiFiService *)self getConnectedStationCount];
+  if (getConnectedStationCount >= 2)
   {
-    v6 = v6 / v12;
+    v6 = v6 / getConnectedStationCount;
   }
 
-  [WCM_Logging logLevel:28 message:@"getCalculatedAvailableRxPhyBandwidth: RX PER %.2f, TX PER : %.2f RX Packet Count: %lld, Station Count: %d", *&v8, *&v10, v11, v12];
-  if (v11)
+  [WCM_Logging logLevel:28 message:@"getCalculatedAvailableRxPhyBandwidth: RX PER %.2f, TX PER : %.2f RX Packet Count: %lld, Station Count: %d", *&v8, *&v10, getRxPacket, getConnectedStationCount];
+  if (getRxPacket)
   {
     v13 = v8;
   }
@@ -313,7 +313,7 @@
   return (1.0 - v13) * v6;
 }
 
-- (void)getMinMaxAvailableRxBandwidth:(id *)a3
+- (void)getMinMaxAvailableRxBandwidth:(id *)bandwidth
 {
   [(WCM_WiFiService *)self getRxPhyRate];
   v6 = v5;
@@ -321,9 +321,9 @@
   {
     [WCM_Logging logLevel:28 message:@"QBSS load valid, load: %lld \n", [(WCM_WiFiService *)self getChannelUtlization]];
     v7 = (v6 * (100 - [(WCM_WiFiService *)self getChannelUtlization])) / 100.0;
-    v8 = [(WCM_WiFiService *)self getConnectedStationCount];
-    v9 = (v8 / 3);
-    if (v8 >= 9)
+    getConnectedStationCount = [(WCM_WiFiService *)self getConnectedStationCount];
+    v9 = (getConnectedStationCount / 3);
+    if (getConnectedStationCount >= 9)
     {
       v10 = v7 / v9;
       goto LABEL_6;
@@ -343,9 +343,9 @@ LABEL_6:
   v12 = v11;
   [(WCM_WiFiService *)self getTxRetryPercent];
   v14 = v13;
-  v15 = [(WCM_WiFiService *)self getRxPacket];
-  [WCM_Logging logLevel:28 message:@"getCalculatedAvailableRxPhyBandwidth: RX PER %.2f, TX PER : %.2f RX Packet Count: %lld, Station Count: %d", *&v12, *&v14, v15, v9];
-  if (v15)
+  getRxPacket = [(WCM_WiFiService *)self getRxPacket];
+  [WCM_Logging logLevel:28 message:@"getCalculatedAvailableRxPhyBandwidth: RX PER %.2f, TX PER : %.2f RX Packet Count: %lld, Station Count: %d", *&v12, *&v14, getRxPacket, v9];
+  if (getRxPacket)
   {
     v16 = v12;
   }
@@ -381,8 +381,8 @@ LABEL_6:
   [WCM_Logging logLevel:28 message:@"Estimated Min AVG Bandwitdh: %.2f, Max AVG Bandwidth: %.2f", v32.f32[0], v32.f32[1]];
   v33 = vdup_n_s32(0x447A0000u);
   v34 = vcvtq_u64_f64(vcvtq_f64_f32(vmul_f32(*p_m_minMovAvgBW, v33)));
-  *&a3->var0 = vcvtq_u64_f64(vcvtq_f64_f32(vmul_f32(v37, v33)));
-  *&a3->var2 = v34;
+  *&bandwidth->var0 = vcvtq_u64_f64(vcvtq_f64_f32(vmul_f32(v37, v33)));
+  *&bandwidth->var2 = v34;
 }
 
 - (float)getCalculatedAvailableTxPhyBandwidth
@@ -393,12 +393,12 @@ LABEL_6:
   v6 = v5;
   [(WCM_WiFiService *)self getTxRetryPercent];
   v8 = v7;
-  v9 = [(WCM_WiFiService *)self getRxPacket];
-  v10 = [(WCM_WiFiService *)self getStationCountWithPendingData];
-  [WCM_Logging logLevel:28 message:@"getCalculatedAvailableTxPhyBandwidth: RX PER %.2f, TX PER : %.2f RX Packet Count: %lld, Station Count: %d", *&v6, *&v8, v9, v10];
-  if (v10 >= 2)
+  getRxPacket = [(WCM_WiFiService *)self getRxPacket];
+  getStationCountWithPendingData = [(WCM_WiFiService *)self getStationCountWithPendingData];
+  [WCM_Logging logLevel:28 message:@"getCalculatedAvailableTxPhyBandwidth: RX PER %.2f, TX PER : %.2f RX Packet Count: %lld, Station Count: %d", *&v6, *&v8, getRxPacket, getStationCountWithPendingData];
+  if (getStationCountWithPendingData >= 2)
   {
-    v4 = v4 / v10;
+    v4 = v4 / getStationCountWithPendingData;
   }
 
   if (self->m_txFrame + self->m_fw_txFrame)
@@ -414,39 +414,39 @@ LABEL_6:
   return (1.0 - v11) * v4;
 }
 
-- (float)getL3Bandwidth:(float)a3 :(float)a4
+- (float)getL3Bandwidth:(float)bandwidth :(float)a4
 {
-  v4 = ceil((((a3 + 38.0) * 8.0) + 6.0) / a4) + 36.0;
+  v4 = ceil((((bandwidth + 38.0) * 8.0) + 6.0) / a4) + 36.0;
   v5 = v4;
-  v6 = a3 * 8.0 / v5;
+  v6 = bandwidth * 8.0 / v5;
   [WCM_Logging logLevel:28 message:@"iRAT: WIFI L3 Pkt Time: %.2f, L3 Throughput : %.2f", *&v5, v6];
   return v6;
 }
 
-- (void)setRSSI:(int64_t)a3
+- (void)setRSSI:(int64_t)i
 {
-  if (a3 != -600)
+  if (i != -600)
   {
     if (!self->m_valid_rssi_measurement)
     {
       self->m_valid_rssi_measurement = 1;
     }
 
-    self->m_rawRssi = a3;
+    self->m_rawRssi = i;
     v3 = self->m_sample_Size + 1;
-    v4 = self->m_cumRawRssi + a3;
+    v4 = self->m_cumRawRssi + i;
     self->m_sample_Size = v3;
     self->m_cumRawRssi = v4;
     self->m_avgRawRssi = (v4 / (v3 + 0.000001));
   }
 }
 
-- (void)setSNR:(int64_t)a3
+- (void)setSNR:(int64_t)r
 {
-  if (a3 != -600)
+  if (r != -600)
   {
     m_valid_snr_measurement = self->m_valid_snr_measurement;
-    self->m_Snr = a3;
+    self->m_Snr = r;
     if (!m_valid_snr_measurement)
     {
       self->m_valid_snr_measurement = 1;
@@ -465,19 +465,19 @@ LABEL_6:
   return *(&self->super.isa + v2);
 }
 
-- (void)updateTxStats:(int64_t)a3 :(int64_t)a4 :(int64_t)a5
+- (void)updateTxStats:(int64_t)stats :(int64_t)a4 :(int64_t)a5
 {
-  if (a3 != -600 && a4 != -600 && a5 != -600)
+  if (stats != -600 && a4 != -600 && a5 != -600)
   {
-    self->m_txFrame = a3;
+    self->m_txFrame = stats;
     self->m_txRetrans = a4;
     m_cumulative_txFrame = self->m_cumulative_txFrame;
     v7 = self->m_cumulative_txRetrans + a4;
     self->m_txFail = a5;
-    self->m_cumulative_txFrame = m_cumulative_txFrame + a3;
+    self->m_cumulative_txFrame = m_cumulative_txFrame + stats;
     self->m_cumulative_txRetrans = v7;
     self->m_cumulative_txFail += a5;
-    v8.i64[0] = a3;
+    v8.i64[0] = stats;
     v8.i64[1] = a5;
     __asm
     {
@@ -512,20 +512,20 @@ LABEL_6:
   *&self->m_rxMovingAvgRetryPercent = 0u;
 }
 
-- (void)updateFwTxStats:(int64_t)a3 :(int64_t)a4 :(int64_t)a5
+- (void)updateFwTxStats:(int64_t)stats :(int64_t)a4 :(int64_t)a5
 {
-  if (a3 != -600 && a4 != -600 && a5 != -600)
+  if (stats != -600 && a4 != -600 && a5 != -600)
   {
-    self->m_fw_txFrame = a3;
+    self->m_fw_txFrame = stats;
     self->m_fw_txRetrans = a4;
     self->m_fw_txFail = a5;
-    v7 = self->m_cumulative_fw_txFrame + a3;
+    v7 = self->m_cumulative_fw_txFrame + stats;
     v8 = self->m_cumulative_fw_txRetrans + a4;
     self->m_cumulative_fw_txFrame = v7;
     self->m_cumulative_fw_txRetrans = v8;
     v9 = self->m_cumulative_fw_txFail + a5;
     self->m_cumulative_fw_txFail = v9;
-    [WCM_Logging logLevel:18 message:@"WiFi Stats: FW TX Fail %lld, FW Tx Frame %lld FW Cum TX Fail %lld, FW  Cum Tx Frame %lld", a5, a3, v9, v7, v5, v6];
+    [WCM_Logging logLevel:18 message:@"WiFi Stats: FW TX Fail %lld, FW Tx Frame %lld FW Cum TX Fail %lld, FW  Cum Tx Frame %lld", a5, stats, v9, v7, v5, v6];
   }
 }
 
@@ -547,36 +547,36 @@ LABEL_6:
   return v4;
 }
 
-- (void)updateRxStats:(int64_t)a3 :(int64_t)a4
+- (void)updateRxStats:(int64_t)stats :(int64_t)a4
 {
-  if (a3 != -600 && a4 != -600)
+  if (stats != -600 && a4 != -600)
   {
     m_movingAvgRxRetrans = self->m_movingAvgRxRetrans;
-    v5 = (a3 + 11 * self->m_movingAvgRxFrame) / 12;
-    self->m_rxFrame = a3;
+    v5 = (stats + 11 * self->m_movingAvgRxFrame) / 12;
+    self->m_rxFrame = stats;
     self->m_rxRetrans = a4;
     self->m_movingAvgRxFrame = v5;
     self->m_movingAvgRxRetrans = (a4 + 11 * m_movingAvgRxRetrans) / 12;
   }
 }
 
-- (void)updatePhyRates:(int64_t)a3 :(int64_t)a4 :(int64_t)a5
+- (void)updatePhyRates:(int64_t)rates :(int64_t)a4 :(int64_t)a5
 {
-  if (a5 <= 989999 && a4 >= 1000 && a3 >= 1000 && a5 >= 1000)
+  if (a5 <= 989999 && a4 >= 1000 && rates >= 1000 && a5 >= 1000)
   {
     self->m_prevRxPhyRate = self->m_rxPhyRate;
-    self->m_txPhyRate = a3 / 1000.0;
+    self->m_txPhyRate = rates / 1000.0;
     self->m_txFBPhyRate = a4 / 1000.0;
     self->m_rxPhyRate = a5 / 1000.0;
   }
 }
 
-- (void)updateRxBeacons:(int64_t)a3 :(int64_t)a4
+- (void)updateRxBeacons:(int64_t)beacons :(int64_t)a4
 {
   v4 = 0;
-  if (a3 <= a4 && a4 && a3 != -600 && a4 != -600)
+  if (beacons <= a4 && a4 && beacons != -600 && a4 != -600)
   {
-    self->m_rxBeacons = a3;
+    self->m_rxBeacons = beacons;
     self->m_rxBeaconSched = a4;
     v4 = 1;
   }
@@ -584,27 +584,27 @@ LABEL_6:
   self->m_valid_beacon_per = v4;
 }
 
-- (void)updateCCA:(int64_t)a3
+- (void)updateCCA:(int64_t)a
 {
-  if (a3 != -600)
+  if (a != -600)
   {
-    self->m_cca = a3;
+    self->m_cca = a;
   }
 }
 
 - (BOOL)isWiFiQualityGoodForProximityMode
 {
-  v3 = [(WCM_WiFiService *)self getRSSI];
-  v4 = [(WCM_WiFiService *)self getSNR];
+  getRSSI = [(WCM_WiFiService *)self getRSSI];
+  getSNR = [(WCM_WiFiService *)self getSNR];
   [(WCM_WiFiService *)self getBeaconPer];
   v6 = v5;
-  v7 = [(WCM_WiFiService *)self isAssociated];
+  isAssociated = [(WCM_WiFiService *)self isAssociated];
   v8 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v9 = [(WCM_WiFiService *)self isWiFiPrimaryInterface];
+  isWiFiPrimaryInterface = [(WCM_WiFiService *)self isWiFiPrimaryInterface];
   result = 0;
-  if (v9 && v7)
+  if (isWiFiPrimaryInterface && isAssociated)
   {
-    return v4 >= 11 && v3 > [v8 dataMinWifiRssiTh0] && v6 * 100.0 < objc_msgSend(v8, "dataMinWifiBeaconPerTh0") && -[WCM_WiFiService isLSMWiFiQualityGood](self, "isLSMWiFiQualityGood");
+    return getSNR >= 11 && getRSSI > [v8 dataMinWifiRssiTh0] && v6 * 100.0 < objc_msgSend(v8, "dataMinWifiBeaconPerTh0") && -[WCM_WiFiService isLSMWiFiQualityGood](self, "isLSMWiFiQualityGood");
   }
 
   return result;

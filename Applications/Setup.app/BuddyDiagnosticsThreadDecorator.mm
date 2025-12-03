@@ -1,80 +1,80 @@
 @interface BuddyDiagnosticsThreadDecorator
-- (BuddyDiagnosticsThreadDecorator)initWithSetupMethod:(id)a3 runState:(id)a4 flowItemDispositionProvider:(id)a5 fundamentalFlowStartupProvider:(id)a6;
+- (BuddyDiagnosticsThreadDecorator)initWithSetupMethod:(id)method runState:(id)state flowItemDispositionProvider:(id)provider fundamentalFlowStartupProvider:(id)startupProvider;
 - (unint64_t)countOfAllDiagnostics;
-- (void)_throwWithException:(id)a3;
-- (void)addDiagnostics:(id)a3 thenThrowException:(id)a4;
-- (void)overrideThrowExceptionHandler:(id)a3;
+- (void)_throwWithException:(id)exception;
+- (void)addDiagnostics:(id)diagnostics thenThrowException:(id)exception;
+- (void)overrideThrowExceptionHandler:(id)handler;
 - (void)removeAllDiagnostics;
 @end
 
 @implementation BuddyDiagnosticsThreadDecorator
 
-- (BuddyDiagnosticsThreadDecorator)initWithSetupMethod:(id)a3 runState:(id)a4 flowItemDispositionProvider:(id)a5 fundamentalFlowStartupProvider:(id)a6
+- (BuddyDiagnosticsThreadDecorator)initWithSetupMethod:(id)method runState:(id)state flowItemDispositionProvider:(id)provider fundamentalFlowStartupProvider:(id)startupProvider
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, method);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, state);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, provider);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, startupProvider);
+  v9 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = BuddyDiagnosticsThreadDecorator;
-  v18 = [(BuddyDiagnosticsThreadDecorator *)&v13 init];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyDiagnosticsThreadDecorator *)&v13 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v18 setSetupMethod:location[0]];
-    [v18 setRunState:v16];
-    [v18 setFlowItemDispositionProvider:v15];
-    [v18 setFundamentalFlowStartupProvider:v14];
+    [selfCopy setSetupMethod:location[0]];
+    [selfCopy setRunState:v16];
+    [selfCopy setFlowItemDispositionProvider:v15];
+    [selfCopy setFundamentalFlowStartupProvider:v14];
     v10 = objc_alloc_init(NSMutableArray);
-    [v18 setNeverSignaledSemaphores:v10];
+    [selfCopy setNeverSignaledSemaphores:v10];
   }
 
-  v11 = v18;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)addDiagnostics:(id)a3 thenThrowException:(id)a4
+- (void)addDiagnostics:(id)diagnostics thenThrowException:(id)exception
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, diagnostics);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  v5 = [(BuddyDiagnosticsThreadDecorator *)v31 setupMethod];
-  v6 = [(BuddySetupMethod *)v5 intent];
-  v7 = [(BuddyDiagnosticsThreadDecorator *)v31 runState];
-  v8 = [(BYRunState *)v7 hasCompletedInitialRun];
-  v9 = [(BuddyDiagnosticsThreadDecorator *)v31 flowItemDispositionProvider];
-  v10 = [(BuddyFlowItemDispositionProvider *)v9 preferredDispositions];
-  v11 = [(BuddyDiagnosticsThreadDecorator *)v31 fundamentalFlowStartupProvider];
-  v12 = [(BuddyFundamentalFlowStartupProvider *)v11 startupCause];
-  v13 = [NSString stringWithFormat:@"purplebuddydiagnostics.%lu.%d.%lu.%lu.%@", v6, v8, v10, v12, location[0]];
+  objc_storeStrong(&v29, exception);
+  setupMethod = [(BuddyDiagnosticsThreadDecorator *)selfCopy setupMethod];
+  intent = [(BuddySetupMethod *)setupMethod intent];
+  runState = [(BuddyDiagnosticsThreadDecorator *)selfCopy runState];
+  hasCompletedInitialRun = [(BYRunState *)runState hasCompletedInitialRun];
+  flowItemDispositionProvider = [(BuddyDiagnosticsThreadDecorator *)selfCopy flowItemDispositionProvider];
+  preferredDispositions = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider preferredDispositions];
+  fundamentalFlowStartupProvider = [(BuddyDiagnosticsThreadDecorator *)selfCopy fundamentalFlowStartupProvider];
+  startupCause = [(BuddyFundamentalFlowStartupProvider *)fundamentalFlowStartupProvider startupCause];
+  v13 = [NSString stringWithFormat:@"purplebuddydiagnostics.%lu.%d.%lu.%lu.%@", intent, hasCompletedInitialRun, preferredDispositions, startupCause, location[0]];
   v14 = v13;
-  v15 = [(NSString *)v13 UTF8String];
+  uTF8String = [(NSString *)v13 UTF8String];
   v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-  v28 = dispatch_queue_create(v15, v16);
+  v28 = dispatch_queue_create(uTF8String, v16);
 
   v27 = dispatch_semaphore_create(0);
-  v17 = [(BuddyDiagnosticsThreadDecorator *)v31 neverSignaledSemaphores];
-  objc_sync_enter(v17);
-  v18 = [(BuddyDiagnosticsThreadDecorator *)v31 neverSignaledSemaphores];
-  [(NSMutableArray *)v18 addObject:v27];
+  neverSignaledSemaphores = [(BuddyDiagnosticsThreadDecorator *)selfCopy neverSignaledSemaphores];
+  objc_sync_enter(neverSignaledSemaphores);
+  neverSignaledSemaphores2 = [(BuddyDiagnosticsThreadDecorator *)selfCopy neverSignaledSemaphores];
+  [(NSMutableArray *)neverSignaledSemaphores2 addObject:v27];
 
-  objc_sync_exit(v17);
+  objc_sync_exit(neverSignaledSemaphores);
   v26 = dispatch_semaphore_create(0);
   block = _NSConcreteStackBlock;
   v20 = -1073741824;
@@ -85,7 +85,7 @@
   v25 = v27;
   dispatch_async(v28, &block);
   dispatch_semaphore_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
-  [(BuddyDiagnosticsThreadDecorator *)v31 _throwWithException:v29];
+  [(BuddyDiagnosticsThreadDecorator *)selfCopy _throwWithException:v29];
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v26, 0);
@@ -97,27 +97,27 @@
 
 - (unint64_t)countOfAllDiagnostics
 {
-  v2 = [(BuddyDiagnosticsThreadDecorator *)self neverSignaledSemaphores];
-  objc_sync_enter(v2);
-  v3 = [(BuddyDiagnosticsThreadDecorator *)self neverSignaledSemaphores];
-  v4 = [(NSMutableArray *)v3 count];
+  neverSignaledSemaphores = [(BuddyDiagnosticsThreadDecorator *)self neverSignaledSemaphores];
+  objc_sync_enter(neverSignaledSemaphores);
+  neverSignaledSemaphores2 = [(BuddyDiagnosticsThreadDecorator *)self neverSignaledSemaphores];
+  v4 = [(NSMutableArray *)neverSignaledSemaphores2 count];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(neverSignaledSemaphores);
   return v4;
 }
 
 - (void)removeAllDiagnostics
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v2 = [(BuddyDiagnosticsThreadDecorator *)self neverSignaledSemaphores];
-  objc_sync_enter(v2);
+  neverSignaledSemaphores = [(BuddyDiagnosticsThreadDecorator *)self neverSignaledSemaphores];
+  objc_sync_enter(neverSignaledSemaphores);
   v11 = 0u;
   v10 = 0u;
   v9 = 0u;
   v8 = 0u;
-  v3 = [(BuddyDiagnosticsThreadDecorator *)v14 neverSignaledSemaphores];
-  v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v15 count:16];
+  neverSignaledSemaphores2 = [(BuddyDiagnosticsThreadDecorator *)selfCopy neverSignaledSemaphores];
+  v4 = [(NSMutableArray *)neverSignaledSemaphores2 countByEnumeratingWithState:&v8 objects:v15 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -127,31 +127,31 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(neverSignaledSemaphores2);
         }
 
         dsema = *(*(&v8 + 1) + 8 * i);
         dispatch_semaphore_signal(dsema);
       }
 
-      v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v15 count:16];
+      v4 = [(NSMutableArray *)neverSignaledSemaphores2 countByEnumeratingWithState:&v8 objects:v15 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [(BuddyDiagnosticsThreadDecorator *)v14 neverSignaledSemaphores];
-  [(NSMutableArray *)v7 removeAllObjects];
+  neverSignaledSemaphores3 = [(BuddyDiagnosticsThreadDecorator *)selfCopy neverSignaledSemaphores];
+  [(NSMutableArray *)neverSignaledSemaphores3 removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(neverSignaledSemaphores);
 }
 
-- (void)overrideThrowExceptionHandler:(id)a3
+- (void)overrideThrowExceptionHandler:(id)handler
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   if (os_variant_has_internal_ui())
   {
     oslog = _BYLoggingFacility();
@@ -165,25 +165,25 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BuddyDiagnosticsThreadDecorator *)v9 setCustomExceptionHandler:location[0]];
+    [(BuddyDiagnosticsThreadDecorator *)selfCopy setCustomExceptionHandler:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_throwWithException:(id)a3
+- (void)_throwWithException:(id)exception
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, exception);
   v6 = 0;
   v3 = 0;
   if (os_variant_has_internal_ui())
   {
-    v7 = [(BuddyDiagnosticsThreadDecorator *)v9 customExceptionHandler];
+    customExceptionHandler = [(BuddyDiagnosticsThreadDecorator *)selfCopy customExceptionHandler];
     v6 = 1;
-    v3 = v7 != 0;
+    v3 = customExceptionHandler != 0;
   }
 
   if (v6)
@@ -203,8 +203,8 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(BuddyDiagnosticsThreadDecorator *)v9 customExceptionHandler];
-  v4[2](v4, location[0]);
+  customExceptionHandler2 = [(BuddyDiagnosticsThreadDecorator *)selfCopy customExceptionHandler];
+  customExceptionHandler2[2](customExceptionHandler2, location[0]);
 
   objc_storeStrong(location, 0);
 }

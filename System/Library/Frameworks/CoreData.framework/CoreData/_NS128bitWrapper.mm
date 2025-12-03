@@ -1,6 +1,6 @@
 @interface _NS128bitWrapper
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation _NS128bitWrapper
@@ -15,14 +15,14 @@
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   high64 = self->bits.high64;
-  v4 = *(a3 + 1);
+  v4 = *(compare + 1);
   if (high64 == v4)
   {
     high64 = self->bits.low64;
-    v4 = *(a3 + 2);
+    v4 = *(compare + 2);
   }
 
   v5 = high64 < v4;

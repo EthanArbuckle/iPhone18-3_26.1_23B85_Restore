@@ -4,12 +4,12 @@
 - (id)_matchingDictionaries;
 - (id)attachedKeyboards;
 - (void)_disableUserInterfaceClient;
-- (void)_showSimpleAlertWithText:(id)a3;
+- (void)_showSimpleAlertWithText:(id)text;
 - (void)_updateKeyboardMonitorStateIfNeeded;
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3;
-- (void)setDetectDevices:(BOOL)a3;
-- (void)setListenForMouseKeyToggle:(BOOL)a3;
-- (void)setMouseKeysEnabled:(BOOL)a3;
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event;
+- (void)setDetectDevices:(BOOL)devices;
+- (void)setListenForMouseKeyToggle:(BOOL)toggle;
+- (void)setMouseKeysEnabled:(BOOL)enabled;
 @end
 
 @implementation HNDDeviceDetector
@@ -55,9 +55,9 @@
   return v2;
 }
 
-- (void)setListenForMouseKeyToggle:(BOOL)a3
+- (void)setListenForMouseKeyToggle:(BOOL)toggle
 {
-  if (a3)
+  if (toggle)
   {
     v4 = objc_opt_new();
     [v4 setWantsKeyboardEvents:1];
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)setMouseKeysEnabled:(BOOL)a3
+- (void)setMouseKeysEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[NSMutableSet set];
   hidManager = self->_hidManager;
   if (hidManager)
@@ -98,7 +98,7 @@
     [(__CFSet *)v7 enumerateObjectsUsingBlock:v10];
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -110,8 +110,8 @@
 
   else
   {
-    v8 = [(HNDDeviceDetector *)self delegate];
-    [v8 deviceDetector:self unloadDevicesPassingTest:&stru_1001D3800];
+    delegate = [(HNDDeviceDetector *)self delegate];
+    [delegate deviceDetector:self unloadDevicesPassingTest:&stru_1001D3800];
   }
 }
 
@@ -144,20 +144,20 @@
 
 - (id)attachedKeyboards
 {
-  v2 = [(AXDeviceMonitor *)self->_keyboardMonitor copyDevices];
+  copyDevices = [(AXDeviceMonitor *)self->_keyboardMonitor copyDevices];
 
-  return v2;
+  return copyDevices;
 }
 
-- (void)_showSimpleAlertWithText:(id)a3
+- (void)_showSimpleAlertWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_disableUserInterfaceClient" object:0];
   v5 = +[HNDHandManager sharedManager];
-  v6 = [v5 currentDisplayManager];
+  currentDisplayManager = [v5 currentDisplayManager];
 
-  [v6 addUserInterfaceClientEnabler:@"AssistiveTouchDeviceDetector"];
-  [v6 showSimpleAlertWithText:v4];
+  [currentDisplayManager addUserInterfaceClientEnabler:@"AssistiveTouchDeviceDetector"];
+  [currentDisplayManager showSimpleAlertWithText:textCopy];
 
   [(HNDDeviceDetector *)self performSelector:"_disableUserInterfaceClient" withObject:0 afterDelay:15.0];
 }
@@ -165,11 +165,11 @@
 - (void)_disableUserInterfaceClient
 {
   v3 = +[HNDHandManager sharedManager];
-  v2 = [v3 currentDisplayManager];
-  [v2 removeUserInterfaceClientEnabler:@"AssistiveTouchDeviceDetector"];
+  currentDisplayManager = [v3 currentDisplayManager];
+  [currentDisplayManager removeUserInterfaceClientEnabler:@"AssistiveTouchDeviceDetector"];
 }
 
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event
 {
   v3 = +[HNDHandManager sharedManager];
   [v3 updateSoftwareKeyboardState];
@@ -239,11 +239,11 @@
   return v2;
 }
 
-- (void)setDetectDevices:(BOOL)a3
+- (void)setDetectDevices:(BOOL)devices
 {
-  self->_detectDevices = a3;
+  self->_detectDevices = devices;
   hidManager = self->_hidManager;
-  if (a3)
+  if (devices)
   {
     if (!hidManager)
     {
@@ -252,8 +252,8 @@
       IOHIDManagerRegisterDeviceMatchingCallback(v5, sub_10000FCC8, self);
       IOHIDManagerRegisterDeviceRemovalCallback(self->_hidManager, sub_10000FDB4, self);
       v6 = self->_hidManager;
-      v7 = [(HNDDeviceDetector *)self _matchingDictionaries];
-      IOHIDManagerSetDeviceMatchingMultiple(v6, v7);
+      _matchingDictionaries = [(HNDDeviceDetector *)self _matchingDictionaries];
+      IOHIDManagerSetDeviceMatchingMultiple(v6, _matchingDictionaries);
 
       v8 = self->_hidManager;
       Current = CFRunLoopGetCurrent();

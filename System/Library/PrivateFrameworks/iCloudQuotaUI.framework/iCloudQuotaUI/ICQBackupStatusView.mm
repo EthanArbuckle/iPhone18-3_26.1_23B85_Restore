@@ -1,20 +1,20 @@
 @interface ICQBackupStatusView
-- (ICQBackupStatusView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
+- (ICQBackupStatusView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
 - (void)_layoutSubviews;
-- (void)_sizeToFitWidth:(double)a3 inTableView:(id)a4;
+- (void)_sizeToFitWidth:(double)width inTableView:(id)view;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setBackupProgress:(double)a3 timeIntervalRemaining:(double)a4;
-- (void)setLastBackupText:(id)a3;
+- (void)setBackupProgress:(double)progress timeIntervalRemaining:(double)remaining;
+- (void)setLastBackupText:(id)text;
 - (void)sizeToFit;
-- (void)updateStatus:(id)a3;
-- (void)updateViewsForBackupState:(int)a3 restoreState:(int)a4 enabled:(BOOL)a5;
+- (void)updateStatus:(id)status;
+- (void)updateViewsForBackupState:(int)state restoreState:(int)restoreState enabled:(BOOL)enabled;
 @end
 
 @implementation ICQBackupStatusView
 
-- (ICQBackupStatusView)initWithSpecifier:(id)a3
+- (ICQBackupStatusView)initWithSpecifier:(id)specifier
 {
   v53.receiver = self;
   v53.super_class = ICQBackupStatusView;
@@ -22,7 +22,7 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(ICQBackupStatusView *)&v53 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(ICQBackupStatusView *)&v53 initWithFrame:specifier, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -47,12 +47,12 @@
 
     [(UILabel *)v7->_statusLabel setAdjustsFontForContentSizeCategory:1];
     v18 = v7->_statusLabel;
-    v19 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v18 setTextColor:v19];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v18 setTextColor:labelColor];
 
     v20 = v7->_statusLabel;
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v20 setBackgroundColor:v21];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v20 setBackgroundColor:clearColor];
 
     v22 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v3, v4, v5, v6}];
     timeRemainingLabel = v7->_timeRemainingLabel;
@@ -63,13 +63,13 @@
 
     [(UILabel *)v7->_timeRemainingLabel setAdjustsFontForContentSizeCategory:1];
     v25 = v7->_timeRemainingLabel;
-    v26 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v25 setTextColor:v26];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v25 setTextColor:labelColor2];
 
     [(UILabel *)v7->_timeRemainingLabel setTextAlignment:1];
     v27 = v7->_timeRemainingLabel;
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v27 setBackgroundColor:v28];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v27 setBackgroundColor:clearColor2];
 
     v29 = v7->_timeRemainingLabel;
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -85,13 +85,13 @@
     [(UILabel *)v34 setFont:v35];
 
     v36 = v7->_backupIssueLabel;
-    v37 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v36 setTextColor:v37];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v36 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v7->_backupIssueLabel setTextAlignment:4];
     v38 = v7->_backupIssueLabel;
-    v39 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v38 setBackgroundColor:v39];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v38 setBackgroundColor:clearColor3];
 
     [(UILabel *)v7->_backupIssueLabel setNumberOfLines:0];
     v40 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v3, v4, v5, v6}];
@@ -103,13 +103,13 @@
     [(UILabel *)v42 setFont:v43];
 
     v44 = v7->_lastBackupLabel;
-    v45 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v44 setTextColor:v45];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v44 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v7->_lastBackupLabel setTextAlignment:4];
     v46 = v7->_lastBackupLabel;
-    v47 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v46 setBackgroundColor:v47];
+    clearColor4 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v46 setBackgroundColor:clearColor4];
 
     [(UILabel *)v7->_lastBackupLabel setNumberOfLines:0];
     v48 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -141,30 +141,30 @@
   }
 }
 
-- (void)setLastBackupText:(id)a3
+- (void)setLastBackupText:(id)text
 {
-  [(UILabel *)self->_lastBackupLabel setText:a3];
+  [(UILabel *)self->_lastBackupLabel setText:text];
 
   [(ICQBackupStatusView *)self sizeToFit];
 }
 
-- (void)updateStatus:(id)a3
+- (void)updateStatus:(id)status
 {
-  [(UILabel *)self->_statusLabel setText:a3];
+  [(UILabel *)self->_statusLabel setText:status];
   statusLabel = self->_statusLabel;
 
   [(UILabel *)statusLabel sizeToFit];
 }
 
-- (void)_sizeToFitWidth:(double)a3 inTableView:(id)a4
+- (void)_sizeToFitWidth:(double)width inTableView:(id)view
 {
-  v6 = a4;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [ICQBackupStatusView _sizeToFitWidth:inTableView:];
   }
 
-  v45 = v6;
+  v45 = viewCopy;
   PSTextViewInsets();
   v8 = v7;
   [v45 _backgroundInset];
@@ -191,9 +191,9 @@
     [(UILabel *)self->_backupIssueLabel frame];
     v20 = v19;
     v22 = v21;
-    v23 = [(UILabel *)self->_backupIssueLabel text];
-    v24 = [(UILabel *)self->_backupIssueLabel font];
-    [v23 _legacy_sizeWithFont:v24 constrainedToSize:-[UILabel lineBreakMode](self->_backupIssueLabel lineBreakMode:{"lineBreakMode"), a3 + v13 * -2.0, 1.79769313e308}];
+    text = [(UILabel *)self->_backupIssueLabel text];
+    font = [(UILabel *)self->_backupIssueLabel font];
+    [text _legacy_sizeWithFont:font constrainedToSize:-[UILabel lineBreakMode](self->_backupIssueLabel lineBreakMode:{"lineBreakMode"), width + v13 * -2.0, 1.79769313e308}];
     v26 = v25;
     v28 = v27;
 
@@ -207,9 +207,9 @@
     [(UILabel *)self->_lastBackupLabel frame];
     v31 = v30;
     v33 = v32;
-    v34 = [(UILabel *)self->_lastBackupLabel text];
-    v35 = [(UILabel *)self->_lastBackupLabel font];
-    [v34 _legacy_sizeWithFont:v35 constrainedToSize:-[UILabel lineBreakMode](self->_lastBackupLabel lineBreakMode:{"lineBreakMode"), a3 + v13 * -2.0, 1.79769313e308}];
+    text2 = [(UILabel *)self->_lastBackupLabel text];
+    font2 = [(UILabel *)self->_lastBackupLabel font];
+    [text2 _legacy_sizeWithFont:font2 constrainedToSize:-[UILabel lineBreakMode](self->_lastBackupLabel lineBreakMode:{"lineBreakMode"), width + v13 * -2.0, 1.79769313e308}];
     v37 = v36;
     v39 = v38;
 
@@ -249,13 +249,13 @@
     v40 = v40 + v43;
   }
 
-  [(ICQBackupStatusView *)self setFrame:v44, v16, a3, v40];
+  [(ICQBackupStatusView *)self setFrame:v44, v16, width, v40];
   [(ICQBackupStatusView *)self setNeedsLayout];
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  [(ICQBackupStatusView *)self _sizeToFitWidth:a4 inTableView:a3];
+  [(ICQBackupStatusView *)self _sizeToFitWidth:view inTableView:width];
   [(ICQBackupStatusView *)self bounds];
   return v5;
 }
@@ -265,25 +265,25 @@
   v8.receiver = self;
   v8.super_class = ICQBackupStatusView;
   [(ICQBackupStatusView *)&v8 sizeToFit];
-  v3 = [(ICQBackupStatusView *)self superview];
+  superview = [(ICQBackupStatusView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(ICQBackupStatusView *)self superview];
-    [v4 bounds];
+    superview2 = [(ICQBackupStatusView *)self superview];
+    [superview2 bounds];
     v6 = v5;
-    v7 = [(ICQBackupStatusView *)self superview];
-    [(ICQBackupStatusView *)self _sizeToFitWidth:v7 inTableView:v6];
+    superview3 = [(ICQBackupStatusView *)self superview];
+    [(ICQBackupStatusView *)self _sizeToFitWidth:superview3 inTableView:v6];
   }
 }
 
 - (void)_layoutSubviews
 {
-  v3 = [(ICQBackupStatusView *)self superview];
-  if (v3)
+  superview = [(ICQBackupStatusView *)self superview];
+  if (superview)
   {
-    v4 = [(ICQBackupStatusView *)self superview];
-    [v4 _backgroundInset];
+    superview2 = [(ICQBackupStatusView *)self superview];
+    [superview2 _backgroundInset];
     v6 = v5;
     if (PSIsN56())
     {
@@ -312,11 +312,11 @@
     [(UILabel *)backupIssueLabel frame];
     v14 = v13;
     v16 = v15;
-    v17 = [MEMORY[0x277D75128] sharedApplication];
-    v18 = [v17 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
     v19 = v8;
-    if (v18)
+    if (userInterfaceLayoutDirection)
     {
       [(ICQBackupStatusView *)self bounds];
       v19 = v20 - v8 - v14;
@@ -331,11 +331,11 @@
     [(UILabel *)lastBackupLabel frame];
     v23 = v22;
     v25 = v24;
-    v26 = [MEMORY[0x277D75128] sharedApplication];
-    v27 = [v26 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
 
     v28 = v8;
-    if (v27)
+    if (userInterfaceLayoutDirection2)
     {
       [(ICQBackupStatusView *)self bounds];
       v28 = v29 - v8 - v23;
@@ -408,9 +408,9 @@
   [(ICQBackupStatusView *)self _layoutSubviews];
 }
 
-- (void)setBackupProgress:(double)a3 timeIntervalRemaining:(double)a4
+- (void)setBackupProgress:(double)progress timeIntervalRemaining:(double)remaining
 {
-  if (a4 > 604800.0 || a4 <= 0.0)
+  if (remaining > 604800.0 || remaining <= 0.0)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v7 localizedStringForKey:@"ESTIMATING_TIME_REMAINING" value:&stru_28844FC60 table:@"Backup"];
@@ -418,7 +418,7 @@
 
   else
   {
-    v6 = [(NSDateComponentsFormatter *)self->_durationFormatter stringFromTimeInterval:a4];
+    v6 = [(NSDateComponentsFormatter *)self->_durationFormatter stringFromTimeInterval:remaining];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -427,7 +427,7 @@
   block[3] = &unk_27A65B810;
   block[4] = self;
   v10 = v6;
-  v11 = a3;
+  progressCopy = progress;
   v8 = v6;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
@@ -442,28 +442,28 @@ uint64_t __63__ICQBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
   return [v2 setProgress:v3];
 }
 
-- (void)updateViewsForBackupState:(int)a3 restoreState:(int)a4 enabled:(BOOL)a5
+- (void)updateViewsForBackupState:(int)state restoreState:(int)restoreState enabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v48 = *MEMORY[0x277D85DE8];
   v9 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v47) = a3;
+    LODWORD(v47) = state;
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "update view for backup state: %d", buf, 8u);
   }
 
-  self->_animatedToEnabled = v5;
-  self->_animatingToState = a3;
+  self->_animatedToEnabled = enabledCopy;
+  self->_animatingToState = state;
   [(NSMutableSet *)self->_visibleSubviews removeAllObjects];
-  if (a3 > 6)
+  if (state > 6)
   {
     v10 = 0;
     goto LABEL_48;
   }
 
-  if (((1 << a3) & 0x79) == 0)
+  if (((1 << state) & 0x79) == 0)
   {
     v10 = [MEMORY[0x277CBEB18] arrayWithObjects:{self->_backupIssueLabel, self->_lastBackupLabel, 0}];
     visibleSubviews = self->_visibleSubviews;
@@ -481,7 +481,7 @@ uint64_t __63__ICQBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
 
   v10 = [MEMORY[0x277CBEB18] arrayWithObjects:{self->_spinner, self->_progressBar, self->_statusLabel, self->_timeRemainingLabel, 0}];
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-  if (!v5)
+  if (!enabledCopy)
   {
     [(NSMutableSet *)v10 addObject:self->_backupIssueLabel];
     goto LABEL_48;
@@ -498,20 +498,20 @@ uint64_t __63__ICQBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
       _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "backup error only: %@", buf, 0xCu);
     }
 
-    v13 = [(NSError *)self->_backupError domain];
-    v14 = [v13 isEqualToString:@"MBErrorDomain"];
+    domain = [(NSError *)self->_backupError domain];
+    v14 = [domain isEqualToString:@"MBErrorDomain"];
 
     if (!v14)
     {
       goto LABEL_34;
     }
 
-    v15 = [(NSError *)self->_backupError code];
-    if (v15 > 208)
+    code = [(NSError *)self->_backupError code];
+    if (code > 208)
     {
-      if (v15 <= 302)
+      if (code <= 302)
       {
-        if (v15 == 209)
+        if (code == 209)
         {
           v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v21 = v24;
@@ -519,7 +519,7 @@ uint64_t __63__ICQBackupStatusView_setBackupProgress_timeIntervalRemaining___blo
           goto LABEL_35;
         }
 
-        if (v15 != 300)
+        if (code != 300)
         {
           goto LABEL_34;
         }
@@ -531,9 +531,9 @@ LABEL_33:
         goto LABEL_35;
       }
 
-      if (v15 != 303)
+      if (code != 303)
       {
-        if (v15 != 304 && v15 != 308)
+        if (code != 304 && code != 308)
         {
           goto LABEL_34;
         }
@@ -551,9 +551,9 @@ LABEL_51:
       goto LABEL_36;
     }
 
-    if (v15 <= 201)
+    if (code <= 201)
     {
-      if (v15 == 13)
+      if (code == 13)
       {
         v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v21 = v24;
@@ -561,7 +561,7 @@ LABEL_51:
         goto LABEL_35;
       }
 
-      if (v15 != 105)
+      if (code != 105)
       {
         goto LABEL_34;
       }
@@ -576,9 +576,9 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    if (v15 != 202)
+    if (code != 202)
     {
-      if (v15 != 203)
+      if (code != 203)
       {
 LABEL_34:
         v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -611,7 +611,7 @@ LABEL_34:
 
   v23 = 0;
 LABEL_37:
-  if ((a4 - 1) > 1)
+  if ((restoreState - 1) > 1)
   {
     [(NSMutableSet *)self->_visibleSubviews addObject:self->_lastBackupLabel];
   }
@@ -626,22 +626,22 @@ LABEL_37:
     v23 = 0;
   }
 
-  v29 = [(ICQBackupStatusView *)self footerText];
+  footerText = [(ICQBackupStatusView *)self footerText];
 
-  if (v29)
+  if (footerText)
   {
-    v30 = [(ICQBackupStatusView *)self footerText];
-    v31 = v30;
+    footerText2 = [(ICQBackupStatusView *)self footerText];
+    v31 = footerText2;
     if (v23)
     {
-      v32 = [v23 stringByAppendingFormat:@"\n\n%@", v30];
+      v32 = [v23 stringByAppendingFormat:@"\n\n%@", footerText2];
 
       v23 = v32;
     }
 
     else
     {
-      v23 = v30;
+      v23 = footerText2;
     }
   }
 
@@ -667,22 +667,22 @@ LABEL_48:
   v43[2] = __70__ICQBackupStatusView_updateViewsForBackupState_restoreState_enabled___block_invoke;
   v43[3] = &unk_27A65A708;
   v44 = v10;
-  v45 = self;
+  selfCopy = self;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __70__ICQBackupStatusView_updateViewsForBackupState_restoreState_enabled___block_invoke_2;
   v39[3] = &unk_27A65B838;
-  v41 = a3;
-  v42 = v5;
+  stateCopy = state;
+  v42 = enabledCopy;
   v39[4] = self;
   v40 = v44;
   v36 = v44;
   [v35 animateWithDuration:0 delay:v43 options:v39 animations:0.400000006 completion:0.0];
   [(ICQBackupStatusView *)self sizeToFit];
   [(ICQBackupStatusView *)self _layoutSubviews];
-  v37 = [(ICQBackupStatusView *)self superview];
+  superview = [(ICQBackupStatusView *)self superview];
   [(ICQBackupStatusView *)self frame];
-  [v37 setNeedsDisplayInRect:?];
+  [superview setNeedsDisplayInRect:?];
 }
 
 void __70__ICQBackupStatusView_updateViewsForBackupState_restoreState_enabled___block_invoke(uint64_t a1)

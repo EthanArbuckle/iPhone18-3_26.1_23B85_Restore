@@ -1,8 +1,8 @@
 @interface ANSTActionDetectorConfiguration
 + (ANSTActionDetectorConfiguration)new;
 - (ANSTActionDetectorConfiguration)init;
-- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)a3;
-- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)a3 frameRate:(int64_t)a4 error:(id *)p_isa;
+- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)version;
+- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)version frameRate:(int64_t)rate error:(id *)p_isa;
 - (id)description;
 @end
 
@@ -17,33 +17,33 @@
 
 + (ANSTActionDetectorConfiguration)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)version
 {
   result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)a3 frameRate:(int64_t)a4 error:(id *)p_isa
+- (ANSTActionDetectorConfiguration)initWithVersion:(unint64_t)version frameRate:(int64_t)rate error:(id *)p_isa
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_supportedFrameRatesOfDetectorVersion_(ANSTActionDetector, a2, a3);
-  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v10, a4);
+  v9 = objc_msgSend_supportedFrameRatesOfDetectorVersion_(ANSTActionDetector, a2, version);
+  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v10, rate);
   v13 = objc_msgSend_containsObject_(v9, v12, v11);
 
   if (v13)
   {
     v21.receiver = self;
     v21.super_class = ANSTActionDetectorConfiguration;
-    v15 = [(ANSTConfiguration *)&v21 initWithVersion:a3];
+    v15 = [(ANSTConfiguration *)&v21 initWithVersion:version];
     if (v15)
     {
-      v15->_frameRate = a4;
+      v15->_frameRate = rate;
     }
 
     self = v15;

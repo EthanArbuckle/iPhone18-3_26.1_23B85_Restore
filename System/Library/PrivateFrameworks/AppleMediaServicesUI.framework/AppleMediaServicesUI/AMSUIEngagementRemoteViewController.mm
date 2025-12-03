@@ -2,9 +2,9 @@
 - (AMSUIEngagementTaskHostInterface)delegate;
 - (AMSUIEngagementTaskRemoteInterface)remoteProxy;
 - (CGSize)preferredContentSizeOverride;
-- (void)engagementTaskDidFinishWithResult:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)preferredContentSizeDidChange:(CGSize)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)engagementTaskDidFinishWithResult:(id)result error:(id)error completion:(id)completion;
+- (void)preferredContentSizeDidChange:(CGSize)change;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation AMSUIEngagementRemoteViewController
@@ -49,19 +49,19 @@ void __50__AMSUIEngagementRemoteViewController_remoteProxy__block_invoke(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8.receiver = self;
   v8.super_class = AMSUIEngagementRemoteViewController;
-  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:errorCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__AMSUIEngagementRemoteViewController_viewServiceDidTerminateWithError___block_invoke;
   v6[3] = &unk_1E7F243C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(AMSUIEngagementRemoteViewController *)self engagementTaskDidFinishWithResult:0 error:v5 completion:v6];
 }
 
@@ -93,41 +93,41 @@ void __72__AMSUIEngagementRemoteViewController_viewServiceDidTerminateWithError_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)engagementTaskDidFinishWithResult:(id)a3 error:(id)a4 completion:(id)a5
+- (void)engagementTaskDidFinishWithResult:(id)result error:(id)error completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSUIEngagementRemoteViewController *)self delegate];
-  if (v10)
+  resultCopy = result;
+  errorCopy = error;
+  completionCopy = completion;
+  delegate = [(AMSUIEngagementRemoteViewController *)self delegate];
+  if (delegate)
   {
-    v11 = v10;
-    v12 = [(AMSUIEngagementRemoteViewController *)self delegate];
+    v11 = delegate;
+    delegate2 = [(AMSUIEngagementRemoteViewController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(AMSUIEngagementRemoteViewController *)self delegate];
-      [v14 engagementTaskDidFinishWithResult:v15 error:v8 completion:v9];
+      delegate3 = [(AMSUIEngagementRemoteViewController *)self delegate];
+      [delegate3 engagementTaskDidFinishWithResult:resultCopy error:errorCopy completion:completionCopy];
     }
   }
 }
 
-- (void)preferredContentSizeDidChange:(CGSize)a3
+- (void)preferredContentSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(AMSUIEngagementRemoteViewController *)self delegate];
-  if (v6)
+  height = change.height;
+  width = change.width;
+  delegate = [(AMSUIEngagementRemoteViewController *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(AMSUIEngagementRemoteViewController *)self delegate];
+    v7 = delegate;
+    delegate2 = [(AMSUIEngagementRemoteViewController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(AMSUIEngagementRemoteViewController *)self delegate];
-      [v10 preferredContentSizeDidChange:{width, height}];
+      delegate3 = [(AMSUIEngagementRemoteViewController *)self delegate];
+      [delegate3 preferredContentSizeDidChange:{width, height}];
     }
   }
 }

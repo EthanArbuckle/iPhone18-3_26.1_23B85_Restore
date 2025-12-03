@@ -1,19 +1,19 @@
 @interface CARButtonInfo
-- (CARButtonInfo)initWithButtonType:(unint64_t)a3 buttonLocation:(unint64_t)a4 buttonPressDuration:(unint64_t)a5;
+- (CARButtonInfo)initWithButtonType:(unint64_t)type buttonLocation:(unint64_t)location buttonPressDuration:(unint64_t)duration;
 @end
 
 @implementation CARButtonInfo
 
-- (CARButtonInfo)initWithButtonType:(unint64_t)a3 buttonLocation:(unint64_t)a4 buttonPressDuration:(unint64_t)a5
+- (CARButtonInfo)initWithButtonType:(unint64_t)type buttonLocation:(unint64_t)location buttonPressDuration:(unint64_t)duration
 {
   v9.receiver = self;
   v9.super_class = CARButtonInfo;
   result = [(CARButtonInfo *)&v9 init];
   if (result)
   {
-    result->_buttonType = a3;
-    result->_buttonLocation = a4;
-    result->_buttonPressDuration = a5;
+    result->_buttonType = type;
+    result->_buttonLocation = location;
+    result->_buttonPressDuration = duration;
   }
 
   return result;

@@ -1,31 +1,31 @@
 @interface _HDSQLiteComparisonPredicateSubquery
-- (BOOL)isEqual:(id)a3;
-- (_HDSQLiteComparisonPredicateSubquery)initWithProperty:(id)a3 comparisonType:(int64_t)a4 subqueryDescriptor:(id)a5 subqueryProperties:(id)a6;
-- (id)SQLForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (_HDSQLiteComparisonPredicateSubquery)initWithProperty:(id)property comparisonType:(int64_t)type subqueryDescriptor:(id)descriptor subqueryProperties:(id)properties;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _HDSQLiteComparisonPredicateSubquery
 
-- (_HDSQLiteComparisonPredicateSubquery)initWithProperty:(id)a3 comparisonType:(int64_t)a4 subqueryDescriptor:(id)a5 subqueryProperties:(id)a6
+- (_HDSQLiteComparisonPredicateSubquery)initWithProperty:(id)property comparisonType:(int64_t)type subqueryDescriptor:(id)descriptor subqueryProperties:(id)properties
 {
-  v10 = a5;
-  v11 = a6;
+  descriptorCopy = descriptor;
+  propertiesCopy = properties;
   v12 = MEMORY[0x277CBEB68];
-  v13 = a3;
-  v14 = [v12 null];
+  propertyCopy = property;
+  null = [v12 null];
   v21.receiver = self;
   v21.super_class = _HDSQLiteComparisonPredicateSubquery;
-  v15 = [(HDSQLiteComparisonPredicate *)&v21 initWithProperty:v13 value:v14 comparisonType:a4];
+  v15 = [(HDSQLiteComparisonPredicate *)&v21 initWithProperty:propertyCopy value:null comparisonType:type];
 
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [descriptorCopy copy];
     subqueryDescriptor = v15->_subqueryDescriptor;
     v15->_subqueryDescriptor = v16;
 
-    v18 = [v11 copy];
+    v18 = [propertiesCopy copy];
     subqueryProperties = v15->_subqueryProperties;
     v15->_subqueryProperties = v18;
   }
@@ -38,33 +38,33 @@
   v9.receiver = self;
   v9.super_class = _HDSQLiteComparisonPredicateSubquery;
   v3 = [(HDSQLiteComparisonPredicate *)&v9 hash];
-  v4 = [(_HDSQLiteComparisonPredicateSubquery *)self subqueryDescriptor];
-  v5 = [v4 hash];
-  v6 = [(_HDSQLiteComparisonPredicateSubquery *)self subqueryProperties];
-  v7 = v5 ^ [v6 hash];
+  subqueryDescriptor = [(_HDSQLiteComparisonPredicateSubquery *)self subqueryDescriptor];
+  v5 = [subqueryDescriptor hash];
+  subqueryProperties = [(_HDSQLiteComparisonPredicateSubquery *)self subqueryProperties];
+  v7 = v5 ^ [subqueryProperties hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = _HDSQLiteComparisonPredicateSubquery;
-  if (![(HDSQLiteComparisonPredicate *)&v11 isEqual:v4])
+  if (![(HDSQLiteComparisonPredicate *)&v11 isEqual:equalCopy])
   {
     goto LABEL_8;
   }
 
   subqueryDescriptor = self->_subqueryDescriptor;
-  v6 = v4[5];
+  v6 = equalCopy[5];
   if (subqueryDescriptor != v6 && (!v6 || ![(HDSQLiteQueryDescriptor *)subqueryDescriptor isEqual:?]))
   {
     goto LABEL_8;
   }
 
   subqueryProperties = self->_subqueryProperties;
-  v8 = v4[6];
+  v8 = equalCopy[6];
   if (subqueryProperties == v8)
   {
     v9 = 1;
@@ -93,7 +93,7 @@ LABEL_9:
   [(HDSQLitePropertyPredicate *)self property];
   objc_claimAutoreleasedReturnValue();
   v5 = OUTLINED_FUNCTION_1_6();
-  v6 = [(HDSQLiteComparisonPredicate *)v5 _comparisonTypeString];
+  _comparisonTypeString = [(HDSQLiteComparisonPredicate *)v5 _comparisonTypeString];
   [(HDSQLiteQueryDescriptor *)self->_subqueryDescriptor selectSQLForProperties:self->_subqueryProperties];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_0_9();
@@ -102,13 +102,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v5 = MEMORY[0x277CCACA8];
-  [(objc_class *)a3 disambiguatedSQLForProperty:self->super.super._property];
+  [(objc_class *)class disambiguatedSQLForProperty:self->super.super._property];
   objc_claimAutoreleasedReturnValue();
   v6 = OUTLINED_FUNCTION_1_6();
-  v7 = [(HDSQLiteComparisonPredicate *)v6 _comparisonTypeString];
+  _comparisonTypeString = [(HDSQLiteComparisonPredicate *)v6 _comparisonTypeString];
   [(HDSQLiteQueryDescriptor *)self->_subqueryDescriptor selectSQLForProperties:self->_subqueryProperties];
   objc_claimAutoreleasedReturnValue();
   OUTLINED_FUNCTION_0_9();

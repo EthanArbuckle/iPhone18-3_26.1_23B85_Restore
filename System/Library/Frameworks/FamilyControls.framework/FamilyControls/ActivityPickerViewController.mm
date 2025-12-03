@@ -1,12 +1,12 @@
 @interface ActivityPickerViewController
-- (_TtC14FamilyControls28ActivityPickerViewController)initWithCoder:(id)a3;
-- (_TtC14FamilyControls28ActivityPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14FamilyControls28ActivityPickerViewController)initWithCoder:(id)coder;
+- (_TtC14FamilyControls28ActivityPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
 @implementation ActivityPickerViewController
 
-- (_TtC14FamilyControls28ActivityPickerViewController)initWithCoder:(id)a3
+- (_TtC14FamilyControls28ActivityPickerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14FamilyControls28ActivityPickerViewController_remoteViewController) = 0;
   result = sub_23833EDE0();
@@ -17,17 +17,17 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(MEMORY[0x277D75D18]);
-  v4 = self;
+  selfCopy = self;
   v5 = [v3 init];
-  [(ActivityPickerViewController *)v4 setView:v5];
+  [(ActivityPickerViewController *)selfCopy setView:v5];
   type metadata accessor for ActivityPickerRemoteViewController();
   v6 = swift_allocObject();
-  *(v6 + 16) = v4;
-  v7 = v4;
+  *(v6 + 16) = selfCopy;
+  v7 = selfCopy;
   sub_238304040(sub_238327360, v6);
 }
 
-- (_TtC14FamilyControls28ActivityPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14FamilyControls28ActivityPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

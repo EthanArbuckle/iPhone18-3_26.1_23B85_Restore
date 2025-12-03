@@ -1,72 +1,72 @@
 @interface HMMTRProtocolMap
-+ (BOOL)checkIfCharacteristicsIsOfTypeTemp:(id)a3;
-+ (id)customMapEventForCharacteristic:(id)a3 event:(id)a4 value:(id)a5;
-+ (id)customMapReadForCharacteristic:(id)a3 value:(id)a4 fromRange:(id)a5 toRange:(id)a6;
-+ (id)customMapWriteForCharacteristic:(id)a3 value:(id)a4;
-+ (id)linearMapForCharacteristic:(id)a3 value:(id)a4 fromRange:(id)a5 toRange:(id)a6;
++ (BOOL)checkIfCharacteristicsIsOfTypeTemp:(id)temp;
++ (id)customMapEventForCharacteristic:(id)characteristic event:(id)event value:(id)value;
++ (id)customMapReadForCharacteristic:(id)characteristic value:(id)value fromRange:(id)range toRange:(id)toRange;
++ (id)customMapWriteForCharacteristic:(id)characteristic value:(id)value;
++ (id)linearMapForCharacteristic:(id)characteristic value:(id)value fromRange:(id)range toRange:(id)toRange;
 + (id)logCategory;
-+ (id)mapActiveState:(id)a3;
-+ (id)mapAirQuality:(id)a3;
-+ (id)mapAirflowDirection:(id)a3;
-+ (id)mapCarbonMonoxideDetected:(id)a3;
-+ (id)mapChangeIndicationToFilterChangeIndication:(id)a3;
-+ (id)mapCurrentHeatingCoolingState:(id)a3;
-+ (id)mapCurrentSystemMode:(id)a3;
-+ (id)mapFanModeToActive:(id)a3;
-+ (id)mapFanModeToTargetAirPurifier:(id)a3;
-+ (id)mapFanModeToTargetFanState:(id)a3;
-+ (id)mapPositionState:(id)a3;
-+ (id)mapRotationDirection:(id)a3;
-+ (id)mapSensorFaultToStatusActive:(id)a3;
-+ (id)mapSmokeDetected:(id)a3;
-+ (id)mapTargetAirPuriferState:(id)a3;
-+ (id)mapTargetFanState:(id)a3;
-+ (id)mapTargetHeatingCoolingState:(id)a3;
-+ (id)mapTargetSystemMode:(id)a3;
++ (id)mapActiveState:(id)state;
++ (id)mapAirQuality:(id)quality;
++ (id)mapAirflowDirection:(id)direction;
++ (id)mapCarbonMonoxideDetected:(id)detected;
++ (id)mapChangeIndicationToFilterChangeIndication:(id)indication;
++ (id)mapCurrentHeatingCoolingState:(id)state;
++ (id)mapCurrentSystemMode:(id)mode;
++ (id)mapFanModeToActive:(id)active;
++ (id)mapFanModeToTargetAirPurifier:(id)purifier;
++ (id)mapFanModeToTargetFanState:(id)state;
++ (id)mapPositionState:(id)state;
++ (id)mapRotationDirection:(id)direction;
++ (id)mapSensorFaultToStatusActive:(id)active;
++ (id)mapSmokeDetected:(id)detected;
++ (id)mapTargetAirPuriferState:(id)state;
++ (id)mapTargetFanState:(id)state;
++ (id)mapTargetHeatingCoolingState:(id)state;
++ (id)mapTargetSystemMode:(id)mode;
 + (id)protocolMap;
-- (BOOL)_isValidCharacteristicValue:(id)a3 value:(id)a4;
-- (BOOL)isRequiresOptionalMatterAttributeForCharacteristic:(id)a3;
-- (BOOL)optionalServiceLabelIndexIncludedInService:(id)a3;
+- (BOOL)_isValidCharacteristicValue:(id)value value:(id)a4;
+- (BOOL)isRequiresOptionalMatterAttributeForCharacteristic:(id)characteristic;
+- (BOOL)optionalServiceLabelIndexIncludedInService:(id)service;
 - (HMMTRProtocolMap)init;
 - (NSDictionary)hapToCHIPClusterMappingArray;
-- (id)_buildEventMapper:(id)a3 characteristicsDict:(id)a4;
-- (id)_buildExpectedValueMapper:(id)a3 characteristicsDict:(id)a4 operation:(unint64_t)a5 valueMapper:(id)a6;
-- (id)_buildValueMapper:(id)a3 characteristicsDict:(id)a4 operation:(unint64_t)a5 forMTRCluster:(BOOL)a6;
-- (id)_characteristicsDictionaryForCharacteristic:(id)a3 endpointID:(unint64_t)a4 clusterIDCharacteristicMap:(id)a5;
-- (id)_characteristicsDictionaryForCharacteristicUUID:(id)a3 endpointID:(unint64_t)a4 clusterIDCharacteristicMap:(id)a5;
-- (id)_chipClusterFunctionNameForOperationType:(unint64_t)a3 operationDictionary:(id)a4 value:(id)a5 forMTRCluster:(BOOL)a6 forHMMTRCluster:(BOOL)a7;
-- (id)_chipParamsDictionaryForOperationType:(unint64_t)a3 operationDictionary:(id)a4 value:(id)a5;
-- (id)_protocolMapCharacteristicsKeyForOperationType:(unint64_t)a3;
-- (id)categoriesForDeviceTypes:(id)a3;
-- (id)getBaseClusterName:(id)a3;
-- (id)getCHIPAttributesForCharacteristic:(id)a3;
-- (id)getClusterClassForCharacteristic:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5;
-- (id)getMTRClusterClassForCharacteristic:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5;
-- (id)getRequiredAttributesForCharacteristic:(id)a3;
-- (id)getRequiredFeaturesBitmapForCharacteristic:(id)a3;
-- (id)getUpdatedLinkedCharacteristics:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5;
-- (id)mtrBaseClusterNameFromMTRClusterName:(id)a3;
-- (id)mtrClusterNameFromMTRBaseClusterName:(id)a3;
-- (id)mtrClusterReadFunctionNameFromBaseClusterFunctionName:(id)a3;
-- (id)mtrClusterWriteFunctionNameFromBaseClusterFunctionName:(id)a3;
-- (id)optionalCharacteristicsForService:(id)a3;
-- (id)primaryHAPServiceAmongServices:(id)a3;
-- (id)reportDescriptionForCharacteristic:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5;
-- (id)requiredCharacteristicsForService:(id)a3;
+- (id)_buildEventMapper:(id)mapper characteristicsDict:(id)dict;
+- (id)_buildExpectedValueMapper:(id)mapper characteristicsDict:(id)dict operation:(unint64_t)operation valueMapper:(id)valueMapper;
+- (id)_buildValueMapper:(id)mapper characteristicsDict:(id)dict operation:(unint64_t)operation forMTRCluster:(BOOL)cluster;
+- (id)_characteristicsDictionaryForCharacteristic:(id)characteristic endpointID:(unint64_t)d clusterIDCharacteristicMap:(id)map;
+- (id)_characteristicsDictionaryForCharacteristicUUID:(id)d endpointID:(unint64_t)iD clusterIDCharacteristicMap:(id)map;
+- (id)_chipClusterFunctionNameForOperationType:(unint64_t)type operationDictionary:(id)dictionary value:(id)value forMTRCluster:(BOOL)cluster forHMMTRCluster:(BOOL)rCluster;
+- (id)_chipParamsDictionaryForOperationType:(unint64_t)type operationDictionary:(id)dictionary value:(id)value;
+- (id)_protocolMapCharacteristicsKeyForOperationType:(unint64_t)type;
+- (id)categoriesForDeviceTypes:(id)types;
+- (id)getBaseClusterName:(id)name;
+- (id)getCHIPAttributesForCharacteristic:(id)characteristic;
+- (id)getClusterClassForCharacteristic:(id)characteristic endpointID:(id)d clusterIDCharacteristicMap:(id)map;
+- (id)getMTRClusterClassForCharacteristic:(id)characteristic endpointID:(id)d clusterIDCharacteristicMap:(id)map;
+- (id)getRequiredAttributesForCharacteristic:(id)characteristic;
+- (id)getRequiredFeaturesBitmapForCharacteristic:(id)characteristic;
+- (id)getUpdatedLinkedCharacteristics:(id)characteristics endpointID:(id)d clusterIDCharacteristicMap:(id)map;
+- (id)mtrBaseClusterNameFromMTRClusterName:(id)name;
+- (id)mtrClusterNameFromMTRBaseClusterName:(id)name;
+- (id)mtrClusterReadFunctionNameFromBaseClusterFunctionName:(id)name;
+- (id)mtrClusterWriteFunctionNameFromBaseClusterFunctionName:(id)name;
+- (id)optionalCharacteristicsForService:(id)service;
+- (id)primaryHAPServiceAmongServices:(id)services;
+- (id)reportDescriptionForCharacteristic:(id)characteristic endpointID:(id)d clusterIDCharacteristicMap:(id)map;
+- (id)requiredCharacteristicsForService:(id)service;
 - (id)retrieveHAPCharacteristicsToCheckForRequiredAttributeValues;
-- (id)retrieveHAPToCHIPClusterMapping:(id)a3;
-- (void)_selectedServiceTypeForServiceArray:(id)a3 device:(id)a4 mtrDevice:(id)a5 endpoint:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8;
-- (void)servicesForDeviceTypes:(id)a3 device:(id)a4 endpoint:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)servicesOfMTRDevice:(id)a3 forDeviceTypes:(id)a4 endpoint:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)updateMetadataForCharacteristic:(id)a3 metadata:(id)a4 endpointID:(id)a5 topology:(id)a6 clusterIDCharacteristicMap:(id)a7;
+- (id)retrieveHAPToCHIPClusterMapping:(id)mapping;
+- (void)_selectedServiceTypeForServiceArray:(id)array device:(id)device mtrDevice:(id)mtrDevice endpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)servicesForDeviceTypes:(id)types device:(id)device endpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)servicesOfMTRDevice:(id)device forDeviceTypes:(id)types endpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)updateMetadataForCharacteristic:(id)characteristic metadata:(id)metadata endpointID:(id)d topology:(id)topology clusterIDCharacteristicMap:(id)map;
 @end
 
 @implementation HMMTRProtocolMap
 
-- (id)primaryHAPServiceAmongServices:(id)a3
+- (id)primaryHAPServiceAmongServices:(id)services
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   v5 = [(HMMTRProtocolMap *)self rawPlistAtKey:@"AlwaysSecondaryHAPServices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
   v16 = [v15 na_map:&__block_literal_global_556];
 
   v17 = [MEMORY[0x277CBEB98] setWithArray:v16];
-  v18 = [v4 na_map:&__block_literal_global_559];
+  v18 = [servicesCopy na_map:&__block_literal_global_559];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __51__HMMTRProtocolMap_primaryHAPServiceAmongServices___block_invoke_4;
@@ -189,7 +189,7 @@
   if (v22 != 1)
   {
     v25 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -230,8 +230,8 @@ LABEL_33:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v33 = v4;
-  v34 = v4;
+  v33 = servicesCopy;
+  v34 = servicesCopy;
   v35 = [v34 countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v35)
   {
@@ -247,8 +247,8 @@ LABEL_35:
       }
 
       v18 = *(*(&v48 + 1) + 8 * v38);
-      v39 = [v18 type];
-      v40 = [v39 isEqual:v23];
+      type = [v18 type];
+      v40 = [type isEqual:v23];
 
       if (v40)
       {
@@ -277,7 +277,7 @@ LABEL_41:
 
   v24 = v18;
 
-  v4 = v33;
+  servicesCopy = v33;
   v19 = v45;
   v10 = v46;
   v17 = v43;
@@ -288,17 +288,17 @@ LABEL_43:
   return v24;
 }
 
-- (void)updateMetadataForCharacteristic:(id)a3 metadata:(id)a4 endpointID:(id)a5 topology:(id)a6 clusterIDCharacteristicMap:(id)a7
+- (void)updateMetadataForCharacteristic:(id)characteristic metadata:(id)metadata endpointID:(id)d topology:(id)topology clusterIDCharacteristicMap:(id)map
 {
   v446 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v428 = a6;
-  v15 = a7;
-  v16 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v12];
+  characteristicCopy = characteristic;
+  metadataCopy = metadata;
+  dCopy = d;
+  topologyCopy = topology;
+  mapCopy = map;
+  v16 = [HMMTRUtilities hmmtr_shortTypeFromUUID:characteristicCopy];
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   v20 = v19;
   if (v16)
@@ -309,33 +309,33 @@ LABEL_43:
       *buf = 138544130;
       v435 = v21;
       v436 = 2112;
-      v437 = v13;
+      v437 = metadataCopy;
       v438 = 2112;
-      v439 = v12;
+      v439 = characteristicCopy;
       v440 = 2112;
-      v441 = v14;
+      v441 = dCopy;
       _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_INFO, "%{public}@Update Metadata %@ for characteristic %@ on endpoint %@", buf, 0x2Au);
     }
 
-    v427 = v13;
+    v427 = metadataCopy;
 
     objc_autoreleasePoolPop(v17);
-    v22 = [(HMMTRProtocolMap *)v18 getClusterClassForCharacteristic:v16 endpointID:v14 clusterIDCharacteristicMap:v15];
-    v23 = v428;
-    v24 = [v428 getFeatureMapForClusterClassName:v22 endpoint:v14];
-    if ((([v22 isEqualToString:@"HMMTRWindowCovering"] & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"MTRBaseClusterWindowCovering") & 1) != 0 || objc_msgSend(v22, "isEqualToString:", @"MTRClusterWindowCovering")) && objc_msgSend(v12, "isEqualToString:", @"0000007C-0000-1000-8000-0026BB765291"))
+    v22 = [(HMMTRProtocolMap *)selfCopy getClusterClassForCharacteristic:v16 endpointID:dCopy clusterIDCharacteristicMap:mapCopy];
+    v23 = topologyCopy;
+    v24 = [topologyCopy getFeatureMapForClusterClassName:v22 endpoint:dCopy];
+    if ((([v22 isEqualToString:@"HMMTRWindowCovering"] & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"MTRBaseClusterWindowCovering") & 1) != 0 || objc_msgSend(v22, "isEqualToString:", @"MTRClusterWindowCovering")) && objc_msgSend(characteristicCopy, "isEqualToString:", @"0000007C-0000-1000-8000-0026BB765291"))
     {
       if (([v24 unsignedIntValue] & 4) == 0)
       {
         v25 = v24;
         v26 = v22;
-        v27 = [v427 constraints];
-        v28 = [v27 maximumValue];
-        v29 = [v427 constraints];
-        [v29 setStepValue:v28];
+        constraints = [v427 constraints];
+        maximumValue = [constraints maximumValue];
+        constraints2 = [v427 constraints];
+        [constraints2 setStepValue:maximumValue];
 
         v30 = objc_autoreleasePoolPush();
-        v31 = v18;
+        v31 = selfCopy;
         v32 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
@@ -357,19 +357,19 @@ LABEL_21:
       goto LABEL_55;
     }
 
-    if ((([v22 isEqualToString:@"HMMTRWindowCovering"] & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"MTRBaseClusterWindowCovering") & 1) != 0 || objc_msgSend(v22, "isEqualToString:", @"MTRClusterWindowCovering")) && objc_msgSend(v12, "isEqualToString:", @"000000C2-0000-1000-8000-0026BB765291"))
+    if ((([v22 isEqualToString:@"HMMTRWindowCovering"] & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", @"MTRBaseClusterWindowCovering") & 1) != 0 || objc_msgSend(v22, "isEqualToString:", @"MTRClusterWindowCovering")) && objc_msgSend(characteristicCopy, "isEqualToString:", @"000000C2-0000-1000-8000-0026BB765291"))
     {
       if (([v24 unsignedIntValue] & 0x10) == 0)
       {
         v25 = v24;
         v26 = v22;
-        v37 = [v427 constraints];
-        v38 = [v37 maximumValue];
-        v39 = [v427 constraints];
-        [v39 setStepValue:v38];
+        constraints3 = [v427 constraints];
+        maximumValue2 = [constraints3 maximumValue];
+        constraints4 = [v427 constraints];
+        [constraints4 setStepValue:maximumValue2];
 
         v30 = objc_autoreleasePoolPush();
-        v31 = v18;
+        v31 = selfCopy;
         v32 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
@@ -387,28 +387,28 @@ LABEL_22:
         v22 = v26;
         v24 = v25;
 LABEL_54:
-        v23 = v428;
+        v23 = topologyCopy;
       }
 
 LABEL_55:
 
-      v13 = v427;
+      metadataCopy = v427;
       goto LABEL_56;
     }
 
-    if ([v12 isEqualToString:@"00000073-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"00000073-0000-1000-8000-0026BB765291"])
     {
       v418 = v16;
-      v40 = [(HMMTRProtocolMap *)v18 getClusterClassForCharacteristic:v16 endpointID:v14 clusterIDCharacteristicMap:v15];
-      v405 = [v428 getFeatureMapForClusterClassName:v40 endpoint:v14];
-      v41 = [v405 unsignedIntegerValue];
-      v42 = [MEMORY[0x277CBEB18] array];
-      v43 = v42;
+      v40 = [(HMMTRProtocolMap *)selfCopy getClusterClassForCharacteristic:v16 endpointID:dCopy clusterIDCharacteristicMap:mapCopy];
+      v405 = [topologyCopy getFeatureMapForClusterClassName:v40 endpoint:dCopy];
+      unsignedIntegerValue = [v405 unsignedIntegerValue];
+      array = [MEMORY[0x277CBEB18] array];
+      v43 = array;
       v423 = v22;
-      if ((v41 & 2) != 0)
+      if ((unsignedIntegerValue & 2) != 0)
       {
         v44 = &unk_283EE8DC0;
-        [v42 addObject:&unk_283EE8DC0];
+        [array addObject:&unk_283EE8DC0];
       }
 
       else
@@ -416,125 +416,125 @@ LABEL_55:
         v44 = 0;
       }
 
-      v415 = v12;
+      v415 = characteristicCopy;
       v73 = v44;
-      if ((~v41 & 0x16) == 0)
+      if ((~unsignedIntegerValue & 0x16) == 0)
       {
         v73 = &unk_283EE8EE0;
         [v43 addObject:&unk_283EE8EE0];
       }
 
       v412 = v24;
-      if ((~v41 & 0xELL) == 0)
+      if ((~unsignedIntegerValue & 0xELL) == 0)
       {
         v73 = &unk_283EE8EF8;
         [v43 addObject:&unk_283EE8EF8];
       }
 
       v74 = objc_autoreleasePoolPush();
-      v75 = v18;
+      v75 = selfCopy;
       v76 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
-        v77 = v15;
+        v77 = mapCopy;
         v78 = v40;
-        v80 = v79 = v14;
+        v80 = v79 = dCopy;
         *buf = 138543618;
         v435 = v80;
         v436 = 2112;
         v437 = v43;
         _os_log_impl(&dword_22AEAE000, v76, OS_LOG_TYPE_DEBUG, "%{public}@Constraining input-event characteristic valid values to %@", buf, 0x16u);
 
-        v14 = v79;
+        dCopy = v79;
         v40 = v78;
-        v15 = v77;
+        mapCopy = v77;
       }
 
       objc_autoreleasePoolPop(v74);
-      v81 = [v427 constraints];
+      constraints5 = [v427 constraints];
 
-      if (!v81)
+      if (!constraints5)
       {
         v82 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v82];
       }
 
-      v83 = [v427 constraints];
-      [v83 setMinimumValue:v44];
+      constraints6 = [v427 constraints];
+      [constraints6 setMinimumValue:v44];
 
-      v84 = [v427 constraints];
-      [v84 setMaximumValue:v73];
+      constraints7 = [v427 constraints];
+      [constraints7 setMaximumValue:v73];
 
-      v85 = [v427 constraints];
-      [v85 setStepValue:&unk_283EE8EE0];
+      constraints8 = [v427 constraints];
+      [constraints8 setStepValue:&unk_283EE8EE0];
 
-      v86 = [v427 constraints];
-      [v86 setValidValues:v43];
+      constraints9 = [v427 constraints];
+      [constraints9 setValidValues:v43];
 
-      v12 = v415;
+      characteristicCopy = v415;
       v16 = v418;
       v22 = v423;
       v24 = v412;
       goto LABEL_54;
     }
 
-    if ([v12 isEqualToString:@"000000CE-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"000000CE-0000-1000-8000-0026BB765291"])
     {
       v424 = v22;
-      v406 = v15;
-      v45 = [v427 constraints];
+      v406 = mapCopy;
+      constraints10 = [v427 constraints];
 
-      if (!v45)
+      if (!constraints10)
       {
         v46 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v46];
       }
 
-      v47 = [v427 constraints];
-      [v47 setMinimumValue:&unk_283EE8D90];
+      constraints11 = [v427 constraints];
+      [constraints11 setMinimumValue:&unk_283EE8D90];
 
-      v48 = [v427 constraints];
-      [v48 setMaximumValue:&unk_283EE8DA8];
+      constraints12 = [v427 constraints];
+      [constraints12 setMaximumValue:&unk_283EE8DA8];
 
-      v49 = [v427 constraints];
-      [v49 setStepValue:&unk_283EE8EE0];
+      constraints13 = [v427 constraints];
+      [constraints13 setStepValue:&unk_283EE8EE0];
 
-      v23 = v428;
-      v50 = [v428 getAttributesForClusterClassName:v22 endpoint:v14];
+      v23 = topologyCopy;
+      v50 = [topologyCopy getAttributesForClusterClassName:v22 endpoint:dCopy];
       v51 = v50;
       v419 = v16;
       if (v50)
       {
         v52 = [v50 objectForKeyedSubscript:@"ColorTempPhysicalMinMireds"];
-        v396 = v14;
+        v396 = dCopy;
         if ([v52 count])
         {
           v53 = [v52 objectAtIndexedSubscript:0];
-          v54 = [v427 constraints];
-          [v54 setMinimumValue:v53];
+          constraints14 = [v427 constraints];
+          [constraints14 setMinimumValue:v53];
 
           v55 = objc_autoreleasePoolPush();
-          v56 = v18;
+          v56 = selfCopy;
           v57 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
           {
             v58 = HMFGetLogIdentifier();
             [v427 constraints];
             v59 = v411 = v24;
-            v60 = [v59 minimumValue];
+            minimumValue = [v59 minimumValue];
             *buf = 138543618;
             v435 = v58;
             v436 = 2112;
-            v437 = v60;
+            v437 = minimumValue;
             _os_log_impl(&dword_22AEAE000, v57, OS_LOG_TYPE_DEBUG, "%{public}@ColorTempPhysicalMinMireds %@", buf, 0x16u);
 
             v24 = v411;
           }
 
           objc_autoreleasePoolPop(v55);
-          v14 = v396;
-          v23 = v428;
+          dCopy = v396;
+          v23 = topologyCopy;
         }
 
         v61 = [v51 objectForKeyedSubscript:@"ColorTempPhysicalMaxMireds"];
@@ -543,17 +543,17 @@ LABEL_55:
         {
           v62 = v23;
           v63 = [v61 objectAtIndexedSubscript:0];
-          v64 = [v427 constraints];
-          [v64 setMaximumValue:v63];
+          constraints15 = [v427 constraints];
+          [constraints15 setMaximumValue:v63];
 
           v65 = objc_autoreleasePoolPush();
-          v66 = v18;
+          v66 = selfCopy;
           v67 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
           {
             v68 = HMFGetLogIdentifier();
             [v427 constraints];
-            v414 = v12;
+            v414 = characteristicCopy;
             v70 = v69 = v24;
             [v70 maximumValue];
             v72 = v71 = v62;
@@ -565,11 +565,11 @@ LABEL_55:
 
             v62 = v71;
             v24 = v69;
-            v12 = v414;
+            characteristicCopy = v414;
           }
 
           objc_autoreleasePoolPop(v65);
-          v14 = v396;
+          dCopy = v396;
           v23 = v62;
         }
       }
@@ -577,12 +577,12 @@ LABEL_55:
       else
       {
         v93 = objc_autoreleasePoolPush();
-        v94 = v18;
+        v94 = selfCopy;
         v95 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v97 = v96 = v14;
+          v97 = v96 = dCopy;
           *buf = 138544386;
           v435 = v97;
           v436 = 2112;
@@ -595,39 +595,39 @@ LABEL_55:
           v443 = &unk_283EE8DA8;
           _os_log_impl(&dword_22AEAE000, v95, OS_LOG_TYPE_ERROR, "%{public}@No attributes found for cluster %@ on endpoint %@. Use default ColorTemperature Min/Max %@, %@", buf, 0x34u);
 
-          v14 = v96;
+          dCopy = v96;
         }
 
         objc_autoreleasePoolPop(v93);
-        v23 = v428;
+        v23 = topologyCopy;
       }
 
       goto LABEL_61;
     }
 
-    if (([v12 isEqualToString:@"0000007B-0000-1000-8000-0026BB765291"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"0000007D-0000-1000-8000-0026BB765291"))
+    if (([characteristicCopy isEqualToString:@"0000007B-0000-1000-8000-0026BB765291"] & 1) != 0 || objc_msgSend(characteristicCopy, "isEqualToString:", @"0000007D-0000-1000-8000-0026BB765291"))
     {
-      v87 = [v427 constraints];
+      constraints16 = [v427 constraints];
 
-      if (!v87)
+      if (!constraints16)
       {
         v88 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v88];
       }
 
-      v89 = [v427 constraints];
-      [v89 setMinimumValue:&unk_283EE8DC0];
+      constraints17 = [v427 constraints];
+      [constraints17 setMinimumValue:&unk_283EE8DC0];
 
-      v90 = [v427 constraints];
-      [v90 setMaximumValue:&unk_283EE8F40];
+      constraints18 = [v427 constraints];
+      [constraints18 setMaximumValue:&unk_283EE8F40];
 
-      v91 = [v427 constraints];
-      [v91 setStepValue:&unk_283EE8EE0];
+      constraints19 = [v427 constraints];
+      [constraints19 setStepValue:&unk_283EE8EE0];
 
       goto LABEL_54;
     }
 
-    if ([v12 isEqualToString:@"00000033-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"00000033-0000-1000-8000-0026BB765291"])
     {
       if (([v22 isEqualToString:@"MTRBaseClusterThermostat"] & 1) == 0 && !objc_msgSend(v22, "isEqualToString:", @"MTRClusterThermostat") || !v24)
       {
@@ -635,87 +635,87 @@ LABEL_55:
       }
 
       v98 = v22;
-      v99 = v14;
-      v100 = [v427 constraints];
+      v99 = dCopy;
+      constraints20 = [v427 constraints];
 
-      if (!v100)
+      if (!constraints20)
       {
         v101 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v101];
       }
 
-      v102 = [MEMORY[0x277CBEB18] array];
-      [v102 addObject:&unk_283EE8DC0];
-      v103 = [v427 constraints];
-      [v103 setMinimumValue:&unk_283EE8DC0];
+      array2 = [MEMORY[0x277CBEB18] array];
+      [array2 addObject:&unk_283EE8DC0];
+      constraints21 = [v427 constraints];
+      [constraints21 setMinimumValue:&unk_283EE8DC0];
 
-      v104 = [v427 constraints];
-      [v104 setMaximumValue:&unk_283EE8F10];
+      constraints22 = [v427 constraints];
+      [constraints22 setMaximumValue:&unk_283EE8F10];
 
-      v105 = [v427 constraints];
-      [v105 setStepValue:&unk_283EE8EE0];
+      constraints23 = [v427 constraints];
+      [constraints23 setStepValue:&unk_283EE8EE0];
 
       if ([v24 unsignedIntValue])
       {
-        [v102 addObject:&unk_283EE8EE0];
+        [array2 addObject:&unk_283EE8EE0];
       }
 
       if (([v24 unsignedIntValue] & 2) != 0)
       {
-        [v102 addObject:&unk_283EE8EF8];
+        [array2 addObject:&unk_283EE8EF8];
       }
 
-      v14 = v99;
+      dCopy = v99;
       if (([v24 unsignedIntValue] & 0x20) != 0)
       {
-        [v102 addObject:&unk_283EE8F10];
+        [array2 addObject:&unk_283EE8F10];
       }
 
-      v106 = [v427 constraints];
-      [v106 setValidValues:v102];
+      constraints24 = [v427 constraints];
+      [constraints24 setValidValues:array2];
 
       v22 = v98;
       goto LABEL_54;
     }
 
-    if ([v12 isEqualToString:@"00000035-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"00000035-0000-1000-8000-0026BB765291"])
     {
       if (([v22 isEqualToString:@"HMMTRThermostat"] & 1) == 0 && (objc_msgSend(v22, "isEqualToString:", @"HMMTRSyncThermostat") & 1) == 0 && !objc_msgSend(v22, "isEqualToString:", @"MTRClusterThermostat") || !v24)
       {
         goto LABEL_55;
       }
 
-      v406 = v15;
-      v107 = [v427 constraints];
+      v406 = mapCopy;
+      constraints25 = [v427 constraints];
 
-      if (!v107)
+      if (!constraints25)
       {
         v108 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v108];
       }
 
-      v109 = [v427 constraints];
-      [v109 setMinimumValue:&unk_283EE8F58];
+      constraints26 = [v427 constraints];
+      [constraints26 setMinimumValue:&unk_283EE8F58];
 
-      v110 = [v427 constraints];
-      [v110 setMaximumValue:&unk_283EE8F70];
+      constraints27 = [v427 constraints];
+      [constraints27 setMaximumValue:&unk_283EE8F70];
 
-      v111 = [v427 constraints];
-      [v111 setStepValue:&unk_283EE9310];
+      constraints28 = [v427 constraints];
+      [constraints28 setStepValue:&unk_283EE9310];
 
-      v112 = [v427 constraints];
-      obj = [v112 minimumValue];
+      constraints29 = [v427 constraints];
+      obj = [constraints29 minimumValue];
 
-      v113 = [v427 constraints];
-      v392 = [v113 maximumValue];
+      constraints30 = [v427 constraints];
+      maximumValue3 = [constraints30 maximumValue];
 
-      v114 = [v427 constraints];
-      v393 = [v114 minimumValue];
+      constraints31 = [v427 constraints];
+      minimumValue2 = [constraints31 minimumValue];
 
-      v115 = [v427 constraints];
-      v390 = [v115 maximumValue];
+      constraints32 = [v427 constraints];
+      maximumValue4 = [constraints32 maximumValue];
 
-      v116 = [v428 getAttributesForClusterClassName:v22 endpoint:v14];
+      v116 = [topologyCopy getAttributesForClusterClassName:v22 endpoint:dCopy];
       v117 = v116;
       v424 = v22;
       if (v116)
@@ -728,14 +728,14 @@ LABEL_55:
           obj = v119;
         }
 
-        v120 = v14;
-        v121 = [v117 objectForKeyedSubscript:{@"AbsMaxCoolSetpointLimit", v390}];
+        v120 = dCopy;
+        v121 = [v117 objectForKeyedSubscript:{@"AbsMaxCoolSetpointLimit", maximumValue4}];
 
         if ([v121 count])
         {
           v122 = [v121 objectAtIndexedSubscript:0];
 
-          v392 = v122;
+          maximumValue3 = v122;
         }
 
         v123 = [v117 objectForKeyedSubscript:@"AbsMinHeatSetpointLimit"];
@@ -744,7 +744,7 @@ LABEL_55:
         {
           v124 = [v123 objectAtIndexedSubscript:0];
 
-          v393 = v124;
+          minimumValue2 = v124;
         }
 
         v125 = [v117 objectForKeyedSubscript:@"AbsMaxHeatSetpointLimit"];
@@ -753,21 +753,21 @@ LABEL_55:
         {
           v126 = [v125 objectAtIndexedSubscript:0];
 
-          v390 = v126;
+          maximumValue4 = v126;
         }
 
-        v14 = v120;
+        dCopy = v120;
       }
 
-      v397 = v14;
+      v397 = dCopy;
       v419 = v16;
       if (([v24 unsignedIntValue] & 0x20) != 0)
       {
-        v172 = [obj integerValue];
-        if (v172 != [v393 integerValue] || (v173 = objc_msgSend(v392, "integerValue"), v173 != objc_msgSend(v391, "integerValue")))
+        integerValue = [obj integerValue];
+        if (integerValue != [minimumValue2 integerValue] || (v173 = objc_msgSend(maximumValue3, "integerValue"), v173 != objc_msgSend(v391, "integerValue")))
         {
           v174 = objc_autoreleasePoolPush();
-          v175 = v18;
+          v175 = selfCopy;
           v176 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v176, OS_LOG_TYPE_INFO))
           {
@@ -781,49 +781,49 @@ LABEL_55:
         }
 
         v178 = MEMORY[0x277CCABB0];
-        v179 = [obj integerValue];
-        v180 = [v393 integerValue];
-        if (v179 >= v180)
+        integerValue2 = [obj integerValue];
+        integerValue3 = [minimumValue2 integerValue];
+        if (integerValue2 >= integerValue3)
         {
-          v181 = v180;
+          v181 = integerValue3;
         }
 
         else
         {
-          v181 = v179;
+          v181 = integerValue2;
         }
 
         v182 = [v178 numberWithInteger:v181];
-        v183 = [v427 constraints];
-        [v183 setMinimumValue:v182];
+        constraints33 = [v427 constraints];
+        [constraints33 setMinimumValue:v182];
 
         v184 = MEMORY[0x277CCABB0];
-        v185 = [v392 integerValue];
-        v186 = [v391 integerValue];
-        if (v185 <= v186)
+        integerValue4 = [maximumValue3 integerValue];
+        integerValue5 = [v391 integerValue];
+        if (integerValue4 <= integerValue5)
         {
-          v187 = v186;
+          v187 = integerValue5;
         }
 
         else
         {
-          v187 = v185;
+          v187 = integerValue4;
         }
 
-        v130 = [v184 numberWithInteger:v187];
-        v188 = [v427 constraints];
-        [v188 setMaximumValue:v130];
+        constraints38 = [v184 numberWithInteger:v187];
+        constraints34 = [v427 constraints];
+        [constraints34 setMaximumValue:constraints38];
       }
 
       else
       {
         if (([v24 unsignedIntValue] & 2) != 0)
         {
-          v127 = [v427 constraints];
-          [v127 setMinimumValue:obj];
+          constraints35 = [v427 constraints];
+          [constraints35 setMinimumValue:obj];
 
-          v128 = [v427 constraints];
-          [v128 setMaximumValue:v392];
+          constraints36 = [v427 constraints];
+          [constraints36 setMaximumValue:maximumValue3];
         }
 
         if (([v24 unsignedIntValue] & 1) == 0)
@@ -831,98 +831,98 @@ LABEL_55:
           goto LABEL_139;
         }
 
-        v129 = [v427 constraints];
-        [v129 setMinimumValue:v393];
+        constraints37 = [v427 constraints];
+        [constraints37 setMinimumValue:minimumValue2];
 
-        v130 = [v427 constraints];
-        [v130 setMaximumValue:v391];
+        constraints38 = [v427 constraints];
+        [constraints38 setMaximumValue:v391];
       }
 
 LABEL_139:
       v189 = MEMORY[0x277CCABB0];
-      v190 = [v427 constraints];
-      v191 = [v190 minimumValue];
-      v192 = [v189 numberWithDouble:{objc_msgSend(v191, "integerValue") / 100.0}];
-      v193 = [v427 constraints];
-      [v193 setMinimumValue:v192];
+      constraints39 = [v427 constraints];
+      minimumValue3 = [constraints39 minimumValue];
+      v192 = [v189 numberWithDouble:{objc_msgSend(minimumValue3, "integerValue") / 100.0}];
+      constraints40 = [v427 constraints];
+      [constraints40 setMinimumValue:v192];
 
       v194 = MEMORY[0x277CCABB0];
-      v195 = [v427 constraints];
-      v196 = [v195 maximumValue];
-      v197 = [v194 numberWithDouble:{objc_msgSend(v196, "integerValue") / 100.0}];
-      v198 = [v427 constraints];
-      [v198 setMaximumValue:v197];
+      constraints41 = [v427 constraints];
+      maximumValue5 = [constraints41 maximumValue];
+      v197 = [v194 numberWithDouble:{objc_msgSend(maximumValue5, "integerValue") / 100.0}];
+      constraints42 = [v427 constraints];
+      [constraints42 setMaximumValue:v197];
 
       v199 = objc_autoreleasePoolPush();
-      v200 = v18;
+      v200 = selfCopy;
       v201 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v201, OS_LOG_TYPE_INFO))
       {
         v202 = HMFGetLogIdentifier();
-        v203 = [v427 constraints];
+        constraints43 = [v427 constraints];
         *buf = 138544642;
         v435 = v202;
         v436 = 2112;
         v437 = obj;
         v438 = 2112;
-        v439 = v392;
+        v439 = maximumValue3;
         v440 = 2112;
-        v441 = v393;
+        v441 = minimumValue2;
         v442 = 2112;
         v443 = v391;
         v444 = 2112;
-        v445 = v203;
+        v445 = constraints43;
         _os_log_impl(&dword_22AEAE000, v201, OS_LOG_TYPE_INFO, "%{public}@Device Abs min/max cool setpoint: %@/%@, min/max heat setpoint: %@/%@. Setting metadata constraints: %@", buf, 0x3Eu);
       }
 
       objc_autoreleasePoolPop(v199);
-      v162 = v392;
+      v162 = maximumValue3;
 LABEL_142:
 
 LABEL_143:
-      v14 = v397;
-      v23 = v428;
+      dCopy = v397;
+      v23 = topologyCopy;
 LABEL_61:
-      v15 = v406;
+      mapCopy = v406;
       v16 = v419;
       v22 = v424;
       goto LABEL_55;
     }
 
-    if ([v12 isEqualToString:@"0000000D-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"0000000D-0000-1000-8000-0026BB765291"])
     {
       if (([v22 isEqualToString:@"MTRBaseClusterThermostat"] & 1) == 0 && (objc_msgSend(v22, "isEqualToString:", @"MTRClusterThermostat") & 1) == 0 && !objc_msgSend(v22, "isEqualToString:", @"HMMTRSyncThermostat") || !v24)
       {
         goto LABEL_55;
       }
 
-      v406 = v15;
-      v131 = [v427 constraints];
+      v406 = mapCopy;
+      constraints44 = [v427 constraints];
 
-      if (!v131)
+      if (!constraints44)
       {
         v132 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v132];
       }
 
-      v133 = [v427 constraints];
-      [v133 setMinimumValue:&unk_283EE8F88];
+      constraints45 = [v427 constraints];
+      [constraints45 setMinimumValue:&unk_283EE8F88];
 
-      v134 = [v427 constraints];
-      [v134 setMaximumValue:&unk_283EE8FA0];
+      constraints46 = [v427 constraints];
+      [constraints46 setMaximumValue:&unk_283EE8FA0];
 
-      v135 = [v427 constraints];
-      [v135 setStepValue:&unk_283EE9310];
+      constraints47 = [v427 constraints];
+      [constraints47 setStepValue:&unk_283EE9310];
 
-      v136 = [v427 constraints];
-      obj = [v136 minimumValue];
+      constraints48 = [v427 constraints];
+      obj = [constraints48 minimumValue];
 
-      v137 = [v427 constraints];
-      v138 = [v137 maximumValue];
+      constraints49 = [v427 constraints];
+      maximumValue6 = [constraints49 maximumValue];
 
-      v139 = [v428 getAttributesForClusterClassName:v22 endpoint:v14];
+      v139 = [topologyCopy getAttributesForClusterClassName:v22 endpoint:dCopy];
       v140 = v139;
-      v397 = v14;
+      v397 = dCopy;
       v419 = v16;
       v424 = v22;
       if (v139)
@@ -941,44 +941,44 @@ LABEL_61:
         {
           v144 = [v143 objectAtIndexedSubscript:0];
 
-          v138 = v144;
+          maximumValue6 = v144;
         }
       }
 
-      v145 = [v427 constraints];
-      [v145 setMinimumValue:obj];
+      constraints50 = [v427 constraints];
+      [constraints50 setMinimumValue:obj];
 
-      v146 = [v427 constraints];
-      v394 = v138;
-      [v146 setMaximumValue:v138];
+      constraints51 = [v427 constraints];
+      v394 = maximumValue6;
+      [constraints51 setMaximumValue:maximumValue6];
 
       v147 = MEMORY[0x277CCABB0];
-      v148 = [v427 constraints];
-      v149 = [v148 minimumValue];
-      v150 = [v147 numberWithDouble:{objc_msgSend(v149, "integerValue") / 100.0}];
-      v151 = [v427 constraints];
-      [v151 setMinimumValue:v150];
+      constraints52 = [v427 constraints];
+      minimumValue4 = [constraints52 minimumValue];
+      v150 = [v147 numberWithDouble:{objc_msgSend(minimumValue4, "integerValue") / 100.0}];
+      constraints53 = [v427 constraints];
+      [constraints53 setMinimumValue:v150];
 
       v152 = MEMORY[0x277CCABB0];
-      v153 = [v427 constraints];
-      v154 = [v153 maximumValue];
-      v155 = [v152 numberWithDouble:{objc_msgSend(v154, "integerValue") / 100.0}];
-      v156 = [v427 constraints];
-      [v156 setMaximumValue:v155];
+      constraints54 = [v427 constraints];
+      maximumValue7 = [constraints54 maximumValue];
+      v155 = [v152 numberWithDouble:{objc_msgSend(maximumValue7, "integerValue") / 100.0}];
+      constraints55 = [v427 constraints];
+      [constraints55 setMaximumValue:v155];
 
       v157 = objc_autoreleasePoolPush();
-      v158 = v18;
+      v158 = selfCopy;
       v159 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v159, OS_LOG_TYPE_INFO))
       {
         v160 = HMFGetLogIdentifier();
-        v161 = [v427 constraints];
+        constraints56 = [v427 constraints];
         *buf = 138543874;
         v435 = v160;
         v436 = 2112;
-        v437 = v161;
+        v437 = constraints56;
         v438 = 2112;
-        v439 = v12;
+        v439 = characteristicCopy;
         _os_log_impl(&dword_22AEAE000, v159, OS_LOG_TYPE_INFO, "%{public}@Setting metadata constraints: %@ for characteristic %@", buf, 0x20u);
       }
 
@@ -987,25 +987,25 @@ LABEL_61:
       goto LABEL_142;
     }
 
-    if ([v12 isEqualToString:@"00000012-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"00000012-0000-1000-8000-0026BB765291"])
     {
       if (([v22 isEqualToString:@"MTRBaseClusterThermostat"] & 1) == 0 && (objc_msgSend(v22, "isEqualToString:", @"MTRClusterThermostat") & 1) == 0 && !objc_msgSend(v22, "isEqualToString:", @"HMMTRSyncThermostat") || !v24)
       {
         goto LABEL_55;
       }
 
-      v407 = v15;
-      v163 = [v427 constraints];
+      v407 = mapCopy;
+      constraints57 = [v427 constraints];
 
-      if (!v163)
+      if (!constraints57)
       {
         v164 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v164];
       }
 
-      v165 = [v428 getAttributesForClusterClassName:v22 endpoint:v14];
+      v165 = [topologyCopy getAttributesForClusterClassName:v22 endpoint:dCopy];
       v166 = v165;
-      v398 = v14;
+      v398 = dCopy;
       v425 = v22;
       if (v165)
       {
@@ -1026,15 +1026,15 @@ LABEL_61:
 
           v170 = v169;
 
-          v171 = [v170 integerValue];
+          integerValue6 = [v170 integerValue];
         }
 
         else
         {
-          v171 = 700;
+          integerValue6 = 700;
         }
 
-        objb = v171;
+        objb = integerValue6;
         v245 = [v166 objectForKeyedSubscript:@"AbsMaxHeatSetpointLimit"];
 
         if ([v245 count])
@@ -1053,12 +1053,12 @@ LABEL_61:
 
           v248 = v247;
 
-          v249 = [v248 integerValue];
+          integerValue7 = [v248 integerValue];
         }
 
         else
         {
-          v249 = 3000;
+          integerValue7 = 3000;
         }
 
         v250 = [v166 objectForKeyedSubscript:@"AbsMinCoolSetpointLimit"];
@@ -1080,12 +1080,12 @@ LABEL_61:
 
           v253 = v252;
 
-          v254 = [v253 integerValue];
+          integerValue8 = [v253 integerValue];
         }
 
         else
         {
-          v254 = 1600;
+          integerValue8 = 1600;
         }
 
         v255 = [v166 objectForKeyedSubscript:@"AbsMaxCoolSetpointLimit"];
@@ -1106,18 +1106,18 @@ LABEL_61:
 
           v258 = v257;
 
-          v259 = [v258 integerValue];
+          integerValue9 = [v258 integerValue];
         }
 
         else
         {
-          v259 = 3200;
+          integerValue9 = 3200;
         }
 
         v260 = objb;
         if (([v24 unsignedIntValue] & 0x20) != 0)
         {
-          v395 = v254;
+          v395 = integerValue8;
           v261 = [v166 objectForKeyedSubscript:@"MinSetpointDeadBand"];
 
           if ([v261 count])
@@ -1136,24 +1136,24 @@ LABEL_61:
 
             v264 = v263;
 
-            v265 = [v264 integerValue];
+            integerValue10 = [v264 integerValue];
           }
 
           else
           {
-            v265 = 25;
+            integerValue10 = 25;
           }
 
           v16 = v421;
           v260 = objb;
-          if (objb >= v395 - v265)
+          if (objb >= v395 - integerValue10)
           {
-            v260 = v395 - v265;
+            v260 = v395 - integerValue10;
           }
 
-          if (v249 >= v259 - v265)
+          if (integerValue7 >= integerValue9 - integerValue10)
           {
-            v249 = v259 - v265;
+            integerValue7 = integerValue9 - integerValue10;
           }
         }
 
@@ -1164,7 +1164,7 @@ LABEL_61:
         }
 
         v233 = v260;
-        v234 = v249;
+        v234 = integerValue7;
       }
 
       else
@@ -1173,19 +1173,19 @@ LABEL_61:
         v234 = 3000.0;
       }
 
-      v313 = [v427 constraints];
-      [v313 setStepValue:&unk_283EE9310];
+      constraints58 = [v427 constraints];
+      [constraints58 setStepValue:&unk_283EE9310];
 
       v314 = [MEMORY[0x277CCABB0] numberWithDouble:v233 / 100.0];
-      v315 = [v427 constraints];
-      [v315 setMinimumValue:v314];
+      constraints59 = [v427 constraints];
+      [constraints59 setMinimumValue:v314];
 
       v316 = [MEMORY[0x277CCABB0] numberWithDouble:v234 / 100.0];
-      v317 = [v427 constraints];
-      [v317 setMaximumValue:v316];
+      constraints60 = [v427 constraints];
+      [constraints60 setMaximumValue:v316];
 
       v318 = objc_autoreleasePoolPush();
-      v319 = v18;
+      v319 = selfCopy;
       v320 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v320, OS_LOG_TYPE_INFO))
       {
@@ -1197,59 +1197,59 @@ LABEL_61:
         v436 = 2112;
         v437 = v323;
         v438 = 2112;
-        v439 = v12;
+        v439 = characteristicCopy;
         _os_log_impl(&dword_22AEAE000, v320, OS_LOG_TYPE_INFO, "%{public}@Setting metadata constraints: %@ for characteristic %@", buf, 0x20u);
 
         v16 = v322;
       }
 
       objc_autoreleasePoolPop(v318);
-      v14 = v398;
-      v15 = v407;
+      dCopy = v398;
+      mapCopy = v407;
       v22 = v425;
       goto LABEL_54;
     }
 
-    if ([v12 isEqualToString:@"000000B2-0000-1000-8000-0026BB765291"])
+    if ([characteristicCopy isEqualToString:@"000000B2-0000-1000-8000-0026BB765291"])
     {
       if (([v22 isEqualToString:@"HMMTRThermostat"] & 1) == 0 && (objc_msgSend(v22, "isEqualToString:", @"HMMTRSyncThermostat") & 1) == 0 && !objc_msgSend(v22, "isEqualToString:", @"MTRClusterThermostat") || !v24)
       {
         goto LABEL_55;
       }
 
-      v204 = [v427 constraints];
+      constraints61 = [v427 constraints];
 
-      if (!v204)
+      if (!constraints61)
       {
         v205 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v205];
       }
 
-      v206 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
       if (([v24 unsignedIntValue] & 2) != 0)
       {
-        [v206 addObject:&unk_283EE8EF8];
+        [array3 addObject:&unk_283EE8EF8];
       }
 
       if ([v24 unsignedIntValue])
       {
-        [v206 addObject:&unk_283EE8EE0];
+        [array3 addObject:&unk_283EE8EE0];
       }
 
       v424 = v22;
       if (([v24 unsignedIntValue] & 0x20) != 0)
       {
-        [v206 addObject:&unk_283EE8DC0];
+        [array3 addObject:&unk_283EE8DC0];
       }
 
       v419 = v16;
-      v406 = v15;
-      v397 = v14;
+      v406 = mapCopy;
+      v397 = dCopy;
       v431 = 0u;
       v432 = 0u;
       v429 = 0u;
       v430 = 0u;
-      obj = v206;
+      obj = array3;
       v207 = [obj countByEnumeratingWithState:&v429 objects:v433 count:16];
       if (v207)
       {
@@ -1277,16 +1277,16 @@ LABEL_61:
               v209 = v213;
             }
 
-            v214 = [v213 unsignedIntegerValue];
-            if (v214 < [v210 unsignedIntegerValue])
+            unsignedIntegerValue2 = [v213 unsignedIntegerValue];
+            if (unsignedIntegerValue2 < [v210 unsignedIntegerValue])
             {
               v215 = v213;
 
               v210 = v215;
             }
 
-            v216 = [v213 unsignedIntegerValue];
-            if (v216 > [v209 unsignedIntegerValue])
+            unsignedIntegerValue3 = [v213 unsignedIntegerValue];
+            if (unsignedIntegerValue3 > [v209 unsignedIntegerValue])
             {
               v217 = v213;
 
@@ -1306,31 +1306,31 @@ LABEL_61:
         v210 = 0;
       }
 
-      v266 = [v427 constraints];
-      [v266 setMinimumValue:v210];
+      constraints62 = [v427 constraints];
+      [constraints62 setMinimumValue:v210];
 
-      v267 = [v427 constraints];
-      [v267 setMaximumValue:v209];
+      constraints63 = [v427 constraints];
+      [constraints63 setMaximumValue:v209];
 
-      v268 = [v427 constraints];
-      [v268 setValidValues:obj];
+      constraints64 = [v427 constraints];
+      [constraints64 setValidValues:obj];
 
-      v269 = [v427 constraints];
-      [v269 setStepValue:&unk_283EE8EE0];
+      constraints65 = [v427 constraints];
+      [constraints65 setStepValue:&unk_283EE8EE0];
 
       v270 = objc_autoreleasePoolPush();
-      v271 = v18;
+      v271 = selfCopy;
       v272 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v272, OS_LOG_TYPE_INFO))
       {
         v273 = HMFGetLogIdentifier();
-        v274 = [v427 constraints];
+        constraints66 = [v427 constraints];
         *buf = 138543874;
         v435 = v273;
         v436 = 2112;
-        v437 = v274;
+        v437 = constraints66;
         v438 = 2112;
-        v439 = v12;
+        v439 = characteristicCopy;
         _os_log_impl(&dword_22AEAE000, v272, OS_LOG_TYPE_INFO, "%{public}@Setting metadata constraints: %@ for characteristic %@", buf, 0x20u);
       }
 
@@ -1339,46 +1339,46 @@ LABEL_61:
     }
 
     v426 = v22;
-    if (([v12 isEqualToString:@"00000090-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"00000091-0000-1000-8000-0026BB765291") & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"00000093-0000-1000-8000-0026BB765291") & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"00000094-0000-1000-8000-0026BB765291"))
+    if (([characteristicCopy isEqualToString:@"00000090-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(characteristicCopy, "isEqualToString:", @"00000091-0000-1000-8000-0026BB765291") & 1) != 0 || (objc_msgSend(characteristicCopy, "isEqualToString:", @"00000093-0000-1000-8000-0026BB765291") & 1) != 0 || objc_msgSend(characteristicCopy, "isEqualToString:", @"00000094-0000-1000-8000-0026BB765291"))
     {
-      v218 = [v427 constraints];
+      constraints67 = [v427 constraints];
 
-      if (!v218)
+      if (!constraints67)
       {
         v219 = objc_alloc_init(MEMORY[0x277CFEBA8]);
         [v427 setConstraints:v219];
       }
 
-      v220 = [v427 constraints];
-      [v220 setMinimumValue:&unk_283EE8DC0];
+      constraints68 = [v427 constraints];
+      [constraints68 setMinimumValue:&unk_283EE8DC0];
 
-      v221 = [v427 constraints];
-      [v221 setMaximumValue:&unk_283EE8DD8];
+      constraints69 = [v427 constraints];
+      [constraints69 setMaximumValue:&unk_283EE8DD8];
 
-      v222 = [v427 constraints];
-      [v222 setStepValue:&unk_283EE8EE0];
+      constraints70 = [v427 constraints];
+      [constraints70 setStepValue:&unk_283EE8EE0];
 
-      v23 = v428;
-      v223 = [v428 getAttributesForClusterClassName:v22 endpoint:v14];
+      v23 = topologyCopy;
+      v223 = [topologyCopy getAttributesForClusterClassName:v22 endpoint:dCopy];
       v224 = v223;
       if (!v223)
       {
         obja = 0;
         v420 = v16;
         v235 = objc_autoreleasePoolPush();
-        v236 = v18;
+        v236 = selfCopy;
         v237 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v237, OS_LOG_TYPE_ERROR))
         {
           v238 = HMFGetLogIdentifier();
-          v239 = [v427 constraints];
-          [v239 minimumValue];
-          v409 = v15;
-          v241 = v240 = v14;
+          constraints71 = [v427 constraints];
+          [constraints71 minimumValue];
+          v409 = mapCopy;
+          v241 = v240 = dCopy;
           [v427 constraints];
-          v417 = v12;
+          v417 = characteristicCopy;
           v243 = v242 = v24;
-          v244 = [v243 maximumValue];
+          maximumValue8 = [v243 maximumValue];
           *buf = 138544386;
           v435 = v238;
           v436 = 2112;
@@ -1388,16 +1388,16 @@ LABEL_61:
           v440 = 2112;
           v441 = v241;
           v442 = 2112;
-          v443 = v244;
+          v443 = maximumValue8;
           _os_log_impl(&dword_22AEAE000, v237, OS_LOG_TYPE_ERROR, "%{public}@No attributes found for cluster %@ on endpoint %@. Use default MeasuredValue Min/Max %@, %@", buf, 0x34u);
 
           v24 = v242;
-          v12 = v417;
+          characteristicCopy = v417;
 
-          v14 = v240;
-          v15 = v409;
+          dCopy = v240;
+          mapCopy = v409;
 
-          v23 = v428;
+          v23 = topologyCopy;
         }
 
         objc_autoreleasePoolPop(v235);
@@ -1405,11 +1405,11 @@ LABEL_61:
         goto LABEL_241;
       }
 
-      v408 = v15;
+      v408 = mapCopy;
       v225 = [v223 objectForKeyedSubscript:@"MeasurementUnit"];
       v413 = v24;
-      v416 = v12;
-      v399 = v14;
+      v416 = characteristicCopy;
+      v399 = dCopy;
       if (![v225 count])
       {
         v232 = &unk_283EE9320;
@@ -1434,10 +1434,10 @@ LABEL_61:
 
       if (v230)
       {
-        v231 = [v230 integerValue];
-        if (v231 < 3)
+        integerValue11 = [v230 integerValue];
+        if (integerValue11 < 3)
         {
-          v232 = qword_2786F08B8[v231];
+          v232 = qword_2786F08B8[integerValue11];
 
           v224 = v226;
 LABEL_222:
@@ -1469,25 +1469,25 @@ LABEL_222:
               [v232 floatValue];
               *&v284 = floorf(v282 * v283);
               v285 = [v280 numberWithFloat:v284];
-              v286 = [v427 constraints];
-              [v286 setMinimumValue:v285];
+              constraints72 = [v427 constraints];
+              [constraints72 setMinimumValue:v285];
             }
           }
 
           v287 = v232;
           v288 = objc_autoreleasePoolPush();
-          v289 = v18;
+          v289 = selfCopy;
           v290 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v290, OS_LOG_TYPE_DEBUG))
           {
             v291 = HMFGetLogIdentifier();
             [v427 constraints];
             v293 = v292 = v16;
-            v294 = [v293 minimumValue];
+            minimumValue5 = [v293 minimumValue];
             *buf = 138543874;
             v435 = v291;
             v436 = 2112;
-            v437 = v294;
+            v437 = minimumValue5;
             v438 = 2112;
             v439 = v426;
             _os_log_impl(&dword_22AEAE000, v290, OS_LOG_TYPE_DEBUG, "%{public}@MinMeasuredValue %@ for %@ cluster", buf, 0x20u);
@@ -1499,7 +1499,7 @@ LABEL_222:
           objc_autoreleasePoolPop(v288);
           v295 = [obja objectForKeyedSubscript:@"MaxMeasuredValue"];
 
-          v12 = v416;
+          characteristicCopy = v416;
           if ([v295 count])
           {
             v296 = [v295 objectAtIndexedSubscript:0];
@@ -1524,8 +1524,8 @@ LABEL_222:
               [v287 floatValue];
               *&v303 = ceilf(v301 * v302);
               v304 = [v299 numberWithFloat:v303];
-              v305 = [v276 constraints];
-              [v305 setMaximumValue:v304];
+              constraints73 = [v276 constraints];
+              [constraints73 setMaximumValue:v304];
             }
           }
 
@@ -1537,11 +1537,11 @@ LABEL_222:
             v309 = HMFGetLogIdentifier();
             [v276 constraints];
             v311 = v310 = v16;
-            v312 = [v311 maximumValue];
+            maximumValue9 = [v311 maximumValue];
             *buf = 138543874;
             v435 = v309;
             v436 = 2112;
-            v437 = v312;
+            v437 = maximumValue9;
             v438 = 2112;
             v439 = v426;
             _os_log_impl(&dword_22AEAE000, v308, OS_LOG_TYPE_DEBUG, "%{public}@MaxMeasuredValue %@ for %@ cluster", buf, 0x20u);
@@ -1550,9 +1550,9 @@ LABEL_222:
           }
 
           objc_autoreleasePoolPop(v306);
-          v14 = v399;
-          v23 = v428;
-          v15 = v408;
+          dCopy = v399;
+          v23 = topologyCopy;
+          mapCopy = v408;
           v24 = v413;
 LABEL_241:
 
@@ -1561,7 +1561,7 @@ LABEL_241:
         }
 
         v324 = objc_autoreleasePoolPush();
-        v328 = v18;
+        v328 = selfCopy;
         v326 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v326, OS_LOG_TYPE_ERROR))
         {
@@ -1582,17 +1582,17 @@ LABEL_241:
       else
       {
         v324 = objc_autoreleasePoolPush();
-        v325 = v18;
+        v325 = selfCopy;
         v326 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v326, OS_LOG_TYPE_ERROR))
         {
 LABEL_256:
 
           objc_autoreleasePoolPop(v324);
-          v12 = v416;
-          v14 = v399;
-          v23 = v428;
-          v15 = v408;
+          characteristicCopy = v416;
+          dCopy = v399;
+          v23 = topologyCopy;
+          mapCopy = v408;
           v16 = v227;
 LABEL_257:
           v22 = v426;
@@ -1611,47 +1611,47 @@ LABEL_257:
       goto LABEL_256;
     }
 
-    v23 = v428;
-    if (([v12 isEqualToString:@"000000C4-0000-1000-8000-0026BB765291"] & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"000000C3-0000-1000-8000-0026BB765291") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"000000C6-0000-1000-8000-0026BB765291") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"000000C7-0000-1000-8000-0026BB765291") & 1) == 0 && !objc_msgSend(v12, "isEqualToString:", @"000000C8-0000-1000-8000-0026BB765291"))
+    v23 = topologyCopy;
+    if (([characteristicCopy isEqualToString:@"000000C4-0000-1000-8000-0026BB765291"] & 1) == 0 && (objc_msgSend(characteristicCopy, "isEqualToString:", @"000000C3-0000-1000-8000-0026BB765291") & 1) == 0 && (objc_msgSend(characteristicCopy, "isEqualToString:", @"000000C6-0000-1000-8000-0026BB765291") & 1) == 0 && (objc_msgSend(characteristicCopy, "isEqualToString:", @"000000C7-0000-1000-8000-0026BB765291") & 1) == 0 && !objc_msgSend(characteristicCopy, "isEqualToString:", @"000000C8-0000-1000-8000-0026BB765291"))
     {
       goto LABEL_55;
     }
 
-    v410 = v15;
+    v410 = mapCopy;
     v413 = v24;
     v422 = v16;
-    v400 = v14;
-    v330 = [v427 constraints];
+    v400 = dCopy;
+    constraints74 = [v427 constraints];
 
-    if (!v330)
+    if (!constraints74)
     {
       v331 = objc_alloc_init(MEMORY[0x277CFEBA8]);
       [v427 setConstraints:v331];
     }
 
-    v332 = [v427 constraints];
-    [v332 setMinimumValue:&unk_283EE8DC0];
+    constraints75 = [v427 constraints];
+    [constraints75 setMinimumValue:&unk_283EE8DC0];
 
-    v333 = [v427 constraints];
-    [v333 setMaximumValue:&unk_283EE8DD8];
+    constraints76 = [v427 constraints];
+    [constraints76 setMaximumValue:&unk_283EE8DD8];
 
-    v334 = [v427 constraints];
-    [v334 setStepValue:&unk_283EE8EE0];
+    constraints77 = [v427 constraints];
+    [constraints77 setStepValue:&unk_283EE8EE0];
 
-    v335 = [v428 getAttributesForClusterClassName:v22 endpoint:v14];
+    v335 = [topologyCopy getAttributesForClusterClassName:v22 endpoint:dCopy];
     v336 = v335;
     if (!v335)
     {
       v342 = objc_autoreleasePoolPush();
-      v343 = v18;
+      v343 = selfCopy;
       v344 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v344, OS_LOG_TYPE_ERROR))
       {
         v345 = HMFGetLogIdentifier();
-        v346 = [v427 constraints];
-        v347 = [v346 minimumValue];
-        v348 = [v427 constraints];
-        v349 = [v348 maximumValue];
+        constraints78 = [v427 constraints];
+        minimumValue6 = [constraints78 minimumValue];
+        constraints79 = [v427 constraints];
+        maximumValue10 = [constraints79 maximumValue];
         *buf = 138544386;
         v435 = v345;
         v436 = 2112;
@@ -1659,9 +1659,9 @@ LABEL_257:
         v438 = 2112;
         v439 = v400;
         v440 = 2112;
-        v441 = v347;
+        v441 = minimumValue6;
         v442 = 2112;
-        v443 = v349;
+        v443 = maximumValue10;
         _os_log_impl(&dword_22AEAE000, v344, OS_LOG_TYPE_ERROR, "%{public}@No attributes found for cluster %@ on endpoint %@. Use default MeasuredValue Min/Max %@, %@", buf, 0x34u);
       }
 
@@ -1692,10 +1692,10 @@ LABEL_257:
 
     if (v340)
     {
-      v341 = [v340 integerValue];
-      if ((v341 - 3) < 3)
+      integerValue12 = [v340 integerValue];
+      if ((integerValue12 - 3) < 3)
       {
-        objc = qword_2786F08D0[v341 - 3];
+        objc = qword_2786F08D0[integerValue12 - 3];
 
 LABEL_277:
         v350 = [v336 objectForKeyedSubscript:@"MinMeasuredValue"];
@@ -1724,23 +1724,23 @@ LABEL_277:
             [objc floatValue];
             *&v358 = floorf(v356 * v357);
             v359 = [v354 numberWithFloat:v358];
-            v360 = [v427 constraints];
-            [v360 setMinimumValue:v359];
+            constraints80 = [v427 constraints];
+            [constraints80 setMinimumValue:v359];
           }
         }
 
         v361 = objc_autoreleasePoolPush();
-        v362 = v18;
+        v362 = selfCopy;
         v363 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v363, OS_LOG_TYPE_DEBUG))
         {
           v364 = HMFGetLogIdentifier();
-          v365 = [v427 constraints];
-          v366 = [v365 minimumValue];
+          constraints81 = [v427 constraints];
+          minimumValue7 = [constraints81 minimumValue];
           *buf = 138543874;
           v435 = v364;
           v436 = 2112;
-          v437 = v366;
+          v437 = minimumValue7;
           v438 = 2112;
           v439 = v426;
           _os_log_impl(&dword_22AEAE000, v363, OS_LOG_TYPE_DEBUG, "%{public}@MinMeasuredValue %@ for %@ cluster", buf, 0x20u);
@@ -1773,8 +1773,8 @@ LABEL_277:
             [objc floatValue];
             *&v375 = ceilf(v373 * v374);
             v376 = [v371 numberWithFloat:v375];
-            v377 = [v427 constraints];
-            [v377 setMaximumValue:v376];
+            constraints82 = [v427 constraints];
+            [constraints82 setMaximumValue:v376];
           }
         }
 
@@ -1784,12 +1784,12 @@ LABEL_277:
         if (os_log_type_enabled(v380, OS_LOG_TYPE_DEBUG))
         {
           v381 = HMFGetLogIdentifier();
-          v382 = [v427 constraints];
-          v383 = [v382 maximumValue];
+          constraints83 = [v427 constraints];
+          maximumValue11 = [constraints83 maximumValue];
           *buf = 138543874;
           v435 = v381;
           v436 = 2112;
-          v437 = v383;
+          v437 = maximumValue11;
           v438 = 2112;
           v439 = v426;
           _os_log_impl(&dword_22AEAE000, v380, OS_LOG_TYPE_DEBUG, "%{public}@MaxMeasuredValue %@ for %@ cluster", buf, 0x20u);
@@ -1800,7 +1800,7 @@ LABEL_277:
       }
 
       v384 = objc_autoreleasePoolPush();
-      v388 = v18;
+      v388 = selfCopy;
       v386 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v386, OS_LOG_TYPE_ERROR))
       {
@@ -1821,7 +1821,7 @@ LABEL_277:
     else
     {
       v384 = objc_autoreleasePoolPush();
-      v385 = v18;
+      v385 = selfCopy;
       v386 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v386, OS_LOG_TYPE_ERROR))
       {
@@ -1838,9 +1838,9 @@ LABEL_300:
     objc_autoreleasePoolPop(v384);
 LABEL_302:
 
-    v14 = v400;
-    v23 = v428;
-    v15 = v410;
+    dCopy = v400;
+    v23 = topologyCopy;
+    mapCopy = v410;
     v16 = v422;
     goto LABEL_257;
   }
@@ -1851,26 +1851,26 @@ LABEL_302:
     *buf = 138543874;
     v435 = v36;
     v436 = 2112;
-    v437 = v12;
+    v437 = characteristicCopy;
     v438 = 2112;
     v439 = 0;
     _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_ERROR, "%{public}@Invalid characteristicUUID. Does not convert to a short integer. UUID:%@ shortened: %@. Using default characteristic metadata", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v23 = v428;
+  v23 = topologyCopy;
 LABEL_56:
 
   v92 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getMTRClusterClassForCharacteristic:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5
+- (id)getMTRClusterClassForCharacteristic:(id)characteristic endpointID:(id)d clusterIDCharacteristicMap:(id)map
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:", v8, [v9 unsignedIntegerValue], v10);
+  characteristicCopy = characteristic;
+  dCopy = d;
+  mapCopy = map;
+  v11 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:", characteristicCopy, [dCopy unsignedIntegerValue], mapCopy);
   v12 = v11;
   if (v11)
   {
@@ -1893,7 +1893,7 @@ LABEL_56:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -1901,7 +1901,7 @@ LABEL_56:
       v24 = 138543618;
       v25 = v21;
       v26 = 2112;
-      v27 = v8;
+      v27 = characteristicCopy;
       _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Mapping Characteristic %@ is not supported", &v24, 0x16u);
     }
 
@@ -1914,13 +1914,13 @@ LABEL_56:
   return v17;
 }
 
-- (id)getClusterClassForCharacteristic:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5
+- (id)getClusterClassForCharacteristic:(id)characteristic endpointID:(id)d clusterIDCharacteristicMap:(id)map
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:", v8, [v9 unsignedIntegerValue], v10);
+  characteristicCopy = characteristic;
+  dCopy = d;
+  mapCopy = map;
+  v11 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristic:endpointID:clusterIDCharacteristicMap:", characteristicCopy, [dCopy unsignedIntegerValue], mapCopy);
   v12 = v11;
   if (v11)
   {
@@ -1930,7 +1930,7 @@ LABEL_56:
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -1938,7 +1938,7 @@ LABEL_56:
       v20 = 138543618;
       v21 = v17;
       v22 = 2112;
-      v23 = v8;
+      v23 = characteristicCopy;
       _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Mapping Characteristic %@ is not supported", &v20, 0x16u);
     }
 
@@ -1951,27 +1951,27 @@ LABEL_56:
   return v13;
 }
 
-- (BOOL)isRequiresOptionalMatterAttributeForCharacteristic:(id)a3
+- (BOOL)isRequiresOptionalMatterAttributeForCharacteristic:(id)characteristic
 {
-  v3 = [a3 objectForKeyedSubscript:@"ConfigureCharacteristic"];
+  v3 = [characteristic objectForKeyedSubscript:@"ConfigureCharacteristic"];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"RequiresOptionalMatterAttribute"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)getRequiredFeaturesBitmapForCharacteristic:(id)a3
+- (id)getRequiredFeaturesBitmapForCharacteristic:(id)characteristic
 {
-  v3 = [a3 objectForKeyedSubscript:@"ConfigureCharacteristic"];
+  v3 = [characteristic objectForKeyedSubscript:@"ConfigureCharacteristic"];
   v4 = v3;
   if (v3)
   {
@@ -1986,14 +1986,14 @@ LABEL_56:
   return v5;
 }
 
-- (id)getRequiredAttributesForCharacteristic:(id)a3
+- (id)getRequiredAttributesForCharacteristic:(id)characteristic
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  characteristicCopy = characteristic;
   v5 = [(HMMTRProtocolMap *)self rawPlistAtKey:@"HAPCharacteristics"];
   if (v5)
   {
-    v6 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v4];
+    v6 = [HMMTRUtilities hmmtr_shortTypeFromUUID:characteristicCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -2020,7 +2020,7 @@ LABEL_56:
             v13 = v12;
             if ([v13 countByEnumeratingWithState:v21 objects:v26 count:16])
             {
-              v14 = [**(&v21[0] + 1) objectForKeyedSubscript:@"RequiredAttributes"];
+              array = [**(&v21[0] + 1) objectForKeyedSubscript:@"RequiredAttributes"];
 
               goto LABEL_17;
             }
@@ -2037,14 +2037,14 @@ LABEL_56:
       }
     }
 
-    v14 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
 LABEL_17:
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2055,22 +2055,22 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v15);
-    v14 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return array;
 }
 
-- (id)getCHIPAttributesForCharacteristic:(id)a3
+- (id)getCHIPAttributesForCharacteristic:(id)characteristic
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  characteristicCopy = characteristic;
   v5 = [(HMMTRProtocolMap *)self rawPlistAtKey:@"HAPCharacteristics"];
   if (v5)
   {
-    v6 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v4];
+    v6 = [HMMTRUtilities hmmtr_shortTypeFromUUID:characteristicCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -2097,7 +2097,7 @@ LABEL_17:
             v13 = v12;
             if ([v13 countByEnumeratingWithState:v21 objects:v26 count:16])
             {
-              v14 = [**(&v21[0] + 1) objectForKeyedSubscript:@"CHIPAttributes"];
+              array = [**(&v21[0] + 1) objectForKeyedSubscript:@"CHIPAttributes"];
 
               goto LABEL_17;
             }
@@ -2114,14 +2114,14 @@ LABEL_17:
       }
     }
 
-    v14 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
 LABEL_17:
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2132,22 +2132,22 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v15);
-    v14 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return array;
 }
 
-- (void)servicesOfMTRDevice:(id)a3 forDeviceTypes:(id)a4 endpoint:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)servicesOfMTRDevice:(id)device forDeviceTypes:(id)types endpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v28 = a4;
-  v30 = a5;
-  queue = a6;
-  v27 = a7;
+  deviceCopy = device;
+  typesCopy = types;
+  endpointCopy = endpoint;
+  queue = queue;
+  handlerCopy = handler;
   v12 = [(HMMTRProtocolMap *)self rawPlistOffsetForKey:@"CHIPDeviceTypes"];
   if (v12)
   {
@@ -2169,7 +2169,7 @@ LABEL_17:
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v28;
+    obj = typesCopy;
     v15 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v15)
     {
@@ -2185,8 +2185,8 @@ LABEL_17:
 
           v18 = *(*(&v42 + 1) + 8 * i);
           mapData = self->_mapData;
-          v20 = [v18 stringValue];
-          v21 = [(NSData *)mapData hmf_objectForKey:v20 forDictionaryAtOffset:v13];
+          stringValue = [v18 stringValue];
+          v21 = [(NSData *)mapData hmf_objectForKey:stringValue forDictionaryAtOffset:v13];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -2211,7 +2211,7 @@ LABEL_17:
           v38[4] = self;
           v38[5] = v18;
           v39 = v14;
-          [(HMMTRProtocolMap *)self _selectedServiceTypeForServiceArray:v23 device:0 mtrDevice:v31 endpoint:v30 callbackQueue:queue completionHandler:v38];
+          [(HMMTRProtocolMap *)self _selectedServiceTypeForServiceArray:v23 device:0 mtrDevice:deviceCopy endpoint:endpointCopy callbackQueue:queue completionHandler:v38];
         }
 
         v15 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -2225,7 +2225,7 @@ LABEL_17:
     block[2] = __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callbackQueue_completionHandler___block_invoke_436;
     block[3] = &unk_2786F06E0;
     v36 = v48;
-    v35 = v27;
+    v35 = handlerCopy;
     block[4] = self;
     v34 = obj;
     v37 = v46;
@@ -2234,14 +2234,14 @@ LABEL_17:
     _Block_object_dispose(v46, 8);
     _Block_object_dispose(v48, 8);
 
-    v24 = v27;
+    v24 = handlerCopy;
   }
 
   else
   {
     v25 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
-    v24 = v27;
-    (*(v27 + 2))(v27, 0, 0, v25);
+    v24 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v25);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -2347,14 +2347,14 @@ void __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callback
   }
 }
 
-- (void)servicesForDeviceTypes:(id)a3 device:(id)a4 endpoint:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)servicesForDeviceTypes:(id)types device:(id)device endpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v31 = a4;
-  v30 = a5;
-  queue = a6;
-  v27 = a7;
+  typesCopy = types;
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  queue = queue;
+  handlerCopy = handler;
   v12 = [(HMMTRProtocolMap *)self rawPlistOffsetForKey:@"CHIPDeviceTypes"];
   if (v12)
   {
@@ -2376,7 +2376,7 @@ void __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callback
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v28;
+    obj = typesCopy;
     v15 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v15)
     {
@@ -2392,8 +2392,8 @@ void __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callback
 
           v18 = *(*(&v42 + 1) + 8 * i);
           mapData = self->_mapData;
-          v20 = [v18 stringValue];
-          v21 = [(NSData *)mapData hmf_objectForKey:v20 forDictionaryAtOffset:v13];
+          stringValue = [v18 stringValue];
+          v21 = [(NSData *)mapData hmf_objectForKey:stringValue forDictionaryAtOffset:v13];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -2418,7 +2418,7 @@ void __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callback
           v38[4] = self;
           v38[5] = v18;
           v39 = v14;
-          [(HMMTRProtocolMap *)self _selectedServiceTypeForServiceArray:v23 device:v31 mtrDevice:0 endpoint:v30 callbackQueue:queue completionHandler:v38];
+          [(HMMTRProtocolMap *)self _selectedServiceTypeForServiceArray:v23 device:deviceCopy mtrDevice:0 endpoint:endpointCopy callbackQueue:queue completionHandler:v38];
         }
 
         v15 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -2432,7 +2432,7 @@ void __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callback
     block[2] = __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue_completionHandler___block_invoke_435;
     block[3] = &unk_2786F06E0;
     v36 = v48;
-    v35 = v27;
+    v35 = handlerCopy;
     block[4] = self;
     v34 = obj;
     v37 = v46;
@@ -2441,14 +2441,14 @@ void __96__HMMTRProtocolMap_servicesOfMTRDevice_forDeviceTypes_endpoint_callback
     _Block_object_dispose(v46, 8);
     _Block_object_dispose(v48, 8);
 
-    v24 = v27;
+    v24 = handlerCopy;
   }
 
   else
   {
     v25 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
-    v24 = v27;
-    (*(v27 + 2))(v27, 0, 0, v25);
+    v24 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v25);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -2554,15 +2554,15 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
   }
 }
 
-- (void)_selectedServiceTypeForServiceArray:(id)a3 device:(id)a4 mtrDevice:(id)a5 endpoint:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8
+- (void)_selectedServiceTypeForServiceArray:(id)array device:(id)device mtrDevice:(id)mtrDevice endpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler
 {
   v94 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v58 = a4;
-  v55 = a5;
-  v56 = a6;
-  queue = a7;
-  v49 = a8;
+  arrayCopy = array;
+  deviceCopy = device;
+  mtrDeviceCopy = mtrDevice;
+  endpointCopy = endpoint;
+  queue = queue;
+  handlerCopy = handler;
   v87[0] = 0;
   v87[1] = v87;
   v87[2] = 0x3032000000;
@@ -2593,7 +2593,7 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v13;
+  obj = arrayCopy;
   v14 = [obj countByEnumeratingWithState:&v77 objects:v93 count:16];
   if (v14)
   {
@@ -2609,7 +2609,7 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
         }
 
         v16 = *(*(&v77 + 1) + 8 * i);
-        v17 = [v16 objectForKeyedSubscript:{@"SelectionCriteria", v49}];
+        v17 = [v16 objectForKeyedSubscript:{@"SelectionCriteria", handlerCopy}];
         v18 = v17;
         if (v17)
         {
@@ -2628,9 +2628,9 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
 
           if (!v22)
           {
-            if (v58)
+            if (deviceCopy)
             {
-              v23 = [objc_alloc(NSClassFromString(v20)) initWithDevice:v58 endpoint:objc_msgSend(v56 queue:{"unsignedIntegerValue"), queue}];
+              v23 = [objc_alloc(NSClassFromString(v20)) initWithDevice:deviceCopy endpoint:objc_msgSend(endpointCopy queue:{"unsignedIntegerValue"), queue}];
               if (objc_opt_respondsToSelector())
               {
                 dispatch_group_enter(group);
@@ -2649,7 +2649,7 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
               else
               {
                 v35 = objc_autoreleasePoolPush();
-                v36 = self;
+                selfCopy = self;
                 v37 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
                 {
@@ -2667,7 +2667,7 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
 
             else
             {
-              if (!v55)
+              if (!mtrDeviceCopy)
               {
                 _HMFPreconditionFailure();
                 __break(1u);
@@ -2687,8 +2687,8 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
 
               v23 = v26;
 
-              v27 = [(HMMTRProtocolMap *)self createClusterInstance];
-              v28 = (v27)[2](v27, v23, v55, v56, queue);
+              createClusterInstance = [(HMMTRProtocolMap *)self createClusterInstance];
+              v28 = (createClusterInstance)[2](createClusterInstance, v23, mtrDeviceCopy, endpointCopy, queue);
 
               if (objc_opt_respondsToSelector())
               {
@@ -2718,7 +2718,7 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
                 else
                 {
                   context = objc_autoreleasePoolPush();
-                  v52 = self;
+                  selfCopy2 = self;
                   v43 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                   {
@@ -2738,7 +2738,7 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
               else
               {
                 v39 = objc_autoreleasePoolPush();
-                v40 = self;
+                selfCopy3 = self;
                 v41 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
                 {
@@ -2769,13 +2769,13 @@ void __91__HMMTRProtocolMap_servicesForDeviceTypes_device_endpoint_callbackQueue
   block[3] = &unk_2786F0690;
   v64 = obj;
   v65 = v54;
-  v66 = self;
-  v67 = v49;
+  selfCopy4 = self;
+  v67 = handlerCopy;
   v68 = v87;
   v69 = v81;
   v70 = v85;
   v71 = v83;
-  v45 = v49;
+  v45 = handlerCopy;
   v46 = v54;
   v47 = obj;
   dispatch_group_notify(group, queue, block);
@@ -3074,10 +3074,10 @@ LABEL_47:
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (id)categoriesForDeviceTypes:(id)a3
+- (id)categoriesForDeviceTypes:(id)types
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v39 = [(HMMTRProtocolMap *)self rawPlistOffsetForKey:@"CHIPDeviceTypes"];
   if (v39)
   {
@@ -3086,8 +3086,8 @@ LABEL_47:
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v36 = v4;
-    obj = v4;
+    v36 = typesCopy;
+    obj = typesCopy;
     v40 = [obj countByEnumeratingWithState:&v48 objects:v59 count:16];
     if (v40)
     {
@@ -3106,8 +3106,8 @@ LABEL_47:
           v7 = *(*(&v48 + 1) + 8 * v6);
           mapData = self->_mapData;
           v42 = v7;
-          v9 = [v7 stringValue];
-          v10 = [(NSData *)mapData hmf_objectForKey:v9 forDictionaryAtOffset:v39];
+          stringValue = [v7 stringValue];
+          v10 = [(NSData *)mapData hmf_objectForKey:stringValue forDictionaryAtOffset:v39];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -3152,12 +3152,12 @@ LABEL_47:
                 else
                 {
                   v20 = objc_autoreleasePoolPush();
-                  v21 = self;
+                  selfCopy = self;
                   v22 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
                   {
                     HMFGetLogIdentifier();
-                    v23 = self;
+                    selfCopy2 = self;
                     v25 = v24 = v5;
                     *buf = 138543618;
                     v53 = v25;
@@ -3166,7 +3166,7 @@ LABEL_47:
                     _os_log_impl(&dword_22AEAE000, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to find HAP category for deviceType %@", buf, 0x16u);
 
                     v5 = v24;
-                    self = v23;
+                    self = selfCopy2;
                   }
 
                   objc_autoreleasePoolPop(v20);
@@ -3191,12 +3191,12 @@ LABEL_47:
 
     v26 = [v5 count];
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     v30 = v29;
     if (v26)
     {
-      v4 = v36;
+      typesCopy = v36;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
         v31 = HMFGetLogIdentifier();
@@ -3215,7 +3215,7 @@ LABEL_47:
 
     else
     {
-      v4 = v36;
+      typesCopy = v36;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v33 = HMFGetLogIdentifier();
@@ -3241,15 +3241,15 @@ LABEL_47:
   return v32;
 }
 
-- (BOOL)optionalServiceLabelIndexIncludedInService:(id)a3
+- (BOOL)optionalServiceLabelIndexIncludedInService:(id)service
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = [(HMMTRProtocolMap *)self rawPlistAtKey:@"HAPServices"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [v5 objectForKeyedSubscript:serviceCopy];
     v8 = v7;
     if (v7)
     {
@@ -3269,19 +3269,19 @@ LABEL_47:
 
       if (v11)
       {
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
       }
 
       else
       {
-        v12 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -3289,19 +3289,19 @@ LABEL_47:
         v23 = 138543618;
         v24 = v20;
         v25 = 2112;
-        v26 = v4;
+        v26 = serviceCopy;
         _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_ERROR, "%{public}@Unable to read HAPService dictionary from HomeKitMatter's ProtocolMap for service %@", &v23, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v12 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -3309,27 +3309,27 @@ LABEL_47:
       v23 = 138543618;
       v24 = v16;
       v25 = 2112;
-      v26 = v4;
+      v26 = serviceCopy;
       _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_ERROR, "%{public}@Unable to read HAPServices dictionary from HomeKitMatter's ProtocolMap for service %@", &v23, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = 0;
+    bOOLValue = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return v12;
+  return bOOLValue;
 }
 
-- (id)optionalCharacteristicsForService:(id)a3
+- (id)optionalCharacteristicsForService:(id)service
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = [(HMMTRProtocolMap *)self rawPlistAtKey:@"HAPServices"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [v5 objectForKeyedSubscript:serviceCopy];
     v8 = v7;
     if (v7)
     {
@@ -3339,7 +3339,7 @@ LABEL_47:
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -3347,7 +3347,7 @@ LABEL_47:
         v20 = 138543618;
         v21 = v17;
         v22 = 2112;
-        v23 = v4;
+        v23 = serviceCopy;
         _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_ERROR, "%{public}@Unable to read HAPService dictionary from HomeKitMatter's ProtocolMap for service %@", &v20, 0x16u);
       }
 
@@ -3359,7 +3359,7 @@ LABEL_47:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -3367,7 +3367,7 @@ LABEL_47:
       v20 = 138543618;
       v21 = v13;
       v22 = 2112;
-      v23 = v4;
+      v23 = serviceCopy;
       _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unable to read HAPServices dictionary from HomeKitMatter's ProtocolMap for service %@", &v20, 0x16u);
     }
 
@@ -3380,15 +3380,15 @@ LABEL_47:
   return v9;
 }
 
-- (id)requiredCharacteristicsForService:(id)a3
+- (id)requiredCharacteristicsForService:(id)service
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = [(HMMTRProtocolMap *)self rawPlistAtKey:@"HAPServices"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [v5 objectForKeyedSubscript:serviceCopy];
     v8 = v7;
     if (v7)
     {
@@ -3398,7 +3398,7 @@ LABEL_47:
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -3406,7 +3406,7 @@ LABEL_47:
         v20 = 138543618;
         v21 = v17;
         v22 = 2112;
-        v23 = v4;
+        v23 = serviceCopy;
         _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_ERROR, "%{public}@Unable to read HAPService dictionary from HomeKitMatter's ProtocolMap for service %@", &v20, 0x16u);
       }
 
@@ -3418,7 +3418,7 @@ LABEL_47:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -3426,7 +3426,7 @@ LABEL_47:
       v20 = 138543618;
       v21 = v13;
       v22 = 2112;
-      v23 = v4;
+      v23 = serviceCopy;
       _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unable to read HAPServices dictionary from HomeKitMatter's ProtocolMap for service %@", &v20, 0x16u);
     }
 
@@ -3439,17 +3439,17 @@ LABEL_47:
   return v9;
 }
 
-- (id)_buildEventMapper:(id)a3 characteristicsDict:(id)a4
+- (id)_buildEventMapper:(id)mapper characteristicsDict:(id)dict
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  v9 = [v7 objectForKeyedSubscript:@"HAPRange"];
-  if (v9 && (v10 = v9, [v7 objectForKeyedSubscript:@"CHIPRange"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  mapperCopy = mapper;
+  dictCopy = dict;
+  type = [mapperCopy type];
+  v9 = [dictCopy objectForKeyedSubscript:@"HAPRange"];
+  if (v9 && (v10 = v9, [dictCopy objectForKeyedSubscript:@"CHIPRange"], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -3457,21 +3457,21 @@ LABEL_47:
       *buf = 138543618;
       v33 = v15;
       v34 = 2112;
-      v35 = v8;
+      v35 = type;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Setting up Linear mappings for Characteristic %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [v7 objectForKeyedSubscript:@"HAPRange"];
-    v17 = [v7 objectForKeyedSubscript:@"CHIPRange"];
+    v16 = [dictCopy objectForKeyedSubscript:@"HAPRange"];
+    v17 = [dictCopy objectForKeyedSubscript:@"CHIPRange"];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __58__HMMTRProtocolMap__buildEventMapper_characteristicsDict___block_invoke;
     v27[3] = &unk_2786F0618;
-    v28 = v8;
+    v28 = type;
     v29 = v17;
     v30 = v16;
-    v31 = v13;
+    v31 = selfCopy;
     v18 = v16;
     v19 = v17;
     v20 = MEMORY[0x2318887D0](v27);
@@ -3480,7 +3480,7 @@ LABEL_47:
 
   else
   {
-    v21 = [v7 objectForKeyedSubscript:@"SpecialMappingRequired"];
+    v21 = [dictCopy objectForKeyedSubscript:@"SpecialMappingRequired"];
 
     if (!v21)
     {
@@ -3491,7 +3491,7 @@ LABEL_47:
     v25[1] = 3221225472;
     v25[2] = __58__HMMTRProtocolMap__buildEventMapper_characteristicsDict___block_invoke_307;
     v25[3] = &unk_2786F0640;
-    v26 = v6;
+    v26 = mapperCopy;
     v22 = MEMORY[0x2318887D0](v25);
     v21 = MEMORY[0x2318887D0]();
 
@@ -3532,14 +3532,14 @@ id __58__HMMTRProtocolMap__buildEventMapper_characteristicsDict___block_invoke(u
   return v8;
 }
 
-- (id)_buildExpectedValueMapper:(id)a3 characteristicsDict:(id)a4 operation:(unint64_t)a5 valueMapper:(id)a6
+- (id)_buildExpectedValueMapper:(id)mapper characteristicsDict:(id)dict operation:(unint64_t)operation valueMapper:(id)valueMapper
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [v8 objectForKeyedSubscript:@"Read"];
-  if (a5 == 1)
+  dictCopy = dict;
+  valueMapperCopy = valueMapper;
+  v10 = [dictCopy objectForKeyedSubscript:@"Read"];
+  if (operation == 1)
   {
-    v11 = [v8 objectForKeyedSubscript:@"Write"];
+    v11 = [dictCopy objectForKeyedSubscript:@"Write"];
 
     v10 = v11;
   }
@@ -3574,13 +3574,13 @@ id __58__HMMTRProtocolMap__buildEventMapper_characteristicsDict___block_invoke(u
   v14 = *v13;
 
   v15 = MEMORY[0x277CCAC80];
-  v16 = [v8 objectForKeyedSubscript:@"CHIPClusterIDHex"];
+  v16 = [dictCopy objectForKeyedSubscript:@"CHIPClusterIDHex"];
   v17 = [v15 scannerWithString:v16];
 
   v30 = 0;
   [v17 scanHexLongLong:&v30];
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v30];
-  v19 = [v8 objectForKeyedSubscript:@"CHIPAttributes"];
+  v19 = [dictCopy objectForKeyedSubscript:@"CHIPAttributes"];
   v20 = 0;
   if ([v19 count] == 1)
   {
@@ -3591,7 +3591,7 @@ id __58__HMMTRProtocolMap__buildEventMapper_characteristicsDict___block_invoke(u
   v25[1] = 3221225472;
   v25[2] = __88__HMMTRProtocolMap__buildExpectedValueMapper_characteristicsDict_operation_valueMapper___block_invoke;
   v25[3] = &unk_2786F05F0;
-  v29 = v9;
+  v29 = valueMapperCopy;
   v12 = v14;
   v26 = v12;
   v27 = v20;
@@ -3644,22 +3644,22 @@ id __88__HMMTRProtocolMap__buildExpectedValueMapper_characteristicsDict_operatio
   return v15;
 }
 
-- (id)_buildValueMapper:(id)a3 characteristicsDict:(id)a4 operation:(unint64_t)a5 forMTRCluster:(BOOL)a6
+- (id)_buildValueMapper:(id)mapper characteristicsDict:(id)dict operation:(unint64_t)operation forMTRCluster:(BOOL)cluster
 {
-  v6 = a6;
+  clusterCopy = cluster;
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 objectForKeyedSubscript:@"HAPRange"];
+  mapperCopy = mapper;
+  dictCopy = dict;
+  v12 = [dictCopy objectForKeyedSubscript:@"HAPRange"];
   if (v12)
   {
     v13 = v12;
-    v14 = [v11 objectForKeyedSubscript:@"CHIPRange"];
+    v14 = [dictCopy objectForKeyedSubscript:@"CHIPRange"];
 
     if (v14)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
@@ -3667,23 +3667,23 @@ id __88__HMMTRProtocolMap__buildExpectedValueMapper_characteristicsDict_operatio
         *buf = 138543618;
         v48 = v18;
         v49 = 2112;
-        v50 = v10;
+        v50 = mapperCopy;
         _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Setting up Linear mappings for Characteristic %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v15);
-      v19 = [v11 objectForKeyedSubscript:@"HAPRange"];
-      v20 = [v11 objectForKeyedSubscript:@"CHIPRange"];
+      v19 = [dictCopy objectForKeyedSubscript:@"HAPRange"];
+      v20 = [dictCopy objectForKeyedSubscript:@"CHIPRange"];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __82__HMMTRProtocolMap__buildValueMapper_characteristicsDict_operation_forMTRCluster___block_invoke;
       v40[3] = &unk_2786F0580;
-      v45 = a5;
-      v46 = v6;
-      v41 = v10;
+      operationCopy = operation;
+      v46 = clusterCopy;
+      v41 = mapperCopy;
       v42 = v20;
       v43 = v19;
-      v44 = v16;
+      v44 = selfCopy;
       v21 = v19;
       v22 = v20;
       v23 = MEMORY[0x2318887D0](v40);
@@ -3694,19 +3694,19 @@ id __88__HMMTRProtocolMap__buildExpectedValueMapper_characteristicsDict_operatio
     }
   }
 
-  v26 = [v11 objectForKeyedSubscript:@"SpecialMappingRequired"];
+  v26 = [dictCopy objectForKeyedSubscript:@"SpecialMappingRequired"];
 
   if (v26)
   {
-    v27 = [v11 objectForKeyedSubscript:@"HAPRange"];
-    v28 = [v11 objectForKeyedSubscript:@"CHIPRange"];
+    v27 = [dictCopy objectForKeyedSubscript:@"HAPRange"];
+    v28 = [dictCopy objectForKeyedSubscript:@"CHIPRange"];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __82__HMMTRProtocolMap__buildValueMapper_characteristicsDict_operation_forMTRCluster___block_invoke_286;
     v34[3] = &unk_2786F05A8;
-    v38 = a5;
-    v39 = v6;
-    v35 = v10;
+    operationCopy2 = operation;
+    v39 = clusterCopy;
+    v35 = mapperCopy;
     v36 = v28;
     v37 = v27;
     v21 = v27;
@@ -3720,29 +3720,29 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!clusterCopy)
   {
 LABEL_17:
     v24 = 0;
     goto LABEL_9;
   }
 
-  if (a5 == 4)
+  if (operation == 4)
   {
 LABEL_16:
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __82__HMMTRProtocolMap__buildValueMapper_characteristicsDict_operation_forMTRCluster___block_invoke_2;
     v32[3] = &unk_2786F0E30;
-    v33 = v10;
+    v33 = mapperCopy;
     v24 = MEMORY[0x2318887D0](v32);
 
     goto LABEL_9;
   }
 
-  if (a5 != 2)
+  if (operation != 2)
   {
-    if (!a5)
+    if (!operation)
     {
       goto LABEL_16;
     }
@@ -3914,15 +3914,15 @@ LABEL_16:
   return v5;
 }
 
-- (id)getUpdatedLinkedCharacteristics:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5
+- (id)getUpdatedLinkedCharacteristics:(id)characteristics endpointID:(id)d clusterIDCharacteristicMap:(id)map
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v49 = [MEMORY[0x277CBEB18] array];
-  v11 = [v8 type];
-  v12 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:", v11, [v9 unsignedIntegerValue], v10);
+  characteristicsCopy = characteristics;
+  dCopy = d;
+  mapCopy = map;
+  array = [MEMORY[0x277CBEB18] array];
+  type = [characteristicsCopy type];
+  v12 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:", type, [dCopy unsignedIntegerValue], mapCopy);
 
   if (v12)
   {
@@ -3930,8 +3930,8 @@ LABEL_16:
     if (v13)
     {
       v46 = v12;
-      v47 = v10;
-      v48 = v9;
+      v47 = mapCopy;
+      v48 = dCopy;
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
@@ -3943,7 +3943,7 @@ LABEL_16:
       {
         v15 = v14;
         v16 = *v53;
-        v50 = self;
+        selfCopy = self;
         do
         {
           for (i = 0; i != v15; ++i)
@@ -3954,15 +3954,15 @@ LABEL_16:
             }
 
             v18 = *(*(&v52 + 1) + 8 * i);
-            v19 = [v8 service];
-            v20 = [v19 characteristicsOfType:v18];
-            v21 = [v20 firstObject];
-            v22 = [v21 copy];
+            service = [characteristicsCopy service];
+            v20 = [service characteristicsOfType:v18];
+            firstObject = [v20 firstObject];
+            v22 = [firstObject copy];
 
             if (v22)
             {
               v23 = objc_autoreleasePoolPush();
-              v24 = self;
+              selfCopy2 = self;
               v25 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
               {
@@ -3975,32 +3975,32 @@ LABEL_16:
               }
 
               objc_autoreleasePoolPop(v23);
-              v27 = [v22 value];
-              v28 = [v8 value];
+              value = [v22 value];
+              value2 = [characteristicsCopy value];
 
-              if (v27 != v28)
+              if (value != value2)
               {
                 v29 = objc_autoreleasePoolPush();
-                v30 = v24;
+                v30 = selfCopy2;
                 v31 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
                 {
                   v32 = HMFGetLogIdentifier();
-                  v33 = [v8 value];
+                  value3 = [characteristicsCopy value];
                   *buf = 138543874;
                   v57 = v32;
                   v58 = 2112;
-                  v59 = v33;
+                  v59 = value3;
                   v60 = 2112;
                   v61 = v22;
                   _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_INFO, "%{public}@Linked Characteristic value differs, forcing an update to %@ for characteristic %@", buf, 0x20u);
 
-                  self = v50;
+                  self = selfCopy;
                 }
 
                 objc_autoreleasePoolPop(v29);
-                v34 = [v8 value];
-                v35 = [(HMMTRProtocolMap *)v30 _isValidCharacteristicValue:v22 value:v34];
+                value4 = [characteristicsCopy value];
+                v35 = [(HMMTRProtocolMap *)v30 _isValidCharacteristicValue:v22 value:value4];
 
                 if (v35)
                 {
@@ -4010,24 +4010,24 @@ LABEL_16:
                   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                   {
                     v39 = HMFGetLogIdentifier();
-                    v40 = [v8 value];
+                    value5 = [characteristicsCopy value];
                     *buf = 138543618;
                     v57 = v39;
                     v58 = 2112;
-                    v59 = v40;
+                    v59 = value5;
                     _os_log_impl(&dword_22AEAE000, v38, OS_LOG_TYPE_INFO, "%{public}@Update linked characteristics since value is valid %@", buf, 0x16u);
 
-                    self = v50;
+                    self = selfCopy;
                   }
 
                   objc_autoreleasePoolPop(v36);
-                  v41 = [v8 value];
-                  [v22 setValue:v41];
+                  value6 = [characteristicsCopy value];
+                  [v22 setValue:value6];
 
-                  v42 = [v8 service];
-                  [v22 setService:v42];
+                  service2 = [characteristicsCopy service];
+                  [v22 setService:service2];
 
-                  [v49 addObject:v22];
+                  [array addObject:v22];
                 }
               }
             }
@@ -4039,8 +4039,8 @@ LABEL_16:
         while (v15);
       }
 
-      v10 = v47;
-      v9 = v48;
+      mapCopy = v47;
+      dCopy = v48;
       v13 = v45;
       v12 = v46;
     }
@@ -4048,16 +4048,16 @@ LABEL_16:
 
   v43 = *MEMORY[0x277D85DE8];
 
-  return v49;
+  return array;
 }
 
-- (BOOL)_isValidCharacteristicValue:(id)a3 value:(id)a4
+- (BOOL)_isValidCharacteristicValue:(id)value value:(id)a4
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valueCopy = value;
   v7 = a4;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -4065,18 +4065,18 @@ LABEL_16:
     v19 = 138543874;
     v20 = v11;
     v21 = 2112;
-    v22 = v6;
+    v22 = valueCopy;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Validating value for characteristics %@ %@", &v19, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v6 validateValue:v7 outValue:0];
+  v12 = [valueCopy validateValue:v7 outValue:0];
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v9;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -4084,7 +4084,7 @@ LABEL_16:
       v19 = 138543874;
       v20 = v16;
       v21 = 2112;
-      v22 = v6;
+      v22 = valueCopy;
       v23 = 2112;
       v24 = v12;
       _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to validate value for characteristics %@ with error %@", &v19, 0x20u);
@@ -4097,34 +4097,34 @@ LABEL_16:
   return v12 == 0;
 }
 
-- (id)getBaseClusterName:(id)a3
+- (id)getBaseClusterName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = @"MTRBaseCluster";
-  if ([v3 hasPrefix:@"MTRBaseCluster"] & 1) != 0 || (v4 = @"MTRCluster", (objc_msgSend(v3, "hasPrefix:", @"MTRCluster")) || (v4 = @"HMMTR", (objc_msgSend(v3, "hasPrefix:", @"HMMTR")) || (v4 = @"HMMTRCluster", (objc_msgSend(v3, "hasPrefix:", @"HMMTRCluster")) || (v4 = @"HMMTRSyncCluster", v5 = v3, objc_msgSend(v3, "hasPrefix:", @"HMMTRSyncCluster")))
+  if ([nameCopy hasPrefix:@"MTRBaseCluster"] & 1) != 0 || (v4 = @"MTRCluster", (objc_msgSend(nameCopy, "hasPrefix:", @"MTRCluster")) || (v4 = @"HMMTR", (objc_msgSend(nameCopy, "hasPrefix:", @"HMMTR")) || (v4 = @"HMMTRCluster", (objc_msgSend(nameCopy, "hasPrefix:", @"HMMTRCluster")) || (v4 = @"HMMTRSyncCluster", v5 = nameCopy, objc_msgSend(nameCopy, "hasPrefix:", @"HMMTRSyncCluster")))
   {
-    v5 = [v3 substringFromIndex:{-[__CFString length](v4, "length")}];
+    v5 = [nameCopy substringFromIndex:{-[__CFString length](v4, "length")}];
   }
 
   return v5;
 }
 
-- (id)mtrBaseClusterNameFromMTRClusterName:(id)a3
+- (id)mtrBaseClusterNameFromMTRClusterName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = @"MTRCluster";
-  if ([v3 hasPrefix:@"MTRCluster"])
+  if ([nameCopy hasPrefix:@"MTRCluster"])
   {
     v5 = @"MTRBaseCluster";
 LABEL_5:
-    v6 = [v3 substringFromIndex:{-[__CFString length](v4, "length")}];
+    v6 = [nameCopy substringFromIndex:{-[__CFString length](v4, "length")}];
     v7 = [(__CFString *)v5 stringByAppendingString:v6];
 
     goto LABEL_7;
   }
 
   v4 = @"HMMTRSyncCluster";
-  if ([v3 hasPrefix:@"HMMTRSyncCluster"])
+  if ([nameCopy hasPrefix:@"HMMTRSyncCluster"])
   {
     v5 = @"HMMTR";
     goto LABEL_5;
@@ -4136,12 +4136,12 @@ LABEL_7:
   return v7;
 }
 
-- (id)mtrClusterNameFromMTRBaseClusterName:(id)a3
+- (id)mtrClusterNameFromMTRBaseClusterName:(id)name
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"MTRBaseCluster"])
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"MTRBaseCluster"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"MTRBaseCluster", "length")}];
+    v4 = [nameCopy substringFromIndex:{objc_msgSend(@"MTRBaseCluster", "length")}];
     v5 = @"MTRCluster";
 LABEL_5:
     v6 = [(__CFString *)v5 stringByAppendingString:v4];
@@ -4149,16 +4149,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 hasPrefix:@"HMMTR"])
+  if ([nameCopy hasPrefix:@"HMMTR"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"HMMTR", "length")}];
+    v4 = [nameCopy substringFromIndex:{objc_msgSend(@"HMMTR", "length")}];
     v5 = @"HMMTRSyncCluster";
     goto LABEL_5;
   }
 
-  if ([v3 hasPrefix:@"MTRCluster"])
+  if ([nameCopy hasPrefix:@"MTRCluster"])
   {
-    v6 = v3;
+    v6 = nameCopy;
   }
 
   else
@@ -4171,13 +4171,13 @@ LABEL_6:
   return v6;
 }
 
-- (id)_characteristicsDictionaryForCharacteristic:(id)a3 endpointID:(unint64_t)a4 clusterIDCharacteristicMap:(id)a5
+- (id)_characteristicsDictionaryForCharacteristic:(id)characteristic endpointID:(unint64_t)d clusterIDCharacteristicMap:(id)map
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v39 = v8;
-  v10 = [(NSData *)self->_mapData hmf_objectForKey:v8 forDictionaryAtOffset:[(HMMTRProtocolMap *)self rawPlistOffsetForKey:@"HAPCharacteristics"]];
+  characteristicCopy = characteristic;
+  mapCopy = map;
+  v39 = characteristicCopy;
+  v10 = [(NSData *)self->_mapData hmf_objectForKey:characteristicCopy forDictionaryAtOffset:[(HMMTRProtocolMap *)self rawPlistOffsetForKey:@"HAPCharacteristics"]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -4193,11 +4193,11 @@ LABEL_6:
 
   if (v12)
   {
-    v35 = a4;
-    v36 = self;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v38 = v9;
-    v14 = [v9 objectForKey:v13];
+    dCopy = d;
+    selfCopy = self;
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
+    v38 = mapCopy;
+    v14 = [mapCopy objectForKey:v13];
 
     v42 = 0u;
     v43 = 0u;
@@ -4243,7 +4243,7 @@ LABEL_6:
     }
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v36;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
@@ -4253,7 +4253,7 @@ LABEL_6:
       v47 = 2112;
       v48 = v39;
       v49 = 2048;
-      v50 = v35;
+      dCopy2 = dCopy;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Mapping Characteristic %@ is not supported for endpoint %lu", buf, 0x20u);
     }
 
@@ -4261,13 +4261,13 @@ LABEL_6:
     v28 = 0;
 LABEL_17:
     v12 = v37;
-    v9 = v38;
+    mapCopy = v38;
   }
 
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
@@ -4277,7 +4277,7 @@ LABEL_17:
       v47 = 2112;
       v48 = v39;
       v49 = 2048;
-      v50 = a4;
+      dCopy2 = d;
       _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_DEBUG, "%{public}@Mapping Characteristic %@ is not supported for endpoint %lu", buf, 0x20u);
     }
 
@@ -4290,21 +4290,21 @@ LABEL_17:
   return v28;
 }
 
-- (id)_characteristicsDictionaryForCharacteristicUUID:(id)a3 endpointID:(unint64_t)a4 clusterIDCharacteristicMap:(id)a5
+- (id)_characteristicsDictionaryForCharacteristicUUID:(id)d endpointID:(unint64_t)iD clusterIDCharacteristicMap:(id)map
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v8];
+  dCopy = d;
+  mapCopy = map;
+  v10 = [HMMTRUtilities hmmtr_shortTypeFromUUID:dCopy];
   if (v10)
   {
-    v11 = [(HMMTRProtocolMap *)self _characteristicsDictionaryForCharacteristic:v10 endpointID:a4 clusterIDCharacteristicMap:v9];
+    v11 = [(HMMTRProtocolMap *)self _characteristicsDictionaryForCharacteristic:v10 endpointID:iD clusterIDCharacteristicMap:mapCopy];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -4312,7 +4312,7 @@ LABEL_17:
       v18 = 138543874;
       v19 = v15;
       v20 = 2112;
-      v21 = v8;
+      v21 = dCopy;
       v22 = 2112;
       v23 = 0;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_ERROR, "%{public}@Invalid characteristicUUID. Does not convert to a short integer. UUID:%@ shortened: %@", &v18, 0x20u);
@@ -4327,16 +4327,16 @@ LABEL_17:
   return v11;
 }
 
-- (id)reportDescriptionForCharacteristic:(id)a3 endpointID:(id)a4 clusterIDCharacteristicMap:(id)a5
+- (id)reportDescriptionForCharacteristic:(id)characteristic endpointID:(id)d clusterIDCharacteristicMap:(id)map
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 type];
-  v12 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v11];
+  characteristicCopy = characteristic;
+  dCopy = d;
+  mapCopy = map;
+  type = [characteristicCopy type];
+  v12 = [HMMTRUtilities hmmtr_shortTypeFromUUID:type];
 
-  v13 = [v10 objectForKeyedSubscript:v9];
+  v13 = [mapCopy objectForKeyedSubscript:dCopy];
   v14 = [v13 objectForKeyedSubscript:v12];
 
   if (v14)
@@ -4345,8 +4345,8 @@ LABEL_17:
     v15 = [MEMORY[0x277CCAC80] scannerWithString:v14];
     if ([v15 scanHexInt:&v58])
     {
-      v16 = [v8 type];
-      v17 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:", v16, [v9 unsignedIntegerValue], v10);
+      type2 = [characteristicCopy type];
+      v17 = -[HMMTRProtocolMap _characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:](self, "_characteristicsDictionaryForCharacteristicUUID:endpointID:clusterIDCharacteristicMap:", type2, [dCopy unsignedIntegerValue], mapCopy);
 
       if (v17)
       {
@@ -4359,11 +4359,11 @@ LABEL_17:
           context = v19;
           if (v19 | v20)
           {
-            [v8 type];
+            [characteristicCopy type];
             v21 = v55 = v18;
             v50 = [(HMMTRProtocolMap *)self _buildValueMapper:v21 characteristicsDict:v17 operation:2 forMTRCluster:1];
 
-            v49 = [(HMMTRProtocolMap *)self _buildEventMapper:v8 characteristicsDict:v17];
+            v49 = [(HMMTRProtocolMap *)self _buildEventMapper:characteristicCopy characteristicsDict:v17];
             v22 = [HMMTRReportDescription alloc];
             v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v58];
             v24 = [(HMMTRReportDescription *)v22 initWithClusterId:v23 attributeIds:context eventIds:v20];
@@ -4373,9 +4373,9 @@ LABEL_17:
             v25 = [v17 objectForKeyedSubscript:@"CHIPCluster"];
             [(HMMTRReportDescription *)v24 setClusterClass:v25];
 
-            v26 = self;
+            selfCopy = self;
             v27 = context;
-            v28 = [(HMMTRProtocolMap *)v26 _chipClusterFunctionNameForOperationType:2 operationDictionary:v55 value:0 forMTRCluster:0 forHMMTRCluster:0];
+            v28 = [(HMMTRProtocolMap *)selfCopy _chipClusterFunctionNameForOperationType:2 operationDictionary:v55 value:0 forMTRCluster:0 forHMMTRCluster:0];
             [(HMMTRReportDescription *)v24 setClusterSelector:v28];
 
             v18 = v55;
@@ -4384,7 +4384,7 @@ LABEL_17:
           else
           {
             v51 = objc_autoreleasePoolPush();
-            v44 = self;
+            selfCopy2 = self;
             v45 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
             {
@@ -4393,7 +4393,7 @@ LABEL_17:
               *buf = 138543618;
               v60 = v46;
               v61 = 2112;
-              v62 = v8;
+              v62 = characteristicCopy;
               _os_log_impl(&dword_22AEAE000, v45, OS_LOG_TYPE_DEBUG, "%{public}@Neither attributes array nor events array. Cannot handle reports for characteristic: %@", buf, 0x16u);
 
               v18 = v57;
@@ -4410,7 +4410,7 @@ LABEL_17:
         else
         {
           contexta = objc_autoreleasePoolPush();
-          v41 = self;
+          selfCopy3 = self;
           v42 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
           {
@@ -4418,7 +4418,7 @@ LABEL_17:
             *buf = 138543618;
             v60 = v43;
             v61 = 2112;
-            v62 = v8;
+            v62 = characteristicCopy;
             _os_log_impl(&dword_22AEAE000, v42, OS_LOG_TYPE_DEBUG, "%{public}@No subscription Dict. Cannot handle reports for characteristic: %@", buf, 0x16u);
 
             v18 = 0;
@@ -4432,7 +4432,7 @@ LABEL_17:
       else
       {
         v37 = objc_autoreleasePoolPush();
-        v38 = self;
+        selfCopy4 = self;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
         {
@@ -4441,7 +4441,7 @@ LABEL_17:
           *buf = 138543618;
           v60 = v40;
           v61 = 2112;
-          v62 = v8;
+          v62 = characteristicCopy;
           _os_log_impl(&dword_22AEAE000, v39, OS_LOG_TYPE_DEBUG, "%{public}@No characteristic Dict. Cannot handle reports for characteristic: %@", buf, 0x16u);
 
           v37 = v56;
@@ -4455,7 +4455,7 @@ LABEL_17:
     else
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = self;
+      selfCopy5 = self;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
       {
@@ -4463,7 +4463,7 @@ LABEL_17:
         *buf = 138543618;
         v60 = v36;
         v61 = 2112;
-        v62 = v8;
+        v62 = characteristicCopy;
         _os_log_impl(&dword_22AEAE000, v35, OS_LOG_TYPE_DEBUG, "%{public}@Unknown ClusterId. Cannot handle reports for characteristic: %@", buf, 0x16u);
       }
 
@@ -4475,7 +4475,7 @@ LABEL_17:
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy6 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
@@ -4483,7 +4483,7 @@ LABEL_17:
       *buf = 138543618;
       v60 = v32;
       v61 = 2112;
-      v62 = v8;
+      v62 = characteristicCopy;
       _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_DEBUG, "%{public}@Cannot handle reports for characteristic: %@", buf, 0x16u);
     }
 
@@ -4496,13 +4496,13 @@ LABEL_17:
   return v24;
 }
 
-- (id)_protocolMapCharacteristicsKeyForOperationType:(unint64_t)a3
+- (id)_protocolMapCharacteristicsKeyForOperationType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 >= 5)
+  if (type >= 5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -4510,7 +4510,7 @@ LABEL_17:
       v11 = 138543618;
       v12 = v9;
       v13 = 2048;
-      v14 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_22AEAE000, v8, OS_LOG_TYPE_ERROR, "%{public}@Unsupported Operation type %lu", &v11, 0x16u);
     }
 
@@ -4520,24 +4520,24 @@ LABEL_17:
 
   else
   {
-    result = off_2786F0768[a3];
+    result = off_2786F0768[type];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)_chipClusterFunctionNameForOperationType:(unint64_t)a3 operationDictionary:(id)a4 value:(id)a5 forMTRCluster:(BOOL)a6 forHMMTRCluster:(BOOL)a7
+- (id)_chipClusterFunctionNameForOperationType:(unint64_t)type operationDictionary:(id)dictionary value:(id)value forMTRCluster:(BOOL)cluster forHMMTRCluster:(BOOL)rCluster
 {
-  v7 = a7;
-  v12 = a4;
-  v13 = a5;
-  if (a3 == 1)
+  rClusterCopy = rCluster;
+  dictionaryCopy = dictionary;
+  valueCopy = value;
+  if (type == 1)
   {
-    v14 = [v12 objectForKeyedSubscript:@"Type"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"Type"];
     if ([v14 isEqualToString:@"BOOL"])
     {
-      if ([v13 BOOLValue])
+      if ([valueCopy BOOLValue])
       {
         v15 = @"1";
       }
@@ -4547,10 +4547,10 @@ LABEL_17:
         v15 = @"0";
       }
 
-      v16 = [v12 objectForKeyedSubscript:v15];
+      v16 = [dictionaryCopy objectForKeyedSubscript:v15];
       v17 = [v16 objectForKeyedSubscript:@"Selector"];
 
-      if (a6)
+      if (cluster)
       {
         goto LABEL_17;
       }
@@ -4558,8 +4558,8 @@ LABEL_17:
 
     else
     {
-      v17 = [v12 objectForKeyedSubscript:@"Selector"];
-      if (a6)
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"Selector"];
+      if (cluster)
       {
 LABEL_17:
         v20 = [(HMMTRProtocolMap *)self mtrClusterWriteFunctionNameFromBaseClusterFunctionName:v17];
@@ -4569,7 +4569,7 @@ LABEL_17:
       }
     }
 
-    if (v7)
+    if (rClusterCopy)
     {
       goto LABEL_17;
     }
@@ -4577,11 +4577,11 @@ LABEL_17:
 
   else
   {
-    v18 = [v12 objectForKeyedSubscript:@"Selector"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"Selector"];
     v14 = v18;
-    if (a6 || v7)
+    if (cluster || rClusterCopy)
     {
-      if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+      if ((type & 0xFFFFFFFFFFFFFFFBLL) != 0)
       {
         goto LABEL_19;
       }
@@ -4591,7 +4591,7 @@ LABEL_17:
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_19;
       }
@@ -4610,14 +4610,14 @@ LABEL_19:
   return v14;
 }
 
-- (id)mtrClusterWriteFunctionNameFromBaseClusterFunctionName:(id)a3
+- (id)mtrClusterWriteFunctionNameFromBaseClusterFunctionName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasSuffix:@"WithCompletionHandler:"])
+  nameCopy = name;
+  if ([nameCopy hasSuffix:@"WithCompletionHandler:"])
   {
-    v5 = [v4 hasPrefix:@"writeAttribute"];
-    v6 = [v4 substringToIndex:{objc_msgSend(v4, "length") - objc_msgSend(@"WithCompletionHandler:", "length")}];
+    v5 = [nameCopy hasPrefix:@"writeAttribute"];
+    v6 = [nameCopy substringToIndex:{objc_msgSend(nameCopy, "length") - objc_msgSend(@"WithCompletionHandler:", "length")}];
     if (v5)
     {
       v7 = @"WithExpectedValueInterval:";
@@ -4639,10 +4639,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v4 hasSuffix:@":completionHandler:"])
+  if ([nameCopy hasSuffix:@":completionHandler:"])
   {
-    v8 = [v4 hasPrefix:@"writeAttribute"];
-    v6 = [v4 substringToIndex:{objc_msgSend(v4, "length") - objc_msgSend(@":completionHandler:", "length")}];
+    v8 = [nameCopy hasPrefix:@"writeAttribute"];
+    v6 = [nameCopy substringToIndex:{objc_msgSend(nameCopy, "length") - objc_msgSend(@":completionHandler:", "length")}];
     if (!v8)
     {
       v7 = @":expectedValues:expectedValueInterval:completionHandler:";
@@ -4652,10 +4652,10 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if ([v4 hasSuffix:@":completion:"])
+  if ([nameCopy hasSuffix:@":completion:"])
   {
-    v9 = [v4 hasPrefix:@"writeAttribute"];
-    v6 = [v4 substringToIndex:{objc_msgSend(v4, "length") - objc_msgSend(@":completion:", "length")}];
+    v9 = [nameCopy hasPrefix:@"writeAttribute"];
+    v6 = [nameCopy substringToIndex:{objc_msgSend(nameCopy, "length") - objc_msgSend(@":completion:", "length")}];
     if (!v9)
     {
       v7 = @":expectedValues:expectedValueInterval:completion:";
@@ -4669,7 +4669,7 @@ LABEL_10:
 
 LABEL_13:
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
@@ -4677,7 +4677,7 @@ LABEL_13:
     v17 = 138543618;
     v18 = v14;
     v19 = 2112;
-    v20 = v4;
+    v20 = nameCopy;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_ERROR, "%{public}@Cannot derive MTRCluster function name from a bad MTRBaseCluster function name: %@", &v17, 0x16u);
   }
 
@@ -4690,37 +4690,37 @@ LABEL_16:
   return v10;
 }
 
-- (id)mtrClusterReadFunctionNameFromBaseClusterFunctionName:(id)a3
+- (id)mtrClusterReadFunctionNameFromBaseClusterFunctionName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasSuffix:@"WithCompletionHandler:"])
+  nameCopy = name;
+  if ([nameCopy hasSuffix:@"WithCompletionHandler:"])
   {
-    v5 = [v4 length];
+    v5 = [nameCopy length];
     v6 = @"WithCompletionHandler:";
 LABEL_5:
-    v7 = [v4 substringToIndex:{v5 - -[__CFString length](v6, "length")}];
+    v7 = [nameCopy substringToIndex:{v5 - -[__CFString length](v6, "length")}];
     v8 = [v7 stringByAppendingString:@"WithParams:"];
 
     goto LABEL_6;
   }
 
-  if ([v4 hasSuffix:@"WithCompletion:"])
+  if ([nameCopy hasSuffix:@"WithCompletion:"])
   {
-    v5 = [v4 length];
+    v5 = [nameCopy length];
     v6 = @"WithCompletion:";
     goto LABEL_5;
   }
 
-  if ([v4 hasSuffix:@"WithParams:"])
+  if ([nameCopy hasSuffix:@"WithParams:"])
   {
-    v8 = v4;
+    v8 = nameCopy;
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -4728,7 +4728,7 @@ LABEL_5:
       v15 = 138543618;
       v16 = v14;
       v17 = 2112;
-      v18 = v4;
+      v18 = nameCopy;
       _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_ERROR, "%{public}@Cannot derive MTRCluster function name from a bad MTRBaseCluster function name: %@", &v15, 0x16u);
     }
 
@@ -4743,16 +4743,16 @@ LABEL_6:
   return v8;
 }
 
-- (id)_chipParamsDictionaryForOperationType:(unint64_t)a3 operationDictionary:(id)a4 value:(id)a5
+- (id)_chipParamsDictionaryForOperationType:(unint64_t)type operationDictionary:(id)dictionary value:(id)value
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 == 1)
+  dictionaryCopy = dictionary;
+  valueCopy = value;
+  if (type == 1)
   {
-    v9 = [v7 objectForKeyedSubscript:@"Type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Type"];
     if ([v9 isEqualToString:@"BOOL"])
     {
-      if ([v8 BOOLValue])
+      if ([valueCopy BOOLValue])
       {
         v10 = @"1";
       }
@@ -4762,13 +4762,13 @@ LABEL_6:
         v10 = @"0";
       }
 
-      v11 = [v7 objectForKeyedSubscript:v10];
+      v11 = [dictionaryCopy objectForKeyedSubscript:v10];
       v12 = [v11 objectForKeyedSubscript:@"Params"];
     }
 
     else
     {
-      v12 = [v7 objectForKeyedSubscript:@"Params"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"Params"];
     }
   }
 
@@ -4861,7 +4861,7 @@ LABEL_6:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -4880,14 +4880,14 @@ LABEL_6:
   return v22;
 }
 
-- (id)retrieveHAPToCHIPClusterMapping:(id)a3
+- (id)retrieveHAPToCHIPClusterMapping:(id)mapping
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"HAPCharacteristics"];
+  mappingCopy = mapping;
+  v5 = [mappingCopy objectForKeyedSubscript:@"HAPCharacteristics"];
   if (v5)
   {
-    v22 = v4;
+    v22 = mappingCopy;
     v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v30 = 0u;
     v31 = 0u;
@@ -4950,13 +4950,13 @@ LABEL_6:
       while (v25);
     }
 
-    v4 = v22;
+    mappingCopy = v22;
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -5025,8 +5025,8 @@ LABEL_6:
   [v6 hmf_appendObject:v11];
   v12 = NSTemporaryDirectory();
   v13 = objc_opt_new();
-  v14 = [v13 UUIDString];
-  v15 = [v12 stringByAppendingPathComponent:v14];
+  uUIDString = [v13 UUIDString];
+  v15 = [v12 stringByAppendingPathComponent:uUIDString];
 
   [v6 writeToFile:v15 atomically:1];
   v46 = 0;
@@ -5037,9 +5037,9 @@ LABEL_6:
 
   if (!v17)
   {
-    v24 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v45 = 0;
-    [v24 removeItemAtPath:v15 error:&v45];
+    [defaultManager removeItemAtPath:v15 error:&v45];
     v25 = v45;
     if (v25)
     {
@@ -5171,15 +5171,15 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)customMapEventForCharacteristic:(id)a3 event:(id)a4 value:(id)a5
++ (id)customMapEventForCharacteristic:(id)characteristic event:(id)event value:(id)value
 {
   v110 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 type];
+  characteristicCopy = characteristic;
+  eventCopy = event;
+  valueCopy = value;
+  type = [characteristicCopy type];
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -5187,29 +5187,29 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
     *buf = 138544130;
     v103 = v15;
     v104 = 2112;
-    v105 = v8;
+    v105 = characteristicCopy;
     v106 = 2112;
-    v107 = v9;
+    v107 = eventCopy;
     v108 = 2112;
-    v109 = v10;
+    v109 = valueCopy;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@customMapEventForCharacteristic characteristic %@ event %@ value %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  if ([v11 isEqualToString:@"00000073-0000-1000-8000-0026BB765291"])
+  if ([type isEqualToString:@"00000073-0000-1000-8000-0026BB765291"])
   {
-    v16 = [v8 metadata];
-    v17 = [v16 constraints];
-    v18 = [v17 validValues];
+    metadata = [characteristicCopy metadata];
+    constraints = [metadata constraints];
+    validValues = [constraints validValues];
 
-    v19 = [v8 service];
-    v20 = [v19 accessory];
-    v21 = [v20 server];
+    service = [characteristicCopy service];
+    accessory = [service accessory];
+    server = [accessory server];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      v22 = server;
     }
 
     else
@@ -5219,15 +5219,15 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
 
     v23 = v22;
 
-    v24 = [v23 protocolMappingStateForCharacteristic:v8];
+    v24 = [v23 protocolMappingStateForCharacteristic:characteristicCopy];
 
-    v91 = v18;
-    if ([v9 isEqualToNumber:&unk_283EE8EE0])
+    v91 = validValues;
+    if ([eventCopy isEqualToNumber:&unk_283EE8EE0])
     {
       [v24 setShouldIgnoreSingleMultiPressComplete:0];
-      if (([v18 containsObject:&unk_283EE8EE0] & 1) == 0)
+      if (([validValues containsObject:&unk_283EE8EE0] & 1) == 0)
       {
-        if ([v18 containsObject:&unk_283EE8EF8])
+        if ([validValues containsObject:&unk_283EE8EF8])
         {
           v25 = 0;
         }
@@ -5243,9 +5243,9 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
       goto LABEL_9;
     }
 
-    if ([v9 isEqualToNumber:&unk_283EE8EF8])
+    if ([eventCopy isEqualToNumber:&unk_283EE8EF8])
     {
-      if ([v18 containsObject:&unk_283EE8EF8])
+      if ([validValues containsObject:&unk_283EE8EF8])
       {
         [v24 setShouldIgnoreSingleMultiPressComplete:1];
         v25 = &unk_283EE8EF8;
@@ -5255,7 +5255,7 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
       {
         v47 = v24;
         v48 = objc_autoreleasePoolPush();
-        v49 = v13;
+        v49 = selfCopy;
         v50 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
         {
@@ -5263,7 +5263,7 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
           *buf = 138543618;
           v103 = v51;
           v104 = 2112;
-          v105 = v8;
+          v105 = characteristicCopy;
           _os_log_impl(&dword_22AEAE000, v50, OS_LOG_TYPE_ERROR, "%{public}@Unexpected (feature-map excluded) LongPress event for %@", buf, 0x16u);
         }
 
@@ -5275,11 +5275,11 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
       goto LABEL_77;
     }
 
-    if ([v9 isEqualToNumber:&unk_283EE8F10])
+    if ([eventCopy isEqualToNumber:&unk_283EE8F10])
     {
-      if (([v18 containsObject:&unk_283EE8EE0] & 1) == 0)
+      if (([validValues containsObject:&unk_283EE8EE0] & 1) == 0)
       {
-        if ([v18 containsObject:&unk_283EE8EF8])
+        if ([validValues containsObject:&unk_283EE8EF8])
         {
           v25 = &unk_283EE8DC0;
         }
@@ -5295,10 +5295,10 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
       goto LABEL_9;
     }
 
-    if ([v9 isEqualToNumber:&unk_283EE8F28])
+    if ([eventCopy isEqualToNumber:&unk_283EE8F28])
     {
-      v90 = v11;
-      v52 = v10;
+      v90 = type;
+      v52 = valueCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -5358,8 +5358,8 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
         if (v66)
         {
           v67 = v66;
-          v84 = v10;
-          v86 = v9;
+          v84 = valueCopy;
+          v86 = eventCopy;
           v68 = *v97;
           v69 = *MEMORY[0x277CD50D0];
           while (2)
@@ -5406,9 +5406,9 @@ uint64_t __31__HMMTRProtocolMap_logCategory__block_invoke()
 
           v61 = 0;
 LABEL_83:
-          v10 = v84;
-          v9 = v86;
-          v18 = v91;
+          valueCopy = v84;
+          eventCopy = v86;
+          validValues = v91;
         }
 
         else
@@ -5419,29 +5419,29 @@ LABEL_83:
         v24 = v88;
       }
 
-      v80 = [v24 shouldIgnoreSingleMultiPressComplete];
+      shouldIgnoreSingleMultiPressComplete = [v24 shouldIgnoreSingleMultiPressComplete];
       [v24 setShouldIgnoreSingleMultiPressComplete:0];
-      if (![v18 containsObject:&unk_283EE8EE0])
+      if (![validValues containsObject:&unk_283EE8EE0])
       {
         v25 = 0;
-        v11 = v90;
+        type = v90;
 LABEL_94:
 
         goto LABEL_77;
       }
 
-      v11 = v90;
+      type = v90;
       if (v61)
       {
-        v81 = [v61 unsignedCharValue];
-        if (v81 == 2)
+        unsignedCharValue = [v61 unsignedCharValue];
+        if (unsignedCharValue == 2)
         {
           v25 = &unk_283EE8EE0;
         }
 
-        else if (v81 == 1)
+        else if (unsignedCharValue == 1)
         {
-          if (v80)
+          if (shouldIgnoreSingleMultiPressComplete)
           {
             v25 = 0;
           }
@@ -5468,10 +5468,10 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  if ([v11 isEqualToString:@"0000001D-0000-1000-8000-0026BB765291"] && objc_msgSend(v9, "isEqualToNumber:", &unk_283EE8DC0))
+  if ([type isEqualToString:@"0000001D-0000-1000-8000-0026BB765291"] && objc_msgSend(eventCopy, "isEqualToNumber:", &unk_283EE8DC0))
   {
-    v89 = v11;
-    v26 = v10;
+    v89 = type;
+    v26 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -5506,8 +5506,8 @@ LABEL_77:
     v87 = v31;
     if (v33)
     {
-      v83 = v10;
-      v85 = v9;
+      v83 = valueCopy;
+      v85 = eventCopy;
       v34 = [v31 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -5582,9 +5582,9 @@ LABEL_24:
           goto LABEL_73;
         }
 
-        v10 = v83;
-        v9 = v85;
-        v11 = v89;
+        valueCopy = v83;
+        eventCopy = v85;
+        type = v89;
         if (![v75 isEqualToNumber:&unk_283EE8DF0])
         {
           goto LABEL_75;
@@ -5598,8 +5598,8 @@ LABEL_30:
 
 LABEL_73:
       v46 = 0;
-      v10 = v83;
-      v9 = v85;
+      valueCopy = v83;
+      eventCopy = v85;
     }
 
     else
@@ -5607,7 +5607,7 @@ LABEL_73:
       v46 = 0;
     }
 
-    v11 = v89;
+    type = v89;
 LABEL_75:
 
     v25 = 0;
@@ -5623,53 +5623,53 @@ LABEL_78:
   return v25;
 }
 
-+ (id)customMapWriteForCharacteristic:(id)a3 value:(id)a4
++ (id)customMapWriteForCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([HMMTRProtocolMap checkIfCharacteristicsIsOfTypeTemp:v6])
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  if ([HMMTRProtocolMap checkIfCharacteristicsIsOfTypeTemp:characteristicCopy])
   {
     v8 = MEMORY[0x277CCABB0];
-    [v7 doubleValue];
+    [valueCopy doubleValue];
     v10 = [v8 numberWithDouble:v9 * 100.0];
 LABEL_15:
     v11 = v10;
     goto LABEL_16;
   }
 
-  if ([v6 isEqualToString:@"0000000F-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"0000000F-0000-1000-8000-0026BB765291"])
   {
-    v10 = [a1 mapCurrentHeatingCoolingState:v7];
+    v10 = [self mapCurrentHeatingCoolingState:valueCopy];
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"00000033-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000033-0000-1000-8000-0026BB765291"])
   {
-    v10 = [a1 mapTargetHeatingCoolingState:v7];
+    v10 = [self mapTargetHeatingCoolingState:valueCopy];
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"000000B0-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000B0-0000-1000-8000-0026BB765291"])
   {
-    v10 = [a1 mapActiveState:v7];
+    v10 = [self mapActiveState:valueCopy];
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"000000BF-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000BF-0000-1000-8000-0026BB765291"])
   {
-    v10 = [a1 mapTargetFanState:v7];
+    v10 = [self mapTargetFanState:valueCopy];
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"00000028-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000028-0000-1000-8000-0026BB765291"])
   {
-    v10 = [a1 mapRotationDirection:v7];
+    v10 = [self mapRotationDirection:valueCopy];
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"000000A8-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000A8-0000-1000-8000-0026BB765291"])
   {
-    v10 = [a1 mapTargetAirPuriferState:v7];
+    v10 = [self mapTargetAirPuriferState:valueCopy];
     goto LABEL_15;
   }
 
@@ -5679,23 +5679,23 @@ LABEL_16:
   return v11;
 }
 
-+ (id)customMapReadForCharacteristic:(id)a3 value:(id)a4 fromRange:(id)a5 toRange:(id)a6
++ (id)customMapReadForCharacteristic:(id)characteristic value:(id)value fromRange:(id)range toRange:(id)toRange
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 isEqualToString:@"0000006B-0000-1000-8000-0026BB765291"])
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  rangeCopy = range;
+  toRangeCopy = toRange;
+  if ([characteristicCopy isEqualToString:@"0000006B-0000-1000-8000-0026BB765291"])
   {
-    if (v13)
+    if (toRangeCopy)
     {
-      v14 = v11;
+      v14 = valueCopy;
       v15 = v14;
       if (!v14)
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = a1;
+        selfCopy = self;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
@@ -5718,7 +5718,7 @@ LABEL_16:
         *&v31 = v31;
         v23 = [v29 numberWithFloat:v31];
         v32 = objc_autoreleasePoolPush();
-        v33 = a1;
+        selfCopy2 = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
@@ -5737,12 +5737,12 @@ LABEL_16:
       }
 
       v16 = objc_autoreleasePoolPush();
-      v17 = a1;
+      selfCopy3 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [v13 objectAtIndexedSubscript:0];
+        v20 = [toRangeCopy objectAtIndexedSubscript:0];
         v41 = 138543618;
         v42 = v19;
         v43 = 2112;
@@ -5751,7 +5751,7 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(v16);
-      v21 = [v13 objectAtIndexedSubscript:0];
+      v21 = [toRangeCopy objectAtIndexedSubscript:0];
 LABEL_15:
       v23 = v21;
 LABEL_22:
@@ -5763,29 +5763,29 @@ LABEL_22:
     goto LABEL_52;
   }
 
-  if (([v10 isEqualToString:@"0000001D-0000-1000-8000-0026BB765291"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"0000001E-0000-1000-8000-0026BB765291"))
+  if (([characteristicCopy isEqualToString:@"0000001D-0000-1000-8000-0026BB765291"] & 1) != 0 || objc_msgSend(characteristicCopy, "isEqualToString:", @"0000001E-0000-1000-8000-0026BB765291"))
   {
-    v22 = [v11 integerValue];
-    if (v22 < 3)
+    integerValue = [valueCopy integerValue];
+    if (integerValue < 3)
     {
-      v23 = qword_2786F08A0[v22];
+      v23 = qword_2786F08A0[integerValue];
       goto LABEL_23;
     }
   }
 
-  if (+[HMMTRProtocolMap checkIfCharacteristicsIsOfTypeTemp:](HMMTRProtocolMap, "checkIfCharacteristicsIsOfTypeTemp:", v10) || [v10 isEqualToString:@"00000010-0000-1000-8000-0026BB765291"])
+  if (+[HMMTRProtocolMap checkIfCharacteristicsIsOfTypeTemp:](HMMTRProtocolMap, "checkIfCharacteristicsIsOfTypeTemp:", characteristicCopy) || [characteristicCopy isEqualToString:@"00000010-0000-1000-8000-0026BB765291"])
   {
     v24 = MEMORY[0x277CCABB0];
-    v15 = v11;
+    v15 = valueCopy;
     v21 = [v24 numberWithDouble:{objc_msgSend(v15, "integerValue") / 100.0}];
     goto LABEL_15;
   }
 
-  if ([v10 isEqualToString:@"0000006A-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"0000006A-0000-1000-8000-0026BB765291"])
   {
-    v38 = [v11 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     v39 = &unk_283EE8EE0;
-    if (v38)
+    if (bOOLValue)
     {
       v39 = &unk_283EE8DC0;
     }
@@ -5794,29 +5794,29 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"0000000F-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"0000000F-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapCurrentSystemMode:v11];
+    v40 = [self mapCurrentSystemMode:valueCopy];
 LABEL_36:
     v23 = v40;
     goto LABEL_23;
   }
 
-  if ([v10 isEqualToString:@"00000033-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000033-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapTargetSystemMode:v11];
+    v40 = [self mapTargetSystemMode:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000072-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000072-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapPositionState:v11];
+    v40 = [self mapPositionState:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000079-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000079-0000-1000-8000-0026BB765291"])
   {
-    if ([v11 integerValue] <= 0)
+    if ([valueCopy integerValue] <= 0)
     {
       v23 = &unk_283EE8E68;
     }
@@ -5829,9 +5829,9 @@ LABEL_36:
     goto LABEL_23;
   }
 
-  if ([v10 isEqualToString:@"0000008F-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"0000008F-0000-1000-8000-0026BB765291"])
   {
-    if ([v11 integerValue] == 1)
+    if ([valueCopy integerValue] == 1)
     {
       v23 = &unk_283EE8E50;
     }
@@ -5844,58 +5844,58 @@ LABEL_36:
     goto LABEL_23;
   }
 
-  if ([v10 isEqualToString:@"000000B0-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000B0-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapFanModeToActive:v11];
+    v40 = [self mapFanModeToActive:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"000000BF-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000BF-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapFanModeToTargetFanState:v11];
+    v40 = [self mapFanModeToTargetFanState:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000028-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000028-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapAirflowDirection:v11];
+    v40 = [self mapAirflowDirection:valueCopy];
     goto LABEL_36;
   }
 
 LABEL_52:
-  if ([v10 isEqualToString:@"000000A8-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000A8-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapFanModeToTargetAirPurifier:v11];
+    v40 = [self mapFanModeToTargetAirPurifier:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000095-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000095-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapAirQuality:v11];
+    v40 = [self mapAirQuality:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000076-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000076-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapSmokeDetected:v11];
+    v40 = [self mapSmokeDetected:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000069-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000069-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapCarbonMonoxideDetected:v11];
+    v40 = [self mapCarbonMonoxideDetected:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"00000075-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"00000075-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapSensorFaultToStatusActive:v11];
+    v40 = [self mapSensorFaultToStatusActive:valueCopy];
     goto LABEL_36;
   }
 
-  if ([v10 isEqualToString:@"000000AC-0000-1000-8000-0026BB765291"])
+  if ([characteristicCopy isEqualToString:@"000000AC-0000-1000-8000-0026BB765291"])
   {
-    v40 = [a1 mapChangeIndicationToFilterChangeIndication:v11];
+    v40 = [self mapChangeIndicationToFilterChangeIndication:valueCopy];
     goto LABEL_36;
   }
 
@@ -5907,56 +5907,56 @@ LABEL_23:
   return v23;
 }
 
-+ (BOOL)checkIfCharacteristicsIsOfTypeTemp:(id)a3
++ (BOOL)checkIfCharacteristicsIsOfTypeTemp:(id)temp
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"00000011-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"00000035-0000-1000-8000-0026BB765291") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"0000000D-0000-1000-8000-0026BB765291"))
+  tempCopy = temp;
+  if ([tempCopy isEqualToString:@"00000011-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(tempCopy, "isEqualToString:", @"00000035-0000-1000-8000-0026BB765291") & 1) != 0 || (objc_msgSend(tempCopy, "isEqualToString:", @"0000000D-0000-1000-8000-0026BB765291"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"00000012-0000-1000-8000-0026BB765291"];
+    v4 = [tempCopy isEqualToString:@"00000012-0000-1000-8000-0026BB765291"];
   }
 
   return v4;
 }
 
-+ (id)mapPositionState:(id)a3
++ (id)mapPositionState:(id)state
 {
-  v3 = a3;
-  v4 = qword_2786F0880[[v3 integerValue] & 3];
+  stateCopy = state;
+  v4 = qword_2786F0880[[stateCopy integerValue] & 3];
 
   return v4;
 }
 
-+ (id)mapTargetSystemMode:(id)a3
++ (id)mapTargetSystemMode:(id)mode
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 integerValue];
-  if ((v5 - 3) < 2)
+  modeCopy = mode;
+  integerValue = [modeCopy integerValue];
+  if ((integerValue - 3) < 2)
   {
     goto LABEL_4;
   }
 
-  if (v5 == 1)
+  if (integerValue == 1)
   {
     v6 = &unk_283EE8E98;
   }
 
   else
   {
-    if (!v5)
+    if (!integerValue)
     {
 LABEL_4:
-      v6 = [a1 mapCurrentSystemMode:v4];
+      v6 = [self mapCurrentSystemMode:modeCopy];
       goto LABEL_9;
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -5964,7 +5964,7 @@ LABEL_4:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = modeCopy;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@Target System Mode: Mapping unknown value:%@ to HomeKit HeatingCooling State Off", &v13, 0x16u);
     }
 
@@ -5979,20 +5979,20 @@ LABEL_9:
   return v6;
 }
 
-+ (id)mapCurrentSystemMode:(id)a3
++ (id)mapCurrentSystemMode:(id)mode
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 integerValue];
-  if (v5 < 5 && ((0x1Bu >> v5) & 1) != 0)
+  modeCopy = mode;
+  integerValue = [modeCopy integerValue];
+  if (integerValue < 5 && ((0x1Bu >> integerValue) & 1) != 0)
   {
-    v6 = qword_2786F0858[v5];
+    v6 = qword_2786F0858[integerValue];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -6000,7 +6000,7 @@ LABEL_9:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = modeCopy;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@Current System Mode: Mapping unknown value:%@ to HomeKit HeatingCooling State Off", &v13, 0x16u);
     }
 
@@ -6012,13 +6012,13 @@ LABEL_9:
   return v6;
 }
 
-+ (id)mapTargetHeatingCoolingState:(id)a3
++ (id)mapTargetHeatingCoolingState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 integerValue];
-  if (v5 >= 3)
+  stateCopy = state;
+  integerValue = [stateCopy integerValue];
+  if (integerValue >= 3)
   {
-    if (v5 == 3)
+    if (integerValue == 3)
     {
       v6 = &unk_283EE8E50;
     }
@@ -6031,128 +6031,128 @@ LABEL_9:
 
   else
   {
-    v6 = [a1 mapCurrentHeatingCoolingState:v4];
+    v6 = [self mapCurrentHeatingCoolingState:stateCopy];
   }
 
   return v6;
 }
 
-+ (id)mapCurrentHeatingCoolingState:(id)a3
++ (id)mapCurrentHeatingCoolingState:(id)state
 {
-  v3 = [a3 integerValue];
-  if (v3 > 2)
+  integerValue = [state integerValue];
+  if (integerValue > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F0840[v3];
+    return qword_2786F0840[integerValue];
   }
 }
 
-+ (id)mapSensorFaultToStatusActive:(id)a3
++ (id)mapSensorFaultToStatusActive:(id)active
 {
-  v3 = [a3 integerValue] == 0;
+  v3 = [active integerValue] == 0;
   v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
 
   return v4;
 }
 
-+ (id)mapChangeIndicationToFilterChangeIndication:(id)a3
++ (id)mapChangeIndicationToFilterChangeIndication:(id)indication
 {
-  v3 = [a3 integerValue];
-  if (v3 > 2)
+  integerValue = [indication integerValue];
+  if (integerValue > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F0828[v3];
+    return qword_2786F0828[integerValue];
   }
 }
 
-+ (id)mapCarbonMonoxideDetected:(id)a3
++ (id)mapCarbonMonoxideDetected:(id)detected
 {
-  v3 = [a3 integerValue];
-  if (v3 > 2)
+  integerValue = [detected integerValue];
+  if (integerValue > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F0828[v3];
+    return qword_2786F0828[integerValue];
   }
 }
 
-+ (id)mapSmokeDetected:(id)a3
++ (id)mapSmokeDetected:(id)detected
 {
-  v3 = [a3 integerValue];
-  if (v3 > 2)
+  integerValue = [detected integerValue];
+  if (integerValue > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F0828[v3];
+    return qword_2786F0828[integerValue];
   }
 }
 
-+ (id)mapAirQuality:(id)a3
++ (id)mapAirQuality:(id)quality
 {
-  v3 = [a3 integerValue];
-  if (v3 > 6)
+  integerValue = [quality integerValue];
+  if (integerValue > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F07F0[v3];
+    return qword_2786F07F0[integerValue];
   }
 }
 
-+ (id)mapFanModeToTargetAirPurifier:(id)a3
++ (id)mapFanModeToTargetAirPurifier:(id)purifier
 {
-  v3 = [a3 integerValue];
-  if (v3 > 5)
+  integerValue = [purifier integerValue];
+  if (integerValue > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F07C0[v3];
+    return qword_2786F07C0[integerValue];
   }
 }
 
-+ (id)mapFanModeToTargetFanState:(id)a3
++ (id)mapFanModeToTargetFanState:(id)state
 {
-  v3 = [a3 integerValue];
-  if (v3 > 5)
+  integerValue = [state integerValue];
+  if (integerValue > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F07C0[v3];
+    return qword_2786F07C0[integerValue];
   }
 }
 
-+ (id)mapAirflowDirection:(id)a3
++ (id)mapAirflowDirection:(id)direction
 {
-  v3 = [a3 integerValue];
+  integerValue = [direction integerValue];
   v4 = &unk_283EE8E50;
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -6163,30 +6163,30 @@ LABEL_9:
   }
 }
 
-+ (id)mapFanModeToActive:(id)a3
++ (id)mapFanModeToActive:(id)active
 {
-  v3 = [a3 integerValue];
-  if (v3 > 5)
+  integerValue = [active integerValue];
+  if (integerValue > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_2786F0790[v3];
+    return qword_2786F0790[integerValue];
   }
 }
 
-+ (id)mapTargetAirPuriferState:(id)a3
++ (id)mapTargetAirPuriferState:(id)state
 {
-  v3 = [a3 integerValue];
+  integerValue = [state integerValue];
   v4 = &unk_283EE8E20;
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -6197,16 +6197,16 @@ LABEL_9:
   }
 }
 
-+ (id)mapRotationDirection:(id)a3
++ (id)mapRotationDirection:(id)direction
 {
-  v3 = [a3 integerValue];
+  integerValue = [direction integerValue];
   v4 = &unk_283EE8E38;
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -6217,16 +6217,16 @@ LABEL_9:
   }
 }
 
-+ (id)mapTargetFanState:(id)a3
++ (id)mapTargetFanState:(id)state
 {
-  v3 = [a3 integerValue];
+  integerValue = [state integerValue];
   v4 = &unk_283EE8E20;
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -6237,16 +6237,16 @@ LABEL_9:
   }
 }
 
-+ (id)mapActiveState:(id)a3
++ (id)mapActiveState:(id)state
 {
-  v3 = [a3 integerValue];
+  integerValue = [state integerValue];
   v4 = &unk_283EE8E08;
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -6257,16 +6257,16 @@ LABEL_9:
   }
 }
 
-+ (id)linearMapForCharacteristic:(id)a3 value:(id)a4 fromRange:(id)a5 toRange:(id)a6
++ (id)linearMapForCharacteristic:(id)characteristic value:(id)value fromRange:(id)range toRange:(id)toRange
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v47 = *[v11 objCType];
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  rangeCopy = range;
+  toRangeCopy = toRange;
+  v47 = *[valueCopy objCType];
   v14 = objc_autoreleasePoolPush();
-  v15 = a1;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -6274,35 +6274,35 @@ LABEL_9:
     *buf = 138544386;
     v49 = v17;
     v50 = 2112;
-    v51 = v11;
+    v51 = valueCopy;
     v52 = 2112;
-    v53 = v10;
+    v53 = characteristicCopy;
     v54 = 2112;
-    v55 = v12;
+    v55 = rangeCopy;
     v56 = 2112;
-    v57 = v13;
+    v57 = toRangeCopy;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Scaling value:%@ for characteristic: %@ linearly from %@ to %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v14);
-  [v11 doubleValue];
+  [valueCopy doubleValue];
   v19 = v18;
-  v20 = [v12 objectAtIndexedSubscript:0];
+  v20 = [rangeCopy objectAtIndexedSubscript:0];
   [v20 doubleValue];
   v22 = v19 - v21;
-  v23 = [v12 objectAtIndexedSubscript:1];
+  v23 = [rangeCopy objectAtIndexedSubscript:1];
   [v23 doubleValue];
   v25 = v24;
-  v26 = [v12 objectAtIndexedSubscript:0];
+  v26 = [rangeCopy objectAtIndexedSubscript:0];
   [v26 doubleValue];
   v28 = v22 / (v25 - v27);
-  v29 = [v13 objectAtIndexedSubscript:1];
+  v29 = [toRangeCopy objectAtIndexedSubscript:1];
   [v29 doubleValue];
   v31 = v30;
-  v32 = [v13 objectAtIndexedSubscript:0];
+  v32 = [toRangeCopy objectAtIndexedSubscript:0];
   [v32 doubleValue];
   v34 = v31 - v33;
-  v35 = [v13 objectAtIndexedSubscript:0];
+  v35 = [toRangeCopy objectAtIndexedSubscript:0];
   [v35 doubleValue];
   v37 = v36 + v28 * v34;
 
@@ -6313,22 +6313,22 @@ LABEL_9:
   }
 
   v39 = [MEMORY[0x277CCABB0] numberWithLong:llround(v37)];
-  v40 = [v13 objectAtIndexedSubscript:0];
+  v40 = [toRangeCopy objectAtIndexedSubscript:0];
   if (v39 != v40)
   {
     goto LABEL_6;
   }
 
-  v44 = [v12 objectAtIndexedSubscript:0];
+  v44 = [rangeCopy objectAtIndexedSubscript:0];
   v45 = v44;
-  if (v44 == v11)
+  if (v44 == valueCopy)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v46 = [v10 isEqualToString:@"00000008-0000-1000-8000-0026BB765291"];
+  v46 = [characteristicCopy isEqualToString:@"00000008-0000-1000-8000-0026BB765291"];
 
   if (v46)
   {

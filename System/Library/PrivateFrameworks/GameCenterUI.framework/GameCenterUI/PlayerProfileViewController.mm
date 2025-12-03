@@ -1,32 +1,32 @@
 @interface PlayerProfileViewController
-+ (void)showProfileFor:(id)a3 from:(id)a4 completion:(id)a5;
++ (void)showProfileFor:(id)for from:(id)from completion:(id)completion;
 - (BOOL)shouldDisplayInSplitView;
 - (PSRootController)_rootController;
 - (PSSpecifier)_specifier;
 - (_TtC12GameCenterUI18BaseSplitPresenter)dataPresenter;
-- (_TtC12GameCenterUI27PlayerProfileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12GameCenterUI27PlayerProfileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)contentScrollView;
 - (id)parentController;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (id)rootController;
 - (id)specifier;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)donePressed:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)loadMoreWithContinuationToken:(id)a3;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)donePressed:(id)pressed;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)loadMoreWithContinuationToken:(id)token;
 - (void)mainSecondaryCollectionViewLayout;
 - (void)scrollToTopActionTriggered;
-- (void)setDataPresenter:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setRootController:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)set_rootController:(id)a3;
-- (void)set_specifier:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setDataPresenter:(id)presenter;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setRootController:(id)controller;
+- (void)setSpecifier:(id)specifier;
+- (void)set_rootController:(id)controller;
+- (void)set_specifier:(id)set_specifier;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PlayerProfileViewController
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)setRootController:(id)a3
+- (void)setRootController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  PlayerProfileViewController.setRoot(_:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  PlayerProfileViewController.setRoot(_:)(controller);
 }
 
 - (id)rootController
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  PlayerProfileViewController.setSpecifier(_:)(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  PlayerProfileViewController.setSpecifier(_:)(specifier);
 }
 
 - (id)specifier
@@ -66,12 +66,12 @@
   return v2;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  if (a3)
+  if (value)
   {
-    v6 = a4;
-    v7 = self;
+    specifierCopy = specifier;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -80,14 +80,14 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    specifierCopy2 = specifier;
+    selfCopy2 = self;
   }
 
   sub_24DF8894C(v10);
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
   PlayerProfileViewController.readPreferenceValue(_:)(v11);
   v3 = v12;
@@ -111,10 +111,10 @@
   return v9;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (l)
   {
     sub_24E347C08();
   }
@@ -125,18 +125,18 @@
     v6 = sub_24DFA0D08;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_24DE73FA0(v6);
 }
 
-+ (void)showProfileFor:(id)a3 from:(id)a4 completion:(id)a5
++ (void)showProfileFor:(id)for from:(id)from completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = v7;
-  if (a3)
+  if (for)
   {
     v9 = sub_24E347CF8();
-    a3 = v10;
+    for = v10;
     if (!v8)
     {
       goto LABEL_5;
@@ -154,14 +154,14 @@ LABEL_3:
   }
 
 LABEL_5:
-  v11 = a4;
-  static PlayerProfileViewController.showProfile(for:from:completion:)(v9, a3, v11);
+  fromCopy = from;
+  static PlayerProfileViewController.showProfile(for:from:completion:)(v9, for, fromCopy);
   sub_24DE73FA0(v8);
 }
 
-- (_TtC12GameCenterUI27PlayerProfileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI27PlayerProfileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
     v6 = v5;
@@ -172,7 +172,7 @@ LABEL_5:
     v6 = 0;
   }
 
-  return PlayerProfileViewController.init(nibName:bundle:)(a4, v6, a4);
+  return PlayerProfileViewController.init(nibName:bundle:)(bundle, v6, bundle);
 }
 
 - (_TtC12GameCenterUI18BaseSplitPresenter)dataPresenter
@@ -182,47 +182,47 @@ LABEL_5:
   return v2;
 }
 
-- (void)setDataPresenter:(id)a3
+- (void)setDataPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E0CBA4C(v4);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_24E0CBA4C(presenterCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0CBBBC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E0CBD88(a3);
+  selfCopy = self;
+  sub_24E0CBD88(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24E0CC048(a3);
+  selfCopy = self;
+  sub_24E0CC048(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0CC15C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0CC508(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E0CC508(change);
 }
 
 - (BOOL)shouldDisplayInSplitView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0CC65C();
 
   return v3 & 1;
@@ -230,7 +230,7 @@ LABEL_5:
 
 - (id)contentScrollView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0CC714();
 
   return v3;
@@ -238,15 +238,15 @@ LABEL_5:
 
 - (void)mainSecondaryCollectionViewLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0CDF18();
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -255,7 +255,7 @@ LABEL_5:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24E0CE304();
@@ -263,17 +263,17 @@ LABEL_5:
   sub_24DF8BFF4(v6, &qword_27F1E0370);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_24E343518();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_24E0CE3F0(v12, v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_24E0CE3F0(viewCopy, cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
@@ -285,11 +285,11 @@ LABEL_5:
   return v2;
 }
 
-- (void)set_rootController:(id)a3
+- (void)set_rootController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0CF8EC(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E0CF8EC(controller);
 }
 
 - (PSSpecifier)_specifier
@@ -299,23 +299,23 @@ LABEL_5:
   return v2;
 }
 
-- (void)set_specifier:(id)a3
+- (void)set_specifier:(id)set_specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0CF9B8(a3);
+  set_specifierCopy = set_specifier;
+  selfCopy = self;
+  sub_24E0CF9B8(set_specifier);
 }
 
 - (void)scrollToTopActionTriggered
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0CFAE4();
 }
 
-- (void)loadMoreWithContinuationToken:(id)a3
+- (void)loadMoreWithContinuationToken:(id)token
 {
   sub_24E347CF8();
-  v4 = self;
+  selfCopy = self;
   sub_24E0CFC0C();
 }
 

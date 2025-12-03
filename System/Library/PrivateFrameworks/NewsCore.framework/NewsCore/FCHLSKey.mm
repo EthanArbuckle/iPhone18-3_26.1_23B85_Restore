@@ -1,5 +1,5 @@
 @interface FCHLSKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,10 +15,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
   }
@@ -29,11 +29,11 @@
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (v4)
+      if (equalCopy)
       {
         if (objc_opt_isKindOfClass())
         {
-          v5 = v4;
+          v5 = equalCopy;
         }
 
         else

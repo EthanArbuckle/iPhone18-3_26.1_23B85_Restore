@@ -1,117 +1,117 @@
 @interface PLPhotoTileViewController
-+ (BOOL)shouldShowPlaceholderForAsset:(id)a3;
++ (BOOL)shouldShowPlaceholderForAsset:(id)asset;
 + (CGSize)tileSize;
 + (CGSize)tvOutTileSize;
-+ (id)newPhotoTileViewControllerWithFrame:(CGRect)a3 image:(id)a4 allowZoomToFill:(BOOL)a5 mode:(int)a6;
-+ (id)newPhotoTileViewControllerWithFrame:(CGRect)a3 imageRef:(CGImage *)a4 imageOrientation:(int64_t)a5 allowZoomToFill:(BOOL)a6 mode:(int)a7;
-+ (id)newPhotoTileViewControllerWithFrame:(CGRect)a3 modelPhoto:(id)a4 mode:(int)a5;
++ (id)newPhotoTileViewControllerWithFrame:(CGRect)frame image:(id)image allowZoomToFill:(BOOL)fill mode:(int)mode;
++ (id)newPhotoTileViewControllerWithFrame:(CGRect)frame imageRef:(CGImage *)ref imageOrientation:(int64_t)orientation allowZoomToFill:(BOOL)fill mode:(int)mode;
++ (id)newPhotoTileViewControllerWithFrame:(CGRect)frame modelPhoto:(id)photo mode:(int)mode;
 - (BOOL)allowsEditing;
 - (BOOL)isZoomedOut;
 - (BOOL)photoShouldHaveAvalancheBadge;
 - (BOOL)photoShouldHaveHDRBadge;
 - (BOOL)tileIsOnScreen;
 - (CGRect)tileFrame;
-- (CGSize)scrollView:(id)a3 contentSizeForZoomScale:(double)a4 withProposedSize:(CGSize)a5;
+- (CGSize)scrollView:(id)view contentSizeForZoomScale:(double)scale withProposedSize:(CGSize)size;
 - (NSString)description;
 - (PLPhotoTileViewController)init;
-- (PLPhotoTileViewController)initWithModelPhoto:(id)a3 image:(id)a4 frame:(CGRect)a5 isThumbnail:(BOOL)a6 imageOrientation:(int)a7 allowZoomToFill:(BOOL)a8 mode:(int)a9;
-- (PLPhotoTileViewController)initWithModelPhoto:(id)a3 thumbnailImage:(id)a4 size:(CGSize)a5;
+- (PLPhotoTileViewController)initWithModelPhoto:(id)photo image:(id)image frame:(CGRect)frame isThumbnail:(BOOL)thumbnail imageOrientation:(int)orientation allowZoomToFill:(BOOL)fill mode:(int)mode;
+- (PLPhotoTileViewController)initWithModelPhoto:(id)photo thumbnailImage:(id)image size:(CGSize)size;
 - (UIEdgeInsets)overlayInsets;
 - (UIImage)thumbnailImage;
 - (double)currentToDefaultZoomRatio;
 - (double)currentToMinZoomRatio;
 - (double)defaultZoomScale;
 - (double)minRotatedScale;
-- (float)_calculateZoomScale:(BOOL)a3 inView:(id)a4;
-- (id)_newCGImageBackedUIImageFromImage:(id)a3;
-- (id)_newImageForAsset:(id)a3 targetSize:(CGSize)a4 cropRect:(CGRect)a5 fullSize:(CGSize)a6;
+- (float)_calculateZoomScale:(BOOL)scale inView:(id)view;
+- (id)_newCGImageBackedUIImageFromImage:(id)image;
+- (id)_newImageForAsset:(id)asset targetSize:(CGSize)size cropRect:(CGRect)rect fullSize:(CGSize)fullSize;
 - (id)_newOriginalImageForPickerFromCachedData;
 - (id)cachingImageManager;
-- (id)dictionaryWithCroppedImageForRect:(CGRect)a3 minimalCropDimension:(double)a4 withOptions:(int)a5;
+- (id)dictionaryWithCroppedImageForRect:(CGRect)rect minimalCropDimension:(double)dimension withOptions:(int)options;
 - (id)image;
 - (id)initForPageController;
-- (id)newImageWithCropRect:(CGRect)a3 minimalCropDimension:(double)a4 croppedImageData:(id *)a5 fullScreenImageData:(id *)a6 imageCropRect:(CGRect *)a7 intersectCropWithFullRect:(BOOL)a8;
-- (id)viewForZoomingInScrollView:(id)a3;
+- (id)newImageWithCropRect:(CGRect)rect minimalCropDimension:(double)dimension croppedImageData:(id *)data fullScreenImageData:(id *)imageData imageCropRect:(CGRect *)cropRect intersectCropWithFullRect:(BOOL)fullRect;
+- (id)viewForZoomingInScrollView:(id)view;
 - (int64_t)_imageOrientation;
 - (void)_adjustScrollViewContentOffsetForInsets;
-- (void)_adjustZoomForEnteringMode:(BOOL)a3;
+- (void)_adjustZoomForEnteringMode:(BOOL)mode;
 - (void)_centerImageInScrollView;
 - (void)_configureViews;
-- (void)_getFullScreenImageData:(id *)a3 forImage:(id)a4 fullSize:(CGSize)a5 imageView:(id)a6 screenScaleTransform:(CGAffineTransform *)a7;
-- (void)_handleDoubleTap:(id)a3;
-- (void)_handleFullSizeImageRequestResult:(id)a3 dataUTI:(id)a4 orientation:(int64_t)a5;
-- (void)_installSubview:(id)a3;
+- (void)_getFullScreenImageData:(id *)data forImage:(id)image fullSize:(CGSize)size imageView:(id)view screenScaleTransform:(CGAffineTransform *)transform;
+- (void)_handleDoubleTap:(id)tap;
+- (void)_handleFullSizeImageRequestResult:(id)result dataUTI:(id)i orientation:(int64_t)orientation;
+- (void)_installSubview:(id)subview;
 - (void)_performDidEndZoomBlock;
-- (void)_performRotationUpdatesWithDuration:(double)a3 size:(CGSize)a4;
+- (void)_performRotationUpdatesWithDuration:(double)duration size:(CGSize)size;
 - (void)_removePlaceholderView;
 - (void)_requestFullSizeImage;
 - (void)_resetZoomCommon;
-- (void)_setCustomCenterOverlay:(id)a3;
+- (void)_setCustomCenterOverlay:(id)overlay;
 - (void)_setDefaultZoomScale;
-- (void)_setDidEndZoomingBlock:(id)a3;
-- (void)_setImage:(id)a3 isThumbnail:(BOOL)a4 preserveFrame:(BOOL)a5;
-- (void)_setPhoto:(id)a3;
+- (void)_setDidEndZoomingBlock:(id)block;
+- (void)_setImage:(id)image isThumbnail:(BOOL)thumbnail preserveFrame:(BOOL)frame;
+- (void)_setPhoto:(id)photo;
 - (void)_setupReviewCheckmark;
 - (void)_teardownDispatchTimer;
 - (void)_updateContentInset;
-- (void)_updateModelPhotoWithImage:(id)a3;
+- (void)_updateModelPhotoWithImage:(id)image;
 - (void)_updatePlaceholderImageRect;
-- (void)_updatePlaceholderViewAnimated:(BOOL)a3;
+- (void)_updatePlaceholderViewAnimated:(BOOL)animated;
 - (void)_updatePlaceholderVisibility;
 - (void)_updateSubviewOrdering;
 - (void)_updateVideoViewForModelPhoto;
-- (void)_viewWillMoveToSuperView:(id)a3;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (void)_viewWillMoveToSuperView:(id)view;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationWillResignActive:(id)active;
 - (void)cancelFullSizeImageRequest;
 - (void)dealloc;
 - (void)didLoadImage;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)ensureFullSizeImageLoaded;
 - (void)forceZoomingGesturesEnabled;
 - (void)hideContentView;
 - (void)loadView;
 - (void)noteParentViewControllerDidDisappear;
-- (void)refreshTileWithFullScreenImage:(id)a3 modelPhoto:(id)a4;
+- (void)refreshTileWithFullScreenImage:(id)image modelPhoto:(id)photo;
 - (void)reloadZoomScale;
 - (void)resetZoom;
 - (void)retryDownload;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setAllowsZoomToFill:(BOOL)a3;
-- (void)setAvalancheBadgesHidden:(BOOL)a3;
-- (void)setBadgeVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setClientIsWallpaper:(BOOL)a3;
-- (void)setCropOverlayRect:(CGRect)a3 forCropRect:(CGRect)a4;
-- (void)setFullSizeImage:(id)a3;
-- (void)setOrientationDelegate:(id)a3;
-- (void)setOverlayInsets:(UIEdgeInsets)a3;
-- (void)setPicked:(BOOL)a3;
-- (void)setReviewing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldHideProgressIndicator:(BOOL)a3;
-- (void)setTVOut:(BOOL)a3;
-- (void)setTileDelegate:(id)a3;
-- (void)setVideoView:(id)a3;
-- (void)setZoomScale:(float)a3;
-- (void)setZoomingGesturesEnabled:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setAllowsZoomToFill:(BOOL)fill;
+- (void)setAvalancheBadgesHidden:(BOOL)hidden;
+- (void)setBadgeVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setClientIsWallpaper:(BOOL)wallpaper;
+- (void)setCropOverlayRect:(CGRect)rect forCropRect:(CGRect)cropRect;
+- (void)setFullSizeImage:(id)image;
+- (void)setOrientationDelegate:(id)delegate;
+- (void)setOverlayInsets:(UIEdgeInsets)insets;
+- (void)setPicked:(BOOL)picked;
+- (void)setReviewing:(BOOL)reviewing animated:(BOOL)animated;
+- (void)setShouldHideProgressIndicator:(BOOL)indicator;
+- (void)setTVOut:(BOOL)out;
+- (void)setTileDelegate:(id)delegate;
+- (void)setVideoView:(id)view;
+- (void)setZoomScale:(float)scale;
+- (void)setZoomingGesturesEnabled:(BOOL)enabled;
 - (void)showContentView;
 - (void)showErrorPlaceholderView;
 - (void)updateAfterCollapse;
 - (void)updateCenterOverlay;
-- (void)updateForVisibleOverlays:(BOOL)a3;
+- (void)updateForVisibleOverlays:(BOOL)overlays;
 - (void)updateViewConstraints;
 - (void)updateZoomScales;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)zoomToScale:(double)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)zoomToScale:(double)scale animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation PLPhotoTileViewController
@@ -120,26 +120,26 @@
 {
   if ([(PLPhotoTileViewController *)self imageView])
   {
-    v3 = [(PLPhotoTileViewController *)self imageOrientation];
+    imageOrientation = [(PLPhotoTileViewController *)self imageOrientation];
   }
 
   else
   {
-    v3 = 1;
+    imageOrientation = 1;
   }
 
-  return MEMORY[0x28219B570](v3);
+  return MEMORY[0x28219B570](imageOrientation);
 }
 
 - (id)_newOriginalImageForPickerFromCachedData
 {
-  v3 = [(PLPhotoTileViewController *)self unscaledImage];
-  if (!v3)
+  unscaledImage = [(PLPhotoTileViewController *)self unscaledImage];
+  if (!unscaledImage)
   {
-    v3 = [(PLPhotoTileViewController *)self image];
+    unscaledImage = [(PLPhotoTileViewController *)self image];
   }
 
-  return NewUIImageFromCachedImage(v3);
+  return NewUIImageFromCachedImage(unscaledImage);
 }
 
 - (UIEdgeInsets)overlayInsets
@@ -155,21 +155,21 @@
   return result;
 }
 
-- (void)setPicked:(BOOL)a3
+- (void)setPicked:(BOOL)picked
 {
-  if (self->_picked != a3)
+  if (self->_picked != picked)
   {
-    self->_picked = a3;
+    self->_picked = picked;
     [(PLPhotoTileViewController *)self _updateReviewCheckmark];
   }
 }
 
-- (void)setReviewing:(BOOL)a3 animated:(BOOL)a4
+- (void)setReviewing:(BOOL)reviewing animated:(BOOL)animated
 {
-  if (self->_reviewing != a3)
+  if (self->_reviewing != reviewing)
   {
-    v4 = a4;
-    self->_reviewing = a3;
+    animatedCopy = animated;
+    self->_reviewing = reviewing;
     [(PLPhotoTileViewController *)self _setupReviewCheckmark];
     v6 = 0.0;
     if (self->_reviewing)
@@ -187,8 +187,8 @@
     v7[1] = 3221225472;
     v8 = __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2;
     v9 = &unk_2782A2048;
-    v10 = self;
-    if (v4)
+    selfCopy = self;
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v7 completion:0.3];
     }
@@ -228,11 +228,11 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
   }
 }
 
-- (void)_adjustZoomForEnteringMode:(BOOL)a3
+- (void)_adjustZoomForEnteringMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   [(PLPhotoTileViewController *)self _adjustScrollViewContentOffsetForInsets];
-  if (v3)
+  if (modeCopy)
   {
     if (![(PLPhotoTileViewController *)self isZoomedOut])
     {
@@ -273,11 +273,11 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
   [(PLImageScrollView *)scrollView setContentOffset:v4, v5];
 }
 
-- (void)setAllowsZoomToFill:(BOOL)a3
+- (void)setAllowsZoomToFill:(BOOL)fill
 {
-  if (self->_allowZoomToFill != a3)
+  if (self->_allowZoomToFill != fill)
   {
-    self->_allowZoomToFill = a3;
+    self->_allowZoomToFill = fill;
     [(PLPhotoTileViewController *)self updateZoomScales];
   }
 }
@@ -295,16 +295,16 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
   }
 
   self->_zoomToFillInsteadOfToFit = ShouldZoomToFill;
-  v6 = [(PLPhotoTileViewController *)self viewIfLoaded];
-  v7 = [v6 px_screen];
-  [v6 bounds];
+  viewIfLoaded = [(PLPhotoTileViewController *)self viewIfLoaded];
+  px_screen = [viewIfLoaded px_screen];
+  [viewIfLoaded bounds];
   x = v38.origin.x;
   y = v38.origin.y;
   width = v38.size.width;
   height = v38.size.height;
   if (CGRectIsEmpty(v38))
   {
-    [v7 bounds];
+    [px_screen bounds];
     x = v12;
     y = v13;
     width = v14;
@@ -333,7 +333,7 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
     v20 = v19;
   }
 
-  [v7 scale];
+  [px_screen scale];
   v22 = v20 / v21;
   if (v22 >= 3.0)
   {
@@ -345,11 +345,11 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
     v23 = 3.0;
   }
 
-  v24 = [(PLPhotoTileViewController *)self maxZoomScaleOverride];
-  v25 = v24;
-  if (v24)
+  maxZoomScaleOverride = [(PLPhotoTileViewController *)self maxZoomScaleOverride];
+  v25 = maxZoomScaleOverride;
+  if (maxZoomScaleOverride)
   {
-    [(NSNumber *)v24 doubleValue];
+    [(NSNumber *)maxZoomScaleOverride doubleValue];
     v23 = v26;
   }
 
@@ -445,14 +445,14 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
   }
 }
 
-- (void)setOrientationDelegate:(id)a3
+- (void)setOrientationDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
       orientationDelegate = self->_orientationDelegate;
-      self->_orientationDelegate = a3;
+      self->_orientationDelegate = delegate;
       if (!orientationDelegate)
       {
 
@@ -513,10 +513,10 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
   return result;
 }
 
-- (float)_calculateZoomScale:(BOOL)a3 inView:(id)a4
+- (float)_calculateZoomScale:(BOOL)scale inView:(id)view
 {
-  v5 = a3;
-  if (a4)
+  scaleCopy = scale;
+  if (view)
   {
     goto LABEL_2;
   }
@@ -526,7 +526,7 @@ void __51__PLPhotoTileViewController_setReviewing_animated___block_invoke_2(uint
     v8 = [-[PLPhotoTileViewController view](self "view")];
     if (v8)
     {
-      a4 = v8;
+      view = v8;
 LABEL_2:
       v7 = 0;
       goto LABEL_10;
@@ -536,7 +536,7 @@ LABEL_2:
   v9 = [-[PLPhotoTileViewController view](self "view")];
   if (v9 || (v9 = [MEMORY[0x277D75DA0] keyWindow]) != 0)
   {
-    a4 = v9;
+    view = v9;
   }
 
   else
@@ -547,7 +547,7 @@ LABEL_2:
       return *&v4;
     }
 
-    a4 = 0;
+    view = 0;
   }
 
   v7 = 1;
@@ -566,7 +566,7 @@ LABEL_10:
 
   else
   {
-    [a4 bounds];
+    [view bounds];
     v11 = v10;
     v13 = v12;
   }
@@ -598,7 +598,7 @@ LABEL_25:
 
 LABEL_27:
   v4 = v11 / self->_imageSize.width;
-  if (v4 < v13 / self->_imageSize.height != v5)
+  if (v4 < v13 / self->_imageSize.height != scaleCopy)
   {
     v4 = v13 / self->_imageSize.height;
   }
@@ -628,7 +628,7 @@ LABEL_27:
   }
 }
 
-- (void)_setDidEndZoomingBlock:(id)a3
+- (void)_setDidEndZoomingBlock:(id)block
 {
   didEndZoomingBlock = self->_didEndZoomingBlock;
   if (didEndZoomingBlock)
@@ -637,44 +637,44 @@ LABEL_27:
     self->_didEndZoomingBlock = 0;
   }
 
-  if (a3)
+  if (block)
   {
-    self->_didEndZoomingBlock = [a3 copy];
+    self->_didEndZoomingBlock = [block copy];
   }
 }
 
-- (void)zoomToScale:(double)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)zoomToScale:(double)scale animated:(BOOL)animated completionBlock:(id)block
 {
   scrollView = self->_scrollView;
-  if (scrollView && (v8 = a4, v9 = a3, [(PLImageScrollView *)scrollView zoomScale], a3 = vabdd_f64(v10, v9), a3 >= 0.00000011920929))
+  if (scrollView && (v8 = animated, v9 = scale, [(PLImageScrollView *)scrollView zoomScale], scale = vabdd_f64(v10, v9), scale >= 0.00000011920929))
   {
-    [(PLPhotoTileViewController *)self _setDidEndZoomingBlock:a5];
+    [(PLPhotoTileViewController *)self _setDidEndZoomingBlock:block];
     v12 = self->_scrollView;
 
     [(PLImageScrollView *)v12 setZoomScale:v8 animated:v9];
   }
 
-  else if (a5)
+  else if (block)
   {
-    v11 = *(a5 + 2);
+    v11 = *(block + 2);
 
-    v11(a5, *&a3);
+    v11(block, *&scale);
   }
 }
 
-- (id)dictionaryWithCroppedImageForRect:(CGRect)a3 minimalCropDimension:(double)a4 withOptions:(int)a5
+- (id)dictionaryWithCroppedImageForRect:(CGRect)rect minimalCropDimension:(double)dimension withOptions:(int)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = 0;
   v22 = 0;
   v12 = *(MEMORY[0x277CBF3A0] + 16);
   v19 = *MEMORY[0x277CBF3A0];
   v20 = v12;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if ((a5 & 8) != 0)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ((options & 8) != 0)
   {
     v14 = &v22;
   }
@@ -684,7 +684,7 @@ LABEL_27:
     v14 = 0;
   }
 
-  if ((a5 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v15 = &v21;
   }
@@ -694,24 +694,24 @@ LABEL_27:
     v15 = 0;
   }
 
-  v16 = [(PLPhotoTileViewController *)self newImageWithCropRect:v14 minimalCropDimension:v15 croppedImageData:&v19 fullScreenImageData:(a5 >> 4) & 1 imageCropRect:x intersectCropWithFullRect:y, width, height, a4];
+  dimension = [(PLPhotoTileViewController *)self newImageWithCropRect:v14 minimalCropDimension:v15 croppedImageData:&v19 fullScreenImageData:(options >> 4) & 1 imageCropRect:x intersectCropWithFullRect:y, width, height, dimension];
   v17 = [MEMORY[0x277CCAE60] valueWithCGRect:{v19, v20}];
-  [v13 setObject:v17 forKeyedSubscript:*MEMORY[0x277D3B298]];
-  [v13 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3B2A0]];
-  [v13 setObject:v22 forKeyedSubscript:*MEMORY[0x277D3B2A8]];
-  [v13 setObject:v21 forKeyedSubscript:*MEMORY[0x277D3B2B0]];
+  [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x277D3B298]];
+  [dictionary setObject:dimension forKeyedSubscript:*MEMORY[0x277D3B2A0]];
+  [dictionary setObject:v22 forKeyedSubscript:*MEMORY[0x277D3B2A8]];
+  [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x277D3B2B0]];
 
-  return v13;
+  return dictionary;
 }
 
-- (id)_newImageForAsset:(id)a3 targetSize:(CGSize)a4 cropRect:(CGRect)a5 fullSize:(CGSize)a6
+- (id)_newImageForAsset:(id)asset targetSize:(CGSize)size cropRect:(CGRect)rect fullSize:(CGSize)fullSize
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.height;
-  v11 = a4.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3052000000;
@@ -719,7 +719,7 @@ LABEL_27:
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
   memset(&v24, 0, sizeof(v24));
-  CGAffineTransformMakeScale(&v24, 1.0 / a6.width, 1.0 / a6.height);
+  CGAffineTransformMakeScale(&v24, 1.0 / fullSize.width, 1.0 / fullSize.height);
   v23 = v24;
   v31.origin.x = x;
   v31.origin.y = y;
@@ -753,13 +753,13 @@ LABEL_27:
   [v18 setSynchronous:1];
   [v18 setNormalizedCropRect:{v15, v16, fmin(v13, 1.0), fmin(v14, 1.0)}];
   [v18 setResizeMode:2];
-  v19 = [MEMORY[0x277CD9898] defaultManager];
+  defaultManager = [MEMORY[0x277CD9898] defaultManager];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSize___block_invoke;
   v22[3] = &unk_2782A1BB8;
   v22[4] = &v25;
-  [v19 requestImageForAsset:a3 targetSize:0 contentMode:v18 options:v22 resultHandler:{v11, v10}];
+  [defaultManager requestImageForAsset:asset targetSize:0 contentMode:v18 options:v22 resultHandler:{v11, v10}];
 
   objc_autoreleasePoolPop(v17);
   v20 = v26[5];
@@ -774,7 +774,7 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
   return result;
 }
 
-- (void)_getFullScreenImageData:(id *)a3 forImage:(id)a4 fullSize:(CGSize)a5 imageView:(id)a6 screenScaleTransform:(CGAffineTransform *)a7
+- (void)_getFullScreenImageData:(id *)data forImage:(id)image fullSize:(CGSize)size imageView:(id)view screenScaleTransform:(CGAffineTransform *)transform
 {
   if (-[PLPhotoTileViewController _clientIsWallpaper](self, "_clientIsWallpaper") || ([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) != 1 || *(self + 1361) < 0)
   {
@@ -795,17 +795,17 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
     height = 480.0;
   }
 
-  [a6 convertRect:-[PLPhotoTileViewController view](self fromView:{"view"), v17, v14, width, height}];
+  [view convertRect:-[PLPhotoTileViewController view](self fromView:{"view"), v17, v14, width, height}];
   x = PLIntegralRect(v22, v23, v24, v25);
   y = v27;
   v30 = v29;
   v32 = v31;
   if ((dyld_program_sdk_at_least() & 1) != 0 || [(PLPhotoTileViewController *)self forceNativeScreenScale])
   {
-    v33 = *&a7->c;
-    *&v49.a = *&a7->a;
+    v33 = *&transform->c;
+    *&v49.a = *&transform->a;
     *&v49.c = v33;
-    *&v49.tx = *&a7->tx;
+    *&v49.tx = *&transform->tx;
     v34 = v17;
     *&v33 = v14;
     v35 = width;
@@ -815,23 +815,23 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
     height = v50.size.height;
   }
 
-  v37 = a5.width;
-  v38 = a5.height;
-  if (v30 > a5.width || v32 > a5.height)
+  v37 = size.width;
+  v38 = size.height;
+  if (v30 > size.width || v32 > size.height)
   {
-    v40 = a5.width / v30;
-    if (a5.width / v30 >= a5.height / v32)
+    v40 = size.width / v30;
+    if (size.width / v30 >= size.height / v32)
     {
-      v40 = a5.height / v32;
+      v40 = size.height / v32;
     }
 
-    if (v30 * v40 < a5.width)
+    if (v30 * v40 < size.width)
     {
       v37 = v30 * v40;
     }
 
     v41 = v32 * v40;
-    if (v41 < a5.height)
+    if (v41 < size.height)
     {
       v38 = v41;
     }
@@ -853,7 +853,7 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
     v52.origin.y = y;
     v52.size.width = v30;
     v52.size.height = v32;
-    if (CGRectGetMaxX(v52) <= a5.width)
+    if (CGRectGetMaxX(v52) <= size.width)
     {
       v45 = x;
     }
@@ -864,7 +864,7 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
       v53.origin.y = y;
       v53.size.width = v30;
       v53.size.height = v32;
-      v45 = x - (CGRectGetMaxX(v53) - a5.width);
+      v45 = x - (CGRectGetMaxX(v53) - size.width);
     }
   }
 
@@ -874,10 +874,10 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
     v54.origin.y = y;
     v54.size.width = v30;
     v54.size.height = v32;
-    if (CGRectGetMaxY(v54) <= a5.height)
+    if (CGRectGetMaxY(v54) <= size.height)
     {
       v44 = y;
-      if (a4)
+      if (image)
       {
         goto LABEL_28;
       }
@@ -889,10 +889,10 @@ id __76__PLPhotoTileViewController__newImageForAsset_targetSize_cropRect_fullSiz
     v55.origin.y = y;
     v55.size.width = v30;
     v55.size.height = v32;
-    v44 = y - (CGRectGetMaxY(v55) - a5.height);
+    v44 = y - (CGRectGetMaxY(v55) - size.height);
   }
 
-  if (a4)
+  if (image)
   {
 LABEL_28:
     v46 = PLCreateCroppedImageFromImage();
@@ -900,31 +900,31 @@ LABEL_28:
   }
 
 LABEL_30:
-  v46 = [(PLPhotoTileViewController *)self _newImageForAsset:[(PLPhotoTileViewController *)self photo] targetSize:width cropRect:height fullSize:v45, v44, v30, v32, a5.width, a5.height];
+  v46 = [(PLPhotoTileViewController *)self _newImageForAsset:[(PLPhotoTileViewController *)self photo] targetSize:width cropRect:height fullSize:v45, v44, v30, v32, size.width, size.height];
 LABEL_31:
   v47 = v46;
   if (v46)
   {
     [v46 CGImage];
-    *a3 = imageDataFromImageWithFormat();
+    *data = imageDataFromImageWithFormat();
   }
 }
 
-- (id)newImageWithCropRect:(CGRect)a3 minimalCropDimension:(double)a4 croppedImageData:(id *)a5 fullScreenImageData:(id *)a6 imageCropRect:(CGRect *)a7 intersectCropWithFullRect:(BOOL)a8
+- (id)newImageWithCropRect:(CGRect)rect minimalCropDimension:(double)dimension croppedImageData:(id *)data fullScreenImageData:(id *)imageData imageCropRect:(CGRect *)cropRect intersectCropWithFullRect:(BOOL)fullRect
 {
-  v8 = a8;
-  v13 = PLIntegralRect(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  fullRectCopy = fullRect;
+  v13 = PLIntegralRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PLPhotoTileViewController *)self imageView];
-  v21 = [(PLPhotoTileViewController *)self image];
-  [v21 size];
+  imageView = [(PLPhotoTileViewController *)self imageView];
+  image = [(PLPhotoTileViewController *)self image];
+  [image size];
   v49 = v23;
   v50 = v22;
   if ([(UIViewController *)self uiipc_imagePickerController])
   {
-    v24 = [(PLPhotoTileViewController *)self _newCGImageBackedUIImageFromImage:v21];
+    v24 = [(PLPhotoTileViewController *)self _newCGImageBackedUIImageFromImage:image];
   }
 
   else
@@ -938,15 +938,15 @@ LABEL_31:
   CGAffineTransformMakeScale(&v52, *&v25, *&v25);
   v46 = v15;
   v47 = v13;
-  [v20 convertRect:-[PLPhotoTileViewController scrollView](self fromView:{"scrollView"), v13, v15, v17, v19}];
+  [imageView convertRect:-[PLPhotoTileViewController scrollView](self fromView:{"scrollView"), v13, v15, v17, v19}];
   v54 = CGRectIntegral(v53);
   x = v54.origin.x;
   y = v54.origin.y;
   width = v54.size.width;
   height = v54.size.height;
-  if (v8)
+  if (fullRectCopy)
   {
-    [v20 bounds];
+    [imageView bounds];
     v59.origin.x = v30;
     v59.origin.y = v31;
     v59.size.width = v32;
@@ -988,18 +988,18 @@ LABEL_31:
     v19 = v39;
   }
 
-  a7->origin.x = x;
-  a7->origin.y = y;
-  a7->size.width = v34;
-  a7->size.height = v35;
-  if (a6)
+  cropRect->origin.x = x;
+  cropRect->origin.y = y;
+  cropRect->size.width = v34;
+  cropRect->size.height = v35;
+  if (imageData)
   {
     v51 = v52;
-    [(PLPhotoTileViewController *)self _getFullScreenImageData:a6 forImage:v24 fullSize:v20 imageView:&v51 screenScaleTransform:v50, v49];
+    [(PLPhotoTileViewController *)self _getFullScreenImageData:imageData forImage:v24 fullSize:imageView imageView:&v51 screenScaleTransform:v50, v49];
   }
 
-  v40 = a4;
-  if (a4 <= 0.0 || v17 >= a4 || v19 >= a4)
+  dimensionCopy = dimension;
+  if (dimension <= 0.0 || v17 >= dimension || v19 >= dimension)
   {
     goto LABEL_31;
   }
@@ -1008,33 +1008,33 @@ LABEL_31:
   {
     if (v35 > v19)
     {
-      if (v35 <= a4)
+      if (v35 <= dimension)
       {
-        v41 = v35;
+        dimensionCopy2 = v35;
       }
 
       else
       {
-        v41 = a4;
+        dimensionCopy2 = dimension;
       }
 
       if (v17 == v19)
       {
-        v42 = v41;
+        dimensionCopy3 = dimensionCopy2;
       }
 
       else
       {
-        v40 = v17 * (v41 / v19);
-        v42 = floor(v40);
+        dimensionCopy = v17 * (dimensionCopy2 / v19);
+        dimensionCopy3 = floor(dimensionCopy);
       }
 
       goto LABEL_32;
     }
 
 LABEL_31:
-    v42 = v17;
-    v41 = v19;
+    dimensionCopy3 = v17;
+    dimensionCopy2 = v19;
     goto LABEL_32;
   }
 
@@ -1043,25 +1043,25 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (v34 <= a4)
+  if (v34 <= dimension)
   {
-    v42 = v34;
+    dimensionCopy3 = v34;
   }
 
   else
   {
-    v42 = a4;
+    dimensionCopy3 = dimension;
   }
 
   if (v17 == v19)
   {
-    v41 = v42;
+    dimensionCopy2 = dimensionCopy3;
   }
 
   else
   {
-    v40 = v19 * (v42 / v17);
-    v41 = floor(v40);
+    dimensionCopy = v19 * (dimensionCopy3 / v17);
+    dimensionCopy2 = floor(dimensionCopy);
   }
 
 LABEL_32:
@@ -1072,14 +1072,14 @@ LABEL_32:
 
   else
   {
-    v43 = [(PLPhotoTileViewController *)self _newImageForAsset:[(PLPhotoTileViewController *)self photo] targetSize:v42 cropRect:v41 fullSize:v37, v36, v34, v35, v50, v49];
+    v43 = [(PLPhotoTileViewController *)self _newImageForAsset:[(PLPhotoTileViewController *)self photo] targetSize:dimensionCopy3 cropRect:dimensionCopy2 fullSize:v37, v36, v34, v35, v50, v49];
   }
 
   v44 = v43;
-  if (a5 && v43)
+  if (data && v43)
   {
     [v43 CGImage];
-    *a5 = imageDataFromImageWithFormat();
+    *data = imageDataFromImageWithFormat();
   }
 
   if (v24)
@@ -1089,7 +1089,7 @@ LABEL_32:
   return v44;
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleDoubleTap:(id)tap
 {
   videoView = self->_videoView;
   if (videoView)
@@ -1126,7 +1126,7 @@ LABEL_8:
     }
 
     doubleTapZoomScale = self->_doubleTapZoomScale;
-    [a3 locationInView:self->_imageView];
+    [tap locationInView:self->_imageView];
     v14 = v13;
     v16 = v15;
     [(PLExpandableImageView *)self->_imageView frame];
@@ -1139,9 +1139,9 @@ LABEL_9:
   [(PLPhotoTileViewController *)self _updatePlaceholderImageRect];
 }
 
-- (void)_handleFullSizeImageRequestResult:(id)a3 dataUTI:(id)a4 orientation:(int64_t)a5
+- (void)_handleFullSizeImageRequestResult:(id)result dataUTI:(id)i orientation:(int64_t)orientation
 {
-  if (a4 && (v7 = [MEMORY[0x277CE1CB8] typeWithIdentifier:a4], v8 = objc_msgSend(v7, "conformsToType:", *MEMORY[0x277CE1DC0]), a3) && v8)
+  if (i && (v7 = [MEMORY[0x277CE1CB8] typeWithIdentifier:i], v8 = objc_msgSend(v7, "conformsToType:", *MEMORY[0x277CE1DC0]), result) && v8)
   {
     [(PHAsset *)self->_modelPhoto localIdentifier];
     dispatch_get_global_queue(0, 0);
@@ -1237,14 +1237,14 @@ uint64_t __83__PLPhotoTileViewController__handleFullSizeImageRequestResult_dataU
       [v3 setDeliveryMode:1];
       [v3 setLoadingMode:1];
       [v3 setNetworkAccessAllowed:1];
-      v4 = [(PLPhotoTileViewController *)self cachingImageManager];
+      cachingImageManager = [(PLPhotoTileViewController *)self cachingImageManager];
       modelPhoto = self->_modelPhoto;
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __50__PLPhotoTileViewController__requestFullSizeImage__block_invoke;
       v6[3] = &unk_2782A1B40;
       v6[4] = self;
-      self->_fullSizeImageRequestID = [v4 requestImageDataAndOrientationForAsset:modelPhoto options:v3 resultHandler:v6];
+      self->_fullSizeImageRequestID = [cachingImageManager requestImageDataAndOrientationForAsset:modelPhoto options:v3 resultHandler:v6];
     }
   }
 }
@@ -1282,7 +1282,7 @@ uint64_t __50__PLPhotoTileViewController__requestFullSizeImage__block_invoke(uin
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   if (self->_dispatchTimer)
   {
@@ -1293,7 +1293,7 @@ uint64_t __50__PLPhotoTileViewController__requestFullSizeImage__block_invoke(uin
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   if (self->_dispatchTimer)
   {
@@ -1304,9 +1304,9 @@ uint64_t __50__PLPhotoTileViewController__requestFullSizeImage__block_invoke(uin
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = PLPhotoTileViewController;
   [(PLPhotoTileViewController *)&v12 viewDidAppear:?];
@@ -1317,7 +1317,7 @@ uint64_t __50__PLPhotoTileViewController__requestFullSizeImage__block_invoke(uin
   }
 
   [(PLVideoView *)self->_videoView viewDidAppear];
-  [(PLPhotoTileViewControllerDelegate *)self->_tileDelegate photoTileViewController:self didAppear:v3];
+  [(PLPhotoTileViewControllerDelegate *)self->_tileDelegate photoTileViewController:self didAppear:appearCopy];
   [(PLTilePlaceholderView *)self->_placeholderView showLoadingIndicatorWhenReady];
   if (!self->_dispatchTimer)
   {
@@ -1329,11 +1329,11 @@ uint64_t __50__PLPhotoTileViewController__requestFullSizeImage__block_invoke(uin
     v5 = dispatch_time(0, 5000000000);
     dispatch_source_set_timer(self->_dispatchTimer, v5, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
     self->_dispatchStartTime = CFAbsoluteTimeGetCurrent();
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = MEMORY[0x277D76620];
-    [v6 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:*MEMORY[0x277D76620]];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:*v7];
+    [defaultCenter addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:*MEMORY[0x277D76620]];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:*v7];
     dispatch_resume(self->_dispatchTimer);
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1359,13 +1359,13 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PLPhotoTileViewController;
   [(PLPhotoTileViewController *)&v6 viewWillAppear:?];
   v5 = 1;
-  if (!a3)
+  if (!appear)
   {
     if (*(self + 1361) < 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -1398,9 +1398,9 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
 - (void)resetZoom
 {
   [(PLPhotoTileViewController *)self _resetZoomCommon];
-  v3 = [(PLPhotoTileViewController *)self view];
+  view = [(PLPhotoTileViewController *)self view];
 
-  [v3 layoutBelowIfNeeded];
+  [view layoutBelowIfNeeded];
 }
 
 - (void)updateViewConstraints
@@ -1408,12 +1408,12 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
   v6.receiver = self;
   v6.super_class = PLPhotoTileViewController;
   [(PLPhotoTileViewController *)&v6 updateViewConstraints];
-  v3 = [(PLPhotoTileViewController *)self _customCenterOverlay];
-  if (v3)
+  _customCenterOverlay = [(PLPhotoTileViewController *)self _customCenterOverlay];
+  if (_customCenterOverlay)
   {
     if (!self->_customCenterOverlayConstraints)
     {
-      v4 = v3;
+      v4 = _customCenterOverlay;
       v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
       -[NSArray addObject:](v5, "addObject:", [MEMORY[0x277CCAAD0] constraintWithItem:v4 attribute:9 relatedBy:0 toItem:-[PLPhotoTileViewController view](self attribute:"view") multiplier:9 constant:{1.0, 0.0}]);
       -[NSArray addObject:](v5, "addObject:", [MEMORY[0x277CCAAD0] constraintWithItem:v4 attribute:10 relatedBy:0 toItem:-[PLPhotoTileViewController view](self attribute:"view") multiplier:10 constant:{1.0, 0.0}]);
@@ -1423,7 +1423,7 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PLPhotoTileViewController;
@@ -1490,11 +1490,11 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_viewWillMoveToSuperView:(id)a3
+- (void)_viewWillMoveToSuperView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    [a3 bounds];
+    [view bounds];
     [-[PLPhotoTileViewController view](self "view")];
 
     [(PLPhotoTileViewController *)self _updateContentInset];
@@ -1509,7 +1509,7 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_performRotationUpdatesWithDuration:(double)a3 size:(CGSize)a4
+- (void)_performRotationUpdatesWithDuration:(double)duration size:(CGSize)size
 {
   if ((*(self + 1361) & 2) != 0)
   {
@@ -1522,7 +1522,7 @@ id *__43__PLPhotoTileViewController_viewDidAppear___block_invoke(uint64_t a1)
   {
     if (!videoView)
     {
-      [(PLPhotoTileViewController *)self defaultZoomScale:a3];
+      [(PLPhotoTileViewController *)self defaultZoomScale:duration];
       v8 = v7;
       [(PLImageScrollView *)self->_scrollView zoomScale];
       v10 = v9;
@@ -1597,11 +1597,11 @@ LABEL_25:
   if (videoView)
   {
 LABEL_14:
-    [(PLVideoView *)videoView updateForRotationWithDuration:a4.width > a4.height isLandscape:a3];
+    [(PLVideoView *)videoView updateForRotationWithDuration:size.width > size.height isLandscape:duration];
   }
 
 LABEL_15:
-  [(PLPhotoTileViewController *)self updateZoomScales:a3];
+  [(PLPhotoTileViewController *)self updateZoomScales:duration];
   if (self->_videoView && self->_scrollView)
   {
     [(PLPhotoTileViewController *)self defaultZoomScale];
@@ -1611,18 +1611,18 @@ LABEL_15:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = PLPhotoTileViewController;
   [PLPhotoTileViewController viewWillTransitionToSize:sel_viewWillTransitionToSize_withTransitionCoordinator_ withTransitionCoordinator:?];
   if (![(PLPhotoTileViewController *)self shouldSupressViewWillTransitionToSize])
   {
-    if (a4)
+    if (coordinator)
     {
-      [a4 targetTransform];
+      [coordinator targetTransform];
     }
 
     else
@@ -1638,7 +1638,7 @@ LABEL_15:
       v13[3] = &unk_2782A1AC8;
       v13[4] = self;
       v8 = v13;
-      v9 = a4;
+      coordinatorCopy2 = coordinator;
       v10 = 0;
     }
 
@@ -1659,10 +1659,10 @@ LABEL_15:
       v11[4] = self;
       v8 = v12;
       v10 = v11;
-      v9 = a4;
+      coordinatorCopy2 = coordinator;
     }
 
-    [v9 animateAlongsideTransition:v8 completion:v10];
+    [coordinatorCopy2 animateAlongsideTransition:v8 completion:v10];
   }
 }
 
@@ -1722,9 +1722,9 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   return result;
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  if ([(PLPhotoTileViewController *)self view]== a3)
+  if ([(PLPhotoTileViewController *)self view]== view)
   {
     return 0;
   }
@@ -1735,14 +1735,14 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(PLPhotoTileViewControllerDelegate *)self->_tileDelegate photoTileViewControllerDidEndGesture:self];
-  if (self->_scrollView == a3)
+  if (self->_scrollView == decelerating)
   {
     if ([(PLPhotoTileViewController *)self _clientIsWallpaper])
     {
-      [a3 visibleBounds];
+      [decelerating visibleBounds];
       v10.origin.x = v5;
       v10.origin.y = v6;
       v10.size.width = v7;
@@ -1762,16 +1762,16 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(PLPhotoTileViewControllerDelegate *)self->_tileDelegate photoTileViewControllerDidEndGesture:self];
-    if (self->_scrollView == a3)
+    if (self->_scrollView == dragging)
     {
       if ([(PLPhotoTileViewController *)self _clientIsWallpaper])
       {
-        [a3 visibleBounds];
+        [dragging visibleBounds];
         v11.origin.x = v6;
         v11.origin.y = v7;
         v11.size.width = v8;
@@ -1792,14 +1792,14 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  if (self->_scrollView == a3)
+  if (self->_scrollView == dragging)
   {
     [(PLPhotoTileViewController *)self _updatePlaceholderVisibility];
     if ([(PLPhotoTileViewController *)self _clientIsWallpaper])
     {
-      [a3 visibleBounds];
+      [dragging visibleBounds];
       self->_cropRectBeforeDragging.origin.x = v5;
       self->_cropRectBeforeDragging.origin.y = v6;
       self->_cropRectBeforeDragging.size.width = v7;
@@ -1812,7 +1812,7 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   [(PLPhotoTileViewControllerDelegate *)tileDelegate photoTileViewControllerWillBeginGesture:self];
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
   if ((*(self + 1361) & 4) != 0 && (*(self + 1361) & 0x40) == 0)
   {
@@ -1834,16 +1834,16 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  if (self->_scrollView == a3)
+  if (self->_scrollView == zooming)
   {
     if ([(PLPhotoTileViewController *)self _clientIsWallpaper])
     {
       if ((*(self + 1361) & 0x40) == 0)
       {
         zoomScaleBeforeZooming = self->_zoomScaleBeforeZooming;
-        [a3 zoomScale];
+        [zooming zoomScale];
         if (v8 != zoomScaleBeforeZooming)
         {
           self->_userDidAdjustWallpaper = 1;
@@ -1879,15 +1879,15 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
   self->_shouldUpdateBadgeViewOptimalLayout = 0;
-  if (self->_scrollView == a3)
+  if (self->_scrollView == zooming)
   {
     [(PLPhotoTileViewController *)self _updatePlaceholderVisibility];
     if ([(PLPhotoTileViewController *)self _clientIsWallpaper])
     {
-      [a3 zoomScale];
+      [zooming zoomScale];
       *&v6 = v6;
       self->_zoomScaleBeforeZooming = *&v6;
     }
@@ -1901,16 +1901,16 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (CGSize)scrollView:(id)a3 contentSizeForZoomScale:(double)a4 withProposedSize:(CGSize)a5
+- (CGSize)scrollView:(id)view contentSizeForZoomScale:(double)scale withProposedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  if (*(self + 1361) < 0 && ![(PLPhotoTileViewController *)self _clientIsWallpaper]&& ([(PLPhotoTileViewController *)self defaultZoomScale], v10 >= a4))
+  height = size.height;
+  width = size.width;
+  if (*(self + 1361) < 0 && ![(PLPhotoTileViewController *)self _clientIsWallpaper]&& ([(PLPhotoTileViewController *)self defaultZoomScale], v10 >= scale))
   {
-    [a3 bounds];
+    [view bounds];
     v16 = v15;
     v18 = v17;
-    [-[PLPhotoTileViewController viewForZoomingInScrollView:](self viewForZoomingInScrollView:{a3), "frame"}];
+    [-[PLPhotoTileViewController viewForZoomingInScrollView:](self viewForZoomingInScrollView:{view), "frame"}];
     if (v16 >= v19)
     {
       v21 = v19;
@@ -1960,18 +1960,18 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)updateForVisibleOverlays:(BOOL)a3
+- (void)updateForVisibleOverlays:(BOOL)overlays
 {
-  v3 = a3;
+  overlaysCopy = overlays;
   [(PLPhotoTileViewController *)self setBadgeVisible:?];
   placeholderView = self->_placeholderView;
 
-  [(PLTilePlaceholderView *)placeholderView setToolbarVisible:v3];
+  [(PLTilePlaceholderView *)placeholderView setToolbarVisible:overlaysCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = PLPhotoTileViewController;
   [(PLPhotoTileViewController *)&v5 viewDidDisappear:?];
@@ -1986,7 +1986,7 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   if (![(PLPhotoTileViewController *)self tileIsOnScreen])
   {
     [(PLPhotoTileViewController *)self _setDefaultZoomScale];
-    [(PLPhotoTileViewControllerDelegate *)self->_tileDelegate photoTileViewController:self didDisappear:v3];
+    [(PLPhotoTileViewControllerDelegate *)self->_tileDelegate photoTileViewController:self didDisappear:disappearCopy];
   }
 
   [(PLPhotoTileViewController *)self _teardownDispatchTimer];
@@ -2005,9 +2005,9 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 
   self->_shouldUpdateBadgeViewOptimalLayout = 1;
-  v7 = [[PLTileContainerView alloc] initWithFrame:self photoTileController:x, y, width, height];
-  self->_containerView = v7;
-  [(PLTileContainerView *)v7 setAutoresizingMask:18];
+  height = [[PLTileContainerView alloc] initWithFrame:self photoTileController:x, y, width, height];
+  self->_containerView = height;
+  [(PLTileContainerView *)height setAutoresizingMask:18];
   containerView = self->_containerView;
 
   [(PLPhotoTileViewController *)self setView:containerView];
@@ -2023,18 +2023,18 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   self->_fullSizeImageRequestID = 0;
 }
 
-- (void)setFullSizeImage:(id)a3
+- (void)setFullSizeImage:(id)image
 {
   if ((*(self + 1361) & 8) != 0)
   {
 
-    self->_pendingImage = a3;
+    self->_pendingImage = image;
   }
 
   else
   {
 
-    [(PLPhotoTileViewController *)self _setImage:a3 isThumbnail:0 preserveFrame:1];
+    [(PLPhotoTileViewController *)self _setImage:image isThumbnail:0 preserveFrame:1];
   }
 }
 
@@ -2070,9 +2070,9 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)refreshTileWithFullScreenImage:(id)a3 modelPhoto:(id)a4
+- (void)refreshTileWithFullScreenImage:(id)image modelPhoto:(id)photo
 {
-  self->_modelPhoto = a4;
+  self->_modelPhoto = photo;
   if (![(PLVideoView *)self->_videoView isPlaying])
   {
     [(PLPhotoTileViewController *)self _updateVideoViewForModelPhoto];
@@ -2086,7 +2086,7 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 
   [(PLPhotoTileViewController *)self _updatePlaceholderViewAnimated:1];
-  [(PLPhotoTileViewController *)self _setImage:a3 isThumbnail:0 preserveFrame:0];
+  [(PLPhotoTileViewController *)self _setImage:image isThumbnail:0 preserveFrame:0];
   if (self->_fullSizeImageRequestID)
   {
     [(PLPhotoTileViewController *)self cancelFullSizeImageRequest];
@@ -2095,10 +2095,10 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   }
 }
 
-- (void)_setImage:(id)a3 isThumbnail:(BOOL)a4 preserveFrame:(BOOL)a5
+- (void)_setImage:(id)image isThumbnail:(BOOL)thumbnail preserveFrame:(BOOL)frame
 {
-  v5 = a5;
-  if (!a4)
+  frameCopy = frame;
+  if (!thumbnail)
   {
     self->_isLoadingFullSizeImage = 0;
   }
@@ -2110,17 +2110,17 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   v13 = v12;
   v47 = v14;
   image = self->_image;
-  v16 = a3;
-  if (image != a3)
+  imageCopy2 = image;
+  if (image != image)
   {
 
-    v16 = a3;
-    self->_image = v16;
+    imageCopy2 = image;
+    self->_image = imageCopy2;
   }
 
-  if (v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (imageCopy2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (!a4)
+    if (!thumbnail)
     {
       p_imageSize = &self->_imageSize;
       v20 = self->_image;
@@ -2140,13 +2140,13 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
 
   else
   {
-    v17 = [(PHAsset *)self->_modelPhoto pixelWidth];
-    v18 = [(PHAsset *)self->_modelPhoto pixelHeight];
-    self->_imageSize.width = v17;
-    self->_imageSize.height = v18;
+    pixelWidth = [(PHAsset *)self->_modelPhoto pixelWidth];
+    pixelHeight = [(PHAsset *)self->_modelPhoto pixelHeight];
+    self->_imageSize.width = pixelWidth;
+    self->_imageSize.height = pixelHeight;
   }
 
-  [(PLPhotoTileViewController *)self _updateModelPhotoWithImage:a3];
+  [(PLPhotoTileViewController *)self _updateModelPhotoWithImage:image];
   [(PLPhotoTileViewController *)self _configureViews];
   [(PLPhotoTileViewController *)self _showBadgeViewIfAppropriate];
   [(PLImageScrollView *)self->_scrollView contentOffset];
@@ -2173,8 +2173,8 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
   width = self->_imageSize.width;
   height = self->_imageSize.height;
   [(PLExpandableImageView *)v29 setBounds:0.0, 0.0, width, height];
-  *(self + 1361) = *(self + 1361) & 0xFE | a4;
-  if (a4)
+  *(self + 1361) = *(self + 1361) & 0xFE | thumbnail;
+  if (thumbnail)
   {
     v37 = 1;
   }
@@ -2187,8 +2187,8 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
 
   v38 = v31 * v34;
   self->_imageOrientation = v37;
-  [(PLVideoView *)self->_videoView setPosterFrameImage:a3];
-  [(PLExpandableImageView *)self->_imageView setImage:a3 isFullscreen:(*(self + 1361) & 1) == 0];
+  [(PLVideoView *)self->_videoView setPosterFrameImage:image];
+  [(PLExpandableImageView *)self->_imageView setImage:image isFullscreen:(*(self + 1361) & 1) == 0];
   [(PLPhotoTileViewController *)self updateZoomScales];
   if ((*(self + 1361) & 0x20) != 0)
   {
@@ -2240,7 +2240,7 @@ uint64_t __80__PLPhotoTileViewController_viewWillTransitionToSize_withTransition
     [(PLImageScrollView *)self->_scrollView zoomScale];
     *&v44 = v44;
     [(PLImageScrollView *)self->_scrollView setContentOffset:v42 * (width * *&v44), v43 * (height * *&v44)];
-    if (!v5)
+    if (!frameCopy)
     {
       return;
     }
@@ -2254,7 +2254,7 @@ LABEL_26:
     [(PLPhotoTileViewController *)self _centerImageInScrollView];
   }
 
-  if (v5)
+  if (frameCopy)
   {
 LABEL_30:
     if (v13 != *MEMORY[0x277CBF3A8] || v47 != *(MEMORY[0x277CBF3A8] + 8))
@@ -2266,7 +2266,7 @@ LABEL_30:
   }
 }
 
-- (void)_updateModelPhotoWithImage:(id)a3
+- (void)_updateModelPhotoWithImage:(id)image
 {
   if ([(PLPhotoTileViewController *)self photoShouldHaveHDRBadge])
   {
@@ -2285,11 +2285,11 @@ LABEL_30:
   }
 }
 
-- (void)setShouldHideProgressIndicator:(BOOL)a3
+- (void)setShouldHideProgressIndicator:(BOOL)indicator
 {
-  if (self->_shouldHideProgressIndicator != a3)
+  if (self->_shouldHideProgressIndicator != indicator)
   {
-    self->_shouldHideProgressIndicator = a3;
+    self->_shouldHideProgressIndicator = indicator;
     [(PLPhotoTileViewController *)self _updatePlaceholderVisibility];
   }
 }
@@ -2298,17 +2298,17 @@ LABEL_30:
 {
   if ([(PLPhotoTileViewController *)self shouldHideProgressIndicator]|| (*(self + 1361) & 4) != 0)
   {
-    v3 = 1;
+    isDragging = 1;
   }
 
   else
   {
-    v3 = [(PLImageScrollView *)self->_scrollView isDragging];
+    isDragging = [(PLImageScrollView *)self->_scrollView isDragging];
   }
 
   placeholderView = self->_placeholderView;
 
-  [(PLTilePlaceholderView *)placeholderView setHidden:v3];
+  [(PLTilePlaceholderView *)placeholderView setHidden:isDragging];
 }
 
 - (void)_updatePlaceholderImageRect
@@ -2627,9 +2627,9 @@ LABEL_16:
   else
   {
     v31 = rint(v48);
-    v32 = [(PLPhotoTileViewController *)self _clientIsWallpaper];
+    _clientIsWallpaper = [(PLPhotoTileViewController *)self _clientIsWallpaper];
     v33 = rint(v31 * 0.5);
-    if (v32)
+    if (_clientIsWallpaper)
     {
       v34 = v33;
     }
@@ -2656,7 +2656,7 @@ LABEL_16:
     v37 = v51;
     if (self->_centerContentVertically)
     {
-      v38 = [(PLPhotoTileViewController *)self _clientIsWallpaper];
+      _clientIsWallpaper2 = [(PLPhotoTileViewController *)self _clientIsWallpaper];
       v39 = v36 * 0.5;
       v40 = rint(v47);
       v41 = rintf(v39);
@@ -2666,7 +2666,7 @@ LABEL_16:
       }
 
       v42 = rint(v36 * 0.5);
-      if (v38)
+      if (_clientIsWallpaper2)
       {
         v35 = v42;
       }
@@ -2699,7 +2699,7 @@ LABEL_16:
   [(PLPhotoTileViewController *)self _requestFullSizeImage];
 }
 
-- (void)_updatePlaceholderViewAnimated:(BOOL)a3
+- (void)_updatePlaceholderViewAnimated:(BOOL)animated
 {
   v4 = [objc_opt_class() shouldShowPlaceholderForAsset:self->_modelPhoto];
   placeholderView = self->_placeholderView;
@@ -2742,18 +2742,18 @@ LABEL_16:
 
 - (void)_updateSubviewOrdering
 {
-  v3 = [(PLPhotoTileViewController *)self view];
-  [v3 sendSubviewToBack:self->_scrollView];
-  [v3 sendSubviewToBack:self->_videoView];
-  [v3 bringSubviewToFront:{-[PLVideoView videoOverlayPlayButton](self->_videoView, "videoOverlayPlayButton")}];
-  [v3 bringSubviewToFront:{-[PLPhotoTileViewController _customCenterOverlay](self, "_customCenterOverlay")}];
-  [v3 bringSubviewToFront:self->_reviewCheckmarkImageView];
+  view = [(PLPhotoTileViewController *)self view];
+  [view sendSubviewToBack:self->_scrollView];
+  [view sendSubviewToBack:self->_videoView];
+  [view bringSubviewToFront:{-[PLVideoView videoOverlayPlayButton](self->_videoView, "videoOverlayPlayButton")}];
+  [view bringSubviewToFront:{-[PLPhotoTileViewController _customCenterOverlay](self, "_customCenterOverlay")}];
+  [view bringSubviewToFront:self->_reviewCheckmarkImageView];
   placeholderView = self->_placeholderView;
 
-  [v3 bringSubviewToFront:placeholderView];
+  [view bringSubviewToFront:placeholderView];
 }
 
-- (void)_installSubview:(id)a3
+- (void)_installSubview:(id)subview
 {
   [-[PLPhotoTileViewController view](self "view")];
 
@@ -2787,8 +2787,8 @@ LABEL_16:
       videoView = self->_videoView;
       if (videoView)
       {
-        v10 = [(PLVideoView *)videoView superview];
-        if (v10 != [(PLPhotoTileViewController *)self view])
+        superview = [(PLVideoView *)videoView superview];
+        if (superview != [(PLPhotoTileViewController *)self view])
         {
           [(PLPhotoTileViewController *)self _installSubview:self->_videoView];
         }
@@ -2798,16 +2798,16 @@ LABEL_16:
         [(PLVideoView *)v11 setFrame:?];
       }
 
-      v12 = [(PLPhotoTileViewController *)self view];
+      view = [(PLPhotoTileViewController *)self view];
     }
 
     else
     {
       if (!self->_imageView)
       {
-        v13 = [[PLExpandableImageView alloc] initWithFrame:1 frameStyle:0 withBorder:0.0, 0.0, width, height];
-        self->_imageView = v13;
-        [(PLExpandableImageView *)v13 setUserInteractionEnabled:0];
+        height = [[PLExpandableImageView alloc] initWithFrame:1 frameStyle:0 withBorder:0.0, 0.0, width, height];
+        self->_imageView = height;
+        [(PLExpandableImageView *)height setUserInteractionEnabled:0];
       }
 
       if (self->_videoView)
@@ -2841,16 +2841,16 @@ LABEL_16:
         scrollView = self->_scrollView;
       }
 
-      v18 = [(PLImageScrollView *)scrollView superview];
-      if (v18 != [(PLPhotoTileViewController *)self view])
+      superview2 = [(PLImageScrollView *)scrollView superview];
+      if (superview2 != [(PLPhotoTileViewController *)self view])
       {
         [(PLPhotoTileViewController *)self _installSubview:self->_scrollView];
       }
 
-      v12 = self->_scrollView;
+      view = self->_scrollView;
     }
 
-    [(PLImageScrollView *)v12 addGestureRecognizer:self->_singleTapGestureRecognizer];
+    [(PLImageScrollView *)view addGestureRecognizer:self->_singleTapGestureRecognizer];
   }
 
   else if ([(PLPhotoTileViewController *)self isViewLoaded])
@@ -2861,12 +2861,12 @@ LABEL_16:
   [(PLPhotoTileViewController *)self _updatePlaceholderViewAnimated:0];
 }
 
-- (void)setBadgeVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setBadgeVisible:(BOOL)visible animated:(BOOL)animated
 {
   v4 = *(self + 1362);
-  if (((((v4 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 0x40) == 0) ^ visible) & 1) == 0)
   {
-    if (a3)
+    if (visible)
     {
       v5 = 64;
     }
@@ -2882,7 +2882,7 @@ LABEL_16:
     v6[2] = __54__PLPhotoTileViewController_setBadgeVisible_animated___block_invoke;
     v6[3] = &unk_2782A2020;
     v6[4] = self;
-    if (a4)
+    if (animated)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v6 animations:0.300000012];
     }
@@ -2894,9 +2894,9 @@ LABEL_16:
   }
 }
 
-- (void)setAvalancheBadgesHidden:(BOOL)a3
+- (void)setAvalancheBadgesHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 32;
   }
@@ -2912,13 +2912,13 @@ LABEL_16:
 
 - (BOOL)photoShouldHaveAvalancheBadge
 {
-  v3 = [(PHAsset *)self->_modelPhoto representsBurst];
-  if (v3)
+  representsBurst = [(PHAsset *)self->_modelPhoto representsBurst];
+  if (representsBurst)
   {
-    LOBYTE(v3) = !self->_reviewing && (*(self + 1362) & 0x20) == 0;
+    LOBYTE(representsBurst) = !self->_reviewing && (*(self + 1362) & 0x20) == 0;
   }
 
-  return v3;
+  return representsBurst;
 }
 
 - (BOOL)photoShouldHaveHDRBadge
@@ -2944,11 +2944,11 @@ LABEL_16:
   return tileDelegate;
 }
 
-- (void)setClientIsWallpaper:(BOOL)a3
+- (void)setClientIsWallpaper:(BOOL)wallpaper
 {
-  self->_clientIsTemporarilyWallpaper = a3;
+  self->_clientIsTemporarilyWallpaper = wallpaper;
   self->_userDidAdjustWallpaper = 0;
-  if (a3)
+  if (wallpaper)
   {
     *(self + 1361) |= 0x40u;
     [(PLImageScrollView *)self->_scrollView zoomScale];
@@ -2973,9 +2973,9 @@ LABEL_16:
   [(PLPhotoTileViewController *)self _updateContentInset];
 }
 
-- (void)setTVOut:(BOOL)a3
+- (void)setTVOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 2;
   }
@@ -2988,11 +2988,11 @@ LABEL_16:
   *(self + 1361) = *(self + 1361) & 0xFD | v3;
 }
 
-- (void)setTileDelegate:(id)a3
+- (void)setTileDelegate:(id)delegate
 {
-  if (self->_tileDelegate != a3)
+  if (self->_tileDelegate != delegate)
   {
-    self->_tileDelegate = a3;
+    self->_tileDelegate = delegate;
     self->_isLoadingFullSizeImage = 0;
     [(PLPhotoTileViewController *)self ensureFullSizeImageLoaded];
   }
@@ -3016,20 +3016,20 @@ LABEL_16:
   [(PLImageScrollView *)scrollView setHidden:1];
 }
 
-- (void)_setCustomCenterOverlay:(id)a3
+- (void)_setCustomCenterOverlay:(id)overlay
 {
   customCenterOverlay = self->__customCenterOverlay;
-  if (customCenterOverlay != a3)
+  if (customCenterOverlay != overlay)
   {
     [(UIView *)customCenterOverlay removeFromSuperview];
 
     self->_customCenterOverlayConstraints = 0;
-    self->__customCenterOverlay = a3;
+    self->__customCenterOverlay = overlay;
     [-[PLPhotoTileViewController view](self "view")];
     [(PLPhotoTileViewController *)self _updateSubviewOrdering];
-    v6 = [(PLPhotoTileViewController *)self view];
+    view = [(PLPhotoTileViewController *)self view];
 
-    [v6 setNeedsUpdateConstraints];
+    [view setNeedsUpdateConstraints];
   }
 }
 
@@ -3062,23 +3062,23 @@ LABEL_16:
     [(PLVideoView *)self->_videoView setShowsPlayOverlay:([(PLPhotoTileViewController *)self _customCenterOverlay]== 0) & v4 & ([(PLVideoView *)videoView isPlaying]^ 1)];
   }
 
-  v6 = [(PLPhotoTileViewController *)self _customCenterOverlay];
+  _customCenterOverlay = [(PLPhotoTileViewController *)self _customCenterOverlay];
 
-  [(UIView *)v6 setHidden:v4 ^ 1u];
+  [(UIView *)_customCenterOverlay setHidden:v4 ^ 1u];
 }
 
-- (void)setVideoView:(id)a3
+- (void)setVideoView:(id)view
 {
   videoView = self->_videoView;
-  if (videoView != a3)
+  if (videoView != view)
   {
     [(PLVideoView *)videoView viewDidDisappear];
     [(PLVideoView *)self->_videoView setImageTile:0];
     [(PLVideoView *)self->_videoView removeFromSuperview];
 
-    v6 = a3;
-    self->_videoView = v6;
-    [(PLVideoView *)v6 setImageTile:self];
+    viewCopy = view;
+    self->_videoView = viewCopy;
+    [(PLVideoView *)viewCopy setImageTile:self];
     if (self->_videoView)
     {
       if ([(PLPhotoTileViewController *)self isViewLoaded])
@@ -3090,12 +3090,12 @@ LABEL_16:
   }
 }
 
-- (id)_newCGImageBackedUIImageFromImage:(id)a3
+- (id)_newCGImageBackedUIImageFromImage:(id)image
 {
-  if ([a3 CGImage])
+  if ([image CGImage])
   {
 
-    return a3;
+    return image;
   }
 
   else
@@ -3104,7 +3104,7 @@ LABEL_16:
     if (result)
     {
       v4 = result;
-      v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:result imageOrientation:{objc_msgSend(a3, "imageOrientation")}];
+      v5 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:result imageOrientation:{objc_msgSend(image, "imageOrientation")}];
       CGImageRelease(v4);
       return v5;
     }
@@ -3138,12 +3138,12 @@ LABEL_16:
   [(PLPhotoTileViewController *)self setZoomingGesturesEnabled:1];
 }
 
-- (void)setZoomingGesturesEnabled:(BOOL)a3
+- (void)setZoomingGesturesEnabled:(BOOL)enabled
 {
   v3 = *(self + 1361);
-  if (((((v3 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x10) == 0) ^ enabled) & 1) == 0)
   {
-    if (a3)
+    if (enabled)
     {
       v5 = 16;
     }
@@ -3162,15 +3162,15 @@ LABEL_16:
 
     if (scrollView)
     {
-      v7 = a3;
+      enabledCopy = enabled;
     }
 
     else
     {
-      v7 = 0;
+      enabledCopy = 0;
     }
 
-    if (v7)
+    if (enabledCopy)
     {
       [(UIGestureRecognizer *)self->_singleTapGestureRecognizer requireGestureRecognizerToFail:self->_doubleTapGestureRecognizer];
       [scrollView addGestureRecognizer:self->_doubleTapGestureRecognizer];
@@ -3187,22 +3187,22 @@ LABEL_16:
       [scrollView removeGestureRecognizer:self->_doubleTapGestureRecognizer];
     }
 
-    [(PLImageScrollView *)self->_scrollView setClipsToBounds:!v7];
+    [(PLImageScrollView *)self->_scrollView setClipsToBounds:!enabledCopy];
     videoView = self->_videoView;
 
-    [(PLVideoView *)videoView setClipsToBounds:!v7];
+    [(PLVideoView *)videoView setClipsToBounds:!enabledCopy];
   }
 }
 
-- (void)setCropOverlayRect:(CGRect)a3 forCropRect:(CGRect)a4
+- (void)setCropOverlayRect:(CGRect)rect forCropRect:(CGRect)cropRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  y = cropRect.origin.y;
+  x = cropRect.origin.x;
   p_cropOverlayRect = &self->_cropOverlayRect;
-  self->_cropOverlayRect = a3;
-  if (CGRectIsEmpty(a4))
+  self->_cropOverlayRect = rect;
+  if (CGRectIsEmpty(cropRect))
   {
     *(self + 1362) &= ~0x10u;
     v10 = *(MEMORY[0x277CBF3A0] + 16);
@@ -3232,10 +3232,10 @@ LABEL_16:
   [(PLPhotoTileViewController *)self _updateContentInset];
 }
 
-- (void)setZoomScale:(float)a3
+- (void)setZoomScale:(float)scale
 {
   *(self + 1361) |= 0x40u;
-  [(PLImageScrollView *)self->_scrollView setZoomScale:a3];
+  [(PLImageScrollView *)self->_scrollView setZoomScale:scale];
   [(PLPhotoTileViewController *)self _updatePlaceholderImageRect];
   *(self + 1361) &= ~0x40u;
 }
@@ -3275,17 +3275,17 @@ LABEL_16:
 
 - (void)_updateVideoViewForModelPhoto
 {
-  v3 = [(PHAsset *)self->_modelPhoto isVideo];
+  isVideo = [(PHAsset *)self->_modelPhoto isVideo];
   modelPhoto = self->_modelPhoto;
-  if (v3)
+  if (isVideo)
   {
     [(PHAsset *)modelPhoto isStreamedVideo];
     goto LABEL_3;
   }
 
-  v13 = [(PHAsset *)modelPhoto isAudio];
-  v14 = [(PHAsset *)self->_modelPhoto isStreamedVideo];
-  if ((v13 & 1) != 0 || v14)
+  isAudio = [(PHAsset *)modelPhoto isAudio];
+  isStreamedVideo = [(PHAsset *)self->_modelPhoto isStreamedVideo];
+  if ((isAudio & 1) != 0 || isStreamedVideo)
   {
 LABEL_3:
     if ([(PLPhotoTileViewController *)self isViewLoaded])
@@ -3308,9 +3308,9 @@ LABEL_3:
     [(PLVideoView *)self->_videoView setImageTile:0];
     [(PLVideoView *)self->_videoView removeFromSuperview];
 
-    v16 = [[PLVideoView alloc] initWithFrame:[(PHAsset *)self->_modelPhoto pl_managedAsset] videoCameraImage:1 orientation:x, y, width, height];
-    self->_videoView = v16;
-    [(PLVideoView *)v16 setAllowSlalomEditor:1];
+    height = [[PLVideoView alloc] initWithFrame:[(PHAsset *)self->_modelPhoto pl_managedAsset] videoCameraImage:1 orientation:x, y, width, height];
+    self->_videoView = height;
+    [(PLVideoView *)height setAllowSlalomEditor:1];
     [(PLVideoView *)self->_videoView setImageTile:self];
     if (self->_image)
     {
@@ -3338,13 +3338,13 @@ LABEL_3:
   }
 }
 
-- (void)_setPhoto:(id)a3
+- (void)_setPhoto:(id)photo
 {
   modelPhoto = self->_modelPhoto;
-  if (modelPhoto != a3)
+  if (modelPhoto != photo)
   {
 
-    self->_modelPhoto = a3;
+    self->_modelPhoto = photo;
     [(PLPhotoTileViewController *)self _updateVideoViewForModelPhoto];
     if (self->_modelPhoto)
     {
@@ -3389,14 +3389,14 @@ LABEL_3:
   }
 
   v5 = v4;
-  v6 = [(PLPhotoTileViewController *)self view];
+  view = [(PLPhotoTileViewController *)self view];
   [v5 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 bounds];
-  [v6 convertRect:v5 toView:?];
+  [view bounds];
+  [view convertRect:v5 toView:?];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -3431,11 +3431,11 @@ LABEL_3:
   [(PLVideoView *)self->_videoView removeFromSuperview];
   [(PLVideoView *)self->_videoView removeAllGestureRecognizers];
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = MEMORY[0x277D76620];
-  [v3 removeObserver:self name:*MEMORY[0x277D76768] object:*MEMORY[0x277D76620]];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D76648] object:*v4];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:*MEMORY[0x277D76620]];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76648] object:*v4];
   [(PLPhotoTileViewController *)self _teardownDispatchTimer];
 
   v6.receiver = self;
@@ -3466,12 +3466,12 @@ LABEL_3:
   return result;
 }
 
-- (PLPhotoTileViewController)initWithModelPhoto:(id)a3 thumbnailImage:(id)a4 size:(CGSize)a5
+- (PLPhotoTileViewController)initWithModelPhoto:(id)photo thumbnailImage:(id)image size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  [a4 imageOrientation];
-  result = [(PLPhotoTileViewController *)self initWithModelPhoto:a3 image:a4 frame:1 isThumbnail:PLDeviceOrientationFromImageOrientation() imageOrientation:1 allowZoomToFill:0 mode:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), width, height];
+  height = size.height;
+  width = size.width;
+  [image imageOrientation];
+  result = [(PLPhotoTileViewController *)self initWithModelPhoto:photo image:image frame:1 isThumbnail:PLDeviceOrientationFromImageOrientation() imageOrientation:1 allowZoomToFill:0 mode:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), width, height];
   *(result + 1361) |= 0x80u;
   return result;
 }
@@ -3488,23 +3488,23 @@ LABEL_3:
   return result;
 }
 
-- (PLPhotoTileViewController)initWithModelPhoto:(id)a3 image:(id)a4 frame:(CGRect)a5 isThumbnail:(BOOL)a6 imageOrientation:(int)a7 allowZoomToFill:(BOOL)a8 mode:(int)a9
+- (PLPhotoTileViewController)initWithModelPhoto:(id)photo image:(id)image frame:(CGRect)frame isThumbnail:(BOOL)thumbnail imageOrientation:(int)orientation allowZoomToFill:(BOOL)fill mode:(int)mode
 {
-  v11 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = [(PLPhotoTileViewController *)self init:a3];
+  thumbnailCopy = thumbnail;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v18 = [(PLPhotoTileViewController *)self init:photo];
   v19 = v18;
   if (v18)
   {
-    v18->_allowZoomToFill = a8;
-    *(v18 + 1361) = *(v18 + 1361) & 0x7F | ((a9 == 0) << 7);
-    v18->_mode = a9;
-    [(PLPhotoTileViewController *)v18 _setPhoto:a3];
+    v18->_allowZoomToFill = fill;
+    *(v18 + 1361) = *(v18 + 1361) & 0x7F | ((mode == 0) << 7);
+    v18->_mode = mode;
+    [(PLPhotoTileViewController *)v18 _setPhoto:photo];
     [(PLPhotoTileViewController *)v19 setTileFrame:x, y, width, height];
-    [(PLPhotoTileViewController *)v19 _setImage:a4 isThumbnail:v11 preserveFrame:0];
+    [(PLPhotoTileViewController *)v19 _setImage:image isThumbnail:thumbnailCopy preserveFrame:0];
     if (!v19->_videoView && !v19->_scrollView && v19->_image)
     {
       [(PLPhotoTileViewController *)v19 _configureViews];
@@ -3539,63 +3539,63 @@ LABEL_3:
   return v3;
 }
 
-- (void)setOverlayInsets:(UIEdgeInsets)a3
+- (void)setOverlayInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_overlayInsets.top), vceqq_f64(v4, *&self->_overlayInsets.bottom)))) & 1) == 0)
   {
-    self->_overlayInsets = a3;
+    self->_overlayInsets = insets;
     [(PLPhotoTileViewController *)self _updateContentInset];
 
     [(PLPhotoTileViewController *)self _centerImageInScrollView];
   }
 }
 
-+ (id)newPhotoTileViewControllerWithFrame:(CGRect)a3 modelPhoto:(id)a4 mode:(int)a5
++ (id)newPhotoTileViewControllerWithFrame:(CGRect)frame modelPhoto:(id)photo mode:(int)mode
 {
-  v5 = *&a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v5 = *&mode;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = objc_opt_new();
   [v11 setDeliveryMode:2];
   v12 = [objc_msgSend(MEMORY[0x277CD9898] "defaultManager")];
   v13 = [PLPhotoTileViewController alloc];
 
-  return [(PLPhotoTileViewController *)v13 initWithModelPhoto:a4 image:v12 frame:1 isThumbnail:1 imageOrientation:1 allowZoomToFill:v5 mode:x, y, width, height];
+  return [(PLPhotoTileViewController *)v13 initWithModelPhoto:photo image:v12 frame:1 isThumbnail:1 imageOrientation:1 allowZoomToFill:v5 mode:x, y, width, height];
 }
 
-+ (id)newPhotoTileViewControllerWithFrame:(CGRect)a3 image:(id)a4 allowZoomToFill:(BOOL)a5 mode:(int)a6
++ (id)newPhotoTileViewControllerWithFrame:(CGRect)frame image:(id)image allowZoomToFill:(BOOL)fill mode:(int)mode
 {
-  v6 = *&a6;
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 imageOrientation];
+  v6 = *&mode;
+  fillCopy = fill;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [image imageOrientation];
   v13 = PLDeviceOrientationFromImageOrientation();
   v14 = [PLPhotoTileViewController alloc];
 
-  return [(PLPhotoTileViewController *)v14 initWithModelPhoto:0 image:a4 frame:0 isThumbnail:v13 imageOrientation:v7 allowZoomToFill:v6 mode:x, y, width, height];
+  return [(PLPhotoTileViewController *)v14 initWithModelPhoto:0 image:image frame:0 isThumbnail:v13 imageOrientation:fillCopy allowZoomToFill:v6 mode:x, y, width, height];
 }
 
-+ (id)newPhotoTileViewControllerWithFrame:(CGRect)a3 imageRef:(CGImage *)a4 imageOrientation:(int64_t)a5 allowZoomToFill:(BOOL)a6 mode:(int)a7
++ (id)newPhotoTileViewControllerWithFrame:(CGRect)frame imageRef:(CGImage *)ref imageOrientation:(int64_t)orientation allowZoomToFill:(BOOL)fill mode:(int)mode
 {
-  v7 = *&a7;
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:a4 imageOrientation:a5];
-  v14 = [[PLPhotoTileViewController alloc] initWithModelPhoto:0 image:v13 frame:0 isThumbnail:PLDeviceOrientationFromImageOrientation() imageOrientation:v8 allowZoomToFill:v7 mode:x, y, width, height];
+  v7 = *&mode;
+  fillCopy = fill;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v13 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:ref imageOrientation:orientation];
+  height = [[PLPhotoTileViewController alloc] initWithModelPhoto:0 image:v13 frame:0 isThumbnail:PLDeviceOrientationFromImageOrientation() imageOrientation:fillCopy allowZoomToFill:v7 mode:x, y, width, height];
 
-  return v14;
+  return height;
 }
 
 + (CGSize)tvOutTileSize
@@ -3603,12 +3603,12 @@ LABEL_3:
   v17 = *MEMORY[0x277D85DE8];
   if (*&__TVOutTileSize_0 == 0.0)
   {
-    v2 = [MEMORY[0x277D759A0] screens];
+    screens = [MEMORY[0x277D759A0] screens];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v3 = [screens countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v3)
     {
       v4 = v3;
@@ -3619,7 +3619,7 @@ LABEL_3:
         {
           if (*v13 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(screens);
           }
 
           v7 = *(*(&v12 + 1) + 8 * i);
@@ -3636,7 +3636,7 @@ LABEL_3:
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v4 = [screens countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v4)
         {
           continue;
@@ -3677,19 +3677,19 @@ LABEL_13:
   return result;
 }
 
-+ (BOOL)shouldShowPlaceholderForAsset:(id)a3
++ (BOOL)shouldShowPlaceholderForAsset:(id)asset
 {
-  if (!a3)
+  if (!asset)
   {
     return 0;
   }
 
-  if (![a3 hasLargerThanThumbResourceLocal] || !objc_msgSend(a3, "complete"))
+  if (![asset hasLargerThanThumbResourceLocal] || !objc_msgSend(asset, "complete"))
   {
     return 1;
   }
 
-  return [a3 isTimelapsePlaceholder];
+  return [asset isTimelapsePlaceholder];
 }
 
 @end

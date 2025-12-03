@@ -1,14 +1,14 @@
 @interface TSDDragInsertionContext
 - (CGPoint)preferredCenter;
-- (TSDDragInsertionContext)initWithPreferredCenter:(CGPoint)a3 required:(BOOL)a4 shouldEndEditing:(BOOL)a5 fromDragToInsertController:(BOOL)a6 insertWillBeDiscarded:(BOOL)a7;
+- (TSDDragInsertionContext)initWithPreferredCenter:(CGPoint)center required:(BOOL)required shouldEndEditing:(BOOL)editing fromDragToInsertController:(BOOL)controller insertWillBeDiscarded:(BOOL)discarded;
 @end
 
 @implementation TSDDragInsertionContext
 
-- (TSDDragInsertionContext)initWithPreferredCenter:(CGPoint)a3 required:(BOOL)a4 shouldEndEditing:(BOOL)a5 fromDragToInsertController:(BOOL)a6 insertWillBeDiscarded:(BOOL)a7
+- (TSDDragInsertionContext)initWithPreferredCenter:(CGPoint)center required:(BOOL)required shouldEndEditing:(BOOL)editing fromDragToInsertController:(BOOL)controller insertWillBeDiscarded:(BOOL)discarded
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v14.receiver = self;
   v14.super_class = TSDDragInsertionContext;
   result = [(TSDInsertionContext *)&v14 init];
@@ -16,10 +16,10 @@
   {
     result->mPreferredCenter.x = x;
     result->mPreferredCenter.y = y;
-    result->mPreferredCenterRequired = a4;
-    result->mShouldEndEditing = a5;
-    result->mFromDragToInsertController = a6;
-    result->mInsertWillBeDiscarded = a7;
+    result->mPreferredCenterRequired = required;
+    result->mShouldEndEditing = editing;
+    result->mFromDragToInsertController = controller;
+    result->mInsertWillBeDiscarded = discarded;
   }
 
   return result;

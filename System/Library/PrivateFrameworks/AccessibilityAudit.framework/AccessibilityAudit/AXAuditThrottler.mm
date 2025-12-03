@@ -3,9 +3,9 @@
 - (OS_dispatch_queue)_fireQueue;
 - (SEL)_selector;
 - (void)_fire;
-- (void)_scheduleTimerAfterDelay:(double)a3;
+- (void)_scheduleTimerAfterDelay:(double)delay;
 - (void)scheduleNow;
-- (void)set_selector:(SEL)a3;
+- (void)set_selector:(SEL)set_selector;
 @end
 
 @implementation AXAuditThrottler
@@ -27,52 +27,52 @@
   return v3;
 }
 
-- (void)_scheduleTimerAfterDelay:(double)a3
+- (void)_scheduleTimerAfterDelay:(double)delay
 {
-  v5 = [(AXAuditThrottler *)self _dispatchTimer];
+  _dispatchTimer = [(AXAuditThrottler *)self _dispatchTimer];
 
-  if (v5)
+  if (_dispatchTimer)
   {
     source = [(AXAuditThrottler *)self _dispatchTimer];
-    v6 = dispatch_time(0, (a3 * 1000000000.0));
+    v6 = dispatch_time(0, (delay * 1000000000.0));
     [(AXAuditThrottler *)self _interval];
     dispatch_source_set_timer(source, v6, 0xFFFFFFFFFFFFFFFFLL, (v7 * 0.1 * 1000000000.0));
   }
 
   else
   {
-    v8 = [(AXAuditThrottler *)self _fireQueue];
-    v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v8);
+    _fireQueue = [(AXAuditThrottler *)self _fireQueue];
+    v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, _fireQueue);
     [(AXAuditThrottler *)self set_dispatchTimer:v9];
 
-    v10 = [(AXAuditThrottler *)self _dispatchTimer];
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    _dispatchTimer2 = [(AXAuditThrottler *)self _dispatchTimer];
+    v11 = dispatch_time(0, (delay * 1000000000.0));
     [(AXAuditThrottler *)self _interval];
-    dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, (v12 * 0.1 * 1000000000.0));
+    dispatch_source_set_timer(_dispatchTimer2, v11, 0xFFFFFFFFFFFFFFFFLL, (v12 * 0.1 * 1000000000.0));
 
-    v13 = [(AXAuditThrottler *)self _dispatchTimer];
+    _dispatchTimer3 = [(AXAuditThrottler *)self _dispatchTimer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __45__AXAuditThrottler__scheduleTimerAfterDelay___block_invoke;
     handler[3] = &unk_278BE2CD0;
     handler[4] = self;
-    dispatch_source_set_event_handler(v13, handler);
+    dispatch_source_set_event_handler(_dispatchTimer3, handler);
 
-    v14 = [(AXAuditThrottler *)self _dispatchTimer];
-    dispatch_activate(v14);
+    _dispatchTimer4 = [(AXAuditThrottler *)self _dispatchTimer];
+    dispatch_activate(_dispatchTimer4);
   }
 }
 
 - (void)_fire
 {
-  v5 = [(AXAuditThrottler *)self _target];
-  v3 = [(AXAuditThrottler *)self _selector];
+  _target = [(AXAuditThrottler *)self _target];
+  _selector = [(AXAuditThrottler *)self _selector];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(AXAuditThrottler *)self set_lastFireTime:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(AXAuditThrottler *)self set_lastFireTime:date];
 
-    ([v5 methodForSelector:v3])(v5, v3);
+    ([_target methodForSelector:_selector])(_target, _selector);
   }
 
   [(AXAuditThrottler *)self set_pendingFire:0];
@@ -80,26 +80,26 @@
 
 - (void)scheduleNow
 {
-  v3 = [(AXAuditThrottler *)self _target];
-  if (!v3)
+  _target = [(AXAuditThrottler *)self _target];
+  if (!_target)
   {
     return;
   }
 
-  v20 = v3;
-  v4 = [(AXAuditThrottler *)self _target];
-  if (![v4 isEqual:self])
+  v20 = _target;
+  _target2 = [(AXAuditThrottler *)self _target];
+  if (![_target2 isEqual:self])
   {
-    v5 = [(AXAuditThrottler *)self _selector];
+    _selector = [(AXAuditThrottler *)self _selector];
 
-    if (!v5)
+    if (!_selector)
     {
       return;
     }
 
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [(AXAuditThrottler *)self _lastFireTime];
-    [v6 timeIntervalSinceDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    _lastFireTime = [(AXAuditThrottler *)self _lastFireTime];
+    [date timeIntervalSinceDate:_lastFireTime];
     v9 = v8;
 
     [(AXAuditThrottler *)self _interval];
@@ -107,7 +107,7 @@
     if ([(AXAuditThrottler *)self _alwaysReschedule])
     {
       [(AXAuditThrottler *)self _interval];
-      v12 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -117,16 +117,16 @@
         goto LABEL_18;
       }
 
-      v13 = [(AXAuditThrottler *)self _lastFireTime];
-      if (!v13 || (v14 = v13, [(AXAuditThrottler *)self _interval], v16 = v15, v14, v9 >= v16))
+      _lastFireTime2 = [(AXAuditThrottler *)self _lastFireTime];
+      if (!_lastFireTime2 || (v14 = _lastFireTime2, [(AXAuditThrottler *)self _interval], v16 = v15, v14, v9 >= v16))
       {
-        v19 = [(AXAuditThrottler *)self _fireQueue];
+        _fireQueue = [(AXAuditThrottler *)self _fireQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __31__AXAuditThrottler_scheduleNow__block_invoke;
         block[3] = &unk_278BE2CD0;
         block[4] = self;
-        dispatch_async(v19, block);
+        dispatch_async(_fireQueue, block);
 
         goto LABEL_18;
       }
@@ -139,10 +139,10 @@
         [(AXAuditThrottler *)self _interval];
       }
 
-      v12 = self;
+      selfCopy2 = self;
     }
 
-    [(AXAuditThrottler *)v12 _scheduleTimerAfterDelay:?];
+    [(AXAuditThrottler *)selfCopy2 _scheduleTimerAfterDelay:?];
 LABEL_18:
 
     return;
@@ -162,19 +162,19 @@ LABEL_18:
   }
 }
 
-- (void)set_selector:(SEL)a3
+- (void)set_selector:(SEL)set_selector
 {
-  if (a3)
+  if (set_selector)
   {
-    v3 = a3;
+    set_selectorCopy = set_selector;
   }
 
   else
   {
-    v3 = 0;
+    set_selectorCopy = 0;
   }
 
-  self->__selector = v3;
+  self->__selector = set_selectorCopy;
 }
 
 - (NSObject)_target

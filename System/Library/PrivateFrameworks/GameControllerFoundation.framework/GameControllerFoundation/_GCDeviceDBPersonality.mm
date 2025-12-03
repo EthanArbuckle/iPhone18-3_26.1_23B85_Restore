@@ -1,16 +1,16 @@
 @interface _GCDeviceDBPersonality
 - (_GCDeviceDBPersonality)init;
-- (_GCDeviceDBPersonality)initWithDictionary:(id)a3 error:(id *)a4;
-- (_GCDeviceDBPersonality)initWithURL:(id)a3 error:(id *)a4;
+- (_GCDeviceDBPersonality)initWithDictionary:(id)dictionary error:(id *)error;
+- (_GCDeviceDBPersonality)initWithURL:(id)l error:(id *)error;
 @end
 
 @implementation _GCDeviceDBPersonality
 
-- (_GCDeviceDBPersonality)initWithDictionary:(id)a3 error:(id *)a4
+- (_GCDeviceDBPersonality)initWithDictionary:(id)dictionary error:(id *)error
 {
   v111[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     [_GCDeviceDBPersonality initWithDictionary:a2 error:self];
   }
@@ -20,18 +20,18 @@
   v8 = [(_GCDeviceDBPersonality *)&v88 init];
   v9 = objc_opt_class();
   v87 = 0;
-  v10 = [v7 gc_requiredObjectForKey:@"CompatibilityVersion" ofClass:v9 error:&v87];
+  v10 = [dictionaryCopy gc_requiredObjectForKey:@"CompatibilityVersion" ofClass:v9 error:&v87];
   v11 = v87;
   if (!v10)
   {
-    [(_GCDeviceDBPersonality *)a4 initWithDictionary:v11 error:&v110, v111];
+    [(_GCDeviceDBPersonality *)error initWithDictionary:v11 error:&v110, v111];
     goto LABEL_56;
   }
 
   v12 = [[GCVersion alloc] initWithString:v10];
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -49,7 +49,7 @@
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
     v109[2] = v19;
     v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v109 forKeys:v108 count:3];
-    *a4 = [(NSError *)v56 gc_deviceDBError:v59 userInfo:?];
+    *error = [(NSError *)v56 gc_deviceDBError:v59 userInfo:?];
 
     goto LABEL_8;
   }
@@ -59,7 +59,7 @@
 
   if (v14)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_9:
 
@@ -77,7 +77,7 @@ LABEL_56:
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Personality definition requires version '%@'.", v12];
     v106[1] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:2];
-    *a4 = [(NSError *)v15 gc_deviceDBError:v19 userInfo:?];
+    *error = [(NSError *)v15 gc_deviceDBError:v19 userInfo:?];
 LABEL_8:
 
     goto LABEL_9;
@@ -88,12 +88,12 @@ LABEL_8:
 
   v21 = objc_opt_class();
   v86 = 0;
-  v22 = [v7 gc_objectForKey:@"ObsoletedInVersion" ofClass:v21 error:&v86];
+  v22 = [dictionaryCopy gc_objectForKey:@"ObsoletedInVersion" ofClass:v21 error:&v86];
   v23 = v86;
   v24 = v23;
   if (!v22 && v23)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -104,19 +104,19 @@ LABEL_8:
     v62 = *MEMORY[0x1E696A588];
     v103[0] = v61;
     v103[1] = v62;
-    v25 = [v23 localizedFailureReason];
-    v104[1] = v25;
+    localizedFailureReason = [v23 localizedFailureReason];
+    v104[1] = localizedFailureReason;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:2];
-    *a4 = [(NSError *)v60 gc_deviceDBError:v31 userInfo:?];
+    *error = [(NSError *)v60 gc_deviceDBError:v31 userInfo:?];
     goto LABEL_18;
   }
 
   if (v22)
   {
-    v25 = [[GCVersion alloc] initWithString:v22];
-    if (!v25)
+    localizedFailureReason = [[GCVersion alloc] initWithString:v22];
+    if (!localizedFailureReason)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_19;
       }
@@ -134,7 +134,7 @@ LABEL_8:
       v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
       v102[2] = v32;
       v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:3];
-      *a4 = [(NSError *)v67 gc_deviceDBError:v70 userInfo:?];
+      *error = [(NSError *)v67 gc_deviceDBError:v70 userInfo:?];
 
 LABEL_17:
 LABEL_18:
@@ -143,11 +143,11 @@ LABEL_18:
     }
 
     v26 = +[GCVersion currentSourceVersion];
-    v27 = [(GCVersion *)v25 isLessThanOrEqualToSourceVersion:v26];
+    v27 = [(GCVersion *)localizedFailureReason isLessThanOrEqualToSourceVersion:v26];
 
     if (v27)
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_19:
 
@@ -161,25 +161,25 @@ LABEL_20:
       v30 = *MEMORY[0x1E696A588];
       v98[0] = v29;
       v98[1] = v30;
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Personality definition requires version not greater than '%@'.", v25];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Personality definition requires version not greater than '%@'.", localizedFailureReason];
       v99[1] = v31;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v99 forKeys:v98 count:2];
-      *a4 = [(NSError *)v28 gc_deviceDBError:v32 userInfo:?];
+      *error = [(NSError *)v28 gc_deviceDBError:v32 userInfo:?];
       goto LABEL_17;
     }
 
     obsoletedInVersion = v8->_obsoletedInVersion;
-    v8->_obsoletedInVersion = v25;
+    v8->_obsoletedInVersion = localizedFailureReason;
   }
 
   v34 = objc_opt_class();
   v85 = 0;
-  v35 = [v7 gc_objectForKey:@"IOPropertyMatchingPredicate" ofClass:v34 error:&v85];
+  v35 = [dictionaryCopy gc_objectForKey:@"IOPropertyMatchingPredicate" ofClass:v34 error:&v85];
   v36 = v85;
   v37 = v36;
   if (!v35 && v36)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_55:
 
@@ -192,10 +192,10 @@ LABEL_55:
     v65 = *MEMORY[0x1E696A588];
     v96[0] = v64;
     v96[1] = v65;
-    v66 = [v36 localizedFailureReason];
-    v97[1] = v66;
+    localizedFailureReason2 = [v36 localizedFailureReason];
+    v97[1] = localizedFailureReason2;
     v81 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:2];
-    *a4 = [(NSError *)v63 gc_deviceDBError:v81 userInfo:?];
+    *error = [(NSError *)v63 gc_deviceDBError:v81 userInfo:?];
 
 LABEL_54:
     goto LABEL_55;
@@ -210,8 +210,8 @@ LABEL_54:
   if (!v38)
   {
     v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"String is not a valid predicate: '%@'.", v35];
-    v66 = v71;
-    if (a4)
+    localizedFailureReason2 = v71;
+    if (error)
     {
       v72 = MEMORY[0x1E696ABC0];
       v73 = *MEMORY[0x1E696A588];
@@ -220,20 +220,20 @@ LABEL_54:
       v95[0] = @"Invalid 'Personality' definition.";
       v95[1] = v71;
       v94[2] = *MEMORY[0x1E696AA08];
-      v74 = v37;
+      null = v37;
       if (!v37)
       {
-        v74 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v82 = v74;
-      v95[2] = v74;
+      v82 = null;
+      v95[2] = null;
       v94[3] = 0x1F4E1C010;
       v93 = @"IOPropertyMatchingPredicate";
       v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
       v95[3] = v75;
       v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v95 forKeys:v94 count:4];
-      *a4 = [(NSError *)v72 gc_deviceDBError:v76 userInfo:?];
+      *error = [(NSError *)v72 gc_deviceDBError:v76 userInfo:?];
 
       if (!v37)
       {
@@ -249,11 +249,11 @@ LABEL_54:
 LABEL_27:
   v40 = objc_opt_class();
   v84 = 0;
-  v41 = [v7 gc_requiredObjectForKey:@"Model" ofClass:v40 error:&v84];
+  v41 = [dictionaryCopy gc_requiredObjectForKey:@"Model" ofClass:v40 error:&v84];
   v42 = v84;
   if (!v41)
   {
-    [(_GCDeviceDBPersonality *)a4 initWithDictionary:v42 error:&v91, &v92];
+    [(_GCDeviceDBPersonality *)error initWithDictionary:v42 error:&v91, &v92];
     goto LABEL_56;
   }
 
@@ -263,41 +263,41 @@ LABEL_27:
 
   if (!v43)
   {
-    if (a4)
+    if (error)
     {
       v79 = MEMORY[0x1E696ABC0];
       v89[0] = *MEMORY[0x1E696A578];
-      v47 = [v44 localizedDescription];
-      v80 = v47;
+      localizedDescription = [v44 localizedDescription];
+      v80 = localizedDescription;
       v48 = @"Invalid 'Personality' definition.";
-      if (v47)
+      if (localizedDescription)
       {
-        v48 = v47;
+        v48 = localizedDescription;
       }
 
       v90[0] = v48;
       v89[1] = *MEMORY[0x1E696A588];
-      v49 = [v44 localizedFailureReason];
-      v50 = v49;
+      localizedFailureReason3 = [v44 localizedFailureReason];
+      v50 = localizedFailureReason3;
       v51 = @"Invalid 'Model' definition.";
-      if (v49)
+      if (localizedFailureReason3)
       {
-        v51 = v49;
+        v51 = localizedFailureReason3;
       }
 
       v90[1] = v51;
       v89[2] = 0x1F4E1C010;
-      v52 = [v44 gc_failingKeyPath];
-      v53 = v52;
-      if (!v52)
+      gc_failingKeyPath = [v44 gc_failingKeyPath];
+      v53 = gc_failingKeyPath;
+      if (!gc_failingKeyPath)
       {
-        v52 = MEMORY[0x1E695E0F0];
+        gc_failingKeyPath = MEMORY[0x1E695E0F0];
       }
 
-      v54 = [v52 arrayByAddingObject:@"Model"];
+      v54 = [gc_failingKeyPath arrayByAddingObject:@"Model"];
       v90[2] = v54;
       v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:3];
-      *a4 = [(NSError *)v79 gc_deviceDBError:v55 userInfo:?];
+      *error = [(NSError *)v79 gc_deviceDBError:v55 userInfo:?];
     }
 
     goto LABEL_56;
@@ -313,23 +313,23 @@ LABEL_57:
   return v46;
 }
 
-- (_GCDeviceDBPersonality)initWithURL:(id)a3 error:(id *)a4
+- (_GCDeviceDBPersonality)initWithURL:(id)l error:(id *)error
 {
   v35[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
-    a4 = 0;
+    error = 0;
     goto LABEL_11;
   }
 
   v31 = 0;
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:0 error:&v31];
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:0 error:&v31];
   v9 = v31;
   v10 = v9;
   if (!v8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -341,21 +341,21 @@ LABEL_57:
     v35[0] = @"Invalid device personality";
     v35[1] = @"Error loading file.";
     v34[2] = *MEMORY[0x1E696AA08];
-    v13 = v9;
+    null = v9;
     if (!v9)
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v35[2] = v13;
+    v35[2] = null;
     v34[3] = *MEMORY[0x1E696A368];
-    v22 = [v7 path];
-    v35[3] = v22;
+    path = [lCopy path];
+    v35[3] = path;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:4];
-    *a4 = [(NSError *)v20 gc_deviceDBError:v23 userInfo:?];
+    *error = [(NSError *)v20 gc_deviceDBError:v23 userInfo:?];
 
     p_isa = 0;
-    a4 = 0;
+    error = 0;
     if (v10)
     {
       goto LABEL_9;
@@ -367,30 +367,30 @@ LABEL_57:
   v30 = 0;
   v11 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:0 format:0 error:&v30];
   v12 = v30;
-  v13 = v12;
+  null = v12;
   if (v11)
   {
     v29 = 0;
     self = [(_GCDeviceDBPersonality *)self initWithDictionary:v11 error:&v29];
     v14 = v29;
-    v15 = v14;
+    null2 = v14;
     if (self)
     {
-      objc_storeStrong(&self->_url, a3);
+      objc_storeStrong(&self->_url, l);
       self = self;
-      v16 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [(_GCDeviceDBPersonality *)v14 initWithURL:v7 error:a4];
-      v16 = 0;
+      [(_GCDeviceDBPersonality *)v14 initWithURL:lCopy error:error];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       p_isa = 0;
       goto LABEL_7;
@@ -403,37 +403,37 @@ LABEL_57:
     v33[0] = @"Invalid device personality";
     v33[1] = @"Property list syntax error.";
     v32[2] = *MEMORY[0x1E696AA08];
-    v15 = v12;
+    null2 = v12;
     if (!v12)
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
-    v33[2] = v15;
+    v33[2] = null2;
     v32[3] = *MEMORY[0x1E696A368];
-    v25 = [v7 path];
-    v33[3] = v25;
+    path2 = [lCopy path];
+    v33[3] = path2;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:4];
-    *a4 = [(NSError *)v28 gc_deviceDBError:v26 userInfo:?];
+    *error = [(NSError *)v28 gc_deviceDBError:v26 userInfo:?];
 
-    v16 = 0;
+    selfCopy = 0;
     p_isa = 0;
-    if (v13)
+    if (null)
     {
       goto LABEL_7;
     }
   }
 
-  p_isa = &v16->super.isa;
+  p_isa = &selfCopy->super.isa;
 LABEL_7:
 
 LABEL_8:
-  a4 = p_isa;
+  error = p_isa;
 LABEL_9:
 
 LABEL_11:
   v18 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (_GCDeviceDBPersonality)init

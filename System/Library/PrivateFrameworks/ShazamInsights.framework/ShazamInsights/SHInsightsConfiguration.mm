@@ -1,25 +1,25 @@
 @interface SHInsightsConfiguration
 + (id)bagContract;
-+ (void)fetchSharedInstanceWithCompletion:(id)a3;
++ (void)fetchSharedInstanceWithCompletion:(id)completion;
 - (SHInsightsConfiguration)init;
-- (SHInsightsConfiguration)initWithBagContract:(id)a3;
-- (id)fillInTokenizedURL:(id)a3 date:(id)a4 geoHash:(id)a5;
-- (void)artistsCachedDataMaxAgeWithCompletionHandler:(id)a3;
-- (void)artistsClusterEndpointWithCompletionHandler:(id)a3;
-- (void)artistsEnabledWithCompletionHandler:(id)a3;
-- (void)geoChartsEndpointForDate:(id)a3 geoHash:(id)a4 completionHandler:(id)a5;
-- (void)geoHashLengthsWithCompletionHandler:(id)a3;
-- (void)tokenizedURLForBagPathKey:(id)a3 completionHandler:(id)a4;
-- (void)tracksCachedDataMaxAgeWithCompletionHandler:(id)a3;
-- (void)tracksClusterEndpointForStorefront:(id)a3 completionHandler:(id)a4;
-- (void)tracksEnabledWithCompletionHandler:(id)a3;
+- (SHInsightsConfiguration)initWithBagContract:(id)contract;
+- (id)fillInTokenizedURL:(id)l date:(id)date geoHash:(id)hash;
+- (void)artistsCachedDataMaxAgeWithCompletionHandler:(id)handler;
+- (void)artistsClusterEndpointWithCompletionHandler:(id)handler;
+- (void)artistsEnabledWithCompletionHandler:(id)handler;
+- (void)geoChartsEndpointForDate:(id)date geoHash:(id)hash completionHandler:(id)handler;
+- (void)geoHashLengthsWithCompletionHandler:(id)handler;
+- (void)tokenizedURLForBagPathKey:(id)key completionHandler:(id)handler;
+- (void)tracksCachedDataMaxAgeWithCompletionHandler:(id)handler;
+- (void)tracksClusterEndpointForStorefront:(id)storefront completionHandler:(id)handler;
+- (void)tracksEnabledWithCompletionHandler:(id)handler;
 @end
 
 @implementation SHInsightsConfiguration
 
-+ (void)fetchSharedInstanceWithCompletion:(id)a3
++ (void)fetchSharedInstanceWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (fetchSharedInstanceWithCompletion__onceToken != -1)
   {
     +[SHInsightsConfiguration fetchSharedInstanceWithCompletion:];
@@ -32,14 +32,14 @@
     _os_log_impl(&dword_265F78000, v4, OS_LOG_TYPE_DEBUG, "Fetching insights configuration...", buf, 2u);
   }
 
-  v5 = [fetchSharedInstanceWithCompletion__insights bagContract];
+  bagContract = [fetchSharedInstanceWithCompletion__insights bagContract];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__SHInsightsConfiguration_fetchSharedInstanceWithCompletion___block_invoke_38;
   v7[3] = &unk_279BBEF58;
-  v8 = v3;
-  v6 = v3;
-  [v5 loadBaseDictionary:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [bagContract loadBaseDictionary:v7];
 }
 
 uint64_t __61__SHInsightsConfiguration_fetchSharedInstanceWithCompletion___block_invoke()
@@ -105,67 +105,67 @@ uint64_t __38__SHInsightsConfiguration_bagContract__block_invoke()
   v2 = [(SHInsightsConfiguration *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() bagContract];
+    bagContract = [objc_opt_class() bagContract];
     bagContract = v2->_bagContract;
-    v2->_bagContract = v3;
+    v2->_bagContract = bagContract;
   }
 
   return v2;
 }
 
-- (SHInsightsConfiguration)initWithBagContract:(id)a3
+- (SHInsightsConfiguration)initWithBagContract:(id)contract
 {
-  v5 = a3;
+  contractCopy = contract;
   v9.receiver = self;
   v9.super_class = SHInsightsConfiguration;
   v6 = [(SHInsightsConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bagContract, a3);
+    objc_storeStrong(&v6->_bagContract, contract);
   }
 
   return v7;
 }
 
-- (void)tracksCachedDataMaxAgeWithCompletionHandler:(id)a3
+- (void)tracksCachedDataMaxAgeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHInsightsConfiguration *)self bagContract];
+  handlerCopy = handler;
+  bagContract = [(SHInsightsConfiguration *)self bagContract];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SHInsightsConfiguration_tracksCachedDataMaxAgeWithCompletionHandler___block_invoke;
   v7[3] = &unk_279BBEF80;
-  v8 = v4;
-  v6 = v4;
-  [v5 doubleBackedByStringForKey:@"targeting/updateInterval" completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [bagContract doubleBackedByStringForKey:@"targeting/updateInterval" completionHandler:v7];
 }
 
-- (void)tracksEnabledWithCompletionHandler:(id)a3
+- (void)tracksEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHInsightsConfiguration *)self bagContract];
+  handlerCopy = handler;
+  bagContract = [(SHInsightsConfiguration *)self bagContract];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SHInsightsConfiguration_tracksEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_279BBEFA8;
-  v8 = v4;
-  v6 = v4;
-  [v5 BOOLeanBackedByStringForKey:@"targeting/enabled" completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [bagContract BOOLeanBackedByStringForKey:@"targeting/enabled" completionHandler:v7];
 }
 
-- (void)tracksClusterEndpointForStorefront:(id)a3 completionHandler:(id)a4
+- (void)tracksClusterEndpointForStorefront:(id)storefront completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  storefrontCopy = storefront;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__SHInsightsConfiguration_tracksClusterEndpointForStorefront_completionHandler___block_invoke;
   v10[3] = &unk_279BBEFD0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = storefrontCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = storefrontCopy;
   [(SHInsightsConfiguration *)self tokenizedURLForBagPathKey:@"targeting/path" completionHandler:v10];
 }
 
@@ -187,41 +187,41 @@ void __80__SHInsightsConfiguration_tracksClusterEndpointForStorefront_completion
   }
 }
 
-- (void)artistsCachedDataMaxAgeWithCompletionHandler:(id)a3
+- (void)artistsCachedDataMaxAgeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHInsightsConfiguration *)self bagContract];
+  handlerCopy = handler;
+  bagContract = [(SHInsightsConfiguration *)self bagContract];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__SHInsightsConfiguration_artistsCachedDataMaxAgeWithCompletionHandler___block_invoke;
   v7[3] = &unk_279BBEF80;
-  v8 = v4;
-  v6 = v4;
-  [v5 doubleBackedByStringForKey:@"artists/maxAgeInSeconds" completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [bagContract doubleBackedByStringForKey:@"artists/maxAgeInSeconds" completionHandler:v7];
 }
 
-- (void)artistsEnabledWithCompletionHandler:(id)a3
+- (void)artistsEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHInsightsConfiguration *)self bagContract];
+  handlerCopy = handler;
+  bagContract = [(SHInsightsConfiguration *)self bagContract];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__SHInsightsConfiguration_artistsEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_279BBEFA8;
-  v8 = v4;
-  v6 = v4;
-  [v5 BOOLeanBackedByStringForKey:@"artists/enabled" completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [bagContract BOOLeanBackedByStringForKey:@"artists/enabled" completionHandler:v7];
 }
 
-- (void)artistsClusterEndpointWithCompletionHandler:(id)a3
+- (void)artistsClusterEndpointWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__SHInsightsConfiguration_artistsClusterEndpointWithCompletionHandler___block_invoke;
   v6[3] = &unk_279BBEFF8;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(SHInsightsConfiguration *)self tokenizedURLForBagPathKey:@"artists/path" completionHandler:v6];
 }
 
@@ -233,22 +233,22 @@ void __71__SHInsightsConfiguration_artistsClusterEndpointWithCompletionHandler__
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)geoChartsEndpointForDate:(id)a3 geoHash:(id)a4 completionHandler:(id)a5
+- (void)geoChartsEndpointForDate:(id)date geoHash:(id)hash completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  hashCopy = hash;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__SHInsightsConfiguration_geoChartsEndpointForDate_geoHash_completionHandler___block_invoke;
   v14[3] = &unk_279BBF020;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = dateCopy;
+  v16 = hashCopy;
+  v17 = handlerCopy;
+  v11 = hashCopy;
+  v12 = dateCopy;
+  v13 = handlerCopy;
   [(SHInsightsConfiguration *)self tokenizedURLForBagPathKey:@"geocharts/path" completionHandler:v14];
 }
 
@@ -270,40 +270,40 @@ void __78__SHInsightsConfiguration_geoChartsEndpointForDate_geoHash_completionHa
   }
 }
 
-- (id)fillInTokenizedURL:(id)a3 date:(id)a4 geoHash:(id)a5
+- (id)fillInTokenizedURL:(id)l date:(id)date geoHash:(id)hash
 {
   v7 = MEMORY[0x277CBEA80];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  hashCopy = hash;
+  dateCopy = date;
+  lCopy = l;
   v11 = [v7 alloc];
   v12 = [v11 initWithCalendarIdentifier:*MEMORY[0x277CBE5D0]];
-  v13 = [v12 components:8196 fromDate:v9];
+  v13 = [v12 components:8196 fromDate:dateCopy];
 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v13, "year")];
-  [v10 updateToken:6 withValue:v14];
+  [lCopy updateToken:6 withValue:v14];
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v13, "weekOfYear")];
-  [v10 updateToken:7 withValue:v15];
+  [lCopy updateToken:7 withValue:v15];
 
-  [v10 updateToken:8 withValue:v8];
-  v16 = [v10 URLRepresentation];
+  [lCopy updateToken:8 withValue:hashCopy];
+  uRLRepresentation = [lCopy URLRepresentation];
 
-  return v16;
+  return uRLRepresentation;
 }
 
-- (void)geoHashLengthsWithCompletionHandler:(id)a3
+- (void)geoHashLengthsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHInsightsConfiguration *)self bagContract];
+  handlerCopy = handler;
+  bagContract = [(SHInsightsConfiguration *)self bagContract];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__SHInsightsConfiguration_geoHashLengthsWithCompletionHandler___block_invoke;
   v7[3] = &unk_279BBF070;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 integerBackedByStringForKey:@"geocharts/minGeohashLength" completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [bagContract integerBackedByStringForKey:@"geocharts/minGeohashLength" completionHandler:v7];
 }
 
 void __63__SHInsightsConfiguration_geoHashLengthsWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -331,21 +331,21 @@ uint64_t __63__SHInsightsConfiguration_geoHashLengthsWithCompletionHandler___blo
   return (*(a1[5] + 16))(a1[5], a1[6], a2, a3);
 }
 
-- (void)tokenizedURLForBagPathKey:(id)a3 completionHandler:(id)a4
+- (void)tokenizedURLForBagPathKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHInsightsConfiguration *)self bagContract];
+  keyCopy = key;
+  handlerCopy = handler;
+  bagContract = [(SHInsightsConfiguration *)self bagContract];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__SHInsightsConfiguration_tokenizedURLForBagPathKey_completionHandler___block_invoke;
   v11[3] = &unk_279BBF0C0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 stringForKey:@"baseURL" withCompletionHandler:v11];
+  v12 = keyCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = keyCopy;
+  [bagContract stringForKey:@"baseURL" withCompletionHandler:v11];
 }
 
 void __71__SHInsightsConfiguration_tokenizedURLForBagPathKey_completionHandler___block_invoke(uint64_t a1, void *a2)

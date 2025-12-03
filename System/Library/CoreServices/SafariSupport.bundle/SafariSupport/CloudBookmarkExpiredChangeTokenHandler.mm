@@ -1,25 +1,25 @@
 @interface CloudBookmarkExpiredChangeTokenHandler
-- (BOOL)itemWithServerIDIsFolder:(id)a3;
-- (CloudBookmarkExpiredChangeTokenHandler)initWithDatabaseAccessor:(id)a3 database:(void *)a4;
+- (BOOL)itemWithServerIDIsFolder:(id)folder;
+- (CloudBookmarkExpiredChangeTokenHandler)initWithDatabaseAccessor:(id)accessor database:(void *)database;
 - (NSSet)namesOfLocalRecordsToDelete;
-- (id)serverIDsInFolderWithServerID:(id)a3;
+- (id)serverIDsInFolderWithServerID:(id)d;
 - (void)collectAllRecordNames;
 - (void)dealloc;
 @end
 
 @implementation CloudBookmarkExpiredChangeTokenHandler
 
-- (CloudBookmarkExpiredChangeTokenHandler)initWithDatabaseAccessor:(id)a3 database:(void *)a4
+- (CloudBookmarkExpiredChangeTokenHandler)initWithDatabaseAccessor:(id)accessor database:(void *)database
 {
-  v7 = a3;
+  accessorCopy = accessor;
   v12.receiver = self;
   v12.super_class = CloudBookmarkExpiredChangeTokenHandler;
   v8 = [(CloudBookmarkExpiredChangeTokenHandler *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_databaseAccessor, a3);
-    v9->_databaseRef = CFRetain(a4);
+    objc_storeStrong(&v8->_databaseAccessor, accessor);
+    v9->_databaseRef = CFRetain(database);
     v10 = v9;
   }
 
@@ -39,16 +39,16 @@
   [(CloudBookmarkExpiredChangeTokenHandler *)&v4 dealloc];
 }
 
-- (id)serverIDsInFolderWithServerID:(id)a3
+- (id)serverIDsInFolderWithServerID:(id)d
 {
-  v3 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyServerIdsInFolderWithServerId:a3 database:self->_databaseRef];
+  v3 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyServerIdsInFolderWithServerId:d database:self->_databaseRef];
 
   return v3;
 }
 
-- (BOOL)itemWithServerIDIsFolder:(id)a3
+- (BOOL)itemWithServerIDIsFolder:(id)folder
 {
-  v4 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyItemWithServerId:a3 database:self->_databaseRef];
+  v4 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyItemWithServerId:folder database:self->_databaseRef];
   if (!v4)
   {
     return 0;
@@ -104,16 +104,16 @@
       while (v10);
     }
 
-    v14 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
-    if (!v14)
+    if (!firstObject)
     {
       break;
     }
 
     [v6 removeObjectAtIndex:0];
 
-    v5 = v14;
+    v5 = firstObject;
   }
 }
 

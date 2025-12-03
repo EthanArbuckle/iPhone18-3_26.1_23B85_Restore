@@ -1,27 +1,27 @@
 @interface ATXInformationFeaturizer
-- (double)_fetchAppLaunchCountForBundleIdentifier:(id)a3;
-- (double)_fetchAppLaunchPopularityForBundleIdentifier:(id)a3;
-- (double)_fetchFeedbackForWidgetBundleId:(id)a3 type:(unint64_t)a4;
-- (id)_featureSetForSuggestion:(id)a3;
-- (id)featurizeInfoSuggestions:(id)a3;
-- (id)featurizeTimelineWithWidgetBundleId:(id)a3 widgetKind:(id)a4 appBundleIdentifier:(id)a5;
-- (id)populateFeatureSetForWidgetBundleId:(id)a3 widgetKind:(id)a4 appBundleIdentifier:(id)a5;
+- (double)_fetchAppLaunchCountForBundleIdentifier:(id)identifier;
+- (double)_fetchAppLaunchPopularityForBundleIdentifier:(id)identifier;
+- (double)_fetchFeedbackForWidgetBundleId:(id)id type:(unint64_t)type;
+- (id)_featureSetForSuggestion:(id)suggestion;
+- (id)featurizeInfoSuggestions:(id)suggestions;
+- (id)featurizeTimelineWithWidgetBundleId:(id)id widgetKind:(id)kind appBundleIdentifier:(id)identifier;
+- (id)populateFeatureSetForWidgetBundleId:(id)id widgetKind:(id)kind appBundleIdentifier:(id)identifier;
 - (void)_lazyLoadAppLaunchHistogram;
 - (void)_lazyLoadWidgetFeedbackHistogram;
 @end
 
 @implementation ATXInformationFeaturizer
 
-- (id)featurizeInfoSuggestions:(id)a3
+- (id)featurizeInfoSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = suggestionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -53,44 +53,44 @@
   return v5;
 }
 
-- (id)_featureSetForSuggestion:(id)a3
+- (id)_featureSetForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 widgetBundleIdentifier];
-  v6 = [v4 widgetKind];
-  v7 = [v4 appBundleIdentifier];
-  v8 = [(ATXInformationFeaturizer *)self populateFeatureSetForWidgetBundleId:v5 widgetKind:v6 appBundleIdentifier:v7];
+  suggestionCopy = suggestion;
+  widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+  widgetKind = [suggestionCopy widgetKind];
+  appBundleIdentifier = [suggestionCopy appBundleIdentifier];
+  v8 = [(ATXInformationFeaturizer *)self populateFeatureSetForWidgetBundleId:widgetBundleIdentifier widgetKind:widgetKind appBundleIdentifier:appBundleIdentifier];
 
-  v9 = [v4 confidenceLevel];
-  [v8 appendFeature:4 value:v9];
-  v10 = [v8 build];
+  confidenceLevel = [suggestionCopy confidenceLevel];
+  [v8 appendFeature:4 value:confidenceLevel];
+  build = [v8 build];
 
-  return v10;
+  return build;
 }
 
-- (id)populateFeatureSetForWidgetBundleId:(id)a3 widgetKind:(id)a4 appBundleIdentifier:(id)a5
+- (id)populateFeatureSetForWidgetBundleId:(id)id widgetKind:(id)kind appBundleIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a3;
+  identifierCopy = identifier;
+  idCopy = id;
   v9 = objc_opt_new();
-  [(ATXInformationFeaturizer *)self _fetchAppLaunchPopularityForBundleIdentifier:v7];
+  [(ATXInformationFeaturizer *)self _fetchAppLaunchPopularityForBundleIdentifier:identifierCopy];
   v11 = v10;
-  [(ATXInformationFeaturizer *)self _fetchAppLaunchCountForBundleIdentifier:v7];
+  [(ATXInformationFeaturizer *)self _fetchAppLaunchCountForBundleIdentifier:identifierCopy];
   v13 = v12;
 
   [v9 appendFeature:2 value:v11];
   [v9 appendFeature:3 value:v13];
-  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:v8 type:2];
+  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:idCopy type:2];
   [v9 appendFeature:1 value:?];
-  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:v8 type:0];
+  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:idCopy type:0];
   [v9 appendFeature:5 value:?];
-  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:v8 type:3];
+  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:idCopy type:3];
   [v9 appendFeature:6 value:?];
-  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:v8 type:4];
+  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:idCopy type:4];
   [v9 appendFeature:7 value:?];
-  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:v8 type:7];
+  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:idCopy type:7];
   [v9 appendFeature:9 value:?];
-  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:v8 type:1];
+  [(ATXInformationFeaturizer *)self _fetchFeedbackForWidgetBundleId:idCopy type:1];
   v15 = v14;
 
   [v9 appendFeature:8 value:v15];
@@ -98,12 +98,12 @@
   return v9;
 }
 
-- (id)featurizeTimelineWithWidgetBundleId:(id)a3 widgetKind:(id)a4 appBundleIdentifier:(id)a5
+- (id)featurizeTimelineWithWidgetBundleId:(id)id widgetKind:(id)kind appBundleIdentifier:(id)identifier
 {
-  v5 = [(ATXInformationFeaturizer *)self populateFeatureSetForWidgetBundleId:a3 widgetKind:a4 appBundleIdentifier:a5];
-  v6 = [v5 build];
+  v5 = [(ATXInformationFeaturizer *)self populateFeatureSetForWidgetBundleId:id widgetKind:kind appBundleIdentifier:identifier];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 - (void)_lazyLoadAppLaunchHistogram
@@ -129,13 +129,13 @@
   }
 }
 
-- (double)_fetchAppLaunchPopularityForBundleIdentifier:(id)a3
+- (double)_fetchAppLaunchPopularityForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     [(ATXInformationFeaturizer *)self _lazyLoadAppLaunchHistogram];
-    [(_ATXAppLaunchHistogram *)self->_appLaunchHistory overallLaunchPopularityForBundleId:v4];
+    [(_ATXAppLaunchHistogram *)self->_appLaunchHistory overallLaunchPopularityForBundleId:identifierCopy];
     v6 = v5;
   }
 
@@ -147,15 +147,15 @@
   return v6;
 }
 
-- (double)_fetchAppLaunchCountForBundleIdentifier:(id)a3
+- (double)_fetchAppLaunchCountForBundleIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     [(ATXInformationFeaturizer *)self _lazyLoadAppLaunchHistogram];
     appLaunchHistory = self->_appLaunchHistory;
-    v11[0] = v4;
+    v11[0] = identifierCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [(_ATXAppLaunchHistogram *)appLaunchHistory totalLaunchesForBundleIds:v6];
     v8 = v7;
@@ -170,13 +170,13 @@
   return v8;
 }
 
-- (double)_fetchFeedbackForWidgetBundleId:(id)a3 type:(unint64_t)a4
+- (double)_fetchFeedbackForWidgetBundleId:(id)id type:(unint64_t)type
 {
-  v6 = a3;
-  if ([v6 length])
+  idCopy = id;
+  if ([idCopy length])
   {
     [(ATXInformationFeaturizer *)self _lazyLoadWidgetFeedbackHistogram];
-    [(ATXHomeScreenWidgetFeedback *)self->_widgetFeedback eventCountForWidgetBundleId:v6 type:a4];
+    [(ATXHomeScreenWidgetFeedback *)self->_widgetFeedback eventCountForWidgetBundleId:idCopy type:type];
     v8 = v7;
   }
 

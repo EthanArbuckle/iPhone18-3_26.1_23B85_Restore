@@ -1,5 +1,5 @@
 @interface CCUISensorAttributionExpandedPrivacySectionView
-- (CCUISensorAttributionExpandedPrivacySectionView)initWithWidth:(double)a3 appsUsingSensors:(id)a4 sensorActivityData:(id)a5;
+- (CCUISensorAttributionExpandedPrivacySectionView)initWithWidth:(double)width appsUsingSensors:(id)sensors sensorActivityData:(id)data;
 - (CGSize)intrinsicContentSize;
 - (id)_makeHeaderSeparatorView;
 - (void)_layout;
@@ -7,19 +7,19 @@
 
 @implementation CCUISensorAttributionExpandedPrivacySectionView
 
-- (CCUISensorAttributionExpandedPrivacySectionView)initWithWidth:(double)a3 appsUsingSensors:(id)a4 sensorActivityData:(id)a5
+- (CCUISensorAttributionExpandedPrivacySectionView)initWithWidth:(double)width appsUsingSensors:(id)sensors sensorActivityData:(id)data
 {
-  v9 = a4;
-  v10 = a5;
+  sensorsCopy = sensors;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = CCUISensorAttributionExpandedPrivacySectionView;
   v11 = [(CCUISensorAttributionExpandedPrivacySectionView *)&v14 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v12 = v11;
   if (v11)
   {
-    v11->_width = a3;
-    objc_storeStrong(&v11->_appsUsingSensors, a4);
-    objc_storeStrong(&v12->_sensorActivityData, a5);
+    v11->_width = width;
+    objc_storeStrong(&v11->_appsUsingSensors, sensors);
+    objc_storeStrong(&v12->_sensorActivityData, data);
     [(CCUISensorAttributionExpandedPrivacySectionView *)v12 _layout];
   }
 
@@ -40,14 +40,14 @@
   v100 = *MEMORY[0x277D85DE8];
   [(CCUISensorAttributionExpandedPrivacySectionView *)self width];
   v81 = v3;
-  v4 = [(CCUISensorAttributionExpandedPrivacySectionView *)self appsUsingSensors];
-  v76 = [(CCUISensorAttributionExpandedPrivacySectionView *)self sensorActivityData];
+  appsUsingSensors = [(CCUISensorAttributionExpandedPrivacySectionView *)self appsUsingSensors];
+  sensorActivityData = [(CCUISensorAttributionExpandedPrivacySectionView *)self sensorActivityData];
   self->_yOffset = 0.0;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  obj = v4;
+  obj = appsUsingSensors;
   v77 = [obj countByEnumeratingWithState:&v93 objects:v99 count:16];
   if (v77)
   {
@@ -63,7 +63,7 @@
         }
 
         v6 = *(*(&v93 + 1) + 8 * i);
-        v7 = CCUISortedAttributionsForEntity(v6, v76);
+        v7 = CCUISortedAttributionsForEntity(v6, sensorActivityData);
         v89 = 0u;
         v90 = 0u;
         v91 = 0u;
@@ -87,17 +87,17 @@
               if (!CCUISectionForSensorType([*(*(&v89 + 1) + 8 * j) sensorType]))
               {
 
-                v14 = [(CCUISensorAttributionExpandedPrivacySectionView *)self _makeHeaderSeparatorView];
+                _makeHeaderSeparatorView = [(CCUISensorAttributionExpandedPrivacySectionView *)self _makeHeaderSeparatorView];
                 v15 = v81;
-                [v14 setFrame:{0.0, self->_yOffset, v81, 1.0}];
-                [(CCUISensorAttributionExpandedPrivacySectionView *)self addSubview:v14];
+                [_makeHeaderSeparatorView setFrame:{0.0, self->_yOffset, v81, 1.0}];
+                [(CCUISensorAttributionExpandedPrivacySectionView *)self addSubview:_makeHeaderSeparatorView];
                 self->_yOffset = self->_yOffset + 15.0;
-                v16 = [(CCUISensorAttributionExpandedPrivacySectionView *)self traitCollection];
-                v17 = [v16 preferredContentSizeCategory];
-                IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v17);
+                traitCollection = [(CCUISensorAttributionExpandedPrivacySectionView *)self traitCollection];
+                preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+                IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-                v19 = [(CCUISensorAttributionExpandedPrivacySectionView *)self traitCollection];
-                [v19 displayScale];
+                traitCollection2 = [(CCUISensorAttributionExpandedPrivacySectionView *)self traitCollection];
+                [traitCollection2 displayScale];
 
                 v84 = IsAccessibilityCategory;
                 if (!IsAccessibilityCategory)
@@ -106,7 +106,7 @@
                   v15 = v20;
                 }
 
-                v78 = v14;
+                v78 = _makeHeaderSeparatorView;
                 v80 = i;
                 v21 = v15 + -10.0;
                 +[CCUISensorEntityNameAndIconView iconSize];
@@ -119,10 +119,10 @@
                 [(CCUISensorEntityNameAndIconView *)v24 frame];
                 v27 = v26;
                 v29 = v28;
-                v30 = [MEMORY[0x277D75128] sharedApplication];
-                v31 = [v30 userInterfaceLayoutDirection];
+                mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+                userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-                if (v31 == 1)
+                if (userInterfaceLayoutDirection == 1)
                 {
                   v32 = v81 - v27 + -2.0;
                 }
@@ -145,8 +145,8 @@
                 v35 = 0.0;
                 if (!IsAccessibilityCategory)
                 {
-                  v36 = [MEMORY[0x277D75128] sharedApplication];
-                  if ([v36 userInterfaceLayoutDirection] == 1)
+                  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+                  if ([mEMORY[0x277D75128]2 userInterfaceLayoutDirection] == 1)
                   {
                     v35 = 0.0;
                   }
@@ -181,9 +181,9 @@
                       v42 = *(*(&v85 + 1) + 8 * k);
                       if (!CCUISectionForSensorType([v42 sensorType]))
                       {
-                        v43 = [v42 website];
+                        website = [v42 website];
 
-                        if (v43)
+                        if (website)
                         {
                           v44 = self->_yOffset;
                           [(CCUISensorEntityNameAndIconView *)v24 frame];
@@ -197,31 +197,31 @@
 
                           if (![v82 count])
                           {
-                            v48 = [v83 firstObject];
+                            firstObject = [v83 firstObject];
 
-                            if (v42 == v48)
+                            if (v42 == firstObject)
                             {
                               self->_yOffset = self->_yOffset + 25.0;
                             }
                           }
 
-                          v49 = [v42 website];
-                          v50 = [v82 containsObject:v49];
+                          website2 = [v42 website];
+                          v50 = [v82 containsObject:website2];
 
                           if ((v50 & 1) == 0)
                           {
-                            v51 = [v42 website];
-                            [v82 addObject:v51];
+                            website3 = [v42 website];
+                            [v82 addObject:website3];
 
                             +[CCUISensorEntityNameAndIconView iconSize];
                             v53 = v52 + 2.0;
                             +[CCUISensorEntityNameAndIconView horizontalPaddingBetweenIconAndLabel];
                             v55 = v53 + v54;
-                            v56 = [MEMORY[0x277D75128] sharedApplication];
-                            v57 = [v56 userInterfaceLayoutDirection];
+                            mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+                            userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]3 userInterfaceLayoutDirection];
 
                             v58 = v81 - v55 - (v81 * 0.5 + 5.0 + 5.0);
-                            if (v57 == 1)
+                            if (userInterfaceLayoutDirection2 == 1)
                             {
                               v55 = v81 * 0.5 + 5.0 + 5.0;
                               v59 = v58;
@@ -334,20 +334,20 @@ LABEL_58:
 - (id)_makeHeaderSeparatorView
 {
   v2 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [v2 setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v2 setBackgroundColor:whiteColor];
 
-  v4 = [v2 layer];
-  [v4 setCornerCurve:*MEMORY[0x277CDA138]];
+  layer = [v2 layer];
+  [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
-  v5 = [v2 layer];
-  [v5 setCornerRadius:0.5];
+  layer2 = [v2 layer];
+  [layer2 setCornerRadius:0.5];
 
-  v6 = [v2 layer];
-  [v6 setCompositingFilter:*MEMORY[0x277CDA5D0]];
+  layer3 = [v2 layer];
+  [layer3 setCompositingFilter:*MEMORY[0x277CDA5D0]];
 
-  v7 = [v2 layer];
-  [v7 setAllowsGroupBlending:0];
+  layer4 = [v2 layer];
+  [layer4 setAllowsGroupBlending:0];
 
   [v2 setAlpha:0.125];
 

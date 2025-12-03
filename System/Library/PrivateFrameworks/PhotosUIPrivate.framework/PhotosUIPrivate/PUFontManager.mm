@@ -1,11 +1,11 @@
 @interface PUFontManager
 - (PUFontManager)init;
-- (void)_preferredContentSizeChanged:(id)a3;
+- (void)_preferredContentSizeChanged:(id)changed;
 - (void)dealloc;
 - (void)invalidateFonts;
-- (void)setAlbumListSectionTitleLabelFont:(id)a3;
-- (void)setAlbumListSubtitleLabelFont:(id)a3;
-- (void)setAlbumListTitleLabelFont:(id)a3;
+- (void)setAlbumListSectionTitleLabelFont:(id)font;
+- (void)setAlbumListSubtitleLabelFont:(id)font;
+- (void)setAlbumListTitleLabelFont:(id)font;
 @end
 
 @implementation PUFontManager
@@ -38,7 +38,7 @@ void __32__PUFontManager_invalidateFonts__block_invoke(uint64_t a1)
   [v8 setAlbumListSectionTitleLabelFont:v9];
 }
 
-- (void)_preferredContentSizeChanged:(id)a3
+- (void)_preferredContentSizeChanged:(id)changed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -56,46 +56,46 @@ uint64_t __46__PUFontManager__preferredContentSizeChanged___block_invoke(uint64_
   return [v2 signalChange:1];
 }
 
-- (void)setAlbumListSectionTitleLabelFont:(id)a3
+- (void)setAlbumListSectionTitleLabelFont:(id)font
 {
-  v5 = a3;
-  if (self->_albumListSectionTitleLabelFont != v5)
+  fontCopy = font;
+  if (self->_albumListSectionTitleLabelFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_albumListSectionTitleLabelFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_albumListSectionTitleLabelFont, font);
     [(PUFontManager *)self _setNeedsUpdate];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setAlbumListSubtitleLabelFont:(id)a3
+- (void)setAlbumListSubtitleLabelFont:(id)font
 {
-  v5 = a3;
-  if (self->_albumListSubtitleLabelFont != v5)
+  fontCopy = font;
+  if (self->_albumListSubtitleLabelFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_albumListSubtitleLabelFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_albumListSubtitleLabelFont, font);
     [(PUFontManager *)self _setNeedsUpdate];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setAlbumListTitleLabelFont:(id)a3
+- (void)setAlbumListTitleLabelFont:(id)font
 {
-  v5 = a3;
-  if (self->_albumListTitleLabelFont != v5)
+  fontCopy = font;
+  if (self->_albumListTitleLabelFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_albumListTitleLabelFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_albumListTitleLabelFont, font);
     [(PUFontManager *)self _setNeedsUpdate];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = PUFontManager;
@@ -109,8 +109,8 @@ uint64_t __46__PUFontManager__preferredContentSizeChanged___block_invoke(uint64_
   v2 = [(PUFontManager *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__preferredContentSizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__preferredContentSizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
 
     [(PUFontManager *)v2 invalidateFonts];
   }

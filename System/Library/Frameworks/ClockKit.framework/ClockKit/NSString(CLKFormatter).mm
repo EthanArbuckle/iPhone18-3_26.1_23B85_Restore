@@ -14,7 +14,7 @@
 
   v2 = _clkBlinkerRange_blinkerSet;
 
-  return [a1 rangeOfCharacterFromSet:v2];
+  return [self rangeOfCharacterFromSet:v2];
 }
 
 - (uint64_t)_clkBlinkerRangeByBackwardsSearch
@@ -26,7 +26,7 @@
 
   v2 = _clkBlinkerRangeByBackwardsSearch_blinkerSet;
 
-  return [a1 rangeOfCharacterFromSet:v2 options:4];
+  return [self rangeOfCharacterFromSet:v2 options:4];
 }
 
 @end

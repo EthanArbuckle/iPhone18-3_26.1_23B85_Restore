@@ -1,13 +1,13 @@
 @interface AGXG18PFamilySampledComputeContext
-- (AGXG18PFamilySampledComputeContext)initWithCommandBuffer:(id)a3 config:(EncoderComputeServiceConfigA *)a4 programInfoBuffer:(id *)a5 capacity:(unint64_t)a6;
+- (AGXG18PFamilySampledComputeContext)initWithCommandBuffer:(id)buffer config:(EncoderComputeServiceConfigA *)config programInfoBuffer:(id *)infoBuffer capacity:(unint64_t)capacity;
 - (id)endEncodingAndRetrieveProgramAddressTable;
-- (id)reInitWithCommandBuffer:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
+- (id)reInitWithCommandBuffer:(id)buffer programInfoBuffer:(id *)infoBuffer capacity:(unint64_t)capacity;
 - (void)dealloc;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5;
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
 @end
 
 @implementation AGXG18PFamilySampledComputeContext
@@ -44,13 +44,13 @@
   return [objc_alloc(MEMORY[0x29EDBB730]) initWithEncoderMappings:*(self->_sampled_impl + 1) perInvocationMappings:*self->_sampled_impl internalMappings:*(self->_sampled_impl + 2)];
 }
 
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
-  if (a4->var1 * a4->var0 * a4->var2 <= *(*(self->super._impl + 292) + 456))
+  if (threadgroup->var1 * threadgroup->var0 * threadgroup->var2 <= *(*(self->super._impl + 292) + 456))
   {
     sampled_impl = self->_sampled_impl;
-    v12 = *a3;
-    v11 = *a4;
+    v12 = *threads;
+    v11 = *threadgroup;
     AGX::SampledComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::duplicateShaderAddresses(sampled_impl);
     v5 = sampled_impl[6];
     *(v5 + 2060) |= 1u;
@@ -75,13 +75,13 @@
   }
 }
 
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   sampled_impl = self->_sampled_impl;
   AGX::SampledComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::duplicateShaderAddresses(sampled_impl);
   v7 = sampled_impl[6];
   *(v7 + 2060) |= 1u;
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::executeKernelThreadsIndirectInternal(v7, a3, a4);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::executeKernelThreadsIndirectInternal(v7, buffer, offset);
   if (*(sampled_impl + 56) == 1)
   {
     v8 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -101,16 +101,16 @@
   }
 }
 
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup
 {
-  if (a5->var1 * a5->var0 * a5->var2 <= *(*(self->super._impl + 292) + 456))
+  if (threadgroup->var1 * threadgroup->var0 * threadgroup->var2 <= *(*(self->super._impl + 292) + 456))
   {
     sampled_impl = self->_sampled_impl;
-    v14 = *a5;
+    v14 = *threadgroup;
     AGX::SampledComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::duplicateShaderAddresses(sampled_impl);
     v8 = sampled_impl[6];
     *(v8 + 2060) |= 1u;
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::executeKernelThreadgroupsIndirectInternal(v8, a3, a4, &v14);
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::executeKernelThreadgroupsIndirectInternal(v8, buffer, offset, &v14);
     if (*(sampled_impl + 56) == 1)
     {
       v9 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -131,26 +131,26 @@
   }
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
   v4 = *(self->_sampled_impl + 6);
   *(v4 + 2060) |= 1u;
-  if (LODWORD(a4.length))
+  if (LODWORD(range.length))
   {
     v5[0] = 1;
-    v5[2] = a4.location;
-    v5[3] = LODWORD(a4.location) + LODWORD(a4.length) - 1;
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::executeCommandsInBufferCommon(v4, a3, v5);
+    v5[2] = range.location;
+    v5[3] = LODWORD(range.location) + LODWORD(range.length) - 1;
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::executeCommandsInBufferCommon(v4, buffer, v5);
   }
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
-  if (a4->var1 * a4->var0 * a4->var2 <= *(*(self->super._impl + 292) + 456))
+  if (threadgroup->var1 * threadgroup->var0 * threadgroup->var2 <= *(*(self->super._impl + 292) + 456))
   {
     sampled_impl = self->_sampled_impl;
-    v12 = *a4;
-    v11 = *a3;
+    v12 = *threadgroup;
+    v11 = *threadgroups;
     AGX::SampledComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding,AGX::HAL300::EncoderComputeServiceClasses>::duplicateShaderAddresses(sampled_impl);
     v5 = sampled_impl[6];
     *(v5 + 2060) |= 1u;
@@ -190,32 +190,32 @@
   [(AGXG18PFamilyComputeContext *)&v4 dealloc];
 }
 
-- (id)reInitWithCommandBuffer:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)reInitWithCommandBuffer:(id)buffer programInfoBuffer:(id *)infoBuffer capacity:(unint64_t)capacity
 {
-  v5 = a5;
+  capacityCopy = capacity;
   v10.receiver = self;
   v10.super_class = AGXG18PFamilySampledComputeContext;
-  [(AGXG18PFamilyComputeContext *)&v10 reInitWithCommandBuffer:a3];
+  [(AGXG18PFamilyComputeContext *)&v10 reInitWithCommandBuffer:buffer];
   sampled_impl = self->_sampled_impl;
-  sampled_impl[3] = a4;
-  *(sampled_impl + 8) = v5;
+  sampled_impl[3] = infoBuffer;
+  *(sampled_impl + 8) = capacityCopy;
   *(sampled_impl + 9) = 0;
   return self;
 }
 
-- (AGXG18PFamilySampledComputeContext)initWithCommandBuffer:(id)a3 config:(EncoderComputeServiceConfigA *)a4 programInfoBuffer:(id *)a5 capacity:(unint64_t)a6
+- (AGXG18PFamilySampledComputeContext)initWithCommandBuffer:(id)buffer config:(EncoderComputeServiceConfigA *)config programInfoBuffer:(id *)infoBuffer capacity:(unint64_t)capacity
 {
-  v6 = a6;
-  v9 = *&a4->var7;
-  v28 = *&a4->var4;
+  capacityCopy = capacity;
+  v9 = *&config->var7;
+  v28 = *&config->var4;
   v29 = v9;
-  var10 = a4->var10;
-  v10 = *&a4->var2;
-  block = *&a4->var0;
+  var10 = config->var10;
+  v10 = *&config->var2;
+  block = *&config->var0;
   v27 = v10;
   v25.receiver = self;
   v25.super_class = AGXG18PFamilySampledComputeContext;
-  v11 = [(AGXG18PFamilyComputeContext *)&v25 initWithCommandBuffer:a3 config:&block];
+  v11 = [(AGXG18PFamilyComputeContext *)&v25 initWithCommandBuffer:buffer config:&block];
   if (!v11)
   {
     return v11;
@@ -225,15 +225,15 @@
   v13 = v12;
   v11->_sampled_impl = v12;
   impl = v11->super._impl;
-  v15 = *(a3 + 760);
-  v16 = *(a3 + 761);
+  v15 = *(buffer + 760);
+  v16 = *(buffer + 761);
   *v12 = 0;
   v12[1] = 0;
   v12[2] = 0;
-  v12[3] = a5;
+  v12[3] = infoBuffer;
   *(v12 + 9) = 0;
   *(v12 + 10) = 0;
-  *(v12 + 8) = v6;
+  *(v12 + 8) = capacityCopy;
   v12[6] = impl;
   *(v12 + 56) = v15;
   *(v12 + 57) = v16;

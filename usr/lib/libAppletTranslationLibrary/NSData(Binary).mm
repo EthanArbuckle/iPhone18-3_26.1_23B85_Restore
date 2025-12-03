@@ -22,7 +22,7 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  v8 = 8 * [a1 length];
+  v8 = 8 * [self length];
   if (v8 < a4 + a3)
   {
     v9 = ATLLogObject();
@@ -44,7 +44,7 @@ LABEL_9:
   v12 = v11 >> 3;
   v13 = ~v11 & 7;
   v14 = exp2(a4) - 1;
-  v15 = [a1 bytes];
+  bytes = [self bytes];
   if (v12 - (a3 >> 3) == -1)
   {
     v16 = 0;
@@ -53,7 +53,7 @@ LABEL_9:
   else
   {
     v16 = 0;
-    v17 = (v15 + (a3 >> 3));
+    v17 = (bytes + (a3 >> 3));
     v18 = v12 - (a3 >> 3) + 1;
     do
     {

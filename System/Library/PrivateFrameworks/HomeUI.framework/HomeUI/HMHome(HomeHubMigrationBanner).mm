@@ -12,35 +12,35 @@
 
 - (uint64_t)hf_shouldDisplaySignIntoAppleAccountForHH2Update
 {
-  v0 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v1 = [v0 homeManager];
-  v2 = [v1 status];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  status = [homeManager status];
 
-  return (v2 >> 5) & 1;
+  return (status >> 5) & 1;
 }
 
 - (BOOL)hf_shouldDisplayTurnOnICloudForHH2Update
 {
-  v0 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v1 = [v0 homeManager];
-  v2 = [v1 dataSyncState];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  dataSyncState = [homeManager dataSyncState];
 
-  return v2 == 3;
+  return dataSyncState == 3;
 }
 
 - (BOOL)hf_shouldDisplayTurnOnICloudKeychain
 {
-  v0 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v1 = [v0 homeManager];
-  v2 = [v1 dataSyncState];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  dataSyncState = [homeManager dataSyncState];
 
-  return v2 == 2;
+  return dataSyncState == 2;
 }
 
 - (id)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
 {
   v2 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateControlDescription", @"HUSoftwareUpdateControlDescription", 1);
-  if ([a1 hf_shouldDisplaySignIntoAppleAccountForHH2Update])
+  if ([self hf_shouldDisplaySignIntoAppleAccountForHH2Update])
   {
     v3 = @"HUSoftwareUpdateControlDescription_GoToAppleAccountSettings";
 LABEL_6:
@@ -50,7 +50,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([a1 hf_shouldDisplayTurnOnICloudForHH2Update] & 1) != 0 || (objc_msgSend(a1, "hf_shouldDisplayTurnOnICloudKeychain"))
+  if ([self hf_shouldDisplayTurnOnICloudForHH2Update] & 1) != 0 || (objc_msgSend(self, "hf_shouldDisplayTurnOnICloudKeychain"))
   {
     v3 = @"HUSoftwareUpdateControlDescription_GoToICloudSettings";
     goto LABEL_6;
@@ -62,7 +62,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if ([a1 hf_shouldDisplayHH2UpdateLearnMore])
+  if ([self hf_shouldDisplayHH2UpdateLearnMore])
   {
     v3 = @"HULearnMoreTitle";
     goto LABEL_6;
@@ -78,67 +78,67 @@ LABEL_7:
   v28 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 hf_shouldDisplaySignIntoAppleAccountForHH2Update];
-  v9 = [a1 hf_shouldDisplayTurnOnICloudForHH2Update];
-  v10 = [a1 hf_shouldDisplayTurnOnICloudKeychain];
-  v11 = [MEMORY[0x277D14CE8] isCurrentAccount2FAEnabled];
-  v12 = [a1 hf_shouldDisplayHH2UpdateLearnMore];
+  hf_shouldDisplaySignIntoAppleAccountForHH2Update = [self hf_shouldDisplaySignIntoAppleAccountForHH2Update];
+  hf_shouldDisplayTurnOnICloudForHH2Update = [self hf_shouldDisplayTurnOnICloudForHH2Update];
+  hf_shouldDisplayTurnOnICloudKeychain = [self hf_shouldDisplayTurnOnICloudKeychain];
+  isCurrentAccount2FAEnabled = [MEMORY[0x277D14CE8] isCurrentAccount2FAEnabled];
+  hf_shouldDisplayHH2UpdateLearnMore = [self hf_shouldDisplayHH2UpdateLearnMore];
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v19[0] = 67110144;
-    v19[1] = v8;
+    v19[1] = hf_shouldDisplaySignIntoAppleAccountForHH2Update;
     v20 = 1024;
-    v21 = v9;
+    v21 = hf_shouldDisplayTurnOnICloudForHH2Update;
     v22 = 1024;
-    v23 = v10;
+    v23 = hf_shouldDisplayTurnOnICloudKeychain;
     v24 = 1024;
-    v25 = v11 ^ 1;
+    v25 = isCurrentAccount2FAEnabled ^ 1;
     v26 = 1024;
-    v27 = v12;
+    v27 = hf_shouldDisplayHH2UpdateLearnMore;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "[HMHome+HomeHubMigrationBanner-hf_homeHubMigrationBannerTapAction> userTappedOpenSettings = %{BOOL}d | userTappedTurnOnICloud = %{BOOL}d | userTappedTurnOnICloudKeychain = %{BOOL}d | userTappedTurnOn2FA = %{BOOL}d | userTappedLearnMore %{BOOL}d", v19, 0x20u);
   }
 
-  if (v8)
+  if (hf_shouldDisplaySignIntoAppleAccountForHH2Update)
   {
-    v14 = [MEMORY[0x277D148E8] sharedInstance];
-    v15 = [MEMORY[0x277CBEBC0] hu_openiCloudPreferencesURL];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    hu_openiCloudPreferencesURL = [MEMORY[0x277CBEBC0] hu_openiCloudPreferencesURL];
 LABEL_13:
-    v16 = v15;
-    v17 = [v14 openURL:v15];
+    v16 = hu_openiCloudPreferencesURL;
+    v17 = [mEMORY[0x277D148E8] openURL:hu_openiCloudPreferencesURL];
 
     goto LABEL_14;
   }
 
-  if (v9)
+  if (hf_shouldDisplayTurnOnICloudForHH2Update)
   {
-    v14 = [MEMORY[0x277D148E8] sharedInstance];
-    v15 = [MEMORY[0x277CBEBC0] hf_openiCloudToggleURL];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    hu_openiCloudPreferencesURL = [MEMORY[0x277CBEBC0] hf_openiCloudToggleURL];
     goto LABEL_13;
   }
 
-  if (v10)
+  if (hf_shouldDisplayTurnOnICloudKeychain)
   {
-    v14 = [MEMORY[0x277D148E8] sharedInstance];
-    v15 = [MEMORY[0x277CBEBC0] hf_openiCloudKeychainPreferences];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    hu_openiCloudPreferencesURL = [MEMORY[0x277CBEBC0] hf_openiCloudKeychainPreferences];
     goto LABEL_13;
   }
 
-  if ((v11 & 1) == 0)
+  if ((isCurrentAccount2FAEnabled & 1) == 0)
   {
-    v14 = [MEMORY[0x277D148E8] sharedInstance];
-    v15 = [MEMORY[0x277CBEBC0] hf_openiCloudPasswordAndSecurityURL];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    hu_openiCloudPreferencesURL = [MEMORY[0x277CBEBC0] hf_openiCloudPasswordAndSecurityURL];
     goto LABEL_13;
   }
 
-  if (v12)
+  if (hf_shouldDisplayHH2UpdateLearnMore)
   {
-    v14 = [MEMORY[0x277D148E8] sharedInstance];
-    v15 = [MEMORY[0x277CBEBC0] hu_homeUpdateLearnMoreURL];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    hu_openiCloudPreferencesURL = [MEMORY[0x277CBEBC0] hu_homeUpdateLearnMoreURL];
     goto LABEL_13;
   }
 
-  v17 = [HUHomeFeatureOnboardingUtilities home:a1 onboardHomeHub2FromPresentingViewController:v6 devices:v7 usageOptions:0];
+  v17 = [HUHomeFeatureOnboardingUtilities home:self onboardHomeHub2FromPresentingViewController:v6 devices:v7 usageOptions:0];
 LABEL_14:
 
   return v17;
@@ -147,32 +147,32 @@ LABEL_14:
 - (id)_hf_homeHubMigrationBannerStringWithIsForTitle:()HomeHubMigrationBanner
 {
   v91 = *MEMORY[0x277D85DE8];
-  v70 = [a1 hf_currentUserIsOwner];
-  v4 = [a1 residentDevices];
-  v5 = [v4 na_filter:&__block_literal_global_106];
+  hf_currentUserIsOwner = [self hf_currentUserIsOwner];
+  residentDevices = [self residentDevices];
+  v5 = [residentDevices na_filter:&__block_literal_global_106];
 
-  v6 = [a1 hf_appleTVs];
-  v72 = [a1 hf_homePods];
+  hf_appleTVs = [self hf_appleTVs];
+  hf_homePods = [self hf_homePods];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [a1 uniqueIdentifier];
-    v68 = [a1 currentUser];
-    v9 = [v68 name];
-    v66 = [a1 currentUser];
-    v10 = [v66 uniqueIdentifier];
-    v64 = [a1 residentDevices];
-    v62 = [v64 count];
-    v63 = [a1 residentDevices];
-    v11 = __81__HMHome_HomeHubMigrationBanner___hf_homeHubMigrationBannerStringWithIsForTitle___block_invoke_2(v63);
+    uniqueIdentifier = [self uniqueIdentifier];
+    currentUser = [self currentUser];
+    name = [currentUser name];
+    currentUser2 = [self currentUser];
+    uniqueIdentifier2 = [currentUser2 uniqueIdentifier];
+    residentDevices2 = [self residentDevices];
+    v62 = [residentDevices2 count];
+    residentDevices3 = [self residentDevices];
+    v11 = __81__HMHome_HomeHubMigrationBanner___hf_homeHubMigrationBannerStringWithIsForTitle___block_invoke_2(residentDevices3);
     *buf = 138545666;
-    v74 = v8;
+    v74 = uniqueIdentifier;
     v75 = 2112;
-    v76 = v9;
+    v76 = name;
     v77 = 2114;
-    v78 = v10;
+    v78 = uniqueIdentifier2;
     v79 = 1024;
-    *v80 = v70;
+    *v80 = hf_currentUserIsOwner;
     *&v80[4] = 1024;
     *&v80[6] = a3;
     v81 = 2048;
@@ -182,30 +182,30 @@ LABEL_14:
     v85 = 2048;
     v86 = [v5 count];
     v87 = 2048;
-    v88 = [v6 count];
+    v88 = [hf_appleTVs count];
     v89 = 2048;
-    v90 = [v72 count];
+    v90 = [hf_homePods count];
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "(_hf_homeHubMigrationBannerStringWithIsForTitle:) home.uniqueIdentifier = %{public}@ | currentUser = %@ (uniqueIdentifier: %{public}@, isOwner = %{BOOL}d) | isForTitle = %{BOOL}d | residentDevices = (%lu) %@ | enabledResidents.count = %lu | atvs.count = %lu | hps.count = %lu", buf, 0x5Eu);
   }
 
-  v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v13 = [v12 homeManager];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
 
-  v14 = [v13 status];
-  v15 = [v13 dataSyncState];
+  status = [homeManager status];
+  dataSyncState = [homeManager dataSyncState];
   v16 = HFLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [a1 uniqueIdentifier];
+    uniqueIdentifier3 = [self uniqueIdentifier];
     v18 = HMHomeManagerStatusToString();
     *buf = 138544130;
-    v74 = v17;
+    v74 = uniqueIdentifier3;
     v75 = 2048;
-    v76 = v14;
+    v76 = status;
     v77 = 2112;
     v78 = v18;
     v79 = 2048;
-    *v80 = v15;
+    *v80 = dataSyncState;
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "[HMHome:_hf_homeHubMigrationBannerStringWithIsForTitle:] homeUUID = %{public}@ | homeManager.status = %ld (%@) | dataSyncState = %ld", buf, 0x2Au);
   }
 
@@ -215,7 +215,7 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if ([a1 hf_shouldDisplaySignIntoAppleAccountForHH2Update])
+  if ([self hf_shouldDisplaySignIntoAppleAccountForHH2Update])
   {
     v21 = @"HUSoftwareUpdateHomeKitUpdateRequiredDescription_AutoUpdateFailureReason_NotSignedInAppleAccount";
 LABEL_15:
@@ -223,13 +223,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([a1 hf_shouldDisplayTurnOnICloudForHH2Update])
+  if ([self hf_shouldDisplayTurnOnICloudForHH2Update])
   {
     v21 = @"HUSoftwareUpdateHomeKitUpdateRequiredDescription_AutoUpdateFailureReason_iCloudTurnedOFF";
     goto LABEL_15;
   }
 
-  if ([a1 hf_shouldDisplayTurnOnICloudKeychain])
+  if ([self hf_shouldDisplayTurnOnICloudKeychain])
   {
     v21 = @"HUSoftwareUpdateHomeKitUpdateRequiredDescription_AutoUpdateFailureReason_iCloudKeychainTurnedOFF";
     goto LABEL_15;
@@ -244,7 +244,7 @@ LABEL_15:
 LABEL_6:
   v20 = 0;
 LABEL_16:
-  if ([v5 count] || objc_msgSend(v6, "count") || objc_msgSend(v72, "count"))
+  if ([v5 count] || objc_msgSend(hf_appleTVs, "count") || objc_msgSend(hf_homePods, "count"))
   {
     v22 = [v5 na_filter:&__block_literal_global_75];
     v23 = [v5 count];
@@ -269,7 +269,7 @@ LABEL_16:
 
       else
       {
-        if (v70)
+        if (hf_currentUserIsOwner)
         {
           v53 = @"HUSoftwareUpdateHomeKitUpdateRequiredDescription_accessoriesOnly";
         }
@@ -292,11 +292,11 @@ LABEL_16:
     }
 
     v69 = v5;
-    v28 = [a1 residentDevices];
-    v29 = [v28 na_filter:&__block_literal_global_78_1];
+    residentDevices4 = [self residentDevices];
+    v29 = [residentDevices4 na_filter:&__block_literal_global_78_1];
 
-    v30 = [objc_opt_class() _hh1EOLAccessories:v6];
-    v31 = v6;
+    v30 = [objc_opt_class() _hh1EOLAccessories:hf_appleTVs];
+    v31 = hf_appleTVs;
     v32 = v30;
     v67 = v31;
     v33 = [v31 count];
@@ -321,7 +321,7 @@ LABEL_16:
 
       else
       {
-        if (v70)
+        if (hf_currentUserIsOwner)
         {
           v58 = @"HUResidentSWUpdateRequired_AllResidentsAreATVsWithHH1EOL_Description";
         }
@@ -343,8 +343,8 @@ LABEL_16:
       goto LABEL_56;
     }
 
-    v37 = [objc_opt_class() _hh1EOLAccessories:v72];
-    v38 = [v72 count];
+    v37 = [objc_opt_class() _hh1EOLAccessories:hf_homePods];
+    v38 = [hf_homePods count];
     if (v38 == [v29 count] && objc_msgSend(v37, "count"))
     {
       v39 = HFLogForCategory();
@@ -380,7 +380,7 @@ LABEL_16:
         __81__HMHome_HomeHubMigrationBanner___hf_homeHubMigrationBannerStringWithIsForTitle___block_invoke_3(v37);
         v65 = v37;
         v48 = v29;
-        v49 = v13;
+        v49 = homeManager;
         v51 = v50 = v20;
         *buf = 134218754;
         v74 = v45;
@@ -394,7 +394,7 @@ LABEL_16:
         _os_log_impl(&dword_20CEB6000, v44, OS_LOG_TYPE_DEFAULT, "(_hf_homeHubMigrationBannerStringWithIsForTitle:) atvsHH1EOL = (%lu) %{public}@ | hpsHH1EOL = (%lu) %{public}@", buf, 0x2Au);
 
         v20 = v50;
-        v13 = v49;
+        homeManager = v49;
         v29 = v48;
         v37 = v65;
       }
@@ -408,7 +408,7 @@ LABEL_43:
 LABEL_55:
 
 LABEL_56:
-        v6 = v67;
+        hf_appleTVs = v67;
         v5 = v69;
 LABEL_57:
 
@@ -432,7 +432,7 @@ LABEL_57:
     }
 
 LABEL_50:
-    if (v70)
+    if (hf_currentUserIsOwner)
     {
       v55 = v43;
     }
@@ -460,7 +460,7 @@ LABEL_50:
 
   else
   {
-    if (v70)
+    if (hf_currentUserIsOwner)
     {
       v60 = @"HUSoftwareUpdateHomeKitUpdateRequiredDescription_accessoriesOnly";
     }
@@ -487,13 +487,13 @@ LABEL_58:
 - (uint64_t)hf_isHomeHubMigrationBannerVisible
 {
   v20 = *MEMORY[0x277D85DE8];
-  if ([a1 hf_shouldBlockCurrentUserFromHomeForRoarUpgrade])
+  if ([self hf_shouldBlockCurrentUserFromHomeForRoarUpgrade])
   {
-    v2 = HFLogForCategory();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    homeManager = HFLogForCategory();
+    if (os_log_type_enabled(homeManager, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v9[0]) = 0;
-      _os_log_impl(&dword_20CEB6000, v2, OS_LOG_TYPE_DEFAULT, "[hf_isHomeHubMigrationBannerVisible:] Hiding HH2 migration banner because the full blockout upgrade view is displayed.", v9, 2u);
+      _os_log_impl(&dword_20CEB6000, homeManager, OS_LOG_TYPE_DEFAULT, "[hf_isHomeHubMigrationBannerVisible:] Hiding HH2 migration banner because the full blockout upgrade view is displayed.", v9, 2u);
     }
 
     v3 = 0;
@@ -501,13 +501,13 @@ LABEL_58:
 
   else
   {
-    v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v2 = [v4 homeManager];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
 
-    v5 = [a1 hf_canUpdateToHH2];
-    if ([v2 isHH2MigrationAvailable])
+    hf_canUpdateToHH2 = [self hf_canUpdateToHH2];
+    if ([homeManager isHH2MigrationAvailable])
     {
-      v6 = [v2 hasOptedToHH2]^ 1;
+      v6 = [homeManager hasOptedToHH2]^ 1;
     }
 
     else
@@ -515,20 +515,20 @@ LABEL_58:
       v6 = 0;
     }
 
-    v3 = v5 | v6;
+    v3 = hf_canUpdateToHH2 | v6;
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67110400;
       v9[1] = v3 & 1;
       v10 = 1024;
-      v11 = v5;
+      v11 = hf_canUpdateToHH2;
       v12 = 1024;
-      v13 = [a1 hf_currentUserIsOwner];
+      hf_currentUserIsOwner = [self hf_currentUserIsOwner];
       v14 = 1024;
-      v15 = [v2 isHH2MigrationAvailable];
+      isHH2MigrationAvailable = [homeManager isHH2MigrationAvailable];
       v16 = 1024;
-      v17 = [v2 hasOptedToHH2];
+      hasOptedToHH2 = [homeManager hasOptedToHH2];
       v18 = 1024;
       v19 = v6;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "[hf_isHomeHubMigrationBannerVisible:] Show HH2 migration banner: %{BOOL}d | canUpdateToHH2: %{BOOL}d | isOwner:%{BOOL}d | migrationAvailable:%{BOOL}d | hasOptedToHH2:%{BOOL}d | displayHH2UpdateRequired: %{BOOL}d", v9, 0x26u);

@@ -1,12 +1,12 @@
 @interface LogPushConnection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)formattedText;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LogPushConnection
@@ -79,8 +79,8 @@
   v7.receiver = self;
   v7.super_class = LogPushConnection;
   v3 = [(LogPushConnection *)&v7 description];
-  v4 = [(LogPushConnection *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(LogPushConnection *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -110,16 +110,16 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -128,18 +128,18 @@
       while (1)
       {
         v20 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v20 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v20 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v20 & 0x7F) << v6;
@@ -156,11 +156,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -194,10 +194,10 @@ LABEL_25:
       }
 
 LABEL_27:
-      v18 = [a3 position];
-      if (v18 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -210,12 +210,12 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_environment)
   {
     PBDataWriterWriteStringField();
@@ -258,14 +258,14 @@ LABEL_27:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_environment copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_environment copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_token copyWithZone:a3];
+  v8 = [(NSString *)self->_token copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -289,7 +289,7 @@ LABEL_27:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * v14) copyWithZone:{a3, v17}];
+        v15 = [*(*(&v17 + 1) + 8 * v14) copyWithZone:{zone, v17}];
         sub_100284E8C(v5, v15);
 
         v14 = v14 + 1;
@@ -305,13 +305,13 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((environment = self->_environment, !(environment | v4[1])) || -[NSString isEqual:](environment, "isEqual:")) && ((token = self->_token, !(token | v4[3])) || -[NSString isEqual:](token, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((environment = self->_environment, !(environment | equalCopy[1])) || -[NSString isEqual:](environment, "isEqual:")) && ((token = self->_token, !(token | equalCopy[3])) || -[NSString isEqual:](token, "isEqual:")))
   {
     messages = self->_messages;
-    if (messages | v4[2])
+    if (messages | equalCopy[2])
     {
       v8 = [(NSMutableArray *)messages isEqual:?];
     }

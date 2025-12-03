@@ -33,11 +33,11 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCys11AnyHashableV_yptGMd, &_ss23_ContiguousArrayStorageCys11AnyHashableV_yptGMR);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_2653419E0;
-  v4 = self;
+  selfCopy = self;
   v5 = MEMORY[0x277D837D0];
   AnyHashable.init<A>(_:)();
-  v7 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC24SecureMessagingAgentCore34DeregisterKeyPackageRequestMessage_telURI);
-  v6 = *(&v4->super.super._cachedBody + OBJC_IVAR____TtC24SecureMessagingAgentCore34DeregisterKeyPackageRequestMessage_telURI);
+  v7 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC24SecureMessagingAgentCore34DeregisterKeyPackageRequestMessage_telURI);
+  v6 = *(&selfCopy->super.super._cachedBody + OBJC_IVAR____TtC24SecureMessagingAgentCore34DeregisterKeyPackageRequestMessage_telURI);
   *(inited + 96) = v5;
   *(inited + 72) = v7;
   *(inited + 80) = v6;

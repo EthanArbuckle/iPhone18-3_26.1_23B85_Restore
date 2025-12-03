@@ -1,32 +1,32 @@
 @interface UIStatusBarItem
-+ (BOOL)isItemWithTypeExclusive:(int)a3 outBlacklistItems:(id *)a4 outWhitelistItems:(id *)a5;
-+ (BOOL)itemType:(int)a3 idiom:(int64_t)a4 appearsInRegion:(int)a5;
-+ (BOOL)itemType:(int)a3 idiom:(int64_t)a4 canBeEnabledForData:(id)a5 style:(id)a6;
-+ (UIStatusBarItem)itemWithType:(int)a3 idiom:(int64_t)a4;
-- (BOOL)appearsInRegion:(int)a3;
++ (BOOL)isItemWithTypeExclusive:(int)exclusive outBlacklistItems:(id *)items outWhitelistItems:(id *)whitelistItems;
++ (BOOL)itemType:(int)type idiom:(int64_t)idiom appearsInRegion:(int)region;
++ (BOOL)itemType:(int)type idiom:(int64_t)idiom canBeEnabledForData:(id)data style:(id)style;
++ (UIStatusBarItem)itemWithType:(int)type idiom:(int64_t)idiom;
+- (BOOL)appearsInRegion:(int)region;
 - (Class)viewClass;
 - (NSString)indicatorName;
-- (UIStatusBarItem)initWithType:(int)a3;
+- (UIStatusBarItem)initWithType:(int)type;
 - (id)description;
 - (int)centerOrder;
 - (int)leftOrder;
 - (int)priority;
 - (int)rightOrder;
-- (int64_t)compareCenterOrder:(id)a3;
-- (int64_t)compareLeftOrder:(id)a3;
-- (int64_t)comparePriority:(id)a3;
-- (int64_t)compareRightOrder:(id)a3;
+- (int64_t)compareCenterOrder:(id)order;
+- (int64_t)compareLeftOrder:(id)order;
+- (int64_t)comparePriority:(id)priority;
+- (int64_t)compareRightOrder:(id)order;
 @end
 
 @implementation UIStatusBarItem
 
-+ (UIStatusBarItem)itemWithType:(int)a3 idiom:(int64_t)a4
++ (UIStatusBarItem)itemWithType:(int)type idiom:(int64_t)idiom
 {
-  v5 = *&a3;
-  if ([a1 typeIsValid:?])
+  v5 = *&type;
+  if ([self typeIsValid:?])
   {
     v6 = &_MergedGlobals_1294;
-    if (a4 != 3)
+    if (idiom != 3)
     {
       v6 = &unk_1ED4A0D38;
     }
@@ -36,7 +36,7 @@
     if (!v8)
     {
       v8 = [[UIStatusBarItem alloc] initWithType:v5];
-      v8->_idiom = a4;
+      v8->_idiom = idiom;
       objc_storeStrong(v7, v8);
     }
   }
@@ -49,35 +49,35 @@
   return v8;
 }
 
-+ (BOOL)itemType:(int)a3 idiom:(int64_t)a4 canBeEnabledForData:(id)a5 style:(id)a6
++ (BOOL)itemType:(int)type idiom:(int64_t)idiom canBeEnabledForData:(id)data style:(id)style
 {
   v7 = &__itemValues;
-  if (a4 == 1)
+  if (idiom == 1)
   {
     v7 = &__padItemValues;
   }
 
-  v8 = v7[5 * a3 + 4];
+  v8 = v7[5 * type + 4];
   if (!v8)
   {
-    return *([a5 rawData] + a3);
+    return *([data rawData] + type);
   }
 
-  return (v8)(a5, a6);
+  return (v8)(data, style);
 }
 
-+ (BOOL)itemType:(int)a3 idiom:(int64_t)a4 appearsInRegion:(int)a5
++ (BOOL)itemType:(int)type idiom:(int64_t)idiom appearsInRegion:(int)region
 {
-  if (a4 == 3)
+  if (idiom == 3)
   {
-    v8 = &(&__externalItemValues)[5 * a3];
+    v8 = &(&__externalItemValues)[5 * type];
     v9 = *(v8 + 5);
     v10 = (v8 + 3);
   }
 
   else
   {
-    if (a4 == 1)
+    if (idiom == 1)
     {
       v11 = &__padItemValues;
     }
@@ -88,7 +88,7 @@
     }
 
     v12 = +[UIStatusBar _deviceUserInterfaceLayoutDirection];
-    v13 = &v11[5 * a3];
+    v13 = &v11[5 * type];
     v14 = v13 + 5;
     v15 = (v13 + 3);
     if (v12)
@@ -113,48 +113,48 @@
     }
   }
 
-  if (a5 == 2)
+  if (region == 2)
   {
     v19 = &__itemValues;
-    if (a4 == 1)
+    if (idiom == 1)
     {
       v19 = &__padItemValues;
     }
 
-    if (a4 == 3)
+    if (idiom == 3)
     {
       v19 = &__externalItemValues;
     }
 
-    v18 = HIDWORD(v19[5 * a3 + 3]);
+    v18 = HIDWORD(v19[5 * type + 3]);
     return v18 != 0;
   }
 
-  if (a5 == 1)
+  if (region == 1)
   {
     v18 = *v10;
     return v18 != 0;
   }
 
-  return !a5 && v9 != 0;
+  return !region && v9 != 0;
 }
 
-+ (BOOL)isItemWithTypeExclusive:(int)a3 outBlacklistItems:(id *)a4 outWhitelistItems:(id *)a5
++ (BOOL)isItemWithTypeExclusive:(int)exclusive outBlacklistItems:(id *)items outWhitelistItems:(id *)whitelistItems
 {
   result = 0;
-  if (a3 <= 46)
+  if (exclusive <= 46)
   {
-    if (a3 == 36)
+    if (exclusive == 36)
     {
       return 1;
     }
 
-    if (a3 != 42)
+    if (exclusive != 42)
     {
       return result;
     }
 
-    if (a4)
+    if (items)
     {
       v7 = MEMORY[0x1E695DFD8];
       v8 = &unk_1EFE331F0;
@@ -162,28 +162,28 @@ LABEL_15:
       v12 = [v7 setWithObject:v8];
       v13 = v12;
       result = 0;
-      *a4 = v12;
+      *items = v12;
       return result;
     }
 
     return 0;
   }
 
-  switch(a3)
+  switch(exclusive)
   {
     case '3':
-      if (a5)
+      if (whitelistItems)
       {
         v10 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1EFE331A8, &unk_1EFE331C0, 0}];
         v11 = v10;
         result = 0;
-        *a5 = v10;
+        *whitelistItems = v10;
         return result;
       }
 
       return 0;
     case '2':
-      if (a4)
+      if (items)
       {
         v7 = MEMORY[0x1E695DFD8];
         v8 = &unk_1EFE331D8;
@@ -198,14 +198,14 @@ LABEL_15:
   return result;
 }
 
-- (UIStatusBarItem)initWithType:(int)a3
+- (UIStatusBarItem)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = UIStatusBarItem;
   result = [(UIStatusBarItem *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -360,19 +360,19 @@ LABEL_15:
   return v2[5 * self->_type + 1];
 }
 
-- (BOOL)appearsInRegion:(int)a3
+- (BOOL)appearsInRegion:(int)region
 {
-  if (a3 == 2)
+  if (region == 2)
   {
     return [(UIStatusBarItem *)self appearsOnCenter];
   }
 
-  if (a3 == 1)
+  if (region == 1)
   {
     return [(UIStatusBarItem *)self appearsOnRight];
   }
 
-  if (a3)
+  if (region)
   {
     return 0;
   }
@@ -380,13 +380,13 @@ LABEL_15:
   return [(UIStatusBarItem *)self appearsOnLeft];
 }
 
-- (int64_t)comparePriority:(id)a3
+- (int64_t)comparePriority:(id)priority
 {
-  v4 = a3;
-  v5 = [(UIStatusBarItem *)self priority];
-  v6 = [v4 priority];
+  priorityCopy = priority;
+  priority = [(UIStatusBarItem *)self priority];
+  priority2 = [priorityCopy priority];
 
-  if (v5 >= v6)
+  if (priority >= priority2)
   {
     v7 = 0;
   }
@@ -396,7 +396,7 @@ LABEL_15:
     v7 = -1;
   }
 
-  if (v5 > v6)
+  if (priority > priority2)
   {
     return 1;
   }
@@ -407,13 +407,13 @@ LABEL_15:
   }
 }
 
-- (int64_t)compareLeftOrder:(id)a3
+- (int64_t)compareLeftOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(UIStatusBarItem *)self leftOrder];
-  v6 = [v4 leftOrder];
+  orderCopy = order;
+  leftOrder = [(UIStatusBarItem *)self leftOrder];
+  leftOrder2 = [orderCopy leftOrder];
 
-  if (v5 >= v6)
+  if (leftOrder >= leftOrder2)
   {
     v7 = 0;
   }
@@ -423,7 +423,7 @@ LABEL_15:
     v7 = -1;
   }
 
-  if (v5 > v6)
+  if (leftOrder > leftOrder2)
   {
     return 1;
   }
@@ -434,13 +434,13 @@ LABEL_15:
   }
 }
 
-- (int64_t)compareRightOrder:(id)a3
+- (int64_t)compareRightOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(UIStatusBarItem *)self rightOrder];
-  v6 = [v4 rightOrder];
+  orderCopy = order;
+  rightOrder = [(UIStatusBarItem *)self rightOrder];
+  rightOrder2 = [orderCopy rightOrder];
 
-  if (v5 >= v6)
+  if (rightOrder >= rightOrder2)
   {
     v7 = 0;
   }
@@ -450,7 +450,7 @@ LABEL_15:
     v7 = -1;
   }
 
-  if (v5 > v6)
+  if (rightOrder > rightOrder2)
   {
     return 1;
   }
@@ -461,13 +461,13 @@ LABEL_15:
   }
 }
 
-- (int64_t)compareCenterOrder:(id)a3
+- (int64_t)compareCenterOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(UIStatusBarItem *)self centerOrder];
-  v6 = [v4 centerOrder];
+  orderCopy = order;
+  centerOrder = [(UIStatusBarItem *)self centerOrder];
+  centerOrder2 = [orderCopy centerOrder];
 
-  if (v5 >= v6)
+  if (centerOrder >= centerOrder2)
   {
     v7 = 0;
   }
@@ -477,7 +477,7 @@ LABEL_15:
     v7 = -1;
   }
 
-  if (v5 > v6)
+  if (centerOrder > centerOrder2)
   {
     return 1;
   }
@@ -496,12 +496,12 @@ LABEL_15:
   v4 = NSStringFromClass([(UIStatusBarItem *)self viewClass]);
   v5 = [v3 stringByAppendingFormat:@" [%@", v4];
 
-  v6 = [(UIStatusBarItem *)self indicatorName];
+  indicatorName = [(UIStatusBarItem *)self indicatorName];
 
-  if (v6)
+  if (indicatorName)
   {
-    v7 = [(UIStatusBarItem *)self indicatorName];
-    v8 = [v5 stringByAppendingFormat:@":%@", v7];
+    indicatorName2 = [(UIStatusBarItem *)self indicatorName];
+    v8 = [v5 stringByAppendingFormat:@":%@", indicatorName2];
 
     v5 = v8;
   }

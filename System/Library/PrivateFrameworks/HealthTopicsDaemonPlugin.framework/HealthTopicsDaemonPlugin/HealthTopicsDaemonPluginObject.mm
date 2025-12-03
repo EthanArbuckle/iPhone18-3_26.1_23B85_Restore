@@ -1,8 +1,8 @@
 @interface HealthTopicsDaemonPluginObject
 - (NSString)pluginIdentifier;
 - (_TtC24HealthTopicsDaemonPlugin30HealthTopicsDaemonPluginObject)init;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
 @end
 
@@ -16,21 +16,21 @@
   return v2;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_251F5C8F8();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_251F5BDF8(v4);
+  profileCopy = profile;
+  selfCopy = self;
+  v6 = sub_251F5BDF8(profileCopy);
 
   return v6;
 }

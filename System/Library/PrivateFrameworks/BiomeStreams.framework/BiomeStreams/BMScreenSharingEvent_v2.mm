@@ -1,13 +1,13 @@
 @interface BMScreenSharingEvent_v2
-- (BMScreenSharingEvent_v2)initWithProto:(id)a3;
+- (BMScreenSharingEvent_v2)initWithProto:(id)proto;
 @end
 
 @implementation BMScreenSharingEvent_v2
 
-- (BMScreenSharingEvent_v2)initWithProto:(id)a3
+- (BMScreenSharingEvent_v2)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -18,24 +18,24 @@
         [BMScreenSharingEvent initWithProto:];
       }
 
-      v10 = 0;
+      selfCopy = 0;
       goto LABEL_15;
     }
 
-    v5 = v4;
-    v6 = [v5 isStart];
-    v7 = [v5 type];
-    if (v7 != 1)
+    v5 = protoCopy;
+    isStart = [v5 isStart];
+    type = [v5 type];
+    if (type != 1)
     {
-      v8 = v7;
-      if (v7 == 2)
+      v8 = type;
+      if (type == 2)
       {
         v9 = 1;
 LABEL_14:
         v13.receiver = self;
         v13.super_class = BMScreenSharingEvent_v2;
-        self = [(BMScreenSharingEvent *)&v13 initWithIsStart:v6 type:v9];
-        v10 = self;
+        self = [(BMScreenSharingEvent *)&v13 initWithIsStart:isStart type:v9];
+        selfCopy = self;
 LABEL_15:
 
         goto LABEL_16;
@@ -52,10 +52,10 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

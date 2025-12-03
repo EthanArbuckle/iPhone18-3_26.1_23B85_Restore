@@ -1,15 +1,15 @@
 @interface iOSSetupFinishViewController
-- (void)handleDismissButton:(id)a3;
-- (void)handleProgressEvent:(unsigned int)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleDismissButton:(id)button;
+- (void)handleProgressEvent:(unsigned int)event;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation iOSSetupFinishViewController
 
-- (void)handleProgressEvent:(unsigned int)a3
+- (void)handleProgressEvent:(unsigned int)event
 {
-  if (a3 == 97)
+  if (event == 97)
   {
     v4 = [self->super.super._mainController otherDeviceClassCode] - 1;
     if (v4 > 6)
@@ -29,7 +29,7 @@
 
   else
   {
-    if (a3 != 99)
+    if (event != 99)
     {
       return;
     }
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -50,9 +50,9 @@
   [(iOSSetupBaseViewController *)self dismissWithType:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -60,15 +60,15 @@
 
   v6.receiver = self;
   v6.super_class = iOSSetupFinishViewController;
-  [(iOSSetupFinishViewController *)&v6 viewDidDisappear:v3];
+  [(iOSSetupFinishViewController *)&v6 viewDidDisappear:disappearCopy];
   [self->super.super._mainController setBlockHardwareButtons:0];
-  v5 = [self->super.super._mainController _remoteViewControllerProxy];
-  [v5 setDesiredHardwareButtonEvents:{objc_msgSend(self->super.super._mainController, "desiredHomeButtonEvents")}];
+  _remoteViewControllerProxy = [self->super.super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:{objc_msgSend(self->super.super._mainController, "desiredHomeButtonEvents")}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -76,10 +76,10 @@
 
   v28.receiver = self;
   v28.super_class = iOSSetupFinishViewController;
-  [(SVSBaseViewController *)&v28 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v28 viewWillAppear:appearCopy];
   [self->super.super._mainController setBlockHardwareButtons:1];
-  v5 = [self->super.super._mainController _remoteViewControllerProxy];
-  [v5 setDesiredHardwareButtonEvents:17];
+  _remoteViewControllerProxy = [self->super.super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:17];
   v6 = [self->super.super._mainController otherDeviceClassCode] - 1;
   if (v6 > 6)
   {
@@ -130,7 +130,7 @@
     v25[2] = sub_1000F5C60;
     v25[3] = &unk_100195A70;
     v26 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-    v27 = self;
+    selfCopy = self;
     v24 = v26;
     dispatch_source_set_event_handler(v24, v25);
     SFDispatchTimerSet();

@@ -1,14 +1,14 @@
 @interface MBDHTMLToSuper_SPAN_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDHTMLToSuper_SPAN_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v17 = a4;
-  v10 = MBDIMCopyNormalizedAttributes(a8, 1, 0);
+  contextCopy = context;
+  v10 = MBDIMCopyNormalizedAttributes(attributes, 1, 0);
   v11 = [v10 objectForKey:@"style"];
   v12 = MBDIMCreateDictionaryFromCSSString(v11, 1);
   v13 = [v12 objectForKey:@"font-family"];
@@ -17,19 +17,19 @@
   v16 = [v12 objectForKey:@"text-decoration"];
   if (v13)
   {
-    [v17 pushFontFamily:v13];
+    [contextCopy pushFontFamily:v13];
     self->_shouldPopFontFamily = 1;
   }
 
   if (v15 && ([v15 rangeOfString:@"bold" options:1] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v15, "integerValue") >= 700))
   {
-    [v17 incrementBoldCount];
+    [contextCopy incrementBoldCount];
     self->_shouldDecrementBoldCount = 1;
   }
 
   if (v14 && ([v14 rangeOfString:@"italic" options:1] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v14, "rangeOfString:options:", @"oblique", 1) != 0x7FFFFFFFFFFFFFFFLL))
   {
-    [v17 incrementItalicCount];
+    [contextCopy incrementItalicCount];
     self->_shouldDecrementItalicCount = 1;
   }
 
@@ -37,48 +37,48 @@
   {
     if ([v16 rangeOfString:@"under" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v17 incrementUnderlineCount];
+      [contextCopy incrementUnderlineCount];
       self->_shouldDecrementUnderlineCount = 1;
     }
 
     if ([v16 rangeOfString:@"line-through" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v17 incrementStrikethroughCount];
+      [contextCopy incrementStrikethroughCount];
       self->_shouldDecrementStrikeCount = 1;
     }
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  parserCopy = parser;
+  contextCopy = context;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   if (self->_shouldPopFontFamily)
   {
-    [v12 popFontFamily];
+    [contextCopy popFontFamily];
   }
 
   if (self->_shouldDecrementBoldCount)
   {
-    [v12 decrementBoldCount];
+    [contextCopy decrementBoldCount];
   }
 
   if (self->_shouldDecrementItalicCount)
   {
-    [v12 decrementItalicCount];
+    [contextCopy decrementItalicCount];
   }
 
   if (self->_shouldDecrementUnderlineCount)
   {
-    [v12 decrementUnderlineCount];
+    [contextCopy decrementUnderlineCount];
   }
 
   if (self->_shouldDecrementStrikeCount)
   {
-    [v12 decrementStrikethroughCount];
+    [contextCopy decrementStrikethroughCount];
   }
 }
 

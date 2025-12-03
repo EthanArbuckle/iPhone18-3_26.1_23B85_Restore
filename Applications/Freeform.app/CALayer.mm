@@ -2,18 +2,18 @@
 - (BOOL)crl_hideOverlayLayerDuringZoomOperations;
 - (BOOL)crl_tilingSafeHasContents;
 - (CGImage)crl_newRasterizedImageRef;
-- (CGImage)crl_newRasterizedImageRefForLayerRect:(CGRect)a3;
+- (CGImage)crl_newRasterizedImageRefForLayerRect:(CGRect)rect;
 - (CGRect)crl_frameIncludingSublayers;
 - (NSArray)crl_sublayersForTilingLayerSupport;
-- (void)crl_addSpringScaleInAnimationWithDelay:(double)a3;
-- (void)crl_addZoomAnimationFromPoint:(CGPoint)a3 startingScale:(double)a4;
+- (void)crl_addSpringScaleInAnimationWithDelay:(double)delay;
+- (void)crl_addZoomAnimationFromPoint:(CGPoint)point startingScale:(double)scale;
 - (void)crl_applyDefaultCanvasOverlayUIShadowSettings;
 - (void)crl_cancelLayoutForTilingLayers;
-- (void)crl_ignoreAccessibilityInvertColorsIfNeeded:(BOOL)a3;
-- (void)crl_setHideOverlayLayerDuringZoomOperations:(BOOL)a3;
-- (void)crl_setIfDifferentFrame:(CGRect)a3 orTransform:(CGAffineTransform *)a4;
+- (void)crl_ignoreAccessibilityInvertColorsIfNeeded:(BOOL)needed;
+- (void)crl_setHideOverlayLayerDuringZoomOperations:(BOOL)operations;
+- (void)crl_setIfDifferentFrame:(CGRect)frame orTransform:(CGAffineTransform *)transform;
 - (void)crl_setNeedsLayoutForTilingLayers;
-- (void)crl_tilingSafeSetSublayers:(id)a3;
+- (void)crl_tilingSafeSetSublayers:(id)sublayers;
 - (void)crl_undoIgnoreAccessibilityInvertColors;
 - (void)p_clearAllLayerDelegates;
 @end
@@ -22,7 +22,7 @@
 
 - (void)p_clearAllLayerDelegates
 {
-  v3 = [(CALayer *)self delegate];
+  delegate = [(CALayer *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -31,7 +31,7 @@
   if (isKindOfClass)
   {
     v6 = v5;
-    v7 = [(CALayer *)self delegate];
+    delegate2 = [(CALayer *)self delegate];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
@@ -46,12 +46,12 @@
     [(CALayer *)self setDelegate:0];
   }
 
-  v9 = [(CALayer *)self sublayers];
+  sublayers = [(CALayer *)self sublayers];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v10 = [sublayers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -63,7 +63,7 @@
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v14 + 1) + 8 * v13) p_clearAllLayerDelegates];
@@ -71,27 +71,27 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [sublayers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)crl_ignoreAccessibilityInvertColorsIfNeeded:(BOOL)a3
+- (void)crl_ignoreAccessibilityInvertColorsIfNeeded:(BOOL)needed
 {
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v4 = [(CALayer *)self filters];
+    filters = [(CALayer *)self filters];
 
-    if (v4)
+    if (filters)
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(CALayer *)self filters];
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      filters2 = [(CALayer *)self filters];
+      v6 = [filters2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         v7 = v6;
@@ -102,11 +102,11 @@ LABEL_5:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(filters2);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) name];
-          v11 = [v10 isEqualToString:@"CRLCALayerAdditionsAXDoubleInvertFilterKey"];
+          name = [*(*(&v14 + 1) + 8 * v9) name];
+          v11 = [name isEqualToString:@"CRLCALayerAdditionsAXDoubleInvertFilterKey"];
 
           if (v11)
           {
@@ -115,7 +115,7 @@ LABEL_5:
 
           if (v7 == ++v9)
           {
-            v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+            v7 = [filters2 countByEnumeratingWithState:&v14 objects:v18 count:16];
             if (v7)
             {
               goto LABEL_5;
@@ -126,16 +126,16 @@ LABEL_5:
         }
       }
 
-      v5 = [(CALayer *)self filters];
+      filters2 = [(CALayer *)self filters];
       v12 = sub_1001A853C();
-      v13 = [v5 arrayByAddingObject:v12];
+      v13 = [filters2 arrayByAddingObject:v12];
       [(CALayer *)self setFilters:v13];
     }
 
     else
     {
-      v5 = sub_1001A853C();
-      v19 = v5;
+      filters2 = sub_1001A853C();
+      v19 = filters2;
       v12 = [NSArray arrayWithObjects:&v19 count:1];
       [(CALayer *)self setFilters:v12];
     }
@@ -149,47 +149,47 @@ LABEL_17:
 
 - (void)crl_undoIgnoreAccessibilityInvertColors
 {
-  v4 = [(CALayer *)self filters];
-  v3 = [v4 crl_arrayOfObjectsPassingTest:&stru_101844560];
+  filters = [(CALayer *)self filters];
+  v3 = [filters crl_arrayOfObjectsPassingTest:&stru_101844560];
   [(CALayer *)self setFilters:v3];
 }
 
 - (NSArray)crl_sublayersForTilingLayerSupport
 {
-  v2 = [(CALayer *)self sublayers];
-  v3 = [v2 copy];
+  sublayers = [(CALayer *)self sublayers];
+  v3 = [sublayers copy];
 
   return v3;
 }
 
 - (void)crl_setNeedsLayoutForTilingLayers
 {
-  v3 = [(CALayer *)self crl_sublayersForTilingLayerSupport];
-  [v3 makeObjectsPerformSelector:a2];
+  crl_sublayersForTilingLayerSupport = [(CALayer *)self crl_sublayersForTilingLayerSupport];
+  [crl_sublayersForTilingLayerSupport makeObjectsPerformSelector:a2];
 }
 
 - (void)crl_cancelLayoutForTilingLayers
 {
-  v3 = [(CALayer *)self crl_sublayersForTilingLayerSupport];
-  [v3 makeObjectsPerformSelector:a2];
+  crl_sublayersForTilingLayerSupport = [(CALayer *)self crl_sublayersForTilingLayerSupport];
+  [crl_sublayersForTilingLayerSupport makeObjectsPerformSelector:a2];
 }
 
-- (void)crl_tilingSafeSetSublayers:(id)a3
+- (void)crl_tilingSafeSetSublayers:(id)sublayers
 {
-  v6 = a3;
-  v4 = [(CALayer *)self sublayers];
-  v5 = [v6 isEqualToArray:v4];
+  sublayersCopy = sublayers;
+  sublayers = [(CALayer *)self sublayers];
+  v5 = [sublayersCopy isEqualToArray:sublayers];
 
   if ((v5 & 1) == 0)
   {
-    [(CALayer *)self setSublayers:v6];
+    [(CALayer *)self setSublayers:sublayersCopy];
   }
 }
 
 - (BOOL)crl_tilingSafeHasContents
 {
-  v2 = [(CALayer *)self contents];
-  v3 = v2 != 0;
+  contents = [(CALayer *)self contents];
+  v3 = contents != 0;
 
   return v3;
 }
@@ -206,12 +206,12 @@ LABEL_17:
   [(CALayer *)self setShadowOffset:0.0, 4.0];
 }
 
-- (void)crl_setIfDifferentFrame:(CGRect)a3 orTransform:(CGAffineTransform *)a4
+- (void)crl_setIfDifferentFrame:(CGRect)frame orTransform:(CGAffineTransform *)transform
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ((sub_100122890() & 1) != 0 || (v9 = *&a4->c, *&t1.a = *&a4->a, *&t1.c = v9, *&t1.tx = *&a4->tx, sub_1001228C8()))
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ((sub_100122890() & 1) != 0 || (v9 = *&transform->c, *&t1.a = *&transform->a, *&t1.c = v9, *&t1.tx = *&transform->tx, sub_1001228C8()))
   {
     v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -267,24 +267,24 @@ LABEL_17:
     }
 
     [(CALayer *)self affineTransform];
-    v29 = *&a4->c;
-    *&v31.a = *&a4->a;
+    v29 = *&transform->c;
+    *&v31.a = *&transform->a;
     *&v31.c = v29;
-    *&v31.tx = *&a4->tx;
+    *&v31.tx = *&transform->tx;
     if (!CGAffineTransformEqualToTransform(&t1, &v31))
     {
-      v30 = *&a4->c;
-      *&t1.a = *&a4->a;
+      v30 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v30;
-      *&t1.tx = *&a4->tx;
+      *&t1.tx = *&transform->tx;
       [(CALayer *)self setAffineTransform:&t1];
     }
   }
 }
 
-- (void)crl_setHideOverlayLayerDuringZoomOperations:(BOOL)a3
+- (void)crl_setHideOverlayLayerDuringZoomOperations:(BOOL)operations
 {
-  if (a3)
+  if (operations)
   {
     v3 = 0;
   }
@@ -305,10 +305,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)crl_addZoomAnimationFromPoint:(CGPoint)a3 startingScale:(double)a4
+- (void)crl_addZoomAnimationFromPoint:(CGPoint)point startingScale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CALayer *)self crl_removeZoomAnimation];
   v38 = +[NSMutableArray array];
   [(CALayer *)self position];
@@ -347,7 +347,7 @@ LABEL_17:
   }
 
   v29 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
-  v30 = [NSNumber numberWithDouble:a4];
+  v30 = [NSNumber numberWithDouble:scale];
   [v29 setFromValue:v30];
 
   v31 = [NSNumber numberWithDouble:1.0];
@@ -376,7 +376,7 @@ LABEL_17:
   [(CALayer *)self addAnimation:v37 forKey:@"CRLZoomAnimationKey"];
 }
 
-- (void)crl_addSpringScaleInAnimationWithDelay:(double)a3
+- (void)crl_addSpringScaleInAnimationWithDelay:(double)delay
 {
   [(CALayer *)self crl_removeSpringScaleInAnimation];
   LODWORD(v5) = 1051260355;
@@ -387,7 +387,7 @@ LABEL_17:
   v10 = [NSNumber numberWithDouble:0.0];
   [v9 setFromValue:v10];
 
-  [v9 setBeginTime:a3];
+  [v9 setBeginTime:delay];
   [v9 setDuration:0.2];
   [v9 setTimingFunction:v8];
   [v9 setFillMode:kCAFillModeBoth];
@@ -400,7 +400,7 @@ LABEL_17:
   [v11 setInitialVelocity:0.0];
   [v11 settlingDuration];
   [v11 setDuration:?];
-  [v11 setBeginTime:a3];
+  [v11 setBeginTime:delay];
   [v11 settlingDuration];
   v13 = v12;
   [v9 duration];
@@ -409,7 +409,7 @@ LABEL_17:
     v14 = v13;
   }
 
-  v15 = v14 + a3;
+  v15 = v14 + delay;
   v16 = objc_alloc_init(CAAnimationGroup);
   v18[0] = v9;
   v18[1] = v11;
@@ -434,8 +434,8 @@ LABEL_17:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v11 = [(CALayer *)self sublayers];
-    v12 = [v11 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    sublayers = [(CALayer *)self sublayers];
+    v12 = [sublayers countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v12)
     {
       v13 = v12;
@@ -446,7 +446,7 @@ LABEL_17:
         {
           if (*v48 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sublayers);
           }
 
           [*(*(&v47 + 1) + 8 * i) crl_frameIncludingSublayers];
@@ -454,12 +454,12 @@ LABEL_17:
           v19 = v18;
           v21 = v20;
           v23 = v22;
-          v24 = [(CALayer *)self superlayer];
+          superlayer = [(CALayer *)self superlayer];
 
-          if (v24)
+          if (superlayer)
           {
-            v25 = [(CALayer *)self superlayer];
-            [v25 convertRect:self fromLayer:{v17, v19, v21, v23}];
+            superlayer2 = [(CALayer *)self superlayer];
+            [superlayer2 convertRect:self fromLayer:{v17, v19, v21, v23}];
             x = v26;
             y = v28;
             width = v30;
@@ -507,7 +507,7 @@ LABEL_17:
           v10 = v55.size.height;
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v47 objects:v51 count:16];
+        v13 = [sublayers countByEnumeratingWithState:&v47 objects:v51 count:16];
       }
 
       while (v13);
@@ -532,14 +532,14 @@ LABEL_17:
   return [(CALayer *)self crl_newRasterizedImageRefForLayerRect:?];
 }
 
-- (CGImage)crl_newRasterizedImageRefForLayerRect:(CGRect)a3
+- (CGImage)crl_newRasterizedImageRefForLayerRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
-  [(CALayer *)v7 frame];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  [(CALayer *)selfCopy frame];
   v104.origin.x = v8;
   v104.origin.y = v9;
   v104.size.width = v10;
@@ -548,16 +548,16 @@ LABEL_17:
   v89.origin.y = y;
   v89.size.width = width;
   v89.size.height = height;
-  v12 = v7;
+  lastObject2 = selfCopy;
   if (CGRectEqualToRect(v89, v104))
   {
-    v13 = [(CALayer *)v7 sublayers];
-    v14 = [v13 count];
+    sublayers = [(CALayer *)selfCopy sublayers];
+    v14 = [sublayers count];
 
-    v12 = v7;
+    lastObject2 = selfCopy;
     if (v14 <= 1)
     {
-      v15 = v7;
+      v15 = selfCopy;
       while (1)
       {
         [(CALayer *)v15 borderWidth];
@@ -566,8 +566,8 @@ LABEL_17:
           goto LABEL_20;
         }
 
-        v17 = [(CALayer *)v15 mask];
-        if (v17)
+        mask = [(CALayer *)v15 mask];
+        if (mask)
         {
           break;
         }
@@ -615,24 +615,24 @@ LABEL_17:
           goto LABEL_20;
         }
 
-        v21 = [(CALayer *)v15 sublayers];
-        v22 = [v21 count];
+        sublayers2 = [(CALayer *)v15 sublayers];
+        v22 = [sublayers2 count];
 
         if (v22 != 1)
         {
-          v82 = [(CALayer *)v15 contents];
+          contents = [(CALayer *)v15 contents];
 
-          if (v82)
+          if (contents)
           {
             Image = [(CALayer *)v15 contents];
 
             CGImageRetain(Image);
-            v12 = v15;
+            lastObject2 = v15;
             goto LABEL_41;
           }
 
 LABEL_20:
-          v12 = v15;
+          lastObject2 = v15;
           goto LABEL_21;
         }
 
@@ -641,9 +641,9 @@ LABEL_20:
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        v31 = [(CALayer *)v15 sublayers];
-        v32 = [v31 lastObject];
-        [v32 bounds];
+        sublayers3 = [(CALayer *)v15 sublayers];
+        lastObject = [sublayers3 lastObject];
+        [lastObject bounds];
         v106.origin.x = v33;
         v106.origin.y = v34;
         v106.size.width = v35;
@@ -659,13 +659,13 @@ LABEL_20:
           goto LABEL_20;
         }
 
-        v38 = [(CALayer *)v15 sublayers];
-        v12 = [v38 lastObject];
+        sublayers4 = [(CALayer *)v15 sublayers];
+        lastObject2 = [sublayers4 lastObject];
 
-        v39 = [(CALayer *)v12 sublayers];
-        v40 = [v39 count];
+        sublayers5 = [(CALayer *)lastObject2 sublayers];
+        v40 = [sublayers5 count];
 
-        v15 = v12;
+        v15 = lastObject2;
         if (v40 > 1)
         {
           goto LABEL_21;
@@ -677,7 +677,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  [(CALayer *)v7 crl_frameIncludingSublayers];
+  [(CALayer *)selfCopy crl_frameIncludingSublayers];
   v41 = v92.origin.x;
   v42 = v92.origin.y;
   v43 = v92.size.width;
@@ -763,21 +763,21 @@ LABEL_21:
   v53 = v97.origin.y;
   v54 = v97.size.width;
   v55 = v97.size.height;
-  [(CALayer *)v7 frame];
+  [(CALayer *)selfCopy frame];
   MinX = CGRectGetMinX(v98);
   v99.origin.x = v52;
   v99.origin.y = v53;
   v99.size.width = v54;
   v99.size.height = v55;
   v83 = CGRectGetMinX(v99);
-  [(CALayer *)v7 frame];
+  [(CALayer *)selfCopy frame];
   MinY = CGRectGetMinY(v100);
   v101.origin.x = v52;
   v101.origin.y = v53;
   v101.size.width = v54;
   v101.size.height = v55;
   v57 = CGRectGetMinY(v101);
-  [(CALayer *)v7 contentsScale];
+  [(CALayer *)selfCopy contentsScale];
   v59 = v58;
   v60 = sub_10011F340(v54, v55, v58);
   v62 = v61;
@@ -796,9 +796,9 @@ LABEL_21:
     v67 = v66;
     CGAffineTransformMakeScale(&v88, v59, v59);
     CGContextConcatCTM(v67, &v88);
-    if (v12)
+    if (lastObject2)
     {
-      [(CALayer *)v12 transform];
+      [(CALayer *)lastObject2 transform];
     }
 
     else
@@ -816,10 +816,10 @@ LABEL_21:
       *&transform.c = v69;
       *&transform.tx = *&v88.m21;
       CGAffineTransformTranslate(&v88, &transform, -v52, -v53);
-      [(CALayer *)v7 anchorPoint];
+      [(CALayer *)selfCopy anchorPoint];
       v71 = v70;
       v73 = v72;
-      [(CALayer *)v7 bounds];
+      [(CALayer *)selfCopy bounds];
       v75 = sub_10011FFCC(v71, v73, v74);
       v77 = v76;
       *&t1.a = *&v88.m11;
@@ -829,7 +829,7 @@ LABEL_21:
       *&v88.m11 = *&transform.a;
       *&v88.m13 = *&transform.c;
       *&v88.m21 = *&transform.tx;
-      [(CALayer *)v7 affineTransform];
+      [(CALayer *)selfCopy affineTransform];
       *&t2.a = *&v88.m11;
       *&t2.c = *&v88.m13;
       *&t2.tx = *&v88.m21;
@@ -847,7 +847,7 @@ LABEL_21:
 
     CGAffineTransformMakeTranslation(&v88, MinX - v83, MinY - v57);
     CGContextConcatCTM(v67, &v88);
-    [(CALayer *)v7 renderInContext:v67];
+    [(CALayer *)selfCopy renderInContext:v67];
     Image = CGBitmapContextCreateImage(v67);
     CGContextRelease(v67);
   }

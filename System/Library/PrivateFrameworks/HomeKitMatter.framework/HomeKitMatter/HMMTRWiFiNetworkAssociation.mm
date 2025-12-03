@@ -1,21 +1,21 @@
 @interface HMMTRWiFiNetworkAssociation
-- (HMMTRWiFiNetworkAssociation)initWithSSID:(id)a3 credentials:(id)a4;
+- (HMMTRWiFiNetworkAssociation)initWithSSID:(id)d credentials:(id)credentials;
 @end
 
 @implementation HMMTRWiFiNetworkAssociation
 
-- (HMMTRWiFiNetworkAssociation)initWithSSID:(id)a3 credentials:(id)a4
+- (HMMTRWiFiNetworkAssociation)initWithSSID:(id)d credentials:(id)credentials
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  credentialsCopy = credentials;
   v12.receiver = self;
   v12.super_class = HMMTRWiFiNetworkAssociation;
   v9 = [(HMMTRWiFiNetworkAssociation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ssid, a3);
-    objc_storeStrong(&v10->_credentials, a4);
+    objc_storeStrong(&v9->_ssid, d);
+    objc_storeStrong(&v10->_credentials, credentials);
   }
 
   return v10;

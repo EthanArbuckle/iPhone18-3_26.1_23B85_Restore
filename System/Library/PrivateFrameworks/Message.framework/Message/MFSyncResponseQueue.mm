@@ -1,18 +1,18 @@
 @interface MFSyncResponseQueue
-- (BOOL)addItem:(id)a3;
+- (BOOL)addItem:(id)item;
 @end
 
 @implementation MFSyncResponseQueue
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
-  v4 = a3;
-  if ([v4 responseType] == 17)
+  itemCopy = item;
+  if ([itemCopy responseType] == 17)
   {
-    v5 = [v4 fetchResults];
+    fetchResults = [itemCopy fetchResults];
     v7.receiver = self;
     v7.super_class = MFSyncResponseQueue;
-    [(MFBufferedQueue *)&v7 addItem:v5];
+    [(MFBufferedQueue *)&v7 addItem:fetchResults];
   }
 
   return 1;

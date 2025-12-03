@@ -3,7 +3,7 @@
 + (id)logCategory;
 + (void)recordCurrentBackupRunToUserDefault;
 + (void)resetHH2KeyBackupOperationFromUserDefault;
-- (BOOL)mainWithError:(id *)a3;
+- (BOOL)mainWithError:(id *)error;
 - (id)logIdentifier;
 @end
 
@@ -33,7 +33,7 @@ void __48__HMDAuditHH2KeysForBackupOperation_logCategory__block_invoke()
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = a1;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -44,8 +44,8 @@ void __48__HMDAuditHH2KeysForBackupOperation_logCategory__block_invoke()
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 removeObjectForKey:@"HMDHH2BackUpKeyBackgroundOperationTimeStampKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"HMDHH2BackUpKeyBackgroundOperationTimeStampKey"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -54,7 +54,7 @@ void __48__HMDAuditHH2KeysForBackupOperation_logCategory__block_invoke()
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = a1;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -65,9 +65,9 @@ void __48__HMDAuditHH2KeysForBackupOperation_logCategory__block_invoke()
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v8 = [MEMORY[0x277CBEAA8] now];
-  [v7 setObject:v8 forKey:@"HMDHH2BackUpKeyBackgroundOperationTimeStampKey"];
+  [standardUserDefaults setObject:v8 forKey:@"HMDHH2BackUpKeyBackgroundOperationTimeStampKey"];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -75,8 +75,8 @@ void __48__HMDAuditHH2KeysForBackupOperation_logCategory__block_invoke()
 + (BOOL)shouldWeScheduleHH2KeyBackupOperation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"HMDHH2BackUpKeyBackgroundOperationTimeStampKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"HMDHH2BackUpKeyBackgroundOperationTimeStampKey"];
 
   v5 = v4;
   objc_opt_class();
@@ -95,7 +95,7 @@ void __48__HMDAuditHH2KeysForBackupOperation_logCategory__block_invoke()
   if (!v7)
   {
     v11 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     v16 = 1;
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -120,7 +120,7 @@ LABEL_13:
   v10 = v9;
 
   v11 = objc_autoreleasePoolPush();
-  v12 = a1;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
   if (v10 >= 86400.0)
@@ -163,17 +163,17 @@ LABEL_15:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -185,17 +185,17 @@ LABEL_15:
 
   objc_autoreleasePoolPop(v4);
   [objc_opt_class() recordCurrentBackupRunToUserDefault];
-  v8 = [MEMORY[0x277CFEC78] systemStore];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v38 = 0;
-  v9 = [v8 allKeysForType:&unk_283E73A60 error:&v38];
+  v9 = [systemStore allKeysForType:&unk_283E73A60 error:&v38];
   v10 = v38;
   v37 = v10;
-  v11 = [v8 allKeysForType:&unk_283E73A78 error:&v37];
+  v11 = [systemStore allKeysForType:&unk_283E73A78 error:&v37];
   v12 = v37;
 
   v13 = [v9 count] == 0;
   v14 = objc_autoreleasePoolPush();
-  v15 = v5;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   v17 = v16;
   if (v13)
@@ -254,7 +254,7 @@ LABEL_15:
     v32[3] = &unk_27867E428;
     v33 = v11;
     v34 = v21;
-    v35 = v8;
+    v35 = systemStore;
     v36 = buf;
     [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
     if (*(*&buf[8] + 24) == 1)

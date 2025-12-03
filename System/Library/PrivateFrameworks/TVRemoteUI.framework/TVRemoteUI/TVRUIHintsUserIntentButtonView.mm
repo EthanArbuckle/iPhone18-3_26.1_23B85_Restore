@@ -1,40 +1,40 @@
 @interface TVRUIHintsUserIntentButtonView
-- (TVRUIHintsUserIntentButtonView)initWithPresentation:(unint64_t)a3 styleProvider:(id)a4 buttonEdge:(unsigned int)a5;
-- (void)_setupConstraintsForButtonEdge:(unsigned int)a3 buttonWidth:(double)a4;
-- (void)_updateViewForButtonEdge:(unsigned int)a3;
-- (void)setPresentation:(unint64_t)a3;
+- (TVRUIHintsUserIntentButtonView)initWithPresentation:(unint64_t)presentation styleProvider:(id)provider buttonEdge:(unsigned int)edge;
+- (void)_setupConstraintsForButtonEdge:(unsigned int)edge buttonWidth:(double)width;
+- (void)_updateViewForButtonEdge:(unsigned int)edge;
+- (void)setPresentation:(unint64_t)presentation;
 @end
 
 @implementation TVRUIHintsUserIntentButtonView
 
-- (TVRUIHintsUserIntentButtonView)initWithPresentation:(unint64_t)a3 styleProvider:(id)a4 buttonEdge:(unsigned int)a5
+- (TVRUIHintsUserIntentButtonView)initWithPresentation:(unint64_t)presentation styleProvider:(id)provider buttonEdge:(unsigned int)edge
 {
-  v5 = *&a5;
-  v9 = a4;
+  v5 = *&edge;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = TVRUIHintsUserIntentButtonView;
   v10 = [(TVRUIHintsUserIntentButtonView *)&v21 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_styleProvider, a4);
-    v11->_presentation = a3;
+    objc_storeStrong(&v10->_styleProvider, provider);
+    v11->_presentation = presentation;
     v11->_buttonEdge = v5;
     v12 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(TVRUIHintsUserIntentButtonView *)v11 setButtonOutline:v12];
 
-    v13 = [(TVRUIHintsUserIntentButtonView *)v11 buttonOutline];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonOutline = [(TVRUIHintsUserIntentButtonView *)v11 buttonOutline];
+    [buttonOutline setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(TVRUIHintsStyleProvider *)v11->_styleProvider primaryTintColor];
-    v15 = [(TVRUIHintsUserIntentButtonView *)v11 buttonOutline];
-    [v15 setBackgroundColor:v14];
+    primaryTintColor = [(TVRUIHintsStyleProvider *)v11->_styleProvider primaryTintColor];
+    buttonOutline2 = [(TVRUIHintsUserIntentButtonView *)v11 buttonOutline];
+    [buttonOutline2 setBackgroundColor:primaryTintColor];
 
-    v16 = [(TVRUIHintsUserIntentButtonView *)v11 buttonOutline];
-    [(TVRUIHintsUserIntentButtonView *)v11 addSubview:v16];
+    buttonOutline3 = [(TVRUIHintsUserIntentButtonView *)v11 buttonOutline];
+    [(TVRUIHintsUserIntentButtonView *)v11 addSubview:buttonOutline3];
 
-    v17 = [(TVRUIHintsStyleProvider *)v11->_styleProvider siriImage];
-    v18 = [[TVRUIHintsGlyphView alloc] initWithImage:v17 styleProvider:v11->_styleProvider];
+    siriImage = [(TVRUIHintsStyleProvider *)v11->_styleProvider siriImage];
+    v18 = [[TVRUIHintsGlyphView alloc] initWithImage:siriImage styleProvider:v11->_styleProvider];
     glyphView = v11->_glyphView;
     v11->_glyphView = v18;
 
@@ -46,135 +46,135 @@
   return v11;
 }
 
-- (void)setPresentation:(unint64_t)a3
+- (void)setPresentation:(unint64_t)presentation
 {
-  if (self->_presentation != a3)
+  if (self->_presentation != presentation)
   {
-    self->_presentation = a3;
-    v5 = [(TVRUIHintsUserIntentButtonView *)self buttonEdge];
+    self->_presentation = presentation;
+    buttonEdge = [(TVRUIHintsUserIntentButtonView *)self buttonEdge];
 
-    [(TVRUIHintsUserIntentButtonView *)self _updateViewForButtonEdge:v5];
+    [(TVRUIHintsUserIntentButtonView *)self _updateViewForButtonEdge:buttonEdge];
   }
 }
 
-- (void)_updateViewForButtonEdge:(unsigned int)a3
+- (void)_updateViewForButtonEdge:(unsigned int)edge
 {
-  v3 = *&a3;
+  v3 = *&edge;
   [(TVRUIHintsStyleProvider *)self->_styleProvider buttonOutlineWidth];
   v6 = v5;
   presentation = self->_presentation;
-  v8 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
-  v9 = v8;
+  glyphView = [(TVRUIHintsUserIntentButtonView *)self glyphView];
+  styleProvider = glyphView;
   if (presentation == 1)
   {
-    [v8 setAlpha:0.0];
+    [glyphView setAlpha:0.0];
 
-    v9 = [(TVRUIHintsUserIntentButtonView *)self styleProvider];
-    if ([v9 supportsSBHints])
+    styleProvider = [(TVRUIHintsUserIntentButtonView *)self styleProvider];
+    if ([styleProvider supportsSBHints])
     {
-      v10 = [(TVRUIHintsUserIntentButtonView *)self styleProvider];
-      [v10 hintButtonWidth];
+      styleProvider2 = [(TVRUIHintsUserIntentButtonView *)self styleProvider];
+      [styleProvider2 hintButtonWidth];
       v6 = v11;
     }
   }
 
   else
   {
-    [v8 setAlpha:1.0];
+    [glyphView setAlpha:1.0];
   }
 
-  v12 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-  v13 = [v12 layer];
-  [v13 setCornerRadius:v6];
+  buttonOutline = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+  layer = [buttonOutline layer];
+  [layer setCornerRadius:v6];
 
   [(TVRUIHintsUserIntentButtonView *)self _setupConstraintsForButtonEdge:v3 buttonWidth:v6];
 }
 
-- (void)_setupConstraintsForButtonEdge:(unsigned int)a3 buttonWidth:(double)a4
+- (void)_setupConstraintsForButtonEdge:(unsigned int)edge buttonWidth:(double)width
 {
-  v7 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
+  buttonConstraints = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
 
   v8 = 0x277CCA000uLL;
-  if (v7)
+  if (buttonConstraints)
   {
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
-    [v9 deactivateConstraints:v10];
+    buttonConstraints2 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
+    [v9 deactivateConstraints:buttonConstraints2];
 
     [(TVRUIHintsUserIntentButtonView *)self setButtonConstraints:0];
   }
 
-  if (a3 == 2)
+  if (edge == 2)
   {
     v52 = MEMORY[0x277CBEA60];
-    v68 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v66 = [v68 widthAnchor];
-    v48 = [v66 constraintEqualToConstant:a4 + a4];
-    v64 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v62 = [v64 rightAnchor];
-    v60 = [(TVRUIHintsUserIntentButtonView *)self rightAnchor];
-    v70 = [v62 constraintEqualToAnchor:v60 constant:a4];
-    v58 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v56 = [v58 topAnchor];
-    v54 = [(TVRUIHintsUserIntentButtonView *)self topAnchor];
-    v38 = [v56 constraintEqualToAnchor:v54];
-    v50 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v46 = [v50 bottomAnchor];
-    v44 = [(TVRUIHintsUserIntentButtonView *)self bottomAnchor];
-    v22 = [v46 constraintEqualToAnchor:v44];
-    v42 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
-    v40 = [v42 centerYAnchor];
-    v23 = [(TVRUIHintsUserIntentButtonView *)self centerYAnchor];
-    v24 = [v40 constraintEqualToAnchor:v23];
-    v25 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
-    v26 = [v25 rightAnchor];
-    v27 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v28 = [v27 leftAnchor];
+    buttonOutline = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    widthAnchor = [buttonOutline widthAnchor];
+    width = [widthAnchor constraintEqualToConstant:width + width];
+    buttonOutline2 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    rightAnchor = [buttonOutline2 rightAnchor];
+    rightAnchor2 = [(TVRUIHintsUserIntentButtonView *)self rightAnchor];
+    v70 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:width];
+    buttonOutline3 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    topAnchor = [buttonOutline3 topAnchor];
+    topAnchor2 = [(TVRUIHintsUserIntentButtonView *)self topAnchor];
+    v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    buttonOutline4 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    bottomAnchor = [buttonOutline4 bottomAnchor];
+    bottomAnchor2 = [(TVRUIHintsUserIntentButtonView *)self bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    glyphView = [(TVRUIHintsUserIntentButtonView *)self glyphView];
+    centerYAnchor = [glyphView centerYAnchor];
+    centerYAnchor2 = [(TVRUIHintsUserIntentButtonView *)self centerYAnchor];
+    v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    glyphView2 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
+    rightAnchor3 = [glyphView2 rightAnchor];
+    buttonOutline5 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    leftAnchor = [buttonOutline5 leftAnchor];
     [(TVRUIHintsStyleProvider *)self->_styleProvider imageMargin];
-    v30 = [v26 constraintEqualToAnchor:v28 constant:-v29];
-    v31 = [v52 arrayWithObjects:{v48, v70, v38, v22, v24, v30, 0}];
+    v30 = [rightAnchor3 constraintEqualToAnchor:leftAnchor constant:-v29];
+    v31 = [v52 arrayWithObjects:{width, v70, v38, v22, v24, v30, 0}];
     buttonConstraints = self->_buttonConstraints;
     self->_buttonConstraints = v31;
 
     v8 = 0x277CCA000;
-    v21 = v68;
+    v21 = buttonOutline;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (edge == 1)
   {
     v49 = MEMORY[0x277CBEA60];
-    v65 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v63 = [v65 heightAnchor];
-    v69 = [v63 constraintEqualToConstant:a4 + a4];
-    v61 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v59 = [v61 leftAnchor];
-    v57 = [(TVRUIHintsUserIntentButtonView *)self leftAnchor];
-    v67 = [v59 constraintEqualToAnchor:v57];
-    v55 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v53 = [v55 rightAnchor];
-    v51 = [(TVRUIHintsUserIntentButtonView *)self rightAnchor];
-    v37 = [v53 constraintEqualToAnchor:v51];
-    v47 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v45 = [v47 bottomAnchor];
-    v43 = [(TVRUIHintsUserIntentButtonView *)self bottomAnchor];
-    v11 = [v45 constraintEqualToAnchor:v43 constant:a4];
-    v41 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
-    v39 = [v41 centerXAnchor];
-    v12 = [(TVRUIHintsUserIntentButtonView *)self centerXAnchor];
-    v13 = [v39 constraintEqualToAnchor:v12];
-    v14 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
-    v15 = [v14 topAnchor];
-    v16 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
-    v17 = [v16 bottomAnchor];
+    buttonOutline6 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    heightAnchor = [buttonOutline6 heightAnchor];
+    width2 = [heightAnchor constraintEqualToConstant:width + width];
+    buttonOutline7 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    leftAnchor2 = [buttonOutline7 leftAnchor];
+    leftAnchor3 = [(TVRUIHintsUserIntentButtonView *)self leftAnchor];
+    v67 = [leftAnchor2 constraintEqualToAnchor:leftAnchor3];
+    buttonOutline8 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    rightAnchor4 = [buttonOutline8 rightAnchor];
+    rightAnchor5 = [(TVRUIHintsUserIntentButtonView *)self rightAnchor];
+    v37 = [rightAnchor4 constraintEqualToAnchor:rightAnchor5];
+    buttonOutline9 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    bottomAnchor3 = [buttonOutline9 bottomAnchor];
+    bottomAnchor4 = [(TVRUIHintsUserIntentButtonView *)self bottomAnchor];
+    v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:width];
+    glyphView3 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
+    centerXAnchor = [glyphView3 centerXAnchor];
+    centerXAnchor2 = [(TVRUIHintsUserIntentButtonView *)self centerXAnchor];
+    v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    glyphView4 = [(TVRUIHintsUserIntentButtonView *)self glyphView];
+    topAnchor3 = [glyphView4 topAnchor];
+    buttonOutline10 = [(TVRUIHintsUserIntentButtonView *)self buttonOutline];
+    bottomAnchor5 = [buttonOutline10 bottomAnchor];
     [(TVRUIHintsStyleProvider *)self->_styleProvider imageMargin];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:?];
-    v19 = [v49 arrayWithObjects:{v69, v67, v37, v11, v13, v18, 0}];
+    v18 = [topAnchor3 constraintEqualToAnchor:bottomAnchor5 constant:?];
+    v19 = [v49 arrayWithObjects:{width2, v67, v37, v11, v13, v18, 0}];
     v20 = self->_buttonConstraints;
     self->_buttonConstraints = v19;
 
     v8 = 0x277CCA000;
-    v21 = v65;
+    v21 = buttonOutline6;
 LABEL_7:
 
     goto LABEL_11;
@@ -187,13 +187,13 @@ LABEL_7:
   }
 
 LABEL_11:
-  v34 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
+  buttonConstraints3 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
 
-  if (v34)
+  if (buttonConstraints3)
   {
     v35 = *(v8 + 2768);
-    v36 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
-    [v35 activateConstraints:v36];
+    buttonConstraints4 = [(TVRUIHintsUserIntentButtonView *)self buttonConstraints];
+    [v35 activateConstraints:buttonConstraints4];
   }
 }
 

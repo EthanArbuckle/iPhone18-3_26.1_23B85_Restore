@@ -6,25 +6,25 @@
 - (PXStoryTimelineLayout)init;
 - (PXStoryTimelineLayoutSnapshot)presentedSnapshot;
 - (UIEdgeInsets)clippingInsets;
-- (id)existingLayoutForClipWithIdentifier:(int64_t)a3;
-- (int64_t)_sublayoutIndexForClipWithIdentifier:(int64_t)a3;
+- (id)existingLayoutForClipWithIdentifier:(int64_t)identifier;
+- (int64_t)_sublayoutIndexForClipWithIdentifier:(int64_t)identifier;
 - (void)_invalidateContent;
 - (void)_updateContent;
 - (void)alphaDidChange;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)didUpdate;
-- (void)didUpdateClipLayout:(id)a3 frame:(CGRect)a4;
-- (void)enumerateClipLayouts:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)didUpdateClipLayout:(id)layout frame:(CGRect)frame;
+- (void)enumerateClipLayouts:(id)layouts;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)setClipsCornerRadius:(id)a3;
-- (void)setCornerRadius:(id)a3;
-- (void)setDisplayedTimeRange:(id *)a3;
-- (void)setDisplayedTimeline:(id)a3;
-- (void)setDisplayedTimelineRect:(CGRect)a3;
-- (void)setPresentedTimelineTransition:(id)a3;
-- (void)setRelativeZPositionAboveLegibilityGradients:(double)a3;
+- (void)setClipsCornerRadius:(id)radius;
+- (void)setCornerRadius:(id)radius;
+- (void)setDisplayedTimeRange:(id *)range;
+- (void)setDisplayedTimeline:(id)timeline;
+- (void)setDisplayedTimelineRect:(CGRect)rect;
+- (void)setPresentedTimelineTransition:(id)transition;
+- (void)setRelativeZPositionAboveLegibilityGradients:(double)gradients;
 - (void)update;
 - (void)willUpdate;
 @end
@@ -80,51 +80,51 @@
   return self;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (TimelineTransitionObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (TimelineTransitionObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineLayout.m" lineNumber:417 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineLayout.m" lineNumber:417 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 1) != 0 && !self->_isUpdatingTimelineContent)
+  if ((changeCopy & 1) != 0 && !self->_isUpdatingTimelineContent)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXStoryTimelineLayout *)self _invalidateContent];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v9 = [(PXStoryTimelineLayout *)self displayedTimeline];
-  v5 = [v9 description];
-  v6 = [v9 diagnosticDescription];
-  v7 = [v5 stringByAppendingFormat:@"\n\n%@", v6];
+  containerCopy = container;
+  displayedTimeline = [(PXStoryTimelineLayout *)self displayedTimeline];
+  v5 = [displayedTimeline description];
+  diagnosticDescription = [displayedTimeline diagnosticDescription];
+  v7 = [v5 stringByAppendingFormat:@"\n\n%@", diagnosticDescription];
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DisplayedTimeline-%p", self];
-  [v4 addAttachmentWithText:v7 name:v8];
+  [containerCopy addAttachmentWithText:v7 name:v8];
 }
 
-- (int64_t)_sublayoutIndexForClipWithIdentifier:(int64_t)a3
+- (int64_t)_sublayoutIndexForClipWithIdentifier:(int64_t)identifier
 {
   clipLayoutReuseIdentifiersByClipIdentifier = self->_clipLayoutReuseIdentifiersByClipIdentifier;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v6 = [(NSMutableDictionary *)clipLayoutReuseIdentifiersByClipIdentifier objectForKeyedSubscript:v5];
 
   v7 = [(NSMutableOrderedSet *)self->_clipLayoutReuseIdentifiers indexOfObject:v6];
   return v7;
 }
 
-- (id)existingLayoutForClipWithIdentifier:(int64_t)a3
+- (id)existingLayoutForClipWithIdentifier:(int64_t)identifier
 {
-  v4 = [(PXStoryTimelineLayout *)self _sublayoutIndexForClipWithIdentifier:a3];
+  v4 = [(PXStoryTimelineLayout *)self _sublayoutIndexForClipWithIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -138,17 +138,17 @@
   return v5;
 }
 
-- (void)enumerateClipLayouts:(id)a3
+- (void)enumerateClipLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   clipIdentifiers = self->_clipIdentifiers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PXStoryTimelineLayout_enumerateClipLayouts___block_invoke;
   v7[3] = &unk_1E773CDD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = layoutsCopy;
+  v6 = layoutsCopy;
   [(NSMutableIndexSet *)clipIdentifiers enumerateIndexesUsingBlock:v7];
 }
 
@@ -527,9 +527,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryTimelineLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryTimelineLayout.m" lineNumber:200 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryTimelineLayout.m" lineNumber:200 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -558,9 +558,9 @@ LABEL_5:
   [(PXGCompositeLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryTimelineLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryTimelineLayout.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryTimelineLayout.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -573,9 +573,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryTimelineLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXStoryTimelineLayout.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXStoryTimelineLayout.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -592,9 +592,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryTimelineLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryTimelineLayout.m" lineNumber:190 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXStoryTimelineLayout.m" lineNumber:190 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -611,16 +611,16 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryTimelineLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryTimelineLayout.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryTimelineLayout.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
 - (PXStoryTimelineLayoutSnapshot)presentedSnapshot
 {
   v3 = [PXStoryTimelineLayoutSnapshot alloc];
-  v4 = [(PXStoryTimelineLayout *)self displayedTimeline];
+  displayedTimeline = [(PXStoryTimelineLayout *)self displayedTimeline];
   [(PXStoryTimelineLayout *)self displayedTimelineRect];
   v6 = v5;
   v8 = v7;
@@ -632,17 +632,17 @@ LABEL_5:
   LODWORD(v16) = v15;
   LODWORD(v18) = v17;
   LODWORD(v20) = v19;
-  v21 = [(PXStoryTimelineLayoutSnapshot *)v3 initWithTimeline:v4 timelineRect:&v23 timeRange:v6 clipCornerRadius:v8, v10, v12, v14, v16, v18, v20];
+  v21 = [(PXStoryTimelineLayoutSnapshot *)v3 initWithTimeline:displayedTimeline timelineRect:&v23 timeRange:v6 clipCornerRadius:v8, v10, v12, v14, v16, v18, v20];
 
   return v21;
 }
 
-- (void)didUpdateClipLayout:(id)a3 frame:(CGRect)a4
+- (void)didUpdateClipLayout:(id)layout frame:(CGRect)frame
 {
-  v5 = a3;
-  v6 = [(PXStoryTimelineLayout *)self displayedTimeline];
-  [v6 originalSize];
-  [v5 setDisplayedTimelineOriginalSize:?];
+  layoutCopy = layout;
+  displayedTimeline = [(PXStoryTimelineLayout *)self displayedTimeline];
+  [displayedTimeline originalSize];
+  [layoutCopy setDisplayedTimelineOriginalSize:?];
 }
 
 - (void)referenceDepthDidChange
@@ -669,16 +669,16 @@ LABEL_5:
   [(PXStoryTimelineLayout *)self _invalidateContent];
 }
 
-- (void)setRelativeZPositionAboveLegibilityGradients:(double)a3
+- (void)setRelativeZPositionAboveLegibilityGradients:(double)gradients
 {
-  if (self->_relativeZPositionAboveLegibilityGradients != a3)
+  if (self->_relativeZPositionAboveLegibilityGradients != gradients)
   {
-    self->_relativeZPositionAboveLegibilityGradients = a3;
+    self->_relativeZPositionAboveLegibilityGradients = gradients;
     [(PXStoryTimelineLayout *)self _invalidateContent];
   }
 }
 
-- (void)setClipsCornerRadius:(id)a3
+- (void)setClipsCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -688,11 +688,11 @@ LABEL_5:
     self->_clipsCornerRadius.var0.var0.topRight = v4;
     self->_clipsCornerRadius.var0.var0.bottomLeft = v5;
     self->_clipsCornerRadius.var0.var0.bottomRight = v6;
-    [(PXStoryTimelineLayout *)self _invalidateContent:*&a3.var0.var0.var0];
+    [(PXStoryTimelineLayout *)self _invalidateContent:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setCornerRadius:(id)a3
+- (void)setCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -702,23 +702,23 @@ LABEL_5:
     self->_cornerRadius.var0.var0.topRight = v4;
     self->_cornerRadius.var0.var0.bottomLeft = v5;
     self->_cornerRadius.var0.var0.bottomRight = v6;
-    [(PXStoryTimelineLayout *)self _invalidateContent:*&a3.var0.var0.var0];
+    [(PXStoryTimelineLayout *)self _invalidateContent:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setPresentedTimelineTransition:(id)a3
+- (void)setPresentedTimelineTransition:(id)transition
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_presentedTimelineTransition != v5)
+  transitionCopy = transition;
+  v6 = transitionCopy;
+  if (self->_presentedTimelineTransition != transitionCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryViewModeTransition *)v5 isEqual:?];
+    v8 = transitionCopy;
+    v7 = [(PXStoryViewModeTransition *)transitionCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
       [(PXStoryViewModeTransition *)self->_presentedTimelineTransition unregisterChangeObserver:self context:TimelineTransitionObservationContext];
-      objc_storeStrong(&self->_presentedTimelineTransition, a3);
+      objc_storeStrong(&self->_presentedTimelineTransition, transition);
       [(PXStoryViewModeTransition *)self->_presentedTimelineTransition registerChangeObserver:self context:TimelineTransitionObservationContext];
       [(PXStoryTimelineLayout *)self _invalidateContent];
       v6 = v8;
@@ -726,14 +726,14 @@ LABEL_5:
   }
 }
 
-- (void)setDisplayedTimelineRect:(CGRect)a3
+- (void)setDisplayedTimelineRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_displayedTimelineRect = &self->_displayedTimelineRect;
-  if (!CGRectEqualToRect(a3, self->_displayedTimelineRect))
+  if (!CGRectEqualToRect(rect, self->_displayedTimelineRect))
   {
     p_displayedTimelineRect->origin.x = x;
     p_displayedTimelineRect->origin.y = y;
@@ -744,40 +744,40 @@ LABEL_5:
   }
 }
 
-- (void)setDisplayedTimeRange:(id *)a3
+- (void)setDisplayedTimeRange:(id *)range
 {
   p_displayedTimeRange = &self->_displayedTimeRange;
-  v6 = *&a3->var0.var3;
-  *&range1.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&range1.start.value = *&range->var0.var0;
   *&range1.start.epoch = v6;
-  *&range1.duration.timescale = *&a3->var1.var1;
+  *&range1.duration.timescale = *&range->var1.var1;
   v7 = *&self->_displayedTimeRange.start.epoch;
   *&v10.start.value = *&self->_displayedTimeRange.start.value;
   *&v10.start.epoch = v7;
   *&v10.duration.timescale = *&self->_displayedTimeRange.duration.timescale;
   if (!CMTimeRangeEqual(&range1, &v10))
   {
-    v8 = *&a3->var0.var0;
-    v9 = *&a3->var1.var1;
-    *&p_displayedTimeRange->start.epoch = *&a3->var0.var3;
+    v8 = *&range->var0.var0;
+    v9 = *&range->var1.var1;
+    *&p_displayedTimeRange->start.epoch = *&range->var0.var3;
     *&p_displayedTimeRange->duration.timescale = v9;
     *&p_displayedTimeRange->start.value = v8;
     [(PXStoryTimelineLayout *)self displayedTimeRangeDidChange];
   }
 }
 
-- (void)setDisplayedTimeline:(id)a3
+- (void)setDisplayedTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displayedTimeline != v5)
+  timelineCopy = timeline;
+  v6 = timelineCopy;
+  if (self->_displayedTimeline != timelineCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryTimeline *)v5 isEqual:?];
+    v8 = timelineCopy;
+    v7 = [(PXStoryTimeline *)timelineCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displayedTimeline, a3);
+      objc_storeStrong(&self->_displayedTimeline, timeline);
       [(PXStoryTimelineLayout *)self displayedTimelineDidChange];
       v6 = v8;
     }

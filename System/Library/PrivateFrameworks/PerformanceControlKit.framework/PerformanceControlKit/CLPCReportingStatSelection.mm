@@ -1,9 +1,9 @@
 @interface CLPCReportingStatSelection
 - (CLPCReportingStatSelection)init;
 - (double)selectedStats;
-- (unint64_t)isSelected:(unint64_t)a3 error:(id *)a4;
+- (unint64_t)isSelected:(unint64_t)selected error:(id *)error;
 - (void)deselectAll;
-- (void)enumerate:(id)a3;
+- (void)enumerate:(id)enumerate;
 - (void)selectAll;
 @end
 
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (unint64_t)isSelected:(unint64_t)a3 error:(id *)a4
+- (unint64_t)isSelected:(unint64_t)selected error:(id *)error
 {
   v4 = 0;
   {
@@ -63,7 +63,7 @@
   *self->selection.__elems_ = 0u;
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   v4 = 0;
   p_selection = &self->selection;
@@ -82,7 +82,7 @@
 
 - (double)selectedStats
 {
-  if (a1)
+  if (self)
   {
     result = 0.0;
     *a2 = 0u;
@@ -90,7 +90,7 @@
     *(a2 + 32) = 1065353216;
     for (i = 8; i != 48; ++i)
     {
-      if (*(a1 + i) == 1)
+      if (*(self + i) == 1)
       {
         std::__hash_table<CLPCReportingStatID,std::hash<CLPCReportingStatID>,std::equal_to<CLPCReportingStatID>,std::allocator<CLPCReportingStatID>>::__emplace_unique_key_args<CLPCReportingStatID,CLPCReportingStatID const&>(a2, v5);
       }

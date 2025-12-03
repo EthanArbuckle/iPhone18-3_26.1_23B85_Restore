@@ -1,8 +1,8 @@
 @interface VCVideoRelay
 + (id)sharedInstance;
-- (BOOL)deregisterForVideoFrames:(id)a3;
-- (BOOL)enqueueFrame:(__CVBuffer *)a3 atTime:(id *)a4 cameraStatusBits:(unsigned __int8)a5;
-- (BOOL)registerForVideoFrames:(id)a3;
+- (BOOL)deregisterForVideoFrames:(id)frames;
+- (BOOL)enqueueFrame:(__CVBuffer *)frame atTime:(id *)time cameraStatusBits:(unsigned __int8)bits;
+- (BOOL)registerForVideoFrames:(id)frames;
 - (VCVideoRelay)init;
 - (void)dealloc;
 @end
@@ -16,7 +16,7 @@
   v3[1] = 3221225472;
   v3[2] = __30__VCVideoRelay_sharedInstance__block_invoke;
   v3[3] = &unk_1E85F3778;
-  v3[4] = a1;
+  v3[4] = self;
   if (sharedInstance_onceToken_17 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_17, v3);
@@ -62,10 +62,10 @@ Class *__30__VCVideoRelay_sharedInstance__block_invoke(Class *result)
   [(VCVideoRelay *)&v3 dealloc];
 }
 
-- (BOOL)enqueueFrame:(__CVBuffer *)a3 atTime:(id *)a4 cameraStatusBits:(unsigned __int8)a5
+- (BOOL)enqueueFrame:(__CVBuffer *)frame atTime:(id *)time cameraStatusBits:(unsigned __int8)bits
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!frame)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -84,8 +84,8 @@ LABEL_10:
     return v10;
   }
 
-  v19 = *a4;
-  SampleBufferWithPixelBuffer = createSampleBufferWithPixelBuffer(a3, &v19.var0);
+  v19 = *time;
+  SampleBufferWithPixelBuffer = createSampleBufferWithPixelBuffer(frame, &v19.var0);
   if (!SampleBufferWithPixelBuffer)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -113,9 +113,9 @@ LABEL_10:
   v12[3] = &unk_1E85F9820;
   v12[4] = self;
   v12[5] = SampleBufferWithPixelBuffer;
-  v13 = *&a4->var0;
-  var3 = a4->var3;
-  v16 = a5;
+  v13 = *&time->var0;
+  var3 = time->var3;
+  bitsCopy = bits;
   dispatch_sync(dispatchQueue, v12);
   LOBYTE(v10) = 1;
   return v10;
@@ -165,10 +165,10 @@ void __53__VCVideoRelay_enqueueFrame_atTime_cameraStatusBits___block_invoke(uint
   }
 }
 
-- (BOOL)registerForVideoFrames:(id)a3
+- (BOOL)registerForVideoFrames:(id)frames
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (frames)
   {
     v7 = 0;
     v8 = &v7;
@@ -180,7 +180,7 @@ void __53__VCVideoRelay_enqueueFrame_atTime_cameraStatusBits___block_invoke(uint
     v6[2] = __39__VCVideoRelay_registerForVideoFrames___block_invoke;
     v6[3] = &unk_1E85F6638;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = frames;
     v6[6] = &v7;
     dispatch_sync(dispatchQueue, v6);
     v4 = *(v8 + 24);
@@ -225,10 +225,10 @@ void __39__VCVideoRelay_registerForVideoFrames___block_invoke(void *a1)
   }
 }
 
-- (BOOL)deregisterForVideoFrames:(id)a3
+- (BOOL)deregisterForVideoFrames:(id)frames
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (frames)
   {
     v7 = 0;
     v8 = &v7;
@@ -240,7 +240,7 @@ void __39__VCVideoRelay_registerForVideoFrames___block_invoke(void *a1)
     v6[2] = __41__VCVideoRelay_deregisterForVideoFrames___block_invoke;
     v6[3] = &unk_1E85F6638;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = frames;
     v6[6] = &v7;
     dispatch_sync(dispatchQueue, v6);
     v4 = *(v8 + 24);

@@ -6,7 +6,7 @@
 
 - (id)_bcs_strictlyDecodeObjectOfClass:()BCSNSCoderExtras forKey:
 {
-  v1 = [a1 decodeObjectOfClass:? forKey:?];
+  v1 = [self decodeObjectOfClass:? forKey:?];
   if (objc_opt_isKindOfClass())
   {
     v2 = v1;

@@ -1,25 +1,25 @@
 @interface HUContainedAccessoryElementsGridViewController
-- (BOOL)hasDetailsActionForPresentationCoordinator:(id)a3 item:(id)a4;
+- (BOOL)hasDetailsActionForPresentationCoordinator:(id)coordinator item:(id)item;
 - (BOOL)requiresPresentingViewControllerDismissal;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HFMediaAccessoryItem)mediaItem;
-- (HUContainedAccessoryElementsGridViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (HUContainedAccessoryElementsGridViewController)initWithServiceContainingItem:(id)a3 mediaItem:(id)a4 isPresentedModally:(BOOL)a5 shouldGroupByRoom:(BOOL)a6 valueSource:(id)a7;
+- (HUContainedAccessoryElementsGridViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (HUContainedAccessoryElementsGridViewController)initWithServiceContainingItem:(id)item mediaItem:(id)mediaItem isPresentedModally:(BOOL)modally shouldGroupByRoom:(BOOL)room valueSource:(id)source;
 - (HUContainedAccessoryElementsGridViewControllerDelegate)serviceGridDelegate;
 - (HUPresentationDelegate)presentationDelegate;
 - (HUServiceContainerItem)serviceContainingItem;
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4;
-- (id)displayedItemsInSection:(id)a3;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)doneWithSender:(id)a3;
-- (void)editWithSender:(id)a3;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)setPresentationDelegate:(id)a3;
-- (void)setRequiresPresentingViewControllerDismissal:(BOOL)a3;
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item;
+- (id)displayedItemsInSection:(id)section;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)doneWithSender:(id)sender;
+- (void)editWithSender:(id)sender;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)setPresentationDelegate:(id)delegate;
+- (void)setRequiresPresentingViewControllerDismissal:(BOOL)dismissal;
 - (void)viewDidLoad;
 @end
 
@@ -32,11 +32,11 @@
   return *(self + v3);
 }
 
-- (void)setRequiresPresentingViewControllerDismissal:(BOOL)a3
+- (void)setRequiresPresentingViewControllerDismissal:(BOOL)dismissal
 {
   v5 = OBJC_IVAR___HUContainedAccessoryElementsGridViewController_requiresPresentingViewControllerDismissal;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = dismissal;
 }
 
 - (HUPresentationDelegate)presentationDelegate
@@ -47,11 +47,11 @@
   return v2;
 }
 
-- (void)setPresentationDelegate:(id)a3
+- (void)setPresentationDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___HUContainedAccessoryElementsGridViewController_presentationDelegate;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -78,12 +78,12 @@
   return Strong;
 }
 
-- (HUContainedAccessoryElementsGridViewController)initWithServiceContainingItem:(id)a3 mediaItem:(id)a4 isPresentedModally:(BOOL)a5 shouldGroupByRoom:(BOOL)a6 valueSource:(id)a7
+- (HUContainedAccessoryElementsGridViewController)initWithServiceContainingItem:(id)item mediaItem:(id)mediaItem isPresentedModally:(BOOL)modally shouldGroupByRoom:(BOOL)room valueSource:(id)source
 {
-  v12 = a3;
-  v13 = a4;
+  itemCopy = item;
+  mediaItemCopy = mediaItem;
   swift_unknownObjectRetain();
-  return ContainedAccessoryElementsGridViewController.init(serviceContainingItem:mediaItem:isPresentedModally:shouldGroupByRoom:valueSource:)(a3, a4, a5, a6, a7);
+  return ContainedAccessoryElementsGridViewController.init(serviceContainingItem:mediaItem:isPresentedModally:shouldGroupByRoom:valueSource:)(item, mediaItem, modally, room, source);
 }
 
 - (void)viewDidLoad
@@ -92,11 +92,11 @@
   v6.super_class = type metadata accessor for ContainedAccessoryElementsGridViewController();
   v2 = v6.receiver;
   [(HUControllableItemCollectionViewController *)&v6 viewDidLoad];
-  v3 = [v2 collectionView];
-  if (v3)
+  collectionView = [v2 collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemGroupedBackgroundColor];
+    v4 = collectionView;
+    systemGroupedBackgroundColor = [objc_opt_self() systemGroupedBackgroundColor];
     [v4 setBackgroundColor_];
   }
 
@@ -106,7 +106,7 @@
   }
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
@@ -121,13 +121,13 @@
 
   else
   {
-    v10 = a3;
-    v11 = self;
+    itemCopy = item;
+    selfCopy = self;
     v12 = sub_20D563868();
     v13 = type metadata accessor for ContainedAccessoryElementsGridViewController();
-    v16.receiver = v11;
+    v16.receiver = selfCopy;
     v16.super_class = v13;
-    [(HUItemCollectionViewController *)&v16 cellClassForItem:v10 indexPath:v12];
+    [(HUItemCollectionViewController *)&v16 cellClassForItem:itemCopy indexPath:v12];
 
     swift_getObjCClassMetadata();
   }
@@ -136,43 +136,43 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20D05E5C8(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D05E5C8(cellCopy, itemCopy);
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for ContainedAccessoryElementsGridViewController();
-  v4 = a3;
+  updateCopy = update;
   v5 = v6.receiver;
-  [(HUItemCollectionViewController *)&v6 itemManagerDidUpdate:v4];
+  [(HUItemCollectionViewController *)&v6 itemManagerDidUpdate:updateCopy];
   sub_20D05E9CC();
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_20D05EC60(a3, a4);
+  selfCopy = self;
+  v8 = sub_20D05EC60(section, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = for;
+  v13[3] = item;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_20D567C58();
@@ -187,13 +187,13 @@
   v16[3] = 0;
   v16[4] = &unk_20D5C5200;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  forCopy = for;
+  itemCopy = item;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v11, &unk_20D5BCD00, v16);
 }
 
-- (BOOL)hasDetailsActionForPresentationCoordinator:(id)a3 item:(id)a4
+- (BOOL)hasDetailsActionForPresentationCoordinator:(id)coordinator item:(id)item
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -205,7 +205,7 @@
   v7 = Strong;
   if ([Strong respondsToSelector_])
   {
-    v8 = [v7 hasDetailsActionFor:self item:a4];
+    v8 = [v7 hasDetailsActionFor:self item:item];
   }
 
   else
@@ -217,39 +217,39 @@
   return v8;
 }
 
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_20D06159C(v7);
+  coordinatorCopy = coordinator;
+  itemCopy = item;
+  selfCopy = self;
+  v9 = sub_20D06159C(itemCopy);
 
   return v9;
 }
 
-- (HUContainedAccessoryElementsGridViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUContainedAccessoryElementsGridViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HUItemCollectionViewController *)v5 itemManager];
-  v7 = [(HUItemCollectionViewController *)v5 itemManager];
-  v8 = [(HFItemManager *)v7 sectionIndexForDisplayedSectionIdentifier:v4];
+  sectionCopy = section;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
+  itemManager2 = [(HUItemCollectionViewController *)selfCopy itemManager];
+  v8 = [(HFItemManager *)itemManager2 sectionIndexForDisplayedSectionIdentifier:sectionCopy];
 
-  v9 = [(HFItemManager *)v6 displayedItemsInSection:v8];
+  v9 = [(HFItemManager *)itemManager displayedItemsInSection:v8];
   if (!v9)
   {
     sub_20CECF940(0, &qword_281120AC0);
@@ -260,38 +260,38 @@
   return v9;
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  v8 = ContainedAccessoryElementsGridViewController.finishPresentation(_:animated:)(v6, a4);
+  presentationCopy = presentation;
+  selfCopy = self;
+  v8 = ContainedAccessoryElementsGridViewController.finishPresentation(_:animated:)(presentationCopy, animated);
 
   return v8;
 }
 
-- (void)doneWithSender:(id)a3
+- (void)doneWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   v5 = OBJC_IVAR___HUContainedAccessoryElementsGridViewController_presentationDelegate;
   swift_beginAccess();
-  if (*(v4 + v5))
+  if (*(selfCopy + v5))
   {
-    v6 = [swift_unknownObjectRetain() finishPresentation:v4 animated:1];
+    v6 = [swift_unknownObjectRetain() finishPresentation:selfCopy animated:1];
 
     swift_unknownObjectRelease();
-    v4 = v6;
+    selfCopy = v6;
   }
 
   __swift_destroy_boxed_opaque_existential_1(v7);
 }
 
-- (void)editWithSender:(id)a3
+- (void)editWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   sub_20D05F9A8();

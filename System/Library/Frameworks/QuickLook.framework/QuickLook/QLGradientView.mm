@@ -1,10 +1,10 @@
 @interface QLGradientView
 - (BOOL)reversed;
 - (_TtC9QuickLook14QLGradientView)init;
-- (_TtC9QuickLook14QLGradientView)initWithCoder:(id)a3;
-- (_TtC9QuickLook14QLGradientView)initWithFrame:(CGRect)a3;
+- (_TtC9QuickLook14QLGradientView)initWithCoder:(id)coder;
+- (_TtC9QuickLook14QLGradientView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setReversed:(BOOL)a3;
+- (void)setReversed:(BOOL)reversed;
 @end
 
 @implementation QLGradientView
@@ -16,10 +16,10 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setReversed:(BOOL)a3
+- (void)setReversed:(BOOL)reversed
 {
-  v4 = self;
-  sub_23A7B83EC(a3);
+  selfCopy = self;
+  sub_23A7B83EC(reversed);
 }
 
 - (_TtC9QuickLook14QLGradientView)init
@@ -35,7 +35,7 @@
   return v4;
 }
 
-- (_TtC9QuickLook14QLGradientView)initWithCoder:(id)a3
+- (_TtC9QuickLook14QLGradientView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9QuickLook14QLGradientView_reversed) = 0;
   v3 = OBJC_IVAR____TtC9QuickLook14QLGradientView_gradientLayer;
@@ -56,7 +56,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC9QuickLook14QLGradientView)initWithFrame:(CGRect)a3
+- (_TtC9QuickLook14QLGradientView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

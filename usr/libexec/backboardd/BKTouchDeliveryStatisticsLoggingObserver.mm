@@ -1,14 +1,14 @@
 @interface BKTouchDeliveryStatisticsLoggingObserver
-- (BKTouchDeliveryStatisticsLoggingObserver)initWithLabel:(id)a3;
+- (BKTouchDeliveryStatisticsLoggingObserver)initWithLabel:(id)label;
 - (void)dealloc;
-- (void)touch:(unsigned int)a3 didHitTestToDestination:(id)a4 hostingChainIndex:(int64_t)a5;
-- (void)touch:(unsigned int)a3 pathIndex:(int64_t)a4 downAtPoint:(CGPoint)a5 eventMask:(unsigned int)a6 transducerType:(unsigned int)a7;
-- (void)touch:(unsigned int)a3 pathIndex:(int64_t)a4 rangeOutAtPoint:(CGPoint)a5;
-- (void)touchDidDetach:(unsigned int)a3 destinations:(id)a4;
+- (void)touch:(unsigned int)touch didHitTestToDestination:(id)destination hostingChainIndex:(int64_t)index;
+- (void)touch:(unsigned int)touch pathIndex:(int64_t)index downAtPoint:(CGPoint)point eventMask:(unsigned int)mask transducerType:(unsigned int)type;
+- (void)touch:(unsigned int)touch pathIndex:(int64_t)index rangeOutAtPoint:(CGPoint)point;
+- (void)touchDidDetach:(unsigned int)detach destinations:(id)destinations;
 - (void)touchDidFinishProcessingTouchCollection;
-- (void)touchDidHIDCancel:(unsigned int)a3;
-- (void)touchDidSoftCancel:(unsigned int)a3;
-- (void)touchDidTransfer:(unsigned int)a3 destination:(id)a4;
+- (void)touchDidHIDCancel:(unsigned int)cancel;
+- (void)touchDidSoftCancel:(unsigned int)cancel;
+- (void)touchDidTransfer:(unsigned int)transfer destination:(id)destination;
 - (void)touchWillStartProcessingTouchCollection;
 @end
 
@@ -45,7 +45,7 @@
   [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v3];
 }
 
-- (void)touchDidSoftCancel:(unsigned int)a3
+- (void)touchDidSoftCancel:(unsigned int)cancel
 {
   loggingController = self->_loggingController;
   v4[0] = _NSConcreteStackBlock;
@@ -56,7 +56,7 @@
   [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v4];
 }
 
-- (void)touchDidHIDCancel:(unsigned int)a3
+- (void)touchDidHIDCancel:(unsigned int)cancel
 {
   loggingController = self->_loggingController;
   v4[0] = _NSConcreteStackBlock;
@@ -67,7 +67,7 @@
   [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v4];
 }
 
-- (void)touchDidTransfer:(unsigned int)a3 destination:(id)a4
+- (void)touchDidTransfer:(unsigned int)transfer destination:(id)destination
 {
   loggingController = self->_loggingController;
   v5[0] = _NSConcreteStackBlock;
@@ -75,10 +75,10 @@
   v5[2] = sub_1000940D4;
   v5[3] = &unk_1000FD150;
   v5[4] = self;
-  [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v5, a4];
+  [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v5, destination];
 }
 
-- (void)touchDidDetach:(unsigned int)a3 destinations:(id)a4
+- (void)touchDidDetach:(unsigned int)detach destinations:(id)destinations
 {
   loggingController = self->_loggingController;
   v5[0] = _NSConcreteStackBlock;
@@ -86,10 +86,10 @@
   v5[2] = sub_100094154;
   v5[3] = &unk_1000FD150;
   v5[4] = self;
-  [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v5, a4];
+  [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v5, destinations];
 }
 
-- (void)touch:(unsigned int)a3 pathIndex:(int64_t)a4 downAtPoint:(CGPoint)a5 eventMask:(unsigned int)a6 transducerType:(unsigned int)a7
+- (void)touch:(unsigned int)touch pathIndex:(int64_t)index downAtPoint:(CGPoint)point eventMask:(unsigned int)mask transducerType:(unsigned int)type
 {
   loggingController = self->_loggingController;
   v8[0] = _NSConcreteStackBlock;
@@ -97,13 +97,13 @@
   v8[2] = sub_10009429C;
   v8[3] = &unk_1000FCFA0;
   v8[4] = self;
-  v8[5] = a4;
-  v9 = a7;
-  v10 = a6;
+  v8[5] = index;
+  typeCopy = type;
+  maskCopy = mask;
   [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v8];
 }
 
-- (void)touch:(unsigned int)a3 pathIndex:(int64_t)a4 rangeOutAtPoint:(CGPoint)a5
+- (void)touch:(unsigned int)touch pathIndex:(int64_t)index rangeOutAtPoint:(CGPoint)point
 {
   loggingController = self->_loggingController;
   v6[0] = _NSConcreteStackBlock;
@@ -111,28 +111,28 @@
   v6[2] = sub_1000943B4;
   v6[3] = &unk_1000FCF78;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = index;
   [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v6];
 }
 
-- (void)touch:(unsigned int)a3 didHitTestToDestination:(id)a4 hostingChainIndex:(int64_t)a5
+- (void)touch:(unsigned int)touch didHitTestToDestination:(id)destination hostingChainIndex:(int64_t)index
 {
-  v7 = a4;
+  destinationCopy = destination;
   loggingController = self->_loggingController;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100094574;
   v10[3] = &unk_1000FD1A0;
-  v12 = a3;
+  touchCopy = touch;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = destinationCopy;
+  v9 = destinationCopy;
   [(BKEventStatisticsLoggingController *)loggingController updateStatistics:v10];
 }
 
-- (BKTouchDeliveryStatisticsLoggingObserver)initWithLabel:(id)a3
+- (BKTouchDeliveryStatisticsLoggingObserver)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v58.receiver = self;
   v58.super_class = BKTouchDeliveryStatisticsLoggingObserver;
   v5 = [(BKTouchDeliveryStatisticsLoggingObserver *)&v58 init];
@@ -204,7 +204,7 @@
     destinations = v5->_destinations;
     v5->_destinations = v36;
 
-    v38 = [@"touchstats " stringByAppendingString:v4];
+    v38 = [@"touchstats " stringByAppendingString:labelCopy];
     v39 = [BKEventStatisticsLoggingController alloc];
     v40 = BKLogTouchEvents();
     v41 = [(BKEventStatisticsLoggingController *)v39 initWithLabel:v38 logCategory:v40];

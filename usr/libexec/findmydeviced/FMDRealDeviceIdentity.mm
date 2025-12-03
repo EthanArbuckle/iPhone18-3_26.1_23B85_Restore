@@ -1,7 +1,7 @@
 @interface FMDRealDeviceIdentity
 + (id)sharedInstance;
 - (FMDRealDeviceIdentity)init;
-- (void)attestSigningRequest:(id)a3 completion:(id)a4;
+- (void)attestSigningRequest:(id)request completion:(id)completion;
 @end
 
 @implementation FMDRealDeviceIdentity
@@ -33,12 +33,12 @@
   return v2;
 }
 
-- (void)attestSigningRequest:(id)a3 completion:(id)a4
+- (void)attestSigningRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v7 = objc_alloc_init(FMDDeviceIdentityFactory);
-  [v7 baaIdentityAttestationForSigningRequest:v6 completion:v5];
+  [v7 baaIdentityAttestationForSigningRequest:requestCopy completion:completionCopy];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface AWDControlFrames
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBlockAck:(BOOL)a3;
-- (void)setHasBlockAckRequest:(BOOL)a3;
-- (void)setHasCFend:(BOOL)a3;
-- (void)setHasCFendCFack:(BOOL)a3;
-- (void)setHasCts:(BOOL)a3;
-- (void)setHasPsPoll:(BOOL)a3;
-- (void)setHasRts:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBlockAck:(BOOL)ack;
+- (void)setHasBlockAckRequest:(BOOL)request;
+- (void)setHasCFend:(BOOL)fend;
+- (void)setHasCFendCFack:(BOOL)fack;
+- (void)setHasCts:(BOOL)cts;
+- (void)setHasPsPoll:(BOOL)poll;
+- (void)setHasRts:(BOOL)rts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDControlFrames
 
-- (void)setHasBlockAckRequest:(BOOL)a3
+- (void)setHasBlockAckRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBlockAck:(BOOL)a3
+- (void)setHasBlockAck:(BOOL)ack
 {
-  if (a3)
+  if (ack)
   {
     v3 = 2;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPsPoll:(BOOL)a3
+- (void)setHasPsPoll:(BOOL)poll
 {
-  if (a3)
+  if (poll)
   {
     v3 = 64;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasRts:(BOOL)a3
+- (void)setHasRts:(BOOL)rts
 {
-  if (a3)
+  if (rts)
   {
     v3 = 0x80;
   }
@@ -78,9 +78,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasCts:(BOOL)a3
+- (void)setHasCts:(BOOL)cts
 {
-  if (a3)
+  if (cts)
   {
     v3 = 32;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasCFend:(BOOL)a3
+- (void)setHasCFend:(BOOL)fend
 {
-  if (a3)
+  if (fend)
   {
     v3 = 8;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCFendCFack:(BOOL)a3
+- (void)setHasCFendCFack:(BOOL)fack
 {
-  if (a3)
+  if (fack)
   {
     v3 = 16;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blockAckRequest), @"blockAckRequest"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blockAckRequest), @"blockAckRequest"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blockAck), @"blockAck"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blockAck), @"blockAck"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_psPoll), @"psPoll"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_psPoll), @"psPoll"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rts), @"rts"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rts), @"rts"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_cts), @"cts"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_cts), @"cts"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_cFend), @"CFend"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_cFend), @"CFend"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ack), @"ack"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ack), @"ack"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if ((has & 0x10) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_cFendCFack), @"CFendCFack"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_cFendCFack), @"CFendCFack"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_blockAckRequest;
-    *(a3 + 72) |= 4u;
+    *(to + 3) = self->_blockAckRequest;
+    *(to + 72) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_blockAck;
-  *(a3 + 72) |= 2u;
+  *(to + 2) = self->_blockAck;
+  *(to + 72) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 7) = self->_psPoll;
-  *(a3 + 72) |= 0x40u;
+  *(to + 7) = self->_psPoll;
+  *(to + 72) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 8) = self->_rts;
-  *(a3 + 72) |= 0x80u;
+  *(to + 8) = self->_rts;
+  *(to + 72) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 6) = self->_cts;
-  *(a3 + 72) |= 0x20u;
+  *(to + 6) = self->_cts;
+  *(to + 72) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 1) = self->_ack;
-  *(a3 + 72) |= 1u;
+  *(to + 1) = self->_ack;
+  *(to + 72) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 5) = self->_cFendCFack;
-    *(a3 + 72) |= 0x10u;
+    *(to + 5) = self->_cFendCFack;
+    *(to + 72) |= 0x10u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 4) = self->_cFend;
-  *(a3 + 72) |= 8u;
+  *(to + 4) = self->_cFend;
+  *(to + 72) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -573,59 +573,59 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_blockAckRequest != *(a3 + 3))
+      if ((*(equal + 72) & 4) == 0 || self->_blockAckRequest != *(equal + 3))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_blockAck != *(a3 + 2))
+      if ((*(equal + 72) & 2) == 0 || self->_blockAck != *(equal + 2))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 72) & 0x40) == 0 || self->_psPoll != *(a3 + 7))
+      if ((*(equal + 72) & 0x40) == 0 || self->_psPoll != *(equal + 7))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x40) != 0)
+    else if ((*(equal + 72) & 0x40) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 72) & 0x80) == 0 || self->_rts != *(a3 + 8))
+      if ((*(equal + 72) & 0x80) == 0 || self->_rts != *(equal + 8))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x80) != 0)
+    else if ((*(equal + 72) & 0x80) != 0)
     {
 LABEL_41:
       LOBYTE(v5) = 0;
@@ -634,47 +634,47 @@ LABEL_41:
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 72) & 0x20) == 0 || self->_cts != *(a3 + 6))
+      if ((*(equal + 72) & 0x20) == 0 || self->_cts != *(equal + 6))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x20) != 0)
+    else if ((*(equal + 72) & 0x20) != 0)
     {
       goto LABEL_41;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_ack != *(a3 + 1))
+      if ((*(equal + 72) & 1) == 0 || self->_ack != *(equal + 1))
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(a3 + 72))
+    else if (*(equal + 72))
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0 || self->_cFend != *(a3 + 4))
+      if ((*(equal + 72) & 8) == 0 || self->_cFend != *(equal + 4))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 8) != 0)
+    else if ((*(equal + 72) & 8) != 0)
     {
       goto LABEL_41;
     }
 
-    LOBYTE(v5) = (*(a3 + 72) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 72) & 0x10) == 0;
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 72) & 0x10) == 0 || self->_cFendCFack != *(a3 + 5))
+      if ((*(equal + 72) & 0x10) == 0 || self->_cFendCFack != *(equal + 5))
       {
         goto LABEL_41;
       }
@@ -796,14 +796,14 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 4) != 0)
   {
-    self->_blockAckRequest = *(a3 + 3);
+    self->_blockAckRequest = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 72);
+    v3 = *(from + 72);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -816,14 +816,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 72) & 2) == 0)
+  else if ((*(from + 72) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_blockAck = *(a3 + 2);
+  self->_blockAck = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x40) == 0)
   {
 LABEL_4:
@@ -836,9 +836,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_psPoll = *(a3 + 7);
+  self->_psPoll = *(from + 7);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x80) == 0)
   {
 LABEL_5:
@@ -851,9 +851,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_rts = *(a3 + 8);
+  self->_rts = *(from + 8);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x20) == 0)
   {
 LABEL_6:
@@ -866,9 +866,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_cts = *(a3 + 6);
+  self->_cts = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 1) == 0)
   {
 LABEL_7:
@@ -881,9 +881,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_ack = *(a3 + 1);
+  self->_ack = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 8) == 0)
   {
 LABEL_8:
@@ -893,15 +893,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_cFendCFack = *(a3 + 5);
+    self->_cFendCFack = *(from + 5);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_16:
-  self->_cFend = *(a3 + 4);
+  self->_cFend = *(from + 4);
   *&self->_has |= 8u;
-  if ((*(a3 + 72) & 0x10) != 0)
+  if ((*(from + 72) & 0x10) != 0)
   {
     goto LABEL_17;
   }

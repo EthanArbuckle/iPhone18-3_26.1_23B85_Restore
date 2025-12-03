@@ -1,14 +1,14 @@
 @interface TILanguageModelOfflineLearningHandleLanguageLikelihood
-- (void)adaptToParagraph:(id)a3 timeStamp:(double)a4 adaptationType:(int)a5;
-- (void)updateAdaptationContext:(id)a3;
+- (void)adaptToParagraph:(id)paragraph timeStamp:(double)stamp adaptationType:(int)type;
+- (void)updateAdaptationContext:(id)context;
 @end
 
 @implementation TILanguageModelOfflineLearningHandleLanguageLikelihood
 
-- (void)adaptToParagraph:(id)a3 timeStamp:(double)a4 adaptationType:(int)a5
+- (void)adaptToParagraph:(id)paragraph timeStamp:(double)stamp adaptationType:(int)type
 {
-  v6 = a3;
-  v5 = v6;
+  paragraphCopy = paragraph;
+  v5 = paragraphCopy;
   TIDispatchSync();
 }
 
@@ -24,15 +24,15 @@ void __100__TILanguageModelOfflineLearningHandleLanguageLikelihood_adaptToParagr
   [v5 addEvidence:*(a1 + 40) timestamp:*(a1 + 56) adaptationType:v6 forRecipient:v4 app:0 language:*(a1 + 48)];
 }
 
-- (void)updateAdaptationContext:(id)a3
+- (void)updateAdaptationContext:(id)context
 {
-  v4 = a3;
-  [(TILanguageModelOfflineLearningHandle *)self setCurrentAdaptationContext:v4];
-  v5 = [(TILanguageModelOfflineLearningHandle *)self lastAdaptationDate];
+  contextCopy = context;
+  [(TILanguageModelOfflineLearningHandle *)self setCurrentAdaptationContext:contextCopy];
+  lastAdaptationDate = [(TILanguageModelOfflineLearningHandle *)self lastAdaptationDate];
 
-  if (!v5)
+  if (!lastAdaptationDate)
   {
-    v6 = v4;
+    v6 = contextCopy;
     TIDispatchSync();
   }
 }

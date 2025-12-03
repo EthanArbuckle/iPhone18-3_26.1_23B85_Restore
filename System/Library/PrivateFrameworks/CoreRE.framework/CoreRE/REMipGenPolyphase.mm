@@ -1,11 +1,11 @@
 @interface REMipGenPolyphase
 + (_REMipGenPolyphaseOptions)defaultOptions;
-- (REMipGenPolyphase)initWithLibrary:(id)a3 binaryArchive:(id)a4;
-- (void)copyAndGenerateMipmapsFromTexture:(id)a3 toTexture:(id)a4 withComputeEncoder:(id)a5;
-- (void)copyAndGenerateMipmapsFromTexture:(id)a3 toTexture:(id)a4 withComputeEncoder:(id)a5 withOptions:(_REMipGenPolyphaseOptions *)a6;
+- (REMipGenPolyphase)initWithLibrary:(id)library binaryArchive:(id)archive;
+- (void)copyAndGenerateMipmapsFromTexture:(id)texture toTexture:(id)toTexture withComputeEncoder:(id)encoder;
+- (void)copyAndGenerateMipmapsFromTexture:(id)texture toTexture:(id)toTexture withComputeEncoder:(id)encoder withOptions:(_REMipGenPolyphaseOptions *)options;
 - (void)dealloc;
-- (void)generateMipmapsForTexture:(id)a3 withComputeEncoder:(id)a4;
-- (void)generateMipmapsForTexture:(id)a3 withComputeEncoder:(id)a4 withOptions:(_REMipGenPolyphaseOptions *)a5;
+- (void)generateMipmapsForTexture:(id)texture withComputeEncoder:(id)encoder;
+- (void)generateMipmapsForTexture:(id)texture withComputeEncoder:(id)encoder withOptions:(_REMipGenPolyphaseOptions *)options;
 @end
 
 @implementation REMipGenPolyphase
@@ -19,13 +19,13 @@
   return result;
 }
 
-- (REMipGenPolyphase)initWithLibrary:(id)a3 binaryArchive:(id)a4
+- (REMipGenPolyphase)initWithLibrary:(id)library binaryArchive:(id)archive
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v36 = v6;
-  v8 = [v6 device];
+  libraryCopy = library;
+  archiveCopy = archive;
+  v36 = libraryCopy;
+  device = [libraryCopy device];
   v40.receiver = self;
   v40.super_class = REMipGenPolyphase;
   v9 = [(REMipGenPolyphase *)&v40 init];
@@ -34,10 +34,10 @@
     v44[0] = xmmword_1E871E758;
     v44[1] = *off_1E871E768;
     v45 = @"mipGenPolyphaseRef";
-    v35 = v8;
-    if ([v8 supportsFamily:5001])
+    v35 = device;
+    if ([device supportsFamily:5001])
     {
-      v10 = [v8 supportsFamily:1006] ^ 1;
+      v10 = [device supportsFamily:1006] ^ 1;
     }
 
     else
@@ -62,9 +62,9 @@
       v17 = *(v44 + v12);
       [v16 setName:v17];
       [v16 setConstantValues:v34];
-      if (v7)
+      if (archiveCopy)
       {
-        v43 = v7;
+        v43 = archiveCopy;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
         [v16 setBinaryArchives:v18];
       }
@@ -78,9 +78,9 @@
 
       v22 = objc_alloc_init(MEMORY[0x1E6974030]);
       [v22 setComputeFunction:*v15];
-      if (v7)
+      if (archiveCopy)
       {
-        v42 = v7;
+        v42 = archiveCopy;
         v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
         [v22 setBinaryArchives:v23];
       }
@@ -119,7 +119,7 @@
     v9 = v32;
     v32->_tileValid = 0;
 
-    v8 = v35;
+    device = v35;
   }
 
   return v9;
@@ -132,70 +132,70 @@
   [(REMipGenPolyphase *)&v2 dealloc];
 }
 
-- (void)generateMipmapsForTexture:(id)a3 withComputeEncoder:(id)a4
+- (void)generateMipmapsForTexture:(id)texture withComputeEncoder:(id)encoder
 {
   v12 = 0;
   v10 = 0u;
   v11 = 0u;
-  v6 = a4;
-  v7 = a3;
+  encoderCopy = encoder;
+  textureCopy = texture;
   +[REMipGenPolyphase defaultOptions];
   v8[0] = v10;
   v8[1] = v11;
   v9 = v12;
-  [(REMipGenPolyphase *)self generateMipmapsForTexture:v7 withComputeEncoder:v6 withOptions:v8];
+  [(REMipGenPolyphase *)self generateMipmapsForTexture:textureCopy withComputeEncoder:encoderCopy withOptions:v8];
 }
 
-- (void)generateMipmapsForTexture:(id)a3 withComputeEncoder:(id)a4 withOptions:(_REMipGenPolyphaseOptions *)a5
+- (void)generateMipmapsForTexture:(id)texture withComputeEncoder:(id)encoder withOptions:(_REMipGenPolyphaseOptions *)options
 {
-  if (a5->var1)
+  if (options->var1)
   {
     bzero(self->_tileValid, self->_tileMaxCount);
-    v9 = a4;
-    v10 = a3;
-    v11 = [v10 mipmapLevelCount];
+    encoderCopy = encoder;
+    textureCopy2 = texture;
+    mipmapLevelCount = [textureCopy2 mipmapLevelCount];
     useTextureViews = self->_useTextureViews;
-    v13 = *&a5->var2.origin.y;
-    v16 = *&a5->var0;
+    v13 = *&options->var2.origin.y;
+    v16 = *&options->var0;
     v17 = v13;
-    height = a5->var2.size.height;
-    generateMipmapsForTexture_HierarchicalTiling_traverse(v10, v9, &v16, self, v11 - 1, 0, 0, useTextureViews, *&v16);
+    height = options->var2.size.height;
+    generateMipmapsForTexture_HierarchicalTiling_traverse(textureCopy2, encoderCopy, &v16, self, mipmapLevelCount - 1, 0, 0, useTextureViews, *&v16);
   }
 
   else
   {
-    v14 = *&a5->var2.origin.y;
-    v16 = *&a5->var0;
+    v14 = *&options->var2.origin.y;
+    v16 = *&options->var0;
     v17 = v14;
-    height = a5->var2.size.height;
-    v15 = a4;
-    v10 = a3;
-    generateMipmapsForTexture(v10, v10, v15, &v16, self, 0);
+    height = options->var2.size.height;
+    encoderCopy2 = encoder;
+    textureCopy2 = texture;
+    generateMipmapsForTexture(textureCopy2, textureCopy2, encoderCopy2, &v16, self, 0);
   }
 }
 
-- (void)copyAndGenerateMipmapsFromTexture:(id)a3 toTexture:(id)a4 withComputeEncoder:(id)a5
+- (void)copyAndGenerateMipmapsFromTexture:(id)texture toTexture:(id)toTexture withComputeEncoder:(id)encoder
 {
   v15 = 0;
   v13 = 0u;
   v14 = 0u;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  encoderCopy = encoder;
+  toTextureCopy = toTexture;
+  textureCopy = texture;
   +[REMipGenPolyphase defaultOptions];
   v11[0] = v13;
   v11[1] = v14;
   v12 = v15;
-  [(REMipGenPolyphase *)self copyAndGenerateMipmapsFromTexture:v10 toTexture:v9 withComputeEncoder:v8 withOptions:v11];
+  [(REMipGenPolyphase *)self copyAndGenerateMipmapsFromTexture:textureCopy toTexture:toTextureCopy withComputeEncoder:encoderCopy withOptions:v11];
 }
 
-- (void)copyAndGenerateMipmapsFromTexture:(id)a3 toTexture:(id)a4 withComputeEncoder:(id)a5 withOptions:(_REMipGenPolyphaseOptions *)a6
+- (void)copyAndGenerateMipmapsFromTexture:(id)texture toTexture:(id)toTexture withComputeEncoder:(id)encoder withOptions:(_REMipGenPolyphaseOptions *)options
 {
-  v6 = *&a6->var2.origin.y;
-  v7[0] = *&a6->var0;
+  v6 = *&options->var2.origin.y;
+  v7[0] = *&options->var0;
   v7[1] = v6;
-  height = a6->var2.size.height;
-  generateMipmapsForTexture(a3, a4, a5, v7, self, 1u);
+  height = options->var2.size.height;
+  generateMipmapsForTexture(texture, toTexture, encoder, v7, self, 1u);
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface IMFileManager
 + (id)defaultHFSFileManager;
-- (id)MIMETypeOfPath:(id)a3;
-- (id)MIMETypeOfPathExtension:(id)a3;
-- (id)UTITypeOfMimeType:(id)a3;
-- (id)UTITypeOfPath:(id)a3;
-- (id)UTITypeOfPathExtension:(id)a3;
-- (id)displayNameOfFileWithName:(id)a3 hfsFlags:(unsigned __int16)a4;
-- (id)pathExtensionForMIMEType:(id)a3;
-- (id)pathExtensionForUTIType:(id)a3;
+- (id)MIMETypeOfPath:(id)path;
+- (id)MIMETypeOfPathExtension:(id)extension;
+- (id)UTITypeOfMimeType:(id)type;
+- (id)UTITypeOfPath:(id)path;
+- (id)UTITypeOfPathExtension:(id)extension;
+- (id)displayNameOfFileWithName:(id)name hfsFlags:(unsigned __int16)flags;
+- (id)pathExtensionForMIMEType:(id)type;
+- (id)pathExtensionForUTIType:(id)type;
 @end
 
 @implementation IMFileManager
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (id)displayNameOfFileWithName:(id)a3 hfsFlags:(unsigned __int16)a4
+- (id)displayNameOfFileWithName:(id)name hfsFlags:(unsigned __int16)flags
 {
-  v4 = a4;
-  v5 = a3;
-  v8 = v5;
-  if ((v4 & 0x10) != 0 || (objc_msgSend_pathExtension(v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v9, v10, @"app"), v9, isEqualToString))
+  flagsCopy = flags;
+  nameCopy = name;
+  v8 = nameCopy;
+  if ((flagsCopy & 0x10) != 0 || (objc_msgSend_pathExtension(nameCopy, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v9, v10, @"app"), v9, isEqualToString))
   {
     v12 = objc_msgSend_stringByDeletingPathExtension(v8, v6, v7);
   }
@@ -44,25 +44,25 @@
   return v13;
 }
 
-- (id)pathExtensionForMIMEType:(id)a3
+- (id)pathExtensionForMIMEType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v6 = objc_msgSend_sharedMappings(MEMORY[0x1E696AF48], v4, v5);
-  v8 = objc_msgSend_preferredExtensionForMIMEType_(v6, v7, v3);
+  v8 = objc_msgSend_preferredExtensionForMIMEType_(v6, v7, typeCopy);
 
   if (v8)
   {
     goto LABEL_2;
   }
 
-  if (objc_msgSend_isEqualToIgnoringCase_(v3, v9, @"text/x-vlocation"))
+  if (objc_msgSend_isEqualToIgnoringCase_(typeCopy, v9, @"text/x-vlocation"))
   {
     v10 = @"vcf";
   }
 
   else
   {
-    if ((objc_msgSend_isEqualToIgnoringCase_(v3, v11, @"text/x-vcalendar") & 1) == 0)
+    if ((objc_msgSend_isEqualToIgnoringCase_(typeCopy, v11, @"text/x-vcalendar") & 1) == 0)
     {
 LABEL_2:
       v10 = v8;
@@ -77,9 +77,9 @@ LABEL_7:
   return v10;
 }
 
-- (id)UTITypeOfMimeType:(id)a3
+- (id)UTITypeOfMimeType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (qword_1EAED8FC0 != -1)
   {
     sub_1959D4DD4();
@@ -91,15 +91,15 @@ LABEL_7:
     sub_1959D4DE8();
   }
 
-  v5 = v4(qword_1EAED9000, v3, 0);
+  v5 = v4(qword_1EAED9000, typeCopy, 0);
 
   return v5;
 }
 
-- (id)MIMETypeOfPathExtension:(id)a3
+- (id)MIMETypeOfPathExtension:(id)extension
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"vcs"))
+  extensionCopy = extension;
+  if (objc_msgSend_isEqualToString_(extensionCopy, v4, @"vcs"))
   {
     v7 = @"text/x-vcalendar";
   }
@@ -107,17 +107,17 @@ LABEL_7:
   else
   {
     v8 = objc_msgSend_sharedMappings(MEMORY[0x1E696AF48], v5, v6);
-    v7 = objc_msgSend_MIMETypeForExtension_(v8, v9, v3);
+    v7 = objc_msgSend_MIMETypeForExtension_(v8, v9, extensionCopy);
   }
 
   return v7;
 }
 
-- (id)MIMETypeOfPath:(id)a3
+- (id)MIMETypeOfPath:(id)path
 {
-  v4 = a3;
-  v7 = objc_msgSend_pathExtension(v4, v5, v6);
-  if (objc_msgSend_isEqualToString_(v7, v8, @"vcf") && (objc_msgSend_hasSuffix_(v4, v9, @".loc.vcf") & 1) != 0)
+  pathCopy = path;
+  v7 = objc_msgSend_pathExtension(pathCopy, v5, v6);
+  if (objc_msgSend_isEqualToString_(v7, v8, @"vcf") && (objc_msgSend_hasSuffix_(pathCopy, v9, @".loc.vcf") & 1) != 0)
   {
     v10 = @"text/x-vlocation";
   }
@@ -130,15 +130,15 @@ LABEL_7:
   return v10;
 }
 
-- (id)pathExtensionForUTIType:(id)a3
+- (id)pathExtensionForUTIType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   if (qword_1EAED8FD0 != -1)
   {
     sub_1959D4DFC();
   }
 
-  if (objc_msgSend_length(v5, v3, v4))
+  if (objc_msgSend_length(typeCopy, v3, v4))
   {
     v6 = off_1EAED8FC8;
     if (qword_1EAED8D08 != -1)
@@ -146,7 +146,7 @@ LABEL_7:
       sub_1959D4E10();
     }
 
-    v7 = v6(v5, qword_1EAED8D10);
+    v7 = v6(typeCopy, qword_1EAED8D10);
   }
 
   else
@@ -157,11 +157,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)UTITypeOfPath:(id)a3
+- (id)UTITypeOfPath:(id)path
 {
-  v3 = a3;
-  v6 = objc_msgSend_pathExtension(v3, v4, v5);
-  if (objc_msgSend_isEqualToString_(v6, v7, @"vcf") && (objc_msgSend_hasSuffix_(v3, v8, @".loc.vcf") & 1) != 0)
+  pathCopy = path;
+  v6 = objc_msgSend_pathExtension(pathCopy, v4, v5);
+  if (objc_msgSend_isEqualToString_(v6, v7, @"vcf") && (objc_msgSend_hasSuffix_(pathCopy, v8, @".loc.vcf") & 1) != 0)
   {
     v10 = @"public.vlocation";
   }
@@ -190,10 +190,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)UTITypeOfPathExtension:(id)a3
+- (id)UTITypeOfPathExtension:(id)extension
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5))
+  extensionCopy = extension;
+  if (objc_msgSend_length(extensionCopy, v4, v5))
   {
     if (qword_1EAED8FF0 != -1)
     {
@@ -206,7 +206,7 @@ LABEL_7:
       sub_1959D4E10();
     }
 
-    v7 = v6(qword_1EAED8D10, v3, 0);
+    v7 = v6(qword_1EAED8D10, extensionCopy, 0);
   }
 
   else

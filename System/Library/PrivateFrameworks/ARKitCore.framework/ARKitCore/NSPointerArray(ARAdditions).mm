@@ -6,9 +6,9 @@
 
 - (uint64_t)ar_compactZeroedWeakPointers
 {
-  [a1 addPointer:0];
+  [self addPointer:0];
 
-  return [a1 compact];
+  return [self compact];
 }
 
 @end

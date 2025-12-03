@@ -1,7 +1,7 @@
 @interface TTKSimpleKey
 - (CGRect)frame;
-- (TTKSimpleKey)initWithJsonDictionary:(id)a3;
-- (TTKSimpleKey)initWithString:(id)a3 frame:(CGRect)a4 keyCode:(signed __int16)a5;
+- (TTKSimpleKey)initWithJsonDictionary:(id)dictionary;
+- (TTKSimpleKey)initWithString:(id)string frame:(CGRect)frame keyCode:(signed __int16)code;
 - (id)toJsonDictionary;
 @end
 
@@ -22,46 +22,46 @@
 
 - (id)toJsonDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->_string forKeyedSubscript:@"string"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_string forKeyedSubscript:@"string"];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_keyCode];
-  [v3 setObject:v4 forKeyedSubscript:@"key_code"];
+  [dictionary setObject:v4 forKeyedSubscript:@"key_code"];
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   x = self->_frame.origin.x;
   *&x = x;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:x];
-  [v5 setObject:v7 forKeyedSubscript:@"x"];
+  [dictionary2 setObject:v7 forKeyedSubscript:@"x"];
 
   y = self->_frame.origin.y;
   *&y = y;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:y];
-  [v5 setObject:v9 forKeyedSubscript:@"y"];
+  [dictionary2 setObject:v9 forKeyedSubscript:@"y"];
 
   height = self->_frame.size.height;
   *&height = height;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:height];
-  [v5 setObject:v11 forKeyedSubscript:@"height"];
+  [dictionary2 setObject:v11 forKeyedSubscript:@"height"];
 
   width = self->_frame.size.width;
   *&width = width;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:width];
-  [v5 setObject:v13 forKeyedSubscript:@"width"];
+  [dictionary2 setObject:v13 forKeyedSubscript:@"width"];
 
-  [v3 setObject:v5 forKeyedSubscript:@"frame"];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"frame"];
 
-  return v3;
+  return dictionary;
 }
 
-- (TTKSimpleKey)initWithJsonDictionary:(id)a3
+- (TTKSimpleKey)initWithJsonDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = TTKSimpleKey;
   v5 = [(TTKSimpleKey *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"frame"];
+    v6 = [dictionaryCopy objectForKey:@"frame"];
     v7 = [v6 objectForKey:@"x"];
     v8 = [v6 objectForKey:@"y"];
     v9 = [v6 objectForKey:@"height"];
@@ -77,36 +77,36 @@
     v5->_frame.origin.y = v14;
     v5->_frame.size.width = v16;
     v5->_frame.size.height = v17;
-    v18 = [v4 objectForKey:@"string"];
+    v18 = [dictionaryCopy objectForKey:@"string"];
     string = v5->_string;
     v5->_string = v18;
 
-    v20 = [v4 objectForKey:@"key_code"];
+    v20 = [dictionaryCopy objectForKey:@"key_code"];
     v5->_keyCode = [v20 intValue];
   }
 
   return v5;
 }
 
-- (TTKSimpleKey)initWithString:(id)a3 frame:(CGRect)a4 keyCode:(signed __int16)a5
+- (TTKSimpleKey)initWithString:(id)string frame:(CGRect)frame keyCode:(signed __int16)code
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stringCopy = string;
   v16.receiver = self;
   v16.super_class = TTKSimpleKey;
   v13 = [(TTKSimpleKey *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_string, a3);
+    objc_storeStrong(&v13->_string, string);
     v14->_frame.origin.x = x;
     v14->_frame.origin.y = y;
     v14->_frame.size.width = width;
     v14->_frame.size.height = height;
-    v14->_keyCode = a5;
+    v14->_keyCode = code;
   }
 
   return v14;

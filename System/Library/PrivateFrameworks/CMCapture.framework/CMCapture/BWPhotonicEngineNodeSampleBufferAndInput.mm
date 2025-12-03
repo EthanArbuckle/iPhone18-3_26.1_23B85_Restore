@@ -1,20 +1,20 @@
 @interface BWPhotonicEngineNodeSampleBufferAndInput
-- (BWPhotonicEngineNodeSampleBufferAndInput)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 nodeInput:(id)a4;
+- (BWPhotonicEngineNodeSampleBufferAndInput)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer nodeInput:(id)input;
 - (void)dealloc;
 @end
 
 @implementation BWPhotonicEngineNodeSampleBufferAndInput
 
-- (BWPhotonicEngineNodeSampleBufferAndInput)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 nodeInput:(id)a4
+- (BWPhotonicEngineNodeSampleBufferAndInput)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer nodeInput:(id)input
 {
   v8.receiver = self;
   v8.super_class = BWPhotonicEngineNodeSampleBufferAndInput;
   v6 = [(BWPhotonicEngineNodeSampleBufferAndInput *)&v8 init];
   if (v6)
   {
-    if (a3 && (v6->_sampleBuffer = CFRetain(a3), a4))
+    if (buffer && (v6->_sampleBuffer = CFRetain(buffer), input))
     {
-      v6->_nodeInput = a4;
+      v6->_nodeInput = input;
     }
 
     else

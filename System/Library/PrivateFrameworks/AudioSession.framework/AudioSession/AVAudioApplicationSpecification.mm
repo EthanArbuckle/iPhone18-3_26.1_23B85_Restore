@@ -1,38 +1,38 @@
 @interface AVAudioApplicationSpecification
 - ($115C4C562B26FF47E01F9F4EA65B5887)appAuditToken;
-- (AVAudioApplicationSpecification)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppAuditToken:(id *)a3;
+- (AVAudioApplicationSpecification)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppAuditToken:(id *)token;
 @end
 
 @implementation AVAudioApplicationSpecification
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->audioAppType forKey:@"audioAppType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->audioAppType forKey:@"audioAppType"];
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&self->_appAuditToken length:32];
-  [v5 encodeObject:v4 forKey:@"appAuditToken"];
-  [v5 encodeObject:self->attributionBundleID forKey:@"attributionBundleID"];
-  [v5 encodeObject:self->processName forKey:@"processName"];
+  [coderCopy encodeObject:v4 forKey:@"appAuditToken"];
+  [coderCopy encodeObject:self->attributionBundleID forKey:@"attributionBundleID"];
+  [coderCopy encodeObject:self->processName forKey:@"processName"];
 }
 
-- (AVAudioApplicationSpecification)initWithCoder:(id)a3
+- (AVAudioApplicationSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AVAudioApplicationSpecification;
   v5 = [(AVAudioApplicationSpecification *)&v12 init];
   if (v5)
   {
-    v5->audioAppType = [v4 decodeIntegerForKey:@"audioAppType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appAuditToken"];
+    v5->audioAppType = [coderCopy decodeIntegerForKey:@"audioAppType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appAuditToken"];
     [v6 getBytes:&v5->_appAuditToken length:32];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributionBundleID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionBundleID"];
     attributionBundleID = v5->attributionBundleID;
     v5->attributionBundleID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
     processName = v5->processName;
     v5->processName = v9;
   }
@@ -48,10 +48,10 @@
   return self;
 }
 
-- (void)setAppAuditToken:(id *)a3
+- (void)setAppAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_appAuditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_appAuditToken.val = *token->var0;
   *&self->_appAuditToken.val[4] = v3;
 }
 

@@ -1,11 +1,11 @@
 @interface VKMapView
 + (BOOL)_elevatedGroundIsAvailable;
 + (BOOL)_globeIsAvailable;
-+ (void)updateUserLocationAnnotationStateForNavigationPuck:(id)a3 isPuckEnabled:(BOOL)a4 synchronizedState:(void *)a5;
++ (void)updateUserLocationAnnotationStateForNavigationPuck:(id)puck isPuckEnabled:(BOOL)enabled synchronizedState:(void *)state;
 - ($1AB5FA073B851C12C2339EC22442E995)centerCoordinate;
 - ($6EFE6C6748B912A6EAC8A8E593ED1344)mapDisplayStyle;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)a3 toCoordinateFromLayer:(id)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)a3 toMapPointFromLayer:(id)a4;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)point toCoordinateFromLayer:(id)layer;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)point toMapPointFromLayer:(id)layer;
 - ($FF918C85BF8E73478720C66798E418D4)annotationTrackingBehavior;
 - (BOOL)_advancedLightingAllowed;
 - (BOOL)_advancedWaterAllowed;
@@ -18,11 +18,11 @@
 - (BOOL)buildingFootprintsDisabled;
 - (BOOL)canEnter3DMode;
 - (BOOL)canRotate;
-- (BOOL)canZoomInForTileSize:(int64_t)a3;
-- (BOOL)canZoomOutForTileSize:(int64_t)a3;
+- (BOOL)canZoomInForTileSize:(int64_t)size;
+- (BOOL)canZoomOutForTileSize:(int64_t)size;
 - (BOOL)cancelPendingMove;
 - (BOOL)debugLayoutContinuously;
-- (BOOL)displayedFloorIsDefaultForVenueBuilding:(id)a3;
+- (BOOL)displayedFloorIsDefaultForVenueBuilding:(id)building;
 - (BOOL)enableAdvancedLighting;
 - (BOOL)enableAdvancedWater;
 - (BOOL)enableBuildingHeights;
@@ -43,12 +43,12 @@
 - (BOOL)isLoadingMuninMetadata;
 - (BOOL)isPitchable;
 - (BOOL)isPitched;
-- (BOOL)isPointValidForGesturing:(CGPoint)a3;
+- (BOOL)isPointValidForGesturing:(CGPoint)gesturing;
 - (BOOL)isShowingCuratedElevatedGround;
 - (BOOL)labelsDisabled;
 - (BOOL)loadMuninAvailability;
-- (BOOL)moveToMarker:(id)a3 withHeading:(double)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (BOOL)moveToStorefrontView:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
+- (BOOL)moveToMarker:(id)marker withHeading:(double)heading animated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)moveToStorefrontView:(id)view animated:(BOOL)animated completionHandler:(id)handler;
 - (BOOL)polygonsDisabled;
 - (BOOL)preferStaleTiles;
 - (BOOL)rastersDisabled;
@@ -68,17 +68,17 @@
 - (BOOL)staysCenteredDuringPinch;
 - (BOOL)staysCenteredDuringRotation;
 - (BOOL)stylesheetIsDevResource;
-- (BOOL)supportsMapType:(int)a3;
+- (BOOL)supportsMapType:(int)type;
 - (BOOL)supportsNightMode;
-- (BOOL)tapAtPoint:(CGPoint)a3;
+- (BOOL)tapAtPoint:(CGPoint)point;
 - (BOOL)trafficEnabled;
 - (BOOL)trafficIncidentsEnabled;
 - (BOOL)transitLinesDisabled;
 - (BOOL)wantsTimerTick;
 - (CADisplay)hostDisplay;
-- (CGPoint)convertCoordinate:(id)a3 toCameraModelPointToLayer:(id)a4;
-- (CGPoint)convertCoordinate:(id)a3 toPointToLayer:(id)a4;
-- (CGPoint)convertMapPoint:(id)a3 toPointToLayer:(id)a4;
+- (CGPoint)convertCoordinate:(id)coordinate toCameraModelPointToLayer:(id)layer;
+- (CGPoint)convertCoordinate:(id)coordinate toPointToLayer:(id)layer;
+- (CGPoint)convertMapPoint:(id)point toPointToLayer:(id)layer;
 - (GEOFeatureStyleAttributes)clientFeatureStyleAttributes;
 - (GEOMapRegion)mapRegion;
 - (GEOMapRegion)mapRegionIgnoringEdgeInsets;
@@ -90,8 +90,8 @@
 - (VKEdgeInsets)labelEdgeWidths;
 - (VKLabelMarker)selectedLabelMarker;
 - (VKLabelSelectionFilter)labelSelectionFilter;
-- (VKMapView)initWithDescriptor:(id)a3;
-- (VKMapView)initWithLayer:(id)a3;
+- (VKMapView)initWithDescriptor:(id)descriptor;
+- (VKMapView)initWithLayer:(id)layer;
 - (VKMapViewCameraDelegate)cameraDelegate;
 - (VKMapViewDelegate)mapDelegate;
 - (VKMetrics)metrics;
@@ -99,19 +99,19 @@
 - (VKSceneConfiguration)sceneConfiguration;
 - (__CFString)initWithDescriptor:;
 - (double)altitude;
-- (double)currentZoomLevelForTileSize:(int64_t)a3;
-- (double)distanceFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 fromLayer:(id)a5 withPrecision:(int64_t)a6;
-- (double)durationToAnimateToMapRegion:(id)a3;
+- (double)currentZoomLevelForTileSize:(int64_t)size;
+- (double)distanceFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint fromLayer:(id)layer withPrecision:(int64_t)precision;
+- (double)durationToAnimateToMapRegion:(id)region;
 - (double)maxPitch;
-- (double)maximumZoomLevelForTileSize:(int64_t)a3;
+- (double)maximumZoomLevelForTileSize:(int64_t)size;
 - (double)minPitch;
-- (double)minimumZoomLevelForTileSize:(int64_t)a3;
+- (double)minimumZoomLevelForTileSize:(int64_t)size;
 - (double)pitch;
 - (double)presentationYaw;
-- (double)topDownMinimumZoomLevelForTileSize:(int64_t)a3;
+- (double)topDownMinimumZoomLevelForTileSize:(int64_t)size;
 - (double)trackingZoomScale;
 - (double)yaw;
-- (double)zoomLevelAdjustmentForTileSize:(int64_t)a3;
+- (double)zoomLevelAdjustmentForTileSize:(int64_t)size;
 - (float)currentZoomLevel;
 - (float)styleZOffsetScale;
 - (float)worldSpaceWidthOfView;
@@ -122,36 +122,36 @@
 - (id)annotationRectTest;
 - (id)arWalkingDebugOutput;
 - (id)attributionsForCurrentRegion;
-- (id)buildingMarkerAtPoint:(CGPoint)a3;
+- (id)buildingMarkerAtPoint:(CGPoint)point;
 - (id)clearVenueBuildingFloorSelections;
-- (id)consoleString:(BOOL)a3;
+- (id)consoleString:(BOOL)string;
 - (id)currentMarker;
-- (id)debugLabelString:(BOOL)a3;
+- (id)debugLabelString:(BOOL)string;
 - (id)detailedDescription;
 - (id)detailedDescriptionDictionaryRepresentation;
-- (id)iconForStyleAttributes:(id)a3 contentScale:(double)a4 size:(int64_t)a5 transparent:(BOOL)a6;
-- (id)initShouldRasterize:(BOOL)a3 inBackground:(BOOL)a4 contentScale:(double)a5 auditToken:(id)a6 mapViewPurpose:(int64_t)a7 allowsAntialiasing:(BOOL)a8;
-- (id)labelMarkerForCustomFeatureAnnotation:(id)a3;
-- (id)labelMarkerForCustomFeatureAnnotation:(id)a3 dataSource:(id)a4;
-- (id)labelMarkerForSelectionAtPoint:(CGPoint)a3 selectableLabelsOnly:(BOOL)a4;
-- (id)markerAtPoint:(CGPoint)a3;
-- (id)muninMarkerAtCoordinate:(id)a3;
-- (id)muninMarkerAtCoordinate:(id)a3 completeMarkerHandler:(id)a4;
+- (id)iconForStyleAttributes:(id)attributes contentScale:(double)scale size:(int64_t)size transparent:(BOOL)transparent;
+- (id)initShouldRasterize:(BOOL)rasterize inBackground:(BOOL)background contentScale:(double)scale auditToken:(id)token mapViewPurpose:(int64_t)purpose allowsAntialiasing:(BOOL)antialiasing;
+- (id)labelMarkerForCustomFeatureAnnotation:(id)annotation;
+- (id)labelMarkerForCustomFeatureAnnotation:(id)annotation dataSource:(id)source;
+- (id)labelMarkerForSelectionAtPoint:(CGPoint)point selectableLabelsOnly:(BOOL)only;
+- (id)markerAtPoint:(CGPoint)point;
+- (id)muninMarkerAtCoordinate:(id)coordinate;
+- (id)muninMarkerAtCoordinate:(id)coordinate completeMarkerHandler:(id)handler;
 - (id)navigationPuck;
 - (id)onscreenImageResources;
-- (id)rapMarkerAtPoint:(CGPoint)a3;
+- (id)rapMarkerAtPoint:(CGPoint)point;
 - (id)resolveMapCameraController;
 - (id)roadLabelTilesInScene;
 - (id)selectedTransitLineIDs;
-- (id)setARWalkingFeatureSet:(id)a3;
+- (id)setARWalkingFeatureSet:(id)set;
 - (id)testStatistics;
 - (id)tileStatistics;
-- (id)transitLineMarkersForSelectionAtPoint:(CGPoint)a3;
+- (id)transitLineMarkersForSelectionAtPoint:(CGPoint)point;
 - (id)transitLineMarkersInCurrentViewport;
-- (id)venueAtLocation:(id)a3 withMarginForError:(BOOL)a4 includeNonRevealedVenues:(BOOL)a5;
+- (id)venueAtLocation:(id)location withMarginForError:(BOOL)error includeNonRevealedVenues:(BOOL)venues;
 - (id)venueBuildingWithFocus;
 - (id)venueWithFocus;
-- (id)venueWithID:(unint64_t)a3;
+- (id)venueWithID:(unint64_t)d;
 - (int)arMode;
 - (int)arSceneType;
 - (int)mapType;
@@ -162,23 +162,23 @@
 - (int64_t)navigationShieldSize;
 - (int64_t)shieldSize;
 - (int64_t)terrainMode;
-- (optional<double>)puckAnimator:(id)a3 getElevationWithCoordinate:(const void *)a4;
-- (signed)defaultFloorOrdinalForVenueBuilding:(id)a3;
-- (signed)displayedFloorOrdinalForVenueBuilding:(id)a3;
+- (optional<double>)puckAnimator:(id)animator getElevationWithCoordinate:(const void *)coordinate;
+- (signed)defaultFloorOrdinalForVenueBuilding:(id)building;
+- (signed)displayedFloorOrdinalForVenueBuilding:(id)building;
 - (unint64_t)getSceneState;
 - (unordered_map<unsigned)clientStyleAttributes;
-- (void)_applyMapDisplayStyle:(id)a3 animated:(BOOL)a4 duration:(double)a5;
-- (void)_closeLoaderConnection:(BOOL)a3;
+- (void)_applyMapDisplayStyle:(id)style animated:(BOOL)animated duration:(double)duration;
+- (void)_closeLoaderConnection:(BOOL)connection;
 - (void)_configureDefaultSettings;
 - (void)_forceLayoutForSuspensionSnapShot;
-- (void)_notifyDelegateFlyoverTourLabelChanged:(id)a3;
-- (void)_postDelegateCallbackBlock:(id)a3;
+- (void)_notifyDelegateFlyoverTourLabelChanged:(id)changed;
+- (void)_postDelegateCallbackBlock:(id)block;
 - (void)_reconfigurePermissions;
 - (void)_resetElevationRasterMinZoom;
-- (void)_runFlyoverTourStateChange:(int)a3 completion:(id)a4;
-- (void)_setARSession:(id)a3;
-- (void)_setFloorSwitcherZoomPadding:(float)a3;
-- (void)_setThermalPressureLevel:(unint64_t)a3;
+- (void)_runFlyoverTourStateChange:(int)change completion:(id)completion;
+- (void)_setARSession:(id)session;
+- (void)_setFloorSwitcherZoomPadding:(float)padding;
+- (void)_setThermalPressureLevel:(unint64_t)level;
 - (void)_setupThermalMonitor;
 - (void)_shutdownThermalMonitor;
 - (void)_updateBackgroundColor;
@@ -188,24 +188,24 @@
 - (void)_updateOnlyShowRoadClosures;
 - (void)_updateThermalPressureLevel;
 - (void)activateInternalSettings;
-- (void)activeARWalkingFeatureDidUpdate:(id)a3;
+- (void)activeARWalkingFeatureDidUpdate:(id)update;
 - (void)activeLogics;
-- (void)addCustomFeatureDataSource:(id)a3;
-- (void)addExternalAnchor:(id)a3;
-- (void)addOverlay:(id)a3;
-- (void)addPersistentRouteOverlay:(id)a3;
-- (void)addRouteOverlay:(id)a3;
-- (void)arController:(id)a3 arSessionWasInterrupted:(unint64_t)a4;
-- (void)arController:(id)a3 didChangeTrackingState:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)arController:(id)a3 didEncounterError:(id)a4;
-- (void)arControllerSessionInterruptionEnded:(id)a3;
-- (void)arWalkingElevationRequestFailure:(id)a3;
-- (void)arWalkingFeatureSetStateDidUpdate:(id)a3;
+- (void)addCustomFeatureDataSource:(id)source;
+- (void)addExternalAnchor:(id)anchor;
+- (void)addOverlay:(id)overlay;
+- (void)addPersistentRouteOverlay:(id)overlay;
+- (void)addRouteOverlay:(id)overlay;
+- (void)arController:(id)controller arSessionWasInterrupted:(unint64_t)interrupted;
+- (void)arController:(id)controller didChangeTrackingState:(unint64_t)state reason:(unint64_t)reason;
+- (void)arController:(id)controller didEncounterError:(id)error;
+- (void)arControllerSessionInterruptionEnded:(id)ended;
+- (void)arWalkingElevationRequestFailure:(id)failure;
+- (void)arWalkingFeatureSetStateDidUpdate:(id)update;
 - (void)clearPreviouslySelectedLabelMarker;
 - (void)clearScene;
 - (void)dealloc;
-- (void)debugHighlightFeatureMarker:(const void *)a3;
-- (void)debugHighlightLabelAtPoint:(CGPoint)a3;
+- (void)debugHighlightFeatureMarker:(const void *)marker;
+- (void)debugHighlightLabelAtPoint:(CGPoint)point;
 - (void)deselectFeatureId;
 - (void)deselectLabelMarker;
 - (void)deselectTrails;
@@ -213,7 +213,7 @@
 - (void)deselectVenuePoiFeatureId;
 - (void)didEnterBackground;
 - (void)didFinishLoadingData;
-- (void)didFinishLoadingDataWithError:(id)a3;
+- (void)didFinishLoadingDataWithError:(id)error;
 - (void)didFinishSnapshotting;
 - (void)didPresent;
 - (void)didReceiveFlushTileCaches;
@@ -221,19 +221,19 @@
 - (void)didReceiveMemoryWarning;
 - (void)didReceivePowerStateChanged;
 - (void)didStartLoadingData;
-- (void)didUpdateSceneStatus:(unsigned __int8)a3;
-- (void)didUpdateVerticalYawTo:(double)a3;
+- (void)didUpdateSceneStatus:(unsigned __int8)status;
+- (void)didUpdateVerticalYawTo:(double)to;
 - (void)disableMapDisplayStyleDebugOverride;
 - (void)disableTestStatistics;
 - (void)disableTileStatistics;
-- (void)enableMapDisplayStyleDebugOverride:(id)a3;
+- (void)enableMapDisplayStyleDebugOverride:(id)override;
 - (void)enableTestStatistics;
 - (void)enableTileStatistics;
-- (void)enableViewDataLoading:(BOOL)a3;
+- (void)enableViewDataLoading:(BOOL)loading;
 - (void)enter3DMode;
-- (void)enterARWalking:(id)a3;
-- (void)enterMuninForMarker:(id)a3 withHeading:(double)a4;
-- (void)enterMuninForStorefrontView:(id)a3 secondaryStorefrontView:(id)a4;
+- (void)enterARWalking:(id)walking;
+- (void)enterMuninForMarker:(id)marker withHeading:(double)heading;
+- (void)enterMuninForStorefrontView:(id)view secondaryStorefrontView:(id)storefrontView;
 - (void)exit3DMode;
 - (void)exitARMode;
 - (void)flushTileLoads;
@@ -241,203 +241,203 @@
 - (void)forceLayout;
 - (void)forceResolveCameraController;
 - (void)initWithDescriptor:;
-- (void)injectDebugARFeatures:(id)a3;
-- (void)injectDebugARUserRouteCoordinate:(PolylineCoordinate)a3;
-- (void)insertOverlay:(id)a3 aboveOverlay:(id)a4;
-- (void)insertOverlay:(id)a3 belowOverlay:(id)a4;
+- (void)injectDebugARFeatures:(id)features;
+- (void)injectDebugARUserRouteCoordinate:(PolylineCoordinate)coordinate;
+- (void)insertOverlay:(id)overlay aboveOverlay:(id)aboveOverlay;
+- (void)insertOverlay:(id)overlay belowOverlay:(id)belowOverlay;
 - (void)labelManagerDidLayout;
-- (void)labelMarkerDidChangeState:(const void *)a3;
-- (void)location:(id)a3 isInHikingContextualRegion:(BOOL)a4;
-- (void)locationInHikingToolTipRegion:(unint64_t)a3;
-- (void)map:(id)a3 canShowFlyoverDidChange:(BOOL)a4;
-- (void)map:(id)a3 didEnterARMode:(BOOL)a4;
-- (void)mapController:(id)a3 requestsDisplayRate:(int64_t)a4;
-- (void)mapDidFinishChangingMapDisplayStyle:(id)a3;
-- (void)mapDidReloadStylesheet:(id)a3;
-- (void)moveToFlyoverTourStartPosition:(id)a3 duration:(double)a4 completion:(id)a5;
-- (void)muninJunctionDidChange:(const void *)a3 currentRoad:(const void *)a4 localize:(BOOL)a5;
+- (void)labelMarkerDidChangeState:(const void *)state;
+- (void)location:(id)location isInHikingContextualRegion:(BOOL)region;
+- (void)locationInHikingToolTipRegion:(unint64_t)region;
+- (void)map:(id)map canShowFlyoverDidChange:(BOOL)change;
+- (void)map:(id)map didEnterARMode:(BOOL)mode;
+- (void)mapController:(id)controller requestsDisplayRate:(int64_t)rate;
+- (void)mapDidFinishChangingMapDisplayStyle:(id)style;
+- (void)mapDidReloadStylesheet:(id)stylesheet;
+- (void)moveToFlyoverTourStartPosition:(id)position duration:(double)duration completion:(id)completion;
+- (void)muninJunctionDidChange:(const void *)change currentRoad:(const void *)road localize:(BOOL)localize;
 - (void)navigationCameraReturnToPuck;
-- (void)nearestVenueDidChange:(const void *)a3 building:(const void *)a4;
+- (void)nearestVenueDidChange:(const void *)change building:(const void *)building;
 - (void)openLoaderConnection;
-- (void)panWithOffset:(CGPoint)a3 relativeToScreenPoint:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6 completionHandler:(id)a7;
+- (void)panWithOffset:(CGPoint)offset relativeToScreenPoint:(CGPoint)point animated:(BOOL)animated duration:(double)duration completionHandler:(id)handler;
 - (void)pauseTracking;
 - (void)performStylesheetDidChange;
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4;
-- (void)prepareFlyoverAnimation:(id)a3 completion:(id)a4;
-- (void)projectCoordinate:(id)a3 toPoint:(CGPoint *)a4;
-- (void)puckAnimator:(id)a3 runAnimation:(id)a4;
-- (void)puckAnimator:(id)a3 updatedPosition:(const void *)a4 course:(const void *)a5 polylineCoordinate:(PolylineCoordinate)a6;
-- (void)puckLocationTracingEvent:(id)a3;
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options;
+- (void)prepareFlyoverAnimation:(id)animation completion:(id)completion;
+- (void)projectCoordinate:(id)coordinate toPoint:(CGPoint *)point;
+- (void)puckAnimator:(id)animator runAnimation:(id)animation;
+- (void)puckAnimator:(id)animator updatedPosition:(const void *)position course:(const void *)course polylineCoordinate:(PolylineCoordinate)coordinate;
+- (void)puckLocationTracingEvent:(id)event;
 - (void)reloadStylesheet;
-- (void)removeCustomFeatureDataSource:(id)a3;
-- (void)removeExternalAnchor:(id)a3;
-- (void)removeOverlay:(id)a3;
-- (void)removePersistentRouteOverlay:(id)a3;
-- (void)removeRouteOverlay:(id)a3;
-- (void)renderInContext:(CGContext *)a3;
-- (void)requestHikingContextualRegionDoesIntersectForLocation:(id)a3;
-- (void)requestHikingToolTipRegionIDForLocation:(id)a3;
+- (void)removeCustomFeatureDataSource:(id)source;
+- (void)removeExternalAnchor:(id)anchor;
+- (void)removeOverlay:(id)overlay;
+- (void)removePersistentRouteOverlay:(id)overlay;
+- (void)removeRouteOverlay:(id)overlay;
+- (void)renderInContext:(CGContext *)context;
+- (void)requestHikingContextualRegionDoesIntersectForLocation:(id)location;
+- (void)requestHikingToolTipRegionIDForLocation:(id)location;
 - (void)resetTestStatistics;
 - (void)resetTileStatistics;
-- (void)selectLabelMarker:(id)a3 completion:(id)a4;
-- (void)selectTransitLineMarker:(id)a3;
-- (void)selectedLabelMarkerDidCompleteLayout:(const void *)a3;
-- (void)selectedLabelMarkerWillDisappear:(const void *)a3;
-- (void)setARInterfaceOrientation:(int64_t)a3;
-- (void)setARMode:(int)a3;
-- (void)setARSceneType:(int)a3;
-- (void)setAnnotationTrackingBehavior:(id *)a3;
-- (void)setApplicationState:(unsigned __int8)a3 displayedSearchResultsType:(unsigned __int8)a4;
-- (void)setApplicationSubState:(unsigned __int8)a3;
-- (void)setApplicationUILayout:(int64_t)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCameraCollisionMode:(int64_t)a3;
-- (void)setCameraDelegate:(id)a3;
-- (void)setCameraFramingInsets:(VKEdgeInsets)a3;
-- (void)setCameraHorizontalOffset:(double)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setCanonicalSkyHeight:(double)a3;
-- (void)setCarDisplayConfig:(int64_t)a3 animated:(BOOL)a4;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 timingCurve:(id)a8 completion:(id)a9;
-- (void)setCenterCoordinateDistanceRange:(id *)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setContentsScale:(double)a3;
-- (void)setCurrentLocationText:(id)a3;
-- (void)setDebugLayoutContinuously:(BOOL)a3;
-- (void)setDesiredMapMode:(int64_t)a3;
-- (void)setDimmingBaseMap:(BOOL)a3 animated:(BOOL)a4 duration:(double)a5;
-- (void)setDisableBuildingFootprints:(BOOL)a3;
-- (void)setDisableGrid:(BOOL)a3;
-- (void)setDisableLabels:(BOOL)a3;
-- (void)setDisablePolygons:(BOOL)a3;
-- (void)setDisableRasters:(BOOL)a3;
-- (void)setDisableRoads:(BOOL)a3;
-- (void)setDisableShadows:(BOOL)a3;
-- (void)setDisableTransitLines:(BOOL)a3;
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3 forVenueBuilding:(id)a4;
-- (void)setEdgeInsets:(VKEdgeInsets)a3 duration:(double)a4 timingFunction:(id)a5 completionHandler:(id)a6;
-- (void)setEmphasis:(unsigned __int8)a3 animated:(BOOL)a4;
-- (void)setEnableAdvancedLighting:(BOOL)a3;
-- (void)setEnableAdvancedWater:(BOOL)a3;
-- (void)setEnableBuildingHeights:(BOOL)a3;
-- (void)setEnableColorizedBuildings:(BOOL)a3;
-- (void)setEnableGlobe:(BOOL)a3;
-- (void)setEnableRoundedBuildings:(BOOL)a3;
-- (void)setExternalTrafficFeatures:(id)a3 areRouteTrafficFeaturesActive:(BOOL)a4;
-- (void)setFlyoverMode:(int)a3;
-- (void)setFocusedLabelsPolyline:(id)a3;
-- (void)setFullyOccludedEdgeInsets:(VKEdgeInsets)a3;
-- (void)setGesturing:(BOOL)a3;
-- (void)setHasVehicleHeading:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHiddenTrafficIncidentFeatures:(id)a3;
-- (void)setHostDisplay:(id)a3;
-- (void)setIconsShouldAlignToPixels:(BOOL)a3;
-- (void)setIncreaseContrastEnabled:(BOOL)a3;
-- (void)setIsMKRenderingSelectionBalloon:(BOOL)a3;
-- (void)setIsPitchable:(BOOL)a3;
-- (void)setLabelEdgeInsets:(VKEdgeInsets)a3;
-- (void)setLabelEdgeWidths:(VKEdgeInsets)a3;
-- (void)setLabelExclusionRegions:(id)a3;
-- (void)setLabelMarkerSelectionEnabled:(BOOL)a3;
-- (void)setLabelScaleFactor:(int64_t)a3;
-- (void)setLabelSelectionFilter:(id)a3;
-- (void)setLevelOfDetail:(unsigned __int8)a3 animated:(BOOL)a4;
-- (void)setLoadMuninAvailability:(BOOL)a3;
-- (void)setLoadMuninMetadata:(BOOL)a3;
-- (void)setLocalizeLabels:(BOOL)a3;
-- (void)setMapDisplayStyle:(id)a3 animated:(BOOL)a4 duration:(double)a5;
-- (void)setMapKitClientMode:(unsigned __int8)a3;
-- (void)setMapKitUsage:(unsigned __int8)a3;
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5;
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5 duration:(double)a6 timingCurve:(id)a7 completion:(id)a8;
-- (void)setMapType:(int)a3 animated:(BOOL)a4;
-- (void)setModernMapEnabled:(BOOL)a3;
-- (void)setNavCameraMode:(unint64_t)a3;
-- (void)setNavContext:(id)a3;
-- (void)setNavigationShieldSize:(int64_t)a3;
+- (void)selectLabelMarker:(id)marker completion:(id)completion;
+- (void)selectTransitLineMarker:(id)marker;
+- (void)selectedLabelMarkerDidCompleteLayout:(const void *)layout;
+- (void)selectedLabelMarkerWillDisappear:(const void *)disappear;
+- (void)setARInterfaceOrientation:(int64_t)orientation;
+- (void)setARMode:(int)mode;
+- (void)setARSceneType:(int)type;
+- (void)setAnnotationTrackingBehavior:(id *)behavior;
+- (void)setApplicationState:(unsigned __int8)state displayedSearchResultsType:(unsigned __int8)type;
+- (void)setApplicationSubState:(unsigned __int8)state;
+- (void)setApplicationUILayout:(int64_t)layout;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCameraCollisionMode:(int64_t)mode;
+- (void)setCameraDelegate:(id)delegate;
+- (void)setCameraFramingInsets:(VKEdgeInsets)insets;
+- (void)setCameraHorizontalOffset:(double)offset duration:(double)duration timingFunction:(id)function;
+- (void)setCanonicalSkyHeight:(double)height;
+- (void)setCarDisplayConfig:(int64_t)config animated:(BOOL)animated;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration timingCurve:(id)curve completion:(id)completion;
+- (void)setCenterCoordinateDistanceRange:(id *)range duration:(double)duration timingFunction:(id)function;
+- (void)setContentsScale:(double)scale;
+- (void)setCurrentLocationText:(id)text;
+- (void)setDebugLayoutContinuously:(BOOL)continuously;
+- (void)setDesiredMapMode:(int64_t)mode;
+- (void)setDimmingBaseMap:(BOOL)map animated:(BOOL)animated duration:(double)duration;
+- (void)setDisableBuildingFootprints:(BOOL)footprints;
+- (void)setDisableGrid:(BOOL)grid;
+- (void)setDisableLabels:(BOOL)labels;
+- (void)setDisablePolygons:(BOOL)polygons;
+- (void)setDisableRasters:(BOOL)rasters;
+- (void)setDisableRoads:(BOOL)roads;
+- (void)setDisableShadows:(BOOL)shadows;
+- (void)setDisableTransitLines:(BOOL)lines;
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal forVenueBuilding:(id)building;
+- (void)setEdgeInsets:(VKEdgeInsets)insets duration:(double)duration timingFunction:(id)function completionHandler:(id)handler;
+- (void)setEmphasis:(unsigned __int8)emphasis animated:(BOOL)animated;
+- (void)setEnableAdvancedLighting:(BOOL)lighting;
+- (void)setEnableAdvancedWater:(BOOL)water;
+- (void)setEnableBuildingHeights:(BOOL)heights;
+- (void)setEnableColorizedBuildings:(BOOL)buildings;
+- (void)setEnableGlobe:(BOOL)globe;
+- (void)setEnableRoundedBuildings:(BOOL)buildings;
+- (void)setExternalTrafficFeatures:(id)features areRouteTrafficFeaturesActive:(BOOL)active;
+- (void)setFlyoverMode:(int)mode;
+- (void)setFocusedLabelsPolyline:(id)polyline;
+- (void)setFullyOccludedEdgeInsets:(VKEdgeInsets)insets;
+- (void)setGesturing:(BOOL)gesturing;
+- (void)setHasVehicleHeading:(BOOL)heading;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHiddenTrafficIncidentFeatures:(id)features;
+- (void)setHostDisplay:(id)display;
+- (void)setIconsShouldAlignToPixels:(BOOL)pixels;
+- (void)setIncreaseContrastEnabled:(BOOL)enabled;
+- (void)setIsMKRenderingSelectionBalloon:(BOOL)balloon;
+- (void)setIsPitchable:(BOOL)pitchable;
+- (void)setLabelEdgeInsets:(VKEdgeInsets)insets;
+- (void)setLabelEdgeWidths:(VKEdgeInsets)widths;
+- (void)setLabelExclusionRegions:(id)regions;
+- (void)setLabelMarkerSelectionEnabled:(BOOL)enabled;
+- (void)setLabelScaleFactor:(int64_t)factor;
+- (void)setLabelSelectionFilter:(id)filter;
+- (void)setLevelOfDetail:(unsigned __int8)detail animated:(BOOL)animated;
+- (void)setLoadMuninAvailability:(BOOL)availability;
+- (void)setLoadMuninMetadata:(BOOL)metadata;
+- (void)setLocalizeLabels:(BOOL)labels;
+- (void)setMapDisplayStyle:(id)style animated:(BOOL)animated duration:(double)duration;
+- (void)setMapKitClientMode:(unsigned __int8)mode;
+- (void)setMapKitUsage:(unsigned __int8)usage;
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw;
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw duration:(double)duration timingCurve:(id)curve completion:(id)completion;
+- (void)setMapType:(int)type animated:(BOOL)animated;
+- (void)setModernMapEnabled:(BOOL)enabled;
+- (void)setNavCameraMode:(unint64_t)mode;
+- (void)setNavContext:(id)context;
+- (void)setNavigationShieldSize:(int64_t)size;
 - (void)setNeedsLayout;
 - (void)setNeedsRender;
-- (void)setNewInterfaceEnabled:(BOOL)a3;
-- (void)setOfflineMode:(BOOL)a3;
-- (void)setOfflineRegionSelector:(BOOL)a3;
-- (void)setPointsOfInterestFilter:(id)a3;
-- (void)setPreferStaleTiles:(BOOL)a3;
-- (void)setPreferredUnits:(unint64_t)a3;
-- (void)setPreviouslySelectedLabelMarker:(id)a3;
-- (void)setRegionRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setRenderInverseFills:(BOOL)a3;
-- (void)setRenderOverlayPolygons:(BOOL)a3;
-- (void)setRendersInBackground:(BOOL)a3;
-- (void)setRouteContext:(id)a3;
-- (void)setRouteLineSplitAnnotation:(id)a3;
-- (void)setRouteUserOffset:(PolylineCoordinate)a3;
-- (void)setScreenLabelFeatures:(id)a3;
-- (void)setSelectedBuildingFeatureIds:(id)a3;
-- (void)setSelectedFeatureId:(unint64_t)a3;
-- (void)setSelectedTrailWithId:(unint64_t)a3 name:(id)a4 locale:(id)a5;
-- (void)setSelectedVenuePoiFeatureId:(unint64_t)a3;
-- (void)setShieldIdiom:(int64_t)a3;
-- (void)setShieldSize:(int64_t)a3;
-- (void)setShouldLoadFallbackTiles:(BOOL)a3;
-- (void)setShouldLoadMapMargin:(BOOL)a3;
-- (void)setShowsBuildings:(BOOL)a3;
-- (void)setShowsContourLabels:(BOOL)a3;
-- (void)setShowsHiking:(BOOL)a3 withTopographicFeatures:(BOOL)a4;
-- (void)setShowsHillshade:(BOOL)a3;
-- (void)setShowsLabels:(BOOL)a3;
-- (void)setShowsLiveEVData:(BOOL)a3;
-- (void)setShowsPOIUpdates:(BOOL)a3;
-- (void)setShowsPhysicalFeatureLabels:(BOOL)a3;
-- (void)setShowsPointLabels:(BOOL)a3;
-- (void)setShowsPointsOfInterest:(BOOL)a3;
-- (void)setShowsRoadLabels:(BOOL)a3;
-- (void)setShowsRoadShields:(BOOL)a3;
-- (void)setShowsVenues:(BOOL)a3;
-- (void)setSkippedRouteLineSplitAnnotation:(id)a3;
-- (void)setStaysCenteredDuringPinch:(BOOL)a3;
-- (void)setStaysCenteredDuringRotation:(BOOL)a3;
-- (void)setStyleZOffsetScale:(float)a3;
-- (void)setSupportedEVConnectorTypes:(id)a3;
-- (void)setTargetDisplay:(int64_t)a3;
-- (void)setTerrainMode:(int64_t)a3;
-- (void)setTrackingZoomScale:(double)a3;
-- (void)setTrafficEnabled:(BOOL)a3;
-- (void)setTrafficIncidentsEnabled:(BOOL)a3;
-- (void)setUseSmallCache:(BOOL)a3;
-- (void)setVehicleState:(id)a3;
-- (void)setVirtualParallaxEnabled:(BOOL)a3;
-- (void)setYaw:(double)a3 animated:(BOOL)a4;
+- (void)setNewInterfaceEnabled:(BOOL)enabled;
+- (void)setOfflineMode:(BOOL)mode;
+- (void)setOfflineRegionSelector:(BOOL)selector;
+- (void)setPointsOfInterestFilter:(id)filter;
+- (void)setPreferStaleTiles:(BOOL)tiles;
+- (void)setPreferredUnits:(unint64_t)units;
+- (void)setPreviouslySelectedLabelMarker:(id)marker;
+- (void)setRegionRestriction:(id)restriction duration:(double)duration timingFunction:(id)function;
+- (void)setRenderInverseFills:(BOOL)fills;
+- (void)setRenderOverlayPolygons:(BOOL)polygons;
+- (void)setRendersInBackground:(BOOL)background;
+- (void)setRouteContext:(id)context;
+- (void)setRouteLineSplitAnnotation:(id)annotation;
+- (void)setRouteUserOffset:(PolylineCoordinate)offset;
+- (void)setScreenLabelFeatures:(id)features;
+- (void)setSelectedBuildingFeatureIds:(id)ids;
+- (void)setSelectedFeatureId:(unint64_t)id;
+- (void)setSelectedTrailWithId:(unint64_t)id name:(id)name locale:(id)locale;
+- (void)setSelectedVenuePoiFeatureId:(unint64_t)id;
+- (void)setShieldIdiom:(int64_t)idiom;
+- (void)setShieldSize:(int64_t)size;
+- (void)setShouldLoadFallbackTiles:(BOOL)tiles;
+- (void)setShouldLoadMapMargin:(BOOL)margin;
+- (void)setShowsBuildings:(BOOL)buildings;
+- (void)setShowsContourLabels:(BOOL)labels;
+- (void)setShowsHiking:(BOOL)hiking withTopographicFeatures:(BOOL)features;
+- (void)setShowsHillshade:(BOOL)hillshade;
+- (void)setShowsLabels:(BOOL)labels;
+- (void)setShowsLiveEVData:(BOOL)data;
+- (void)setShowsPOIUpdates:(BOOL)updates;
+- (void)setShowsPhysicalFeatureLabels:(BOOL)labels;
+- (void)setShowsPointLabels:(BOOL)labels;
+- (void)setShowsPointsOfInterest:(BOOL)interest;
+- (void)setShowsRoadLabels:(BOOL)labels;
+- (void)setShowsRoadShields:(BOOL)shields;
+- (void)setShowsVenues:(BOOL)venues;
+- (void)setSkippedRouteLineSplitAnnotation:(id)annotation;
+- (void)setStaysCenteredDuringPinch:(BOOL)pinch;
+- (void)setStaysCenteredDuringRotation:(BOOL)rotation;
+- (void)setStyleZOffsetScale:(float)scale;
+- (void)setSupportedEVConnectorTypes:(id)types;
+- (void)setTargetDisplay:(int64_t)display;
+- (void)setTerrainMode:(int64_t)mode;
+- (void)setTrackingZoomScale:(double)scale;
+- (void)setTrafficEnabled:(BOOL)enabled;
+- (void)setTrafficIncidentsEnabled:(BOOL)enabled;
+- (void)setUseSmallCache:(BOOL)cache;
+- (void)setVehicleState:(id)state;
+- (void)setVirtualParallaxEnabled:(BOOL)enabled;
+- (void)setYaw:(double)yaw animated:(BOOL)animated;
 - (void)snapMapAfterModeChange;
-- (void)startFlyoverAnimation:(id)a3 animateToStart:(BOOL)a4 completion:(id)a5;
-- (void)startFlyoverTourAnimation:(unint64_t)a3 animateToStart:(BOOL)a4 completion:(id)a5;
-- (void)startPanningAtPoint:(CGPoint)a3;
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
-- (void)startPitchingWithFocusPoint:(CGPoint)a3;
-- (void)startRotatingWithFocusPoint:(CGPoint)a3;
-- (void)startTrackingAnnotation:(id)a3 trackHeading:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6 timingFunction:(id)a7;
+- (void)startFlyoverAnimation:(id)animation animateToStart:(BOOL)start completion:(id)completion;
+- (void)startFlyoverTourAnimation:(unint64_t)animation animateToStart:(BOOL)start completion:(id)completion;
+- (void)startPanningAtPoint:(CGPoint)point;
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
+- (void)startPitchingWithFocusPoint:(CGPoint)point;
+- (void)startRotatingWithFocusPoint:(CGPoint)point;
+- (void)startTrackingAnnotation:(id)annotation trackHeading:(BOOL)heading animated:(BOOL)animated duration:(double)duration timingFunction:(id)function;
 - (void)stopFlyoverAnimation;
-- (void)stopPanningAtPoint:(CGPoint)a3;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3;
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3;
+- (void)stopPanningAtPoint:(CGPoint)point;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
+- (void)stopPitchingWithFocusPoint:(CGPoint)point;
+- (void)stopRotatingWithFocusPoint:(CGPoint)point;
 - (void)stopSnappingAnimations;
 - (void)stopTracking;
 - (void)stopTrackingAnnotation;
 - (void)tileGroupDidChange;
 - (void)tileGroupWillChange;
 - (void)tileStatistics;
-- (void)transitionToTracking:(BOOL)a3 mapMode:(int64_t)a4 startLocation:(id)a5 startCourse:(double)a6 pounceCompletionHandler:(id)a7;
+- (void)transitionToTracking:(BOOL)tracking mapMode:(int64_t)mode startLocation:(id)location startCourse:(double)course pounceCompletionHandler:(id)handler;
 - (void)updateLightingLogic;
-- (void)updatePanWithTranslation:(CGPoint)a3;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4;
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
+- (void)updatePanWithTranslation:(CGPoint)translation;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees;
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation;
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
 - (void)willEnterForeground;
-- (void)willLayoutWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)willStopPanningAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4;
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)zoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4;
+- (void)willLayoutWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)willStopPanningAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)zoomToLevel:(double)level withFocusPoint:(CGPoint)point;
 @end
 
 @implementation VKMapView
@@ -495,7 +495,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_ERROR, "[VKMapView:%p] Failed to register for thermal pressure notifications", buf, 0xCu);
     }
   }
@@ -534,7 +534,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_ERROR, "[VKMapView:%p] Failed to get thermal pressure level", buf, 0xCu);
     }
   }
@@ -551,11 +551,11 @@
   if ((*(self + 136) & 1) == 0)
   {
     *(self + 136) = 1;
-    v3 = [MEMORY[0x1E69A2610] modernLoader];
-    [v3 openForClient:*(self + 18)];
+    modernLoader = [MEMORY[0x1E69A2610] modernLoader];
+    [modernLoader openForClient:*(self + 18)];
 
-    v4 = [MEMORY[0x1E69A2478] modernManager];
-    [v4 openServerConnection];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager openServerConnection];
   }
 }
 
@@ -601,8 +601,8 @@
   }
 
   v16 = [*(*(self + 50) + 41640) insertDisplayLayer:{self, v6}];
-  v17 = [(VKMapView *)self currentCanvas];
-  [v17 updateCameraForFrameResize];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas updateCameraForFrameResize];
 
   return v16;
 }
@@ -623,9 +623,9 @@
 
   else
   {
-    v6 = [(VKMapView *)self _supportsDeferredCamera];
+    _supportsDeferredCamera = [(VKMapView *)self _supportsDeferredCamera];
     v5 = &OBJC_IVAR___VKMapView__mapCameraController;
-    if (v6)
+    if (_supportsDeferredCamera)
     {
       v5 = &OBJC_IVAR___VKMapView__deferredCameraController;
     }
@@ -748,16 +748,16 @@
 
 - (void)updateLightingLogic
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 thermalState];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  thermalState = [processInfo thermalState];
 
-  *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x91E65CD7F1A7A7FALL)[5] + 228) = (*(self + 544) | ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)) ^ 1;
+  *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x91E65CD7F1A7A7FALL)[5] + 228) = (*(self + 544) | ((thermalState & 0xFFFFFFFFFFFFFFFELL) == 2)) ^ 1;
 }
 
 - (void)didReceivePowerStateChanged
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  *(self + 544) = [v3 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  *(self + 544) = [processInfo isLowPowerModeEnabled];
 
   [(VKMapView *)self updateLightingLogic];
 
@@ -806,8 +806,8 @@
     v9 = 0;
   }
 
-  v10 = [(VKMapView *)self currentCanvas];
-  [v10 setBaseDisplayRate:v9];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas setBaseDisplayRate:v9];
 
   if (v8)
   {
@@ -819,21 +819,21 @@
     v11 = 0;
   }
 
-  v12 = [(VKMapView *)self currentCanvas];
-  [v12 setMaxDisplayRate:v11];
+  currentCanvas2 = [(VKMapView *)self currentCanvas];
+  [currentCanvas2 setMaxDisplayRate:v11];
 
   v13 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(VKMapView *)self currentCanvas];
-    v15 = [v14 baseDisplayRate];
-    v16 = [(VKMapView *)self currentCanvas];
+    currentCanvas3 = [(VKMapView *)self currentCanvas];
+    baseDisplayRate = [currentCanvas3 baseDisplayRate];
+    currentCanvas4 = [(VKMapView *)self currentCanvas];
     v17 = 134218496;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = v15;
+    v20 = baseDisplayRate;
     v21 = 1024;
-    v22 = [v16 maxDisplayRate];
+    maxDisplayRate = [currentCanvas4 maxDisplayRate];
     _os_log_impl(&dword_1B2754000, v13, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set Nav Thermal Options: targetFps=%i, maxFps:%i", &v17, 0x18u);
   }
 }
@@ -1034,9 +1034,9 @@
     }
 
     v5 = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
-    v8 = [(__CFString *)v4 UTF8String];
+    uTF8String = [(__CFString *)v4 UTF8String];
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Map display style debug override disabled, setting time of day to: %s", &v5, 0x16u);
   }
 
@@ -1067,10 +1067,10 @@
 
 - (id)annotationRectTest
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 annotationRectTest];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  annotationRectTest = [currentCanvas annotationRectTest];
 
-  return v3;
+  return annotationRectTest;
 }
 
 - (void)_updateOnlyShowRoadClosures
@@ -1117,7 +1117,7 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v23 = 134218240;
-      v24 = self;
+      selfCopy = self;
       v25 = 1024;
       v26 = v3 & 1;
       _os_log_impl(&dword_1B2754000, v8, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set onlyShowRoadClosures: %i", &v23, 0x12u);
@@ -1126,7 +1126,7 @@ LABEL_11:
     v9 = *(*(self + 50) + 41936);
     LOBYTE(v23) = 4;
     md::MapEngineSettings::set(v9, &v23, v3 & 1);
-    v10 = [(VKMapView *)self _labelSettings];
+    _labelSettings = [(VKMapView *)self _labelSettings];
     if (v3)
     {
       v11 = *(*(self + 50) + 41936);
@@ -1151,8 +1151,8 @@ LABEL_11:
 
     v14 = 0;
 LABEL_24:
-    *(*(v10 + 5) + 26) = v14;
-    md::LabelManager::setTrafficClosuresEnabled(*(v10 + 3), v14);
+    *(*(_labelSettings + 5) + 26) = v14;
+    md::LabelManager::setTrafficClosuresEnabled(*(_labelSettings + 3), v14);
     v15 = *(*(self + 50) + 41704);
     if (v15)
     {
@@ -1230,18 +1230,18 @@ LABEL_43:
 
 - (BOOL)isGesturing
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 isGesturing];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  isGesturing = [cameraController isGesturing];
 
-  return v4;
+  return isGesturing;
 }
 
 - (double)presentationYaw
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 heading];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController heading];
   v5 = v4;
 
   return v5;
@@ -1249,46 +1249,46 @@ LABEL_43:
 
 - (BOOL)isPitchable
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 isPitchEnabled];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  isPitchEnabled = [cameraController isPitchEnabled];
 
-  return v4;
+  return isPitchEnabled;
 }
 
 - (BOOL)isPitched
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 isPitched];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  isPitched = [cameraController isPitched];
 
-  return v4;
+  return isPitched;
 }
 
 - (BOOL)canEnter3DMode
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 canEnter3DMode];
+    canEnter3DMode = [cameraController canEnter3DMode];
   }
 
   else
   {
-    v4 = 1;
+    canEnter3DMode = 1;
   }
 
-  return v4;
+  return canEnter3DMode;
 }
 
 - ($1AB5FA073B851C12C2339EC22442E995)centerCoordinate
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 centerCoordinate];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController centerCoordinate];
   v5 = v4;
   v7 = v6;
 
@@ -1303,11 +1303,11 @@ LABEL_43:
 
 - (GEOMapRegion)mapRegion
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 mapRegion];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  mapRegion = [cameraController mapRegion];
 
-  return v4;
+  return mapRegion;
 }
 
 - (BOOL)isShowingCuratedElevatedGround
@@ -1340,26 +1340,26 @@ LABEL_6:
 
 - (BOOL)wantsTimerTick
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 wantsTimerTick];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  wantsTimerTick = [currentCanvas wantsTimerTick];
 
-  return v3;
+  return wantsTimerTick;
 }
 
 - (GEOMapRegion)mapRegionIgnoringEdgeInsets
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 mapRegionIgnoringEdgeInsets];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  mapRegionIgnoringEdgeInsets = [cameraController mapRegionIgnoringEdgeInsets];
 
-  return v4;
+  return mapRegionIgnoringEdgeInsets;
 }
 
 - (double)pitch
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 pitch];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController pitch];
   v5 = v4;
 
   return v5;
@@ -1367,18 +1367,18 @@ LABEL_6:
 
 - (BOOL)canRotate
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 canRotate];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  canRotate = [cameraController canRotate];
 
-  return v4;
+  return canRotate;
 }
 
 - (double)altitude
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 altitude];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController altitude];
   v5 = v4;
 
   return v5;
@@ -1411,7 +1411,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v12 = 134217984;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Did enter background", &v12, 0xCu);
   }
 
@@ -1426,9 +1426,9 @@ LABEL_6:
 
   v7 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(*(v7 + 47360), "[VKMapView didEnterBackground]");
-  v8 = [(VKMapView *)self isEffectivelyHidden];
-  [*(self + 7) didReceiveMemoryWarning:v8 beAggressive:0];
-  md::MapEngine::prune(v7, !v8);
+  isEffectivelyHidden = [(VKMapView *)self isEffectivelyHidden];
+  [*(self + 7) didReceiveMemoryWarning:isEffectivelyHidden beAggressive:0];
+  md::MapEngine::prune(v7, !isEffectivelyHidden);
   if ((*(self + 248) & 1) == 0)
   {
     md::MapEngine::prune(v7, 0);
@@ -1453,28 +1453,28 @@ LABEL_6:
 
 - (BOOL)isEffectivelyHidden
 {
-  v3 = [(VKMapView *)self isHidden];
-  v4 = [(VKMapView *)self superlayer];
-  v5 = v4;
-  if (!v4 || (v3 & 1) != 0)
+  isHidden = [(VKMapView *)self isHidden];
+  superlayer = [(VKMapView *)self superlayer];
+  v5 = superlayer;
+  if (!superlayer || (isHidden & 1) != 0)
   {
-    v6 = v4;
+    superlayer2 = superlayer;
   }
 
   else
   {
     do
     {
-      v3 = [v5 isHidden];
-      v6 = [v5 superlayer];
+      isHidden = [v5 isHidden];
+      superlayer2 = [v5 superlayer];
 
-      v5 = v6;
+      v5 = superlayer2;
     }
 
-    while (!((v6 == 0) | v3 & 1));
+    while (!((superlayer2 == 0) | isHidden & 1));
   }
 
-  return v3;
+  return isHidden;
 }
 
 - (void)willEnterForeground
@@ -1484,7 +1484,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v11 = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Will enter foreground", &v11, 0xCu);
   }
 
@@ -1498,15 +1498,15 @@ LABEL_6:
   }
 
   *(self + 408) = 0;
-  v7 = [(VKMapView *)self _createDisplayLayer];
+  _createDisplayLayer = [(VKMapView *)self _createDisplayLayer];
   v8 = *(self + 50);
   if (*(self + 248) == 1 && (*(v8 + 42002) & 1) == 0)
   {
-    v9 = [(VKMapView *)self userLocationAnimator];
-    [v9 resetCourse];
+    userLocationAnimator = [(VKMapView *)self userLocationAnimator];
+    [userLocationAnimator resetCourse];
 
-    v10 = [(VKMapView *)self userLocationAnimator];
-    [v10 processLocationUpdates];
+    userLocationAnimator2 = [(VKMapView *)self userLocationAnimator];
+    [userLocationAnimator2 processLocationUpdates];
 
     v8 = *(self + 50);
   }
@@ -1517,7 +1517,7 @@ LABEL_6:
   *(v8 + 42001) = 0;
   md::MapEngine::updateRunLoopStatus(v8);
   *(self + 248) = 0;
-  if (v7)
+  if (_createDisplayLayer)
   {
     [(VKMapView *)self forceLayout];
   }
@@ -1587,10 +1587,10 @@ LABEL_6:
 
 - (id)annotationCoordinateTest
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 annotationCoordinateTest];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  annotationCoordinateTest = [currentCanvas annotationCoordinateTest];
 
-  return v3;
+  return annotationCoordinateTest;
 }
 
 - (id)navigationPuck
@@ -1627,8 +1627,8 @@ void __35__VKMapView_snapMapAfterModeChange__block_invoke(uint64_t a1)
 
 - (void)didPresent
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  [v4 didPresent];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas didPresent];
 
   WeakRetained = objc_loadWeakRetained(self + 16);
   v3 = objc_opt_respondsToSelector();
@@ -1652,8 +1652,8 @@ void __35__VKMapView_snapMapAfterModeChange__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(VKMapView *)self currentCanvas];
-    [v6 edgeInsets];
+    currentCanvas = [(VKMapView *)self currentCanvas];
+    [currentCanvas edgeInsets];
     v2 = v7;
     v3 = v8;
     v4 = v9;
@@ -1673,9 +1673,9 @@ void __35__VKMapView_snapMapAfterModeChange__block_invoke(uint64_t a1)
 
 - (double)yaw
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 heading];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController heading];
   v5 = v4;
 
   return v5;
@@ -1757,7 +1757,7 @@ void __35__VKMapView_snapMapAfterModeChange__block_invoke(uint64_t a1)
   v2 = +[VKDebugSettings sharedSettings];
   if ([v2 daVinciEntityDebugHighlighting])
   {
-    v3 = 1;
+    transitHighlighting = 1;
   }
 
   else
@@ -1765,47 +1765,47 @@ void __35__VKMapView_snapMapAfterModeChange__block_invoke(uint64_t a1)
     v4 = +[VKDebugSettings sharedSettings];
     if ([v4 labelHighlighting])
     {
-      v3 = 1;
+      transitHighlighting = 1;
     }
 
     else
     {
       v5 = +[VKDebugSettings sharedSettings];
-      v3 = [v5 transitHighlighting];
+      transitHighlighting = [v5 transitHighlighting];
     }
   }
 
-  return v3;
+  return transitHighlighting;
 }
 
 - (void)stopSnappingAnimations
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 stopSnappingAnimations];
+    [cameraController stopSnappingAnimations];
   }
 }
 
 - (BOOL)isAnimatingToTrackAnnotation
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isAnimatingToTrackAnnotation];
+    isAnimatingToTrackAnnotation = [cameraController isAnimatingToTrackAnnotation];
   }
 
   else
   {
-    v4 = 0;
+    isAnimatingToTrackAnnotation = 0;
   }
 
-  return v4;
+  return isAnimatingToTrackAnnotation;
 }
 
 - (VKLabelMarker)selectedLabelMarker
@@ -1822,7 +1822,7 @@ void __35__VKMapView_snapMapAfterModeChange__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] clearPreviouslySelectedLabelMarker", &v4, 0xCu);
   }
 
@@ -1866,20 +1866,20 @@ void __34__VKMapView_labelManagerDidLayout__block_invoke(uint64_t a1)
 
 - (void)stopTrackingAnnotation
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 stopTrackingAnnotation];
+    [cameraController stopTrackingAnnotation];
   }
 }
 
 - (float)currentZoomLevel
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 currentZoomLevel];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController currentZoomLevel];
   v5 = v4;
 
   return v5;
@@ -2027,20 +2027,20 @@ LABEL_34:
   return result;
 }
 
-- (id)markerAtPoint:(CGPoint)a3
+- (id)markerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 markerAtScreenPoint:1 enableExtendedFeatureMarkers:{x, y}];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  v6 = [currentCanvas markerAtScreenPoint:1 enableExtendedFeatureMarkers:{x, y}];
 
   return v6;
 }
 
-- (id)buildingMarkerAtPoint:(CGPoint)a3
+- (id)buildingMarkerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = *(*(self + 50) + 41656);
   v7 = v6;
   v8 = *(*(self + 50) + 41728);
@@ -2214,22 +2214,22 @@ LABEL_32:
   return WeakRetained;
 }
 
-- (void)projectCoordinate:(id)a3 toPoint:(CGPoint *)a4
+- (void)projectCoordinate:(id)coordinate toPoint:(CGPoint *)point
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = [(VKMapView *)self currentCanvas];
-  [v9 convertCoordinateToPoint:{var0, var1}];
-  a4->x = v7;
-  a4->y = v8;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas convertCoordinateToPoint:{var0, var1}];
+  point->x = v7;
+  point->y = v8;
 }
 
-- (optional<double>)puckAnimator:(id)a3 getElevationWithCoordinate:(const void *)a4
+- (optional<double>)puckAnimator:(id)animator getElevationWithCoordinate:(const void *)coordinate
 {
   v4 = *(*(self + 50) + 41712);
   if (v4)
   {
-    v5 = md::MapDataAccess::heightAtCoordinate(v4, a4);
+    v5 = md::MapDataAccess::heightAtCoordinate(v4, coordinate);
     v4 = (v5 & ((v6 << 55) >> 63));
     v7 = (v6 >> 8) & 1;
   }
@@ -2244,103 +2244,103 @@ LABEL_32:
   return result;
 }
 
-- (void)puckAnimator:(id)a3 updatedPosition:(const void *)a4 course:(const void *)a5 polylineCoordinate:(PolylineCoordinate)a6
+- (void)puckAnimator:(id)animator updatedPosition:(const void *)position course:(const void *)course polylineCoordinate:(PolylineCoordinate)coordinate
 {
-  v10 = a3;
+  animatorCopy = animator;
   v11 = (self + 344);
   if (*(self + 368) == 1)
   {
-    v12 = *a4;
-    *(self + 45) = *(a4 + 2);
+    v12 = *position;
+    *(self + 45) = *(position + 2);
     *v11 = v12;
   }
 
   else
   {
-    *v11 = *a4;
-    *(self + 22) = *(a4 + 8);
+    *v11 = *position;
+    *(self + 22) = *(position + 8);
     *(self + 368) = 1;
   }
 
-  v13 = *a5;
+  v13 = *course;
   if ((*(self + 384) & 1) == 0)
   {
     *(self + 384) = 1;
   }
 
   *(self + 47) = v13;
-  *(self + 49) = a6;
+  *(self + 49) = coordinate;
   v14 = *(*(self + 50) + 41928);
   v15 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v14 + 16), 0xBEC1A12372CEEC00)[5];
   if (*(self + 368))
   {
-    v16 = self + 344;
+    positionCopy = self + 344;
   }
 
   else
   {
-    v16 = a4;
+    positionCopy = position;
   }
 
-  v17 = *(v16 + 2);
-  *(v15 + 128) = *v16;
+  v17 = *(positionCopy + 2);
+  *(v15 + 128) = *positionCopy;
   *(v15 + 144) = v17;
-  *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v14 + 16), 0xBEC1A12372CEEC00)[5] + 208) = a6;
-  v18 = [(VKMapView *)self navigationPuck];
-  +[VKMapView updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:](VKMapView, "updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:", v10, [v18 enabled], *(self + 50) + 41736);
+  *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v14 + 16), 0xBEC1A12372CEEC00)[5] + 208) = coordinate;
+  navigationPuck = [(VKMapView *)self navigationPuck];
+  +[VKMapView updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:](VKMapView, "updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:", animatorCopy, [navigationPuck enabled], *(self + 50) + 41736);
 
   v19 = *(self + 50) + 41792;
-  v20 = *(a4 + 2);
-  *v19 = *a4;
+  v20 = *(position + 2);
+  *v19 = *position;
   *(v19 + 16) = v20;
   v21 = *(self + 35);
   if (*(self + 368))
   {
-    v22 = self + 344;
+    positionCopy2 = self + 344;
   }
 
   else
   {
-    v22 = a4;
+    positionCopy2 = position;
   }
 
-  v23 = *(v22 + 2);
-  v24 = *v22;
+  v23 = *(positionCopy2 + 2);
+  v24 = *positionCopy2;
   v25 = v23;
-  [v21 puckAnimator:v10 updatedPosition:&v24 course:a5 polylineCoordinate:*(self + 49)];
+  [v21 puckAnimator:animatorCopy updatedPosition:&v24 course:course polylineCoordinate:*(self + 49)];
 }
 
-- (void)puckAnimator:(id)a3 runAnimation:(id)a4
+- (void)puckAnimator:(id)animator runAnimation:(id)animation
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(VKMapView *)self navigationPuck];
-  +[VKMapView updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:](VKMapView, "updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:", v8, [v7 enabled], *(self + 50) + 41736);
+  animatorCopy = animator;
+  animationCopy = animation;
+  navigationPuck = [(VKMapView *)self navigationPuck];
+  +[VKMapView updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:](VKMapView, "updateUserLocationAnnotationStateForNavigationPuck:isPuckEnabled:synchronizedState:", animatorCopy, [navigationPuck enabled], *(self + 50) + 41736);
 
-  [(VKMapView *)self runAnimation:v6];
+  [(VKMapView *)self runAnimation:animationCopy];
 }
 
-- (void)didUpdateVerticalYawTo:(double)a3
+- (void)didUpdateVerticalYawTo:(double)to
 {
-  if (*(self + 24) != a3)
+  if (*(self + 24) != to)
   {
-    *(self + 24) = a3;
-    v4 = [(VKMapView *)self mapDelegate];
-    [v4 mapLayer:self didUpdateVerticalYawTo:*(self + 24)];
+    *(self + 24) = to;
+    mapDelegate = [(VKMapView *)self mapDelegate];
+    [mapDelegate mapLayer:self didUpdateVerticalYawTo:*(self + 24)];
   }
 }
 
-- (void)removeExternalAnchor:(id)a3
+- (void)removeExternalAnchor:(id)anchor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x79FE0BD9535D5C4DuLL);
   if (v5)
   {
     v6 = v5[5];
     if (v6)
     {
-      geo::_retain_ptr<VKAnchorWrapper * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,md::_equal_objc_ptr>::_retain_ptr(&v27, v4);
+      geo::_retain_ptr<VKAnchorWrapper * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,md::_equal_objc_ptr>::_retain_ptr(&v27, anchorCopy);
       v7 = [v28 hash];
       v8 = v6[24];
       if (v8)
@@ -2516,50 +2516,50 @@ LABEL_39:
     }
   }
 
-  [v4 setDisplayLayer:0];
+  [anchorCopy setDisplayLayer:0];
 }
 
-- (void)addExternalAnchor:(id)a3
+- (void)addExternalAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = *(self + 50);
   v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(v5 + 41928) + 16), 0x79FE0BD9535D5C4DuLL);
   if (v6 && v6[5])
   {
-    v7 = v4;
+    v7 = anchorCopy;
     operator new();
   }
 
-  [v4 setDisplayLayer:*(v5 + 41656)];
+  [anchorCopy setDisplayLayer:*(v5 + 41656)];
   v8 = *(self + 50);
   LOBYTE(v9) = 16;
   md::MapEngine::setNeedsTick(v8, &v9);
 }
 
-- (void)setCameraHorizontalOffset:(double)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setCameraHorizontalOffset:(double)offset duration:(double)duration timingFunction:(id)function
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  functionCopy = function;
   v9 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = 134218496;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a3;
+    offsetCopy = offset;
     v14 = 2048;
-    v15 = a4;
+    durationCopy = duration;
     _os_log_impl(&dword_1B2754000, v9, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set horizontal offset: %f, duration: %f", &v10, 0x20u);
   }
 
-  [*(self + 7) setCameraHorizontalOffset:v8 duration:a3 timingFunction:a4];
+  [*(self + 7) setCameraHorizontalOffset:functionCopy duration:offset timingFunction:duration];
 }
 
-- (void)setUseSmallCache:(BOOL)a3
+- (void)setUseSmallCache:(BOOL)cache
 {
   v3 = *(*(self + 50) + 41704);
   v4 = 1.0;
-  if (a3)
+  if (cache)
   {
     {
       GEOConfigGetDouble();
@@ -2575,18 +2575,18 @@ LABEL_39:
 - (void)forceResolveCameraController
 {
   v2 = *(self + 7);
-  v3 = [(VKMapView *)self resolveMapCameraController];
+  resolveMapCameraController = [(VKMapView *)self resolveMapCameraController];
   [v2 setCameraController:?];
 }
 
-- (void)setSkippedRouteLineSplitAnnotation:(id)a3
+- (void)setSkippedRouteLineSplitAnnotation:(id)annotation
 {
-  v5 = a3;
-  v6 = v5;
+  annotationCopy = annotation;
+  v6 = annotationCopy;
   v7 = *(*(self + 50) + 41928);
   if (v7)
   {
-    v10 = v5;
+    v10 = annotationCopy;
     v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v7 + 16), 0x5CBBA028798243FuLL);
     v6 = v10;
     if (v8)
@@ -2594,21 +2594,21 @@ LABEL_39:
       v9 = v8[5];
       if (v9)
       {
-        objc_storeStrong((v9 + 184), a3);
+        objc_storeStrong((v9 + 184), annotation);
         v6 = v10;
       }
     }
   }
 }
 
-- (void)setRouteLineSplitAnnotation:(id)a3
+- (void)setRouteLineSplitAnnotation:(id)annotation
 {
-  v5 = a3;
-  v6 = v5;
+  annotationCopy = annotation;
+  v6 = annotationCopy;
   v7 = *(*(self + 50) + 41928);
   if (v7)
   {
-    v10 = v5;
+    v10 = annotationCopy;
     v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v7 + 16), 0x5CBBA028798243FuLL);
     v6 = v10;
     if (v8)
@@ -2616,35 +2616,35 @@ LABEL_39:
       v9 = v8[5];
       if (v9)
       {
-        objc_storeStrong((v9 + 176), a3);
+        objc_storeStrong((v9 + 176), annotation);
         v6 = v10;
       }
     }
   }
 }
 
-- (void)setRendersInBackground:(BOOL)a3
+- (void)setRendersInBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (backgroundCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set renders in background: %s", &v8, 0x16u);
   }
 
   v7 = *(self + 50);
-  *(v7 + 42002) = v3;
+  *(v7 + 42002) = backgroundCopy;
   md::MapEngine::updateRunLoopStatus(v7);
 }
 
@@ -2852,7 +2852,7 @@ LABEL_39:
   }
 }
 
-- (void)setDisableShadows:(BOOL)a3
+- (void)setDisableShadows:(BOOL)shadows
 {
   v4 = *(self + 50);
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(v4 + 41928) + 16), 0x91E65CD7F1A7A7FALL);
@@ -2861,103 +2861,103 @@ LABEL_39:
     v6 = v5[5];
     if (v6)
     {
-      *(v6 + 224) = a3;
+      *(v6 + 224) = shadows;
       v7 = 1;
       md::MapEngine::setNeedsTick(v4, &v7);
     }
   }
 }
 
-- (void)setDisableGrid:(BOOL)a3
+- (void)setDisableGrid:(BOOL)grid
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 15;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, grid);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setDisableRasters:(BOOL)a3
+- (void)setDisableRasters:(BOOL)rasters
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 14;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, rasters);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setDisableBuildingFootprints:(BOOL)a3
+- (void)setDisableBuildingFootprints:(BOOL)footprints
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 13;
-  md::MapEngineSettings::set(v4, &v7, (*(*(self + 65) + 1) | a3) & 1);
+  md::MapEngineSettings::set(v4, &v7, (*(*(self + 65) + 1) | footprints) & 1);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setRenderInverseFills:(BOOL)a3
+- (void)setRenderInverseFills:(BOOL)fills
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 12;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, fills);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setRenderOverlayPolygons:(BOOL)a3
+- (void)setRenderOverlayPolygons:(BOOL)polygons
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 11;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, polygons);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setDisablePolygons:(BOOL)a3
+- (void)setDisablePolygons:(BOOL)polygons
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 10;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, polygons);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setDisableLabels:(BOOL)a3
+- (void)setDisableLabels:(BOOL)labels
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 9;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, labels);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (void)setDisableRoads:(BOOL)a3
+- (void)setDisableRoads:(BOOL)roads
 {
   v4 = *(*(self + 50) + 41936);
   v7 = 8;
-  md::MapEngineSettings::set(v4, &v7, a3);
+  md::MapEngineSettings::set(v4, &v7, roads);
   v5 = *(self + 50);
   v6 = 1;
   md::MapEngine::setNeedsTick(v5, &v6);
 }
 
-- (BOOL)tapAtPoint:(CGPoint)a3
+- (BOOL)tapAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 tapAtPoint:{x, y}];
+    v7 = [cameraController tapAtPoint:{x, y}];
   }
 
   else
@@ -2968,236 +2968,236 @@ LABEL_39:
   return v7;
 }
 
-- (BOOL)isPointValidForGesturing:(CGPoint)a3
+- (BOOL)isPointValidForGesturing:(CGPoint)gesturing
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 isPointValidForGesturing:{x, y}];
+  y = gesturing.y;
+  x = gesturing.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  v6 = [currentCanvas isPointValidForGesturing:{x, y}];
 
   return v6;
 }
 
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3
+- (void)stopPitchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 stopPitchingWithFocusPoint:{x, y}];
+    [cameraController stopPitchingWithFocusPoint:{x, y}];
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 updatePitchWithFocusPoint:x degrees:{y, a4}];
+    [cameraController updatePitchWithFocusPoint:x degrees:{y, degrees}];
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 updatePitchWithFocusPoint:x translation:{y, a4}];
+    [cameraController updatePitchWithFocusPoint:x translation:{y, translation}];
   }
 }
 
-- (void)startPitchingWithFocusPoint:(CGPoint)a3
+- (void)startPitchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 startPitchingWithFocusPoint:{x, y}];
+    [cameraController startPitchingWithFocusPoint:{x, y}];
   }
 }
 
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3
+- (void)stopRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 stopRotatingWithFocusPoint:{x, y}];
+    [cameraController stopRotatingWithFocusPoint:{x, y}];
   }
 }
 
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 updateRotationWithFocusPoint:x newValue:{y, a4}];
+    [cameraController updateRotationWithFocusPoint:x newValue:{y, value}];
   }
 }
 
-- (void)startRotatingWithFocusPoint:(CGPoint)a3
+- (void)startRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 startRotatingWithFocusPoint:{x, y}];
+    [cameraController startRotatingWithFocusPoint:{x, y}];
   }
 }
 
-- (void)stopPanningAtPoint:(CGPoint)a3
+- (void)stopPanningAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKMapView *)self currentCanvas];
-  v8 = [v6 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 stopPanningAtPoint:{x, y}];
+    [cameraController stopPanningAtPoint:{x, y}];
     v7 = *(self + 50);
     v9 = 16;
     md::MapEngine::setNeedsTick(v7, &v9);
   }
 }
 
-- (void)willStopPanningAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (void)willStopPanningAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(VKMapView *)self currentCanvas];
-  v11 = [v9 cameraController];
+  y = velocity.y;
+  x = velocity.x;
+  v6 = point.y;
+  v7 = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v11 willStopPanningAtPoint:v7 withVelocity:{v6, x, y}];
+    [cameraController willStopPanningAtPoint:v7 withVelocity:{v6, x, y}];
     v10 = *(self + 50);
     v12 = 16;
     md::MapEngine::setNeedsTick(v10, &v12);
   }
 }
 
-- (void)updatePanWithTranslation:(CGPoint)a3
+- (void)updatePanWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKMapView *)self currentCanvas];
-  v8 = [v6 cameraController];
+  y = translation.y;
+  x = translation.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 updatePanWithTranslation:{x, y}];
+    [cameraController updatePanWithTranslation:{x, y}];
     v7 = *(self + 50);
     v9 = 16;
     md::MapEngine::setNeedsTick(v7, &v9);
   }
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(VKMapView *)self currentCanvas];
-  v10 = [v8 cameraController];
+  startPointCopy = startPoint;
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v10 startPanningAtPoint:v4 panAtStartPoint:{x, y}];
+    [cameraController startPanningAtPoint:startPointCopy panAtStartPoint:{x, y}];
     v9 = *(self + 50);
     v11 = 16;
     md::MapEngine::setNeedsTick(v9, &v11);
   }
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3
+- (void)startPanningAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKMapView *)self currentCanvas];
-  v8 = [v6 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 startPanningAtPoint:0 panAtStartPoint:{x, y}];
+    [cameraController startPanningAtPoint:0 panAtStartPoint:{x, y}];
     v7 = *(self + 50);
     v9 = 16;
     md::MapEngine::setNeedsTick(v7, &v9);
   }
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 stopPinchingWithFocusPoint:{x, y}];
+    [cameraController stopPinchingWithFocusPoint:{x, y}];
   }
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = [(VKMapView *)self currentCanvas];
-  v10 = [v9 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v10 updatePinchWithFocusPoint:x oldFactor:y newFactor:{a4, a5}];
+    [cameraController updatePinchWithFocusPoint:x oldFactor:y newFactor:{factor, newFactor}];
   }
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 startPinchingWithFocusPoint:{x, y}];
+    [cameraController startPinchingWithFocusPoint:{x, y}];
   }
 }
 
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = [(VKMapView *)self currentCanvas];
-  v11 = [v10 cameraController];
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
@@ -3205,13 +3205,13 @@ LABEL_39:
     v12[1] = 3221225472;
     v12[2] = __51__VKMapView_zoom_withFocusPoint_completionHandler___block_invoke;
     v12[3] = &unk_1E7B392C8;
-    v13 = v9;
-    [v11 zoom:v12 withFocusPoint:a3 completionHandler:{x, y}];
+    v13 = handlerCopy;
+    [cameraController zoom:v12 withFocusPoint:zoom completionHandler:{x, y}];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -3226,91 +3226,91 @@ uint64_t __51__VKMapView_zoom_withFocusPoint_completionHandler___block_invoke(ui
   return result;
 }
 
-- (void)zoomToLevel:(double)a3 withFocusPoint:(CGPoint)a4
+- (void)zoomToLevel:(double)level withFocusPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 zoomToLevel:a3 withFocusPoint:{x, y}];
+    [cameraController zoomToLevel:level withFocusPoint:{x, y}];
   }
 }
 
-- (void)willLayoutWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)willLayoutWithTimestamp:(double)timestamp withContext:(void *)context
 {
-  v6 = [(VKMapView *)self currentCanvas];
-  [v6 updateWithTimestamp:a4 withContext:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas updateWithTimestamp:context withContext:timestamp];
 }
 
-- (void)setRegionRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setRegionRestriction:(id)restriction duration:(double)duration timingFunction:(id)function
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(VKMapView *)self currentCanvas];
-  v10 = [v9 cameraController];
+  restrictionCopy = restriction;
+  functionCopy = function;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = v12;
-    if (!v12)
+    v11 = restrictionCopy;
+    if (!restrictionCopy)
     {
       v11 = [[VKCameraRegionRestriction alloc] initWithMapRegion:0];
     }
 
-    v12 = v11;
-    [v10 setRegionRestriction:a4 duration:? timingFunction:?];
+    restrictionCopy = v11;
+    [cameraController setRegionRestriction:duration duration:? timingFunction:?];
   }
 }
 
-- (void)setCenterCoordinateDistanceRange:(id *)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setCenterCoordinateDistanceRange:(id *)range duration:(double)duration timingFunction:(id)function
 {
-  v8 = a5;
-  v9 = [(VKMapView *)self currentCanvas];
-  v10 = [v9 cameraController];
+  functionCopy = function;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = *&a3->var0;
-    v12 = *&a3->var2;
-    [v10 setCenterCoordinateDistanceRange:&v11 duration:v8 timingFunction:a4];
+    v11 = *&range->var0;
+    v12 = *&range->var2;
+    [cameraController setCenterCoordinateDistanceRange:&v11 duration:functionCopy timingFunction:duration];
   }
 }
 
-- (void)mapController:(id)a3 requestsDisplayRate:(int64_t)a4
+- (void)mapController:(id)controller requestsDisplayRate:(int64_t)rate
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (*(*(*(self + 50) + 208) + 8) != a4)
+  if (*(*(*(self + 50) + 208) + 8) != rate)
   {
     v6 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 134218240;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = a4;
+      rateCopy = rate;
       _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set requested display rate: %ld", &v11, 0x16u);
     }
 
     v7 = *(*(self + 50) + 208);
-    *(v7 + 1) = a4;
+    *(v7 + 1) = rate;
     md::RunLoopController::_updateDisplayRate(v7, v8, v9, v10);
   }
 }
 
 - (void)_updateMapDisplayStyle
 {
-  v3 = [(VKMapView *)self mapDisplayStyle];
-  if ((BYTE2(v3) - 1) > 8u)
+  mapDisplayStyle = [(VKMapView *)self mapDisplayStyle];
+  if ((BYTE2(mapDisplayStyle) - 1) > 8u)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = byte_1B33B2C2A[(BYTE2(v3) - 1)];
+    v4 = byte_1B33B2C2A[(BYTE2(mapDisplayStyle) - 1)];
   }
 
   v5 = *(self + 200);
@@ -3329,21 +3329,21 @@ uint64_t __51__VKMapView_zoom_withFocusPoint_completionHandler___block_invoke(ui
   v6 = *(self + 201) == 1;
 LABEL_6:
   v7 = *(self + 216);
-  if ((v3 & 0xFF00) >> 8 != BYTE1(v3) || v5 != v4 || v6 != (v3 & 0xFF000000) >> 24 || v7 != BYTE4(v3))
+  if ((mapDisplayStyle & 0xFF00) >> 8 != BYTE1(mapDisplayStyle) || v5 != v4 || v6 != (mapDisplayStyle & 0xFF000000) >> 24 || v7 != BYTE4(mapDisplayStyle))
   {
 
-    [(VKMapView *)self setMapDisplayStyle:((((v3 & 0xFF0000000000) == 0x10000000000) << 40) | (v7 << 32) | (v6 << 24) | (v5 << 16)) & 0xFFFFFFFFFFFFLL | v3 & 0xFF00 | v3 animated:1 duration:0.25];
+    [(VKMapView *)self setMapDisplayStyle:((((mapDisplayStyle & 0xFF0000000000) == 0x10000000000) << 40) | (v7 << 32) | (v6 << 24) | (v5 << 16)) & 0xFFFFFFFFFFFFLL | mapDisplayStyle & 0xFF00 | mapDisplayStyle animated:1 duration:0.25];
   }
 }
 
-- (void)mapDidFinishChangingMapDisplayStyle:(id)a3
+- (void)mapDidFinishChangingMapDisplayStyle:(id)style
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49__VKMapView_mapDidFinishChangingMapDisplayStyle___block_invoke;
   v3[3] = &unk_1E7B30168;
   v3[4] = self;
-  v4 = a3;
+  styleCopy = style;
   [(VKMapView *)self _postDelegateCallbackBlock:v3];
 }
 
@@ -3359,16 +3359,16 @@ void __49__VKMapView_mapDidFinishChangingMapDisplayStyle___block_invoke(uint64_t
   }
 }
 
-- (void)map:(id)a3 canShowFlyoverDidChange:(BOOL)a4
+- (void)map:(id)map canShowFlyoverDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(self + 16);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v14 = objc_loadWeakRetained(self + 16);
-    [v14 mapLayer:self canShowFlyoverDidChange:v4];
+    [v14 mapLayer:self canShowFlyoverDidChange:changeCopy];
   }
 
   v15 = objc_loadWeakRetained(self + 16);
@@ -3376,14 +3376,14 @@ void __49__VKMapView_mapDidFinishChangingMapDisplayStyle___block_invoke(uint64_t
 
   if (v7)
   {
-    v8 = [(VKMapView *)self currentCanvas];
-    v16 = v8;
-    if (v4)
+    currentCanvas = [(VKMapView *)self currentCanvas];
+    v16 = currentCanvas;
+    if (changeCopy)
     {
-      v9 = [v8 cameraController];
-      v10 = [v9 isPitched];
+      cameraController = [currentCanvas cameraController];
+      isPitched = [cameraController isPitched];
 
-      if (!v10)
+      if (!isPitched)
       {
         return;
       }
@@ -3394,10 +3394,10 @@ void __49__VKMapView_mapDidFinishChangingMapDisplayStyle___block_invoke(uint64_t
 
     else
     {
-      v11 = [v8 cameraController];
-      v12 = [v11 isPitched];
+      cameraController2 = [currentCanvas cameraController];
+      isPitched2 = [cameraController2 isPitched];
 
-      if (!v12)
+      if (!isPitched2)
       {
         return;
       }
@@ -3408,19 +3408,19 @@ void __49__VKMapView_mapDidFinishChangingMapDisplayStyle___block_invoke(uint64_t
   }
 }
 
-- (void)labelMarkerDidChangeState:(const void *)a3
+- (void)labelMarkerDidChangeState:(const void *)state
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] labelMarkerDidChangeState", buf, 0xCu);
   }
 
-  v6 = *a3;
-  v7 = *(a3 + 1);
+  v6 = *state;
+  v7 = *(state + 1);
   if (v7)
   {
     atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -3484,10 +3484,10 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)selectedLabelMarkerWillDisappear:(const void *)a3
+- (void)selectedLabelMarkerWillDisappear:(const void *)disappear
 {
-  v3 = *a3;
-  v4 = *(a3 + 1);
+  v3 = *disappear;
+  v4 = *(disappear + 1);
   if (v4)
   {
     atomic_fetch_add_explicit(&v4->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -3530,19 +3530,19 @@ void __46__VKMapView_selectedLabelMarkerWillDisappear___block_invoke(uint64_t a1
   }
 }
 
-- (void)selectedLabelMarkerDidCompleteLayout:(const void *)a3
+- (void)selectedLabelMarkerDidCompleteLayout:(const void *)layout
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] selectedLabelMarkerDidCompleteLayout", buf, 0xCu);
   }
 
-  v6 = *a3;
-  v7 = *(a3 + 1);
+  v6 = *layout;
+  v7 = *(layout + 1);
   if (v7)
   {
     atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -3585,23 +3585,23 @@ void __50__VKMapView_selectedLabelMarkerDidCompleteLayout___block_invoke(uint64_
   }
 }
 
-- (void)didUpdateSceneStatus:(unsigned __int8)a3
+- (void)didUpdateSceneStatus:(unsigned __int8)status
 {
-  v4 = a3;
-  if (a3 > 1)
+  statusCopy = status;
+  if (status > 1)
   {
-    switch(a3)
+    switch(status)
     {
       case 2u:
         v5 = 0;
         goto LABEL_12;
       case 3u:
         v5 = 1;
-        v4 = 3;
+        statusCopy = 3;
         goto LABEL_12;
       case 4u:
         v5 = 1;
-        v4 = 4;
+        statusCopy = 4;
 LABEL_12:
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
@@ -3615,18 +3615,18 @@ LABEL_12:
 
 LABEL_11:
     v5 = 0;
-    v4 = 0;
+    statusCopy = 0;
     goto LABEL_12;
   }
 
-  if (a3)
+  if (status)
   {
-    if (a3 != 1)
+    if (status != 1)
     {
       goto LABEL_11;
     }
 
-    v4 = 1;
+    statusCopy = 1;
   }
 
 LABEL_13:
@@ -3635,7 +3635,7 @@ LABEL_13:
   v6[2] = __34__VKMapView_didUpdateSceneStatus___block_invoke_2;
   v6[3] = &unk_1E7B30000;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = statusCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -3663,7 +3663,7 @@ void __34__VKMapView_didUpdateSceneStatus___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)mapDidReloadStylesheet:(id)a3
+- (void)mapDidReloadStylesheet:(id)stylesheet
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -3685,16 +3685,16 @@ void __36__VKMapView_mapDidReloadStylesheet___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didFinishLoadingDataWithError:(id)a3
+- (void)didFinishLoadingDataWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__VKMapView_didFinishLoadingDataWithError___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -3744,16 +3744,16 @@ void __32__VKMapView_didStartLoadingData__block_invoke(uint64_t a1)
   }
 }
 
-- (void)puckLocationTracingEvent:(id)a3
+- (void)puckLocationTracingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__VKMapView_puckLocationTracingEvent___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = eventCopy;
+  v5 = eventCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -3782,40 +3782,40 @@ void __38__VKMapView_puckLocationTracingEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)injectDebugARUserRouteCoordinate:(PolylineCoordinate)a3
+- (void)injectDebugARUserRouteCoordinate:(PolylineCoordinate)coordinate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __46__VKMapView_injectDebugARUserRouteCoordinate___block_invoke;
   v3[3] = &unk_1E7B30000;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = coordinate;
   [(VKMapView *)self _postDelegateCallbackBlock:v3];
 }
 
-- (void)injectDebugARFeatures:(id)a3
+- (void)injectDebugARFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__VKMapView_injectDebugARFeatures___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = featuresCopy;
+  v5 = featuresCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
-- (void)arWalkingElevationRequestFailure:(id)a3
+- (void)arWalkingElevationRequestFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__VKMapView_arWalkingElevationRequestFailure___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = failureCopy;
+  v5 = failureCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -3844,16 +3844,16 @@ void __46__VKMapView_arWalkingElevationRequestFailure___block_invoke(uint64_t a1
   }
 }
 
-- (void)arWalkingFeatureSetStateDidUpdate:(id)a3
+- (void)arWalkingFeatureSetStateDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__VKMapView_arWalkingFeatureSetStateDidUpdate___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -3882,16 +3882,16 @@ void __47__VKMapView_arWalkingFeatureSetStateDidUpdate___block_invoke(uint64_t a
   }
 }
 
-- (void)activeARWalkingFeatureDidUpdate:(id)a3
+- (void)activeARWalkingFeatureDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__VKMapView_activeARWalkingFeatureDidUpdate___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -3920,24 +3920,24 @@ void __45__VKMapView_activeARWalkingFeatureDidUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)muninJunctionDidChange:(const void *)a3 currentRoad:(const void *)a4 localize:(BOOL)a5
+- (void)muninJunctionDidChange:(const void *)change currentRoad:(const void *)road localize:(BOOL)localize
 {
-  v5 = a5;
+  localizeCopy = localize;
   v18[2] = *MEMORY[0x1E69E9840];
   v17 = &unk_1F29E6470;
   v18[0] = 0;
   v15 = &unk_1F29E6490;
   v16 = 0;
-  if (a3)
+  if (change)
   {
-    v8 = [[VKMuninJunction alloc] initWithMuninJunction:a3 localize:a5];
+    v8 = [[VKMuninJunction alloc] initWithMuninJunction:change localize:localize];
     v9 = v8;
     objc_storeStrong(v18, v8);
   }
 
-  if (a4)
+  if (road)
   {
-    v10 = [[VKMuninRoad alloc] initWithMuninRoadEdge:a4 localize:v5];
+    v10 = [[VKMuninRoad alloc] initWithMuninRoadEdge:road localize:localizeCopy];
     v11 = v10;
     objc_storeStrong(&v16, v10);
   }
@@ -3990,21 +3990,21 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
   }
 }
 
-- (void)setFocusedLabelsPolyline:(id)a3
+- (void)setFocusedLabelsPolyline:(id)polyline
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  polylineCopy = polyline;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = polylineCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Setting focused labels polyline: %@", &v6, 0x16u);
   }
 
-  md::LabelSettings_Navigation::setFocusedPolyline(([(VKMapView *)self _labelSettings]+ 8), v4);
+  md::LabelSettings_Navigation::setFocusedPolyline(([(VKMapView *)self _labelSettings]+ 8), polylineCopy);
 }
 
 - (VKPolylineOverlay)focusedLabelsPolyline
@@ -4014,17 +4014,17 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
   return md::LabelExternalPointFeature::incident(v2);
 }
 
-- (void)setNavContext:(id)a3
+- (void)setNavContext:(id)context
 {
-  v5 = a3;
-  v6 = v5;
-  if (*(self + 42) != v5)
+  contextCopy = context;
+  v6 = contextCopy;
+  if (*(self + 42) != contextCopy)
   {
-    objc_storeStrong(self + 42, a3);
-    v5 = *(self + 42);
+    objc_storeStrong(self + 42, context);
+    contextCopy = *(self + 42);
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     [(VKMapView *)self setRouteUserOffset:*MEMORY[0x1E69A1918]];
   }
@@ -4032,17 +4032,17 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
   [*(self + 35) setNavContext:v6];
 }
 
-- (void)setRouteContext:(id)a3
+- (void)setRouteContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v5;
+    v12 = contextCopy;
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "[VKMapView:%p] Setting route context: %@", buf, 0x16u);
   }
 
@@ -4052,151 +4052,151 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
     v7 = *(v7 + 5);
   }
 
-  md::TransitLogic::setRouteContext(v7, v5);
+  md::TransitLogic::setRouteContext(v7, contextCopy);
   v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xBEC1A12372CEEC00);
   if (v8)
   {
     v8 = *(v8 + 5);
   }
 
-  md::NavigationLogic::setRouteContext(v8, v5);
-  if (*(self + 61) != v5)
+  md::NavigationLogic::setRouteContext(v8, contextCopy);
+  if (*(self + 61) != contextCopy)
   {
-    objc_storeStrong(self + 61, a3);
+    objc_storeStrong(self + 61, context);
   }
 
-  md::LabelSettings_Navigation::setRouteContext(([(VKMapView *)self _labelSettings]+ 8), v5);
+  md::LabelSettings_Navigation::setRouteContext(([(VKMapView *)self _labelSettings]+ 8), contextCopy);
 }
 
-- (void)setCurrentLocationText:(id)a3
+- (void)setCurrentLocationText:(id)text
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134218243;
-    v7 = self;
+    selfCopy = self;
     v8 = 2113;
-    v9 = v4;
+    v9 = textCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Setting current location text: %{private}@", &v6, 0x16u);
   }
 
-  md::LabelSettings_Navigation::setCurrentLocationText(([(VKMapView *)self _labelSettings]+ 8), v4);
+  md::LabelSettings_Navigation::setCurrentLocationText(([(VKMapView *)self _labelSettings]+ 8), textCopy);
 }
 
-- (void)setRouteUserOffset:(PolylineCoordinate)a3
+- (void)setRouteUserOffset:(PolylineCoordinate)offset
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  offsetCopy = offset;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    index = a3.index;
+    index = offset.index;
     v11 = 2048;
-    offset = a3.offset;
+    offset = offset.offset;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Setting route user offset: %d.%f", buf, 0x1Cu);
   }
 
-  md::LabelSettings_Navigation::setRouteUserOffset(([(VKMapView *)self _labelSettings]+ 8), &v6);
-  *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xBEC1A12372CEEC00)[5] + 200) = a3;
+  md::LabelSettings_Navigation::setRouteUserOffset(([(VKMapView *)self _labelSettings]+ 8), &offsetCopy);
+  *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xBEC1A12372CEEC00)[5] + 200) = offset;
 }
 
-- (void)insertOverlay:(id)a3 belowOverlay:(id)a4
+- (void)insertOverlay:(id)overlay belowOverlay:(id)belowOverlay
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VKMapView *)self currentCanvas];
-  [v8 insertOverlay:v6 belowOverlay:v7];
+  overlayCopy = overlay;
+  belowOverlayCopy = belowOverlay;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas insertOverlay:overlayCopy belowOverlay:belowOverlayCopy];
 
   v9 = *(*(self + 50) + 41936);
   v14 = 5;
-  v10 = [(VKMapView *)self currentCanvas];
-  v11 = [v10 overlays];
-  md::MapEngineSettings::set(v9, &v14, [v11 count] != 0);
+  currentCanvas2 = [(VKMapView *)self currentCanvas];
+  overlays = [currentCanvas2 overlays];
+  md::MapEngineSettings::set(v9, &v14, [overlays count] != 0);
 
   v12 = *(self + 50);
   v13 = 15;
   md::MapEngine::setNeedsTick(v12, &v13);
 }
 
-- (void)insertOverlay:(id)a3 aboveOverlay:(id)a4
+- (void)insertOverlay:(id)overlay aboveOverlay:(id)aboveOverlay
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VKMapView *)self currentCanvas];
-  [v8 insertOverlay:v6 aboveOverlay:v7];
+  overlayCopy = overlay;
+  aboveOverlayCopy = aboveOverlay;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas insertOverlay:overlayCopy aboveOverlay:aboveOverlayCopy];
 
   v9 = *(*(self + 50) + 41936);
   v14 = 5;
-  v10 = [(VKMapView *)self currentCanvas];
-  v11 = [v10 overlays];
-  md::MapEngineSettings::set(v9, &v14, [v11 count] != 0);
+  currentCanvas2 = [(VKMapView *)self currentCanvas];
+  overlays = [currentCanvas2 overlays];
+  md::MapEngineSettings::set(v9, &v14, [overlays count] != 0);
 
   v12 = *(self + 50);
   v13 = 15;
   md::MapEngine::setNeedsTick(v12, &v13);
 }
 
-- (void)removeOverlay:(id)a3
+- (void)removeOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(VKMapView *)self currentCanvas];
-  [v5 removeOverlay:v4];
+  overlayCopy = overlay;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas removeOverlay:overlayCopy];
 
   v6 = *(*(self + 50) + 41936);
   v11 = 5;
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 overlays];
-  md::MapEngineSettings::set(v6, &v11, [v8 count] != 0);
+  currentCanvas2 = [(VKMapView *)self currentCanvas];
+  overlays = [currentCanvas2 overlays];
+  md::MapEngineSettings::set(v6, &v11, [overlays count] != 0);
 
   v9 = *(self + 50);
   v10 = 15;
   md::MapEngine::setNeedsTick(v9, &v10);
 }
 
-- (void)addOverlay:(id)a3
+- (void)addOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(VKMapView *)self currentCanvas];
-  [v5 addOverlay:v4];
+  overlayCopy = overlay;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas addOverlay:overlayCopy];
 
   v6 = *(*(self + 50) + 41936);
   v11 = 5;
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 overlays];
-  md::MapEngineSettings::set(v6, &v11, [v8 count] != 0);
+  currentCanvas2 = [(VKMapView *)self currentCanvas];
+  overlays = [currentCanvas2 overlays];
+  md::MapEngineSettings::set(v6, &v11, [overlays count] != 0);
 
   v9 = *(self + 50);
   v10 = 15;
   md::MapEngine::setNeedsTick(v9, &v10);
 }
 
-- (void)removePersistentRouteOverlay:(id)a3
+- (void)removePersistentRouteOverlay:(id)overlay
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VKMapView *)self targetDisplay];
-    if (v6 > 2)
+    targetDisplay = [(VKMapView *)self targetDisplay];
+    if (targetDisplay > 2)
     {
       v7 = &stru_1F2A61C40;
     }
 
     else
     {
-      v7 = off_1E7B304A0[v6];
+      v7 = off_1E7B304A0[targetDisplay];
     }
 
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = overlayCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Removing persistent route overlay: %@, and the target display: %@", &v9, 0x20u);
@@ -4204,31 +4204,31 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
 
   v8 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(*(v8 + 47360), "[VKMapView removePersistentRouteOverlay:]");
-  md::RouteOverlayContainer::removeOverlay(*(*(v8 + 41704) + 16), v4, 1);
+  md::RouteOverlayContainer::removeOverlay(*(*(v8 + 41704) + 16), overlayCopy, 1);
 }
 
-- (void)addPersistentRouteOverlay:(id)a3
+- (void)addPersistentRouteOverlay:(id)overlay
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VKMapView *)self targetDisplay];
-    if (v6 > 2)
+    targetDisplay = [(VKMapView *)self targetDisplay];
+    if (targetDisplay > 2)
     {
       v7 = &stru_1F2A61C40;
     }
 
     else
     {
-      v7 = off_1E7B304A0[v6];
+      v7 = off_1E7B304A0[targetDisplay];
     }
 
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = overlayCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Adding persistent route overlay: %@, and the target display: %@", &v9, 0x20u);
@@ -4236,31 +4236,31 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
 
   v8 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(*(v8 + 47360), "[VKMapView addPersistentRouteOverlay:]");
-  md::RouteOverlayContainer::addOverlay(*(*(v8 + 41704) + 16), v4, 1);
+  md::RouteOverlayContainer::addOverlay(*(*(v8 + 41704) + 16), overlayCopy, 1);
 }
 
-- (void)removeRouteOverlay:(id)a3
+- (void)removeRouteOverlay:(id)overlay
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VKMapView *)self targetDisplay];
-    if (v6 > 2)
+    targetDisplay = [(VKMapView *)self targetDisplay];
+    if (targetDisplay > 2)
     {
       v7 = &stru_1F2A61C40;
     }
 
     else
     {
-      v7 = off_1E7B304A0[v6];
+      v7 = off_1E7B304A0[targetDisplay];
     }
 
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = overlayCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Removing route overlay: %@, and the target display: %@", &v9, 0x20u);
@@ -4268,31 +4268,31 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
 
   v8 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(*(v8 + 47360), "[VKMapView removeRouteOverlay:]");
-  md::RouteOverlayContainer::removeOverlay(*(*(v8 + 41704) + 16), v4, 0);
+  md::RouteOverlayContainer::removeOverlay(*(*(v8 + 41704) + 16), overlayCopy, 0);
 }
 
-- (void)addRouteOverlay:(id)a3
+- (void)addRouteOverlay:(id)overlay
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VKMapView *)self targetDisplay];
-    if (v6 > 2)
+    targetDisplay = [(VKMapView *)self targetDisplay];
+    if (targetDisplay > 2)
     {
       v7 = &stru_1F2A61C40;
     }
 
     else
     {
-      v7 = off_1E7B304A0[v6];
+      v7 = off_1E7B304A0[targetDisplay];
     }
 
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = overlayCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Adding route overlay: %@, and the target display: %@", &v9, 0x20u);
@@ -4300,59 +4300,59 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
 
   v8 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(*(v8 + 47360), "[VKMapView addRouteOverlay:]");
-  md::RouteOverlayContainer::addOverlay(*(*(v8 + 41704) + 16), v4, 0);
+  md::RouteOverlayContainer::addOverlay(*(*(v8 + 41704) + 16), overlayCopy, 0);
 }
 
-- (void)startTrackingAnnotation:(id)a3 trackHeading:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6 timingFunction:(id)a7
+- (void)startTrackingAnnotation:(id)annotation trackHeading:(BOOL)heading animated:(BOOL)animated duration:(double)duration timingFunction:(id)function
 {
-  v9 = a5;
-  v10 = a4;
-  v15 = a3;
-  v12 = a7;
-  v13 = [(VKMapView *)self currentCanvas];
-  v14 = [v13 cameraController];
+  animatedCopy = animated;
+  headingCopy = heading;
+  annotationCopy = annotation;
+  functionCopy = function;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 startTrackingAnnotation:v15 trackHeading:v10 animated:v9 duration:v12 timingFunction:a6];
+    [cameraController startTrackingAnnotation:annotationCopy trackHeading:headingCopy animated:animatedCopy duration:functionCopy timingFunction:duration];
   }
 }
 
-- (void)setHasVehicleHeading:(BOOL)a3
+- (void)setHasVehicleHeading:(BOOL)heading
 {
-  v3 = a3;
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
+  headingCopy = heading;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setHasVehicleHeading:v3];
+    [cameraController setHasVehicleHeading:headingCopy];
   }
 }
 
-- (void)setAnnotationTrackingBehavior:(id *)a3
+- (void)setAnnotationTrackingBehavior:(id *)behavior
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = *&a3->var0;
-    v7 = *&a3->var2;
-    [v5 setAnnotationTrackingBehavior:&v6];
+    v6 = *&behavior->var0;
+    v7 = *&behavior->var2;
+    [cameraController setAnnotationTrackingBehavior:&v6];
   }
 }
 
 - ($FF918C85BF8E73478720C66798E418D4)annotationTrackingBehavior
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v6 = [v4 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    if (v6)
+    if (cameraController)
     {
-      [v6 annotationTrackingBehavior];
+      [cameraController annotationTrackingBehavior];
     }
 
     else
@@ -4372,20 +4372,20 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
   return result;
 }
 
-- (void)setTrackingZoomScale:(double)a3
+- (void)setTrackingZoomScale:(double)scale
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
-    v9 = a3;
+    scaleCopy = scale;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set tracking zoom scale: %f", &v6, 0x16u);
   }
 
-  [*(self + 35) setZoomScale:a3];
+  [*(self + 35) setZoomScale:scale];
 }
 
 - (double)trackingZoomScale
@@ -4432,41 +4432,41 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
 
 - (BOOL)shouldHideOffscreenSelectedAnnotation
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 shouldHideOffscreenSelectedAnnotation];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  shouldHideOffscreenSelectedAnnotation = [currentCanvas shouldHideOffscreenSelectedAnnotation];
 
-  return v3;
+  return shouldHideOffscreenSelectedAnnotation;
 }
 
-- (void)panWithOffset:(CGPoint)a3 relativeToScreenPoint:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6 completionHandler:(id)a7
+- (void)panWithOffset:(CGPoint)offset relativeToScreenPoint:(CGPoint)point animated:(BOOL)animated duration:(double)duration completionHandler:(id)handler
 {
-  v8 = a5;
-  y = a4.y;
-  x = a4.x;
-  v11 = a3.y;
-  v12 = a3.x;
-  v16 = a7;
-  v14 = [(VKMapView *)self currentCanvas];
-  v15 = [v14 cameraController];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  v11 = offset.y;
+  v12 = offset.x;
+  handlerCopy = handler;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v15 panWithOffset:v8 relativeToScreenPoint:v16 animated:v12 duration:v11 completionHandler:{x, y, a6}];
+    [cameraController panWithOffset:animatedCopy relativeToScreenPoint:handlerCopy animated:v12 duration:v11 completionHandler:{x, y, duration}];
   }
 
-  else if (v16)
+  else if (handlerCopy)
   {
-    v16[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)setFlyoverMode:(int)a3
+- (void)setFlyoverMode:(int)mode
 {
-  if (*(self + 103) != a3)
+  if (*(self + 103) != mode)
   {
     [*(self + 33) setTourShouldResumeWhenDoneGesturing:{+[MDARController isSupported](MDARController, "isSupported") ^ 1}];
-    if (a3 == -1)
+    if (mode == -1)
     {
       [(VKMapView *)self stopFlyoverAnimation];
     }
@@ -4482,13 +4482,13 @@ void __57__VKMapView_muninJunctionDidChange_currentRoad_localize___block_invoke(
       }
     }
 
-    *(self + 103) = a3;
+    *(self + 103) = mode;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __28__VKMapView_setFlyoverMode___block_invoke;
     v6[3] = &unk_1E7B30118;
     v6[4] = self;
-    v7 = a3;
+    modeCopy = mode;
     [(VKMapView *)self _postDelegateCallbackBlock:v6];
   }
 }
@@ -4505,23 +4505,23 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIncreaseContrastEnabled:(BOOL)a3
+- (void)setIncreaseContrastEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
-  if ([(VKMapView *)self isIncreaseContrastEnabled]!= a3)
+  if ([(VKMapView *)self isIncreaseContrastEnabled]!= enabled)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = "NO";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = "YES";
       }
 
       v9 = 134218242;
-      v10 = self;
+      selfCopy = self;
       v11 = 2080;
       v12 = v6;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] setIncreaseContrastEnabled:%s", &v9, 0x16u);
@@ -4534,12 +4534,12 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
       v8 = v8[5];
     }
 
-    if (*(v8 + 1113) != v3)
+    if (*(v8 + 1113) != enabledCopy)
     {
-      *(v8 + 1113) = v3;
+      *(v8 + 1113) = enabledCopy;
       if ((v8[139] & 1) == 0)
       {
-        md::StyleLogic::setResolvedIncreaseContrastEnabled(v8, v3, 0.6);
+        md::StyleLogic::setResolvedIncreaseContrastEnabled(v8, enabledCopy, 0.6);
         v7 = *(self + 50);
       }
     }
@@ -4551,9 +4551,9 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
 
 - (double)maxPitch
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 maxPitch];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController maxPitch];
   v5 = v4;
 
   return v5;
@@ -4561,9 +4561,9 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
 
 - (double)minPitch
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  [v3 minPitch];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController minPitch];
   v5 = v4;
 
   return v5;
@@ -4571,11 +4571,11 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
 
 - (BOOL)isFullyPitched
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 isFullyPitched];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  isFullyPitched = [cameraController isFullyPitched];
 
-  return v4;
+  return isFullyPitched;
 }
 
 - (void)exit3DMode
@@ -4585,17 +4585,17 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Exit 3d mode", &v6, 0xCu);
   }
 
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 exit3DMode];
+    [cameraController exit3DMode];
   }
 }
 
@@ -4606,37 +4606,37 @@ void __28__VKMapView_setFlyoverMode___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Enter 3d mode", &v6, 0xCu);
   }
 
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 enter3DMode];
+    [cameraController enter3DMode];
   }
 }
 
-- (void)setSelectedBuildingFeatureIds:(id)a3
+- (void)setSelectedBuildingFeatureIds:(id)ids
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idsCopy = ids;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = idsCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Select building feature ids %@", buf, 0x16u);
   }
 
-  if (([v4 isEqualToSet:*(self + 63)] & 1) == 0)
+  if (([idsCopy isEqualToSet:*(self + 63)] & 1) == 0)
   {
-    v6 = v4;
+    v6 = idsCopy;
     v7 = v6;
     v8 = v6 == 0;
     if (v6)
@@ -4768,7 +4768,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Deselect venue poi feature", &v6, 0xCu);
   }
 
@@ -4783,16 +4783,16 @@ LABEL_34:
   }
 }
 
-- (void)setSelectedVenuePoiFeatureId:(unint64_t)a3
+- (void)setSelectedVenuePoiFeatureId:(unint64_t)id
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    idCopy = id;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Select venue poi feature id: %llu", &v8, 0x16u);
   }
 
@@ -4802,7 +4802,7 @@ LABEL_34:
     v7 = v6[5];
     if (v7)
     {
-      *(v7 + 592) = a3;
+      *(v7 + 592) = id;
     }
   }
 }
@@ -4814,7 +4814,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v12 = 134217984;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Deselect feature id", &v12, 0xCu);
   }
 
@@ -4854,16 +4854,16 @@ LABEL_34:
   }
 }
 
-- (void)setSelectedFeatureId:(unint64_t)a3
+- (void)setSelectedFeatureId:(unint64_t)id
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v14 = 134218240;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = a3;
+    idCopy = id;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Select feature id: %llu", &v14, 0x16u);
   }
 
@@ -4872,7 +4872,7 @@ LABEL_34:
   v7 = *(v6 + 41704);
   for (i = *(v7 + 32); i != *(v7 + 40); i += 16)
   {
-    (*(**(i + 8) + 80))(*(i + 8), a3);
+    (*(**(i + 8) + 80))(*(i + 8), id);
   }
 
   v9 = *(*(self + 50) + 41928);
@@ -4882,7 +4882,7 @@ LABEL_34:
     v11 = v10[5];
     if (v11)
     {
-      *(v11 + 216) = a3;
+      *(v11 + 216) = id;
       *(v11 + 224) = 1;
     }
   }
@@ -4893,7 +4893,7 @@ LABEL_34:
     v13 = v12[5];
     if (v13)
     {
-      *(v13 + 120) = a3;
+      *(v13 + 120) = id;
       *(v13 + 128) = 1;
     }
   }
@@ -4906,7 +4906,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Deselect trails", &v7, 0xCu);
   }
 
@@ -4924,18 +4924,18 @@ LABEL_34:
   }
 }
 
-- (void)setSelectedTrailWithId:(unint64_t)a3 name:(id)a4 locale:(id)a5
+- (void)setSelectedTrailWithId:(unint64_t)id name:(id)name locale:(id)locale
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  localeCopy = locale;
   v10 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v17 = 134218240;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    idCopy = id;
     _os_log_impl(&dword_1B2754000, v10, OS_LOG_TYPE_INFO, "[VKMapView:%p] Select trail ID: %llu", &v17, 0x16u);
   }
 
@@ -4945,10 +4945,10 @@ LABEL_34:
     v12 = v11[5];
     if (v12)
     {
-      v13 = v8;
-      v14 = [v8 UTF8String];
-      v15 = v9;
-      md::HikingLogic::setSelectedTrail(v12, a3, v14, [v9 UTF8String]);
+      v13 = nameCopy;
+      uTF8String = [nameCopy UTF8String];
+      v15 = localeCopy;
+      md::HikingLogic::setSelectedTrail(v12, id, uTF8String, [localeCopy UTF8String]);
       v16 = *(self + 50);
       LOBYTE(v17) = 1;
       md::MapEngine::setNeedsTick(v16, &v17);
@@ -4956,28 +4956,28 @@ LABEL_34:
   }
 }
 
-- (void)setPreferredUnits:(unint64_t)a3
+- (void)setPreferredUnits:(unint64_t)units
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v10 = 134218240;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a3;
+    unitsCopy = units;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set Contour Line Units: %lu", &v10, 0x16u);
   }
 
   v6 = *(self + 50);
-  v7 = a3 != 0;
+  v7 = units != 0;
   if (*(*(v6 + 41704) + 400) != v7)
   {
     md::HomeQueueScheduler::waitForSynchronization(*(v6 + 47360), "[VKMapView setPreferredUnits:]");
     md::World::setPreferredUnits(*(v6 + 41704), v7);
     v8 = *(*(self + 50) + 41936);
     LOBYTE(v10) = 35;
-    md::MapEngineSettings::set(v8, &v10, a3 != 0);
+    md::MapEngineSettings::set(v8, &v10, units != 0);
     v9 = *(self + 50);
     LOBYTE(v10) = 1;
     md::MapEngine::setNeedsTick(v9, &v10);
@@ -4991,7 +4991,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Deselect transit line marker", &v7, 0xCu);
   }
 
@@ -5009,17 +5009,17 @@ LABEL_34:
   }
 }
 
-- (void)selectTransitLineMarker:(id)a3
+- (void)selectTransitLineMarker:(id)marker
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  markerCopy = marker;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = markerCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Select transit line marker: %@", &v9, 0x16u);
   }
 
@@ -5029,7 +5029,7 @@ LABEL_34:
     v7 = v6[5];
     if (v7)
     {
-      md::TransitLogic::setSelectedLines(v7, v4);
+      md::TransitLogic::setSelectedLines(v7, markerCopy);
       v8 = *(self + 50);
       LOBYTE(v9) = 1;
       md::MapEngine::setNeedsTick(v8, &v9);
@@ -5231,27 +5231,27 @@ LABEL_42:
   return v4;
 }
 
-- (id)transitLineMarkersForSelectionAtPoint:(CGPoint)a3
+- (id)transitLineMarkersForSelectionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x1BCA10CB9934FB1BuLL);
   if (v6 && (v7 = v6[5]) != 0)
   {
-    v8 = [(VKMapView *)self currentCanvas];
-    v9 = [v8 cameraController];
+    currentCanvas = [(VKMapView *)self currentCanvas];
+    cameraController = [currentCanvas cameraController];
 
-    if (v9 && ([v9 vkCamera], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if (cameraController && ([cameraController vkCamera], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
       [*(*(self + 50) + 41656) size];
       v12 = v11;
       [*(*(self + 50) + 41656) size];
       v14 = v13;
-      v15 = [v9 vkCamera];
-      v16 = v15;
-      if (v15)
+      vkCamera = [cameraController vkCamera];
+      v16 = vkCamera;
+      if (vkCamera)
       {
-        [v15 groundPointFromScreenPoint:{x / v12, 1.0 - y / v14}];
+        [vkCamera groundPointFromScreenPoint:{x / v12, 1.0 - y / v14}];
       }
 
       else
@@ -5284,7 +5284,7 @@ LABEL_42:
 
       else
       {
-        v44 = v9;
+        v44 = cameraController;
         v19 = 0;
         v20 = 0;
         do
@@ -5424,7 +5424,7 @@ LABEL_41:
         v48 = 0;
         v49 = 0;
         v50 = 0;
-        v9 = v44;
+        cameraController = v44;
         if (v19 != v20)
         {
           std::__introsort<std::_ClassicAlgPolicy,md::TransitLogic::getTransitLineMarkersForSelectionAtGroundPoint(gm::Matrix<double,3,1> const&)::$_0 &,std::pair<md::TransitLineWithLink,float> *,false>(v19, v20, 126 - 2 * __clz(0xAAAAAAAAAAAAAAABLL * ((v20 - v19) >> 3)), 1, v22);
@@ -5714,21 +5714,21 @@ LABEL_54:
   return v44;
 }
 
-- (void)setDisableTransitLines:(BOOL)a3
+- (void)setDisableTransitLines:(BOOL)lines
 {
-  v3 = a3;
+  linesCopy = lines;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (linesCopy)
     {
       v6 = "YES";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set disable transit lines: %s", &v9, 0x16u);
@@ -5736,7 +5736,7 @@ LABEL_54:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v9) = 16;
-  md::MapEngineSettings::set(v7, &v9, v3);
+  md::MapEngineSettings::set(v7, &v9, linesCopy);
   v8 = *(self + 50);
   LOBYTE(v9) = 1;
   md::MapEngine::setNeedsTick(v8, &v9);
@@ -5765,25 +5765,25 @@ LABEL_54:
   return 0;
 }
 
-- (void)setPreviouslySelectedLabelMarker:(id)a3
+- (void)setPreviouslySelectedLabelMarker:(id)marker
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  markerCopy = marker;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [markerCopy name];
     v8 = 134218243;
-    v9 = self;
+    selfCopy = self;
     v10 = 2113;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] setPreviouslySelectedLabelMarker=%{private}@", &v8, 0x16u);
   }
 
-  if (v4)
+  if (markerCopy)
   {
     [(VKMapView *)self _labelSettings];
-    v7 = *([v4 labelMarkerImpl] + 8);
+    v7 = *([markerCopy labelMarkerImpl] + 8);
     if (v7)
     {
       atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -5807,72 +5807,72 @@ LABEL_54:
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] deselectLabelMarker", &v5, 0xCu);
   }
 
-  v4 = [(VKMapView *)self _labelSettings];
+  _labelSettings = [(VKMapView *)self _labelSettings];
   v5 = 0uLL;
-  md::LabelSettings_Markers::selectLabelMarker(v4 + 16, &v5);
+  md::LabelSettings_Markers::selectLabelMarker(_labelSettings + 16, &v5);
 }
 
-- (void)selectLabelMarker:(id)a3 completion:(id)a4
+- (void)selectLabelMarker:(id)marker completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  markerCopy = marker;
+  completionCopy = completion;
   v8 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 name];
+    name = [markerCopy name];
     v10 = 134218243;
-    v11 = self;
+    selfCopy = self;
     v12 = 2113;
-    v13 = v9;
+    v13 = name;
     _os_log_impl(&dword_1B2754000, v8, OS_LOG_TYPE_INFO, "[VKMapView:%p] selectLabelMarker=%{private}@", &v10, 0x16u);
   }
 
-  if (v6)
+  if (markerCopy)
   {
-    md::LabelSettings_Markers::selectLabelMarker((-[VKMapView _labelSettings](self, "_labelSettings") + 16), [v6 labelMarkerImpl]);
+    md::LabelSettings_Markers::selectLabelMarker((-[VKMapView _labelSettings](self, "_labelSettings") + 16), [markerCopy labelMarkerImpl]);
   }
 
   [(VKMapView *)self deselectLabelMarker];
 }
 
-- (id)rapMarkerAtPoint:(CGPoint)a3
+- (id)rapMarkerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 markerAtScreenPoint:0 enableExtendedFeatureMarkers:{x, y}];
+  y = point.y;
+  x = point.x;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  v6 = [currentCanvas markerAtScreenPoint:0 enableExtendedFeatureMarkers:{x, y}];
 
   return v6;
 }
 
-- (id)labelMarkerForCustomFeatureAnnotation:(id)a3
+- (id)labelMarkerForCustomFeatureAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [v4 feature];
-  v6 = [v5 dataSource];
-  v7 = [(VKMapView *)self labelMarkerForCustomFeatureAnnotation:v4 dataSource:v6];
+  annotationCopy = annotation;
+  feature = [annotationCopy feature];
+  dataSource = [feature dataSource];
+  v7 = [(VKMapView *)self labelMarkerForCustomFeatureAnnotation:annotationCopy dataSource:dataSource];
 
   return v7;
 }
 
-- (id)labelMarkerForCustomFeatureAnnotation:(id)a3 dataSource:(id)a4
+- (id)labelMarkerForCustomFeatureAnnotation:(id)annotation dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  annotationCopy = annotation;
+  sourceCopy = source;
+  v8 = sourceCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (annotationCopy && sourceCopy)
   {
-    v10 = [v6 feature];
-    v11 = [v10 dataSource];
+    feature = [annotationCopy feature];
+    dataSource = [feature dataSource];
 
-    if (v11)
+    if (dataSource)
     {
-      v12 = [v6 feature];
-      v13 = [v12 dataSource];
+      feature2 = [annotationCopy feature];
+      dataSource2 = [feature2 dataSource];
 
-      if (v13 != v8)
+      if (dataSource2 != v8)
       {
         v9 = 0;
         goto LABEL_9;
@@ -5881,12 +5881,12 @@ LABEL_54:
 
     else
     {
-      v14 = [v6 feature];
-      [v14 setDataSource:v8];
+      feature3 = [annotationCopy feature];
+      [feature3 setDataSource:v8];
     }
 
     md::HomeQueueScheduler::waitForSynchronization(*(*(self + 50) + 47360), "[VKMapView labelMarkerForCustomFeatureAnnotation:dataSource:]");
-    md::LabelManager::labelMarkerForCustomFeatureAnnotation(&v16, *(*([(VKMapView *)self _labelSettings]+ 16) + 24), v6, v8);
+    md::LabelManager::labelMarkerForCustomFeatureAnnotation(&v16, *(*([(VKMapView *)self _labelSettings]+ 16) + 24), annotationCopy, v8);
     v9 = [VKLabelMarker markerWithLabelMarker:&v16];
     if (v17)
     {
@@ -5899,15 +5899,15 @@ LABEL_9:
   return v9;
 }
 
-- (id)labelMarkerForSelectionAtPoint:(CGPoint)a3 selectableLabelsOnly:(BOOL)a4
+- (id)labelMarkerForSelectionAtPoint:(CGPoint)point selectableLabelsOnly:(BOOL)only
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v7 = [(VKMapView *)self _labelSettings];
+  onlyCopy = only;
+  y = point.y;
+  x = point.x;
+  _labelSettings = [(VKMapView *)self _labelSettings];
   v13.x = x;
   v13.y = y;
-  md::LabelSettings_Markers::labelMarkerForSelectionAtPoint(&v10, v13, *(v7[2] + 24), v4);
+  md::LabelSettings_Markers::labelMarkerForSelectionAtPoint(&v10, v13, *(_labelSettings[2] + 24), onlyCopy);
   v8 = [VKLabelMarker markerWithLabelMarker:&v10];
   if (v11)
   {
@@ -5917,45 +5917,45 @@ LABEL_9:
   return v8;
 }
 
-- (void)setScreenLabelFeatures:(id)a3
+- (void)setScreenLabelFeatures:(id)features
 {
-  v6 = a3;
-  v4 = [(VKMapView *)self _labelSettings];
-  v5 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
-  md::LabelSettings::setScreenLabelFeatures(v4, v5);
+  featuresCopy = features;
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithArray:featuresCopy];
+  md::LabelSettings::setScreenLabelFeatures(_labelSettings, v5);
 }
 
-- (void)setLabelExclusionRegions:(id)a3
+- (void)setLabelExclusionRegions:(id)regions
 {
-  v6 = a3;
-  v4 = [(VKMapView *)self _labelSettings];
-  v5 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
-  md::LabelSettings::setLabelExclusionRegions(v4, v5);
+  regionsCopy = regions;
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithArray:regionsCopy];
+  md::LabelSettings::setLabelExclusionRegions(_labelSettings, v5);
 }
 
-- (void)removeCustomFeatureDataSource:(id)a3
+- (void)removeCustomFeatureDataSource:(id)source
 {
-  v4 = a3;
-  md::LabelSettings::removeCustomFeatureDataSource([(VKMapView *)self _labelSettings], v4);
+  sourceCopy = source;
+  md::LabelSettings::removeCustomFeatureDataSource([(VKMapView *)self _labelSettings], sourceCopy);
 }
 
-- (void)addCustomFeatureDataSource:(id)a3
+- (void)addCustomFeatureDataSource:(id)source
 {
-  v4 = a3;
-  md::LabelSettings::addCustomFeatureDataSource([(VKMapView *)self _labelSettings], v4);
+  sourceCopy = source;
+  md::LabelSettings::addCustomFeatureDataSource([(VKMapView *)self _labelSettings], sourceCopy);
 }
 
-- (void)setExternalTrafficFeatures:(id)a3 areRouteTrafficFeaturesActive:(BOOL)a4
+- (void)setExternalTrafficFeatures:(id)features areRouteTrafficFeaturesActive:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  featuresCopy = features;
   v7 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if (v6)
+    if (featuresCopy)
     {
-      v8 = [v6 count];
+      v8 = [featuresCopy count];
     }
 
     else
@@ -5965,8 +5965,8 @@ LABEL_9:
 
     v9 = "NO";
     *buf = 134218498;
-    v11 = self;
-    if (v4)
+    selfCopy = self;
+    if (activeCopy)
     {
       v9 = "YES";
     }
@@ -5978,19 +5978,19 @@ LABEL_9:
     _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set external traffic features - count:%zu, areRouteTrafficFeaturesActive:%s", buf, 0x20u);
   }
 
-  md::LabelSettings::setExternalTrafficFeatures([(VKMapView *)self _labelSettings], v6, v4);
+  md::LabelSettings::setExternalTrafficFeatures([(VKMapView *)self _labelSettings], featuresCopy, activeCopy);
 }
 
-- (void)setHiddenTrafficIncidentFeatures:(id)a3
+- (void)setHiddenTrafficIncidentFeatures:(id)features
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    if (v4)
+    if (featuresCopy)
     {
-      v6 = [v4 count];
+      v6 = [featuresCopy count];
     }
 
     else
@@ -5999,21 +5999,21 @@ LABEL_9:
     }
 
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
     v10 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set hidden traffic incident features - count:%zu", &v7, 0x16u);
   }
 
-  md::LabelSettings::setHiddenTrafficIncidentFeatures([(VKMapView *)self _labelSettings], v4);
+  md::LabelSettings::setHiddenTrafficIncidentFeatures([(VKMapView *)self _labelSettings], featuresCopy);
 }
 
-- (void)transitionToTracking:(BOOL)a3 mapMode:(int64_t)a4 startLocation:(id)a5 startCourse:(double)a6 pounceCompletionHandler:(id)a7
+- (void)transitionToTracking:(BOOL)tracking mapMode:(int64_t)mode startLocation:(id)location startCourse:(double)course pounceCompletionHandler:(id)handler
 {
-  var0 = a5.var0;
-  var1 = a5.var1;
-  v9 = a3;
-  v11 = a7;
+  var0 = location.var0;
+  var1 = location.var1;
+  trackingCopy = tracking;
+  handlerCopy = handler;
   if (fabs(var0) > 90.0 || var1 > 180.0 || var1 < -180.0)
   {
     v12 = GEOGetVectorKitVKMapViewLog();
@@ -6025,7 +6025,7 @@ LABEL_9:
   }
 
   [(VKMapView *)self stopTrackingAnnotation];
-  v13 = [(VKMapView *)self currentCanvas];
+  currentCanvas = [(VKMapView *)self currentCanvas];
   if (!*(self + 35))
   {
     v14 = [VKNavCameraController alloc];
@@ -6033,8 +6033,8 @@ LABEL_9:
     v16 = v15[12];
     v39 = v15[11];
     v40 = v16;
-    v31 = a4;
-    v33 = v11;
+    modeCopy = mode;
+    v33 = handlerCopy;
     if (v16)
     {
       atomic_fetch_add_explicit(&v16->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -6052,18 +6052,18 @@ LABEL_9:
     v23 = *(self + 35);
     *(self + 35) = v22;
 
-    v11 = v33;
+    handlerCopy = v33;
     if (v40)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v40);
     }
 
     [(VKMapView *)self sceneConfiguration];
-    v24 = a4 = v32;
+    v24 = mode = v32;
     [*(self + 35) setSceneConfiguration:v24];
 
     [*(self + 35) setNavContext:*(self + 42)];
-    [*(self + 35) setScreenCanvas:v13];
+    [*(self + 35) setScreenCanvas:currentCanvas];
   }
 
   [(VKMapView *)self _configureDynamicFrameRateForCarDisplayConfig:[(VKMapView *)self carDisplayConfig]];
@@ -6091,15 +6091,15 @@ LABEL_9:
 
     v38 = v28;
     v29 = *(self + 29);
-    v36 = a6 * 0.0174532925;
+    v36 = course * 0.0174532925;
     [(VKMapView *)self puckAnimator:v29 updatedPosition:buf course:&v36 polylineCoordinate:*(self + 49)];
-    v30 = [(VKMapView *)self navigationPuck];
-    [v30 setPresentationCourse:a6];
+    navigationPuck = [(VKMapView *)self navigationPuck];
+    [navigationPuck setPresentationCourse:course];
   }
 
   [*(self + 29) start];
-  [v13 setCameraController:*(self + 35)];
-  [v13 transitionToTracking:v9 mapMode:a4 startLocation:*(self + 35) startCourse:v11 cameraController:var0 pounceCompletionHandler:{var1, a6}];
+  [currentCanvas setCameraController:*(self + 35)];
+  [currentCanvas transitionToTracking:trackingCopy mapMode:mode startLocation:*(self + 35) startCourse:handlerCopy cameraController:var0 pounceCompletionHandler:{var1, course}];
 }
 
 - (void)navigationCameraReturnToPuck
@@ -6109,7 +6109,7 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Navigation return to puck", &v4, 0xCu);
   }
 
@@ -6123,7 +6123,7 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Pause tracking", &v4, 0xCu);
   }
 
@@ -6137,14 +6137,14 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Stop tracking", &v7, 0xCu);
   }
 
   [*(self + 35) stop];
   v4 = *(self + 7);
-  v5 = [(VKMapView *)self resolveMapCameraController];
-  [v4 setCameraController:v5];
+  resolveMapCameraController = [(VKMapView *)self resolveMapCameraController];
+  [v4 setCameraController:resolveMapCameraController];
 
   v6 = *(self + 35);
   *(self + 35) = 0;
@@ -6152,8 +6152,8 @@ LABEL_9:
 
 - (id)tileStatistics
 {
-  v1 = a1;
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"DaVinci" withString:@"Pine"];
+  selfCopy = self;
+  v2 = [selfCopy stringByReplacingOccurrencesOfString:@"DaVinci" withString:@"Pine"];
 
   v3 = [v2 stringByReplacingOccurrencesOfString:@"DAVINCI" withString:@"PINE"];
 
@@ -6165,8 +6165,8 @@ LABEL_9:
   v11 = a2;
   v7 = a3;
   v8 = a4;
-  [*a1 setValue:v11 forKey:v7];
-  v9 = *a1;
+  [*self setValue:v11 forKey:v7];
+  v9 = *self;
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Units", v7];
   [v9 setValue:v8 forKey:v10];
 }
@@ -6466,12 +6466,12 @@ LABEL_12:
   [*(self + 33) stopFlyoverTourAnimation];
 }
 
-- (void)startFlyoverTourAnimation:(unint64_t)a3 animateToStart:(BOOL)a4 completion:(id)a5
+- (void)startFlyoverTourAnimation:(unint64_t)animation animateToStart:(BOOL)start completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [*(self + 33) cameraDelegate];
-  [v9 didEndAnimatingAccess];
+  startCopy = start;
+  completionCopy = completion;
+  cameraDelegate = [*(self + 33) cameraDelegate];
+  [cameraDelegate didEndAnimatingAccess];
 
   v10 = *(*(self + 50) + 41936);
   v19 = 2;
@@ -6496,15 +6496,15 @@ LABEL_12:
   v16[2] = __65__VKMapView_startFlyoverTourAnimation_animateToStart_completion___block_invoke_2;
   v16[3] = &unk_1E7B300C8;
   v16[4] = self;
-  v15 = v8;
+  v15 = completionCopy;
   v17 = v15;
-  [v14 startFlyoverTourAnimation:a3 animateToStart:v5 labelChanged:v18 stateChange:v16];
+  [v14 startFlyoverTourAnimation:animation animateToStart:startCopy labelChanged:v18 stateChange:v16];
 }
 
-- (void)moveToFlyoverTourStartPosition:(id)a3 duration:(double)a4 completion:(id)a5
+- (void)moveToFlyoverTourStartPosition:(id)position duration:(double)duration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  positionCopy = position;
+  completionCopy = completion;
   v10 = *(*(self + 50) + 41936);
   LOBYTE(v19) = 2;
   md::MapEngineSettings::set(v10, &v19, 0);
@@ -6513,13 +6513,13 @@ LABEL_12:
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__1128;
   v23 = __Block_byref_object_dispose__1129;
-  v24 = [*(self + 33) createFlyoverPreTourAnimation:v8 duration:a4];
+  v24 = [*(self + 33) createFlyoverPreTourAnimation:positionCopy duration:duration];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __64__VKMapView_moveToFlyoverTourStartPosition_duration_completion___block_invoke;
   v16 = &unk_1E7B300F0;
   v18 = &v19;
-  v11 = v9;
+  v11 = completionCopy;
   v17 = v11;
   v12 = MEMORY[0x1B8C62DA0](&v13);
   [(VKMapView *)self startFlyoverAnimation:v20[5] animateToStart:0 completion:v12, v13, v14, v15, v16];
@@ -6538,11 +6538,11 @@ uint64_t __64__VKMapView_moveToFlyoverTourStartPosition_duration_completion___bl
   return v4();
 }
 
-- (void)startFlyoverAnimation:(id)a3 animateToStart:(BOOL)a4 completion:(id)a5
+- (void)startFlyoverAnimation:(id)animation animateToStart:(BOOL)start completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  startCopy = start;
+  animationCopy = animation;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 16);
   v11 = objc_opt_respondsToSelector();
 
@@ -6563,21 +6563,21 @@ uint64_t __64__VKMapView_moveToFlyoverTourStartPosition_duration_completion___bl
   v15[2] = __61__VKMapView_startFlyoverAnimation_animateToStart_completion___block_invoke_2;
   v15[3] = &unk_1E7B300C8;
   v15[4] = self;
-  v14 = v9;
+  v14 = completionCopy;
   v16 = v14;
-  [v13 flyoverTourAnimation:v8 animateToStart:v6 labelChanged:v17 stateChange:v15];
+  [v13 flyoverTourAnimation:animationCopy animateToStart:startCopy labelChanged:v17 stateChange:v15];
 }
 
-- (void)_notifyDelegateFlyoverTourLabelChanged:(id)a3
+- (void)_notifyDelegateFlyoverTourLabelChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__VKMapView__notifyDelegateFlyoverTourLabelChanged___block_invoke;
   v6[3] = &unk_1E7B3F110;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   [(VKMapView *)self _postDelegateCallbackBlock:v6];
 }
 
@@ -6593,9 +6593,9 @@ void __52__VKMapView__notifyDelegateFlyoverTourLabelChanged___block_invoke(uint6
   }
 }
 
-- (void)_runFlyoverTourStateChange:(int)a3 completion:(id)a4
+- (void)_runFlyoverTourStateChange:(int)change completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke;
@@ -6608,18 +6608,18 @@ void __52__VKMapView__notifyDelegateFlyoverTourLabelChanged___block_invoke(uint6
   v11[3] = &unk_1E7B3B9F8;
   v11[4] = self;
   v8 = MEMORY[0x1B8C62DA0](v11);
-  if ((a3 - 3) >= 2)
+  if ((change - 3) >= 2)
   {
     v9 = v7;
-    if (a3 == 5)
+    if (change == 5)
     {
       goto LABEL_5;
     }
 
-    if (a3 != 6)
+    if (change != 6)
     {
       v10 = 0;
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_8;
       }
@@ -6631,15 +6631,15 @@ void __52__VKMapView__notifyDelegateFlyoverTourLabelChanged___block_invoke(uint6
   v9 = v8;
 LABEL_5:
   v10 = MEMORY[0x1B8C62DA0](v9);
-  if (!v6)
+  if (!completionCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  if ((a3 - 3) <= 3)
+  if ((change - 3) <= 3)
   {
-    v6[2](v6, a3 == 5);
+    completionCopy[2](completionCopy, change == 5);
     [(VKMapView *)self _notifyDelegateFlyoverTourLabelChanged:0];
   }
 
@@ -6696,10 +6696,10 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
   }
 }
 
-- (void)prepareFlyoverAnimation:(id)a3 completion:(id)a4
+- (void)prepareFlyoverAnimation:(id)animation completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
+  animationCopy = animation;
+  completionCopy = completion;
   v7 = *(*(self + 50) + 41912);
   md::LabelExternalPointFeature::incident(v7);
   objc_claimAutoreleasedReturnValue();
@@ -6712,7 +6712,7 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
     [objc_claimAutoreleasedReturnValue() mapLayerWillChangeRegionAnimated:0];
   }
 
-  [*(self + 33) prepareFlyoverAnimation:v13 completion:v6];
+  [*(self + 33) prepareFlyoverAnimation:animationCopy completion:completionCopy];
   v10 = *(*(self + 50) + 41912);
   md::LabelExternalPointFeature::incident(v10);
   objc_claimAutoreleasedReturnValue();
@@ -6726,18 +6726,18 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
   }
 }
 
-- (void)setCameraFramingInsets:(VKEdgeInsets)a3
+- (void)setCameraFramingInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v23 = *MEMORY[0x1E69E9840];
   v8 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v13 = 134219008;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
     v16 = top;
     v17 = 2048;
@@ -6756,18 +6756,18 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
   [*(self + 35) setClientFramingInsets:{v9, v10, v11, v12}];
 }
 
-- (void)setLabelEdgeWidths:(VKEdgeInsets)a3
+- (void)setLabelEdgeWidths:(VKEdgeInsets)widths
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = widths.right;
+  bottom = widths.bottom;
+  left = widths.left;
+  top = widths.top;
   v20 = *MEMORY[0x1E69E9840];
   v8 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 134219008;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = top;
     v14 = 2048;
@@ -6788,18 +6788,18 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
   md::MapEngine::setNeedsTick(v9, &v10);
 }
 
-- (void)setLabelEdgeInsets:(VKEdgeInsets)a3
+- (void)setLabelEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v20 = *MEMORY[0x1E69E9840];
   v8 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 134219008;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = top;
     v14 = 2048;
@@ -6822,8 +6822,8 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
 
 - (VKEdgeInsets)fullyOccludedEdgeInsets
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  [v2 fullyOccludedEdgeInsets];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas fullyOccludedEdgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -6840,18 +6840,18 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
   return result;
 }
 
-- (void)setFullyOccludedEdgeInsets:(VKEdgeInsets)a3
+- (void)setFullyOccludedEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v24 = *MEMORY[0x1E69E9840];
   v8 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v14 = 134219008;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = top;
     v18 = 2048;
@@ -6863,30 +6863,30 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
     _os_log_impl(&dword_1B2754000, v8, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set fully occluded edge insets: top: %f, bottom: %f, left: %f, right: %f", &v14, 0x34u);
   }
 
-  v9 = [(VKMapView *)self currentCanvas];
+  currentCanvas = [(VKMapView *)self currentCanvas];
   *&v10 = top;
   *&v11 = left;
   *&v12 = bottom;
   *&v13 = right;
-  [v9 setFullyOccludedEdgeInsets:{v10, v11, v12, v13}];
+  [currentCanvas setFullyOccludedEdgeInsets:{v10, v11, v12, v13}];
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3 duration:(double)a4 timingFunction:(id)a5 completionHandler:(id)a6
+- (void)setEdgeInsets:(VKEdgeInsets)insets duration:(double)duration timingFunction:(id)function completionHandler:(id)handler
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v72 = *MEMORY[0x1E69E9840];
-  v61 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(VKMapView *)self currentCanvas];
-  [v15 edgeInsets];
+  insetsCopy = insets;
+  functionCopy = function;
+  handlerCopy = handler;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas edgeInsets];
   v59 = __PAIR64__(v17, v16);
   v60 = __PAIR64__(v19, v18);
 
-  v21 = *&v61.top != v59 || *&v61.bottom != v60;
+  v21 = *&insetsCopy.top != v59 || *&insetsCopy.bottom != v60;
   [*(self + 20) stop];
   if (v21)
   {
@@ -6894,7 +6894,7 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 134219008;
-      v63 = self;
+      selfCopy = self;
       v64 = 2048;
       v65 = top;
       v66 = 2048;
@@ -6906,10 +6906,10 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
       _os_log_impl(&dword_1B2754000, v22, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set edge insets: top: %f, bottom: %f, left: %f, right: %f", buf, 0x34u);
     }
 
-    if (a4 > 0.0 && v13)
+    if (duration > 0.0 && functionCopy)
     {
-      *(self + 168) = v61;
-      v23 = [[VKTimedAnimation alloc] initWithDuration:a4];
+      *(self + 168) = insetsCopy;
+      v23 = [[VKTimedAnimation alloc] initWithDuration:duration];
       v24 = *(self + 20);
       *(self + 20) = v23;
 
@@ -6917,10 +6917,10 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
       v57[1] = 3221225472;
       v57[2] = __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___block_invoke;
       v57[3] = &unk_1E7B30690;
-      v58 = v13;
+      v58 = functionCopy;
       [*(self + 20) setTimingFunction:v57];
-      v25 = [(VKMapView *)self currentCanvas];
-      [v25 edgeInsets];
+      currentCanvas2 = [(VKMapView *)self currentCanvas];
+      [currentCanvas2 edgeInsets];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -6936,18 +6936,18 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
       v53 = v29;
       v54 = v31;
       v55 = v33;
-      v56 = v61;
+      v56 = insetsCopy;
       [*(self + 20) setStepHandler:v50];
       v44 = MEMORY[0x1E69E9820];
       v45 = 3221225472;
       v46 = __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___block_invoke_3;
       v47 = &unk_1E7B3DE58;
       objc_copyWeak(&v49, buf);
-      v48 = v14;
+      v48 = handlerCopy;
       [*(self + 20) setCompletionHandler:&v44];
       v34 = [(VKMapView *)self currentCanvas:v44];
-      v35 = [v34 cameraController];
-      [v35 setEdgeInsetsAnimating:1];
+      cameraController = [v34 cameraController];
+      [cameraController setEdgeInsetsAnimating:1];
 
       [(VKMapView *)self runAnimation:*(self + 20)];
       objc_destroyWeak(&v49);
@@ -6957,14 +6957,14 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
       goto LABEL_21;
     }
 
-    v36 = [(VKMapView *)self currentCanvas];
+    currentCanvas3 = [(VKMapView *)self currentCanvas];
     *&v37 = top;
     *&v38 = left;
     *&v39 = bottom;
     *&v40 = right;
-    [v36 setEdgeInsets:{v37, v38, v39, v40}];
+    [currentCanvas3 setEdgeInsets:{v37, v38, v39, v40}];
 
-    *(*(self + 50) + 41768) = v61;
+    *(*(self + 50) + 41768) = insetsCopy;
     v41 = *(*(self + 50) + 41872);
     v42 = *(*(self + 50) + 41880);
     if (v42)
@@ -6975,7 +6975,7 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
       v41[110] = bottom;
       v41[111] = right;
       std::__shared_weak_count::__release_shared[abi:nn200100](v42);
-      if (!v14)
+      if (!handlerCopy)
       {
         goto LABEL_20;
       }
@@ -6987,7 +6987,7 @@ void __51__VKMapView__runFlyoverTourStateChange_completion___block_invoke_2(uint
       v41[109] = left;
       v41[110] = bottom;
       v41[111] = right;
-      if (!v14)
+      if (!handlerCopy)
       {
 LABEL_20:
         v43 = *(self + 50);
@@ -6997,13 +6997,13 @@ LABEL_20:
       }
     }
 
-    (*(v14 + 2))(v14, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
     goto LABEL_20;
   }
 
-  if (v14)
+  if (handlerCopy)
   {
-    (*(v14 + 2))(v14, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
 LABEL_21:
@@ -7063,21 +7063,21 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 fromLayer:(id)a5 withPrecision:(int64_t)a6
+- (double)distanceFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint fromLayer:(id)layer withPrecision:(int64_t)precision
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a5;
-  [(VKMapView *)self convertPoint:v12 toCoordinateFromLayer:v10, v9];
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  layerCopy = layer;
+  [(VKMapView *)self convertPoint:layerCopy toCoordinateFromLayer:v10, v9];
   v14 = v13;
   v16 = v15;
-  [(VKMapView *)self convertPoint:v12 toCoordinateFromLayer:x, y];
+  [(VKMapView *)self convertPoint:layerCopy toCoordinateFromLayer:x, y];
   v19 = 0.0;
   if (fabs(v14) <= 90.0 && v16 <= 180.0 && v16 >= -180.0 && fabs(v17) <= 90.0 && v18 <= 180.0 && v18 >= -180.0)
   {
-    if (a6)
+    if (precision)
     {
       GEOCalculateDistanceHighPrecision();
     }
@@ -7093,17 +7093,17 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   return v19;
 }
 
-- (CGPoint)convertCoordinate:(id)a3 toCameraModelPointToLayer:(id)a4
+- (CGPoint)convertCoordinate:(id)coordinate toCameraModelPointToLayer:(id)layer
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = [(VKMapView *)self currentCanvas];
-  [v8 convertCoordinateToCameraModelPoint:{var0, var1}];
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  layerCopy = layer;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas convertCoordinateToCameraModelPoint:{var0, var1}];
   v10 = v9;
   v12 = v11;
 
-  [(VKMapView *)self convertPoint:v7 toLayer:v10, v12];
+  [(VKMapView *)self convertPoint:layerCopy toLayer:v10, v12];
   v14 = v13;
   v16 = v15;
 
@@ -7114,17 +7114,17 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   return result;
 }
 
-- (CGPoint)convertCoordinate:(id)a3 toPointToLayer:(id)a4
+- (CGPoint)convertCoordinate:(id)coordinate toPointToLayer:(id)layer
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = [(VKMapView *)self currentCanvas];
-  [v8 convertCoordinateToPoint:{var0, var1}];
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  layerCopy = layer;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas convertCoordinateToPoint:{var0, var1}];
   v10 = v9;
   v12 = v11;
 
-  [(VKMapView *)self convertPoint:v7 toLayer:v10, v12];
+  [(VKMapView *)self convertPoint:layerCopy toLayer:v10, v12];
   v14 = v13;
   v16 = v15;
 
@@ -7135,17 +7135,17 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   return result;
 }
 
-- (CGPoint)convertMapPoint:(id)a3 toPointToLayer:(id)a4
+- (CGPoint)convertMapPoint:(id)point toPointToLayer:(id)layer
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = [(VKMapView *)self currentCanvas];
-  [v8 convertMapPointToPoint:{var0, var1}];
+  var1 = point.var1;
+  var0 = point.var0;
+  layerCopy = layer;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas convertMapPointToPoint:{var0, var1}];
   v10 = v9;
   v12 = v11;
 
-  [(VKMapView *)self convertPoint:v7 toLayer:v10, v12];
+  [(VKMapView *)self convertPoint:layerCopy toLayer:v10, v12];
   v14 = v13;
   v16 = v15;
 
@@ -7156,20 +7156,20 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)a3 toMapPointFromLayer:(id)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)point toMapPointFromLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (v7 != self)
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  if (layerCopy != self)
   {
-    [(VKMapView *)self convertPoint:v7 fromLayer:x, y];
+    [(VKMapView *)self convertPoint:layerCopy fromLayer:x, y];
     x = v8;
     y = v9;
   }
 
-  v10 = [(VKMapView *)self currentCanvas];
-  [v10 convertPointToMapPoint:{x, y}];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas convertPointToMapPoint:{x, y}];
   v12 = v11;
   v14 = v13;
 
@@ -7180,20 +7180,20 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)a3 toCoordinateFromLayer:(id)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)convertPoint:(CGPoint)point toCoordinateFromLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (v7 != self)
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
+  if (layerCopy != self)
   {
-    [(VKMapView *)self convertPoint:v7 fromLayer:x, y];
+    [(VKMapView *)self convertPoint:layerCopy fromLayer:x, y];
     x = v8;
     y = v9;
   }
 
-  v10 = [(VKMapView *)self currentCanvas];
-  [v10 convertPointToCoordinate:{x, y}];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas convertPointToCoordinate:{x, y}];
   v12 = v11;
   v14 = v13;
 
@@ -7204,127 +7204,127 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
   return result;
 }
 
-- (double)durationToAnimateToMapRegion:(id)a3
+- (double)durationToAnimateToMapRegion:(id)region
 {
-  v4 = a3;
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
+  regionCopy = region;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   v7 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    [v6 durationToAnimateToMapRegion:v4];
+    [cameraController durationToAnimateToMapRegion:regionCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5 duration:(double)a6 timingCurve:(id)a7 completion:(id)a8
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw duration:(double)duration timingCurve:(id)curve completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  regionCopy = region;
+  curveCopy = curve;
+  completionCopy = completion;
   v17 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v20 = 134219010;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v14;
+    v23 = regionCopy;
     v24 = 2048;
-    v25 = a4;
+    pitchCopy = pitch;
     v26 = 2048;
-    v27 = a5;
+    yawCopy = yaw;
     v28 = 2048;
-    v29 = a6;
+    durationCopy = duration;
     _os_log_impl(&dword_1B2754000, v17, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set map region: %@, pitch: %f, yaw: %f, animation duration: %f", &v20, 0x34u);
   }
 
-  v18 = [(VKMapView *)self currentCanvas];
-  v19 = [v18 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v19 setMapRegion:v14 pitch:v15 yaw:v16 duration:a4 timingCurve:a5 completion:a6];
+    [cameraController setMapRegion:regionCopy pitch:curveCopy yaw:completionCopy duration:pitch timingCurve:yaw completion:duration];
   }
 
-  else if (v16)
+  else if (completionCopy)
   {
-    v16[2](v16, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  regionCopy = region;
   v9 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v12 = 134218754;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = regionCopy;
     v16 = 2048;
-    v17 = a4;
+    pitchCopy = pitch;
     v18 = 2048;
-    v19 = a5;
+    yawCopy = yaw;
     _os_log_impl(&dword_1B2754000, v9, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set map region: %@, pitch: %f, yaw: %f", &v12, 0x2Au);
   }
 
-  v10 = [(VKMapView *)self currentCanvas];
-  v11 = [v10 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 setMapRegion:v8 pitch:0 yaw:0 duration:a4 timingCurve:a5 completion:0.0];
+    [cameraController setMapRegion:regionCopy pitch:0 yaw:0 duration:pitch timingCurve:yaw completion:0.0];
   }
 }
 
-- (void)setYaw:(double)a3 animated:(BOOL)a4
+- (void)setYaw:(double)yaw animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
   v7 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = "NO";
     v11 = 134218498;
-    v12 = self;
-    if (v4)
+    selfCopy = self;
+    if (animatedCopy)
     {
       v8 = "YES";
     }
 
     v13 = 2048;
-    v14 = a3;
+    yawCopy = yaw;
     v15 = 2080;
     v16 = v8;
     _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set yaw: %f, animated: %s", &v11, 0x20u);
   }
 
-  v9 = [(VKMapView *)self currentCanvas];
-  v10 = [v9 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 setYaw:v4 animated:a3];
+    [cameraController setYaw:animatedCopy animated:yaw];
   }
 }
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
   if (*(self + 545) == 1)
   {
     v6.receiver = self;
     v6.super_class = VKMapView;
-    [(VKMapView *)&v6 renderInContext:a3];
+    [(VKMapView *)&v6 renderInContext:context];
   }
 
   else
@@ -7335,36 +7335,36 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
       md::HomeQueueScheduler::waitForSynchronization(v4[5920], "[VKMapView renderInContext:]");
       v5 = CACurrentMediaTime();
 
-      md::MapEngine::renderSceneInContextSync(v4, a3, v5);
+      md::MapEngine::renderSceneInContextSync(v4, context, v5);
     }
   }
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (vabdd_f64(*(self + 75), a3) > 2.22044605e-16)
+  if (vabdd_f64(*(self + 75), scale) > 2.22044605e-16)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v54 = self;
+      selfCopy = self;
       v55 = 2048;
-      v56 = a3;
+      scaleCopy = scale;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set contents scale: %f", buf, 0x16u);
     }
 
-    *(self + 75) = a3;
+    *(self + 75) = scale;
     v52.receiver = self;
     v52.super_class = VKMapView;
-    [(VKMapView *)&v52 setContentsScale:a3];
+    [(VKMapView *)&v52 setContentsScale:scale];
     v6 = *(self + 50);
     if (v6)
     {
       md::HomeQueueScheduler::waitForSynchronization(*(v6 + 47360), "[VKMapView setContentsScale:]");
       v7 = v6 + 41656;
-      v8 = a3;
+      scaleCopy2 = scale;
       v9 = *(v6 + 41704);
       v10 = *(v9 + 4);
       v11 = *(v9 + 5);
@@ -7385,7 +7385,7 @@ void __69__VKMapView_setEdgeInsets_duration_timingFunction_completionHandler___b
           v13 = *(v12 + 8);
           if (v13)
           {
-            atomic_store(LODWORD(v8), (v13 + 808));
+            atomic_store(LODWORD(scaleCopy2), (v13 + 808));
             v10 = *(v9 + 4);
             v11 = *(v9 + 5);
           }
@@ -7410,7 +7410,7 @@ LABEL_13:
           v15 = *(v14 + 8);
           if (v15)
           {
-            atomic_store(LODWORD(v8), (v15 + 808));
+            atomic_store(LODWORD(scaleCopy2), (v15 + 808));
             v10 = *(v9 + 4);
             v11 = *(v9 + 5);
           }
@@ -7435,7 +7435,7 @@ LABEL_21:
           v17 = *(v16 + 8);
           if (v17)
           {
-            atomic_store(LODWORD(v8), (v17 + 800));
+            atomic_store(LODWORD(scaleCopy2), (v17 + 800));
             v10 = *(v9 + 4);
             v11 = *(v9 + 5);
           }
@@ -7463,7 +7463,7 @@ LABEL_29:
         v19 = *(v18 + 8);
         if (v19)
         {
-          atomic_store(LODWORD(v8), (v19 + 776));
+          atomic_store(LODWORD(scaleCopy2), (v19 + 776));
           v10 = *(v9 + 4);
           v11 = *(v9 + 5);
         }
@@ -7479,7 +7479,7 @@ LABEL_39:
             v23 = *(v10 + 8);
             if (v23)
             {
-              atomic_store(LODWORD(v8), (v23 + 632));
+              atomic_store(LODWORD(scaleCopy2), (v23 + 632));
             }
           }
 
@@ -7508,7 +7508,7 @@ LABEL_39:
           v24 = *(v22 + 8);
           if (v24)
           {
-            *(v24 + 24) = v8;
+            *(v24 + 24) = scaleCopy2;
           }
         }
       }
@@ -7525,7 +7525,7 @@ LABEL_51:
             v27 = *(v25 + 8);
             if (v27)
             {
-              atomic_store(LODWORD(v8), (v27 + 632));
+              atomic_store(LODWORD(scaleCopy2), (v27 + 632));
               v20 = *(v9 + 7);
               v21 = *(v9 + 8);
             }
@@ -7554,7 +7554,7 @@ LABEL_51:
           v29 = *(v28 + 8);
           if (v29)
           {
-            *(v29 + 24) = v8;
+            *(v29 + 24) = scaleCopy2;
           }
         }
       }
@@ -7571,7 +7571,7 @@ LABEL_66:
             v32 = *(v30 + 8);
             if (v32)
             {
-              atomic_store(LODWORD(v8), (v32 + 632));
+              atomic_store(LODWORD(scaleCopy2), (v32 + 632));
               v20 = *(v9 + 7);
               v21 = *(v9 + 8);
             }
@@ -7600,7 +7600,7 @@ LABEL_66:
           v34 = *(v33 + 8);
           if (v34)
           {
-            *(v34 + 24) = v8;
+            *(v34 + 24) = scaleCopy2;
           }
         }
       }
@@ -7628,7 +7628,7 @@ LABEL_81:
         v37 = *(v35 + 8);
         if (v37)
         {
-          atomic_store(LODWORD(v8), (v37 + 632));
+          atomic_store(LODWORD(scaleCopy2), (v37 + 632));
           v20 = *(v9 + 7);
           v21 = *(v9 + 8);
         }
@@ -7644,7 +7644,7 @@ LABEL_90:
             v41 = *(v20 + 8);
             if (v41)
             {
-              *(v41 + 24) = v8;
+              *(v41 + 24) = scaleCopy2;
             }
           }
 
@@ -7673,7 +7673,7 @@ LABEL_90:
           v42 = *(v40 + 8);
           if (v42)
           {
-            atomic_store(LODWORD(v8), (v42 + 864));
+            atomic_store(LODWORD(scaleCopy2), (v42 + 864));
             v38 = *(v9 + 4);
             v39 = *(v9 + 5);
           }
@@ -7701,7 +7701,7 @@ LABEL_102:
         v44 = *(v43 + 8);
         if (v44)
         {
-          atomic_store(LODWORD(v8), (v44 + 816));
+          atomic_store(LODWORD(scaleCopy2), (v44 + 816));
           v38 = *(v9 + 4);
           v39 = *(v9 + 5);
         }
@@ -7717,7 +7717,7 @@ LABEL_112:
             v51 = *(v38 + 8);
             if (v51)
             {
-              atomic_store(LODWORD(v8), (v51 + 808));
+              atomic_store(LODWORD(scaleCopy2), (v51 + 808));
             }
           }
 
@@ -7734,7 +7734,7 @@ LABEL_112:
         v47 = gdc::ResourceManager::resourceFetcher(*(v46 + 32), *(v46 + 40), md::MapResourceTypeList[v45]);
         if (v47)
         {
-          (*(*v47 + 88))(v47, v8);
+          (*(*v47 + 88))(v47, scaleCopy2);
         }
 
         ++v45;
@@ -7742,20 +7742,20 @@ LABEL_112:
 
       while (v45 != 54);
       md::World::clearAllData(v9);
-      [*v7 setContentScale:v8];
+      [*v7 setContentScale:scaleCopy2];
       v48 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(v7 + 272) + 16), 0x2FED70A4459DFCA1uLL);
       if (v48)
       {
         v48 = *(v48 + 5);
       }
 
-      v48[30] = v8;
+      v48[30] = scaleCopy2;
       (*(*v48 + 16))(v48);
       v49 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(v7 + 272) + 16), 0x20A1ED17D78F322BuLL)[5];
-      **(v49 + 152) = v8;
+      **(v49 + 152) = scaleCopy2;
       for (i = *(v49 + 192); i; i = *i)
       {
-        md::LabelManager::setContentScale(i[3], v8);
+        md::LabelManager::setContentScale(i[3], scaleCopy2);
       }
     }
   }
@@ -7764,7 +7764,7 @@ LABEL_112:
 - (id)activeLogics
 {
   *a2 = &unk_1F29E6428;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -7904,9 +7904,9 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v28 = self;
+    selfCopy = self;
     v29 = 2048;
-    v30 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B2754000, v9, OS_LOG_TYPE_INFO, "[VKMapView:%p] Destroying map view(%p)", buf, 0x16u);
   }
 
@@ -7916,8 +7916,8 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
     *(self + 56) = 0;
   }
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(VKMapView *)self _shutdownThermalMonitor];
   [(VKMapView *)self _closeLoaderConnection:1];
@@ -7973,11 +7973,11 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
   [(VKMapView *)&v22 dealloc];
 }
 
-- (VKMapView)initWithDescriptor:(id)a3
+- (VKMapView)initWithDescriptor:(id)descriptor
 {
   v33 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  [v24 contentScale];
+  descriptorCopy = descriptor;
+  [descriptorCopy contentScale];
   checkForBogusContentScale(v4);
   v25.receiver = self;
   v25.super_class = VKMapView;
@@ -8001,17 +8001,17 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
     v10 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v24 shouldRasterize];
-      v12 = [v24 inBackground];
-      [v24 contentScale];
+      shouldRasterize = [descriptorCopy shouldRasterize];
+      inBackground = [descriptorCopy inBackground];
+      [descriptorCopy contentScale];
       v14 = v13;
-      v15 = gss::to_string([v24 carDisplayType]);
+      v15 = gss::to_string([descriptorCopy carDisplayType]);
       buf[0] = 134219010;
       *&buf[1] = v5;
       v27 = 1024;
-      v28 = v11;
+      v28 = shouldRasterize;
       v29 = 1024;
-      v30 = v12;
+      v30 = inBackground;
       v31[0] = 2048;
       *&v31[1] = v14;
       v31[5] = 2080;
@@ -8067,33 +8067,33 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
 
 - (void)initWithDescriptor:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
 
 - (__CFString)initWithDescriptor:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v2 = WeakRetained;
   if (WeakRetained)
   {
-    v3 = [WeakRetained detailedDescription];
+    detailedDescription = [WeakRetained detailedDescription];
   }
 
   else
   {
-    v3 = @"Invalid VKMapView";
+    detailedDescription = @"Invalid VKMapView";
   }
 
-  return v3;
+  return detailedDescription;
 }
 
-- (VKMapView)initWithLayer:(id)a3
+- (VKMapView)initWithLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = VKMapView;
-  result = [(VKMapView *)&v4 initWithLayer:a3];
+  result = [(VKMapView *)&v4 initWithLayer:layer];
   if (result)
   {
     *(result + 545) = 1;
@@ -8102,73 +8102,73 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
   return result;
 }
 
-- (id)initShouldRasterize:(BOOL)a3 inBackground:(BOOL)a4 contentScale:(double)a5 auditToken:(id)a6 mapViewPurpose:(int64_t)a7 allowsAntialiasing:(BOOL)a8
+- (id)initShouldRasterize:(BOOL)rasterize inBackground:(BOOL)background contentScale:(double)scale auditToken:(id)token mapViewPurpose:(int64_t)purpose allowsAntialiasing:(BOOL)antialiasing
 {
-  v9 = [VKMapViewDescriptor descriptorWithShouldRasterize:a3 inBackground:a4 contentScale:a6 auditToken:a7 mapViewPurpose:a8 allowsAntialiasing:a5];
+  v9 = [VKMapViewDescriptor descriptorWithShouldRasterize:rasterize inBackground:background contentScale:token auditToken:purpose mapViewPurpose:antialiasing allowsAntialiasing:scale];
   v10 = [(VKMapView *)self initWithDescriptor:v9];
 
   return v10;
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 timingCurve:(id)a8 completion:(id)a9
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration timingCurve:(id)curve completion:(id)completion
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v37 = *MEMORY[0x1E69E9840];
-  v17 = a8;
-  v18 = a9;
+  curveCopy = curve;
+  completionCopy = completion;
   v19 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v23 = 134219521;
-    v24 = self;
+    selfCopy = self;
     v25 = 2049;
     v26 = var0;
     v27 = 2049;
     v28 = var1;
     v29 = 2049;
-    v30 = a4;
+    altitudeCopy = altitude;
     v31 = 2048;
-    v32 = a5;
+    yawCopy = yaw;
     v33 = 2048;
-    v34 = a6;
+    pitchCopy = pitch;
     v35 = 2048;
-    v36 = a7;
+    durationCopy = duration;
     _os_log_impl(&dword_1B2754000, v19, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set center coodinate: (%{private}f, %{private}f), altitude: %{private}f, yaw: %f, pitch: %f, duration: %f", &v23, 0x48u);
   }
 
-  v20 = [(VKMapView *)self currentCanvas];
-  v21 = [v20 cameraController];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v21 setCenterCoordinate:0 altitude:v17 yaw:v18 pitch:var0 duration:var1 animationStyle:a4 timingCurve:a5 completion:{a6, a7}];
+    [cameraController setCenterCoordinate:0 altitude:curveCopy yaw:completionCopy pitch:var0 duration:var1 animationStyle:altitude timingCurve:yaw completion:{pitch, duration}];
     v22 = *(self + 50);
     LOBYTE(v23) = 16;
     md::MapEngine::setNeedsTick(v22, &v23);
   }
 
-  else if (v18)
+  else if (completionCopy)
   {
-    v18[2](v18, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)consoleString:(BOOL)a3
+- (id)consoleString:(BOOL)string
 {
-  v3 = a3;
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 consoleString:v3];
+  stringCopy = string;
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  v5 = [currentCanvas consoleString:stringCopy];
 
   return v5;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v43 = *MEMORY[0x1E69E9840];
   [(VKMapView *)self bounds];
   v45.origin.x = v8;
@@ -8185,7 +8185,7 @@ void __38__VKMapView__configureDefaultSettings__block_invoke_8(uint64_t a1, uint
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 134219008;
-      v34 = self;
+      selfCopy = self;
       v35 = 2048;
       v36 = width;
       v37 = 2048;
@@ -8290,16 +8290,16 @@ LABEL_22:
       v30 = *(self + 50);
       buf[0] = 1;
       md::MapEngine::setNeedsTick(v30, buf);
-      v31 = [(VKMapView *)self currentCanvas];
-      [v31 updateCameraForFrameResize];
+      currentCanvas = [(VKMapView *)self currentCanvas];
+      [currentCanvas updateCameraForFrameResize];
     }
   }
 }
 
-- (void)_applyMapDisplayStyle:(id)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)_applyMapDisplayStyle:(id)style animated:(BOOL)animated duration:(double)duration
 {
-  v25 = a4;
-  v6 = *&a3.var0;
+  animatedCopy = animated;
+  v6 = *&style.var0;
   v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL);
   if (v8)
   {
@@ -8371,10 +8371,10 @@ LABEL_9:
     v22 = (v17 << 48) | (v18 << 56) | v27 | v20;
     gss::ClientStyleState<gss::PropertyID>::setTargetMapDisplayStyle(*(v9 + 208), v22);
     gss::ClientStyleState<gss::ScenePropertyID>::setTargetMapDisplayStyle(*(v9 + 224), v22);
-    v23 = v12 * a5;
+    v23 = v12 * duration;
     *(v9 + 328) = v22;
-    *(v9 + 336) = v25;
-    if (!v25)
+    *(v9 + 336) = animatedCopy;
+    if (!animatedCopy)
     {
       v23 = 0.0;
     }
@@ -8392,13 +8392,13 @@ LABEL_9:
   [(VKMapView *)self _updateBackgroundColor];
 }
 
-- (void)setMapDisplayStyle:(id)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)setMapDisplayStyle:(id)style animated:(BOOL)animated duration:(double)duration
 {
-  v6 = a4;
-  v7 = *&a3.var0;
+  animatedCopy = animated;
+  v7 = *&style.var0;
   v46 = *MEMORY[0x1E69E9840];
-  var1 = a3.var1;
-  var3 = a3.var3;
+  var1 = style.var1;
+  var3 = style.var3;
   v11 = GEOGetVectorKitVKMapViewLog();
   v12 = 0x1EB7F5000;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -8413,7 +8413,7 @@ LABEL_9:
       v13 = @"Day";
     }
 
-    v14 = [(__CFString *)v13 UTF8String];
+    uTF8String = [(__CFString *)v13 UTF8String];
     v15 = @"None";
     if (var1 == 1)
     {
@@ -8430,14 +8430,14 @@ LABEL_9:
       v16 = v15;
     }
 
-    v17 = [(__CFString *)v16 UTF8String];
+    uTF8String2 = [(__CFString *)v16 UTF8String];
     v18 = &stru_1F2A61C40;
     if (BYTE2(v7) <= 9u)
     {
       v18 = off_1E7B30508[(v7 >> 16) & 0xF];
     }
 
-    v19 = [(__CFString *)v18 UTF8String];
+    uTF8String3 = [(__CFString *)v18 UTF8String];
     v20 = @"Route Creation";
     if (var3 != 1)
     {
@@ -8454,7 +8454,7 @@ LABEL_9:
       v21 = @"Default";
     }
 
-    v22 = [(__CFString *)v21 UTF8String];
+    uTF8String4 = [(__CFString *)v21 UTF8String];
     if (BYTE4(v7) > 4u)
     {
       v23 = &stru_1F2A61C40;
@@ -8465,27 +8465,27 @@ LABEL_9:
       v23 = off_1E7B30558[HIDWORD(v7) & 7];
     }
 
-    v24 = [(__CFString *)v23 UTF8String];
+    uTF8String5 = [(__CFString *)v23 UTF8String];
     v25 = *(self + 590);
     v26 = 134220290;
-    v27 = self;
+    selfCopy = self;
     v28 = 2080;
-    v29 = v14;
+    v29 = uTF8String;
     v30 = 2080;
-    v31 = v17;
+    v31 = uTF8String2;
     v32 = 2080;
-    v33 = v19;
+    v33 = uTF8String3;
     v34 = 2080;
-    v35 = v22;
+    v35 = uTF8String4;
     v12 = 0x1EB7F5000uLL;
     v36 = 2080;
-    v37 = v24;
+    v37 = uTF8String5;
     v38 = 1024;
     v39 = (v7 >> 40) & 1;
     v40 = 1024;
-    v41 = v6;
+    v41 = animatedCopy;
     v42 = 2048;
-    v43 = a5;
+    durationCopy = duration;
     v44 = 1024;
     v45 = v25;
     _os_log_impl(&dword_1B2754000, v11, OS_LOG_TYPE_INFO, "[VKMapView:%p] SetDisplayStyle (timePeriod:%s overlayType:%s applicationState:%s applicationSubState:%s searchResultsType:%s mapHasLabels:%d) animated:%d duration:%f _displayOverrideEnabled:%d", &v26, 0x5Au);
@@ -8499,36 +8499,36 @@ LABEL_9:
   *(self + 589) = BYTE5(v7);
   if ((*(self + *(v12 + 2528)) & 1) == 0)
   {
-    [(VKMapView *)self _applyMapDisplayStyle:v7 & 0xFFFFFFFFFFFFLL animated:v6 duration:a5];
+    [(VKMapView *)self _applyMapDisplayStyle:v7 & 0xFFFFFFFFFFFFLL animated:animatedCopy duration:duration];
   }
 }
 
-- (void)setMapType:(int)a3 animated:(BOOL)a4
+- (void)setMapType:(int)type animated:(BOOL)animated
 {
-  v5 = a4;
+  animatedCopy = animated;
   v48 = *MEMORY[0x1E69E9840];
   v8 = self + 48;
-  if (*(self + 52) != 1 || *v8 != a3)
+  if (*(self + 52) != 1 || *v8 != type)
   {
-    v9 = [(VKMapView *)self mapType];
+    mapType = [(VKMapView *)self mapType];
     md::HomeQueueScheduler::waitForSynchronization(*(*(self + 50) + 47360), "[VKMapView setMapType:animated:]");
     v10 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      if ((a3 - 1) > 9)
+      if ((type - 1) > 9)
       {
         v11 = @"VKMapTypeStandard";
       }
 
       else
       {
-        v11 = off_1E7B304B8[a3 - 1];
+        v11 = off_1E7B304B8[type - 1];
       }
 
       v12 = "NO";
       *buf = 134218498;
-      v43 = self;
-      if (v5)
+      selfCopy = self;
+      if (animatedCopy)
       {
         v12 = "YES";
       }
@@ -8542,23 +8542,23 @@ LABEL_9:
 
     v13 = *(*(self + 50) + 41936);
     buf[0] = 20;
-    md::MapEngineSettings::set(v13, buf, a3);
-    v14 = [(VKMapView *)self currentCanvas];
-    v15 = [v14 cameraController];
-    v16 = [v15 regionChangeCount] == 0;
+    md::MapEngineSettings::set(v13, buf, type);
+    currentCanvas = [(VKMapView *)self currentCanvas];
+    cameraController = [currentCanvas cameraController];
+    v16 = [cameraController regionChangeCount] == 0;
 
     if (!v16)
     {
       v17 = GEOGetVectorKitVKMapViewLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v41 = v5;
+        v41 = animatedCopy;
         if ((v8[4] & 1) == 0)
         {
           goto LABEL_51;
         }
 
-        v18 = v14;
+        v18 = currentCanvas;
         v19 = *v8 - 1;
         if (v19 > 9)
         {
@@ -8570,37 +8570,37 @@ LABEL_9:
           v20 = off_1E7B304B8[v19];
         }
 
-        if ((a3 - 1) > 9)
+        if ((type - 1) > 9)
         {
           v21 = @"VKMapTypeStandard";
         }
 
         else
         {
-          v21 = off_1E7B304B8[a3 - 1];
+          v21 = off_1E7B304B8[type - 1];
         }
 
-        v22 = [v18 cameraController];
-        v23 = [v22 regionChangeCount];
+        cameraController2 = [v18 cameraController];
+        regionChangeCount = [cameraController2 regionChangeCount];
         *buf = 138412802;
-        v43 = v20;
+        selfCopy = v20;
         v44 = 2112;
         v45 = v21;
         v46 = 2048;
-        v47 = v23;
+        v47 = regionChangeCount;
         _os_log_impl(&dword_1B2754000, v17, OS_LOG_TYPE_INFO, "OldMapType : %@, NewMapType: %@, regionCount number: %lu", buf, 0x20u);
 
-        v14 = v18;
-        v5 = v41;
+        currentCanvas = v18;
+        animatedCopy = v41;
       }
     }
 
-    v17 = v14;
+    v17 = currentCanvas;
     v4 = *(*(self + 50) + 41912);
     md::LabelExternalPointFeature::incident(v4);
     [objc_claimAutoreleasedReturnValue() setIsChangingMapType:1];
 
-    *v8 = a3;
+    *v8 = type;
     v8[4] = 1;
     v24 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL);
     if (v24)
@@ -8608,7 +8608,7 @@ LABEL_9:
       v24 = v24[5];
     }
 
-    md::StyleLogic::updateConfiguration(v24, a3);
+    md::StyleLogic::updateConfiguration(v24, type);
     v25 = *(self + 50) + 40960;
     v26 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x20A1ED17D78F322BuLL);
     if (v26)
@@ -8630,7 +8630,7 @@ LABEL_9:
 
       [(VKMapView *)self setNeedsLayout];
       md::MapEngine::updateRunLoopStatus(*(self + 50));
-      v29 = [(VKMapView *)self mapDisplayStyle];
+      mapDisplayStyle = [(VKMapView *)self mapDisplayStyle];
       v30 = *(*(self + 50) + 41936);
       v31 = *v30;
       v32 = v30[1];
@@ -8652,49 +8652,49 @@ LABEL_9:
 
       v33 = 0;
 LABEL_34:
-      v34 = (v9 < 8) & (0x9Eu >> v9) ^ ((a3 > 7) | (0x61u >> a3));
-      if (!v5)
+      v34 = (mapType < 8) & (0x9Eu >> mapType) ^ ((type > 7) | (0x61u >> type));
+      if (!animatedCopy)
       {
         LOBYTE(v34) = 0;
       }
 
-      if (a3 == 8)
+      if (type == 8)
       {
         v33 = 512;
       }
 
-      [(VKMapView *)self setMapDisplayStyle:v29 & 0xFFFFFF00FFLL | (((a3 & 0xFFFFFFFD) != 1) << 40) | v33 animated:v34 & 1 duration:0.6];
-      if (a3 == 10)
+      [(VKMapView *)self setMapDisplayStyle:mapDisplayStyle & 0xFFFFFF00FFLL | (((type & 0xFFFFFFFD) != 1) << 40) | v33 animated:v34 & 1 duration:0.6];
+      if (type == 10)
       {
-        v35 = [(VKMapView *)self currentCanvas];
-        [v35 setCameraController:*(self + 37)];
+        currentCanvas2 = [(VKMapView *)self currentCanvas];
+        [currentCanvas2 setCameraController:*(self + 37)];
       }
 
       else
       {
-        if (v9 == 10 && v17 == *(self + 7))
+        if (mapType == 10 && v17 == *(self + 7))
         {
-          v36 = [(VKMapView *)self currentCanvas];
-          v37 = [(VKMapView *)self resolveMapCameraController];
-          [v36 setCameraController:v37];
+          currentCanvas3 = [(VKMapView *)self currentCanvas];
+          resolveMapCameraController = [(VKMapView *)self resolveMapCameraController];
+          [currentCanvas3 setCameraController:resolveMapCameraController];
         }
 
-        if (a3 == 9)
+        if (type == 9)
         {
-          v38 = [(VKMapView *)self currentCanvas];
-          [v38 setCameraController:*(self + 40)];
+          currentCanvas4 = [(VKMapView *)self currentCanvas];
+          [currentCanvas4 setCameraController:*(self + 40)];
           goto LABEL_48;
         }
       }
 
-      if (v9 != 9 || v17 != *(self + 7))
+      if (mapType != 9 || v17 != *(self + 7))
       {
         goto LABEL_49;
       }
 
-      v38 = [(VKMapView *)self currentCanvas];
-      v39 = [(VKMapView *)self resolveMapCameraController];
-      [v38 setCameraController:v39];
+      currentCanvas4 = [(VKMapView *)self currentCanvas];
+      resolveMapCameraController2 = [(VKMapView *)self resolveMapCameraController];
+      [currentCanvas4 setCameraController:resolveMapCameraController2];
 
 LABEL_48:
 LABEL_49:
@@ -8764,9 +8764,9 @@ LABEL_12:
   return v8 & 1;
 }
 
-- (BOOL)supportsMapType:(int)a3
+- (BOOL)supportsMapType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   [(VKMapView *)self contentsScale];
   if (v4 <= 1.0)
   {
@@ -8781,40 +8781,40 @@ LABEL_12:
   return [VKMapCanvas supportsMapType:v3 scale:v5];
 }
 
-- (void)setCanonicalSkyHeight:(double)a3
+- (void)setCanonicalSkyHeight:(double)height
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
-    v9 = a3;
+    heightCopy = height;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set sky height: %f", &v6, 0x16u);
   }
 
-  [*(self + 7) setCanonicalSkyHeight:a3];
+  [*(self + 7) setCanonicalSkyHeight:height];
 }
 
-- (void)setDesiredMapMode:(int64_t)a3
+- (void)setDesiredMapMode:(int64_t)mode
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    if ((a3 + 1) > 5)
+    if ((mode + 1) > 5)
     {
       v6 = &stru_1F2A61C40;
     }
 
     else
     {
-      v6 = *(&off_1E7B301C8 + a3 + 1);
+      v6 = *(&off_1E7B301C8 + mode + 1);
     }
 
     *buf = 134218242;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set desired map mode: %@", buf, 0x16u);
@@ -8838,11 +8838,11 @@ LABEL_12:
     goto LABEL_28;
   }
 
-  if (a3 <= 2)
+  if (mode <= 2)
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
         v10 = 5;
         goto LABEL_19;
@@ -8855,9 +8855,9 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  if (a3 != 3)
+  if (mode != 3)
   {
-    if (a3 != 4)
+    if (mode != 4)
     {
 LABEL_16:
       v11 = *(v9 + 168);
@@ -8888,13 +8888,13 @@ LABEL_19:
     }
 
 LABEL_28:
-    [(VKMapView *)self setLoadMuninMetadata:a3 == 3];
+    [(VKMapView *)self setLoadMuninMetadata:mode == 3];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __31__VKMapView_setDesiredMapMode___block_invoke;
     v23[3] = &unk_1E7B30000;
     v23[4] = self;
-    v23[5] = a3;
+    v23[5] = mode;
     [(VKMapView *)self _postDelegateCallbackBlock:v23];
     v22 = *(self + 50);
     buf[0] = 1;
@@ -8942,15 +8942,15 @@ void __31__VKMapView_setDesiredMapMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)location:(id)a3 isInHikingContextualRegion:(BOOL)a4
+- (void)location:(id)location isInHikingContextualRegion:(BOOL)region
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __49__VKMapView_location_isInHikingContextualRegion___block_invoke;
   v4[3] = &unk_1E7B30028;
   v4[4] = self;
-  v6 = a4;
-  v5 = a3;
+  regionCopy = region;
+  locationCopy = location;
   [(VKMapView *)self _postDelegateCallbackBlock:v4];
 }
 
@@ -8984,14 +8984,14 @@ void __49__VKMapView_location_isInHikingContextualRegion___block_invoke(uint64_t
   }
 }
 
-- (void)locationInHikingToolTipRegion:(unint64_t)a3
+- (void)locationInHikingToolTipRegion:(unint64_t)region
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__VKMapView_locationInHikingToolTipRegion___block_invoke;
   v3[3] = &unk_1E7B30000;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = region;
   [(VKMapView *)self _postDelegateCallbackBlock:v3];
 }
 
@@ -9020,16 +9020,16 @@ void __43__VKMapView_locationInHikingToolTipRegion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)nearestVenueDidChange:(const void *)a3 building:(const void *)a4
+- (void)nearestVenueDidChange:(const void *)change building:(const void *)building
 {
-  v9 = [(VKMapView *)self mapDelegate];
-  if (a3)
+  mapDelegate = [(VKMapView *)self mapDelegate];
+  if (change)
   {
-    v7 = [[VKVenueFeatureMarker alloc] initWithVenue:a3 localize:[(VKMapView *)self localizeLabels]];
-    if (a4)
+    v7 = [[VKVenueFeatureMarker alloc] initWithVenue:change localize:[(VKMapView *)self localizeLabels]];
+    if (building)
     {
 LABEL_3:
-      v8 = [[VKVenueBuildingFeatureMarker alloc] initWithVenueBuilding:a4 localize:[(VKMapView *)self localizeLabels]];
+      v8 = [[VKVenueBuildingFeatureMarker alloc] initWithVenueBuilding:building localize:[(VKMapView *)self localizeLabels]];
       goto LABEL_6;
     }
   }
@@ -9037,7 +9037,7 @@ LABEL_3:
   else
   {
     v7 = 0;
-    if (a4)
+    if (building)
     {
       goto LABEL_3;
     }
@@ -9045,17 +9045,17 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  [v9 mapLayer:self venueWithFocusDidChange:v7 building:v8];
-  if (a4)
+  [mapDelegate mapLayer:self venueWithFocusDidChange:v7 building:v8];
+  if (building)
   {
   }
 
-  if (a3)
+  if (change)
   {
   }
 }
 
-- (void)_setFloorSwitcherZoomPadding:(float)a3
+- (void)_setFloorSwitcherZoomPadding:(float)padding
 {
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   if (v5)
@@ -9063,7 +9063,7 @@ LABEL_6:
     v6 = v5[5];
     if (v6)
     {
-      *(v6 + 692) = a3;
+      *(v6 + 692) = padding;
     }
   }
 
@@ -9144,20 +9144,20 @@ LABEL_6:
   return v6;
 }
 
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3 forVenueBuilding:(id)a4
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal forVenueBuilding:(id)building
 {
-  v20 = a4;
+  buildingCopy = building;
   v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   if (v6)
   {
     v7 = v6[5];
     if (v7)
     {
-      if (v20 && (v7[7].i8[0] & 1) != 0)
+      if (buildingCopy && (v7[7].i8[0] & 1) != 0)
       {
-        v8 = [v20 venueBuildingFeatureMarker];
-        v9 = *v8;
-        v10 = *(*v8 + 56);
+        venueBuildingFeatureMarker = [buildingCopy venueBuildingFeatureMarker];
+        v9 = *venueBuildingFeatureMarker;
+        v10 = *(*venueBuildingFeatureMarker + 56);
         v11 = std::__hash_table<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>>>::find<unsigned long>(&v7[31], v10);
         v12 = (v11 + 3);
         if (!v11)
@@ -9165,7 +9165,7 @@ LABEL_6:
           v12 = (v9 + 88);
         }
 
-        if (*v12 != a3)
+        if (*v12 != ordinal)
         {
           v13 = v7[32];
           if (!*&v13)
@@ -9203,7 +9203,7 @@ LABEL_25:
             {
               if (v17[2] == v10)
               {
-                *(v17 + 12) = a3;
+                *(v17 + 12) = ordinal;
                 v19 = v7[98];
                 if (v19)
                 {
@@ -9249,18 +9249,18 @@ LABEL_25:
   [(VKMapView *)self setNeedsLayout];
 }
 
-- (signed)displayedFloorOrdinalForVenueBuilding:(id)a3
+- (signed)displayedFloorOrdinalForVenueBuilding:(id)building
 {
-  v4 = a3;
+  buildingCopy = building;
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   if (v5 && (v6 = v5[5]) != 0)
   {
     v7 = 0x8000;
-    if (v4 && (*(v6 + 56) & 1) != 0)
+    if (buildingCopy && (*(v6 + 56) & 1) != 0)
     {
-      v8 = [v4 venueBuildingFeatureMarker];
-      v9 = *v8;
-      v10 = std::__hash_table<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>>>::find<unsigned long>((v6 + 248), *(*v8 + 56));
+      venueBuildingFeatureMarker = [buildingCopy venueBuildingFeatureMarker];
+      v9 = *venueBuildingFeatureMarker;
+      v10 = std::__hash_table<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>>>::find<unsigned long>((v6 + 248), *(*venueBuildingFeatureMarker + 56));
       v11 = (v10 + 3);
       if (!v10)
       {
@@ -9279,29 +9279,29 @@ LABEL_25:
   return v7;
 }
 
-- (signed)defaultFloorOrdinalForVenueBuilding:(id)a3
+- (signed)defaultFloorOrdinalForVenueBuilding:(id)building
 {
-  v4 = a3;
+  buildingCopy = building;
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   v6 = 0x8000;
-  if (v5 && v4 && v5[5])
+  if (v5 && buildingCopy && v5[5])
   {
-    v6 = *(*[v4 venueBuildingFeatureMarker] + 88);
+    v6 = *(*[buildingCopy venueBuildingFeatureMarker] + 88);
   }
 
   return v6;
 }
 
-- (BOOL)displayedFloorIsDefaultForVenueBuilding:(id)a3
+- (BOOL)displayedFloorIsDefaultForVenueBuilding:(id)building
 {
-  v4 = a3;
+  buildingCopy = building;
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   if (v5 && (v6 = v5[5]) != 0)
   {
     v7 = 0;
-    if (v4 && (*(v6 + 56) & 1) != 0)
+    if (buildingCopy && (*(v6 + 56) & 1) != 0)
     {
-      v7 = std::__hash_table<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>>>::find<unsigned long>((v6 + 248), *(*[v4 venueBuildingFeatureMarker] + 56)) == 0;
+      v7 = std::__hash_table<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,std::unique_ptr<gdc::ComponentStorageWrapperBase>>>>::find<unsigned long>((v6 + 248), *(*[buildingCopy venueBuildingFeatureMarker] + 56)) == 0;
     }
   }
 
@@ -9313,7 +9313,7 @@ LABEL_25:
   return v7;
 }
 
-- (id)venueWithID:(unint64_t)a3
+- (id)venueWithID:(unint64_t)d
 {
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   if (v5)
@@ -9334,19 +9334,19 @@ LABEL_25:
     v8.i16[0] = vaddlv_u8(v8);
     if (v8.u32[0] > 1uLL)
     {
-      v9 = a3;
-      if (v7 <= a3)
+      dCopy = d;
+      if (v7 <= d)
       {
-        v9 = a3 % v7;
+        dCopy = d % v7;
       }
     }
 
     else
     {
-      v9 = (v7 - 1) & a3;
+      dCopy = (v7 - 1) & d;
     }
 
-    v10 = *(*(v6 + 208) + 8 * v9);
+    v10 = *(*(v6 + 208) + 8 * dCopy);
     if (!v10)
     {
       goto LABEL_19;
@@ -9361,9 +9361,9 @@ LABEL_25:
     while (1)
     {
       v12 = v11[1];
-      if (v12 == a3)
+      if (v12 == d)
       {
-        if (v11[2] == a3)
+        if (v11[2] == d)
         {
           v14 = v11[3];
           if (v14)
@@ -9393,7 +9393,7 @@ LABEL_19:
           v12 &= v7 - 1;
         }
 
-        if (v12 != v9)
+        if (v12 != dCopy)
         {
           goto LABEL_19;
         }
@@ -9410,11 +9410,11 @@ LABEL_19:
   return v5;
 }
 
-- (id)venueAtLocation:(id)a3 withMarginForError:(BOOL)a4 includeNonRevealedVenues:(BOOL)a5
+- (id)venueAtLocation:(id)location withMarginForError:(BOOL)error includeNonRevealedVenues:(BOOL)venues
 {
-  v5 = a5;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  venuesCopy = venues;
+  var1 = location.var1;
+  var0 = location.var0;
   v9 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xEC9B77B4222D22FFLL);
   if (v9)
   {
@@ -9432,7 +9432,7 @@ LABEL_19:
     __asm { FMOV            V1.2D, #0.5 }
 
     v24 = vmlaq_f64(_Q1, xmmword_1B33B0700, v13);
-    if (!a4)
+    if (!error)
     {
       v21 = (v10 + 224);
       while (1)
@@ -9452,7 +9452,7 @@ LABEL_19:
     }
 
     v14.n128_u32[0] = -1.0;
-    if (v5)
+    if (venuesCopy)
     {
       v14.n128_f32[0] = 0.0;
     }
@@ -9514,10 +9514,10 @@ LABEL_12:
   return v2;
 }
 
-- (void)setDimmingBaseMap:(BOOL)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)setDimmingBaseMap:(BOOL)map animated:(BOOL)animated duration:(double)duration
 {
-  v6 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  mapCopy = map;
   v34 = *MEMORY[0x1E69E9840];
   v9 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -9525,7 +9525,7 @@ LABEL_12:
     v10 = "NO";
     *buf = 134218754;
     *&buf[4] = self;
-    if (v7)
+    if (mapCopy)
     {
       v11 = "YES";
     }
@@ -9537,7 +9537,7 @@ LABEL_12:
 
     *&buf[14] = v11;
     *&buf[12] = 2080;
-    if (v6)
+    if (animatedCopy)
     {
       v10 = "YES";
     }
@@ -9545,7 +9545,7 @@ LABEL_12:
     *&buf[22] = 2080;
     v31 = v10;
     *v32 = 2048;
-    *&v32[2] = a5;
+    *&v32[2] = duration;
     _os_log_impl(&dword_1B2754000, v9, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set dimming base map: %s, animated: %s, duration: %f", buf, 0x2Au);
   }
 
@@ -9574,7 +9574,7 @@ LABEL_12:
   }
 
   v16 = 0;
-  if (v7)
+  if (mapCopy)
   {
     gss::StylesheetManager<gss::PropertyID>::styleGlobalProperties(buf, v14[2]);
     v16 = *(*buf + 316);
@@ -9591,7 +9591,7 @@ LABEL_12:
     atomic_fetch_add_explicit(&v18->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(v17, 0x10049u, v7);
+  gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(v17, 0x10049u, mapCopy);
   if (v18)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v18);
@@ -9603,11 +9603,11 @@ LABEL_12:
     v20 = v19[5];
     if (v20)
     {
-      if (v6)
+      if (animatedCopy)
       {
         v21 = *(v20 + 488);
         [*(v20 + 648) stop];
-        v22 = [[VKTimedAnimation alloc] initWithDuration:a5];
+        v22 = [[VKTimedAnimation alloc] initWithDuration:duration];
         geo::_retain_ptr<LabelNavRouteContextObserverProxy * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::reset(v20 + 640, v22);
 
         v23 = *(v20 + 648);
@@ -9646,10 +9646,10 @@ LABEL_12:
       v26 = *(v20 + 880);
       if (v26)
       {
-        std::function<void ()(BOOL)>::operator()(v26, v7);
+        std::function<void ()(BOOL)>::operator()(v26, mapCopy);
       }
 
-      if (!v6)
+      if (!animatedCopy)
       {
         v27 = *(self + 50);
         buf[0] = 1;
@@ -9667,8 +9667,8 @@ LABEL_12:
 - (float)worldSpaceWidthOfView
 {
   v2 = (self + 464);
-  v3 = [*(self + 59) footprint];
-  [v3 minDepth];
+  footprint = [*(self + 59) footprint];
+  [footprint minDepth];
   [v2[1] widthOfViewAtDepth:?];
   v5 = v4;
 
@@ -9682,7 +9682,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] tileGroupDidChange", &v6, 0xCu);
   }
 
@@ -9704,7 +9704,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] tileGroupWillChange", &v4, 0xCu);
   }
 }
@@ -9722,10 +9722,10 @@ LABEL_12:
   [(VKMapView *)self setEnableAdvancedLighting:v3];
 }
 
-- (void)requestHikingContextualRegionDoesIntersectForLocation:(id)a3
+- (void)requestHikingContextualRegionDoesIntersectForLocation:(id)location
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = location.var1;
+  var0 = location.var0;
   v4 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xC74495586E0C32F6);
   if (v4)
   {
@@ -9751,10 +9751,10 @@ LABEL_12:
   }
 }
 
-- (void)requestHikingToolTipRegionIDForLocation:(id)a3
+- (void)requestHikingToolTipRegionIDForLocation:(id)location
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = location.var1;
+  var0 = location.var0;
   v4 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xC74495586E0C32F6);
   if (v4)
   {
@@ -9828,30 +9828,30 @@ LABEL_5:
   return v3 & 1;
 }
 
-- (void)setEnableAdvancedWater:(BOOL)a3
+- (void)setEnableAdvancedWater:(BOOL)water
 {
-  v3 = a3;
-  *(self + 573) = a3;
-  v4 = [(VKMapView *)self _advancedWaterAllowed];
+  waterCopy = water;
+  *(self + 573) = water;
+  _advancedWaterAllowed = [(VKMapView *)self _advancedWaterAllowed];
   v5 = +[VKDebugSettings sharedSettings];
-  [v5 setDaVinciWaterEnabled:v4 & v3];
+  [v5 setDaVinciWaterEnabled:_advancedWaterAllowed & waterCopy];
 }
 
 - (BOOL)enableAdvancedWater
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 daVinciWaterEnabled];
+  daVinciWaterEnabled = [v2 daVinciWaterEnabled];
 
-  return v3;
+  return daVinciWaterEnabled;
 }
 
-- (void)setEnableAdvancedLighting:(BOOL)a3
+- (void)setEnableAdvancedLighting:(BOOL)lighting
 {
-  v3 = a3;
-  *(self + 572) = a3;
+  lightingCopy = lighting;
+  *(self + 572) = lighting;
   if ([(VKMapView *)self _daVinciDataAvailable])
   {
-    v5 = [(VKMapView *)self _advancedLightingAllowed]& v3;
+    v5 = [(VKMapView *)self _advancedLightingAllowed]& lightingCopy;
   }
 
   else
@@ -9866,18 +9866,18 @@ LABEL_5:
 - (BOOL)enableAdvancedLighting
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 daVinciAdvancedLightingEnabled];
+  daVinciAdvancedLightingEnabled = [v2 daVinciAdvancedLightingEnabled];
 
-  return v3;
+  return daVinciAdvancedLightingEnabled;
 }
 
-- (void)setEnableBuildingHeights:(BOOL)a3
+- (void)setEnableBuildingHeights:(BOOL)heights
 {
-  v3 = a3;
-  *(self + 571) = a3;
-  v5 = [(VKMapView *)self _buildingHeightsAllowed];
+  heightsCopy = heights;
+  *(self + 571) = heights;
+  _buildingHeightsAllowed = [(VKMapView *)self _buildingHeightsAllowed];
   v6 = +[VKDebugSettings sharedSettings];
-  [v6 setDaVinciBuildingHeights:v5 & v3];
+  [v6 setDaVinciBuildingHeights:_buildingHeightsAllowed & heightsCopy];
 
   v7 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(v7[5920], "[VKMapView setEnableBuildingHeights:]");
@@ -9888,35 +9888,35 @@ LABEL_5:
 - (BOOL)enableBuildingHeights
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 daVinciBuildingHeights];
+  daVinciBuildingHeights = [v2 daVinciBuildingHeights];
 
-  return v3;
+  return daVinciBuildingHeights;
 }
 
-- (void)setEnableColorizedBuildings:(BOOL)a3
+- (void)setEnableColorizedBuildings:(BOOL)buildings
 {
-  v3 = a3;
-  *(self + 570) = a3;
-  v4 = [(VKMapView *)self _colorizedBuildingsAllowed];
+  buildingsCopy = buildings;
+  *(self + 570) = buildings;
+  _colorizedBuildingsAllowed = [(VKMapView *)self _colorizedBuildingsAllowed];
   v5 = +[VKDebugSettings sharedSettings];
-  [v5 setDaVinciColorBuildings:v4 & v3];
+  [v5 setDaVinciColorBuildings:_colorizedBuildingsAllowed & buildingsCopy];
 }
 
 - (BOOL)enableColorizedBuildings
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 daVinciColorBuildings];
+  daVinciColorBuildings = [v2 daVinciColorBuildings];
 
-  return v3;
+  return daVinciColorBuildings;
 }
 
-- (void)setEnableRoundedBuildings:(BOOL)a3
+- (void)setEnableRoundedBuildings:(BOOL)buildings
 {
-  v3 = a3;
-  *(self + 569) = a3;
-  v5 = [(VKMapView *)self _roundedBuildingsAllowed];
+  buildingsCopy = buildings;
+  *(self + 569) = buildings;
+  _roundedBuildingsAllowed = [(VKMapView *)self _roundedBuildingsAllowed];
   v6 = +[VKDebugSettings sharedSettings];
-  [v6 setDaVinciRoundBuildings:v5 & v3];
+  [v6 setDaVinciRoundBuildings:_roundedBuildingsAllowed & buildingsCopy];
 
   v7 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(v7[5920], "[VKMapView setEnableRoundedBuildings:]");
@@ -9927,15 +9927,15 @@ LABEL_5:
 - (BOOL)enableRoundedBuildings
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 daVinciRoundBuildings];
+  daVinciRoundBuildings = [v2 daVinciRoundBuildings];
 
-  return v3;
+  return daVinciRoundBuildings;
 }
 
-- (void)setEnableGlobe:(BOOL)a3
+- (void)setEnableGlobe:(BOOL)globe
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3 & ~*(*(self + 65) + 2);
+  v4 = globe & ~*(*(self + 65) + 2);
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -9946,7 +9946,7 @@ LABEL_5:
     }
 
     v14 = 134218242;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] setEnableGlobe:%s", &v14, 0x16u);
@@ -9973,8 +9973,8 @@ LABEL_5:
     md::World::setEnableGlobe(*(v9 + 32), *(v9 + 40), v7);
   }
 
-  v10 = [*(self + 7) cameraController];
-  v11 = v10 == *(self + 35);
+  cameraController = [*(self + 7) cameraController];
+  v11 = cameraController == *(self + 35);
 
   if (!v11)
   {
@@ -9986,17 +9986,17 @@ LABEL_5:
 
     else
     {
-      v13 = [(VKMapView *)self resolveMapCameraController];
-      [v12 setCameraController:v13];
+      resolveMapCameraController = [(VKMapView *)self resolveMapCameraController];
+      [v12 setCameraController:resolveMapCameraController];
     }
   }
 }
 
-- (void)setModernMapEnabled:(BOOL)a3
+- (void)setModernMapEnabled:(BOOL)enabled
 {
   v3 = *(*(self + 50) + 41936);
   v4 = 25;
-  md::MapEngineSettings::set(v3, &v4, a3);
+  md::MapEngineSettings::set(v3, &v4, enabled);
 }
 
 - (BOOL)_realTimeEVChargerIsEnabled
@@ -10022,7 +10022,7 @@ LABEL_5:
   return v2 & 1;
 }
 
-- (void)setCameraCollisionMode:(int64_t)a3
+- (void)setCameraCollisionMode:(int64_t)mode
 {
   {
     [VKMapView setCameraCollisionMode:]::$_10::operator() const(void)::cached_result = MapsFeature_IsEnabled_Maps68();
@@ -10036,63 +10036,63 @@ LABEL_5:
 
     if (![VKMapView setCameraCollisionMode:]::$_11::operator() const(void)::cached_result)
     {
-      a3 = 0;
+      mode = 0;
     }
   }
 
   else
   {
-    a3 = 0;
+    mode = 0;
   }
 
   v5 = *(self + 32);
   if (v5)
   {
-    [v5 setCameraCollisionMode:a3];
+    [v5 setCameraCollisionMode:mode];
   }
 
-  v6 = [*(self + 7) cameraController];
+  cameraController = [*(self + 7) cameraController];
   v7 = *(self + 32);
 
-  if (a3)
+  if (mode)
   {
-    if (v6 == v7)
+    if (cameraController == v7)
     {
       return;
     }
   }
 
-  else if (v6 != v7)
+  else if (cameraController != v7)
   {
     return;
   }
 
   v8 = *(self + 7);
-  v9 = [(VKMapView *)self resolveMapCameraController];
+  resolveMapCameraController = [(VKMapView *)self resolveMapCameraController];
   [v8 setCameraController:?];
 }
 
-- (void)setTerrainMode:(int64_t)a3
+- (void)setTerrainMode:(int64_t)mode
 {
   if (*(*(self + 65) + 3))
   {
-    v4 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v4 = a3;
+    modeCopy = mode;
   }
 
-  *(self + 70) = v4;
+  *(self + 70) = modeCopy;
   if ([(VKMapView *)self _daVinciDataAvailable]&& +[VKMapView _elevatedGroundIsEnabled])
   {
     v5 = *(*(self + 50) + 41936);
     v13 = 29;
-    md::MapEngineSettings::set(v5, &v13, v4);
+    md::MapEngineSettings::set(v5, &v13, modeCopy);
     v6 = *(*(self + 50) + 41936);
     v12 = 21;
-    v7 = (v4 - 1) < 3;
+    v7 = (modeCopy - 1) < 3;
     v8 = &v12;
   }
 
@@ -10137,11 +10137,11 @@ LABEL_5:
   return 0;
 }
 
-- (void)setLoadMuninAvailability:(BOOL)a3
+- (void)setLoadMuninAvailability:(BOOL)availability
 {
   v3 = *(*(self + 50) + 41936);
   v4 = 19;
-  md::MapEngineSettings::set(v3, &v4, a3);
+  md::MapEngineSettings::set(v3, &v4, availability);
 }
 
 - (BOOL)loadMuninAvailability
@@ -10167,11 +10167,11 @@ LABEL_5:
   return 0;
 }
 
-- (void)setLoadMuninMetadata:(BOOL)a3
+- (void)setLoadMuninMetadata:(BOOL)metadata
 {
   v3 = *(*(self + 50) + 41936);
   v4 = 18;
-  md::MapEngineSettings::set(v3, &v4, a3);
+  md::MapEngineSettings::set(v3, &v4, metadata);
 }
 
 - (BOOL)isLoadingMuninMetadata
@@ -10197,16 +10197,16 @@ LABEL_5:
   return 0;
 }
 
-- (void)setSupportedEVConnectorTypes:(id)a3
+- (void)setSupportedEVConnectorTypes:(id)types
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
+  typesCopy = types;
   v5 = 0;
-  v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [typesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -10217,33 +10217,33 @@ LABEL_5:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(typesCopy);
         }
 
         v5 |= 1 << [*(*(&v10 + 1) + 8 * v8++) integerValue];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [typesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(VKMapView *)self _labelSettings];
-  *(v9[5] + 320) = v5;
-  md::LabelManager::setSupportedEVConnectorTypes(v9[3], v5);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  *(_labelSettings[5] + 320) = v5;
+  md::LabelManager::setSupportedEVConnectorTypes(_labelSettings[3], v5);
 }
 
-- (void)setShowsLiveEVData:(BOOL)a3
+- (void)setShowsLiveEVData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (dataCopy)
     {
       v6 = "YES";
     }
@@ -10257,17 +10257,17 @@ LABEL_5:
 
   v7 = *(*(self + 50) + 41936);
   v10[0] = 36;
-  if (v3)
+  if (dataCopy)
   {
-    v8 = [(VKMapView *)self _realTimeEVChargerIsEnabled];
+    _realTimeEVChargerIsEnabled = [(VKMapView *)self _realTimeEVChargerIsEnabled];
   }
 
   else
   {
-    v8 = 0;
+    _realTimeEVChargerIsEnabled = 0;
   }
 
-  md::MapEngineSettings::set(v7, v10, v8);
+  md::MapEngineSettings::set(v7, v10, _realTimeEVChargerIsEnabled);
   v9 = *(self + 50);
   v10[0] = 1;
   md::MapEngine::setNeedsTick(v9, v10);
@@ -10296,21 +10296,21 @@ LABEL_5:
   return 0;
 }
 
-- (void)setPreferStaleTiles:(BOOL)a3
+- (void)setPreferStaleTiles:(BOOL)tiles
 {
-  v3 = a3;
+  tilesCopy = tiles;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (tilesCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] set preferStaleTiles: %s", &v8, 0x16u);
@@ -10319,7 +10319,7 @@ LABEL_5:
   v7 = *(*(*(*(self + 50) + 41704) + 24) + 56);
   if (v7)
   {
-    gdc::ResourceManager::setResourceFetcherConfig(v7, v3);
+    gdc::ResourceManager::setResourceFetcherConfig(v7, tilesCopy);
   }
 }
 
@@ -10334,21 +10334,21 @@ LABEL_5:
   return v2;
 }
 
-- (void)setShowsPOIUpdates:(BOOL)a3
+- (void)setShowsPOIUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (updatesCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] set showsPOIUpdates: %s", &v8, 0x16u);
@@ -10356,7 +10356,7 @@ LABEL_5:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v8) = 39;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, updatesCopy);
 }
 
 - (BOOL)showsPOIUpdates
@@ -10382,15 +10382,15 @@ LABEL_5:
   return 0;
 }
 
-- (void)setShowsHillshade:(BOOL)a3
+- (void)setShowsHillshade:(BOOL)hillshade
 {
-  v3 = a3;
+  hillshadeCopy = hillshade;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (hillshadeCopy)
     {
       v6 = "YES";
     }
@@ -10410,17 +10410,17 @@ LABEL_5:
   {
     v7 = *(*(self + 50) + 41936);
     v9[0] = 32;
-    if (v3)
+    if (hillshadeCopy)
     {
-      v8 = [(VKMapView *)self _hillshadeIsAvailable];
+      _hillshadeIsAvailable = [(VKMapView *)self _hillshadeIsAvailable];
     }
 
     else
     {
-      v8 = 0;
+      _hillshadeIsAvailable = 0;
     }
 
-    md::MapEngineSettings::set(v7, v9, v8);
+    md::MapEngineSettings::set(v7, v9, _hillshadeIsAvailable);
   }
 }
 
@@ -10447,10 +10447,10 @@ LABEL_5:
   return 0;
 }
 
-- (void)setShowsHiking:(BOOL)a3 withTopographicFeatures:(BOOL)a4
+- (void)setShowsHiking:(BOOL)hiking withTopographicFeatures:(BOOL)features
 {
-  v4 = a4;
-  v5 = a3;
+  featuresCopy = features;
+  hikingCopy = hiking;
   v20 = *MEMORY[0x1E69E9840];
   {
     [VKMapView setShowsHiking:withTopographicFeatures:]::$_6::operator() const(void)::cached_result = GEOConfigGetBOOL();
@@ -10462,24 +10462,24 @@ LABEL_5:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v14 = 134217984;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set shows hiking is overridden", &v14, 0xCu);
     }
   }
 
   else
   {
-    if (v5)
+    if (hikingCopy)
     {
-      v5 = [(VKMapView *)self _hikingIsAvailable];
+      hikingCopy = [(VKMapView *)self _hikingIsAvailable];
     }
 
-    v8 = v5 & v4;
+    v8 = hikingCopy & featuresCopy;
     v9 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = "NO";
-      if (v5)
+      if (hikingCopy)
       {
         v11 = "YES";
       }
@@ -10490,7 +10490,7 @@ LABEL_5:
       }
 
       v14 = 134218498;
-      v15 = self;
+      selfCopy2 = self;
       v17 = v11;
       v16 = 2080;
       if (v8)
@@ -10505,7 +10505,7 @@ LABEL_5:
 
     v12 = *(*(self + 50) + 41936);
     LOBYTE(v14) = 33;
-    md::MapEngineSettings::set(v12, &v14, v5);
+    md::MapEngineSettings::set(v12, &v14, hikingCopy);
     v13 = *(*(self + 50) + 41936);
     LOBYTE(v14) = 34;
     md::MapEngineSettings::set(v13, &v14, v8);
@@ -10558,21 +10558,21 @@ LABEL_5:
   return 0;
 }
 
-- (void)setShowsVenues:(BOOL)a3
+- (void)setShowsVenues:(BOOL)venues
 {
-  v3 = a3;
+  venuesCopy = venues;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (venuesCopy)
     {
       v6 = "YES";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set shows venues: %s", &v9, 0x16u);
@@ -10580,9 +10580,9 @@ LABEL_5:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v9) = 0;
-  md::MapEngineSettings::set(v7, &v9, v3);
-  v8 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsVenues(*(*v8 + 24), *(*v8 + 40), v3);
+  md::MapEngineSettings::set(v7, &v9, venuesCopy);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsVenues(*(*_labelSettings + 24), *(*_labelSettings + 40), venuesCopy);
 }
 
 - (BOOL)showsVenues
@@ -10608,21 +10608,21 @@ LABEL_5:
   return 0;
 }
 
-- (void)setShowsBuildings:(BOOL)a3
+- (void)setShowsBuildings:(BOOL)buildings
 {
-  v3 = a3;
+  buildingsCopy = buildings;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (buildingsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set shows buildings: %s", &v8, 0x16u);
@@ -10630,7 +10630,7 @@ LABEL_5:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v8) = 1;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, buildingsCopy);
 }
 
 - (BOOL)showsBuildings
@@ -10656,13 +10656,13 @@ LABEL_5:
   return 0;
 }
 
-- (void)setPointsOfInterestFilter:(id)a3
+- (void)setPointsOfInterestFilter:(id)filter
 {
-  v5 = a3;
-  v6[2] = v5;
-  if (*(self + 53) != v5)
+  filterCopy = filter;
+  v6[2] = filterCopy;
+  if (*(self + 53) != filterCopy)
   {
-    objc_storeStrong(self + 53, a3);
+    objc_storeStrong(self + 53, filter);
     if (*(self + 53))
     {
       std::allocate_shared[abi:nn200100]<md::LabelCategoryFilter,std::allocator<md::LabelCategoryFilter>,GEOPOICategoryFilter * {__strong}&,0>();
@@ -10674,230 +10674,230 @@ LABEL_5:
   }
 }
 
-- (void)setIsMKRenderingSelectionBalloon:(BOOL)a3
+- (void)setIsMKRenderingSelectionBalloon:(BOOL)balloon
 {
-  v3 = a3;
+  balloonCopy = balloon;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (balloonCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set isMKRenderingSelectionBalloon: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setMKRenderingSelectionBalloon(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setMKRenderingSelectionBalloon(*(*_labelSettings + 24), *(*_labelSettings + 40), balloonCopy);
 }
 
-- (void)setShowsPointsOfInterest:(BOOL)a3
+- (void)setShowsPointsOfInterest:(BOOL)interest
 {
-  v3 = a3;
+  interestCopy = interest;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (interestCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set shows points of interest: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsPOIs(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsPOIs(*(*_labelSettings + 24), *(*_labelSettings + 40), interestCopy);
 }
 
-- (void)setShowsLabels:(BOOL)a3
+- (void)setShowsLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set show labels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsPhysicalFeatureLabels:(BOOL)a3
+- (void)setShowsPhysicalFeatureLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set show physical feature labels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsPhysicalFeatureLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsPhysicalFeatureLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsContourLabels:(BOOL)a3
+- (void)setShowsContourLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set show contour labels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsContourLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsContourLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsPointLabels:(BOOL)a3
+- (void)setShowsPointLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set show point labels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsPointLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsPointLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsRoadShields:(BOOL)a3
+- (void)setShowsRoadShields:(BOOL)shields
 {
-  v3 = a3;
+  shieldsCopy = shields;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (shieldsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set show road shields: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsRoadShields(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsRoadShields(*(*_labelSettings + 24), *(*_labelSettings + 40), shieldsCopy);
 }
 
-- (void)setShowsRoadLabels:(BOOL)a3
+- (void)setShowsRoadLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set show road labels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsRoadLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsRoadLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShieldIdiom:(int64_t)a3
+- (void)setShieldIdiom:(int64_t)idiom
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    idiomCopy = idiom;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set shield idiom: %ld", &v7, 0x16u);
   }
 
-  v6 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setShieldIdiom(*(*v6 + 24), *(*v6 + 40), a3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setShieldIdiom(*(*_labelSettings + 24), *(*_labelSettings + 40), idiom);
 }
 
-- (void)setNavigationShieldSize:(int64_t)a3
+- (void)setNavigationShieldSize:(int64_t)size
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    sizeCopy = size;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set navigation shield size: %ld", &v7, 0x16u);
   }
 
-  v6 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Navigation::setNavigationShieldSize(*(v6[1] + 24), *(v6[1] + 40), [VKInternalIconManager convertSizeGroup:a3]);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Navigation::setNavigationShieldSize(*(_labelSettings[1] + 24), *(_labelSettings[1] + 40), [VKInternalIconManager convertSizeGroup:size]);
 }
 
 - (int64_t)navigationShieldSize
@@ -10907,144 +10907,144 @@ LABEL_5:
   return [VKInternalIconManager convertGrlSizeGroup:v2];
 }
 
-- (void)setShieldSize:(int64_t)a3
+- (void)setShieldSize:(int64_t)size
 {
   v12 = *MEMORY[0x1E69E9840];
-  if ([(VKMapView *)self shieldSize]!= a3)
+  if ([(VKMapView *)self shieldSize]!= size)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 134218240;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
-      v11 = a3;
+      sizeCopy = size;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set shield size: %ld", &v8, 0x16u);
     }
 
-    v6 = [(VKMapView *)self _labelSettings];
-    md::LabelSettings_Presentation::setShieldSize(*(*v6 + 24), *(*v6 + 40), [VKInternalIconManager convertSizeGroup:a3]);
+    _labelSettings = [(VKMapView *)self _labelSettings];
+    md::LabelSettings_Presentation::setShieldSize(*(*_labelSettings + 24), *(*_labelSettings + 40), [VKInternalIconManager convertSizeGroup:size]);
     v7 = *(self + 69);
     *(self + 69) = 0;
   }
 }
 
-- (double)zoomLevelAdjustmentForTileSize:(int64_t)a3
+- (double)zoomLevelAdjustmentForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  [v5 zoomLevelAdjustmentForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController zoomLevelAdjustmentForTileSize:size];
   v7 = v6;
 
   return v7;
 }
 
-- (double)currentZoomLevelForTileSize:(int64_t)a3
+- (double)currentZoomLevelForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  [v5 currentZoomLevelForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController currentZoomLevelForTileSize:size];
   v7 = v6;
 
   return v7;
 }
 
-- (double)maximumZoomLevelForTileSize:(int64_t)a3
+- (double)maximumZoomLevelForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  [v5 maximumZoomLevelForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController maximumZoomLevelForTileSize:size];
   v7 = v6;
 
   return v7;
 }
 
-- (double)topDownMinimumZoomLevelForTileSize:(int64_t)a3
+- (double)topDownMinimumZoomLevelForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  [v5 topDownMinimumZoomLevelForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController topDownMinimumZoomLevelForTileSize:size];
   v7 = v6;
 
   return v7;
 }
 
-- (double)minimumZoomLevelForTileSize:(int64_t)a3
+- (double)minimumZoomLevelForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  [v5 minimumZoomLevelForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController minimumZoomLevelForTileSize:size];
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)canZoomOutForTileSize:(int64_t)a3
+- (BOOL)canZoomOutForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  LOBYTE(a3) = [v5 canZoomOutForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  LOBYTE(size) = [cameraController canZoomOutForTileSize:size];
 
-  return a3;
+  return size;
 }
 
-- (BOOL)canZoomInForTileSize:(int64_t)a3
+- (BOOL)canZoomInForTileSize:(int64_t)size
 {
-  v4 = [(VKMapView *)self currentCanvas];
-  v5 = [v4 cameraController];
-  LOBYTE(a3) = [v5 canZoomInForTileSize:a3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  LOBYTE(size) = [cameraController canZoomInForTileSize:size];
 
-  return a3;
+  return size;
 }
 
-- (void)setIconsShouldAlignToPixels:(BOOL)a3
+- (void)setIconsShouldAlignToPixels:(BOOL)pixels
 {
-  v3 = a3;
+  pixelsCopy = pixels;
   v11 = *MEMORY[0x1E69E9840];
-  if ([(VKMapView *)self iconsShouldAlignToPixels]!= a3)
+  if ([(VKMapView *)self iconsShouldAlignToPixels]!= pixels)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = "NO";
-      if (v3)
+      if (pixelsCopy)
       {
         v6 = "YES";
       }
 
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
       v10 = v6;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set icons should align to pixels: %s", &v7, 0x16u);
     }
 
-    *(*(self + 50) + 41784) = v3;
+    *(*(self + 50) + 41784) = pixelsCopy;
     [(VKMapView *)self setNeedsLayout];
   }
 }
 
-- (void)setGesturing:(BOOL)a3
+- (void)setGesturing:(BOOL)gesturing
 {
-  v3 = a3;
+  gesturingCopy = gesturing;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(VKMapView *)self currentCanvas];
-  v6 = [v5 cameraController];
-  v7 = [v6 isGesturing];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  isGesturing = [cameraController isGesturing];
 
-  if (v7 != v3)
+  if (isGesturing != gesturingCopy)
   {
     v8 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = "NO";
-      if (v3)
+      if (gesturingCopy)
       {
         v9 = "YES";
       }
 
       v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2080;
       v18 = v9;
       _os_log_impl(&dword_1B2754000, v8, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set gesturing: %s", &v15, 0x16u);
@@ -11053,7 +11053,7 @@ LABEL_5:
     v10 = GEOGetVectorKitVKMapViewLog();
     v11 = v10;
     v12 = *(*(self + 50) + 42080);
-    if (v3)
+    if (gesturingCopy)
     {
       if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
       {
@@ -11073,19 +11073,19 @@ LABEL_5:
       }
     }
 
-    v13 = [(VKMapView *)self currentCanvas];
-    v14 = [v13 cameraController];
-    [v14 setGesturing:v3];
+    currentCanvas2 = [(VKMapView *)self currentCanvas];
+    cameraController2 = [currentCanvas2 cameraController];
+    [cameraController2 setGesturing:gesturingCopy];
 
     md::MapEngine::updateRunLoopStatus(*(self + 50));
   }
 }
 
-- (void)enableMapDisplayStyleDebugOverride:(id)a3
+- (void)enableMapDisplayStyleDebugOverride:(id)override
 {
-  v3 = *&a3.var0;
+  v3 = *&override.var0;
   v17 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  overrideCopy = override;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -11100,30 +11100,30 @@ LABEL_5:
     }
 
     *buf = 134218242;
-    v14 = self;
+    selfCopy = self;
     v15 = 2080;
-    v16 = [(__CFString *)v6 UTF8String];
+    uTF8String = [(__CFString *)v6 UTF8String];
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Map display style debug override enabled, setting time of day to: %s", buf, 0x16u);
   }
 
   *(self + 590) = 1;
-  if (!(*&v12.var0 | *&v12.var4 ^ 0x100) || (*&v12.var0 == 1 ? (v7 = *&v12.var4 == 256) : (v7 = 0), v7))
+  if (!(*&overrideCopy.var0 | *&overrideCopy.var4 ^ 0x100) || (*&overrideCopy.var0 == 1 ? (v7 = *&overrideCopy.var4 == 256) : (v7 = 0), v7))
   {
-    v12.var2 = *(self + 586);
-    v3 = *&v12.var0 | (*&v12.var4 << 32);
+    overrideCopy.var2 = *(self + 586);
+    v3 = *&overrideCopy.var0 | (*&overrideCopy.var4 << 32);
 LABEL_26:
     v11 = 1;
     goto LABEL_27;
   }
 
-  if (*&v12.var0 != 512 || *&v12.var4 != 256)
+  if (*&overrideCopy.var0 != 512 || *&overrideCopy.var4 != 256)
   {
-    if (*&v12.var0 == 0x10000 && *&v12.var4 == 256)
+    if (*&overrideCopy.var0 == 0x10000 && *&overrideCopy.var4 == 256)
     {
       goto LABEL_26;
     }
 
-    if (*&v12.var0 != 66048 || *&v12.var4 != 256)
+    if (*&overrideCopy.var0 != 66048 || *&overrideCopy.var4 != 256)
     {
       goto LABEL_26;
     }
@@ -11147,9 +11147,9 @@ LABEL_27:
   v5 = objc_alloc_init(VKDebugTree);
   [(VKDebugTree *)v5 enableAllOptions];
   [(VKDebugTree *)v5 populateData:self];
-  v3 = [(VKDebugTree *)v5 logTree];
+  logTree = [(VKDebugTree *)v5 logTree];
 
-  return v3;
+  return logTree;
 }
 
 - (BOOL)shouldLoadMapMargin
@@ -11175,21 +11175,21 @@ LABEL_27:
   return 0;
 }
 
-- (void)setShouldLoadMapMargin:(BOOL)a3
+- (void)setShouldLoadMapMargin:(BOOL)margin
 {
-  v3 = a3;
+  marginCopy = margin;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (marginCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set should load map margin: %s", &v8, 0x16u);
@@ -11197,7 +11197,7 @@ LABEL_27:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v8) = 6;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, marginCopy);
 }
 
 - (BOOL)shouldLoadFallbackTiles
@@ -11223,21 +11223,21 @@ LABEL_27:
   return 0;
 }
 
-- (void)setShouldLoadFallbackTiles:(BOOL)a3
+- (void)setShouldLoadFallbackTiles:(BOOL)tiles
 {
-  v3 = a3;
+  tilesCopy = tiles;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (tilesCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set should load fallback tiles display: %s", &v8, 0x16u);
@@ -11245,15 +11245,15 @@ LABEL_27:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v8) = 7;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, tilesCopy);
 }
 
-- (id)debugLabelString:(BOOL)a3
+- (id)debugLabelString:(BOOL)string
 {
-  v3 = a3;
-  v4 = [(VKMapView *)self _labelSettings];
+  stringCopy = string;
+  _labelSettings = [(VKMapView *)self _labelSettings];
   v5 = MEMORY[0x1E696AEC0];
-  md::LabelManager::debugString(__p, v4[3], v3);
+  md::LabelManager::debugString(__p, _labelSettings[3], stringCopy);
   if (v10 >= 0)
   {
     v6 = __p;
@@ -11273,14 +11273,14 @@ LABEL_27:
   return v7;
 }
 
-- (void)debugHighlightLabelAtPoint:(CGPoint)a3
+- (void)debugHighlightLabelAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v12 = +[VKDebugSettings sharedSettings];
-  v6 = [v12 daVinciEntityDebugHighlighting];
+  daVinciEntityDebugHighlighting = [v12 daVinciEntityDebugHighlighting];
 
-  if (v6)
+  if (daVinciEntityDebugHighlighting)
   {
     v7 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x8D737D0C0FC52C0CLL)[5];
     v8 = x;
@@ -11299,12 +11299,12 @@ LABEL_27:
   else
   {
     v13 = +[VKDebugSettings sharedSettings];
-    v11 = [v13 transitHighlighting];
+    transitHighlighting = [v13 transitHighlighting];
 
-    if (v11)
+    if (transitHighlighting)
     {
-      v14 = [(VKMapView *)self currentCanvas];
-      [v14 debugHighlightObjectAtPoint:1 highlightTarget:{x, y}];
+      currentCanvas = [(VKMapView *)self currentCanvas];
+      [currentCanvas debugHighlightObjectAtPoint:1 highlightTarget:{x, y}];
     }
 
     else
@@ -11314,22 +11314,22 @@ LABEL_27:
   }
 }
 
-- (void)setHostDisplay:(id)a3
+- (void)setHostDisplay:(id)display
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  displayCopy = display;
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = v4;
+    v12 = displayCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set host display: %p", &v9, 0x16u);
   }
 
   v6 = *(self + 50);
-  v7 = v4;
+  v7 = displayCopy;
   v8 = *(v6 + 136);
   if (v8)
   {
@@ -11371,9 +11371,9 @@ LABEL_27:
 
 - (void)didReceiveMemoryWarning
 {
-  v3 = [(VKMapView *)self isEffectivelyHidden];
-  v4 = v3;
-  [*(self + 7) didReceiveMemoryWarning:v3 beAggressive:0];
+  isEffectivelyHidden = [(VKMapView *)self isEffectivelyHidden];
+  v4 = isEffectivelyHidden;
+  [*(self + 7) didReceiveMemoryWarning:isEffectivelyHidden beAggressive:0];
   v5 = *(self + 50);
   md::HomeQueueScheduler::waitForSynchronization(*(v5 + 47360), "[VKMapView didReceiveMemoryWarning]");
   md::MapEngine::prune(v5, !v4);
@@ -11381,21 +11381,21 @@ LABEL_27:
   [v6 prune:1];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v18 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (hiddenCopy)
     {
       v6 = "YES";
     }
 
     *buf = 134218242;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set hidden: %s", buf, 0x16u);
@@ -11404,7 +11404,7 @@ LABEL_27:
   v7 = GEOGetVectorKitVKMapViewLog();
   v8 = v7;
   v9 = *(*(self + 50) + 42080);
-  if (v3)
+  if (hiddenCopy)
   {
     if (v9 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v7))
     {
@@ -11433,11 +11433,11 @@ LABEL_13:
 
   v13.receiver = self;
   v13.super_class = VKMapView;
-  [(VKMapView *)&v13 setHidden:v3];
+  [(VKMapView *)&v13 setHidden:hiddenCopy];
   v12 = *(self + 50);
   if (v12)
   {
-    *(v12 + 42000) = v3;
+    *(v12 + 42000) = hiddenCopy;
     md::MapEngine::updateRunLoopStatus(v12);
   }
 }
@@ -11474,11 +11474,11 @@ LABEL_13:
   md::MapEngine::setNeedsTick(v3, v4);
 }
 
-- (void)setDebugLayoutContinuously:(BOOL)a3
+- (void)setDebugLayoutContinuously:(BOOL)continuously
 {
-  v3 = a3;
+  continuouslyCopy = continuously;
   v5 = +[VKDebugSettings sharedSettings];
-  [v5 setLayoutContinuously:v3];
+  [v5 setLayoutContinuously:continuouslyCopy];
 
   [(VKMapView *)self setNeedsLayout];
 }
@@ -11486,77 +11486,77 @@ LABEL_13:
 - (BOOL)debugLayoutContinuously
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 layoutContinuously];
+  layoutContinuously = [v2 layoutContinuously];
 
-  return v3;
+  return layoutContinuously;
 }
 
-- (void)setIsPitchable:(BOOL)a3
+- (void)setIsPitchable:(BOOL)pitchable
 {
-  v3 = a3;
+  pitchableCopy = pitchable;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (pitchableCopy)
     {
       v6 = "YES";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set is pitchable: %s", &v9, 0x16u);
   }
 
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
-  [v8 setIsPitchEnabled:v3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController setIsPitchEnabled:pitchableCopy];
 }
 
 - (BOOL)staysCenteredDuringRotation
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 staysCenteredDuringRotation];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  staysCenteredDuringRotation = [cameraController staysCenteredDuringRotation];
 
-  return v4;
+  return staysCenteredDuringRotation;
 }
 
-- (void)setStaysCenteredDuringRotation:(BOOL)a3
+- (void)setStaysCenteredDuringRotation:(BOOL)rotation
 {
-  v3 = a3;
+  rotationCopy = rotation;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (rotationCopy)
     {
       v6 = "YES";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set stays centered durning rotation: %s", &v9, 0x16u);
   }
 
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
-  [v8 setStaysCenteredDuringRotation:v3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController setStaysCenteredDuringRotation:rotationCopy];
 }
 
 - (BOOL)staysCenteredDuringPinch
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 cameraController];
-  v4 = [v3 staysCenteredDuringPinch];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  staysCenteredDuringPinch = [cameraController staysCenteredDuringPinch];
 
-  return v4;
+  return staysCenteredDuringPinch;
 }
 
 - (VKMetrics)metrics
@@ -11611,85 +11611,85 @@ LABEL_13:
   return v3;
 }
 
-- (void)setLabelScaleFactor:(int64_t)a3
+- (void)setLabelScaleFactor:(int64_t)factor
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([(VKMapView *)self labelScaleFactor]!= a3)
+  if ([(VKMapView *)self labelScaleFactor]!= factor)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9 = 134218240;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
-      v12 = a3;
+      factorCopy = factor;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set label scale factor: %ld", &v9, 0x16u);
     }
 
-    v6 = [(VKMapView *)self _labelSettings];
-    if (a3 >= 6)
+    _labelSettings = [(VKMapView *)self _labelSettings];
+    if (factor >= 6)
     {
-      v7 = 1;
+      factorCopy2 = 1;
     }
 
     else
     {
-      v7 = a3;
+      factorCopy2 = factor;
     }
 
-    md::LabelSettings_Presentation::setLabelScaleFactor(*(*v6 + 24), *(*v6 + 40), v7);
+    md::LabelSettings_Presentation::setLabelScaleFactor(*(*_labelSettings + 24), *(*_labelSettings + 40), factorCopy2);
     v8 = *(self + 69);
     *(self + 69) = 0;
   }
 }
 
-- (void)setLocalizeLabels:(BOOL)a3
+- (void)setLocalizeLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set localized labels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Presentation::setLocalizeLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Presentation::setLocalizeLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setStaysCenteredDuringPinch:(BOOL)a3
+- (void)setStaysCenteredDuringPinch:(BOOL)pinch
 {
-  v3 = a3;
+  pinchCopy = pinch;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (pinchCopy)
     {
       v6 = "YES";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set stays centered during pitch: %s", &v9, 0x16u);
   }
 
-  v7 = [(VKMapView *)self currentCanvas];
-  v8 = [v7 cameraController];
-  [v8 setStaysCenteredDuringPinch:v3];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  [cameraController setStaysCenteredDuringPinch:pinchCopy];
 }
 
 - (void)flushTileLoads
@@ -11722,7 +11722,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKMapView:%p] Did finish suspension snapshot", &v5, 0xCu);
   }
 
@@ -11736,21 +11736,21 @@ LABEL_13:
   *(self + 408) = 1;
 }
 
-- (void)setTrafficIncidentsEnabled:(BOOL)a3
+- (void)setTrafficIncidentsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v22 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
 
     v18 = 134218242;
-    v19 = self;
+    selfCopy = self;
     v20 = 2080;
     v21 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set traffic incidents enabled: %s", &v18, 0x16u);
@@ -11758,9 +11758,9 @@ LABEL_13:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v18) = 3;
-  md::MapEngineSettings::set(v7, &v18, v3);
-  v8 = [(VKMapView *)self _labelSettings];
-  if (v3)
+  md::MapEngineSettings::set(v7, &v18, enabledCopy);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  if (enabledCopy)
   {
     v9 = *(*(self + 50) + 41936);
     v10 = *v9;
@@ -11784,10 +11784,10 @@ LABEL_13:
 
   v12 = 0;
 LABEL_13:
-  *(*(v8 + 5) + 25) = v12;
-  md::LabelManager::setTrafficEnabled(*(v8 + 3), v12);
-  v13 = [(VKMapView *)self _labelSettings];
-  if (v3)
+  *(*(_labelSettings + 5) + 25) = v12;
+  md::LabelManager::setTrafficEnabled(*(_labelSettings + 3), v12);
+  _labelSettings2 = [(VKMapView *)self _labelSettings];
+  if (enabledCopy)
   {
     v14 = *(*(self + 50) + 41936);
     v15 = *v14;
@@ -11811,8 +11811,8 @@ LABEL_13:
 
   v17 = 0;
 LABEL_21:
-  *(*(v13 + 5) + 26) = v17;
-  md::LabelManager::setTrafficClosuresEnabled(*(v13 + 3), v17);
+  *(*(_labelSettings2 + 5) + 26) = v17;
+  md::LabelManager::setTrafficClosuresEnabled(*(_labelSettings2 + 3), v17);
 }
 
 - (BOOL)trafficIncidentsEnabled
@@ -11838,21 +11838,21 @@ LABEL_21:
   return 0;
 }
 
-- (void)setTrafficEnabled:(BOOL)a3
+- (void)setTrafficEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
 
     v15 = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2080;
     v18 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set trafficEnabled: %s", &v15, 0x16u);
@@ -11860,9 +11860,9 @@ LABEL_21:
 
   v7 = *(*(self + 50) + 41936);
   LOBYTE(v15) = 2;
-  md::MapEngineSettings::set(v7, &v15, v3);
-  v8 = [(VKMapView *)self _labelSettings];
-  if (v3)
+  md::MapEngineSettings::set(v7, &v15, enabledCopy);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  if (enabledCopy)
   {
     v9 = *(*(self + 50) + 41936);
     v10 = *v9;
@@ -11886,39 +11886,39 @@ LABEL_21:
 
   v12 = 0;
 LABEL_13:
-  *(*(v8 + 5) + 25) = v12;
-  md::LabelManager::setTrafficEnabled(*(v8 + 3), v12);
-  v13 = [(VKMapView *)self mapDisplayStyle];
-  if ((v13 & 0xFE00) == 0)
+  *(*(_labelSettings + 5) + 25) = v12;
+  md::LabelManager::setTrafficEnabled(*(_labelSettings + 3), v12);
+  mapDisplayStyle = [(VKMapView *)self mapDisplayStyle];
+  if ((mapDisplayStyle & 0xFE00) == 0)
   {
     v14 = 256;
-    if (!v3)
+    if (!enabledCopy)
     {
       v14 = 0;
     }
 
-    [(VKMapView *)self setMapDisplayStyle:v13 & 0xFFFFFFFF00FFLL | v14];
+    [(VKMapView *)self setMapDisplayStyle:mapDisplayStyle & 0xFFFFFFFF00FFLL | v14];
   }
 
   [(VKMapView *)self _updateOnlyShowRoadClosures];
 }
 
-- (void)setApplicationUILayout:(int64_t)a3
+- (void)setApplicationUILayout:(int64_t)layout
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (*(self + 26) != a3)
+  if (*(self + 26) != layout)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2080;
-      v13 = gss::to_string(a3);
+      v13 = gss::to_string(layout);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set applicationUILayout: %s", &v10, 0x16u);
     }
 
-    *(self + 26) = a3;
+    *(self + 26) = layout;
     v6 = *(self + 50);
     v7 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(v6 + 41928) + 16), 0x2FED70A4459DFCA1uLL);
     if (v7)
@@ -11931,7 +11931,7 @@ LABEL_13:
       v8 = 0;
     }
 
-    if (*(v8 + 167) != a3)
+    if (*(v8 + 167) != layout)
     {
       v9 = *(v8 + 1184);
       if (v9)
@@ -11939,9 +11939,9 @@ LABEL_13:
         [v9 stop];
       }
 
-      *(v8 + 167) = a3;
-      gss::ClientStyleState<gss::PropertyID>::setTargetClientStyleAttribute(*(v8 + 208), 0x1003Du, a3);
-      gss::ClientStyleState<gss::ScenePropertyID>::setTargetClientStyleAttribute(*(v8 + 224), 0x1003Du, a3);
+      *(v8 + 167) = layout;
+      gss::ClientStyleState<gss::PropertyID>::setTargetClientStyleAttribute(*(v8 + 208), 0x1003Du, layout);
+      gss::ClientStyleState<gss::ScenePropertyID>::setTargetClientStyleAttribute(*(v8 + 224), 0x1003Du, layout);
       md::StyleLogic::queueStyleTransition(v8, 0.25);
       v6 = *(self + 50);
     }
@@ -11951,36 +11951,36 @@ LABEL_13:
   }
 }
 
-- (void)setLevelOfDetail:(unsigned __int8)a3 animated:(BOOL)a4
+- (void)setLevelOfDetail:(unsigned __int8)detail animated:(BOOL)animated
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (*(self + 153) != a3)
+  if (*(self + 153) != detail)
   {
-    v4 = a4;
-    v5 = a3;
+    animatedCopy = animated;
+    detailCopy = detail;
     v7 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      if (v5 > 2)
+      if (detailCopy > 2)
       {
         v8 = &stru_1F2A61C40;
       }
 
       else
       {
-        v8 = *(&off_1E7B301B0 + v5);
+        v8 = *(&off_1E7B301B0 + detailCopy);
       }
 
       v16 = 134218242;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set levelOfDetail: %@", &v16, 0x16u);
     }
 
-    *(self + 153) = v5;
+    *(self + 153) = detailCopy;
     v9 = 0.0;
-    if (v4)
+    if (animatedCopy)
     {
       v10 = +[VKDebugSettings sharedSettings];
       [v10 transitionTimeMultiplier];
@@ -11995,14 +11995,14 @@ LABEL_13:
       v13 = v13[5];
     }
 
-    if (v5 == 2)
+    if (detailCopy == 2)
     {
       v14 = 2;
     }
 
     else
     {
-      v14 = v5 == 1;
+      v14 = detailCopy == 1;
     }
 
     md::StyleLogic::setLevelOfDetail(v13, v14, v9);
@@ -12012,36 +12012,36 @@ LABEL_13:
   }
 }
 
-- (void)setEmphasis:(unsigned __int8)a3 animated:(BOOL)a4
+- (void)setEmphasis:(unsigned __int8)emphasis animated:(BOOL)animated
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (*(self + 152) != a3)
+  if (*(self + 152) != emphasis)
   {
-    v4 = a4;
-    v5 = a3;
+    animatedCopy = animated;
+    emphasisCopy = emphasis;
     v7 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      if (v5 == 2)
+      if (emphasisCopy == 2)
       {
         v8 = 2;
       }
 
       else
       {
-        v8 = v5 == 1;
+        v8 = emphasisCopy == 1;
       }
 
       v16 = 134218242;
-      v17 = self;
+      selfCopy = self;
       v18 = 2080;
       v19 = gss::to_string(v8);
       _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set emphasis: %s", &v16, 0x16u);
     }
 
-    *(self + 152) = v5;
+    *(self + 152) = emphasisCopy;
     v9 = 0.0;
-    if (v4)
+    if (animatedCopy)
     {
       v10 = +[VKDebugSettings sharedSettings];
       [v10 transitionTimeMultiplier];
@@ -12056,14 +12056,14 @@ LABEL_13:
       v13 = v13[5];
     }
 
-    if (v5 == 2)
+    if (emphasisCopy == 2)
     {
       v14 = 2;
     }
 
     else
     {
-      v14 = v5 == 1;
+      v14 = emphasisCopy == 1;
     }
 
     md::StyleLogic::setEmphasis(v13, v14, v9);
@@ -12075,20 +12075,20 @@ LABEL_13:
   }
 }
 
-- (void)setVehicleState:(id)a3
+- (void)setVehicleState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (a3.var0)
+    if (state.var0)
     {
       v6 = "YES";
     }
 
     v11 = 134218242;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set vehicle state parked: %s", &v11, 0x16u);
@@ -12105,7 +12105,7 @@ LABEL_13:
     v8 = 0;
   }
 
-  var0 = a3.var0;
+  var0 = state.var0;
   if (*(v8 + 160) != var0)
   {
     *(v8 + 160) = var0;
@@ -12122,20 +12122,20 @@ LABEL_13:
   }
 }
 
-- (void)setNavCameraMode:(unint64_t)a3
+- (void)setNavCameraMode:(unint64_t)mode
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (*(self + 74) != a3)
+  if (*(self + 74) != mode)
   {
-    v3 = a3;
-    *(self + 74) = a3;
+    modeCopy = mode;
+    *(self + 74) = mode;
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = modeCopy;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set nav camera mode to:%d", &v6, 0x12u);
     }
 
@@ -12143,18 +12143,18 @@ LABEL_13:
   }
 }
 
-- (void)setCarDisplayConfig:(int64_t)a3 animated:(BOOL)a4
+- (void)setCarDisplayConfig:(int64_t)config animated:(BOOL)animated
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 162) != a3)
+  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 162) != config)
   {
     v6 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2080;
-      v18 = gss::to_string(a3);
+      v18 = gss::to_string(config);
       _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set car display config:%s", &v15, 0x16u);
     }
 
@@ -12169,10 +12169,10 @@ LABEL_13:
       v8 = 0;
     }
 
-    if (*(v8 + 162) != a3)
+    if (*(v8 + 162) != config)
     {
-      *(v8 + 162) = a3;
-      gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(*(v8 + 208), 0x10078u, a3);
+      *(v8 + 162) = config;
+      gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(*(v8 + 208), 0x10078u, config);
       gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(*(v8 + 224), 0x10078u, *(v8 + 162));
       LOBYTE(v15) = 4;
       geo::linear_set<md::StyleManagerEvent,std::less<md::StyleManagerEvent>,std::allocator<md::StyleManagerEvent>,std::vector<md::StyleManagerEvent>>::insert((v8 + 1128), &v15);
@@ -12187,7 +12187,7 @@ LABEL_13:
     v10 = *(self + 50);
     LOBYTE(v15) = 1;
     md::MapEngine::setNeedsTick(v10, &v15);
-    if (a3 == 2)
+    if (config == 2)
     {
       v11 = *(*(self + 50) + 41936);
       v12 = *v11;
@@ -12226,30 +12226,30 @@ LABEL_19:
 
 LABEL_20:
     [(VKMapView *)self setNavCameraMode:v14];
-    [(VKMapView *)self _configureDynamicFrameRateForCarDisplayConfig:a3];
+    [(VKMapView *)self _configureDynamicFrameRateForCarDisplayConfig:config];
   }
 }
 
-- (void)setTargetDisplay:(int64_t)a3
+- (void)setTargetDisplay:(int64_t)display
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 161) != a3)
+  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 161) != display)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 2)
+      if (display > 2)
       {
         v6 = &stru_1F2A61C40;
       }
 
       else
       {
-        v6 = off_1E7B304A0[a3];
+        v6 = off_1E7B304A0[display];
       }
 
       v19 = 134218242;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
       v22 = v6;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set target display: %@", &v19, 0x16u);
@@ -12268,12 +12268,12 @@ LABEL_20:
           v11 = *(v9 + 8);
           if (v11)
           {
-            if (*(v11 + 768) != a3)
+            if (*(v11 + 768) != display)
             {
               v12 = *(v11 + 760);
               v13 = v12 & 0xFFFFFFFFFFFFFFF9 | 4;
               v14 = v12 | 6;
-              if (a3 == 1)
+              if (display == 1)
               {
                 v15 = v14;
               }
@@ -12284,7 +12284,7 @@ LABEL_20:
               }
 
               *(v11 + 760) = v15;
-              *(v11 + 768) = a3;
+              *(v11 + 768) = display;
               gdc::LayerDataStore::clearAllData(*(v11 + 16));
               v7 = *(self + 50);
             }
@@ -12303,22 +12303,22 @@ LABEL_20:
       v16 = v16[5];
     }
 
-    if (*(v16 + 161) != a3)
+    if (*(v16 + 161) != display)
     {
-      *(v16 + 161) = a3;
+      *(v16 + 161) = display;
       (*(*v16 + 16))(v16);
     }
 
-    v17 = [(VKMapView *)self _labelSettings];
-    **(v17 + 5) = a3;
-    md::LabelManager::setTargetDisplay(*(v17 + 3), a3);
+    _labelSettings = [(VKMapView *)self _labelSettings];
+    **(_labelSettings + 5) = display;
+    md::LabelManager::setTargetDisplay(*(_labelSettings + 3), display);
     v18 = *(self + 50);
     md::HomeQueueScheduler::waitForSynchronization(v18[5920], "[VKMapView setTargetDisplay:]");
     md::MapEngine::clearScene(v18);
   }
 }
 
-- (void)setStyleZOffsetScale:(float)a3
+- (void)setStyleZOffsetScale:(float)scale
 {
   v4 = *(*(self + 50) + 41928);
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v4 + 16), 0x2FED70A4459DFCA1uLL);
@@ -12327,7 +12327,7 @@ LABEL_20:
     v6 = v5[5];
     if (v6)
     {
-      *(v6 + 124) = a3;
+      *(v6 + 124) = scale;
     }
   }
 
@@ -12337,7 +12337,7 @@ LABEL_20:
     v8 = v7[5];
     if (v8)
     {
-      *(v8 + 120) = a3;
+      *(v8 + 120) = scale;
     }
   }
 }
@@ -12552,30 +12552,30 @@ LABEL_10:
 
 - (id)attributionsForCurrentRegion
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 attributionsForCurrentRegion];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  attributionsForCurrentRegion = [currentCanvas attributionsForCurrentRegion];
 
-  return v3;
+  return attributionsForCurrentRegion;
 }
 
 - (NSArray)visibleTileSets
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  v3 = [v2 visibleTileSets];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  visibleTileSets = [currentCanvas visibleTileSets];
 
-  return v3;
+  return visibleTileSets;
 }
 
 - (void)forceCameraUpdateForFrameResize
 {
-  v2 = [(VKMapView *)self currentCanvas];
-  [v2 updateCameraForFrameResize];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas updateCameraForFrameResize];
 }
 
 - (void)forceLayout
 {
-  v3 = [(VKMapView *)self currentCanvas];
-  [v3 updateCameraForFrameResize];
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  [currentCanvas updateCameraForFrameResize];
 
   v4 = *(self + 50);
   v7 = 1;
@@ -12592,73 +12592,73 @@ LABEL_10:
 
 - (void)_forceLayoutForSuspensionSnapShot
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v3 objectForInfoDictionaryKey:@"CAProcessCanAccessGPU"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v6 = [mainBundle objectForInfoDictionaryKey:@"CAProcessCanAccessGPU"];
 
   if (v6 && ([v6 BOOLValue] & 1) != 0)
   {
-    v4 = [(VKMapView *)self rendersInBackground];
+    rendersInBackground = [(VKMapView *)self rendersInBackground];
     [(VKMapView *)self setRendersInBackground:1];
     v5 = *(self + 50);
     [*(v5 + 41656) setRenderSource:0];
     [*(v5 + 41656) destroyRenderTarget];
     [(VKMapView *)self _createDisplayLayer];
     [(VKMapView *)self forceLayout];
-    [(VKMapView *)self setRendersInBackground:v4];
+    [(VKMapView *)self setRendersInBackground:rendersInBackground];
   }
 }
 
-- (void)_closeLoaderConnection:(BOOL)a3
+- (void)_closeLoaderConnection:(BOOL)connection
 {
   if (*(self + 136) == 1)
   {
-    v3 = a3;
+    connectionCopy = connection;
     *(self + 136) = 0;
-    v5 = [MEMORY[0x1E69A2610] modernLoader];
-    [v5 closeForClient:*(self + 18)];
+    modernLoader = [MEMORY[0x1E69A2610] modernLoader];
+    [modernLoader closeForClient:*(self + 18)];
 
-    v6 = [MEMORY[0x1E69A2478] modernManager];
-    [v6 closeServerConnection:v3];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager closeServerConnection:connectionCopy];
   }
 }
 
-- (void)setLabelMarkerSelectionEnabled:(BOOL)a3
+- (void)setLabelMarkerSelectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set label marker selection enabled: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapView *)self _labelSettings];
-  md::LabelSettings_Markers::setSelectionEnabled(*(v7[2] + 24), *(v7[2] + 40), v3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  md::LabelSettings_Markers::setSelectionEnabled(*(_labelSettings[2] + 24), *(_labelSettings[2] + 40), enabledCopy);
 }
 
-- (void)setNewInterfaceEnabled:(BOOL)a3
+- (void)setNewInterfaceEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
-  if ((*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 180) == 1) != a3)
+  if ((*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 180) == 1) != enabled)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 134218240;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
-      v11 = v3;
+      v11 = enabledCopy;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set new interface enabled=%i", &v8, 0x12u);
     }
 
@@ -12668,26 +12668,26 @@ LABEL_10:
       v6 = *(v6 + 5);
     }
 
-    md::StyleLogic::setNewInterfaceEnabled(v6, v3);
+    md::StyleLogic::setNewInterfaceEnabled(v6, enabledCopy);
     v7 = *(self + 50);
     LOBYTE(v8) = 1;
     md::MapEngine::setNeedsTick(v7, &v8);
   }
 }
 
-- (void)setOfflineMode:(BOOL)a3
+- (void)setOfflineMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v17 = *MEMORY[0x1E69E9840];
-  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 179) != a3)
+  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 179) != mode)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v13 = 134218242;
-      v14 = self;
+      selfCopy = self;
       v15 = 2080;
-      v16 = gss::to_string(v3);
+      v16 = gss::to_string(modeCopy);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set set offline mode:%s", &v13, 0x16u);
     }
 
@@ -12702,10 +12702,10 @@ LABEL_10:
       v7 = 0;
     }
 
-    if (*(v7 + 179) != v3)
+    if (*(v7 + 179) != modeCopy)
     {
-      *(v7 + 179) = v3;
-      gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(*(v7 + 208), 0x10083u, v3);
+      *(v7 + 179) = modeCopy;
+      gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(*(v7 + 208), 0x10083u, modeCopy);
       gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(*(v7 + 224), 0x10083u, *(v7 + 179));
       LOBYTE(v13) = 4;
       geo::linear_set<md::StyleManagerEvent,std::less<md::StyleManagerEvent>,std::allocator<md::StyleManagerEvent>,std::vector<md::StyleManagerEvent>>::insert((v7 + 1128), &v13);
@@ -12722,30 +12722,30 @@ LABEL_10:
     md::MapEngine::setNeedsTick(v9, &v13);
   }
 
-  v10 = [(VKMapView *)self _labelSettings];
-  *(v10[5] + 28) = v3;
-  v11 = v10[3];
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  *(_labelSettings[5] + 28) = modeCopy;
+  v11 = _labelSettings[3];
   v12 = atomic_load(v11 + 3045);
-  if ((v12 & 1) != v3)
+  if ((v12 & 1) != modeCopy)
   {
-    atomic_store(v3, v11 + 3045);
+    atomic_store(modeCopy, v11 + 3045);
     md::LabelManager::updateTileZBias(v11);
   }
 }
 
-- (void)setOfflineRegionSelector:(BOOL)a3
+- (void)setOfflineRegionSelector:(BOOL)selector
 {
-  v3 = a3;
+  selectorCopy = selector;
   v14 = *MEMORY[0x1E69E9840];
-  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 178) != a3)
+  if (*(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL)[5] + 178) != selector)
   {
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2080;
-      v13 = gss::to_string(v3);
+      v13 = gss::to_string(selectorCopy);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set set offline region selector:%s", &v10, 0x16u);
     }
 
@@ -12760,10 +12760,10 @@ LABEL_10:
       v7 = 0;
     }
 
-    if (*(v7 + 178) != v3)
+    if (*(v7 + 178) != selectorCopy)
     {
-      *(v7 + 178) = v3;
-      gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(*(v7 + 208), 0x10080u, v3);
+      *(v7 + 178) = selectorCopy;
+      gss::ClientStyleState<gss::PropertyID>::setClientStyleAttribute(*(v7 + 208), 0x10080u, selectorCopy);
       gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(*(v7 + 224), 0x10080u, *(v7 + 178));
       LOBYTE(v10) = 4;
       geo::linear_set<md::StyleManagerEvent,std::less<md::StyleManagerEvent>,std::allocator<md::StyleManagerEvent>,std::vector<md::StyleManagerEvent>>::insert((v7 + 1128), &v10);
@@ -12781,9 +12781,9 @@ LABEL_10:
   }
 }
 
-- (void)setLabelSelectionFilter:(id)a3
+- (void)setLabelSelectionFilter:(id)filter
 {
-  obj = a3;
+  obj = filter;
   WeakRetained = objc_loadWeakRetained(self + 77);
 
   if (WeakRetained != obj)
@@ -12793,47 +12793,47 @@ LABEL_10:
   }
 }
 
-- (void)setCameraDelegate:(id)a3
+- (void)setCameraDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = *(*(self + 50) + 41912);
   md::LabelExternalPointFeature::incident(v4);
-  [objc_claimAutoreleasedReturnValue() setCameraDelegate:v5];
+  [objc_claimAutoreleasedReturnValue() setCameraDelegate:delegateCopy];
 }
 
 - (VKMapViewCameraDelegate)cameraDelegate
 {
   v2 = *(*(self + 50) + 41912);
   md::LabelExternalPointFeature::incident(v2);
-  v3 = [objc_claimAutoreleasedReturnValue() cameraDelegate];
+  cameraDelegate = [objc_claimAutoreleasedReturnValue() cameraDelegate];
 
-  return v3;
+  return cameraDelegate;
 }
 
-- (void)setMapKitClientMode:(unsigned __int8)a3
+- (void)setMapKitClientMode:(unsigned __int8)mode
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (*(self + 220) != a3)
+  if (*(self + 220) != mode)
   {
-    v3 = a3;
+    modeCopy = mode;
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 134218242;
-      v9 = self;
+      selfCopy = self;
       v10 = 2080;
-      v11 = gss::to_string(v3);
+      v11 = gss::to_string(modeCopy);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set mapKitClientMode: %s", &v8, 0x16u);
     }
 
-    *(self + 220) = v3;
+    *(self + 220) = modeCopy;
     v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL);
     if (v6)
     {
       v6 = v6[5];
     }
 
-    md::StyleLogic::setMapKitClientMode(v6, v3);
+    md::StyleLogic::setMapKitClientMode(v6, modeCopy);
     if (*(self + 219))
     {
       v7 = *(self + 50);
@@ -12843,32 +12843,32 @@ LABEL_10:
   }
 }
 
-- (void)setMapKitUsage:(unsigned __int8)a3
+- (void)setMapKitUsage:(unsigned __int8)usage
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (*(self + 219) != a3)
+  if (*(self + 219) != usage)
   {
-    v3 = a3;
+    usageCopy = usage;
     v5 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2080;
-      v13 = gss::to_string(v3);
+      v13 = gss::to_string(usageCopy);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set mapKitUsage: %s", &v10, 0x16u);
     }
 
-    *(self + 219) = v3;
+    *(self + 219) = usageCopy;
     v6 = *(self + 217);
-    *(self + 217) = v3 != 0;
+    *(self + 217) = usageCopy != 0;
     v7 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL);
     if (v7)
     {
       v7 = v7[5];
     }
 
-    md::StyleLogic::setUsage(v7, v3 != 0, v3);
+    md::StyleLogic::setUsage(v7, usageCopy != 0, usageCopy);
     v8 = *(self + 217) == 0;
     *(self + 218) = v8;
     v9 = *(self + 50);
@@ -12882,47 +12882,47 @@ LABEL_10:
   }
 }
 
-- (void)setApplicationSubState:(unsigned __int8)a3
+- (void)setApplicationSubState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   v11 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = &stru_1F2A61C40;
-    if (v3 == 1)
+    if (stateCopy == 1)
     {
       v6 = @"Route Creation";
     }
 
-    if (!v3)
+    if (!stateCopy)
     {
       v6 = @"Default";
     }
 
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set application substate: %@", &v7, 0x16u);
   }
 
-  if (*(self + 201) != v3)
+  if (*(self + 201) != stateCopy)
   {
-    *(self + 201) = v3;
+    *(self + 201) = stateCopy;
     [(VKMapView *)self _updateMapDisplayStyle];
   }
 }
 
-- (void)setApplicationState:(unsigned __int8)a3 displayedSearchResultsType:(unsigned __int8)a4
+- (void)setApplicationState:(unsigned __int8)state displayedSearchResultsType:(unsigned __int8)type
 {
-  v4 = a4;
-  v5 = a3;
+  typeCopy = type;
+  stateCopy = state;
   v25 = *MEMORY[0x1E69E9840];
   v7 = *(self + 200);
-  if (v7 != a3)
+  if (v7 != state)
   {
-    *(self + 200) = a3;
+    *(self + 200) = state;
     v8 = *(*(self + 50) + 41928);
     if (v8)
     {
@@ -12932,7 +12932,7 @@ LABEL_10:
         v10 = v9[5];
         if (v10)
         {
-          *(v10 + 192) = v5;
+          *(v10 + 192) = stateCopy;
         }
       }
 
@@ -12956,28 +12956,28 @@ LABEL_10:
   v14 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    if (v5 > 9)
+    if (stateCopy > 9)
     {
       v15 = &stru_1F2A61C40;
     }
 
     else
     {
-      v15 = off_1E7B30508[v5];
+      v15 = off_1E7B30508[stateCopy];
     }
 
-    if (v4 > 4)
+    if (typeCopy > 4)
     {
       v16 = &stru_1F2A61C40;
     }
 
     else
     {
-      v16 = off_1E7B30558[v4];
+      v16 = off_1E7B30558[typeCopy];
     }
 
     v19 = 134218498;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v15;
     v23 = 2112;
@@ -12985,9 +12985,9 @@ LABEL_10:
     _os_log_impl(&dword_1B2754000, v14, OS_LOG_TYPE_INFO, "[VKMapView:%p] Set application state: %@, displayed search results type: %@", &v19, 0x20u);
   }
 
-  if (*(self + 216) == v4)
+  if (*(self + 216) == typeCopy)
   {
-    if (v7 == v5)
+    if (v7 == stateCopy)
     {
       return;
     }
@@ -12995,7 +12995,7 @@ LABEL_10:
 
   else
   {
-    *(self + 216) = v4;
+    *(self + 216) = typeCopy;
   }
 
   [(VKMapView *)self _updateMapDisplayStyle];
@@ -13003,34 +13003,34 @@ LABEL_10:
   if (*(self + 590) == 1)
   {
     v17 = +[VKDebugSettings sharedSettings];
-    v18 = [v17 displayStyleOverride];
+    displayStyleOverride = [v17 displayStyleOverride];
 
-    if (v18)
+    if (displayStyleOverride)
     {
-      [(VKMapView *)self enableMapDisplayStyleDebugOverride:*v18 | (*(v18 + 2) << 32)];
+      [(VKMapView *)self enableMapDisplayStyleDebugOverride:*displayStyleOverride | (*(displayStyleOverride + 2) << 32)];
     }
   }
 }
 
-+ (void)updateUserLocationAnnotationStateForNavigationPuck:(id)a3 isPuckEnabled:(BOOL)a4 synchronizedState:(void *)a5
++ (void)updateUserLocationAnnotationStateForNavigationPuck:(id)puck isPuckEnabled:(BOOL)enabled synchronizedState:(void *)state
 {
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  enabledCopy = enabled;
+  puckCopy = puck;
+  if (enabledCopy)
   {
-    *(a5 + 84) = 1;
+    *(state + 84) = 1;
   }
 
   else
   {
-    *(a5 + 84) = 2;
-    v10 = v7;
-    v8 = [v7 target];
-    [v8 collisionSize];
+    *(state + 84) = 2;
+    v10 = puckCopy;
+    target = [puckCopy target];
+    [target collisionSize];
     *&v9 = v9;
-    *(a5 + 20) = LODWORD(v9);
+    *(state + 20) = LODWORD(v9);
 
-    v7 = v10;
+    puckCopy = v10;
   }
 }
 
@@ -13050,10 +13050,10 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v2 = [v3 supportsAdvancedMap];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  supportsAdvancedMap = [mEMORY[0x1E69A2398] supportsAdvancedMap];
 
-  return v2;
+  return supportsAdvancedMap;
 }
 
 + (BOOL)_elevatedGroundIsAvailable
@@ -13072,10 +13072,10 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v2 = [v3 supportsAdvancedMap];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  supportsAdvancedMap = [mEMORY[0x1E69A2398] supportsAdvancedMap];
 
-  return v2;
+  return supportsAdvancedMap;
 }
 
 - (void)_shutdownThermalMonitor
@@ -13094,25 +13094,25 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   [WeakRetained _updateThermalPressureLevel];
 }
 
-- (void)_setThermalPressureLevel:(unint64_t)a3
+- (void)_setThermalPressureLevel:(unint64_t)level
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = a3;
+    levelCopy = level;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapView:%p] set thermal pressure %i", &v7, 0x12u);
   }
 
-  *(self + 67) = a3;
-  if (a3 < 0x1E)
+  *(self + 67) = level;
+  if (level < 0x1E)
   {
-    if (a3 < 0x14)
+    if (level < 0x14)
     {
-      if (a3 < 0xA)
+      if (level < 0xA)
       {
         *(self + 528) = 0;
         return;
@@ -13147,19 +13147,19 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_postDelegateCallbackBlock:(id)a3
+- (void)_postDelegateCallbackBlock:(id)block
 {
-  block = a3;
+  block = block;
   WeakRetained = objc_loadWeakRetained(self + 16);
 
   if (WeakRetained)
   {
-    v5 = [(VKMapView *)self _mapDelegateQueue];
-    dispatch_async(v5, block);
+    _mapDelegateQueue = [(VKMapView *)self _mapDelegateQueue];
+    dispatch_async(_mapDelegateQueue, block);
   }
 }
 
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options
 {
   v111 = *MEMORY[0x1E69E9840];
   v7 = *(self + 50);
@@ -13168,7 +13168,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   v8 = [(VKMapView *)self description];
   v9 = v8;
   gdc::DebugTreeValue::DebugTreeValue(v104, [v8 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v108, v104);
+  gdc::DebugTreeNode::addProperty(node, &v108, v104);
   if (v106 < 0)
   {
     operator delete(__p);
@@ -13181,7 +13181,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Is in Background");
   gdc::DebugTreeValue::DebugTreeValue(v101, *(self + 248));
-  gdc::DebugTreeNode::addProperty(a3, &v108, v101);
+  gdc::DebugTreeNode::addProperty(node, &v108, v101);
   if (v103 < 0)
   {
     operator delete(v102);
@@ -13206,16 +13206,16 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
       v11 = off_1E7B304B8[v10];
     }
 
-    v12 = [(__CFString *)v11 UTF8String];
+    uTF8String = [(__CFString *)v11 UTF8String];
   }
 
   else
   {
-    v12 = "NONE";
+    uTF8String = "NONE";
   }
 
-  gdc::DebugTreeValue::DebugTreeValue(v98, v12);
-  gdc::DebugTreeNode::addProperty(a3, &v108, v98);
+  gdc::DebugTreeValue::DebugTreeValue(v98, uTF8String);
+  gdc::DebugTreeNode::addProperty(node, &v108, v98);
   if (v100 < 0)
   {
     operator delete(v99);
@@ -13228,7 +13228,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Renders In Background");
   gdc::DebugTreeValue::DebugTreeValue(v95, [(VKMapView *)self rendersInBackground]);
-  gdc::DebugTreeNode::addProperty(a3, &v108, v95);
+  gdc::DebugTreeNode::addProperty(node, &v108, v95);
   if (v97 < 0)
   {
     operator delete(v96);
@@ -13241,7 +13241,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Did Finish Snapshotting");
   gdc::DebugTreeValue::DebugTreeValue(v92, *(self + 408));
-  gdc::DebugTreeNode::addProperty(a3, &v108, v92);
+  gdc::DebugTreeNode::addProperty(node, &v108, v92);
   if (v94 < 0)
   {
     operator delete(v93);
@@ -13254,7 +13254,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Hidden");
   gdc::DebugTreeValue::DebugTreeValue(v89, [(VKMapView *)self isHidden]);
-  gdc::DebugTreeNode::addProperty(a3, &v108, v89);
+  gdc::DebugTreeNode::addProperty(node, &v108, v89);
   if (v91 < 0)
   {
     operator delete(v90);
@@ -13267,7 +13267,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Display Rate");
   gdc::DebugTreeValue::DebugTreeValue(v86, *(*(*(self + 50) + 208) + 8));
-  gdc::DebugTreeNode::addProperty(a3, &v108, v86);
+  gdc::DebugTreeNode::addProperty(node, &v108, v86);
   if (v88 < 0)
   {
     operator delete(v87);
@@ -13279,10 +13279,10 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Navigation Display Rate");
-  v13 = [(VKMapView *)self currentCanvas];
-  v14 = [v13 cameraController];
-  gdc::DebugTreeValue::DebugTreeValue(v83, [v14 baseDisplayRate]);
-  gdc::DebugTreeNode::addProperty(a3, &v108, v83);
+  currentCanvas = [(VKMapView *)self currentCanvas];
+  cameraController = [currentCanvas cameraController];
+  gdc::DebugTreeValue::DebugTreeValue(v83, [cameraController baseDisplayRate]);
+  gdc::DebugTreeNode::addProperty(node, &v108, v83);
   if (v85 < 0)
   {
     operator delete(v84);
@@ -13295,7 +13295,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
   std::string::basic_string[abi:nn200100]<0>(&v108, "Display Rate");
   gdc::DebugTreeValue::DebugTreeValue(v80, *(*(*(self + 50) + 208) + 8));
-  gdc::DebugTreeNode::addProperty(a3, &v108, v80);
+  gdc::DebugTreeNode::addProperty(node, &v108, v80);
   if (v82 < 0)
   {
     operator delete(v81);
@@ -13319,7 +13319,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   }
 
   gdc::DebugTreeValue::DebugTreeValue(v77, [(__CFString *)v16 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v108, v77);
+  gdc::DebugTreeNode::addProperty(node, &v108, v77);
   if (v79 < 0)
   {
     operator delete(v78);
@@ -13330,17 +13330,17 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
     operator delete(v108);
   }
 
-  v17 = *a4;
-  if (*a4)
+  v17 = *options;
+  if (*options)
   {
     std::string::basic_string[abi:nn200100]<0>(&v108, "Display Style");
-    v18 = gdc::DebugTreeNode::createChildNode(a3, &v108);
+    v18 = gdc::DebugTreeNode::createChildNode(node, &v108);
     if (v109 < 0)
     {
       operator delete(v108);
     }
 
-    v19 = [(VKMapView *)self mapDisplayStyle];
+    mapDisplayStyle = [(VKMapView *)self mapDisplayStyle];
     std::string::basic_string[abi:nn200100]<0>(&v108, "Displayed Search Results Type");
     v20 = *(self + 216);
     if (v20 > 4)
@@ -13366,7 +13366,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
     }
 
     std::string::basic_string[abi:nn200100]<0>(&v108, "TimePeriod");
-    if (v19)
+    if (mapDisplayStyle)
     {
       v22 = @"Night";
     }
@@ -13390,12 +13390,12 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
 
     std::string::basic_string[abi:nn200100]<0>(&v108, "OverlayType");
     v23 = @"None";
-    if (BYTE1(v19) == 1)
+    if (BYTE1(mapDisplayStyle) == 1)
     {
       v23 = @"Traffic";
     }
 
-    if (BYTE1(v19) == 2)
+    if (BYTE1(mapDisplayStyle) == 2)
     {
       v24 = @"Transit";
     }
@@ -13418,14 +13418,14 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
     }
 
     std::string::basic_string[abi:nn200100]<0>(&v108, "ApplicationState");
-    if (BYTE2(v19) > 9u)
+    if (BYTE2(mapDisplayStyle) > 9u)
     {
       v25 = &stru_1F2A61C40;
     }
 
     else
     {
-      v25 = off_1E7B30508[(v19 >> 16) & 0xF];
+      v25 = off_1E7B30508[(mapDisplayStyle >> 16) & 0xF];
     }
 
     gdc::DebugTreeValue::DebugTreeValue(v65, [(__CFString *)v25 UTF8String]);
@@ -13441,14 +13441,14 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
     }
 
     std::string::basic_string[abi:nn200100]<0>(&v108, "SearchResultsType");
-    if (BYTE4(v19) > 4u)
+    if (BYTE4(mapDisplayStyle) > 4u)
     {
       v26 = &stru_1F2A61C40;
     }
 
     else
     {
-      v26 = off_1E7B30558[HIDWORD(v19) & 7];
+      v26 = off_1E7B30558[HIDWORD(mapDisplayStyle) & 7];
     }
 
     gdc::DebugTreeValue::DebugTreeValue(v62, [(__CFString *)v26 UTF8String]);
@@ -13464,7 +13464,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
     }
 
     std::string::basic_string[abi:nn200100]<0>(&v108, "MapHasLabels");
-    gdc::DebugTreeValue::DebugTreeValue(v59, (v19 >> 40) & 1);
+    gdc::DebugTreeValue::DebugTreeValue(v59, (mapDisplayStyle >> 40) & 1);
     gdc::DebugTreeNode::addProperty(v18, &v108, v59);
     if (v61 < 0)
     {
@@ -13476,47 +13476,47 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
       operator delete(v108);
     }
 
-    v17 = *a4;
+    v17 = *options;
   }
 
   if ((v17 & 2) != 0)
   {
     std::string::basic_string[abi:nn200100]<0>(&v108, "Map Canvas");
-    v27 = gdc::DebugTreeNode::createChildNode(a3, &v108);
+    v27 = gdc::DebugTreeNode::createChildNode(node, &v108);
     if (v109 < 0)
     {
       operator delete(v108);
     }
 
-    [*(self + 7) populateDebugNode:v27 withOptions:a4];
-    v17 = *a4;
+    [*(self + 7) populateDebugNode:v27 withOptions:options];
+    v17 = *options;
   }
 
   if ((v17 & 4) != 0)
   {
     std::string::basic_string[abi:nn200100]<0>(&v108, "Current Camera Controller");
-    v28 = gdc::DebugTreeNode::createChildNode(a3, &v108);
+    v28 = gdc::DebugTreeNode::createChildNode(node, &v108);
     if (v109 < 0)
     {
       operator delete(v108);
     }
 
-    v29 = [(VKMapView *)self currentCanvas];
-    v30 = [v29 cameraController];
-    [v30 populateDebugNode:v28 withOptions:a4];
+    currentCanvas2 = [(VKMapView *)self currentCanvas];
+    cameraController2 = [currentCanvas2 cameraController];
+    [cameraController2 populateDebugNode:v28 withOptions:options];
 
-    v17 = *a4;
+    v17 = *options;
   }
 
   if ((v17 & 8) != 0)
   {
-    md::MapEngine::createDebugNode(&v108, v7, a4);
+    md::MapEngine::createDebugNode(&v108, v7, options);
   }
 
   if ((v17 & 0x10) != 0)
   {
     std::string::basic_string[abi:nn200100]<0>(&v108, "Route Context");
-    v31 = gdc::DebugTreeNode::createChildNode(a3, &v108);
+    v31 = gdc::DebugTreeNode::createChildNode(node, &v108);
     if (v109 < 0)
     {
       operator delete(v108);
@@ -13537,46 +13537,46 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
       operator delete(v108);
     }
 
-    v17 = *a4;
+    v17 = *options;
   }
 
   if ((v17 & 0x20) != 0)
   {
     std::string::basic_string[abi:nn200100]<0>(&v108, "TileLoader");
-    v34 = gdc::DebugTreeNode::createChildNode(a3, &v108);
+    v34 = gdc::DebugTreeNode::createChildNode(node, &v108);
     if (v109 < 0)
     {
       operator delete(v108);
     }
 
-    v35 = [MEMORY[0x1E69A2610] modernLoader];
-    v36 = v35;
-    if (v35)
+    modernLoader = [MEMORY[0x1E69A2610] modernLoader];
+    v36 = modernLoader;
+    if (modernLoader)
     {
       *&v108 = &unk_1F29E6510;
       *(&v108 + 1) = &v108;
       v110 = &v108;
-      v37 = [v35 descriptionDictionaryRepresentation];
-      std::function<void ()(NSDictionary *,gdc::DebugTreeNode &)>::operator()(&v108, v37, v34);
+      descriptionDictionaryRepresentation = [modernLoader descriptionDictionaryRepresentation];
+      std::function<void ()(NSDictionary *,gdc::DebugTreeNode &)>::operator()(&v108, descriptionDictionaryRepresentation, v34);
 
       std::__function::__value_func<void ()(NSDictionary *,gdc::DebugTreeNode &)>::~__value_func[abi:nn200100](&v108);
     }
 
-    v17 = *a4;
+    v17 = *options;
   }
 
   if ((v17 & 0x40) != 0)
   {
     std::string::basic_string[abi:nn200100]<0>(&v108, "Tile Statistics");
-    v38 = gdc::DebugTreeNode::createChildNode(a3, &v108);
+    v38 = gdc::DebugTreeNode::createChildNode(node, &v108);
     if (v109 < 0)
     {
       operator delete(v108);
     }
 
-    v39 = [(VKMapView *)self tileStatistics];
-    v40 = [v39 allKeys];
-    v41 = [v40 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+    tileStatistics = [(VKMapView *)self tileStatistics];
+    allKeys = [tileStatistics allKeys];
+    v41 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
     v54 = 0u;
     v55 = 0u;
@@ -13597,7 +13597,7 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
           }
 
           v46 = *(*(&v52 + 1) + 8 * i);
-          v47 = [v39 valueForKey:v46];
+          v47 = [tileStatistics valueForKey:v46];
           v48 = v46;
           std::string::basic_string[abi:nn200100]<0>(&v108, [v46 UTF8String]);
           gdc::DebugTreeValue::DebugTreeValue(v49, [v47 longLongValue]);
@@ -13705,18 +13705,18 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   }
 }
 
-- (void)debugHighlightFeatureMarker:(const void *)a3
+- (void)debugHighlightFeatureMarker:(const void *)marker
 {
-  v5 = [(VKMapView *)self _labelSettings];
-  (*(**(v5[3] + 240) + 272))(*(v5[3] + 240), a3);
+  _labelSettings = [(VKMapView *)self _labelSettings];
+  (*(**(_labelSettings[3] + 240) + 272))(*(_labelSettings[3] + 240), marker);
 
   [(VKMapView *)self _updateMapDisplayStyle];
 }
 
-- (id)iconForStyleAttributes:(id)a3 contentScale:(double)a4 size:(int64_t)a5 transparent:(BOOL)a6
+- (id)iconForStyleAttributes:(id)attributes contentScale:(double)scale size:(int64_t)size transparent:(BOOL)transparent
 {
-  v6 = a6;
-  v10 = a3;
+  transparentCopy = transparent;
+  attributesCopy = attributes;
   v11 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x2FED70A4459DFCA1uLL);
   if (v11)
   {
@@ -13742,10 +13742,10 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
   }
 
   v15 = objc_alloc_init(VKIconModifiers);
-  [(VKIconModifiers *)v15 setGlyphOnly:v6];
+  [(VKIconModifiers *)v15 setGlyphOnly:transparentCopy];
   v16 = +[VKSharedResourcesManager sharedResources];
-  v17 = [v16 iconManager];
-  v19 = v17;
+  iconManager = [v16 iconManager];
+  v19 = iconManager;
   v22 = v13;
   v23 = v14;
   if (v14)
@@ -13753,8 +13753,8 @@ void __42__VKMapView_Thermal___setupThermalMonitor__block_invoke(uint64_t a1)
     atomic_fetch_add_explicit(&v14->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  *&v18 = a4;
-  v20 = [v17 imageForStyleAttributes:v10 styleManager:&v22 contentScale:a5 sizeGroup:v15 modifiers:v18];
+  *&v18 = scale;
+  v20 = [iconManager imageForStyleAttributes:attributesCopy styleManager:&v22 contentScale:size sizeGroup:v15 modifiers:v18];
   if (v23)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v23);
@@ -13965,9 +13965,9 @@ LABEL_45:
   return v3;
 }
 
-- (void)setARMode:(int)a3
+- (void)setARMode:(int)mode
 {
-  v3 = (a3 - 1);
+  v3 = (mode - 1);
   if (v3 < 3)
   {
     v4 = v3 + 1;
@@ -14057,18 +14057,18 @@ LABEL_45:
   }
 }
 
-- (void)setARSceneType:(int)a3
+- (void)setARSceneType:(int)type
 {
   v3 = *(*(self + 50) + 41936);
   v5 = 27;
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = a3 == 1;
+    v4 = type == 1;
   }
 
   md::MapEngineSettings::set(v3, &v5, v4);
@@ -14095,20 +14095,20 @@ LABEL_45:
   }
 }
 
-- (void)setARInterfaceOrientation:(int64_t)a3
+- (void)setARInterfaceOrientation:(int64_t)orientation
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 3)
+    if ((orientation - 1) > 3)
     {
       v6 = @"Unknown";
     }
 
     else
     {
-      v6 = *(&off_1E7B3BA18 + a3 - 1);
+      v6 = *(&off_1E7B3BA18 + orientation - 1);
     }
 
     v10 = 138412290;
@@ -14117,19 +14117,19 @@ LABEL_45:
   }
 
   v7 = *(self + 50) + 40960;
-  *(*(*(self + 50) + 41864) + 96) = a3;
+  *(*(*(self + 50) + 41864) + 96) = orientation;
   v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(v7 + 968) + 16), 0x69AB09C896BF94A7uLL);
   if (v8)
   {
     v9 = v8[5];
     if (v9)
     {
-      *(v9 + 176) = a3;
+      *(v9 + 176) = orientation;
     }
   }
 }
 
-- (void)arController:(id)a3 didChangeTrackingState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)arController:(id)controller didChangeTrackingState:(unint64_t)state reason:(unint64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(self + 16);
   v8 = objc_opt_respondsToSelector();
@@ -14137,11 +14137,11 @@ LABEL_45:
   if (v8)
   {
     v10 = objc_loadWeakRetained(self + 16);
-    [v10 mapLayer:self arTrackingStateDidChange:a4 reason:a5];
+    [v10 mapLayer:self arTrackingStateDidChange:state reason:reason];
   }
 }
 
-- (void)arControllerSessionInterruptionEnded:(id)a3
+- (void)arControllerSessionInterruptionEnded:(id)ended
 {
   WeakRetained = objc_loadWeakRetained(self + 16);
   v4 = objc_opt_respondsToSelector();
@@ -14153,7 +14153,7 @@ LABEL_45:
   }
 }
 
-- (void)arController:(id)a3 arSessionWasInterrupted:(unint64_t)a4
+- (void)arController:(id)controller arSessionWasInterrupted:(unint64_t)interrupted
 {
   WeakRetained = objc_loadWeakRetained(self + 16);
   v6 = objc_opt_respondsToSelector();
@@ -14161,35 +14161,35 @@ LABEL_45:
   if (v6)
   {
     v8 = objc_loadWeakRetained(self + 16);
-    [v8 mapLayer:self arSessionWasInterrupted:a4];
+    [v8 mapLayer:self arSessionWasInterrupted:interrupted];
   }
 }
 
-- (void)arController:(id)a3 didEncounterError:(id)a4
+- (void)arController:(id)controller didEncounterError:(id)error
 {
-  v8 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(self + 16);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(self + 16);
-    [v7 mapLayer:self didEncounterARError:v8];
+    [v7 mapLayer:self didEncounterARError:errorCopy];
   }
 }
 
-- (void)map:(id)a3 didEnterARMode:(BOOL)a4
+- (void)map:(id)map didEnterARMode:(BOOL)mode
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__VKMapView_AR__map_didEnterARMode___block_invoke;
   v10[3] = &unk_1E7B3B9F8;
   v10[4] = self;
-  [(VKMapView *)self _postDelegateCallbackBlock:v10, a4];
+  [(VKMapView *)self _postDelegateCallbackBlock:v10, mode];
   v5 = +[VKDebugSettings sharedSettings];
-  v6 = [v5 arRenderAtNativeRate];
+  arRenderAtNativeRate = [v5 arRenderAtNativeRate];
 
-  if ((v6 & 1) == 0)
+  if ((arRenderAtNativeRate & 1) == 0)
   {
     md::MapEngine::setDisplayRate(*(self + 50), 60, v7, v8, v9);
   }
@@ -14267,10 +14267,10 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)setARWalkingFeatureSet:(id)a3
+- (id)setARWalkingFeatureSet:(id)set
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v5 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0xF4B920F5F640B882);
   if (v5)
   {
@@ -14294,19 +14294,19 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
     objc_claimAutoreleasedReturnValue();
   }
 
-  v8 = [v7 features];
+  features = [v7 features];
 
-  if (v8 == v4)
+  if (features == setCopy)
   {
     v15 = GEOGetVectorKitVKMapViewLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v7 features];
-      v17 = [v7 features];
+      features2 = [v7 features];
+      features3 = [v7 features];
       v24 = 134218240;
-      v25 = v16;
+      v25 = features2;
       v26 = 2048;
-      v27 = v17;
+      v27 = features3;
       _os_log_impl(&dword_1B2754000, v15, OS_LOG_TYPE_INFO, "Set ARFeatures (unchanged) - current:%p incoming:%p", &v24, 0x16u);
     }
 
@@ -14315,10 +14315,10 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [MEMORY[0x1E695DFA8] setWithArray:v4];
+    v9 = [MEMORY[0x1E695DFA8] setWithArray:setCopy];
     v10 = MEMORY[0x1E695DFA8];
-    v11 = [v7 features];
-    v12 = [v10 setWithArray:v11];
+    features4 = [v7 features];
+    v12 = [v10 setWithArray:features4];
 
     if ([v9 isEqualToSet:v12])
     {
@@ -14326,7 +14326,7 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v24 = 138412290;
-        v25 = v4;
+        v25 = setCopy;
         _os_log_impl(&dword_1B2754000, v13, OS_LOG_TYPE_INFO, "Set ARFeatures (unchanged) - %@", &v24, 0xCu);
       }
 
@@ -14335,7 +14335,7 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
 
     else
     {
-      v18 = [[VKARWalkingFeatureSet alloc] initWithFeatures:v4];
+      v18 = [[VKARWalkingFeatureSet alloc] initWithFeatures:setCopy];
       v19 = GEOGetVectorKitVKMapViewLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -14375,10 +14375,10 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
   return v14;
 }
 
-- (void)_setARSession:(id)a3
+- (void)_setARSession:(id)session
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[MDARSession isSupported];
   v6 = GEOGetVectorKitVKMapViewLog();
   v7 = v6;
@@ -14387,7 +14387,7 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = sessionCopy;
       _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "Set AR Session:%@", &v10, 0xCu);
     }
 
@@ -14397,7 +14397,7 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
       v9 = v8[5];
       if (v9)
       {
-        md::ARLogic::setARSession(v9, v4);
+        md::ARLogic::setARSession(v9, sessionCopy);
       }
     }
   }
@@ -14412,13 +14412,13 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)enterARWalking:(id)a3
+- (void)enterARWalking:(id)walking
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  walkingCopy = walking;
+  v6 = walkingCopy;
+  if (walkingCopy)
   {
-    [(VKMapView *)self setARSession:v4];
+    [(VKMapView *)self setARSession:walkingCopy];
   }
 
   else
@@ -14428,15 +14428,15 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setVirtualParallaxEnabled:(BOOL)a3
+- (void)setVirtualParallaxEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapViewMuninLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "true";
     }
@@ -14446,7 +14446,7 @@ void __36__VKMapView_AR__map_didEnterARMode___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "Set virtual parallax enabled: %s", &v7, 0xCu);
   }
 
-  [*(self + 37) setVirtualParallaxEnabled:v3];
+  [*(self + 37) setVirtualParallaxEnabled:enabledCopy];
 }
 
 - (id)onscreenImageResources
@@ -14564,18 +14564,18 @@ LABEL_26:
 
 - (id)currentMarker
 {
-  v2 = [*(self + 37) currentPoint];
-  if (v2)
+  currentPoint = [*(self + 37) currentPoint];
+  if (currentPoint)
   {
-    v2 = [[VKMuninMarker alloc] initWithCollectionPoint:v2];
+    currentPoint = [[VKMuninMarker alloc] initWithCollectionPoint:currentPoint];
   }
 
-  return v2;
+  return currentPoint;
 }
 
-- (void)enableViewDataLoading:(BOOL)a3
+- (void)enableViewDataLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   v4 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(*(self + 50) + 41928) + 16), 0x669A8EDAC04FCBF1uLL);
   if (v4)
   {
@@ -14587,8 +14587,8 @@ LABEL_26:
     v5 = 0;
   }
 
-  *(v5 + 833) = v3;
-  if (v3)
+  *(v5 + 833) = loadingCopy;
+  if (loadingCopy)
   {
     v6 = **(v5 + 160);
     if (v6)
@@ -14611,15 +14611,15 @@ LABEL_26:
   return [*(self + 37) cancelPendingMove];
 }
 
-- (BOOL)moveToMarker:(id)a3 withHeading:(double)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (BOOL)moveToMarker:(id)marker withHeading:(double)heading animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 collectionPoint];
+  animatedCopy = animated;
+  markerCopy = marker;
+  handlerCopy = handler;
+  collectionPoint = [markerCopy collectionPoint];
   v13 = GEOGetVectorKitVKMapViewMuninLog();
   v14 = v13;
-  if (v12)
+  if (collectionPoint)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -14635,10 +14635,10 @@ LABEL_26:
     }
 
     v14 = *(self + 37);
-    v16 = [v10 collectionPoint];
-    *buf = a4 * -0.0174532925;
+    collectionPoint2 = [markerCopy collectionPoint];
+    *buf = heading * -0.0174532925;
     v19 = 0;
-    v17 = [v14 moveToPoint:v16 withHeading:buf withPitch:&v19 animated:v7 completionHandler:v11];
+    v17 = [v14 moveToPoint:collectionPoint2 withHeading:buf withPitch:&v19 animated:animatedCopy completionHandler:handlerCopy];
   }
 
   else
@@ -14655,16 +14655,16 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)moveToStorefrontView:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)moveToStorefrontView:(id)view animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  animatedCopy = animated;
+  viewCopy = view;
+  handlerCopy = handler;
+  if (viewCopy)
   {
-    v10 = [v8 imageryInfo];
+    imageryInfo = [viewCopy imageryInfo];
 
-    md::mun::cameraFrameFromStorefront(v24, v8);
+    md::mun::cameraFrameFromStorefront(v24, viewCopy);
     v11 = GEOGetVectorKitVKMapViewMuninLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -14688,9 +14688,9 @@ LABEL_26:
     v18[1] = 3221225472;
     v18[2] = __68__VKMapView_Munin__moveToStorefrontView_animated_completionHandler___block_invoke;
     v18[3] = &unk_1E7B3DE58;
-    v19 = v9;
+    v19 = handlerCopy;
     objc_copyWeak(&v20, &buf);
-    v15 = [v14 moveToPoint:v27 withHeading:&v22 withPitch:&v21 animated:v6 completionHandler:v18];
+    v15 = [v14 moveToPoint:v27 withHeading:&v22 withPitch:&v21 animated:animatedCopy completionHandler:v18];
     objc_destroyWeak(&v20);
 
     objc_destroyWeak(&buf);
@@ -14722,10 +14722,10 @@ void __68__VKMapView_Munin__moveToStorefrontView_animated_completionHandler___bl
   }
 }
 
-- (id)muninMarkerAtCoordinate:(id)a3
+- (id)muninMarkerAtCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v5 = GEOGetVectorKitVKMapViewMuninLog();
   if (os_signpost_enabled(v5))
   {
@@ -14894,13 +14894,13 @@ LABEL_31:
   return v17;
 }
 
-- (id)muninMarkerAtCoordinate:(id)a3 completeMarkerHandler:(id)a4
+- (id)muninMarkerAtCoordinate:(id)coordinate completeMarkerHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(VKMapView *)self muninMarkerAtCoordinate:var0, var1];
+  handlerCopy = handler;
+  var1 = [(VKMapView *)self muninMarkerAtCoordinate:var0, var1];
   v7 = *(*(self + 50) + 42080);
   v8 = GEOGetVectorKitVKMapViewMuninLog();
   v9 = v8;
@@ -14911,9 +14911,9 @@ LABEL_31:
     _os_signpost_emit_with_name_impl(&dword_1B2754000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "MarkerAtPoint", &unk_1B3514CAA, buf, 2u);
   }
 
-  if (v6 && [v6 canMoveToMarker])
+  if (var1 && [var1 canMoveToMarker])
   {
-    v5[2](v5, v6);
+    handlerCopy[2](handlerCopy, var1);
     v11 = GEOGetVectorKitVKMapViewMuninLog();
     v12 = v11;
     if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
@@ -14954,13 +14954,13 @@ LABEL_31:
           }
         }
 
-        MEMORY[0x1B8C62DA0](v5);
+        MEMORY[0x1B8C62DA0](handlerCopy);
         MEMORY[0x1B8C62DA0]();
         operator new();
       }
     }
 
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
     v18 = GEOGetVectorKitVKMapViewMuninLog();
     v12 = v18;
     if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
@@ -14970,15 +14970,15 @@ LABEL_31:
     }
   }
 
-  return v6;
+  return var1;
 }
 
-- (void)enterMuninForMarker:(id)a3 withHeading:(double)a4
+- (void)enterMuninForMarker:(id)marker withHeading:(double)heading
 {
-  v6 = a3;
+  markerCopy = marker;
   v7 = GEOGetVectorKitVKMapViewMuninLog();
   v8 = v7;
-  if (v6)
+  if (markerCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -14998,11 +14998,11 @@ LABEL_31:
 
     [(VKMapView *)self setMapType:10];
     [(VKMapView *)self setShouldLoadFallbackTiles:0];
-    [v6 coordinate];
+    [markerCopy coordinate];
     v19 = v11;
-    [v6 coordinate];
+    [markerCopy coordinate];
     v18 = v12;
-    [v6 coordinate];
+    [markerCopy coordinate];
     v13 = self + 288;
     v14 = *(v13 + 1);
     v15.f64[0] = v19;
@@ -15011,13 +15011,13 @@ LABEL_31:
     v21 = v16;
     v22 = 0;
     v23 = 0;
-    v24 = a4 * -0.0174532925;
+    v24 = heading * -0.0174532925;
     v25 = 0;
     [v14 setCameraFrame:buf];
-    v17 = [v6 collectionPoint];
-    if (v17)
+    collectionPoint = [markerCopy collectionPoint];
+    if (collectionPoint)
     {
-      [*(v13 + 1) setCurrentPoint:v17];
+      [*(v13 + 1) setCurrentPoint:collectionPoint];
     }
   }
 
@@ -15033,7 +15033,7 @@ LABEL_31:
   }
 }
 
-- (void)enterMuninForStorefrontView:(id)a3 secondaryStorefrontView:(id)a4
+- (void)enterMuninForStorefrontView:(id)view secondaryStorefrontView:(id)storefrontView
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v6 = v5;
@@ -15059,7 +15059,7 @@ LABEL_31:
       _os_signpost_emit_with_name_impl(&dword_1B2754000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "EnterForStorefrontView", &unk_1B3514CAA, buf, 2u);
     }
 
-    v17 = [v9 imageryInfo];
+    imageryInfo = [v9 imageryInfo];
 
     md::mun::cameraFrameFromStorefront(v39, v9);
     [v7 setMapType:10];
@@ -15069,7 +15069,7 @@ LABEL_31:
     {
       if (v10)
       {
-        v19 = [v10 imageryInfo];
+        imageryInfo2 = [v10 imageryInfo];
 
         v20 = v7[37];
         v22 = *v33;

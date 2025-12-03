@@ -1,52 +1,52 @@
 @interface SMCurrentWorkoutSnapshot
-- (SMCurrentWorkoutSnapshot)initWithCoder:(id)a3;
-- (SMCurrentWorkoutSnapshot)initWithSessionIdentifier:(id)a3 activityType:(unint64_t)a4 sessionType:(int64_t)a5 isWorkoutOngoing:(BOOL)a6 isFirstPartyWorkout:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
+- (SMCurrentWorkoutSnapshot)initWithCoder:(id)coder;
+- (SMCurrentWorkoutSnapshot)initWithSessionIdentifier:(id)identifier activityType:(unint64_t)type sessionType:(int64_t)sessionType isWorkoutOngoing:(BOOL)ongoing isFirstPartyWorkout:(BOOL)workout;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMCurrentWorkoutSnapshot
 
-- (SMCurrentWorkoutSnapshot)initWithSessionIdentifier:(id)a3 activityType:(unint64_t)a4 sessionType:(int64_t)a5 isWorkoutOngoing:(BOOL)a6 isFirstPartyWorkout:(BOOL)a7
+- (SMCurrentWorkoutSnapshot)initWithSessionIdentifier:(id)identifier activityType:(unint64_t)type sessionType:(int64_t)sessionType isWorkoutOngoing:(BOOL)ongoing isFirstPartyWorkout:(BOOL)workout
 {
-  v13 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = SMCurrentWorkoutSnapshot;
   v14 = [(SMCurrentWorkoutSnapshot *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sessionIdentifier, a3);
-    v15->_activityType = a4;
-    v15->_sessionType = a5;
-    v15->_isWorkoutOngoing = a6;
-    v15->_isFirstPartyWorkout = a7;
+    objc_storeStrong(&v14->_sessionIdentifier, identifier);
+    v15->_activityType = type;
+    v15->_sessionType = sessionType;
+    v15->_isWorkoutOngoing = ongoing;
+    v15->_isFirstPartyWorkout = workout;
   }
 
   return v15;
 }
 
-- (SMCurrentWorkoutSnapshot)initWithCoder:(id)a3
+- (SMCurrentWorkoutSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutSessionIdentifierKey"];
-  v6 = [v4 decodeIntegerForKey:@"__kSMWorkoutActivityTypeKey"];
-  v7 = [v4 decodeIntegerForKey:@"__kSMWorkoutSessionTypeKey"];
-  v8 = [v4 decodeBoolForKey:@"__kSMIsWorkoutOngoingKey"];
-  v9 = [v4 decodeBoolForKey:@"__kSMIsFirstPartyWorkoutKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutSessionIdentifierKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"__kSMWorkoutActivityTypeKey"];
+  v7 = [coderCopy decodeIntegerForKey:@"__kSMWorkoutSessionTypeKey"];
+  v8 = [coderCopy decodeBoolForKey:@"__kSMIsWorkoutOngoingKey"];
+  v9 = [coderCopy decodeBoolForKey:@"__kSMIsFirstPartyWorkoutKey"];
 
   v10 = [(SMCurrentWorkoutSnapshot *)self initWithSessionIdentifier:v5 activityType:v6 sessionType:v7 isWorkoutOngoing:v8 isFirstPartyWorkout:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"__kSMWorkoutSessionIdentifierKey"];
-  [v5 encodeInteger:self->_activityType forKey:@"__kSMWorkoutActivityTypeKey"];
-  [v5 encodeInteger:self->_sessionType forKey:@"__kSMWorkoutSessionTypeKey"];
-  [v5 encodeBool:self->_isWorkoutOngoing forKey:@"__kSMIsWorkoutOngoingKey"];
-  [v5 encodeBool:self->_isFirstPartyWorkout forKey:@"__kSMIsFirstPartyWorkoutKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"__kSMWorkoutSessionIdentifierKey"];
+  [coderCopy encodeInteger:self->_activityType forKey:@"__kSMWorkoutActivityTypeKey"];
+  [coderCopy encodeInteger:self->_sessionType forKey:@"__kSMWorkoutSessionTypeKey"];
+  [coderCopy encodeBool:self->_isWorkoutOngoing forKey:@"__kSMIsWorkoutOngoingKey"];
+  [coderCopy encodeBool:self->_isFirstPartyWorkout forKey:@"__kSMIsFirstPartyWorkoutKey"];
 }
 
 @end

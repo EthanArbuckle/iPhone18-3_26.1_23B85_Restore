@@ -1,5 +1,5 @@
 @interface ICMediaCryptoStrategyV1
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL;
 - (id)decryptedData;
 - (id)fileURLEncryptionCryptoInitialzationVector;
 - (id)fileURLEncryptionCryptoTag;
@@ -7,10 +7,10 @@
 
 @implementation ICMediaCryptoStrategyV1
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -21,9 +21,9 @@
   v11[3] = &unk_278199A90;
   v14 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = rLCopy;
   v13 = v9;
   [(ICCryptoStrategyBase *)self performBlockIfMediaExists:v11];
   LOBYTE(self) = *(v16 + 24);

@@ -1,25 +1,25 @@
 @interface SUScanResults
-- (SUScanResults)initWithCoder:(id)a3;
-- (SUScanResults)initWithPreferredDescriptor:(id)a3 alternateDescriptor:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUScanResults)initWithCoder:(id)coder;
+- (SUScanResults)initWithPreferredDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)latestUpdate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUScanResults
 
-- (SUScanResults)initWithPreferredDescriptor:(id)a3 alternateDescriptor:(id)a4
+- (SUScanResults)initWithPreferredDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  alternateDescriptorCopy = alternateDescriptor;
   v11.receiver = self;
   v11.super_class = SUScanResults;
   v8 = [(SUScanResults *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(SUScanResults *)v8 setPreferredDescriptor:v6];
-    [(SUScanResults *)v9 setAlternateDescriptor:v7];
+    [(SUScanResults *)v8 setPreferredDescriptor:descriptorCopy];
+    [(SUScanResults *)v9 setAlternateDescriptor:alternateDescriptorCopy];
   }
 
   return v9;
@@ -27,24 +27,24 @@
 
 - (id)latestUpdate
 {
-  v3 = [(SUScanResults *)self preferredDescriptor];
-  if (v3 || ([(SUScanResults *)self alternateDescriptor], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  preferredDescriptor = [(SUScanResults *)self preferredDescriptor];
+  if (preferredDescriptor || ([(SUScanResults *)self alternateDescriptor], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    v4 = [(SUScanResults *)self preferredDescriptor];
-    if (v4)
+    preferredDescriptor2 = [(SUScanResults *)self preferredDescriptor];
+    if (preferredDescriptor2)
     {
-      v5 = v4;
-      v6 = [(SUScanResults *)self alternateDescriptor];
+      v5 = preferredDescriptor2;
+      alternateDescriptor = [(SUScanResults *)self alternateDescriptor];
 
-      if (v6)
+      if (alternateDescriptor)
       {
-        v7 = [(SUScanResults *)self preferredDescriptor];
-        v8 = [v7 productBuildVersion];
+        preferredDescriptor3 = [(SUScanResults *)self preferredDescriptor];
+        productBuildVersion = [preferredDescriptor3 productBuildVersion];
 
-        v9 = [(SUScanResults *)self alternateDescriptor];
-        v10 = [v9 productBuildVersion];
+        alternateDescriptor2 = [(SUScanResults *)self alternateDescriptor];
+        productBuildVersion2 = [alternateDescriptor2 productBuildVersion];
 
-        if ([v8 compare:v10 options:64] == -1)
+        if ([productBuildVersion compare:productBuildVersion2 options:64] == -1)
         {
           [(SUScanResults *)self alternateDescriptor];
         }
@@ -55,55 +55,55 @@
         }
         v12 = ;
 
-        v3 = v12;
+        preferredDescriptor = v12;
       }
     }
   }
 
   else
   {
-    v3 = [(SUScanResults *)self alternateDescriptor];
+    preferredDescriptor = [(SUScanResults *)self alternateDescriptor];
   }
 
-  return v3;
+  return preferredDescriptor;
 }
 
-- (SUScanResults)initWithCoder:(id)a3
+- (SUScanResults)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUScanResults;
   v5 = [(SUScanResults *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreferredDescriptor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreferredDescriptor"];
     [(SUScanResults *)v5 setPreferredDescriptor:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AlternateDescriptor"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AlternateDescriptor"];
     [(SUScanResults *)v5 setAlternateDescriptor:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUScanResults *)self preferredDescriptor];
-  [v4 encodeObject:v5 forKey:@"PreferredDescriptor"];
+  coderCopy = coder;
+  preferredDescriptor = [(SUScanResults *)self preferredDescriptor];
+  [coderCopy encodeObject:preferredDescriptor forKey:@"PreferredDescriptor"];
 
-  v6 = [(SUScanResults *)self alternateDescriptor];
-  [v4 encodeObject:v6 forKey:@"AlternateDescriptor"];
+  alternateDescriptor = [(SUScanResults *)self alternateDescriptor];
+  [coderCopy encodeObject:alternateDescriptor forKey:@"AlternateDescriptor"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SUScanResults);
-  v5 = [(SUScanResults *)self preferredDescriptor];
-  [(SUScanResults *)v4 setPreferredDescriptor:v5];
+  preferredDescriptor = [(SUScanResults *)self preferredDescriptor];
+  [(SUScanResults *)v4 setPreferredDescriptor:preferredDescriptor];
 
-  v6 = [(SUScanResults *)self alternateDescriptor];
-  [(SUScanResults *)v4 setAlternateDescriptor:v6];
+  alternateDescriptor = [(SUScanResults *)self alternateDescriptor];
+  [(SUScanResults *)v4 setAlternateDescriptor:alternateDescriptor];
 
   return v4;
 }

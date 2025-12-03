@@ -1,12 +1,12 @@
 @interface STFamilyRootViewController
-- (STFamilyRootViewController)initWithModalPresentation:(BOOL)a3;
+- (STFamilyRootViewController)initWithModalPresentation:(BOOL)presentation;
 @end
 
 @implementation STFamilyRootViewController
 
-- (STFamilyRootViewController)initWithModalPresentation:(BOOL)a3
+- (STFamilyRootViewController)initWithModalPresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   v14[1] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = STFamilyRootViewController;
@@ -17,13 +17,13 @@
     coordinator = v4->_coordinator;
     v4->_coordinator = v5;
 
-    v4->_presentedAsModal = v3;
+    v4->_presentedAsModal = presentationCopy;
     v7 = +[STScreenTimeSettingsUIBundle bundle];
     v8 = [v7 localizedStringForKey:@"ScreenTimeControllerTitle" value:&stru_28766E5A8 table:0];
     [(STFamilyRootViewController *)v4 setTitle:v8];
 
-    v9 = [(STFamilyRootViewController *)v4 coordinator];
-    v10 = [STFamilyMemberGroupSpecifierProvider providerWithCoordinator:v9 presentedAsModal:v3];
+    coordinator = [(STFamilyRootViewController *)v4 coordinator];
+    v10 = [STFamilyMemberGroupSpecifierProvider providerWithCoordinator:coordinator presentedAsModal:presentationCopy];
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [(STListViewController *)v4 setSpecifierProviders:v11];

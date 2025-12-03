@@ -1,32 +1,32 @@
 @interface _NMRProxiedOriginsProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addOrigins:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOrigins:(id)origins;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRProxiedOriginsProtobuf
 
-- (void)addOrigins:(id)a3
+- (void)addOrigins:(id)origins
 {
-  v4 = a3;
+  originsCopy = origins;
   origins = self->_origins;
-  v8 = v4;
+  v8 = originsCopy;
   if (!origins)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_origins;
     self->_origins = v6;
 
-    v4 = v8;
+    originsCopy = v8;
     origins = self->_origins;
   }
 
-  [(NSMutableArray *)origins addObject:v4];
+  [(NSMutableArray *)origins addObject:originsCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = _NMRProxiedOriginsProtobuf;
   v3 = [(_NMRProxiedOriginsProtobuf *)&v7 description];
-  v4 = [(_NMRProxiedOriginsProtobuf *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRProxiedOriginsProtobuf *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -65,8 +65,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -81,9 +81,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -117,28 +117,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_NMRProxiedOriginsProtobuf *)self originsCount])
   {
-    [v8 clearOrigins];
-    v4 = [(_NMRProxiedOriginsProtobuf *)self originsCount];
-    if (v4)
+    [toCopy clearOrigins];
+    originsCount = [(_NMRProxiedOriginsProtobuf *)self originsCount];
+    if (originsCount)
     {
-      v5 = v4;
+      v5 = originsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_NMRProxiedOriginsProtobuf *)self originsAtIndex:i];
-        [v8 addOrigins:v7];
+        [toCopy addOrigins:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -159,7 +159,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addOrigins:v11];
 
         v10 = v10 + 1;
@@ -175,13 +175,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     origins = self->_origins;
-    if (origins | v4[1])
+    if (origins | equalCopy[1])
     {
       v6 = [(NSMutableArray *)origins isEqual:?];
     }
@@ -200,13 +200,13 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

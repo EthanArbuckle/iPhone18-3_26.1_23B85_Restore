@@ -1,61 +1,61 @@
 @interface _INPBDeviceDetail
-- (BOOL)isEqual:(id)a3;
-- (_INPBDeviceDetail)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDeviceDetail)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeviceClass:(id)a3;
+- (int)StringAsDeviceClass:(id)class;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeviceClass:(int)a3;
-- (void)setIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeviceClass:(int)class;
+- (void)setIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDeviceDetail
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBDeviceDetail *)self category];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"category"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  category = [(_INPBDeviceDetail *)self category];
+  dictionaryRepresentation = [category dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"category"];
 
   if ([(_INPBDeviceDetail *)self hasDeviceClass])
   {
-    v6 = [(_INPBDeviceDetail *)self deviceClass];
-    if (v6 >= 0xA)
+    deviceClass = [(_INPBDeviceDetail *)self deviceClass];
+    if (deviceClass >= 0xA)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", deviceClass];
     }
 
     else
     {
-      v7 = *(&off_1E7287678 + v6);
+      v7 = *(&off_1E7287678 + deviceClass);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"deviceClass"];
+    [dictionary setObject:v7 forKeyedSubscript:@"deviceClass"];
   }
 
-  v8 = [(_INPBDeviceDetail *)self deviceName];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"deviceName"];
+  deviceName = [(_INPBDeviceDetail *)self deviceName];
+  dictionaryRepresentation2 = [deviceName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"deviceName"];
 
-  v10 = [(_INPBDeviceDetail *)self deviceOwner];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"deviceOwner"];
+  deviceOwner = [(_INPBDeviceDetail *)self deviceOwner];
+  dictionaryRepresentation3 = [deviceOwner dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"deviceOwner"];
 
   if (self->_identifier)
   {
-    v12 = [(_INPBDeviceDetail *)self identifier];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBDeviceDetail *)self identifier];
+    v13 = [identifier copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"identifier"];
   }
 
-  v14 = [(_INPBDeviceDetail *)self productName];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"productName"];
+  productName = [(_INPBDeviceDetail *)self productName];
+  dictionaryRepresentation4 = [productName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"productName"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -78,28 +78,28 @@
   return v7 ^ v8 ^ [(_INPBDataString *)self->_productName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_INPBDeviceDetail *)self category];
-  v6 = [v4 category];
-  if ((v5 != 0) == (v6 == 0))
+  category = [(_INPBDeviceDetail *)self category];
+  category2 = [equalCopy category];
+  if ((category != 0) == (category2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_INPBDeviceDetail *)self category];
-  if (v7)
+  category3 = [(_INPBDeviceDetail *)self category];
+  if (category3)
   {
-    v8 = v7;
-    v9 = [(_INPBDeviceDetail *)self category];
-    v10 = [v4 category];
-    v11 = [v9 isEqual:v10];
+    v8 = category3;
+    category4 = [(_INPBDeviceDetail *)self category];
+    category5 = [equalCopy category];
+    v11 = [category4 isEqual:category5];
 
     if (!v11)
     {
@@ -111,38 +111,38 @@
   {
   }
 
-  v12 = [(_INPBDeviceDetail *)self hasDeviceClass];
-  if (v12 != [v4 hasDeviceClass])
+  hasDeviceClass = [(_INPBDeviceDetail *)self hasDeviceClass];
+  if (hasDeviceClass != [equalCopy hasDeviceClass])
   {
     goto LABEL_31;
   }
 
   if ([(_INPBDeviceDetail *)self hasDeviceClass])
   {
-    if ([v4 hasDeviceClass])
+    if ([equalCopy hasDeviceClass])
     {
       deviceClass = self->_deviceClass;
-      if (deviceClass != [v4 deviceClass])
+      if (deviceClass != [equalCopy deviceClass])
       {
         goto LABEL_31;
       }
     }
   }
 
-  v5 = [(_INPBDeviceDetail *)self deviceName];
-  v6 = [v4 deviceName];
-  if ((v5 != 0) == (v6 == 0))
+  category = [(_INPBDeviceDetail *)self deviceName];
+  category2 = [equalCopy deviceName];
+  if ((category != 0) == (category2 == 0))
   {
     goto LABEL_30;
   }
 
-  v14 = [(_INPBDeviceDetail *)self deviceName];
-  if (v14)
+  deviceName = [(_INPBDeviceDetail *)self deviceName];
+  if (deviceName)
   {
-    v15 = v14;
-    v16 = [(_INPBDeviceDetail *)self deviceName];
-    v17 = [v4 deviceName];
-    v18 = [v16 isEqual:v17];
+    v15 = deviceName;
+    deviceName2 = [(_INPBDeviceDetail *)self deviceName];
+    deviceName3 = [equalCopy deviceName];
+    v18 = [deviceName2 isEqual:deviceName3];
 
     if (!v18)
     {
@@ -154,20 +154,20 @@
   {
   }
 
-  v5 = [(_INPBDeviceDetail *)self deviceOwner];
-  v6 = [v4 deviceOwner];
-  if ((v5 != 0) == (v6 == 0))
+  category = [(_INPBDeviceDetail *)self deviceOwner];
+  category2 = [equalCopy deviceOwner];
+  if ((category != 0) == (category2 == 0))
   {
     goto LABEL_30;
   }
 
-  v19 = [(_INPBDeviceDetail *)self deviceOwner];
-  if (v19)
+  deviceOwner = [(_INPBDeviceDetail *)self deviceOwner];
+  if (deviceOwner)
   {
-    v20 = v19;
-    v21 = [(_INPBDeviceDetail *)self deviceOwner];
-    v22 = [v4 deviceOwner];
-    v23 = [v21 isEqual:v22];
+    v20 = deviceOwner;
+    deviceOwner2 = [(_INPBDeviceDetail *)self deviceOwner];
+    deviceOwner3 = [equalCopy deviceOwner];
+    v23 = [deviceOwner2 isEqual:deviceOwner3];
 
     if (!v23)
     {
@@ -179,20 +179,20 @@
   {
   }
 
-  v5 = [(_INPBDeviceDetail *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  category = [(_INPBDeviceDetail *)self identifier];
+  category2 = [equalCopy identifier];
+  if ((category != 0) == (category2 == 0))
   {
     goto LABEL_30;
   }
 
-  v24 = [(_INPBDeviceDetail *)self identifier];
-  if (v24)
+  identifier = [(_INPBDeviceDetail *)self identifier];
+  if (identifier)
   {
-    v25 = v24;
-    v26 = [(_INPBDeviceDetail *)self identifier];
-    v27 = [v4 identifier];
-    v28 = [v26 isEqual:v27];
+    v25 = identifier;
+    identifier2 = [(_INPBDeviceDetail *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v28 = [identifier2 isEqual:identifier3];
 
     if (!v28)
     {
@@ -204,12 +204,12 @@
   {
   }
 
-  v5 = [(_INPBDeviceDetail *)self productName];
-  v6 = [v4 productName];
-  if ((v5 != 0) != (v6 == 0))
+  category = [(_INPBDeviceDetail *)self productName];
+  category2 = [equalCopy productName];
+  if ((category != 0) != (category2 == 0))
   {
-    v29 = [(_INPBDeviceDetail *)self productName];
-    if (!v29)
+    productName = [(_INPBDeviceDetail *)self productName];
+    if (!productName)
     {
 
 LABEL_34:
@@ -217,10 +217,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(_INPBDeviceDetail *)self productName];
-    v32 = [v4 productName];
-    v33 = [v31 isEqual:v32];
+    v30 = productName;
+    productName2 = [(_INPBDeviceDetail *)self productName];
+    productName3 = [equalCopy productName];
+    v33 = [productName2 isEqual:productName3];
 
     if (v33)
     {
@@ -240,10 +240,10 @@ LABEL_32:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDeviceDetail allocWithZone:](_INPBDeviceDetail init];
-  v6 = [(_INPBDataString *)self->_category copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_category copyWithZone:zone];
   [(_INPBDeviceDetail *)v5 setCategory:v6];
 
   if ([(_INPBDeviceDetail *)self hasDeviceClass])
@@ -251,53 +251,53 @@ LABEL_32:
     [(_INPBDeviceDetail *)v5 setDeviceClass:[(_INPBDeviceDetail *)self deviceClass]];
   }
 
-  v7 = [(_INPBDataString *)self->_deviceName copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_deviceName copyWithZone:zone];
   [(_INPBDeviceDetail *)v5 setDeviceName:v7];
 
-  v8 = [(_INPBContact *)self->_deviceOwner copyWithZone:a3];
+  v8 = [(_INPBContact *)self->_deviceOwner copyWithZone:zone];
   [(_INPBDeviceDetail *)v5 setDeviceOwner:v8];
 
-  v9 = [(NSString *)self->_identifier copyWithZone:a3];
+  v9 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBDeviceDetail *)v5 setIdentifier:v9];
 
-  v10 = [(_INPBDataString *)self->_productName copyWithZone:a3];
+  v10 = [(_INPBDataString *)self->_productName copyWithZone:zone];
   [(_INPBDeviceDetail *)v5 setProductName:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDeviceDetail *)self data];
+  coderCopy = coder;
+  data = [(_INPBDeviceDetail *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDeviceDetail)initWithCoder:(id)a3
+- (_INPBDeviceDetail)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDeviceDetail *)self initWithData:v6];
+    self = [(_INPBDeviceDetail *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
-  v4 = [(_INPBDeviceDetail *)self category];
+  toCopy = to;
+  category = [(_INPBDeviceDetail *)self category];
 
-  if (v4)
+  if (category)
   {
-    v5 = [(_INPBDeviceDetail *)self category];
+    category2 = [(_INPBDeviceDetail *)self category];
     PBDataWriterWriteSubmessage();
   }
 
@@ -307,100 +307,100 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_INPBDeviceDetail *)self deviceName];
+  deviceName = [(_INPBDeviceDetail *)self deviceName];
 
-  if (v7)
+  if (deviceName)
   {
-    v8 = [(_INPBDeviceDetail *)self deviceName];
+    deviceName2 = [(_INPBDeviceDetail *)self deviceName];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBDeviceDetail *)self deviceOwner];
+  deviceOwner = [(_INPBDeviceDetail *)self deviceOwner];
 
-  if (v9)
+  if (deviceOwner)
   {
-    v10 = [(_INPBDeviceDetail *)self deviceOwner];
+    deviceOwner2 = [(_INPBDeviceDetail *)self deviceOwner];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBDeviceDetail *)self identifier];
+  identifier = [(_INPBDeviceDetail *)self identifier];
 
-  if (v11)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBDeviceDetail *)self productName];
+  productName = [(_INPBDeviceDetail *)self productName];
 
-  v14 = v16;
-  if (v13)
+  v14 = toCopy;
+  if (productName)
   {
-    v15 = [(_INPBDeviceDetail *)self productName];
+    productName2 = [(_INPBDeviceDetail *)self productName];
     PBDataWriterWriteSubmessage();
 
-    v14 = v16;
+    v14 = toCopy;
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, identifier);
 }
 
-- (int)StringAsDeviceClass:(id)a3
+- (int)StringAsDeviceClass:(id)class
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  classCopy = class;
+  if ([classCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"IPHONE"])
+  else if ([classCopy isEqualToString:@"IPHONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IPAD"])
+  else if ([classCopy isEqualToString:@"IPAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WATCH"])
+  else if ([classCopy isEqualToString:@"WATCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"IPOD"])
+  else if ([classCopy isEqualToString:@"IPOD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TV"])
+  else if ([classCopy isEqualToString:@"TV"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MAC"])
+  else if ([classCopy isEqualToString:@"MAC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"HOMEPOD"])
+  else if ([classCopy isEqualToString:@"HOMEPOD"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"HEADPHONE"])
+  else if ([classCopy isEqualToString:@"HEADPHONE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ACCESSORIES"])
+  else if ([classCopy isEqualToString:@"ACCESSORIES"])
   {
     v4 = 9;
   }
@@ -413,10 +413,10 @@ LABEL_32:
   return v4;
 }
 
-- (void)setDeviceClass:(int)a3
+- (void)setDeviceClass:(int)class
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (class == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -424,7 +424,7 @@ LABEL_32:
   else
   {
     *&self->_has = has | 1;
-    self->_deviceClass = a3;
+    self->_deviceClass = class;
   }
 }
 

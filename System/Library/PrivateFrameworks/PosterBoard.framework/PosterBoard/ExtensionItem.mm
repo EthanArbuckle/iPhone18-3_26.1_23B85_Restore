@@ -1,6 +1,6 @@
 @interface ExtensionItem
-+ (id)itemWithExtension:(id)a3 activationStyle:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)itemWithExtension:(id)extension activationStyle:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (id)activate;
 - (id)name;
 - (unint64_t)hash;
@@ -10,14 +10,14 @@
 
 @implementation ExtensionItem
 
-+ (id)itemWithExtension:(id)a3 activationStyle:(int64_t)a4
++ (id)itemWithExtension:(id)extension activationStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  extensionCopy = extension;
+  v7 = objc_alloc_init(self);
   v8 = v7[1];
-  v7[1] = v6;
+  v7[1] = extensionCopy;
 
-  v7[4] = a4;
+  v7[4] = style;
 
   return v7;
 }
@@ -32,15 +32,15 @@
 
 - (id)name
 {
-  v3 = [(_EXExtensionIdentity *)self->_extension localizedName];
+  localizedName = [(_EXExtensionIdentity *)self->_extension localizedName];
   if ([(ExtensionItem *)self wasEverActivated])
   {
-    v4 = [v3 stringByAppendingString:@" 🟢"];
+    v4 = [localizedName stringByAppendingString:@" 🟢"];
 
-    v3 = v4;
+    localizedName = v4;
   }
 
-  return v3;
+  return localizedName;
 }
 
 - (id)activate
@@ -81,19 +81,19 @@ LABEL_10:
     self->_tmpPoster = v10;
 
     v12 = MEMORY[0x277D3EB98];
-    v13 = [(_EXExtensionIdentity *)self->_extension bundleIdentifier];
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v12 configurationIdentityWithProvider:v13 identifier:0 role:v9 posterUUID:v14 version:1 supplement:0];
+    bundleIdentifier = [(_EXExtensionIdentity *)self->_extension bundleIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v15 = [v12 configurationIdentityWithProvider:bundleIdentifier identifier:0 role:v9 posterUUID:uUID version:1 supplement:0];
 
     v16 = MEMORY[0x277D3EBA0];
-    v17 = [(BSInvalidatable *)self->_tmpPoster contentsURL];
-    v18 = [v16 pathWithContainerURL:v17 identity:v15];
+    contentsURL = [(BSInvalidatable *)self->_tmpPoster contentsURL];
+    v18 = [v16 pathWithContainerURL:contentsURL identity:v15];
 
     [v18 ensureContentsURLIsReachableAndReturnError:0];
     v19 = MEMORY[0x277D3EB78];
     extension = self->_extension;
-    v21 = [MEMORY[0x277CCAD78] UUID];
-    v22 = [v19 extensionInstanceForIdentity:extension instanceIdentifier:v21];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    v22 = [v19 extensionInstanceForIdentity:extension instanceIdentifier:uUID2];
 
     v23 = [[v7 alloc] initWithProvider:v22 contents:v18];
     v24 = self->_viewController;
@@ -127,21 +127,21 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v2 = [(_EXExtensionIdentity *)self->_extension uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(_EXExtensionIdentity *)self->_extension uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   extension = self->_extension;
-  v4 = a3;
-  v5 = [(_EXExtensionIdentity *)extension uniqueIdentifier];
-  v6 = v4[1];
+  equalCopy = equal;
+  uniqueIdentifier = [(_EXExtensionIdentity *)extension uniqueIdentifier];
+  v6 = equalCopy[1];
 
-  v7 = [v6 uniqueIdentifier];
-  LOBYTE(v6) = [v5 isEqual:v7];
+  uniqueIdentifier2 = [v6 uniqueIdentifier];
+  LOBYTE(v6) = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   return v6;
 }

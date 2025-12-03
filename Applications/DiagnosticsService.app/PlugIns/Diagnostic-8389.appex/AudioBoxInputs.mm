@@ -1,13 +1,13 @@
 @interface AudioBoxInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation AudioBoxInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
   v4 = sub_10002186C();
-  v5 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_10000C664(v4);
 
   return self & 1;

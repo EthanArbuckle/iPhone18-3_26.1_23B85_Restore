@@ -1,48 +1,48 @@
 @interface CAMBufferKeyValueObserverObservance
-- (BOOL)shouldBeFulfilledByChange:(id)a3;
-- (CAMBufferKeyValueObserverObservance)initWithKeyPath:(id)a3 ofObject:(id)a4 withPredicate:(id)a5 removedOnceEnabled:(BOOL)a6;
+- (BOOL)shouldBeFulfilledByChange:(id)change;
+- (CAMBufferKeyValueObserverObservance)initWithKeyPath:(id)path ofObject:(id)object withPredicate:(id)predicate removedOnceEnabled:(BOOL)enabled;
 - (NSObject)object;
-- (void)setupObservanceForBuffer:(id)a3;
-- (void)teardownObservanceForBuffer:(id)a3;
+- (void)setupObservanceForBuffer:(id)buffer;
+- (void)teardownObservanceForBuffer:(id)buffer;
 @end
 
 @implementation CAMBufferKeyValueObserverObservance
 
-- (CAMBufferKeyValueObserverObservance)initWithKeyPath:(id)a3 ofObject:(id)a4 withPredicate:(id)a5 removedOnceEnabled:(BOOL)a6
+- (CAMBufferKeyValueObserverObservance)initWithKeyPath:(id)path ofObject:(id)object withPredicate:(id)predicate removedOnceEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  enabledCopy = enabled;
+  pathCopy = path;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = CAMBufferKeyValueObserverObservance;
-  v12 = [(CAMBufferObservance *)&v17 initWithPredicate:a5 removedOnceEnabled:v6];
+  v12 = [(CAMBufferObservance *)&v17 initWithPredicate:predicate removedOnceEnabled:enabledCopy];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [pathCopy copy];
     keyPath = v12->_keyPath;
     v12->_keyPath = v13;
 
-    objc_storeWeak(&v12->_object, v11);
+    objc_storeWeak(&v12->_object, objectCopy);
     v15 = v12;
   }
 
   return v12;
 }
 
-- (BOOL)shouldBeFulfilledByChange:(id)a3
+- (BOOL)shouldBeFulfilledByChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CAMBufferKeyValueObserverObservance *)self keyPath];
-    v7 = [(CAMBufferKeyValueObserverObservance *)self object];
-    v8 = [v5 keyPath];
-    if ([v8 isEqualToString:v6])
+    v5 = changeCopy;
+    keyPath = [(CAMBufferKeyValueObserverObservance *)self keyPath];
+    object = [(CAMBufferKeyValueObserverObservance *)self object];
+    keyPath2 = [v5 keyPath];
+    if ([keyPath2 isEqualToString:keyPath])
     {
-      v9 = [v5 object];
-      v10 = [v9 isEqual:v7];
+      object2 = [v5 object];
+      v10 = [object2 isEqual:object];
     }
 
     else
@@ -59,20 +59,20 @@
   return v10;
 }
 
-- (void)setupObservanceForBuffer:(id)a3
+- (void)setupObservanceForBuffer:(id)buffer
 {
-  v4 = a3;
-  v6 = [(CAMBufferKeyValueObserverObservance *)self object];
-  v5 = [(CAMBufferKeyValueObserverObservance *)self keyPath];
-  [v6 addObserver:v4 forKeyPath:v5 options:1 context:self];
+  bufferCopy = buffer;
+  object = [(CAMBufferKeyValueObserverObservance *)self object];
+  keyPath = [(CAMBufferKeyValueObserverObservance *)self keyPath];
+  [object addObserver:bufferCopy forKeyPath:keyPath options:1 context:self];
 }
 
-- (void)teardownObservanceForBuffer:(id)a3
+- (void)teardownObservanceForBuffer:(id)buffer
 {
-  v4 = a3;
-  v6 = [(CAMBufferKeyValueObserverObservance *)self object];
-  v5 = [(CAMBufferKeyValueObserverObservance *)self keyPath];
-  [v6 removeObserver:v4 forKeyPath:v5 context:self];
+  bufferCopy = buffer;
+  object = [(CAMBufferKeyValueObserverObservance *)self object];
+  keyPath = [(CAMBufferKeyValueObserverObservance *)self keyPath];
+  [object removeObserver:bufferCopy forKeyPath:keyPath context:self];
 }
 
 - (NSObject)object

@@ -1,47 +1,47 @@
 @interface DTGPUCounterProfile_GPURawCountersAPS
-+ (id)create:(id)a3 profile:(unint64_t)a4;
++ (id)create:(id)create profile:(unint64_t)profile;
 - (BOOL)_validateAndConfigureRawCounters;
-- (BOOL)start:(unint64_t)a3 vendorFeatures:(id)a4;
-- (DTGPUCounterProfile_GPURawCountersAPS)initWithDevice:(id)a3 profile:(unint64_t)a4;
+- (BOOL)start:(unint64_t)start vendorFeatures:(id)features;
+- (DTGPUCounterProfile_GPURawCountersAPS)initWithDevice:(id)device profile:(unint64_t)profile;
 - (id)counterProfileForHost;
 - (id)ringBufferCounts;
 - (id)sampleSizes;
-- (void)setAPSCounterConfig:(id)a3;
+- (void)setAPSCounterConfig:(id)config;
 - (void)stop;
 @end
 
 @implementation DTGPUCounterProfile_GPURawCountersAPS
 
-+ (id)create:(id)a3 profile:(unint64_t)a4
++ (id)create:(id)create profile:(unint64_t)profile
 {
-  v5 = a3;
-  v6 = [[DTGPUCounterProfile_GPURawCountersAPS alloc] initWithDevice:v5 profile:a4];
+  createCopy = create;
+  v6 = [[DTGPUCounterProfile_GPURawCountersAPS alloc] initWithDevice:createCopy profile:profile];
 
   return v6;
 }
 
-- (DTGPUCounterProfile_GPURawCountersAPS)initWithDevice:(id)a3 profile:(unint64_t)a4
+- (DTGPUCounterProfile_GPURawCountersAPS)initWithDevice:(id)device profile:(unint64_t)profile
 {
-  v7 = a3;
-  if ([v7 supportsFamily:1009])
+  deviceCopy = device;
+  if ([deviceCopy supportsFamily:1009])
   {
     v15.receiver = self;
     v15.super_class = DTGPUCounterProfile_GPURawCountersAPS;
-    v8 = [(DTGPUCounterProfile *)&v15 initWithProfile:a4 device:v7];
+    v8 = [(DTGPUCounterProfile *)&v15 initWithProfile:profile device:deviceCopy];
     v9 = v8;
     if (!v8)
     {
       goto LABEL_4;
     }
 
-    objc_storeStrong(&v8->_device, a3);
-    v10 = v7;
+    objc_storeStrong(&v8->_device, device);
+    v10 = deviceCopy;
     v11 = sub_247FFF4F0(v10);
     gpuConfig = v9->_gpuConfig;
     v9->_gpuConfig = v11;
 
-    v13 = v9->_gpuConfig;
-    if (!v13)
+    selfCopy = v9->_gpuConfig;
+    if (!selfCopy)
     {
       self = v9;
     }
@@ -50,32 +50,32 @@
     {
 LABEL_4:
       self = v9;
-      v13 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)setAPSCounterConfig:(id)a3
+- (void)setAPSCounterConfig:(id)config
 {
   v89 = *MEMORY[0x277D85DE8];
-  v60 = a3;
+  configCopy = config;
   v4 = objc_opt_new();
   rdeSelects = self->_rdeSelects;
   self->_rdeSelects = v4;
 
   v6 = objc_opt_new();
   apsSelects = self->_apsSelects;
-  v61 = self;
+  selfCopy = self;
   self->_apsSelects = v6;
 
-  v64 = [v60 objectForKeyedSubscript:@"RawCounterGRCs"];
+  v64 = [configCopy objectForKeyedSubscript:@"RawCounterGRCs"];
   v8 = 0;
   memset(v85, 0, sizeof(v85));
   v86 = 1065353216;
@@ -121,12 +121,12 @@ LABEL_4:
     v78 = 0u;
     v75 = 0u;
     v58 = v76 = 0u;
-    v13 = [v58 sourceList];
-    v14 = [v13 countByEnumeratingWithState:&v75 objects:v88 count:16];
+    sourceList = [v58 sourceList];
+    v14 = [sourceList countByEnumeratingWithState:&v75 objects:v88 count:16];
     if (v14)
     {
       v15 = *v76;
-      obj = v13;
+      obj = sourceList;
       do
       {
         for (i = 0; i != v14; ++i)
@@ -137,15 +137,15 @@ LABEL_4:
           }
 
           v17 = *(*(&v75 + 1) + 8 * i);
-          v18 = [v17 name];
-          v19 = [v18 hasPrefix:@"APS_USC"];
+          name = [v17 name];
+          v19 = [name hasPrefix:@"APS_USC"];
 
           v73 = 0u;
           v74 = 0u;
           v71 = 0u;
           v72 = 0u;
-          v20 = [v17 availableCounters];
-          v21 = [v20 countByEnumeratingWithState:&v71 objects:v87 count:16];
+          availableCounters = [v17 availableCounters];
+          v21 = [availableCounters countByEnumeratingWithState:&v71 objects:v87 count:16];
           if (v21)
           {
             v22 = *v72;
@@ -165,12 +165,12 @@ LABEL_4:
               {
                 if (*v72 != v22)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(availableCounters);
                 }
 
-                v25 = [*(*(&v71 + 1) + 8 * j) name];
-                v26 = v25;
-                sub_247F85940(&v68, [v25 UTF8String]);
+                name2 = [*(*(&v71 + 1) + 8 * j) name];
+                v26 = name2;
+                sub_247F85940(&v68, [name2 UTF8String]);
                 v27 = sub_247FF8CE4(v85, &v68);
                 if (SHIBYTE(v70) < 0)
                 {
@@ -183,14 +183,14 @@ LABEL_4:
                 }
               }
 
-              v21 = [v20 countByEnumeratingWithState:&v71 objects:v87 count:16];
+              v21 = [availableCounters countByEnumeratingWithState:&v71 objects:v87 count:16];
             }
 
             while (v21);
           }
         }
 
-        v13 = obj;
+        sourceList = obj;
         v14 = [obj countByEnumeratingWithState:&v75 objects:v88 count:16];
       }
 
@@ -204,7 +204,7 @@ LABEL_4:
     {
       v28 = 0;
       v29 = v80;
-      v30 = v61;
+      v30 = selfCopy;
       do
       {
         ++v28;
@@ -217,7 +217,7 @@ LABEL_4:
     else
     {
       v28 = 0;
-      v30 = v61;
+      v30 = selfCopy;
     }
 
     sub_24800158C(&v68, 0, v80, 0, v28);
@@ -293,7 +293,7 @@ LABEL_4:
         [v43 setObject:v47 forKeyedSubscript:@"Width"];
         if (v40)
         {
-          v48 = v61->_rdeSelects;
+          v48 = selfCopy->_rdeSelects;
           v49 = [objc_alloc(MEMORY[0x277D0AF28]) initWithName:v40 options:v43];
           [(NSMutableArray *)v48 addObject:v49];
         }
@@ -315,7 +315,7 @@ LABEL_4:
         v54 = [v52 objectForKeyedSubscript:@"Options"];
         if (v53)
         {
-          v55 = v61->_apsSelects;
+          v55 = selfCopy->_apsSelects;
           v56 = [objc_alloc(MEMORY[0x277D0AF28]) initWithName:v53 options:v54];
           [(NSMutableArray *)v55 addObject:v56];
         }
@@ -365,9 +365,9 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v4 = [agxSource firstObject];
+    firstObject = [agxSource firstObject];
     sourceGroup = self->_sourceGroup;
-    self->_sourceGroup = v4;
+    self->_sourceGroup = firstObject;
   }
 
   v6 = [[DTGPUAGXCounterSourceGroup alloc] initWithSourceGroup:self->_sourceGroup selects:self->_rdeSelects apsSelects:self->_apsSelects profile:[(DTGPUCounterProfile *)self profile]];
@@ -379,25 +379,25 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)start:(unint64_t)a3 vendorFeatures:(id)a4
+- (BOOL)start:(unint64_t)start vendorFeatures:(id)features
 {
-  v6 = a4;
+  featuresCopy = features;
   if (!self->_sourceGroup)
   {
     goto LABEL_10;
   }
 
   v7 = [(NSDictionary *)self->_gpuConfig objectForKeyedSubscript:@"RDESampleInterval"];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  v9 = v8;
-  if (v8 <= a3)
+  startCopy = unsignedIntValue;
+  if (unsignedIntValue <= start)
   {
-    v9 = a3;
+    startCopy = start;
   }
 
-  v10 = v9 ? v9 : 50000;
-  if ([(DTGPUAGXCounterSourceGroup *)self->_agxSource request:v10 vendorFeatures:v6]&& [(GPURawCounterSourceGroup *)self->_sourceGroup startSampling])
+  v10 = startCopy ? startCopy : 50000;
+  if ([(DTGPUAGXCounterSourceGroup *)self->_agxSource request:v10 vendorFeatures:featuresCopy]&& [(GPURawCounterSourceGroup *)self->_sourceGroup startSampling])
   {
     [(DTGPUAGXCounterSourceGroup *)self->_agxSource resume];
     v11 = 1;
@@ -443,9 +443,9 @@ LABEL_10:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v8 = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  sources = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
+  obj = sources;
+  v9 = [sources countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v9)
   {
     v10 = *v40;
@@ -463,23 +463,23 @@ LABEL_10:
         if (objc_opt_isKindOfClass())
         {
           v13 = v12;
-          v14 = [v13 apsConfig];
-          v15 = [v14 toDictionary];
-          [v7 setObject:v15 forKeyedSubscript:@"APSConfig"];
+          apsConfig = [v13 apsConfig];
+          toDictionary = [apsConfig toDictionary];
+          [v7 setObject:toDictionary forKeyedSubscript:@"APSConfig"];
 
           v16 = MEMORY[0x277CCABB0];
-          v17 = [v13 apsConfig];
-          v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "countPeriod")}];
+          apsConfig2 = [v13 apsConfig];
+          v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(apsConfig2, "countPeriod")}];
           [v7 setObject:v18 forKeyedSubscript:@"CountPeriod"];
 
           v19 = MEMORY[0x277CCABB0];
-          v20 = [v13 apsConfig];
-          v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v20, "pulsePeriod")}];
+          apsConfig3 = [v13 apsConfig];
+          v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(apsConfig3, "pulsePeriod")}];
           [v7 setObject:v21 forKeyedSubscript:@"PulsePeriod"];
 
           v22 = MEMORY[0x277CCABB0];
-          v23 = [v13 apsConfig];
-          v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(v23, "systemTimePeriod")}];
+          apsConfig4 = [v13 apsConfig];
+          v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(apsConfig4, "systemTimePeriod")}];
           [v7 setObject:v24 forKeyedSubscript:@"SystemTimePeriod"];
         }
 
@@ -490,8 +490,8 @@ LABEL_10:
           v38 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v25 = [v12 selects];
-          v26 = [v25 countByEnumeratingWithState:&v35 objects:v44 count:16];
+          selects = [v12 selects];
+          v26 = [selects countByEnumeratingWithState:&v35 objects:v44 count:16];
           if (v26)
           {
             v27 = *v36;
@@ -501,14 +501,14 @@ LABEL_10:
               {
                 if (*v36 != v27)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(selects);
                 }
 
-                v29 = [*(*(&v35 + 1) + 8 * j) name];
-                [v13 addObject:v29];
+                name = [*(*(&v35 + 1) + 8 * j) name];
+                [v13 addObject:name];
               }
 
-              v26 = [v25 countByEnumeratingWithState:&v35 objects:v44 count:16];
+              v26 = [selects countByEnumeratingWithState:&v35 objects:v44 count:16];
             }
 
             while (v26);
@@ -518,7 +518,7 @@ LABEL_10:
         }
       }
 
-      v8 = obj;
+      sources = obj;
       v9 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
@@ -546,8 +546,8 @@ LABEL_10:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sources = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
+  v5 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -557,16 +557,16 @@ LABEL_10:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sources);
         }
 
         v8 = MEMORY[0x277CCABB0];
-        v9 = [*(*(&v13 + 1) + 8 * i) selects];
-        v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+        selects = [*(*(&v13 + 1) + 8 * i) selects];
+        v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(selects, "count")}];
         [v3 addObject:v10];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -585,8 +585,8 @@ LABEL_10:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sources = [(DTGPUAGXCounterSourceGroup *)self->_agxSource sources];
+  v5 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -596,16 +596,16 @@ LABEL_10:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sources);
         }
 
         v8 = MEMORY[0x277CCABB0];
-        v9 = [*(*(&v13 + 1) + 8 * i) source];
-        v10 = [v8 numberWithUnsignedInt:{objc_msgSend(v9, "ringBufferNum")}];
+        source = [*(*(&v13 + 1) + 8 * i) source];
+        v10 = [v8 numberWithUnsignedInt:{objc_msgSend(source, "ringBufferNum")}];
         [v3 addObject:v10];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

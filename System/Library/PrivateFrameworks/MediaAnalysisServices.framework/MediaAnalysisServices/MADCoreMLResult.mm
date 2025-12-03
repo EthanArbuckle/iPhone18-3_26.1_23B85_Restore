@@ -1,21 +1,21 @@
 @interface MADCoreMLResult
-+ (id)resultWithVisionResults:(id)a3;
-- (MADCoreMLResult)initWithCoder:(id)a3;
-- (MADCoreMLResult)initWithVisionResults:(id)a3;
++ (id)resultWithVisionResults:(id)results;
+- (MADCoreMLResult)initWithCoder:(id)coder;
+- (MADCoreMLResult)initWithVisionResults:(id)results;
 - (id)description;
 - (int)_packageCoreMLObservations;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADCoreMLResult
 
-- (MADCoreMLResult)initWithCoder:(id)a3
+- (MADCoreMLResult)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MADCoreMLResult;
-  v5 = [(MADResult *)&v12 initWithCoder:v4];
+  v5 = [(MADResult *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -24,7 +24,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"CoreMLObservations"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CoreMLObservations"];
     observations = v5->_observations;
     v5->_observations = v9;
   }
@@ -32,23 +32,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADCoreMLResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_observations forKey:@"CoreMLObservations"];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_observations forKey:@"CoreMLObservations"];
 }
 
-- (MADCoreMLResult)initWithVisionResults:(id)a3
+- (MADCoreMLResult)initWithVisionResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v11.receiver = self;
   v11.super_class = MADCoreMLResult;
   v6 = [(MADResult *)&v11 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_visionResults, a3), [(MADCoreMLResult *)v7 _packageCoreMLObservations]))
+  if (v6 && (objc_storeStrong(&v6->_visionResults, results), [(MADCoreMLResult *)v7 _packageCoreMLObservations]))
   {
     v8 = 0;
   }
@@ -63,39 +63,39 @@
   return v9;
 }
 
-+ (id)resultWithVisionResults:(id)a3
++ (id)resultWithVisionResults:(id)results
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithVisionResults:v4];
+  resultsCopy = results;
+  v5 = [[self alloc] initWithVisionResults:resultsCopy];
 
   return v5;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"%@: %lu count>", @"CoreMLObservations", -[NSArray count](self->_observations, "count")];
+  [string appendFormat:@"%@: %lu count>", @"CoreMLObservations", -[NSArray count](self->_observations, "count")];
 
-  return v3;
+  return string;
 }
 
 - (int)_packageCoreMLObservations
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   visionResults = self->_visionResults;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__MADCoreMLResult__packageCoreMLObservations__block_invoke;
   v8[3] = &unk_1E8343078;
-  v5 = v3;
+  v5 = array;
   v9 = v5;
   [(NSArray *)visionResults enumerateObjectsUsingBlock:v8];
-  objc_storeStrong(&self->_observations, v3);
+  objc_storeStrong(&self->_observations, array);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v6 = [(NSArray *)self->_observations count];

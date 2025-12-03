@@ -1,47 +1,47 @@
 @interface HMDNetworkRouterStaticPortRule
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-+ (id)ruleFromFirewallRuleLAN:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
++ (id)ruleFromFirewallRuleLAN:(id)n;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterStaticPortRule)init;
-- (HMDNetworkRouterStaticPortRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 protocol:(id)a5 destinationIPAddress:(id)a6 destinationPortStart:(id)a7 destinationPortEnd:(id)a8;
+- (HMDNetworkRouterStaticPortRule)initWithDirection:(id)direction lanIdentifierList:(id)list protocol:(id)protocol destinationIPAddress:(id)address destinationPortStart:(id)start destinationPortEnd:(id)end;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
-- (void)addTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
+- (void)addTo:(id)to;
 @end
 
 @implementation HMDNetworkRouterStaticPortRule
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v7 = a3;
-  v4 = [v7 staticPortRules];
-  v5 = v4;
-  if (v4)
+  toCopy = to;
+  staticPortRules = [toCopy staticPortRules];
+  v5 = staticPortRules;
+  if (staticPortRules)
   {
-    [v4 addObject:self];
+    [staticPortRules addObject:self];
   }
 
   else
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    [v7 setStaticPortRules:v6];
+    [toCopy setStaticPortRules:v6];
   }
 }
 
-+ (id)ruleFromFirewallRuleLAN:(id)a3
++ (id)ruleFromFirewallRuleLAN:(id)n
 {
-  v3 = a3;
-  v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [v3 direction]);
-  v5 = createIdentifierListFromLANRule(v3);
-  v6 = +[HMDNetworkRouterProtocol protocolFromTransportProtocol:](HMDNetworkRouterProtocol, "protocolFromTransportProtocol:", [v3 transportProtocol]);
+  nCopy = n;
+  v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [nCopy direction]);
+  v5 = createIdentifierListFromLANRule(nCopy);
+  v6 = +[HMDNetworkRouterProtocol protocolFromTransportProtocol:](HMDNetworkRouterProtocol, "protocolFromTransportProtocol:", [nCopy transportProtocol]);
   v7 = objc_alloc(MEMORY[0x277CFEC98]);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v3, "portStart")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(nCopy, "portStart")}];
   v9 = [v7 initWithValue:v8];
 
-  LODWORD(v8) = [v3 portStart];
-  if (v8 == [v3 portEnd])
+  LODWORD(v8) = [nCopy portStart];
+  if (v8 == [nCopy portEnd])
   {
     v10 = 0;
   }
@@ -49,13 +49,13 @@
   else
   {
     v11 = objc_alloc(MEMORY[0x277CFEC98]);
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v3, "portEnd")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(nCopy, "portEnd")}];
     v10 = [v11 initWithValue:v12];
   }
 
-  v13 = [v3 ipAddress];
+  ipAddress = [nCopy ipAddress];
 
-  if (v13 && ([v3 ipAddress], v14 = objc_claimAutoreleasedReturnValue(), +[HMDNetworkRouterIPAddress ipAddressFromRuleAddress:allowWildcard:](HMDNetworkRouterIPAddress, "ipAddressFromRuleAddress:allowWildcard:", v14, 0), v13 = objc_claimAutoreleasedReturnValue(), v14, !v13))
+  if (ipAddress && ([nCopy ipAddress], v14 = objc_claimAutoreleasedReturnValue(), +[HMDNetworkRouterIPAddress ipAddressFromRuleAddress:allowWildcard:](HMDNetworkRouterIPAddress, "ipAddressFromRuleAddress:allowWildcard:", v14, 0), ipAddress = objc_claimAutoreleasedReturnValue(), v14, !ipAddress))
   {
     v15 = 0;
   }
@@ -65,7 +65,7 @@
     v15 = 0;
     if (v4 && v5 && v6 && v9)
     {
-      v15 = [[HMDNetworkRouterStaticPortRule alloc] initWithDirection:v4 lanIdentifierList:v5 protocol:v6 destinationIPAddress:v13 destinationPortStart:v9 destinationPortEnd:v10];
+      v15 = [[HMDNetworkRouterStaticPortRule alloc] initWithDirection:v4 lanIdentifierList:v5 protocol:v6 destinationIPAddress:ipAddress destinationPortStart:v9 destinationPortEnd:v10];
     }
   }
 
@@ -75,21 +75,21 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterStaticPortRule *)self direction];
-  v5 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
-  v6 = [(HMDNetworkRouterStaticPortRule *)self protocol];
-  v7 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
-  v8 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
-  v9 = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
-  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterStaticPortRule direction=%@, lanIdentifierList=%@, protocol=%@, destinationIPAddress=%@, destinationPortStart=%@, destinationPortEnd=%@>", v4, v5, v6, v7, v8, v9];
+  direction = [(HMDNetworkRouterStaticPortRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
+  protocol = [(HMDNetworkRouterStaticPortRule *)self protocol];
+  destinationIPAddress = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
+  destinationPortStart = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
+  destinationPortEnd = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
+  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterStaticPortRule direction=%@, lanIdentifierList=%@, protocol=%@, destinationIPAddress=%@, destinationPortStart=%@, destinationPortEnd=%@>", direction, lanIdentifierList, protocol, destinationIPAddress, destinationPortStart, destinationPortEnd];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -99,34 +99,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterStaticPortRule *)self direction];
-      v8 = [(HMDNetworkRouterStaticPortRule *)v6 direction];
-      if (v7 != v8)
+      v6 = equalCopy;
+      direction = [(HMDNetworkRouterStaticPortRule *)self direction];
+      direction2 = [(HMDNetworkRouterStaticPortRule *)v6 direction];
+      if (direction != direction2)
       {
-        v9 = [(HMDNetworkRouterStaticPortRule *)self direction];
-        v55 = [(HMDNetworkRouterStaticPortRule *)v6 direction];
-        v56 = v9;
-        if (![v9 isEqual:?])
+        direction3 = [(HMDNetworkRouterStaticPortRule *)self direction];
+        direction4 = [(HMDNetworkRouterStaticPortRule *)v6 direction];
+        v56 = direction3;
+        if (![direction3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_37;
         }
       }
 
-      v11 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
-      v12 = [(HMDNetworkRouterStaticPortRule *)v6 lanIdentifierList];
-      if (v11 != v12)
+      lanIdentifierList = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
+      lanIdentifierList2 = [(HMDNetworkRouterStaticPortRule *)v6 lanIdentifierList];
+      if (lanIdentifierList != lanIdentifierList2)
       {
-        v3 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
-        v53 = [(HMDNetworkRouterStaticPortRule *)v6 lanIdentifierList];
-        if (![v3 isEqual:?])
+        lanIdentifierList3 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
+        lanIdentifierList4 = [(HMDNetworkRouterStaticPortRule *)v6 lanIdentifierList];
+        if (![lanIdentifierList3 isEqual:?])
         {
           v10 = 0;
 LABEL_35:
 
 LABEL_36:
-          if (v7 == v8)
+          if (direction == direction2)
           {
 LABEL_38:
 
@@ -139,22 +139,22 @@ LABEL_37:
         }
       }
 
-      v13 = [(HMDNetworkRouterStaticPortRule *)self protocol];
-      v14 = [(HMDNetworkRouterStaticPortRule *)v6 protocol];
-      v54 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      protocol = [(HMDNetworkRouterStaticPortRule *)self protocol];
+      protocol2 = [(HMDNetworkRouterStaticPortRule *)v6 protocol];
+      v54 = protocol;
+      v15 = protocol == protocol2;
+      v16 = protocol2;
       if (v15)
       {
-        v51 = v14;
+        v51 = protocol2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterStaticPortRule *)self protocol];
-        v47 = [(HMDNetworkRouterStaticPortRule *)v6 protocol];
-        v48 = v17;
-        if (![v17 isEqual:?])
+        protocol3 = [(HMDNetworkRouterStaticPortRule *)self protocol];
+        protocol4 = [(HMDNetworkRouterStaticPortRule *)v6 protocol];
+        v48 = protocol3;
+        if (![protocol3 isEqual:?])
         {
           v10 = 0;
           v24 = v16;
@@ -162,7 +162,7 @@ LABEL_37:
 LABEL_33:
 
 LABEL_34:
-          if (v11 == v12)
+          if (lanIdentifierList == lanIdentifierList2)
           {
             goto LABEL_36;
           }
@@ -173,18 +173,18 @@ LABEL_34:
         v51 = v16;
       }
 
-      v18 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
-      v19 = [(HMDNetworkRouterStaticPortRule *)v6 destinationIPAddress];
-      v49 = v18;
-      v50 = v3;
-      v15 = v18 == v19;
-      v20 = v19;
+      destinationIPAddress = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
+      destinationIPAddress2 = [(HMDNetworkRouterStaticPortRule *)v6 destinationIPAddress];
+      v49 = destinationIPAddress;
+      v50 = lanIdentifierList3;
+      v15 = destinationIPAddress == destinationIPAddress2;
+      v20 = destinationIPAddress2;
       if (!v15)
       {
-        v21 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
-        v41 = [(HMDNetworkRouterStaticPortRule *)v6 destinationIPAddress];
-        v42 = v21;
-        if (![v21 isEqual:?])
+        destinationIPAddress3 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
+        destinationIPAddress4 = [(HMDNetworkRouterStaticPortRule *)v6 destinationIPAddress];
+        v42 = destinationIPAddress3;
+        if (![destinationIPAddress3 isEqual:?])
         {
           v22 = v51;
           v10 = 0;
@@ -195,7 +195,7 @@ LABEL_32:
           v25 = v54;
           v24 = v22;
           v15 = v54 == v22;
-          v3 = v50;
+          lanIdentifierList3 = v50;
           if (v15)
           {
             goto LABEL_34;
@@ -205,39 +205,39 @@ LABEL_32:
         }
       }
 
-      v26 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
-      v44 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortStart];
-      v45 = v26;
+      destinationPortStart = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
+      destinationPortStart2 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortStart];
+      v45 = destinationPortStart;
       v46 = v20;
-      v43 = v12;
-      if (v26 == v44)
+      v43 = lanIdentifierList2;
+      if (destinationPortStart == destinationPortStart2)
       {
-        v40 = v11;
+        v40 = lanIdentifierList;
         v29 = v51;
       }
 
       else
       {
-        v27 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
-        v38 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortStart];
-        v39 = v27;
-        v28 = [v27 isEqual:?];
+        destinationPortStart3 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
+        destinationPortStart4 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortStart];
+        v39 = destinationPortStart3;
+        v28 = [destinationPortStart3 isEqual:?];
         v29 = v51;
         if (!v28)
         {
           v10 = 0;
-          v36 = v44;
+          v36 = destinationPortStart2;
           v35 = v45;
           goto LABEL_28;
         }
 
-        v40 = v11;
+        v40 = lanIdentifierList;
       }
 
-      v30 = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
-      v31 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortEnd];
-      v32 = v31;
-      if (v30 == v31)
+      destinationPortEnd = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
+      destinationPortEnd2 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortEnd];
+      v32 = destinationPortEnd2;
+      if (destinationPortEnd == destinationPortEnd2)
       {
 
         v10 = 1;
@@ -247,23 +247,23 @@ LABEL_32:
       {
         [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
         v33 = v52 = v29;
-        v34 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortEnd];
-        v10 = [v33 isEqual:v34];
+        destinationPortEnd3 = [(HMDNetworkRouterStaticPortRule *)v6 destinationPortEnd];
+        v10 = [v33 isEqual:destinationPortEnd3];
 
         v29 = v52;
       }
 
-      v36 = v44;
+      v36 = destinationPortStart2;
       v35 = v45;
-      v11 = v40;
-      if (v45 == v44)
+      lanIdentifierList = v40;
+      if (v45 == destinationPortStart2)
       {
         v22 = v29;
 LABEL_30:
 
         v23 = v49;
         v20 = v46;
-        v12 = v43;
+        lanIdentifierList2 = v43;
         if (v49 == v46)
         {
           goto LABEL_32;
@@ -286,21 +286,21 @@ LABEL_39:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterStaticPortRule allocWithZone:a3];
-  v5 = [(HMDNetworkRouterStaticPortRule *)self direction];
-  v6 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
-  v7 = [(HMDNetworkRouterStaticPortRule *)self protocol];
-  v8 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
-  v9 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
-  v10 = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
-  v11 = [(HMDNetworkRouterStaticPortRule *)v4 initWithDirection:v5 lanIdentifierList:v6 protocol:v7 destinationIPAddress:v8 destinationPortStart:v9 destinationPortEnd:v10];
+  v4 = [HMDNetworkRouterStaticPortRule allocWithZone:zone];
+  direction = [(HMDNetworkRouterStaticPortRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
+  protocol = [(HMDNetworkRouterStaticPortRule *)self protocol];
+  destinationIPAddress = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
+  destinationPortStart = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
+  destinationPortEnd = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
+  v11 = [(HMDNetworkRouterStaticPortRule *)v4 initWithDirection:direction lanIdentifierList:lanIdentifierList protocol:protocol destinationIPAddress:destinationIPAddress destinationPortStart:destinationPortStart destinationPortEnd:destinationPortEnd];
 
   return v11;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
   v49 = 0u;
@@ -325,13 +325,13 @@ LABEL_39:
   v32 = 0u;
   v30 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterStaticPortRule *)self direction];
+  direction = [(HMDNetworkRouterStaticPortRule *)self direction];
 
-  if (v5)
+  if (direction)
   {
-    v6 = [(HMDNetworkRouterStaticPortRule *)self direction];
+    direction2 = [(HMDNetworkRouterStaticPortRule *)self direction];
     v29 = 0;
-    v7 = [v6 serializeWithError:&v29];
+    v7 = [direction2 serializeWithError:&v29];
     v8 = v29;
 
     if (v8)
@@ -347,13 +347,13 @@ LABEL_39:
     }
   }
 
-  v9 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
+  lanIdentifierList = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
 
-  if (v9)
+  if (lanIdentifierList)
   {
-    v10 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
+    lanIdentifierList2 = [(HMDNetworkRouterStaticPortRule *)self lanIdentifierList];
     v28 = 0;
-    v7 = [v10 serializeWithError:&v28];
+    v7 = [lanIdentifierList2 serializeWithError:&v28];
     v8 = v28;
 
     if (v8)
@@ -369,13 +369,13 @@ LABEL_39:
     }
   }
 
-  v11 = [(HMDNetworkRouterStaticPortRule *)self protocol];
+  protocol = [(HMDNetworkRouterStaticPortRule *)self protocol];
 
-  if (v11)
+  if (protocol)
   {
-    v12 = [(HMDNetworkRouterStaticPortRule *)self protocol];
+    protocol2 = [(HMDNetworkRouterStaticPortRule *)self protocol];
     v27 = 0;
-    v7 = [v12 serializeWithError:&v27];
+    v7 = [protocol2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -391,16 +391,16 @@ LABEL_39:
     }
   }
 
-  v13 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
+  destinationIPAddress = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
 
-  if (!v13)
+  if (!destinationIPAddress)
   {
     goto LABEL_17;
   }
 
-  v14 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
+  destinationIPAddress2 = [(HMDNetworkRouterStaticPortRule *)self destinationIPAddress];
   v26 = 0;
-  v7 = [v14 serializeWithError:&v26];
+  v7 = [destinationIPAddress2 serializeWithError:&v26];
   v8 = v26;
 
   if (v8)
@@ -415,11 +415,11 @@ LABEL_39:
 LABEL_20:
 
 LABEL_21:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_30;
     }
 
@@ -430,13 +430,13 @@ LABEL_29:
   }
 
 LABEL_17:
-  v15 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
+  destinationPortStart = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
 
-  if (v15)
+  if (destinationPortStart)
   {
-    v16 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
+    destinationPortStart2 = [(HMDNetworkRouterStaticPortRule *)self destinationPortStart];
     v25 = 0;
-    v7 = [v16 serializeWithError:&v25];
+    v7 = [destinationPortStart2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -452,24 +452,24 @@ LABEL_17:
     }
   }
 
-  v18 = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
+  destinationPortEnd = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
 
-  if (v18)
+  if (destinationPortEnd)
   {
-    v19 = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
+    destinationPortEnd2 = [(HMDNetworkRouterStaticPortRule *)self destinationPortEnd];
     v24 = 0;
-    v7 = [v19 serializeWithError:&v24];
+    v7 = [destinationPortEnd2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
     {
 LABEL_27:
 
-      if (a3)
+      if (error)
       {
         v20 = v8;
         v17 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_30;
       }
 
@@ -496,16 +496,16 @@ LABEL_30:
   return v17;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -525,7 +525,7 @@ LABEL_30:
   v12 = 0;
   v26 = 0;
   v27 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   do
   {
     v40 = 0;
@@ -535,10 +535,10 @@ LABEL_30:
     v36 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_32;
       }
 
@@ -558,11 +558,11 @@ LABEL_31:
       }
 
 LABEL_26:
-      if (a4)
+      if (error)
       {
         v18 = v10;
         v19 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_32:
         v21 = v28;
         v20 = v29;
@@ -669,26 +669,26 @@ LABEL_36:
   return v19;
 }
 
-- (HMDNetworkRouterStaticPortRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 protocol:(id)a5 destinationIPAddress:(id)a6 destinationPortStart:(id)a7 destinationPortEnd:(id)a8
+- (HMDNetworkRouterStaticPortRule)initWithDirection:(id)direction lanIdentifierList:(id)list protocol:(id)protocol destinationIPAddress:(id)address destinationPortStart:(id)start destinationPortEnd:(id)end
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  directionCopy = direction;
+  listCopy = list;
+  protocolCopy = protocol;
+  addressCopy = address;
+  startCopy = start;
+  endCopy = end;
   v24.receiver = self;
   v24.super_class = HMDNetworkRouterStaticPortRule;
   v18 = [(HMDNetworkRouterStaticPortRule *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_direction, a3);
-    objc_storeStrong(&v19->_lanIdentifierList, a4);
-    objc_storeStrong(&v19->_protocol, a5);
-    objc_storeStrong(&v19->_destinationIPAddress, a6);
-    objc_storeStrong(&v19->_destinationPortStart, a7);
-    objc_storeStrong(&v19->_destinationPortEnd, a8);
+    objc_storeStrong(&v18->_direction, direction);
+    objc_storeStrong(&v19->_lanIdentifierList, list);
+    objc_storeStrong(&v19->_protocol, protocol);
+    objc_storeStrong(&v19->_destinationIPAddress, address);
+    objc_storeStrong(&v19->_destinationPortStart, start);
+    objc_storeStrong(&v19->_destinationPortEnd, end);
   }
 
   return v19;
@@ -701,24 +701,24 @@ LABEL_36:
   return [(HMDNetworkRouterStaticPortRule *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterStaticPortRule);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterStaticPortRule *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterStaticPortRule *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

@@ -1,61 +1,61 @@
 @interface SBAppLayout
-+ (SBAppLayout)appLayoutWithProtobufRepresentation:(id)a3 layoutAttributesProvider:(id)a4;
++ (SBAppLayout)appLayoutWithProtobufRepresentation:(id)representation layoutAttributesProvider:(id)provider;
 + (id)appLibraryAppLayout;
 + (id)homeScreenAppLayout;
-- (BOOL)containsAllItemsFromAppLayout:(id)a3;
-- (BOOL)containsAllItemsFromSet:(id)a3;
-- (BOOL)containsAnyItemFromAppLayout:(id)a3;
-- (BOOL)containsAnyItemFromSet:(id)a3;
-- (BOOL)containsItem:(id)a3;
-- (BOOL)containsItemWithBundleIdentifier:(id)a3;
-- (BOOL)containsItemWithUniqueIdentifier:(id)a3;
-- (BOOL)hasSameItemsInLayoutRoles:(id)a3 asAppLayout:(id)a4;
+- (BOOL)containsAllItemsFromAppLayout:(id)layout;
+- (BOOL)containsAllItemsFromSet:(id)set;
+- (BOOL)containsAnyItemFromAppLayout:(id)layout;
+- (BOOL)containsAnyItemFromSet:(id)set;
+- (BOOL)containsItem:(id)item;
+- (BOOL)containsItemWithBundleIdentifier:(id)identifier;
+- (BOOL)containsItemWithUniqueIdentifier:(id)identifier;
+- (BOOL)hasSameItemsInLayoutRoles:(id)roles asAppLayout:(id)layout;
 - (BOOL)isCenterOverFull;
 - (BOOL)isCenterOverSplit;
 - (BOOL)isFullScreen;
-- (BOOL)isOrContainsAppLayout:(id)a3;
+- (BOOL)isOrContainsAppLayout:(id)layout;
 - (BOOL)isSplitConfiguration;
 - (NSString)uniqueIdentifier;
-- (SBAppLayout)appLayoutWithItemsPassingTest:(id)a3;
+- (SBAppLayout)appLayoutWithItemsPassingTest:(id)test;
 - (SBAppLayout)init;
-- (SBAppLayout)initWithItems:(id)a3 centerItem:(id)a4 floatingItem:(id)a5 configuration:(int64_t)a6 centerConfiguration:(int64_t)a7 environment:(int64_t)a8 hidden:(BOOL)a9 preferredDisplayOrdinal:(int64_t)a10;
-- (SBAppLayout)initWithItemsForLayoutRoles:(id)a3 configuration:(int64_t)a4 centerConfiguration:(int64_t)a5 environment:(int64_t)a6 hidden:(BOOL)a7 preferredDisplayOrdinal:(int64_t)a8;
-- (SBAppLayout)initWithPlistRepresentation:(id)a3 layoutAttributesProvider:(id)a4;
-- (id)_leafAppLayoutForItem:(id)a3 role:(int64_t)a4;
+- (SBAppLayout)initWithItems:(id)items centerItem:(id)item floatingItem:(id)floatingItem configuration:(int64_t)configuration centerConfiguration:(int64_t)centerConfiguration environment:(int64_t)environment hidden:(BOOL)hidden preferredDisplayOrdinal:(int64_t)self0;
+- (SBAppLayout)initWithItemsForLayoutRoles:(id)roles configuration:(int64_t)configuration centerConfiguration:(int64_t)centerConfiguration environment:(int64_t)environment hidden:(BOOL)hidden preferredDisplayOrdinal:(int64_t)ordinal;
+- (SBAppLayout)initWithPlistRepresentation:(id)representation layoutAttributesProvider:(id)provider;
+- (id)_leafAppLayoutForItem:(id)item role:(int64_t)role;
 - (id)_preferredWindowScene;
 - (id)appLayoutByAdjustingCenterWindowItemsForFlexibleWindowing;
 - (id)appLayoutByAdjustingFloatingItemsForFlexibleWindowing;
-- (id)appLayoutByInsertingItem:(id)a3;
-- (id)appLayoutByInsertingItem:(id)a3 inLayoutRole:(int64_t)a4;
-- (id)appLayoutByInsertingLeafAppLayout:(id)a3 inRole:(int64_t)a4;
-- (id)appLayoutByModifyingConfiguration:(int64_t)a3;
-- (id)appLayoutByModifyingEnvironment:(int64_t)a3;
-- (id)appLayoutByModifyingHiddenState:(BOOL)a3;
-- (id)appLayoutByModifyingPreferredDisplayOrdinal:(int64_t)a3;
-- (id)appLayoutByRemovingItemInLayoutRole:(int64_t)a3;
-- (id)appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:(id)a3 multitaskingSupported:(BOOL)a4;
+- (id)appLayoutByInsertingItem:(id)item;
+- (id)appLayoutByInsertingItem:(id)item inLayoutRole:(int64_t)role;
+- (id)appLayoutByInsertingLeafAppLayout:(id)layout inRole:(int64_t)role;
+- (id)appLayoutByModifyingConfiguration:(int64_t)configuration;
+- (id)appLayoutByModifyingEnvironment:(int64_t)environment;
+- (id)appLayoutByModifyingHiddenState:(BOOL)state;
+- (id)appLayoutByModifyingPreferredDisplayOrdinal:(int64_t)ordinal;
+- (id)appLayoutByRemovingItemInLayoutRole:(int64_t)role;
+- (id)appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:(id)controller multitaskingSupported:(BOOL)supported;
 - (id)appLibraryDisplayItem;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)flippedAppLayout;
-- (id)itemForLayoutRole:(int64_t)a3;
-- (id)leafAppLayoutForItem:(id)a3;
-- (id)leafAppLayoutForRole:(int64_t)a3;
+- (id)itemForLayoutRole:(int64_t)role;
+- (id)leafAppLayoutForItem:(id)item;
+- (id)leafAppLayoutForRole:(int64_t)role;
 - (id)leafAppLayouts;
-- (id)leafAppLayoutsFromDisplayItems:(id)a3;
-- (id)plistRepresentationWithLayoutAttributesMap:(id)a3;
+- (id)leafAppLayoutsFromDisplayItems:(id)items;
+- (id)plistRepresentationWithLayoutAttributesMap:(id)map;
 - (id)preferredDisplayIdentity;
-- (id)protobufRepresentationWithLayoutAttributesMap:(id)a3 layoutAttributesEntries:(id)a4;
+- (id)protobufRepresentationWithLayoutAttributesMap:(id)map layoutAttributesEntries:(id)entries;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)compare:(id)a3;
-- (int64_t)layoutRoleForItem:(id)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)layoutRoleForItem:(id)item;
 - (int64_t)type;
 - (uint64_t)isFlexibleWindowingEnabled;
 - (uint64_t)setConfiguration:(uint64_t)result;
-- (void)enumerate:(id)a3;
-- (void)setItems:(void *)a1;
-- (void)setItemsWithoutCenterOrFloatingItems:(void *)a1;
+- (void)enumerate:(id)enumerate;
+- (void)setItems:(void *)items;
+- (void)setItemsWithoutCenterOrFloatingItems:(void *)items;
 @end
 
 @implementation SBAppLayout
@@ -66,28 +66,28 @@
   if (result == -1)
   {
     v4 = [(SBAppLayout *)self itemForLayoutRole:1];
-    v5 = [v4 type];
+    type = [v4 type];
 
     v6 = +[SBAppLayout homeScreenAppLayout];
     v7 = [(SBAppLayout *)self isEqual:v6];
 
     result = 1;
-    if (!v7 && v5 != 1)
+    if (!v7 && type != 1)
     {
       v8 = +[SBAppLayout appLibraryAppLayout];
       v9 = [(SBAppLayout *)self isEqual:v8];
 
       result = 6;
-      if (!v9 && v5 != 8)
+      if (!v9 && type != 8)
       {
-        if (v5 > 6)
+        if (type > 6)
         {
           result = -1;
         }
 
         else
         {
-          result = qword_21F8A73C8[v5];
+          result = qword_21F8A73C8[type];
         }
       }
     }
@@ -127,18 +127,18 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBAppLayout *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBAppLayout *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [objc_opt_class() homeScreenAppLayout];
+  homeScreenAppLayout = [objc_opt_class() homeScreenAppLayout];
 
-  if (v4 == self)
+  if (homeScreenAppLayout == self)
   {
     [v3 appendString:@"HomeScreenAppLayout" withName:0];
   }
@@ -198,7 +198,7 @@
   block[1] = 3221225472;
   block[2] = __34__SBAppLayout_homeScreenAppLayout__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (homeScreenAppLayout_onceToken != -1)
   {
     dispatch_once(&homeScreenAppLayout_onceToken, block);
@@ -236,10 +236,10 @@ void __41__SBAppLayout_succinctDescriptionBuilder__block_invoke(uint64_t a1, uin
 
 - (id)appLibraryDisplayItem
 {
-  v2 = [(NSArray *)self->_items firstObject];
-  if ([v2 isAppLibraryDisplayItem])
+  firstObject = [(NSArray *)self->_items firstObject];
+  if ([firstObject isAppLibraryDisplayItem])
   {
-    v3 = v2;
+    v3 = firstObject;
   }
 
   else
@@ -271,27 +271,27 @@ void __41__SBAppLayout_succinctDescriptionBuilder__block_invoke(uint64_t a1, uin
 
 - (id)preferredDisplayIdentity
 {
-  v2 = [(SBAppLayout *)self _preferredWindowScene];
-  v3 = [v2 _sbDisplayConfiguration];
-  v4 = [v3 identity];
+  _preferredWindowScene = [(SBAppLayout *)self _preferredWindowScene];
+  _sbDisplayConfiguration = [_preferredWindowScene _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
 
-  return v4;
+  return identity;
 }
 
 - (id)_preferredWindowScene
 {
-  v2 = [(SBAppLayout *)self preferredDisplayOrdinal];
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 connectedWindowScenes];
-  v5 = [v4 bs_firstObjectPassingTest:&__block_literal_global_92_1];
+  preferredDisplayOrdinal = [(SBAppLayout *)self preferredDisplayOrdinal];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
+  v5 = [connectedWindowScenes bs_firstObjectPassingTest:&__block_literal_global_92_1];
 
-  v6 = [SBApp windowSceneManager];
-  v7 = [v6 connectedWindowScenes];
-  v8 = [v7 bs_firstObjectPassingTest:&__block_literal_global_94_1];
+  windowSceneManager2 = [SBApp windowSceneManager];
+  connectedWindowScenes2 = [windowSceneManager2 connectedWindowScenes];
+  v8 = [connectedWindowScenes2 bs_firstObjectPassingTest:&__block_literal_global_94_1];
 
   if (v8)
   {
-    v9 = v2 == 1;
+    v9 = preferredDisplayOrdinal == 1;
   }
 
   else
@@ -316,20 +316,20 @@ void __41__SBAppLayout_succinctDescriptionBuilder__block_invoke(uint64_t a1, uin
 
 - (SBAppLayout)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBAppLayout.m" lineNumber:267 description:@"use -initWithItemsForLayoutRoles:configuration:environment:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppLayout.m" lineNumber:267 description:@"use -initWithItemsForLayoutRoles:configuration:environment:"];
 
   return 0;
 }
 
-- (SBAppLayout)initWithItemsForLayoutRoles:(id)a3 configuration:(int64_t)a4 centerConfiguration:(int64_t)a5 environment:(int64_t)a6 hidden:(BOOL)a7 preferredDisplayOrdinal:(int64_t)a8
+- (SBAppLayout)initWithItemsForLayoutRoles:(id)roles configuration:(int64_t)configuration centerConfiguration:(int64_t)centerConfiguration environment:(int64_t)environment hidden:(BOOL)hidden preferredDisplayOrdinal:(int64_t)ordinal
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = [v11 allKeys];
-  v13 = [v12 sortedArrayUsingSelector:sel_compare_];
+  rolesCopy = roles;
+  allKeys = [rolesCopy allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(rolesCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -352,7 +352,7 @@ void __41__SBAppLayout_succinctDescriptionBuilder__block_invoke(uint64_t a1, uin
         v20 = *(*(&v32 + 1) + 8 * i);
         if (SBLayoutRoleIsValid([v20 integerValue]))
         {
-          v21 = [v11 objectForKey:v20];
+          v21 = [rolesCopy objectForKey:v20];
           [v14 addObject:v21];
         }
       }
@@ -364,28 +364,28 @@ void __41__SBAppLayout_succinctDescriptionBuilder__block_invoke(uint64_t a1, uin
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:4];
-  v23 = [v11 objectForKey:v22];
+  v23 = [rolesCopy objectForKey:v22];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:3];
-  v25 = [v11 objectForKey:v24];
+  v25 = [rolesCopy objectForKey:v24];
 
-  LOBYTE(v28) = a7;
-  v26 = [(SBAppLayout *)self initWithItems:v14 centerItem:v23 floatingItem:v25 configuration:a4 centerConfiguration:a5 environment:a6 hidden:v28 preferredDisplayOrdinal:a8];
+  LOBYTE(v28) = hidden;
+  v26 = [(SBAppLayout *)self initWithItems:v14 centerItem:v23 floatingItem:v25 configuration:configuration centerConfiguration:centerConfiguration environment:environment hidden:v28 preferredDisplayOrdinal:ordinal];
 
   return v26;
 }
 
-- (SBAppLayout)initWithItems:(id)a3 centerItem:(id)a4 floatingItem:(id)a5 configuration:(int64_t)a6 centerConfiguration:(int64_t)a7 environment:(int64_t)a8 hidden:(BOOL)a9 preferredDisplayOrdinal:(int64_t)a10
+- (SBAppLayout)initWithItems:(id)items centerItem:(id)item floatingItem:(id)floatingItem configuration:(int64_t)configuration centerConfiguration:(int64_t)centerConfiguration environment:(int64_t)environment hidden:(BOOL)hidden preferredDisplayOrdinal:(int64_t)self0
 {
   v66 = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v16 = a4;
-  v17 = a5;
+  itemsCopy = items;
+  itemCopy = item;
+  floatingItemCopy = floatingItem;
   v18 = objc_opt_class();
-  v48 = v16;
+  v48 = itemCopy;
   if (v18 == objc_opt_class())
   {
-    if (!v16)
+    if (!itemCopy)
     {
       goto LABEL_5;
     }
@@ -394,19 +394,19 @@ void __41__SBAppLayout_succinctDescriptionBuilder__block_invoke(uint64_t a1, uin
   else
   {
     [SBAppLayout initWithItems:centerItem:floatingItem:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:];
-    if (!v16)
+    if (!itemCopy)
     {
       goto LABEL_5;
     }
   }
 
-  if (([v50 containsObject:{v16, v16}] & 1) == 0)
+  if (([itemsCopy containsObject:{itemCopy, itemCopy}] & 1) == 0)
   {
     [SBAppLayout initWithItems:centerItem:floatingItem:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:];
   }
 
 LABEL_5:
-  if (v17 && ([v50 containsObject:v17] & 1) == 0)
+  if (floatingItemCopy && ([itemsCopy containsObject:floatingItemCopy] & 1) == 0)
   {
     [SBAppLayout initWithItems:centerItem:floatingItem:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:];
   }
@@ -422,15 +422,15 @@ LABEL_5:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_centerItem, a4);
-    objc_storeStrong(&v20->_floatingItem, a5);
-    v20->_configuration = a6;
-    v20->_environment = a8;
-    v20->_centerConfiguration = a7;
+    objc_storeStrong(&v19->_centerItem, item);
+    objc_storeStrong(&v20->_floatingItem, floatingItem);
+    v20->_configuration = configuration;
+    v20->_environment = environment;
+    v20->_centerConfiguration = centerConfiguration;
     v20->_cachedAppLayoutType = -1;
-    v20->_hidden = a9;
-    v20->_preferredDisplayOrdinal = a10;
-    v21 = [v50 copy];
+    v20->_hidden = hidden;
+    v20->_preferredDisplayOrdinal = ordinal;
+    v21 = [itemsCopy copy];
     items = v20->_items;
     v20->_items = v21;
 
@@ -445,12 +445,12 @@ LABEL_5:
     itemsWithoutCenterOrFloatingItems = v24->_itemsWithoutCenterOrFloatingItems;
     v24->_itemsWithoutCenterOrFloatingItems = v25;
 
-    if ([v50 count] == 1)
+    if ([itemsCopy count] == 1)
     {
-      v27 = [v50 firstObject];
-      v28 = [v27 bundleIdentifier];
+      firstObject = [itemsCopy firstObject];
+      bundleIdentifier = [firstObject bundleIdentifier];
       continuousExposeIdentifier = v24->_continuousExposeIdentifier;
-      v24->_continuousExposeIdentifier = v28;
+      v24->_continuousExposeIdentifier = bundleIdentifier;
     }
 
     else
@@ -467,22 +467,22 @@ LABEL_5:
       v55[3] = &unk_2783AFC58;
       v55[4] = &v56;
       [(SBAppLayout *)v24 enumerate:v55];
-      v30 = [v57[5] allObjects];
-      v31 = [v30 componentsJoinedByString:@"&"];
+      allObjects = [v57[5] allObjects];
+      v31 = [allObjects componentsJoinedByString:@"&"];
       v32 = v24->_continuousExposeIdentifier;
       v24->_continuousExposeIdentifier = v31;
 
       _Block_object_dispose(&v56, 8);
     }
 
-    v33 = [MEMORY[0x277CF0C40] builder];
-    v34 = [v33 appendInteger:v20->_environment];
-    v35 = [v33 appendInteger:v20->_configuration];
-    v36 = [v33 appendInteger:v20->_centerConfiguration];
-    v37 = [v33 appendBool:v20->_hidden];
+    builder = [MEMORY[0x277CF0C40] builder];
+    v34 = [builder appendInteger:v20->_environment];
+    v35 = [builder appendInteger:v20->_configuration];
+    v36 = [builder appendInteger:v20->_centerConfiguration];
+    v37 = [builder appendBool:v20->_hidden];
     if ([(NSArray *)v20->_items count])
     {
-      v38 = [v33 appendInteger:v20->_preferredDisplayOrdinal];
+      v38 = [builder appendInteger:v20->_preferredDisplayOrdinal];
     }
 
     v53 = 0u;
@@ -503,7 +503,7 @@ LABEL_5:
             objc_enumerationMutation(v39);
           }
 
-          v43 = [v33 appendObject:*(*(&v51 + 1) + 8 * i)];
+          v43 = [builder appendObject:*(*(&v51 + 1) + 8 * i)];
         }
 
         v40 = [(NSArray *)v39 countByEnumeratingWithState:&v51 objects:v65 count:16];
@@ -512,7 +512,7 @@ LABEL_5:
       while (v40);
     }
 
-    v24->_cachedHash = [v33 hash];
+    v24->_cachedHash = [builder hash];
   }
 
   v44 = v20;
@@ -586,7 +586,7 @@ void __34__SBAppLayout_homeScreenAppLayout__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__SBAppLayout_appLibraryAppLayout__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (appLibraryAppLayout_onceToken != -1)
   {
     dispatch_once(&appLibraryAppLayout_onceToken, block);
@@ -611,16 +611,16 @@ void __34__SBAppLayout_appLibraryAppLayout__block_invoke(uint64_t a1)
   appLibraryAppLayout___appLibraryAppLayout = v5;
 }
 
-- (id)itemForLayoutRole:(int64_t)a3
+- (id)itemForLayoutRole:(int64_t)role
 {
   v5 = [(NSArray *)self->_itemsWithoutCenterOrFloatingItems count];
   v6 = SBLayoutRoleMax();
-  if (a3 < 1 || v6 < a3)
+  if (role < 1 || v6 < role)
   {
     goto LABEL_6;
   }
 
-  switch(a3)
+  switch(role)
   {
     case 1:
       if (v5)
@@ -651,8 +651,8 @@ LABEL_6:
       floatingItem = self->_centerItem;
       break;
     default:
-      v10 = a3 - 3;
-      if (v5 >= a3 - 2)
+      v10 = role - 3;
+      if (v5 >= role - 2)
       {
         itemsWithoutCenterOrFloatingItems = self->_itemsWithoutCenterOrFloatingItems;
         goto LABEL_13;
@@ -667,10 +667,10 @@ LABEL_19:
   return v8;
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enumerateCopy = enumerate;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
@@ -691,7 +691,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, [(SBAppLayout *)self layoutRoleForItem:*(*(&v10 + 1) + 8 * v9), v10], *(*(&v10 + 1) + 8 * v9), &v14);
+      enumerateCopy[2](enumerateCopy, [(SBAppLayout *)self layoutRoleForItem:*(*(&v10 + 1) + 8 * v9), v10], *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -711,10 +711,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)containsAnyItemFromSet:(id)a3
+- (BOOL)containsAnyItemFromSet:(id)set
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   [(SBAppLayout *)self allItems];
   v10 = 0u;
   v11 = 0u;
@@ -733,7 +733,7 @@ LABEL_3:
           objc_enumerationMutation(v5);
         }
 
-        if ([v4 containsObject:{*(*(&v10 + 1) + 8 * i), v10}])
+        if ([setCopy containsObject:{*(*(&v10 + 1) + 8 * i), v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -755,12 +755,12 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsAnyItemFromAppLayout:(id)a3
+- (BOOL)containsAnyItemFromAppLayout:(id)layout
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAppLayout *)self allItems];
-  [v4 allItems];
+  layoutCopy = layout;
+  allItems = [(SBAppLayout *)self allItems];
+  [layoutCopy allItems];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -778,7 +778,7 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        if ([v5 containsObject:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([allItems containsObject:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
@@ -800,31 +800,31 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)containsAllItemsFromSet:(id)a3
+- (BOOL)containsAllItemsFromSet:(id)set
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [(SBAppLayout *)self allItems];
-  v7 = [v4 setWithArray:v6];
+  setCopy = set;
+  allItems = [(SBAppLayout *)self allItems];
+  v7 = [v4 setWithArray:allItems];
 
-  LOBYTE(v6) = [v5 isSubsetOfSet:v7];
-  return v6;
+  LOBYTE(allItems) = [setCopy isSubsetOfSet:v7];
+  return allItems;
 }
 
-- (BOOL)containsAllItemsFromAppLayout:(id)a3
+- (BOOL)containsAllItemsFromAppLayout:(id)layout
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAppLayout *)self allItems];
-  v6 = [v4 allItems];
-  v7 = [v6 count];
-  if (v7 <= [v5 count])
+  layoutCopy = layout;
+  allItems = [(SBAppLayout *)self allItems];
+  allItems2 = [layoutCopy allItems];
+  v7 = [allItems2 count];
+  if (v7 <= [allItems count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v6;
+    v9 = allItems2;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
@@ -839,7 +839,7 @@ LABEL_11:
             objc_enumerationMutation(v9);
           }
 
-          if (![v5 containsObject:{*(*(&v15 + 1) + 8 * i), v15}])
+          if (![allItems containsObject:{*(*(&v15 + 1) + 8 * i), v15}])
           {
             v8 = 0;
             goto LABEL_13;
@@ -868,25 +868,25 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBAppLayout *)self allItems];
-  v6 = [v5 containsObject:v4];
+  itemCopy = item;
+  allItems = [(SBAppLayout *)self allItems];
+  v6 = [allItems containsObject:itemCopy];
 
   return v6;
 }
 
-- (BOOL)containsItemWithBundleIdentifier:(id)a3
+- (BOOL)containsItemWithBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SBAppLayout *)self allItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allItems = [(SBAppLayout *)self allItems];
+  v6 = [allItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -896,11 +896,11 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allItems);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqualToString:v4];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v10)
         {
@@ -909,7 +909,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -924,16 +924,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsItemWithUniqueIdentifier:(id)a3
+- (BOOL)containsItemWithUniqueIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SBAppLayout *)self allItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allItems = [(SBAppLayout *)self allItems];
+  v6 = [allItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -943,11 +943,11 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allItems);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) uniqueIdentifier];
-        v10 = [v9 isEqualToString:v4];
+        uniqueIdentifier = [*(*(&v12 + 1) + 8 * i) uniqueIdentifier];
+        v10 = [uniqueIdentifier isEqualToString:identifierCopy];
 
         if (v10)
         {
@@ -956,7 +956,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -971,10 +971,10 @@ LABEL_11:
   return v6;
 }
 
-- (int64_t)layoutRoleForItem:(id)a3
+- (int64_t)layoutRoleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_itemsWithoutCenterOrFloatingItems indexOfObject:v4];
+  itemCopy = item;
+  v5 = [(NSArray *)self->_itemsWithoutCenterOrFloatingItems indexOfObject:itemCopy];
   switch(v5)
   {
     case 0uLL:
@@ -984,7 +984,7 @@ LABEL_11:
       v6 = &SBLayoutRoleSide;
       goto LABEL_13;
     case 0x7FFFFFFFFFFFFFFFuLL:
-      if (v4)
+      if (itemCopy)
       {
         if (BSEqualObjects())
         {
@@ -1011,20 +1011,20 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isOrContainsAppLayout:(id)a3
+- (BOOL)isOrContainsAppLayout:(id)layout
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (v4 == self)
+  layoutCopy = layout;
+  p_isa = &layoutCopy->super.isa;
+  if (layoutCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (v6 = -[NSArray count](self->_items, "count"), v6 >= [p_isa[14] count]))
+  else if (layoutCopy && (v6 = -[NSArray count](self->_items, "count"), v6 >= [p_isa[14] count]))
   {
-    v8 = [p_isa environment];
+    environment = [p_isa environment];
     environment = self->_environment;
-    if (environment == v8 || (v7 = 0, v8 == 3) && environment == 1)
+    if (environment == environment || (v7 = 0, environment == 3) && environment == 1)
     {
       v7 = [(SBAppLayout *)self containsAllItemsFromAppLayout:p_isa];
     }
@@ -1081,28 +1081,28 @@ LABEL_14:
   return v4;
 }
 
-- (id)leafAppLayoutForItem:(id)a3
+- (id)leafAppLayoutForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBAppLayout *)self layoutRoleForItem:v4];
+  itemCopy = item;
+  v5 = [(SBAppLayout *)self layoutRoleForItem:itemCopy];
   if (v5 == 1)
   {
     v6 = [(NSArray *)self->_items count];
-    if (v4)
+    if (itemCopy)
     {
       if (v6 == 1)
       {
-        v7 = self;
+        selfCopy = self;
 LABEL_7:
-        v8 = v7;
+        v8 = selfCopy;
         goto LABEL_9;
       }
     }
   }
 
-  if (v4)
+  if (itemCopy)
   {
-    v7 = [(SBAppLayout *)self _leafAppLayoutForItem:v4 role:v5];
+    selfCopy = [(SBAppLayout *)self _leafAppLayoutForItem:itemCopy role:v5];
     goto LABEL_7;
   }
 
@@ -1112,18 +1112,18 @@ LABEL_9:
   return v8;
 }
 
-- (id)_leafAppLayoutForItem:(id)a3 role:(int64_t)a4
+- (id)_leafAppLayoutForItem:(id)item role:(int64_t)role
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (item)
   {
-    if (a4 == 3)
+    if (role == 3)
     {
       centerConfiguration = 0;
       environment = 2;
     }
 
-    else if (a4 == 4 || (environment = self->_environment, environment == 3))
+    else if (role == 4 || (environment = self->_environment, environment == 3))
     {
       centerConfiguration = self->_centerConfiguration;
       environment = 3;
@@ -1134,11 +1134,11 @@ LABEL_9:
       centerConfiguration = 0;
     }
 
-    v8 = a3;
+    itemCopy = item;
     v9 = [SBAppLayout alloc];
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:1];
     v13 = v10;
-    v14[0] = v8;
+    v14[0] = itemCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
     v7 = [(SBAppLayout *)v9 initWithItemsForLayoutRoles:v11 configuration:1 centerConfiguration:centerConfiguration environment:environment hidden:self->_hidden preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
@@ -1152,10 +1152,10 @@ LABEL_9:
   return v7;
 }
 
-- (id)appLayoutByInsertingLeafAppLayout:(id)a3 inRole:(int64_t)a4
+- (id)appLayoutByInsertingLeafAppLayout:(id)layout inRole:(int64_t)role
 {
-  v6 = [a3 itemForLayoutRole:1];
-  v7 = [(SBAppLayout *)self appLayoutByInsertingItem:v6 inLayoutRole:a4];
+  v6 = [layout itemForLayoutRole:1];
+  v7 = [(SBAppLayout *)self appLayoutByInsertingItem:v6 inLayoutRole:role];
 
   return v7;
 }
@@ -1166,51 +1166,51 @@ void __29__SBAppLayout_leafAppLayouts__block_invoke(uint64_t a1)
   [*(a1 + 40) addObject:v2];
 }
 
-- (id)leafAppLayoutForRole:(int64_t)a3
+- (id)leafAppLayoutForRole:(int64_t)role
 {
-  v4 = [(SBAppLayout *)self itemForLayoutRole:a3];
+  v4 = [(SBAppLayout *)self itemForLayoutRole:role];
   v5 = [(SBAppLayout *)self leafAppLayoutForItem:v4];
 
   return v5;
 }
 
-- (id)leafAppLayoutsFromDisplayItems:(id)a3
+- (id)leafAppLayoutsFromDisplayItems:(id)items
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__SBAppLayout_leafAppLayoutsFromDisplayItems___block_invoke;
   v5[3] = &unk_2783BA888;
   v5[4] = self;
-  v3 = [a3 bs_compactMap:v5];
+  v3 = [items bs_compactMap:v5];
 
   return v3;
 }
 
-- (id)appLayoutByModifyingHiddenState:(BOOL)a3
+- (id)appLayoutByModifyingHiddenState:(BOOL)state
 {
   hidden = self->_hidden;
-  if (hidden == a3)
+  if (hidden == state)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    LOBYTE(v6) = a3 & ~hidden;
-    v4 = [[SBAppLayout alloc] initWithItems:self->_items centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:self->_configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v6 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
-    [(SBAppLayout *)v4 setCachedLastFlexibleWindowingAutoLayoutSpace:0];
-    [(SBAppLayout *)v4 setCachedLastOverlappingModelKey:0];
+    LOBYTE(v6) = state & ~hidden;
+    selfCopy = [[SBAppLayout alloc] initWithItems:self->_items centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:self->_configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v6 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
+    [(SBAppLayout *)selfCopy setCachedLastFlexibleWindowingAutoLayoutSpace:0];
+    [(SBAppLayout *)selfCopy setCachedLastOverlappingModelKey:0];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)appLayoutByModifyingEnvironment:(int64_t)a3
+- (id)appLayoutByModifyingEnvironment:(int64_t)environment
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (self->_environment == a3)
+  if (self->_environment == environment)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
@@ -1221,62 +1221,62 @@ void __29__SBAppLayout_leafAppLayouts__block_invoke(uint64_t a1)
     v11 = v8;
     v12[0] = v6;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    v4 = [(SBAppLayout *)v7 initWithItemsForLayoutRoles:v9 configuration:1 centerConfiguration:0 environment:a3 hidden:0 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
+    selfCopy = [(SBAppLayout *)v7 initWithItemsForLayoutRoles:v9 configuration:1 centerConfiguration:0 environment:environment hidden:0 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)appLayoutByModifyingConfiguration:(int64_t)a3
+- (id)appLayoutByModifyingConfiguration:(int64_t)configuration
 {
-  if (self->_configuration == a3)
+  if (self->_configuration == configuration)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6 = [SBAppLayout alloc];
     LOBYTE(v8) = self->_hidden;
-    v4 = [(SBAppLayout *)v6 initWithItems:self->_items centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:a3 centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v8 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
+    selfCopy = [(SBAppLayout *)v6 initWithItems:self->_items centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v8 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)appLayoutByModifyingPreferredDisplayOrdinal:(int64_t)a3
+- (id)appLayoutByModifyingPreferredDisplayOrdinal:(int64_t)ordinal
 {
-  if (self->_preferredDisplayOrdinal == a3)
+  if (self->_preferredDisplayOrdinal == ordinal)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6 = [SBAppLayout alloc];
     LOBYTE(v8) = self->_hidden;
-    v4 = [(SBAppLayout *)v6 initWithItems:self->_items centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:self->_configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v8 preferredDisplayOrdinal:a3];
+    selfCopy = [(SBAppLayout *)v6 initWithItems:self->_items centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:self->_configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v8 preferredDisplayOrdinal:ordinal];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)appLayoutByInsertingItem:(id)a3
+- (id)appLayoutByInsertingItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [SBAppLayout appLayoutByInsertingItem:];
   }
 
-  if ([(NSArray *)self->_items containsObject:v4])
+  if ([(NSArray *)self->_items containsObject:itemCopy])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_items arrayByAddingObject:v4];
+    v6 = [(NSArray *)self->_items arrayByAddingObject:itemCopy];
     configuration = self->_configuration;
     if ([v6 count] >= 2 && configuration == 1)
     {
@@ -1290,70 +1290,70 @@ void __29__SBAppLayout_leafAppLayouts__block_invoke(uint64_t a1)
 
     v9 = [SBAppLayout alloc];
     LOBYTE(v11) = self->_hidden;
-    v5 = [(SBAppLayout *)v9 initWithItems:v6 centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v11 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
+    selfCopy = [(SBAppLayout *)v9 initWithItems:v6 centerItem:self->_centerItem floatingItem:self->_floatingItem configuration:configuration centerConfiguration:self->_centerConfiguration environment:self->_environment hidden:v11 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)appLayoutByInsertingItem:(id)a3 inLayoutRole:(int64_t)a4
+- (id)appLayoutByInsertingItem:(id)item inLayoutRole:(int64_t)role
 {
-  v7 = a3;
-  v8 = [(SBAppLayout *)self itemForLayoutRole:a4];
-  v9 = [(SBDisplayItem *)v7 isEqualToItem:v8];
+  itemCopy = item;
+  v8 = [(SBAppLayout *)self itemForLayoutRole:role];
+  v9 = [(SBDisplayItem *)itemCopy isEqualToItem:v8];
 
   if (v9)
   {
-    v10 = self;
+    selfCopy = self;
     goto LABEL_45;
   }
 
   v11 = [(NSArray *)self->_itemsWithoutCenterOrFloatingItems mutableCopy];
   v12 = self->_centerItem;
   v13 = self->_floatingItem;
-  if ([v11 containsObject:v7])
+  if ([v11 containsObject:itemCopy])
   {
-    [v11 removeObject:v7];
+    [v11 removeObject:itemCopy];
     if ([v11 count])
     {
       goto LABEL_11;
     }
 
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    v15 = SBLayoutRoleDescription(a4);
-    [v14 handleFailureInMethod:a2 object:self file:@"SBAppLayout.m" lineNumber:806 description:{@"Moving %@ to %@ would result in an app layout without a primary item", v7, v15}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v15 = SBLayoutRoleDescription(role);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppLayout.m" lineNumber:806 description:{@"Moving %@ to %@ would result in an app layout without a primary item", itemCopy, v15}];
   }
 
-  else if (([(SBDisplayItem *)v7 isEqualToItem:v12]& 1) != 0)
+  else if (([(SBDisplayItem *)itemCopy isEqualToItem:v12]& 1) != 0)
   {
-    v14 = v12;
+    currentHandler = v12;
     v12 = 0;
   }
 
   else
   {
-    if (![(SBDisplayItem *)v7 isEqualToItem:v13])
+    if (![(SBDisplayItem *)itemCopy isEqualToItem:v13])
     {
       goto LABEL_11;
     }
 
-    v14 = v13;
+    currentHandler = v13;
     v13 = 0;
   }
 
 LABEL_11:
-  if (!SBLayoutRoleIsValidForSplitView(a4))
+  if (!SBLayoutRoleIsValidForSplitView(role))
   {
-    if (a4 == 4)
+    if (role == 4)
     {
-      v17 = v7;
+      v17 = itemCopy;
 
       v12 = v17;
     }
 
-    else if (a4 == 3)
+    else if (role == 3)
     {
-      v18 = v7;
+      v18 = itemCopy;
 
       v13 = v18;
     }
@@ -1361,12 +1361,12 @@ LABEL_11:
     goto LABEL_30;
   }
 
-  if (a4 == 1)
+  if (role == 1)
   {
     v16 = 0;
   }
 
-  else if (a4 == 2)
+  else if (role == 2)
   {
     v16 = 1;
   }
@@ -1374,9 +1374,9 @@ LABEL_11:
   else
   {
     v19 = [v11 count];
-    if (v19 >= a4 - 3)
+    if (v19 >= role - 3)
     {
-      v16 = a4 - 3;
+      v16 = role - 3;
     }
 
     else
@@ -1389,19 +1389,19 @@ LABEL_11:
   {
     if ([v11 count] > v16)
     {
-      [v11 replaceObjectAtIndex:v16 withObject:v7];
+      [v11 replaceObjectAtIndex:v16 withObject:itemCopy];
       goto LABEL_30;
     }
 
     v20 = v11;
-    v21 = v7;
+    v21 = itemCopy;
     v22 = v16;
   }
 
   else
   {
     v20 = v11;
-    v21 = v7;
+    v21 = itemCopy;
     v22 = 0;
   }
 
@@ -1457,14 +1457,14 @@ LABEL_30:
 
   v29 = [SBAppLayout alloc];
   LOBYTE(v31) = self->_hidden;
-  v10 = [(SBAppLayout *)v29 initWithItems:v23 centerItem:v12 floatingItem:v13 configuration:configuration centerConfiguration:centerConfiguration environment:self->_environment hidden:v31 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
+  selfCopy = [(SBAppLayout *)v29 initWithItems:v23 centerItem:v12 floatingItem:v13 configuration:configuration centerConfiguration:centerConfiguration environment:self->_environment hidden:v31 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
 
 LABEL_45:
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)appLayoutByRemovingItemInLayoutRole:(int64_t)a3
+- (id)appLayoutByRemovingItemInLayoutRole:(int64_t)role
 {
   v5 = [(SBAppLayout *)self itemForLayoutRole:?];
   if (v5)
@@ -1472,14 +1472,14 @@ LABEL_45:
     v6 = [(NSArray *)self->_itemsWithoutCenterOrFloatingItems mutableCopy];
     v7 = self->_centerItem;
     v8 = self->_floatingItem;
-    if (SBLayoutRoleIsValidForSplitView(a3))
+    if (SBLayoutRoleIsValidForSplitView(role))
     {
-      if (a3 == 1)
+      if (role == 1)
       {
         v9 = 0;
       }
 
-      else if (a3 == 2)
+      else if (role == 2)
       {
         v9 = 1;
       }
@@ -1487,9 +1487,9 @@ LABEL_45:
       else
       {
         v11 = [v6 count];
-        if (v11 >= a3 - 3)
+        if (v11 >= role - 3)
         {
-          v9 = a3 - 3;
+          v9 = role - 3;
         }
 
         else
@@ -1504,13 +1504,13 @@ LABEL_45:
       }
     }
 
-    else if (a3 == 4)
+    else if (role == 4)
     {
 
       v7 = 0;
     }
 
-    else if (a3 == 3)
+    else if (role == 3)
     {
 
       v8 = 0;
@@ -1542,23 +1542,23 @@ LABEL_45:
 
     v16 = [SBAppLayout alloc];
     LOBYTE(v18) = self->_hidden;
-    v10 = [(SBAppLayout *)v16 initWithItems:v12 centerItem:v7 floatingItem:v8 configuration:configuration centerConfiguration:centerConfiguration environment:self->_environment hidden:v18 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
+    selfCopy = [(SBAppLayout *)v16 initWithItems:v12 centerItem:v7 floatingItem:v8 configuration:configuration centerConfiguration:centerConfiguration environment:self->_environment hidden:v18 preferredDisplayOrdinal:self->_preferredDisplayOrdinal];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:(id)a3 multitaskingSupported:(BOOL)a4
+- (id)appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:(id)controller multitaskingSupported:(BOOL)supported
 {
-  v4 = a4;
+  supportedCopy = supported;
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(SBAppLayout *)self environment]== 2 && !v4)
+  controllerCopy = controller;
+  if ([(SBAppLayout *)self environment]== 2 && !supportedCopy)
   {
     v7 = [(SBAppLayout *)self appLayoutByModifyingEnvironment:1];
     v26[0] = v7;
@@ -1574,16 +1574,16 @@ LABEL_45:
   }
 
   v9 = [(SBAppLayout *)self itemForLayoutRole:1];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v6 applicationWithBundleIdentifier:v10];
-  v12 = [v11 isMedusaCapable];
+  bundleIdentifier = [v9 bundleIdentifier];
+  v11 = [controllerCopy applicationWithBundleIdentifier:bundleIdentifier];
+  isMedusaCapable = [v11 isMedusaCapable];
 
   v13 = [(SBAppLayout *)self itemForLayoutRole:2];
-  v14 = [v13 bundleIdentifier];
-  v15 = [v6 applicationWithBundleIdentifier:v14];
-  v16 = [v15 isMedusaCapable];
+  bundleIdentifier2 = [v13 bundleIdentifier];
+  v15 = [controllerCopy applicationWithBundleIdentifier:bundleIdentifier2];
+  isMedusaCapable2 = [v15 isMedusaCapable];
 
-  v17 = v12 & v16 & v4;
+  v17 = isMedusaCapable & isMedusaCapable2 & supportedCopy;
   if (v17 == 1)
   {
     v8 = [(SBAppLayout *)self itemForLayoutRole:5];
@@ -1644,14 +1644,14 @@ void __107__SBAppLayout_appLayoutsBySplittingMedusaIncompatibleItemsWithApplicat
   if (v3)
   {
     v4 = [SBAppLayout alloc];
-    v5 = [(SBAppLayout *)self allItems];
+    allItems = [(SBAppLayout *)self allItems];
     v6 = [(SBAppLayout *)self itemForLayoutRole:4];
-    v7 = [(SBAppLayout *)self configuration];
-    v8 = [(SBAppLayout *)self environment];
+    configuration = [(SBAppLayout *)self configuration];
+    environment = [(SBAppLayout *)self environment];
     LOBYTE(v14) = [(SBAppLayout *)self isHidden];
-    v9 = [(SBAppLayout *)v4 initWithItems:v5 centerItem:v6 floatingItem:0 configuration:v7 centerConfiguration:0 environment:v8 hidden:v14 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
+    v9 = [(SBAppLayout *)v4 initWithItems:allItems centerItem:v6 floatingItem:0 configuration:configuration centerConfiguration:0 environment:environment hidden:v14 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
 LABEL_5:
-    v12 = v9;
+    selfCopy = v9;
 
     goto LABEL_6;
   }
@@ -1659,18 +1659,18 @@ LABEL_5:
   if ([(SBAppLayout *)self environment]== 2)
   {
     v10 = [SBAppLayout alloc];
-    v5 = [(SBAppLayout *)self allItems];
+    allItems = [(SBAppLayout *)self allItems];
     v6 = [(SBAppLayout *)self itemForLayoutRole:4];
-    v11 = [(SBAppLayout *)self configuration];
+    configuration2 = [(SBAppLayout *)self configuration];
     LOBYTE(v14) = [(SBAppLayout *)self isHidden];
-    v9 = [(SBAppLayout *)v10 initWithItems:v5 centerItem:v6 floatingItem:0 configuration:v11 centerConfiguration:0 environment:1 hidden:v14 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
+    v9 = [(SBAppLayout *)v10 initWithItems:allItems centerItem:v6 floatingItem:0 configuration:configuration2 centerConfiguration:0 environment:1 hidden:v14 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
     goto LABEL_5;
   }
 
-  v12 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)appLayoutByAdjustingCenterWindowItemsForFlexibleWindowing
@@ -1679,52 +1679,52 @@ LABEL_6:
 
   if (v3)
   {
-    v4 = [(SBAppLayout *)self configuration];
-    if (v4 == 1)
+    configuration = [(SBAppLayout *)self configuration];
+    if (configuration == 1)
     {
       v5 = 3;
     }
 
     else
     {
-      v5 = v4;
+      v5 = configuration;
     }
 
     v6 = [SBAppLayout alloc];
-    v7 = [(SBAppLayout *)self allItems];
+    allItems = [(SBAppLayout *)self allItems];
     v8 = [(SBAppLayout *)self itemForLayoutRole:3];
-    v9 = [(SBAppLayout *)self environment];
+    environment = [(SBAppLayout *)self environment];
     LOBYTE(v16) = [(SBAppLayout *)self isHidden];
-    v10 = [(SBAppLayout *)v6 initWithItems:v7 centerItem:0 floatingItem:v8 configuration:v5 centerConfiguration:0 environment:v9 hidden:v16 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
+    selfCopy = [(SBAppLayout *)v6 initWithItems:allItems centerItem:0 floatingItem:v8 configuration:v5 centerConfiguration:0 environment:environment hidden:v16 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
   }
 
   else if ([(SBAppLayout *)self environment]== 3)
   {
     v11 = [SBAppLayout alloc];
-    v12 = [(SBAppLayout *)self allItems];
+    allItems2 = [(SBAppLayout *)self allItems];
     v13 = [(SBAppLayout *)self itemForLayoutRole:3];
-    v14 = [(SBAppLayout *)self configuration];
+    configuration2 = [(SBAppLayout *)self configuration];
     LOBYTE(v16) = [(SBAppLayout *)self isHidden];
-    v10 = [(SBAppLayout *)v11 initWithItems:v12 centerItem:0 floatingItem:v13 configuration:v14 centerConfiguration:0 environment:1 hidden:v16 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
+    selfCopy = [(SBAppLayout *)v11 initWithItems:allItems2 centerItem:0 floatingItem:v13 configuration:configuration2 centerConfiguration:0 environment:1 hidden:v16 preferredDisplayOrdinal:[(SBAppLayout *)self preferredDisplayOrdinal]];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   v5 = objc_opt_self();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, compareCopy);
 
   if (v6)
   {
@@ -1765,10 +1765,10 @@ void __23__SBAppLayout_compare___block_invoke(uint64_t a1, uint64_t a2, void *a3
   }
 }
 
-- (BOOL)hasSameItemsInLayoutRoles:(id)a3 asAppLayout:(id)a4
+- (BOOL)hasSameItemsInLayoutRoles:(id)roles asAppLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  rolesCopy = roles;
+  layoutCopy = layout;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1778,10 +1778,10 @@ void __23__SBAppLayout_compare___block_invoke(uint64_t a1, uint64_t a2, void *a3
   v10[2] = __53__SBAppLayout_hasSameItemsInLayoutRoles_asAppLayout___block_invoke;
   v10[3] = &unk_2783BA900;
   v10[4] = self;
-  v8 = v7;
+  v8 = layoutCopy;
   v11 = v8;
   v12 = &v13;
-  [v6 enumerateRolesUsingBlock:v10];
+  [rolesCopy enumerateRolesUsingBlock:v10];
   LOBYTE(self) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -1799,9 +1799,9 @@ void __53__SBAppLayout_hasSameItemsInLayoutRoles_asAppLayout___block_invoke(uint
   }
 }
 
-- (SBAppLayout)appLayoutWithItemsPassingTest:(id)a3
+- (SBAppLayout)appLayoutWithItemsPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1812,7 +1812,7 @@ void __53__SBAppLayout_hasSameItemsInLayoutRoles_asAppLayout___block_invoke(uint
   v21 = 3221225472;
   v22 = __45__SBAppLayout_appLayoutWithItemsPassingTest___block_invoke;
   v23 = &unk_2783BA928;
-  v5 = v4;
+  v5 = testCopy;
   v24 = v5;
   v25 = &v26;
   [(SBAppLayout *)self enumerate:&v20];
@@ -1904,7 +1904,7 @@ LABEL_28:
         floatingItem = 0;
 LABEL_31:
         LOBYTE(v19) = self->_hidden;
-        v6 = [v15 initWithItems:v27[5] centerItem:centerItem floatingItem:floatingItem configuration:configuration centerConfiguration:v14 environment:environment hidden:v19 preferredDisplayOrdinal:{self->_preferredDisplayOrdinal, v20, v21, v22, v23}];
+        selfCopy = [v15 initWithItems:v27[5] centerItem:centerItem floatingItem:floatingItem configuration:configuration centerConfiguration:v14 environment:environment hidden:v19 preferredDisplayOrdinal:{self->_preferredDisplayOrdinal, v20, v21, v22, v23}];
         goto LABEL_32;
       }
     }
@@ -1922,9 +1922,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v6 = self;
+  selfCopy = self;
 LABEL_32:
-  v8 = v6;
+  v8 = selfCopy;
 LABEL_33:
 
   _Block_object_dispose(&v26, 8);
@@ -1957,10 +1957,10 @@ void __45__SBAppLayout_appLayoutWithItemsPassingTest___block_invoke(uint64_t a1,
   cached_uniqueIdentifier = self->_cached_uniqueIdentifier;
   if (!cached_uniqueIdentifier)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_cached_uniqueIdentifier;
-    self->_cached_uniqueIdentifier = v5;
+    self->_cached_uniqueIdentifier = uUIDString;
 
     cached_uniqueIdentifier = self->_cached_uniqueIdentifier;
   }
@@ -1968,26 +1968,26 @@ void __45__SBAppLayout_appLayoutWithItemsPassingTest___block_invoke(uint64_t a1,
   return cached_uniqueIdentifier;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBAppLayout *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBAppLayout *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBAppLayout *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBAppLayout *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_2783A92D8;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -2070,15 +2070,15 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
   [v21 appendDictionarySection:v13 withName:@"layoutItems" multilinePrefix:v22 skipIfEmpty:0];
 }
 
-- (SBAppLayout)initWithPlistRepresentation:(id)a3 layoutAttributesProvider:(id)a4
+- (SBAppLayout)initWithPlistRepresentation:(id)representation layoutAttributesProvider:(id)provider
 {
   v91 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  representationCopy = representation;
+  providerCopy = provider;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = objc_opt_class();
-  v10 = v5;
+  v10 = representationCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -2148,7 +2148,7 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
 
     v25 = v24;
 
-    v78 = [v25 integerValue];
+    integerValue = [v25 integerValue];
     v26 = [v82 objectForKey:@"CenterConfig"];
     v27 = objc_opt_class();
     v28 = v26;
@@ -2174,12 +2174,12 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
 
     if (v18)
     {
-      v77 = [v18 integerValue];
+      integerValue2 = [v18 integerValue];
     }
 
     else
     {
-      v77 = 0;
+      integerValue2 = 0;
     }
 
     v30 = [v82 objectForKey:@"Environment"];
@@ -2207,12 +2207,12 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
 
     if (v34)
     {
-      v76 = [v34 integerValue];
+      integerValue3 = [v34 integerValue];
     }
 
     else
     {
-      v76 = 1;
+      integerValue3 = 1;
     }
 
     v35 = [v82 objectForKey:@"Hidden"];
@@ -2238,7 +2238,7 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
 
     v39 = v38;
 
-    v75 = [v39 BOOLValue];
+    bOOLValue = [v39 BOOLValue];
     v40 = [v82 objectForKey:@"PreferredDisplayOrdinal"];
     v41 = objc_opt_class();
     v42 = v40;
@@ -2262,7 +2262,7 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
 
     v44 = v43;
 
-    v74 = [v44 integerValue];
+    integerValue4 = [v44 integerValue];
   }
 
   else
@@ -2288,16 +2288,16 @@ void __53__SBAppLayout_descriptionBuilderWithMultilinePrefix___block_invoke(uint
     }
 
     v20 = v19;
-    v74 = 0;
-    v75 = 0;
-    v77 = 0;
-    v78 = 0;
-    v76 = 1;
+    integerValue4 = 0;
+    bOOLValue = 0;
+    integerValue2 = 0;
+    integerValue = 0;
+    integerValue3 = 1;
   }
 
   v83 = v8;
   v80 = v10;
-  v81 = v6;
+  v81 = providerCopy;
 
   v88 = 0u;
   v89 = 0u;
@@ -2422,12 +2422,12 @@ LABEL_52:
     v70 = v80;
     v69 = v81;
     v71 = v83;
-    v72 = self;
+    selfCopy2 = self;
     if ((v84 & 1) == 0)
     {
-      v68 = [(SBAppLayout *)self initWithItemsForLayoutRoles:v7 configuration:v78 centerConfiguration:v77 environment:v76 hidden:v75 preferredDisplayOrdinal:v74];
+      v68 = [(SBAppLayout *)self initWithItemsForLayoutRoles:v7 configuration:integerValue centerConfiguration:integerValue2 environment:integerValue3 hidden:bOOLValue preferredDisplayOrdinal:integerValue4];
       [v81 updateLayoutAttributesMap:v83 forAppLayout:v68 displayOrdinal:-[SBAppLayout preferredDisplayOrdinal](v68 orientation:{"preferredDisplayOrdinal"), 0}];
-      v72 = v68;
+      selfCopy2 = v68;
     }
   }
 
@@ -2436,24 +2436,24 @@ LABEL_52:
     v70 = v80;
     v69 = v81;
     v71 = v83;
-    v72 = self;
+    selfCopy2 = self;
   }
 
   return v68;
 }
 
-- (id)plistRepresentationWithLayoutAttributesMap:(id)a3
+- (id)plistRepresentationWithLayoutAttributesMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __65__SBAppLayout_Plist__plistRepresentationWithLayoutAttributesMap___block_invoke;
   v18 = &unk_2783A8FF8;
-  v19 = v4;
+  v19 = mapCopy;
   v20 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = mapCopy;
   [(SBAppLayout *)self enumerate:&v15];
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{self->_configuration, v15, v16, v17, v18}];
@@ -2493,14 +2493,14 @@ void __65__SBAppLayout_Plist__plistRepresentationWithLayoutAttributesMap___block
   [*(a1 + 40) addObject:v10];
 }
 
-+ (SBAppLayout)appLayoutWithProtobufRepresentation:(id)a3 layoutAttributesProvider:(id)a4
++ (SBAppLayout)appLayoutWithProtobufRepresentation:(id)representation layoutAttributesProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  representationCopy = representation;
+  providerCopy = provider;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = objc_opt_new();
   v59 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [(SBPBAppLayout *)v5 layoutConfiguration]- 1;
+  v9 = [(SBPBAppLayout *)representationCopy layoutConfiguration]- 1;
   if (v9 < 4)
   {
     v10 = v9 + 1;
@@ -2511,12 +2511,12 @@ void __65__SBAppLayout_Plist__plistRepresentationWithLayoutAttributesMap___block
     v10 = 0;
   }
 
-  v11 = [(SBPBAppLayout *)v5 displayItems];
-  v60 = v11;
-  if (![v11 count])
+  displayItems = [(SBPBAppLayout *)representationCopy displayItems];
+  v60 = displayItems;
+  if (![displayItems count])
   {
-    v14 = [(SBPBAppLayout *)v5 primaryDisplayItem];
-    v15 = [SBDisplayItem displayItemWithProtobufRepresentation:v14];
+    primaryDisplayItem = [(SBPBAppLayout *)representationCopy primaryDisplayItem];
+    v15 = [SBDisplayItem displayItemWithProtobufRepresentation:primaryDisplayItem];
 
     if (!v15)
     {
@@ -2526,30 +2526,30 @@ void __65__SBAppLayout_Plist__plistRepresentationWithLayoutAttributesMap___block
 
     v58 = v8;
     v16 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-    [v7 setObject:v15 forKey:v16];
+    [dictionary setObject:v15 forKey:v16];
 
     v57 = v15;
-    if ([(SBPBAppLayout *)v5 hasPrimaryLayoutAttributes])
+    if ([(SBPBAppLayout *)representationCopy hasPrimaryLayoutAttributes])
     {
-      v17 = [(SBPBAppLayout *)v5 primaryLayoutAttributes];
-      v18 = [SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:v17];
+      primaryLayoutAttributes = [(SBPBAppLayout *)representationCopy primaryLayoutAttributes];
+      v18 = [SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:primaryLayoutAttributes];
       [v8 setObject:v18 forKey:v15];
     }
 
     else
     {
-      v17 = objc_alloc_init(SBDisplayItemLayoutAttributes);
-      [v8 setObject:v17 forKey:v15];
+      primaryLayoutAttributes = objc_alloc_init(SBDisplayItemLayoutAttributes);
+      [v8 setObject:primaryLayoutAttributes forKey:v15];
     }
 
-    if ([(SBPBAppLayout *)v5 hasSecondaryDisplayItem])
+    if ([(SBPBAppLayout *)representationCopy hasSecondaryDisplayItem])
     {
-      v34 = [(SBPBAppLayout *)v5 secondaryDisplayItem];
-      v35 = [SBDisplayItem displayItemWithProtobufRepresentation:v34];
+      secondaryDisplayItem = [(SBPBAppLayout *)representationCopy secondaryDisplayItem];
+      v35 = [SBDisplayItem displayItemWithProtobufRepresentation:secondaryDisplayItem];
 
       if (v35)
       {
-        v36 = [(SBPBAppLayout *)v5 secondaryDisplayItemRole]- 1;
+        v36 = [(SBPBAppLayout *)representationCopy secondaryDisplayItemRole]- 1;
         if (v36 > 3)
         {
           v37 = &SBLayoutRoleUndefined;
@@ -2561,35 +2561,35 @@ void __65__SBAppLayout_Plist__plistRepresentationWithLayoutAttributesMap___block
         }
 
         v38 = [MEMORY[0x277CCABB0] numberWithInteger:*v37];
-        [v7 setObject:v35 forKey:v38];
+        [dictionary setObject:v35 forKey:v38];
       }
 
-      if ([(SBPBAppLayout *)v5 hasSecondaryLayoutAttributes])
+      if ([(SBPBAppLayout *)representationCopy hasSecondaryLayoutAttributes])
       {
-        v39 = [(SBPBAppLayout *)v5 secondaryLayoutAttributes];
-        v40 = [SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:v39];
+        secondaryLayoutAttributes = [(SBPBAppLayout *)representationCopy secondaryLayoutAttributes];
+        v40 = [SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:secondaryLayoutAttributes];
         [v8 setObject:v40 forKey:v35];
       }
 
       else
       {
-        v39 = objc_alloc_init(SBDisplayItemLayoutAttributes);
-        [v8 setObject:v39 forKey:v35];
+        secondaryLayoutAttributes = objc_alloc_init(SBDisplayItemLayoutAttributes);
+        [v8 setObject:secondaryLayoutAttributes forKey:v35];
       }
     }
 
-    if (![(SBPBAppLayout *)v5 hasCenterDisplayItem])
+    if (![(SBPBAppLayout *)representationCopy hasCenterDisplayItem])
     {
       goto LABEL_62;
     }
 
-    v56 = v7;
-    v41 = [(SBPBAppLayout *)v5 centerDisplayItem];
-    v19 = [SBDisplayItem displayItemWithProtobufRepresentation:v41];
+    v56 = dictionary;
+    centerDisplayItem = [(SBPBAppLayout *)representationCopy centerDisplayItem];
+    displayItemLayoutAttributes = [SBDisplayItem displayItemWithProtobufRepresentation:centerDisplayItem];
 
-    if (v19)
+    if (displayItemLayoutAttributes)
     {
-      v42 = [(SBPBAppLayout *)v5 centerDisplayItemRole]- 1;
+      v42 = [(SBPBAppLayout *)representationCopy centerDisplayItemRole]- 1;
       if (v42 > 3)
       {
         v43 = &SBLayoutRoleUndefined;
@@ -2601,30 +2601,30 @@ void __65__SBAppLayout_Plist__plistRepresentationWithLayoutAttributesMap___block
       }
 
       v44 = [MEMORY[0x277CCABB0] numberWithInteger:*v43];
-      [v56 setObject:v19 forKey:v44];
+      [v56 setObject:displayItemLayoutAttributes forKey:v44];
     }
 
-    v55 = v5;
-    if ([(SBPBAppLayout *)v5 hasCenterLayoutAttributes])
+    v55 = representationCopy;
+    if ([(SBPBAppLayout *)representationCopy hasCenterLayoutAttributes])
     {
-      v20 = [(SBPBAppLayout *)v5 centerLayoutAttributes];
-      v45 = [SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:v20];
-      [v58 setObject:v45 forKey:v19];
+      centerLayoutAttributes = [(SBPBAppLayout *)representationCopy centerLayoutAttributes];
+      v45 = [SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:centerLayoutAttributes];
+      [v58 setObject:v45 forKey:displayItemLayoutAttributes];
     }
 
     else
     {
-      v20 = objc_alloc_init(SBDisplayItemLayoutAttributes);
-      [v58 setObject:v20 forKey:v19];
+      centerLayoutAttributes = objc_alloc_init(SBDisplayItemLayoutAttributes);
+      [v58 setObject:centerLayoutAttributes forKey:displayItemLayoutAttributes];
     }
 
 LABEL_61:
 
-    v5 = v55;
-    v7 = v56;
+    representationCopy = v55;
+    dictionary = v56;
 LABEL_62:
 
-    v46 = [(SBPBAppLayout *)v5 environment]- 1;
+    v46 = [(SBPBAppLayout *)representationCopy environment]- 1;
     v8 = v58;
     if (v46 > 2)
     {
@@ -2636,35 +2636,35 @@ LABEL_62:
       v47 = qword_21F8A7400[v46];
     }
 
-    v48 = [(SBPBAppLayout *)v5 centerConfiguration];
-    if (v48 == 2)
+    centerConfiguration = [(SBPBAppLayout *)representationCopy centerConfiguration];
+    if (centerConfiguration == 2)
     {
       v49 = 2;
     }
 
     else
     {
-      v49 = v48 == 1;
+      v49 = centerConfiguration == 1;
     }
 
-    v50 = [(SBPBAppLayout *)v5 hidden];
-    v13 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v7 configuration:v10 centerConfiguration:v49 environment:v47 hidden:v50 preferredDisplayOrdinal:[(SBPBAppLayout *)v5 preferredDisplayOrdinal]];
-    [v6 updateLayoutAttributesMap:v58 forAppLayout:v13 displayOrdinal:-[SBAppLayout preferredDisplayOrdinal](v13 orientation:{"preferredDisplayOrdinal"), 0}];
-    v51 = [(SBPBAppLayout *)v5 layoutAttributesEntries];
+    hidden = [(SBPBAppLayout *)representationCopy hidden];
+    v13 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:dictionary configuration:v10 centerConfiguration:v49 environment:v47 hidden:hidden preferredDisplayOrdinal:[(SBPBAppLayout *)representationCopy preferredDisplayOrdinal]];
+    [providerCopy updateLayoutAttributesMap:v58 forAppLayout:v13 displayOrdinal:-[SBAppLayout preferredDisplayOrdinal](v13 orientation:{"preferredDisplayOrdinal"), 0}];
+    layoutAttributesEntries = [(SBPBAppLayout *)representationCopy layoutAttributesEntries];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __86__SBAppLayout_Protobuf__appLayoutWithProtobufRepresentation_layoutAttributesProvider___block_invoke;
     v61[3] = &unk_2783BA950;
-    v62 = v6;
-    [v51 bs_each:v61];
+    v62 = providerCopy;
+    [layoutAttributesEntries bs_each:v61];
 
     goto LABEL_69;
   }
 
-  v12 = [(SBPBAppLayout *)v5 centerDisplayItem];
-  if (v12)
+  centerDisplayItem2 = [(SBPBAppLayout *)representationCopy centerDisplayItem];
+  if (centerDisplayItem2)
   {
-    v57 = [SBDisplayItem displayItemWithProtobufRepresentation:v12];
+    v57 = [SBDisplayItem displayItemWithProtobufRepresentation:centerDisplayItem2];
     if (!v57)
     {
 
@@ -2679,24 +2679,24 @@ LABEL_62:
   }
 
   v58 = v8;
-  v56 = v7;
+  v56 = dictionary;
 
-  v19 = [(SBPBAppLayout *)v5 displayItemLayoutAttributes];
-  v55 = v5;
-  v20 = [(SBPBAppLayout *)v5 displayItemLayoutAttributesForNonPreferredDisplays];
-  if (![v11 count])
+  displayItemLayoutAttributes = [(SBPBAppLayout *)representationCopy displayItemLayoutAttributes];
+  v55 = representationCopy;
+  centerLayoutAttributes = [(SBPBAppLayout *)representationCopy displayItemLayoutAttributesForNonPreferredDisplays];
+  if (![displayItems count])
   {
     goto LABEL_61;
   }
 
   v53 = v10;
-  v54 = v6;
+  v54 = providerCopy;
   v21 = 0;
   v22 = 0;
   v23 = v57;
   while (1)
   {
-    v24 = [v11 objectAtIndex:{v22, v53}];
+    v24 = [displayItems objectAtIndex:{v22, v53}];
     v25 = [SBDisplayItem displayItemWithProtobufRepresentation:v24];
     if (!v25)
     {
@@ -2704,7 +2704,7 @@ LABEL_62:
     }
 
     v26 = v25;
-    if (v22 >= [v19 count] || (objc_msgSend(v19, "objectAtIndex:", v22), (v27 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (v22 >= [displayItemLayoutAttributes count] || (objc_msgSend(displayItemLayoutAttributes, "objectAtIndex:", v22), (v27 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v29 = objc_alloc_init(SBDisplayItemLayoutAttributes);
       if (!v29)
@@ -2737,9 +2737,9 @@ LABEL_20:
       [v56 setObject:v26 forKey:v31];
 
       [v58 setObject:v29 forKey:v26];
-      if (v22 < [(SBDisplayItemLayoutAttributes *)v20 count])
+      if (v22 < [(SBDisplayItemLayoutAttributes *)centerLayoutAttributes count])
       {
-        v32 = [(SBDisplayItemLayoutAttributes *)v20 objectAtIndex:v22];
+        v32 = [(SBDisplayItemLayoutAttributes *)centerLayoutAttributes objectAtIndex:v22];
         if (!v32 || ([SBDisplayItemLayoutAttributes layoutAttributesWithProtobufRepresentation:v32], (v33 = objc_claimAutoreleasedReturnValue()) == 0))
         {
 LABEL_32:
@@ -2772,23 +2772,23 @@ LABEL_34:
     }
 
     ++v22;
-    v11 = v60;
+    displayItems = v60;
     if (v22 >= [v60 count])
     {
       v10 = v53;
-      v6 = v54;
+      providerCopy = v54;
       goto LABEL_61;
     }
   }
 
 LABEL_44:
   v13 = 0;
-  v5 = v55;
-  v6 = v54;
-  v7 = v56;
+  representationCopy = v55;
+  providerCopy = v54;
+  dictionary = v56;
   v8 = v58;
 LABEL_69:
-  v11 = v60;
+  displayItems = v60;
 LABEL_70:
 
   return v13;
@@ -2807,15 +2807,15 @@ void __86__SBAppLayout_Protobuf__appLayoutWithProtobufRepresentation_layoutAttri
   [*(a1 + 32) updateLayoutAttributes:v6 forKey:v7];
 }
 
-- (id)protobufRepresentationWithLayoutAttributesMap:(id)a3 layoutAttributesEntries:(id)a4
+- (id)protobufRepresentationWithLayoutAttributesMap:(id)map layoutAttributesEntries:(id)entries
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  entriesCopy = entries;
   v8 = objc_alloc_init(SBPBAppLayout);
-  v9 = [(SBAppLayout *)self configuration];
-  if ((v9 - 1) < 4)
+  configuration = [(SBAppLayout *)self configuration];
+  if ((configuration - 1) < 4)
   {
-    v10 = v9;
+    v10 = configuration;
   }
 
   else
@@ -2824,33 +2824,33 @@ void __86__SBAppLayout_Protobuf__appLayoutWithProtobufRepresentation_layoutAttri
   }
 
   [(SBPBAppLayout *)v8 setLayoutConfiguration:v10];
-  v11 = [(SBAppLayout *)self environment];
-  if (v11 == 3)
+  environment = [(SBAppLayout *)self environment];
+  if (environment == 3)
   {
     v12 = 3;
   }
 
   else
   {
-    v12 = v11 == 2;
+    v12 = environment == 2;
   }
 
   [(SBPBAppLayout *)v8 setEnvironment:v12];
-  v13 = [(SBAppLayout *)self centerConfiguration];
-  if (v13 == 2)
+  centerConfiguration = [(SBAppLayout *)self centerConfiguration];
+  if (centerConfiguration == 2)
   {
     v14 = 2;
   }
 
   else
   {
-    v14 = v13 == 1;
+    v14 = centerConfiguration == 1;
   }
 
   [(SBPBAppLayout *)v8 setCenterConfiguration:v14];
   v15 = [(SBAppLayout *)self itemForLayoutRole:1];
-  v16 = [v15 protobufRepresentation];
-  [(SBPBAppLayout *)v8 setPrimaryDisplayItem:v16];
+  protobufRepresentation = [v15 protobufRepresentation];
+  [(SBPBAppLayout *)v8 setPrimaryDisplayItem:protobufRepresentation];
 
   [(SBPBAppLayout *)v8 setHidden:?];
   [(SBPBAppLayout *)v8 setPreferredDisplayOrdinal:?];
@@ -2858,8 +2858,8 @@ void __86__SBAppLayout_Protobuf__appLayoutWithProtobufRepresentation_layoutAttri
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 protobufRepresentation];
-    [(SBPBAppLayout *)v8 setSecondaryDisplayItem:v19];
+    protobufRepresentation2 = [v17 protobufRepresentation];
+    [(SBPBAppLayout *)v8 setSecondaryDisplayItem:protobufRepresentation2];
 
     [(SBPBAppLayout *)v8 setSecondaryDisplayItemRole:?];
   }
@@ -2868,8 +2868,8 @@ void __86__SBAppLayout_Protobuf__appLayoutWithProtobufRepresentation_layoutAttri
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 protobufRepresentation];
-    [(SBPBAppLayout *)v8 setCenterDisplayItem:v22];
+    protobufRepresentation3 = [v20 protobufRepresentation];
+    [(SBPBAppLayout *)v8 setCenterDisplayItem:protobufRepresentation3];
 
     [(SBPBAppLayout *)v8 setCenterDisplayItemRole:?];
   }
@@ -2880,17 +2880,17 @@ void __86__SBAppLayout_Protobuf__appLayoutWithProtobufRepresentation_layoutAttri
   v33[3] = &unk_2783A8FF8;
   v23 = v8;
   v34 = v23;
-  v35 = v6;
-  v24 = v6;
+  v35 = mapCopy;
+  v24 = mapCopy;
   [(SBAppLayout *)self enumerate:v33];
-  v25 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __95__SBAppLayout_Protobuf__protobufRepresentationWithLayoutAttributesMap_layoutAttributesEntries___block_invoke_2;
   v31[3] = &unk_2783BA978;
-  v32 = v25;
-  v26 = v25;
-  [v7 bs_each:v31];
+  v32 = array;
+  v26 = array;
+  [entriesCopy bs_each:v31];
 
   v27 = [v26 copy];
   [(SBPBAppLayout *)v23 setLayoutAttributesEntries:v27];
@@ -2964,14 +2964,14 @@ void __95__SBAppLayout_Protobuf__protobufRepresentationWithLayoutAttributesMap_l
     [v5 replaceObjectAtIndex:1 withObject:v6];
   }
 
-  v8 = [(SBAppLayout *)self configuration];
+  configuration = [(SBAppLayout *)self configuration];
   v9 = 4;
-  if (v8 != 2)
+  if (configuration != 2)
   {
-    v9 = v8;
+    v9 = configuration;
   }
 
-  if (v8 == 4)
+  if (configuration == 4)
   {
     v10 = 2;
   }
@@ -2998,27 +2998,27 @@ void __95__SBAppLayout_Protobuf__protobufRepresentationWithLayoutAttributesMap_l
   return result;
 }
 
-- (void)setItems:(void *)a1
+- (void)setItems:(void *)items
 {
-  if (a1)
+  if (items)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 112);
+    objc_setProperty_nonatomic_copy(items, newValue, newValue, 112);
   }
 }
 
-- (void)setItemsWithoutCenterOrFloatingItems:(void *)a1
+- (void)setItemsWithoutCenterOrFloatingItems:(void *)items
 {
-  if (a1)
+  if (items)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 120);
+    objc_setProperty_nonatomic_copy(items, newValue, newValue, 120);
   }
 }
 
 - (uint64_t)isFlexibleWindowingEnabled
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 33);
+    v1 = *(self + 33);
   }
 
   else

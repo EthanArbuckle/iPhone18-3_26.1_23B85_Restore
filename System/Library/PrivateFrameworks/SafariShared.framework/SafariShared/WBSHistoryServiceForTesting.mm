@@ -1,6 +1,6 @@
 @interface WBSHistoryServiceForTesting
 - (WBSHistoryServiceForTesting)init;
-- (id)connectWithClass:(Class)a3;
+- (id)connectWithClass:(Class)class;
 @end
 
 @implementation WBSHistoryServiceForTesting
@@ -12,9 +12,9 @@
   v2 = [(WBSHistoryService *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v2->_listener;
-    v2->_listener = v3;
+    v2->_listener = anonymousListener;
 
     v5 = v2;
   }
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (id)connectWithClass:(Class)a3
+- (id)connectWithClass:(Class)class
 {
-  v4 = [a3 alloc];
-  v5 = [(NSXPCListener *)self->_listener endpoint];
-  v6 = [v4 initWithListenerEndpoint:v5];
+  v4 = [class alloc];
+  endpoint = [(NSXPCListener *)self->_listener endpoint];
+  v6 = [v4 initWithListenerEndpoint:endpoint];
 
   return v6;
 }

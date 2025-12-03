@@ -2,9 +2,9 @@
 + (BOOL)isSupported;
 + (id)newDefaultViewController;
 - (VNDocumentCameraViewController)init;
-- (VNDocumentCameraViewController)initWithChildViewController:(id)a3;
+- (VNDocumentCameraViewController)initWithChildViewController:(id)controller;
 - (id)delegate;
-- (void)setChildViewController:(id)a3;
+- (void)setChildViewController:(id)controller;
 @end
 
 @implementation VNDocumentCameraViewController
@@ -41,16 +41,16 @@
   return v3;
 }
 
-- (VNDocumentCameraViewController)initWithChildViewController:(id)a3
+- (VNDocumentCameraViewController)initWithChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = VNDocumentCameraViewController;
   v5 = [(VNDocumentCameraViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
-  if (v4 && v5)
+  if (controllerCopy && v5)
   {
-    [(VNDocumentCameraViewController *)v5 setChildViewController:v4];
+    [(VNDocumentCameraViewController *)v5 setChildViewController:controllerCopy];
   }
 
   return v6;
@@ -59,65 +59,65 @@
 + (id)newDefaultViewController
 {
   v3 = +[DCSettings sharedSettings];
-  v4 = [v3 enableViewService];
+  enableViewService = [v3 enableViewService];
 
-  if (v4)
+  if (enableViewService)
   {
 
-    return [a1 newViewServiceViewController];
+    return [self newViewServiceViewController];
   }
 
   else
   {
 
-    return [a1 newInProcessViewController];
+    return [self newInProcessViewController];
   }
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  objc_storeStrong(&self->_childViewController, a3);
-  v5 = a3;
-  [v5 beginAppearanceTransition:1 animated:0];
-  [(VNDocumentCameraViewController *)self addChildViewController:v5];
-  v6 = [v5 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  objc_storeStrong(&self->_childViewController, controller);
+  controllerCopy = controller;
+  [controllerCopy beginAppearanceTransition:1 animated:0];
+  [(VNDocumentCameraViewController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(VNDocumentCameraViewController *)self view];
-  v8 = [v5 view];
-  [v7 addSubview:v8];
+  view2 = [(VNDocumentCameraViewController *)self view];
+  view3 = [controllerCopy view];
+  [view2 addSubview:view3];
 
   v21 = MEMORY[0x277CCAAD0];
-  v30 = [v5 view];
-  v28 = [v30 leadingAnchor];
-  v29 = [(VNDocumentCameraViewController *)self view];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  view4 = [controllerCopy view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(VNDocumentCameraViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[0] = v26;
-  v25 = [v5 view];
-  v23 = [v25 trailingAnchor];
-  v24 = [(VNDocumentCameraViewController *)self view];
-  v22 = [v24 trailingAnchor];
-  v20 = [v23 constraintEqualToAnchor:v22];
+  view6 = [controllerCopy view];
+  trailingAnchor = [view6 trailingAnchor];
+  view7 = [(VNDocumentCameraViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[1] = v20;
-  v19 = [v5 view];
-  v17 = [v19 topAnchor];
-  v18 = [(VNDocumentCameraViewController *)self view];
-  v9 = [v18 topAnchor];
-  v10 = [v17 constraintEqualToAnchor:v9];
+  view8 = [controllerCopy view];
+  topAnchor = [view8 topAnchor];
+  view9 = [(VNDocumentCameraViewController *)self view];
+  topAnchor2 = [view9 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[2] = v10;
-  v11 = [v5 view];
-  v12 = [v11 bottomAnchor];
-  v13 = [(VNDocumentCameraViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  view10 = [controllerCopy view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(VNDocumentCameraViewController *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
   [v21 activateConstraints:v16];
 
-  [v5 didMoveToParentViewController:self];
-  [v5 endAppearanceTransition];
+  [controllerCopy didMoveToParentViewController:self];
+  [controllerCopy endAppearanceTransition];
 }
 
 - (id)delegate

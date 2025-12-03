@@ -1,15 +1,15 @@
 @interface HOUtilities
-+ (double)buttonPaddingToViewBottomForViewSizeSubclass:(int64_t)a3;
-+ (double)viewMarginInsetForViewSizeSubclass:(int64_t)a3 withViewWidth:(double)a4;
-+ (id)onboardingStatesForRestrictedGuestInvitation:(id)a3;
++ (double)buttonPaddingToViewBottomForViewSizeSubclass:(int64_t)subclass;
++ (double)viewMarginInsetForViewSizeSubclass:(int64_t)subclass withViewWidth:(double)width;
++ (id)onboardingStatesForRestrictedGuestInvitation:(id)invitation;
 @end
 
 @implementation HOUtilities
 
-+ (double)viewMarginInsetForViewSizeSubclass:(int64_t)a3 withViewWidth:(double)a4
++ (double)viewMarginInsetForViewSizeSubclass:(int64_t)subclass withViewWidth:(double)width
 {
-  result = (a4 + -288.0) * 0.5;
-  if (a3 > 2)
+  result = (width + -288.0) * 0.5;
+  if (subclass > 2)
   {
     return 74.0;
   }
@@ -17,10 +17,10 @@
   return result;
 }
 
-+ (double)buttonPaddingToViewBottomForViewSizeSubclass:(int64_t)a3
++ (double)buttonPaddingToViewBottomForViewSizeSubclass:(int64_t)subclass
 {
   result = 60.0;
-  if (a3 != 3)
+  if (subclass != 3)
   {
     return 24.0;
   }
@@ -28,15 +28,15 @@
   return result;
 }
 
-+ (id)onboardingStatesForRestrictedGuestInvitation:(id)a3
++ (id)onboardingStatesForRestrictedGuestInvitation:(id)invitation
 {
-  v3 = a3;
+  invitationCopy = invitation;
   v4 = objc_opt_new();
-  if ([v3 isInviteeRestrictedGuest])
+  if ([invitationCopy isInviteeRestrictedGuest])
   {
-    v5 = [v3 restrictedGuestSchedule];
+    restrictedGuestSchedule = [invitationCopy restrictedGuestSchedule];
 
-    if (v5)
+    if (restrictedGuestSchedule)
     {
       [v4 addObject:&off_1000CB6C8];
     }

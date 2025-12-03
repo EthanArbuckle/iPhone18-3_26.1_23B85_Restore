@@ -2,9 +2,9 @@
 + (id)_audioHashFileBaseDirectory;
 + (id)_audioHashFilePath;
 + (id)tryToRetrieveAudioHashFromFile;
-- (BOOL)isEqual:(id)a3;
-- (SCDAPerceptualAudioHash)initWithCoder:(id)a3;
-- (SCDAPerceptualAudioHash)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCDAPerceptualAudioHash)initWithCoder:(id)coder;
+- (SCDAPerceptualAudioHash)initWithData:(id)data;
 - (id)description;
 @end
 
@@ -13,16 +13,16 @@
 + (id)tryToRetrieveAudioHashFromFile
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _audioHashFilePath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v3 fileExistsAtPath:v2])
+  _audioHashFilePath = [self _audioHashFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:_audioHashFilePath])
   {
-    v4 = [v2 UTF8String];
+    uTF8String = [_audioHashFilePath UTF8String];
   }
 
   else
   {
-    v4 = 0;
+    uTF8String = 0;
   }
 
   v5 = SCDALogContextCore;
@@ -31,13 +31,13 @@
     *buf = 136315395;
     v16 = "+[SCDAPerceptualAudioHash tryToRetrieveAudioHashFromFile]";
     v17 = 2081;
-    v18 = v4;
+    v18 = uTF8String;
     _os_log_impl(&dword_1DA758000, v5, OS_LOG_TYPE_INFO, "%s #scda BTLE opening audio file at path %{private}s", buf, 0x16u);
   }
 
-  if (v4)
+  if (uTF8String)
   {
-    v6 = open(v4, 0);
+    v6 = open(uTF8String, 0);
     if (v6 >= 1)
     {
       v7 = v6;
@@ -80,8 +80,8 @@ LABEL_16:
 + (id)_audioHashFilePath
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _audioHashFileBaseDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"siriBC"];
+  _audioHashFileBaseDirectory = [self _audioHashFileBaseDirectory];
+  v3 = [_audioHashFileBaseDirectory stringByAppendingPathComponent:@"siriBC"];
   v4 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -117,19 +117,19 @@ LABEL_16:
   return v3;
 }
 
-- (SCDAPerceptualAudioHash)initWithCoder:(id)a3
+- (SCDAPerceptualAudioHash)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDAPerceptualAudioHash::data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDAPerceptualAudioHash::data"];
 
   v6 = [[SCDAPerceptualAudioHash alloc] initWithData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -139,9 +139,9 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SCDAPerceptualAudioHash *)v4 data];
+      data = [(SCDAPerceptualAudioHash *)equalCopy data];
       data = self->_data;
-      v7 = data == v5 || [(NSData *)data isEqual:v5];
+      v7 = data == data || [(NSData *)data isEqual:data];
     }
 
     else
@@ -156,19 +156,19 @@ LABEL_16:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SCDAPerceptualAudioHash *)self pHash];
-  v5 = [(SCDAPerceptualAudioHash *)self scoreAudioIntensity];
-  v6 = [(SCDAPerceptualAudioHash *)self userConfidence];
-  v7 = [(SCDAPerceptualAudioHash *)self frac];
-  v8 = [(SCDAPerceptualAudioHash *)self voiceTriggerTime];
+  pHash = [(SCDAPerceptualAudioHash *)self pHash];
+  scoreAudioIntensity = [(SCDAPerceptualAudioHash *)self scoreAudioIntensity];
+  userConfidence = [(SCDAPerceptualAudioHash *)self userConfidence];
+  frac = [(SCDAPerceptualAudioHash *)self frac];
+  voiceTriggerTime = [(SCDAPerceptualAudioHash *)self voiceTriggerTime];
   [SCDAElectionWindow electionWindowTimeRemaining:[(SCDAPerceptualAudioHash *)self voiceTriggerTime] fromNow:mach_absolute_time()];
-  return [v3 stringWithFormat:@"hash:%hu, audio:%d, uc:%d, frac:%d, vtt:%llu, remaining:%f", v4, v5, v6, v7, v8, v9];
+  return [v3 stringWithFormat:@"hash:%hu, audio:%d, uc:%d, frac:%d, vtt:%llu, remaining:%f", pHash, scoreAudioIntensity, userConfidence, frac, voiceTriggerTime, v9];
 }
 
-- (SCDAPerceptualAudioHash)initWithData:(id)a3
+- (SCDAPerceptualAudioHash)initWithData:(id)data
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v26.receiver = self;
   v26.super_class = SCDAPerceptualAudioHash;
   v5 = [(SCDAPerceptualAudioHash *)&v26 init];
@@ -177,7 +177,7 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  v6 = v4;
+  v6 = dataCopy;
   v7 = [v6 length];
   v8 = v7;
   if (v7 <= 0xCuLL)

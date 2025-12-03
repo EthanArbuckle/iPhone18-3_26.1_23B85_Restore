@@ -1,19 +1,19 @@
 @interface CKTransientFileTransfer
-- (CKTransientFileTransfer)initWithAttributionInfo:(id)a3;
+- (CKTransientFileTransfer)initWithAttributionInfo:(id)info;
 @end
 
 @implementation CKTransientFileTransfer
 
-- (CKTransientFileTransfer)initWithAttributionInfo:(id)a3
+- (CKTransientFileTransfer)initWithAttributionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = CKTransientFileTransfer;
   v5 = [(CKTransientFileTransfer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKTransientFileTransfer *)v5 setAttributionInfo:v4];
+    [(CKTransientFileTransfer *)v5 setAttributionInfo:infoCopy];
   }
 
   return v6;

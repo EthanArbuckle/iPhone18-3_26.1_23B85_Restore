@@ -1,5 +1,5 @@
 @interface FMNoLocationCalloutViewController
-- (_TtC6FindMy33FMNoLocationCalloutViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6FindMy33FMNoLocationCalloutViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)infoButtonPressed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -19,7 +19,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10040F100();
 }
 
@@ -31,13 +31,13 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 8);
-    v7 = self;
+    selfCopy = self;
     v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC6FindMy33FMNoLocationCalloutViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy33FMNoLocationCalloutViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

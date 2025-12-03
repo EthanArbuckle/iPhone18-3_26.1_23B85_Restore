@@ -1,15 +1,15 @@
 @interface CosmeticDiagnosticsViewController
-- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CosmeticDiagnosticsViewController
 
-- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -19,13 +19,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_247C5E538();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -37,14 +37,14 @@
 
   v7.receiver = self;
   v7.super_class = ObjectType;
-  v6 = self;
-  [(CosmeticDiagnosticsViewController *)&v7 viewIsAppearing:v3];
+  selfCopy = self;
+  [(CosmeticDiagnosticsViewController *)&v7 viewIsAppearing:appearingCopy];
   sub_247C444F8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   ObjectType = swift_getObjectType();
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE62FF0);
   MEMORY[0x28223BE20](v6 - 8);
@@ -60,11 +60,11 @@
 
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v10 = self;
-  [(CosmeticDiagnosticsViewController *)&v15 viewWillAppear:v3];
+  selfCopy = self;
+  [(CosmeticDiagnosticsViewController *)&v15 viewWillAppear:appearCopy];
   v11 = sub_247D1FEC8();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
-  v12 = v10;
+  v12 = selfCopy;
   v13 = sub_247D1FE98();
   v14 = swift_allocObject();
   v14[2] = v13;
@@ -86,7 +86,7 @@
 
   v18.receiver = self;
   v18.super_class = ObjectType;
-  v4 = self;
+  selfCopy = self;
   [(CosmeticDiagnosticsViewController *)&v18 viewDidLayoutSubviews];
   v5 = sub_247C41308();
   [v5 frame];
@@ -95,7 +95,7 @@
   v11 = v10;
   v13 = v12;
 
-  v14 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC18CosmeticAssessment33CosmeticDiagnosticsViewController_protectedProperties);
+  v14 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18CosmeticAssessment33CosmeticDiagnosticsViewController_protectedProperties);
   v15 = *(*v14 + *MEMORY[0x277D841D0] + 16);
   v16 = (*(*v14 + 48) + 3) & 0x1FFFFFFFCLL;
   os_unfair_lock_lock((v14 + v16));
@@ -107,10 +107,10 @@
   os_unfair_lock_unlock((v14 + v16));
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -123,10 +123,10 @@
   v14.receiver = self;
   v14.super_class = ObjectType;
   swift_unknownObjectRetain();
-  v9 = self;
-  [(CosmeticDiagnosticsViewController *)&v14 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  selfCopy = self;
+  [(CosmeticDiagnosticsViewController *)&v14 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v10 = swift_allocObject();
-  *(v10 + 16) = v9;
+  *(v10 + 16) = selfCopy;
   v13[4] = sub_247C60F60;
   v13[5] = v10;
   v13[0] = MEMORY[0x277D85DD0];
@@ -134,15 +134,15 @@
   v13[2] = sub_247C9451C;
   v13[3] = &block_descriptor_107;
   v11 = _Block_copy(v13);
-  v12 = v9;
+  v12 = selfCopy;
 
-  [a4 animateAlongsideTransition:v11 completion:0];
+  [coordinator animateAlongsideTransition:v11 completion:0];
   swift_unknownObjectRelease();
 
   _Block_release(v11);
 }
 
-- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18CosmeticAssessment33CosmeticDiagnosticsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_247D1FEA8();
   sub_247D1FE98();

@@ -1,18 +1,18 @@
 @interface UISwipeActionStandardButton
-- (UISwipeActionStandardButton)initWithFrame:(CGRect)a3;
+- (UISwipeActionStandardButton)initWithFrame:(CGRect)frame;
 - (double)buttonWidth;
 - (id)titleLabel;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 @end
 
 @implementation UISwipeActionStandardButton
 
-- (UISwipeActionStandardButton)initWithFrame:(CGRect)a3
+- (UISwipeActionStandardButton)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = UISwipeActionStandardButton;
-  v3 = [(UISwipeActionButton *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UISwipeActionButton *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -20,17 +20,17 @@
     v5 = [(UIView *)v4 initWithFrame:?];
     [(UISwipeActionButton *)v3 setBackgroundView:v5];
 
-    v6 = [(UISwipeActionButton *)v3 visualStyle];
-    v7 = [v6 defaultButtonBackgroundColor];
-    v8 = [(UISwipeActionButton *)v3 backgroundView];
-    [v8 setBackgroundColor:v7];
+    visualStyle = [(UISwipeActionButton *)v3 visualStyle];
+    defaultButtonBackgroundColor = [visualStyle defaultButtonBackgroundColor];
+    backgroundView = [(UISwipeActionButton *)v3 backgroundView];
+    [backgroundView setBackgroundColor:defaultButtonBackgroundColor];
 
-    v9 = [(UISwipeActionButton *)v3 backgroundView];
-    [(UIView *)v3 addSubview:v9];
+    backgroundView2 = [(UISwipeActionButton *)v3 backgroundView];
+    [(UIView *)v3 addSubview:backgroundView2];
 
     [(UIView *)v3 setClipsToBounds:0];
-    v10 = [(UIButton *)v3 _visualProvider];
-    [v10 setAvoidDefaultTitleAndImageLayout:1];
+    _visualProvider = [(UIButton *)v3 _visualProvider];
+    [_visualProvider setAvoidDefaultTitleAndImageLayout:1];
   }
 
   return v3;
@@ -49,21 +49,21 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIButton *)self _currentImageWithResolvedConfiguration];
-  v12 = [(UIButton *)self currentImage];
+  _currentImageWithResolvedConfiguration = [(UIButton *)self _currentImageWithResolvedConfiguration];
+  currentImage = [(UIButton *)self currentImage];
 
-  if (v12)
+  if (currentImage)
   {
-    [v11 size];
+    [_currentImageWithResolvedConfiguration size];
     [(UIView *)self frame];
     [(UISwipeActionButton *)self _defaultLayoutForHeight:v13];
     isRenderingText = _isRenderingText(self);
     v15 = 1.0;
     if ((isRenderingText & 1) == 0)
     {
-      v16 = self;
-      [(UIView *)v16 bounds];
-      v17 = [(UISwipeActionButton *)v16 _defaultLayoutForHeight:CGRectGetHeight(v105)];
+      selfCopy = self;
+      [(UIView *)selfCopy bounds];
+      v17 = [(UISwipeActionButton *)selfCopy _defaultLayoutForHeight:CGRectGetHeight(v105)];
 
       if (v17 == 2)
       {
@@ -76,13 +76,13 @@
       }
     }
 
-    [v11 size];
+    [_currentImageWithResolvedConfiguration size];
     if (v18 > 0.0)
     {
-      [v11 size];
+      [_currentImageWithResolvedConfiguration size];
       if (v19 > v8)
       {
-        [v11 size];
+        [_currentImageWithResolvedConfiguration size];
         v21 = v8 / v20;
         if (v15 >= v21)
         {
@@ -91,13 +91,13 @@
       }
     }
 
-    [v11 size];
+    [_currentImageWithResolvedConfiguration size];
     if (v22 > 0.0)
     {
-      [v11 size];
+      [_currentImageWithResolvedConfiguration size];
       if (v23 > v10)
       {
-        [v11 size];
+        [_currentImageWithResolvedConfiguration size];
         if (v15 >= v10 / v24)
         {
           v15 = v10 / v24;
@@ -107,48 +107,48 @@
 
     if (fabs(v15 + -1.0) >= 2.22044605e-16)
     {
-      v25 = [(UIButton *)self imageView];
-      [v25 setContentMode:1];
+      imageView = [(UIButton *)self imageView];
+      [imageView setContentMode:1];
     }
 
     v26 = v15;
     v27 = v6;
-    v28 = _UITableCellLineHeightCenteredImageInRect(v11, v26, v4, v6, v8, v10);
+    v28 = _UITableCellLineHeightCenteredImageInRect(_currentImageWithResolvedConfiguration, v26, v4, v6, v8, v10);
     MinY = v29;
     v32 = v31;
     v34 = v33;
-    v35 = [(UISwipeActionStandardButton *)self titleLabel];
-    [v35 setHidden:isRenderingText ^ 1u];
+    titleLabel = [(UISwipeActionStandardButton *)self titleLabel];
+    [titleLabel setHidden:isRenderingText ^ 1u];
 
     if (isRenderingText)
     {
       v99 = MinY;
       rect = v32;
-      v36 = [(UISwipeActionStandardButton *)self titleLabel];
+      titleLabel2 = [(UISwipeActionStandardButton *)self titleLabel];
       [(UIView *)self bounds];
-      [v36 sizeThatFits:{v37, v38}];
+      [titleLabel2 sizeThatFits:{v37, v38}];
       v97 = v39;
 
-      v40 = [(UISwipeActionStandardButton *)self titleLabel];
-      v41 = [v40 font];
+      titleLabel3 = [(UISwipeActionStandardButton *)self titleLabel];
+      font = [titleLabel3 font];
 
-      v42 = [objc_opt_self() mainScreen];
-      [v42 scale];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
       v95 = v43;
 
-      [v41 lineHeight];
+      [font lineHeight];
       v45 = v44;
-      v46 = [(UISwipeActionButton *)self visualStyle];
-      [v46 iconToTitleSpacing];
+      visualStyle = [(UISwipeActionButton *)self visualStyle];
+      [visualStyle iconToTitleSpacing];
       v93 = v45 + v47;
 
-      v48 = [v11 symbolConfiguration];
-      v49 = v48;
+      symbolConfiguration = [_currentImageWithResolvedConfiguration symbolConfiguration];
+      v49 = symbolConfiguration;
       v101 = v34;
-      if (v48)
+      if (symbolConfiguration)
       {
         v103 = 0.0;
-        v50 = v48;
+        v50 = symbolConfiguration;
         if ((v50[20] & 1) == 0)
         {
           v51 = +[UIImageSymbolConfiguration unspecifiedConfiguration];
@@ -158,7 +158,7 @@
 
         [v50 _deriveGlyphSize:0 weight:0 pointSize:&v103];
         v52 = [off_1E70ECC18 systemFontOfSize:v103];
-        [v11 baselineOffsetFromBottom];
+        [_currentImageWithResolvedConfiguration baselineOffsetFromBottom];
         v54 = -v53;
         [v52 descender];
         v92 = v54 - v55;
@@ -193,8 +193,8 @@
       v108.size.width = v32;
       v108.size.height = v101;
       v66 = v92 + CGRectGetMaxY(v108);
-      v67 = [(UISwipeActionButton *)self visualStyle];
-      [v67 iconToTitleSpacing];
+      visualStyle2 = [(UISwipeActionButton *)self visualStyle];
+      [visualStyle2 iconToTitleSpacing];
       UIRoundToScale(v66 + v68, v95);
       v70 = v69;
 
@@ -264,8 +264,8 @@
       v32 = rect;
     }
 
-    v57 = [(UIButton *)self imageView];
-    v58 = v57;
+    imageView2 = [(UIButton *)self imageView];
+    v58 = imageView2;
     v59 = v28;
     v60 = MinY;
     v61 = v32;
@@ -274,18 +274,18 @@
 
   else
   {
-    v56 = [(UISwipeActionStandardButton *)self titleLabel];
-    [v56 setHidden:0];
+    titleLabel4 = [(UISwipeActionStandardButton *)self titleLabel];
+    [titleLabel4 setHidden:0];
 
-    v57 = [(UISwipeActionStandardButton *)self titleLabel];
-    v58 = v57;
+    imageView2 = [(UISwipeActionStandardButton *)self titleLabel];
+    v58 = imageView2;
     v59 = v4;
     v60 = v6;
     v61 = v8;
     v62 = v10;
   }
 
-  [v57 setFrame:{v59, v60, v61, v62}];
+  [imageView2 setFrame:{v59, v60, v61, v62}];
 
   [(UIView *)self bounds];
   v80 = v79;
@@ -311,20 +311,20 @@
     v80 = v88 - CGRectGetWidth(v118);
   }
 
-  v89 = [(UISwipeActionButton *)self backgroundView];
-  [v89 setFrame:{v80, v82, v86, v84}];
+  backgroundView = [(UISwipeActionButton *)self backgroundView];
+  [backgroundView setFrame:{v80, v82, v86, v84}];
 
-  v90 = [(UISwipeActionButton *)self backgroundView];
-  [(UIView *)self sendSubviewToBack:v90];
+  backgroundView2 = [(UISwipeActionButton *)self backgroundView];
+  [(UIView *)self sendSubviewToBack:backgroundView2];
 
   *&self->_flags &= ~1u;
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = UISwipeActionStandardButton;
-  [(UISwipeActionButton *)&v5 setTitle:a3 forState:a4];
+  [(UISwipeActionButton *)&v5 setTitle:title forState:state];
   self->_buttonWidth = 0.0;
 }
 
@@ -335,26 +335,26 @@
     result = self->_buttonWidth;
     if (result == 0.0)
     {
-      v4 = [(UIButton *)self _currentImageWithResolvedConfiguration];
+      _currentImageWithResolvedConfiguration = [(UIButton *)self _currentImageWithResolvedConfiguration];
       [(UISwipeActionButton *)self _horizontalPaddingForCurrentIdiom];
       v6 = v5;
       if (dyld_program_sdk_at_least() && ([(UIButton *)self currentImage], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
       {
-        v8 = [(UISwipeActionStandardButton *)self titleLabel];
-        if (([v8 isHidden] & 1) == 0)
+        titleLabel = [(UISwipeActionStandardButton *)self titleLabel];
+        if (([titleLabel isHidden] & 1) == 0)
         {
-          v9 = [(UISwipeActionStandardButton *)self titleLabel];
-          v10 = [v9 text];
-          [v10 length];
+          titleLabel2 = [(UISwipeActionStandardButton *)self titleLabel];
+          text = [titleLabel2 text];
+          [text length];
         }
 
         [(UIView *)self bounds];
         [(UISwipeActionButton *)self _defaultLayoutForHeight:CGRectGetHeight(v34)];
-        [v4 size];
+        [_currentImageWithResolvedConfiguration size];
         v12 = v11;
-        v13 = self;
-        [(UIView *)v13 bounds];
-        v14 = [(UISwipeActionButton *)v13 _defaultLayoutForHeight:CGRectGetHeight(v35)];
+        selfCopy = self;
+        [(UIView *)selfCopy bounds];
+        v14 = [(UISwipeActionButton *)selfCopy _defaultLayoutForHeight:CGRectGetHeight(v35)];
 
         v15 = 0.8;
         if (v14 != 2)
@@ -363,12 +363,12 @@
         }
 
         v16 = v12 * v15;
-        v17 = [(UISwipeActionStandardButton *)v13 titleLabel];
-        [(UIView *)v13 bounds];
-        [v17 sizeThatFits:{v18, v19}];
+        titleLabel3 = [(UISwipeActionStandardButton *)selfCopy titleLabel];
+        [(UIView *)selfCopy bounds];
+        [titleLabel3 sizeThatFits:{v18, v19}];
         v21 = v20;
 
-        if ((_isRenderingText(v13) & (v16 < v21)) == 0)
+        if ((_isRenderingText(selfCopy) & (v16 < v21)) == 0)
         {
           v21 = v16;
         }
@@ -376,18 +376,18 @@
 
       else
       {
-        v22 = [(UISwipeActionStandardButton *)self titleLabel];
+        titleLabel4 = [(UISwipeActionStandardButton *)self titleLabel];
         [(UIView *)self bounds];
-        [v22 sizeThatFits:{v23, v24}];
+        [titleLabel4 sizeThatFits:{v23, v24}];
         v21 = v25;
       }
 
-      v26 = [(UISwipeActionButton *)self visualStyle];
-      [v26 maxButtonWidth];
+      visualStyle = [(UISwipeActionButton *)self visualStyle];
+      [visualStyle maxButtonWidth];
       v28 = v27;
 
-      v29 = [(UISwipeActionButton *)self visualStyle];
-      [v29 defaultButtonWidth];
+      visualStyle2 = [(UISwipeActionButton *)self visualStyle];
+      [visualStyle2 defaultButtonWidth];
       v31 = v30;
 
       v32 = v6 + v6 + v21;
@@ -426,9 +426,9 @@
 
   v5.receiver = self;
   v5.super_class = UISwipeActionStandardButton;
-  v3 = [(UIButton *)&v5 titleLabel];
+  titleLabel = [(UIButton *)&v5 titleLabel];
 
-  return v3;
+  return titleLabel;
 }
 
 @end

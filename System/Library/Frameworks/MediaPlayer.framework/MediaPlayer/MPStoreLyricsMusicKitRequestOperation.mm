@@ -1,25 +1,25 @@
 @interface MPStoreLyricsMusicKitRequestOperation
-+ (BOOL)supportsLyricsForURLBag:(id)a3;
-+ (id)_lyricsURLForURLBag:(id)a3 identifier:(int64_t)a4;
++ (BOOL)supportsLyricsForURLBag:(id)bag;
++ (id)_lyricsURLForURLBag:(id)bag identifier:(int64_t)identifier;
 - (MPStoreLyricsMusicKitRequestOperation)init;
-- (void)_enqueueOperationWithURL:(id)a3;
+- (void)_enqueueOperationWithURL:(id)l;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation MPStoreLyricsMusicKitRequestOperation
 
-- (void)_enqueueOperationWithURL:(id)a3
+- (void)_enqueueOperationWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__39977;
   v16[4] = __Block_byref_object_dispose__39978;
   v17 = 0;
-  v5 = [(NSOperationQueue *)self->_operationQueue qualityOfService];
+  qualityOfService = [(NSOperationQueue *)self->_operationQueue qualityOfService];
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x1E69E43A0]);
   v11[0] = MEMORY[0x1E69E9820];
@@ -27,10 +27,10 @@
   v11[2] = __66__MPStoreLyricsMusicKitRequestOperation__enqueueOperationWithURL___block_invoke;
   v11[3] = &unk_1E767D078;
   objc_copyWeak(v14, &location);
-  v7 = v4;
+  v7 = lCopy;
   v12 = v7;
   v13 = v16;
-  v14[1] = v5;
+  v14[1] = qualityOfService;
   v8 = [v6 initWithStartHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -210,20 +210,20 @@ void __66__MPStoreLyricsMusicKitRequestOperation__enqueueOperationWithURL___bloc
   [v2 setIdentity:v5];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7.receiver = self;
   v7.super_class = MPStoreLyricsMusicKitRequestOperation;
-  [(MPAsyncOperation *)&v7 finishWithError:v4];
-  if (v4)
+  [(MPAsyncOperation *)&v7 finishWithError:errorCopy];
+  if (errorCopy)
   {
-    v5 = [(MPStoreLyricsMusicKitRequestOperation *)self responseHandler];
+    responseHandler = [(MPStoreLyricsMusicKitRequestOperation *)self responseHandler];
 
-    if (v5)
+    if (responseHandler)
     {
-      v6 = [(MPStoreLyricsMusicKitRequestOperation *)self responseHandler];
-      (v6)[2](v6, 0, v4);
+      responseHandler2 = [(MPStoreLyricsMusicKitRequestOperation *)self responseHandler];
+      (responseHandler2)[2](responseHandler2, 0, errorCopy);
     }
   }
 }
@@ -240,8 +240,8 @@ void __66__MPStoreLyricsMusicKitRequestOperation__enqueueOperationWithURL___bloc
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSOperationQueue *)self->_operationQueue operations];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  operations = [(NSOperationQueue *)self->_operationQueue operations];
+  v5 = [operations countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -253,14 +253,14 @@ void __66__MPStoreLyricsMusicKitRequestOperation__enqueueOperationWithURL___bloc
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) finishWithError:v3];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [operations countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -281,21 +281,21 @@ void __66__MPStoreLyricsMusicKitRequestOperation__enqueueOperationWithURL___bloc
 
       [(NSOperationQueue *)self->_operationQueue setMaxConcurrentOperationCount:2];
       [(NSOperationQueue *)self->_operationQueue setName:@"com.apple.MediaPlayer.MPStoreLyricsMusicKitRequestOperation.operationQueue"];
-      v5 = [MEMORY[0x1E696AF00] currentThread];
-      -[NSOperationQueue setQualityOfService:](self->_operationQueue, "setQualityOfService:", [v5 qualityOfService]);
+      currentThread = [MEMORY[0x1E696AF00] currentThread];
+      -[NSOperationQueue setQualityOfService:](self->_operationQueue, "setQualityOfService:", [currentThread qualityOfService]);
     }
 
     v6 = objc_alloc(MEMORY[0x1E69E4618]);
-    v7 = [MEMORY[0x1E69E4680] activeAccount];
-    v8 = [v6 initWithIdentity:v7];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    v8 = [v6 initWithIdentity:activeAccount];
 
-    v9 = [MEMORY[0x1E69E4658] sharedBagProvider];
+    mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __48__MPStoreLyricsMusicKitRequestOperation_execute__block_invoke;
     v11[3] = &unk_1E767D230;
     v11[4] = self;
-    [v9 getBagForRequestContext:v8 withCompletionHandler:v11];
+    [mEMORY[0x1E69E4658] getBagForRequestContext:v8 withCompletionHandler:v11];
   }
 
   else
@@ -354,18 +354,18 @@ void __48__MPStoreLyricsMusicKitRequestOperation_execute__block_invoke(uint64_t 
   return v2;
 }
 
-+ (id)_lyricsURLForURLBag:(id)a3 identifier:(int64_t)a4
++ (id)_lyricsURLForURLBag:(id)bag identifier:(int64_t)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 stringForBagKey:*MEMORY[0x1E69E42E0]];
+  bagCopy = bag;
+  v6 = [bagCopy stringForBagKey:*MEMORY[0x1E69E42E0]];
   if (_NSIsNSString())
   {
     v7 = MEMORY[0x1E696AEC0];
-    if (a4)
+    if (identifier)
     {
       v8 = &v25 + 1;
-      quot = a4;
+      quot = identifier;
       do
       {
         v10 = lldiv(quot, 10);
@@ -386,7 +386,7 @@ void __48__MPStoreLyricsMusicKitRequestOperation_execute__block_invoke(uint64_t 
       }
 
       while (v10.quot);
-      if (a4 < 0)
+      if (identifier < 0)
       {
         *(v8 - 2) = 45;
         v12 = (v8 - 2);
@@ -403,20 +403,20 @@ void __48__MPStoreLyricsMusicKitRequestOperation_execute__block_invoke(uint64_t 
     v14 = [v7 stringWithFormat:@"%@/%@%@/%@%@", @"/v1/catalog", v6, @"/songs", v13, @"/syllable-lyrics"];
 
     v16 = MEMORY[0x1E696AF20];
-    v17 = MusicURLWithPathUsingURLBag(v14, v5, 0);
+    v17 = MusicURLWithPathUsingURLBag(v14, bagCopy, 0);
     v18 = [v16 componentsWithURL:v17 resolvingAgainstBaseURL:1];
 
-    v19 = MusicURLQueryItemLanguageWithURLBag(v5);
+    v19 = MusicURLQueryItemLanguageWithURLBag(bagCopy);
     if (v19)
     {
-      v20 = [v18 queryItems];
-      v21 = v20;
-      if (!v20)
+      queryItems = [v18 queryItems];
+      v21 = queryItems;
+      if (!queryItems)
       {
-        v20 = MEMORY[0x1E695E0F0];
+        queryItems = MEMORY[0x1E695E0F0];
       }
 
-      v22 = [v20 arrayByAddingObject:v19];
+      v22 = [queryItems arrayByAddingObject:v19];
       [v18 setQueryItems:v22];
     }
 
@@ -438,9 +438,9 @@ void __48__MPStoreLyricsMusicKitRequestOperation_execute__block_invoke(uint64_t 
   return v15;
 }
 
-+ (BOOL)supportsLyricsForURLBag:(id)a3
++ (BOOL)supportsLyricsForURLBag:(id)bag
 {
-  v3 = [a1 _lyricsURLForURLBag:a3 identifier:0];
+  v3 = [self _lyricsURLForURLBag:bag identifier:0];
   v4 = v3 != 0;
 
   return v4;

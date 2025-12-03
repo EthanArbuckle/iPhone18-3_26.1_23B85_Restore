@@ -1,12 +1,12 @@
 @interface ICMiniPlayerViewController
 - (ICAttachment)attachment;
-- (ICMiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)close:(id)a3;
-- (void)hideCloseButton:(id)a3;
+- (ICMiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)close:(id)close;
+- (void)hideCloseButton:(id)button;
 - (void)loadView;
-- (void)setAttachment:(id)a3;
-- (void)swipe:(id)a3;
+- (void)setAttachment:(id)attachment;
+- (void)swipe:(id)swipe;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -19,44 +19,44 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
   v5 = OBJC_IVAR___ICMiniPlayerViewController_attachment;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = attachment;
+  attachmentCopy = attachment;
+  selfCopy = self;
   sub_2153C6F9C(v6);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_2153C77E0();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2153C85E0();
 }
 
-- (void)swipe:(id)a3
+- (void)swipe:(id)swipe
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 direction] == 2;
-  v6 = *(&v7->super.super.super.isa + OBJC_IVAR___ICMiniPlayerViewController_showCloseButton);
-  *(&v7->super.super.super.isa + OBJC_IVAR___ICMiniPlayerViewController_showCloseButton) = v5;
+  swipeCopy = swipe;
+  selfCopy = self;
+  v5 = [swipeCopy direction] == 2;
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___ICMiniPlayerViewController_showCloseButton);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR___ICMiniPlayerViewController_showCloseButton) = v5;
   sub_2153C8AD4(v6);
 }
 
-- (void)close:(id)a3
+- (void)close:(id)close
 {
-  if (a3)
+  if (close)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2154A2BCC();
     swift_unknownObjectRelease();
@@ -65,7 +65,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_2153C8FA4();
@@ -73,17 +73,17 @@
   sub_2151ADCD8(v6, &qword_27CA5ABC0);
 }
 
-- (void)hideCloseButton:(id)a3
+- (void)hideCloseButton:(id)button
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___ICMiniPlayerViewController_showCloseButton);
   *(&self->super.super.super.isa + OBJC_IVAR___ICMiniPlayerViewController_showCloseButton) = 0;
-  v4 = self;
+  selfCopy = self;
   sub_2153C8AD4(v3);
 }
 
-- (ICMiniPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICMiniPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2154A1D6C();
     v7 = v6;
@@ -95,11 +95,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return MiniPlayerViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return MiniPlayerViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v5 = OBJC_IVAR___ICMiniPlayerViewController_attachment;
   swift_beginAccess();
@@ -110,7 +110,7 @@
     v7 = swift_allocObject();
     *(v7 + 16) = self;
     *(v7 + 24) = v6;
-    v8 = self;
+    selfCopy = self;
     v9 = v6;
     v10 = sub_2153BF4F8(0, 0, 0, sub_2153CCBC4, v7);
   }

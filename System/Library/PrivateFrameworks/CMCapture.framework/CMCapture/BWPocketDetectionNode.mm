@@ -1,20 +1,20 @@
 @interface BWPocketDetectionNode
 + (void)initialize;
-- (BWPocketDetectionNode)initWithMetalCommandQueue:(id)a3 clientApplicationID:(id)a4;
+- (BWPocketDetectionNode)initWithMetalCommandQueue:(id)queue clientApplicationID:(id)d;
 - (int)_allocateResources;
-- (int)_detectPocket:(opaqueCMSampleBuffer *)a3;
-- (void)accidentalActivationMitigationSessionStateDidChange:(id)a3;
+- (int)_detectPocket:(opaqueCMSampleBuffer *)pocket;
+- (void)accidentalActivationMitigationSessionStateDidChange:(id)change;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWPocketDetectionNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -23,19 +23,19 @@
   }
 }
 
-- (BWPocketDetectionNode)initWithMetalCommandQueue:(id)a3 clientApplicationID:(id)a4
+- (BWPocketDetectionNode)initWithMetalCommandQueue:(id)queue clientApplicationID:(id)d
 {
   v17.receiver = self;
   v17.super_class = BWPocketDetectionNode;
   v6 = [(BWNode *)&v17 init];
   v7 = v6;
-  if (!a3)
+  if (!queue)
   {
     [BWPocketDetectionNode initWithMetalCommandQueue:clientApplicationID:];
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!d)
   {
     [BWPocketDetectionNode initWithMetalCommandQueue:clientApplicationID:];
     goto LABEL_15;
@@ -64,7 +64,7 @@
     v7->_coreMotionSuppressionStateMonitor = v12;
     if (v12)
     {
-      v13 = [[BWPocketDetectionFFTProcessor alloc] initWithMetalCommandQueue:a3];
+      v13 = [[BWPocketDetectionFFTProcessor alloc] initWithMetalCommandQueue:queue];
       v7->_fftProcessor = v13;
       if (v13)
       {
@@ -77,7 +77,7 @@
         LOBYTE(v7->_cumulativeEnergyInPocketThreshold) = 1;
         v7->_sbMitigationSessionDurationInSeconds = 5.0;
         v7->_suppressFacedownSetdownAccidentals = 1;
-        if (LOBYTE(v7->_cumulativeEnergyInPocketThreshold) != 1 || (v14 = [objc_alloc(MEMORY[0x1E69D4180]) initWithBundleIdentifier:a4 callOutQueue:v7->_detectionQueue], (v7->_sbAccidentalActivationMitigationClientSession = v14) != 0))
+        if (LOBYTE(v7->_cumulativeEnergyInPocketThreshold) != 1 || (v14 = [objc_alloc(MEMORY[0x1E69D4180]) initWithBundleIdentifier:d callOutQueue:v7->_detectionQueue], (v7->_sbAccidentalActivationMitigationClientSession = v14) != 0))
         {
           v7->_suppressionStateStrings = &unk_1F2248250;
           [(BWNode *)v7 setSupportsLiveReconfiguration:1];
@@ -230,9 +230,9 @@ void __53__BWPocketDetectionNode_renderSampleBuffer_forInput___block_invoke_40(u
   *(*(a1 + 32) + 232) = 1;
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (!a3)
+  if (!d)
   {
     [(BWCoreMotionSuppressionStateMonitor *)self->_coreMotionSuppressionStateMonitor stop];
     [(BWPocketDetectionNode *)self _waitForDetectionToComplete];
@@ -268,7 +268,7 @@ void __53__BWPocketDetectionNode_renderSampleBuffer_forInput___block_invoke_40(u
 
   v10.receiver = self;
   v10.super_class = BWPocketDetectionNode;
-  [(BWNode *)&v10 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v10 didReachEndOfDataForConfigurationID:d input:input];
 }
 
 uint64_t __67__BWPocketDetectionNode_didReachEndOfDataForConfigurationID_input___block_invoke(uint64_t result)
@@ -282,10 +282,10 @@ uint64_t __67__BWPocketDetectionNode_didReachEndOfDataForConfigurationID_input__
   return result;
 }
 
-- (int)_detectPocket:(opaqueCMSampleBuffer *)a3
+- (int)_detectPocket:(opaqueCMSampleBuffer *)pocket
 {
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  ImageBuffer = CMSampleBufferGetImageBuffer(pocket);
+  v6 = CMGetAttachment(pocket, *off_1E798A3C8, 0);
   v7 = *(MEMORY[0x1E695F058] + 8);
   rect.origin.x = *MEMORY[0x1E695F058];
   rect.origin.y = v7;
@@ -306,18 +306,18 @@ uint64_t __67__BWPocketDetectionNode_didReachEndOfDataForConfigurationID_input__
   self->_cumulativeEnergyFiltered = v9;
   v10 = self->_coreMotionSuppressionState == 1 && ([(NSMutableArray *)self->_cumulativeEnergyHistory count]>= 5 && self->_cumulativeEnergyFiltered < *&self->_stopDetection || self->_suppressFacedownSetdownAccidentals && self->_coreMotionFacedownState == 1);
   self->_inPocketConsolidatedDecision = v10;
-  if (a3)
+  if (pocket)
   {
-    CFRelease(a3);
+    CFRelease(pocket);
   }
 
   return 0;
 }
 
-- (void)accidentalActivationMitigationSessionStateDidChange:(id)a3
+- (void)accidentalActivationMitigationSessionStateDidChange:(id)change
 {
-  v3 = [(SBSAccidentalActivationMitigationClientSession *)self->_sbAccidentalActivationMitigationClientSession state];
-  if (v3 == 3)
+  state = [(SBSAccidentalActivationMitigationClientSession *)self->_sbAccidentalActivationMitigationClientSession state];
+  if (state == 3)
   {
     if (!dword_1EB58E520)
     {
@@ -327,7 +327,7 @@ uint64_t __67__BWPocketDetectionNode_didReachEndOfDataForConfigurationID_input__
     goto LABEL_9;
   }
 
-  if (v3 == 2)
+  if (state == 2)
   {
     if (!dword_1EB58E520)
     {
@@ -337,7 +337,7 @@ uint64_t __67__BWPocketDetectionNode_didReachEndOfDataForConfigurationID_input__
     goto LABEL_9;
   }
 
-  if (v3 == 1 && dword_1EB58E520)
+  if (state == 1 && dword_1EB58E520)
   {
 LABEL_9:
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -348,8 +348,8 @@ LABEL_9:
 
 - (int)_allocateResources
 {
-  v3 = [(BWPocketDetectionFFTProcessor *)self->_fftProcessor allocateResources];
-  v4 = v3;
+  allocateResources = [(BWPocketDetectionFFTProcessor *)self->_fftProcessor allocateResources];
+  v4 = allocateResources;
   if (!self->_fftProcessor)
   {
     [BWPocketDetectionNode _allocateResources];
@@ -361,7 +361,7 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (allocateResources)
   {
 LABEL_3:
     [(BWPocketDetectionNode *)self _cleanupResources];
@@ -370,9 +370,9 @@ LABEL_3:
   return v4;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, @"CaptureInitiatedOnce", 0);
+  v6 = CMGetAttachment(buffer, @"CaptureInitiatedOnce", 0);
   if ((LOBYTE(self->_detectionEnabledDurationInSeconds) & 1) == 0)
   {
     if ([v6 BOOLValue])
@@ -392,17 +392,17 @@ LABEL_3:
     }
 
     memset(&v101, 0, sizeof(v101));
-    PresentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(&v101, a3);
+    PresentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(&v101, buffer);
     if ((self->_firstFramePts.timescale & 1) == 0)
     {
-      OUTLINED_FUNCTION_2_24(PresentationTimeStamp, v9, v10, v11, v12, v13, v14, v15, v55, v61, v67, v73, v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, v95, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, v16, v101.value);
+      OUTLINED_FUNCTION_2_24(PresentationTimeStamp, v9, v10, v11, v12, v13, v14, v15, v55, v61, v67, v73, v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, selfCopy, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, v16, v101.value);
       self->_ppsData.detectionSessionStartTime = CFAbsoluteTimeGetCurrent();
     }
 
     memset(&v100, 0, sizeof(v100));
     v17 = CMTimeMakeWithSeconds(&v100, 4.0, v101.timescale);
-    OUTLINED_FUNCTION_1_29(v17, v18, v19, v20, v21, v22, v23, v24, v55, v61, v67, v73, SBYTE1(v73), v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, v95, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, *&v101.value, v101.epoch);
-    if (OUTLINED_FUNCTION_4_22(v100.epoch, v56, v62, v68, v73, v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, v100.value, *&v100.timescale, rhs.epoch) >= 1)
+    OUTLINED_FUNCTION_1_29(v17, v18, v19, v20, v21, v22, v23, v24, v55, v61, v67, v73, SBYTE1(v73), v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, selfCopy, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, *&v101.value, v101.epoch);
+    if (OUTLINED_FUNCTION_4_22(v100.epoch, v56, v62, v68, v73, v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, v100.value, *&v100.timescale, rhs.epoch) >= 1)
     {
       if (!self->_resourcesAllocated)
       {
@@ -413,15 +413,15 @@ LABEL_3:
         v92 = 3221225472;
         v93 = __53__BWPocketDetectionNode_renderSampleBuffer_forInput___block_invoke;
         v94 = &unk_1E798F870;
-        v95 = self;
+        selfCopy = self;
         dispatch_async(detectionQueue, &block);
         self->_resourcesAllocated = 1;
       }
 
       memset(&v90, 0, sizeof(v90));
       v26 = CMTimeMakeWithSeconds(&v90, *(&self->_firstFramePts.epoch + 1), v101.timescale);
-      OUTLINED_FUNCTION_1_29(v26, v27, v28, v29, v30, v31, v32, v33, v57, v63, v69, v73, SBYTE1(v73), v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, v95, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, *&v101.value, v101.epoch);
-      if (OUTLINED_FUNCTION_4_22(v90.epoch, v58, v64, v70, v73, v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, v90.value, *&v90.timescale, rhs.epoch) >= 1)
+      OUTLINED_FUNCTION_1_29(v26, v27, v28, v29, v30, v31, v32, v33, v57, v63, v69, v73, SBYTE1(v73), v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, selfCopy, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, *&v101.value, v101.epoch);
+      if (OUTLINED_FUNCTION_4_22(v90.epoch, v58, v64, v70, v73, v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, v90.value, *&v90.timescale, rhs.epoch) >= 1)
       {
         LOBYTE(self->_detectionEnabledDurationInSeconds) = 1;
         self->_ppsData.inPocket = self->_inPocketConsolidatedDecision;
@@ -479,7 +479,7 @@ LABEL_3:
           v82 = 3221225472;
           v83 = __53__BWPocketDetectionNode_renderSampleBuffer_forInput___block_invoke_39;
           v84 = &unk_1E798F870;
-          v85 = self;
+          selfCopy2 = self;
           dispatch_async(v43, &v81);
         }
       }
@@ -491,14 +491,14 @@ LABEL_3:
       memset(&v79, 0, sizeof(v79));
       CMTimeMakeWithSeconds(&v79, *(&self->_lastDetectionFramePTS.epoch + 1), v101.timescale);
       lhs = v80;
-      v44 = OUTLINED_FUNCTION_4_22(v79.epoch, p_rhs, v65, v71, v73, v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, v79.value, *&v79.timescale, rhs.epoch);
+      v44 = OUTLINED_FUNCTION_4_22(v79.epoch, p_rhs, v65, v71, v73, v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, v79.value, *&v79.timescale, rhs.epoch);
       if (v44 >= 1 && (LOBYTE(self->_detectionEnabledDurationInSeconds) & 1) == 0 && LOBYTE(self->_detectionIntervalInSeconds) == 1)
       {
         LOBYTE(self->_detectionIntervalInSeconds) = 0;
-        OUTLINED_FUNCTION_2_24(v44, v45, v46, v47, v48, v49, v50, v51, v60, v66, v72, v73, v74, v75, v76, v77, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, v85, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, v95, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, v52, v101.value);
+        OUTLINED_FUNCTION_2_24(v44, v45, v46, v47, v48, v49, v50, v51, v60, v66, v72, v73, v74, v75, v76, selfCopy3, v78, v79.value, *&v79.timescale, v79.epoch, v80.value, *&v80.timescale, v80.epoch, v81, v82, v83, v84, selfCopy2, rhs.value, *&rhs.timescale, rhs.epoch, v87, *(&v87 + 1), v88, *(&v88 + 1), v89, v90.value, *&v90.timescale, v90.epoch, block, v92, v93, v94, selfCopy, sampleBufferOut, v97, v98, v99, v100.value, *&v100.timescale, v100.epoch, v52, v101.value);
         lhs.value = 0;
         rhs.value = 0;
-        BWOverCaptureSampleBufferUnpackAndRetain(a3, 0, &rhs, &lhs, 0, 0);
+        BWOverCaptureSampleBufferUnpackAndRetain(buffer, 0, &rhs, &lhs, 0, 0);
         value = lhs.value;
         if (rhs.value && [objc_msgSend(CMGetAttachment(rhs.value *off_1E798A3C8])
         {
@@ -512,7 +512,7 @@ LABEL_3:
         v74 = 3221225472;
         v75 = __53__BWPocketDetectionNode_renderSampleBuffer_forInput___block_invoke_40;
         v76 = &unk_1E7990178;
-        v77 = self;
+        selfCopy3 = self;
         v78 = sampleBufferOut;
         dispatch_async(v54, &v73);
         if (lhs.value)
@@ -528,7 +528,7 @@ LABEL_3:
     }
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 @end

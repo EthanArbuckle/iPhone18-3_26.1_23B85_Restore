@@ -1,6 +1,6 @@
 @interface FIUIChartFloatingBarSeries
 - (void)_loadFromDataSet;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSubviews;
 @end
 
@@ -11,11 +11,11 @@
   v74 = *MEMORY[0x1E69E9840];
   [(FIUIChartFloatingBarSeries *)self cornerRadius];
   v4 = v3;
-  v5 = [(FIUIChartSeries *)self maxYValue];
-  [v5 doubleValue];
+  maxYValue = [(FIUIChartSeries *)self maxYValue];
+  [maxYValue doubleValue];
   v7 = v6;
-  v8 = [(FIUIChartSeries *)self minYValue];
-  [v8 doubleValue];
+  minYValue = [(FIUIChartSeries *)self minYValue];
+  [minYValue doubleValue];
   v10 = v9;
 
   [(FIUIChartSeries *)self insetBounds];
@@ -26,51 +26,51 @@
   }
 
   v61 = v12;
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   barRects = self->_barRects;
   v58 = 496;
-  self->_barRects = v13;
+  self->_barRects = array;
 
-  v15 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   barLabelTopPoints = self->_barLabelTopPoints;
-  self->_barLabelTopPoints = v15;
+  self->_barLabelTopPoints = array2;
 
-  v17 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   barLabelBottomPoints = self->_barLabelBottomPoints;
-  self->_barLabelBottomPoints = v17;
+  self->_barLabelBottomPoints = array3;
 
-  v19 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   barLabels = self->_barLabels;
-  self->_barLabels = v19;
+  self->_barLabels = array4;
 
-  v60 = [(FIUIChartSeries *)self labelsFromDataSet];
-  v65 = [MEMORY[0x1E695DF70] array];
-  v21 = [(FIUIChartSeries *)self dataSet];
-  v22 = [v21 points];
-  v23 = [v22 count];
+  labelsFromDataSet = [(FIUIChartSeries *)self labelsFromDataSet];
+  array5 = [MEMORY[0x1E695DF70] array];
+  dataSet = [(FIUIChartSeries *)self dataSet];
+  points = [dataSet points];
+  v23 = [points count];
 
   if (v23)
   {
     v24 = 0;
     do
     {
-      v25 = [(FIUIChartSeries *)self dataSet];
-      v26 = [v25 points];
-      v27 = [v26 objectAtIndexedSubscript:v24];
+      dataSet2 = [(FIUIChartSeries *)self dataSet];
+      points2 = [dataSet2 points];
+      v27 = [points2 objectAtIndexedSubscript:v24];
 
       [(FIUIChartSeries *)self xValueForPointFromChartPoint:v27];
       v29 = v28;
-      v30 = [v27 yValue];
-      v31 = [MEMORY[0x1E695DF70] array];
+      yValue = [v27 yValue];
+      array6 = [MEMORY[0x1E695DF70] array];
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
       v70[2] = __46__FIUIChartFloatingBarSeries__loadFromDataSet__block_invoke;
       v70[3] = &unk_1E878CE88;
-      v32 = v31;
+      v32 = array6;
       v71 = v32;
       v72 = v61;
-      v64 = v30;
-      [v30 enumerateRangesUsingBlock:v70];
+      v64 = yValue;
+      [yValue enumerateRangesUsingBlock:v70];
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
@@ -96,17 +96,17 @@
               objc_enumerationMutation(v33);
             }
 
-            v41 = [*(*(&v66 + 1) + 8 * v39) rangeValue];
-            v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v42 + v41 - 1];
+            rangeValue = [*(*(&v66 + 1) + 8 * v39) rangeValue];
+            v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v42 + rangeValue - 1];
             [(FIUIChartSeries *)self yValueForPointFromChartPointValue:v43];
             v45 = v44;
 
-            v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v41];
+            v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:rangeValue];
             [(FIUIChartSeries *)self yValueForPointFromChartPointValue:v46];
             v48 = v47 - v45;
 
             v49 = [MEMORY[0x1E696B098] valueWithCGRect:{v29 - v4, v45 - v4, v4 + v4, v48 + v4 * 2.0}];
-            [v65 addObject:v49];
+            [array5 addObject:v49];
 
             v36 = [MEMORY[0x1E696B098] valueWithCGPoint:{v29, v45 - v4}];
 
@@ -129,12 +129,12 @@
         {
           v27 = v62;
           v24 = v63;
-          if (v63 < [v60 count])
+          if (v63 < [labelsFromDataSet count])
           {
             v50 = self->_barLabels;
-            v51 = [v60 objectAtIndexedSubscript:v63];
-            v52 = [v51 firstObject];
-            [(NSMutableArray *)v50 addObject:v52];
+            v51 = [labelsFromDataSet objectAtIndexedSubscript:v63];
+            firstObject = [v51 firstObject];
+            [(NSMutableArray *)v50 addObject:firstObject];
 
             [(NSMutableArray *)self->_barLabelTopPoints addObject:v36];
             [(NSMutableArray *)self->_barLabelBottomPoints addObject:v37];
@@ -156,15 +156,15 @@
       }
 
       ++v24;
-      v53 = [(FIUIChartSeries *)self dataSet];
-      v54 = [v53 points];
-      v55 = [v54 count];
+      dataSet3 = [(FIUIChartSeries *)self dataSet];
+      points3 = [dataSet3 points];
+      v55 = [points3 count];
     }
 
     while (v24 < v55);
   }
 
-  v56 = [MEMORY[0x1E695DEC8] arrayWithArray:{v65, v58}];
+  v56 = [MEMORY[0x1E695DEC8] arrayWithArray:{array5, v58}];
   v57 = *(&self->super.super.super.super.isa + v59);
   *(&self->super.super.super.super.isa + v59) = v56;
 }
@@ -212,14 +212,14 @@ LABEL_7:
   v4.super_class = FIUIChartFloatingBarSeries;
   [(FIUIChartSeries *)&v4 layoutSubviews];
   [(FIUIChartFloatingBarSeries *)self _loadFromDataSet];
-  v3 = [(FIUIChartFloatingBarSeries *)self layer];
-  [v3 setNeedsDisplay];
+  layer = [(FIUIChartFloatingBarSeries *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  UIGraphicsPushContext(a4);
+  UIGraphicsPushContext(context);
   if (self->_cornerRadius <= 2.22044605e-16)
   {
     cornerRadius = 1.0;
@@ -232,7 +232,7 @@ LABEL_7:
 
   if (self->_outlineWidth > 0.0 && self->_outlineColor)
   {
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -255,7 +255,7 @@ LABEL_7:
           [*(*(&v42 + 1) + 8 * i) CGRectValue];
           v50 = CGRectInset(v49, -self->_outlineWidth, -self->_outlineWidth);
           v12 = CGPathCreateWithRoundedRect(v50, cornerRadius + self->_outlineWidth, cornerRadius + self->_outlineWidth, 0);
-          CGContextAddPath(a4, v12);
+          CGContextAddPath(context, v12);
           CGPathRelease(v12);
         }
 
@@ -265,9 +265,9 @@ LABEL_7:
       while (v9);
     }
 
-    CGContextSetFillColorWithColor(a4, [(UIColor *)self->_outlineColor CGColor]);
-    CGContextDrawPath(a4, kCGPathFill);
-    CGContextRestoreGState(a4);
+    CGContextSetFillColorWithColor(context, [(UIColor *)self->_outlineColor CGColor]);
+    CGContextDrawPath(context, kCGPathFill);
+    CGContextRestoreGState(context);
   }
 
   v40 = 0u;
@@ -291,7 +291,7 @@ LABEL_7:
 
         [*(*(&v38 + 1) + 8 * j) CGRectValue];
         v18 = CGPathCreateWithRoundedRect(v51, cornerRadius, cornerRadius, 0);
-        CGContextAddPath(a4, v18);
+        CGContextAddPath(context, v18);
         CGPathRelease(v18);
       }
 
@@ -353,17 +353,17 @@ LABEL_7:
   barColor = self->_barColor;
   if (barColor)
   {
-    v36 = barColor;
+    whiteColor = barColor;
   }
 
   else
   {
-    v36 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v37 = v36;
-  CGContextSetFillColorWithColor(a4, [(UIColor *)v36 CGColor]);
-  CGContextDrawPath(a4, kCGPathFill);
+  v37 = whiteColor;
+  CGContextSetFillColorWithColor(context, [(UIColor *)whiteColor CGColor]);
+  CGContextDrawPath(context, kCGPathFill);
   UIGraphicsPopContext();
 }
 

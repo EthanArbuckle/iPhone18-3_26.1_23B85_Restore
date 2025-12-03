@@ -1,5 +1,5 @@
 @interface MSMessageExtensionBalloonLiveViewController
-+ (int64_t)_convertUserInterfaceStyle:(int64_t)a3;
++ (int64_t)_convertUserInterfaceStyle:(int64_t)style;
 - (BOOL)_hasValidSnapshot;
 - (BOOL)_isInShelf;
 - (BOOL)_isShowingLoadingView;
@@ -7,69 +7,69 @@
 - (BOOL)isInShelf;
 - (CGSize)contentSize;
 - (CGSize)lastRequestSize;
-- (CGSize)liveView:(id)a3 sizeThatFits:(CGSize)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)liveView:(id)view sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (IMPluginPayload)payload;
-- (MSMessageExtensionBalloonLiveViewController)initWithDataSource:(id)a3 fromMe:(BOOL)a4 conversationID:(id)a5 recipients:(id)a6;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (MSMessageExtensionBalloonLiveViewController)initWithDataSource:(id)source fromMe:(BOOL)me conversationID:(id)d recipients:(id)recipients;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (UIImage)appIcon;
 - (id)_snapshotView;
 - (id)conversationState;
 - (id)messageTintColor;
-- (id)remoteBalloonViewControllerContextIdentifier:(id)a3;
+- (id)remoteBalloonViewControllerContextIdentifier:(id)identifier;
 - (id)snapshotIdentifier;
-- (void)_handleApplicationStateResumeFromInActive:(id)a3;
-- (void)_handleDynamicTextSizeChange:(id)a3;
-- (void)_handleLocaleChange:(id)a3;
-- (void)_handleRemoteConnectionInterrupted:(id)a3;
-- (void)_handleUpdatedMessageTintColor:(id)a3;
+- (void)_handleApplicationStateResumeFromInActive:(id)active;
+- (void)_handleDynamicTextSizeChange:(id)change;
+- (void)_handleLocaleChange:(id)change;
+- (void)_handleRemoteConnectionInterrupted:(id)interrupted;
+- (void)_handleUpdatedMessageTintColor:(id)color;
 - (void)_initializeContentSize;
 - (void)_initializeStaticView;
-- (void)_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7;
-- (void)_presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6;
+- (void)_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion;
+- (void)_presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion;
 - (void)_remoteViewDidBecomeReadyForDisplay;
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3;
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color;
 - (void)_remoteViewNeedsSizeMatchBeforeSnapshotSwap;
 - (void)_remoteViewProvidesExplicitSizeSnapshot;
 - (void)_requestMessageTintColor;
 - (void)_requestResize;
 - (void)_swapOutSnapshotView;
 - (void)clearShelfPayload;
-- (void)configureLiveViewForDisplay:(id)a3;
-- (void)createRemoteBalloonViewControllerIsResuming:(BOOL)a3;
+- (void)configureLiveViewForDisplay:(id)display;
+- (void)createRemoteBalloonViewControllerIsResuming:(BOOL)resuming;
 - (void)createRemoveViewController;
 - (void)dealloc;
-- (void)didChangeBackgroundLuminance:(double)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4;
+- (void)didChangeBackgroundLuminance:(double)luminance;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion;
 - (void)loadView;
-- (void)pluginPayloadDidChangeForLiveView:(id)a3;
+- (void)pluginPayloadDidChangeForLiveView:(id)view;
 - (void)refreshConversationState;
-- (void)reloadRemoteViewIsResuming:(BOOL)a3;
-- (void)remoteBalloonViewControllerDidLoad:(id)a3;
-- (void)remoteBalloonViewControllerWillLoad:(id)a3;
-- (void)requestSizeThatFits:(CGSize)a3 presentationStyle:(unint64_t)a4 completionHandler:(id)a5;
+- (void)reloadRemoteViewIsResuming:(BOOL)resuming;
+- (void)remoteBalloonViewControllerDidLoad:(id)load;
+- (void)remoteBalloonViewControllerWillLoad:(id)load;
+- (void)requestSizeThatFits:(CGSize)fits presentationStyle:(unint64_t)style completionHandler:(id)handler;
 - (void)requestSnapshot;
 - (void)sendDidBecomeActiveMessage;
-- (void)setHasLiveViewSize:(BOOL)a3;
-- (void)setNeedsResize:(BOOL)a3;
+- (void)setHasLiveViewSize:(BOOL)size;
+- (void)setNeedsResize:(BOOL)resize;
 - (void)startListeningForSnapshotRemovalStatus;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillMoveToWindow:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillMoveToWindow:(id)window;
 @end
 
 @implementation MSMessageExtensionBalloonLiveViewController
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = MSMessageExtensionBalloonLiveViewController;
   [(MSMessageExtensionBalloonLiveViewController *)&v5 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(_MSRemoteBalloonViewController *)self->_remoteViewController purgeRemoteViewController];
   }
@@ -77,8 +77,8 @@
 
 - (void)dealloc
 {
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self sizeUpdater];
-  [v3 invalidate];
+  sizeUpdater = [(MSMessageExtensionBalloonLiveViewController *)self sizeUpdater];
+  [sizeUpdater invalidate];
 
   [(_MSRemoteBalloonViewController *)self->_remoteViewController setDelegate:0];
   v4.receiver = self;
@@ -99,21 +99,21 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v25.receiver = self;
   v25.super_class = MSMessageExtensionBalloonLiveViewController;
-  [(MSMessageExtensionBalloonLiveViewController *)&v25 viewWillAppear:a3];
-  v4 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-  v5 = [v4 wantsLoadingView];
+  [(MSMessageExtensionBalloonLiveViewController *)&v25 viewWillAppear:appear];
+  balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+  wantsLoadingView = [balloonPlugin wantsLoadingView];
 
-  if ((v5 & 1) == 0)
+  if ((wantsLoadingView & 1) == 0)
   {
     [(MSMessageExtensionBalloonLiveViewController *)self createRemoveViewController];
   }
 
-  v6 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  [v6 bounds];
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
@@ -125,44 +125,44 @@
     v16 = ms_defaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-      [v17 bounds];
+      view2 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      [view2 bounds];
       v32.width = v18;
       v32.height = v19;
       v20 = NSStringFromCGSize(v32);
       [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
       v21 = NSStringFromCGSize(v33);
-      v22 = [(MSMessageBalloonLiveViewController *)self dataSource];
-      v23 = [v22 messageGUID];
+      dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+      messageGUID = [dataSource messageGUID];
       *buf = 138412802;
       v27 = v20;
       v28 = 2112;
       v29 = v21;
       v30 = 2112;
-      v31 = v23;
+      v31 = messageGUID;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "LiveBubble. NeedResize because current view size %@ != contentSize %@ for messageGUID: %@", buf, 0x20u);
     }
 
-    v24 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    [v24 needsResize];
+    dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+    [dataSource2 needsResize];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MSMessageExtensionBalloonLiveViewController;
-  [(MSMessageExtensionBalloonLiveViewController *)&v7 viewDidAppear:a3];
+  [(MSMessageExtensionBalloonLiveViewController *)&v7 viewDidAppear:appear];
   v4 = ms_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_2D3BC();
   }
 
-  v5 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-  v6 = [v5 wantsLoadingView];
+  balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+  wantsLoadingView = [balloonPlugin wantsLoadingView];
 
-  if (v6)
+  if (wantsLoadingView)
   {
     [(MSMessageExtensionBalloonLiveViewController *)self createRemoveViewController];
   }
@@ -191,9 +191,9 @@
   }
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  *a4 = 1;
+  *absolute = 1;
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
@@ -219,8 +219,8 @@
 
 - (void)_requestMessageTintColor
 {
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
-  if (v3)
+  _remoteProxy = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
+  if (_remoteProxy)
   {
     objc_initWeak(&location, self);
     v5[0] = _NSConcreteStackBlock;
@@ -228,7 +228,7 @@
     v5[2] = sub_1805C;
     v5[3] = &unk_4D588;
     objc_copyWeak(&v6, &location);
-    [v3 _requestMessageTintColor:v5];
+    [_remoteProxy _requestMessageTintColor:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -243,50 +243,50 @@
   }
 }
 
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_18230;
   block[3] = &unk_4D560;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = colorCopy;
+  v5 = colorCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleUpdatedMessageTintColor:(id)a3
+- (void)_handleUpdatedMessageTintColor:(id)color
 {
   self->_haveUpToDateMessageTintColor = 1;
-  objc_storeStrong(&self->_lastKnownMessageTintColor, a3);
-  v4 = [(MSMessageBalloonLiveViewController *)self tintColorDelegate];
-  [v4 liveViewControllerDidUpdateMessageTintColor:self];
+  objc_storeStrong(&self->_lastKnownMessageTintColor, color);
+  tintColorDelegate = [(MSMessageBalloonLiveViewController *)self tintColorDelegate];
+  [tintColorDelegate liveViewControllerDidUpdateMessageTintColor:self];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_18450;
   v10[3] = &unk_4D5B0;
   v10[4] = self;
-  [(MSMessageExtensionBalloonLiveViewController *)self requestSizeThatFits:2 presentationStyle:v10 completionHandler:a3.width, a3.height];
+  [(MSMessageExtensionBalloonLiveViewController *)self requestSizeThatFits:2 presentationStyle:v10 completionHandler:fits.width, fits.height];
   v4 = ms_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
     v5 = NSStringFromCGSize(v15);
-    v6 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v7 = [v6 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     *buf = 138412546;
     v12 = v5;
     v13 = 2112;
-    v14 = v7;
+    v14 = messageGUID;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "LiveBubble. Returning contentSize: %@ | messageGUID: %@", buf, 0x16u);
   }
 
@@ -296,12 +296,12 @@
   return result;
 }
 
-- (void)setNeedsResize:(BOOL)a3
+- (void)setNeedsResize:(BOOL)resize
 {
-  if (self->_needsResize != a3)
+  if (self->_needsResize != resize)
   {
-    self->_needsResize = a3;
-    if (a3)
+    self->_needsResize = resize;
+    if (resize)
     {
       [(MSMessageExtensionBalloonLiveViewController *)self beginHoldingSnapshotForReason:3];
       height = CGSizeZero.height;
@@ -311,12 +311,12 @@
   }
 }
 
-- (void)setHasLiveViewSize:(BOOL)a3
+- (void)setHasLiveViewSize:(BOOL)size
 {
-  if (self->_hasLiveViewSize != a3)
+  if (self->_hasLiveViewSize != size)
   {
-    self->_hasLiveViewSize = a3;
-    if (a3)
+    self->_hasLiveViewSize = size;
+    if (size)
     {
       [(MSMessageExtensionBalloonLiveViewController *)self endHoldingSnapshotForReason:0];
     }
@@ -328,15 +328,15 @@
   }
 }
 
-- (void)requestSizeThatFits:(CGSize)a3 presentationStyle:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestSizeThatFits:(CGSize)fits presentationStyle:(unint64_t)style completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = fits.height;
+  width = fits.width;
+  handlerCopy = handler;
   if ([(MSMessageExtensionBalloonLiveViewController *)self needsResize])
   {
-    v10 = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
-    v11 = v10 == 0;
+    _remoteProxy = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
+    v11 = _remoteProxy == 0;
 
     v12 = ms_defaultLog();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -344,28 +344,28 @@
     {
       if (v13)
       {
-        v34 = [(MSMessageBalloonLiveViewController *)self dataSource];
-        v35 = [v34 messageGUID];
+        dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+        messageGUID = [dataSource messageGUID];
         remoteViewController = self->_remoteViewController;
         *buf = 138412546;
-        v49 = v35;
+        v49 = messageGUID;
         v50 = 2112;
         v51 = remoteViewController;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "LiveBubble. Early returning size request for messageGUID: %@. Reason: remoteProxy is nil, remoteViewController %@", buf, 0x16u);
       }
 
       [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
-      v9[2](v9, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
     {
       if (v13)
       {
-        v14 = [(MSMessageBalloonLiveViewController *)self dataSource];
-        v15 = [v14 messageGUID];
+        dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+        messageGUID2 = [dataSource2 messageGUID];
         *buf = 138412290;
-        v49 = v15;
+        v49 = messageGUID2;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "LiveBubble. Attempting to request new size for messageGUID: %@", buf, 0xCu);
       }
 
@@ -381,12 +381,12 @@
       if (v26 || (v20 & v22 & 1) != 0)
       {
         [(MSMessageExtensionBalloonLiveViewController *)self setLastRequestSize:width, height];
-        v37 = [(MSMessageExtensionBalloonLiveViewController *)self sizeUpdater];
-        [v37 invalidate];
+        sizeUpdater = [(MSMessageExtensionBalloonLiveViewController *)self sizeUpdater];
+        [sizeUpdater invalidate];
 
         [(MSMessageExtensionBalloonLiveViewController *)self setSizeUpdater:0];
         v38 = +[UIApplication sharedApplication];
-        LOBYTE(v37) = [v38 isRunningTest];
+        LOBYTE(sizeUpdater) = [v38 isRunningTest];
 
         objc_initWeak(buf, self);
         v44[0] = _NSConcreteStackBlock;
@@ -395,14 +395,14 @@
         v44[3] = &unk_4D628;
         v46[1] = *&width;
         v46[2] = *&height;
-        v46[3] = a4;
+        v46[3] = style;
         objc_copyWeak(v46, buf);
         v44[4] = self;
-        v45 = v9;
-        v47 = v37;
+        v45 = handlerCopy;
+        v47 = sizeUpdater;
         v39 = objc_retainBlock(v44);
-        v40 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-        LODWORD(v38) = [v40 wantsLoadingView];
+        balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+        LODWORD(v38) = [balloonPlugin wantsLoadingView];
 
         if (v38)
         {
@@ -430,15 +430,15 @@
         v27 = ms_defaultLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [(MSMessageBalloonLiveViewController *)self dataSource];
-          v29 = [v28 messageGUID];
+          dataSource3 = [(MSMessageBalloonLiveViewController *)self dataSource];
+          messageGUID3 = [dataSource3 messageGUID];
           v30 = [NSNumber numberWithBool:v22];
           v31 = [NSNumber numberWithBool:v20];
           [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
           v32 = NSStringFromCGSize(v58);
           v33 = [NSNumber numberWithBool:[(MSMessageExtensionBalloonLiveViewController *)self needsResize]];
           *buf = 138413314;
-          v49 = v29;
+          v49 = messageGUID3;
           v50 = 2112;
           v51 = v30;
           v52 = 2112;
@@ -451,7 +451,7 @@
         }
 
         [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
-        v9[2](v9, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
   }
@@ -459,37 +459,37 @@
   else
   {
     [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
 - (void)requestSnapshot
 {
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self _shouldUseBackwardsCompatibilityOffsets];
-  v4 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  v5 = [v4 staticView];
-  if (v5)
+  _shouldUseBackwardsCompatibilityOffsets = [(MSMessageExtensionBalloonLiveViewController *)self _shouldUseBackwardsCompatibilityOffsets];
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  staticView = [view staticView];
+  if (staticView)
   {
 
 LABEL_7:
     v16 = ms_defaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MSMessageBalloonLiveViewController *)self dataSource];
-      v18 = [v17 messageGUID];
-      v19 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-      v20 = [v19 staticView];
-      v21 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-      [v21 bounds];
+      dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+      messageGUID = [dataSource messageGUID];
+      view2 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      staticView2 = [view2 staticView];
+      view3 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      [view3 bounds];
       v45.width = v22;
       v45.height = v23;
       v24 = NSStringFromCGSize(v45);
       [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
       v25 = NSStringFromCGSize(v46);
       *buf = 138413058;
-      v38 = v18;
+      v38 = messageGUID;
       v39 = 2112;
-      v40 = v20;
+      v40 = staticView2;
       v41 = 2112;
       v42 = v24;
       v43 = 2112;
@@ -500,8 +500,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v6 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  [v6 bounds];
+  view4 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  [view4 bounds];
   v8 = v7;
   v10 = v9;
   [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
@@ -513,22 +513,22 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v26 = [(MSMessageExtensionBalloonLiveViewController *)self _isInShelf];
+  _isInShelf = [(MSMessageExtensionBalloonLiveViewController *)self _isInShelf];
   v27 = ms_defaultLog();
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
-  if (v26)
+  if (_isInShelf)
   {
     if (v28)
     {
-      v29 = [(MSMessageBalloonLiveViewController *)self dataSource];
-      v30 = [v29 messageGUID];
+      dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+      messageGUID2 = [dataSource2 messageGUID];
       *buf = 138412290;
-      v38 = v30;
+      v38 = messageGUID2;
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "LiveBubble. Took snapshot for shelf message. messageGUID: %@ ", buf, 0xCu);
     }
 
-    v31 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-    v16 = [v31 snapshotViewAfterScreenUpdates:0];
+    view5 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+    v16 = [view5 snapshotViewAfterScreenUpdates:0];
 
     [(MSMessageExtensionBalloonLiveViewController *)self setSnapshotView:v16];
   }
@@ -537,10 +537,10 @@ LABEL_7:
   {
     if (v28)
     {
-      v32 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-      v33 = [v32 messageGUID];
+      payload = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+      messageGUID3 = [payload messageGUID];
       *buf = 138412290;
-      v38 = v33;
+      v38 = messageGUID3;
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "LiveBubble. Requesting snapshot for messageGUID: %@", buf, 0xCu);
     }
 
@@ -555,14 +555,14 @@ LABEL_7:
       v16 = 0;
     }
 
-    v34 = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
+    _remoteProxy = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_194F8;
     v35[3] = &unk_4D678;
     v35[4] = self;
-    v36 = v3;
-    [v34 _requestSnapshotThatFits:v16 completion:v35];
+    v36 = _shouldUseBackwardsCompatibilityOffsets;
+    [_remoteProxy _requestSnapshotThatFits:v16 completion:v35];
   }
 
 LABEL_9:
@@ -572,68 +572,68 @@ LABEL_9:
 {
   if ([(MSMessageExtensionBalloonLiveViewController *)self _isInShelf])
   {
-    v3 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v4 = [v3 chat];
-    v5 = [v4 guid];
-    v6 = [NSString stringWithFormat:@"%@-ShelfIdentifier", v5];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    chat = [dataSource chat];
+    guid = [chat guid];
+    messageGUID = [NSString stringWithFormat:@"%@-ShelfIdentifier", guid];
   }
 
   else
   {
-    v3 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-    v6 = [v3 messageGUID];
+    dataSource = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+    messageGUID = [dataSource messageGUID];
   }
 
-  return v6;
+  return messageGUID;
 }
 
 - (void)clearShelfPayload
 {
   if ([(MSMessageExtensionBalloonLiveViewController *)self _isInShelf])
   {
-    v3 = [(_MSRemoteBalloonViewController *)self->_remoteViewController requestUUID];
-    if (v3)
+    requestUUID = [(_MSRemoteBalloonViewController *)self->_remoteViewController requestUUID];
+    if (requestUUID)
     {
-      v10 = v3;
+      v10 = requestUUID;
       v4 = +[IMBalloonPluginManager sharedInstance];
-      v5 = [(MSMessageBalloonLiveViewController *)self dataSource];
-      v6 = [v5 pluginPayload];
-      v7 = [v6 pluginBundleID];
-      v8 = [v4 balloonPluginForBundleID:v7];
+      dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+      pluginPayload = [dataSource pluginPayload];
+      pluginBundleID = [pluginPayload pluginBundleID];
+      v8 = [v4 balloonPluginForBundleID:pluginBundleID];
 
-      v9 = [v8 extension];
-      [v9 cancelExtensionRequestWithIdentifier:v10];
+      extension = [v8 extension];
+      [extension cancelExtensionRequestWithIdentifier:v10];
 
-      v3 = v10;
+      requestUUID = v10;
     }
   }
 }
 
-- (void)reloadRemoteViewIsResuming:(BOOL)a3
+- (void)reloadRemoteViewIsResuming:(BOOL)resuming
 {
-  v3 = a3;
+  resumingCopy = resuming;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_2D444();
   }
 
-  [(MSMessageExtensionBalloonLiveViewController *)self createRemoteBalloonViewControllerIsResuming:v3];
+  [(MSMessageExtensionBalloonLiveViewController *)self createRemoteBalloonViewControllerIsResuming:resumingCopy];
 }
 
 - (id)conversationState
 {
-  v2 = [(MSMessageBalloonLiveViewController *)self conversationStateFactory];
-  v3 = [v2 conversationState];
+  conversationStateFactory = [(MSMessageBalloonLiveViewController *)self conversationStateFactory];
+  conversationState = [conversationStateFactory conversationState];
 
-  return v3;
+  return conversationState;
 }
 
-- (MSMessageExtensionBalloonLiveViewController)initWithDataSource:(id)a3 fromMe:(BOOL)a4 conversationID:(id)a5 recipients:(id)a6
+- (MSMessageExtensionBalloonLiveViewController)initWithDataSource:(id)source fromMe:(BOOL)me conversationID:(id)d recipients:(id)recipients
 {
   v12.receiver = self;
   v12.super_class = MSMessageExtensionBalloonLiveViewController;
-  v6 = [(MSMessageBalloonLiveViewController *)&v12 initWithDataSource:a3 fromMe:a4 conversationID:a5 recipients:a6];
+  v6 = [(MSMessageBalloonLiveViewController *)&v12 initWithDataSource:source fromMe:me conversationID:d recipients:recipients];
   if (v6)
   {
     v7 = objc_alloc_init(_TtC31MSMessageExtensionBalloonPlugin29MSExtensionViewLoadingTracker);
@@ -668,16 +668,16 @@ LABEL_9:
 - (void)loadView
 {
   v3 = [MSMessageExtensionBalloonLiveView alloc];
-  v4 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v5 = [(MSMessageExtensionBalloonLiveView *)v3 initWithFrame:v4 dataSource:self->_isFromMe fromMe:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  v5 = [(MSMessageExtensionBalloonLiveView *)v3 initWithFrame:dataSource dataSource:self->_isFromMe fromMe:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(MSMessageExtensionBalloonLiveViewController *)self setView:v5];
 
-  v6 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  [v6 setDelegate:self];
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  [view setDelegate:self];
 
   v7 = [MSMessageExtensionBalloonLoadingView alloc];
-  v8 = [(MSMessageExtensionBalloonLiveViewController *)self appIcon];
-  v9 = [(MSMessageExtensionBalloonLoadingView *)v7 initWithAppIcon:v8 fromMe:self->_isFromMe];
+  appIcon = [(MSMessageExtensionBalloonLiveViewController *)self appIcon];
+  v9 = [(MSMessageExtensionBalloonLoadingView *)v7 initWithAppIcon:appIcon fromMe:self->_isFromMe];
 
   [(MSMessageExtensionBalloonLiveViewController *)self setLoadingView:v9];
   [(MSMessageExtensionBalloonLiveViewController *)self _initializeStaticView];
@@ -690,54 +690,54 @@ LABEL_9:
   v10 = ms_defaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v12 = [v11 messageGUID];
+    dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource2 messageGUID];
     [(MSMessageExtensionBalloonLiveViewController *)self contentSize];
     v13 = NSStringFromCGSize(v27);
-    v14 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-    v15 = [v14 staticView];
+    view2 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+    staticView = [view2 staticView];
     v16 = [NSNumber numberWithBool:[(MSMessageExtensionBalloonLiveViewController *)self _hasValidSnapshot]];
     v19 = 138413058;
-    v20 = v12;
+    v20 = messageGUID;
     v21 = 2112;
     v22 = v13;
     v23 = 2112;
-    v24 = v15;
+    v24 = staticView;
     v25 = 2112;
     v26 = v16;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "LiveBubble. Initialized with messageGUID: %@, contentSize: %@, staticView: %@, hasValidSnapshot: %@", &v19, 0x2Au);
   }
 
-  v17 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-  v18 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  [v18 updateIconForPlugin:v17];
+  balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+  view3 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  [view3 updateIconForPlugin:balloonPlugin];
 }
 
 - (void)_initializeStaticView
 {
-  v4 = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  [v3 setStaticView:v4];
+  _snapshotView = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  [view setStaticView:_snapshotView];
 }
 
 - (BOOL)_isInShelf
 {
-  v2 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v3 = [v2 payloadInShelf];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  payloadInShelf = [dataSource payloadInShelf];
 
-  return v3;
+  return payloadInShelf;
 }
 
 - (BOOL)_isShowingLoadingView
 {
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  v4 = [v3 staticView];
-  if (v4)
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  staticView = [view staticView];
+  if (staticView)
   {
-    v5 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-    v6 = [v5 staticView];
-    v7 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
-    v8 = v6 == v7;
+    view2 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+    staticView2 = [view2 staticView];
+    loadingView = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
+    v8 = staticView2 == loadingView;
   }
 
   else
@@ -750,45 +750,45 @@ LABEL_9:
 
 - (void)_initializeContentSize
 {
-  v25 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  v3 = [v25 staticView];
-  v4 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  staticView = [view staticView];
+  loadingView = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
 
-  if (v3 == v4)
+  if (staticView == loadingView)
   {
-    v13 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
-    v14 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-    [v14 bounds];
-    [v13 sizeThatFits:{v15, v16}];
+    loadingView2 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
+    view2 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+    [view2 bounds];
+    [loadingView2 sizeThatFits:{v15, v16}];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
+    loadingView3 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
     v8 = 0.0;
-    [v21 setFrame:{0.0, 0.0, v18, v20}];
+    [loadingView3 setFrame:{0.0, 0.0, v18, v20}];
 
-    v22 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-    LODWORD(v14) = [v22 wantsLoadingView];
+    balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+    LODWORD(view2) = [balloonPlugin wantsLoadingView];
 
     v10 = 0.0;
-    if (!v14)
+    if (!view2)
     {
       goto LABEL_7;
     }
 
-    v11 = [v25 staticView];
-    [v11 bounds];
+    staticView2 = [view staticView];
+    [staticView2 bounds];
     v8 = v23;
     v10 = v24;
   }
 
   else
   {
-    v5 = [v25 staticView];
-    [v5 sizeToFit];
+    staticView3 = [view staticView];
+    [staticView3 sizeToFit];
 
-    v6 = [v25 staticView];
-    [v6 bounds];
+    staticView4 = [view staticView];
+    [staticView4 bounds];
     v8 = v7;
     v10 = v9;
 
@@ -797,8 +797,8 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v11 = +[CKUIBehavior sharedBehaviors];
-    [v11 pluginBackwardsCompatibilityLeadingTrailingOffset];
+    staticView2 = +[CKUIBehavior sharedBehaviors];
+    [staticView2 pluginBackwardsCompatibilityLeadingTrailingOffset];
     v8 = v8 + v12 * -2.0;
   }
 
@@ -806,16 +806,16 @@ LABEL_7:
   [(MSMessageExtensionBalloonLiveViewController *)self setContentSize:v8, v10];
 }
 
-+ (int64_t)_convertUserInterfaceStyle:(int64_t)a3
++ (int64_t)_convertUserInterfaceStyle:(int64_t)style
 {
-  if (a3 >= 3)
+  if (style >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
@@ -828,23 +828,23 @@ LABEL_7:
   }
 
   v4 = [NSString stringWithFormat:@"%@-LiveBubbleSendAnimation", @"ShelfIdentifier"];
-  v5 = [CKSnapshotUtilities _snapshotViewForGUID:v4];
-  if (!v5)
+  loadingView = [CKSnapshotUtilities _snapshotViewForGUID:v4];
+  if (!loadingView)
   {
-    v6 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
-    v5 = [CKSnapshotUtilities _snapshotViewForGUID:v6];
+    snapshotIdentifier = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
+    loadingView = [CKSnapshotUtilities _snapshotViewForGUID:snapshotIdentifier];
   }
 
-  v7 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
+  snapshotIdentifier2 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
 
-  v8 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v9 = [v8 chat];
-  v10 = [v9 transcriptBackgroundGUID];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  chat = [dataSource chat];
+  transcriptBackgroundGUID = [chat transcriptBackgroundGUID];
 
-  if (v10)
+  if (transcriptBackgroundGUID)
   {
     v11 = 2;
-    if (!v5)
+    if (!loadingView)
     {
       goto LABEL_8;
     }
@@ -853,24 +853,24 @@ LABEL_7:
   else
   {
     v12 = +[UIWindow keyWindow];
-    v13 = [v12 traitCollection];
-    v11 = +[MSMessageExtensionBalloonLiveViewController _convertUserInterfaceStyle:](MSMessageExtensionBalloonLiveViewController, "_convertUserInterfaceStyle:", [v13 userInterfaceStyle]);
+    traitCollection = [v12 traitCollection];
+    v11 = +[MSMessageExtensionBalloonLiveViewController _convertUserInterfaceStyle:](MSMessageExtensionBalloonLiveViewController, "_convertUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
-    if (!v5)
+    if (!loadingView)
     {
 LABEL_8:
-      v14 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
-      v15 = [CKSnapshotUtilities snapshotExistsForGUID:v14 interfaceStyle:v11];
+      snapshotIdentifier3 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
+      v15 = [CKSnapshotUtilities snapshotExistsForGUID:snapshotIdentifier3 interfaceStyle:v11];
 
       if (!v15)
       {
         goto LABEL_19;
       }
 
-      v16 = [CKSnapshotUtilities snapshotForGUID:v7 interfaceStyle:v11];
+      v16 = [CKSnapshotUtilities snapshotForGUID:snapshotIdentifier2 interfaceStyle:v11];
       v17 = [UIImageView alloc];
-      v18 = [v16 image];
-      v5 = [v17 initWithImage:v18];
+      image = [v16 image];
+      loadingView = [v17 initWithImage:image];
 
       [v16 messageTintColor];
       v20 = v19;
@@ -907,33 +907,33 @@ LABEL_8:
       v32 = ms_defaultLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
+        snapshotIdentifier4 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotIdentifier];
         *buf = 138412546;
         v45 = v25;
         v46 = 2112;
-        v47 = v33;
+        v47 = snapshotIdentifier4;
         _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "LiveBubble. Snapshot Tint color %@ for messageGUID: %@", buf, 0x16u);
       }
 
       if (v25)
       {
-        v34 = [(MSMessageExtensionBalloonLiveViewController *)self lastKnownMessageTintColor];
-        v35 = [(UIView *)v25 isEqual:v34];
+        lastKnownMessageTintColor = [(MSMessageExtensionBalloonLiveViewController *)self lastKnownMessageTintColor];
+        v35 = [(UIView *)v25 isEqual:lastKnownMessageTintColor];
 
         if ((v35 & 1) == 0)
         {
           [(MSMessageExtensionBalloonLiveViewController *)self setLastKnownMessageTintColor:v25];
-          v36 = [(MSMessageBalloonLiveViewController *)self tintColorDelegate];
-          [v36 liveViewControllerDidUpdateMessageTintColor:self];
+          tintColorDelegate = [(MSMessageBalloonLiveViewController *)self tintColorDelegate];
+          [tintColorDelegate liveViewControllerDidUpdateMessageTintColor:self];
         }
       }
 
-      if (!v5)
+      if (!loadingView)
       {
 LABEL_19:
-        v5 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
-        v37 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-        [v37 setForceHideAppIcon:1];
+        loadingView = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
+        view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+        [view setForceHideAppIcon:1];
       }
     }
   }
@@ -941,20 +941,20 @@ LABEL_19:
   v38 = ms_defaultLog();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v40 = [v39 messageGUID];
+    dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource2 messageGUID];
     *buf = 138412546;
-    v45 = v5;
+    v45 = loadingView;
     v46 = 2112;
-    v47 = v40;
+    v47 = messageGUID;
     _os_log_impl(&dword_0, v38, OS_LOG_TYPE_DEFAULT, "LiveBubble. Setting snapshotView to %@. messageGUID: %@", buf, 0x16u);
   }
 
   v41 = self->_snapshotView;
-  self->_snapshotView = v5;
+  self->_snapshotView = loadingView;
 
-  v42 = [(MSMessageExtensionBalloonLiveViewController *)self traitCollection];
-  -[MSMessageExtensionBalloonLiveViewController setSnapshotViewInterfaceStyle:](self, "setSnapshotViewInterfaceStyle:", [v42 userInterfaceStyle]);
+  traitCollection2 = [(MSMessageExtensionBalloonLiveViewController *)self traitCollection];
+  -[MSMessageExtensionBalloonLiveViewController setSnapshotViewInterfaceStyle:](self, "setSnapshotViewInterfaceStyle:", [traitCollection2 userInterfaceStyle]);
 
   snapshotView = self->_snapshotView;
 LABEL_23:
@@ -967,21 +967,21 @@ LABEL_23:
   appIcon = self->_appIcon;
   if (!appIcon)
   {
-    v4 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-    v5 = [(MSMessageExtensionBalloonLiveViewController *)self traitCollection];
-    v6 = [v4 __ck_browserImageForInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+    balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+    traitCollection = [(MSMessageExtensionBalloonLiveViewController *)self traitCollection];
+    v6 = [balloonPlugin __ck_browserImageForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
     if (!v6)
     {
-      v7 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-      v8 = [v7 payloadDictionary];
+      payload = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+      payloadDictionary = [payload payloadDictionary];
 
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_1A9C4;
       v11[3] = &unk_4D470;
       v11[4] = self;
-      v6 = [IMBalloonPlugin __ck_appIconFromPayloadDictionary:v8 withCompletionBlock:v11];
+      v6 = [IMBalloonPlugin __ck_appIconFromPayloadDictionary:payloadDictionary withCompletionBlock:v11];
     }
 
     v9 = self->_appIcon;
@@ -995,10 +995,10 @@ LABEL_23:
 
 - (BOOL)_hasValidSnapshot
 {
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
-  if (v3)
+  _snapshotView = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
+  if (_snapshotView)
   {
-    v4 = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
+    _snapshotView2 = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1013,56 +1013,56 @@ LABEL_23:
 
 - (IMPluginPayload)payload
 {
-  v2 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v3 = [v2 pluginPayload];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  pluginPayload = [dataSource pluginPayload];
 
-  return v3;
+  return pluginPayload;
 }
 
-- (void)_handleDynamicTextSizeChange:(id)a3
+- (void)_handleDynamicTextSizeChange:(id)change
 {
   v4 = ms_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v6 = [v5 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     v7 = 138412290;
-    v8 = v6;
+    v8 = messageGUID;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "LiveBubble. Handling dynamic text size change. messageGUID: %@", &v7, 0xCu);
   }
 
   [(MSMessageExtensionBalloonLiveViewController *)self setNeedsResize:1];
 }
 
-- (void)_handleLocaleChange:(id)a3
+- (void)_handleLocaleChange:(id)change
 {
   v4 = ms_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v6 = [v5 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     v7 = 138412290;
-    v8 = v6;
+    v8 = messageGUID;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "LiveBubble. Handling locale change. messageGUID: %@", &v7, 0xCu);
   }
 
   [(MSMessageExtensionBalloonLiveViewController *)self setNeedsResize:1];
 }
 
-- (void)configureLiveViewForDisplay:(id)a3
+- (void)configureLiveViewForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v7 = [v6 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     v8 = [NSNumber numberWithBool:[(_MSRemoteBalloonViewController *)self->_remoteViewController loadedRemoteView]];
     v9 = [NSNumber numberWithBool:[(_MSRemoteBalloonViewController *)self->_remoteViewController isReadyToDisplay]];
     v15 = 138413058;
-    v16 = v4;
+    v16 = displayCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = messageGUID;
     v19 = 2112;
     v20 = v8;
     v21 = 2112;
@@ -1079,52 +1079,52 @@ LABEL_23:
 
     else
     {
-      v10 = [(MSMessageExtensionBalloonLiveViewController *)self traitCollection];
-      v11 = [v10 userInterfaceStyle];
-      v12 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotViewInterfaceStyle];
+      traitCollection = [(MSMessageExtensionBalloonLiveViewController *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
+      snapshotViewInterfaceStyle = [(MSMessageExtensionBalloonLiveViewController *)self snapshotViewInterfaceStyle];
 
-      if (v11 != v12)
+      if (userInterfaceStyle != snapshotViewInterfaceStyle)
       {
         [(MSMessageExtensionBalloonLiveViewController *)self setSnapshotView:0];
       }
 
-      v13 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-      v14 = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
-      [v13 setStaticView:v14];
+      view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      _snapshotView = [(MSMessageExtensionBalloonLiveViewController *)self _snapshotView];
+      [view setStaticView:_snapshotView];
     }
   }
 }
 
 - (void)refreshConversationState
 {
-  v5 = [(MSMessageExtensionBalloonLiveViewController *)self conversationState];
-  v3 = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
-  v4 = [v5 activeMessage];
-  [v3 _didUpdateMessage:v4 conversationState:v5];
+  conversationState = [(MSMessageExtensionBalloonLiveViewController *)self conversationState];
+  _remoteProxy = [(MSMessageExtensionBalloonLiveViewController *)self _remoteProxy];
+  activeMessage = [conversationState activeMessage];
+  [_remoteProxy _didUpdateMessage:activeMessage conversationState:conversationState];
 }
 
-- (void)pluginPayloadDidChangeForLiveView:(id)a3
+- (void)pluginPayloadDidChangeForLiveView:(id)view
 {
-  v8 = a3;
-  v4 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-  v5 = [v8 dataSource];
-  v6 = [v5 pluginPayload];
+  viewCopy = view;
+  payload = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+  dataSource = [viewCopy dataSource];
+  pluginPayload = [dataSource pluginPayload];
 
-  if (v4 != v6)
+  if (payload != pluginPayload)
   {
-    v7 = [v8 dataSource];
-    [(MSMessageBalloonLiveViewController *)self setDataSource:v7];
+    dataSource2 = [viewCopy dataSource];
+    [(MSMessageBalloonLiveViewController *)self setDataSource:dataSource2];
 
     [(MSMessageExtensionBalloonLiveViewController *)self refreshConversationState];
   }
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = MSMessageExtensionBalloonLiveViewController;
   [(MSMessageExtensionBalloonLiveViewController *)&v5 viewWillMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(MSMessageExtensionBalloonLiveViewController *)self endHoldingSnapshotForReason:1];
   }
@@ -1135,11 +1135,11 @@ LABEL_23:
   }
 }
 
-- (CGSize)liveView:(id)a3 sizeThatFits:(CGSize)a4
+- (CGSize)liveView:(id)view sizeThatFits:(CGSize)fits
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = fits.height;
+  width = fits.width;
+  viewCopy = view;
   if ([(MSMessageExtensionBalloonLiveViewController *)self needsResize])
   {
     if (IMOSLoggingEnabled())
@@ -1147,10 +1147,10 @@ LABEL_23:
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(MSMessageBalloonLiveViewController *)self dataSource];
-        v10 = [v9 messageGUID];
+        dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+        messageGUID = [dataSource messageGUID];
         v15 = 138412290;
-        v16 = v10;
+        v16 = messageGUID;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "LiveBubble. We don't have a good size as we need to resize. Returning the sizeThatFits size. messageGUID: %@", &v15, 0xCu);
       }
     }
@@ -1170,35 +1170,35 @@ LABEL_23:
   return result;
 }
 
-- (void)_handleRemoteConnectionInterrupted:(id)a3
+- (void)_handleRemoteConnectionInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:IMExtensionRemoteConnectionInterruptedBundleIdentifier];
+  userInfo = [interrupted userInfo];
+  v5 = [userInfo objectForKey:IMExtensionRemoteConnectionInterruptedBundleIdentifier];
   v6 = ms_defaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v8 = [v7 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     v13 = 138412546;
     v14 = v5;
     v15 = 2112;
-    v16 = v8;
+    v16 = messageGUID;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "LiveBubble. Handling extension interruption for bundleID %@. messageGUID: %@", &v13, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v10 = [v9 bundleID];
+    dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+    bundleID = [dataSource2 bundleID];
 
-    if ([v10 isEqualToIgnoringCase:v5])
+    if ([bundleID isEqualToIgnoringCase:v5])
     {
-      v11 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      view = [(MSMessageExtensionBalloonLiveViewController *)self view];
       [(MSMessageExtensionBalloonLiveViewController *)self _initializeStaticView];
       [(_MSRemoteBalloonViewController *)self->_remoteViewController handleRemoteInterruption];
       [(_MSRemoteBalloonViewController *)self->_remoteViewController willMoveToParentViewController:0];
-      [v11 setRemoteBalloonView:0];
+      [view setRemoteBalloonView:0];
       [(_MSRemoteBalloonViewController *)self->_remoteViewController removeFromParentViewController];
       remoteViewController = self->_remoteViewController;
       self->_remoteViewController = 0;
@@ -1206,7 +1206,7 @@ LABEL_23:
   }
 }
 
-- (void)_handleApplicationStateResumeFromInActive:(id)a3
+- (void)_handleApplicationStateResumeFromInActive:(id)active
 {
   v4 = ms_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1217,52 +1217,52 @@ LABEL_23:
   [(MSMessageExtensionBalloonLiveViewController *)self createRemoteBalloonViewControllerIsResuming:1];
 }
 
-- (void)remoteBalloonViewControllerWillLoad:(id)a3
+- (void)remoteBalloonViewControllerWillLoad:(id)load
 {
-  v4 = [(_MSRemoteBalloonViewController *)self->_remoteViewController extensionContext];
-  [v4 setDelegate:self];
+  extensionContext = [(_MSRemoteBalloonViewController *)self->_remoteViewController extensionContext];
+  [extensionContext setDelegate:self];
 }
 
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  draftCopy = draft;
+  completionCopy = completion;
   remoteViewController = self->_remoteViewController;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1B550;
   v9[3] = &unk_4D378;
-  v10 = v6;
-  v8 = v6;
-  [(_MSRemoteBalloonViewController *)remoteViewController fetchInternalMessageStateForDraft:v4 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(_MSRemoteBalloonViewController *)remoteViewController fetchInternalMessageStateForDraft:draftCopy completion:v9];
 }
 
-- (void)didChangeBackgroundLuminance:(double)a3
+- (void)didChangeBackgroundLuminance:(double)luminance
 {
-  [(MSMessageExtensionBalloonLiveViewController *)self setBackgroundLuminance:a3];
+  [(MSMessageExtensionBalloonLiveViewController *)self setBackgroundLuminance:luminance];
   remoteViewController = self->_remoteViewController;
   [(MSMessageExtensionBalloonLiveViewController *)self backgroundLuminance];
 
   [(_MSRemoteBalloonViewController *)remoteViewController didChangeBackgroundLuminance:?];
 }
 
-- (void)remoteBalloonViewControllerDidLoad:(id)a3
+- (void)remoteBalloonViewControllerDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [NSNumber numberWithBool:[(MSMessageExtensionBalloonLiveViewController *)self needsResize]];
-    v7 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v8 = [v7 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     v9 = [NSNumber numberWithBool:[(_MSRemoteBalloonViewController *)self->_remoteViewController isReadyToDisplay]];
     v10 = [NSNumber numberWithBool:[(MSMessageExtensionBalloonLiveViewController *)self _hasValidSnapshot]];
     *buf = 138413314;
-    v14 = v4;
+    v14 = loadCopy;
     v15 = 2112;
     v16 = v6;
     v17 = 2112;
-    v18 = v8;
+    v18 = messageGUID;
     v19 = 2112;
     v20 = v9;
     v21 = 2112;
@@ -1294,24 +1294,24 @@ LABEL_23:
   }
 }
 
-- (id)remoteBalloonViewControllerContextIdentifier:(id)a3
+- (id)remoteBalloonViewControllerContextIdentifier:(id)identifier
 {
-  v4 = [(MSMessageBalloonLiveViewController *)self delegate];
-  v5 = [v4 liveViewControllerContextIdentifier:self];
+  delegate = [(MSMessageBalloonLiveViewController *)self delegate];
+  v5 = [delegate liveViewControllerContextIdentifier:self];
 
   return v5;
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  imageCopy = image;
+  completionCopy = completion;
   v17 = [MSEntitlementChecker alloc];
-  v18 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v19 = [(MSEntitlementChecker *)v17 initWithDataSource:v18 requestIdentifierProvider:self];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  v19 = [(MSEntitlementChecker *)v17 initWithDataSource:dataSource requestIdentifierProvider:self];
 
   if ([(MSEntitlementChecker *)v19 hasEntitlement:@"com.apple.messages.private.AllowAlertPresentation"])
   {
@@ -1319,12 +1319,12 @@ LABEL_23:
     v21[1] = 3221225472;
     v21[2] = sub_1BA8C;
     v21[3] = &unk_4D6A0;
-    v22 = v12;
-    v23 = v13;
-    v24 = v15;
-    v25 = v14;
-    v26 = self;
-    v27 = v16;
+    v22 = titleCopy;
+    v23 = messageCopy;
+    v24 = imageCopy;
+    v25 = buttonTitleCopy;
+    selfCopy = self;
+    v27 = completionCopy;
     dispatch_async(&_dispatch_main_q, v21);
 
     v20 = v22;
@@ -1340,16 +1340,16 @@ LABEL_23:
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  destructiveButtonTitleCopy = destructiveButtonTitle;
+  completionCopy = completion;
   v17 = [MSEntitlementChecker alloc];
-  v18 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v19 = [(MSEntitlementChecker *)v17 initWithDataSource:v18 requestIdentifierProvider:self];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  v19 = [(MSEntitlementChecker *)v17 initWithDataSource:dataSource requestIdentifierProvider:self];
 
   if ([(MSEntitlementChecker *)v19 hasEntitlement:@"com.apple.messages.private.AllowAlertPresentation"])
   {
@@ -1357,12 +1357,12 @@ LABEL_23:
     v21[1] = 3221225472;
     v21[2] = sub_1BD64;
     v21[3] = &unk_4D150;
-    v22 = v12;
-    v23 = v13;
-    v24 = v14;
-    v25 = self;
-    v27 = v16;
-    v26 = v15;
+    v22 = titleCopy;
+    v23 = messageCopy;
+    v24 = buttonTitleCopy;
+    selfCopy = self;
+    v27 = completionCopy;
+    v26 = destructiveButtonTitleCopy;
     dispatch_async(&_dispatch_main_q, v21);
 
     v20 = v22;
@@ -1378,16 +1378,16 @@ LABEL_23:
   }
 }
 
-- (void)_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7
+- (void)_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  titlesCopy = titles;
+  stylesCopy = styles;
+  completionCopy = completion;
   v17 = [MSEntitlementChecker alloc];
-  v18 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v19 = [(MSEntitlementChecker *)v17 initWithDataSource:v18 requestIdentifierProvider:self];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  v19 = [(MSEntitlementChecker *)v17 initWithDataSource:dataSource requestIdentifierProvider:self];
 
   if (![(MSEntitlementChecker *)v19 hasEntitlement:@"com.apple.messages.private.AllowAlertPresentation"])
   {
@@ -1402,8 +1402,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v20 = [v14 count];
-  if (v20 != [v15 count])
+  v20 = [titlesCopy count];
+  if (v20 != [stylesCopy count])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -1424,38 +1424,38 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = sub_1C26C;
   v22[3] = &unk_4D6A0;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = self;
-  v28 = v16;
+  v23 = titleCopy;
+  v24 = messageCopy;
+  v25 = titlesCopy;
+  v26 = stylesCopy;
+  selfCopy = self;
+  v28 = completionCopy;
   dispatch_async(&_dispatch_main_q, v22);
 
 LABEL_7:
 }
 
-- (void)_presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6
+- (void)_presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1C80C;
   v15[3] = &unk_4D768;
   v15[4] = self;
-  v16 = a3;
+  titlesCopy = titles;
   v19 = x;
   v20 = y;
   v21 = width;
   v22 = height;
-  v17 = a4;
-  v18 = a6;
-  v12 = v18;
-  v13 = v17;
-  v14 = v16;
+  namesCopy = names;
+  completionCopy = completion;
+  v12 = completionCopy;
+  v13 = namesCopy;
+  v14 = titlesCopy;
   dispatch_async(&_dispatch_main_q, v15);
 }
 
@@ -1502,20 +1502,20 @@ LABEL_7:
 - (BOOL)_shouldUseBackwardsCompatibilityOffsets
 {
   v3 = +[IMBalloonPluginManager sharedInstance];
-  v4 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v5 = [v4 pluginPayload];
-  v6 = [v5 pluginBundleID];
-  v7 = [v3 balloonPluginForBundleID:v6];
+  dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+  pluginPayload = [dataSource pluginPayload];
+  pluginBundleID = [pluginPayload pluginBundleID];
+  v7 = [v3 balloonPluginForBundleID:pluginBundleID];
 
-  LOBYTE(v4) = [v7 linkedBeforeSDKVersion:@"19.0"];
-  return v4;
+  LOBYTE(dataSource) = [v7 linkedBeforeSDKVersion:@"19.0"];
+  return dataSource;
 }
 
 - (BOOL)isInShelf
 {
-  v2 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-  v3 = [v2 messageGUID];
-  v4 = v3 == 0;
+  payload = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+  messageGUID = [payload messageGUID];
+  v4 = messageGUID == 0;
 
   return v4;
 }
@@ -1525,45 +1525,45 @@ LABEL_7:
   v3 = ms_defaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v5 = [v4 messageGUID];
+    dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+    messageGUID = [dataSource messageGUID];
     *buf = 138412290;
-    v30 = v5;
+    v30 = messageGUID;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "LiveBubble swapping out snapshotView GUID: %@", buf, 0xCu);
   }
 
-  v6 = [(MSMessageExtensionBalloonLiveViewController *)self _isShowingLoadingView];
-  v7 = [(MSMessageBalloonLiveViewController *)self dataSource];
-  v8 = [v7 payloadInShelf];
+  _isShowingLoadingView = [(MSMessageExtensionBalloonLiveViewController *)self _isShowingLoadingView];
+  dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+  payloadInShelf = [dataSource2 payloadInShelf];
 
-  v9 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-  v10 = [(_MSRemoteBalloonViewController *)self->_remoteViewController view];
-  v11 = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
-  if (v6)
+  view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+  view2 = [(_MSRemoteBalloonViewController *)self->_remoteViewController view];
+  loadingView = [(MSMessageExtensionBalloonLiveViewController *)self loadingView];
+  if (_isShowingLoadingView)
   {
-    [v10 setAlpha:0.33];
+    [view2 setAlpha:0.33];
     v12 = 1.0;
-    if (v8)
+    if (payloadInShelf)
     {
       v12 = 0.0;
     }
 
-    [v11 setAlpha:v12];
-    v13 = [v9 iconView];
-    [v13 setAlpha:0.0];
+    [loadingView setAlpha:v12];
+    iconView = [view iconView];
+    [iconView setAlpha:0.0];
 
-    v14 = [v11 layer];
-    [v14 setValue:&off_4EAA8 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    layer = [loadingView layer];
+    [layer setValue:&off_4EAA8 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
-    v15 = [v10 layer];
-    [v15 setValue:&off_4EAC0 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    layer2 = [view2 layer];
+    [layer2 setValue:&off_4EAC0 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 
-  [v9 setRemoteBalloonView:v10];
-  [v9 setForceHideAppIcon:0];
-  v16 = [(MSMessageExtensionBalloonLiveViewController *)self snapshotView];
+  [view setRemoteBalloonView:view2];
+  [view setForceHideAppIcon:0];
+  snapshotView = [(MSMessageExtensionBalloonLiveViewController *)self snapshotView];
 
-  if (v16)
+  if (snapshotView)
   {
     [(MSMessageExtensionBalloonLiveViewController *)self setSnapshotView:0];
   }
@@ -1572,19 +1572,19 @@ LABEL_7:
   v26[1] = 3221225472;
   v26[2] = sub_1D4F4;
   v26[3] = &unk_4CF20;
-  v17 = v9;
+  v17 = view;
   v27 = v17;
-  v28 = self;
+  selfCopy = self;
   v18 = objc_retainBlock(v26);
   v19 = v18;
-  if (v6)
+  if (_isShowingLoadingView)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1D538;
     v22[3] = &unk_4D0B0;
-    v23 = v10;
-    v24 = v11;
+    v23 = view2;
+    v24 = loadingView;
     v25 = v17;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -1600,32 +1600,32 @@ LABEL_7:
   }
 }
 
-- (void)createRemoteBalloonViewControllerIsResuming:(BOOL)a3
+- (void)createRemoteBalloonViewControllerIsResuming:(BOOL)resuming
 {
-  if (![(MSMessageExtensionBalloonLiveViewController *)self _applicationStateIsBackground]|| a3)
+  if (![(MSMessageExtensionBalloonLiveViewController *)self _applicationStateIsBackground]|| resuming)
   {
     if (self->_remoteViewController)
     {
       return;
     }
 
-    v5 = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
-    v8 = [(MSMessageBalloonLiveViewController *)self recipients];
-    v9 = [v5 shouldShowForRecipients:v8];
+    balloonPlugin = [(MSMessageBalloonLiveViewController *)self balloonPlugin];
+    recipients = [(MSMessageBalloonLiveViewController *)self recipients];
+    v9 = [balloonPlugin shouldShowForRecipients:recipients];
 
     if ((v9 & 1) == 0)
     {
-      v7 = ms_defaultLog();
-      if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      extension = ms_defaultLog();
+      if (!os_log_type_enabled(extension, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_32;
       }
 
-      v10 = [(MSMessageBalloonLiveViewController *)self dataSource];
-      v11 = [v10 messageGUID];
+      dataSource = [(MSMessageBalloonLiveViewController *)self dataSource];
+      messageGUID = [dataSource messageGUID];
       v26 = 138412290;
-      v27 = v11;
-      _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "LiveBubble. Plugin should not be shown for specified recipients. messageGUID: %@", &v26, 0xCu);
+      v27 = messageGUID;
+      _os_log_impl(&dword_0, extension, OS_LOG_TYPE_DEFAULT, "LiveBubble. Plugin should not be shown for specified recipients. messageGUID: %@", &v26, 0xCu);
 
 LABEL_31:
       goto LABEL_32;
@@ -1634,30 +1634,30 @@ LABEL_31:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 extension];
+      extension = [balloonPlugin extension];
     }
 
     else
     {
-      v7 = 0;
+      extension = 0;
     }
 
     v12 = ms_defaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_2D5FC(v7, v12);
+      sub_2D5FC(extension, v12);
     }
 
-    v13 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-    v14 = [v13 messageGUID];
-    v15 = v14;
+    payload = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+    messageGUID2 = [payload messageGUID];
+    v15 = messageGUID2;
     v16 = @"_MSRemoteBalloonViewControllerShelfIdentifier";
-    if (v14)
+    if (messageGUID2)
     {
-      v16 = v14;
+      v16 = messageGUID2;
     }
 
-    v11 = v16;
+    messageGUID = v16;
 
     v17 = ms_defaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1665,9 +1665,9 @@ LABEL_31:
       sub_2D690();
     }
 
-    if (v7)
+    if (extension)
     {
-      v18 = [[_MSRemoteBalloonViewController alloc] initWithExtension:v7 identifier:v11];
+      v18 = [[_MSRemoteBalloonViewController alloc] initWithExtension:extension identifier:messageGUID];
     }
 
     else
@@ -1678,7 +1678,7 @@ LABEL_31:
         goto LABEL_23;
       }
 
-      v18 = [[_MSRemoteBalloonViewController alloc] initWithPlugin:v5 identifier:v11];
+      v18 = [[_MSRemoteBalloonViewController alloc] initWithPlugin:balloonPlugin identifier:messageGUID];
     }
 
     remoteViewController = self->_remoteViewController;
@@ -1698,10 +1698,10 @@ LABEL_23:
       [(MSMessageExtensionBalloonLiveViewController *)self _requestMessageTintColor];
       [(_MSRemoteBalloonViewController *)self->_remoteViewController setDelegate:self];
       [(MSMessageExtensionBalloonLiveViewController *)self addChildViewController:self->_remoteViewController];
-      v21 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-      v22 = [v21 window];
+      view = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      window = [view window];
 
-      if (!v22)
+      if (!window)
       {
         v23 = ms_defaultLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1710,9 +1710,9 @@ LABEL_23:
         }
       }
 
-      v24 = [(_MSRemoteBalloonViewController *)self->_remoteViewController view];
-      v25 = [(MSMessageExtensionBalloonLiveViewController *)self view];
-      [v25 setRemoteBalloonView:v24];
+      view2 = [(_MSRemoteBalloonViewController *)self->_remoteViewController view];
+      view3 = [(MSMessageExtensionBalloonLiveViewController *)self view];
+      [view3 setRemoteBalloonView:view2];
 
       [(_MSRemoteBalloonViewController *)self->_remoteViewController didMoveToParentViewController:self];
     }
@@ -1720,14 +1720,14 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  v5 = ms_defaultLog();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  balloonPlugin = ms_defaultLog();
+  if (os_log_type_enabled(balloonPlugin, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MSMessageBalloonLiveViewController *)self dataSource];
-    v7 = [v6 messageGUID];
+    dataSource2 = [(MSMessageBalloonLiveViewController *)self dataSource];
+    extension = [dataSource2 messageGUID];
     v26 = 138412290;
-    v27 = v7;
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "LiveBubble. ApplicationState is background and not resuming. messageGUID: %@", &v26, 0xCu);
+    v27 = extension;
+    _os_log_impl(&dword_0, balloonPlugin, OS_LOG_TYPE_DEFAULT, "LiveBubble. ApplicationState is background and not resuming. messageGUID: %@", &v26, 0xCu);
 
 LABEL_32:
   }
@@ -1736,9 +1736,9 @@ LABEL_32:
 - (void)sendDidBecomeActiveMessage
 {
   remoteViewController = self->_remoteViewController;
-  v5 = [(MSMessageExtensionBalloonLiveViewController *)self conversationState];
-  v4 = [(MSMessageExtensionBalloonLiveViewController *)self payload];
-  -[_MSRemoteBalloonViewController becomeActiveWithConversationState:liveEditableInEntryView:](remoteViewController, "becomeActiveWithConversationState:liveEditableInEntryView:", v5, [v4 liveEditableInEntryView]);
+  conversationState = [(MSMessageExtensionBalloonLiveViewController *)self conversationState];
+  payload = [(MSMessageExtensionBalloonLiveViewController *)self payload];
+  -[_MSRemoteBalloonViewController becomeActiveWithConversationState:liveEditableInEntryView:](remoteViewController, "becomeActiveWithConversationState:liveEditableInEntryView:", conversationState, [payload liveEditableInEntryView]);
 }
 
 - (CGSize)contentSize
@@ -1769,7 +1769,7 @@ LABEL_32:
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
   sub_2DCB8();
-  v7 = self;
+  selfCopy = self;
 
   v8 = sub_2DCA8();
   v9 = swift_allocObject();

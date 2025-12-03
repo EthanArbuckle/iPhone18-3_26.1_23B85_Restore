@@ -1,18 +1,18 @@
 @interface MPSNDArrayAffineQuantizationDescriptor
 - (MPSNDArrayAffineQuantizationDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)getDQuantMinValIndex;
 - (int64_t)getDQuantScaleIndex;
 - (int64_t)getMinValIndex;
 - (int64_t)getNDArrayCount;
 - (int64_t)getScaleIndex;
 - (int64_t)getZeroPointIndex;
-- (void)setImplicitZeroPoint:(BOOL)a3;
+- (void)setImplicitZeroPoint:(BOOL)point;
 @end
 
 @implementation MPSNDArrayAffineQuantizationDescriptor
 
-- (void)setImplicitZeroPoint:(BOOL)a3
+- (void)setImplicitZeroPoint:(BOOL)point
 {
   if ([(MPSNDArrayQuantizationDescriptor *)self quantizationDataType]!= 536870916)
   {
@@ -24,7 +24,7 @@
     MTLReportFailure();
   }
 
-  self->_signedAsUnsigned = a3;
+  self->_signedAsUnsigned = point;
 }
 
 - (MPSNDArrayAffineQuantizationDescriptor)init
@@ -44,11 +44,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayAffineQuantizationDescriptor;
-  result = [(MPSNDArrayQuantizationDescriptor *)&v5 copyWithZone:a3];
+  result = [(MPSNDArrayQuantizationDescriptor *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 24) = self->_hasZeroPoint;

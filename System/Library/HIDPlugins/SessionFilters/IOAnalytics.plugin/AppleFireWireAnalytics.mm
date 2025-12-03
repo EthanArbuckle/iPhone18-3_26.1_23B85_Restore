@@ -1,7 +1,7 @@
 @interface AppleFireWireAnalytics
 - (AppleFireWireAnalytics)init;
 - (BOOL)_startEventMonitoring;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_stopEventMonitoring;
 - (void)start;
 - (void)stop;
@@ -196,24 +196,24 @@ void __30__AppleFireWireAnalytics_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
-  if (a3)
+  if (matched)
   {
     if ([(AppleFireWireAnalytics *)self analyticsEventsEnabled])
     {
-      IOObjectRetain(a3);
+      IOObjectRetain(matched);
       v5 = objc_opt_new();
-      v6 = getPropFromReg(kAppleFireWireAnalytics_IOFireWireDevice_Property_VendorID, a3);
+      v6 = getPropFromReg(kAppleFireWireAnalytics_IOFireWireDevice_Property_VendorID, matched);
       [v5 setValue:v6 forKey:@"FireWire_VendorID"];
 
-      v7 = getPropFromReg(kAppleFireWireAnalytics_IOFireWireDevice_Property_VendorName, a3);
+      v7 = getPropFromReg(kAppleFireWireAnalytics_IOFireWireDevice_Property_VendorName, matched);
       [v5 setValue:v7 forKey:@"FireWire_VendorName"];
 
-      v8 = getPropFromReg(kAppleFireWireAnalytics_IOFireWireDevice_Property_ProductName, a3);
+      v8 = getPropFromReg(kAppleFireWireAnalytics_IOFireWireDevice_Property_ProductName, matched);
       [v5 setValue:v8 forKey:@"FireWire_ProductName"];
 
-      IOObjectRelease(a3);
+      IOObjectRelease(matched);
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {

@@ -1,11 +1,11 @@
 @interface NEFilterControlExtensionProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)handleNewFlow:(id)a3 completionHandler:(id)a4;
-- (void)handleReport:(id)a3;
+- (void)handleNewFlow:(id)flow completionHandler:(id)handler;
+- (void)handleReport:(id)report;
 - (void)notifyRulesChanged;
-- (void)provideRemediationMap:(id)a3;
-- (void)provideURLAppendStringMap:(id)a3;
+- (void)provideRemediationMap:(id)map;
+- (void)provideURLAppendStringMap:(id)map;
 @end
 
 @implementation NEFilterControlExtensionProviderHostContext
@@ -48,39 +48,39 @@ uint64_t __80__NEFilterControlExtensionProviderHostContext__extensionAuxiliaryVe
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)provideURLAppendStringMap:(id)a3
+- (void)provideURLAppendStringMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
-  [v5 provideURLAppendStringMap:v4];
+  mapCopy = map;
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
+  [delegate provideURLAppendStringMap:mapCopy];
 }
 
-- (void)provideRemediationMap:(id)a3
+- (void)provideRemediationMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
-  [v5 provideRemediationMap:v4];
+  mapCopy = map;
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
+  [delegate provideRemediationMap:mapCopy];
 }
 
 - (void)notifyRulesChanged
 {
-  v2 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
-  [v2 notifyRulesChanged];
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
+  [delegate notifyRulesChanged];
 }
 
-- (void)handleReport:(id)a3
+- (void)handleReport:(id)report
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
-  [v5 handleReport:v4];
+  reportCopy = report;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
+  [vendorContext handleReport:reportCopy];
 }
 
-- (void)handleNewFlow:(id)a3 completionHandler:(id)a4
+- (void)handleNewFlow:(id)flow completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
-  [v8 handleNewFlow:v7 completionHandler:v6];
+  handlerCopy = handler;
+  flowCopy = flow;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa vendorContext];
+  [vendorContext handleNewFlow:flowCopy completionHandler:handlerCopy];
 }
 
 @end

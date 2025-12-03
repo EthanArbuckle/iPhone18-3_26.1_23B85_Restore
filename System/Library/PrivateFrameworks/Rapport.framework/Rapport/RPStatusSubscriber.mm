@@ -1,17 +1,17 @@
 @interface RPStatusSubscriber
 - (NSString)description;
 - (RPStatusSubscriber)init;
-- (RPStatusSubscriber)initWithCoder:(id)a3;
-- (id)_connectionWithClient:(id)a3 queue:(id)a4 userProvider:(id)a5 interruptionHandler:(id)a6 invalidationHandler:(id)a7;
+- (RPStatusSubscriber)initWithCoder:(id)coder;
+- (id)_connectionWithClient:(id)client queue:(id)queue userProvider:(id)provider interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 - (id)_ensureXPCStarted;
-- (id)identifierFromDevice:(id)a3;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (id)identifierFromDevice:(id)device;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)subscribeToStatusUpdate:(id)a3 leeway:(double)a4 configurationFlags:(unint64_t)a5 statusUpdateHandler:(id)a6 completion:(id)a7;
-- (void)unsubscribeToStatusUpdate:(id)a3 completion:(id)a4;
+- (void)subscribeToStatusUpdate:(id)update leeway:(double)leeway configurationFlags:(unint64_t)flags statusUpdateHandler:(id)handler completion:(id)completion;
+- (void)unsubscribeToStatusUpdate:(id)update completion:(id)completion;
 @end
 
 @implementation RPStatusSubscriber
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (RPStatusSubscriber)initWithCoder:(id)a3
+- (RPStatusSubscriber)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = RPStatusSubscriber;
@@ -57,20 +57,20 @@
   return 0;
 }
 
-- (void)subscribeToStatusUpdate:(id)a3 leeway:(double)a4 configurationFlags:(unint64_t)a5 statusUpdateHandler:(id)a6 completion:(id)a7
+- (void)subscribeToStatusUpdate:(id)update leeway:(double)leeway configurationFlags:(unint64_t)flags statusUpdateHandler:(id)handler completion:(id)completion
 {
-  v9 = a3;
-  v10 = a7;
+  updateCopy = update;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __103__RPStatusSubscriber_subscribeToStatusUpdate_leeway_configurationFlags_statusUpdateHandler_completion___block_invoke;
   block[3] = &unk_1E7C92DF8;
-  v15 = v9;
-  v16 = v10;
+  v15 = updateCopy;
+  v16 = completionCopy;
   block[4] = self;
-  v12 = v9;
-  v13 = v10;
+  v12 = updateCopy;
+  v13 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -105,20 +105,20 @@ LABEL_8:
   }
 }
 
-- (void)unsubscribeToStatusUpdate:(id)a3 completion:(id)a4
+- (void)unsubscribeToStatusUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__RPStatusSubscriber_unsubscribeToStatusUpdate_completion___block_invoke;
   block[3] = &unk_1E7C92DF8;
-  v12 = v6;
-  v13 = v7;
+  v12 = updateCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = updateCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -153,30 +153,30 @@ LABEL_8:
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__RPStatusSubscriber_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E7C92E20;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  if (reactivateCopy)
   {
     if (gLogCategory_StatusSubscriber <= 30 && (gLogCategory_StatusSubscriber != -1 || _LogCategory_Initialize()))
     {
@@ -190,12 +190,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [(RPStatusSubscriber *)self _ensureXPCStarted];
-  if (v7)
+  _ensureXPCStarted = [(RPStatusSubscriber *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v7);
+      completionCopy[2](completionCopy, _ensureXPCStarted);
     }
   }
 
@@ -206,15 +206,15 @@ LABEL_16:
     v15[1] = 3221225472;
     v15[2] = __57__RPStatusSubscriber__activateWithCompletion_reactivate___block_invoke;
     v15[3] = &unk_1E7C92F88;
-    v17 = v4;
-    v9 = v6;
+    v17 = reactivateCopy;
+    v9 = completionCopy;
     v16 = v9;
     v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v15];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__RPStatusSubscriber__activateWithCompletion_reactivate___block_invoke_2;
     v12[3] = &unk_1E7C93528;
-    v14 = v4;
+    v14 = reactivateCopy;
     v12[4] = self;
     v11 = v9;
     v13 = v11;
@@ -418,14 +418,14 @@ uint64_t __39__RPStatusSubscriber__ensureXPCStarted__block_invoke_2(uint64_t a1)
   return [v4 _invalidated];
 }
 
-- (id)_connectionWithClient:(id)a3 queue:(id)a4 userProvider:(id)a5 interruptionHandler:(id)a6 invalidationHandler:(id)a7
+- (id)_connectionWithClient:(id)client queue:(id)queue userProvider:(id)provider interruptionHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v30 = a5;
+  providerCopy = provider;
   v11 = MEMORY[0x1E696B0B8];
-  v32 = a7;
-  v31 = a6;
-  v33 = a4;
-  v12 = a3;
+  invalidationHandlerCopy = invalidationHandler;
+  handlerCopy = handler;
+  queueCopy = queue;
+  clientCopy = client;
   v13 = [[v11 alloc] initWithMachServiceName:@"com.apple.rapport.StatusUpdates" options:0];
   v14 = objc_alloc(MEMORY[0x1E695DFD8]);
   v15 = objc_opt_class();
@@ -449,17 +449,17 @@ uint64_t __39__RPStatusSubscriber__ensureXPCStarted__block_invoke_2(uint64_t a1)
   [v24 setClasses:v28 forSelector:sel_xpcStatusUpdatableUnsubscribeToStatus_ argumentIndex:0 ofReply:0];
 
   [v13 setExportedInterface:v23];
-  [v13 setExportedObject:v12];
+  [v13 setExportedObject:clientCopy];
 
-  [v13 setInterruptionHandler:v31];
-  [v13 setInvalidationHandler:v32];
+  [v13 setInterruptionHandler:handlerCopy];
+  [v13 setInvalidationHandler:invalidationHandlerCopy];
 
   [v13 setRemoteObjectInterface:v24];
-  [v13 _setQueue:v33];
+  [v13 _setQueue:queueCopy];
 
-  if (self->_targetUserSession && [v30 supportsMultipleUsers] && objc_msgSend(v30, "signedInUserID"))
+  if (self->_targetUserSession && [providerCopy supportsMultipleUsers] && objc_msgSend(providerCopy, "signedInUserID"))
   {
-    [v13 _setTargetUserIdentifier:{objc_msgSend(v30, "signedInUserID")}];
+    [v13 _setTargetUserIdentifier:{objc_msgSend(providerCopy, "signedInUserID")}];
   }
 
   [v13 resume];
@@ -552,22 +552,22 @@ uint64_t __32__RPStatusSubscriber_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (id)identifierFromDevice:(id)a3
+- (id)identifierFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 idsDeviceIdentifier];
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  v5 = idsDeviceIdentifier;
+  if (idsDeviceIdentifier)
   {
-    v6 = v4;
+    identifier = idsDeviceIdentifier;
   }
 
   else
   {
-    v6 = [v3 identifier];
+    identifier = [deviceCopy identifier];
   }
 
-  v7 = v6;
+  v7 = identifier;
 
   return v7;
 }

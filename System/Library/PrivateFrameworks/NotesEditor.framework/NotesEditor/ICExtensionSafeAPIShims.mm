@@ -1,8 +1,8 @@
 @interface ICExtensionSafeAPIShims
 + (id)openURLHandler;
 + (int64_t)applicationState;
-+ (void)openURL:(id)a3 originatingView:(id)a4 completionHandler:(id)a5;
-+ (void)setOpenURLHandler:(id)a3;
++ (void)openURL:(id)l originatingView:(id)view completionHandler:(id)handler;
++ (void)setOpenURLHandler:(id)handler;
 @end
 
 @implementation ICExtensionSafeAPIShims
@@ -19,21 +19,21 @@
   return [v3 applicationState];
 }
 
-+ (void)openURL:(id)a3 originatingView:(id)a4 completionHandler:(id)a5
++ (void)openURL:(id)l originatingView:(id)view completionHandler:(id)handler
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 openURLHandler];
-  v11 = v10;
-  if (v10)
+  viewCopy = view;
+  handlerCopy = handler;
+  lCopy = l;
+  openURLHandler = [self openURLHandler];
+  v11 = openURLHandler;
+  if (openURLHandler)
   {
-    (*(v10 + 16))(v10, v9, v8);
+    (*(openURLHandler + 16))(openURLHandler, lCopy, handlerCopy);
   }
 
   else
   {
-    [*MEMORY[0x277D76620] _openURL:v9 originatingView:v12 completionHandler:v8];
+    [*MEMORY[0x277D76620] _openURL:lCopy originatingView:viewCopy completionHandler:handlerCopy];
   }
 }
 
@@ -65,15 +65,15 @@ void __41__ICExtensionSafeAPIShims_openURLHandler__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (void)setOpenURLHandler:(id)a3
++ (void)setOpenURLHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__ICExtensionSafeAPIShims_setOpenURLHandler___block_invoke;
   v5[3] = &unk_2781AC7D8;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   ICWithOpenURLHandlerLock(v5);
 }
 

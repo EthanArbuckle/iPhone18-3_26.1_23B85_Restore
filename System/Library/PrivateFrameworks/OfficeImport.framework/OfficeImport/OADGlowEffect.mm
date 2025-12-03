@@ -1,7 +1,7 @@
 @interface OADGlowEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADGlowEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,9 +15,9 @@
   return [(OADEffect *)&v3 initWithType:4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(OADColor *)self->mColor copy];
   [v4 setColor:v5];
   *&v6 = self->mRadius;
@@ -35,19 +35,19 @@
   return v3 ^ [(OADEffect *)&v6 hash]^ mRadius;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mColor = self->mColor;
-    v6 = [v4 color];
-    if (-[OADColor isEqual:](mColor, "isEqual:", v6) && (mRadius = self->mRadius, [v4 radius], mRadius == v8))
+    color = [equalCopy color];
+    if (-[OADColor isEqual:](mColor, "isEqual:", color) && (mRadius = self->mRadius, [equalCopy radius], mRadius == v8))
     {
       v11.receiver = self;
       v11.super_class = OADGlowEffect;
-      v9 = [(OADEffect *)&v11 isEqual:v4];
+      v9 = [(OADEffect *)&v11 isEqual:equalCopy];
     }
 
     else

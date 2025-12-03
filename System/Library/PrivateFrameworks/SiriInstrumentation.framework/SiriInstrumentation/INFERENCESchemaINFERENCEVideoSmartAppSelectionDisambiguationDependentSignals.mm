@@ -1,41 +1,41 @@
 @interface INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDisambiguationAppOrdinal:(BOOL)a3;
-- (void)setHasModelAppConfidence:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDisambiguationAppOrdinal:(BOOL)ordinal;
+- (void)setHasModelAppConfidence:(BOOL)confidence;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals
 
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals;
   v5 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isDisambiguatedApp"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isDisambiguatedApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals setIsDisambiguatedApp:](v5, "setIsDisambiguatedApp:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"modelAppConfidence"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"modelAppConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals setModelAppConfidence:](v5, "setModelAppConfidence:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"disambiguationAppOrdinal"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationAppOrdinal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals disambiguationAppOrdinal](self, "disambiguationAppOrdinal")}];
-    [v3 setObject:v7 forKeyedSubscript:@"disambiguationAppOrdinal"];
+    [dictionary setObject:v7 forKeyedSubscript:@"disambiguationAppOrdinal"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -110,19 +110,19 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals isDisambiguatedApp](self, "isDisambiguatedApp")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isDisambiguatedApp"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isDisambiguatedApp"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationDependentSignals modelAppConfidence](self, "modelAppConfidence")}];
-    [v3 setObject:v5 forKeyedSubscript:@"modelAppConfidence"];
+    [dictionary setObject:v5 forKeyedSubscript:@"modelAppConfidence"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,16 +165,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -183,13 +183,13 @@ LABEL_4:
   if (*&has)
   {
     isDisambiguatedApp = self->_isDisambiguatedApp;
-    if (isDisambiguatedApp != [v4 isDisambiguatedApp])
+    if (isDisambiguatedApp != [equalCopy isDisambiguatedApp])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -201,10 +201,10 @@ LABEL_4:
   if (v8)
   {
     modelAppConfidence = self->_modelAppConfidence;
-    if (modelAppConfidence == [v4 modelAppConfidence])
+    if (modelAppConfidence == [equalCopy modelAppConfidence])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_10;
     }
 
@@ -223,7 +223,7 @@ LABEL_10:
   if (v10)
   {
     disambiguationAppOrdinal = self->_disambiguationAppOrdinal;
-    if (disambiguationAppOrdinal != [v4 disambiguationAppOrdinal])
+    if (disambiguationAppOrdinal != [equalCopy disambiguationAppOrdinal])
     {
       goto LABEL_14;
     }
@@ -235,15 +235,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -263,20 +263,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasDisambiguationAppOrdinal:(BOOL)a3
+- (void)setHasDisambiguationAppOrdinal:(BOOL)ordinal
 {
-  if (a3)
+  if (ordinal)
   {
     v3 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasModelAppConfidence:(BOOL)a3
+- (void)setHasModelAppConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2;
   }

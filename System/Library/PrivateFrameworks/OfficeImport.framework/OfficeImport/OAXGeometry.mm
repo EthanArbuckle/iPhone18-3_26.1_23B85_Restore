@@ -1,24 +1,24 @@
 @interface OAXGeometry
-+ (OADAdjustCoord)readAdjustCoordFromXmlNode:(_xmlNode *)a3 name:(const char *)a4 formulaNameToIndexMap:(id)a5;
++ (OADAdjustCoord)readAdjustCoordFromXmlNode:(_xmlNode *)node name:(const char *)name formulaNameToIndexMap:(id)map;
 + (id)formulaKeywordEnumMap;
 + (id)formulaTypeEnumMap;
 + (id)pathFillModeEnumMap;
-+ (id)readCustomGeometryFromXmlNode:(_xmlNode *)a3 hasImplicitFormulas:(BOOL)a4 drawingState:(id)a5;
-+ (id)readFromParentXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readPresetGeometryFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
++ (id)readCustomGeometryFromXmlNode:(_xmlNode *)node hasImplicitFormulas:(BOOL)formulas drawingState:(id)state;
++ (id)readFromParentXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readPresetGeometryFromXmlNode:(_xmlNode *)node drawingState:(id)state;
 + (id)shapeTypeEnumMap;
-+ (id)stringForShapeType:(int)a3;
-+ (id)stringWritingShapeType:(int)a3;
-+ (int)adjustValueWithGuideXmlNode:(_xmlNode *)a3;
-+ (int)shapeTypeForString:(id)a3;
-+ (void)addFormulasFromFile:(id)a3 toCustomGeometry:(id)a4 formulaNameToIndexMap:(id)a5 drawingState:(id)a6;
-+ (void)readAdjustValuesFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 adjustValueNameToIndexMap:(id)a5 drawingState:(id)a6;
-+ (void)readFormulasFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 adjustValueNameToIndexMap:(id)a5 formulaNameToIndexMap:(id)a6 drawingState:(id)a7;
-+ (void)readPathsFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 formulaNameToIndexMap:(id)a5 drawingState:(id)a6;
-+ (void)readTextRectFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 formulaNameToIndexMap:(id)a5 drawingState:(id)a6;
-+ (void)write:(id)a3 to:(id)a4;
-+ (void)writePath:(id)a3 coordSpace:(CsRect<int>)a4 to:(id)a5;
-+ (void)writeShapePathPoint:(OADAdjustPoint)a3 origin:(CsPoint<int>)a4 to:(id)a5;
++ (id)stringForShapeType:(int)type;
++ (id)stringWritingShapeType:(int)type;
++ (int)adjustValueWithGuideXmlNode:(_xmlNode *)node;
++ (int)shapeTypeForString:(id)string;
++ (void)addFormulasFromFile:(id)file toCustomGeometry:(id)geometry formulaNameToIndexMap:(id)map drawingState:(id)state;
++ (void)readAdjustValuesFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry adjustValueNameToIndexMap:(id)map drawingState:(id)state;
++ (void)readFormulasFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry adjustValueNameToIndexMap:(id)map formulaNameToIndexMap:(id)indexMap drawingState:(id)state;
++ (void)readPathsFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry formulaNameToIndexMap:(id)map drawingState:(id)state;
++ (void)readTextRectFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry formulaNameToIndexMap:(id)map drawingState:(id)state;
++ (void)write:(id)write to:(id)to;
++ (void)writePath:(id)path coordSpace:(CsRect<int>)space to:(id)to;
++ (void)writeShapePathPoint:(OADAdjustPoint)point origin:(CsPoint<int>)origin to:(id)to;
 @end
 
 @implementation OAXGeometry
@@ -71,26 +71,26 @@
   return v3;
 }
 
-+ (id)readFromParentXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readFromParentXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
-  v7 = [v6 OAXMainNamespace];
-  v8 = OCXFindChild(a3, v7, "prstGeom");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v8 = OCXFindChild(node, oAXMainNamespace, "prstGeom");
 
   if (v8)
   {
-    v9 = [a1 readPresetGeometryFromXmlNode:v8 drawingState:v6];
+    v9 = [self readPresetGeometryFromXmlNode:v8 drawingState:stateCopy];
 LABEL_5:
     v12 = v9;
     goto LABEL_6;
   }
 
-  v10 = [v6 OAXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "custGeom");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v11 = OCXFindChild(node, oAXMainNamespace2, "custGeom");
 
   if (v11)
   {
-    v9 = [a1 readCustomGeometryFromXmlNode:v11 hasImplicitFormulas:0 drawingState:v6];
+    v9 = [self readCustomGeometryFromXmlNode:v11 hasImplicitFormulas:0 drawingState:stateCopy];
     goto LABEL_5;
   }
 
@@ -100,44 +100,44 @@ LABEL_6:
   return v12;
 }
 
-+ (id)readCustomGeometryFromXmlNode:(_xmlNode *)a3 hasImplicitFormulas:(BOOL)a4 drawingState:(id)a5
++ (id)readCustomGeometryFromXmlNode:(_xmlNode *)node hasImplicitFormulas:(BOOL)formulas drawingState:(id)state
 {
-  v5 = a4;
-  v8 = a5;
+  formulasCopy = formulas;
+  stateCopy = state;
   v9 = objc_alloc_init(OADCustomShapeGeometry);
   [(OADShapeGeometry *)v9 setIsEscher:0];
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [a1 readAdjustValuesFromCustomGeometryXmlNode:a3 toCustomGeometry:v9 adjustValueNameToIndexMap:v10 drawingState:v8];
+  [self readAdjustValuesFromCustomGeometryXmlNode:node toCustomGeometry:v9 adjustValueNameToIndexMap:v10 drawingState:stateCopy];
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [a1 addFormulasFromFile:@"_KeywordFormulas" toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:v8];
-  if (v5)
+  [self addFormulasFromFile:@"_KeywordFormulas" toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:stateCopy];
+  if (formulasCopy)
   {
-    [a1 addFormulasFromFile:@"_ImplicitFormulas" toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:v8];
+    [self addFormulasFromFile:@"_ImplicitFormulas" toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:stateCopy];
   }
 
-  [a1 readFormulasFromCustomGeometryXmlNode:a3 toCustomGeometry:v9 adjustValueNameToIndexMap:v10 formulaNameToIndexMap:v11 drawingState:v8];
-  [a1 readTextRectFromCustomGeometryXmlNode:a3 toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:v8];
-  [a1 readPathsFromCustomGeometryXmlNode:a3 toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:v8];
+  [self readFormulasFromCustomGeometryXmlNode:node toCustomGeometry:v9 adjustValueNameToIndexMap:v10 formulaNameToIndexMap:v11 drawingState:stateCopy];
+  [self readTextRectFromCustomGeometryXmlNode:node toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:stateCopy];
+  [self readPathsFromCustomGeometryXmlNode:node toCustomGeometry:v9 formulaNameToIndexMap:v11 drawingState:stateCopy];
 
   return v9;
 }
 
-+ (int)shapeTypeForString:(id)a3
++ (int)shapeTypeForString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 shapeTypeEnumMap];
-  v6 = [v5 valueForString:v4];
+  stringCopy = string;
+  shapeTypeEnumMap = [self shapeTypeEnumMap];
+  v6 = [shapeTypeEnumMap valueForString:stringCopy];
 
   return v6;
 }
 
-+ (id)stringForShapeType:(int)a3
++ (id)stringForShapeType:(int)type
 {
-  if (a3)
+  if (type)
   {
-    v3 = *&a3;
-    v4 = [a1 shapeTypeEnumMap];
-    v5 = [v4 stringForValue:v3];
+    v3 = *&type;
+    shapeTypeEnumMap = [self shapeTypeEnumMap];
+    v5 = [shapeTypeEnumMap stringForValue:v3];
   }
 
   else
@@ -148,75 +148,75 @@ LABEL_6:
   return v5;
 }
 
-+ (void)write:(id)a3 to:(id)a4
++ (void)write:(id)write to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  writeCopy = write;
+  toCopy = to;
+  if (writeCopy)
   {
     objc_opt_class();
-    v28 = a1;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
-      v27 = v6;
-      v8 = v6;
+      v27 = writeCopy;
+      v8 = writeCopy;
       [v8 geometryCoordSpace];
-      [v7 startOAElement:@"custGeom"];
-      [v7 startOAElement:@"avLst"];
-      [v7 endElement];
-      [v7 startOAElement:@"gdLst"];
-      [v7 endElement];
-      [v7 startOAElement:@"ahLst"];
-      [v7 endElement];
-      [v7 startOAElement:@"cxnLst"];
+      [toCopy startOAElement:@"custGeom"];
+      [toCopy startOAElement:@"avLst"];
+      [toCopy endElement];
+      [toCopy startOAElement:@"gdLst"];
+      [toCopy endElement];
+      [toCopy startOAElement:@"ahLst"];
+      [toCopy endElement];
+      [toCopy startOAElement:@"cxnLst"];
       v9 = 0;
       v10 = 4;
       do
       {
-        [v7 startOAElement:@"cxn"];
-        [v7 writeOAAttribute:@"ang" intContent:v9];
-        [v7 startOAElement:@"pos"];
-        [v7 writeOAAttribute:@"x" content:@"wd2"];
-        [v7 writeOAAttribute:@"y" content:@"hd2"];
-        [v7 endElement];
-        [v7 endElement];
+        [toCopy startOAElement:@"cxn"];
+        [toCopy writeOAAttribute:@"ang" intContent:v9];
+        [toCopy startOAElement:@"pos"];
+        [toCopy writeOAAttribute:@"x" content:@"wd2"];
+        [toCopy writeOAAttribute:@"y" content:@"hd2"];
+        [toCopy endElement];
+        [toCopy endElement];
         v9 += 5400000;
         --v10;
       }
 
       while (v10);
-      [v7 endElement];
-      [v7 startOAElement:@"rect"];
-      [v7 writeOAAttribute:@"l" intContent:0];
-      [v7 writeOAAttribute:@"t" intContent:0];
-      [v7 writeOAAttribute:@"r" content:@"r"];
-      [v7 writeOAAttribute:@"b" content:@"b"];
-      [v7 endElement];
-      [v7 startOAElement:@"pathLst"];
+      [toCopy endElement];
+      [toCopy startOAElement:@"rect"];
+      [toCopy writeOAAttribute:@"l" intContent:0];
+      [toCopy writeOAAttribute:@"t" intContent:0];
+      [toCopy writeOAAttribute:@"r" content:@"r"];
+      [toCopy writeOAAttribute:@"b" content:@"b"];
+      [toCopy endElement];
+      [toCopy startOAElement:@"pathLst"];
       for (i = 0; i < [v8 pathCount]; ++i)
       {
         v12 = [v8 pathAtIndex:i];
         v29[0] = v29[1];
-        [a1 writePath:v12 coordSpace:v29 to:v7];
+        [self writePath:v12 coordSpace:v29 to:toCopy];
       }
 
-      [v7 endElement];
-      [v7 endElement];
+      [toCopy endElement];
+      [toCopy endElement];
 LABEL_21:
 
-      v6 = v27;
+      writeCopy = v27;
       goto LABEL_22;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = v6;
-      v8 = v6;
-      [v7 startOAElement:@"prstGeom"];
-      v26 = [a1 stringWritingShapeType:{objc_msgSend(v8, "type")}];
-      [v7 writeOAAttribute:@"prst" content:v26];
-      [v7 startOAElement:@"avLst"];
+      v27 = writeCopy;
+      v8 = writeCopy;
+      [toCopy startOAElement:@"prstGeom"];
+      v26 = [self stringWritingShapeType:{objc_msgSend(v8, "type")}];
+      [toCopy writeOAAttribute:@"prst" content:v26];
+      [toCopy startOAElement:@"avLst"];
       if ([v8 adjustValueCount])
       {
         v25 = +[TCBundleResourceManager instance];
@@ -225,37 +225,37 @@ LABEL_21:
         {
           v14 = [[OAXDrawingState alloc] initWithClient:0];
           v15 = OCXGetRootElement(v13);
-          v16 = [(OAXDrawingState *)v14 OAXMainNamespace];
-          v17 = OCXFindChild(v15, v16, "avLst");
+          oAXMainNamespace = [(OAXDrawingState *)v14 OAXMainNamespace];
+          v17 = OCXFindChild(v15, oAXMainNamespace, "avLst");
 
           if (v17)
           {
-            v18 = [(OAXDrawingState *)v14 OAXMainNamespace];
-            Child = OCXFindChild(v17, v18, "gd");
+            oAXMainNamespace2 = [(OAXDrawingState *)v14 OAXMainNamespace];
+            Child = OCXFindChild(v17, oAXMainNamespace2, "gd");
 
             if (Child)
             {
               v20 = 0;
               do
               {
-                v21 = [a1 adjustValueWithGuideXmlNode:Child];
+                v21 = [self adjustValueWithGuideXmlNode:Child];
                 if ([v8 hasAdjustValueAtIndex:v20])
                 {
                   v21 = [v8 adjustValueAtIndex:v20];
                 }
 
                 v22 = CXRequiredStringAttribute(Child, CXNoNamespace, "name");
-                [v7 startOAElement:@"gd"];
-                [v7 writeOAAttribute:@"name" content:v22];
+                [toCopy startOAElement:@"gd"];
+                [toCopy writeOAAttribute:@"name" content:v22];
                 v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"val %ld", v21];
-                [v7 writeOAAttribute:@"fmla" content:v23];
+                [toCopy writeOAAttribute:@"fmla" content:v23];
 
-                [v7 endElement];
-                v24 = [(OAXDrawingState *)v14 OAXMainNamespace];
-                Child = OCXFindNextChild(Child, v24, "gd");
+                [toCopy endElement];
+                oAXMainNamespace3 = [(OAXDrawingState *)v14 OAXMainNamespace];
+                Child = OCXFindNextChild(Child, oAXMainNamespace3, "gd");
 
                 v20 = (v20 + 1);
-                a1 = v28;
+                self = selfCopy;
               }
 
               while (Child);
@@ -264,8 +264,8 @@ LABEL_21:
         }
       }
 
-      [v7 endElement];
-      [v7 endElement];
+      [toCopy endElement];
+      [toCopy endElement];
 
       goto LABEL_21;
     }
@@ -274,9 +274,9 @@ LABEL_21:
 LABEL_22:
 }
 
-+ (id)stringWritingShapeType:(int)a3
++ (id)stringWritingShapeType:(int)type
 {
-  if (a3 == 202)
+  if (type == 202)
   {
     v5 = @"rect";
   }
@@ -289,16 +289,16 @@ LABEL_22:
   return v5;
 }
 
-+ (int)adjustValueWithGuideXmlNode:(_xmlNode *)a3
++ (int)adjustValueWithGuideXmlNode:(_xmlNode *)node
 {
-  v3 = CXRequiredStringAttribute(a3, CXNoNamespace, "fmla");
-  v4 = [v3 tc_componentsSeparatedByWhitespace];
-  if ([v4 count] != 2)
+  v3 = CXRequiredStringAttribute(node, CXNoNamespace, "fmla");
+  tc_componentsSeparatedByWhitespace = [v3 tc_componentsSeparatedByWhitespace];
+  if ([tc_componentsSeparatedByWhitespace count] != 2)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  v5 = [v4 objectAtIndex:0];
+  v5 = [tc_componentsSeparatedByWhitespace objectAtIndex:0];
   v6 = [v5 isEqualToString:@"val"];
 
   if ((v6 & 1) == 0)
@@ -306,36 +306,36 @@ LABEL_22:
     [TCMessageException raise:OABadFormat];
   }
 
-  v7 = [v4 objectAtIndex:1];
-  v8 = [v7 intValue];
+  v7 = [tc_componentsSeparatedByWhitespace objectAtIndex:1];
+  intValue = [v7 intValue];
 
-  return v8;
+  return intValue;
 }
 
-+ (id)readPresetGeometryFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readPresetGeometryFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
-  v7 = CXRequiredStringAttribute(a3, CXNoNamespace, "prst");
+  stateCopy = state;
+  v7 = CXRequiredStringAttribute(node, CXNoNamespace, "prst");
   if (v7)
   {
     v8 = objc_alloc_init(OADPresetShapeGeometry);
-    -[OADPresetShapeGeometry setType:](v8, "setType:", [a1 shapeTypeForString:v7]);
-    v9 = [v6 OAXMainNamespace];
-    v10 = OCXFindChild(a3, v9, "avLst");
+    -[OADPresetShapeGeometry setType:](v8, "setType:", [self shapeTypeForString:v7]);
+    oAXMainNamespace = [stateCopy OAXMainNamespace];
+    v10 = OCXFindChild(node, oAXMainNamespace, "avLst");
 
     if (v10)
     {
-      v11 = [v6 OAXMainNamespace];
-      Child = OCXFindChild(v10, v11, "gd");
+      oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+      Child = OCXFindChild(v10, oAXMainNamespace2, "gd");
 
       if (Child)
       {
         v13 = 0;
         do
         {
-          -[OADShapeGeometry setAdjustValue:atIndex:](v8, "setAdjustValue:atIndex:", [a1 adjustValueWithGuideXmlNode:Child], v13);
-          v14 = [v6 OAXMainNamespace];
-          Child = OCXFindNextChild(Child, v14, "gd");
+          -[OADShapeGeometry setAdjustValue:atIndex:](v8, "setAdjustValue:atIndex:", [self adjustValueWithGuideXmlNode:Child], v13);
+          oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+          Child = OCXFindNextChild(Child, oAXMainNamespace3, "gd");
 
           v13 = (v13 + 1);
         }
@@ -353,31 +353,31 @@ LABEL_22:
   return v8;
 }
 
-+ (void)readAdjustValuesFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 adjustValueNameToIndexMap:(id)a5 drawingState:(id)a6
++ (void)readAdjustValuesFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry adjustValueNameToIndexMap:(id)map drawingState:(id)state
 {
-  v20 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v11 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "avLst");
+  geometryCopy = geometry;
+  mapCopy = map;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace, "avLst");
 
   if (v13)
   {
-    v14 = [v11 OAXMainNamespace];
-    Child = OCXFindChild(v13, v14, "gd");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindChild(v13, oAXMainNamespace2, "gd");
 
     if (Child)
     {
       v16 = 0;
       do
       {
-        [v20 setAdjustValue:objc_msgSend(a1 atIndex:{"adjustValueWithGuideXmlNode:", Child), v16}];
+        [geometryCopy setAdjustValue:objc_msgSend(self atIndex:{"adjustValueWithGuideXmlNode:", Child), v16}];
         v17 = CXRequiredStringAttribute(Child, CXNoNamespace, "name");
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16];
-        [v10 setObject:v18 forKey:v17];
+        [mapCopy setObject:v18 forKey:v17];
 
-        v19 = [v11 OAXMainNamespace];
-        Child = OCXFindNextChild(Child, v19, "gd");
+        oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+        Child = OCXFindNextChild(Child, oAXMainNamespace3, "gd");
 
         v16 = (v16 + 1);
       }
@@ -387,21 +387,21 @@ LABEL_22:
   }
 }
 
-+ (void)readFormulasFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 adjustValueNameToIndexMap:(id)a5 formulaNameToIndexMap:(id)a6 drawingState:(id)a7
++ (void)readFormulasFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry adjustValueNameToIndexMap:(id)map formulaNameToIndexMap:(id)indexMap drawingState:(id)state
 {
   v51 = *MEMORY[0x277D85DE8];
-  v40 = a4;
-  v47 = a5;
-  v11 = a6;
-  v41 = a7;
-  v12 = [v41 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "gdLst");
+  geometryCopy = geometry;
+  mapCopy = map;
+  indexMapCopy = indexMap;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace, "gdLst");
 
   if (v13)
   {
-    v45 = [v11 count];
-    v14 = [v41 OAXMainNamespace];
-    Child = OCXFindChild(v13, v14, "gd");
+    v45 = [indexMapCopy count];
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindChild(v13, oAXMainNamespace2, "gd");
 
     if (Child)
     {
@@ -409,8 +409,8 @@ LABEL_22:
       {
         v43 = Child;
         v42 = CXRequiredStringAttribute(Child, CXNoNamespace, "fmla");
-        v16 = [v42 tc_componentsSeparatedByWhitespace];
-        v17 = [v16 count];
+        tc_componentsSeparatedByWhitespace = [v42 tc_componentsSeparatedByWhitespace];
+        v17 = [tc_componentsSeparatedByWhitespace count];
         if (v17 - 1 <= 1)
         {
           v18 = 1;
@@ -436,14 +436,14 @@ LABEL_22:
           v19 = (v17 - 1);
         }
 
-        v44 = [v16 firstObject];
-        if (!v44)
+        firstObject = [tc_componentsSeparatedByWhitespace firstObject];
+        if (!firstObject)
         {
           [TCMessageException raise:OABadFormat];
         }
 
-        v20 = [a1 formulaTypeEnumMap];
-        v21 = [v20 valueForString:v44];
+        formulaTypeEnumMap = [self formulaTypeEnumMap];
+        v21 = [formulaTypeEnumMap valueForString:firstObject];
 
         if (v21 == -130883970)
         {
@@ -461,14 +461,14 @@ LABEL_22:
 LABEL_31:
         v35 = [OADFormula alloc];
         v36 = [(OADFormula *)v35 initWithType:v21 arg0:v48 arg1:v49 arg2:v50];
-        [v40 addFormula:v36];
+        [geometryCopy addFormula:v36];
         v37 = CXRequiredStringAttribute(v43, CXNoNamespace, "name");
         v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v45];
-        [v11 setObject:v38 forKey:v37];
+        [indexMapCopy setObject:v38 forKey:v37];
 
         [(OADFormula *)v36 setName:v37];
-        v39 = [v41 OAXMainNamespace];
-        Child = OCXFindNextChild(v43, v39, "gd");
+        oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+        Child = OCXFindNextChild(v43, oAXMainNamespace3, "gd");
         v45 = (v45 + 1);
 
         if (!Child)
@@ -481,33 +481,33 @@ LABEL_31:
       v23 = 1;
       while (1)
       {
-        v24 = [v16 objectAtIndex:v23];
+        v24 = [tc_componentsSeparatedByWhitespace objectAtIndex:v23];
         v25 = [v24 characterAtIndex:0];
-        v26 = [v11 objectForKey:v24];
+        v26 = [indexMapCopy objectForKey:v24];
 
         if (v26)
         {
           break;
         }
 
-        v30 = [v47 objectForKey:v24];
+        v30 = [mapCopy objectForKey:v24];
 
         if (v30)
         {
-          v31 = [v47 objectForKey:v24];
-          v28 = [v31 unsignedLongValue];
+          v31 = [mapCopy objectForKey:v24];
+          unsignedLongValue = [v31 unsignedLongValue];
 
           v29 = 2;
           goto LABEL_29;
         }
 
-        v32 = [a1 formulaKeywordEnumMap];
-        v33 = [v32 valueForString:v24];
+        formulaKeywordEnumMap = [self formulaKeywordEnumMap];
+        v33 = [formulaKeywordEnumMap valueForString:v24];
 
         if (v33 != -130883970)
         {
-          v34 = [a1 formulaKeywordEnumMap];
-          v28 = [v34 valueForString:v24];
+          formulaKeywordEnumMap2 = [self formulaKeywordEnumMap];
+          unsignedLongValue = [formulaKeywordEnumMap2 valueForString:v24];
 
           v29 = 4;
           goto LABEL_29;
@@ -515,7 +515,7 @@ LABEL_31:
 
         if (v25 <= 0xFF && ((*(MEMORY[0x277D85DE0] + 4 * v25 + 60) >> 10) & 1) != 0 || v25 == 45)
         {
-          v28 = [v24 intValue];
+          unsignedLongValue = [v24 intValue];
           v29 = 1;
           goto LABEL_29;
         }
@@ -531,12 +531,12 @@ LABEL_30:
         }
       }
 
-      v27 = [v11 objectForKey:v24];
-      v28 = [v27 unsignedLongValue];
+      v27 = [indexMapCopy objectForKey:v24];
+      unsignedLongValue = [v27 unsignedLongValue];
 
       v29 = 3;
 LABEL_29:
-      *v22 = v29 | (v28 << 32);
+      *v22 = v29 | (unsignedLongValue << 32);
       goto LABEL_30;
     }
   }
@@ -544,71 +544,71 @@ LABEL_29:
 LABEL_32:
 }
 
-+ (void)addFormulasFromFile:(id)a3 toCustomGeometry:(id)a4 formulaNameToIndexMap:(id)a5 drawingState:(id)a6
++ (void)addFormulasFromFile:(id)file toCustomGeometry:(id)geometry formulaNameToIndexMap:(id)map drawingState:(id)state
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  fileCopy = file;
+  geometryCopy = geometry;
+  mapCopy = map;
+  stateCopy = state;
   v13 = +[TCBundleResourceManager instance];
-  v14 = [v13 xmlDocumentForResource:v15 ofType:@"xml" inPackage:@"OAShapeTypes"];
+  v14 = [v13 xmlDocumentForResource:fileCopy ofType:@"xml" inPackage:@"OAShapeTypes"];
   if (!v14)
   {
     [TCMessageException raise:OABadFormat];
     v14 = 0;
   }
 
-  [a1 readFormulasFromCustomGeometryXmlNode:OCXGetRootElement(v14) toCustomGeometry:v10 adjustValueNameToIndexMap:0 formulaNameToIndexMap:v11 drawingState:v12];
+  [self readFormulasFromCustomGeometryXmlNode:OCXGetRootElement(v14) toCustomGeometry:geometryCopy adjustValueNameToIndexMap:0 formulaNameToIndexMap:mapCopy drawingState:stateCopy];
 }
 
-+ (OADAdjustCoord)readAdjustCoordFromXmlNode:(_xmlNode *)a3 name:(const char *)a4 formulaNameToIndexMap:(id)a5
++ (OADAdjustCoord)readAdjustCoordFromXmlNode:(_xmlNode *)node name:(const char *)name formulaNameToIndexMap:(id)map
 {
-  v7 = a5;
-  v8 = CXRequiredStringAttribute(a3, CXNoNamespace, a4);
-  v9 = [v7 objectForKey:v8];
+  mapCopy = map;
+  v8 = CXRequiredStringAttribute(node, CXNoNamespace, name);
+  v9 = [mapCopy objectForKey:v8];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 unsignedIntValue];
+    unsignedIntValue = [v9 unsignedIntValue];
   }
 
   else
   {
-    v11 = CXRequiredLongAttribute(a3, CXNoNamespace, a4, 12);
+    unsignedIntValue = CXRequiredLongAttribute(node, CXNoNamespace, name, 12);
   }
 
-  v12 = ((v10 != 0) | (v11 << 32));
+  v12 = ((v10 != 0) | (unsignedIntValue << 32));
 
   return v12;
 }
 
-+ (void)readTextRectFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 formulaNameToIndexMap:(id)a5 drawingState:(id)a6
++ (void)readTextRectFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry formulaNameToIndexMap:(id)map drawingState:(id)state
 {
-  v14 = a4;
-  v10 = a5;
-  v11 = [a6 OAXMainNamespace];
-  v12 = OCXFindChild(a3, v11, "rect");
+  geometryCopy = geometry;
+  mapCopy = map;
+  oAXMainNamespace = [state OAXMainNamespace];
+  v12 = OCXFindChild(node, oAXMainNamespace, "rect");
 
   if (v12)
   {
-    v13 = -[OADAdjustRect initWithLeft:top:right:bottom:]([OADAdjustRect alloc], "initWithLeft:top:right:bottom:", [a1 readAdjustCoordFromXmlNode:v12 name:"l" formulaNameToIndexMap:v10], objc_msgSend(a1, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", v12, "t", v10), objc_msgSend(a1, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", v12, "r", v10), objc_msgSend(a1, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", v12, "b", v10));
-    [v14 addTextBodyRect:v13];
+    v13 = -[OADAdjustRect initWithLeft:top:right:bottom:]([OADAdjustRect alloc], "initWithLeft:top:right:bottom:", [self readAdjustCoordFromXmlNode:v12 name:"l" formulaNameToIndexMap:mapCopy], objc_msgSend(self, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", v12, "t", mapCopy), objc_msgSend(self, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", v12, "r", mapCopy), objc_msgSend(self, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", v12, "b", mapCopy));
+    [geometryCopy addTextBodyRect:v13];
   }
 }
 
-+ (void)readPathsFromCustomGeometryXmlNode:(_xmlNode *)a3 toCustomGeometry:(id)a4 formulaNameToIndexMap:(id)a5 drawingState:(id)a6
++ (void)readPathsFromCustomGeometryXmlNode:(_xmlNode *)node toCustomGeometry:(id)geometry formulaNameToIndexMap:(id)map drawingState:(id)state
 {
   v45 = *MEMORY[0x277D85DE8];
-  v35 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v11 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "pathLst");
+  geometryCopy = geometry;
+  mapCopy = map;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace, "pathLst");
 
   if (v13)
   {
-    v14 = [v11 OAXMainNamespace];
-    v15 = OCXFindChild(v13, v14, "path");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    v15 = OCXFindChild(v13, oAXMainNamespace2, "path");
 
     v37 = v15;
     if (v15)
@@ -621,8 +621,8 @@ LABEL_32:
         v36 = CXDefaultStringAttribute(v37, CXNoNamespace, "fill", 0);
         if (v36)
         {
-          v17 = [a1 pathFillModeEnumMap];
-          v18 = [v17 valueForString:v36];
+          pathFillModeEnumMap = [self pathFillModeEnumMap];
+          v18 = [pathFillModeEnumMap valueForString:v36];
 
           [(OADPath *)v38 setFillMode:v18];
         }
@@ -635,8 +635,8 @@ LABEL_32:
             continue;
           }
 
-          v20 = [v11 OAXMainNamespace];
-          Child = OCXFindChild(i, v20, "pt");
+          oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+          Child = OCXFindChild(i, oAXMainNamespace3, "pt");
 
           if (Child)
           {
@@ -644,10 +644,10 @@ LABEL_32:
             v23 = &v40;
             do
             {
-              *(v23 - 1) = [a1 readAdjustCoordFromXmlNode:Child name:"x" formulaNameToIndexMap:{v10, v35}];
-              *v23 = [a1 readAdjustCoordFromXmlNode:Child name:"y" formulaNameToIndexMap:v10];
-              v24 = [v11 OAXMainNamespace];
-              Child = OCXFindNextChild(Child, v24, "pt");
+              *(v23 - 1) = [self readAdjustCoordFromXmlNode:Child name:"x" formulaNameToIndexMap:{mapCopy, geometryCopy}];
+              *v23 = [self readAdjustCoordFromXmlNode:Child name:"y" formulaNameToIndexMap:mapCopy];
+              oAXMainNamespace4 = [stateCopy OAXMainNamespace];
+              Child = OCXFindNextChild(Child, oAXMainNamespace4, "pt");
 
               v25 = v22 + 1;
               if (!Child)
@@ -737,18 +737,18 @@ LABEL_27:
               [TCMessageException raise:OABadFormat];
             }
 
-            v27 = -[OADArcToPathElement initWithSemiaxes:startAngle:angleLength:]([OADArcToPathElement alloc], "initWithSemiaxes:startAngle:angleLength:", [a1 readAdjustCoordFromXmlNode:i name:"wR" formulaNameToIndexMap:{v10, v35}], objc_msgSend(a1, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", i, "hR", v10), objc_msgSend(a1, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", i, "stAng", v10), objc_msgSend(a1, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", i, "swAng", v10));
+            v27 = -[OADArcToPathElement initWithSemiaxes:startAngle:angleLength:]([OADArcToPathElement alloc], "initWithSemiaxes:startAngle:angleLength:", [self readAdjustCoordFromXmlNode:i name:"wR" formulaNameToIndexMap:{mapCopy, geometryCopy}], objc_msgSend(self, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", i, "hR", mapCopy), objc_msgSend(self, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", i, "stAng", mapCopy), objc_msgSend(self, "readAdjustCoordFromXmlNode:name:formulaNameToIndexMap:", i, "swAng", mapCopy));
           }
 
 LABEL_28:
           v30 = v27;
 LABEL_29:
-          [(OADPath *)v38 addElement:v30, v35];
+          [(OADPath *)v38 addElement:v30, geometryCopy];
         }
 
-        [v35 addPath:v38];
-        v33 = [v11 OAXMainNamespace];
-        v34 = OCXFindNextChild(v37, v33, "path");
+        [geometryCopy addPath:v38];
+        oAXMainNamespace5 = [stateCopy OAXMainNamespace];
+        v34 = OCXFindNextChild(v37, oAXMainNamespace5, "path");
 
         v37 = v34;
       }
@@ -758,29 +758,29 @@ LABEL_29:
   }
 }
 
-+ (void)writePath:(id)a3 coordSpace:(CsRect<int>)a4 to:(id)a5
++ (void)writePath:(id)path coordSpace:(CsRect<int>)space to:(id)to
 {
-  v5 = *&a4.var0[2];
-  v6 = *a4.var0;
-  v8 = a3;
+  v5 = *&space.var0[2];
+  v6 = *space.var0;
+  pathCopy = path;
   v9 = v5;
   [v9 startOAElement:@"path"];
   v10 = v6[1];
   v11 = *v6;
   [v9 writeOAAttribute:@"w" intContent:v6[2] - v11];
   [v9 writeOAAttribute:@"h" intContent:v6[3] - v6[1]];
-  v12 = [v8 fillMode];
-  v13 = [a1 pathFillModeEnumMap];
-  [v9 writeOAAttribute:@"fill" enumContent:v12 map:v13];
+  fillMode = [pathCopy fillMode];
+  pathFillModeEnumMap = [self pathFillModeEnumMap];
+  [v9 writeOAAttribute:@"fill" enumContent:fillMode map:pathFillModeEnumMap];
 
-  [v9 writeOAAttribute:@"stroke" BOOLContent:{objc_msgSend(v8, "stroked")}];
+  [v9 writeOAAttribute:@"stroke" BOOLContent:{objc_msgSend(pathCopy, "stroked")}];
   [v9 writeOAAttribute:@"extrusionOk" BOOLContent:0];
-  v14 = [v8 elementCount];
-  if (v14)
+  elementCount = [pathCopy elementCount];
+  if (elementCount)
   {
-    for (i = 0; v14 != i; ++i)
+    for (i = 0; elementCount != i; ++i)
     {
-      v16 = [v8 elementAtIndex:i];
+      v16 = [pathCopy elementAtIndex:i];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -795,18 +795,18 @@ LABEL_29:
         {
           v17 = v16;
           [v9 startOAElement:@"cubicBezTo"];
-          v18 = [v17 controlPoint1];
+          controlPoint1 = [v17 controlPoint1];
           v34[0] = v11;
           v34[1] = v10;
-          [a1 writeShapePathPoint:v18 origin:v19 to:{v34, v9}];
-          v20 = [v17 controlPoint2];
+          [self writeShapePathPoint:controlPoint1 origin:v19 to:{v34, v9}];
+          controlPoint2 = [v17 controlPoint2];
           v33[0] = v11;
           v33[1] = v10;
-          [a1 writeShapePathPoint:v20 origin:v21 to:{v33, v9}];
-          v22 = [v17 toPoint];
+          [self writeShapePathPoint:controlPoint2 origin:v21 to:{v33, v9}];
+          toPoint = [v17 toPoint];
           v32[0] = v11;
           v32[1] = v10;
-          [a1 writeShapePathPoint:v22 origin:v23 to:{v32, v9}];
+          [self writeShapePathPoint:toPoint origin:v23 to:{v32, v9}];
           [v9 endElement];
 LABEL_11:
 
@@ -818,10 +818,10 @@ LABEL_11:
         {
           v24 = v16;
           [v9 startOAElement:@"lnTo"];
-          v25 = [v24 toPoint];
+          toPoint2 = [v24 toPoint];
           v31[0] = v11;
           v31[1] = v10;
-          [a1 writeShapePathPoint:v25 origin:v26 to:{v31, v9}];
+          [self writeShapePathPoint:toPoint2 origin:v26 to:{v31, v9}];
           [v9 endElement];
           goto LABEL_11;
         }
@@ -831,10 +831,10 @@ LABEL_11:
         {
           v27 = v16;
           [v9 startOAElement:@"moveTo"];
-          v28 = [v27 toPoint];
+          toPoint3 = [v27 toPoint];
           v30[0] = v11;
           v30[1] = v10;
-          [a1 writeShapePathPoint:v28 origin:v29 to:{v30, v9}];
+          [self writeShapePathPoint:toPoint3 origin:v29 to:{v30, v9}];
           [v9 endElement];
           goto LABEL_11;
         }
@@ -847,15 +847,15 @@ LABEL_12:
   [v9 endElement];
 }
 
-+ (void)writeShapePathPoint:(OADAdjustPoint)a3 origin:(CsPoint<int>)a4 to:(id)a5
++ (void)writeShapePathPoint:(OADAdjustPoint)point origin:(CsPoint<int>)origin to:(id)to
 {
-  value = a3.y.value;
-  x = a3.x;
-  v8 = a5;
-  [v8 startOAElement:@"pt"];
-  [v8 writeOAAttribute:@"x" intContent:(*&x >> 32) - *a4.var0[0]];
-  [v8 writeOAAttribute:@"y" intContent:value - *(*&a4 + 4)];
-  [v8 endElement];
+  value = point.y.value;
+  x = point.x;
+  toCopy = to;
+  [toCopy startOAElement:@"pt"];
+  [toCopy writeOAAttribute:@"x" intContent:(*&x >> 32) - *origin.var0[0]];
+  [toCopy writeOAAttribute:@"y" intContent:value - *(*&origin + 4)];
+  [toCopy endElement];
 }
 
 void __40__OAXGeometry_Private__shapeTypeEnumMap__block_invoke()

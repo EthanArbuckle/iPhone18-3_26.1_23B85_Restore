@@ -1,16 +1,16 @@
 @interface CNUIUserActivityManager
 + (OS_os_log)log;
-- (CNUIUserActivityManager)initWithApplicationWorkspace:(id)a3;
-- (CNUIUserActivityManager)initWithContactStore:(id)a3;
-- (CNUIUserActivityManager)initWithContactStore:(id)a3 applicationWorkspace:(id)a4;
-- (CNUIUserActivityManager)initWithContactStore:(id)a3 applicationWorkspace:(id)a4 interactionDonor:(id)a5;
+- (CNUIUserActivityManager)initWithApplicationWorkspace:(id)workspace;
+- (CNUIUserActivityManager)initWithContactStore:(id)store;
+- (CNUIUserActivityManager)initWithContactStore:(id)store applicationWorkspace:(id)workspace;
+- (CNUIUserActivityManager)initWithContactStore:(id)store applicationWorkspace:(id)workspace interactionDonor:(id)donor;
 - (id)makeActivityAdvertisingViewingGroups;
 - (id)makeActivityAdvertisingViewingList;
-- (id)makeActivityAdvertisingViewingOfContact:(id)a3;
-- (void)publishRequestToCreateContact:(id)a3;
-- (void)publishRequestToEditContact:(id)a3;
-- (void)updateUserActivityState:(id)a3 withContentsOfContact:(id)a4;
-- (void)updateUserActivityState:(id)a3 withContentsOfListTopContact:(id)a4 displayedContact:(id)a5 searchString:(id)a6 isShowingGroups:(BOOL)a7;
+- (id)makeActivityAdvertisingViewingOfContact:(id)contact;
+- (void)publishRequestToCreateContact:(id)contact;
+- (void)publishRequestToEditContact:(id)contact;
+- (void)updateUserActivityState:(id)state withContentsOfContact:(id)contact;
+- (void)updateUserActivityState:(id)state withContentsOfListTopContact:(id)contact displayedContact:(id)displayedContact searchString:(id)string isShowingGroups:(BOOL)groups;
 @end
 
 @implementation CNUIUserActivityManager
@@ -34,41 +34,41 @@ uint64_t __30__CNUIUserActivityManager_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNUIUserActivityManager)initWithContactStore:(id)a3
+- (CNUIUserActivityManager)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(CNLSApplicationWorkspace);
-  v6 = [(CNUIUserActivityManager *)self initWithContactStore:v4 applicationWorkspace:v5];
+  v6 = [(CNUIUserActivityManager *)self initWithContactStore:storeCopy applicationWorkspace:v5];
 
   return v6;
 }
 
-- (CNUIUserActivityManager)initWithApplicationWorkspace:(id)a3
+- (CNUIUserActivityManager)initWithApplicationWorkspace:(id)workspace
 {
   v4 = MEMORY[0x1E695CE18];
-  v5 = a3;
+  workspaceCopy = workspace;
   v6 = objc_alloc_init(v4);
-  v7 = [(CNUIUserActivityManager *)self initWithContactStore:v6 applicationWorkspace:v5];
+  v7 = [(CNUIUserActivityManager *)self initWithContactStore:v6 applicationWorkspace:workspaceCopy];
 
   return v7;
 }
 
-- (CNUIUserActivityManager)initWithContactStore:(id)a3 applicationWorkspace:(id)a4
+- (CNUIUserActivityManager)initWithContactStore:(id)store applicationWorkspace:(id)workspace
 {
-  v6 = a4;
-  v7 = a3;
+  workspaceCopy = workspace;
+  storeCopy = store;
   v8 = objc_alloc_init(CNUIInteractionDonor);
-  v9 = [(CNUIUserActivityManager *)self initWithContactStore:v7 applicationWorkspace:v6 interactionDonor:v8];
+  v9 = [(CNUIUserActivityManager *)self initWithContactStore:storeCopy applicationWorkspace:workspaceCopy interactionDonor:v8];
 
   return v9;
 }
 
-- (CNUIUserActivityManager)initWithContactStore:(id)a3 applicationWorkspace:(id)a4 interactionDonor:(id)a5
+- (CNUIUserActivityManager)initWithContactStore:(id)store applicationWorkspace:(id)workspace interactionDonor:(id)donor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  storeCopy = store;
+  workspaceCopy = workspace;
+  donorCopy = donor;
+  if (storeCopy)
   {
     goto LABEL_5;
   }
@@ -82,7 +82,7 @@ uint64_t __30__CNUIUserActivityManager_log__block_invoke()
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_7, OS_LOG_TYPE_FAULT))
   {
     [(CNUICoreContactRefetcher *)v12 initWithContactStore:v13 contactsToRefetch:v14 keysToFetch:v15, v16, v17, v18, v19];
-    if (v10)
+    if (workspaceCopy)
     {
       goto LABEL_10;
     }
@@ -91,7 +91,7 @@ uint64_t __30__CNUIUserActivityManager_log__block_invoke()
   else
   {
 LABEL_5:
-    if (v10)
+    if (workspaceCopy)
     {
       goto LABEL_10;
     }
@@ -109,7 +109,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (!v11)
+  if (!donorCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_7 != -1)
     {
@@ -129,41 +129,41 @@ LABEL_10:
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->_contactStore, a3);
-    objc_storeStrong(&v37->_applicationWorkspace, a4);
-    objc_storeStrong(&v37->_interactionDonor, a5);
+    objc_storeStrong(&v36->_contactStore, store);
+    objc_storeStrong(&v37->_applicationWorkspace, workspace);
+    objc_storeStrong(&v37->_interactionDonor, donor);
     v38 = v37;
   }
 
   return v37;
 }
 
-- (void)publishRequestToCreateContact:(id)a3
+- (void)publishRequestToCreateContact:(id)contact
 {
   v6 = objc_alloc_init(CNUICreateContactIntent);
   v4 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v6 response:0];
-  v5 = [(CNUIUserActivityManager *)self interactionDonor];
-  [v5 donateInteraction:v4];
+  interactionDonor = [(CNUIUserActivityManager *)self interactionDonor];
+  [interactionDonor donateInteraction:v4];
 }
 
-- (void)publishRequestToEditContact:(id)a3
+- (void)publishRequestToEditContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = objc_alloc(MEMORY[0x1E696B090]);
   v6 = [v5 initWithActivityType:CNUIActivityTypeEditingContact];
-  v7 = [(CNUIUserActivityManager *)self contactStore];
-  v8 = [v7 userActivityUserInfoForContact:v4];
+  contactStore = [(CNUIUserActivityManager *)self contactStore];
+  v8 = [contactStore userActivityUserInfoForContact:contactCopy];
   [v6 setUserInfo:v8];
 
-  v9 = [(CNUIUserActivityManager *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActivityManager *)self applicationWorkspace];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke;
   v11[3] = &unk_1E76E8FA0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v9 openUserActivity:v6 inApplication:0 options:0 completionHandler:v11];
+  v12 = contactCopy;
+  v10 = contactCopy;
+  [applicationWorkspace openUserActivity:v6 inApplication:0 options:0 completionHandler:v11];
 }
 
 void __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke(uint64_t a1, char a2, void *a3)
@@ -186,12 +186,12 @@ void __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke(ui
   }
 }
 
-- (id)makeActivityAdvertisingViewingOfContact:(id)a3
+- (id)makeActivityAdvertisingViewingOfContact:(id)contact
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNUIUserActivityManager *)self contactStore];
-  v6 = [v5 userActivityUserInfoForContact:v4];
+  contactCopy = contact;
+  contactStore = [(CNUIUserActivityManager *)self contactStore];
+  v6 = [contactStore userActivityUserInfoForContact:contactCopy];
 
   if (v6)
   {
@@ -205,7 +205,7 @@ void __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke(ui
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = contactCopy;
       _os_log_impl(&dword_1A31E6000, v9, OS_LOG_TYPE_INFO, "activity continuity - %@ needs to save the user activity", &v11, 0xCu);
     }
   }
@@ -215,7 +215,7 @@ void __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke(ui
     v9 = [objc_opt_class() log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(CNUIUserActivityManager *)v4 makeActivityAdvertisingViewingOfContact:v9];
+      [(CNUIUserActivityManager *)contactCopy makeActivityAdvertisingViewingOfContact:v9];
     }
 
     v8 = 0;
@@ -224,18 +224,18 @@ void __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke(ui
   return v8;
 }
 
-- (void)updateUserActivityState:(id)a3 withContentsOfListTopContact:(id)a4 displayedContact:(id)a5 searchString:(id)a6 isShowingGroups:(BOOL)a7
+- (void)updateUserActivityState:(id)state withContentsOfListTopContact:(id)contact displayedContact:(id)displayedContact searchString:(id)string isShowingGroups:(BOOL)groups
 {
-  v7 = a7;
+  groupsCopy = groups;
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v13 && ([MEMORY[0x1E695CD80] stringFromContact:v13 style:0], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  stateCopy = state;
+  contactCopy = contact;
+  displayedContactCopy = displayedContact;
+  stringCopy = string;
+  if (contactCopy && ([MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v17 = v16;
-    [v12 setTitle:v16];
+    [stateCopy setTitle:v16];
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
@@ -243,108 +243,108 @@ void __55__CNUIUserActivityManager_publishRequestToEditContact___block_invoke(ui
   {
     v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"NO_NAME" value:&stru_1F162C170 table:@"Localized"];
-    [v12 setTitle:v20];
+    [stateCopy setTitle:v20];
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if (!v13)
+    if (!contactCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v21 = [(CNUIUserActivityManager *)self contactStore];
-  v22 = [v21 userActivityUserInfoForContact:v13];
+  contactStore = [(CNUIUserActivityManager *)self contactStore];
+  v22 = [contactStore userActivityUserInfoForContact:contactCopy];
   [v18 setObject:v22 forKeyedSubscript:CNUIActivityUserInformationListTopContactKey];
 
 LABEL_6:
-  if (v14)
+  if (displayedContactCopy)
   {
-    v23 = [(CNUIUserActivityManager *)self contactStore];
-    v24 = [v23 userActivityUserInfoForContact:v14];
+    contactStore2 = [(CNUIUserActivityManager *)self contactStore];
+    v24 = [contactStore2 userActivityUserInfoForContact:displayedContactCopy];
     [v18 setObject:v24 forKeyedSubscript:CNUIActivityUserInformationDisplayedContactKey];
   }
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    [v18 setObject:v15 forKeyedSubscript:CNUIActivityUserInformationSearchStringKey];
+    [v18 setObject:stringCopy forKeyedSubscript:CNUIActivityUserInformationSearchStringKey];
   }
 
-  v25 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v25 = [MEMORY[0x1E696AD98] numberWithBool:groupsCopy];
   [v18 setObject:v25 forKeyedSubscript:CNUIActivityUserInformationIsShowingGroupsKey];
 
-  [v12 setUserInfo:v18];
+  [stateCopy setUserInfo:v18];
   v26 = MEMORY[0x1E695DFD8];
-  v27 = [v12 userInfo];
-  v28 = [v27 allKeys];
-  v29 = [v26 setWithArray:v28];
-  [v12 setRequiredUserInfoKeys:v29];
+  userInfo = [stateCopy userInfo];
+  allKeys = [userInfo allKeys];
+  v29 = [v26 setWithArray:allKeys];
+  [stateCopy setRequiredUserInfoKeys:v29];
 
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v13 searchableItemAttributeSetForUserActivity];
-    [v12 setContentAttributeSet:v30];
+    searchableItemAttributeSetForUserActivity = [contactCopy searchableItemAttributeSetForUserActivity];
+    [stateCopy setContentAttributeSet:searchableItemAttributeSetForUserActivity];
   }
 
   v31 = [objc_opt_class() log];
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v12 title];
-    v33 = [v12 userInfo];
+    title = [stateCopy title];
+    userInfo2 = [stateCopy userInfo];
     v34 = 138412802;
-    v35 = v12;
+    v35 = stateCopy;
     v36 = 2112;
-    v37 = v32;
+    v37 = title;
     v38 = 2112;
-    v39 = v33;
+    v39 = userInfo2;
     _os_log_impl(&dword_1A31E6000, v31, OS_LOG_TYPE_INFO, "activity continuity - updated %@ with title %@, userInfo %@", &v34, 0x20u);
   }
 }
 
-- (void)updateUserActivityState:(id)a3 withContentsOfContact:(id)a4
+- (void)updateUserActivityState:(id)state withContentsOfContact:(id)contact
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695CD80] stringFromContact:v7 style:0];
+  stateCopy = state;
+  contactCopy = contact;
+  v8 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
   if (v8)
   {
-    [v6 setTitle:v8];
+    [stateCopy setTitle:v8];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"NO_NAME" value:&stru_1F162C170 table:@"Localized"];
-    [v6 setTitle:v10];
+    [stateCopy setTitle:v10];
   }
 
-  v11 = [(CNUIUserActivityManager *)self contactStore];
-  v12 = [v11 userActivityUserInfoForContact:v7];
-  [v6 setUserInfo:v12];
+  contactStore = [(CNUIUserActivityManager *)self contactStore];
+  v12 = [contactStore userActivityUserInfoForContact:contactCopy];
+  [stateCopy setUserInfo:v12];
 
   v13 = MEMORY[0x1E695DFD8];
-  v14 = [v6 userInfo];
-  v15 = [v14 allKeys];
-  v16 = [v13 setWithArray:v15];
-  [v6 setRequiredUserInfoKeys:v16];
+  userInfo = [stateCopy userInfo];
+  allKeys = [userInfo allKeys];
+  v16 = [v13 setWithArray:allKeys];
+  [stateCopy setRequiredUserInfoKeys:v16];
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v7 searchableItemAttributeSetForUserActivity];
-    [v6 setContentAttributeSet:v17];
+    searchableItemAttributeSetForUserActivity = [contactCopy searchableItemAttributeSetForUserActivity];
+    [stateCopy setContentAttributeSet:searchableItemAttributeSetForUserActivity];
   }
 
   v18 = [objc_opt_class() log];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [v6 title];
-    v20 = [v6 userInfo];
+    title = [stateCopy title];
+    userInfo2 = [stateCopy userInfo];
     v21 = 138412802;
-    v22 = v6;
+    v22 = stateCopy;
     v23 = 2112;
-    v24 = v19;
+    v24 = title;
     v25 = 2112;
-    v26 = v20;
+    v26 = userInfo2;
     _os_log_impl(&dword_1A31E6000, v18, OS_LOG_TYPE_INFO, "activity continuity - updated %@ with title %@, userInfo %@", &v21, 0x20u);
   }
 }

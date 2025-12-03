@@ -1,58 +1,58 @@
 @interface DCAtomicLRUCache
 - (id)allKeys;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation DCAtomicLRUCache
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9.receiver = v8;
+  objectCopy = object;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9.receiver = selfCopy;
   v9.super_class = DCAtomicLRUCache;
-  [(DCLRUCache *)&v9 setObject:v6 forKey:v7];
-  objc_sync_exit(v8);
+  [(DCLRUCache *)&v9 setObject:objectCopy forKey:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6.receiver = v5;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6.receiver = selfCopy;
   v6.super_class = DCAtomicLRUCache;
-  [(DCLRUCache *)&v6 removeObjectForKey:v4];
-  objc_sync_exit(v5);
+  [(DCLRUCache *)&v6 removeObjectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8.receiver = v5;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = DCAtomicLRUCache;
-  v6 = [(DCLRUCache *)&v8 objectForKey:v4];
-  objc_sync_exit(v5);
+  v6 = [(DCLRUCache *)&v8 objectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)allKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6.receiver = selfCopy;
   v6.super_class = DCAtomicLRUCache;
-  v3 = [(DCLRUCache *)&v6 allKeys];
-  v4 = [v3 copy];
+  allKeys = [(DCLRUCache *)&v6 allKeys];
+  v4 = [allKeys copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }

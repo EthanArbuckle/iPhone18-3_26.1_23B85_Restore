@@ -1,14 +1,14 @@
 @interface _UIRopeAnimation
-- (void)addAnimation:(id)a3;
-- (void)beginUsingSpringBehavior:(id)a3 completion:(id)a4;
+- (void)addAnimation:(id)animation;
+- (void)beginUsingSpringBehavior:(id)behavior completion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation _UIRopeAnimation
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(animation);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -17,7 +17,7 @@
   v7 = OBJC_IVAR____UIRopeAnimation__animations;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v7) = v8;
@@ -42,9 +42,9 @@
   swift_endAccess();
 }
 
-- (void)beginUsingSpringBehavior:(id)a3 completion:(id)a4
+- (void)beginUsingSpringBehavior:(id)behavior completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -57,9 +57,9 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_188E44940(v8, v6, v7);
+  behaviorCopy = behavior;
+  selfCopy = self;
+  sub_188E44940(behaviorCopy, v6, v7);
   sub_188A55B8C(v6);
 }
 

@@ -1,183 +1,183 @@
 @interface UISUIActivityExtensionItemDataRequest
-+ (id)requestForActivity:(id)a3 activityType:(id)a4 activitySpecificMetadata:(id)a5;
-+ (id)requestForActivity:(id)a3 activityType:(id)a4 sourceAppIsManaged:(BOOL)a5;
++ (id)requestForActivity:(id)activity activityType:(id)type activitySpecificMetadata:(id)metadata;
++ (id)requestForActivity:(id)activity activityType:(id)type sourceAppIsManaged:(BOOL)managed;
 - (CGSize)thumbnailSize;
-- (UISUIActivityExtensionItemDataRequest)initWithCoder:(id)a3;
-- (id)_initWithClassForPreparingExtensionItemData:(Class)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UISUIActivityExtensionItemDataRequest)initWithCoder:(id)coder;
+- (id)_initWithClassForPreparingExtensionItemData:(Class)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISUIActivityExtensionItemDataRequest
 
-+ (id)requestForActivity:(id)a3 activityType:(id)a4 sourceAppIsManaged:(BOOL)a5
++ (id)requestForActivity:(id)activity activityType:(id)type sourceAppIsManaged:(BOOL)managed
 {
-  v5 = a5;
-  v6 = [a1 requestForActivity:a3 activityType:a4];
-  [v6 setSourceAppIsManaged:v5];
+  managedCopy = managed;
+  v6 = [self requestForActivity:activity activityType:type];
+  [v6 setSourceAppIsManaged:managedCopy];
 
   return v6;
 }
 
-+ (id)requestForActivity:(id)a3 activityType:(id)a4 activitySpecificMetadata:(id)a5
++ (id)requestForActivity:(id)activity activityType:(id)type activitySpecificMetadata:(id)metadata
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 activityType];
-  v12 = [v11 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
+  metadataCopy = metadata;
+  typeCopy = type;
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v12 = [activityType isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
 
-  v13 = [[a1 alloc] _initWithClassForPreparingExtensionItemData:{objc_msgSend(objc_opt_class(), "classForPreparingExtensionItemData")}];
-  v14 = [v10 activityUUID];
-  [v13 setActivityUUID:v14];
+  v13 = [[self alloc] _initWithClassForPreparingExtensionItemData:{objc_msgSend(objc_opt_class(), "classForPreparingExtensionItemData")}];
+  activityUUID = [activityCopy activityUUID];
+  [v13 setActivityUUID:activityUUID];
 
   [v13 setActivityCategory:{objc_msgSend(objc_opt_class(), "activityCategory")}];
-  v15 = [v10 applicationExtension];
-  v16 = [v15 identifier];
-  [v13 setExtensionIdentifier:v16];
+  applicationExtension = [activityCopy applicationExtension];
+  identifier = [applicationExtension identifier];
+  [v13 setExtensionIdentifier:identifier];
 
   [v13 setIsAirDropActivity:v12];
-  [v10 _thumbnailSize];
+  [activityCopy _thumbnailSize];
   [v13 setThumbnailSize:?];
-  [v13 setWantsThumbnailItemData:{objc_msgSend(v10, "_wantsThumbnailItemData")}];
-  [v13 setWantsAttachmentURLItemData:{objc_msgSend(v10, "_wantsAttachmentURLItemData")}];
-  [v13 setActivitySupportsPromiseURLs:{objc_msgSend(v10, "_activitySupportsPromiseURLs")}];
-  [v13 setActivityType:v9];
+  [v13 setWantsThumbnailItemData:{objc_msgSend(activityCopy, "_wantsThumbnailItemData")}];
+  [v13 setWantsAttachmentURLItemData:{objc_msgSend(activityCopy, "_wantsAttachmentURLItemData")}];
+  [v13 setActivitySupportsPromiseURLs:{objc_msgSend(activityCopy, "_activitySupportsPromiseURLs")}];
+  [v13 setActivityType:typeCopy];
 
-  [v13 setActivitySpecificMetadata:v8];
-  v17 = [v10 maxPreviews];
+  [v13 setActivitySpecificMetadata:metadataCopy];
+  maxPreviews = [activityCopy maxPreviews];
 
-  [v13 setMaxPreviews:v17];
+  [v13 setMaxPreviews:maxPreviews];
 
   return v13;
 }
 
-- (id)_initWithClassForPreparingExtensionItemData:(Class)a3
+- (id)_initWithClassForPreparingExtensionItemData:(Class)data
 {
   v5.receiver = self;
   v5.super_class = UISUIActivityExtensionItemDataRequest;
   result = [(UISUIActivityExtensionItemDataRequest *)&v5 init];
   if (result)
   {
-    *(result + 2) = a3;
+    *(result + 2) = data;
   }
 
   return result;
 }
 
-- (UISUIActivityExtensionItemDataRequest)initWithCoder:(id)a3
+- (UISUIActivityExtensionItemDataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_classNameForPreparingExtensionItemData);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(UISUIActivityExtensionItemDataRequest *)self _initWithClassForPreparingExtensionItemData:NSClassFromString(v7)];
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_activityUUID);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     [(UISUIActivityExtensionItemDataRequest *)v8 setActivityUUID:v11];
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_activityType);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     [(UISUIActivityExtensionItemDataRequest *)v8 setActivityType:v14];
 
     v15 = NSStringFromSelector(sel_activityCategory);
-    -[UISUIActivityExtensionItemDataRequest setActivityCategory:](v8, "setActivityCategory:", [v4 decodeIntegerForKey:v15]);
+    -[UISUIActivityExtensionItemDataRequest setActivityCategory:](v8, "setActivityCategory:", [coderCopy decodeIntegerForKey:v15]);
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_extensionIdentifier);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     [(UISUIActivityExtensionItemDataRequest *)v8 setExtensionIdentifier:v18];
 
     v19 = NSStringFromSelector(sel_isAirDropActivity);
-    -[UISUIActivityExtensionItemDataRequest setIsAirDropActivity:](v8, "setIsAirDropActivity:", [v4 decodeBoolForKey:v19]);
+    -[UISUIActivityExtensionItemDataRequest setIsAirDropActivity:](v8, "setIsAirDropActivity:", [coderCopy decodeBoolForKey:v19]);
 
     v20 = NSStringFromSelector(sel_thumbnailSize);
-    [(UISUIActivityExtensionItemDataRequest *)v8 setThumbnailSize:_UISecureDecodeCGSizeWithKeyAndDefaultSize(v4, v20, *MEMORY[0x1E695F060])];
+    [(UISUIActivityExtensionItemDataRequest *)v8 setThumbnailSize:_UISecureDecodeCGSizeWithKeyAndDefaultSize(coderCopy, v20, *MEMORY[0x1E695F060])];
 
     v21 = NSStringFromSelector(sel_wantsThumbnailItemData);
-    -[UISUIActivityExtensionItemDataRequest setWantsThumbnailItemData:](v8, "setWantsThumbnailItemData:", [v4 decodeBoolForKey:v21]);
+    -[UISUIActivityExtensionItemDataRequest setWantsThumbnailItemData:](v8, "setWantsThumbnailItemData:", [coderCopy decodeBoolForKey:v21]);
 
     v22 = NSStringFromSelector(sel_wantsAttachmentURLItemData);
-    -[UISUIActivityExtensionItemDataRequest setWantsAttachmentURLItemData:](v8, "setWantsAttachmentURLItemData:", [v4 decodeBoolForKey:v22]);
+    -[UISUIActivityExtensionItemDataRequest setWantsAttachmentURLItemData:](v8, "setWantsAttachmentURLItemData:", [coderCopy decodeBoolForKey:v22]);
 
     v23 = NSStringFromSelector(sel_activitySupportsPromiseURLs);
-    -[UISUIActivityExtensionItemDataRequest setActivitySupportsPromiseURLs:](v8, "setActivitySupportsPromiseURLs:", [v4 decodeBoolForKey:v23]);
+    -[UISUIActivityExtensionItemDataRequest setActivitySupportsPromiseURLs:](v8, "setActivitySupportsPromiseURLs:", [coderCopy decodeBoolForKey:v23]);
 
     v24 = _UISecureStandardPropertyListClasses();
     v25 = NSStringFromSelector(sel_activitySpecificMetadata);
-    v26 = [v4 decodeObjectOfClasses:v24 forKey:v25];
+    v26 = [coderCopy decodeObjectOfClasses:v24 forKey:v25];
     [(UISUIActivityExtensionItemDataRequest *)v8 setActivitySpecificMetadata:v26];
 
     v27 = NSStringFromSelector(sel_maxPreviews);
-    -[UISUIActivityExtensionItemDataRequest setMaxPreviews:](v8, "setMaxPreviews:", [v4 decodeIntegerForKey:v27]);
+    -[UISUIActivityExtensionItemDataRequest setMaxPreviews:](v8, "setMaxPreviews:", [coderCopy decodeIntegerForKey:v27]);
 
     v28 = NSStringFromSelector(sel_sourceAppIsManaged);
-    -[UISUIActivityExtensionItemDataRequest setSourceAppIsManaged:](v8, "setSourceAppIsManaged:", [v4 decodeBoolForKey:v28]);
+    -[UISUIActivityExtensionItemDataRequest setSourceAppIsManaged:](v8, "setSourceAppIsManaged:", [coderCopy decodeBoolForKey:v28]);
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33 = NSStringFromClass([(UISUIActivityExtensionItemDataRequest *)self classForPreparingExtensionItemData]);
   v5 = NSStringFromSelector(sel_classNameForPreparingExtensionItemData);
-  [v4 encodeObject:v33 forKey:v5];
+  [coderCopy encodeObject:v33 forKey:v5];
 
-  v6 = [(UISUIActivityExtensionItemDataRequest *)self activityType];
+  activityType = [(UISUIActivityExtensionItemDataRequest *)self activityType];
   v7 = NSStringFromSelector(sel_activityType);
-  [v4 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:activityType forKey:v7];
 
-  v8 = [(UISUIActivityExtensionItemDataRequest *)self activityUUID];
+  activityUUID = [(UISUIActivityExtensionItemDataRequest *)self activityUUID];
   v9 = NSStringFromSelector(sel_activityUUID);
-  [v4 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:activityUUID forKey:v9];
 
-  v10 = [(UISUIActivityExtensionItemDataRequest *)self activityCategory];
+  activityCategory = [(UISUIActivityExtensionItemDataRequest *)self activityCategory];
   v11 = NSStringFromSelector(sel_activityCategory);
-  [v4 encodeInteger:v10 forKey:v11];
+  [coderCopy encodeInteger:activityCategory forKey:v11];
 
-  v12 = [(UISUIActivityExtensionItemDataRequest *)self extensionIdentifier];
+  extensionIdentifier = [(UISUIActivityExtensionItemDataRequest *)self extensionIdentifier];
   v13 = NSStringFromSelector(sel_isPhotoServiceAccessGranted);
-  [v4 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:extensionIdentifier forKey:v13];
 
-  v14 = [(UISUIActivityExtensionItemDataRequest *)self isAirDropActivity];
+  isAirDropActivity = [(UISUIActivityExtensionItemDataRequest *)self isAirDropActivity];
   v15 = NSStringFromSelector(sel_isAirDropActivity);
-  [v4 encodeBool:v14 forKey:v15];
+  [coderCopy encodeBool:isAirDropActivity forKey:v15];
 
   [(UISUIActivityExtensionItemDataRequest *)self thumbnailSize];
   v17 = v16;
   v19 = v18;
   v20 = NSStringFromSelector(sel_thumbnailSize);
-  _UISecureEncodeCGSizeWithKey(v4, v20, v17, v19);
+  _UISecureEncodeCGSizeWithKey(coderCopy, v20, v17, v19);
 
-  v21 = [(UISUIActivityExtensionItemDataRequest *)self wantsThumbnailItemData];
+  wantsThumbnailItemData = [(UISUIActivityExtensionItemDataRequest *)self wantsThumbnailItemData];
   v22 = NSStringFromSelector(sel_wantsThumbnailItemData);
-  [v4 encodeBool:v21 forKey:v22];
+  [coderCopy encodeBool:wantsThumbnailItemData forKey:v22];
 
-  v23 = [(UISUIActivityExtensionItemDataRequest *)self wantsAttachmentURLItemData];
+  wantsAttachmentURLItemData = [(UISUIActivityExtensionItemDataRequest *)self wantsAttachmentURLItemData];
   v24 = NSStringFromSelector(sel_wantsAttachmentURLItemData);
-  [v4 encodeBool:v23 forKey:v24];
+  [coderCopy encodeBool:wantsAttachmentURLItemData forKey:v24];
 
-  v25 = [(UISUIActivityExtensionItemDataRequest *)self activitySupportsPromiseURLs];
+  activitySupportsPromiseURLs = [(UISUIActivityExtensionItemDataRequest *)self activitySupportsPromiseURLs];
   v26 = NSStringFromSelector(sel_activitySupportsPromiseURLs);
-  [v4 encodeBool:v25 forKey:v26];
+  [coderCopy encodeBool:activitySupportsPromiseURLs forKey:v26];
 
-  v27 = [(UISUIActivityExtensionItemDataRequest *)self activitySpecificMetadata];
+  activitySpecificMetadata = [(UISUIActivityExtensionItemDataRequest *)self activitySpecificMetadata];
   v28 = NSStringFromSelector(sel_activitySpecificMetadata);
-  [v4 encodeObject:v27 forKey:v28];
+  [coderCopy encodeObject:activitySpecificMetadata forKey:v28];
 
-  v29 = [(UISUIActivityExtensionItemDataRequest *)self maxPreviews];
+  maxPreviews = [(UISUIActivityExtensionItemDataRequest *)self maxPreviews];
   v30 = NSStringFromSelector(sel_maxPreviews);
-  [v4 encodeInteger:v29 forKey:v30];
+  [coderCopy encodeInteger:maxPreviews forKey:v30];
 
-  v31 = [(UISUIActivityExtensionItemDataRequest *)self sourceAppIsManaged];
+  sourceAppIsManaged = [(UISUIActivityExtensionItemDataRequest *)self sourceAppIsManaged];
   v32 = NSStringFromSelector(sel_sourceAppIsManaged);
-  [v4 encodeBool:v31 forKey:v32];
+  [coderCopy encodeBool:sourceAppIsManaged forKey:v32];
 }
 
 - (CGSize)thumbnailSize

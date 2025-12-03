@@ -1,15 +1,15 @@
 @interface TKTokenDriverContext
-- (BOOL)_setupWithDriver:(id)a3 error:(id *)a4;
-- (BOOL)startRequestWithError:(id *)a3;
+- (BOOL)_setupWithDriver:(id)driver error:(id *)error;
+- (BOOL)startRequestWithError:(id *)error;
 - (TKTokenConfigurationConnection)configurationConnection;
 - (double)idleTimeout;
-- (id)configurationForTokenID:(id)a3;
+- (id)configurationForTokenID:(id)d;
 - (void)_setupDriver;
-- (void)acquireTokenWithInstanceID:(id)a3 reply:(id)a4;
-- (void)configureWithReply:(id)a3;
+- (void)acquireTokenWithInstanceID:(id)d reply:(id)reply;
+- (void)configureWithReply:(id)reply;
 - (void)idleTimeout;
-- (void)releaseTokenWithInstanceID:(id)a3 reply:(id)a4;
-- (void)setConfigurationEndpoint:(id)a3 reply:(id)a4;
+- (void)releaseTokenWithInstanceID:(id)d reply:(id)reply;
+- (void)setConfigurationEndpoint:(id)endpoint reply:(id)reply;
 - (void)setup;
 @end
 
@@ -17,40 +17,40 @@
 
 - (TKTokenConfigurationConnection)configurationConnection
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  configurationConnection = v3->_configurationConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configurationConnection = selfCopy->_configurationConnection;
   if (!configurationConnection)
   {
-    v5 = [(TKTokenDriverContext *)v3 configurationEndpoint];
+    configurationEndpoint = [(TKTokenDriverContext *)selfCopy configurationEndpoint];
 
-    if (!v5)
+    if (!configurationEndpoint)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v3 file:@"TKToken.m" lineNumber:321 description:@"ctkd did not set configurationEndpoint"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"TKToken.m" lineNumber:321 description:@"ctkd did not set configurationEndpoint"];
     }
 
     v6 = [TKTokenConfigurationConnection alloc];
-    v7 = [(TKTokenDriverContext *)v3 configurationEndpoint];
-    v8 = [(TKTokenConfigurationConnection *)v6 initWithEndpoint:v7];
-    v9 = v3->_configurationConnection;
-    v3->_configurationConnection = v8;
+    configurationEndpoint2 = [(TKTokenDriverContext *)selfCopy configurationEndpoint];
+    v8 = [(TKTokenConfigurationConnection *)v6 initWithEndpoint:configurationEndpoint2];
+    v9 = selfCopy->_configurationConnection;
+    selfCopy->_configurationConnection = v8;
 
-    configurationConnection = v3->_configurationConnection;
+    configurationConnection = selfCopy->_configurationConnection;
   }
 
   v10 = configurationConnection;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)configurationForTokenID:(id)a3
+- (id)configurationForTokenID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [TKTokenConfiguration alloc];
-  v6 = [(TKTokenDriverContext *)self configurationConnection];
-  v7 = [(TKTokenConfiguration *)v5 initWithTokenID:v4 configurationConnection:v6];
+  configurationConnection = [(TKTokenDriverContext *)self configurationConnection];
+  v7 = [(TKTokenConfiguration *)v5 initWithTokenID:dCopy configurationConnection:configurationConnection];
 
   return v7;
 }
@@ -67,13 +67,13 @@ void __62__TKTokenDriverContext_auditAuthOperation_auditToken_success___block_in
 
 - (double)idleTimeout
 {
-  v2 = [(TKTokenDriverContext *)self inputItems];
-  v3 = [v2 firstObject];
+  inputItems = [(TKTokenDriverContext *)self inputItems];
+  firstObject = [inputItems firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 objectForKeyedSubscript:@"idleTimeout"];
+    userInfo = [firstObject userInfo];
+    v5 = [userInfo objectForKeyedSubscript:@"idleTimeout"];
 
     objc_opt_class();
     v6 = 5.0;
@@ -110,9 +110,9 @@ void __62__TKTokenDriverContext_auditAuthOperation_auditToken_success___block_in
 {
   [(TKTokenDriver *)self->_driver setContext:self];
   v3 = [TKSharedResourceSlot alloc];
-  v4 = [(TKTokenDriverContext *)self driver];
-  v5 = [v4 classID];
-  v6 = [(TKSharedResourceSlot *)v3 initWithName:v5];
+  driver = [(TKTokenDriverContext *)self driver];
+  classID = [driver classID];
+  v6 = [(TKSharedResourceSlot *)v3 initWithName:classID];
   [(TKTokenDriver *)self->_driver setKeepAliveResourceSlot:v6];
 
   objc_initWeak(&location, self);
@@ -126,26 +126,26 @@ void __62__TKTokenDriverContext_auditAuthOperation_auditToken_success___block_in
 
   [(TKTokenDriverContext *)self idleTimeout];
   v9 = v8;
-  v10 = [(TKTokenDriver *)self->_driver keepAliveResourceSlot];
-  [v10 setIdleTimeout:v9];
+  keepAliveResourceSlot = [(TKTokenDriver *)self->_driver keepAliveResourceSlot];
+  [keepAliveResourceSlot setIdleTimeout:v9];
 
-  v11 = [(TKTokenDriverContext *)self _auxiliaryConnection];
-  v12 = [v11 _queue];
-  v13 = [(TKTokenDriver *)self->_driver keepAliveResourceSlot];
-  [v13 setIdleQueue:v12];
+  _auxiliaryConnection = [(TKTokenDriverContext *)self _auxiliaryConnection];
+  _queue = [_auxiliaryConnection _queue];
+  keepAliveResourceSlot2 = [(TKTokenDriver *)self->_driver keepAliveResourceSlot];
+  [keepAliveResourceSlot2 setIdleQueue:_queue];
 
-  v14 = [(TKTokenDriver *)self->_driver keepAliveResourceSlot];
-  v15 = [v14 resourceWithError:0];
+  keepAliveResourceSlot3 = [(TKTokenDriver *)self->_driver keepAliveResourceSlot];
+  v15 = [keepAliveResourceSlot3 resourceWithError:0];
   initialKeepAlive = self->_initialKeepAlive;
   self->_initialKeepAlive = v15;
 
-  v17 = [(TKTokenDriverContext *)self inputItems];
-  v18 = [v17 firstObject];
-  v19 = [v18 userInfo];
-  v20 = [v19 objectForKey:@"avoidInitialKeepAlive"];
-  v21 = [v20 BOOLValue];
+  inputItems = [(TKTokenDriverContext *)self inputItems];
+  firstObject = [inputItems firstObject];
+  userInfo = [firstObject userInfo];
+  v20 = [userInfo objectForKey:@"avoidInitialKeepAlive"];
+  bOOLValue = [v20 BOOLValue];
 
-  if (v21)
+  if (bOOLValue)
   {
     v22 = self->_initialKeepAlive;
     self->_initialKeepAlive = 0;
@@ -189,10 +189,10 @@ void __36__TKTokenDriverContext__setupDriver__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_setupWithDriver:(id)a3 error:(id *)a4
+- (BOOL)_setupWithDriver:(id)driver error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  driverCopy = driver;
   if (_setupWithDriver_error__onceToken != -1)
   {
     [TKTokenDriverContext _setupWithDriver:error:];
@@ -203,12 +203,12 @@ void __36__TKTokenDriverContext__setupDriver__block_invoke(uint64_t a1)
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ![v8 BOOLValue])
   {
-    if (a4)
+    if (error)
     {
       if (v14)
       {
         v9 = 0;
-        *a4 = v14;
+        *error = v14;
         goto LABEL_11;
       }
 
@@ -216,14 +216,14 @@ void __36__TKTokenDriverContext__setupDriver__block_invoke(uint64_t a1)
       v15 = *MEMORY[0x1E696A578];
       v16[0] = @"missing virtual token entitlement";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      *a4 = [v10 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v11];
+      *error = [v10 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v11];
     }
 
     v9 = 0;
     goto LABEL_11;
   }
 
-  objc_storeStrong(&self->_driver, a3);
+  objc_storeStrong(&self->_driver, driver);
   [(TKTokenDriverContext *)self _setupDriver];
   v9 = 1;
 LABEL_11:
@@ -239,30 +239,30 @@ SecTaskRef __47__TKTokenDriverContext__setupWithDriver_error___block_invoke()
   return result;
 }
 
-- (void)setConfigurationEndpoint:(id)a3 reply:(id)a4
+- (void)setConfigurationEndpoint:(id)endpoint reply:(id)reply
 {
-  objc_storeStrong(&self->_configurationEndpoint, a3);
-  v5 = a4;
-  v5[2]();
+  objc_storeStrong(&self->_configurationEndpoint, endpoint);
+  replyCopy = reply;
+  replyCopy[2]();
 }
 
-- (BOOL)startRequestWithError:(id *)a3
+- (BOOL)startRequestWithError:(id *)error
 {
-  v6 = [(TKTokenDriverContext *)self driver];
+  driver = [(TKTokenDriverContext *)self driver];
 
-  if (v6)
+  if (driver)
   {
     initialKeepAlive = self->_initialKeepAlive;
     v8 = initialKeepAlive;
     if (!initialKeepAlive)
     {
-      a3 = [(TKTokenDriverContext *)self driver];
-      v3 = [a3 keepAliveResourceSlot];
-      v8 = [v3 resourceWithError:0];
+      error = [(TKTokenDriverContext *)self driver];
+      keepAliveResourceSlot = [error keepAliveResourceSlot];
+      v8 = [keepAliveResourceSlot resourceWithError:0];
     }
 
-    v9 = [(TKTokenDriverContext *)self driver];
-    [v9 setKeepAlive:v8];
+    driver2 = [(TKTokenDriverContext *)self driver];
+    [driver2 setKeepAlive:v8];
 
     if (!initialKeepAlive)
     {
@@ -280,19 +280,19 @@ SecTaskRef __47__TKTokenDriverContext__setupWithDriver_error___block_invoke()
       [TKTokenDriverContext startRequestWithError:];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:0];
     }
   }
 
-  return v6 != 0;
+  return driver != 0;
 }
 
-- (void)acquireTokenWithInstanceID:(id)a3 reply:(id)a4
+- (void)acquireTokenWithInstanceID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v17 = 0;
   v8 = [(TKTokenDriverContext *)self startRequestWithError:&v17];
   v9 = v17;
@@ -302,22 +302,22 @@ SecTaskRef __47__TKTokenDriverContext__setupWithDriver_error___block_invoke()
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v10, &state);
-    v11 = [(TKTokenDriverContext *)self driver];
+    driver = [(TKTokenDriverContext *)self driver];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__TKTokenDriverContext_acquireTokenWithInstanceID_reply___block_invoke;
     v12[3] = &unk_1E86B6EC0;
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
-    [v11 acquireTokenWithInstanceID:v13 reply:v12];
+    v13 = dCopy;
+    selfCopy = self;
+    v15 = replyCopy;
+    [driver acquireTokenWithInstanceID:v13 reply:v12];
 
     os_activity_scope_leave(&state);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(replyCopy + 2))(replyCopy, 0, v9);
   }
 }
 
@@ -352,9 +352,9 @@ void __76__TKTokenDriverContext_acquireTokenWithSlot_AID_proprietaryCardUsage_re
   [v11 setKeepAlive:0];
 }
 
-- (void)configureWithReply:(id)a3
+- (void)configureWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v12 = 0;
   v5 = [(TKTokenDriverContext *)self startRequestWithError:&v12];
   v6 = v12;
@@ -364,21 +364,21 @@ void __76__TKTokenDriverContext_acquireTokenWithSlot_AID_proprietaryCardUsage_re
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v7, &state);
-    v8 = [(TKTokenDriverContext *)self driver];
+    driver = [(TKTokenDriverContext *)self driver];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __43__TKTokenDriverContext_configureWithReply___block_invoke;
     v9[3] = &unk_1E86B6F10;
     v9[4] = self;
-    v10 = v4;
-    [v8 configureWithReply:v9];
+    v10 = replyCopy;
+    [driver configureWithReply:v9];
 
     os_activity_scope_leave(&state);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(replyCopy + 2))(replyCopy, 0, v6);
   }
 }
 
@@ -396,10 +396,10 @@ void __43__TKTokenDriverContext_configureWithReply___block_invoke(uint64_t a1, u
   [v6 setKeepAlive:0];
 }
 
-- (void)releaseTokenWithInstanceID:(id)a3 reply:(id)a4
+- (void)releaseTokenWithInstanceID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v14 = 0;
   v8 = [(TKTokenDriverContext *)self startRequestWithError:&v14];
   v9 = v14;
@@ -409,19 +409,19 @@ void __43__TKTokenDriverContext_configureWithReply___block_invoke(uint64_t a1, u
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v10, &state);
-    v11 = [(TKTokenDriverContext *)self driver];
-    [v11 releaseTokenWithInstanceID:v6];
+    driver = [(TKTokenDriverContext *)self driver];
+    [driver releaseTokenWithInstanceID:dCopy];
 
-    v7[2](v7);
-    v12 = [(TKTokenDriverContext *)self driver];
-    [v12 setKeepAlive:0];
+    replyCopy[2](replyCopy);
+    driver2 = [(TKTokenDriverContext *)self driver];
+    [driver2 setKeepAlive:0];
 
     os_activity_scope_leave(&state);
   }
 
   else
   {
-    v7[2](v7);
+    replyCopy[2](replyCopy);
   }
 }
 

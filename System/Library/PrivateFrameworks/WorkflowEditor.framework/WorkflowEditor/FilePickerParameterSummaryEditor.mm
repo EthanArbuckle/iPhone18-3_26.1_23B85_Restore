@@ -1,70 +1,70 @@
 @interface FilePickerParameterSummaryEditor
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
-- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)a3;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
+- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)anchor;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation FilePickerParameterSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_27452BE44(v8, v7);
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_27452BE44(selfCopy, anchorCopy);
 }
 
-- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)a3
+- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = self;
-  sub_27452BEC0(v4);
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_27452BEC0(anchorCopy);
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_2745EA34C(&unk_274656ED8, v5);
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = self;
-  sub_27452D1F0(v4);
+  cancelledCopy = cancelled;
+  selfCopy = self;
+  sub_27452D1F0(cancelledCopy);
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_274637E2C();
   v6 = sub_27463B81C();
-  v7 = a3;
-  v8 = self;
-  sub_27452D308(v7, v6);
+  pickerCopy = picker;
+  selfCopy = self;
+  sub_27452D308(pickerCopy, v6);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_27452D490();
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_27452D500(v8, v7);
+  controllerCopy = controller;
+  collectionCopy = collection;
+  selfCopy = self;
+  v9 = sub_27452D500(selfCopy, collectionCopy);
 
   return v9;
 }

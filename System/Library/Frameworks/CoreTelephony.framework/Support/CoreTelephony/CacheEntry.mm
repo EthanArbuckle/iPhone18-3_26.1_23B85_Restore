@@ -1,38 +1,38 @@
 @interface CacheEntry
 - (id)description;
-- (id)init:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)init:(id)init;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CacheEntry
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v9.receiver = self;
   v9.super_class = CacheEntry;
   v6 = [(CacheEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nsManagedObjectId, a3);
+    objc_storeStrong(&v6->_nsManagedObjectId, init);
     v7[2] = CFAbsoluteTimeGetCurrent();
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(CacheEntry *)self lastAccess];
   v6 = v5;
-  [v4 lastAccess];
+  [compareCopy lastAccess];
   if (v6 >= v7)
   {
     [(CacheEntry *)self lastAccess];
     v10 = v9;
-    [v4 lastAccess];
+    [compareCopy lastAccess];
     v8 = v10 > v11;
   }
 

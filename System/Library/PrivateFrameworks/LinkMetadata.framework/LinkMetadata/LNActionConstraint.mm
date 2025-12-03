@@ -1,33 +1,33 @@
 @interface LNActionConstraint
-- (LNActionConstraint)initWithCoder:(id)a3;
-- (LNActionConstraint)initWithRequirement:(id)a3 condition:(id)a4;
-- (LNActionConstraint)initWithRequirement:(id)a3 condition:(id)a4 behavior:(int64_t)a5 message:(id)a6;
+- (LNActionConstraint)initWithCoder:(id)coder;
+- (LNActionConstraint)initWithRequirement:(id)requirement condition:(id)condition;
+- (LNActionConstraint)initWithRequirement:(id)requirement condition:(id)condition behavior:(int64_t)behavior message:(id)message;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionConstraint
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionConstraint *)self requirement];
-  v6 = [v5 predicateFormat];
-  [v4 encodeObject:v6 forKey:@"requirement"];
+  coderCopy = coder;
+  requirement = [(LNActionConstraint *)self requirement];
+  predicateFormat = [requirement predicateFormat];
+  [coderCopy encodeObject:predicateFormat forKey:@"requirement"];
 
-  v7 = [(LNActionConstraint *)self condition];
-  v8 = [v7 predicateFormat];
-  [v4 encodeObject:v8 forKey:@"condition"];
+  condition = [(LNActionConstraint *)self condition];
+  predicateFormat2 = [condition predicateFormat];
+  [coderCopy encodeObject:predicateFormat2 forKey:@"condition"];
 
-  [v4 encodeInteger:-[LNActionConstraint behavior](self forKey:{"behavior"), @"behavior"}];
-  v9 = [(LNActionConstraint *)self message];
-  [v4 encodeObject:v9 forKey:@"message"];
+  [coderCopy encodeInteger:-[LNActionConstraint behavior](self forKey:{"behavior"), @"behavior"}];
+  message = [(LNActionConstraint *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 }
 
-- (LNActionConstraint)initWithCoder:(id)a3
+- (LNActionConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requirement"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requirement"];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AE18] predicateWithFormat:v5];
@@ -38,7 +38,7 @@
     v6 = 0;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"condition"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"condition"];
   if (v7)
   {
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:v7];
@@ -49,8 +49,8 @@
     v8 = 0;
   }
 
-  v9 = [v4 decodeIntegerForKey:@"behavior"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+  v9 = [coderCopy decodeIntegerForKey:@"behavior"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
   v11 = [(LNActionConstraint *)self initWithRequirement:v6 condition:v8 behavior:v9 message:v10];
 
   return v11;
@@ -58,63 +58,63 @@
 
 - (id)description
 {
-  v3 = [(LNActionConstraint *)self behavior];
+  behavior = [(LNActionConstraint *)self behavior];
   v4 = @"available";
-  if (v3 == 1)
+  if (behavior == 1)
   {
     v4 = @"enable";
   }
 
   v5 = v4;
-  v6 = [(LNActionConstraint *)self condition];
+  condition = [(LNActionConstraint *)self condition];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(LNActionConstraint *)self requirement];
-  v9 = v8;
-  if (v6)
+  requirement = [(LNActionConstraint *)self requirement];
+  v9 = requirement;
+  if (condition)
   {
-    v10 = [(LNActionConstraint *)self condition];
-    v11 = [v7 stringWithFormat:@"<%@ if %@ when %@>", v5, v9, v10];
+    condition2 = [(LNActionConstraint *)self condition];
+    v11 = [v7 stringWithFormat:@"<%@ if %@ when %@>", v5, v9, condition2];
 
-    v5 = v10;
+    v5 = condition2;
   }
 
   else
   {
-    v11 = [v7 stringWithFormat:@"<%@ if %@>", v5, v8];
+    v11 = [v7 stringWithFormat:@"<%@ if %@>", v5, requirement];
   }
 
   return v11;
 }
 
-- (LNActionConstraint)initWithRequirement:(id)a3 condition:(id)a4 behavior:(int64_t)a5 message:(id)a6
+- (LNActionConstraint)initWithRequirement:(id)requirement condition:(id)condition behavior:(int64_t)behavior message:(id)message
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (!v12)
+  requirementCopy = requirement;
+  conditionCopy = condition;
+  messageCopy = message;
+  if (!requirementCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"requirement"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"requirement"}];
   }
 
-  if (a5 == 1 && !v14)
+  if (behavior == 1 && !messageCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"!(behavior == LN_TYPE(ConstraintBehaviorDisable) && !message)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"!(behavior == LN_TYPE(ConstraintBehaviorDisable) && !message)"}];
     goto LABEL_15;
   }
 
-  if (v13 && a5 == 9999)
+  if (conditionCopy && behavior == 9999)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"!(behavior == LN_TYPE(ConstraintBehaviorUnavailable) && condition)"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"!(behavior == LN_TYPE(ConstraintBehaviorUnavailable) && condition)"}];
   }
 
-  if (a5 == 9999 && v14)
+  if (behavior == 9999 && messageCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"!(behavior == LN_TYPE(ConstraintBehaviorUnavailable) && message)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNActionConstraint.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"!(behavior == LN_TYPE(ConstraintBehaviorUnavailable) && message)"}];
 LABEL_15:
   }
 
@@ -124,22 +124,22 @@ LABEL_15:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_requirement, a3);
-    objc_storeStrong(&v16->_condition, a4);
-    v16->_behavior = a5;
-    objc_storeStrong(&v16->_message, a6);
+    objc_storeStrong(&v15->_requirement, requirement);
+    objc_storeStrong(&v16->_condition, condition);
+    v16->_behavior = behavior;
+    objc_storeStrong(&v16->_message, message);
     v17 = v16;
   }
 
   return v16;
 }
 
-- (LNActionConstraint)initWithRequirement:(id)a3 condition:(id)a4
+- (LNActionConstraint)initWithRequirement:(id)requirement condition:(id)condition
 {
-  v6 = a4;
-  v7 = a3;
+  conditionCopy = condition;
+  requirementCopy = requirement;
   v8 = [[LNStaticDeferredLocalizedString alloc] initWithKey:@"Something went wrong." table:0 bundleURL:0];
-  v9 = [(LNActionConstraint *)self initWithRequirement:v7 condition:v6 behavior:1 message:v8];
+  v9 = [(LNActionConstraint *)self initWithRequirement:requirementCopy condition:conditionCopy behavior:1 message:v8];
 
   return v9;
 }

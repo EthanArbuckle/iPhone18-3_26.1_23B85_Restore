@@ -21,17 +21,17 @@
 {
   if (([(UITextField_QSExtrasAccessibility *)self isSecureTextEntry]& 1) != 0)
   {
-    v3 = 0;
+    _accessibilityQuickSpeakContent = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UITextField_QSExtrasAccessibility;
-    v3 = [(UITextField_QSExtrasAccessibility *)&v5 _accessibilityQuickSpeakContent];
+    _accessibilityQuickSpeakContent = [(UITextField_QSExtrasAccessibility *)&v5 _accessibilityQuickSpeakContent];
   }
 
-  return v3;
+  return _accessibilityQuickSpeakContent;
 }
 
 @end

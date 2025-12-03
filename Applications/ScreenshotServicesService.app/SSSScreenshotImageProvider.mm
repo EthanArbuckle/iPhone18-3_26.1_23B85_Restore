@@ -1,35 +1,35 @@
 @interface SSSScreenshotImageProvider
-- (BOOL)requestOutputImageDataInTransition:(BOOL)a3 imageType:(id)a4 forSaving:(id)a5;
+- (BOOL)requestOutputImageDataInTransition:(BOOL)transition imageType:(id)type forSaving:(id)saving;
 - (SSSScreenshot)screenshot;
-- (SSSScreenshotImageProvider)initWithScreenshot:(id)a3;
+- (SSSScreenshotImageProvider)initWithScreenshot:(id)screenshot;
 - (id)_outputImageOnCurrentUneditedImage;
 - (id)pdfDocument;
 - (id)requestCGImageBackedUneditedImageForUIBlocking;
 - (id)requestOutputImageForSavingBlocking;
 - (id)requestOutputImageForUIBlocking;
 - (id)requestUneditedImageForUIBlocking;
-- (unint64_t)dispatchTimeForInTransition:(BOOL)a3;
-- (void)_loadUneditedImageIfNecessaryWithCompletionBlock:(id)a3;
+- (unint64_t)dispatchTimeForInTransition:(BOOL)transition;
+- (void)_loadUneditedImageIfNecessaryWithCompletionBlock:(id)block;
 - (void)_resumeHighQualityQueueIfNecessary;
 - (void)dealloc;
-- (void)processImageIdentifier:(id)a3;
-- (void)requestCGImageBackedUneditedImageForUI:(id)a3;
-- (void)requestOutputImageForUI:(id)a3;
-- (void)requestOutputImageInTransition:(BOOL)a3 forSaving:(id)a4;
-- (void)requestUneditedImageForUI:(id)a3;
-- (void)scheduleDeletionBlock:(id)a3;
-- (void)setHighQualityQueueIsValid:(BOOL)a3;
+- (void)processImageIdentifier:(id)identifier;
+- (void)requestCGImageBackedUneditedImageForUI:(id)i;
+- (void)requestOutputImageForUI:(id)i;
+- (void)requestOutputImageInTransition:(BOOL)transition forSaving:(id)saving;
+- (void)requestUneditedImageForUI:(id)i;
+- (void)scheduleDeletionBlock:(id)block;
+- (void)setHighQualityQueueIsValid:(BOOL)valid;
 @end
 
 @implementation SSSScreenshotImageProvider
 
-- (SSSScreenshotImageProvider)initWithScreenshot:(id)a3
+- (SSSScreenshotImageProvider)initWithScreenshot:(id)screenshot
 {
   v18.receiver = self;
   v18.super_class = SSSScreenshotImageProvider;
-  v3 = a3;
+  screenshotCopy = screenshot;
   v4 = [(SSSScreenshotImageProvider *)&v18 init];
-  objc_storeWeak(v4 + 2, v3);
+  objc_storeWeak(v4 + 2, screenshotCopy);
 
   *(v4 + 2) = 0;
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -44,34 +44,34 @@
   *(v4 + 13) = 1;
   dispatch_set_target_queue(*(v4 + 4), *(v4 + 3));
   dispatch_suspend(*(v4 + 4));
-  v10 = [v4 screenshot];
-  v11 = [v10 modelModificationInfo];
-  v12 = [v11 copy];
+  screenshot = [v4 screenshot];
+  modelModificationInfo = [screenshot modelModificationInfo];
+  v12 = [modelModificationInfo copy];
   v13 = *(v4 + 7);
   *(v4 + 7) = v12;
 
-  v14 = [v4 screenshot];
-  v15 = [v14 backingImage];
+  screenshot2 = [v4 screenshot];
+  backingImage = [screenshot2 backingImage];
   v16 = *(v4 + 5);
-  *(v4 + 5) = v15;
+  *(v4 + 5) = backingImage;
 
   return v4;
 }
 
-- (void)setHighQualityQueueIsValid:(BOOL)a3
+- (void)setHighQualityQueueIsValid:(BOOL)valid
 {
-  if (self->_highQualityQueueIsValid != a3)
+  if (self->_highQualityQueueIsValid != valid)
   {
-    v3 = a3;
+    validCopy = valid;
     v5 = os_log_create("com.apple.screenshotservices", "ImageProvider");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = validCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setHighQualityQueueIsValid: %{BOOL}d", v6, 8u);
     }
 
-    self->_highQualityQueueIsValid = v3;
+    self->_highQualityQueueIsValid = validCopy;
   }
 }
 
@@ -81,7 +81,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "dealloc: %p", buf, 0xCu);
   }
 
@@ -108,25 +108,25 @@
   if (![(SSSScreenshotImageProvider *)self highQualityQueueHasBeenResumed])
   {
     [(SSSScreenshotImageProvider *)self setHighQualityQueueHasBeenResumed:1];
-    v3 = [(SSSScreenshotImageProvider *)self highQualityImageQueue];
-    dispatch_resume(v3);
+    highQualityImageQueue = [(SSSScreenshotImageProvider *)self highQualityImageQueue];
+    dispatch_resume(highQualityImageQueue);
   }
 }
 
 - (id)_outputImageOnCurrentUneditedImage
 {
   os_unfair_lock_lock(&self->_outputImageLock);
-  v3 = [(SSSScreenshotImageProvider *)self screenshot];
-  v4 = v3;
-  if (v3)
+  screenshot = [(SSSScreenshotImageProvider *)self screenshot];
+  v4 = screenshot;
+  if (screenshot)
   {
     cachedModificationInfo = self->_cachedModificationInfo;
-    v6 = [v3 modelModificationInfo];
-    if ([(SSSScreenshotModificationInfo *)cachedModificationInfo isEqual:v6])
+    modelModificationInfo = [screenshot modelModificationInfo];
+    if ([(SSSScreenshotModificationInfo *)cachedModificationInfo isEqual:modelModificationInfo])
     {
-      v7 = [(SSSScreenshotImageProvider *)self hasChangedBackingImage];
+      hasChangedBackingImage = [(SSSScreenshotImageProvider *)self hasChangedBackingImage];
 
-      if ((v7 & 1) == 0)
+      if ((hasChangedBackingImage & 1) == 0)
       {
         goto LABEL_12;
       }
@@ -152,8 +152,8 @@
     v8 = [UIImage _sss_imageFromScreenshot:v4];
     [(SSSScreenshotImageProvider *)self setCachedOutputImage:v8];
 
-    v9 = [v4 modelModificationInfo];
-    v10 = [v9 copy];
+    modelModificationInfo2 = [v4 modelModificationInfo];
+    v10 = [modelModificationInfo2 copy];
     [(SSSScreenshotImageProvider *)self setCachedModificationInfo:v10];
   }
 
@@ -165,14 +165,14 @@ LABEL_12:
   return cachedOutputImage;
 }
 
-- (unint64_t)dispatchTimeForInTransition:(BOOL)a3
+- (unint64_t)dispatchTimeForInTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v4 = +[SSSSpringAnimationParameters scaleAnimationParameters];
   [v4 duration];
   v6 = v5;
 
-  if (!v3)
+  if (!transitionCopy)
   {
     return 0;
   }
@@ -182,79 +182,79 @@ LABEL_12:
   return dispatch_time(0, v7);
 }
 
-- (void)requestOutputImageInTransition:(BOOL)a3 forSaving:(id)a4
+- (void)requestOutputImageInTransition:(BOOL)transition forSaving:(id)saving
 {
-  v4 = a3;
-  v6 = a4;
+  transitionCopy = transition;
+  savingCopy = saving;
   objc_initWeak(&location, self);
-  v7 = [(SSSScreenshotImageProvider *)self screenshot];
-  v8 = [v7 imageGenerator];
+  screenshot = [(SSSScreenshotImageProvider *)self screenshot];
+  imageGenerator = [screenshot imageGenerator];
 
-  v9 = [(SSSScreenshotImageProvider *)self dispatchTimeForInTransition:v4];
+  v9 = [(SSSScreenshotImageProvider *)self dispatchTimeForInTransition:transitionCopy];
   highQualityImageQueue = self->_highQualityImageQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002BB64;
   v13[3] = &unk_1000BA320;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v6;
-  v11 = v6;
-  v12 = v8;
+  v14 = imageGenerator;
+  v15 = savingCopy;
+  v11 = savingCopy;
+  v12 = imageGenerator;
   dispatch_after(v9, highQualityImageQueue, v13);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)requestOutputImageDataInTransition:(BOOL)a3 imageType:(id)a4 forSaving:(id)a5
+- (BOOL)requestOutputImageDataInTransition:(BOOL)transition imageType:(id)type forSaving:(id)saving
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SSSScreenshotImageProvider *)self screenshot];
-  v11 = [v10 imageGenerator];
-  if (v11)
+  transitionCopy = transition;
+  typeCopy = type;
+  savingCopy = saving;
+  screenshot = [(SSSScreenshotImageProvider *)self screenshot];
+  imageGenerator = [screenshot imageGenerator];
+  if (imageGenerator)
   {
     objc_initWeak(&location, self);
-    v12 = [v8 isEqual:UTTypeHEIC];
-    v13 = [(SSSScreenshotImageProvider *)self dispatchTimeForInTransition:v6];
+    v12 = [typeCopy isEqual:UTTypeHEIC];
+    v13 = [(SSSScreenshotImageProvider *)self dispatchTimeForInTransition:transitionCopy];
     highQualityImageQueue = self->_highQualityImageQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002BE2C;
     block[3] = &unk_1000BAB60;
     objc_copyWeak(&v21, &location);
-    v17 = v11;
-    v18 = v10;
+    v17 = imageGenerator;
+    v18 = screenshot;
     v22 = v12;
-    v19 = v8;
-    v20 = v9;
+    v19 = typeCopy;
+    v20 = savingCopy;
     dispatch_after(v13, highQualityImageQueue, block);
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  return v11 != 0;
+  return imageGenerator != 0;
 }
 
-- (void)requestOutputImageForUI:(id)a3
+- (void)requestOutputImageForUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   objc_initWeak(&location, self);
-  v5 = [(SSSScreenshotImageProvider *)self screenshot];
-  v6 = [v5 imageGenerator];
+  screenshot = [(SSSScreenshotImageProvider *)self screenshot];
+  imageGenerator = [screenshot imageGenerator];
 
   potentiallyLowQualityImageQueue = self->_potentiallyLowQualityImageQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002BFF0;
   v10[3] = &unk_1000BAB88;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
+  v11 = imageGenerator;
+  v12 = iCopy;
+  v8 = iCopy;
+  v9 = imageGenerator;
   objc_copyWeak(&v13, &location);
   dispatch_async(potentiallyLowQualityImageQueue, v10);
   objc_destroyWeak(&v13);
@@ -310,17 +310,17 @@ LABEL_12:
   return v4;
 }
 
-- (void)requestUneditedImageForUI:(id)a3
+- (void)requestUneditedImageForUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   objc_initWeak(&location, self);
   potentiallyLowQualityImageQueue = self->_potentiallyLowQualityImageQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002C480;
   block[3] = &unk_1000BABD8;
-  v8 = v4;
-  v6 = v4;
+  v8 = iCopy;
+  v6 = iCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(potentiallyLowQualityImageQueue, block);
   objc_destroyWeak(&v9);
@@ -352,20 +352,20 @@ LABEL_12:
   return v4;
 }
 
-- (void)requestCGImageBackedUneditedImageForUI:(id)a3
+- (void)requestCGImageBackedUneditedImageForUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   objc_initWeak(&location, self);
-  v5 = [(SSSScreenshotImageProvider *)self potentiallyLowQualityImageQueue];
+  potentiallyLowQualityImageQueue = [(SSSScreenshotImageProvider *)self potentiallyLowQualityImageQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002C788;
   v7[3] = &unk_1000BAC00;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = iCopy;
+  v6 = iCopy;
+  dispatch_async(potentiallyLowQualityImageQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -395,16 +395,16 @@ LABEL_12:
   return v4;
 }
 
-- (void)_loadUneditedImageIfNecessaryWithCompletionBlock:(id)a3
+- (void)_loadUneditedImageIfNecessaryWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_hasOriginalUneditedImage)
   {
     objc_initWeak(&location, self);
     v5 = dispatch_semaphore_create(0);
     v6 = +[SSScreenshotAssetManager sharedAssetManager];
-    v7 = [(SSSScreenshotImageProvider *)self screenshot];
-    v8 = [v7 identifier];
+    screenshot = [(SSSScreenshotImageProvider *)self screenshot];
+    identifier = [screenshot identifier];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10002CBE0;
@@ -412,7 +412,7 @@ LABEL_12:
     objc_copyWeak(&v12, &location);
     v9 = v5;
     v11 = v9;
-    [v6 imageWithPreviouslyRegisteredIdentifier:v8 withAccessBlock:v10];
+    [v6 imageWithPreviouslyRegisteredIdentifier:identifier withAccessBlock:v10];
 
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     objc_destroyWeak(&v12);
@@ -420,23 +420,23 @@ LABEL_12:
     objc_destroyWeak(&location);
   }
 
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 }
 
-- (void)processImageIdentifier:(id)a3
+- (void)processImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotImageProvider *)self screenshot];
-  [v5 setIdentifier:v4];
+  identifierCopy = identifier;
+  screenshot = [(SSSScreenshotImageProvider *)self screenshot];
+  [screenshot setIdentifier:identifierCopy];
 
   objc_initWeak(&location, self);
-  v6 = [(SSSScreenshotImageProvider *)self potentiallyLowQualityImageQueue];
+  potentiallyLowQualityImageQueue = [(SSSScreenshotImageProvider *)self potentiallyLowQualityImageQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002CDCC;
   v7[3] = &unk_1000BA2F8;
   objc_copyWeak(&v8, &location);
-  dispatch_async(v6, v7);
+  dispatch_async(potentiallyLowQualityImageQueue, v7);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -444,11 +444,11 @@ LABEL_12:
 
 - (id)pdfDocument
 {
-  v2 = [(SSSScreenshotImageProvider *)self requestOutputImageForSavingBlocking];
-  v3 = [[PDFPage alloc] initWithImage:v2];
-  [v2 size];
+  requestOutputImageForSavingBlocking = [(SSSScreenshotImageProvider *)self requestOutputImageForSavingBlocking];
+  v3 = [[PDFPage alloc] initWithImage:requestOutputImageForSavingBlocking];
+  [requestOutputImageForSavingBlocking size];
   v5 = v4;
-  [v2 size];
+  [requestOutputImageForSavingBlocking size];
   [v3 setBounds:1 forBox:{0.0, 0.0, v5, v6}];
   v7 = objc_alloc_init(PDFDocument);
   [v7 insertPage:v3 atIndex:0];
@@ -456,29 +456,29 @@ LABEL_12:
   return v7;
 }
 
-- (void)scheduleDeletionBlock:(id)a3
+- (void)scheduleDeletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotImageProvider *)self highQualityQueueIsValid];
+  blockCopy = block;
+  highQualityQueueIsValid = [(SSSScreenshotImageProvider *)self highQualityQueueIsValid];
   v6 = os_log_create("com.apple.screenshotservices", "ImageProvider");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
-    v14 = v5;
+    v14 = highQualityQueueIsValid;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%p schedule deletion block, highQualityQueueIsValid: %{BOOL}d", buf, 0x12u);
   }
 
-  if (v5)
+  if (highQualityQueueIsValid)
   {
-    v7 = [(SSSScreenshotImageProvider *)self highQualityImageQueue];
+    highQualityImageQueue = [(SSSScreenshotImageProvider *)self highQualityImageQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002D07C;
     block[3] = &unk_1000BA998;
-    v10 = v4;
-    dispatch_async(v7, block);
+    v10 = blockCopy;
+    dispatch_async(highQualityImageQueue, block);
   }
 
   else
@@ -490,7 +490,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "highQualityImageQueue is invalid - execute deletion block immediately!", buf, 2u);
     }
 
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 

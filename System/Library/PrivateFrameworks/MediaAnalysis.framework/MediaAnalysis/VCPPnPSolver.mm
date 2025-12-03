@@ -1,47 +1,47 @@
 @interface VCPPnPSolver
-- (VCPPnPSolver)initWithFocalLengthInPixels:(float)a3 principalPoint:(CGPoint)a4 cameraTowardsPositiveZ:(BOOL)a5;
-- (float)computeProjectionError:(float)a3[3][3] T:(float)a4[3];
+- (VCPPnPSolver)initWithFocalLengthInPixels:(float)pixels principalPoint:(CGPoint)point cameraTowardsPositiveZ:(BOOL)z;
+- (float)computeProjectionError:(float)error[3][3] T:(float)t[3];
 - (int)computeBarycentricCoordinates;
-- (int)computeL6x10:(void *)a3 L6x10:(void *)a4;
-- (int)computeRT:(float)a3[3][3] T:(float)a4[3];
-- (int)computeSVDVt:(void *)a3 Vt:(void *)a4;
-- (int)configureGaussNewton:(void *)a3 R6x1:(void *)a4 betas:(float)a5[4] jacobian:(void *)a6 residual:(void *)a7;
+- (int)computeL6x10:(void *)l6x10 L6x10:(void *)a4;
+- (int)computeRT:(float)t[3][3] T:(float)a4[3];
+- (int)computeSVDVt:(void *)vt Vt:(void *)a4;
+- (int)configureGaussNewton:(void *)newton R6x1:(void *)r6x1 betas:(float)betas[4] jacobian:(void *)jacobian residual:(void *)residual;
 - (int)correctSigns;
-- (int)estimateBetasN1:(void *)a3 R6x1:(void *)a4 betas:(float *)a5;
-- (int)estimateBetasN2:(void *)a3 R6x1:(void *)a4 betas:(float *)a5;
-- (int)estimateBetasN3:(void *)a3 R6x1:(void *)a4 betas:(float *)a5;
-- (int)estimateExtrinsicsWith:(const float *)a3 andPoints3D:(const float *)a4 andNumPoints:(int)a5;
-- (int)estimatePose:(float *)a3;
-- (int)estimateRT:(void *)a3 betas:(const float *)a4 R:(float)a5[3][3] T:(float)a6[3] projectionError:(float *)a7;
+- (int)estimateBetasN1:(void *)n1 R6x1:(void *)r6x1 betas:(float *)betas;
+- (int)estimateBetasN2:(void *)n2 R6x1:(void *)r6x1 betas:(float *)betas;
+- (int)estimateBetasN3:(void *)n3 R6x1:(void *)r6x1 betas:(float *)betas;
+- (int)estimateExtrinsicsWith:(const float *)with andPoints3D:(const float *)d andNumPoints:(int)points;
+- (int)estimatePose:(float *)pose;
+- (int)estimateRT:(void *)t betas:(const float *)betas R:(float)r[3][3] T:(float)a6[3] projectionError:(float *)error;
 - (int)getControlPoints;
-- (int)optimizeBetas:(void *)a3 R6x1:(void *)a4 betas:(float)a5[4];
-- (void)computeControlPointsCamera:(const float *)a3 Vt:(void *)a4;
+- (int)optimizeBetas:(void *)betas R6x1:(void *)r6x1 betas:(float)a5[4];
+- (void)computeControlPointsCamera:(const float *)camera Vt:(void *)vt;
 - (void)computePoints3DCamera;
-- (void)computeR6x1:(void *)a3;
+- (void)computeR6x1:(void *)r6x1;
 - (void)dealloc;
-- (void)setPose:(__n128)a3;
+- (void)setPose:(__n128)pose;
 @end
 
 @implementation VCPPnPSolver
 
-- (VCPPnPSolver)initWithFocalLengthInPixels:(float)a3 principalPoint:(CGPoint)a4 cameraTowardsPositiveZ:(BOOL)a5
+- (VCPPnPSolver)initWithFocalLengthInPixels:(float)pixels principalPoint:(CGPoint)point cameraTowardsPositiveZ:(BOOL)z
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  zCopy = z;
+  y = point.y;
+  x = point.x;
   v13.receiver = self;
   v13.super_class = VCPPnPSolver;
   result = [(VCPPnPSolver *)&v13 init];
   if (result)
   {
-    result->_fu = a3;
-    result->_fv = a3;
+    result->_fu = pixels;
+    result->_fv = pixels;
     v10 = x;
     v11 = y;
     result->_uc = v10;
     result->_vc = v11;
     v12 = -1.0;
-    if (v5)
+    if (zCopy)
     {
       v12 = 1.0;
     }
@@ -301,16 +301,16 @@ LABEL_29:
   return v22;
 }
 
-- (void)computeControlPointsCamera:(const float *)a3 Vt:(void *)a4
+- (void)computeControlPointsCamera:(const float *)camera Vt:(void *)vt
 {
   v4 = 0;
-  v5 = *(a4 + 4);
+  v5 = *(vt + 4);
   *&self->_controlPointsCamera[0][0] = 0u;
   controlPointsCamera = self->_controlPointsCamera;
   *&(*controlPointsCamera)[4] = 0u;
   *&(*controlPointsCamera)[8] = 0u;
-  v7 = *(a4 + 4);
-  v8 = *a4;
+  v7 = *(vt + 4);
+  v8 = *vt;
   do
   {
     v9 = 0;
@@ -322,7 +322,7 @@ LABEL_29:
       v13 = v9;
       do
       {
-        (*v11)[v12] = (*v11)[v12] + (a3[v4] * *(v8 + 4 * (v5 + ~v4) + 4 * v13));
+        (*v11)[v12] = (*v11)[v12] + (camera[v4] * *(v8 + 4 * (v5 + ~v4) + 4 * v13));
         v13 += v7;
         ++v12;
       }
@@ -383,11 +383,11 @@ LABEL_29:
   }
 }
 
-- (int)computeSVDVt:(void *)a3 Vt:(void *)a4
+- (int)computeSVDVt:(void *)vt Vt:(void *)a4
 {
-  v7 = a3;
-  v8[0] = &v7;
-  v8[1] = a3;
+  vtCopy = vt;
+  v8[0] = &vtCopy;
+  v8[1] = vt;
   cva::SVD<cva::Matrix<float,0u,0u,false>,true>::SVD<cva::MatrixMultExpr<cva::MatrixTransposeExpr<cva::Matrix<float,0u,0u,false>>,cva::Matrix<float,0u,0u,false>>>(&v9, v8, 3, 0);
   if (v11)
   {
@@ -406,13 +406,13 @@ LABEL_29:
   return v5;
 }
 
-- (int)computeL6x10:(void *)a3 L6x10:(void *)a4
+- (int)computeL6x10:(void *)l6x10 L6x10:(void *)a4
 {
   v4 = 0;
   v59[18] = *MEMORY[0x1E69E9840];
   v5 = &v58;
-  v6 = *(a3 + 4);
-  v7 = *a3;
+  v6 = *(l6x10 + 4);
+  v7 = *l6x10;
   v8 = 3 * v6;
   do
   {
@@ -516,13 +516,13 @@ LABEL_29:
   return 0;
 }
 
-- (void)computeR6x1:(void *)a3
+- (void)computeR6x1:(void *)r6x1
 {
   v3 = self->_controlPointsWorld[0][0] - self->_controlPointsWorld[1][0];
   v4 = self->_controlPointsWorld[0][1] - self->_controlPointsWorld[1][1];
   v5 = (v4 * v4) + (v3 * v3);
   v6 = self->_controlPointsWorld[0][2] - self->_controlPointsWorld[1][2];
-  v7 = *a3;
+  v7 = *r6x1;
   *v7 = v5 + (v6 * v6);
   v8 = self->_controlPointsWorld[0][0] - self->_controlPointsWorld[2][0];
   v9 = self->_controlPointsWorld[0][1] - self->_controlPointsWorld[2][1];
@@ -549,7 +549,7 @@ LABEL_29:
   v7[5] = (((self->_controlPointsWorld[2][1] - self->_controlPointsWorld[3][1]) * (self->_controlPointsWorld[2][1] - self->_controlPointsWorld[3][1])) + (v24 * v24)) + (v25 * v25);
 }
 
-- (int)estimateBetasN1:(void *)a3 R6x1:(void *)a4 betas:(float *)a5
+- (int)estimateBetasN1:(void *)n1 R6x1:(void *)r6x1 betas:(float *)betas
 {
   v36 = 0u;
   v33 = 0;
@@ -559,12 +559,12 @@ LABEL_29:
   v35 = 0x100000004;
   cva::MatrixData<float,0ul,0ul,false>::reserve(&v33, 4uLL);
   v8 = 0;
-  v9 = *a3;
-  v10 = *(a3 + 4);
+  v9 = *n1;
+  v10 = *(n1 + 4);
   v11 = v36;
-  v12 = *a3 + 4 * (6 * v10);
-  v13 = *a3 + 4 * (3 * v10);
-  v14 = *a3 + 4 * v10;
+  v12 = *n1 + 4 * (6 * v10);
+  v13 = *n1 + 4 * (3 * v10);
+  v14 = *n1 + 4 * v10;
   v15 = v36 + 4 * (3 * v37);
   v16 = v36 + 4 * (2 * v37);
   v17 = v36 + 4 * v37;
@@ -586,19 +586,19 @@ LABEL_29:
   }
 
   v28 = 925353388;
-  v29 = a4;
-  if (__PAIR64__(*(a4 + 5), v31) != v35)
+  r6x1Copy = r6x1;
+  if (__PAIR64__(*(r6x1 + 5), v31) != v35)
   {
-    if (*a4 == v33)
+    if (*r6x1 == v33)
     {
-      v20 = (4 * *(a4 + 5) * v31 + 31) & 0x7FFFFFFE0;
+      v20 = (4 * *(r6x1 + 5) * v31 + 31) & 0x7FFFFFFE0;
       v38 = 0;
       v39 = v20 >> 2;
       memptr = 0;
       malloc_type_posix_memalign(&memptr, 0x20uLL, v20, 0xE1AC2527uLL);
       v38 = memptr;
-      v40 = __PAIR64__(v29[5], v31);
-      cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v30, &v38, v29, &v28);
+      v40 = __PAIR64__(r6x1Copy[5], v31);
+      cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v30, &v38, r6x1Copy, &v28);
       v21 = v33;
       v22 = v34;
       v33 = v38;
@@ -611,36 +611,36 @@ LABEL_29:
       goto LABEL_11;
     }
 
-    v19 = *(a4 + 5);
+    v19 = *(r6x1 + 5);
     v35 = __PAIR64__(v19, v31);
     cva::MatrixData<float,0ul,0ul,false>::reserve(&v33, v19 * v31);
-    a4 = v29;
+    r6x1 = r6x1Copy;
   }
 
-  cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v30, &v33, a4, &v28);
+  cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v30, &v33, r6x1, &v28);
 LABEL_11:
   v23 = v33;
   v24 = *v33;
   if (*v33 >= 0.0)
   {
     v25 = sqrtf(v24);
-    *a5 = v25;
-    a5[1] = v23[1] / v25;
-    a5[2] = v23[2] / v25;
+    *betas = v25;
+    betas[1] = v23[1] / v25;
+    betas[2] = v23[2] / v25;
     v26 = v23[3];
   }
 
   else
   {
     v25 = sqrtf(-v24);
-    *a5 = v25;
-    a5[1] = -v23[1] / v25;
-    a5[2] = -v23[2] / v25;
+    *betas = v25;
+    betas[1] = -v23[1] / v25;
+    betas[2] = -v23[2] / v25;
     v26 = -v23[3];
   }
 
   v18 = 0;
-  a5[3] = v26 / v25;
+  betas[3] = v26 / v25;
 LABEL_15:
   free(v30[6]);
   free(v30[3]);
@@ -650,7 +650,7 @@ LABEL_15:
   return v18;
 }
 
-- (int)estimateBetasN2:(void *)a3 R6x1:(void *)a4 betas:(float *)a5
+- (int)estimateBetasN2:(void *)n2 R6x1:(void *)r6x1 betas:(float *)betas
 {
   v37 = 0u;
   v34 = 0;
@@ -660,11 +660,11 @@ LABEL_15:
   v36 = 0x100000003;
   cva::MatrixData<float,0ul,0ul,false>::reserve(&v34, 3uLL);
   v8 = 0;
-  v9 = *a3;
-  v10 = *(a3 + 4);
+  v9 = *n2;
+  v10 = *(n2 + 4);
   v11 = v37;
-  v12 = *a3 + 4 * (2 * v10);
-  v13 = *a3 + 4 * v10;
+  v12 = *n2 + 4 * (2 * v10);
+  v13 = *n2 + 4 * v10;
   v14 = v37 + 4 * (2 * v38);
   v15 = v37 + 4 * v38;
   do
@@ -684,19 +684,19 @@ LABEL_15:
   }
 
   v29 = 925353388;
-  v30 = a4;
-  if (__PAIR64__(*(a4 + 5), v32) != v36)
+  r6x1Copy = r6x1;
+  if (__PAIR64__(*(r6x1 + 5), v32) != v36)
   {
-    if (*a4 == v34)
+    if (*r6x1 == v34)
     {
-      v18 = (4 * *(a4 + 5) * v32 + 31) & 0x7FFFFFFE0;
+      v18 = (4 * *(r6x1 + 5) * v32 + 31) & 0x7FFFFFFE0;
       v39 = 0;
       v40 = v18 >> 2;
       memptr = 0;
       malloc_type_posix_memalign(&memptr, 0x20uLL, v18, 0xE1AC2527uLL);
       v39 = memptr;
-      v41 = __PAIR64__(v30[5], v32);
-      cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v31, &v39, v30, &v29);
+      v41 = __PAIR64__(r6x1Copy[5], v32);
+      cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v31, &v39, r6x1Copy, &v29);
       v19 = v34;
       v20 = v35;
       v34 = v39;
@@ -709,20 +709,20 @@ LABEL_15:
       goto LABEL_11;
     }
 
-    v17 = *(a4 + 5);
+    v17 = *(r6x1 + 5);
     v36 = __PAIR64__(v17, v32);
     cva::MatrixData<float,0ul,0ul,false>::reserve(&v34, v17 * v32);
-    a4 = v30;
+    r6x1 = r6x1Copy;
   }
 
-  cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v31, &v34, a4, &v29);
+  cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v31, &v34, r6x1, &v29);
 LABEL_11:
   v21 = v34;
   v22 = *v34;
   if (*v34 >= 0.0)
   {
     v23 = sqrtf(v22);
-    *a5 = v23;
+    *betas = v23;
     v26 = v21[2];
     v25 = v26 > 0.0;
   }
@@ -730,7 +730,7 @@ LABEL_11:
   else
   {
     v23 = sqrtf(-v22);
-    *a5 = v23;
+    *betas = v23;
     v24 = v21[2];
     v25 = v24 < 0.0;
     v26 = -v24;
@@ -742,14 +742,14 @@ LABEL_11:
     v27 = 0.0;
   }
 
-  a5[1] = v27;
+  betas[1] = v27;
   if (v21[1] < 0.0)
   {
-    *a5 = -v23;
+    *betas = -v23;
   }
 
   v16 = 0;
-  *(a5 + 1) = 0;
+  *(betas + 1) = 0;
 LABEL_19:
   free(v31[6]);
   free(v31[3]);
@@ -759,7 +759,7 @@ LABEL_19:
   return v16;
 }
 
-- (int)estimateBetasN3:(void *)a3 R6x1:(void *)a4 betas:(float *)a5
+- (int)estimateBetasN3:(void *)n3 R6x1:(void *)r6x1 betas:(float *)betas
 {
   v41 = 0u;
   v38 = 0;
@@ -769,13 +769,13 @@ LABEL_19:
   v40 = 0x100000005;
   cva::MatrixData<float,0ul,0ul,false>::reserve(&v38, 5uLL);
   v8 = 0;
-  v9 = *(a3 + 4);
-  v10 = *a3;
+  v9 = *(n3 + 4);
+  v10 = *n3;
   v11 = v41;
-  v12 = *a3 + 4 * (4 * v9);
-  v13 = *a3 + 4 * (3 * v9);
-  v14 = *a3 + 4 * (2 * v9);
-  v15 = *a3 + 4 * v9;
+  v12 = *n3 + 4 * (4 * v9);
+  v13 = *n3 + 4 * (3 * v9);
+  v14 = *n3 + 4 * (2 * v9);
+  v15 = *n3 + 4 * v9;
   v16 = v41 + 4 * (4 * v42);
   v17 = v41 + 4 * (3 * v42);
   v18 = v41 + 4 * (2 * v42);
@@ -799,19 +799,19 @@ LABEL_19:
   }
 
   v33 = 925353388;
-  v34 = a4;
-  if (__PAIR64__(*(a4 + 5), v36) != v40)
+  r6x1Copy = r6x1;
+  if (__PAIR64__(*(r6x1 + 5), v36) != v40)
   {
-    if (*a4 == v38)
+    if (*r6x1 == v38)
     {
-      v22 = (4 * *(a4 + 5) * v36 + 31) & 0x7FFFFFFE0;
+      v22 = (4 * *(r6x1 + 5) * v36 + 31) & 0x7FFFFFFE0;
       v43 = 0;
       v44 = v22 >> 2;
       memptr = 0;
       malloc_type_posix_memalign(&memptr, 0x20uLL, v22, 0xE1AC2527uLL);
       v43 = memptr;
-      v45 = __PAIR64__(v34[5], v36);
-      cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v35, &v43, v34, &v33);
+      v45 = __PAIR64__(r6x1Copy[5], v36);
+      cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v35, &v43, r6x1Copy, &v33);
       v23 = v38;
       v24 = v39;
       v38 = v43;
@@ -824,20 +824,20 @@ LABEL_19:
       goto LABEL_11;
     }
 
-    v21 = *(a4 + 5);
+    v21 = *(r6x1 + 5);
     v40 = __PAIR64__(v21, v36);
     cva::MatrixData<float,0ul,0ul,false>::reserve(&v38, v21 * v36);
-    a4 = v34;
+    r6x1 = r6x1Copy;
   }
 
-  cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v35, &v38, a4, &v33);
+  cva::SVD<cva::Matrix<float,0u,0u,false>,true>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(v35, &v38, r6x1, &v33);
 LABEL_11:
   v25 = v38;
   v26 = *v38;
   if (*v38 >= 0.0)
   {
     v27 = sqrtf(v26);
-    *a5 = v27;
+    *betas = v27;
     v30 = v25[2];
     v29 = v30 > 0.0;
   }
@@ -845,7 +845,7 @@ LABEL_11:
   else
   {
     v27 = sqrtf(-v26);
-    *a5 = v27;
+    *betas = v27;
     v28 = v25[2];
     v29 = v28 < 0.0;
     v30 = -v28;
@@ -857,16 +857,16 @@ LABEL_11:
     v31 = 0.0;
   }
 
-  a5[1] = v31;
+  betas[1] = v31;
   if (v25[1] < 0.0)
   {
     v27 = -v27;
-    *a5 = v27;
+    *betas = v27;
   }
 
   v20 = 0;
-  a5[2] = v25[3] / v27;
-  a5[3] = 0.0;
+  betas[2] = v25[3] / v27;
+  betas[3] = 0.0;
 LABEL_19:
   free(v35[6]);
   free(v35[3]);
@@ -914,7 +914,7 @@ LABEL_19:
   return 0;
 }
 
-- (float)computeProjectionError:(float)a3[3][3] T:(float)a4[3]
+- (float)computeProjectionError:(float)error[3][3] T:(float)t[3]
 {
   numPoints = self->_numPoints;
   if (numPoints < 1)
@@ -937,11 +937,11 @@ LABEL_19:
       v13 = *(v8 - 1);
       v14 = *v8;
       v8 += 3;
-      v15 = ((((*a3)[1] * v13) + ((*a3)[0] * v12)) + ((*a3)[2] * v14)) + *a4;
-      v16 = ((v13 * (*a3)[4]) + ((*a3)[3] * v12)) + ((*a3)[5] * v14);
-      v17 = 1.0 / (a4[2] + (((v13 * (*a3)[7]) + ((*a3)[6] * v12)) + ((*a3)[8] * v14)));
+      v15 = ((((*error)[1] * v13) + ((*error)[0] * v12)) + ((*error)[2] * v14)) + *t;
+      v16 = ((v13 * (*error)[4]) + ((*error)[3] * v12)) + ((*error)[5] * v14);
+      v17 = 1.0 / (t[2] + (((v13 * (*error)[7]) + ((*error)[6] * v12)) + ((*error)[8] * v14)));
       v18 = *(v9 - 1) - (self->_uc + ((v15 * v6) * v17));
-      v19 = *v9 - (self->_vc + (((a4[1] + v16) * v7) * v17));
+      v19 = *v9 - (self->_vc + (((t[1] + v16) * v7) * v17));
       v10 = v10 + sqrtf((v19 * v19) + (v18 * v18));
       v9 += 2;
       --v11;
@@ -953,7 +953,7 @@ LABEL_19:
   return v10 / numPoints;
 }
 
-- (int)computeRT:(float)a3[3][3] T:(float)a4[3]
+- (int)computeRT:(float)t[3][3] T:(float)a4[3]
 {
   v62 = *MEMORY[0x1E69E9840];
   v60 = 0;
@@ -1045,38 +1045,38 @@ LABEL_19:
     v27 = v53;
     v28 = v52;
     v29 = 2 * v52;
-    v30 = a3;
+    tCopy = t;
     do
     {
       v31 = 0;
       for (j = 0; j != 3; ++j)
       {
-        (*v30)[j] = ((v25[v24 + v28] * v27[v31 + 1]) + (v25[v24] * v27[v31])) + (v25[v24 + v29] * v27[v31 + 2]);
+        (*tCopy)[j] = ((v25[v24 + v28] * v27[v31 + 1]) + (v25[v24] * v27[v31])) + (v25[v24 + v29] * v27[v31 + 2]);
         v31 += v26;
       }
 
       ++v24;
-      ++v30;
+      ++tCopy;
     }
 
     while (v24 != 3);
-    v33 = (*a3)[8];
-    _S18 = (*a3)[2] * (*a3)[3];
-    _D1 = *&(*a3)[6];
+    v33 = (*t)[8];
+    _S18 = (*t)[2] * (*t)[3];
+    _D1 = *&(*t)[6];
     __asm { FMLA            S6, S18, V1.S[1] }
 
-    _S2 = -((*a3)[0] * (*a3)[5]);
+    _S2 = -((*t)[0] * (*t)[5]);
     __asm { FMLA            S3, S2, V1.S[1] }
 
     if (_S3 < 0.0)
     {
-      *&(*a3)[6] = vneg_f32(_D1);
-      (*a3)[8] = -v33;
+      *&(*t)[6] = vneg_f32(_D1);
+      (*t)[8] = -v33;
     }
 
     v43 = 0;
     v44 = v58;
-    v45 = &(*a3)[2];
+    v45 = &(*t)[2];
     v46 = v59;
     do
     {
@@ -1103,50 +1103,50 @@ LABEL_19:
   return v49;
 }
 
-- (int)estimateRT:(void *)a3 betas:(const float *)a4 R:(float)a5[3][3] T:(float)a6[3] projectionError:(float *)a7
+- (int)estimateRT:(void *)t betas:(const float *)betas R:(float)r[3][3] T:(float)a6[3] projectionError:(float *)error
 {
-  [(VCPPnPSolver *)self computeControlPointsCamera:a4 Vt:a3];
+  [(VCPPnPSolver *)self computeControlPointsCamera:betas Vt:t];
   [(VCPPnPSolver *)self computePoints3DCamera];
   [(VCPPnPSolver *)self correctSigns];
-  v11 = [(VCPPnPSolver *)self computeRT:a5 T:a6];
+  v11 = [(VCPPnPSolver *)self computeRT:r T:a6];
   if (!v11)
   {
-    [(VCPPnPSolver *)self computeProjectionError:a5 T:a6];
-    *a7 = v12;
+    [(VCPPnPSolver *)self computeProjectionError:r T:a6];
+    *error = v12;
   }
 
   return v11;
 }
 
-- (int)configureGaussNewton:(void *)a3 R6x1:(void *)a4 betas:(float)a5[4] jacobian:(void *)a6 residual:(void *)a7
+- (int)configureGaussNewton:(void *)newton R6x1:(void *)r6x1 betas:(float)betas[4] jacobian:(void *)jacobian residual:(void *)residual
 {
   v7 = 0;
-  v8 = *(a3 + 4);
-  v9 = *a3;
-  v10 = *a6;
-  v11 = *(a6 + 4);
-  v12 = *a4;
-  v13 = *a7;
-  v14 = *a3 + 4 * (9 * v8);
-  v15 = *a3 + 4 * (8 * v8);
-  v16 = *a3 + 4 * (5 * v8);
-  v17 = *a3 + 4 * (7 * v8);
-  v18 = *a3 + 4 * (4 * v8);
-  v19 = *a3 + 4 * (2 * v8);
-  v20 = *a3 + 4 * (6 * v8);
-  v21 = *a3 + 4 * (3 * v8);
+  v8 = *(newton + 4);
+  v9 = *newton;
+  v10 = *jacobian;
+  v11 = *(jacobian + 4);
+  v12 = *r6x1;
+  v13 = *residual;
+  v14 = *newton + 4 * (9 * v8);
+  v15 = *newton + 4 * (8 * v8);
+  v16 = *newton + 4 * (5 * v8);
+  v17 = *newton + 4 * (7 * v8);
+  v18 = *newton + 4 * (4 * v8);
+  v19 = *newton + 4 * (2 * v8);
+  v20 = *newton + 4 * (6 * v8);
+  v21 = *newton + 4 * (3 * v8);
   v22 = v9 + 4 * v8;
-  v23 = *a6 + 4 * (3 * v11);
+  v23 = *jacobian + 4 * (3 * v11);
   do
   {
-    *(v10 + v7) = (((*(v22 + v7) * a5[1]) + ((*(v9 + v7) + *(v9 + v7)) * *a5)) + (*(v21 + v7) * a5[2])) + (*(v20 + v7) * a5[3]);
-    *(v10 + 4 * v11 + v7) = ((((*(v19 + v7) + *(v19 + v7)) * a5[1]) + (*(v22 + v7) * *a5)) + (*(v18 + v7) * a5[2])) + (*(v17 + v7) * a5[3]);
-    *(v10 + 4 * (2 * v11) + v7) = (((*(v18 + v7) * a5[1]) + (*(v21 + v7) * *a5)) + ((*(v16 + v7) + *(v16 + v7)) * a5[2])) + (*(v15 + v7) * a5[3]);
-    *(v23 + v7) = (((*(v17 + v7) * a5[1]) + (*(v20 + v7) * *a5)) + (*(v15 + v7) * a5[2])) + ((*(v14 + v7) + *(v14 + v7)) * a5[3]);
-    v24 = a5[1];
-    v25 = a5[2];
-    v26 = a5[3];
-    *(v13 + v7) = *(v12 + v7) - (((((((((((*a5 * *(v22 + v7)) * v24) + ((*(v9 + v7) * *a5) * *a5)) + ((v24 * *(v19 + v7)) * v24)) + ((*a5 * *(v21 + v7)) * v25)) + ((v24 * *(v18 + v7)) * v25)) + ((v25 * *(v16 + v7)) * v25)) + ((*a5 * *(v20 + v7)) * v26)) + ((v24 * *(v17 + v7)) * v26)) + ((v25 * *(v15 + v7)) * v26)) + ((v26 * *(v14 + v7)) * v26));
+    *(v10 + v7) = (((*(v22 + v7) * betas[1]) + ((*(v9 + v7) + *(v9 + v7)) * *betas)) + (*(v21 + v7) * betas[2])) + (*(v20 + v7) * betas[3]);
+    *(v10 + 4 * v11 + v7) = ((((*(v19 + v7) + *(v19 + v7)) * betas[1]) + (*(v22 + v7) * *betas)) + (*(v18 + v7) * betas[2])) + (*(v17 + v7) * betas[3]);
+    *(v10 + 4 * (2 * v11) + v7) = (((*(v18 + v7) * betas[1]) + (*(v21 + v7) * *betas)) + ((*(v16 + v7) + *(v16 + v7)) * betas[2])) + (*(v15 + v7) * betas[3]);
+    *(v23 + v7) = (((*(v17 + v7) * betas[1]) + (*(v20 + v7) * *betas)) + (*(v15 + v7) * betas[2])) + ((*(v14 + v7) + *(v14 + v7)) * betas[3]);
+    v24 = betas[1];
+    v25 = betas[2];
+    v26 = betas[3];
+    *(v13 + v7) = *(v12 + v7) - (((((((((((*betas * *(v22 + v7)) * v24) + ((*(v9 + v7) * *betas) * *betas)) + ((v24 * *(v19 + v7)) * v24)) + ((*betas * *(v21 + v7)) * v25)) + ((v24 * *(v18 + v7)) * v25)) + ((v25 * *(v16 + v7)) * v25)) + ((*betas * *(v20 + v7)) * v26)) + ((v24 * *(v17 + v7)) * v26)) + ((v25 * *(v15 + v7)) * v26)) + ((v26 * *(v14 + v7)) * v26));
     v7 += 4;
   }
 
@@ -1154,7 +1154,7 @@ LABEL_19:
   return 0;
 }
 
-- (int)optimizeBetas:(void *)a3 R6x1:(void *)a4 betas:(float)a5[4]
+- (int)optimizeBetas:(void *)betas R6x1:(void *)r6x1 betas:(float)a5[4]
 {
   v20[1] = 24;
   memptr[0] = 0;
@@ -1177,7 +1177,7 @@ LABEL_19:
   *memptr[0] = 0;
   v10[1] = 0;
   v10[2] = 0;
-  [(VCPPnPSolver *)self configureGaussNewton:a3 R6x1:a4 betas:a5 jacobian:v20 residual:v18];
+  [(VCPPnPSolver *)self configureGaussNewton:betas R6x1:r6x1 betas:a5 jacobian:v20 residual:v18];
   cva::QR<cva::Matrix<float,0u,0u,false>>::QR<cva::Matrix<float,0u,0u,false>>(memptr, v20);
   v11 = (4 * (HIDWORD(v19) * v17) + 31) & 0x7FFFFFFE0;
   v13[1] = (v11 >> 2);
@@ -1189,19 +1189,19 @@ LABEL_19:
   cva::QR<cva::Matrix<float,0u,0u,false>>::initialize<cva::Matrix<float,0u,0u,false>,cva::Matrix<float,0u,0u,false>>(memptr, v13, v18);
 }
 
-- (int)estimatePose:(float *)a3
+- (int)estimatePose:(float *)pose
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = [(VCPPnPSolver *)self getControlPoints];
-  if (v5)
+  getControlPoints = [(VCPPnPSolver *)self getControlPoints];
+  if (getControlPoints)
   {
-    return v5;
+    return getControlPoints;
   }
 
-  v5 = [(VCPPnPSolver *)self computeBarycentricCoordinates];
-  if (v5)
+  getControlPoints = [(VCPPnPSolver *)self computeBarycentricCoordinates];
+  if (getControlPoints)
   {
-    return v5;
+    return getControlPoints;
   }
 
   v41[0] = 0;
@@ -1357,7 +1357,7 @@ LABEL_19:
 
           while (v33 != 3);
           v6 = 0;
-          *a3 = v30;
+          *pose = v30;
           break;
         }
       }
@@ -1372,13 +1372,13 @@ LABEL_19:
   return v6;
 }
 
-- (int)estimateExtrinsicsWith:(const float *)a3 andPoints3D:(const float *)a4 andNumPoints:(int)a5
+- (int)estimateExtrinsicsWith:(const float *)with andPoints3D:(const float *)d andNumPoints:(int)points
 {
   v15 = 0;
   result = -50;
-  if (a4 && a3 && (a5 - 4) <= 0x7CC)
+  if (d && with && (points - 4) <= 0x7CC)
   {
-    if (self->_numPoints >= a5)
+    if (self->_numPoints >= points)
     {
       goto LABEL_11;
     }
@@ -1396,9 +1396,9 @@ LABEL_19:
     }
 
     v12 = MEMORY[0x1E69E5398];
-    v13 = operator new[]((16 * a5), MEMORY[0x1E69E5398]);
+    v13 = operator new[]((16 * points), MEMORY[0x1E69E5398]);
     self->_alphas = v13;
-    v14 = operator new[]((12 * a5), v12);
+    v14 = operator new[]((12 * points), v12);
     self->_points3DCamera = v14;
     result = -108;
     if (v13)
@@ -1406,9 +1406,9 @@ LABEL_19:
       if (v14)
       {
 LABEL_11:
-        self->_numPoints = a5;
-        self->_pointsWorld = a4;
-        self->_pointsImage = a3;
+        self->_numPoints = points;
+        self->_pointsWorld = d;
+        self->_pointsImage = with;
         return [(VCPPnPSolver *)self estimatePose:&v15];
       }
     }
@@ -1417,13 +1417,13 @@ LABEL_11:
   return result;
 }
 
-- (void)setPose:(__n128)a3
+- (void)setPose:(__n128)pose
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = pose;
   v5[2] = a4;
   v5[3] = a5;
-  objc_copyStruct((a1 + 192), v5, 64, 1, 0);
+  objc_copyStruct((self + 192), v5, 64, 1, 0);
 }
 
 @end

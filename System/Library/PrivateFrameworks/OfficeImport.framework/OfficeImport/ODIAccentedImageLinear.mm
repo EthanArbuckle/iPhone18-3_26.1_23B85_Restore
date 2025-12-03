@@ -1,32 +1,32 @@
 @interface ODIAccentedImageLinear
-- (void)mapPoint:(id)a3 bounds:(CGRect)a4;
+- (void)mapPoint:(id)point bounds:(CGRect)bounds;
 @end
 
 @implementation ODIAccentedImageLinear
 
-- (void)mapPoint:(id)a3 bounds:(CGRect)a4
+- (void)mapPoint:(id)point bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pointCopy = point;
   v16.receiver = self;
   v16.super_class = ODIAccentedImageLinear;
-  [(ODIImageLinear *)&v16 mapPoint:v9 bounds:x, y, width, height];
+  [(ODIImageLinear *)&v16 mapPoint:pointCopy bounds:x, y, width, height];
   if (![(ODIState *)self->super.super.mState pointIndex])
   {
-    v10 = [(ODIState *)self->super.super.mState group];
-    v11 = [v10 childCount];
+    group = [(ODIState *)self->super.super.mState group];
+    childCount = [group childCount];
 
-    if (v11 >= 2)
+    if (childCount >= 2)
     {
-      v12 = [(ODIState *)self->super.super.mState group];
-      v13 = [(ODIState *)self->super.super.mState group];
-      v14 = [v12 childAtIndex:{objc_msgSend(v13, "childCount") - 2}];
+      group2 = [(ODIState *)self->super.super.mState group];
+      group3 = [(ODIState *)self->super.super.mState group];
+      v14 = [group2 childAtIndex:{objc_msgSend(group3, "childCount") - 2}];
 
-      v15 = [v9 siblingTransition];
-      [ODIDrawable mapStyleFromPoint:v15 shape:v14 state:self->super.super.mState];
+      siblingTransition = [pointCopy siblingTransition];
+      [ODIDrawable mapStyleFromPoint:siblingTransition shape:v14 state:self->super.super.mState];
     }
   }
 }

@@ -1,17 +1,17 @@
 @interface UpgradeOperation
-- (UpgradeOperation)initWithCryptexName:(id)a3 graftPath:(id)a4;
+- (UpgradeOperation)initWithCryptexName:(id)name graftPath:(id)path;
 - (void)completeUpgrade;
-- (void)onComplete:(id)a3 withQueue:(id)a4;
+- (void)onComplete:(id)complete withQueue:(id)queue;
 - (void)startUpgrade;
-- (void)terminateJobsWithCompletion:(id)a3;
+- (void)terminateJobsWithCompletion:(id)completion;
 @end
 
 @implementation UpgradeOperation
 
-- (UpgradeOperation)initWithCryptexName:(id)a3 graftPath:(id)a4
+- (UpgradeOperation)initWithCryptexName:(id)name graftPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = UpgradeOperation;
   v9 = [(UpgradeOperation *)&v18 init];
@@ -25,12 +25,12 @@
     group = v9->_group;
     v9->_group = v12;
 
-    objc_storeStrong(&v9->_cryptexName, a3);
+    objc_storeStrong(&v9->_cryptexName, name);
     v14 = dispatch_queue_create("com.apple.security.cryptexd.upgrade", 0);
     workQueue = v9->_workQueue;
     v9->_workQueue = v14;
 
-    objc_storeStrong(&v9->_graftPath, a4);
+    objc_storeStrong(&v9->_graftPath, path);
     error = v9->_error;
     v9->_error = 0;
   }
@@ -38,20 +38,20 @@
   return v9;
 }
 
-- (void)terminateJobsWithCompletion:(id)a3
+- (void)terminateJobsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UpgradeOperation *)self cryptexName];
-  v6 = [v5 UTF8String];
-  v7 = [(UpgradeOperation *)self workQueue];
+  completionCopy = completion;
+  cryptexName = [(UpgradeOperation *)self cryptexName];
+  uTF8String = [cryptexName UTF8String];
+  workQueue = [(UpgradeOperation *)self workQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __48__UpgradeOperation_terminateJobsWithCompletion___block_invoke;
   v9[3] = &unk_1000713F0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  launch_cryptex_terminate_with_timeout(v6, 0x3Cu, v7, v9);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  launch_cryptex_terminate_with_timeout(uTF8String, 0x3Cu, workQueue, v9);
 }
 
 void __48__UpgradeOperation_terminateJobsWithCompletion___block_invoke(uint64_t a1, int a2)
@@ -143,30 +143,30 @@ LABEL_15:
 - (void)startUpgrade
 {
   v3 = *__error();
-  v4 = [(UpgradeOperation *)self logHandle];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logHandle = [(UpgradeOperation *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     *v6 = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Upgrade started.", v6, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "Upgrade started.", v6, 2u);
   }
 
   *__error() = v3;
-  v5 = [(UpgradeOperation *)self group];
-  dispatch_group_enter(v5);
+  group = [(UpgradeOperation *)self group];
+  dispatch_group_enter(group);
 }
 
 - (void)completeUpgrade
 {
-  v3 = [(UpgradeOperation *)self workQueue];
-  dispatch_assert_queue_not_V2(v3);
+  workQueue = [(UpgradeOperation *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v4 = [(UpgradeOperation *)self workQueue];
+  workQueue2 = [(UpgradeOperation *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __35__UpgradeOperation_completeUpgrade__block_invoke;
   block[3] = &unk_100071418;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(workQueue2, block);
 }
 
 void __35__UpgradeOperation_completeUpgrade__block_invoke(uint64_t a1)
@@ -184,19 +184,19 @@ void __35__UpgradeOperation_completeUpgrade__block_invoke(uint64_t a1)
   dispatch_group_leave(v4);
 }
 
-- (void)onComplete:(id)a3 withQueue:(id)a4
+- (void)onComplete:(id)complete withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UpgradeOperation *)self group];
+  completeCopy = complete;
+  queueCopy = queue;
+  group = [(UpgradeOperation *)self group];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __41__UpgradeOperation_onComplete_withQueue___block_invoke;
   v10[3] = &unk_100071440;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  dispatch_group_notify(v8, v7, v10);
+  v11 = completeCopy;
+  v9 = completeCopy;
+  dispatch_group_notify(group, queueCopy, v10);
 }
 
 void __41__UpgradeOperation_onComplete_withQueue___block_invoke(uint64_t a1)

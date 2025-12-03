@@ -1,10 +1,10 @@
 @interface WiFiAwareFastDiscoveryConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WiFiAwareFastDiscoveryConfiguration)init;
-- (WiFiAwareFastDiscoveryConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiAwareFastDiscoveryConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwareFastDiscoveryConfiguration
@@ -26,47 +26,47 @@
   return v3;
 }
 
-- (WiFiAwareFastDiscoveryConfiguration)initWithCoder:(id)a3
+- (WiFiAwareFastDiscoveryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WiFiAwareFastDiscoveryConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareFastDiscoveryConfiguration.instantCommunicationChannel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareFastDiscoveryConfiguration.instantCommunicationChannel"];
     [(WiFiAwareFastDiscoveryConfiguration *)v5 setInstantCommunicationChannel:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareFastDiscoveryConfiguration.peerBandInformation"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareFastDiscoveryConfiguration.peerBandInformation"];
     -[WiFiAwareFastDiscoveryConfiguration setPeerBandInformation:](v5, "setPeerBandInformation:", [v7 unsignedCharValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
-  [v4 encodeObject:v5 forKey:@"WiFiAwareFastDiscoveryConfiguration.instantCommunicationChannel"];
+  coderCopy = coder;
+  instantCommunicationChannel = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
+  [coderCopy encodeObject:instantCommunicationChannel forKey:@"WiFiAwareFastDiscoveryConfiguration.instantCommunicationChannel"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[WiFiAwareFastDiscoveryConfiguration peerBandInformation](self, "peerBandInformation")}];
-  [v4 encodeObject:v6 forKey:@"WiFiAwareFastDiscoveryConfiguration.peerBandInformation"];
+  [coderCopy encodeObject:v6 forKey:@"WiFiAwareFastDiscoveryConfiguration.peerBandInformation"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WiFiAwareFastDiscoveryConfiguration);
-  v5 = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
-  v6 = [v5 copy];
+  instantCommunicationChannel = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
+  v6 = [instantCommunicationChannel copy];
   [(WiFiAwareFastDiscoveryConfiguration *)v4 setInstantCommunicationChannel:v6];
 
   [(WiFiAwareFastDiscoveryConfiguration *)v4 setPeerBandInformation:[(WiFiAwareFastDiscoveryConfiguration *)self peerBandInformation]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 0;
 LABEL_11:
@@ -77,14 +77,14 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
-    v9 = [(WiFiAwareFastDiscoveryConfiguration *)v7 instantCommunicationChannel];
-    if (v8 != v9)
+    v7 = equalCopy;
+    instantCommunicationChannel = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
+    instantCommunicationChannel2 = [(WiFiAwareFastDiscoveryConfiguration *)v7 instantCommunicationChannel];
+    if (instantCommunicationChannel != instantCommunicationChannel2)
     {
-      v3 = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
-      v4 = [(WiFiAwareFastDiscoveryConfiguration *)v7 instantCommunicationChannel];
-      if (![v3 isEqual:v4])
+      instantCommunicationChannel3 = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
+      instantCommunicationChannel4 = [(WiFiAwareFastDiscoveryConfiguration *)v7 instantCommunicationChannel];
+      if (![instantCommunicationChannel3 isEqual:instantCommunicationChannel4])
       {
 
 LABEL_12:
@@ -93,13 +93,13 @@ LABEL_12:
       }
     }
 
-    v11 = [(WiFiAwareFastDiscoveryConfiguration *)self peerBandInformation];
-    v12 = [(WiFiAwareFastDiscoveryConfiguration *)v7 peerBandInformation];
-    if (v8 != v9)
+    peerBandInformation = [(WiFiAwareFastDiscoveryConfiguration *)self peerBandInformation];
+    peerBandInformation2 = [(WiFiAwareFastDiscoveryConfiguration *)v7 peerBandInformation];
+    if (instantCommunicationChannel != instantCommunicationChannel2)
     {
     }
 
-    if (v11 != v12)
+    if (peerBandInformation != peerBandInformation2)
     {
       goto LABEL_12;
     }
@@ -117,9 +117,9 @@ LABEL_13:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiAwareFastDiscoveryConfiguration *)self peerBandInformation];
-  v5 = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
-  v6 = [v3 stringWithFormat:@"<enabled (peer band: %u, channel: %@)>", v4, v5];
+  peerBandInformation = [(WiFiAwareFastDiscoveryConfiguration *)self peerBandInformation];
+  instantCommunicationChannel = [(WiFiAwareFastDiscoveryConfiguration *)self instantCommunicationChannel];
+  v6 = [v3 stringWithFormat:@"<enabled (peer band: %u, channel: %@)>", peerBandInformation, instantCommunicationChannel];
 
   return v6;
 }

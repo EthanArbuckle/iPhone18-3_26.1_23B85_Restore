@@ -1,24 +1,24 @@
 @interface WFNetworkProfile
-+ (BOOL)networkProfileRepresentSameNetwork:(id)a3 toNetworkProfile:(id)a4;
++ (BOOL)networkProfileRepresentSameNetwork:(id)network toNetworkProfile:(id)profile;
 - (BOOL)TLSProfileCanJoin;
 - (BOOL)canAttemptJoin;
 - (BOOL)isEnterprise;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNetwork:(id)a3;
-- (BOOL)profileContainsCarrierEAPType:(id)a3;
-- (BOOL)profileContainsEAPAKA:(id)a3;
-- (BOOL)profileContainsEAPSIM:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNetwork:(id)network;
+- (BOOL)profileContainsCarrierEAPType:(id)type;
+- (BOOL)profileContainsEAPAKA:(id)a;
+- (BOOL)profileContainsEAPSIM:(id)m;
 - (BOOL)requiresTLSIdentityOnly;
 - (BOOL)requiresUsernameAndPassword;
 - (BOOL)shouldBeRemovedIfApplicationIsNoLongerInstalled;
 - (NSDictionary)enterpriseProfile;
 - (NSString)password;
-- (WFNetworkProfile)initWithCoreWiFiProfile:(id)a3;
-- (WFNetworkProfile)initWithNetwork:(id)a3;
-- (WFNetworkProfile)initWithNetworkRef:(__WiFiNetwork *)a3;
+- (WFNetworkProfile)initWithCoreWiFiProfile:(id)profile;
+- (WFNetworkProfile)initWithNetwork:(id)network;
+- (WFNetworkProfile)initWithNetworkRef:(__WiFiNetwork *)ref;
 - (__SecIdentity)TLSIdentity;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)networkAttributes;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -28,28 +28,28 @@
 
 - (id)networkAttributes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [(WFNetworkProfile *)v2 scanAttributes];
-  v5 = [v3 initWithDictionary:v4];
+  scanAttributes = [(WFNetworkProfile *)selfCopy scanAttributes];
+  v5 = [v3 initWithDictionary:scanAttributes];
 
-  v6 = [(WFNetworkProfile *)v2 enterpriseProfile];
+  enterpriseProfile = [(WFNetworkProfile *)selfCopy enterpriseProfile];
 
-  if (v6)
+  if (enterpriseProfile)
   {
-    v7 = [(WFNetworkProfile *)v2 enterpriseProfile];
-    [v5 setObject:v7 forKey:*MEMORY[0x277D29850]];
+    enterpriseProfile2 = [(WFNetworkProfile *)selfCopy enterpriseProfile];
+    [v5 setObject:enterpriseProfile2 forKey:*MEMORY[0x277D29850]];
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[WFNetworkProfile isHidden](v2, "isHidden")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[WFNetworkProfile isHidden](selfCopy, "isHidden")}];
   [v5 setObject:v8 forKey:@"HIDDEN_NETWORK"];
 
-  v9 = [(WFNetworkProfile *)v2 isCaptive];
+  isCaptive = [(WFNetworkProfile *)selfCopy isCaptive];
   v10 = MEMORY[0x277CBEC38];
   v11 = MEMORY[0x277CBEC28];
-  if (v9)
+  if (isCaptive)
   {
-    if ([(WFNetworkProfile *)v2 isAutoLoginEnabled])
+    if ([(WFNetworkProfile *)selfCopy isAutoLoginEnabled])
     {
       v12 = v11;
     }
@@ -62,7 +62,7 @@
     [v5 setObject:v12 forKey:*MEMORY[0x277CF7F20]];
   }
 
-  if ([(WFNetworkProfile *)v2 isInSaveDataMode])
+  if ([(WFNetworkProfile *)selfCopy isInSaveDataMode])
   {
     v13 = 1;
   }
@@ -75,7 +75,7 @@
   v14 = [MEMORY[0x277CCABB0] numberWithInt:v13];
   [v5 setObject:v14 forKey:*MEMORY[0x277D29898]];
 
-  if ([(WFNetworkProfile *)v2 isPrivacyProxyEnabled])
+  if ([(WFNetworkProfile *)selfCopy isPrivacyProxyEnabled])
   {
     v15 = v10;
   }
@@ -86,15 +86,15 @@
   }
 
   [v5 setObject:v15 forKey:*MEMORY[0x277D29880]];
-  v16 = [(WFNetworkProfile *)v2 networkQualityDate];
+  networkQualityDate = [(WFNetworkProfile *)selfCopy networkQualityDate];
 
-  if (v16)
+  if (networkQualityDate)
   {
-    v17 = [(WFNetworkProfile *)v2 networkQualityDate];
-    [v5 setObject:v17 forKey:*MEMORY[0x277D29860]];
+    networkQualityDate2 = [(WFNetworkProfile *)selfCopy networkQualityDate];
+    [v5 setObject:networkQualityDate2 forKey:*MEMORY[0x277D29860]];
 
     v18 = MEMORY[0x277CCABB0];
-    [(WFNetworkProfile *)v2 networkQualityResponsiveness];
+    [(WFNetworkProfile *)selfCopy networkQualityResponsiveness];
     v19 = [v18 numberWithDouble:?];
     [v5 setObject:v19 forKey:*MEMORY[0x277D29868]];
   }
@@ -102,43 +102,43 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [(WFNetworkProfile *)v2 lastAssociationDate];
-    if (v20)
+    lastAssociationDate = [(WFNetworkProfile *)selfCopy lastAssociationDate];
+    if (lastAssociationDate)
     {
-      [v5 setObject:v20 forKey:@"lastJoined"];
+      [v5 setObject:lastAssociationDate forKey:@"lastJoined"];
     }
   }
 
-  v21 = [(WFNetworkProfile *)v2 originatorBundleIdentifier];
+  originatorBundleIdentifier = [(WFNetworkProfile *)selfCopy originatorBundleIdentifier];
 
-  if (v21)
+  if (originatorBundleIdentifier)
   {
-    v22 = [(WFNetworkProfile *)v2 originatorBundleIdentifier];
-    [v5 setObject:v22 forKey:*MEMORY[0x277D29840]];
+    originatorBundleIdentifier2 = [(WFNetworkProfile *)selfCopy originatorBundleIdentifier];
+    [v5 setObject:originatorBundleIdentifier2 forKey:*MEMORY[0x277D29840]];
   }
 
-  v23 = [(WFNetworkProfile *)v2 hotspotDeviceIdentifier];
+  hotspotDeviceIdentifier = [(WFNetworkProfile *)selfCopy hotspotDeviceIdentifier];
 
-  if (v23)
+  if (hotspotDeviceIdentifier)
   {
-    v24 = [(WFNetworkProfile *)v2 hotspotDeviceIdentifier];
-    [v5 setObject:v24 forKey:@"HotspotDeviceIdentifier"];
+    hotspotDeviceIdentifier2 = [(WFNetworkProfile *)selfCopy hotspotDeviceIdentifier];
+    [v5 setObject:hotspotDeviceIdentifier2 forKey:@"HotspotDeviceIdentifier"];
   }
 
   [v5 removeObjectForKey:@"enabled"];
   [v5 removeObjectForKey:*MEMORY[0x277D29848]];
   v25 = objc_opt_new();
-  v26 = [(WFNetworkProfile *)v2 randomMACAddress];
-  v27 = [v26 UTF8String];
+  randomMACAddress = [(WFNetworkProfile *)selfCopy randomMACAddress];
+  uTF8String = [randomMACAddress UTF8String];
 
-  if (v27)
+  if (uTF8String)
   {
-    v28 = ether_aton(v27);
+    v28 = ether_aton(uTF8String);
     v29 = CFDataCreate(0, v28->octet, 6);
     [v25 setObject:v29 forKey:@"PRIVATE_MAC_ADDRESS_VALUE"];
   }
 
-  if ([(WFNetworkProfile *)v2 isRandomMACAddressEnabled])
+  if ([(WFNetworkProfile *)selfCopy isRandomMACAddressEnabled])
   {
     v30 = 2;
   }
@@ -156,7 +156,7 @@
   return v5;
 }
 
-- (WFNetworkProfile)initWithNetworkRef:(__WiFiNetwork *)a3
+- (WFNetworkProfile)initWithNetworkRef:(__WiFiNetwork *)ref
 {
   v95 = *MEMORY[0x277D85DE8];
   v88.receiver = self;
@@ -168,7 +168,7 @@
     goto LABEL_70;
   }
 
-  if (!a3)
+  if (!ref)
   {
     [(WFNetworkProfile *)&v89 initWithNetworkRef:buf];
 LABEL_69:
@@ -344,7 +344,7 @@ LABEL_8:
       if (WFCurrentLogLevel() >= 3 && v54 && os_log_type_enabled(v54, v55))
       {
         *buf = 138412290;
-        *&buf[4] = a3;
+        *&buf[4] = ref;
         _os_log_impl(&dword_273ECD000, v54, v55, "Autologin disabled due to captive bypass for network %@", buf, 0xCu);
       }
     }
@@ -386,15 +386,15 @@ LABEL_8:
   v4->_canExposeIMSI = WiFiNetworkCanExposeIMSI() != 0;
   v4->_requiresPassword = WiFiNetworkRequiresPassword() != 0;
   v4->_personalHotspot = WiFiNetworkIsApplePersonalHotspot() != 0;
-  v68 = [WiFiNetworkGetProperty() intValue];
-  if (v68 == 17)
+  intValue = [WiFiNetworkGetProperty() intValue];
+  if (intValue == 17)
   {
     v69 = 21;
   }
 
   else
   {
-    if (v68 != 11)
+    if (intValue != 11)
     {
       goto LABEL_45;
     }
@@ -480,17 +480,17 @@ LABEL_65:
   return v85;
 }
 
-- (WFNetworkProfile)initWithNetwork:(id)a3
+- (WFNetworkProfile)initWithNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [v4 attributes];
+  networkCopy = network;
+  attributes = [networkCopy attributes];
 
-  if (!v5)
+  if (!attributes)
   {
     goto LABEL_5;
   }
 
-  [v4 attributes];
+  [networkCopy attributes];
   v6 = WiFiNetworkCreate();
   self = [(WFNetworkProfile *)self initWithNetworkRef:v6];
   if (v6)
@@ -508,7 +508,7 @@ LABEL_5:
   return self;
 }
 
-- (WFNetworkProfile)initWithCoreWiFiProfile:(id)a3
+- (WFNetworkProfile)initWithCoreWiFiProfile:(id)profile
 {
   v4 = WiFiNetworkCreateFromCoreWiFiNetworkProfile();
   v5 = v4;
@@ -516,58 +516,58 @@ LABEL_5:
   return [(WFNetworkProfile *)self initWithNetworkRef:v4];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(WFMutableNetworkProfile);
-  v6 = [(WFNetworkProfile *)self ssid];
-  v7 = [v6 copyWithZone:a3];
+  ssid = [(WFNetworkProfile *)self ssid];
+  v7 = [ssid copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setSsid:v7];
 
-  v8 = [(WFNetworkProfile *)self bssid];
-  v9 = [v8 copyWithZone:a3];
+  bssid = [(WFNetworkProfile *)self bssid];
+  v9 = [bssid copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setBssid:v9];
 
-  v10 = [(WFNetworkProfile *)self username];
-  v11 = [v10 copyWithZone:a3];
+  username = [(WFNetworkProfile *)self username];
+  v11 = [username copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setUsername:v11];
 
-  v12 = [(WFNetworkProfile *)self password];
-  v13 = [v12 copyWithZone:a3];
+  password = [(WFNetworkProfile *)self password];
+  v13 = [password copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setPassword:v13];
 
   [(WFMutableNetworkProfile *)v5 setSecurityMode:[(WFNetworkProfile *)self securityMode]];
   [(WFMutableNetworkProfile *)v5 setSecurityModeExt:[(WFNetworkProfile *)self securityModeExt]];
-  v14 = [(WFNetworkProfile *)self enterpriseProfile];
-  v15 = [v14 copyWithZone:a3];
+  enterpriseProfile = [(WFNetworkProfile *)self enterpriseProfile];
+  v15 = [enterpriseProfile copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setEnterpriseProfile:v15];
 
-  v16 = [(WFNetworkProfile *)self certificateChain];
-  v17 = [v16 copyWithZone:a3];
+  certificateChain = [(WFNetworkProfile *)self certificateChain];
+  v17 = [certificateChain copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setCertificateChain:v17];
 
-  v18 = [(WFNetworkProfile *)self scanAttributes];
-  v19 = [v18 copyWithZone:a3];
+  scanAttributes = [(WFNetworkProfile *)self scanAttributes];
+  v19 = [scanAttributes copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setScanAttributes:v19];
 
-  v20 = [(WFNetworkProfile *)self enterpriseProfile];
-  v21 = [v20 copyWithZone:a3];
+  enterpriseProfile2 = [(WFNetworkProfile *)self enterpriseProfile];
+  v21 = [enterpriseProfile2 copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setEnterpriseProfile:v21];
 
-  v22 = [(WFNetworkProfile *)self enterpriseProfile];
-  v23 = WFUserNameFromEnterpriseProfile(v22);
+  enterpriseProfile3 = [(WFNetworkProfile *)self enterpriseProfile];
+  v23 = WFUserNameFromEnterpriseProfile(enterpriseProfile3);
   [(WFMutableNetworkProfile *)v5 setUsername:v23];
 
-  v24 = [(WFMutableNetworkProfile *)v5 username];
+  username2 = [(WFMutableNetworkProfile *)v5 username];
 
-  if (!v24)
+  if (!username2)
   {
-    v25 = [(WFNetworkProfile *)self username];
-    v26 = [v25 copyWithZone:a3];
+    username3 = [(WFNetworkProfile *)self username];
+    v26 = [username3 copyWithZone:zone];
     [(WFMutableNetworkProfile *)v5 setUsername:v26];
   }
 
-  v27 = [(WFNetworkProfile *)self password];
-  v28 = [v27 copyWithZone:a3];
+  password2 = [(WFNetworkProfile *)self password];
+  v28 = [password2 copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setPassword:v28];
 
   [(WFMutableNetworkProfile *)v5 setManaged:[(WFNetworkProfile *)self isManaged]];
@@ -579,40 +579,40 @@ LABEL_5:
   [(WFMutableNetworkProfile *)v5 setIsPrivacyProxyEnabled:[(WFNetworkProfile *)self isPrivacyProxyEnabled]];
   [(WFNetworkProfile *)self networkQualityResponsiveness];
   [(WFMutableNetworkProfile *)v5 setNetworkQualityResponsiveness:?];
-  v29 = [(WFNetworkProfile *)self networkQualityDate];
-  v30 = [v29 copyWithZone:a3];
+  networkQualityDate = [(WFNetworkProfile *)self networkQualityDate];
+  v30 = [networkQualityDate copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setNetworkQualityDate:v30];
 
   [(WFMutableNetworkProfile *)v5 setHidden:[(WFNetworkProfile *)self isHidden]];
-  v31 = [(WFNetworkProfile *)self policyUUID];
-  [(WFNetworkProfile *)v5 setPolicyUUID:v31];
+  policyUUID = [(WFNetworkProfile *)self policyUUID];
+  [(WFNetworkProfile *)v5 setPolicyUUID:policyUUID];
 
-  v32 = [(WFNetworkProfile *)self carPlayUUID];
-  [(WFNetworkProfile *)v5 setCarPlayUUID:v32];
+  carPlayUUID = [(WFNetworkProfile *)self carPlayUUID];
+  [(WFNetworkProfile *)v5 setCarPlayUUID:carPlayUUID];
 
   [(WFNetworkProfile *)v5 setCarPlay:[(WFNetworkProfile *)self isCarPlay]];
   [(WFNetworkProfile *)v5 setCarPlayType:[(WFNetworkProfile *)self carPlayType]];
   [(WFMutableNetworkProfile *)v5 setTLSIdentity:[(WFNetworkProfile *)self TLSIdentity]];
-  v33 = [(WFNetworkProfile *)self policyUUID];
-  [(WFNetworkProfile *)v5 setPolicyUUID:v33];
+  policyUUID2 = [(WFNetworkProfile *)self policyUUID];
+  [(WFNetworkProfile *)v5 setPolicyUUID:policyUUID2];
 
-  v34 = [(WFNetworkProfile *)self originatorBundleIdentifier];
-  [(WFMutableNetworkProfile *)v5 setOriginatorBundleIdentifier:v34];
+  originatorBundleIdentifier = [(WFNetworkProfile *)self originatorBundleIdentifier];
+  [(WFMutableNetworkProfile *)v5 setOriginatorBundleIdentifier:originatorBundleIdentifier];
 
-  v35 = [(WFNetworkProfile *)self originatorName];
-  [(WFMutableNetworkProfile *)v5 setOriginatorName:v35];
+  originatorName = [(WFNetworkProfile *)self originatorName];
+  [(WFMutableNetworkProfile *)v5 setOriginatorName:originatorName];
 
   [(WFMutableNetworkProfile *)v5 setHS20Network:[(WFNetworkProfile *)self isHS20Network]];
   [(WFMutableNetworkProfile *)v5 setHS20NetworkProvisioned:[(WFNetworkProfile *)self isHS20NetworkProvisioned]];
   [(WFNetworkProfile *)v5 setCarrierBased:[(WFNetworkProfile *)self isCarrierBased]];
   [(WFNetworkProfile *)v5 setProfileBased:[(WFNetworkProfile *)self isProfileBased]];
   [(WFMutableNetworkProfile *)v5 setAddedFromWiFiPasswordSharing:[(WFNetworkProfile *)self wasAddedFromWiFiPasswordSharing]];
-  v36 = [(WFNetworkProfile *)self HS20AccountName];
-  v37 = [v36 copyWithZone:a3];
+  hS20AccountName = [(WFNetworkProfile *)self HS20AccountName];
+  v37 = [hS20AccountName copyWithZone:zone];
   [(WFNetworkProfile *)v5 setHS20AccountName:v37];
 
-  v38 = [(WFNetworkProfile *)self HS20Badge];
-  v39 = [v38 copyWithZone:a3];
+  hS20Badge = [(WFNetworkProfile *)self HS20Badge];
+  v39 = [hS20Badge copyWithZone:zone];
   [(WFNetworkProfile *)v5 setHS20Badge:v39];
 
   [(WFNetworkProfile *)v5 setCanExposeIMSI:[(WFNetworkProfile *)self canExposeIMSI]];
@@ -621,17 +621,17 @@ LABEL_5:
   [(WFMutableNetworkProfile *)v5 setUserProvidedPassword:[(WFNetworkProfile *)self userProvidedPassword]];
   [(WFNetworkProfile *)v5 setPersonalHotspot:[(WFNetworkProfile *)self isPersonalHotspot]];
   [(WFMutableNetworkProfile *)v5 setInstantHotspotJoin:[(WFNetworkProfile *)self isInstantHotspotJoin]];
-  v40 = [(WFNetworkProfile *)self hotspotDeviceIdentifier];
-  [(WFMutableNetworkProfile *)v5 setHotspotDeviceIdentifier:v40];
+  hotspotDeviceIdentifier = [(WFNetworkProfile *)self hotspotDeviceIdentifier];
+  [(WFMutableNetworkProfile *)v5 setHotspotDeviceIdentifier:hotspotDeviceIdentifier];
 
   [(WFMutableNetworkProfile *)v5 setRandomMACAddressEnabled:[(WFNetworkProfile *)self isRandomMACAddressEnabled]];
-  v41 = [(WFNetworkProfile *)self randomMACAddress];
-  v42 = [v41 copyWithZone:a3];
+  randomMACAddress = [(WFNetworkProfile *)self randomMACAddress];
+  v42 = [randomMACAddress copyWithZone:zone];
   [(WFMutableNetworkProfile *)v5 setRandomMACAddress:v42];
 
   [(WFNetworkProfile *)v5 setDNSHeuristicsFiltered:[(WFNetworkProfile *)self isDNSHeuristicsFiltered]];
-  v43 = [(WFNetworkProfile *)self HS20OperatorName];
-  v44 = [v43 copyWithZone:a3];
+  hS20OperatorName = [(WFNetworkProfile *)self HS20OperatorName];
+  v44 = [hS20OperatorName copyWithZone:zone];
   [(WFNetworkProfile *)v5 setHS20OperatorName:v44];
 
   return v5;
@@ -653,13 +653,13 @@ LABEL_5:
 
 - (BOOL)requiresUsernameAndPassword
 {
-  v3 = [(WFNetworkProfile *)self isEnterprise];
-  if (v3)
+  isEnterprise = [(WFNetworkProfile *)self isEnterprise];
+  if (isEnterprise)
   {
-    LOBYTE(v3) = ![(WFNetworkProfile *)self requiresTLSIdentityOnly];
+    LOBYTE(isEnterprise) = ![(WFNetworkProfile *)self requiresTLSIdentityOnly];
   }
 
-  return v3;
+  return isEnterprise;
 }
 
 - (BOOL)TLSProfileCanJoin
@@ -674,8 +674,8 @@ LABEL_5:
     return 1;
   }
 
-  v4 = [(WFNetworkProfile *)self enterpriseProfile];
-  v5 = [v4 objectForKey:@"EAPClientConfiguration"];
+  enterpriseProfile = [(WFNetworkProfile *)self enterpriseProfile];
+  v5 = [enterpriseProfile objectForKey:@"EAPClientConfiguration"];
   v6 = [v5 objectForKey:@"TLSIdentityHandle"];
   v3 = v6 != 0;
 
@@ -684,8 +684,8 @@ LABEL_5:
 
 - (BOOL)requiresTLSIdentityOnly
 {
-  v2 = [(WFNetworkProfile *)self enterpriseProfile];
-  v3 = [v2 objectForKey:@"EAPClientConfiguration"];
+  enterpriseProfile = [(WFNetworkProfile *)self enterpriseProfile];
+  v3 = [enterpriseProfile objectForKey:@"EAPClientConfiguration"];
   v4 = [v3 objectForKey:@"AcceptEAPTypes"];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:13];
   v6 = [v4 containsObject:v5];
@@ -695,20 +695,20 @@ LABEL_5:
 
 - (NSDictionary)enterpriseProfile
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(WFNetworkProfile *)self isEnterprise]|| [(WFNetworkProfile *)self isHS20Network])
   {
     if (self->_enterpriseProfile)
     {
-      [v3 addEntriesFromDictionary:?];
+      [dictionary addEntriesFromDictionary:?];
     }
 
-    v4 = [v3 objectForKey:@"EAPClientConfiguration"];
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = v5;
+    v4 = [dictionary objectForKey:@"EAPClientConfiguration"];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    v6 = dictionary2;
     if (v4)
     {
-      [v5 addEntriesFromDictionary:v4];
+      [dictionary2 addEntriesFromDictionary:v4];
     }
 
     v7 = [v6 objectForKey:@"AcceptEAPTypes"];
@@ -728,37 +728,37 @@ LABEL_5:
       [v6 setObject:v8 forKey:@"AcceptEAPTypes"];
     }
 
-    v9 = [(WFNetworkProfile *)self username];
-    v10 = [v9 length];
+    username = [(WFNetworkProfile *)self username];
+    v10 = [username length];
 
     if (v10)
     {
-      v11 = [(WFNetworkProfile *)self username];
-      [v6 setObject:v11 forKey:@"UserName"];
+      username2 = [(WFNetworkProfile *)self username];
+      [v6 setObject:username2 forKey:@"UserName"];
     }
 
-    v12 = [(WFNetworkProfile *)self password];
-    v13 = [v12 length];
+    password = [(WFNetworkProfile *)self password];
+    v13 = [password length];
 
     if (v13)
     {
-      v14 = [(WFNetworkProfile *)self password];
-      [v6 setObject:v14 forKey:@"UserPassword"];
+      password2 = [(WFNetworkProfile *)self password];
+      [v6 setObject:password2 forKey:@"UserPassword"];
     }
 
-    v15 = [(WFNetworkProfile *)self certificateChain];
+    certificateChain = [(WFNetworkProfile *)self certificateChain];
 
-    if (v15)
+    if (certificateChain)
     {
-      v16 = [(WFNetworkProfile *)self certificateChain];
-      [v6 setObject:v16 forKey:@"TLSUserTrustProceedCertificateChain"];
+      certificateChain2 = [(WFNetworkProfile *)self certificateChain];
+      [v6 setObject:certificateChain2 forKey:@"TLSUserTrustProceedCertificateChain"];
 
       [v6 setObject:MEMORY[0x277CBEC38] forKey:@"TLSSaveTrustExceptions"];
     }
 
-    [v3 setObject:v6 forKey:@"EAPClientConfiguration"];
-    [v3 setObject:MEMORY[0x277CBEC28] forKey:@"EnableUserInterface"];
-    v17 = v3;
+    [dictionary setObject:v6 forKey:@"EAPClientConfiguration"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKey:@"EnableUserInterface"];
+    v17 = dictionary;
   }
 
   else
@@ -813,9 +813,9 @@ LABEL_5:
   return v5 & 1;
 }
 
-- (BOOL)profileContainsEAPSIM:(id)a3
+- (BOOL)profileContainsEAPSIM:(id)m
 {
-  v3 = [a3 objectForKey:@"EAPClientConfiguration"];
+  v3 = [m objectForKey:@"EAPClientConfiguration"];
   v4 = v3;
   if (v3)
   {
@@ -832,9 +832,9 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)profileContainsEAPAKA:(id)a3
+- (BOOL)profileContainsEAPAKA:(id)a
 {
-  v3 = [a3 objectForKey:@"EAPClientConfiguration"];
+  v3 = [a objectForKey:@"EAPClientConfiguration"];
   v4 = v3;
   if (v3)
   {
@@ -851,12 +851,12 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)profileContainsCarrierEAPType:(id)a3
+- (BOOL)profileContainsCarrierEAPType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
-    v5 = [(WFNetworkProfile *)self profileContainsEAPSIM:v4]|| [(WFNetworkProfile *)self profileContainsEAPAKA:v4];
+    v5 = [(WFNetworkProfile *)self profileContainsEAPSIM:typeCopy]|| [(WFNetworkProfile *)self profileContainsEAPAKA:typeCopy];
   }
 
   else
@@ -870,13 +870,13 @@ LABEL_5:
 - (BOOL)canAttemptJoin
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(WFNetworkProfile *)self securityMode];
-  v4 = [(WFNetworkProfile *)self enterpriseProfile];
-  v5 = [(WFNetworkProfile *)self password];
-  v6 = WFValidPasswordForSecurityMode(v3, v5);
+  securityMode = [(WFNetworkProfile *)self securityMode];
+  enterpriseProfile = [(WFNetworkProfile *)self enterpriseProfile];
+  password = [(WFNetworkProfile *)self password];
+  v6 = WFValidPasswordForSecurityMode(securityMode, password);
 
-  v7 = WFSecurityModeRequiresPasswordOnly(v3);
-  v8 = [(WFNetworkProfile *)self requiresUsernameAndPassword];
+  v7 = WFSecurityModeRequiresPasswordOnly(securityMode);
+  requiresUsernameAndPassword = [(WFNetworkProfile *)self requiresUsernameAndPassword];
   if ([(WFNetworkProfile *)self requiresTLSIdentityOnly])
   {
     if ([(WFNetworkProfile *)self TLSIdentity])
@@ -886,7 +886,7 @@ LABEL_5:
 
     else
     {
-      v10 = [v4 objectForKey:@"EAPClientConfiguration"];
+      v10 = [enterpriseProfile objectForKey:@"EAPClientConfiguration"];
       v11 = [v10 objectForKey:@"TLSIdentityHandle"];
       v9 = v11 != 0;
     }
@@ -897,19 +897,19 @@ LABEL_5:
     v9 = 0;
   }
 
-  v12 = [(WFNetworkProfile *)self profileContainsCarrierEAPType:v4];
+  v12 = [(WFNetworkProfile *)self profileContainsCarrierEAPType:enterpriseProfile];
   if ([(WFNetworkProfile *)self isHS20Network])
   {
-    v13 = [(WFNetworkProfile *)self isHS20NetworkProvisioned];
+    isHS20NetworkProvisioned = [(WFNetworkProfile *)self isHS20NetworkProvisioned];
   }
 
   else
   {
-    v13 = 0;
+    isHS20NetworkProvisioned = 0;
   }
 
   v14 = v7 & v6;
-  v15 = v8 & v6;
+  v15 = requiresUsernameAndPassword & v6;
   v16 = WFLogForCategory(0);
   v17 = OSLogForWFLogLevel(4uLL);
   if (WFCurrentLogLevel() >= 4 && v16 && os_log_type_enabled(v16, v17))
@@ -925,12 +925,12 @@ LABEL_5:
     v28 = 1024;
     v29 = v12;
     v30 = 1024;
-    v31 = v13;
+    v31 = isHS20NetworkProvisioned;
     _os_log_impl(&dword_273ECD000, v16, v17, "%s: tlsProfileCanJoin %d, automaticProfileCanJoin %d, passwordOnlyCanJoin %d, isEAPSimOrAKA %d, isHS20Provisioned %d", &v20, 0x2Au);
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return (v3 == 0) | v14 & 1 | (v15 | v9) & 1 | (v12 || v13);
+  return (securityMode == 0) | v14 & 1 | (v15 | v9) & 1 | (v12 || isHS20NetworkProvisioned);
 }
 
 - (NSString)password
@@ -959,11 +959,11 @@ LABEL_25:
       v8 = v6;
       if (os_log_type_enabled(v8, v7))
       {
-        v9 = [(WFNetworkProfile *)self ssid];
+        ssid = [(WFNetworkProfile *)self ssid];
         v20 = 136315394;
         v21 = "[WFNetworkProfile password]";
         v22 = 2112;
-        v23 = v9;
+        v23 = ssid;
         _os_log_impl(&dword_273ECD000, v8, v7, "%s: fetching password from keychain for %@", &v20, 0x16u);
       }
     }
@@ -983,11 +983,11 @@ LABEL_25:
         v15 = v13;
         if (os_log_type_enabled(v15, v14))
         {
-          v16 = [(WFNetworkProfile *)self ssid];
+          ssid2 = [(WFNetworkProfile *)self ssid];
           v20 = 136315394;
           v21 = "[WFNetworkProfile password]";
           v22 = 2114;
-          v23 = v16;
+          v23 = ssid2;
           _os_log_impl(&dword_273ECD000, v15, v14, "%s: password is nil for %{public}@", &v20, 0x16u);
         }
       }
@@ -1023,11 +1023,11 @@ LABEL_26:
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFNetworkProfile *)self ssid];
-  v7 = [(WFNetworkProfile *)self bssid];
+  ssid = [(WFNetworkProfile *)self ssid];
+  bssid = [(WFNetworkProfile *)self bssid];
   v8 = WFStringFromWFSecurityMode([(WFNetworkProfile *)self securityMode]);
   v9 = WFStringFromWFSecurityModeExt([(WFNetworkProfile *)self securityModeExt]);
-  v10 = [v3 stringWithFormat:@"<%@ : %p SSID:%@ BSSID:%@ security:%@ securityExt %@", v5, self, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@ : %p SSID:%@ BSSID:%@ security:%@ securityExt %@", v5, self, ssid, bssid, v8, v9];
 
   if ([(WFNetworkProfile *)self requiresPassword])
   {
@@ -1035,8 +1035,8 @@ LABEL_26:
     [v11 appendFormat:@"fetched=%d", -[WFNetworkProfile fetchedPassword](self, "fetchedPassword")];
     if ([(WFNetworkProfile *)self fetchedPassword])
     {
-      v12 = [(WFNetworkProfile *)self password];
-      [v11 appendFormat:@", valid=%d", v12 != 0];
+      password = [(WFNetworkProfile *)self password];
+      [v11 appendFormat:@", valid=%d", password != 0];
     }
 
     if ([(WFNetworkProfile *)self userProvidedPassword])
@@ -1051,8 +1051,8 @@ LABEL_26:
   [v10 appendFormat:@" auto-join=%d, auto-login=%d, data-saver=%d, privacy-proxy=%d", -[WFNetworkProfile isAutoJoinEnabled](self, "isAutoJoinEnabled"), -[WFNetworkProfile isAutoLoginEnabled](self, "isAutoLoginEnabled"), -[WFNetworkProfile isInSaveDataMode](self, "isInSaveDataMode"), -[WFNetworkProfile isPrivacyProxyEnabled](self, "isPrivacyProxyEnabled")];
   [(WFNetworkProfile *)self networkQualityResponsiveness];
   v14 = v13;
-  v15 = [(WFNetworkProfile *)self networkQualityDate];
-  [v10 appendFormat:@" responsiveness=%.3f (%@)", v14, v15];
+  networkQualityDate = [(WFNetworkProfile *)self networkQualityDate];
+  [v10 appendFormat:@" responsiveness=%.3f (%@)", v14, networkQualityDate];
 
   if ([(WFNetworkProfile *)self isHidden])
   {
@@ -1081,9 +1081,9 @@ LABEL_26:
 
   if ([(WFNetworkProfile *)self isCarPlay])
   {
-    v16 = [(WFNetworkProfile *)self carPlayType];
+    carPlayType = [(WFNetworkProfile *)self carPlayType];
     v17 = @",CarPlayUserConfigured";
-    if (v16 == 1)
+    if (carPlayType == 1)
     {
       v17 = @",CarPlayOnly";
     }
@@ -1091,20 +1091,20 @@ LABEL_26:
     [v10 appendFormat:@", %@", v17];
   }
 
-  v18 = [(WFNetworkProfile *)self originatorBundleIdentifier];
+  originatorBundleIdentifier = [(WFNetworkProfile *)self originatorBundleIdentifier];
 
-  if (v18)
+  if (originatorBundleIdentifier)
   {
-    v19 = [(WFNetworkProfile *)self originatorBundleIdentifier];
-    [v10 appendFormat:@", originatorBundle:%@", v19];
+    originatorBundleIdentifier2 = [(WFNetworkProfile *)self originatorBundleIdentifier];
+    [v10 appendFormat:@", originatorBundle:%@", originatorBundleIdentifier2];
   }
 
-  v20 = [(WFNetworkProfile *)self originatorName];
+  originatorName = [(WFNetworkProfile *)self originatorName];
 
-  if (v20)
+  if (originatorName)
   {
-    v21 = [(WFNetworkProfile *)self originatorName];
-    [v10 appendFormat:@", originatorName:%@", v21];
+    originatorName2 = [(WFNetworkProfile *)self originatorName];
+    [v10 appendFormat:@", originatorName:%@", originatorName2];
   }
 
   if ([(WFNetworkProfile *)self isDNSHeuristicsFiltered])
@@ -1123,13 +1123,13 @@ LABEL_26:
   }
 
   [v10 appendString:v22];
-  v23 = [(WFNetworkProfile *)self randomMACAddress];
+  randomMACAddress = [(WFNetworkProfile *)self randomMACAddress];
 
-  if (v23)
+  if (randomMACAddress)
   {
     v24 = MEMORY[0x277CCACA8];
-    v25 = [(WFNetworkProfile *)self randomMACAddress];
-    v26 = [v24 stringWithFormat:@" Random MAC: %@", v25];
+    randomMACAddress2 = [(WFNetworkProfile *)self randomMACAddress];
+    v26 = [v24 stringWithFormat:@" Random MAC: %@", randomMACAddress2];
     [v10 appendString:v26];
   }
 
@@ -1138,18 +1138,18 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)isEqualToNetwork:(id)a3
+- (BOOL)isEqualToNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFNetworkProfile *)self ssid];
-    v6 = [v4 ssid];
-    if ([v5 isEqualToString:v6])
+    ssid = [(WFNetworkProfile *)self ssid];
+    ssid2 = [networkCopy ssid];
+    if ([ssid isEqualToString:ssid2])
     {
-      v7 = [(WFNetworkProfile *)self securityMode];
-      v8 = v7 == [v4 securityMode];
+      securityMode = [(WFNetworkProfile *)self securityMode];
+      v8 = securityMode == [networkCopy securityMode];
     }
 
     else
@@ -1166,20 +1166,20 @@ LABEL_26:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_21;
   }
 
-  v6 = [(WFNetworkProfile *)self randomMACAddress];
-  if (!v6)
+  randomMACAddress = [(WFNetworkProfile *)self randomMACAddress];
+  if (!randomMACAddress)
   {
-    v3 = [v5 randomMACAddress];
-    if (!v3)
+    randomMACAddress2 = [equalCopy randomMACAddress];
+    if (!randomMACAddress2)
     {
       v9 = 1;
 LABEL_7:
@@ -1188,50 +1188,50 @@ LABEL_7:
     }
   }
 
-  v7 = [(WFNetworkProfile *)self randomMACAddress];
-  v8 = [v5 randomMACAddress];
-  v9 = [v7 isEqualToString:v8];
+  randomMACAddress3 = [(WFNetworkProfile *)self randomMACAddress];
+  randomMACAddress4 = [equalCopy randomMACAddress];
+  v9 = [randomMACAddress3 isEqualToString:randomMACAddress4];
 
-  if (!v6)
+  if (!randomMACAddress)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
 
-  v10 = [(WFNetworkProfile *)self ssid];
-  v11 = [v5 ssid];
-  if (![v10 isEqualToString:v11])
+  ssid = [(WFNetworkProfile *)self ssid];
+  ssid2 = [equalCopy ssid];
+  if (![ssid isEqualToString:ssid2])
   {
     goto LABEL_20;
   }
 
-  v12 = [(WFNetworkProfile *)self securityMode];
-  if (v12 != [v5 securityMode])
+  securityMode = [(WFNetworkProfile *)self securityMode];
+  if (securityMode != [equalCopy securityMode])
   {
     goto LABEL_20;
   }
 
-  v13 = [(WFNetworkProfile *)self isAutoJoinEnabled];
-  if (v13 != [v5 isAutoJoinEnabled])
+  isAutoJoinEnabled = [(WFNetworkProfile *)self isAutoJoinEnabled];
+  if (isAutoJoinEnabled != [equalCopy isAutoJoinEnabled])
   {
     goto LABEL_20;
   }
 
-  v14 = [(WFNetworkProfile *)self isAutoLoginEnabled];
-  if (v14 != [v5 isAutoLoginEnabled])
+  isAutoLoginEnabled = [(WFNetworkProfile *)self isAutoLoginEnabled];
+  if (isAutoLoginEnabled != [equalCopy isAutoLoginEnabled])
   {
     goto LABEL_20;
   }
 
-  v15 = [(WFNetworkProfile *)self isInSaveDataMode];
-  if (v15 != [v5 isInSaveDataMode])
+  isInSaveDataMode = [(WFNetworkProfile *)self isInSaveDataMode];
+  if (isInSaveDataMode != [equalCopy isInSaveDataMode])
   {
     goto LABEL_20;
   }
 
-  v16 = [(WFNetworkProfile *)self isPrivacyProxyEnabled];
-  if (v16 == [v5 isPrivacyProxyEnabled] && (v17 = -[WFNetworkProfile isHidden](self, "isHidden"), v17 == objc_msgSend(v5, "isHidden")) && (v18 = -[WFNetworkProfile carPlayType](self, "carPlayType"), v18 == objc_msgSend(v5, "carPlayType")) && (v19 = -[WFNetworkProfile isManaged](self, "isManaged"), v19 == objc_msgSend(v5, "isManaged")) && (v20 = -[WFNetworkProfile isHS20Network](self, "isHS20Network"), v20 == objc_msgSend(v5, "isHS20Network")) && (v21 = -[WFNetworkProfile isCaptive](self, "isCaptive"), v21 == objc_msgSend(v5, "isCaptive")) && (v22 = -[WFNetworkProfile isRandomMACAddressEnabled](self, "isRandomMACAddressEnabled"), v22 == objc_msgSend(v5, "isRandomMACAddressEnabled")))
+  isPrivacyProxyEnabled = [(WFNetworkProfile *)self isPrivacyProxyEnabled];
+  if (isPrivacyProxyEnabled == [equalCopy isPrivacyProxyEnabled] && (v17 = -[WFNetworkProfile isHidden](self, "isHidden"), v17 == objc_msgSend(equalCopy, "isHidden")) && (v18 = -[WFNetworkProfile carPlayType](self, "carPlayType"), v18 == objc_msgSend(equalCopy, "carPlayType")) && (v19 = -[WFNetworkProfile isManaged](self, "isManaged"), v19 == objc_msgSend(equalCopy, "isManaged")) && (v20 = -[WFNetworkProfile isHS20Network](self, "isHS20Network"), v20 == objc_msgSend(equalCopy, "isHS20Network")) && (v21 = -[WFNetworkProfile isCaptive](self, "isCaptive"), v21 == objc_msgSend(equalCopy, "isCaptive")) && (v22 = -[WFNetworkProfile isRandomMACAddressEnabled](self, "isRandomMACAddressEnabled"), v22 == objc_msgSend(equalCopy, "isRandomMACAddressEnabled")))
   {
 
     if (v9)
@@ -1255,41 +1255,41 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(WFNetworkProfile *)self ssid];
-  v4 = [v3 hash];
+  ssid = [(WFNetworkProfile *)self ssid];
+  v4 = [ssid hash];
   v5 = [(WFNetworkProfile *)self securityMode]^ v4;
   v6 = v5 ^ [(WFNetworkProfile *)self isAutoJoinEnabled];
-  v7 = [(WFNetworkProfile *)self isAutoLoginEnabled];
-  v8 = v6 ^ v7 ^ [(WFNetworkProfile *)self isInSaveDataMode];
-  v9 = [(WFNetworkProfile *)self isPrivacyProxyEnabled];
-  v10 = v9 ^ [(WFNetworkProfile *)self isHidden];
+  isAutoLoginEnabled = [(WFNetworkProfile *)self isAutoLoginEnabled];
+  v8 = v6 ^ isAutoLoginEnabled ^ [(WFNetworkProfile *)self isInSaveDataMode];
+  isPrivacyProxyEnabled = [(WFNetworkProfile *)self isPrivacyProxyEnabled];
+  v10 = isPrivacyProxyEnabled ^ [(WFNetworkProfile *)self isHidden];
   v11 = v8 ^ v10 ^ [(WFNetworkProfile *)self carPlayType];
-  v12 = [(WFNetworkProfile *)self isManaged];
-  v13 = v12 ^ [(WFNetworkProfile *)self isHS20Network];
+  isManaged = [(WFNetworkProfile *)self isManaged];
+  v13 = isManaged ^ [(WFNetworkProfile *)self isHS20Network];
   v14 = v13 ^ [(WFNetworkProfile *)self isCaptive];
   v15 = v11 ^ v14 ^ [(WFNetworkProfile *)self isRandomMACAddressEnabled];
-  v16 = [(WFNetworkProfile *)self randomMACAddress];
-  v17 = [v16 hash];
+  randomMACAddress = [(WFNetworkProfile *)self randomMACAddress];
+  v17 = [randomMACAddress hash];
 
   return v15 ^ v17;
 }
 
-+ (BOOL)networkProfileRepresentSameNetwork:(id)a3 toNetworkProfile:(id)a4
++ (BOOL)networkProfileRepresentSameNetwork:(id)network toNetworkProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 ssid];
-  v8 = [v6 ssid];
-  if ([v7 isEqualToString:v8])
+  networkCopy = network;
+  profileCopy = profile;
+  ssid = [networkCopy ssid];
+  ssid2 = [profileCopy ssid];
+  if ([ssid isEqualToString:ssid2])
   {
-    if (WFIsSecurityModeMatch([v5 securityModeExt], objc_msgSend(v6, "securityModeExt")))
+    if (WFIsSecurityModeMatch([networkCopy securityModeExt], objc_msgSend(profileCopy, "securityModeExt")))
     {
       IsEquivalentWPA = 1;
     }
 
     else
     {
-      IsEquivalentWPA = WFSecurityModeIsEquivalentWPA([v5 securityMode], objc_msgSend(v6, "securityMode"));
+      IsEquivalentWPA = WFSecurityModeIsEquivalentWPA([networkCopy securityMode], objc_msgSend(profileCopy, "securityMode"));
     }
   }
 
@@ -1313,11 +1313,11 @@ LABEL_22:
 
   else
   {
-    v4 = [(WFNetworkProfile *)self enterpriseProfile];
-    v5 = v4;
-    if (v4)
+    enterpriseProfile = [(WFNetworkProfile *)self enterpriseProfile];
+    v5 = enterpriseProfile;
+    if (enterpriseProfile)
     {
-      v6 = [v4 objectForKey:@"EAPClientConfiguration"];
+      v6 = [enterpriseProfile objectForKey:@"EAPClientConfiguration"];
       v7 = v6;
       if (v6 && [v6 objectForKey:@"TLSIdentityHandle"])
       {
@@ -1331,7 +1331,7 @@ LABEL_22:
           v15 = 1024;
           v16 = SecIdentity;
           v17 = 2112;
-          v18 = self;
+          selfCopy = self;
           _os_log_impl(&dword_273ECD000, v11, v12, "%s: failed to create TLS identity (err %d) %@", buf, 0x1Cu);
         }
 
@@ -1386,15 +1386,15 @@ LABEL_22:
 - (BOOL)shouldBeRemovedIfApplicationIsNoLongerInstalled
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(WFNetworkProfile *)self originatorBundleIdentifier];
+  originatorBundleIdentifier = [(WFNetworkProfile *)self originatorBundleIdentifier];
 
-  if (!v3)
+  if (!originatorBundleIdentifier)
   {
     goto LABEL_16;
   }
 
-  v4 = [(WFNetworkProfile *)self originatorBundleIdentifier];
-  v5 = [v4 rangeOfString:@"com.apple" options:1];
+  originatorBundleIdentifier2 = [(WFNetworkProfile *)self originatorBundleIdentifier];
+  v5 = [originatorBundleIdentifier2 rangeOfString:@"com.apple" options:1];
 
   if (!v5)
   {
@@ -1410,9 +1410,9 @@ LABEL_22:
     goto LABEL_15;
   }
 
-  v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v7 = [(WFNetworkProfile *)self originatorBundleIdentifier];
-  v8 = [v6 applicationIsInstalled:v7];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  originatorBundleIdentifier3 = [(WFNetworkProfile *)self originatorBundleIdentifier];
+  v8 = [defaultWorkspace applicationIsInstalled:originatorBundleIdentifier3];
 
   if (v8)
   {
@@ -1423,7 +1423,7 @@ LABEL_22:
       v11 = v11;
       if (os_log_type_enabled(v11, v13))
       {
-        v14 = [(WFNetworkProfile *)self originatorBundleIdentifier];
+        originatorBundleIdentifier4 = [(WFNetworkProfile *)self originatorBundleIdentifier];
         *v17 = 136315650;
         OUTLINED_FUNCTION_0_9();
         v18 = v15;

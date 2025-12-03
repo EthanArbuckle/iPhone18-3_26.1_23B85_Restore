@@ -1,22 +1,22 @@
 @interface ABPKMLImageData
-- (ABPKMLImageData)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4 abpkDeviceOrientation:(int64_t)a5 preprocessingParameters:(id)a6;
+- (ABPKMLImageData)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp abpkDeviceOrientation:(int64_t)orientation preprocessingParameters:(id)parameters;
 - (void)dealloc;
 @end
 
 @implementation ABPKMLImageData
 
-- (ABPKMLImageData)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4 abpkDeviceOrientation:(int64_t)a5 preprocessingParameters:(id)a6
+- (ABPKMLImageData)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp abpkDeviceOrientation:(int64_t)orientation preprocessingParameters:(id)parameters
 {
-  v11 = a6;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = ABPKMLImageData;
   v12 = [(ABPKMLImageData *)&v14 init];
   if (v12)
   {
-    v12->_pixelBuffer = CVPixelBufferRetain(a3);
-    v12->_timestamp = a4;
-    v12->_abpkDeviceOrientation = a5;
-    objc_storeStrong(&v12->_preprocessingParams, a6);
+    v12->_pixelBuffer = CVPixelBufferRetain(buffer);
+    v12->_timestamp = timestamp;
+    v12->_abpkDeviceOrientation = orientation;
+    objc_storeStrong(&v12->_preprocessingParams, parameters);
   }
 
   return v12;

@@ -1,83 +1,83 @@
 @interface _UISystemAppearanceManager
 - (UIWindow)previousWindowDrivingSystemAppearance;
-- (_UISystemAppearanceManager)initWithScene:(id)a3;
+- (_UISystemAppearanceManager)initWithScene:(id)scene;
 - (id)_findWindowDrivingSystemAppearance;
-- (void)_handleWindowVisibilityNotification:(id)a3;
-- (void)_logOrientationPreferencesChangeWithOldSupportedOrientations:(unint64_t)a3 newSupportedOrientations:(unint64_t)a4 oldPreferredOrientation:(int64_t)a5 newPreferredOrientation:(int64_t)a6 animationSettings:(id)a7 fenced:(BOOL)a8;
-- (void)_setScene:(id)a3;
+- (void)_handleWindowVisibilityNotification:(id)notification;
+- (void)_logOrientationPreferencesChangeWithOldSupportedOrientations:(unint64_t)orientations newSupportedOrientations:(unint64_t)supportedOrientations oldPreferredOrientation:(int64_t)orientation newPreferredOrientation:(int64_t)preferredOrientation animationSettings:(id)settings fenced:(BOOL)fenced;
+- (void)_setScene:(id)scene;
 - (void)dealloc;
 - (void)updateHomeIndicatorAutoHidden;
 - (void)updateMultitaskingDragExclusionRects;
 - (void)updateScreenEdgesDeferringSystemGestures;
 - (void)updateWhitePointAdaptivityStyle;
-- (void)window:(id)a3 didUpdateSupportedOrientations:(unint64_t)a4 preferredOrientation:(int64_t)a5 prefersAnimation:(BOOL)a6;
+- (void)window:(id)window didUpdateSupportedOrientations:(unint64_t)orientations preferredOrientation:(int64_t)orientation prefersAnimation:(BOOL)animation;
 @end
 
 @implementation _UISystemAppearanceManager
 
 - (void)updateHomeIndicatorAutoHidden
 {
-  v3 = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
-  v4 = [v3 rootViewController];
-  v5 = [v4 _effectiveHomeIndicatorAutoHiddenViewController];
+  _findWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
+  rootViewController = [_findWindowDrivingSystemAppearance rootViewController];
+  _effectiveHomeIndicatorAutoHiddenViewController = [rootViewController _effectiveHomeIndicatorAutoHiddenViewController];
 
-  if (v5)
+  if (_effectiveHomeIndicatorAutoHiddenViewController)
   {
-    v6 = [v5 prefersHomeIndicatorAutoHidden];
+    prefersHomeIndicatorAutoHidden = [_effectiveHomeIndicatorAutoHiddenViewController prefersHomeIndicatorAutoHidden];
   }
 
   else
   {
-    v6 = 0;
+    prefersHomeIndicatorAutoHidden = 0;
   }
 
-  self->_homeIndicatorAutoHidden = v6;
+  self->_homeIndicatorAutoHidden = prefersHomeIndicatorAutoHidden;
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v7 = [(UIScene *)self->_windowScene _FBSScene];
+    _FBSScene = [(UIScene *)self->_windowScene _FBSScene];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59___UISystemAppearanceManager_updateHomeIndicatorAutoHidden__block_invoke;
     v8[3] = &unk_1E70F44D8;
     v8[4] = self;
-    [v7 updateUIClientSettingsWithBlock:v8];
+    [_FBSScene updateUIClientSettingsWithBlock:v8];
   }
 }
 
 - (void)updateScreenEdgesDeferringSystemGestures
 {
-  v3 = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
+  _findWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
   if ((dyld_program_sdk_at_least() & 1) != 0 || (-[UIWindowScene statusBarManager](self->_windowScene, "statusBarManager"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isStatusBarHidden], v4, (v5 & 1) == 0))
   {
-    v7 = [v3 rootViewController];
-    v8 = [v7 _effectiveScreenEdgesDeferringSystemGesturesViewController];
+    rootViewController = [_findWindowDrivingSystemAppearance rootViewController];
+    _effectiveScreenEdgesDeferringSystemGesturesViewController = [rootViewController _effectiveScreenEdgesDeferringSystemGesturesViewController];
 
-    if (v8)
+    if (_effectiveScreenEdgesDeferringSystemGesturesViewController)
     {
-      v6 = [v8 preferredScreenEdgesDeferringSystemGestures];
+      preferredScreenEdgesDeferringSystemGestures = [_effectiveScreenEdgesDeferringSystemGesturesViewController preferredScreenEdgesDeferringSystemGestures];
     }
 
     else
     {
-      v6 = 0;
+      preferredScreenEdgesDeferringSystemGestures = 0;
     }
   }
 
   else
   {
-    v6 = 15;
+    preferredScreenEdgesDeferringSystemGestures = 15;
   }
 
-  self->_screenEdgesDeferringSystemGestures = v6;
+  self->_screenEdgesDeferringSystemGestures = preferredScreenEdgesDeferringSystemGestures;
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v9 = [(UIScene *)self->_windowScene _FBSScene];
+    _FBSScene = [(UIScene *)self->_windowScene _FBSScene];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __70___UISystemAppearanceManager_updateScreenEdgesDeferringSystemGestures__block_invoke;
     v10[3] = &__block_descriptor_40_e49_v16__0__UIMutableApplicationSceneClientSettings_8l;
-    v10[4] = v6;
-    [v9 updateUIClientSettingsWithBlock:v10];
+    v10[4] = preferredScreenEdgesDeferringSystemGestures;
+    [_FBSScene updateUIClientSettingsWithBlock:v10];
   }
 }
 
@@ -90,21 +90,21 @@
 
 - (void)updateWhitePointAdaptivityStyle
 {
-  v3 = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
-  v4 = [v3 rootViewController];
-  v5 = [v4 _effectiveWhitePointAdaptivityStyleViewController];
+  _findWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
+  rootViewController = [_findWindowDrivingSystemAppearance rootViewController];
+  _effectiveWhitePointAdaptivityStyleViewController = [rootViewController _effectiveWhitePointAdaptivityStyleViewController];
 
-  if (v5)
+  if (_effectiveWhitePointAdaptivityStyleViewController)
   {
-    v6 = [v5 preferredWhitePointAdaptivityStyle];
+    preferredWhitePointAdaptivityStyle = [_effectiveWhitePointAdaptivityStyleViewController preferredWhitePointAdaptivityStyle];
   }
 
   else
   {
-    v6 = 0;
+    preferredWhitePointAdaptivityStyle = 0;
   }
 
-  self->_whitePointAdaptivityStyle = v6;
+  self->_whitePointAdaptivityStyle = preferredWhitePointAdaptivityStyle;
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
     windowScene = self->_windowScene;
@@ -121,9 +121,9 @@
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = [UIWindow _findWindowForControllingOverallAppearanceInWindowScene:self->_windowScene];
-  v4 = [(_UISystemAppearanceManager *)self previousWindowDrivingSystemAppearance];
+  previousWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self previousWindowDrivingSystemAppearance];
 
-  if (v3 != v4)
+  if (v3 != previousWindowDrivingSystemAppearance)
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("Orientation", &_findWindowDrivingSystemAppearance___s_category);
     if (*CategoryCachedImpl)
@@ -147,14 +147,14 @@
         }
 
         v14 = v13;
-        v15 = [(UIScene *)self->_windowScene _persistenceIdentifier];
-        v16 = [(_UISystemAppearanceManager *)self previousWindowDrivingSystemAppearance];
-        if (v16)
+        _persistenceIdentifier = [(UIScene *)self->_windowScene _persistenceIdentifier];
+        previousWindowDrivingSystemAppearance2 = [(_UISystemAppearanceManager *)self previousWindowDrivingSystemAppearance];
+        if (previousWindowDrivingSystemAppearance2)
         {
           v17 = MEMORY[0x1E696AEC0];
           v18 = objc_opt_class();
           v19 = NSStringFromClass(v18);
-          v20 = [v17 stringWithFormat:@"<%@: %p>", v19, v16];
+          v20 = [v17 stringWithFormat:@"<%@: %p>", v19, previousWindowDrivingSystemAppearance2];
         }
 
         else
@@ -180,7 +180,7 @@
         *buf = 138413058;
         v28 = v14;
         v29 = 2112;
-        v30 = v15;
+        v30 = _persistenceIdentifier;
         v31 = 2112;
         v32 = v21;
         v33 = 2112;
@@ -195,16 +195,16 @@
   return v3;
 }
 
-- (_UISystemAppearanceManager)initWithScene:(id)a3
+- (_UISystemAppearanceManager)initWithScene:(id)scene
 {
-  v5 = a3;
-  if (v5)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"_UISystemAppearanceManager.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UISystemAppearanceManager.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
     }
   }
 
@@ -214,12 +214,12 @@
   v7 = v6;
   if (v6)
   {
-    [(_UISystemAppearanceManager *)v6 _setScene:v5];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__handleWindowVisibilityNotification_ name:@"UIWindowDidBecomeVisibleNotification" object:0];
+    [(_UISystemAppearanceManager *)v6 _setScene:sceneCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleWindowVisibilityNotification_ name:@"UIWindowDidBecomeVisibleNotification" object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v7 selector:sel__handleWindowVisibilityNotification_ name:@"UIWindowDidBecomeHiddenNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleWindowVisibilityNotification_ name:@"UIWindowDidBecomeHiddenNotification" object:0];
   }
 
   return v7;
@@ -227,36 +227,36 @@
 
 - (void)dealloc
 {
-  v3 = [(_UISystemAppearanceManager *)self stateCaptureToken];
-  [v3 invalidate];
+  stateCaptureToken = [(_UISystemAppearanceManager *)self stateCaptureToken];
+  [stateCaptureToken invalidate];
 
   v4.receiver = self;
   v4.super_class = _UISystemAppearanceManager;
   [(_UISystemAppearanceManager *)&v4 dealloc];
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v6 = a3;
-  if (v6)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"_UISystemAppearanceManager.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UISystemAppearanceManager.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"scene == nil || [scene isKindOfClass:[UIWindowScene class]]"}];
     }
   }
 
-  objc_storeStrong(&self->_windowScene, a3);
+  objc_storeStrong(&self->_windowScene, scene);
   objc_storeWeak(&self->_previousWindowDrivingSystemAppearance, 0);
-  v7 = [(_UISystemAppearanceManager *)self stateCaptureToken];
-  [v7 invalidate];
+  stateCaptureToken = [(_UISystemAppearanceManager *)self stateCaptureToken];
+  [stateCaptureToken invalidate];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(UIScene *)self->_windowScene session];
-  v10 = [v9 persistentIdentifier];
-  v11 = [v8 stringWithFormat:@"UIKit - UIWindowSceneOrientationState - %@", v10];
+  session = [(UIScene *)self->_windowScene session];
+  persistentIdentifier = [session persistentIdentifier];
+  v11 = [v8 stringWithFormat:@"UIKit - UIWindowSceneOrientationState - %@", persistentIdentifier];
 
   objc_initWeak(&location, self->_windowScene);
   v12 = MEMORY[0x1E69E96A0];
@@ -269,20 +269,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_handleWindowVisibilityNotification:(id)a3
+- (void)_handleWindowVisibilityNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(_UISystemAppearanceManager *)self windowScene];
-  v19 = v4;
-  v6 = [v19 name];
-  if ([v6 isEqualToString:@"UIWindowDidBecomeVisibleNotification"])
+  notificationCopy = notification;
+  windowScene = [(_UISystemAppearanceManager *)self windowScene];
+  v19 = notificationCopy;
+  name = [v19 name];
+  if ([name isEqualToString:@"UIWindowDidBecomeVisibleNotification"])
   {
   }
 
   else
   {
-    v7 = [v19 name];
-    v8 = [v7 isEqualToString:@"UIWindowDidBecomeHiddenNotification"];
+    name2 = [v19 name];
+    v8 = [name2 isEqualToString:@"UIWindowDidBecomeHiddenNotification"];
 
     if (!v8)
     {
@@ -292,7 +292,7 @@ LABEL_10:
     }
   }
 
-  v9 = [v19 object];
+  object = [v19 object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -301,17 +301,17 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [v19 object];
-  v12 = [v11 windowScene];
-  v13 = v5;
+  object2 = [v19 object];
+  windowScene2 = [object2 windowScene];
+  v13 = windowScene;
   v14 = v13;
-  if (v12 == v13)
+  if (windowScene2 == v13)
   {
   }
 
   else
   {
-    if (!v13 || !v12)
+    if (!v13 || !windowScene2)
     {
 
 LABEL_14:
@@ -319,7 +319,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v15 = [v12 isEqual:v13];
+    v15 = [windowScene2 isEqual:v13];
 
     if (!v15)
     {
@@ -327,17 +327,17 @@ LABEL_14:
     }
   }
 
-  v16 = v11;
+  v16 = object2;
 LABEL_15:
 
 LABEL_16:
   if (v16)
   {
-    v17 = [(_UISystemAppearanceManager *)self previousWindowDrivingSystemAppearance];
-    v18 = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
-    if (v17 != v18)
+    previousWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self previousWindowDrivingSystemAppearance];
+    _findWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
+    if (previousWindowDrivingSystemAppearance != _findWindowDrivingSystemAppearance)
     {
-      [(_UISystemAppearanceManager *)self _windowDrivingSystemAppearanceDidChange:v18];
+      [(_UISystemAppearanceManager *)self _windowDrivingSystemAppearanceDidChange:_findWindowDrivingSystemAppearance];
     }
   }
 }
@@ -345,17 +345,17 @@ LABEL_16:
 - (void)updateMultitaskingDragExclusionRects
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
-  v4 = [v3 rootViewController];
-  v5 = [v4 _effectiveViewControllerForMultitaskingDragExclusionRects];
+  _findWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
+  rootViewController = [_findWindowDrivingSystemAppearance rootViewController];
+  _effectiveViewControllerForMultitaskingDragExclusionRects = [rootViewController _effectiveViewControllerForMultitaskingDragExclusionRects];
 
-  v6 = [v5 _multitaskingDragExclusionRects];
-  v7 = [MEMORY[0x1E695DF70] array];
+  _multitaskingDragExclusionRects = [_effectiveViewControllerForMultitaskingDragExclusionRects _multitaskingDragExclusionRects];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = v6;
+  v8 = _multitaskingDragExclusionRects;
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v9)
   {
@@ -376,16 +376,16 @@ LABEL_16:
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        v21 = [v5 viewIfLoaded];
-        [v3 convertRect:v21 fromView:{v14, v16, v18, v20}];
+        viewIfLoaded = [_effectiveViewControllerForMultitaskingDragExclusionRects viewIfLoaded];
+        [_findWindowDrivingSystemAppearance convertRect:viewIfLoaded fromView:{v14, v16, v18, v20}];
         v23 = v22;
         v25 = v24;
         v27 = v26;
         v29 = v28;
 
-        [v3 _convertRectToSceneReferenceSpace:{v23, v25, v27, v29}];
+        [_findWindowDrivingSystemAppearance _convertRectToSceneReferenceSpace:{v23, v25, v27, v29}];
         v30 = [MEMORY[0x1E696B098] valueWithCGRect:?];
-        [v7 addObject:v30];
+        [array addObject:v30];
 
         ++v12;
       }
@@ -397,7 +397,7 @@ LABEL_16:
     while (v10);
   }
 
-  v31 = [v7 copy];
+  v31 = [array copy];
   multitaskingDragExclusionRects = self->_multitaskingDragExclusionRects;
   self->_multitaskingDragExclusionRects = v31;
 
@@ -413,33 +413,33 @@ LABEL_16:
   }
 }
 
-- (void)window:(id)a3 didUpdateSupportedOrientations:(unint64_t)a4 preferredOrientation:(int64_t)a5 prefersAnimation:(BOOL)a6
+- (void)window:(id)window didUpdateSupportedOrientations:(unint64_t)orientations preferredOrientation:(int64_t)orientation prefersAnimation:(BOOL)animation
 {
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(_UISystemAppearanceManager *)self windowScene];
+  windowCopy = window;
+  windowScene = [(_UISystemAppearanceManager *)self windowScene];
 
-  if (v11)
+  if (windowScene)
   {
-    v12 = [v10 windowScene];
-    v13 = [(_UISystemAppearanceManager *)self windowScene];
+    windowScene2 = [windowCopy windowScene];
+    windowScene3 = [(_UISystemAppearanceManager *)self windowScene];
 
-    v46 = a4;
-    if (v12 != v13)
+    orientationsCopy = orientations;
+    if (windowScene2 != windowScene3)
     {
       if (os_variant_has_internal_diagnostics())
       {
         v39 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
         {
-          v40 = [(_UISystemAppearanceManager *)self windowScene];
-          v41 = [v10 windowScene];
+          windowScene4 = [(_UISystemAppearanceManager *)self windowScene];
+          windowScene5 = [windowCopy windowScene];
           *buf = 138412802;
-          v60 = v10;
+          v60 = windowCopy;
           v61 = 2112;
-          v62 = v40;
+          v62 = windowScene4;
           v63 = 2112;
-          v64 = v41;
+          v64 = windowScene5;
           _os_log_fault_impl(&dword_188A29000, v39, OS_LOG_TYPE_FAULT, "Window (%@) with unexpected windowScene passed to windowDidUpdateOrientationPreferences. Expected: %@, Received: %@", buf, 0x20u);
         }
       }
@@ -450,36 +450,36 @@ LABEL_16:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
           v36 = v35;
-          v37 = [(_UISystemAppearanceManager *)self windowScene];
-          v38 = [v10 windowScene];
+          windowScene6 = [(_UISystemAppearanceManager *)self windowScene];
+          windowScene7 = [windowCopy windowScene];
           *buf = 138412802;
-          v60 = v10;
+          v60 = windowCopy;
           v61 = 2112;
-          v62 = v37;
+          v62 = windowScene6;
           v63 = 2112;
-          v64 = v38;
+          v64 = windowScene7;
           _os_log_impl(&dword_188A29000, v36, OS_LOG_TYPE_ERROR, "Window (%@) with unexpected windowScene passed to windowDidUpdateOrientationPreferences. Expected: %@, Received: %@", buf, 0x20u);
         }
       }
     }
 
-    v14 = [(UIWindowScene *)self->_windowScene _windowOrientationPreferencesObserver];
-    v15 = v14;
-    if (v14)
+    _windowOrientationPreferencesObserver = [(UIWindowScene *)self->_windowScene _windowOrientationPreferencesObserver];
+    v15 = _windowOrientationPreferencesObserver;
+    if (_windowOrientationPreferencesObserver)
     {
-      (*(v14 + 16))(v14, v10, a4, a5);
+      (*(_windowOrientationPreferencesObserver + 16))(_windowOrientationPreferencesObserver, windowCopy, orientations, orientation);
     }
 
-    v16 = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
-    v17 = v10;
-    v18 = v16;
+    _findWindowDrivingSystemAppearance = [(_UISystemAppearanceManager *)self _findWindowDrivingSystemAppearance];
+    v17 = windowCopy;
+    v18 = _findWindowDrivingSystemAppearance;
     v19 = v18;
     if (v18 == v17)
     {
-      v45 = a6;
+      animationCopy2 = animation;
 
-      v20 = a5;
-      v22 = a4;
+      orientationCopy2 = orientation;
+      orientationsCopy3 = orientations;
     }
 
     else
@@ -493,38 +493,38 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v45 = a6;
-      v20 = a5;
+      animationCopy2 = animation;
+      orientationCopy2 = orientation;
       v21 = [v17 isEqual:v18];
 
-      v22 = a4;
+      orientationsCopy3 = orientations;
       if (!v21)
       {
         goto LABEL_19;
       }
     }
 
-    v23 = [(UIScene *)self->_windowScene _canDynamicallySpecifySupportedInterfaceOrientations];
+    _canDynamicallySpecifySupportedInterfaceOrientations = [(UIScene *)self->_windowScene _canDynamicallySpecifySupportedInterfaceOrientations];
     supportedInterfaceOrientations = self->_supportedInterfaceOrientations;
     preferredInterfaceOrientation = self->_preferredInterfaceOrientation;
-    v26 = supportedInterfaceOrientations != v22;
-    v27 = preferredInterfaceOrientation != v20;
-    if (v23)
+    v26 = supportedInterfaceOrientations != orientationsCopy3;
+    v27 = preferredInterfaceOrientation != orientationCopy2;
+    if (_canDynamicallySpecifySupportedInterfaceOrientations)
     {
-      v43 = supportedInterfaceOrientations != v22;
-      v44 = v23;
-      v42 = preferredInterfaceOrientation != v20;
+      v43 = supportedInterfaceOrientations != orientationsCopy3;
+      v44 = _canDynamicallySpecifySupportedInterfaceOrientations;
+      v42 = preferredInterfaceOrientation != orientationCopy2;
       [(_UISystemAppearanceManager *)self windowScene];
-      v29 = v28 = v20;
-      v30 = [v29 _interfaceOrientation];
-      v31 = [(_UISystemAppearanceManager *)self windowScene];
-      v32 = v30 != [v31 _interfaceOrientationForSupportedOrientations:v46 preferredOrientation:v28];
+      v29 = v28 = orientationCopy2;
+      _interfaceOrientation = [v29 _interfaceOrientation];
+      windowScene8 = [(_UISystemAppearanceManager *)self windowScene];
+      v32 = _interfaceOrientation != [windowScene8 _interfaceOrientationForSupportedOrientations:orientationsCopy preferredOrientation:v28];
 
       v27 = v42;
       v26 = v43;
-      LOBYTE(v23) = v44;
-      v20 = v28;
-      v22 = v46;
+      LOBYTE(_canDynamicallySpecifySupportedInterfaceOrientations) = v44;
+      orientationCopy2 = v28;
+      orientationsCopy3 = orientationsCopy;
     }
 
     else
@@ -532,10 +532,10 @@ LABEL_19:
       v32 = 0;
     }
 
-    self->_supportedInterfaceOrientations = v22;
-    self->_preferredInterfaceOrientation = v20;
-    v33 = v20;
-    if (supportedInterfaceOrientations == v22 && preferredInterfaceOrientation == v20)
+    self->_supportedInterfaceOrientations = orientationsCopy3;
+    self->_preferredInterfaceOrientation = orientationCopy2;
+    v33 = orientationCopy2;
+    if (supportedInterfaceOrientations == orientationsCopy3 && preferredInterfaceOrientation == orientationCopy2)
     {
       goto LABEL_19;
     }
@@ -547,12 +547,12 @@ LABEL_19:
     v47[3] = &unk_1E70FA3B8;
     v54 = v26;
     v55 = v27;
-    v50 = v22;
+    v50 = orientationsCopy3;
     v51 = v33;
-    v56 = v23;
-    v57 = v45;
+    v56 = _canDynamicallySpecifySupportedInterfaceOrientations;
+    v57 = animationCopy2;
     v48 = v17;
-    v49 = self;
+    selfCopy = self;
     v52 = supportedInterfaceOrientations;
     v53 = preferredInterfaceOrientation;
     v58 = v32;
@@ -564,27 +564,27 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_logOrientationPreferencesChangeWithOldSupportedOrientations:(unint64_t)a3 newSupportedOrientations:(unint64_t)a4 oldPreferredOrientation:(int64_t)a5 newPreferredOrientation:(int64_t)a6 animationSettings:(id)a7 fenced:(BOOL)a8
+- (void)_logOrientationPreferencesChangeWithOldSupportedOrientations:(unint64_t)orientations newSupportedOrientations:(unint64_t)supportedOrientations oldPreferredOrientation:(int64_t)orientation newPreferredOrientation:(int64_t)preferredOrientation animationSettings:(id)settings fenced:(BOOL)fenced
 {
   v50 = *MEMORY[0x1E69E9840];
-  v13 = a7;
-  v14 = [MEMORY[0x1E695DF70] array];
-  if (a3 != a4)
+  settingsCopy = settings;
+  array = [MEMORY[0x1E695DF70] array];
+  if (orientations != supportedOrientations)
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = BSInterfaceOrientationMaskDescription();
     v17 = BSInterfaceOrientationMaskDescription();
     v18 = [v15 stringWithFormat:@"%@ -> %@", v16, v17];
-    [v14 addObject:v18];
+    [array addObject:v18];
   }
 
-  if (a5 != a6)
+  if (orientation != preferredOrientation)
   {
     v19 = MEMORY[0x1E696AEC0];
     v20 = BSInterfaceOrientationDescription();
     v21 = BSInterfaceOrientationDescription();
     v22 = [v19 stringWithFormat:@"%@ -> %@", v20, v21];
-    [v14 addObject:v22];
+    [array addObject:v22];
   }
 
   if (os_variant_has_internal_diagnostics())
@@ -592,20 +592,20 @@ LABEL_20:
     v34 = MEMORY[0x1E696AEC0];
     v35 = NSStringFromBOOL();
     v36 = [v34 stringWithFormat:@"fenced=%@", v35];
-    [v14 addObject:v36];
+    [array addObject:v36];
 
     v37 = MEMORY[0x1E696AEC0];
-    [v13 duration];
+    [settingsCopy duration];
     v39 = [v37 stringWithFormat:@"animationDuration=%0.4f", v38];
-    [v14 addObject:v39];
+    [array addObject:v39];
 
-    [v13 speed];
+    [settingsCopy speed];
     if (v40 != 1.0)
     {
       v41 = MEMORY[0x1E696AEC0];
-      [v13 speed];
+      [settingsCopy speed];
       v43 = [v41 stringWithFormat:@"animationSpeed=%0.4f", v42];
-      [v14 addObject:v43];
+      [array addObject:v43];
     }
   }
 
@@ -631,12 +631,12 @@ LABEL_20:
     }
 
     v31 = v29;
-    v32 = [(UIScene *)v30 _persistenceIdentifier];
-    v33 = [v14 componentsJoinedByString:@" "];;
+    _persistenceIdentifier = [(UIScene *)v30 _persistenceIdentifier];
+    v33 = [array componentsJoinedByString:@" "];;
     *buf = 138412802;
     v45 = v29;
     v46 = 2112;
-    v47 = v32;
+    v47 = _persistenceIdentifier;
     v48 = 2112;
     v49 = v33;
     _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_DEFAULT, "%@ (%@) Scene updated orientation preferences: %@", buf, 0x20u);

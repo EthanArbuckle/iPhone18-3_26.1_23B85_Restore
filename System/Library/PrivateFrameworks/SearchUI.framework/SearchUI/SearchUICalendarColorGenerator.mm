@@ -1,23 +1,23 @@
 @interface SearchUICalendarColorGenerator
-- (void)generateUIColorsIsDark:(BOOL)a3 completionHandler:(id)a4;
+- (void)generateUIColorsIsDark:(BOOL)dark completionHandler:(id)handler;
 @end
 
 @implementation SearchUICalendarColorGenerator
 
-- (void)generateUIColorsIsDark:(BOOL)a3 completionHandler:(id)a4
+- (void)generateUIColorsIsDark:(BOOL)dark completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(SearchUIColorGenerator *)self sfColor];
-  v8 = [v7 eventIdentifier];
+  handlerCopy = handler;
+  sfColor = [(SearchUIColorGenerator *)self sfColor];
+  eventIdentifier = [sfColor eventIdentifier];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__SearchUICalendarColorGenerator_generateUIColorsIsDark_completionHandler___block_invoke;
   v10[3] = &unk_1E85B4428;
-  v12 = a3;
-  v11 = v6;
-  v9 = v6;
-  [SearchUICalendarStore fetchCalendarItemFromEventIdentifier:v8 completionHandler:v10];
+  darkCopy = dark;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [SearchUICalendarStore fetchCalendarItemFromEventIdentifier:eventIdentifier completionHandler:v10];
 }
 
 void __75__SearchUICalendarColorGenerator_generateUIColorsIsDark_completionHandler___block_invoke(uint64_t a1, void *a2)

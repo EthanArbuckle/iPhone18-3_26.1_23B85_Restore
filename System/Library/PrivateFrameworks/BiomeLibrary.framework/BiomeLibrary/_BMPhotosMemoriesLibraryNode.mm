@@ -17,50 +17,50 @@
 + (id)storeConfigurationForNotification;
 + (id)storeConfigurationForShared;
 + (id)storeConfigurationForViewed;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMPhotosMemoriesLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AddToMemories"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AddToMemories"])
   {
-    v5 = [a1 AddToMemories];
+    addToMemories = [self AddToMemories];
 LABEL_13:
-    v6 = v5;
+    v6 = addToMemories;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"Curation"])
+  if ([nameCopy isEqualToString:@"Curation"])
   {
-    v5 = [a1 Curation];
+    addToMemories = [self Curation];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"MoviePlayed"])
+  if ([nameCopy isEqualToString:@"MoviePlayed"])
   {
-    v5 = [a1 MoviePlayed];
+    addToMemories = [self MoviePlayed];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Notification"])
+  if ([nameCopy isEqualToString:@"Notification"])
   {
-    v5 = [a1 Notification];
+    addToMemories = [self Notification];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Shared"])
+  if ([nameCopy isEqualToString:@"Shared"])
   {
-    v5 = [a1 Shared];
+    addToMemories = [self Shared];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Viewed"])
+  if ([nameCopy isEqualToString:@"Viewed"])
   {
-    v5 = [a1 Viewed];
+    addToMemories = [self Viewed];
     goto LABEL_13;
   }
 
@@ -98,13 +98,13 @@ LABEL_14:
 
 + (id)configurationForViewed
 {
-  v3 = [a1 storeConfigurationForViewed];
-  v4 = [a1 syncPolicyForViewed];
+  storeConfigurationForViewed = [self storeConfigurationForViewed];
+  syncPolicyForViewed = [self syncPolicyForViewed];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"0CA97DAE-A48B-4609-91A6-3CC17E5ACB26"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Viewed" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Viewed" eventClass:objc_opt_class() storeConfig:storeConfigurationForViewed syncPolicy:syncPolicyForViewed legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -119,13 +119,13 @@ LABEL_14:
 
 + (id)configurationForShared
 {
-  v3 = [a1 storeConfigurationForShared];
-  v4 = [a1 syncPolicyForShared];
+  storeConfigurationForShared = [self storeConfigurationForShared];
+  syncPolicyForShared = [self syncPolicyForShared];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1E95A2A3-CA17-4DBE-9B5C-E9BD6C6855E4"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Shared" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Shared" eventClass:objc_opt_class() storeConfig:storeConfigurationForShared syncPolicy:syncPolicyForShared legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -140,13 +140,13 @@ LABEL_14:
 
 + (id)configurationForNotification
 {
-  v3 = [a1 storeConfigurationForNotification];
-  v4 = [a1 syncPolicyForNotification];
+  storeConfigurationForNotification = [self storeConfigurationForNotification];
+  syncPolicyForNotification = [self syncPolicyForNotification];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C54C6758-8994-46F6-B4DC-566D394692E7"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Notification" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Notification" eventClass:objc_opt_class() storeConfig:storeConfigurationForNotification syncPolicy:syncPolicyForNotification legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -161,13 +161,13 @@ LABEL_14:
 
 + (id)configurationForMoviePlayed
 {
-  v3 = [a1 storeConfigurationForMoviePlayed];
-  v4 = [a1 syncPolicyForMoviePlayed];
+  storeConfigurationForMoviePlayed = [self storeConfigurationForMoviePlayed];
+  syncPolicyForMoviePlayed = [self syncPolicyForMoviePlayed];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2F0273EF-7A8E-49E7-8646-FB3FEEDD780E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.MoviePlayed" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.MoviePlayed" eventClass:objc_opt_class() storeConfig:storeConfigurationForMoviePlayed syncPolicy:syncPolicyForMoviePlayed legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -182,13 +182,13 @@ LABEL_14:
 
 + (id)configurationForCuration
 {
-  v3 = [a1 storeConfigurationForCuration];
-  v4 = [a1 syncPolicyForCuration];
+  storeConfigurationForCuration = [self storeConfigurationForCuration];
+  syncPolicyForCuration = [self syncPolicyForCuration];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"0624885B-3656-4879-AC15-A56AD03D690B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Curation" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.Curation" eventClass:objc_opt_class() storeConfig:storeConfigurationForCuration syncPolicy:syncPolicyForCuration legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -203,13 +203,13 @@ LABEL_14:
 
 + (id)configurationForAddToMemories
 {
-  v3 = [a1 storeConfigurationForAddToMemories];
-  v4 = [a1 syncPolicyForAddToMemories];
+  storeConfigurationForAddToMemories = [self storeConfigurationForAddToMemories];
+  syncPolicyForAddToMemories = [self syncPolicyForAddToMemories];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"985AAF74-3CCA-4F43-BC58-0329AEADB604"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.AddToMemories" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Photos.Memories.AddToMemories" eventClass:objc_opt_class() storeConfig:storeConfigurationForAddToMemories syncPolicy:syncPolicyForAddToMemories legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.mobileslideshow" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -225,7 +225,7 @@ LABEL_14:
 + (id)Viewed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForViewed];
+  configurationForViewed = [self configurationForViewed];
   v3 = +[BMPhotosMemoriesViewed columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -237,7 +237,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.Memories.Viewed" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Viewed" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Viewed" schema:v9 configuration:configurationForViewed];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -247,7 +247,7 @@ LABEL_14:
 + (id)Shared
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForShared];
+  configurationForShared = [self configurationForShared];
   v3 = +[BMPhotosMemoriesShared columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -259,7 +259,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.Memories.Shared" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Shared" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Shared" schema:v9 configuration:configurationForShared];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -269,7 +269,7 @@ LABEL_14:
 + (id)Notification
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNotification];
+  configurationForNotification = [self configurationForNotification];
   v3 = +[BMPhotosNotification columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -281,7 +281,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.Memories.Notification" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Notification" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Notification" schema:v9 configuration:configurationForNotification];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -291,7 +291,7 @@ LABEL_14:
 + (id)MoviePlayed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMoviePlayed];
+  configurationForMoviePlayed = [self configurationForMoviePlayed];
   v3 = +[BMPhotosMoviePlayed columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -303,7 +303,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.Memories.MoviePlayed" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.MoviePlayed" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.MoviePlayed" schema:v9 configuration:configurationForMoviePlayed];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -313,7 +313,7 @@ LABEL_14:
 + (id)Curation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCuration];
+  configurationForCuration = [self configurationForCuration];
   v3 = +[BMPhotosCuration columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -325,7 +325,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.Memories.Curation" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Curation" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.Curation" schema:v9 configuration:configurationForCuration];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -335,7 +335,7 @@ LABEL_14:
 + (id)AddToMemories
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAddToMemories];
+  configurationForAddToMemories = [self configurationForAddToMemories];
   v3 = +[BMPhotosAddToMemories columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -347,7 +347,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Photos.Memories.AddToMemories" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.AddToMemories" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Photos.Memories.AddToMemories" schema:v9 configuration:configurationForAddToMemories];
 
   v11 = *MEMORY[0x1E69E9840];
 

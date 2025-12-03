@@ -1,18 +1,18 @@
 @interface UIKBCachedImage
 - (UIColor)formatColor;
-- (void)setFormatColor:(id)a3;
+- (void)setFormatColor:(id)color;
 @end
 
 @implementation UIKBCachedImage
 
-- (void)setFormatColor:(id)a3
+- (void)setFormatColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = self;
-    v6 = a3;
+    selfCopy = self;
+    colorCopy = color;
     [(UIKBCachedImage *)self CGImage];
-    [v6 CGColor];
+    [colorCopy CGColor];
 
     CGImageSetProperty();
   }

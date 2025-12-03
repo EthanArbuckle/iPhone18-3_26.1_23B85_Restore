@@ -7,16 +7,16 @@
 - (void)applyToProcessState:()ProcessState attributePath:context:
 {
   v7 = a3;
-  v4 = [v7 coalitionLevel];
-  v5 = [a1 coalitionLevel];
-  if (v4 <= v5)
+  coalitionLevel = [v7 coalitionLevel];
+  coalitionLevel2 = [self coalitionLevel];
+  if (coalitionLevel <= coalitionLevel2)
   {
-    v6 = v5;
+    v6 = coalitionLevel2;
   }
 
   else
   {
-    v6 = v4;
+    v6 = coalitionLevel;
   }
 
   [v7 setCoalitionLevel:v6];

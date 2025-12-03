@@ -1,19 +1,19 @@
 @interface CPSAppSignInRequest
-- (CPSAppSignInRequest)initWithAppleIDRequest:(id)a3 passwordReqeust:(id)a4 platformKeyCredentialAssertionOptions:(id)a5 platformKeyCredentialRegistrationOptions:(id)a6;
-- (CPSAppSignInRequest)initWithAppleIDRequest:(id)a3 passwordRequest:(id)a4 platformKeyCredentialAssertionOptions:(id)a5 platformKeyCredentialRegistrationOptions:(id)a6;
-- (CPSAppSignInRequest)initWithCoder:(id)a3;
-- (CPSAppSignInRequest)initWithRequests:(id)a3;
-- (CPSAppSignInRequest)initWithWebRequest:(id)a3;
+- (CPSAppSignInRequest)initWithAppleIDRequest:(id)request passwordReqeust:(id)reqeust platformKeyCredentialAssertionOptions:(id)options platformKeyCredentialRegistrationOptions:(id)registrationOptions;
+- (CPSAppSignInRequest)initWithAppleIDRequest:(id)request passwordRequest:(id)passwordRequest platformKeyCredentialAssertionOptions:(id)options platformKeyCredentialRegistrationOptions:(id)registrationOptions;
+- (CPSAppSignInRequest)initWithCoder:(id)coder;
+- (CPSAppSignInRequest)initWithRequests:(id)requests;
+- (CPSAppSignInRequest)initWithWebRequest:(id)request;
 - (id)description;
 - (int64_t)authType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSAppSignInRequest
 
-- (CPSAppSignInRequest)initWithRequests:(id)a3
+- (CPSAppSignInRequest)initWithRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v10.receiver = self;
   v10.super_class = CPSAppSignInRequest;
   v5 = [(CPSAuthenticationRequest *)&v10 init];
@@ -25,7 +25,7 @@
     v8[2] = __40__CPSAppSignInRequest_initWithRequests___block_invoke;
     v8[3] = &unk_278DF1448;
     v9 = v5;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [requestsCopy enumerateObjectsUsingBlock:v8];
   }
 
   return v6;
@@ -149,64 +149,64 @@ LABEL_22:
 LABEL_23:
 }
 
-- (CPSAppSignInRequest)initWithWebRequest:(id)a3
+- (CPSAppSignInRequest)initWithWebRequest:(id)request
 {
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [(CPSAppSignInRequest *)a2 initWithWebRequest:?];
   }
 
-  v7 = v6;
+  v7 = requestCopy;
   v11.receiver = self;
   v11.super_class = CPSAppSignInRequest;
   v8 = [(CPSAuthenticationRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_webRequest, a3);
+    objc_storeStrong(&v8->_webRequest, request);
   }
 
   return v9;
 }
 
-- (CPSAppSignInRequest)initWithAppleIDRequest:(id)a3 passwordRequest:(id)a4 platformKeyCredentialAssertionOptions:(id)a5 platformKeyCredentialRegistrationOptions:(id)a6
+- (CPSAppSignInRequest)initWithAppleIDRequest:(id)request passwordRequest:(id)passwordRequest platformKeyCredentialAssertionOptions:(id)options platformKeyCredentialRegistrationOptions:(id)registrationOptions
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  requestCopy = request;
+  passwordRequestCopy = passwordRequest;
+  optionsCopy = options;
+  registrationOptionsCopy = registrationOptions;
   v18.receiver = self;
   v18.super_class = CPSAppSignInRequest;
   v15 = [(CPSAuthenticationRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_appleIDRequest, a3);
-    objc_storeStrong(&v16->_passwordRequest, a4);
-    objc_storeStrong(&v16->_platformKeyCredentialAssertionOptions, a5);
-    objc_storeStrong(&v16->_platformKeyCredentialRegistrationOptions, a6);
+    objc_storeStrong(&v15->_appleIDRequest, request);
+    objc_storeStrong(&v16->_passwordRequest, passwordRequest);
+    objc_storeStrong(&v16->_platformKeyCredentialAssertionOptions, options);
+    objc_storeStrong(&v16->_platformKeyCredentialRegistrationOptions, registrationOptions);
   }
 
   return v16;
 }
 
-- (CPSAppSignInRequest)initWithAppleIDRequest:(id)a3 passwordReqeust:(id)a4 platformKeyCredentialAssertionOptions:(id)a5 platformKeyCredentialRegistrationOptions:(id)a6
+- (CPSAppSignInRequest)initWithAppleIDRequest:(id)request passwordReqeust:(id)reqeust platformKeyCredentialAssertionOptions:(id)options platformKeyCredentialRegistrationOptions:(id)registrationOptions
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  requestCopy = request;
+  reqeustCopy = reqeust;
+  optionsCopy = options;
+  registrationOptionsCopy = registrationOptions;
   v18.receiver = self;
   v18.super_class = CPSAppSignInRequest;
   v15 = [(CPSAuthenticationRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_appleIDRequest, a3);
-    objc_storeStrong(&v16->_passwordRequest, a4);
-    objc_storeStrong(&v16->_platformKeyCredentialAssertionOptions, a5);
-    objc_storeStrong(&v16->_platformKeyCredentialRegistrationOptions, a6);
+    objc_storeStrong(&v15->_appleIDRequest, request);
+    objc_storeStrong(&v16->_passwordRequest, reqeust);
+    objc_storeStrong(&v16->_platformKeyCredentialAssertionOptions, options);
+    objc_storeStrong(&v16->_platformKeyCredentialRegistrationOptions, registrationOptions);
   }
 
   return v16;
@@ -222,9 +222,9 @@ LABEL_23:
   v8 = [v3 appendObject:self->_platformKeyCredentialRegistrationOptions withName:@"platformKeyCredentialRegistrationOptions" skipIfNil:1];
   v9 = [v3 appendObject:self->_customAuthenticationMethods withName:@"customAuthenticationMethods" skipIfNil:1];
   [v3 appendString:self->_overrideBundleIdentifier withName:@"overrideBundleIdentifier" skipIfEmpty:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (int64_t)authType
@@ -242,46 +242,46 @@ LABEL_23:
   return 2;
 }
 
-- (CPSAppSignInRequest)initWithCoder:(id)a3
+- (CPSAppSignInRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = CPSAppSignInRequest;
-  v5 = [(CPSAuthenticationRequest *)&v28 initWithCoder:v4];
+  v5 = [(CPSAuthenticationRequest *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"appleIDRequest"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"appleIDRequest"];
     appleIDRequest = v5->_appleIDRequest;
     v5->_appleIDRequest = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"passwordRequest"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"passwordRequest"];
     passwordRequest = v5->_passwordRequest;
     v5->_passwordRequest = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"webRequest"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"webRequest"];
     webRequest = v5->_webRequest;
     v5->_webRequest = v13;
 
     v15 = objc_opt_self();
-    v16 = [v4 decodeObjectOfClass:v15 forKey:@"platformKeyCredentialAssertionOptions"];
+    v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"platformKeyCredentialAssertionOptions"];
     platformKeyCredentialAssertionOptions = v5->_platformKeyCredentialAssertionOptions;
     v5->_platformKeyCredentialAssertionOptions = v16;
 
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"platformKeyCredentialRegistrationOptions"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"platformKeyCredentialRegistrationOptions"];
     platformKeyCredentialRegistrationOptions = v5->_platformKeyCredentialRegistrationOptions;
     v5->_platformKeyCredentialRegistrationOptions = v19;
 
     v21 = objc_opt_self();
-    v22 = [v4 decodeArrayOfObjectsOfClass:v21 forKey:@"customAuthenticationMethods"];
+    v22 = [coderCopy decodeArrayOfObjectsOfClass:v21 forKey:@"customAuthenticationMethods"];
     customAuthenticationMethods = v5->_customAuthenticationMethods;
     v5->_customAuthenticationMethods = v22;
 
     v24 = objc_opt_self();
-    v25 = [v4 decodeObjectOfClass:v24 forKey:@"overrideBundleIdentifier"];
+    v25 = [coderCopy decodeObjectOfClass:v24 forKey:@"overrideBundleIdentifier"];
     overrideBundleIdentifier = v5->_overrideBundleIdentifier;
     v5->_overrideBundleIdentifier = v25;
   }
@@ -289,19 +289,19 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPSAppSignInRequest;
-  v4 = a3;
-  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_appleIDRequest forKey:{@"appleIDRequest", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_passwordRequest forKey:@"passwordRequest"];
-  [v4 encodeObject:self->_webRequest forKey:@"webRequest"];
-  [v4 encodeObject:self->_platformKeyCredentialAssertionOptions forKey:@"platformKeyCredentialAssertionOptions"];
-  [v4 encodeObject:self->_platformKeyCredentialRegistrationOptions forKey:@"platformKeyCredentialRegistrationOptions"];
-  [v4 encodeObject:self->_customAuthenticationMethods forKey:@"customAuthenticationMethods"];
-  [v4 encodeObject:self->_overrideBundleIdentifier forKey:@"overrideBundleIdentifier"];
+  coderCopy = coder;
+  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_appleIDRequest forKey:{@"appleIDRequest", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_passwordRequest forKey:@"passwordRequest"];
+  [coderCopy encodeObject:self->_webRequest forKey:@"webRequest"];
+  [coderCopy encodeObject:self->_platformKeyCredentialAssertionOptions forKey:@"platformKeyCredentialAssertionOptions"];
+  [coderCopy encodeObject:self->_platformKeyCredentialRegistrationOptions forKey:@"platformKeyCredentialRegistrationOptions"];
+  [coderCopy encodeObject:self->_customAuthenticationMethods forKey:@"customAuthenticationMethods"];
+  [coderCopy encodeObject:self->_overrideBundleIdentifier forKey:@"overrideBundleIdentifier"];
 }
 
 void __40__CPSAppSignInRequest_initWithRequests___block_invoke_cold_1()

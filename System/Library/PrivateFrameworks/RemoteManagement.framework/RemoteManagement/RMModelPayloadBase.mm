@@ -6,29 +6,29 @@
 
 + (id)rm_payloadTypeName
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = @"com.apple.activation";
   }
 
-  else if (objc_opt_class() == a1)
+  else if (objc_opt_class() == self)
   {
     v3 = @"com.apple.asset";
   }
 
-  else if (objc_opt_class() == a1)
+  else if (objc_opt_class() == self)
   {
     v3 = @"com.apple.configuration";
   }
 
-  else if (objc_opt_class() == a1)
+  else if (objc_opt_class() == self)
   {
     v3 = @"com.apple.command";
   }
 
   else
   {
-    v3 = NSStringFromClass(a1);
+    v3 = NSStringFromClass(self);
   }
 
   return v3;

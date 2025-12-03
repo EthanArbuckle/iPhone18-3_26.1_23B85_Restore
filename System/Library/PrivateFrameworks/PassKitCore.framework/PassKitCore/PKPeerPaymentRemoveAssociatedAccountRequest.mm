@@ -1,32 +1,32 @@
 @interface PKPeerPaymentRemoveAssociatedAccountRequest
-- (PKPeerPaymentRemoveAssociatedAccountRequest)initWithAssociatedAccountIdentifier:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentRemoveAssociatedAccountRequest)initWithAssociatedAccountIdentifier:(id)identifier;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentRemoveAssociatedAccountRequest
 
-- (PKPeerPaymentRemoveAssociatedAccountRequest)initWithAssociatedAccountIdentifier:(id)a3
+- (PKPeerPaymentRemoveAssociatedAccountRequest)initWithAssociatedAccountIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentRemoveAssociatedAccountRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_associatedAccountIdentifier, a3);
+    objc_storeStrong(&v6->_associatedAccountIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -70,7 +70,7 @@ LABEL_11:
     v18[1] = @"associatedAccount";
     v18[2] = associatedAccountIdentifier;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
-    v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
+    v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
 
     [v11 setHTTPMethod:@"DELETE"];
     [v11 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

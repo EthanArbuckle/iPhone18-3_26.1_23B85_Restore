@@ -1,5 +1,5 @@
 @interface CLAssertion
-- (CLAssertion)initWithRegistrationMessageName:(const char *)a3 messageDictionary:(id)a4;
+- (CLAssertion)initWithRegistrationMessageName:(const char *)name messageDictionary:(id)dictionary;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -30,7 +30,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLAssertion, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -69,7 +69,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLAssertion, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -88,7 +88,7 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (CLAssertion)initWithRegistrationMessageName:(const char *)a3 messageDictionary:(id)a4
+- (CLAssertion)initWithRegistrationMessageName:(const char *)name messageDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
   v8 = _os_activity_create(&dword_19B873000, "CL: CLAssertion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -108,13 +108,13 @@
     v21 = 2082;
     v22 = "";
     v23 = 2082;
-    v24 = "activity";
+    dictionaryCopy = "activity";
     v25 = 2114;
     v26 = v10;
     v27 = 2050;
-    v28 = self;
+    selfCopy = self;
     v29 = 2082;
-    v30 = a3;
+    nameCopy = name;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLAssertion, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, name:%{public, location:escape_only}s}", buf, 0x3Au);
   }
 
@@ -136,7 +136,7 @@
       v21 = 2082;
       v22 = "";
       v23 = 2114;
-      v24 = a4;
+      dictionaryCopy = dictionary;
       _os_log_impl(&dword_19B873000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Requesting new assertion, messageDictionary:%{public, location:escape_only}@}", buf, 0x1Cu);
     }
 
@@ -147,8 +147,8 @@
     v16[3] = &unk_1E753ED68;
     v16[4] = v11;
     v16[5] = v13;
-    v16[6] = a4;
-    v16[7] = a3;
+    v16[6] = dictionary;
+    v16[7] = name;
     dispatch_sync(v13, v16);
     dispatch_release(v13);
   }

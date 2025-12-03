@@ -2,7 +2,7 @@
 + (BOOL)superclassRespondsToSetVelocityScaleFactor;
 + (BOOL)superclassRespondsToVelocityScaleFactor;
 - (double)velocityScaleFactor;
-- (void)setVelocityScaleFactor:(double)a3;
+- (void)setVelocityScaleFactor:(double)factor;
 @end
 
 @implementation SBFluidSwitcherTouchPassThroughScrollView
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __84__SBFluidSwitcherTouchPassThroughScrollView_superclassRespondsToVelocityScaleFactor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (superclassRespondsToVelocityScaleFactor_once != -1)
   {
     dispatch_once(&superclassRespondsToVelocityScaleFactor_once, block);
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __87__SBFluidSwitcherTouchPassThroughScrollView_superclassRespondsToSetVelocityScaleFactor__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (superclassRespondsToSetVelocityScaleFactor_once != -1)
   {
     dispatch_once(&superclassRespondsToSetVelocityScaleFactor_once, block);
@@ -64,13 +64,13 @@ uint64_t __87__SBFluidSwitcherTouchPassThroughScrollView_superclassRespondsToSet
   return result;
 }
 
-- (void)setVelocityScaleFactor:(double)a3
+- (void)setVelocityScaleFactor:(double)factor
 {
   if ([objc_opt_class() superclassRespondsToSetVelocityScaleFactor])
   {
     v5.receiver = self;
     v5.super_class = SBFluidSwitcherTouchPassThroughScrollView;
-    [(SBFluidSwitcherTouchPassThroughScrollView *)&v5 _setVelocityScaleFactor:a3];
+    [(SBFluidSwitcherTouchPassThroughScrollView *)&v5 _setVelocityScaleFactor:factor];
   }
 }
 

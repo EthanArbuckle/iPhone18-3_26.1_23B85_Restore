@@ -1,17 +1,17 @@
 @interface EPSagaTransactionSetUpTinkerHealthSyncZones
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionSetUpTinkerHealthSyncZones
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v7 = [v5 objectForKeyedSubscript:@"idsDeviceIdentifier"];
-  v8 = [v5 queue];
-  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v8);
+  entryCopy = entry;
+  v6 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  v7 = [entryCopy objectForKeyedSubscript:@"idsDeviceIdentifier"];
+  queue = [entryCopy queue];
+  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   currentTimer = self->_currentTimer;
   self->_currentTimer = v9;
 
@@ -24,8 +24,8 @@
   handler[2] = sub_100011680;
   handler[3] = &unk_100175598;
   handler[4] = self;
-  v23 = v5;
-  v14 = v5;
+  v23 = entryCopy;
+  v14 = entryCopy;
   dispatch_source_set_event_handler(v13, handler);
   dispatch_resume(self->_currentTimer);
   v15 = objc_alloc_init(FAFetchFamilyCircleRequest);
@@ -36,7 +36,7 @@
   v18[3] = &unk_100175BB8;
   v19 = v7;
   v20 = v6;
-  v21 = self;
+  selfCopy = self;
   v16 = v6;
   v17 = v7;
   [v15 startRequestWithCompletionHandler:v18];

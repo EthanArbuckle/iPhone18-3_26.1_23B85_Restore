@@ -1,12 +1,12 @@
 @interface _KSTextReplacementManager
-+ (id)textReplacementStoreWithTestDirectory:(id)a3 withDelegate:(id)a4;
-- (_KSTextReplacementManager)initWithDirectoryPath:(id)a3;
++ (id)textReplacementStoreWithTestDirectory:(id)directory withDelegate:(id)delegate;
+- (_KSTextReplacementManager)initWithDirectoryPath:(id)path;
 - (void)dealloc;
 - (void)notifyTextReplacementDidChange;
 - (void)pushAllLocalRecordsOnceIfNeeded;
 - (void)recordSyncStatus;
-- (void)requestSync:(unint64_t)a3 withCompletionBlock:(id)a4;
-- (void)requestSyncWithCompletionBlock:(id)a3;
+- (void)requestSync:(unint64_t)sync withCompletionBlock:(id)block;
+- (void)requestSyncWithCompletionBlock:(id)block;
 @end
 
 @implementation _KSTextReplacementManager
@@ -24,32 +24,32 @@
   }
 }
 
-+ (id)textReplacementStoreWithTestDirectory:(id)a3 withDelegate:(id)a4
++ (id)textReplacementStoreWithTestDirectory:(id)directory withDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[_KSTextReplacementManager alloc] initWithDirectoryPath:v4];
+  directoryCopy = directory;
+  v5 = [[_KSTextReplacementManager alloc] initWithDirectoryPath:directoryCopy];
 
-  v6 = [(_KSTextReplacementManager *)v5 ckStore];
-  [(_KSTextReplacementManager *)v5 setTextReplacementStore:v6];
+  ckStore = [(_KSTextReplacementManager *)v5 ckStore];
+  [(_KSTextReplacementManager *)v5 setTextReplacementStore:ckStore];
 
   return v5;
 }
 
-- (_KSTextReplacementManager)initWithDirectoryPath:(id)a3
+- (_KSTextReplacementManager)initWithDirectoryPath:(id)path
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = _KSTextReplacementManager;
   v6 = [(_KSTextReplacementManager *)&v14 init];
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [[_KSTextReplacementCKStore alloc] initWithDirectoryPath:v5];
+    v8 = [[_KSTextReplacementCKStore alloc] initWithDirectoryPath:pathCopy];
     ckStore = v6->_ckStore;
     v6->_ckStore = v8;
 
-    objc_storeStrong(&v6->_directoryPath, a3);
+    objc_storeStrong(&v6->_directoryPath, path);
     v10 = KSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -61,8 +61,8 @@
     objc_storeStrong(&v6->_textReplacementStore, v6->_ckStore);
     [_KSAggdLogger setValue:1 forScalarKey:@"com.apple.keyboard.textReplacement.usingCloudKitSyncing"];
     [(_KSTextReplacementManager *)v6 pushAllLocalRecordsOnceIfNeeded];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v6 selector:sel_notifyTextReplacementDidChange name:@"_KSTRCKStoreDidReceiveChangesNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_notifyTextReplacementDidChange name:@"_KSTRCKStoreDidReceiveChangesNotification" object:0];
 
     objc_autoreleasePoolPop(v7);
   }
@@ -73,8 +73,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _KSTextReplacementManager;
@@ -89,28 +89,28 @@
   }
 
   NSLog(&cfstr_SendingOutShor.isa);
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"KSTextReplacementDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"KSTextReplacementDidChangeNotification" object:0];
 }
 
-- (void)requestSyncWithCompletionBlock:(id)a3
+- (void)requestSyncWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_KSTextReplacementManager *)self textReplacementStore];
-  [v5 requestSyncWithCompletionBlock:v4];
+  blockCopy = block;
+  textReplacementStore = [(_KSTextReplacementManager *)self textReplacementStore];
+  [textReplacementStore requestSyncWithCompletionBlock:blockCopy];
 }
 
-- (void)requestSync:(unint64_t)a3 withCompletionBlock:(id)a4
+- (void)requestSync:(unint64_t)sync withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(_KSTextReplacementManager *)self textReplacementStore];
-  [v7 requestSync:a3 withCompletionBlock:v6];
+  blockCopy = block;
+  textReplacementStore = [(_KSTextReplacementManager *)self textReplacementStore];
+  [textReplacementStore requestSync:sync withCompletionBlock:blockCopy];
 }
 
 - (void)recordSyncStatus
 {
-  v2 = [(_KSTextReplacementManager *)self ckStore];
-  [v2 recordSyncStatus];
+  ckStore = [(_KSTextReplacementManager *)self ckStore];
+  [ckStore recordSyncStatus];
 }
 
 @end

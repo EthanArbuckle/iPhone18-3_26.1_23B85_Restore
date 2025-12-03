@@ -1,64 +1,64 @@
 @interface BCAuthenticationManager
-- (BCAuthenticationManager)initWithAuthenticationRequest:(id)a3;
-- (uint64_t)processQueryItems:(void *)a3 completion:;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)exchangeCode:(void *)a3 completion:;
-- (void)fetchTokenWithRequest:(id)a3 completion:(id)a4;
+- (BCAuthenticationManager)initWithAuthenticationRequest:(id)request;
+- (uint64_t)processQueryItems:(void *)items completion:;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)exchangeCode:(void *)code completion:;
+- (void)fetchTokenWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation BCAuthenticationManager
 
-- (BCAuthenticationManager)initWithAuthenticationRequest:(id)a3
+- (BCAuthenticationManager)initWithAuthenticationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = BCAuthenticationManager;
   v6 = [(BCAuthenticationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authenticationRequest, a3);
+    objc_storeStrong(&v6->_authenticationRequest, request);
   }
 
   return v7;
 }
 
-- (void)fetchTokenWithRequest:(id)a3 completion:(id)a4
+- (void)fetchTokenWithRequest:(id)request completion:(id)completion
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = LogCategory_Daemon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 URL];
-    v10 = [v9 baseURL];
+    v9 = [requestCopy URL];
+    baseURL = [v9 baseURL];
     *buf = 138412290;
-    v64 = v10;
+    v64 = baseURL;
     _os_log_impl(&dword_236EA0000, v8, OS_LOG_TYPE_DEFAULT, "BCAuthenticationManager: fetchToken for URL: %@", buf, 0xCu);
   }
 
   v11 = objc_alloc(MEMORY[0x277CCACE0]);
-  v12 = [v6 URL];
+  v12 = [requestCopy URL];
   v13 = [v11 initWithURL:v12 resolvingAgainstBaseURL:0];
 
-  v14 = [v13 queryItems];
-  v15 = [v14 count];
+  queryItems = [v13 queryItems];
+  v15 = [queryItems count];
 
   if (!v15)
   {
     goto LABEL_44;
   }
 
-  v16 = [v13 queryItems];
-  v17 = [(BCAuthenticationManager *)self processQueryItems:v16 completion:v7];
+  queryItems2 = [v13 queryItems];
+  v17 = [(BCAuthenticationManager *)self processQueryItems:queryItems2 completion:completionCopy];
 
   v18 = LogCategory_Daemon();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v13 queryItems];
+    queryItems3 = [v13 queryItems];
     *buf = 138412546;
-    v64 = v19;
+    v64 = queryItems3;
     v65 = 1024;
     v66 = v17;
     _os_log_impl(&dword_236EA0000, v18, OS_LOG_TYPE_DEFAULT, "BCAuthenticationManager: queryitems %@ processed: %d", buf, 0x12u);
@@ -68,23 +68,23 @@
   {
 LABEL_44:
     v55 = v13;
-    v20 = [v6 URL];
-    v21 = [(NSURL *)v20 fragments];
-    v22 = v7;
-    v56 = self;
+    v20 = [requestCopy URL];
+    fragments = [(NSURL *)v20 fragments];
+    v22 = completionCopy;
+    selfCopy = self;
     if (self)
     {
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v23 = [v21 allKeys];
-      v24 = [v23 countByEnumeratingWithState:&v57 objects:buf count:16];
+      allKeys = [fragments allKeys];
+      v24 = [allKeys countByEnumeratingWithState:&v57 objects:buf count:16];
       if (v24)
       {
         v25 = v24;
         v53 = v22;
-        v54 = v6;
+        v54 = requestCopy;
         v26 = *v58;
 LABEL_10:
         v27 = 0;
@@ -92,21 +92,21 @@ LABEL_10:
         {
           if (*v58 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allKeys);
           }
 
           v28 = *(*(&v57 + 1) + 8 * v27);
-          v29 = [v21 objectForKeyedSubscript:v28];
+          v29 = [fragments objectForKeyedSubscript:v28];
           if (v29)
           {
             if ([v28 isEqualToString:@"code"])
             {
               v22 = v53;
-              [(BCAuthenticationManager *)v56 exchangeCode:v29 completion:v53];
+              [(BCAuthenticationManager *)selfCopy exchangeCode:v29 completion:v53];
 LABEL_22:
 
               v30 = 1;
-              v6 = v54;
+              requestCopy = v54;
               goto LABEL_23;
             }
 
@@ -120,14 +120,14 @@ LABEL_22:
 
           if (v25 == ++v27)
           {
-            v25 = [v23 countByEnumeratingWithState:&v57 objects:buf count:16];
+            v25 = [allKeys countByEnumeratingWithState:&v57 objects:buf count:16];
             if (v25)
             {
               goto LABEL_10;
             }
 
             v30 = 0;
-            v6 = v54;
+            requestCopy = v54;
             v13 = v55;
             v22 = v53;
             goto LABEL_24;
@@ -156,26 +156,26 @@ LABEL_24:
 
     if ((v30 & 1) == 0)
     {
-      v32 = [v6 valueForHTTPHeaderField:@"Content-Type"];
+      v32 = [requestCopy valueForHTTPHeaderField:@"Content-Type"];
       v33 = [v32 isEqualToString:@"application/x-www-form-urlencoded"];
 
       if (v33)
       {
-        v34 = [v6 HTTPBody];
+        hTTPBody = [requestCopy HTTPBody];
 
-        if (v34)
+        if (hTTPBody)
         {
           v35 = objc_alloc(MEMORY[0x277CCACA8]);
-          v36 = [v6 HTTPBody];
-          v37 = [v35 initWithData:v36 encoding:4];
+          hTTPBody2 = [requestCopy HTTPBody];
+          v37 = [v35 initWithData:hTTPBody2 encoding:4];
 
           v38 = objc_alloc_init(MEMORY[0x277CCACE0]);
           [v38 setQuery:v37];
-          v39 = [v38 queryItems];
+          queryItems4 = [v38 queryItems];
           v40 = v22;
-          v41 = v39;
+          v41 = queryItems4;
           v42 = v40;
-          v43 = [(BCAuthenticationManager *)v56 processQueryItems:v39 completion:v40];
+          v43 = [(BCAuthenticationManager *)selfCopy processQueryItems:queryItems4 completion:v40];
 
           v44 = LogCategory_Daemon();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -232,12 +232,12 @@ LABEL_40:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)processQueryItems:(void *)a3 completion:
+- (uint64_t)processQueryItems:(void *)items completion:
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  itemsCopy = items;
+  if (!self)
   {
     goto LABEL_20;
   }
@@ -257,13 +257,13 @@ LABEL_40:
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (!v9)
   {
-    a1 = 0;
+    self = 0;
     goto LABEL_19;
   }
 
   v10 = v9;
-  v21 = a1;
-  v22 = v6;
+  selfCopy = self;
+  v22 = itemsCopy;
   v23 = v5;
   v11 = *v25;
   while (2)
@@ -276,33 +276,33 @@ LABEL_40:
       }
 
       v13 = *(*(&v24 + 1) + 8 * i);
-      v14 = [v13 value];
-      if (v14)
+      value = [v13 value];
+      if (value)
       {
-        v15 = [v13 name];
-        v16 = [v15 isEqualToString:@"code"];
+        name = [v13 name];
+        v16 = [name isEqualToString:@"code"];
 
         if (v16)
         {
-          v6 = v22;
-          [(BCAuthenticationManager *)v21 exchangeCode:v14 completion:v22];
+          itemsCopy = v22;
+          [(BCAuthenticationManager *)selfCopy exchangeCode:value completion:v22];
         }
 
         else
         {
-          v17 = [v13 name];
-          v18 = [v17 isEqualToString:@"access_token"];
+          name2 = [v13 name];
+          v18 = [name2 isEqualToString:@"access_token"];
 
           if (!v18)
           {
             goto LABEL_12;
           }
 
-          v6 = v22;
-          (v22)[2](v22, v14, 0);
+          itemsCopy = v22;
+          (v22)[2](v22, value, 0);
         }
 
-        a1 = 1;
+        self = 1;
         v5 = v23;
         goto LABEL_19;
       }
@@ -319,51 +319,51 @@ LABEL_12:
     break;
   }
 
-  a1 = 0;
-  v6 = v22;
+  self = 0;
+  itemsCopy = v22;
   v5 = v23;
 LABEL_19:
 
 LABEL_20:
   v19 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (void)exchangeCode:(void *)a3 completion:
+- (void)exchangeCode:(void *)code completion:
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  codeCopy = code;
   v6 = a2;
-  v7 = [a1 authenticationRequest];
-  v8 = [v7 oauth2];
+  authenticationRequest = [self authenticationRequest];
+  oauth2 = [authenticationRequest oauth2];
 
-  v9 = [v8 tokenExchangeURL];
+  tokenExchangeURL = [oauth2 tokenExchangeURL];
   v10 = LogCategory_Daemon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 absoluteString];
+    absoluteString = [tokenExchangeURL absoluteString];
     *buf = 138412290;
-    v28 = v11;
+    v28 = absoluteString;
     _os_log_impl(&dword_236EA0000, v10, OS_LOG_TYPE_DEFAULT, "BCAuthenticationManager: exchange code url: %@", buf, 0xCu);
   }
 
-  v12 = [v8 tokenExchangeBodyWithCode:v6];
+  v12 = [oauth2 tokenExchangeBodyWithCode:v6];
 
   v13 = [v12 dataUsingEncoding:4];
-  v14 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v9];
+  v14 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:tokenExchangeURL];
   [v14 setHTTPMethod:@"POST"];
   [v14 setHTTPBody:v13];
   [v14 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
   v15 = MEMORY[0x277CCAD30];
-  v16 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  v17 = [v15 sessionWithConfiguration:v16 delegate:a1 delegateQueue:0];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  v17 = [v15 sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:0];
 
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __51__BCAuthenticationManager_exchangeCode_completion___block_invoke;
   v24 = &unk_278A0E948;
-  v18 = v5;
-  v25 = a1;
+  v18 = codeCopy;
+  selfCopy = self;
   v26 = v18;
   v19 = [v17 dataTaskWithRequest:v14 completionHandler:&v21];
   [v19 resume];
@@ -483,21 +483,21 @@ void __51__BCAuthenticationManager_exchangeCode_completion___block_invoke(uint64
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a5;
-  v6 = [a4 protectionSpace];
-  v7 = [v6 serverTrust];
+  handlerCopy = handler;
+  protectionSpace = [challenge protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
-  if (v7)
+  if (serverTrust)
   {
-    v8 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:v7];
-    v9[2](v9, 0, v8);
+    v8 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:serverTrust];
+    handlerCopy[2](handlerCopy, 0, v8);
   }
 
   else
   {
-    v9[2](v9, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 

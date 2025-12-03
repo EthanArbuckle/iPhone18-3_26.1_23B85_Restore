@@ -1,47 +1,47 @@
 @interface MSAttachmentInfo
-- (MSAttachmentInfo)initWithCoder:(id)a3;
-- (MSAttachmentInfo)initWithURL:(id)a3 filename:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MSAttachmentInfo)initWithCoder:(id)coder;
+- (MSAttachmentInfo)initWithURL:(id)l filename:(id)filename;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSAttachmentInfo
 
-- (MSAttachmentInfo)initWithURL:(id)a3 filename:(id)a4
+- (MSAttachmentInfo)initWithURL:(id)l filename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  filenameCopy = filename;
   v12.receiver = self;
   v12.super_class = MSAttachmentInfo;
   v9 = [(MSAttachmentInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_filename, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_filename, filename);
   }
 
   return v10;
 }
 
-- (MSAttachmentInfo)initWithCoder:(id)a3
+- (MSAttachmentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MSAttachmentInfo;
   v5 = [(MSAttachmentInfo *)&v12 init];
   if (v5)
   {
-    if (([v4 allowsKeyedCoding] & 1) == 0)
+    if (([coderCopy allowsKeyedCoding] & 1) == 0)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_filename"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_filename"];
     filename = v5->_filename;
     v5->_filename = v8;
   }
@@ -52,19 +52,19 @@ LABEL_6:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   if (self->_url)
   {
     v4 = [(MSAttachmentInfo *)self url];
-    [v6 encodeObject:v4 forKey:@"EFPropertyKey_url"];
+    [coderCopy encodeObject:v4 forKey:@"EFPropertyKey_url"];
   }
 
   if (self->_filename)
   {
-    v5 = [(MSAttachmentInfo *)self filename];
-    [v6 encodeObject:v5 forKey:@"EFPropertyKey_filename"];
+    filename = [(MSAttachmentInfo *)self filename];
+    [coderCopy encodeObject:filename forKey:@"EFPropertyKey_filename"];
   }
 }
 

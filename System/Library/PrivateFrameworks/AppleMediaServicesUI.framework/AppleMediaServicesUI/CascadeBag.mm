@@ -1,14 +1,14 @@
 @interface CascadeBag
 - (BOOL)isExpired;
 - (NSDate)expirationDate;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation CascadeBag
 
 - (BOOL)isExpired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000B037C();
 
   return v3 & 1;
@@ -20,7 +20,7 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1000B04AC(v6);
 
   v8 = type metadata accessor for Date();
@@ -34,13 +34,13 @@
   return isa;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_100009624(&unk_1001E8868, v5);
 }

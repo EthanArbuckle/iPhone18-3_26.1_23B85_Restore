@@ -1,25 +1,25 @@
 @interface PKDeviceSharingCapabilitiesFetchStatus
-- (BOOL)hasDeviceVersionWithOSVersionRequirementRange:(id)a3;
+- (BOOL)hasDeviceVersionWithOSVersionRequirementRange:(id)range;
 - (NSArray)fetchedCapabilities;
-- (PKDeviceSharingCapabilitiesFetchStatus)initWithAppleID:(id)a3 fetchStartDate:(id)a4;
+- (PKDeviceSharingCapabilitiesFetchStatus)initWithAppleID:(id)d fetchStartDate:(id)date;
 - (id)description;
 - (int64_t)secondsPassedSinceFetchStart;
 @end
 
 @implementation PKDeviceSharingCapabilitiesFetchStatus
 
-- (PKDeviceSharingCapabilitiesFetchStatus)initWithAppleID:(id)a3 fetchStartDate:(id)a4
+- (PKDeviceSharingCapabilitiesFetchStatus)initWithAppleID:(id)d fetchStartDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = PKDeviceSharingCapabilitiesFetchStatus;
   v9 = [(PKDeviceSharingCapabilitiesFetchStatus *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appleID, a3);
-    objc_storeStrong(&v10->_fetchStartDate, a4);
+    objc_storeStrong(&v9->_appleID, d);
+    objc_storeStrong(&v10->_fetchStartDate, date);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     fetchedCapabilities = v10->_fetchedCapabilities;
     v10->_fetchedCapabilities = v11;
@@ -28,10 +28,10 @@
   return v10;
 }
 
-- (BOOL)hasDeviceVersionWithOSVersionRequirementRange:(id)a3
+- (BOOL)hasDeviceVersionWithOSVersionRequirementRange:(id)range
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangeCopy = range;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -57,12 +57,12 @@
         objc_enumerationMutation(v5);
       }
 
-      v11 = [*(*(&v32 + 1) + 8 * v10) fromDeviceVersion];
-      v12 = [v11 watch];
+      fromDeviceVersion = [*(*(&v32 + 1) + 8 * v10) fromDeviceVersion];
+      watch = [fromDeviceVersion watch];
 
-      if (v12)
+      if (watch)
       {
-        v13 = [v4 versionMeetsRequirements:v11 deviceClass:@"Watch"];
+        v13 = [rangeCopy versionMeetsRequirements:fromDeviceVersion deviceClass:@"Watch"];
         v14 = PKLogFacilityTypeGetObject(7uLL);
         if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -85,11 +85,11 @@
         goto LABEL_26;
       }
 
-      v19 = [v11 ipad];
+      ipad = [fromDeviceVersion ipad];
 
-      if (v19)
+      if (ipad)
       {
-        v13 = [v4 versionMeetsRequirements:v11 deviceClass:@"iPad"];
+        v13 = [rangeCopy versionMeetsRequirements:fromDeviceVersion deviceClass:@"iPad"];
         v14 = PKLogFacilityTypeGetObject(7uLL);
         if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -112,11 +112,11 @@
         goto LABEL_26;
       }
 
-      v22 = [v11 iphone];
+      iphone = [fromDeviceVersion iphone];
 
-      if (v22)
+      if (iphone)
       {
-        v13 = [v4 versionMeetsRequirements:v11 deviceClass:@"iPhone"];
+        v13 = [rangeCopy versionMeetsRequirements:fromDeviceVersion deviceClass:@"iPhone"];
         v14 = PKLogFacilityTypeGetObject(7uLL);
         if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -139,15 +139,15 @@
         goto LABEL_26;
       }
 
-      v25 = [v11 vision];
+      vision = [fromDeviceVersion vision];
 
-      if (!v25)
+      if (!vision)
       {
 
         goto LABEL_28;
       }
 
-      v13 = [v4 versionMeetsRequirements:v11 deviceClass:@"RealityDevice"];
+      v13 = [rangeCopy versionMeetsRequirements:fromDeviceVersion deviceClass:@"RealityDevice"];
       v14 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -202,8 +202,8 @@ LABEL_34:
 
 - (int64_t)secondsPassedSinceFetchStart
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->_fetchStartDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_fetchStartDate];
   v5 = v4;
 
   return v5;

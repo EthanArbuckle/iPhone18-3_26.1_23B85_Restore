@@ -1,8 +1,8 @@
 @interface BiologicalSexPickerItem
 - (_TtC18HealthExperienceUI23BiologicalSexPickerItem)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation BiologicalSexPickerItem
@@ -14,9 +14,9 @@
   return result;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  if (a4)
+  if (component)
   {
     return 0;
   }
@@ -27,9 +27,9 @@
   }
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  sub_1BA31EE9C(a4, a5);
+  sub_1BA31EE9C(row, component);
   if (v5)
   {
     v6 = sub_1BA4A6758();
@@ -43,11 +43,11 @@
   return v6;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  sub_1BA31EF90(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1BA31EF90(row, component);
 }
 
 @end

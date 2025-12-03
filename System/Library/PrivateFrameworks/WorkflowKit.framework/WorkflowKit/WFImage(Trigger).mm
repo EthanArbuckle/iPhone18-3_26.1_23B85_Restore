@@ -21,7 +21,7 @@
 {
   v7 = MEMORY[0x1E69E0B68];
   v8 = a4;
-  v9 = [v7 configurationWithPointSize:a1];
+  v9 = [v7 configurationWithPointSize:self];
   v10 = [MEMORY[0x1E69E0B58] systemImageNamed:v8 configuration:v9 renderingMode:a5];
 
   return v10;

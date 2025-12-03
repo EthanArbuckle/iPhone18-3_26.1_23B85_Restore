@@ -1,5 +1,5 @@
 @interface BCIngestSidecarPlistProducer
-- (BCIngestSidecarPlistProducer)initWithPath:(id)a3 sidecarPath:(id)a4;
+- (BCIngestSidecarPlistProducer)initWithPath:(id)path sidecarPath:(id)sidecarPath;
 - (BOOL)shouldRetry;
 - (id)produceData;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation BCIngestSidecarPlistProducer
 
-- (BCIngestSidecarPlistProducer)initWithPath:(id)a3 sidecarPath:(id)a4
+- (BCIngestSidecarPlistProducer)initWithPath:(id)path sidecarPath:(id)sidecarPath
 {
-  v5 = [(BCPlistProducer *)self initWithPath:a3];
+  v5 = [(BCPlistProducer *)self initWithPath:path];
   if (v5)
   {
-    v6 = [[NSDictionary alloc] initWithContentsOfFile:a4];
+    v6 = [[NSDictionary alloc] initWithContentsOfFile:sidecarPath];
     v7 = objc_opt_class();
     v5->_sidecarDeletes = BCDynamicCast(v7, [v6 objectForKey:@"Deletes"]);
     v5->_filterMatches = 0;
@@ -50,7 +50,7 @@
   v5 = objc_opt_class();
   v6 = BCDynamicCast(v5, [(NSMutableDictionary *)v4 objectForKey:@"Books"]);
 
-  v33 = self;
+  selfCopy = self;
   self->_filterMatches = objc_alloc_init(NSMutableArray);
   if (-[NSArray count](self->_sidecarDeletes, "count") && [v6 count])
   {
@@ -131,7 +131,7 @@ LABEL_20:
 
             if (!v22)
             {
-              [(NSMutableArray *)v33->_filterMatches addObject:v20];
+              [(NSMutableArray *)selfCopy->_filterMatches addObject:v20];
               ++v34;
               if (++v13 >= v9)
               {
@@ -165,7 +165,7 @@ LABEL_20:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = [v31 count];
-      v26 = [(NSArray *)v33->_sidecarDeletes count];
+      v26 = [(NSArray *)selfCopy->_sidecarDeletes count];
       v27 = [v36 count];
       *buf = 134218752;
       v42 = v25;
@@ -192,14 +192,14 @@ LABEL_32:
 
     else
     {
-      -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v30, v33, @"BCIngestSidecarPlistProducer.m", 143, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", [v31 count], -[NSArray count](v33->_sidecarDeletes, "count"), objc_msgSend(v36, "count"), v34);
+      -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", v30, selfCopy, @"BCIngestSidecarPlistProducer.m", 143, @"Unexpected Counts: Unfiltered: %lu; Filter: %lu; Filtered: %lu; Filter Hit: %lu", [v31 count], -[NSArray count](selfCopy->_sidecarDeletes, "count"), objc_msgSend(v36, "count"), v34);
       if (v34)
       {
         goto LABEL_32;
       }
     }
 
-    v33->super._dataUnchanged = 1;
+    selfCopy->super._dataUnchanged = 1;
     return v32;
   }
 

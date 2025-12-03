@@ -1,16 +1,16 @@
 @interface NUVisionForegroundIsolationSegmentationRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
 
 @implementation NUVisionForegroundIsolationSegmentationRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = NUVisionForegroundIsolationSegmentationRequest;
-  return [(NURenderRequest *)&v4 copyWithZone:a3];
+  return [(NURenderRequest *)&v4 copyWithZone:zone];
 }
 
 - (id)newRenderJob

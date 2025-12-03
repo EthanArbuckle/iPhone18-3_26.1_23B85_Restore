@@ -1,9 +1,9 @@
 @interface _NSPersonNameComponentsStyleFormatterShort
 - (BOOL)isEnabled;
 - (_NSPersonNameComponentsStyleFormatter)subFormatter;
-- (_NSPersonNameComponentsStyleFormatterShort)initWithMasterFormatter:(id)a3;
+- (_NSPersonNameComponentsStyleFormatterShort)initWithMasterFormatter:(id)formatter;
 - (_NSPersonNameComponentsStyleFormatterShortVariantGeneral)variantFormatter;
-- (id)_formattedStringFromOrderedKeys:(id)a3 components:(id)a4 attributesByRange:(id)a5;
+- (id)_formattedStringFromOrderedKeys:(id)keys components:(id)components attributesByRange:(id)range;
 - (id)abbreviatedKeys;
 - (id)fallbackStyleFormatter;
 - (id)keysOfInterest;
@@ -23,7 +23,7 @@
     return 1;
   }
 
-  v4 = [(_NSPersonNameComponentsStyleFormatterShort *)self forceShortNameEnabled]|| +[NSPersonNameComponentsFormatter _shortNameIsEnabled];
+  _shortNameIsEnabled = [(_NSPersonNameComponentsStyleFormatterShort *)self forceShortNameEnabled]|| +[NSPersonNameComponentsFormatter _shortNameIsEnabled];
   LOBYTE(v5) = 1;
   v6 = [(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] __localizedRestrictionExistsForStyle:1];
   [(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter];
@@ -33,7 +33,7 @@
     v5 = ![(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] __localizedRestrictionExistsForShortStyle:[(_NSPersonNameComponentsStyleFormatterShort *)self shortNameFormat]];
   }
 
-  if (v4)
+  if (_shortNameIsEnabled)
   {
     return !v6 & v5;
   }
@@ -140,12 +140,12 @@
   return result;
 }
 
-- (_NSPersonNameComponentsStyleFormatterShort)initWithMasterFormatter:(id)a3
+- (_NSPersonNameComponentsStyleFormatterShort)initWithMasterFormatter:(id)formatter
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
   v4.super_class = _NSPersonNameComponentsStyleFormatterShort;
-  result = [(_NSPersonNameComponentsStyleFormatter *)&v4 initWithMasterFormatter:a3];
+  result = [(_NSPersonNameComponentsStyleFormatter *)&v4 initWithMasterFormatter:formatter];
   if (result)
   {
     result->_shortNameFormat = 0;
@@ -154,23 +154,23 @@
   return result;
 }
 
-- (id)_formattedStringFromOrderedKeys:(id)a3 components:(id)a4 attributesByRange:(id)a5
+- (id)_formattedStringFromOrderedKeys:(id)keys components:(id)components attributesByRange:(id)range
 {
   v8 = +[NSPersonNameComponentsFormatter _shouldPreferNicknames];
-  v9 = [NSPersonNameComponentsFormatter _isCJKScript:a4];
+  v9 = [NSPersonNameComponentsFormatter _isCJKScript:components];
   if (v8)
   {
-    if (v9 || [NSPersonNameComponentsFormatter _isMixedScript:a4])
+    if (v9 || [NSPersonNameComponentsFormatter _isMixedScript:components])
     {
-      v10 = [[_NSPersonNameComponentsStyleFormatterLong alloc] initWithMasterFormatter:[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter]];
+      variantFormatter = [[_NSPersonNameComponentsStyleFormatterLong alloc] initWithMasterFormatter:[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter]];
     }
 
     else
     {
-      v10 = [(_NSPersonNameComponentsStyleFormatterShort *)self variantFormatter];
+      variantFormatter = [(_NSPersonNameComponentsStyleFormatterShort *)self variantFormatter];
     }
 
-    [[(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter] setFallbackStyleFormatter:v10];
+    [[(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter] setFallbackStyleFormatter:variantFormatter];
   }
 
   else if (v9)
@@ -184,17 +184,17 @@
   }
 
   [[(_NSPersonNameComponentsStyleFormatterShort *)self variantFormatter] setFallbackStyleFormatter:[[_NSPersonNameComponentsStyleFormatterShortNameSimpleFallback alloc] initWithMasterFormatter:[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter]]];
-  v12 = [(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter];
+  subFormatter = [(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter];
 
-  return [(_NSPersonNameComponentsStyleFormatter *)v12 stringFromComponents:a4 attributesByRange:a5];
+  return [(_NSPersonNameComponentsStyleFormatter *)subFormatter stringFromComponents:components attributesByRange:range];
 }
 
 - (id)abbreviatedKeys
 {
-  v2 = [(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter];
-  if (v2)
+  subFormatter = [(_NSPersonNameComponentsStyleFormatterShort *)self subFormatter];
+  if (subFormatter)
   {
-    [(_NSPersonNameComponentsStyleFormatter *)v2 abbreviatedKeys];
+    [(_NSPersonNameComponentsStyleFormatter *)subFormatter abbreviatedKeys];
   }
 
   return 0;

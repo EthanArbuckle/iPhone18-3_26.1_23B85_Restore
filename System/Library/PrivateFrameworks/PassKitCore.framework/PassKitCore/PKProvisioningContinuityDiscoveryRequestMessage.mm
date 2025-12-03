@@ -1,19 +1,19 @@
 @interface PKProvisioningContinuityDiscoveryRequestMessage
-- (BOOL)configureWithContent:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKProvisioningContinuityDiscoveryRequestMessage)initWithContinuityType:(unint64_t)a3 advertisement:(id)a4;
+- (BOOL)configureWithContent:(id)content;
+- (BOOL)isEqual:(id)equal;
+- (PKProvisioningContinuityDiscoveryRequestMessage)initWithContinuityType:(unint64_t)type advertisement:(id)advertisement;
 - (id)description;
 @end
 
 @implementation PKProvisioningContinuityDiscoveryRequestMessage
 
-- (PKProvisioningContinuityDiscoveryRequestMessage)initWithContinuityType:(unint64_t)a3 advertisement:(id)a4
+- (PKProvisioningContinuityDiscoveryRequestMessage)initWithContinuityType:(unint64_t)type advertisement:(id)advertisement
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
+  advertisementCopy = advertisement;
   v8 = objc_alloc_init(v6);
   v9 = v8;
-  if (a3 == 1)
+  if (type == 1)
   {
     v10 = @"carKey";
   }
@@ -24,9 +24,9 @@
   }
 
   [v8 setObject:v10 forKeyedSubscript:@"continuityType"];
-  v11 = [v7 dictionaryRepresentation];
+  dictionaryRepresentation = [advertisementCopy dictionaryRepresentation];
 
-  [v9 setObject:v11 forKeyedSubscript:@"advertisement"];
+  [v9 setObject:dictionaryRepresentation forKeyedSubscript:@"advertisement"];
   v14.receiver = self;
   v14.super_class = PKProvisioningContinuityDiscoveryRequestMessage;
   v12 = [(PKSharingGenericMessage *)&v14 initWithFormat:3 type:2001 genericSharingDict:MEMORY[0x1E695E0F8] appleSharingDict:v9];
@@ -34,14 +34,14 @@
   return v12;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v13.receiver = self;
   v13.super_class = PKProvisioningContinuityDiscoveryRequestMessage;
-  if ([(PKSharingGenericMessage *)&v13 configureWithContent:v4])
+  if ([(PKSharingGenericMessage *)&v13 configureWithContent:contentCopy])
   {
-    v5 = [v4 PKDictionaryForKey:@"apple"];
+    v5 = [contentCopy PKDictionaryForKey:@"apple"];
     v6 = [v5 PKStringForKey:@"continuityType"];
     self->_continuityType = PKProvisioningContinuityDiscoveryRequestTypeFromString(v6);
 
@@ -67,8 +67,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSharingMessage *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKSharingMessage *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   v5 = PKSharingMessageTypeToString([(PKSharingMessage *)self type]);
   [v3 appendFormat:@"type: '%@'; ", v5];
@@ -91,16 +91,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)

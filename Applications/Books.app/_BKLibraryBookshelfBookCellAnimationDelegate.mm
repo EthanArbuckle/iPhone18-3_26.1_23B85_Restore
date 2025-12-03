@@ -1,18 +1,18 @@
 @interface _BKLibraryBookshelfBookCellAnimationDelegate
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation _BKLibraryBookshelfBookCellAnimationDelegate
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v5 = [(_BKLibraryBookshelfBookCellAnimationDelegate *)self completionBlock];
-  if (v5)
+  finishedCopy = finished;
+  completionBlock = [(_BKLibraryBookshelfBookCellAnimationDelegate *)self completionBlock];
+  if (completionBlock)
   {
-    v6 = v5;
-    v5[2](v5, v4);
-    v5 = v6;
+    v6 = completionBlock;
+    completionBlock[2](completionBlock, finishedCopy);
+    completionBlock = v6;
   }
 }
 

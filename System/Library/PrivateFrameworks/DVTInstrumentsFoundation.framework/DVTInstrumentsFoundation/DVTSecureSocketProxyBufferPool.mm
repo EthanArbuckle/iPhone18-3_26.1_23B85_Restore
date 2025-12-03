@@ -1,38 +1,38 @@
 @interface DVTSecureSocketProxyBufferPool
-- (DVTSecureSocketProxyBufferPool)initWithCount:(int)a3 bufferSize:(unint64_t)a4;
+- (DVTSecureSocketProxyBufferPool)initWithCount:(int)count bufferSize:(unint64_t)size;
 - (id)blockingAcquireBuffer;
-- (void)releaseBuffer:(id)a3;
+- (void)releaseBuffer:(id)buffer;
 @end
 
 @implementation DVTSecureSocketProxyBufferPool
 
-- (DVTSecureSocketProxyBufferPool)initWithCount:(int)a3 bufferSize:(unint64_t)a4
+- (DVTSecureSocketProxyBufferPool)initWithCount:(int)count bufferSize:(unint64_t)size
 {
   v14.receiver = self;
   v14.super_class = DVTSecureSocketProxyBufferPool;
   v6 = [(DVTSecureSocketProxyBufferPool *)&v14 init];
   if (v6)
   {
-    v7 = dispatch_semaphore_create(a3);
+    v7 = dispatch_semaphore_create(count);
     bufferAvailable = v6->_bufferAvailable;
     v6->_bufferAvailable = v7;
 
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
     dataBuffers = v6->_dataBuffers;
     v6->_dataBuffers = v9;
 
-    if (a3 >= 1)
+    if (count >= 1)
     {
       do
       {
         v11 = v6->_dataBuffers;
-        v12 = [MEMORY[0x277CBEB28] dataWithLength:a4];
+        v12 = [MEMORY[0x277CBEB28] dataWithLength:size];
         [(NSMutableArray *)v11 addObject:v12];
 
-        --a3;
+        --count;
       }
 
-      while (a3);
+      while (count);
     }
   }
 
@@ -41,39 +41,39 @@
 
 - (id)blockingAcquireBuffer
 {
-  v3 = [(DVTSecureSocketProxyBufferPool *)self bufferAvailable];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  bufferAvailable = [(DVTSecureSocketProxyBufferPool *)self bufferAvailable];
+  dispatch_semaphore_wait(bufferAvailable, 0xFFFFFFFFFFFFFFFFLL);
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DVTSecureSocketProxyBufferPool *)v4 dataBuffers];
-  if (![v5 count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataBuffers = [(DVTSecureSocketProxyBufferPool *)selfCopy dataBuffers];
+  if (![dataBuffers count])
   {
     __assert_rtn("[DVTSecureSocketProxyBufferPool blockingAcquireBuffer]", "DVTSecureSocketProxy.m", 427, "self.dataBuffers.count > 0");
   }
 
-  v6 = [(DVTSecureSocketProxyBufferPool *)v4 dataBuffers];
-  v7 = [v6 lastObject];
+  dataBuffers2 = [(DVTSecureSocketProxyBufferPool *)selfCopy dataBuffers];
+  lastObject = [dataBuffers2 lastObject];
 
-  v8 = [(DVTSecureSocketProxyBufferPool *)v4 dataBuffers];
-  [v8 removeLastObject];
+  dataBuffers3 = [(DVTSecureSocketProxyBufferPool *)selfCopy dataBuffers];
+  [dataBuffers3 removeLastObject];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return lastObject;
 }
 
-- (void)releaseBuffer:(id)a3
+- (void)releaseBuffer:(id)buffer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DVTSecureSocketProxyBufferPool *)v4 dataBuffers];
-  [v5 addObject:v7];
+  bufferCopy = buffer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataBuffers = [(DVTSecureSocketProxyBufferPool *)selfCopy dataBuffers];
+  [dataBuffers addObject:bufferCopy];
 
-  objc_sync_exit(v4);
-  v6 = [(DVTSecureSocketProxyBufferPool *)v4 bufferAvailable];
-  dispatch_semaphore_signal(v6);
+  objc_sync_exit(selfCopy);
+  bufferAvailable = [(DVTSecureSocketProxyBufferPool *)selfCopy bufferAvailable];
+  dispatch_semaphore_signal(bufferAvailable);
 }
 
 @end

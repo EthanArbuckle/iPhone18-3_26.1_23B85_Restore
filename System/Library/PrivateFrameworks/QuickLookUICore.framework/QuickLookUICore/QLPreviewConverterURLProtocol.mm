@@ -1,15 +1,15 @@
 @interface QLPreviewConverterURLProtocol
 + (id)_errorForNoPreview;
 + (void)initialize;
-+ (void)registerPreview:(id)a3;
-+ (void)unregisterURLs:(id)a3 andPreview:(id)a4;
++ (void)registerPreview:(id)preview;
++ (void)unregisterURLs:(id)ls andPreview:(id)preview;
 @end
 
 @implementation QLPreviewConverterURLProtocol
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = MEMORY[0x277D43EF8];
     v4 = *MEMORY[0x277D43EF8];
@@ -25,15 +25,15 @@
       _os_log_impl(&dword_261653000, v4, OS_LOG_TYPE_DEFAULT, " #Conversion", v5, 2u);
     }
 
-    [MEMORY[0x277CCAD10] registerClass:a1];
+    [MEMORY[0x277CCAD10] registerClass:self];
   }
 }
 
-+ (void)registerPreview:(id)a3
++ (void)registerPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [v4 previewURL];
-  [a1 registerPreview:v4 forPreviewURL:v5];
+  previewCopy = preview;
+  previewURL = [previewCopy previewURL];
+  [self registerPreview:previewCopy forPreviewURL:previewURL];
 }
 
 + (id)_errorForNoPreview
@@ -49,11 +49,11 @@
   return v7;
 }
 
-+ (void)unregisterURLs:(id)a3 andPreview:(id)a4
++ (void)unregisterURLs:(id)ls andPreview:(id)preview
 {
-  v6 = a3;
-  v7 = [a4 previewURL];
-  [a1 unregisterURLs:v6 andPreviewURL:v7];
+  lsCopy = ls;
+  previewURL = [preview previewURL];
+  [self unregisterURLs:lsCopy andPreviewURL:previewURL];
 }
 
 @end

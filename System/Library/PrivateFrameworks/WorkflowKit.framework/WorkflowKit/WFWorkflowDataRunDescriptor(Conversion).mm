@@ -8,9 +8,9 @@
 {
   v7 = a5;
   v8 = [WFWorkflowFile alloc];
-  v9 = [a1 workflowData];
+  workflowData = [self workflowData];
   v19 = 0;
-  v10 = [(WFWorkflowFile *)v8 initWithFileData:v9 name:0 error:&v19];
+  v10 = [(WFWorkflowFile *)v8 initWithFileData:workflowData name:0 error:&v19];
   v11 = v19;
 
   if (v10)

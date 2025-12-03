@@ -7,8 +7,8 @@
 - (id)sg_LoggingIdentifier
 {
   v2 = objc_alloc(MEMORY[0x277CCACA8]);
-  v3 = [a1 identifier];
-  v4 = [v2 initWithFormat:@"%tu", objc_msgSend(v3, "hash")];
+  identifier = [self identifier];
+  v4 = [v2 initWithFormat:@"%tu", objc_msgSend(identifier, "hash")];
 
   if ([v4 length] > 0xC)
   {

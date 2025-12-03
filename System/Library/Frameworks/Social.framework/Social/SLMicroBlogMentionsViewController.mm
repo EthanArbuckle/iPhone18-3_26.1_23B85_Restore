@@ -1,42 +1,42 @@
 @interface SLMicroBlogMentionsViewController
 + (id)_blankSurrogateProfileImage;
 - (SLMicroBlogMentionsDelegate)delegate;
-- (SLMicroBlogMentionsViewController)initWithSheetDelegate:(id)a3;
+- (SLMicroBlogMentionsViewController)initWithSheetDelegate:(id)delegate;
 - (id)mentions;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)chooseRow:(int64_t)a3;
-- (void)completeWithSelectedMention:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)chooseRow:(int64_t)row;
+- (void)completeWithSelectedMention:(id)mention;
 - (void)loadView;
-- (void)setMentions:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setMentions:(id)mentions;
+- (void)setSearchString:(id)string;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateMentions;
 @end
 
 @implementation SLMicroBlogMentionsViewController
 
-- (SLMicroBlogMentionsViewController)initWithSheetDelegate:(id)a3
+- (SLMicroBlogMentionsViewController)initWithSheetDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SLMicroBlogMentionsViewController;
   v5 = [(SLMicroBlogMentionsViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sheetDelegate, v4);
+    objc_storeWeak(&v5->_sheetDelegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)completeWithSelectedMention:(id)a3
+- (void)completeWithSelectedMention:(id)mention
 {
-  v4 = a3;
-  v5 = [(SLMicroBlogMentionsViewController *)self delegate];
-  [v5 mentionsViewController:self finishedWithResult:v4];
+  mentionCopy = mention;
+  delegate = [(SLMicroBlogMentionsViewController *)self delegate];
+  [delegate mentionsViewController:self finishedWithResult:mentionCopy];
 }
 
 - (id)mentions
@@ -55,13 +55,13 @@
   return mentions;
 }
 
-- (void)setMentions:(id)a3
+- (void)setMentions:(id)mentions
 {
-  v5 = a3;
+  mentionsCopy = mentions;
   _SLLog(v3, 7, @"SLMicroBlogMentionsViewController setMentions:");
   mentions = self->_mentions;
-  self->_mentions = v5;
-  v7 = v5;
+  self->_mentions = mentionsCopy;
+  v7 = mentionsCopy;
 
   tableView = self->_tableView;
   v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
@@ -115,17 +115,17 @@ uint64_t __51__SLMicroBlogMentionsViewController_updateMentions__block_invoke_2(
   return [v2 didChangeValueForKey:@"contentSizeForViewInPopover"];
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   _SLLog(v3, 7, @"SLMicroBlogMentionsViewController setSearchString: %@");
-  v6 = [(NSString *)self->_searchString compare:v5, v5];
-  v7 = [v5 copy];
+  stringCopy = [(NSString *)self->_searchString compare:stringCopy, stringCopy];
+  v7 = [stringCopy copy];
 
   searchString = self->_searchString;
   self->_searchString = v7;
 
-  if (v6)
+  if (stringCopy)
   {
     if ([(NSString *)self->_searchString length])
     {
@@ -147,8 +147,8 @@ uint64_t __51__SLMicroBlogMentionsViewController_updateMentions__block_invoke_2(
   v13.super_class = SLMicroBlogMentionsViewController;
   [(SLMicroBlogMentionsViewController *)&v13 loadView];
   v3 = objc_alloc(MEMORY[0x1E69DD020]);
-  v4 = [(SLMicroBlogMentionsViewController *)self view];
-  [v4 frame];
+  view = [(SLMicroBlogMentionsViewController *)self view];
+  [view frame];
   v5 = [v3 initWithFrame:?];
   tableView = self->_tableView;
   self->_tableView = v5;
@@ -157,15 +157,15 @@ uint64_t __51__SLMicroBlogMentionsViewController_updateMentions__block_invoke_2(
   [(UITableView *)self->_tableView setDataSource:self];
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setOpaque:0];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITableView *)self->_tableView setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UITableView *)self->_tableView setBackgroundColor:clearColor];
 
-  v8 = [(UITableView *)self->_tableView backgroundView];
-  [v8 setOpaque:0];
+  backgroundView = [(UITableView *)self->_tableView backgroundView];
+  [backgroundView setOpaque:0];
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  v10 = [(UITableView *)self->_tableView backgroundView];
-  [v10 setBackgroundColor:v9];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  backgroundView2 = [(UITableView *)self->_tableView backgroundView];
+  [backgroundView2 setBackgroundColor:clearColor2];
 
   [(UITableView *)self->_tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -175,60 +175,60 @@ uint64_t __51__SLMicroBlogMentionsViewController_updateMentions__block_invoke_2(
   [(SLMicroBlogMentionsViewController *)self setView:self->_tableView];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(SLMicroBlogMentionsViewController *)self mentions:a3];
+  v5 = [(SLMicroBlogMentionsViewController *)self mentions:view];
   _SLLog(v4, 7, @"Mentions tableView:numberOfRowsInSection: with results %@");
   v6 = [v5 count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   _SLLog(v4, 7, @"Mentions tableView:cellForRowAtIndexPath: %@");
-  v9 = [v8 indexAtPosition:{1, v8}];
+  v9 = [pathCopy indexAtPosition:{1, pathCopy}];
 
-  v10 = [(SLMicroBlogMentionsViewController *)self mentions];
-  v11 = [v10 objectAtIndex:v9];
+  mentions = [(SLMicroBlogMentionsViewController *)self mentions];
+  v11 = [mentions objectAtIndex:v9];
 
   _SLLog(v4, 7, @"Mentions tableView:cellForRowAtIndexPath: using userRecord %@");
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v11 screen_name];
-  v14 = [v12 stringWithFormat:@"@%@", v13];
+  screen_name = [v11 screen_name];
+  v14 = [v12 stringWithFormat:@"@%@", screen_name];
 
-  v15 = [v7 dequeueReusableCellWithIdentifier:@"MicroBlogMentionCell"];
+  v15 = [viewCopy dequeueReusableCellWithIdentifier:@"MicroBlogMentionCell"];
   if (!v15)
   {
     v15 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"MicroBlogMentionCell"];
   }
 
   [v15 setOpaque:0];
-  v16 = [MEMORY[0x1E69DC888] clearColor];
-  [v15 setBackgroundColor:v16];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v15 setBackgroundColor:clearColor];
 
-  v17 = [v15 textLabel];
-  [v17 setText:v14];
+  textLabel = [v15 textLabel];
+  [textLabel setText:v14];
 
-  v18 = [v11 name];
+  name = [v11 name];
 
-  if (v18)
+  if (name)
   {
-    v19 = [v11 name];
-    v20 = [v15 detailTextLabel];
-    [v20 setText:v19];
+    name2 = [v11 name];
+    detailTextLabel = [v15 detailTextLabel];
+    [detailTextLabel setText:name2];
   }
 
-  v21 = [v11 profileImageCache];
-  v22 = [v15 imageView];
-  [v22 setImage:v21];
+  profileImageCache = [v11 profileImageCache];
+  imageView = [v15 imageView];
+  [imageView setImage:profileImageCache];
 
-  v23 = [v15 imageView];
-  v24 = [v23 image];
+  imageView2 = [v15 imageView];
+  image = [imageView2 image];
 
-  if (!v24)
+  if (!image)
   {
     WeakRetained = objc_loadWeakRetained(&self->_sheetDelegate);
     v26 = objc_opt_respondsToSelector();
@@ -236,41 +236,41 @@ uint64_t __51__SLMicroBlogMentionsViewController_updateMentions__block_invoke_2(
     if (v26)
     {
       v27 = objc_loadWeakRetained(&self->_sheetDelegate);
-      v28 = [v11 screen_name];
-      v29 = [v27 cachedProfileImageDataForScreenName:v28];
+      screen_name2 = [v11 screen_name];
+      v29 = [v27 cachedProfileImageDataForScreenName:screen_name2];
 
       if (v29)
       {
         v30 = [MEMORY[0x1E69DCAB8] imageWithData:v29];
-        v31 = [v15 imageView];
-        [v31 setImage:v30];
+        imageView3 = [v15 imageView];
+        [imageView3 setImage:v30];
       }
     }
   }
 
-  v32 = [v15 imageView];
-  v33 = [v32 image];
+  imageView4 = [v15 imageView];
+  image2 = [imageView4 image];
 
-  if (!v33)
+  if (!image2)
   {
     v34 = +[SLMicroBlogMentionsViewController _blankSurrogateProfileImage];
     [v11 setProfileImageCache:v34];
 
-    v35 = [v11 profileImageCache];
-    v36 = [v15 imageView];
-    [v36 setImage:v35];
+    profileImageCache2 = [v11 profileImageCache];
+    imageView5 = [v15 imageView];
+    [imageView5 setImage:profileImageCache2];
 
     _SLLog(v4, 7, @"Mentions will fetch profile image for userRecord %@");
     v37 = objc_loadWeakRetained(&self->_sheetDelegate);
-    v38 = [v11 screen_name];
+    screen_name3 = [v11 screen_name];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __69__SLMicroBlogMentionsViewController_tableView_cellForRowAtIndexPath___block_invoke;
     v40[3] = &unk_1E81766B0;
     v41 = v11;
-    v42 = self;
-    v43 = v7;
-    [v37 fetchProfileImageDataForScreenName:v38 completion:v40];
+    selfCopy = self;
+    v43 = viewCopy;
+    [v37 fetchProfileImageDataForScreenName:screen_name3 completion:v40];
   }
 
   return v15;
@@ -319,28 +319,28 @@ void __69__SLMicroBlogMentionsViewController_tableView_cellForRowAtIndexPath___b
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 setOpaque:0];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setBackgroundColor:v6];
+  cellCopy = cell;
+  [cellCopy setOpaque:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 }
 
-- (void)chooseRow:(int64_t)a3
+- (void)chooseRow:(int64_t)row
 {
-  v6 = [(NSArray *)self->_mentions objectAtIndex:a3];
-  v4 = [v6 screen_name];
-  v5 = [v4 stringByAppendingString:@" "];
+  v6 = [(NSArray *)self->_mentions objectAtIndex:row];
+  screen_name = [v6 screen_name];
+  v5 = [screen_name stringByAppendingString:@" "];
 
   [(SLMicroBlogMentionsViewController *)self completeWithSelectedMention:v5];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   _SLLog(v4, 7, @"SLMicroBlogMentionsViewController didSelectRowAtIndexPath: %@");
-  v7 = [v6 indexAtPosition:{1, v6}];
+  v7 = [pathCopy indexAtPosition:{1, pathCopy}];
 
   [(SLMicroBlogMentionsViewController *)self chooseRow:v7];
 }

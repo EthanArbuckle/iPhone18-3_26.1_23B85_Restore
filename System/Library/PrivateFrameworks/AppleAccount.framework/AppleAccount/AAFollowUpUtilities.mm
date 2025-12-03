@@ -1,16 +1,16 @@
 @interface AAFollowUpUtilities
-+ (BOOL)hasValidIDMSAccountForUserInfo:(id)a3;
-+ (id)followUpPostAnalyticsInfoWithContext:(id)a3 identifier:(id)a4 error:(id)a5;
++ (BOOL)hasValidIDMSAccountForUserInfo:(id)info;
++ (id)followUpPostAnalyticsInfoWithContext:(id)context identifier:(id)identifier error:(id)error;
 @end
 
 @implementation AAFollowUpUtilities
 
-+ (BOOL)hasValidIDMSAccountForUserInfo:(id)a3
++ (BOOL)hasValidIDMSAccountForUserInfo:(id)info
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E6959A48] defaultStore];
-  v5 = [v3 objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
+  infoCopy = info;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v5 = [infoCopy objectForKeyedSubscript:AAFollowUpUserInfoAccountIdentifier[0]];
   v6 = _AALogSystem();
   v7 = v6;
   if (!v5)
@@ -28,7 +28,7 @@
     +[AAFollowUpUtilities hasValidIDMSAccountForUserInfo:];
   }
 
-  v7 = [v4 accountWithIdentifier:v5];
+  v7 = [defaultStore accountWithIdentifier:v5];
   if (!v7)
   {
 LABEL_32:
@@ -42,20 +42,20 @@ LABEL_32:
     +[AAFollowUpUtilities hasValidIDMSAccountForUserInfo:];
   }
 
-  v9 = [MEMORY[0x1E698DC80] sharedInstance];
-  v10 = [v9 allAuthKitAccounts];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  allAuthKitAccounts = [mEMORY[0x1E698DC80] allAuthKitAccounts];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v11 = v10;
+  v11 = allAuthKitAccounts;
   v40 = [v11 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v40)
   {
     v12 = *v48;
-    v37 = v4;
-    v38 = v3;
+    v37 = defaultStore;
+    v38 = infoCopy;
     v35 = *v48;
     v36 = v5;
     v39 = v11;
@@ -69,9 +69,9 @@ LABEL_32:
         }
 
         v14 = *(*(&v47 + 1) + 8 * i);
-        v15 = [v14 username];
-        v16 = [v7 username];
-        v17 = [v15 isEqualToString:v16];
+        username = [v14 username];
+        username2 = [v7 username];
+        v17 = [username isEqualToString:username2];
 
         if (v17)
         {
@@ -84,14 +84,14 @@ LABEL_32:
           v30 = 1;
 LABEL_36:
           v29 = v11;
-          v4 = v37;
-          v3 = v38;
+          defaultStore = v37;
+          infoCopy = v38;
           v5 = v36;
           goto LABEL_37;
         }
 
-        v18 = [MEMORY[0x1E698DC80] sharedInstance];
-        v19 = [v18 aliasesForAccount:v14];
+        mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+        v19 = [mEMORY[0x1E698DC80]2 aliasesForAccount:v14];
 
         if (v19)
         {
@@ -121,8 +121,8 @@ LABEL_36:
                 }
 
                 v26 = *(*(&v41 + 1) + 8 * j);
-                v27 = [v7 username];
-                v28 = [v27 isEqualToString:v26];
+                username3 = [v7 username];
+                v28 = [username3 isEqualToString:v26];
 
                 if (v28)
                 {
@@ -153,8 +153,8 @@ LABEL_36:
         }
       }
 
-      v4 = v37;
-      v3 = v38;
+      defaultStore = v37;
+      infoCopy = v38;
       v5 = v36;
       v40 = [v11 countByEnumeratingWithState:&v47 objects:v52 count:16];
       if (v40)
@@ -180,51 +180,51 @@ LABEL_38:
   return v30;
 }
 
-+ (id)followUpPostAnalyticsInfoWithContext:(id)a3 identifier:(id)a4 error:(id)a5
++ (id)followUpPostAnalyticsInfoWithContext:(id)context identifier:(id)identifier error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
+  errorCopy = error;
   v10 = objc_alloc_init(MEMORY[0x1E6985DA8]);
-  v11 = [v7 proxiedDevice];
+  proxiedDevice = [contextCopy proxiedDevice];
 
-  if (v11)
+  if (proxiedDevice)
   {
     [v10 setHasProxiedDevice:&unk_1F2F24B80];
   }
 
-  v12 = [v7 _proxiedAppBundleID];
+  _proxiedAppBundleID = [contextCopy _proxiedAppBundleID];
 
-  if (v12)
+  if (_proxiedAppBundleID)
   {
-    v13 = [v7 _proxiedAppBundleID];
-    [v10 setProxiedBundleID:v13];
+    _proxiedAppBundleID2 = [contextCopy _proxiedAppBundleID];
+    [v10 setProxiedBundleID:_proxiedAppBundleID2];
   }
 
-  if (v9)
+  if (errorCopy)
   {
-    [v10 setPostedReasonError:v9];
+    [v10 setPostedReasonError:errorCopy];
   }
 
-  v14 = [v7 telemetryFlowID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
 
-  if (v14)
+  if (telemetryFlowID)
   {
-    v15 = [v7 telemetryFlowID];
-    [v10 setFlowID:v15];
+    telemetryFlowID2 = [contextCopy telemetryFlowID];
+    [v10 setFlowID:telemetryFlowID2];
   }
 
-  v16 = [MEMORY[0x1E698DC80] sharedInstance];
-  v17 = [v7 altDSID];
-  v18 = [v16 authKitAccountWithAltDSID:v17];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  altDSID = [contextCopy altDSID];
+  v18 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:altDSID];
 
-  if ([v16 accountAccessTelemetryOptInForAccount:v18])
+  if ([mEMORY[0x1E698DC80] accountAccessTelemetryOptInForAccount:v18])
   {
-    v19 = [v16 telemetryDeviceSessionIDForAccount:v18];
+    v19 = [mEMORY[0x1E698DC80] telemetryDeviceSessionIDForAccount:v18];
     [v10 setDeviceSessionID:v19];
   }
 
-  [v10 setCfuType:v8];
+  [v10 setCfuType:identifierCopy];
   v20 = [v10 copy];
 
   return v20;

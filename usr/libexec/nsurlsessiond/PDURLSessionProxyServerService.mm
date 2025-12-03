@@ -1,12 +1,12 @@
 @interface PDURLSessionProxyServerService
 + (id)sharedService;
 - (PDURLSessionProxyServerService)init;
-- (id)_onqueue_loggableDescriptionForMessage:(id)a3;
-- (id)_onqueue_sourceApplicationForMessage:(id)a3;
-- (int64_t)_onqueue_IDSTimoutForMessage:(id)a3;
+- (id)_onqueue_loggableDescriptionForMessage:(id)message;
+- (id)_onqueue_sourceApplicationForMessage:(id)message;
+- (int64_t)_onqueue_IDSTimoutForMessage:(id)message;
 - (void)_onqueue_remoteDeviceStartedUp;
 - (void)dealloc;
-- (void)proxyServerBecameInvalid:(id)a3;
+- (void)proxyServerBecameInvalid:(id)invalid;
 - (void)releaseBTLinkAssertion;
 - (void)releaseInfraWiFi;
 - (void)retainBTLinkAssertion;
@@ -16,33 +16,33 @@
 
 @implementation PDURLSessionProxyServerService
 
-- (void)proxyServerBecameInvalid:(id)a3
+- (void)proxyServerBecameInvalid:(id)invalid
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000DF08;
   v5[3] = &unk_1000D6420;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  invalidCopy = invalid;
+  selfCopy = self;
+  v4 = invalidCopy;
   [(PDURLSessionProxyService *)self withWorkQueue:v5];
 }
 
-- (id)_onqueue_loggableDescriptionForMessage:(id)a3
+- (id)_onqueue_loggableDescriptionForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 _nsurlsessionproxy_sessionIdentifier];
-  v6 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v5];
+  messageCopy = message;
+  _nsurlsessionproxy_sessionIdentifier = [messageCopy _nsurlsessionproxy_sessionIdentifier];
+  v6 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:_nsurlsessionproxy_sessionIdentifier];
   if (v6)
   {
-    v7 = [v6 messageLoggableDescriptionForTaskWithIdentifier:{objc_msgSend(v4, "_nsurlsessionproxy_taskIdentifier")}];
+    v7 = [v6 messageLoggableDescriptionForTaskWithIdentifier:{objc_msgSend(messageCopy, "_nsurlsessionproxy_taskIdentifier")}];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PDURLSessionProxyServerService;
-    v7 = [(PDURLSessionProxyService *)&v10 _onqueue_loggableDescriptionForMessage:v4];
+    v7 = [(PDURLSessionProxyService *)&v10 _onqueue_loggableDescriptionForMessage:messageCopy];
   }
 
   v8 = v7;
@@ -50,45 +50,45 @@
   return v8;
 }
 
-- (int64_t)_onqueue_IDSTimoutForMessage:(id)a3
+- (int64_t)_onqueue_IDSTimoutForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 _nsurlsessionproxy_sessionIdentifier];
-  v6 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v5];
+  messageCopy = message;
+  _nsurlsessionproxy_sessionIdentifier = [messageCopy _nsurlsessionproxy_sessionIdentifier];
+  v6 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:_nsurlsessionproxy_sessionIdentifier];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 IDSMessageTimeout];
+    iDSMessageTimeout = [v6 IDSMessageTimeout];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = PDURLSessionProxyServerService;
-    v8 = [(PDURLSessionProxyService *)&v11 _onqueue_IDSTimoutForMessage:v4];
+    iDSMessageTimeout = [(PDURLSessionProxyService *)&v11 _onqueue_IDSTimoutForMessage:messageCopy];
   }
 
-  v9 = v8;
+  v9 = iDSMessageTimeout;
 
   return v9;
 }
 
-- (id)_onqueue_sourceApplicationForMessage:(id)a3
+- (id)_onqueue_sourceApplicationForMessage:(id)message
 {
-  v4 = [a3 _nsurlsessionproxy_sessionIdentifier];
-  v5 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v4];
+  _nsurlsessionproxy_sessionIdentifier = [message _nsurlsessionproxy_sessionIdentifier];
+  v5 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:_nsurlsessionproxy_sessionIdentifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 sourceApplicationBundleIdentifier];
+    sourceApplicationBundleIdentifier = [v5 sourceApplicationBundleIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    sourceApplicationBundleIdentifier = 0;
   }
 
-  return v7;
+  return sourceApplicationBundleIdentifier;
 }
 
 - (void)_onqueue_remoteDeviceStartedUp

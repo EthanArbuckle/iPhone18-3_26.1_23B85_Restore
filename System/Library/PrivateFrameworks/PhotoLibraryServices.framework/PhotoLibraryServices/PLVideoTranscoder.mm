@@ -1,32 +1,32 @@
 @interface PLVideoTranscoder
-+ (id)generatePosterFrameForAVAsset:(id)a3 maxSize:(CGSize)a4 error:(id *)a5;
-+ (id)generatePosterFrameForVideoAtURL:(id)a3 maxSize:(CGSize)a4 error:(id *)a5;
-+ (void)transcodeVideo:(id)a3 outputURL:(id)a4 presetName:(id)a5 outputFileType:(id)a6 metadata:(id)a7 completionHandler:(id)a8;
-+ (void)transcodeVideoWithObjectBuilder:(id)a3 outputURL:(id)a4 startTime:(id *)a5 endTime:(id *)a6 presetName:(id)a7 outputFileType:(id)a8 metadata:(id)a9 completionHandler:(id)a10;
++ (id)generatePosterFrameForAVAsset:(id)asset maxSize:(CGSize)size error:(id *)error;
++ (id)generatePosterFrameForVideoAtURL:(id)l maxSize:(CGSize)size error:(id *)error;
++ (void)transcodeVideo:(id)video outputURL:(id)l presetName:(id)name outputFileType:(id)type metadata:(id)metadata completionHandler:(id)handler;
++ (void)transcodeVideoWithObjectBuilder:(id)builder outputURL:(id)l startTime:(id *)time endTime:(id *)endTime presetName:(id)name outputFileType:(id)type metadata:(id)metadata completionHandler:(id)self0;
 @end
 
 @implementation PLVideoTranscoder
 
-+ (id)generatePosterFrameForAVAsset:(id)a3 maxSize:(CGSize)a4 error:(id *)a5
++ (id)generatePosterFrameForAVAsset:(id)asset maxSize:(CGSize)size error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (assetCopy)
   {
-    [v5 duration];
+    [assetCopy duration];
   }
 
   return 0;
 }
 
-+ (id)generatePosterFrameForVideoAtURL:(id)a3 maxSize:(CGSize)a4 error:(id *)a5
++ (id)generatePosterFrameForVideoAtURL:(id)l maxSize:(CGSize)size error:(id *)error
 {
-  if (a3)
+  if (l)
   {
-    height = a4.height;
-    width = a4.width;
+    height = size.height;
+    width = size.width;
     v9 = [MEMORY[0x1E6987E28] assetWithURL:?];
-    v10 = [a1 generatePosterFrameForAVAsset:v9 maxSize:a5 error:{width, height}];
+    v10 = [self generatePosterFrameForAVAsset:v9 maxSize:error error:{width, height}];
   }
 
   else
@@ -37,14 +37,14 @@
   return v10;
 }
 
-+ (void)transcodeVideoWithObjectBuilder:(id)a3 outputURL:(id)a4 startTime:(id *)a5 endTime:(id *)a6 presetName:(id)a7 outputFileType:(id)a8 metadata:(id)a9 completionHandler:(id)a10
++ (void)transcodeVideoWithObjectBuilder:(id)builder outputURL:(id)l startTime:(id *)time endTime:(id *)endTime presetName:(id)name outputFileType:(id)type metadata:(id)metadata completionHandler:(id)self0
 {
-  v15 = a3;
-  v31 = a4;
-  v16 = a7;
-  v30 = a8;
-  v29 = a9;
-  v17 = a10;
+  builderCopy = builder;
+  lCopy = l;
+  nameCopy = name;
+  typeCopy = type;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -56,13 +56,13 @@
   v45[2] = __134__PLVideoTranscoder_transcodeVideoWithObjectBuilder_outputURL_startTime_endTime_presetName_outputFileType_metadata_completionHandler___block_invoke;
   v45[3] = &unk_1E75778F0;
   v45[4] = &v46;
-  [v15 requestExportSessionWithExportPreset:v16 resultHandler:v45];
+  [builderCopy requestExportSessionWithExportPreset:nameCopy resultHandler:v45];
   v18 = v47[5];
   if (v18)
   {
-    if (v17)
+    if (handlerCopy)
     {
-      v19 = [v17 copy];
+      v19 = [handlerCopy copy];
 
       v18 = v47[5];
     }
@@ -72,27 +72,27 @@
       v19 = 0;
     }
 
-    v25 = [v18 presetName];
-    v26 = [v47[5] asset];
+    presetName = [v18 presetName];
+    asset = [v47[5] asset];
     v27 = MEMORY[0x1E6987E60];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __134__PLVideoTranscoder_transcodeVideoWithObjectBuilder_outputURL_startTime_endTime_presetName_outputFileType_metadata_completionHandler___block_invoke_2;
     v32[3] = &unk_1E7577940;
     v40 = &v46;
-    v33 = v30;
-    v34 = v31;
-    v35 = v29;
-    v36 = v16;
-    v41 = *&a6->var0;
-    var3 = a6->var3;
-    v43 = *&a5->var0;
-    v44 = a5->var3;
-    v17 = v19;
-    v39 = v17;
-    v24 = v25;
+    v33 = typeCopy;
+    v34 = lCopy;
+    v35 = metadataCopy;
+    v36 = nameCopy;
+    v41 = *&endTime->var0;
+    var3 = endTime->var3;
+    v43 = *&time->var0;
+    v44 = time->var3;
+    handlerCopy = v19;
+    v39 = handlerCopy;
+    v24 = presetName;
     v37 = v24;
-    v28 = v26;
+    v28 = asset;
     v38 = v28;
     [v27 determineCompatibilityOfExportPreset:v24 withAsset:v28 outputFileType:v33 completionHandler:v32];
   }
@@ -105,9 +105,9 @@
     v23 = [v21 dictionaryWithObject:v22 forKey:*MEMORY[0x1E696A578]];
     v24 = [v20 errorWithDomain:@"PLVideoTranscoderErrorDomain" code:0 userInfo:v23];
 
-    if (v17)
+    if (handlerCopy)
     {
-      (*(v17 + 2))(v17, 0, v24);
+      (*(handlerCopy + 2))(handlerCopy, 0, v24);
     }
   }
 
@@ -250,18 +250,18 @@ LABEL_6:
   return MEMORY[0x1EEE66BE0](v12);
 }
 
-+ (void)transcodeVideo:(id)a3 outputURL:(id)a4 presetName:(id)a5 outputFileType:(id)a6 metadata:(id)a7 completionHandler:(id)a8
++ (void)transcodeVideo:(id)video outputURL:(id)l presetName:(id)name outputFileType:(id)type metadata:(id)metadata completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v14 videoAdjustments:0];
-  if (v14)
+  videoCopy = video;
+  lCopy = l;
+  nameCopy = name;
+  typeCopy = type;
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  v20 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:videoCopy videoAdjustments:0];
+  if (videoCopy)
   {
-    [v14 duration];
+    [videoCopy duration];
   }
 
   else
@@ -271,7 +271,7 @@ LABEL_6:
 
   v21 = *MEMORY[0x1E6960CC0];
   v22 = *(MEMORY[0x1E6960CC0] + 16);
-  [a1 transcodeVideoWithObjectBuilder:v20 outputURL:v15 startTime:&v21 endTime:v23 presetName:v16 outputFileType:v17 metadata:v18 completionHandler:v19];
+  [self transcodeVideoWithObjectBuilder:v20 outputURL:lCopy startTime:&v21 endTime:v23 presetName:nameCopy outputFileType:typeCopy metadata:metadataCopy completionHandler:handlerCopy];
 }
 
 @end

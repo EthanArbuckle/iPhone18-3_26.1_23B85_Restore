@@ -1,35 +1,35 @@
 @interface AAUIServerHookFactory
-- (id)_defaultHooks:(id)a3;
-- (id)_iCloudDataRecoveryServiceHooksFor:(id)a3 accountManager:(id)a4 cdpContext:(id)a5;
-- (id)_passwordAndSecurityHooksForAccount:(id)a3 accountManager:(id)a4;
-- (id)_personalInformationHooksForAccount:(id)a3 accountManager:(id)a4;
-- (id)hooksFor:(unint64_t)a3 accountManager:(id)a4;
-- (id)hooksFor:(unint64_t)a3 accountManager:(id)a4 cdpContext:(id)a5;
+- (id)_defaultHooks:(id)hooks;
+- (id)_iCloudDataRecoveryServiceHooksFor:(id)for accountManager:(id)manager cdpContext:(id)context;
+- (id)_passwordAndSecurityHooksForAccount:(id)account accountManager:(id)manager;
+- (id)_personalInformationHooksForAccount:(id)account accountManager:(id)manager;
+- (id)hooksFor:(unint64_t)for accountManager:(id)manager;
+- (id)hooksFor:(unint64_t)for accountManager:(id)manager cdpContext:(id)context;
 @end
 
 @implementation AAUIServerHookFactory
 
-- (id)hooksFor:(unint64_t)a3 accountManager:(id)a4
+- (id)hooksFor:(unint64_t)for accountManager:(id)manager
 {
-  v6 = a4;
-  v7 = [v6 accounts];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  managerCopy = manager;
+  accounts = [managerCopy accounts];
+  v8 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
-  if (a3 == 3)
+  if (for == 3)
   {
-    v9 = [(AAUIServerHookFactory *)self _personalInformationHooksForAccount:v8 accountManager:v6];
+    v9 = [(AAUIServerHookFactory *)self _personalInformationHooksForAccount:v8 accountManager:managerCopy];
   }
 
-  else if (a3 == 2)
+  else if (for == 2)
   {
-    v9 = [(AAUIServerHookFactory *)self _iCloudDataRecoveryServiceHooksFor:v8 accountManager:v6 cdpContext:0];
+    v9 = [(AAUIServerHookFactory *)self _iCloudDataRecoveryServiceHooksFor:v8 accountManager:managerCopy cdpContext:0];
   }
 
   else
   {
-    if (a3 == 1)
+    if (for == 1)
     {
-      [(AAUIServerHookFactory *)self _passwordAndSecurityHooksForAccount:v8 accountManager:v6];
+      [(AAUIServerHookFactory *)self _passwordAndSecurityHooksForAccount:v8 accountManager:managerCopy];
     }
 
     else
@@ -44,23 +44,23 @@
   return v10;
 }
 
-- (id)hooksFor:(unint64_t)a3 accountManager:(id)a4 cdpContext:(id)a5
+- (id)hooksFor:(unint64_t)for accountManager:(id)manager cdpContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 accounts];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  managerCopy = manager;
+  contextCopy = context;
+  accounts = [managerCopy accounts];
+  v11 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
-  if (a3 == 2)
+  if (for == 2)
   {
-    v12 = [(AAUIServerHookFactory *)self _iCloudDataRecoveryServiceHooksFor:v11 accountManager:v8 cdpContext:v9];
+    v12 = [(AAUIServerHookFactory *)self _iCloudDataRecoveryServiceHooksFor:v11 accountManager:managerCopy cdpContext:contextCopy];
   }
 
   else
   {
-    if (a3 == 1)
+    if (for == 1)
     {
-      [(AAUIServerHookFactory *)self _passwordAndSecurityHooksForAccount:v11 accountManager:v8];
+      [(AAUIServerHookFactory *)self _passwordAndSecurityHooksForAccount:v11 accountManager:managerCopy];
     }
 
     else
@@ -75,16 +75,16 @@
   return v13;
 }
 
-- (id)_defaultHooks:(id)a3
+- (id)_defaultHooks:(id)hooks
 {
   v26[15] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  hooksCopy = hooks;
   v25 = objc_opt_new();
   v26[0] = v25;
   v4 = [AAUIAuthKitAuthenticatonHook alloc];
-  v24 = [v3 username];
-  v23 = [v3 aa_altDSID];
-  v22 = [(AAUIAuthKitAuthenticatonHook *)v4 initWithUsername:v24 altDSID:v23];
+  username = [hooksCopy username];
+  aa_altDSID = [hooksCopy aa_altDSID];
+  v22 = [(AAUIAuthKitAuthenticatonHook *)v4 initWithUsername:username altDSID:aa_altDSID];
   v26[1] = v22;
   v21 = objc_opt_new();
   v26[2] = v21;
@@ -109,10 +109,10 @@
   v10 = objc_opt_new();
   v26[12] = v10;
   v11 = objc_alloc(MEMORY[0x1E698DE78]);
-  v12 = [v3 aa_altDSID];
-  v13 = [v11 initWithAltDSID:v12];
+  aa_altDSID2 = [hooksCopy aa_altDSID];
+  v13 = [v11 initWithAltDSID:aa_altDSID2];
   v26[13] = v13;
-  v14 = [objc_alloc(MEMORY[0x1E698DEC0]) initWithAccount:v3];
+  v14 = [objc_alloc(MEMORY[0x1E698DEC0]) initWithAccount:hooksCopy];
 
   v26[14] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:15];
@@ -120,34 +120,34 @@
   return v15;
 }
 
-- (id)_passwordAndSecurityHooksForAccount:(id)a3 accountManager:(id)a4
+- (id)_passwordAndSecurityHooksForAccount:(id)account accountManager:(id)manager
 {
   v26[5] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
+  managerCopy = manager;
+  accountCopy = account;
   v9 = [v6 alloc];
-  v10 = [(AAUIServerHookFactory *)self _defaultHooks:v8];
+  v10 = [(AAUIServerHookFactory *)self _defaultHooks:accountCopy];
   v11 = [v9 initWithArray:v10];
 
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v25 = [v12 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v13 = [AAUIRecoveryContactsViewFactory createViewModelWithAccountManager:v7 telemetryFlowID:v25];
-  v14 = [AAUILegacyContactsViewFactory createViewModelWithAccountManager:v7];
+  v13 = [AAUIRecoveryContactsViewFactory createViewModelWithAccountManager:managerCopy telemetryFlowID:uUIDString];
+  v14 = [AAUILegacyContactsViewFactory createViewModelWithAccountManager:managerCopy];
   v15 = objc_opt_new();
   v26[0] = v15;
-  v16 = [[AAUIAccountBeneficiaryManagementHook alloc] initWithAccountManager:v7 legacyContactsViewModel:v14];
+  v16 = [[AAUIAccountBeneficiaryManagementHook alloc] initWithAccountManager:managerCopy legacyContactsViewModel:v14];
   v26[1] = v16;
-  v17 = [[AAUIAccountRecoveryManagementHook alloc] initWithAccountManager:v7 recoveryContactsViewModel:v13];
+  v17 = [[AAUIAccountRecoveryManagementHook alloc] initWithAccountManager:managerCopy recoveryContactsViewModel:v13];
 
   v26[2] = v17;
   v18 = objc_opt_new();
   v26[3] = v18;
   v19 = [AAUIAuthKitPasswordChangeHook alloc];
-  v20 = [v8 aa_altDSID];
+  aa_altDSID = [accountCopy aa_altDSID];
 
-  v21 = [(AAUIAuthKitPasswordChangeHook *)v19 initWithAltDSID:v20];
+  v21 = [(AAUIAuthKitPasswordChangeHook *)v19 initWithAltDSID:aa_altDSID];
   v26[4] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:5];
   [v11 addObjectsFromArray:v22];
@@ -157,41 +157,41 @@
   return v23;
 }
 
-- (id)_iCloudDataRecoveryServiceHooksFor:(id)a3 accountManager:(id)a4 cdpContext:(id)a5
+- (id)_iCloudDataRecoveryServiceHooksFor:(id)for accountManager:(id)manager cdpContext:(id)context
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  forCopy = for;
+  contextCopy = context;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a4;
+  managerCopy = manager;
   v12 = [v10 alloc];
-  v13 = [(AAUIServerHookFactory *)self _defaultHooks:v8];
+  v13 = [(AAUIServerHookFactory *)self _defaultHooks:forCopy];
   v29 = [v12 initWithArray:v13];
 
-  v14 = [v9 telemetryFlowID];
-  v15 = v14;
-  if (v14)
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  v15 = telemetryFlowID;
+  if (telemetryFlowID)
   {
-    v16 = v14;
+    uUIDString = telemetryFlowID;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v17 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v18 = [AAUIRecoveryContactsViewFactory createViewModelWithAccountManager:v11 telemetryFlowID:v16];
-  v19 = [[AAUICDPWalrusStatusUpdateHook alloc] initWithAppleAccount:v8];
+  v18 = [AAUIRecoveryContactsViewFactory createViewModelWithAccountManager:managerCopy telemetryFlowID:uUIDString];
+  v19 = [[AAUICDPWalrusStatusUpdateHook alloc] initWithAppleAccount:forCopy];
   v30[0] = v19;
-  v20 = [[AAUICustodianVerificationHook alloc] initWithAccountManager:v11];
+  v20 = [[AAUICustodianVerificationHook alloc] initWithAccountManager:managerCopy];
   v30[1] = v20;
   v21 = [AAUICDPCustodianHook alloc];
   v22 = objc_opt_new();
-  v23 = [(AAUICDPCustodianHook *)v21 initWithAccountManager:v11 contactsProvider:v22 cdpContext:v9];
+  v23 = [(AAUICDPCustodianHook *)v21 initWithAccountManager:managerCopy contactsProvider:v22 cdpContext:contextCopy];
   v30[2] = v23;
-  v28 = v8;
-  v24 = [[AAUIAccountRecoveryManagementHook alloc] initWithAccountManager:v11 recoveryContactsViewModel:v18];
+  v28 = forCopy;
+  v24 = [[AAUIAccountRecoveryManagementHook alloc] initWithAccountManager:managerCopy recoveryContactsViewModel:v18];
 
   v30[3] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
@@ -202,23 +202,23 @@
   return v26;
 }
 
-- (id)_personalInformationHooksForAccount:(id)a3 accountManager:(id)a4
+- (id)_personalInformationHooksForAccount:(id)account accountManager:(id)manager
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
+  accountCopy = account;
   v7 = [v5 alloc];
-  v8 = [(AAUIServerHookFactory *)self _defaultHooks:v6];
+  v8 = [(AAUIServerHookFactory *)self _defaultHooks:accountCopy];
   v9 = [v7 initWithArray:v8];
 
   v10 = [AAUIAuthKitUpdateReachableEmailsHook alloc];
-  v11 = [v6 aa_altDSID];
-  v12 = [(AAUIAuthKitUpdateReachableEmailsHook *)v10 initWithAltDSID:v11];
+  aa_altDSID = [accountCopy aa_altDSID];
+  v12 = [(AAUIAuthKitUpdateReachableEmailsHook *)v10 initWithAltDSID:aa_altDSID];
   [v9 addObject:v12];
 
   v13 = [AAUIAccountMigrationHook alloc];
-  v14 = [v6 aa_altDSID];
+  aa_altDSID2 = [accountCopy aa_altDSID];
 
-  v15 = [(AAUIAccountMigrationHook *)v13 initWithAltDSID:v14];
+  v15 = [(AAUIAccountMigrationHook *)v13 initWithAltDSID:aa_altDSID2];
   [v9 addObject:v15];
 
   v16 = [v9 copy];

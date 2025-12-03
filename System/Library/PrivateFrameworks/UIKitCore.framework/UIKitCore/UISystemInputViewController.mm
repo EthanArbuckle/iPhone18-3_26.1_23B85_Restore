@@ -1,135 +1,135 @@
 @interface UISystemInputViewController
-+ (BOOL)canUseSystemInputViewControllerForResponder:(id)a3;
-+ (id)_carPlay_systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5 traitCollection:(id)a6;
-+ (id)_iOS_systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5 traitCollection:(id)a6;
-+ (id)_tvOS_systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5 traitCollection:(id)a6;
-+ (id)systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5;
-+ (void)setKeyboardInteractionModel:(unint64_t)a3;
++ (BOOL)canUseSystemInputViewControllerForResponder:(id)responder;
++ (id)_carPlay_systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder traitCollection:(id)collection;
++ (id)_iOS_systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder traitCollection:(id)collection;
++ (id)_tvOS_systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder traitCollection:(id)collection;
++ (id)systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder;
++ (void)setKeyboardInteractionModel:(unint64_t)model;
 - (BOOL)keyboardCanBecomeFocusedWithZeroAlpha;
 - (BOOL)willShowRecentsList;
 - (UIEdgeInsets)unfocusedFocusGuideOutsets;
-- (UISystemInputViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_accessoryViewControllerForEdge:(int64_t)a3;
+- (UISystemInputViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_accessoryViewControllerForEdge:(int64_t)edge;
 - (id)_remoteInputSessionIdentifier;
 - (id)_traitCollectionForUserInterfaceStyle;
-- (id)accessoryViewControllerForEdge:(int64_t)a3;
-- (id)alignmentConstraintArrayForAxis:(int64_t)a3;
-- (id)alignmentConstraintForAxis:(int64_t)a3;
-- (id)constraintsForEdge:(int64_t)a3;
+- (id)accessoryViewControllerForEdge:(int64_t)edge;
+- (id)alignmentConstraintArrayForAxis:(int64_t)axis;
+- (id)alignmentConstraintForAxis:(int64_t)axis;
+- (id)constraintsForEdge:(int64_t)edge;
 - (id)doneButtonStringForCurrentInputDelegate;
 - (id)preferredFocusEnvironments;
-- (id)viewForFocusHeading:(unint64_t)a3 fromView:(id)a4;
-- (unint64_t)_horizontalLayoutTypeForEdge:(int64_t)a3;
-- (unint64_t)_verticalLayoutTypeForEdge:(int64_t)a3;
-- (void)_addAccessoryViewController:(id)a3;
+- (id)viewForFocusHeading:(unint64_t)heading fromView:(id)view;
+- (unint64_t)_horizontalLayoutTypeForEdge:(int64_t)edge;
+- (unint64_t)_verticalLayoutTypeForEdge:(int64_t)edge;
+- (void)_addAccessoryViewController:(id)controller;
 - (void)_addChildInputViewController;
 - (void)_clearCursorLocationIfNotFirstResponder;
 - (void)_createKeyboardIfNecessary;
-- (void)_didSuspend:(id)a3;
+- (void)_didSuspend:(id)suspend;
 - (void)_dismissSystemInputViewController;
-- (void)_removeAccessoryViewController:(id)a3;
+- (void)_removeAccessoryViewController:(id)controller;
 - (void)_resetDelegate;
 - (void)_responderIsReloaded;
 - (void)_restoreKeyboardIfNecessary;
 - (void)_returnButtonPressed;
-- (void)_setNonInputViewVisibility:(BOOL)a3;
-- (void)_setSystemInputInteractionActive:(BOOL)a3;
-- (void)_willResume:(id)a3;
-- (void)_windowDidBecomeApplicationKey:(id)a3;
-- (void)_windowWillBecomeApplicationKey:(id)a3;
+- (void)_setNonInputViewVisibility:(BOOL)visibility;
+- (void)_setSystemInputInteractionActive:(BOOL)active;
+- (void)_willResume:(id)resume;
+- (void)_windowDidBecomeApplicationKey:(id)key;
+- (void)_windowWillBecomeApplicationKey:(id)key;
 - (void)configureRecentsVCIfNecessary;
 - (void)dealloc;
 - (void)didSelectRecentInput;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)findNextInputDelegate;
-- (void)inputModeDidChange:(id)a3;
-- (void)notifyDelegateWithAccessoryVisibility:(BOOL)a3;
+- (void)inputModeDidChange:(id)change;
+- (void)notifyDelegateWithAccessoryVisibility:(BOOL)visibility;
 - (void)populateCoreHierarchy;
 - (void)prepareForRelease;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reloadInputViewsForPersistentDelegate;
-- (void)setAccessoryViewController:(id)a3 forEdge:(int64_t)a4;
-- (void)setAlignmentConstraint:(id)a3 forAxis:(int64_t)a4;
-- (void)setAlignmentConstraintArray:(id)a3 forAxis:(int64_t)a4;
-- (void)setConstraints:(id)a3 forEdge:(int64_t)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDoneButton:(id)a3;
-- (void)setInputVC:(id)a3;
-- (void)setKeyboardCanBecomeFocusedWithZeroAlpha:(BOOL)a3;
-- (void)setPersistentDelegate:(id)a3;
-- (void)setRecentsVC:(id)a3;
-- (void)setRequestedInteractionModel:(unint64_t)a3;
-- (void)setSupportsRecentInputsIntegration:(BOOL)a3;
-- (void)setSystemInputViewControllerDelegate:(id)a3;
-- (void)setUnfocusedFocusGuideOutsets:(UIEdgeInsets)a3;
+- (void)setAccessoryViewController:(id)controller forEdge:(int64_t)edge;
+- (void)setAlignmentConstraint:(id)constraint forAxis:(int64_t)axis;
+- (void)setAlignmentConstraintArray:(id)array forAxis:(int64_t)axis;
+- (void)setConstraints:(id)constraints forEdge:(int64_t)edge;
+- (void)setDelegate:(id)delegate;
+- (void)setDoneButton:(id)button;
+- (void)setInputVC:(id)c;
+- (void)setKeyboardCanBecomeFocusedWithZeroAlpha:(BOOL)alpha;
+- (void)setPersistentDelegate:(id)delegate;
+- (void)setRecentsVC:(id)c;
+- (void)setRequestedInteractionModel:(unint64_t)model;
+- (void)setSupportsRecentInputsIntegration:(BOOL)integration;
+- (void)setSystemInputViewControllerDelegate:(id)delegate;
+- (void)setUnfocusedFocusGuideOutsets:(UIEdgeInsets)outsets;
 - (void)setupKeyboard;
 - (void)switchToKeyboard;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAlignmentConstraints;
 - (void)updateBackdropForCarPlay;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation UISystemInputViewController
 
-+ (void)setKeyboardInteractionModel:(unint64_t)a3
++ (void)setKeyboardInteractionModel:(unint64_t)model
 {
   v4 = +[UIKeyboardImpl sharedInstance];
-  [v4 setRequestedInteractionModel:a3];
+  [v4 setRequestedInteractionModel:model];
 }
 
-+ (BOOL)canUseSystemInputViewControllerForResponder:(id)a3
++ (BOOL)canUseSystemInputViewControllerForResponder:(id)responder
 {
-  v3 = a3;
-  if (![v3 conformsToProtocol:&unk_1EFE8B2D0] || (objc_msgSend(v3, "_disableAutomaticKeyboardUI") & 1) != 0 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "_isHardwareKeyboardAvailable"), v4, (v5 & 1) != 0))
+  responderCopy = responder;
+  if (![responderCopy conformsToProtocol:&unk_1EFE8B2D0] || (objc_msgSend(responderCopy, "_disableAutomaticKeyboardUI") & 1) != 0 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "_isHardwareKeyboardAvailable"), v4, (v5 & 1) != 0))
   {
     v6 = 0;
   }
 
   else
   {
-    v8 = [v3 traitCollection];
-    v9 = v8;
-    if (v8)
+    traitCollection = [responderCopy traitCollection];
+    v9 = traitCollection;
+    if (traitCollection)
     {
-      v10 = v8;
+      traitCollection2 = traitCollection;
     }
 
     else
     {
-      v11 = [v3 _responderWindow];
-      v12 = [v11 screen];
-      v10 = [v12 traitCollection];
+      _responderWindow = [responderCopy _responderWindow];
+      screen = [_responderWindow screen];
+      traitCollection2 = [screen traitCollection];
     }
 
-    v6 = [v10 userInterfaceIdiom] == 2;
+    v6 = [traitCollection2 userInterfaceIdiom] == 2;
   }
 
   return v6;
 }
 
-+ (id)systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5
++ (id)systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 _disableAutomaticKeyboardUI];
-  v12 = [v8 conformsToProtocol:&unk_1EFE8B2D0];
-  if (v11)
+  responderCopy = responder;
+  viewCopy = view;
+  containingResponderCopy = containingResponder;
+  _disableAutomaticKeyboardUI = [containingResponderCopy _disableAutomaticKeyboardUI];
+  v12 = [responderCopy conformsToProtocol:&unk_1EFE8B2D0];
+  if (_disableAutomaticKeyboardUI)
   {
     if (v12)
     {
-      v13 = [v9 window];
+      window = [viewCopy window];
 
-      if (v13)
+      if (window)
       {
         v14 = 0;
         goto LABEL_19;
@@ -137,36 +137,36 @@
     }
   }
 
-  v15 = [v10 traitCollection];
-  if (v15)
+  traitCollection = [containingResponderCopy traitCollection];
+  if (traitCollection)
   {
-    v16 = v15;
+    traitCollection2 = traitCollection;
   }
 
   else
   {
-    v17 = [v10 _responderWindow];
-    v18 = [v17 screen];
-    v16 = [v18 traitCollection];
+    _responderWindow = [containingResponderCopy _responderWindow];
+    screen = [_responderWindow screen];
+    traitCollection2 = [screen traitCollection];
 
-    if (((v16 == 0) & v11) == 1)
+    if (((traitCollection2 == 0) & _disableAutomaticKeyboardUI) == 1)
     {
-      v19 = [objc_opt_self() mainScreen];
-      v16 = [v19 traitCollection];
+      mainScreen = [objc_opt_self() mainScreen];
+      traitCollection2 = [mainScreen traitCollection];
     }
   }
 
-  v20 = [v16 userInterfaceIdiom];
+  userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
   v21 = 0;
-  if (v20 > 2)
+  if (userInterfaceIdiom > 2)
   {
-    if (v20 == 3)
+    if (userInterfaceIdiom == 3)
     {
-      v21 = [a1 _carPlay_systemInputViewControllerForResponder:v8 editorView:v9 containingResponder:v10 traitCollection:v16];
+      v21 = [self _carPlay_systemInputViewControllerForResponder:responderCopy editorView:viewCopy containingResponder:containingResponderCopy traitCollection:traitCollection2];
       goto LABEL_18;
     }
 
-    if (v20 != 8)
+    if (userInterfaceIdiom != 8)
     {
       goto LABEL_18;
     }
@@ -174,19 +174,19 @@
     goto LABEL_16;
   }
 
-  if (v20 >= 2)
+  if (userInterfaceIdiom >= 2)
   {
-    if (v20 != 2)
+    if (userInterfaceIdiom != 2)
     {
       goto LABEL_18;
     }
 
 LABEL_16:
-    v21 = [a1 _tvOS_systemInputViewControllerForResponder:v8 editorView:v9 containingResponder:v10 traitCollection:v16];
+    v21 = [self _tvOS_systemInputViewControllerForResponder:responderCopy editorView:viewCopy containingResponder:containingResponderCopy traitCollection:traitCollection2];
     goto LABEL_18;
   }
 
-  v21 = [a1 _iOS_systemInputViewControllerForResponder:v8 editorView:v9 containingResponder:v10 traitCollection:v16];
+  v21 = [self _iOS_systemInputViewControllerForResponder:responderCopy editorView:viewCopy containingResponder:containingResponderCopy traitCollection:traitCollection2];
 LABEL_18:
   v14 = v21;
 
@@ -195,19 +195,19 @@ LABEL_19:
   return v14;
 }
 
-+ (id)_carPlay_systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5 traitCollection:(id)a6
++ (id)_carPlay_systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder traitCollection:(id)collection
 {
   v66 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 userInterfaceIdiom] == 3)
+  responderCopy = responder;
+  viewCopy = view;
+  containingResponderCopy = containingResponder;
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] == 3)
   {
-    v14 = [v12 _disableAutomaticKeyboardUI];
-    if ([v10 conformsToProtocol:&unk_1EFE8B2D0])
+    _disableAutomaticKeyboardUI = [containingResponderCopy _disableAutomaticKeyboardUI];
+    if ([responderCopy conformsToProtocol:&unk_1EFE8B2D0])
     {
-      v15 = v10;
+      v15 = responderCopy;
     }
 
     else
@@ -216,23 +216,23 @@ LABEL_19:
     }
 
     v16 = v15;
-    v17 = [[a1 alloc] initWithNibName:0 bundle:0];
-    [v17 setSupportsTouchInput:{objc_msgSend(v13, "primaryInteractionModel") & 1}];
+    v17 = [[self alloc] initWithNibName:0 bundle:0];
+    [v17 setSupportsTouchInput:{objc_msgSend(collectionCopy, "primaryInteractionModel") & 1}];
     [v17 setPersistentDelegate:v16];
     [v17 setWillUpdateBackgroundEffectOnInputModeChange:0];
-    [v17 setIsAutomaticResponderTransition:__automaticNextFocusResponder == v10];
-    *(v17 + 1041) = v14 ^ 1;
-    *(v17 + 1016) = v12;
+    [v17 setIsAutomaticResponderTransition:__automaticNextFocusResponder == responderCopy];
+    *(v17 + 1041) = _disableAutomaticKeyboardUI ^ 1;
+    *(v17 + 1016) = containingResponderCopy;
     v18 = [UITextInputTraits traitsByAdoptingTraits:v16];
     [v17 setTextInputTraits:v18];
-    v19 = [v17 textInputTraits];
-    v20 = [v19 keyboardAppearance];
+    textInputTraits = [v17 textInputTraits];
+    keyboardAppearance = [textInputTraits keyboardAppearance];
 
     v21 = _UISolariumEnabled();
-    v60 = v12;
+    v60 = containingResponderCopy;
     v58 = v18;
-    v55 = v20;
-    if ((v20 - 1) > 9)
+    v55 = keyboardAppearance;
+    if ((keyboardAppearance - 1) > 9)
     {
       v23 = 1000;
     }
@@ -245,7 +245,7 @@ LABEL_19:
         v22 = &unk_18A67E8E0;
       }
 
-      v23 = v22[v20 - 1];
+      v23 = v22[keyboardAppearance - 1];
     }
 
     [v17 setBlurEffectStyle:v23];
@@ -261,21 +261,21 @@ LABEL_19:
 
     [v17 setView:v29];
     [v17 setContainingView:v29];
-    v31 = [MEMORY[0x1E695DF70] array];
-    if (v11)
+    array = [MEMORY[0x1E695DF70] array];
+    if (viewCopy)
     {
-      v32 = [UIViewController viewControllerForView:v11];
+      v32 = [UIViewController viewControllerForView:viewCopy];
       if (!v32)
       {
         v32 = [[UIViewController alloc] initWithNibName:0 bundle:0];
-        [(UIViewController *)v32 setView:v11];
+        [(UIViewController *)v32 setView:viewCopy];
       }
 
       v33 = [UIKBSystemLayoutViewController systemLayoutViewControllerWithViewController:v32];
       [v33 setVerticalLayoutType:4];
-      if (([v17 supportsTouchInput] | v14))
+      if (([v17 supportsTouchInput] | _disableAutomaticKeyboardUI))
       {
-        if ((v14 & 1) == 0)
+        if ((_disableAutomaticKeyboardUI & 1) == 0)
         {
           [v33 setMinimumInsets:{0.0, 0.0, 32.0, 0.0}];
         }
@@ -286,41 +286,41 @@ LABEL_19:
       else
       {
         [v33 setHorizontalLayoutType:3];
-        [v31 addObject:v33];
+        [array addObject:v33];
       }
     }
 
-    v34 = [v16 inputView];
+    inputView = [v16 inputView];
     v59 = v16;
-    v35 = [v16 inputViewController];
-    if (!v35 && v34)
+    inputViewController = [v16 inputViewController];
+    if (!inputViewController && inputView)
     {
-      v35 = [UICompatibilityInputViewController inputViewControllerWithView:v34];
+      inputViewController = [UICompatibilityInputViewController inputViewControllerWithView:inputView];
     }
 
-    [v17 setInputVC:v35];
+    [v17 setInputVC:inputViewController];
     [v17 populateCoreHierarchy];
     [v17 updateViewConstraints];
-    v56 = v34;
-    v57 = v31;
-    if ((v14 & 1) == 0 && [v31 count])
+    v56 = inputView;
+    v57 = array;
+    if ((_disableAutomaticKeyboardUI & 1) == 0 && [array count])
     {
-      v54 = v11;
+      v54 = viewCopy;
       v36 = [(UIViewController *)[UIKBStackViewController alloc] initWithNibName:0 bundle:0];
-      v37 = [(UIKBStackViewController *)v36 stackView];
-      [v37 setAxis:1];
+      stackView = [(UIKBStackViewController *)v36 stackView];
+      [stackView setAxis:1];
 
-      v38 = [(UIKBStackViewController *)v36 stackView];
-      [v38 setAlignment:0];
+      stackView2 = [(UIKBStackViewController *)v36 stackView];
+      [stackView2 setAlignment:0];
 
-      v39 = [(UIKBStackViewController *)v36 stackView];
-      [v39 setDistribution:0];
+      stackView3 = [(UIKBStackViewController *)v36 stackView];
+      [stackView3 setDistribution:0];
 
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v40 = v31;
+      v40 = array;
       v41 = [v40 countByEnumeratingWithState:&v61 objects:v65 count:16];
       if (v41)
       {
@@ -345,29 +345,29 @@ LABEL_19:
       }
 
       [v17 setAccessoryViewController:v36 forEdge:3];
-      v11 = v54;
+      viewCopy = v54;
     }
 
-    if ([v13 interactionModel])
+    if ([collectionCopy interactionModel])
     {
       v45 = [[UIKBInputBackdropView alloc] initWithFrame:v25, v26, v27, v28];
       [(UIView *)v45 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v17 setBackdropView:v45];
       v46 = +[UIKeyboardInputModeController sharedInputModeController];
-      v47 = [v46 currentInputMode];
-      v48 = [UIKBRenderConfig configForAppearance:v55 inputMode:v47 traitEnvironment:0];
+      currentInputMode = [v46 currentInputMode];
+      v48 = [UIKBRenderConfig configForAppearance:v55 inputMode:currentInputMode traitEnvironment:0];
 
       [(UIKBInputBackdropView *)v45 _setRenderConfig:v48];
-      v49 = [v17 contentLayoutView];
-      [v49 addSubview:v45];
+      contentLayoutView = [v17 contentLayoutView];
+      [contentLayoutView addSubview:v45];
     }
 
-    v50 = [v17 contentLayoutView];
-    v51 = [v17 keyboardVC];
-    v52 = [v51 view];
-    [v50 bringSubviewToFront:v52];
+    contentLayoutView2 = [v17 contentLayoutView];
+    keyboardVC = [v17 keyboardVC];
+    view = [keyboardVC view];
+    [contentLayoutView2 bringSubviewToFront:view];
 
-    v12 = v60;
+    containingResponderCopy = v60;
   }
 
   else
@@ -378,24 +378,24 @@ LABEL_19:
   return v17;
 }
 
-+ (id)_tvOS_systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5 traitCollection:(id)a6
++ (id)_tvOS_systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder traitCollection:(id)collection
 {
   v153 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 userInterfaceIdiom] != 2 && objc_msgSend(v13, "userInterfaceIdiom") != 8)
+  responderCopy = responder;
+  viewCopy = view;
+  containingResponderCopy = containingResponder;
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] != 2 && objc_msgSend(collectionCopy, "userInterfaceIdiom") != 8)
   {
     v17 = 0;
     goto LABEL_98;
   }
 
-  v138 = v13;
-  v14 = [v12 _disableAutomaticKeyboardUI];
-  if ([v10 conformsToProtocol:&unk_1EFE8B2D0])
+  v138 = collectionCopy;
+  _disableAutomaticKeyboardUI = [containingResponderCopy _disableAutomaticKeyboardUI];
+  if ([responderCopy conformsToProtocol:&unk_1EFE8B2D0])
   {
-    v15 = v10;
+    v15 = responderCopy;
   }
 
   else
@@ -404,21 +404,21 @@ LABEL_19:
   }
 
   v16 = v15;
-  v17 = [[a1 alloc] initWithNibName:0 bundle:0];
+  v17 = [[self alloc] initWithNibName:0 bundle:0];
   v137 = [UITextInputTraits traitsByAdoptingTraits:v16];
   [v17 setTextInputTraits:?];
   [v17 setPersistentDelegate:v16];
-  [v17 setWillPresentFullscreen:v14 ^ 1u];
+  [v17 setWillPresentFullscreen:_disableAutomaticKeyboardUI ^ 1u];
   [v17 setWillUpdateBackgroundEffectOnInputModeChange:0];
-  [v17 setIsAutomaticResponderTransition:__automaticNextFocusResponder == v10];
-  *(v17 + 1041) = v14 ^ 1;
-  *(v17 + 1016) = v12;
+  [v17 setIsAutomaticResponderTransition:__automaticNextFocusResponder == responderCopy];
+  *(v17 + 1041) = _disableAutomaticKeyboardUI ^ 1;
+  *(v17 + 1016) = containingResponderCopy;
   *(v17 + 1043) = 1;
-  v18 = [v17 textInputTraits];
-  v19 = [v18 keyboardAppearance];
+  textInputTraits = [v17 textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
   v20 = _UISolariumEnabled();
-  if ((v19 - 1) > 9)
+  if ((keyboardAppearance - 1) > 9)
   {
     v22 = 1000;
   }
@@ -431,12 +431,12 @@ LABEL_19:
       v21 = &unk_18A67E8E0;
     }
 
-    v22 = v21[v19 - 1];
+    v22 = v21[keyboardAppearance - 1];
   }
 
   [v17 setBlurEffectStyle:v22];
-  v136 = v12;
-  if (v14)
+  v136 = containingResponderCopy;
+  if (_disableAutomaticKeyboardUI)
   {
     v23 = [UIKBFocusVCView alloc];
     v24 = [(UIView *)v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -455,25 +455,25 @@ LABEL_19:
 
     [(UIKBFocusVCView *)v24 _setGroupName:@"UIKBBackdropGroupName"];
     [v17 setView:v24];
-    v27 = [(UIKBFocusVCView *)v24 contentView];
-    [v17 setContainingView:v27];
+    contentView = [(UIKBFocusVCView *)v24 contentView];
+    [v17 setContainingView:contentView];
   }
 
-  v142 = [MEMORY[0x1E695DF70] array];
-  if (v11)
+  array = [MEMORY[0x1E695DF70] array];
+  if (viewCopy)
   {
-    v28 = [UIViewController viewControllerForView:v11];
+    v28 = [UIViewController viewControllerForView:viewCopy];
     if (!v28)
     {
       v28 = [[UIViewController alloc] initWithNibName:0 bundle:0];
-      [(UIViewController *)v28 setView:v11];
+      [(UIViewController *)v28 setView:viewCopy];
     }
 
     v29 = [UIKBSystemLayoutViewController systemLayoutViewControllerWithViewController:v28];
     [v29 setVerticalLayoutType:4];
-    if (([v17 supportsTouchInput] | v14))
+    if (([v17 supportsTouchInput] | _disableAutomaticKeyboardUI))
     {
-      if ((v14 & 1) == 0)
+      if ((_disableAutomaticKeyboardUI & 1) == 0)
       {
         [v29 setMinimumInsets:{0.0, 0.0, 32.0, 0.0}];
       }
@@ -484,22 +484,22 @@ LABEL_19:
     else
     {
       [v29 setHorizontalLayoutType:3];
-      [v142 addObject:v29];
+      [array addObject:v29];
     }
   }
 
-  v30 = [v16 inputView];
-  v31 = [v16 inputViewController];
-  if (!v31 && v30)
+  inputView = [v16 inputView];
+  inputViewController = [v16 inputViewController];
+  if (!inputViewController && inputView)
   {
-    v31 = [UICompatibilityInputViewController inputViewControllerWithView:v30];
+    inputViewController = [UICompatibilityInputViewController inputViewControllerWithView:inputView];
   }
 
-  v135 = v30;
-  v141 = v31;
-  [v17 setInputVC:v31];
+  v135 = inputView;
+  v141 = inputViewController;
+  [v17 setInputVC:inputViewController];
   [v17 populateCoreHierarchy];
-  if (v14)
+  if (_disableAutomaticKeyboardUI)
   {
     v139 = 0;
     goto LABEL_41;
@@ -507,11 +507,11 @@ LABEL_19:
 
   [v17 findNextInputDelegate];
   v32 = [UIButton buttonWithType:1];
-  v33 = [v17 doneButtonStringForCurrentInputDelegate];
-  [v32 setTitle:v33 forState:0];
+  doneButtonStringForCurrentInputDelegate = [v17 doneButtonStringForCurrentInputDelegate];
+  [v32 setTitle:doneButtonStringForCurrentInputDelegate forState:0];
 
   [v32 addTarget:v17 action:sel__returnButtonPressed forControlEvents:0x2000];
-  if (v19 == 2)
+  if (keyboardAppearance == 2)
   {
     v34 = _UISolariumEnabled() == 0;
     v35 = 4005;
@@ -528,13 +528,13 @@ LABEL_33:
     }
 
     v38 = [UIBlurEffect _effectWithStyle:v37 invertAutomaticStyle:0];
-    v39 = [v32 _contentBackdropView];
-    [v39 setEffect:v38];
+    _contentBackdropView = [v32 _contentBackdropView];
+    [_contentBackdropView setEffect:v38];
 
     goto LABEL_37;
   }
 
-  if ((v19 & 0xFFFFFFFFFFFFFFF7) == 1)
+  if ((keyboardAppearance & 0xFFFFFFFFFFFFFFF7) == 1)
   {
     v34 = _UISolariumEnabled() == 0;
     v35 = 4000;
@@ -561,30 +561,30 @@ LABEL_37:
     [v42 setVerticalLayoutType:3];
     [v42 setMinimumInsets:{-112.0, 0.0, 0.0, 0.0}];
     v139 = v42;
-    [v142 addObject:v42];
+    [array addObject:v42];
   }
 
   v43 = [[UITapGestureRecognizer alloc] initWithTarget:v17 action:sel__returnButtonPressed];
   [(UITapGestureRecognizer *)v43 setAllowedPressTypes:&unk_1EFE2C2C8];
   [(UIGestureRecognizer *)v43 setAllowedTouchTypes:MEMORY[0x1E695E0F0]];
-  v44 = [v17 view];
-  [v44 addGestureRecognizer:v43];
+  view = [v17 view];
+  [view addGestureRecognizer:v43];
 
   [v17 setDoneButton:v32];
 LABEL_41:
-  v45 = [v16 inputAccessoryView];
-  v46 = [v16 inputAccessoryViewController];
-  if (v46)
+  inputAccessoryView = [v16 inputAccessoryView];
+  inputAccessoryViewController = [v16 inputAccessoryViewController];
+  if (inputAccessoryViewController)
   {
-    v47 = v46;
+    v47 = inputAccessoryViewController;
     v48 = 0;
     goto LABEL_43;
   }
 
-  if ((v45 != 0) | v14 & 1)
+  if ((inputAccessoryView != 0) | _disableAutomaticKeyboardUI & 1)
   {
     v48 = 0;
-    if (!v45)
+    if (!inputAccessoryView)
     {
       goto LABEL_72;
     }
@@ -594,32 +594,32 @@ LABEL_41:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v45 = 0;
+    inputAccessoryView = 0;
     goto LABEL_72;
   }
 
-  v62 = [v16 _defaultPromptString];
-  v48 = v62 != 0;
-  if (!v62)
+  _defaultPromptString = [v16 _defaultPromptString];
+  v48 = _defaultPromptString != 0;
+  if (!_defaultPromptString)
   {
-    v45 = 0;
+    inputAccessoryView = 0;
     goto LABEL_70;
   }
 
-  v63 = [v138 userInterfaceStyle];
+  userInterfaceStyle = [v138 userInterfaceStyle];
   v64 = [[UILabel alloc] initWithFrame:0.0, 0.0, 300.0, 70.0];
-  v65 = [v137 keyboardAppearance];
+  keyboardAppearance2 = [v137 keyboardAppearance];
   v66 = 0;
-  if (v65 > 8)
+  if (keyboardAppearance2 > 8)
   {
-    if (v65 != 9)
+    if (keyboardAppearance2 != 9)
     {
-      if (v65 != 10)
+      if (keyboardAppearance2 != 10)
       {
         goto LABEL_69;
       }
 
-      if (v63 <= 1)
+      if (userInterfaceStyle <= 1)
       {
 LABEL_66:
         v67 = +[UIColor darkTextColor];
@@ -634,12 +634,12 @@ LABEL_67:
     goto LABEL_68;
   }
 
-  if (v65 == 1)
+  if (keyboardAppearance2 == 1)
   {
     goto LABEL_67;
   }
 
-  if (v65 == 2)
+  if (keyboardAppearance2 == 2)
   {
     goto LABEL_66;
   }
@@ -648,27 +648,27 @@ LABEL_69:
   [(UILabel *)v64 setTextColor:v66];
   [(UIView *)v64 setOpaque:0];
   [(UIView *)v64 setBackgroundColor:0];
-  [(UILabel *)v64 setText:v62];
+  [(UILabel *)v64 setText:_defaultPromptString];
   v68 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleTitle2"];
   [(UILabel *)v64 setFont:v68];
 
   [(UIView *)v64 sizeToFit];
   [v17 set_promptLabel:v64];
 
-  v45 = v64;
+  inputAccessoryView = v64;
 LABEL_70:
 
-  if (!v45)
+  if (!inputAccessoryView)
   {
     goto LABEL_72;
   }
 
 LABEL_71:
-  v47 = [UICompatibilityInputViewController inputViewControllerWithView:v45];
+  v47 = [UICompatibilityInputViewController inputViewControllerWithView:inputAccessoryView];
   if (v47)
   {
 LABEL_43:
-    v140 = v45;
+    v140 = inputAccessoryView;
     if ([v17 supportsTouchInput])
     {
       [v17 setAccessoryViewController:v47 forEdge:0];
@@ -688,16 +688,16 @@ LABEL_43:
       [v49 setHorizontalLayoutType:1];
       [v49 setVerticalLayoutType:3];
       [v49 setMinimumInsets:{0.0, 0.0, 20.0, 0.0}];
-      [v142 insertObject:v49 atIndex:0];
+      [array insertObject:v49 atIndex:0];
     }
 
-    v51 = [v47 view];
+    view2 = [v47 view];
     v52 = objc_opt_respondsToSelector();
 
     if (v52)
     {
-      v53 = [v141 view];
-      [v53 _alignmentOffset];
+      view3 = [v141 view];
+      [view3 _alignmentOffset];
       v55 = v54;
       v57 = v56;
       v58 = [v17 alignmentConstraintForAxis:0];
@@ -707,10 +707,10 @@ LABEL_43:
       v60 = [v17 alignmentConstraintForAxis:1];
       [v60 setConstant:v57];
 
-      v61 = [v17 view];
-      [v61 setNeedsLayout];
+      view4 = [v17 view];
+      [view4 setNeedsLayout];
 
-      if (v14)
+      if (_disableAutomaticKeyboardUI)
       {
         goto LABEL_97;
       }
@@ -719,32 +719,32 @@ LABEL_43:
     else
     {
       v59 = 1;
-      if (v14)
+      if (_disableAutomaticKeyboardUI)
       {
         goto LABEL_97;
       }
     }
 
 LABEL_73:
-    if ([v142 count])
+    if ([array count])
     {
-      v133 = v10;
-      v134 = v11;
+      v133 = responderCopy;
+      v134 = viewCopy;
       v69 = [(UIViewController *)[UIKBStackViewController alloc] initWithNibName:0 bundle:0];
-      v70 = [(UIKBStackViewController *)v69 stackView];
-      [v70 setAxis:1];
+      stackView = [(UIKBStackViewController *)v69 stackView];
+      [stackView setAxis:1];
 
-      v71 = [(UIKBStackViewController *)v69 stackView];
-      [v71 setAlignment:0];
+      stackView2 = [(UIKBStackViewController *)v69 stackView];
+      [stackView2 setAlignment:0];
 
-      v72 = [(UIKBStackViewController *)v69 stackView];
-      [v72 setDistribution:0];
+      stackView3 = [(UIKBStackViewController *)v69 stackView];
+      [stackView3 setDistribution:0];
 
       v145 = 0u;
       v146 = 0u;
       v143 = 0u;
       v144 = 0u;
-      v73 = v142;
+      v73 = array;
       v74 = [v73 countByEnumeratingWithState:&v143 objects:v152 count:16];
       if (v74)
       {
@@ -769,10 +769,10 @@ LABEL_73:
       }
 
       [v17 setAccessoryViewController:v69 forEdge:3];
-      v78 = [v17 supportsTouchInput];
+      supportsTouchInput = [v17 supportsTouchInput];
       v79 = [v17 _accessoryViewControllerForEdge:3];
       v80 = v79;
-      if (v78)
+      if (supportsTouchInput)
       {
         [v79 setMinimumInsets:{0.0, -300.0, 0.0, 0.0}];
 
@@ -785,8 +785,8 @@ LABEL_73:
         [v79 setMinimumInsets:{0.0, -292.0, 0.0, 0.0}];
       }
 
-      v10 = v133;
-      v11 = v134;
+      responderCopy = v133;
+      viewCopy = v134;
       if (([v17 supportsTouchInput] & 1) == 0 && ((v140 == 0) & ~v59) == 0)
       {
         v81 = objc_alloc_init(UIFocusGuide);
@@ -800,7 +800,7 @@ LABEL_73:
           v82 = v47;
         }
 
-        v83 = [v82 view];
+        view5 = [v82 view];
         if (v140)
         {
           v151 = v140;
@@ -816,30 +816,30 @@ LABEL_73:
         v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:1];
         [(UIFocusGuide *)v81 setPreferredFocusEnvironments:v85];
 
-        v86 = [v17 view];
-        [v86 addLayoutGuide:v81];
+        view6 = [v17 view];
+        [view6 addLayoutGuide:v81];
 
         v115 = MEMORY[0x1E69977A0];
-        v127 = [(UILayoutGuide *)v81 leadingAnchor];
-        v131 = [v17 keyboardVC];
-        v125 = [v131 focusSafeAreaLayoutGuide];
-        v123 = [v125 trailingAnchor];
-        v121 = [v127 constraintEqualToAnchor:v123];
+        leadingAnchor = [(UILayoutGuide *)v81 leadingAnchor];
+        keyboardVC = [v17 keyboardVC];
+        focusSafeAreaLayoutGuide = [keyboardVC focusSafeAreaLayoutGuide];
+        trailingAnchor = [focusSafeAreaLayoutGuide trailingAnchor];
+        v121 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
         v149[0] = v121;
-        v117 = [(UILayoutGuide *)v81 trailingAnchor];
-        v119 = [v17 view];
-        v113 = [v119 trailingAnchor];
-        v111 = [v117 constraintEqualToAnchor:v113];
+        trailingAnchor2 = [(UILayoutGuide *)v81 trailingAnchor];
+        view7 = [v17 view];
+        trailingAnchor3 = [view7 trailingAnchor];
+        v111 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
         v149[1] = v111;
-        v109 = [(UILayoutGuide *)v81 topAnchor];
-        v107 = [v83 topAnchor];
-        v105 = [v109 constraintEqualToAnchor:v107];
+        topAnchor = [(UILayoutGuide *)v81 topAnchor];
+        topAnchor2 = [view5 topAnchor];
+        v105 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v149[2] = v105;
         v130 = v81;
-        v87 = [(UILayoutGuide *)v81 bottomAnchor];
-        v129 = v83;
-        v88 = [v83 bottomAnchor];
-        v89 = [v87 constraintEqualToAnchor:v88];
+        bottomAnchor = [(UILayoutGuide *)v81 bottomAnchor];
+        v129 = view5;
+        bottomAnchor2 = [view5 bottomAnchor];
+        v89 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v149[3] = v89;
         v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v149 count:4];
         [v115 activateConstraints:v90];
@@ -855,39 +855,39 @@ LABEL_73:
           [v17 doneButton];
         }
         v132 = ;
-        v92 = [v17 doneButton];
-        v148 = v92;
+        doneButton = [v17 doneButton];
+        v148 = doneButton;
         v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v148 count:1];
         [(UIFocusGuide *)v91 setPreferredFocusEnvironments:v93];
 
-        v94 = [v17 view];
-        [v94 addLayoutGuide:v91];
+        view8 = [v17 view];
+        [view8 addLayoutGuide:v91];
 
         v114 = MEMORY[0x1E69977A0];
-        v126 = [(UILayoutGuide *)v91 leadingAnchor];
-        v128 = [v17 keyboardVC];
-        v124 = [v128 focusSafeAreaLayoutGuide];
-        v122 = [v124 trailingAnchor];
-        v120 = [v126 constraintEqualToAnchor:v122];
+        leadingAnchor2 = [(UILayoutGuide *)v91 leadingAnchor];
+        keyboardVC2 = [v17 keyboardVC];
+        focusSafeAreaLayoutGuide2 = [keyboardVC2 focusSafeAreaLayoutGuide];
+        trailingAnchor4 = [focusSafeAreaLayoutGuide2 trailingAnchor];
+        v120 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor4];
         v147[0] = v120;
-        v116 = [(UILayoutGuide *)v91 trailingAnchor];
-        v118 = [v17 view];
-        v110 = [v118 trailingAnchor];
-        v108 = [v116 constraintEqualToAnchor:v110];
+        trailingAnchor5 = [(UILayoutGuide *)v91 trailingAnchor];
+        view9 = [v17 view];
+        trailingAnchor6 = [view9 trailingAnchor];
+        v108 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
         v147[1] = v108;
-        v106 = [(UILayoutGuide *)v91 topAnchor];
-        v104 = [v132 topAnchor];
-        v103 = [v106 constraintEqualToAnchor:v104];
+        topAnchor3 = [(UILayoutGuide *)v91 topAnchor];
+        topAnchor4 = [v132 topAnchor];
+        v103 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         v147[2] = v103;
-        v95 = [(UILayoutGuide *)v91 bottomAnchor];
+        bottomAnchor3 = [(UILayoutGuide *)v91 bottomAnchor];
         [v132 bottomAnchor];
         v96 = v112 = v91;
-        v97 = [v95 constraintEqualToAnchor:v96];
+        v97 = [bottomAnchor3 constraintEqualToAnchor:v96];
         v147[3] = v97;
         v98 = [MEMORY[0x1E695DEC8] arrayWithObjects:v147 count:4];
         [v114 activateConstraints:v98];
 
-        v11 = v134;
+        viewCopy = v134;
       }
     }
 
@@ -895,47 +895,47 @@ LABEL_73:
   }
 
 LABEL_72:
-  v140 = v45;
+  v140 = inputAccessoryView;
   [v17 updateViewConstraints];
   v59 = 0;
   v47 = 0;
   v49 = 0;
-  if ((v14 & 1) == 0)
+  if ((_disableAutomaticKeyboardUI & 1) == 0)
   {
     goto LABEL_73;
   }
 
 LABEL_97:
-  v99 = [v17 contentLayoutView];
-  v100 = [v17 keyboardVC];
-  v101 = [v100 view];
-  [v99 bringSubviewToFront:v101];
+  contentLayoutView = [v17 contentLayoutView];
+  keyboardVC3 = [v17 keyboardVC];
+  view10 = [keyboardVC3 view];
+  [contentLayoutView bringSubviewToFront:view10];
 
-  v12 = v136;
-  v13 = v138;
+  containingResponderCopy = v136;
+  collectionCopy = v138;
 LABEL_98:
   +[_UIKeyboardUsageTracking keyboardSupportsTouch:](_UIKeyboardUsageTracking, "keyboardSupportsTouch:", [v17 supportsTouchInput]);
 
   return v17;
 }
 
-+ (id)_iOS_systemInputViewControllerForResponder:(id)a3 editorView:(id)a4 containingResponder:(id)a5 traitCollection:(id)a6
++ (id)_iOS_systemInputViewControllerForResponder:(id)responder editorView:(id)view containingResponder:(id)containingResponder traitCollection:(id)collection
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v11 userInterfaceIdiom] && objc_msgSend(v11, "userInterfaceIdiom") != 1)
+  responderCopy = responder;
+  containingResponderCopy = containingResponder;
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] && objc_msgSend(collectionCopy, "userInterfaceIdiom") != 1)
   {
     v15 = 0;
   }
 
   else
   {
-    v36 = v11;
-    v12 = [v10 _disableAutomaticKeyboardUI];
-    if ([v9 conformsToProtocol:&unk_1EFE8B2D0])
+    v36 = collectionCopy;
+    _disableAutomaticKeyboardUI = [containingResponderCopy _disableAutomaticKeyboardUI];
+    if ([responderCopy conformsToProtocol:&unk_1EFE8B2D0])
     {
-      v13 = v9;
+      v13 = responderCopy;
     }
 
     else
@@ -944,27 +944,27 @@ LABEL_98:
     }
 
     v14 = v13;
-    v15 = [[a1 alloc] initWithNibName:0 bundle:0];
+    v15 = [[self alloc] initWithNibName:0 bundle:0];
     *(v15 + 1040) = 1;
     [v15 setPersistentDelegate:v14];
-    [v15 setWillPresentFullscreen:v12 ^ 1u];
+    [v15 setWillPresentFullscreen:_disableAutomaticKeyboardUI ^ 1u];
     [v15 setWillUpdateBackgroundEffectOnInputModeChange:1];
-    [v15 setIsAutomaticResponderTransition:__automaticNextFocusResponder == v9];
+    [v15 setIsAutomaticResponderTransition:__automaticNextFocusResponder == responderCopy];
     *(v15 + 1041) = 1;
-    v37 = v10;
-    *(v15 + 1016) = v10;
+    v37 = containingResponderCopy;
+    *(v15 + 1016) = containingResponderCopy;
     v35 = [UITextInputTraits traitsByAdoptingTraits:v14];
     [v15 setTextInputTraits:?];
-    v16 = [v15 textInputTraits];
-    v17 = [v16 keyboardAppearance];
+    textInputTraits = [v15 textInputTraits];
+    keyboardAppearance = [textInputTraits keyboardAppearance];
 
     v18 = +[UIKeyboardInputModeController sharedInputModeController];
-    v19 = [v18 currentInputMode];
-    v20 = [UIKBRenderConfig configForAppearance:v17 inputMode:v19 traitEnvironment:0];
-    v21 = [v20 blurEffectStyle];
+    currentInputMode = [v18 currentInputMode];
+    v20 = [UIKBRenderConfig configForAppearance:keyboardAppearance inputMode:currentInputMode traitEnvironment:0];
+    blurEffectStyle = [v20 blurEffectStyle];
 
-    [v15 setBlurEffectStyle:v21];
-    if (v12)
+    [v15 setBlurEffectStyle:blurEffectStyle];
+    if (_disableAutomaticKeyboardUI)
     {
       v22 = [UIKBFocusVCView alloc];
       v23 = [(UIView *)v22 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -983,31 +983,31 @@ LABEL_98:
 
       [(UIKBFocusVCView *)v23 _setGroupName:@"UIKBBackdropGroupName"];
       [v15 setView:v23];
-      v26 = [(UIKBFocusVCView *)v23 contentView];
-      [v15 setContainingView:v26];
+      contentView = [(UIKBFocusVCView *)v23 contentView];
+      [v15 setContainingView:contentView];
     }
 
-    v27 = [v14 inputView];
-    v28 = [v14 inputViewController];
-    if (!v28 && v27)
+    inputView = [v14 inputView];
+    inputViewController = [v14 inputViewController];
+    if (!inputViewController && inputView)
     {
-      v28 = [UICompatibilityInputViewController inputViewControllerWithView:v27];
+      inputViewController = [UICompatibilityInputViewController inputViewControllerWithView:inputView];
     }
 
-    [v15 setInputVC:v28];
+    [v15 setInputVC:inputViewController];
     [v15 populateCoreHierarchy];
-    v29 = [v14 inputAccessoryView];
-    v30 = [v14 inputAccessoryViewController];
-    if (!v30 && v29)
+    inputAccessoryView = [v14 inputAccessoryView];
+    inputAccessoryViewController = [v14 inputAccessoryViewController];
+    if (!inputAccessoryViewController && inputAccessoryView)
     {
-      v30 = [UICompatibilityInputViewController inputViewControllerWithView:v29];
+      inputAccessoryViewController = [UICompatibilityInputViewController inputViewControllerWithView:inputAccessoryView];
     }
 
-    if (v30)
+    if (inputAccessoryViewController)
     {
       if ([v15 supportsTouchInput])
       {
-        [v15 setAccessoryViewController:v30 forEdge:0];
+        [v15 setAccessoryViewController:inputAccessoryViewController forEdge:0];
       }
     }
 
@@ -1016,13 +1016,13 @@ LABEL_98:
       [v15 updateViewConstraints];
     }
 
-    v31 = [v15 contentLayoutView];
-    v32 = [v15 keyboardVC];
-    v33 = [v32 view];
-    [v31 bringSubviewToFront:v33];
+    contentLayoutView = [v15 contentLayoutView];
+    keyboardVC = [v15 keyboardVC];
+    view = [keyboardVC view];
+    [contentLayoutView bringSubviewToFront:view];
 
-    v11 = v36;
-    v10 = v37;
+    collectionCopy = v36;
+    containingResponderCopy = v37;
   }
 
   return v15;
@@ -1030,21 +1030,21 @@ LABEL_98:
 
 - (void)_restoreKeyboardIfNecessary
 {
-  v3 = [(UISystemInputViewController *)self keyboardVC];
-  v4 = [v3 parentViewController];
+  keyboardVC = [(UISystemInputViewController *)self keyboardVC];
+  parentViewController = [keyboardVC parentViewController];
 
-  if (v4 != self)
+  if (parentViewController != self)
   {
-    v5 = [(UISystemInputViewController *)self keyboardVC];
-    v6 = [(UISystemInputViewController *)self keyboard];
-    [v5 setDeferredSystemView:v6];
+    keyboardVC2 = [(UISystemInputViewController *)self keyboardVC];
+    keyboard = [(UISystemInputViewController *)self keyboard];
+    [keyboardVC2 setDeferredSystemView:keyboard];
 
     [(UISystemInputViewController *)self _addChildInputViewController];
     [(UISystemInputViewController *)self updateViewConstraints];
-    v9 = [(UISystemInputViewController *)self contentLayoutView];
-    v7 = [(UISystemInputViewController *)self keyboardVC];
-    v8 = [v7 view];
-    [v9 bringSubviewToFront:v8];
+    contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+    keyboardVC3 = [(UISystemInputViewController *)self keyboardVC];
+    view = [keyboardVC3 view];
+    [contentLayoutView bringSubviewToFront:view];
   }
 }
 
@@ -1052,28 +1052,28 @@ LABEL_98:
 {
   v30[4] = *MEMORY[0x1E69E9840];
   v3 = [UIView alloc];
-  v4 = [(UISystemInputViewController *)self containingView];
-  [v4 bounds];
+  containingView = [(UISystemInputViewController *)self containingView];
+  [containingView bounds];
   v5 = [(UIView *)v3 initWithFrame:?];
   [(UISystemInputViewController *)self setContentLayoutView:v5];
 
-  v6 = [(UISystemInputViewController *)self contentLayoutView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+  [contentLayoutView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(UISystemInputViewController *)self contentLayoutView];
-  [v7 setOpaque:0];
+  contentLayoutView2 = [(UISystemInputViewController *)self contentLayoutView];
+  [contentLayoutView2 setOpaque:0];
 
-  v8 = [(UISystemInputViewController *)self containingView];
-  v9 = [(UISystemInputViewController *)self contentLayoutView];
-  [v8 addSubview:v9];
+  containingView2 = [(UISystemInputViewController *)self containingView];
+  contentLayoutView3 = [(UISystemInputViewController *)self contentLayoutView];
+  [containingView2 addSubview:contentLayoutView3];
 
   [(UISystemInputViewController *)self _addChildInputViewController];
-  v10 = [(UISystemInputViewController *)self editorVC];
+  editorVC = [(UISystemInputViewController *)self editorVC];
 
-  if (v10)
+  if (editorVC)
   {
-    v11 = [(UISystemInputViewController *)self editorVC];
-    [(UISystemInputViewController *)self _addAccessoryViewController:v11];
+    editorVC2 = [(UISystemInputViewController *)self editorVC];
+    [(UISystemInputViewController *)self _addAccessoryViewController:editorVC2];
   }
 
   if ([(UISystemInputViewController *)self willPresentFullscreen])
@@ -1085,43 +1085,43 @@ LABEL_98:
   else
   {
     v12 = MEMORY[0x1E69977A0];
-    v29 = [(UISystemInputViewController *)self contentLayoutView];
-    v28 = [(UISystemInputViewController *)self containingView];
-    v27 = [v12 constraintWithItem:v29 attribute:3 relatedBy:0 toItem:v28 attribute:3 multiplier:1.0 constant:0.0];
+    contentLayoutView4 = [(UISystemInputViewController *)self contentLayoutView];
+    containingView3 = [(UISystemInputViewController *)self containingView];
+    v27 = [v12 constraintWithItem:contentLayoutView4 attribute:3 relatedBy:0 toItem:containingView3 attribute:3 multiplier:1.0 constant:0.0];
     v30[0] = v27;
     v13 = MEMORY[0x1E69977A0];
-    v26 = [(UISystemInputViewController *)self contentLayoutView];
-    v14 = [(UISystemInputViewController *)self containingView];
-    v15 = [v13 constraintWithItem:v26 attribute:4 relatedBy:0 toItem:v14 attribute:4 multiplier:1.0 constant:0.0];
+    contentLayoutView5 = [(UISystemInputViewController *)self contentLayoutView];
+    containingView4 = [(UISystemInputViewController *)self containingView];
+    v15 = [v13 constraintWithItem:contentLayoutView5 attribute:4 relatedBy:0 toItem:containingView4 attribute:4 multiplier:1.0 constant:0.0];
     v30[1] = v15;
     v16 = MEMORY[0x1E69977A0];
-    v17 = [(UISystemInputViewController *)self contentLayoutView];
-    v18 = [(UISystemInputViewController *)self containingView];
-    v19 = [v16 constraintWithItem:v17 attribute:1 relatedBy:0 toItem:v18 attribute:1 multiplier:1.0 constant:0.0];
+    contentLayoutView6 = [(UISystemInputViewController *)self contentLayoutView];
+    containingView5 = [(UISystemInputViewController *)self containingView];
+    v19 = [v16 constraintWithItem:contentLayoutView6 attribute:1 relatedBy:0 toItem:containingView5 attribute:1 multiplier:1.0 constant:0.0];
     v30[2] = v19;
     v20 = MEMORY[0x1E69977A0];
-    v21 = [(UISystemInputViewController *)self contentLayoutView];
-    v22 = [(UISystemInputViewController *)self containingView];
-    v23 = [v20 constraintWithItem:v21 attribute:2 relatedBy:0 toItem:v22 attribute:2 multiplier:1.0 constant:0.0];
+    contentLayoutView7 = [(UISystemInputViewController *)self contentLayoutView];
+    containingView6 = [(UISystemInputViewController *)self containingView];
+    v23 = [v20 constraintWithItem:contentLayoutView7 attribute:2 relatedBy:0 toItem:containingView6 attribute:2 multiplier:1.0 constant:0.0];
     v30[3] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
 
-    v25 = [(UISystemInputViewController *)self containingView];
-    [v25 addConstraints:v24];
+    containingView7 = [(UISystemInputViewController *)self containingView];
+    [containingView7 addConstraints:v24];
   }
 }
 
 - (id)_traitCollectionForUserInterfaceStyle
 {
-  v3 = [(UIViewController *)self _window];
-  v4 = [v3 screen];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  _window = [(UIViewController *)self _window];
+  screen = [_window screen];
+  traitCollection = [screen traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 3 && ([(UISystemInputViewController *)self persistentDelegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
+  if (userInterfaceIdiom == 3 && ([(UISystemInputViewController *)self persistentDelegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
   {
-    v9 = [(UISystemInputViewController *)self persistentDelegate];
-    v10 = [v9 traitCollection];
+    persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+    traitCollection2 = [persistentDelegate traitCollection];
   }
 
   else
@@ -1130,73 +1130,73 @@ LABEL_98:
     {
       v19.receiver = self;
       v19.super_class = UISystemInputViewController;
-      v14 = [(UIViewController *)&v19 traitCollection];
+      traitCollection3 = [(UIViewController *)&v19 traitCollection];
       goto LABEL_18;
     }
 
-    v11 = [(UITraitEnvironment *)self->_containingResponder traitCollection];
-    v12 = v11;
-    if (v11)
+    traitCollection4 = [(UITraitEnvironment *)self->_containingResponder traitCollection];
+    v12 = traitCollection4;
+    if (traitCollection4)
     {
-      v13 = v11;
+      traitCollection5 = traitCollection4;
     }
 
     else
     {
       v20.receiver = self;
       v20.super_class = UISystemInputViewController;
-      v13 = [(UIViewController *)&v20 traitCollection];
+      traitCollection5 = [(UIViewController *)&v20 traitCollection];
     }
 
-    v9 = v13;
+    persistentDelegate = traitCollection5;
 
-    v15 = [(UISystemInputViewController *)self textInputTraits];
-    v16 = [v15 keyboardAppearance];
+    textInputTraits = [(UISystemInputViewController *)self textInputTraits];
+    keyboardAppearance = [textInputTraits keyboardAppearance];
 
-    switch(v16)
+    switch(keyboardAppearance)
     {
       case 9:
-        v17 = 1000;
+        userInterfaceStyle = 1000;
         break;
       case 2:
-        v17 = 1;
+        userInterfaceStyle = 1;
         break;
       case 1:
-        v17 = 2;
+        userInterfaceStyle = 2;
         break;
       default:
-        v17 = [v9 userInterfaceStyle];
+        userInterfaceStyle = [persistentDelegate userInterfaceStyle];
         break;
     }
 
-    v10 = [v9 _traitCollectionByReplacingNSIntegerValue:v17 forTraitToken:0x1EFE323B0];
+    traitCollection2 = [persistentDelegate _traitCollectionByReplacingNSIntegerValue:userInterfaceStyle forTraitToken:0x1EFE323B0];
   }
 
-  v14 = v10;
+  traitCollection3 = traitCollection2;
 
 LABEL_18:
 
-  return v14;
+  return traitCollection3;
 }
 
-- (void)_setNonInputViewVisibility:(BOOL)a3
+- (void)_setNonInputViewVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  v5 = [(UISystemInputViewController *)self editorVC];
+  visibilityCopy = visibility;
+  editorVC = [(UISystemInputViewController *)self editorVC];
 
-  if (v5)
+  if (editorVC)
   {
-    v6 = [(UISystemInputViewController *)self editorVC];
-    v7 = [v6 view];
-    [v7 setHidden:!v3];
+    editorVC2 = [(UISystemInputViewController *)self editorVC];
+    view = [editorVC2 view];
+    [view setHidden:!visibilityCopy];
   }
 
-  v8 = [(UISystemInputViewController *)self doneButton];
+  doneButton = [(UISystemInputViewController *)self doneButton];
 
-  if (v8)
+  if (doneButton)
   {
-    v9 = [(UISystemInputViewController *)self doneButton];
-    [v9 setHidden:!v3];
+    doneButton2 = [(UISystemInputViewController *)self doneButton];
+    [doneButton2 setHidden:!visibilityCopy];
   }
 
   accessoryViewControllers = self->_accessoryViewControllers;
@@ -1204,7 +1204,7 @@ LABEL_18:
   v11[1] = 3221225472;
   v11[2] = __58__UISystemInputViewController__setNonInputViewVisibility___block_invoke;
   v11[3] = &__block_descriptor_33_e43_v32__0__NSNumber_8__UIViewController_16_B24l;
-  v12 = v3;
+  v12 = visibilityCopy;
   [(NSMutableDictionary *)accessoryViewControllers enumerateKeysAndObjectsUsingBlock:v11];
 }
 
@@ -1217,7 +1217,7 @@ void __58__UISystemInputViewController__setNonInputViewVisibility___block_invoke
 
 - (BOOL)keyboardCanBecomeFocusedWithZeroAlpha
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1226,83 +1226,83 @@ void __58__UISystemInputViewController__setNonInputViewVisibility___block_invoke
     return 0;
   }
 
-  v5 = [(UIViewController *)self view];
-  v6 = [v5 isEligibleForFocusWithZeroAlpha];
+  view2 = [(UIViewController *)self view];
+  isEligibleForFocusWithZeroAlpha = [view2 isEligibleForFocusWithZeroAlpha];
 
-  return v6;
+  return isEligibleForFocusWithZeroAlpha;
 }
 
-- (void)setKeyboardCanBecomeFocusedWithZeroAlpha:(BOOL)a3
+- (void)setKeyboardCanBecomeFocusedWithZeroAlpha:(BOOL)alpha
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self view];
+  alphaCopy = alpha;
+  view = [(UIViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(UIViewController *)self view];
-    [v7 setIsEligibleForFocusWithZeroAlpha:v3];
+    view2 = [(UIViewController *)self view];
+    [view2 setIsEligibleForFocusWithZeroAlpha:alphaCopy];
   }
 }
 
 - (void)_addChildInputViewController
 {
-  v3 = [(UISystemInputViewController *)self recentsVC];
+  recentsVC = [(UISystemInputViewController *)self recentsVC];
 
-  if (v3)
+  if (recentsVC)
   {
-    v4 = [(UIViewController *)self childViewControllers];
-    v5 = [(UISystemInputViewController *)self recentsVC];
-    v6 = [v4 containsObject:v5];
+    childViewControllers = [(UIViewController *)self childViewControllers];
+    recentsVC2 = [(UISystemInputViewController *)self recentsVC];
+    v6 = [childViewControllers containsObject:recentsVC2];
 
     if (v6)
     {
       goto LABEL_10;
     }
 
-    v7 = [(UISystemInputViewController *)self recentsVC];
+    recentsVC3 = [(UISystemInputViewController *)self recentsVC];
   }
 
   else
   {
-    v8 = [(UISystemInputViewController *)self inputVC];
+    inputVC = [(UISystemInputViewController *)self inputVC];
 
-    if (v8)
+    if (inputVC)
     {
-      v9 = [(UIViewController *)self childViewControllers];
-      v10 = [(UISystemInputViewController *)self inputVC];
-      v11 = [v9 containsObject:v10];
+      childViewControllers2 = [(UIViewController *)self childViewControllers];
+      inputVC2 = [(UISystemInputViewController *)self inputVC];
+      v11 = [childViewControllers2 containsObject:inputVC2];
 
       if (v11)
       {
         goto LABEL_10;
       }
 
-      v7 = [(UISystemInputViewController *)self inputVC];
+      recentsVC3 = [(UISystemInputViewController *)self inputVC];
     }
 
     else
     {
       [(UISystemInputViewController *)self _createKeyboardIfNecessary];
-      v12 = [(UIViewController *)self childViewControllers];
-      v13 = [(UISystemInputViewController *)self keyboardVC];
-      v14 = [v12 containsObject:v13];
+      childViewControllers3 = [(UIViewController *)self childViewControllers];
+      keyboardVC = [(UISystemInputViewController *)self keyboardVC];
+      v14 = [childViewControllers3 containsObject:keyboardVC];
 
       if (v14)
       {
         goto LABEL_10;
       }
 
-      v7 = [(UISystemInputViewController *)self keyboardVC];
+      recentsVC3 = [(UISystemInputViewController *)self keyboardVC];
     }
   }
 
-  v15 = v7;
-  [(UISystemInputViewController *)self _addAccessoryViewController:v7];
+  v15 = recentsVC3;
+  [(UISystemInputViewController *)self _addAccessoryViewController:recentsVC3];
 
 LABEL_10:
-  [(UISystemInputViewController *)self _setNonInputViewVisibility:v3 == 0];
+  [(UISystemInputViewController *)self _setNonInputViewVisibility:recentsVC == 0];
 
   [(UISystemInputViewController *)self _updateRemoteTextEditingSession];
 }
@@ -1324,85 +1324,85 @@ LABEL_10:
 
 - (void)_createKeyboardIfNecessary
 {
-  v3 = [(UISystemInputViewController *)self keyboard];
+  keyboard = [(UISystemInputViewController *)self keyboard];
 
-  if (!v3)
+  if (!keyboard)
   {
-    v4 = [[UIKeyboard alloc] initLazily];
-    [(UISystemInputViewController *)self setKeyboard:v4];
+    initLazily = [[UIKeyboard alloc] initLazily];
+    [(UISystemInputViewController *)self setKeyboard:initLazily];
 
-    v5 = [(UISystemInputViewController *)self keyboard];
-    [v5 _setDisableTouchInput:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput") ^ 1}];
+    keyboard2 = [(UISystemInputViewController *)self keyboard];
+    [keyboard2 _setDisableTouchInput:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput") ^ 1}];
 
-    v6 = [(UISystemInputViewController *)self keyboard];
-    [v6 _setUseLinearLayout:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput")}];
+    keyboard3 = [(UISystemInputViewController *)self keyboard];
+    [keyboard3 _setUseLinearLayout:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput")}];
 
-    v7 = [(UISystemInputViewController *)self requestedInteractionModel];
-    v8 = [(UISystemInputViewController *)self keyboard];
-    [v8 setRequestedInteractionModel:v7];
+    requestedInteractionModel = [(UISystemInputViewController *)self requestedInteractionModel];
+    keyboard4 = [(UISystemInputViewController *)self keyboard];
+    [keyboard4 setRequestedInteractionModel:requestedInteractionModel];
 
-    v9 = [(UISystemInputViewController *)self keyboard];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    keyboard5 = [(UISystemInputViewController *)self keyboard];
+    [keyboard5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(UISystemInputViewController *)self keyboard];
-    v11 = [UICompatibilityInputViewController deferredInputModeControllerWithKeyboard:v10];
+    keyboard6 = [(UISystemInputViewController *)self keyboard];
+    v11 = [UICompatibilityInputViewController deferredInputModeControllerWithKeyboard:keyboard6];
     [(UISystemInputViewController *)self setKeyboardVC:v11];
   }
 
   v12 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v13 = [v12 preferencesActions];
-  v14 = [v13 currentInputModeSupportsCrescendo];
+  preferencesActions = [v12 preferencesActions];
+  currentInputModeSupportsCrescendo = [preferencesActions currentInputModeSupportsCrescendo];
 
-  if ((v14 & 1) == 0)
+  if ((currentInputModeSupportsCrescendo & 1) == 0)
   {
-    v15 = [(UISystemInputViewController *)self keyboardVC];
-    v16 = [v15 view];
+    keyboardVC = [(UISystemInputViewController *)self keyboardVC];
+    view = [keyboardVC view];
     LODWORD(v17) = 1148846080;
-    [v16 setContentCompressionResistancePriority:1 forAxis:v17];
+    [view setContentCompressionResistancePriority:1 forAxis:v17];
 
-    v20 = [(UISystemInputViewController *)self keyboardVC];
-    v18 = [v20 view];
+    keyboardVC2 = [(UISystemInputViewController *)self keyboardVC];
+    view2 = [keyboardVC2 view];
     LODWORD(v19) = 1148846080;
-    [v18 setContentCompressionResistancePriority:0 forAxis:v19];
+    [view2 setContentCompressionResistancePriority:0 forAxis:v19];
   }
 }
 
-- (void)_windowWillBecomeApplicationKey:(id)a3
+- (void)_windowWillBecomeApplicationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = +[UIWindow _applicationKeyWindow];
-  v5 = [v4 object];
+  object = [keyCopy object];
 
-  v6 = [v11 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [v11 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v8 = [(UIResponder *)self _responderWindow];
-  if (v5 != v8 || v5 == v11)
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  if (object != _responderWindow || object == v11)
   {
     goto LABEL_6;
   }
 
-  v9 = [(UISystemInputViewController *)self persistentDelegate];
-  v10 = [v9 isFirstResponder];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  isFirstResponder = [persistentDelegate isFirstResponder];
 
-  if (v10 && v7 != 3)
+  if (isFirstResponder && userInterfaceIdiom != 3)
   {
-    v8 = [v11 firstResponder];
-    [v8 resignFirstResponder];
+    _responderWindow = [v11 firstResponder];
+    [_responderWindow resignFirstResponder];
 LABEL_6:
   }
 }
 
-- (void)_windowDidBecomeApplicationKey:(id)a3
+- (void)_windowDidBecomeApplicationKey:(id)key
 {
-  v7 = [a3 object];
-  v4 = [(UIResponder *)self _responderWindow];
-  if (v7 == v4)
+  object = [key object];
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  if (object == _responderWindow)
   {
-    v5 = [(UISystemInputViewController *)self persistentDelegate];
-    v6 = [v5 isFirstResponder];
+    persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+    isFirstResponder = [persistentDelegate isFirstResponder];
 
-    if (v6)
+    if (isFirstResponder)
     {
       [(UISystemInputViewController *)self _restoreKeyboardIfNecessary];
     }
@@ -1415,25 +1415,25 @@ LABEL_6:
 
 - (void)_responderIsReloaded
 {
-  v9 = [(UISystemInputViewController *)self persistentDelegate];
-  if ([v9 isFirstResponder])
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  if ([persistentDelegate isFirstResponder])
   {
-    v3 = [(UISystemInputViewController *)self persistentDelegate];
-    v4 = [v3 _responderWindow];
-    v5 = [v4 traitCollection];
-    if ([v5 userInterfaceIdiom] == 3)
+    persistentDelegate2 = [(UISystemInputViewController *)self persistentDelegate];
+    _responderWindow = [persistentDelegate2 _responderWindow];
+    traitCollection = [_responderWindow traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 3)
     {
       v6 = +[UIKeyboardImpl activeInstance];
-      v7 = [v6 delegateAsResponder];
-      v8 = [(UISystemInputViewController *)self persistentDelegate];
+      delegateAsResponder = [v6 delegateAsResponder];
+      persistentDelegate3 = [(UISystemInputViewController *)self persistentDelegate];
 
-      if (v7 == v8)
+      if (delegateAsResponder == persistentDelegate3)
       {
         return;
       }
 
-      v9 = [(UISystemInputViewController *)self persistentDelegate];
-      [v9 resignFirstResponder];
+      persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+      [persistentDelegate resignFirstResponder];
     }
 
     else
@@ -1442,48 +1442,48 @@ LABEL_6:
   }
 }
 
-- (void)setRequestedInteractionModel:(unint64_t)a3
+- (void)setRequestedInteractionModel:(unint64_t)model
 {
-  if (self->_requestedInteractionModel != a3)
+  if (self->_requestedInteractionModel != model)
   {
-    self->_requestedInteractionModel = a3;
-    self->_supportsTouchInput = a3 < 2;
-    v5 = [(UISystemInputViewController *)self keyboard];
+    self->_requestedInteractionModel = model;
+    self->_supportsTouchInput = model < 2;
+    keyboard = [(UISystemInputViewController *)self keyboard];
 
-    if (v5)
+    if (keyboard)
     {
-      v6 = [(UISystemInputViewController *)self keyboard];
-      [v6 setRequestedInteractionModel:a3];
+      keyboard2 = [(UISystemInputViewController *)self keyboard];
+      [keyboard2 setRequestedInteractionModel:model];
     }
   }
 }
 
-- (void)setInputVC:(id)a3
+- (void)setInputVC:(id)c
 {
-  v5 = a3;
+  cCopy = c;
   inputVC = self->_inputVC;
-  if (inputVC != v5)
+  if (inputVC != cCopy)
   {
-    v14 = v5;
+    v14 = cCopy;
     if (inputVC)
     {
-      v7 = [(UIViewController *)self childViewControllers];
-      v8 = [v7 containsObject:self->_inputVC];
+      childViewControllers = [(UIViewController *)self childViewControllers];
+      v8 = [childViewControllers containsObject:self->_inputVC];
 
-      v5 = v14;
+      cCopy = v14;
       if (v8)
       {
         [(UISystemInputViewController *)self _removeAccessoryViewController:self->_inputVC];
-        v5 = v14;
+        cCopy = v14;
       }
     }
 
-    if (v5)
+    if (cCopy)
     {
       if (self->_keyboardVC)
       {
-        v9 = [(UIViewController *)self childViewControllers];
-        v10 = [v9 containsObject:self->_keyboardVC];
+        childViewControllers2 = [(UIViewController *)self childViewControllers];
+        v10 = [childViewControllers2 containsObject:self->_keyboardVC];
 
         if (v10)
         {
@@ -1492,12 +1492,12 @@ LABEL_6:
       }
     }
 
-    objc_storeStrong(&self->_inputVC, a3);
+    objc_storeStrong(&self->_inputVC, c);
     [(UISystemInputViewController *)self _addChildInputViewController];
-    v11 = [(UIViewController *)self view];
-    v12 = [v11 window];
+    view = [(UIViewController *)self view];
+    window = [view window];
 
-    if (v12)
+    if (window)
     {
       [(UISystemInputViewController *)self updateViewConstraints];
       [(UISystemInputViewController *)self updateAlignmentConstraints];
@@ -1505,40 +1505,40 @@ LABEL_6:
 
     else
     {
-      v13 = [(UIViewController *)self view];
-      [v13 setNeedsUpdateConstraints];
+      view2 = [(UIViewController *)self view];
+      [view2 setNeedsUpdateConstraints];
     }
 
-    v5 = v14;
+    cCopy = v14;
   }
 }
 
-- (void)setRecentsVC:(id)a3
+- (void)setRecentsVC:(id)c
 {
-  v5 = a3;
+  cCopy = c;
   recentsVC = self->_recentsVC;
-  if (recentsVC != v5)
+  if (recentsVC != cCopy)
   {
-    v14 = v5;
+    v14 = cCopy;
     if (recentsVC)
     {
-      v7 = [(UIViewController *)self childViewControllers];
-      v8 = [v7 containsObject:self->_recentsVC];
+      childViewControllers = [(UIViewController *)self childViewControllers];
+      v8 = [childViewControllers containsObject:self->_recentsVC];
 
-      v5 = v14;
+      cCopy = v14;
       if (v8)
       {
         [(UISystemInputViewController *)self _removeAccessoryViewController:self->_recentsVC];
-        v5 = v14;
+        cCopy = v14;
       }
     }
 
-    if (v5)
+    if (cCopy)
     {
       if (self->_keyboardVC)
       {
-        v9 = [(UIViewController *)self childViewControllers];
-        v10 = [v9 containsObject:self->_keyboardVC];
+        childViewControllers2 = [(UIViewController *)self childViewControllers];
+        v10 = [childViewControllers2 containsObject:self->_keyboardVC];
 
         if (v10)
         {
@@ -1547,12 +1547,12 @@ LABEL_6:
       }
     }
 
-    objc_storeStrong(&self->_recentsVC, a3);
+    objc_storeStrong(&self->_recentsVC, c);
     [(UISystemInputViewController *)self _addChildInputViewController];
-    v11 = [(UIViewController *)self view];
-    v12 = [v11 window];
+    view = [(UIViewController *)self view];
+    window = [view window];
 
-    if (v12)
+    if (window)
     {
       [(UISystemInputViewController *)self updateViewConstraints];
       [(UISystemInputViewController *)self updateAlignmentConstraints];
@@ -1560,11 +1560,11 @@ LABEL_6:
 
     else
     {
-      v13 = [(UIViewController *)self view];
-      [v13 setNeedsUpdateConstraints];
+      view2 = [(UIViewController *)self view];
+      [view2 setNeedsUpdateConstraints];
     }
 
-    v5 = v14;
+    cCopy = v14;
   }
 }
 
@@ -1578,13 +1578,13 @@ LABEL_6:
 
   else
   {
-    v3 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
+    systemInputViewControllerDelegate = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
-      [v5 systemInputViewControllerDidAcceptRecentInput:self];
+      systemInputViewControllerDelegate2 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
+      [systemInputViewControllerDelegate2 systemInputViewControllerDidAcceptRecentInput:self];
     }
   }
 }
@@ -1597,14 +1597,14 @@ LABEL_6:
   [(UISystemInputViewController *)self _setSystemInputInteractionActive:1];
 }
 
-- (void)setSupportsRecentInputsIntegration:(BOOL)a3
+- (void)setSupportsRecentInputsIntegration:(BOOL)integration
 {
-  v3 = a3;
-  self->_supportsRecentInputsIntegration = a3;
-  if (a3)
+  integrationCopy = integration;
+  self->_supportsRecentInputsIntegration = integration;
+  if (integration)
   {
-    v5 = [(UISystemInputViewController *)self recentsVC];
-    if (!v5)
+    recentsVC = [(UISystemInputViewController *)self recentsVC];
+    if (!recentsVC)
     {
 LABEL_11:
 
@@ -1618,16 +1618,16 @@ LABEL_11:
       return;
     }
 
-    v7 = v5;
+    v7 = recentsVC;
   }
 
-  v6 = [(UISystemInputViewController *)self recentsVC];
+  recentsVC2 = [(UISystemInputViewController *)self recentsVC];
 
-  if (v3)
+  if (integrationCopy)
   {
   }
 
-  if (v6)
+  if (recentsVC2)
   {
     goto LABEL_11;
   }
@@ -1638,73 +1638,73 @@ LABEL_11:
   if ([(UISystemInputViewController *)self willShowRecentsList]&& ![(UISystemInputViewController *)self didDisplayRecents])
   {
     v12 = [(UITableViewController *)[UIRecentsInputViewController alloc] initWithStyle:0];
-    v3 = [(UISystemInputViewController *)self textInputTraits];
-    -[UIRecentsInputViewController setCanManageList:](v12, "setCanManageList:", [v3 manageRecentInputs]);
+    textInputTraits = [(UISystemInputViewController *)self textInputTraits];
+    -[UIRecentsInputViewController setCanManageList:](v12, "setCanManageList:", [textInputTraits manageRecentInputs]);
 
-    v4 = [(UISystemInputViewController *)self persistentDelegate];
-    v5 = [v4 recentsAccessoryView];
-    [(UIRecentsInputViewController *)v12 setCustomHeaderView:v5];
+    persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+    recentsAccessoryView = [persistentDelegate recentsAccessoryView];
+    [(UIRecentsInputViewController *)v12 setCustomHeaderView:recentsAccessoryView];
 
     v6 = [UIBlurEffect effectWithStyle:[(UISystemInputViewController *)self blurEffectStyle]];
-    v7 = [(UITraitEnvironment *)self->_containingResponder traitCollection];
-    v8 = [v6 effectForUserInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
+    traitCollection = [(UITraitEnvironment *)self->_containingResponder traitCollection];
+    v8 = [v6 effectForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
     -[UIRecentsInputViewController setContainingEffectStyle:](v12, "setContainingEffectStyle:", [v8 _style]);
     [(UISystemInputViewController *)self setRecentsVC:v12];
-    v9 = [(UISystemInputViewController *)self recentsVC];
-    [v9 setRecentInputDelegate:self];
+    recentsVC = [(UISystemInputViewController *)self recentsVC];
+    [recentsVC setRecentInputDelegate:self];
 
-    v10 = [(UISystemInputViewController *)self cachedRecents];
-    v11 = [(UISystemInputViewController *)self recentsVC];
-    [v11 setRecentInputs:v10];
+    cachedRecents = [(UISystemInputViewController *)self cachedRecents];
+    recentsVC2 = [(UISystemInputViewController *)self recentsVC];
+    [recentsVC2 setRecentInputs:cachedRecents];
 
     [(UISystemInputViewController *)self setDidDisplayRecents:1];
     [(UISystemInputViewController *)self notifyDelegateWithAccessoryVisibility:0];
   }
 }
 
-- (void)setSystemInputViewControllerDelegate:(id)a3
+- (void)setSystemInputViewControllerDelegate:(id)delegate
 {
-  if (self->_systemInputViewControllerDelegate != a3)
+  if (self->_systemInputViewControllerDelegate != delegate)
   {
-    self->_systemInputViewControllerDelegate = a3;
-    v5 = [(UISystemInputViewController *)self recentsVC];
-    [(UISystemInputViewController *)self notifyDelegateWithAccessoryVisibility:v5 == 0];
+    self->_systemInputViewControllerDelegate = delegate;
+    recentsVC = [(UISystemInputViewController *)self recentsVC];
+    [(UISystemInputViewController *)self notifyDelegateWithAccessoryVisibility:recentsVC == 0];
   }
 }
 
-- (void)notifyDelegateWithAccessoryVisibility:(BOOL)a3
+- (void)notifyDelegateWithAccessoryVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  v5 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
-  if (v5)
+  visibilityCopy = visibility;
+  systemInputViewControllerDelegate = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
+  if (systemInputViewControllerDelegate)
   {
-    v6 = v5;
-    v7 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
+    v6 = systemInputViewControllerDelegate;
+    systemInputViewControllerDelegate2 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
-      [v9 systemInputViewController:self didChangeAccessoryVisibility:v3];
+      systemInputViewControllerDelegate3 = [(UISystemInputViewController *)self systemInputViewControllerDelegate];
+      [systemInputViewControllerDelegate3 systemInputViewController:self didChangeAccessoryVisibility:visibilityCopy];
     }
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UISystemInputViewController *)self willPresentFullscreen]&& _UIPressesContainsPressType(v6, 5))
+  beganCopy = began;
+  eventCopy = event;
+  if ([(UISystemInputViewController *)self willPresentFullscreen]&& _UIPressesContainsPressType(beganCopy, 5))
   {
-    v8 = [(UIViewController *)self _window];
-    v9 = [v8 firstResponder];
+    _window = [(UIViewController *)self _window];
+    firstResponder = [_window firstResponder];
 
-    if (!v9)
+    if (!firstResponder)
     {
       v11.receiver = self;
       v11.super_class = UISystemInputViewController;
-      [(UIResponder *)&v11 pressesBegan:v6 withEvent:v7];
+      [(UIResponder *)&v11 pressesBegan:beganCopy withEvent:eventCopy];
     }
   }
 
@@ -1712,29 +1712,29 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = UISystemInputViewController;
-    [(UIResponder *)&v10 pressesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UISystemInputViewController *)self willPresentFullscreen]&& _UIPressesContainsPressType(v6, 5))
+  endedCopy = ended;
+  eventCopy = event;
+  if ([(UISystemInputViewController *)self willPresentFullscreen]&& _UIPressesContainsPressType(endedCopy, 5))
   {
-    v8 = [(UIViewController *)self _window];
-    v9 = [v8 firstResponder];
+    _window = [(UIViewController *)self _window];
+    firstResponder = [_window firstResponder];
 
-    if (v9)
+    if (firstResponder)
     {
-      [v9 _nonDestructivelyResignFirstResponder];
+      [firstResponder _nonDestructivelyResignFirstResponder];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = UISystemInputViewController;
-      [(UIResponder *)&v11 pressesEnded:v6 withEvent:v7];
+      [(UIResponder *)&v11 pressesEnded:endedCopy withEvent:eventCopy];
     }
   }
 
@@ -1742,24 +1742,24 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = UISystemInputViewController;
-    [(UIResponder *)&v10 pressesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UISystemInputViewController *)self willPresentFullscreen]&& _UIPressesContainsPressType(v6, 5))
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if ([(UISystemInputViewController *)self willPresentFullscreen]&& _UIPressesContainsPressType(cancelledCopy, 5))
   {
-    v8 = [(UIViewController *)self _window];
-    v9 = [v8 firstResponder];
+    _window = [(UIViewController *)self _window];
+    firstResponder = [_window firstResponder];
 
-    if (!v9)
+    if (!firstResponder)
     {
       v11.receiver = self;
       v11.super_class = UISystemInputViewController;
-      [(UIResponder *)&v11 pressesCancelled:v6 withEvent:v7];
+      [(UIResponder *)&v11 pressesCancelled:cancelledCopy withEvent:eventCopy];
     }
   }
 
@@ -1767,23 +1767,23 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = UISystemInputViewController;
-    [(UIResponder *)&v10 pressesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v10 pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
 - (void)_dismissSystemInputViewController
 {
-  v3 = [(UISystemInputViewController *)self nextInputDelegate];
+  nextInputDelegate = [(UISystemInputViewController *)self nextInputDelegate];
 
-  if (v3)
+  if (nextInputDelegate)
   {
-    v4 = [(UISystemInputViewController *)self nextInputDelegate];
+    nextInputDelegate2 = [(UISystemInputViewController *)self nextInputDelegate];
     v5 = __automaticNextFocusResponder;
-    __automaticNextFocusResponder = v4;
+    __automaticNextFocusResponder = nextInputDelegate2;
 
     [(UISystemInputViewController *)self setIsAutomaticResponderTransition:1];
-    v6 = [(UISystemInputViewController *)self keyboard];
-    [v6 setDisableInteraction:1];
+    keyboard = [(UISystemInputViewController *)self keyboard];
+    [keyboard setDisableInteraction:1];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -1797,8 +1797,8 @@ LABEL_11:
 
   else
   {
-    v8 = [(UISystemInputViewController *)self persistentDelegate];
-    [v8 resignFirstResponder];
+    persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+    [persistentDelegate resignFirstResponder];
   }
 }
 
@@ -1817,26 +1817,26 @@ void __64__UISystemInputViewController__dismissSystemInputViewController__block_
 
 - (void)_returnButtonPressed
 {
-  v3 = [(UISystemInputViewController *)self persistentDelegate];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 keyboardInput:v3 shouldInsertText:@"\n" isMarkedText:0];
+    [persistentDelegate keyboardInput:persistentDelegate shouldInsertText:@"\n" isMarkedText:0];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 sendActionsForControlEvents:0x80000];
+    [persistentDelegate sendActionsForControlEvents:0x80000];
   }
 
   [(UISystemInputViewController *)self _dismissSystemInputViewController];
 }
 
-- (UISystemInputViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UISystemInputViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = UISystemInputViewController;
-  result = [(UIViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(UIViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_supportsTouchInput = 1;
@@ -1848,7 +1848,7 @@ void __64__UISystemInputViewController__dismissSystemInputViewController__block_
 - (void)dealloc
 {
   v11[10] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11[0] = @"UIApplicationDidEnterBackgroundNotification";
   v11[1] = @"UIApplicationWillEnterForegroundNotification";
   v11[2] = @"UIApplicationWillResignActiveNotification";
@@ -1860,13 +1860,13 @@ void __64__UISystemInputViewController__dismissSystemInputViewController__block_
   v11[8] = @"_UIWindowDidBecomeApplicationKeyNotification";
   v11[9] = @"UITextInputResponderIsReloadedNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:10];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
   persistentDelegate = self->_persistentDelegate;
 
-  if (v6 == persistentDelegate)
+  if (delegate == persistentDelegate)
   {
     [(UISystemInputViewController *)self setDelegate:0];
   }
@@ -1887,10 +1887,10 @@ void __64__UISystemInputViewController__dismissSystemInputViewController__block_
 - (void)prepareForRelease
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
   persistentDelegate = self->_persistentDelegate;
 
-  if (v4 == persistentDelegate)
+  if (delegate == persistentDelegate)
   {
     if (self->_isVisible)
     {
@@ -1901,24 +1901,24 @@ void __64__UISystemInputViewController__dismissSystemInputViewController__block_
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = UISystemInputViewController;
-  [(UIViewController *)&v9 viewDidAppear:a3];
+  [(UIViewController *)&v9 viewDidAppear:appear];
   self->_isVisible = 1;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [(UIResponder *)self _responderWindow];
-  [v4 addObserver:self selector:sel__windowWillBecomeApplicationKey_ name:@"_UIWindowWillBecomeApplicationKeyNotification" object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  [defaultCenter addObserver:self selector:sel__windowWillBecomeApplicationKey_ name:@"_UIWindowWillBecomeApplicationKeyNotification" object:_responderWindow];
 
-  v6 = [(UIResponder *)self _responderWindow];
-  [v4 addObserver:self selector:sel__windowDidBecomeApplicationKey_ name:@"_UIWindowDidBecomeApplicationKeyNotification" object:v6];
+  _responderWindow2 = [(UIResponder *)self _responderWindow];
+  [defaultCenter addObserver:self selector:sel__windowDidBecomeApplicationKey_ name:@"_UIWindowDidBecomeApplicationKeyNotification" object:_responderWindow2];
 
-  [v4 addObserver:self selector:sel__responderIsReloaded name:@"UITextInputResponderIsReloadedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__responderIsReloaded name:@"UITextInputResponderIsReloadedNotification" object:0];
   if ([(UISystemInputViewController *)self willPresentFullscreen])
   {
-    v7 = [(UIViewController *)self presentationController];
-    [v7 _disableMenuPressForBackGesture];
+    presentationController = [(UIViewController *)self presentationController];
+    [presentationController _disableMenuPressForBackGesture];
   }
 
   else
@@ -1966,12 +1966,12 @@ LABEL_7:
 - (id)preferredFocusEnvironments
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UISystemInputViewController *)self recentsVC];
+  recentsVC = [(UISystemInputViewController *)self recentsVC];
 
-  if (v3)
+  if (recentsVC)
   {
-    v4 = [(UISystemInputViewController *)self recentsVC];
-    v12[0] = v4;
+    recentsVC2 = [(UISystemInputViewController *)self recentsVC];
+    v12[0] = recentsVC2;
     v5 = v12;
 LABEL_7:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:{1, v10, v11, v12[0]}];
@@ -1979,22 +1979,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(UISystemInputViewController *)self inputVC];
+  inputVC = [(UISystemInputViewController *)self inputVC];
 
-  if (v6)
+  if (inputVC)
   {
-    v4 = [(UISystemInputViewController *)self inputVC];
-    v11 = v4;
+    recentsVC2 = [(UISystemInputViewController *)self inputVC];
+    v11 = recentsVC2;
     v5 = &v11;
     goto LABEL_7;
   }
 
-  v7 = [(UISystemInputViewController *)self keyboardVC];
+  keyboardVC = [(UISystemInputViewController *)self keyboardVC];
 
-  if (v7)
+  if (keyboardVC)
   {
-    v4 = [(UISystemInputViewController *)self keyboardVC];
-    v10 = v4;
+    recentsVC2 = [(UISystemInputViewController *)self keyboardVC];
+    v10 = recentsVC2;
     v5 = &v10;
     goto LABEL_7;
   }
@@ -2005,23 +2005,23 @@ LABEL_8:
   return v8;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = UISystemInputViewController;
-  [(UIViewController *)&v6 didUpdateFocusInContext:a3 withAnimationCoordinator:a4];
+  [(UIViewController *)&v6 didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
   [(UISystemInputViewController *)self _updateRemoteTextEditingSession];
   if ([(UISystemInputViewController *)self notifyKeyboardOnScreenOnFocusOnly])
   {
-    v5 = [(UISystemInputViewController *)self keyboard];
-    -[UISystemInputViewController _setSystemInputInteractionActive:](self, "_setSystemInputInteractionActive:", [v5 isFocused]);
+    keyboard = [(UISystemInputViewController *)self keyboard];
+    -[UISystemInputViewController _setSystemInputInteractionActive:](self, "_setSystemInputInteractionActive:", [keyboard isFocused]);
   }
 }
 
 - (UIEdgeInsets)unfocusedFocusGuideOutsets
 {
-  v2 = [(UISystemInputViewController *)self keyboard];
-  [v2 unfocusedFocusGuideOutsets];
+  keyboard = [(UISystemInputViewController *)self keyboard];
+  [keyboard unfocusedFocusGuideOutsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2038,47 +2038,47 @@ LABEL_8:
   return result;
 }
 
-- (void)setUnfocusedFocusGuideOutsets:(UIEdgeInsets)a3
+- (void)setUnfocusedFocusGuideOutsets:(UIEdgeInsets)outsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = [(UISystemInputViewController *)self keyboard];
-  v8 = [(UIViewController *)self view];
-  [v9 setUnfocusedFocusGuideOutsets:v8 fromView:{top, left, bottom, right}];
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  keyboard = [(UISystemInputViewController *)self keyboard];
+  view = [(UIViewController *)self view];
+  [keyboard setUnfocusedFocusGuideOutsets:view fromView:{top, left, bottom, right}];
 }
 
-- (id)viewForFocusHeading:(unint64_t)a3 fromView:(id)a4
+- (id)viewForFocusHeading:(unint64_t)heading fromView:(id)view
 {
-  v7 = a4;
-  if (v7)
+  viewCopy = view;
+  if (viewCopy)
   {
-    if (a3)
+    if (heading)
     {
 LABEL_3:
-      v8 = [UIFocusSystem focusSystemForEnvironment:v7];
+      v8 = [UIFocusSystem focusSystemForEnvironment:viewCopy];
       v9 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v8];
-      v10 = _UIFocusEnvironmentContainingView(v7);
+      v10 = _UIFocusEnvironmentContainingView(viewCopy);
       v11 = [_UIFocusItemInfo infoWithItem:v10];
       [(_UIFocusMovementRequest *)v9 setFocusedItemInfo:v11];
 
-      v12 = [[_UIFocusMovementInfo alloc] initWithHeading:a3 linearHeading:0 isInitial:1 shouldLoadScrollableContainer:1 looping:0 groupFilter:0 inputType:5];
+      v12 = [[_UIFocusMovementInfo alloc] initWithHeading:heading linearHeading:0 isInitial:1 shouldLoadScrollableContainer:1 looping:0 groupFilter:0 inputType:5];
       [(_UIFocusMovementRequest *)v9 setMovementInfo:v12];
 
-      v13 = [v8 _movementPerformer];
-      v14 = [v13 contextForFocusMovement:v9];
+      _movementPerformer = [v8 _movementPerformer];
+      v14 = [_movementPerformer contextForFocusMovement:v9];
 
-      v15 = [v14 nextFocusedView];
-      v16 = v15;
-      if (v15)
+      nextFocusedView = [v14 nextFocusedView];
+      v16 = nextFocusedView;
+      if (nextFocusedView)
       {
-        v17 = v15;
+        v17 = nextFocusedView;
       }
 
       else
       {
-        v17 = v7;
+        v17 = viewCopy;
       }
 
       v18 = v17;
@@ -2089,16 +2089,16 @@ LABEL_3:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UISystemInputViewController.m" lineNumber:1760 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISystemInputViewController.m" lineNumber:1760 description:{@"Invalid parameter not satisfying: %@", @"view"}];
 
-    if (a3)
+    if (heading)
     {
       goto LABEL_3;
     }
   }
 
-  v18 = v7;
+  v18 = viewCopy;
 LABEL_9:
 
   return v18;
@@ -2106,20 +2106,20 @@ LABEL_9:
 
 - (void)findNextInputDelegate
 {
-  v3 = [(UISystemInputViewController *)self persistentDelegate];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(UITextInput *)self->_persistentDelegate _responderWindow];
-    v5 = [v10 _focusEventRecognizer];
-    if (v5)
+    _responderWindow = [(UITextInput *)self->_persistentDelegate _responderWindow];
+    _focusEventRecognizer = [_responderWindow _focusEventRecognizer];
+    if (_focusEventRecognizer)
     {
-      v6 = [(UISystemInputViewController *)self persistentDelegate];
-      v7 = [(UISystemInputViewController *)self viewForFocusHeading:16 fromView:v6];
+      persistentDelegate2 = [(UISystemInputViewController *)self persistentDelegate];
+      v7 = [(UISystemInputViewController *)self viewForFocusHeading:16 fromView:persistentDelegate2];
       v8 = v7;
-      if (v7 && v7 != v6 && [v7 conformsToProtocol:&unk_1EFE8B2D0])
+      if (v7 && v7 != persistentDelegate2 && [v7 conformsToProtocol:&unk_1EFE8B2D0])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -2142,12 +2142,12 @@ LABEL_9:
 
 - (id)doneButtonStringForCurrentInputDelegate
 {
-  v3 = [(UISystemInputViewController *)self persistentDelegate];
-  v4 = [v3 returnKeyType];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  returnKeyType = [persistentDelegate returnKeyType];
 
-  if (v4)
+  if (returnKeyType)
   {
-    v5 = v4;
+    v5 = returnKeyType;
   }
 
   else
@@ -2155,9 +2155,9 @@ LABEL_9:
     v5 = 9;
   }
 
-  v6 = [(UISystemInputViewController *)self nextInputDelegate];
+  nextInputDelegate = [(UISystemInputViewController *)self nextInputDelegate];
 
-  if (v6)
+  if (nextInputDelegate)
   {
     v7 = 4;
   }
@@ -2170,41 +2170,41 @@ LABEL_9:
   return UIKeyboardLocalizedReturnKeyName(v7);
 }
 
-- (void)setDoneButton:(id)a3
+- (void)setDoneButton:(id)button
 {
-  v8 = a3;
-  objc_storeStrong(&self->_doneButton, a3);
+  buttonCopy = button;
+  objc_storeStrong(&self->_doneButton, button);
   doneButton = self->_doneButton;
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  v7 = v6;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v7 = defaultCenter;
   if (doneButton)
   {
-    [v6 addObserver:self selector:sel_inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel_inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
   }
 
   else
   {
-    [v6 removeObserver:self name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [v4 _responderWindow];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  delegateCopy = delegate;
+  _responderWindow = [delegateCopy _responderWindow];
+  traitCollection = [_responderWindow traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UISystemInputViewController *)self _restoreKeyboardIfNecessary];
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 delegateAsResponder];
+  delegateAsResponder = [v8 delegateAsResponder];
 
   v10 = +[UIKeyboardImpl activeInstance];
-  [v10 setDelegate:v4];
+  [v10 setDelegate:delegateCopy];
 
   v11 = +[UIKeyboardImpl activeInstance];
   v17[0] = MEMORY[0x1E69E9820];
@@ -2212,21 +2212,21 @@ LABEL_9:
   v17[2] = __43__UISystemInputViewController_setDelegate___block_invoke;
   v17[3] = &unk_1E710E718;
   v17[4] = self;
-  [v11 handleTraitChangeObserver:v9 newResponder:v4 updateTraitCollection:v17];
+  [v11 handleTraitChangeObserver:delegateAsResponder newResponder:delegateCopy updateTraitCollection:v17];
 
-  if (v4 && v9 != v4)
+  if (delegateCopy && delegateAsResponder != delegateCopy)
   {
-    v12 = [v4 _responderWindow];
-    v13 = [v12 traitCollection];
-    if ([v13 userInterfaceIdiom] == 3)
+    _responderWindow2 = [delegateCopy _responderWindow];
+    traitCollection2 = [_responderWindow2 traitCollection];
+    if ([traitCollection2 userInterfaceIdiom] == 3)
     {
-      v14 = [v9 _responderWindow];
-      v15 = [v14 traitCollection];
-      v16 = [v15 userInterfaceIdiom];
+      _responderWindow3 = [delegateAsResponder _responderWindow];
+      traitCollection3 = [_responderWindow3 traitCollection];
+      userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
 
-      if (v16 != 3)
+      if (userInterfaceIdiom2 != 3)
       {
-        [v9 resignFirstResponder];
+        [delegateAsResponder resignFirstResponder];
       }
     }
 
@@ -2253,38 +2253,38 @@ void __43__UISystemInputViewController_setDelegate___block_invoke_2(uint64_t a1)
   [v1 traitCollectionDidChange];
 }
 
-- (void)inputModeDidChange:(id)a3
+- (void)inputModeDidChange:(id)change
 {
-  v4 = [(UISystemInputViewController *)self doneButton];
+  doneButton = [(UISystemInputViewController *)self doneButton];
 
-  if (v4)
+  if (doneButton)
   {
-    v5 = [(UISystemInputViewController *)self doneButton];
-    v6 = [(UISystemInputViewController *)self doneButtonStringForCurrentInputDelegate];
-    [v5 setTitle:v6 forState:0];
+    doneButton2 = [(UISystemInputViewController *)self doneButton];
+    doneButtonStringForCurrentInputDelegate = [(UISystemInputViewController *)self doneButtonStringForCurrentInputDelegate];
+    [doneButton2 setTitle:doneButtonStringForCurrentInputDelegate forState:0];
   }
 
   if ([(UISystemInputViewController *)self willPresentFullscreen])
   {
     if ([(UISystemInputViewController *)self willUpdateBackgroundEffectOnInputModeChange])
     {
-      v7 = [(UIViewController *)self view];
+      view = [(UIViewController *)self view];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [(UISystemInputViewController *)self textInputTraits];
-        v10 = [v9 keyboardAppearance];
+        textInputTraits = [(UISystemInputViewController *)self textInputTraits];
+        keyboardAppearance = [textInputTraits keyboardAppearance];
         v11 = +[UIKeyboardInputModeController sharedInputModeController];
-        v12 = [v11 currentInputMode];
-        v13 = [UIKBRenderConfig configForAppearance:v10 inputMode:v12 traitEnvironment:0];
-        v14 = [v13 blurEffectStyle];
+        currentInputMode = [v11 currentInputMode];
+        v13 = [UIKBRenderConfig configForAppearance:keyboardAppearance inputMode:currentInputMode traitEnvironment:0];
+        blurEffectStyle = [v13 blurEffectStyle];
 
-        [(UISystemInputViewController *)self setBlurEffectStyle:v14];
-        v16 = [(UIViewController *)self view];
+        [(UISystemInputViewController *)self setBlurEffectStyle:blurEffectStyle];
+        view2 = [(UIViewController *)self view];
         v15 = [UIBlurEffect effectWithStyle:[(UISystemInputViewController *)self blurEffectStyle]];
-        [v16 setEffect:v15];
+        [view2 setEffect:v15];
       }
     }
   }
@@ -2295,32 +2295,32 @@ void __43__UISystemInputViewController_setDelegate___block_invoke_2(uint64_t a1)
   v38 = *MEMORY[0x1E69E9840];
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v3 = [(UIViewController *)self _window];
-    v4 = [v3 screen];
-    v5 = [v4 traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    _window = [(UIViewController *)self _window];
+    screen = [_window screen];
+    traitCollection = [screen traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v6 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v7 = +[UIKeyboardImpl activeInstance];
-      v8 = [v7 inputDelegate];
+      inputDelegate = [v7 inputDelegate];
 
       v9 = +[UIWindowScene _keyWindowScene];
-      v10 = [v9 screen];
+      screen2 = [v9 screen];
 
-      if (v8)
+      if (inputDelegate)
       {
-        v11 = [v8 _responderWindow];
-        v12 = [v11 screen];
-        v13 = v12;
-        if (v12 == v10)
+        _responderWindow = [inputDelegate _responderWindow];
+        screen3 = [_responderWindow screen];
+        v13 = screen3;
+        if (screen3 == screen2)
         {
-          v14 = [(UIViewController *)self _window];
-          v15 = [v14 screen];
+          _window2 = [(UIViewController *)self _window];
+          screen4 = [_window2 screen];
 
-          if (v15 != v10)
+          if (screen4 != screen2)
           {
-            [v8 resignFirstResponder];
+            [inputDelegate resignFirstResponder];
           }
         }
 
@@ -2331,20 +2331,20 @@ void __43__UISystemInputViewController_setDelegate___block_invoke_2(uint64_t a1)
     }
   }
 
-  v16 = [(UISystemInputViewController *)self persistentDelegate];
-  v17 = [v16 isFirstResponder];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  isFirstResponder = [persistentDelegate isFirstResponder];
 
-  if (v17)
+  if (isFirstResponder)
   {
-    v18 = [(UISystemInputViewController *)self persistentDelegate];
-    [(UISystemInputViewController *)self setDelegate:v18];
+    persistentDelegate2 = [(UISystemInputViewController *)self persistentDelegate];
+    [(UISystemInputViewController *)self setDelegate:persistentDelegate2];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = [(UIViewController *)self childViewControllers];
-    v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    childViewControllers = [(UIViewController *)self childViewControllers];
+    v20 = [childViewControllers countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v20)
     {
       v21 = v20;
@@ -2355,20 +2355,20 @@ void __43__UISystemInputViewController_setDelegate___block_invoke_2(uint64_t a1)
         {
           if (*v34 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v24 = *(*(&v33 + 1) + 8 * i);
-          v25 = [(UISystemInputViewController *)self keyboardVC];
+          keyboardVC = [(UISystemInputViewController *)self keyboardVC];
 
-          if (v24 != v25)
+          if (v24 != keyboardVC)
           {
-            v26 = [(UISystemInputViewController *)self traitCollection];
-            [v24 traitCollectionDidChange:v26];
+            traitCollection2 = [(UISystemInputViewController *)self traitCollection];
+            [v24 traitCollectionDidChange:traitCollection2];
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v21 = [childViewControllers countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v21);
@@ -2377,16 +2377,16 @@ void __43__UISystemInputViewController_setDelegate___block_invoke_2(uint64_t a1)
     return;
   }
 
-  v27 = [(UISystemInputViewController *)self textInputTraits];
-  if (([v27 forceSpellingDictation] & 1) == 0)
+  textInputTraits = [(UISystemInputViewController *)self textInputTraits];
+  if (([textInputTraits forceSpellingDictation] & 1) == 0)
   {
-    v28 = [(UISystemInputViewController *)self textInputTraits];
-    if (!UIKeyboardTypeSupportsDictationSpelling([v28 dictationKeyboardType]))
+    textInputTraits2 = [(UISystemInputViewController *)self textInputTraits];
+    if (!UIKeyboardTypeSupportsDictationSpelling([textInputTraits2 dictationKeyboardType]))
     {
-      v30 = [(UISystemInputViewController *)self textInputTraits];
-      v31 = [v30 isSecureTextEntry];
+      textInputTraits3 = [(UISystemInputViewController *)self textInputTraits];
+      isSecureTextEntry = [textInputTraits3 isSecureTextEntry];
 
-      if ((v31 & 1) == 0)
+      if ((isSecureTextEntry & 1) == 0)
       {
         goto LABEL_25;
       }
@@ -2401,49 +2401,49 @@ LABEL_24:
 
 LABEL_25:
   [(UISystemInputViewController *)self setupKeyboard];
-  v32 = [(UIViewController *)self view];
-  [v32 setNeedsUpdateConstraints];
+  view = [(UIViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
 - (BOOL)willShowRecentsList
 {
-  v3 = [(UISystemInputViewController *)self cachedRecents];
-  if (!v3)
+  cachedRecents = [(UISystemInputViewController *)self cachedRecents];
+  if (!cachedRecents)
   {
-    v4 = [(UISystemInputViewController *)self textInputTraits];
-    v5 = [v4 isSecureTextEntry];
+    textInputTraits = [(UISystemInputViewController *)self textInputTraits];
+    isSecureTextEntry = [textInputTraits isSecureTextEntry];
 
-    if (v5)
+    if (isSecureTextEntry)
     {
       goto LABEL_5;
     }
 
     v6 = MEMORY[0x1E69D96E0];
-    v7 = [(UISystemInputViewController *)self textInputTraits];
-    v3 = [v6 traitsForUITextInputTraits:v7];
+    textInputTraits2 = [(UISystemInputViewController *)self textInputTraits];
+    cachedRecents = [v6 traitsForUITextInputTraits:textInputTraits2];
 
     v8 = MEMORY[0x1E69D9690];
-    v9 = [v3 recentInputIdentifier];
-    v10 = [v8 recentInputForIdentifier:v9];
+    recentInputIdentifier = [cachedRecents recentInputIdentifier];
+    v10 = [v8 recentInputForIdentifier:recentInputIdentifier];
 
     v11 = [UILexicon _lexiconWithTILexicon:v10];
     [(UISystemInputViewController *)self setCachedRecents:v11];
   }
 
 LABEL_5:
-  v12 = [(UISystemInputViewController *)self cachedRecents];
-  v13 = [v12 entries];
-  if ([v13 count])
+  cachedRecents2 = [(UISystemInputViewController *)self cachedRecents];
+  entries = [cachedRecents2 entries];
+  if ([entries count])
   {
-    v14 = [(UISystemInputViewController *)self supportsRecentInputsIntegration];
+    supportsRecentInputsIntegration = [(UISystemInputViewController *)self supportsRecentInputsIntegration];
   }
 
   else
   {
-    v14 = 0;
+    supportsRecentInputsIntegration = 0;
   }
 
-  return v14;
+  return supportsRecentInputsIntegration;
 }
 
 - (void)updateAlignmentConstraints
@@ -2453,34 +2453,34 @@ LABEL_5:
     return;
   }
 
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [(UISystemInputViewController *)self alignmentConstraintForAxis:0];
   if (!v3)
   {
     v4 = MEMORY[0x1E69977A0];
-    v5 = [(UISystemInputViewController *)self contentLayoutView];
-    v6 = [(UISystemInputViewController *)self containingView];
-    v3 = [v4 constraintWithItem:v5 attribute:9 relatedBy:0 toItem:v6 attribute:9 multiplier:1.0 constant:0.0];
+    contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+    containingView = [(UISystemInputViewController *)self containingView];
+    v3 = [v4 constraintWithItem:contentLayoutView attribute:9 relatedBy:0 toItem:containingView attribute:9 multiplier:1.0 constant:0.0];
 
     [(UISystemInputViewController *)self setAlignmentConstraint:v3 forAxis:0];
-    [v22 addObject:v3];
+    [array addObject:v3];
   }
 
-  v7 = [(UISystemInputViewController *)self contentLayoutView];
-  v8 = [(UISystemInputViewController *)self recentsVC];
-  if (v8)
+  contentLayoutView2 = [(UISystemInputViewController *)self contentLayoutView];
+  recentsVC = [(UISystemInputViewController *)self recentsVC];
+  if (recentsVC)
   {
-    v9 = v8;
-    v10 = [(UIViewController *)self childViewControllers];
-    v11 = [(UISystemInputViewController *)self recentsVC];
-    v12 = [v10 containsObject:v11];
+    v9 = recentsVC;
+    childViewControllers = [(UIViewController *)self childViewControllers];
+    recentsVC2 = [(UISystemInputViewController *)self recentsVC];
+    v12 = [childViewControllers containsObject:recentsVC2];
 
     if (v12)
     {
-      v13 = [(UISystemInputViewController *)self recentsVC];
-      v14 = [v13 view];
+      recentsVC3 = [(UISystemInputViewController *)self recentsVC];
+      view = [recentsVC3 view];
 
-      v7 = v14;
+      contentLayoutView2 = view;
     }
   }
 
@@ -2491,25 +2491,25 @@ LABEL_5:
   }
 
   v16 = v15;
-  v17 = [v15 firstItem];
+  firstItem = [v15 firstItem];
 
-  if (v17 != v7)
+  if (firstItem != contentLayoutView2)
   {
-    v18 = [(UISystemInputViewController *)self containingView];
-    [v18 removeConstraint:v16];
+    containingView2 = [(UISystemInputViewController *)self containingView];
+    [containingView2 removeConstraint:v16];
 
     [(UISystemInputViewController *)self setAlignmentConstraint:0 forAxis:1];
 LABEL_10:
     v19 = MEMORY[0x1E69977A0];
-    v20 = [(UISystemInputViewController *)self containingView];
-    v16 = [v19 constraintWithItem:v7 attribute:10 relatedBy:0 toItem:v20 attribute:10 multiplier:1.0 constant:0.0];
+    containingView3 = [(UISystemInputViewController *)self containingView];
+    v16 = [v19 constraintWithItem:contentLayoutView2 attribute:10 relatedBy:0 toItem:containingView3 attribute:10 multiplier:1.0 constant:0.0];
 
     [(UISystemInputViewController *)self setAlignmentConstraint:v16 forAxis:1];
-    [v22 addObject:v16];
+    [array addObject:v16];
   }
 
-  v21 = [(UISystemInputViewController *)self containingView];
-  [v21 addConstraints:v22];
+  containingView4 = [(UISystemInputViewController *)self containingView];
+  [containingView4 addConstraints:array];
 }
 
 - (void)updateViewConstraints
@@ -2518,64 +2518,64 @@ LABEL_10:
   v108.receiver = self;
   v108.super_class = UISystemInputViewController;
   [(UIViewController *)&v108 updateViewConstraints];
-  v3 = [(UISystemInputViewController *)self contentLayoutView];
-  v4 = [(UISystemInputViewController *)self recentsVC];
-  v5 = [v4 view];
-  v6 = [v5 isDescendantOfView:v3];
+  contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+  recentsVC = [(UISystemInputViewController *)self recentsVC];
+  view = [recentsVC view];
+  v6 = [view isDescendantOfView:contentLayoutView];
 
   v96 = v6;
-  v100 = v3;
+  v100 = contentLayoutView;
   if (v6)
   {
-    v7 = [(UISystemInputViewController *)self recentsVC];
+    recentsVC2 = [(UISystemInputViewController *)self recentsVC];
 LABEL_7:
-    v14 = v7;
-    v15 = [v7 view];
+    v14 = recentsVC2;
+    view2 = [recentsVC2 view];
 
     goto LABEL_8;
   }
 
-  v8 = [(UISystemInputViewController *)self inputVC];
-  v9 = [v8 view];
-  v10 = [v9 isDescendantOfView:v3];
+  inputVC = [(UISystemInputViewController *)self inputVC];
+  view3 = [inputVC view];
+  v10 = [view3 isDescendantOfView:contentLayoutView];
 
   if (v10)
   {
-    v7 = [(UISystemInputViewController *)self inputVC];
+    recentsVC2 = [(UISystemInputViewController *)self inputVC];
     goto LABEL_7;
   }
 
-  v11 = [(UISystemInputViewController *)self keyboardVC];
-  v12 = [v11 view];
-  v13 = [v12 isDescendantOfView:v3];
+  keyboardVC = [(UISystemInputViewController *)self keyboardVC];
+  view4 = [keyboardVC view];
+  v13 = [view4 isDescendantOfView:contentLayoutView];
 
   if (v13)
   {
-    v7 = [(UISystemInputViewController *)self keyboardVC];
+    recentsVC2 = [(UISystemInputViewController *)self keyboardVC];
     goto LABEL_7;
   }
 
-  v15 = 0;
+  view2 = 0;
 LABEL_8:
-  v16 = [(UISystemInputViewController *)self editorVC];
-  v17 = [v16 view];
+  editorVC = [(UISystemInputViewController *)self editorVC];
+  view5 = [editorVC view];
 
   v18 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:0];
-  v19 = [v18 view];
+  view6 = [v18 view];
 
   v20 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:2];
-  v21 = [v20 view];
+  view7 = [v20 view];
 
   v22 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:1];
-  v23 = [v22 view];
+  view8 = [v22 view];
 
   v24 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:3];
-  v25 = [v24 view];
+  view9 = [v24 view];
 
-  v105 = v19;
-  if (v19)
+  v105 = view6;
+  if (view6)
   {
-    v26 = v19;
+    v26 = view6;
   }
 
   else
@@ -2583,10 +2583,10 @@ LABEL_8:
     v26 = v100;
   }
 
-  v99 = v17;
-  if (v17)
+  v99 = view5;
+  if (view5)
   {
-    v26 = v17;
+    v26 = view5;
   }
 
   v27 = v26;
@@ -2600,10 +2600,10 @@ LABEL_8:
     v28 = 4;
   }
 
-  v103 = v23;
-  if (v23)
+  v103 = view8;
+  if (view8)
   {
-    v29 = v23;
+    v29 = view8;
   }
 
   else
@@ -2611,7 +2611,7 @@ LABEL_8:
     v29 = v100;
   }
 
-  if (v23)
+  if (view8)
   {
     v30 = 2;
   }
@@ -2623,11 +2623,11 @@ LABEL_8:
 
   v101 = v30;
   v107 = v29;
-  v31 = v25 == 0;
-  v102 = v25;
-  if (v25)
+  v31 = view9 == 0;
+  v102 = view9;
+  if (view9)
   {
-    v32 = v25;
+    v32 = view9;
   }
 
   else
@@ -2635,7 +2635,7 @@ LABEL_8:
     v32 = v100;
   }
 
-  v33 = v21;
+  v33 = view7;
   v34 = v100;
   if (v31)
   {
@@ -2648,9 +2648,9 @@ LABEL_8:
   }
 
   v36 = v32;
-  if (v15)
+  if (view2)
   {
-    v37 = v15;
+    v37 = view2;
   }
 
   else
@@ -2667,40 +2667,40 @@ LABEL_8:
 
   else
   {
-    v38 = v15;
+    v38 = view2;
   }
 
   v39 = v38;
-  if (v15)
+  if (view2)
   {
-    v40 = [(UISystemInputViewController *)self keyboardConstraints];
+    keyboardConstraints = [(UISystemInputViewController *)self keyboardConstraints];
 
-    if (v40)
+    if (keyboardConstraints)
     {
-      v41 = [(UISystemInputViewController *)self keyboardConstraints];
-      [v100 removeConstraints:v41];
+      keyboardConstraints2 = [(UISystemInputViewController *)self keyboardConstraints];
+      [v100 removeConstraints:keyboardConstraints2];
     }
 
     if (v96)
     {
-      v97 = [MEMORY[0x1E69977A0] constraintWithItem:v15 attribute:1 relatedBy:1 toItem:v107 attribute:1 multiplier:1.0 constant:0.0];
-      [MEMORY[0x1E69977A0] constraintWithItem:v15 attribute:2 relatedBy:-1 toItem:v36 attribute:2 multiplier:1.0 constant:0.0];
+      v97 = [MEMORY[0x1E69977A0] constraintWithItem:view2 attribute:1 relatedBy:1 toItem:v107 attribute:1 multiplier:1.0 constant:0.0];
+      [MEMORY[0x1E69977A0] constraintWithItem:view2 attribute:2 relatedBy:-1 toItem:v36 attribute:2 multiplier:1.0 constant:0.0];
     }
 
     else
     {
-      v97 = [(UISystemInputViewController *)self constraintFromView:v15 attribute:1 toView:v107 attribute:v101];
-      [(UISystemInputViewController *)self constraintFromView:v15 attribute:2 toView:v36 attribute:v35];
+      v97 = [(UISystemInputViewController *)self constraintFromView:view2 attribute:1 toView:v107 attribute:v101];
+      [(UISystemInputViewController *)self constraintFromView:view2 attribute:2 toView:v36 attribute:v35];
     }
     v42 = ;
-    v43 = [(UISystemInputViewController *)self constraintFromView:v15 attribute:3 toView:v27 attribute:v28];
-    v44 = [(UISystemInputViewController *)self traitCollection];
+    v43 = [(UISystemInputViewController *)self constraintFromView:view2 attribute:3 toView:v27 attribute:v28];
+    traitCollection = [(UISystemInputViewController *)self traitCollection];
     v94 = v43;
-    if ([v44 userInterfaceIdiom] == 3)
+    if ([traitCollection userInterfaceIdiom] == 3)
     {
-      v45 = [(UISystemInputViewController *)self supportsTouchInput];
+      supportsTouchInput = [(UISystemInputViewController *)self supportsTouchInput];
 
-      if (v45)
+      if (supportsTouchInput)
       {
         v116[0] = v43;
         v46 = MEMORY[0x1E695DEC8];
@@ -2710,8 +2710,8 @@ LABEL_45:
         v49 = [v46 arrayWithObjects:v47 count:v48];
         if ([(UISystemInputViewController *)self supportsTouchInput])
         {
-          v50 = [v15 superview];
-          v51 = [(UISystemInputViewController *)self constraintFromView:v15 attribute:9 toView:v50 attribute:9];
+          superview = [view2 superview];
+          v51 = [(UISystemInputViewController *)self constraintFromView:view2 attribute:9 toView:superview attribute:9];
 
           v52 = [v49 arrayByAddingObject:v51];
 
@@ -2721,18 +2721,18 @@ LABEL_45:
         v95 = v42;
         if (!v106)
         {
-          v53 = [v100 safeAreaLayoutGuide];
-          v54 = [v53 bottomAnchor];
-          [v15 bottomAnchor];
+          safeAreaLayoutGuide = [v100 safeAreaLayoutGuide];
+          bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+          [view2 bottomAnchor];
           v55 = v39;
-          v56 = v15;
+          v56 = view2;
           v57 = v36;
           v59 = v58 = v27;
-          v60 = [v54 constraintEqualToAnchor:v59];
+          v60 = [bottomAnchor constraintEqualToAnchor:v59];
 
           v27 = v58;
           v36 = v57;
-          v15 = v56;
+          view2 = v56;
           v39 = v55;
           v34 = v100;
 
@@ -2742,8 +2742,8 @@ LABEL_45:
         }
 
         [(UISystemInputViewController *)self setKeyboardConstraints:v49];
-        v62 = [(UISystemInputViewController *)self keyboardConstraints];
-        [v34 addConstraints:v62];
+        keyboardConstraints3 = [(UISystemInputViewController *)self keyboardConstraints];
+        [v34 addConstraints:keyboardConstraints3];
 
         goto LABEL_50;
       }
@@ -2766,12 +2766,12 @@ LABEL_50:
   v98 = v27;
   if (v99)
   {
-    v63 = [(UISystemInputViewController *)self editorConstraints];
+    editorConstraints = [(UISystemInputViewController *)self editorConstraints];
 
-    if (v63)
+    if (editorConstraints)
     {
-      v64 = [(UISystemInputViewController *)self editorConstraints];
-      [v34 removeConstraints:v64];
+      editorConstraints2 = [(UISystemInputViewController *)self editorConstraints];
+      [v34 removeConstraints:editorConstraints2];
     }
 
     v65 = [(UISystemInputViewController *)self constraintFromView:v99 attribute:1 toView:v107 attribute:v101];
@@ -2795,8 +2795,8 @@ LABEL_50:
       [(UISystemInputViewController *)self setEditorConstraints:v69];
     }
 
-    v70 = [(UISystemInputViewController *)self editorConstraints];
-    [v34 addConstraints:v70];
+    editorConstraints3 = [(UISystemInputViewController *)self editorConstraints];
+    [v34 addConstraints:editorConstraints3];
   }
 
   v71 = v105;
@@ -2812,7 +2812,7 @@ LABEL_50:
 
     else
     {
-      v75 = v15;
+      v75 = view2;
     }
 
     v76 = [(UISystemInputViewController *)self constraintFromView:v105 attribute:4 toView:v75 attribute:3];
@@ -2830,9 +2830,9 @@ LABEL_50:
   {
     v78 = [(UISystemInputViewController *)self constraintFromView:v106 attribute:1 toView:v107 attribute:v101];
     v79 = [(UISystemInputViewController *)self constraintFromView:v106 attribute:7 toView:v104 attribute:7];
-    if (v15)
+    if (view2)
     {
-      v80 = v15;
+      v80 = view2;
     }
 
     else
@@ -2887,149 +2887,149 @@ LABEL_50:
 - (void)updateBackdropForCarPlay
 {
   v39[5] = *MEMORY[0x1E69E9840];
-  v3 = [(UISystemInputViewController *)self keyboardBackdropConstraints];
-  if (v3)
+  keyboardBackdropConstraints = [(UISystemInputViewController *)self keyboardBackdropConstraints];
+  if (keyboardBackdropConstraints)
   {
   }
 
   else
   {
-    v4 = [(UISystemInputViewController *)self backdropView];
+    backdropView = [(UISystemInputViewController *)self backdropView];
 
-    if (v4)
+    if (backdropView)
     {
-      v38 = [(UISystemInputViewController *)self backdropView];
-      v36 = [v38 leadingAnchor];
-      v37 = [(UIViewController *)self view];
-      v35 = [v37 leadingAnchor];
-      v34 = [v36 constraintEqualToAnchor:v35 constant:4.0];
+      backdropView2 = [(UISystemInputViewController *)self backdropView];
+      leadingAnchor = [backdropView2 leadingAnchor];
+      view = [(UIViewController *)self view];
+      leadingAnchor2 = [view leadingAnchor];
+      v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
       v39[0] = v34;
-      v33 = [(UIViewController *)self view];
-      v31 = [v33 trailingAnchor];
-      v32 = [(UISystemInputViewController *)self backdropView];
-      v30 = [v32 trailingAnchor];
-      v29 = [v31 constraintEqualToAnchor:v30 constant:4.0];
+      view2 = [(UIViewController *)self view];
+      trailingAnchor = [view2 trailingAnchor];
+      backdropView3 = [(UISystemInputViewController *)self backdropView];
+      trailingAnchor2 = [backdropView3 trailingAnchor];
+      v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:4.0];
       v39[1] = v29;
-      v28 = [(UISystemInputViewController *)self backdropView];
-      v26 = [v28 topAnchor];
-      v27 = [(UIViewController *)self view];
-      v25 = [v27 topAnchor];
-      v24 = [v26 constraintEqualToAnchor:v25 constant:0.0];
+      backdropView4 = [(UISystemInputViewController *)self backdropView];
+      topAnchor = [backdropView4 topAnchor];
+      view3 = [(UIViewController *)self view];
+      topAnchor2 = [view3 topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       v39[2] = v24;
-      v22 = [(UISystemInputViewController *)self backdropView];
-      v5 = [v22 bottomAnchor];
-      v6 = [(UIViewController *)self view];
-      v7 = [v6 bottomAnchor];
-      v8 = [v5 constraintEqualToAnchor:v7 constant:0.0];
+      backdropView5 = [(UISystemInputViewController *)self backdropView];
+      bottomAnchor = [backdropView5 bottomAnchor];
+      view4 = [(UIViewController *)self view];
+      bottomAnchor2 = [view4 bottomAnchor];
+      v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
       v39[3] = v8;
-      v9 = [(UISystemInputViewController *)self backdropView];
-      v10 = [v9 centerXAnchor];
-      v11 = [(UIViewController *)self view];
-      v12 = [v11 centerXAnchor];
-      v13 = [v10 constraintEqualToAnchor:v12];
+      backdropView6 = [(UISystemInputViewController *)self backdropView];
+      centerXAnchor = [backdropView6 centerXAnchor];
+      view5 = [(UIViewController *)self view];
+      centerXAnchor2 = [view5 centerXAnchor];
+      v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v39[4] = v13;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:5];
 
       [(UISystemInputViewController *)self setKeyboardBackdropConstraints:v23];
-      v14 = [(UIViewController *)self view];
-      v15 = [(UISystemInputViewController *)self keyboardBackdropConstraints];
-      [v14 addConstraints:v15];
+      view6 = [(UIViewController *)self view];
+      keyboardBackdropConstraints2 = [(UISystemInputViewController *)self keyboardBackdropConstraints];
+      [view6 addConstraints:keyboardBackdropConstraints2];
     }
   }
 
-  v16 = [(UISystemInputViewController *)self backdropView];
+  backdropView7 = [(UISystemInputViewController *)self backdropView];
 
-  if (v16)
+  if (backdropView7)
   {
-    v17 = +[UIColor clearColor];
-    v18 = [(UISystemInputViewController *)self containingView];
-    [v18 setBackgroundColor:v17];
+    containingView3 = +[UIColor clearColor];
+    containingView = [(UISystemInputViewController *)self containingView];
+    [containingView setBackgroundColor:containingView3];
   }
 
   else
   {
-    v19 = [(UISystemInputViewController *)self containingView];
-    v20 = [v19 layer];
-    [v20 setCornerRadius:22.0];
+    containingView2 = [(UISystemInputViewController *)self containingView];
+    layer = [containingView2 layer];
+    [layer setCornerRadius:22.0];
 
-    v17 = [(UISystemInputViewController *)self containingView];
-    v18 = [v17 layer];
-    [v18 setMasksToBounds:1];
+    containingView3 = [(UISystemInputViewController *)self containingView];
+    containingView = [containingView3 layer];
+    [containingView setMasksToBounds:1];
   }
 
-  v21 = [(UISystemInputViewController *)self backdropView];
-  [v21 updateCornersWithRadius:1 usingCornerRadii:22.0];
+  backdropView8 = [(UISystemInputViewController *)self backdropView];
+  [backdropView8 updateCornersWithRadius:1 usingCornerRadii:22.0];
 }
 
-- (id)constraintsForEdge:(int64_t)a3
+- (id)constraintsForEdge:(int64_t)edge
 {
   accessoryConstraints = self->_accessoryConstraints;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:edge];
   v5 = [(NSMutableDictionary *)accessoryConstraints objectForKey:v4];
 
   return v5;
 }
 
-- (void)setConstraints:(id)a3 forEdge:(int64_t)a4
+- (void)setConstraints:(id)constraints forEdge:(int64_t)edge
 {
-  v10 = a3;
-  v6 = [(UISystemInputViewController *)self constraintsForEdge:a4];
+  constraintsCopy = constraints;
+  v6 = [(UISystemInputViewController *)self constraintsForEdge:edge];
   if (v6)
   {
-    v7 = [(UISystemInputViewController *)self contentLayoutView];
-    [v7 removeConstraints:v6];
+    contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+    [contentLayoutView removeConstraints:v6];
   }
 
   accessoryConstraints = self->_accessoryConstraints;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  if (v10)
+  contentLayoutView2 = [MEMORY[0x1E696AD98] numberWithInteger:edge];
+  if (constraintsCopy)
   {
-    [(NSMutableDictionary *)accessoryConstraints setObject:v10 forKey:v9];
+    [(NSMutableDictionary *)accessoryConstraints setObject:constraintsCopy forKey:contentLayoutView2];
 
-    v9 = [(UISystemInputViewController *)self contentLayoutView];
-    [v9 addConstraints:v10];
+    contentLayoutView2 = [(UISystemInputViewController *)self contentLayoutView];
+    [contentLayoutView2 addConstraints:constraintsCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)accessoryConstraints removeObjectForKey:v9];
+    [(NSMutableDictionary *)accessoryConstraints removeObjectForKey:contentLayoutView2];
   }
 }
 
-- (void)_addAccessoryViewController:(id)a3
+- (void)_addAccessoryViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v9 = a3;
-    [(UIViewController *)self addChildViewController:v9];
-    v4 = [(UISystemInputViewController *)self contentLayoutView];
-    v5 = [v9 view];
-    [v4 addSubview:v5];
+    controllerCopy = controller;
+    [(UIViewController *)self addChildViewController:controllerCopy];
+    contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+    view = [controllerCopy view];
+    [contentLayoutView addSubview:view];
 
-    v6 = [(UISystemInputViewController *)self contentLayoutView];
-    v7 = [(UISystemInputViewController *)self keyboardVC];
-    v8 = [v7 view];
-    [v6 bringSubviewToFront:v8];
+    contentLayoutView2 = [(UISystemInputViewController *)self contentLayoutView];
+    keyboardVC = [(UISystemInputViewController *)self keyboardVC];
+    view2 = [keyboardVC view];
+    [contentLayoutView2 bringSubviewToFront:view2];
 
-    [v9 didMoveToParentViewController:self];
+    [controllerCopy didMoveToParentViewController:self];
   }
 }
 
-- (void)_removeAccessoryViewController:(id)a3
+- (void)_removeAccessoryViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v4 = a3;
-    v3 = [v4 view];
-    [v3 removeFromSuperview];
+    controllerCopy = controller;
+    view = [controllerCopy view];
+    [view removeFromSuperview];
 
-    [v4 removeFromParentViewController];
+    [controllerCopy removeFromParentViewController];
   }
 }
 
-- (unint64_t)_verticalLayoutTypeForEdge:(int64_t)a3
+- (unint64_t)_verticalLayoutTypeForEdge:(int64_t)edge
 {
-  if (((a3 - 1) & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if (((edge - 1) & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     return 3;
   }
@@ -3040,9 +3040,9 @@ LABEL_50:
   }
 }
 
-- (unint64_t)_horizontalLayoutTypeForEdge:(int64_t)a3
+- (unint64_t)_horizontalLayoutTypeForEdge:(int64_t)edge
 {
-  if (((a3 - 1) & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if (((edge - 1) & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     return 1;
   }
@@ -3053,27 +3053,27 @@ LABEL_50:
   }
 }
 
-- (id)_accessoryViewControllerForEdge:(int64_t)a3
+- (id)_accessoryViewControllerForEdge:(int64_t)edge
 {
   accessoryViewControllers = self->_accessoryViewControllers;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:edge];
   v5 = [(NSMutableDictionary *)accessoryViewControllers objectForKey:v4];
 
   return v5;
 }
 
-- (id)accessoryViewControllerForEdge:(int64_t)a3
+- (id)accessoryViewControllerForEdge:(int64_t)edge
 {
-  v3 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:a3];
-  v4 = [v3 childViewControllers];
-  v5 = [v4 firstObject];
+  v3 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:edge];
+  childViewControllers = [v3 childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)setAccessoryViewController:(id)a3 forEdge:(int64_t)a4
+- (void)setAccessoryViewController:(id)controller forEdge:(int64_t)edge
 {
-  v15 = a3;
+  controllerCopy = controller;
   if (!self->_accessoryViewControllers)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4];
@@ -3085,15 +3085,15 @@ LABEL_50:
     self->_accessoryConstraints = v8;
   }
 
-  v10 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:a4];
+  v10 = [(UISystemInputViewController *)self _accessoryViewControllerForEdge:edge];
   [(UISystemInputViewController *)self _removeAccessoryViewController:v10];
-  if (v15)
+  if (controllerCopy)
   {
-    v11 = [UIKBSystemLayoutViewController systemLayoutViewControllerWithViewController:v15];
-    [v11 setVerticalLayoutType:{-[UISystemInputViewController _verticalLayoutTypeForEdge:](self, "_verticalLayoutTypeForEdge:", a4)}];
-    [v11 setHorizontalLayoutType:{-[UISystemInputViewController _horizontalLayoutTypeForEdge:](self, "_horizontalLayoutTypeForEdge:", a4)}];
+    v11 = [UIKBSystemLayoutViewController systemLayoutViewControllerWithViewController:controllerCopy];
+    [v11 setVerticalLayoutType:{-[UISystemInputViewController _verticalLayoutTypeForEdge:](self, "_verticalLayoutTypeForEdge:", edge)}];
+    [v11 setHorizontalLayoutType:{-[UISystemInputViewController _horizontalLayoutTypeForEdge:](self, "_horizontalLayoutTypeForEdge:", edge)}];
     v12 = self->_accessoryViewControllers;
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:edge];
     [(NSMutableDictionary *)v12 setObject:v11 forKey:v13];
 
     [(UISystemInputViewController *)self _addAccessoryViewController:v11];
@@ -3102,95 +3102,95 @@ LABEL_50:
   else
   {
     v14 = self->_accessoryViewControllers;
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:edge];
     [(NSMutableDictionary *)v14 removeObjectForKey:v11];
   }
 
   [(UISystemInputViewController *)self updateViewConstraints];
 }
 
-- (id)alignmentConstraintArrayForAxis:(int64_t)a3
+- (id)alignmentConstraintArrayForAxis:(int64_t)axis
 {
-  if (a3 == 1)
+  if (axis == 1)
   {
-    v3 = [(UISystemInputViewController *)self verticalAlignments];
+    verticalAlignments = [(UISystemInputViewController *)self verticalAlignments];
   }
 
-  else if (a3)
+  else if (axis)
   {
-    v3 = 0;
+    verticalAlignments = 0;
   }
 
   else
   {
-    v3 = [(UISystemInputViewController *)self horizontalAlignments];
+    verticalAlignments = [(UISystemInputViewController *)self horizontalAlignments];
   }
 
-  return v3;
+  return verticalAlignments;
 }
 
-- (void)setAlignmentConstraintArray:(id)a3 forAxis:(int64_t)a4
+- (void)setAlignmentConstraintArray:(id)array forAxis:(int64_t)axis
 {
-  v6 = a3;
-  if (a4 == 1)
+  arrayCopy = array;
+  if (axis == 1)
   {
-    v7 = v6;
-    [(UISystemInputViewController *)self setVerticalAlignments:v6];
+    v7 = arrayCopy;
+    [(UISystemInputViewController *)self setVerticalAlignments:arrayCopy];
   }
 
   else
   {
-    if (a4)
+    if (axis)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
-    [(UISystemInputViewController *)self setHorizontalAlignments:v6];
+    v7 = arrayCopy;
+    [(UISystemInputViewController *)self setHorizontalAlignments:arrayCopy];
   }
 
-  v6 = v7;
+  arrayCopy = v7;
 LABEL_6:
 }
 
-- (id)alignmentConstraintForAxis:(int64_t)a3
+- (id)alignmentConstraintForAxis:(int64_t)axis
 {
-  if (a3 == 1)
+  if (axis == 1)
   {
-    v3 = [(UISystemInputViewController *)self verticalAlignments];
+    verticalAlignments = [(UISystemInputViewController *)self verticalAlignments];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!axis)
   {
-    v3 = [(UISystemInputViewController *)self horizontalAlignments];
+    verticalAlignments = [(UISystemInputViewController *)self horizontalAlignments];
 LABEL_5:
-    v4 = v3;
-    v5 = [v3 firstObject];
+    v4 = verticalAlignments;
+    firstObject = [verticalAlignments firstObject];
 
     goto LABEL_7;
   }
 
-  v5 = 0;
+  firstObject = 0;
 LABEL_7:
 
-  return v5;
+  return firstObject;
 }
 
-- (void)setAlignmentConstraint:(id)a3 forAxis:(int64_t)a4
+- (void)setAlignmentConstraint:(id)constraint forAxis:(int64_t)axis
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1)
+  constraintCopy = constraint;
+  v7 = constraintCopy;
+  if (axis == 1)
   {
-    if (!v6)
+    if (!constraintCopy)
     {
       [(UISystemInputViewController *)self setVerticalAlignments:0];
       goto LABEL_10;
     }
 
-    v9 = v6;
+    v9 = constraintCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
     [(UISystemInputViewController *)self setVerticalAlignments:v8];
 LABEL_7:
@@ -3198,15 +3198,15 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!axis)
   {
-    if (!v6)
+    if (!constraintCopy)
     {
       [(UISystemInputViewController *)self setHorizontalAlignments:0];
       goto LABEL_10;
     }
 
-    v10[0] = v6;
+    v10[0] = constraintCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(UISystemInputViewController *)self setHorizontalAlignments:v8];
     goto LABEL_7;
@@ -3215,17 +3215,17 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)setPersistentDelegate:(id)a3
+- (void)setPersistentDelegate:(id)delegate
 {
-  v8 = a3;
-  v5 = [(UISystemInputViewController *)self persistentDelegate];
-  v6 = [v5 isFirstResponder];
+  delegateCopy = delegate;
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  isFirstResponder = [persistentDelegate isFirstResponder];
 
-  objc_storeStrong(&self->_persistentDelegate, a3);
-  if ((v6 & 1) != 0 || [v8 isFirstResponder])
+  objc_storeStrong(&self->_persistentDelegate, delegate);
+  if ((isFirstResponder & 1) != 0 || [delegateCopy isFirstResponder])
   {
-    v7 = [(UISystemInputViewController *)self persistentDelegate];
-    [(UISystemInputViewController *)self setDelegate:v7];
+    persistentDelegate2 = [(UISystemInputViewController *)self persistentDelegate];
+    [(UISystemInputViewController *)self setDelegate:persistentDelegate2];
   }
 }
 
@@ -3234,88 +3234,88 @@ LABEL_10:
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 setTextInputChangesIgnored:1];
 
-  v4 = [(UISystemInputViewController *)self persistentDelegate];
-  v5 = [v4 isFirstResponder];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  isFirstResponder = [persistentDelegate isFirstResponder];
 
-  if ((v5 & 1) == 0)
+  if ((isFirstResponder & 1) == 0)
   {
-    v6 = [(UISystemInputViewController *)self persistentDelegate];
-    [v6 becomeFirstResponder];
+    persistentDelegate2 = [(UISystemInputViewController *)self persistentDelegate];
+    [persistentDelegate2 becomeFirstResponder];
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
   [v7 setTextInputChangesIgnored:0];
 
-  v8 = [(UISystemInputViewController *)self persistentDelegate];
-  if (v8)
+  persistentDelegate3 = [(UISystemInputViewController *)self persistentDelegate];
+  if (persistentDelegate3)
   {
-    v9 = v8;
+    v9 = persistentDelegate3;
     v10 = +[UIKeyboardImpl sharedInstance];
-    v11 = [v10 delegate];
-    v12 = [(UISystemInputViewController *)self persistentDelegate];
+    delegate = [v10 delegate];
+    persistentDelegate4 = [(UISystemInputViewController *)self persistentDelegate];
 
-    if (v11 != v12)
+    if (delegate != persistentDelegate4)
     {
-      v13 = [(UISystemInputViewController *)self persistentDelegate];
-      [(UISystemInputViewController *)self setDelegate:v13];
+      persistentDelegate5 = [(UISystemInputViewController *)self persistentDelegate];
+      [(UISystemInputViewController *)self setDelegate:persistentDelegate5];
     }
   }
 }
 
 - (void)_clearCursorLocationIfNotFirstResponder
 {
-  v3 = [(UISystemInputViewController *)self persistentDelegate];
-  v4 = [v3 isFirstResponder];
+  persistentDelegate = [(UISystemInputViewController *)self persistentDelegate];
+  isFirstResponder = [persistentDelegate isFirstResponder];
 
-  if ((v4 & 1) == 0)
+  if ((isFirstResponder & 1) == 0)
   {
-    v5 = [(UISystemInputViewController *)self keyboard];
-    [v5 setCursorLocation:0];
+    keyboard = [(UISystemInputViewController *)self keyboard];
+    [keyboard setCursorLocation:0];
   }
 }
 
 - (void)setupKeyboard
 {
-  v3 = [(UISystemInputViewController *)self keyboard];
-  [v3 _setDisableTouchInput:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput") ^ 1}];
+  keyboard = [(UISystemInputViewController *)self keyboard];
+  [keyboard _setDisableTouchInput:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput") ^ 1}];
 
-  v4 = [(UISystemInputViewController *)self keyboard];
-  [v4 _setUseLinearLayout:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput")}];
+  keyboard2 = [(UISystemInputViewController *)self keyboard];
+  [keyboard2 _setUseLinearLayout:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput")}];
 
-  v5 = [(UISystemInputViewController *)self keyboard];
-  [v5 _setUseRecentsAlert:{-[UISystemInputViewController supportsRecentInputsIntegration](self, "supportsRecentInputsIntegration") ^ 1}];
+  keyboard3 = [(UISystemInputViewController *)self keyboard];
+  [keyboard3 _setUseRecentsAlert:{-[UISystemInputViewController supportsRecentInputsIntegration](self, "supportsRecentInputsIntegration") ^ 1}];
 
   [(UISystemInputViewController *)self _resetDelegate];
-  v6 = [(UIViewController *)self _window];
+  _window = [(UIViewController *)self _window];
 
-  if (v6)
+  if (_window)
   {
-    v7 = [(UISystemInputViewController *)self keyboardVC];
-    [v7 assertCurrentInputModeIfNecessary];
+    keyboardVC = [(UISystemInputViewController *)self keyboardVC];
+    [keyboardVC assertCurrentInputModeIfNecessary];
   }
 
   [(UISystemInputViewController *)self configureRecentsVCIfNecessary];
-  v8 = [(UISystemInputViewController *)self keyboard];
-  v9 = [v8 isActive];
+  keyboard4 = [(UISystemInputViewController *)self keyboard];
+  isActive = [keyboard4 isActive];
 
-  if ((v9 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v10 = [(UISystemInputViewController *)self keyboard];
-    [v10 activate];
+    keyboard5 = [(UISystemInputViewController *)self keyboard];
+    [keyboard5 activate];
 
-    v11 = [(UIViewController *)self view];
-    [v11 setNeedsLayout];
+    view = [(UIViewController *)self view];
+    [view setNeedsLayout];
 
-    v12 = [(UISystemInputViewController *)self contentLayoutView];
-    [v12 setNeedsLayout];
+    contentLayoutView = [(UISystemInputViewController *)self contentLayoutView];
+    [contentLayoutView setNeedsLayout];
   }
 
   [(UISystemInputViewController *)self _clearCursorLocationIfNotFirstResponder];
-  v13 = [(UISystemInputViewController *)self keyboard];
-  [v13 _setDisableTouchInput:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput") ^ 1}];
+  keyboard6 = [(UISystemInputViewController *)self keyboard];
+  [keyboard6 _setDisableTouchInput:{-[UISystemInputViewController supportsTouchInput](self, "supportsTouchInput") ^ 1}];
 
-  v14 = [(UISystemInputViewController *)self keyboard];
-  [v14 _setUseRecentsAlert:{-[UISystemInputViewController supportsRecentInputsIntegration](self, "supportsRecentInputsIntegration") ^ 1}];
+  keyboard7 = [(UISystemInputViewController *)self keyboard];
+  [keyboard7 _setUseRecentsAlert:{-[UISystemInputViewController supportsRecentInputsIntegration](self, "supportsRecentInputsIntegration") ^ 1}];
 
   +[UIDictationController keyboardDidUpdateOnScreenStatus];
 }
@@ -3329,21 +3329,21 @@ LABEL_10:
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = [(UISystemInputViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(UISystemInputViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v4 = +[UIKeyboardImpl activeInstance];
     [v4 updateLayout];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = UISystemInputViewController;
-  [(UIViewController *)&v12 viewWillAppear:a3];
+  [(UIViewController *)&v12 viewWillAppear:appear];
   needsSetupAgain = self->_needsSetupAgain;
   if (needsSetupAgain)
   {
@@ -3354,48 +3354,48 @@ LABEL_10:
 
   v5 = 1;
   self->_isVisible = 1;
-  v6 = [(UISystemInputViewController *)self recentsVC];
-  if (v6)
+  recentsVC = [(UISystemInputViewController *)self recentsVC];
+  if (recentsVC)
   {
-    v7 = [(UIViewController *)self childViewControllers];
-    v8 = [(UISystemInputViewController *)self recentsVC];
-    v9 = [v7 containsObject:v8];
+    childViewControllers = [(UIViewController *)self childViewControllers];
+    recentsVC2 = [(UISystemInputViewController *)self recentsVC];
+    v9 = [childViewControllers containsObject:recentsVC2];
 
     v5 = v9 ^ 1;
   }
 
   if ([(UISystemInputViewController *)self notifyKeyboardOnScreenOnFocusOnly])
   {
-    v10 = [(UISystemInputViewController *)self keyboard];
-    v11 = [v10 isFocused];
+    keyboard = [(UISystemInputViewController *)self keyboard];
+    isFocused = [keyboard isFocused];
   }
 
   else
   {
-    v11 = 1;
+    isFocused = 1;
   }
 
-  if ((v5 & (!needsSetupAgain | v11)) == 1)
+  if ((v5 & (!needsSetupAgain | isFocused)) == 1)
   {
     [(UISystemInputViewController *)self _setSystemInputInteractionActive:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v14.receiver = self;
   v14.super_class = UISystemInputViewController;
-  [(UIViewController *)&v14 viewWillDisappear:a3];
-  v4 = [(UISystemInputViewController *)self textInputTraits];
-  if (([v4 forceSpellingDictation] & 1) == 0)
+  [(UIViewController *)&v14 viewWillDisappear:disappear];
+  textInputTraits = [(UISystemInputViewController *)self textInputTraits];
+  if (([textInputTraits forceSpellingDictation] & 1) == 0)
   {
-    v5 = [(UISystemInputViewController *)self textInputTraits];
-    if (!UIKeyboardTypeSupportsDictationSpelling([v5 dictationKeyboardType]))
+    textInputTraits2 = [(UISystemInputViewController *)self textInputTraits];
+    if (!UIKeyboardTypeSupportsDictationSpelling([textInputTraits2 dictationKeyboardType]))
     {
-      v12 = [(UISystemInputViewController *)self textInputTraits];
-      v13 = [v12 isSecureTextEntry];
+      textInputTraits3 = [(UISystemInputViewController *)self textInputTraits];
+      isSecureTextEntry = [textInputTraits3 isSecureTextEntry];
 
-      if ((v13 & 1) == 0)
+      if ((isSecureTextEntry & 1) == 0)
       {
         goto LABEL_6;
       }
@@ -3410,32 +3410,32 @@ LABEL_5:
 
 LABEL_6:
   self->_needsSetupAgain = 1;
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [(UIResponder *)self _responderWindow];
-  [v7 removeObserver:self name:@"_UIWindowWillBecomeApplicationKeyNotification" object:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  _responderWindow = [(UIResponder *)self _responderWindow];
+  [defaultCenter removeObserver:self name:@"_UIWindowWillBecomeApplicationKeyNotification" object:_responderWindow];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  v10 = [(UIResponder *)self _responderWindow];
-  [v9 removeObserver:self name:@"_UIWindowDidBecomeApplicationKeyNotification" object:v10];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  _responderWindow2 = [(UIResponder *)self _responderWindow];
+  [defaultCenter2 removeObserver:self name:@"_UIWindowDidBecomeApplicationKeyNotification" object:_responderWindow2];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 removeObserver:self name:@"UITextInputResponderIsReloadedNotification" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"UITextInputResponderIsReloadedNotification" object:0];
 
   self->_isVisible = 0;
   [(UISystemInputViewController *)self _setSystemInputInteractionActive:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(UISystemInputViewController *)self traitCollection];
 
   v5.receiver = self;
   v5.super_class = UISystemInputViewController;
-  [(UIViewController *)&v5 traitCollectionDidChange:v4];
+  [(UIViewController *)&v5 traitCollectionDidChange:changeCopy];
 }
 
-- (void)_didSuspend:(id)a3
+- (void)_didSuspend:(id)suspend
 {
   if (self->_isVisible)
   {
@@ -3446,43 +3446,43 @@ LABEL_6:
   }
 }
 
-- (void)_willResume:(id)a3
+- (void)_willResume:(id)resume
 {
   if ([(UISystemInputViewController *)self notifyKeyboardOnScreenOnFocusOnly])
   {
-    v4 = [(UISystemInputViewController *)self keyboard];
-    v5 = [v4 isFocused];
+    keyboard = [(UISystemInputViewController *)self keyboard];
+    isFocused = [keyboard isFocused];
   }
 
   else
   {
-    v5 = 1;
+    isFocused = 1;
   }
 
-  if (self->_isVisible && v5 != 0)
+  if (self->_isVisible && isFocused != 0)
   {
     [(UISystemInputViewController *)self _setSystemInputInteractionActive:1];
     [(UISystemInputViewController *)self _updateRemoteTextEditingSession];
   }
 
-  v7 = [(UISystemInputViewController *)self keyboard];
-  v8 = [v7 isActive];
+  keyboard2 = [(UISystemInputViewController *)self keyboard];
+  isActive = [keyboard2 isActive];
 
-  if (v8)
+  if (isActive)
   {
     [(UISystemInputViewController *)self _resetDelegate];
-    v9 = [(UISystemInputViewController *)self keyboard];
-    [v9 activate];
+    keyboard3 = [(UISystemInputViewController *)self keyboard];
+    [keyboard3 activate];
 
     [(UISystemInputViewController *)self _clearCursorLocationIfNotFirstResponder];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  disappearCopy = disappear;
+  windowCopy = window;
+  if (!windowCopy)
   {
     self->_isVisible = 0;
     [(UISystemInputViewController *)self _setSystemInputInteractionActive:0];
@@ -3490,17 +3490,17 @@ LABEL_6:
 
   v7.receiver = self;
   v7.super_class = UISystemInputViewController;
-  [(UIViewController *)&v7 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(UIViewController *)&v7 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
 }
 
-- (void)_setSystemInputInteractionActive:(BOOL)a3
+- (void)_setSystemInputInteractionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = +[UIPeripheralHost sharedInstance];
-  [v5 setKeyboardOnScreenNotifyKey:v3];
+  [v5 setKeyboardOnScreenNotifyKey:activeCopy];
 
   activeSystemInputInteraction = self->_activeSystemInputInteraction;
-  if (v3)
+  if (activeCopy)
   {
     if (activeSystemInputInteraction)
     {
@@ -3511,9 +3511,9 @@ LABEL_6:
     v8 = self->_activeSystemInputInteraction;
     self->_activeSystemInputInteraction = v7;
 
-    v11 = [(UIViewController *)self view];
-    [v11 addInteraction:self->_activeSystemInputInteraction];
-    v9 = v11;
+    view = [(UIViewController *)self view];
+    [view addInteraction:self->_activeSystemInputInteraction];
+    v9 = view;
   }
 
   else
@@ -3523,8 +3523,8 @@ LABEL_6:
       return;
     }
 
-    v10 = [(UIViewController *)self view];
-    [v10 removeInteraction:self->_activeSystemInputInteraction];
+    view2 = [(UIViewController *)self view];
+    [view2 removeInteraction:self->_activeSystemInputInteraction];
 
     v9 = self->_activeSystemInputInteraction;
     self->_activeSystemInputInteraction = 0;

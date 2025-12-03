@@ -1,24 +1,24 @@
 @interface HFHeaterCoolerThresholdControlItem
 + (id)readOnlyCharacteristicTypes;
-- (HFHeaterCoolerThresholdControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
+- (HFHeaterCoolerThresholdControlItem)initWithValueSource:(id)source displayResults:(id)results;
 - (id)numberValueFormatter;
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3;
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3;
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type;
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type;
 @end
 
 @implementation HFHeaterCoolerThresholdControlItem
 
-- (HFHeaterCoolerThresholdControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFHeaterCoolerThresholdControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  resultsCopy = results;
   v8 = [MEMORY[0x277CBEB98] set];
   v9 = objc_opt_class();
   v10 = *MEMORY[0x277CCF8C8];
-  v11 = [v9 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF8C8] valueSource:v6];
+  v11 = [v9 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF8C8] valueSource:sourceCopy];
   v12 = objc_opt_class();
   v13 = *MEMORY[0x277CCF7F0];
-  v14 = [v12 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF7F0] valueSource:v6];
+  v14 = [v12 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF7F0] valueSource:sourceCopy];
   if (v11)
   {
     v15 = v14 == 0;
@@ -66,7 +66,7 @@
 LABEL_12:
   v23.receiver = self;
   v23.super_class = HFHeaterCoolerThresholdControlItem;
-  v21 = [(HFRangeControlItem *)&v23 initWithValueSource:v6 targetCharacteristicTypes:v8 minimumCharacteristicType:v18 maximumCharacteristicType:v19 displayResults:v7];
+  v21 = [(HFRangeControlItem *)&v23 initWithValueSource:sourceCopy targetCharacteristicTypes:v8 minimumCharacteristicType:v18 maximumCharacteristicType:v19 displayResults:resultsCopy];
 
   return v21;
 }
@@ -104,18 +104,18 @@ void __65__HFHeaterCoolerThresholdControlItem_readOnlyCharacteristicTypes__block
 - (id)numberValueFormatter
 {
   v2 = +[HFFormatterManager sharedInstance];
-  v3 = [v2 temperatureFormatter];
+  temperatureFormatter = [v2 temperatureFormatter];
 
-  [v3 setInputIsCelsius:1];
+  [temperatureFormatter setInputIsCelsius:1];
 
-  return v3;
+  return temperatureFormatter;
 }
 
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCFB18]];
+  v5 = [typeCopy objectForKeyedSubscript:*MEMORY[0x277CCFB18]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -138,9 +138,9 @@ void __65__HFHeaterCoolerThresholdControlItem_readOnlyCharacteristicTypes__block
     else
     {
       v10 = v9;
-      v11 = [(HFRangeControlItem *)self maximumCharacteristicType];
+      maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
 
-      if (v11)
+      if (maximumCharacteristicType)
       {
         v8 = 2;
       }
@@ -160,11 +160,11 @@ void __65__HFHeaterCoolerThresholdControlItem_readOnlyCharacteristicTypes__block
   return v8;
 }
 
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCFB18]];
+  v5 = [typeCopy objectForKeyedSubscript:*MEMORY[0x277CCFB18]];
 
   if (objc_opt_isKindOfClass())
   {
@@ -185,16 +185,16 @@ void __65__HFHeaterCoolerThresholdControlItem_readOnlyCharacteristicTypes__block
 
   v8 = objc_opt_class();
   v9 = *MEMORY[0x277CCF8C8];
-  v10 = [(HFControlItem *)self valueSource];
-  v11 = [v8 _hasWritableCharacteristicsOfType:v9 valueSource:v10];
+  valueSource = [(HFControlItem *)self valueSource];
+  v11 = [v8 _hasWritableCharacteristicsOfType:v9 valueSource:valueSource];
 
   v12 = objc_opt_class();
   v13 = *MEMORY[0x277CCF7F0];
-  v14 = [(HFControlItem *)self valueSource];
-  v15 = [v12 _hasWritableCharacteristicsOfType:v13 valueSource:v14];
+  valueSource2 = [(HFControlItem *)self valueSource];
+  v15 = [v12 _hasWritableCharacteristicsOfType:v13 valueSource:valueSource2];
 
-  v16 = [v7 integerValue];
-  if (v16 == 1)
+  integerValue = [v7 integerValue];
+  if (integerValue == 1)
   {
     if (!v11)
     {
@@ -219,7 +219,7 @@ LABEL_17:
     goto LABEL_27;
   }
 
-  if (v16 != 2)
+  if (integerValue != 2)
   {
     if ((v11 & 1) == 0)
     {

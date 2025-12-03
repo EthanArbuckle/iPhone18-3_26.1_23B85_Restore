@@ -1,28 +1,28 @@
 @interface EKCalendarItemEditItem
 + (double)scaledHeightOfSystemTableViewCell;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (EKCalendarItemEditItemDelegate)delegate;
 - (id)calendarItem;
 - (id)viewForActionSheet;
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4;
-- (void)editItemViewControllerWantsKeyboardPinned:(BOOL)a3;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)editor:(id)a3 requestsInjectableViewControllerToBeShownForSubitem:(unint64_t)a4;
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action;
+- (void)editItemViewControllerWantsKeyboardPinned:(BOOL)pinned;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
+- (void)editor:(id)editor requestsInjectableViewControllerToBeShownForSubitem:(unint64_t)subitem;
 - (void)notifyDidEndEditing;
 - (void)notifyDidStartEditing;
 - (void)notifyRequiresHeightChange;
-- (void)notifySubitemDidSave:(unint64_t)a3;
+- (void)notifySubitemDidSave:(unint64_t)save;
 - (void)notifyTextChanged;
-- (void)setCalendarItem:(id)a3 store:(id)a4;
-- (void)showViewController:(id)a3 editor:(id)a4 animated:(BOOL)a5;
+- (void)setCalendarItem:(id)item store:(id)store;
+- (void)showViewController:(id)controller editor:(id)editor animated:(BOOL)animated;
 @end
 
 @implementation EKCalendarItemEditItem
 
-- (void)setCalendarItem:(id)a3 store:(id)a4
+- (void)setCalendarItem:(id)item store:(id)store
 {
-  obj = a3;
-  v6 = a4;
+  obj = item;
+  storeCopy = store;
   WeakRetained = objc_loadWeakRetained(&self->_calendarItem);
 
   if (WeakRetained != obj)
@@ -37,9 +37,9 @@
 
   v9 = objc_loadWeakRetained(&self->_store);
 
-  if (v9 != v6)
+  if (v9 != storeCopy)
   {
-    objc_storeWeak(&self->_store, v6);
+    objc_storeWeak(&self->_store, storeCopy);
   }
 
   [(EKCalendarItemEditItem *)self refreshFromCalendarItemAndStore];
@@ -52,31 +52,31 @@
   return WeakRetained;
 }
 
-- (void)editor:(id)a3 requestsInjectableViewControllerToBeShownForSubitem:(unint64_t)a4
+- (void)editor:(id)editor requestsInjectableViewControllerToBeShownForSubitem:(unint64_t)subitem
 {
-  v6 = a3;
-  v7 = [v6 view];
-  [v7 frame];
-  v8 = [(EKCalendarItemEditItem *)self injectableViewControllerWithFrame:a4 forSubitemAtIndex:?];
+  editorCopy = editor;
+  view = [editorCopy view];
+  [view frame];
+  v8 = [(EKCalendarItemEditItem *)self injectableViewControllerWithFrame:subitem forSubitemAtIndex:?];
 
-  [(EKCalendarItemEditItem *)self showViewController:v8 editor:v6 animated:0];
+  [(EKCalendarItemEditItem *)self showViewController:v8 editor:editorCopy animated:0];
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  v6 = a3;
-  v7 = [v6 view];
-  [v7 frame];
-  v8 = [(EKCalendarItemEditItem *)self detailViewControllerWithFrame:a4 forSubitemAtIndex:?];
+  editorCopy = editor;
+  view = [editorCopy view];
+  [view frame];
+  v8 = [(EKCalendarItemEditItem *)self detailViewControllerWithFrame:subitem forSubitemAtIndex:?];
 
-  [(EKCalendarItemEditItem *)self showViewController:v8 editor:v6 animated:1];
+  [(EKCalendarItemEditItem *)self showViewController:v8 editor:editorCopy animated:1];
 }
 
-- (void)showViewController:(id)a3 editor:(id)a4 animated:(BOOL)a5
+- (void)showViewController:(id)controller editor:(id)editor animated:(BOOL)animated
 {
-  v5 = a5;
-  obj = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  obj = controller;
+  editorCopy = editor;
   if (obj)
   {
     v9 = objc_storeWeak(&self->_viewController, obj);
@@ -92,20 +92,20 @@
     if (objc_opt_respondsToSelector())
     {
       v13 = objc_loadWeakRetained(&self->_viewController);
-      v14 = [v13 presentModally];
+      presentModally = [v13 presentModally];
 
-      if (v14)
+      if (presentModally)
       {
-        v15 = [EKEditItemViewController preferredViewControllerForPresentationsFromViewController:v8];
+        v15 = [EKEditItemViewController preferredViewControllerForPresentationsFromViewController:editorCopy];
         v16 = [EKUIManagedNavigationController alloc];
         v17 = objc_loadWeakRetained(&self->_viewController);
         v18 = [(EKUIManagedNavigationController *)v16 initWithRootViewController:v17];
 
-        v19 = [v8 view];
-        if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v19))
+        view = [editorCopy view];
+        if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view))
         {
-          v20 = [v8 view];
-          IsRegular = EKUICurrentHeightSizeClassIsRegular(v20);
+          view2 = [editorCopy view];
+          IsRegular = EKUICurrentHeightSizeClassIsRegular(view2);
 
           if (IsRegular)
           {
@@ -117,13 +117,13 @@
         {
         }
 
-        [v8 preferredContentSize];
+        [editorCopy preferredContentSize];
         v27 = v26;
         v29 = v28;
         v30 = objc_loadWeakRetained(&self->_viewController);
         [v30 setPreferredContentSize:{v27, v29}];
 
-        [v15 presentViewController:v18 animated:v5 completion:0];
+        [v15 presentViewController:v18 animated:animatedCopy completion:0];
         goto LABEL_15;
       }
     }
@@ -132,23 +132,23 @@
     {
     }
 
-    v22 = [v8 navigationController];
-    v15 = v22;
-    if (v5)
+    navigationController = [editorCopy navigationController];
+    v15 = navigationController;
+    if (animatedCopy)
     {
-      [v22 pushViewController:obj animated:1];
+      [navigationController pushViewController:obj animated:1];
     }
 
     else
     {
-      v23 = [v22 viewControllers];
+      viewControllers = [navigationController viewControllers];
 
-      v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v23];
+      v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:viewControllers];
       [v24 addObject:obj];
-      v25 = [v8 navigationController];
-      [v25 setViewControllers:v24 animated:0];
+      navigationController2 = [editorCopy navigationController];
+      [navigationController2 setViewControllers:v24 animated:0];
 
-      v15 = v23;
+      v15 = viewControllers;
     }
 
 LABEL_15:
@@ -181,14 +181,14 @@ LABEL_15:
   }
 }
 
-- (void)notifySubitemDidSave:(unint64_t)a3
+- (void)notifySubitemDidSave:(unint64_t)save
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(EKCalendarItemEditItem *)self usesDetailViewControllerForSubitem:a3];
+    v7 = [(EKCalendarItemEditItem *)self usesDetailViewControllerForSubitem:save];
     v8 = objc_loadWeakRetained(&self->_delegate);
     [v8 editItem:self didSaveFromDetailViewController:v7];
   }
@@ -218,12 +218,12 @@ LABEL_15:
   }
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
 
-  if (WeakRetained && v3)
+  if (WeakRetained && forceCopy)
   {
     v6 = objc_loadWeakRetained(&self->_viewController);
     [v6 saveAndDismissWithExtremePrejudice];
@@ -232,20 +232,20 @@ LABEL_15:
   return 1;
 }
 
-- (void)editItemViewControllerWantsKeyboardPinned:(BOOL)a3
+- (void)editItemViewControllerWantsKeyboardPinned:(BOOL)pinned
 {
-  v3 = a3;
+  pinnedCopy = pinned;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 editItem:self wantsKeyboardPinned:v3];
+    [v7 editItem:self wantsKeyboardPinned:pinnedCopy];
   }
 }
 
-- (void)editItemViewController:(id)a3 didCompleteWithAction:(int)a4
+- (void)editItemViewController:(id)controller didCompleteWithAction:(int)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -276,28 +276,28 @@ LABEL_15:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v13 presentModally])
   {
-    v11 = [v13 presentingViewController];
-    [v11 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [v13 presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v11 = [v13 navigationController];
-    v12 = [v11 popViewControllerAnimated:1];
+    presentingViewController = [v13 navigationController];
+    v12 = [presentingViewController popViewControllerAnimated:1];
   }
 }
 
 - (id)viewForActionSheet
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v3 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  return v3;
+  return view;
 }
 
 + (double)scaledHeightOfSystemTableViewCell
 {
-  if (MEMORY[0x1D38B98D0](a1, a2))
+  if (MEMORY[0x1D38B98D0](self, a2))
   {
 
     return EKUITableRowHeightDefault();

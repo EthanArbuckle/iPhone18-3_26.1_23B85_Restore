@@ -1,33 +1,33 @@
 @interface REScriptASTSubscriptExpressionNode
-+ (id)parseBuffer:(id)a3 error:(id *)a4;
-- (REScriptASTSubscriptExpressionNode)initWithExpression:(id)a3 startIndex:(id)a4 endIndex:(id)a5;
++ (id)parseBuffer:(id)buffer error:(id *)error;
+- (REScriptASTSubscriptExpressionNode)initWithExpression:(id)expression startIndex:(id)index endIndex:(id)endIndex;
 - (id)dependencies;
 @end
 
 @implementation REScriptASTSubscriptExpressionNode
 
-+ (id)parseBuffer:(id)a3 error:(id *)a4
++ (id)parseBuffer:(id)buffer error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 currentToken];
-  v7 = [v6 type];
+  bufferCopy = buffer;
+  currentToken = [bufferCopy currentToken];
+  type = [currentToken type];
 
-  if (v7 != 36)
+  if (type != 36)
   {
     v12 = 0;
     goto LABEL_14;
   }
 
-  [v5 push];
-  [v5 next];
-  v8 = [REScriptASTExpressionNode parseBuffer:v5 error:a4];
-  v9 = [v5 currentToken];
-  v10 = [v9 type];
+  [bufferCopy push];
+  [bufferCopy next];
+  v8 = [REScriptASTExpressionNode parseBuffer:bufferCopy error:error];
+  currentToken2 = [bufferCopy currentToken];
+  type2 = [currentToken2 type];
 
-  if (v10 == 38)
+  if (type2 == 38)
   {
-    [v5 next];
-    v11 = [REScriptASTExpressionNode parseBuffer:v5 error:a4];
+    [bufferCopy next];
+    v11 = [REScriptASTExpressionNode parseBuffer:bufferCopy error:error];
   }
 
   else
@@ -48,16 +48,16 @@
   }
 
 LABEL_9:
-  if (!REExpectTokenTypeInBuffer(v5, 0x25uLL, a4))
+  if (!REExpectTokenTypeInBuffer(bufferCopy, 0x25uLL, error))
   {
 LABEL_12:
-    [v5 pop];
+    [bufferCopy pop];
     v12 = 0;
     goto LABEL_13;
   }
 
-  [v5 next];
-  [v5 consume];
+  [bufferCopy next];
+  [bufferCopy consume];
   v12 = [[REScriptASTSubscriptExpressionNode alloc] initWithExpression:0 startIndex:v11 endIndex:v8];
 LABEL_13:
 
@@ -66,27 +66,27 @@ LABEL_14:
   return v12;
 }
 
-- (REScriptASTSubscriptExpressionNode)initWithExpression:(id)a3 startIndex:(id)a4 endIndex:(id)a5
+- (REScriptASTSubscriptExpressionNode)initWithExpression:(id)expression startIndex:(id)index endIndex:(id)endIndex
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  expressionCopy = expression;
+  indexCopy = index;
+  endIndexCopy = endIndex;
+  v12 = endIndexCopy;
+  if (indexCopy)
   {
-    v11 = v10;
+    endIndexCopy = indexCopy;
   }
 
-  v13 = [v11 token];
+  token = [endIndexCopy token];
   v16.receiver = self;
   v16.super_class = REScriptASTSubscriptExpressionNode;
-  v14 = [(REScriptASTNode *)&v16 initWithToken:v13];
+  v14 = [(REScriptASTNode *)&v16 initWithToken:token];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_expression, a3);
-    objc_storeStrong(&v14->_startIndex, a4);
-    objc_storeStrong(&v14->_endIndex, a5);
+    objc_storeStrong(&v14->_expression, expression);
+    objc_storeStrong(&v14->_startIndex, index);
+    objc_storeStrong(&v14->_endIndex, endIndex);
   }
 
   return v14;
@@ -94,11 +94,11 @@ LABEL_14:
 
 - (id)dependencies
 {
-  v2 = [(REScriptASTNode *)self->_expression dependencies];
-  v3 = v2;
-  if (v2)
+  dependencies = [(REScriptASTNode *)self->_expression dependencies];
+  v3 = dependencies;
+  if (dependencies)
   {
-    v4 = v2;
+    v4 = dependencies;
   }
 
   else

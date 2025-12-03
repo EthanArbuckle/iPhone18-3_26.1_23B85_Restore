@@ -7,8 +7,8 @@
 
 + (int64_t)timestampGranularity
 {
-  v2 = [MEMORY[0x277CEAF38] shared];
-  v3 = [v2 initWithName:@"day"];
+  mEMORY[0x277CEAF38] = [MEMORY[0x277CEAF38] shared];
+  v3 = [mEMORY[0x277CEAF38] initWithName:@"day"];
 
   return v3;
 }

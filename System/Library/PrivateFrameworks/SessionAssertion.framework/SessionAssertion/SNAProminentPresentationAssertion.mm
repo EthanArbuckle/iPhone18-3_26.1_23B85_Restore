@@ -1,14 +1,14 @@
 @interface SNAProminentPresentationAssertion
-- (SNAProminentPresentationAssertion)initWithExplanation:(id)a3 sessionIdentifier:(id)a4 duration:(double)a5 invalidationHandler:(id)a6;
+- (SNAProminentPresentationAssertion)initWithExplanation:(id)explanation sessionIdentifier:(id)identifier duration:(double)duration invalidationHandler:(id)handler;
 @end
 
 @implementation SNAProminentPresentationAssertion
 
-- (SNAProminentPresentationAssertion)initWithExplanation:(id)a3 sessionIdentifier:(id)a4 duration:(double)a5 invalidationHandler:(id)a6
+- (SNAProminentPresentationAssertion)initWithExplanation:(id)explanation sessionIdentifier:(id)identifier duration:(double)duration invalidationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  explanationCopy = explanation;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = SNAProminentPresentationAssertion;
   v13 = [(SNAProminentPresentationAssertion *)&v22 init];
@@ -19,10 +19,10 @@
     v19[1] = 3221225472;
     v19[2] = __104__SNAProminentPresentationAssertion_initWithExplanation_sessionIdentifier_duration_invalidationHandler___block_invoke;
     v19[3] = &unk_279B9F620;
-    v21 = v12;
+    v21 = handlerCopy;
     v15 = v13;
     v20 = v15;
-    v16 = [(ProminentPresentationAssertion *)v14 initWithExplanation:v10 activityIdentifier:v11 duration:v19 invalidationHandler:a5];
+    v16 = [(ProminentPresentationAssertion *)v14 initWithExplanation:explanationCopy activityIdentifier:identifierCopy duration:v19 invalidationHandler:duration];
     assertion = v15->_assertion;
     v15->_assertion = v16;
   }

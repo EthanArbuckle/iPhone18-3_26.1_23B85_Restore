@@ -1,20 +1,20 @@
 @interface SafariSandboxBrokerServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation SafariSandboxBrokerServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = WBSUISafariSandboxBrokerInterface();
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = [WBSUISafariSandboxBroker alloc];
-  v7 = [v4 processIdentifier];
-  if (v4)
+  processIdentifier = [connectionCopy processIdentifier];
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -22,10 +22,10 @@
     memset(v10, 0, sizeof(v10));
   }
 
-  v8 = [v6 initWithPID:v7 auditToken:v10];
-  [v4 setExportedObject:v8];
+  v8 = [v6 initWithPID:processIdentifier auditToken:v10];
+  [connectionCopy setExportedObject:v8];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 

@@ -1,5 +1,5 @@
 @interface VOTGestureEvent
-+ (id)gestureEventWithEventRepresentation:(id)a3;
++ (id)gestureEventWithEventRepresentation:(id)representation;
 - (BOOL)_eventMaskHasTouch;
 - (BOOL)_isBogusTouchEvent;
 - (BOOL)isCancelEvent;
@@ -8,21 +8,21 @@
 - (BOOL)isMovedEvent;
 - (BOOL)isNonLiftingInRangeEvent;
 - (BOOL)isStylusEvent;
-- (id)_initWithDeviceIdentifier:(unint64_t)a3 andEventRepresentation:(id)a4;
+- (id)_initWithDeviceIdentifier:(unint64_t)identifier andEventRepresentation:(id)representation;
 - (id)description;
 - (void)_addFingerInformation;
 - (void)dealloc;
-- (void)setEventRepresentation:(id)a3;
+- (void)setEventRepresentation:(id)representation;
 @end
 
 @implementation VOTGestureEvent
 
-+ (id)gestureEventWithEventRepresentation:(id)a3
++ (id)gestureEventWithEventRepresentation:(id)representation
 {
-  v3 = a3;
-  if ([v3 type] == 3001)
+  representationCopy = representation;
+  if ([representationCopy type] == 3001)
   {
-    v4 = [objc_allocWithZone(VOTGestureEvent) _initWithDeviceIdentifier:1 andEventRepresentation:v3];
+    v4 = [objc_allocWithZone(VOTGestureEvent) _initWithDeviceIdentifier:1 andEventRepresentation:representationCopy];
   }
 
   else
@@ -33,14 +33,14 @@
   return v4;
 }
 
-- (id)_initWithDeviceIdentifier:(unint64_t)a3 andEventRepresentation:(id)a4
+- (id)_initWithDeviceIdentifier:(unint64_t)identifier andEventRepresentation:(id)representation
 {
-  v6 = a4;
-  v7 = [(VOTGestureEvent *)self initWithDeviceIdentifier:a3];
+  representationCopy = representation;
+  v7 = [(VOTGestureEvent *)self initWithDeviceIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    [(VOTGestureEvent *)v7 setEventRepresentation:v6];
+    [(VOTGestureEvent *)v7 setEventRepresentation:representationCopy];
     v9 = v8;
   }
 
@@ -60,15 +60,15 @@
   v7.receiver = self;
   v7.super_class = VOTGestureEvent;
   v3 = [(VOTGestureEvent *)&v7 description];
-  v4 = [(VOTGestureEvent *)self eventRepresentation];
-  v5 = [NSString stringWithFormat:@"%@\nAXEventRep:%@", v3, v4];
+  eventRepresentation = [(VOTGestureEvent *)self eventRepresentation];
+  v5 = [NSString stringWithFormat:@"%@\nAXEventRep:%@", v3, eventRepresentation];
 
   return v5;
 }
 
-- (void)setEventRepresentation:(id)a3
+- (void)setEventRepresentation:(id)representation
 {
-  objc_storeStrong(&self->_eventRepresentation, a3);
+  objc_storeStrong(&self->_eventRepresentation, representation);
   if (self->_eventRepresentation)
   {
 
@@ -78,23 +78,23 @@
 
 - (BOOL)isCancelEvent
 {
-  v2 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-  v3 = [v2 eventType] == 8;
+  handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+  v3 = [handInfo eventType] == 8;
 
   return v3;
 }
 
 - (BOOL)isLiftEvent
 {
-  v3 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-  v4 = [v3 eventType];
+  handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+  eventType = [handInfo eventType];
 
-  if (v4 == 6 || v4 == 10)
+  if (eventType == 6 || eventType == 10)
   {
     return 1;
   }
 
-  if (v4 == 9)
+  if (eventType == 9)
   {
     return ![(VOTGestureEvent *)self isNonLiftingInRangeEvent];
   }
@@ -134,32 +134,32 @@ LABEL_8:
 
 - (BOOL)_isBogusTouchEvent
 {
-  v3 = [(VOTGestureEvent *)self isStylusEvent];
-  if (v3)
+  isStylusEvent = [(VOTGestureEvent *)self isStylusEvent];
+  if (isStylusEvent)
   {
-    v4 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-    v5 = [v4 eventType];
+    handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+    eventType = [handInfo eventType];
 
-    if (v5 == 1)
+    if (eventType == 1)
     {
-      LOBYTE(v3) = ![(VOTGestureEvent *)self _eventMaskHasTouch];
+      LOBYTE(isStylusEvent) = ![(VOTGestureEvent *)self _eventMaskHasTouch];
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isStylusEvent) = 0;
     }
   }
 
-  return v3;
+  return isStylusEvent;
 }
 
 - (BOOL)isNonLiftingInRangeEvent
 {
-  v3 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-  v4 = [v3 eventType];
+  handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+  eventType = [handInfo eventType];
 
-  if (v4 == 9)
+  if (eventType == 9)
   {
     return ![(VOTGestureEvent *)self _eventMaskHasTouch];
   }
@@ -172,8 +172,8 @@ LABEL_8:
 
 - (BOOL)isDownEvent
 {
-  v3 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-  if ([v3 eventType] == 1)
+  handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+  if ([handInfo eventType] == 1)
   {
     v4 = ![(VOTGestureEvent *)self _isBogusTouchEvent];
   }
@@ -188,26 +188,26 @@ LABEL_8:
 
 - (BOOL)isMovedEvent
 {
-  v3 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-  if ([v3 eventType] == 2)
+  handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+  if ([handInfo eventType] == 2)
   {
-    v4 = 1;
+    _isBogusTouchEvent = 1;
   }
 
   else
   {
-    v4 = [(VOTGestureEvent *)self _isBogusTouchEvent];
+    _isBogusTouchEvent = [(VOTGestureEvent *)self _isBogusTouchEvent];
   }
 
-  return v4;
+  return _isBogusTouchEvent;
 }
 
 - (BOOL)isStylusEvent
 {
-  v2 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-  v3 = [v2 isStylus];
+  handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+  isStylus = [handInfo isStylus];
 
-  return v3;
+  return isStylus;
 }
 
 - (void)_addFingerInformation
@@ -218,10 +218,10 @@ LABEL_8:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v3 = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
-    v4 = [v3 pathsIncludingMayBeginEvents];
+    handInfo = [(AXEventRepresentation *)self->_eventRepresentation handInfo];
+    pathsIncludingMayBeginEvents = [handInfo pathsIncludingMayBeginEvents];
 
-    v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v5 = [pathsIncludingMayBeginEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v5)
     {
       v6 = v5;
@@ -232,7 +232,7 @@ LABEL_8:
         {
           if (*v22 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(pathsIncludingMayBeginEvents);
           }
 
           v9 = *(*(&v21 + 1) + 8 * i);
@@ -241,13 +241,13 @@ LABEL_8:
             [v9 pathLocation];
             v11 = sub_1000517C4(v10);
             v13 = v12;
-            v14 = [v9 transducerType];
-            v15 = [v9 pathIndex];
+            transducerType = [v9 transducerType];
+            pathIndex = [v9 pathIndex];
             [v9 orbValue];
             v17 = v16;
-            if (v14)
+            if (transducerType)
             {
-              [(VOTGestureEvent *)self addFingerWithIdentifier:v15 location:v11 pressure:v13, v17];
+              [(VOTGestureEvent *)self addFingerWithIdentifier:pathIndex location:v11 pressure:v13, v17];
             }
 
             else
@@ -255,12 +255,12 @@ LABEL_8:
               [v9 altitude];
               v19 = v18;
               [v9 azimuth];
-              [(VOTGestureEvent *)self addStylusWithIdentifier:v15 location:v11 pressure:v13 altitude:v17 azimuth:v19, v20];
+              [(VOTGestureEvent *)self addStylusWithIdentifier:pathIndex location:v11 pressure:v13 altitude:v17 azimuth:v19, v20];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v6 = [pathsIncludingMayBeginEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v6);

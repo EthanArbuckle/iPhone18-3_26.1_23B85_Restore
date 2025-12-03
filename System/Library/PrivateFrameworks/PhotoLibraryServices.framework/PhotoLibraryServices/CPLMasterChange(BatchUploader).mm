@@ -7,9 +7,9 @@
 - (BOOL)hasResourceOfType:()BatchUploader notInMasterChange:
 {
   v6 = a4;
-  v7 = [a1 scopedIdentifier];
-  v8 = [v6 scopedIdentifier];
-  v9 = [v7 isEqual:v8];
+  scopedIdentifier = [self scopedIdentifier];
+  scopedIdentifier2 = [v6 scopedIdentifier];
+  v9 = [scopedIdentifier isEqual:scopedIdentifier2];
 
   if (v9)
   {
@@ -19,8 +19,8 @@
     aBlock[3] = &__block_descriptor_40_e28_B32__0__CPLResource_8Q16_B24l;
     aBlock[4] = a3;
     v10 = _Block_copy(aBlock);
-    v11 = [a1 resources];
-    v12 = [v11 indexOfObjectPassingTest:v10];
+    resources = [self resources];
+    v12 = [resources indexOfObjectPassingTest:v10];
 
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -29,8 +29,8 @@
 
     else
     {
-      v14 = [v6 resources];
-      v15 = [v14 indexOfObjectPassingTest:v10];
+      resources2 = [v6 resources];
+      v15 = [resources2 indexOfObjectPassingTest:v10];
 
       v13 = v15 == 0x7FFFFFFFFFFFFFFFLL;
     }

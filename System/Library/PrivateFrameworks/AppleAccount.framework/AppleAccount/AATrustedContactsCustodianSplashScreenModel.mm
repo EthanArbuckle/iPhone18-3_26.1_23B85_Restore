@@ -82,10 +82,10 @@ void __54__AATrustedContactsCustodianSplashScreenModel_bullets__block_invoke(uin
 
 - (id)_firstBulletPointDescription
 {
-  v2 = [MEMORY[0x1E698DC80] sharedInstance];
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [v3 primaryAuthKitAccount];
-  v5 = [v2 ageOfMajorityForAccount:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80]2 primaryAuthKitAccount];
+  v5 = [mEMORY[0x1E698DC80] ageOfMajorityForAccount:primaryAuthKitAccount];
 
   if (v5)
   {

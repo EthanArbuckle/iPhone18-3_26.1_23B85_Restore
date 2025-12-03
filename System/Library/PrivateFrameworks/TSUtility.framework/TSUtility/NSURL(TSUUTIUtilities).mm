@@ -7,16 +7,16 @@
 
 - (uint64_t)tsu_UTI
 {
-  v1 = [a1 path];
+  path = [self path];
 
-  return [v1 tsu_pathUTI];
+  return [path tsu_pathUTI];
 }
 
 - (uint64_t)tsu_conformsToUTI:()TSUUTIUtilities
 {
-  v4 = [a1 pathExtension];
+  pathExtension = [self pathExtension];
 
-  return [v4 tsu_pathExtensionConformsToUTI:a3];
+  return [pathExtension tsu_pathExtensionConformsToUTI:a3];
 }
 
 @end

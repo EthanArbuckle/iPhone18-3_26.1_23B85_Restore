@@ -1,14 +1,14 @@
 @interface TTRITemplateSavingViewController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (_TtC9Reminders32TTRITemplateSavingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapCancel:(id)a3;
-- (void)didTapCommit:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (_TtC9Reminders32TTRITemplateSavingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapCancel:(id)cancel;
+- (void)didTapCommit:(id)commit;
 - (void)loadView;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -16,33 +16,33 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100377EF8();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100378024();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003788B4(a3);
+  selfCopy = self;
+  sub_1003788B4(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(TTRITemplateSavingViewController *)&v8 viewDidAppear:v3];
-  v5 = [v4 view];
-  if (v5)
+  [(TTRITemplateSavingViewController *)&v8 viewDidAppear:appearCopy];
+  view = [v4 view];
+  if (view)
   {
-    v6 = v5;
+    v6 = view;
     v7 = UIView.firstResponderDescendant.getter();
 
     if (v7)
@@ -63,13 +63,13 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRITemplateSavingViewController *)&v5 viewWillDisappear:v3];
+  [(TTRITemplateSavingViewController *)&v5 viewWillDisappear:disappearCopy];
   UIViewController.endFirstResponderEditing()();
   [v4 resignFirstResponder];
   sub_10037ACE0();
@@ -78,15 +78,15 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100378C20();
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
-  if (a3)
+  if (cancel)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -95,7 +95,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders32TTRITemplateSavingViewController_cancelButton);
@@ -113,11 +113,11 @@
   }
 }
 
-- (void)didTapCommit:(id)a3
+- (void)didTapCommit:(id)commit
 {
-  if (a3)
+  if (commit)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -126,7 +126,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100379698();
@@ -134,27 +134,27 @@
   sub_1000079B4(v6, &qword_10076AE40);
 }
 
-- (_TtC9Reminders32TTRITemplateSavingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders32TTRITemplateSavingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1002FA3CC();
 
   return (v4 & 1) == 0;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders32TTRITemplateSavingViewController_cancelButton);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = v3;
     sub_1002FA994(v5);
   }

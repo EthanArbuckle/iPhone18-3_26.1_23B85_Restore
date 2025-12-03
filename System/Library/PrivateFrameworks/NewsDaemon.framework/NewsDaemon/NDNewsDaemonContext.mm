@@ -1,13 +1,13 @@
 @interface NDNewsDaemonContext
 - (NDNewsDaemonContext)init;
 - (id)updateResultsHandler;
-- (void)fetchLatestResultsWithParameters:(id)a3 completion:(id)a4;
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3;
-- (void)fetchPlaceholderResultsWithOperationInfo:(id)a3 syncCompletion:(id)a4;
-- (void)markAnalyticsElement:(id)a3 asReadAtDate:(id)a4 withCompletion:(id)a5;
-- (void)markAnalyticsElements:(id)a3 asSeenAtDate:(id)a4 withCompletion:(id)a5;
+- (void)fetchLatestResultsWithParameters:(id)parameters completion:(id)completion;
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion;
+- (void)fetchPlaceholderResultsWithOperationInfo:(id)info syncCompletion:(id)completion;
+- (void)markAnalyticsElement:(id)element asReadAtDate:(id)date withCompletion:(id)completion;
+- (void)markAnalyticsElements:(id)elements asSeenAtDate:(id)date withCompletion:(id)completion;
 - (void)serviceHasNewTodayResults;
-- (void)setUpdateResultsHandler:(id)a3;
+- (void)setUpdateResultsHandler:(id)handler;
 @end
 
 @implementation NDNewsDaemonContext
@@ -29,13 +29,13 @@
 
 - (void)serviceHasNewTodayResults
 {
-  v3 = [(NDNewsDaemonContext *)self _queue];
+  _queue = [(NDNewsDaemonContext *)self _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__NDNewsDaemonContext_serviceHasNewTodayResults__block_invoke;
   block[3] = &unk_27997BFF8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_queue, block);
 }
 
 void __48__NDNewsDaemonContext_serviceHasNewTodayResults__block_invoke(uint64_t a1)
@@ -49,32 +49,32 @@ void __48__NDNewsDaemonContext_serviceHasNewTodayResults__block_invoke(uint64_t 
   }
 }
 
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsDaemonContext fetchModuleDescriptorsWithCompletion:];
   }
 
-  v5 = [(NDNewsDaemonContext *)self daemon];
-  [v5 fetchModuleDescriptorsWithCompletion:v4];
+  daemon = [(NDNewsDaemonContext *)self daemon];
+  [daemon fetchModuleDescriptorsWithCompletion:completionCopy];
 }
 
-- (void)fetchLatestResultsWithParameters:(id)a3 completion:(id)a4
+- (void)fetchLatestResultsWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (!parametersCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsDaemonContext fetchLatestResultsWithParameters:completion:];
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -85,24 +85,24 @@ void __48__NDNewsDaemonContext_serviceHasNewTodayResults__block_invoke(uint64_t 
   }
 
 LABEL_6:
-  v8 = [(NDNewsDaemonContext *)self daemon];
-  [v8 fetchLatestResultsWithParameters:v6 completion:v7];
+  daemon = [(NDNewsDaemonContext *)self daemon];
+  [daemon fetchLatestResultsWithParameters:parametersCopy completion:completionCopy];
 }
 
-- (void)fetchPlaceholderResultsWithOperationInfo:(id)a3 syncCompletion:(id)a4
+- (void)fetchPlaceholderResultsWithOperationInfo:(id)info syncCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsDaemonContext fetchPlaceholderResultsWithOperationInfo:syncCompletion:];
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -113,13 +113,13 @@ LABEL_6:
   }
 
 LABEL_6:
-  v8 = [(NDNewsDaemonContext *)self daemon];
-  [v8 fetchPlaceholderResultsWithOperationInfo:v6 syncCompletion:v7];
+  daemon = [(NDNewsDaemonContext *)self daemon];
+  [daemon fetchPlaceholderResultsWithOperationInfo:infoCopy syncCompletion:completionCopy];
 }
 
-- (void)setUpdateResultsHandler:(id)a3
+- (void)setUpdateResultsHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   updateResultsHandler = self->_updateResultsHandler;
   self->_updateResultsHandler = v4;
 
@@ -133,21 +133,21 @@ LABEL_6:
   return v2;
 }
 
-- (void)markAnalyticsElements:(id)a3 asSeenAtDate:(id)a4 withCompletion:(id)a5
+- (void)markAnalyticsElements:(id)elements asSeenAtDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  elementsCopy = elements;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!elementsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsDaemonContext markAnalyticsElements:asSeenAtDate:withCompletion:];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -158,25 +158,25 @@ LABEL_6:
   }
 
 LABEL_6:
-  v11 = [(NDNewsDaemonContext *)self daemon];
-  [v11 markAnalyticsElements:v8 asSeenAtDate:v9 withCompletion:v10];
+  daemon = [(NDNewsDaemonContext *)self daemon];
+  [daemon markAnalyticsElements:elementsCopy asSeenAtDate:dateCopy withCompletion:completionCopy];
 }
 
-- (void)markAnalyticsElement:(id)a3 asReadAtDate:(id)a4 withCompletion:(id)a5
+- (void)markAnalyticsElement:(id)element asReadAtDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  elementCopy = element;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!elementCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsDaemonContext markAnalyticsElement:asReadAtDate:withCompletion:];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -187,8 +187,8 @@ LABEL_6:
   }
 
 LABEL_6:
-  v11 = [(NDNewsDaemonContext *)self daemon];
-  [v11 markAnalyticsElement:v8 asReadAtDate:v9 withCompletion:v10];
+  daemon = [(NDNewsDaemonContext *)self daemon];
+  [daemon markAnalyticsElement:elementCopy asReadAtDate:dateCopy withCompletion:completionCopy];
 }
 
 - (void)fetchModuleDescriptorsWithCompletion:.cold.1()

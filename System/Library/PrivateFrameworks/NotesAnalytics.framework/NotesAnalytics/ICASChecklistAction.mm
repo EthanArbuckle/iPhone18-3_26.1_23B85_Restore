@@ -1,34 +1,34 @@
 @interface ICASChecklistAction
-- (ICASChecklistAction)initWithChecklistAction:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASChecklistAction)initWithChecklistAction:(int64_t)action;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASChecklistAction
 
-- (ICASChecklistAction)initWithChecklistAction:(int64_t)a3
+- (ICASChecklistAction)initWithChecklistAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = ICASChecklistAction;
   result = [(ICASChecklistAction *)&v5 init];
   if (result)
   {
-    result->_checklistAction = a3;
+    result->_checklistAction = action;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASChecklistAction *)self checklistAction];
-  if ((v3 - 1) > 3)
+  checklistAction = [(ICASChecklistAction *)self checklistAction];
+  if ((checklistAction - 1) > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF5F8[v3 - 1];
+    return off_2799AF5F8[checklistAction - 1];
   }
 }
 

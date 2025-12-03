@@ -2,9 +2,9 @@
 + (WBSPegasusResponseFuzzer)sharedFuzzer;
 + (id)_protectedFields;
 - (WBSPegasusResponseFuzzer)init;
-- (WBSPegasusResponseFuzzer)initWithParsecSession:(id)a3 sampleResponsesPlistKey:(id)a4;
-- (id)_validPegasusResponseForKey:(id)a3;
-- (id)responseForQuery:(id)a3;
+- (WBSPegasusResponseFuzzer)initWithParsecSession:(id)session sampleResponsesPlistKey:(id)key;
+- (id)_validPegasusResponseForKey:(id)key;
+- (id)responseForQuery:(id)query;
 - (void)_recordMutatedPegasusResponseJSON;
 @end
 
@@ -56,10 +56,10 @@ void __44__WBSPegasusResponseFuzzer__protectedFields__block_invoke()
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 arguments];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  arguments = [processInfo arguments];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [arguments countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -70,7 +70,7 @@ void __44__WBSPegasusResponseFuzzer__protectedFields__block_invoke()
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arguments);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -85,7 +85,7 @@ void __44__WBSPegasusResponseFuzzer__protectedFields__block_invoke()
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [arguments countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -96,27 +96,27 @@ void __44__WBSPegasusResponseFuzzer__protectedFields__block_invoke()
   }
 
   v10 = [WBSParsecDSession alloc];
-  v4 = +[WBSParsecDSession sharedPARSession];
-  v11 = [(WBSParsecDSession *)v10 initWithParsecdSession:v4 skipAutoFillDataUpdates:1];
+  arguments = +[WBSParsecDSession sharedPARSession];
+  v11 = [(WBSParsecDSession *)v10 initWithParsecdSession:arguments skipAutoFillDataUpdates:1];
   v12 = [(WBSPegasusResponseFuzzer *)self initWithParsecSession:v11 sampleResponsesPlistKey:&stru_1F3A5E418];
 LABEL_12:
 
   return v12;
 }
 
-- (WBSPegasusResponseFuzzer)initWithParsecSession:(id)a3 sampleResponsesPlistKey:(id)a4
+- (WBSPegasusResponseFuzzer)initWithParsecSession:(id)session sampleResponsesPlistKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  keyCopy = key;
   v25.receiver = self;
   v25.super_class = WBSPegasusResponseFuzzer;
   v9 = [(WBSPegasusResponseFuzzer *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parsecSession, a3);
+    objc_storeStrong(&v9->_parsecSession, session);
     v10->_indexOfCurrentResponse = 0;
-    v11 = [(WBSPegasusResponseFuzzer *)v10 _validPegasusResponseForKey:v8];
+    v11 = [(WBSPegasusResponseFuzzer *)v10 _validPegasusResponseForKey:keyCopy];
     validJSONPARResponse = v10->_validJSONPARResponse;
     v10->_validJSONPARResponse = v11;
 
@@ -129,22 +129,22 @@ LABEL_12:
 
     v18 = MEMORY[0x1E6998650];
     v19 = v10->_validJSONPARResponse;
-    v20 = [(WBSParsecDSession *)v10->_parsecSession parsecdSession];
-    v21 = [v18 responseFromJSON:v19 session:v20];
+    parsecdSession = [(WBSParsecDSession *)v10->_parsecSession parsecdSession];
+    v21 = [v18 responseFromJSON:v19 session:parsecdSession];
     currentResponse = v10->_currentResponse;
     v10->_currentResponse = v21;
 
-    v10->_shouldAttachMutatedJSONToTestResultKeys = [v8 safari_hasPrefix:@"PegasusResponseFuzzer"];
+    v10->_shouldAttachMutatedJSONToTestResultKeys = [keyCopy safari_hasPrefix:@"PegasusResponseFuzzer"];
     v23 = v10;
   }
 
   return v10;
 }
 
-- (id)responseForQuery:(id)a3
+- (id)responseForQuery:(id)query
 {
   v5 = self->_currentResponse;
-  if ([a3 isEqualToString:self->_query])
+  if ([query isEqualToString:self->_query])
   {
     if (self->_shouldAttachMutatedJSONToTestResultKeys)
     {
@@ -157,8 +157,8 @@ LABEL_12:
     v8 = v6;
 
     v9 = MEMORY[0x1E6998650];
-    v10 = [(WBSParsecDSession *)self->_parsecSession parsecdSession];
-    v11 = [v9 responseFromJSON:v8 session:v10];
+    parsecdSession = [(WBSParsecDSession *)self->_parsecSession parsecdSession];
+    v11 = [v9 responseFromJSON:v8 session:parsecdSession];
     currentResponse = self->_currentResponse;
     self->_currentResponse = v11;
   }
@@ -184,24 +184,24 @@ LABEL_12:
   else
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 bundleURL];
-    v9 = [v8 URLByAppendingPathComponent:@"PegasusResponseFuzzingJSON.json"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleURL = [mainBundle bundleURL];
+    v9 = [bundleURL URLByAppendingPathComponent:@"PegasusResponseFuzzingJSON.json"];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v9 path];
-    v12 = [v10 fileExistsAtPath:v11];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v9 path];
+    v12 = [defaultManager fileExistsAtPath:path];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      v14 = [v9 path];
-      [v13 createFileAtPath:v14 contents:0 attributes:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [v9 path];
+      [defaultManager2 createFileAtPath:path2 contents:0 attributes:0];
     }
 
-    v15 = [v9 path];
+    path3 = [v9 path];
     v18 = 0;
-    [v6 writeToFile:v15 atomically:1 encoding:4 error:&v18];
+    [v6 writeToFile:path3 atomically:1 encoding:4 error:&v18];
     v16 = v18;
 
     if (v16)
@@ -215,16 +215,16 @@ LABEL_12:
   }
 }
 
-- (id)_validPegasusResponseForKey:(id)a3
+- (id)_validPegasusResponseForKey:(id)key
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
-  v6 = [v4 safari_safariSharedBundle];
-  v7 = [v6 URLForResource:@"SafariPegasusResponseFuzzerSampleInputs" withExtension:@"plist"];
+  keyCopy = key;
+  safari_safariSharedBundle = [v4 safari_safariSharedBundle];
+  v7 = [safari_safariSharedBundle URLForResource:@"SafariPegasusResponseFuzzerSampleInputs" withExtension:@"plist"];
 
   v8 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v7];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
 
   v10 = [v9 objectForKeyedSubscript:@"query"];
   query = self->_query;

@@ -1,21 +1,21 @@
 @interface _TVTintedImageDecorator
-- (_TVTintedImageDecorator)initWithTintColor:(id)a3;
+- (_TVTintedImageDecorator)initWithTintColor:(id)color;
 - (id)decoratorIdentifier;
-- (void)drawInContext:(id)a3 imageRect:(CGRect)a4;
+- (void)drawInContext:(id)context imageRect:(CGRect)rect;
 @end
 
 @implementation _TVTintedImageDecorator
 
-- (_TVTintedImageDecorator)initWithTintColor:(id)a3
+- (_TVTintedImageDecorator)initWithTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = _TVTintedImageDecorator;
   v6 = [(TVImageScaleDecorator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tintColor, a3);
+    objc_storeStrong(&v6->_tintColor, color);
   }
 
   return v7;
@@ -23,40 +23,40 @@
 
 - (id)decoratorIdentifier
 {
-  v3 = [(_TVTintedImageDecorator *)self tintColor];
+  tintColor = [(_TVTintedImageDecorator *)self tintColor];
   v39.receiver = self;
   v39.super_class = _TVTintedImageDecorator;
-  v4 = [(TVImageScaleDecorator *)&v39 decoratorIdentifier];
-  v5 = [v4 mutableCopy];
+  decoratorIdentifier = [(TVImageScaleDecorator *)&v39 decoratorIdentifier];
+  v5 = [decoratorIdentifier mutableCopy];
 
-  v6 = [v3 color];
-  if (v6 || [v3 colorType] != 3)
+  color = [tintColor color];
+  if (color || [tintColor colorType] != 3)
   {
-    v9 = v6;
+    firstObject = color;
   }
 
   else
   {
-    v7 = [v3 gradientColors];
-    if ([v7 count] == 1)
+    gradientColors = [tintColor gradientColors];
+    if ([gradientColors count] == 1)
     {
-      v8 = [v3 gradientColors];
-      v9 = [v8 firstObject];
+      gradientColors2 = [tintColor gradientColors];
+      firstObject = [gradientColors2 firstObject];
     }
 
     else
     {
-      v9 = 0;
+      firstObject = 0;
     }
   }
 
-  if (v9)
+  if (firstObject)
   {
     v37 = 0.0;
     v38 = 0.0;
     v35 = 0.0;
     v36 = 0.0;
-    [v9 getRed:&v38 green:&v37 blue:&v36 alpha:&v35];
+    [firstObject getRed:&v38 green:&v37 blue:&v36 alpha:&v35];
     [v5 appendFormat:@"_t"];
     v10 = &off_26CE87000;
     LODWORD(v10) = vcvtad_u64_f64(v38 * 255.0);
@@ -66,29 +66,29 @@
     [v5 appendFormat:@"%02X%02X%02X%.1f", v10, v11, v12, v13];
   }
 
-  else if ([v3 colorType] == 3)
+  else if ([tintColor colorType] == 3)
   {
-    v14 = [v3 gradientColors];
-    v15 = [v14 count];
+    gradientColors3 = [tintColor gradientColors];
+    v15 = [gradientColors3 count];
 
     if (v15 >= 2)
     {
       [v5 appendFormat:@"_t"];
-      v16 = [v3 gradientColors];
-      v17 = [v16 count];
+      gradientColors4 = [tintColor gradientColors];
+      v17 = [gradientColors4 count];
 
       if (v17)
       {
         v18 = 0;
         do
         {
-          v19 = [v3 gradientPoints];
-          v20 = [v19 objectAtIndex:v18];
+          gradientPoints = [tintColor gradientPoints];
+          v20 = [gradientPoints objectAtIndex:v18];
           [v20 floatValue];
           v22 = v21;
 
-          v23 = [v3 gradientColors];
-          v24 = [v23 objectAtIndex:v18];
+          gradientColors5 = [tintColor gradientColors];
+          v24 = [gradientColors5 objectAtIndex:v18];
 
           v37 = 0.0;
           v38 = 0.0;
@@ -100,8 +100,8 @@
           LODWORD(v27) = vcvtad_u64_f64(v36 * 255.0);
           v28 = v35;
           [v5 appendFormat:@"%.2f:%02X%02X%02X%.1f", *&v22, v25, v26, v27, v28];
-          v29 = [v3 gradientColors];
-          v30 = [v29 count] - 1;
+          gradientColors6 = [tintColor gradientColors];
+          v30 = [gradientColors6 count] - 1;
 
           if (v18 < v30)
           {
@@ -109,8 +109,8 @@
           }
 
           ++v18;
-          v31 = [v3 gradientColors];
-          v32 = [v31 count];
+          gradientColors7 = [tintColor gradientColors];
+          v32 = [gradientColors7 count];
         }
 
         while (v18 < v32);
@@ -123,82 +123,82 @@
   return v33;
 }
 
-- (void)drawInContext:(id)a3 imageRect:(CGRect)a4
+- (void)drawInContext:(id)context imageRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(_TVTintedImageDecorator *)self tintColor];
-  if (v8)
+  contextCopy = context;
+  tintColor = [(_TVTintedImageDecorator *)self tintColor];
+  if (tintColor)
   {
-    v9 = [v7 CGContext];
-    CGContextSaveGState(v9);
-    CGContextTranslateCTM(v9, 0.0, height);
-    CGContextScaleCTM(v9, 1.0, -1.0);
-    v10 = [v8 color];
-    if (v10 || [v8 colorType] != 3)
+    cGContext = [contextCopy CGContext];
+    CGContextSaveGState(cGContext);
+    CGContextTranslateCTM(cGContext, 0.0, height);
+    CGContextScaleCTM(cGContext, 1.0, -1.0);
+    color = [tintColor color];
+    if (color || [tintColor colorType] != 3)
     {
-      v13 = v10;
+      firstObject = color;
     }
 
     else
     {
-      v11 = [v8 gradientColors];
-      if ([v11 count] == 1)
+      gradientColors = [tintColor gradientColors];
+      if ([gradientColors count] == 1)
       {
-        v12 = [v8 gradientColors];
-        v13 = [v12 firstObject];
+        gradientColors2 = [tintColor gradientColors];
+        firstObject = [gradientColors2 firstObject];
       }
 
       else
       {
-        v13 = 0;
+        firstObject = 0;
       }
     }
 
-    if (v13)
+    if (firstObject)
     {
-      v14 = [v8 color];
-      CGContextSetFillColorWithColor(v9, [v14 CGColor]);
+      color2 = [tintColor color];
+      CGContextSetFillColorWithColor(cGContext, [color2 CGColor]);
 
       v47.origin.x = 0.0;
       v47.origin.y = 0.0;
       v47.size.width = width;
       v47.size.height = height;
-      CGContextFillRect(v9, v47);
+      CGContextFillRect(cGContext, v47);
     }
 
-    else if ([v8 colorType] == 3)
+    else if ([tintColor colorType] == 3)
     {
-      v15 = [v8 gradientColors];
-      v16 = [v15 count];
+      gradientColors3 = [tintColor gradientColors];
+      v16 = [gradientColors3 count];
 
       if (v16 >= 2)
       {
-        v17 = [v8 gradientPoints];
-        v18 = [v17 count];
+        gradientPoints = [tintColor gradientPoints];
+        v18 = [gradientPoints count];
 
         v19 = malloc_type_malloc(8 * v18, 0x100004000313F17uLL);
         if (v19)
         {
           v20 = v19;
-          v21 = [v8 gradientPoints];
+          gradientPoints2 = [tintColor gradientPoints];
           v44[0] = MEMORY[0x277D85DD0];
           v44[1] = 3221225472;
           v44[2] = __51___TVTintedImageDecorator_drawInContext_imageRect___block_invoke;
           v44[3] = &__block_descriptor_40_e25_v32__0__NSNumber_8Q16_B24l;
           locations = v20;
           v44[4] = v20;
-          [v21 enumerateObjectsUsingBlock:v44];
+          [gradientPoints2 enumerateObjectsUsingBlock:v44];
 
           v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:v18];
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v23 = [v8 gradientColors];
-          v24 = [v23 countByEnumeratingWithState:&v40 objects:v45 count:16];
+          gradientColors4 = [tintColor gradientColors];
+          v24 = [gradientColors4 countByEnumeratingWithState:&v40 objects:v45 count:16];
           if (v24)
           {
             v25 = v24;
@@ -209,13 +209,13 @@
               {
                 if (*v41 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(gradientColors4);
                 }
 
                 [v22 addObject:{objc_msgSend(*(*(&v40 + 1) + 8 * i), "CGColor")}];
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v40 objects:v45 count:16];
+              v25 = [gradientColors4 countByEnumeratingWithState:&v40 objects:v45 count:16];
             }
 
             while (v25);
@@ -223,9 +223,9 @@
 
           v28 = CGGradientCreateWithColors(0, v22, locations);
           v29 = MEMORY[0x277CBF348];
-          v30 = [v8 gradientDirectionType];
+          gradientDirectionType = [tintColor gradientDirectionType];
           v31 = *locations;
-          if (v30 == 1)
+          if (gradientDirectionType == 1)
           {
             v32 = *v29;
             v33 = height * (1.0 - v31);
@@ -260,7 +260,7 @@
 
           if (v28)
           {
-            CGContextDrawLinearGradient(v9, v28, *&v32, *&v36, 0);
+            CGContextDrawLinearGradient(cGContext, v28, *&v32, *&v36, 0);
             CGGradientRelease(v28);
           }
 
@@ -269,7 +269,7 @@
       }
     }
 
-    CGContextRestoreGState(v9);
+    CGContextRestoreGState(cGContext);
   }
 }
 

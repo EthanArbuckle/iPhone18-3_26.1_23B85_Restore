@@ -1,30 +1,30 @@
 @interface NavControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)configureToolbar:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)configureToolbar:(id)toolbar;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
 @end
 
 @implementation NavControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_UIDocumentListController"];
-  [v3 validateClass:@"_UIDocumentListController" hasInstanceVariable:@"_containerViewController" withType:"_UIDocumentPickerContainerViewController"];
-  [v3 validateClass:@"_UIDocumentPickerContainerViewController" hasInstanceMethod:@"sortView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIDocumentPickerSortOrderView" hasInstanceMethod:@"listModeToggle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavController" hasInstanceMethod:@"getTopDocumentListController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_UIDocumentListController"];
+  [validationsCopy validateClass:@"_UIDocumentListController" hasInstanceVariable:@"_containerViewController" withType:"_UIDocumentPickerContainerViewController"];
+  [validationsCopy validateClass:@"_UIDocumentPickerContainerViewController" hasInstanceMethod:@"sortView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIDocumentPickerSortOrderView" hasInstanceMethod:@"listModeToggle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavController" hasInstanceMethod:@"getTopDocumentListController" withFullSignature:{"@", 0}];
 }
 
-- (void)configureToolbar:(id)a3
+- (void)configureToolbar:(id)toolbar
 {
   v8.receiver = self;
   v8.super_class = NavControllerAccessibility;
-  v3 = a3;
-  [(NavControllerAccessibility *)&v8 configureToolbar:v3];
-  v4 = [v3 safeValueForKey:{@"_containerViewController", v8.receiver, v8.super_class}];
+  toolbarCopy = toolbar;
+  [(NavControllerAccessibility *)&v8 configureToolbar:toolbarCopy];
+  v4 = [toolbarCopy safeValueForKey:{@"_containerViewController", v8.receiver, v8.super_class}];
 
   v5 = [v4 safeValueForKey:@"sortView"];
   v6 = [v5 safeValueForKey:@"listModeToggle"];
@@ -33,12 +33,12 @@
   [v6 setAccessibilityLabel:v7];
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v7 = MEMORY[0x29EDCA5F8];
-  v8 = v4;
-  v5 = v4;
+  v8 = editingCopy;
+  v5 = editingCopy;
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   v6 = _AXTableOrCollectionView(self);
@@ -53,12 +53,12 @@ id __59__NavControllerAccessibility_searchBarTextDidBeginEditing___block_invoke(
   return objc_msgSendSuper2(&v3, sel_searchBarTextDidBeginEditing_, v1);
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v7 = MEMORY[0x29EDCA5F8];
-  v8 = v4;
-  v5 = v4;
+  v8 = editingCopy;
+  v5 = editingCopy;
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   v6 = _AXTableOrCollectionView(self);
@@ -73,12 +73,12 @@ id __57__NavControllerAccessibility_searchBarTextDidEndEditing___block_invoke(ui
   return objc_msgSendSuper2(&v3, sel_searchBarTextDidEndEditing_, v1);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  barCopy = bar;
+  changeCopy = change;
+  v6 = changeCopy;
+  v7 = barCopy;
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }

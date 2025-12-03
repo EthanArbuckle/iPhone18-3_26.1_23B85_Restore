@@ -1,10 +1,10 @@
 @interface THWSceneController
-- (BOOL)shouldFillSize:(CGSize)a3 withinSize:(CGSize)a4;
+- (BOOL)shouldFillSize:(CGSize)size withinSize:(CGSize)withinSize;
 - (BOOL)userInteractionEnabled;
 - (BOOL)yFovFixed;
 - (CGRect)sceneFrame;
-- (THWSceneController)initWithSceneInfo:(id)a3 frame:(CGRect)a4 delegate:(id)a5;
-- (id)p_loadSceneFromURL:(id)a3;
+- (THWSceneController)initWithSceneInfo:(id)info frame:(CGRect)frame delegate:(id)delegate;
+- (id)p_loadSceneFromURL:(id)l;
 - (id)sceneLayer;
 - (void)dealloc;
 - (void)didAddSceneView;
@@ -14,37 +14,37 @@
 - (void)p_addIdleAnimation;
 - (void)p_cleanupFailedLoad;
 - (void)p_configureDiagnosticOverlayLayer;
-- (void)p_crossfadeLayerOut:(id)a3 fadeLayerIn:(id)a4 completion:(id)a5;
+- (void)p_crossfadeLayerOut:(id)out fadeLayerIn:(id)in completion:(id)completion;
 - (void)p_didCreateView;
-- (void)p_pauseIdleAnimationForRotation:(BOOL)a3;
+- (void)p_pauseIdleAnimationForRotation:(BOOL)rotation;
 - (void)p_setupCameraBehavior;
 - (void)p_setupGestureRecognizers;
-- (void)p_setupSceneViewWithCancelHandler:(id)a3;
+- (void)p_setupSceneViewWithCancelHandler:(id)handler;
 - (void)playIdleAnimation;
 - (void)resumeIdleAnimationIfNecessary;
-- (void)setFrame:(CGRect)a3 overrideDisabled:(BOOL)a4;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setFrame:(CGRect)frame overrideDisabled:(BOOL)disabled;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 - (void)setupSceneView;
 - (void)stopAnimation;
 @end
 
 @implementation THWSceneController
 
-- (THWSceneController)initWithSceneInfo:(id)a3 frame:(CGRect)a4 delegate:(id)a5
+- (THWSceneController)initWithSceneInfo:(id)info frame:(CGRect)frame delegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = THWSceneController;
   v11 = [(THWSceneController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(THWSceneController *)v11 setSceneInfo:a3];
+    [(THWSceneController *)v11 setSceneInfo:info];
     [(THWSceneController *)v12 setSceneFrame:x, y, width, height];
-    [(THWSceneController *)v12 setDelegate:a5];
+    [(THWSceneController *)v12 setDelegate:delegate];
   }
 
   return v12;
@@ -53,9 +53,9 @@
 - (void)stopAnimation
 {
   [(THWSceneView *)[(THWSceneController *)self sceneView] removeCameraAnimation];
-  v3 = [(THWSceneController *)self sceneView];
+  sceneView = [(THWSceneController *)self sceneView];
 
-  [(THWSceneView *)v3 stop:self];
+  [(THWSceneView *)sceneView stop:self];
 }
 
 - (void)dealloc
@@ -80,30 +80,30 @@
     return 0;
   }
 
-  v3 = [(THWSceneController *)self sceneView];
+  sceneView = [(THWSceneController *)self sceneView];
 
-  return [(THWSceneView *)v3 layer];
+  return [(THWSceneView *)sceneView layer];
 }
 
 - (void)p_configureDiagnosticOverlayLayer
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [(NSUserDefaults *)v3 BOOLForKey:kTHSceneWidgetFPSOverlayKey[0]];
-  v5 = [(THWSceneController *)self sceneView];
+  sceneView = [(THWSceneController *)self sceneView];
 
-  [(THWSceneView *)v5 setShowsStatistics:v4];
+  [(THWSceneView *)sceneView setShowsStatistics:v4];
 }
 
 - (void)p_addIdleAnimation
 {
-  v3 = [(THWSceneInfo *)[(THWSceneController *)self sceneInfo] idleAnimationBehavior];
-  if (v3)
+  idleAnimationBehavior = [(THWSceneInfo *)[(THWSceneController *)self sceneInfo] idleAnimationBehavior];
+  if (idleAnimationBehavior)
   {
-    if (v3 == 1)
+    if (idleAnimationBehavior == 1)
     {
-      v4 = [(THWSceneController *)self sceneView];
+      sceneView = [(THWSceneController *)self sceneView];
 
-      [(THWSceneView *)v4 rotateCameraContinuouslyWithEaseIn];
+      [(THWSceneView *)sceneView rotateCameraContinuouslyWithEaseIn];
     }
 
     else
@@ -124,12 +124,12 @@
   return v3 != 0.0;
 }
 
-- (BOOL)shouldFillSize:(CGSize)a3 withinSize:(CGSize)a4
+- (BOOL)shouldFillSize:(CGSize)size withinSize:(CGSize)withinSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = withinSize.height;
+  width = withinSize.width;
+  v6 = size.height;
+  v7 = size.width;
   if (![(THWSceneController *)self sceneView])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -145,7 +145,7 @@
   return result;
 }
 
-- (void)p_pauseIdleAnimationForRotation:(BOOL)a3
+- (void)p_pauseIdleAnimationForRotation:(BOOL)rotation
 {
   if (!+[NSThread isMainThread])
   {
@@ -156,7 +156,7 @@
   {
     [(THWSceneView *)[(THWSceneController *)self sceneView] removeCameraAnimation];
     [(THWSceneView *)[(THWSceneController *)self sceneView] pause:self];
-    if (!a3)
+    if (!rotation)
     {
       [(THWSceneController *)self setUserInterruptedAnimation:1];
     }
@@ -177,9 +177,9 @@
     [(THWSceneController *)self setIsPlaying:1];
     if ([(THWSceneController *)self hasEmbeddedAnimation])
     {
-      v3 = [(THWSceneController *)self sceneView];
+      sceneView = [(THWSceneController *)self sceneView];
 
-      [(THWSceneView *)v3 play:?];
+      [(THWSceneView *)sceneView play:?];
     }
 
     else
@@ -213,22 +213,22 @@
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(THWSceneController *)self sceneView];
+  enabledCopy = enabled;
+  sceneView = [(THWSceneController *)self sceneView];
 
-  [(THWSceneView *)v4 setUserInteractionEnabled:v3];
+  [(THWSceneView *)sceneView setUserInteractionEnabled:enabledCopy];
 }
 
 - (BOOL)userInteractionEnabled
 {
-  v2 = [(THWSceneController *)self sceneView];
+  sceneView = [(THWSceneController *)self sceneView];
 
-  return [(THWSceneView *)v2 isUserInteractionEnabled];
+  return [(THWSceneView *)sceneView isUserInteractionEnabled];
 }
 
-- (void)p_setupSceneViewWithCancelHandler:(id)a3
+- (void)p_setupSceneViewWithCancelHandler:(id)handler
 {
   if (!+[NSThread isMainThread])
   {
@@ -245,13 +245,13 @@
   [-[THWSceneView layer](v8 "layer")];
   [-[THWSceneView layer](v8 "layer")];
   [(THWSceneController *)self setSceneView:v8];
-  v7 = [(THWSceneController *)self scene];
+  scene = [(THWSceneController *)self scene];
   [(THWSceneView *)[(THWSceneController *)self sceneView] setDelegate:self];
-  if (v7)
+  if (scene)
   {
-    [(THWSceneView *)v8 scnWarmUpScene:v7 abortHandler:a3];
+    [(THWSceneView *)v8 scnWarmUpScene:scene abortHandler:handler];
     +[SCNTransaction begin];
-    [(THWSceneView *)v8 setScene:v7];
+    [(THWSceneView *)v8 setScene:scene];
     +[SCNTransaction commit];
   }
 
@@ -277,12 +277,12 @@
   }
 }
 
-- (void)p_crossfadeLayerOut:(id)a3 fadeLayerIn:(id)a4 completion:(id)a5
+- (void)p_crossfadeLayerOut:(id)out fadeLayerIn:(id)in completion:(id)completion
 {
-  if (!a3)
+  if (!out)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a4)
+    if (in)
     {
       goto LABEL_3;
     }
@@ -292,7 +292,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!in)
   {
     goto LABEL_5;
   }
@@ -304,20 +304,20 @@ LABEL_3:
   v12[1] = 3221225472;
   v12[2] = sub_1B7E4C;
   v12[3] = &unk_45B8B0;
-  v12[4] = a5;
+  v12[4] = completion;
   [CATransaction setCompletionBlock:v12];
   v8 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   LODWORD(v9) = 1.0;
   [(CABasicAnimation *)v8 setToValue:[NSNumber numberWithFloat:v9]];
   [(CABasicAnimation *)v8 setRemovedOnCompletion:0];
   [(CABasicAnimation *)v8 setFillMode:kCAFillModeForwards];
-  [a4 addAnimation:v8 forKey:@"opacity"];
+  [in addAnimation:v8 forKey:@"opacity"];
   v10 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   LODWORD(v11) = 0.5;
   [(CABasicAnimation *)v10 setToValue:[NSNumber numberWithFloat:v11]];
   [(CABasicAnimation *)v10 setRemovedOnCompletion:0];
   [(CABasicAnimation *)v10 setFillMode:kCAFillModeForwards];
-  [a3 addAnimation:v10 forKey:@"opacity"];
+  [out addAnimation:v10 forKey:@"opacity"];
   +[CATransaction commit];
 }
 
@@ -329,7 +329,7 @@ LABEL_3:
   v7 = sub_1B7F50;
   v8 = &unk_45AE58;
   v9 = v3;
-  v10 = self;
+  selfCopy = self;
   if (-[THWSceneControllerDelegate sceneControllerShouldAllowCrossfade:](-[THWSceneController delegate](self, "delegate"), "sceneControllerShouldAllowCrossfade:", self) && v3 && ([v3 isHidden] & 1) == 0 && (objc_msgSend(v3, "opacity"), v4 > 0.0))
   {
     [(THWSceneController *)self p_crossfadeLayerOut:v3 fadeLayerIn:[(THWSceneView *)[(THWSceneController *)self sceneView] layer] completion:&v5];
@@ -341,13 +341,13 @@ LABEL_3:
   }
 }
 
-- (void)setFrame:(CGRect)a3 overrideDisabled:(BOOL)a4
+- (void)setFrame:(CGRect)frame overrideDisabled:(BOOL)disabled
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 || !self->_disableFrameUpdate)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (disabled || !self->_disableFrameUpdate)
   {
     [(THWSceneController *)self sceneFrame];
     v22.origin.x = v9;
@@ -361,23 +361,23 @@ LABEL_3:
     if (!CGRectEqualToRect(v21, v22))
     {
       [(THWSceneController *)self setSceneFrame:x, y, width, height];
-      v13 = [(THWSceneController *)self sceneView];
-      if (v13)
+      sceneView = [(THWSceneController *)self sceneView];
+      if (sceneView)
       {
-        v14 = v13;
-        [(THWSceneView *)v13 frame];
-        v17 = [(THWSceneController *)self shouldFillSize:v15 withinSize:v16, width, height];
+        v14 = sceneView;
+        [(THWSceneView *)sceneView frame];
+        height = [(THWSceneController *)self shouldFillSize:v15 withinSize:v16, width, height];
         v18 = &kCAGravityResizeAspectFill;
-        if (!v17)
+        if (!height)
         {
           v18 = &kCAGravityResizeAspect;
         }
 
         [-[THWSceneView layer](v14 "layer")];
         [(THWSceneView *)v14 setFrame:x, y, width, height];
-        v19 = [(THWSceneController *)self sceneView];
+        sceneView2 = [(THWSceneController *)self sceneView];
 
-        [(THWSceneView *)v19 setNeedsDisplay];
+        [(THWSceneView *)sceneView2 setNeedsDisplay];
       }
     }
   }
@@ -437,10 +437,10 @@ LABEL_3:
     }
 
     [(THWSceneController *)self setIsLoading:1];
-    v3 = [(THWSceneController *)self sceneInfo];
-    if (v3)
+    sceneInfo = [(THWSceneController *)self sceneInfo];
+    if (sceneInfo)
     {
-      v4 = [(THWSceneController *)self p_loadSceneFromURL:[(THWSceneInfo *)v3 sourceURL]];
+      v4 = [(THWSceneController *)self p_loadSceneFromURL:[(THWSceneInfo *)sceneInfo sourceURL]];
     }
 
     else
@@ -451,18 +451,18 @@ LABEL_3:
     [(THWSceneController *)self setIsLoading:0];
     [(THWSceneController *)self setIsLoaded:1];
     [(THWSceneController *)self setScene:v4];
-    v8 = [(THWSceneController *)self delegate];
+    delegate = [(THWSceneController *)self delegate];
 
-    [(THWSceneControllerDelegate *)v8 sceneDidLoadForSceneController:self];
+    [(THWSceneControllerDelegate *)delegate sceneDidLoadForSceneController:self];
   }
 }
 
-- (id)p_loadSceneFromURL:(id)a3
+- (id)p_loadSceneFromURL:(id)l
 {
-  if (a3 && ([a3 isFileURL] & 1) != 0)
+  if (l && ([l isFileURL] & 1) != 0)
   {
-    v17 = self;
-    if (!-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a3 path]))
+    selfCopy = self;
+    if (!-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [l path]))
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
@@ -486,16 +486,16 @@ LABEL_3:
     v19[1] = v19;
     v19[2] = 0x2020000000;
     v19[3] = 0;
-    v14 = [[SCNSceneSource alloc] initWithURL:a3 options:v13];
+    v14 = [[SCNSceneSource alloc] initWithURL:l options:v13];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1B88F8;
     v18[3] = &unk_45E978;
     v18[5] = v19;
     v18[6] = v20;
-    v18[4] = v17;
+    v18[4] = selfCopy;
     v15 = [v14 sceneWithOptions:v13 statusHandler:v18];
-    -[THWSceneController setHasEmbeddedAnimation:](v17, "setHasEmbeddedAnimation:", [objc_msgSend(v14 IDsOfEntriesWithClass:{objc_opt_class()), "count"}] != 0);
+    -[THWSceneController setHasEmbeddedAnimation:](selfCopy, "setHasEmbeddedAnimation:", [objc_msgSend(v14 IDsOfEntriesWithClass:{objc_opt_class()), "count"}] != 0);
     _Block_object_dispose(v19, 8);
     _Block_object_dispose(v20, 8);
   }
@@ -511,19 +511,19 @@ LABEL_3:
 
 - (void)p_cleanupFailedLoad
 {
-  v3 = [(THWSceneController *)self sceneView];
+  sceneView = [(THWSceneController *)self sceneView];
 
-  [(THWSceneView *)v3 stop:self];
+  [(THWSceneView *)sceneView stop:self];
 }
 
 - (void)p_setupCameraBehavior
 {
   [(THWSceneController *)self setCameraControlEventHandler:[[THWSCNCameraControlEventHandler alloc] initWithSceneController:self]];
   [(THWSceneView *)[(THWSceneController *)self sceneView] setEventHandler:[(THWSceneController *)self cameraControlEventHandler]];
-  v3 = [(THWSceneInfo *)[(THWSceneController *)self sceneInfo] rotationConstraints];
-  if (v3)
+  rotationConstraints = [(THWSceneInfo *)[(THWSceneController *)self sceneInfo] rotationConstraints];
+  if (rotationConstraints)
   {
-    if (v3 == 2)
+    if (rotationConstraints == 2)
     {
       [(THWSceneView *)[(THWSceneController *)self sceneView] eventHandler];
       objc_opt_class();
@@ -533,7 +533,7 @@ LABEL_3:
       }
     }
 
-    else if (v3 == 1)
+    else if (rotationConstraints == 1)
     {
       [(THWSceneView *)[(THWSceneController *)self sceneView] eventHandler];
       objc_opt_class();
@@ -553,19 +553,19 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(THWSceneView *)[(THWSceneController *)self sceneView] eventHandler];
-    [v4 setEnableInertia:1];
+    eventHandler = [(THWSceneView *)[(THWSceneController *)self sceneView] eventHandler];
+    [eventHandler setEnableInertia:1];
     v5 = *&THWSceneInertialDampingNormal;
 
-    [v4 setFriction:v5];
+    [eventHandler setFriction:v5];
   }
 }
 
 - (void)handleSingleTapInSceneView
 {
-  v3 = [(THWSceneController *)self delegate];
+  delegate = [(THWSceneController *)self delegate];
 
-  [(THWSceneControllerDelegate *)v3 handleSingleTapInSceneForSceneController:self];
+  [(THWSceneControllerDelegate *)delegate handleSingleTapInSceneForSceneController:self];
 }
 
 - (void)p_setupGestureRecognizers
@@ -576,7 +576,7 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v11 = self;
+  selfCopy = self;
   v3 = [-[THWSceneView eventHandler](-[THWSceneController sceneView](self "sceneView")];
   v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
@@ -624,7 +624,7 @@ LABEL_3:
           v10 = TSUDynamicCast();
           if ([v10 numberOfTapsRequired] == &dword_0 + 2)
           {
-            [(UITapGestureRecognizer *)[(THWSceneController *)v11 singleTapGR] requireGestureRecognizerToFail:v10];
+            [(UITapGestureRecognizer *)[(THWSceneController *)selfCopy singleTapGR] requireGestureRecognizerToFail:v10];
           }
         }
 

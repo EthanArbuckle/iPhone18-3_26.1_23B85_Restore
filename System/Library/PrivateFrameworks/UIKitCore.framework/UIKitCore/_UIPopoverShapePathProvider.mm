@@ -1,21 +1,21 @@
 @interface _UIPopoverShapePathProvider
-+ (id)defaultProviderForIdiom:(int64_t)a3;
-- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)a3;
++ (id)defaultProviderForIdiom:(int64_t)idiom;
+- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)parameters;
 @end
 
 @implementation _UIPopoverShapePathProvider
 
-+ (id)defaultProviderForIdiom:(int64_t)a3
++ (id)defaultProviderForIdiom:(int64_t)idiom
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)a3
+- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)parameters
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIPopoverShapePathProvider.m" lineNumber:32 description:@"Calling -generatePopoverPathForParameters: on instance abstract class _UIPopoverShapePathProvider."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPopoverShapePathProvider.m" lineNumber:32 description:@"Calling -generatePopoverPathForParameters: on instance abstract class _UIPopoverShapePathProvider."];
 
   return 0;
 }

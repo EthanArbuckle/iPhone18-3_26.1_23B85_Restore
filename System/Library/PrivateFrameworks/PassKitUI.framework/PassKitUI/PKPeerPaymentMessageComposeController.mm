@@ -1,34 +1,34 @@
 @interface PKPeerPaymentMessageComposeController
-- (PKPeerPaymentMessageComposeController)initWithMessage:(id)a3 recipientAddress:(id)a4;
+- (PKPeerPaymentMessageComposeController)initWithMessage:(id)message recipientAddress:(id)address;
 - (UIViewController)currentHostController;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)presentMessageOverController:(id)a3 presentationHandler:(id)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)presentMessageOverController:(id)controller presentationHandler:(id)handler;
 @end
 
 @implementation PKPeerPaymentMessageComposeController
 
-- (PKPeerPaymentMessageComposeController)initWithMessage:(id)a3 recipientAddress:(id)a4
+- (PKPeerPaymentMessageComposeController)initWithMessage:(id)message recipientAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  addressCopy = address;
   v12.receiver = self;
   v12.super_class = PKPeerPaymentMessageComposeController;
   v9 = [(PKPeerPaymentMessageComposeController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
-    objc_storeStrong(&v10->_recipientAddress, a4);
+    objc_storeStrong(&v9->_message, message);
+    objc_storeStrong(&v10->_recipientAddress, address);
   }
 
   return v10;
 }
 
-- (void)presentMessageOverController:(id)a3 presentationHandler:(id)a4
+- (void)presentMessageOverController:(id)controller presentationHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  objc_storeWeak(&self->_currentHostController, a3);
+  handlerCopy = handler;
+  objc_storeWeak(&self->_currentHostController, controller);
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,8 +50,8 @@
   v12[1] = 3221225472;
   v12[2] = __90__PKPeerPaymentMessageComposeController_presentMessageOverController_presentationHandler___block_invoke;
   v12[3] = &unk_1E8010B50;
-  v13 = v6;
-  v11 = v6;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   [WeakRetained presentViewController:v8 animated:1 completion:v12];
 }
 
@@ -66,17 +66,17 @@ uint64_t __90__PKPeerPaymentMessageComposeController_presentMessageOverControlle
   return result;
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  if (a4 <= 2)
+  controllerCopy = controller;
+  if (result <= 2)
   {
     completionHandler = self->_completionHandler;
     if (completionHandler)
     {
-      v8 = v6;
-      completionHandler[2](completionHandler, a4, 0);
-      v6 = v8;
+      v8 = controllerCopy;
+      completionHandler[2](completionHandler, result, 0);
+      controllerCopy = v8;
     }
   }
 }

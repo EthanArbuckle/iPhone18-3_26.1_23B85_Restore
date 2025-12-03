@@ -1,29 +1,29 @@
 @interface NTKFaceInstanceDescriptor
-- (BOOL)isEqual:(id)a3;
-- (NTKFaceInstanceDescriptor)initWithCoder:(id)a3;
-- (NTKFaceInstanceDescriptor)initWithJSONRepresentation:(id)a3 pairingID:(id)a4 resourceDirectory:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (NTKFaceInstanceDescriptor)initWithCoder:(id)coder;
+- (NTKFaceInstanceDescriptor)initWithJSONRepresentation:(id)representation pairingID:(id)d resourceDirectory:(id)directory;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKFaceInstanceDescriptor
 
-- (NTKFaceInstanceDescriptor)initWithJSONRepresentation:(id)a3 pairingID:(id)a4 resourceDirectory:(id)a5
+- (NTKFaceInstanceDescriptor)initWithJSONRepresentation:(id)representation pairingID:(id)d resourceDirectory:(id)directory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  dCopy = d;
+  directoryCopy = directory;
   v17.receiver = self;
   v17.super_class = NTKFaceInstanceDescriptor;
   v11 = [(NTKFaceInstanceDescriptor *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [representationCopy copy];
     faceJSONRepresentation = v11->_faceJSONRepresentation;
     v11->_faceJSONRepresentation = v12;
 
-    objc_storeStrong(&v11->_pairingID, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_pairingID, d);
+    v14 = [directoryCopy copy];
     resourceDirectory = v11->_resourceDirectory;
     v11->_resourceDirectory = v14;
   }
@@ -33,35 +33,35 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NTKFaceInstanceDescriptor *)self faceJSONRepresentation];
-  v4 = [v3 hash];
-  v5 = [(NTKFaceInstanceDescriptor *)self resourceDirectory];
-  v6 = [v5 hash] ^ v4;
+  faceJSONRepresentation = [(NTKFaceInstanceDescriptor *)self faceJSONRepresentation];
+  v4 = [faceJSONRepresentation hash];
+  resourceDirectory = [(NTKFaceInstanceDescriptor *)self resourceDirectory];
+  v6 = [resourceDirectory hash] ^ v4;
 
-  v7 = [(NTKFaceInstanceDescriptor *)self pairingID];
-  v8 = v6 ^ (16 * [v7 hash]);
+  pairingID = [(NTKFaceInstanceDescriptor *)self pairingID];
+  v8 = v6 ^ (16 * [pairingID hash]);
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 pairingID];
-    v7 = [(NTKFaceInstanceDescriptor *)self pairingID];
-    if (NTKEqualObjects(v7, v6))
+    v5 = equalCopy;
+    pairingID = [v5 pairingID];
+    pairingID2 = [(NTKFaceInstanceDescriptor *)self pairingID];
+    if (NTKEqualObjects(pairingID2, pairingID))
     {
-      v8 = [v5 faceJSONRepresentation];
-      v9 = [(NTKFaceInstanceDescriptor *)self faceJSONRepresentation];
-      if (NTKEqualObjects(v9, v8))
+      faceJSONRepresentation = [v5 faceJSONRepresentation];
+      faceJSONRepresentation2 = [(NTKFaceInstanceDescriptor *)self faceJSONRepresentation];
+      if (NTKEqualObjects(faceJSONRepresentation2, faceJSONRepresentation))
       {
-        v10 = [v5 resourceDirectory];
-        v11 = [(NTKFaceInstanceDescriptor *)self resourceDirectory];
-        v12 = NTKEqualObjects(v11, v10);
+        resourceDirectory = [v5 resourceDirectory];
+        resourceDirectory2 = [(NTKFaceInstanceDescriptor *)self resourceDirectory];
+        v12 = NTKEqualObjects(resourceDirectory2, resourceDirectory);
       }
 
       else
@@ -84,25 +84,25 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NTKFaceInstanceDescriptor *)self faceJSONRepresentation];
-  [v4 encodeObject:v5 forKey:@"faceJSONRepresentation"];
+  coderCopy = coder;
+  faceJSONRepresentation = [(NTKFaceInstanceDescriptor *)self faceJSONRepresentation];
+  [coderCopy encodeObject:faceJSONRepresentation forKey:@"faceJSONRepresentation"];
 
-  v6 = [(NTKFaceInstanceDescriptor *)self resourceDirectory];
-  [v4 encodeObject:v6 forKey:@"resourceDirectory"];
+  resourceDirectory = [(NTKFaceInstanceDescriptor *)self resourceDirectory];
+  [coderCopy encodeObject:resourceDirectory forKey:@"resourceDirectory"];
 
-  v7 = [(NTKFaceInstanceDescriptor *)self pairingID];
-  [v4 encodeObject:v7 forKey:@"nrDeviceUUID"];
+  pairingID = [(NTKFaceInstanceDescriptor *)self pairingID];
+  [coderCopy encodeObject:pairingID forKey:@"nrDeviceUUID"];
 }
 
-- (NTKFaceInstanceDescriptor)initWithCoder:(id)a3
+- (NTKFaceInstanceDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceJSONRepresentation"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceUUID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceDirectory"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceJSONRepresentation"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceUUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceDirectory"];
 
   v8 = [(NTKFaceInstanceDescriptor *)self initWithJSONRepresentation:v5 pairingID:v6 resourceDirectory:v7];
   return v8;

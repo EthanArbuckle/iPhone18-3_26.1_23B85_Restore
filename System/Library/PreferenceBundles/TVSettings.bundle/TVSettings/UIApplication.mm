@@ -10,8 +10,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(UIApplication *)self connectedScenes];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  connectedScenes = [(UIApplication *)self connectedScenes];
+  v3 = [connectedScenes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -23,13 +23,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) tvSettings_isNonLightningSecondScreenScene];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [connectedScenes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);

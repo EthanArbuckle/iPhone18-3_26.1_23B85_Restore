@@ -1,75 +1,75 @@
 @interface ARVideoFormat
-+ (BOOL)isCaptureDeviceTypeAvailable:(id)a3 position:(int64_t)a4;
++ (BOOL)isCaptureDeviceTypeAvailable:(id)available position:(int64_t)position;
 + (CGSize)hiResVideoDimensions;
-+ (id)_querySupportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 videoBinned:(BOOL)a5 frameRate:(double)a6;
-+ (id)_supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 resolutions:(id)a5 frameRatesByPowerUsage:(id)a6 videoBinned:(BOOL)a7 pixelFormat:(unsigned int)a8 needsHDRSupport:(BOOL)a9;
-+ (id)bestDepthFormatForDeviceFormat:(id)a3;
-+ (id)bestTimeOfFlightFormatForDevicePosition:(int64_t)a3 depthSensorNumberOfPointsMode:(int64_t)a4 frameRates:(id)a5;
-+ (id)bestVideoFormatForDevicePosition:(int64_t)a3 deviceType:(id)a4 resolution:(id)a5 frameRate:(double)a6 videoBinned:(BOOL)a7 needsHDRSupport:(BOOL)a8 needsMultiCamSupport:(BOOL)a9 pixelFormat:(unsigned int)a10;
-+ (id)bestVideoFormatForDevicePosition:(int64_t)a3 deviceType:(id)a4 resolution:(id)a5 frameRates:(id)a6 videoBinned:(BOOL)a7 needsHDRSupport:(BOOL)a8 pixelFormat:(unsigned int)a9;
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4;
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 frameRate:(double)a5;
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 videoBinned:(BOOL)a5;
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 videoBinned:(BOOL)a5 frameRate:(double)a6;
++ (id)_querySupportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type videoBinned:(BOOL)binned frameRate:(double)rate;
++ (id)_supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type resolutions:(id)resolutions frameRatesByPowerUsage:(id)usage videoBinned:(BOOL)binned pixelFormat:(unsigned int)format needsHDRSupport:(BOOL)support;
++ (id)bestDepthFormatForDeviceFormat:(id)format;
++ (id)bestTimeOfFlightFormatForDevicePosition:(int64_t)position depthSensorNumberOfPointsMode:(int64_t)mode frameRates:(id)rates;
++ (id)bestVideoFormatForDevicePosition:(int64_t)position deviceType:(id)type resolution:(id)resolution frameRate:(double)rate videoBinned:(BOOL)binned needsHDRSupport:(BOOL)support needsMultiCamSupport:(BOOL)camSupport pixelFormat:(unsigned int)self0;
++ (id)bestVideoFormatForDevicePosition:(int64_t)position deviceType:(id)type resolution:(id)resolution frameRates:(id)rates videoBinned:(BOOL)binned needsHDRSupport:(BOOL)support pixelFormat:(unsigned int)format;
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type;
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type frameRate:(double)rate;
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type videoBinned:(BOOL)binned;
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type videoBinned:(BOOL)binned frameRate:(double)rate;
 + (id)supportedVideoFormatsForHiResOrX420;
-+ (id)supportedVideoFormatsForHiResOrX420ForDevicePosition:(int64_t)a3 deviceType:(id)a4;
++ (id)supportedVideoFormatsForHiResOrX420ForDevicePosition:(int64_t)position deviceType:(id)type;
 + (id)supportedVideoFormatsForStillImageCapture;
-+ (id)supportedVideoFormatsForStillImageCaptureForDevicePosition:(int64_t)a3 deviceType:(id)a4;
++ (id)supportedVideoFormatsForStillImageCaptureForDevicePosition:(int64_t)position deviceType:(id)type;
 + (int64_t)photoQualityPrioritizationOverride;
 - ($2825F4736939C4A6D3AD43837233062D)maxPhotoDimensions;
-- (ARVideoFormat)initWithCaptureDevice:(id)a3 format:(id)a4;
-- (ARVideoFormat)initWithCoder:(id)a3;
-- (ARVideoFormat)initWithImageResolution:(CGSize)a3 captureDevicePosition:(int64_t)a4 captureDeviceType:(id)a5 frameRatesByPowerUsage:(id)a6 pixelFormat:(unsigned int)a7;
-- (ARVideoFormat)videoFormatWithDepthDataFormat:(id)a3;
+- (ARVideoFormat)initWithCaptureDevice:(id)device format:(id)format;
+- (ARVideoFormat)initWithCoder:(id)coder;
+- (ARVideoFormat)initWithImageResolution:(CGSize)resolution captureDevicePosition:(int64_t)position captureDeviceType:(id)type frameRatesByPowerUsage:(id)usage pixelFormat:(unsigned int)format;
+- (ARVideoFormat)videoFormatWithDepthDataFormat:(id)format;
 - (ARVideoFormat)videoFormatWithUnthrottledLowPowerUsageFramerate;
 - (AVCapturePhotoSettings)defaultPhotoSettings;
 - (BOOL)has4KVideoResolution;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRecommendedForHighResolutionFrameCapturing;
 - (BOOL)isVideoHDRSupported;
 - (BOOL)isX420PixelFormat;
 - (CGSize)imageResolution;
 - (NSInteger)framesPerSecond;
 - (NSString)pixelFormat;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)defaultColorSpace;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARVideoFormat
 
-- (ARVideoFormat)initWithCaptureDevice:(id)a3 format:(id)a4
+- (ARVideoFormat)initWithCaptureDevice:(id)device format:(id)format
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  formatCopy = format;
   v15.receiver = self;
   v15.super_class = ARVideoFormat;
   v9 = [(ARVideoFormat *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_deviceFormat, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_deviceFormat, format);
     frameRatesByPowerUsage = v10->_frameRatesByPowerUsage;
     v10->_frameRatesByPowerUsage = &unk_1F42590D0;
 
-    v10->_captureDevicePosition = [v7 position];
-    v12 = [v7 deviceType];
+    v10->_captureDevicePosition = [deviceCopy position];
+    deviceType = [deviceCopy deviceType];
     captureDeviceType = v10->_captureDeviceType;
-    v10->_captureDeviceType = v12;
+    v10->_captureDeviceType = deviceType;
   }
 
   return v10;
 }
 
-- (ARVideoFormat)initWithImageResolution:(CGSize)a3 captureDevicePosition:(int64_t)a4 captureDeviceType:(id)a5 frameRatesByPowerUsage:(id)a6 pixelFormat:(unsigned int)a7
+- (ARVideoFormat)initWithImageResolution:(CGSize)resolution captureDevicePosition:(int64_t)position captureDeviceType:(id)type frameRatesByPowerUsage:(id)usage pixelFormat:(unsigned int)format
 {
-  height = a3.height;
-  width = a3.width;
-  v14 = a5;
-  v15 = a6;
+  height = resolution.height;
+  width = resolution.width;
+  typeCopy = type;
+  usageCopy = usage;
   v19.receiver = self;
   v19.super_class = ARVideoFormat;
   v16 = [(ARVideoFormat *)&v19 init];
@@ -78,25 +78,25 @@
   {
     v16->_imageResolution.width = width;
     v16->_imageResolution.height = height;
-    objc_storeStrong(&v16->_frameRatesByPowerUsage, a6);
-    v17->_captureDevicePosition = a4;
-    objc_storeStrong(&v17->_captureDeviceType, a5);
-    v17->_pixelFormat = a7;
+    objc_storeStrong(&v16->_frameRatesByPowerUsage, usage);
+    v17->_captureDevicePosition = position;
+    objc_storeStrong(&v17->_captureDeviceType, type);
+    v17->_pixelFormat = format;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     objc_storeStrong((v5 + 8), self->_device);
     objc_storeStrong((v6 + 16), self->_deviceFormat);
     objc_storeStrong((v6 + 72), self->_depthDataFormat);
-    v7 = [(NSArray *)self->_frameRatesByPowerUsage copyWithZone:a3];
+    v7 = [(NSArray *)self->_frameRatesByPowerUsage copyWithZone:zone];
     v8 = *(v6 + 64);
     *(v6 + 64) = v7;
 
@@ -109,44 +109,44 @@
   return v6;
 }
 
-- (ARVideoFormat)initWithCoder:(id)a3
+- (ARVideoFormat)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ARVideoFormat;
   v5 = [(ARVideoFormat *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"frameRatesByPowerUsage"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"frameRatesByPowerUsage"];
     frameRatesByPowerUsage = v5->_frameRatesByPowerUsage;
     v5->_frameRatesByPowerUsage = v6;
 
-    [v4 decodeSizeForKey:@"imageResolution"];
+    [coderCopy decodeSizeForKey:@"imageResolution"];
     v5->_imageResolution.width = v8;
     v5->_imageResolution.height = v9;
-    v5->_captureDevicePosition = [v4 decodeIntegerForKey:@"captureDevicePosition"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"captureDeviceType"];
+    v5->_captureDevicePosition = [coderCopy decodeIntegerForKey:@"captureDevicePosition"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"captureDeviceType"];
     captureDeviceType = v5->_captureDeviceType;
     v5->_captureDeviceType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pixelFormat"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pixelFormat"];
     v5->_pixelFormat = [v12 unsignedIntValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   frameRatesByPowerUsage = self->_frameRatesByPowerUsage;
-  v5 = a3;
-  [v5 encodeObject:frameRatesByPowerUsage forKey:@"frameRatesByPowerUsage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:frameRatesByPowerUsage forKey:@"frameRatesByPowerUsage"];
   [(ARVideoFormat *)self imageResolution];
-  [v5 encodeSize:@"imageResolution" forKey:?];
-  [v5 encodeInteger:self->_captureDevicePosition forKey:@"captureDevicePosition"];
-  [v5 encodeObject:self->_captureDeviceType forKey:@"captureDeviceType"];
+  [coderCopy encodeSize:@"imageResolution" forKey:?];
+  [coderCopy encodeInteger:self->_captureDevicePosition forKey:@"captureDevicePosition"];
+  [coderCopy encodeObject:self->_captureDeviceType forKey:@"captureDeviceType"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pixelFormat];
-  [v5 encodeObject:v6 forKey:@"pixelFormat"];
+  [coderCopy encodeObject:v6 forKey:@"pixelFormat"];
 }
 
 - (unint64_t)hash
@@ -160,12 +160,12 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_device == *(v5 + 1) && self->_deviceFormat == *(v5 + 2) && self->_depthDataFormat == *(v5 + 9) && [(NSArray *)self->_frameRatesByPowerUsage isEqualToArray:*(v5 + 8)])
     {
@@ -183,8 +183,8 @@
       if (captureDevicePosition == [v6 captureDevicePosition])
       {
         captureDeviceType = self->_captureDeviceType;
-        v16 = [v6 captureDeviceType];
-        if ([(NSString *)captureDeviceType isEqual:v16])
+        captureDeviceType = [v6 captureDeviceType];
+        if ([(NSString *)captureDeviceType isEqual:captureDeviceType])
         {
           v12 = self->_pixelFormat == v6[6];
         }
@@ -212,10 +212,10 @@ LABEL_14:
 
 - (NSInteger)framesPerSecond
 {
-  v2 = [(NSArray *)self->_frameRatesByPowerUsage firstObject];
-  v3 = [v2 integerValue];
+  firstObject = [(NSArray *)self->_frameRatesByPowerUsage firstObject];
+  integerValue = [firstObject integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)description
@@ -226,10 +226,10 @@ LABEL_14:
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [(ARVideoFormat *)self pixelFormat];
-  v11 = [(ARVideoFormat *)self framesPerSecond];
-  v12 = [(ARVideoFormat *)self captureDeviceType];
-  v13 = [v7 stringWithFormat:@"<%@: %p imageResolution=(%.0f, %.0f) pixelFormat=(%@) framesPerSecond=(%li) captureDeviceType=%@ captureDevicePosition=(%li)>", v9, self, v4, v6, v10, v11, v12, -[ARVideoFormat captureDevicePosition](self, "captureDevicePosition")];
+  pixelFormat = [(ARVideoFormat *)self pixelFormat];
+  framesPerSecond = [(ARVideoFormat *)self framesPerSecond];
+  captureDeviceType = [(ARVideoFormat *)self captureDeviceType];
+  v13 = [v7 stringWithFormat:@"<%@: %p imageResolution=(%.0f, %.0f) pixelFormat=(%@) framesPerSecond=(%li) captureDeviceType=%@ captureDevicePosition=(%li)>", v9, self, v4, v6, pixelFormat, framesPerSecond, captureDeviceType, -[ARVideoFormat captureDevicePosition](self, "captureDevicePosition")];
 
   return v13;
 }
@@ -266,37 +266,37 @@ LABEL_14:
 
 - (BOOL)isRecommendedForHighResolutionFrameCapturing
 {
-  v3 = [(ARVideoFormat *)self captureDeviceType];
-  if ([v3 isEqualToString:*MEMORY[0x1E6986950]])
+  captureDeviceType = [(ARVideoFormat *)self captureDeviceType];
+  if ([captureDeviceType isEqualToString:*MEMORY[0x1E6986950]])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(ARVideoFormat *)self captureDeviceType];
-    if ([v5 isEqualToString:*MEMORY[0x1E6986908]])
+    captureDeviceType2 = [(ARVideoFormat *)self captureDeviceType];
+    if ([captureDeviceType2 isEqualToString:*MEMORY[0x1E6986908]])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(ARVideoFormat *)self captureDeviceType];
-      v7 = [v6 isEqualToString:*MEMORY[0x1E6986938]];
+      captureDeviceType3 = [(ARVideoFormat *)self captureDeviceType];
+      v7 = [captureDeviceType3 isEqualToString:*MEMORY[0x1E6986938]];
 
       v4 = v7 ^ 1;
     }
   }
 
-  LOBYTE(v3) = 0;
+  LOBYTE(captureDeviceType) = 0;
   if ([(ARVideoFormat *)self captureDevicePosition]== AVCaptureDevicePositionBack && (v4 & 1) == 0)
   {
-    v8 = [(ARVideoFormat *)self deviceFormat];
-    LODWORD(v3) = [v8 isVideoBinned] ^ 1;
+    deviceFormat = [(ARVideoFormat *)self deviceFormat];
+    LODWORD(captureDeviceType) = [deviceFormat isVideoBinned] ^ 1;
   }
 
-  return v3;
+  return captureDeviceType;
 }
 
 - (AVCapturePhotoSettings)defaultPhotoSettings
@@ -323,8 +323,8 @@ LABEL_14:
 - ($2825F4736939C4A6D3AD43837233062D)maxPhotoDimensions
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(AVCaptureDeviceFormat *)self->_deviceFormat supportedMaxPhotoDimensions];
-  v4 = [v3 count];
+  supportedMaxPhotoDimensions = [(AVCaptureDeviceFormat *)self->_deviceFormat supportedMaxPhotoDimensions];
+  v4 = [supportedMaxPhotoDimensions count];
 
   if (!v4)
   {
@@ -346,7 +346,7 @@ LABEL_14:
         *buf = 138543874;
         v31 = v9;
         v32 = 2048;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2112;
         v35 = v10;
         v11 = "%{public}@ <%p>: Returning {0, 0} for maxPhotoDimensions because the supportedMaxPhotoDimensions array is empty for video format: %@";
@@ -365,7 +365,7 @@ LABEL_9:
       *buf = 138543874;
       v31 = v9;
       v32 = 2048;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = v10;
       v11 = "Error: %{public}@ <%p>: Returning {0, 0} for maxPhotoDimensions because the supportedMaxPhotoDimensions array is empty for video format: %@";
@@ -379,8 +379,8 @@ LABEL_9:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = [(AVCaptureDeviceFormat *)self->_deviceFormat supportedMaxPhotoDimensions];
-  v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  supportedMaxPhotoDimensions2 = [(AVCaptureDeviceFormat *)self->_deviceFormat supportedMaxPhotoDimensions];
+  v16 = [supportedMaxPhotoDimensions2 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v16)
   {
     LODWORD(v17) = 0;
@@ -392,14 +392,14 @@ LABEL_9:
       {
         if (*v26 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(supportedMaxPhotoDimensions2);
         }
 
-        v21 = [*(*(&v25 + 1) + 8 * i) CMVideoDimensionsValue];
-        v23 = v18 < v21 || v17 < SHIDWORD(v21);
+        cMVideoDimensionsValue = [*(*(&v25 + 1) + 8 * i) CMVideoDimensionsValue];
+        v23 = v18 < cMVideoDimensionsValue || v17 < SHIDWORD(cMVideoDimensionsValue);
         if (v23)
         {
-          v17 = HIDWORD(v21);
+          v17 = HIDWORD(cMVideoDimensionsValue);
         }
 
         else
@@ -409,7 +409,7 @@ LABEL_9:
 
         if (v23)
         {
-          v18 = v21;
+          v18 = cMVideoDimensionsValue;
         }
 
         else
@@ -418,7 +418,7 @@ LABEL_9:
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v16 = [supportedMaxPhotoDimensions2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v16);
@@ -461,20 +461,20 @@ void __51__ARVideoFormat_photoQualityPrioritizationOverride__block_invoke()
 
 - (int64_t)defaultColorSpace
 {
-  v2 = [(ARVideoFormat *)self deviceFormat];
-  v3 = [v2 supportedColorSpaces];
-  v4 = [v3 firstObject];
+  deviceFormat = [(ARVideoFormat *)self deviceFormat];
+  supportedColorSpaces = [deviceFormat supportedColorSpaces];
+  firstObject = [supportedColorSpaces firstObject];
 
-  v5 = [v4 integerValue];
-  return v5;
+  integerValue = [firstObject integerValue];
+  return integerValue;
 }
 
 - (BOOL)isVideoHDRSupported
 {
-  v2 = [(ARVideoFormat *)self deviceFormat];
-  v3 = [v2 isVideoHDRSupported];
+  deviceFormat = [(ARVideoFormat *)self deviceFormat];
+  isVideoHDRSupported = [deviceFormat isVideoHDRSupported];
 
-  return v3;
+  return isVideoHDRSupported;
 }
 
 - (NSString)pixelFormat
@@ -497,9 +497,9 @@ void __51__ARVideoFormat_photoQualityPrioritizationOverride__block_invoke()
 
 - (BOOL)isX420PixelFormat
 {
-  v2 = [(ARVideoFormat *)self pixelFormat];
+  pixelFormat = [(ARVideoFormat *)self pixelFormat];
   v3 = AROSTypeToString(0x78343230u);
-  v4 = [v2 isEqualToString:v3];
+  v4 = [pixelFormat isEqualToString:v3];
 
   return v4;
 }
@@ -529,31 +529,31 @@ void __51__ARVideoFormat_photoQualityPrioritizationOverride__block_invoke()
   return v3;
 }
 
-- (ARVideoFormat)videoFormatWithDepthDataFormat:(id)a3
+- (ARVideoFormat)videoFormatWithDepthDataFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5 = [(ARVideoFormat *)self copy];
   v6 = v5[9];
-  v5[9] = v4;
+  v5[9] = formatCopy;
 
   return v5;
 }
 
-+ (id)bestVideoFormatForDevicePosition:(int64_t)a3 deviceType:(id)a4 resolution:(id)a5 frameRate:(double)a6 videoBinned:(BOOL)a7 needsHDRSupport:(BOOL)a8 needsMultiCamSupport:(BOOL)a9 pixelFormat:(unsigned int)a10
++ (id)bestVideoFormatForDevicePosition:(int64_t)position deviceType:(id)type resolution:(id)resolution frameRate:(double)rate videoBinned:(BOOL)binned needsHDRSupport:(BOOL)support needsMultiCamSupport:(BOOL)camSupport pixelFormat:(unsigned int)self0
 {
-  v10 = a9;
-  v69 = a7;
-  v70 = a8;
+  camSupportCopy = camSupport;
+  binnedCopy = binned;
+  supportCopy = support;
   v94[1] = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  typeCopy = type;
   v15 = MEMORY[0x1E69870A8];
-  v71 = v14;
-  v94[0] = v14;
+  v71 = typeCopy;
+  v94[0] = typeCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:1];
-  v17 = [v15 discoverySessionWithDeviceTypes:v16 mediaType:*MEMORY[0x1E6987608] position:a3];
+  v17 = [v15 discoverySessionWithDeviceTypes:v16 mediaType:*MEMORY[0x1E6987608] position:position];
 
-  v18 = [v17 devices];
-  if (![v18 count])
+  devices = [v17 devices];
+  if (![devices count])
   {
     if (ARShouldUseLogTypeError_onceToken_36 != -1)
     {
@@ -569,11 +569,11 @@ void __51__ARVideoFormat_photoQualityPrioritizationOverride__block_invoke()
       {
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
-        v24 = NSStringFromAVCaptureDevicePosition(a3);
+        v24 = NSStringFromAVCaptureDevicePosition(position);
         *buf = 138544130;
         v87 = v23;
         v88 = 2048;
-        v89 = a1;
+        selfCopy2 = self;
         v90 = 2114;
         v91 = v71;
         v92 = 2114;
@@ -590,11 +590,11 @@ LABEL_53:
     {
       v59 = objc_opt_class();
       v23 = NSStringFromClass(v59);
-      v24 = NSStringFromAVCaptureDevicePosition(a3);
+      v24 = NSStringFromAVCaptureDevicePosition(position);
       *buf = 138544130;
       v87 = v23;
       v88 = 2048;
-      v89 = a1;
+      selfCopy2 = self;
       v90 = 2114;
       v91 = v71;
       v92 = 2114;
@@ -609,7 +609,7 @@ LABEL_53:
     goto LABEL_57;
   }
 
-  if (v10)
+  if (camSupportCopy)
   {
     if (ARDeviceSupportsMulticamMode() && (ARUserDefaultsMulticamModeEnabled() & 1) != 0)
     {
@@ -627,15 +627,15 @@ LABEL_53:
     v67 = 0;
   }
 
-  v61 = v18;
+  v61 = devices;
   v62 = v17;
-  [v18 firstObject];
+  [devices firstObject];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v63 = v82 = 0u;
-  v28 = [v63 formats];
-  v72 = [v28 countByEnumeratingWithState:&v79 objects:v85 count:16];
+  formats = [v63 formats];
+  v72 = [formats countByEnumeratingWithState:&v79 objects:v85 count:16];
   if (!v72)
   {
     v31 = 0;
@@ -647,7 +647,7 @@ LABEL_50:
     goto LABEL_56;
   }
 
-  obj = v28;
+  obj = formats;
   v29 = 0;
   v30 = 0;
   v31 = 0;
@@ -664,24 +664,24 @@ LABEL_50:
 
       v33 = *(*(&v79 + 1) + 8 * i);
       Dimensions = CMVideoFormatDescriptionGetDimensions([v33 formatDescription]);
-      if (v70)
+      if (supportCopy)
       {
-        v35 = [v33 isVideoHDRSupported];
+        isVideoHDRSupported = [v33 isVideoHDRSupported];
       }
 
       else
       {
-        v35 = 1;
+        isVideoHDRSupported = 1;
       }
 
-      v36 = CMFormatDescriptionGetMediaSubType([v33 formatDescription]) == a10;
-      v37 = v36 & ~([v33 isVideoBinned] ^ v69);
-      if (Dimensions != a5)
+      v36 = CMFormatDescriptionGetMediaSubType([v33 formatDescription]) == format;
+      v37 = v36 & ~([v33 isVideoBinned] ^ binnedCopy);
+      if (Dimensions != resolution)
       {
         v37 = 0;
       }
 
-      v38 = v37 & v35;
+      v38 = v37 & isVideoHDRSupported;
       if (v67)
       {
         v38 &= [v33 isMultiCamSupported];
@@ -719,8 +719,8 @@ LABEL_50:
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v41 = [v33 videoSupportedFrameRateRanges];
-      v42 = [v41 countByEnumeratingWithState:&v75 objects:v84 count:16];
+      videoSupportedFrameRateRanges = [v33 videoSupportedFrameRateRanges];
+      v42 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v75 objects:v84 count:16];
       if (v42)
       {
         v43 = v42;
@@ -731,12 +731,12 @@ LABEL_50:
           {
             if (*v76 != v44)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(videoSupportedFrameRateRanges);
             }
 
             v46 = *(*(&v75 + 1) + 8 * j);
             [v46 maxFrameRate];
-            if (v47 >= a6)
+            if (v47 >= rate)
             {
               [v46 maxFrameRate];
               if (v48 <= 120.0)
@@ -753,7 +753,7 @@ LABEL_50:
             }
           }
 
-          v43 = [v41 countByEnumeratingWithState:&v75 objects:v84 count:16];
+          v43 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v75 objects:v84 count:16];
         }
 
         while (v43);
@@ -772,11 +772,11 @@ LABEL_50:
   {
     v54 = [[ARVideoFormat alloc] initWithCaptureDevice:v63 format:v31];
     objc_storeStrong(&v54->_depthDataFormat, v30);
-    v28 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-    v83[0] = v28;
-    v55 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+    formats = [MEMORY[0x1E696AD98] numberWithDouble:rate];
+    v83[0] = formats;
+    v55 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
     v83[1] = v55;
-    v56 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+    v56 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
     v83[2] = v56;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:3];
     frameRatesByPowerUsage = v54->_frameRatesByPowerUsage;
@@ -788,7 +788,7 @@ LABEL_50:
   v54 = 0;
 LABEL_56:
 
-  v18 = v61;
+  devices = v61;
   v17 = v62;
   v21 = v63;
 LABEL_57:
@@ -796,52 +796,52 @@ LABEL_57:
   return v54;
 }
 
-+ (id)bestVideoFormatForDevicePosition:(int64_t)a3 deviceType:(id)a4 resolution:(id)a5 frameRates:(id)a6 videoBinned:(BOOL)a7 needsHDRSupport:(BOOL)a8 pixelFormat:(unsigned int)a9
++ (id)bestVideoFormatForDevicePosition:(int64_t)position deviceType:(id)type resolution:(id)resolution frameRates:(id)rates videoBinned:(BOOL)binned needsHDRSupport:(BOOL)support pixelFormat:(unsigned int)format
 {
-  v9 = a8;
-  v10 = a7;
-  v16 = a6;
-  v17 = a4;
-  v18 = [v16 firstObject];
-  [v18 doubleValue];
-  LODWORD(v21) = a9;
-  v19 = [a1 bestVideoFormatForDevicePosition:a3 deviceType:v17 resolution:a5 frameRate:v10 videoBinned:v9 needsHDRSupport:1 needsMultiCamSupport:v21 pixelFormat:?];
+  supportCopy = support;
+  binnedCopy = binned;
+  ratesCopy = rates;
+  typeCopy = type;
+  firstObject = [ratesCopy firstObject];
+  [firstObject doubleValue];
+  LODWORD(v21) = format;
+  v19 = [self bestVideoFormatForDevicePosition:position deviceType:typeCopy resolution:resolution frameRate:binnedCopy videoBinned:supportCopy needsHDRSupport:1 needsMultiCamSupport:v21 pixelFormat:?];
 
   if (v19)
   {
-    objc_storeStrong(v19 + 8, a6);
+    objc_storeStrong(v19 + 8, rates);
   }
 
   return v19;
 }
 
-+ (id)bestTimeOfFlightFormatForDevicePosition:(int64_t)a3 depthSensorNumberOfPointsMode:(int64_t)a4 frameRates:(id)a5
++ (id)bestTimeOfFlightFormatForDevicePosition:(int64_t)position depthSensorNumberOfPointsMode:(int64_t)mode frameRates:(id)rates
 {
   v109 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  ratesCopy = rates;
   v8 = *MEMORY[0x1E6986930];
-  v77 = a1;
-  if (v7)
+  selfCopy = self;
+  if (ratesCopy)
   {
     v9 = _ARLogSensor_10();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [(NSArray *)v7 objectAtIndexedSubscript:0];
+      v12 = [(NSArray *)ratesCopy objectAtIndexedSubscript:0];
       [v12 doubleValue];
       v14 = v13;
-      v15 = [(NSArray *)v7 objectAtIndexedSubscript:1];
+      v15 = [(NSArray *)ratesCopy objectAtIndexedSubscript:1];
       [v15 doubleValue];
       v17 = v16;
-      v18 = [(NSArray *)v7 objectAtIndexedSubscript:2];
+      v18 = [(NSArray *)ratesCopy objectAtIndexedSubscript:2];
       [v18 doubleValue];
       *buf = 138544386;
       v100 = v11;
       v101 = 2048;
-      v102 = a1;
+      selfCopy2 = self;
       v103 = 2048;
-      v104 = v14;
+      positionCopy2 = v14;
       v105 = 2048;
       v106 = v17;
       v107 = 2048;
@@ -852,16 +852,16 @@ LABEL_57:
 
   else
   {
-    v7 = &unk_1F4259118;
+    ratesCopy = &unk_1F4259118;
   }
 
   v20 = MEMORY[0x1E69870A8];
   v98 = v8;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v98 count:1];
-  v22 = [v20 discoverySessionWithDeviceTypes:v21 mediaType:*MEMORY[0x1E6986FA8] position:a3];
+  v22 = [v20 discoverySessionWithDeviceTypes:v21 mediaType:*MEMORY[0x1E6986FA8] position:position];
 
-  v23 = [v22 devices];
-  if (![v23 count])
+  devices = [v22 devices];
+  if (![devices count])
   {
     if (ARShouldUseLogTypeError_onceToken_36 != -1)
     {
@@ -880,9 +880,9 @@ LABEL_57:
         *buf = 138543874;
         v100 = v68;
         v101 = 2048;
-        v102 = v77;
+        selfCopy2 = selfCopy;
         v103 = 2048;
-        v104 = a3;
+        positionCopy2 = position;
         v69 = "%{public}@ <%p>: No point cloud capture device found. (%ld)";
         v70 = v66;
         v71 = OS_LOG_TYPE_ERROR;
@@ -898,9 +898,9 @@ LABEL_48:
       *buf = 138543874;
       v100 = v68;
       v101 = 2048;
-      v102 = v77;
+      selfCopy2 = selfCopy;
       v103 = 2048;
-      v104 = a3;
+      positionCopy2 = position;
       v69 = "Error: %{public}@ <%p>: No point cloud capture device found. (%ld)";
       v70 = v66;
       v71 = OS_LOG_TYPE_INFO;
@@ -911,8 +911,8 @@ LABEL_48:
     goto LABEL_52;
   }
 
-  v78 = v23;
-  [v23 firstObject];
+  v78 = devices;
+  [devices firstObject];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
@@ -923,7 +923,7 @@ LABEL_48:
   {
     v26 = v25;
     v74 = v22;
-    v75 = v7;
+    v75 = ratesCopy;
     v76 = v8;
     v86 = 0;
     v27 = 0;
@@ -956,7 +956,7 @@ LABEL_48:
 
           v87 = 0u;
           v88 = 0u;
-          if (a4 == 1)
+          if (mode == 1)
           {
             v34 = NumberOfPoints > v29;
           }
@@ -1034,7 +1034,7 @@ LABEL_24:
     if (!v27)
     {
       v63 = 0;
-      v7 = v75;
+      ratesCopy = v75;
       v8 = v76;
       v22 = v74;
       goto LABEL_51;
@@ -1066,9 +1066,9 @@ LABEL_24:
         *buf = 138544130;
         v100 = v55;
         v101 = 2048;
-        v102 = v77;
+        selfCopy2 = selfCopy;
         v103 = 2048;
-        v104 = v58;
+        positionCopy2 = v58;
         v105 = 2048;
         v106 = v59;
         _os_log_impl(&dword_1C241C000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Requested time of flight framerate: %f. Returning best available framerate: %f.", buf, 0x2Au);
@@ -1085,9 +1085,9 @@ LABEL_24:
     }
 
     v63 = [[ARVideoFormat alloc] initWithCaptureDevice:v79 format:v27];
-    v7 = v47;
+    ratesCopy = v47;
     frameRatesByPowerUsage = v63->_frameRatesByPowerUsage;
-    v63->_frameRatesByPowerUsage = v7;
+    v63->_frameRatesByPowerUsage = ratesCopy;
   }
 
   else
@@ -1098,54 +1098,54 @@ LABEL_24:
   }
 
 LABEL_51:
-  v23 = v78;
+  devices = v78;
   v66 = v79;
 LABEL_52:
 
   return v63;
 }
 
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type
 {
-  v5 = a4;
-  v6 = [objc_opt_class() supportedVideoFormatsForDevicePosition:a3 deviceType:v5 frameRate:0.0];
+  typeCopy = type;
+  v6 = [objc_opt_class() supportedVideoFormatsForDevicePosition:position deviceType:typeCopy frameRate:0.0];
 
   return v6;
 }
 
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 videoBinned:(BOOL)a5
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type videoBinned:(BOOL)binned
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [objc_opt_class() supportedVideoFormatsForDevicePosition:a3 deviceType:v7 videoBinned:v5 frameRate:0.0];
+  binnedCopy = binned;
+  typeCopy = type;
+  v8 = [objc_opt_class() supportedVideoFormatsForDevicePosition:position deviceType:typeCopy videoBinned:binnedCopy frameRate:0.0];
 
   return v8;
 }
 
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 frameRate:(double)a5
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type frameRate:(double)rate
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 == 2)
+  typeCopy = type;
+  v8 = typeCopy;
+  if (position == 2)
   {
     v9 = &ARFrontFacingImageSensorVideoBinnedUserDefaultsKey;
   }
 
   else
   {
-    if (a3 != 1)
+    if (position != 1)
     {
       goto LABEL_10;
     }
 
-    if (*MEMORY[0x1E6986950] == v7)
+    if (*MEMORY[0x1E6986950] == typeCopy)
     {
       v9 = &ARBackFacingWideImageSensorVideoBinnedUserDefaultsKey;
     }
 
     else
     {
-      if (*MEMORY[0x1E6986948] != v7)
+      if (*MEMORY[0x1E6986948] != typeCopy)
       {
         goto LABEL_10;
       }
@@ -1158,23 +1158,23 @@ LABEL_52:
   if (v10)
   {
     v11 = v10;
-    v12 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
     goto LABEL_11;
   }
 
 LABEL_10:
-  v12 = 1;
+  bOOLValue = 1;
 LABEL_11:
-  v13 = [objc_opt_class() supportedVideoFormatsForDevicePosition:a3 deviceType:v8 videoBinned:v12 frameRate:a5];
+  v13 = [objc_opt_class() supportedVideoFormatsForDevicePosition:position deviceType:v8 videoBinned:bOOLValue frameRate:rate];
 
   return v13;
 }
 
-+ (id)supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 videoBinned:(BOOL)a5 frameRate:(double)a6
++ (id)supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type videoBinned:(BOOL)binned frameRate:(double)rate
 {
-  v7 = a5;
-  v9 = a4;
+  binnedCopy = binned;
+  typeCopy = type;
   if (supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__onceToken != -1)
   {
     +[ARVideoFormat supportedVideoFormatsForDevicePosition:deviceType:videoBinned:frameRate:];
@@ -1183,18 +1183,18 @@ LABEL_11:
   dispatch_semaphore_wait(supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__semaphore, 0xFFFFFFFFFFFFFFFFLL);
   if (!supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__cachedSupportedVideoFormats)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__cachedSupportedVideoFormats;
-    supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__cachedSupportedVideoFormats = v10;
+    supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__cachedSupportedVideoFormats = dictionary;
   }
 
   v12 = @"non-binned";
-  if (v7)
+  if (binnedCopy)
   {
     v12 = @"binned";
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@:%li:%f", v9, v12, a3, *&a6];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@:%li:%f", typeCopy, v12, position, *&rate];
   v14 = [supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__cachedSupportedVideoFormats objectForKey:v13];
   if (v14)
   {
@@ -1204,7 +1204,7 @@ LABEL_11:
 
   else
   {
-    v15 = [objc_opt_class() _querySupportedVideoFormatsForDevicePosition:a3 deviceType:v9 videoBinned:v7 frameRate:a6];
+    v15 = [objc_opt_class() _querySupportedVideoFormatsForDevicePosition:position deviceType:typeCopy videoBinned:binnedCopy frameRate:rate];
     if ([v15 count])
     {
       [supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__cachedSupportedVideoFormats setObject:v15 forKey:v13];
@@ -1223,22 +1223,22 @@ void __89__ARVideoFormat_supportedVideoFormatsForDevicePosition_deviceType_video
   supportedVideoFormatsForDevicePosition_deviceType_videoBinned_frameRate__semaphore = v0;
 }
 
-+ (id)_querySupportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 videoBinned:(BOOL)a5 frameRate:(double)a6
++ (id)_querySupportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type videoBinned:(BOOL)binned frameRate:(double)rate
 {
-  v142 = a5;
+  binnedCopy = binned;
   v189[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  typeCopy = type;
   v9 = objc_opt_new();
   v10 = MEMORY[0x1E69870A8];
-  v189[0] = v8;
+  v189[0] = typeCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v189 count:1];
-  v12 = [v10 discoverySessionWithDeviceTypes:v11 mediaType:*MEMORY[0x1E6987608] position:a3];
+  v12 = [v10 discoverySessionWithDeviceTypes:v11 mediaType:*MEMORY[0x1E6987608] position:position];
 
   v130 = v12;
-  v13 = [v12 devices];
-  v135 = a3;
-  v129 = v13;
-  if (![v13 count])
+  devices = [v12 devices];
+  positionCopy = position;
+  v129 = devices;
+  if (![devices count])
   {
     if (ARShouldUseLogTypeError_onceToken_36 != -1)
     {
@@ -1257,11 +1257,11 @@ void __89__ARVideoFormat_supportedVideoFormatsForDevicePosition_deviceType_video
         *buf = 138544130;
         v180 = v21;
         v181 = 2048;
-        v182 = a1;
+        selfCopy7 = self;
         v183 = 2114;
-        *v184 = v8;
+        *v184 = typeCopy;
         *&v184[8] = 2048;
-        v185 = a3;
+        positionCopy3 = position;
         v22 = "%{public}@ <%p>: No image capture device found in supportedVideoFormatsForDevicePosition. (%{public}@ / %ld)";
         v23 = v19;
         v24 = OS_LOG_TYPE_ERROR;
@@ -1277,11 +1277,11 @@ LABEL_18:
       *buf = 138544130;
       v180 = v21;
       v181 = 2048;
-      v182 = a1;
+      selfCopy7 = self;
       v183 = 2114;
-      *v184 = v8;
+      *v184 = typeCopy;
       *&v184[8] = 2048;
-      v185 = a3;
+      positionCopy3 = position;
       v22 = "Error: %{public}@ <%p>: No image capture device found in supportedVideoFormatsForDevicePosition. (%{public}@ / %ld)";
       v23 = v19;
       v24 = OS_LOG_TYPE_INFO;
@@ -1292,12 +1292,12 @@ LABEL_18:
     goto LABEL_193;
   }
 
-  v149 = [v13 firstObject];
+  firstObject = [devices firstObject];
   v173 = 0;
   v14 = MEMORY[0x1E6986948];
-  if (a3 == 1)
+  if (position == 1)
   {
-    if (*MEMORY[0x1E6986950] == v8)
+    if (*MEMORY[0x1E6986950] == typeCopy)
     {
       v15 = [ARKitUserDefaults resolutionForKey:@"com.apple.arkit.imagesensor.back.wide.resolution" resultingDimensions:&v173];
       v16 = &ARBackFacingWideImageSensorFrameRateUserDefaultsKey;
@@ -1319,7 +1319,7 @@ LABEL_32:
         *buf = 138544130;
         v180 = v51;
         v181 = 2048;
-        v182 = a1;
+        selfCopy7 = self;
         v183 = 1024;
         *v184 = v173;
         *&v184[4] = 1024;
@@ -1336,7 +1336,7 @@ LABEL_32:
       goto LABEL_35;
     }
 
-    if (*MEMORY[0x1E6986948] == v8)
+    if (*MEMORY[0x1E6986948] == typeCopy)
     {
       v15 = [ARKitUserDefaults resolutionForKey:@"com.apple.arkit.imagesensor.back.ultrawide.resolution" resultingDimensions:&v173];
       v16 = &ARBackFacingUltraWideImageSensorFrameRateUserDefaultsKey;
@@ -1348,7 +1348,7 @@ LABEL_15:
     goto LABEL_35;
   }
 
-  if (a3 != 2)
+  if (position != 2)
   {
     goto LABEL_15;
   }
@@ -1357,7 +1357,7 @@ LABEL_15:
   v26 = [ARKitUserDefaults numberForKey:@"com.apple.arkit.imagesensor.front.frameRate"];
   v27 = ARFaceTrackingDevice();
 
-  if (v27 != v8)
+  if (v27 != typeCopy)
   {
     v136 = 0;
     v28 = v26;
@@ -1394,11 +1394,11 @@ LABEL_15:
       *buf = 138544386;
       v180 = v42;
       v181 = 2048;
-      v182 = a1;
+      selfCopy7 = self;
       v183 = 2048;
       *v184 = v44;
       *&v184[8] = 2048;
-      v185 = v46;
+      positionCopy3 = v46;
       v186 = 2048;
       v187 = v47;
       _os_log_impl(&dword_1C241C000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: ARVideoFormat face tracking frame rates set to %f, %f, %f by user defaults", buf, 0x34u);
@@ -1419,7 +1419,7 @@ LABEL_22:
 LABEL_23:
     v126 = v28;
     [v28 doubleValue];
-    v32 = v31;
+    rateCopy = v31;
     v33 = _ARLogSensor_10();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
@@ -1428,9 +1428,9 @@ LABEL_23:
       *buf = 138543874;
       v180 = v35;
       v181 = 2048;
-      v182 = a1;
+      selfCopy7 = self;
       v183 = 2048;
-      *v184 = v32;
+      *v184 = rateCopy;
       _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: ARVideoFormat frame rate set to %f by user defaults", buf, 0x20u);
     }
 
@@ -1438,10 +1438,10 @@ LABEL_23:
   }
 
 LABEL_35:
-  if (a6 <= 0.0)
+  if (rate <= 0.0)
   {
     v126 = 0;
-    v32 = 0.0;
+    rateCopy = 0.0;
     goto LABEL_41;
   }
 
@@ -1453,19 +1453,19 @@ LABEL_35:
     *buf = 138543874;
     v180 = v53;
     v181 = 2048;
-    v182 = a1;
+    selfCopy7 = self;
     v183 = 2048;
-    *v184 = a6;
+    *v184 = rate;
     _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: ARVideoFormat frame rate set to %f by SPI", buf, 0x20u);
   }
 
   v126 = 0;
-  v32 = a6;
+  rateCopy = rate;
 LABEL_39:
 
 LABEL_41:
   v54 = [MEMORY[0x1E695DFA8] set];
-  if (v135 == 1)
+  if (positionCopy == 1)
   {
     v55 = ARDeviceIsiPad();
   }
@@ -1476,11 +1476,11 @@ LABEL_41:
   }
 
   v127 = ARDeviceString();
-  v56 = v135;
-  if (v135 == 2)
+  v56 = positionCopy;
+  if (positionCopy == 2)
   {
     v57 = ARFaceTrackingDevice();
-    if (v57 == v8)
+    if (v57 == typeCopy)
     {
       v58 = [v127 hasPrefix:@"D22"] ^ 1;
     }
@@ -1496,7 +1496,7 @@ LABEL_41:
   }
 
   v125 = *v14;
-  if (v56 == 2 && *v14 == v8)
+  if (v56 == 2 && *v14 == typeCopy)
   {
     v60 = 1;
   }
@@ -1508,7 +1508,7 @@ LABEL_41:
 
   v140 = v60;
   v61 = ARShouldSupport1440pAndAutofocus();
-  if (v135 == 1)
+  if (positionCopy == 1)
   {
     v145 = ARShouldSupport1440pAndAutofocus() ^ 1;
     v62 = ARShouldSupport1440pAndAutofocus() ^ 1;
@@ -1522,17 +1522,17 @@ LABEL_41:
 
   v144 = v62;
   v134 = objc_opt_new();
-  if (v32 <= 0.0)
+  if (rateCopy <= 0.0)
   {
-    v64 = v142;
+    v64 = binnedCopy;
     if (v136)
     {
-      v65 = [v136 firstObject];
-      [v65 doubleValue];
+      firstObject2 = [v136 firstObject];
+      [firstObject2 doubleValue];
       v63 = v66;
 
       v141 = 0;
-      v32 = v63;
+      rateCopy = v63;
     }
 
     else
@@ -1545,8 +1545,8 @@ LABEL_41:
   else
   {
     v141 = 0;
-    v63 = v32;
-    v64 = v142;
+    v63 = rateCopy;
+    v64 = binnedCopy;
   }
 
   if (ARDeviceSupportsMulticamMode() && (ARUserDefaultsMulticamModeEnabled() & 1) != 0)
@@ -1575,7 +1575,7 @@ LABEL_41:
   v152 = *MEMORY[0x1E6986940];
   v150 = v54;
   v139 = v9;
-  v146 = v8;
+  v146 = typeCopy;
   do
   {
     v67 = 0;
@@ -1594,7 +1594,7 @@ LABEL_41:
       v166 = 0u;
       v167 = 0u;
       v168 = 0u;
-      obj = [v149 formats];
+      obj = [firstObject formats];
       v156 = [obj countByEnumeratingWithState:&v165 objects:v177 count:16];
       if (v156)
       {
@@ -1611,7 +1611,7 @@ LABEL_41:
 
             v70 = *(*(&v165 + 1) + 8 * v69);
             MediaSubType = CMFormatDescriptionGetMediaSubType([v70 formatDescription]);
-            v72 = [v155 unsignedIntegerValue];
+            unsignedIntegerValue = [v155 unsignedIntegerValue];
             Dimensions = CMVideoFormatDescriptionGetDimensions([v70 formatDescription]);
             v74 = Dimensions;
             v75 = HIDWORD(Dimensions);
@@ -1641,7 +1641,7 @@ LABEL_41:
               }
             }
 
-            v84 = v72 == MediaSubType && v77;
+            v84 = unsignedIntegerValue == MediaSubType && v77;
             v85 = v84 & ([v70 isVideoBinned] ^ v64 ^ 1);
             if (v153)
             {
@@ -1650,7 +1650,7 @@ LABEL_41:
 
             if (v85)
             {
-              v86 = v152 == v8;
+              v86 = v152 == typeCopy;
             }
 
             else
@@ -1681,8 +1681,8 @@ LABEL_41:
             v164 = 0u;
             v161 = 0u;
             v162 = 0u;
-            v88 = [v70 videoSupportedFrameRateRanges];
-            v89 = [v88 countByEnumeratingWithState:&v161 objects:v176 count:16];
+            videoSupportedFrameRateRanges = [v70 videoSupportedFrameRateRanges];
+            v89 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v161 objects:v176 count:16];
             if (v89)
             {
               v90 = v89;
@@ -1693,18 +1693,18 @@ LABEL_41:
                 {
                   if (*v162 != v91)
                   {
-                    objc_enumerationMutation(v88);
+                    objc_enumerationMutation(videoSupportedFrameRateRanges);
                   }
 
                   v93 = *(*(&v161 + 1) + 8 * i);
                   [v93 maxFrameRate];
                   if (v94 >= v63)
                   {
-                    if (v32 > 0.0 || ([v93 maxFrameRate], v95 <= 120.0))
+                    if (rateCopy > 0.0 || ([v93 maxFrameRate], v95 <= 120.0))
                     {
-                      v96 = [[ARVideoFormat alloc] initWithCaptureDevice:v149 format:v70];
+                      v96 = [[ARVideoFormat alloc] initWithCaptureDevice:firstObject format:v70];
                       objc_storeStrong(&v96->_depthDataFormat, v87);
-                      if (v32 > 0.0)
+                      if (rateCopy > 0.0)
                       {
                         if (v136)
                         {
@@ -1715,11 +1715,11 @@ LABEL_41:
 
                         else
                         {
-                          frameRatesByPowerUsage = [MEMORY[0x1E696AD98] numberWithDouble:v32];
+                          frameRatesByPowerUsage = [MEMORY[0x1E696AD98] numberWithDouble:rateCopy];
                           v175[0] = frameRatesByPowerUsage;
-                          v147 = [MEMORY[0x1E696AD98] numberWithDouble:v32];
+                          v147 = [MEMORY[0x1E696AD98] numberWithDouble:rateCopy];
                           v175[1] = v147;
-                          v100 = [MEMORY[0x1E696AD98] numberWithDouble:v32];
+                          v100 = [MEMORY[0x1E696AD98] numberWithDouble:rateCopy];
                           v175[2] = v100;
                           v101 = [MEMORY[0x1E695DEC8] arrayWithObjects:v175 count:3];
                           v102 = v96->_frameRatesByPowerUsage;
@@ -1735,7 +1735,7 @@ LABEL_41:
                           v98 = &unk_1F4259148;
                         }
 
-                        else if (v135 == 2)
+                        else if (positionCopy == 2)
                         {
                           v98 = &unk_1F4259160;
                         }
@@ -1774,9 +1774,9 @@ LABEL_41:
                         [v93 maxFrameRate];
                         if (v105 >= 60.0)
                         {
-                          v106 = [[ARVideoFormat alloc] initWithCaptureDevice:v149 format:v70];
+                          v106 = [[ARVideoFormat alloc] initWithCaptureDevice:firstObject format:v70];
                           objc_storeStrong(&v106->_depthDataFormat, v87);
-                          if (v135 == 2 && (ARFaceTrackingDevice(), v107 = objc_claimAutoreleasedReturnValue(), v107, v107 == v146))
+                          if (positionCopy == 2 && (ARFaceTrackingDevice(), v107 = objc_claimAutoreleasedReturnValue(), v107, v107 == v146))
                           {
                             v108 = &unk_1F4259190;
                           }
@@ -1803,14 +1803,14 @@ LABEL_41:
                         }
                       }
 
-                      v8 = v146;
-                      v64 = v142;
+                      typeCopy = v146;
+                      v64 = binnedCopy;
                       goto LABEL_165;
                     }
                   }
                 }
 
-                v90 = [v88 countByEnumeratingWithState:&v161 objects:v176 count:16];
+                v90 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v161 objects:v176 count:16];
                 if (v90)
                 {
                   continue;
@@ -1819,8 +1819,8 @@ LABEL_41:
                 break;
               }
 
-              v8 = v146;
-              v64 = v142;
+              typeCopy = v146;
+              v64 = binnedCopy;
               v54 = v150;
             }
 
@@ -1898,7 +1898,7 @@ LABEL_185:
       *buf = 138543618;
       v180 = v119;
       v181 = 2048;
-      v182 = a1;
+      selfCopy7 = self;
       _os_log_impl(&dword_1C241C000, v117, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Removing 1440x1080 video format, because 1920x1440 is supported", buf, 0x16u);
     }
 
@@ -1909,13 +1909,13 @@ LABEL_186:
   [v9 sortUsingComparator:&__block_literal_global_80_0];
   v120 = ARFaceTrackingDevice();
   v121 = v120;
-  if (v135 == 2 && v120 == v8 && [v149 isGeometricDistortionCorrectionSupported])
+  if (positionCopy == 2 && v120 == typeCopy && [firstObject isGeometricDistortionCorrectionSupported])
   {
     v122 = ARLinkedOnOrAfterAzulE();
 
     if (v122)
     {
-      v121 = [objc_opt_class() _querySupportedVideoFormatsForDevicePosition:2 deviceType:v125 videoBinned:v64 frameRate:a6];
+      v121 = [objc_opt_class() _querySupportedVideoFormatsForDevicePosition:2 deviceType:v125 videoBinned:v64 frameRate:rate];
       [v9 addObjectsFromArray:v121];
       goto LABEL_191;
     }
@@ -1966,16 +1966,16 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   return v13;
 }
 
-+ (id)bestDepthFormatForDeviceFormat:(id)a3
++ (id)bestDepthFormatForDeviceFormat:(id)format
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 supportedDepthDataFormats];
+  formatCopy = format;
+  supportedDepthDataFormats = [formatCopy supportedDepthDataFormats];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [supportedDepthDataFormats countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1987,7 +1987,7 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(supportedDepthDataFormats);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -2003,7 +2003,7 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [supportedDepthDataFormats countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -2025,10 +2025,10 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   return [v2 supportedVideoFormatsForStillImageCaptureForDevicePosition:1 deviceType:v3];
 }
 
-+ (id)supportedVideoFormatsForStillImageCaptureForDevicePosition:(int64_t)a3 deviceType:(id)a4
++ (id)supportedVideoFormatsForStillImageCaptureForDevicePosition:(int64_t)position deviceType:(id)type
 {
-  v5 = a4;
-  v6 = [objc_opt_class() supportedVideoFormatsForDevicePosition:a3 deviceType:v5 videoBinned:0];
+  typeCopy = type;
+  v6 = [objc_opt_class() supportedVideoFormatsForDevicePosition:position deviceType:typeCopy videoBinned:0];
 
   return v6;
 }
@@ -2050,10 +2050,10 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   return [v2 supportedVideoFormatsForHiResOrX420ForDevicePosition:1 deviceType:v3];
 }
 
-+ (id)supportedVideoFormatsForHiResOrX420ForDevicePosition:(int64_t)a3 deviceType:(id)a4
++ (id)supportedVideoFormatsForHiResOrX420ForDevicePosition:(int64_t)position deviceType:(id)type
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  typeCopy = type;
   v6 = objc_opt_new();
   [objc_opt_class() hiResVideoDimensions];
   v8 = v7;
@@ -2065,7 +2065,7 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   v33[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   LOBYTE(v24) = 1;
-  v14 = [v11 _supportedVideoFormatsForDevicePosition:a3 deviceType:v5 resolutions:v13 frameRatesByPowerUsage:&unk_1F4259208 videoBinned:0 pixelFormat:875704422 needsHDRSupport:v24];
+  v14 = [v11 _supportedVideoFormatsForDevicePosition:position deviceType:typeCopy resolutions:v13 frameRatesByPowerUsage:&unk_1F4259208 videoBinned:0 pixelFormat:875704422 needsHDRSupport:v24];
   [v6 addObjectsFromArray:v14];
 
   v15 = objc_opt_class();
@@ -2075,7 +2075,7 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   v32 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
   LOBYTE(v25) = 0;
-  v18 = [v15 _supportedVideoFormatsForDevicePosition:a3 deviceType:v5 resolutions:v17 frameRatesByPowerUsage:&unk_1F4259208 videoBinned:0 pixelFormat:2016686640 needsHDRSupport:v25];
+  v18 = [v15 _supportedVideoFormatsForDevicePosition:position deviceType:typeCopy resolutions:v17 frameRatesByPowerUsage:&unk_1F4259208 videoBinned:0 pixelFormat:2016686640 needsHDRSupport:v25];
   [v6 addObjectsFromArray:v18];
 
   v28 = xmmword_1C25C9280;
@@ -2087,22 +2087,22 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
 
   LOBYTE(v26) = 0;
-  v22 = [objc_opt_class() _supportedVideoFormatsForDevicePosition:a3 deviceType:v5 resolutions:v21 frameRatesByPowerUsage:&unk_1F4259250 videoBinned:0 pixelFormat:2016686640 needsHDRSupport:v26];
+  v22 = [objc_opt_class() _supportedVideoFormatsForDevicePosition:position deviceType:typeCopy resolutions:v21 frameRatesByPowerUsage:&unk_1F4259250 videoBinned:0 pixelFormat:2016686640 needsHDRSupport:v26];
 
   [v6 addObjectsFromArray:v22];
 
   return v6;
 }
 
-+ (id)_supportedVideoFormatsForDevicePosition:(int64_t)a3 deviceType:(id)a4 resolutions:(id)a5 frameRatesByPowerUsage:(id)a6 videoBinned:(BOOL)a7 pixelFormat:(unsigned int)a8 needsHDRSupport:(BOOL)a9
++ (id)_supportedVideoFormatsForDevicePosition:(int64_t)position deviceType:(id)type resolutions:(id)resolutions frameRatesByPowerUsage:(id)usage videoBinned:(BOOL)binned pixelFormat:(unsigned int)format needsHDRSupport:(BOOL)support
 {
-  v47 = a7;
+  binnedCopy = binned;
   v63[3] = *MEMORY[0x1E69E9840];
-  v49 = a4;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  resolutionsCopy = resolutions;
+  usageCopy = usage;
   v44 = objc_opt_new();
-  v13 = [MEMORY[0x1E695DFA8] setWithArray:v12];
+  v13 = [MEMORY[0x1E695DFA8] setWithArray:usageCopy];
   v14 = [ARKitUserDefaults numberForKey:@"com.apple.arkit.imagesensor.back.wide.frameRate"];
   v15 = v14;
   if (v14)
@@ -2119,17 +2119,17 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
   v41 = [v13 sortedArrayUsingDescriptors:v18];
 
-  v45 = ARIsBravoCamera(v49);
-  if ((ARDeviceSupportsUltraWideCamera() || !((a8 == 2016686640) | v45 & 1)) && (a8 != 2016686640 || (ARDeviceIsiPad() & 1) == 0))
+  v45 = ARIsBravoCamera(typeCopy);
+  if ((ARDeviceSupportsUltraWideCamera() || !((format == 2016686640) | v45 & 1)) && (format != 2016686640 || (ARDeviceIsiPad() & 1) == 0))
   {
     v36 = v13;
-    v37 = v12;
+    v37 = usageCopy;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v38 = v11;
-    obj = v11;
+    v38 = resolutionsCopy;
+    obj = resolutionsCopy;
     v42 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (!v42)
     {
@@ -2192,8 +2192,8 @@ uint64_t __95__ARVideoFormat__querySupportedVideoFormatsForDevicePosition_device
                 }
               }
 
-              LODWORD(v35) = a8;
-              v32 = [objc_opt_class() bestVideoFormatForDevicePosition:a3 deviceType:v49 resolution:v27 | (v28 << 32) frameRates:v26 videoBinned:v47 needsHDRSupport:a9 pixelFormat:v35];
+              LODWORD(v35) = format;
+              v32 = [objc_opt_class() bestVideoFormatForDevicePosition:position deviceType:typeCopy resolution:v27 | (v28 << 32) frameRates:v26 videoBinned:binnedCopy needsHDRSupport:support pixelFormat:v35];
               if (v32)
               {
                 [v44 addObject:v32];
@@ -2220,8 +2220,8 @@ LABEL_24:
       {
 LABEL_34:
 
-        v12 = v37;
-        v11 = v38;
+        usageCopy = v37;
+        resolutionsCopy = v38;
         v13 = v36;
         break;
       }
@@ -2250,20 +2250,20 @@ uint64_t __143__ARVideoFormat__supportedVideoFormatsForDevicePosition_deviceType
   return v8;
 }
 
-+ (BOOL)isCaptureDeviceTypeAvailable:(id)a3 position:(int64_t)a4
++ (BOOL)isCaptureDeviceTypeAvailable:(id)available position:(int64_t)position
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69870A8];
-  v12 = a3;
+  availableCopy = available;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v12 count:1];
-  v9 = [v5 discoverySessionWithDeviceTypes:v8 mediaType:*MEMORY[0x1E6987608] position:{a4, v12, v13}];
+  availableCopy2 = available;
+  v8 = [v6 arrayWithObjects:&availableCopy count:1];
+  v9 = [v5 discoverySessionWithDeviceTypes:v8 mediaType:*MEMORY[0x1E6987608] position:{position, availableCopy, v13}];
 
-  v10 = [v9 devices];
-  LOBYTE(a4) = [v10 count] != 0;
+  devices = [v9 devices];
+  LOBYTE(position) = [devices count] != 0;
 
-  return a4;
+  return position;
 }
 
 @end

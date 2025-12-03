@@ -1,11 +1,11 @@
 @interface SearchQueryDelegate
 - (_TtC9PencilKitP33_0537958B5BACCEE51E097AACDDA82C0419SearchQueryDelegate)init;
-- (void)queryDidUpdateResult:(id)a3;
+- (void)queryDidUpdateResult:(id)result;
 @end
 
 @implementation SearchQueryDelegate
 
-- (void)queryDidUpdateResult:(id)a3
+- (void)queryDidUpdateResult:(id)result
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
@@ -15,14 +15,14 @@
     if (v6)
     {
       v7 = v5;
-      v11 = a3;
-      v8 = self;
+      resultCopy = result;
+      selfCopy = self;
       outlined copy of (@escaping @callee_guaranteed @async (@guaranteed [PKStroke], @guaranteed [PKStroke]) -> ())?(v6);
-      v9 = [v7 foundItems];
+      foundItems = [v7 foundItems];
       type metadata accessor for CHSearchQueryItem();
       v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
-      v6(v10, v8);
+      v6(v10, selfCopy);
       outlined consume of (@escaping @callee_guaranteed (@guaranteed [PKStroke], @guaranteed [PKStroke]) -> ())?(v6);
     }
   }

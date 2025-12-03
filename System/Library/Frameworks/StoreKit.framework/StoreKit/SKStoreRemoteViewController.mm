@@ -1,54 +1,54 @@
 @interface SKStoreRemoteViewController
 - (SKStoreRemoteViewControllerDelegate)delegate;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentRequestedViewControllerWithIdentifier:(id)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentRequestedViewControllerWithIdentifier:(id)identifier;
 - (void)setNeedsTabSelection;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SKStoreRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(SKStoreRemoteViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(SKStoreRemoteViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SKStoreRemoteViewController *)self delegate];
-    [v6 storeRemoteViewControllerTerminatedWithError:v7];
+    delegate2 = [(SKStoreRemoteViewController *)self delegate];
+    [delegate2 storeRemoteViewControllerTerminatedWithError:errorCopy];
   }
 }
 
 - (void)setNeedsTabSelection
 {
-  v3 = [(SKStoreRemoteViewController *)self delegate];
-  [v3 storeRemoteViewControllerNeedsTabSelection:self];
+  delegate = [(SKStoreRemoteViewController *)self delegate];
+  [delegate storeRemoteViewControllerNeedsTabSelection:self];
 }
 
-- (void)presentRequestedViewControllerWithIdentifier:(id)a3
+- (void)presentRequestedViewControllerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SKStoreRemoteViewController *)self delegate];
-  [v5 storeRemoteViewController:self presentRequestedViewControllerWithIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(SKStoreRemoteViewController *)self delegate];
+  [delegate storeRemoteViewController:self presentRequestedViewControllerWithIdentifier:identifierCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__SKStoreRemoteViewController_dismissViewControllerAnimated_completion___block_invoke;
   aBlock[3] = &unk_1E7B27B30;
   aBlock[4] = self;
-  v11 = v6;
-  v7 = v6;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   v9.receiver = self;
   v9.super_class = SKStoreRemoteViewController;
-  [(SKStoreRemoteViewController *)&v9 dismissViewControllerAnimated:v4 completion:v8];
+  [(SKStoreRemoteViewController *)&v9 dismissViewControllerAnimated:animatedCopy completion:v8];
 }
 
 void __72__SKStoreRemoteViewController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)

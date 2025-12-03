@@ -1,14 +1,14 @@
 @interface MFSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (_TtC16MagnifierSupport8MFSlider)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport8MFSlider)initWithFrame:(CGRect)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (_TtC16MagnifierSupport8MFSlider)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport8MFSlider)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFSlider
 
-- (_TtC16MagnifierSupport8MFSlider)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport8MFSlider)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MagnifierSupport8MFSlider_trackColor;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D75348]) initWithWhite:0.7 alpha:1.0];
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(MFSlider *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(MFSlider *)selfCopy bounds];
   v11 = CGRectInset(v10, -8.0, -8.0);
   v9.x = x;
   v9.y = y;
@@ -32,19 +32,19 @@
   return v7;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   ObjectType = swift_getObjectType();
-  v8 = self;
-  [(MFSlider *)v8 alignmentRectInsets];
+  selfCopy = self;
+  [(MFSlider *)selfCopy alignmentRectInsets];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   UIRoundToViewScale();
-  v28.receiver = v8;
+  v28.receiver = selfCopy;
   v28.super_class = ObjectType;
   [(MFSlider *)&v28 trackRectForBounds:x, y, width, v15];
   v17 = v16;
@@ -63,17 +63,17 @@
   return result;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257C7EE98(v6);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  v9 = sub_257C7EE98(touchCopy);
 
   return v9;
 }
 
-- (_TtC16MagnifierSupport8MFSlider)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport8MFSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

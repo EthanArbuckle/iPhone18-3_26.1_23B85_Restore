@@ -1,32 +1,32 @@
 @interface FMDeviceImageDownloadOperation
 - (_TtC6FindMy30FMDeviceImageDownloadOperation)init;
 - (void)main;
-- (void)setFinished:(BOOL)a3;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation FMDeviceImageDownloadOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v6 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(FMDeviceImageDownloadOperation *)v6 willChangeValueForKey:v4];
+  [(FMDeviceImageDownloadOperation *)selfCopy willChangeValueForKey:v4];
 
-  *(&v6->super.super.isa + OBJC_IVAR____TtC6FindMy30FMDeviceImageDownloadOperation__isFinished) = a3;
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC6FindMy30FMDeviceImageDownloadOperation__isFinished) = finished;
   v5 = String._bridgeToObjectiveC()();
-  [(FMDeviceImageDownloadOperation *)v6 didChangeValueForKey:v5];
+  [(FMDeviceImageDownloadOperation *)selfCopy didChangeValueForKey:v5];
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BC2B8();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BC40C();
 }
 

@@ -1,16 +1,16 @@
 @interface WLTransferCancellationViewController
-- (WLTransferCancellationViewController)initWithWelcomeController:(id)a3 context:(id)a4;
-- (void)_detailTapped:(id)a3;
+- (WLTransferCancellationViewController)initWithWelcomeController:(id)controller context:(id)context;
+- (void)_detailTapped:(id)tapped;
 - (void)_reset;
 @end
 
 @implementation WLTransferCancellationViewController
 
-- (WLTransferCancellationViewController)initWithWelcomeController:(id)a3 context:(id)a4
+- (WLTransferCancellationViewController)initWithWelcomeController:(id)controller context:(id)context
 {
   v42[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   v9 = WLLocalizedString();
   v10 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CANCELLATION_DETAIL"];
   v11 = WLLocalizedString();
@@ -23,54 +23,54 @@
 
   if (v15)
   {
-    objc_storeStrong(&v15->_welcomeController, a3);
-    v40 = v8;
-    if ([v8 isEnabled])
+    objc_storeStrong(&v15->_welcomeController, controller);
+    v40 = contextCopy;
+    if ([contextCopy isEnabled])
     {
-      objc_storeStrong(&v15->_context, a4);
-      v16 = [MEMORY[0x277D37650] linkButton];
+      objc_storeStrong(&v15->_context, context);
+      linkButton = [MEMORY[0x277D37650] linkButton];
       v17 = WLLocalizedString();
-      [v16 setTitle:v17 forState:0];
+      [linkButton setTitle:v17 forState:0];
 
-      [v16 addTarget:v15 action:sel__detailTapped_ forControlEvents:64];
-      v18 = [(WLTransferCancellationViewController *)v15 contentView];
-      [v18 addSubview:v16];
+      [linkButton addTarget:v15 action:sel__detailTapped_ forControlEvents:64];
+      contentView = [(WLTransferCancellationViewController *)v15 contentView];
+      [contentView addSubview:linkButton];
 
       v34 = MEMORY[0x277CCAAD0];
-      v37 = [v16 topAnchor];
-      v38 = [(WLTransferCancellationViewController *)v15 contentView];
-      v36 = [v38 topAnchor];
-      v35 = [v37 constraintEqualToAnchor:v36];
+      topAnchor = [linkButton topAnchor];
+      contentView2 = [(WLTransferCancellationViewController *)v15 contentView];
+      topAnchor2 = [contentView2 topAnchor];
+      v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v42[0] = v35;
-      v33 = [v16 bottomAnchor];
+      bottomAnchor = [linkButton bottomAnchor];
       [(WLTransferCancellationViewController *)v15 contentView];
-      v19 = v39 = v7;
-      v20 = [v19 bottomAnchor];
-      v21 = [v33 constraintEqualToAnchor:v20];
+      v19 = v39 = controllerCopy;
+      bottomAnchor2 = [v19 bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v42[1] = v21;
-      v22 = [v16 centerXAnchor];
-      v23 = [(WLTransferCancellationViewController *)v15 contentView];
-      v24 = [v23 centerXAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      centerXAnchor = [linkButton centerXAnchor];
+      contentView3 = [(WLTransferCancellationViewController *)v15 contentView];
+      centerXAnchor2 = [contentView3 centerXAnchor];
+      v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v42[2] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:3];
       [v34 activateConstraints:v26];
 
-      v7 = v39;
+      controllerCopy = v39;
     }
 
-    v27 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v28 = WLLocalizedString();
-    [v27 setTitle:v28 forState:0];
+    [boldButton setTitle:v28 forState:0];
 
-    [v27 addTarget:v15 action:sel__reset forControlEvents:64];
-    v29 = [(WLTransferCancellationViewController *)v15 buttonTray];
-    [v29 addButton:v27];
+    [boldButton addTarget:v15 action:sel__reset forControlEvents:64];
+    buttonTray = [(WLTransferCancellationViewController *)v15 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v30 = [(OBBaseWelcomeController *)v15 navigationItem];
-    [v30 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)v15 navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
 
-    v8 = v40;
+    contextCopy = v40;
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -86,7 +86,7 @@
   }
 }
 
-- (void)_detailTapped:(id)a3
+- (void)_detailTapped:(id)tapped
 {
   v5 = [[WLDetailViewController alloc] initWithContext:self->_context];
   v4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v5];

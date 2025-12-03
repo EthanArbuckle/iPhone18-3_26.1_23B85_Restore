@@ -1,12 +1,12 @@
 @interface UIPromptSuggestionView
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (_TtC5UIKit22UIPromptSuggestionView)initWithFrame:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (_TtC5UIKit22UIPromptSuggestionView)initWithFrame:(CGRect)frame;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation UIPromptSuggestionView
@@ -18,17 +18,17 @@
   return [(UIControl *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = type metadata accessor for UIPromptSuggestionView(0);
   v4 = v8.receiver;
-  [(UIControl *)&v8 setHighlighted:v3];
+  [(UIControl *)&v8 setHighlighted:highlightedCopy];
   v5 = *&v4[OBJC_IVAR____TtC5UIKit22UIPromptSuggestionView_label];
-  v6 = [v4 isHighlighted];
+  isHighlighted = [v4 isHighlighted];
   v7 = 0.65;
-  if (!v6)
+  if (!isHighlighted)
   {
     v7 = 1.0;
   }
@@ -36,33 +36,33 @@
   [v5 setAlpha_];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v4 = self;
-  if ([(UIControl *)v4 isTouchInside])
+  selfCopy = self;
+  if ([(UIControl *)selfCopy isTouchInside])
   {
-    [(UIControl *)v4 performPrimaryAction];
+    [(UIControl *)selfCopy performPrimaryAction];
   }
 }
 
-- (_TtC5UIKit22UIPromptSuggestionView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit22UIPromptSuggestionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = OBJC_IVAR____TtC5UIKit22UIPromptSuggestionView_label;
   v7 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit22UIPromptSuggestionView_label);
-  v8 = self;
-  v9 = [v7 numberOfLines];
+  selfCopy = self;
+  numberOfLines = [v7 numberOfLines];
   v10 = OBJC_IVAR____TtC5UIKit22UIPromptSuggestionView_configuration;
   swift_beginAccess();
-  if (*(&v8->super.super.super.super.isa + v10))
+  if (*(&selfCopy->super.super.super.super.isa + v10))
   {
     v11 = 60.0;
   }
@@ -72,7 +72,7 @@
     v11 = 34.0;
   }
 
-  [*(&self->super.super.super.super.isa + v6) textRectForBounds:v9 limitedToNumberOfLines:{0.0, 0.0, width - v11, height}];
+  [*(&self->super.super.super.super.isa + v6) textRectForBounds:numberOfLines limitedToNumberOfLines:{0.0, 0.0, width - v11, height}];
   v13 = v12;
   v15 = v14;
 
@@ -83,9 +83,9 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(UIPromptSuggestionView *)self sizeThatFits:a3.width, a3.height];
+  [(UIPromptSuggestionView *)self sizeThatFits:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -93,9 +93,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(UIView *)v2 bounds];
-  [(UIPromptSuggestionView *)v2 sizeThatFits:v3, v4];
+  selfCopy = self;
+  [(UIView *)selfCopy bounds];
+  [(UIPromptSuggestionView *)selfCopy sizeThatFits:v3, v4];
   v6 = v5;
   v8 = v7;
 
@@ -108,7 +108,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UIPromptSuggestionView.layoutSubviews()();
 }
 

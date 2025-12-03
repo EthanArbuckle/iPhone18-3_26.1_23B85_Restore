@@ -1,24 +1,24 @@
 @interface KCellularDownlinkIpPacketFilterStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFilters:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBearerContextId:(BOOL)a3;
-- (void)setHasIsActivated:(BOOL)a3;
-- (void)setHasIsEchoReqBlocked:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFilters:(id)filters;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBearerContextId:(BOOL)id;
+- (void)setHasIsActivated:(BOOL)activated;
+- (void)setHasIsEchoReqBlocked:(BOOL)blocked;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularDownlinkIpPacketFilterStatus
 
-- (void)setHasBearerContextId:(BOOL)a3
+- (void)setHasBearerContextId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsActivated:(BOOL)a3
+- (void)setHasIsActivated:(BOOL)activated
 {
-  if (a3)
+  if (activated)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsEchoReqBlocked:(BOOL)a3
+- (void)setHasIsEchoReqBlocked:(BOOL)blocked
 {
-  if (a3)
+  if (blocked)
   {
     v3 = 16;
   }
@@ -61,27 +61,27 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   filters = self->_filters;
-  v8 = v4;
+  v8 = filtersCopy;
   if (!filters)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_filters;
     self->_filters = v6;
 
-    v4 = v8;
+    filtersCopy = v8;
     filters = self->_filters;
   }
 
-  [(NSMutableArray *)filters addObject:v4];
+  [(NSMutableArray *)filters addObject:filtersCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -100,8 +100,8 @@
   v8.receiver = self;
   v8.super_class = KCellularDownlinkIpPacketFilterStatus;
   v4 = [(KCellularDownlinkIpPacketFilterStatus *)&v8 description];
-  v5 = [(KCellularDownlinkIpPacketFilterStatus *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularDownlinkIpPacketFilterStatus *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -109,12 +109,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v16 forKey:@"timestamp"];
+    [dictionary setObject:v16 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -135,7 +135,7 @@ LABEL_3:
   }
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_bearerContextId];
-  [v3 setObject:v17 forKey:@"bearer_context_id"];
+  [dictionary setObject:v17 forKey:@"bearer_context_id"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -151,13 +151,13 @@ LABEL_4:
 
 LABEL_22:
   v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_isActivated];
-  [v3 setObject:v18 forKey:@"is_activated"];
+  [dictionary setObject:v18 forKey:@"is_activated"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isEchoReqBlocked];
-    [v3 setObject:v5 forKey:@"is_echo_req_blocked"];
+    [dictionary setObject:v5 forKey:@"is_echo_req_blocked"];
   }
 
 LABEL_6:
@@ -183,8 +183,8 @@ LABEL_6:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -193,24 +193,24 @@ LABEL_6:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"filters"];
+    [dictionary setObject:v6 forKey:@"filters"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v13 forKey:@"subs_id"];
+    [dictionary setObject:v13 forKey:@"subs_id"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -297,14 +297,14 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -315,8 +315,8 @@ LABEL_3:
       }
 
 LABEL_17:
-      *(v4 + 36) = self->_isActivated;
-      *(v4 + 40) |= 8u;
+      *(toCopy + 36) = self->_isActivated;
+      *(toCopy + 40) |= 8u;
       if ((*&self->_has & 0x10) == 0)
       {
         goto LABEL_6;
@@ -331,8 +331,8 @@ LABEL_17:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_bearerContextId;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 4) = self->_bearerContextId;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -343,19 +343,19 @@ LABEL_4:
   if ((has & 0x10) != 0)
   {
 LABEL_5:
-    *(v4 + 37) = self->_isEchoReqBlocked;
-    *(v4 + 40) |= 0x10u;
+    *(toCopy + 37) = self->_isEchoReqBlocked;
+    *(toCopy + 40) |= 0x10u;
   }
 
 LABEL_6:
-  v10 = v4;
+  v10 = toCopy;
   if ([(KCellularDownlinkIpPacketFilterStatus *)self filtersCount])
   {
     [v10 clearFilters];
-    v6 = [(KCellularDownlinkIpPacketFilterStatus *)self filtersCount];
-    if (v6)
+    filtersCount = [(KCellularDownlinkIpPacketFilterStatus *)self filtersCount];
+    if (filtersCount)
     {
-      v7 = v6;
+      v7 = filtersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(KCellularDownlinkIpPacketFilterStatus *)self filtersAtIndex:i];
@@ -371,10 +371,10 @@ LABEL_6:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -443,7 +443,7 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addFilters:v13];
       }
 
@@ -463,98 +463,98 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_bearerContextId != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_bearerContextId != *(equalCopy + 4))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0)
+    if ((*(equalCopy + 40) & 8) == 0)
     {
       goto LABEL_34;
     }
 
-    v9 = *(v4 + 36);
+    v9 = *(equalCopy + 36);
     if (self->_isActivated)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0)
+    if ((*(equalCopy + 40) & 0x10) == 0)
     {
       goto LABEL_34;
     }
 
-    v10 = *(v4 + 37);
+    v10 = *(equalCopy + 37);
     if (self->_isEchoReqBlocked)
     {
-      if ((*(v4 + 37) & 1) == 0)
+      if ((*(equalCopy + 37) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 37))
+    else if (*(equalCopy + 37))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 40) & 0x10) != 0)
+  else if ((*(equalCopy + 40) & 0x10) != 0)
   {
     goto LABEL_34;
   }
 
   filters = self->_filters;
-  if (!(filters | *(v4 + 3)))
+  if (!(filters | *(equalCopy + 3)))
   {
     goto LABEL_19;
   }
@@ -567,12 +567,12 @@ LABEL_34:
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
 LABEL_19:
   v8 = (v6 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_subsId != *(v4 + 8))
+    if ((v6 & 4) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_34;
     }
@@ -651,17 +651,17 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 40);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 40);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -674,14 +674,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_bearerContextId = *(v4 + 4);
+  self->_bearerContextId = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v6 = *(v4 + 40);
+  v6 = *(fromCopy + 40);
   if ((v6 & 8) == 0)
   {
 LABEL_4:
@@ -694,12 +694,12 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_isActivated = *(v4 + 36);
+  self->_isActivated = *(fromCopy + 36);
   *&self->_has |= 8u;
-  if ((*(v4 + 40) & 0x10) != 0)
+  if ((*(fromCopy + 40) & 0x10) != 0)
   {
 LABEL_5:
-    self->_isEchoReqBlocked = *(v4 + 37);
+    self->_isEchoReqBlocked = *(fromCopy + 37);
     *&self->_has |= 0x10u;
   }
 
@@ -708,7 +708,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

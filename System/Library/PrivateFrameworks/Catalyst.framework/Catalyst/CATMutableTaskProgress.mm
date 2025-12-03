@@ -1,61 +1,61 @@
 @interface CATMutableTaskProgress
-- (CATMutableTaskProgress)initWithCoder:(id)a3;
-- (CATMutableTaskProgress)initWithOperationUUID:(id)a3;
-- (CATMutableTaskProgress)initWithOperationUUID:(id)a3 requestClass:(Class)a4;
-- (void)setProgress:(id)a3;
-- (void)setResultObject:(id)a3;
+- (CATMutableTaskProgress)initWithCoder:(id)coder;
+- (CATMutableTaskProgress)initWithOperationUUID:(id)d;
+- (CATMutableTaskProgress)initWithOperationUUID:(id)d requestClass:(Class)class;
+- (void)setProgress:(id)progress;
+- (void)setResultObject:(id)object;
 @end
 
 @implementation CATMutableTaskProgress
 
-- (CATMutableTaskProgress)initWithOperationUUID:(id)a3
+- (CATMutableTaskProgress)initWithOperationUUID:(id)d
 {
   v4.receiver = self;
   v4.super_class = CATMutableTaskProgress;
-  return [(CATTaskProgress *)&v4 initWithOperationUUID:a3];
+  return [(CATTaskProgress *)&v4 initWithOperationUUID:d];
 }
 
-- (CATMutableTaskProgress)initWithOperationUUID:(id)a3 requestClass:(Class)a4
+- (CATMutableTaskProgress)initWithOperationUUID:(id)d requestClass:(Class)class
 {
-  v7 = a3;
-  if (!a4)
+  dCopy = d;
+  if (!class)
   {
     [CATMutableTaskProgress initWithOperationUUID:a2 requestClass:self];
   }
 
-  v8 = [(CATMutableTaskProgress *)self initWithOperationUUID:v7];
+  v8 = [(CATMutableTaskProgress *)self initWithOperationUUID:dCopy];
   if (v8)
   {
-    v9 = NSStringFromClass(a4);
+    v9 = NSStringFromClass(class);
     [(CATTaskProgress *)v8 setRequestClassName:v9];
   }
 
   return v8;
 }
 
-- (CATMutableTaskProgress)initWithCoder:(id)a3
+- (CATMutableTaskProgress)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CATMutableTaskProgress;
-  return [(CATTaskProgress *)&v4 initWithCoder:a3];
+  return [(CATTaskProgress *)&v4 initWithCoder:coder];
 }
 
-- (void)setResultObject:(id)a3
+- (void)setResultObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = CATMutableTaskProgress;
-  [(CATTaskProgress *)&v7 setResultObject:a3];
+  [(CATTaskProgress *)&v7 setResultObject:object];
   v4 = objc_opt_class();
-  v5 = [(CATTaskProgress *)self resultObject];
-  v6 = [(CATTaskProgress *)self requestClassName];
-  [v4 assertResultObject:v5 isValidForRequestClassName:v6];
+  resultObject = [(CATTaskProgress *)self resultObject];
+  requestClassName = [(CATTaskProgress *)self requestClassName];
+  [v4 assertResultObject:resultObject isValidForRequestClassName:requestClassName];
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
   v3.receiver = self;
   v3.super_class = CATMutableTaskProgress;
-  [(CATTaskProgress *)&v3 setProgress:a3];
+  [(CATTaskProgress *)&v3 setProgress:progress];
 }
 
 - (void)initWithOperationUUID:(uint64_t)a1 requestClass:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

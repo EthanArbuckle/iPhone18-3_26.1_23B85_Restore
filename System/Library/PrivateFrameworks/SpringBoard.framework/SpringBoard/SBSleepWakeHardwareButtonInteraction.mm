@@ -6,9 +6,9 @@
 - (void)_performSleep;
 - (void)_performWake;
 - (void)_playLockSound;
-- (void)performSleepForReason:(id)a3;
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4;
-- (void)setDeferOrientationUpdatesAssertion:(id)a3;
+- (void)performSleepForReason:(id)reason;
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters;
+- (void)setDeferOrientationUpdatesAssertion:(id)assertion;
 @end
 
 @implementation SBSleepWakeHardwareButtonInteraction
@@ -36,9 +36,9 @@
     soundController = v2->_soundController;
     v2->_soundController = v9;
 
-    v11 = [SBApp HIDUISensorController];
+    hIDUISensorController = [SBApp HIDUISensorController];
     sensorModeController = v2->_sensorModeController;
-    v2->_sensorModeController = v11;
+    v2->_sensorModeController = hIDUISensorController;
 
     objc_storeStrong(&v2->_SBApp, SBApp);
   }
@@ -77,10 +77,10 @@
   return fadeOutInProgressFromLockButtonWhileUnlocked;
 }
 
-- (void)performSleepForReason:(id)a3
+- (void)performSleepForReason:(id)reason
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   inhibitNextSinglePressUp = self->_inhibitNextSinglePressUp;
   v6 = SBLogButtonsInteraction();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -89,7 +89,7 @@
     if (v7)
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "ignoring sleep attempt (%{public}@) because a wake from button press is in progress", &v8, 0xCu);
     }
   }
@@ -99,7 +99,7 @@
     if (v7)
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "sleeping (%{public}@)", &v8, 0xCu);
     }
 
@@ -110,13 +110,13 @@
 - (BOOL)consumeInitialPressDown
 {
   self->_inhibitNextSinglePressUp = 0;
-  v3 = [(SBBacklightController *)self->_backlightController screenIsDim];
+  screenIsDim = [(SBBacklightController *)self->_backlightController screenIsDim];
   v4 = +[SBAlwaysOnDomain rootSettings];
   if ([v4 sideButtonBehavior] == 1)
   {
     v5 = [(SBBacklightController *)self->_backlightController backlightState]!= 3;
 
-    if (!v5 || !v3)
+    if (!v5 || !screenIsDim)
     {
       return 0;
     }
@@ -125,7 +125,7 @@
   else
   {
 
-    if (!v3)
+    if (!screenIsDim)
     {
       return 0;
     }
@@ -163,9 +163,9 @@
   return 1;
 }
 
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters
 {
-  [a4 multiplePressTimeInterval];
+  [parameters multiplePressTimeInterval];
 
   [(SBSleepWakeHardwareButtonInteraction *)self setMultiplePressTimeInterval:?];
 }
@@ -241,10 +241,10 @@ LABEL_11:
 
     else
     {
-      v12 = [(SBSleepWakeHardwareButtonInteraction *)self isSOSGestureActive];
+      isSOSGestureActive = [(SBSleepWakeHardwareButtonInteraction *)self isSOSGestureActive];
       v9 = SBLogButtonsInteraction();
       v13 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      if (!v12)
+      if (!isSOSGestureActive)
       {
         if (v13)
         {
@@ -327,12 +327,12 @@ LABEL_11:
 
   v6 = !+[SBInCallPresentationManager isSpecializedAPISupported]&& [(SBLockScreenManager *)v3 shouldLockUIAfterEndingCall];
   [(SBSleepWakeHardwareButtonInteraction *)self _playLockSound];
-  v7 = [SBApp bannerManager];
-  [v7 dismissAllBannersInAllWindowScenesAnimated:1 reason:@"performSleep"];
+  bannerManager = [SBApp bannerManager];
+  [bannerManager dismissAllBannersInAllWindowScenesAnimated:1 reason:@"performSleep"];
 
   v8 = +[SBWorkspace mainWorkspace];
-  v9 = [v8 inCallPresentationManager];
-  if ([v9 supportsHandlingDeviceLock])
+  inCallPresentationManager = [v8 inCallPresentationManager];
+  if ([inCallPresentationManager supportsHandlingDeviceLock])
   {
 
 LABEL_19:
@@ -375,8 +375,8 @@ LABEL_19:
     }
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBLockForScreenFadeOut-%i", ++_performSleep_lockReasonCount];
-    v15 = [(SpringBoard *)self->_SBApp authenticationController];
-    self->_fadeOutInProgressFromLockButtonWhileUnlocked = [v15 isAuthenticated];
+    authenticationController = [(SpringBoard *)self->_SBApp authenticationController];
+    self->_fadeOutInProgressFromLockButtonWhileUnlocked = [authenticationController isAuthenticated];
 
     v16 = [(SpringBoard *)self->_SBApp deviceOrientationUpdateDeferralAssertionWithReason:v13];
     [(SBSleepWakeHardwareButtonInteraction *)self setDeferOrientationUpdatesAssertion:v16];
@@ -389,13 +389,13 @@ LABEL_19:
     }
 
     objc_initWeak(buf, self);
-    v18 = [SBApp screenSleepCoordinator];
+    screenSleepCoordinator = [SBApp screenSleepCoordinator];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __53__SBSleepWakeHardwareButtonInteraction__performSleep__block_invoke;
     v19[3] = &unk_2783A8C68;
     objc_copyWeak(&v20, buf);
-    [v18 sleepAndLockUIFromSource:1 completion:v19];
+    [screenSleepCoordinator sleepAndLockUIFromSource:1 completion:v19];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -411,31 +411,31 @@ void __53__SBSleepWakeHardwareButtonInteraction__performSleep__block_invoke(uint
   [WeakRetained setDeferOrientationUpdatesAssertion:0];
 }
 
-- (void)setDeferOrientationUpdatesAssertion:(id)a3
+- (void)setDeferOrientationUpdatesAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   deferOrientationUpdatesAssertion = self->_deferOrientationUpdatesAssertion;
   p_deferOrientationUpdatesAssertion = &self->_deferOrientationUpdatesAssertion;
   v6 = deferOrientationUpdatesAssertion;
-  if (deferOrientationUpdatesAssertion != v5)
+  if (deferOrientationUpdatesAssertion != assertionCopy)
   {
-    v9 = v5;
+    v9 = assertionCopy;
     if (v6)
     {
       [(BSInvalidatable *)v6 invalidate];
     }
 
-    objc_storeStrong(p_deferOrientationUpdatesAssertion, a3);
-    v5 = v9;
+    objc_storeStrong(p_deferOrientationUpdatesAssertion, assertion);
+    assertionCopy = v9;
   }
 }
 
 - (void)_playLockSound
 {
-  v2 = [(SBLockScreenManager *)self->_lockScreenManager playLockSoundIfPermitted];
+  playLockSoundIfPermitted = [(SBLockScreenManager *)self->_lockScreenManager playLockSoundIfPermitted];
   v3 = SBLogButtonsInteraction();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (playLockSoundIfPermitted)
   {
     if (v4)
     {

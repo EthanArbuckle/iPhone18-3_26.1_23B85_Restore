@@ -7,13 +7,13 @@
 - (void)updateComposition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(PXTilingControllerComposition *)self input];
-  v4 = [(PXTilingControllerComposition *)self output];
-  v5 = [(PXTilingControllerDefaultComposition *)self tilingControllers];
-  [v3 referenceSize];
+  input = [(PXTilingControllerComposition *)self input];
+  output = [(PXTilingControllerComposition *)self output];
+  tilingControllers = [(PXTilingControllerDefaultComposition *)self tilingControllers];
+  [input referenceSize];
   v22 = v7;
   v23 = v6;
-  [v3 contentInset];
+  [input contentInset];
   v20 = v9;
   v21 = v8;
   v18 = v11;
@@ -23,18 +23,18 @@
   v15 = *(MEMORY[0x1E695F050] + 16);
   v14 = *(MEMORY[0x1E695F050] + 24);
   memset(v24, 0, sizeof(v24));
-  v16 = v5;
+  v16 = tilingControllers;
   if ([v16 countByEnumeratingWithState:v24 objects:v25 count:16])
   {
     v17 = **(&v24[0] + 1);
-    [v4 setReferenceSize:**(&v24[0] + 1) contentInset:v23 forTilingController:{v22, v21, v20, v19, v18}];
-    [v3 contentBoundsForTilingController:v17];
-    [v3 scrollBoundsForTilingController:v17];
-    [v3 preferredOriginForTilingController:v17];
+    [output setReferenceSize:**(&v24[0] + 1) contentInset:v23 forTilingController:{v22, v21, v20, v19, v18}];
+    [input contentBoundsForTilingController:v17];
+    [input scrollBoundsForTilingController:v17];
+    [input preferredOriginForTilingController:v17];
     PXPointIsNull();
   }
 
-  [v4 setContentBounds:0 scrollBounds:v13 scrollInfo:{v12, v15, v14, v13, v12, v15, v14}];
+  [output setContentBounds:0 scrollBounds:v13 scrollInfo:{v12, v15, v14, v13, v12, v15, v14}];
 }
 
 @end

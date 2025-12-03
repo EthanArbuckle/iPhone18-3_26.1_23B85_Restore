@@ -6,7 +6,7 @@
 
 + (id)abilityCheck
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setIsAbleToTakeScreenshots:1];
   [v2 setReasonForNotBeingAbleToTakeScreenshots:0];
   v20 = 0;
@@ -27,10 +27,10 @@
 
   v4 = v3;
   _Block_object_dispose(&v20, 8);
-  v5 = [v3 sharedConnection];
-  v6 = [v5 isScreenShotAllowed];
+  sharedConnection = [v3 sharedConnection];
+  isScreenShotAllowed = [sharedConnection isScreenShotAllowed];
 
-  if ((v6 & 1) == 0)
+  if ((isScreenShotAllowed & 1) == 0)
   {
     [v2 setIsAbleToTakeScreenshots:0];
     [v2 setReasonForNotBeingAbleToTakeScreenshots:@"Disallowed from ManagedConfiguration"];
@@ -65,14 +65,14 @@
     [v2 setReasonForNotBeingAbleToTakeScreenshots:@"Device has not done first unlock"];
   }
 
-  v8 = [getUMUserManagerClass() sharedManager];
-  if ([v8 isSharedIPad])
+  sharedManager = [getUMUserManagerClass() sharedManager];
+  if ([sharedManager isSharedIPad])
   {
-    v9 = [getUMUserManagerClass() sharedManager];
-    v10 = [v9 currentUser];
-    v11 = [v10 isLoginUser];
+    sharedManager2 = [getUMUserManagerClass() sharedManager];
+    currentUser = [sharedManager2 currentUser];
+    isLoginUser = [currentUser isLoginUser];
 
-    if (v11)
+    if (isLoginUser)
     {
       [v2 setIsAbleToTakeScreenshots:0];
       [v2 setReasonForNotBeingAbleToTakeScreenshots:@"Device is at the login window"];

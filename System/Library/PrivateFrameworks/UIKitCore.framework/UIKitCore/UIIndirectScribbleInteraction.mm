@@ -3,7 +3,7 @@
 - (UIView)view;
 - (id)delegate;
 - (id)scribbleInteractionWrapper;
-- (void)_setHandlingWritingCount:(int64_t)a3;
+- (void)_setHandlingWritingCount:(int64_t)count;
 @end
 
 @implementation UIIndirectScribbleInteraction
@@ -30,15 +30,15 @@
   return v6;
 }
 
-- (void)_setHandlingWritingCount:(int64_t)a3
+- (void)_setHandlingWritingCount:(int64_t)count
 {
   handlingWritingCount = self->__handlingWritingCount;
-  if (handlingWritingCount != a3)
+  if (handlingWritingCount != count)
   {
-    self->__handlingWritingCount = a3;
-    if (a3 > 0 == handlingWritingCount < 1)
+    self->__handlingWritingCount = count;
+    if (count > 0 == handlingWritingCount < 1)
     {
-      [(UIIndirectScribbleInteraction *)self _setHandlingWriting:a3 > 0];
+      [(UIIndirectScribbleInteraction *)self _setHandlingWriting:count > 0];
     }
   }
 }
@@ -50,10 +50,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIIndirectScribbleInteraction *)self view];
-  v4 = [v3 interactions];
+  view = [(UIIndirectScribbleInteraction *)self view];
+  interactions = [view interactions];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [interactions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -63,7 +63,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interactions);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -75,7 +75,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [interactions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

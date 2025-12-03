@@ -6,19 +6,19 @@
 
 - (id)avkitACMIdentifier
 {
-  v1 = [a1 asset];
+  asset = [self asset];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v1 URL];
-    v3 = [v2 absoluteString];
+    v2 = [asset URL];
+    absoluteString = [v2 absoluteString];
   }
 
   else
   {
-    v3 = 0;
+    absoluteString = 0;
   }
 
-  return v3;
+  return absoluteString;
 }
 
 @end

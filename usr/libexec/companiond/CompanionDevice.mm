@@ -2,7 +2,7 @@
 - (NSString)description;
 - (_TtC10companiond15CompanionDevice)init;
 - (unsigned)color;
-- (void)setColor:(unsigned int)a3;
+- (void)setColor:(unsigned int)color;
 @end
 
 @implementation CompanionDevice
@@ -14,16 +14,16 @@
   return *(self + v3);
 }
 
-- (void)setColor:(unsigned int)a3
+- (void)setColor:(unsigned int)color
 {
   v5 = OBJC_IVAR____TtC10companiond15CompanionDevice_color;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = color;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CompanionDevice.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

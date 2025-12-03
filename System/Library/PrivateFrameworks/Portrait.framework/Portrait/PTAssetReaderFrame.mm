@@ -2,15 +2,15 @@
 - (CGAffineTransform)colorBufferPreferredTransform;
 - (CGAffineTransform)disparityBufferPreferredTransform;
 - (NSDictionary)jsonFriendlyMetadata;
-- (PTAssetReaderFrame)initWithAssetReaderFrame:(id)a3;
-- (id)_jsonFriendlyObject:(id)a3;
+- (PTAssetReaderFrame)initWithAssetReaderFrame:(id)frame;
+- (id)_jsonFriendlyObject:(id)object;
 - (void)dealloc;
-- (void)setColorBufferPreferredTransform:(CGAffineTransform *)a3;
-- (void)setColorBufferTime:(id *)a3;
-- (void)setDisparityBufferPreferredTransform:(CGAffineTransform *)a3;
-- (void)setDisparityBufferTime:(id *)a3;
-- (void)setMetadataTime:(id *)a3;
-- (void)setTime:(id *)a3;
+- (void)setColorBufferPreferredTransform:(CGAffineTransform *)transform;
+- (void)setColorBufferTime:(id *)time;
+- (void)setDisparityBufferPreferredTransform:(CGAffineTransform *)transform;
+- (void)setDisparityBufferTime:(id *)time;
+- (void)setMetadataTime:(id *)time;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PTAssetReaderFrame
@@ -32,18 +32,18 @@
   [(PTAssetReaderFrame *)&v3 dealloc];
 }
 
-- (id)_jsonFriendlyObject:(id)a3
+- (id)_jsonFriendlyObject:(id)object
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x277CCAAA0];
-  v25[0] = v4;
+  v25[0] = objectCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   LODWORD(v5) = [v5 isValidJSONObject:v6];
 
   if (v5)
   {
-    v7 = v4;
+    v7 = objectCopy;
   }
 
   else
@@ -59,7 +59,7 @@
       v22[4] = self;
       v9 = v8;
       v23 = v9;
-      [v4 enumerateKeysAndObjectsUsingBlock:v22];
+      [objectCopy enumerateKeysAndObjectsUsingBlock:v22];
       v10 = v23;
       v7 = v9;
     }
@@ -74,7 +74,7 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = v4;
+        v11 = objectCopy;
         v12 = [v11 countByEnumeratingWithState:&v18 objects:v24 count:16];
         if (v12)
         {
@@ -130,12 +130,12 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
 
 - (NSDictionary)jsonFriendlyMetadata
 {
-  v3 = [(PTAssetReaderFrame *)self metadata];
+  metadata = [(PTAssetReaderFrame *)self metadata];
 
-  if (v3)
+  if (metadata)
   {
-    v4 = [(PTAssetReaderFrame *)self metadata];
-    v5 = [(PTAssetReaderFrame *)self _jsonFriendlyObject:v4];
+    metadata2 = [(PTAssetReaderFrame *)self metadata];
+    v5 = [(PTAssetReaderFrame *)self _jsonFriendlyObject:metadata2];
   }
 
   else
@@ -146,17 +146,17 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
   return v5;
 }
 
-- (PTAssetReaderFrame)initWithAssetReaderFrame:(id)a3
+- (PTAssetReaderFrame)initWithAssetReaderFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v17.receiver = self;
   v17.super_class = PTAssetReaderFrame;
   v5 = [(PTAssetReaderFrame *)&v17 init];
   if (v5)
   {
-    if (v4)
+    if (frameCopy)
     {
-      [v4 time];
+      [frameCopy time];
     }
 
     else
@@ -167,15 +167,15 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
 
     *(v5 + 3) = v10;
     *(v5 + 8) = v14;
-    *(v5 + 1) = [v4 index];
-    v6 = [v4 metadata];
-    v7 = [v6 copy];
+    *(v5 + 1) = [frameCopy index];
+    metadata = [frameCopy metadata];
+    v7 = [metadata copy];
     v8 = *(v5 + 2);
     *(v5 + 2) = v7;
 
-    if (v4)
+    if (frameCopy)
     {
-      [v4 metadataTime];
+      [frameCopy metadataTime];
     }
 
     else
@@ -186,13 +186,13 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
 
     *(v5 + 72) = v11;
     *(v5 + 11) = v15;
-    *(v5 + 4) = CVPixelBufferRetain([v4 colorBuffer]);
-    if (v4)
+    *(v5 + 4) = CVPixelBufferRetain([frameCopy colorBuffer]);
+    if (frameCopy)
     {
-      [v4 colorBufferTime];
+      [frameCopy colorBufferTime];
       *(v5 + 6) = v12;
       *(v5 + 14) = v14;
-      [v4 colorBufferPreferredTransform];
+      [frameCopy colorBufferPreferredTransform];
     }
 
     else
@@ -208,13 +208,13 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
     *(v5 + 9) = v12;
     *(v5 + 10) = v14;
     *(v5 + 11) = v16;
-    *(v5 + 5) = CVPixelBufferRetain([v4 disparityBuffer]);
-    if (v4)
+    *(v5 + 5) = CVPixelBufferRetain([frameCopy disparityBuffer]);
+    if (frameCopy)
     {
-      [v4 disparityBufferTime];
+      [frameCopy disparityBufferTime];
       *(v5 + 120) = v13;
       *(v5 + 17) = v14;
-      [v4 disparityBufferPreferredTransform];
+      [frameCopy disparityBufferPreferredTransform];
     }
 
     else
@@ -235,24 +235,24 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
   return v5;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 
-- (void)setMetadataTime:(id *)a3
+- (void)setMetadataTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_metadataTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_metadataTime.epoch = time->var3;
   *&self->_metadataTime.value = v3;
 }
 
-- (void)setColorBufferTime:(id *)a3
+- (void)setColorBufferTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_colorBufferTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_colorBufferTime.epoch = time->var3;
   *&self->_colorBufferTime.value = v3;
 }
 
@@ -265,19 +265,19 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
   return self;
 }
 
-- (void)setColorBufferPreferredTransform:(CGAffineTransform *)a3
+- (void)setColorBufferPreferredTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_colorBufferPreferredTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_colorBufferPreferredTransform.c = *&transform->c;
   *&self->_colorBufferPreferredTransform.tx = v4;
   *&self->_colorBufferPreferredTransform.a = v3;
 }
 
-- (void)setDisparityBufferTime:(id *)a3
+- (void)setDisparityBufferTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_disparityBufferTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_disparityBufferTime.epoch = time->var3;
   *&self->_disparityBufferTime.value = v3;
 }
 
@@ -290,11 +290,11 @@ void __42__PTAssetReaderFrame__jsonFriendlyObject___block_invoke(uint64_t a1, vo
   return self;
 }
 
-- (void)setDisparityBufferPreferredTransform:(CGAffineTransform *)a3
+- (void)setDisparityBufferPreferredTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_disparityBufferPreferredTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_disparityBufferPreferredTransform.c = *&transform->c;
   *&self->_disparityBufferPreferredTransform.tx = v4;
   *&self->_disparityBufferPreferredTransform.a = v3;
 }

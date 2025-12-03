@@ -1,5 +1,5 @@
 @interface _HKCFGNonTerminalNode
-+ (id)nodeWithChildren:(id)a3 rule:(id)a4 rangeOfString:(_NSRange)a5;
++ (id)nodeWithChildren:(id)children rule:(id)rule rangeOfString:(_NSRange)string;
 - (id)evaluate;
 @end
 
@@ -10,8 +10,8 @@
   value = self->_value;
   if (!value)
   {
-    v4 = [(_HKCFGReplacementRule *)self->_rule nodeEvaluator];
-    v5 = (v4)[2](v4, self->_nodes);
+    nodeEvaluator = [(_HKCFGReplacementRule *)self->_rule nodeEvaluator];
+    v5 = (nodeEvaluator)[2](nodeEvaluator, self->_nodes);
     v6 = self->_value;
     self->_value = v5;
 
@@ -21,20 +21,20 @@
   return value;
 }
 
-+ (id)nodeWithChildren:(id)a3 rule:(id)a4 rangeOfString:(_NSRange)a5
++ (id)nodeWithChildren:(id)children rule:(id)rule rangeOfString:(_NSRange)string
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithRangeOfString:{location, length}];
-  v12 = [v10 copy];
+  length = string.length;
+  location = string.location;
+  ruleCopy = rule;
+  childrenCopy = children;
+  v11 = [[self alloc] initWithRangeOfString:{location, length}];
+  v12 = [childrenCopy copy];
 
   v13 = v11[3];
   v11[3] = v12;
 
   v14 = v11[5];
-  v11[5] = v9;
+  v11[5] = ruleCopy;
 
   return v11;
 }

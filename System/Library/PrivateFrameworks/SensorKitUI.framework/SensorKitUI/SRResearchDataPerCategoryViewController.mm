@@ -1,17 +1,17 @@
 @interface SRResearchDataPerCategoryViewController
 + (void)initialize;
-- (BOOL)sensorReader:(id)a3 fetchingRequest:(id)a4 didFetchResult:(id)a5;
-- (id)bundleForIndexPath:(id)a3;
+- (BOOL)sensorReader:(id)reader fetchingRequest:(id)request didFetchResult:(id)result;
+- (id)bundleForIndexPath:(id)path;
 - (id)prepareDayCell;
 - (id)prepareDeleteCell;
 - (id)prepareExportCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)daysFromDate:(id)a3 toDate:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableSectionFromIndexPathSection:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)daysFromDate:(id)date toDate:(id)toDate;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableSectionFromIndexPathSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancelExport;
 - (void)cleanupExportedFile;
 - (void)dealloc;
@@ -19,11 +19,11 @@
 - (void)exportData;
 - (void)navigateToAuthorization;
 - (void)populateDays;
-- (void)presentDownloadPath:(id)a3 sandboxExtensionToken:(id)a4;
-- (void)sensorReader:(id)a3 didCompleteFetch:(id)a4;
-- (void)sensorReader:(id)a3 fetchingRequest:(id)a4 failedWithError:(id)a5;
+- (void)presentDownloadPath:(id)path sandboxExtensionToken:(id)token;
+- (void)sensorReader:(id)reader didCompleteFetch:(id)fetch;
+- (void)sensorReader:(id)reader fetchingRequest:(id)request failedWithError:(id)error;
 - (void)showActionSheet;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -31,7 +31,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRResearchPerDataLog = os_log_create("com.apple.SensorKit", "SRResearchPerData");
   }
@@ -238,9 +238,9 @@
     v28 = SRResearchPerDataLog;
     if (os_log_type_enabled(SRResearchPerDataLog, OS_LOG_TYPE_FAULT))
     {
-      v46 = [(NSSet *)[(SRResearchDataPerCategoryViewController *)self sensorIdentifiers] anyObject];
+      anyObject = [(NSSet *)[(SRResearchDataPerCategoryViewController *)self sensorIdentifiers] anyObject];
       LODWORD(location[0]) = 138543362;
-      *(location + 4) = v46;
+      *(location + 4) = anyObject;
       _os_log_fault_impl(&dword_265602000, v28, OS_LOG_TYPE_FAULT, "Failed to find sensor description for %{public}@", location, 0xCu);
     }
   }
@@ -266,8 +266,8 @@
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v57 = [(SRResearchDataPerCategoryViewController *)self sensorIdentifiers];
-      v32 = [(NSSet *)v57 countByEnumeratingWithState:&v61 objects:v86 count:16];
+      sensorIdentifiers = [(SRResearchDataPerCategoryViewController *)self sensorIdentifiers];
+      v32 = [(NSSet *)sensorIdentifiers countByEnumeratingWithState:&v61 objects:v86 count:16];
       if (v32)
       {
         v33 = *v62;
@@ -277,7 +277,7 @@
           {
             if (*v62 != v33)
             {
-              objc_enumerationMutation(v57);
+              objc_enumerationMutation(sensorIdentifiers);
             }
 
             v35 = *(*(&v61 + 1) + 8 * m);
@@ -303,20 +303,20 @@
             [(NSMutableArray *)[(SRResearchDataPerCategoryViewController *)self pruners] addObject:v43];
           }
 
-          v32 = [(NSSet *)v57 countByEnumeratingWithState:&v61 objects:v86 count:16];
+          v32 = [(NSSet *)sensorIdentifiers countByEnumeratingWithState:&v61 objects:v86 count:16];
         }
 
         while (v32);
       }
 
       objc_initWeak(location, self);
-      v44 = [(SRResearchDataPerCategoryViewController *)self fetchGroup];
+      fetchGroup = [(SRResearchDataPerCategoryViewController *)self fetchGroup];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke_14;
       block[3] = &unk_279B98368;
       objc_copyWeak(&v60, location);
-      dispatch_group_notify(v44, MEMORY[0x277D85CD0], block);
+      dispatch_group_notify(fetchGroup, MEMORY[0x277D85CD0], block);
       objc_destroyWeak(&v60);
       objc_destroyWeak(location);
     }
@@ -368,14 +368,14 @@ uint64_t __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke
   [(SRResearchDataPerCategoryViewController *)&v3 dealloc];
 }
 
-- (int64_t)tableSectionFromIndexPathSection:(int64_t)a3
+- (int64_t)tableSectionFromIndexPathSection:(int64_t)section
 {
-  v3 = a3;
-  if ((a3 - 2) >= 4)
+  sectionCopy = section;
+  if ((section - 2) >= 4)
   {
-    if (a3 != 1)
+    if (section != 1)
     {
-      return v3;
+      return sectionCopy;
     }
 
     v8 = [(NSArray *)[(SRResearchDataPerCategoryViewController *)self appBundles] count]== 0;
@@ -388,12 +388,12 @@ uint64_t __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke
     v6 = [(NSArray *)[(SRResearchDataPerCategoryViewController *)self writerAppBundles] count];
     if (v5)
     {
-      v7 = v3;
+      v7 = sectionCopy;
     }
 
     else
     {
-      v7 = v3 + 1;
+      v7 = sectionCopy + 1;
     }
 
     v8 = v6 == 0;
@@ -410,7 +410,7 @@ uint64_t __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(NSArray *)[(SRResearchDataPerCategoryViewController *)self writerAppBundles] count])
   {
@@ -426,9 +426,9 @@ uint64_t __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke
   return v5 - ([(SRResearchDataPerCategoryViewController *)self datastoreBackend]== 1);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(SRResearchDataPerCategoryViewController *)self tableSectionFromIndexPathSection:a4];
+  v5 = [(SRResearchDataPerCategoryViewController *)self tableSectionFromIndexPathSection:section];
   if (v5 > 2)
   {
     return (v5 - 3) < 3;
@@ -441,7 +441,7 @@ uint64_t __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke
 
   if (v5 == 1)
   {
-    v6 = [(SRResearchDataPerCategoryViewController *)self appBundles];
+    appBundles = [(SRResearchDataPerCategoryViewController *)self appBundles];
     goto LABEL_11;
   }
 
@@ -450,15 +450,15 @@ uint64_t __54__SRResearchDataPerCategoryViewController_viewDidLoad__block_invoke
     return 0;
   }
 
-  v6 = [(SRResearchDataPerCategoryViewController *)self writerAppBundles];
+  appBundles = [(SRResearchDataPerCategoryViewController *)self writerAppBundles];
 LABEL_11:
 
-  return [(NSArray *)v6 count];
+  return [(NSArray *)appBundles count];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(SRResearchDataPerCategoryViewController *)self tableSectionFromIndexPathSection:a4];
+  v4 = [(SRResearchDataPerCategoryViewController *)self tableSectionFromIndexPathSection:section];
   if ((v4 - 1) > 2)
   {
     return 0;
@@ -470,10 +470,10 @@ LABEL_11:
   return [v6 srui_localizedStringForCode:v5];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = [(SRResearchDataPerCategoryViewController *)self tableSectionFromIndexPathSection:a4];
+  v6 = [(SRResearchDataPerCategoryViewController *)self tableSectionFromIndexPathSection:section];
   v7 = 0;
   if (v6 <= 2)
   {
@@ -484,7 +484,7 @@ LABEL_18:
         v10 = *MEMORY[0x277D85DE8];
         return v7;
       case 1:
-        if ([(SRResearchDataPerCategoryViewController *)self tableView:a3 numberOfRowsInSection:1])
+        if ([(SRResearchDataPerCategoryViewController *)self tableView:view numberOfRowsInSection:1])
         {
           v7 = 13;
         }
@@ -520,15 +520,15 @@ LABEL_18:
     {
       if (v6 == 3)
       {
-        v12 = [(SRResearchDataPerCategoryViewController *)self datastoreBackend];
-        if (v12 == 1)
+        datastoreBackend = [(SRResearchDataPerCategoryViewController *)self datastoreBackend];
+        if (datastoreBackend == 1)
         {
           v7 = 92;
         }
 
         else
         {
-          v7 = 16 * (v12 == 0);
+          v7 = 16 * (datastoreBackend == 0);
         }
       }
 
@@ -571,10 +571,10 @@ LABEL_26:
   return [v13 srui_localizedStringForCode:v7];
 }
 
-- (id)bundleForIndexPath:(id)a3
+- (id)bundleForIndexPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = -[SRResearchDataPerCategoryViewController tableSectionFromIndexPathSection:](self, "tableSectionFromIndexPathSection:", [a3 section]);
+  v5 = -[SRResearchDataPerCategoryViewController tableSectionFromIndexPathSection:](self, "tableSectionFromIndexPathSection:", [path section]);
   if (v5 - 3 < 4)
   {
 LABEL_14:
@@ -590,25 +590,25 @@ LABEL_14:
       goto LABEL_8;
     }
 
-    v6 = [(SRResearchDataPerCategoryViewController *)self writerAppBundles];
+    writerAppBundles = [(SRResearchDataPerCategoryViewController *)self writerAppBundles];
   }
 
   else
   {
-    v6 = [(SRResearchDataPerCategoryViewController *)self appBundles];
+    writerAppBundles = [(SRResearchDataPerCategoryViewController *)self appBundles];
   }
 
-  v7 = v6;
+  v7 = writerAppBundles;
 LABEL_8:
-  v8 = [a3 row];
+  v8 = [path row];
   if ([(NSArray *)v7 count]<= v8)
   {
     v11 = SRResearchPerDataLog;
     if (os_log_type_enabled(SRResearchPerDataLog, OS_LOG_TYPE_FAULT))
     {
-      v13 = [(SRAuthorizationGroup *)self->_authGroup localizedDisplayName];
+      localizedDisplayName = [(SRAuthorizationGroup *)self->_authGroup localizedDisplayName];
       v14 = 138543874;
-      v15 = v13;
+      v15 = localizedDisplayName;
       v16 = 2048;
       v17 = [(NSArray *)v7 count];
       v18 = 2048;
@@ -624,10 +624,10 @@ LABEL_8:
   return [(NSArray *)v7 objectAtIndexedSubscript:v8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = [a4 row];
-  v8 = -[SRResearchDataPerCategoryViewController tableSectionFromIndexPathSection:](self, "tableSectionFromIndexPathSection:", [a4 section]);
+  v7 = [path row];
+  v8 = -[SRResearchDataPerCategoryViewController tableSectionFromIndexPathSection:](self, "tableSectionFromIndexPathSection:", [path section]);
   if (v8 > 2)
   {
     switch(v8)
@@ -655,30 +655,30 @@ LABEL_24:
     {
       if (v8 == 1)
       {
-        v22 = [(SRResearchDataPerCategoryViewController *)self bundleForIndexPath:a4];
+        v22 = [(SRResearchDataPerCategoryViewController *)self bundleForIndexPath:path];
         if (v22)
         {
           v10 = v22;
-          v11 = [v22 sk_appName];
+          sk_appName = [v22 sk_appName];
           v12 = MEMORY[0x277CCABB0];
-          v13 = [(SRResearchDataPerCategoryViewController *)self authorizedBundleIds];
+          authorizedBundleIds = [(SRResearchDataPerCategoryViewController *)self authorizedBundleIds];
           goto LABEL_21;
         }
       }
 
       else if (v8 == 2)
       {
-        v9 = [(SRResearchDataPerCategoryViewController *)self bundleForIndexPath:a4];
+        v9 = [(SRResearchDataPerCategoryViewController *)self bundleForIndexPath:path];
         if (v9)
         {
           v10 = v9;
-          v11 = [v9 sk_appName];
+          sk_appName = [v9 sk_appName];
           v12 = MEMORY[0x277CCABB0];
-          v13 = [(SRResearchDataPerCategoryViewController *)self authorizedWriterBundleIds];
+          authorizedBundleIds = [(SRResearchDataPerCategoryViewController *)self authorizedWriterBundleIds];
 LABEL_21:
-          v23 = [v12 numberWithBool:{-[NSMutableSet containsObject:](v13, "containsObject:", objc_msgSend(v10, "bundleIdentifier"))}];
+          v23 = [v12 numberWithBool:{-[NSMutableSet containsObject:](authorizedBundleIds, "containsObject:", objc_msgSend(v10, "bundleIdentifier"))}];
 
-          return [SRAuthorizationCell authorizationCellForIndexPath:a4 title:v11 state:v23 delegate:self tableView:a3];
+          return [SRAuthorizationCell authorizationCellForIndexPath:path title:sk_appName state:v23 delegate:self tableView:view];
         }
       }
 
@@ -694,7 +694,7 @@ LABEL_21:
         v17 = [MEMORY[0x277D74300] fontWithDescriptor:v16 size:0.0];
         v18 = [MEMORY[0x277D74300] preferredFontForTextStyle:v15];
         v19 = +[SRAuthorizationCategoryDetailCell categoryDetailCellForAuthGroup:bundle:titleFont:bodyFont:textColor:OBKStyle:](SRAuthorizationCategoryDetailCell, "categoryDetailCellForAuthGroup:bundle:titleFont:bodyFont:textColor:OBKStyle:", self->_authGroup, 0, v17, v18, [MEMORY[0x277D75348] labelColor], 0);
-        [a3 separatorInset];
+        [view separatorInset];
         [objc_msgSend(v19 "contentView")];
         return v19;
       }
@@ -704,13 +704,13 @@ LABEL_21:
 
     v25 = MEMORY[0x277D75B48];
 
-    return [v25 skui_tableViewCellForDataSample:a3];
+    return [v25 skui_tableViewCellForDataSample:view];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = -[SRResearchDataPerCategoryViewController tableSectionFromIndexPathSection:](self, "tableSectionFromIndexPathSection:", [a4 section]);
+  v7 = -[SRResearchDataPerCategoryViewController tableSectionFromIndexPathSection:](self, "tableSectionFromIndexPathSection:", [path section]);
   if (v7 > 3)
   {
     if (v7 == 4)
@@ -729,34 +729,34 @@ LABEL_21:
     [(SRResearchDataPerCategoryViewController *)self end];
     [v9 setEnd:?];
     [v9 setTombstones:{-[SRResearchDataPerCategoryViewController tombstones](self, "tombstones")}];
-    v10 = self;
+    selfCopy2 = self;
     v11 = v9;
 LABEL_12:
-    [(UIViewController *)v10 sk_showViewController:v11 animated:1];
+    [(UIViewController *)selfCopy2 sk_showViewController:v11 animated:1];
     goto LABEL_15;
   }
 
   if (!v7)
   {
-    if ([a4 row] != 1)
+    if ([path row] != 1)
     {
       goto LABEL_15;
     }
 
     v11 = [SRSampleViewController sampleViewControllerForAuthGroup:self->_authGroup];
-    v10 = self;
+    selfCopy2 = self;
     goto LABEL_12;
   }
 
   if (v7 == 3)
   {
-    v8 = [(SRResearchDataPerCategoryViewController *)self datastoreBackend];
-    if (v8 == 1)
+    datastoreBackend = [(SRResearchDataPerCategoryViewController *)self datastoreBackend];
+    if (datastoreBackend == 1)
     {
       [(SRResearchDataPerCategoryViewController *)self navigateToAuthorization];
     }
 
-    else if (!v8)
+    else if (!datastoreBackend)
     {
       [(SRResearchDataPerCategoryViewController *)self showActionSheet];
     }
@@ -764,7 +764,7 @@ LABEL_12:
 
 LABEL_15:
 
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  [view deselectRowAtIndexPath:path animated:1];
 }
 
 - (id)prepareDayCell
@@ -797,17 +797,17 @@ LABEL_15:
     v3 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"SRDataDeleteRowReuseIdentifier"];
   }
 
-  v4 = [(SRResearchDataPerCategoryViewController *)self datastoreBackend];
-  if (v4 == 1)
+  datastoreBackend = [(SRResearchDataPerCategoryViewController *)self datastoreBackend];
+  if (datastoreBackend == 1)
   {
-    v5 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
     v6 = 95;
     goto LABEL_7;
   }
 
-  if (!v4)
+  if (!datastoreBackend)
   {
-    v5 = [MEMORY[0x277D75348] redColor];
+    systemBlueColor = [MEMORY[0x277D75348] redColor];
     v6 = 20;
 LABEL_7:
     [objc_msgSend(v3 "textLabel")];
@@ -834,35 +834,35 @@ LABEL_7:
   return v2;
 }
 
-- (BOOL)sensorReader:(id)a3 fetchingRequest:(id)a4 didFetchResult:(id)a5
+- (BOOL)sensorReader:(id)reader fetchingRequest:(id)request didFetchResult:(id)result
 {
-  [a5 sample];
+  [result sample];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[NSMutableArray addObject:](self->_tombstones, "addObject:", [a5 sample]);
+    -[NSMutableArray addObject:](self->_tombstones, "addObject:", [result sample]);
   }
 
   return 1;
 }
 
-- (void)sensorReader:(id)a3 didCompleteFetch:(id)a4
+- (void)sensorReader:(id)reader didCompleteFetch:(id)fetch
 {
-  if ([(SRResearchDataPerCategoryViewController *)self fetchGroup:a3])
+  if ([(SRResearchDataPerCategoryViewController *)self fetchGroup:reader])
   {
-    v5 = [(SRResearchDataPerCategoryViewController *)self fetchGroup];
+    fetchGroup = [(SRResearchDataPerCategoryViewController *)self fetchGroup];
 
-    dispatch_group_leave(v5);
+    dispatch_group_leave(fetchGroup);
   }
 }
 
-- (void)sensorReader:(id)a3 fetchingRequest:(id)a4 failedWithError:(id)a5
+- (void)sensorReader:(id)reader fetchingRequest:(id)request failedWithError:(id)error
 {
-  if ([(SRResearchDataPerCategoryViewController *)self fetchGroup:a3])
+  if ([(SRResearchDataPerCategoryViewController *)self fetchGroup:reader])
   {
-    v6 = [(SRResearchDataPerCategoryViewController *)self fetchGroup];
+    fetchGroup = [(SRResearchDataPerCategoryViewController *)self fetchGroup];
 
-    dispatch_group_leave(v6);
+    dispatch_group_leave(fetchGroup);
   }
 }
 
@@ -882,23 +882,23 @@ LABEL_7:
     -[SRResearchDataPerCategoryViewController setNumberOfDays:](self, "setNumberOfDays:", -[SRResearchDataPerCategoryViewController daysFromDate:toDate:](self, "daysFromDate:toDate:", v7, [v8 dateWithSRAbsoluteTime:?]));
     [-[SRResearchDataPerCategoryViewController tableView](self "tableView")];
     v9 = [(SRResearchDataPerCategoryViewController *)self numberOfSectionsInTableView:[(SRResearchDataPerCategoryViewController *)self tableView]]- 1;
-    v10 = [(SRResearchDataPerCategoryViewController *)self tableView];
+    tableView = [(SRResearchDataPerCategoryViewController *)self tableView];
     v12[0] = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v9];
-    [v10 reloadRowsAtIndexPaths:objc_msgSend(MEMORY[0x277CBEA60] withRowAnimation:{"arrayWithObjects:count:", v12, 1), 100}];
+    [tableView reloadRowsAtIndexPaths:objc_msgSend(MEMORY[0x277CBEA60] withRowAnimation:{"arrayWithObjects:count:", v12, 1), 100}];
     [-[SRResearchDataPerCategoryViewController tableView](self "tableView")];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)daysFromDate:(id)a3 toDate:(id)a4
+- (int64_t)daysFromDate:(id)date toDate:(id)toDate
 {
   v8 = 0;
   v9 = 0;
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  [v6 rangeOfUnit:16 startDate:&v9 interval:0 forDate:a3];
-  [v6 rangeOfUnit:16 startDate:&v8 interval:0 forDate:a4];
-  return [objc_msgSend(v6 components:16 fromDate:v9 toDate:v8 options:{0), "day"}] + 1;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  [currentCalendar rangeOfUnit:16 startDate:&v9 interval:0 forDate:date];
+  [currentCalendar rangeOfUnit:16 startDate:&v8 interval:0 forDate:toDate];
+  return [objc_msgSend(currentCalendar components:16 fromDate:v9 toDate:v8 options:{0), "day"}] + 1;
 }
 
 - (void)showActionSheet
@@ -958,7 +958,7 @@ uint64_t __58__SRResearchDataPerCategoryViewController_showActionSheet__block_in
   v9 = [MEMORY[0x277CDC638] sensorDescriptionsForAuthorizationService:{-[SRAuthorizationGroup authorizationService](self->_authGroup, "authorizationService")}];
   v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v9, "count")}];
   v19 = v6;
-  v20 = self;
+  selfCopy = self;
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -1002,7 +1002,7 @@ uint64_t __58__SRResearchDataPerCategoryViewController_showActionSheet__block_in
 
   if ([v10 count])
   {
-    objc_initWeak(v35, v20);
+    objc_initWeak(v35, selfCopy);
     v16 = MEMORY[0x277CDC648];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -1012,7 +1012,7 @@ uint64_t __58__SRResearchDataPerCategoryViewController_showActionSheet__block_in
     objc_copyWeak(&v23, &location);
     v21[4] = v19;
     v21[5] = buf;
-    v20->_cancelExportBlock = [v16 createExportDataForServices:v10 withCompletionHandler:v21];
+    selfCopy->_cancelExportBlock = [v16 createExportDataForServices:v10 withCompletionHandler:v21];
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v22);
     objc_destroyWeak(v35);
@@ -1159,10 +1159,10 @@ id __53__SRResearchDataPerCategoryViewController_exportData__block_invoke_2(uint
 
 - (void)cancelExport
 {
-  v3 = [(SRResearchDataPerCategoryViewController *)self cancelExportBlock];
-  if (v3)
+  cancelExportBlock = [(SRResearchDataPerCategoryViewController *)self cancelExportBlock];
+  if (cancelExportBlock)
   {
-    v3[2]();
+    cancelExportBlock[2]();
   }
 
   [(SRResearchDataPerCategoryViewController *)self setCancelExportBlock:0];
@@ -1179,9 +1179,9 @@ id __53__SRResearchDataPerCategoryViewController_exportData__block_invoke_2(uint
       v3 = SRResearchPerDataLog;
       if (os_log_type_enabled(SRResearchPerDataLog, OS_LOG_TYPE_ERROR))
       {
-        v6 = [(SRResearchDataPerCategoryViewController *)self exportedDataURL];
+        exportedDataURL = [(SRResearchDataPerCategoryViewController *)self exportedDataURL];
         *buf = 138543618;
-        v11 = v6;
+        v11 = exportedDataURL;
         v12 = 2114;
         v13 = v9;
         _os_log_error_impl(&dword_265602000, v3, OS_LOG_TYPE_ERROR, "Failed to remove exported URL %{public}@ because %{public}@", buf, 0x16u);
@@ -1199,10 +1199,10 @@ id __53__SRResearchDataPerCategoryViewController_exportData__block_invoke_2(uint
       v4 = SRResearchPerDataLog;
       if (os_log_type_enabled(SRResearchPerDataLog, OS_LOG_TYPE_ERROR))
       {
-        v7 = [(SRResearchDataPerCategoryViewController *)self sb_handle];
+        sb_handle = [(SRResearchDataPerCategoryViewController *)self sb_handle];
         v8 = *__error();
         *buf = 134218240;
-        v11 = v7;
+        v11 = sb_handle;
         v12 = 1026;
         LODWORD(v13) = v8;
         _os_log_error_impl(&dword_265602000, v4, OS_LOG_TYPE_ERROR, "Error releasing sandbox handle %lld because %{public, errno}d", buf, 0x12u);
@@ -1215,24 +1215,24 @@ id __53__SRResearchDataPerCategoryViewController_exportData__block_invoke_2(uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentDownloadPath:(id)a3 sandboxExtensionToken:(id)a4
+- (void)presentDownloadPath:(id)path sandboxExtensionToken:(id)token
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (token)
   {
-    [a4 UTF8String];
+    [token UTF8String];
     [(SRResearchDataPerCategoryViewController *)self setSb_handle:sandbox_extension_consume()];
-    v7 = [(SRResearchDataPerCategoryViewController *)self sb_handle];
+    sb_handle = [(SRResearchDataPerCategoryViewController *)self sb_handle];
     v8 = SRResearchPerDataLog;
-    if (v7 == -1)
+    if (sb_handle == -1)
     {
       if (os_log_type_enabled(SRResearchPerDataLog, OS_LOG_TYPE_ERROR))
       {
         v19 = *__error();
         *buf = 138543618;
-        v25 = a4;
+        tokenCopy2 = token;
         v26 = 1026;
-        LODWORD(v27) = v19;
+        LODWORD(pathCopy) = v19;
         _os_log_error_impl(&dword_265602000, v8, OS_LOG_TYPE_ERROR, "Error consuming sandbox extension token %{public}@ because %{public, errno}d", buf, 0x12u);
       }
     }
@@ -1240,14 +1240,14 @@ id __53__SRResearchDataPerCategoryViewController_exportData__block_invoke_2(uint
     else if (os_log_type_enabled(SRResearchPerDataLog, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543618;
-      v25 = a4;
+      tokenCopy2 = token;
       v26 = 2114;
-      v27 = a3;
+      pathCopy = path;
       _os_log_debug_impl(&dword_265602000, v8, OS_LOG_TYPE_DEBUG, "Consumed sandbox extension token %{public}@ for %{public}@", buf, 0x16u);
     }
   }
 
-  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
   v10 = objc_alloc(MEMORY[0x277D546D8]);
   v23 = v9;
   v11 = [v10 initWithActivityItems:objc_msgSend(MEMORY[0x277CBEA60] applicationActivities:{"arrayWithObjects:count:", &v23, 1), 0}];
@@ -1303,8 +1303,8 @@ uint64_t __85__SRResearchDataPerCategoryViewController_presentDownloadPath_sandb
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(SRResearchDataPerCategoryViewController *)self pruners];
-    v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    pruners = [(SRResearchDataPerCategoryViewController *)self pruners];
+    v5 = [(NSMutableArray *)pruners countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1316,7 +1316,7 @@ uint64_t __85__SRResearchDataPerCategoryViewController_presentDownloadPath_sandb
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(pruners);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
@@ -1326,7 +1326,7 @@ uint64_t __85__SRResearchDataPerCategoryViewController_presentDownloadPath_sandb
         }
 
         while (v6 != v8);
-        v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [(NSMutableArray *)pruners countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);

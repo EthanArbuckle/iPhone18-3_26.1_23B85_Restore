@@ -1,8 +1,8 @@
 @interface _UITextFieldBezelBackgroundProvider
 + (id)bezelStyleMetricsProvider;
-- (void)addToTextField:(id)a3;
-- (void)drawInBounds:(CGRect)a3;
-- (void)enabledDidChangeAnimated:(BOOL)a3;
+- (void)addToTextField:(id)field;
+- (void)drawInBounds:(CGRect)bounds;
+- (void)enabledDidChangeAnimated:(BOOL)animated;
 @end
 
 @implementation _UITextFieldBezelBackgroundProvider
@@ -14,18 +14,18 @@
   return v2;
 }
 
-- (void)addToTextField:(id)a3
+- (void)addToTextField:(id)field
 {
   v8.receiver = self;
   v8.super_class = _UITextFieldBezelBackgroundProvider;
-  v3 = a3;
-  [(_UITextFieldDrawingBackgroundProvider *)&v8 addToTextField:v3];
-  v4 = [v3 _contentView];
-  v5 = [v3 backgroundColor];
+  fieldCopy = field;
+  [(_UITextFieldDrawingBackgroundProvider *)&v8 addToTextField:fieldCopy];
+  _contentView = [fieldCopy _contentView];
+  backgroundColor = [fieldCopy backgroundColor];
 
-  if (v5)
+  if (backgroundColor)
   {
-    [v5 alphaComponent];
+    [backgroundColor alphaComponent];
     v7 = v6 == 1.0;
   }
 
@@ -34,30 +34,30 @@
     v7 = 0;
   }
 
-  [v4 setOpaque:v7];
+  [_contentView setOpaque:v7];
 }
 
-- (void)enabledDidChangeAnimated:(BOOL)a3
+- (void)enabledDidChangeAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = _UITextFieldBezelBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v4 enabledDidChangeAnimated:a3];
+  [(_UITextFieldBackgroundProvider *)&v4 enabledDidChangeAnimated:animated];
   [(_UITextFieldDrawingBackgroundProvider *)self setNeedsDisplay];
 }
 
-- (void)drawInBounds:(CGRect)a3
+- (void)drawInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(_UITextFieldDrawingBackgroundProvider *)self drawsContent])
   {
-    v14 = [(_UITextFieldBackgroundProvider *)self textField];
-    v8 = [v14 traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    textField = [(_UITextFieldBackgroundProvider *)self textField];
+    traitCollection = [textField traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v9 == 2)
+    if (userInterfaceStyle == 2)
     {
       +[UIColor darkGrayColor];
     }

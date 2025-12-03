@@ -1,6 +1,6 @@
 @interface GCDevicePhysicalInputViewDescription
 - (GCDevicePhysicalInputViewDescription)init;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GCDevicePhysicalInputViewDescription
@@ -12,10 +12,10 @@
   return [(GCDevicePhysicalInputViewDescription *)&v3 init];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   additionalConfiguration = self->_additionalConfiguration;
   if (!additionalConfiguration)
   {
@@ -26,7 +26,7 @@
     additionalConfiguration = self->_additionalConfiguration;
   }
 
-  [(NSMutableDictionary *)additionalConfiguration setValue:v10 forUndefinedKey:v6];
+  [(NSMutableDictionary *)additionalConfiguration setValue:valueCopy forUndefinedKey:keyCopy];
 }
 
 @end

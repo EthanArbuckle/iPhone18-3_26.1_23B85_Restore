@@ -7,7 +7,7 @@
 + (void)hkhr_defaultTimeIntervals
 {
   OUTLINED_FUNCTION_0_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

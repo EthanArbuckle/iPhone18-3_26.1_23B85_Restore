@@ -1,16 +1,16 @@
 @interface ImageProcessUtility
 - (BOOL)createModules;
 - (BOOL)setupMetal;
-- (ImageProcessUtility)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5;
-- (int64_t)encodeCopyTextureToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (int64_t)encodeDownscaleDepthToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
-- (int64_t)encodeDownscaleImageToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
-- (int64_t)encodeFlowEdgeToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 edgeThresh:(float)a6;
-- (int64_t)encodeSmoothOnePlaneToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
+- (ImageProcessUtility)initWithDevice:(id)device commmandQueue:(id)queue;
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
+- (int64_t)encodeCopyTextureToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (int64_t)encodeDownscaleDepthToCommandBuffer:(id)buffer input:(id)input output:(id)output;
+- (int64_t)encodeDownscaleImageToCommandBuffer:(id)buffer input:(id)input output:(id)output;
+- (int64_t)encodeFlowEdgeToCommandBuffer:(id)buffer source:(id)source destination:(id)destination edgeThresh:(float)thresh;
+- (int64_t)encodeSmoothOnePlaneToCommandBuffer:(id)buffer input:(id)input output:(id)output;
 - (void)dealloc;
-- (void)dumpDebugBuffer:(__CVBuffer *)a3 fileName:(id)a4 debugCnt:(int)a5;
-- (void)encodeConvertPack2ArrayToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
+- (void)dumpDebugBuffer:(__CVBuffer *)buffer fileName:(id)name debugCnt:(int)cnt;
+- (void)encodeConvertPack2ArrayToCommandBuffer:(id)buffer input:(id)input output:(id)output;
 @end
 
 @implementation ImageProcessUtility
@@ -33,9 +33,9 @@
       return 1;
     }
 
-    v6 = [(MTLDevice *)device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)device newCommandQueue];
     commandQueue = self->super._commandQueue;
-    self->super._commandQueue = v6;
+    self->super._commandQueue = newCommandQueue;
 
     if (self->super._commandQueue)
     {
@@ -46,29 +46,29 @@
   return result;
 }
 
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) + a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) * a5) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
+  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) + width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) * channels) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
 
   return v5;
 }
 
-- (void)dumpDebugBuffer:(__CVBuffer *)a3 fileName:(id)a4 debugCnt:(int)a5
+- (void)dumpDebugBuffer:(__CVBuffer *)buffer fileName:(id)name debugCnt:(int)cnt
 {
-  v5 = *&a5;
-  v18 = a4;
-  if (CVPixelBufferGetPixelFormatType(a3) == 1278226536)
+  v5 = *&cnt;
+  nameCopy = name;
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1278226536)
   {
-    writeDebugFlo([v18 UTF8String], a3, v5);
+    writeDebugFlo([nameCopy UTF8String], buffer, v5);
   }
 
   else
   {
-    v8 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-    [v8 enqueue];
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+    [commandBuffer enqueue];
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (PixelFormatType == 843264104)
     {
       v12 = 2 * Height;
@@ -100,30 +100,30 @@
     }
 
     PixelBuffer = CreatePixelBuffer(Width, v12, 1278226536);
-    v16 = createTexturesFromCVPixelBuffer(a3, self->super._device, v13, 1uLL);
+    v16 = createTexturesFromCVPixelBuffer(buffer, self->super._device, v13, 1uLL);
     v17 = createTexturesFromCVPixelBuffer(PixelBuffer, self->super._device, 1, v14);
-    [(ImageProcessUtility *)self encodeConvertPack2ArrayToCommandBuffer:v8 input:v16 output:v17];
-    [v8 commit];
-    [(VEMetalBase *)self commandBufferWait:v8 flag:[(VEMetalBase *)self EnableGpuWaitForComplete]];
-    writeDebugFlo([v18 UTF8String], PixelBuffer, v5);
+    [(ImageProcessUtility *)self encodeConvertPack2ArrayToCommandBuffer:commandBuffer input:v16 output:v17];
+    [commandBuffer commit];
+    [(VEMetalBase *)self commandBufferWait:commandBuffer flag:[(VEMetalBase *)self EnableGpuWaitForComplete]];
+    writeDebugFlo([nameCopy UTF8String], PixelBuffer, v5);
     CVPixelBufferRelease(PixelBuffer);
   }
 }
 
-- (void)encodeConvertPack2ArrayToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (void)encodeConvertPack2ArrayToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10)
+  bufferCopy = buffer;
+  inputCopy = input;
+  outputCopy = output;
+  v11 = outputCopy;
+  if (inputCopy && outputCopy)
   {
-    v12 = [v8 computeCommandEncoder];
-    v13 = v12;
-    if (v12)
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    v13 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v12 setComputePipelineState:self->_convertPackToArrayKernel];
-      [v13 setTexture:v9 atIndex:0];
+      [computeCommandEncoder setComputePipelineState:self->_convertPackToArrayKernel];
+      [v13 setTexture:inputCopy atIndex:0];
       [v13 setTexture:v11 atIndex:1];
       v18[0] = ([v11 width] + 15) >> 4;
       v18[1] = ([v11 height] + 15) >> 4;
@@ -154,11 +154,11 @@
   }
 }
 
-- (ImageProcessUtility)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (ImageProcessUtility)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = ImageProcessUtility;
-  v4 = [(VEMetalBase *)&v8 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v8 initWithDevice:device commmandQueue:queue];
   v5 = v4;
   if (v4 && [(ImageProcessUtility *)v4 setupMetal])
   {
@@ -229,7 +229,7 @@
   return 1;
 }
 
-- (int64_t)encodeDownscaleImageToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeDownscaleImageToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
   OUTLINED_FUNCTION_5_4();
   v8 = v7;
@@ -239,8 +239,8 @@
   v13 = 12;
   if (v10 && v11)
   {
-    v14 = [v6 computeCommandEncoder];
-    if (v14)
+    computeCommandEncoder = [v6 computeCommandEncoder];
+    if (computeCommandEncoder)
     {
       [v10 width];
       v15 = OUTLINED_FUNCTION_8_5([v12 width]);
@@ -256,14 +256,14 @@
       }
 
       HIWORD(v45) = v17;
-      v18 = [v12 arrayLength];
+      arrayLength = [v12 arrayLength];
       v19 = &OBJC_IVAR___ImageProcessUtility__downscaleImageKernel;
-      if (v18 == 1)
+      if (arrayLength == 1)
       {
         v19 = &OBJC_IVAR___ImageProcessUtility__downscalePackedImageKernel;
       }
 
-      [v14 setComputePipelineState:*(v8 + *v19)];
+      [computeCommandEncoder setComputePipelineState:*(v8 + *v19)];
       OUTLINED_FUNCTION_3_2();
       v20 = OUTLINED_FUNCTION_1_14();
       v28 = OUTLINED_FUNCTION_10_2(v20, v21, v22, v23, v24, v25, v26, v27, v38, v39, v40, v41, v42, v43, v44, v45, v46);
@@ -274,8 +274,8 @@
       v42 = 12;
       v43 = v36;
       v44 = v8;
-      [v14 dispatchThreadgroups:&v42 threadsPerThreadgroup:{&v38, *OUTLINED_FUNCTION_0_19().i64}];
-      [v14 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:&v42 threadsPerThreadgroup:{&v38, *OUTLINED_FUNCTION_0_19().i64}];
+      [computeCommandEncoder endEncoding];
       v13 = 0;
     }
 
@@ -288,7 +288,7 @@
   return v13;
 }
 
-- (int64_t)encodeFlowEdgeToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5 edgeThresh:(float)a6
+- (int64_t)encodeFlowEdgeToCommandBuffer:(id)buffer source:(id)source destination:(id)destination edgeThresh:(float)thresh
 {
   OUTLINED_FUNCTION_5_4();
   v10 = v9;
@@ -298,28 +298,28 @@
   v15 = 12;
   if (v12 && v13)
   {
-    v16 = [v7 computeCommandEncoder];
-    if (v16)
+    computeCommandEncoder = [v7 computeCommandEncoder];
+    if (computeCommandEncoder)
     {
       v17 = [*(v10 + 16) newBufferWithLength:4 options:0];
-      *[v17 contents] = a6;
-      v18 = [v12 arrayLength];
+      *[v17 contents] = thresh;
+      arrayLength = [v12 arrayLength];
       v19 = &OBJC_IVAR___ImageProcessUtility__flowEdgeInterleavedKernel;
-      if (v18 > 1)
+      if (arrayLength > 1)
       {
         v19 = &OBJC_IVAR___ImageProcessUtility__flowEdgeKernel;
       }
 
-      [v16 setComputePipelineState:*(v10 + *v19)];
+      [computeCommandEncoder setComputePipelineState:*(v10 + *v19)];
       OUTLINED_FUNCTION_3_2();
-      [v16 setTexture:v14 atIndex:1];
-      [v16 setBuffer:v17 offset:0 atIndex:0];
+      [computeCommandEncoder setTexture:v14 atIndex:1];
+      [computeCommandEncoder setBuffer:v17 offset:0 atIndex:0];
       v20 = ([v14 width] + 15) >> 4;
       [v14 height];
       OUTLINED_FUNCTION_8_0();
       v30 = vdupq_n_s64(0x10uLL);
       OUTLINED_FUNCTION_4_4(v21, v22, v23, v24, v25, v26, v27, v28, v30.i64[0], v30.i64[1], 1, v20);
-      [v16 endEncoding];
+      [computeCommandEncoder endEncoding];
 
       v15 = 0;
     }
@@ -333,7 +333,7 @@
   return v15;
 }
 
-- (int64_t)encodeDownscaleDepthToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeDownscaleDepthToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
   OUTLINED_FUNCTION_5_4();
   v8 = v7;
@@ -343,11 +343,11 @@
   v13 = 12;
   if (v10 && v11)
   {
-    v14 = [v6 computeCommandEncoder];
-    v15 = v14;
-    if (v14)
+    computeCommandEncoder = [v6 computeCommandEncoder];
+    v15 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v14 setComputePipelineState:*(v8 + 72)];
+      [computeCommandEncoder setComputePipelineState:*(v8 + 72)];
       OUTLINED_FUNCTION_3_2();
       OUTLINED_FUNCTION_1_14();
       [v10 width];
@@ -381,7 +381,7 @@
   return v13;
 }
 
-- (int64_t)encodeSmoothOnePlaneToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeSmoothOnePlaneToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
   OUTLINED_FUNCTION_5_4();
   v8 = v7;
@@ -391,11 +391,11 @@
   v13 = 12;
   if (v10 && v11)
   {
-    v14 = [v6 computeCommandEncoder];
-    v15 = v14;
-    if (v14)
+    computeCommandEncoder = [v6 computeCommandEncoder];
+    v15 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v14 setComputePipelineState:*(v8 + 80)];
+      [computeCommandEncoder setComputePipelineState:*(v8 + 80)];
       OUTLINED_FUNCTION_3_2();
       OUTLINED_FUNCTION_1_14();
       [v12 width];
@@ -416,7 +416,7 @@
   return v13;
 }
 
-- (int64_t)encodeCopyTextureToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (int64_t)encodeCopyTextureToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
   OUTLINED_FUNCTION_5_4();
   v8 = v7;
@@ -426,8 +426,8 @@
   v13 = 12;
   if (v10 && v11)
   {
-    v14 = [v6 computeCommandEncoder];
-    if (!v14)
+    computeCommandEncoder = [v6 computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       v13 = 9;
       goto LABEL_14;
@@ -457,13 +457,13 @@
       }
 
       LOWORD(v29[0]) = v15;
-      [v14 setComputePipelineState:*(v8 + 104)];
-      [v14 setBytes:v29 length:2 atIndex:0];
+      [computeCommandEncoder setComputePipelineState:*(v8 + 104)];
+      [computeCommandEncoder setBytes:v29 length:2 atIndex:0];
     }
 
     else
     {
-      [v14 setComputePipelineState:*(v8 + 96)];
+      [computeCommandEncoder setComputePipelineState:*(v8 + 96)];
     }
 
     OUTLINED_FUNCTION_3_2();
@@ -476,7 +476,7 @@
     v29[2] = v8;
     OUTLINED_FUNCTION_0_19();
     OUTLINED_FUNCTION_4_4(v17, v18, v19, v20, v21, v22, v23, v24, v26, v27, v28, v29[0]);
-    [v14 endEncoding];
+    [computeCommandEncoder endEncoding];
     v13 = 0;
 LABEL_14:
   }

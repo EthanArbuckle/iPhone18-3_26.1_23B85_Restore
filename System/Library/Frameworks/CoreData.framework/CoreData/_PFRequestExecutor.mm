@@ -1,6 +1,6 @@
 @interface _PFRequestExecutor
-- (BOOL)executeRequest:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)executeRequest:(id)a3 onMirroringDelegate:(id)a4 error:(id *)a5;
+- (BOOL)executeRequest:(id)request inContext:(id)context error:(id *)error;
+- (BOOL)executeRequest:(id)request onMirroringDelegate:(id)delegate error:(id *)error;
 - (BOOL)wait;
 - (_PFRequestExecutor)init;
 - (void)dealloc;
@@ -30,7 +30,7 @@
   [(_PFRequestExecutor *)&v3 dealloc];
 }
 
-- (BOOL)executeRequest:(id)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)executeRequest:(id)request inContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -47,20 +47,20 @@
   v12[1] = 3221225472;
   v12[2] = __53___PFRequestExecutor_executeRequest_inContext_error___block_invoke;
   v12[3] = &unk_1E6EC1900;
-  v12[4] = a4;
+  v12[4] = context;
   v12[5] = self;
-  v12[6] = a3;
+  v12[6] = request;
   v12[7] = &v13;
   v12[8] = &v19;
-  [a4 performBlockAndWait:v12];
+  [context performBlockAndWait:v12];
   if ((v20[3] & 1) == 0)
   {
     v9 = v14[5];
     if (v9)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v9;
+        *error = v9;
       }
     }
 
@@ -96,21 +96,21 @@
   return v6;
 }
 
-- (BOOL)executeRequest:(id)a3 onMirroringDelegate:(id)a4 error:(id *)a5
+- (BOOL)executeRequest:(id)request onMirroringDelegate:(id)delegate error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_requestGroup;
   }
 
   dispatch_group_enter(&self->super);
-  v9 = [(NSCloudKitMirroringDelegate *)a4 executeMirroringRequest:a3 error:a5];
+  v9 = [(NSCloudKitMirroringDelegate *)delegate executeMirroringRequest:request error:error];
   if (!v9)
   {
-    if (v8)
+    if (selfCopy)
     {
-      requestGroup = v8->_requestGroup;
+      requestGroup = selfCopy->_requestGroup;
     }
 
     else

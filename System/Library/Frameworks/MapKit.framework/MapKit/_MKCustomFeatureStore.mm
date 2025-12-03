@@ -1,30 +1,30 @@
 @interface _MKCustomFeatureStore
 - (MKCustomFeatureStoreDelegate)delegate;
-- (_MKCustomFeatureStore)initWithClustering:(BOOL)a3;
+- (_MKCustomFeatureStore)initWithClustering:(BOOL)clustering;
 - (id)allAnnotations;
-- (id)annotationsInMapRect:(id)a3;
+- (id)annotationsInMapRect:(id)rect;
 - (void)_clearGlobalAnnotations;
 - (void)_clearTileAnnotations;
 - (void)_invalidateGlobalAnnotations;
-- (void)_invalidateRect:(id)a3;
-- (void)_setSceneState:(unsigned __int8)a3;
-- (void)addAnnotations:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5;
-- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5;
-- (void)removeAnnotations:(id)a3;
-- (void)setAnnotations:(id)a3;
-- (void)setClusterAnnotationText:(id)a3 locale:(id)a4;
-- (void)setSceneID:(unsigned __int8)a3;
+- (void)_invalidateRect:(id)rect;
+- (void)_setSceneState:(unsigned __int8)state;
+- (void)addAnnotations:(id)annotations;
+- (void)addObserver:(id)observer;
+- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale;
+- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale;
+- (void)removeAnnotations:(id)annotations;
+- (void)setAnnotations:(id)annotations;
+- (void)setClusterAnnotationText:(id)text locale:(id)locale;
+- (void)setSceneID:(unsigned __int8)d;
 @end
 
 @implementation _MKCustomFeatureStore
 
 - (id)allAnnotations
 {
-  v3 = [(MKQuadTrie *)self->_annotationsTrie allItems];
-  v4 = [(NSMutableSet *)self->_globalAnnotations allObjects];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  allItems = [(MKQuadTrie *)self->_annotationsTrie allItems];
+  allObjects = [(NSMutableSet *)self->_globalAnnotations allObjects];
+  v5 = [allItems arrayByAddingObjectsFromArray:allObjects];
 
   return v5;
 }
@@ -36,73 +36,73 @@
   return WeakRetained;
 }
 
-- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5
+- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale
 {
   v9 = self->_annotationText;
   v10 = self->_annotationLocale;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16 = v10;
   v17 = v9;
-  [WeakRetained customFeatureStore:self annotationTextForClusterFeatureCount:a3 text:&v17 locale:&v16];
+  [WeakRetained customFeatureStore:self annotationTextForClusterFeatureCount:count text:&v17 locale:&v16];
   v12 = v17;
 
   v13 = v16;
-  if (a4)
+  if (text)
   {
     v14 = v12;
-    *a4 = v12;
+    *text = v12;
   }
 
-  if (a5)
+  if (locale)
   {
     v15 = v13;
-    *a5 = v13;
+    *locale = v13;
   }
 }
 
-- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5
+- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale
 {
   v9 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v7 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v9 setLocale:v7];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v9 setLocale:autoupdatingCurrentLocale];
 
   [v9 setNumberStyle:1];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  *a4 = [v9 stringFromNumber:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+  *text = [v9 stringFromNumber:v8];
 }
 
-- (id)annotationsInMapRect:(id)a3
+- (id)annotationsInMapRect:(id)rect
 {
-  v3 = [(MKQuadTrie *)self->_annotationsTrie itemsInMapRect:a3.var0.var0, a3.var0.var1, a3.var1.var0, a3.var1.var1];
-  v4 = [v3 allObjects];
+  v3 = [(MKQuadTrie *)self->_annotationsTrie itemsInMapRect:rect.var0.var0, rect.var0.var1, rect.var1.var0, rect.var1.var1];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
-    v4 = v8;
+    observerCopy = v8;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)setSceneID:(unsigned __int8)a3
+- (void)setSceneID:(unsigned __int8)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_sceneID != a3)
+  if (self->_sceneID != d)
   {
-    self->_sceneID = a3;
+    self->_sceneID = d;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
@@ -134,12 +134,12 @@
   }
 }
 
-- (void)_setSceneState:(unsigned __int8)a3
+- (void)_setSceneState:(unsigned __int8)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_sceneState != a3)
+  if (self->_sceneState != state)
   {
-    self->_sceneState = a3;
+    self->_sceneState = state;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
@@ -204,12 +204,12 @@
   }
 }
 
-- (void)_invalidateRect:(id)a3
+- (void)_invalidateRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
@@ -265,8 +265,8 @@
             objc_enumerationMutation(v3);
           }
 
-          v7 = [*(*(&v8 + 1) + 8 * v6) feature];
-          [v7 setDataSource:0];
+          feature = [*(*(&v8 + 1) + 8 * v6) feature];
+          [feature setDataSource:0];
 
           ++v6;
         }
@@ -315,13 +315,13 @@
   }
 }
 
-- (void)removeAnnotations:(id)a3
+- (void)removeAnnotations:(id)annotations
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  annotationsCopy = annotations;
   v36 = 0;
   v37 = 0;
-  PartitionAnnotations(v4, &v37, &v36);
+  PartitionAnnotations(annotationsCopy, &v37, &v36);
   v5 = v37;
   v6 = v36;
   if ([v5 count])
@@ -353,8 +353,8 @@
           [v11 coordinate];
           if (fabs(v13) <= 180.0 && fabs(v12) <= 90.0 && [(MKQuadTrie *)self->_annotationsTrie contains:v11])
           {
-            v14 = [v11 feature];
-            [v14 setDataSource:0];
+            feature = [v11 feature];
+            [feature setDataSource:0];
 
             [v11 coordinate];
             GEOMapPointForCoordinate();
@@ -409,8 +409,8 @@
           }
 
           v22 = *(*(&v24 + 1) + 8 * v21);
-          v23 = [v22 feature];
-          [v23 setDataSource:0];
+          feature2 = [v22 feature];
+          [feature2 setDataSource:0];
 
           [(NSMutableSet *)self->_globalAnnotations removeObject:v22];
           ++v21;
@@ -427,13 +427,13 @@
   }
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  annotationsCopy = annotations;
   v36 = 0;
   v37 = 0;
-  PartitionAnnotations(v4, &v37, &v36);
+  PartitionAnnotations(annotationsCopy, &v37, &v36);
   v5 = v37;
   v6 = v36;
   if ([v5 count])
@@ -441,7 +441,7 @@
     v33 = 0;
     v34 = 0;
     v35 = 0;
-    std::vector<GEOPosition2d>::reserve(&v33, [v4 count]);
+    std::vector<GEOPosition2d>::reserve(&v33, [annotationsCopy count]);
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -465,8 +465,8 @@
           [v11 coordinate];
           if (fabs(v13) <= 180.0 && fabs(v12) <= 90.0 && ![(MKQuadTrie *)self->_annotationsTrie contains:v11])
           {
-            v14 = [v11 feature];
-            [v14 setDataSource:self];
+            feature = [v11 feature];
+            [feature setDataSource:self];
 
             [v11 coordinate];
             GEOMapPointForCoordinate();
@@ -521,8 +521,8 @@
           }
 
           v22 = *(*(&v24 + 1) + 8 * v21);
-          v23 = [v22 feature];
-          [v23 setDataSource:self];
+          feature2 = [v22 feature];
+          [feature2 setDataSource:self];
 
           [(NSMutableSet *)self->_globalAnnotations addObject:v22];
           ++v21;
@@ -539,19 +539,19 @@
   }
 }
 
-- (void)setAnnotations:(id)a3
+- (void)setAnnotations:(id)annotations
 {
   v23 = 0;
   v24 = 0;
-  v22 = a3;
-  PartitionAnnotations(v22, &v24, &v23);
+  annotationsCopy = annotations;
+  PartitionAnnotations(annotationsCopy, &v24, &v23);
   v4 = v24;
   v5 = v23;
   if ([v4 count])
   {
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [(MKQuadTrie *)self->_annotationsTrie allItems];
-    v8 = [v6 setWithArray:v7];
+    allItems = [(MKQuadTrie *)self->_annotationsTrie allItems];
+    v8 = [v6 setWithArray:allItems];
 
     v9 = [MEMORY[0x1E695DFD8] setWithArray:v4];
     v10 = [MEMORY[0x1E695DFA8] setWithSet:v9];
@@ -568,15 +568,15 @@
 
       else
       {
-        v13 = [v11 allObjects];
-        [(_MKCustomFeatureStore *)self removeAnnotations:v13];
+        allObjects = [v11 allObjects];
+        [(_MKCustomFeatureStore *)self removeAnnotations:allObjects];
       }
     }
 
     if ([v10 count])
     {
-      v14 = [v10 allObjects];
-      [(_MKCustomFeatureStore *)self addAnnotations:v14];
+      allObjects2 = [v10 allObjects];
+      [(_MKCustomFeatureStore *)self addAnnotations:allObjects2];
     }
   }
 
@@ -603,15 +603,15 @@
 
       else
       {
-        v20 = [v18 allObjects];
-        [(_MKCustomFeatureStore *)self removeAnnotations:v20];
+        allObjects3 = [v18 allObjects];
+        [(_MKCustomFeatureStore *)self removeAnnotations:allObjects3];
       }
     }
 
     if ([v17 count])
     {
-      v21 = [v17 allObjects];
-      [(_MKCustomFeatureStore *)self addAnnotations:v21];
+      allObjects4 = [v17 allObjects];
+      [(_MKCustomFeatureStore *)self addAnnotations:allObjects4];
     }
   }
 
@@ -621,20 +621,20 @@
   }
 }
 
-- (void)setClusterAnnotationText:(id)a3 locale:(id)a4
+- (void)setClusterAnnotationText:(id)text locale:(id)locale
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 copy];
+  textCopy = text;
+  localeCopy = locale;
+  v7 = [textCopy copy];
   annotationText = self->_annotationText;
   self->_annotationText = v7;
 
-  v9 = [v6 copy];
+  v9 = [localeCopy copy];
   annotationLocale = self->_annotationLocale;
   self->_annotationLocale = v9;
 }
 
-- (_MKCustomFeatureStore)initWithClustering:(BOOL)a3
+- (_MKCustomFeatureStore)initWithClustering:(BOOL)clustering
 {
   v11.receiver = self;
   v11.super_class = _MKCustomFeatureStore;
@@ -643,7 +643,7 @@
   if (v4)
   {
     *&v4->_sceneID = 256;
-    v4->_isClusteringEnabled = a3;
+    v4->_isClusteringEnabled = clustering;
     v6 = [[MKQuadTrie alloc] initWithInitialRegion:100 minimumSize:0.0 maximumItems:0.0, 268435456.0, 268435456.0, 1024.0, 1024.0];
     annotationsTrie = v5->_annotationsTrie;
     v5->_annotationsTrie = v6;

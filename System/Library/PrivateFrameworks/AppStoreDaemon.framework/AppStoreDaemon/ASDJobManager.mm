@@ -1,29 +1,29 @@
 @interface ASDJobManager
 - (ASDJobManager)init;
-- (ASDJobManager)initWithOptions:(id)a3;
+- (ASDJobManager)initWithOptions:(id)options;
 - (id)_mapAllJobsToIDs;
-- (void)_applyUpdates:(void *)a3 usingBlock:;
+- (void)_applyUpdates:(void *)updates usingBlock:;
 - (void)_connectToDaemon;
-- (void)_getJobsWithIDs:(void *)a3 usingBlock:;
+- (void)_getJobsWithIDs:(void *)ds usingBlock:;
 - (void)_invalidate;
-- (void)_sendJobsChanged:(uint64_t)a1;
-- (void)_sendJobsCompleted:(uint64_t)a1;
-- (void)_sendProgressUpdated:(uint64_t)a1;
-- (void)addJobObserver:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)cancelJobsWithIDs:(id)a3 completionBlock:(id)a4;
+- (void)_sendJobsChanged:(uint64_t)changed;
+- (void)_sendJobsCompleted:(uint64_t)completed;
+- (void)_sendProgressUpdated:(uint64_t)updated;
+- (void)addJobObserver:(id)observer;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)cancelJobsWithIDs:(id)ds completionBlock:(id)block;
 - (void)dealloc;
-- (void)didChangeJobs:(id)a3;
-- (void)didCompleteJobs:(id)a3 finalPhases:(id)a4;
-- (void)didUpdateProgress:(id)a3;
-- (void)didUpdateStates:(id)a3;
-- (void)finishJobs:(id)a3;
-- (void)getJobsUsingBlock:(id)a3;
-- (void)getJobsWithIDs:(id)a3 usingBlock:(id)a4;
+- (void)didChangeJobs:(id)jobs;
+- (void)didCompleteJobs:(id)jobs finalPhases:(id)phases;
+- (void)didUpdateProgress:(id)progress;
+- (void)didUpdateStates:(id)states;
+- (void)finishJobs:(id)jobs;
+- (void)getJobsUsingBlock:(id)block;
+- (void)getJobsWithIDs:(id)ds usingBlock:(id)block;
 - (void)invalidate;
-- (void)pauseJobsWithIDs:(id)a3 completionBlock:(id)a4;
-- (void)removeJobObserver:(id)a3;
-- (void)resumeJobsWithIDs:(id)a3 completionBlock:(id)a4;
+- (void)pauseJobsWithIDs:(id)ds completionBlock:(id)block;
+- (void)removeJobObserver:(id)observer;
+- (void)resumeJobsWithIDs:(id)ds completionBlock:(id)block;
 @end
 
 @implementation ASDJobManager
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (ASDJobManager)initWithOptions:(id)a3
+- (ASDJobManager)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v33.receiver = self;
   v33.super_class = ASDJobManager;
   v5 = [(ASDJobManager *)&v33 init];
@@ -63,7 +63,7 @@
     jobs = v5->_jobs;
     v5->_jobs = v15;
 
-    v17 = [v4 copy];
+    v17 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v17;
 
@@ -89,8 +89,8 @@
           v5->_useLaunchServicesProgress = Value != 0;
           if (Value)
           {
-            v24 = [getLSApplicationWorkspaceClass() defaultWorkspace];
-            [v24 addObserver:v5];
+            defaultWorkspace = [getLSApplicationWorkspaceClass() defaultWorkspace];
+            [defaultWorkspace addObserver:v5];
           }
 
           goto LABEL_12;
@@ -130,9 +130,9 @@ LABEL_12:
 - (void)_connectToDaemon
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([(ASDBaseClient *)a1 _clientHasEntitlement:?])
+    if ([(ASDBaseClient *)self _clientHasEntitlement:?])
     {
       goto LABEL_6;
     }
@@ -146,20 +146,20 @@ LABEL_12:
       _os_log_error_impl(&dword_1B8220000, v2, OS_LOG_TYPE_ERROR, "[%{public}@]: Treating as legacy client", &buf, 0xCu);
     }
 
-    if ([(ASDBaseClient *)a1 _clientHasEntitlement:?])
+    if ([(ASDBaseClient *)self _clientHasEntitlement:?])
     {
 LABEL_6:
-      v3 = *(a1 + 16);
+      v3 = *(self + 16);
       if (v3)
       {
         [v3 invalidate];
       }
 
       v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.appstored.xpc.jobmanager" options:0];
-      v5 = *(a1 + 16);
-      *(a1 + 16) = v4;
+      v5 = *(self + 16);
+      *(self + 16) = v4;
 
-      [*(a1 + 16) _setQueue:*(a1 + 80)];
+      [*(self + 16) _setQueue:*(self + 80)];
       v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F304A898];
       v7 = MEMORY[0x1E695DFD8];
       v8 = objc_opt_class();
@@ -172,18 +172,18 @@ LABEL_6:
       [v6 setClasses:v12 forSelector:sel_getJobsWithIDs_usingReplyBlock_ argumentIndex:0 ofReply:1];
 
       [v6 setClass:objc_opt_class() forSelector:sel_registerJobManagerWithOptions_replyBlock_ argumentIndex:0 ofReply:0];
-      [*(a1 + 16) setRemoteObjectInterface:v6];
+      [*(self + 16) setRemoteObjectInterface:v6];
       v13 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3042418];
       v14 = MEMORY[0x1E695DFD8];
       v15 = objc_opt_class();
       v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
       [v13 setClasses:v16 forSelector:sel_didChangeJobs_ argumentIndex:0 ofReply:0];
 
-      [*(a1 + 16) setExportedInterface:v13];
-      [*(a1 + 16) setExportedObject:a1];
-      objc_initWeak(&location, a1);
-      objc_initWeak(&from, *(a1 + 16));
-      v17 = *(a1 + 16);
+      [*(self + 16) setExportedInterface:v13];
+      [*(self + 16) setExportedObject:self];
+      objc_initWeak(&location, self);
+      objc_initWeak(&from, *(self + 16));
+      v17 = *(self + 16);
       *&buf = MEMORY[0x1E69E9820];
       *(&buf + 1) = 3221225472;
       v33 = __33__ASDJobManager__setupConnection__block_invoke;
@@ -191,38 +191,38 @@ LABEL_6:
       objc_copyWeak(&v35, &location);
       objc_copyWeak(v36, &from);
       [v17 setInvalidationHandler:&buf];
-      v18 = *(a1 + 16);
+      v18 = *(self + 16);
       v24 = MEMORY[0x1E69E9820];
       v25 = 3221225472;
       v26 = __33__ASDJobManager__setupConnection__block_invoke_130;
       v27 = &unk_1E7CDDBA8;
-      objc_copyWeak(&v28, &location);
+      objc_copyWeak(&selfCopy, &location);
       objc_copyWeak(&v29, &from);
       [v18 setInterruptionHandler:&v24];
-      [*(a1 + 16) resume];
+      [*(self + 16) resume];
       objc_destroyWeak(&v29);
-      objc_destroyWeak(&v28);
+      objc_destroyWeak(&selfCopy);
       objc_destroyWeak(v36);
       objc_destroyWeak(&v35);
       objc_destroyWeak(&from);
       objc_destroyWeak(&location);
     }
 
-    v19 = *(a1 + 56);
-    v20 = *(a1 + 16);
+    v19 = *(self + 56);
+    v20 = *(self + 16);
     *&buf = MEMORY[0x1E69E9820];
     *(&buf + 1) = 3221225472;
     v33 = __45__ASDJobManager__registerManagerWithOptions___block_invoke;
     v34 = &unk_1E7CDDAE0;
     v21 = v19;
     v35 = v21;
-    v36[0] = a1;
+    v36[0] = self;
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __45__ASDJobManager__registerManagerWithOptions___block_invoke_39;
     v27 = &unk_1E7CDB980;
-    v28 = a1;
-    [a1 _call:v20 run:&buf error:&v24];
+    selfCopy = self;
+    [self _call:v20 run:&buf error:&v24];
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -238,8 +238,8 @@ void __33__ASDJobManager_initWithOptions___block_invoke_2(uint64_t a1)
 {
   if (self->_useLaunchServicesProgress)
   {
-    v3 = [getLSApplicationWorkspaceClass() defaultWorkspace];
-    [v3 removeObserver:self];
+    defaultWorkspace = [getLSApplicationWorkspaceClass() defaultWorkspace];
+    [defaultWorkspace removeObserver:self];
   }
 
   [(ASDJobManager *)self _invalidate];
@@ -250,30 +250,30 @@ void __33__ASDJobManager_initWithOptions___block_invoke_2(uint64_t a1)
 
 - (void)_invalidate
 {
-  if (a1)
+  if (self)
   {
-    notify_cancel(*(a1 + 32));
-    v2 = *(a1 + 16);
+    notify_cancel(*(self + 32));
+    v2 = *(self + 16);
     if (v2)
     {
       [v2 invalidate];
-      v3 = *(a1 + 16);
-      *(a1 + 16) = 0;
+      v3 = *(self + 16);
+      *(self + 16) = 0;
     }
   }
 }
 
-- (void)addJobObserver:(id)a3
+- (void)addJobObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__ASDJobManager_addJobObserver___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -295,17 +295,17 @@ uint64_t __32__ASDJobManager_addJobObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)cancelJobsWithIDs:(id)a3 completionBlock:(id)a4
+- (void)cancelJobsWithIDs:(id)ds completionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v6 componentsJoinedByString:{@", "}];
+    v11 = [dsCopy componentsJoinedByString:{@", "}];
     *buf = 138543618;
     v20 = v9;
     v21 = 2114;
@@ -319,10 +319,10 @@ uint64_t __32__ASDJobManager_addJobObserver___block_invoke(uint64_t a1)
   block[2] = __51__ASDJobManager_cancelJobsWithIDs_completionBlock___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
+  v17 = dsCopy;
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = dsCopy;
   dispatch_async(accessQueue, block);
 
   v15 = *MEMORY[0x1E69E9840];
@@ -396,16 +396,16 @@ void __51__ASDJobManager_cancelJobsWithIDs_completionBlock___block_invoke_5(uint
   }
 }
 
-- (void)finishJobs:(id)a3
+- (void)finishJobs:(id)jobs
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  jobsCopy = jobs;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = jobsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -497,17 +497,17 @@ void __28__ASDJobManager_finishJobs___block_invoke(uint64_t a1)
   }
 }
 
-- (void)getJobsUsingBlock:(id)a3
+- (void)getJobsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__ASDJobManager_getJobsUsingBlock___block_invoke;
   v7[3] = &unk_1E7CDBE48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -559,20 +559,20 @@ void __35__ASDJobManager_getJobsUsingBlock___block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)getJobsWithIDs:(id)a3 usingBlock:(id)a4
+- (void)getJobsWithIDs:(id)ds usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__ASDJobManager_getJobsWithIDs_usingBlock___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dsCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -607,12 +607,12 @@ void __43__ASDJobManager_getJobsWithIDs_usingBlock___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)_getJobsWithIDs:(void *)a3 usingBlock:
+- (void)_getJobsWithIDs:(void *)ds usingBlock:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dsCopy = ds;
+  if (self)
   {
     v7 = ASDLogHandleForCategory(13);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -627,21 +627,21 @@ void __43__ASDJobManager_getJobsWithIDs_usingBlock___block_invoke_2(uint64_t a1,
       _os_log_impl(&dword_1B8220000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Getting job(s) with IDs: %{public}@", buf, 0x16u);
     }
 
-    v11 = a1[2];
+    v11 = self[2];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __44__ASDJobManager__getJobsWithIDs_usingBlock___block_invoke;
     v15[3] = &unk_1E7CDDB58;
     v16 = v5;
-    v17 = a1;
-    v18 = v6;
+    selfCopy = self;
+    v18 = dsCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __44__ASDJobManager__getJobsWithIDs_usingBlock___block_invoke_2_36;
     v13[3] = &unk_1E7CDBAB8;
-    v13[4] = a1;
+    v13[4] = self;
     v14 = v18;
-    [a1 _call:v11 run:v15 error:v13];
+    [self _call:v11 run:v15 error:v13];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -658,17 +658,17 @@ void __43__ASDJobManager_getJobsWithIDs_usingBlock___block_invoke_2(uint64_t a1,
   dispatch_async(accessQueue, block);
 }
 
-- (void)pauseJobsWithIDs:(id)a3 completionBlock:(id)a4
+- (void)pauseJobsWithIDs:(id)ds completionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v6 componentsJoinedByString:{@", "}];
+    v11 = [dsCopy componentsJoinedByString:{@", "}];
     *buf = 138543618;
     v20 = v9;
     v21 = 2114;
@@ -682,10 +682,10 @@ void __43__ASDJobManager_getJobsWithIDs_usingBlock___block_invoke_2(uint64_t a1,
   block[2] = __50__ASDJobManager_pauseJobsWithIDs_completionBlock___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
+  v17 = dsCopy;
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = dsCopy;
   dispatch_async(accessQueue, block);
 
   v15 = *MEMORY[0x1E69E9840];
@@ -759,17 +759,17 @@ void __50__ASDJobManager_pauseJobsWithIDs_completionBlock___block_invoke_5(uint6
   }
 }
 
-- (void)removeJobObserver:(id)a3
+- (void)removeJobObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__ASDJobManager_removeJobObserver___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -783,17 +783,17 @@ uint64_t __35__ASDJobManager_removeJobObserver___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)resumeJobsWithIDs:(id)a3 completionBlock:(id)a4
+- (void)resumeJobsWithIDs:(id)ds completionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v6 componentsJoinedByString:{@", "}];
+    v11 = [dsCopy componentsJoinedByString:{@", "}];
     *buf = 138543618;
     v20 = v9;
     v21 = 2114;
@@ -807,10 +807,10 @@ uint64_t __35__ASDJobManager_removeJobObserver___block_invoke(uint64_t result)
   block[2] = __51__ASDJobManager_resumeJobsWithIDs_completionBlock___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
+  v17 = dsCopy;
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = dsCopy;
   dispatch_async(accessQueue, block);
 
   v15 = *MEMORY[0x1E69E9840];
@@ -886,17 +886,17 @@ void __51__ASDJobManager_resumeJobsWithIDs_completionBlock___block_invoke_5(uint
   }
 }
 
-- (void)didChangeJobs:(id)a3
+- (void)didChangeJobs:(id)jobs
 {
-  v4 = a3;
+  jobsCopy = jobs;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__ASDJobManager_didChangeJobs___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = jobsCopy;
+  v6 = jobsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -968,39 +968,39 @@ void __31__ASDJobManager_didChangeJobs___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendJobsChanged:(uint64_t)a1
+- (void)_sendJobsChanged:(uint64_t)changed
 {
   v3 = a2;
-  if (a1)
+  if (changed)
   {
-    v4 = [*(a1 + 48) allObjects];
-    v5 = *(a1 + 40);
+    allObjects = [*(changed + 48) allObjects];
+    v5 = *(changed + 40);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __34__ASDJobManager__sendJobsChanged___block_invoke;
     block[3] = &unk_1E7CDBA20;
-    v8 = v4;
-    v9 = a1;
+    v8 = allObjects;
+    changedCopy = changed;
     v10 = v3;
-    v6 = v4;
+    v6 = allObjects;
     dispatch_async(v5, block);
   }
 }
 
-- (void)didCompleteJobs:(id)a3 finalPhases:(id)a4
+- (void)didCompleteJobs:(id)jobs finalPhases:(id)phases
 {
-  v6 = a3;
-  v7 = a4;
+  jobsCopy = jobs;
+  phasesCopy = phases;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__ASDJobManager_didCompleteJobs_finalPhases___block_invoke;
   block[3] = &unk_1E7CDBA20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = jobsCopy;
+  v13 = phasesCopy;
+  v9 = phasesCopy;
+  v10 = jobsCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1081,14 +1081,14 @@ void __45__ASDJobManager_didCompleteJobs_finalPhases___block_invoke(uint64_t a1)
 - (id)_mapAllJobsToIDs
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v3 = *(a1 + 64);
+    v3 = *(self + 64);
     v4 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v4)
     {
@@ -1118,7 +1118,7 @@ void __45__ASDJobManager_didCompleteJobs_finalPhases___block_invoke(uint64_t a1)
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v11)
     {
@@ -1155,37 +1155,37 @@ void __45__ASDJobManager_didCompleteJobs_finalPhases___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_sendJobsCompleted:(uint64_t)a1
+- (void)_sendJobsCompleted:(uint64_t)completed
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 count])
+  if (completed && [v3 count])
   {
-    v5 = [*(a1 + 48) allObjects];
-    v6 = *(a1 + 40);
+    allObjects = [*(completed + 48) allObjects];
+    v6 = *(completed + 40);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __36__ASDJobManager__sendJobsCompleted___block_invoke;
     block[3] = &unk_1E7CDBA20;
-    v9 = v5;
-    v10 = a1;
+    v9 = allObjects;
+    completedCopy = completed;
     v11 = v4;
-    v7 = v5;
+    v7 = allObjects;
     dispatch_async(v6, block);
   }
 }
 
-- (void)didUpdateProgress:(id)a3
+- (void)didUpdateProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__ASDJobManager_didUpdateProgress___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1239,12 +1239,12 @@ void __35__ASDJobManager_didUpdateProgress___block_invoke_20(uint64_t a1, void *
   [v4 setPercentComplete:?];
 }
 
-- (void)_applyUpdates:(void *)a3 usingBlock:
+- (void)_applyUpdates:(void *)updates usingBlock:
 {
   v44 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  updatesCopy = updates;
+  if (self)
   {
     v28 = v5;
     v7 = objc_opt_new();
@@ -1252,7 +1252,7 @@ void __35__ASDJobManager_didUpdateProgress___block_invoke_20(uint64_t a1, void *
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v8 = *(a1 + 24);
+    v8 = *(self + 24);
     v9 = [v8 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v9)
     {
@@ -1286,7 +1286,7 @@ void __35__ASDJobManager_didUpdateProgress___block_invoke_20(uint64_t a1, void *
     v30[3] = &unk_1E7CDDA90;
     v17 = v7;
     v31 = v17;
-    v34 = v6;
+    v34 = updatesCopy;
     v18 = v15;
     v32 = v18;
     v19 = v16;
@@ -1299,8 +1299,8 @@ void __35__ASDJobManager_didUpdateProgress___block_invoke_20(uint64_t a1, void *
       v29[1] = 3221225472;
       v29[2] = __42__ASDJobManager__applyUpdates_usingBlock___block_invoke_2;
       v29[3] = &unk_1E7CDDAB8;
-      v29[4] = a1;
-      [(ASDJobManager *)a1 _getJobsWithIDs:v19 usingBlock:v29];
+      v29[4] = self;
+      [(ASDJobManager *)self _getJobsWithIDs:v19 usingBlock:v29];
     }
 
     v20 = ASDLogHandleForCategory(13);
@@ -1319,7 +1319,7 @@ void __35__ASDJobManager_didUpdateProgress___block_invoke_20(uint64_t a1, void *
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
-      v25 = *(a1 + 24);
+      v25 = *(self + 24);
       *buf = 138543618;
       v40 = v24;
       v41 = 2114;
@@ -1328,23 +1328,23 @@ void __35__ASDJobManager_didUpdateProgress___block_invoke_20(uint64_t a1, void *
       _os_log_impl(&dword_1B8220000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Our jobs are: %{public}@", buf, 0x16u);
     }
 
-    [(ASDJobManager *)a1 _sendProgressUpdated:v18];
+    [(ASDJobManager *)self _sendProgressUpdated:v18];
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateStates:(id)a3
+- (void)didUpdateStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__ASDJobManager_didUpdateStates___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statesCopy;
+  v6 = statesCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1375,17 +1375,17 @@ void __33__ASDJobManager_didUpdateStates___block_invoke_22(uint64_t a1, void *a2
   [v4 setPhase:{objc_msgSend(a3, "integerValue")}];
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__ASDJobManager_applicationInstallsDidChange___block_invoke;
   v7[3] = &unk_1E7CDB868;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1467,21 +1467,21 @@ void __46__ASDJobManager_applicationInstallsDidChange___block_invoke(uint64_t a1
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendProgressUpdated:(uint64_t)a1
+- (void)_sendProgressUpdated:(uint64_t)updated
 {
   v3 = a2;
-  if (a1)
+  if (updated)
   {
-    v4 = [*(a1 + 48) allObjects];
-    v5 = *(a1 + 40);
+    allObjects = [*(updated + 48) allObjects];
+    v5 = *(updated + 40);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__ASDJobManager__sendProgressUpdated___block_invoke;
     block[3] = &unk_1E7CDBA20;
-    v8 = v4;
-    v9 = a1;
+    v8 = allObjects;
+    updatedCopy = updated;
     v10 = v3;
-    v6 = v4;
+    v6 = allObjects;
     dispatch_async(v5, block);
   }
 }

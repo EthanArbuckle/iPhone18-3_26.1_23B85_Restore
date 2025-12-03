@@ -1,33 +1,33 @@
 @interface IMMessageAttributionChatItem
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithItem:(id)a3 attributionInfo:(id)a4 attributionType:(int64_t)a5 showsLearnMoreLink:(BOOL)a6 statusItemSequenceNumber:(unint64_t)a7;
-- (id)copyWithStatusItemSequenceNumber:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithItem:(id)item attributionInfo:(id)info attributionType:(int64_t)type showsLearnMoreLink:(BOOL)link statusItemSequenceNumber:(unint64_t)number;
+- (id)copyWithStatusItemSequenceNumber:(unint64_t)number;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMMessageAttributionChatItem
 
-- (id)_initWithItem:(id)a3 attributionInfo:(id)a4 attributionType:(int64_t)a5 showsLearnMoreLink:(BOOL)a6 statusItemSequenceNumber:(unint64_t)a7
+- (id)_initWithItem:(id)item attributionInfo:(id)info attributionType:(int64_t)type showsLearnMoreLink:(BOOL)link statusItemSequenceNumber:(unint64_t)number
 {
-  v13 = a4;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = IMMessageAttributionChatItem;
-  v14 = [(IMMessageStatusChatItem *)&v17 _initWithItem:a3 statusType:14 time:0 count:0 expireStatusType:0 statusItemSequenceNumber:a7];
+  v14 = [(IMMessageStatusChatItem *)&v17 _initWithItem:item statusType:14 time:0 count:0 expireStatusType:0 statusItemSequenceNumber:number];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(v14 + 16, a4);
-    v15[17] = a5;
-    *(v15 + 120) = a6;
+    objc_storeStrong(v14 + 16, info);
+    v15[17] = type;
+    *(v15 + 120) = link;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v9 = objc_msgSend_attributionType(self, v7, v8);
       if (v9 != objc_msgSend_attributionType(v6, v10, v11) || (v14 = objc_msgSend_showsLearnMoreLink(self, v12, v13), v14 != objc_msgSend_showsLearnMoreLink(v6, v15, v16)))
       {
@@ -78,9 +78,9 @@ LABEL_16:
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_messageItem(self, a2, a3);
+  v4 = objc_msgSend_messageItem(self, a2, zone);
   v7 = objc_msgSend_statusItemSequenceNumber(self, v5, v6);
   v8 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend__initWithItem_attributionInfo_attributionType_showsLearnMoreLink_statusItemSequenceNumber_(v8, v9, v4, self->_attributionInfo, self->_attributionType, self->_showsLearnMoreLink, v7);
@@ -88,11 +88,11 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithStatusItemSequenceNumber:(unint64_t)a3
+- (id)copyWithStatusItemSequenceNumber:(unint64_t)number
 {
-  v5 = objc_msgSend_messageItem(self, a2, a3);
+  v5 = objc_msgSend_messageItem(self, a2, number);
   v6 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend__initWithItem_attributionInfo_attributionType_showsLearnMoreLink_statusItemSequenceNumber_(v6, v7, v5, self->_attributionInfo, self->_attributionType, self->_showsLearnMoreLink, a3);
+  v8 = objc_msgSend__initWithItem_attributionInfo_attributionType_showsLearnMoreLink_statusItemSequenceNumber_(v6, v7, v5, self->_attributionInfo, self->_attributionType, self->_showsLearnMoreLink, number);
 
   return v8;
 }

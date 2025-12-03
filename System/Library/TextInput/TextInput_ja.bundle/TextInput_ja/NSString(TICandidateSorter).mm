@@ -6,7 +6,7 @@
 
 - (__CFString)stringByConvertingKatakanaToHiragana
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringTransform(v1, 0, *MEMORY[0x29EDB8FE0], 1u);
 
   return v1;

@@ -1,5 +1,5 @@
 @interface CNPRUISPosterAppearanceObservingAttachmentProvider
-- (CNPRUISPosterAppearanceObservingAttachmentProvider)initWithConfiguration:(id)a3;
+- (CNPRUISPosterAppearanceObservingAttachmentProvider)initWithConfiguration:(id)configuration;
 - (CNPRUISPosterAttachment)obscurableContentAttachment;
 - (CNPRUISPosterAttachment)overlayContentAttachment;
 @end
@@ -9,8 +9,8 @@
 - (CNPRUISPosterAttachment)overlayContentAttachment
 {
   v3 = [CNPRUISPosterAttachment alloc];
-  v4 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self->_wrappedProvider overlayContentAttachment];
-  v5 = [(CNPRUISPosterAttachment *)v3 initWithAttachment:v4];
+  overlayContentAttachment = [(PRUISPosterAppearanceObservingAttachmentProvider *)self->_wrappedProvider overlayContentAttachment];
+  v5 = [(CNPRUISPosterAttachment *)v3 initWithAttachment:overlayContentAttachment];
 
   return v5;
 }
@@ -18,15 +18,15 @@
 - (CNPRUISPosterAttachment)obscurableContentAttachment
 {
   v3 = [CNPRUISPosterAttachment alloc];
-  v4 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self->_wrappedProvider obscurableContentAttachment];
-  v5 = [(CNPRUISPosterAttachment *)v3 initWithAttachment:v4];
+  obscurableContentAttachment = [(PRUISPosterAppearanceObservingAttachmentProvider *)self->_wrappedProvider obscurableContentAttachment];
+  v5 = [(CNPRUISPosterAttachment *)v3 initWithAttachment:obscurableContentAttachment];
 
   return v5;
 }
 
-- (CNPRUISPosterAppearanceObservingAttachmentProvider)initWithConfiguration:(id)a3
+- (CNPRUISPosterAppearanceObservingAttachmentProvider)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = CNPRUISPosterAppearanceObservingAttachmentProvider;
   v5 = [(CNPRUISPosterAppearanceObservingAttachmentProvider *)&v13 init];
@@ -51,8 +51,8 @@
     v7 = v6;
     _Block_object_dispose(&v15, 8);
     v8 = [v6 alloc];
-    v9 = [v4 wrappedPosterConfiguration];
-    v10 = [v8 initWithPRSConfiguration:v9];
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
+    v10 = [v8 initWithPRSConfiguration:wrappedPosterConfiguration];
     wrappedProvider = v5->_wrappedProvider;
     v5->_wrappedProvider = v10;
   }

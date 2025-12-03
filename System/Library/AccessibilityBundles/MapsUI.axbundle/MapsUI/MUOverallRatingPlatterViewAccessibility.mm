@@ -1,15 +1,15 @@
 @interface MUOverallRatingPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MUOverallRatingPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUOverallRatingPlatterView" hasInstanceVariable:@"_attributionLabel" withType:"UILabel"];
-  [v3 validateClass:@"MUOverallRatingPlatterView" hasInstanceVariable:@"_viewModel" withType:"<MUOverallRatingPlatterViewModel>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUOverallRatingPlatterView" hasInstanceVariable:@"_attributionLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MUOverallRatingPlatterView" hasInstanceVariable:@"_viewModel" withType:"<MUOverallRatingPlatterViewModel>"];
 }
 
 - (id)accessibilityLabel

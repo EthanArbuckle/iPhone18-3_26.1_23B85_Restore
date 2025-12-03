@@ -1,23 +1,23 @@
 @interface DayNavigationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 @end
 
 @implementation DayNavigationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DayViewController"];
-  [v3 validateClass:@"DayNavigationViewController" hasInstanceMethod:@"setSelectedDate: animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"DayNavigationViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DayViewController" hasInstanceMethod:@"dayNavigationViewController: didSelectDate:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"DayNavigationViewController" hasInstanceVariable:@"_navigationView" withType:"DayNavigationView"];
-  [v3 validateClass:@"DayNavigationView" hasInstanceVariable:@"_calendar" withType:"NSCalendar"];
-  [v3 validateClass:@"DayNavigationView" hasInstanceVariable:@"_selectedDate" withType:"NSDate"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DayViewController"];
+  [validationsCopy validateClass:@"DayNavigationViewController" hasInstanceMethod:@"setSelectedDate: animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"DayNavigationViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DayViewController" hasInstanceMethod:@"dayNavigationViewController: didSelectDate:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"DayNavigationViewController" hasInstanceVariable:@"_navigationView" withType:"DayNavigationView"];
+  [validationsCopy validateClass:@"DayNavigationView" hasInstanceVariable:@"_calendar" withType:"NSCalendar"];
+  [validationsCopy validateClass:@"DayNavigationView" hasInstanceVariable:@"_selectedDate" withType:"NSDate"];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(DayNavigationViewControllerAccessibility *)self safeValueForKey:@"_navigationView"];
   v6 = [v5 safeValueForKey:@"_selectedDate"];
@@ -25,7 +25,7 @@
   if (objc_opt_isKindOfClass())
   {
     v7 = [v5 safeValueForKey:@"_calendar"];
-    if (a3 == 2)
+    if (scroll == 2)
     {
       v8 = @"day.scrubber.next.week";
       v9 = 1;
@@ -33,7 +33,7 @@
 
     else
     {
-      if (a3 != 1)
+      if (scroll != 1)
       {
         v16 = 0;
         LOBYTE(v10) = 0;

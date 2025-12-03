@@ -9,9 +9,9 @@
   v9.receiver = self;
   v9.super_class = PUSectionedGridLayoutInvalidationContext;
   v3 = [(PUSectionedGridLayoutInvalidationContext *)&v9 description];
-  v4 = [(UICollectionViewLayoutInvalidationContext *)self invalidateDataSourceCounts];
+  invalidateDataSourceCounts = [(UICollectionViewLayoutInvalidationContext *)self invalidateDataSourceCounts];
   v5 = @"N";
-  if (v4)
+  if (invalidateDataSourceCounts)
   {
     v6 = @"Y";
   }

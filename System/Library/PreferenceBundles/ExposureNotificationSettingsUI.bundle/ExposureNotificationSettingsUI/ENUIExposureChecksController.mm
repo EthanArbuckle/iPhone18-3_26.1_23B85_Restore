@@ -1,6 +1,6 @@
 @interface ENUIExposureChecksController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)deleteExposureChecks;
 - (void)exportExposureChecks;
 - (void)viewDidLoad;
@@ -13,10 +13,10 @@
   v8.receiver = self;
   v8.super_class = ENUIExposureChecksController;
   [(ENUIExposureChecksController *)&v8 viewDidLoad];
-  v3 = [(ENUIExposureChecksController *)self parentController];
-  v4 = [v3 store];
+  parentController = [(ENUIExposureChecksController *)self parentController];
+  store = [parentController store];
   store = self->_store;
-  self->_store = v4;
+  self->_store = store;
 
   v6 = self->_store;
   v7[0] = _NSConcreteStackBlock;
@@ -29,16 +29,16 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
     v5 = ENUILocalizedString();
-    [(ENUIExposureChecksController *)v2 setTitle:v5];
+    [(ENUIExposureChecksController *)selfCopy setTitle:v5];
 
     v6 = objc_alloc_init(NSMutableArray);
-    if (-[ENUIExposureChecksController fetchCompleted](v2, "fetchCompleted") && (-[ENUIExposureChecksController exposureChecks](v2, "exposureChecks"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8))
+    if (-[ENUIExposureChecksController fetchCompleted](selfCopy, "fetchCompleted") && (-[ENUIExposureChecksController exposureChecks](selfCopy, "exposureChecks"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8))
     {
       v35 = v3;
       if (qword_34108 != -1)
@@ -51,8 +51,8 @@
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v9 = v2;
-      obj = v2->_exposureChecks;
+      v9 = selfCopy;
+      obj = selfCopy->_exposureChecks;
       v10 = [(NSArray *)obj countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v10)
       {
@@ -68,9 +68,9 @@
             }
 
             v14 = *(*(&v38 + 1) + 8 * i);
-            v15 = [v14 session];
-            v16 = [v15 date];
-            v17 = [v37 stringFromDate:v16];
+            session = [v14 session];
+            date = [session date];
+            v17 = [v37 stringFromDate:date];
 
             v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:v9 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
             v19 = objc_opt_class();
@@ -96,7 +96,7 @@
       [v24 setObject:@"EXPORT_EXPOSURE_CHECKS" forKeyedSubscript:v22];
       [v24 setButtonAction:"exportExposureChecks"];
       [v6 addObject:v24];
-      v2 = v9;
+      selfCopy = v9;
       v25 = +[PSSpecifier emptyGroupSpecifier];
       [v25 setObject:@"DELETE_EXPOSURE_CHECKS_GROUP" forKeyedSubscript:v22];
       [v6 addObject:v25];
@@ -120,32 +120,32 @@
       v3 = v35;
     }
 
-    else if ([(ENUIExposureChecksController *)v2 fetchCompleted])
+    else if ([(ENUIExposureChecksController *)selfCopy fetchCompleted])
     {
       v31 = +[PSSpecifier emptyGroupSpecifier];
-      v2->_exposureChecks;
+      selfCopy->_exposureChecks;
       v32 = ENUILocalizedString();
       [v31 setObject:v32 forKeyedSubscript:PSFooterTextGroupKey];
 
       [v6 addObject:v31];
     }
 
-    v33 = *&v2->PSListController_opaque[v3];
-    *&v2->PSListController_opaque[v3] = v6;
+    v33 = *&selfCopy->PSListController_opaque[v3];
+    *&selfCopy->PSListController_opaque[v3] = v6;
 
-    v4 = *&v2->PSListController_opaque[v3];
+    v4 = *&selfCopy->PSListController_opaque[v3];
   }
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = ENUIExposureChecksController;
-  v6 = a4;
-  v7 = [(ENUIExposureChecksController *)&v16 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(ENUIExposureChecksController *)self specifierAtIndexPath:v6, v16.receiver, v16.super_class];
+  pathCopy = path;
+  v7 = [(ENUIExposureChecksController *)&v16 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(ENUIExposureChecksController *)self specifierAtIndexPath:pathCopy, v16.receiver, v16.super_class];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -159,8 +159,8 @@
       if ([v11 type] == &dword_C + 1)
       {
         v12 = +[UIColor redColor];
-        v13 = [v11 textLabel];
-        [v13 setTextColor:v12];
+        textLabel = [v11 textLabel];
+        [textLabel setTextColor:v12];
 
         goto LABEL_7;
       }

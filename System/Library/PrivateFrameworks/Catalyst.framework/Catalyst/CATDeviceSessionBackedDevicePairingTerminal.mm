@@ -1,55 +1,55 @@
 @interface CATDeviceSessionBackedDevicePairingTerminal
-- (CATDeviceSessionBackedDevicePairingTerminal)initWithDeviceSession:(id)a3;
-- (void)_beginPairing:(id)a3 withCompletion:(id)a4;
+- (CATDeviceSessionBackedDevicePairingTerminal)initWithDeviceSession:(id)session;
+- (void)_beginPairing:(id)pairing withCompletion:(id)completion;
 - (void)_invalidate;
-- (void)_tryPIN:(id)a3;
-- (void)_verifyPairingAndFetchStableIdentifierWithCompletion:(id)a3;
+- (void)_tryPIN:(id)n;
+- (void)_verifyPairingAndFetchStableIdentifierWithCompletion:(id)completion;
 - (void)addSessionHandlers;
-- (void)beginPairing:(id)a3 withCompletion:(id)a4;
-- (void)deviceSessionEncounteredError:(id)a3;
-- (void)deviceSessionInvalidated:(id)a3;
+- (void)beginPairing:(id)pairing withCompletion:(id)completion;
+- (void)deviceSessionEncounteredError:(id)error;
+- (void)deviceSessionInvalidated:(id)invalidated;
 - (void)deviceSessionReady;
 - (void)fetchStableIdentifier;
-- (void)fetchStableIdentifierFinished:(id)a3;
+- (void)fetchStableIdentifierFinished:(id)finished;
 - (void)invalidate;
-- (void)invalidateWithError:(id)a3;
-- (void)pairingCompleteWithError:(id)a3;
+- (void)invalidateWithError:(id)error;
+- (void)pairingCompleteWithError:(id)error;
 - (void)removeSessionHandlers;
-- (void)sessionHasPromptedForPINWithWaitTime:(unint64_t)a3;
-- (void)tryPIN:(id)a3;
-- (void)vendConnectionForCompletion:(id)a3;
+- (void)sessionHasPromptedForPINWithWaitTime:(unint64_t)time;
+- (void)tryPIN:(id)n;
+- (void)vendConnectionForCompletion:(id)completion;
 - (void)verifyPairing;
-- (void)verifyPairingAndFetchStableIdentifierWithCompletion:(id)a3;
-- (void)verifyPairingFinished:(BOOL)a3;
+- (void)verifyPairingAndFetchStableIdentifierWithCompletion:(id)completion;
+- (void)verifyPairingFinished:(BOOL)finished;
 @end
 
 @implementation CATDeviceSessionBackedDevicePairingTerminal
 
-- (CATDeviceSessionBackedDevicePairingTerminal)initWithDeviceSession:(id)a3
+- (CATDeviceSessionBackedDevicePairingTerminal)initWithDeviceSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = CATDeviceSessionBackedDevicePairingTerminal;
   v6 = [(CATDeviceSessionBackedDevicePairingTerminal *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mDeviceSession, a3);
+    objc_storeStrong(&v6->mDeviceSession, session);
   }
 
   return v7;
 }
 
-- (void)verifyPairingAndFetchStableIdentifierWithCompletion:(id)a3
+- (void)verifyPairingAndFetchStableIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __99__CATDeviceSessionBackedDevicePairingTerminal_verifyPairingAndFetchStableIdentifierWithCompletion___block_invoke;
   v8[3] = &unk_278DA7760;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v9 = v5;
   v6 = v8;
   v7 = CATGetCatalystQueue();
@@ -70,19 +70,19 @@ void __99__CATDeviceSessionBackedDevicePairingTerminal_verifyPairingAndFetchStab
   [WeakRetained _verifyPairingAndFetchStableIdentifierWithCompletion:*(a1 + 32)];
 }
 
-- (void)beginPairing:(id)a3 withCompletion:(id)a4
+- (void)beginPairing:(id)pairing withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pairingCopy = pairing;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__CATDeviceSessionBackedDevicePairingTerminal_beginPairing_withCompletion___block_invoke;
   v12[3] = &unk_278DA7788;
   objc_copyWeak(&v15, &location);
-  v8 = v6;
+  v8 = pairingCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v14 = v9;
   v10 = v12;
   v11 = CATGetCatalystQueue();
@@ -103,16 +103,16 @@ void __75__CATDeviceSessionBackedDevicePairingTerminal_beginPairing_withCompleti
   [WeakRetained _beginPairing:*(a1 + 32) withCompletion:*(a1 + 40)];
 }
 
-- (void)tryPIN:(id)a3
+- (void)tryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__CATDeviceSessionBackedDevicePairingTerminal_tryPIN___block_invoke;
   v8[3] = &unk_278DA7530;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = nCopy;
   v9 = v5;
   v6 = v8;
   v7 = CATGetCatalystQueue();
@@ -160,9 +160,9 @@ void __57__CATDeviceSessionBackedDevicePairingTerminal_invalidate__block_invoke(
   [WeakRetained _invalidate];
 }
 
-- (void)_verifyPairingAndFetchStableIdentifierWithCompletion:(id)a3
+- (void)_verifyPairingAndFetchStableIdentifierWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
@@ -171,7 +171,7 @@ void __57__CATDeviceSessionBackedDevicePairingTerminal_invalidate__block_invoke(
     v5 = 706;
 LABEL_5:
     v6 = CATErrorWithCodeAndUserInfo(v5, 0);
-    v9[2](v9, v6, 0);
+    completionCopy[2](completionCopy, v6, 0);
 
     goto LABEL_6;
   }
@@ -182,7 +182,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v7 = MEMORY[0x245D2F510](v9);
+  v7 = MEMORY[0x245D2F510](completionCopy);
   mVerifyPairingCompletion = self->mVerifyPairingCompletion;
   self->mVerifyPairingCompletion = v7;
 
@@ -191,10 +191,10 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_beginPairing:(id)a3 withCompletion:(id)a4
+- (void)_beginPairing:(id)pairing withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pairingCopy = pairing;
+  completionCopy = completion;
   v8 = CATGetCatalystQueue();
   CATAssertIsQueue(v8);
 
@@ -212,11 +212,11 @@ LABEL_6:
   {
     if (!self->mBeginPairingCompletion)
     {
-      v11 = MEMORY[0x245D2F510](v7);
+      v11 = MEMORY[0x245D2F510](completionCopy);
       mBeginPairingCompletion = self->mBeginPairingCompletion;
       self->mBeginPairingCompletion = v11;
 
-      v13 = MEMORY[0x245D2F510](v6);
+      v13 = MEMORY[0x245D2F510](pairingCopy);
       mPINPromptHandler = self->mPINPromptHandler;
       self->mPINPromptHandler = v13;
 
@@ -242,7 +242,7 @@ LABEL_6:
   }
 
   v10 = CATErrorWithCodeAndUserInfo(v9, 0);
-  v7[2](v7, v10, 0);
+  completionCopy[2](completionCopy, v10, 0);
 
 LABEL_10:
 }
@@ -286,10 +286,10 @@ void __76__CATDeviceSessionBackedDevicePairingTerminal__beginPairing_withComplet
   [WeakRetained pairingCompleteWithError:v4];
 }
 
-- (void)_tryPIN:(id)a3
+- (void)_tryPIN:(id)n
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nCopy = n;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
@@ -307,7 +307,7 @@ void __76__CATDeviceSessionBackedDevicePairingTerminal__beginPairing_withComplet
 
   else
   {
-    [(CATSharingDeviceSession *)self->mDeviceSession tryPairingPIN:v5];
+    [(CATSharingDeviceSession *)self->mDeviceSession tryPairingPIN:nCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -488,17 +488,17 @@ void __65__CATDeviceSessionBackedDevicePairingTerminal_addSessionHandlers__block
   [WeakRetained sessionHasPromptedForPINWithWaitTime:*(a1 + 40)];
 }
 
-- (void)deviceSessionInvalidated:(id)a3
+- (void)deviceSessionInvalidated:(id)invalidated
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  invalidatedCopy = invalidated;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
-  v7 = [(CATDeviceSessionBackedDevicePairingTerminal *)self isInvalidated];
+  isInvalidated = [(CATDeviceSessionBackedDevicePairingTerminal *)self isInvalidated];
   v8 = _CATLogGeneral_3();
   v9 = v8;
-  if (v7)
+  if (isInvalidated)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -517,7 +517,7 @@ void __65__CATDeviceSessionBackedDevicePairingTerminal_addSessionHandlers__block
   }
 
   [(CATDeviceSessionBackedDevicePairingTerminal *)self removeSessionHandlers];
-  if (!v5)
+  if (!invalidatedCopy)
   {
     v9 = CATErrorWithCodeAndUserInfo(1, 0);
     [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:v9];
@@ -526,23 +526,23 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:v5];
+  [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:invalidatedCopy];
 LABEL_10:
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceSessionEncounteredError:(id)a3
+- (void)deviceSessionEncounteredError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
-  v7 = [(CATDeviceSessionBackedDevicePairingTerminal *)self isInvalidated];
+  isInvalidated = [(CATDeviceSessionBackedDevicePairingTerminal *)self isInvalidated];
   v8 = _CATLogGeneral_3();
   v9 = v8;
-  if (v7)
+  if (isInvalidated)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -557,11 +557,11 @@ LABEL_10:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(CATDeviceSessionBackedDevicePairingTerminal *)self deviceSessionEncounteredError:v5, v9];
+    [(CATDeviceSessionBackedDevicePairingTerminal *)self deviceSessionEncounteredError:errorCopy, v9];
   }
 
   [(CATDeviceSessionBackedDevicePairingTerminal *)self removeSessionHandlers];
-  if (!v5)
+  if (!errorCopy)
   {
     v9 = CATErrorWithCodeAndUserInfo(1, 0);
     [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:v9];
@@ -570,7 +570,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:v5];
+  [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:errorCopy];
 LABEL_10:
 
   v11 = *MEMORY[0x277D85DE8];
@@ -582,10 +582,10 @@ LABEL_10:
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
-  v5 = [(CATDeviceSessionBackedDevicePairingTerminal *)self isInvalidated];
+  isInvalidated = [(CATDeviceSessionBackedDevicePairingTerminal *)self isInvalidated];
   v6 = _CATLogGeneral_3();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (isInvalidated)
   {
     if (v7)
     {
@@ -662,7 +662,7 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
   dispatch_async(v3, block);
 }
 
-- (void)verifyPairingFinished:(BOOL)a3
+- (void)verifyPairingFinished:(BOOL)finished
 {
   v17 = *MEMORY[0x277D85DE8];
   v6 = CATGetCatalystQueue();
@@ -682,7 +682,7 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
     v9 = *MEMORY[0x277D85DE8];
   }
 
-  else if (a3)
+  else if (finished)
   {
     v10 = *MEMORY[0x277D85DE8];
 
@@ -702,7 +702,7 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
   }
 }
 
-- (void)sessionHasPromptedForPINWithWaitTime:(unint64_t)a3
+- (void)sessionHasPromptedForPINWithWaitTime:(unint64_t)time
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = CATGetCatalystQueue();
@@ -728,7 +728,7 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
     if (v10)
     {
       v12 = v10;
-      v10[2](v10, a3);
+      v10[2](v10, time);
       v10 = v12;
     }
 
@@ -774,7 +774,7 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchStableIdentifierFinished:(id)a3
+- (void)fetchStableIdentifierFinished:(id)finished
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = CATGetCatalystQueue();
@@ -802,7 +802,7 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
     mVerifyPairingCompletion = self->mVerifyPairingCompletion;
     self->mVerifyPairingCompletion = 0;
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = v17;
   }
 
@@ -810,8 +810,8 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
   {
     if (!v9)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"CATDeviceSessionBackedDevicePairingTerminal.m" lineNumber:349 description:{@"Stable identifier was fetched, but no completions were set."}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CATDeviceSessionBackedDevicePairingTerminal.m" lineNumber:349 description:{@"Stable identifier was fetched, but no completions were set."}];
 
       goto LABEL_10;
     }
@@ -822,17 +822,17 @@ void __60__CATDeviceSessionBackedDevicePairingTerminal_verifyPairing__block_invo
     mPINPromptHandler = self->mPINPromptHandler;
     self->mPINPromptHandler = 0;
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = v9;
   }
 
-  [(CATDeviceSessionBackedDevicePairingTerminal *)v11 vendConnectionForCompletion:v12];
+  [(CATDeviceSessionBackedDevicePairingTerminal *)selfCopy2 vendConnectionForCompletion:v12];
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pairingCompleteWithError:(id)a3
+- (void)pairingCompleteWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = CATGetCatalystQueue();
@@ -860,9 +860,9 @@ LABEL_10:
   }
 }
 
-- (void)vendConnectionForCompletion:(id)a3
+- (void)vendConnectionForCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
@@ -872,27 +872,27 @@ LABEL_10:
   v8 = objc_opt_new();
   v10 = [(CATSharingDeviceSessionConnection *)v6 initWithDeviceSession:mDeviceSession timerSource:v8];
 
-  v4[2](v4, 0, v10);
+  completionCopy[2](completionCopy, 0, v10);
   v9 = CATErrorWithCodeAndUserInfo(702, 0);
   [(CATDeviceSessionBackedDevicePairingTerminal *)self invalidateWithError:v9];
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
   mVerifyPairingCompletion = self->mVerifyPairingCompletion;
   if (mVerifyPairingCompletion)
   {
-    mVerifyPairingCompletion[2](mVerifyPairingCompletion, v7, 0);
+    mVerifyPairingCompletion[2](mVerifyPairingCompletion, errorCopy, 0);
   }
 
   mBeginPairingCompletion = self->mBeginPairingCompletion;
   if (mBeginPairingCompletion)
   {
-    mBeginPairingCompletion[2](mBeginPairingCompletion, v7, 0);
+    mBeginPairingCompletion[2](mBeginPairingCompletion, errorCopy, 0);
   }
 
   [(CATDeviceSessionBackedDevicePairingTerminal *)self setInvalidated:1];

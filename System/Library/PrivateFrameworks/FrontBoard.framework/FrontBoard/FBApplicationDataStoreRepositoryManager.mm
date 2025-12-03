@@ -1,17 +1,17 @@
 @interface FBApplicationDataStoreRepositoryManager
 + (id)sharedInstance;
-- (BOOL)migrateFromApplicationStore:(id)a3 toApplicationStore:(id)a4 error:(id *)a5;
-- (BOOL)migrateFromPlistStoreAtURL:(id)a3 toSqliteStoreAtURL:(id)a4 error:(id *)a5;
-- (BOOL)removeStoreAtURL:(id)a3 error:(id *)a4;
-- (id)_initWithDataStore:(id)a3 lsEnumerator:(id)a4;
-- (id)_safeObjectForKey:(id)a3 forApplication:(id)a4 ofType:(Class)a5;
-- (id)urlByAppendingString:(id)a3 toURL:(id)a4;
-- (void)_handleApplicationInstalled:(id)a3;
+- (BOOL)migrateFromApplicationStore:(id)store toApplicationStore:(id)applicationStore error:(id *)error;
+- (BOOL)migrateFromPlistStoreAtURL:(id)l toSqliteStoreAtURL:(id)rL error:(id *)error;
+- (BOOL)removeStoreAtURL:(id)l error:(id *)error;
+- (id)_initWithDataStore:(id)store lsEnumerator:(id)enumerator;
+- (id)_safeObjectForKey:(id)key forApplication:(id)application ofType:(Class)type;
+- (id)urlByAppendingString:(id)string toURL:(id)l;
+- (void)_handleApplicationInstalled:(id)installed;
 - (void)clearExpiredUninstalledApplicationsFromStoreIfNecessary;
 - (void)dealloc;
 - (void)migrateApplicationStorePathIfNecessary;
-- (void)objectChangedForKeys:(id)a3 application:(id)a4;
-- (void)storeInvalidatedForIdentifier:(id)a3;
+- (void)objectChangedForKeys:(id)keys application:(id)application;
+- (void)storeInvalidatedForIdentifier:(id)identifier;
 @end
 
 @implementation FBApplicationDataStoreRepositoryManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __57__FBApplicationDataStoreRepositoryManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_6 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_6, block);
@@ -40,28 +40,28 @@ void __57__FBApplicationDataStoreRepositoryManager_sharedInstance__block_invoke(
   sharedInstance_sharedInstance = v1;
 }
 
-- (id)_initWithDataStore:(id)a3 lsEnumerator:(id)a4
+- (id)_initWithDataStore:(id)store lsEnumerator:(id)enumerator
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  enumeratorCopy = enumerator;
   v22.receiver = self;
   v22.super_class = FBApplicationDataStoreRepositoryManager;
   v8 = [(FBApplicationDataStoreRepositoryManager *)&v22 init];
   if (v8)
   {
     v9 = MEMORY[0x1E695DFF8];
-    v10 = [@"~/Library/FrontBoard/applicationState.db" stringByExpandingTildeInPath];
-    v11 = [v9 fileURLWithPath:v10];
+    stringByExpandingTildeInPath = [@"~/Library/FrontBoard/applicationState.db" stringByExpandingTildeInPath];
+    v11 = [v9 fileURLWithPath:stringByExpandingTildeInPath];
     dataStoreURL = v8->_dataStoreURL;
     v8->_dataStoreURL = v11;
 
-    objc_storeStrong(&v8->_lsEnumerator, a4);
+    objc_storeStrong(&v8->_lsEnumerator, enumerator);
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(DistributedCenter, v8, _handleApplicationsRegisteredNotification, @"com.apple.LaunchServices.applicationRegistered", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     [(FBApplicationDataStoreRepositoryManager *)v8 migrateApplicationStorePathIfNecessary];
-    if (v6)
+    if (storeCopy)
     {
-      v14 = v6;
+      v14 = storeCopy;
     }
 
     else
@@ -98,42 +98,42 @@ void __57__FBApplicationDataStoreRepositoryManager_sharedInstance__block_invoke(
   [(FBApplicationDataStoreRepositoryManager *)&v3 dealloc];
 }
 
-- (id)urlByAppendingString:(id)a3 toURL:(id)a4
+- (id)urlByAppendingString:(id)string toURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 lastPathComponent];
-  v8 = [v5 URLByDeletingLastPathComponent];
+  lCopy = l;
+  stringCopy = string;
+  lastPathComponent = [lCopy lastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
 
-  v9 = [v7 stringByAppendingString:v6];
+  v9 = [lastPathComponent stringByAppendingString:stringCopy];
 
-  v10 = [v8 URLByAppendingPathComponent:v9];
+  v10 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v9];
 
   return v10;
 }
 
-- (BOOL)removeStoreAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeStoreAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v7 removeItemAtURL:self->_dataStoreURL error:a4])
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager removeItemAtURL:self->_dataStoreURL error:error])
   {
-    v8 = [(FBApplicationDataStoreRepositoryManager *)self urlByAppendingString:@"-shm" toURL:v6];
-    v9 = [v8 path];
-    v10 = [v7 fileExistsAtPath:v9];
+    v8 = [(FBApplicationDataStoreRepositoryManager *)self urlByAppendingString:@"-shm" toURL:lCopy];
+    path = [v8 path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
-    if (v10 && ![v7 removeItemAtURL:v8 error:a4])
+    if (v10 && ![defaultManager removeItemAtURL:v8 error:error])
     {
       v14 = 0;
     }
 
     else
     {
-      v11 = [(FBApplicationDataStoreRepositoryManager *)self urlByAppendingString:@"-wal" toURL:v6];
-      v12 = [v11 path];
-      v13 = [v7 fileExistsAtPath:v12];
+      v11 = [(FBApplicationDataStoreRepositoryManager *)self urlByAppendingString:@"-wal" toURL:lCopy];
+      path2 = [v11 path];
+      v13 = [defaultManager fileExistsAtPath:path2];
 
-      v14 = !v13 || [v7 removeItemAtURL:v11 error:a4];
+      v14 = !v13 || [defaultManager removeItemAtURL:v11 error:error];
     }
   }
 
@@ -149,27 +149,27 @@ void __57__FBApplicationDataStoreRepositoryManager_sharedInstance__block_invoke(
 {
   v67[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v4 = [(NSURL *)self->_dataStoreURL path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [(NSURL *)self->_dataStoreURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   v48 = v5;
   if ((v5 & 1) == 0)
   {
-    v6 = [(NSURL *)self->_dataStoreURL URLByDeletingLastPathComponent];
-    [v3 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
+    uRLByDeletingLastPathComponent = [(NSURL *)self->_dataStoreURL URLByDeletingLastPathComponent];
+    [v3 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v7 = MEMORY[0x1E695DFF8];
-  v8 = [@"~/Library/FrontBoard/applicationState.plist" stringByExpandingTildeInPath];
-  v9 = [v7 fileURLWithPath:v8];
+  stringByExpandingTildeInPath = [@"~/Library/FrontBoard/applicationState.plist" stringByExpandingTildeInPath];
+  v9 = [v7 fileURLWithPath:stringByExpandingTildeInPath];
   v67[0] = v9;
   v10 = MEMORY[0x1E695DFF8];
-  v11 = [@"~/Library/BackBoard/applicationState.plist" stringByExpandingTildeInPath];
-  v12 = [v10 fileURLWithPath:v11];
+  stringByExpandingTildeInPath2 = [@"~/Library/BackBoard/applicationState.plist" stringByExpandingTildeInPath];
+  v12 = [v10 fileURLWithPath:stringByExpandingTildeInPath2];
   v67[1] = v12;
   v13 = MEMORY[0x1E695DFF8];
-  v14 = [@"~/Library/SpringBoard/applicationstate.plist" stringByExpandingTildeInPath];
-  v15 = [v13 fileURLWithPath:v14];
+  stringByExpandingTildeInPath3 = [@"~/Library/SpringBoard/applicationstate.plist" stringByExpandingTildeInPath];
+  v15 = [v13 fileURLWithPath:stringByExpandingTildeInPath3];
   v67[2] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:3];
 
@@ -195,8 +195,8 @@ void __57__FBApplicationDataStoreRepositoryManager_sharedInstance__block_invoke(
         }
 
         v23 = *(*(&v55 + 1) + 8 * i);
-        v24 = [v23 path];
-        v25 = [v3 fileExistsAtPath:v24];
+        path2 = [v23 path];
+        v25 = [v3 fileExistsAtPath:path2];
 
         if (v25)
         {
@@ -299,8 +299,8 @@ LABEL_27:
         }
 
         v43 = *(*(&v49 + 1) + 8 * j);
-        v44 = [v43 path];
-        v45 = [v3 fileExistsAtPath:v44];
+        path3 = [v43 path];
+        v45 = [v3 fileExistsAtPath:path3];
 
         if (v45)
         {
@@ -317,18 +317,18 @@ LABEL_27:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)migrateFromApplicationStore:(id)a3 toApplicationStore:(id)a4 error:(id *)a5
+- (BOOL)migrateFromApplicationStore:(id)store toApplicationStore:(id)applicationStore error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v7 beginBatchedUpdate];
+  storeCopy = store;
+  applicationStoreCopy = applicationStore;
+  [applicationStoreCopy beginBatchedUpdate];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [v7 applicationIdentifiersWithState];
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  applicationIdentifiersWithState = [applicationStoreCopy applicationIdentifiersWithState];
+  v9 = [applicationIdentifiersWithState countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -339,13 +339,13 @@ LABEL_27:
       {
         if (*v36 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(applicationIdentifiersWithState);
         }
 
-        [v7 removeAllObjectsForApplication:*(*(&v35 + 1) + 8 * i)];
+        [applicationStoreCopy removeAllObjectsForApplication:*(*(&v35 + 1) + 8 * i)];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v10 = [applicationIdentifiersWithState countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v10);
@@ -355,7 +355,7 @@ LABEL_27:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [v6 applicationIdentifiersWithState];
+  obj = [storeCopy applicationIdentifiersWithState];
   v26 = [obj countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v26)
   {
@@ -374,7 +374,7 @@ LABEL_27:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v15 = [v6 keysForApplication:v14];
+        v15 = [storeCopy keysForApplication:v14];
         v16 = [v15 countByEnumeratingWithState:&v27 objects:v39 count:16];
         if (v16)
         {
@@ -390,10 +390,10 @@ LABEL_27:
               }
 
               v20 = *(*(&v27 + 1) + 8 * k);
-              v21 = [v6 objectForKey:v20 forApplication:v14];
+              v21 = [storeCopy objectForKey:v20 forApplication:v14];
               if (v21)
               {
-                [v7 setObject:v21 forKey:v20 forApplication:v14];
+                [applicationStoreCopy setObject:v21 forKey:v20 forApplication:v14];
               }
             }
 
@@ -410,20 +410,20 @@ LABEL_27:
     while (v26);
   }
 
-  [v7 endBatchedUpdate];
-  [v7 flushSynchronously];
+  [applicationStoreCopy endBatchedUpdate];
+  [applicationStoreCopy flushSynchronously];
 
   v22 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (BOOL)migrateFromPlistStoreAtURL:(id)a3 toSqliteStoreAtURL:(id)a4 error:(id *)a5
+- (BOOL)migrateFromPlistStoreAtURL:(id)l toSqliteStoreAtURL:(id)rL error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[FBPlistApplicationDataStoreRepository alloc] initWithStorePath:v9];
+  rLCopy = rL;
+  lCopy = l;
+  v10 = [[FBPlistApplicationDataStoreRepository alloc] initWithStorePath:lCopy];
 
-  v11 = [[FBSqliteApplicationDataStoreRepository alloc] initWithStorePath:v8];
+  v11 = [[FBSqliteApplicationDataStoreRepository alloc] initWithStorePath:rLCopy];
   if (v10)
   {
     v12 = v11 == 0;
@@ -434,7 +434,7 @@ LABEL_27:
     v12 = 1;
   }
 
-  v13 = !v12 && [(FBApplicationDataStoreRepositoryManager *)self migrateFromApplicationStore:v10 toApplicationStore:v11 error:a5];
+  v13 = !v12 && [(FBApplicationDataStoreRepositoryManager *)self migrateFromApplicationStore:v10 toApplicationStore:v11 error:error];
 
   return v13;
 }
@@ -458,8 +458,8 @@ LABEL_27:
   v6 = self->_lsEnumerator;
   self->_lsEnumerator = 0;
 
-  v7 = [(LSEnumerator *)v5 allObjects];
-  if ([v7 count])
+  allObjects = [(LSEnumerator *)v5 allObjects];
+  if ([allObjects count])
   {
     v53 = v5;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -467,8 +467,8 @@ LABEL_27:
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v52 = v7;
-    v9 = v7;
+    v52 = allObjects;
+    v9 = allObjects;
     v10 = [v9 countByEnumeratingWithState:&v73 objects:v83 count:16];
     if (v10)
     {
@@ -483,10 +483,10 @@ LABEL_27:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v73 + 1) + 8 * i) bundleIdentifier];
-          if (v14)
+          bundleIdentifier = [*(*(&v73 + 1) + 8 * i) bundleIdentifier];
+          if (bundleIdentifier)
           {
-            [v8 addObject:v14];
+            [v8 addObject:bundleIdentifier];
           }
         }
 
@@ -496,14 +496,14 @@ LABEL_27:
       while (v11);
     }
 
-    v15 = [(FBApplicationDataStoreRepository *)self->_dataStore applicationIdentifiersWithState];
+    applicationIdentifiersWithState = [(FBApplicationDataStoreRepository *)self->_dataStore applicationIdentifiersWithState];
     v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"_SBUninstalledDate", @"__SBUninstalledDate", 0}];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    obj = v15;
+    obj = applicationIdentifiersWithState;
     v55 = v16;
     v56 = v8;
     v59 = [obj countByEnumeratingWithState:&v69 objects:v82 count:16];
@@ -522,8 +522,8 @@ LABEL_27:
           }
 
           v19 = *(*(&v69 + 1) + 8 * v18);
-          v20 = [v19 fbs_bundleIDFromAppID];
-          v21 = [v8 containsObject:v20];
+          fbs_bundleIDFromAppID = [v19 fbs_bundleIDFromAppID];
+          v21 = [v8 containsObject:fbs_bundleIDFromAppID];
 
           v22 = [(FBApplicationDataStoreRepositoryManager *)self _safeObjectForKey:@"__UninstallDate" forApplication:v19 ofType:objc_opt_class()];
           v23 = v22;
@@ -654,8 +654,8 @@ LABEL_39:
             }
 
             dataStore = self->_dataStore;
-            v37 = [MEMORY[0x1E695DF00] date];
-            [(FBApplicationDataStoreRepository *)dataStore setObject:v37 forKey:@"__UninstallDate" forApplication:v19];
+            date = [MEMORY[0x1E695DF00] date];
+            [(FBApplicationDataStoreRepository *)dataStore setObject:date forKey:@"__UninstallDate" forApplication:v19];
           }
 
 LABEL_53:
@@ -718,7 +718,7 @@ LABEL_53:
     block[4] = self;
     dispatch_after(v46, deferredWorkQueue, block);
 
-    v7 = v52;
+    allObjects = v52;
     v5 = v53;
   }
 
@@ -743,9 +743,9 @@ LABEL_53:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_safeObjectForKey:(id)a3 forApplication:(id)a4 ofType:(Class)a5
+- (id)_safeObjectForKey:(id)key forApplication:(id)application ofType:(Class)type
 {
-  v5 = [(FBApplicationDataStoreRepository *)self->_dataStore objectForKey:a3 forApplication:a4];
+  v5 = [(FBApplicationDataStoreRepository *)self->_dataStore objectForKey:key forApplication:application];
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -759,15 +759,15 @@ LABEL_53:
   return v6;
 }
 
-- (void)_handleApplicationInstalled:(id)a3
+- (void)_handleApplicationInstalled:(id)installed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  installedCopy = installed;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [installedCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -778,13 +778,13 @@ LABEL_53:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installedCopy);
         }
 
         [(FBApplicationDataStoreRepository *)self->_dataStore removeObjectForKey:@"__UninstallDate" forApplication:*(*(&v21 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [installedCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -794,8 +794,8 @@ LABEL_53:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(FBApplicationDataStoreRepository *)self->_dataStore applicationIdentifiersWithState];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  applicationIdentifiersWithState = [(FBApplicationDataStoreRepository *)self->_dataStore applicationIdentifiersWithState];
+  v10 = [applicationIdentifiersWithState countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -806,18 +806,18 @@ LABEL_53:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(applicationIdentifiersWithState);
         }
 
         v14 = *(*(&v17 + 1) + 8 * j);
-        v15 = [v14 fbs_bundleIDFromAppID];
-        if ([v4 containsObject:v15])
+        fbs_bundleIDFromAppID = [v14 fbs_bundleIDFromAppID];
+        if ([installedCopy containsObject:fbs_bundleIDFromAppID])
         {
           [(FBApplicationDataStoreRepository *)self->_dataStore removeObjectForKey:@"__UninstallDate" forApplication:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v11 = [applicationIdentifiersWithState countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v11);
@@ -826,17 +826,17 @@ LABEL_53:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)objectChangedForKeys:(id)a3 application:(id)a4
+- (void)objectChangedForKeys:(id)keys application:(id)application
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  keysCopy = keys;
+  applicationCopy = application;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v7;
+  obj = keysCopy;
   v10 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v10)
   {
@@ -853,22 +853,22 @@ LABEL_53:
 
         v14 = *(*(&v21 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [(FBApplicationDataStoreRepository *)self->_dataStore objectForKey:v14 forApplication:v8];
+        v16 = [(FBApplicationDataStoreRepository *)self->_dataStore objectForKey:v14 forApplication:applicationCopy];
         v25[0] = @"FBApplicationStoreRepositoryChangeKey";
         v25[1] = @"FBApplicationStoreRepositoryChangeApp";
         v26[0] = v14;
-        v26[1] = v8;
+        v26[1] = applicationCopy;
         v17 = v16;
         v25[2] = @"FBApplicationStoreRepositoryChangeValue";
         if (!v16)
         {
-          v4 = [MEMORY[0x1E695DFB0] null];
-          v17 = v4;
+          null = [MEMORY[0x1E695DFB0] null];
+          v17 = null;
         }
 
         v26[2] = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
-        [v9 postNotificationName:@"FBApplicationStoreRepositoryChangeNotification" object:0 userInfo:v18];
+        [defaultCenter postNotificationName:@"FBApplicationStoreRepositoryChangeNotification" object:0 userInfo:v18];
 
         if (!v16)
         {
@@ -886,17 +886,17 @@ LABEL_53:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeInvalidatedForIdentifier:(id)a3
+- (void)storeInvalidatedForIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD88];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
+  identifierCopy = identifier;
+  defaultCenter = [v3 defaultCenter];
   v8 = @"FBApplicationStoreRepositoryChangeApp";
-  v9[0] = v4;
+  v9[0] = identifierCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v5 postNotificationName:@"FBApplicationStoreRepositoryInvalidatedNotification" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"FBApplicationStoreRepositoryInvalidatedNotification" object:0 userInfo:v6];
   v7 = *MEMORY[0x1E69E9840];
 }
 

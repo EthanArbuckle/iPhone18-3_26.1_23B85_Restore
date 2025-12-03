@@ -2,7 +2,7 @@
 + (SKWarpGeometryGrid)grid;
 + (SKWarpGeometryGrid)gridWithColumns:(NSInteger)cols rows:(NSInteger)rows;
 + (SKWarpGeometryGrid)gridWithColumns:(NSInteger)cols rows:(NSInteger)rows sourcePositions:(const vector_float2 *)sourcePositions destPositions:(const vector_float2 *)destPositions;
-- (BOOL)isEqualToGrid:(id)a3;
+- (BOOL)isEqualToGrid:(id)grid;
 - (SKWarpGeometryGrid)gridByReplacingDestPositions:(const vector_float2 *)destPositions;
 - (SKWarpGeometryGrid)gridByReplacingSourcePositions:(const vector_float2 *)sourcePositions;
 - (SKWarpGeometryGrid)initWithCoder:(NSCoder *)aDecoder;
@@ -10,7 +10,7 @@
 - (id).cxx_construct;
 - (vector_float2)destPositionAtIndex:(NSInteger)index;
 - (vector_float2)sourcePositionAtIndex:(NSInteger)index;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKWarpGeometryGrid
@@ -269,13 +269,13 @@ LABEL_27:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  [v17 encodeInteger:1 forKey:@"_SKWarpGeometryGridVersion"];
-  [v17 encodeInteger:-[SKWarpGeometryGrid numberOfColumns](self forKey:{"numberOfColumns"), @"_numberOfColumns"}];
-  [v17 encodeInteger:-[SKWarpGeometryGrid numberOfRows](self forKey:{"numberOfRows"), @"_numberOfRows"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"_SKWarpGeometryGridVersion"];
+  [coderCopy encodeInteger:-[SKWarpGeometryGrid numberOfColumns](self forKey:{"numberOfColumns"), @"_numberOfColumns"}];
+  [coderCopy encodeInteger:-[SKWarpGeometryGrid numberOfRows](self forKey:{"numberOfRows"), @"_numberOfRows"}];
   v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[SKWarpGeometryGrid vertexCount](self, "vertexCount")}];
   v4 = 0;
   v5 = 4;
@@ -293,7 +293,7 @@ LABEL_27:
     v5 += 8;
   }
 
-  [v17 encodeObject:v18 forKey:@"_sourcePositions"];
+  [coderCopy encodeObject:v18 forKey:@"_sourcePositions"];
   v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[SKWarpGeometryGrid vertexCount](self, "vertexCount")}];
   v11 = 0;
   v12 = 4;
@@ -311,29 +311,29 @@ LABEL_27:
     v12 += 8;
   }
 
-  [v17 encodeObject:v10 forKey:@"_destPositions"];
+  [coderCopy encodeObject:v10 forKey:@"_destPositions"];
 }
 
-- (BOOL)isEqualToGrid:(id)a3
+- (BOOL)isEqualToGrid:(id)grid
 {
-  v4 = a3;
-  if (self == v4)
+  gridCopy = grid;
+  if (self == gridCopy)
   {
     goto LABEL_19;
   }
 
-  v5 = [(SKWarpGeometryGrid *)self numberOfColumns];
-  if (v5 == [(SKWarpGeometryGrid *)v4 numberOfColumns])
+  numberOfColumns = [(SKWarpGeometryGrid *)self numberOfColumns];
+  if (numberOfColumns == [(SKWarpGeometryGrid *)gridCopy numberOfColumns])
   {
-    v6 = [(SKWarpGeometryGrid *)self numberOfRows];
-    if (v6 == [(SKWarpGeometryGrid *)v4 numberOfRows])
+    numberOfRows = [(SKWarpGeometryGrid *)self numberOfRows];
+    if (numberOfRows == [(SKWarpGeometryGrid *)gridCopy numberOfRows])
     {
       v7 = *self->_anon_8;
       v8 = *&self->_anon_8[8] - v7;
       if (v8)
       {
         v9 = v8 >> 3;
-        v10 = *v4->_anon_8;
+        v10 = *gridCopy->_anon_8;
         if (v9 <= 1)
         {
           v9 = 1;
@@ -373,7 +373,7 @@ LABEL_27:
 
         while (1)
         {
-          v18 = vsub_f32(*(v12 + 8 * v15), *(*v4->_anon_20 + 8 * v15));
+          v18 = vsub_f32(*(v12 + 8 * v15), *(*gridCopy->_anon_20 + 8 * v15));
           if ((v18.i32[0] & 0x60000000) != 0 || (v18.i32[1] & 0x60000000) != 0)
           {
             goto LABEL_18;
@@ -431,21 +431,21 @@ LABEL_20:
 - (SKWarpGeometryGrid)gridByReplacingSourcePositions:(const vector_float2 *)sourcePositions
 {
   v5 = objc_opt_class();
-  v6 = [(SKWarpGeometryGrid *)self numberOfColumns];
-  v7 = [(SKWarpGeometryGrid *)self numberOfRows];
-  v8 = [(SKWarpGeometryGrid *)self destPositions];
+  numberOfColumns = [(SKWarpGeometryGrid *)self numberOfColumns];
+  numberOfRows = [(SKWarpGeometryGrid *)self numberOfRows];
+  destPositions = [(SKWarpGeometryGrid *)self destPositions];
 
-  return [v5 gridWithColumns:v6 rows:v7 sourcePositions:sourcePositions destPositions:v8];
+  return [v5 gridWithColumns:numberOfColumns rows:numberOfRows sourcePositions:sourcePositions destPositions:destPositions];
 }
 
 - (SKWarpGeometryGrid)gridByReplacingDestPositions:(const vector_float2 *)destPositions
 {
   v5 = objc_opt_class();
-  v6 = [(SKWarpGeometryGrid *)self numberOfColumns];
-  v7 = [(SKWarpGeometryGrid *)self numberOfRows];
-  v8 = [(SKWarpGeometryGrid *)self sourcePositions];
+  numberOfColumns = [(SKWarpGeometryGrid *)self numberOfColumns];
+  numberOfRows = [(SKWarpGeometryGrid *)self numberOfRows];
+  sourcePositions = [(SKWarpGeometryGrid *)self sourcePositions];
 
-  return [v5 gridWithColumns:v6 rows:v7 sourcePositions:v8 destPositions:destPositions];
+  return [v5 gridWithColumns:numberOfColumns rows:numberOfRows sourcePositions:sourcePositions destPositions:destPositions];
 }
 
 - (id).cxx_construct

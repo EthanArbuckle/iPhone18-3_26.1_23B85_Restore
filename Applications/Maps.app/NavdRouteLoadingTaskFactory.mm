@@ -1,37 +1,37 @@
 @interface NavdRouteLoadingTaskFactory
 - (GEOCountryConfiguration)countryConfiguration;
 - (NSSet)supportedTransportTypes;
-- (NavdRouteLoadingTaskFactory)initWithTransportTypes:(id)a3 traits:(id)a4 isResumingMultipointRoute:(BOOL)a5 resumeRouteHandle:(id)a6 persistentData:(id)a7;
-- (NavdRouteLoadingTaskFactory)initWithUserDefaults:(id)a3 existingTiming:(id)a4 traits:(id)a5 isResumingMultipointRoute:(BOOL)a6 resumeRouteHandle:(id)a7 persistentData:(id)a8;
-- (id)_configurationByModifyingTransportTypeInfoDictionary:(id)a3;
-- (id)_timing:(id)a3 forTransportType:(int64_t)a4;
-- (id)factoryByModifyingCyclePreferences:(id)a3 timing:(id)a4;
-- (id)factoryByModifyingDrivePreferences:(id)a3 timing:(id)a4;
-- (id)factoryByModifyingTransitPreferences:(id)a3 timing:(id)a4;
-- (id)factoryByModifyingWalkPreferences:(id)a3 timing:(id)a4;
-- (id)taskForRoutes:(id)a3;
-- (id)taskForTransportType:(int64_t)a3 waypointSet:(id)a4;
-- (void)setCountryConfiguration:(id)a3;
-- (void)setIsResumingMultipointRoute:(BOOL)a3;
-- (void)setPersistentData:(id)a3;
-- (void)setResumeRouteHandle:(id)a3;
-- (void)setTraits:(id)a3;
+- (NavdRouteLoadingTaskFactory)initWithTransportTypes:(id)types traits:(id)traits isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)handle persistentData:(id)data;
+- (NavdRouteLoadingTaskFactory)initWithUserDefaults:(id)defaults existingTiming:(id)timing traits:(id)traits isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)handle persistentData:(id)data;
+- (id)_configurationByModifyingTransportTypeInfoDictionary:(id)dictionary;
+- (id)_timing:(id)_timing forTransportType:(int64_t)type;
+- (id)factoryByModifyingCyclePreferences:(id)preferences timing:(id)timing;
+- (id)factoryByModifyingDrivePreferences:(id)preferences timing:(id)timing;
+- (id)factoryByModifyingTransitPreferences:(id)preferences timing:(id)timing;
+- (id)factoryByModifyingWalkPreferences:(id)preferences timing:(id)timing;
+- (id)taskForRoutes:(id)routes;
+- (id)taskForTransportType:(int64_t)type waypointSet:(id)set;
+- (void)setCountryConfiguration:(id)configuration;
+- (void)setIsResumingMultipointRoute:(BOOL)route;
+- (void)setPersistentData:(id)data;
+- (void)setResumeRouteHandle:(id)handle;
+- (void)setTraits:(id)traits;
 @end
 
 @implementation NavdRouteLoadingTaskFactory
 
-- (NavdRouteLoadingTaskFactory)initWithUserDefaults:(id)a3 existingTiming:(id)a4 traits:(id)a5 isResumingMultipointRoute:(BOOL)a6 resumeRouteHandle:(id)a7 persistentData:(id)a8
+- (NavdRouteLoadingTaskFactory)initWithUserDefaults:(id)defaults existingTiming:(id)timing traits:(id)traits isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)handle persistentData:(id)data
 {
-  v38 = a6;
-  v12 = a3;
-  v13 = a4;
-  v37 = a5;
-  v35 = a7;
-  v33 = v13;
-  v34 = a8;
-  if (v13)
+  routeCopy = route;
+  defaultsCopy = defaults;
+  timingCopy = timing;
+  traitsCopy = traits;
+  handleCopy = handle;
+  v33 = timingCopy;
+  dataCopy = data;
+  if (timingCopy)
   {
-    v14 = v13;
+    v14 = timingCopy;
   }
 
   else
@@ -43,121 +43,121 @@
   v16 = [RequestTransportTypeInformation alloc];
   v39[0] = &off_1016E97D0;
   v17 = [WalkingRequestInfoProvider alloc];
-  v32 = [[WalkPreferences alloc] initWithDefaults:v12];
+  v32 = [[WalkPreferences alloc] initWithDefaults:defaultsCopy];
   v31 = [(WalkingRequestInfoProvider *)v17 initWithPreferences:v32 timing:v15];
   v40[0] = v31;
   v39[1] = &off_1016E97E8;
   v18 = [CyclingRequestInfoProvider alloc];
-  v19 = [[CyclePreferences alloc] initWithDefaults:v12];
+  v19 = [[CyclePreferences alloc] initWithDefaults:defaultsCopy];
   v20 = [(CyclingRequestInfoProvider *)v18 initWithPreferences:v19 timing:v15];
   v40[1] = v20;
   v39[2] = &off_1016E97B8;
   v21 = [DrivingRequestInfoProvider alloc];
-  v22 = [[DrivePreferences alloc] initWithDefaults:v12];
+  v22 = [[DrivePreferences alloc] initWithDefaults:defaultsCopy];
   v23 = [(DrivingRequestInfoProvider *)v21 initWithPreferences:v22 timing:v15];
   v40[2] = v23;
   v39[3] = &off_1016E97A0;
   v24 = [TransitRequestInfoProvider alloc];
-  v25 = [(WatchSyncedPreferences *)[TransitPreferences alloc] initWithDefaults:v12];
+  v25 = [(WatchSyncedPreferences *)[TransitPreferences alloc] initWithDefaults:defaultsCopy];
   v26 = [(TransitRequestInfoProvider *)v24 initWithPreferences:v25 timing:v15];
   v40[3] = v26;
   v27 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:4];
   v28 = [(RequestTransportTypeInformation *)v16 initWithDictionary:v27];
 
-  v29 = [(NavdRouteLoadingTaskFactory *)self initWithTransportTypes:v28 traits:v37 isResumingMultipointRoute:v38 resumeRouteHandle:v35 persistentData:v34];
+  v29 = [(NavdRouteLoadingTaskFactory *)self initWithTransportTypes:v28 traits:traitsCopy isResumingMultipointRoute:routeCopy resumeRouteHandle:handleCopy persistentData:dataCopy];
   return v29;
 }
 
-- (id)_configurationByModifyingTransportTypeInfoDictionary:(id)a3
+- (id)_configurationByModifyingTransportTypeInfoDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(NavdRouteLoadingTaskFactory *)self transportTypeInformation];
-  v6 = [v5 transportTypeInfoProviders];
-  v7 = [v6 mutableCopy];
+  dictionaryCopy = dictionary;
+  transportTypeInformation = [(NavdRouteLoadingTaskFactory *)self transportTypeInformation];
+  transportTypeInfoProviders = [transportTypeInformation transportTypeInfoProviders];
+  v7 = [transportTypeInfoProviders mutableCopy];
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v4[2](v4, v7);
+    dictionaryCopy[2](dictionaryCopy, v7);
   }
 
   v8 = [[RequestTransportTypeInformation alloc] initWithDictionary:v7];
   v9 = [NavdRouteLoadingTaskFactory alloc];
-  v10 = [(NavdRouteLoadingTaskFactory *)self traits];
-  v11 = [(NavdRouteLoadingTaskFactory *)self isResumingMultipointRoute];
-  v12 = [(NavdRouteLoadingTaskFactory *)self resumeRouteHandle];
-  v13 = [(NavdRouteLoadingTaskFactory *)self persistentData];
-  v14 = [(NavdRouteLoadingTaskFactory *)v9 initWithTransportTypes:v8 traits:v10 isResumingMultipointRoute:v11 resumeRouteHandle:v12 persistentData:v13];
+  traits = [(NavdRouteLoadingTaskFactory *)self traits];
+  isResumingMultipointRoute = [(NavdRouteLoadingTaskFactory *)self isResumingMultipointRoute];
+  resumeRouteHandle = [(NavdRouteLoadingTaskFactory *)self resumeRouteHandle];
+  persistentData = [(NavdRouteLoadingTaskFactory *)self persistentData];
+  v14 = [(NavdRouteLoadingTaskFactory *)v9 initWithTransportTypes:v8 traits:traits isResumingMultipointRoute:isResumingMultipointRoute resumeRouteHandle:resumeRouteHandle persistentData:persistentData];
 
   return v14;
 }
 
-- (id)factoryByModifyingCyclePreferences:(id)a3 timing:(id)a4
+- (id)factoryByModifyingCyclePreferences:(id)preferences timing:(id)timing
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100D337FC;
   v10[3] = &unk_101651B70;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v6 = v13;
-  v7 = v11;
+  preferencesCopy = preferences;
+  selfCopy = self;
+  timingCopy = timing;
+  v6 = timingCopy;
+  v7 = preferencesCopy;
   v8 = [(NavdRouteLoadingTaskFactory *)self _configurationByModifyingTransportTypeInfoDictionary:v10];
 
   return v8;
 }
 
-- (id)factoryByModifyingWalkPreferences:(id)a3 timing:(id)a4
+- (id)factoryByModifyingWalkPreferences:(id)preferences timing:(id)timing
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100D33980;
   v10[3] = &unk_101651B70;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v6 = v13;
-  v7 = v11;
+  preferencesCopy = preferences;
+  selfCopy = self;
+  timingCopy = timing;
+  v6 = timingCopy;
+  v7 = preferencesCopy;
   v8 = [(NavdRouteLoadingTaskFactory *)self _configurationByModifyingTransportTypeInfoDictionary:v10];
 
   return v8;
 }
 
-- (id)factoryByModifyingDrivePreferences:(id)a3 timing:(id)a4
+- (id)factoryByModifyingDrivePreferences:(id)preferences timing:(id)timing
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100D33B04;
   v10[3] = &unk_101651B70;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v6 = v13;
-  v7 = v11;
+  preferencesCopy = preferences;
+  selfCopy = self;
+  timingCopy = timing;
+  v6 = timingCopy;
+  v7 = preferencesCopy;
   v8 = [(NavdRouteLoadingTaskFactory *)self _configurationByModifyingTransportTypeInfoDictionary:v10];
 
   return v8;
 }
 
-- (id)factoryByModifyingTransitPreferences:(id)a3 timing:(id)a4
+- (id)factoryByModifyingTransitPreferences:(id)preferences timing:(id)timing
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100D33D14;
   v10[3] = &unk_101651B70;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
-  v6 = v13;
-  v7 = v11;
+  preferencesCopy = preferences;
+  selfCopy = self;
+  timingCopy = timing;
+  v6 = timingCopy;
+  v7 = preferencesCopy;
   v8 = [(NavdRouteLoadingTaskFactory *)self _configurationByModifyingTransportTypeInfoDictionary:v10];
 
   return v8;
 }
 
-- (id)_timing:(id)a3 forTransportType:(int64_t)a4
+- (id)_timing:(id)_timing forTransportType:(int64_t)type
 {
-  v5 = a3;
+  _timingCopy = _timing;
   if (MapsFeature_IsEnabled_Maps357RoutePlanning())
   {
     [NSSet setWithObjects:&off_1016E97A0, &off_1016E97B8, 0];
@@ -168,10 +168,10 @@
     [NSSet setWithObjects:&off_1016E97A0, 0, v11];
   }
   v6 = ;
-  v7 = [NSNumber numberWithInteger:a4];
+  v7 = [NSNumber numberWithInteger:type];
   if ([v6 containsObject:v7])
   {
-    v8 = v5;
+    v8 = _timingCopy;
   }
 
   else
@@ -184,33 +184,33 @@
   return v9;
 }
 
-- (id)taskForRoutes:(id)a3
+- (id)taskForRoutes:(id)routes
 {
-  v3 = a3;
-  v4 = [[RouteUpdatingNavigationServiceTask alloc] initWithRoutes:v3];
+  routesCopy = routes;
+  v4 = [[RouteUpdatingNavigationServiceTask alloc] initWithRoutes:routesCopy];
 
   return v4;
 }
 
-- (id)taskForTransportType:(int64_t)a3 waypointSet:(id)a4
+- (id)taskForTransportType:(int64_t)type waypointSet:(id)set
 {
-  v6 = a4;
-  v7 = [(NavdRouteLoadingTaskFactory *)self transportTypeInformation];
-  v8 = [v7 requestInfoProviderForTransportType:a3];
+  setCopy = set;
+  transportTypeInformation = [(NavdRouteLoadingTaskFactory *)self transportTypeInformation];
+  v8 = [transportTypeInformation requestInfoProviderForTransportType:type];
 
-  [v8 updateWithRefinedWaypoints:v6];
+  [v8 updateWithRefinedWaypoints:setCopy];
   if (v8)
   {
     routeRequestBuilderFactory = self->_routeRequestBuilderFactory;
     if (routeRequestBuilderFactory)
     {
       [(RouteRequestBuilderFactory *)routeRequestBuilderFactory setTransportTypeRequestInfoProvider:v8];
-      [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setWaypointSet:v6];
+      [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setWaypointSet:setCopy];
     }
 
     else
     {
-      v11 = [[RouteRequestBuilderFactory alloc] initWithTransportTypeRequestInfoProvider:v8 waypointSet:v6];
+      v11 = [[RouteRequestBuilderFactory alloc] initWithTransportTypeRequestInfoProvider:v8 waypointSet:setCopy];
       v12 = self->_routeRequestBuilderFactory;
       self->_routeRequestBuilderFactory = v11;
 
@@ -221,20 +221,20 @@
     }
 
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setInitiator:self->_initiator];
-    v13 = [(NavdRouteLoadingTaskFactory *)self traits];
-    [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setTraits:v13];
+    traits = [(NavdRouteLoadingTaskFactory *)self traits];
+    [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setTraits:traits];
 
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setIsResumingMultipointRoute:[(NavdRouteLoadingTaskFactory *)self isResumingMultipointRoute]];
-    v14 = [(NavdRouteLoadingTaskFactory *)self resumeRouteHandle];
-    [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setResumeRouteHandle:v14];
+    resumeRouteHandle = [(NavdRouteLoadingTaskFactory *)self resumeRouteHandle];
+    [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setResumeRouteHandle:resumeRouteHandle];
 
-    v15 = [(NavdRouteLoadingTaskFactory *)self persistentData];
-    [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setPersistentData:v15];
+    persistentData = [(NavdRouteLoadingTaskFactory *)self persistentData];
+    [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setPersistentData:persistentData];
 
-    v16 = [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory makeRouteRequestBuilder];
+    makeRouteRequestBuilder = [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory makeRouteRequestBuilder];
     v17 = [RouteLoadingNavigationServiceTask alloc];
     v18 = +[MNNavigationService sharedService];
-    v10 = [(RouteLoadingNavigationServiceTask *)v17 initWithNavigationService:v18 routeRequestDetailsBuilder:v16];
+    v10 = [(RouteLoadingNavigationServiceTask *)v17 initWithNavigationService:v18 routeRequestDetailsBuilder:makeRouteRequestBuilder];
   }
 
   else
@@ -261,60 +261,60 @@
   return v3;
 }
 
-- (void)setPersistentData:(id)a3
+- (void)setPersistentData:(id)data
 {
-  v5 = a3;
-  if (self->_persistentData != v5)
+  dataCopy = data;
+  if (self->_persistentData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_persistentData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_persistentData, data);
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setPersistentData:v6];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
-- (void)setResumeRouteHandle:(id)a3
+- (void)setResumeRouteHandle:(id)handle
 {
-  v5 = a3;
-  if (self->_resumeRouteHandle != v5)
+  handleCopy = handle;
+  if (self->_resumeRouteHandle != handleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_resumeRouteHandle, a3);
+    v6 = handleCopy;
+    objc_storeStrong(&self->_resumeRouteHandle, handle);
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setResumeRouteHandle:v6];
-    v5 = v6;
+    handleCopy = v6;
   }
 }
 
-- (void)setIsResumingMultipointRoute:(BOOL)a3
+- (void)setIsResumingMultipointRoute:(BOOL)route
 {
-  if (self->_isResumingMultipointRoute != a3)
+  if (self->_isResumingMultipointRoute != route)
   {
-    self->_isResumingMultipointRoute = a3;
+    self->_isResumingMultipointRoute = route;
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setIsResumingMultipointRoute:?];
   }
 }
 
-- (void)setTraits:(id)a3
+- (void)setTraits:(id)traits
 {
-  v5 = a3;
-  if (self->_traits != v5)
+  traitsCopy = traits;
+  if (self->_traits != traitsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_traits, a3);
+    v6 = traitsCopy;
+    objc_storeStrong(&self->_traits, traits);
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setTraits:v6];
-    v5 = v6;
+    traitsCopy = v6;
   }
 }
 
-- (void)setCountryConfiguration:(id)a3
+- (void)setCountryConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_countryConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_countryConfiguration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_countryConfiguration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_countryConfiguration, configuration);
     [(RouteRequestBuilderFactory *)self->_routeRequestBuilderFactory setCountryConfiguration:self->_countryConfiguration];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
@@ -323,10 +323,10 @@
   supportedTransportTypes = self->_supportedTransportTypes;
   if (!supportedTransportTypes)
   {
-    v4 = [(NavdRouteLoadingTaskFactory *)self transportTypeInformation];
-    v5 = [v4 transportTypeInfoProviders];
-    v6 = [v5 allKeys];
-    v7 = [NSSet setWithArray:v6];
+    transportTypeInformation = [(NavdRouteLoadingTaskFactory *)self transportTypeInformation];
+    transportTypeInfoProviders = [transportTypeInformation transportTypeInfoProviders];
+    allKeys = [transportTypeInfoProviders allKeys];
+    v7 = [NSSet setWithArray:allKeys];
     v8 = self->_supportedTransportTypes;
     self->_supportedTransportTypes = v7;
 
@@ -336,23 +336,23 @@
   return supportedTransportTypes;
 }
 
-- (NavdRouteLoadingTaskFactory)initWithTransportTypes:(id)a3 traits:(id)a4 isResumingMultipointRoute:(BOOL)a5 resumeRouteHandle:(id)a6 persistentData:(id)a7
+- (NavdRouteLoadingTaskFactory)initWithTransportTypes:(id)types traits:(id)traits isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)handle persistentData:(id)data
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  typesCopy = types;
+  traitsCopy = traits;
+  handleCopy = handle;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = NavdRouteLoadingTaskFactory;
   v17 = [(NavdRouteLoadingTaskFactory *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_transportTypeInformation, a3);
-    objc_storeStrong(&v18->_traits, a4);
-    v18->_isResumingMultipointRoute = a5;
-    objc_storeStrong(&v18->_resumeRouteHandle, a6);
-    objc_storeStrong(&v18->_persistentData, a7);
+    objc_storeStrong(&v17->_transportTypeInformation, types);
+    objc_storeStrong(&v18->_traits, traits);
+    v18->_isResumingMultipointRoute = route;
+    objc_storeStrong(&v18->_resumeRouteHandle, handle);
+    objc_storeStrong(&v18->_persistentData, data);
   }
 
   return v18;

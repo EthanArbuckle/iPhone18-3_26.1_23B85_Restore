@@ -1,7 +1,7 @@
 @interface CSExcessiveCPUViolationHandler
 + (id)sharedInstance;
 - (id)_init;
-- (void)handleViolationByProcess:(id)a3 pid:(unint64_t)a4 path:(id)a5 endTime:(mach_timespec)a6 observedValue:(int64_t)a7 observationWindow:(int64_t)a8 limitValue:(int64_t)a9 limitWindow:(int64_t)a10 fatal:(BOOL)a11;
+- (void)handleViolationByProcess:(id)process pid:(unint64_t)pid path:(id)path endTime:(mach_timespec)time observedValue:(int64_t)value observationWindow:(int64_t)window limitValue:(int64_t)limitValue limitWindow:(int64_t)self0 fatal:(BOOL)self1;
 @end
 
 @implementation CSExcessiveCPUViolationHandler
@@ -47,16 +47,16 @@ uint64_t __48__CSExcessiveCPUViolationHandler_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)handleViolationByProcess:(id)a3 pid:(unint64_t)a4 path:(id)a5 endTime:(mach_timespec)a6 observedValue:(int64_t)a7 observationWindow:(int64_t)a8 limitValue:(int64_t)a9 limitWindow:(int64_t)a10 fatal:(BOOL)a11
+- (void)handleViolationByProcess:(id)process pid:(unint64_t)pid path:(id)path endTime:(mach_timespec)time observedValue:(int64_t)value observationWindow:(int64_t)window limitValue:(int64_t)limitValue limitWindow:(int64_t)self0 fatal:(BOOL)self1
 {
   v52 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
+  processCopy = process;
+  pathCopy = path;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v19 = "(NON FATAL) ";
-    if (a11)
+    if (fatal)
     {
       v19 = "(FATAL) ";
     }
@@ -64,41 +64,41 @@ uint64_t __48__CSExcessiveCPUViolationHandler_sharedInstance__block_invoke()
     *buf = 136317186;
     v35 = v19;
     v36 = 2112;
-    v37 = v16;
+    v37 = processCopy;
     v40 = 2112;
     v46 = 1024;
     v38 = 2048;
-    v39 = a4;
-    v41 = v17;
+    pidCopy = pid;
+    v41 = pathCopy;
     v42 = 2048;
-    v43 = a7 / 1000000000.0;
+    v43 = value / 1000000000.0;
     v44 = 2048;
-    v45 = a8 / 1000000000.0;
-    v47 = 100 * a7 / a8;
+    v45 = window / 1000000000.0;
+    v47 = 100 * value / window;
     v48 = 2048;
-    v49 = a9 / 1000000000.0;
+    v49 = limitValue / 1000000000.0;
     v50 = 2048;
-    v51 = a10 / 0x3B9ACA00uLL;
+    v51 = limitWindow / 0x3B9ACA00uLL;
     _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_DEFAULT, "handleViolationByProcess: Received %sCPU violation: %@[%llu] (%@) used %.2f seconds of CPU over %.2f seconds (averaging %d%%), violating a CPU usage limit of %.2f seconds over %lld seconds.", buf, 0x58u);
   }
 
-  if (v16)
+  if (processCopy)
   {
     v20 = getMainQueue();
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __137__CSExcessiveCPUViolationHandler_handleViolationByProcess_pid_path_endTime_observedValue_observationWindow_limitValue_limitWindow_fatal___block_invoke;
     block[3] = &unk_278DF51F8;
-    v27 = a4;
+    pidCopy2 = pid;
     block[4] = self;
-    v25 = v17;
-    v28 = a7;
-    v29 = a8;
-    v30 = a9;
-    v31 = a10;
-    v32 = a6;
-    v26 = v16;
-    v33 = a11;
+    v25 = pathCopy;
+    valueCopy = value;
+    windowCopy = window;
+    limitValueCopy = limitValue;
+    limitWindowCopy = limitWindow;
+    timeCopy = time;
+    v26 = processCopy;
+    fatalCopy = fatal;
     dispatch_sync(v20, block);
   }
 

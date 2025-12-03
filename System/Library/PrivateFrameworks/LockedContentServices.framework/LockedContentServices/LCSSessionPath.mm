@@ -1,22 +1,22 @@
 @interface LCSSessionPath
-+ (id)finalizedSessionPathsWithType:(unint64_t)a3;
-+ (id)temporarySessionPathWithType:(unint64_t)a3;
-- (BOOL)_lock_purgeContentsIncludingDirectory:(BOOL)a3;
-- (LCSSessionPath)initWithBSXPCCoder:(id)a3;
-- (LCSSessionPath)initWithCoder:(id)a3;
-- (id)_initWithURL:(id)a3 type:(unint64_t)a4 isTemporaryPath:(BOOL)a5;
-- (id)finalizeTemporarySessionPathForExtension:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)finalizedSessionPathsWithType:(unint64_t)type;
++ (id)temporarySessionPathWithType:(unint64_t)type;
+- (BOOL)_lock_purgeContentsIncludingDirectory:(BOOL)directory;
+- (LCSSessionPath)initWithBSXPCCoder:(id)coder;
+- (LCSSessionPath)initWithCoder:(id)coder;
+- (id)_initWithURL:(id)l type:(unint64_t)type isTemporaryPath:(BOOL)path;
+- (id)finalizeTemporarySessionPathForExtension:(id)extension;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
 @implementation LCSSessionPath
 
-+ (id)temporarySessionPathWithType:(unint64_t)a3
++ (id)temporarySessionPathWithType:(unint64_t)type
 {
   v4 = @"com.apple.GenericSession";
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"com.apple.SecureCapture";
   }
@@ -24,24 +24,24 @@
   v5 = v4;
   v6 = [[LCSSessionURLBuilder alloc] initWithTypeIdentifier:v5];
 
-  v7 = [(LCSSessionURLBuilder *)v6 temporarySessionURL];
-  if (v7)
+  temporarySessionURL = [(LCSSessionURLBuilder *)v6 temporarySessionURL];
+  if (temporarySessionURL)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    v9 = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v14];
+    v9 = [defaultManager createDirectoryAtURL:temporarySessionURL withIntermediateDirectories:1 attributes:0 error:&v14];
     v10 = v14;
 
     if (v9)
     {
-      v11 = [[LCSSessionPath alloc] _initWithURL:v7 type:a3 isTemporaryPath:1];
+      v11 = [[LCSSessionPath alloc] _initWithURL:temporarySessionURL type:type isTemporaryPath:1];
       goto LABEL_12;
     }
 
     v12 = LCSLogSessionContents();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(LCSSessionPath *)v7 temporarySessionPathWithType:v12];
+      [(LCSSessionPath *)temporarySessionURL temporarySessionPathWithType:v12];
     }
   }
 
@@ -60,10 +60,10 @@ LABEL_12:
   return v11;
 }
 
-+ (id)finalizedSessionPathsWithType:(unint64_t)a3
++ (id)finalizedSessionPathsWithType:(unint64_t)type
 {
   v4 = @"com.apple.GenericSession";
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"com.apple.SecureCapture";
   }
@@ -71,15 +71,15 @@ LABEL_12:
   v5 = v4;
   v6 = [[LCSSessionURLBuilder alloc] initWithTypeIdentifier:v5];
 
-  v7 = [(LCSSessionURLBuilder *)v6 finalizedSessionURLsForCurrentApplication];
-  if ([v7 count])
+  finalizedSessionURLsForCurrentApplication = [(LCSSessionURLBuilder *)v6 finalizedSessionURLsForCurrentApplication];
+  if ([finalizedSessionURLsForCurrentApplication count])
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __48__LCSSessionPath_finalizedSessionPathsWithType___block_invoke;
     v10[3] = &__block_descriptor_40_e15__16__0__NSURL_8l;
-    v10[4] = a3;
-    v8 = [v7 bs_map:v10];
+    v10[4] = type;
+    v8 = [finalizedSessionURLsForCurrentApplication bs_map:v10];
   }
 
   else
@@ -98,9 +98,9 @@ id __48__LCSSessionPath_finalizedSessionPathsWithType___block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)_initWithURL:(id)a3 type:(unint64_t)a4 isTemporaryPath:(BOOL)a5
+- (id)_initWithURL:(id)l type:(unint64_t)type isTemporaryPath:(BOOL)path
 {
-  v8 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = LCSSessionPath;
   v9 = [(LCSSessionPath *)&v14 init];
@@ -108,9 +108,9 @@ id __48__LCSSessionPath_finalizedSessionPathsWithType___block_invoke(uint64_t a1
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v9->_type = a4;
-    v9->_isTemporaryPath = a5;
-    v11 = [v8 copy];
+    v9->_type = type;
+    v9->_isTemporaryPath = path;
+    v11 = [lCopy copy];
     url = v10->_url;
     v10->_url = v11;
   }
@@ -118,11 +118,11 @@ id __48__LCSSessionPath_finalizedSessionPathsWithType___block_invoke(uint64_t a1
   return v10;
 }
 
-- (id)finalizeTemporarySessionPathForExtension:(id)a3
+- (id)finalizeTemporarySessionPathForExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(LCSSessionPath *)self url];
-  v6 = [LCSSessionFinalizer finalizeTemporarySessionAtURL:v5 forBundleProvider:v4];
+  v6 = [LCSSessionFinalizer finalizeTemporarySessionAtURL:v5 forBundleProvider:extensionCopy];
 
   if (v6)
   {
@@ -170,17 +170,17 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_lock_purgeContentsIncludingDirectory:(BOOL)a3
+- (BOOL)_lock_purgeContentsIncludingDirectory:(BOOL)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v46 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v3)
+  if (directoryCopy)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     url = self->_url;
     v42 = 0;
-    v7 = [v5 removeItemAtURL:url error:&v42];
+    v7 = [defaultManager removeItemAtURL:url error:&v42];
     v8 = v42;
 
     if (v7)
@@ -198,15 +198,15 @@ LABEL_3:
     v38 = 0x3032000000;
     v39 = __Block_byref_object_copy__0;
     v40 = __Block_byref_object_dispose__0;
-    v41 = [MEMORY[0x277CBEB38] dictionary];
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v11 = self->_url;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __56__LCSSessionPath__lock_purgeContentsIncludingDirectory___block_invoke;
     v35[3] = &unk_279824FF8;
     v35[4] = &v36;
-    v12 = [v10 enumeratorAtURL:v11 includingPropertiesForKeys:0 options:3 errorHandler:v35];
+    v12 = [defaultManager2 enumeratorAtURL:v11 includingPropertiesForKeys:0 options:3 errorHandler:v35];
 
     v33 = 0u;
     v34 = 0u;
@@ -230,9 +230,9 @@ LABEL_3:
           }
 
           v18 = *(*(&v31 + 1) + 8 * v16);
-          v19 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
           v30 = v17;
-          v20 = [v19 removeItemAtURL:v18 error:&v30];
+          v20 = [defaultManager3 removeItemAtURL:v18 error:&v30];
           v8 = v30;
 
           if ((v20 & 1) == 0)
@@ -268,8 +268,8 @@ LABEL_14:
       v43[0] = *MEMORY[0x277CCA450];
       v43[1] = v22;
       v44[0] = v14;
-      v23 = [v37[5] allValues];
-      v24 = [v23 copy];
+      allValues = [v37[5] allValues];
+      v24 = [allValues copy];
       v44[1] = v24;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:2];
       v26 = [v21 errorWithDomain:@"com.apple.LCSSessionPath" code:-1 userInfo:v25];
@@ -298,15 +298,15 @@ LABEL_20:
   return v9;
 }
 
-- (LCSSessionPath)initWithCoder:(id)a3
+- (LCSSessionPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-    v8 = [v4 decodeBoolForKey:@"isTemporaryPath"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v8 = [coderCopy decodeBoolForKey:@"isTemporaryPath"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v10 = v9;
     if (!v9 || (v11 = [v9 integerValue], v11 > 1))
     {
@@ -326,25 +326,25 @@ LABEL_20:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeBool:self->_isTemporaryPath forKey:@"isTemporaryPath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeBool:self->_isTemporaryPath forKey:@"isTemporaryPath"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_type];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 }
 
-- (LCSSessionPath)initWithBSXPCCoder:(id)a3
+- (LCSSessionPath)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-    v8 = [v4 decodeBoolForKey:@"isTemporaryPath"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v8 = [coderCopy decodeBoolForKey:@"isTemporaryPath"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v10 = v9;
     if (!v9 || (v11 = [v9 integerValue], v11 > 1))
     {
@@ -364,14 +364,14 @@ LABEL_20:
   return v7;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeBool:self->_isTemporaryPath forKey:@"isTemporaryPath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeBool:self->_isTemporaryPath forKey:@"isTemporaryPath"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_type];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 }
 
 + (void)temporarySessionPathWithType:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

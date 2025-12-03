@@ -1,8 +1,8 @@
 @interface AKThoughtBubbleAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKThoughtBubbleAnnotation)initWithCoder:(id)a3;
+- (AKThoughtBubbleAnnotation)initWithCoder:(id)coder;
 - (CGPoint)pointyBitPoint;
 - (CGRect)hitTestBounds;
 - (id)displayName;
@@ -10,9 +10,9 @@
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKThoughtBubbleAnnotation
@@ -20,7 +20,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKThoughtBubbleAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -33,7 +33,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKThoughtBubbleAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -43,14 +43,14 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if (![v4 isEqualToString:@"pointyBitPoint"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Thought Bubble Tail", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"pointyBitPoint"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Thought Bubble Tail", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___AKThoughtBubbleAnnotation;
-    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
   }
 
   return v6;
@@ -69,8 +69,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKThoughtBubbleAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BA890];
 
@@ -82,8 +82,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKThoughtBubbleAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BA8A8];
 
@@ -95,8 +95,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKThoughtBubbleAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BA8C0];
 
@@ -171,61 +171,61 @@
   [(AKThoughtBubbleAnnotation *)self setPointyBitPoint:?];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = AKThoughtBubbleAnnotation;
   [AKRectangularShapeAnnotation flattenModelExifOrientation:sel_flattenModelExifOrientation_withModelSize_ withModelSize:?];
   [(AKThoughtBubbleAnnotation *)self pointyBitPoint];
   v10 = v9;
   v11 = v8;
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   [(AKThoughtBubbleAnnotation *)self setPointyBitPoint:vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, v10), 0, v11))];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     v10.receiver = self;
     v10.super_class = AKThoughtBubbleAnnotation;
     [(AKRectangularShapeAnnotation *)&v10 translateBy:x, y];
     [(AKThoughtBubbleAnnotation *)self pointyBitPoint];
     [(AKThoughtBubbleAnnotation *)self setPointyBitPoint:x + v8, y + v9];
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AKThoughtBubbleAnnotation;
-  v4 = a3;
-  [(AKRectangularShapeAnnotation *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKRectangularShapeAnnotation *)&v6 encodeWithCoder:coderCopy];
   [(AKThoughtBubbleAnnotation *)self pointyBitPoint:v6.receiver];
   DictionaryRepresentation = CGPointCreateDictionaryRepresentation(v7);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"pointyBitPoint"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"pointyBitPoint"];
 }
 
-- (AKThoughtBubbleAnnotation)initWithCoder:(id)a3
+- (AKThoughtBubbleAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AKThoughtBubbleAnnotation;
-  v5 = [(AKRectangularShapeAnnotation *)&v12 initWithCoder:v4];
+  v5 = [(AKRectangularShapeAnnotation *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"pointyBitPoint"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"pointyBitPoint"];
 
     CGPointMakeWithDictionaryRepresentation(v10, &v5->_pointyBitPoint);
   }

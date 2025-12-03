@@ -2,25 +2,25 @@
 + (id)Processing;
 + (id)configurationForProcessing;
 + (id)storeConfigurationForProcessing;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMMediaAnalysisVisualSearchLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Processing"])
+  if ([name isEqualToString:@"Processing"])
   {
-    v4 = [a1 Processing];
+    processing = [self Processing];
   }
 
   else
   {
-    v4 = 0;
+    processing = 0;
   }
 
-  return v4;
+  return processing;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForProcessing
 {
-  v3 = [a1 storeConfigurationForProcessing];
-  v4 = [a1 syncPolicyForProcessing];
+  storeConfigurationForProcessing = [self storeConfigurationForProcessing];
+  syncPolicyForProcessing = [self syncPolicyForProcessing];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"37FEAF0D-ED4F-468C-A68D-01DF5063134F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MediaAnalysis.VisualSearch.Processing" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MediaAnalysis.VisualSearch.Processing" eventClass:objc_opt_class() storeConfig:storeConfigurationForProcessing syncPolicy:syncPolicyForProcessing legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)Processing
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForProcessing];
+  configurationForProcessing = [self configurationForProcessing];
   v3 = +[BMPerBatchDomainSpecificAssetCounts columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MediaAnalysis.VisualSearch.Processing" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaAnalysis.VisualSearch.Processing" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaAnalysis.VisualSearch.Processing" schema:v9 configuration:configurationForProcessing];
 
   v11 = *MEMORY[0x1E69E9840];
 

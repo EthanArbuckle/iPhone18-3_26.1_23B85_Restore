@@ -8,27 +8,27 @@
 - (NSDictionary)dictionary
 {
   v10[0] = @"device";
-  v3 = [(CCDRequestPayload *)self _deviceInfoDictionary];
-  v4 = v3;
-  if (!v3)
+  _deviceInfoDictionary = [(CCDRequestPayload *)self _deviceInfoDictionary];
+  v4 = _deviceInfoDictionary;
+  if (!_deviceInfoDictionary)
   {
     v4 = objc_opt_new();
   }
 
   v10[1] = @"action";
   v11[0] = v4;
-  v5 = [(CCDRequestPayload *)self action];
-  v6 = v5;
+  action = [(CCDRequestPayload *)self action];
+  v6 = action;
   v7 = &stru_10001DC98;
-  if (v5)
+  if (action)
   {
-    v7 = v5;
+    v7 = action;
   }
 
   v11[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  if (!v3)
+  if (!_deviceInfoDictionary)
   {
   }
 

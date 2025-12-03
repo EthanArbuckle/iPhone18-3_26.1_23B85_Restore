@@ -8,14 +8,14 @@
 - (NSUnarchiver)initForReadingWithData:(NSData *)data;
 - (id)decodeDataObject;
 - (id)decodeObject;
-- (int64_t)versionForClassName:(id)a3;
-- (void)_setAllowedClasses:(id)a3;
+- (int64_t)versionForClassName:(id)name;
+- (void)_setAllowedClasses:(id)classes;
 - (void)dealloc;
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5;
-- (void)decodeBytesWithReturnedLength:(unint64_t *)a3;
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at;
+- (void)decodeBytesWithReturnedLength:(unint64_t *)length;
 - (void)decodeClassName:(NSString *)inArchiveName asClassName:(NSString *)trueName;
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4;
-- (void)decodeValuesOfObjCTypes:(const char *)a3;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at;
+- (void)decodeValuesOfObjCTypes:(const char *)types;
 - (void)replaceObject:(id)object withObject:(id)newObject;
 @end
 
@@ -23,7 +23,7 @@
 
 + (void)initialize
 {
-  if (NSUnarchiver == a1)
+  if (NSUnarchiver == self)
   {
     [NSUnarchiver decodeClassName:@"NSAbsoluteURL" asClassName:@"NSURL"];
 
@@ -124,7 +124,7 @@
 
 - (NSUnarchiver)initForReadingWithData:(NSData *)data
 {
-  v3 = self;
+  selfCopy = self;
   if (!data)
   {
 
@@ -136,7 +136,7 @@ LABEL_31:
   }
 
   v5 = malloc_type_malloc(0x18uLL, 0x1070040B3A6EEE0uLL);
-  v3->datax = v5;
+  selfCopy->datax = v5;
   if (!v5)
   {
 LABEL_29:
@@ -172,14 +172,14 @@ LABEL_29:
     }
   }
 
-  v13 = _decodeCharAtCursor(*(v3->datax + 1), *(v3->datax + 2), &v3->cursor);
-  v3->streamerVersion = v13;
+  v13 = _decodeCharAtCursor(*(selfCopy->datax + 1), *(selfCopy->datax + 2), &selfCopy->cursor);
+  selfCopy->streamerVersion = v13;
   if ((v13 - 5) < 0xFEu)
   {
     goto LABEL_18;
   }
 
-  v14 = _decodeCStringAtCursor(v3->datax, &v3->cursor, v3->swap != 0);
+  v14 = _decodeCStringAtCursor(selfCopy->datax, &selfCopy->cursor, selfCopy->swap != 0);
   if (!strcmp(v14, "typedstream"))
   {
     v16 = 1;
@@ -198,14 +198,14 @@ LABEL_18:
     v16 = 0;
   }
 
-  v3->swap = v16;
+  selfCopy->swap = v16;
   free(v14);
-  datax = v3->datax;
-  v18 = v3->swap != 0;
-  v19 = _decodeCharAtCursor(*(datax + 8), *(datax + 16), &v3->cursor);
-  v3->systemVersion = _decodeIntStartingWithChar(datax, v19, &v3->cursor, v18);
+  datax = selfCopy->datax;
+  v18 = selfCopy->swap != 0;
+  v19 = _decodeCharAtCursor(*(datax + 8), *(datax + 16), &selfCopy->cursor);
+  selfCopy->systemVersion = _decodeIntStartingWithChar(datax, v19, &selfCopy->cursor, v18);
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, &_NSUnarchiverCreatePointerTable__NSUnarchiverPointerTableValueCallbacks);
-  v3->pointerTable = Mutable;
+  selfCopy->pointerTable = Mutable;
   if (!Mutable)
   {
     goto LABEL_28;
@@ -227,17 +227,17 @@ LABEL_18:
     goto LABEL_29;
   }
 
-  v3->stringTable = v22;
+  selfCopy->stringTable = v22;
   v24 = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], 0);
-  v3->classVersions = v24;
-  if (!v24 || (v3->objectZone = 0, v3->lastLabel = -111, v3->reserved = 0, v25 = malloc_type_malloc(0x18uLL, 0x108004098BBCF0FuLL), (v3->allUnarchivedObjects = v25) == 0) || (*v25 = xmmword_1813059C0, (*(v3->allUnarchivedObjects + 2) = NSAllocateObjectArray(0x200uLL)) == 0))
+  selfCopy->classVersions = v24;
+  if (!v24 || (selfCopy->objectZone = 0, selfCopy->lastLabel = -111, selfCopy->reserved = 0, v25 = malloc_type_malloc(0x18uLL, 0x108004098BBCF0FuLL), (selfCopy->allUnarchivedObjects = v25) == 0) || (*v25 = xmmword_1813059C0, (*(selfCopy->allUnarchivedObjects + 2) = NSAllocateObjectArray(0x200uLL)) == 0))
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)replaceObject:(id)object withObject:(id)newObject
@@ -291,7 +291,7 @@ LABEL_28:
   v10 = Count;
   if (Count >> 60)
   {
-    v15 = [NSString stringWithFormat:@"*** value %lu too large (may have wrapped)", Count];
+    count = [NSString stringWithFormat:@"*** value %lu too large (may have wrapped)", Count];
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D920];
     goto LABEL_20;
@@ -313,9 +313,9 @@ LABEL_28:
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695DA18];
-    v15 = @"*** memory allocation failed";
+    count = @"*** memory allocation failed";
 LABEL_20:
-    objc_exception_throw([v16 exceptionWithName:v17 reason:v15 userInfo:{0, v18, *(&v18 + 1), v19, *(&v19 + 1), v20, *(&v20 + 1), v21, *(&v21 + 1), v22, *(&v22 + 1), v23, *(&v23 + 1), v24, *(&v24 + 1), v25, *(&v25 + 1), v26, *(&v26 + 1), v27, *(&v27 + 1), v28, *(&v28 + 1), v29, *(&v29 + 1), v30, *(&v30 + 1), v31, *(&v31 + 1), v32, *(&v32 + 1), v33, *(&v33 + 1), v34, *(&v34 + 1), v35, *(&v35 + 1), v36, *(&v36 + 1), v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), v40, *(&v40 + 1), v41, *(&v41 + 1), v42, *(&v42 + 1), v43, *(&v43 + 1), v44, *(&v44 + 1), v45, *(&v45 + 1), v46, *(&v46 + 1)}]);
+    objc_exception_throw([v16 exceptionWithName:v17 reason:count userInfo:{0, v18, *(&v18 + 1), v19, *(&v19 + 1), v20, *(&v20 + 1), v21, *(&v21 + 1), v22, *(&v22 + 1), v23, *(&v23 + 1), v24, *(&v24 + 1), v25, *(&v25 + 1), v26, *(&v26 + 1), v27, *(&v27 + 1), v28, *(&v28 + 1), v29, *(&v29 + 1), v30, *(&v30 + 1), v31, *(&v31 + 1), v32, *(&v32 + 1), v33, *(&v33 + 1), v34, *(&v34 + 1), v35, *(&v35 + 1), v36, *(&v36 + 1), v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), v40, *(&v40 + 1), v41, *(&v41 + 1), v42, *(&v42 + 1), v43, *(&v43 + 1), v44, *(&v44 + 1), v45, *(&v45 + 1), v46, *(&v46 + 1)}]);
   }
 
   CFDictionaryGetKeysAndValues(self->pointerTable, v11, v12);
@@ -340,27 +340,27 @@ LABEL_20:
   }
 }
 
-- (void)_setAllowedClasses:(id)a3
+- (void)_setAllowedClasses:(id)classes
 {
   reserved = self->reserved;
-  if (reserved != a3)
+  if (reserved != classes)
   {
 
-    self->reserved = [a3 copy];
+    self->reserved = [classes copy];
   }
 }
 
-- (int64_t)versionForClassName:(id)a3
+- (int64_t)versionForClassName:(id)name
 {
   v6[1] = *MEMORY[0x1E69E9840];
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (name)
   {
     classVersions = self->classVersions;
     if (classVersions)
     {
       v6[0] = 0;
-      if (CFDictionaryGetValueIfPresent(classVersions, a3, v6))
+      if (CFDictionaryGetValueIfPresent(classVersions, name, v6))
       {
         return v6[0];
       }
@@ -375,66 +375,66 @@ LABEL_20:
   return result;
 }
 
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at
 {
   v7 = _decodeReusedCStringUsingTable(self->datax, self->stringTable, &self->cursor, self->swap != 0);
-  checkExpected(v7, a3);
-  v8 = *_decodeValueOfObjCType(self, a3, a4);
+  checkExpected(v7, type);
+  v8 = *_decodeValueOfObjCType(self, type, at);
   if (v8)
   {
-    typeDescriptorError(v8, a3, "excess characters in type descriptor");
+    typeDescriptorError(v8, type, "excess characters in type descriptor");
   }
 }
 
-- (void)decodeValuesOfObjCTypes:(const char *)a3
+- (void)decodeValuesOfObjCTypes:(const char *)types
 {
   v5 = _decodeReusedCStringUsingTable(self->datax, self->stringTable, &self->cursor, self->swap != 0);
-  checkExpected(v5, a3);
-  for (i = &v8; *a3; a3 = _decodeValueOfObjCType(self, a3, *v6))
+  checkExpected(v5, types);
+  for (i = &v8; *types; types = _decodeValueOfObjCType(self, types, *v6))
   {
     v6 = i++;
   }
 }
 
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at
 {
   sizep[1] = *MEMORY[0x1E69E9840];
-  v9 = strlen(a3);
+  v9 = strlen(type);
   MEMORY[0x1EEE9AC00](v9);
   v11 = sizep - ((v10 + 30) & 0xFFFFFFFFFFFFFFF0);
-  snprintf(v11, v10 + 15, "[%lu%s]", a4, a3);
+  snprintf(v11, v10 + 15, "[%lu%s]", count, type);
   v12 = _decodeReusedCStringUsingTable(self->datax, self->stringTable, &self->cursor, self->swap != 0);
   checkExpected(v12, v11);
-  if (*a3 == 99 && (v13 = a3 + 1, !a3[1]))
+  if (*type == 99 && (v13 = type + 1, !type[1]))
   {
-    _deserializeBytes(a5, *(self->datax + 1), *(self->datax + 2), &self->cursor, a4);
+    _deserializeBytes(at, *(self->datax + 1), *(self->datax + 2), &self->cursor, count);
   }
 
   else
   {
     sizep[0] = 0;
-    v14 = strlen(a3);
+    v14 = strlen(type);
     MEMORY[0x1EEE9AC00](v14);
     v16 = sizep - ((v15 + 18) & 0xFFFFFFFFFFFFFFF0);
-    v17 = a3;
-    if (*a3)
+    typeCopy3 = type;
+    if (*type)
     {
-      v17 = a3;
-      if (*a3 != 123)
+      typeCopy3 = type;
+      if (*type != 123)
       {
-        v17 = a3;
-        if (a3[1])
+        typeCopy3 = type;
+        if (type[1])
         {
           strlcpy(sizep - ((v15 + 18) & 0xFFFFFFFFFFFFFFF0), "{", v14 + 3);
-          strlcat(v16, a3, v14 + 3);
+          strlcat(v16, type, v14 + 3);
           strlcat(v16, "}", v14 + 3);
-          v17 = v16;
+          typeCopy3 = v16;
         }
       }
     }
 
-    v13 = NSGetSizeAndAlignment(v17, sizep, 0);
-    if (a4)
+    v13 = NSGetSizeAndAlignment(typeCopy3, sizep, 0);
+    if (count)
     {
       v18 = 0;
       do
@@ -445,20 +445,20 @@ LABEL_20:
           objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v19 userInfo:0]);
         }
 
-        _decodeValueOfObjCType(self, v17, (a5 + sizep[0] * v18++));
+        _decodeValueOfObjCType(self, typeCopy3, (at + sizep[0] * v18++));
       }
 
-      while (a4 != v18);
+      while (count != v18);
     }
   }
 
   if (*v13)
   {
-    typeDescriptorError(*v13, a3, "excess characters in type descriptor");
+    typeDescriptorError(*v13, type, "excess characters in type descriptor");
   }
 }
 
-- (void)decodeBytesWithReturnedLength:(unint64_t *)a3
+- (void)decodeBytesWithReturnedLength:(unint64_t *)length
 {
   if (self->streamerVersion > 3)
   {
@@ -471,7 +471,7 @@ LABEL_20:
   v8 = _decodeCharAtCursor(datax[1], datax[2], &self->cursor);
   v9 = _decodeIntStartingWithChar(datax, v8, &self->cursor, v7);
   v10 = v9;
-  *a3 = v9;
+  *length = v9;
   if (v9 < 0 || ((v11 = self->datax, v12 = v11[1], cursor = self->cursor, !__CFADD__(cursor, v12)) ? (v14 = 0) : (v14 = 1), cursor == 0x8000000000000000 || ((cursor > 0) & v14) != 0 || (v15 = v11[2], cursor < 0) && v12 < -cursor || !v15 || ((result = (cursor + v12), -v15 < v12) ? (v17 = v15 == 1) : (v17 = 1), (v18 = v15 - 1 + v12, v17) ? (v19 = result >= v12) : (v19 = 0), v19 ? (v20 = v18 >= result) : (v20 = 0), !v20 || v10 && (v10 != 1 && result > -v10 || ((v21 = result + v10 - 1, v21 >= v12) ? (v22 = v18 >= v21) : (v22 = 0), !v22)))))
   {
     v23 = [NSString stringWithFormat:@"*** End of archive encountered prematurely at %ld", self->cursor];
@@ -484,16 +484,16 @@ LABEL_20:
 
 + (id)unarchiveObjectWithData:(NSData *)data
 {
-  v3 = [objc_allocWithZone(a1) initForReadingWithData:data];
-  v4 = [v3 decodeObject];
-  if (([v3 isAtEnd] & 1) == 0 && v4)
+  v3 = [objc_allocWithZone(self) initForReadingWithData:data];
+  decodeObject = [v3 decodeObject];
+  if (([v3 isAtEnd] & 1) == 0 && decodeObject)
   {
     NSLog(@"*** +[NSUnarchiver unarchiveObjectWithData:]: extra data discarded");
   }
 
-  v5 = v4;
+  v5 = decodeObject;
 
-  return v4;
+  return decodeObject;
 }
 
 + (id)unarchiveObjectWithFile:(NSString *)path
@@ -502,7 +502,7 @@ LABEL_20:
   if (result)
   {
 
-    return [a1 unarchiveObjectWithData:result];
+    return [self unarchiveObjectWithData:result];
   }
 
   return result;

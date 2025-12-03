@@ -1,52 +1,52 @@
 @interface XBLaunchImageContextWrapper
-+ (id)contextWrapperForApplicationWithCompatibilityInfo:(id)a3 launchRequest:(id)a4 captureOptions:(int64_t)a5;
-- (BOOL)_verifyMemoryImpactOfViewHierarchy:(id)a3 bundleID:(id)a4 size:(unint64_t *)a5 error:(id *)a6;
-- (XBLaunchImageContextWrapper)initWithApplicationCompatibilityInfo:(id)a3 launchRequest:(id)a4 captureOptions:(int64_t)a5;
-- (id)_errorForParsingException:(id)a3 bundleID:(id)a4;
-- (id)_ioSurfaceForLayerContents:(void *)a3;
-- (id)_parseInterfaceConfiguration:(id)a3 bundle:(id)a4 bundleID:(id)a5 error:(id *)a6;
-- (id)_parseInterfaceWithNibName:(id)a3 bundle:(id)a4 bundleID:(id)a5 error:(id *)a6;
-- (id)_parseInterfaceWithStoryboardName:(id)a3 bundle:(id)a4 bundleID:(id)a5 error:(id *)a6;
-- (id)_parseLaunchInterface:(id)a3 bundle:(id)a4 bundlePath:(id)a5 bundleID:(id)a6 error:(id *)a7;
-- (unint64_t)_estimatedMemorySizeOfViewHierarchy:(id)a3;
++ (id)contextWrapperForApplicationWithCompatibilityInfo:(id)info launchRequest:(id)request captureOptions:(int64_t)options;
+- (BOOL)_verifyMemoryImpactOfViewHierarchy:(id)hierarchy bundleID:(id)d size:(unint64_t *)size error:(id *)error;
+- (XBLaunchImageContextWrapper)initWithApplicationCompatibilityInfo:(id)info launchRequest:(id)request captureOptions:(int64_t)options;
+- (id)_errorForParsingException:(id)exception bundleID:(id)d;
+- (id)_ioSurfaceForLayerContents:(void *)contents;
+- (id)_parseInterfaceConfiguration:(id)configuration bundle:(id)bundle bundleID:(id)d error:(id *)error;
+- (id)_parseInterfaceWithNibName:(id)name bundle:(id)bundle bundleID:(id)d error:(id *)error;
+- (id)_parseInterfaceWithStoryboardName:(id)name bundle:(id)bundle bundleID:(id)d error:(id *)error;
+- (id)_parseLaunchInterface:(id)interface bundle:(id)bundle bundlePath:(id)path bundleID:(id)d error:(id *)error;
+- (unint64_t)_estimatedMemorySizeOfViewHierarchy:(id)hierarchy;
 - (unsigned)contextID;
 - (void)_configureNewWindow;
-- (void)_configureRootViewForRTL:(id)a3 bundle:(id)a4;
+- (void)_configureRootViewForRTL:(id)l bundle:(id)bundle;
 - (void)_update;
 - (void)invalidate;
-- (void)updateLaunchRequest:(id)a3;
+- (void)updateLaunchRequest:(id)request;
 @end
 
 @implementation XBLaunchImageContextWrapper
 
-+ (id)contextWrapperForApplicationWithCompatibilityInfo:(id)a3 launchRequest:(id)a4 captureOptions:(int64_t)a5
++ (id)contextWrapperForApplicationWithCompatibilityInfo:(id)info launchRequest:(id)request captureOptions:(int64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithApplicationCompatibilityInfo:v9 launchRequest:v8 captureOptions:a5];
+  requestCopy = request;
+  infoCopy = info;
+  v10 = [[self alloc] initWithApplicationCompatibilityInfo:infoCopy launchRequest:requestCopy captureOptions:options];
 
   return v10;
 }
 
-- (XBLaunchImageContextWrapper)initWithApplicationCompatibilityInfo:(id)a3 launchRequest:(id)a4 captureOptions:(int64_t)a5
+- (XBLaunchImageContextWrapper)initWithApplicationCompatibilityInfo:(id)info launchRequest:(id)request captureOptions:(int64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  infoCopy = info;
+  requestCopy = request;
   v25.receiver = self;
   v25.super_class = XBLaunchImageContextWrapper;
   v11 = [(XBLaunchImageContextWrapper *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appInfo, a3);
-    objc_storeStrong(&v12->_launchRequest, a4);
-    v13 = [v10 launchInterfaceIdentifier];
-    v14 = [v9 launchInterfaceWithIdentifier:v13];
+    objc_storeStrong(&v11->_appInfo, info);
+    objc_storeStrong(&v12->_launchRequest, request);
+    launchInterfaceIdentifier = [requestCopy launchInterfaceIdentifier];
+    v14 = [infoCopy launchInterfaceWithIdentifier:launchInterfaceIdentifier];
     launchInterface = v12->_launchInterface;
     v12->_launchInterface = v14;
 
-    v12->_captureOptions = a5;
-    if (a5)
+    v12->_captureOptions = options;
+    if (options)
     {
       v16 = objc_alloc_init(XBLaunchCaptureInformation);
       captureInformation = v12->_captureInformation;
@@ -56,15 +56,15 @@
     v18 = sub_1000012D0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [(XBApplicationLaunchCompatibilityInfo *)v12->_appInfo bundleIdentifier];
-      v20 = [v10 launchInterfaceIdentifier];
+      bundleIdentifier = [(XBApplicationLaunchCompatibilityInfo *)v12->_appInfo bundleIdentifier];
+      launchInterfaceIdentifier2 = [requestCopy launchInterfaceIdentifier];
       v21 = v12->_launchInterface;
       captureOptions = v12->_captureOptions;
       launchRequest = v12->_launchRequest;
       *buf = 138544386;
-      v27 = v19;
+      v27 = bundleIdentifier;
       v28 = 2114;
-      v29 = v20;
+      v29 = launchInterfaceIdentifier2;
       v30 = 2114;
       v31 = v21;
       v32 = 2048;
@@ -94,14 +94,14 @@
   }
 }
 
-- (id)_errorForParsingException:(id)a3 bundleID:(id)a4
+- (id)_errorForParsingException:(id)exception bundleID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 name];
-  v8 = [v7 isEqualToString:@"UIWindowRestrictedSplashboardViewException"];
+  dCopy = d;
+  exceptionCopy = exception;
+  name = [exceptionCopy name];
+  v8 = [name isEqualToString:@"UIWindowRestrictedSplashboardViewException"];
   v9 = [XBLaunchImageError alloc];
-  v10 = [v6 description];
+  v10 = [exceptionCopy description];
 
   if (v8)
   {
@@ -124,35 +124,35 @@
   }
 
   v13 = [NSString stringWithFormat:v11, v10];
-  v14 = [v9 initWithCode:v12 bundleID:v5 reason:v13 fatal:0];
+  v14 = [v9 initWithCode:v12 bundleID:dCopy reason:v13 fatal:0];
 
   return v14;
 }
 
-- (id)_parseInterfaceWithStoryboardName:(id)a3 bundle:(id)a4 bundleID:(id)a5 error:(id *)a6
+- (id)_parseInterfaceWithStoryboardName:(id)name bundle:(id)bundle bundleID:(id)d error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [UIStoryboard storyboardWithName:v9 bundle:v10];
-  v13 = [v12 instantiateInitialViewController];
+  nameCopy = name;
+  bundleCopy = bundle;
+  dCopy = d;
+  v12 = [UIStoryboard storyboardWithName:nameCopy bundle:bundleCopy];
+  instantiateInitialViewController = [v12 instantiateInitialViewController];
 
-  if (a6 && !v13 && !*a6)
+  if (error && !instantiateInitialViewController && !*error)
   {
     v14 = [XBLaunchImageError alloc];
-    v15 = [NSString stringWithFormat:@"Could not load any content for the interface named %@.", v9];
-    *a6 = [v14 initWithCode:3 bundleID:v11 reason:v15 fatal:0];
+    nameCopy = [NSString stringWithFormat:@"Could not load any content for the interface named %@.", nameCopy];
+    *error = [v14 initWithCode:3 bundleID:dCopy reason:nameCopy fatal:0];
   }
 
-  return v13;
+  return instantiateInitialViewController;
 }
 
-- (id)_parseInterfaceWithNibName:(id)a3 bundle:(id)a4 bundleID:(id)a5 error:(id *)a6
+- (id)_parseInterfaceWithNibName:(id)name bundle:(id)bundle bundleID:(id)d error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v22 = a5;
-  v21 = [UINib nibWithNibName:v9 bundle:v10];
+  nameCopy = name;
+  bundleCopy = bundle;
+  dCopy = d;
+  v21 = [UINib nibWithNibName:nameCopy bundle:bundleCopy];
   [v21 instantiateWithOwner:0 options:0];
   v26 = 0u;
   v27 = 0u;
@@ -178,8 +178,8 @@
           v16 = sub_1000012D0();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v17 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
-            sub_100005C88(v17, buf, &v29, v16);
+            bundleIdentifier = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+            sub_100005C88(bundleIdentifier, buf, &v29, v16);
           }
         }
 
@@ -214,26 +214,26 @@
 
 LABEL_17:
 
-  if (a6 && !v12 && !*a6)
+  if (error && !v12 && !*error)
   {
     v18 = [XBLaunchImageError alloc];
-    v19 = [NSString stringWithFormat:@"Could not load any content for the interface named %@.", v9];
-    *a6 = [v18 initWithCode:3 bundleID:v22 reason:v19 fatal:0];
+    nameCopy = [NSString stringWithFormat:@"Could not load any content for the interface named %@.", nameCopy];
+    *error = [v18 initWithCode:3 bundleID:dCopy reason:nameCopy fatal:0];
   }
 
   return v12;
 }
 
-- (id)_parseInterfaceConfiguration:(id)a3 bundle:(id)a4 bundleID:(id)a5 error:(id *)a6
+- (id)_parseInterfaceConfiguration:(id)configuration bundle:(id)bundle bundleID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v51 = a4;
-  v48 = a5;
+  configurationCopy = configuration;
+  bundleCopy = bundle;
+  dCopy = d;
   v50 = objc_alloc_init(UIViewController);
   v9 = objc_alloc_init(UIView);
-  v10 = [v8 colorName];
+  colorName = [configurationCopy colorName];
 
-  if (v10 && ([v8 colorName], v11 = objc_claimAutoreleasedReturnValue(), +[UIColor colorNamed:inBundle:compatibleWithTraitCollection:](UIColor, "colorNamed:inBundle:compatibleWithTraitCollection:", v11, v51, 0), v49 = objc_claimAutoreleasedReturnValue(), v11, (v12 = v49) != 0))
+  if (colorName && ([configurationCopy colorName], v11 = objc_claimAutoreleasedReturnValue(), +[UIColor colorNamed:inBundle:compatibleWithTraitCollection:](UIColor, "colorNamed:inBundle:compatibleWithTraitCollection:", v11, bundleCopy, 0), v49 = objc_claimAutoreleasedReturnValue(), v11, (v12 = v49) != 0))
   {
     v13 = 0;
   }
@@ -250,36 +250,36 @@ LABEL_17:
   {
   }
 
-  v14 = [v8 imageName];
+  imageName = [configurationCopy imageName];
 
-  if (v14)
+  if (imageName)
   {
-    v15 = [v8 imageName];
-    v16 = [UIImage imageNamed:v15 inBundle:v51 compatibleWithTraitCollection:0];
+    imageName2 = [configurationCopy imageName];
+    v16 = [UIImage imageNamed:imageName2 inBundle:bundleCopy compatibleWithTraitCollection:0];
 
     if (v16)
     {
       v17 = objc_alloc_init(XBUpdatingImageView);
       [v9 addSubview:v17];
-      if ([v8 imageRespectsSafeAreaInsets])
+      if ([configurationCopy imageRespectsSafeAreaInsets])
       {
         [(XBUpdatingImageView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v47 = [v9 safeAreaLayoutGuide];
-        v46 = [v47 leadingAnchor];
-        v45 = [(XBUpdatingImageView *)v17 leadingAnchor];
-        v44 = [v46 constraintEqualToAnchor:v45];
+        safeAreaLayoutGuide = [v9 safeAreaLayoutGuide];
+        leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+        leadingAnchor2 = [(XBUpdatingImageView *)v17 leadingAnchor];
+        v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v52[0] = v44;
-        v43 = [v47 trailingAnchor];
-        v42 = [(XBUpdatingImageView *)v17 trailingAnchor];
-        v41 = [v43 constraintEqualToAnchor:v42];
+        trailingAnchor = [safeAreaLayoutGuide trailingAnchor];
+        trailingAnchor2 = [(XBUpdatingImageView *)v17 trailingAnchor];
+        v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v52[1] = v41;
-        v40 = [v47 topAnchor];
-        v18 = [(XBUpdatingImageView *)v17 topAnchor];
-        v19 = [v40 constraintEqualToAnchor:v18];
+        topAnchor = [safeAreaLayoutGuide topAnchor];
+        topAnchor2 = [(XBUpdatingImageView *)v17 topAnchor];
+        v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v52[2] = v19;
-        v20 = [v47 bottomAnchor];
-        v21 = [(XBUpdatingImageView *)v17 bottomAnchor];
-        v22 = [v20 constraintEqualToAnchor:v21];
+        bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+        bottomAnchor2 = [(XBUpdatingImageView *)v17 bottomAnchor];
+        v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v52[3] = v22;
         v23 = [NSArray arrayWithObjects:v52 count:4];
         [NSLayoutConstraint activateConstraints:v23];
@@ -294,14 +294,14 @@ LABEL_17:
     }
   }
 
-  v24 = [v8 bars];
-  v25 = [v24 containsObject:XBLaunchConfigurationToolbarKey];
+  bars = [configurationCopy bars];
+  v25 = [bars containsObject:XBLaunchConfigurationToolbarKey];
 
   if (v25)
   {
     v26 = objc_alloc_init(UIToolbar);
-    v27 = [v8 toolbarImageName];
-    v28 = [UIImage imageNamed:v27 inBundle:v51 compatibleWithTraitCollection:0];
+    toolbarImageName = [configurationCopy toolbarImageName];
+    v28 = [UIImage imageNamed:toolbarImageName inBundle:bundleCopy compatibleWithTraitCollection:0];
 
     v29 = [[XBViewMatchingImageView alloc] initWithMatchingView:v26 image:v28 bottom:1];
     [(XBViewMatchingImageView *)v29 setAutoresizingMask:18];
@@ -310,8 +310,8 @@ LABEL_17:
 
   else
   {
-    v30 = [v8 bars];
-    v31 = [v30 containsObject:XBLaunchConfigurationTabBarKey];
+    bars2 = [configurationCopy bars];
+    v31 = [bars2 containsObject:XBLaunchConfigurationTabBarKey];
 
     if (!v31)
     {
@@ -319,8 +319,8 @@ LABEL_17:
     }
 
     v26 = objc_alloc_init(UITabBar);
-    v32 = [v8 tabBarImageName];
-    v28 = [UIImage imageNamed:v32 inBundle:v51 compatibleWithTraitCollection:0];
+    tabBarImageName = [configurationCopy tabBarImageName];
+    v28 = [UIImage imageNamed:tabBarImageName inBundle:bundleCopy compatibleWithTraitCollection:0];
 
     v29 = [[XBViewMatchingImageView alloc] initWithMatchingView:v26 image:v28 bottom:1];
     [(XBViewMatchingImageView *)v29 setAutoresizingMask:18];
@@ -328,14 +328,14 @@ LABEL_17:
   }
 
 LABEL_19:
-  v33 = [v8 bars];
-  v34 = [v33 containsObject:XBLaunchConfigurationNavigationBarKey];
+  bars3 = [configurationCopy bars];
+  v34 = [bars3 containsObject:XBLaunchConfigurationNavigationBarKey];
 
   if (v34)
   {
     v35 = objc_alloc_init(UINavigationBar);
-    v36 = [v8 navigationBarImageName];
-    v37 = [UIImage imageNamed:v36 inBundle:v51 compatibleWithTraitCollection:0];
+    navigationBarImageName = [configurationCopy navigationBarImageName];
+    v37 = [UIImage imageNamed:navigationBarImageName inBundle:bundleCopy compatibleWithTraitCollection:0];
 
     v38 = [[XBViewMatchingImageView alloc] initWithMatchingView:v35 image:v37 bottom:0];
     [(XBViewMatchingImageView *)v38 setAutoresizingMask:18];
@@ -347,13 +347,13 @@ LABEL_19:
   return v50;
 }
 
-- (id)_parseLaunchInterface:(id)a3 bundle:(id)a4 bundlePath:(id)a5 bundleID:(id)a6 error:(id *)a7
+- (id)_parseLaunchInterface:(id)interface bundle:(id)bundle bundlePath:(id)path bundleID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v13)
+  interfaceCopy = interface;
+  bundleCopy = bundle;
+  pathCopy = path;
+  dCopy = d;
+  if (!bundleCopy)
   {
     v19 = sub_1000012D0();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -361,17 +361,17 @@ LABEL_19:
       sub_100005DB4();
     }
 
-    if (a7)
+    if (error)
     {
       v20 = [XBLaunchImageError alloc];
-      v21 = [NSString stringWithFormat:@"Failed to construct NSBundle for %@ at %@.", v15, v14];
-      *a7 = [v20 initWithCode:4 bundleID:v15 reason:v21 fatal:0];
+      pathCopy = [NSString stringWithFormat:@"Failed to construct NSBundle for %@ at %@.", dCopy, pathCopy];
+      *error = [v20 initWithCode:4 bundleID:dCopy reason:pathCopy fatal:0];
     }
 
     goto LABEL_10;
   }
 
-  if ([v12 isStoryboard])
+  if ([interfaceCopy isStoryboard])
   {
     v16 = sub_1000012D0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -379,15 +379,15 @@ LABEL_19:
       sub_100005D80();
     }
 
-    v17 = [(XBLaunchInterface *)self->_launchInterface name];
-    v18 = [(XBLaunchImageContextWrapper *)self _parseInterfaceWithStoryboardName:v17 bundle:v13 bundleID:v15 error:a7];
+    name = [(XBLaunchInterface *)self->_launchInterface name];
+    v18 = [(XBLaunchImageContextWrapper *)self _parseInterfaceWithStoryboardName:name bundle:bundleCopy bundleID:dCopy error:error];
 LABEL_19:
     v22 = v18;
 
     goto LABEL_20;
   }
 
-  if ([v12 isXIB])
+  if ([interfaceCopy isXIB])
   {
     v23 = sub_1000012D0();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -395,12 +395,12 @@ LABEL_19:
       sub_100005D4C();
     }
 
-    v17 = [(XBLaunchInterface *)self->_launchInterface name];
-    v18 = [(XBLaunchImageContextWrapper *)self _parseInterfaceWithNibName:v17 bundle:v13 bundleID:v15 error:a7];
+    name = [(XBLaunchInterface *)self->_launchInterface name];
+    v18 = [(XBLaunchImageContextWrapper *)self _parseInterfaceWithNibName:name bundle:bundleCopy bundleID:dCopy error:error];
     goto LABEL_19;
   }
 
-  if ([v12 isConfiguration])
+  if ([interfaceCopy isConfiguration])
   {
     v24 = sub_1000012D0();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -408,12 +408,12 @@ LABEL_19:
       sub_100005D18();
     }
 
-    v17 = [(XBLaunchInterface *)self->_launchInterface configuration];
-    v18 = [(XBLaunchImageContextWrapper *)self _parseInterfaceConfiguration:v17 bundle:v13 bundleID:v15 error:a7];
+    name = [(XBLaunchInterface *)self->_launchInterface configuration];
+    v18 = [(XBLaunchImageContextWrapper *)self _parseInterfaceConfiguration:name bundle:bundleCopy bundleID:dCopy error:error];
     goto LABEL_19;
   }
 
-  if (!a7)
+  if (!error)
   {
 LABEL_10:
     v22 = 0;
@@ -427,45 +427,45 @@ LABEL_10:
   }
 
   v22 = 0;
-  *a7 = [[XBLaunchImageError alloc] initWithCode:1 bundleID:v15 reason:@"No such interface found." fatal:0];
+  *error = [[XBLaunchImageError alloc] initWithCode:1 bundleID:dCopy reason:@"No such interface found." fatal:0];
 LABEL_20:
 
   return v22;
 }
 
-- (void)_configureRootViewForRTL:(id)a3 bundle:(id)a4
+- (void)_configureRootViewForRTL:(id)l bundle:(id)bundle
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
-    v11 = v5;
-    v6 = [(NSBundle *)self->_bundle localizations];
+    v11 = lCopy;
+    localizations = [(NSBundle *)self->_bundle localizations];
     v7 = +[NSLocale preferredLanguages];
-    v8 = [NSBundle preferredLocalizationsFromArray:v6 forPreferences:v7];
+    v8 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v7];
 
-    v9 = [v8 firstObject];
-    v10 = [NSParagraphStyle defaultWritingDirectionForLanguage:v9];
+    firstObject = [v8 firstObject];
+    v10 = [NSParagraphStyle defaultWritingDirectionForLanguage:firstObject];
 
     if (v10 == NSWritingDirectionRightToLeft)
     {
       sub_100002850(v11);
     }
 
-    v5 = v11;
+    lCopy = v11;
   }
 }
 
-- (BOOL)_verifyMemoryImpactOfViewHierarchy:(id)a3 bundleID:(id)a4 size:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_verifyMemoryImpactOfViewHierarchy:(id)hierarchy bundleID:(id)d size:(unint64_t *)size error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  [v11 setNeedsLayout];
-  [v11 layoutIfNeeded];
-  v12 = [(XBLaunchImageContextWrapper *)self _estimatedMemorySizeOfViewHierarchy:v11];
+  dCopy = d;
+  hierarchyCopy = hierarchy;
+  [hierarchyCopy setNeedsLayout];
+  [hierarchyCopy layoutIfNeeded];
+  v12 = [(XBLaunchImageContextWrapper *)self _estimatedMemorySizeOfViewHierarchy:hierarchyCopy];
 
-  if (a5)
+  if (size)
   {
-    *a5 = v12;
+    *size = v12;
   }
 
   v13 = sub_1000010B0();
@@ -482,19 +482,19 @@ LABEL_20:
   IsEnabled = _XBDebugCaptureIsEnabled();
   if (!IsEnabled)
   {
-    if (a6)
+    if (error)
     {
       v16 = [XBLaunchImageError alloc];
-      v17 = [NSString stringWithFormat:@"[%@] Estimated size (%zu) is over limit (%zu)", v10, v12, 25000000];
-      *a6 = [v16 initWithCode:6 bundleID:v10 reason:v17 fatal:0];
+      25000000 = [NSString stringWithFormat:@"[%@] Estimated size (%zu) is over limit (%zu)", dCopy, v12, 25000000];
+      *error = [v16 initWithCode:6 bundleID:dCopy reason:25000000 fatal:0];
     }
 
     v15 = sub_1000010B0();
     if (os_signpost_enabled(v15))
     {
-      v18 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+      bundleIdentifier = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
       *buf = 138543874;
-      v21 = v18;
+      v21 = bundleIdentifier;
       v22 = 2050;
       v23 = v12;
       v24 = 2050;
@@ -536,16 +536,16 @@ LABEL_16:
   v5 = +[UIScreen mainScreen];
   [v5 _setUIIBAlwaysProvidePeripheryInsets:1];
 
-  v6 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundlePath];
-  v7 = [NSBundle bundleWithPath:v6];
+  bundlePath = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundlePath];
+  v7 = [NSBundle bundleWithPath:bundlePath];
   bundle = self->_bundle;
   self->_bundle = v7;
 
   launchInterface = self->_launchInterface;
   v10 = self->_bundle;
-  v11 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+  bundleIdentifier = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
   v34 = 0;
-  v12 = [(XBLaunchImageContextWrapper *)self _parseLaunchInterface:launchInterface bundle:v10 bundlePath:v6 bundleID:v11 error:&v34];
+  v12 = [(XBLaunchImageContextWrapper *)self _parseLaunchInterface:launchInterface bundle:v10 bundlePath:bundlePath bundleID:bundleIdentifier error:&v34];
   v13 = v34;
   rootViewController = self->_rootViewController;
   self->_rootViewController = v12;
@@ -553,26 +553,26 @@ LABEL_16:
   v15 = self->_rootViewController;
   if (v15 && !v13)
   {
-    v16 = [(UIViewController *)v15 view];
+    view = [(UIViewController *)v15 view];
     v17 = sub_1000010B0();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+      bundleIdentifier2 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
       v32 = self->_rootViewController;
       *buf = 138412802;
-      *&buf[4] = v31;
+      *&buf[4] = bundleIdentifier2;
       v36 = 2112;
       v37 = v32;
       v38 = 2112;
-      v39 = v16;
+      v39 = view;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[%@] rootViewController: %@; rootView: %@", buf, 0x20u);
     }
 
-    [(XBLaunchImageContextWrapper *)self _configureRootViewForRTL:v16 bundle:self->_bundle];
+    [(XBLaunchImageContextWrapper *)self _configureRootViewForRTL:view bundle:self->_bundle];
     *buf = 0;
-    v18 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+    bundleIdentifier3 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
     v33 = 0;
-    v19 = [(XBLaunchImageContextWrapper *)self _verifyMemoryImpactOfViewHierarchy:v16 bundleID:v18 size:buf error:&v33];
+    v19 = [(XBLaunchImageContextWrapper *)self _verifyMemoryImpactOfViewHierarchy:view bundleID:bundleIdentifier3 size:buf error:&v33];
     v13 = v33;
 
     if (v19)
@@ -609,9 +609,9 @@ LABEL_16:
   if (v13)
   {
     objc_storeStrong(&self->_error, v13);
-    v25 = [v13 isFatal];
+    isFatal = [v13 isFatal];
     v26 = @"Error";
-    if (v25)
+    if (isFatal)
     {
       v26 = @"Fatal error";
     }
@@ -620,14 +620,14 @@ LABEL_16:
     v28 = sub_1000012D0();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
-      v30 = [v13 succinctDescription];
+      bundleIdentifier4 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+      succinctDescription = [v13 succinctDescription];
       *buf = 138543874;
       *&buf[4] = v27;
       v36 = 2114;
-      v37 = v29;
+      v37 = bundleIdentifier4;
       v38 = 2114;
-      v39 = v30;
+      v39 = succinctDescription;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}@ generating launch image for %{public}@: %{public}@", buf, 0x20u);
     }
   }
@@ -647,23 +647,23 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Updating window to %{public}@", buf, 0xCu);
   }
 
-  v6 = [(XBLaunchStateRequest *)self->_launchRequest interfaceOrientation];
+  interfaceOrientation = [(XBLaunchStateRequest *)self->_launchRequest interfaceOrientation];
   [(XBLaunchStateRequest *)self->_launchRequest naturalSize];
   BSRectWithSize();
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(XBLaunchStateRequest *)self->_launchRequest userInterfaceStyle];
-  v16 = [(_XBWrapperWindow *)self->_wrapperWindow screen];
-  [v16 _updateUserInterfaceIdiom];
-  [v16 _setInterfaceOrientation:v6];
+  userInterfaceStyle = [(XBLaunchStateRequest *)self->_launchRequest userInterfaceStyle];
+  screen = [(_XBWrapperWindow *)self->_wrapperWindow screen];
+  [screen _updateUserInterfaceIdiom];
+  [screen _setInterfaceOrientation:interfaceOrientation];
   _UIAppSetStatusBarOrientation();
   sub_100001634([(XBLaunchStateRequest *)self->_launchRequest statusBarState]);
   _UIAppSetStatusBarHeight();
-  v17 = [v16 _launchImageTraitCollectionForInterfaceOrientation:v6 inBounds:{v8, v10, v12, v14}];
-  v18 = +[UITraitCollection traitCollectionWithUserInterfaceIdiom:](UITraitCollection, "traitCollectionWithUserInterfaceIdiom:", [v16 _userInterfaceIdiom]);
-  v19 = [UITraitCollection traitCollectionWithUserInterfaceStyle:v15];
+  v17 = [screen _launchImageTraitCollectionForInterfaceOrientation:interfaceOrientation inBounds:{v8, v10, v12, v14}];
+  v18 = +[UITraitCollection traitCollectionWithUserInterfaceIdiom:](UITraitCollection, "traitCollectionWithUserInterfaceIdiom:", [screen _userInterfaceIdiom]);
+  v19 = [UITraitCollection traitCollectionWithUserInterfaceStyle:userInterfaceStyle];
   wrapperWindow = self->_wrapperWindow;
   v34[0] = v17;
   v34[1] = v18;
@@ -672,17 +672,17 @@ LABEL_16:
   v22 = [UITraitCollection traitCollectionWithTraitsFromCollections:v21];
   [(_XBWrapperWindow *)wrapperWindow _setLocalOverrideTraitCollection:v22];
 
-  [(_XBWrapperWindow *)self->_wrapperWindow _setWindowInterfaceOrientation:v6];
-  [(_XBWrapperWindow *)self->_wrapperWindow _setRotatableViewOrientation:v6 updateStatusBar:0 duration:0 force:0.0];
+  [(_XBWrapperWindow *)self->_wrapperWindow _setWindowInterfaceOrientation:interfaceOrientation];
+  [(_XBWrapperWindow *)self->_wrapperWindow _setRotatableViewOrientation:interfaceOrientation updateStatusBar:0 duration:0 force:0.0];
   v23 = self->_wrapperWindow;
-  v24 = [(XBLaunchStateRequest *)self->_launchRequest customSafeAreaInsets];
-  [(_XBWrapperWindow *)v23 _setCustomSafeAreaInsets:v24];
+  customSafeAreaInsets = [(XBLaunchStateRequest *)self->_launchRequest customSafeAreaInsets];
+  [(_XBWrapperWindow *)v23 _setCustomSafeAreaInsets:customSafeAreaInsets];
 
   [(_XBWrapperWindow *)self->_wrapperWindow setHidden:0];
   [(_XBWrapperWindow *)self->_wrapperWindow setFrame:v8, v10, v12, v14];
-  v25 = [(UIViewController *)self->_rootViewController view];
+  view = [(UIViewController *)self->_rootViewController view];
   [(_XBWrapperWindow *)self->_wrapperWindow bounds];
-  [v25 setFrame:?];
+  [view setFrame:?];
 
   [(_XBWrapperWindow *)self->_wrapperWindow setNeedsUpdateConstraints];
   [(_XBWrapperWindow *)self->_wrapperWindow setNeedsLayout];
@@ -722,34 +722,34 @@ LABEL_16:
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_ioSurfaceForLayerContents:(void *)a3
+- (id)_ioSurfaceForLayerContents:(void *)contents
 {
-  v4 = CFGetTypeID(a3);
+  v4 = CFGetTypeID(contents);
   if (v4 == CGImageGetTypeID())
   {
     CGImageGetImageProvider();
-    v5 = CGImageProviderCopyIOSurface();
+    contentsCopy = CGImageProviderCopyIOSurface();
   }
 
   else if (v4 == IOSurfaceGetTypeID())
   {
-    v5 = a3;
+    contentsCopy = contents;
   }
 
   else
   {
-    v5 = 0;
+    contentsCopy = 0;
   }
 
-  return v5;
+  return contentsCopy;
 }
 
-- (unint64_t)_estimatedMemorySizeOfViewHierarchy:(id)a3
+- (unint64_t)_estimatedMemorySizeOfViewHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  v5 = [v4 layer];
-  v6 = [v5 contents];
-  if (!v6)
+  hierarchyCopy = hierarchy;
+  layer = [hierarchyCopy layer];
+  contents = [layer contents];
+  if (!contents)
   {
     v13 = sub_1000010B0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -760,31 +760,31 @@ LABEL_16:
       if ((isKindOfClass & 1) == 0)
       {
 LABEL_16:
-        v11 = 0;
+        allocationSize = 0;
         goto LABEL_30;
       }
 
-      [v4 bounds];
-      v11 = 0;
+      [hierarchyCopy bounds];
+      allocationSize = 0;
       if (v16 <= 0.0 || v15 <= 0.0)
       {
         goto LABEL_30;
       }
 
-      v13 = v4;
-      v17 = [v13 image];
-      if (v17)
+      v13 = hierarchyCopy;
+      image = [v13 image];
+      if (image)
       {
         v18 = sub_1000010B0();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v39 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+          bundleIdentifier = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
           *buf = 138543874;
-          v47 = v39;
+          v47 = bundleIdentifier;
           v48 = 2114;
           v49 = v13;
           v50 = 2114;
-          v51 = v17;
+          v51 = image;
           _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[%{public}@] found UIImageView with no contents, but has image: %{public}@ %{public}@", buf, 0x20u);
         }
       }
@@ -793,52 +793,52 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [(XBLaunchImageContextWrapper *)self _ioSurfaceForLayerContents:v6];
+  v7 = [(XBLaunchImageContextWrapper *)self _ioSurfaceForLayerContents:contents];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 width];
-    v10 = [v8 height];
-    v11 = [v8 allocationSize];
+    width = [v7 width];
+    height = [v8 height];
+    allocationSize = [v8 allocationSize];
     v12 = sub_1000010B0();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v37 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+      bundleIdentifier2 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
       *buf = 138544642;
-      v47 = v37;
+      v47 = bundleIdentifier2;
       v48 = 2048;
-      v49 = v9;
+      v49 = width;
       v50 = 2048;
-      v51 = v10;
+      v51 = height;
       v52 = 2048;
-      v53 = v11;
+      v53 = allocationSize;
       v54 = 2114;
-      v55 = v4;
+      v55 = hierarchyCopy;
       v56 = 2114;
-      v57 = v5;
+      v57 = layer;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[%{public}@] found IOSurface in layer hierarchy; size: {%zu, %zu}; allocSize: %zu; view: %{public}@; layer: %{public}@", buf, 0x3Eu);
     }
   }
 
   else
   {
-    v19 = CFGetTypeID(v6);
+    v19 = CFGetTypeID(contents);
     if (v19 == CGImageGetTypeID())
     {
-      Width = CGImageGetWidth(v6);
-      Height = CGImageGetHeight(v6);
-      BitsPerPixel = CGImageGetBitsPerPixel(v6);
-      BytesPerRow = CGImageGetBytesPerRow(v6);
-      if (CGImageGetAlphaInfo(v6) == kCGImageAlphaOnly)
+      Width = CGImageGetWidth(contents);
+      Height = CGImageGetHeight(contents);
+      BitsPerPixel = CGImageGetBitsPerPixel(contents);
+      BytesPerRow = CGImageGetBytesPerRow(contents);
+      if (CGImageGetAlphaInfo(contents) == kCGImageAlphaOnly)
       {
         v24 = sub_1000010B0();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          v25 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+          bundleIdentifier3 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
           v26 = BitsPerPixel >> 3;
           *buf = 138543874;
-          v47 = v25;
-          v27 = v25;
+          v47 = bundleIdentifier3;
+          v27 = bundleIdentifier3;
           v48 = 2048;
           v49 = v26;
           v50 = 2048;
@@ -860,9 +860,9 @@ LABEL_16:
         v24 = sub_1000010B0();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          v40 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+          bundleIdentifier4 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
           *buf = 138543874;
-          v47 = v40;
+          v47 = bundleIdentifier4;
           v48 = 2048;
           v49 = v28;
           v50 = 2048;
@@ -874,9 +874,9 @@ LABEL_16:
       v30 = sub_1000010B0();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v38 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+        bundleIdentifier5 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
         *buf = 138544642;
-        v47 = v38;
+        v47 = bundleIdentifier5;
         v48 = 2048;
         v49 = Width;
         v50 = 2048;
@@ -884,18 +884,18 @@ LABEL_16:
         v52 = 2048;
         v53 = BytesPerRow;
         v54 = 2114;
-        v55 = v4;
+        v55 = hierarchyCopy;
         v56 = 2114;
-        v57 = v5;
+        v57 = layer;
         _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "[%{public}@] found CGImage in layer hierarchy; size: {%zu, %zu}; bytesPerRow: %zu; view: %{public}@; layer: %{public}@", buf, 0x3Eu);
       }
 
-      v11 = BytesPerRow * Height;
+      allocationSize = BytesPerRow * Height;
     }
 
     else
     {
-      v11 = 0;
+      allocationSize = 0;
     }
   }
 
@@ -904,8 +904,8 @@ LABEL_30:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v31 = [v4 subviews];
-  v32 = [v31 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  subviews = [hierarchyCopy subviews];
+  v32 = [subviews countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v32)
   {
     v33 = v32;
@@ -916,29 +916,29 @@ LABEL_30:
       {
         if (*v42 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(subviews);
         }
 
-        v11 += [(XBLaunchImageContextWrapper *)self _estimatedMemorySizeOfViewHierarchy:*(*(&v41 + 1) + 8 * i)];
+        allocationSize += [(XBLaunchImageContextWrapper *)self _estimatedMemorySizeOfViewHierarchy:*(*(&v41 + 1) + 8 * i)];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v33 = [subviews countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v33);
   }
 
-  return v11;
+  return allocationSize;
 }
 
-- (void)updateLaunchRequest:(id)a3
+- (void)updateLaunchRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   p_launchRequest = &self->_launchRequest;
-  if (self->_launchRequest != v5)
+  if (self->_launchRequest != requestCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_launchRequest, a3);
+    v7 = requestCopy;
+    objc_storeStrong(p_launchRequest, request);
     if (v7)
     {
       p_launchRequest = [(XBLaunchImageContextWrapper *)self _update];

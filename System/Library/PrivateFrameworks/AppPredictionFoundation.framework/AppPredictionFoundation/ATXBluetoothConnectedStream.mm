@@ -1,46 +1,46 @@
 @interface ATXBluetoothConnectedStream
-+ (int64_t)deviceTypeFromBiomeBluetoothDeviceType:(int)a3;
-- (void)_enumerateEventsConnected:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 block:(id)a9;
++ (int64_t)deviceTypeFromBiomeBluetoothDeviceType:(int)type;
+- (void)_enumerateEventsConnected:(BOOL)connected startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a9;
 @end
 
 @implementation ATXBluetoothConnectedStream
 
-+ (int64_t)deviceTypeFromBiomeBluetoothDeviceType:(int)a3
++ (int64_t)deviceTypeFromBiomeBluetoothDeviceType:(int)type
 {
-  if (a3 > 0x32)
+  if (type > 0x32)
   {
     return 2;
   }
 
   else
   {
-    return qword_22638AC80[a3];
+    return qword_22638AC80[type];
   }
 }
 
-- (void)_enumerateEventsConnected:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 block:(id)a9
+- (void)_enumerateEventsConnected:(BOOL)connected startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a9
 {
-  v9 = a8;
-  v15 = a6;
+  ascendingCopy = ascending;
+  blockCopy = block;
   v16 = a9;
-  v17 = a5;
-  v18 = a4;
+  endDateCopy = endDate;
+  dateCopy = date;
   v19 = objc_opt_new();
-  v20 = !v9;
-  v21 = [(ATXBluetoothConnectedStream *)self _bluetoothPublisherWithStartDate:v18 endDate:v17 limit:a7 shouldReverse:!v9];
+  v20 = !ascendingCopy;
+  v21 = [(ATXBluetoothConnectedStream *)self _bluetoothPublisherWithStartDate:dateCopy endDate:endDateCopy limit:limit shouldReverse:!ascendingCopy];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __109__ATXBluetoothConnectedStream__enumerateEventsConnected_startDate_endDate_filterBlock_limit_ascending_block___block_invoke_2;
   v26[3] = &unk_2785904D0;
   v30 = v20;
-  v31 = a3;
+  connectedCopy = connected;
   v26[4] = self;
   v27 = v19;
-  v28 = v15;
+  v28 = blockCopy;
   v29 = v16;
   v22 = v16;
-  v23 = v15;
+  v23 = blockCopy;
   v24 = v19;
   v25 = [v21 sinkWithCompletion:&__block_literal_global_11 shouldContinue:v26];
 }

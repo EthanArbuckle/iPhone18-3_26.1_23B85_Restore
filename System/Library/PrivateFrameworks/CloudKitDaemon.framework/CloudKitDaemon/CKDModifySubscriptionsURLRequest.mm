@@ -1,28 +1,28 @@
 @interface CKDModifySubscriptionsURLRequest
-- (CKDModifySubscriptionsURLRequest)initWithOperation:(id)a3 subscriptionsToSave:(id)a4 subscriptionIDsToDelete:(id)a5;
+- (CKDModifySubscriptionsURLRequest)initWithOperation:(id)operation subscriptionsToSave:(id)save subscriptionIDsToDelete:(id)delete;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDModifySubscriptionsURLRequest
 
-- (CKDModifySubscriptionsURLRequest)initWithOperation:(id)a3 subscriptionsToSave:(id)a4 subscriptionIDsToDelete:(id)a5
+- (CKDModifySubscriptionsURLRequest)initWithOperation:(id)operation subscriptionsToSave:(id)save subscriptionIDsToDelete:(id)delete
 {
-  v9 = a4;
-  v10 = a5;
+  saveCopy = save;
+  deleteCopy = delete;
   v16.receiver = self;
   v16.super_class = CKDModifySubscriptionsURLRequest;
-  v11 = [(CKDURLRequest *)&v16 initWithOperation:a3];
+  v11 = [(CKDURLRequest *)&v16 initWithOperation:operation];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_subscriptionsToSave, a4);
-    objc_storeStrong(&v12->_subscriptionIDsToDelete, a5);
+    objc_storeStrong(&v11->_subscriptionsToSave, save);
+    objc_storeStrong(&v12->_subscriptionIDsToDelete, delete);
     v13 = objc_opt_new();
     subscriptionIDByRequestID = v12->_subscriptionIDByRequestID;
     v12->_subscriptionIDByRequestID = v13;
@@ -31,29 +31,29 @@
   return v12;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v21.receiver = self;
   v21.super_class = CKDModifySubscriptionsURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v21 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v21 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_subscriptionsToSave(self, v6, v7, v21.receiver, v21.super_class);
   v10 = objc_msgSend_CKMap_(v8, v9, &unk_28385E640);
   v12 = objc_msgSend_setWithArray_(v5, v11, v10);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v13, v12, @"modifyIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v13, v12, @"modifyIDs");
   v14 = MEMORY[0x277CBEB98];
   v17 = objc_msgSend_subscriptionIDsToDelete(self, v15, v16);
   v19 = objc_msgSend_setWithArray_(v14, v18, v17);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v20, v19, @"deleteIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v20, v19, @"deleteIDs");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -106,10 +106,10 @@ LABEL_12:
     while (v11);
   }
 
-  objc_msgSend_setModifySubscriptionRecordZoneIDs_(v4, v21, v5);
+  objc_msgSend_setModifySubscriptionRecordZoneIDs_(propertiesCopy, v21, v5);
   v23.receiver = self;
   v23.super_class = CKDModifySubscriptionsURLRequest;
-  [(CKDURLRequest *)&v23 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v23 fillOutRequestProperties:propertiesCopy];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -306,11 +306,11 @@ LABEL_15:
   return v116;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_subscriptionIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
@@ -319,18 +319,18 @@ LABEL_15:
   if (v18)
   {
     v21 = objc_msgSend_subscriptionModifiedBlock(self, v19, v20);
-    v24 = objc_msgSend_result(v4, v22, v23);
+    v24 = objc_msgSend_result(objectCopy, v22, v23);
     (v21)[2](v21, v15, v24);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v24 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_subscriptionIDByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v24, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -339,7 +339,7 @@ LABEL_15:
   if (v17)
   {
     v20 = objc_msgSend_subscriptionModifiedBlock(self, v18, v19);
-    v23 = objc_msgSend_result(v24, v21, v22);
+    v23 = objc_msgSend_result(failureCopy, v21, v22);
     (v20)[2](v20, v14, v23);
   }
 }

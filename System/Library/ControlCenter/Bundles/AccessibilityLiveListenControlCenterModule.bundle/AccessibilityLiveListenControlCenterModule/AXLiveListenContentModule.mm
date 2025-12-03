@@ -1,10 +1,10 @@
 @interface AXLiveListenContentModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation AXLiveListenContentModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   moduleViewController = self->_moduleViewController;
   if (!moduleViewController)
@@ -16,8 +16,8 @@
     moduleViewController = self->_moduleViewController;
   }
 
-  v7 = [(AXLiveListenContentModule *)self contentModuleContext];
-  [(AXLiveListenModuleViewController *)moduleViewController setContentModuleContext:v7];
+  contentModuleContext = [(AXLiveListenContentModule *)self contentModuleContext];
+  [(AXLiveListenModuleViewController *)moduleViewController setContentModuleContext:contentModuleContext];
 
   v8 = self->_moduleViewController;
 

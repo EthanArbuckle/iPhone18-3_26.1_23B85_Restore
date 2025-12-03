@@ -1,16 +1,16 @@
 @interface PlatformDisplayLink.DisplayLinkTarget
-- (void)frame:(id)a3;
+- (void)frame:(id)frame;
 @end
 
 @implementation PlatformDisplayLink.DisplayLinkTarget
 
-- (void)frame:(id)a3
+- (void)frame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
 
-  [v4 timestamp];
+  [frameCopy timestamp];
   v6 = v5;
-  [v4 duration];
+  [frameCopy duration];
   v8 = *self->callback;
   if (v8)
   {

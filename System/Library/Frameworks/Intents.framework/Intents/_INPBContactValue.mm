@@ -1,36 +1,36 @@
 @interface _INPBContactValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBContactValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBContactValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSearchProvider:(id)a3;
-- (int)StringAsSuggestionType:(id)a3;
+- (int)StringAsSearchProvider:(id)provider;
+- (int)StringAsSuggestionType:(id)type;
 - (unint64_t)hash;
-- (void)addAliases:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAliases:(id)a3;
-- (void)setCustomIdentifier:(id)a3;
-- (void)setFirstName:(id)a3;
-- (void)setFullName:(id)a3;
-- (void)setHandle:(id)a3;
-- (void)setHasIsMe:(BOOL)a3;
-- (void)setHasSearchProvider:(BOOL)a3;
-- (void)setHasSuggestionType:(BOOL)a3;
-- (void)setLastName:(id)a3;
-- (void)setMiddleName:(id)a3;
-- (void)setNamePrefix:(id)a3;
-- (void)setNameSuffix:(id)a3;
-- (void)setNickName:(id)a3;
-- (void)setPhonemeData:(id)a3;
-- (void)setPhoneticFirstName:(id)a3;
-- (void)setPhoneticLastName:(id)a3;
-- (void)setPhoneticMiddleName:(id)a3;
-- (void)setPhoneticNamePrefix:(id)a3;
-- (void)setPhoneticNameSuffix:(id)a3;
-- (void)setRelationship:(id)a3;
-- (void)setSearchProvider:(int)a3;
-- (void)setSuggestionType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addAliases:(id)aliases;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAliases:(id)aliases;
+- (void)setCustomIdentifier:(id)identifier;
+- (void)setFirstName:(id)name;
+- (void)setFullName:(id)name;
+- (void)setHandle:(id)handle;
+- (void)setHasIsMe:(BOOL)me;
+- (void)setHasSearchProvider:(BOOL)provider;
+- (void)setHasSuggestionType:(BOOL)type;
+- (void)setLastName:(id)name;
+- (void)setMiddleName:(id)name;
+- (void)setNamePrefix:(id)prefix;
+- (void)setNameSuffix:(id)suffix;
+- (void)setNickName:(id)name;
+- (void)setPhonemeData:(id)data;
+- (void)setPhoneticFirstName:(id)name;
+- (void)setPhoneticLastName:(id)name;
+- (void)setPhoneticMiddleName:(id)name;
+- (void)setPhoneticNamePrefix:(id)prefix;
+- (void)setPhoneticNameSuffix:(id)suffix;
+- (void)setRelationship:(id)relationship;
+- (void)setSearchProvider:(int)provider;
+- (void)setSuggestionType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBContactValue
@@ -38,10 +38,10 @@
 - (id)dictionaryRepresentation
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_aliases count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -61,8 +61,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v57 objects:v61 count:16];
@@ -71,180 +71,180 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"aliases"];
+    [dictionary setObject:array forKeyedSubscript:@"aliases"];
   }
 
-  v11 = [(_INPBContactValue *)self contactHandle];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"contactHandle"];
+  contactHandle = [(_INPBContactValue *)self contactHandle];
+  dictionaryRepresentation2 = [contactHandle dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contactHandle"];
 
   if (self->_customIdentifier)
   {
-    v13 = [(_INPBContactValue *)self customIdentifier];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"customIdentifier"];
+    customIdentifier = [(_INPBContactValue *)self customIdentifier];
+    v14 = [customIdentifier copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"customIdentifier"];
   }
 
   if (self->_firstName)
   {
-    v15 = [(_INPBContactValue *)self firstName];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"firstName"];
+    firstName = [(_INPBContactValue *)self firstName];
+    v16 = [firstName copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"firstName"];
   }
 
   if (self->_fullName)
   {
-    v17 = [(_INPBContactValue *)self fullName];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"fullName"];
+    fullName = [(_INPBContactValue *)self fullName];
+    v18 = [fullName copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"fullName"];
   }
 
   if (self->_handle)
   {
-    v19 = [(_INPBContactValue *)self handle];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"handle"];
+    handle = [(_INPBContactValue *)self handle];
+    v20 = [handle copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"handle"];
   }
 
-  v21 = [(_INPBContactValue *)self image];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"image"];
+  image = [(_INPBContactValue *)self image];
+  dictionaryRepresentation3 = [image dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"image"];
 
   if ([(_INPBContactValue *)self hasIsContactSuggestion])
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBContactValue isContactSuggestion](self, "isContactSuggestion")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isContactSuggestion"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isContactSuggestion"];
   }
 
   if ([(_INPBContactValue *)self hasIsMe])
   {
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBContactValue isMe](self, "isMe")}];
-    [v3 setObject:v24 forKeyedSubscript:@"isMe"];
+    [dictionary setObject:v24 forKeyedSubscript:@"isMe"];
   }
 
   if (self->_lastName)
   {
-    v25 = [(_INPBContactValue *)self lastName];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"lastName"];
+    lastName = [(_INPBContactValue *)self lastName];
+    v26 = [lastName copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"lastName"];
   }
 
   if (self->_middleName)
   {
-    v27 = [(_INPBContactValue *)self middleName];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"middleName"];
+    middleName = [(_INPBContactValue *)self middleName];
+    v28 = [middleName copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"middleName"];
   }
 
   if (self->_namePrefix)
   {
-    v29 = [(_INPBContactValue *)self namePrefix];
-    v30 = [v29 copy];
-    [v3 setObject:v30 forKeyedSubscript:@"namePrefix"];
+    namePrefix = [(_INPBContactValue *)self namePrefix];
+    v30 = [namePrefix copy];
+    [dictionary setObject:v30 forKeyedSubscript:@"namePrefix"];
   }
 
   if (self->_nameSuffix)
   {
-    v31 = [(_INPBContactValue *)self nameSuffix];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"nameSuffix"];
+    nameSuffix = [(_INPBContactValue *)self nameSuffix];
+    v32 = [nameSuffix copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"nameSuffix"];
   }
 
   if (self->_nickName)
   {
-    v33 = [(_INPBContactValue *)self nickName];
-    v34 = [v33 copy];
-    [v3 setObject:v34 forKeyedSubscript:@"nickName"];
+    nickName = [(_INPBContactValue *)self nickName];
+    v34 = [nickName copy];
+    [dictionary setObject:v34 forKeyedSubscript:@"nickName"];
   }
 
   if (self->_phonemeData)
   {
-    v35 = [(_INPBContactValue *)self phonemeData];
-    v36 = [v35 copy];
-    [v3 setObject:v36 forKeyedSubscript:@"phonemeData"];
+    phonemeData = [(_INPBContactValue *)self phonemeData];
+    v36 = [phonemeData copy];
+    [dictionary setObject:v36 forKeyedSubscript:@"phonemeData"];
   }
 
   if (self->_phoneticFirstName)
   {
-    v37 = [(_INPBContactValue *)self phoneticFirstName];
-    v38 = [v37 copy];
-    [v3 setObject:v38 forKeyedSubscript:@"phoneticFirstName"];
+    phoneticFirstName = [(_INPBContactValue *)self phoneticFirstName];
+    v38 = [phoneticFirstName copy];
+    [dictionary setObject:v38 forKeyedSubscript:@"phoneticFirstName"];
   }
 
   if (self->_phoneticLastName)
   {
-    v39 = [(_INPBContactValue *)self phoneticLastName];
-    v40 = [v39 copy];
-    [v3 setObject:v40 forKeyedSubscript:@"phoneticLastName"];
+    phoneticLastName = [(_INPBContactValue *)self phoneticLastName];
+    v40 = [phoneticLastName copy];
+    [dictionary setObject:v40 forKeyedSubscript:@"phoneticLastName"];
   }
 
   if (self->_phoneticMiddleName)
   {
-    v41 = [(_INPBContactValue *)self phoneticMiddleName];
-    v42 = [v41 copy];
-    [v3 setObject:v42 forKeyedSubscript:@"phoneticMiddleName"];
+    phoneticMiddleName = [(_INPBContactValue *)self phoneticMiddleName];
+    v42 = [phoneticMiddleName copy];
+    [dictionary setObject:v42 forKeyedSubscript:@"phoneticMiddleName"];
   }
 
   if (self->_phoneticNamePrefix)
   {
-    v43 = [(_INPBContactValue *)self phoneticNamePrefix];
-    v44 = [v43 copy];
-    [v3 setObject:v44 forKeyedSubscript:@"phoneticNamePrefix"];
+    phoneticNamePrefix = [(_INPBContactValue *)self phoneticNamePrefix];
+    v44 = [phoneticNamePrefix copy];
+    [dictionary setObject:v44 forKeyedSubscript:@"phoneticNamePrefix"];
   }
 
   if (self->_phoneticNameSuffix)
   {
-    v45 = [(_INPBContactValue *)self phoneticNameSuffix];
-    v46 = [v45 copy];
-    [v3 setObject:v46 forKeyedSubscript:@"phoneticNameSuffix"];
+    phoneticNameSuffix = [(_INPBContactValue *)self phoneticNameSuffix];
+    v46 = [phoneticNameSuffix copy];
+    [dictionary setObject:v46 forKeyedSubscript:@"phoneticNameSuffix"];
   }
 
   if (self->_relationship)
   {
-    v47 = [(_INPBContactValue *)self relationship];
-    v48 = [v47 copy];
-    [v3 setObject:v48 forKeyedSubscript:@"relationship"];
+    relationship = [(_INPBContactValue *)self relationship];
+    v48 = [relationship copy];
+    [dictionary setObject:v48 forKeyedSubscript:@"relationship"];
   }
 
   if ([(_INPBContactValue *)self hasSearchProvider])
   {
-    v49 = [(_INPBContactValue *)self searchProvider];
-    if (v49 >= 4)
+    searchProvider = [(_INPBContactValue *)self searchProvider];
+    if (searchProvider >= 4)
     {
-      v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v49];
+      v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", searchProvider];
     }
 
     else
     {
-      v50 = off_1E727F808[v49];
+      v50 = off_1E727F808[searchProvider];
     }
 
-    [v3 setObject:v50 forKeyedSubscript:@"searchProvider"];
+    [dictionary setObject:v50 forKeyedSubscript:@"searchProvider"];
   }
 
   if ([(_INPBContactValue *)self hasSuggestionType])
   {
-    v51 = [(_INPBContactValue *)self suggestionType];
-    if (v51 >= 3)
+    suggestionType = [(_INPBContactValue *)self suggestionType];
+    if (suggestionType >= 3)
     {
-      v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v51];
+      v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", suggestionType];
     }
 
     else
     {
-      v52 = off_1E727F828[v51];
+      v52 = off_1E727F828[suggestionType];
     }
 
-    [v3 setObject:v52 forKeyedSubscript:@"suggestionType"];
+    [dictionary setObject:v52 forKeyedSubscript:@"suggestionType"];
   }
 
-  v53 = [(_INPBContactValue *)self valueMetadata];
-  v54 = [v53 dictionaryRepresentation];
-  [v3 setObject:v54 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBContactValue *)self valueMetadata];
+  dictionaryRepresentation4 = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"valueMetadata"];
 
   v55 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,28 +311,28 @@
   return v25 ^ v26 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_118;
   }
 
-  v5 = [(_INPBContactValue *)self aliases];
-  v6 = [v4 aliases];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self aliases];
+  aliases2 = [equalCopy aliases];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v7 = [(_INPBContactValue *)self aliases];
-  if (v7)
+  aliases3 = [(_INPBContactValue *)self aliases];
+  if (aliases3)
   {
-    v8 = v7;
-    v9 = [(_INPBContactValue *)self aliases];
-    v10 = [v4 aliases];
-    v11 = [v9 isEqual:v10];
+    v8 = aliases3;
+    aliases4 = [(_INPBContactValue *)self aliases];
+    aliases5 = [equalCopy aliases];
+    v11 = [aliases4 isEqual:aliases5];
 
     if (!v11)
     {
@@ -344,20 +344,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self contactHandle];
-  v6 = [v4 contactHandle];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self contactHandle];
+  aliases2 = [equalCopy contactHandle];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v12 = [(_INPBContactValue *)self contactHandle];
-  if (v12)
+  contactHandle = [(_INPBContactValue *)self contactHandle];
+  if (contactHandle)
   {
-    v13 = v12;
-    v14 = [(_INPBContactValue *)self contactHandle];
-    v15 = [v4 contactHandle];
-    v16 = [v14 isEqual:v15];
+    v13 = contactHandle;
+    contactHandle2 = [(_INPBContactValue *)self contactHandle];
+    contactHandle3 = [equalCopy contactHandle];
+    v16 = [contactHandle2 isEqual:contactHandle3];
 
     if (!v16)
     {
@@ -369,20 +369,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self customIdentifier];
-  v6 = [v4 customIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self customIdentifier];
+  aliases2 = [equalCopy customIdentifier];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v17 = [(_INPBContactValue *)self customIdentifier];
-  if (v17)
+  customIdentifier = [(_INPBContactValue *)self customIdentifier];
+  if (customIdentifier)
   {
-    v18 = v17;
-    v19 = [(_INPBContactValue *)self customIdentifier];
-    v20 = [v4 customIdentifier];
-    v21 = [v19 isEqual:v20];
+    v18 = customIdentifier;
+    customIdentifier2 = [(_INPBContactValue *)self customIdentifier];
+    customIdentifier3 = [equalCopy customIdentifier];
+    v21 = [customIdentifier2 isEqual:customIdentifier3];
 
     if (!v21)
     {
@@ -394,20 +394,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self firstName];
-  v6 = [v4 firstName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self firstName];
+  aliases2 = [equalCopy firstName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v22 = [(_INPBContactValue *)self firstName];
-  if (v22)
+  firstName = [(_INPBContactValue *)self firstName];
+  if (firstName)
   {
-    v23 = v22;
-    v24 = [(_INPBContactValue *)self firstName];
-    v25 = [v4 firstName];
-    v26 = [v24 isEqual:v25];
+    v23 = firstName;
+    firstName2 = [(_INPBContactValue *)self firstName];
+    firstName3 = [equalCopy firstName];
+    v26 = [firstName2 isEqual:firstName3];
 
     if (!v26)
     {
@@ -419,20 +419,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self fullName];
-  v6 = [v4 fullName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self fullName];
+  aliases2 = [equalCopy fullName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v27 = [(_INPBContactValue *)self fullName];
-  if (v27)
+  fullName = [(_INPBContactValue *)self fullName];
+  if (fullName)
   {
-    v28 = v27;
-    v29 = [(_INPBContactValue *)self fullName];
-    v30 = [v4 fullName];
-    v31 = [v29 isEqual:v30];
+    v28 = fullName;
+    fullName2 = [(_INPBContactValue *)self fullName];
+    fullName3 = [equalCopy fullName];
+    v31 = [fullName2 isEqual:fullName3];
 
     if (!v31)
     {
@@ -444,20 +444,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self handle];
-  v6 = [v4 handle];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self handle];
+  aliases2 = [equalCopy handle];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v32 = [(_INPBContactValue *)self handle];
-  if (v32)
+  handle = [(_INPBContactValue *)self handle];
+  if (handle)
   {
-    v33 = v32;
-    v34 = [(_INPBContactValue *)self handle];
-    v35 = [v4 handle];
-    v36 = [v34 isEqual:v35];
+    v33 = handle;
+    handle2 = [(_INPBContactValue *)self handle];
+    handle3 = [equalCopy handle];
+    v36 = [handle2 isEqual:handle3];
 
     if (!v36)
     {
@@ -469,20 +469,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self image];
+  aliases2 = [equalCopy image];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v37 = [(_INPBContactValue *)self image];
-  if (v37)
+  image = [(_INPBContactValue *)self image];
+  if (image)
   {
-    v38 = v37;
-    v39 = [(_INPBContactValue *)self image];
-    v40 = [v4 image];
-    v41 = [v39 isEqual:v40];
+    v38 = image;
+    image2 = [(_INPBContactValue *)self image];
+    image3 = [equalCopy image];
+    v41 = [image2 isEqual:image3];
 
     if (!v41)
     {
@@ -494,56 +494,56 @@
   {
   }
 
-  v42 = [(_INPBContactValue *)self hasIsContactSuggestion];
-  if (v42 != [v4 hasIsContactSuggestion])
+  hasIsContactSuggestion = [(_INPBContactValue *)self hasIsContactSuggestion];
+  if (hasIsContactSuggestion != [equalCopy hasIsContactSuggestion])
   {
     goto LABEL_118;
   }
 
   if ([(_INPBContactValue *)self hasIsContactSuggestion])
   {
-    if ([v4 hasIsContactSuggestion])
+    if ([equalCopy hasIsContactSuggestion])
     {
       isContactSuggestion = self->_isContactSuggestion;
-      if (isContactSuggestion != [v4 isContactSuggestion])
+      if (isContactSuggestion != [equalCopy isContactSuggestion])
       {
         goto LABEL_118;
       }
     }
   }
 
-  v44 = [(_INPBContactValue *)self hasIsMe];
-  if (v44 != [v4 hasIsMe])
+  hasIsMe = [(_INPBContactValue *)self hasIsMe];
+  if (hasIsMe != [equalCopy hasIsMe])
   {
     goto LABEL_118;
   }
 
   if ([(_INPBContactValue *)self hasIsMe])
   {
-    if ([v4 hasIsMe])
+    if ([equalCopy hasIsMe])
     {
       isMe = self->_isMe;
-      if (isMe != [v4 isMe])
+      if (isMe != [equalCopy isMe])
       {
         goto LABEL_118;
       }
     }
   }
 
-  v5 = [(_INPBContactValue *)self lastName];
-  v6 = [v4 lastName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self lastName];
+  aliases2 = [equalCopy lastName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v46 = [(_INPBContactValue *)self lastName];
-  if (v46)
+  lastName = [(_INPBContactValue *)self lastName];
+  if (lastName)
   {
-    v47 = v46;
-    v48 = [(_INPBContactValue *)self lastName];
-    v49 = [v4 lastName];
-    v50 = [v48 isEqual:v49];
+    v47 = lastName;
+    lastName2 = [(_INPBContactValue *)self lastName];
+    lastName3 = [equalCopy lastName];
+    v50 = [lastName2 isEqual:lastName3];
 
     if (!v50)
     {
@@ -555,20 +555,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self middleName];
-  v6 = [v4 middleName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self middleName];
+  aliases2 = [equalCopy middleName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v51 = [(_INPBContactValue *)self middleName];
-  if (v51)
+  middleName = [(_INPBContactValue *)self middleName];
+  if (middleName)
   {
-    v52 = v51;
-    v53 = [(_INPBContactValue *)self middleName];
-    v54 = [v4 middleName];
-    v55 = [v53 isEqual:v54];
+    v52 = middleName;
+    middleName2 = [(_INPBContactValue *)self middleName];
+    middleName3 = [equalCopy middleName];
+    v55 = [middleName2 isEqual:middleName3];
 
     if (!v55)
     {
@@ -580,20 +580,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self namePrefix];
-  v6 = [v4 namePrefix];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self namePrefix];
+  aliases2 = [equalCopy namePrefix];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v56 = [(_INPBContactValue *)self namePrefix];
-  if (v56)
+  namePrefix = [(_INPBContactValue *)self namePrefix];
+  if (namePrefix)
   {
-    v57 = v56;
-    v58 = [(_INPBContactValue *)self namePrefix];
-    v59 = [v4 namePrefix];
-    v60 = [v58 isEqual:v59];
+    v57 = namePrefix;
+    namePrefix2 = [(_INPBContactValue *)self namePrefix];
+    namePrefix3 = [equalCopy namePrefix];
+    v60 = [namePrefix2 isEqual:namePrefix3];
 
     if (!v60)
     {
@@ -605,20 +605,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self nameSuffix];
-  v6 = [v4 nameSuffix];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self nameSuffix];
+  aliases2 = [equalCopy nameSuffix];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v61 = [(_INPBContactValue *)self nameSuffix];
-  if (v61)
+  nameSuffix = [(_INPBContactValue *)self nameSuffix];
+  if (nameSuffix)
   {
-    v62 = v61;
-    v63 = [(_INPBContactValue *)self nameSuffix];
-    v64 = [v4 nameSuffix];
-    v65 = [v63 isEqual:v64];
+    v62 = nameSuffix;
+    nameSuffix2 = [(_INPBContactValue *)self nameSuffix];
+    nameSuffix3 = [equalCopy nameSuffix];
+    v65 = [nameSuffix2 isEqual:nameSuffix3];
 
     if (!v65)
     {
@@ -630,20 +630,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self nickName];
-  v6 = [v4 nickName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self nickName];
+  aliases2 = [equalCopy nickName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v66 = [(_INPBContactValue *)self nickName];
-  if (v66)
+  nickName = [(_INPBContactValue *)self nickName];
+  if (nickName)
   {
-    v67 = v66;
-    v68 = [(_INPBContactValue *)self nickName];
-    v69 = [v4 nickName];
-    v70 = [v68 isEqual:v69];
+    v67 = nickName;
+    nickName2 = [(_INPBContactValue *)self nickName];
+    nickName3 = [equalCopy nickName];
+    v70 = [nickName2 isEqual:nickName3];
 
     if (!v70)
     {
@@ -655,20 +655,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self phonemeData];
-  v6 = [v4 phonemeData];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self phonemeData];
+  aliases2 = [equalCopy phonemeData];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v71 = [(_INPBContactValue *)self phonemeData];
-  if (v71)
+  phonemeData = [(_INPBContactValue *)self phonemeData];
+  if (phonemeData)
   {
-    v72 = v71;
-    v73 = [(_INPBContactValue *)self phonemeData];
-    v74 = [v4 phonemeData];
-    v75 = [v73 isEqual:v74];
+    v72 = phonemeData;
+    phonemeData2 = [(_INPBContactValue *)self phonemeData];
+    phonemeData3 = [equalCopy phonemeData];
+    v75 = [phonemeData2 isEqual:phonemeData3];
 
     if (!v75)
     {
@@ -680,20 +680,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self phoneticFirstName];
-  v6 = [v4 phoneticFirstName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self phoneticFirstName];
+  aliases2 = [equalCopy phoneticFirstName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v76 = [(_INPBContactValue *)self phoneticFirstName];
-  if (v76)
+  phoneticFirstName = [(_INPBContactValue *)self phoneticFirstName];
+  if (phoneticFirstName)
   {
-    v77 = v76;
-    v78 = [(_INPBContactValue *)self phoneticFirstName];
-    v79 = [v4 phoneticFirstName];
-    v80 = [v78 isEqual:v79];
+    v77 = phoneticFirstName;
+    phoneticFirstName2 = [(_INPBContactValue *)self phoneticFirstName];
+    phoneticFirstName3 = [equalCopy phoneticFirstName];
+    v80 = [phoneticFirstName2 isEqual:phoneticFirstName3];
 
     if (!v80)
     {
@@ -705,20 +705,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self phoneticLastName];
-  v6 = [v4 phoneticLastName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self phoneticLastName];
+  aliases2 = [equalCopy phoneticLastName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v81 = [(_INPBContactValue *)self phoneticLastName];
-  if (v81)
+  phoneticLastName = [(_INPBContactValue *)self phoneticLastName];
+  if (phoneticLastName)
   {
-    v82 = v81;
-    v83 = [(_INPBContactValue *)self phoneticLastName];
-    v84 = [v4 phoneticLastName];
-    v85 = [v83 isEqual:v84];
+    v82 = phoneticLastName;
+    phoneticLastName2 = [(_INPBContactValue *)self phoneticLastName];
+    phoneticLastName3 = [equalCopy phoneticLastName];
+    v85 = [phoneticLastName2 isEqual:phoneticLastName3];
 
     if (!v85)
     {
@@ -730,20 +730,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self phoneticMiddleName];
-  v6 = [v4 phoneticMiddleName];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self phoneticMiddleName];
+  aliases2 = [equalCopy phoneticMiddleName];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v86 = [(_INPBContactValue *)self phoneticMiddleName];
-  if (v86)
+  phoneticMiddleName = [(_INPBContactValue *)self phoneticMiddleName];
+  if (phoneticMiddleName)
   {
-    v87 = v86;
-    v88 = [(_INPBContactValue *)self phoneticMiddleName];
-    v89 = [v4 phoneticMiddleName];
-    v90 = [v88 isEqual:v89];
+    v87 = phoneticMiddleName;
+    phoneticMiddleName2 = [(_INPBContactValue *)self phoneticMiddleName];
+    phoneticMiddleName3 = [equalCopy phoneticMiddleName];
+    v90 = [phoneticMiddleName2 isEqual:phoneticMiddleName3];
 
     if (!v90)
     {
@@ -755,20 +755,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self phoneticNamePrefix];
-  v6 = [v4 phoneticNamePrefix];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self phoneticNamePrefix];
+  aliases2 = [equalCopy phoneticNamePrefix];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v91 = [(_INPBContactValue *)self phoneticNamePrefix];
-  if (v91)
+  phoneticNamePrefix = [(_INPBContactValue *)self phoneticNamePrefix];
+  if (phoneticNamePrefix)
   {
-    v92 = v91;
-    v93 = [(_INPBContactValue *)self phoneticNamePrefix];
-    v94 = [v4 phoneticNamePrefix];
-    v95 = [v93 isEqual:v94];
+    v92 = phoneticNamePrefix;
+    phoneticNamePrefix2 = [(_INPBContactValue *)self phoneticNamePrefix];
+    phoneticNamePrefix3 = [equalCopy phoneticNamePrefix];
+    v95 = [phoneticNamePrefix2 isEqual:phoneticNamePrefix3];
 
     if (!v95)
     {
@@ -780,20 +780,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self phoneticNameSuffix];
-  v6 = [v4 phoneticNameSuffix];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self phoneticNameSuffix];
+  aliases2 = [equalCopy phoneticNameSuffix];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v96 = [(_INPBContactValue *)self phoneticNameSuffix];
-  if (v96)
+  phoneticNameSuffix = [(_INPBContactValue *)self phoneticNameSuffix];
+  if (phoneticNameSuffix)
   {
-    v97 = v96;
-    v98 = [(_INPBContactValue *)self phoneticNameSuffix];
-    v99 = [v4 phoneticNameSuffix];
-    v100 = [v98 isEqual:v99];
+    v97 = phoneticNameSuffix;
+    phoneticNameSuffix2 = [(_INPBContactValue *)self phoneticNameSuffix];
+    phoneticNameSuffix3 = [equalCopy phoneticNameSuffix];
+    v100 = [phoneticNameSuffix2 isEqual:phoneticNameSuffix3];
 
     if (!v100)
     {
@@ -805,20 +805,20 @@
   {
   }
 
-  v5 = [(_INPBContactValue *)self relationship];
-  v6 = [v4 relationship];
-  if ((v5 != 0) == (v6 == 0))
+  aliases = [(_INPBContactValue *)self relationship];
+  aliases2 = [equalCopy relationship];
+  if ((aliases != 0) == (aliases2 == 0))
   {
     goto LABEL_117;
   }
 
-  v101 = [(_INPBContactValue *)self relationship];
-  if (v101)
+  relationship = [(_INPBContactValue *)self relationship];
+  if (relationship)
   {
-    v102 = v101;
-    v103 = [(_INPBContactValue *)self relationship];
-    v104 = [v4 relationship];
-    v105 = [v103 isEqual:v104];
+    v102 = relationship;
+    relationship2 = [(_INPBContactValue *)self relationship];
+    relationship3 = [equalCopy relationship];
+    v105 = [relationship2 isEqual:relationship3];
 
     if (!v105)
     {
@@ -830,48 +830,48 @@
   {
   }
 
-  v106 = [(_INPBContactValue *)self hasSearchProvider];
-  if (v106 != [v4 hasSearchProvider])
+  hasSearchProvider = [(_INPBContactValue *)self hasSearchProvider];
+  if (hasSearchProvider != [equalCopy hasSearchProvider])
   {
     goto LABEL_118;
   }
 
   if ([(_INPBContactValue *)self hasSearchProvider])
   {
-    if ([v4 hasSearchProvider])
+    if ([equalCopy hasSearchProvider])
     {
       searchProvider = self->_searchProvider;
-      if (searchProvider != [v4 searchProvider])
+      if (searchProvider != [equalCopy searchProvider])
       {
         goto LABEL_118;
       }
     }
   }
 
-  v108 = [(_INPBContactValue *)self hasSuggestionType];
-  if (v108 != [v4 hasSuggestionType])
+  hasSuggestionType = [(_INPBContactValue *)self hasSuggestionType];
+  if (hasSuggestionType != [equalCopy hasSuggestionType])
   {
     goto LABEL_118;
   }
 
   if ([(_INPBContactValue *)self hasSuggestionType])
   {
-    if ([v4 hasSuggestionType])
+    if ([equalCopy hasSuggestionType])
     {
       suggestionType = self->_suggestionType;
-      if (suggestionType != [v4 suggestionType])
+      if (suggestionType != [equalCopy suggestionType])
       {
         goto LABEL_118;
       }
     }
   }
 
-  v5 = [(_INPBContactValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  aliases = [(_INPBContactValue *)self valueMetadata];
+  aliases2 = [equalCopy valueMetadata];
+  if ((aliases != 0) != (aliases2 == 0))
   {
-    v110 = [(_INPBContactValue *)self valueMetadata];
-    if (!v110)
+    valueMetadata = [(_INPBContactValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_121:
@@ -879,10 +879,10 @@ LABEL_121:
       goto LABEL_119;
     }
 
-    v111 = v110;
-    v112 = [(_INPBContactValue *)self valueMetadata];
-    v113 = [v4 valueMetadata];
-    v114 = [v112 isEqual:v113];
+    v111 = valueMetadata;
+    valueMetadata2 = [(_INPBContactValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v114 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v114)
     {
@@ -902,28 +902,28 @@ LABEL_119:
   return v115;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBContactValue allocWithZone:](_INPBContactValue init];
-  v6 = [(NSArray *)self->_aliases copyWithZone:a3];
+  v6 = [(NSArray *)self->_aliases copyWithZone:zone];
   [(_INPBContactValue *)v5 setAliases:v6];
 
-  v7 = [(_INPBContactHandle *)self->_contactHandle copyWithZone:a3];
+  v7 = [(_INPBContactHandle *)self->_contactHandle copyWithZone:zone];
   [(_INPBContactValue *)v5 setContactHandle:v7];
 
-  v8 = [(NSString *)self->_customIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_customIdentifier copyWithZone:zone];
   [(_INPBContactValue *)v5 setCustomIdentifier:v8];
 
-  v9 = [(NSString *)self->_firstName copyWithZone:a3];
+  v9 = [(NSString *)self->_firstName copyWithZone:zone];
   [(_INPBContactValue *)v5 setFirstName:v9];
 
-  v10 = [(NSString *)self->_fullName copyWithZone:a3];
+  v10 = [(NSString *)self->_fullName copyWithZone:zone];
   [(_INPBContactValue *)v5 setFullName:v10];
 
-  v11 = [(NSString *)self->_handle copyWithZone:a3];
+  v11 = [(NSString *)self->_handle copyWithZone:zone];
   [(_INPBContactValue *)v5 setHandle:v11];
 
-  v12 = [(_INPBImageValue *)self->_image copyWithZone:a3];
+  v12 = [(_INPBImageValue *)self->_image copyWithZone:zone];
   [(_INPBContactValue *)v5 setImage:v12];
 
   if ([(_INPBContactValue *)self hasIsContactSuggestion])
@@ -936,40 +936,40 @@ LABEL_119:
     [(_INPBContactValue *)v5 setIsMe:[(_INPBContactValue *)self isMe]];
   }
 
-  v13 = [(NSString *)self->_lastName copyWithZone:a3];
+  v13 = [(NSString *)self->_lastName copyWithZone:zone];
   [(_INPBContactValue *)v5 setLastName:v13];
 
-  v14 = [(NSString *)self->_middleName copyWithZone:a3];
+  v14 = [(NSString *)self->_middleName copyWithZone:zone];
   [(_INPBContactValue *)v5 setMiddleName:v14];
 
-  v15 = [(NSString *)self->_namePrefix copyWithZone:a3];
+  v15 = [(NSString *)self->_namePrefix copyWithZone:zone];
   [(_INPBContactValue *)v5 setNamePrefix:v15];
 
-  v16 = [(NSString *)self->_nameSuffix copyWithZone:a3];
+  v16 = [(NSString *)self->_nameSuffix copyWithZone:zone];
   [(_INPBContactValue *)v5 setNameSuffix:v16];
 
-  v17 = [(NSString *)self->_nickName copyWithZone:a3];
+  v17 = [(NSString *)self->_nickName copyWithZone:zone];
   [(_INPBContactValue *)v5 setNickName:v17];
 
-  v18 = [(NSString *)self->_phonemeData copyWithZone:a3];
+  v18 = [(NSString *)self->_phonemeData copyWithZone:zone];
   [(_INPBContactValue *)v5 setPhonemeData:v18];
 
-  v19 = [(NSString *)self->_phoneticFirstName copyWithZone:a3];
+  v19 = [(NSString *)self->_phoneticFirstName copyWithZone:zone];
   [(_INPBContactValue *)v5 setPhoneticFirstName:v19];
 
-  v20 = [(NSString *)self->_phoneticLastName copyWithZone:a3];
+  v20 = [(NSString *)self->_phoneticLastName copyWithZone:zone];
   [(_INPBContactValue *)v5 setPhoneticLastName:v20];
 
-  v21 = [(NSString *)self->_phoneticMiddleName copyWithZone:a3];
+  v21 = [(NSString *)self->_phoneticMiddleName copyWithZone:zone];
   [(_INPBContactValue *)v5 setPhoneticMiddleName:v21];
 
-  v22 = [(NSString *)self->_phoneticNamePrefix copyWithZone:a3];
+  v22 = [(NSString *)self->_phoneticNamePrefix copyWithZone:zone];
   [(_INPBContactValue *)v5 setPhoneticNamePrefix:v22];
 
-  v23 = [(NSString *)self->_phoneticNameSuffix copyWithZone:a3];
+  v23 = [(NSString *)self->_phoneticNameSuffix copyWithZone:zone];
   [(_INPBContactValue *)v5 setPhoneticNameSuffix:v23];
 
-  v24 = [(NSString *)self->_relationship copyWithZone:a3];
+  v24 = [(NSString *)self->_relationship copyWithZone:zone];
   [(_INPBContactValue *)v5 setRelationship:v24];
 
   if ([(_INPBContactValue *)self hasSearchProvider])
@@ -982,40 +982,40 @@ LABEL_119:
     [(_INPBContactValue *)v5 setSuggestionType:[(_INPBContactValue *)self suggestionType]];
   }
 
-  v25 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v25 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBContactValue *)v5 setValueMetadata:v25];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBContactValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBContactValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBContactValue)initWithCoder:(id)a3
+- (_INPBContactValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBContactValue *)self initWithData:v6];
+    self = [(_INPBContactValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -1048,51 +1048,51 @@ LABEL_119:
     while (v7);
   }
 
-  v11 = [(_INPBContactValue *)self contactHandle];
+  contactHandle = [(_INPBContactValue *)self contactHandle];
 
-  if (v11)
+  if (contactHandle)
   {
-    v12 = [(_INPBContactValue *)self contactHandle];
+    contactHandle2 = [(_INPBContactValue *)self contactHandle];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBContactValue *)self customIdentifier];
+  customIdentifier = [(_INPBContactValue *)self customIdentifier];
 
-  if (v13)
+  if (customIdentifier)
   {
     customIdentifier = self->_customIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBContactValue *)self firstName];
+  firstName = [(_INPBContactValue *)self firstName];
 
-  if (v15)
+  if (firstName)
   {
     firstName = self->_firstName;
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_INPBContactValue *)self fullName];
+  fullName = [(_INPBContactValue *)self fullName];
 
-  if (v17)
+  if (fullName)
   {
     fullName = self->_fullName;
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_INPBContactValue *)self handle];
+  handle = [(_INPBContactValue *)self handle];
 
-  if (v19)
+  if (handle)
   {
     handle = self->_handle;
     PBDataWriterWriteStringField();
   }
 
-  v21 = [(_INPBContactValue *)self image];
+  image = [(_INPBContactValue *)self image];
 
-  if (v21)
+  if (image)
   {
-    v22 = [(_INPBContactValue *)self image];
+    image2 = [(_INPBContactValue *)self image];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1108,97 +1108,97 @@ LABEL_119:
     PBDataWriterWriteBOOLField();
   }
 
-  v25 = [(_INPBContactValue *)self lastName];
+  lastName = [(_INPBContactValue *)self lastName];
 
-  if (v25)
+  if (lastName)
   {
     lastName = self->_lastName;
     PBDataWriterWriteStringField();
   }
 
-  v27 = [(_INPBContactValue *)self middleName];
+  middleName = [(_INPBContactValue *)self middleName];
 
-  if (v27)
+  if (middleName)
   {
     middleName = self->_middleName;
     PBDataWriterWriteStringField();
   }
 
-  v29 = [(_INPBContactValue *)self namePrefix];
+  namePrefix = [(_INPBContactValue *)self namePrefix];
 
-  if (v29)
+  if (namePrefix)
   {
     namePrefix = self->_namePrefix;
     PBDataWriterWriteStringField();
   }
 
-  v31 = [(_INPBContactValue *)self nameSuffix];
+  nameSuffix = [(_INPBContactValue *)self nameSuffix];
 
-  if (v31)
+  if (nameSuffix)
   {
     nameSuffix = self->_nameSuffix;
     PBDataWriterWriteStringField();
   }
 
-  v33 = [(_INPBContactValue *)self nickName];
+  nickName = [(_INPBContactValue *)self nickName];
 
-  if (v33)
+  if (nickName)
   {
     nickName = self->_nickName;
     PBDataWriterWriteStringField();
   }
 
-  v35 = [(_INPBContactValue *)self phonemeData];
+  phonemeData = [(_INPBContactValue *)self phonemeData];
 
-  if (v35)
+  if (phonemeData)
   {
     phonemeData = self->_phonemeData;
     PBDataWriterWriteStringField();
   }
 
-  v37 = [(_INPBContactValue *)self phoneticFirstName];
+  phoneticFirstName = [(_INPBContactValue *)self phoneticFirstName];
 
-  if (v37)
+  if (phoneticFirstName)
   {
     phoneticFirstName = self->_phoneticFirstName;
     PBDataWriterWriteStringField();
   }
 
-  v39 = [(_INPBContactValue *)self phoneticLastName];
+  phoneticLastName = [(_INPBContactValue *)self phoneticLastName];
 
-  if (v39)
+  if (phoneticLastName)
   {
     phoneticLastName = self->_phoneticLastName;
     PBDataWriterWriteStringField();
   }
 
-  v41 = [(_INPBContactValue *)self phoneticMiddleName];
+  phoneticMiddleName = [(_INPBContactValue *)self phoneticMiddleName];
 
-  if (v41)
+  if (phoneticMiddleName)
   {
     phoneticMiddleName = self->_phoneticMiddleName;
     PBDataWriterWriteStringField();
   }
 
-  v43 = [(_INPBContactValue *)self phoneticNamePrefix];
+  phoneticNamePrefix = [(_INPBContactValue *)self phoneticNamePrefix];
 
-  if (v43)
+  if (phoneticNamePrefix)
   {
     phoneticNamePrefix = self->_phoneticNamePrefix;
     PBDataWriterWriteStringField();
   }
 
-  v45 = [(_INPBContactValue *)self phoneticNameSuffix];
+  phoneticNameSuffix = [(_INPBContactValue *)self phoneticNameSuffix];
 
-  if (v45)
+  if (phoneticNameSuffix)
   {
     phoneticNameSuffix = self->_phoneticNameSuffix;
     PBDataWriterWriteStringField();
   }
 
-  v47 = [(_INPBContactValue *)self relationship];
+  relationship = [(_INPBContactValue *)self relationship];
 
-  if (v47)
+  if (relationship)
   {
     relationship = self->_relationship;
     PBDataWriterWriteStringField();
@@ -1216,31 +1216,31 @@ LABEL_119:
     PBDataWriterWriteInt32Field();
   }
 
-  v51 = [(_INPBContactValue *)self valueMetadata];
+  valueMetadata = [(_INPBContactValue *)self valueMetadata];
 
-  if (v51)
+  if (valueMetadata)
   {
-    v52 = [(_INPBContactValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBContactValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
   }
 
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsSuggestionType:(id)a3
+- (int)StringAsSuggestionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SocialProfile"])
+  else if ([typeCopy isEqualToString:@"SocialProfile"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"InstantMessageAddress"])
+  else if ([typeCopy isEqualToString:@"InstantMessageAddress"])
   {
     v4 = 2;
   }
@@ -1253,9 +1253,9 @@ LABEL_119:
   return v4;
 }
 
-- (void)setHasSuggestionType:(BOOL)a3
+- (void)setHasSuggestionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -1268,10 +1268,10 @@ LABEL_119:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setSuggestionType:(int)a3
+- (void)setSuggestionType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -1279,29 +1279,29 @@ LABEL_119:
   else
   {
     *&self->_has = has | 8;
-    self->_suggestionType = a3;
+    self->_suggestionType = type;
   }
 }
 
-- (int)StringAsSearchProvider:(id)a3
+- (int)StringAsSearchProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  providerCopy = provider;
+  if ([providerCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PLUS"])
+  else if ([providerCopy isEqualToString:@"PLUS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SRR"])
+  else if ([providerCopy isEqualToString:@"SRR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SuggestedStore"])
+  else if ([providerCopy isEqualToString:@"SuggestedStore"])
   {
     v4 = 3;
   }
@@ -1314,9 +1314,9 @@ LABEL_119:
   return v4;
 }
 
-- (void)setHasSearchProvider:(BOOL)a3
+- (void)setHasSearchProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 4;
   }
@@ -1329,10 +1329,10 @@ LABEL_119:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setSearchProvider:(int)a3
+- (void)setSearchProvider:(int)provider
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (provider == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -1340,121 +1340,121 @@ LABEL_119:
   else
   {
     *&self->_has = has | 4;
-    self->_searchProvider = a3;
+    self->_searchProvider = provider;
   }
 }
 
-- (void)setRelationship:(id)a3
+- (void)setRelationship:(id)relationship
 {
-  v4 = [a3 copy];
+  v4 = [relationship copy];
   relationship = self->_relationship;
   self->_relationship = v4;
 
   MEMORY[0x1EEE66BB8](v4, relationship);
 }
 
-- (void)setPhoneticNameSuffix:(id)a3
+- (void)setPhoneticNameSuffix:(id)suffix
 {
-  v4 = [a3 copy];
+  v4 = [suffix copy];
   phoneticNameSuffix = self->_phoneticNameSuffix;
   self->_phoneticNameSuffix = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticNameSuffix);
 }
 
-- (void)setPhoneticNamePrefix:(id)a3
+- (void)setPhoneticNamePrefix:(id)prefix
 {
-  v4 = [a3 copy];
+  v4 = [prefix copy];
   phoneticNamePrefix = self->_phoneticNamePrefix;
   self->_phoneticNamePrefix = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticNamePrefix);
 }
 
-- (void)setPhoneticMiddleName:(id)a3
+- (void)setPhoneticMiddleName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticMiddleName = self->_phoneticMiddleName;
   self->_phoneticMiddleName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticMiddleName);
 }
 
-- (void)setPhoneticLastName:(id)a3
+- (void)setPhoneticLastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticLastName = self->_phoneticLastName;
   self->_phoneticLastName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticLastName);
 }
 
-- (void)setPhoneticFirstName:(id)a3
+- (void)setPhoneticFirstName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticFirstName = self->_phoneticFirstName;
   self->_phoneticFirstName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticFirstName);
 }
 
-- (void)setPhonemeData:(id)a3
+- (void)setPhonemeData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   phonemeData = self->_phonemeData;
   self->_phonemeData = v4;
 
   MEMORY[0x1EEE66BB8](v4, phonemeData);
 }
 
-- (void)setNickName:(id)a3
+- (void)setNickName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   nickName = self->_nickName;
   self->_nickName = v4;
 
   MEMORY[0x1EEE66BB8](v4, nickName);
 }
 
-- (void)setNameSuffix:(id)a3
+- (void)setNameSuffix:(id)suffix
 {
-  v4 = [a3 copy];
+  v4 = [suffix copy];
   nameSuffix = self->_nameSuffix;
   self->_nameSuffix = v4;
 
   MEMORY[0x1EEE66BB8](v4, nameSuffix);
 }
 
-- (void)setNamePrefix:(id)a3
+- (void)setNamePrefix:(id)prefix
 {
-  v4 = [a3 copy];
+  v4 = [prefix copy];
   namePrefix = self->_namePrefix;
   self->_namePrefix = v4;
 
   MEMORY[0x1EEE66BB8](v4, namePrefix);
 }
 
-- (void)setMiddleName:(id)a3
+- (void)setMiddleName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   middleName = self->_middleName;
   self->_middleName = v4;
 
   MEMORY[0x1EEE66BB8](v4, middleName);
 }
 
-- (void)setLastName:(id)a3
+- (void)setLastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   lastName = self->_lastName;
   self->_lastName = v4;
 
   MEMORY[0x1EEE66BB8](v4, lastName);
 }
 
-- (void)setHasIsMe:(BOOL)a3
+- (void)setHasIsMe:(BOOL)me
 {
-  if (a3)
+  if (me)
   {
     v3 = 2;
   }
@@ -1467,63 +1467,63 @@ LABEL_119:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v4 = [a3 copy];
+  v4 = [handle copy];
   handle = self->_handle;
   self->_handle = v4;
 
   MEMORY[0x1EEE66BB8](v4, handle);
 }
 
-- (void)setFullName:(id)a3
+- (void)setFullName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   fullName = self->_fullName;
   self->_fullName = v4;
 
   MEMORY[0x1EEE66BB8](v4, fullName);
 }
 
-- (void)setFirstName:(id)a3
+- (void)setFirstName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   firstName = self->_firstName;
   self->_firstName = v4;
 
   MEMORY[0x1EEE66BB8](v4, firstName);
 }
 
-- (void)setCustomIdentifier:(id)a3
+- (void)setCustomIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   customIdentifier = self->_customIdentifier;
   self->_customIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, customIdentifier);
 }
 
-- (void)addAliases:(id)a3
+- (void)addAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   aliases = self->_aliases;
-  v8 = v4;
+  v8 = aliasesCopy;
   if (!aliases)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_aliases;
-    self->_aliases = v6;
+    self->_aliases = array;
 
-    v4 = v8;
+    aliasesCopy = v8;
     aliases = self->_aliases;
   }
 
-  [(NSArray *)aliases addObject:v4];
+  [(NSArray *)aliases addObject:aliasesCopy];
 }
 
-- (void)setAliases:(id)a3
+- (void)setAliases:(id)aliases
 {
-  v4 = [a3 mutableCopy];
+  v4 = [aliases mutableCopy];
   aliases = self->_aliases;
   self->_aliases = v4;
 

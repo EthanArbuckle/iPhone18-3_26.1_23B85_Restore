@@ -1,18 +1,18 @@
 @interface TransparencyCertificateHelper
-+ (BOOL)addTrustedCertificate:(id)a3 trustedKeys:(id)a4 error:(id *)a5;
-+ (BOOL)verifyCertificates:(id)a3 intermediates:(id)a4 policy:(__SecPolicy *)a5 error:(id *)a6;
-+ (BOOL)verifyLeaf:(id)a3 intermediates:(id)a4 policy:(__SecPolicy *)a5 error:(id *)a6;
-+ (__SecCertificate)certificateFromData:(id)a3 error:(id *)a4;
-+ (id)copyTrustedKeysFromDataArray:(id)a3 error:(id *)a4;
-+ (id)createCACertificatesArray:(id)a3 error:(id *)a4;
++ (BOOL)addTrustedCertificate:(id)certificate trustedKeys:(id)keys error:(id *)error;
++ (BOOL)verifyCertificates:(id)certificates intermediates:(id)intermediates policy:(__SecPolicy *)policy error:(id *)error;
++ (BOOL)verifyLeaf:(id)leaf intermediates:(id)intermediates policy:(__SecPolicy *)policy error:(id *)error;
++ (__SecCertificate)certificateFromData:(id)data error:(id *)error;
++ (id)copyTrustedKeysFromDataArray:(id)array error:(id *)error;
++ (id)createCACertificatesArray:(id)array error:(id *)error;
 @end
 
 @implementation TransparencyCertificateHelper
 
-+ (__SecCertificate)certificateFromData:(id)a3 error:(id *)a4
++ (__SecCertificate)certificateFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = SecCertificateCreateWithData(0, v5);
+  dataCopy = data;
+  v6 = SecCertificateCreateWithData(0, dataCopy);
   if (v6 || (v6 = SecCertificateCreateWithPEM()) != 0)
   {
     v7 = v6;
@@ -20,9 +20,9 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-7 description:@"Unable to decode certificate"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-7 description:@"Unable to decode certificate"];
     }
 
     if (qword_10039CE58 != -1)
@@ -43,10 +43,10 @@
   return v7;
 }
 
-+ (BOOL)addTrustedCertificate:(id)a3 trustedKeys:(id)a4 error:(id *)a5
++ (BOOL)addTrustedCertificate:(id)certificate trustedKeys:(id)keys error:(id *)error
 {
-  v7 = a4;
-  v8 = [TransparencyCertificateHelper certificateFromData:a3 error:a5];
+  keysCopy = keys;
+  v8 = [TransparencyCertificateHelper certificateFromData:certificate error:error];
   if (!v8)
   {
     if (qword_10039CE58 != -1)
@@ -68,9 +68,9 @@
   v10 = SecCertificateCopyKey(v8);
   if (!v10)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-8 description:@"Unable to decode certificate public key"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-8 description:@"Unable to decode certificate public key"];
     }
 
     if (qword_10039CE58 != -1)
@@ -93,9 +93,9 @@
   v12 = SecCertificateCopySubjectPublicKeyInfoSHA256Digest();
   if (!v12)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-30 description:@"Unable to copy certificate key SPKI hash"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-30 description:@"Unable to copy certificate key SPKI hash"];
     }
 
     if (qword_10039CE58 != -1)
@@ -120,7 +120,7 @@ LABEL_24:
   }
 
   v13 = v12;
-  [v7 setObject:v11 forKey:v12];
+  [keysCopy setObject:v11 forKey:v12];
   CFRelease(v9);
   CFRelease(v11);
 
@@ -130,15 +130,15 @@ LABEL_25:
   return v14;
 }
 
-+ (id)copyTrustedKeysFromDataArray:(id)a3 error:(id *)a4
++ (id)copyTrustedKeysFromDataArray:(id)array error:(id *)error
 {
-  v5 = a3;
+  arrayCopy = array;
   v6 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -154,7 +154,7 @@ LABEL_25:
           objc_enumerationMutation(v7);
         }
 
-        if (![TransparencyCertificateHelper addTrustedCertificate:*(*(&v14 + 1) + 8 * v11) trustedKeys:v6 error:a4, v14])
+        if (![TransparencyCertificateHelper addTrustedCertificate:*(*(&v14 + 1) + 8 * v11) trustedKeys:v6 error:error, v14])
         {
 
           v12 = 0;
@@ -181,15 +181,15 @@ LABEL_11:
   return v12;
 }
 
-+ (id)createCACertificatesArray:(id)a3 error:(id *)a4
++ (id)createCACertificatesArray:(id)array error:(id *)error
 {
-  v5 = a3;
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  arrayCopy = array;
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -204,7 +204,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [TransparencyCertificateHelper certificateFromData:*(*(&v17 + 1) + 8 * i) error:a4];
+        v12 = [TransparencyCertificateHelper certificateFromData:*(*(&v17 + 1) + 8 * i) error:error];
         if (!v12)
         {
           if (qword_10039CE58 != -1)
@@ -243,23 +243,23 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)verifyLeaf:(id)a3 intermediates:(id)a4 policy:(__SecPolicy *)a5 error:(id *)a6
++ (BOOL)verifyLeaf:(id)leaf intermediates:(id)intermediates policy:(__SecPolicy *)policy error:(id *)error
 {
-  v9 = a4;
-  v10 = [TransparencyCertificateHelper certificateFromData:a3 error:a6];
+  intermediatesCopy = intermediates;
+  v10 = [TransparencyCertificateHelper certificateFromData:leaf error:error];
   if (v10)
   {
     v11 = v10;
     v12 = [NSMutableArray arrayWithObject:v10];
     CFRelease(v11);
-    [v12 addObjectsFromArray:v9];
+    [v12 addObjectsFromArray:intermediatesCopy];
     trust[0] = 0;
-    v13 = SecTrustCreateWithCertificates(v12, a5, trust);
+    v13 = SecTrustCreateWithCertificates(v12, policy, trust);
     if (v13)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [TransparencyError errorWithDomain:kTransparencyErrorAlloc code:v13 description:@"SecTrustCreate failed"];
+        *error = [TransparencyError errorWithDomain:kTransparencyErrorAlloc code:v13 description:@"SecTrustCreate failed"];
       }
 
       if (qword_10039CE58 != -1)
@@ -282,9 +282,9 @@ LABEL_15:
       v20[0] = 0;
       v15 = SecTrustEvaluateWithError(trust[0], v20);
       v17 = v20[0];
-      if (a6 && v20[0])
+      if (error && v20[0])
       {
-        *a6 = v20[0];
+        *error = v20[0];
         v20[0] = 0;
       }
 
@@ -323,25 +323,25 @@ LABEL_15:
   return v15;
 }
 
-+ (BOOL)verifyCertificates:(id)a3 intermediates:(id)a4 policy:(__SecPolicy *)a5 error:(id *)a6
++ (BOOL)verifyCertificates:(id)certificates intermediates:(id)intermediates policy:(__SecPolicy *)policy error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  certificatesCopy = certificates;
+  intermediatesCopy = intermediates;
   v12 = objc_autoreleasePoolPush();
   v34 = 0;
-  v13 = [a1 createCACertificatesArray:v11 error:&v34];
+  v13 = [self createCACertificatesArray:intermediatesCopy error:&v34];
   v14 = v34;
   if (v13)
   {
     v25 = v12;
-    v26 = v11;
-    v27 = a6;
-    v28 = v10;
+    v26 = intermediatesCopy;
+    errorCopy = error;
+    v28 = certificatesCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = v10;
+    v15 = certificatesCopy;
     v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v16)
     {
@@ -361,7 +361,7 @@ LABEL_15:
           {
             v21 = *(*(&v30 + 1) + 8 * i);
             v29 = v14;
-            v19 = [a1 verifyLeaf:v21 intermediates:v13 policy:a5 error:&v29];
+            v19 = [self verifyLeaf:v21 intermediates:v13 policy:policy error:&v29];
             v22 = v29;
 
             v14 = v22;
@@ -384,10 +384,10 @@ LABEL_15:
       v19 = 1;
     }
 
-    a6 = v27;
-    v10 = v28;
+    error = errorCopy;
+    certificatesCopy = v28;
     v12 = v25;
-    v11 = v26;
+    intermediatesCopy = v26;
   }
 
   else
@@ -396,10 +396,10 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v12);
-  if (a6 && v14)
+  if (error && v14)
   {
     v23 = v14;
-    *a6 = v14;
+    *error = v14;
   }
 
   return v19;

@@ -1,8 +1,8 @@
 @interface CRKInstructorExtensionContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)listenerEndpointWithCompletion:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)listenerEndpointWithCompletion:(id)completion;
 @end
 
 @implementation CRKInstructorExtensionContext
@@ -45,43 +45,43 @@ uint64_t __64__CRKInstructorExtensionContext__extensionAuxiliaryHostProtocol__bl
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)listenerEndpointWithCompletion:(id)a3
+- (void)listenerEndpointWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = v4;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (!self->mListener)
   {
-    v5 = [MEMORY[0x277CCAE98] anonymousListener];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     mListener = self->mListener;
-    self->mListener = v5;
+    self->mListener = anonymousListener;
 
     [(NSXPCListener *)self->mListener setDelegate:self];
     [(NSXPCListener *)self->mListener resume];
-    v4 = v8;
+    completionCopy = v8;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v7 = [(NSXPCListener *)self->mListener endpoint];
-    (*(v8 + 2))(v8, v7);
+    endpoint = [(NSXPCListener *)self->mListener endpoint];
+    (*(v8 + 2))(v8, endpoint);
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CF95B8];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithXPCConnection:v6];
+  connectionCopy = connection;
+  v7 = [[v5 alloc] initWithXPCConnection:connectionCopy];
 
-  v8 = [(CRKInstructorExtensionContext *)self _principalObject];
+  _principalObject = [(CRKInstructorExtensionContext *)self _principalObject];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CRKInstructorExtensionContext *)self _principalObject];
-    [v10 didAcceptAdminTransport:v7];
+    _principalObject2 = [(CRKInstructorExtensionContext *)self _principalObject];
+    [_principalObject2 didAcceptAdminTransport:v7];
   }
 
   else

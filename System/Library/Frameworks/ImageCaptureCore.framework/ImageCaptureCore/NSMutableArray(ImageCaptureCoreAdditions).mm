@@ -11,7 +11,7 @@
   if (a3)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLong:a4];
-    [a1 addObject:v5];
+    [self addObject:v5];
   }
 }
 
@@ -29,8 +29,8 @@
     v33 = 0u;
     v34 = 0u;
     v26 = v8;
-    v10 = [v8 files];
-    v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    files = [v8 files];
+    v11 = [files countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v11)
     {
       v12 = v11;
@@ -41,7 +41,7 @@
         {
           if (*v32 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(files);
           }
 
           v15 = *(*(&v31 + 1) + 8 * i);
@@ -51,11 +51,11 @@
 
           if ([v18 conformsToType:v9])
           {
-            [a1 addObject:v15];
+            [self addObject:v15];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v12 = [files countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v12);
@@ -66,16 +66,16 @@
 
   else
   {
-    v19 = [v7 files];
-    [a1 addObjectsFromArray:v19];
+    files2 = [v7 files];
+    [self addObjectsFromArray:files2];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = [v8 folders];
-  v21 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  folders = [v8 folders];
+  v21 = [folders countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v21)
   {
     v22 = v21;
@@ -86,13 +86,13 @@
       {
         if (*v28 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(folders);
         }
 
-        [a1 addItemsMatchingType:v6 fromFolder:*(*(&v27 + 1) + 8 * j)];
+        [self addItemsMatchingType:v6 fromFolder:*(*(&v27 + 1) + 8 * j)];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v22 = [folders countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v22);
@@ -125,7 +125,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [a1 addItemsMatchingType:*(*(&v13 + 1) + 8 * v11++) fromFolder:v7];
+        [self addItemsMatchingType:*(*(&v13 + 1) + 8 * v11++) fromFolder:v7];
       }
 
       while (v9 != v11);

@@ -1,10 +1,10 @@
 @interface KNBuildSparkle
 + (id)defaultAttributes;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (CGRect)frameOfEffectWithFrame:(CGRect)a3 context:(id)a4;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (CGRect)frameOfEffectWithFrame:(CGRect)frame context:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
 @end
 
 @implementation KNBuildSparkle
@@ -16,9 +16,9 @@
   return [NSDictionary dictionaryWithObjects:&v4 forKeys:&v3 count:1];
 }
 
-- (CGRect)frameOfEffectWithFrame:(CGRect)a3 context:(id)a4
+- (CGRect)frameOfEffectWithFrame:(CGRect)frame context:(id)context
 {
-  [a4 drawableFrame];
+  [context drawableFrame];
   x = v9.origin.x;
   y = v9.origin.y;
   width = v9.size.width;
@@ -56,9 +56,9 @@
   return result;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  [objc_msgSend(objc_msgSend(a3 "textures")];
+  [objc_msgSend(objc_msgSend(context "textures")];
   x = v8.origin.x;
   y = v8.origin.y;
   width = v8.size.width;
@@ -96,22 +96,22 @@
   return result;
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v5 = [a3 textures];
-  v6 = [a3 animatedBuild];
-  [objc_msgSend(v5 objectAtIndexedSubscript:{0), "frame"}];
-  [(KNBuildSparkle *)self frameOfEffectWithFrame:a3 context:?];
-  if ([v5 count] != &dword_0 + 1)
+  textures = [context textures];
+  animatedBuild = [context animatedBuild];
+  [objc_msgSend(textures objectAtIndexedSubscript:{0), "frame"}];
+  [(KNBuildSparkle *)self frameOfEffectWithFrame:context context:?];
+  if ([textures count] != &dword_0 + 1)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [v6 direction];
-  v8 = [v5 lastObject];
+  direction = [animatedBuild direction];
+  lastObject = [textures lastObject];
   if (self)
   {
-    [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:a3];
+    [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:context];
   }
 
   else
@@ -140,11 +140,11 @@
   *&self->_baseTransform.m23 = v12;
   v13 = [KNSparkleEffect alloc];
   mAnimationContext = self->super.mAnimationContext;
-  [v6 duration];
+  [animatedBuild duration];
   v16 = v15;
-  v17 = [v6 buildType];
-  v18 = [a3 metalContext];
-  v19 = [a3 randomGenerator];
+  buildType = [animatedBuild buildType];
+  metalContext = [context metalContext];
+  randomGenerator = [context randomGenerator];
   x = self->_frameRect.origin.x;
   y = self->_frameRect.origin.y;
   width = self->_frameRect.size.width;
@@ -161,12 +161,12 @@
   v27 = *&self->_baseTransform.m23;
   v30 = *&self->_baseTransform.m21;
   v31 = v27;
-  self->_effect = [(KNSparkleEffect *)v13 initWithAnimationContext:mAnimationContext texture:v8 destinationRect:&v28 translate:v7 duration:v17 direction:v18 buildType:x metalContext:y randomGenerator:width, height, v16, v19];
+  self->_effect = [(KNSparkleEffect *)v13 initWithAnimationContext:mAnimationContext texture:lastObject destinationRect:&v28 translate:direction duration:buildType direction:metalContext buildType:x metalContext:y randomGenerator:width, height, v16, randomGenerator];
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  [a3 drawableFrame];
+  [context drawableFrame];
   self->_drawableFrame.origin.x = v5;
   self->_drawableFrame.origin.y = v6;
   self->_drawableFrame.size.width = v7;
@@ -177,17 +177,17 @@
   self->_frameRect.size.width = v11;
   self->_frameRect.size.height = v12;
 
-  [(KNBuildSparkle *)self animationWillBeginWithContext:a3];
+  [(KNBuildSparkle *)self animationWillBeginWithContext:context];
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
   effect = self->_effect;
-  [a3 percent];
+  [context percent];
   v6 = v5;
-  v7 = [a3 metalContext];
+  metalContext = [context metalContext];
 
-  [(KNSparkleEffect *)effect renderEffectAtPercent:v7 withContext:v6];
+  [(KNSparkleEffect *)effect renderEffectAtPercent:metalContext withContext:v6];
 }
 
 @end

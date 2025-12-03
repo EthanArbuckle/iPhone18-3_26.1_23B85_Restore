@@ -1,42 +1,42 @@
 @interface DOCEnumerationProperties
-- (DOCEnumerationProperties)initWithConfiguration:(id)a3 tags:(id)a4;
-- (DOCEnumerationProperties)initWithHostIdentifier:(id)a3 maximumNumberOfItems:(int64_t)a4 allowedContentTypes:(id)a5 excludedContentTypes:(id)a6 tags:(id)a7;
+- (DOCEnumerationProperties)initWithConfiguration:(id)configuration tags:(id)tags;
+- (DOCEnumerationProperties)initWithHostIdentifier:(id)identifier maximumNumberOfItems:(int64_t)items allowedContentTypes:(id)types excludedContentTypes:(id)contentTypes tags:(id)tags;
 @end
 
 @implementation DOCEnumerationProperties
 
-- (DOCEnumerationProperties)initWithConfiguration:(id)a3 tags:(id)a4
+- (DOCEnumerationProperties)initWithConfiguration:(id)configuration tags:(id)tags
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 hostIdentifier];
-  v9 = [v7 maximumNumberOfItemsToFetch];
-  v10 = [v7 documentContentTypes];
-  v11 = [v7 excludedDocumentContentTypes];
+  tagsCopy = tags;
+  configurationCopy = configuration;
+  hostIdentifier = [configurationCopy hostIdentifier];
+  maximumNumberOfItemsToFetch = [configurationCopy maximumNumberOfItemsToFetch];
+  documentContentTypes = [configurationCopy documentContentTypes];
+  excludedDocumentContentTypes = [configurationCopy excludedDocumentContentTypes];
 
-  v12 = [(DOCEnumerationProperties *)self initWithHostIdentifier:v8 maximumNumberOfItems:v9 allowedContentTypes:v10 excludedContentTypes:v11 tags:v6];
+  v12 = [(DOCEnumerationProperties *)self initWithHostIdentifier:hostIdentifier maximumNumberOfItems:maximumNumberOfItemsToFetch allowedContentTypes:documentContentTypes excludedContentTypes:excludedDocumentContentTypes tags:tagsCopy];
   return v12;
 }
 
-- (DOCEnumerationProperties)initWithHostIdentifier:(id)a3 maximumNumberOfItems:(int64_t)a4 allowedContentTypes:(id)a5 excludedContentTypes:(id)a6 tags:(id)a7
+- (DOCEnumerationProperties)initWithHostIdentifier:(id)identifier maximumNumberOfItems:(int64_t)items allowedContentTypes:(id)types excludedContentTypes:(id)contentTypes tags:(id)tags
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  typesCopy = types;
+  contentTypesCopy = contentTypes;
+  tagsCopy = tags;
   v21.receiver = self;
   v21.super_class = DOCEnumerationProperties;
   v16 = [(DOCEnumerationProperties *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    [(DOCEnumerationProperties *)v16 setHostIdentifier:v12];
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    [(DOCEnumerationProperties *)v16 setHostIdentifier:identifierCopy];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:items];
     [(DOCEnumerationProperties *)v17 setMaximumNumberOfItems:v18];
 
-    [(DOCEnumerationProperties *)v17 setAllowedContentTypes:v13];
-    [(DOCEnumerationProperties *)v17 setExcludedContentTypes:v14];
-    [(DOCEnumerationProperties *)v17 setTagIdentifiers:v15];
+    [(DOCEnumerationProperties *)v17 setAllowedContentTypes:typesCopy];
+    [(DOCEnumerationProperties *)v17 setExcludedContentTypes:contentTypesCopy];
+    [(DOCEnumerationProperties *)v17 setTagIdentifiers:tagsCopy];
     v19 = v17;
   }
 

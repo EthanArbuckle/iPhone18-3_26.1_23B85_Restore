@@ -1,22 +1,22 @@
 @interface WDCitationTable
-- (WDCitationTable)initWithDocument:(id)a3;
+- (WDCitationTable)initWithDocument:(id)document;
 - (WDDocument)document;
-- (id)citationFor:(id)a3;
+- (id)citationFor:(id)for;
 - (id)description;
 @end
 
 @implementation WDCitationTable
 
-- (WDCitationTable)initWithDocument:(id)a3
+- (WDCitationTable)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v10.receiver = self;
   v10.super_class = WDCitationTable;
   v5 = [(WDCitationTable *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mCitations = v6->mCitations;
     v6->mCitations = v7;
@@ -25,9 +25,9 @@
   return v6;
 }
 
-- (id)citationFor:(id)a3
+- (id)citationFor:(id)for
 {
-  v3 = [(NSMutableDictionary *)self->mCitations objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mCitations objectForKey:for];
 
   return v3;
 }

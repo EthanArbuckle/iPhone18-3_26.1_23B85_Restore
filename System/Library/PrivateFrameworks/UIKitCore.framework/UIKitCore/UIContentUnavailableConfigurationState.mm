@@ -1,13 +1,13 @@
 @interface UIContentUnavailableConfigurationState
-+ (UIContentUnavailableConfigurationState)_readonlyContentUnavailableConfigurationState:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (UIContentUnavailableConfigurationState)_readonlyContentUnavailableConfigurationState:(uint64_t)state;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (UIContentUnavailableConfigurationState)initWithCoder:(NSCoder *)coder;
 - (UIContentUnavailableConfigurationState)initWithTraitCollection:(UITraitCollection *)traitCollection;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCustomState:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCustomState:(id)state forKey:(id)key;
 - (void)setSearchText:(NSString *)searchText;
 - (void)setTraitCollection:(UITraitCollection *)traitCollection;
 @end
@@ -19,8 +19,8 @@
   v6 = traitCollection;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIContentUnavailableConfigurationState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIContentUnavailableConfigurationState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
   }
 
   v11.receiver = self;
@@ -70,28 +70,28 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_traitCollection forKey:@"traitCollection"];
-  [v4 encodeObject:self->_searchText forKey:@"searchText"];
-  if (([v4 requiresSecureCoding] & 1) == 0)
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_traitCollection forKey:@"traitCollection"];
+  [coderCopy encodeObject:self->_searchText forKey:@"searchText"];
+  if (([coderCopy requiresSecureCoding] & 1) == 0)
   {
-    [v4 encodeObject:self->_customStates forKey:@"customStates"];
+    [coderCopy encodeObject:self->_customStates forKey:@"customStates"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = self;
-  v6 = v5;
+  v4 = [objc_opt_class() allocWithZone:zone];
+  selfCopy = self;
+  v6 = selfCopy;
   if (v4)
   {
-    if (!v5)
+    if (!selfCopy)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel__initWithState_ object:v4 file:@"UIContentUnavailableConfigurationState.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithState_ object:v4 file:@"UIContentUnavailableConfigurationState.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
     }
 
     v4 = [v4 initWithTraitCollection:v6->_traitCollection];
@@ -108,18 +108,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -249,8 +249,8 @@ LABEL_25:
   v6 = traitCollection;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIContentUnavailableConfigurationState.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIContentUnavailableConfigurationState.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"traitCollection != nil"}];
 
     v6 = 0;
   }
@@ -264,10 +264,10 @@ LABEL_25:
   }
 }
 
-- (void)setCustomState:(id)a3 forKey:(id)a4
+- (void)setCustomState:(id)state forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  stateCopy = state;
+  keyCopy = key;
   if (self)
   {
     ++self->_mutations;
@@ -283,7 +283,7 @@ LABEL_25:
     customStates = self->_customStates;
   }
 
-  [(NSMutableDictionary *)customStates setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)customStates setObject:stateCopy forKeyedSubscript:keyCopy];
 }
 
 - (void)setSearchText:(NSString *)searchText
@@ -323,7 +323,7 @@ LABEL_8:
 LABEL_10:
 }
 
-+ (UIContentUnavailableConfigurationState)_readonlyContentUnavailableConfigurationState:(uint64_t)a1
++ (UIContentUnavailableConfigurationState)_readonlyContentUnavailableConfigurationState:(uint64_t)state
 {
   v2 = a2;
   objc_opt_self();
@@ -348,8 +348,8 @@ LABEL_7:
   }
 
   v5 = [UIContentUnavailableConfigurationState alloc];
-  v6 = [v2 traitCollection];
-  v4 = [(UIContentUnavailableConfigurationState *)v5 initWithTraitCollection:v6];
+  traitCollection = [v2 traitCollection];
+  v4 = [(UIContentUnavailableConfigurationState *)v5 initWithTraitCollection:traitCollection];
 
 LABEL_9:
 

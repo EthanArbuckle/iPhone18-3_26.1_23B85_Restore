@@ -1,20 +1,20 @@
 @interface VKTextSelectionRect
-- (BOOL)containsPoint:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point;
 - (CGRect)rect;
-- (VKTextSelectionRect)initWithRect:(CGRect)a3 containsStart:(BOOL)a4 containsEnd:(BOOL)a5 layoutDirection:(unint64_t)a6 quad:(id)a7;
-- (id)handleInfoForQuad:(id)a3 origin:(CGPoint)a4;
+- (VKTextSelectionRect)initWithRect:(CGRect)rect containsStart:(BOOL)start containsEnd:(BOOL)end layoutDirection:(unint64_t)direction quad:(id)quad;
+- (id)handleInfoForQuad:(id)quad origin:(CGPoint)origin;
 - (id)summaryDescription;
 @end
 
 @implementation VKTextSelectionRect
 
-- (VKTextSelectionRect)initWithRect:(CGRect)a3 containsStart:(BOOL)a4 containsEnd:(BOOL)a5 layoutDirection:(unint64_t)a6 quad:(id)a7
+- (VKTextSelectionRect)initWithRect:(CGRect)rect containsStart:(BOOL)start containsEnd:(BOOL)end layoutDirection:(unint64_t)direction quad:(id)quad
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  quadCopy = quad;
   v24.receiver = self;
   v24.super_class = VKTextSelectionRect;
   v17 = [(VKTextSelectionRect *)&v24 init];
@@ -25,35 +25,35 @@
     v17->_rect.origin.y = y;
     v17->_rect.size.width = width;
     v17->_rect.size.height = height;
-    v17->_containsStart = a4;
-    v17->_containsEnd = a5;
-    v17->_layoutDirection = a6;
-    v19 = [v16 path];
+    v17->_containsStart = start;
+    v17->_containsEnd = end;
+    v17->_layoutDirection = direction;
+    path = [quadCopy path];
     path = v18->__path;
-    v18->__path = v19;
+    v18->__path = path;
 
-    v21 = [(VKTextSelectionRect *)v18 handleInfoForQuad:v16 origin:x, y];
+    v21 = [(VKTextSelectionRect *)v18 handleInfoForQuad:quadCopy origin:x, y];
     customHandleInfo = v18->__customHandleInfo;
     v18->__customHandleInfo = v21;
 
-    objc_storeStrong(&v18->_quad, a7);
+    objc_storeStrong(&v18->_quad, quad);
   }
 
   return v18;
 }
 
-- (id)handleInfoForQuad:(id)a3 origin:(CGPoint)a4
+- (id)handleInfoForQuad:(id)quad origin:(CGPoint)origin
 {
-  x = a4.x;
-  v5 = a3;
+  x = origin.x;
+  quadCopy = quad;
   v6 = objc_alloc_init(VKTextSelectionRectCustomHandleInfo);
-  [v5 bottomLeft];
+  [quadCopy bottomLeft];
   [(VKTextSelectionRectCustomHandleInfo *)v6 setBottomLeft:VKMAddPoints(v7, v8, x)];
-  [v5 bottomRight];
+  [quadCopy bottomRight];
   [(VKTextSelectionRectCustomHandleInfo *)v6 setBottomRight:VKMAddPoints(v9, v10, x)];
-  [v5 topLeft];
+  [quadCopy topLeft];
   [(VKTextSelectionRectCustomHandleInfo *)v6 setTopLeft:VKMAddPoints(v11, v12, x)];
-  [v5 topRight];
+  [quadCopy topRight];
   v14 = v13;
   v16 = v15;
 
@@ -62,10 +62,10 @@
   return v6;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKTextSelectionRect *)self rect];
   v6 = v15.origin.x;
   v14.x = x;
@@ -75,8 +75,8 @@
   {
     v8 = VKMSubtractPoints(x, y, v6);
     v10 = v9;
-    v11 = [(VKTextSelectionRect *)self quad];
-    v12 = [v11 containsPoint:{v8, v10}];
+    quad = [(VKTextSelectionRect *)self quad];
+    v12 = [quad containsPoint:{v8, v10}];
 
     LOBYTE(v7) = v12;
   }

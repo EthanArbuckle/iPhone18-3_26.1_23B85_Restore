@@ -1,19 +1,19 @@
 @interface ATXAppClipsFeedback
 - (ATXAppClipsFeedback)init;
-- (ATXAppClipsFeedback)initWithAppClipsHistogram:(id)a3 appClipsHistogramNoDecay:(id)a4;
-- (BOOL)_shouldHideAppClipForLowEngagementNoDecay:(id)a3;
-- (BOOL)shouldShowAppClipWithHeroAppPrediction:(id)a3;
+- (ATXAppClipsFeedback)initWithAppClipsHistogram:(id)histogram appClipsHistogramNoDecay:(id)decay;
+- (BOOL)_shouldHideAppClipForLowEngagementNoDecay:(id)decay;
+- (BOOL)shouldShowAppClipWithHeroAppPrediction:(id)prediction;
 - (BOOL)shouldShowAppClips;
-- (double)_confirmsForAppClipWithHeroAppPrediction:(id)a3;
-- (double)_confirmsForAppClipWithHeroAppPredictionNoDecay:(id)a3;
-- (double)_engagementForAppClipWithHeroAppPrediction:(id)a3;
-- (double)_engagementForAppClipWithHeroAppPredictionNoDecay:(id)a3;
+- (double)_confirmsForAppClipWithHeroAppPrediction:(id)prediction;
+- (double)_confirmsForAppClipWithHeroAppPredictionNoDecay:(id)decay;
+- (double)_engagementForAppClipWithHeroAppPrediction:(id)prediction;
+- (double)_engagementForAppClipWithHeroAppPredictionNoDecay:(id)decay;
 - (double)_overallAppClipsengagement;
-- (double)_rejectsForAppClipWithHeroAppPrediction:(id)a3;
-- (double)_rejectsForAppClipWithHeroAppPredictionNoDecay:(id)a3;
-- (double)feedbackScoreForAppClipWithHeroAppPrediction:(id)a3;
-- (void)addConfirmForAppClipWithHeroAppPrediction:(id)a3 weight:(float)a4;
-- (void)addRejectForAppClipWithHeroAppPrediction:(id)a3 weight:(float)a4;
+- (double)_rejectsForAppClipWithHeroAppPrediction:(id)prediction;
+- (double)_rejectsForAppClipWithHeroAppPredictionNoDecay:(id)decay;
+- (double)feedbackScoreForAppClipWithHeroAppPrediction:(id)prediction;
+- (void)addConfirmForAppClipWithHeroAppPrediction:(id)prediction weight:(float)weight;
+- (void)addRejectForAppClipWithHeroAppPrediction:(id)prediction weight:(float)weight;
 @end
 
 @implementation ATXAppClipsFeedback
@@ -29,71 +29,71 @@
   return v7;
 }
 
-- (ATXAppClipsFeedback)initWithAppClipsHistogram:(id)a3 appClipsHistogramNoDecay:(id)a4
+- (ATXAppClipsFeedback)initWithAppClipsHistogram:(id)histogram appClipsHistogramNoDecay:(id)decay
 {
-  v7 = a3;
-  v8 = a4;
+  histogramCopy = histogram;
+  decayCopy = decay;
   v12.receiver = self;
   v12.super_class = ATXAppClipsFeedback;
   v9 = [(ATXAppClipsFeedback *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appClipsAndHeroAppHistogram, a3);
-    objc_storeStrong(&v10->_appClipsAndHeroAppHistogramNoDecay, a4);
+    objc_storeStrong(&v9->_appClipsAndHeroAppHistogram, histogram);
+    objc_storeStrong(&v10->_appClipsAndHeroAppHistogramNoDecay, decay);
   }
 
   return v10;
 }
 
-- (void)addConfirmForAppClipWithHeroAppPrediction:(id)a3 weight:(float)a4
+- (void)addConfirmForAppClipWithHeroAppPrediction:(id)prediction weight:(float)weight
 {
   appClipsAndHeroAppHistogram = self->_appClipsAndHeroAppHistogram;
-  v7 = a3;
-  v8 = [v7 urlHash];
+  predictionCopy = prediction;
+  urlHash = [predictionCopy urlHash];
   v9 = [MEMORY[0x277CBEAA8] now];
-  *&v10 = a4;
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram addLaunchWithBundleId:v8 date:v9 category:@"confirms_clips" weight:v10];
+  *&v10 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram addLaunchWithBundleId:urlHash date:v9 category:@"confirms_clips" weight:v10];
 
   appClipsAndHeroAppHistogramNoDecay = self->_appClipsAndHeroAppHistogramNoDecay;
-  v14 = [v7 urlHash];
+  urlHash2 = [predictionCopy urlHash];
 
   v12 = [MEMORY[0x277CBEAA8] now];
-  *&v13 = a4;
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay addLaunchWithBundleId:v14 date:v12 category:@"confirms_clips" weight:v13];
+  *&v13 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay addLaunchWithBundleId:urlHash2 date:v12 category:@"confirms_clips" weight:v13];
 }
 
-- (void)addRejectForAppClipWithHeroAppPrediction:(id)a3 weight:(float)a4
+- (void)addRejectForAppClipWithHeroAppPrediction:(id)prediction weight:(float)weight
 {
   appClipsAndHeroAppHistogram = self->_appClipsAndHeroAppHistogram;
-  v7 = a3;
-  v8 = [v7 urlHash];
+  predictionCopy = prediction;
+  urlHash = [predictionCopy urlHash];
   v9 = [MEMORY[0x277CBEAA8] now];
-  *&v10 = a4;
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram addLaunchWithBundleId:v8 date:v9 category:@"rejects_clips" weight:v10];
+  *&v10 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram addLaunchWithBundleId:urlHash date:v9 category:@"rejects_clips" weight:v10];
 
   appClipsAndHeroAppHistogramNoDecay = self->_appClipsAndHeroAppHistogramNoDecay;
-  v14 = [v7 urlHash];
+  urlHash2 = [predictionCopy urlHash];
 
   v12 = [MEMORY[0x277CBEAA8] now];
-  *&v13 = a4;
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay addLaunchWithBundleId:v14 date:v12 category:@"rejects_clips" weight:v13];
+  *&v13 = weight;
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay addLaunchWithBundleId:urlHash2 date:v12 category:@"rejects_clips" weight:v13];
 }
 
-- (BOOL)shouldShowAppClipWithHeroAppPrediction:(id)a3
+- (BOOL)shouldShowAppClipWithHeroAppPrediction:(id)prediction
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionCopy = prediction;
   if (![MEMORY[0x277D42590] isInternalBuild] || (v5 = *MEMORY[0x277CEBDC8], LOBYTE(v33) = 0, !CFPreferencesGetAppBooleanValue(v5, *MEMORY[0x277CEBD00], &v33)))
   {
     v6 = +[ATXHeroAndClipConstants sharedInstance];
-    if ([(ATXAppClipsFeedback *)self _shouldHideAppClipForLowEngagementNoDecay:v4])
+    if ([(ATXAppClipsFeedback *)self _shouldHideAppClipForLowEngagementNoDecay:predictionCopy])
     {
-      [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPredictionNoDecay:v4];
+      [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPredictionNoDecay:predictionCopy];
       v9 = v8;
-      [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPredictionNoDecay:v4];
+      [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPredictionNoDecay:predictionCopy];
       v11 = v10;
-      [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPredictionNoDecay:v4];
+      [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPredictionNoDecay:predictionCopy];
       v13 = v12;
       v14 = __atxlog_handle_hero();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -107,7 +107,7 @@ LABEL_21:
 
       [v6 appClipsPerAppClipEngagementThresholdNoDecay];
       v33 = 138413314;
-      v34 = v4;
+      v34 = predictionCopy;
       v35 = 2048;
       v36 = v9;
       v37 = 2048;
@@ -122,14 +122,14 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPrediction:v4];
+    [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPrediction:predictionCopy];
     v18 = v17;
-    [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPrediction:v4];
+    [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPrediction:predictionCopy];
     v20 = v19;
     [v6 appClipsPerAppClipMinRejects];
     if (v18 >= v21)
     {
-      [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPrediction:v4];
+      [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPrediction:predictionCopy];
       v26 = v25;
       [v6 appClipsPerAppClipEngagementThreshold];
       v28 = v27;
@@ -144,7 +144,7 @@ LABEL_9:
 
         [v6 appClipsPerAppClipEngagementThreshold];
         v33 = 138413314;
-        v34 = v4;
+        v34 = predictionCopy;
         v35 = 2048;
         v36 = v18;
         v37 = 2048;
@@ -207,17 +207,17 @@ LABEL_22:
   return v7;
 }
 
-- (double)feedbackScoreForAppClipWithHeroAppPrediction:(id)a3
+- (double)feedbackScoreForAppClipWithHeroAppPrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   v5 = +[ATXHeroAndClipConstants sharedInstance];
-  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPrediction:v4];
+  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPrediction:predictionCopy];
   v7 = v6;
   [v5 appClipsPerAppClipMinRejects];
   v8 = 1.0;
   if (v7 >= v9)
   {
-    [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPrediction:v4];
+    [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPrediction:predictionCopy];
     v8 = v10;
   }
 
@@ -331,12 +331,12 @@ LABEL_18:
   }
 }
 
-- (double)_engagementForAppClipWithHeroAppPrediction:(id)a3
+- (double)_engagementForAppClipWithHeroAppPrediction:(id)prediction
 {
-  v4 = a3;
-  [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPrediction:v4];
+  predictionCopy = prediction;
+  [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPrediction:predictionCopy];
   v6 = v5;
-  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPrediction:v4];
+  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPrediction:predictionCopy];
   v8 = v7;
 
   if (v8 == 0.0)
@@ -350,36 +350,36 @@ LABEL_18:
   }
 }
 
-- (double)_confirmsForAppClipWithHeroAppPrediction:(id)a3
+- (double)_confirmsForAppClipWithHeroAppPrediction:(id)prediction
 {
   appClipsAndHeroAppHistogram = self->_appClipsAndHeroAppHistogram;
-  v4 = [a3 urlHash];
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram totalLaunchesForBundleId:v4 category:@"confirms_clips"];
+  urlHash = [prediction urlHash];
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram totalLaunchesForBundleId:urlHash category:@"confirms_clips"];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_rejectsForAppClipWithHeroAppPrediction:(id)a3
+- (double)_rejectsForAppClipWithHeroAppPrediction:(id)prediction
 {
   appClipsAndHeroAppHistogram = self->_appClipsAndHeroAppHistogram;
-  v4 = [a3 urlHash];
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram totalLaunchesForBundleId:v4 category:@"rejects_clips"];
+  urlHash = [prediction urlHash];
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogram totalLaunchesForBundleId:urlHash category:@"rejects_clips"];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)_shouldHideAppClipForLowEngagementNoDecay:(id)a3
+- (BOOL)_shouldHideAppClipForLowEngagementNoDecay:(id)decay
 {
-  v4 = a3;
+  decayCopy = decay;
   v5 = +[ATXHeroAndClipConstants sharedInstance];
-  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPredictionNoDecay:v4];
+  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPredictionNoDecay:decayCopy];
   v7 = v6;
   [v5 appClipsPerAppClipMinRejectsNoDecay];
   if (v7 >= v8)
   {
-    [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPredictionNoDecay:v4];
+    [(ATXAppClipsFeedback *)self _engagementForAppClipWithHeroAppPredictionNoDecay:decayCopy];
     v11 = v10;
     [v5 appClipsPerAppClipEngagementThresholdNoDecay];
     v9 = v11 < v12;
@@ -393,12 +393,12 @@ LABEL_18:
   return v9;
 }
 
-- (double)_engagementForAppClipWithHeroAppPredictionNoDecay:(id)a3
+- (double)_engagementForAppClipWithHeroAppPredictionNoDecay:(id)decay
 {
-  v4 = a3;
-  [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPredictionNoDecay:v4];
+  decayCopy = decay;
+  [(ATXAppClipsFeedback *)self _confirmsForAppClipWithHeroAppPredictionNoDecay:decayCopy];
   v6 = v5;
-  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPredictionNoDecay:v4];
+  [(ATXAppClipsFeedback *)self _rejectsForAppClipWithHeroAppPredictionNoDecay:decayCopy];
   v8 = v7;
 
   if (v8 == 0.0)
@@ -412,21 +412,21 @@ LABEL_18:
   }
 }
 
-- (double)_confirmsForAppClipWithHeroAppPredictionNoDecay:(id)a3
+- (double)_confirmsForAppClipWithHeroAppPredictionNoDecay:(id)decay
 {
   appClipsAndHeroAppHistogramNoDecay = self->_appClipsAndHeroAppHistogramNoDecay;
-  v4 = [a3 urlHash];
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay totalLaunchesForBundleId:v4 category:@"confirms_clips"];
+  urlHash = [decay urlHash];
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay totalLaunchesForBundleId:urlHash category:@"confirms_clips"];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_rejectsForAppClipWithHeroAppPredictionNoDecay:(id)a3
+- (double)_rejectsForAppClipWithHeroAppPredictionNoDecay:(id)decay
 {
   appClipsAndHeroAppHistogramNoDecay = self->_appClipsAndHeroAppHistogramNoDecay;
-  v4 = [a3 urlHash];
-  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay totalLaunchesForBundleId:v4 category:@"rejects_clips"];
+  urlHash = [decay urlHash];
+  [(_ATXAppLaunchCategoricalHistogram *)appClipsAndHeroAppHistogramNoDecay totalLaunchesForBundleId:urlHash category:@"rejects_clips"];
   v6 = v5;
 
   return v6;

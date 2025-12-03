@@ -1,15 +1,15 @@
 @interface ContextKeys
 - (_TtC8TipsCore11ContextKeys)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ContextKeys
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ContextKeys.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ContextKeys.encode(with:)(coderCopy);
 }
 
 - (_TtC8TipsCore11ContextKeys)init

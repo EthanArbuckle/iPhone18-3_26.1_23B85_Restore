@@ -1,7 +1,7 @@
 @interface OSLogSystemEnumerator
-- (OSLogSystemEnumerator)initWithEventStream:(id)a3 options:(unint64_t)a4 position:(id)a5;
+- (OSLogSystemEnumerator)initWithEventStream:(id)stream options:(unint64_t)options position:(id)position;
 - (id)nextObject;
-- (void)_handleEventProxy:(id)a3;
+- (void)_handleEventProxy:(id)proxy;
 - (void)_handleInvalidation;
 - (void)dealloc;
 @end
@@ -17,9 +17,9 @@
   dispatch_semaphore_signal(handlerDone);
 }
 
-- (void)_handleEventProxy:(id)a3
+- (void)_handleEventProxy:(id)proxy
 {
-  v4 = convertEventProxyToEntry(a3);
+  v4 = convertEventProxyToEntry(proxy);
   next = self->_next;
   self->_next = v4;
 
@@ -49,18 +49,18 @@
   [(OSLogSystemEnumerator *)&v3 dealloc];
 }
 
-- (OSLogSystemEnumerator)initWithEventStream:(id)a3 options:(unint64_t)a4 position:(id)a5
+- (OSLogSystemEnumerator)initWithEventStream:(id)stream options:(unint64_t)options position:(id)position
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  optionsCopy = options;
+  streamCopy = stream;
+  positionCopy = position;
   v30.receiver = self;
   v30.super_class = OSLogSystemEnumerator;
   v11 = [(OSLogSystemEnumerator *)&v30 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_stream, a3);
+    objc_storeStrong(&v11->_stream, stream);
     v13 = dispatch_semaphore_create(0);
     pushDone = v12->_pushDone;
     v12->_pushDone = v13;
@@ -85,27 +85,27 @@
     objc_copyWeak(&v26, &location);
     [(OSLogEventStream *)v18 setInvalidationHandler:v25];
     [(OSLogEventStream *)v12->_stream setFlags:39];
-    if (v6)
+    if (optionsCopy)
     {
       [(OSLogEventStream *)v12->_stream setFlags:[(OSLogEventStream *)v12->_stream flags]| 8];
     }
 
-    if (v10)
+    if (positionCopy)
     {
-      if ([v10 precision] == 1)
+      if ([positionCopy precision] == 1)
       {
         v19 = v12->_stream;
-        v20 = [v10 date];
-        [(OSLogEventStream *)v19 activateStreamFromDate:v20];
+        date = [positionCopy date];
+        [(OSLogEventStream *)v19 activateStreamFromDate:date];
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      if ([v10 precision] == 2)
+      if ([positionCopy precision] == 2)
       {
         v21 = v12->_stream;
-        [v10 offset];
+        [positionCopy offset];
         [(OSLogEventStream *)v21 _activateStreamFromTimeIntervalSinceLastBoot:?];
 LABEL_11:
         v23 = v12;
@@ -117,8 +117,8 @@ LABEL_11:
     }
 
     v22 = v12->_stream;
-    v20 = [MEMORY[0x277CBEAA8] distantPast];
-    [(OSLogEventStream *)v22 activateStreamFromDate:v20];
+    date = [MEMORY[0x277CBEAA8] distantPast];
+    [(OSLogEventStream *)v22 activateStreamFromDate:date];
     goto LABEL_10;
   }
 

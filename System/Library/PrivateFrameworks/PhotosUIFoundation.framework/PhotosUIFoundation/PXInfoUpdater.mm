@@ -1,16 +1,16 @@
 @interface PXInfoUpdater
 - (PXInfoProvider)infoProvider;
 - (PXInfoUpdater)init;
-- (PXInfoUpdater)initWithInfoProvider:(id)a3 infoKind:(id)a4;
+- (PXInfoUpdater)initWithInfoProvider:(id)provider infoKind:(id)kind;
 - (PXInfoUpdaterObserver)observer;
 - (id)info;
-- (void)_handleCurrentUpdateWithInfo:(id)a3 generation:(int64_t)a4;
+- (void)_handleCurrentUpdateWithInfo:(id)info generation:(int64_t)generation;
 - (void)_updateInfo;
 - (void)_updateInfoIfNeeded;
 - (void)invalidateInfo;
-- (void)performBlockWhenDoneUpdating:(id)a3;
-- (void)setInfo:(id)a3;
-- (void)setObserver:(id)a3;
+- (void)performBlockWhenDoneUpdating:(id)updating;
+- (void)setInfo:(id)info;
+- (void)setObserver:(id)observer;
 @end
 
 @implementation PXInfoUpdater
@@ -26,9 +26,9 @@
         return;
       }
 
-      v3 = [(PXInfoUpdater *)self infoProvider];
-      v4 = [(PXInfoUpdater *)self infoKind];
-      v5 = [v3 priorityForInfoRequestOfKind:v4];
+      infoProvider = [(PXInfoUpdater *)self infoProvider];
+      infoKind = [(PXInfoUpdater *)self infoKind];
+      v5 = [infoProvider priorityForInfoRequestOfKind:infoKind];
 
       if (v5 <= [(PXInfoUpdater *)self currentUpdatePriority])
       {
@@ -56,21 +56,21 @@
   [(PXInfoUpdater *)self setCurrentUpdateGeneration:v3];
   [(PXInfoUpdater *)self setShouldUpdateInfo:0];
   [(PXInfoUpdater *)self setIsUpdatingInfo:1];
-  v4 = [(PXInfoUpdater *)self currentUpdateProgress];
-  [v4 cancel];
+  currentUpdateProgress = [(PXInfoUpdater *)self currentUpdateProgress];
+  [currentUpdateProgress cancel];
 
-  v5 = [(PXInfoUpdater *)self infoProvider];
-  if (v5)
+  infoProvider = [(PXInfoUpdater *)self infoProvider];
+  if (infoProvider)
   {
     objc_initWeak(&location, self);
-    v6 = [(PXInfoUpdater *)self infoKind];
+    infoKind = [(PXInfoUpdater *)self infoKind];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __28__PXInfoUpdater__updateInfo__block_invoke;
     v8[3] = &unk_1E7BB6A88;
     objc_copyWeak(v9, &location);
     v9[1] = v3;
-    v7 = [v5 requestInfoOfKind:v6 withResultHandler:v8];
+    v7 = [infoProvider requestInfoOfKind:infoKind withResultHandler:v8];
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);
@@ -155,9 +155,9 @@ void __21__PXInfoUpdater_info__block_invoke(uint64_t a1)
   [WeakRetained _updateInfoIfNeeded];
 }
 
-- (void)performBlockWhenDoneUpdating:(id)a3
+- (void)performBlockWhenDoneUpdating:(id)updating
 {
-  v4 = a3;
+  updatingCopy = updating;
   if ([(PXInfoUpdater *)self isUpdatingInfo]|| [(PXInfoUpdater *)self shouldUpdateInfo])
   {
     [(PXInfoUpdater *)self info];
@@ -168,7 +168,7 @@ void __21__PXInfoUpdater_info__block_invoke(uint64_t a1)
     block[2] = __46__PXInfoUpdater_performBlockWhenDoneUpdating___block_invoke;
     block[3] = &unk_1E7BB6AB0;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = updatingCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v7);
@@ -177,7 +177,7 @@ void __21__PXInfoUpdater_info__block_invoke(uint64_t a1)
 
   else
   {
-    v4[2](v4);
+    updatingCopy[2](updatingCopy);
   }
 }
 
@@ -187,12 +187,12 @@ void __46__PXInfoUpdater_performBlockWhenDoneUpdating___block_invoke(uint64_t a1
   [WeakRetained performBlockWhenDoneUpdating:*(a1 + 32)];
 }
 
-- (void)_handleCurrentUpdateWithInfo:(id)a3 generation:(int64_t)a4
+- (void)_handleCurrentUpdateWithInfo:(id)info generation:(int64_t)generation
 {
-  v6 = a3;
-  if ([(PXInfoUpdater *)self currentUpdateGeneration]== a4)
+  infoCopy = info;
+  if ([(PXInfoUpdater *)self currentUpdateGeneration]== generation)
   {
-    [(PXInfoUpdater *)self setInfo:v6];
+    [(PXInfoUpdater *)self setInfo:infoCopy];
     [(PXInfoUpdater *)self setIsUpdatingInfo:0];
     if ([(PXInfoUpdater *)self shouldUpdateInfo])
     {
@@ -201,26 +201,26 @@ void __46__PXInfoUpdater_performBlockWhenDoneUpdating___block_invoke(uint64_t a1
   }
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   p_info = &self->_info;
-  if (self->_info != v5)
+  if (self->_info != infoCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_info, a3);
-    v7 = [(PXInfoUpdater *)self observer];
-    [v7 infoUpdaterDidUpdate:self];
+    v8 = infoCopy;
+    objc_storeStrong(p_info, info);
+    observer = [(PXInfoUpdater *)self observer];
+    [observer infoUpdaterDidUpdate:self];
 
-    v5 = v8;
+    infoCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_info, v5);
+  MEMORY[0x1EEE66BB8](p_info, infoCopy);
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
 
   if (WeakRetained != obj)
@@ -231,19 +231,19 @@ void __46__PXInfoUpdater_performBlockWhenDoneUpdating___block_invoke(uint64_t a1
   }
 }
 
-- (PXInfoUpdater)initWithInfoProvider:(id)a3 infoKind:(id)a4
+- (PXInfoUpdater)initWithInfoProvider:(id)provider infoKind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  kindCopy = kind;
   v13.receiver = self;
   v13.super_class = PXInfoUpdater;
   v8 = [(PXInfoUpdater *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_infoProvider, v6);
+    objc_storeWeak(&v8->_infoProvider, providerCopy);
     v9->_infoProviderRespondsTo.priorityForInfoRequestOfKind = objc_opt_respondsToSelector() & 1;
-    v10 = [v7 copy];
+    v10 = [kindCopy copy];
     infoKind = v9->_infoKind;
     v9->_infoKind = v10;
 
@@ -255,8 +255,8 @@ void __46__PXInfoUpdater_performBlockWhenDoneUpdating___block_invoke(uint64_t a1
 
 - (PXInfoUpdater)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXInfoUpdater.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXInfoUpdater init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXInfoUpdater.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXInfoUpdater init]"}];
 
   abort();
 }

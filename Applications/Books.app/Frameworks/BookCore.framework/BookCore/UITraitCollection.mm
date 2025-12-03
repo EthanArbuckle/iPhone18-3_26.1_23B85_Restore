@@ -1,9 +1,9 @@
 @interface UITraitCollection
 + (id)bc_allAPITraits;
-+ (id)bk_traitCollectionWithReadingMode:(unint64_t)a3;
-+ (id)currentTraitCollectionLimitedToSizeCategory:(id)a3;
-- (BOOL)bc_knownPropertiesEqual:(id)a3;
-- (id)traitCollectionLimitedToSizeCategory:(id)a3;
++ (id)bk_traitCollectionWithReadingMode:(unint64_t)mode;
++ (id)currentTraitCollectionLimitedToSizeCategory:(id)category;
+- (BOOL)bc_knownPropertiesEqual:(id)equal;
+- (id)traitCollectionLimitedToSizeCategory:(id)category;
 @end
 
 @implementation UITraitCollection
@@ -29,25 +29,25 @@
   return v2;
 }
 
-- (BOOL)bc_knownPropertiesEqual:(id)a3
+- (BOOL)bc_knownPropertiesEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
 
   else
   {
-    v5 = [(UITraitCollection *)self userInterfaceIdiom];
-    if (v5 == [(UITraitCollection *)v4 userInterfaceIdiom]&& ([(UITraitCollection *)self displayScale], v7 = v6, [(UITraitCollection *)v4 displayScale], v7 == v8) && (v9 = [(UITraitCollection *)self displayGamut], v9 == [(UITraitCollection *)v4 displayGamut]) && (v10 = [(UITraitCollection *)self userInterfaceStyle], v10 == [(UITraitCollection *)v4 userInterfaceStyle]) && (v11 = [(UITraitCollection *)self layoutDirection], v11 == [(UITraitCollection *)v4 layoutDirection]) && (v12 = [(UITraitCollection *)self forceTouchCapability], v12 == [(UITraitCollection *)v4 forceTouchCapability]))
+    userInterfaceIdiom = [(UITraitCollection *)self userInterfaceIdiom];
+    if (userInterfaceIdiom == [(UITraitCollection *)equalCopy userInterfaceIdiom]&& ([(UITraitCollection *)self displayScale], v7 = v6, [(UITraitCollection *)equalCopy displayScale], v7 == v8) && (v9 = [(UITraitCollection *)self displayGamut], v9 == [(UITraitCollection *)equalCopy displayGamut]) && (v10 = [(UITraitCollection *)self userInterfaceStyle], v10 == [(UITraitCollection *)equalCopy userInterfaceStyle]) && (v11 = [(UITraitCollection *)self layoutDirection], v11 == [(UITraitCollection *)equalCopy layoutDirection]) && (v12 = [(UITraitCollection *)self forceTouchCapability], v12 == [(UITraitCollection *)equalCopy forceTouchCapability]))
     {
-      v13 = [(UITraitCollection *)self preferredContentSizeCategory];
-      v14 = [(UITraitCollection *)v4 preferredContentSizeCategory];
-      if (v13 == v14 && (v15 = [(UITraitCollection *)self accessibilityContrast], v15 == [(UITraitCollection *)v4 accessibilityContrast]))
+      preferredContentSizeCategory = [(UITraitCollection *)self preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [(UITraitCollection *)equalCopy preferredContentSizeCategory];
+      if (preferredContentSizeCategory == preferredContentSizeCategory2 && (v15 = [(UITraitCollection *)self accessibilityContrast], v15 == [(UITraitCollection *)equalCopy accessibilityContrast]))
       {
-        v16 = [(UITraitCollection *)self userInterfaceLevel];
-        v17 = v16 == [(UITraitCollection *)v4 userInterfaceLevel];
+        userInterfaceLevel = [(UITraitCollection *)self userInterfaceLevel];
+        v17 = userInterfaceLevel == [(UITraitCollection *)equalCopy userInterfaceLevel];
       }
 
       else
@@ -65,31 +65,31 @@
   return v17;
 }
 
-- (id)traitCollectionLimitedToSizeCategory:(id)a3
+- (id)traitCollectionLimitedToSizeCategory:(id)category
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_C7728;
   v7[3] = &unk_2CC5B8;
-  v8 = a3;
-  v4 = v8;
+  categoryCopy = category;
+  v4 = categoryCopy;
   v5 = [(UITraitCollection *)self traitCollectionByModifyingTraits:v7];
 
   return v5;
 }
 
-+ (id)currentTraitCollectionLimitedToSizeCategory:(id)a3
++ (id)currentTraitCollectionLimitedToSizeCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = +[UITraitCollection currentTraitCollection];
-  v5 = [v4 traitCollectionLimitedToSizeCategory:v3];
+  v5 = [v4 traitCollectionLimitedToSizeCategory:categoryCopy];
 
   return v5;
 }
 
-+ (id)bk_traitCollectionWithReadingMode:(unint64_t)a3
++ (id)bk_traitCollectionWithReadingMode:(unint64_t)mode
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:mode];
   v4 = [UITraitCollection _traitCollectionWithValue:v3 forTraitNamed:@"BKClientTraitReadingModeKey"];
 
   return v4;

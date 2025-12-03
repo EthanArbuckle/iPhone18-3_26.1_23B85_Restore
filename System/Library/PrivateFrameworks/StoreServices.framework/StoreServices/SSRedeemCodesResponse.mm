@@ -1,13 +1,13 @@
 @interface SSRedeemCodesResponse
-- (SSRedeemCodesResponse)initWithXPCEncoding:(id)a3;
+- (SSRedeemCodesResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (id)dictionaryForCode:(id)a3;
-- (id)errorForCode:(id)a3;
-- (id)responseDictionaryForCode:(id)a3;
+- (id)dictionaryForCode:(id)code;
+- (id)errorForCode:(id)code;
+- (id)responseDictionaryForCode:(id)code;
 - (void)dealloc;
-- (void)setCodeResponses:(id)a3;
-- (void)setFailedCodes:(id)a3;
-- (void)setRedeemedCodes:(id)a3;
+- (void)setCodeResponses:(id)responses;
+- (void)setFailedCodes:(id)codes;
+- (void)setRedeemedCodes:(id)codes;
 @end
 
 @implementation SSRedeemCodesResponse
@@ -19,60 +19,60 @@
   [(SSRedeemCodesResponse *)&v3 dealloc];
 }
 
-- (id)dictionaryForCode:(id)a3
+- (id)dictionaryForCode:(id)code
 {
-  v3 = [(NSDictionary *)self->_redeemedCodes objectForKey:a3];
+  v3 = [(NSDictionary *)self->_redeemedCodes objectForKey:code];
 
   return v3;
 }
 
-- (id)errorForCode:(id)a3
+- (id)errorForCode:(id)code
 {
-  v3 = [(NSDictionary *)self->_errors objectForKey:a3];
+  v3 = [(NSDictionary *)self->_errors objectForKey:code];
 
   return v3;
 }
 
-- (id)responseDictionaryForCode:(id)a3
+- (id)responseDictionaryForCode:(id)code
 {
-  v3 = [(NSDictionary *)self->_codeResponses objectForKey:a3];
+  v3 = [(NSDictionary *)self->_codeResponses objectForKey:code];
 
   return v3;
 }
 
-- (void)setCodeResponses:(id)a3
+- (void)setCodeResponses:(id)responses
 {
   codeResponses = self->_codeResponses;
-  if (codeResponses != a3)
+  if (codeResponses != responses)
   {
 
-    self->_codeResponses = [a3 copy];
+    self->_codeResponses = [responses copy];
   }
 }
 
-- (void)setFailedCodes:(id)a3
+- (void)setFailedCodes:(id)codes
 {
   errors = self->_errors;
-  if (errors != a3)
+  if (errors != codes)
   {
 
-    self->_errors = [a3 copy];
+    self->_errors = [codes copy];
   }
 }
 
-- (void)setRedeemedCodes:(id)a3
+- (void)setRedeemedCodes:(id)codes
 {
   redeemedCodes = self->_redeemedCodes;
-  if (redeemedCodes != a3)
+  if (redeemedCodes != codes)
   {
 
-    self->_redeemedCodes = [a3 copy];
+    self->_redeemedCodes = [codes copy];
   }
 }
 
-- (SSRedeemCodesResponse)initWithXPCEncoding:(id)a3
+- (SSRedeemCodesResponse)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && (v5 = MEMORY[0x1DA6E0380](a3, a2), v6 = MEMORY[0x1E69E9E80], v5 == MEMORY[0x1E69E9E80]))
+  if (encoding && (v5 = MEMORY[0x1DA6E0380](encoding, a2), v6 = MEMORY[0x1E69E9E80], v5 == MEMORY[0x1E69E9E80]))
   {
     v13.receiver = self;
     v13.super_class = SSRedeemCodesResponse;
@@ -80,11 +80,11 @@
     if (v7)
     {
       objc_opt_class();
-      v7->_codeResponses = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v7->_codeResponses = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
       objc_opt_class();
-      v7->_redeemedCodes = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
+      v7->_redeemedCodes = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      value = xpc_dictionary_get_value(a3, "1");
+      value = xpc_dictionary_get_value(encoding, "1");
       if (value)
       {
         v11 = value;

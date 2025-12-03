@@ -25,8 +25,8 @@
   if (v6)
   {
     v7 = MEMORY[0x277CCAAC8];
-    v8 = [a1 MSSafeUnarchiveAllowedClasses];
-    v9 = [v7 unarchivedObjectOfClasses:v8 fromData:v6 error:a4];
+    mSSafeUnarchiveAllowedClasses = [self MSSafeUnarchiveAllowedClasses];
+    v9 = [v7 unarchivedObjectOfClasses:mSSafeUnarchiveAllowedClasses fromData:v6 error:a4];
   }
 
   else if (a4)

@@ -1,16 +1,16 @@
 @interface SLGoogleAuthController
-+ (id)_identityFromUsername:(id)a3 displayName:(id)a4 token:(id)a5 refreshToken:(id)a6 idToken:(id)a7 grantedDataclasses:(id)a8;
-+ (id)googleAuthControllerWithAccount:(id)a3 accountStore:(id)a4 presentationBlock:(id)a5 completion:(id)a6;
-+ (id)googleAuthControllerWithPresentationBlock:(id)a3 completion:(id)a4;
-+ (id)googleAuthControllerWithYouTubeUsername:(id)a3 presentationBlock:(id)a4 completion:(id)a5;
++ (id)_identityFromUsername:(id)username displayName:(id)name token:(id)token refreshToken:(id)refreshToken idToken:(id)idToken grantedDataclasses:(id)dataclasses;
++ (id)googleAuthControllerWithAccount:(id)account accountStore:(id)store presentationBlock:(id)block completion:(id)completion;
++ (id)googleAuthControllerWithPresentationBlock:(id)block completion:(id)completion;
++ (id)googleAuthControllerWithYouTubeUsername:(id)username presentationBlock:(id)block completion:(id)completion;
 + (void)_presentInternetOfflineError;
 + (void)_presentUsernameMismatchAlert;
-- (id)_initWithAccount:(id)a3 accountStore:(id)a4 username:(id)a5 youTube:(BOOL)a6 emailOnly:(BOOL)a7 clientID:(id)a8 presentationBlock:(id)a9 completion:(id)a10;
-- (id)_redirectPathForURI:(id)a3;
+- (id)_initWithAccount:(id)account accountStore:(id)store username:(id)username youTube:(BOOL)tube emailOnly:(BOOL)only clientID:(id)d presentationBlock:(id)block completion:(id)self0;
+- (id)_redirectPathForURI:(id)i;
 - (id)_webClient;
-- (void)_completeWithIdentity:(id)a3 error:(id)a4;
-- (void)_didRedirectToURL:(id)a3 codeVerifier:(id)a4;
-- (void)_dismissAndCompleteWithIdentity:(id)a3 error:(id)a4;
+- (void)_completeWithIdentity:(id)identity error:(id)error;
+- (void)_didRedirectToURL:(id)l codeVerifier:(id)verifier;
+- (void)_dismissAndCompleteWithIdentity:(id)identity error:(id)error;
 - (void)dealloc;
 @end
 
@@ -23,77 +23,77 @@
   return v2;
 }
 
-+ (id)googleAuthControllerWithPresentationBlock:(id)a3 completion:(id)a4
++ (id)googleAuthControllerWithPresentationBlock:(id)block completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithAccount:0 accountStore:0 username:0 youTube:0 emailOnly:0 clientID:0 presentationBlock:v7 completion:v6];
+  completionCopy = completion;
+  blockCopy = block;
+  v8 = [[self alloc] _initWithAccount:0 accountStore:0 username:0 youTube:0 emailOnly:0 clientID:0 presentationBlock:blockCopy completion:completionCopy];
 
   return v8;
 }
 
-+ (id)googleAuthControllerWithAccount:(id)a3 accountStore:(id)a4 presentationBlock:(id)a5 completion:(id)a6
++ (id)googleAuthControllerWithAccount:(id)account accountStore:(id)store presentationBlock:(id)block completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithAccount:v13 accountStore:v12 username:0 youTube:0 emailOnly:0 clientID:0 presentationBlock:v11 completion:v10];
+  completionCopy = completion;
+  blockCopy = block;
+  storeCopy = store;
+  accountCopy = account;
+  v14 = [[self alloc] _initWithAccount:accountCopy accountStore:storeCopy username:0 youTube:0 emailOnly:0 clientID:0 presentationBlock:blockCopy completion:completionCopy];
 
   return v14;
 }
 
-+ (id)googleAuthControllerWithYouTubeUsername:(id)a3 presentationBlock:(id)a4 completion:(id)a5
++ (id)googleAuthControllerWithYouTubeUsername:(id)username presentationBlock:(id)block completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithAccount:0 accountStore:0 username:v10 youTube:1 emailOnly:0 clientID:0 presentationBlock:v9 completion:v8];
+  completionCopy = completion;
+  blockCopy = block;
+  usernameCopy = username;
+  v11 = [[self alloc] _initWithAccount:0 accountStore:0 username:usernameCopy youTube:1 emailOnly:0 clientID:0 presentationBlock:blockCopy completion:completionCopy];
 
   return v11;
 }
 
-- (id)_initWithAccount:(id)a3 accountStore:(id)a4 username:(id)a5 youTube:(BOOL)a6 emailOnly:(BOOL)a7 clientID:(id)a8 presentationBlock:(id)a9 completion:(id)a10
+- (id)_initWithAccount:(id)account accountStore:(id)store username:(id)username youTube:(BOOL)tube emailOnly:(BOOL)only clientID:(id)d presentationBlock:(id)block completion:(id)self0
 {
-  v11 = a7;
-  v53 = a6;
-  v16 = a3;
-  v56 = a4;
-  v17 = a5;
-  v55 = a8;
-  v18 = a9;
-  v19 = a10;
+  onlyCopy = only;
+  tubeCopy = tube;
+  accountCopy = account;
+  storeCopy = store;
+  usernameCopy = username;
+  dCopy = d;
+  blockCopy = block;
+  completionCopy = completion;
   v61.receiver = self;
   v61.super_class = SLGoogleAuthController;
-  v20 = [(SLWebAuthController *)&v61 _init];
-  if (!v20)
+  _init = [(SLWebAuthController *)&v61 _init];
+  if (!_init)
   {
     goto LABEL_14;
   }
 
-  v49 = v11;
-  v21 = v17;
+  v49 = onlyCopy;
+  v21 = usernameCopy;
   _SLLog();
-  objc_storeStrong(v20 + 134, a3);
-  objc_storeStrong(v20 + 135, a4);
-  v22 = MEMORY[0x26D666280](v18);
-  v23 = v20[136];
-  v20[136] = v22;
+  objc_storeStrong(_init + 134, account);
+  objc_storeStrong(_init + 135, store);
+  v22 = MEMORY[0x26D666280](blockCopy);
+  v23 = _init[136];
+  _init[136] = v22;
 
-  objc_storeStrong(v20 + 138, a8);
-  [v20 setCompletion:{v19, v20}];
-  v24 = [v20 _webClient];
+  objc_storeStrong(_init + 138, d);
+  [_init setCompletion:{completionCopy, _init}];
+  _webClient = [_init _webClient];
   v25 = objc_opt_respondsToSelector();
 
-  v52 = v16;
+  v52 = accountCopy;
   if (v25)
   {
     v26 = MEMORY[0x277CCACA8];
-    v27 = [v20 _webClient];
-    v28 = [v27 clientRedirectForAppOpenURL];
-    v54 = [v26 stringWithFormat:@"%@:/", v28];
+    _webClient2 = [_init _webClient];
+    clientRedirectForAppOpenURL = [_webClient2 clientRedirectForAppOpenURL];
+    v54 = [v26 stringWithFormat:@"%@:/", clientRedirectForAppOpenURL];
 
-    v16 = v52;
+    accountCopy = v52;
     if (!v52)
     {
       goto LABEL_7;
@@ -103,50 +103,50 @@
   }
 
   v54 = 0;
-  if (v16)
+  if (accountCopy)
   {
 LABEL_6:
-    v29 = [v16 username];
+    username = [accountCopy username];
 
-    v21 = v29;
+    v21 = username;
   }
 
 LABEL_7:
-  v30 = [MEMORY[0x277CCAD78] UUID];
-  v31 = [v30 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v32 = [v20 _webClient];
-  v33 = v32;
-  v50 = v19;
-  v51 = v18;
-  if (v53)
+  _webClient3 = [_init _webClient];
+  v33 = _webClient3;
+  v50 = completionCopy;
+  v51 = blockCopy;
+  if (tubeCopy)
   {
-    v34 = [v32 youTubeScope];
+    youTubeScope = [_webClient3 youTubeScope];
   }
 
   else
   {
     if (v49)
     {
-      [v32 emailScope];
+      [_webClient3 emailScope];
     }
 
     else
     {
-      [v32 defaultScope];
+      [_webClient3 defaultScope];
     }
-    v34 = ;
+    youTubeScope = ;
   }
 
-  v35 = v34;
+  v35 = youTubeScope;
 
-  v36 = [v31 sl_urlEncodedSHA256];
+  sl_urlEncodedSHA256 = [uUIDString sl_urlEncodedSHA256];
   v37 = MEMORY[0x277CDC7D0];
-  v38 = [v20 _webClient];
-  v39 = [v38 clientID];
-  v40 = [v20 _webClient];
-  v41 = [v40 authRequestURL];
-  v42 = [v37 urlForClientID:v39 redirectURI:v54 scope:v35 username:v21 authRequestURL:v41 codeChallenge:v36];
+  _webClient4 = [_init _webClient];
+  clientID = [_webClient4 clientID];
+  _webClient5 = [_init _webClient];
+  authRequestURL = [_webClient5 authRequestURL];
+  v42 = [v37 urlForClientID:clientID redirectURI:v54 scope:v35 username:v21 authRequestURL:authRequestURL codeChallenge:sl_urlEncodedSHA256];
 
   _SLLog();
   v43 = objc_alloc(MEMORY[0x277CDC7C8]);
@@ -155,20 +155,20 @@ LABEL_7:
   v57[2] = __121__SLGoogleAuthController__initWithAccount_accountStore_username_youTube_emailOnly_clientID_presentationBlock_completion___block_invoke;
   v57[3] = &unk_279CA4D98;
   v58 = 0;
-  v44 = v20;
+  v44 = _init;
   v59 = v44;
-  v60 = v31;
-  v45 = v31;
+  v60 = uUIDString;
+  v45 = uUIDString;
   v46 = [v43 initForPermissionToAccessURL:v42 fromURLString:@"https://gil.apple.com/" completion:{v57, v42}];
   v47 = v44;
 
-  v17 = v21;
-  v18 = v51;
-  v16 = v52;
-  v19 = v50;
+  usernameCopy = v21;
+  blockCopy = v51;
+  accountCopy = v52;
+  completionCopy = v50;
 LABEL_14:
 
-  return v20;
+  return _init;
 }
 
 void __121__SLGoogleAuthController__initWithAccount_accountStore_username_youTube_emailOnly_clientID_presentationBlock_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -309,30 +309,30 @@ LABEL_6:
   [(SLGoogleAuthController *)&v3 dealloc];
 }
 
-- (id)_redirectPathForURI:(id)a3
+- (id)_redirectPathForURI:(id)i
 {
-  if (a3)
+  if (i)
   {
     v3 = [MEMORY[0x277CBEBC0] URLWithString:?];
-    v4 = [v3 host];
-    if (!v4)
+    host = [v3 host];
+    if (!host)
     {
-      v5 = [v3 path];
-      v6 = [v5 hasPrefix:@"/"];
+      path = [v3 path];
+      v6 = [path hasPrefix:@"/"];
 
-      v7 = [v3 path];
-      v4 = v7;
+      path2 = [v3 path];
+      host = path2;
       if (v6)
       {
-        v8 = [v7 substringFromIndex:1];
+        v8 = [path2 substringFromIndex:1];
 
-        v4 = v8;
+        host = v8;
       }
     }
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v3 scheme];
-    v11 = [v9 stringWithFormat:@"%@://%@", v10, v4];
+    scheme = [v3 scheme];
+    v11 = [v9 stringWithFormat:@"%@://%@", scheme, host];
   }
 
   else
@@ -343,46 +343,46 @@ LABEL_6:
   return v11;
 }
 
-+ (id)_identityFromUsername:(id)a3 displayName:(id)a4 token:(id)a5 refreshToken:(id)a6 idToken:(id)a7 grantedDataclasses:(id)a8
++ (id)_identityFromUsername:(id)username displayName:(id)name token:(id)token refreshToken:(id)refreshToken idToken:(id)idToken grantedDataclasses:(id)dataclasses
 {
-  v8 = a3;
-  if (a3)
+  usernameCopy = username;
+  if (username)
   {
     v13 = MEMORY[0x277CDC7E0];
-    v14 = a8;
-    v15 = a7;
-    v16 = a6;
-    v17 = a5;
-    v18 = a4;
-    v19 = v8;
-    v8 = [[v13 alloc] initWithUsername:v19 token:v17 displayName:v18 refreshToken:v16 youTubeUsername:0 idToken:v15 grantedDataclasses:v14];
+    dataclassesCopy = dataclasses;
+    idTokenCopy = idToken;
+    refreshTokenCopy = refreshToken;
+    tokenCopy = token;
+    nameCopy = name;
+    v19 = usernameCopy;
+    usernameCopy = [[v13 alloc] initWithUsername:v19 token:tokenCopy displayName:nameCopy refreshToken:refreshTokenCopy youTubeUsername:0 idToken:idTokenCopy grantedDataclasses:dataclassesCopy];
   }
 
-  return v8;
+  return usernameCopy;
 }
 
-- (void)_didRedirectToURL:(id)a3 codeVerifier:(id)a4
+- (void)_didRedirectToURL:(id)l codeVerifier:(id)verifier
 {
-  v6 = a4;
-  v7 = a3;
+  verifierCopy = verifier;
+  lCopy = l;
   _SLLog();
-  v8 = [MEMORY[0x277CDC7D0] authCodeFromRedirectURL:{v7, v7}];
+  v8 = [MEMORY[0x277CDC7D0] authCodeFromRedirectURL:{lCopy, lCopy}];
 
-  if (v6 && v8)
+  if (verifierCopy && v8)
   {
     v9 = objc_alloc(MEMORY[0x277CDC7E8]);
-    v10 = [(SLGoogleAuthController *)self _webClient];
-    v11 = [v9 initWithWebClient:v10];
+    _webClient = [(SLGoogleAuthController *)self _webClient];
+    v11 = [v9 initWithWebClient:_webClient];
 
-    v12 = [(SLGoogleAuthController *)self _webClient];
+    _webClient2 = [(SLGoogleAuthController *)self _webClient];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [(SLGoogleAuthController *)self _webClient];
-      v16 = [v15 clientRedirectForAppOpenURL];
-      v17 = [v14 stringWithFormat:@"%@:/", v16];
+      _webClient3 = [(SLGoogleAuthController *)self _webClient];
+      clientRedirectForAppOpenURL = [_webClient3 clientRedirectForAppOpenURL];
+      v17 = [v14 stringWithFormat:@"%@:/", clientRedirectForAppOpenURL];
     }
 
     else
@@ -395,7 +395,7 @@ LABEL_6:
     v19[2] = __57__SLGoogleAuthController__didRedirectToURL_codeVerifier___block_invoke;
     v19[3] = &unk_279CA4E38;
     v19[4] = self;
-    [v11 exchangeAuthCode:v8 usingRedirect:v17 codeVerifier:v6 forAccountResponse:v19];
+    [v11 exchangeAuthCode:v8 usingRedirect:v17 codeVerifier:verifierCopy forAccountResponse:v19];
   }
 
   else
@@ -644,41 +644,41 @@ void __57__SLGoogleAuthController__didRedirectToURL_codeVerifier___block_invoke_
   [*(a1 + 40) _dismissAndCompleteWithIdentity:v9 error:*(a1 + 48)];
 }
 
-- (void)_dismissAndCompleteWithIdentity:(id)a3 error:(id)a4
+- (void)_dismissAndCompleteWithIdentity:(id)identity error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  identityCopy = identity;
   _SLLog();
-  [(ASWebAuthenticationSession *)self->_authenticationSession cancel:v7];
+  [(ASWebAuthenticationSession *)self->_authenticationSession cancel:identityCopy];
   _SLLog();
-  [(SLGoogleAuthController *)self _completeWithIdentity:v7 error:v6];
+  [(SLGoogleAuthController *)self _completeWithIdentity:identityCopy error:errorCopy];
 }
 
-- (void)_completeWithIdentity:(id)a3 error:(id)a4
+- (void)_completeWithIdentity:(id)identity error:(id)error
 {
-  v13 = a3;
-  v6 = a4;
-  v12 = v6;
-  v11 = v13;
+  identityCopy = identity;
+  errorCopy = error;
+  v12 = errorCopy;
+  v11 = identityCopy;
   _SLLog();
-  if (!v6)
+  if (!errorCopy)
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 domain];
-  if ([v7 isEqualToString:*MEMORY[0x277CCA738]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
-    v8 = [v6 code];
+    code = [errorCopy code];
 
-    if (v8 != -1009)
+    if (code != -1009)
     {
       goto LABEL_6;
     }
 
     +[SLGoogleAuthController _presentInternetOfflineError];
-    v7 = v6;
-    v6 = 0;
+    domain = errorCopy;
+    errorCopy = 0;
   }
 
 LABEL_6:
@@ -686,8 +686,8 @@ LABEL_6:
 
   if (v9)
   {
-    v10 = [(SLWebAuthController *)self completion];
-    (v10)[2](v10, v13, v6);
+    completion = [(SLWebAuthController *)self completion];
+    (completion)[2](completion, identityCopy, errorCopy);
 
     [(SLWebAuthController *)self setCompletion:0];
   }
@@ -711,8 +711,8 @@ LABEL_6:
   v8 = [v7 localizedStringForKey:@"GOOGLE_EMAIL_MISMATCH_OK" value:&stru_287B2CFF0 table:@"Localizable"];
   v9 = *MEMORY[0x277CBF1E8];
   v10 = SLSocialFrameworkBundle();
-  v11 = [v10 resourceURL];
-  v12 = [v14 dictionaryWithObjectsAndKeys:{v2, v3, v5, v6, v8, v9, v11, *MEMORY[0x277CBF208], 0}];
+  resourceURL = [v10 resourceURL];
+  v12 = [v14 dictionaryWithObjectsAndKeys:{v2, v3, v5, v6, v8, v9, resourceURL, *MEMORY[0x277CBF208], 0}];
 
   v17 = 0;
   v18 = &v17;
@@ -756,8 +756,8 @@ void __55__SLGoogleAuthController__presentUsernameMismatchAlert__block_invoke(ui
   v19[2] = v7;
   v18[3] = *MEMORY[0x277CBF208];
   v8 = SLSocialFrameworkBundle();
-  v9 = [v8 resourceURL];
-  v19[3] = v9;
+  resourceURL = [v8 resourceURL];
+  v19[3] = resourceURL;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v14 = 0;

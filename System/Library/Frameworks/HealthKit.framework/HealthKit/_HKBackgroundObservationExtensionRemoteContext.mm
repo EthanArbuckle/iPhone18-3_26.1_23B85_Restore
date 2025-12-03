@@ -1,17 +1,17 @@
 @interface _HKBackgroundObservationExtensionRemoteContext
-- (_HKBackgroundObservationExtensionRemoteContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (_HKBackgroundObservationExtensionRemoteContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (void)backgroundObservationExtensionTimeWillExpire;
-- (void)didReceiveUpdateForSampleType:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveUpdateForSampleType:(id)type completionHandler:(id)handler;
 - (void)performCleanup;
 @end
 
 @implementation _HKBackgroundObservationExtensionRemoteContext
 
-- (_HKBackgroundObservationExtensionRemoteContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_HKBackgroundObservationExtensionRemoteContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v8.receiver = self;
   v8.super_class = _HKBackgroundObservationExtensionRemoteContext;
-  v5 = [(_HKBackgroundObservationExtensionRemoteContext *)&v8 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(_HKBackgroundObservationExtensionRemoteContext *)&v8 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   if (v5)
   {
     _HKInitializeLogging();
@@ -33,9 +33,9 @@
   if (os_log_type_enabled(HKLogBackgroundUpdates, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(_HKBackgroundObservationExtensionRemoteContext *)self _UUID];
+    _UUID = [(_HKBackgroundObservationExtensionRemoteContext *)self _UUID];
     v7 = 138543362;
-    v8 = v5;
+    v8 = _UUID;
     _os_log_impl(&dword_19197B000, v4, OS_LOG_TYPE_INFO, "HealthKit app extension cleaning up for UUID: %{public}@", &v7, 0xCu);
   }
 
@@ -44,33 +44,33 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceiveUpdateForSampleType:(id)a3 completionHandler:(id)a4
+- (void)didReceiveUpdateForSampleType:(id)type completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HKBackgroundObservationExtensionRemoteContext *)self extensionInstance];
+  typeCopy = type;
+  handlerCopy = handler;
+  extensionInstance = [(_HKBackgroundObservationExtensionRemoteContext *)self extensionInstance];
   _HKInitializeLogging();
   v9 = HKLogBackgroundUpdates;
   if (os_log_type_enabled(HKLogBackgroundUpdates, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [(_HKBackgroundObservationExtensionRemoteContext *)self _UUID];
+    _UUID = [(_HKBackgroundObservationExtensionRemoteContext *)self _UUID];
     v13 = 138543618;
-    v14 = v11;
+    v14 = _UUID;
     v15 = 2114;
-    v16 = v6;
+    v16 = typeCopy;
     _os_log_impl(&dword_19197B000, v10, OS_LOG_TYPE_INFO, "HealthKit app extension with UUID: %{public}@ did receive update for sample type: %{public}@", &v13, 0x16u);
   }
 
-  if (v8)
+  if (extensionInstance)
   {
-    [v8 didReceiveUpdateForSampleType:v6 completionHandler:v7];
+    [extensionInstance didReceiveUpdateForSampleType:typeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -84,14 +84,14 @@
   if (os_log_type_enabled(HKLogBackgroundUpdates, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(_HKBackgroundObservationExtensionRemoteContext *)self _UUID];
+    _UUID = [(_HKBackgroundObservationExtensionRemoteContext *)self _UUID];
     v8 = 138543362;
-    v9 = v5;
+    v9 = _UUID;
     _os_log_impl(&dword_19197B000, v4, OS_LOG_TYPE_INFO, "HealthKit app extension with UUID: %{public}@ will time out", &v8, 0xCu);
   }
 
-  v6 = [(_HKBackgroundObservationExtensionRemoteContext *)self extensionInstance];
-  [v6 backgroundObservationExtensionTimeWillExpire];
+  extensionInstance = [(_HKBackgroundObservationExtensionRemoteContext *)self extensionInstance];
+  [extensionInstance backgroundObservationExtensionTimeWillExpire];
 
   v7 = *MEMORY[0x1E69E9840];
 }

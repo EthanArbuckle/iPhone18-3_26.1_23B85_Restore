@@ -1,49 +1,49 @@
 @interface AVCMediaStreamNegotiator
-+ (BOOL)newOptionalObject:(id *)a3 withClass:(Class)a4 withOptionalOfferInfo:(id)a5 parameter:(id)a6 error:(id *)a7;
-+ (int64_t)clientAccessNetworkType:(int)a3;
-- (AVCMediaStreamNegotiator)initWithMode:(int64_t)a3 error:(id *)a4;
-- (AVCMediaStreamNegotiator)initWithMode:(int64_t)a3 options:(id)a4 error:(id *)a5;
-- (AVCMediaStreamNegotiator)initWithOffer:(id)a3 error:(id *)a4;
-- (AVCMediaStreamNegotiator)initWithOffer:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)addLocalCallInfoBlobToOutgoingDictionary:(id)a3;
++ (BOOL)newOptionalObject:(id *)object withClass:(Class)class withOptionalOfferInfo:(id)info parameter:(id)parameter error:(id *)error;
++ (int64_t)clientAccessNetworkType:(int)type;
+- (AVCMediaStreamNegotiator)initWithMode:(int64_t)mode error:(id *)error;
+- (AVCMediaStreamNegotiator)initWithMode:(int64_t)mode options:(id)options error:(id *)error;
+- (AVCMediaStreamNegotiator)initWithOffer:(id)offer error:(id *)error;
+- (AVCMediaStreamNegotiator)initWithOffer:(id)offer options:(id)options error:(id *)error;
+- (BOOL)addLocalCallInfoBlobToOutgoingDictionary:(id)dictionary;
 - (BOOL)createAnswer;
 - (BOOL)createOffer;
-- (BOOL)initNegotiatorLocalConfiguration:(id *)a3 options:(id)a4;
+- (BOOL)initNegotiatorLocalConfiguration:(id *)configuration options:(id)options;
 - (BOOL)isNegotiatorSettingsScreenType;
-- (BOOL)negotiateDirection:(id)a3 error:(id *)a4;
-- (BOOL)processAnswerWithError:(id *)a3 errorReason:(id *)a4;
-- (BOOL)processAnswererInitOptions:(id)a3 errorReason:(id *)a4;
-- (BOOL)processOfferWithError:(id *)a3 errorReason:(id *)a4;
-- (BOOL)setAnswer:(id)a3 withError:(id *)a4;
-- (BOOL)setUpEncryptionForMediaStreamConfig:(id)a3;
-- (BOOL)setUpEncryptionSettingsForLocalSettings:(id)a3;
-- (BOOL)setupAudioStreamConfiguration:(id)a3 errorReason:(id *)a4;
-- (BOOL)setupVideoStreamConfiguration:(id)a3 errorReason:(id *)a4;
-- (id)applyNegotiatedDirectionToOptions:(id)a3 error:(id *)a4;
-- (id)generateMediaStreamConfigurationWithError:(id *)a3;
-- (id)generateMediaStreamInitOptionsWithError:(id *)a3;
+- (BOOL)negotiateDirection:(id)direction error:(id *)error;
+- (BOOL)processAnswerWithError:(id *)error errorReason:(id *)reason;
+- (BOOL)processAnswererInitOptions:(id)options errorReason:(id *)reason;
+- (BOOL)processOfferWithError:(id *)error errorReason:(id *)reason;
+- (BOOL)setAnswer:(id)answer withError:(id *)error;
+- (BOOL)setUpEncryptionForMediaStreamConfig:(id)config;
+- (BOOL)setUpEncryptionSettingsForLocalSettings:(id)settings;
+- (BOOL)setupAudioStreamConfiguration:(id)configuration errorReason:(id *)reason;
+- (BOOL)setupVideoStreamConfiguration:(id)configuration errorReason:(id *)reason;
+- (id)applyNegotiatedDirectionToOptions:(id)options error:(id *)error;
+- (id)generateMediaStreamConfigurationWithError:(id *)error;
+- (id)generateMediaStreamInitOptionsWithError:(id *)error;
 - (id)supportedPixelFormats;
-- (unsigned)pickBestPixelFormatFromSet:(id)a3;
-- (unsigned)pickBestPixelFormatFromSet:(id)a3 preferenceList:(unsigned int *)a4 count:(int)a5 acceptDefault:(BOOL)a6;
-- (void)addHDRModeSpecificSettings:(id)a3;
+- (unsigned)pickBestPixelFormatFromSet:(id)set;
+- (unsigned)pickBestPixelFormatFromSet:(id)set preferenceList:(unsigned int *)list count:(int)count acceptDefault:(BOOL)default;
+- (void)addHDRModeSpecificSettings:(id)settings;
 - (void)createAnswer;
 - (void)createOffer;
 - (void)dealloc;
-- (void)pickBestHDRMode:(id)a3;
-- (void)processOffererInitOptions:(id)a3 errorReason:(id *)a4;
-- (void)setUpDirectionBasedPropertiesForConfiguration:(id)a3;
+- (void)pickBestHDRMode:(id)mode;
+- (void)processOffererInitOptions:(id)options errorReason:(id *)reason;
+- (void)setUpDirectionBasedPropertiesForConfiguration:(id)configuration;
 @end
 
 @implementation AVCMediaStreamNegotiator
 
-+ (int64_t)clientAccessNetworkType:(int)a3
++ (int64_t)clientAccessNetworkType:(int)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 1;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
@@ -69,27 +69,27 @@
   [(AVCMediaStreamNegotiator *)&v3 dealloc];
 }
 
-- (BOOL)initNegotiatorLocalConfiguration:(id *)a3 options:(id)a4
+- (BOOL)initNegotiatorLocalConfiguration:(id *)configuration options:(id)options
 {
   [(AVCMediaStreamNegotiator *)self refreshLoggingParameters];
   v7 = [[VCBitrateArbiter alloc] initWithDeviceRole:0 callLogFile:0];
   if (!v7)
   {
-    v10 = 0;
+    featureListString = 0;
     v12 = 0;
     v8 = 0;
     v22 = 0;
     self->_errorDetailCode = 7;
     v24 = @"Failed to create bitRateArbiter";
 LABEL_37:
-    *a3 = v24;
+    *configuration = v24;
     goto LABEL_20;
   }
 
   v8 = [[VCMediaNegotiatorLocalConfiguration alloc] initWithBitrateArbiter:v7];
   if (!v8)
   {
-    v10 = 0;
+    featureListString = 0;
     v12 = 0;
     v22 = 0;
     self->_errorDetailCode = 7;
@@ -97,19 +97,19 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v9 = [AVCMediaStreamNegotiatorSettings negotiatorSettingsForMode:self->_mediaStreamMode deviceRole:self->_deviceRole options:a4 errorString:a3];
+  v9 = [AVCMediaStreamNegotiatorSettings negotiatorSettingsForMode:self->_mediaStreamMode deviceRole:self->_deviceRole options:options errorString:configuration];
   self->_negotiatorSettings = v9;
   if (!v9)
   {
-    v10 = 0;
+    featureListString = 0;
     v12 = 0;
     v22 = 0;
     self->_errorDetailCode = 7;
     goto LABEL_20;
   }
 
-  v10 = [(AVCMediaStreamNegotiatorSettings *)v9 featureListString];
-  if (!v10)
+  featureListString = [(AVCMediaStreamNegotiatorSettings *)v9 featureListString];
+  if (!featureListString)
   {
     v12 = 0;
     v22 = 0;
@@ -130,7 +130,7 @@ LABEL_37:
       }
     }
 
-    v10 = 0;
+    featureListString = 0;
     v12 = 0;
     goto LABEL_35;
   }
@@ -138,20 +138,20 @@ LABEL_37:
   v12 = v11;
   if ([(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings videoRuleCollections])
   {
-    v13 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings localSSRC];
+    localSSRC = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings localSSRC];
   }
 
   else
   {
-    v13 = 0;
+    localSSRC = 0;
   }
 
-  [(VCMediaNegotiatorCommonConfiguration *)v12 setSsrc:v13];
+  [(VCMediaNegotiatorCommonConfiguration *)v12 setSsrc:localSSRC];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setMediaConfiguration:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings audioConfiguration] forMediaType:1];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setPreferredAudioCodec:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings preferredAudioCodec]];
   [(VCMediaNegotiatorVideoConfiguration *)v12 setVideoRuleCollections:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings videoRuleCollections]];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setAccessNetworkType:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings accessNetworkType]];
-  [(VCMediaNegotiatorVideoConfiguration *)v12 setVideoFeatureStrings:v10];
+  [(VCMediaNegotiatorVideoConfiguration *)v12 setVideoFeatureStrings:featureListString];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setAllowRTCPFB:0];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setIsCaller:self->_deviceRole == 1];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setCallLogFile:0];
@@ -184,7 +184,7 @@ LABEL_37:
   [(VCMediaNegotiatorLocalConfiguration *)v8 setEnableInterleavedEncoding:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings enableInterleavedEncoding]];
   if (![(AVCMediaStreamNegotiator *)self setUpEncryptionSettingsForLocalSettings:v8])
   {
-    v10 = 0;
+    featureListString = 0;
     v22 = 0;
     self->_errorDetailCode = 7;
     v24 = @"Failed to setup encryption info";
@@ -194,7 +194,7 @@ LABEL_37:
   [(AVCMediaStreamNegotiator *)self addHDRModeSpecificSettings:v8];
   if (![(VCMediaNegotiatorLocalConfiguration *)v8 pixelFormats])
   {
-    v10 = 0;
+    featureListString = 0;
     v22 = 0;
     self->_errorDetailCode = 7;
     v24 = @"Failed to obtain pixelFormat set";
@@ -213,27 +213,27 @@ LABEL_37:
       }
     }
 
-    v10 = 0;
+    featureListString = 0;
 LABEL_35:
     v22 = 0;
     goto LABEL_20;
   }
 
-  v10 = v19;
+  featureListString = v19;
   if ([(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings screenRuleCollections])
   {
-    v20 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings localSSRC];
+    localSSRC2 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings localSSRC];
   }
 
   else
   {
-    v20 = 0;
+    localSSRC2 = 0;
   }
 
-  [(NSDictionary *)v10 setSsrc:v20];
-  [(NSDictionary *)v10 setVideoRuleCollections:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings screenRuleCollections]];
+  [(NSDictionary *)featureListString setSsrc:localSSRC2];
+  [(NSDictionary *)featureListString setVideoRuleCollections:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings screenRuleCollections]];
   [(VCMediaNegotiatorLocalConfiguration *)v8 setMediaConfiguration:v12 forMediaType:2];
-  [(VCMediaNegotiatorLocalConfiguration *)v8 setMediaConfiguration:v10 forMediaType:3];
+  [(VCMediaNegotiatorLocalConfiguration *)v8 setMediaConfiguration:featureListString forMediaType:3];
   v21 = [[VCMediaNegotiator alloc] initWithMode:self->_mediaStreamMode localSettings:v8];
   self->_mediaNegotiator = v21;
   if (!v21)
@@ -257,23 +257,23 @@ LABEL_20:
   return [(VCHardwareSettings *)v2 pixelFormatCollections];
 }
 
-- (void)addHDRModeSpecificSettings:(id)a3
+- (void)addHDRModeSpecificSettings:(id)settings
 {
-  v5 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings hdrModePixelFormats];
-  if (v5)
+  hdrModePixelFormats = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings hdrModePixelFormats];
+  if (hdrModePixelFormats)
   {
-    [a3 setPixelFormats:{objc_msgSend(objc_msgSend(a3, "pixelFormats"), "setByAddingObjectsFromArray:", v5)}];
+    [settings setPixelFormats:{objc_msgSend(objc_msgSend(settings, "pixelFormats"), "setByAddingObjectsFromArray:", hdrModePixelFormats)}];
   }
 
   if ([(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings hdrModesSupported])
   {
-    v6 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings hdrModesSupported];
+    hdrModesSupported = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings hdrModesSupported];
 
-    [a3 setHdrModesSupported:v6];
+    [settings setHdrModesSupported:hdrModesSupported];
   }
 }
 
-- (AVCMediaStreamNegotiator)initWithMode:(int64_t)a3 options:(id)a4 error:(id *)a5
+- (AVCMediaStreamNegotiator)initWithMode:(int64_t)mode options:(id)options error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -282,7 +282,7 @@ LABEL_20:
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 136316162;
       *&buf[4] = v9;
       v20 = 2080;
@@ -290,7 +290,7 @@ LABEL_20:
       v22 = 1024;
       v23 = 241;
       v24 = 2048;
-      v25 = a3;
+      modeCopy = mode;
       v26 = 2112;
       v27 = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d mode=%ld, error=%@", buf, 0x30u);
@@ -305,19 +305,19 @@ LABEL_20:
   {
     v17 = 0;
     v12->_deviceRole = 1;
-    v12->_mediaStreamMode = a3;
+    v12->_mediaStreamMode = mode;
     *&v12->_videoHDRMode = 0u;
     *&v12->_mediaStreamAccessNetworkType = 0u;
-    if (a4)
+    if (options)
     {
-      [(AVCMediaStreamNegotiator *)v12 processOffererInitOptions:a4 errorReason:&v17];
+      [(AVCMediaStreamNegotiator *)v12 processOffererInitOptions:options errorReason:&v17];
     }
 
-    if ([(AVCMediaStreamNegotiator *)v13 initNegotiatorLocalConfiguration:&v17 options:a4])
+    if ([(AVCMediaStreamNegotiator *)v13 initNegotiatorLocalConfiguration:&v17 options:options])
     {
-      v14 = [(VCMediaNegotiator *)v13->_mediaNegotiator negotiationData];
-      v13->_mediaBlobCompressed = v14;
-      if (v14)
+      negotiationData = [(VCMediaNegotiator *)v13->_mediaNegotiator negotiationData];
+      v13->_mediaBlobCompressed = negotiationData;
+      if (negotiationData)
       {
         if ([(AVCMediaStreamNegotiator *)v13 createOffer])
         {
@@ -356,9 +356,9 @@ LABEL_20:
       }
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
-      [GKVoiceChatError getNSError:a5 code:32032 detailedCode:errorDetailCode filePath:0 description:0 reason:v17];
+      [GKVoiceChatError getNSError:error code:32032 detailedCode:errorDetailCode filePath:0 description:0 reason:v17];
     }
 
     return 0;
@@ -367,7 +367,7 @@ LABEL_20:
   return v13;
 }
 
-- (AVCMediaStreamNegotiator)initWithMode:(int64_t)a3 error:(id *)a4
+- (AVCMediaStreamNegotiator)initWithMode:(int64_t)mode error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -376,7 +376,7 @@ LABEL_20:
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *a4;
+      v9 = *error;
       v11 = 136316162;
       v12 = v7;
       v13 = 2080;
@@ -384,43 +384,43 @@ LABEL_20:
       v15 = 1024;
       v16 = 284;
       v17 = 2048;
-      v18 = a3;
+      modeCopy = mode;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d mode=%ld, error=%@", &v11, 0x30u);
     }
   }
 
-  return [(AVCMediaStreamNegotiator *)self initWithMode:a3 options:0 error:a4];
+  return [(AVCMediaStreamNegotiator *)self initWithMode:mode options:0 error:error];
 }
 
-- (void)processOffererInitOptions:(id)a3 errorReason:(id *)a4
+- (void)processOffererInitOptions:(id)options errorReason:(id *)reason
 {
-  if ([a3 objectForKey:{@"AVCMediaStreamNegotiatorHDRMode", a4}])
+  if ([options objectForKey:{@"AVCMediaStreamNegotiatorHDRMode", reason}])
   {
-    self->_videoHDRMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorHDRMode", "intValue"}];
+    self->_videoHDRMode = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorHDRMode", "intValue"}];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorTransportType"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorTransportType"])
   {
-    self->_mediaStreamTransportType = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportType", "intValue"}];
+    self->_mediaStreamTransportType = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportType", "intValue"}];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorTransportProtocolType"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorTransportProtocolType"])
   {
-    self->_mediaStreamTransportProtocolType = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportProtocolType", "intValue"}];
+    self->_mediaStreamTransportProtocolType = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportProtocolType", "intValue"}];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorVideoWidth"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorVideoWidth"])
   {
-    v6 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoWidth"];
+    v6 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoWidth"];
     self->_dpiFactor = 1;
     self->_videoWidth = [v6 intValue];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorVideoHeight"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorVideoHeight"])
   {
-    v7 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoHeight"];
+    v7 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoHeight"];
     self->_dpiFactor = 1;
     self->_videoHeight = [v7 intValue];
   }
@@ -479,16 +479,16 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)processOfferWithError:(id *)a3 errorReason:(id *)a4
+- (BOOL)processOfferWithError:(id *)error errorReason:(id *)reason
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AE40] propertyListWithData:self->_offer options:0 format:0 error:a3];
+  v6 = [MEMORY[0x1E696AE40] propertyListWithData:self->_offer options:0 format:0 error:error];
   if (!v6)
   {
     self->_errorDetailCode = 4;
     v9 = @"Failed to deserialize media blob on answerer";
 LABEL_11:
-    *a4 = v9;
+    *reason = v9;
     return v6;
   }
 
@@ -504,7 +504,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([AVCMediaStreamNegotiator newOptionalObject:&self->_remoteCallInfoBlob withClass:objc_opt_class() withOptionalOfferInfo:v7 parameter:@"avcMediaStreamOptionRemoteEndpointInfo" error:a4]&& (v11[0] = 0, [AVCMediaStreamNegotiator newOptionalObject:v11 withClass:objc_opt_class() withOptionalOfferInfo:v7 parameter:@"avcMediaStreamNegotiatorDirection" error:a4]) && (v8 = [(AVCMediaStreamNegotiator *)self negotiateDirection:v11[0] error:a4], v11[0], v8))
+  if ([AVCMediaStreamNegotiator newOptionalObject:&self->_remoteCallInfoBlob withClass:objc_opt_class() withOptionalOfferInfo:v7 parameter:@"avcMediaStreamOptionRemoteEndpointInfo" error:reason]&& (v11[0] = 0, [AVCMediaStreamNegotiator newOptionalObject:v11 withClass:objc_opt_class() withOptionalOfferInfo:v7 parameter:@"avcMediaStreamNegotiatorDirection" error:reason]) && (v8 = [(AVCMediaStreamNegotiator *)self negotiateDirection:v11[0] error:reason], v11[0], v8))
   {
     LOBYTE(v6) = 1;
   }
@@ -518,12 +518,12 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)processAnswererInitOptions:(id)a3 errorReason:(id *)a4
+- (BOOL)processAnswererInitOptions:(id)options errorReason:(id *)reason
 {
   self->_dpiFactor = 1;
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorVideoWidth"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorVideoWidth"])
   {
-    v7 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoWidth"];
+    v7 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoWidth"];
     if (!v7)
     {
       self->_errorDetailCode = 7;
@@ -534,9 +534,9 @@ LABEL_11:
     self->_videoWidth = [v7 intValue];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorVideoHeight"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorVideoHeight"])
   {
-    v7 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoHeight"];
+    v7 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoHeight"];
     if (!v7)
     {
       self->_errorDetailCode = 7;
@@ -547,9 +547,9 @@ LABEL_11:
     self->_videoHeight = [v7 intValue];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorVideoResolution"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorVideoResolution"])
   {
-    v7 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoResolution"];
+    v7 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorVideoResolution"];
     if (v7)
     {
       self->_dpiFactor = [v7 intValue];
@@ -559,31 +559,31 @@ LABEL_11:
     self->_errorDetailCode = 7;
     v8 = @"cannot get DPI scaling facfor from Init options";
 LABEL_20:
-    *a4 = v8;
+    *reason = v8;
     return v7;
   }
 
 LABEL_10:
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorHDRMode"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorHDRMode"])
   {
-    self->_videoHDRMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorHDRMode", "intValue"}];
+    self->_videoHDRMode = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorHDRMode", "intValue"}];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorTransportType"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorTransportType"])
   {
-    self->_mediaStreamTransportType = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportType", "intValue"}];
+    self->_mediaStreamTransportType = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportType", "intValue"}];
   }
 
-  if ([a3 objectForKey:@"AVCMediaStreamNegotiatorTransportProtocolType"])
+  if ([options objectForKey:@"AVCMediaStreamNegotiatorTransportProtocolType"])
   {
-    self->_mediaStreamTransportProtocolType = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportProtocolType", "intValue"}];
+    self->_mediaStreamTransportProtocolType = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorTransportProtocolType", "intValue"}];
   }
 
   LOBYTE(v7) = 1;
   return v7;
 }
 
-- (AVCMediaStreamNegotiator)initWithOffer:(id)a3 error:(id *)a4
+- (AVCMediaStreamNegotiator)initWithOffer:(id)offer error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -592,7 +592,7 @@ LABEL_10:
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *a4;
+      v9 = *error;
       v11 = 136316162;
       v12 = v7;
       v13 = 2080;
@@ -600,17 +600,17 @@ LABEL_10:
       v15 = 1024;
       v16 = 458;
       v17 = 2112;
-      v18 = a3;
+      offerCopy = offer;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d offer=%@, error=%@", &v11, 0x30u);
     }
   }
 
-  return [(AVCMediaStreamNegotiator *)self initWithOffer:a3 options:0 error:a4];
+  return [(AVCMediaStreamNegotiator *)self initWithOffer:offer options:0 error:error];
 }
 
-- (AVCMediaStreamNegotiator)initWithOffer:(id)a3 options:(id)a4 error:(id *)a5
+- (AVCMediaStreamNegotiator)initWithOffer:(id)offer options:(id)options error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -619,13 +619,13 @@ LABEL_10:
   }
 
   __str = 0;
-  if (a3)
+  if (offer)
   {
-    v9 = [objc_msgSend(a3 "description")];
-    if (a4)
+    v9 = [objc_msgSend(offer "description")];
+    if (options)
     {
 LABEL_4:
-      v10 = [objc_msgSend(a4 "description")];
+      v10 = [objc_msgSend(options "description")];
       goto LABEL_7;
     }
   }
@@ -633,7 +633,7 @@ LABEL_4:
   else
   {
     v9 = "<nil>";
-    if (a4)
+    if (options)
     {
       goto LABEL_4;
     }
@@ -641,9 +641,9 @@ LABEL_4:
 
   v10 = "<nil>";
 LABEL_7:
-  if (*a5)
+  if (*error)
   {
-    v11 = [objc_msgSend(*a5 "description")];
+    v11 = [objc_msgSend(*error "description")];
   }
 
   else
@@ -654,8 +654,8 @@ LABEL_7:
   asprintf(&__str, "offer=%s, options=%s, error=%s", v9, v10, v11);
   if (__str)
   {
-    v22 = self;
-    v23 = a5;
+    selfCopy = self;
+    errorCopy = error;
     __lasts = 0;
     v12 = strtok_r(__str, "\n", &__lasts);
     v13 = MEMORY[0x1E6986650];
@@ -686,8 +686,8 @@ LABEL_7:
 
     while (v12);
     free(__str);
-    a5 = v23;
-    self = v22;
+    error = errorCopy;
+    self = selfCopy;
   }
 
 LABEL_17:
@@ -702,10 +702,10 @@ LABEL_17:
     v16->_mediaStreamAccessNetworkType = 0;
     v16->_videoHDRMode = 0;
     v16->_deviceRole = 2;
-    v16->_offer = a3;
-    if ([(AVCMediaStreamNegotiator *)v17 processOfferWithError:a5 errorReason:&__str])
+    v16->_offer = offer;
+    if ([(AVCMediaStreamNegotiator *)v17 processOfferWithError:error errorReason:&__str])
     {
-      if (a4 && ![(AVCMediaStreamNegotiator *)v17 processAnswererInitOptions:a4 errorReason:&__str])
+      if (options && ![(AVCMediaStreamNegotiator *)v17 processAnswererInitOptions:options errorReason:&__str])
       {
         errorDetailCode = v17->_errorDetailCode;
         if (VRTraceGetErrorLogLevelForModule() >= 2)
@@ -728,7 +728,7 @@ LABEL_17:
 
       else
       {
-        v18 = [(AVCMediaStreamNegotiator *)v17 applyNegotiatedDirectionToOptions:a4 error:&__str];
+        v18 = [(AVCMediaStreamNegotiator *)v17 applyNegotiatedDirectionToOptions:options error:&__str];
         if (__str)
         {
           [AVCMediaStreamNegotiator initWithOffer:v17 options:buf error:?];
@@ -739,9 +739,9 @@ LABEL_17:
         {
           if ([(VCMediaNegotiator *)v17->_mediaNegotiator processRemoteNegotiationData:v17->_mediaBlobCompressed])
           {
-            v19 = [(VCMediaNegotiator *)v17->_mediaNegotiator newResponseBlob];
-            v17->_mediaBlobNegotiated = v19;
-            if (v19)
+            newResponseBlob = [(VCMediaNegotiator *)v17->_mediaNegotiator newResponseBlob];
+            v17->_mediaBlobNegotiated = newResponseBlob;
+            if (newResponseBlob)
             {
               if ([(AVCMediaStreamNegotiator *)v17 createAnswer])
               {
@@ -809,9 +809,9 @@ LABEL_17:
       }
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
-      [GKVoiceChatError getNSError:a5 code:32033 detailedCode:errorDetailCode filePath:0 description:0 reason:__str];
+      [GKVoiceChatError getNSError:error code:32033 detailedCode:errorDetailCode filePath:0 description:0 reason:__str];
     }
 
     return 0;
@@ -857,9 +857,9 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)processAnswerWithError:(id *)a3 errorReason:(id *)a4
+- (BOOL)processAnswerWithError:(id *)error errorReason:(id *)reason
 {
-  v6 = [MEMORY[0x1E696AE40] propertyListWithData:self->_answer options:0 format:0 error:a3];
+  v6 = [MEMORY[0x1E696AE40] propertyListWithData:self->_answer options:0 format:0 error:error];
   if (v6)
   {
     v7 = v6;
@@ -868,7 +868,7 @@ LABEL_6:
     if (!v8)
     {
       self->_errorDetailCode = 4;
-      *a4 = @"Failed to extract negotiated media blob on offerer";
+      *reason = @"Failed to extract negotiated media blob on offerer";
       return v8;
     }
 
@@ -887,7 +887,7 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)setAnswer:(id)a3 withError:(id *)a4
+- (BOOL)setAnswer:(id)answer withError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -896,7 +896,7 @@ LABEL_6:
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *a4;
+      v9 = *error;
       *buf = 136316162;
       *&buf[4] = v7;
       v14 = 2080;
@@ -904,7 +904,7 @@ LABEL_6:
       v16 = 1024;
       v17 = 584;
       v18 = 2112;
-      v19 = a3;
+      answerCopy = answer;
       v20 = 2112;
       v21 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d answer=%@, error=%@", buf, 0x30u);
@@ -935,11 +935,11 @@ LABEL_6:
     errorDetailCode = 1;
   }
 
-  else if (a3)
+  else if (answer)
   {
 
-    self->_answer = a3;
-    if ([(AVCMediaStreamNegotiator *)self processAnswerWithError:a4 errorReason:&v12])
+    self->_answer = answer;
+    if ([(AVCMediaStreamNegotiator *)self processAnswerWithError:error errorReason:&v12])
     {
       return 1;
     }
@@ -969,39 +969,39 @@ LABEL_6:
     errorDetailCode = *buf;
   }
 
-  if (a4)
+  if (error)
   {
-    if (!*a4)
+    if (!*error)
     {
-      [GKVoiceChatError getNSError:a4 code:32034 detailedCode:errorDetailCode filePath:0 description:0 reason:v12];
+      [GKVoiceChatError getNSError:error code:32034 detailedCode:errorDetailCode filePath:0 description:0 reason:v12];
     }
   }
 
   return 0;
 }
 
-- (BOOL)setupAudioStreamConfiguration:(id)a3 errorReason:(id *)a4
+- (BOOL)setupAudioStreamConfiguration:(id)configuration errorReason:(id *)reason
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = [(VCMediaNegotiatorBase *)self->_mediaNegotiator negotiatedAudioSettings:a3];
-  v7 = [(VCMediaNegotiatorResultsAudio *)v6 primaryPayload];
-  v8 = [VCPayloadUtils codecTypeForPayload:v7];
-  if (v7 == [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings preferredAudioCodec])
+  v6 = [(VCMediaNegotiatorBase *)self->_mediaNegotiator negotiatedAudioSettings:configuration];
+  primaryPayload = [(VCMediaNegotiatorResultsAudio *)v6 primaryPayload];
+  preferredAudioCodecType = [VCPayloadUtils codecTypeForPayload:primaryPayload];
+  if (primaryPayload == [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings preferredAudioCodec])
   {
-    v8 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings preferredAudioCodecType];
+    preferredAudioCodecType = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings preferredAudioCodecType];
   }
 
-  v9 = [AVCAudioStreamConfig clientCodecTypeWithCodecType:v8];
-  [a3 setRemoteSSRC:{-[VCMediaNegotiatorResultsAudio remoteSSRC](v6, "remoteSSRC")}];
-  [a3 setTxPayloadType:{-[VCMediaNegotiatorResultsAudio primaryPayload](v6, "primaryPayload")}];
-  [a3 setRxPayloadType:{objc_msgSend(a3, "txPayloadType")}];
-  [objc_msgSend(a3 "audio")];
-  [objc_msgSend(a3 "audio")];
-  [objc_msgSend(a3 "audio")];
-  [objc_msgSend(a3 "audio")];
-  [objc_msgSend(a3 "audio")];
-  [objc_msgSend(a3 "audio")];
-  v10 = [objc_msgSend(a3 "audio")];
+  v9 = [AVCAudioStreamConfig clientCodecTypeWithCodecType:preferredAudioCodecType];
+  [configuration setRemoteSSRC:{-[VCMediaNegotiatorResultsAudio remoteSSRC](v6, "remoteSSRC")}];
+  [configuration setTxPayloadType:{-[VCMediaNegotiatorResultsAudio primaryPayload](v6, "primaryPayload")}];
+  [configuration setRxPayloadType:{objc_msgSend(configuration, "txPayloadType")}];
+  [objc_msgSend(configuration "audio")];
+  [objc_msgSend(configuration "audio")];
+  [objc_msgSend(configuration "audio")];
+  [objc_msgSend(configuration "audio")];
+  [objc_msgSend(configuration "audio")];
+  [objc_msgSend(configuration "audio")];
+  v10 = [objc_msgSend(configuration "audio")];
   if (self->_remoteCallInfoBlob)
   {
     v11 = [[VCCallInfoBlob alloc] initWithData:self->_remoteCallInfoBlob];
@@ -1029,31 +1029,31 @@ LABEL_6:
       v22 = 1024;
       v23 = mediaStreamMode;
       v24 = 1024;
-      v25 = [objc_msgSend(a3 "audio")];
+      v25 = [objc_msgSend(configuration "audio")];
       v26 = 1024;
-      v27 = [objc_msgSend(a3 "audio")];
+      v27 = [objc_msgSend(configuration "audio")];
       v28 = 1024;
-      v29 = [objc_msgSend(a3 "audio")];
+      v29 = [objc_msgSend(configuration "audio")];
       v30 = 1024;
-      v31 = [a3 txPayloadType];
+      txPayloadType = [configuration txPayloadType];
       v32 = 1024;
-      v33 = [a3 rxPayloadType];
+      rxPayloadType = [configuration rxPayloadType];
       v34 = 1024;
-      v35 = [a3 jitterBufferMode];
+      jitterBufferMode = [configuration jitterBufferMode];
       v36 = 2048;
-      v37 = [a3 fixedJitterBufferSize];
+      fixedJitterBufferSize = [configuration fixedJitterBufferSize];
       v38 = 1024;
-      v39 = [objc_msgSend(a3 "audio")];
+      v39 = [objc_msgSend(configuration "audio")];
       v40 = 2048;
-      v41 = [objc_msgSend(a3 "audio")];
+      v41 = [objc_msgSend(configuration "audio")];
       v42 = 2112;
-      v43 = [v10 deviceUID];
+      deviceUID = [v10 deviceUID];
       v44 = 2112;
-      v45 = [v10 deviceName];
+      deviceName = [v10 deviceName];
       v46 = 2112;
-      v47 = [v10 modelUID];
+      modelUID = [v10 modelUID];
       v48 = 1024;
-      v49 = [objc_msgSend(a3 "audio")];
+      v49 = [objc_msgSend(configuration "audio")];
       _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Negotiated values: mediaStreamMode=%u, audioStreamMode=%u, codecType=%u, pTime=%u, txPayloadType=%u, rxPayloadType=%u, jitterBufferMode=%u, fixedJitterBufferSize=%lu, channelCount=%u, preferredMediaBitrate=%lu, deviceUID=%@, deviceName=%@, modelUID=%@, systemAudioCaptureMuteBehavior=%u", buf, 0x84u);
     }
   }
@@ -1063,10 +1063,10 @@ LABEL_6:
 
 - (BOOL)isNegotiatorSettingsScreenType
 {
-  v3 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings captureSource];
-  if ((v3 - 2) >= 2)
+  captureSource = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings captureSource];
+  if ((captureSource - 2) >= 2)
   {
-    return v3 == 1;
+    return captureSource == 1;
   }
 
   else
@@ -1075,45 +1075,45 @@ LABEL_6:
   }
 }
 
-- (BOOL)setupVideoStreamConfiguration:(id)a3 errorReason:(id *)a4
+- (BOOL)setupVideoStreamConfiguration:(id)configuration errorReason:(id *)reason
 {
   v83 = *MEMORY[0x1E69E9840];
-  v8 = [(VCMediaNegotiatorBase *)self->_mediaNegotiator localSettings];
-  v7 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings connectionType];
-  LODWORD(v8) = [objc_msgSend(objc_msgSend(objc_msgSend(v8 "bandwidthConfigurations")];
-  v9 = [(VCMediaNegotiator *)self->_mediaNegotiator remoteMaxBandwidthForArbiterMode:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings bitrateArbiterMode] connectionType:v7];
-  if (v8 >= v9)
+  localSettings = [(VCMediaNegotiatorBase *)self->_mediaNegotiator localSettings];
+  connectionType = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings connectionType];
+  LODWORD(localSettings) = [objc_msgSend(objc_msgSend(objc_msgSend(localSettings "bandwidthConfigurations")];
+  v9 = [(VCMediaNegotiator *)self->_mediaNegotiator remoteMaxBandwidthForArbiterMode:[(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings bitrateArbiterMode] connectionType:connectionType];
+  if (localSettings >= v9)
   {
-    v8 = v9;
+    localSettings = v9;
   }
 
   else
   {
-    v8 = v8;
+    localSettings = localSettings;
   }
 
-  v10 = [(AVCMediaStreamNegotiator *)self isNegotiatorSettingsScreenType];
+  isNegotiatorSettingsScreenType = [(AVCMediaStreamNegotiator *)self isNegotiatorSettingsScreenType];
   mediaNegotiator = self->_mediaNegotiator;
-  if (v10)
+  if (isNegotiatorSettingsScreenType)
   {
-    v12 = [(VCMediaNegotiatorBase *)mediaNegotiator negotiatedScreenSettings];
+    negotiatedScreenSettings = [(VCMediaNegotiatorBase *)mediaNegotiator negotiatedScreenSettings];
   }
 
   else
   {
-    v12 = [(VCMediaNegotiatorBase *)mediaNegotiator negotiatedVideoSettings];
+    negotiatedScreenSettings = [(VCMediaNegotiatorBase *)mediaNegotiator negotiatedVideoSettings];
   }
 
-  v13 = v12;
-  if (v12)
+  v13 = negotiatedScreenSettings;
+  if (negotiatedScreenSettings)
   {
-    if ([(VCMediaNegotiatorResultsVideo *)v12 videoRuleCollections]&& [(VCVideoRuleCollections *)[(VCMediaNegotiatorResultsVideo *)v13 videoRuleCollections] supportedPayloads])
+    if ([(VCMediaNegotiatorResultsVideo *)negotiatedScreenSettings videoRuleCollections]&& [(VCVideoRuleCollections *)[(VCMediaNegotiatorResultsVideo *)v13 videoRuleCollections] supportedPayloads])
     {
-      v38 = a4;
-      v39 = self;
+      reasonCopy = reason;
+      selfCopy = self;
       v79 = 0u;
       v80 = 0u;
-      if ([a3 direction] == 1)
+      if ([configuration direction] == 1)
       {
         v14 = 1;
       }
@@ -1125,8 +1125,8 @@ LABEL_6:
 
       v81 = 0uLL;
       v82 = 0uLL;
-      v15 = [(VCVideoRuleCollections *)[(VCMediaNegotiatorResultsVideo *)v13 videoRuleCollections] supportedPayloads];
-      v16 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v79 objects:v78 count:16];
+      supportedPayloads = [(VCVideoRuleCollections *)[(VCMediaNegotiatorResultsVideo *)v13 videoRuleCollections] supportedPayloads];
+      v16 = [(NSMutableArray *)supportedPayloads countByEnumeratingWithState:&v79 objects:v78 count:16];
       if (!v16)
       {
         goto LABEL_23;
@@ -1140,7 +1140,7 @@ LABEL_15:
       {
         if (*v80 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(supportedPayloads);
         }
 
         v20 = *(*(&v79 + 1) + 8 * v19);
@@ -1157,18 +1157,18 @@ LABEL_15:
 
         if (v17 == ++v19)
         {
-          v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v79 objects:v78 count:16];
+          v17 = [(NSMutableArray *)supportedPayloads countByEnumeratingWithState:&v79 objects:v78 count:16];
           if (v17)
           {
             goto LABEL_15;
           }
 
 LABEL_23:
-          v39->_errorDetailCode = 5;
+          selfCopy->_errorDetailCode = 5;
           if (VRTraceGetErrorLogLevelForModule() >= 2)
           {
             VRTraceErrorLogLevelToCSTR();
-            a4 = v38;
+            reason = reasonCopy;
             if (VRTraceIsOSFaultDisabled())
             {
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
@@ -1190,7 +1190,7 @@ LABEL_23:
           v33 = 0;
           v36 = @"No valid payload found in the negotiated settings";
 LABEL_60:
-          a4 = v38;
+          reason = reasonCopy;
           goto LABEL_61;
         }
       }
@@ -1205,22 +1205,22 @@ LABEL_30:
       if (v21)
       {
         v22 = v21;
-        v23 = [v21 iPayload];
-        v24 = [AVCMediaStreamNegotiator clientCodecTypeWithCodecType:[VCPayloadUtils codecTypeForPayload:v23]];
-        [a3 setRemoteSSRC:{-[VCMediaNegotiatorResultsVideo remoteSSRC](v13, "remoteSSRC")}];
-        [a3 setTxPayloadType:v23];
-        [a3 setRxPayloadType:{objc_msgSend(a3, "txPayloadType")}];
+        iPayload = [v21 iPayload];
+        v24 = [AVCMediaStreamNegotiator clientCodecTypeWithCodecType:[VCPayloadUtils codecTypeForPayload:iPayload]];
+        [configuration setRemoteSSRC:{-[VCMediaNegotiatorResultsVideo remoteSSRC](v13, "remoteSSRC")}];
+        [configuration setTxPayloadType:iPayload];
+        [configuration setRxPayloadType:{objc_msgSend(configuration, "txPayloadType")}];
         if ([(NSSet *)[(VCMediaNegotiatorResultsVideo *)v13 hdrModesNegotiated] count])
         {
-          [(AVCMediaStreamNegotiator *)v39 pickBestHDRMode:[(VCMediaNegotiatorResultsVideo *)v13 hdrModesNegotiated]];
+          [(AVCMediaStreamNegotiator *)selfCopy pickBestHDRMode:[(VCMediaNegotiatorResultsVideo *)v13 hdrModesNegotiated]];
         }
 
-        if ([a3 direction] == 1 || objc_msgSend(a3, "direction") == 3)
+        if ([configuration direction] == 1 || objc_msgSend(configuration, "direction") == 3)
         {
-          v25 = [(AVCMediaStreamNegotiator *)v39 pickBestPixelFormatFromSet:[(VCMediaNegotiatorResultsVideo *)v13 pixelFormats]];
+          v25 = [(AVCMediaStreamNegotiator *)selfCopy pickBestPixelFormatFromSet:[(VCMediaNegotiatorResultsVideo *)v13 pixelFormats]];
           if (!v25)
           {
-            v39->_errorDetailCode = 5;
+            selfCopy->_errorDetailCode = 5;
             if (VRTraceGetErrorLogLevelForModule() >= 2)
             {
               VRTraceErrorLogLevelToCSTR();
@@ -1243,94 +1243,94 @@ LABEL_30:
             goto LABEL_60;
           }
 
-          [objc_msgSend(a3 "video")];
+          [objc_msgSend(configuration "video")];
         }
 
-        if (v39->_mediaStreamTransportType == 2 && v39->_videoHDRMode == 3)
+        if (selfCopy->_mediaStreamTransportType == 2 && selfCopy->_videoHDRMode == 3)
         {
-          v26 = 80000000;
+          maxBandwidth2 = 80000000;
         }
 
         else if ([(VCMediaNegotiatorResultsVideo *)v13 foveationIsSupported])
         {
-          v26 = 60000000;
+          maxBandwidth2 = 60000000;
         }
 
         else
         {
-          v26 = v8;
+          maxBandwidth2 = localSettings;
         }
 
-        if (!v39->_mediaStreamTransportProtocolType)
+        if (!selfCopy->_mediaStreamTransportProtocolType)
         {
-          v39->_mediaStreamTransportProtocolType = 1;
+          selfCopy->_mediaStreamTransportProtocolType = 1;
         }
 
-        [objc_msgSend(a3 "video")];
-        v27 = [(VCMediaNegotiatorResultsVideo *)v13 featureStrings];
-        [objc_msgSend(a3 "video")];
-        v28 = [(VCMediaNegotiatorResultsVideo *)v13 featureStrings];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
+        [objc_msgSend(configuration "video")];
+        featureStrings = [(VCMediaNegotiatorResultsVideo *)v13 featureStrings];
+        [objc_msgSend(configuration "video")];
+        featureStrings2 = [(VCMediaNegotiatorResultsVideo *)v13 featureStrings];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
         [v22 fRate];
-        [objc_msgSend(a3 "video")];
+        [objc_msgSend(configuration "video")];
         if ([(VCMediaNegotiatorResultsVideo *)v13 customVideoWidth])
         {
-          v30 = [(VCMediaNegotiatorResultsVideo *)v13 customVideoWidth];
+          customVideoWidth = [(VCMediaNegotiatorResultsVideo *)v13 customVideoWidth];
         }
 
         else
         {
-          v30 = [v22 iWidth];
+          customVideoWidth = [v22 iWidth];
         }
 
-        [objc_msgSend(a3 "video")];
+        [objc_msgSend(configuration "video")];
         if ([(VCMediaNegotiatorResultsVideo *)v13 customVideoHeight])
         {
-          v31 = [(VCMediaNegotiatorResultsVideo *)v13 customVideoHeight];
+          customVideoHeight = [(VCMediaNegotiatorResultsVideo *)v13 customVideoHeight];
         }
 
         else
         {
-          v31 = [v22 iHeight];
+          customVideoHeight = [v22 iHeight];
         }
 
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        v32 = v26;
-        if ([(AVCMediaStreamNegotiatorSettings *)v39->_negotiatorSettings maxBandwidth]< v26)
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        maxBandwidth = maxBandwidth2;
+        if ([(AVCMediaStreamNegotiatorSettings *)selfCopy->_negotiatorSettings maxBandwidth]< maxBandwidth2)
         {
-          v32 = [(AVCMediaStreamNegotiatorSettings *)v39->_negotiatorSettings maxBandwidth];
+          maxBandwidth = [(AVCMediaStreamNegotiatorSettings *)selfCopy->_negotiatorSettings maxBandwidth];
         }
 
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        if ([(AVCMediaStreamNegotiatorSettings *)v39->_negotiatorSettings maxBandwidth]< v26)
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        if ([(AVCMediaStreamNegotiatorSettings *)selfCopy->_negotiatorSettings maxBandwidth]< maxBandwidth2)
         {
-          v26 = [(AVCMediaStreamNegotiatorSettings *)v39->_negotiatorSettings maxBandwidth];
+          maxBandwidth2 = [(AVCMediaStreamNegotiatorSettings *)selfCopy->_negotiatorSettings maxBandwidth];
         }
 
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
         v33 = 1;
-        [a3 setRateAdaptationEnabled:1];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
-        [objc_msgSend(a3 "video")];
+        [configuration setRateAdaptationEnabled:1];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
+        [objc_msgSend(configuration "video")];
         if (VRTraceGetErrorLogLevelForModule() >= 7 && (v34 = VRTraceErrorLogLevelToCSTR(), v35 = *MEMORY[0x1E6986650], os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
         {
           *buf = 136319746;
@@ -1340,37 +1340,37 @@ LABEL_30:
           v44 = 1024;
           v45 = 775;
           v46 = 2048;
-          v47 = [objc_msgSend(a3 "video")];
+          v47 = [objc_msgSend(configuration "video")];
           v48 = 1024;
-          v49 = [objc_msgSend(a3 "video")];
+          v49 = [objc_msgSend(configuration "video")];
           v50 = 1024;
-          v51 = [objc_msgSend(a3 "video")];
+          v51 = [objc_msgSend(configuration "video")];
           v52 = 1024;
-          v53 = [objc_msgSend(a3 "video")];
+          v53 = [objc_msgSend(configuration "video")];
           v54 = 1024;
-          v55 = [objc_msgSend(a3 "video")];
+          v55 = [objc_msgSend(configuration "video")];
           v56 = 1024;
-          v57 = [objc_msgSend(a3 "video")];
+          v57 = [objc_msgSend(configuration "video")];
           v58 = 1024;
-          v59 = [a3 accessNetworkType];
+          accessNetworkType = [configuration accessNetworkType];
           v60 = 2048;
-          v61 = [objc_msgSend(a3 "video")];
+          v61 = [objc_msgSend(configuration "video")];
           v62 = 2048;
-          v63 = [objc_msgSend(a3 "video")];
+          v63 = [objc_msgSend(configuration "video")];
           v64 = 2048;
-          v65 = [a3 txPayloadType];
+          txPayloadType = [configuration txPayloadType];
           v66 = 2048;
-          v67 = [objc_msgSend(a3 "video")];
+          v67 = [objc_msgSend(configuration "video")];
           v68 = 2048;
-          v69 = [objc_msgSend(a3 "video")];
+          v69 = [objc_msgSend(configuration "video")];
           v70 = 2048;
-          v71 = [objc_msgSend(a3 "video")];
+          v71 = [objc_msgSend(configuration "video")];
           v72 = 2080;
-          v73 = [objc_msgSend(objc_msgSend(a3 "video")];
+          v73 = [objc_msgSend(objc_msgSend(configuration "video")];
           v74 = 1024;
-          v75 = [objc_msgSend(a3 "video")];
+          v75 = [objc_msgSend(configuration "video")];
           v76 = 1024;
-          v77 = [objc_msgSend(a3 "video")];
+          v77 = [objc_msgSend(configuration "video")];
           _os_log_impl(&dword_1DB56E000, v35, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Negotiated values: tilesPerFrame=%lu, ltrpEnabled=%i, fecEnabled=%i, rtxEnabled=%i, shouldSendBlackFramesOnClearScreen=%i,  transportProtocolType=%u, accessNetworkType=%u, videoWidth=%lu, videoHeight=%lu, payloadType=%lu, videoHDRMode = %lu, frameRate=%lu, maxTxBitRate=%lu, FLS=%s, foveation=%d enableInterleaving=%d", buf, 0x9Cu);
           v36 = 0;
           v33 = 1;
@@ -1384,8 +1384,8 @@ LABEL_30:
         goto LABEL_60;
       }
 
-      v39->_errorDetailCode = 5;
-      a4 = v38;
+      selfCopy->_errorDetailCode = 5;
+      reason = reasonCopy;
       if (VRTraceGetErrorLogLevelForModule() >= 2)
       {
         VRTraceErrorLogLevelToCSTR();
@@ -1457,40 +1457,40 @@ LABEL_30:
   }
 
 LABEL_61:
-  if (a4)
+  if (reason)
   {
-    *a4 = v36;
+    *reason = v36;
   }
 
   return v33;
 }
 
-- (void)setUpDirectionBasedPropertiesForConfiguration:(id)a3
+- (void)setUpDirectionBasedPropertiesForConfiguration:(id)configuration
 {
-  v5 = [a3 direction];
-  v6 = v5 & 0xFFFFFFFFFFFFFFFDLL;
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  direction = [configuration direction];
+  v6 = direction & 0xFFFFFFFFFFFFFFFDLL;
+  if ((direction & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     if ([(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings shouldSetJitterBufferMode])
     {
-      v7 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings jitterBufferMode];
-      [a3 setJitterBufferMode:v7];
-      if (v7 == 2)
+      jitterBufferMode = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings jitterBufferMode];
+      [configuration setJitterBufferMode:jitterBufferMode];
+      if (jitterBufferMode == 2)
       {
-        [a3 setFixedJitterBufferSize:{-[AVCMediaStreamNegotiatorSettings fixedJitterBufferSize](self->_negotiatorSettings, "fixedJitterBufferSize")}];
+        [configuration setFixedJitterBufferSize:{-[AVCMediaStreamNegotiatorSettings fixedJitterBufferSize](self->_negotiatorSettings, "fixedJitterBufferSize")}];
       }
     }
   }
 
   if (v6 == 1)
   {
-    v8 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings packetExpirationTime];
+    packetExpirationTime = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings packetExpirationTime];
 
-    [a3 setPacketExpirationTime:v8];
+    [configuration setPacketExpirationTime:packetExpirationTime];
   }
 }
 
-- (id)generateMediaStreamConfigurationWithError:(id *)a3
+- (id)generateMediaStreamConfigurationWithError:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1499,7 +1499,7 @@ LABEL_61:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = *a3;
+      v7 = *error;
       *v13 = 136315906;
       *&v13[4] = v5;
       v14 = 2080;
@@ -1576,15 +1576,15 @@ LABEL_61:
   }
 
 LABEL_20:
-  if (a3 && !*a3)
+  if (error && !*error)
   {
-    [GKVoiceChatError getNSError:a3 code:32035 detailedCode:self->_errorDetailCode filePath:0 description:0 reason:*v13];
+    [GKVoiceChatError getNSError:error code:32035 detailedCode:self->_errorDetailCode filePath:0 description:0 reason:*v13];
   }
 
   return 0;
 }
 
-- (BOOL)addLocalCallInfoBlobToOutgoingDictionary:(id)a3
+- (BOOL)addLocalCallInfoBlobToOutgoingDictionary:(id)dictionary
 {
   v28[3] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(VCCallInfoBlob);
@@ -1680,7 +1680,7 @@ LABEL_31:
     }
   }
 
-  [a3 setObject:-[VCCallInfoBlob data](v6 forKeyedSubscript:{"data"), @"avcMediaStreamOptionRemoteEndpointInfo"}];
+  [dictionary setObject:-[VCCallInfoBlob data](v6 forKeyedSubscript:{"data"), @"avcMediaStreamOptionRemoteEndpointInfo"}];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v14 = VRTraceErrorLogLevelToCSTR();
@@ -1715,7 +1715,7 @@ LABEL_15:
   return v17;
 }
 
-- (id)generateMediaStreamInitOptionsWithError:(id *)a3
+- (id)generateMediaStreamInitOptionsWithError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1724,7 +1724,7 @@ LABEL_15:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = *a3;
+      v7 = *error;
       v11 = 136315906;
       v12 = v5;
       v13 = 2080;
@@ -1748,13 +1748,13 @@ LABEL_15:
 
   else
   {
-    [AVCMediaStreamNegotiator generateMediaStreamInitOptionsWithError:a3];
+    [AVCMediaStreamNegotiator generateMediaStreamInitOptionsWithError:error];
   }
 
   return v9;
 }
 
-- (unsigned)pickBestPixelFormatFromSet:(id)a3
+- (unsigned)pickBestPixelFormatFromSet:(id)set
 {
   mediaStreamMode = self->_mediaStreamMode;
   v6 = 1;
@@ -1931,44 +1931,44 @@ LABEL_17:
   v6 = 1;
 LABEL_52:
 
-  return [(AVCMediaStreamNegotiator *)self pickBestPixelFormatFromSet:a3 preferenceList:v7 count:v6 acceptDefault:v8];
+  return [(AVCMediaStreamNegotiator *)self pickBestPixelFormatFromSet:set preferenceList:v7 count:v6 acceptDefault:v8];
 }
 
-- (unsigned)pickBestPixelFormatFromSet:(id)a3 preferenceList:(unsigned int *)a4 count:(int)a5 acceptDefault:(BOOL)a6
+- (unsigned)pickBestPixelFormatFromSet:(id)set preferenceList:(unsigned int *)list count:(int)count acceptDefault:(BOOL)default
 {
-  v6 = a6;
+  defaultCopy = default;
   v33 = *MEMORY[0x1E69E9840];
-  if (a5 < 1)
+  if (count < 1)
   {
 LABEL_5:
     v14 = 0;
 LABEL_7:
-    if (v6)
+    if (defaultCopy)
     {
-      v14 = a4[a5 - 1];
+      v14 = list[count - 1];
     }
 
     goto LABEL_9;
   }
 
-  v11 = a5;
-  v12 = a4;
+  countCopy = count;
+  listCopy = list;
   while (1)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*v12];
-    if ([a3 containsObject:v13])
+    v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*listCopy];
+    if ([set containsObject:v13])
     {
       break;
     }
 
-    ++v12;
-    if (!--v11)
+    ++listCopy;
+    if (!--countCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v14 = *v12;
+  v14 = *listCopy;
 
   if (!v14)
   {
@@ -2004,7 +2004,7 @@ LABEL_9:
   return v14;
 }
 
-- (void)pickBestHDRMode:(id)a3
+- (void)pickBestHDRMode:(id)mode
 {
   mediaStreamMode = self->_mediaStreamMode;
   if (mediaStreamMode <= 0xF)
@@ -2016,7 +2016,7 @@ LABEL_9:
         return;
       }
 
-      if ([a3 containsObject:&unk_1F579B490])
+      if ([mode containsObject:&unk_1F579B490])
       {
         v6 = 1;
         goto LABEL_8;
@@ -2025,7 +2025,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if ([a3 containsObject:&unk_1F579B460])
+    if ([mode containsObject:&unk_1F579B460])
     {
       v6 = 3;
 LABEL_8:
@@ -2033,7 +2033,7 @@ LABEL_8:
       return;
     }
 
-    if ([a3 containsObject:&unk_1F579B478])
+    if ([mode containsObject:&unk_1F579B478])
     {
 LABEL_10:
       self->_videoHDRMode = 0;
@@ -2051,15 +2051,15 @@ LABEL_10:
   }
 }
 
-- (BOOL)setUpEncryptionSettingsForLocalSettings:(id)a3
+- (BOOL)setUpEncryptionSettingsForLocalSettings:(id)settings
 {
   if ([(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtpCipherSuite]== -1 && [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtcpCipherSuite]== -1)
   {
     return 1;
   }
 
-  v5 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtpCipherSuite];
-  v6 = VCMediaStreamCipherSuite_EncryptionKeyLength(v5);
+  rtpCipherSuite = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtpCipherSuite];
+  v6 = VCMediaStreamCipherSuite_EncryptionKeyLength(rtpCipherSuite);
   v7 = [MEMORY[0x1E695DF88] dataWithLength:v6];
   if (v7)
   {
@@ -2069,18 +2069,18 @@ LABEL_10:
     if (v9)
     {
       v10 = v9;
-      if (v5 != -1)
+      if (rtpCipherSuite != -1)
       {
-        [(VCMediaNegotiatorMediaEncryptionSettings *)v9 addMediaCipherSuite:v5];
+        [(VCMediaNegotiatorMediaEncryptionSettings *)v9 addMediaCipherSuite:rtpCipherSuite];
       }
 
-      v11 = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtcpCipherSuite];
-      if (v11 != -1)
+      rtcpCipherSuite = [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtcpCipherSuite];
+      if (rtcpCipherSuite != -1)
       {
-        [(VCMediaNegotiatorMediaEncryptionSettings *)v10 addSRTCPCipherSuite:v11];
+        [(VCMediaNegotiatorMediaEncryptionSettings *)v10 addSRTCPCipherSuite:rtcpCipherSuite];
       }
 
-      [a3 setMediaEncryptionSettings:v10];
+      [settings setMediaEncryptionSettings:v10];
       goto LABEL_10;
     }
 
@@ -2095,45 +2095,45 @@ LABEL_10:
   v10 = v13;
 LABEL_10:
 
-  return [a3 mediaEncryptionSettings] != 0;
+  return [settings mediaEncryptionSettings] != 0;
 }
 
-- (BOOL)setUpEncryptionForMediaStreamConfig:(id)a3
+- (BOOL)setUpEncryptionForMediaStreamConfig:(id)config
 {
   if ([(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtpCipherSuite]!= -1 || [(AVCMediaStreamNegotiatorSettings *)self->_negotiatorSettings rtcpCipherSuite]!= -1)
   {
-    v5 = [(VCMediaNegotiatorBase *)self->_mediaNegotiator negotiatedMediaEncyptionSettings];
-    if ([(NSSet *)[(VCMediaNegotiatorMediaEncryptionSettings *)v5 mediaCipherSuites] count]>= 2)
+    negotiatedMediaEncyptionSettings = [(VCMediaNegotiatorBase *)self->_mediaNegotiator negotiatedMediaEncyptionSettings];
+    if ([(NSSet *)[(VCMediaNegotiatorMediaEncryptionSettings *)negotiatedMediaEncyptionSettings mediaCipherSuites] count]>= 2)
     {
       [AVCMediaStreamNegotiator setUpEncryptionForMediaStreamConfig:];
       return v8;
     }
 
-    [a3 setSRTPCipherSuite:{VCMediaStreamCipherSuite_ClientCipherSuiteWithCipherSuite(objc_msgSend(-[NSSet anyObject](-[VCMediaNegotiatorMediaEncryptionSettings mediaCipherSuites](v5, "mediaCipherSuites"), "anyObject"), "integerValue"))}];
-    if ([(NSSet *)[(VCMediaNegotiatorMediaEncryptionSettings *)v5 srtcpCipherSuites] count]>= 2)
+    [config setSRTPCipherSuite:{VCMediaStreamCipherSuite_ClientCipherSuiteWithCipherSuite(objc_msgSend(-[NSSet anyObject](-[VCMediaNegotiatorMediaEncryptionSettings mediaCipherSuites](negotiatedMediaEncyptionSettings, "mediaCipherSuites"), "anyObject"), "integerValue"))}];
+    if ([(NSSet *)[(VCMediaNegotiatorMediaEncryptionSettings *)negotiatedMediaEncyptionSettings srtcpCipherSuites] count]>= 2)
     {
       [AVCMediaStreamNegotiator setUpEncryptionForMediaStreamConfig:];
       return v7;
     }
 
-    [a3 setSRTCPCipherSuite:{VCMediaStreamCipherSuite_ClientCipherSuiteWithCipherSuite(objc_msgSend(-[NSSet anyObject](-[VCMediaNegotiatorMediaEncryptionSettings srtcpCipherSuites](v5, "srtcpCipherSuites"), "anyObject"), "integerValue"))}];
-    [a3 setReceiveMediaKey:{-[VCMediaNegotiatorMediaEncryptionSettings sendMediaKey](v5, "sendMediaKey")}];
-    [a3 setSendMediaKey:{-[VCMediaNegotiatorMediaEncryptionSettings sendMediaKey](-[VCMediaNegotiatorLocalConfiguration mediaEncryptionSettings](-[VCMediaNegotiatorBase localSettings](self->_mediaNegotiator, "localSettings"), "mediaEncryptionSettings"), "sendMediaKey")}];
+    [config setSRTCPCipherSuite:{VCMediaStreamCipherSuite_ClientCipherSuiteWithCipherSuite(objc_msgSend(-[NSSet anyObject](-[VCMediaNegotiatorMediaEncryptionSettings srtcpCipherSuites](negotiatedMediaEncyptionSettings, "srtcpCipherSuites"), "anyObject"), "integerValue"))}];
+    [config setReceiveMediaKey:{-[VCMediaNegotiatorMediaEncryptionSettings sendMediaKey](negotiatedMediaEncyptionSettings, "sendMediaKey")}];
+    [config setSendMediaKey:{-[VCMediaNegotiatorMediaEncryptionSettings sendMediaKey](-[VCMediaNegotiatorLocalConfiguration mediaEncryptionSettings](-[VCMediaNegotiatorBase localSettings](self->_mediaNegotiator, "localSettings"), "mediaEncryptionSettings"), "sendMediaKey")}];
   }
 
   return 1;
 }
 
-- (BOOL)negotiateDirection:(id)a3 error:(id *)a4
+- (BOOL)negotiateDirection:(id)direction error:(id *)error
 {
-  if (!a3)
+  if (!direction)
   {
     v7 = 0;
 LABEL_4:
     v8 = 0;
     self->_negotiatedDirection = v7;
     result = 1;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -2141,34 +2141,34 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [a3 integerValue];
-  if (v6 <= 3)
+  integerValue = [direction integerValue];
+  if (integerValue <= 3)
   {
-    v7 = qword_1DBD4F8C0[v6];
+    v7 = qword_1DBD4F8C0[integerValue];
     goto LABEL_4;
   }
 
   result = 0;
   v8 = @"Unknown direction";
-  if (!a4)
+  if (!error)
   {
     return result;
   }
 
 LABEL_5:
-  *a4 = v8;
+  *error = v8;
   return result;
 }
 
-+ (BOOL)newOptionalObject:(id *)a3 withClass:(Class)a4 withOptionalOfferInfo:(id)a5 parameter:(id)a6 error:(id *)a7
++ (BOOL)newOptionalObject:(id *)object withClass:(Class)class withOptionalOfferInfo:(id)info parameter:(id)parameter error:(id *)error
 {
-  v9 = [a5 objectForKeyedSubscript:a6];
+  v9 = [info objectForKeyedSubscript:parameter];
   if (!v9)
   {
     v12 = 0;
 LABEL_4:
     result = 1;
-    if (!a7)
+    if (!error)
     {
       return result;
     }
@@ -2181,29 +2181,29 @@ LABEL_4:
   {
     v11 = v10;
     v12 = 0;
-    *a3 = v11;
+    *object = v11;
     goto LABEL_4;
   }
 
   result = 0;
   v12 = @"Invalid class for parameter";
-  if (!a7)
+  if (!error)
   {
     return result;
   }
 
 LABEL_5:
-  *a7 = v12;
+  *error = v12;
   return result;
 }
 
-- (id)applyNegotiatedDirectionToOptions:(id)a3 error:(id *)a4
+- (id)applyNegotiatedDirectionToOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   negotiatedDirection = self->_negotiatedDirection;
   if (negotiatedDirection)
   {
-    v8 = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorDirection"];
+    v8 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorDirection"];
     if (v8)
     {
       if ([v8 isEqualToNumber:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", self->_negotiatedDirection)}])
@@ -2219,22 +2219,22 @@ LABEL_5:
 
     else
     {
-      if (v5)
+      if (optionsCopy)
       {
-        v9 = [v5 mutableCopy];
+        dictionary = [optionsCopy mutableCopy];
       }
 
       else
       {
-        v9 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v10 = v9;
-      if (v9)
+      v10 = dictionary;
+      if (dictionary)
       {
-        [v9 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->_negotiatedDirection), @"AVCMediaStreamNegotiatorDirection"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->_negotiatedDirection), @"AVCMediaStreamNegotiatorDirection"}];
         negotiatedDirection = 0;
-        v5 = v10;
+        optionsCopy = v10;
       }
 
       else
@@ -2244,12 +2244,12 @@ LABEL_5:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = negotiatedDirection;
+    *error = negotiatedDirection;
   }
 
-  return v5;
+  return optionsCopy;
 }
 
 - (void)initNegotiatorLocalConfiguration:options:.cold.1()
@@ -2362,7 +2362,7 @@ LABEL_5:
 
 - (void)createOffer
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     VRTraceGetErrorLogLevelForModule();
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -2405,7 +2405,7 @@ LABEL_5:
     *(a3 + 28) = 2112;
     *(a3 + 30) = v6;
     *(a3 + 38) = 2048;
-    *(a3 + 40) = a1;
+    *(a3 + 40) = self;
     v9 = " [%s] %s:%d %@(%p) Failed to allocate offer info";
     v10 = v14;
     v11 = a3;
@@ -2628,7 +2628,7 @@ LABEL_5:
   }
 
   *a2 = 0;
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)setAnswer:withError:.cold.1()

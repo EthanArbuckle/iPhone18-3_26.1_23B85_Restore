@@ -1,29 +1,29 @@
 @interface GEOAPLocationCollectionReporter
-+ (BOOL)_fuzzCNProbes:(id)a3;
-+ (BOOL)_fuzzINProbes:(id)a3;
-+ (BOOL)_fuzzROWProbes:(id)a3;
-+ (uint64_t)_fuzzProbes:(uint64_t)a1;
-+ (void)_withCollectionRequest:(id)a3 fuzzBaseline:(BOOL)a4 fuzzCourseAccuracy:(BOOL)a5 fuzzSpeedAccuracy:(BOOL)a6 fuzzHorizAccuracy:(BOOL)a7 fuzzVertAccuracy:(BOOL)a8 useOneSecondPrecision:(BOOL)a9;
-+ (void)reportBatchLocationCollection:(id)a3;
-+ (void)reportCalibratedPressureCollection:(id)a3;
-+ (void)reportRealtimeLocationCollection:(id)a3;
++ (BOOL)_fuzzCNProbes:(id)probes;
++ (BOOL)_fuzzINProbes:(id)probes;
++ (BOOL)_fuzzROWProbes:(id)probes;
++ (uint64_t)_fuzzProbes:(uint64_t)probes;
++ (void)_withCollectionRequest:(id)request fuzzBaseline:(BOOL)baseline fuzzCourseAccuracy:(BOOL)accuracy fuzzSpeedAccuracy:(BOOL)speedAccuracy fuzzHorizAccuracy:(BOOL)horizAccuracy fuzzVertAccuracy:(BOOL)vertAccuracy useOneSecondPrecision:(BOOL)precision;
++ (void)reportBatchLocationCollection:(id)collection;
++ (void)reportCalibratedPressureCollection:(id)collection;
++ (void)reportRealtimeLocationCollection:(id)collection;
 @end
 
 @implementation GEOAPLocationCollectionReporter
 
-+ (void)reportCalibratedPressureCollection:(id)a3
++ (void)reportCalibratedPressureCollection:(id)collection
 {
-  v3 = [a3 data];
-  [GEOAPPortal capturePressureDataWithPressureData:v3];
+  data = [collection data];
+  [GEOAPPortal capturePressureDataWithPressureData:data];
 }
 
-+ (void)reportBatchLocationCollection:(id)a3
++ (void)reportBatchLocationCollection:(id)collection
 {
-  v3 = a3;
-  if (([GEOAPLocationCollectionReporter _fuzzProbes:v3]& 1) != 0)
+  collectionCopy = collection;
+  if (([GEOAPLocationCollectionReporter _fuzzProbes:collectionCopy]& 1) != 0)
   {
-    v4 = [v3 data];
-    [GEOAPPortal captureBatchTrafficWithLocationCollection:v4];
+    data = [collectionCopy data];
+    [GEOAPPortal captureBatchTrafficWithLocationCollection:data];
   }
 
   else
@@ -37,14 +37,14 @@
   }
 }
 
-+ (uint64_t)_fuzzProbes:(uint64_t)a1
++ (uint64_t)_fuzzProbes:(uint64_t)probes
 {
   v2 = a2;
   v3 = objc_opt_self();
-  v4 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v5 = [v4 countryCode];
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  countryCode = [mEMORY[0x1E69A1CD8] countryCode];
 
-  if ([v5 isEqualToString:@"CN"])
+  if ([countryCode isEqualToString:@"CN"])
   {
     v6 = GEOGetTrafficProbeAnalyticsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -58,7 +58,7 @@
 
   else
   {
-    v8 = [v5 isEqualToString:@"IN"];
+    v8 = [countryCode isEqualToString:@"IN"];
     v9 = GEOGetTrafficProbeAnalyticsLog();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
     if (v8)
@@ -89,20 +89,20 @@
   return v11;
 }
 
-+ (void)reportRealtimeLocationCollection:(id)a3
++ (void)reportRealtimeLocationCollection:(id)collection
 {
-  v3 = a3;
-  if (([GEOAPLocationCollectionReporter _fuzzProbes:v3]& 1) != 0)
+  collectionCopy = collection;
+  if (([GEOAPLocationCollectionReporter _fuzzProbes:collectionCopy]& 1) != 0)
   {
     v4 = GEOConfigGetDate();
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [v4 earlierDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [v4 earlierDate:date];
     v7 = [v6 isEqualToDate:v4];
 
     if (v7)
     {
       GEOConfigGetDouble();
-      v9 = [v5 dateByAddingTimeInterval:v8 * 60.0];
+      v9 = [date dateByAddingTimeInterval:v8 * 60.0];
 
       GEOConfigSetDate();
       v10 = 1;
@@ -117,8 +117,8 @@
     if (v10 <= GEOConfigGetUInteger())
     {
       GEOConfigSetUInteger();
-      v12 = [v3 data];
-      [GEOAPPortal captureRealTrafficWithLocationCollection:v12];
+      data = [collectionCopy data];
+      [GEOAPPortal captureRealTrafficWithLocationCollection:data];
     }
 
     else
@@ -143,37 +143,37 @@
   }
 }
 
-+ (BOOL)_fuzzROWProbes:(id)a3
++ (BOOL)_fuzzROWProbes:(id)probes
 {
-  v4 = a3;
+  probesCopy = probes;
   BOOL = GEOConfigGetBOOL();
   v6 = GEOConfigGetBOOL();
   v7 = GEOConfigGetBOOL();
   v8 = GEOConfigGetBOOL();
   v9 = GEOConfigGetBOOL();
   LOBYTE(v11) = GEOConfigGetBOOL();
-  [a1 _withCollectionRequest:v4 fuzzBaseline:BOOL fuzzCourseAccuracy:v6 fuzzSpeedAccuracy:v7 fuzzHorizAccuracy:v8 fuzzVertAccuracy:v9 useOneSecondPrecision:v11];
+  [self _withCollectionRequest:probesCopy fuzzBaseline:BOOL fuzzCourseAccuracy:v6 fuzzSpeedAccuracy:v7 fuzzHorizAccuracy:v8 fuzzVertAccuracy:v9 useOneSecondPrecision:v11];
 
   return 1;
 }
 
-+ (BOOL)_fuzzINProbes:(id)a3
++ (BOOL)_fuzzINProbes:(id)probes
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  probesCopy = probes;
   if (GEOConfigGetBOOL())
   {
-    v29 = v4;
-    v5 = [a1 _geoShifterObfuscationSeed];
-    v30 = v5 != 0;
-    if (v5)
+    v29 = probesCopy;
+    _geoShifterObfuscationSeed = [self _geoShifterObfuscationSeed];
+    v30 = _geoShifterObfuscationSeed != 0;
+    if (_geoShifterObfuscationSeed)
     {
-      v6 = v5;
+      v6 = _geoShifterObfuscationSeed;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      obj = [v4 locations];
+      obj = [probesCopy locations];
       v7 = [obj countByEnumeratingWithState:&v35 objects:v50 count:16];
       if (!v7)
       {
@@ -303,7 +303,7 @@ LABEL_19:
 
 LABEL_23:
 
-    v4 = v29;
+    probesCopy = v29;
   }
 
   else
@@ -315,28 +315,28 @@ LABEL_23:
   return v30;
 }
 
-+ (BOOL)_fuzzCNProbes:(id)a3
++ (BOOL)_fuzzCNProbes:(id)probes
 {
   LOBYTE(v4) = 1;
-  [a1 _withCollectionRequest:a3 fuzzBaseline:1 fuzzCourseAccuracy:1 fuzzSpeedAccuracy:1 fuzzHorizAccuracy:1 fuzzVertAccuracy:1 useOneSecondPrecision:v4];
+  [self _withCollectionRequest:probes fuzzBaseline:1 fuzzCourseAccuracy:1 fuzzSpeedAccuracy:1 fuzzHorizAccuracy:1 fuzzVertAccuracy:1 useOneSecondPrecision:v4];
   return 1;
 }
 
-+ (void)_withCollectionRequest:(id)a3 fuzzBaseline:(BOOL)a4 fuzzCourseAccuracy:(BOOL)a5 fuzzSpeedAccuracy:(BOOL)a6 fuzzHorizAccuracy:(BOOL)a7 fuzzVertAccuracy:(BOOL)a8 useOneSecondPrecision:(BOOL)a9
++ (void)_withCollectionRequest:(id)request fuzzBaseline:(BOOL)baseline fuzzCourseAccuracy:(BOOL)accuracy fuzzSpeedAccuracy:(BOOL)speedAccuracy fuzzHorizAccuracy:(BOOL)horizAccuracy fuzzVertAccuracy:(BOOL)vertAccuracy useOneSecondPrecision:(BOOL)precision
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  vertAccuracyCopy = vertAccuracy;
+  horizAccuracyCopy = horizAccuracy;
+  speedAccuracyCopy = speedAccuracy;
+  accuracyCopy = accuracy;
+  baselineCopy = baseline;
   v31 = *MEMORY[0x1E69E9840];
-  if (a4 || a5 || a6 || a7 || a8 || a9)
+  if (baseline || accuracy || speedAccuracy || horizAccuracy || vertAccuracy || precision)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = [a3 locations];
+    obj = [request locations];
     v14 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (!v14)
     {
@@ -355,7 +355,7 @@ LABEL_23:
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
-        if (v13)
+        if (baselineCopy)
         {
           [*(*(&v26 + 1) + 8 * i) clearAppBundleIdIndices];
           [v18 setHasProvider:0];
@@ -368,10 +368,10 @@ LABEL_23:
           [v18 setHasHorzUncSemiMaj:0];
           [v18 setHasHorzUncSemiMin:0];
           [v18 setHasHorzUncSemiMajAz:0];
-          if (!a9)
+          if (!precision)
           {
 LABEL_14:
-            if (!v12)
+            if (!accuracyCopy)
             {
               goto LABEL_15;
             }
@@ -380,17 +380,17 @@ LABEL_14:
           }
         }
 
-        else if (!a9)
+        else if (!precision)
         {
           goto LABEL_14;
         }
 
         [v18 timestamp];
         [v18 setTimestamp:rint(v19)];
-        if (!v12)
+        if (!accuracyCopy)
         {
 LABEL_15:
-          if (!v11)
+          if (!speedAccuracyCopy)
           {
             goto LABEL_16;
           }
@@ -400,10 +400,10 @@ LABEL_15:
 
 LABEL_21:
         [v18 setHasCourseAccuracy:0];
-        if (!v11)
+        if (!speedAccuracyCopy)
         {
 LABEL_16:
-          if (v10)
+          if (horizAccuracyCopy)
           {
             goto LABEL_23;
           }
@@ -413,7 +413,7 @@ LABEL_16:
 
 LABEL_22:
         [v18 setHasSpeedAccuracy:0];
-        if (v10)
+        if (horizAccuracyCopy)
         {
 LABEL_23:
           [v18 horizontalAccuracy];
@@ -429,7 +429,7 @@ LABEL_23:
           }
 
           [v18 setHorizontalAccuracy:v20];
-          if (!v9)
+          if (!vertAccuracyCopy)
           {
             continue;
           }
@@ -438,7 +438,7 @@ LABEL_23:
         }
 
 LABEL_17:
-        if (!v9)
+        if (!vertAccuracyCopy)
         {
           continue;
         }

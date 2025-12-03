@@ -1,14 +1,14 @@
 @interface WFActionSessionKitSessionConfiguration
-- (WFActionSessionKitSessionConfiguration)initWithBundleIdentifier:(id)a3 toastDurationPerRunSource:(id)a4;
-- (double)toastDurationForRunSource:(id)a3;
+- (WFActionSessionKitSessionConfiguration)initWithBundleIdentifier:(id)identifier toastDurationPerRunSource:(id)source;
+- (double)toastDurationForRunSource:(id)source;
 @end
 
 @implementation WFActionSessionKitSessionConfiguration
 
-- (double)toastDurationForRunSource:(id)a3
+- (double)toastDurationForRunSource:(id)source
 {
-  v5 = a3;
-  if (v5)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     if (self)
     {
@@ -20,8 +20,8 @@ LABEL_3:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFActionSessionKitSessionConfiguration.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"runSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionSessionKitSessionConfiguration.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"runSource"}];
 
     if (self)
     {
@@ -31,12 +31,12 @@ LABEL_3:
 
   toastDurationPerRunSource = 0;
 LABEL_4:
-  v7 = [(NSDictionary *)toastDurationPerRunSource objectForKeyedSubscript:v5];
+  v7 = [(NSDictionary *)toastDurationPerRunSource objectForKeyedSubscript:sourceCopy];
   v8 = objc_opt_class();
   v9 = WFEnforceClass_1501(v7, v8);
 
-  v10 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v11 = [v10 valueForKey:@"WFShortcutsToastedBannerAutoCollapseDuration"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v11 = [systemShortcutsUserDefaults valueForKey:@"WFShortcutsToastedBannerAutoCollapseDuration"];
   v12 = objc_opt_class();
   v13 = WFEnforceClass_1501(v11, v12);
 
@@ -52,9 +52,9 @@ LABEL_4:
 
   [v14 doubleValue];
   v16 = v15;
-  v17 = [(WFActionSessionKitSessionConfiguration *)self deviceHasDynamicIsland];
+  deviceHasDynamicIsland = [(WFActionSessionKitSessionConfiguration *)self deviceHasDynamicIsland];
   v18 = 5.0;
-  if (v17)
+  if (deviceHasDynamicIsland)
   {
     v18 = 0.0;
   }
@@ -68,14 +68,14 @@ LABEL_4:
   return v16;
 }
 
-- (WFActionSessionKitSessionConfiguration)initWithBundleIdentifier:(id)a3 toastDurationPerRunSource:(id)a4
+- (WFActionSessionKitSessionConfiguration)initWithBundleIdentifier:(id)identifier toastDurationPerRunSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  sourceCopy = source;
+  if (!identifierCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFActionSessionKitSessionConfiguration.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionSessionKitSessionConfiguration.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v18.receiver = self;
@@ -83,16 +83,16 @@ LABEL_4:
   v9 = [(WFActionSessionKitSessionConfiguration *)&v18 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v10;
 
-    v12 = [v8 copy];
+    v12 = [sourceCopy copy];
     toastDurationPerRunSource = v9->_toastDurationPerRunSource;
     v9->_toastDurationPerRunSource = v12;
 
-    v14 = [MEMORY[0x1E69E0A90] currentDevice];
-    v9->_deviceHasDynamicIsland = [v14 hasSystemAperture];
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    v9->_deviceHasDynamicIsland = [currentDevice hasSystemAperture];
 
     v15 = v9;
   }

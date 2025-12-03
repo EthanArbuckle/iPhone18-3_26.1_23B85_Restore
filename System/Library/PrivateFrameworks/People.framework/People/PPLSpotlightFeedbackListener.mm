@@ -1,17 +1,17 @@
 @interface PPLSpotlightFeedbackListener
-- (void)didPerformCommand:(id)a3;
+- (void)didPerformCommand:(id)command;
 @end
 
 @implementation PPLSpotlightFeedbackListener
 
-- (void)didPerformCommand:(id)a3
+- (void)didPerformCommand:(id)command
 {
-  v4 = a3;
-  v3 = [v4 command];
+  commandCopy = command;
+  command = [commandCopy command];
 
-  if (v3)
+  if (command)
   {
-    [_TtC6People25SpotlightFeedbackListener didPerformCommand:v4];
+    [_TtC6People25SpotlightFeedbackListener didPerformCommand:commandCopy];
   }
 }
 

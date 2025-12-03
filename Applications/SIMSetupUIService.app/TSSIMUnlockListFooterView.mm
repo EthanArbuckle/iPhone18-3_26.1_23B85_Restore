@@ -1,21 +1,21 @@
 @interface TSSIMUnlockListFooterView
-- (TSSIMUnlockListFooterView)initWithDelegate:(id)a3;
+- (TSSIMUnlockListFooterView)initWithDelegate:(id)delegate;
 - (TSSIMUnlockListFooterViewDelegate)delegate;
-- (void)_continueButtonPressed:(id)a3;
+- (void)_continueButtonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setMode:(int64_t)a3;
+- (void)setMode:(int64_t)mode;
 @end
 
 @implementation TSSIMUnlockListFooterView
 
-- (TSSIMUnlockListFooterView)initWithDelegate:(id)a3
+- (TSSIMUnlockListFooterView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(TSSIMUnlockListFooterView *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -68,15 +68,15 @@
   [(UIButton *)self->_continueButton setFrame:v12, v14, v16, v18];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(UIButton *)self->_continueButton removeFromSuperview];
-    if (a3)
+    if (mode)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
         v22 = [UIButton buttonWithType:1];
         continueButton = self->_continueButton;
@@ -98,7 +98,7 @@
         [(UIButton *)self->_continueButton sizeToFit];
       }
 
-      else if (a3 == 1)
+      else if (mode == 1)
       {
         v6 = [UIButton buttonWithType:0];
         v7 = self->_continueButton;
@@ -126,11 +126,11 @@
         v19 = [v18 colorWithAlphaComponent:0.25];
         [(UIButton *)v17 setTitleColor:v19 forState:1];
 
-        v20 = [(UIButton *)self->_continueButton titleLabel];
-        [v20 setAdjustsFontSizeToFitWidth:1];
+        titleLabel = [(UIButton *)self->_continueButton titleLabel];
+        [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-        v21 = [(UIButton *)self->_continueButton layer];
-        [v21 setCornerRadius:8.0];
+        layer = [(UIButton *)self->_continueButton layer];
+        [layer setCornerRadius:8.0];
       }
     }
 
@@ -147,7 +147,7 @@
   }
 }
 
-- (void)_continueButtonPressed:(id)a3
+- (void)_continueButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained unlockListFooterViewContinueButtonWasPressed:self];

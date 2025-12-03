@@ -3,18 +3,18 @@
 + (id)new;
 - (PXAssetMetadataDonator)init;
 - (id)_init;
-- (void)_notifyWhenDonationIsComplete:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)donate:(id)a3;
-- (void)donateMetadataForAsset:(id)a3;
+- (void)_notifyWhenDonationIsComplete:(id)complete;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)donate:(id)donate;
+- (void)donateMetadataForAsset:(id)asset;
 @end
 
 @implementation PXAssetMetadataDonator
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  backgroundCopy = background;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -23,7 +23,7 @@
   v12[1] = 3221225472;
   v12[2] = __56__PXAssetMetadataDonator_applicationDidEnterBackground___block_invoke;
   v12[3] = &unk_1E7749A28;
-  v6 = v5;
+  v6 = mEMORY[0x1E69DC668];
   v13 = v6;
   v14 = &v15;
   v7 = [v6 beginBackgroundTaskWithName:@"Asset Metadata Donation" expirationHandler:v12];
@@ -41,11 +41,11 @@
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_notifyWhenDonationIsComplete:(id)a3
+- (void)_notifyWhenDonationIsComplete:(id)complete
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completeCopy = complete;
+  v5 = completeCopy;
+  if (completeCopy)
   {
     v11[0] = 0;
     v11[1] = v11;
@@ -57,7 +57,7 @@
     aBlock[3] = &unk_1E7744A38;
     aBlock[4] = self;
     v10 = v11;
-    v9 = v4;
+    v9 = completeCopy;
     v6 = _Block_copy(aBlock);
     v7 = dispatch_time(0, 5000000000);
     dispatch_after(v7, MEMORY[0x1E69E96A0], v6);
@@ -81,7 +81,7 @@ void __56__PXAssetMetadataDonator__notifyWhenDonationIsComplete___block_invoke(u
   objc_sync_exit(obj);
 }
 
-- (void)donate:(id)a3
+- (void)donate:(id)donate
 {
   backgroundQueue = self->_backgroundQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -196,17 +196,17 @@ void __33__PXAssetMetadataDonator_donate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)donateMetadataForAsset:(id)a3
+- (void)donateMetadataForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   backgroundQueue = self->_backgroundQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PXAssetMetadataDonator_donateMetadataForAsset___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(backgroundQueue, v7);
 }
 
@@ -251,13 +251,13 @@ void __49__PXAssetMetadataDonator_donateMetadataForAsset___block_invoke(uint64_t
     v4 = dispatch_queue_create("PXAssetMetadataDonator Background Queue", 0);
     [(PXAssetMetadataDonator *)v2 setBackgroundQueue:v4];
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [(PXAssetMetadataDonator *)v2 setLocationDescriptionsByAssetLocalIdentifiers:v5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(PXAssetMetadataDonator *)v2 setLocationDescriptionsByAssetLocalIdentifiers:dictionary];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v6 addObserver:v2 selector:sel_donate_ name:*MEMORY[0x1E69DDBC8] object:v7];
-    [v6 addObserver:v2 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [defaultCenter addObserver:v2 selector:sel_donate_ name:*MEMORY[0x1E69DDBC8] object:mEMORY[0x1E69DC668]];
+    [defaultCenter addObserver:v2 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:mEMORY[0x1E69DC668]];
   }
 
   return v2;
@@ -265,8 +265,8 @@ void __49__PXAssetMetadataDonator_donateMetadataForAsset___block_invoke(uint64_t
 
 - (PXAssetMetadataDonator)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetMetadataDonator.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXAssetMetadataDonator init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetMetadataDonator.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXAssetMetadataDonator init]"}];
 
   abort();
 }
@@ -277,7 +277,7 @@ void __49__PXAssetMetadataDonator_donateMetadataForAsset___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __39__PXAssetMetadataDonator_sharedDonator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDonator_onceToken != -1)
   {
     dispatch_once(&sharedDonator_onceToken, block);
@@ -297,8 +297,8 @@ void __39__PXAssetMetadataDonator_sharedDonator__block_invoke(uint64_t a1)
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXAssetMetadataDonator.m" lineNumber:44 description:{@"%s is not available as initializer", "+[PXAssetMetadataDonator new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetMetadataDonator.m" lineNumber:44 description:{@"%s is not available as initializer", "+[PXAssetMetadataDonator new]"}];
 
   abort();
 }

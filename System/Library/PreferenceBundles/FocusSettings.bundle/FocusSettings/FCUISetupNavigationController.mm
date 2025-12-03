@@ -1,31 +1,31 @@
 @interface FCUISetupNavigationController
-+ (id)setupNavigationControllerForMode:(id)a3;
-+ (id)setupNavigationControllerForUnknownModeWithPlaceholderModes:(id)a3 allReservedModes:(id)a4;
++ (id)setupNavigationControllerForMode:(id)mode;
++ (id)setupNavigationControllerForUnknownModeWithPlaceholderModes:(id)modes allReservedModes:(id)reservedModes;
 - (FCUISetupNavigationControllerDelegate)setupDelegate;
 - (id)_listController;
-- (void)createDefaultModeConfigurationForMode:(id)a3;
+- (void)createDefaultModeConfigurationForMode:(id)mode;
 - (void)viewDidLoad;
 @end
 
 @implementation FCUISetupNavigationController
 
-+ (id)setupNavigationControllerForMode:(id)a3
++ (id)setupNavigationControllerForMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = [FCUISetupNavigationController alloc];
-  v5 = [_TtC13FocusSettings47FCUIFocusCustomizationInvitationSwiftController welcomeControllerWithMode:v3];
+  v5 = [_TtC13FocusSettings47FCUIFocusCustomizationInvitationSwiftController welcomeControllerWithMode:modeCopy];
 
   v6 = [(FCUISetupNavigationController *)v4 initWithRootViewController:v5];
 
   return v6;
 }
 
-+ (id)setupNavigationControllerForUnknownModeWithPlaceholderModes:(id)a3 allReservedModes:(id)a4
++ (id)setupNavigationControllerForUnknownModeWithPlaceholderModes:(id)modes allReservedModes:(id)reservedModes
 {
-  v5 = a4;
-  v6 = a3;
+  reservedModesCopy = reservedModes;
+  modesCopy = modes;
   v7 = [FCUISetupNavigationController alloc];
-  v8 = [FCUIFocusListWelcomeController welcomeControllerWithPlaceholderModes:v6 allReservedModes:v5];
+  v8 = [FCUIFocusListWelcomeController welcomeControllerWithPlaceholderModes:modesCopy allReservedModes:reservedModesCopy];
 
   v9 = [(FCUISetupNavigationController *)v7 initWithRootViewController:v8];
 
@@ -40,20 +40,20 @@
   [(FCUISetupNavigationController *)self setModalPresentationStyle:2];
 }
 
-- (void)createDefaultModeConfigurationForMode:(id)a3
+- (void)createDefaultModeConfigurationForMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
-  [WeakRetained setupNavigationController:self createDefaultModeConfigurationForMode:v4];
+  [WeakRetained setupNavigationController:self createDefaultModeConfigurationForMode:modeCopy];
 
   [(FCUISetupNavigationController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)_listController
 {
-  v2 = [(FCUISetupNavigationController *)self presentingViewController];
+  presentingViewController = [(FCUISetupNavigationController *)self presentingViewController];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = presentingViewController;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

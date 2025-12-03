@@ -1,28 +1,28 @@
 @interface AXPIOSPlatformElement
-+ (id)platformElementWithTranslationObject:(id)a3;
-+ (id)platformElementWithTranslationObject:(id)a3 rootParent:(id)a4;
++ (id)platformElementWithTranslationObject:(id)object;
++ (id)platformElementWithTranslationObject:(id)object rootParent:(id)parent;
 @end
 
 @implementation AXPIOSPlatformElement
 
-+ (id)platformElementWithTranslationObject:(id)a3 rootParent:(id)a4
++ (id)platformElementWithTranslationObject:(id)object rootParent:(id)parent
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AXPIOSPlatformElement alloc] initWithAccessibilityContainer:v5];
+  parentCopy = parent;
+  objectCopy = object;
+  v7 = [[AXPIOSPlatformElement alloc] initWithAccessibilityContainer:parentCopy];
 
-  [(AXPIOSPlatformElement *)v7 setTranslation:v6];
+  [(AXPIOSPlatformElement *)v7 setTranslation:objectCopy];
 
   return v7;
 }
 
-+ (id)platformElementWithTranslationObject:(id)a3
++ (id)platformElementWithTranslationObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = +[AXPTranslator_iOS sharedInstance];
-  v6 = [v5 iosPlatformElementFromTranslation:v4];
+  v6 = [v5 iosPlatformElementFromTranslation:objectCopy];
 
-  v7 = [a1 platformElementWithTranslationObject:v4 rootParent:v6];
+  v7 = [self platformElementWithTranslationObject:objectCopy rootParent:v6];
 
   return v7;
 }

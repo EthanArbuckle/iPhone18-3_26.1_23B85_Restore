@@ -7,21 +7,21 @@
 - (HMDPhotoLibraryPerson)createPhotoLibraryPerson
 {
   v2 = objc_alloc(MEMORY[0x277CCAD78]);
-  v3 = [a1 uuid];
-  v4 = [v2 initWithUUIDString:v3];
+  uuid = [self uuid];
+  v4 = [v2 initWithUUIDString:uuid];
 
-  v5 = [a1 name];
-  if ([v5 length])
+  name = [self name];
+  if ([name length])
   {
-    v6 = [a1 name];
+    name2 = [self name];
   }
 
   else
   {
-    v6 = 0;
+    name2 = 0;
   }
 
-  v7 = [[HMDPhotoLibraryPerson alloc] initWithUUID:v4 name:v6];
+  v7 = [[HMDPhotoLibraryPerson alloc] initWithUUID:v4 name:name2];
 
   return v7;
 }

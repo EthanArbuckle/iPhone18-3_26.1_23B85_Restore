@@ -1,14 +1,14 @@
 @interface UIInputViewSetPlacementOffScreenDown
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 @end
 
 @implementation UIInputViewSetPlacementOffScreenDown
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  if (a4)
+  if (view)
   {
-    v6 = [MEMORY[0x1E69977A0] constraintWithItem:a4 attribute:3 relatedBy:0 toItem:a5 attribute:4 multiplier:1.0 constant:0.0];
+    v6 = [MEMORY[0x1E69977A0] constraintWithItem:view attribute:3 relatedBy:0 toItem:containerView attribute:4 multiplier:1.0 constant:0.0];
   }
 
   else

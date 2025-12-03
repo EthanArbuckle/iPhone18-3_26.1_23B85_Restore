@@ -1,23 +1,23 @@
 @interface RTTTranscriptionController
 - (RTTTranscriptionController)init;
-- (RTTTranscriptionController)initWithDelegate:(id)a3;
+- (RTTTranscriptionController)initWithDelegate:(id)delegate;
 - (RTTTranscriptionControllerDelegate)delegate;
-- (void)startTranscribingForCallUUID:(id)a3;
-- (void)startTranscribingV2ForCallUUID:(id)a3;
-- (void)stopTranscribingForCallUUID:(id)a3;
-- (void)stopTranscribingV2ForCallUUID:(id)a3;
+- (void)startTranscribingForCallUUID:(id)d;
+- (void)startTranscribingV2ForCallUUID:(id)d;
+- (void)stopTranscribingForCallUUID:(id)d;
+- (void)stopTranscribingV2ForCallUUID:(id)d;
 @end
 
 @implementation RTTTranscriptionController
 
-- (RTTTranscriptionController)initWithDelegate:(id)a3
+- (RTTTranscriptionController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(RTTTranscriptionController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(RTTTranscriptionController *)v5 setDelegate:v4];
+    [(RTTTranscriptionController *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -48,17 +48,17 @@
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [v3 sharedInstance];
-    [(RTTTranscriptionController *)v2 setTranscriber:v5];
+    sharedInstance = [v3 sharedInstance];
+    [(RTTTranscriptionController *)v2 setTranscriber:sharedInstance];
   }
 
   return v2;
 }
 
-- (void)startTranscribingForCallUUID:(id)a3
+- (void)startTranscribingForCallUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[RTTSettings sharedInstance];
   if (([v5 rttLiveTranscriptionsFeatureFlagEnabled] & 1) == 0)
   {
@@ -81,33 +81,33 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [(RTTTranscriptionController *)self currentCallUUID];
-  v9 = [v8 isEqualToString:v4];
+  currentCallUUID = [(RTTTranscriptionController *)self currentCallUUID];
+  v9 = [currentCallUUID isEqualToString:dCopy];
 
   if (!v9)
   {
-    v11 = [(RTTTranscriptionController *)self currentCallUUID];
+    currentCallUUID2 = [(RTTTranscriptionController *)self currentCallUUID];
 
-    if (v11)
+    if (currentCallUUID2)
     {
-      v12 = [(RTTTranscriptionController *)self currentCallUUID];
-      [(RTTTranscriptionController *)self stopTranscribingForCallUUID:v12];
+      currentCallUUID3 = [(RTTTranscriptionController *)self currentCallUUID];
+      [(RTTTranscriptionController *)self stopTranscribingForCallUUID:currentCallUUID3];
     }
 
     if (soft_AXHasCapability(@"AXLiveCaptionsLanguageExpansion"))
     {
-      [(RTTTranscriptionController *)self startTranscribingV2ForCallUUID:v4];
+      [(RTTTranscriptionController *)self startTranscribingV2ForCallUUID:dCopy];
       goto LABEL_17;
     }
 
-    v13 = [(RTTTranscriptionController *)self transcriber];
+    transcriber = [(RTTTranscriptionController *)self transcriber];
     v16 = 0;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __59__RTTTranscriptionController_startTranscribingForCallUUID___block_invoke;
     v17[3] = &unk_279AE8048;
     v17[4] = self;
-    [v13 startTranscribing:1 targetPID:4294967294 callbackBlock:v17 error:&v16];
+    [transcriber startTranscribing:1 targetPID:4294967294 callbackBlock:v17 error:&v16];
     v5 = v16;
 
     v14 = AXLogRTT();
@@ -117,12 +117,12 @@ LABEL_16:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v19 = v4;
+        v19 = dCopy;
         _os_log_impl(&dword_261754000, v6, OS_LOG_TYPE_INFO, "Started transcription for callUUID %@", buf, 0xCu);
       }
 
       [(RTTTranscriptionController *)self setCurrentTranscription:0];
-      [(RTTTranscriptionController *)self setCurrentCallUUID:v4];
+      [(RTTTranscriptionController *)self setCurrentCallUUID:dCopy];
       goto LABEL_16;
     }
 
@@ -138,7 +138,7 @@ LABEL_16:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = dCopy;
     _os_log_impl(&dword_261754000, v10, OS_LOG_TYPE_INFO, "Already transcribing for callUUID %@", buf, 0xCu);
   }
 
@@ -190,25 +190,25 @@ void __59__RTTTranscriptionController_startTranscribingForCallUUID___block_invok
   }
 }
 
-- (void)stopTranscribingForCallUUID:(id)a3
+- (void)stopTranscribingForCallUUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTTTranscriptionController *)self currentCallUUID];
-  v6 = [v5 isEqualToString:v4];
+  dCopy = d;
+  currentCallUUID = [(RTTTranscriptionController *)self currentCallUUID];
+  v6 = [currentCallUUID isEqualToString:dCopy];
 
   if (v6)
   {
     if (soft_AXHasCapability(@"AXLiveCaptionsLanguageExpansion"))
     {
-      [(RTTTranscriptionController *)self stopTranscribingV2ForCallUUID:v4];
+      [(RTTTranscriptionController *)self stopTranscribingV2ForCallUUID:dCopy];
     }
 
     else
     {
-      v8 = [(RTTTranscriptionController *)self transcriber];
+      transcriber = [(RTTTranscriptionController *)self transcriber];
       v13 = 0;
-      [v8 stopTranscribing:1 targetPID:4294967294 error:&v13];
+      [transcriber stopTranscribing:1 targetPID:4294967294 error:&v13];
       v9 = v13;
 
       v10 = AXLogRTT();
@@ -226,7 +226,7 @@ void __59__RTTTranscriptionController_startTranscribingForCallUUID___block_invok
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v15 = v4;
+          v15 = dCopy;
           _os_log_impl(&dword_261754000, v11, OS_LOG_TYPE_INFO, "Stopped transcription for callUUID %@", buf, 0xCu);
         }
 
@@ -242,7 +242,7 @@ void __59__RTTTranscriptionController_startTranscribingForCallUUID___block_invok
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_261754000, v7, OS_LOG_TYPE_INFO, "Already not transcribing for callUUID %@", buf, 0xCu);
     }
   }
@@ -250,10 +250,10 @@ void __59__RTTTranscriptionController_startTranscribingForCallUUID___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTranscribingV2ForCallUUID:(id)a3
+- (void)startTranscribingV2ForCallUUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -374,10 +374,10 @@ void __61__RTTTranscriptionController_startTranscribingV2ForCallUUID___block_inv
   [*(a1 + 32) setCurrentTranscription:v14];
 }
 
-- (void)stopTranscribingV2ForCallUUID:(id)a3
+- (void)stopTranscribingV2ForCallUUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   AXPerformBlockOnMainThread();
 }
 

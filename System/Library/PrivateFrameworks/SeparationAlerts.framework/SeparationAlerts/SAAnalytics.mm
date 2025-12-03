@@ -1,21 +1,21 @@
 @interface SAAnalytics
 - (SAAnalytics)init;
-- (SAAnalytics)initWithSettings:(id)a3;
-- (void)addAggressiveScanRequest:(BOOL)a3;
-- (void)addAlertWithContext:(id)a3;
-- (void)addDeviceFetchResultCount:(unint64_t)a3 type1count:(unint64_t)a4 type2count:(unint64_t)a5 type3count:(unint64_t)a6 type4count:(unint64_t)a7 type5count:(unint64_t)a8 type6count:(unint64_t)a9 type7count:(unint64_t)a10 type8count:(unint64_t)a11 safeCount:(unint64_t)a12 usingSameSafe:(BOOL)a13;
-- (void)addScanDuration:(double)a3;
-- (void)addScanDurationForFindingRelevantItemsOnly:(double)a3;
+- (SAAnalytics)initWithSettings:(id)settings;
+- (void)addAggressiveScanRequest:(BOOL)request;
+- (void)addAlertWithContext:(id)context;
+- (void)addDeviceFetchResultCount:(unint64_t)count type1count:(unint64_t)type1count type2count:(unint64_t)type2count type3count:(unint64_t)type3count type4count:(unint64_t)type4count type5count:(unint64_t)type5count type6count:(unint64_t)type6count type7count:(unint64_t)self0 type8count:(unint64_t)self1 safeCount:(unint64_t)self2 usingSameSafe:(BOOL)self3;
+- (void)addScanDuration:(double)duration;
+- (void)addScanDurationForFindingRelevantItemsOnly:(double)only;
 - (void)addWakeTimerRequest;
 - (void)publishAndResetAggregation;
 - (void)resetAggregation;
-- (void)setActiveState:(BOOL)a3;
-- (void)setInSafeLocationState:(BOOL)a3;
-- (void)setInTravelState:(BOOL)a3;
-- (void)setInUnsafeLocationState:(BOOL)a3;
-- (void)submitAlertRateEvent:(id)a3 alertType:(id)a4;
+- (void)setActiveState:(BOOL)state;
+- (void)setInSafeLocationState:(BOOL)state;
+- (void)setInTravelState:(BOOL)state;
+- (void)setInUnsafeLocationState:(BOOL)state;
+- (void)submitAlertRateEvent:(id)event alertType:(id)type;
 - (void)submitDefaultAlertRateEvent;
-- (void)submitEvent:(id)a3 content:(id)a4;
+- (void)submitEvent:(id)event content:(id)content;
 @end
 
 @implementation SAAnalytics
@@ -28,16 +28,16 @@
   return v4;
 }
 
-- (SAAnalytics)initWithSettings:(id)a3
+- (SAAnalytics)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v14.receiver = self;
   v14.super_class = SAAnalytics;
   v6 = [(SAAnalytics *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   lastActivated = v7->_lastActivated;
@@ -59,15 +59,15 @@
   return v7;
 }
 
-- (void)submitEvent:(id)a3 content:(id)a4
+- (void)submitEvent:(id)event content:(id)content
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAAnalyticsSettings *)self->_settings enableSubmission];
+  eventCopy = event;
+  contentCopy = content;
+  enableSubmission = [(SAAnalyticsSettings *)self->_settings enableSubmission];
   v9 = TASALog;
   v10 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (enableSubmission)
   {
     if (v10)
     {
@@ -76,13 +76,13 @@
       v15 = 2082;
       v16 = "";
       v17 = 2113;
-      v18 = v6;
+      v18 = eventCopy;
       v19 = 2113;
-      v20 = v7;
+      v20 = contentCopy;
       _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAAnalytics Submitting analytics event, eventName:%{private}@, content:%{private}@}", buf, 0x26u);
     }
 
-    v12 = v7;
+    v12 = contentCopy;
     AnalyticsSendEventLazy();
   }
 
@@ -93,9 +93,9 @@
     v15 = 2082;
     v16 = "";
     v17 = 2113;
-    v18 = v6;
+    v18 = eventCopy;
     v19 = 2113;
-    v20 = v7;
+    v20 = contentCopy;
     _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAAnalytics submission not enabled, eventName:%{private}@, content:%{private}@}", buf, 0x26u);
   }
 
@@ -105,52 +105,52 @@
 - (void)publishAndResetAggregation
 {
   v83[31] = *MEMORY[0x277D85DE8];
-  v3 = [(SAAnalytics *)self lastActivated];
+  lastActivated = [(SAAnalytics *)self lastActivated];
 
-  if (v3)
+  if (lastActivated)
   {
     v4 = [MEMORY[0x277CBEAA8] now];
-    v5 = [(SAAnalytics *)self lastActivated];
-    [v4 timeIntervalSinceDate:v5];
+    lastActivated2 = [(SAAnalytics *)self lastActivated];
+    [v4 timeIntervalSinceDate:lastActivated2];
     [(SAAnalytics *)self setAggActiveDuration:[(SAAnalytics *)self aggActiveDuration]+ v6];
 
     v7 = [MEMORY[0x277CBEAA8] now];
     [(SAAnalytics *)self setLastActivated:v7];
   }
 
-  v8 = [(SAAnalytics *)self lastSafeEntry];
+  lastSafeEntry = [(SAAnalytics *)self lastSafeEntry];
 
-  if (v8)
+  if (lastSafeEntry)
   {
     v9 = [MEMORY[0x277CBEAA8] now];
-    v10 = [(SAAnalytics *)self lastSafeEntry];
-    [v9 timeIntervalSinceDate:v10];
+    lastSafeEntry2 = [(SAAnalytics *)self lastSafeEntry];
+    [v9 timeIntervalSinceDate:lastSafeEntry2];
     [(SAAnalytics *)self setAggInSafeDuration:[(SAAnalytics *)self aggInSafeDuration]+ v11];
 
     v12 = [MEMORY[0x277CBEAA8] now];
     [(SAAnalytics *)self setLastSafeEntry:v12];
   }
 
-  v13 = [(SAAnalytics *)self lastUnsafeEntry];
+  lastUnsafeEntry = [(SAAnalytics *)self lastUnsafeEntry];
 
-  if (v13)
+  if (lastUnsafeEntry)
   {
     v14 = [MEMORY[0x277CBEAA8] now];
-    v15 = [(SAAnalytics *)self lastUnsafeEntry];
-    [v14 timeIntervalSinceDate:v15];
+    lastUnsafeEntry2 = [(SAAnalytics *)self lastUnsafeEntry];
+    [v14 timeIntervalSinceDate:lastUnsafeEntry2];
     [(SAAnalytics *)self setAggInUnsafeDuration:[(SAAnalytics *)self aggInUnsafeDuration]+ v16];
 
     v17 = [MEMORY[0x277CBEAA8] now];
     [(SAAnalytics *)self setLastUnsafeEntry:v17];
   }
 
-  v18 = [(SAAnalytics *)self lastTravelStart];
+  lastTravelStart = [(SAAnalytics *)self lastTravelStart];
 
-  if (v18)
+  if (lastTravelStart)
   {
     v19 = [MEMORY[0x277CBEAA8] now];
-    v20 = [(SAAnalytics *)self lastTravelStart];
-    [v19 timeIntervalSinceDate:v20];
+    lastTravelStart2 = [(SAAnalytics *)self lastTravelStart];
+    [v19 timeIntervalSinceDate:lastTravelStart2];
     [(SAAnalytics *)self setAggInTravelDuration:[(SAAnalytics *)self aggInTravelDuration]+ v21];
 
     v22 = [MEMORY[0x277CBEAA8] now];
@@ -170,8 +170,8 @@
   v78 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAAnalytics numEnabled](self, "numEnabled")}];
   v83[3] = v78;
   v82[4] = @"numItems";
-  v77 = [(SAAnalytics *)self numEnabledPerType];
-  v23 = [v77 objectForKey:&unk_287710150];
+  numEnabledPerType = [(SAAnalytics *)self numEnabledPerType];
+  v23 = [numEnabledPerType objectForKey:&unk_287710150];
   v76 = v23;
   if (v23)
   {
@@ -185,8 +185,8 @@
 
   v83[4] = v24;
   v82[5] = @"numAccessories";
-  v75 = [(SAAnalytics *)self numEnabledPerType];
-  v25 = [v75 objectForKey:&unk_287710180];
+  numEnabledPerType2 = [(SAAnalytics *)self numEnabledPerType];
+  v25 = [numEnabledPerType2 objectForKey:&unk_287710180];
   v74 = v25;
   if (v25)
   {
@@ -200,8 +200,8 @@
 
   v83[5] = v26;
   v82[6] = @"numBTLE";
-  v73 = [(SAAnalytics *)self numEnabledPerType];
-  v27 = [v73 objectForKey:&unk_287710198];
+  numEnabledPerType3 = [(SAAnalytics *)self numEnabledPerType];
+  v27 = [numEnabledPerType3 objectForKey:&unk_287710198];
   v72 = v27;
   if (v27)
   {
@@ -215,8 +215,8 @@
 
   v83[6] = v28;
   v82[7] = @"numDevices";
-  v71 = [(SAAnalytics *)self numEnabledPerType];
-  v29 = [v71 objectForKey:&unk_2877101B0];
+  numEnabledPerType4 = [(SAAnalytics *)self numEnabledPerType];
+  v29 = [numEnabledPerType4 objectForKey:&unk_2877101B0];
   v70 = v29;
   if (v29)
   {
@@ -230,8 +230,8 @@
 
   v83[7] = v30;
   v82[8] = @"numiPhone";
-  v69 = [(SAAnalytics *)self numEnabledPerType];
-  v31 = [v69 objectForKey:&unk_2877101C8];
+  numEnabledPerType5 = [(SAAnalytics *)self numEnabledPerType];
+  v31 = [numEnabledPerType5 objectForKey:&unk_2877101C8];
   v68 = v31;
   if (v31)
   {
@@ -245,8 +245,8 @@
 
   v83[8] = v32;
   v82[9] = @"numiPad";
-  v67 = [(SAAnalytics *)self numEnabledPerType];
-  v33 = [v67 objectForKey:&unk_2877101E0];
+  numEnabledPerType6 = [(SAAnalytics *)self numEnabledPerType];
+  v33 = [numEnabledPerType6 objectForKey:&unk_2877101E0];
   v66 = v33;
   if (v33)
   {
@@ -260,8 +260,8 @@
 
   v83[9] = v34;
   v82[10] = @"numMacBook";
-  v65 = [(SAAnalytics *)self numEnabledPerType];
-  v35 = [v65 objectForKey:&unk_2877101F8];
+  numEnabledPerType7 = [(SAAnalytics *)self numEnabledPerType];
+  v35 = [numEnabledPerType7 objectForKey:&unk_2877101F8];
   v64 = v35;
   if (v35)
   {
@@ -275,8 +275,8 @@
 
   v83[10] = v36;
   v82[11] = @"numAirPods";
-  v63 = [(SAAnalytics *)self numEnabledPerType];
-  v37 = [v63 objectForKey:&unk_287710210];
+  numEnabledPerType8 = [(SAAnalytics *)self numEnabledPerType];
+  v37 = [numEnabledPerType8 objectForKey:&unk_287710210];
   v62 = v37;
   if (v37)
   {
@@ -409,8 +409,8 @@
         v26[0] = &unk_287710168;
         v26[1] = v3;
         v25[2] = @"numEnabled";
-        v4 = [(SAAnalytics *)self numEnabledPerType];
-        v5 = [v4 objectForKey:v3];
+        numEnabledPerType = [(SAAnalytics *)self numEnabledPerType];
+        v5 = [numEnabledPerType objectForKey:v3];
         v6 = v5;
         if (v5)
         {
@@ -433,8 +433,8 @@
         v24[0] = &unk_287710168;
         v24[1] = v3;
         v23[2] = @"numEnabled";
-        v9 = [(SAAnalytics *)self numEnabledPerType];
-        v10 = [v9 objectForKey:v3];
+        numEnabledPerType2 = [(SAAnalytics *)self numEnabledPerType];
+        v10 = [numEnabledPerType2 objectForKey:v3];
         v11 = v10;
         if (v10)
         {
@@ -463,25 +463,25 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitAlertRateEvent:(id)a3 alertType:(id)a4
+- (void)submitAlertRateEvent:(id)event alertType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  typeCopy = type;
   if ([(SAAnalyticsSettings *)self->_settings enableSubmission])
   {
-    v8 = [(SAAnalytics *)self numEnabledPerType];
-    v9 = [v8 objectForKey:v6];
+    numEnabledPerType = [(SAAnalytics *)self numEnabledPerType];
+    v9 = [numEnabledPerType objectForKey:eventCopy];
 
     if (v9)
     {
       v16[0] = &unk_287710228;
-      v16[1] = v6;
+      v16[1] = eventCopy;
       v10 = [(SAAnalytics *)self numEnabledPerType:@"numOfAlertsPerDay"];
-      v11 = [v10 objectForKey:v6];
+      v11 = [v10 objectForKey:eventCopy];
       v15[3] = @"alertType";
       v16[2] = v11;
-      v16[3] = v7;
+      v16[3] = typeCopy;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
 
       [(SAAnalytics *)self submitEvent:@"com.apple.clx.sa.alertRate" content:v12];
@@ -504,21 +504,21 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAlertWithContext:(id)a3
+- (void)addAlertWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(SAAnalytics *)self setNumAlerts:[(SAAnalytics *)self numAlerts]+ 1];
-  v5 = [v4 objectForKeyedSubscript:&unk_287710240];
+  v5 = [contextCopy objectForKeyedSubscript:&unk_287710240];
 
-  v6 = [v5 integerValue];
-  if (v6 == 1)
+  integerValue = [v5 integerValue];
+  if (integerValue == 1)
   {
     v8 = [(SAAnalytics *)self numAlertsLeftBehind]+ 1;
 
     [(SAAnalytics *)self setNumAlertsLeftBehind:v8];
   }
 
-  else if (v6 == 2)
+  else if (integerValue == 2)
   {
     v7 = [(SAAnalytics *)self numAlertsTraveling]+ 1;
 
@@ -526,67 +526,67 @@
   }
 }
 
-- (void)addScanDuration:(double)a3
+- (void)addScanDuration:(double)duration
 {
   [(SAAnalytics *)self aggScanDuration];
-  v6 = v5 + a3;
+  v6 = v5 + duration;
 
   [(SAAnalytics *)self setAggScanDuration:v6];
 }
 
-- (void)addScanDurationForFindingRelevantItemsOnly:(double)a3
+- (void)addScanDurationForFindingRelevantItemsOnly:(double)only
 {
   [(SAAnalytics *)self aggScanDurationForFindingRelevantItemsOnly];
-  v6 = v5 + a3;
+  v6 = v5 + only;
 
   [(SAAnalytics *)self setAggScanDurationForFindingRelevantItemsOnly:v6];
 }
 
-- (void)addDeviceFetchResultCount:(unint64_t)a3 type1count:(unint64_t)a4 type2count:(unint64_t)a5 type3count:(unint64_t)a6 type4count:(unint64_t)a7 type5count:(unint64_t)a8 type6count:(unint64_t)a9 type7count:(unint64_t)a10 type8count:(unint64_t)a11 safeCount:(unint64_t)a12 usingSameSafe:(BOOL)a13
+- (void)addDeviceFetchResultCount:(unint64_t)count type1count:(unint64_t)type1count type2count:(unint64_t)type2count type3count:(unint64_t)type3count type4count:(unint64_t)type4count type5count:(unint64_t)type5count type6count:(unint64_t)type6count type7count:(unint64_t)self0 type8count:(unint64_t)self1 safeCount:(unint64_t)self2 usingSameSafe:(BOOL)self3
 {
-  [(SAAnalytics *)self setNumEnabled:a3];
-  v19 = [(SAAnalytics *)self numEnabledPerType];
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v19 setObject:v20 forKey:&unk_287710150];
+  [(SAAnalytics *)self setNumEnabled:count];
+  numEnabledPerType = [(SAAnalytics *)self numEnabledPerType];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type1count];
+  [numEnabledPerType setObject:v20 forKey:&unk_287710150];
 
-  v21 = [(SAAnalytics *)self numEnabledPerType];
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v21 setObject:v22 forKey:&unk_287710180];
+  numEnabledPerType2 = [(SAAnalytics *)self numEnabledPerType];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type2count];
+  [numEnabledPerType2 setObject:v22 forKey:&unk_287710180];
 
-  v23 = [(SAAnalytics *)self numEnabledPerType];
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-  [v23 setObject:v24 forKey:&unk_287710198];
+  numEnabledPerType3 = [(SAAnalytics *)self numEnabledPerType];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type3count];
+  [numEnabledPerType3 setObject:v24 forKey:&unk_287710198];
 
-  v25 = [(SAAnalytics *)self numEnabledPerType];
-  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
-  [v25 setObject:v26 forKey:&unk_2877101B0];
+  numEnabledPerType4 = [(SAAnalytics *)self numEnabledPerType];
+  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type4count];
+  [numEnabledPerType4 setObject:v26 forKey:&unk_2877101B0];
 
-  v27 = [(SAAnalytics *)self numEnabledPerType];
-  v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
-  [v27 setObject:v28 forKey:&unk_2877101C8];
+  numEnabledPerType5 = [(SAAnalytics *)self numEnabledPerType];
+  v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type5count];
+  [numEnabledPerType5 setObject:v28 forKey:&unk_2877101C8];
 
-  v29 = [(SAAnalytics *)self numEnabledPerType];
-  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a9];
-  [v29 setObject:v30 forKey:&unk_2877101E0];
+  numEnabledPerType6 = [(SAAnalytics *)self numEnabledPerType];
+  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type6count];
+  [numEnabledPerType6 setObject:v30 forKey:&unk_2877101E0];
 
-  v31 = [(SAAnalytics *)self numEnabledPerType];
-  v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a10];
-  [v31 setObject:v32 forKey:&unk_2877101F8];
+  numEnabledPerType7 = [(SAAnalytics *)self numEnabledPerType];
+  v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type7count];
+  [numEnabledPerType7 setObject:v32 forKey:&unk_2877101F8];
 
-  v33 = [(SAAnalytics *)self numEnabledPerType];
-  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a11];
-  [v33 setObject:v34 forKey:&unk_287710210];
+  numEnabledPerType8 = [(SAAnalytics *)self numEnabledPerType];
+  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type8count];
+  [numEnabledPerType8 setObject:v34 forKey:&unk_287710210];
 
-  [(SAAnalytics *)self setNumSafeInUse:a12];
+  [(SAAnalytics *)self setNumSafeInUse:safeCount];
 
-  [(SAAnalytics *)self setIsAllUsingSameSafe:a13];
+  [(SAAnalytics *)self setIsAllUsingSameSafe:safe];
 }
 
-- (void)addAggressiveScanRequest:(BOOL)a3
+- (void)addAggressiveScanRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   [(SAAnalytics *)self setNumBTRequests:[(SAAnalytics *)self numBTRequests]+ 1];
-  if (v3)
+  if (requestCopy)
   {
     v5 = [(SAAnalytics *)self numBTTravelingRequests]+ 1;
 
@@ -608,14 +608,14 @@
   [(SAAnalytics *)self setNumTimers:v3];
 }
 
-- (void)setActiveState:(BOOL)a3
+- (void)setActiveState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(SAAnalytics *)self lastActivated];
+  stateCopy = state;
+  lastActivated = [(SAAnalytics *)self lastActivated];
 
-  if (v3)
+  if (stateCopy)
   {
-    if (v5)
+    if (lastActivated)
     {
       return;
     }
@@ -627,14 +627,14 @@
 
   else
   {
-    if (!v5)
+    if (!lastActivated)
     {
       return;
     }
 
     v7 = [MEMORY[0x277CBEAA8] now];
-    v8 = [(SAAnalytics *)self lastActivated];
-    [v7 timeIntervalSinceDate:v8];
+    lastActivated2 = [(SAAnalytics *)self lastActivated];
+    [v7 timeIntervalSinceDate:lastActivated2];
     [(SAAnalytics *)self setAggActiveDuration:[(SAAnalytics *)self aggActiveDuration]+ v9];
 
     lastActivated = self->_lastActivated;
@@ -642,14 +642,14 @@
   }
 }
 
-- (void)setInSafeLocationState:(BOOL)a3
+- (void)setInSafeLocationState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(SAAnalytics *)self lastSafeEntry];
+  stateCopy = state;
+  lastSafeEntry = [(SAAnalytics *)self lastSafeEntry];
 
-  if (v3)
+  if (stateCopy)
   {
-    if (v5)
+    if (lastSafeEntry)
     {
       return;
     }
@@ -661,14 +661,14 @@
 
   else
   {
-    if (!v5)
+    if (!lastSafeEntry)
     {
       return;
     }
 
     v7 = [MEMORY[0x277CBEAA8] now];
-    v8 = [(SAAnalytics *)self lastSafeEntry];
-    [v7 timeIntervalSinceDate:v8];
+    lastSafeEntry2 = [(SAAnalytics *)self lastSafeEntry];
+    [v7 timeIntervalSinceDate:lastSafeEntry2];
     [(SAAnalytics *)self setAggInSafeDuration:[(SAAnalytics *)self aggInSafeDuration]+ v9];
 
     lastSafeEntry = self->_lastSafeEntry;
@@ -676,14 +676,14 @@
   }
 }
 
-- (void)setInUnsafeLocationState:(BOOL)a3
+- (void)setInUnsafeLocationState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(SAAnalytics *)self lastUnsafeEntry];
+  stateCopy = state;
+  lastUnsafeEntry = [(SAAnalytics *)self lastUnsafeEntry];
 
-  if (v3)
+  if (stateCopy)
   {
-    if (v5)
+    if (lastUnsafeEntry)
     {
       return;
     }
@@ -695,14 +695,14 @@
 
   else
   {
-    if (!v5)
+    if (!lastUnsafeEntry)
     {
       return;
     }
 
     v7 = [MEMORY[0x277CBEAA8] now];
-    v8 = [(SAAnalytics *)self lastUnsafeEntry];
-    [v7 timeIntervalSinceDate:v8];
+    lastUnsafeEntry2 = [(SAAnalytics *)self lastUnsafeEntry];
+    [v7 timeIntervalSinceDate:lastUnsafeEntry2];
     [(SAAnalytics *)self setAggInUnsafeDuration:[(SAAnalytics *)self aggInUnsafeDuration]+ v9];
 
     lastUnsafeEntry = self->_lastUnsafeEntry;
@@ -710,14 +710,14 @@
   }
 }
 
-- (void)setInTravelState:(BOOL)a3
+- (void)setInTravelState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(SAAnalytics *)self lastTravelStart];
+  stateCopy = state;
+  lastTravelStart = [(SAAnalytics *)self lastTravelStart];
 
-  if (v3)
+  if (stateCopy)
   {
-    if (v5)
+    if (lastTravelStart)
     {
       return;
     }
@@ -729,14 +729,14 @@
 
   else
   {
-    if (!v5)
+    if (!lastTravelStart)
     {
       return;
     }
 
     v7 = [MEMORY[0x277CBEAA8] now];
-    v8 = [(SAAnalytics *)self lastTravelStart];
-    [v7 timeIntervalSinceDate:v8];
+    lastTravelStart2 = [(SAAnalytics *)self lastTravelStart];
+    [v7 timeIntervalSinceDate:lastTravelStart2];
     [(SAAnalytics *)self setAggInTravelDuration:[(SAAnalytics *)self aggInTravelDuration]+ v9];
 
     lastTravelStart = self->_lastTravelStart;

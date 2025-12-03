@@ -1,12 +1,12 @@
 @interface ShareActivityItemProvider
 - (_TtC5Music25ShareActivityItemProvider)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ShareActivityItemProvider
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = sub_10010FC20(&qword_101183A20);
   __chkstk_darwin(v3 - 8);
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v5 = sub_10010FC20(&qword_101183A20);
   __chkstk_darwin(v5 - 8);

@@ -1,5 +1,5 @@
 @interface CKVAdminServiceFactory
-- (CKVAdminServiceFactory)initWithQueue:(id)a3 semAdministrator:(id)a4 taskManager:(id)a5;
+- (CKVAdminServiceFactory)initWithQueue:(id)queue semAdministrator:(id)administrator taskManager:(id)manager;
 - (id)adminService;
 @end
 
@@ -12,20 +12,20 @@
   return v2;
 }
 
-- (CKVAdminServiceFactory)initWithQueue:(id)a3 semAdministrator:(id)a4 taskManager:(id)a5
+- (CKVAdminServiceFactory)initWithQueue:(id)queue semAdministrator:(id)administrator taskManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  administratorCopy = administrator;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = CKVAdminServiceFactory;
   v12 = [(CKVAdminServiceFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceQueue, a3);
-    objc_storeStrong(&v13->_semAdministrator, a4);
-    objc_storeStrong(&v13->_taskManager, a5);
+    objc_storeStrong(&v12->_serviceQueue, queue);
+    objc_storeStrong(&v13->_semAdministrator, administrator);
+    objc_storeStrong(&v13->_taskManager, manager);
   }
 
   return v13;

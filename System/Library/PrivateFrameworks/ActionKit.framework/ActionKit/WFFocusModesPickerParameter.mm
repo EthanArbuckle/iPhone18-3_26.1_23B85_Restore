@@ -1,25 +1,25 @@
 @interface WFFocusModesPickerParameter
-- (WFFocusModesPickerParameter)initWithDefinition:(id)a3;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)possibleStatesForEnumeration:(id)a3;
+- (WFFocusModesPickerParameter)initWithDefinition:(id)definition;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)possibleStatesForEnumeration:(id)enumeration;
 @end
 
 @implementation WFFocusModesPickerParameter
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D7C438] defaultActivity];
-  if (v3)
+  defaultActivity = [MEMORY[0x277D7C438] defaultActivity];
+  if (defaultActivity)
   {
     v4 = objc_alloc(MEMORY[0x277CD3E20]);
-    v5 = [v3 activityIdentifier];
-    v6 = [v3 activityDisplayName];
-    v7 = [v4 initWithIdentifier:v5 displayString:v6];
+    activityIdentifier = [defaultActivity activityIdentifier];
+    activityDisplayName = [defaultActivity activityDisplayName];
+    v7 = [v4 initWithIdentifier:activityIdentifier displayString:activityDisplayName];
 
     v8 = [objc_alloc(MEMORY[0x277D7C510]) initWithValue:v7];
-    v9 = [v8 serializedRepresentation];
+    serializedRepresentation = [v8 serializedRepresentation];
   }
 
   else
@@ -32,18 +32,18 @@
       _os_log_impl(&dword_23DE30000, v10, OS_LOG_TYPE_FAULT, "%s Could not get defaultActivity from FocusModesManager.", &v13, 0xCu);
     }
 
-    v9 = 0;
+    serializedRepresentation = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return serializedRepresentation;
 }
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
-  v3 = [MEMORY[0x277D7C438] availableModes];
-  v4 = [v3 if_compactMap:&__block_literal_global_15658];
+  availableModes = [MEMORY[0x277D7C438] availableModes];
+  v4 = [availableModes if_compactMap:&__block_literal_global_15658];
 
   return v4;
 }
@@ -69,19 +69,19 @@ id __60__WFFocusModesPickerParameter_possibleStatesForEnumeration___block_invoke
   return v3;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = [a4 value];
-  v5 = [v4 displayString];
+  value = [state value];
+  displayString = [value displayString];
 
-  return v5;
+  return displayString;
 }
 
-- (WFFocusModesPickerParameter)initWithDefinition:(id)a3
+- (WFFocusModesPickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFFocusModesPickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

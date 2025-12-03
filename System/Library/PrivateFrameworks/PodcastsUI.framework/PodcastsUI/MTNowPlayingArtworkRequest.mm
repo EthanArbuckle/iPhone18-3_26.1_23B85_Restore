@@ -7,7 +7,7 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B4C7698();
 }
 

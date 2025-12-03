@@ -1,26 +1,26 @@
 @interface CNFRegChangeAccountPasswordController
-- (BOOL)canSendURLRequest:(id)a3;
-- (CNFRegChangeAccountPasswordController)initWithRegController:(id)a3 appleID:(id)a4;
+- (BOOL)canSendURLRequest:(id)request;
+- (CNFRegChangeAccountPasswordController)initWithRegController:(id)controller appleID:(id)d;
 - (id)bagKey;
-- (id)overrideURLForURL:(id)a3;
+- (id)overrideURLForURL:(id)l;
 - (void)cancelTapped;
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6;
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token;
 - (void)dealloc;
-- (void)setHeadersForRequest:(id)a3;
+- (void)setHeadersForRequest:(id)request;
 @end
 
 @implementation CNFRegChangeAccountPasswordController
 
-- (CNFRegChangeAccountPasswordController)initWithRegController:(id)a3 appleID:(id)a4
+- (CNFRegChangeAccountPasswordController)initWithRegController:(id)controller appleID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CNFRegChangeAccountPasswordController;
-  v7 = [(CNFRegAccountWebViewController *)&v10 initWithRegController:a3];
+  v7 = [(CNFRegAccountWebViewController *)&v10 initWithRegController:controller];
   v8 = v7;
   if (v7)
   {
-    [(CNFRegChangeAccountPasswordController *)v7 setAppleID:v6];
+    [(CNFRegChangeAccountPasswordController *)v7 setAppleID:dCopy];
   }
 
   return v8;
@@ -34,34 +34,34 @@
   [(CNFRegAccountWebViewController *)&v2 dealloc];
 }
 
-- (void)setHeadersForRequest:(id)a3
+- (void)setHeadersForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = CNFRegChangeAccountPasswordController;
-  [(CNFRegAuthorizedAccountWebViewController *)&v8 setHeadersForRequest:v4];
-  v5 = [(CNFRegAccountWebViewController *)self pushTokenHeaderValue];
-  v6 = v5;
-  if (v5)
+  [(CNFRegAuthorizedAccountWebViewController *)&v8 setHeadersForRequest:requestCopy];
+  pushTokenHeaderValue = [(CNFRegAccountWebViewController *)self pushTokenHeaderValue];
+  v6 = pushTokenHeaderValue;
+  if (pushTokenHeaderValue)
   {
-    v7 = [v5 __imHexString];
-    [v4 addValue:v7 forHTTPHeaderField:@"x-push-token"];
+    __imHexString = [pushTokenHeaderValue __imHexString];
+    [requestCopy addValue:__imHexString forHTTPHeaderField:@"x-push-token"];
   }
 }
 
-- (BOOL)canSendURLRequest:(id)a3
+- (BOOL)canSendURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = CNFRegChangeAccountPasswordController;
-  if (![(CNFRegAuthorizedAccountWebViewController *)&v10 canSendURLRequest:v4])
+  if (![(CNFRegAuthorizedAccountWebViewController *)&v10 canSendURLRequest:requestCopy])
   {
 LABEL_10:
     v6 = 0;
     goto LABEL_11;
   }
 
-  v5 = [v4 valueForHTTPHeaderField:@"x-push-token"];
+  v5 = [requestCopy valueForHTTPHeaderField:@"x-push-token"];
 
   if (!v5)
   {
@@ -91,10 +91,10 @@ LABEL_11:
 
 - (id)bagKey
 {
-  v2 = [(CNFRegServerWebViewController *)self regController];
-  v3 = [v2 serviceType];
+  regController = [(CNFRegServerWebViewController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v3 == 1)
+  if (serviceType == 1)
   {
     return @"md-profile-password-change";
   }
@@ -105,17 +105,17 @@ LABEL_11:
   }
 }
 
-- (id)overrideURLForURL:(id)a3
+- (id)overrideURLForURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CNFRegChangeAccountPasswordController *)self appleID];
-  v6 = v5;
-  v7 = v4;
-  if (v5)
+  lCopy = l;
+  appleID = [(CNFRegChangeAccountPasswordController *)self appleID];
+  v6 = appleID;
+  v7 = lCopy;
+  if (appleID)
   {
-    v7 = v4;
-    if ([v5 length])
+    v7 = lCopy;
+    if ([appleID length])
     {
       if ([(CNFRegServerWebViewController *)self _shouldLog])
       {
@@ -135,7 +135,7 @@ LABEL_11:
       }
 
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v6 forKey:{@"appleId", v12}];
-      v7 = [v4 URLByAppendingCNFQueryDictionary:v9];
+      v7 = [lCopy URLByAppendingCNFQueryDictionary:v9];
     }
   }
 
@@ -146,17 +146,17 @@ LABEL_11:
 
 - (void)cancelTapped
 {
-  v3 = [(CNFRegChangeAccountPasswordController *)self delegate];
-  [v3 changePasswordControllerDidCancel:self];
+  delegate = [(CNFRegChangeAccountPasswordController *)self delegate];
+  [delegate changePasswordControllerDidCancel:self];
 }
 
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CNFRegChangeAccountPasswordController *)self delegate];
-  [v12 changePasswordControllerDidFinish:self withAppleID:v11 authID:v10 authToken:v9];
+  tokenCopy = token;
+  iDCopy = iD;
+  dCopy = d;
+  delegate = [(CNFRegChangeAccountPasswordController *)self delegate];
+  [delegate changePasswordControllerDidFinish:self withAppleID:dCopy authID:iDCopy authToken:tokenCopy];
 }
 
 @end

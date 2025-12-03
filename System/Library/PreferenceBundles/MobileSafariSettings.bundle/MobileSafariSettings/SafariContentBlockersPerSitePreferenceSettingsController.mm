@@ -13,8 +13,8 @@
     v4 = [_SFContentBlockersPreferenceManager alloc];
     v5 = +[WBSPerSitePreferencesSQLiteStore sharedStore];
     v6 = +[SafariSettingsController extensionsProfilesDataSource];
-    v7 = [v6 profileServerIDToWebExtensionsControllers];
-    v8 = [v7 objectForKeyedSubscript:WBSDefaultProfileIdentifier];
+    profileServerIDToWebExtensionsControllers = [v6 profileServerIDToWebExtensionsControllers];
+    v8 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:WBSDefaultProfileIdentifier];
     v9 = [v4 initWithPerSitePreferencesStore:v5 extensionsController:v8];
     v10 = self->_contentBlockersPreferenceManager;
     self->_contentBlockersPreferenceManager = v9;
@@ -27,10 +27,10 @@
 
 - (id)preference
 {
-  v2 = [(SafariContentBlockersPerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 contentBlockersPreference];
+  preferenceManager = [(SafariContentBlockersPerSitePreferenceSettingsController *)self preferenceManager];
+  contentBlockersPreference = [preferenceManager contentBlockersPreference];
 
-  return v3;
+  return contentBlockersPreference;
 }
 
 @end

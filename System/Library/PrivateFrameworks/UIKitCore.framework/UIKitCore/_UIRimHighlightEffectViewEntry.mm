@@ -1,44 +1,44 @@
 @interface _UIRimHighlightEffectViewEntry
 - (_TtC5UIKit30_UIRimHighlightEffectViewEntry)init;
-- (void)addEffectToView:(id)a3;
-- (void)applyIdentityEffectToView:(id)a3;
-- (void)applyRequestedEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)applyIdentityEffectToView:(id)view;
+- (void)applyRequestedEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UIRimHighlightEffectViewEntry
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DECF64(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DECF64(viewCopy);
 }
 
-- (void)applyRequestedEffectToView:(id)a3
+- (void)applyRequestedEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DEF6B0(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DEF6B0(viewCopy);
 }
 
-- (void)applyIdentityEffectToView:(id)a3
+- (void)applyIdentityEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_188DF0E08(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188DF0E08(viewCopy);
 }
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit30_UIRimHighlightEffectViewEntry_activationOrigin + 4) != 1 || (*(&self->super.super.isa + OBJC_IVAR____TtC5UIKit30_UIRimHighlightEffectViewEntry_deactivationOrigin + 4) & 1) == 0)
   {
-    v4 = a3;
-    v7 = self;
-    v5 = sub_188DF2098(v4);
-    [v4 addSubview_];
-    v6 = [v4 layer];
-    [v6 setAllowsGroupBlending_];
+    viewCopy = view;
+    selfCopy = self;
+    v5 = sub_188DF2098(viewCopy);
+    [viewCopy addSubview_];
+    layer = [viewCopy layer];
+    [layer setAllowsGroupBlending_];
   }
 }
 

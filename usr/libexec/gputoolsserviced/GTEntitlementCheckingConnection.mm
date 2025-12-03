@@ -6,8 +6,8 @@
 
 - (BOOL)isTrusted
 {
-  v2 = [(GTLocalXPCConnection *)self connection];
-  v3 = sub_100020AFC(v2);
+  connection = [(GTLocalXPCConnection *)self connection];
+  v3 = sub_100020AFC(connection);
 
   return v3;
 }

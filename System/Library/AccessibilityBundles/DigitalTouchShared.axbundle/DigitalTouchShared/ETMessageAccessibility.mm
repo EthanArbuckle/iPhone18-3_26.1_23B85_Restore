@@ -1,23 +1,23 @@
 @interface ETMessageAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityColorString;
 @end
 
 @implementation ETMessageAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETMessageAccessibility"];
-  [v3 validateClass:@"ETMessage" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETMessageAccessibility"];
+  [validationsCopy validateClass:@"ETMessage" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityColorString
 {
   v2 = [(ETMessageAccessibility *)self safeValueForKey:@"color"];
-  v3 = [v2 axColorStringForSpeaking];
+  axColorStringForSpeaking = [v2 axColorStringForSpeaking];
 
-  return v3;
+  return axColorStringForSpeaking;
 }
 
 @end

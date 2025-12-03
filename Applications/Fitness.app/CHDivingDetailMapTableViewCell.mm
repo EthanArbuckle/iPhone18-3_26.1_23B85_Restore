@@ -1,16 +1,16 @@
 @interface CHDivingDetailMapTableViewCell
-- (CHDivingDetailMapTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureWithDive:(id)a3 row:(int64_t)a4 dataCalculator:(id)a5;
+- (CHDivingDetailMapTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureWithDive:(id)dive row:(int64_t)row dataCalculator:(id)calculator;
 - (void)prepareForReuse;
 @end
 
 @implementation CHDivingDetailMapTableViewCell
 
-- (CHDivingDetailMapTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHDivingDetailMapTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,15 +19,15 @@
     v6 = 0;
   }
 
-  return sub_100693FA0(a3, a4, v6);
+  return sub_100693FA0(style, identifier, v6);
 }
 
-- (void)configureWithDive:(id)a3 row:(int64_t)a4 dataCalculator:(id)a5
+- (void)configureWithDive:(id)dive row:(int64_t)row dataCalculator:(id)calculator
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_100694190(v8, a4, v9);
+  diveCopy = dive;
+  calculatorCopy = calculator;
+  selfCopy = self;
+  sub_100694190(diveCopy, row, calculatorCopy);
 }
 
 - (void)prepareForReuse

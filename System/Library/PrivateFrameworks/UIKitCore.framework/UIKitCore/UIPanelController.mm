@@ -1,19 +1,19 @@
 @interface UIPanelController
-+ (id)_withDisabledAppearanceTransitions:(BOOL)a3 forVisibleDescendantsOf:(id)a4 perform:(id)a5;
-- (BOOL)_animateCustomTransitionIfNeededWithAnimationState:(id)a3 possiblePublicStates:(id)a4 newPublicState:(id)a5 estimatedDuration:(double)a6 needsInitialLayout:(BOOL)a7;
-- (BOOL)_willCollapseWithNewTraitCollection:(id)a3 oldTraitCollection:(id)a4;
-- (BOOL)_willExpandWithNewTraitCollection:(id)a3 oldTraitCollection:(id)a4;
++ (id)_withDisabledAppearanceTransitions:(BOOL)transitions forVisibleDescendantsOf:(id)of perform:(id)perform;
+- (BOOL)_animateCustomTransitionIfNeededWithAnimationState:(id)state possiblePublicStates:(id)states newPublicState:(id)publicState estimatedDuration:(double)duration needsInitialLayout:(BOOL)layout;
+- (BOOL)_willCollapseWithNewTraitCollection:(id)collection oldTraitCollection:(id)traitCollection;
+- (BOOL)_willExpandWithNewTraitCollection:(id)collection oldTraitCollection:(id)traitCollection;
 - (BOOL)isAnimating;
 - (BOOL)isCollapsed;
 - (BOOL)isLeadingViewControllerVisibleAfterAnimation;
 - (BOOL)isSupplementaryViewControllerVisibleAfterAnimation;
 - (BOOL)isTrailingViewControllerVisibleAfterAnimation;
-- (CGSize)_expectedSecondaryColumnSizeAfterAnimatingToState:(id)a3 getLeadingColumnSize:(CGSize *)a4 trailingColumnSize:(CGSize *)a5 supplementaryColumnSize:(CGSize *)a6;
+- (CGSize)_expectedSecondaryColumnSizeAfterAnimatingToState:(id)state getLeadingColumnSize:(CGSize *)size trailingColumnSize:(CGSize *)columnSize supplementaryColumnSize:(CGSize *)supplementaryColumnSize;
 - (CGSize)_lastViewSize;
 - (NSArray)uncachedPossibleStates;
 - (NSString)description;
 - (UILayoutContainerView)view;
-- (UIPanelController)initWithOwningViewController:(id)a3;
+- (UIPanelController)initWithOwningViewController:(id)controller;
 - (UIPanelControllerDelegate)delegate;
 - (UISlidingBarConfiguration)configuration;
 - (UISlidingBarStateRequest)interactiveStateRequest;
@@ -26,70 +26,70 @@
 - (UIViewController)supplementaryViewController;
 - (UIViewController)trailingViewController;
 - (UIViewControllerTransitionCoordinator)transitionCoordinator;
-- (double)interpolatedMarginForPrimaryNavigationBar:(id)a3 supplementaryOrSecondaryNavbar:(id)a4 getInterpolatedAlpha:(double *)a5;
+- (double)interpolatedMarginForPrimaryNavigationBar:(id)bar supplementaryOrSecondaryNavbar:(id)navbar getInterpolatedAlpha:(double *)alpha;
 - (id)_createBorderView;
-- (id)_createOverlayEdgeShadowViewForEdge:(unint64_t)a3;
+- (id)_createOverlayEdgeShadowViewForEdge:(unint64_t)edge;
 - (id)_createOverlayShadowView;
 - (id)allViewControllers;
 - (id)gatherMultitaskingDragExclusionRectsFromVisibleColumns;
-- (id)uncachedPossibleStatesForSize:(CGSize)a3;
+- (id)uncachedPossibleStatesForSize:(CGSize)size;
 - (int64_t)collapsedState;
 - (void)__viewWillLayoutSubviews;
-- (void)_addIdentifiedChildViewController:(id)a3;
-- (void)_adjustForKeyboardInfo:(id)a3;
-- (void)_adjustNonOverlayLeadingScrollViewsForKeyboardInfo:(id)a3;
-- (void)_animateFromRequest:(id)a3 toRequest:(id)a4 withAffectedSides:(int64_t)a5 forceOverlay:(BOOL)a6 velocity:(double)a7;
-- (void)_collapseWithTransitionCoordinator:(id)a3;
-- (void)_expandWithTransitionCoordinator:(id)a3;
-- (void)_layoutContainerViewDidMoveToWindow:(id)a3;
-- (void)_layoutContainerViewWillMoveToWindow:(id)a3;
-- (void)_observeKeyboardNotificationsOnScreen:(id)a3;
+- (void)_addIdentifiedChildViewController:(id)controller;
+- (void)_adjustForKeyboardInfo:(id)info;
+- (void)_adjustNonOverlayLeadingScrollViewsForKeyboardInfo:(id)info;
+- (void)_animateFromRequest:(id)request toRequest:(id)toRequest withAffectedSides:(int64_t)sides forceOverlay:(BOOL)overlay velocity:(double)velocity;
+- (void)_collapseWithTransitionCoordinator:(id)coordinator;
+- (void)_expandWithTransitionCoordinator:(id)coordinator;
+- (void)_layoutContainerViewDidMoveToWindow:(id)window;
+- (void)_layoutContainerViewWillMoveToWindow:(id)window;
+- (void)_observeKeyboardNotificationsOnScreen:(id)screen;
 - (void)_performDeferredUpdate;
 - (void)_performSingleDeferredUpdatePass;
-- (void)_performWrappedUpdate:(id)a3;
-- (void)_removeIdentifiedChildViewController:(id)a3;
-- (void)_setBorderViewsObserveViewBackgroundColor:(BOOL)a3;
+- (void)_performWrappedUpdate:(id)update;
+- (void)_removeIdentifiedChildViewController:(id)controller;
+- (void)_setBorderViewsObserveViewBackgroundColor:(BOOL)color;
 - (void)_setNeedsDeferredUpdate;
-- (void)_setNeedsLayoutAndPerformImmediately:(BOOL)a3;
-- (void)_stopAnimationsBeginningInteraction:(BOOL)a3;
+- (void)_setNeedsLayoutAndPerformImmediately:(BOOL)immediately;
+- (void)_stopAnimationsBeginningInteraction:(BOOL)interaction;
 - (void)_stopObservingKeyboardNotifications;
 - (void)_storeSuspendedConfiguration;
-- (void)_unspecifiedUpdateToNewPublicState:(id)a3 withSize:(CGSize)a4;
-- (void)_updateBorderViewsBackgroundColor:(id)a3;
-- (void)_updateForTraitCollection:(id)a3 oldTraitCollection:(id)a4 withTransitionCoordinator:(id)a5;
-- (void)_updateToNewPublicState:(id)a3 withSize:(CGSize)a4;
-- (void)_withDisabledAppearanceTransitionsPerform:(id)a3;
-- (void)addWrapperBlockForNextUpdate:(id)a3;
-- (void)animateToRequest:(id)a3 forceOverlay:(BOOL)a4 withVelocity:(double)a5;
+- (void)_unspecifiedUpdateToNewPublicState:(id)state withSize:(CGSize)size;
+- (void)_updateBorderViewsBackgroundColor:(id)color;
+- (void)_updateForTraitCollection:(id)collection oldTraitCollection:(id)traitCollection withTransitionCoordinator:(id)coordinator;
+- (void)_updateToNewPublicState:(id)state withSize:(CGSize)size;
+- (void)_withDisabledAppearanceTransitionsPerform:(id)perform;
+- (void)addWrapperBlockForNextUpdate:(id)update;
+- (void)animateToRequest:(id)request forceOverlay:(BOOL)overlay withVelocity:(double)velocity;
 - (void)dealloc;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeChildViewController:(id)a3;
-- (void)setClippingViewsUnnecessary:(BOOL)a3;
-- (void)setCollapsedViewController:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDimmingView:(id)a3;
-- (void)setInteractiveStateRequest:(id)a3;
-- (void)setLeadingTrailingWrapsNavigationController:(BOOL)a3;
-- (void)setLeadingViewController:(id)a3 changingParentage:(BOOL)a4;
-- (void)setMainViewController:(id)a3 changingParentage:(BOOL)a4 animateTransition:(BOOL)a5;
-- (void)setPresentationGestureActive:(BOOL)a3;
-- (void)setPreservedDetailController:(id)a3;
-- (void)setRunExpandScheduled:(BOOL)a3;
-- (void)setStateRequest:(id)a3;
-- (void)setSupplementaryViewController:(id)a3 changingParentage:(BOOL)a4;
-- (void)setTrailingViewController:(id)a3 changingParentage:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3 toNewTraits:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4 superBlock:(id)a5;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4 superBlock:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeChildViewController:(id)controller;
+- (void)setClippingViewsUnnecessary:(BOOL)unnecessary;
+- (void)setCollapsedViewController:(id)controller;
+- (void)setConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
+- (void)setDimmingView:(id)view;
+- (void)setInteractiveStateRequest:(id)request;
+- (void)setLeadingTrailingWrapsNavigationController:(BOOL)controller;
+- (void)setLeadingViewController:(id)controller changingParentage:(BOOL)parentage;
+- (void)setMainViewController:(id)controller changingParentage:(BOOL)parentage animateTransition:(BOOL)transition;
+- (void)setPresentationGestureActive:(BOOL)active;
+- (void)setPreservedDetailController:(id)controller;
+- (void)setRunExpandScheduled:(BOOL)scheduled;
+- (void)setStateRequest:(id)request;
+- (void)setSupplementaryViewController:(id)controller changingParentage:(BOOL)parentage;
+- (void)setTrailingViewController:(id)controller changingParentage:(BOOL)parentage;
+- (void)traitCollectionDidChange:(id)change toNewTraits:(id)traits;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator superBlock:(id)block;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator superBlock:(id)block;
 @end
 
 @implementation UIPanelController
 
-- (void)setPresentationGestureActive:(BOOL)a3
+- (void)setPresentationGestureActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 16;
   }
@@ -102,9 +102,9 @@
   self->_panelControllerFlags = (*&self->_panelControllerFlags & 0xFFFFFFEF | v3);
 }
 
-- (void)setClippingViewsUnnecessary:(BOOL)a3
+- (void)setClippingViewsUnnecessary:(BOOL)unnecessary
 {
-  if (a3)
+  if (unnecessary)
   {
     v3 = 32;
   }
@@ -117,9 +117,9 @@
   self->_panelControllerFlags = (*&self->_panelControllerFlags & 0xFFFFFFDF | v3);
 }
 
-- (void)setRunExpandScheduled:(BOOL)a3
+- (void)setRunExpandScheduled:(BOOL)scheduled
 {
-  if (a3)
+  if (scheduled)
   {
     v3 = 0x10000;
   }
@@ -132,22 +132,22 @@
   self->_panelControllerFlags = (*&self->_panelControllerFlags & 0xFFFEFFFF | v3);
 }
 
-- (UIPanelController)initWithOwningViewController:(id)a3
+- (UIPanelController)initWithOwningViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = UIPanelController;
   v5 = [(UIPanelController *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(UIPanelController *)v5 setOwningViewController:v4];
+    [(UIPanelController *)v5 setOwningViewController:controllerCopy];
     v7 = objc_alloc_init(_UIPanelInternalState);
     [(UIPanelController *)v6 _setInternalState:v7];
 
     v8 = objc_alloc_init(UISlidingBarConfiguration);
-    v9 = [(UIPanelController *)v6 _internalState];
-    [v9 setConfiguration:v8];
+    _internalState = [(UIPanelController *)v6 _internalState];
+    [_internalState setConfiguration:v8];
 
     [(UIPanelController *)v6 _setNeedsFirstTimeUpdateForTraitCollection:1];
   }
@@ -164,9 +164,9 @@
   [(UIPanelController *)&v3 dealloc];
 }
 
-- (void)setLeadingTrailingWrapsNavigationController:(BOOL)a3
+- (void)setLeadingTrailingWrapsNavigationController:(BOOL)controller
 {
-  if (a3)
+  if (controller)
   {
     v3 = 0x4000;
   }
@@ -181,180 +181,180 @@
 
 - (UIViewController)mainViewController
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 mainViewController];
+  _internalState = [(UIPanelController *)self _internalState];
+  mainViewController = [_internalState mainViewController];
 
-  return v3;
+  return mainViewController;
 }
 
-- (void)setMainViewController:(id)a3 changingParentage:(BOOL)a4 animateTransition:(BOOL)a5
+- (void)setMainViewController:(id)controller changingParentage:(BOOL)parentage animateTransition:(BOOL)transition
 {
-  v5 = a4;
-  v10 = a3;
-  v7 = [(UIPanelController *)self _internalState];
-  v8 = [v7 mainViewController];
+  parentageCopy = parentage;
+  controllerCopy = controller;
+  _internalState = [(UIPanelController *)self _internalState];
+  mainViewController = [_internalState mainViewController];
 
-  if (v8 != v10)
+  if (mainViewController != controllerCopy)
   {
-    if (v5)
+    if (parentageCopy)
     {
-      [(UIPanelController *)self _removeIdentifiedChildViewController:v8];
+      [(UIPanelController *)self _removeIdentifiedChildViewController:mainViewController];
     }
 
-    v9 = [(UIPanelController *)self _internalState];
-    [v9 setMainViewController:v10];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setMainViewController:controllerCopy];
   }
 
-  if (v5)
+  if (parentageCopy)
   {
-    [(UIPanelController *)self _addIdentifiedChildViewController:v10];
+    [(UIPanelController *)self _addIdentifiedChildViewController:controllerCopy];
   }
 }
 
 - (UIViewController)leadingViewController
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 leadingViewController];
+  _internalState = [(UIPanelController *)self _internalState];
+  leadingViewController = [_internalState leadingViewController];
 
-  return v3;
+  return leadingViewController;
 }
 
-- (void)setLeadingViewController:(id)a3 changingParentage:(BOOL)a4
+- (void)setLeadingViewController:(id)controller changingParentage:(BOOL)parentage
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(UIPanelController *)self _internalState];
-  v7 = [v6 leadingViewController];
+  parentageCopy = parentage;
+  controllerCopy = controller;
+  _internalState = [(UIPanelController *)self _internalState];
+  leadingViewController = [_internalState leadingViewController];
 
-  if (v7 != v9)
+  if (leadingViewController != controllerCopy)
   {
-    if (v4)
+    if (parentageCopy)
     {
-      [(UIPanelController *)self _removeIdentifiedChildViewController:v7];
+      [(UIPanelController *)self _removeIdentifiedChildViewController:leadingViewController];
     }
 
-    v8 = [(UIPanelController *)self _internalState];
-    [v8 setLeadingViewController:v9];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setLeadingViewController:controllerCopy];
   }
 
-  if (v4)
+  if (parentageCopy)
   {
-    [(UIPanelController *)self _addIdentifiedChildViewController:v9];
+    [(UIPanelController *)self _addIdentifiedChildViewController:controllerCopy];
   }
 }
 
 - (UIViewController)trailingViewController
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 trailingViewController];
+  _internalState = [(UIPanelController *)self _internalState];
+  trailingViewController = [_internalState trailingViewController];
 
-  return v3;
+  return trailingViewController;
 }
 
-- (void)setTrailingViewController:(id)a3 changingParentage:(BOOL)a4
+- (void)setTrailingViewController:(id)controller changingParentage:(BOOL)parentage
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(UIPanelController *)self _internalState];
-  v7 = [v6 trailingViewController];
+  parentageCopy = parentage;
+  controllerCopy = controller;
+  _internalState = [(UIPanelController *)self _internalState];
+  trailingViewController = [_internalState trailingViewController];
 
-  if (v7 != v9)
+  if (trailingViewController != controllerCopy)
   {
-    if (v4)
+    if (parentageCopy)
     {
-      [(UIPanelController *)self _removeIdentifiedChildViewController:v7];
+      [(UIPanelController *)self _removeIdentifiedChildViewController:trailingViewController];
     }
 
-    v8 = [(UIPanelController *)self _internalState];
-    [v8 setTrailingViewController:v9];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setTrailingViewController:controllerCopy];
   }
 
-  if (v4)
+  if (parentageCopy)
   {
-    [(UIPanelController *)self _addIdentifiedChildViewController:v9];
+    [(UIPanelController *)self _addIdentifiedChildViewController:controllerCopy];
   }
 }
 
 - (UIViewController)supplementaryViewController
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 supplementaryViewController];
+  _internalState = [(UIPanelController *)self _internalState];
+  supplementaryViewController = [_internalState supplementaryViewController];
 
-  return v3;
+  return supplementaryViewController;
 }
 
-- (void)setSupplementaryViewController:(id)a3 changingParentage:(BOOL)a4
+- (void)setSupplementaryViewController:(id)controller changingParentage:(BOOL)parentage
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(UIPanelController *)self _internalState];
-  v7 = [v6 supplementaryViewController];
+  parentageCopy = parentage;
+  controllerCopy = controller;
+  _internalState = [(UIPanelController *)self _internalState];
+  supplementaryViewController = [_internalState supplementaryViewController];
 
-  if (v7 != v9)
+  if (supplementaryViewController != controllerCopy)
   {
-    if (v4)
+    if (parentageCopy)
     {
-      [(UIPanelController *)self _removeIdentifiedChildViewController:v7];
+      [(UIPanelController *)self _removeIdentifiedChildViewController:supplementaryViewController];
     }
 
-    v8 = [(UIPanelController *)self _internalState];
-    [v8 setSupplementaryViewController:v9];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setSupplementaryViewController:controllerCopy];
   }
 
-  if (v4)
+  if (parentageCopy)
   {
-    [(UIPanelController *)self _addIdentifiedChildViewController:v9];
+    [(UIPanelController *)self _addIdentifiedChildViewController:controllerCopy];
   }
 }
 
-- (void)setPreservedDetailController:(id)a3
+- (void)setPreservedDetailController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIPanelController *)self _internalState];
-  [v5 setPreservedDetailController:v4];
+  controllerCopy = controller;
+  _internalState = [(UIPanelController *)self _internalState];
+  [_internalState setPreservedDetailController:controllerCopy];
 }
 
 - (UIViewController)preservedDetailController
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 preservedDetailController];
+  _internalState = [(UIPanelController *)self _internalState];
+  preservedDetailController = [_internalState preservedDetailController];
 
-  return v3;
+  return preservedDetailController;
 }
 
-- (void)setCollapsedViewController:(id)a3
+- (void)setCollapsedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIPanelController *)self _internalState];
-  [v5 setCollapsedViewController:v4];
+  controllerCopy = controller;
+  _internalState = [(UIPanelController *)self _internalState];
+  [_internalState setCollapsedViewController:controllerCopy];
 }
 
 - (UIViewController)collapsedViewController
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 collapsedViewController];
+  _internalState = [(UIPanelController *)self _internalState];
+  collapsedViewController = [_internalState collapsedViewController];
 
-  return v3;
+  return collapsedViewController;
 }
 
 - (UIPanelControllerDelegate)delegate
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 delegate];
+  _internalState = [(UIPanelController *)self _internalState];
+  delegate = [_internalState delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = [(UIPanelController *)self _internalState];
-  v5 = [v4 delegate];
+  delegateCopy = delegate;
+  _internalState = [(UIPanelController *)self _internalState];
+  delegate = [_internalState delegate];
 
-  if (v5 != v8)
+  if (delegate != delegateCopy)
   {
-    v6 = [(UIPanelController *)self _internalState];
-    [v6 setDelegate:v8];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setDelegate:delegateCopy];
 
     if (objc_opt_respondsToSelector())
     {
@@ -372,24 +372,24 @@
 
 - (UISlidingBarConfiguration)configuration
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 configuration];
-  v4 = [v3 copy];
+  _internalState = [(UIPanelController *)self _internalState];
+  configuration = [_internalState configuration];
+  v4 = [configuration copy];
 
   return v4;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v8 = a3;
-  v4 = [(UIPanelController *)self _internalState];
-  v5 = [v4 configuration];
-  v6 = [v8 isEqual:v5];
+  configurationCopy = configuration;
+  _internalState = [(UIPanelController *)self _internalState];
+  configuration = [_internalState configuration];
+  v6 = [configurationCopy isEqual:configuration];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(UIPanelController *)self _internalState];
-    [v7 setConfiguration:v8];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setConfiguration:configurationCopy];
 
     [(UIPanelController *)self _setNeedsDeferredUpdate];
   }
@@ -397,25 +397,25 @@
 
 - (UISlidingBarStateRequest)stateRequest
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 stateRequest];
-  v4 = [v3 copy];
+  _internalState = [(UIPanelController *)self _internalState];
+  stateRequest = [_internalState stateRequest];
+  v4 = [stateRequest copy];
 
   return v4;
 }
 
-- (void)setStateRequest:(id)a3
+- (void)setStateRequest:(id)request
 {
-  v7 = a3;
-  v4 = [(UIPanelController *)self _internalState];
-  v5 = [v4 stateRequest];
+  requestCopy = request;
+  _internalState = [(UIPanelController *)self _internalState];
+  stateRequest = [_internalState stateRequest];
 
-  if (v5 != v7)
+  if (stateRequest != requestCopy)
   {
-    v6 = [(UIPanelController *)self _internalState];
-    [v6 setStateRequest:v7];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    [_internalState2 setStateRequest:requestCopy];
 
-    if (!v7 || !v5 || ([v5 isEqual:v7] & 1) == 0)
+    if (!requestCopy || !stateRequest || ([stateRequest isEqual:requestCopy] & 1) == 0)
     {
       [(UIPanelController *)self _setNeedsDeferredUpdate];
     }
@@ -436,11 +436,11 @@
 
 - (void)loadView
 {
-  v3 = [(UIPanelController *)self delegate];
+  delegate = [(UIPanelController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UIPanelController *)self delegate];
-    v5 = [v4 viewClassForPanelController:self];
+    delegate2 = [(UIPanelController *)self delegate];
+    v5 = [delegate2 viewClassForPanelController:self];
   }
 
   else
@@ -448,8 +448,8 @@
     v5 = objc_opt_class();
   }
 
-  v6 = [(UIPanelController *)self owningViewController];
-  [v6 _defaultInitialViewFrame];
+  owningViewController = [(UIPanelController *)self owningViewController];
+  [owningViewController _defaultInitialViewFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -458,14 +458,14 @@
   v15 = [[v5 alloc] initWithFrame:{v8, v10, v12, v14}];
   if (dyld_program_sdk_at_least())
   {
-    v16 = [(UIPanelController *)self delegate];
+    delegate3 = [(UIPanelController *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(UIPanelController *)self delegate];
-      v19 = [v18 primaryBackgroundColor];
-      [(UILayoutContainerView *)v15 setDefaultBackgroundColor:v19];
+      delegate4 = [(UIPanelController *)self delegate];
+      primaryBackgroundColor = [delegate4 primaryBackgroundColor];
+      [(UILayoutContainerView *)v15 setDefaultBackgroundColor:primaryBackgroundColor];
 
       goto LABEL_10;
     }
@@ -478,7 +478,7 @@
     v20 = +[UIColor systemGrayColor];
   }
 
-  v18 = v20;
+  delegate4 = v20;
   [(UILayoutContainerView *)v15 setDefaultBackgroundColor:v20];
 LABEL_10:
 
@@ -495,198 +495,198 @@ LABEL_10:
   self->_view = v15;
 }
 
-- (void)_addIdentifiedChildViewController:(id)a3
+- (void)_addIdentifiedChildViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v21 = v4;
-    v5 = [v4 parentViewController];
-    v6 = [(UIPanelController *)self owningViewController];
-    v7 = v6;
-    if (v5 == v6)
+    v21 = controllerCopy;
+    parentViewController = [controllerCopy parentViewController];
+    owningViewController = [(UIPanelController *)self owningViewController];
+    v7 = owningViewController;
+    if (parentViewController == owningViewController)
     {
 
 LABEL_15:
       goto LABEL_16;
     }
 
-    v8 = [(UIPanelController *)self owningViewController];
-    v9 = [v8 childViewControllers];
-    v10 = [v9 indexOfObjectIdenticalTo:v21];
+    owningViewController2 = [(UIPanelController *)self owningViewController];
+    childViewControllers = [owningViewController2 childViewControllers];
+    v10 = [childViewControllers indexOfObjectIdenticalTo:v21];
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_16:
       [(UIPanelController *)self _setNeedsDeferredUpdate];
-      v4 = v21;
+      controllerCopy = v21;
       goto LABEL_17;
     }
 
-    v11 = [(UIPanelController *)self owningViewController];
-    [v11 addChildViewController:v21];
+    owningViewController3 = [(UIPanelController *)self owningViewController];
+    [owningViewController3 addChildViewController:v21];
 
     if (![(UIPanelController *)self style])
     {
-      v12 = [(UIPanelController *)self leadingViewController];
-      if (v12 == v21)
+      leadingViewController = [(UIPanelController *)self leadingViewController];
+      if (leadingViewController == v21)
       {
       }
 
       else
       {
-        v13 = [(UIPanelController *)self trailingViewController];
+        trailingViewController = [(UIPanelController *)self trailingViewController];
 
-        if (v13 != v21)
+        if (trailingViewController != v21)
         {
           goto LABEL_11;
         }
       }
 
       v14 = [UITraitCollection traitCollectionWithHorizontalSizeClass:1];
-      v15 = [(UIPanelController *)self owningViewController];
-      [v15 setOverrideTraitCollection:v14 forChildViewController:v21];
+      owningViewController4 = [(UIPanelController *)self owningViewController];
+      [owningViewController4 setOverrideTraitCollection:v14 forChildViewController:v21];
     }
 
 LABEL_11:
-    v16 = [(UIPanelController *)self _contentView];
-    if (v16)
+    _contentView = [(UIPanelController *)self _contentView];
+    if (_contentView)
     {
-      v17 = v16;
-      v18 = [(UIPanelController *)self style];
+      v17 = _contentView;
+      style = [(UIPanelController *)self style];
 
-      if (!v18)
+      if (!style)
       {
-        v19 = [(UIPanelController *)self _contentView];
-        v20 = [v21 view];
-        [v19 addSubview:v20];
+        _contentView2 = [(UIPanelController *)self _contentView];
+        view = [v21 view];
+        [_contentView2 addSubview:view];
       }
     }
 
-    v5 = [(UIPanelController *)self owningViewController];
-    [v21 didMoveToParentViewController:v5];
+    parentViewController = [(UIPanelController *)self owningViewController];
+    [v21 didMoveToParentViewController:parentViewController];
     goto LABEL_15;
   }
 
 LABEL_17:
 }
 
-- (void)_removeIdentifiedChildViewController:(id)a3
+- (void)_removeIdentifiedChildViewController:(id)controller
 {
-  v10 = a3;
-  v4 = [v10 parentViewController];
-  v5 = [(UIPanelController *)self owningViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
+  owningViewController = [(UIPanelController *)self owningViewController];
 
-  if (v4 == v5)
+  if (parentViewController == owningViewController)
   {
-    [v10 willMoveToParentViewController:0];
-    v6 = [v10 _existingView];
-    v7 = v6;
+    [controllerCopy willMoveToParentViewController:0];
+    _existingView = [controllerCopy _existingView];
+    v7 = _existingView;
     if (self->_view)
     {
-      v8 = [v6 superview];
+      superview = [_existingView superview];
       view = self->_view;
 
-      if (v8 == view)
+      if (superview == view)
       {
         [v7 removeFromSuperview];
       }
     }
 
-    [v10 removeFromParentViewController];
+    [controllerCopy removeFromParentViewController];
   }
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v20 = v4;
+    v20 = controllerCopy;
     if (![(UIPanelController *)self _changingViewControllerParentage])
     {
-      v5 = [(UIPanelController *)self _internalState];
-      v6 = [v5 leadingViewController];
+      _internalState = [(UIPanelController *)self _internalState];
+      leadingViewController = [_internalState leadingViewController];
 
-      if (v6 == v20)
+      if (leadingViewController == v20)
       {
-        v7 = [(UIPanelController *)self _internalState];
-        [v7 setLeadingViewController:0];
+        _internalState2 = [(UIPanelController *)self _internalState];
+        [_internalState2 setLeadingViewController:0];
       }
 
-      v8 = [(UIPanelController *)self _internalState];
-      v9 = [v8 mainViewController];
+      _internalState3 = [(UIPanelController *)self _internalState];
+      mainViewController = [_internalState3 mainViewController];
 
-      if (v9 == v20)
+      if (mainViewController == v20)
       {
-        v10 = [(UIPanelController *)self _internalState];
-        [v10 setMainViewController:0];
+        _internalState4 = [(UIPanelController *)self _internalState];
+        [_internalState4 setMainViewController:0];
       }
 
-      v11 = [(UIPanelController *)self _internalState];
-      v12 = [v11 trailingViewController];
+      _internalState5 = [(UIPanelController *)self _internalState];
+      trailingViewController = [_internalState5 trailingViewController];
 
-      if (v12 == v20)
+      if (trailingViewController == v20)
       {
-        v13 = [(UIPanelController *)self _internalState];
-        [v13 setTrailingViewController:0];
+        _internalState6 = [(UIPanelController *)self _internalState];
+        [_internalState6 setTrailingViewController:0];
       }
 
-      v14 = [(UIPanelController *)self _internalState];
-      v15 = [v14 collapsedViewController];
+      _internalState7 = [(UIPanelController *)self _internalState];
+      collapsedViewController = [_internalState7 collapsedViewController];
 
-      if (v15 == v20)
+      if (collapsedViewController == v20)
       {
-        v16 = [(UIPanelController *)self _internalState];
-        [v16 setCollapsedViewController:0];
+        _internalState8 = [(UIPanelController *)self _internalState];
+        [_internalState8 setCollapsedViewController:0];
       }
 
-      v17 = [(UIPanelController *)self _internalState];
-      v18 = [v17 preservedDetailController];
+      _internalState9 = [(UIPanelController *)self _internalState];
+      preservedDetailController = [_internalState9 preservedDetailController];
 
-      if (v18 == v20)
+      if (preservedDetailController == v20)
       {
-        v19 = [(UIPanelController *)self _internalState];
-        [v19 setPreservedDetailController:0];
+        _internalState10 = [(UIPanelController *)self _internalState];
+        [_internalState10 setPreservedDetailController:0];
       }
     }
 
     [(UIPanelController *)self _setNeedsDeferredUpdate];
-    v4 = v20;
+    controllerCopy = v20;
   }
 }
 
 - (id)allViewControllers
 {
   v3 = objc_opt_new();
-  v4 = [(UIPanelController *)self mainViewController];
+  mainViewController = [(UIPanelController *)self mainViewController];
 
-  if (v4)
+  if (mainViewController)
   {
-    v5 = [(UIPanelController *)self mainViewController];
-    [v3 addObject:v5];
+    mainViewController2 = [(UIPanelController *)self mainViewController];
+    [v3 addObject:mainViewController2];
   }
 
-  v6 = [(UIPanelController *)self leadingViewController];
+  leadingViewController = [(UIPanelController *)self leadingViewController];
 
-  if (v6)
+  if (leadingViewController)
   {
-    v7 = [(UIPanelController *)self leadingViewController];
-    [v3 addObject:v7];
+    leadingViewController2 = [(UIPanelController *)self leadingViewController];
+    [v3 addObject:leadingViewController2];
   }
 
-  v8 = [(UIPanelController *)self trailingViewController];
+  trailingViewController = [(UIPanelController *)self trailingViewController];
 
-  if (v8)
+  if (trailingViewController)
   {
-    v9 = [(UIPanelController *)self trailingViewController];
-    [v3 addObject:v9];
+    trailingViewController2 = [(UIPanelController *)self trailingViewController];
+    [v3 addObject:trailingViewController2];
   }
 
-  v10 = [(UIPanelController *)self collapsedViewController];
-  if (v10)
+  collapsedViewController = [(UIPanelController *)self collapsedViewController];
+  if (collapsedViewController)
   {
-    v11 = [v3 indexOfObjectIdenticalTo:v10];
+    v11 = [v3 indexOfObjectIdenticalTo:collapsedViewController];
     if (v11)
     {
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -694,7 +694,7 @@ LABEL_17:
         [v3 removeObjectAtIndex:v11];
       }
 
-      [v3 insertObject:v10 atIndex:0];
+      [v3 insertObject:collapsedViewController atIndex:0];
     }
   }
 
@@ -703,131 +703,131 @@ LABEL_17:
 
 - (BOOL)isAnimating
 {
-  v3 = [(UIPanelController *)self _internalState];
-  v4 = [v3 animationState];
-  if (v4)
+  _internalState = [(UIPanelController *)self _internalState];
+  animationState = [_internalState animationState];
+  if (animationState)
   {
-    v5 = [(UIPanelController *)self _internalState];
-    v6 = [v5 animationState];
-    [v6 progress];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    animationState2 = [_internalState2 animationState];
+    [animationState2 progress];
     if (v7 >= 1.0)
     {
-      v9 = [(UIPanelController *)self _internalState];
-      v10 = [v9 animationState];
-      v8 = [v10 isFinishingAnimation];
+      _internalState3 = [(UIPanelController *)self _internalState];
+      animationState3 = [_internalState3 animationState];
+      isFinishingAnimation = [animationState3 isFinishingAnimation];
     }
 
     else
     {
-      v8 = 1;
+      isFinishingAnimation = 1;
     }
   }
 
   else
   {
-    v8 = 0;
+    isFinishingAnimation = 0;
   }
 
-  return v8;
+  return isFinishingAnimation;
 }
 
-- (void)setDimmingView:(id)a3
+- (void)setDimmingView:(id)view
 {
-  v5 = a3;
-  if (self->_dimmingView != v5)
+  viewCopy = view;
+  if (self->_dimmingView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dimmingView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_dimmingView, view);
     [(UIPanelController *)self _setNeedsDeferredUpdate];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (int64_t)collapsedState
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 collapsedState];
+  _internalState = [(UIPanelController *)self _internalState];
+  collapsedState = [_internalState collapsedState];
 
-  return v3;
+  return collapsedState;
 }
 
 - (BOOL)isCollapsed
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 collapsedState];
+  _internalState = [(UIPanelController *)self _internalState];
+  collapsedState = [_internalState collapsedState];
 
-  return (v3 - 1) < 2;
+  return (collapsedState - 1) < 2;
 }
 
-- (void)addWrapperBlockForNextUpdate:(id)a3
+- (void)addWrapperBlockForNextUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   wrapperBlocksForNextUpdate = self->_wrapperBlocksForNextUpdate;
-  aBlock = v4;
+  aBlock = updateCopy;
   if (!wrapperBlocksForNextUpdate)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_wrapperBlocksForNextUpdate;
-    self->_wrapperBlocksForNextUpdate = v6;
+    self->_wrapperBlocksForNextUpdate = array;
 
-    v4 = aBlock;
+    updateCopy = aBlock;
     wrapperBlocksForNextUpdate = self->_wrapperBlocksForNextUpdate;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(updateCopy);
   [(NSMutableArray *)wrapperBlocksForNextUpdate addObject:v8];
 }
 
 - (id)gatherMultitaskingDragExclusionRectsFromVisibleColumns
 {
-  v3 = [(UIPanelController *)self _internalState];
-  v4 = [v3 leadingViewController];
+  _internalState = [(UIPanelController *)self _internalState];
+  leadingViewController = [_internalState leadingViewController];
 
-  v5 = [(UIPanelController *)self _internalState];
-  v6 = [v5 mainViewController];
+  _internalState2 = [(UIPanelController *)self _internalState];
+  mainViewController = [_internalState2 mainViewController];
 
-  v7 = [(UIPanelController *)self _internalState];
-  v8 = [v7 trailingViewController];
+  _internalState3 = [(UIPanelController *)self _internalState];
+  trailingViewController = [_internalState3 trailingViewController];
 
-  v9 = [(UIPanelController *)self _internalState];
-  v10 = [v9 supplementaryViewController];
+  _internalState4 = [(UIPanelController *)self _internalState];
+  supplementaryViewController = [_internalState4 supplementaryViewController];
 
-  v11 = [(UIPanelController *)self _lastComputedPublicState];
-  v12 = [v11 _collapsedState];
+  _lastComputedPublicState = [(UIPanelController *)self _lastComputedPublicState];
+  _collapsedState = [_lastComputedPublicState _collapsedState];
 
-  v13 = [(UIPanelController *)self _internalState];
-  v14 = [v13 collapsedViewController];
+  _internalState5 = [(UIPanelController *)self _internalState];
+  collapsedViewController = [_internalState5 collapsedViewController];
 
-  v15 = [(UIPanelController *)self owningViewController];
-  v16 = [v15 viewIfLoaded];
+  owningViewController = [(UIPanelController *)self owningViewController];
+  viewIfLoaded = [owningViewController viewIfLoaded];
 
-  if (v16)
+  if (viewIfLoaded)
   {
-    v17 = v12 - 1;
-    v18 = [MEMORY[0x1E695DF70] array];
+    v17 = _collapsedState - 1;
+    array = [MEMORY[0x1E695DF70] array];
     v30 = MEMORY[0x1E69E9820];
     v31 = 3221225472;
     v32 = __75__UIPanelController_gatherMultitaskingDragExclusionRectsFromVisibleColumns__block_invoke;
     v33 = &unk_1E7102F90;
-    v34 = v16;
-    v35 = v18;
-    v19 = v18;
+    v34 = viewIfLoaded;
+    v35 = array;
+    v19 = array;
     v20 = _Block_copy(&v30);
     v25 = v20;
     v26 = *(v20 + 2);
     if (v17 > 1)
     {
-      v26(v20, v4, v21, v22, v23, v24);
-      (v25)[2](v25, v6);
-      (v25)[2](v25, v8);
+      v26(v20, leadingViewController, v21, v22, v23, v24);
+      (v25)[2](v25, mainViewController);
+      (v25)[2](v25, trailingViewController);
       v26 = v25[2];
       v20 = v25;
-      v27 = v10;
+      v27 = supplementaryViewController;
     }
 
     else
     {
-      v27 = v14;
+      v27 = collapsedViewController;
     }
 
     (v26)(v20, v27);
@@ -898,75 +898,75 @@ void __75__UIPanelController_gatherMultitaskingDragExclusionRectsFromVisibleColu
   }
 }
 
-- (BOOL)_willCollapseWithNewTraitCollection:(id)a3 oldTraitCollection:(id)a4
+- (BOOL)_willCollapseWithNewTraitCollection:(id)collection oldTraitCollection:(id)traitCollection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIPanelController *)self _internalState];
-  v9 = [v8 collapsedState];
+  traitCollectionCopy = traitCollection;
+  collectionCopy = collection;
+  _internalState = [(UIPanelController *)self _internalState];
+  collapsedState = [_internalState collapsedState];
 
-  v10 = [v6 horizontalSizeClass];
-  v11 = [v7 horizontalSizeClass];
+  horizontalSizeClass = [traitCollectionCopy horizontalSizeClass];
+  horizontalSizeClass2 = [collectionCopy horizontalSizeClass];
 
-  if (v11 != 1)
+  if (horizontalSizeClass2 != 1)
   {
     return 0;
   }
 
   v12 = ![(UIPanelController *)self _hasUpdatedForTraitCollection];
-  if (v10 == 2)
+  if (horizontalSizeClass == 2)
   {
     LOBYTE(v12) = 1;
   }
 
-  return !v9 || v12;
+  return !collapsedState || v12;
 }
 
-- (BOOL)_willExpandWithNewTraitCollection:(id)a3 oldTraitCollection:(id)a4
+- (BOOL)_willExpandWithNewTraitCollection:(id)collection oldTraitCollection:(id)traitCollection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIPanelController *)self _willCollapseWithNewTraitCollection:v6 oldTraitCollection:v7])
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  if ([(UIPanelController *)self _willCollapseWithNewTraitCollection:collectionCopy oldTraitCollection:traitCollectionCopy])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(UIPanelController *)self _internalState];
-    v10 = [v9 collapsedState];
+    _internalState = [(UIPanelController *)self _internalState];
+    collapsedState = [_internalState collapsedState];
 
-    v11 = [v7 horizontalSizeClass];
-    v12 = [v6 horizontalSizeClass];
-    v14 = v11 == 1 || v10 == 2;
-    v8 = v12 == 2 && v14;
+    horizontalSizeClass = [traitCollectionCopy horizontalSizeClass];
+    horizontalSizeClass2 = [collectionCopy horizontalSizeClass];
+    v14 = horizontalSizeClass == 1 || collapsedState == 2;
+    v8 = horizontalSizeClass2 == 2 && v14;
   }
 
   return v8;
 }
 
-- (void)_updateForTraitCollection:(id)a3 oldTraitCollection:(id)a4 withTransitionCoordinator:(id)a5
+- (void)_updateForTraitCollection:(id)collection oldTraitCollection:(id)traitCollection withTransitionCoordinator:(id)coordinator
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIPanelController *)self _internalState];
-  v12 = [v11 leadingViewController];
-  if (!v12)
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  coordinatorCopy = coordinator;
+  _internalState = [(UIPanelController *)self _internalState];
+  leadingViewController = [_internalState leadingViewController];
+  if (!leadingViewController)
   {
-    v12 = [(UIPanelController *)self _internalState];
-    v13 = [v12 mainViewController];
-    if (!v13)
+    leadingViewController = [(UIPanelController *)self _internalState];
+    mainViewController = [leadingViewController mainViewController];
+    if (!mainViewController)
     {
-      v13 = [(UIPanelController *)self _internalState];
-      v14 = [v13 trailingViewController];
-      if (!v14)
+      mainViewController = [(UIPanelController *)self _internalState];
+      trailingViewController = [mainViewController trailingViewController];
+      if (!trailingViewController)
       {
-        v15 = [(UIPanelController *)self _internalState];
-        v16 = [v15 collapsedViewController];
+        _internalState2 = [(UIPanelController *)self _internalState];
+        collapsedViewController = [_internalState2 collapsedViewController];
 
-        if (!v16)
+        if (!collapsedViewController)
         {
           goto LABEL_13;
         }
@@ -977,7 +977,7 @@ void __75__UIPanelController_gatherMultitaskingDragExclusionRectsFromVisibleColu
   }
 
 LABEL_7:
-  if ([(UIPanelController *)self _willCollapseWithNewTraitCollection:v8 oldTraitCollection:v9])
+  if ([(UIPanelController *)self _willCollapseWithNewTraitCollection:collectionCopy oldTraitCollection:traitCollectionCopy])
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -985,40 +985,40 @@ LABEL_7:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [(UIPanelController *)self _internalState];
-        v20 = [v19 collapsedState];
-        v21 = [(UIPanelController *)self owningViewController];
-        v22 = [v21 traitCollection];
+        _internalState3 = [(UIPanelController *)self _internalState];
+        collapsedState = [_internalState3 collapsedState];
+        owningViewController = [(UIPanelController *)self owningViewController];
+        traitCollection = [owningViewController traitCollection];
         v23 = 134284035;
-        v24 = v20;
+        v24 = collapsedState;
         v25 = 2113;
-        v26 = v22;
+        v26 = traitCollection;
         v27 = 2113;
-        v28 = v8;
+        v28 = collectionCopy;
         _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEFAULT, "About to collapse, current collapsedState : %{private}ld, current traitCollection: %{private}@ new traitCollection: %{private}@", &v23, 0x20u);
       }
     }
 
-    [(UIPanelController *)self _collapseWithTransitionCoordinator:v10];
+    [(UIPanelController *)self _collapseWithTransitionCoordinator:coordinatorCopy];
   }
 
-  else if ([(UIPanelController *)self _willExpandWithNewTraitCollection:v8 oldTraitCollection:v9])
+  else if ([(UIPanelController *)self _willExpandWithNewTraitCollection:collectionCopy oldTraitCollection:traitCollectionCopy])
   {
-    [(UIPanelController *)self _expandWithTransitionCoordinator:v10];
+    [(UIPanelController *)self _expandWithTransitionCoordinator:coordinatorCopy];
   }
 
   [(UIPanelController *)self _setHasUpdatedForTraitCollection:1];
 LABEL_13:
 }
 
-- (void)_collapseWithTransitionCoordinator:(id)a3
+- (void)_collapseWithTransitionCoordinator:(id)coordinator
 {
   v81 = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v5 = [(UIPanelController *)self _internalState];
-  v6 = [v5 collapsedState];
+  coordinatorCopy = coordinator;
+  _internalState = [(UIPanelController *)self _internalState];
+  collapsedState = [_internalState collapsedState];
 
-  if ((v6 - 1) <= 1)
+  if ((collapsedState - 1) <= 1)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1026,7 +1026,7 @@ LABEL_13:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 134283521;
-        *(&buf + 4) = v6;
+        *(&buf + 4) = collapsedState;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "Ignoring redundant collapse request (non-workaround path): current collapsedState: %{private}ld", &buf, 0xCu);
       }
     }
@@ -1034,11 +1034,11 @@ LABEL_13:
     goto LABEL_38;
   }
 
-  v8 = [(UIPanelController *)self _internalState];
-  [v8 setCollapsedState:1];
+  _internalState2 = [(UIPanelController *)self _internalState];
+  [_internalState2 setCollapsedState:1];
 
   [(UIPanelController *)self setRunExpandScheduled:0];
-  v9 = [(UIPanelController *)self delegate];
+  delegate = [(UIPanelController *)self delegate];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v77 = 0x3032000000;
@@ -1047,7 +1047,7 @@ LABEL_13:
   v80 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 primaryViewControllerForCollapsingPanelController:self];
+    v10 = [delegate primaryViewControllerForCollapsingPanelController:self];
     v11 = *(*(&buf + 1) + 40);
     *(*(&buf + 1) + 40) = v10;
   }
@@ -1057,8 +1057,8 @@ LABEL_13:
   v72 = 0x3032000000;
   v73 = __Block_byref_object_copy__56;
   v74 = __Block_byref_object_dispose__56;
-  v12 = [(UIPanelController *)self _internalState];
-  v75 = [v12 supplementaryViewController];
+  _internalState3 = [(UIPanelController *)self _internalState];
+  supplementaryViewController = [_internalState3 supplementaryViewController];
 
   if (*(*(&buf + 1) + 40))
   {
@@ -1067,28 +1067,28 @@ LABEL_13:
 
   else
   {
-    v14 = [(UIPanelController *)self leadingViewController];
-    v15 = v14;
-    if (v14)
+    leadingViewController = [(UIPanelController *)self leadingViewController];
+    v15 = leadingViewController;
+    if (leadingViewController)
     {
       v16 = 0;
-      v17 = v14;
+      mainViewController = leadingViewController;
     }
 
     else
     {
-      v18 = [(UIPanelController *)self trailingViewController];
-      v3 = v18;
-      if (v18)
+      trailingViewController = [(UIPanelController *)self trailingViewController];
+      v3 = trailingViewController;
+      if (trailingViewController)
       {
         v16 = 0;
-        v17 = v18;
+        mainViewController = trailingViewController;
       }
 
       else
       {
-        v17 = v71[5];
-        if (v17)
+        mainViewController = v71[5];
+        if (mainViewController)
         {
           v16 = 0;
           v3 = 0;
@@ -1096,14 +1096,14 @@ LABEL_13:
 
         else
         {
-          v17 = [(UIPanelController *)self mainViewController];
+          mainViewController = [(UIPanelController *)self mainViewController];
           v3 = 0;
           v16 = 1;
         }
       }
     }
 
-    objc_storeStrong((*(&buf + 1) + 40), v17);
+    objc_storeStrong((*(&buf + 1) + 40), mainViewController);
     if (v16)
     {
     }
@@ -1120,7 +1120,7 @@ LABEL_13:
   v66 = 0x3032000000;
   v67 = __Block_byref_object_copy__56;
   v68 = __Block_byref_object_dispose__56;
-  v69 = [(UIPanelController *)self mainViewController];
+  mainViewController2 = [(UIPanelController *)self mainViewController];
   v19 = v65;
   if (v65[5])
   {
@@ -1145,7 +1145,7 @@ LABEL_13:
     goto LABEL_34;
   }
 
-  v21 = [v9 topColumnForCollapsingPanelController:self];
+  v21 = [delegate topColumnForCollapsingPanelController:self];
   v22 = v21;
   switch(v21)
   {
@@ -1158,7 +1158,7 @@ LABEL_32:
 
       break;
     case 3:
-      v23 = [v9 viewControllerForColumn:3];
+      v23 = [delegate viewControllerForColumn:3];
       v24 = *(*(&buf + 1) + 40);
       *(*(&buf + 1) + 40) = v23;
 
@@ -1180,28 +1180,28 @@ LABEL_34:
   v60 = &v70;
   v61 = &v64;
   v62 = v22;
-  v27 = v9;
+  v27 = delegate;
   v57 = v27;
-  v28 = v45;
+  v28 = coordinatorCopy;
   v58 = v28;
   v29 = _Block_copy(aBlock);
-  v30 = [(UIPanelController *)self style];
+  style = [(UIPanelController *)self style];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v53 = __56__UIPanelController__collapseWithTransitionCoordinator___block_invoke_387;
   v54 = &__block_descriptor_33_e24___UIView_16__0__UIView_8l;
-  v55 = v30 != 0;
-  v31 = [(UIPanelController *)self leadingViewController];
-  v32 = [v31 _existingView];
-  v33 = __56__UIPanelController__collapseWithTransitionCoordinator___block_invoke_387(v52, v32);
+  v55 = style != 0;
+  leadingViewController2 = [(UIPanelController *)self leadingViewController];
+  _existingView = [leadingViewController2 _existingView];
+  v33 = __56__UIPanelController__collapseWithTransitionCoordinator___block_invoke_387(v52, _existingView);
 
-  v34 = [(UIPanelController *)self supplementaryViewController];
-  v35 = [v34 _existingView];
-  v36 = v53(v52, v35);
+  supplementaryViewController2 = [(UIPanelController *)self supplementaryViewController];
+  _existingView2 = [supplementaryViewController2 _existingView];
+  v36 = v53(v52, _existingView2);
 
-  v37 = [(UIPanelController *)self trailingViewController];
-  v38 = [v37 _existingView];
-  v39 = v53(v52, v38);
+  trailingViewController2 = [(UIPanelController *)self trailingViewController];
+  _existingView3 = [trailingViewController2 _existingView];
+  v39 = v53(v52, _existingView3);
 
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -1213,7 +1213,7 @@ LABEL_34:
   v48 = v41;
   v42 = v39;
   v49 = v42;
-  v50 = self;
+  selfCopy = self;
   v43 = v27;
   v51 = v43;
   v44 = _Block_copy(v46);
@@ -1448,30 +1448,30 @@ void __56__UIPanelController__collapseWithTransitionCoordinator___block_invoke_2
   }
 }
 
-- (void)_expandWithTransitionCoordinator:(id)a3
+- (void)_expandWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(UIPanelController *)self _internalState];
-  [v5 setCollapsedState:3];
+  coordinatorCopy = coordinator;
+  _internalState = [(UIPanelController *)self _internalState];
+  [_internalState setCollapsedState:3];
 
-  v6 = [(UIPanelController *)self delegate];
+  delegate = [(UIPanelController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  if ((v7 & 1) == 0 || (-[UIPanelController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), [v8 primaryViewControllerForExpandingPanelController:self], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if ((v7 & 1) == 0 || (-[UIPanelController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), [v8 primaryViewControllerForExpandingPanelController:self], collapsedViewController = objc_claimAutoreleasedReturnValue(), v8, !collapsedViewController))
   {
-    v10 = [(UIPanelController *)self _internalState];
-    v9 = [v10 collapsedViewController];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    collapsedViewController = [_internalState2 collapsedViewController];
   }
 
-  v11 = [(UIPanelController *)self delegate];
+  delegate2 = [(UIPanelController *)self delegate];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__UIPanelController__expandWithTransitionCoordinator___block_invoke;
   aBlock[3] = &unk_1E7101978;
   aBlock[4] = self;
-  v12 = v9;
+  v12 = collapsedViewController;
   v30 = v12;
-  v13 = v11;
+  v13 = delegate2;
   v31 = v13;
   v14 = _Block_copy(aBlock);
   v27[0] = MEMORY[0x1E69E9820];
@@ -1489,30 +1489,30 @@ void __56__UIPanelController__collapseWithTransitionCoordinator___block_invoke_2
       goto LABEL_13;
     }
 
-    v17 = [v12 _window];
-    if (!v17)
+    _window = [v12 _window];
+    if (!_window)
     {
       goto LABEL_14;
     }
 
-    v18 = [v12 _isNavigationController];
+    _isNavigationController = [v12 _isNavigationController];
 
-    if (v18)
+    if (_isNavigationController)
     {
-      v19 = [v12 _transitionConductor];
-      v17 = [v19 transitionCoordinator];
+      _transitionConductor = [v12 _transitionConductor];
+      _window = [_transitionConductor transitionCoordinator];
 
-      if (v17 && v17 != v4)
+      if (_window && _window != coordinatorCopy)
       {
         v20 = MEMORY[0x1E69E9820];
         v21 = 3221225472;
         v22 = __54__UIPanelController__expandWithTransitionCoordinator___block_invoke_6;
         v23 = &unk_1E7101FE0;
-        v24 = self;
+        selfCopy = self;
         v25 = v14;
         v26 = v16;
-        [v17 animateAlongsideTransition:0 completion:&v20];
-        [(UIPanelController *)self setRunExpandScheduled:1, v20, v21, v22, v23, v24];
+        [_window animateAlongsideTransition:0 completion:&v20];
+        [(UIPanelController *)self setRunExpandScheduled:1, v20, v21, v22, v23, selfCopy];
 
 LABEL_19:
         goto LABEL_20;
@@ -1522,15 +1522,15 @@ LABEL_19:
     else
     {
 LABEL_13:
-      v17 = 0;
+      _window = 0;
     }
 
 LABEL_14:
     if (![(UIPanelController *)self isRunExpandScheduled])
     {
-      if (v4)
+      if (coordinatorCopy)
       {
-        [v4 animateAlongsideTransition:v14 completion:v16];
+        [coordinatorCopy animateAlongsideTransition:v14 completion:v16];
         [(UIPanelController *)self setRunExpandScheduled:1];
       }
 
@@ -1544,9 +1544,9 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  if (v4)
+  if (coordinatorCopy)
   {
-    [v4 animateAlongsideTransition:v14 completion:v16];
+    [coordinatorCopy animateAlongsideTransition:v14 completion:v16];
   }
 
   else
@@ -1751,20 +1751,20 @@ uint64_t __54__UIPanelController__expandWithTransitionCoordinator___block_invoke
   return [v4 setRunExpandScheduled:0];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4 superBlock:(id)a5
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator superBlock:(id)block
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIPanelController *)self owningViewController];
-  v11 = [v10 traitCollection];
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  blockCopy = block;
+  owningViewController = [(UIPanelController *)self owningViewController];
+  traitCollection = [owningViewController traitCollection];
 
-  v12 = [(UIView *)self->_view window];
-  if (v12)
+  window = [(UIView *)self->_view window];
+  if (window)
   {
-    if (v8)
+    if (coordinatorCopy)
     {
-      [v8 targetTransform];
+      [coordinatorCopy targetTransform];
     }
 
     else
@@ -1774,13 +1774,13 @@ uint64_t __54__UIPanelController__expandWithTransitionCoordinator___block_invoke
 
     if (!CGAffineTransformIsIdentity(&v17))
     {
-      if ([(UIPanelController *)self _willCollapseWithNewTraitCollection:v16 oldTraitCollection:v11])
+      if ([(UIPanelController *)self _willCollapseWithNewTraitCollection:collectionCopy oldTraitCollection:traitCollection])
       {
       }
 
       else
       {
-        v13 = [(UIPanelController *)self _willExpandWithNewTraitCollection:v16 oldTraitCollection:v11];
+        v13 = [(UIPanelController *)self _willExpandWithNewTraitCollection:collectionCopy oldTraitCollection:traitCollection];
 
         if (!v13)
         {
@@ -1788,12 +1788,12 @@ uint64_t __54__UIPanelController__expandWithTransitionCoordinator___block_invoke
         }
       }
 
-      v14 = [(UIPanelController *)self _contentView];
-      v12 = [v14 snapshotViewAfterScreenUpdates:0];
+      _contentView = [(UIPanelController *)self _contentView];
+      window = [_contentView snapshotViewAfterScreenUpdates:0];
 
-      if (v12)
+      if (window)
       {
-        v15 = [[_UIPanelControllerMeshAnimatingTransitionView alloc] initWithView:v12];
+        v15 = [[_UIPanelControllerMeshAnimatingTransitionView alloc] initWithView:window];
         [(UIPanelController *)self _setSourceTransitionView:v15];
       }
     }
@@ -1801,26 +1801,26 @@ uint64_t __54__UIPanelController__expandWithTransitionCoordinator___block_invoke
 
 LABEL_12:
   *&self->_panelControllerFlags |= 0x40u;
-  [(UIPanelController *)self _updateForTraitCollection:v16 oldTraitCollection:v11 withTransitionCoordinator:v8];
+  [(UIPanelController *)self _updateForTraitCollection:collectionCopy oldTraitCollection:traitCollection withTransitionCoordinator:coordinatorCopy];
   *&self->_panelControllerFlags &= ~0x40u;
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3 toNewTraits:(id)a4
+- (void)traitCollectionDidChange:(id)change toNewTraits:(id)traits
 {
-  v8 = a3;
-  v6 = a4;
+  changeCopy = change;
+  traitsCopy = traits;
   if ([(UIPanelController *)self _hasUpdatedForTraitCollection])
   {
     if (dyld_program_sdk_at_least())
     {
-      v7 = [v6 horizontalSizeClass] == 1;
+      v7 = [traitsCopy horizontalSizeClass] == 1;
       if (v7 != [(UIPanelController *)self isCollapsed])
       {
-        [(UIPanelController *)self _updateForTraitCollection:v6 oldTraitCollection:v8 withTransitionCoordinator:0];
+        [(UIPanelController *)self _updateForTraitCollection:traitsCopy oldTraitCollection:changeCopy withTransitionCoordinator:0];
       }
     }
   }
@@ -1828,17 +1828,17 @@ LABEL_12:
 
 - (void)_storeSuspendedConfiguration
 {
-  v4 = [(UIPanelController *)self _internalState];
-  v3 = [v4 configuration];
-  [(UIPanelController *)self _setSuspendedConfiguration:v3];
+  _internalState = [(UIPanelController *)self _internalState];
+  configuration = [_internalState configuration];
+  [(UIPanelController *)self _setSuspendedConfiguration:configuration];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4 superBlock:(id)a5
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator superBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  blockCopy = block;
   [(UIPanelController *)self _stopAnimationsBeginningInteraction:0];
   *&self->_panelControllerFlags |= 0x80u;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1848,14 +1848,14 @@ LABEL_12:
   aBlock[4] = self;
   v67 = width;
   v68 = height;
-  v11 = v10;
+  v11 = blockCopy;
   v66 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(UIPanelController *)self _sourceTransitionView];
-  v14 = [(UIPanelController *)self _contentView];
-  if (v9)
+  _sourceTransitionView = [(UIPanelController *)self _sourceTransitionView];
+  _contentView = [(UIPanelController *)self _contentView];
+  if (coordinatorCopy)
   {
-    [v9 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -1864,7 +1864,7 @@ LABEL_12:
   }
 
   v15 = 0;
-  if (!CGAffineTransformIsIdentity(&v69) && !v13)
+  if (!CGAffineTransformIsIdentity(&v69) && !_sourceTransitionView)
   {
     if ((*(&self->_panelControllerFlags + 1) & 2) != 0)
     {
@@ -1873,16 +1873,16 @@ LABEL_12:
 
     else
     {
-      v16 = [v14 autoresizesSubviews];
+      autoresizesSubviews = [_contentView autoresizesSubviews];
       *&self->_panelControllerFlags |= 0x200u;
-      [v14 setAutoresizesSubviews:0];
+      [_contentView setAutoresizesSubviews:0];
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
       v62[2] = __83__UIPanelController_viewWillTransitionToSize_withTransitionCoordinator_superBlock___block_invoke_2;
       v62[3] = &unk_1E70F5AF0;
       v62[4] = self;
-      v63 = v14;
-      v64 = v16;
+      v63 = _contentView;
+      v64 = autoresizesSubviews;
       v15 = _Block_copy(v62);
     }
   }
@@ -1893,17 +1893,17 @@ LABEL_12:
   *&v69.d = __Block_byref_object_copy__56;
   *&v69.tx = __Block_byref_object_dispose__56;
   v69.ty = 0.0;
-  [v14 bounds];
+  [_contentView bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v14 center];
+  [_contentView center];
   v41 = v26;
   v42 = v25;
   WeakRetained = objc_loadWeakRetained(&self->_owningViewController);
-  v28 = [(UIPanelController *)self _internalState];
-  v29 = _transitionInsetsForViewController(WeakRetained, v28);
+  _internalState = [(UIPanelController *)self _internalState];
+  v29 = _transitionInsetsForViewController(WeakRetained, _internalState);
   v31 = v30;
   v33 = v32;
   v35 = v34;
@@ -1915,9 +1915,9 @@ LABEL_12:
   v47[4] = self;
   v36 = v15;
   v50 = v36;
-  v37 = v13;
+  v37 = _sourceTransitionView;
   v48 = v37;
-  v38 = v14;
+  v38 = _contentView;
   v49 = v38;
   v51 = &v69;
   v52 = v24;
@@ -1930,7 +1930,7 @@ LABEL_12:
   v59 = v35;
   v60 = v42;
   v61 = v41;
-  [v9 animateAlongsideTransition:v47 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v47 completion:0];
   v12[2](v12);
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
@@ -1942,7 +1942,7 @@ LABEL_12:
   v46 = &v69;
   v40 = v38;
   v45 = v40;
-  [v9 animateAlongsideTransition:0 completion:v43];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v43];
 
   _Block_object_dispose(&v69, 8);
 }
@@ -2271,15 +2271,15 @@ void *__83__UIPanelController_viewWillTransitionToSize_withTransitionCoordinator
   return result;
 }
 
-- (void)_withDisabledAppearanceTransitionsPerform:(id)a3
+- (void)_withDisabledAppearanceTransitionsPerform:(id)perform
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIPanelController *)self owningViewController];
+  performCopy = perform;
+  owningViewController = [(UIPanelController *)self owningViewController];
   v6 = objc_opt_class();
-  if (v5)
+  if (owningViewController)
   {
-    v7 = (v5[94] & 3u) - 1 < 2;
+    v7 = (owningViewController[94] & 3u) - 1 < 2;
   }
 
   else
@@ -2287,8 +2287,8 @@ void *__83__UIPanelController_viewWillTransitionToSize_withTransitionCoordinator
     v7 = 0;
   }
 
-  v8 = [v6 _withDisabledAppearanceTransitions:v7 forVisibleDescendantsOf:v5 perform:{v4, v4}];
-  v9 = [MEMORY[0x1E695DF70] array];
+  v8 = [v6 _withDisabledAppearanceTransitions:v7 forVisibleDescendantsOf:owningViewController perform:{performCopy, performCopy}];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -2309,12 +2309,12 @@ void *__83__UIPanelController_viewWillTransitionToSize_withTransitionCoordinator
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 _existingView];
-        v17 = [v16 window];
+        _existingView = [v15 _existingView];
+        window = [_existingView window];
 
-        if (!v17)
+        if (!window)
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -2324,13 +2324,13 @@ void *__83__UIPanelController_viewWillTransitionToSize_withTransitionCoordinator
     while (v12);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __63__UIPanelController__withDisabledAppearanceTransitionsPerform___block_invoke;
     v19[3] = &unk_1E7103900;
-    v20 = v9;
+    v20 = array;
     [(UIPanelController *)self addWrapperBlockForNextUpdate:v19];
   }
 }
@@ -2451,17 +2451,17 @@ void __63__UIPanelController__withDisabledAppearanceTransitionsPerform___block_i
   }
 }
 
-+ (id)_withDisabledAppearanceTransitions:(BOOL)a3 forVisibleDescendantsOf:(id)a4 perform:(id)a5
++ (id)_withDisabledAppearanceTransitions:(BOOL)transitions forVisibleDescendantsOf:(id)of perform:(id)perform
 {
-  v6 = a3;
+  transitionsCopy = transitions;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (!v6)
+  ofCopy = of;
+  performCopy = perform;
+  v9 = performCopy;
+  if (!transitionsCopy)
   {
     v13 = 0;
-    if (!v8)
+    if (!performCopy)
     {
       goto LABEL_13;
     }
@@ -2485,7 +2485,7 @@ void __63__UIPanelController__withDisabledAppearanceTransitionsPerform___block_i
   v32 = &v33;
   v12 = _Block_copy(aBlock);
   objc_storeWeak(v34 + 5, v12);
-  (*(v12 + 2))(v12, v7);
+  (*(v12 + 2))(v12, ofCopy);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -2522,7 +2522,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (v6)
+  if (transitionsCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -2616,22 +2616,22 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
   }
 }
 
-- (void)_layoutContainerViewWillMoveToWindow:(id)a3
+- (void)_layoutContainerViewWillMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     if ([(UIPanelController *)self _needsFirstTimeUpdateForTraitCollection])
     {
       [(UIPanelController *)self _setNeedsFirstTimeUpdateForTraitCollection:0];
       v4 = objc_alloc_init(_UIViewControllerNullAnimationTransitionCoordinator);
-      v5 = [(UIPanelController *)self owningViewController];
-      v6 = [v5 traitCollection];
+      owningViewController = [(UIPanelController *)self owningViewController];
+      traitCollection = [owningViewController traitCollection];
 
       v7 = [UITraitCollection traitCollectionWithHorizontalSizeClass:0];
-      [(UIPanelController *)self _updateForTraitCollection:v6 oldTraitCollection:v7 withTransitionCoordinator:v4];
+      [(UIPanelController *)self _updateForTraitCollection:traitCollection oldTraitCollection:v7 withTransitionCoordinator:v4];
 
-      v8 = [(UIPanelController *)self owningViewController];
-      [v8 _setLastNotifiedTraitCollection:v6];
+      owningViewController2 = [(UIPanelController *)self owningViewController];
+      [owningViewController2 _setLastNotifiedTraitCollection:traitCollection];
 
       [(_UIViewControllerNullAnimationTransitionCoordinator *)v4 _runAlongsideAnimations];
       [(_UIViewControllerNullAnimationTransitionCoordinator *)v4 _runAlongsideCompletionsAfterCommit];
@@ -2647,18 +2647,18 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
   }
 }
 
-- (void)_layoutContainerViewDidMoveToWindow:(id)a3
+- (void)_layoutContainerViewDidMoveToWindow:(id)window
 {
-  v8 = a3;
+  windowCopy = window;
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    if (v8)
+    if (windowCopy)
     {
-      v6 = [v8 screen];
-      [(UIPanelController *)self _observeKeyboardNotificationsOnScreen:v6];
+      screen = [windowCopy screen];
+      [(UIPanelController *)self _observeKeyboardNotificationsOnScreen:screen];
 
       [(UIPanelController *)self _adjustForKeyboardInfo:0];
     }
@@ -2666,22 +2666,22 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
     else
     {
       [(UIPanelController *)self _stopObservingKeyboardNotifications];
-      v7 = [(UIPanelController *)self _internalState];
-      [v7 setKeyboardAdjustment:0.0];
+      _internalState = [(UIPanelController *)self _internalState];
+      [_internalState setKeyboardAdjustment:0.0];
     }
   }
 }
 
 - (void)__viewWillLayoutSubviews
 {
-  v3 = [(UIPanelController *)self _sourceTransitionView];
-  if (v3)
+  _sourceTransitionView = [(UIPanelController *)self _sourceTransitionView];
+  if (_sourceTransitionView)
   {
-    v4 = v3;
-    v5 = [(UIPanelController *)self _sourceTransitionView];
-    v6 = [v5 superview];
-    v7 = [(UIPanelController *)self view];
-    if (v6 == v7)
+    v4 = _sourceTransitionView;
+    _sourceTransitionView2 = [(UIPanelController *)self _sourceTransitionView];
+    superview = [_sourceTransitionView2 superview];
+    view = [(UIPanelController *)self view];
+    if (superview == view)
     {
       panelControllerFlags = self->_panelControllerFlags;
 
@@ -2706,8 +2706,8 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
 
     else
     {
-      v10 = [(UIPanelController *)self view];
-      [v10 bounds];
+      view2 = [(UIPanelController *)self view];
+      [view2 bounds];
       v12 = v11;
       v14 = v13;
       [(UIPanelController *)self _lastViewSize];
@@ -2731,12 +2731,12 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
   }
 }
 
-- (void)_setNeedsLayoutAndPerformImmediately:(BOOL)a3
+- (void)_setNeedsLayoutAndPerformImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   [(UIView *)self->_view setNeedsLayout];
   *&self->_panelControllerFlags |= 0x2000u;
-  if (v3)
+  if (immediatelyCopy)
   {
     view = self->_view;
 
@@ -2757,9 +2757,9 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
 
   else
   {
-    v7 = [(UIPanelController *)self _internalState];
-    v4 = [v7 externallyAnimatingStateRequest];
-    if (v4)
+    _internalState = [(UIPanelController *)self _internalState];
+    externallyAnimatingStateRequest = [_internalState externallyAnimatingStateRequest];
+    if (externallyAnimatingStateRequest)
     {
     }
 
@@ -2815,10 +2815,10 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
 - (void)_performSingleDeferredUpdatePass
 {
   v85 = *MEMORY[0x1E69E9840];
-  v67 = [(UIPanelController *)self delegate];
+  delegate = [(UIPanelController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v66 = [v67 panelControllerWillUpdate:self];
+    v66 = [delegate panelControllerWillUpdate:self];
   }
 
   else
@@ -2826,43 +2826,43 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
     v66 = 0;
   }
 
-  v2 = [(UIPanelController *)self view];
-  [v2 bounds];
+  view = [(UIPanelController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
 
   v83 = 0;
-  v7 = [(UIPanelController *)self _internalState];
-  v8 = [v7 configuration];
-  v9 = [v8 forceOverlay];
+  _internalState = [(UIPanelController *)self _internalState];
+  configuration = [_internalState configuration];
+  forceOverlay = [configuration forceOverlay];
 
-  v10 = [(UIPanelController *)self _internalState];
-  v11 = [(UIPanelController *)self view];
-  v68 = [v10 computePossibleStatesGivenParentView:v11 withSize:v9 forceOverlay:{v4, v6}];
+  _internalState2 = [(UIPanelController *)self _internalState];
+  view2 = [(UIPanelController *)self view];
+  v68 = [_internalState2 computePossibleStatesGivenParentView:view2 withSize:forceOverlay forceOverlay:{v4, v6}];
 
   if (v66)
   {
     v12 = v66[2]();
-    v13 = [(UIPanelController *)self _internalState];
-    [v13 setStateRequest:v12];
+    _internalState3 = [(UIPanelController *)self _internalState];
+    [_internalState3 setStateRequest:v12];
 
     if (v83 == 1)
     {
-      v14 = [(UIPanelController *)self _suspendedConfiguration];
-      v15 = v14 == 0;
+      _suspendedConfiguration = [(UIPanelController *)self _suspendedConfiguration];
+      v15 = _suspendedConfiguration == 0;
 
       if (!v15)
       {
-        v16 = [(UIPanelController *)self _suspendedConfiguration];
-        v17 = [(UIPanelController *)self _internalState];
-        [v17 setConfiguration:v16];
+        _suspendedConfiguration2 = [(UIPanelController *)self _suspendedConfiguration];
+        _internalState4 = [(UIPanelController *)self _internalState];
+        [_internalState4 setConfiguration:_suspendedConfiguration2];
 
-        v18 = [(UIPanelController *)self _suspendedConfiguration];
-        v19 = [v18 forceOverlay];
+        _suspendedConfiguration3 = [(UIPanelController *)self _suspendedConfiguration];
+        forceOverlay2 = [_suspendedConfiguration3 forceOverlay];
 
-        v20 = [(UIPanelController *)self _internalState];
-        v21 = [(UIPanelController *)self view];
-        v22 = [v20 computePossibleStatesGivenParentView:v21 withSize:v19 forceOverlay:{v4, v6}];
+        _internalState5 = [(UIPanelController *)self _internalState];
+        view3 = [(UIPanelController *)self view];
+        v22 = [_internalState5 computePossibleStatesGivenParentView:view3 withSize:forceOverlay2 forceOverlay:{v4, v6}];
 
         v68 = v22;
       }
@@ -2870,13 +2870,13 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
 
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
-      v23 = [(UIPanelController *)self _internalState];
-      [v23 setExternallyAnimatingStateRequest:v12];
+      _internalState6 = [(UIPanelController *)self _internalState];
+      [_internalState6 setExternallyAnimatingStateRequest:v12];
 
-      v24 = [(UIPanelController *)self currentState];
-      v25 = affectedSidesFromState(v24);
-      v26 = [(UIPanelController *)self _internalState];
-      [v26 setExternallyAnimatingAffectedSides:v25];
+      currentState = [(UIPanelController *)self currentState];
+      v25 = affectedSidesFromState(currentState);
+      _internalState7 = [(UIPanelController *)self _internalState];
+      [_internalState7 setExternallyAnimatingAffectedSides:v25];
 
       objc_initWeak(&location, self);
       v79[0] = MEMORY[0x1E69E9820];
@@ -2892,60 +2892,60 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
     }
   }
 
-  v27 = [(UIPanelController *)self _internalState];
-  v69 = [v27 copy];
+  _internalState8 = [(UIPanelController *)self _internalState];
+  v69 = [_internalState8 copy];
 
-  v28 = [v69 animationState];
+  animationState = [v69 animationState];
 
-  if (!v28)
+  if (!animationState)
   {
-    v40 = [v69 externallyAnimatingStateRequest];
+    externallyAnimatingStateRequest = [v69 externallyAnimatingStateRequest];
 
-    if (v40)
+    if (externallyAnimatingStateRequest)
     {
-      v41 = [v69 externallyAnimatingStateRequest];
-      v42 = [v69 _stateForInteractiveRequest:v41 withAffectedSides:objc_msgSend(v69 inPossibleStates:{"externallyAnimatingAffectedSides"), v68}];
+      externallyAnimatingStateRequest2 = [v69 externallyAnimatingStateRequest];
+      v42 = [v69 _stateForInteractiveRequest:externallyAnimatingStateRequest2 withAffectedSides:objc_msgSend(v69 inPossibleStates:{"externallyAnimatingAffectedSides"), v68}];
     }
 
     else
     {
-      v47 = [v69 interactiveStateRequest];
+      interactiveStateRequest = [v69 interactiveStateRequest];
 
-      if (v47)
+      if (interactiveStateRequest)
       {
-        v41 = [v69 interactiveStateRequest];
-        v42 = [v69 _stateForInteractiveRequest:v41 withAffectedSides:0 inPossibleStates:v68];
+        externallyAnimatingStateRequest2 = [v69 interactiveStateRequest];
+        v42 = [v69 _stateForInteractiveRequest:externallyAnimatingStateRequest2 withAffectedSides:0 inPossibleStates:v68];
       }
 
       else
       {
-        v48 = [v69 stateRequest];
+        stateRequest = [v69 stateRequest];
 
-        if (!v48)
+        if (!stateRequest)
         {
           goto LABEL_38;
         }
 
-        v41 = [v69 stateRequest];
-        v42 = [v41 _matchingState:v68];
+        externallyAnimatingStateRequest2 = [v69 stateRequest];
+        v42 = [externallyAnimatingStateRequest2 _matchingState:v68];
       }
     }
 
-    v46 = v42;
+    firstObject = v42;
     goto LABEL_37;
   }
 
-  v29 = [v69 animationState];
-  [v29 progress];
+  animationState2 = [v69 animationState];
+  [animationState2 progress];
   v31 = v30 == 0.0;
 
   if (!v31)
   {
-    v41 = v68;
+    externallyAnimatingStateRequest2 = v68;
     goto LABEL_31;
   }
 
-  v65 = [(UIPanelController *)self possibleStates];
+  possibleStates = [(UIPanelController *)self possibleStates];
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
@@ -2959,9 +2959,9 @@ void __88__UIPanelController__withDisabledAppearanceTransitions_forVisibleDescen
     v36 = 1;
     v35 = 1;
 LABEL_30:
-    v41 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v65 copyItems:1];
+    externallyAnimatingStateRequest2 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:possibleStates copyItems:1];
 
-    _updateTreatsHiddenAsOverlapsInStates(v41, v35, v36, v37);
+    _updateTreatsHiddenAsOverlapsInStates(externallyAnimatingStateRequest2, v35, v36, v37);
     goto LABEL_31;
   }
 
@@ -3006,43 +3006,43 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  v41 = v65;
+  externallyAnimatingStateRequest2 = possibleStates;
 LABEL_31:
-  v43 = [v69 animationState];
-  v44 = [v43 stateRequest];
-  v45 = [v69 animationState];
-  v46 = [v69 _stateForInteractiveRequest:v44 withAffectedSides:objc_msgSend(v45 inPossibleStates:{"affectedSides"), v41}];
+  animationState3 = [v69 animationState];
+  stateRequest2 = [animationState3 stateRequest];
+  animationState4 = [v69 animationState];
+  firstObject = [v69 _stateForInteractiveRequest:stateRequest2 withAffectedSides:objc_msgSend(animationState4 inPossibleStates:{"affectedSides"), externallyAnimatingStateRequest2}];
 
 LABEL_37:
-  if (!v46)
+  if (!firstObject)
   {
 LABEL_38:
-    v46 = [v68 firstObject];
-    if (!v46)
+    firstObject = [v68 firstObject];
+    if (!firstObject)
     {
       goto LABEL_53;
     }
   }
 
-  v49 = self;
+  selfCopy2 = self;
   if ((*&self->_panelControllerFlags & 8) != 0)
   {
-    v51 = [(UIPanelController *)self _previousInternalState];
-    v52 = v51 == 0;
+    _previousInternalState = [(UIPanelController *)self _previousInternalState];
+    v52 = _previousInternalState == 0;
 
     if (v52)
     {
-      v50 = v46;
+      v50 = firstObject;
     }
 
     else
     {
-      v53 = affectedSidesFromState(v46);
-      v54 = [(UIPanelController *)self _previousInternalState];
-      v55 = [(UIPanelController *)self _previousInternalState];
-      v56 = [v55 stateRequest];
-      v57 = [(UIPanelController *)self _lastPossiblePublicStates];
-      v50 = [v54 _stateForInteractiveRequest:v56 withAffectedSides:v53 inPossibleStates:v57];
+      v53 = affectedSidesFromState(firstObject);
+      _previousInternalState2 = [(UIPanelController *)self _previousInternalState];
+      _previousInternalState3 = [(UIPanelController *)self _previousInternalState];
+      stateRequest3 = [_previousInternalState3 stateRequest];
+      _lastPossiblePublicStates = [(UIPanelController *)self _lastPossiblePublicStates];
+      v50 = [_previousInternalState2 _stateForInteractiveRequest:stateRequest3 withAffectedSides:v53 inPossibleStates:_lastPossiblePublicStates];
 
       [(UIPanelController *)self _lastViewSize];
       if (!v50)
@@ -3054,20 +3054,20 @@ LABEL_38:
       v6 = v59;
     }
 
-    v49 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v50 = v46;
+    v50 = firstObject;
   }
 
-  p_panelControllerFlags = &v49->_panelControllerFlags;
-  *&v49->_panelControllerFlags |= 1u;
-  v61 = [(UIPanelController *)v49 delegate];
+  p_panelControllerFlags = &selfCopy2->_panelControllerFlags;
+  *&selfCopy2->_panelControllerFlags |= 1u;
+  delegate2 = [(UIPanelController *)selfCopy2 delegate];
   if (*p_panelControllerFlags & 8) == 0 && (objc_opt_respondsToSelector())
   {
-    [v61 panelController:self willChangeToState:v50];
+    [delegate2 panelController:self willChangeToState:v50];
   }
 
   v71[0] = MEMORY[0x1E69E9820];
@@ -3080,7 +3080,7 @@ LABEL_38:
   v73 = v4;
   v74 = v6;
   [(UIPanelController *)self _performWrappedUpdate:v71];
-  v63 = self;
+  selfCopy5 = self;
   if ((*&self->_panelControllerFlags & 8) == 0)
   {
     [(UIPanelController *)self _setLastComputedPublicState:v62];
@@ -3088,15 +3088,15 @@ LABEL_38:
     [(UIPanelController *)self _setLastPossiblePublicStates:v68];
     [(UIPanelController *)self _setLastViewSize:v4, v6];
     v64 = objc_opt_respondsToSelector();
-    v63 = self;
+    selfCopy5 = self;
     if (v64)
     {
-      [v61 panelController:self didChangeToState:v62 withSize:{v4, v6}];
-      v63 = self;
+      [delegate2 panelController:self didChangeToState:v62 withSize:{v4, v6}];
+      selfCopy5 = self;
     }
   }
 
-  *&v63->_panelControllerFlags &= ~1u;
+  *&selfCopy5->_panelControllerFlags &= ~1u;
 
 LABEL_53:
 }
@@ -3127,9 +3127,9 @@ void __53__UIPanelController__performSingleDeferredUpdatePass__block_invoke(uint
   }
 }
 
-- (void)_performWrappedUpdate:(id)a3
+- (void)_performWrappedUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3042000000;
@@ -3141,7 +3141,7 @@ void __53__UIPanelController__performSingleDeferredUpdatePass__block_invoke(uint
   v9[2] = __43__UIPanelController__performWrappedUpdate___block_invoke;
   v9[3] = &unk_1E7103950;
   v11 = &v12;
-  v5 = v4;
+  v5 = updateCopy;
   v10 = v5;
   v6 = _Block_copy(v9);
   objc_storeWeak(v13 + 5, v6);
@@ -3189,104 +3189,104 @@ void __43__UIPanelController__performWrappedUpdate___block_invoke_2(uint64_t a1)
   WeakRetained[2](WeakRetained, *(a1 + 32));
 }
 
-- (void)_unspecifiedUpdateToNewPublicState:(id)a3 withSize:(CGSize)a4
+- (void)_unspecifiedUpdateToNewPublicState:(id)state withSize:(CGSize)size
 {
   v183 = *MEMORY[0x1E69E9840];
-  v158 = a3;
-  v161 = [(UIPanelController *)self _contentView];
-  v5 = [(UIPanelController *)self _internalState];
-  v146 = [v5 leadingViewController];
+  stateCopy = state;
+  _contentView = [(UIPanelController *)self _contentView];
+  _internalState = [(UIPanelController *)self _internalState];
+  leadingViewController = [_internalState leadingViewController];
 
-  v6 = [(UIPanelController *)self _internalState];
-  v138 = [v6 mainViewController];
+  _internalState2 = [(UIPanelController *)self _internalState];
+  mainViewController = [_internalState2 mainViewController];
 
-  v7 = [(UIPanelController *)self _internalState];
-  v135 = [v7 trailingViewController];
+  _internalState3 = [(UIPanelController *)self _internalState];
+  trailingViewController = [_internalState3 trailingViewController];
 
-  v8 = [v158 _collapsedState] == 1 || objc_msgSend(v158, "_collapsedState") == 2;
-  v9 = [(UIPanelController *)self _internalState];
-  v137 = [v9 collapsedViewController];
+  v8 = [stateCopy _collapsedState] == 1 || objc_msgSend(stateCopy, "_collapsedState") == 2;
+  _internalState4 = [(UIPanelController *)self _internalState];
+  collapsedViewController = [_internalState4 collapsedViewController];
 
   if (v8)
   {
-    v134 = v137;
-    v10 = [v134 view];
-    v11 = 0;
-    v12 = 0;
-    v13 = 0;
-    v14 = 0;
+    v134 = collapsedViewController;
+    view = [v134 view];
+    _trailingBorderView2 = 0;
+    _leadingBorderView2 = 0;
+    view3 = 0;
+    view2 = 0;
     goto LABEL_35;
   }
 
-  v134 = v138;
-  v10 = [v134 view];
-  v15 = v158;
-  [v158 leadingWidth];
+  v134 = mainViewController;
+  view = [v134 view];
+  v15 = stateCopy;
+  [stateCopy leadingWidth];
   if (v16 <= 0.0)
   {
-    v14 = 0;
+    view2 = 0;
   }
 
   else
   {
-    v14 = [v146 view];
+    view2 = [leadingViewController view];
 
-    v15 = v158;
+    v15 = stateCopy;
   }
 
   [v15 trailingWidth];
   if (v17 <= 0.0)
   {
-    v13 = 0;
+    view3 = 0;
   }
 
   else
   {
-    v13 = [v135 view];
+    view3 = [trailingViewController view];
 
-    v15 = v158;
+    v15 = stateCopy;
   }
 
-  v18 = [v15 configuration];
-  v19 = [v18 borderColor];
-  if (v19)
+  configuration = [v15 configuration];
+  borderColor = [configuration borderColor];
+  if (borderColor)
   {
   }
 
   else if ([(UILayoutContainerView *)self->_view backgroundColorIsDefault])
   {
-    v20 = +[UIColor _splitViewBorderColor];
+    borderColor2 = +[UIColor _splitViewBorderColor];
     goto LABEL_17;
   }
 
-  v20 = [v18 borderColor];
-  if (!v20)
+  borderColor2 = [configuration borderColor];
+  if (!borderColor2)
   {
-    v22 = [(UIView *)self->_view backgroundColor];
+    backgroundColor = [(UIView *)self->_view backgroundColor];
 
     v21 = 0;
     goto LABEL_19;
   }
 
 LABEL_17:
-  v21 = v20;
-  v22 = v21;
+  v21 = borderColor2;
+  backgroundColor = v21;
 LABEL_19:
 
-  if (v14 && ([v158 configuration], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "leadingBorderWidthForScale:", 1.0), v25 = v24, v23, v25 > 0.0))
+  if (view2 && ([stateCopy configuration], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "leadingBorderWidthForScale:", 1.0), v25 = v24, v23, v25 > 0.0))
   {
-    v26 = [(UIPanelController *)self _leadingBorderView];
+    _leadingBorderView = [(UIPanelController *)self _leadingBorderView];
 
-    if (!v26)
+    if (!_leadingBorderView)
     {
-      v27 = [(UIPanelController *)self _createBorderView];
-      [(UIPanelController *)self _setLeadingBorderView:v27];
+      _createBorderView = [(UIPanelController *)self _createBorderView];
+      [(UIPanelController *)self _setLeadingBorderView:_createBorderView];
     }
 
-    v12 = [(UIPanelController *)self _leadingBorderView];
-    [v12 setBackgroundColor:v22];
-    [v12 setNeedsLayout];
-    if (!v13)
+    _leadingBorderView2 = [(UIPanelController *)self _leadingBorderView];
+    [_leadingBorderView2 setBackgroundColor:backgroundColor];
+    [_leadingBorderView2 setNeedsLayout];
+    if (!view3)
     {
       goto LABEL_30;
     }
@@ -3294,41 +3294,41 @@ LABEL_19:
 
   else
   {
-    v12 = 0;
-    if (!v13)
+    _leadingBorderView2 = 0;
+    if (!view3)
     {
       goto LABEL_30;
     }
   }
 
-  v28 = [v158 configuration];
-  [v28 trailingBorderWidthForScale:1.0];
+  configuration2 = [stateCopy configuration];
+  [configuration2 trailingBorderWidthForScale:1.0];
   v30 = v29;
 
   if (v30 > 0.0)
   {
-    v31 = [(UIPanelController *)self _trailingBorderView];
+    _trailingBorderView = [(UIPanelController *)self _trailingBorderView];
 
-    if (!v31)
+    if (!_trailingBorderView)
     {
-      v32 = [(UIPanelController *)self _createBorderView];
-      [(UIPanelController *)self _setTrailingBorderView:v32];
+      _createBorderView2 = [(UIPanelController *)self _createBorderView];
+      [(UIPanelController *)self _setTrailingBorderView:_createBorderView2];
     }
 
-    v11 = [(UIPanelController *)self _trailingBorderView];
-    [v11 setBackgroundColor:v22];
-    [v11 setNeedsLayout];
+    _trailingBorderView2 = [(UIPanelController *)self _trailingBorderView];
+    [_trailingBorderView2 setBackgroundColor:backgroundColor];
+    [_trailingBorderView2 setNeedsLayout];
     goto LABEL_31;
   }
 
 LABEL_30:
-  v11 = 0;
+  _trailingBorderView2 = 0;
 LABEL_31:
-  if (v12 | v11)
+  if (_leadingBorderView2 | _trailingBorderView2)
   {
-    v33 = [v158 configuration];
-    v34 = [v33 borderColor];
-    [(UIPanelController *)self _setBorderViewsObserveViewBackgroundColor:v34 == 0];
+    configuration3 = [stateCopy configuration];
+    borderColor3 = [configuration3 borderColor];
+    [(UIPanelController *)self _setBorderViewsObserveViewBackgroundColor:borderColor3 == 0];
   }
 
   else
@@ -3338,7 +3338,7 @@ LABEL_31:
 
 LABEL_35:
   v173 = 0;
-  v174 = v10;
+  v174 = view;
   v172 = 0;
   __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block_invoke(&v174, &v173, &v172);
   v155 = v174;
@@ -3346,7 +3346,7 @@ LABEL_35:
   v151 = v173;
   v141 = v172;
   v170 = 0;
-  v171 = v14;
+  v171 = view2;
   v169 = 0;
   __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block_invoke(&v171, &v170, &v169);
   v35 = v171;
@@ -3354,7 +3354,7 @@ LABEL_35:
   v153 = v170;
   v140 = v169;
   v167 = 0;
-  v168 = v13;
+  v168 = view3;
   v166 = 0;
   __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block_invoke(&v168, &v167, &v166);
   v36 = v168;
@@ -3376,9 +3376,9 @@ LABEL_35:
 
   v142 = v37;
   v157 = v36;
-  if ((!v35 || ([v158 leadingOverlapsMain] & 1) == 0) && (!v36 || !objc_msgSend(v158, "trailingOverlapsMain")))
+  if ((!v35 || ([stateCopy leadingOverlapsMain] & 1) == 0) && (!v36 || !objc_msgSend(stateCopy, "trailingOverlapsMain")))
   {
-    v40 = 0;
+    dimmingView = 0;
     if (!v35)
     {
       goto LABEL_52;
@@ -3387,10 +3387,10 @@ LABEL_35:
     goto LABEL_48;
   }
 
-  v40 = [(UIPanelController *)self dimmingView];
-  if (v40)
+  dimmingView = [(UIPanelController *)self dimmingView];
+  if (dimmingView)
   {
-    [v38 addObject:v40];
+    [v38 addObject:dimmingView];
   }
 
   v39 = v153;
@@ -3404,9 +3404,9 @@ LABEL_48:
     }
 
     [v148 addObject:v35];
-    if (v12)
+    if (_leadingBorderView2)
     {
-      [v38 addObject:v12];
+      [v38 addObject:_leadingBorderView2];
     }
   }
 
@@ -3420,16 +3420,16 @@ LABEL_52:
     }
 
     [v148 addObject:v36];
-    if (v11)
+    if (_trailingBorderView2)
     {
-      [v38 addObject:v11];
+      [v38 addObject:_trailingBorderView2];
     }
   }
 
-  v150 = v40;
-  v41 = [v161 subviews];
-  v42 = [v38 array];
-  v43 = [v41 isEqualToArray:v42];
+  v150 = dimmingView;
+  subviews = [_contentView subviews];
+  array = [v38 array];
+  v43 = [subviews isEqualToArray:array];
 
   if ((v43 & 1) == 0)
   {
@@ -3437,8 +3437,8 @@ LABEL_52:
     v165 = 0u;
     v162 = 0u;
     v163 = 0u;
-    v44 = [v161 subviews];
-    v45 = [v44 countByEnumeratingWithState:&v162 objects:v182 count:16];
+    subviews2 = [_contentView subviews];
+    v45 = [subviews2 countByEnumeratingWithState:&v162 objects:v182 count:16];
     if (v45)
     {
       v46 = *v163;
@@ -3448,7 +3448,7 @@ LABEL_52:
         {
           if (*v163 != v46)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(subviews2);
           }
 
           v48 = *(*(&v162 + 1) + 8 * i);
@@ -3458,7 +3458,7 @@ LABEL_52:
           }
         }
 
-        v45 = [v44 countByEnumeratingWithState:&v162 objects:v182 count:16];
+        v45 = [subviews2 countByEnumeratingWithState:&v162 objects:v182 count:16];
       }
 
       while (v45);
@@ -3466,7 +3466,7 @@ LABEL_52:
 
     if (v155)
     {
-      [v161 insertSubview:v155 atIndex:0];
+      [_contentView insertSubview:v155 atIndex:0];
       v49 = 1;
     }
 
@@ -3477,54 +3477,54 @@ LABEL_52:
 
     if (v151)
     {
-      [v161 insertSubview:v151 atIndex:v49++];
+      [_contentView insertSubview:v151 atIndex:v49++];
     }
 
     if (v150)
     {
-      [v161 insertSubview:v150 atIndex:v49++];
+      [_contentView insertSubview:v150 atIndex:v49++];
     }
 
     v50 = dyld_program_sdk_at_least();
-    if (!((v12 == 0) | v50 & 1))
+    if (!((_leadingBorderView2 == 0) | v50 & 1))
     {
-      [v161 insertSubview:v12 atIndex:v49++];
+      [_contentView insertSubview:_leadingBorderView2 atIndex:v49++];
     }
 
     if (v35)
     {
-      [v161 insertSubview:v35 atIndex:v49++];
+      [_contentView insertSubview:v35 atIndex:v49++];
     }
 
     if (v153)
     {
-      [v161 insertSubview:v153 atIndex:v49++];
+      [_contentView insertSubview:v153 atIndex:v49++];
     }
 
-    if (!((v11 == 0) | v50 & 1))
+    if (!((_trailingBorderView2 == 0) | v50 & 1))
     {
-      [v161 insertSubview:v11 atIndex:v49++];
+      [_contentView insertSubview:_trailingBorderView2 atIndex:v49++];
     }
 
     if (v157)
     {
-      [v161 insertSubview:v157 atIndex:v49++];
+      [_contentView insertSubview:v157 atIndex:v49++];
     }
 
     if (v142)
     {
-      [v161 insertSubview:v142 atIndex:v49++];
+      [_contentView insertSubview:v142 atIndex:v49++];
     }
 
     v51 = v50 ^ 1;
-    if (v12 && (v51 & 1) == 0)
+    if (_leadingBorderView2 && (v51 & 1) == 0)
     {
-      [v161 insertSubview:v12 atIndex:v49++];
+      [_contentView insertSubview:_leadingBorderView2 atIndex:v49++];
     }
 
-    if (!((v11 == 0) | v51 & 1))
+    if (!((_trailingBorderView2 == 0) | v51 & 1))
     {
-      [v161 insertSubview:v11 atIndex:v49];
+      [_contentView insertSubview:_trailingBorderView2 atIndex:v49];
     }
   }
 
@@ -3536,29 +3536,29 @@ LABEL_52:
 
   else
   {
-    [v161 bounds];
-    a4.width = v52;
-    a4.height = v53;
+    [_contentView bounds];
+    size.width = v52;
+    size.height = v53;
     v55 = v54;
     v57 = v56;
   }
 
-  v58 = [(UIPanelController *)self view];
-  v154 = [v58 _shouldReverseLayoutDirection];
+  view4 = [(UIPanelController *)self view];
+  _shouldReverseLayoutDirection = [view4 _shouldReverseLayoutDirection];
 
-  [v161 _currentScreenScale];
+  [_contentView _currentScreenScale];
   v60 = v59;
-  [v150 setFrame:{v55, v57, a4.width, a4.height}];
+  [v150 setFrame:{v55, v57, size.width, size.height}];
   v143 = v35;
-  v61 = v12;
+  v61 = _leadingBorderView2;
   v152 = v155;
-  v62 = v11;
+  v62 = _trailingBorderView2;
   v144 = v157;
-  v63 = v158;
+  v63 = stateCopy;
   v64 = v148;
-  v149 = v146;
+  v149 = leadingViewController;
   v159 = v134;
-  v147 = v135;
+  v147 = trailingViewController;
   if (v35)
   {
     v65 = [v63 leadingOverlapsMain] ^ 1;
@@ -3629,8 +3629,8 @@ LABEL_52:
     v85 = v84;
     v184.origin.x = v55;
     v184.origin.y = v57;
-    v184.size.width = a4.width;
-    v184.size.height = a4.height;
+    v184.size.width = size.width;
+    v184.size.height = size.height;
     Width = CGRectGetWidth(v184);
     if (v65)
     {
@@ -3643,8 +3643,8 @@ LABEL_52:
       Width = Width - (v69 - v87);
       if (v61)
       {
-        v88 = [v63 configuration];
-        [v88 leadingBorderWidthForScale:v60];
+        configuration4 = [v63 configuration];
+        [configuration4 leadingBorderWidthForScale:v60];
         v90 = v89;
 
         Width = Width - v90;
@@ -3662,8 +3662,8 @@ LABEL_52:
       Width = Width - (v136 - v91);
       if (v62)
       {
-        v92 = [v63 configuration];
-        [v92 trailingBorderWidthForScale:v60];
+        configuration5 = [v63 configuration];
+        [configuration5 trailingBorderWidthForScale:v60];
         v94 = v93;
 
         Width = Width - v94;
@@ -3678,18 +3678,18 @@ LABEL_52:
 
   v185.origin.x = v55;
   v185.origin.y = v57;
-  v185.size.width = a4.width;
-  v185.size.height = a4.height;
+  v185.size.width = size.width;
+  v185.size.height = size.height;
   Height = CGRectGetHeight(v185);
   v181[0] = 0;
   v181[1] = v181;
   v181[2] = 0x2020000000;
-  if (v154)
+  if (_shouldReverseLayoutDirection)
   {
     v186.origin.x = v55;
     v186.origin.y = v57;
-    v186.size.width = a4.width;
-    v186.size.height = a4.height;
+    v186.size.width = size.width;
+    v186.size.height = size.height;
     v83 = CGRectGetWidth(v186) - v83;
   }
 
@@ -3698,7 +3698,7 @@ LABEL_52:
   aBlock[1] = 3221225472;
   aBlock[2] = __unspecifiedLayoutSideBySideViews_block_invoke;
   aBlock[3] = &unk_1E7103A58;
-  v180 = v154 ^ 1;
+  v180 = _shouldReverseLayoutDirection ^ 1;
   v178 = v181;
   v179 = Height;
   v96 = v64;
@@ -3710,16 +3710,16 @@ LABEL_52:
   if (v65)
   {
     (*(v98 + 2))(v98, v143, 0, v149, v69);
-    v100 = [v97 configuration];
-    [v100 leadingBorderWidthForScale:v60];
+    configuration6 = [v97 configuration];
+    [configuration6 leadingBorderWidthForScale:v60];
     (v99)[2](v99, v61, 0, 0);
   }
 
   (v99[2])(v99, v152, 0, v159, Width);
   if (v66)
   {
-    v101 = [v97 configuration];
-    [v101 trailingBorderWidthForScale:v60];
+    configuration7 = [v97 configuration];
+    [configuration7 trailingBorderWidthForScale:v60];
     (v99)[2](v99, v62, 0, 0);
 
     (v99[2])(v99, v144, 0, v147, v136);
@@ -3738,42 +3738,42 @@ LABEL_52:
   v108 = v147;
   if (v102)
   {
-    v109 = 0;
+    leadingOverlapsMain = 0;
   }
 
   else
   {
-    v109 = [v105 leadingOverlapsMain];
+    leadingOverlapsMain = [v105 leadingOverlapsMain];
   }
 
   if (v157)
   {
-    v110 = [v105 trailingOverlapsMain];
+    trailingOverlapsMain = [v105 trailingOverlapsMain];
   }
 
   else
   {
-    v110 = 0;
+    trailingOverlapsMain = 0;
   }
 
   [v105 leadingDragOffset];
   v112 = v111;
-  v113 = [v105 trailingOverlapsMain];
-  if (v109)
+  trailingOverlapsMain2 = [v105 trailingOverlapsMain];
+  if (leadingOverlapsMain)
   {
     [v105 leadingWidth];
     v115 = v114;
     v187.origin.x = v55;
     v187.origin.y = v57;
-    v187.size.width = a4.width;
-    v187.size.height = a4.height;
+    v187.size.width = size.width;
+    v187.size.height = size.height;
     v116 = CGRectGetHeight(v187);
-    if (v154)
+    if (_shouldReverseLayoutDirection)
     {
       v188.origin.x = v55;
       v188.origin.y = v57;
-      v188.size.width = a4.width;
-      v188.size.height = a4.height;
+      v188.size.width = size.width;
+      v188.size.height = size.height;
       v117 = CGRectGetWidth(v188);
       v189.origin.x = 0.0;
       v189.origin.y = 0.0;
@@ -3805,11 +3805,11 @@ LABEL_52:
 
     if (v156)
     {
-      v120 = [v105 configuration];
-      [v120 leadingBorderWidthForScale:v60];
+      configuration8 = [v105 configuration];
+      [configuration8 leadingBorderWidthForScale:v60];
       v122 = v121;
 
-      if (v154)
+      if (_shouldReverseLayoutDirection)
       {
         v123 = -v122;
       }
@@ -3832,22 +3832,22 @@ LABEL_52:
     }
   }
 
-  if (v110)
+  if (trailingOverlapsMain)
   {
     [v105 trailingWidth];
     v125 = v124;
     v193.origin.x = v55;
     v193.origin.y = v57;
-    v193.size.width = a4.width;
-    v193.size.height = a4.height;
+    v193.size.width = size.width;
+    v193.size.height = size.height;
     v126 = CGRectGetHeight(v193);
-    v127 = v113;
-    if ((v154 & 1) == 0)
+    v127 = trailingOverlapsMain2;
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v194.origin.x = v55;
       v194.origin.y = v57;
-      v194.size.width = a4.width;
-      v194.size.height = a4.height;
+      v194.size.width = size.width;
+      v194.size.height = size.height;
       v128 = CGRectGetWidth(v194);
       v195.origin.x = 0.0;
       v195.origin.y = 0.0;
@@ -3874,11 +3874,11 @@ LABEL_52:
 
     if (v104)
     {
-      v130 = [v105 configuration];
-      [v130 trailingBorderWidthForScale:v60];
+      configuration9 = [v105 configuration];
+      [configuration9 trailingBorderWidthForScale:v60];
       v132 = v131;
 
-      if (v154)
+      if (_shouldReverseLayoutDirection)
       {
         v196.origin.y = 0.0;
         v196.origin.x = v127;
@@ -3901,9 +3901,9 @@ LABEL_52:
     }
   }
 
-  layoutPresentationViews(v161, v159, v141);
-  layoutPresentationViews(v161, v107, v140);
-  layoutPresentationViews(v161, v108, v139);
+  layoutPresentationViews(_contentView, v159, v141);
+  layoutPresentationViews(_contentView, v107, v140);
+  layoutPresentationViews(_contentView, v108, v139);
 }
 
 void __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block_invoke(id *a1, void *a2, void *a3)
@@ -3939,57 +3939,57 @@ void __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block
   *a3 = v11;
 }
 
-- (void)_updateToNewPublicState:(id)a3 withSize:(CGSize)a4
+- (void)_updateToNewPublicState:(id)state withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v665 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  stateCopy = state;
   if (![(UIPanelController *)self style])
   {
-    [(UIPanelController *)self _unspecifiedUpdateToNewPublicState:v7 withSize:width, height];
+    [(UIPanelController *)self _unspecifiedUpdateToNewPublicState:stateCopy withSize:width, height];
     goto LABEL_745;
   }
 
   r1_24 = width;
   v590 = height;
-  v598 = v7;
-  v602 = self;
-  v8 = [(UIPanelController *)self _contentView];
-  v9 = [(UIPanelController *)v602 _internalState];
-  v582 = [v9 leadingViewController];
+  v598 = stateCopy;
+  selfCopy = self;
+  _contentView = [(UIPanelController *)self _contentView];
+  _internalState = [(UIPanelController *)selfCopy _internalState];
+  leadingViewController = [_internalState leadingViewController];
 
-  v10 = [(UIPanelController *)v602 _internalState];
-  v519 = [v10 mainViewController];
+  _internalState2 = [(UIPanelController *)selfCopy _internalState];
+  mainViewController = [_internalState2 mainViewController];
 
-  v11 = [(UIPanelController *)v602 _internalState];
-  v581 = [v11 trailingViewController];
+  _internalState3 = [(UIPanelController *)selfCopy _internalState];
+  trailingViewController = [_internalState3 trailingViewController];
 
-  v12 = [(UIPanelController *)v602 _internalState];
-  v566 = [v12 supplementaryViewController];
+  _internalState4 = [(UIPanelController *)selfCopy _internalState];
+  supplementaryViewController = [_internalState4 supplementaryViewController];
 
   v13 = [v598 _collapsedState] == 1 || objc_msgSend(v598, "_collapsedState") == 2;
-  v14 = [(UIPanelController *)v602 _internalState];
-  v518 = [v14 collapsedViewController];
+  _internalState5 = [(UIPanelController *)selfCopy _internalState];
+  collapsedViewController = [_internalState5 collapsedViewController];
 
-  v15 = [(UIPanelController *)v602 configuration];
-  v532 = [v15 supplementaryEdge];
+  configuration = [(UIPanelController *)selfCopy configuration];
+  supplementaryEdge = [configuration supplementaryEdge];
 
-  v580 = [v598 configuration];
+  configuration2 = [v598 configuration];
   if (!v13)
   {
-    v563 = v519;
-    v16 = [v563 view];
+    v563 = mainViewController;
+    view = [v563 view];
     v19 = v598;
     [v598 leadingWidth];
     if (v20 <= 0.0 && ([v598 leadingOffscreenWidth], v21 <= 0.0))
     {
-      v17 = 0;
+      view2 = 0;
     }
 
     else
     {
-      v17 = [v582 view];
+      view2 = [leadingViewController view];
 
       v19 = v598;
     }
@@ -3997,12 +3997,12 @@ void __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block
     [v19 trailingWidth];
     if (v22 <= 0.0 && ([v19 trailingOffscreenWidth], v23 <= 0.0))
     {
-      v24 = 0;
+      view3 = 0;
     }
 
     else
     {
-      v24 = [v581 view];
+      view3 = [trailingViewController view];
 
       v19 = v598;
     }
@@ -4017,23 +4017,23 @@ void __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block
 
     else
     {
-      v27 = [v566 view];
+      view4 = [supplementaryViewController view];
 
       v592 = 0;
-      v28 = v27 != 0;
-      r1_16 = v27;
-      if (v27 && !v17 && !v24)
+      v28 = view4 != 0;
+      r1_16 = view4;
+      if (view4 && !view2 && !view3)
       {
-        v29 = v27;
-        v17 = v29;
-        if (v532)
+        v29 = view4;
+        view2 = v29;
+        if (supplementaryEdge)
         {
           v18 = 0;
           v28 = 1;
           r1_16 = v29;
           v592 = 1;
-          v30 = 1;
-          if ([v580 forceOverlay])
+          supplementaryOverlapsMain = 1;
+          if ([configuration2 forceOverlay])
           {
             goto LABEL_38;
           }
@@ -4041,51 +4041,51 @@ void __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block
           goto LABEL_32;
         }
 
-        v24 = 0;
+        view3 = 0;
         v592 = 1;
         v28 = 1;
         r1_16 = v29;
       }
     }
 
-    if ([v580 forceOverlay] & 1) != 0 || v17 && (objc_msgSend(v598, "leadingOverlapsMain"))
+    if ([configuration2 forceOverlay] & 1) != 0 || view2 && (objc_msgSend(v598, "leadingOverlapsMain"))
     {
-      v30 = 1;
-      v18 = v17;
-      v17 = v24;
+      supplementaryOverlapsMain = 1;
+      v18 = view2;
+      view2 = view3;
       goto LABEL_38;
     }
 
-    v18 = v17;
-    if (!v24)
+    v18 = view2;
+    if (!view3)
     {
-      v17 = 0;
+      view2 = 0;
 LABEL_35:
       if (r1_16)
       {
-        v30 = [v598 supplementaryOverlapsMain];
+        supplementaryOverlapsMain = [v598 supplementaryOverlapsMain];
       }
 
       else
       {
         r1_16 = 0;
-        v30 = 0;
+        supplementaryOverlapsMain = 0;
       }
 
 LABEL_38:
-      v31 = [v580 borderColor];
-      if (v31)
+      borderColor = [configuration2 borderColor];
+      if (borderColor)
       {
       }
 
-      else if ([(UILayoutContainerView *)v602->_view backgroundColorIsDefault])
+      else if ([(UILayoutContainerView *)selfCopy->_view backgroundColorIsDefault])
       {
-        v32 = +[UIColor _splitViewBorderColor];
+        backgroundColor3 = +[UIColor _splitViewBorderColor];
 
-        if (v30)
+        if (supplementaryOverlapsMain)
         {
           v594 = 0;
-          v33 = v602;
+          v33 = selfCopy;
           if (!v18)
           {
             goto LABEL_64;
@@ -4094,10 +4094,10 @@ LABEL_38:
           goto LABEL_49;
         }
 
-        v33 = v602;
-        if ([v580 borderAbuttingMainRendersAsShadow])
+        v33 = selfCopy;
+        if ([configuration2 borderAbuttingMainRendersAsShadow])
         {
-          if (v18 | v17)
+          if (v18 | view2)
           {
             v44 = 1;
           }
@@ -4124,96 +4124,96 @@ LABEL_48:
         }
 
 LABEL_49:
-        [v580 leadingBorderWidthForScale:1.0];
+        [configuration2 leadingBorderWidthForScale:1.0];
         if (v36 > 0.0)
         {
-          v37 = [(UIPanelController *)v33 _leadingBorderView];
+          _leadingBorderView = [(UIPanelController *)v33 _leadingBorderView];
 
-          v38 = v602;
-          if (!v37)
+          v38 = selfCopy;
+          if (!_leadingBorderView)
           {
-            v39 = [(UIPanelController *)v602 _createBorderView];
-            v38 = v602;
-            [(UIPanelController *)v602 _setLeadingBorderView:v39];
+            _createBorderView = [(UIPanelController *)selfCopy _createBorderView];
+            v38 = selfCopy;
+            [(UIPanelController *)selfCopy _setLeadingBorderView:_createBorderView];
           }
 
-          v584 = [(UIPanelController *)v38 _leadingBorderView];
-          [v584 setRenderAsShadow:0];
-          [v584 setBackgroundColor:v32];
-          [v584 setNeedsLayout];
-          if (v592 & 1 | (r1_16 == 0 || v532 != 0))
+          _leadingBorderView2 = [(UIPanelController *)v38 _leadingBorderView];
+          [_leadingBorderView2 setRenderAsShadow:0];
+          [_leadingBorderView2 setBackgroundColor:backgroundColor3];
+          [_leadingBorderView2 setNeedsLayout];
+          if (v592 & 1 | (r1_16 == 0 || supplementaryEdge != 0))
           {
-            v547 = 0;
+            _supplementaryBorderView2 = 0;
           }
 
           else
           {
-            v40 = [(UIPanelController *)v602 _supplementaryBorderView];
+            _supplementaryBorderView = [(UIPanelController *)selfCopy _supplementaryBorderView];
 
-            v41 = v602;
-            if (!v40)
+            v41 = selfCopy;
+            if (!_supplementaryBorderView)
             {
-              v42 = [(UIPanelController *)v602 _createBorderView];
-              v41 = v602;
-              [(UIPanelController *)v602 _setSupplementaryBorderView:v42];
+              _createBorderView2 = [(UIPanelController *)selfCopy _createBorderView];
+              v41 = selfCopy;
+              [(UIPanelController *)selfCopy _setSupplementaryBorderView:_createBorderView2];
             }
 
-            v547 = [(UIPanelController *)v41 _supplementaryBorderView];
-            [v547 setRenderAsShadow:0];
-            v43 = [v584 backgroundColor];
-            [v547 setBackgroundColor:v43];
+            _supplementaryBorderView2 = [(UIPanelController *)v41 _supplementaryBorderView];
+            [_supplementaryBorderView2 setRenderAsShadow:0];
+            backgroundColor = [_leadingBorderView2 backgroundColor];
+            [_supplementaryBorderView2 setBackgroundColor:backgroundColor];
 
-            [v547 setNeedsLayout];
+            [_supplementaryBorderView2 setNeedsLayout];
           }
 
-          v33 = v602;
-          if (!v17)
+          v33 = selfCopy;
+          if (!view2)
           {
             goto LABEL_72;
           }
 
 LABEL_65:
-          [v580 trailingBorderWidthForScale:1.0];
+          [configuration2 trailingBorderWidthForScale:1.0];
           if (v45 > 0.0)
           {
-            v46 = [(UIPanelController *)v33 _trailingBorderView];
+            _trailingBorderView = [(UIPanelController *)v33 _trailingBorderView];
 
-            v47 = v602;
-            if (!v46)
+            v47 = selfCopy;
+            if (!_trailingBorderView)
             {
-              v48 = [(UIPanelController *)v602 _createBorderView];
-              v47 = v602;
-              [(UIPanelController *)v602 _setTrailingBorderView:v48];
+              _createBorderView3 = [(UIPanelController *)selfCopy _createBorderView];
+              v47 = selfCopy;
+              [(UIPanelController *)selfCopy _setTrailingBorderView:_createBorderView3];
             }
 
-            v49 = [(UIPanelController *)v47 _trailingBorderView];
-            [v49 setRenderAsShadow:0];
-            [v49 setBackgroundColor:v32];
-            [v49 setNeedsLayout];
-            if (!(v592 & 1 | (r1_16 == 0) | (v532 == 0)))
+            _trailingBorderView2 = [(UIPanelController *)v47 _trailingBorderView];
+            [_trailingBorderView2 setRenderAsShadow:0];
+            [_trailingBorderView2 setBackgroundColor:backgroundColor3];
+            [_trailingBorderView2 setNeedsLayout];
+            if (!(v592 & 1 | (r1_16 == 0) | (supplementaryEdge == 0)))
             {
-              v50 = [(UIPanelController *)v602 _supplementaryBorderView];
+              _supplementaryBorderView3 = [(UIPanelController *)selfCopy _supplementaryBorderView];
 
-              v51 = v602;
-              if (!v50)
+              v51 = selfCopy;
+              if (!_supplementaryBorderView3)
               {
-                v52 = [(UIPanelController *)v602 _createBorderView];
-                v51 = v602;
-                [(UIPanelController *)v602 _setSupplementaryBorderView:v52];
+                _createBorderView4 = [(UIPanelController *)selfCopy _createBorderView];
+                v51 = selfCopy;
+                [(UIPanelController *)selfCopy _setSupplementaryBorderView:_createBorderView4];
               }
 
-              v53 = [(UIPanelController *)v51 _supplementaryBorderView];
+              _supplementaryBorderView4 = [(UIPanelController *)v51 _supplementaryBorderView];
 
-              [v53 setRenderAsShadow:0];
-              v54 = [v49 backgroundColor];
-              [v53 setBackgroundColor:v54];
+              [_supplementaryBorderView4 setRenderAsShadow:0];
+              backgroundColor2 = [_trailingBorderView2 backgroundColor];
+              [_supplementaryBorderView4 setBackgroundColor:backgroundColor2];
 
-              [v53 setNeedsLayout];
-              v547 = v53;
+              [_supplementaryBorderView4 setNeedsLayout];
+              _supplementaryBorderView2 = _supplementaryBorderView4;
             }
 
 LABEL_73:
-            if (v18 | v17)
+            if (v18 | view2)
             {
               v55 = v592 ^ 1;
             }
@@ -4223,74 +4223,74 @@ LABEL_73:
               v55 = 0;
             }
 
-            v543 = v49;
-            if (v584 | v49)
+            v543 = _trailingBorderView2;
+            if (_leadingBorderView2 | _trailingBorderView2)
             {
-              v56 = [v580 borderColor];
-              [(UIPanelController *)v602 _setBorderViewsObserveViewBackgroundColor:v56 == 0];
+              borderColor2 = [configuration2 borderColor];
+              [(UIPanelController *)selfCopy _setBorderViewsObserveViewBackgroundColor:borderColor2 == 0];
 
-              if (!v30)
+              if (!supplementaryOverlapsMain)
               {
 LABEL_78:
-                v534 = 0;
+                _overlayEdgeShadowView2 = 0;
                 goto LABEL_84;
               }
             }
 
             else
             {
-              [(UIPanelController *)v602 _setBorderViewsObserveViewBackgroundColor:0];
-              if (!v30)
+              [(UIPanelController *)selfCopy _setBorderViewsObserveViewBackgroundColor:0];
+              if (!supplementaryOverlapsMain)
               {
                 goto LABEL_78;
               }
             }
 
-            v57 = v602;
-            if ([(UIPanelController *)v602 showShadowViews])
+            v57 = selfCopy;
+            if ([(UIPanelController *)selfCopy showShadowViews])
             {
-              v58 = [(UIPanelController *)v602 _overlayEdgeShadowView];
+              _overlayEdgeShadowView = [(UIPanelController *)selfCopy _overlayEdgeShadowView];
 
-              v57 = v602;
-              if (!v58)
+              v57 = selfCopy;
+              if (!_overlayEdgeShadowView)
               {
-                v59 = [(UIPanelController *)v602 _createOverlayShadowView];
-                v57 = v602;
-                [(UIPanelController *)v602 _setOverlayEdgeShadowView:v59];
+                _createOverlayShadowView = [(UIPanelController *)selfCopy _createOverlayShadowView];
+                v57 = selfCopy;
+                [(UIPanelController *)selfCopy _setOverlayEdgeShadowView:_createOverlayShadowView];
               }
             }
 
-            v534 = [(UIPanelController *)v57 _overlayEdgeShadowView];
+            _overlayEdgeShadowView2 = [(UIPanelController *)v57 _overlayEdgeShadowView];
 LABEL_84:
             v599 = v28 & v55;
             if ((v28 & v55) != 0)
             {
-              v60 = v602;
-              if (![(UIPanelController *)v602 isAnimating])
+              v60 = selfCopy;
+              if (![(UIPanelController *)selfCopy isAnimating])
               {
                 [v598 supplementaryDragOffset];
                 if (v61 == 0.0)
                 {
-                  v533 = 0;
-                  v558 = 0;
+                  _primaryParallaxDimmingView2 = 0;
+                  _supplementaryParallaxShadowView2 = 0;
                   goto LABEL_98;
                 }
               }
 
-              v62 = [(UIPanelController *)v602 _supplementaryParallaxShadowView];
+              _supplementaryParallaxShadowView = [(UIPanelController *)selfCopy _supplementaryParallaxShadowView];
 
-              v63 = v602;
-              if (!v62)
+              v63 = selfCopy;
+              if (!_supplementaryParallaxShadowView)
               {
-                v64 = [(UIPanelController *)v602 _createOverlayShadowView];
-                v63 = v602;
-                [(UIPanelController *)v602 _setSupplementaryParallaxShadowView:v64];
+                _createOverlayShadowView2 = [(UIPanelController *)selfCopy _createOverlayShadowView];
+                v63 = selfCopy;
+                [(UIPanelController *)selfCopy _setSupplementaryParallaxShadowView:_createOverlayShadowView2];
               }
 
-              v558 = [(UIPanelController *)v63 _supplementaryParallaxShadowView];
-              v65 = [(UIPanelController *)v602 _primaryParallaxDimmingView];
+              _supplementaryParallaxShadowView2 = [(UIPanelController *)v63 _supplementaryParallaxShadowView];
+              _primaryParallaxDimmingView = [(UIPanelController *)selfCopy _primaryParallaxDimmingView];
 
-              if (!v65)
+              if (!_primaryParallaxDimmingView)
               {
                 v66 = [UIDimmingView alloc];
                 if (v18)
@@ -4300,66 +4300,66 @@ LABEL_84:
 
                 else
                 {
-                  v67 = v17;
+                  v67 = view2;
                 }
 
                 [v67 frame];
                 v68 = [(UIDimmingView *)v66 initWithFrame:?];
-                [(UIPanelController *)v602 _setPrimaryParallaxDimmingView:v68];
+                [(UIPanelController *)selfCopy _setPrimaryParallaxDimmingView:v68];
               }
 
-              v533 = [(UIPanelController *)v602 _primaryParallaxDimmingView];
+              _primaryParallaxDimmingView2 = [(UIPanelController *)selfCopy _primaryParallaxDimmingView];
             }
 
             else
             {
-              v533 = 0;
-              v558 = 0;
+              _primaryParallaxDimmingView2 = 0;
+              _supplementaryParallaxShadowView2 = 0;
             }
 
-            v60 = v602;
+            v60 = selfCopy;
 LABEL_98:
-            if (((v30 | ((*&v60->_panelControllerFlags & 0x20) >> 5)) & 1) == 0 && ([v580 allowTotalWidthGreaterThanParent] & 1) == 0 && (panelControllerFlags = v60->_panelControllerFlags, (*&panelControllerFlags & 0x80) == 0) && ((*&panelControllerFlags & 8) != 0 || -[UIPanelController isAnimating](v60, "isAnimating") || (*&v60->_panelControllerFlags & 0x10) != 0))
+            if (((supplementaryOverlapsMain | ((*&v60->_panelControllerFlags & 0x20) >> 5)) & 1) == 0 && ([configuration2 allowTotalWidthGreaterThanParent] & 1) == 0 && (panelControllerFlags = v60->_panelControllerFlags, (*&panelControllerFlags & 0x80) == 0) && ((*&panelControllerFlags & 8) != 0 || -[UIPanelController isAnimating](v60, "isAnimating") || (*&v60->_panelControllerFlags & 0x10) != 0))
             {
-              v552 = [(UIPanelController *)v60 leadingBarContentClippingView];
-              v551 = [(UIPanelController *)v602 trailingBarContentClippingView];
-              v201 = [(UIPanelController *)v602 style];
+              leadingBarContentClippingView = [(UIPanelController *)v60 leadingBarContentClippingView];
+              trailingBarContentClippingView = [(UIPanelController *)selfCopy trailingBarContentClippingView];
+              style = [(UIPanelController *)selfCopy style];
               v202 = v592 ^ 1;
-              if (v201 != 2)
+              if (style != 2)
               {
                 v202 = 1;
               }
 
               if (v202)
               {
-                v550 = 0;
+                supplementaryBarContentClippingView = 0;
               }
 
               else
               {
-                v550 = [(UIPanelController *)v602 supplementaryBarContentClippingView];
+                supplementaryBarContentClippingView = [(UIPanelController *)selfCopy supplementaryBarContentClippingView];
               }
             }
 
             else
             {
-              v550 = 0;
-              v551 = 0;
-              v552 = 0;
+              supplementaryBarContentClippingView = 0;
+              trailingBarContentClippingView = 0;
+              leadingBarContentClippingView = 0;
             }
 
             goto LABEL_106;
           }
 
 LABEL_72:
-          v49 = 0;
+          _trailingBorderView2 = 0;
           goto LABEL_73;
         }
 
 LABEL_64:
-        v547 = 0;
-        v584 = 0;
-        if (!v17)
+        _supplementaryBorderView2 = 0;
+        _leadingBorderView2 = 0;
+        if (!view2)
         {
           goto LABEL_72;
         }
@@ -4367,52 +4367,52 @@ LABEL_64:
         goto LABEL_65;
       }
 
-      v34 = [v580 borderColor];
-      v35 = v34;
-      if (v34)
+      borderColor3 = [configuration2 borderColor];
+      v35 = borderColor3;
+      if (borderColor3)
       {
-        v32 = v34;
+        backgroundColor3 = borderColor3;
       }
 
       else
       {
-        v32 = [(UIView *)v602->_view backgroundColor];
+        backgroundColor3 = [(UIView *)selfCopy->_view backgroundColor];
       }
 
-      v33 = v602;
+      v33 = selfCopy;
 
       goto LABEL_48;
     }
 
-    v17 = v24;
+    view2 = view3;
 LABEL_32:
     if ([v598 trailingOverlapsMain])
     {
-      v30 = 1;
+      supplementaryOverlapsMain = 1;
       goto LABEL_38;
     }
 
     goto LABEL_35;
   }
 
-  v563 = v518;
-  v16 = [v563 view];
+  v563 = collapsedViewController;
+  view = [v563 view];
   v594 = 0;
   v599 = 0;
-  v550 = 0;
-  v551 = 0;
-  v552 = 0;
-  v533 = 0;
-  v534 = 0;
-  v558 = 0;
-  v547 = 0;
+  supplementaryBarContentClippingView = 0;
+  trailingBarContentClippingView = 0;
+  leadingBarContentClippingView = 0;
+  _primaryParallaxDimmingView2 = 0;
+  _overlayEdgeShadowView2 = 0;
+  _supplementaryParallaxShadowView2 = 0;
+  _supplementaryBorderView2 = 0;
   v543 = 0;
-  v584 = 0;
+  _leadingBorderView2 = 0;
   r1_16 = 0;
-  v17 = 0;
+  view2 = 0;
   v18 = 0;
 LABEL_106:
-  v646 = v16;
+  v646 = view;
   v645 = 0;
   v644 = 0;
   __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block_invoke(&v646, &v645, &v644);
@@ -4428,7 +4428,7 @@ LABEL_106:
 
   v526 = v642;
   v524 = v641;
-  v640 = v17;
+  v640 = view2;
   v639 = 0;
   v638 = 0;
   __65__UIPanelController__unspecifiedUpdateToNewPublicState_withSize___block_invoke(&v640, &v639, &v638);
@@ -4462,9 +4462,9 @@ LABEL_106:
   v73 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:2];
   v74 = v72;
   v75 = v74;
-  v76 = v602;
-  v77 = r1_8;
-  v78 = v584;
+  v76 = selfCopy;
+  supplementaryOverlapsMain2 = r1_8;
+  v78 = _leadingBorderView2;
   v79 = v543;
   if (v539)
   {
@@ -4480,17 +4480,17 @@ LABEL_106:
   {
     if ([v598 leadingOverlapsMain])
     {
-      v77 = 1;
+      supplementaryOverlapsMain2 = 1;
     }
 
     else if (r1_16 == r1_8)
     {
-      v77 = [v598 supplementaryOverlapsMain];
+      supplementaryOverlapsMain2 = [v598 supplementaryOverlapsMain];
     }
 
     else
     {
-      v77 = 0;
+      supplementaryOverlapsMain2 = 0;
     }
   }
 
@@ -4501,27 +4501,27 @@ LABEL_106:
 
   if ([v598 trailingOverlapsMain])
   {
-    [v580 allowTotalWidthGreaterThanParent];
+    [configuration2 allowTotalWidthGreaterThanParent];
     goto LABEL_125;
   }
 
   if (r1_16 == v591)
   {
-    v80 = [v598 supplementaryOverlapsMain];
+    supplementaryOverlapsMain3 = [v598 supplementaryOverlapsMain];
   }
 
   else
   {
 LABEL_123:
-    v80 = 0;
+    supplementaryOverlapsMain3 = 0;
   }
 
-  v81 = [v580 allowTotalWidthGreaterThanParent];
-  if (((v77 | v80) & 1) == 0)
+  allowTotalWidthGreaterThanParent = [configuration2 allowTotalWidthGreaterThanParent];
+  if (((supplementaryOverlapsMain2 | supplementaryOverlapsMain3) & 1) == 0)
   {
     v576 = 0;
-    v577 = 0;
-    if ((v599 & v81) != 1)
+    dimmingView = 0;
+    if ((v599 & allowTotalWidthGreaterThanParent) != 1)
     {
       goto LABEL_133;
     }
@@ -4530,29 +4530,29 @@ LABEL_123:
   }
 
 LABEL_125:
-  [(UIPanelController *)v602 _captureView];
-  v82 = v76 = v602;
+  [(UIPanelController *)selfCopy _captureView];
+  v82 = v76 = selfCopy;
   if (!v82)
   {
     v82 = objc_alloc_init(_UIMTCaptureView);
-    [(UIPanelController *)v602 _setMaterialThemesCaptureView:v82];
+    [(UIPanelController *)selfCopy _setMaterialThemesCaptureView:v82];
   }
 
   v576 = v82;
   [v75 addObject:v82];
 LABEL_129:
-  v577 = [(UIPanelController *)v76 dimmingView];
-  if (v577)
+  dimmingView = [(UIPanelController *)v76 dimmingView];
+  if (dimmingView)
   {
     [v75 addObject:?];
   }
 
   else
   {
-    v577 = 0;
+    dimmingView = 0;
   }
 
-  v78 = v584;
+  v78 = _leadingBorderView2;
   v79 = v543;
 LABEL_133:
   v83 = dyld_program_sdk_at_least();
@@ -4602,9 +4602,9 @@ LABEL_133:
     }
 
     [v573 addObject:r1_16];
-    if (v547)
+    if (_supplementaryBorderView2)
     {
-      [v75 addObject:v547];
+      [v75 addObject:_supplementaryBorderView2];
     }
   }
 
@@ -4619,9 +4619,9 @@ LABEL_133:
     [v75 addObject:v79];
   }
 
-  if (v534 && v577)
+  if (_overlayEdgeShadowView2 && dimmingView)
   {
-    [v75 insertObject:v534 atIndex:{objc_msgSend(v75, "indexOfObject:", v577) + 1}];
+    [v75 insertObject:_overlayEdgeShadowView2 atIndex:{objc_msgSend(v75, "indexOfObject:", dimmingView) + 1}];
   }
 
   if (v594)
@@ -4636,9 +4636,9 @@ LABEL_133:
       v86 = v79;
     }
 
-    if (v547)
+    if (_supplementaryBorderView2)
     {
-      v86 = v547;
+      v86 = _supplementaryBorderView2;
     }
 
     v87 = v86;
@@ -4647,7 +4647,7 @@ LABEL_133:
 
   if (r1_8 | v591)
   {
-    v88 = v533 != 0;
+    v88 = _primaryParallaxDimmingView2 != 0;
   }
 
   else
@@ -4668,10 +4668,10 @@ LABEL_133:
       v89 = v591;
     }
 
-    [v75 insertObject:v533 atIndex:{objc_msgSend(v75, "indexOfObject:", v89) + 1}];
+    [v75 insertObject:_primaryParallaxDimmingView2 atIndex:{objc_msgSend(v75, "indexOfObject:", v89) + 1}];
   }
 
-  if (v558)
+  if (_supplementaryParallaxShadowView2)
   {
     v90 = [v75 indexOfObject:r1_16];
     if (v79 | v78)
@@ -4693,30 +4693,30 @@ LABEL_133:
       v90 = [v91 indexOfObject:v92];
     }
 
-    [v75 insertObject:v558 atIndex:v90];
+    [v75 insertObject:_supplementaryParallaxShadowView2 atIndex:v90];
   }
 
   v521 = (r1_8 | v591) != 0;
-  v93 = [v8 subviews];
-  v94 = [v75 array];
-  v95 = [v93 isEqualToArray:v94];
+  subviews = [_contentView subviews];
+  array = [v75 array];
+  v95 = [subviews isEqualToArray:array];
 
-  v96 = [0 contentView];
-  if (v96)
+  contentView = [0 contentView];
+  if (contentView)
   {
-    v97 = v96;
+    contentView2 = contentView;
 
 LABEL_185:
-    v98 = [v97 subviews];
-    v99 = [v73 array];
-    v595 = [v98 isEqualToArray:v99] ^ 1;
+    subviews2 = [contentView2 subviews];
+    array2 = [v73 array];
+    v595 = [subviews2 isEqualToArray:array2] ^ 1;
 
     goto LABEL_186;
   }
 
-  v97 = [0 contentView];
+  contentView2 = [0 contentView];
 
-  if (v97)
+  if (contentView2)
   {
     goto LABEL_185;
   }
@@ -4725,7 +4725,7 @@ LABEL_185:
 LABEL_186:
   if (v95)
   {
-    [v8 setNeedsLayout];
+    [_contentView setNeedsLayout];
   }
 
   else
@@ -4734,8 +4734,8 @@ LABEL_186:
     v634 = 0u;
     v631 = 0u;
     v632 = 0u;
-    v100 = [v8 subviews];
-    v101 = [v100 countByEnumeratingWithState:&v631 objects:v664 count:16];
+    subviews3 = [_contentView subviews];
+    v101 = [subviews3 countByEnumeratingWithState:&v631 objects:v664 count:16];
     if (v101)
     {
       v102 = *v632;
@@ -4745,7 +4745,7 @@ LABEL_186:
         {
           if (*v632 != v102)
           {
-            objc_enumerationMutation(v100);
+            objc_enumerationMutation(subviews3);
           }
 
           v104 = *(*(&v631 + 1) + 8 * i);
@@ -4755,7 +4755,7 @@ LABEL_186:
           }
         }
 
-        v101 = [v100 countByEnumeratingWithState:&v631 objects:v664 count:16];
+        v101 = [subviews3 countByEnumeratingWithState:&v631 objects:v664 count:16];
       }
 
       while (v101);
@@ -4780,7 +4780,7 @@ LABEL_186:
             objc_enumerationMutation(v105);
           }
 
-          [v8 insertSubview:*(*(&v627 + 1) + 8 * j) atIndex:v107++];
+          [_contentView insertSubview:*(*(&v627 + 1) + 8 * j) atIndex:v107++];
         }
 
         v106 = [v105 countByEnumeratingWithState:&v627 objects:v663 count:16];
@@ -4796,8 +4796,8 @@ LABEL_186:
     v626 = 0u;
     v623 = 0u;
     v624 = 0u;
-    v110 = [v97 subviews];
-    v111 = [v110 countByEnumeratingWithState:&v623 objects:v662 count:16];
+    subviews4 = [contentView2 subviews];
+    v111 = [subviews4 countByEnumeratingWithState:&v623 objects:v662 count:16];
     if (v111)
     {
       v112 = *v624;
@@ -4807,7 +4807,7 @@ LABEL_186:
         {
           if (*v624 != v112)
           {
-            objc_enumerationMutation(v110);
+            objc_enumerationMutation(subviews4);
           }
 
           v114 = *(*(&v623 + 1) + 8 * k);
@@ -4817,7 +4817,7 @@ LABEL_186:
           }
         }
 
-        v111 = [v110 countByEnumeratingWithState:&v623 objects:v662 count:16];
+        v111 = [subviews4 countByEnumeratingWithState:&v623 objects:v662 count:16];
       }
 
       while (v111);
@@ -4842,7 +4842,7 @@ LABEL_186:
             objc_enumerationMutation(v115);
           }
 
-          [v97 insertSubview:*(*(&v619 + 1) + 8 * m) atIndex:v117++];
+          [contentView2 insertSubview:*(*(&v619 + 1) + 8 * m) atIndex:v117++];
         }
 
         v116 = [v115 countByEnumeratingWithState:&v619 objects:v661 count:16];
@@ -4856,17 +4856,17 @@ LABEL_186:
   v615[1] = 3221225472;
   v616 = __54__UIPanelController__updateToNewPublicState_withSize___block_invoke_2;
   v617 = &unk_1E7103978;
-  v618 = v602;
+  v618 = selfCopy;
   v611[0] = MEMORY[0x1E69E9820];
   v611[1] = 3221225472;
   v612 = __54__UIPanelController__updateToNewPublicState_withSize___block_invoke_426;
   v613 = &__block_descriptor_40_e37_B24__0__UIView_8__UIViewController_16lu32l8;
   v614 = v615;
-  if (__54__UIPanelController__updateToNewPublicState_withSize___block_invoke_426(v611, v552))
+  if (__54__UIPanelController__updateToNewPublicState_withSize___block_invoke_426(v611, leadingBarContentClippingView))
   {
-    v120 = [(UIPanelController *)v602 leadingBarContentClippingView];
-    v121 = [v120 subviews];
-    v122 = [v121 count] == 0;
+    leadingBarContentClippingView2 = [(UIPanelController *)selfCopy leadingBarContentClippingView];
+    subviews5 = [leadingBarContentClippingView2 subviews];
+    v122 = [subviews5 count] == 0;
 
     if (!v122)
     {
@@ -4891,15 +4891,15 @@ LABEL_186:
       }
     }
 
-    v123 = [(UIPanelController *)v602 leadingBarContentClippingView];
-    [v123 removeFromSuperview];
+    leadingBarContentClippingView3 = [(UIPanelController *)selfCopy leadingBarContentClippingView];
+    [leadingBarContentClippingView3 removeFromSuperview];
   }
 
-  if ((v612)(v611, v551, v581))
+  if ((v612)(v611, trailingBarContentClippingView, trailingViewController))
   {
-    v124 = [(UIPanelController *)v602 trailingBarContentClippingView];
-    v125 = [v124 subviews];
-    v126 = [v125 count] == 0;
+    trailingBarContentClippingView2 = [(UIPanelController *)selfCopy trailingBarContentClippingView];
+    subviews6 = [trailingBarContentClippingView2 subviews];
+    v126 = [subviews6 count] == 0;
 
     if (!v126)
     {
@@ -4924,15 +4924,15 @@ LABEL_186:
       }
     }
 
-    v127 = [(UIPanelController *)v602 trailingBarContentClippingView];
-    [v127 removeFromSuperview];
+    trailingBarContentClippingView3 = [(UIPanelController *)selfCopy trailingBarContentClippingView];
+    [trailingBarContentClippingView3 removeFromSuperview];
   }
 
-  if ((v612)(v611, v550, v566))
+  if ((v612)(v611, supplementaryBarContentClippingView, supplementaryViewController))
   {
-    v128 = [(UIPanelController *)v602 supplementaryBarContentClippingView];
-    v129 = [v128 subviews];
-    v130 = [v129 count] == 0;
+    supplementaryBarContentClippingView2 = [(UIPanelController *)selfCopy supplementaryBarContentClippingView];
+    subviews7 = [supplementaryBarContentClippingView2 subviews];
+    v130 = [subviews7 count] == 0;
 
     if (!v130)
     {
@@ -4957,8 +4957,8 @@ LABEL_186:
       }
     }
 
-    v131 = [(UIPanelController *)v602 supplementaryBarContentClippingView];
-    [v131 removeFromSuperview];
+    supplementaryBarContentClippingView3 = [(UIPanelController *)selfCopy supplementaryBarContentClippingView];
+    [supplementaryBarContentClippingView3 removeFromSuperview];
   }
 
   if (+[UIView _materialSidebarsEnabled])
@@ -4973,8 +4973,8 @@ LABEL_186:
       v132 = 0;
     }
 
-    v133 = [(UIPanelController *)v602 leadingViewController];
-    [v133 _setOverrideUserInterfaceRenderingMode:v132];
+    leadingViewController2 = [(UIPanelController *)selfCopy leadingViewController];
+    [leadingViewController2 _setOverrideUserInterfaceRenderingMode:v132];
 
     if ([v598 trailingOverlapsMain])
     {
@@ -4986,8 +4986,8 @@ LABEL_186:
       v134 = 0;
     }
 
-    v135 = [(UIPanelController *)v602 trailingViewController];
-    [v135 _setOverrideUserInterfaceRenderingMode:v134];
+    trailingViewController2 = [(UIPanelController *)selfCopy trailingViewController];
+    [trailingViewController2 _setOverrideUserInterfaceRenderingMode:v134];
 
     if ([v598 supplementaryOverlapsMain])
     {
@@ -4999,12 +4999,12 @@ LABEL_186:
       v136 = 0;
     }
 
-    v137 = [(UIPanelController *)v602 supplementaryViewController];
-    [v137 _setOverrideUserInterfaceRenderingMode:v136];
+    supplementaryViewController2 = [(UIPanelController *)selfCopy supplementaryViewController];
+    [supplementaryViewController2 _setOverrideUserInterfaceRenderingMode:v136];
   }
 
-  v138 = v602;
-  if ((*&v602->_panelControllerFlags & 8) != 0)
+  v138 = selfCopy;
+  if ((*&selfCopy->_panelControllerFlags & 8) != 0)
   {
     r1 = *MEMORY[0x1E695EFF8];
     rect = *(MEMORY[0x1E695EFF8] + 8);
@@ -5012,18 +5012,18 @@ LABEL_186:
 
   else
   {
-    [v8 bounds];
+    [_contentView bounds];
     r1 = v139;
     rect = v140;
     r1_24 = v141;
     v590 = v142;
-    v138 = v602;
+    v138 = selfCopy;
   }
 
-  v143 = [(UIPanelController *)v138 view];
-  v593 = [v143 _shouldReverseLayoutDirection];
+  view5 = [(UIPanelController *)v138 view];
+  _shouldReverseLayoutDirection = [view5 _shouldReverseLayoutDirection];
 
-  [v8 _currentScreenScale];
+  [_contentView _currentScreenScale];
   v596 = v144;
   if (v599)
   {
@@ -5043,7 +5043,7 @@ LABEL_186:
       v516 = v152 > v153;
     }
 
-    v570 = v547;
+    v570 = _supplementaryBorderView2;
     v154 = r1_16;
   }
 
@@ -5054,10 +5054,10 @@ LABEL_186:
     v516 = 0;
   }
 
-  v155 = [(UIPanelController *)v602 wantsFloatingSidebar];
-  v572 = v577;
+  wantsFloatingSidebar = [(UIPanelController *)selfCopy wantsFloatingSidebar];
+  v572 = dimmingView;
   v156 = v598;
-  v157 = v155 | dyld_program_sdk_at_least() ^ 1;
+  v157 = wantsFloatingSidebar | dyld_program_sdk_at_least() ^ 1;
   v158 = r1;
   v159 = r1_24;
   v160 = v590;
@@ -5082,7 +5082,7 @@ LABEL_186:
     v167 = v166;
     [v156 supplementaryDragOffset];
     v169 = v162 + v167 - v165 - v168;
-    if (((r1_8 == 0) | v593) == 1)
+    if (((r1_8 == 0) | _shouldReverseLayoutDirection) == 1)
     {
       v170 = r1;
       v158 = r1;
@@ -5095,7 +5095,7 @@ LABEL_186:
         goto LABEL_269;
       }
 
-      v173 = v593 ^ 1;
+      v173 = _shouldReverseLayoutDirection ^ 1;
       if (!v591)
       {
         v173 = 1;
@@ -5139,16 +5139,16 @@ LABEL_268:
 
 LABEL_269:
   [v572 setFrame:{v158, rect, v159, v160}];
-  v178 = [v156 configuration];
-  v179 = [v178 allowTotalWidthGreaterThanParent];
+  configuration3 = [v156 configuration];
+  allowTotalWidthGreaterThanParent2 = [configuration3 allowTotalWidthGreaterThanParent];
 
   v181 = 1.0;
-  if (!(v179 & 1 | !v516))
+  if (!(allowTotalWidthGreaterThanParent2 & 1 | !v516))
   {
     goto LABEL_292;
   }
 
-  if ((r1_16 == 0) | v179 & 1)
+  if ((r1_16 == 0) | allowTotalWidthGreaterThanParent2 & 1)
   {
     v181 = 0.0;
     if (!(r1_8 | v591))
@@ -5156,7 +5156,7 @@ LABEL_269:
       goto LABEL_292;
     }
 
-    if ((v516 & v179) == 1)
+    if ((v516 & allowTotalWidthGreaterThanParent2) == 1)
     {
       [v156 leadingDragOffset];
       v183 = v182;
@@ -5169,7 +5169,7 @@ LABEL_269:
       }
     }
 
-    if (v179)
+    if (allowTotalWidthGreaterThanParent2)
     {
       v185 = v156;
       [v185 leadingWidth];
@@ -5218,7 +5218,7 @@ LABEL_287:
 
 LABEL_289:
     v211 = 1.0;
-    if (v179)
+    if (allowTotalWidthGreaterThanParent2)
     {
       v211 = 0.5;
     }
@@ -5245,19 +5245,19 @@ LABEL_289:
 LABEL_292:
   [v572 setPercentDisplayed:{v181, v180}];
 
-  if (v532)
+  if (supplementaryEdge)
   {
     v212 = 0;
   }
 
   else
   {
-    v212 = v566;
+    v212 = supplementaryViewController;
   }
 
-  if (v532)
+  if (supplementaryEdge)
   {
-    v213 = v566;
+    v213 = supplementaryViewController;
   }
 
   else
@@ -5265,20 +5265,20 @@ LABEL_292:
     v213 = 0;
   }
 
-  if (v582)
+  if (leadingViewController)
   {
-    v212 = v582;
+    v212 = leadingViewController;
   }
 
   v214 = v212;
-  v215 = v581;
-  if (!v581)
+  v215 = trailingViewController;
+  if (!trailingViewController)
   {
     v215 = v213;
   }
 
   v216 = v215;
-  v512 = [v580 _supplementaryAdoptsPrimaryBackgroundStyle];
+  _supplementaryAdoptsPrimaryBackgroundStyle = [configuration2 _supplementaryAdoptsPrimaryBackgroundStyle];
   v217 = v599 ^ 1;
   if (!r1_16)
   {
@@ -5287,17 +5287,17 @@ LABEL_292:
 
   v600 = v217;
   v529 = r1_8;
-  v553 = v584;
+  v553 = _leadingBorderView2;
   v218 = v154;
   v578 = v570;
-  v541 = v558;
+  v541 = _supplementaryParallaxShadowView2;
   v571 = v539;
   v556 = v543;
   v531 = v591;
   v219 = v156;
   v513 = v573;
   v574 = v214;
-  v560 = v566;
+  v560 = supplementaryViewController;
   v555 = v563;
   v537 = v216;
   v567 = v218;
@@ -5313,12 +5313,12 @@ LABEL_292:
 
   if (v591 != 0 && v220)
   {
-    v499 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v500 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void layoutSideBySideViewsColumnStyle(UIView *__strong, UIView *__strong, UIPanelBorderView *__strong, UIView *__strong, BOOL, UIPanelBorderView *__strong, UIView *__strong, UIView *__strong, UIPanelBorderView *__strong, UIView *__strong, UIView *__strong, BOOL, UISlidingBarState *__strong, BOOL, CGRect, NSMutableSet *__strong, CGFloat, UIViewController *__strong, UIViewController *__strong, UIViewController *__strong, UIViewController *__strong)"}];
-    [v499 handleFailureInFunction:v500 file:@"UIPanelController.m" lineNumber:3094 description:{@"Side-by-side layout not supported for all non-nil leading, trailing, and supplementary views. This is an internal UIKit problem."}];
+    [currentHandler handleFailureInFunction:v500 file:@"UIPanelController.m" lineNumber:3094 description:{@"Side-by-side layout not supported for all non-nil leading, trailing, and supplementary views. This is an internal UIKit problem."}];
   }
 
-  v221 = [v219 supplementaryOverlapsMain];
+  supplementaryOverlapsMain4 = [v219 supplementaryOverlapsMain];
   v222 = v574 != 0;
   if (v574)
   {
@@ -5332,33 +5332,33 @@ LABEL_292:
 
   if (v223)
   {
-    v224 = v222 & v221;
+    leadingOverlapsMain = v222 & supplementaryOverlapsMain4;
     v225 = v574 == 0;
     if (v600 & 1 | (v574 != 0))
     {
-      v564 = v222 | v221;
-      v226 = v225 | v221;
-      v227 = v225 & v221;
+      trailingOverlapsMain = v222 | supplementaryOverlapsMain4;
+      v226 = v225 | supplementaryOverlapsMain4;
+      v227 = v225 & supplementaryOverlapsMain4;
     }
 
     else
     {
-      v564 = [v219 trailingOverlapsMain];
+      trailingOverlapsMain = [v219 trailingOverlapsMain];
       v226 = 1;
-      v227 = v564;
+      v227 = trailingOverlapsMain;
     }
   }
 
   else
   {
-    v224 = [v219 leadingOverlapsMain];
+    leadingOverlapsMain = [v219 leadingOverlapsMain];
     v227 = 0;
-    v564 = 1;
-    v226 = v224;
+    trailingOverlapsMain = 1;
+    v226 = leadingOverlapsMain;
   }
 
   v228 = v553;
-  if (!v584)
+  if (!_leadingBorderView2)
   {
     v228 = v556;
   }
@@ -5385,8 +5385,8 @@ LABEL_292:
   if (v574 == v560 || (v545 = 0.0, v229 = 0.0, v537 == v560))
   {
 LABEL_326:
-    v230 = [v219 configuration];
-    [v230 rubberBandExtension];
+    configuration4 = [v219 configuration];
+    [configuration4 rubberBandExtension];
     v545 = v231;
 
     [v219 _rubberBandInset];
@@ -5395,10 +5395,10 @@ LABEL_326:
   }
 
 LABEL_327:
-  if (v584)
+  if (_leadingBorderView2)
   {
-    v234 = [v219 configuration];
-    [v234 leadingBorderWidthForScale:v596];
+    configuration5 = [v219 configuration];
+    [configuration5 leadingBorderWidthForScale:v596];
     v548 = v235;
 LABEL_331:
 
@@ -5407,8 +5407,8 @@ LABEL_331:
 
   if (v556)
   {
-    v234 = [v219 configuration];
-    [v234 trailingBorderWidthForScale:v596];
+    configuration5 = [v219 configuration];
+    [configuration5 trailingBorderWidthForScale:v596];
     v548 = v236;
     goto LABEL_331;
   }
@@ -5500,14 +5500,14 @@ LABEL_332:
     v241 = v255;
   }
 
-  if (v226 & v564)
+  if (v226 & trailingOverlapsMain)
   {
-    v264 = 0;
+    _supplementaryEntirelyOverlapsMain = 0;
   }
 
   else
   {
-    v264 = [v219 _supplementaryEntirelyOverlapsMain];
+    _supplementaryEntirelyOverlapsMain = [v219 _supplementaryEntirelyOverlapsMain];
   }
 
   v265 = 0.0;
@@ -5518,7 +5518,7 @@ LABEL_332:
     {
       [v219 supplementaryDragOffset];
       v268 = v267;
-      v269 = v264;
+      _leadingEntirelyOverlapsMain = _supplementaryEntirelyOverlapsMain;
       if (v267 == 0.0 && v241 > 0.0)
       {
         [v219 supplementaryWidth];
@@ -5527,7 +5527,7 @@ LABEL_332:
           v268 = v241;
         }
 
-        v269 = v264;
+        _leadingEntirelyOverlapsMain = _supplementaryEntirelyOverlapsMain;
       }
     }
 
@@ -5544,18 +5544,18 @@ LABEL_332:
         }
       }
 
-      v269 = [v219 _leadingEntirelyOverlapsMain];
+      _leadingEntirelyOverlapsMain = [v219 _leadingEntirelyOverlapsMain];
     }
 
     v273 = 0.0 - v268;
-    if (v269)
+    if (_leadingEntirelyOverlapsMain)
     {
       v274 = 0;
     }
 
     else
     {
-      v274 = v224;
+      v274 = leadingOverlapsMain;
     }
 
     if (v274 == 1)
@@ -5592,7 +5592,7 @@ LABEL_332:
     v266 = v229 - v545 + v273;
   }
 
-  if ((v564 & 1) == 0)
+  if ((trailingOverlapsMain & 1) == 0)
   {
     if (v600)
     {
@@ -5621,11 +5621,11 @@ LABEL_332:
         }
       }
 
-      v264 = [v219 _trailingEntirelyOverlapsMain];
+      _supplementaryEntirelyOverlapsMain = [v219 _trailingEntirelyOverlapsMain];
     }
 
     v282 = v278 + 0.0;
-    if (v264)
+    if (_supplementaryEntirelyOverlapsMain)
     {
       v283 = 0;
     }
@@ -5681,7 +5681,7 @@ LABEL_332:
   {
     v294 = 0.0;
     v295 = v539;
-    if ((v564 & 1) == 0)
+    if ((trailingOverlapsMain & 1) == 0)
     {
       v294 = v545 - v229 + v528 + v535 - v289 - v291;
     }
@@ -5731,7 +5731,7 @@ LABEL_402:
       if ((v226 & 1) == 0)
       {
         v299 = 0;
-        if (v584)
+        if (_leadingBorderView2)
         {
           if (v241 > 0.0)
           {
@@ -5773,7 +5773,7 @@ LABEL_402:
         }
       }
 
-      if ((v564 & 1) == 0)
+      if ((trailingOverlapsMain & 1) == 0)
       {
         v304 = 0;
         if (v543)
@@ -5834,7 +5834,7 @@ LABEL_402:
   v658 = &v657;
   v659 = 0x2020000000;
   v660 = 0.0;
-  if (v593)
+  if (_shouldReverseLayoutDirection)
   {
     v669.origin.x = r1;
     v669.origin.y = rect;
@@ -5845,7 +5845,7 @@ LABEL_402:
     v658[3] = MaxX;
     if (v226)
     {
-      if (v564)
+      if (trailingOverlapsMain)
       {
         goto LABEL_473;
       }
@@ -5901,7 +5901,7 @@ LABEL_472:
     goto LABEL_473;
   }
 
-  if (v564)
+  if (trailingOverlapsMain)
   {
     goto LABEL_473;
   }
@@ -5947,7 +5947,7 @@ LABEL_473:
   v649 = 3221225472;
   v650 = __layoutSideBySideViewsColumnStyle_block_invoke;
   v651 = &unk_1E7103A80;
-  v656 = v593 ^ 1;
+  v656 = _shouldReverseLayoutDirection ^ 1;
   v654 = &v657;
   v655 = v309;
   v319 = v513;
@@ -5962,13 +5962,13 @@ LABEL_473:
   if ((v226 & 1) == 0)
   {
     v323 = v321.n128_f64[0] - v298 - (v545 + v241 + v287);
-    if (v600 | v512 ^ 1)
+    if (v600 | _supplementaryAdoptsPrimaryBackgroundStyle ^ 1)
     {
       v323 = 0.0;
     }
 
     v322.n128_f64[0] = -v323;
-    if (!v593)
+    if (!_shouldReverseLayoutDirection)
     {
       v322.n128_f64[0] = v323;
     }
@@ -5990,7 +5990,7 @@ LABEL_473:
       if (v291 > 0.0)
       {
         v325 = v548 + v291;
-        if (!v593)
+        if (!_shouldReverseLayoutDirection)
         {
           v325 = -(v548 + v291);
         }
@@ -5998,13 +5998,13 @@ LABEL_473:
         v658[3] = v325 + v658[3];
       }
 
-      v326 = [v553 renderAsShadow];
-      v650(buf, v553, 0, 0, v548, 0.0, v326);
+      renderAsShadow = [v553 renderAsShadow];
+      v650(buf, v553, 0, 0, v548, 0.0, renderAsShadow);
       v327 = v528;
-      if (v558)
+      if (_supplementaryParallaxShadowView2)
       {
         v328 = -1.0;
-        if (v593)
+        if (_shouldReverseLayoutDirection)
         {
           v328 = 1.0;
         }
@@ -6046,21 +6046,21 @@ LABEL_473:
       }
 
       v650(buf, v567, 0, v560, v327, 0.0, 0.0);
-      v330 = [v578 renderAsShadow];
-      v650(buf, v578, 0, 0, v548, 0.0, v330);
+      renderAsShadow2 = [v578 renderAsShadow];
+      v650(buf, v578, 0, 0, v548, 0.0, renderAsShadow2);
     }
 
     else
     {
-      v331 = [v553 renderAsShadow];
-      v650(buf, v553, 0, 0, v548, 0.0, v331);
+      renderAsShadow3 = [v553 renderAsShadow];
+      v650(buf, v553, 0, 0, v548, 0.0, renderAsShadow3);
     }
   }
 
   v650(buf, v571, 0, v555, v298, 0.0, 0.0);
-  if ((v564 & 1) == 0)
+  if ((trailingOverlapsMain & 1) == 0)
   {
-    if (v512)
+    if (_supplementaryAdoptsPrimaryBackgroundStyle)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -6085,18 +6085,18 @@ LABEL_473:
 
     if (v567)
     {
-      v332 = [v578 renderAsShadow];
-      v650(buf, v578, 0, 0, v548, 0.0, v332);
+      renderAsShadow4 = [v578 renderAsShadow];
+      v650(buf, v578, 0, 0, v548, 0.0, renderAsShadow4);
       v650(buf, v567, 0, v560, v528, 0.0, 0.0);
     }
 
-    v333 = [v556 renderAsShadow];
-    v650(buf, v556, 0, 0, v548, 0.0, v333);
+    renderAsShadow5 = [v556 renderAsShadow];
+    v650(buf, v556, 0, 0, v548, 0.0, renderAsShadow5);
     v335 = v658;
-    if (v558)
+    if (_supplementaryParallaxShadowView2)
     {
       v336 = -v548;
-      if (v593)
+      if (_shouldReverseLayoutDirection)
       {
         v336 = v548;
       }
@@ -6135,8 +6135,8 @@ LABEL_473:
       [v541 setAlpha:1.0 - v337];
       v338 = v600;
       v334.n128_f64[0] = 1.0 - v548;
-      v339 = v593;
-      if (!v593)
+      v339 = _shouldReverseLayoutDirection;
+      if (!_shouldReverseLayoutDirection)
       {
         v334.n128_f64[0] = -(1.0 - v548);
       }
@@ -6149,7 +6149,7 @@ LABEL_473:
     else
     {
       v340 = v658[3];
-      v339 = v593;
+      v339 = _shouldReverseLayoutDirection;
       v338 = v600;
     }
 
@@ -6181,23 +6181,23 @@ LABEL_473:
   v536 = v578;
   v540 = v531;
   v546 = v556;
-  v565 = v534;
+  v565 = _overlayEdgeShadowView2;
   v557 = v541;
   v343 = v320;
   v544 = v319;
   v579 = v574;
   v575 = v537;
   v585 = v560;
-  v344 = [v343 supplementaryOverlapsMain];
-  v345 = v344;
+  supplementaryOverlapsMain5 = [v343 supplementaryOverlapsMain];
+  v345 = supplementaryOverlapsMain5;
   if (v600 & 1 | (r1_8 == 0))
   {
-    v346 = (r1_8 != 0) & v344;
+    leadingOverlapsMain2 = (r1_8 != 0) & supplementaryOverlapsMain5;
   }
 
   else
   {
-    v346 = [v343 leadingOverlapsMain];
+    leadingOverlapsMain2 = [v343 leadingOverlapsMain];
   }
 
   v347 = v600;
@@ -6208,18 +6208,18 @@ LABEL_473:
 
   if (v347)
   {
-    v348 = (v591 != 0) & v345;
+    trailingOverlapsMain2 = (v591 != 0) & v345;
   }
 
   else
   {
-    v348 = [v343 trailingOverlapsMain];
+    trailingOverlapsMain2 = [v343 trailingOverlapsMain];
   }
 
   v349 = v567 != 0;
-  if (!v346)
+  if (!leadingOverlapsMain2)
   {
-    if ((v348 & 1) == 0)
+    if ((trailingOverlapsMain2 & 1) == 0)
     {
       v352 = 0.0;
       v351 = 0.0;
@@ -6246,7 +6246,7 @@ LABEL_473:
     [v343 leadingDragOffset];
     v351 = -v355;
     v352 = 0.0;
-    if ((v348 & 1) == 0)
+    if ((trailingOverlapsMain2 & 1) == 0)
     {
 LABEL_535:
       [v343 supplementaryDragOffset];
@@ -6264,7 +6264,7 @@ LABEL_533:
   v351 = -v350;
   v352 = 0.0;
   v353 = 0.0;
-  if (v348)
+  if (trailingOverlapsMain2)
   {
 LABEL_531:
     [v343 supplementaryDragOffset];
@@ -6297,8 +6297,8 @@ LABEL_536:
   if (v579 == v585 || (v361 = 0.0, v542 = 0.0, v575 == v585))
   {
 LABEL_543:
-    v362 = [v343 configuration];
-    [v362 rubberBandExtension];
+    configuration6 = [v343 configuration];
+    [configuration6 rubberBandExtension];
     v361 = v363;
 
     [v343 _rubberBandInset];
@@ -6314,7 +6314,7 @@ LABEL_544:
   UIRoundToScale(v353, v596);
   v561 = v369;
   v370 = v349 & v345 & (v600 ^ 1);
-  if (!v346)
+  if (!leadingOverlapsMain2)
   {
     goto LABEL_614;
   }
@@ -6382,7 +6382,7 @@ LABEL_561:
   v383 = rect;
   v384 = CGRectGetHeight(*&v382);
   v385 = v361 + v374;
-  if (v593)
+  if (_shouldReverseLayoutDirection)
   {
     v672.origin.x = r1;
     v672.origin.y = rect;
@@ -6432,13 +6432,13 @@ LABEL_561:
 
   if (v554)
   {
-    v393 = [v343 configuration];
-    [v393 leadingBorderWidthForScale:v596];
+    configuration7 = [v343 configuration];
+    [configuration7 leadingBorderWidthForScale:v596];
     v395 = v394;
 
     if (v561 <= 0.0)
     {
-      if (v593)
+      if (_shouldReverseLayoutDirection)
       {
         v399 = -v395;
       }
@@ -6460,7 +6460,7 @@ LABEL_561:
       goto LABEL_588;
     }
 
-    LOBYTE(v396) = v593;
+    LOBYTE(v396) = _shouldReverseLayoutDirection;
 LABEL_576:
     if (v396)
     {
@@ -6490,7 +6490,7 @@ LABEL_576:
       goto LABEL_589;
     }
 
-    if (v593)
+    if (_shouldReverseLayoutDirection)
     {
       v400 = v568;
     }
@@ -6508,20 +6508,20 @@ LABEL_588:
     [v554 setFrame:?];
     v385 = v395;
 LABEL_589:
-    v396 = v593;
+    v396 = _shouldReverseLayoutDirection;
     goto LABEL_590;
   }
 
   v395 = 0.0;
   y = 0.0;
-  v396 = v593;
+  v396 = _shouldReverseLayoutDirection;
   if (v561 > 0.0)
   {
     goto LABEL_576;
   }
 
 LABEL_590:
-  if (v558)
+  if (_supplementaryParallaxShadowView2)
   {
     if ((v396 & 1) == 0)
     {
@@ -6577,8 +6577,8 @@ LABEL_590:
 
     v385 = 1.0;
     [v557 setAlpha:1.0 - v402];
-    v396 = v593;
-    if ((v593 & 1) == 0)
+    v396 = _shouldReverseLayoutDirection;
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v682.size.width = 1.0;
       v682.origin.x = x;
@@ -6589,7 +6589,7 @@ LABEL_590:
       y = v683.origin.y;
       v385 = v683.size.width;
       v384 = v683.size.height;
-      v396 = v593;
+      v396 = _shouldReverseLayoutDirection;
     }
   }
 
@@ -6607,7 +6607,7 @@ LABEL_590:
     [v530 setFrame:?];
     if (v536)
     {
-      if (v593)
+      if (_shouldReverseLayoutDirection)
       {
         v404 = -v395;
       }
@@ -6636,7 +6636,7 @@ LABEL_590:
   if (v565)
   {
     v405 = 0.0;
-    if (v593)
+    if (_shouldReverseLayoutDirection)
     {
       v689.size.width = 1.0;
       v689.origin.x = x;
@@ -6654,7 +6654,7 @@ LABEL_590:
   }
 
 LABEL_614:
-  if (!v348)
+  if (!trailingOverlapsMain2)
   {
     goto LABEL_684;
   }
@@ -6728,7 +6728,7 @@ LABEL_632:
   v419 = rect;
   v420 = CGRectGetHeight(*&v417);
   v421 = v361 + v409;
-  if (v593)
+  if (_shouldReverseLayoutDirection)
   {
     v422 = -v538 - (v361 - v542);
   }
@@ -6778,13 +6778,13 @@ LABEL_632:
 
   if (v546)
   {
-    v429 = [v343 configuration];
-    [v429 trailingBorderWidthForScale:v596];
+    configuration8 = [v343 configuration];
+    [configuration8 trailingBorderWidthForScale:v596];
     v431 = v430;
 
     if (v561 <= 0.0)
     {
-      if (v593)
+      if (_shouldReverseLayoutDirection)
       {
         v694.origin.y = 0.0;
         v694.origin.x = v422;
@@ -6823,7 +6823,7 @@ LABEL_658:
     }
   }
 
-  if (v593)
+  if (_shouldReverseLayoutDirection)
   {
     v434 = v361 - v542 + v409 - v561;
   }
@@ -6844,7 +6844,7 @@ LABEL_658:
   v420 = v696.size.height;
   if (v546)
   {
-    if (v593)
+    if (_shouldReverseLayoutDirection)
     {
       v435 = -v431;
     }
@@ -6859,9 +6859,9 @@ LABEL_658:
   }
 
 LABEL_659:
-  if (v558)
+  if (_supplementaryParallaxShadowView2)
   {
-    if (v593)
+    if (_shouldReverseLayoutDirection)
     {
       v699.origin.x = v422;
       v699.origin.y = v433;
@@ -6915,8 +6915,8 @@ LABEL_659:
 
     v421 = 1.0;
     [v557 setAlpha:1.0 - v437];
-    v438 = v593;
-    if (!v593)
+    v438 = _shouldReverseLayoutDirection;
+    if (!_shouldReverseLayoutDirection)
     {
       goto LABEL_671;
     }
@@ -6932,7 +6932,7 @@ LABEL_659:
     v420 = v702.size.height;
   }
 
-  v438 = v593;
+  v438 = _shouldReverseLayoutDirection;
 LABEL_671:
   if (v370)
   {
@@ -6948,7 +6948,7 @@ LABEL_671:
     [v530 setFrame:?];
     if (v536)
     {
-      if (v593)
+      if (_shouldReverseLayoutDirection)
       {
         v705.origin.x = v422;
         v705.origin.y = v433;
@@ -6977,7 +6977,7 @@ LABEL_671:
   if (v565)
   {
     v441 = 0.0;
-    if ((v593 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v708.size.width = 1.0;
       v708.origin.x = v422;
@@ -6996,7 +6996,7 @@ LABEL_671:
 
 LABEL_684:
 
-  v569 = v533;
+  v569 = _primaryParallaxDimmingView2;
   v562 = v549;
   v559 = v540;
   v442 = v343;
@@ -7041,46 +7041,46 @@ LABEL_684:
     [v569 setPercentDisplayed:(1.0 - v455) * 0.5];
   }
 
-  layoutPresentationViews(v8, v555, v525);
-  layoutPresentationViews(v8, v582, v524);
-  layoutPresentationViews(v8, v581, v523);
-  layoutPresentationViews(v8, v585, v522);
-  [v8 bounds];
+  layoutPresentationViews(_contentView, v555, v525);
+  layoutPresentationViews(_contentView, leadingViewController, v524);
+  layoutPresentationViews(_contentView, trailingViewController, v523);
+  layoutPresentationViews(_contentView, v585, v522);
+  [_contentView bounds];
   [(UIView *)v576 setFrame:?];
-  v457 = [(_UIMTCaptureView *)v576 mt_captureGroupName];
-  v458 = [v582 _existingView];
-  [v458 mt_setCaptureGroupName:v457];
+  mt_captureGroupName = [(_UIMTCaptureView *)v576 mt_captureGroupName];
+  _existingView = [leadingViewController _existingView];
+  [_existingView mt_setCaptureGroupName:mt_captureGroupName];
 
-  v459 = [(_UIMTCaptureView *)v576 mt_captureGroupName];
-  v460 = [v581 _existingView];
-  [v460 mt_setCaptureGroupName:v459];
+  mt_captureGroupName2 = [(_UIMTCaptureView *)v576 mt_captureGroupName];
+  _existingView2 = [trailingViewController _existingView];
+  [_existingView2 mt_setCaptureGroupName:mt_captureGroupName2];
 
-  v461 = [(_UIMTCaptureView *)v576 mt_captureGroupName];
-  v462 = [v585 _existingView];
-  [v462 mt_setCaptureGroupName:v461];
+  mt_captureGroupName3 = [(_UIMTCaptureView *)v576 mt_captureGroupName];
+  _existingView3 = [v585 _existingView];
+  [_existingView3 mt_setCaptureGroupName:mt_captureGroupName3];
 
-  v601 = [(UIPanelController *)v602 floatingBarButtonItem];
-  if ([v601 _isFloatable])
+  floatingBarButtonItem = [(UIPanelController *)selfCopy floatingBarButtonItem];
+  if ([floatingBarButtonItem _isFloatable])
   {
-    v463 = (v552 | v551 | v550) != 0;
-    if (v463 != [v601 _isFloating])
+    v463 = (leadingBarContentClippingView | trailingBarContentClippingView | supplementaryBarContentClippingView) != 0;
+    if (v463 != [floatingBarButtonItem _isFloating])
     {
-      [v601 _setFloating:v463];
+      [floatingBarButtonItem _setFloating:v463];
       v607[0] = MEMORY[0x1E69E9820];
       v607[1] = 3221225472;
       v608 = __54__UIPanelController__updateToNewPublicState_withSize___block_invoke_431;
       v609 = &__block_descriptor_40_e26_v16__0__UIViewController_8lu32l8;
       v610 = v615;
-      v464 = v616(v615, v582);
+      v464 = v616(v615, leadingViewController);
       [v464 _setNeedsStaticNavBarButtonUpdate];
 
-      (__54__UIPanelController__updateToNewPublicState_withSize___block_invoke_431)(v607, v581);
+      (__54__UIPanelController__updateToNewPublicState_withSize___block_invoke_431)(v607, trailingViewController);
       (v608)(v607, v585);
       (v608)(v607, v555);
     }
   }
 
-  if (v593)
+  if (_shouldReverseLayoutDirection)
   {
     v465 = v591 != 0;
   }
@@ -7090,11 +7090,11 @@ LABEL_684:
     v465 = r1_8 != 0;
   }
 
-  layoutClippingView(v552, v601, v465);
-  layoutClippingView(v550, v601, v465);
-  layoutClippingView(v551, v601, v465);
-  v466 = [(UIPanelController *)v602 style];
-  if (v532)
+  layoutClippingView(leadingBarContentClippingView, floatingBarButtonItem, v465);
+  layoutClippingView(supplementaryBarContentClippingView, floatingBarButtonItem, v465);
+  layoutClippingView(trailingBarContentClippingView, floatingBarButtonItem, v465);
+  style2 = [(UIPanelController *)selfCopy style];
+  if (supplementaryEdge)
   {
     v467 = v575;
   }
@@ -7104,40 +7104,40 @@ LABEL_684:
     v467 = v579;
   }
 
-  v597 = [(UIPanelController *)v602 navigationBarForContentLayoutGuideAnimation];
-  v468 = [v597 window];
-  if (v468)
+  navigationBarForContentLayoutGuideAnimation = [(UIPanelController *)selfCopy navigationBarForContentLayoutGuideAnimation];
+  window = [navigationBarForContentLayoutGuideAnimation window];
+  if (window)
   {
-    v469 = [v597 _isAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
+    _isAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange = [navigationBarForContentLayoutGuideAnimation _isAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
 
-    if ((v469 & 1) == 0)
+    if ((_isAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange & 1) == 0)
     {
-      [v597 layoutIfNeeded];
-      [v597 _beginAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
+      [navigationBarForContentLayoutGuideAnimation layoutIfNeeded];
+      [navigationBarForContentLayoutGuideAnimation _beginAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
     }
   }
 
-  v470 = [(UIPanelController *)v602 navigationBarForContentLayoutGuideAnimation];
+  navigationBarForContentLayoutGuideAnimation2 = [(UIPanelController *)selfCopy navigationBarForContentLayoutGuideAnimation];
   v471 = v442;
-  v472 = [v471 configuration];
-  v473 = [v472 allowTotalWidthGreaterThanParent];
+  configuration9 = [v471 configuration];
+  allowTotalWidthGreaterThanParent3 = [configuration9 allowTotalWidthGreaterThanParent];
 
   if ([v471 leadingOverlapsMain] & 1) != 0 || (objc_msgSend(v471, "trailingOverlapsMain"))
   {
-    v474 = 1;
+    supplementaryOverlapsMain6 = 1;
   }
 
   else
   {
-    v474 = [v471 supplementaryOverlapsMain];
+    supplementaryOverlapsMain6 = [v471 supplementaryOverlapsMain];
   }
 
-  v475 = v467 == v585 || v466 == 1;
-  v603 = v474;
-  v476 = v474 | v473;
-  if (v475 && ((v474 | v473) & 1) != 0)
+  v475 = v467 == v585 || style2 == 1;
+  v603 = supplementaryOverlapsMain6;
+  v476 = supplementaryOverlapsMain6 | allowTotalWidthGreaterThanParent3;
+  if (v475 && ((supplementaryOverlapsMain6 | allowTotalWidthGreaterThanParent3) & 1) != 0)
   {
-    if (v473)
+    if (allowTotalWidthGreaterThanParent3)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -7163,7 +7163,7 @@ LABEL_684:
     goto LABEL_737;
   }
 
-  if ([v470 _isAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange])
+  if ([navigationBarForContentLayoutGuideAnimation2 _isAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange])
   {
     if (v476)
     {
@@ -7180,7 +7180,7 @@ LABEL_684:
       }
     }
 
-    else if (v466 == 1)
+    else if (style2 == 1)
     {
       v480 = v471;
       [v480 leadingWidth];
@@ -7210,10 +7210,10 @@ LABEL_684:
       }
     }
 
-    [v470 _navItemContentLayoutGuideAnimationDistance];
-    UIRoundToViewScale(v470);
-    v486 = [v470 _updateNavItemContentLayoutGuideAnimationConstraintConstant:?];
-    if (v603 & 1 | ((v486 & 1) == 0) | v473 & 1)
+    [navigationBarForContentLayoutGuideAnimation2 _navItemContentLayoutGuideAnimationDistance];
+    UIRoundToViewScale(navigationBarForContentLayoutGuideAnimation2);
+    v486 = [navigationBarForContentLayoutGuideAnimation2 _updateNavItemContentLayoutGuideAnimationConstraintConstant:?];
+    if (v603 & 1 | ((v486 & 1) == 0) | allowTotalWidthGreaterThanParent3 & 1)
     {
       if (!v486)
       {
@@ -7223,18 +7223,18 @@ LABEL_684:
 
     else
     {
-      v487 = [v470 _staticNavBarButtonItem];
-      v488 = v487 == 0;
+      _staticNavBarButtonItem = [navigationBarForContentLayoutGuideAnimation2 _staticNavBarButtonItem];
+      v488 = _staticNavBarButtonItem == 0;
 
       if (!v488)
       {
 LABEL_736:
-        [v470 layoutIfNeeded];
+        [navigationBarForContentLayoutGuideAnimation2 layoutIfNeeded];
         goto LABEL_737;
       }
     }
 
-    [v470 _setNeedsStaticNavBarButtonUpdate];
+    [navigationBarForContentLayoutGuideAnimation2 _setNeedsStaticNavBarButtonUpdate];
     goto LABEL_736;
   }
 
@@ -7275,7 +7275,7 @@ LABEL_737:
     }
   }
 
-  v7 = v598;
+  stateCopy = v598;
 LABEL_745:
 }
 
@@ -7405,14 +7405,14 @@ uint64_t __54__UIPanelController__updateToNewPublicState_withSize___block_invoke
   return result;
 }
 
-- (double)interpolatedMarginForPrimaryNavigationBar:(id)a3 supplementaryOrSecondaryNavbar:(id)a4 getInterpolatedAlpha:(double *)a5
+- (double)interpolatedMarginForPrimaryNavigationBar:(id)bar supplementaryOrSecondaryNavbar:(id)navbar getInterpolatedAlpha:(double *)alpha
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(UIPanelController *)self currentState];
-  [v10 supplementaryWidth];
+  barCopy = bar;
+  navbarCopy = navbar;
+  currentState = [(UIPanelController *)self currentState];
+  [currentState supplementaryWidth];
   v12 = v11;
-  v13 = v10;
+  v13 = currentState;
   [v13 leadingWidth];
   v15 = v14;
   [v13 trailingWidth];
@@ -7454,13 +7454,13 @@ uint64_t __54__UIPanelController__updateToNewPublicState_withSize___block_invoke
 
   v19 = v27 / v18;
 LABEL_7:
-  if (v8)
+  if (barCopy)
   {
-    v31 = [v8 _isContentViewHidden] ^ 1;
-    if (v9)
+    v31 = [barCopy _isContentViewHidden] ^ 1;
+    if (navbarCopy)
     {
 LABEL_9:
-      v32 = [v9 _isContentViewHidden];
+      _isContentViewHidden = [navbarCopy _isContentViewHidden];
       v33 = 0.0;
       if (v31)
       {
@@ -7472,15 +7472,15 @@ LABEL_9:
         v34 = 0.0;
       }
 
-      if (v32)
+      if (_isContentViewHidden)
       {
-        v35 = v8;
+        v35 = barCopy;
       }
 
       else
       {
         v33 = 1.0;
-        v35 = v9;
+        v35 = navbarCopy;
       }
 
       goto LABEL_19;
@@ -7490,7 +7490,7 @@ LABEL_9:
   else
   {
     v31 = 0;
-    if (v9)
+    if (navbarCopy)
     {
       goto LABEL_9;
     }
@@ -7503,24 +7503,24 @@ LABEL_9:
     v34 = 0.0;
   }
 
-  v35 = v8;
+  v35 = barCopy;
 LABEL_19:
   v36 = 1.0 - v19;
-  if (a5)
+  if (alpha)
   {
     v34 = v36 * v34;
     v33 = v34 + v19 * v33;
-    *a5 = v33;
+    *alpha = v33;
   }
 
   if (v31)
   {
-    v37 = v8;
+    v37 = barCopy;
   }
 
   else
   {
-    v37 = v9;
+    v37 = navbarCopy;
   }
 
   [v37 _contentMargin];
@@ -7539,9 +7539,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)_createOverlayEdgeShadowViewForEdge:(unint64_t)a3
+- (id)_createOverlayEdgeShadowViewForEdge:(unint64_t)edge
 {
-  v3 = [[_UIVerticalEdgeShadowView alloc] initWithWidth:a3 edge:9.0];
+  v3 = [[_UIVerticalEdgeShadowView alloc] initWithWidth:edge edge:9.0];
 
   return v3;
 }
@@ -7561,12 +7561,12 @@ LABEL_19:
   return v4;
 }
 
-- (void)_setBorderViewsObserveViewBackgroundColor:(BOOL)a3
+- (void)_setBorderViewsObserveViewBackgroundColor:(BOOL)color
 {
-  if (((((*(&self->_panelControllerFlags + 1) & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((*(&self->_panelControllerFlags + 1) & 0x10) == 0) ^ color) & 1) == 0)
   {
     view = self->_view;
-    if (a3)
+    if (color)
     {
       [(UILayoutContainerView *)view addObserver:self forKeyPath:@"backgroundColor" options:1 context:0];
       v5 = 4096;
@@ -7582,81 +7582,81 @@ LABEL_19:
   }
 }
 
-- (void)_updateBorderViewsBackgroundColor:(id)a3
+- (void)_updateBorderViewsBackgroundColor:(id)color
 {
-  v11 = a3;
-  v4 = [(UIPanelController *)self _leadingBorderView];
+  colorCopy = color;
+  _leadingBorderView = [(UIPanelController *)self _leadingBorderView];
 
-  if (v4)
+  if (_leadingBorderView)
   {
-    v5 = [(UIPanelController *)self _leadingBorderView];
-    [v5 setBackgroundColor:v11];
+    _leadingBorderView2 = [(UIPanelController *)self _leadingBorderView];
+    [_leadingBorderView2 setBackgroundColor:colorCopy];
   }
 
-  v6 = [(UIPanelController *)self _trailingBorderView];
+  _trailingBorderView = [(UIPanelController *)self _trailingBorderView];
 
-  if (v6)
+  if (_trailingBorderView)
   {
-    v7 = [(UIPanelController *)self _trailingBorderView];
-    [v7 setBackgroundColor:v11];
+    _trailingBorderView2 = [(UIPanelController *)self _trailingBorderView];
+    [_trailingBorderView2 setBackgroundColor:colorCopy];
   }
 
-  v8 = [(UIPanelController *)self _supplementaryBorderView];
+  _supplementaryBorderView = [(UIPanelController *)self _supplementaryBorderView];
 
-  v9 = v11;
-  if (v8)
+  v9 = colorCopy;
+  if (_supplementaryBorderView)
   {
-    v10 = [(UIPanelController *)self _supplementaryBorderView];
-    [v10 setBackgroundColor:v11];
+    _supplementaryBorderView2 = [(UIPanelController *)self _supplementaryBorderView];
+    [_supplementaryBorderView2 setBackgroundColor:colorCopy];
 
-    v9 = v11;
+    v9 = colorCopy;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_view == a4 && [a3 isEqualToString:@"backgroundColor"])
+  if (self->_view == object && [path isEqualToString:@"backgroundColor"])
   {
-    v7 = [(UIView *)self->_view backgroundColor];
-    [(UIPanelController *)self _updateBorderViewsBackgroundColor:v7];
+    backgroundColor = [(UIView *)self->_view backgroundColor];
+    [(UIPanelController *)self _updateBorderViewsBackgroundColor:backgroundColor];
   }
 }
 
-- (void)_stopAnimationsBeginningInteraction:(BOOL)a3
+- (void)_stopAnimationsBeginningInteraction:(BOOL)interaction
 {
-  v3 = a3;
-  v5 = [(UIPanelController *)self _internalState];
-  v6 = [v5 animationState];
-  v50 = [v6 animator];
+  interactionCopy = interaction;
+  _internalState = [(UIPanelController *)self _internalState];
+  animationState = [_internalState animationState];
+  animator = [animationState animator];
 
-  v7 = [v50 isRunning];
-  [v50 stopAnimation:0];
-  [v50 finishAnimationAtPosition:2];
-  v8 = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
-  v9 = v8;
-  if (v8)
+  isRunning = [animator isRunning];
+  [animator stopAnimation:0];
+  [animator finishAnimationAtPosition:2];
+  navigationBarForContentLayoutGuideAnimation = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
+  v9 = navigationBarForContentLayoutGuideAnimation;
+  if (navigationBarForContentLayoutGuideAnimation)
   {
-    [v8 _endAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
+    [navigationBarForContentLayoutGuideAnimation _endAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
     [v9 _setShouldFadeStaticNavBarButton:0];
     [(UIPanelController *)self setNavigationBarForContentLayoutGuideAnimation:0];
   }
 
-  if (v3)
+  if (interactionCopy)
   {
-    v10 = [(UIPanelController *)self currentState];
-    v11 = [v10 stateRequest];
+    currentState = [(UIPanelController *)self currentState];
+    stateRequest = [currentState stateRequest];
 
-    v12 = [v11 copy];
-    if (v7)
+    v12 = [stateRequest copy];
+    if (isRunning)
     {
-      v13 = [(UIPanelController *)self _internalState];
-      v14 = [v13 configuration];
+      _internalState2 = [(UIPanelController *)self _internalState];
+      configuration = [_internalState2 configuration];
 
-      v49 = v14;
-      v15 = [v14 supplementaryEdge];
-      v16 = [(UIPanelController *)self view];
-      v17 = (v15 == 0) ^ [v16 _shouldReverseLayoutDirection];
-      if (v15)
+      v49 = configuration;
+      supplementaryEdge = [configuration supplementaryEdge];
+      view = [(UIPanelController *)self view];
+      v17 = (supplementaryEdge == 0) ^ [view _shouldReverseLayoutDirection];
+      if (supplementaryEdge)
       {
         [(UIPanelController *)self trailingViewController];
       }
@@ -7666,7 +7666,7 @@ LABEL_19:
         [(UIPanelController *)self leadingViewController];
       }
       v18 = ;
-      v19 = [v18 view];
+      view2 = [v18 view];
 
       if (v17)
       {
@@ -7678,27 +7678,27 @@ LABEL_19:
 
       else
       {
-        [v16 bounds];
+        [view bounds];
         MaxX = CGRectGetMaxX(v52);
         v22 = 0.0;
         v23 = 0.0;
         v21 = 0.0;
       }
 
-      v24 = [v19 window];
+      window = [view2 window];
 
-      if (v24)
+      if (window)
       {
-        [v19 frame];
+        [view2 frame];
         MaxX = v25;
         v21 = v26;
         v23 = v27;
         v22 = v28;
       }
 
-      v29 = [(UIPanelController *)self supplementaryViewController];
-      v30 = [v29 view];
-      [v30 frame];
+      supplementaryViewController = [(UIPanelController *)self supplementaryViewController];
+      view3 = [supplementaryViewController view];
+      [view3 frame];
       v32 = v31;
       v34 = v33;
       v36 = v35;
@@ -7715,7 +7715,7 @@ LABEL_19:
 
       else
       {
-        [v16 bounds];
+        [view bounds];
         v40 = CGRectGetMaxX(v54);
         v41 = MaxX;
         v42 = v40;
@@ -7726,7 +7726,7 @@ LABEL_19:
         v39 = v42 - CGRectGetMinX(v55);
       }
 
-      if (v15)
+      if (supplementaryEdge)
       {
         [v12 setTrailingWidth:v39];
       }
@@ -7752,7 +7752,7 @@ LABEL_19:
 
       else
       {
-        [v16 bounds];
+        [view bounds];
         v45 = CGRectGetMaxX(v58);
         v59.origin.x = v32;
         v59.origin.y = v34;
@@ -7769,27 +7769,27 @@ LABEL_19:
       [v12 setSupplementaryWidth:v44];
     }
 
-    if (![v12 isEqual:v11] || (objc_msgSend(v12, "leadingWidth"), v46 != 0.0) || (objc_msgSend(v12, "supplementaryWidth"), v47 != 0.0) || (objc_msgSend(v12, "trailingWidth"), v48 != 0.0))
+    if (![v12 isEqual:stateRequest] || (objc_msgSend(v12, "leadingWidth"), v46 != 0.0) || (objc_msgSend(v12, "supplementaryWidth"), v47 != 0.0) || (objc_msgSend(v12, "trailingWidth"), v48 != 0.0))
     {
       [(UIPanelController *)self setInteractiveStateRequest:v12];
     }
   }
 }
 
-- (CGSize)_expectedSecondaryColumnSizeAfterAnimatingToState:(id)a3 getLeadingColumnSize:(CGSize *)a4 trailingColumnSize:(CGSize *)a5 supplementaryColumnSize:(CGSize *)a6
+- (CGSize)_expectedSecondaryColumnSizeAfterAnimatingToState:(id)state getLeadingColumnSize:(CGSize *)size trailingColumnSize:(CGSize *)columnSize supplementaryColumnSize:(CGSize *)supplementaryColumnSize
 {
-  v9 = a3;
+  stateCopy = state;
   if (![(UIPanelController *)self style])
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v55 handleFailureInMethod:a2 object:self file:@"UIPanelController.m" lineNumber:4890 description:@"Unsupported code path for unspecified-style UISplitViewController"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPanelController.m" lineNumber:4890 description:@"Unsupported code path for unspecified-style UISplitViewController"];
   }
 
-  [v9 leadingWidth];
+  [stateCopy leadingWidth];
   v11 = v10;
-  [v9 trailingWidth];
+  [stateCopy trailingWidth];
   v13 = v12;
-  [v9 supplementaryWidth];
+  [stateCopy supplementaryWidth];
   v15 = v14;
   if (v11 <= 0.0)
   {
@@ -7798,7 +7798,7 @@ LABEL_19:
 
   else
   {
-    v16 = [v9 leadingOverlapsMain] ^ 1;
+    v16 = [stateCopy leadingOverlapsMain] ^ 1;
   }
 
   if (v13 <= 0.0)
@@ -7808,7 +7808,7 @@ LABEL_19:
 
   else
   {
-    v17 = [v9 trailingOverlapsMain] ^ 1;
+    v17 = [stateCopy trailingOverlapsMain] ^ 1;
   }
 
   if (v15 <= 0.0)
@@ -7818,41 +7818,41 @@ LABEL_19:
 
   else
   {
-    v18 = [v9 supplementaryOverlapsMain] ^ 1;
+    v18 = [stateCopy supplementaryOverlapsMain] ^ 1;
   }
 
-  v19 = [v9 configuration];
-  v20 = [(UIPanelController *)self _contentView];
-  [v20 bounds];
+  configuration = [stateCopy configuration];
+  _contentView = [(UIPanelController *)self _contentView];
+  [_contentView bounds];
   v22 = v21;
-  v23 = [(UIPanelController *)self mainViewController];
-  v24 = [v23 view];
-  [v24 bounds];
+  mainViewController = [(UIPanelController *)self mainViewController];
+  view = [mainViewController view];
+  [view bounds];
   v59 = v25;
   v60 = v26;
 
-  v27 = [(UIPanelController *)self leadingViewController];
-  v28 = [v27 view];
-  [v28 bounds];
+  leadingViewController = [(UIPanelController *)self leadingViewController];
+  view2 = [leadingViewController view];
+  [view2 bounds];
   v30 = v29;
   v58 = v31;
 
-  v32 = [(UIPanelController *)self trailingViewController];
-  v33 = [v32 view];
-  [v33 bounds];
+  trailingViewController = [(UIPanelController *)self trailingViewController];
+  view3 = [trailingViewController view];
+  [view3 bounds];
   v35 = v34;
   v57 = v36;
 
-  v37 = [(UIPanelController *)self supplementaryViewController];
-  v38 = [v37 view];
-  [v38 bounds];
+  supplementaryViewController = [(UIPanelController *)self supplementaryViewController];
+  view4 = [supplementaryViewController view];
+  [view4 bounds];
   v40 = v39;
   v56 = v41;
 
-  [v20 _currentScreenScale];
-  [v19 leadingBorderWidthForScale:?];
+  [_contentView _currentScreenScale];
+  [configuration leadingBorderWidthForScale:?];
   v43 = v42;
-  [v9 mainWidth];
+  [stateCopy mainWidth];
   if (v44 == 0.0)
   {
     if ((v16 | v17 | v18))
@@ -7887,31 +7887,31 @@ LABEL_19:
 
   if (v11 == 0.0)
   {
-    [v9 leadingOffscreenWidth];
+    [stateCopy leadingOffscreenWidth];
     v11 = v46;
   }
 
   if (v13 == 0.0)
   {
-    [v9 trailingOffscreenWidth];
+    [stateCopy trailingOffscreenWidth];
     v13 = v47;
   }
 
   if (v11 > 0.0)
   {
-    [v19 rubberBandExtension];
+    [configuration rubberBandExtension];
     v30 = v11 + v48;
   }
 
   if (v13 > 0.0)
   {
-    [v19 rubberBandExtension];
+    [configuration rubberBandExtension];
     v35 = v13 + v49;
   }
 
   if (v15 == 0.0)
   {
-    [v9 supplementaryOffscreenWidth];
+    [stateCopy supplementaryOffscreenWidth];
     v15 = v50;
   }
 
@@ -7925,22 +7925,22 @@ LABEL_19:
     v51 = v15;
   }
 
-  if (a4)
+  if (size)
   {
-    a4->width = v30;
-    a4->height = v58;
+    size->width = v30;
+    size->height = v58;
   }
 
-  if (a5)
+  if (columnSize)
   {
-    a5->width = v35;
-    a5->height = v57;
+    columnSize->width = v35;
+    columnSize->height = v57;
   }
 
-  if (a6)
+  if (supplementaryColumnSize)
   {
-    a6->width = v51;
-    a6->height = v56;
+    supplementaryColumnSize->width = v51;
+    supplementaryColumnSize->height = v56;
   }
 
   if (v22 <= 0.0)
@@ -7960,51 +7960,51 @@ LABEL_19:
   return result;
 }
 
-- (void)_animateFromRequest:(id)a3 toRequest:(id)a4 withAffectedSides:(int64_t)a5 forceOverlay:(BOOL)a6 velocity:(double)a7
+- (void)_animateFromRequest:(id)request toRequest:(id)toRequest withAffectedSides:(int64_t)sides forceOverlay:(BOOL)overlay velocity:(double)velocity
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v12 && v13)
+  overlayCopy = overlay;
+  requestCopy = request;
+  toRequestCopy = toRequest;
+  v14 = toRequestCopy;
+  if (requestCopy && toRequestCopy)
   {
-    v15 = [(UIPanelController *)self _internalState];
-    v16 = [v15 animationState];
+    _internalState = [(UIPanelController *)self _internalState];
+    animationState = [_internalState animationState];
 
-    if (v16)
+    if (animationState)
     {
-      v17 = [(UIPanelController *)self _internalState];
-      v18 = [v17 animationState];
-      v19 = [v18 toRequest];
-      v20 = [v19 isEqual:v14];
+      _internalState2 = [(UIPanelController *)self _internalState];
+      animationState2 = [_internalState2 animationState];
+      toRequest = [animationState2 toRequest];
+      v20 = [toRequest isEqual:v14];
 
       if (v20)
       {
         goto LABEL_25;
       }
 
-      v21 = [(UIPanelController *)self _internalState];
-      v22 = [v21 animationState];
-      v23 = [v22 animator];
-      [v23 stopAnimation:1];
+      _internalState3 = [(UIPanelController *)self _internalState];
+      animationState3 = [_internalState3 animationState];
+      animator = [animationState3 animator];
+      [animator stopAnimation:1];
     }
 
-    v24 = [(UIPanelController *)self currentState];
-    v25 = [v24 _interactiveStateRequest];
-    v26 = [v14 isEqual:v25];
+    currentState = [(UIPanelController *)self currentState];
+    _interactiveStateRequest = [currentState _interactiveStateRequest];
+    v26 = [v14 isEqual:_interactiveStateRequest];
 
     if (v26)
     {
-      v27 = [(UIPanelController *)self _internalState];
-      [v27 setStateRequest:v14];
+      _internalState4 = [(UIPanelController *)self _internalState];
+      [_internalState4 setStateRequest:v14];
 
-      v28 = [(UIPanelController *)self _internalState];
-      v29 = [v28 animationState];
+      _internalState5 = [(UIPanelController *)self _internalState];
+      animationState4 = [_internalState5 animationState];
 
-      if (!v29)
+      if (!animationState4)
       {
-        v30 = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
-        [v30 _endAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
+        navigationBarForContentLayoutGuideAnimation = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
+        [navigationBarForContentLayoutGuideAnimation _endAnimatingNavItemContentLayoutGuideForStaticButtonVisibilityChange];
 
         [(UIPanelController *)self setNavigationBarForContentLayoutGuideAnimation:0];
       }
@@ -8012,72 +8012,72 @@ LABEL_19:
 
     else
     {
-      v75 = [(UIPanelController *)self delegate];
-      v31 = [(UIPanelController *)self view];
-      v32 = [(UIPanelController *)self _internalState];
-      v33 = [v32 copy];
+      delegate = [(UIPanelController *)self delegate];
+      view = [(UIPanelController *)self view];
+      _internalState6 = [(UIPanelController *)self _internalState];
+      v33 = [_internalState6 copy];
 
-      [v31 bounds];
-      v74 = v31;
-      v36 = [v33 computePossibleStatesGivenParentView:v31 withSize:v8 forceOverlay:{v34, v35}];
+      [view bounds];
+      v74 = view;
+      v36 = [v33 computePossibleStatesGivenParentView:view withSize:overlayCopy forceOverlay:{v34, v35}];
       v73 = v33;
-      v37 = [v33 _stateForInteractiveRequest:v14 withAffectedSides:a5 inPossibleStates:v36];
+      v37 = [v33 _stateForInteractiveRequest:v14 withAffectedSides:sides inPossibleStates:v36];
       +[_UIPanelAnimationState defaultDuration];
       v39 = v38;
       v40 = objc_alloc_init(_UIPanelAnimationState);
       [(_UIPanelAnimationState *)v40 setToRequest:v14];
-      [(_UIPanelAnimationState *)v40 setFromRequest:v12];
-      [(_UIPanelAnimationState *)v40 setAffectedSides:a5];
-      v71 = [(UIPanelController *)self style];
-      [(_UIPanelAnimationState *)v40 setShouldAssignOffscreenWidthsToStateRequest:v71 != 0];
+      [(_UIPanelAnimationState *)v40 setFromRequest:requestCopy];
+      [(_UIPanelAnimationState *)v40 setAffectedSides:sides];
+      style = [(UIPanelController *)self style];
+      [(_UIPanelAnimationState *)v40 setShouldAssignOffscreenWidthsToStateRequest:style != 0];
       [(_UIPanelAnimationState *)v40 setAnimatorShouldCoordinate:[(UIPanelController *)self animationRequestShouldCoordinate]];
       [(UIPanelController *)self setAnimationRequestShouldCoordinate:0];
-      v41 = [(UIPanelController *)self _internalState];
-      [v41 setAnimationState:v40];
+      _internalState7 = [(UIPanelController *)self _internalState];
+      [_internalState7 setAnimationState:v40];
 
       v72 = v36;
-      if (![(UIPanelController *)self _animateCustomTransitionIfNeededWithAnimationState:v40 possiblePublicStates:v36 newPublicState:v37 estimatedDuration:v16 == 0 needsInitialLayout:*&v39])
+      if (![(UIPanelController *)self _animateCustomTransitionIfNeededWithAnimationState:v40 possiblePublicStates:v36 newPublicState:v37 estimatedDuration:animationState == 0 needsInitialLayout:*&v39])
       {
-        v70 = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
+        navigationBarForContentLayoutGuideAnimation2 = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
         objc_initWeak(location, self);
         objc_initWeak(&from, v40);
         v42 = [_UIPanelCoordinatingAnimator alloc];
-        v43 = [_UIPanelAnimationState timingCurveProviderWithVelocity:a7];
+        v43 = [_UIPanelAnimationState timingCurveProviderWithVelocity:velocity];
         v44 = [(UIViewPropertyAnimator *)v42 initWithDuration:v43 timingParameters:*&v39];
         [(_UIPanelAnimationState *)v40 setAnimator:v44];
 
-        v45 = [(_UIPanelAnimationState *)v40 animator];
+        animator2 = [(_UIPanelAnimationState *)v40 animator];
         v92[0] = MEMORY[0x1E69E9820];
         v92[1] = 3221225472;
         v92[2] = __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_forceOverlay_velocity___block_invoke;
         v92[3] = &unk_1E71039E0;
         objc_copyWeak(&v95, location);
         objc_copyWeak(v96, &from);
-        v97 = v71 != 0;
+        v97 = style != 0;
         v46 = v14;
         v93 = v46;
         v47 = v37;
         v94 = v47;
         v96[1] = v39;
-        [v45 addAnimations:v92];
+        [animator2 addAnimations:v92];
         v69 = v47;
 
-        v48 = [(_UIPanelAnimationState *)v40 animator];
+        animator3 = [(_UIPanelAnimationState *)v40 animator];
         v88[0] = MEMORY[0x1E69E9820];
         v88[1] = 3221225472;
         v88[2] = __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_forceOverlay_velocity___block_invoke_3;
         v88[3] = &unk_1E7103A08;
         objc_copyWeak(&v91, location);
         v89 = v46;
-        v49 = v70;
+        v49 = navigationBarForContentLayoutGuideAnimation2;
         v90 = v49;
-        [v48 addCompletion:v88];
+        [animator3 addCompletion:v88];
 
-        v50 = [(UIPanelController *)self configuration];
+        configuration = [(UIPanelController *)self configuration];
         v51 = v49;
-        [v49 _setShouldFadeStaticNavBarButton:{objc_msgSend(v50, "shouldFadeStaticNavBarButton")}];
+        [v49 _setShouldFadeStaticNavBarButton:{objc_msgSend(configuration, "shouldFadeStaticNavBarButton")}];
 
-        if (v16)
+        if (animationState)
         {
           v82[0] = MEMORY[0x1E69E9820];
           v82[1] = 3221225472;
@@ -8093,22 +8093,22 @@ LABEL_19:
           v83[1] = 3221225472;
           v83[2] = __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_forceOverlay_velocity___block_invoke_4;
           v83[3] = &unk_1E70F5B18;
-          v87 = v71 != 0;
+          v87 = style != 0;
           v84 = v40;
-          v85 = self;
+          selfCopy = self;
           v86 = v49;
           [UIView performWithoutAnimation:v83];
         }
 
-        v52 = [(UIPanelController *)self _contentView];
-        v53 = [(_UIPanelAnimationState *)v40 animator];
-        [v53 setContainerView:v52];
+        _contentView = [(UIPanelController *)self _contentView];
+        animator4 = [(_UIPanelAnimationState *)v40 animator];
+        [animator4 setContainerView:_contentView];
 
-        if (v71)
+        if (style)
         {
           if ([(_UIPanelAnimationState *)v40 animatorShouldCoordinate])
           {
-            v54 = [(UIPanelController *)self delegate];
+            delegate2 = [(UIPanelController *)self delegate];
             v55 = objc_opt_respondsToSelector();
 
             if (v55)
@@ -8126,8 +8126,8 @@ LABEL_19:
               v61 = v81;
               v62 = v78;
               v63 = v79;
-              v64 = [(UIPanelController *)self delegate];
-              v65 = v64;
+              delegate3 = [(UIPanelController *)self delegate];
+              v65 = delegate3;
               if (v62 <= 0.0)
               {
                 v66 = v61;
@@ -8148,13 +8148,13 @@ LABEL_19:
                 v67 = v62;
               }
 
-              [v64 panelController:self willBeginAnimationToPrimarySize:v67 supplementarySize:v66 secondarySize:{v76, v77, v57, v59}];
+              [delegate3 panelController:self willBeginAnimationToPrimarySize:v67 supplementarySize:v66 secondarySize:{v76, v77, v57, v59}];
             }
           }
         }
 
-        v68 = [(_UIPanelAnimationState *)v40 animator];
-        [v68 startAnimation];
+        animator5 = [(_UIPanelAnimationState *)v40 animator];
+        [animator5 startAnimation];
 
         objc_destroyWeak(&v91);
         objc_destroyWeak(v96);
@@ -8283,20 +8283,20 @@ void __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_for
   [v8 layoutIfNeeded];
 }
 
-- (BOOL)_animateCustomTransitionIfNeededWithAnimationState:(id)a3 possiblePublicStates:(id)a4 newPublicState:(id)a5 estimatedDuration:(double)a6 needsInitialLayout:(BOOL)a7
+- (BOOL)_animateCustomTransitionIfNeededWithAnimationState:(id)state possiblePublicStates:(id)states newPublicState:(id)publicState estimatedDuration:(double)duration needsInitialLayout:(BOOL)layout
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(UIPanelController *)self delegate];
+  layoutCopy = layout;
+  stateCopy = state;
+  statesCopy = states;
+  publicStateCopy = publicState;
+  delegate = [(UIPanelController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(UIPanelController *)self delegate];
-    v18 = [v12 toRequest];
-    v19 = [v17 panelController:self willBeginAnimatedTransitionToStateRequest:v18 predictedEndState:v14 predictedDuration:a6];
+    delegate2 = [(UIPanelController *)self delegate];
+    toRequest = [stateCopy toRequest];
+    v19 = [delegate2 panelController:self willBeginAnimatedTransitionToStateRequest:toRequest predictedEndState:publicStateCopy predictedDuration:duration];
 
     if (v19)
     {
@@ -8304,40 +8304,40 @@ void __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_for
 
       if (!v20)
       {
-        v69 = v7;
+        v69 = layoutCopy;
         v21 = objc_alloc_init(_UIViewControllerOneToOneTransitionContext);
         [(_UIViewControllerTransitionContext *)v21 _setIsAnimated:+[UIView areAnimationsEnabled]];
-        v22 = [(UIPanelController *)self _contentView];
-        [(_UIViewControllerTransitionContext *)v21 _setContainerView:v22];
+        _contentView = [(UIPanelController *)self _contentView];
+        [(_UIViewControllerTransitionContext *)v21 _setContainerView:_contentView];
 
         [(_UIViewControllerTransitionContext *)v21 _setAnimator:v19];
-        [(_UIViewControllerTransitionContext *)v21 _setDuration:a6];
+        [(_UIViewControllerTransitionContext *)v21 _setDuration:duration];
         [(_UIViewControllerOneToOneTransitionContext *)v21 _setFromView:0];
         [(_UIViewControllerOneToOneTransitionContext *)v21 _setFromViewController:0];
-        v23 = [(UIPanelController *)self _internalState];
-        v24 = [v23 leadingViewController];
-        v25 = [v24 view];
-        [(_UIViewControllerOneToOneTransitionContext *)v21 _setToView:v25];
+        _internalState = [(UIPanelController *)self _internalState];
+        leadingViewController = [_internalState leadingViewController];
+        view = [leadingViewController view];
+        [(_UIViewControllerOneToOneTransitionContext *)v21 _setToView:view];
 
-        v26 = [(UIPanelController *)self _internalState];
-        v27 = [v26 leadingViewController];
+        _internalState2 = [(UIPanelController *)self _internalState];
+        leadingViewController2 = [_internalState2 leadingViewController];
         v71 = v21;
-        [(_UIViewControllerOneToOneTransitionContext *)v21 _setToViewController:v27];
+        [(_UIViewControllerOneToOneTransitionContext *)v21 _setToViewController:leadingViewController2];
 
-        v28 = [(UIPanelController *)self view];
-        v29 = [v12 fromRequest];
-        v70 = [v12 toRequest];
-        v30 = [(UIPanelController *)self _internalState];
-        v31 = [v30 copy];
+        view2 = [(UIPanelController *)self view];
+        fromRequest = [stateCopy fromRequest];
+        toRequest2 = [stateCopy toRequest];
+        _internalState3 = [(UIPanelController *)self _internalState];
+        v31 = [_internalState3 copy];
 
-        v32 = [v12 affectedSides];
-        v33 = [(UIPanelController *)self possibleStates];
-        v34 = [v31 _stateForInteractiveRequest:v29 withAffectedSides:v32 inPossibleStates:v33];
+        affectedSides = [stateCopy affectedSides];
+        possibleStates = [(UIPanelController *)self possibleStates];
+        v34 = [v31 _stateForInteractiveRequest:fromRequest withAffectedSides:affectedSides inPossibleStates:possibleStates];
 
-        [v29 leadingWidth];
+        [fromRequest leadingWidth];
         v36 = v35;
-        v68 = v29;
-        [v29 leadingOffscreenWidth];
+        v68 = fromRequest;
+        [fromRequest leadingOffscreenWidth];
         if (v36 < v37)
         {
           v36 = v37;
@@ -8346,19 +8346,19 @@ void __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_for
         v67 = v34;
         [v34 leadingDragOffset];
         v39 = v38;
-        [v28 _currentScreenScale];
+        [view2 _currentScreenScale];
         UIRoundToScale(v39, v40);
         v42 = v41;
-        v72 = v28;
-        [v28 bounds];
+        v72 = view2;
+        [view2 bounds];
         Height = CGRectGetHeight(v84);
-        v44 = [(UIPanelController *)self view];
-        v45 = [v44 _shouldReverseLayoutDirection];
+        view3 = [(UIPanelController *)self view];
+        _shouldReverseLayoutDirection = [view3 _shouldReverseLayoutDirection];
 
-        if (v45)
+        if (_shouldReverseLayoutDirection)
         {
-          v46 = [(UIPanelController *)self view];
-          [v46 bounds];
+          view4 = [(UIPanelController *)self view];
+          [view4 bounds];
           v49 = v47 + v48 - (v36 - v42);
         }
 
@@ -8369,25 +8369,25 @@ void __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_for
 
         v51 = 0.0;
         [(_UIViewControllerOneToOneTransitionContext *)v71 _setToStartFrame:v49, 0.0, v36, Height];
-        [v70 leadingWidth];
+        [toRequest2 leadingWidth];
         v53 = v52;
-        [v70 leadingOffscreenWidth];
+        [toRequest2 leadingOffscreenWidth];
         if (v53 < v54)
         {
           v53 = v54;
         }
 
-        [v14 leadingDragOffset];
+        [publicStateCopy leadingDragOffset];
         v56 = v55;
-        [v28 _currentScreenScale];
+        [view2 _currentScreenScale];
         UIRoundToScale(v56, v57);
         v59 = v58;
-        [v28 bounds];
+        [view2 bounds];
         v60 = CGRectGetHeight(v85);
-        if (v45)
+        if (_shouldReverseLayoutDirection)
         {
-          v61 = [(UIPanelController *)self view];
-          [v61 bounds];
+          view5 = [(UIPanelController *)self view];
+          [view5 bounds];
         }
 
         else
@@ -8402,23 +8402,23 @@ void __91__UIPanelController__animateFromRequest_toRequest_withAffectedSides_for
         v77[2] = __145__UIPanelController__animateCustomTransitionIfNeededWithAnimationState_possiblePublicStates_newPublicState_estimatedDuration_needsInitialLayout___block_invoke;
         v77[3] = &unk_1E7103A30;
         objc_copyWeak(&v82, location);
-        v62 = v70;
+        v62 = toRequest2;
         v78 = v62;
-        v79 = v14;
+        v79 = publicStateCopy;
         v63 = v31;
         v80 = v63;
-        v81 = v13;
+        v81 = statesCopy;
         [(_UIViewControllerTransitionContext *)v71 _setCompletionHandler:v77];
         if (v69)
         {
-          v64 = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
+          navigationBarForContentLayoutGuideAnimation = [(UIPanelController *)self navigationBarForContentLayoutGuideAnimation];
           v73[0] = MEMORY[0x1E69E9820];
           v73[1] = 3221225472;
           v73[2] = __145__UIPanelController__animateCustomTransitionIfNeededWithAnimationState_possiblePublicStates_newPublicState_estimatedDuration_needsInitialLayout___block_invoke_2;
           v73[3] = &unk_1E70F6228;
-          v74 = v12;
-          v75 = self;
-          v65 = v64;
+          v74 = stateCopy;
+          selfCopy = self;
+          v65 = navigationBarForContentLayoutGuideAnimation;
           v76 = v65;
           [UIView performWithoutAnimation:v73];
         }
@@ -8511,29 +8511,29 @@ uint64_t __145__UIPanelController__animateCustomTransitionIfNeededWithAnimationS
 
 - (UIViewControllerTransitionCoordinator)transitionCoordinator
 {
-  v3 = [(UIPanelController *)self _internalState];
-  v4 = [v3 animationState];
-  if ([v4 animatorShouldCoordinate])
+  _internalState = [(UIPanelController *)self _internalState];
+  animationState = [_internalState animationState];
+  if ([animationState animatorShouldCoordinate])
   {
-    v5 = [(UIPanelController *)self _internalState];
-    v6 = [v5 animationState];
-    v7 = [v6 animator];
+    _internalState2 = [(UIPanelController *)self _internalState];
+    animationState2 = [_internalState2 animationState];
+    animator = [animationState2 animator];
   }
 
   else
   {
-    v7 = 0;
+    animator = 0;
   }
 
-  return v7;
+  return animator;
 }
 
 - (BOOL)isLeadingViewControllerVisibleAfterAnimation
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 animationState];
-  v4 = [v3 toRequest];
-  [v4 leadingWidth];
+  _internalState = [(UIPanelController *)self _internalState];
+  animationState = [_internalState animationState];
+  toRequest = [animationState toRequest];
+  [toRequest leadingWidth];
   v6 = v5 > 0.0;
 
   return v6;
@@ -8541,10 +8541,10 @@ uint64_t __145__UIPanelController__animateCustomTransitionIfNeededWithAnimationS
 
 - (BOOL)isTrailingViewControllerVisibleAfterAnimation
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 animationState];
-  v4 = [v3 toRequest];
-  [v4 trailingWidth];
+  _internalState = [(UIPanelController *)self _internalState];
+  animationState = [_internalState animationState];
+  toRequest = [animationState toRequest];
+  [toRequest trailingWidth];
   v6 = v5 > 0.0;
 
   return v6;
@@ -8552,41 +8552,41 @@ uint64_t __145__UIPanelController__animateCustomTransitionIfNeededWithAnimationS
 
 - (BOOL)isSupplementaryViewControllerVisibleAfterAnimation
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 animationState];
-  v4 = [v3 toRequest];
-  [v4 supplementaryWidth];
+  _internalState = [(UIPanelController *)self _internalState];
+  animationState = [_internalState animationState];
+  toRequest = [animationState toRequest];
+  [toRequest supplementaryWidth];
   v6 = v5 > 0.0;
 
   return v6;
 }
 
-- (void)animateToRequest:(id)a3 forceOverlay:(BOOL)a4 withVelocity:(double)a5
+- (void)animateToRequest:(id)request forceOverlay:(BOOL)overlay withVelocity:(double)velocity
 {
-  v6 = a4;
-  v29 = a3;
-  v8 = [(UIPanelController *)self interactiveStateRequest];
+  overlayCopy = overlay;
+  requestCopy = request;
+  interactiveStateRequest = [(UIPanelController *)self interactiveStateRequest];
   [(UIPanelController *)self setInteractiveStateRequest:0];
-  v9 = v8;
-  v10 = v9;
+  v9 = interactiveStateRequest;
+  stateRequest = v9;
   if (!v9)
   {
-    v11 = [(UIPanelController *)self currentState];
-    v10 = [v11 stateRequest];
-    if ([v29 isEqual:v10])
+    currentState = [(UIPanelController *)self currentState];
+    stateRequest = [currentState stateRequest];
+    if ([requestCopy isEqual:stateRequest])
     {
-      v12 = [(UIPanelController *)self delegate];
-      v13 = [v12 primaryEdge];
+      delegate = [(UIPanelController *)self delegate];
+      primaryEdge = [delegate primaryEdge];
 
-      if (v13)
+      if (primaryEdge)
       {
-        [v11 trailingDragOffset];
+        [currentState trailingDragOffset];
         v15 = v14;
-        [v11 supplementaryDragOffset];
+        [currentState supplementaryDragOffset];
         v17 = v15 + v16;
         if (v17 > 0.0)
         {
-          [v10 trailingWidth];
+          [stateRequest trailingWidth];
 LABEL_8:
           v22 = v17 - v18;
           v23 = v18 - v17;
@@ -8612,95 +8612,95 @@ LABEL_8:
             v27 = 0.0;
           }
 
-          [v10 supplementaryWidth];
+          [stateRequest supplementaryWidth];
           if (v26 < v28)
           {
             v25 = v28 - v26;
           }
 
-          if (v13)
+          if (primaryEdge)
           {
-            [v10 setTrailingWidth:v27];
+            [stateRequest setTrailingWidth:v27];
           }
 
           else
           {
-            [v10 setLeadingWidth:v27];
+            [stateRequest setLeadingWidth:v27];
           }
 
-          [v10 setSupplementaryWidth:v25];
+          [stateRequest setSupplementaryWidth:v25];
         }
       }
 
       else
       {
-        [v11 leadingDragOffset];
+        [currentState leadingDragOffset];
         v20 = v19;
-        [v11 supplementaryDragOffset];
+        [currentState supplementaryDragOffset];
         v17 = v20 + v21;
         if (v17 > 0.0)
         {
-          [v10 leadingWidth];
+          [stateRequest leadingWidth];
           goto LABEL_8;
         }
       }
     }
   }
 
-  [(UIPanelController *)self _animateFromRequest:v10 toRequest:v29 withAffectedSides:0 forceOverlay:v6 velocity:a5];
+  [(UIPanelController *)self _animateFromRequest:stateRequest toRequest:requestCopy withAffectedSides:0 forceOverlay:overlayCopy velocity:velocity];
 }
 
 - (UISlidingBarStateRequest)interactiveStateRequest
 {
-  v2 = [(UIPanelController *)self _internalState];
-  v3 = [v2 interactiveStateRequest];
+  _internalState = [(UIPanelController *)self _internalState];
+  interactiveStateRequest = [_internalState interactiveStateRequest];
 
-  return v3;
+  return interactiveStateRequest;
 }
 
-- (void)setInteractiveStateRequest:(id)a3
+- (void)setInteractiveStateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(UIPanelController *)self _internalState];
-  [v5 setInteractiveStateRequest:v4];
+  requestCopy = request;
+  _internalState = [(UIPanelController *)self _internalState];
+  [_internalState setInteractiveStateRequest:requestCopy];
 
   [(UIPanelController *)self _setNeedsLayoutAndPerformImmediately:0];
 }
 
 - (NSArray)uncachedPossibleStates
 {
-  v3 = [(UIPanelController *)self view];
-  v4 = [(UIPanelController *)self _internalState];
-  [v3 bounds];
-  v7 = [v4 computePossibleStatesGivenParentView:v3 withSize:{v5, v6}];
+  view = [(UIPanelController *)self view];
+  _internalState = [(UIPanelController *)self _internalState];
+  [view bounds];
+  v7 = [_internalState computePossibleStatesGivenParentView:view withSize:{v5, v6}];
 
   return v7;
 }
 
-- (id)uncachedPossibleStatesForSize:(CGSize)a3
+- (id)uncachedPossibleStatesForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIPanelController *)self _internalState];
-  v7 = [(UIPanelController *)self view];
-  v8 = [v6 computePossibleStatesGivenParentView:v7 withSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _internalState = [(UIPanelController *)self _internalState];
+  view = [(UIPanelController *)self view];
+  v8 = [_internalState computePossibleStatesGivenParentView:view withSize:{width, height}];
 
   return v8;
 }
 
-- (void)_observeKeyboardNotificationsOnScreen:(id)a3
+- (void)_observeKeyboardNotificationsOnScreen:(id)screen
 {
-  v4 = a3;
-  if (v4 && (*(&self->_panelControllerFlags + 1) & 8) == 0)
+  screenCopy = screen;
+  if (screenCopy && (*(&self->_panelControllerFlags + 1) & 8) == 0)
   {
-    v6 = v4;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__adjustForKeyboardInfo_ name:@"UIKeyboardPrivateWillShowNotification" object:v6];
-    [v5 addObserver:self selector:sel__adjustForKeyboardInfo_ name:@"UIKeyboardPrivateWillHideNotification" object:v6];
-    [v5 addObserver:self selector:sel__adjustForKeyboardInfo_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:v6];
+    v6 = screenCopy;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__adjustForKeyboardInfo_ name:@"UIKeyboardPrivateWillShowNotification" object:v6];
+    [defaultCenter addObserver:self selector:sel__adjustForKeyboardInfo_ name:@"UIKeyboardPrivateWillHideNotification" object:v6];
+    [defaultCenter addObserver:self selector:sel__adjustForKeyboardInfo_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:v6];
     *&self->_panelControllerFlags |= 0x800u;
 
-    v4 = v6;
+    screenCopy = v6;
   }
 }
 
@@ -8708,57 +8708,57 @@ LABEL_8:
 {
   if ((*(&self->_panelControllerFlags + 1) & 8) != 0)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"UIKeyboardPrivateWillShowNotification" object:0];
-    [v4 removeObserver:self name:@"UIKeyboardPrivateWillHideNotification" object:0];
-    [v4 removeObserver:self name:@"UIKeyboardPrivateDidChangeFrameNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillShowNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillHideNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardPrivateDidChangeFrameNotification" object:0];
     *&self->_panelControllerFlags &= ~0x800u;
   }
 }
 
-- (void)_adjustForKeyboardInfo:(id)a3
+- (void)_adjustForKeyboardInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_view && ![(UIPanelController *)self isCollapsed])
   {
     if (![(UIPanelController *)self supportsColumnStyle])
     {
-      v5 = [(UIPanelController *)self owningViewController];
-      v6 = [(UIViewController *)v5 _keyboardSceneDelegate];
+      owningViewController = [(UIPanelController *)self owningViewController];
+      _keyboardSceneDelegate = [(UIViewController *)owningViewController _keyboardSceneDelegate];
       view = self->_view;
-      v8 = [v4 userInfo];
-      [v6 verticalOverlapForView:view usingKeyboardInfo:v8];
+      userInfo = [infoCopy userInfo];
+      [_keyboardSceneDelegate verticalOverlapForView:view usingKeyboardInfo:userInfo];
       v10 = v9;
 
-      v11 = [(UIPanelController *)self _internalState];
-      [v11 keyboardAdjustment];
+      _internalState = [(UIPanelController *)self _internalState];
+      [_internalState keyboardAdjustment];
       v13 = v12;
 
       if (v13 != v10)
       {
-        v14 = [(UIPanelController *)self owningViewController];
-        v15 = findTransitioningChildNavigationController(v14);
+        owningViewController2 = [(UIPanelController *)self owningViewController];
+        v15 = findTransitioningChildNavigationController(owningViewController2);
 
         if (v15)
         {
-          v16 = [v15 transitionCoordinator];
+          transitionCoordinator = [v15 transitionCoordinator];
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = __44__UIPanelController__adjustForKeyboardInfo___block_invoke;
           v29[3] = &unk_1E70F3B98;
           v29[4] = self;
-          [v16 animateAlongsideTransition:0 completion:v29];
+          [transitionCoordinator animateAlongsideTransition:0 completion:v29];
         }
 
         else
         {
-          v17 = [(UIPanelController *)self _internalState];
-          [v17 setKeyboardAdjustment:v10];
+          _internalState2 = [(UIPanelController *)self _internalState];
+          [_internalState2 setKeyboardAdjustment:v10];
 
-          v18 = [(UIPanelController *)self currentState];
-          v19 = [v18 leadingOverlapsMain];
+          currentState = [(UIPanelController *)self currentState];
+          leadingOverlapsMain = [currentState leadingOverlapsMain];
 
-          if (v19)
+          if (leadingOverlapsMain)
           {
             [(UIPanelController *)self _setNeedsDeferredUpdate];
           }
@@ -8766,33 +8766,33 @@ LABEL_8:
       }
     }
 
-    v20 = [(UIPanelController *)self currentState];
-    v21 = [v20 leadingOverlapsMain];
+    currentState2 = [(UIPanelController *)self currentState];
+    leadingOverlapsMain2 = [currentState2 leadingOverlapsMain];
 
-    if ((v21 & 1) == 0)
+    if ((leadingOverlapsMain2 & 1) == 0)
     {
-      v22 = [v4 name];
-      if ([v22 isEqualToString:@"UIKeyboardPrivateWillShowNotification"])
+      name = [infoCopy name];
+      if ([name isEqualToString:@"UIKeyboardPrivateWillShowNotification"])
       {
 
 LABEL_14:
-        v25 = [v4 userInfo];
-        [(UIPanelController *)self _adjustNonOverlayLeadingScrollViewsForKeyboardInfo:v25];
+        userInfo2 = [infoCopy userInfo];
+        [(UIPanelController *)self _adjustNonOverlayLeadingScrollViewsForKeyboardInfo:userInfo2];
 
         [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel__adjustNonOverlayLeadingScrollViewsForKeyboardInfo_ object:0];
         goto LABEL_15;
       }
 
-      v23 = [v4 name];
-      v24 = [v23 isEqualToString:@"UIKeyboardPrivateDidChangeFrameNotification"];
+      name2 = [infoCopy name];
+      v24 = [name2 isEqualToString:@"UIKeyboardPrivateDidChangeFrameNotification"];
 
       if (v24)
       {
         goto LABEL_14;
       }
 
-      v26 = [v4 name];
-      v27 = [v26 isEqualToString:@"UIKeyboardPrivateWillHideNotification"];
+      name3 = [infoCopy name];
+      v27 = [name3 isEqualToString:@"UIKeyboardPrivateWillHideNotification"];
 
       if (v27)
       {
@@ -8805,20 +8805,20 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_adjustNonOverlayLeadingScrollViewsForKeyboardInfo:(id)a3
+- (void)_adjustNonOverlayLeadingScrollViewsForKeyboardInfo:(id)info
 {
-  v7 = a3;
-  v4 = [(UIPanelController *)self delegate];
-  v5 = [(UIPanelController *)self leadingViewController];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  infoCopy = info;
+  delegate = [(UIPanelController *)self delegate];
+  leadingViewController = [(UIPanelController *)self leadingViewController];
+  if (leadingViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 panelController:self adjustLeadingViewController:v5 forKeyboardInfo:v7];
+    [delegate panelController:self adjustLeadingViewController:leadingViewController forKeyboardInfo:infoCopy];
   }
 
-  v6 = [(UIPanelController *)self trailingViewController];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  trailingViewController = [(UIPanelController *)self trailingViewController];
+  if (trailingViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 panelController:self adjustTrailingViewController:v6 forKeyboardInfo:v7];
+    [delegate panelController:self adjustTrailingViewController:trailingViewController forKeyboardInfo:infoCopy];
   }
 }
 

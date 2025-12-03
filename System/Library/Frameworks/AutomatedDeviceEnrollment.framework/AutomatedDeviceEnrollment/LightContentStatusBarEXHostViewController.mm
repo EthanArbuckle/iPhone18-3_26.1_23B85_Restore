@@ -1,7 +1,7 @@
 @interface LightContentStatusBarEXHostViewController
-- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithCoder:(id)a3;
-- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithConfiguration:(id)a3;
-- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithCoder:(id)coder;
+- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithConfiguration:(id)configuration;
+- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -13,11 +13,11 @@
   v6.super_class = type metadata accessor for LightContentStatusBarEXHostViewController();
   v2 = v6.receiver;
   [(_EXHostViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() blackColor];
+    v4 = view;
+    blackColor = [objc_opt_self() blackColor];
     [v4 setBackgroundColor_];
   }
 
@@ -27,41 +27,41 @@
   }
 }
 
-- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithConfiguration:(id)a3
+- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for LightContentStatusBarEXHostViewController();
-  return [(_EXHostViewController *)&v5 initWithConfiguration:a3];
+  return [(_EXHostViewController *)&v5 initWithConfiguration:configuration];
 }
 
-- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_236DEE818();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_236DEE808();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for LightContentStatusBarEXHostViewController();
-  v9 = [(LightContentStatusBarEXHostViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(LightContentStatusBarEXHostViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithCoder:(id)a3
+- (_TtC25AutomatedDeviceEnrollment41LightContentStatusBarEXHostViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LightContentStatusBarEXHostViewController();
-  v4 = a3;
-  v5 = [(LightContentStatusBarEXHostViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LightContentStatusBarEXHostViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

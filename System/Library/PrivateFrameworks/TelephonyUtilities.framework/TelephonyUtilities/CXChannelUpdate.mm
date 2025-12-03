@@ -9,20 +9,20 @@
   v3 = objc_alloc_init(CXCallUpdate);
   if (([(CXChannelUpdate *)self hasSet]& 1) != 0)
   {
-    v4 = [(CXChannelUpdate *)self activeRemoteParticipant];
-    [v3 setActiveRemoteParticipant:v4];
+    activeRemoteParticipant = [(CXChannelUpdate *)self activeRemoteParticipant];
+    [v3 setActiveRemoteParticipant:activeRemoteParticipant];
   }
 
   if (([(CXChannelUpdate *)self hasSet]& 0x40) != 0)
   {
-    v5 = [(CXChannelUpdate *)self name];
-    [v3 setLocalizedCallerName:v5];
+    name = [(CXChannelUpdate *)self name];
+    [v3 setLocalizedCallerName:name];
   }
 
   if (([(CXChannelUpdate *)self hasSet]& 0x80) != 0)
   {
-    v6 = [(CXChannelUpdate *)self sandboxExtendedImageURL];
-    [v3 setLocalizedCallerImageURL:v6];
+    sandboxExtendedImageURL = [(CXChannelUpdate *)self sandboxExtendedImageURL];
+    [v3 setLocalizedCallerImageURL:sandboxExtendedImageURL];
   }
 
   if (([(CXChannelUpdate *)self hasSet]& 0x100) != 0)

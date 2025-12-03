@@ -10,15 +10,15 @@
 
 - (NSString)sceneTitle
 {
-  v2 = [(MKLookAroundView *)self muninViewState];
-  v3 = [v2 locationInfo];
-  v4 = [v3 localityName];
+  muninViewState = [(MKLookAroundView *)self muninViewState];
+  locationInfo = [muninViewState locationInfo];
+  localityName = [locationInfo localityName];
 
-  if ([v4 length])
+  if ([localityName length])
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"[App switcher title] Look Around — <location>" value:@"localized string not found" table:0];
-    v7 = [NSString stringWithFormat:v6, v4];
+    v7 = [NSString stringWithFormat:v6, localityName];
   }
 
   else
@@ -32,9 +32,9 @@
 
 - (NSString)expandedSceneTitle
 {
-  v3 = [(MKLookAroundView *)self locationTitle];
-  v4 = [(MKLookAroundView *)self locationSubtitle];
-  v5 = [NSString stringWithFormat:@"%@ - %@", v3, v4];
+  locationTitle = [(MKLookAroundView *)self locationTitle];
+  locationSubtitle = [(MKLookAroundView *)self locationSubtitle];
+  v5 = [NSString stringWithFormat:@"%@ - %@", locationTitle, locationSubtitle];
 
   return v5;
 }
@@ -61,62 +61,62 @@
 
 - (NSString)locationSubtitle
 {
-  v2 = [(MKLookAroundView *)self muninViewState];
-  v3 = [v2 locationInfo];
+  muninViewState = [(MKLookAroundView *)self muninViewState];
+  locationInfo = [muninViewState locationInfo];
 
-  v4 = [v3 secondaryLocationName];
-  v5 = [v4 length];
+  secondaryLocationName = [locationInfo secondaryLocationName];
+  v5 = [secondaryLocationName length];
 
   if (v5)
   {
-    v6 = [v3 secondaryLocationName];
+    secondaryLocationName2 = [locationInfo secondaryLocationName];
   }
 
   else
   {
-    v6 = &stru_1016631F0;
+    secondaryLocationName2 = &stru_1016631F0;
   }
 
-  v7 = [v3 localityName];
-  v8 = [v7 length];
+  localityName = [locationInfo localityName];
+  v8 = [localityName length];
 
   if (v8)
   {
-    if ([(__CFString *)v6 length])
+    if ([(__CFString *)secondaryLocationName2 length])
     {
-      v9 = [(__CFString *)v6 stringByAppendingString:@", "];
+      v9 = [(__CFString *)secondaryLocationName2 stringByAppendingString:@", "];
 
-      v6 = v9;
+      secondaryLocationName2 = v9;
     }
 
-    v10 = [v3 localityName];
-    v11 = [(__CFString *)v6 stringByAppendingString:v10];
+    localityName2 = [locationInfo localityName];
+    v11 = [(__CFString *)secondaryLocationName2 stringByAppendingString:localityName2];
 
-    v6 = v11;
+    secondaryLocationName2 = v11;
   }
 
-  return v6;
+  return secondaryLocationName2;
 }
 
 - (NSString)locationTitle
 {
-  v2 = [(MKLookAroundView *)self muninViewState];
-  v3 = [v2 locationInfo];
+  muninViewState = [(MKLookAroundView *)self muninViewState];
+  locationInfo = [muninViewState locationInfo];
 
-  v4 = [v3 locationName];
-  v5 = [v4 length];
+  locationName = [locationInfo locationName];
+  v5 = [locationName length];
 
   if (v5)
   {
-    v6 = [v3 locationName];
+    locationName2 = [locationInfo locationName];
   }
 
   else
   {
-    v6 = &stru_1016631F0;
+    locationName2 = &stru_1016631F0;
   }
 
-  return v6;
+  return locationName2;
 }
 
 @end

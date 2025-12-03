@@ -1,36 +1,36 @@
 @interface MPSGraphPermuteOp
-- (MPSGraphPermuteOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 permute:(id)a6 name:(id)a7;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphPermuteOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies permute:(id)permute name:(id)name;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphPermuteOp
 
-- (MPSGraphPermuteOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 permute:(id)a6 name:(id)a7
+- (MPSGraphPermuteOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies permute:(id)permute name:(id)name
 {
-  objc_storeStrong(&self->_permute, a6);
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(MPSGraphOperation *)self initWithGraph:v15 inputTensors:v14 controlDependencies:v13 name:v12];
+  objc_storeStrong(&self->_permute, permute);
+  nameCopy = name;
+  dependenciesCopy = dependencies;
+  tensorsCopy = tensors;
+  graphCopy = graph;
+  v16 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
 
   return v16;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphPermuteOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", v27);
-  v11 = v10;
+  v11 = nameCopy;
   v34 = 260;
   v33[0] = v27;
-  StringAttr = mlir::Builder::getStringAttr(a3, v33);
+  StringAttr = mlir::Builder::getStringAttr(builder, v33);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x103u, 0);
   if (v11)
   {
-    v15 = [v11 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v11 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -45,7 +45,7 @@
     v32 = v16;
     if (v16)
     {
-      memmove(__dst, v15, v16);
+      memmove(__dst, uTF8String, v16);
     }
 
     v18 = &__dst[v17];
@@ -59,7 +59,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v13, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v13, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -75,7 +75,7 @@
   }
 
   LOBYTE(v34) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v33);
+  v21 = mlir::Builder::getStringAttr(builder, v33);
   v22 = mlir::NameLoc::get(v21, v14);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -91,8 +91,8 @@ LABEL_16:
 
 LABEL_21:
       operator delete(v27[0]);
-      v23 = *a5;
-      v24 = *(a5 + 1) - *a5;
+      v23 = *values;
+      v24 = *(values + 1) - *values;
       if (!v24)
       {
         goto LABEL_24;
@@ -115,8 +115,8 @@ LABEL_21:
   }
 
 LABEL_17:
-  v23 = *a5;
-  v24 = *(a5 + 1) - *a5;
+  v23 = *values;
+  v24 = *(values + 1) - *values;
   if (!v24)
   {
 LABEL_24:
@@ -129,17 +129,17 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v33[0] = mlir::OpBuilder::create<mlir::mps::PermuteOp,mlir::Value,mlir::Value>(a3, v22, v23, v23 + 1) - 16;
+  v33[0] = mlir::OpBuilder::create<mlir::mps::PermuteOp,mlir::Value,mlir::Value>(builder, v22, v23, v23 + 1) - 16;
   DefiningOp = mlir::Value::getDefiningOp(v33);
 
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a4;
-  v10 = a6;
-  if (a5)
+  gradientCopy = gradient;
+  nameCopy = name;
+  if (index)
   {
     v11 = 0;
   }
@@ -153,9 +153,9 @@ LABEL_22:
       for (i = 0; i != v12; ++i)
       {
         v15 = [(NSArray *)self->_permute objectAtIndexedSubscript:i];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
-        v13[v16 + (v12 & (v16 >> 63))] = i;
+        v13[integerValue + (v12 & (integerValue >> 63))] = i;
       }
     }
 
@@ -178,9 +178,9 @@ LABEL_22:
     free(v13);
     WeakRetained = objc_loadWeakRetained(&self->super._graph);
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [(MPSGraphOperation *)self name];
-    v24 = [v22 stringWithFormat:@"%@/%@/transposePermute", v10, v23];
-    v11 = [WeakRetained transposeTensor:v9 permute:v17 name:v24];
+    name = [(MPSGraphOperation *)self name];
+    v24 = [v22 stringWithFormat:@"%@/%@/transposePermute", nameCopy, name];
+    v11 = [WeakRetained transposeTensor:gradientCopy permute:v17 name:v24];
   }
 
   return v11;

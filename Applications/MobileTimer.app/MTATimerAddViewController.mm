@@ -1,53 +1,53 @@
 @interface MTATimerAddViewController
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section;
 - (MTATimerAddEditDelegate)delegate;
-- (MTATimerAddViewController)initWithDataSource:(id)a3 timerManager:(id)a4 delegate:(id)a5;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (MTATimerAddViewController)initWithDataSource:(id)source timerManager:(id)manager delegate:(id)delegate;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)currentSoundToneName;
 - (id)defaultEditLabel;
 - (id)startButtonItem;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)timerControlCell;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_cancelButtonClicked:(id)a3;
-- (void)_startButtonClicked:(id)a3;
-- (void)dataSourceDidReloadRecentDurations:(id)a3;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_cancelButtonClicked:(id)clicked;
+- (void)_startButtonClicked:(id)clicked;
+- (void)dataSourceDidReloadRecentDurations:(id)durations;
 - (void)dealloc;
-- (void)deleteRowAtIndexPath:(id)a3;
-- (void)didSelectPresetWithDuration:(double)a3;
-- (void)didSelectRecentDuration:(id)a3;
+- (void)deleteRowAtIndexPath:(id)path;
+- (void)didSelectPresetWithDuration:(double)duration;
+- (void)didSelectRecentDuration:(id)duration;
 - (void)localSetup;
 - (void)reloadSections;
 - (void)setupNavigationButtons;
-- (void)showSoundPicker:(id)a3;
-- (void)timePickerDidSelectDuration:(double)a3;
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4;
+- (void)showSoundPicker:(id)picker;
+- (void)timePickerDidSelectDuration:(double)duration;
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier;
 @end
 
 @implementation MTATimerAddViewController
 
-- (MTATimerAddViewController)initWithDataSource:(id)a3 timerManager:(id)a4 delegate:(id)a5
+- (MTATimerAddViewController)initWithDataSource:(id)source timerManager:(id)manager delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = MTATimerAddViewController;
   v11 = [(MTATableViewController *)&v16 initWithTableViewStyle:1];
   v12 = v11;
   if (v11)
   {
-    [(MTATimerAddViewController *)v11 setDelegate:v10];
-    [(MTATimerAddViewController *)v12 setDataSource:v8];
-    v13 = [(MTATimerAddViewController *)v12 dataSource];
-    [v13 registerObserver:v12];
+    [(MTATimerAddViewController *)v11 setDelegate:delegateCopy];
+    [(MTATimerAddViewController *)v12 setDataSource:sourceCopy];
+    dataSource = [(MTATimerAddViewController *)v12 dataSource];
+    [dataSource registerObserver:v12];
 
-    [(MTATimerAddViewController *)v12 setTimerManager:v9];
+    [(MTATimerAddViewController *)v12 setTimerManager:managerCopy];
     [(MTATimerAddViewController *)v12 localSetup];
     v14 = v12;
   }
@@ -58,8 +58,8 @@
 - (void)localSetup
 {
   v3 = [UIImage systemImageNamed:@"timer"];
-  v4 = [(MTATimerAddViewController *)self tabBarItem];
-  [v4 setImage:v3];
+  tabBarItem = [(MTATimerAddViewController *)self tabBarItem];
+  [tabBarItem setImage:v3];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"TIMER" value:&stru_1000AEF10 table:0];
@@ -71,11 +71,11 @@
 
   [(MTATimerAddViewController *)self reloadSections];
   [(MTATimerAddViewController *)self setupNavigationButtons];
-  v9 = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
-  v10 = [v9 sound];
-  if (v10)
+  getLatestDuration = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
+  sound = [getLatestDuration sound];
+  if (sound)
   {
-    [(MTATimerAddViewController *)self setSound:v10];
+    [(MTATimerAddViewController *)self setSound:sound];
   }
 
   else
@@ -84,26 +84,26 @@
     [(MTATimerAddViewController *)self setSound:v11];
   }
 
-  v12 = [(MTATimerAddViewController *)self tableView];
-  [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMTATimerControlsCelldentifier"];
+  tableView = [(MTATimerAddViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kMTATimerControlsCelldentifier"];
 
-  v13 = [(MTATimerAddViewController *)self tableView];
-  [v13 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMTATimerPresetsCelldentifier"];
+  tableView2 = [(MTATimerAddViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMTATimerPresetsCelldentifier"];
 
-  v14 = [(MTATimerAddViewController *)self tableView];
-  [v14 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMTATimerRecentCelldentifier"];
+  tableView3 = [(MTATimerAddViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMTATimerRecentCelldentifier"];
 
-  v15 = [(MTATimerAddViewController *)self tableView];
-  [v15 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMTATimerAddTableViewHeaderReuseIdentifier"];
+  tableView4 = [(MTATimerAddViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMTATimerAddTableViewHeaderReuseIdentifier"];
 }
 
 - (void)dealloc
 {
-  v3 = [(MTATimerAddViewController *)self tonePickerViewController];
-  [v3 setDelegate:0];
+  tonePickerViewController = [(MTATimerAddViewController *)self tonePickerViewController];
+  [tonePickerViewController setDelegate:0];
 
-  v4 = [(MTATimerAddViewController *)self dataSource];
-  [v4 unregisterObserver:self];
+  dataSource = [(MTATimerAddViewController *)self dataSource];
+  [dataSource unregisterObserver:self];
 
   v5.receiver = self;
   v5.super_class = MTATimerAddViewController;
@@ -115,8 +115,8 @@
   [(NSMutableArray *)self->_sections removeAllObjects];
   [(NSMutableArray *)self->_sections addObject:&off_1000B17D0];
   [(NSMutableArray *)self->_sections addObject:&off_1000B17E8];
-  v3 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-  v4 = [v3 count];
+  getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+  v4 = [getRecentDurations count];
 
   if (v4)
   {
@@ -129,16 +129,16 @@
 - (void)setupNavigationButtons
 {
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonClicked:"];
-  v4 = [(MTATimerAddViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(MTATimerAddViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
-  v5 = [(MTATimerAddViewController *)self navigationItem];
-  v6 = [v5 leftBarButtonItem];
-  [v6 setTag:@"CancelButton"];
+  navigationItem2 = [(MTATimerAddViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setTag:@"CancelButton"];
 
-  v8 = [(MTATimerAddViewController *)self startButtonItem];
-  v7 = [(MTATimerAddViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v8];
+  startButtonItem = [(MTATimerAddViewController *)self startButtonItem];
+  navigationItem3 = [(MTATimerAddViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:startButtonItem];
 }
 
 - (id)startButtonItem
@@ -152,86 +152,86 @@
   return v2;
 }
 
-- (void)_cancelButtonClicked:(id)a3
+- (void)_cancelButtonClicked:(id)clicked
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ cancel button clicked timer add sheet", &v6, 0xCu);
   }
 
-  v5 = [(MTATimerAddViewController *)self delegate];
-  [v5 timerAddEditControllerDidCancel:self reload:0];
+  delegate = [(MTATimerAddViewController *)self delegate];
+  [delegate timerAddEditControllerDidCancel:self reload:0];
 }
 
-- (void)_startButtonClicked:(id)a3
+- (void)_startButtonClicked:(id)clicked
 {
-  v4 = [(MTATimerAddViewController *)self timerControlCell];
-  if (v4)
+  timerControlCell = [(MTATimerAddViewController *)self timerControlCell];
+  if (timerControlCell)
   {
-    v10 = v4;
-    [v4 getCurrentDuration];
+    v10 = timerControlCell;
+    [timerControlCell getCurrentDuration];
     v6 = v5;
-    v7 = [v10 getCurrentLabel];
-    v8 = [(MTATimerAddViewController *)self delegate];
-    v9 = [(MTATimerAddViewController *)self sound];
-    [v8 didStartTimerWithDuration:v7 title:v9 sound:self sender:v6];
+    getCurrentLabel = [v10 getCurrentLabel];
+    delegate = [(MTATimerAddViewController *)self delegate];
+    sound = [(MTATimerAddViewController *)self sound];
+    [delegate didStartTimerWithDuration:getCurrentLabel title:sound sound:self sender:v6];
 
-    v4 = v10;
+    timerControlCell = v10;
   }
 }
 
 - (id)timerControlCell
 {
-  v3 = [(MTATimerAddViewController *)self tableView];
+  tableView = [(MTATimerAddViewController *)self tableView];
   v4 = [NSIndexPath indexPathForRow:0 inSection:[(NSMutableArray *)self->_sections indexOfObject:&off_1000B17D0]];
-  v5 = [v3 cellForRowAtIndexPath:v4];
+  v5 = [tableView cellForRowAtIndexPath:v4];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a4];
-  v6 = [v5 integerValue];
+  v5 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v5 integerValue];
 
-  if (v6 != 2)
+  if (integerValue != 2)
   {
     return 1;
   }
 
-  v7 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-  v8 = [v7 count];
+  getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+  v8 = [getRecentDurations count];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v8 integerValue];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v8 integerValue];
 
-  if (v9 == 2)
+  if (integerValue == 2)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"kMTATimerRecentCelldentifier" forIndexPath:v7];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"recent-timer-%ld", [v7 row]);
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"kMTATimerRecentCelldentifier" forIndexPath:pathCopy];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"recent-timer-%ld", [pathCopy row]);
     [v8 setAccessibilityIdentifier:v13];
 
-    v14 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-    v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+    v15 = [getRecentDurations objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     [v8 setDelegate:self duration:v15];
 
     goto LABEL_7;
   }
 
-  if (v9 == 1)
+  if (integerValue == 1)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"kMTATimerPresetsCelldentifier" forIndexPath:v7];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"preset-timers-%ld", [v7 row]);
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"kMTATimerPresetsCelldentifier" forIndexPath:pathCopy];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"preset-timers-%ld", [pathCopy row]);
     [v8 setAccessibilityIdentifier:v12];
 
     [v8 setDelegate:self];
@@ -240,16 +240,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!integerValue)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"kMTATimerControlsCelldentifier" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"kMTATimerControlsCelldentifier" forIndexPath:pathCopy];
     [v8 setDelegate:self];
-    v10 = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
-    [v10 duration];
+    getLatestDuration = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
+    [getLatestDuration duration];
     [v8 setDuration:?];
 
-    v11 = [(MTATimerAddViewController *)self currentSoundToneName];
-    [v8 setTimerToneName:v11];
+    currentSoundToneName = [(MTATimerAddViewController *)self currentSoundToneName];
+    [v8 setTimerToneName:currentSoundToneName];
   }
 
 LABEL_8:
@@ -259,53 +259,53 @@ LABEL_8:
 
 - (id)currentSoundToneName
 {
-  v3 = [(MTATimerAddViewController *)self sound];
-  v4 = [v3 interruptAudio];
+  sound = [(MTATimerAddViewController *)self sound];
+  interruptAudio = [sound interruptAudio];
 
-  if (v4)
+  if (interruptAudio)
   {
-    v5 = +[NSBundle mainBundle];
-    v6 = [v5 localizedStringForKey:@"STOP_PLAYING" value:&stru_1000AEF10 table:0];
+    toneIdentifier = +[NSBundle mainBundle];
+    v6 = [toneIdentifier localizedStringForKey:@"STOP_PLAYING" value:&stru_1000AEF10 table:0];
   }
 
   else
   {
-    v7 = [(MTATimerAddViewController *)self sound];
-    v5 = [v7 toneIdentifier];
+    sound2 = [(MTATimerAddViewController *)self sound];
+    toneIdentifier = [sound2 toneIdentifier];
 
     v8 = +[TLToneManager sharedToneManager];
-    if (([v8 toneWithIdentifierIsValid:v5] & 1) == 0)
+    if (([v8 toneWithIdentifierIsValid:toneIdentifier] & 1) == 0)
     {
       v9 = [v8 defaultToneIdentifierForAlertType:13];
 
-      v5 = v9;
+      toneIdentifier = v9;
     }
 
-    v6 = [v8 nameForToneIdentifier:v5];
+    v6 = [v8 nameForToneIdentifier:toneIdentifier];
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [a4 section]);
-  v5 = [v4 integerValue];
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [path section]);
+  integerValue = [v4 integerValue];
 
-  return v5 == 2;
+  return integerValue == 2;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100009E8C;
   v14[3] = &unk_1000ADA20;
   objc_copyWeak(&v16, &location);
-  v8 = v7;
+  v8 = pathCopy;
   v15 = v8;
   v9 = [UIContextualAction contextualActionWithStyle:1 title:0 handler:v14];
   v10 = [UIImage systemImageNamed:@"trash"];
@@ -321,24 +321,24 @@ LABEL_8:
   return v12;
 }
 
-- (void)deleteRowAtIndexPath:(id)a3
+- (void)deleteRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
-    v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v4 section]);
-    v7 = [v6 integerValue];
+    v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+    integerValue = [v6 integerValue];
 
-    if (v7 == 2)
+    if (integerValue == 2)
     {
-      v8 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+      getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+      v9 = [getRecentDurations objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
 
       if (v9)
       {
-        v10 = [(MTATimerAddViewController *)self timerManager];
-        v11 = [v10 removeRecentDuration:v9];
+        timerManager = [(MTATimerAddViewController *)self timerManager];
+        v11 = [timerManager removeRecentDuration:v9];
 
         v12 = +[NAScheduler mainThreadScheduler];
         v13 = [v11 reschedule:v12];
@@ -349,7 +349,7 @@ LABEL_8:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543618;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
         v19 = v9;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ deleting recent %{public}@", &v16, 0x16u);
@@ -358,21 +358,21 @@ LABEL_8:
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v6 integerValue];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v6 integerValue];
 
-  if (v7 == 2)
+  if (integerValue == 2)
   {
-    v12 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+    v13 = [getRecentDurations objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     if (v13)
     {
-      v14 = [v13 title];
-      [MTATimerRecentCell estimatedCellHeightForTimerWithTitle:v14];
+      title = [v13 title];
+      [MTATimerRecentCell estimatedCellHeightForTimerWithTitle:title];
       v11 = v15;
     }
 
@@ -382,7 +382,7 @@ LABEL_8:
     }
   }
 
-  else if (v7)
+  else if (integerValue)
   {
     v11 = 90.0;
   }
@@ -398,22 +398,22 @@ LABEL_8:
   return v11;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:@"kMTATimerAddTableViewHeaderReuseIdentifier"];
-  v7 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a4];
-  v8 = [v7 integerValue];
+  v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"kMTATimerAddTableViewHeaderReuseIdentifier"];
+  v7 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v7 integerValue];
 
-  if (v8)
+  if (integerValue)
   {
-    if (v8 == 1)
+    if (integerValue == 1)
     {
       v9 = @"TIMER_ADD_SHEET_PRESETS";
     }
 
     else
     {
-      if (v8 != 2)
+      if (integerValue != 2)
       {
 LABEL_7:
         v14 = v6;
@@ -425,8 +425,8 @@ LABEL_7:
 
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:v9 value:&stru_1000AEF10 table:0];
-    v12 = [(MTATimerAddViewController *)self view];
-    v13 = +[MTAUtilities sectionHeaderConfigurationWithTitle:isRTL:](MTAUtilities, "sectionHeaderConfigurationWithTitle:isRTL:", v11, [v12 mtui_isRTL]);
+    view = [(MTATimerAddViewController *)self view];
+    v13 = +[MTAUtilities sectionHeaderConfigurationWithTitle:isRTL:](MTAUtilities, "sectionHeaderConfigurationWithTitle:isRTL:", v11, [view mtui_isRTL]);
 
     [v6 setContentConfiguration:v13];
     goto LABEL_7;
@@ -438,35 +438,35 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 integerValue];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v4 integerValue];
 
-  return v5 == 2;
+  return integerValue == 2;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 integerValue];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v4 integerValue];
 
-  return v5 == 2;
+  return integerValue == 2;
 }
 
-- (void)dataSourceDidReloadRecentDurations:(id)a3
+- (void)dataSourceDidReloadRecentDurations:(id)durations
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ dataSourceDidReloadRecentDurations reloading table", &v6, 0xCu);
   }
 
   [(MTATimerAddViewController *)self reloadSections];
-  v5 = [(MTATimerAddViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(MTATimerAddViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)defaultEditLabel
@@ -477,26 +477,26 @@ LABEL_9:
   return v3;
 }
 
-- (void)didSelectPresetWithDuration:(double)a3
+- (void)didSelectPresetWithDuration:(double)duration
 {
-  v6 = [(MTATimerAddViewController *)self delegate];
-  v5 = [(MTATimerAddViewController *)self sound];
-  [v6 didStartTimerWithDuration:0 title:v5 sound:self sender:a3];
+  delegate = [(MTATimerAddViewController *)self delegate];
+  sound = [(MTATimerAddViewController *)self sound];
+  [delegate didStartTimerWithDuration:0 title:sound sound:self sender:duration];
 }
 
-- (void)didSelectRecentDuration:(id)a3
+- (void)didSelectRecentDuration:(id)duration
 {
-  v4 = a3;
-  v9 = [(MTATimerAddViewController *)self delegate];
-  [v4 duration];
+  durationCopy = duration;
+  delegate = [(MTATimerAddViewController *)self delegate];
+  [durationCopy duration];
   v6 = v5;
-  v7 = [v4 title];
-  v8 = [v4 sound];
+  title = [durationCopy title];
+  sound = [durationCopy sound];
 
-  [v9 didStartTimerWithDuration:v7 title:v8 sound:self sender:v6];
+  [delegate didStartTimerWithDuration:title title:sound sound:self sender:v6];
 }
 
-- (void)showSoundPicker:(id)a3
+- (void)showSoundPicker:(id)picker
 {
   if (!self->_tonePickerViewController)
   {
@@ -517,43 +517,43 @@ LABEL_9:
     v10 = objc_opt_new();
     [(TKTonePickerViewController *)self->_tonePickerViewController setStyleProvider:v10];
 
-    v11 = [(TKTonePickerViewController *)self->_tonePickerViewController navigationItem];
+    navigationItem = [(TKTonePickerViewController *)self->_tonePickerViewController navigationItem];
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"WHEN_TIMER_ENDS" value:&stru_1000AEF10 table:0];
-    [v11 setTitle:v13];
+    [navigationItem setTitle:v13];
   }
 
-  v14 = [(MTATimerAddViewController *)self sound];
-  v15 = [v14 toneIdentifier];
-  [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:v15];
+  sound = [(MTATimerAddViewController *)self sound];
+  toneIdentifier = [sound toneIdentifier];
+  [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:toneIdentifier];
 
   [(TKTonePickerViewController *)self->_tonePickerViewController setShowsToneStore:MTShouldAllowToneStore()];
-  v16 = [(MTATimerAddViewController *)self navigationController];
-  [v16 pushViewController:self->_tonePickerViewController animated:1];
+  navigationController = [(MTATimerAddViewController *)self navigationController];
+  [navigationController pushViewController:self->_tonePickerViewController animated:1];
 }
 
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier
 {
-  v5 = [(TKTonePickerViewController *)self->_tonePickerViewController selectedToneIdentifier:a3];
-  if (!v5)
+  defaultToneIdentifier = [(TKTonePickerViewController *)self->_tonePickerViewController selectedToneIdentifier:controller];
+  if (!defaultToneIdentifier)
   {
-    v5 = [(TKTonePickerViewController *)self->_tonePickerViewController defaultToneIdentifier];
+    defaultToneIdentifier = [(TKTonePickerViewController *)self->_tonePickerViewController defaultToneIdentifier];
   }
 
-  v13 = v5;
-  v6 = [(MTATimerAddViewController *)self sound];
-  v7 = [v6 vibrationIdentifier];
-  v8 = [(MTATimerAddViewController *)self sound];
-  v9 = [v8 soundVolume];
-  v10 = [MTSound toneSoundWithIdentifier:v13 vibrationIdentifer:v7 volume:v9];
+  v13 = defaultToneIdentifier;
+  sound = [(MTATimerAddViewController *)self sound];
+  vibrationIdentifier = [sound vibrationIdentifier];
+  sound2 = [(MTATimerAddViewController *)self sound];
+  soundVolume = [sound2 soundVolume];
+  v10 = [MTSound toneSoundWithIdentifier:v13 vibrationIdentifer:vibrationIdentifier volume:soundVolume];
   [(MTATimerAddViewController *)self setSound:v10];
 
-  v11 = [(MTATimerAddViewController *)self timerControlCell];
-  v12 = [(MTATimerAddViewController *)self currentSoundToneName];
-  [v11 setTimerToneName:v12];
+  timerControlCell = [(MTATimerAddViewController *)self timerControlCell];
+  currentSoundToneName = [(MTATimerAddViewController *)self currentSoundToneName];
+  [timerControlCell setTimerToneName:currentSoundToneName];
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   if (MTUIIsPadIdiom())
   {
@@ -566,12 +566,12 @@ LABEL_9:
   }
 }
 
-- (void)timePickerDidSelectDuration:(double)a3
+- (void)timePickerDidSelectDuration:(double)duration
 {
-  v3 = a3 != 0.0;
-  v5 = [(MTATimerAddViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  v3 = duration != 0.0;
+  navigationItem = [(MTATimerAddViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v3];
 }
 
 - (MTATimerAddEditDelegate)delegate

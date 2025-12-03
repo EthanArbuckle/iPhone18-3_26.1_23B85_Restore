@@ -1,8 +1,8 @@
 @interface SidecarDisplaySendingDeviceSessionState
-- (SidecarDisplaySendingDeviceSessionState)initWithCoder:(id)a3;
-- (SidecarDisplaySendingDeviceSessionState)initWithDevice:(id)a3 sessionState:(int64_t)a4 visualDetectability:(int64_t)a5;
+- (SidecarDisplaySendingDeviceSessionState)initWithCoder:(id)coder;
+- (SidecarDisplaySendingDeviceSessionState)initWithDevice:(id)device sessionState:(int64_t)state visualDetectability:(int64_t)detectability;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SidecarDisplaySendingDeviceSessionState
@@ -12,70 +12,70 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SidecarDisplaySendingDeviceSessionState *)self device];
-  v7 = [v6 identifier];
-  v8 = [(SidecarDisplaySendingDeviceSessionState *)self visualDetectability];
-  if (v8 > 2)
+  device = [(SidecarDisplaySendingDeviceSessionState *)self device];
+  identifier = [device identifier];
+  visualDetectability = [(SidecarDisplaySendingDeviceSessionState *)self visualDetectability];
+  if (visualDetectability > 2)
   {
     v9 = @"UnrecognizedValue";
   }
 
   else
   {
-    v9 = off_279BC35E0[v8];
+    v9 = off_279BC35E0[visualDetectability];
   }
 
   v10 = v9;
-  v11 = [(SidecarDisplaySendingDeviceSessionState *)self sessionState];
-  if (v11 > 3)
+  sessionState = [(SidecarDisplaySendingDeviceSessionState *)self sessionState];
+  if (sessionState > 3)
   {
     v12 = @"Unknown";
   }
 
   else
   {
-    v12 = off_279BC31A0[v11];
+    v12 = off_279BC31A0[sessionState];
   }
 
   v13 = v12;
-  v14 = [v3 stringWithFormat:@"%@ device identifier: [%@], visualDetectability: [%@], sessionState: [%@]", v5, v7, v10, v13];
+  v14 = [v3 stringWithFormat:@"%@ device identifier: [%@], visualDetectability: [%@], sessionState: [%@]", v5, identifier, v10, v13];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   device = self->_device;
-  v5 = a3;
-  encodeObject(v5, @"device", device);
-  encodeInteger(v5, @"sessionState", self->_sessionState);
-  encodeInteger(v5, @"visualDetectability", self->_visualDetectability);
+  coderCopy = coder;
+  encodeObject(coderCopy, @"device", device);
+  encodeInteger(coderCopy, @"sessionState", self->_sessionState);
+  encodeInteger(coderCopy, @"visualDetectability", self->_visualDetectability);
 }
 
-- (SidecarDisplaySendingDeviceSessionState)initWithCoder:(id)a3
+- (SidecarDisplaySendingDeviceSessionState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = decodeObject(v4, @"device", v5);
-  v7 = decodeInteger(v4, @"sessionState");
-  v8 = decodeInteger(v4, @"visualDetectability");
+  v6 = decodeObject(coderCopy, @"device", v5);
+  v7 = decodeInteger(coderCopy, @"sessionState");
+  v8 = decodeInteger(coderCopy, @"visualDetectability");
 
   v9 = [(SidecarDisplaySendingDeviceSessionState *)self initWithDevice:v6 sessionState:v7 visualDetectability:v8];
   return v9;
 }
 
-- (SidecarDisplaySendingDeviceSessionState)initWithDevice:(id)a3 sessionState:(int64_t)a4 visualDetectability:(int64_t)a5
+- (SidecarDisplaySendingDeviceSessionState)initWithDevice:(id)device sessionState:(int64_t)state visualDetectability:(int64_t)detectability
 {
-  v9 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = SidecarDisplaySendingDeviceSessionState;
   v10 = [(SidecarDisplaySendingDeviceSessionState *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a3);
-    v11->_sessionState = a4;
-    v11->_visualDetectability = a5;
+    objc_storeStrong(&v10->_device, device);
+    v11->_sessionState = state;
+    v11->_visualDetectability = detectability;
   }
 
   return v11;

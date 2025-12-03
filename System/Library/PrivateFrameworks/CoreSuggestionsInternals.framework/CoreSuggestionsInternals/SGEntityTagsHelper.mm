@@ -1,19 +1,19 @@
 @interface SGEntityTagsHelper
-+ (BOOL)schemasInEntityTagsBelongsToPendingConfirmationEvent:(id)a3;
-+ (id)extractSchemasFromEntityTags:(id)a3;
++ (BOOL)schemasInEntityTagsBelongsToPendingConfirmationEvent:(id)event;
++ (id)extractSchemasFromEntityTags:(id)tags;
 @end
 
 @implementation SGEntityTagsHelper
 
-+ (id)extractSchemasFromEntityTags:(id)a3
++ (id)extractSchemasFromEntityTags:(id)tags
 {
   v27 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  tagsCopy = tags;
+  v4 = [tagsCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,7 +24,7 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tagsCopy);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
@@ -32,8 +32,8 @@
         {
           v10 = objc_autoreleasePoolPush();
           v11 = MEMORY[0x277CCAAA0];
-          v12 = [v8 value];
-          v13 = [v12 dataUsingEncoding:4];
+          value = [v8 value];
+          v13 = [value dataUsingEncoding:4];
           v19 = 0;
           v9 = [v11 JSONObjectWithData:v13 options:0 error:&v19];
           v14 = v19;
@@ -66,7 +66,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v5 = [tagsCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v5)
       {
         continue;
@@ -95,9 +95,9 @@ uint64_t __51__SGEntityTagsHelper_extractSchemasFromEntityTags___block_invoke(ui
   return isKindOfClass & 1;
 }
 
-+ (BOOL)schemasInEntityTagsBelongsToPendingConfirmationEvent:(id)a3
++ (BOOL)schemasInEntityTagsBelongsToPendingConfirmationEvent:(id)event
 {
-  v3 = [a1 extractSchemasFromEntityTags:a3];
+  v3 = [self extractSchemasFromEntityTags:event];
   if ([v3 count])
   {
     v4 = [v3 objectAtIndexedSubscript:0];

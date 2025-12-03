@@ -1,9 +1,9 @@
 @interface ACCNavigationRoadObjectDetectionInfo
-+ (id)keyForType:(unsigned __int16)a3;
++ (id)keyForType:(unsigned __int16)type;
 - (ACCNavigationRoadObjectDetectionInfo)init;
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4;
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data;
 - (id)description;
-- (void)setInfoFromDictionary:(id)a3;
+- (void)setInfoFromDictionary:(id)dictionary;
 @end
 
 @implementation ACCNavigationRoadObjectDetectionInfo
@@ -92,18 +92,18 @@
   return v25;
 }
 
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 > 6)
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy > 6)
   {
     isKindOfClass = 0;
   }
 
   else
   {
-    v6 = *(&off_100226B50)[v4];
+    v6 = *(&off_100226B50)[typeCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -111,18 +111,18 @@
   return isKindOfClass & 1;
 }
 
-- (void)setInfoFromDictionary:(id)a3
+- (void)setInfoFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     [(NSMutableDictionary *)self->_infoDict removeAllObjects];
-    _setInfoFromDictionary(v4, self->_infoDict, ACCNav_RODUpdate_ID);
-    _setInfoFromDictionary(v4, self->_infoDict, ACCNav_RODUpdate_Timestamp);
-    _setInfoFromDictionary(v4, self->_infoDict, ACCNav_RODUpdate_EgoSpeed);
-    _setInfoFromDictionary(v4, self->_infoDict, ACCNav_RODUpdate_EgoYawRate);
-    v5 = [v4 objectForKey:ACCNav_RODUpdate_RoadSign];
-    v32 = self;
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_ID);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_Timestamp);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_EgoSpeed);
+    _setInfoFromDictionary(dictionaryCopy, self->_infoDict, ACCNav_RODUpdate_EgoYawRate);
+    v5 = [dictionaryCopy objectForKey:ACCNav_RODUpdate_RoadSign];
+    selfCopy = self;
     if (v5)
     {
       v6 = objc_alloc_init(NSMutableArray);
@@ -161,10 +161,10 @@
         while (v9);
       }
 
-      [(NSMutableDictionary *)v32->_infoDict setObject:v6 forKey:ACCNav_RODUpdate_RoadSign];
+      [(NSMutableDictionary *)selfCopy->_infoDict setObject:v6 forKey:ACCNav_RODUpdate_RoadSign];
     }
 
-    v14 = [v4 objectForKey:ACCNav_RODUpdate_RoadLane];
+    v14 = [dictionaryCopy objectForKey:ACCNav_RODUpdate_RoadLane];
 
     if (v14)
     {
@@ -204,10 +204,10 @@
         while (v18);
       }
 
-      [(NSMutableDictionary *)v32->_infoDict setObject:v15 forKey:ACCNav_RODUpdate_RoadLane];
+      [(NSMutableDictionary *)selfCopy->_infoDict setObject:v15 forKey:ACCNav_RODUpdate_RoadLane];
     }
 
-    v23 = [v4 objectForKey:ACCNav_RODUpdate_RoadObject];
+    v23 = [dictionaryCopy objectForKey:ACCNav_RODUpdate_RoadObject];
 
     if (v23)
     {
@@ -247,17 +247,17 @@
         while (v27);
       }
 
-      [(NSMutableDictionary *)v32->_infoDict setObject:v24 forKey:ACCNav_RODUpdate_RoadObject];
+      [(NSMutableDictionary *)selfCopy->_infoDict setObject:v24 forKey:ACCNav_RODUpdate_RoadObject];
     }
   }
 }
 
-+ (id)keyForType:(unsigned __int16)a3
++ (id)keyForType:(unsigned __int16)type
 {
-  v3 = a3;
-  if (a3 <= 2)
+  typeCopy = type;
+  if (type <= 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 0u:
         v4 = &ACCNav_RODUpdate_ID;
@@ -275,9 +275,9 @@ LABEL_19:
 
   else
   {
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v4 = &ACCNav_RODUpdate_EgoYawRate;
       }
@@ -290,13 +290,13 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v4 = &ACCNav_RODUpdate_RoadLane;
       goto LABEL_19;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v4 = &ACCNav_RODUpdate_RoadObject;
       goto LABEL_19;
@@ -322,7 +322,7 @@ LABEL_19:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = typeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown RoadObjectDetectionInfo infoType %d", v9, 8u);
   }
 

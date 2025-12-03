@@ -1,8 +1,8 @@
 @interface _SBIconImageViewDisableUpdatesAssertion
 - (SBIconImageView)iconImageView;
-- (_SBIconImageViewDisableUpdatesAssertion)initWithIconImageView:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBIconImageViewDisableUpdatesAssertion)initWithIconImageView:(id)view reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,18 +10,18 @@
 
 @implementation _SBIconImageViewDisableUpdatesAssertion
 
-- (_SBIconImageViewDisableUpdatesAssertion)initWithIconImageView:(id)a3 reason:(id)a4
+- (_SBIconImageViewDisableUpdatesAssertion)initWithIconImageView:(id)view reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = _SBIconImageViewDisableUpdatesAssertion;
   v8 = [(_SBIconImageViewDisableUpdatesAssertion *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_iconImageView, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_iconImageView, viewCopy);
+    v10 = [reasonCopy copy];
     reason = v9->_reason;
     v9->_reason = v10;
   }
@@ -34,8 +34,8 @@
   if (![(_SBIconImageViewDisableUpdatesAssertion *)self isInvalidated])
   {
     [(_SBIconImageViewDisableUpdatesAssertion *)self setInvalidated:1];
-    v3 = [(_SBIconImageViewDisableUpdatesAssertion *)self iconImageView];
-    [v3 invalidateImageUpdatesAssertion:self];
+    iconImageView = [(_SBIconImageViewDisableUpdatesAssertion *)self iconImageView];
+    [iconImageView invalidateImageUpdatesAssertion:self];
   }
 }
 
@@ -54,32 +54,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_SBIconImageViewDisableUpdatesAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBIconImageViewDisableUpdatesAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBIconImageViewDisableUpdatesAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBIconImageViewDisableUpdatesAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBIconImageViewDisableUpdatesAssertion *)self succinctDescriptionBuilder];
-  v5 = [(_SBIconImageViewDisableUpdatesAssertion *)self iconImageView];
-  v6 = [v4 appendPointer:v5 withName:@"iconImageView"];
+  succinctDescriptionBuilder = [(_SBIconImageViewDisableUpdatesAssertion *)self succinctDescriptionBuilder];
+  iconImageView = [(_SBIconImageViewDisableUpdatesAssertion *)self iconImageView];
+  v6 = [succinctDescriptionBuilder appendPointer:iconImageView withName:@"iconImageView"];
 
-  v7 = [(_SBIconImageViewDisableUpdatesAssertion *)self reason];
-  v8 = [v4 appendObject:v7 withName:@"reason"];
+  reason = [(_SBIconImageViewDisableUpdatesAssertion *)self reason];
+  v8 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v9 = [v4 appendBool:-[_SBIconImageViewDisableUpdatesAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
+  v9 = [succinctDescriptionBuilder appendBool:-[_SBIconImageViewDisableUpdatesAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBIconImageView)iconImageView

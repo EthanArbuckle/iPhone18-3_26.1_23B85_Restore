@@ -9,10 +9,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_INVocabularyGenerationDiff *)self isFullReset];
-  v6 = [(_INVocabularyGenerationDiff *)self deletedSiriIDs];
-  v7 = [(_INVocabularyGenerationDiff *)self updatedVocabularyItems];
-  v8 = [v3 stringWithFormat:@"<%@ %p>{\n  Reset=%d\n  deletedSiriIDs=%@\n  updatedVocabularyItems=%@\n}", v4, self, v5, v6, v7];
+  isFullReset = [(_INVocabularyGenerationDiff *)self isFullReset];
+  deletedSiriIDs = [(_INVocabularyGenerationDiff *)self deletedSiriIDs];
+  updatedVocabularyItems = [(_INVocabularyGenerationDiff *)self updatedVocabularyItems];
+  v8 = [v3 stringWithFormat:@"<%@ %p>{\n  Reset=%d\n  deletedSiriIDs=%@\n  updatedVocabularyItems=%@\n}", v4, self, isFullReset, deletedSiriIDs, updatedVocabularyItems];
 
   return v8;
 }
@@ -24,16 +24,16 @@
     return 1;
   }
 
-  v4 = [(_INVocabularyGenerationDiff *)self deletedSiriIDs];
-  if ([v4 count])
+  deletedSiriIDs = [(_INVocabularyGenerationDiff *)self deletedSiriIDs];
+  if ([deletedSiriIDs count])
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(_INVocabularyGenerationDiff *)self updatedVocabularyItems];
-    v3 = [v5 count] != 0;
+    updatedVocabularyItems = [(_INVocabularyGenerationDiff *)self updatedVocabularyItems];
+    v3 = [updatedVocabularyItems count] != 0;
   }
 
   return v3;

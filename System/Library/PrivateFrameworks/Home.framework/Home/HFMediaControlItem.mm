@@ -1,75 +1,75 @@
 @interface HFMediaControlItem
-- (HFMediaControlItem)initWithMediaRoutingIdentifier:(id)a3 deviceName:(id)a4 mediaAccessoryItemType:(int64_t)a5;
-- (HFMediaControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFMediaControlItem)initWithValueSource:(id)a3 mediaProfileContainer:(id)a4 mediaAccessoryItemType:(int64_t)a5 displayResults:(id)a6;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (HFMediaControlItem)initWithMediaRoutingIdentifier:(id)identifier deviceName:(id)name mediaAccessoryItemType:(int64_t)type;
+- (HFMediaControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFMediaControlItem)initWithValueSource:(id)source mediaProfileContainer:(id)container mediaAccessoryItemType:(int64_t)type displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)readValueAndPopulateStandardResults;
 - (id)toggleValue;
-- (id)writePrimaryState:(int64_t)a3;
-- (id)writeValue:(id)a3;
-- (int64_t)mapToHMMediaPlaybackState:(int64_t)a3;
-- (int64_t)toggledSceneStateFromPrimaryState:(int64_t)a3;
+- (id)writePrimaryState:(int64_t)state;
+- (id)writeValue:(id)value;
+- (int64_t)mapToHMMediaPlaybackState:(int64_t)state;
+- (int64_t)toggledSceneStateFromPrimaryState:(int64_t)state;
 @end
 
 @implementation HFMediaControlItem
 
-- (HFMediaControlItem)initWithValueSource:(id)a3 mediaProfileContainer:(id)a4 mediaAccessoryItemType:(int64_t)a5 displayResults:(id)a6
+- (HFMediaControlItem)initWithValueSource:(id)source mediaProfileContainer:(id)container mediaAccessoryItemType:(int64_t)type displayResults:(id)results
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  sourceCopy = source;
+  containerCopy = container;
+  resultsCopy = results;
+  if (!sourceCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HFMediaControlItem.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"valueSource"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaControlItem.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"valueSource"}];
   }
 
-  v14 = [v12 hf_home];
-  if (!v14)
+  hf_home = [containerCopy hf_home];
+  if (!hf_home)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HFMediaControlItem.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFMediaControlItem.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v15 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v16 = [v14 hf_characteristicValueManager];
+  hf_characteristicValueManager = [hf_home hf_characteristicValueManager];
   v17 = [MEMORY[0x277CBEB98] set];
-  v18 = [(HFSimpleAggregatedCharacteristicValueSource *)v15 initWithValueSource:v16 characteristics:v17 primaryServiceDescriptor:0];
+  v18 = [(HFSimpleAggregatedCharacteristicValueSource *)v15 initWithValueSource:hf_characteristicValueManager characteristics:v17 primaryServiceDescriptor:0];
 
   v19 = objc_alloc_init(HFControlItemCharacteristicOptions);
   v25.receiver = self;
   v25.super_class = HFMediaControlItem;
-  v20 = [(HFControlItem *)&v25 initWithValueSource:v18 characteristicOptions:v19 displayResults:v13];
+  v20 = [(HFControlItem *)&v25 initWithValueSource:v18 characteristicOptions:v19 displayResults:resultsCopy];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_mediaValueSource, a3);
-    objc_storeStrong(&v20->_mediaProfileContainer, a4);
-    v20->_mediaAccessoryItemType = a5;
+    objc_storeStrong(&v20->_mediaValueSource, source);
+    objc_storeStrong(&v20->_mediaProfileContainer, container);
+    v20->_mediaAccessoryItemType = type;
   }
 
   return v20;
 }
 
-- (HFMediaControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFMediaControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFMediaControlItem.m" lineNumber:109 description:{@"%s is unavailable; use %@ instead", "-[HFMediaControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaControlItem.m" lineNumber:109 description:{@"%s is unavailable; use %@ instead", "-[HFMediaControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (HFMediaControlItem)initWithMediaRoutingIdentifier:(id)a3 deviceName:(id)a4 mediaAccessoryItemType:(int64_t)a5
+- (HFMediaControlItem)initWithMediaRoutingIdentifier:(id)identifier deviceName:(id)name mediaAccessoryItemType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v10 = [HFSimpleAggregatedCharacteristicValueSource alloc];
   v11 = +[HFHomeKitDispatcher sharedDispatcher];
-  v12 = [v11 home];
-  v13 = [v12 hf_characteristicValueManager];
+  home = [v11 home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
   v14 = [MEMORY[0x277CBEB98] set];
-  v15 = [(HFSimpleAggregatedCharacteristicValueSource *)v10 initWithValueSource:v13 characteristics:v14 primaryServiceDescriptor:0];
+  v15 = [(HFSimpleAggregatedCharacteristicValueSource *)v10 initWithValueSource:hf_characteristicValueManager characteristics:v14 primaryServiceDescriptor:0];
 
   v16 = objc_alloc_init(HFControlItemCharacteristicOptions);
   v20.receiver = self;
@@ -78,46 +78,46 @@
 
   if (v17)
   {
-    objc_storeStrong(&v17->_mediaRoutingIdentifier, a3);
-    objc_storeStrong(&v17->_deviceName, a4);
-    v17->_mediaAccessoryItemType = a5;
+    objc_storeStrong(&v17->_mediaRoutingIdentifier, identifier);
+    objc_storeStrong(&v17->_deviceName, name);
+    v17->_mediaAccessoryItemType = type;
   }
 
   return v17;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v5 = [(HFMediaControlItem *)self mediaValueSource:a3];
+  v5 = [(HFMediaControlItem *)self mediaValueSource:options];
   if (v5 && (v6 = v5, [(HFMediaControlItem *)self mediaProfileContainer], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v8 = objc_alloc(objc_opt_class());
-    v9 = [(HFMediaControlItem *)self mediaValueSource];
-    v10 = [(HFMediaControlItem *)self mediaProfileContainer];
-    v11 = [(HFMediaControlItem *)self mediaAccessoryItemType];
-    v12 = [(HFControlItem *)self displayResults];
-    v13 = [v8 initWithValueSource:v9 mediaProfileContainer:v10 mediaAccessoryItemType:v11 displayResults:v12];
+    mediaValueSource = [(HFMediaControlItem *)self mediaValueSource];
+    mediaProfileContainer = [(HFMediaControlItem *)self mediaProfileContainer];
+    mediaAccessoryItemType = [(HFMediaControlItem *)self mediaAccessoryItemType];
+    displayResults = [(HFControlItem *)self displayResults];
+    v13 = [v8 initWithValueSource:mediaValueSource mediaProfileContainer:mediaProfileContainer mediaAccessoryItemType:mediaAccessoryItemType displayResults:displayResults];
   }
 
   else
   {
-    v14 = [(HFMediaControlItem *)self mediaRoutingIdentifier];
+    mediaRoutingIdentifier = [(HFMediaControlItem *)self mediaRoutingIdentifier];
 
-    if (!v14)
+    if (!mediaRoutingIdentifier)
     {
       v13 = 0;
       goto LABEL_8;
     }
 
     v15 = objc_alloc(objc_opt_class());
-    v9 = [(HFMediaControlItem *)self mediaRoutingIdentifier];
-    v10 = [(HFMediaControlItem *)self deviceName];
-    v13 = [v15 initWithMediaRoutingIdentifier:v9 deviceName:v10 mediaAccessoryItemType:{-[HFMediaControlItem mediaAccessoryItemType](self, "mediaAccessoryItemType")}];
+    mediaValueSource = [(HFMediaControlItem *)self mediaRoutingIdentifier];
+    mediaProfileContainer = [(HFMediaControlItem *)self deviceName];
+    v13 = [v15 initWithMediaRoutingIdentifier:mediaValueSource deviceName:mediaProfileContainer mediaAccessoryItemType:{-[HFMediaControlItem mediaAccessoryItemType](self, "mediaAccessoryItemType")}];
   }
 
 LABEL_8:
-  v16 = [(HFMediaControlItem *)self mediaActionSetting];
-  [v13 setMediaActionSetting:v16];
+  mediaActionSetting = [(HFMediaControlItem *)self mediaActionSetting];
+  [v13 setMediaActionSetting:mediaActionSetting];
 
   [v13 copyLatestResultsFromItem:self];
   return v13;
@@ -127,17 +127,17 @@ LABEL_8:
 {
   v31.receiver = self;
   v31.super_class = HFMediaControlItem;
-  v3 = [(HFControlItem *)&v31 readValueAndPopulateStandardResults];
-  v4 = [(HFMediaControlItem *)self mediaValueSource];
-  v5 = [(HFMediaControlItem *)self mediaProfileContainer];
-  v6 = [v5 hf_mediaRouteIdentifier];
-  v7 = [v4 lastPlaybackStateForProfileForRouteID:v6];
+  readValueAndPopulateStandardResults = [(HFControlItem *)&v31 readValueAndPopulateStandardResults];
+  mediaValueSource = [(HFMediaControlItem *)self mediaValueSource];
+  mediaProfileContainer = [(HFMediaControlItem *)self mediaProfileContainer];
+  hf_mediaRouteIdentifier = [mediaProfileContainer hf_mediaRouteIdentifier];
+  v7 = [mediaValueSource lastPlaybackStateForProfileForRouteID:hf_mediaRouteIdentifier];
 
-  v8 = [(HFMediaControlItem *)self mediaActionSetting];
-  [v8 updatePlaybackState:v7];
+  mediaActionSetting = [(HFMediaControlItem *)self mediaActionSetting];
+  [mediaActionSetting updatePlaybackState:v7];
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = v9;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = dictionary;
   if (v7 == 2)
   {
     goto LABEL_8;
@@ -154,13 +154,13 @@ LABEL_8:
 LABEL_8:
     v15 = &unk_282523EF8;
 LABEL_10:
-    [v9 setObject:v15 forKeyedSubscript:@"value"];
+    [dictionary setObject:v15 forKeyedSubscript:@"value"];
     goto LABEL_11;
   }
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(HFMediaControlItem *)self mediaActionSetting];
-  if (v12)
+  mediaActionSetting2 = [(HFMediaControlItem *)self mediaActionSetting];
+  if (mediaActionSetting2)
   {
     v13 = 2;
   }
@@ -175,31 +175,31 @@ LABEL_10:
 
 LABEL_11:
   [v10 setObject:&unk_282523F28 forKeyedSubscript:@"controlItemPurpose"];
-  v16 = [(HFMediaControlItem *)self mediaProfileContainer];
-  v17 = [v16 hf_mediaRouteIdentifier];
-  [v10 setObject:v17 forKeyedSubscript:@"HFMediaControlItemRouteIdentifierKey"];
+  mediaProfileContainer2 = [(HFMediaControlItem *)self mediaProfileContainer];
+  hf_mediaRouteIdentifier2 = [mediaProfileContainer2 hf_mediaRouteIdentifier];
+  [v10 setObject:hf_mediaRouteIdentifier2 forKeyedSubscript:@"HFMediaControlItemRouteIdentifierKey"];
 
-  v18 = [(HFMediaControlItem *)self mediaProfileContainer];
-  v19 = [v18 hf_dependentHomeKitObjectsForDownstreamItems];
-  v20 = [v19 copy];
+  mediaProfileContainer3 = [(HFMediaControlItem *)self mediaProfileContainer];
+  hf_dependentHomeKitObjectsForDownstreamItems = [mediaProfileContainer3 hf_dependentHomeKitObjectsForDownstreamItems];
+  v20 = [hf_dependentHomeKitObjectsForDownstreamItems copy];
   [v10 setObject:v20 forKeyedSubscript:@"dependentHomeKitObjects"];
 
-  v21 = [(HFMediaControlItem *)self mediaProfileContainer];
-  v22 = [v21 hf_serviceNameComponents];
+  mediaProfileContainer4 = [(HFMediaControlItem *)self mediaProfileContainer];
+  hf_serviceNameComponents = [mediaProfileContainer4 hf_serviceNameComponents];
 
-  if (v22)
+  if (hf_serviceNameComponents)
   {
-    [v10 setObject:v22 forKeyedSubscript:@"serviceNameComponents"];
-    v23 = [v22 composedString];
-    if (v23)
+    [v10 setObject:hf_serviceNameComponents forKeyedSubscript:@"serviceNameComponents"];
+    composedString = [hf_serviceNameComponents composedString];
+    if (composedString)
     {
-      [v10 setObject:v23 forKeyedSubscript:@"title"];
+      [v10 setObject:composedString forKeyedSubscript:@"title"];
     }
   }
 
-  v24 = [(HFMediaControlItem *)self mediaProfileContainer];
-  v25 = [v24 hf_categoryCapitalizedLocalizedDescription];
-  [v10 setObject:v25 forKeyedSubscript:@"HFMediaControlItemCategoryLocalizedDescriptionKey"];
+  mediaProfileContainer5 = [(HFMediaControlItem *)self mediaProfileContainer];
+  hf_categoryCapitalizedLocalizedDescription = [mediaProfileContainer5 hf_categoryCapitalizedLocalizedDescription];
+  [v10 setObject:hf_categoryCapitalizedLocalizedDescription forKeyedSubscript:@"HFMediaControlItemCategoryLocalizedDescriptionKey"];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -207,7 +207,7 @@ LABEL_11:
   v29[3] = &unk_277DF3FD0;
   v30 = v10;
   v26 = v10;
-  v27 = [v3 flatMap:v29];
+  v27 = [readValueAndPopulateStandardResults flatMap:v29];
 
   return v27;
 }
@@ -221,11 +221,11 @@ id __57__HFMediaControlItem_readValueAndPopulateStandardResults__block_invoke(ui
   return v4;
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -238,52 +238,52 @@ id __57__HFMediaControlItem_readValueAndPopulateStandardResults__block_invoke(ui
 
   v7 = v6;
 
-  v8 = [v7 integerValue];
-  v9 = [(HFMediaControlItem *)self mediaActionSetting];
-  if (v9)
+  integerValue = [v7 integerValue];
+  mediaActionSetting = [(HFMediaControlItem *)self mediaActionSetting];
+  if (mediaActionSetting)
   {
-    v10 = [(HFMediaControlItem *)self toggledSceneStateFromPrimaryState:v8];
+    v10 = [(HFMediaControlItem *)self toggledSceneStateFromPrimaryState:integerValue];
   }
 
   else
   {
-    v10 = [(HFMediaControlItem *)self mapToHMMediaPlaybackState:v8];
+    v10 = [(HFMediaControlItem *)self mapToHMMediaPlaybackState:integerValue];
   }
 
   v11 = v10;
 
-  v12 = [(HFMediaControlItem *)self mediaValueSource];
-  v13 = [(HFMediaControlItem *)self mediaActionSetting];
-  v14 = [v13 playbackArchive];
-  v15 = [(HFMediaControlItem *)self mediaProfileContainer];
-  v16 = [v15 hf_mediaRouteIdentifier];
-  v17 = [v12 writePlaybackState:v11 playbackArchive:v14 forRouteID:v16];
+  mediaValueSource = [(HFMediaControlItem *)self mediaValueSource];
+  mediaActionSetting2 = [(HFMediaControlItem *)self mediaActionSetting];
+  playbackArchive = [mediaActionSetting2 playbackArchive];
+  mediaProfileContainer = [(HFMediaControlItem *)self mediaProfileContainer];
+  hf_mediaRouteIdentifier = [mediaProfileContainer hf_mediaRouteIdentifier];
+  v17 = [mediaValueSource writePlaybackState:v11 playbackArchive:playbackArchive forRouteID:hf_mediaRouteIdentifier];
   v18 = [v17 flatMap:&__block_literal_global_85];
 
   return v18;
 }
 
-- (int64_t)toggledSceneStateFromPrimaryState:(int64_t)a3
+- (int64_t)toggledSceneStateFromPrimaryState:(int64_t)state
 {
-  if (a3 < 2)
+  if (state < 2)
   {
     return 2;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     return 0;
   }
 
-  v4 = [(HFMediaControlItem *)self mediaActionSetting];
-  v5 = [v4 originalHMNonPausePlaybackState];
+  mediaActionSetting = [(HFMediaControlItem *)self mediaActionSetting];
+  originalHMNonPausePlaybackState = [mediaActionSetting originalHMNonPausePlaybackState];
 
-  return v5;
+  return originalHMNonPausePlaybackState;
 }
 
-- (int64_t)mapToHMMediaPlaybackState:(int64_t)a3
+- (int64_t)mapToHMMediaPlaybackState:(int64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
     return 1;
   }
@@ -294,9 +294,9 @@ id __57__HFMediaControlItem_readValueAndPopulateStandardResults__block_invoke(ui
   }
 }
 
-- (id)writePrimaryState:(int64_t)a3
+- (id)writePrimaryState:(int64_t)state
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   v5 = [(HFMediaControlItem *)self writeValue:v4];
 
   return v5;
@@ -305,13 +305,13 @@ id __57__HFMediaControlItem_readValueAndPopulateStandardResults__block_invoke(ui
 - (id)toggleValue
 {
   objc_initWeak(&location, self);
-  v3 = [(HFMediaControlItem *)self readValueAndPopulateStandardResults];
+  readValueAndPopulateStandardResults = [(HFMediaControlItem *)self readValueAndPopulateStandardResults];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__HFMediaControlItem_toggleValue__block_invoke;
   v6[3] = &unk_277DF9FE8;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 flatMap:v6];
+  v4 = [readValueAndPopulateStandardResults flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);

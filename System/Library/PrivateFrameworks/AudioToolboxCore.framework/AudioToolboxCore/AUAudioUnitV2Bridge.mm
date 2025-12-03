@@ -1,9 +1,9 @@
 @interface AUAudioUnitV2Bridge
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-- (AUAudioUnitV2Bridge)initWithAudioUnit:(OpaqueAudioComponentInstance *)a3 description:(AudioComponentDescription *)a4;
-- (BOOL)_elementCountWritable:(unsigned int)a3;
-- (BOOL)_setElementCount:(unsigned int)a3 count:(unsigned int)a4 error:(id *)a5;
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
+- (AUAudioUnitV2Bridge)initWithAudioUnit:(OpaqueAudioComponentInstance *)unit description:(AudioComponentDescription *)description;
+- (BOOL)_elementCountWritable:(unsigned int)writable;
+- (BOOL)_setElementCount:(unsigned int)count count:(unsigned int)a4 error:(id *)error;
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error;
 - (BOOL)providesUserInterface;
 - (__n128)_valueForProperty:error:;
 - (id).cxx_construct;
@@ -11,36 +11,36 @@
 - (id)MIDIOutputEventListBlock;
 - (id)_buildNewParameterTree;
 - (id)_createParameterTree;
-- (id)_valueForProperty:(id)a3 error:(id *)a4;
+- (id)_valueForProperty:(id)property error:(id *)error;
 - (id)channelCapabilities;
 - (id)internalRenderBlock;
 - (id)osWorkgroup;
 - (id)parameterTree;
-- (id)parametersForOverviewWithCount:(int64_t)a3;
-- (int)enableBus:(unsigned int)a3 scope:(unsigned int)a4 enable:(BOOL)a5;
+- (id)parametersForOverviewWithCount:(int64_t)count;
+- (int)enableBus:(unsigned int)bus scope:(unsigned int)scope enable:(BOOL)enable;
 - (uint64_t)invalidateAudioUnit;
-- (unsigned)_elementCount:(unsigned int)a3;
+- (unsigned)_elementCount:(unsigned int)count;
 - (void)_createEventListenerQueue;
-- (void)_invalidateParameterTree:(unsigned int)a3;
-- (void)_notifyParameterChange:(unint64_t)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (void)_invalidateParameterTree:(unsigned int)tree;
+- (void)_notifyParameterChange:(unint64_t)change;
+- (void)_setValue:(id)value forKey:(id)key error:(id *)error;
 - (void)_valueForProperty:error:;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)dealloc;
-- (void)deliverV2Parameters:(const AURenderEvent *)a3;
+- (void)deliverV2Parameters:(const AURenderEvent *)parameters;
 - (void)init2;
 - (void)internalDeallocateRenderResources;
 - (void)invalidateAudioUnit;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5;
-- (void)requestViewControllerWithCompletionHandler:(id)a3;
-- (void)setCurrentPreset:(id)a3;
-- (void)setFullState:(id)a3;
-- (void)setFullStateForDocument:(id)a3;
-- (void)setMIDIOutputEventBlock:(id)a3;
-- (void)setMIDIOutputEventListBlock:(id)a3;
-- (void)setMusicalContextBlock:(id)a3;
-- (void)setTransportStateBlock:(id)a3;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context;
+- (void)requestViewControllerWithCompletionHandler:(id)handler;
+- (void)setCurrentPreset:(id)preset;
+- (void)setFullState:(id)state;
+- (void)setFullStateForDocument:(id)document;
+- (void)setMIDIOutputEventBlock:(id)block;
+- (void)setMIDIOutputEventListBlock:(id)block;
+- (void)setMusicalContextBlock:(id)block;
+- (void)setTransportStateBlock:(id)block;
 @end
 
 @implementation AUAudioUnitV2Bridge
@@ -81,24 +81,24 @@
   return v4;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)_setValue:(id)value forKey:(id)key error:(id *)error
 {
-  v16 = a3;
-  v8 = a4;
-  if ([v8 isEqualToString:@"fullStateForDocument"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"fullStateForDocument"])
   {
-    setStateAndNotify(v16, self);
+    setStateAndNotify(valueCopy, self);
   }
 
-  if ([v8 isEqualToString:@"fullState"])
+  if ([keyCopy isEqualToString:@"fullState"])
   {
-    setStateAndNotify(v16, self);
+    setStateAndNotify(valueCopy, self);
   }
 
-  if ([v8 isEqualToString:@"currentPreset"])
+  if ([keyCopy isEqualToString:@"currentPreset"])
   {
-    v10 = setPresentPresetAndNotify(self, v16);
-    if (!a5)
+    v10 = setPresentPresetAndNotify(self, valueCopy);
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -108,21 +108,21 @@
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:0];
 LABEL_14:
       v15 = v11;
-      *a5 = v15;
+      *error = v15;
 
       goto LABEL_16;
     }
 
 LABEL_15:
-    *a5 = 0;
+    *error = 0;
     goto LABEL_16;
   }
 
-  v12 = AUAudioUnitProperties::infoForKey(v8, v9);
+  v12 = AUAudioUnitProperties::infoForKey(keyCopy, v9);
   if (v12)
   {
     audioUnit = self->_audioUnit;
-    v17 = v16;
+    v17 = valueCopy;
     v13 = v12[18];
     if (!v13)
     {
@@ -131,7 +131,7 @@ LABEL_15:
 
     v14 = (*(*v13 + 48))(v13, &audioUnit, &v17);
 
-    if (a5)
+    if (error)
     {
       if (v14)
       {
@@ -145,62 +145,62 @@ LABEL_15:
 
   else
   {
-    [(AUAudioUnitV2Bridge *)self setValue:v16 forKey:v8];
+    [(AUAudioUnitV2Bridge *)self setValue:valueCopy forKey:keyCopy];
   }
 
 LABEL_16:
 }
 
-- (id)_valueForProperty:(id)a3 error:(id *)a4
+- (id)_valueForProperty:(id)property error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([*(v6 + 1) isEqualToString:@"_v2fwd_PropertySize"])
+  propertyCopy = property;
+  if ([*(propertyCopy + 1) isEqualToString:@"_v2fwd_PropertySize"])
   {
     outDataSize = 0;
     outWritable[0] = 0;
-    PropertyInfo = AudioUnitGetPropertyInfo(self->_audioUnit, *(v6 + 4), *(v6 + 5), *(v6 + 6), &outDataSize, outWritable);
-    if (a4)
+    PropertyInfo = AudioUnitGetPropertyInfo(self->_audioUnit, *(propertyCopy + 4), *(propertyCopy + 5), *(propertyCopy + 6), &outDataSize, outWritable);
+    if (error)
     {
       if (PropertyInfo)
       {
         v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:PropertyInfo userInfo:0];
-        *a4 = v8;
+        *error = v8;
       }
 
       else
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
 
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:outDataSize];
   }
 
-  else if ([*(v6 + 1) isEqualToString:@"_v2bridge_providesUserInterface"])
+  else if ([*(propertyCopy + 1) isEqualToString:@"_v2bridge_providesUserInterface"])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[AUAudioUnitV2Bridge providesUserInterface](self, "providesUserInterface")}];
   }
 
   else
   {
-    v11 = AUAudioUnitProperties::infoForKey(*(v6 + 1), v9);
-    v12 = *(v6 + 1);
+    v11 = AUAudioUnitProperties::infoForKey(*(propertyCopy + 1), v9);
+    v12 = *(propertyCopy + 1);
     if (v11)
     {
-      if (([*(v6 + 1) isEqualToString:@"fullState"] & 1) != 0 || objc_msgSend(*(v6 + 1), "isEqualToString:", @"fullStateForDocument"))
+      if (([*(propertyCopy + 1) isEqualToString:@"fullState"] & 1) != 0 || objc_msgSend(*(propertyCopy + 1), "isEqualToString:", @"fullStateForDocument"))
       {
         [(AUAudioUnitV2Bridge *)self audioUnit:0];
         v18 = 0;
         operator new();
       }
 
-      v10 = std::function<objc_object * ()(OpaqueAudioComponentInstance *,NSError * {__autoreleasing}*)>::operator()(v11[14], [(AUAudioUnitV2Bridge *)self audioUnit], a4);
+      v10 = std::function<objc_object * ()(OpaqueAudioComponentInstance *,NSError * {__autoreleasing}*)>::operator()(v11[14], [(AUAudioUnitV2Bridge *)self audioUnit], error);
     }
 
     else
     {
-      v10 = [(AUAudioUnitV2Bridge *)self valueForKey:*(v6 + 1)];
+      v10 = [(AUAudioUnitV2Bridge *)self valueForKey:*(propertyCopy + 1)];
     }
   }
 
@@ -213,9 +213,9 @@ LABEL_16:
 
 - (void)_valueForProperty:error:
 {
-  v3 = a1[2];
-  v2 = a1[3];
-  v4 = a1[1];
+  v3 = self[2];
+  v2 = self[3];
+  v4 = self[1];
   if (v3)
   {
     obj = *v3;
@@ -228,7 +228,7 @@ LABEL_16:
     v5 = std::function<objc_object * ()(OpaqueAudioComponentInstance *,NSError * {__autoreleasing}*)>::operator()(*(v2 + 112), v4, 0);
   }
 
-  v6 = a1[4];
+  v6 = self[4];
   v7 = *v6;
   *v6 = v5;
 }
@@ -236,31 +236,31 @@ LABEL_16:
 - (__n128)_valueForProperty:error:
 {
   *a2 = &unk_1F0334838;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)setCurrentPreset:(id)a3
+- (void)setCurrentPreset:(id)preset
 {
-  v4 = a3;
+  presetCopy = preset;
   [(AUAudioUnit *)self flushEventSchedule];
-  setPresentPresetAndNotify(self, v4);
+  setPresentPresetAndNotify(self, presetCopy);
 }
 
-- (void)setFullStateForDocument:(id)a3
+- (void)setFullStateForDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   [(AUAudioUnit *)self flushEventSchedule];
-  setStateAndNotify(v4, self);
+  setStateAndNotify(documentCopy, self);
 }
 
-- (void)setFullState:(id)a3
+- (void)setFullState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(AUAudioUnit *)self flushEventSchedule];
-  setStateAndNotify(v4, self);
+  setStateAndNotify(stateCopy, self);
 }
 
 - (BOOL)providesUserInterface
@@ -287,35 +287,35 @@ LABEL_16:
   return result;
 }
 
-- (void)requestViewControllerWithCompletionHandler:(id)a3
+- (void)requestViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  inData = v4;
+  handlerCopy = handler;
+  inData = handlerCopy;
   if ([(AUAudioUnitV2Bridge *)self providesUserInterface])
   {
     v5 = AudioUnitSetProperty(self->_audioUnit, 0x38u, 0, 0, &inData, 8u);
-    v4 = inData;
+    handlerCopy = inData;
     if (v5)
     {
       inData[2](inData, 0);
-      v4 = inData;
+      handlerCopy = inData;
     }
   }
 
   else
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
+  observerCopy = observer;
+  pathCopy = path;
+  v9 = pathCopy;
   if (!self->_removingObserverWithContext)
   {
-    v10 = AUAudioUnitProperties::infoForKey(v7, v8);
+    v10 = AUAudioUnitProperties::infoForKey(pathCopy, v8);
     if (v10)
     {
       AudioUnitRemovePropertyListenerWithUserData(self->_audioUnit, v10[5], V2BridgePropertyListener, self);
@@ -326,51 +326,51 @@ LABEL_16:
       inEvent.mEventType = kAudioUnitEvent_ParameterValueChange;
       *&inEvent.mArgument.mParameter.mAudioUnit = self->_audioUnit;
       inEvent.mArgument.mParameter.mElement = 0;
-      AUEventListenerRemoveEventType(self->_eventListener, v6, &inEvent);
+      AUEventListenerRemoveEventType(self->_eventListener, observerCopy, &inEvent);
     }
   }
 
   v11.receiver = self;
   v11.super_class = AUAudioUnitV2Bridge;
-  [(AUAudioUnitV2Bridge *)&v11 removeObserver:v6 forKeyPath:v9];
+  [(AUAudioUnitV2Bridge *)&v11 removeObserver:observerCopy forKeyPath:v9];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  observerCopy = observer;
+  pathCopy = path;
   self->_removingObserverWithContext = 1;
-  v11 = AUAudioUnitProperties::infoForKey(v9, v10);
+  v11 = AUAudioUnitProperties::infoForKey(pathCopy, v10);
   if (v11)
   {
     AudioUnitRemovePropertyListenerWithUserData(self->_audioUnit, v11[5], V2BridgePropertyListener, self);
   }
 
-  else if ([(AUAudioUnitProperties *)v9 isEqualToString:@"allParameterValues"])
+  else if ([(AUAudioUnitProperties *)pathCopy isEqualToString:@"allParameterValues"])
   {
     inEvent.mEventType = kAudioUnitEvent_ParameterValueChange;
     *&inEvent.mArgument.mParameter.mAudioUnit = self->_audioUnit;
     inEvent.mArgument.mParameter.mElement = 0;
-    AUEventListenerRemoveEventType(self->_eventListener, v8, &inEvent);
+    AUEventListenerRemoveEventType(self->_eventListener, observerCopy, &inEvent);
   }
 
   v12.receiver = self;
   v12.super_class = AUAudioUnitV2Bridge;
-  [(AUAudioUnitV2Bridge *)&v12 removeObserver:v8 forKeyPath:v9 context:a5];
+  [(AUAudioUnitV2Bridge *)&v12 removeObserver:observerCopy forKeyPath:pathCopy context:context];
   self->_removingObserverWithContext = 0;
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v13 = AUAudioUnitProperties::infoForKey(v11, v12);
+  observerCopy = observer;
+  pathCopy = path;
+  v13 = AUAudioUnitProperties::infoForKey(pathCopy, v12);
   if (v13)
   {
     AudioUnitAddPropertyListener(self->_audioUnit, v13[5], V2BridgePropertyListener, self);
   }
 
-  else if ([(AUAudioUnitProperties *)v11 isEqualToString:@"allParameterValues"])
+  else if ([(AUAudioUnitProperties *)pathCopy isEqualToString:@"allParameterValues"])
   {
     eventListener = self->_eventListener;
     if (!eventListener)
@@ -381,8 +381,8 @@ LABEL_16:
       *&inEvent.mArgument.mProperty.mPropertyID = 0x3032000000;
       *&inEvent.mArgument.mProperty.mElement = __Block_byref_object_copy__9486;
       v19 = __Block_byref_object_dispose__9487;
-      v20 = self;
-      eventListenerQueue = v20->_eventListenerQueue;
+      selfCopy = self;
+      eventListenerQueue = selfCopy->_eventListenerQueue;
       inBlock[0] = MEMORY[0x1E69E9820];
       inBlock[1] = 3221225472;
       inBlock[2] = __62__AUAudioUnitV2Bridge_addObserver_forKeyPath_options_context___block_invoke;
@@ -398,12 +398,12 @@ LABEL_16:
     inEvent.mArgument.mParameter.mAudioUnit = self->_audioUnit;
     *&inEvent.mArgument.mProperty.mPropertyID = 0xFFFFFFFFLL;
     inEvent.mArgument.mParameter.mElement = 0;
-    AUEventListenerAddEventType(eventListener, v10, &inEvent);
+    AUEventListenerAddEventType(eventListener, observerCopy, &inEvent);
   }
 
   v16.receiver = self;
   v16.super_class = AUAudioUnitV2Bridge;
-  [(AUAudioUnitV2Bridge *)&v16 addObserver:v10 forKeyPath:v11 options:a5 context:a6];
+  [(AUAudioUnitV2Bridge *)&v16 addObserver:observerCopy forKeyPath:pathCopy options:options context:context];
 }
 
 uint64_t __62__AUAudioUnitV2Bridge_addObserver_forKeyPath_options_context___block_invoke(uint64_t result, uint64_t a2, uint64_t a3)
@@ -447,14 +447,14 @@ uint64_t __62__AUAudioUnitV2Bridge_addObserver_forKeyPath_options_context___bloc
 
 - (id)parameterTree
 {
-  v8 = self;
+  selfCopy = self;
   cachedParameterTree = self->_cachedParameterTree;
   if (!cachedParameterTree)
   {
-    v7 = [(AUAudioUnitV2Bridge *)self _buildNewParameterTree];
+    _buildNewParameterTree = [(AUAudioUnitV2Bridge *)self _buildNewParameterTree];
     parameterTreeRebuildQueue = self->_parameterTreeRebuildQueue;
-    v6[0] = &v8;
-    v6[1] = &v7;
+    v6[0] = &selfCopy;
+    v6[1] = &_buildNewParameterTree;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = ___ZN10applesauce8dispatch2v19sync_implIZ36__AUAudioUnitV2Bridge_parameterTree_E3__7EEvPU28objcproto17OS_dispatch_queue8NSObjectOT_NSt3__117integral_constantIbLb1EEE_block_invoke;
@@ -462,7 +462,7 @@ uint64_t __62__AUAudioUnitV2Bridge_addObserver_forKeyPath_options_context___bloc
     block[4] = v6;
     dispatch_sync(parameterTreeRebuildQueue, block);
 
-    cachedParameterTree = v8->_cachedParameterTree;
+    cachedParameterTree = selfCopy->_cachedParameterTree;
   }
 
   return cachedParameterTree;
@@ -488,15 +488,15 @@ uint64_t __62__AUAudioUnitV2Bridge_addObserver_forKeyPath_options_context___bloc
       objc_destroyWeak(location);
     }
 
-    v21 = self;
-    inUnit = [(AUAudioUnitV2Bridge *)v21 audioUnit];
-    v13 = v21;
+    selfCopy = self;
+    inUnit = [(AUAudioUnitV2Bridge *)selfCopy audioUnit];
+    v13 = selfCopy;
 
     audioUnit = self->_audioUnit;
     v14 = objc_opt_new();
     for (i = 0; i != 8; ++i)
     {
-      v15 = [(AUAudioUnitV2Bridge *)v21 _elementCount:i];
+      v15 = [(AUAudioUnitV2Bridge *)selfCopy _elementCount:i];
       if (!i || v15)
       {
         outDataSize = 4;
@@ -852,12 +852,12 @@ LABEL_9:
   }
 }
 
-- (id)parametersForOverviewWithCount:(int64_t)a3
+- (id)parametersForOverviewWithCount:(int64_t)count
 {
-  ioDataSize = 24 * a3;
-  if (a3)
+  ioDataSize = 24 * count;
+  if (count)
   {
-    if (a3 < 0xAAAAAAAAAAAAAABLL)
+    if (count < 0xAAAAAAAAAAAAAABLL)
     {
       operator new();
     }
@@ -867,15 +867,15 @@ LABEL_9:
 
   if (AudioUnitGetProperty(self->_audioUnit, 0x39u, 0, 0, 0, &ioDataSize))
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   else
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
+    array = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)internalDeallocateRenderResources
@@ -888,7 +888,7 @@ LABEL_9:
   [(AUAudioUnit *)&v3 internalDeallocateRenderResources];
 }
 
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error
 {
   v12.receiver = self;
   v12.super_class = AUAudioUnitV2Bridge;
@@ -898,10 +898,10 @@ LABEL_9:
     v6 = AudioUnitInitialize(self->_audioUnit);
     if (v6)
     {
-      if (a3)
+      if (error)
       {
         v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v6 userInfo:0];
-        *a3 = v7;
+        *error = v7;
       }
 
       LOBYTE(v5) = 0;
@@ -910,13 +910,13 @@ LABEL_9:
     else
     {
       ptr = self->_renderer.__ptr_;
-      v9 = [(AUAudioUnit *)self musicalContextBlock];
-      v10 = [(AUAudioUnit *)self transportStateBlock];
-      AUAudioUnitV2Bridge_Renderer::prepareHostCallbacks(ptr, v9, v10);
+      musicalContextBlock = [(AUAudioUnit *)self musicalContextBlock];
+      transportStateBlock = [(AUAudioUnit *)self transportStateBlock];
+      AUAudioUnitV2Bridge_Renderer::prepareHostCallbacks(ptr, musicalContextBlock, transportStateBlock);
 
-      if (a3)
+      if (error)
       {
-        *a3 = 0;
+        *error = 0;
       }
 
       LOBYTE(v5) = 1;
@@ -926,38 +926,38 @@ LABEL_9:
   return v5;
 }
 
-- (void)setTransportStateBlock:(id)a3
+- (void)setTransportStateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = AUAudioUnitV2Bridge;
-  [(AUAudioUnit *)&v8 setTransportStateBlock:v4];
+  [(AUAudioUnit *)&v8 setTransportStateBlock:blockCopy];
   ptr = self->_renderer.__ptr_;
-  v6 = [(AUAudioUnit *)self musicalContextBlock];
-  v7 = [(AUAudioUnit *)self transportStateBlock];
-  AUAudioUnitV2Bridge_Renderer::prepareHostCallbacks(ptr, v6, v7);
+  musicalContextBlock = [(AUAudioUnit *)self musicalContextBlock];
+  transportStateBlock = [(AUAudioUnit *)self transportStateBlock];
+  AUAudioUnitV2Bridge_Renderer::prepareHostCallbacks(ptr, musicalContextBlock, transportStateBlock);
 }
 
-- (void)setMusicalContextBlock:(id)a3
+- (void)setMusicalContextBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = AUAudioUnitV2Bridge;
-  [(AUAudioUnit *)&v8 setMusicalContextBlock:v4];
+  [(AUAudioUnit *)&v8 setMusicalContextBlock:blockCopy];
   ptr = self->_renderer.__ptr_;
-  v6 = [(AUAudioUnit *)self musicalContextBlock];
-  v7 = [(AUAudioUnit *)self transportStateBlock];
-  AUAudioUnitV2Bridge_Renderer::prepareHostCallbacks(ptr, v6, v7);
+  musicalContextBlock = [(AUAudioUnit *)self musicalContextBlock];
+  transportStateBlock = [(AUAudioUnit *)self transportStateBlock];
+  AUAudioUnitV2Bridge_Renderer::prepareHostCallbacks(ptr, musicalContextBlock, transportStateBlock);
 }
 
-- (void)setMIDIOutputEventListBlock:(id)a3
+- (void)setMIDIOutputEventListBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   MIDIOutputEventListBlock = self->_MIDIOutputEventListBlock;
-  v9 = v4;
+  v9 = blockCopy;
   if (MIDIOutputEventListBlock)
   {
-    v6 = MIDIOutputEventListBlock == v4;
+    v6 = MIDIOutputEventListBlock == blockCopy;
   }
 
   else
@@ -977,14 +977,14 @@ LABEL_9:
   AudioUnitSetProperty(self->_audioUnit, 0x3Fu, 0, 0, &self->_MIDIOutputEventListBlock, 8u);
 }
 
-- (void)setMIDIOutputEventBlock:(id)a3
+- (void)setMIDIOutputEventBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   MIDIOutputEventBlock = self->_MIDIOutputEventBlock;
   if (MIDIOutputEventBlock)
   {
-    v7 = MIDIOutputEventBlock == v4;
+    v7 = MIDIOutputEventBlock == blockCopy;
   }
 
   else
@@ -1031,11 +1031,11 @@ LABEL_9:
   return v2;
 }
 
-- (void)deliverV2Parameters:(const AURenderEvent *)a3
+- (void)deliverV2Parameters:(const AURenderEvent *)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    next = a3;
+    next = parameters;
     do
     {
       if (next->head.eventType == AURenderEventParameter)
@@ -1077,29 +1077,29 @@ LABEL_9:
 
 - (void)invalidateAudioUnit
 {
-  v2 = self;
+  selfCopy = self;
   v20[4] = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy2 = self;
   audioUnit = self->_audioUnit;
   if (audioUnit)
   {
-    AudioUnitRemovePropertyListenerWithUserData(audioUnit, 0xBu, ElementCountPropertyListener, v2);
-    AudioUnitRemovePropertyListenerWithUserData(v2->_audioUnit, 3u, ParameterListPropertyListener, v2);
-    AudioUnitRemovePropertyListenerWithUserData(v2->_audioUnit, 4u, ParameterListPropertyListener, v2);
+    AudioUnitRemovePropertyListenerWithUserData(audioUnit, 0xBu, ElementCountPropertyListener, selfCopy);
+    AudioUnitRemovePropertyListenerWithUserData(selfCopy->_audioUnit, 3u, ParameterListPropertyListener, selfCopy);
+    AudioUnitRemovePropertyListenerWithUserData(selfCopy->_audioUnit, 4u, ParameterListPropertyListener, selfCopy);
   }
 
-  inputBusses = v2->_inputBusses;
-  v2->_inputBusses = 0;
+  inputBusses = selfCopy->_inputBusses;
+  selfCopy->_inputBusses = 0;
 
-  outputBusses = v2->_outputBusses;
-  v2->_outputBusses = 0;
+  outputBusses = selfCopy->_outputBusses;
+  selfCopy->_outputBusses = 0;
 
-  cachedParameterTree = v2->_cachedParameterTree;
-  v2->_cachedParameterTree = 0;
+  cachedParameterTree = selfCopy->_cachedParameterTree;
+  selfCopy->_cachedParameterTree = 0;
 
-  [(AUAudioUnitV2Bridge *)v2 setMIDIOutputEventBlock:0];
-  [(AUAudioUnitV2Bridge *)v2 setMIDIOutputEventListBlock:0];
-  ptr = v2->_renderer.__ptr_;
+  [(AUAudioUnitV2Bridge *)selfCopy setMIDIOutputEventBlock:0];
+  [(AUAudioUnitV2Bridge *)selfCopy setMIDIOutputEventListBlock:0];
+  ptr = selfCopy->_renderer.__ptr_;
   if (ptr)
   {
     v8 = *(ptr + 2);
@@ -1110,41 +1110,41 @@ LABEL_9:
     *(ptr + 3) = 0;
   }
 
-  eventListener = v2->_eventListener;
+  eventListener = selfCopy->_eventListener;
   if (eventListener)
   {
     AUListenerDispose(eventListener);
-    v2->_eventListener = 0;
+    selfCopy->_eventListener = 0;
   }
 
-  if (v2->_parameterListener)
+  if (selfCopy->_parameterListener)
   {
-    parameterTreeRebuildQueue = v2->_parameterTreeRebuildQueue;
-    v17 = &v18;
+    parameterTreeRebuildQueue = selfCopy->_parameterTreeRebuildQueue;
+    v17 = &selfCopy2;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = ___ZN10applesauce8dispatch2v19sync_implIZ42__AUAudioUnitV2Bridge_invalidateAudioUnit_E3__6EEvPU28objcproto17OS_dispatch_queue8NSObjectOT_NSt3__117integral_constantIbLb1EEE_block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
     block[4] = &v17;
     dispatch_sync(parameterTreeRebuildQueue, block);
-    v2 = v18;
+    selfCopy = selfCopy2;
   }
 
-  eventListenerQueue = v2->_eventListenerQueue;
+  eventListenerQueue = selfCopy->_eventListenerQueue;
   if (eventListenerQueue)
   {
-    v2->_eventListenerQueue = 0;
+    selfCopy->_eventListenerQueue = 0;
 
-    v2 = v18;
+    selfCopy = selfCopy2;
   }
 
-  v16.receiver = v2;
+  v16.receiver = selfCopy;
   v16.super_class = AUAudioUnitV2Bridge;
   [(AUAudioUnit *)&v16 invalidateAudioUnit];
-  v13 = v18;
-  if (v18->_audioUnitIsOwned)
+  v13 = selfCopy2;
+  if (selfCopy2->_audioUnitIsOwned)
   {
-    v14 = v18->_audioUnit;
+    v14 = selfCopy2->_audioUnit;
     if (v14)
     {
       v20[0] = &unk_1F03347F0;
@@ -1152,12 +1152,12 @@ LABEL_9:
       v20[3] = v20;
       dispatch_to_main_queue_with_timeout(v20);
       std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v20);
-      v13 = v18;
+      v13 = selfCopy2;
     }
   }
 
   v13->_audioUnit = 0;
-  std::unique_ptr<AUAudioUnitV2Bridge_Renderer>::reset[abi:ne200100](&v18->_renderer, 0);
+  std::unique_ptr<AUAudioUnitV2Bridge_Renderer>::reset[abi:ne200100](&selfCopy2->_renderer, 0);
   v15 = *MEMORY[0x1E69E9840];
 }
 
@@ -1169,16 +1169,16 @@ LABEL_9:
   return result;
 }
 
-- (AUAudioUnitV2Bridge)initWithAudioUnit:(OpaqueAudioComponentInstance *)a3 description:(AudioComponentDescription *)a4
+- (AUAudioUnitV2Bridge)initWithAudioUnit:(OpaqueAudioComponentInstance *)unit description:(AudioComponentDescription *)description
 {
-  v9 = *a4;
+  v9 = *description;
   v8.receiver = self;
   v8.super_class = AUAudioUnitV2Bridge;
   v5 = [(AUAudioUnit *)&v8 initWithComponentDescription:&v9 options:0 error:0];
   v6 = v5;
   if (v5)
   {
-    v5->_audioUnit = a3;
+    v5->_audioUnit = unit;
     v5->_audioUnitIsOwned = 0;
     [(AUAudioUnitV2Bridge *)v5 init2];
   }
@@ -1208,10 +1208,10 @@ LABEL_9:
   operator new();
 }
 
-- (void)_invalidateParameterTree:(unsigned int)a3
+- (void)_invalidateParameterTree:(unsigned int)tree
 {
-  v10 = self;
-  if (a3 <= 0xB && ((1 << a3) & 0x818) != 0)
+  selfCopy = self;
+  if (tree <= 0xB && ((1 << tree) & 0x818) != 0)
   {
     v3 = 2;
   }
@@ -1222,17 +1222,17 @@ LABEL_9:
   }
 
   atomic_fetch_or(&self->_eventsTriggeringParameterTreeInvalidation, v3);
-  if (v10->_cachedParameterTree)
+  if (selfCopy->_cachedParameterTree)
   {
-    v4 = [(AUAudioUnitV2Bridge *)v10 _buildNewParameterTree];
-    v9 = v4;
-    if (v4)
+    _buildNewParameterTree = [(AUAudioUnitV2Bridge *)selfCopy _buildNewParameterTree];
+    v9 = _buildNewParameterTree;
+    if (_buildNewParameterTree)
     {
-      if (-[AUAudioUnit renderResourcesAllocated](v10, "renderResourcesAllocated") || ([v4 allParameters], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+      if (-[AUAudioUnit renderResourcesAllocated](selfCopy, "renderResourcesAllocated") || ([_buildNewParameterTree allParameters], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
       {
-        [(AUAudioUnitV2Bridge *)v10 willChangeValueForKey:@"parameterTree"];
-        parameterTreeRebuildQueue = v10->_parameterTreeRebuildQueue;
-        v8[0] = &v10;
+        [(AUAudioUnitV2Bridge *)selfCopy willChangeValueForKey:@"parameterTree"];
+        parameterTreeRebuildQueue = selfCopy->_parameterTreeRebuildQueue;
+        v8[0] = &selfCopy;
         v8[1] = &v9;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -1240,8 +1240,8 @@ LABEL_9:
         block[3] = &__block_descriptor_40_e5_v8__0l;
         block[4] = v8;
         dispatch_sync(parameterTreeRebuildQueue, block);
-        [(AUAudioUnitV2Bridge *)v10 didChangeValueForKey:@"parameterTree"];
-        v4 = v9;
+        [(AUAudioUnitV2Bridge *)selfCopy didChangeValueForKey:@"parameterTree"];
+        _buildNewParameterTree = v9;
       }
     }
   }
@@ -1251,13 +1251,13 @@ LABEL_9:
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0;
-  v15 = self;
+  selfCopy = self;
   __p = 0;
   v12 = 0;
   v13 = 0;
   parameterTreeRebuildQueue = self->_parameterTreeRebuildQueue;
   v10[0] = &v14;
-  v10[1] = &v15;
+  v10[1] = &selfCopy;
   v10[2] = &__p;
   *block = MEMORY[0x1E69E9820];
   *&block[8] = 3221225472;
@@ -1299,7 +1299,7 @@ LABEL_7:
   v7 = v12;
   while (v6 != v7)
   {
-    [(AUAudioUnitV2Bridge *)v15 _notifyParameterChange:*v6++];
+    [(AUAudioUnitV2Bridge *)selfCopy _notifyParameterChange:*v6++];
   }
 
   v3 = 0;
@@ -1315,12 +1315,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)_notifyParameterChange:(unint64_t)a3
+- (void)_notifyParameterChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   audioUnit = self->_audioUnit;
-  v5 = a3 >> 61;
-  v6 = HIDWORD(a3) & 0x1FFFFFFF;
+  v5 = change >> 61;
+  v6 = HIDWORD(change) & 0x1FFFFFFF;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1329,7 +1329,7 @@ LABEL_14:
   objc_copyWeak(&v8, &location);
   v9 = 0;
   v10 = audioUnit;
-  v11 = v3;
+  v11 = changeCopy;
   v12 = v5;
   v13 = v6;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
@@ -1346,9 +1346,9 @@ void __46__AUAudioUnitV2Bridge__notifyParameterChange___block_invoke(uint64_t a1
   }
 }
 
-- (int)enableBus:(unsigned int)a3 scope:(unsigned int)a4 enable:(BOOL)a5
+- (int)enableBus:(unsigned int)bus scope:(unsigned int)scope enable:(BOOL)enable
 {
-  if (a4 != 1)
+  if (scope != 1)
   {
     return 0;
   }
@@ -1356,11 +1356,11 @@ void __46__AUAudioUnitV2Bridge__notifyParameterChange___block_invoke(uint64_t a1
   v11[2] = v5;
   v11[3] = v6;
   ptr = self->_renderer.__ptr_;
-  v8 = a5 ? AUAudioUnitV2Bridge_Renderer::renderInputProc : 0;
-  v9 = a5 ? self->_renderer.__ptr_ : 0;
+  v8 = enable ? AUAudioUnitV2Bridge_Renderer::renderInputProc : 0;
+  v9 = enable ? self->_renderer.__ptr_ : 0;
   v11[0] = v8;
   v11[1] = v9;
-  result = AudioUnitSetProperty(*ptr, 0x17u, 1u, a3, v11, 0x10u);
+  result = AudioUnitSetProperty(*ptr, 0x17u, 1u, bus, v11, 0x10u);
   if (!result)
   {
     return 0;
@@ -1369,52 +1369,52 @@ void __46__AUAudioUnitV2Bridge__notifyParameterChange___block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)_setElementCount:(unsigned int)a3 count:(unsigned int)a4 error:(id *)a5
+- (BOOL)_setElementCount:(unsigned int)count count:(unsigned int)a4 error:(id *)error
 {
   inData = a4;
-  v6 = AudioUnitSetProperty(self->_audioUnit, 0xBu, a3, 0, &inData, 4u);
+  v6 = AudioUnitSetProperty(self->_audioUnit, 0xBu, count, 0, &inData, 4u);
   v7 = v6;
-  if (a5)
+  if (error)
   {
     if (v6)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v6 userInfo:0];
-      *a5 = v8;
+      *error = v8;
     }
 
     else
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
   return v7 == 0;
 }
 
-- (BOOL)_elementCountWritable:(unsigned int)a3
+- (BOOL)_elementCountWritable:(unsigned int)writable
 {
   outDataSize = 0;
   outWritable = 0;
-  AudioUnitGetPropertyInfo(self->_audioUnit, 0xBu, a3, 0, &outDataSize, &outWritable);
+  AudioUnitGetPropertyInfo(self->_audioUnit, 0xBu, writable, 0, &outDataSize, &outWritable);
   return outWritable != 0;
 }
 
-- (unsigned)_elementCount:(unsigned int)a3
+- (unsigned)_elementCount:(unsigned int)count
 {
   outData = 0;
   ioDataSize = 4;
-  AudioUnitGetProperty(self->_audioUnit, 0xBu, a3, 0, &outData, &ioDataSize);
+  AudioUnitGetProperty(self->_audioUnit, 0xBu, count, 0, &outData, &ioDataSize);
   return outData;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   {
     +[AUAudioUnitV2Bridge automaticallyNotifiesObserversForKey:]::autoNotifying = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"fullState", @"fullStateForDocument", @"currentPreset", 0}];
   }
 
-  v4 = [+[AUAudioUnitV2Bridge automaticallyNotifiesObserversForKey:]::autoNotifying containsObject:v3];
+  v4 = [+[AUAudioUnitV2Bridge automaticallyNotifiesObserversForKey:]::autoNotifying containsObject:keyCopy];
 
   return v4;
 }

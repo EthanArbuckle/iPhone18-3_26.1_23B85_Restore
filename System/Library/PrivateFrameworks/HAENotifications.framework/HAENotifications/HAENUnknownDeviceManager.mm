@@ -1,20 +1,20 @@
 @interface HAENUnknownDeviceManager
 + (id)sharedInstance;
 - (BOOL)_isAlertSupported;
-- (BOOL)_shouldSurfaceAlert:(id)a3;
+- (BOOL)_shouldSurfaceAlert:(id)alert;
 - (BOOL)unknownWiredHeadsetConnectedThroughB204;
 - (HAENUnknownDeviceManager)init;
-- (void)_processPrompt:(id)a3;
-- (void)_processWiredDevice:(id)a3;
+- (void)_processPrompt:(id)prompt;
+- (void)_processWiredDevice:(id)device;
 - (void)_resetWiredStatus;
-- (void)_updateMXVolumeLimitStatus:(id)a3;
-- (void)_wiredDeviceSessionCreated:(id)a3 SessionID:(unint64_t)a4;
-- (void)_wiredDeviceSessionDestroyed:(id)a3;
-- (void)_wiredDeviceSessionInit:(id)a3;
-- (void)deviceSessionCreated:(id)a3 SessionID:(unint64_t)a4;
-- (void)deviceSessionDestroyed:(id)a3 isWired:(BOOL)a4;
-- (void)registerDevice:(id)a3;
-- (void)setDeviceConnectionState:(id)a3 isConnected:(BOOL)a4;
+- (void)_updateMXVolumeLimitStatus:(id)status;
+- (void)_wiredDeviceSessionCreated:(id)created SessionID:(unint64_t)d;
+- (void)_wiredDeviceSessionDestroyed:(id)destroyed;
+- (void)_wiredDeviceSessionInit:(id)init;
+- (void)deviceSessionCreated:(id)created SessionID:(unint64_t)d;
+- (void)deviceSessionDestroyed:(id)destroyed isWired:(BOOL)wired;
+- (void)registerDevice:(id)device;
+- (void)setDeviceConnectionState:(id)state isConnected:(BOOL)connected;
 - (void)surfaceAlertBox;
 - (void)updateWiredDeviceStatus;
 @end
@@ -65,17 +65,17 @@ uint64_t __42__HAENUnknownDeviceManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)deviceSessionCreated:(id)a3 SessionID:(unint64_t)a4
+- (void)deviceSessionCreated:(id)created SessionID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  createdCopy = created;
+  v7 = createdCopy;
+  if (createdCopy)
   {
     self->_isWiredUnknown = 0;
-    v8 = [v6 objectForKey:@"_HAENMetadataIdentifierHeadsetIsWired"];
-    v9 = [v8 BOOLValue];
+    v8 = [createdCopy objectForKey:@"_HAENMetadataIdentifierHeadsetIsWired"];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = [v7 objectForKey:@"_HAENMetadataIdentifierDeviceName"];
       v11 = [v7 objectForKey:@"_HAENMetadataIdentifierHeadsetIsUnknown"];
@@ -87,7 +87,7 @@ uint64_t __42__HAENUnknownDeviceManager_sharedInstance__block_invoke()
 
       if (v10)
       {
-        [(HAENUnknownDeviceManager *)self _wiredDeviceSessionCreated:v10 SessionID:a4];
+        [(HAENUnknownDeviceManager *)self _wiredDeviceSessionCreated:v10 SessionID:d];
       }
 
       else
@@ -105,32 +105,32 @@ uint64_t __42__HAENUnknownDeviceManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)registerDevice:(id)a3
+- (void)registerDevice:(id)device
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lock);
   if (![(HAENUnknownDeviceManager *)self isUSBCPort])
   {
     v9 = HAENotificationsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(HAENUnknownDeviceManager *)v4 registerDevice:v9, v10, v11, v12, v13, v14, v15];
+      [(HAENUnknownDeviceManager *)deviceCopy registerDevice:v9, v10, v11, v12, v13, v14, v15];
     }
 
     goto LABEL_7;
   }
 
-  if (v4)
+  if (deviceCopy)
   {
-    v5 = [v4 objectForKey:@"_HAENMetadataIdentifierDeviceIdentifier"];
+    v5 = [deviceCopy objectForKey:@"_HAENMetadataIdentifierDeviceIdentifier"];
     deviceUID = self->_deviceUID;
     self->_deviceUID = v5;
 
-    v7 = [v4 objectForKey:@"_HAENMetadataIdentifierHeadsetIsUnknown"];
+    v7 = [deviceCopy objectForKey:@"_HAENMetadataIdentifierHeadsetIsUnknown"];
     if ([v7 BOOLValue])
     {
-      v8 = [v4 objectForKey:@"_HAENMetadataIdentifierHeadsetIsWired"];
+      v8 = [deviceCopy objectForKey:@"_HAENMetadataIdentifierHeadsetIsWired"];
       self->_isWiredUnknown = [v8 BOOLValue];
     }
 
@@ -139,7 +139,7 @@ uint64_t __42__HAENUnknownDeviceManager_sharedInstance__block_invoke()
       self->_isWiredUnknown = 0;
     }
 
-    v17 = [v4 objectForKey:@"_HAENMetadataIdentifierDeviceName"];
+    v17 = [deviceCopy objectForKey:@"_HAENMetadataIdentifierDeviceName"];
     v9 = v17;
     if (self->_deviceUID)
     {
@@ -175,7 +175,7 @@ LABEL_7:
     v23 = HAENotificationsLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [(HAENUnknownDeviceManager *)v4 deviceSessionCreated:v23 SessionID:v24, v25, v26, v27, v28, v29];
+      [(HAENUnknownDeviceManager *)deviceCopy deviceSessionCreated:v23 SessionID:v24, v25, v26, v27, v28, v29];
     }
   }
 
@@ -184,21 +184,21 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceConnectionState:(id)a3 isConnected:(BOOL)a4
+- (void)setDeviceConnectionState:(id)state isConnected:(BOOL)connected
 {
-  v13 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
   if ([(HAENUnknownDeviceManager *)self isUSBCPort])
   {
     v6 = +[HAENDefaults sharedInstance];
-    v7 = [v6 getAudioAccessoryConnectionInfoWithKey:v13];
+    v7 = [v6 getAudioAccessoryConnectionInfoWithKey:stateCopy];
 
     if (!v7)
     {
       v8 = objc_alloc_init(MEMORY[0x277CEFB38]);
       v9 = v8;
       v10 = *MEMORY[0x277CEFAB0];
-      if (a4)
+      if (connected)
       {
         v11 = [MEMORY[0x277CCABB0] numberWithInt:0];
         v12 = [v9 setPreferenceFor:v10 value:v11 notify:1];
@@ -214,27 +214,27 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_wiredDeviceSessionCreated:(id)a3 SessionID:(unint64_t)a4
+- (void)_wiredDeviceSessionCreated:(id)created SessionID:(unint64_t)d
 {
-  v6 = a3;
+  createdCopy = created;
   os_unfair_lock_lock(&self->_lock);
-  [(HAENUnknownDeviceManager *)self _wiredDeviceSessionInit:v6];
-  if (self->_adamSessionID != a4)
+  [(HAENUnknownDeviceManager *)self _wiredDeviceSessionInit:createdCopy];
+  if (self->_adamSessionID != d)
   {
     ++self->_connectionCnt;
-    self->_adamSessionID = a4;
+    self->_adamSessionID = d;
   }
 
-  [(HAENUnknownDeviceManager *)self _processWiredDevice:v6];
+  [(HAENUnknownDeviceManager *)self _processWiredDevice:createdCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_wiredDeviceSessionInit:(id)a3
+- (void)_wiredDeviceSessionInit:(id)init
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isEqualToString:self->_deviceName] & 1) == 0)
+  initCopy = init;
+  if (([initCopy isEqualToString:self->_deviceName] & 1) == 0)
   {
     v5 = HAENotificationsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -242,7 +242,7 @@ LABEL_8:
       deviceName = self->_deviceName;
       connectionCnt = self->_connectionCnt;
       v12 = 138412802;
-      v13 = v4;
+      v13 = initCopy;
       v14 = 2112;
       v15 = deviceName;
       v16 = 1024;
@@ -261,7 +261,7 @@ LABEL_8:
     }
 
     [(HAENUnknownDeviceManager *)self _resetWiredStatus];
-    v9 = [v4 copy];
+    v9 = [initCopy copy];
     v10 = self->_deviceName;
     self->_deviceName = v9;
   }
@@ -269,10 +269,10 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processWiredDevice:(id)a3
+- (void)_processWiredDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   alertSupported = self->_alertSupported;
   v6 = HAENotificationsLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -282,32 +282,32 @@ LABEL_8:
     {
       connectionCnt = self->_connectionCnt;
       v12 = 138412546;
-      v13 = v4;
+      v13 = deviceCopy;
       v14 = 1024;
       v15 = connectionCnt;
       _os_log_impl(&dword_25081E000, v6, OS_LOG_TYPE_DEFAULT, "wired headset connected [%@], session count [%d]", &v12, 0x12u);
     }
 
-    if ([(HAENUnknownDeviceManager *)self _shouldSurfaceAlert:v4])
+    if ([(HAENUnknownDeviceManager *)self _shouldSurfaceAlert:deviceCopy])
     {
       if ([(HAENUnknownDeviceManager *)self isUSBCPort])
       {
         deviceUID = self->_deviceUID;
-        v10 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v10 = self;
-        deviceUID = v4;
+        selfCopy2 = self;
+        deviceUID = deviceCopy;
       }
 
-      [(HAENUnknownDeviceManager *)v10 _processPrompt:deviceUID];
+      [(HAENUnknownDeviceManager *)selfCopy2 _processPrompt:deviceUID];
     }
 
     else
     {
-      [(HAENUnknownDeviceManager *)self _updateMXVolumeLimitStatus:v4];
+      [(HAENUnknownDeviceManager *)self _updateMXVolumeLimitStatus:deviceCopy];
     }
   }
 
@@ -316,7 +316,7 @@ LABEL_8:
     if (v7)
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = deviceCopy;
       _os_log_impl(&dword_25081E000, v6, OS_LOG_TYPE_DEFAULT, "Alert not supported: %@", &v12, 0xCu);
     }
   }
@@ -327,7 +327,7 @@ LABEL_8:
 - (void)updateWiredDeviceStatus
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0(&dword_25081E000, a2, a3, "device [%@] alread released?", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -340,10 +340,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)_processPrompt:(id)a3
+- (void)_processPrompt:(id)prompt
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  promptCopy = prompt;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -351,20 +351,20 @@ LABEL_8:
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "found unknown wired headset!", &v19, 2u);
   }
 
-  v6 = [(HAENUnknownDeviceManager *)self isUSBCPort];
+  isUSBCPort = [(HAENUnknownDeviceManager *)self isUSBCPort];
   v7 = +[HAENDefaults sharedInstance];
   v8 = v7;
-  if (v6)
+  if (isUSBCPort)
   {
-    v9 = [v7 getAudioAccessoryConnectionInfoWithKey:v4];
+    getAudioAccessoryConnectionInfo = [v7 getAudioAccessoryConnectionInfoWithKey:promptCopy];
   }
 
   else
   {
-    v9 = [v7 getAudioAccessoryConnectionInfo];
+    getAudioAccessoryConnectionInfo = [v7 getAudioAccessoryConnectionInfo];
   }
 
-  v10 = v9;
+  v10 = getAudioAccessoryConnectionInfo;
 
   v11 = HAENotificationsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -406,11 +406,11 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMXVolumeLimitStatus:(id)a3
+- (void)_updateMXVolumeLimitStatus:(id)status
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(HAENUnknownDeviceManager *)self _isUnknownWiredHeadset:v4])
+  statusCopy = status;
+  if ([(HAENUnknownDeviceManager *)self _isUnknownWiredHeadset:statusCopy])
   {
     v5 = +[HAENDefaults sharedInstance];
     if ([v5 softwareVersionEnabled])
@@ -428,9 +428,9 @@ LABEL_13:
     }
 
     v11 = +[HAENDefaults sharedInstance];
-    v12 = [v11 isConnectedUnknownWiredDeviceHeadphone];
+    isConnectedUnknownWiredDeviceHeadphone = [v11 isConnectedUnknownWiredDeviceHeadphone];
 
-    if ((v12 & 1) == 0)
+    if ((isConnectedUnknownWiredDeviceHeadphone & 1) == 0)
     {
       v13 = objc_alloc_init(MEMORY[0x277CEFB38]);
       v14 = [v13 setPreferenceFor:*MEMORY[0x277CEFAB0] value:&unk_2862C9790];
@@ -454,7 +454,7 @@ LABEL_9:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = statusCopy;
     v7 = "Calibrated wired connection: %@";
     v8 = v6;
     v9 = 12;
@@ -624,13 +624,13 @@ LABEL_20:
   return v3;
 }
 
-- (BOOL)_shouldSurfaceAlert:(id)a3
+- (BOOL)_shouldSurfaceAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = +[HAENDefaults sharedInstance];
   if ([v5 isHAENFeatureEnabled])
   {
-    v6 = 1;
+    isUSBCPort = 1;
   }
 
   else
@@ -638,7 +638,7 @@ LABEL_20:
     v7 = +[HAENDefaults sharedInstance];
     if ([v7 isReduceLoudSoundEnabled])
     {
-      v6 = 1;
+      isUSBCPort = 1;
     }
 
     else
@@ -649,40 +649,40 @@ LABEL_20:
         v9 = +[HAENDefaults sharedInstance];
         if ([v9 isHAEOtherDevicesEnabled])
         {
-          v6 = 1;
+          isUSBCPort = 1;
         }
 
         else
         {
-          v6 = (_os_feature_enabled_impl() & 1) != 0 && [(HAENUnknownDeviceManager *)self isUSBCPort];
+          isUSBCPort = (_os_feature_enabled_impl() & 1) != 0 && [(HAENUnknownDeviceManager *)self isUSBCPort];
         }
       }
 
       else if (_os_feature_enabled_impl())
       {
-        v6 = [(HAENUnknownDeviceManager *)self isUSBCPort];
+        isUSBCPort = [(HAENUnknownDeviceManager *)self isUSBCPort];
       }
 
       else
       {
-        v6 = 0;
+        isUSBCPort = 0;
       }
     }
   }
 
-  v10 = [(HAENUnknownDeviceManager *)self _isUnknownWiredHeadset:v4];
-  return v10 && v6;
+  v10 = [(HAENUnknownDeviceManager *)self _isUnknownWiredHeadset:alertCopy];
+  return v10 && isUSBCPort;
 }
 
-- (void)deviceSessionDestroyed:(id)a3 isWired:(BOOL)a4
+- (void)deviceSessionDestroyed:(id)destroyed isWired:(BOOL)wired
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  wiredCopy = wired;
+  destroyedCopy = destroyed;
+  if (destroyedCopy)
   {
-    if (v4)
+    if (wiredCopy)
     {
-      [(HAENUnknownDeviceManager *)self _wiredDeviceSessionDestroyed:v6];
+      [(HAENUnknownDeviceManager *)self _wiredDeviceSessionDestroyed:destroyedCopy];
     }
 
     v7 = +[HAENVolumeControl sharedInstance];
@@ -699,12 +699,12 @@ LABEL_20:
   }
 }
 
-- (void)_wiredDeviceSessionDestroyed:(id)a3
+- (void)_wiredDeviceSessionDestroyed:(id)destroyed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destroyedCopy = destroyed;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 isEqualToString:self->_deviceName];
+  v5 = [destroyedCopy isEqualToString:self->_deviceName];
 
   if (v5)
   {

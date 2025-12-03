@@ -1,17 +1,17 @@
 @interface FLDPGBatchFactory
-+ (BOOL)allowDPGBundleID:(id)a3;
-+ (BOOL)allowSubmissionForBundleID:(id)a3 isDPG:(BOOL)a4;
-+ (BOOL)isDPGBundleID:(id)a3;
-+ (id)makeBatchWithPayload:(id)a3 bundleID:(id)a4 schema:(id)a5;
++ (BOOL)allowDPGBundleID:(id)d;
++ (BOOL)allowSubmissionForBundleID:(id)d isDPG:(BOOL)g;
++ (BOOL)isDPGBundleID:(id)d;
++ (id)makeBatchWithPayload:(id)payload bundleID:(id)d schema:(id)schema;
 @end
 
 @implementation FLDPGBatchFactory
 
-+ (id)makeBatchWithPayload:(id)a3 bundleID:(id)a4 schema:(id)a5
++ (id)makeBatchWithPayload:(id)payload bundleID:(id)d schema:(id)schema
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  payloadCopy = payload;
+  dCopy = d;
+  schemaCopy = schema;
   v10 = sub_24AB5FDCC();
   v12 = v11;
 
@@ -28,7 +28,7 @@
   return v19;
 }
 
-+ (BOOL)isDPGBundleID:(id)a3
++ (BOOL)isDPGBundleID:(id)d
 {
   sub_24AB6016C();
   v3 = sub_24AB47068();
@@ -36,7 +36,7 @@
   return v3 & 1;
 }
 
-+ (BOOL)allowDPGBundleID:(id)a3
++ (BOOL)allowDPGBundleID:(id)d
 {
   v3 = sub_24AB6016C();
   v5 = v4;
@@ -46,10 +46,10 @@
   return v6 & 1;
 }
 
-+ (BOOL)allowSubmissionForBundleID:(id)a3 isDPG:(BOOL)a4
++ (BOOL)allowSubmissionForBundleID:(id)d isDPG:(BOOL)g
 {
   v5 = sub_24AB6016C();
-  v7 = sub_24AB47250(v5, v6, a4);
+  v7 = sub_24AB47250(v5, v6, g);
 
   return v7 & 1;
 }

@@ -1,11 +1,11 @@
 @interface MiniProductPageView
-- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithFrame:(CGRect)a3;
+- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MiniProductPageView
 
-- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithFrame:(CGRect)a3
+- (_TtC26AppDistributionLaunchAngel19MiniProductPageView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

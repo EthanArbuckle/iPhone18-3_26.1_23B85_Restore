@@ -1,12 +1,12 @@
 @interface GlassMorphablePreview
-- (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview)initWithView:(id)a3 parameters:(id)a4 target:(id)a5;
+- (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview)initWithView:(id)view parameters:(id)parameters target:(id)target;
 - (id)_resolvedBackgroundMaterial;
-- (id)retargetedPreviewWithTarget:(id)a3;
+- (id)retargetedPreviewWithTarget:(id)target;
 @end
 
 @implementation GlassMorphablePreview
 
-- (id)retargetedPreviewWithTarget:(id)a3
+- (id)retargetedPreviewWithTarget:(id)target
 {
   ObjectType = swift_getObjectType();
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA93BA10);
@@ -14,12 +14,12 @@
   v8 = &v15[-v7];
   v16.receiver = self;
   v16.super_class = ObjectType;
-  v9 = self;
-  v10 = [(UITargetedPreview *)&v16 retargetedPreviewWithTarget:a3];
+  selfCopy = self;
+  v10 = [(UITargetedPreview *)&v16 retargetedPreviewWithTarget:target];
   v11 = swift_dynamicCastClassUnconditional();
   v12 = OBJC_IVAR____TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview_glass;
   swift_beginAccess();
-  sub_188A3F29C(v9 + v12, v8, &unk_1EA93BA10);
+  sub_188A3F29C(selfCopy + v12, v8, &unk_1EA93BA10);
 
   v13 = OBJC_IVAR____TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview_glass;
   swift_beginAccess();
@@ -42,23 +42,23 @@
   {
     v14.receiver = self;
     v14.super_class = ObjectType;
-    v9 = [(UITargetedPreview *)&v14 _resolvedBackgroundMaterial];
+    _resolvedBackgroundMaterial = [(UITargetedPreview *)&v14 _resolvedBackgroundMaterial];
   }
 
   else
   {
     sub_1890A43A8(self + v8, v7, type metadata accessor for _Glass);
-    v10 = self;
+    selfCopy = self;
     v11 = sub_1890A2744();
     sub_188B7533C(v7);
 
-    v9 = v11;
+    _resolvedBackgroundMaterial = v11;
   }
 
-  return v9;
+  return _resolvedBackgroundMaterial;
 }
 
-- (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview)initWithView:(id)a3 parameters:(id)a4 target:(id)a5
+- (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview)initWithView:(id)view parameters:(id)parameters target:(id)target
 {
   ObjectType = swift_getObjectType();
   v10 = OBJC_IVAR____TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7421GlassMorphablePreview_glass;
@@ -66,7 +66,7 @@
   (*(*(v11 - 8) + 56))(self + v10, 1, 1, v11);
   v13.receiver = self;
   v13.super_class = ObjectType;
-  return [(UITargetedPreview *)&v13 initWithView:a3 parameters:a4 target:a5];
+  return [(UITargetedPreview *)&v13 initWithView:view parameters:parameters target:target];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface ICASImportFileType
-- (ICASImportFileType)initWithImportFileType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASImportFileType)initWithImportFileType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASImportFileType
 
-- (ICASImportFileType)initWithImportFileType:(int64_t)a3
+- (ICASImportFileType)initWithImportFileType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASImportFileType;
   result = [(ICASImportFileType *)&v5 init];
   if (result)
   {
-    result->_importFileType = a3;
+    result->_importFileType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASImportFileType *)self importFileType];
-  if ((v3 - 1) > 4)
+  importFileType = [(ICASImportFileType *)self importFileType];
+  if ((importFileType - 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF4D0[v3 - 1];
+    return off_2799AF4D0[importFileType - 1];
   }
 }
 

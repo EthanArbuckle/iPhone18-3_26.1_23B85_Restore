@@ -3,22 +3,22 @@
 + (id)privacyPreferencesDataSource;
 + (id)respiratoryPreferencesDataSource;
 + (id)sharedHealthPreferencesDataSource;
-- (HKUserDefaultsDataSource)initWithUserDefaults:(id)a3;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
+- (HKUserDefaultsDataSource)initWithUserDefaults:(id)defaults;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
 @end
 
 @implementation HKUserDefaultsDataSource
 
-- (HKUserDefaultsDataSource)initWithUserDefaults:(id)a3
+- (HKUserDefaultsDataSource)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = HKUserDefaultsDataSource;
   v6 = [(HKObserverBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
   }
 
   return v7;
@@ -26,7 +26,7 @@
 
 + (id)privacyPreferencesDataSource
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.nanolifestyle.privacy"];
   v4 = [v2 initWithUserDefaults:v3];
 
@@ -35,7 +35,7 @@
 
 + (id)respiratoryPreferencesDataSource
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.private.health.respiratory"];
   v4 = [v2 initWithUserDefaults:v3];
 
@@ -44,7 +44,7 @@
 
 + (id)ageGatingDataSource
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.private.health.age-gating"];
   v4 = [v2 initWithUserDefaults:v3];
 
@@ -53,20 +53,20 @@
 
 + (id)sharedHealthPreferencesDataSource
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.health.shared"];
   v4 = [v2 initWithUserDefaults:v3];
 
   return v4;
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_HKUserDefaultsBridgedObserver alloc] initWithHandle:v6];
+  handleCopy = handle;
+  keyCopy = key;
+  v8 = [[_HKUserDefaultsBridgedObserver alloc] initWithHandle:handleCopy];
 
-  [(NSUserDefaults *)self->_userDefaults addObserver:v8 forKeyPath:v7 options:1 context:0];
+  [(NSUserDefaults *)self->_userDefaults addObserver:v8 forKeyPath:keyCopy options:1 context:0];
 
   return v8;
 }

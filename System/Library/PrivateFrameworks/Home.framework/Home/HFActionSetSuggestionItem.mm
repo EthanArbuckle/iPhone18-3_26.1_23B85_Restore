@@ -1,80 +1,80 @@
 @interface HFActionSetSuggestionItem
 - (HFActionSetSuggestionItem)init;
-- (HFActionSetSuggestionItem)initWithHome:(id)a3 actionSet:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFActionSetSuggestionItem)initWithHome:(id)home actionSet:(id)set;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFActionSetSuggestionItem
 
 - (HFActionSetSuggestionItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFActionSetSuggestionItem.m" lineNumber:32 description:@"Use -initWithHome:builtInActionSetType:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionSetSuggestionItem.m" lineNumber:32 description:@"Use -initWithHome:builtInActionSetType:"];
 
   return 0;
 }
 
-- (HFActionSetSuggestionItem)initWithHome:(id)a3 actionSet:(id)a4
+- (HFActionSetSuggestionItem)initWithHome:(id)home actionSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = HFActionSetSuggestionItem;
   v9 = [(HFActionSetSuggestionItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_actionSet, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_actionSet, set);
   }
 
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(HFMutableItemUpdateOutcome);
   v6 = [MEMORY[0x277D2C900] futureWithResult:v5];
-  v7 = [(HFActionSetSuggestionItem *)self actionSet];
+  actionSet = [(HFActionSetSuggestionItem *)self actionSet];
 
-  if (v7)
+  if (actionSet)
   {
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(HFActionSetSuggestionItem *)self actionSet];
-    v10 = [v8 setWithObject:v9];
+    actionSet2 = [(HFActionSetSuggestionItem *)self actionSet];
+    v10 = [v8 setWithObject:actionSet2];
     [(HFMutableItemUpdateOutcome *)v5 setObject:v10 forKeyedSubscript:@"dependentHomeKitObjects"];
 
-    v11 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
+    serviceLikeItem = [(HFActionSetSuggestionItem *)self serviceLikeItem];
 
-    if (v11)
+    if (serviceLikeItem)
     {
-      v12 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
-      v13 = [v12 services];
-      v14 = [v13 allObjects];
-      v11 = [HFActionSetSuggestionFilter filterWithServices:v14];
+      serviceLikeItem2 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
+      services = [serviceLikeItem2 services];
+      allObjects = [services allObjects];
+      serviceLikeItem = [HFActionSetSuggestionFilter filterWithServices:allObjects];
     }
 
     v15 = [HFActionSetSuggestionVendor alloc];
-    v16 = [(HFActionSetSuggestionItem *)self home];
-    v17 = [(HFActionSetSuggestionItem *)self actionSet];
-    v51 = v11;
-    v18 = [(HFActionSetSuggestionVendor *)v15 initWithHome:v16 actionSet:v17 filter:v11];
+    home = [(HFActionSetSuggestionItem *)self home];
+    actionSet3 = [(HFActionSetSuggestionItem *)self actionSet];
+    v51 = serviceLikeItem;
+    v18 = [(HFActionSetSuggestionVendor *)v15 initWithHome:home actionSet:actionSet3 filter:serviceLikeItem];
 
     v54 = 0;
     v19 = [(HFActionSetSuggestionVendor *)v18 buildWithOutDependentServiceTypes:&v54];
     v20 = v54;
     [(HFMutableItemUpdateOutcome *)v5 setObject:v20 forKeyedSubscript:@"dependentServiceTypes"];
     [(HFMutableItemUpdateOutcome *)v5 setObject:v19 forKeyedSubscript:@"actionSetBuilder"];
-    v21 = [v19 name];
-    [(HFMutableItemUpdateOutcome *)v5 setObject:v21 forKeyedSubscript:@"title"];
+    name = [v19 name];
+    [(HFMutableItemUpdateOutcome *)v5 setObject:name forKeyedSubscript:@"title"];
 
-    v22 = [(HFActionSetSuggestionItem *)self actionSet];
-    v23 = [v22 hf_iconDescriptor];
-    [(HFMutableItemUpdateOutcome *)v5 setObject:v23 forKeyedSubscript:@"icon"];
+    actionSet4 = [(HFActionSetSuggestionItem *)self actionSet];
+    hf_iconDescriptor = [actionSet4 hf_iconDescriptor];
+    [(HFMutableItemUpdateOutcome *)v5 setObject:hf_iconDescriptor forKeyedSubscript:@"icon"];
 
-    v24 = [v19 actions];
-    v25 = [v24 na_any:&__block_literal_global_50];
+    actions = [v19 actions];
+    v25 = [actions na_any:&__block_literal_global_50];
 
     if ([(HFActionSetSuggestionItem *)self includeExistingActionSets])
     {
@@ -83,17 +83,17 @@
 
     else
     {
-      v28 = [(HFActionSetSuggestionItem *)self actionSet];
-      [v28 actions];
+      actionSet5 = [(HFActionSetSuggestionItem *)self actionSet];
+      [actionSet5 actions];
       v50 = v5;
       v29 = v19;
       v30 = v20;
       v31 = v6;
       v32 = v18;
-      v34 = v33 = v4;
+      v34 = v33 = optionsCopy;
       v26 = [v34 count] != 0;
 
-      v4 = v33;
+      optionsCopy = v33;
       v18 = v32;
       v6 = v31;
       v20 = v30;
@@ -108,9 +108,9 @@
         [(HFActionSetSuggestionItem *)self setHasEverHadValidSuggestion:1];
       }
 
-      v35 = [(HFActionSetSuggestionItem *)self hasEverHadValidSuggestion];
-      LOBYTE(v25) = v35 | v25;
-      v26 &= !v35;
+      hasEverHadValidSuggestion = [(HFActionSetSuggestionItem *)self hasEverHadValidSuggestion];
+      LOBYTE(v25) = hasEverHadValidSuggestion | v25;
+      v26 &= !hasEverHadValidSuggestion;
     }
 
     if ((v25 & 1) == 0 || v26)
@@ -120,22 +120,22 @@
 
     else
     {
-      v36 = v4;
-      v37 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
+      v36 = optionsCopy;
+      serviceLikeItem3 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
 
-      if (v37)
+      if (serviceLikeItem3)
       {
-        v38 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
+        serviceLikeItem4 = [(HFActionSetSuggestionItem *)self serviceLikeItem];
         v39 = [[HFActionSetValueSource alloc] initWithActionSetBuilder:v19];
-        v40 = [v38 copyWithValueSource:v39];
+        v40 = [serviceLikeItem4 copyWithValueSource:v39];
 
         v41 = [HFServiceActionItem alloc];
-        v42 = [(HFActionSetSuggestionItem *)self home];
-        v43 = [(HFServiceActionItem *)v41 initWithHome:v42 containingItem:v40];
+        home2 = [(HFActionSetSuggestionItem *)self home];
+        v43 = [(HFServiceActionItem *)v41 initWithHome:home2 containingItem:v40];
 
         v44 = MEMORY[0x277CBEB98];
-        v45 = [v19 actions];
-        v46 = [v44 setWithArray:v45];
+        actions2 = [v19 actions];
+        v46 = [v44 setWithArray:actions2];
         [(HFServiceActionItem *)v43 setActionBuilders:v46];
 
         v47 = [(HFItem *)v43 updateWithOptions:v36];
@@ -146,13 +146,13 @@
         v53 = v5;
         v48 = [v47 flatMap:v52];
 
-        v4 = v36;
+        optionsCopy = v36;
         v6 = v48;
       }
 
       else
       {
-        v4 = v36;
+        optionsCopy = v36;
       }
     }
 

@@ -1,5 +1,5 @@
 @interface DatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (SQLiteDatabaseStoreDescriptor)storeDescriptor;
 @end
 
@@ -12,11 +12,11 @@
   return v2;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1001E0198(v4);
+  schemaCopy = schema;
+  v5 = sub_1001E0198(schemaCopy);
 
   return v5 & 1;
 }

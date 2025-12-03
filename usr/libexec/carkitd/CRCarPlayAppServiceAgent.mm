@@ -1,25 +1,25 @@
 @interface CRCarPlayAppServiceAgent
 - (BOOL)ferriteDisabled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldDisableAssetWithIdentifier:(id)a3 iOSContentVersion:(id)a4 accessoryContentVersion:(id)a5;
-- (CRCarPlayAppServiceAgent)initWithSessionStatus:(id)a3 vehicleStore:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldDisableAssetWithIdentifier:(id)identifier iOSContentVersion:(id)version accessoryContentVersion:(id)contentVersion;
+- (CRCarPlayAppServiceAgent)initWithSessionStatus:(id)status vehicleStore:(id)store;
 - (id)_denylistPreference;
-- (id)_parseDenylistContent:(id)a3 error:(id *)a4;
+- (id)_parseDenylistContent:(id)content error:(id *)error;
 - (void)_queryForUpdatedAsset;
-- (void)_reloadWithAsset:(id)a3;
+- (void)_reloadWithAsset:(id)asset;
 - (void)_requestAssetCatalogDownload;
-- (void)_setDenylistPreference:(id)a3;
+- (void)_setDenylistPreference:(id)preference;
 - (void)dealloc;
-- (void)requestCarCapabilitiesStatus:(id)a3 withReply:(id)a4;
+- (void)requestCarCapabilitiesStatus:(id)status withReply:(id)reply;
 - (void)requestCarCapabilitiesUpdate;
 @end
 
 @implementation CRCarPlayAppServiceAgent
 
-- (CRCarPlayAppServiceAgent)initWithSessionStatus:(id)a3 vehicleStore:(id)a4
+- (CRCarPlayAppServiceAgent)initWithSessionStatus:(id)status vehicleStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = CRCarPlayAppServiceAgent;
   v8 = [(CRCarPlayAppServiceAgent *)&v15 init];
@@ -30,7 +30,7 @@
     [(CRCarPlayAppServiceAgent *)v8 setAssetQueue:v10];
 
     [(CRCarPlayAppServiceAgent *)v8 setAssetQueryInProgress:0];
-    v11 = [[CRCarPlayCapabilitiesManager alloc] initWithSessionStatus:v6 vehicleStore:v7];
+    v11 = [[CRCarPlayCapabilitiesManager alloc] initWithSessionStatus:statusCopy vehicleStore:storeCopy];
     carCapabilitiesManager = v8->_carCapabilitiesManager;
     v8->_carCapabilitiesManager = v11;
 
@@ -61,10 +61,10 @@
   [(CRCarPlayCapabilitiesManager *)self->_carCapabilitiesManager reconcileCapabilities];
 }
 
-- (void)requestCarCapabilitiesStatus:(id)a3 withReply:(id)a4
+- (void)requestCarCapabilitiesStatus:(id)status withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  replyCopy = reply;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -81,7 +81,7 @@
   v16[2] = sub_100020B34;
   v16[3] = &unk_1000DDD80;
   v18 = v19;
-  v10 = v7;
+  v10 = replyCopy;
   v17 = v10;
   [(CRCarPlayCapabilitiesManager *)carCapabilitiesManager plistLookupFinishedCompletionHandler:v16];
   v11 = dispatch_time(0, 1000000000);
@@ -114,12 +114,12 @@
   return v2;
 }
 
-- (void)_setDenylistPreference:(id)a3
+- (void)_setDenylistPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(CRCarPlayAppServiceAgent *)self _denylistPreference];
-  CFPreferencesSetAppValue(CRCarPlayAppDenylistPreferenceKey, v4, CRPreferencesNotMigratedDomain);
-  if (v4 && !v5 || ([v5 isEqual:v4] & 1) == 0)
+  preferenceCopy = preference;
+  _denylistPreference = [(CRCarPlayAppServiceAgent *)self _denylistPreference];
+  CFPreferencesSetAppValue(CRCarPlayAppDenylistPreferenceKey, preferenceCopy, CRPreferencesNotMigratedDomain);
+  if (preferenceCopy && !_denylistPreference || ([_denylistPreference isEqual:preferenceCopy] & 1) == 0)
   {
     v6 = CarGeneralLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -169,31 +169,31 @@
     v2 = +[NSNotificationCenter defaultCenter];
     [v2 removeObserver:obj name:CRVehicleStoreAvailabilityDidChangeNotification object:0];
 
-    v3 = [(CRCarPlayAppServiceAgent *)obj assetQueue];
+    assetQueue = [(CRCarPlayAppServiceAgent *)obj assetQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[3] = &unk_1000DD480;
     block[4] = obj;
     block[2] = sub_100021120;
-    dispatch_async(v3, block);
+    dispatch_async(assetQueue, block);
   }
 }
 
-- (void)_reloadWithAsset:(id)a3
+- (void)_reloadWithAsset:(id)asset
 {
-  v25 = a3;
-  v4 = [v25 getLocalFileUrl];
-  v5 = self;
-  objc_sync_enter(v5);
-  [(CRCarPlayAppServiceAgent *)v5 setAssetURL:v4];
-  objc_sync_exit(v5);
+  assetCopy = asset;
+  getLocalFileUrl = [assetCopy getLocalFileUrl];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CRCarPlayAppServiceAgent *)selfCopy setAssetURL:getLocalFileUrl];
+  objc_sync_exit(selfCopy);
 
-  v6 = [v4 URLByAppendingPathComponent:@"CarPlayAppDenylist"];
+  v6 = [getLocalFileUrl URLByAppendingPathComponent:@"CarPlayAppDenylist"];
   v30 = [v6 URLByAppendingPathExtension:@"plist"];
 
   v29 = [NSArray arrayWithContentsOfURL:v30];
   v35 = 0;
-  v7 = [(CRCarPlayAppServiceAgent *)v5 _parseDenylistContent:v29 error:&v35];
+  v7 = [(CRCarPlayAppServiceAgent *)selfCopy _parseDenylistContent:v29 error:&v35];
   v8 = v35;
   if (v7)
   {
@@ -205,15 +205,15 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetched CarPlay MobileAsset App (denylist): %@", buf, 0xCu);
     }
 
-    [(CRCarPlayAppServiceAgent *)v5 _setDenylistPreference:v7];
+    [(CRCarPlayAppServiceAgent *)selfCopy _setDenylistPreference:v7];
   }
 
-  v10 = [v4 URLByAppendingPathComponent:@"CarPlayLiveActivityDenyList"];
+  v10 = [getLocalFileUrl URLByAppendingPathComponent:@"CarPlayLiveActivityDenyList"];
   v28 = [v10 URLByAppendingPathExtension:@"plist"];
 
   v27 = [NSArray arrayWithContentsOfURL:v28];
   v34 = v8;
-  v26 = [(CRCarPlayAppServiceAgent *)v5 _parseDenylistContent:v27 error:&v34];
+  v26 = [(CRCarPlayAppServiceAgent *)selfCopy _parseDenylistContent:v27 error:&v34];
   v11 = v34;
 
   v12 = CarGeneralLogging();
@@ -239,12 +239,12 @@
     [v13 setDenyListBundleIdentifiers:v26];
   }
 
-  v14 = [v4 URLByAppendingPathComponent:@"CarPlayWidgetDenyList"];
+  v14 = [getLocalFileUrl URLByAppendingPathComponent:@"CarPlayWidgetDenyList"];
   v15 = [v14 URLByAppendingPathExtension:@"plist"];
 
   v16 = [NSArray arrayWithContentsOfURL:v15];
   v33 = v11;
-  v17 = [(CRCarPlayAppServiceAgent *)v5 _parseDenylistContent:v16 error:&v33];
+  v17 = [(CRCarPlayAppServiceAgent *)selfCopy _parseDenylistContent:v16 error:&v33];
   v18 = v33;
 
   v19 = CarGeneralLogging();
@@ -270,7 +270,7 @@
     [v20 setDenyListExtensions:v17];
   }
 
-  v21 = [v4 URLByAppendingPathComponent:@"CarPlayCapabilities.plist"];
+  v21 = [getLocalFileUrl URLByAppendingPathComponent:@"CarPlayCapabilities.plist"];
   v32 = 0;
   v31 = 0;
   [v21 getResourceValue:&v32 forKey:NSURLIsRegularFileKey error:&v31];
@@ -289,22 +289,22 @@
 
     if ((CRIsTestContext() & 1) == 0)
     {
-      [(CRCarPlayCapabilitiesManager *)v5->_carCapabilitiesManager setCarCapabilitiesURL:v21];
+      [(CRCarPlayCapabilitiesManager *)selfCopy->_carCapabilitiesManager setCarCapabilitiesURL:v21];
     }
   }
 }
 
-- (id)_parseDenylistContent:(id)a3 error:(id *)a4
+- (id)_parseDenylistContent:(id)content error:(id *)error
 {
-  v5 = a3;
+  contentCopy = content;
   v6 = +[NSMutableArray array];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (contentCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = v5;
+    v7 = contentCopy;
     v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
@@ -344,10 +344,10 @@
       sub_100083FF8(v14, v15, v16, v17, v18, v19, v20, v21);
     }
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:@"com.apple.carkit.app" code:1 userInfo:0];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -359,13 +359,13 @@
   return v13;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.carkit.app"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.app"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CRCarPlayAppService];
     v9 = objc_opt_class();
@@ -374,9 +374,9 @@
     v12 = [NSSet setWithObjects:v9, v10, v11, objc_opt_class(), 0];
     [v8 setClasses:v12 forSelector:"requestCarCapabilitiesStatus:withReply:" argumentIndex:0 ofReply:1];
 
-    [v5 setExportedInterface:v8];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v8];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   else
@@ -384,25 +384,25 @@
     v13 = CarGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_100084030(v5);
+      sub_100084030(connectionCopy);
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)ferriteDisabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CRCarPlayAppServiceAgent *)v2 assetURL];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  assetURL = [(CRCarPlayAppServiceAgent *)selfCopy assetURL];
+  objc_sync_exit(selfCopy);
 
-  if (v3)
+  if (assetURL)
   {
-    v4 = [v3 URLByAppendingPathComponent:@"CarPlayDisabledAssetIDs.plist"];
+    v4 = [assetURL URLByAppendingPathComponent:@"CarPlayDisabledAssetIDs.plist"];
     v5 = [[CRCarPlayDisabledAssetIDsManager alloc] initWithFile:v4];
-    v6 = [(CRCarPlayDisabledAssetIDsManager *)v5 ferriteDisabled];
+    ferriteDisabled = [(CRCarPlayDisabledAssetIDsManager *)v5 ferriteDisabled];
   }
 
   else
@@ -414,27 +414,27 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Asset URL is nil, assume not disabled.", v9, 2u);
     }
 
-    v6 = 0;
+    ferriteDisabled = 0;
   }
 
-  return v6;
+  return ferriteDisabled;
 }
 
-- (BOOL)shouldDisableAssetWithIdentifier:(id)a3 iOSContentVersion:(id)a4 accessoryContentVersion:(id)a5
+- (BOOL)shouldDisableAssetWithIdentifier:(id)identifier iOSContentVersion:(id)version accessoryContentVersion:(id)contentVersion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(CRCarPlayAppServiceAgent *)v11 assetURL];
-  objc_sync_exit(v11);
+  identifierCopy = identifier;
+  versionCopy = version;
+  contentVersionCopy = contentVersion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  assetURL = [(CRCarPlayAppServiceAgent *)selfCopy assetURL];
+  objc_sync_exit(selfCopy);
 
-  if (v12)
+  if (assetURL)
   {
-    v13 = [v12 URLByAppendingPathComponent:@"CarPlayDisabledAssetIDs.plist"];
+    v13 = [assetURL URLByAppendingPathComponent:@"CarPlayDisabledAssetIDs.plist"];
     v14 = [[CRCarPlayDisabledAssetIDsManager alloc] initWithFile:v13];
-    v15 = [(CRCarPlayDisabledAssetIDsManager *)v14 isAssetDisabled:v8 accessoryContentVersion:v10 iosContentVersion:v9];
+    v15 = [(CRCarPlayDisabledAssetIDsManager *)v14 isAssetDisabled:identifierCopy accessoryContentVersion:contentVersionCopy iosContentVersion:versionCopy];
   }
 
   else

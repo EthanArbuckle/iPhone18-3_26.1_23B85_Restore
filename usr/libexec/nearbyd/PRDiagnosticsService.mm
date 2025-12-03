@@ -1,29 +1,29 @@
 @interface PRDiagnosticsService
-- (BOOL)shouldAcceptNewConnection:(id)a3;
-- (BOOL)validateClientEntitlements:(id)a3;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateClientEntitlements:(id)entitlements;
 - (PRDiagnosticsService)init;
-- (void)getChipInfoSync:(BOOL)a3 reply:(id)a4;
-- (void)getChipPublicKey:(id)a3;
-- (void)getChipType:(id)a3;
-- (void)getDeepSleepState:(id)a3;
-- (void)getPowerStatsWithTimeout:(unint64_t)a3 reply:(id)a4;
-- (void)getPreflightInfo:(id)a3;
-- (void)getRoseChipPowerState:(id)a3;
+- (void)getChipInfoSync:(BOOL)sync reply:(id)reply;
+- (void)getChipPublicKey:(id)key;
+- (void)getChipType:(id)type;
+- (void)getDeepSleepState:(id)state;
+- (void)getPowerStatsWithTimeout:(unint64_t)timeout reply:(id)reply;
+- (void)getPreflightInfo:(id)info;
+- (void)getRoseChipPowerState:(id)state;
 - (void)handleXPCDisconnection;
-- (void)hasFailedRoseUpdate:(id)a3;
-- (void)injectIsoCode:(id)a3;
-- (void)prepareForRegulatoryAssistance:(id)a3;
-- (void)publishBytes:(char *)a3 amount:(unint64_t)a4;
-- (void)requestPowerChange:(BOOL)a3 reply:(id)a4;
-- (void)sendHelloWithTimeout:(unint64_t)a3 reply:(id)a4;
-- (void)setNarrowbandSarState:(int64_t)a3 reply:(id)a4;
-- (void)setRegulatoryAccessoryState:(id)a3 reply:(id)a4;
-- (void)setRegulatoryIsoCountry:(id)a3 reply:(id)a4;
-- (void)setRegulatoryMcc:(id)a3 reply:(id)a4;
-- (void)setRoseGlobalConfigParams:(id)a3 reply:(id)a4;
-- (void)startStreamingProtobufDataForClientId:(id)a3 reply:(id)a4;
-- (void)stopStreamingProtobufDataForClientId:(id)a3 reply:(id)a4;
-- (void)triggerLogCollection:(int64_t)a3 reply:(id)a4;
+- (void)hasFailedRoseUpdate:(id)update;
+- (void)injectIsoCode:(id)code;
+- (void)prepareForRegulatoryAssistance:(id)assistance;
+- (void)publishBytes:(char *)bytes amount:(unint64_t)amount;
+- (void)requestPowerChange:(BOOL)change reply:(id)reply;
+- (void)sendHelloWithTimeout:(unint64_t)timeout reply:(id)reply;
+- (void)setNarrowbandSarState:(int64_t)state reply:(id)reply;
+- (void)setRegulatoryAccessoryState:(id)state reply:(id)reply;
+- (void)setRegulatoryIsoCountry:(id)country reply:(id)reply;
+- (void)setRegulatoryMcc:(id)mcc reply:(id)reply;
+- (void)setRoseGlobalConfigParams:(id)params reply:(id)reply;
+- (void)startStreamingProtobufDataForClientId:(id)id reply:(id)reply;
+- (void)stopStreamingProtobufDataForClientId:(id)id reply:(id)reply;
+- (void)triggerLogCollection:(int64_t)collection reply:(id)reply;
 @end
 
 @implementation PRDiagnosticsService
@@ -48,37 +48,37 @@
   return v3;
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
     sub_100499A14(v5);
   }
 
-  v6 = [v4 processIdentifier];
-  v7 = [(PRDiagnosticsService *)self validateClientEntitlements:v4];
+  processIdentifier = [connectionCopy processIdentifier];
+  v7 = [(PRDiagnosticsService *)self validateClientEntitlements:connectionCopy];
   v8 = qword_1009F9820;
   if (v7)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
     {
-      sub_100499ACC(v6, v8);
+      sub_100499ACC(processIdentifier, v8);
     }
 
-    v9 = [v4 valueForEntitlement:@"com.apple.private.nearbyd.protobuf-client"];
+    v9 = [connectionCopy valueForEntitlement:@"com.apple.private.nearbyd.protobuf-client"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
 
-      if (v10)
+      if (bOOLValue)
       {
         v11 = sub_1001B2C40();
-        [v4 setRemoteObjectInterface:v11];
+        [connectionCopy setRemoteObjectInterface:v11];
 
         v12 = sub_1001B2BA8();
-        [v4 setExportedInterface:v12];
+        [connectionCopy setExportedInterface:v12];
         goto LABEL_19;
       }
     }
@@ -87,7 +87,7 @@
     {
     }
 
-    if (sub_10001779C(v4))
+    if (sub_10001779C(connectionCopy))
     {
       v13 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -97,7 +97,7 @@
       }
 
       v14 = sub_1001B2CDC();
-      [v4 setExportedInterface:v14];
+      [connectionCopy setExportedInterface:v14];
 
       v15 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -109,29 +109,29 @@
       goto LABEL_20;
     }
 
-    [v4 setRemoteObjectInterface:0];
+    [connectionCopy setRemoteObjectInterface:0];
     v12 = sub_1001B2A00();
-    [v4 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 LABEL_19:
 
 LABEL_20:
-    [v4 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(buf, self);
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100017818;
     v23[3] = &unk_100989FD0;
-    v25 = v6;
+    v25 = processIdentifier;
     objc_copyWeak(&v24, buf);
-    [v4 setInterruptionHandler:v23];
+    [connectionCopy setInterruptionHandler:v23];
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_1000178F4;
     v20 = &unk_100989FD0;
-    v22 = v6;
+    v22 = processIdentifier;
     objc_copyWeak(&v21, buf);
-    [v4 setInvalidationHandler:&v17];
-    [v4 resume];
+    [connectionCopy setInvalidationHandler:&v17];
+    [connectionCopy resume];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -148,18 +148,18 @@ LABEL_21:
   return v7;
 }
 
-- (void)getChipInfoSync:(BOOL)a3 reply:(id)a4
+- (void)getChipInfoSync:(BOOL)sync reply:(id)reply
 {
-  v4 = a3;
+  syncCopy = sync;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100017AEC;
   v14[3] = &unk_100989FF8;
-  v5 = a4;
-  v15 = v5;
+  replyCopy = reply;
+  v15 = replyCopy;
   v6 = objc_retainBlock(v14);
   v7 = sub_10035D02C();
-  if (v4)
+  if (syncCopy)
   {
     v8 = sub_10035FD28(v7, &v12);
     v10 = v13;
@@ -174,30 +174,30 @@ LABEL_21:
   }
 }
 
-- (void)getPreflightInfo:(id)a3
+- (void)getPreflightInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v3 = sub_10035D02C();
   v4 = sub_10035FD18(v3);
-  v5[2]();
+  infoCopy[2]();
   if (v4)
   {
   }
 }
 
-- (void)hasFailedRoseUpdate:(id)a3
+- (void)hasFailedRoseUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   v3 = sub_10035D02C();
   v4 = sub_10035FD20(v3);
-  v5[2](v5, v4);
+  updateCopy[2](updateCopy, v4);
 }
 
-- (void)sendHelloWithTimeout:(unint64_t)a3 reply:(id)a4
+- (void)sendHelloWithTimeout:(unint64_t)timeout reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = sub_10035D02C();
-  sub_10035D220(v6, a3, v9);
+  sub_10035D220(v6, timeout, v9);
   if (v16)
   {
     v7 = [PRHelloResponse alloc];
@@ -207,12 +207,12 @@ LABEL_21:
     }
 
     v8 = [v7 initWithHelloResponse:v9];
-    v5[2](v5, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
   else
   {
-    v5[2](v5, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   if (v16 == 1)
@@ -237,11 +237,11 @@ LABEL_21:
   }
 }
 
-- (void)getPowerStatsWithTimeout:(unint64_t)a3 reply:(id)a4
+- (void)getPowerStatsWithTimeout:(unint64_t)timeout reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = sub_10035D02C();
-  sub_10035FE70(v6, a3, v9);
+  sub_10035FE70(v6, timeout, v9);
   if (v10)
   {
     v7 = [PRGetPowerStatsResponse alloc];
@@ -251,66 +251,66 @@ LABEL_21:
     }
 
     v8 = [v7 initWithGetPowerStatsResponse:v9];
-    v5[2](v5, v8);
+    replyCopy[2](replyCopy, v8);
   }
 
   else
   {
-    v5[2](v5, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)setRegulatoryMcc:(id)a3 reply:(id)a4
+- (void)setRegulatoryMcc:(id)mcc reply:(id)reply
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = v8;
-  if (v8)
+  mccCopy = mcc;
+  replyCopy = reply;
+  v6 = mccCopy;
+  if (mccCopy)
   {
     v7 = +[PRGlobalDebugSettings sharedSettings];
-    [v7 setObject:v8 forKey:PRDebugConfigArgMcc];
+    [v7 setObject:mccCopy forKey:PRDebugConfigArgMcc];
 
-    v6 = v8;
+    v6 = mccCopy;
   }
 
-  v5[2](v5, v6 != 0);
+  replyCopy[2](replyCopy, v6 != 0);
 }
 
-- (void)setRegulatoryIsoCountry:(id)a3 reply:(id)a4
+- (void)setRegulatoryIsoCountry:(id)country reply:(id)reply
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = v8;
-  if (v8)
+  countryCopy = country;
+  replyCopy = reply;
+  v6 = countryCopy;
+  if (countryCopy)
   {
     v7 = +[PRGlobalDebugSettings sharedSettings];
-    [v7 setObject:v8 forKey:PRDebugConfigArgIsoCountry];
+    [v7 setObject:countryCopy forKey:PRDebugConfigArgIsoCountry];
 
-    v6 = v8;
+    v6 = countryCopy;
   }
 
-  v5[2](v5, v6 != 0);
+  replyCopy[2](replyCopy, v6 != 0);
 }
 
-- (void)setRegulatoryAccessoryState:(id)a3 reply:(id)a4
+- (void)setRegulatoryAccessoryState:(id)state reply:(id)reply
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = v8;
-  if (v8)
+  stateCopy = state;
+  replyCopy = reply;
+  v6 = stateCopy;
+  if (stateCopy)
   {
     v7 = +[PRGlobalDebugSettings sharedSettings];
-    [v7 setObject:v8 forKey:PRDebugConfigArgAccessoryState];
+    [v7 setObject:stateCopy forKey:PRDebugConfigArgAccessoryState];
 
-    v6 = v8;
+    v6 = stateCopy;
   }
 
-  v5[2](v5, v6 != 0);
+  replyCopy[2](replyCopy, v6 != 0);
 }
 
-- (void)triggerLogCollection:(int64_t)a3 reply:(id)a4
+- (void)triggerLogCollection:(int64_t)collection reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   memset(&v31, 0, sizeof(v31));
   v6 = sub_1000054A8();
   sub_1000198EC(v23, v6);
@@ -346,20 +346,20 @@ LABEL_21:
   }
 
   v9 = +[NSUserDefaults standardUserDefaults];
-  v10 = [v9 dictionaryRepresentation];
+  dictionaryRepresentation = [v9 dictionaryRepresentation];
 
   v11 = qword_1009F9820;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 count];
+    v12 = [dictionaryRepresentation count];
     *v32 = 67109120;
     *&v32[4] = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "===== Current defaults (%d) =====", v32, 8u);
   }
 
-  [v10 enumerateKeysAndObjectsUsingBlock:&stru_10098A038];
+  [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:&stru_10098A038];
   v13 = +[NIServerFindableDeviceProxySessionManager sharedInstance];
-  v14 = [v13 printableState];
+  printableState = [v13 printableState];
 
   v15 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -368,7 +368,7 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "===== Findable Device =====", v32, 2u);
   }
 
-  [v14 enumerateObjectsUsingBlock:&stru_10098A078];
+  [printableState enumerateObjectsUsingBlock:&stru_10098A078];
   v16 = +[NIServerFindingSession servicePoolPrintableState];
 
   v17 = v16;
@@ -381,18 +381,18 @@ LABEL_21:
 
   [v17 enumerateObjectsUsingBlock:&stru_10098A098];
   v19 = 0;
-  if (a3 > 1)
+  if (collection > 1)
   {
-    if (a3 == 2)
+    if (collection == 2)
     {
       std::string::assign(&v31, "user-triggered-fatal");
       v19 = 0;
       goto LABEL_28;
     }
 
-    if (a3 != 4)
+    if (collection != 4)
     {
-      if (a3 == 3)
+      if (collection == 3)
       {
         std::string::assign(&v31, "user-triggered-dump-all-existing-logs-if-crashlog");
         v19 = 2;
@@ -408,13 +408,13 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (!a3)
+  if (!collection)
   {
     v20 = "sysdiagnose-triggered";
     goto LABEL_27;
   }
 
-  if (a3 == 1)
+  if (collection == 1)
   {
     std::string::assign(&v31, "user-triggered-non-fatal");
     v19 = 1;
@@ -423,7 +423,7 @@ LABEL_27:
 LABEL_28:
   v21 = sub_10035D02C();
   v22 = sub_10035FD38(v21, v19, &v31);
-  v5[2](v5, v22);
+  replyCopy[2](replyCopy, v22);
 
   if (v30 == 1)
   {
@@ -452,15 +452,15 @@ LABEL_28:
   }
 }
 
-- (void)setRoseGlobalConfigParams:(id)a3 reply:(id)a4
+- (void)setRoseGlobalConfigParams:(id)params reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  paramsCopy = params;
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (paramsCopy)
   {
     v10 = 0;
-    v8 = sub_10002CB38(v5, &v10);
+    v8 = sub_10002CB38(paramsCopy, &v10);
     v9 = v10;
     if ((v8 & 1) == 0 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -472,13 +472,13 @@ LABEL_28:
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 }
 
-- (void)getRoseChipPowerState:(id)a3
+- (void)getRoseChipPowerState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v8 = 0;
   v4 = sub_10035D02C();
   if (sub_10035FE78(v4, &v8 + 1))
@@ -502,21 +502,21 @@ LABEL_7:
   v7 = 0;
   v6 = 0;
 LABEL_8:
-  v3[2](v3, v7, v6 & 1);
+  stateCopy[2](stateCopy, v7, v6 & 1);
 }
 
-- (void)requestPowerChange:(BOOL)a3 reply:(id)a4
+- (void)requestPowerChange:(BOOL)change reply:(id)reply
 {
-  v4 = a3;
-  v7 = a4;
+  changeCopy = change;
+  replyCopy = reply;
   v5 = sub_10035D02C();
-  v6 = sub_10035FE80(v5, v4);
-  v7[2](v7, v6);
+  v6 = sub_10035FE80(v5, changeCopy);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)getChipType:(id)a3
+- (void)getChipType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v3 = sub_10045ED24();
   if (v3)
   {
@@ -528,24 +528,24 @@ LABEL_8:
     v4 = 1;
   }
 
-  v5[2](v5, v4);
+  typeCopy[2](typeCopy, v4);
 }
 
-- (void)getChipPublicKey:(id)a3
+- (void)getChipPublicKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v3 = sub_10035D02C();
   v4 = sub_10035FE90(v3);
-  v5[2]();
+  keyCopy[2]();
   if (v4)
   {
   }
 }
 
-- (void)setNarrowbandSarState:(int64_t)a3 reply:(id)a4
+- (void)setNarrowbandSarState:(int64_t)state reply:(id)reply
 {
-  v9 = a4;
-  switch(a3)
+  replyCopy = reply;
+  switch(state)
   {
     case 3:
       v7 = 2;
@@ -565,12 +565,12 @@ LABEL_8:
   v8 = sub_10035D02C();
   v6 = (*(*v8 + 144))(v8, v7);
 LABEL_9:
-  v9[2](v9, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)getDeepSleepState:(id)a3
+- (void)getDeepSleepState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = sub_10035D02C();
   v5 = sub_10035FE98(v4);
   v6 = qword_1009F9820;
@@ -616,34 +616,34 @@ LABEL_9:
     v8 = 0;
   }
 
-  v3[2](v3, v8);
+  stateCopy[2](stateCopy, v8);
 }
 
-- (void)startStreamingProtobufDataForClientId:(id)a3 reply:(id)a4
+- (void)startStreamingProtobufDataForClientId:(id)id reply:(id)reply
 {
-  v8 = a3;
-  v6 = a4;
+  idCopy = id;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_protobufLock);
   v7 = +[NSXPCConnection currentConnection];
-  [(NSMutableDictionary *)self->_protobufClients setObject:v7 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_protobufClients setObject:v7 forKeyedSubscript:idCopy];
 
   os_unfair_lock_unlock(&self->_protobufLock);
-  v6[2](v6, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)stopStreamingProtobufDataForClientId:(id)a3 reply:(id)a4
+- (void)stopStreamingProtobufDataForClientId:(id)id reply:(id)reply
 {
-  v7 = a3;
-  v6 = a4;
+  idCopy = id;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_protobufLock);
-  [(NSMutableDictionary *)self->_protobufClients removeObjectForKey:v7];
+  [(NSMutableDictionary *)self->_protobufClients removeObjectForKey:idCopy];
   os_unfair_lock_unlock(&self->_protobufLock);
-  v6[2](v6, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)prepareForRegulatoryAssistance:(id)a3
+- (void)prepareForRegulatoryAssistance:(id)assistance
 {
-  v3 = a3;
+  assistanceCopy = assistance;
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -656,7 +656,7 @@ LABEL_9:
 
   if (v6)
   {
-    v3[2](v3, 0);
+    assistanceCopy[2](assistanceCopy, 0);
   }
 
   else
@@ -665,13 +665,13 @@ LABEL_9:
     v11 = @"Insufficient entitlements.";
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v8 = [NSError errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:999 userInfo:v7];
-    (v3)[2](v3, v8);
+    (assistanceCopy)[2](assistanceCopy, v8);
   }
 }
 
-- (void)injectIsoCode:(id)a3
+- (void)injectIsoCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -682,10 +682,10 @@ LABEL_9:
   v5 = +[NSXPCConnection currentConnection];
   if (sub_10001779C(v5))
   {
-    if (v3)
+    if (codeCopy)
     {
-      v6 = v3;
-      sub_100004A08(__p, [v3 UTF8String]);
+      v6 = codeCopy;
+      sub_100004A08(__p, [codeCopy UTF8String]);
       v7 = sub_10035D02C();
       v8 = (*(*v7 + 136))(v7, __p);
       v9 = qword_1009F9820;
@@ -694,7 +694,7 @@ LABEL_9:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v13 = v3;
+          v13 = codeCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#reg-assist, successfully inject iso code: %@.", buf, 0xCu);
         }
       }
@@ -722,20 +722,20 @@ LABEL_9:
   }
 }
 
-- (BOOL)validateClientEntitlements:(id)a3
+- (BOOL)validateClientEntitlements:(id)entitlements
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.nearbyd.diagnostics"];
+  v3 = [entitlements valueForEntitlement:@"com.apple.nearbyd.diagnostics"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)handleXPCDisconnection
@@ -748,15 +748,15 @@ LABEL_9:
   }
 }
 
-- (void)publishBytes:(char *)a3 amount:(unint64_t)a4
+- (void)publishBytes:(char *)bytes amount:(unint64_t)amount
 {
-  if (a4 >= 0x3E9)
+  if (amount >= 0x3E9)
   {
     sub_100499CE0();
   }
 
   os_unfair_lock_lock(&self->_protobufLock);
-  v7 = [NSData dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+  v7 = [NSData dataWithBytesNoCopy:bytes length:amount freeWhenDone:0];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -778,8 +778,8 @@ LABEL_9:
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         v13 = [(NSMutableDictionary *)self->_protobufClients objectForKeyedSubscript:v12, v15];
-        v14 = [v13 remoteObjectProxy];
-        [v14 consumeProtobufBytes:v7];
+        remoteObjectProxy = [v13 remoteObjectProxy];
+        [remoteObjectProxy consumeProtobufBytes:v7];
 
         v11 = v11 + 1;
       }

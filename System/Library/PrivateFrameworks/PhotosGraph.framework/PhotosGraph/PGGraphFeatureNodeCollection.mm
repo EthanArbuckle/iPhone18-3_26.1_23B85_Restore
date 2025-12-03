@@ -1,8 +1,8 @@
 @interface PGGraphFeatureNodeCollection
 + (MARelation)memoryOfFeature;
 + (MARelation)momentOfFeature;
-+ (PGGraphFeatureNodeCollection)featureNodeCollectionWithCollection:(id)a3;
-+ (PGGraphFeatureNodeCollection)featureNodeCollectionWithFeatures:(id)a3 inGraph:(id)a4;
++ (PGGraphFeatureNodeCollection)featureNodeCollectionWithCollection:(id)collection;
++ (PGGraphFeatureNodeCollection)featureNodeCollectionWithFeatures:(id)features inGraph:(id)graph;
 - (NSSet)featureIdentifiers;
 - (PGGraphMemoryNodeCollection)memoryNodes;
 - (PGGraphMomentNodeCollection)momentNodes;
@@ -111,23 +111,23 @@ void __43__PGGraphFeatureNodeCollection_allFeatures__block_invoke(uint64_t a1, v
 - (PGGraphMemoryNodeCollection)memoryNodes
 {
   v3 = +[PGGraphMemoryFeaturesEdge filter];
-  v4 = [v3 inRelation];
-  v5 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  inRelation = [v3 inRelation];
+  v5 = [(MANodeCollection *)PGGraphMemoryNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }
 
-+ (PGGraphFeatureNodeCollection)featureNodeCollectionWithFeatures:(id)a3 inGraph:(id)a4
++ (PGGraphFeatureNodeCollection)featureNodeCollectionWithFeatures:(id)features inGraph:(id)graph
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  featuresCopy = features;
+  graphCopy = graph;
   v23 = objc_alloc_init(MEMORY[0x277D22BD0]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = featuresCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -145,7 +145,7 @@ void __43__PGGraphFeatureNodeCollection_allFeatures__block_invoke(uint64_t a1, v
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 nodeInGraph:{v6, v22}];
+        v14 = [v13 nodeInGraph:{graphCopy, v22}];
         v15 = v14;
         if (v14)
         {
@@ -156,26 +156,26 @@ void __43__PGGraphFeatureNodeCollection_allFeatures__block_invoke(uint64_t a1, v
           }
 
           v18 = +[PGLogging sharedLogging];
-          v17 = [v18 loggingConnection];
+          loggingConnection = [v18 loggingConnection];
 
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = v22;
             v29 = v13;
-            _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Feature node found for feature (%@) does not conform PGAssetCollectionFeature protocol", buf, 0xCu);
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Feature node found for feature (%@) does not conform PGAssetCollectionFeature protocol", buf, 0xCu);
           }
         }
 
         else
         {
           v16 = +[PGLogging sharedLogging];
-          v17 = [v16 loggingConnection];
+          loggingConnection = [v16 loggingConnection];
 
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             *buf = v22;
             v29 = v13;
-            _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "Feature node for feature (%@) not found in graph", buf, 0xCu);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Feature node for feature (%@) not found in graph", buf, 0xCu);
           }
         }
 
@@ -188,20 +188,20 @@ LABEL_14:
     while (v10);
   }
 
-  v19 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:v6 elementIdentifiers:v23];
+  v19 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:graphCopy elementIdentifiers:v23];
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-+ (PGGraphFeatureNodeCollection)featureNodeCollectionWithCollection:(id)a3
++ (PGGraphFeatureNodeCollection)featureNodeCollectionWithCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = [PGGraphFeatureNodeCollection alloc];
-  v5 = [v3 graph];
-  v6 = [v3 elementIdentifiers];
+  graph = [collectionCopy graph];
+  elementIdentifiers = [collectionCopy elementIdentifiers];
 
-  v7 = [(MAElementCollection *)v4 initWithGraph:v5 elementIdentifiers:v6];
+  v7 = [(MAElementCollection *)v4 initWithGraph:graph elementIdentifiers:elementIdentifiers];
 
   return v7;
 }
@@ -209,17 +209,17 @@ LABEL_14:
 + (MARelation)memoryOfFeature
 {
   v2 = +[PGGraphMemoryFeaturesEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)momentOfFeature
 {
   v2 = +[PGGraphMomentFeaturesEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 @end

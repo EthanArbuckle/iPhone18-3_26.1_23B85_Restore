@@ -14,7 +14,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __138__AVCaptureDevice_CAMCaptureEngine__cameraVideoFormat_orPreset_forVideoConfiguration_videoEncodingBehavior_colorSpace_requireVideoBinned___block_invoke;
   aBlock[3] = &unk_1E76FAF08;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   aBlock[5] = a7;
   v22 = a6 == 2;
   v23 = a8;
@@ -195,7 +195,7 @@ LABEL_45:
   v19 = __Block_byref_object_copy__9;
   v20 = __Block_byref_object_dispose__9;
   v21 = 0;
-  v10 = [a1 formats];
+  formats = [self formats];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __126__AVCaptureDevice_CAMCaptureEngine__cam_highestQualityFormatForConfiguration_colorSpace_enableProResVideo_requireVideoBinned___block_invoke;
@@ -205,7 +205,7 @@ LABEL_45:
   v14 = a5;
   v15 = a6;
   v13[4] = &v16;
-  [v10 enumerateObjectsUsingBlock:v13];
+  [formats enumerateObjectsUsingBlock:v13];
   v11 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -222,7 +222,7 @@ LABEL_45:
   v15 = __Block_byref_object_copy__9;
   v16 = __Block_byref_object_dispose__9;
   v17 = 0;
-  v5 = [a1 formats];
+  formats = [self formats];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__AVCaptureDevice_CAMCaptureEngine__cameraPanoramaFormatForConfiguration___block_invoke;
@@ -230,7 +230,7 @@ LABEL_45:
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [formats enumerateObjectsUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -246,13 +246,13 @@ LABEL_45:
   v8 = __Block_byref_object_copy__9;
   v9 = __Block_byref_object_dispose__9;
   v10 = 0;
-  v1 = [a1 formats];
+  formats = [self formats];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__AVCaptureDevice_CAMCaptureEngine__cam_formatForPortraitFrontFacingZoomed__block_invoke;
   v4[3] = &unk_1E76FAF80;
   v4[4] = &v5;
-  [v1 enumerateObjectsUsingBlock:v4];
+  [formats enumerateObjectsUsingBlock:v4];
   v2 = v6[5];
 
   _Block_object_dispose(&v5, 8);
@@ -268,7 +268,7 @@ LABEL_45:
   v24 = __Block_byref_object_copy__9;
   v25 = __Block_byref_object_dispose__9;
   v26 = 0;
-  v14 = [a1 formats];
+  formats = [self formats];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __167__AVCaptureDevice_CAMCaptureEngine__cam_frontFacingFormatForVideoConfiguration_videoEncodingBehavior_colorSpace_dynamicAspectRatio_useSquareFormat_requireVideoBinned___block_invoke;
@@ -280,7 +280,7 @@ LABEL_45:
   v20 = a8;
   v17[4] = &v21;
   v17[5] = a3;
-  [v14 enumerateObjectsUsingBlock:v17];
+  [formats enumerateObjectsUsingBlock:v17];
   v15 = v22[5];
 
   _Block_object_dispose(&v21, 8);

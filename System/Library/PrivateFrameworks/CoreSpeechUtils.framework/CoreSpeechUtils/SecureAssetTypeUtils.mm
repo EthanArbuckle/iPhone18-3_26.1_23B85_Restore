@@ -1,22 +1,22 @@
 @interface SecureAssetTypeUtils
-+ (id)getAssetFileName:(unsigned int)a3;
-+ (id)getBundle:(unsigned int)a3;
++ (id)getAssetFileName:(unsigned int)name;
++ (id)getBundle:(unsigned int)bundle;
 + (id)getVoiceTriggerAssetBundle;
 - (SecureAssetTypeUtils)init;
 @end
 
 @implementation SecureAssetTypeUtils
 
-+ (id)getBundle:(unsigned int)a3
++ (id)getBundle:(unsigned int)bundle
 {
-  v3 = _sSo20SecureAssetTypeUtilsC010CoreSpeechD0E9getBundleySo8NSBundleCSgs6UInt32VFZ_0(a3);
+  v3 = _sSo20SecureAssetTypeUtilsC010CoreSpeechD0E9getBundleySo8NSBundleCSgs6UInt32VFZ_0(bundle);
 
   return v3;
 }
 
-+ (id)getAssetFileName:(unsigned int)a3
++ (id)getAssetFileName:(unsigned int)name
 {
-  _sSo20SecureAssetTypeUtilsC010CoreSpeechD0E03getB8FileNameySSSgs6UInt32VFZ_0(a3);
+  _sSo20SecureAssetTypeUtilsC010CoreSpeechD0E03getB8FileNameySSSgs6UInt32VFZ_0(name);
   if (v3)
   {
     v4 = sub_247994E74();
@@ -34,9 +34,9 @@
 {
   v2 = objc_allocWithZone(MEMORY[0x277CCA8D8]);
   v3 = sub_247994E74();
-  v4 = [v2 initWithPath_];
+  initWithPath_ = [v2 initWithPath_];
 
-  return v4;
+  return initWithPath_;
 }
 
 - (SecureAssetTypeUtils)init

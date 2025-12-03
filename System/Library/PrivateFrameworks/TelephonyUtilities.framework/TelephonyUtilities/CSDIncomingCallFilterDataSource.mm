@@ -1,8 +1,8 @@
 @interface CSDIncomingCallFilterDataSource
-- (BOOL)isDestinationIDAllowedThroughDoNotDisturb:(id)a3 providerIdentifier:(id)a4;
+- (BOOL)isDestinationIDAllowedThroughDoNotDisturb:(id)disturb providerIdentifier:(id)identifier;
 - (CSDIncomingCallFilterDataSource)init;
 - (void)dealloc;
-- (void)setFilterBlock:(id)a3;
+- (void)setFilterBlock:(id)block;
 @end
 
 @implementation CSDIncomingCallFilterDataSource
@@ -32,7 +32,7 @@
 
 - (void)dealloc
 {
-  v3 = [(CSDIncomingCallFilterDataSource *)self _callFilterIdentifier];
+  _callFilterIdentifier = [(CSDIncomingCallFilterDataSource *)self _callFilterIdentifier];
   ICFUnregisterCallFilterResultBlockWithIdentifier();
 
   v4.receiver = self;
@@ -40,26 +40,26 @@
   [(CSDIncomingCallFilterDataSource *)&v4 dealloc];
 }
 
-- (void)setFilterBlock:(id)a3
+- (void)setFilterBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CSDIncomingCallFilterDataSource *)self _callFilterIdentifier];
+  blockCopy = block;
+  _callFilterIdentifier = [(CSDIncomingCallFilterDataSource *)self _callFilterIdentifier];
   ICFRegisterCallFilterResultBlockWithIdentifier();
 }
 
-- (BOOL)isDestinationIDAllowedThroughDoNotDisturb:(id)a3 providerIdentifier:(id)a4
+- (BOOL)isDestinationIDAllowedThroughDoNotDisturb:(id)disturb providerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDIncomingCallFilterDataSource *)self callProviderManager];
-  v9 = [v8 providerWithIdentifier:v7];
+  disturbCopy = disturb;
+  identifierCopy = identifier;
+  callProviderManager = [(CSDIncomingCallFilterDataSource *)self callProviderManager];
+  v9 = [callProviderManager providerWithIdentifier:identifierCopy];
 
-  v10 = [(CSDIncomingCallFilterDataSource *)self featureFlags];
-  if ([v10 isFocusBasedSimSilencingEnabled])
+  featureFlags = [(CSDIncomingCallFilterDataSource *)self featureFlags];
+  if ([featureFlags isFocusBasedSimSilencingEnabled])
   {
-    v11 = [v9 isTelephonyProvider];
+    isTelephonyProvider = [v9 isTelephonyProvider];
 
-    if (v11)
+    if (isTelephonyProvider)
     {
       v12 = 1;
       goto LABEL_24;
@@ -70,24 +70,24 @@
   {
   }
 
-  v13 = [v9 bundleIdentifier];
-  if (!v13)
+  bundleIdentifier = [v9 bundleIdentifier];
+  if (!bundleIdentifier)
   {
-    v14 = [v9 isTelephonyProvider];
+    isTelephonyProvider2 = [v9 isTelephonyProvider];
     v15 = TUBundleIdentifierPhoneApplication;
-    if (!v14)
+    if (!isTelephonyProvider2)
     {
-      v15 = v7;
+      v15 = identifierCopy;
     }
 
-    v13 = v15;
+    bundleIdentifier = v15;
   }
 
   v16 = objc_alloc_init(DNDMutableClientEventDetails);
-  [v16 setBundleIdentifier:v13];
+  [v16 setBundleIdentifier:bundleIdentifier];
   [v16 setType:1];
   v17 = objc_alloc_init(DNDMutableContactHandle);
-  if ([v6 destinationIdIsPhoneNumber])
+  if ([disturbCopy destinationIdIsPhoneNumber])
   {
     v18 = 2;
   }
@@ -98,7 +98,7 @@
   }
 
   [v17 setType:v18];
-  [v17 setValue:v6];
+  [v17 setValue:disturbCopy];
   [v16 setSender:v17];
   v19 = sub_100004778();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -112,7 +112,7 @@
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v13;
+    v29 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "isDestinationIDAllowedThroughDoNotDisturb: bundleID=%@", buf, 0xCu);
   }
 
@@ -124,9 +124,9 @@
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "isDestinationIDAllowedThroughDoNotDisturb: eventDetails=%@", buf, 0xCu);
   }
 
-  v22 = [(CSDIncomingCallFilterDataSource *)self behaviorResolutionService];
+  behaviorResolutionService = [(CSDIncomingCallFilterDataSource *)self behaviorResolutionService];
   v27 = 0;
-  v23 = [v22 resolveBehaviorForEventDetails:v16 error:&v27];
+  v23 = [behaviorResolutionService resolveBehaviorForEventDetails:v16 error:&v27];
   v24 = v27;
 
   if (v23)

@@ -1,26 +1,26 @@
 @interface PK_ipp_value_t
-+ (id)valueWithBoolean:(int)a3;
-+ (id)valueWithInteger:(int)a3;
-+ (id)valueWithString:(id)a3;
++ (id)valueWithBoolean:(int)boolean;
++ (id)valueWithInteger:(int)integer;
++ (id)valueWithString:(id)string;
 - (BOOL)BOOLean;
 - (NSData)unknown;
 - (PK_ipp_collection_t)collection;
 - (PK_ipp_value_t)init;
-- (PK_ipp_value_t)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PK_ipp_value_t)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)loggingValue:(int)a3;
+- (id)loggingValue:(int)value;
 - (int)integer;
 - (ipp_value_date_t)date;
 - (ipp_value_range_t)range;
 - (ipp_value_resolution_t)resolution;
 - (ipp_value_string_t)string;
-- (void)setBoolean:(BOOL)a3;
-- (void)setDate:(ipp_value_date_t)a3;
-- (void)setInteger:(int)a3;
-- (void)setRange:(ipp_value_range_t)a3;
-- (void)setResolution:(ipp_value_resolution_t)a3;
-- (void)setString:(ipp_value_string_t)a3;
+- (void)setBoolean:(BOOL)boolean;
+- (void)setDate:(ipp_value_date_t)date;
+- (void)setInteger:(int)integer;
+- (void)setRange:(ipp_value_range_t)range;
+- (void)setResolution:(ipp_value_resolution_t)resolution;
+- (void)setString:(ipp_value_string_t)string;
 @end
 
 @implementation PK_ipp_value_t
@@ -32,17 +32,17 @@
   return [(PK_ipp_value_t *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 1, self->x_payload);
   return v4;
 }
 
-- (PK_ipp_value_t)initWithCoder:(id)a3
+- (PK_ipp_value_t)initWithCoder:(id)coder
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PK_ipp_value_t;
   v5 = [(PK_ipp_value_t *)&v13 init];
@@ -62,7 +62,7 @@
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:4];
     v9 = [v7 setWithArray:v8];
 
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_payload"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_payload"];
     x_payload = v5->x_payload;
     v5->x_payload = v10;
   }
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)setInteger:(int)a3
+- (void)setInteger:(int)integer
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&integer];
   x_payload = self->x_payload;
   self->x_payload = v4;
 }
@@ -104,9 +104,9 @@
   return [x_payload BOOLValue];
 }
 
-- (void)setBoolean:(BOOL)a3
+- (void)setBoolean:(BOOL)boolean
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:boolean];
   x_payload = self->x_payload;
   self->x_payload = v4;
 }
@@ -132,20 +132,20 @@
   return result;
 }
 
-- (void)setDate:(ipp_value_date_t)a3
+- (void)setDate:(ipp_value_date_t)date
 {
   v7 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v6 length:11];
+  dateCopy = date;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&dateCopy length:11];
   x_payload = self->x_payload;
   self->x_payload = v4;
 }
 
-- (void)setString:(ipp_value_string_t)a3
+- (void)setString:(ipp_value_string_t)string
 {
-  var0 = a3.var0;
+  var0 = string.var0;
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3.var1;
+  v5 = string.var1;
   v6 = v5;
   if (var0)
   {
@@ -232,15 +232,15 @@ LABEL_7:
   }
 
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
   v6 = [v3 objectAtIndexedSubscript:1];
-  v7 = [v6 integerValue];
+  integerValue2 = [v6 integerValue];
   v8 = [v3 objectAtIndexedSubscript:2];
-  v9 = [v8 integerValue];
+  integerValue3 = [v8 integerValue];
 
-  v10 = v7 << 32;
-  v11 = v5;
-  v12 = v9;
+  v10 = integerValue2 << 32;
+  v11 = integerValue;
+  v12 = integerValue3;
 LABEL_8:
   v14 = v10 | v11;
   result.var0 = v14;
@@ -249,10 +249,10 @@ LABEL_8:
   return result;
 }
 
-- (void)setResolution:(ipp_value_resolution_t)a3
+- (void)setResolution:(ipp_value_resolution_t)resolution
 {
-  v3 = *&a3.var2;
-  v4 = *&a3.var0;
+  v3 = *&resolution.var2;
+  v4 = *&resolution.var0;
   v11[3] = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CCABB0] numberWithInt:?];
   v7 = [MEMORY[0x277CCABB0] numberWithInt:{HIDWORD(v4), v6}];
@@ -290,21 +290,21 @@ LABEL_9:
   }
 
   v6 = [v11 objectAtIndexedSubscript:0];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
   v8 = [v11 objectAtIndexedSubscript:1];
-  v9 = [v8 integerValue];
-  *v4 = v7;
-  *(v4 + 4) = v9;
+  integerValue2 = [v8 integerValue];
+  *v4 = integerValue;
+  *(v4 + 4) = integerValue2;
 
   return isKindOfClass;
 }
 
-- (void)setRange:(ipp_value_range_t)a3
+- (void)setRange:(ipp_value_range_t)range
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:*a3.var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:*range.var0];
   v9[0] = v5;
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:*(*&a3 + 4)];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:*(*&range + 4)];
   v9[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
   x_payload = self->x_payload;
@@ -354,31 +354,31 @@ LABEL_9:
   return v5;
 }
 
-- (id)loggingValue:(int)a3
+- (id)loggingValue:(int)value
 {
   v57 = *MEMORY[0x277D85DE8];
-  if (a3 <= 34)
+  if (value <= 34)
   {
-    if (a3 <= 18)
+    if (value <= 18)
     {
-      if (a3 && a3 != 16)
+      if (value && value != 16)
       {
         goto LABEL_45;
       }
     }
 
-    else if (a3 != 19)
+    else if (value != 19)
     {
-      if (a3 == 33)
+      if (value == 33)
       {
         goto LABEL_39;
       }
 
-      if (a3 == 34)
+      if (value == 34)
       {
-        v11 = [(PK_ipp_value_t *)self BOOLean];
+        bOOLean = [(PK_ipp_value_t *)self BOOLean];
         x_payload = @"false";
-        if (v11)
+        if (bOOLean)
         {
           x_payload = @"true";
         }
@@ -394,7 +394,7 @@ LABEL_45:
         if (![v29 count])
         {
 
-          v43 = @"<empty array>";
+          null = @"<empty array>";
           goto LABEL_56;
         }
 
@@ -404,7 +404,7 @@ LABEL_45:
         {
           if ([v29 count]== 1)
           {
-            v43 = v31;
+            null = v31;
             goto LABEL_44;
           }
 
@@ -412,7 +412,7 @@ LABEL_45:
           {
             v38 = MEMORY[0x277CCACA8];
             v33 = [v29 objectAtIndexedSubscript:1];
-            v43 = [v38 stringWithFormat:@"%@ (%@)", v31, v33];
+            null = [v38 stringWithFormat:@"%@ (%@)", v31, v33];
             goto LABEL_43;
           }
         }
@@ -420,19 +420,19 @@ LABEL_45:
 
       x_payload = self->x_payload;
 LABEL_55:
-      v43 = x_payload;
+      null = x_payload;
       goto LABEL_56;
     }
 
-    v43 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_56;
   }
 
-  if (a3 <= 49)
+  if (value <= 49)
   {
-    if (a3 != 35)
+    if (value != 35)
     {
-      if (a3 == 48)
+      if (value == 48)
       {
         v25 = self->x_payload;
         v26 = objc_opt_new();
@@ -443,25 +443,25 @@ LABEL_55:
         *&v52.tm_hour = 3221225472;
         *&v52.tm_mon = ___ZL17pretty_data_linesP6NSData_block_invoke;
         *&v52.tm_wday = &unk_279A90490;
-        v43 = v26;
-        *&v52.tm_isdst = v43;
+        null = v26;
+        *&v52.tm_isdst = null;
         _visitHexLines(v25, 0, &v52);
         v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"}"];
-        [(__CFString *)v43 addObject:v28];
+        [(__CFString *)null addObject:v28];
 
         goto LABEL_56;
       }
 
-      if (a3 == 49)
+      if (value == 49)
       {
-        v4 = [(PK_ipp_value_t *)self date];
+        date = [(PK_ipp_value_t *)self date];
         v6 = v5;
         memset(&v52.tm_wday, 0, 32);
-        v52.tm_mon = BYTE2(v4) - 1;
-        v52.tm_year = (bswap32(v4) >> 16) - 1900;
-        v52.tm_hour = BYTE4(v4);
-        v52.tm_mday = BYTE3(v4);
-        *&v52.tm_sec = vand_s8(vmovn_s64(vshlq_u64(vdupq_n_s64(v4), xmmword_25F6493D0)), 0xFF000000FFLL);
+        v52.tm_mon = BYTE2(date) - 1;
+        v52.tm_year = (bswap32(date) >> 16) - 1900;
+        v52.tm_hour = BYTE4(date);
+        v52.tm_mday = BYTE3(date);
+        *&v52.tm_sec = vand_s8(vmovn_s64(vshlq_u64(vdupq_n_s64(date), xmmword_25F6493D0)), 0xFF000000FFLL);
         v7 = mktime(&v52);
         v8 = 3600;
         if (v6 != 45)
@@ -476,7 +476,7 @@ LABEL_55:
         }
 
         v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(v9 * BYTE2(v6) + v8 * BYTE1(v6) + v7)];
-        v43 = [v10 description];
+        null = [v10 description];
 
         goto LABEL_56;
       }
@@ -485,52 +485,52 @@ LABEL_55:
     }
 
 LABEL_39:
-    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[PK_ipp_value_t integer](self, "integer")];
+    null = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[PK_ipp_value_t integer](self, "integer")];
     goto LABEL_56;
   }
 
-  if (a3 == 50)
+  if (value == 50)
   {
     v29 = self->x_payload;
     v34 = MEMORY[0x277CCACA8];
     v31 = [v29 objectAtIndexedSubscript:0];
-    v35 = [v31 integerValue];
+    integerValue = [v31 integerValue];
     v33 = [v29 objectAtIndexedSubscript:1];
-    v36 = [v33 integerValue];
+    integerValue2 = [v33 integerValue];
     v37 = [v29 objectAtIndexedSubscript:2];
-    v43 = [v34 stringWithFormat:@"resolution<%d, %d, %d>", v35, v36, objc_msgSend(v37, "integerValue")];
+    null = [v34 stringWithFormat:@"resolution<%d, %d, %d>", integerValue, integerValue2, objc_msgSend(v37, "integerValue")];
 
     goto LABEL_43;
   }
 
-  if (a3 == 51)
+  if (value == 51)
   {
     v29 = self->x_payload;
     v30 = MEMORY[0x277CCACA8];
     v31 = [v29 objectAtIndexedSubscript:0];
-    v32 = [v31 integerValue];
+    integerValue3 = [v31 integerValue];
     v33 = [v29 objectAtIndexedSubscript:1];
-    v43 = [v30 stringWithFormat:@"range<%d, %d>", v32, objc_msgSend(v33, "integerValue")];
+    null = [v30 stringWithFormat:@"range<%d, %d>", integerValue3, objc_msgSend(v33, "integerValue")];
 LABEL_43:
 
 LABEL_44:
     goto LABEL_56;
   }
 
-  if (a3 != 52)
+  if (value != 52)
   {
     goto LABEL_45;
   }
 
   v40 = self->x_payload;
-  v43 = objc_opt_new();
+  null = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v13 = [v40 attrs];
-  obj = v13;
-  v14 = [v13 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  attrs = [v40 attrs];
+  obj = attrs;
+  v14 = [attrs countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v14)
   {
     v42 = *v49;
@@ -544,14 +544,14 @@ LABEL_44:
         }
 
         v16 = *(*(&v48 + 1) + 8 * i);
-        v17 = [v16 name];
+        name = [v16 name];
         v18 = objc_opt_new();
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v19 = [v16 values];
-        v20 = [v19 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        values = [v16 values];
+        v20 = [values countByEnumeratingWithState:&v44 objects:v55 count:16];
         if (v20)
         {
           v21 = *v45;
@@ -561,14 +561,14 @@ LABEL_44:
             {
               if (*v45 != v21)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(values);
               }
 
               v23 = [*(*(&v44 + 1) + 8 * j) loggingValue:{objc_msgSend(v16, "value_tag")}];
               [v18 addObject:v23];
             }
 
-            v20 = [v19 countByEnumeratingWithState:&v44 objects:v55 count:16];
+            v20 = [values countByEnumeratingWithState:&v44 objects:v55 count:16];
           }
 
           while (v20);
@@ -576,13 +576,13 @@ LABEL_44:
 
         v53[0] = @"col_name";
         v53[1] = @"col_vals";
-        v54[0] = v17;
+        v54[0] = name;
         v54[1] = v18;
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
-        [(__CFString *)v43 addObject:v24];
+        [(__CFString *)null addObject:v24];
       }
 
-      v13 = obj;
+      attrs = obj;
       v14 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
     }
 
@@ -591,31 +591,31 @@ LABEL_44:
 
 LABEL_56:
 
-  return v43;
+  return null;
 }
 
-+ (id)valueWithInteger:(int)a3
++ (id)valueWithInteger:(int)integer
 {
-  v3 = *&a3;
+  v3 = *&integer;
   v4 = objc_opt_new();
   [v4 setInteger:v3];
 
   return v4;
 }
 
-+ (id)valueWithBoolean:(int)a3
++ (id)valueWithBoolean:(int)boolean
 {
   v4 = objc_opt_new();
-  [v4 setBoolean:a3 != 0];
+  [v4 setBoolean:boolean != 0];
 
   return v4;
 }
 
-+ (id)valueWithString:(id)a3
++ (id)valueWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  v5 = v3;
+  v5 = stringCopy;
   v6 = v5;
   if (v4)
   {

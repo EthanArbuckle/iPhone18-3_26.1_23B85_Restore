@@ -1,87 +1,87 @@
 @interface MSDBundleProgressTracker
-+ (BOOL)isBundleInstance:(id)a3 identicalWithNewBundle:(id)a4;
++ (BOOL)isBundleInstance:(id)instance identicalWithNewBundle:(id)bundle;
 + (void)migratePreferencesFromFactoryDevicesIfNeeded;
 + (void)migratePreferencesFromLegacyDevicesIfNeeded;
-+ (void)removeBundleFromPreferences:(id)a3;
++ (void)removeBundleFromPreferences:(id)preferences;
 - (BOOL)checkIfAllCriticalComponentsTried;
-- (BOOL)getComponentProgressStatus:(id)a3;
+- (BOOL)getComponentProgressStatus:(id)status;
 - (NSMutableDictionary)contentProgress;
 - (NSMutableDictionary)installedComponentList;
 - (double)getBundleUpdateTime;
 - (id)getLastBundleUpdateDate;
-- (id)initializeTrackerForBundle:(id)a3 withContentType:(unsigned __int8)a4;
-- (id)retrieveLegacyContentnIdentifier:(unsigned __int8)a3;
+- (id)initializeTrackerForBundle:(id)bundle withContentType:(unsigned __int8)type;
+- (id)retrieveLegacyContentnIdentifier:(unsigned __int8)identifier;
 - (int64_t)getAllComponentsForUpdate;
-- (void)addToBundleUpdateTime:(double)a3;
+- (void)addToBundleUpdateTime:(double)time;
 - (void)flushRecordsToPreferences;
 - (void)markBundleInProgressAsCompleted;
 - (void)renameBundleInPrgressToBundleInstalled;
-- (void)retrieveAndPopulateBundleInfo:(id)a3;
+- (void)retrieveAndPopulateBundleInfo:(id)info;
 - (void)startBundleUpdateTimer;
 - (void)stopBundleUpdateTimer;
-- (void)updateComponentProgress:(id)a3 withResult:(BOOL)a4 withAdditionalInfo:(id)a5;
-- (void)updateDownloadedContent:(unint64_t)a3 fromSource:(id)a4;
+- (void)updateComponentProgress:(id)progress withResult:(BOOL)result withAdditionalInfo:(id)info;
+- (void)updateDownloadedContent:(unint64_t)content fromSource:(id)source;
 @end
 
 @implementation MSDBundleProgressTracker
 
-- (id)initializeTrackerForBundle:(id)a3 withContentType:(unsigned __int8)a4
+- (id)initializeTrackerForBundle:(id)bundle withContentType:(unsigned __int8)type
 {
-  v41 = a4;
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v44 = v5;
-  v7 = [v5 installationOrder];
+  typeCopy = type;
+  bundleCopy = bundle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v44 = bundleCopy;
+  installationOrder = [bundleCopy installationOrder];
   v8 = objc_alloc_init(NSMutableDictionary);
-  [(MSDBundleProgressTracker *)v6 setComponentsFromBundle:v8];
+  [(MSDBundleProgressTracker *)selfCopy setComponentsFromBundle:v8];
 
-  v9 = [v44 criticalComponents];
-  [(MSDBundleProgressTracker *)v6 setCriticalComponents:v9];
+  criticalComponents = [v44 criticalComponents];
+  [(MSDBundleProgressTracker *)selfCopy setCriticalComponents:criticalComponents];
 
   v10 = sub_100063A54();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MSDBundleProgressTracker *)v6 criticalComponents];
+    criticalComponents2 = [(MSDBundleProgressTracker *)selfCopy criticalComponents];
     *buf = 134217984;
-    *v52 = [v11 count];
+    *v52 = [criticalComponents2 count];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "criticalComponents count:%ld", buf, 0xCu);
   }
 
-  v12 = [(MSDBundleProgressTracker *)v6 criticalComponents];
-  v13 = v12 == 0;
+  criticalComponents3 = [(MSDBundleProgressTracker *)selfCopy criticalComponents];
+  v13 = criticalComponents3 == 0;
 
   if (v13)
   {
-    [(MSDBundleProgressTracker *)v6 setCriticalComponents:v7];
+    [(MSDBundleProgressTracker *)selfCopy setCriticalComponents:installationOrder];
   }
 
   v14 = sub_100063A54();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(MSDBundleProgressTracker *)v6 criticalComponents];
-    v16 = [v15 count];
+    criticalComponents4 = [(MSDBundleProgressTracker *)selfCopy criticalComponents];
+    v16 = [criticalComponents4 count];
     *buf = 134217984;
     *v52 = v16;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "installation order items are:%ld", buf, 0xCu);
   }
 
-  v17 = [(MSDBundleProgressTracker *)v6 retrieveLegacyContentnIdentifier:v41];
-  [(MSDBundleProgressTracker *)v6 setContentIdentifierString:v17];
+  v17 = [(MSDBundleProgressTracker *)selfCopy retrieveLegacyContentnIdentifier:typeCopy];
+  [(MSDBundleProgressTracker *)selfCopy setContentIdentifierString:v17];
 
   v18 = sub_100063A54();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *v52 = v41;
+    *v52 = typeCopy;
     *&v52[4] = 2114;
     *&v52[6] = v44;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "initializing tracker:%d %{public}@", buf, 0x12u);
   }
 
-  [(MSDBundleProgressTracker *)v6 retrieveAndPopulateBundleInfo:v44];
-  v19 = [(MSDBundleProgressTracker *)v6 bundleInfo];
-  v20 = [v19 objectForKey:@"ManifestVersion"];
+  [(MSDBundleProgressTracker *)selfCopy retrieveAndPopulateBundleInfo:v44];
+  bundleInfo = [(MSDBundleProgressTracker *)selfCopy bundleInfo];
+  v20 = [bundleInfo objectForKey:@"ManifestVersion"];
   v45 = [MSDSignedManifest appsPrefixForManifestVersion:v20];
 
   v21 = sub_100063A54();
@@ -98,7 +98,7 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v7;
+  obj = installationOrder;
   v22 = 0;
   v23 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v23)
@@ -116,8 +116,8 @@
         }
 
         v26 = *(*(&v46 + 1) + 8 * v24);
-        v27 = [(MSDBundleProgressTracker *)v6 criticalComponents];
-        v28 = [v27 containsObject:v26];
+        criticalComponents5 = [(MSDBundleProgressTracker *)selfCopy criticalComponents];
+        v28 = [criticalComponents5 containsObject:v26];
 
         if ([v26 hasPrefix:v45])
         {
@@ -146,15 +146,15 @@ LABEL_20:
 LABEL_23:
         v31 = @"1";
 LABEL_24:
-        v32 = [(MSDBundleProgressTracker *)v6 bundleInfo];
-        v33 = [v32 objectForKey:@"ManifestVersion"];
+        bundleInfo2 = [(MSDBundleProgressTracker *)selfCopy bundleInfo];
+        v33 = [bundleInfo2 objectForKey:@"ManifestVersion"];
         v22 = [MSDSignedManifest getComponentFromPath:v29 forManifestVersion:v33];
 
         v34 = [NSNumber numberWithBool:v28];
         v35 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v31, @"Version", &__NSDictionary0__struct, @"DebugInfo", &off_10017AEA0, @"Status", v34, @"CriticalComponent", 0];
 
-        v36 = [(MSDBundleProgressTracker *)v6 componentsFromBundle];
-        [v36 setObject:v35 forKey:v22];
+        componentsFromBundle = [(MSDBundleProgressTracker *)selfCopy componentsFromBundle];
+        [componentsFromBundle setObject:v35 forKey:v22];
 
         v24 = v24 + 1;
         v25 = v22;
@@ -167,48 +167,48 @@ LABEL_24:
     while (v23);
   }
 
-  [(MSDBundleProgressTracker *)v6 setPercentageProgress:0];
+  [(MSDBundleProgressTracker *)selfCopy setPercentageProgress:0];
   v37 = objc_alloc_init(NSMutableDictionary);
-  [(MSDBundleProgressTracker *)v6 setDownloadedContentSource:v37];
+  [(MSDBundleProgressTracker *)selfCopy setDownloadedContentSource:v37];
 
-  [(MSDBundleProgressTracker *)v6 setBundleState:1];
-  [(MSDBundleProgressTracker *)v6 setBundleType:v41];
-  [(MSDBundleProgressTracker *)v6 addBundleSpecificCompoments:v41];
-  v38 = [(MSDBundleProgressTracker *)v6 componentsFromBundle];
-  -[MSDBundleProgressTracker setTotalComponents:](v6, "setTotalComponents:", [v38 count]);
+  [(MSDBundleProgressTracker *)selfCopy setBundleState:1];
+  [(MSDBundleProgressTracker *)selfCopy setBundleType:typeCopy];
+  [(MSDBundleProgressTracker *)selfCopy addBundleSpecificCompoments:typeCopy];
+  componentsFromBundle2 = [(MSDBundleProgressTracker *)selfCopy componentsFromBundle];
+  -[MSDBundleProgressTracker setTotalComponents:](selfCopy, "setTotalComponents:", [componentsFromBundle2 count]);
 
-  [(MSDBundleProgressTracker *)v6 setComponentsSuccessful:0];
-  [(MSDBundleProgressTracker *)v6 setLastBundleUpdateDate:@"<unknown>"];
+  [(MSDBundleProgressTracker *)selfCopy setComponentsSuccessful:0];
+  [(MSDBundleProgressTracker *)selfCopy setLastBundleUpdateDate:@"<unknown>"];
   v39 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"startTime", &off_10017AEB8, @"totalTimeTaken", 0];
-  [(MSDBundleProgressTracker *)v6 setBundleTimerInfo:v39];
+  [(MSDBundleProgressTracker *)selfCopy setBundleTimerInfo:v39];
 
-  [(MSDBundleProgressTracker *)v6 flushRecordsToPreferences];
-  objc_sync_exit(v6);
+  [(MSDBundleProgressTracker *)selfCopy flushRecordsToPreferences];
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)updateComponentProgress:(id)a3 withResult:(BOOL)a4 withAdditionalInfo:(id)a5
+- (void)updateComponentProgress:(id)progress withResult:(BOOL)result withAdditionalInfo:(id)info
 {
-  v6 = a4;
-  v37 = a3;
-  v38 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  v42 = v8;
-  v9 = [(MSDBundleProgressTracker *)v8 bundleInfo];
+  resultCopy = result;
+  progressCopy = progress;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v42 = selfCopy;
+  bundleInfo = [(MSDBundleProgressTracker *)selfCopy bundleInfo];
 
-  if (v9)
+  if (bundleInfo)
   {
-    v10 = [(MSDBundleProgressTracker *)v42 bundleInfo];
-    v11 = [v10 objectForKey:@"ManifestVersion"];
+    bundleInfo2 = [(MSDBundleProgressTracker *)v42 bundleInfo];
+    v11 = [bundleInfo2 objectForKey:@"ManifestVersion"];
 
     v36 = v11;
     if (v11)
     {
-      v39 = [MSDSignedManifest getComponentFromPath:v37 forManifestVersion:v11];
-      v12 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
-      v13 = [v12 objectForKey:v39];
+      v39 = [MSDSignedManifest getComponentFromPath:progressCopy forManifestVersion:v11];
+      componentsFromBundle = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
+      v13 = [componentsFromBundle objectForKey:v39];
       v40 = [v13 mutableCopy];
 
       v14 = sub_100063A54();
@@ -217,15 +217,15 @@ LABEL_24:
         *buf = 138543874;
         *&buf[4] = v39;
         v49 = 1026;
-        v50 = v6;
+        v50 = resultCopy;
         v51 = 2114;
-        v52 = v38;
+        v52 = infoCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Updating component record:%{public}@ result:%{public, BOOL}d info:%{public}@", buf, 0x1Cu);
       }
 
       if (v40)
       {
-        if (v6)
+        if (resultCopy)
         {
           v15 = 2;
         }
@@ -238,26 +238,26 @@ LABEL_24:
         v16 = [NSNumber numberWithUnsignedInteger:v15];
         [v40 setObject:v16 forKey:@"Status"];
 
-        [v40 setObject:v38 forKey:@"DebugInfo"];
-        v17 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
-        [v17 setObject:v40 forKey:v39];
+        [v40 setObject:infoCopy forKey:@"DebugInfo"];
+        componentsFromBundle2 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
+        [componentsFromBundle2 setObject:v40 forKey:v39];
       }
 
       v18 = +[MSDTargetDevice sharedInstance];
-      v19 = [v18 criticalUpdatePrioritized];
+      criticalUpdatePrioritized = [v18 criticalUpdatePrioritized];
 
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v20 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
+      componentsFromBundle3 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
       v21 = 0;
       v22 = 0;
-      v23 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v23 = [componentsFromBundle3 countByEnumeratingWithState:&v43 objects:v47 count:16];
       if (v23)
       {
         v24 = *v44;
-        obj = v20;
+        obj = componentsFromBundle3;
         do
         {
           for (i = 0; i != v23; i = i + 1)
@@ -268,21 +268,21 @@ LABEL_24:
             }
 
             v26 = *(*(&v43 + 1) + 8 * i);
-            v27 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
-            v28 = [v27 objectForKey:v26];
+            componentsFromBundle4 = [(MSDBundleProgressTracker *)v42 componentsFromBundle];
+            v28 = [componentsFromBundle4 objectForKey:v26];
 
             v29 = [v28 objectForKey:@"Status"];
-            LODWORD(v27) = [v29 intValue];
+            LODWORD(componentsFromBundle4) = [v29 intValue];
 
             v30 = [v28 objectForKey:@"CriticalComponent"];
-            v31 = [v30 BOOLValue];
+            bOOLValue = [v30 BOOLValue];
 
-            if (v27 == 2)
+            if (componentsFromBundle4 == 2)
             {
               ++v22;
             }
 
-            if (v31)
+            if (bOOLValue)
             {
               v32 = v21 + 1;
             }
@@ -292,7 +292,7 @@ LABEL_24:
               v32 = v21;
             }
 
-            if (v19)
+            if (criticalUpdatePrioritized)
             {
               v21 = v32;
             }
@@ -303,7 +303,7 @@ LABEL_24:
             }
           }
 
-          v20 = obj;
+          componentsFromBundle3 = obj;
           v23 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
         }
 
@@ -341,27 +341,27 @@ LABEL_24:
   objc_sync_exit(v42);
 }
 
-- (void)updateDownloadedContent:(unint64_t)a3 fromSource:(id)a4
+- (void)updateDownloadedContent:(unint64_t)content fromSource:(id)source
 {
-  v13 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MSDBundleProgressTracker *)v6 downloadedContentSource];
-  v8 = [v7 objectForKey:v13];
+  sourceCopy = source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  downloadedContentSource = [(MSDBundleProgressTracker *)selfCopy downloadedContentSource];
+  longLongValue = [downloadedContentSource objectForKey:sourceCopy];
 
-  if (v8)
+  if (longLongValue)
   {
-    v9 = [(MSDBundleProgressTracker *)v6 downloadedContentSource];
-    v10 = [v9 objectForKey:v13];
-    v8 = [v10 longLongValue];
+    downloadedContentSource2 = [(MSDBundleProgressTracker *)selfCopy downloadedContentSource];
+    v10 = [downloadedContentSource2 objectForKey:sourceCopy];
+    longLongValue = [v10 longLongValue];
   }
 
-  v11 = [(MSDBundleProgressTracker *)v6 downloadedContentSource];
-  v12 = [NSNumber numberWithLongLong:&v8[a3]];
-  [v11 setObject:v12 forKey:v13];
+  downloadedContentSource3 = [(MSDBundleProgressTracker *)selfCopy downloadedContentSource];
+  v12 = [NSNumber numberWithLongLong:&longLongValue[content]];
+  [downloadedContentSource3 setObject:v12 forKey:sourceCopy];
 
-  [(MSDBundleProgressTracker *)v6 flushRecordsToPreferences];
-  objc_sync_exit(v6);
+  [(MSDBundleProgressTracker *)selfCopy flushRecordsToPreferences];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)markBundleInProgressAsCompleted
@@ -370,8 +370,8 @@ LABEL_24:
   objc_sync_enter(obj);
   if ([(MSDBundleProgressTracker *)obj bundleState]== 1)
   {
-    v2 = [(MSDBundleProgressTracker *)obj totalComponents];
-    if (v2 == [(MSDBundleProgressTracker *)obj componentsSuccessful])
+    totalComponents = [(MSDBundleProgressTracker *)obj totalComponents];
+    if (totalComponents == [(MSDBundleProgressTracker *)obj componentsSuccessful])
     {
       v3 = 3;
     }
@@ -379,9 +379,9 @@ LABEL_24:
     else
     {
       v4 = +[MSDTargetDevice sharedInstance];
-      v5 = [v4 criticalUpdatePrioritized];
+      criticalUpdatePrioritized = [v4 criticalUpdatePrioritized];
 
-      if (v5)
+      if (criticalUpdatePrioritized)
       {
         if ([(MSDBundleProgressTracker *)obj checkIfAllCriticalComponentsTried])
         {
@@ -417,8 +417,8 @@ LABEL_24:
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MSDBundleProgressTracker *)obj contentIdentifierString];
-  v3 = [v2 isEqualToString:@"Content.Installing"];
+  contentIdentifierString = [(MSDBundleProgressTracker *)obj contentIdentifierString];
+  v3 = [contentIdentifierString isEqualToString:@"Content.Installing"];
 
   if (v3)
   {
@@ -438,49 +438,49 @@ LABEL_24:
 - (int64_t)getAllComponentsForUpdate
 {
   v3 = +[MSDTargetDevice sharedInstance];
-  v4 = [v3 criticalUpdatePrioritized];
+  criticalUpdatePrioritized = [v3 criticalUpdatePrioritized];
 
-  if (v4)
+  if (criticalUpdatePrioritized)
   {
-    v5 = [(MSDBundleProgressTracker *)self criticalComponents];
-    v6 = [v5 count];
+    criticalComponents = [(MSDBundleProgressTracker *)self criticalComponents];
+    totalComponents = [criticalComponents count];
   }
 
   else
   {
-    v6 = [(MSDBundleProgressTracker *)self totalComponents];
+    totalComponents = [(MSDBundleProgressTracker *)self totalComponents];
   }
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000CA668(self, v6, v7);
+    sub_1000CA668(self, totalComponents, v7);
   }
 
-  return v6;
+  return totalComponents;
 }
 
 - (id)getLastBundleUpdateDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDBundleProgressTracker *)v2 lastBundleUpdateDate];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastBundleUpdateDate = [(MSDBundleProgressTracker *)selfCopy lastBundleUpdateDate];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return lastBundleUpdateDate;
 }
 
 - (double)getBundleUpdateTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
-  v4 = [v3 objectForKey:@"startTime"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundleTimerInfo = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
+  v4 = [bundleTimerInfo objectForKey:@"startTime"];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
-  v8 = [v7 objectForKey:@"totalTimeTaken"];
+  bundleTimerInfo2 = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
+  v8 = [bundleTimerInfo2 objectForKey:@"totalTimeTaken"];
   [v8 doubleValue];
   v10 = v9;
 
@@ -497,68 +497,68 @@ LABEL_24:
     v14 = v13;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10 + v14;
 }
 
-- (void)addToBundleUpdateTime:(double)a3
+- (void)addToBundleUpdateTime:(double)time
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(MSDBundleProgressTracker *)obj bundleTimerInfo];
-  v5 = [v4 objectForKey:@"totalTimeTaken"];
+  bundleTimerInfo = [(MSDBundleProgressTracker *)obj bundleTimerInfo];
+  v5 = [bundleTimerInfo objectForKey:@"totalTimeTaken"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [(MSDBundleProgressTracker *)obj bundleTimerInfo];
-  v9 = [NSNumber numberWithDouble:v7 + a3];
-  [v8 setObject:v9 forKey:@"totalTimeTaken"];
+  bundleTimerInfo2 = [(MSDBundleProgressTracker *)obj bundleTimerInfo];
+  time = [NSNumber numberWithDouble:v7 + time];
+  [bundleTimerInfo2 setObject:time forKey:@"totalTimeTaken"];
 
   [(MSDBundleProgressTracker *)obj flushRecordsToPreferences];
   objc_sync_exit(obj);
 }
 
-- (BOOL)getComponentProgressStatus:(id)a3
+- (BOOL)getComponentProgressStatus:(id)status
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDBundleProgressTracker *)v5 bundleInfo];
-  v7 = [v6 objectForKey:@"ManifestVersion"];
-  v8 = [MSDSignedManifest getComponentFromPath:v4 forManifestVersion:v7];
+  statusCopy = status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundleInfo = [(MSDBundleProgressTracker *)selfCopy bundleInfo];
+  v7 = [bundleInfo objectForKey:@"ManifestVersion"];
+  v8 = [MSDSignedManifest getComponentFromPath:statusCopy forManifestVersion:v7];
 
-  v9 = [(MSDBundleProgressTracker *)v5 componentsFromBundle];
-  v10 = [v9 objectForKey:v8];
+  componentsFromBundle = [(MSDBundleProgressTracker *)selfCopy componentsFromBundle];
+  v10 = [componentsFromBundle objectForKey:v8];
 
   v11 = [v10 objectForKey:@"Status"];
   v12 = [v11 intValue] == 2;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v12;
 }
 
 - (NSMutableDictionary)installedComponentList
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = objc_alloc_init(NSMutableDictionary);
-  if (![(MSDBundleProgressTracker *)v2 preInstalledContent])
+  if (![(MSDBundleProgressTracker *)selfCopy preInstalledContent])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [(MSDBundleProgressTracker *)v2 componentsFromBundle];
-    v4 = [v3 allKeys];
+    componentsFromBundle = [(MSDBundleProgressTracker *)selfCopy componentsFromBundle];
+    allKeys = [componentsFromBundle allKeys];
 
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v5)
     {
       v6 = *v20;
       do
       {
-        v7 = v4;
+        v7 = allKeys;
         for (i = 0; i != v5; i = i + 1)
         {
           if (*v20 != v6)
@@ -567,21 +567,21 @@ LABEL_24:
           }
 
           v9 = *(*(&v19 + 1) + 8 * i);
-          v10 = [(MSDBundleProgressTracker *)v2 componentsFromBundle];
-          v11 = [v10 objectForKey:v9];
+          componentsFromBundle2 = [(MSDBundleProgressTracker *)selfCopy componentsFromBundle];
+          v11 = [componentsFromBundle2 objectForKey:v9];
           v12 = [v11 objectForKey:@"Status"];
           v13 = [v12 integerValue] == 2;
 
           if (v13)
           {
-            v14 = [(MSDBundleProgressTracker *)v2 componentsFromBundle];
-            v15 = [v14 objectForKey:v9];
+            componentsFromBundle3 = [(MSDBundleProgressTracker *)selfCopy componentsFromBundle];
+            v15 = [componentsFromBundle3 objectForKey:v9];
             v16 = [v15 objectForKey:@"Version"];
             [v18 setObject:v16 forKey:v9];
           }
         }
 
-        v4 = v7;
+        allKeys = v7;
         v5 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
@@ -589,125 +589,125 @@ LABEL_24:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
 - (NSMutableDictionary)contentProgress
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MSDBundleProgressTracker *)v2 bundleState];
-  if (v4 == 5)
+  bundleState = [(MSDBundleProgressTracker *)selfCopy bundleState];
+  if (bundleState == 5)
   {
-    v5 = 3;
+    bundleState2 = 3;
   }
 
-  else if (v4 == 6)
+  else if (bundleState == 6)
   {
-    v5 = 4;
+    bundleState2 = 4;
   }
 
   else
   {
-    v5 = [(MSDBundleProgressTracker *)v2 bundleState];
+    bundleState2 = [(MSDBundleProgressTracker *)selfCopy bundleState];
   }
 
-  v6 = [(MSDBundleProgressTracker *)v2 contentIdentifierString];
-  v7 = [v6 isEqualToString:@"Content.Installing"];
+  contentIdentifierString = [(MSDBundleProgressTracker *)selfCopy contentIdentifierString];
+  v7 = [contentIdentifierString isEqualToString:@"Content.Installing"];
 
   if (v7)
   {
-    v8 = [NSNumber numberWithInteger:[(MSDBundleProgressTracker *)v2 percentageProgress]];
+    v8 = [NSNumber numberWithInteger:[(MSDBundleProgressTracker *)selfCopy percentageProgress]];
     [v3 setObject:v8 forKey:@"InstalledComponentsPercent"];
 
     [v3 setObject:&off_10017AEB8 forKey:@"InstalledSizePercent"];
-    v9 = [NSNumber numberWithUnsignedChar:v5];
+    v9 = [NSNumber numberWithUnsignedChar:bundleState2];
     [v3 setObject:v9 forKey:@"InstallState"];
   }
 
   else
   {
-    v10 = [(MSDBundleProgressTracker *)v2 contentIdentifierString];
-    v11 = [v10 isEqualToString:@"Content.Downloading"];
+    contentIdentifierString2 = [(MSDBundleProgressTracker *)selfCopy contentIdentifierString];
+    v11 = [contentIdentifierString2 isEqualToString:@"Content.Downloading"];
 
     if (!v11)
     {
       goto LABEL_11;
     }
 
-    v12 = [NSNumber numberWithInteger:[(MSDBundleProgressTracker *)v2 percentageProgress]];
+    v12 = [NSNumber numberWithInteger:[(MSDBundleProgressTracker *)selfCopy percentageProgress]];
     [v3 setObject:v12 forKey:@"DownloadedComponentsPercent"];
 
     [v3 setObject:&off_10017AEB8 forKey:@"DownloadedSizePercent"];
-    v9 = [NSNumber numberWithUnsignedChar:v5];
+    v9 = [NSNumber numberWithUnsignedChar:bundleState2];
     [v3 setObject:v9 forKey:@"DownloadState"];
   }
 
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)retrieveAndPopulateBundleInfo:(id)a3
+- (void)retrieveAndPopulateBundleInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 getInfo];
+  infoCopy = info;
+  getInfo = [infoCopy getInfo];
   v6 = +[NSMutableDictionary dictionary];
   [(MSDBundleProgressTracker *)self setBundleInfo:v6];
 
-  v7 = [v5 objectForKey:@"PartNumber"];
+  v7 = [getInfo objectForKey:@"PartNumber"];
   if (v7)
   {
-    v8 = [(MSDBundleProgressTracker *)self bundleInfo];
-    [v8 setObject:v7 forKey:@"PartNumber"];
+    bundleInfo = [(MSDBundleProgressTracker *)self bundleInfo];
+    [bundleInfo setObject:v7 forKey:@"PartNumber"];
   }
 
-  v9 = [v5 objectForKey:@"Revision"];
+  v9 = [getInfo objectForKey:@"Revision"];
 
   if (v9)
   {
-    v10 = [(MSDBundleProgressTracker *)self bundleInfo];
-    [v10 setObject:v9 forKey:@"Revision"];
+    bundleInfo2 = [(MSDBundleProgressTracker *)self bundleInfo];
+    [bundleInfo2 setObject:v9 forKey:@"Revision"];
   }
 
-  v11 = [v5 objectForKey:@"BundleName"];
+  v11 = [getInfo objectForKey:@"BundleName"];
 
   if (v11)
   {
-    v12 = [(MSDBundleProgressTracker *)self bundleInfo];
-    [v12 setObject:v11 forKey:@"BundleName"];
+    bundleInfo3 = [(MSDBundleProgressTracker *)self bundleInfo];
+    [bundleInfo3 setObject:v11 forKey:@"BundleName"];
   }
 
   v19 = +[MSDFileDownloadCredentials sharedInstance];
-  v13 = [v19 manifestInfo];
-  v14 = [v13 objectForKey:@"SigningKey"];
+  manifestInfo = [v19 manifestInfo];
+  v14 = [manifestInfo objectForKey:@"SigningKey"];
 
   if (v14)
   {
-    v15 = [(MSDBundleProgressTracker *)self bundleInfo];
-    [v15 setObject:v14 forKey:@"SigningKey"];
+    bundleInfo4 = [(MSDBundleProgressTracker *)self bundleInfo];
+    [bundleInfo4 setObject:v14 forKey:@"SigningKey"];
   }
 
-  v16 = [(MSDBundleProgressTracker *)self bundleInfo];
-  v17 = [v4 getVersion];
+  bundleInfo5 = [(MSDBundleProgressTracker *)self bundleInfo];
+  getVersion = [infoCopy getVersion];
 
-  v18 = [NSNumber numberWithInt:v17];
-  [v16 setObject:v18 forKey:@"ManifestVersion"];
+  v18 = [NSNumber numberWithInt:getVersion];
+  [bundleInfo5 setObject:v18 forKey:@"ManifestVersion"];
 }
 
-- (id)retrieveLegacyContentnIdentifier:(unsigned __int8)a3
+- (id)retrieveLegacyContentnIdentifier:(unsigned __int8)identifier
 {
   v3 = @"Content.Downloading";
-  if (a3 == 2)
+  if (identifier == 2)
   {
     v3 = @"Content.Installing";
   }
 
-  if (a3)
+  if (identifier)
   {
     return v3;
   }
@@ -721,20 +721,20 @@ LABEL_11:
 - (void)flushRecordsToPreferences
 {
   v15[0] = @"BundleInfo";
-  v14 = [(MSDBundleProgressTracker *)self bundleInfo];
-  v16[0] = v14;
+  bundleInfo = [(MSDBundleProgressTracker *)self bundleInfo];
+  v16[0] = bundleInfo;
   v15[1] = @"PreInstalledContent";
   v3 = [NSNumber numberWithBool:[(MSDBundleProgressTracker *)self preInstalledContent]];
   v16[1] = v3;
   v15[2] = @"ComponentInfo";
-  v4 = [(MSDBundleProgressTracker *)self componentsFromBundle];
-  v16[2] = v4;
+  componentsFromBundle = [(MSDBundleProgressTracker *)self componentsFromBundle];
+  v16[2] = componentsFromBundle;
   v15[3] = @"ContentStatus";
   v5 = [NSNumber numberWithUnsignedChar:[(MSDBundleProgressTracker *)self bundleState]];
   v16[3] = v5;
   v15[4] = @"ContentSource";
-  v6 = [(MSDBundleProgressTracker *)self downloadedContentSource];
-  v16[4] = v6;
+  downloadedContentSource = [(MSDBundleProgressTracker *)self downloadedContentSource];
+  v16[4] = downloadedContentSource;
   v15[5] = @"TotalComponents";
   v7 = [NSNumber numberWithInteger:[(MSDBundleProgressTracker *)self totalComponents]];
   v16[5] = v7;
@@ -742,16 +742,16 @@ LABEL_11:
   v8 = [NSNumber numberWithInteger:[(MSDBundleProgressTracker *)self componentsSuccessful]];
   v16[6] = v8;
   v15[7] = @"LastBundleUpdateDate";
-  v9 = [(MSDBundleProgressTracker *)self lastBundleUpdateDate];
-  v16[7] = v9;
+  lastBundleUpdateDate = [(MSDBundleProgressTracker *)self lastBundleUpdateDate];
+  v16[7] = lastBundleUpdateDate;
   v15[8] = @"BundleTimerInfo";
-  v10 = [(MSDBundleProgressTracker *)self bundleTimerInfo];
-  v16[8] = v10;
+  bundleTimerInfo = [(MSDBundleProgressTracker *)self bundleTimerInfo];
+  v16[8] = bundleTimerInfo;
   v11 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:9];
 
   v12 = +[MSDPreferencesFile sharedInstance];
-  v13 = [(MSDBundleProgressTracker *)self contentIdentifierString];
-  [v12 setObject:v11 forKey:v13];
+  contentIdentifierString = [(MSDBundleProgressTracker *)self contentIdentifierString];
+  [v12 setObject:v11 forKey:contentIdentifierString];
 }
 
 - (BOOL)checkIfAllCriticalComponentsTried
@@ -776,19 +776,19 @@ LABEL_11:
         }
 
         v7 = *(*(&v20 + 1) + 8 * i);
-        v8 = [(MSDBundleProgressTracker *)self bundleInfo];
-        v9 = [v8 objectForKey:@"ManifestVersion"];
+        bundleInfo = [(MSDBundleProgressTracker *)self bundleInfo];
+        v9 = [bundleInfo objectForKey:@"ManifestVersion"];
         v10 = [MSDSignedManifest getComponentFromPath:v7 forManifestVersion:v9];
 
-        v11 = [(MSDBundleProgressTracker *)self componentsFromBundle];
-        v12 = [v11 objectForKey:v10];
+        componentsFromBundle = [(MSDBundleProgressTracker *)self componentsFromBundle];
+        v12 = [componentsFromBundle objectForKey:v10];
 
         if (v12)
         {
           v13 = [v12 objectForKey:@"Status"];
-          v14 = [v13 intValue];
+          intValue = [v13 intValue];
 
-          if (!v14)
+          if (!intValue)
           {
 
             v16 = 0;
@@ -828,47 +828,47 @@ LABEL_15:
   return v16;
 }
 
-+ (void)removeBundleFromPreferences:(id)a3
++ (void)removeBundleFromPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = preferencesCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "removing bundlepreferences:%{public}@", &v6, 0xCu);
   }
 
   v5 = +[MSDPreferencesFile sharedInstance];
-  [v5 removeObjectForKey:v3];
+  [v5 removeObjectForKey:preferencesCopy];
 }
 
-+ (BOOL)isBundleInstance:(id)a3 identicalWithNewBundle:(id)a4
++ (BOOL)isBundleInstance:(id)instance identicalWithNewBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = [a4 getInfo];
+  instanceCopy = instance;
+  getInfo = [bundle getInfo];
   v7 = +[MSDFileDownloadCredentials sharedInstance];
   v8 = 0;
-  if (v5 && a4)
+  if (instanceCopy && bundle)
   {
-    v22 = [v6 objectForKey:@"PartNumber"];
-    v9 = [v5 bundleInfo];
-    v10 = [v9 objectForKey:@"PartNumber"];
+    v22 = [getInfo objectForKey:@"PartNumber"];
+    bundleInfo = [instanceCopy bundleInfo];
+    v10 = [bundleInfo objectForKey:@"PartNumber"];
 
-    v11 = [v5 bundleInfo];
-    v12 = [v11 objectForKey:@"Revision"];
-    v13 = [v12 integerValue];
+    bundleInfo2 = [instanceCopy bundleInfo];
+    v12 = [bundleInfo2 objectForKey:@"Revision"];
+    integerValue = [v12 integerValue];
 
-    v14 = [v6 objectForKey:@"Revision"];
-    v15 = [v14 integerValue];
+    v14 = [getInfo objectForKey:@"Revision"];
+    integerValue2 = [v14 integerValue];
 
-    v16 = [v5 bundleInfo];
-    v17 = [v16 objectForKey:@"SigningKey"];
+    bundleInfo3 = [instanceCopy bundleInfo];
+    v17 = [bundleInfo3 objectForKey:@"SigningKey"];
 
-    v18 = [v7 manifestInfo];
-    v19 = [v18 objectForKey:@"SigningKey"];
+    manifestInfo = [v7 manifestInfo];
+    v19 = [manifestInfo objectForKey:@"SigningKey"];
 
-    if ([v22 isEqualToString:v10] && v13 == v15 && objc_msgSend(v19, "isEqualToString:", v17))
+    if ([v22 isEqualToString:v10] && integerValue == integerValue2 && objc_msgSend(v19, "isEqualToString:", v17))
     {
       v20 = sub_100063A54();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -925,26 +925,26 @@ LABEL_15:
         if (v10)
         {
           v11 = [v9 objectForKey:@"Installed"];
-          v12 = [v11 intValue];
+          intValue = [v11 intValue];
 
           v13 = [v9 objectForKey:@"Total"];
-          v14 = [v13 intValue];
+          intValue2 = [v13 intValue];
         }
 
         else
         {
-          v14 = 0;
-          v12 = 0;
+          intValue2 = 0;
+          intValue = 0;
         }
       }
 
       else
       {
-        v14 = 0;
-        v12 = 0;
+        intValue2 = 0;
+        intValue = 0;
       }
 
-      if (v12 == v14)
+      if (intValue == intValue2)
       {
         v16 = 3;
       }
@@ -963,15 +963,15 @@ LABEL_15:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v46 = v14;
+        v46 = intValue2;
         v47 = 2048;
-        v48 = v12;
+        v48 = intValue;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "totalComponents:%ld componentsSuccessful:%ld", buf, 0x16u);
       }
 
       v19 = [NSNumber numberWithUnsignedChar:v16];
-      v20 = [NSNumber numberWithInteger:v14];
-      v21 = [NSNumber numberWithInteger:v12];
+      v20 = [NSNumber numberWithInteger:intValue2];
+      v21 = [NSNumber numberWithInteger:intValue];
       v22 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v4, @"BundleInfo", v15, @"ComponentInfo", v19, @"ContentStatus", v7, @"ContentSource", v20, @"TotalComponents", v21, @"SuccessfulComponents", @"<unknown>", @"LastBundleUpdateDate", 0];
 
       v23 = +[MSDPreferencesFile sharedInstance];
@@ -994,7 +994,7 @@ LABEL_15:
 
       v28 = +[MSDPreferencesFile sharedInstance];
       v29 = [v28 objectForKey:@"TotalDownloadedContent"];
-      v30 = [v29 intValue];
+      intValue3 = [v29 intValue];
 
       v31 = +[MSDPreferencesFile sharedInstance];
       v32 = [v31 objectForKey:@"Content.Downloading"];
@@ -1002,9 +1002,9 @@ LABEL_15:
       v33 = objc_alloc_init(NSMutableDictionary);
       v34 = objc_alloc_init(NSMutableDictionary);
 
-      v35 = 100 * [v27 count] / v30;
+      v35 = 100 * [v27 count] / intValue3;
       v36 = [v27 count];
-      if (v30 == 100)
+      if (intValue3 == 100)
       {
         v37 = 3;
       }
@@ -1092,10 +1092,10 @@ LABEL_15:
 
 - (void)startBundleUpdateTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
-  v4 = [v3 objectForKey:@"startTime"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundleTimerInfo = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
+  v4 = [bundleTimerInfo objectForKey:@"startTime"];
   [v4 doubleValue];
   v6 = v5;
 
@@ -1122,25 +1122,25 @@ LABEL_15:
     }
   }
 
-  v10 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
+  bundleTimerInfo2 = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
   v11 = [NSNumber numberWithDouble:v6];
-  [v10 setObject:v11 forKey:@"startTime"];
+  [bundleTimerInfo2 setObject:v11 forKey:@"startTime"];
 
-  [(MSDBundleProgressTracker *)v2 flushRecordsToPreferences];
-  objc_sync_exit(v2);
+  [(MSDBundleProgressTracker *)selfCopy flushRecordsToPreferences];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stopBundleUpdateTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
-  v4 = [v3 objectForKey:@"startTime"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundleTimerInfo = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
+  v4 = [bundleTimerInfo objectForKey:@"startTime"];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
-  v8 = [v7 objectForKey:@"totalTimeTaken"];
+  bundleTimerInfo2 = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
+  v8 = [bundleTimerInfo2 objectForKey:@"totalTimeTaken"];
   [v8 doubleValue];
   v10 = v9;
 
@@ -1164,18 +1164,18 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Stopping bundle update timer. Time taken in this attempt: %lf, Total time taken: %lf", &v23, 0x16u);
     }
 
-    v19 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
+    bundleTimerInfo3 = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
     v20 = [NSNumber numberWithDouble:0.0];
-    [v19 setObject:v20 forKey:@"startTime"];
+    [bundleTimerInfo3 setObject:v20 forKey:@"startTime"];
 
-    v21 = [(MSDBundleProgressTracker *)v2 bundleTimerInfo];
+    bundleTimerInfo4 = [(MSDBundleProgressTracker *)selfCopy bundleTimerInfo];
     v22 = [NSNumber numberWithDouble:v16];
-    [v21 setObject:v22 forKey:@"totalTimeTaken"];
+    [bundleTimerInfo4 setObject:v22 forKey:@"totalTimeTaken"];
 
-    [(MSDBundleProgressTracker *)v2 flushRecordsToPreferences];
+    [(MSDBundleProgressTracker *)selfCopy flushRecordsToPreferences];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

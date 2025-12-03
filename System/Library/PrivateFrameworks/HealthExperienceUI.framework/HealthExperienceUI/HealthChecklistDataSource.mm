@@ -7,9 +7,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA44F908();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for HealthChecklistDataSource();
   [(HealthChecklistDataSource *)&v3 dealloc];
 }

@@ -1,36 +1,36 @@
 @interface SBHPeopleWidgetPersonDetailInteractionContext
 - (CGRect)homeScreenContentFrame;
-- (SBHPeopleWidgetPersonDetailInteractionContext)initWithPersonURL:(id)a3 sourceIconView:(id)a4 referenceIconView:(id)a5 containerViewController:(id)a6 containerView:(id)a7 homeScreenContentView:(id)a8 homeScreenContentFrame:(CGRect)a9;
+- (SBHPeopleWidgetPersonDetailInteractionContext)initWithPersonURL:(id)l sourceIconView:(id)view referenceIconView:(id)iconView containerViewController:(id)controller containerView:(id)containerView homeScreenContentView:(id)contentView homeScreenContentFrame:(CGRect)frame;
 @end
 
 @implementation SBHPeopleWidgetPersonDetailInteractionContext
 
-- (SBHPeopleWidgetPersonDetailInteractionContext)initWithPersonURL:(id)a3 sourceIconView:(id)a4 referenceIconView:(id)a5 containerViewController:(id)a6 containerView:(id)a7 homeScreenContentView:(id)a8 homeScreenContentFrame:(CGRect)a9
+- (SBHPeopleWidgetPersonDetailInteractionContext)initWithPersonURL:(id)l sourceIconView:(id)view referenceIconView:(id)iconView containerViewController:(id)controller containerView:(id)containerView homeScreenContentView:(id)contentView homeScreenContentFrame:(CGRect)frame
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v19 = a3;
-  v28 = a4;
-  v27 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  lCopy = l;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  controllerCopy = controller;
+  containerViewCopy = containerView;
+  contentViewCopy = contentView;
   v29.receiver = self;
   v29.super_class = SBHPeopleWidgetPersonDetailInteractionContext;
   v23 = [(SBHPeopleWidgetPersonDetailInteractionContext *)&v29 init];
   if (v23)
   {
-    v24 = [v19 copy];
+    v24 = [lCopy copy];
     personURL = v23->_personURL;
     v23->_personURL = v24;
 
-    objc_storeStrong(&v23->_sourceIconView, a4);
-    objc_storeStrong(&v23->_referenceIconView, a5);
-    objc_storeStrong(&v23->_containerViewController, a6);
-    objc_storeStrong(&v23->_containerView, a7);
-    objc_storeStrong(&v23->_homeScreenContentView, a8);
+    objc_storeStrong(&v23->_sourceIconView, view);
+    objc_storeStrong(&v23->_referenceIconView, iconView);
+    objc_storeStrong(&v23->_containerViewController, controller);
+    objc_storeStrong(&v23->_containerView, containerView);
+    objc_storeStrong(&v23->_homeScreenContentView, contentView);
     v23->_homeScreenContentFrame.origin.x = x;
     v23->_homeScreenContentFrame.origin.y = y;
     v23->_homeScreenContentFrame.size.width = width;

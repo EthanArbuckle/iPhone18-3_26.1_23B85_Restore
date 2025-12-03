@@ -1,34 +1,34 @@
 @interface ATXAWDUtils
-+ (double)scoreMultiplierWithInputType:(unint64_t)a3;
-+ (id)appDataAtIndex:(unint64_t)a3 forSessionLogDict:(id)a4;
-+ (id)populateAwdAppPredictionSessionForSessionLogDict:(id)a3;
-+ (id)subscoresWithDictionary:(id)a3;
-+ (int)AWDLOITypeForString:(id)a3;
-+ (int)awdActionEngagementWithEngagement:(unint64_t)a3;
-+ (int)awdActionTypeWithActionType:(unint64_t)a3;
-+ (int)awdAppLaunchReasonWithString:(id)a3;
-+ (int)awdConsumerSubTypeWithConsumerSubType:(unsigned __int8)a3;
-+ (int)awdLOITypeWithRTLOI:(int64_t)a3;
-+ (int)awdMotionTypeWithMotionType:(int64_t)a3;
-+ (int)awdPredictionOutcomeWithATXPredictionOutcome:(unint64_t)a3;
-+ (int)awdScoreWithScore:(double)a3 type:(unint64_t)a4;
-+ (void)logAppPredictionDictionaryViaAWD:(id)a3;
++ (double)scoreMultiplierWithInputType:(unint64_t)type;
++ (id)appDataAtIndex:(unint64_t)index forSessionLogDict:(id)dict;
++ (id)populateAwdAppPredictionSessionForSessionLogDict:(id)dict;
++ (id)subscoresWithDictionary:(id)dictionary;
++ (int)AWDLOITypeForString:(id)string;
++ (int)awdActionEngagementWithEngagement:(unint64_t)engagement;
++ (int)awdActionTypeWithActionType:(unint64_t)type;
++ (int)awdAppLaunchReasonWithString:(id)string;
++ (int)awdConsumerSubTypeWithConsumerSubType:(unsigned __int8)type;
++ (int)awdLOITypeWithRTLOI:(int64_t)i;
++ (int)awdMotionTypeWithMotionType:(int64_t)type;
++ (int)awdPredictionOutcomeWithATXPredictionOutcome:(unint64_t)outcome;
++ (int)awdScoreWithScore:(double)score type:(unint64_t)type;
++ (void)logAppPredictionDictionaryViaAWD:(id)d;
 @end
 
 @implementation ATXAWDUtils
 
-+ (int)awdScoreWithScore:(double)a3 type:(unint64_t)a4
++ (int)awdScoreWithScore:(double)score type:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 == -31337.0)
+  if (score == -31337.0)
   {
-    [ATXAWDUtils awdScoreWithScore:a2 type:a1];
+    [ATXAWDUtils awdScoreWithScore:a2 type:self];
   }
 
-  [ATXAWDUtils scoreMultiplierWithInputType:a4];
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+  [ATXAWDUtils scoreMultiplierWithInputType:type];
+  if ((*&score & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
-    v9 = v6 * a3;
+    v9 = v6 * score;
     if (v9 >= -2147483650.0)
     {
       if (v9 <= 2147483650.0)
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134217984;
-      v15 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "Unexpected nonfinite score input encountered during feedback for scoreType: %lu", &v14, 0xCu);
     }
 
@@ -79,10 +79,10 @@
   return result;
 }
 
-+ (double)scoreMultiplierWithInputType:(unint64_t)a3
++ (double)scoreMultiplierWithInputType:(unint64_t)type
 {
   result = 1.0;
-  switch(a3)
+  switch(type)
   {
     case 5uLL:
     case 0xBuLL:
@@ -913,7 +913,7 @@
     case 0x33CuLL:
       goto LABEL_5;
     default:
-      if (a3 == 0xFFFFFFFF)
+      if (type == 0xFFFFFFFF)
       {
 LABEL_5:
         result = 0.0;
@@ -925,16 +925,16 @@ LABEL_5:
   return result;
 }
 
-+ (id)subscoresWithDictionary:(id)a3
++ (id)subscoresWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v24 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = v3;
+  v4 = dictionaryCopy;
   v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -3398,37 +3398,37 @@ LABEL_5:
   return v24;
 }
 
-+ (int)awdConsumerSubTypeWithConsumerSubType:(unsigned __int8)a3
++ (int)awdConsumerSubTypeWithConsumerSubType:(unsigned __int8)type
 {
-  if ((a3 - 1) > 0x31)
+  if ((type - 1) > 0x31)
   {
     return 0;
   }
 
   else
   {
-    return dword_2268722C8[(a3 - 1)];
+    return dword_2268722C8[(type - 1)];
   }
 }
 
-+ (int)awdLOITypeWithRTLOI:(int64_t)a3
++ (int)awdLOITypeWithRTLOI:(int64_t)i
 {
-  if (a3 > 3)
+  if (i > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_2268723D0[a3];
+    return dword_2268723D0[i];
   }
 }
 
-+ (int)awdActionEngagementWithEngagement:(unint64_t)a3
++ (int)awdActionEngagementWithEngagement:(unint64_t)engagement
 {
-  if (a3 - 1 < 0xA)
+  if (engagement - 1 < 0xA)
   {
-    return a3;
+    return engagement;
   }
 
   else
@@ -3437,13 +3437,13 @@ LABEL_5:
   }
 }
 
-+ (int)awdActionTypeWithActionType:(unint64_t)a3
++ (int)awdActionTypeWithActionType:(unint64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         v4 = __atxlog_handle_default();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -3460,9 +3460,9 @@ LABEL_5:
 
     else
     {
-      if (a3)
+      if (type)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           return 1;
         }
@@ -3476,9 +3476,9 @@ LABEL_5:
 
   else
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         return 5;
       }
@@ -3486,7 +3486,7 @@ LABEL_5:
       return 4;
     }
 
-    switch(a3)
+    switch(type)
     {
       case 6uLL:
         return 6;
@@ -3500,13 +3500,13 @@ LABEL_5:
   }
 }
 
-+ (int)awdAppLaunchReasonWithString:(id)a3
++ (int)awdAppLaunchReasonWithString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (launchReasonMap)
   {
-    if (!v3)
+    if (!stringCopy)
     {
       goto LABEL_8;
     }
@@ -3543,62 +3543,62 @@ LABEL_9:
   return v5;
 }
 
-+ (int)awdMotionTypeWithMotionType:(int64_t)a3
++ (int)awdMotionTypeWithMotionType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 2;
   }
 
   else
   {
-    return dword_226872390[a3];
+    return dword_226872390[type];
   }
 }
 
-+ (id)appDataAtIndex:(unint64_t)a3 forSessionLogDict:(id)a4
++ (id)appDataAtIndex:(unint64_t)index forSessionLogDict:(id)dict
 {
-  v5 = a4;
+  dictCopy = dict;
   v6 = objc_opt_new();
-  v7 = [v5 objectForKeyedSubscript:@"AppData"];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  v7 = [dictCopy objectForKeyedSubscript:@"AppData"];
+  v8 = [v7 objectAtIndexedSubscript:index];
   v9 = [ATXAWDUtils subscoresWithDictionary:v8];
 
   [v6 setSubscores:v9];
-  v10 = [v5 objectForKeyedSubscript:@"AppData"];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  v10 = [dictCopy objectForKeyedSubscript:@"AppData"];
+  v11 = [v10 objectAtIndexedSubscript:index];
   v12 = [v11 objectForKeyedSubscript:@"Score"];
 
   if (v12)
   {
-    v13 = [v5 objectForKeyedSubscript:@"AppData"];
-    v14 = [v13 objectAtIndexedSubscript:a3];
+    v13 = [dictCopy objectForKeyedSubscript:@"AppData"];
+    v14 = [v13 objectAtIndexedSubscript:index];
     v15 = [v14 objectForKeyedSubscript:@"Score"];
     [v15 doubleValue];
     [v6 setScore:?];
   }
 
-  v16 = [v5 objectForKeyedSubscript:@"EngagedApp"];
+  v16 = [dictCopy objectForKeyedSubscript:@"EngagedApp"];
   if (v16)
   {
     v17 = v16;
-    v18 = [v5 objectForKeyedSubscript:@"EngagedApp"];
-    v19 = [v18 intValue];
+    v18 = [dictCopy objectForKeyedSubscript:@"EngagedApp"];
+    intValue = [v18 intValue];
 
-    if (v19 != -1)
+    if (intValue != -1)
     {
-      [v6 setEngagedApp:a3 == 0];
+      [v6 setEngagedApp:index == 0];
     }
   }
 
-  v20 = [v5 objectForKeyedSubscript:@"AppData"];
-  v21 = [v20 objectAtIndexedSubscript:a3];
+  v20 = [dictCopy objectForKeyedSubscript:@"AppData"];
+  v21 = [v20 objectAtIndexedSubscript:index];
   v22 = [v21 objectForKeyedSubscript:@"BundleId"];
 
   if (v22)
   {
-    v23 = [v5 objectForKeyedSubscript:@"AppData"];
-    v24 = [v23 objectAtIndexedSubscript:a3];
+    v23 = [dictCopy objectForKeyedSubscript:@"AppData"];
+    v24 = [v23 objectAtIndexedSubscript:index];
     v25 = [v24 objectForKeyedSubscript:@"BundleId"];
     [v6 setBundleId:v25];
   }
@@ -3606,241 +3606,241 @@ LABEL_9:
   return v6;
 }
 
-+ (id)populateAwdAppPredictionSessionForSessionLogDict:(id)a3
++ (id)populateAwdAppPredictionSessionForSessionLogDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKey:@"CoreMotionLaunches"];
+  v6 = [dictCopy objectForKey:@"CoreMotionLaunches"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"CoreMotionLaunches"];
+    v7 = [dictCopy objectForKeyedSubscript:@"CoreMotionLaunches"];
     [v5 setCoreMotionLaunches:{objc_msgSend(v7, "intValue")}];
   }
 
-  v8 = [v4 objectForKey:@"TotalAirplaneModeLaunches"];
+  v8 = [dictCopy objectForKey:@"TotalAirplaneModeLaunches"];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"TotalAirplaneModeLaunches"];
+    v9 = [dictCopy objectForKeyedSubscript:@"TotalAirplaneModeLaunches"];
     [v5 setTotalAirplaneModeLaunches:{objc_msgSend(v9, "intValue")}];
   }
 
-  v10 = [v4 objectForKey:@"InAirplaneMode"];
+  v10 = [dictCopy objectForKey:@"InAirplaneMode"];
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:@"InAirplaneMode"];
+    v11 = [dictCopy objectForKeyedSubscript:@"InAirplaneMode"];
     [v5 setInAirplaneMode:{objc_msgSend(v11, "intValue") != 0}];
   }
 
-  v12 = [v4 objectForKey:@"CoreMotionCurrentMotionLaunches"];
+  v12 = [dictCopy objectForKey:@"CoreMotionCurrentMotionLaunches"];
 
   if (v12)
   {
-    v13 = [v4 objectForKeyedSubscript:@"CoreMotionCurrentMotionLaunches"];
+    v13 = [dictCopy objectForKeyedSubscript:@"CoreMotionCurrentMotionLaunches"];
     [v5 setCoreMotionCurrentMotionLaunches:{objc_msgSend(v13, "intValue")}];
   }
 
-  v14 = [v4 objectForKey:@"TotalSpotlightLaunches"];
+  v14 = [dictCopy objectForKey:@"TotalSpotlightLaunches"];
 
   if (v14)
   {
-    v15 = [v4 objectForKeyedSubscript:@"TotalSpotlightLaunches"];
+    v15 = [dictCopy objectForKeyedSubscript:@"TotalSpotlightLaunches"];
     [v5 setTotalSpotlightLaunches:{objc_msgSend(v15, "intValue")}];
   }
 
-  v16 = [v4 objectForKey:@"TotalLaunchSequences"];
+  v16 = [dictCopy objectForKey:@"TotalLaunchSequences"];
 
   if (v16)
   {
-    v17 = [v4 objectForKeyedSubscript:@"TotalLaunchSequences"];
+    v17 = [dictCopy objectForKeyedSubscript:@"TotalLaunchSequences"];
     [v5 setTotalLaunchSequences:{objc_msgSend(v17, "intValue")}];
   }
 
-  v18 = [v4 objectForKey:@"TotalCurrentDayOfWeekLaunches"];
+  v18 = [dictCopy objectForKey:@"TotalCurrentDayOfWeekLaunches"];
 
   if (v18)
   {
-    v19 = [v4 objectForKeyedSubscript:@"TotalCurrentDayOfWeekLaunches"];
+    v19 = [dictCopy objectForKeyedSubscript:@"TotalCurrentDayOfWeekLaunches"];
     [v5 setTotalCurrentDayOfWeekLaunches:{objc_msgSend(v19, "intValue")}];
   }
 
-  v20 = [v4 objectForKey:@"TotalWifiLaunches"];
+  v20 = [dictCopy objectForKey:@"TotalWifiLaunches"];
 
   if (v20)
   {
-    v21 = [v4 objectForKeyedSubscript:@"TotalWifiLaunches"];
+    v21 = [dictCopy objectForKeyedSubscript:@"TotalWifiLaunches"];
     [v5 setTotalWifiLaunches:{objc_msgSend(v21, "intValue")}];
   }
 
-  v22 = [v4 objectForKey:@"TimeOfDayInterval"];
+  v22 = [dictCopy objectForKey:@"TimeOfDayInterval"];
 
   if (v22)
   {
-    v23 = [v4 objectForKeyedSubscript:@"TimeOfDayInterval"];
+    v23 = [dictCopy objectForKeyedSubscript:@"TimeOfDayInterval"];
     [v5 setTimeOfDayInterval:{objc_msgSend(v23, "intValue")}];
   }
 
-  v24 = [v4 objectForKey:@"TotalLaunches"];
+  v24 = [dictCopy objectForKey:@"TotalLaunches"];
 
   if (v24)
   {
-    v25 = [v4 objectForKeyedSubscript:@"TotalLaunches"];
+    v25 = [dictCopy objectForKeyedSubscript:@"TotalLaunches"];
     [v5 setTotalLaunches:{objc_msgSend(v25, "intValue")}];
   }
 
-  v26 = [v4 objectForKey:@"EngagedApp"];
+  v26 = [dictCopy objectForKey:@"EngagedApp"];
 
   if (v26)
   {
-    v27 = [v4 objectForKeyedSubscript:@"EngagedApp"];
+    v27 = [dictCopy objectForKeyedSubscript:@"EngagedApp"];
     [v5 setEngagedApp:{objc_msgSend(v27, "intValue")}];
   }
 
-  v28 = [v4 objectForKey:@"TotalTrendingLaunches"];
+  v28 = [dictCopy objectForKey:@"TotalTrendingLaunches"];
 
   if (v28)
   {
-    v29 = [v4 objectForKeyedSubscript:@"TotalTrendingLaunches"];
+    v29 = [dictCopy objectForKeyedSubscript:@"TotalTrendingLaunches"];
     [v5 setTotalTrendingLaunches:{objc_msgSend(v29, "intValue")}];
   }
 
-  v30 = [v4 objectForKey:@"TotalTimeOfDayLaunches"];
+  v30 = [dictCopy objectForKey:@"TotalTimeOfDayLaunches"];
 
   if (v30)
   {
-    v31 = [v4 objectForKeyedSubscript:@"TotalTimeOfDayLaunches"];
+    v31 = [dictCopy objectForKeyedSubscript:@"TotalTimeOfDayLaunches"];
     [v5 setTotalTimeOfDayLaunches:{objc_msgSend(v31, "intValue")}];
   }
 
-  v32 = [v4 objectForKey:@"TotalSSIDLaunches"];
+  v32 = [dictCopy objectForKey:@"TotalSSIDLaunches"];
 
   if (v32)
   {
-    v33 = [v4 objectForKeyedSubscript:@"TotalSSIDLaunches"];
+    v33 = [dictCopy objectForKeyedSubscript:@"TotalSSIDLaunches"];
     [v5 setTotalSSIDLaunches:{objc_msgSend(v33, "intValue")}];
   }
 
-  v34 = [v4 objectForKey:@"LocationDistanceFromHome"];
+  v34 = [dictCopy objectForKey:@"LocationDistanceFromHome"];
 
   if (v34)
   {
-    v35 = [v4 objectForKeyedSubscript:@"LocationDistanceFromHome"];
+    v35 = [dictCopy objectForKeyedSubscript:@"LocationDistanceFromHome"];
     [v5 setLocationDistanceFromHome:{objc_msgSend(v35, "intValue")}];
   }
 
-  v36 = [v4 objectForKey:@"LocationDistanceFromWork"];
+  v36 = [dictCopy objectForKey:@"LocationDistanceFromWork"];
 
   if (v36)
   {
-    v37 = [v4 objectForKeyedSubscript:@"LocationDistanceFromWork"];
+    v37 = [dictCopy objectForKeyedSubscript:@"LocationDistanceFromWork"];
     [v5 setLocationDistanceFromWork:{objc_msgSend(v37, "intValue")}];
   }
 
-  v38 = [v4 objectForKey:@"LocationDistanceFromSchool"];
+  v38 = [dictCopy objectForKey:@"LocationDistanceFromSchool"];
 
   if (v38)
   {
-    v39 = [v4 objectForKeyedSubscript:@"LocationDistanceFromSchool"];
+    v39 = [dictCopy objectForKeyedSubscript:@"LocationDistanceFromSchool"];
     [v5 setLocationDistanceFromSchool:{objc_msgSend(v39, "intValue")}];
   }
 
-  v40 = [v4 objectForKey:@"LocationDistanceFromGym"];
+  v40 = [dictCopy objectForKey:@"LocationDistanceFromGym"];
 
   if (v40)
   {
-    v41 = [v4 objectForKeyedSubscript:@"LocationDistanceFromGym"];
+    v41 = [dictCopy objectForKeyedSubscript:@"LocationDistanceFromGym"];
     [v5 setLocationDistanceFromGym:{objc_msgSend(v41, "intValue")}];
   }
 
-  v42 = [v4 objectForKey:@"IsInternalBuild"];
+  v42 = [dictCopy objectForKey:@"IsInternalBuild"];
 
   if (v42)
   {
-    v43 = [v4 objectForKeyedSubscript:@"IsInternalBuild"];
+    v43 = [dictCopy objectForKeyedSubscript:@"IsInternalBuild"];
     [v5 setIsInternalBuild:{objc_msgSend(v43, "BOOLValue")}];
   }
 
-  v44 = [v4 objectForKey:@"PredictionCacheAge"];
+  v44 = [dictCopy objectForKey:@"PredictionCacheAge"];
 
   if (v44)
   {
-    v45 = [v4 objectForKeyedSubscript:@"PredictionCacheAge"];
+    v45 = [dictCopy objectForKeyedSubscript:@"PredictionCacheAge"];
     [v5 setPredictionCacheAge:{objc_msgSend(v45, "intValue")}];
   }
 
-  v46 = [v4 objectForKey:@"session_log_version"];
+  v46 = [dictCopy objectForKey:@"session_log_version"];
 
   if (v46)
   {
-    v47 = [v4 objectForKeyedSubscript:@"session_log_version"];
+    v47 = [dictCopy objectForKeyedSubscript:@"session_log_version"];
     [v5 setSessionLogVersion:{objc_msgSend(v47, "intValue")}];
   }
 
-  v48 = [v4 objectForKey:@"TotalSpotlightTimeOfDayLaunches"];
+  v48 = [dictCopy objectForKey:@"TotalSpotlightTimeOfDayLaunches"];
 
   if (v48)
   {
-    v49 = [v4 objectForKeyedSubscript:@"TotalSpotlightTimeOfDayLaunches"];
+    v49 = [dictCopy objectForKeyedSubscript:@"TotalSpotlightTimeOfDayLaunches"];
     [v5 setTotalSpotlightLaunches:{objc_msgSend(v49, "intValue")}];
   }
 
-  v50 = [v4 objectForKey:@"TotalDayOfWeekLaunches"];
+  v50 = [dictCopy objectForKey:@"TotalDayOfWeekLaunches"];
 
   if (v50)
   {
-    v51 = [v4 objectForKeyedSubscript:@"TotalDayOfWeekLaunches"];
+    v51 = [dictCopy objectForKeyedSubscript:@"TotalDayOfWeekLaunches"];
     [v5 setTotalDayOfWeekLaunches:{objc_msgSend(v51, "intValue")}];
   }
 
-  v52 = [v4 objectForKey:@"APRFeedbackSource"];
+  v52 = [dictCopy objectForKey:@"APRFeedbackSource"];
 
   if (v52)
   {
-    v53 = [v4 objectForKeyedSubscript:@"APRFeedbackSource"];
+    v53 = [dictCopy objectForKeyedSubscript:@"APRFeedbackSource"];
     [v5 setAPRFeedbackSource:v53];
   }
 
-  v54 = [v4 objectForKey:@"APREngagementType"];
+  v54 = [dictCopy objectForKey:@"APREngagementType"];
 
   if (v54)
   {
-    v55 = [v4 objectForKeyedSubscript:@"APREngagementType"];
+    v55 = [dictCopy objectForKeyedSubscript:@"APREngagementType"];
     [v5 setAPREngagementType:v55];
   }
 
-  v56 = [v4 objectForKey:@"APRSiriExperience"];
+  v56 = [dictCopy objectForKey:@"APRSiriExperience"];
 
   if (v56)
   {
-    v57 = [v4 objectForKeyedSubscript:@"APRSiriExperience"];
+    v57 = [dictCopy objectForKeyedSubscript:@"APRSiriExperience"];
     [v5 setAPRSiriExperience:v57];
   }
 
-  v58 = [v4 objectForKey:@"IntentType"];
+  v58 = [dictCopy objectForKey:@"IntentType"];
 
   if (v58)
   {
-    v59 = [v4 objectForKeyedSubscript:@"IntentType"];
+    v59 = [dictCopy objectForKeyedSubscript:@"IntentType"];
     [v5 setIntentType:v59];
   }
 
-  v60 = [v4 objectForKey:@"ConsumerType"];
+  v60 = [dictCopy objectForKey:@"ConsumerType"];
 
   if (v60)
   {
-    v61 = [v4 objectForKeyedSubscript:@"ConsumerType"];
+    v61 = [dictCopy objectForKeyedSubscript:@"ConsumerType"];
     [v5 setConsumerType:v61];
   }
 
-  v62 = [v4 objectForKey:@"ConsumerSubType"];
+  v62 = [dictCopy objectForKey:@"ConsumerSubType"];
 
   if (v62)
   {
     v76 = 0;
     v63 = MEMORY[0x277CEBCF0];
-    v64 = [v4 objectForKeyedSubscript:@"ConsumerSubType"];
+    v64 = [dictCopy objectForKeyedSubscript:@"ConsumerSubType"];
     v65 = [v63 consumerSubtypeForString:v64 found:&v76];
 
     if (v76 == 1)
@@ -3849,35 +3849,35 @@ LABEL_9:
     }
   }
 
-  v66 = [v4 objectForKey:@"CurrentLOIType"];
+  v66 = [dictCopy objectForKey:@"CurrentLOIType"];
 
   if (v66)
   {
-    v67 = [v4 objectForKeyedSubscript:@"CurrentLOIType"];
-    [v5 setCurrentLOIType:{objc_msgSend(a1, "AWDLOITypeForString:", v67)}];
+    v67 = [dictCopy objectForKeyedSubscript:@"CurrentLOIType"];
+    [v5 setCurrentLOIType:{objc_msgSend(self, "AWDLOITypeForString:", v67)}];
   }
 
-  v68 = [v4 objectForKey:@"AppSequence"];
+  v68 = [dictCopy objectForKey:@"AppSequence"];
 
   if (v68)
   {
-    v69 = [v4 objectForKeyedSubscript:@"AppSequence"];
+    v69 = [dictCopy objectForKeyedSubscript:@"AppSequence"];
     [v5 setAppSequences:v69];
   }
 
-  v70 = [v4 objectForKey:@"Outcome"];
+  v70 = [dictCopy objectForKey:@"Outcome"];
 
   if (v70)
   {
-    v71 = [v4 objectForKeyedSubscript:@"Outcome"];
-    [v5 setOutcome:{objc_msgSend(a1, "awdPredictionOutcomeWithATXPredictionOutcome:", objc_msgSend(v71, "intValue"))}];
+    v71 = [dictCopy objectForKeyedSubscript:@"Outcome"];
+    [v5 setOutcome:{objc_msgSend(self, "awdPredictionOutcomeWithATXPredictionOutcome:", objc_msgSend(v71, "intValue"))}];
   }
 
-  v72 = [v4 objectForKey:@"ABGroup"];
+  v72 = [dictCopy objectForKey:@"ABGroup"];
 
   if (v72)
   {
-    v73 = [v4 objectForKeyedSubscript:@"ABGroup"];
+    v73 = [dictCopy objectForKeyedSubscript:@"ABGroup"];
     [v5 setABGroup:v73];
   }
 
@@ -3886,19 +3886,19 @@ LABEL_9:
   return v5;
 }
 
-+ (void)logAppPredictionDictionaryViaAWD:(id)a3
++ (void)logAppPredictionDictionaryViaAWD:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"AppData"];
+    v5 = [dCopy objectForKeyedSubscript:@"AppData"];
 
     if (v5)
     {
       v6 = objc_alloc_init(MEMORY[0x277CCAD78]);
-      v7 = [v6 UUIDString];
+      uUIDString = [v6 UUIDString];
 
       v8 = [v4 objectForKeyedSubscript:@"AppData"];
       if ([v8 count])
@@ -3907,21 +3907,21 @@ LABEL_9:
         do
         {
           v10 = [ATXAWDUtils appDataAtIndex:v9 forSessionLogDict:v4];
-          [v10 setSessionId:v7];
+          [v10 setSessionId:uUIDString];
           AWDPostMetric();
           v11 = __atxlog_handle_feedback();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = [v10 bundleId];
-            v13 = [v10 engagedApp];
+            bundleId = [v10 bundleId];
+            engagedApp = [v10 engagedApp];
             *buf = 138412546;
             v14 = @"NO";
-            if (v13)
+            if (engagedApp)
             {
               v14 = @"YES";
             }
 
-            v24 = v12;
+            v24 = bundleId;
             v25 = 2112;
             v26 = v14;
             _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "ATXAppPredictorSessionLog - logged AWDProactiveAppData with bundleId: %@ engagedApp: %@", buf, 0x16u);
@@ -3934,32 +3934,32 @@ LABEL_9:
       }
 
       v15 = [ATXAWDUtils populateAwdAppPredictionSessionForSessionLogDict:v4];
-      [v15 setSessionId:v7];
+      [v15 setSessionId:uUIDString];
       AWDPostMetric();
       v16 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v15 consumerSubType];
-        if (v17 >= 0x28)
+        consumerSubType = [v15 consumerSubType];
+        if (consumerSubType >= 0x28)
         {
-          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v17];
+          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", consumerSubType];
         }
 
         else
         {
-          v18 = off_27859A970[v17];
+          v18 = off_27859A970[consumerSubType];
         }
 
         v19 = v18;
-        v20 = [v15 outcome];
-        if (v20 >= 9)
+        outcome = [v15 outcome];
+        if (outcome >= 9)
         {
-          v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v20];
+          v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", outcome];
         }
 
         else
         {
-          v21 = off_27859AAB0[v20];
+          v21 = off_27859AAB0[outcome];
         }
 
         *buf = 138412546;
@@ -3974,33 +3974,33 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (int)awdPredictionOutcomeWithATXPredictionOutcome:(unint64_t)a3
++ (int)awdPredictionOutcomeWithATXPredictionOutcome:(unint64_t)outcome
 {
-  if (a3 - 1 > 7)
+  if (outcome - 1 > 7)
   {
     return 0;
   }
 
   else
   {
-    return dword_2268723A4[a3 - 1];
+    return dword_2268723A4[outcome - 1];
   }
 }
 
-+ (int)AWDLOITypeForString:(id)a3
++ (int)AWDLOITypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Work"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Work"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Home"])
+  else if ([stringCopy isEqualToString:@"Home"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Gym"])
+  else if ([stringCopy isEqualToString:@"Gym"])
   {
     v4 = 3;
   }

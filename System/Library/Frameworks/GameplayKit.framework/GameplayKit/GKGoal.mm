@@ -11,21 +11,21 @@
 + (GKGoal)goalToStayOnPath:(GKPath *)path maxPredictionTime:(NSTimeInterval)maxPredictionTime;
 + (GKGoal)goalToWander:(float)speed;
 - (GKGoal)init;
-- (__n128)getForce:(uint64_t)a3 agent:(void *)a4;
+- (__n128)getForce:(uint64_t)force agent:(void *)agent;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initToAlignWithAgents:(id)a3 maxDistance:(float)a4 maxAngle:(float)a5;
-- (id)initToAvoidAgents:(id)a3 maxPredictionTime:(double)a4;
-- (id)initToAvoidObstacles:(id)a3 maxPredictionTime:(double)a4;
-- (id)initToCohereWithAgents:(id)a3 maxDistance:(float)a4 maxAngle:(float)a5;
-- (id)initToFleeAgent:(id)a3;
-- (id)initToFollowPath:(id)a3 maxPredictionTime:(double)a4 forward:(BOOL)a5;
-- (id)initToInterceptAgent:(id)a3 maxPredictionTime:(double)a4;
-- (id)initToReachTargetSpeed:(float)a3;
-- (id)initToSeekAgent:(id)a3;
-- (id)initToSeparateFromAgents:(id)a3 maxDistance:(float)a4 maxAngle:(float)a5;
-- (id)initToStayOnPath:(id)a3 maxPredictionTime:(double)a4;
-- (id)initToWander:(float)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initToAlignWithAgents:(id)agents maxDistance:(float)distance maxAngle:(float)angle;
+- (id)initToAvoidAgents:(id)agents maxPredictionTime:(double)time;
+- (id)initToAvoidObstacles:(id)obstacles maxPredictionTime:(double)time;
+- (id)initToCohereWithAgents:(id)agents maxDistance:(float)distance maxAngle:(float)angle;
+- (id)initToFleeAgent:(id)agent;
+- (id)initToFollowPath:(id)path maxPredictionTime:(double)time forward:(BOOL)forward;
+- (id)initToInterceptAgent:(id)agent maxPredictionTime:(double)time;
+- (id)initToReachTargetSpeed:(float)speed;
+- (id)initToSeekAgent:(id)agent;
+- (id)initToSeparateFromAgents:(id)agents maxDistance:(float)distance maxAngle:(float)angle;
+- (id)initToStayOnPath:(id)path maxPredictionTime:(double)time;
+- (id)initToWander:(float)wander;
 @end
 
 @implementation GKGoal
@@ -60,10 +60,10 @@
   return v4;
 }
 
-- (id)initToSeekAgent:(id)a3
+- (id)initToSeekAgent:(id)agent
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  agentCopy = agent;
   v11.receiver = self;
   v11.super_class = GKGoal;
   v5 = [(GKGoal *)&v11 init];
@@ -71,7 +71,7 @@
   if (v5)
   {
     v5->_type = 1;
-    v12[0] = v4;
+    v12[0] = agentCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     agents = v6->_agents;
     v6->_agents = v7;
@@ -89,10 +89,10 @@
   return v4;
 }
 
-- (id)initToFleeAgent:(id)a3
+- (id)initToFleeAgent:(id)agent
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  agentCopy = agent;
   v11.receiver = self;
   v11.super_class = GKGoal;
   v5 = [(GKGoal *)&v11 init];
@@ -100,7 +100,7 @@
   if (v5)
   {
     v5->_type = 2;
-    v12[0] = v4;
+    v12[0] = agentCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     agents = v6->_agents;
     v6->_agents = v7;
@@ -118,9 +118,9 @@
   return v6;
 }
 
-- (id)initToAvoidObstacles:(id)a3 maxPredictionTime:(double)a4
+- (id)initToAvoidObstacles:(id)obstacles maxPredictionTime:(double)time
 {
-  v7 = a3;
+  obstaclesCopy = obstacles;
   v11.receiver = self;
   v11.super_class = GKGoal;
   v8 = [(GKGoal *)&v11 init];
@@ -128,8 +128,8 @@
   if (v8)
   {
     v8->_type = 3;
-    objc_storeStrong(&v8->_obstacles, a3);
-    v9[5] = a4;
+    objc_storeStrong(&v8->_obstacles, obstacles);
+    v9[5] = time;
   }
 
   return v9;
@@ -143,9 +143,9 @@
   return v6;
 }
 
-- (id)initToAvoidAgents:(id)a3 maxPredictionTime:(double)a4
+- (id)initToAvoidAgents:(id)agents maxPredictionTime:(double)time
 {
-  v7 = a3;
+  agentsCopy = agents;
   v11.receiver = self;
   v11.super_class = GKGoal;
   v8 = [(GKGoal *)&v11 init];
@@ -153,8 +153,8 @@
   if (v8)
   {
     v8->_type = 4;
-    objc_storeStrong(&v8->_agents, a3);
-    v9[5] = a4;
+    objc_storeStrong(&v8->_agents, agents);
+    v9[5] = time;
   }
 
   return v9;
@@ -171,9 +171,9 @@
   return v11;
 }
 
-- (id)initToSeparateFromAgents:(id)a3 maxDistance:(float)a4 maxAngle:(float)a5
+- (id)initToSeparateFromAgents:(id)agents maxDistance:(float)distance maxAngle:(float)angle
 {
-  v9 = a3;
+  agentsCopy = agents;
   v13.receiver = self;
   v13.super_class = GKGoal;
   v10 = [(GKGoal *)&v13 init];
@@ -181,9 +181,9 @@
   if (v10)
   {
     v10->_type = 5;
-    objc_storeStrong(&v10->_agents, a3);
-    v11[12] = a5;
-    v11[13] = a4;
+    objc_storeStrong(&v10->_agents, agents);
+    v11[12] = angle;
+    v11[13] = distance;
   }
 
   return v11;
@@ -200,9 +200,9 @@
   return v11;
 }
 
-- (id)initToAlignWithAgents:(id)a3 maxDistance:(float)a4 maxAngle:(float)a5
+- (id)initToAlignWithAgents:(id)agents maxDistance:(float)distance maxAngle:(float)angle
 {
-  v9 = a3;
+  agentsCopy = agents;
   v14.receiver = self;
   v14.super_class = GKGoal;
   v10 = [(GKGoal *)&v14 init];
@@ -210,15 +210,15 @@
   if (v10)
   {
     v10->_type = 6;
-    objc_storeStrong(&v10->_agents, a3);
-    v12 = fabsf(a5);
+    objc_storeStrong(&v10->_agents, agents);
+    v12 = fabsf(angle);
     if (v12 > 3.14159265)
     {
       v12 = 3.1416;
     }
 
     v11[12] = v12;
-    v11[13] = a4;
+    v11[13] = distance;
   }
 
   return v11;
@@ -235,9 +235,9 @@
   return v11;
 }
 
-- (id)initToCohereWithAgents:(id)a3 maxDistance:(float)a4 maxAngle:(float)a5
+- (id)initToCohereWithAgents:(id)agents maxDistance:(float)distance maxAngle:(float)angle
 {
-  v9 = a3;
+  agentsCopy = agents;
   v13.receiver = self;
   v13.super_class = GKGoal;
   v10 = [(GKGoal *)&v13 init];
@@ -245,9 +245,9 @@
   if (v10)
   {
     v10->_type = 7;
-    objc_storeStrong(&v10->_agents, a3);
-    v11[12] = a5;
-    v11[13] = a4;
+    objc_storeStrong(&v10->_agents, agents);
+    v11[12] = angle;
+    v11[13] = distance;
   }
 
   return v11;
@@ -262,7 +262,7 @@
   return v6;
 }
 
-- (id)initToReachTargetSpeed:(float)a3
+- (id)initToReachTargetSpeed:(float)speed
 {
   v5.receiver = self;
   v5.super_class = GKGoal;
@@ -270,7 +270,7 @@
   if (result)
   {
     *(result + 2) = 8;
-    *(result + 14) = a3;
+    *(result + 14) = speed;
   }
 
   return result;
@@ -285,7 +285,7 @@
   return v6;
 }
 
-- (id)initToWander:(float)a3
+- (id)initToWander:(float)wander
 {
   v5.receiver = self;
   v5.super_class = GKGoal;
@@ -293,7 +293,7 @@
   if (result)
   {
     *(result + 2) = 9;
-    *(result + 14) = a3;
+    *(result + 14) = wander;
   }
 
   return result;
@@ -307,10 +307,10 @@
   return v6;
 }
 
-- (id)initToInterceptAgent:(id)a3 maxPredictionTime:(double)a4
+- (id)initToInterceptAgent:(id)agent maxPredictionTime:(double)time
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  agentCopy = agent;
   v13.receiver = self;
   v13.super_class = GKGoal;
   v7 = [(GKGoal *)&v13 init];
@@ -318,21 +318,21 @@
   if (v7)
   {
     v7->_type = 10;
-    v14[0] = v6;
+    v14[0] = agentCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     agents = v8->_agents;
     v8->_agents = v9;
 
-    v8->_time = a4;
+    v8->_time = time;
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (id)initToFollowPath:(id)a3 maxPredictionTime:(double)a4 forward:(BOOL)a5
+- (id)initToFollowPath:(id)path maxPredictionTime:(double)time forward:(BOOL)forward
 {
-  v9 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = GKGoal;
   v10 = [(GKGoal *)&v13 init];
@@ -340,9 +340,9 @@
   if (v10)
   {
     v10->_type = 11;
-    objc_storeStrong(&v10->_path, a3);
-    v11->_time = a4;
-    v11->_forward = a5;
+    objc_storeStrong(&v10->_path, path);
+    v11->_time = time;
+    v11->_forward = forward;
   }
 
   return v11;
@@ -356,9 +356,9 @@
   return v6;
 }
 
-- (id)initToStayOnPath:(id)a3 maxPredictionTime:(double)a4
+- (id)initToStayOnPath:(id)path maxPredictionTime:(double)time
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = GKGoal;
   v8 = [(GKGoal *)&v11 init];
@@ -366,39 +366,39 @@
   if (v8)
   {
     v8->_type = 12;
-    objc_storeStrong(&v8->_path, a3);
-    v9[5] = a4;
+    objc_storeStrong(&v8->_path, path);
+    v9[5] = time;
   }
 
   return v9;
 }
 
-- (__n128)getForce:(uint64_t)a3 agent:(void *)a4
+- (__n128)getForce:(uint64_t)force agent:(void *)agent
 {
-  v6 = a4;
-  v9 = v6;
-  v10 = *(a1 + 8);
+  agentCopy = agent;
+  v9 = agentCopy;
+  v10 = *(self + 8);
   if (v10 <= 6)
   {
     if (v10 > 3)
     {
       if (v10 == 4)
       {
-        [v6 steerToAvoidAgents:*(a1 + 32) timeBeforeCollisionToAvoid:*(a1 + 40)];
+        [agentCopy steerToAvoidAgents:*(self + 32) timeBeforeCollisionToAvoid:*(self + 40)];
       }
 
       else
       {
-        LODWORD(v8) = *(a1 + 48);
+        LODWORD(v8) = *(self + 48);
         if (v10 == 5)
         {
-          LODWORD(v7) = *(a1 + 52);
-          [v6 steerForSeparation:*(a1 + 32) maxDistance:v7 maxAngle:v8];
+          LODWORD(v7) = *(self + 52);
+          [agentCopy steerForSeparation:*(self + 32) maxDistance:v7 maxAngle:v8];
         }
 
         else
         {
-          [v6 steerForAlignment:*(a1 + 32) maxDistance:COERCE_DOUBLE(*(a1 + 52)) maxAngle:v8];
+          [agentCopy steerForAlignment:*(self + 32) maxDistance:COERCE_DOUBLE(*(self + 52)) maxAngle:v8];
         }
       }
 
@@ -407,8 +407,8 @@
 
     if (v10 == 1)
     {
-      v12 = [*(a1 + 32) firstObject];
-      [v12 position3];
+      firstObject = [*(self + 32) firstObject];
+      [firstObject position3];
       [v9 steerForSeek:?];
     }
 
@@ -419,7 +419,7 @@
         v17 = 0u;
         if (v10 == 3)
         {
-          [v6 steerToAvoidObstacles:*(a1 + 24) timeBeforeCollisionToAvoid:*(a1 + 40)];
+          [agentCopy steerToAvoidObstacles:*(self + 24) timeBeforeCollisionToAvoid:*(self + 40)];
 LABEL_28:
           v17 = v11;
           goto LABEL_29;
@@ -428,8 +428,8 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v12 = [*(a1 + 32) firstObject];
-      [v12 position3];
+      firstObject = [*(self + 32) firstObject];
+      [firstObject position3];
       [v9 steerForFlee:?];
     }
 
@@ -442,8 +442,8 @@ LABEL_28:
   {
     if (v10 == 10)
     {
-      v14 = [*(a1 + 32) firstObject];
-      [v9 steerForIntercept:v14 maxPredictionTime:*(a1 + 40)];
+      firstObject2 = [*(self + 32) firstObject];
+      [v9 steerForIntercept:firstObject2 maxPredictionTime:*(self + 40)];
       v17 = v15;
     }
 
@@ -451,14 +451,14 @@ LABEL_28:
     {
       if (v10 == 11)
       {
-        [v6 steerToFollowPath:*(a1 + 16) maxPredictionTime:*(a1 + 60) forward:*(a1 + 40)];
+        [agentCopy steerToFollowPath:*(self + 16) maxPredictionTime:*(self + 60) forward:*(self + 40)];
         goto LABEL_28;
       }
 
       v17 = 0u;
       if (v10 == 12)
       {
-        [v6 steerToStayOnPath:*(a1 + 16) maxPredictionTime:*(a1 + 40)];
+        [agentCopy steerToStayOnPath:*(self + 16) maxPredictionTime:*(self + 40)];
         goto LABEL_28;
       }
     }
@@ -468,23 +468,23 @@ LABEL_28:
   {
     if (v10 == 7)
     {
-      LODWORD(v8) = *(a1 + 48);
-      LODWORD(v7) = *(a1 + 52);
-      [v6 steerForCohesion:*(a1 + 32) maxDistance:v7 maxAngle:v8];
+      LODWORD(v8) = *(self + 48);
+      LODWORD(v7) = *(self + 52);
+      [agentCopy steerForCohesion:*(self + 32) maxDistance:v7 maxAngle:v8];
       goto LABEL_28;
     }
 
     if (v10 != 8)
     {
-      LODWORD(v8) = *(a1 + 56);
-      [v6 steerForWander:a2 speed:v8];
+      LODWORD(v8) = *(self + 56);
+      [agentCopy steerForWander:a2 speed:v8];
       goto LABEL_28;
     }
 
     v17 = 0u;
-    if (*(a1 + 56) > 1.0)
+    if (*(self + 56) > 1.0)
     {
-      [v6 steerForTargetSpeed:?];
+      [agentCopy steerForTargetSpeed:?];
       goto LABEL_28;
     }
   }
@@ -501,7 +501,7 @@ LABEL_29:
   return [(GKGoal *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GKGoal);
   v4->_type = self->_type;

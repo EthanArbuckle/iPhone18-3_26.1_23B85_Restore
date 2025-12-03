@@ -2,14 +2,14 @@
 + (id)roleForCoordinator;
 + (id)roleForParticipant;
 + (id)roleForUnknown;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRole:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRole:(id)role;
 - (BOOL)isPrimary;
-- (BOOL)satisfiesRole:(id)a3;
-- (COClusterRole)initWithCoder:(id)a3;
-- (COClusterRole)initWithRoleFlags:(unint64_t)a3;
+- (BOOL)satisfiesRole:(id)role;
+- (COClusterRole)initWithCoder:(id)coder;
+- (COClusterRole)initWithRoleFlags:(unint64_t)flags;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COClusterRole
@@ -35,14 +35,14 @@
   return v2;
 }
 
-- (COClusterRole)initWithRoleFlags:(unint64_t)a3
+- (COClusterRole)initWithRoleFlags:(unint64_t)flags
 {
   v5.receiver = self;
   v5.super_class = COClusterRole;
   result = [(COClusterRole *)&v5 init];
   if (result)
   {
-    result->_flags = a3;
+    result->_flags = flags;
   }
 
   return result;
@@ -73,10 +73,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -84,52 +84,52 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(COClusterRole *)self isEqualToRole:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(COClusterRole *)self isEqualToRole:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToRole:(id)a3
+- (BOOL)isEqualToRole:(id)role
 {
-  v4 = a3;
-  v5 = [(COClusterRole *)self flags];
-  v6 = [v4 flags];
+  roleCopy = role;
+  flags = [(COClusterRole *)self flags];
+  flags2 = [roleCopy flags];
 
-  return v5 == v6;
+  return flags == flags2;
 }
 
-- (BOOL)satisfiesRole:(id)a3
+- (BOOL)satisfiesRole:(id)role
 {
-  v4 = a3;
-  v5 = [(COClusterRole *)self flags];
-  v6 = [v4 flags] & v5;
-  v7 = [v4 flags];
+  roleCopy = role;
+  flags = [(COClusterRole *)self flags];
+  v6 = [roleCopy flags] & flags;
+  flags2 = [roleCopy flags];
 
-  return v6 == v7;
+  return v6 == flags2;
 }
 
-- (COClusterRole)initWithCoder:(id)a3
+- (COClusterRole)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = COClusterRole;
   v5 = [(COClusterRole *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flags"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flags"];
     v5->_flags = [v6 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[COClusterRole flags](self, "flags")}];
-  [v5 encodeObject:v6 forKey:@"flags"];
+  [coderCopy encodeObject:v6 forKey:@"flags"];
 }
 
 @end

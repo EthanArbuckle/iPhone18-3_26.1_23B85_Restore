@@ -1,24 +1,24 @@
 @interface CNPhoneNumberContactPredicate
 - (BOOL)cn_hasHighSpecificity;
-- (BOOL)isEqual:(id)a3;
-- (CNPhoneNumberContactPredicate)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNPhoneNumberContactPredicate)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)contactsFromRecentsLibrary:(id)a3;
-- (id)initWithPhoneNumber:(char)a3 returnMultipleResults:(uint64_t)a4;
-- (id)initWithPhoneNumber:(void *)a3 prefixHint:(uint64_t)a4 returnMultipleResults:;
-- (id)initWithPhoneNumber:(void *)a3 prefixHint:(void *)a4 groupIdentifiers:(char)a5 returnMultipleResults:;
-- (id)sgContactMatchesWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6;
+- (id)contactsFromRecentsLibrary:(id)library;
+- (id)initWithPhoneNumber:(char)number returnMultipleResults:(uint64_t)results;
+- (id)initWithPhoneNumber:(void *)number prefixHint:(uint64_t)hint returnMultipleResults:;
+- (id)initWithPhoneNumber:(void *)number prefixHint:(void *)hint groupIdentifiers:(char)identifiers returnMultipleResults:;
+- (id)sgContactMatchesWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error;
 - (uint64_t)countryCode;
 - (uint64_t)digits;
 - (uint64_t)groupIdentifiers;
 - (uint64_t)phoneNumber;
 - (uint64_t)prefixHint;
 - (uint64_t)returnsMultipleResults;
-- (unint64_t)countOfContactsFromRecentsLibrary:(id)a3;
+- (unint64_t)countOfContactsFromRecentsLibrary:(id)library;
 - (unint64_t)hash;
-- (void)cn_triageWithLog:(id)a3 serialNumber:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithDigits:(void *)a3 countryCode:(char)a4 returnMultipleResults:;
+- (void)cn_triageWithLog:(id)log serialNumber:(unint64_t)number;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithDigits:(void *)digits countryCode:(char)code returnMultipleResults:;
 @end
 
 @implementation CNPhoneNumberContactPredicate
@@ -30,17 +30,17 @@
     self = self->_phoneNumber;
   }
 
-  v2 = [(CNPhoneNumberContactPredicate *)self digits];
-  v3 = [v2 length] > 5;
+  digits = [(CNPhoneNumberContactPredicate *)self digits];
+  v3 = [digits length] > 5;
 
   return v3;
 }
 
 - (uint64_t)returnsMultipleResults
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else
@@ -144,39 +144,39 @@
   }
 
   v13 = [v3 appendName:@"groupIdentifiers" object:groupIdentifiers];
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
-- (id)contactsFromRecentsLibrary:(id)a3
+- (id)contactsFromRecentsLibrary:(id)library
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996570];
-  v6 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
-  v7 = [v6 stringValue];
-  LOBYTE(v5) = (*(v5 + 16))(v5, v7);
+  phoneNumber = [(CNPhoneNumberContactPredicate *)self phoneNumber];
+  stringValue = [phoneNumber stringValue];
+  LOBYTE(v5) = (*(v5 + 16))(v5, stringValue);
 
   if (v5)
   {
-    v8 = [(CNPhoneNumberContactPredicate *)self returnsMultipleResults];
-    v9 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
-    v10 = [v9 stringValue];
-    v11 = v10;
-    if (v8)
+    returnsMultipleResults = [(CNPhoneNumberContactPredicate *)self returnsMultipleResults];
+    phoneNumber2 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
+    stringValue2 = [phoneNumber2 stringValue];
+    v11 = stringValue2;
+    if (returnsMultipleResults)
     {
-      v23[0] = v10;
+      v23[0] = stringValue2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
       v21 = 0;
-      v13 = [v4 contactsWithPhoneNumbers:v12 error:&v21];
+      v13 = [libraryCopy contactsWithPhoneNumbers:v12 error:&v21];
       v14 = v21;
     }
 
     else
     {
       v20 = 0;
-      v16 = [v4 singleContactWithPhoneNumber:v10 error:&v20];
+      v16 = [libraryCopy singleContactWithPhoneNumber:stringValue2 error:&v20];
       v14 = v20;
 
       if (v16)
@@ -190,7 +190,7 @@
         v13 = MEMORY[0x1E695E0F0];
       }
 
-      v9 = v16;
+      phoneNumber2 = v16;
     }
 
     v17 = MEMORY[0x1E6996810];
@@ -206,22 +206,22 @@
   return v15;
 }
 
-- (unint64_t)countOfContactsFromRecentsLibrary:(id)a3
+- (unint64_t)countOfContactsFromRecentsLibrary:(id)library
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996570];
-  v6 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
-  v7 = [v6 stringValue];
-  LODWORD(v5) = (*(v5 + 16))(v5, v7);
+  phoneNumber = [(CNPhoneNumberContactPredicate *)self phoneNumber];
+  stringValue = [phoneNumber stringValue];
+  LODWORD(v5) = (*(v5 + 16))(v5, stringValue);
 
   if (v5)
   {
-    v8 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
-    v9 = [v8 stringValue];
-    v14[0] = v9;
+    phoneNumber2 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
+    stringValue2 = [phoneNumber2 stringValue];
+    v14[0] = stringValue2;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v11 = [v4 countOfContactsWithPhoneNumbers:v10 error:0];
+    v11 = [libraryCopy countOfContactsWithPhoneNumbers:v10 error:0];
 
     if ([(CNPhoneNumberContactPredicate *)self returnsMultipleResults])
     {
@@ -242,30 +242,30 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNPhoneNumberContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_phoneNumber forKey:{@"_phoneNumber", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_prefixHint forKey:@"_prefixHint"];
-  [v4 encodeBool:self->_returnsMultipleResults forKey:@"_returnsMultipleResults"];
-  [v4 encodeObject:self->_digits forKey:@"_digits"];
-  [v4 encodeObject:self->_countryCode forKey:@"_countryCode"];
-  [v4 encodeObject:self->_groupIdentifiers forKey:@"_groupIdentifiers"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_phoneNumber forKey:{@"_phoneNumber", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_prefixHint forKey:@"_prefixHint"];
+  [coderCopy encodeBool:self->_returnsMultipleResults forKey:@"_returnsMultipleResults"];
+  [coderCopy encodeObject:self->_digits forKey:@"_digits"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"_countryCode"];
+  [coderCopy encodeObject:self->_groupIdentifiers forKey:@"_groupIdentifiers"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __41__CNPhoneNumberContactPredicate_isEqual___block_invoke;
   v31[3] = &unk_1E7412228;
   v31[4] = self;
-  v32 = v4;
+  v32 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__CNPhoneNumberContactPredicate_isEqual___block_invoke_2;
@@ -302,11 +302,11 @@
   v18 = 3221225472;
   v19 = __41__CNPhoneNumberContactPredicate_isEqual___block_invoke_6;
   v20 = &unk_1E7412228;
-  v21 = self;
+  selfCopy = self;
   v22 = v12;
   v14 = v12;
   v15 = _Block_copy(&v17);
-  LOBYTE(self) = [v5 isObject:v14 memberOfSameClassAndEqualTo:self withBlocks:{v31, v7, v9, v11, v13, v15, 0, v17, v18, v19, v20, v21}];
+  LOBYTE(self) = [v5 isObject:v14 memberOfSameClassAndEqualTo:self withBlocks:{v31, v7, v9, v11, v13, v15, 0, v17, v18, v19, v20, selfCopy}];
 
   return self;
 }
@@ -354,70 +354,70 @@
   return v9;
 }
 
-- (void)cn_triageWithLog:(id)a3 serialNumber:(unint64_t)a4
+- (void)cn_triageWithLog:(id)log serialNumber:(unint64_t)number
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = MEMORY[0x1E69966E8];
-    v7 = a3;
-    v8 = [v6 currentEnvironment];
-    v9 = [v8 defaultCountryCode];
+    logCopy = log;
+    currentEnvironment = [v6 currentEnvironment];
+    defaultCountryCode = [currentEnvironment defaultCountryCode];
     v10 = 134218242;
-    v11 = a4;
+    numberCopy = number;
     v12 = 2114;
-    v13 = v9;
-    _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_INFO, "%04llx Default country code: %{public}@", &v10, 0x16u);
+    v13 = defaultCountryCode;
+    _os_log_impl(&dword_1954A0000, logCopy, OS_LOG_TYPE_INFO, "%04llx Default country code: %{public}@", &v10, 0x16u);
   }
 }
 
-- (id)sgContactMatchesWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6
+- (id)sgContactMatchesWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error
 {
-  v8 = a5;
-  v9 = [(CNPhoneNumberContactPredicate *)self phoneNumber];
-  v10 = [v9 stringValue];
-  v11 = [v8 contactMatchesByPhoneNumber:v10 error:a6];
+  serviceCopy = service;
+  phoneNumber = [(CNPhoneNumberContactPredicate *)self phoneNumber];
+  stringValue = [phoneNumber stringValue];
+  v11 = [serviceCopy contactMatchesByPhoneNumber:stringValue error:error];
 
   return v11;
 }
 
-- (id)initWithPhoneNumber:(char)a3 returnMultipleResults:(uint64_t)a4
+- (id)initWithPhoneNumber:(char)number returnMultipleResults:(uint64_t)results
 {
   if (result)
   {
-    return OUTLINED_FUNCTION_3_5(result, a2, 0, a4, a3);
+    return OUTLINED_FUNCTION_3_5(result, a2, 0, results, number);
   }
 
   return result;
 }
 
-- (id)initWithPhoneNumber:(void *)a3 prefixHint:(uint64_t)a4 returnMultipleResults:
+- (id)initWithPhoneNumber:(void *)number prefixHint:(uint64_t)hint returnMultipleResults:
 {
   if (result)
   {
-    return OUTLINED_FUNCTION_3_5(result, a2, a3, a4, a4);
+    return OUTLINED_FUNCTION_3_5(result, a2, number, hint, hint);
   }
 
   return result;
 }
 
-- (void)initWithDigits:(void *)a3 countryCode:(char)a4 returnMultipleResults:
+- (void)initWithDigits:(void *)digits countryCode:(char)code returnMultipleResults:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  digitsCopy = digits;
+  if (self)
   {
-    v9 = [CNPhoneNumber phoneNumberWithDigits:v7 countryCode:v8];
-    v10 = [(CNPhoneNumberContactPredicate *)a1 initWithPhoneNumber:v9 prefixHint:0 groupIdentifiers:0 returnMultipleResults:a4];
+    v9 = [CNPhoneNumber phoneNumberWithDigits:v7 countryCode:digitsCopy];
+    v10 = [(CNPhoneNumberContactPredicate *)self initWithPhoneNumber:v9 prefixHint:0 groupIdentifiers:0 returnMultipleResults:code];
 
     if (v10)
     {
-      v11 = [v7 _cn_stringBySanitizingPhoneNumber];
-      v12 = [v11 copy];
+      _cn_stringBySanitizingPhoneNumber = [v7 _cn_stringBySanitizingPhoneNumber];
+      v12 = [_cn_stringBySanitizingPhoneNumber copy];
       v13 = v10[8];
       v10[8] = v12;
 
-      v14 = [v8 copy];
+      v14 = [digitsCopy copy];
       v15 = v10[9];
       v10[9] = v14;
 
@@ -433,56 +433,56 @@
   return v10;
 }
 
-- (id)initWithPhoneNumber:(void *)a3 prefixHint:(void *)a4 groupIdentifiers:(char)a5 returnMultipleResults:
+- (id)initWithPhoneNumber:(void *)number prefixHint:(void *)hint groupIdentifiers:(char)identifiers returnMultipleResults:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  numberCopy = number;
+  hintCopy = hint;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = CNPhoneNumberContactPredicate;
-    a1 = objc_msgSendSuper2(&v19, sel_initWithPredicate_, 0);
-    if (a1)
+    self = objc_msgSendSuper2(&v19, sel_initWithPredicate_, 0);
+    if (self)
     {
       v12 = [v9 copy];
-      v13 = *(a1 + 6);
-      *(a1 + 6) = v12;
+      v13 = *(self + 6);
+      *(self + 6) = v12;
 
-      v14 = [v10 copy];
-      v15 = *(a1 + 7);
-      *(a1 + 7) = v14;
+      v14 = [numberCopy copy];
+      v15 = *(self + 7);
+      *(self + 7) = v14;
 
-      *(a1 + 40) = a5;
-      v16 = [v11 copy];
-      v17 = *(a1 + 10);
-      *(a1 + 10) = v16;
+      *(self + 40) = identifiers;
+      v16 = [hintCopy copy];
+      v17 = *(self + 10);
+      *(self + 10) = v16;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (CNPhoneNumberContactPredicate)initWithCoder:(id)a3
+- (CNPhoneNumberContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_phoneNumber"];
-  v6 = [v4 decodeBoolForKey:@"_returnsMultipleResults"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_prefixHint"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_phoneNumber"];
+  v6 = [coderCopy decodeBoolForKey:@"_returnsMultipleResults"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_prefixHint"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_groupIdentifiers"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_groupIdentifiers"];
 
   v12 = [(CNPhoneNumberContactPredicate *)self initWithPhoneNumber:v5 prefixHint:v7 groupIdentifiers:v11 returnMultipleResults:v6];
   if (v12)
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_digits"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_digits"];
     v14 = [v13 copy];
     digits = v12->_digits;
     v12->_digits = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_countryCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_countryCode"];
     v17 = [v16 copy];
     countryCode = v12->_countryCode;
     v12->_countryCode = v17;

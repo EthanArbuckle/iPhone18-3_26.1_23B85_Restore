@@ -7,24 +7,24 @@
 + (id)iconWithContact:()ContactsUI
 {
   v4 = a3;
-  v5 = [v4 hasBeenPersisted];
+  hasBeenPersisted = [v4 hasBeenPersisted];
   v6 = objc_alloc(MEMORY[0x1E69D41A8]);
-  if (v5)
+  if (hasBeenPersisted)
   {
-    v7 = [v4 identifier];
+    identifier = [v4 identifier];
 
-    v8 = [v6 initWithContactIdentifier:v7];
+    v8 = [v6 initWithContactIdentifier:identifier];
   }
 
   else
   {
-    v7 = [v4 givenName];
-    v9 = [v4 familyName];
+    identifier = [v4 givenName];
+    familyName = [v4 familyName];
 
-    v8 = [v6 initWithFirstName:v7 lastName:v9];
+    v8 = [v6 initWithFirstName:identifier lastName:familyName];
   }
 
-  v10 = [[a1 alloc] initWithSBSApplicationShortcutIcon:v8];
+  v10 = [[self alloc] initWithSBSApplicationShortcutIcon:v8];
 
   return v10;
 }

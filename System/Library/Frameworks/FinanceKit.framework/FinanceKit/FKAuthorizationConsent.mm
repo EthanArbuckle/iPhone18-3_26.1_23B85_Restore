@@ -1,36 +1,36 @@
 @interface FKAuthorizationConsent
-- (BOOL)isEqual:(id)a3;
-- (FKAuthorizationConsent)initWithConsentId:(id)a3 token:(id)a4 authorizationURI:(id)a5 extensionPayload:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKAuthorizationConsent)initWithConsentId:(id)id token:(id)token authorizationURI:(id)i extensionPayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKAuthorizationConsent
 
-- (FKAuthorizationConsent)initWithConsentId:(id)a3 token:(id)a4 authorizationURI:(id)a5 extensionPayload:(id)a6
+- (FKAuthorizationConsent)initWithConsentId:(id)id token:(id)token authorizationURI:(id)i extensionPayload:(id)payload
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  tokenCopy = token;
+  iCopy = i;
+  payloadCopy = payload;
   v24.receiver = self;
   v24.super_class = FKAuthorizationConsent;
   v14 = [(FKAuthorizationConsent *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [idCopy copy];
     consentId = v14->_consentId;
     v14->_consentId = v15;
 
-    v17 = [v11 copy];
+    v17 = [tokenCopy copy];
     token = v14->_token;
     v14->_token = v17;
 
-    v19 = [v12 copy];
+    v19 = [iCopy copy];
     authorizationURI = v14->_authorizationURI;
     v14->_authorizationURI = v19;
 
-    v21 = [v13 copy];
+    v21 = [payloadCopy copy];
     extensionPayload = v14->_extensionPayload;
     v14->_extensionPayload = v21;
   }
@@ -38,22 +38,22 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(FKAuthorizationConsent);
-  v6 = [(NSString *)self->_consentId copyWithZone:a3];
+  v6 = [(NSString *)self->_consentId copyWithZone:zone];
   consentId = v5->_consentId;
   v5->_consentId = v6;
 
-  v8 = [(NSString *)self->_token copyWithZone:a3];
+  v8 = [(NSString *)self->_token copyWithZone:zone];
   token = v5->_token;
   v5->_token = v8;
 
-  v10 = [(NSString *)self->_authorizationURI copyWithZone:a3];
+  v10 = [(NSString *)self->_authorizationURI copyWithZone:zone];
   authorizationURI = v5->_authorizationURI;
   v5->_authorizationURI = v10;
 
-  v12 = [(NSDictionary *)self->_extensionPayload copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_extensionPayload copyWithZone:zone];
   extensionPayload = v5->_extensionPayload;
   v5->_extensionPayload = v12;
 
@@ -72,16 +72,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (FKEqualObjects(self->_consentId, v6[1]) && FKEqualObjects(self->_token, v6[2]) && FKEqualObjects(self->_authorizationURI, v6[3]))

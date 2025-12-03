@@ -2,31 +2,31 @@
 + (id)shared;
 - (CNSafetyCheckHelper)init;
 - (void)fetchSharing;
-- (void)makeSafetyCheckFlowFor:(id)a3 completion:(id)a4;
+- (void)makeSafetyCheckFlowFor:(id)for completion:(id)completion;
 @end
 
 @implementation CNSafetyCheckHelper
 
-- (void)makeSafetyCheckFlowFor:(id)a3 completion:(id)a4
+- (void)makeSafetyCheckFlowFor:(id)for completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   if ([getDSSafetyCheckWhenBlockingClass() featureEnabled])
   {
-    v8 = [(CNSafetyCheckHelper *)self safetyCheckProvider];
+    safetyCheckProvider = [(CNSafetyCheckHelper *)self safetyCheckProvider];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__CNSafetyCheckHelper_makeSafetyCheckFlowFor_completion___block_invoke;
     v9[3] = &unk_1E74E6650;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
-    [v8 fetchSharingWithCompletion:v9];
+    v10 = forCopy;
+    v11 = completionCopy;
+    [safetyCheckProvider fetchSharingWithCompletion:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -38,8 +38,8 @@ void __57__CNSafetyCheckHelper_makeSafetyCheckFlowFor_completion___block_invoke(
 
 - (void)fetchSharing
 {
-  v2 = [(CNSafetyCheckHelper *)self safetyCheckProvider];
-  [v2 fetchSharingWithCompletion:&__block_literal_global_2_62974];
+  safetyCheckProvider = [(CNSafetyCheckHelper *)self safetyCheckProvider];
+  [safetyCheckProvider fetchSharingWithCompletion:&__block_literal_global_2_62974];
 }
 
 - (CNSafetyCheckHelper)init

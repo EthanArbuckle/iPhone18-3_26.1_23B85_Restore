@@ -1,32 +1,32 @@
 @interface MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithDictionary:(id)a3;
-- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithDictionary:(id)dictionary;
+- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart
 
-- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithDictionary:(id)a3
+- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart;
   v5 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"firstBufferStartTimeOffsetInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"firstBufferStartTimeOffsetInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart setFirstBufferStartTimeOffsetInNs:](v5, "setFirstBufferStartTimeOffsetInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"audioInterfaceVendorId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"audioInterfaceVendorId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)v5 setAudioInterfaceVendorId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"audioInterfaceProductName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"audioInterfaceProductName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithJSON:(id)a3
+- (MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioInterfaceProductName)
   {
-    v4 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"audioInterfaceProductName"];
+    audioInterfaceProductName = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
+    v5 = [audioInterfaceProductName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"audioInterfaceProductName"];
   }
 
   if (self->_audioInterfaceVendorId)
   {
-    v6 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"audioInterfaceVendorId"];
+    audioInterfaceVendorId = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
+    v7 = [audioInterfaceVendorId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"audioInterfaceVendorId"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart firstBufferStartTimeOffsetInNs](self, "firstBufferStartTimeOffsetInNs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"firstBufferStartTimeOffsetInNs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"firstBufferStartTimeOffsetInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -126,15 +126,15 @@
   return v4 ^ [(NSString *)self->_audioInterfaceProductName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -142,26 +142,26 @@
   if (*&self->_has)
   {
     firstBufferStartTimeOffsetInNs = self->_firstBufferStartTimeOffsetInNs;
-    if (firstBufferStartTimeOffsetInNs != [v4 firstBufferStartTimeOffsetInNs])
+    if (firstBufferStartTimeOffsetInNs != [equalCopy firstBufferStartTimeOffsetInNs])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
-  v7 = [v4 audioInterfaceVendorId];
-  if ((v6 != 0) == (v7 == 0))
+  audioInterfaceVendorId = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
+  audioInterfaceVendorId2 = [equalCopy audioInterfaceVendorId];
+  if ((audioInterfaceVendorId != 0) == (audioInterfaceVendorId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
-  if (v8)
+  audioInterfaceVendorId3 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
+  if (audioInterfaceVendorId3)
   {
-    v9 = v8;
-    v10 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
-    v11 = [v4 audioInterfaceVendorId];
-    v12 = [v10 isEqual:v11];
+    v9 = audioInterfaceVendorId3;
+    audioInterfaceVendorId4 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
+    audioInterfaceVendorId5 = [equalCopy audioInterfaceVendorId];
+    v12 = [audioInterfaceVendorId4 isEqual:audioInterfaceVendorId5];
 
     if (!v12)
     {
@@ -173,12 +173,12 @@
   {
   }
 
-  v6 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
-  v7 = [v4 audioInterfaceProductName];
-  if ((v6 != 0) != (v7 == 0))
+  audioInterfaceVendorId = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
+  audioInterfaceVendorId2 = [equalCopy audioInterfaceProductName];
+  if ((audioInterfaceVendorId != 0) != (audioInterfaceVendorId2 == 0))
   {
-    v13 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
-    if (!v13)
+    audioInterfaceProductName = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
+    if (!audioInterfaceProductName)
     {
 
 LABEL_18:
@@ -186,10 +186,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
-    v16 = [v4 audioInterfaceProductName];
-    v17 = [v15 isEqual:v16];
+    v14 = audioInterfaceProductName;
+    audioInterfaceProductName2 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
+    audioInterfaceProductName3 = [equalCopy audioInterfaceProductName];
+    v17 = [audioInterfaceProductName2 isEqual:audioInterfaceProductName3];
 
     if (v17)
     {
@@ -209,28 +209,28 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
   }
 
-  v4 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
+  audioInterfaceVendorId = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceVendorId];
 
-  if (v4)
+  if (audioInterfaceVendorId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
+  audioInterfaceProductName = [(MHSchemaMHAssistantDaemonAudioRecordingFirstBufferStart *)self audioInterfaceProductName];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (audioInterfaceProductName)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

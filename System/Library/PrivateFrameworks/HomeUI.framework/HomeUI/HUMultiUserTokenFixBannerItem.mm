@@ -1,44 +1,44 @@
 @interface HUMultiUserTokenFixBannerItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUMultiUserTokenFixBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v5 = [v4 BOOLValue];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     goto LABEL_10;
   }
 
-  v6 = [(HUMultiUserTokenFixBannerItem *)self homeMediaAccount];
-  v7 = [(HUBannerItem *)self home];
-  v8 = [v7 currentUser];
-  v9 = [v8 needsiTunesMultiUserRepair];
+  homeMediaAccount = [(HUMultiUserTokenFixBannerItem *)self homeMediaAccount];
+  home = [(HUBannerItem *)self home];
+  currentUser = [home currentUser];
+  needsiTunesMultiUserRepair = [currentUser needsiTunesMultiUserRepair];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v36 = v6;
+    v36 = homeMediaAccount;
     v37 = 1024;
-    v38 = v9;
+    v38 = needsiTunesMultiUserRepair;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "mediaAccount = [%@]. needsiTunesMultiUserRepair = [%d]", buf, 0x12u);
   }
 
   v11 = 0;
-  if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && v6 && ((v9 ^ 1) & 1) == 0)
+  if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0 && homeMediaAccount && ((needsiTunesMultiUserRepair ^ 1) & 1) == 0)
   {
     v11 = ![(HUMultiUserTokenFixBannerItem *)self forceHidden];
   }
 
-  v12 = [(HUBannerItem *)self forceShowBanner];
+  forceShowBanner = [(HUBannerItem *)self forceShowBanner];
 
-  if (v12 || (v11 & 1) != 0)
+  if (forceShowBanner || (v11 & 1) != 0)
   {
     v15 = objc_opt_new();
     v18 = _HULocalizedStringWithDefaultValue(@"HUSetupCellMultiUserTokenFix_Title", @"HUSetupCellMultiUserTokenFix_Title", 1);
@@ -64,9 +64,9 @@
     [v15 setObject:v25 forKeyedSubscript:*MEMORY[0x277D13E88]];
 
     v26 = MEMORY[0x277CBEB98];
-    v27 = [(HUBannerItem *)self home];
-    v28 = [v27 currentUser];
-    v29 = [v26 na_setWithSafeObject:v28];
+    home2 = [(HUBannerItem *)self home];
+    currentUser2 = [home2 currentUser];
+    v29 = [v26 na_setWithSafeObject:currentUser2];
     [v15 setObject:v29 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
     [v15 setObject:&unk_282491A48 forKeyedSubscript:@"bannerItemCategory"];

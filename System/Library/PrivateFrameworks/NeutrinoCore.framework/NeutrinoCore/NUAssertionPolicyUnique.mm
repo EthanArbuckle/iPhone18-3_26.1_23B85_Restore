@@ -1,28 +1,28 @@
 @interface NUAssertionPolicyUnique
 - (NUAssertionPolicyUnique)init;
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation NUAssertionPolicyUnique
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v4 fileName];
-  v7 = [v5 stringWithFormat:@"%@:%ld", v6, objc_msgSend(v4, "lineNumber")];
+  fileName = [assertionCopy fileName];
+  v7 = [v5 stringWithFormat:@"%@:%ld", fileName, objc_msgSend(assertionCopy, "lineNumber")];
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if (([(NSMutableSet *)v8->_signatures containsObject:v7]& 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(NSMutableSet *)selfCopy->_signatures containsObject:v7]& 1) == 0)
   {
-    [(NSMutableSet *)v8->_signatures addObject:v7];
-    v9.receiver = v8;
+    [(NSMutableSet *)selfCopy->_signatures addObject:v7];
+    v9.receiver = selfCopy;
     v9.super_class = NUAssertionPolicyUnique;
-    [(NUAssertionPolicyComposite *)&v9 notifyAssertion:v4];
+    [(NUAssertionPolicyComposite *)&v9 notifyAssertion:assertionCopy];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (NUAssertionPolicyUnique)init

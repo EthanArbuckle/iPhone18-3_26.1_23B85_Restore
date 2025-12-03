@@ -1,14 +1,14 @@
 @interface PXStoryViewResourcesPreloadingController
 - (PXStoryViewModel)viewModel;
-- (PXStoryViewResourcesPreloadingController)initWithObservableModel:(id)a3;
-- (PXStoryViewResourcesPreloadingController)initWithViewModel:(id)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
-- (id)resourcesPreloadingControllerForModel:(id)a3;
+- (PXStoryViewResourcesPreloadingController)initWithObservableModel:(id)model;
+- (PXStoryViewResourcesPreloadingController)initWithViewModel:(id)model;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
+- (id)resourcesPreloadingControllerForModel:(id)model;
 - (void)_invalidateResourcesPreloadingControllers;
 - (void)_updateResourcesPreloadingControllers;
-- (void)configureUpdater:(id)a3;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)setIsActive:(BOOL)a3;
+- (void)configureUpdater:(id)updater;
+- (void)handleModelChange:(unint64_t)change;
+- (void)setIsActive:(BOOL)active;
 @end
 
 @implementation PXStoryViewResourcesPreloadingController
@@ -20,7 +20,7 @@
   return WeakRetained;
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -29,17 +29,17 @@
   v16 = __81__PXStoryViewResourcesPreloadingController_diagnosticTextForHUDType_displaySize___block_invoke;
   v17 = &unk_1E773BCF0;
   v18 = v5;
-  v19 = self;
+  selfCopy = self;
   v6 = v5;
   v7 = _Block_copy(&v14);
   v8 = [(PXStoryViewResourcesPreloadingController *)self viewModel:v14];
-  v9 = [v8 mainModel];
-  v20[0] = v9;
+  mainModel = [v8 mainModel];
+  v20[0] = mainModel;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v7[2](v7, @"Main", v10);
 
-  v11 = [v8 relatedModels];
-  v7[2](v7, @"Related", v11);
+  relatedModels = [v8 relatedModels];
+  v7[2](v7, @"Related", relatedModels);
 
   v12 = [v6 copy];
 
@@ -96,13 +96,13 @@ void __81__PXStoryViewResourcesPreloadingController_diagnosticTextForHUDType_dis
   }
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = PXStoryViewResourcesPreloadingController;
   [(PXStoryController *)&v6 handleModelChange:?];
-  if ((v3 & 0x140) != 0)
+  if ((changeCopy & 0x140) != 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -116,20 +116,20 @@ void __81__PXStoryViewResourcesPreloadingController_diagnosticTextForHUDType_dis
 - (void)_updateResourcesPreloadingControllers
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [(PXStoryViewResourcesPreloadingController *)self resourcesPreloadingControllers];
-  v5 = [(PXStoryViewResourcesPreloadingController *)self isActive];
-  v6 = v5;
+  resourcesPreloadingControllers = [(PXStoryViewResourcesPreloadingController *)self resourcesPreloadingControllers];
+  isActive = [(PXStoryViewResourcesPreloadingController *)self isActive];
+  v6 = isActive;
   v7 = "MacSyncedAssetsNotificationListManager" + 32;
-  if (v5)
+  if (isActive)
   {
-    v8 = [(PXStoryViewResourcesPreloadingController *)self viewModel];
+    viewModel = [(PXStoryViewResourcesPreloadingController *)self viewModel];
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v10 = [v4 keyEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    keyEnumerator = [resourcesPreloadingControllers keyEnumerator];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v11)
     {
       v12 = v11;
@@ -141,45 +141,45 @@ void __81__PXStoryViewResourcesPreloadingController_diagnosticTextForHUDType_dis
         {
           if (*v41 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           [v9 addObject:*(*(&v40 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v12);
     }
 
     v15 = +[PXStorySettings sharedInstance];
-    v16 = [v15 preloadNonKeyRelated];
+    preloadNonKeyRelated = [v15 preloadNonKeyRelated];
 
-    v17 = [(PXStoryViewResourcesPreloadingController *)self resourcesPreloadingCoordinator];
+    resourcesPreloadingCoordinator = [(PXStoryViewResourcesPreloadingController *)self resourcesPreloadingCoordinator];
     v33[0] = MEMORY[0x1E69E9820];
     v7 = "anager";
     v33[1] = 3221225472;
     v33[2] = __81__PXStoryViewResourcesPreloadingController__updateResourcesPreloadingControllers__block_invoke;
     v33[3] = &unk_1E773BC80;
     v34 = v9;
-    v35 = v4;
-    v36 = v8;
-    v37 = self;
+    v35 = resourcesPreloadingControllers;
+    v36 = viewModel;
+    selfCopy = self;
     v38 = a2;
-    v39 = v16;
-    v18 = v8;
+    v39 = preloadNonKeyRelated;
+    v18 = viewModel;
     v19 = v9;
-    [v17 performChanges:v33];
+    [resourcesPreloadingCoordinator performChanges:v33];
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v20 = [v4 objectEnumerator];
-  v21 = [v20 countByEnumeratingWithState:&v29 objects:v44 count:16];
+  objectEnumerator = [resourcesPreloadingControllers objectEnumerator];
+  v21 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v44 count:16];
   if (v21)
   {
     v22 = v21;
@@ -192,7 +192,7 @@ void __81__PXStoryViewResourcesPreloadingController_diagnosticTextForHUDType_dis
       {
         if (*v30 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v26 = *(*(&v29 + 1) + 8 * v25);
@@ -206,7 +206,7 @@ void __81__PXStoryViewResourcesPreloadingController_diagnosticTextForHUDType_dis
       }
 
       while (v22 != v25);
-      v22 = [v20 countByEnumeratingWithState:&v29 objects:v44 count:16];
+      v22 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v44 count:16];
     }
 
     while (v22);
@@ -386,79 +386,79 @@ void __81__PXStoryViewResourcesPreloadingController__updateResourcesPreloadingCo
 
 - (void)_invalidateResourcesPreloadingControllers
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateResourcesPreloadingControllers];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateResourcesPreloadingControllers];
 }
 
-- (id)resourcesPreloadingControllerForModel:(id)a3
+- (id)resourcesPreloadingControllerForModel:(id)model
 {
-  v4 = a3;
-  v5 = [(PXStoryViewResourcesPreloadingController *)self resourcesPreloadingControllers];
-  v6 = [v5 objectForKey:v4];
+  modelCopy = model;
+  resourcesPreloadingControllers = [(PXStoryViewResourcesPreloadingController *)self resourcesPreloadingControllers];
+  v6 = [resourcesPreloadingControllers objectForKey:modelCopy];
 
   return v6;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryViewResourcesPreloadingController *)self _invalidateResourcesPreloadingControllers];
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryViewResourcesPreloadingController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateResourcesPreloadingControllers, v4.receiver, v4.super_class}];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateResourcesPreloadingControllers, v4.receiver, v4.super_class}];
 }
 
-- (PXStoryViewResourcesPreloadingController)initWithViewModel:(id)a3
+- (PXStoryViewResourcesPreloadingController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v22.receiver = self;
   v22.super_class = PXStoryViewResourcesPreloadingController;
-  v6 = [(PXStoryController *)&v22 initWithObservableModel:v5];
+  v6 = [(PXStoryController *)&v22 initWithObservableModel:modelCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = objc_storeWeak(&v6->_viewModel, v5);
+    v8 = objc_storeWeak(&v6->_viewModel, modelCopy);
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __62__PXStoryViewResourcesPreloadingController_initWithViewModel___block_invoke;
     v20 = &unk_1E774B048;
     v9 = v7;
     v21 = v9;
-    [v5 performChanges:&v17];
+    [modelCopy performChanges:&v17];
 
     WeakRetained = objc_loadWeakRetained(&v7->_viewModel);
-    v11 = [WeakRetained resourcesPreloadingCoordinator];
+    resourcesPreloadingCoordinator = [WeakRetained resourcesPreloadingCoordinator];
     resourcesPreloadingCoordinator = v9->_resourcesPreloadingCoordinator;
-    v9->_resourcesPreloadingCoordinator = v11;
+    v9->_resourcesPreloadingCoordinator = resourcesPreloadingCoordinator;
 
     if (!v9->_resourcesPreloadingCoordinator)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v9 file:@"PXStoryViewResourcesPreloadingController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"_resourcesPreloadingCoordinator != nil", v17, v18, v19, v20}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PXStoryViewResourcesPreloadingController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"_resourcesPreloadingCoordinator != nil", v17, v18, v19, v20}];
     }
 
-    v13 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     resourcesPreloadingControllers = v9->_resourcesPreloadingControllers;
-    v9->_resourcesPreloadingControllers = v13;
+    v9->_resourcesPreloadingControllers = strongToStrongObjectsMapTable;
   }
 
   return v7;
 }
 
-- (PXStoryViewResourcesPreloadingController)initWithObservableModel:(id)a3
+- (PXStoryViewResourcesPreloadingController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryViewResourcesPreloadingController.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXStoryViewResourcesPreloadingController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewResourcesPreloadingController.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXStoryViewResourcesPreloadingController initWithObservableModel:]"}];
 
   abort();
 }

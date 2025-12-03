@@ -1,20 +1,20 @@
 @interface _UIDocumentUnavailableConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)initWithBrowserViewController:(void *)a1;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithBrowserViewController:(void *)controller;
 - (unint64_t)hash;
-- (void)set_tintColor:(uint64_t)a1;
+- (void)set_tintColor:(uint64_t)color;
 @end
 
 @implementation _UIDocumentUnavailableConfiguration
 
-- (id)initWithBrowserViewController:(void *)a1
+- (id)initWithBrowserViewController:(void *)controller
 {
-  if (!a1)
+  if (!controller)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = controller;
   v10.super_class = _UIDocumentUnavailableConfiguration;
   v3 = objc_msgSendSuper2(&v10, sel_init);
   v4 = v3;
@@ -33,15 +33,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
     return v6;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_11;
   }
@@ -51,42 +51,42 @@
   LOBYTE(v6) = 0;
   if (self && (isKindOfClass & 1) != 0)
   {
-    if (self->_enabled != *(a3 + 8) || self->_documentState != *(a3 + 6) || self->_browserViewController != *(a3 + 9) || self->_documentTargetView != *(a3 + 13) || self->_foregroundAccessoryView != *(a3 + 15) || self->_backgroundAccessoryView != *(a3 + 16))
+    if (self->_enabled != *(equal + 8) || self->_documentState != *(equal + 6) || self->_browserViewController != *(equal + 9) || self->_documentTargetView != *(equal + 13) || self->_foregroundAccessoryView != *(equal + 15) || self->_backgroundAccessoryView != *(equal + 16))
     {
 LABEL_11:
       LOBYTE(v6) = 0;
       return v6;
     }
 
-    v6 = _deferringTokenEqualToToken(self->_tintColor, *(a3 + 8));
+    v6 = _deferringTokenEqualToToken(self->_tintColor, *(equal + 8));
     if (v6)
     {
-      v6 = _deferringTokenEqualToToken(self->_documentCreationIntent, *(a3 + 7));
+      v6 = _deferringTokenEqualToToken(self->_documentCreationIntent, *(equal + 7));
       if (v6)
       {
-        v6 = _deferringTokenEqualToToken(self->_title, *(a3 + 10));
+        v6 = _deferringTokenEqualToToken(self->_title, *(equal + 10));
         if (v6)
         {
-          v6 = _deferringTokenEqualToToken(self->_documentURL, *(a3 + 5));
+          v6 = _deferringTokenEqualToToken(self->_documentURL, *(equal + 5));
           if (v6)
           {
-            v6 = _deferringTokenEqualToToken(self->_primaryAction, *(a3 + 11));
+            v6 = _deferringTokenEqualToToken(self->_primaryAction, *(equal + 11));
             if (v6)
             {
-              v6 = _deferringTokenEqualToToken(self->_primaryMenu, *(a3 + 2));
+              v6 = _deferringTokenEqualToToken(self->_primaryMenu, *(equal + 2));
               if (v6)
               {
-                v6 = _deferringTokenEqualToToken(self->_secondaryAction, *(a3 + 12));
+                v6 = _deferringTokenEqualToToken(self->_secondaryAction, *(equal + 12));
                 if (v6)
                 {
-                  v6 = _deferringTokenEqualToToken(self->_secondaryMenu, *(a3 + 3));
+                  v6 = _deferringTokenEqualToToken(self->_secondaryMenu, *(equal + 3));
                   if (v6)
                   {
-                    v6 = _deferringTokenEqualToToken(self->_pasteActionUTTypes, *(a3 + 4));
+                    v6 = _deferringTokenEqualToToken(self->_pasteActionUTTypes, *(equal + 4));
                     if (v6)
                     {
                       background = self->_background;
-                      v8 = *(a3 + 14);
+                      v8 = *(equal + 14);
 
                       LOBYTE(v6) = _deferringTokenEqualToToken(background, v8);
                     }
@@ -112,11 +112,11 @@ LABEL_11:
   return v6 ^ [(UIBackgroundConfiguration *)self->_background hash];
 }
 
-- (void)set_tintColor:(uint64_t)a1
+- (void)set_tintColor:(uint64_t)color
 {
-  if (a1)
+  if (color)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((color + 64), a2);
   }
 }
 

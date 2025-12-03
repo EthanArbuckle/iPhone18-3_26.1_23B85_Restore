@@ -14,9 +14,9 @@
     v4 = MEMORY[0x277CCD1D0];
     v5 = v3;
     v6 = [v4 alloc];
-    v7 = [v5 identifier];
+    identifier = [v5 identifier];
 
-    v8 = [v6 initWithRawIdentifier:v7];
+    v8 = [v6 initWithRawIdentifier:identifier];
   }
 
   else
@@ -30,7 +30,7 @@
 - (HDCodableOntologyConceptIdentifier)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableOntologyConceptIdentifier);
-  -[HDCodableOntologyConceptIdentifier setIdentifier:](v2, "setIdentifier:", [a1 rawIdentifier]);
+  -[HDCodableOntologyConceptIdentifier setIdentifier:](v2, "setIdentifier:", [self rawIdentifier]);
 
   return v2;
 }

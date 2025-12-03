@@ -1,22 +1,22 @@
 @interface MFDaemonAccountsProvider
-- (MFDaemonAccountsProvider)initWithFocusController:(id)a3;
+- (MFDaemonAccountsProvider)initWithFocusController:(id)controller;
 - (void)_handleAccountChange;
-- (void)currentFocusChanged:(id)a3;
+- (void)currentFocusChanged:(id)changed;
 - (void)dealloc;
 @end
 
 @implementation MFDaemonAccountsProvider
 
-- (MFDaemonAccountsProvider)initWithFocusController:(id)a3
+- (MFDaemonAccountsProvider)initWithFocusController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = MFDaemonAccountsProvider;
   v5 = [(MFMailAccountsProvider *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [v4 addObserver:v5 currentFocus:&v5->_currentFocus];
+    v7 = [controllerCopy addObserver:v5 currentFocus:&v5->_currentFocus];
     focusObservationToken = v6->_focusObservationToken;
     v6->_focusObservationToken = v7;
 
@@ -24,8 +24,8 @@
     v10 = [(MFMailAccountsProvider *)v6 reloadWithMailAccounts:v9 currentFocus:v6->_currentFocus];
 
     v11 = +[MFMailMessageLibrary defaultInstance];
-    v12 = [(MFMailAccountsProvider *)v6 mailAccounts];
-    [v11 rebuildActiveAccountsClausesAndExpressionsWithAccounts:v12];
+    mailAccounts = [(MFMailAccountsProvider *)v6 mailAccounts];
+    [v11 rebuildActiveAccountsClausesAndExpressionsWithAccounts:mailAccounts];
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_UTILITY, 0);
@@ -69,18 +69,18 @@
   v5 = +[MFMailMessageLibrary defaultInstance];
   [v5 rebuildActiveAccountsClausesAndExpressionsWithAccounts:v4];
 
-  v6 = [(MFDaemonAccountsProvider *)self currentFocus];
-  v7 = [(MFMailAccountsProvider *)self reloadWithMailAccounts:v4 currentFocus:v6];
+  currentFocus = [(MFDaemonAccountsProvider *)self currentFocus];
+  v7 = [(MFMailAccountsProvider *)self reloadWithMailAccounts:v4 currentFocus:currentFocus];
 
   +[MessageBodyLoader accountsDidChange];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v7 first];
-  v9 = [v8 mailAccounts];
+  first = [v7 first];
+  mailAccounts = [first mailAccounts];
 
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  v10 = [mailAccounts countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v10)
   {
     v11 = *v29;
@@ -91,7 +91,7 @@
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(mailAccounts);
         }
 
         [*(*(&v28 + 1) + 8 * v12) stopListeningForNotifications];
@@ -99,7 +99,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v10 = [mailAccounts countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v10);
@@ -109,10 +109,10 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = [v7 second];
-  v14 = [v13 mailAccounts];
+  second = [v7 second];
+  mailAccounts2 = [second mailAccounts];
 
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v15 = [mailAccounts2 countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v15)
   {
     v16 = *v25;
@@ -123,7 +123,7 @@
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(mailAccounts2);
         }
 
         [*(*(&v24 + 1) + 8 * v17) startListeningForNotifications];
@@ -131,37 +131,37 @@
       }
 
       while (v15 != v17);
-      v15 = [v14 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v15 = [mailAccounts2 countByEnumeratingWithState:&v24 objects:v34 count:16];
     }
 
     while (v15);
   }
 
   v32[0] = ECMailAccountsDidChangeNotificationKeyPreviousAccountIdentifiers;
-  v18 = [v7 first];
-  v19 = [v18 displayedAccountsIdentifiers];
-  v33[0] = v19;
+  first2 = [v7 first];
+  displayedAccountsIdentifiers = [first2 displayedAccountsIdentifiers];
+  v33[0] = displayedAccountsIdentifiers;
   v32[1] = ECMailAccountsDidChangeNotificationKeyAccountIdentifiers;
-  v20 = [v7 second];
-  v21 = [v20 displayedAccountsIdentifiers];
-  v33[1] = v21;
+  second2 = [v7 second];
+  displayedAccountsIdentifiers2 = [second2 displayedAccountsIdentifiers];
+  v33[1] = displayedAccountsIdentifiers2;
   v22 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
 
   v23 = +[NSNotificationCenter defaultCenter];
   [v23 postNotificationName:ECMailAccountsDidChangeNotification object:self userInfo:v22];
 }
 
-- (void)currentFocusChanged:(id)a3
+- (void)currentFocusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005246C;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 

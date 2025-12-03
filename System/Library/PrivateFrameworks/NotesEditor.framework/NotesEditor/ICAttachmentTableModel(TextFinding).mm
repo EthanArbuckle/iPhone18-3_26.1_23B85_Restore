@@ -29,12 +29,12 @@
     v35[1] = v24;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
     v26 = v25 = a7;
-    v27 = [v22 ic_range];
-    [v22 addAttributes:v26 range:{v27, v28}];
+    ic_range = [v22 ic_range];
+    [v22 addAttributes:v26 range:{ic_range, v28}];
 
     v29 = objc_alloc_init(ICTableTextFindingResult);
-    v30 = [a1 attachment];
-    [(ICTableTextFindingResult *)v29 setAttachment:v30];
+    attachment = [self attachment];
+    [(ICTableTextFindingResult *)v29 setAttachment:attachment];
 
     v31 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v22];
     [(ICTableTextFindingResult *)v29 setFindableString:v31];
@@ -76,28 +76,28 @@
   }
 
   v19 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v16 options:v18 error:0];
-  v20 = [a1 attachment];
-  v21 = [v20 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
-  v22 = [MEMORY[0x277CBEB18] array];
-  v23 = [a1 table];
+  array = [MEMORY[0x277CBEB18] array];
+  table = [self table];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __136__ICAttachmentTableModel_TextFinding__textFindingResultsMatchingString_textView_ignoreCase_wholeWords_startsWith_usePattern_completion___block_invoke;
   v31[3] = &unk_2781AEC90;
   v24 = v19;
   v32 = v24;
-  v33 = a1;
+  selfCopy = self;
   v25 = v14;
   v34 = v25;
   v37 = a5;
   v38 = a6;
   v39 = a7;
-  v26 = v22;
+  v26 = array;
   v35 = v26;
-  v27 = v21;
+  v27 = managedObjectContext;
   v36 = v27;
-  [v23 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v31];
+  [table enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:v31];
 
   if (v15)
   {
@@ -113,7 +113,7 @@
   v17 = a8;
   v18 = a9;
   [v18 beginEditing];
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __153__ICAttachmentTableModel_TextFinding__undoablyReplaceAllOccurrencesOfQueryString_textView_ignoreCase_wholeWords_startsWith_withText_tableViewController___block_invoke;
@@ -123,13 +123,13 @@
   v25 = v19;
   v20 = v18;
   v26 = v20;
-  [a1 textFindingResultsMatchingString:v15 textView:v16 ignoreCase:a5 wholeWords:a6 startsWith:a7 usePattern:0 completion:v24];
+  [self textFindingResultsMatchingString:v15 textView:v16 ignoreCase:a5 wholeWords:a6 startsWith:a7 usePattern:0 completion:v24];
   [v20 endEditing];
   [v20 saveOnMainThread];
-  v21 = [v20 undoManager];
-  v22 = [MEMORY[0x277CCA8D8] mainBundle];
-  v23 = [v22 localizedStringForKey:@"Replace All" value:&stru_282757698 table:0];
-  [v21 setActionName:v23];
+  undoManager = [v20 undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v23 = [mainBundle localizedStringForKey:@"Replace All" value:&stru_282757698 table:0];
+  [undoManager setActionName:v23];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -141,15 +141,15 @@
   v9 = a4;
   v10 = a3;
   [v8 beginEditing];
-  [a1 replaceTextFindingResult:v10 withReplacementString:v9 tableViewController:v8];
+  [self replaceTextFindingResult:v10 withReplacementString:v9 tableViewController:v8];
 
   [v8 endEditing];
   [v8 saveOnMainThread];
-  v13 = [v8 undoManager];
+  undoManager = [v8 undoManager];
 
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"Replace" value:&stru_282757698 table:0];
-  [v13 setActionName:v12];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle localizedStringForKey:@"Replace" value:&stru_282757698 table:0];
+  [undoManager setActionName:v12];
 }
 
 - (void)replaceTextFindingResult:()TextFinding withReplacementString:tableViewController:
@@ -164,41 +164,41 @@
   {
     if ([v10 row] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v11, "column") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = os_log_create("com.apple.notes", "UI");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      table = os_log_create("com.apple.notes", "UI");
+      if (os_log_type_enabled(table, OS_LOG_TYPE_ERROR))
       {
-        [ICAttachmentTableModel(TextFinding) replaceTextFindingResult:v11 withReplacementString:v12 tableViewController:?];
+        [ICAttachmentTableModel(TextFinding) replaceTextFindingResult:v11 withReplacementString:table tableViewController:?];
       }
     }
 
     else
     {
-      v13 = [v11 inlineTextFindingResult];
+      inlineTextFindingResult = [v11 inlineTextFindingResult];
 
-      if (v13)
+      if (inlineTextFindingResult)
       {
         goto LABEL_10;
       }
 
-      v12 = [v9 table];
+      table = [v9 table];
       v14 = [v11 row];
-      v15 = [v11 column];
-      v21 = [v11 rangeInFindableString];
+      column = [v11 column];
+      rangeInFindableString = [v11 rangeInFindableString];
       v17 = v16;
-      v18 = [v9 undoTarget];
-      v19 = [v9 undoManager];
-      v20 = [v12 textStorageForCellAtColumnIndex:v15 rowIndex:v14 undoTarget:v18 undoManager:v19];
+      undoTarget = [v9 undoTarget];
+      undoManager = [v9 undoManager];
+      v20 = [table textStorageForCellAtColumnIndex:column rowIndex:v14 undoTarget:undoTarget undoManager:undoManager];
 
-      [v20 replaceCharactersInRange:v21 withString:{v17, v8}];
+      [v20 replaceCharactersInRange:rangeInFindableString withString:{v17, v8}];
     }
   }
 
   else
   {
-    v12 = os_log_create("com.apple.notes", "UI");
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    table = os_log_create("com.apple.notes", "UI");
+    if (os_log_type_enabled(table, OS_LOG_TYPE_ERROR))
     {
-      [ICAttachmentTableModel(TextFinding) replaceTextFindingResult:v7 withReplacementString:v12 tableViewController:?];
+      [ICAttachmentTableModel(TextFinding) replaceTextFindingResult:v7 withReplacementString:table tableViewController:?];
     }
   }
 

@@ -1,7 +1,7 @@
 @interface VCUserDefaults
 + (id)sharedUserDefaults;
-- (BOOL)setCodableObject:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)codableObjectOfClass:(Class)a3 forKey:(id)a4;
+- (BOOL)setCodableObject:(id)object forKey:(id)key error:(id *)error;
+- (id)codableObjectOfClass:(Class)class forKey:(id)key;
 @end
 
 @implementation VCUserDefaults
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __36__VCUserDefaults_sharedUserDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedUserDefaults_once != -1)
   {
     dispatch_once(&sharedUserDefaults_once, block);
@@ -30,13 +30,13 @@ uint64_t __36__VCUserDefaults_sharedUserDefaults__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)setCodableObject:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setCodableObject:(id)object forKey:(id)key error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
-    if (v9)
+    if (objectCopy)
     {
       goto LABEL_3;
     }
@@ -46,20 +46,20 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"VCUserDefaults.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"VCUserDefaults.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
-  if (!v9)
+  if (!objectCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:a5];
+  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:error];
   if (v11)
   {
 LABEL_7:
-    [(VCUserDefaults *)self setObject:v11 forKey:v10];
+    [(VCUserDefaults *)self setObject:v11 forKey:keyCopy];
 
     v12 = 1;
     goto LABEL_8;
@@ -71,21 +71,21 @@ LABEL_8:
   return v12;
 }
 
-- (id)codableObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)codableObjectOfClass:(Class)class forKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCUserDefaults.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCUserDefaults.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v8 = [(VCUserDefaults *)self objectForKey:v7];
+  v8 = [(VCUserDefaults *)self objectForKey:keyCopy];
   if (v8)
   {
     v15 = 0;
-    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a3 fromData:v8 error:&v15];
+    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:class fromData:v8 error:&v15];
     v10 = v15;
     if (!v9)
     {
@@ -95,7 +95,7 @@ LABEL_8:
         *buf = 136315650;
         v17 = "[VCUserDefaults codableObjectOfClass:forKey:]";
         v18 = 2112;
-        v19 = v7;
+        v19 = keyCopy;
         v20 = 2112;
         v21 = v10;
         _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_ERROR, "%s Failed to unarchive object for key (%@) with Error: %@", buf, 0x20u);

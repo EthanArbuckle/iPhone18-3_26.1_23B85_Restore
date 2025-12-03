@@ -1,20 +1,20 @@
 @interface _TVMenuBarStackView
-- (_TVMenuBarStackView)initWithCoder:(id)a3;
-- (_TVMenuBarStackView)initWithFrame:(CGRect)a3;
+- (_TVMenuBarStackView)initWithCoder:(id)coder;
+- (_TVMenuBarStackView)initWithFrame:(CGRect)frame;
 - (_TVMenuBarStackViewDelegate)delegate;
-- (void)_buttonEventTouchUpInside:(id)a3;
+- (void)_buttonEventTouchUpInside:(id)inside;
 - (void)_configureView;
-- (void)setSelectedIndex:(unint64_t)a3;
-- (void)setTabBarItems:(id)a3;
+- (void)setSelectedIndex:(unint64_t)index;
+- (void)setTabBarItems:(id)items;
 @end
 
 @implementation _TVMenuBarStackView
 
-- (_TVMenuBarStackView)initWithFrame:(CGRect)a3
+- (_TVMenuBarStackView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVMenuBarStackView;
-  v3 = [(_TVMenuBarStackView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVMenuBarStackView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (_TVMenuBarStackView)initWithCoder:(id)a3
+- (_TVMenuBarStackView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _TVMenuBarStackView;
-  v3 = [(_TVMenuBarStackView *)&v6 initWithCoder:a3];
+  v3 = [(_TVMenuBarStackView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -38,31 +38,31 @@
   return v4;
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_selectedIndex = a3;
-    v6 = [(_TVMenuBarStackView *)self arrangedSubviews];
+    self->_selectedIndex = index;
+    arrangedSubviews = [(_TVMenuBarStackView *)self arrangedSubviews];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40___TVMenuBarStackView_setSelectedIndex___block_invoke;
     v7[3] = &unk_279D6E820;
     v7[4] = self;
-    [v6 enumerateObjectsUsingBlock:v7];
+    [arrangedSubviews enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (void)setTabBarItems:(id)a3
+- (void)setTabBarItems:(id)items
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_tabBarItems != v4)
+  itemsCopy = items;
+  if (self->_tabBarItems != itemsCopy)
   {
-    v5 = [(_TVMenuBarStackView *)self subviews];
-    v6 = [v5 copy];
+    subviews = [(_TVMenuBarStackView *)self subviews];
+    v6 = [subviews copy];
 
     v28 = 0u;
     v29 = 0u;
@@ -94,8 +94,8 @@
       while (v9);
     }
 
-    v21 = v4;
-    v12 = [(NSArray *)v4 copy];
+    v21 = itemsCopy;
+    v12 = [(NSArray *)itemsCopy copy];
     tabBarItems = self->_tabBarItems;
     self->_tabBarItems = v12;
 
@@ -135,40 +135,40 @@
       while (v16);
     }
 
-    v4 = v21;
+    itemsCopy = v21;
   }
 }
 
-- (void)_buttonEventTouchUpInside:(id)a3
+- (void)_buttonEventTouchUpInside:(id)inside
 {
-  v4 = a3;
+  insideCopy = inside;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v5 = [(_TVMenuBarStackView *)self arrangedSubviews];
+  arrangedSubviews = [(_TVMenuBarStackView *)self arrangedSubviews];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __49___TVMenuBarStackView__buttonEventTouchUpInside___block_invoke;
   v14 = &unk_279D6E848;
-  v6 = v4;
+  v6 = insideCopy;
   v15 = v6;
   v16 = &v17;
-  [v5 enumerateObjectsUsingBlock:&v11];
+  [arrangedSubviews enumerateObjectsUsingBlock:&v11];
 
   v7 = [(_TVMenuBarStackView *)self delegate:v11];
 
   if (v7)
   {
-    v8 = [(_TVMenuBarStackView *)self selectedIndex];
-    if (v8 == v18[3])
+    selectedIndex = [(_TVMenuBarStackView *)self selectedIndex];
+    if (selectedIndex == v18[3])
     {
-      v9 = [(_TVMenuBarStackView *)self delegate];
-      [v9 stackView:self poppedToRootForIndex:v18[3]];
+      delegate = [(_TVMenuBarStackView *)self delegate];
+      [delegate stackView:self poppedToRootForIndex:v18[3]];
     }
 
-    v10 = [(_TVMenuBarStackView *)self delegate];
-    [v10 stackView:self selectedIndex:v18[3]];
+    delegate2 = [(_TVMenuBarStackView *)self delegate];
+    [delegate2 stackView:self selectedIndex:v18[3]];
   }
 
   [(_TVMenuBarStackView *)self setSelectedIndex:v18[3]];

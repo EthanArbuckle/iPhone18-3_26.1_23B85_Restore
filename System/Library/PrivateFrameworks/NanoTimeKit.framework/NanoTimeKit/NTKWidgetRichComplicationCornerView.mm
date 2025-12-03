@@ -1,27 +1,27 @@
 @interface NTKWidgetRichComplicationCornerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (NTKWidgetRichComplicationCornerView)initWithFamily:(int64_t)a3;
-- (int64_t)_widgetPositionFromComplicationPosition:(int64_t)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (NTKWidgetRichComplicationCornerView)initWithFamily:(int64_t)family;
+- (int64_t)_widgetPositionFromComplicationPosition:(int64_t)position;
 - (void)_configurePreviewViewController;
 - (void)_configureWidgetHostViewController;
 - (void)_createHitTestPathIfNecessary;
 - (void)_updatePosition;
-- (void)setCornerComplicationPosition:(int64_t)a3;
+- (void)setCornerComplicationPosition:(int64_t)position;
 @end
 
 @implementation NTKWidgetRichComplicationCornerView
 
-- (NTKWidgetRichComplicationCornerView)initWithFamily:(int64_t)a3
+- (NTKWidgetRichComplicationCornerView)initWithFamily:(int64_t)family
 {
   v4.receiver = self;
   v4.super_class = NTKWidgetRichComplicationCornerView;
-  return [(NTKWidgetRichComplicationView *)&v4 initWithFamily:a3];
+  return [(NTKWidgetRichComplicationView *)&v4 initWithFamily:family];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKWidgetRichComplicationCornerView *)self _createHitTestPathIfNecessary];
   [(NTKWidgetRichComplicationCornerView *)self bounds];
   v11.x = x;
@@ -47,8 +47,8 @@
     v8 = v7;
     v10 = v9;
     cornerComplicationPosition = self->_cornerComplicationPosition;
-    v12 = [(CDRichComplicationView *)self device];
-    v13 = [(CDRichComplicationCornerUtilities *)NTKRichComplicationCornerUtilities hitTestPathWithViewBounds:cornerComplicationPosition position:v12 forDevice:v4, v6, v8, v10];
+    device = [(CDRichComplicationView *)self device];
+    v13 = [(CDRichComplicationCornerUtilities *)NTKRichComplicationCornerUtilities hitTestPathWithViewBounds:cornerComplicationPosition position:device forDevice:v4, v6, v8, v10];
     hitTestPath = self->_hitTestPath;
     self->_hitTestPath = v13;
 
@@ -66,8 +66,8 @@
   v4.super_class = NTKWidgetRichComplicationCornerView;
   [(NTKWidgetRichComplicationView *)&v4 _configureWidgetHostViewController];
   [(NTKWidgetRichComplicationCornerView *)self _updatePosition];
-  v3 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v3 setShowsWidgetLabel:1];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setShowsWidgetLabel:1];
 }
 
 - (void)_configurePreviewViewController
@@ -81,24 +81,24 @@
 - (void)_updatePosition
 {
   v3 = [(NTKWidgetRichComplicationCornerView *)self _widgetPositionFromComplicationPosition:self->_cornerComplicationPosition];
-  v4 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v4 setCornerPosition:v3];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setCornerPosition:v3];
 }
 
-- (void)setCornerComplicationPosition:(int64_t)a3
+- (void)setCornerComplicationPosition:(int64_t)position
 {
-  if (self->_cornerComplicationPosition != a3)
+  if (self->_cornerComplicationPosition != position)
   {
-    self->_cornerComplicationPosition = a3;
+    self->_cornerComplicationPosition = position;
     [(NTKWidgetRichComplicationCornerView *)self _updatePosition];
   }
 }
 
-- (int64_t)_widgetPositionFromComplicationPosition:(int64_t)a3
+- (int64_t)_widgetPositionFromComplicationPosition:(int64_t)position
 {
-  if (a3 < 4)
+  if (position < 4)
   {
-    return a3 + 1;
+    return position + 1;
   }
 
   else

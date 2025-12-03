@@ -6,20 +6,20 @@
 
 - (id)presencePayloadDictionary
 {
-  v1 = [a1 presencePayload];
-  v2 = [v1 payloadDictionary];
-  v3 = v2;
-  if (v2)
+  presencePayload = [self presencePayload];
+  payloadDictionary = [presencePayload payloadDictionary];
+  v3 = payloadDictionary;
+  if (payloadDictionary)
   {
-    v4 = v2;
+    dictionary = payloadDictionary;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v5 = v4;
+  v5 = dictionary;
 
   return v5;
 }

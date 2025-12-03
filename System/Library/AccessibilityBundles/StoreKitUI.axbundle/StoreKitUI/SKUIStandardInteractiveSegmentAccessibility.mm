@@ -1,5 +1,5 @@
 @interface SKUIStandardInteractiveSegmentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)accessibilityRowRange;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,14 +7,14 @@
 
 @implementation SKUIStandardInteractiveSegmentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIInteractiveSegmentedControl"];
-  [v3 validateClass:@"SKUIInteractiveSegmentedControl" hasInstanceMethod:@"segments" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIInteractiveSegmentedControl" hasInstanceMethod:@"selectedSegmentIndexForSelectionProgress:" withFullSignature:{"q", "d", 0}];
-  [v3 validateClass:@"SKUIStandardInteractiveSegment" hasInstanceMethod:@"attributedTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIInteractiveSegmentedControl" hasInstanceVariable:@"_selectionProgress" withType:"d"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIInteractiveSegmentedControl"];
+  [validationsCopy validateClass:@"SKUIInteractiveSegmentedControl" hasInstanceMethod:@"segments" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIInteractiveSegmentedControl" hasInstanceMethod:@"selectedSegmentIndexForSelectionProgress:" withFullSignature:{"q", "d", 0}];
+  [validationsCopy validateClass:@"SKUIStandardInteractiveSegment" hasInstanceMethod:@"attributedTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIInteractiveSegmentedControl" hasInstanceVariable:@"_selectionProgress" withType:"d"];
 }
 
 - (_NSRange)accessibilityRowRange
@@ -49,9 +49,9 @@
   v3 = [(SKUIStandardInteractiveSegmentAccessibility *)self safeValueForKey:@"attributedTitle"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 string];
+  string = [v4 string];
 
-  return v5;
+  return string;
 }
 
 - (unint64_t)accessibilityTraits

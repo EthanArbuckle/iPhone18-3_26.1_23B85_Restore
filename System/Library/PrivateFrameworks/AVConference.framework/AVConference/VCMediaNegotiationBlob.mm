@@ -1,31 +1,31 @@
 @interface VCMediaNegotiationBlob
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)accessNetworkType;
 - (unsigned)mediaControlInfoVersion;
-- (void)addBandwidthSettings:(id)a3;
-- (void)addMultiwayAudioStreams:(id)a3;
-- (void)addMultiwayVideoStream:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addBandwidthSettings:(id)settings;
+- (void)addMultiwayAudioStreams:(id)streams;
+- (void)addMultiwayVideoStream:(id)stream;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)formatBandwidthConfig:(int)a3 maxBanxwidth:(unsigned int)a4 bandwidthString:(id)a5;
-- (void)mergeFrom:(id)a3;
-- (void)printBandwidthSettingsWithLogFile:(void *)a3;
-- (void)printCaptionsSettingsWithLogFile:(void *)a3;
-- (void)printMomentsSettingsWithLogFile:(void *)a3;
-- (void)printMultiwayAudioStreamsWithLogFile:(void *)a3;
-- (void)printMultiwayVideoStreamsWithLogFile:(void *)a3;
-- (void)printWithTitle:(id)a3 blobSize:(unsigned int)a4 logFile:(void *)a5;
-- (void)setHasAccessNetworkType:(BOOL)a3;
-- (void)setHasAllowDynamicMaxBitrate:(BOOL)a3;
-- (void)setHasAllowsContentsChangeWithAspectPreservation:(BOOL)a3;
-- (void)setHasBasebandCodecSampleRate:(BOOL)a3;
-- (void)setHasBlobVersion:(BOOL)a3;
-- (void)setHasMediaControlInfoVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)formatBandwidthConfig:(int)config maxBanxwidth:(unsigned int)banxwidth bandwidthString:(id)string;
+- (void)mergeFrom:(id)from;
+- (void)printBandwidthSettingsWithLogFile:(void *)file;
+- (void)printCaptionsSettingsWithLogFile:(void *)file;
+- (void)printMomentsSettingsWithLogFile:(void *)file;
+- (void)printMultiwayAudioStreamsWithLogFile:(void *)file;
+- (void)printMultiwayVideoStreamsWithLogFile:(void *)file;
+- (void)printWithTitle:(id)title blobSize:(unsigned int)size logFile:(void *)file;
+- (void)setHasAccessNetworkType:(BOOL)type;
+- (void)setHasAllowDynamicMaxBitrate:(BOOL)bitrate;
+- (void)setHasAllowsContentsChangeWithAspectPreservation:(BOOL)preservation;
+- (void)setHasBasebandCodecSampleRate:(BOOL)rate;
+- (void)setHasBlobVersion:(BOOL)version;
+- (void)setHasMediaControlInfoVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlob
@@ -50,9 +50,9 @@
   [(VCMediaNegotiationBlob *)&v3 dealloc];
 }
 
-- (void)setHasAllowDynamicMaxBitrate:(BOOL)a3
+- (void)setHasAllowDynamicMaxBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 32;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAllowsContentsChangeWithAspectPreservation:(BOOL)a3
+- (void)setHasAllowsContentsChangeWithAspectPreservation:(BOOL)preservation
 {
-  if (a3)
+  if (preservation)
   {
     v3 = 64;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasBasebandCodecSampleRate:(BOOL)a3
+- (void)setHasBasebandCodecSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 4;
   }
@@ -95,7 +95,7 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addBandwidthSettings:(id)a3
+- (void)addBandwidthSettings:(id)settings
 {
   bandwidthSettings = self->_bandwidthSettings;
   if (!bandwidthSettings)
@@ -104,10 +104,10 @@
     self->_bandwidthSettings = bandwidthSettings;
   }
 
-  [(NSMutableArray *)bandwidthSettings addObject:a3];
+  [(NSMutableArray *)bandwidthSettings addObject:settings];
 }
 
-- (void)addMultiwayAudioStreams:(id)a3
+- (void)addMultiwayAudioStreams:(id)streams
 {
   multiwayAudioStreams = self->_multiwayAudioStreams;
   if (!multiwayAudioStreams)
@@ -116,12 +116,12 @@
     self->_multiwayAudioStreams = multiwayAudioStreams;
   }
 
-  [(NSMutableArray *)multiwayAudioStreams addObject:a3];
+  [(NSMutableArray *)multiwayAudioStreams addObject:streams];
 }
 
-- (void)setHasBlobVersion:(BOOL)a3
+- (void)setHasBlobVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -134,7 +134,7 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addMultiwayVideoStream:(id)a3
+- (void)addMultiwayVideoStream:(id)stream
 {
   multiwayVideoStreams = self->_multiwayVideoStreams;
   if (!multiwayVideoStreams)
@@ -143,7 +143,7 @@
     self->_multiwayVideoStreams = multiwayVideoStreams;
   }
 
-  [(NSMutableArray *)multiwayVideoStreams addObject:a3];
+  [(NSMutableArray *)multiwayVideoStreams addObject:stream];
 }
 
 - (unsigned)mediaControlInfoVersion
@@ -159,9 +159,9 @@
   }
 }
 
-- (void)setHasMediaControlInfoVersion:(BOOL)a3
+- (void)setHasMediaControlInfoVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -187,9 +187,9 @@
   }
 }
 
-- (void)setHasAccessNetworkType:(BOOL)a3
+- (void)setHasAccessNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -213,52 +213,52 @@
 - (id)dictionaryRepresentation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_allowDynamicMaxBitrate), @"allowDynamicMaxBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_allowDynamicMaxBitrate), @"allowDynamicMaxBitrate"}];
     has = self->_has;
   }
 
   if ((has & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_allowsContentsChangeWithAspectPreservation), @"allowsContentsChangeWithAspectPreservation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_allowsContentsChangeWithAspectPreservation), @"allowsContentsChangeWithAspectPreservation"}];
   }
 
   audioSettings = self->_audioSettings;
   if (audioSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobAudioSettings dictionaryRepresentation](audioSettings forKey:{"dictionaryRepresentation"), @"audioSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobAudioSettings dictionaryRepresentation](audioSettings forKey:{"dictionaryRepresentation"), @"audioSettings"}];
   }
 
   videoSettings = self->_videoSettings;
   if (videoSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobVideoSettings dictionaryRepresentation](videoSettings forKey:{"dictionaryRepresentation"), @"videoSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobVideoSettings dictionaryRepresentation](videoSettings forKey:{"dictionaryRepresentation"), @"videoSettings"}];
   }
 
   screenSettings = self->_screenSettings;
   if (screenSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobVideoSettings dictionaryRepresentation](screenSettings forKey:{"dictionaryRepresentation"), @"screenSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobVideoSettings dictionaryRepresentation](screenSettings forKey:{"dictionaryRepresentation"), @"screenSettings"}];
   }
 
   userAgent = self->_userAgent;
   if (userAgent)
   {
-    [v3 setObject:userAgent forKey:@"userAgent"];
+    [dictionary setObject:userAgent forKey:@"userAgent"];
   }
 
   basebandCodec = self->_basebandCodec;
   if (basebandCodec)
   {
-    [v3 setObject:basebandCodec forKey:@"basebandCodec"];
+    [dictionary setObject:basebandCodec forKey:@"basebandCodec"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_basebandCodecSampleRate), @"basebandCodecSampleRate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_basebandCodecSampleRate), @"basebandCodecSampleRate"}];
   }
 
   if ([(NSMutableArray *)self->_bandwidthSettings count])
@@ -292,13 +292,13 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"bandwidthSettings"];
+    [dictionary setObject:v10 forKey:@"bandwidthSettings"];
   }
 
   captionsSettings = self->_captionsSettings;
   if (captionsSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobCaptionsSettings dictionaryRepresentation](captionsSettings forKey:{"dictionaryRepresentation"), @"captionsSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobCaptionsSettings dictionaryRepresentation](captionsSettings forKey:{"dictionaryRepresentation"), @"captionsSettings"}];
   }
 
   if ([(NSMutableArray *)self->_multiwayAudioStreams count])
@@ -332,25 +332,25 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKey:@"multiwayAudioStreams"];
+    [dictionary setObject:v17 forKey:@"multiwayAudioStreams"];
   }
 
   momentsSettings = self->_momentsSettings;
   if (momentsSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobMomentsSettings dictionaryRepresentation](momentsSettings forKey:{"dictionaryRepresentation"), @"momentsSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobMomentsSettings dictionaryRepresentation](momentsSettings forKey:{"dictionaryRepresentation"), @"momentsSettings"}];
   }
 
   v24 = self->_has;
   if (v24)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_ntpTime), @"ntpTime"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_ntpTime), @"ntpTime"}];
     v24 = self->_has;
   }
 
   if ((v24 & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_blobVersion), @"blobVersion"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_blobVersion), @"blobVersion"}];
   }
 
   if ([(NSMutableArray *)self->_multiwayVideoStreams count])
@@ -384,35 +384,35 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"multiwayVideoStream"];
+    [dictionary setObject:v25 forKey:@"multiwayVideoStream"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_mediaControlInfoVersion), @"mediaControlInfoVersion"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_mediaControlInfoVersion), @"mediaControlInfoVersion"}];
   }
 
   faceTimeSettings = self->_faceTimeSettings;
   if (faceTimeSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationFaceTimeSettings dictionaryRepresentation](faceTimeSettings forKey:{"dictionaryRepresentation"), @"faceTimeSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationFaceTimeSettings dictionaryRepresentation](faceTimeSettings forKey:{"dictionaryRepresentation"), @"faceTimeSettings"}];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_accessNetworkType), @"accessNetworkType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_accessNetworkType), @"accessNetworkType"}];
   }
 
   encryptionSettings = self->_encryptionSettings;
   if (encryptionSettings)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobMediaEncryptionSettings dictionaryRepresentation](encryptionSettings forKey:{"dictionaryRepresentation"), @"encryptionSettings"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobMediaEncryptionSettings dictionaryRepresentation](encryptionSettings forKey:{"dictionaryRepresentation"), @"encryptionSettings"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
   has = self->_has;
@@ -584,147 +584,147 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(a3 + 136) = self->_allowDynamicMaxBitrate;
-    *(a3 + 140) |= 0x20u;
+    *(to + 136) = self->_allowDynamicMaxBitrate;
+    *(to + 140) |= 0x20u;
     has = self->_has;
   }
 
   if ((has & 0x40) != 0)
   {
-    *(a3 + 137) = self->_allowsContentsChangeWithAspectPreservation;
-    *(a3 + 140) |= 0x40u;
+    *(to + 137) = self->_allowsContentsChangeWithAspectPreservation;
+    *(to + 140) |= 0x40u;
   }
 
   if (self->_audioSettings)
   {
-    [a3 setAudioSettings:?];
+    [to setAudioSettings:?];
   }
 
   if (self->_videoSettings)
   {
-    [a3 setVideoSettings:?];
+    [to setVideoSettings:?];
   }
 
   if (self->_screenSettings)
   {
-    [a3 setScreenSettings:?];
+    [to setScreenSettings:?];
   }
 
   if (self->_userAgent)
   {
-    [a3 setUserAgent:?];
+    [to setUserAgent:?];
   }
 
   if (self->_basebandCodec)
   {
-    [a3 setBasebandCodec:?];
+    [to setBasebandCodec:?];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 12) = self->_basebandCodecSampleRate;
-    *(a3 + 140) |= 4u;
+    *(to + 12) = self->_basebandCodecSampleRate;
+    *(to + 140) |= 4u;
   }
 
   if ([(VCMediaNegotiationBlob *)self bandwidthSettingsCount])
   {
-    [a3 clearBandwidthSettings];
-    v6 = [(VCMediaNegotiationBlob *)self bandwidthSettingsCount];
-    if (v6)
+    [to clearBandwidthSettings];
+    bandwidthSettingsCount = [(VCMediaNegotiationBlob *)self bandwidthSettingsCount];
+    if (bandwidthSettingsCount)
     {
-      v7 = v6;
+      v7 = bandwidthSettingsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addBandwidthSettings:{-[VCMediaNegotiationBlob bandwidthSettingsAtIndex:](self, "bandwidthSettingsAtIndex:", i)}];
+        [to addBandwidthSettings:{-[VCMediaNegotiationBlob bandwidthSettingsAtIndex:](self, "bandwidthSettingsAtIndex:", i)}];
       }
     }
   }
 
   if (self->_captionsSettings)
   {
-    [a3 setCaptionsSettings:?];
+    [to setCaptionsSettings:?];
   }
 
   if ([(VCMediaNegotiationBlob *)self multiwayAudioStreamsCount])
   {
-    [a3 clearMultiwayAudioStreams];
-    v9 = [(VCMediaNegotiationBlob *)self multiwayAudioStreamsCount];
-    if (v9)
+    [to clearMultiwayAudioStreams];
+    multiwayAudioStreamsCount = [(VCMediaNegotiationBlob *)self multiwayAudioStreamsCount];
+    if (multiwayAudioStreamsCount)
     {
-      v10 = v9;
+      v10 = multiwayAudioStreamsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addMultiwayAudioStreams:{-[VCMediaNegotiationBlob multiwayAudioStreamsAtIndex:](self, "multiwayAudioStreamsAtIndex:", j)}];
+        [to addMultiwayAudioStreams:{-[VCMediaNegotiationBlob multiwayAudioStreamsAtIndex:](self, "multiwayAudioStreamsAtIndex:", j)}];
       }
     }
   }
 
   if (self->_momentsSettings)
   {
-    [a3 setMomentsSettings:?];
+    [to setMomentsSettings:?];
   }
 
   v12 = self->_has;
   if (v12)
   {
-    *(a3 + 1) = self->_ntpTime;
-    *(a3 + 140) |= 1u;
+    *(to + 1) = self->_ntpTime;
+    *(to + 140) |= 1u;
     v12 = self->_has;
   }
 
   if ((v12 & 8) != 0)
   {
-    *(a3 + 13) = self->_blobVersion;
-    *(a3 + 140) |= 8u;
+    *(to + 13) = self->_blobVersion;
+    *(to + 140) |= 8u;
   }
 
   if ([(VCMediaNegotiationBlob *)self multiwayVideoStreamsCount])
   {
-    [a3 clearMultiwayVideoStreams];
-    v13 = [(VCMediaNegotiationBlob *)self multiwayVideoStreamsCount];
-    if (v13)
+    [to clearMultiwayVideoStreams];
+    multiwayVideoStreamsCount = [(VCMediaNegotiationBlob *)self multiwayVideoStreamsCount];
+    if (multiwayVideoStreamsCount)
     {
-      v14 = v13;
+      v14 = multiwayVideoStreamsCount;
       for (k = 0; k != v14; ++k)
       {
-        [a3 addMultiwayVideoStream:{-[VCMediaNegotiationBlob multiwayVideoStreamAtIndex:](self, "multiwayVideoStreamAtIndex:", k)}];
+        [to addMultiwayVideoStream:{-[VCMediaNegotiationBlob multiwayVideoStreamAtIndex:](self, "multiwayVideoStreamAtIndex:", k)}];
       }
     }
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 20) = self->_mediaControlInfoVersion;
-    *(a3 + 140) |= 0x10u;
+    *(to + 20) = self->_mediaControlInfoVersion;
+    *(to + 140) |= 0x10u;
   }
 
   if (self->_faceTimeSettings)
   {
-    [a3 setFaceTimeSettings:?];
+    [to setFaceTimeSettings:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_accessNetworkType;
-    *(a3 + 140) |= 2u;
+    *(to + 4) = self->_accessNetworkType;
+    *(to + 140) |= 2u;
   }
 
   if (self->_encryptionSettings)
   {
 
-    [a3 setEncryptionSettings:?];
+    [to setEncryptionSettings:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -740,13 +740,13 @@
     *(v5 + 140) |= 0x40u;
   }
 
-  *(v6 + 24) = [(VCMediaNegotiationBlobAudioSettings *)self->_audioSettings copyWithZone:a3];
-  *(v6 + 128) = [(VCMediaNegotiationBlobVideoSettings *)self->_videoSettings copyWithZone:a3];
+  *(v6 + 24) = [(VCMediaNegotiationBlobAudioSettings *)self->_audioSettings copyWithZone:zone];
+  *(v6 + 128) = [(VCMediaNegotiationBlobVideoSettings *)self->_videoSettings copyWithZone:zone];
 
-  *(v6 + 112) = [(VCMediaNegotiationBlobVideoSettings *)self->_screenSettings copyWithZone:a3];
-  *(v6 + 120) = [(NSString *)self->_userAgent copyWithZone:a3];
+  *(v6 + 112) = [(VCMediaNegotiationBlobVideoSettings *)self->_screenSettings copyWithZone:zone];
+  *(v6 + 120) = [(NSString *)self->_userAgent copyWithZone:zone];
 
-  *(v6 + 40) = [(NSString *)self->_basebandCodec copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_basebandCodec copyWithZone:zone];
   if ((*&self->_has & 4) != 0)
   {
     *(v6 + 48) = self->_basebandCodecSampleRate;
@@ -772,7 +772,7 @@
           objc_enumerationMutation(bandwidthSettings);
         }
 
-        v13 = [*(*(&v39 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v39 + 1) + 8 * i) copyWithZone:zone];
         [v6 addBandwidthSettings:v13];
       }
 
@@ -782,7 +782,7 @@
     while (v10);
   }
 
-  *(v6 + 56) = [(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings copyWithZone:a3];
+  *(v6 + 56) = [(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings copyWithZone:zone];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -802,7 +802,7 @@
           objc_enumerationMutation(multiwayAudioStreams);
         }
 
-        v19 = [*(*(&v34 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v34 + 1) + 8 * j) copyWithZone:zone];
         [v6 addMultiwayAudioStreams:v19];
       }
 
@@ -812,7 +812,7 @@
     while (v16);
   }
 
-  *(v6 + 88) = [(VCMediaNegotiationBlobMomentsSettings *)self->_momentsSettings copyWithZone:a3];
+  *(v6 + 88) = [(VCMediaNegotiationBlobMomentsSettings *)self->_momentsSettings copyWithZone:zone];
   v20 = self->_has;
   if (v20)
   {
@@ -846,7 +846,7 @@
           objc_enumerationMutation(multiwayVideoStreams);
         }
 
-        v26 = [*(*(&v29 + 1) + 8 * k) copyWithZone:a3];
+        v26 = [*(*(&v29 + 1) + 8 * k) copyWithZone:zone];
         [v6 addMultiwayVideoStream:v26];
       }
 
@@ -862,20 +862,20 @@
     *(v6 + 140) |= 0x10u;
   }
 
-  *(v6 + 72) = [(VCMediaNegotiationFaceTimeSettings *)self->_faceTimeSettings copyWithZone:a3];
+  *(v6 + 72) = [(VCMediaNegotiationFaceTimeSettings *)self->_faceTimeSettings copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 16) = self->_accessNetworkType;
     *(v6 + 140) |= 2u;
   }
 
-  *(v6 + 64) = [(VCMediaNegotiationBlobMediaEncryptionSettings *)self->_encryptionSettings copyWithZone:a3];
+  *(v6 + 64) = [(VCMediaNegotiationBlobMediaEncryptionSettings *)self->_encryptionSettings copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -883,43 +883,43 @@
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(a3 + 140) & 0x20) == 0)
+    if ((*(equal + 140) & 0x20) == 0)
     {
       goto LABEL_69;
     }
 
     if (self->_allowDynamicMaxBitrate)
     {
-      if ((*(a3 + 136) & 1) == 0)
+      if ((*(equal + 136) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(a3 + 136))
+    else if (*(equal + 136))
     {
       goto LABEL_69;
     }
   }
 
-  else if ((*(a3 + 140) & 0x20) != 0)
+  else if ((*(equal + 140) & 0x20) != 0)
   {
     goto LABEL_69;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(a3 + 140) & 0x40) != 0)
+    if ((*(equal + 140) & 0x40) != 0)
     {
       if (self->_allowsContentsChangeWithAspectPreservation)
       {
-        if ((*(a3 + 137) & 1) == 0)
+        if ((*(equal + 137) & 1) == 0)
         {
           goto LABEL_69;
         }
       }
 
-      else if (*(a3 + 137))
+      else if (*(equal + 137))
       {
         goto LABEL_69;
       }
@@ -932,81 +932,81 @@ LABEL_69:
     return v5;
   }
 
-  if ((*(a3 + 140) & 0x40) != 0)
+  if ((*(equal + 140) & 0x40) != 0)
   {
     goto LABEL_69;
   }
 
 LABEL_6:
   audioSettings = self->_audioSettings;
-  if (!(audioSettings | *(a3 + 3)) || (v5 = [(VCMediaNegotiationBlobAudioSettings *)audioSettings isEqual:?]) != 0)
+  if (!(audioSettings | *(equal + 3)) || (v5 = [(VCMediaNegotiationBlobAudioSettings *)audioSettings isEqual:?]) != 0)
   {
     videoSettings = self->_videoSettings;
-    if (!(videoSettings | *(a3 + 16)) || (v5 = [(VCMediaNegotiationBlobVideoSettings *)videoSettings isEqual:?]) != 0)
+    if (!(videoSettings | *(equal + 16)) || (v5 = [(VCMediaNegotiationBlobVideoSettings *)videoSettings isEqual:?]) != 0)
     {
       screenSettings = self->_screenSettings;
-      if (!(screenSettings | *(a3 + 14)) || (v5 = [(VCMediaNegotiationBlobVideoSettings *)screenSettings isEqual:?]) != 0)
+      if (!(screenSettings | *(equal + 14)) || (v5 = [(VCMediaNegotiationBlobVideoSettings *)screenSettings isEqual:?]) != 0)
       {
         userAgent = self->_userAgent;
-        if (!(userAgent | *(a3 + 15)) || (v5 = [(NSString *)userAgent isEqual:?]) != 0)
+        if (!(userAgent | *(equal + 15)) || (v5 = [(NSString *)userAgent isEqual:?]) != 0)
         {
           basebandCodec = self->_basebandCodec;
-          if (!(basebandCodec | *(a3 + 5)) || (v5 = [(NSString *)basebandCodec isEqual:?]) != 0)
+          if (!(basebandCodec | *(equal + 5)) || (v5 = [(NSString *)basebandCodec isEqual:?]) != 0)
           {
             if ((*&self->_has & 4) != 0)
             {
-              if ((*(a3 + 140) & 4) == 0 || self->_basebandCodecSampleRate != *(a3 + 12))
+              if ((*(equal + 140) & 4) == 0 || self->_basebandCodecSampleRate != *(equal + 12))
               {
                 goto LABEL_69;
               }
             }
 
-            else if ((*(a3 + 140) & 4) != 0)
+            else if ((*(equal + 140) & 4) != 0)
             {
               goto LABEL_69;
             }
 
             bandwidthSettings = self->_bandwidthSettings;
-            if (!(bandwidthSettings | *(a3 + 4)) || (v5 = [(NSMutableArray *)bandwidthSettings isEqual:?]) != 0)
+            if (!(bandwidthSettings | *(equal + 4)) || (v5 = [(NSMutableArray *)bandwidthSettings isEqual:?]) != 0)
             {
               captionsSettings = self->_captionsSettings;
-              if (!(captionsSettings | *(a3 + 7)) || (v5 = [(VCMediaNegotiationBlobCaptionsSettings *)captionsSettings isEqual:?]) != 0)
+              if (!(captionsSettings | *(equal + 7)) || (v5 = [(VCMediaNegotiationBlobCaptionsSettings *)captionsSettings isEqual:?]) != 0)
               {
                 multiwayAudioStreams = self->_multiwayAudioStreams;
-                if (!(multiwayAudioStreams | *(a3 + 12)) || (v5 = [(NSMutableArray *)multiwayAudioStreams isEqual:?]) != 0)
+                if (!(multiwayAudioStreams | *(equal + 12)) || (v5 = [(NSMutableArray *)multiwayAudioStreams isEqual:?]) != 0)
                 {
                   momentsSettings = self->_momentsSettings;
-                  if (!(momentsSettings | *(a3 + 11)) || (v5 = [(VCMediaNegotiationBlobMomentsSettings *)momentsSettings isEqual:?]) != 0)
+                  if (!(momentsSettings | *(equal + 11)) || (v5 = [(VCMediaNegotiationBlobMomentsSettings *)momentsSettings isEqual:?]) != 0)
                   {
                     has = self->_has;
                     if (has)
                     {
-                      if ((*(a3 + 140) & 1) == 0 || self->_ntpTime != *(a3 + 1))
+                      if ((*(equal + 140) & 1) == 0 || self->_ntpTime != *(equal + 1))
                       {
                         goto LABEL_69;
                       }
                     }
 
-                    else if (*(a3 + 140))
+                    else if (*(equal + 140))
                     {
                       goto LABEL_69;
                     }
 
                     if ((*&self->_has & 8) != 0)
                     {
-                      if ((*(a3 + 140) & 8) == 0 || self->_blobVersion != *(a3 + 13))
+                      if ((*(equal + 140) & 8) == 0 || self->_blobVersion != *(equal + 13))
                       {
                         goto LABEL_69;
                       }
                     }
 
-                    else if ((*(a3 + 140) & 8) != 0)
+                    else if ((*(equal + 140) & 8) != 0)
                     {
                       goto LABEL_69;
                     }
 
                     multiwayVideoStreams = self->_multiwayVideoStreams;
-                    if (multiwayVideoStreams | *(a3 + 13))
+                    if (multiwayVideoStreams | *(equal + 13))
                     {
                       v5 = [(NSMutableArray *)multiwayVideoStreams isEqual:?];
                       if (!v5)
@@ -1019,19 +1019,19 @@ LABEL_6:
 
                     if ((has & 0x10) != 0)
                     {
-                      if ((*(a3 + 140) & 0x10) == 0 || self->_mediaControlInfoVersion != *(a3 + 20))
+                      if ((*(equal + 140) & 0x10) == 0 || self->_mediaControlInfoVersion != *(equal + 20))
                       {
                         goto LABEL_69;
                       }
                     }
 
-                    else if ((*(a3 + 140) & 0x10) != 0)
+                    else if ((*(equal + 140) & 0x10) != 0)
                     {
                       goto LABEL_69;
                     }
 
                     faceTimeSettings = self->_faceTimeSettings;
-                    if (faceTimeSettings | *(a3 + 9))
+                    if (faceTimeSettings | *(equal + 9))
                     {
                       v5 = [(VCMediaNegotiationFaceTimeSettings *)faceTimeSettings isEqual:?];
                       if (!v5)
@@ -1044,19 +1044,19 @@ LABEL_6:
 
                     if ((has & 2) != 0)
                     {
-                      if ((*(a3 + 140) & 2) == 0 || self->_accessNetworkType != *(a3 + 4))
+                      if ((*(equal + 140) & 2) == 0 || self->_accessNetworkType != *(equal + 4))
                       {
                         goto LABEL_69;
                       }
                     }
 
-                    else if ((*(a3 + 140) & 2) != 0)
+                    else if ((*(equal + 140) & 2) != 0)
                     {
                       goto LABEL_69;
                     }
 
                     encryptionSettings = self->_encryptionSettings;
-                    if (encryptionSettings | *(a3 + 8))
+                    if (encryptionSettings | *(equal + 8))
                     {
 
                       LOBYTE(v5) = [(VCMediaNegotiationBlobMediaEncryptionSettings *)encryptionSettings isEqual:?];
@@ -1169,25 +1169,25 @@ LABEL_14:
   return v20 ^ v21 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(VCMediaNegotiationBlobMediaEncryptionSettings *)self->_encryptionSettings hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = *(a3 + 140);
+  v5 = *(from + 140);
   if ((v5 & 0x20) != 0)
   {
-    self->_allowDynamicMaxBitrate = *(a3 + 136);
+    self->_allowDynamicMaxBitrate = *(from + 136);
     *&self->_has |= 0x20u;
-    v5 = *(a3 + 140);
+    v5 = *(from + 140);
   }
 
   if ((v5 & 0x40) != 0)
   {
-    self->_allowsContentsChangeWithAspectPreservation = *(a3 + 137);
+    self->_allowsContentsChangeWithAspectPreservation = *(from + 137);
     *&self->_has |= 0x40u;
   }
 
   audioSettings = self->_audioSettings;
-  v7 = *(a3 + 3);
+  v7 = *(from + 3);
   if (audioSettings)
   {
     if (v7)
@@ -1202,7 +1202,7 @@ LABEL_14:
   }
 
   videoSettings = self->_videoSettings;
-  v9 = *(a3 + 16);
+  v9 = *(from + 16);
   if (videoSettings)
   {
     if (v9)
@@ -1217,7 +1217,7 @@ LABEL_14:
   }
 
   screenSettings = self->_screenSettings;
-  v11 = *(a3 + 14);
+  v11 = *(from + 14);
   if (screenSettings)
   {
     if (v11)
@@ -1231,19 +1231,19 @@ LABEL_14:
     [(VCMediaNegotiationBlob *)self setScreenSettings:?];
   }
 
-  if (*(a3 + 15))
+  if (*(from + 15))
   {
     [(VCMediaNegotiationBlob *)self setUserAgent:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(VCMediaNegotiationBlob *)self setBasebandCodec:?];
   }
 
-  if ((*(a3 + 140) & 4) != 0)
+  if ((*(from + 140) & 4) != 0)
   {
-    self->_basebandCodecSampleRate = *(a3 + 12);
+    self->_basebandCodecSampleRate = *(from + 12);
     *&self->_has |= 4u;
   }
 
@@ -1251,7 +1251,7 @@ LABEL_14:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v12 = *(a3 + 4);
+  v12 = *(from + 4);
   v13 = [v12 countByEnumeratingWithState:&v47 objects:v46 count:16];
   if (v13)
   {
@@ -1276,7 +1276,7 @@ LABEL_14:
   }
 
   captionsSettings = self->_captionsSettings;
-  v18 = *(a3 + 7);
+  v18 = *(from + 7);
   if (captionsSettings)
   {
     if (v18)
@@ -1294,7 +1294,7 @@ LABEL_14:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v19 = *(a3 + 12);
+  v19 = *(from + 12);
   v20 = [v19 countByEnumeratingWithState:&v42 objects:v41 count:16];
   if (v20)
   {
@@ -1319,7 +1319,7 @@ LABEL_14:
   }
 
   momentsSettings = self->_momentsSettings;
-  v25 = *(a3 + 11);
+  v25 = *(from + 11);
   if (momentsSettings)
   {
     if (v25)
@@ -1333,17 +1333,17 @@ LABEL_14:
     [(VCMediaNegotiationBlob *)self setMomentsSettings:?];
   }
 
-  v26 = *(a3 + 140);
+  v26 = *(from + 140);
   if (v26)
   {
-    self->_ntpTime = *(a3 + 1);
+    self->_ntpTime = *(from + 1);
     *&self->_has |= 1u;
-    v26 = *(a3 + 140);
+    v26 = *(from + 140);
   }
 
   if ((v26 & 8) != 0)
   {
-    self->_blobVersion = *(a3 + 13);
+    self->_blobVersion = *(from + 13);
     *&self->_has |= 8u;
   }
 
@@ -1351,7 +1351,7 @@ LABEL_14:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v27 = *(a3 + 13);
+  v27 = *(from + 13);
   v28 = [v27 countByEnumeratingWithState:&v37 objects:v36 count:16];
   if (v28)
   {
@@ -1375,14 +1375,14 @@ LABEL_14:
     while (v29);
   }
 
-  if ((*(a3 + 140) & 0x10) != 0)
+  if ((*(from + 140) & 0x10) != 0)
   {
-    self->_mediaControlInfoVersion = *(a3 + 20);
+    self->_mediaControlInfoVersion = *(from + 20);
     *&self->_has |= 0x10u;
   }
 
   faceTimeSettings = self->_faceTimeSettings;
-  v33 = *(a3 + 9);
+  v33 = *(from + 9);
   if (faceTimeSettings)
   {
     if (v33)
@@ -1396,14 +1396,14 @@ LABEL_14:
     [(VCMediaNegotiationBlob *)self setFaceTimeSettings:?];
   }
 
-  if ((*(a3 + 140) & 2) != 0)
+  if ((*(from + 140) & 2) != 0)
   {
-    self->_accessNetworkType = *(a3 + 4);
+    self->_accessNetworkType = *(from + 4);
     *&self->_has |= 2u;
   }
 
   encryptionSettings = self->_encryptionSettings;
-  v35 = *(a3 + 8);
+  v35 = *(from + 8);
   if (encryptionSettings)
   {
     if (v35)
@@ -1418,22 +1418,22 @@ LABEL_14:
   }
 }
 
-- (void)formatBandwidthConfig:(int)a3 maxBanxwidth:(unsigned int)a4 bandwidthString:(id)a5
+- (void)formatBandwidthConfig:(int)config maxBanxwidth:(unsigned int)banxwidth bandwidthString:(id)string
 {
-  v6 = *&a4;
-  if (a3 <= 1023)
+  v6 = *&banxwidth;
+  if (config <= 1023)
   {
-    if (a3 <= 15)
+    if (config <= 15)
     {
-      if (a3 <= 1)
+      if (config <= 1)
       {
-        if (!a3)
+        if (!config)
         {
           v7 = @"mode_Invalid";
           goto LABEL_55;
         }
 
-        if (a3 == 1)
+        if (config == 1)
         {
           v7 = @"mode_Default_Wifi";
           goto LABEL_55;
@@ -1442,7 +1442,7 @@ LABEL_14:
 
       else
       {
-        switch(a3)
+        switch(config)
         {
           case 2:
             v7 = @"mode_Default_LTE";
@@ -1457,9 +1457,9 @@ LABEL_14:
       }
     }
 
-    else if (a3 > 127)
+    else if (config > 127)
     {
-      switch(a3)
+      switch(config)
       {
         case 128:
           v7 = @"mode_Screen_3G";
@@ -1475,7 +1475,7 @@ LABEL_14:
 
     else
     {
-      switch(a3)
+      switch(config)
       {
         case 16:
           v7 = @"mode_Screen_Wifi";
@@ -1490,11 +1490,11 @@ LABEL_14:
     }
   }
 
-  else if (a3 >= 0x10000)
+  else if (config >= 0x10000)
   {
-    if (a3 >= 0x80000)
+    if (config >= 0x80000)
     {
-      switch(a3)
+      switch(config)
       {
         case 0x80000:
           v7 = @"mode_ImmersiveVideo_WiFi";
@@ -1510,7 +1510,7 @@ LABEL_14:
 
     else
     {
-      switch(a3)
+      switch(config)
       {
         case 0x10000:
           v7 = @"mode_RemoteCamera_USB";
@@ -1525,9 +1525,9 @@ LABEL_14:
     }
   }
 
-  else if (a3 >= 0x2000)
+  else if (config >= 0x2000)
   {
-    switch(a3)
+    switch(config)
     {
       case 0x2000:
         v7 = @"mode_iPadCompanion_USB";
@@ -1543,7 +1543,7 @@ LABEL_14:
 
   else
   {
-    switch(a3)
+    switch(config)
     {
       case 1024:
         v7 = @"mode_Screen_2G";
@@ -1557,16 +1557,16 @@ LABEL_14:
     }
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&config];
 LABEL_55:
   v8 = [(__CFString *)v7 componentsSeparatedByString:@"_"];
   if ([v8 count] == 3)
   {
-    [a5 appendFormat:@" %@(%@)=%u, ", objc_msgSend(v8, "objectAtIndex:", 1), objc_msgSend(v8, "objectAtIndex:", 2), v6];
+    [string appendFormat:@" %@(%@)=%u, ", objc_msgSend(v8, "objectAtIndex:", 1), objc_msgSend(v8, "objectAtIndex:", 2), v6];
   }
 }
 
-- (void)printBandwidthSettingsWithLogFile:(void *)a3
+- (void)printBandwidthSettingsWithLogFile:(void *)file
 {
   v51 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"Bandwidth Settings:"];
@@ -1590,10 +1590,10 @@ LABEL_55:
         }
 
         v10 = *(*(&v47 + 1) + 8 * i);
-        v11 = [v10 configuration];
-        if (v11)
+        configuration = [v10 configuration];
+        if (configuration)
         {
-          v12 = v11;
+          v12 = configuration;
           v13 = 1;
           do
           {
@@ -1636,10 +1636,10 @@ LABEL_55:
         }
 
         v19 = *(*(&v42 + 1) + 8 * j);
-        v20 = [v19 configurationExtension];
-        if (v20)
+        configurationExtension = [v19 configurationExtension];
+        if (configurationExtension)
         {
-          v21 = v20;
+          v21 = configurationExtension;
           v22 = 1;
           do
           {
@@ -1681,10 +1681,10 @@ LABEL_55:
     }
   }
 
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - %s\n", v24, v25, v26, v27, v28, v29, v23);
+  VRLogfilePrintWithTimestamp(file, "Media Blob - %s\n", v24, v25, v26, v27, v28, v29, v23);
 }
 
-- (void)printCaptionsSettingsWithLogFile:(void *)a3
+- (void)printCaptionsSettingsWithLogFile:(void *)file
 {
   v36 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() > 6)
@@ -1693,7 +1693,7 @@ LABEL_55:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings canDisplayCaptions];
+      canDisplayCaptions = [(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings canDisplayCaptions];
       *buf = 136315906;
       v29 = v5;
       v30 = 2080;
@@ -1701,13 +1701,13 @@ LABEL_55:
       v32 = 1024;
       v33 = 70;
       v34 = 1024;
-      LODWORD(v35) = v7;
+      LODWORD(v35) = canDisplayCaptions;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob - Captions Settings: canDisplayCaptions=%d", buf, 0x22u);
     }
   }
 
-  v8 = [(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings canDisplayCaptions];
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - Captions Settings: canDisplayCaptions=%d\n", v9, v10, v11, v12, v13, v14, v8);
+  canDisplayCaptions2 = [(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings canDisplayCaptions];
+  VRLogfilePrintWithTimestamp(file, "Media Blob - Captions Settings: canDisplayCaptions=%d\n", v9, v10, v11, v12, v13, v14, canDisplayCaptions2);
   if ([(VCMediaNegotiationBlobCaptionsSettings *)self->_captionsSettings hasSenderLanguages])
   {
     v15 = [MEMORY[0x1E696AD60] stringWithFormat:@"Sender languages:"];
@@ -1753,11 +1753,11 @@ LABEL_55:
       }
     }
 
-    VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v20, v21, v22, v23, v24, v25, v19);
+    VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v20, v21, v22, v23, v24, v25, v19);
   }
 }
 
-- (void)printMomentsSettingsWithLogFile:(void *)a3
+- (void)printMomentsSettingsWithLogFile:(void *)file
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"Moments Settings:"];
@@ -1876,10 +1876,10 @@ LABEL_14:
     }
   }
 
-  VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v15, v16, v17, v18, v19, v20, v14);
+  VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v15, v16, v17, v18, v19, v20, v14);
 }
 
-- (void)printMultiwayAudioStreamsWithLogFile:(void *)a3
+- (void)printMultiwayAudioStreamsWithLogFile:(void *)file
 {
   v33 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() > 6)
@@ -1902,7 +1902,7 @@ LABEL_14:
   }
 
   v8 = [(NSMutableArray *)self->_multiwayAudioStreams count];
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - Multiway Audio: count=%d\n", v9, v10, v11, v12, v13, v14, v8);
+  VRLogfilePrintWithTimestamp(file, "Media Blob - Multiway Audio: count=%d\n", v9, v10, v11, v12, v13, v14, v8);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -1923,7 +1923,7 @@ LABEL_14:
           objc_enumerationMutation(multiwayAudioStreams);
         }
 
-        [*(*(&v21 + 1) + 8 * v19++) printWithLogFile:a3];
+        [*(*(&v21 + 1) + 8 * v19++) printWithLogFile:file];
       }
 
       while (v17 != v19);
@@ -1934,7 +1934,7 @@ LABEL_14:
   }
 }
 
-- (void)printMultiwayVideoStreamsWithLogFile:(void *)a3
+- (void)printMultiwayVideoStreamsWithLogFile:(void *)file
 {
   v33 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() > 6)
@@ -1957,7 +1957,7 @@ LABEL_14:
   }
 
   v8 = [(NSMutableArray *)self->_multiwayVideoStreams count];
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - Multiway Video: count=%d\n", v9, v10, v11, v12, v13, v14, v8);
+  VRLogfilePrintWithTimestamp(file, "Media Blob - Multiway Video: count=%d\n", v9, v10, v11, v12, v13, v14, v8);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -1978,7 +1978,7 @@ LABEL_14:
           objc_enumerationMutation(multiwayVideoStreams);
         }
 
-        [*(*(&v21 + 1) + 8 * v19++) printWithLogFile:a3];
+        [*(*(&v21 + 1) + 8 * v19++) printWithLogFile:file];
       }
 
       while (v17 != v19);
@@ -1989,10 +1989,10 @@ LABEL_14:
   }
 }
 
-- (void)printWithTitle:(id)a3 blobSize:(unsigned int)a4 logFile:(void *)a5
+- (void)printWithTitle:(id)title blobSize:(unsigned int)size logFile:(void *)file
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@ (size=%u): UserAgent=%s", a3, *&a4, -[NSString UTF8String](self->_userAgent, "UTF8String")];
+  v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@ (size=%u): UserAgent=%s", title, *&size, -[NSString UTF8String](self->_userAgent, "UTF8String")];
   if ([(VCMediaNegotiationBlob *)self hasBasebandCodec])
   {
     [v7 appendFormat:@", basebandCodec=%@, basebandCodecSampleRate=%u", self->_basebandCodec, self->_basebandCodecSampleRate];
@@ -2021,51 +2021,51 @@ LABEL_14:
       v21 = 1024;
       v22 = 137;
       v23 = 2080;
-      v24 = [v7 UTF8String];
+      uTF8String = [v7 UTF8String];
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob - %s", buf, 0x26u);
     }
   }
 
-  v10 = [v7 UTF8String];
-  VRLogfilePrintWithTimestamp(a5, "Media Blob - %s\n", v11, v12, v13, v14, v15, v16, v10);
+  uTF8String2 = [v7 UTF8String];
+  VRLogfilePrintWithTimestamp(file, "Media Blob - %s\n", v11, v12, v13, v14, v15, v16, uTF8String2);
   if ([(VCMediaNegotiationBlob *)self hasAudioSettings])
   {
-    [(VCMediaNegotiationBlobAudioSettings *)self->_audioSettings printWithLogFile:a5];
+    [(VCMediaNegotiationBlobAudioSettings *)self->_audioSettings printWithLogFile:file];
   }
 
   if ([(VCMediaNegotiationBlob *)self hasVideoSettings])
   {
-    [(VCMediaNegotiationBlobVideoSettings *)self->_videoSettings printVideoWithLogFile:a5];
+    [(VCMediaNegotiationBlobVideoSettings *)self->_videoSettings printVideoWithLogFile:file];
   }
 
   if ([(VCMediaNegotiationBlob *)self hasScreenSettings])
   {
-    [(VCMediaNegotiationBlobVideoSettings *)self->_screenSettings printScreenWithLogFile:a5];
+    [(VCMediaNegotiationBlobVideoSettings *)self->_screenSettings printScreenWithLogFile:file];
   }
 
   if ([(NSMutableArray *)self->_bandwidthSettings count])
   {
-    [(VCMediaNegotiationBlob *)self printBandwidthSettingsWithLogFile:a5];
+    [(VCMediaNegotiationBlob *)self printBandwidthSettingsWithLogFile:file];
   }
 
   if ([(VCMediaNegotiationBlob *)self hasCaptionsSettings])
   {
-    [(VCMediaNegotiationBlob *)self printCaptionsSettingsWithLogFile:a5];
+    [(VCMediaNegotiationBlob *)self printCaptionsSettingsWithLogFile:file];
   }
 
   if ([(VCMediaNegotiationBlob *)self hasMomentsSettings])
   {
-    [(VCMediaNegotiationBlob *)self printMomentsSettingsWithLogFile:a5];
+    [(VCMediaNegotiationBlob *)self printMomentsSettingsWithLogFile:file];
   }
 
   if ([(NSMutableArray *)self->_multiwayAudioStreams count])
   {
-    [(VCMediaNegotiationBlob *)self printMultiwayAudioStreamsWithLogFile:a5];
+    [(VCMediaNegotiationBlob *)self printMultiwayAudioStreamsWithLogFile:file];
   }
 
   if ([(NSMutableArray *)self->_multiwayVideoStreams count])
   {
-    [(VCMediaNegotiationBlob *)self printMultiwayVideoStreamsWithLogFile:a5];
+    [(VCMediaNegotiationBlob *)self printMultiwayVideoStreamsWithLogFile:file];
   }
 }
 

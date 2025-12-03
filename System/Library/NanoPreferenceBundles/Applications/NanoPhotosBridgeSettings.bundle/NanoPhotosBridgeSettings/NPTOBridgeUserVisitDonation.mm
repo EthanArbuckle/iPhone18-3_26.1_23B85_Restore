@@ -11,7 +11,7 @@
   v3 = objc_opt_self();
   v5 = sub_2E54(v3, @"PANE_TITLE");
   v4 = sub_2F3C();
-  sub_2D5C(a1, v5, &__NSArray0__struct, v4);
+  sub_2D5C(self, v5, &__NSArray0__struct, v4);
 }
 
 + (void)donateUserVisitForSelectedPhotoAlbumSection
@@ -26,7 +26,7 @@
   v8 = sub_2F3C();
   v9 = [v8 stringByAppendingString:@"&path=SELECTED_PHOTO_ALBUM_ID"];
 
-  sub_2D5C(a1, v4, v7, v9);
+  sub_2D5C(self, v4, v7, v9);
 }
 
 + (void)donateUserVisitForPhotosLimitSection
@@ -41,7 +41,7 @@
   v8 = sub_2F3C();
   v9 = [v8 stringByAppendingString:@"&path=PHOTOS_LIMIT_ID"];
 
-  sub_2D5C(a1, v4, v7, v9);
+  sub_2D5C(self, v4, v7, v9);
 }
 
 @end

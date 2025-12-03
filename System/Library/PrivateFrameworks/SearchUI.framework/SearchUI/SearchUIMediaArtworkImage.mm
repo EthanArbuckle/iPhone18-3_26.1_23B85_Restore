@@ -1,62 +1,62 @@
 @interface SearchUIMediaArtworkImage
-- (SearchUIMediaArtworkImage)initWithSFImage:(id)a3;
-- (SearchUIMediaArtworkImage)initWithSpotlightIdentifier:(id)a3;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (SearchUIMediaArtworkImage)initWithSFImage:(id)image;
+- (SearchUIMediaArtworkImage)initWithSpotlightIdentifier:(id)identifier;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUIMediaArtworkImage
 
-- (SearchUIMediaArtworkImage)initWithSFImage:(id)a3
+- (SearchUIMediaArtworkImage)initWithSFImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v10.receiver = self;
   v10.super_class = SearchUIMediaArtworkImage;
-  v5 = [(SearchUIImage *)&v10 initWithSFImage:v4];
+  v5 = [(SearchUIImage *)&v10 initWithSFImage:imageCopy];
   if (v5)
   {
-    v6 = [v4 persistentID];
-    [(SearchUIMediaArtworkImage *)v5 setPersistentID:v6];
+    persistentID = [imageCopy persistentID];
+    [(SearchUIMediaArtworkImage *)v5 setPersistentID:persistentID];
 
-    v7 = [v4 universalLibraryID];
-    [(SearchUIMediaArtworkImage *)v5 setUniversalLibraryID:v7];
+    universalLibraryID = [imageCopy universalLibraryID];
+    [(SearchUIMediaArtworkImage *)v5 setUniversalLibraryID:universalLibraryID];
 
-    v8 = [v4 spotlightIdentifier];
-    [(SearchUIMediaArtworkImage *)v5 setSpotlightIdentifier:v8];
+    spotlightIdentifier = [imageCopy spotlightIdentifier];
+    [(SearchUIMediaArtworkImage *)v5 setSpotlightIdentifier:spotlightIdentifier];
 
-    -[SearchUIMediaArtworkImage setMediaEntityType:](v5, "setMediaEntityType:", +[SearchUIMediaPlayerUtilities MPMediaEntityTypeForSFMediaEntityType:](SearchUIMediaPlayerUtilities, "MPMediaEntityTypeForSFMediaEntityType:", [v4 mediaEntityType]));
+    -[SearchUIMediaArtworkImage setMediaEntityType:](v5, "setMediaEntityType:", +[SearchUIMediaPlayerUtilities MPMediaEntityTypeForSFMediaEntityType:](SearchUIMediaPlayerUtilities, "MPMediaEntityTypeForSFMediaEntityType:", [imageCopy mediaEntityType]));
     [(SearchUIImage *)v5 setSupportsFastPathShadow:1];
   }
 
   return v5;
 }
 
-- (SearchUIMediaArtworkImage)initWithSpotlightIdentifier:(id)a3
+- (SearchUIMediaArtworkImage)initWithSpotlightIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = SearchUIMediaArtworkImage;
   v5 = [(SearchUIMediaArtworkImage *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchUIMediaArtworkImage *)v5 setSpotlightIdentifier:v4];
+    [(SearchUIMediaArtworkImage *)v5 setSpotlightIdentifier:identifierCopy];
     [(SearchUIImage *)v6 setSupportsFastPathShadow:1];
   }
 
   return v6;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__SearchUIMediaArtworkImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke;
   v9[3] = &unk_1E85B28D8;
-  v11 = a3;
+  scaleCopy = scale;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v9];
 }
 

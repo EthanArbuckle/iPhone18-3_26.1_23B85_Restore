@@ -1,47 +1,47 @@
 @interface CNSharedProfileOnboardingController
 + (id)descriptorForRequiredKeys;
 + (id)log;
-+ (id)sharingSettingsViewControllerForNicknameContact:(id)a3 meContact:(id)a4 mode:(int64_t)a5 contactStore:(id)a6;
++ (id)sharingSettingsViewControllerForNicknameContact:(id)contact meContact:(id)meContact mode:(int64_t)mode contactStore:(id)store;
 - (BOOL)accountCanCreateSNaP;
-- (BOOL)accountCanCreateSNaPWithShouldShowErrorAlert:(BOOL)a3 fromViewController:(id)a4;
+- (BOOL)accountCanCreateSNaPWithShouldShowErrorAlert:(BOOL)alert fromViewController:(id)controller;
 - (BOOL)alwaysShowSNaPOnboarding;
-- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)a3;
+- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)numbers;
 - (BOOL)didSkipPosterSetup;
 - (BOOL)hasCompletedOnboarding;
 - (BOOL)isPhotosReadyForOnboarding;
 - (BOOL)multiplePhoneNumbersTiedToAppleID;
 - (BOOL)shouldShowOnboarding;
-- (BOOL)shouldShowOnboardingForSettingsWithNicknameContact:(id)a3 meContact:(id)a4;
-- (CNSharedProfileOnboardingController)initWithContactStore:(id)a3;
-- (CNSharedProfileOnboardingController)initWithContactStore:(id)a3 stateController:(id)a4;
+- (BOOL)shouldShowOnboardingForSettingsWithNicknameContact:(id)contact meContact:(id)meContact;
+- (CNSharedProfileOnboardingController)initWithContactStore:(id)store;
+- (CNSharedProfileOnboardingController)initWithContactStore:(id)store stateController:(id)controller;
 - (CNSharedProfileOnboardingControllerDelegate)delegate;
 - (id)meContact;
 - (id)meOrPrimaryAccountContact;
 - (int64_t)lastShownOnboardingVersion;
-- (void)dismiss:(id)a3;
+- (void)dismiss:(id)dismiss;
 - (void)dismissOnboardingIfNeeded;
-- (void)onboardingFromFlowManager:(id)a3 didSelectSharingAudience:(unint64_t)a4;
-- (void)onboardingFromFlowManager:(id)a3 didUpdateSharingState:(BOOL)a4;
-- (void)onboardingFromFlowManager:(id)a3 didUpdateWithSharingResult:(id)a4;
-- (void)presentOnboardingFlowForNicknameContact:(id)a3 mode:(int64_t)a4 fromViewController:(id)a5;
-- (void)presentOnboardingFlowIfNeededForMode:(int64_t)a3 fromViewController:(id)a4;
-- (void)presentOnboardingFlowIfNeededForSettingsMode:(int64_t)a3 fromViewController:(id)a4 completion:(id)a5;
-- (void)presentSettingsForMode:(int64_t)a3 fromViewController:(id)a4;
-- (void)presentSettingsForNicknameContact:(id)a3 meContact:(id)a4 mode:(int64_t)a5 fromViewController:(id)a6;
-- (void)presentSettingsForNicknameContact:(id)a3 mode:(int64_t)a4 fromViewController:(id)a5;
-- (void)presentVisualIdentityEditorFromViewController:(id)a3;
-- (void)sender:(id)a3 dismissViewController:(id)a4;
-- (void)sender:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (void)sender:(id)a3 presentViewController:(id)a4;
-- (void)showMultiplePhoneNumbersAlertForNicknamesFromViewController:(id)a3;
-- (void)showiCloudNotSignedInAlertForNicknamesFromViewController:(id)a3;
-- (void)startOnboardingOrEditForMode:(int64_t)a3 fromViewController:(id)a4;
-- (void)startVisualIdentityOnboardingForMultipleDevicesFromViewController:(id)a3;
-- (void)updateNicknameWithAudience:(unint64_t)a3;
-- (void)updateNicknameWithSharingResult:(id)a3;
-- (void)updateNicknameWithSharingState:(BOOL)a3;
-- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)a3;
-- (void)writeToDefaultsCompletedOnboarding:(BOOL)a3;
+- (void)onboardingFromFlowManager:(id)manager didSelectSharingAudience:(unint64_t)audience;
+- (void)onboardingFromFlowManager:(id)manager didUpdateSharingState:(BOOL)state;
+- (void)onboardingFromFlowManager:(id)manager didUpdateWithSharingResult:(id)result;
+- (void)presentOnboardingFlowForNicknameContact:(id)contact mode:(int64_t)mode fromViewController:(id)controller;
+- (void)presentOnboardingFlowIfNeededForMode:(int64_t)mode fromViewController:(id)controller;
+- (void)presentOnboardingFlowIfNeededForSettingsMode:(int64_t)mode fromViewController:(id)controller completion:(id)completion;
+- (void)presentSettingsForMode:(int64_t)mode fromViewController:(id)controller;
+- (void)presentSettingsForNicknameContact:(id)contact meContact:(id)meContact mode:(int64_t)mode fromViewController:(id)controller;
+- (void)presentSettingsForNicknameContact:(id)contact mode:(int64_t)mode fromViewController:(id)controller;
+- (void)presentVisualIdentityEditorFromViewController:(id)controller;
+- (void)sender:(id)sender dismissViewController:(id)controller;
+- (void)sender:(id)sender dismissViewController:(id)controller completionHandler:(id)handler;
+- (void)sender:(id)sender presentViewController:(id)controller;
+- (void)showMultiplePhoneNumbersAlertForNicknamesFromViewController:(id)controller;
+- (void)showiCloudNotSignedInAlertForNicknamesFromViewController:(id)controller;
+- (void)startOnboardingOrEditForMode:(int64_t)mode fromViewController:(id)controller;
+- (void)startVisualIdentityOnboardingForMultipleDevicesFromViewController:(id)controller;
+- (void)updateNicknameWithAudience:(unint64_t)audience;
+- (void)updateNicknameWithSharingResult:(id)result;
+- (void)updateNicknameWithSharingState:(BOOL)state;
+- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)editing;
+- (void)writeToDefaultsCompletedOnboarding:(BOOL)onboarding;
 - (void)writeToDefaultsLastShownOnboardingVersion;
 @end
 
@@ -49,10 +49,10 @@
 
 - (BOOL)shouldShowOnboarding
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 shouldShowOnboarding];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  shouldShowOnboarding = [stateController shouldShowOnboarding];
 
-  return v3;
+  return shouldShowOnboarding;
 }
 
 - (CNSharedProfileOnboardingControllerDelegate)delegate
@@ -62,33 +62,33 @@
   return WeakRetained;
 }
 
-- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)a3
+- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)editing
 {
-  v7 = a3;
-  v4 = [(CNSharedProfileOnboardingController *)self delegate];
+  editingCopy = editing;
+  delegate = [(CNSharedProfileOnboardingController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNSharedProfileOnboardingController *)self delegate];
-    [v6 onboardingControllerDidFinishSetup:self];
+    delegate2 = [(CNSharedProfileOnboardingController *)self delegate];
+    [delegate2 onboardingControllerDidFinishSetup:self];
   }
 
-  [(CNSharedProfileOnboardingController *)self dismiss:v7];
+  [(CNSharedProfileOnboardingController *)self dismiss:editingCopy];
 }
 
-- (void)sender:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (void)sender:(id)sender dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(CNSharedProfileOnboardingController *)self baseViewController];
+  handlerCopy = handler;
+  baseViewController = [(CNSharedProfileOnboardingController *)self baseViewController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__CNSharedProfileOnboardingController_sender_dismissViewController_completionHandler___block_invoke;
   v9[3] = &unk_1E74E6DD0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 dismissViewControllerAnimated:1 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [baseViewController dismissViewControllerAnimated:1 completion:v9];
 }
 
 uint64_t __86__CNSharedProfileOnboardingController_sender_dismissViewController_completionHandler___block_invoke(uint64_t a1)
@@ -99,9 +99,9 @@ uint64_t __86__CNSharedProfileOnboardingController_sender_dismissViewController_
   return v2();
 }
 
-- (void)sender:(id)a3 dismissViewController:(id)a4
+- (void)sender:(id)sender dismissViewController:(id)controller
 {
-  v5 = [(CNSharedProfileOnboardingController *)self baseViewController:a3];
+  v5 = [(CNSharedProfileOnboardingController *)self baseViewController:sender];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__CNSharedProfileOnboardingController_sender_dismissViewController___block_invoke;
@@ -110,29 +110,29 @@ uint64_t __86__CNSharedProfileOnboardingController_sender_dismissViewController_
   [v5 dismissViewControllerAnimated:1 completion:v6];
 }
 
-- (void)sender:(id)a3 presentViewController:(id)a4
+- (void)sender:(id)sender presentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(CNSharedProfileOnboardingController *)self baseViewController];
-  v7 = [v6 presentedViewController];
+  controllerCopy = controller;
+  baseViewController = [(CNSharedProfileOnboardingController *)self baseViewController];
+  presentedViewController = [baseViewController presentedViewController];
 
-  v8 = [(CNSharedProfileOnboardingController *)self baseViewController];
-  v9 = v8;
-  if (v7)
+  baseViewController2 = [(CNSharedProfileOnboardingController *)self baseViewController];
+  v9 = baseViewController2;
+  if (presentedViewController)
   {
-    v10 = [v8 presentedViewController];
+    presentedViewController2 = [baseViewController2 presentedViewController];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__CNSharedProfileOnboardingController_sender_presentViewController___block_invoke;
     v11[3] = &unk_1E74E77C0;
     v11[4] = self;
-    v12 = v5;
-    [v10 dismissViewControllerAnimated:0 completion:v11];
+    v12 = controllerCopy;
+    [presentedViewController2 dismissViewControllerAnimated:0 completion:v11];
   }
 
   else
   {
-    [v8 presentViewController:v5 animated:1 completion:0];
+    [baseViewController2 presentViewController:controllerCopy animated:1 completion:0];
   }
 }
 
@@ -142,23 +142,23 @@ void __68__CNSharedProfileOnboardingController_sender_presentViewController___bl
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)onboardingFromFlowManager:(id)a3 didSelectSharingAudience:(unint64_t)a4
+- (void)onboardingFromFlowManager:(id)manager didSelectSharingAudience:(unint64_t)audience
 {
-  [(CNSharedProfileOnboardingController *)self updateNicknameWithAudience:a4];
+  [(CNSharedProfileOnboardingController *)self updateNicknameWithAudience:audience];
 
   [(CNSharedProfileOnboardingController *)self writeToDefaultsCompletedOnboarding:1];
 }
 
-- (void)onboardingFromFlowManager:(id)a3 didUpdateSharingState:(BOOL)a4
+- (void)onboardingFromFlowManager:(id)manager didUpdateSharingState:(BOOL)state
 {
-  [(CNSharedProfileOnboardingController *)self updateNicknameWithSharingState:a4];
+  [(CNSharedProfileOnboardingController *)self updateNicknameWithSharingState:state];
 
   [(CNSharedProfileOnboardingController *)self writeToDefaultsCompletedOnboarding:1];
 }
 
-- (void)onboardingFromFlowManager:(id)a3 didUpdateWithSharingResult:(id)a4
+- (void)onboardingFromFlowManager:(id)manager didUpdateWithSharingResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,102 +166,102 @@ void __68__CNSharedProfileOnboardingController_sender_presentViewController___bl
     _os_log_impl(&dword_199A75000, v6, OS_LOG_TYPE_DEFAULT, "Onboarding controller did finish with sharing result", v7, 2u);
   }
 
-  [(CNSharedProfileOnboardingController *)self updateNicknameWithSharingResult:v5];
+  [(CNSharedProfileOnboardingController *)self updateNicknameWithSharingResult:resultCopy];
   [(CNSharedProfileOnboardingController *)self writeToDefaultsCompletedOnboarding:1];
   [(CNSharedProfileOnboardingController *)self setSetupFlowManager:0];
 }
 
-- (void)updateNicknameWithAudience:(unint64_t)a3
+- (void)updateNicknameWithAudience:(unint64_t)audience
 {
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v5 nicknameProvider];
-  [v4 setSharingAudience:a3];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  [nicknameProvider setSharingAudience:audience];
 }
 
-- (void)updateNicknameWithSharingState:(BOOL)a3
+- (void)updateNicknameWithSharingState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v5 nicknameProvider];
-  [v4 setSharingEnabled:v3];
+  stateCopy = state;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  [nicknameProvider setSharingEnabled:stateCopy];
 }
 
-- (void)updateNicknameWithSharingResult:(id)a3
+- (void)updateNicknameWithSharingResult:(id)result
 {
   v4 = MEMORY[0x1E69966E8];
-  v5 = a3;
-  v6 = [v4 currentEnvironment];
-  v7 = [v6 nicknameProvider];
-  [v7 setPersonalNicknameWithSharingResult:v5];
+  resultCopy = result;
+  currentEnvironment = [v4 currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  [nicknameProvider setPersonalNicknameWithSharingResult:resultCopy];
 
-  v8 = [(CNSharedProfileOnboardingController *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(CNSharedProfileOnboardingController *)self delegate];
+  LOBYTE(resultCopy) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (resultCopy)
   {
-    v9 = [(CNSharedProfileOnboardingController *)self delegate];
-    [v9 onboardingControllerDidFinishSetup:self];
+    delegate2 = [(CNSharedProfileOnboardingController *)self delegate];
+    [delegate2 onboardingControllerDidFinishSetup:self];
   }
 }
 
 - (BOOL)didSkipPosterSetup
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 didSkipPosterSetup];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  didSkipPosterSetup = [stateController didSkipPosterSetup];
 
-  return v3;
+  return didSkipPosterSetup;
 }
 
-- (void)writeToDefaultsCompletedOnboarding:(BOOL)a3
+- (void)writeToDefaultsCompletedOnboarding:(BOOL)onboarding
 {
-  v3 = a3;
-  v4 = [(CNSharedProfileOnboardingController *)self stateController];
-  [v4 writeToDefaultsCompletedOnboarding:v3];
+  onboardingCopy = onboarding;
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  [stateController writeToDefaultsCompletedOnboarding:onboardingCopy];
 }
 
 - (BOOL)hasCompletedOnboarding
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 hasCompletedOnboarding];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  hasCompletedOnboarding = [stateController hasCompletedOnboarding];
 
-  return v3;
+  return hasCompletedOnboarding;
 }
 
 - (int64_t)lastShownOnboardingVersion
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 lastShownOnboardingVersion];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  lastShownOnboardingVersion = [stateController lastShownOnboardingVersion];
 
-  return v3;
+  return lastShownOnboardingVersion;
 }
 
 - (void)writeToDefaultsLastShownOnboardingVersion
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  [v2 writeToDefaultsLastShownOnboardingVersion];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  [stateController writeToDefaultsLastShownOnboardingVersion];
 }
 
 - (id)meOrPrimaryAccountContact
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(CNSharedProfileOnboardingController *)self meContact];
-  v3 = v2;
-  if (v2)
+  meContact = [(CNSharedProfileOnboardingController *)self meContact];
+  v3 = meContact;
+  if (meContact)
   {
-    v4 = v2;
+    freeze = meContact;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E6959A48] defaultStore];
-    v6 = [v5 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
     v7 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v8 = [v6 _cn_firstName];
-    [v7 setGivenName:v8];
+    _cn_firstName = [aa_primaryAppleAccount _cn_firstName];
+    [v7 setGivenName:_cn_firstName];
 
-    v9 = [v6 _cn_lastName];
-    [v7 setFamilyName:v9];
+    _cn_lastName = [aa_primaryAppleAccount _cn_lastName];
+    [v7 setFamilyName:_cn_lastName];
 
     v10 = [objc_opt_class() log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -271,21 +271,21 @@ void __68__CNSharedProfileOnboardingController_sender_presentViewController___bl
       _os_log_impl(&dword_199A75000, v10, OS_LOG_TYPE_INFO, "Failed to fetch current me contact, falling back to contact created from primary account %@", &v12, 0xCu);
     }
 
-    v4 = [v7 freeze];
+    freeze = [v7 freeze];
   }
 
-  return v4;
+  return freeze;
 }
 
 - (id)meContact
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CNSharedProfileOnboardingController *)self contactStore];
-  v3 = [objc_opt_class() descriptorForRequiredKeys];
-  v12[0] = v3;
+  contactStore = [(CNSharedProfileOnboardingController *)self contactStore];
+  descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+  v12[0] = descriptorForRequiredKeys;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v9 = 0;
-  v5 = [v2 _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v9];
+  v5 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v9];
   v6 = v9;
 
   if (!v5)
@@ -302,29 +302,29 @@ void __68__CNSharedProfileOnboardingController_sender_presentViewController___bl
   return v5;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:7];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v6 = [featureFlags isFeatureEnabled:7];
 
-  v7 = [(CNSharedProfileOnboardingController *)self presentedViewController];
-  v8 = v7;
+  presentedViewController = [(CNSharedProfileOnboardingController *)self presentedViewController];
+  v8 = presentedViewController;
   if (v6)
   {
-    v9 = [v7 presentingViewController];
-    v10 = v9;
-    if (v9)
+    presentingViewController = [presentedViewController presentingViewController];
+    v10 = presentingViewController;
+    if (presentingViewController)
     {
-      v11 = v9;
+      presentedViewController2 = presentingViewController;
     }
 
     else
     {
-      v11 = [(CNSharedProfileOnboardingController *)self presentedViewController];
+      presentedViewController2 = [(CNSharedProfileOnboardingController *)self presentedViewController];
     }
 
-    v12 = v11;
+    v12 = presentedViewController2;
 
     v8 = v12;
   }
@@ -352,29 +352,29 @@ void __47__CNSharedProfileOnboardingController_dismiss___block_invoke(uint64_t a
 
 - (void)dismissOnboardingIfNeeded
 {
-  v2 = [(CNSharedProfileOnboardingController *)self setupFlowManager];
-  [v2 dismissOnboardingIfNeeded];
+  setupFlowManager = [(CNSharedProfileOnboardingController *)self setupFlowManager];
+  [setupFlowManager dismissOnboardingIfNeeded];
 }
 
-- (void)presentSettingsForNicknameContact:(id)a3 meContact:(id)a4 mode:(int64_t)a5 fromViewController:(id)a6
+- (void)presentSettingsForNicknameContact:(id)contact meContact:(id)meContact mode:(int64_t)mode fromViewController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x1E6996818] mainThreadScheduler];
+  contactCopy = contact;
+  meContactCopy = meContact;
+  controllerCopy = controller;
+  mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __107__CNSharedProfileOnboardingController_presentSettingsForNicknameContact_meContact_mode_fromViewController___block_invoke;
   v17[3] = &unk_1E74E64D8;
   v17[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  [v13 performBlock:v17];
+  v18 = contactCopy;
+  v20 = controllerCopy;
+  modeCopy = mode;
+  v19 = meContactCopy;
+  v14 = controllerCopy;
+  v15 = meContactCopy;
+  v16 = contactCopy;
+  [mainThreadScheduler performBlock:v17];
 }
 
 void __107__CNSharedProfileOnboardingController_presentSettingsForNicknameContact_meContact_mode_fromViewController___block_invoke(uint64_t a1)
@@ -400,38 +400,38 @@ void __107__CNSharedProfileOnboardingController_presentSettingsForNicknameContac
   [*(a1 + 56) presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)presentSettingsForNicknameContact:(id)a3 mode:(int64_t)a4 fromViewController:(id)a5
+- (void)presentSettingsForNicknameContact:(id)contact mode:(int64_t)mode fromViewController:(id)controller
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CNSharedProfileOnboardingController *)self meContact];
-  [(CNSharedProfileOnboardingController *)self presentSettingsForNicknameContact:v9 meContact:v10 mode:a4 fromViewController:v8];
+  controllerCopy = controller;
+  contactCopy = contact;
+  meContact = [(CNSharedProfileOnboardingController *)self meContact];
+  [(CNSharedProfileOnboardingController *)self presentSettingsForNicknameContact:contactCopy meContact:meContact mode:mode fromViewController:controllerCopy];
 }
 
-- (void)presentSettingsForMode:(int64_t)a3 fromViewController:(id)a4
+- (void)presentSettingsForMode:(int64_t)mode fromViewController:(id)controller
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v8 = [v7 featureFlags];
-  v9 = [v8 isFeatureEnabled:7];
+  controllerCopy = controller;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v9 = [featureFlags isFeatureEnabled:7];
 
   if (v9)
   {
-    [(CNSharedProfileOnboardingController *)self presentVisualIdentityEditorFromViewController:v6];
+    [(CNSharedProfileOnboardingController *)self presentVisualIdentityEditorFromViewController:controllerCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v11 = [v10 nicknameProvider];
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment2 nicknameProvider];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81__CNSharedProfileOnboardingController_presentSettingsForMode_fromViewController___block_invoke;
     v12[3] = &unk_1E74E63E8;
     v12[4] = self;
-    v14 = a3;
-    v13 = v6;
-    [v11 fetchPersonalNicknameAsContactWithCompletion:v12];
+    modeCopy = mode;
+    v13 = controllerCopy;
+    [nicknameProvider fetchPersonalNicknameAsContactWithCompletion:v12];
   }
 }
 
@@ -452,12 +452,12 @@ void __81__CNSharedProfileOnboardingController_presentSettingsForMode_fromViewCo
   [v4 performBlock:v7];
 }
 
-- (void)startOnboardingOrEditForMode:(int64_t)a3 fromViewController:(id)a4
+- (void)startOnboardingOrEditForMode:(int64_t)mode fromViewController:(id)controller
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v8 = [v7 featureFlags];
-  v9 = [v8 isFeatureEnabled:7];
+  controllerCopy = controller;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v9 = [featureFlags isFeatureEnabled:7];
 
   if (!v9)
   {
@@ -466,31 +466,31 @@ void __81__CNSharedProfileOnboardingController_presentSettingsForMode_fromViewCo
     v13[2] = __87__CNSharedProfileOnboardingController_startOnboardingOrEditForMode_fromViewController___block_invoke;
     v13[3] = &unk_1E74E64B0;
     v13[4] = self;
-    v15 = a3;
-    v14 = v6;
-    [(CNSharedProfileOnboardingController *)self presentOnboardingFlowIfNeededForSettingsMode:a3 fromViewController:v14 completion:v13];
+    modeCopy = mode;
+    v14 = controllerCopy;
+    [(CNSharedProfileOnboardingController *)self presentOnboardingFlowIfNeededForSettingsMode:mode fromViewController:v14 completion:v13];
 
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v11 = [v10 featureFlags];
-  if (![v11 isFeatureEnabled:26])
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags2 = [currentEnvironment2 featureFlags];
+  if (![featureFlags2 isFeatureEnabled:26])
   {
 
     goto LABEL_7;
   }
 
-  v12 = [(CNSharedProfileOnboardingController *)self multiplePhoneNumbersTiedToAppleID];
+  multiplePhoneNumbersTiedToAppleID = [(CNSharedProfileOnboardingController *)self multiplePhoneNumbersTiedToAppleID];
 
-  if (!v12)
+  if (!multiplePhoneNumbersTiedToAppleID)
   {
 LABEL_7:
-    [(CNSharedProfileOnboardingController *)self presentVisualIdentityEditorFromViewController:v6];
+    [(CNSharedProfileOnboardingController *)self presentVisualIdentityEditorFromViewController:controllerCopy];
     goto LABEL_8;
   }
 
-  [(CNSharedProfileOnboardingController *)self startVisualIdentityOnboardingForMultipleDevicesFromViewController:v6];
+  [(CNSharedProfileOnboardingController *)self startVisualIdentityOnboardingForMultipleDevicesFromViewController:controllerCopy];
 LABEL_8:
 }
 
@@ -504,9 +504,9 @@ uint64_t __87__CNSharedProfileOnboardingController_startOnboardingOrEditForMode_
   return result;
 }
 
-- (void)startVisualIdentityOnboardingForMultipleDevicesFromViewController:(id)a3
+- (void)startVisualIdentityOnboardingForMultipleDevicesFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   v12[0] = MEMORY[0x1E69E9820];
@@ -524,12 +524,12 @@ uint64_t __87__CNSharedProfileOnboardingController_startOnboardingOrEditForMode_
   v7 = v6;
   [v5 setOnContinue:v10];
   [v7 setNavigationBarHidden:1 animated:0];
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [v7 setModalPresentationStyle:2 * ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+  [v7 setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
   [(CNSharedProfileOnboardingController *)self setPresentedViewController:v5];
-  [v4 presentViewController:v7 animated:1 completion:0];
+  [controllerCopy presentViewController:v7 animated:1 completion:0];
 }
 
 void __105__CNSharedProfileOnboardingController_startVisualIdentityOnboardingForMultipleDevicesFromViewController___block_invoke(uint64_t a1, void *a2)
@@ -557,23 +557,23 @@ uint64_t __105__CNSharedProfileOnboardingController_startVisualIdentityOnboardin
   return [*(a1 + 32) presentVisualIdentityEditorFromViewController:*(a1 + 40)];
 }
 
-- (void)presentOnboardingFlowIfNeededForSettingsMode:(int64_t)a3 fromViewController:(id)a4 completion:(id)a5
+- (void)presentOnboardingFlowIfNeededForSettingsMode:(int64_t)mode fromViewController:(id)controller completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if ([(CNSharedProfileOnboardingController *)self accountCanCreateSNaPWithShouldShowErrorAlert:1 fromViewController:v8])
+  controllerCopy = controller;
+  completionCopy = completion;
+  if ([(CNSharedProfileOnboardingController *)self accountCanCreateSNaPWithShouldShowErrorAlert:1 fromViewController:controllerCopy])
   {
-    v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v11 = [v10 nicknameProvider];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment nicknameProvider];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __114__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForSettingsMode_fromViewController_completion___block_invoke;
     v12[3] = &unk_1E74E6438;
     v12[4] = self;
-    v15 = a3;
-    v13 = v8;
-    v14 = v9;
-    [v11 fetchPersonalNicknameAsContactWithCompletion:v12];
+    modeCopy = mode;
+    v13 = controllerCopy;
+    v14 = completionCopy;
+    [nicknameProvider fetchPersonalNicknameAsContactWithCompletion:v12];
   }
 }
 
@@ -608,86 +608,86 @@ void __114__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededFor
   (*(*(a1 + 56) + 16))();
 }
 
-- (BOOL)shouldShowOnboardingForSettingsWithNicknameContact:(id)a3 meContact:(id)a4
+- (BOOL)shouldShowOnboardingForSettingsWithNicknameContact:(id)contact meContact:(id)meContact
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  meContactCopy = meContact;
   v8 = [(CNSharedProfileOnboardingController *)self canShowOnboardingAllowingMultiplePhoneNumbers:1];
-  v9 = [(CNSharedProfileOnboardingController *)self shouldShowOnboarding];
+  shouldShowOnboarding = [(CNSharedProfileOnboardingController *)self shouldShowOnboarding];
   v10 = [objc_opt_class() log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
     v31 = v8;
     v32 = 1024;
-    v33 = v9;
+    v33 = shouldShowOnboarding;
     _os_log_impl(&dword_199A75000, v10, OS_LOG_TYPE_DEFAULT, "Should show onboarding: canShowOnboarding %d, newOnboardingVersionAvailable %d", buf, 0xEu);
   }
 
-  if (!v9 && v8)
+  if (!shouldShowOnboarding && v8)
   {
-    v11 = [(CNSharedProfileOnboardingController *)self stateController];
-    v12 = [v11 lastShowOnboardingVersionInSettings];
-    v13 = [(CNSharedProfileOnboardingController *)self stateController];
-    v14 = [v13 currentOnboardingVersion];
+    stateController = [(CNSharedProfileOnboardingController *)self stateController];
+    lastShowOnboardingVersionInSettings = [stateController lastShowOnboardingVersionInSettings];
+    stateController2 = [(CNSharedProfileOnboardingController *)self stateController];
+    currentOnboardingVersion = [stateController2 currentOnboardingVersion];
 
     v15 = [objc_opt_class() log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v31 = v12 >= v14;
+      v31 = lastShowOnboardingVersionInSettings >= currentOnboardingVersion;
       _os_log_impl(&dword_199A75000, v15, OS_LOG_TYPE_DEFAULT, "Should show onboarding: hasShownOnboardingInSettings %d", buf, 8u);
     }
 
-    if (v12 >= v14)
+    if (lastShowOnboardingVersionInSettings >= currentOnboardingVersion)
     {
       goto LABEL_7;
     }
 
-    v16 = [(CNSharedProfileOnboardingController *)self hasCompletedOnboarding];
-    v29 = [(CNSharedProfileOnboardingController *)self didSkipPosterSetup];
-    v17 = [(CNSharedProfileOnboardingController *)self stateController];
-    v18 = [v17 deviceSupportsPosters];
+    hasCompletedOnboarding = [(CNSharedProfileOnboardingController *)self hasCompletedOnboarding];
+    didSkipPosterSetup = [(CNSharedProfileOnboardingController *)self didSkipPosterSetup];
+    stateController3 = [(CNSharedProfileOnboardingController *)self stateController];
+    deviceSupportsPosters = [stateController3 deviceSupportsPosters];
 
     v19 = *MEMORY[0x1E6996540];
-    v20 = [v7 wallpaper];
-    v21 = [v20 posterArchiveData];
-    v22 = (*(v19 + 16))(v19, v21);
+    wallpaper = [meContactCopy wallpaper];
+    posterArchiveData = [wallpaper posterArchiveData];
+    v22 = (*(v19 + 16))(v19, posterArchiveData);
 
-    v23 = [v6 wallpaper];
-    v24 = [v23 posterArchiveData];
-    v25 = (*(v19 + 16))(v19, v24);
+    wallpaper2 = [contactCopy wallpaper];
+    posterArchiveData2 = [wallpaper2 posterArchiveData];
+    v25 = (*(v19 + 16))(v19, posterArchiveData2);
 
     v26 = [objc_opt_class() log];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67110144;
-      v31 = !v16;
+      v31 = !hasCompletedOnboarding;
       v32 = 1024;
-      v33 = v6 == 0;
+      v33 = contactCopy == 0;
       v34 = 1024;
       v35 = v22;
       v36 = 1024;
       v37 = v25;
       v38 = 1024;
-      v39 = v29;
+      v39 = didSkipPosterSetup;
       _os_log_impl(&dword_199A75000, v26, OS_LOG_TYPE_DEFAULT, "hasNeverCompletedOnboarding %d, hasNoNickname %d, hasNoMeContactPoster %d, hasNoNicknamePoster %d, userSkippedPosterSetup %d", buf, 0x20u);
     }
 
-    if (v6)
+    if (contactCopy)
     {
       v27 = 1;
     }
 
     else
     {
-      v27 = v16;
+      v27 = hasCompletedOnboarding;
     }
 
-    if (v18)
+    if (deviceSupportsPosters)
     {
-      if (!v27 || !v29 && (v22 & v25 & 1) != 0)
+      if (!v27 || !didSkipPosterSetup && (v22 & v25 & 1) != 0)
       {
         goto LABEL_18;
       }
@@ -709,52 +709,52 @@ LABEL_19:
   return v8;
 }
 
-- (void)presentOnboardingFlowForNicknameContact:(id)a3 mode:(int64_t)a4 fromViewController:(id)a5
+- (void)presentOnboardingFlowForNicknameContact:(id)contact mode:(int64_t)mode fromViewController:(id)controller
 {
-  v8 = a5;
-  v9 = a3;
-  v15 = [(CNSharedProfileOnboardingController *)self meOrPrimaryAccountContact];
-  [(CNSharedProfileOnboardingController *)self setBaseViewController:v8];
+  controllerCopy = controller;
+  contactCopy = contact;
+  meOrPrimaryAccountContact = [(CNSharedProfileOnboardingController *)self meOrPrimaryAccountContact];
+  [(CNSharedProfileOnboardingController *)self setBaseViewController:controllerCopy];
 
   v10 = [CNSNaPSetupFlowManager alloc];
-  v11 = [(CNSharedProfileOnboardingController *)self contactStore];
-  v12 = [(CNSNaPSetupFlowManager *)v10 initWithPresenterDelegate:self contactStore:v11 mode:a4];
+  contactStore = [(CNSharedProfileOnboardingController *)self contactStore];
+  v12 = [(CNSNaPSetupFlowManager *)v10 initWithPresenterDelegate:self contactStore:contactStore mode:mode];
 
   [(CNSharedProfileOnboardingController *)self setSetupFlowManager:v12];
-  v13 = [(CNSharedProfileOnboardingController *)self setupFlowManager];
-  [v13 setDelegate:self];
+  setupFlowManager = [(CNSharedProfileOnboardingController *)self setupFlowManager];
+  [setupFlowManager setDelegate:self];
 
-  v14 = [(CNSharedProfileOnboardingController *)self setupFlowManager];
-  [v14 startOnboardingFlowWithNicknameContact:v9 meContact:v15];
+  setupFlowManager2 = [(CNSharedProfileOnboardingController *)self setupFlowManager];
+  [setupFlowManager2 startOnboardingFlowWithNicknameContact:contactCopy meContact:meOrPrimaryAccountContact];
 
   [(CNSharedProfileOnboardingController *)self writeToDefaultsLastShownOnboardingVersion];
 }
 
-- (void)presentOnboardingFlowIfNeededForMode:(int64_t)a3 fromViewController:(id)a4
+- (void)presentOnboardingFlowIfNeededForMode:(int64_t)mode fromViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   if ([(CNSharedProfileOnboardingController *)self shouldShowOnboarding])
   {
     if ([(CNSharedProfileOnboardingController *)self canShowOnboardingAllowingMultiplePhoneNumbers:0])
     {
       if ([(CNSharedProfileOnboardingController *)self isPhotosReadyForOnboarding])
       {
-        v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-        v8 = [v7 featureFlags];
-        v9 = [v8 isFeatureEnabled:7];
+        currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+        featureFlags = [currentEnvironment featureFlags];
+        v9 = [featureFlags isFeatureEnabled:7];
 
         if ((v9 & 1) == 0)
         {
-          v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-          v11 = [v10 nicknameProvider];
+          currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+          nicknameProvider = [currentEnvironment2 nicknameProvider];
           v12[0] = MEMORY[0x1E69E9820];
           v12[1] = 3221225472;
           v12[2] = __95__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForMode_fromViewController___block_invoke;
           v12[3] = &unk_1E74E63E8;
           v12[4] = self;
-          v14 = a3;
-          v13 = v6;
-          [v11 fetchPersonalNicknameAsContactWithCompletion:v12];
+          modeCopy = mode;
+          v13 = controllerCopy;
+          [nicknameProvider fetchPersonalNicknameAsContactWithCompletion:v12];
         }
       }
     }
@@ -778,16 +778,16 @@ void __95__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForM
   [v4 performBlock:v7];
 }
 
-- (void)presentVisualIdentityEditorFromViewController:(id)a3
+- (void)presentVisualIdentityEditorFromViewController:(id)controller
 {
-  v4 = a3;
-  v9 = [(CNSharedProfileOnboardingController *)self meOrPrimaryAccountContact];
-  v5 = [[CNUIVisualIdentityEditorViewController alloc] initWithContact:v9 isMeContact:1 saveChangesToContactStore:1];
+  controllerCopy = controller;
+  meOrPrimaryAccountContact = [(CNSharedProfileOnboardingController *)self meOrPrimaryAccountContact];
+  v5 = [[CNUIVisualIdentityEditorViewController alloc] initWithContact:meOrPrimaryAccountContact isMeContact:1 saveChangesToContactStore:1];
   [(CNUIVisualIdentityEditorViewController *)v5 setDelegate:self];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v8 = -2;
   }
@@ -802,19 +802,19 @@ void __95__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForM
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 pushViewController:v5 animated:1];
+    [controllerCopy pushViewController:v5 animated:1];
   }
 
   else
   {
-    [v4 presentViewController:v5 animated:1 completion:0];
+    [controllerCopy presentViewController:v5 animated:1 completion:0];
   }
 }
 
-- (void)showMultiplePhoneNumbersAlertForNicknamesFromViewController:(id)a3
+- (void)showMultiplePhoneNumbersAlertForNicknamesFromViewController:(id)controller
 {
   v3 = MEMORY[0x1E69DC650];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"SHARING_NICKNAME_FEATURE_NOT_AVAILABLE_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   v7 = CNContactsUIBundle();
@@ -827,13 +827,13 @@ void __95__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForM
   v12 = [v9 actionWithTitle:v11 style:0 handler:0];
   [v13 addAction:v12];
 
-  [v4 presentViewController:v13 animated:1 completion:0];
+  [controllerCopy presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)showiCloudNotSignedInAlertForNicknamesFromViewController:(id)a3
+- (void)showiCloudNotSignedInAlertForNicknamesFromViewController:(id)controller
 {
   v3 = MEMORY[0x1E69DC650];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"SHARING_NICKNAME_FEATURE_NOT_AVAILABLE_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   v7 = CNContactsUIBundle();
@@ -846,21 +846,21 @@ void __95__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForM
   v12 = [v9 actionWithTitle:v11 style:0 handler:0];
   [v13 addAction:v12];
 
-  [v4 presentViewController:v13 animated:1 completion:0];
+  [controllerCopy presentViewController:v13 animated:1 completion:0];
 }
 
-- (BOOL)accountCanCreateSNaPWithShouldShowErrorAlert:(BOOL)a3 fromViewController:(id)a4
+- (BOOL)accountCanCreateSNaPWithShouldShowErrorAlert:(BOOL)alert fromViewController:(id)controller
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CNSharedProfileOnboardingController *)self stateController];
-  v8 = [v7 iCloudSignedInToUseNicknames];
+  alertCopy = alert;
+  controllerCopy = controller;
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  iCloudSignedInToUseNicknames = [stateController iCloudSignedInToUseNicknames];
 
-  if ((v8 & 1) == 0)
+  if ((iCloudSignedInToUseNicknames & 1) == 0)
   {
-    if (v4)
+    if (alertCopy)
     {
-      [(CNSharedProfileOnboardingController *)self showiCloudNotSignedInAlertForNicknamesFromViewController:v6];
+      [(CNSharedProfileOnboardingController *)self showiCloudNotSignedInAlertForNicknamesFromViewController:controllerCopy];
     }
 
     v11 = [objc_opt_class() log];
@@ -875,9 +875,9 @@ void __95__CNSharedProfileOnboardingController_presentOnboardingFlowIfNeededForM
     goto LABEL_8;
   }
 
-  v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v10 = [v9 featureFlags];
-  if ([v10 isFeatureEnabled:26])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:26])
   {
 
 LABEL_15:
@@ -885,16 +885,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v15 = [(CNSharedProfileOnboardingController *)self multiplePhoneNumbersTiedToAppleID];
+  multiplePhoneNumbersTiedToAppleID = [(CNSharedProfileOnboardingController *)self multiplePhoneNumbersTiedToAppleID];
 
-  if (!v15)
+  if (!multiplePhoneNumbersTiedToAppleID)
   {
     goto LABEL_15;
   }
 
-  if (v4)
+  if (alertCopy)
   {
-    [(CNSharedProfileOnboardingController *)self showMultiplePhoneNumbersAlertForNicknamesFromViewController:v6];
+    [(CNSharedProfileOnboardingController *)self showMultiplePhoneNumbersAlertForNicknamesFromViewController:controllerCopy];
   }
 
   v11 = [objc_opt_class() log];
@@ -917,99 +917,99 @@ LABEL_16:
 
 - (BOOL)accountCanCreateSNaP
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 accountCanCreateSNaP];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  accountCanCreateSNaP = [stateController accountCanCreateSNaP];
 
-  return v3;
+  return accountCanCreateSNaP;
 }
 
 - (BOOL)multiplePhoneNumbersTiedToAppleID
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 multiplePhoneNumbersTiedToAppleID];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  multiplePhoneNumbersTiedToAppleID = [stateController multiplePhoneNumbersTiedToAppleID];
 
-  return v3;
+  return multiplePhoneNumbersTiedToAppleID;
 }
 
 - (BOOL)alwaysShowSNaPOnboarding
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 alwaysShowSNaPOnboarding];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  alwaysShowSNaPOnboarding = [stateController alwaysShowSNaPOnboarding];
 
-  return v3;
+  return alwaysShowSNaPOnboarding;
 }
 
-- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)a3
+- (BOOL)canShowOnboardingAllowingMultiplePhoneNumbers:(BOOL)numbers
 {
-  v3 = a3;
-  v4 = [(CNSharedProfileOnboardingController *)self stateController];
-  LOBYTE(v3) = [v4 canShowOnboardingAllowingMultiplePhoneNumbers:v3];
+  numbersCopy = numbers;
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  LOBYTE(numbersCopy) = [stateController canShowOnboardingAllowingMultiplePhoneNumbers:numbersCopy];
 
-  return v3;
+  return numbersCopy;
 }
 
 - (BOOL)isPhotosReadyForOnboarding
 {
-  v2 = [(CNSharedProfileOnboardingController *)self stateController];
-  v3 = [v2 isPhotosReadyForOnboarding];
+  stateController = [(CNSharedProfileOnboardingController *)self stateController];
+  isPhotosReadyForOnboarding = [stateController isPhotosReadyForOnboarding];
 
-  return v3;
+  return isPhotosReadyForOnboarding;
 }
 
-- (CNSharedProfileOnboardingController)initWithContactStore:(id)a3 stateController:(id)a4
+- (CNSharedProfileOnboardingController)initWithContactStore:(id)store stateController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = CNSharedProfileOnboardingController;
   v9 = [(CNSharedProfileOnboardingController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v10->_stateController, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_stateController, controller);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (CNSharedProfileOnboardingController)initWithContactStore:(id)a3
+- (CNSharedProfileOnboardingController)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(CNSharedProfileOnboardingStateController);
-  v6 = [(CNSharedProfileOnboardingController *)self initWithContactStore:v4 stateController:v5];
+  v6 = [(CNSharedProfileOnboardingController *)self initWithContactStore:storeCopy stateController:v5];
 
   return v6;
 }
 
-+ (id)sharingSettingsViewControllerForNicknameContact:(id)a3 meContact:(id)a4 mode:(int64_t)a5 contactStore:(id)a6
++ (id)sharingSettingsViewControllerForNicknameContact:(id)contact meContact:(id)meContact mode:(int64_t)mode contactStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  contactCopy = contact;
+  meContactCopy = meContact;
+  v11 = meContactCopy;
+  if (contactCopy)
   {
-    v12 = v9;
+    v12 = contactCopy;
   }
 
   else
   {
-    v12 = v10;
+    v12 = meContactCopy;
   }
 
   v13 = v12;
-  v14 = a6;
+  storeCopy = store;
   v15 = [[CNMeCardSharingContactNameProvider alloc] initWithContact:v13];
-  v16 = v9;
+  v16 = contactCopy;
   v17 = v16;
-  if (!v9)
+  if (!contactCopy)
   {
     v17 = objc_alloc_init(MEMORY[0x1E695CF18]);
     if ([v11 isKeyAvailable:*MEMORY[0x1E695C240]])
     {
-      v18 = [v11 givenName];
-      [v17 setGivenName:v18];
+      givenName = [v11 givenName];
+      [v17 setGivenName:givenName];
     }
 
     else
@@ -1019,8 +1019,8 @@ LABEL_16:
 
     if ([v11 isKeyAvailable:*MEMORY[0x1E695C230]])
     {
-      v19 = [v11 familyName];
-      [v17 setFamilyName:v19];
+      familyName = [v11 familyName];
+      [v17 setFamilyName:familyName];
     }
 
     else
@@ -1032,17 +1032,17 @@ LABEL_16:
   v31 = v17;
   v32 = v13;
   v20 = [[CNMeCardSharingContactAvatarProvider alloc] initWithContact:v17];
-  v21 = a5;
-  v22 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v23 = [v22 nicknameProvider];
-  v24 = [v23 isNicknameSharingEnabled];
+  modeCopy = mode;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
+  isNicknameSharingEnabled = [nicknameProvider isNicknameSharingEnabled];
 
-  v25 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v26 = [v25 nicknameProvider];
-  v27 = [v26 sharingAudience];
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider2 = [currentEnvironment2 nicknameProvider];
+  sharingAudience = [nicknameProvider2 sharingAudience];
 
   LOBYTE(v30) = 1;
-  v28 = [[CNMeCardSharingSettingsViewController alloc] initWithContactStore:v14 contact:v11 avatarProvider:v20 nameProvider:v15 sharingEnabled:v24 selectedSharingAudience:v27 showsWallpaperSuggestionsGalleryPicker:v30 headerMode:v21];
+  v28 = [[CNMeCardSharingSettingsViewController alloc] initWithContactStore:storeCopy contact:v11 avatarProvider:v20 nameProvider:v15 sharingEnabled:isNicknameSharingEnabled selectedSharingAudience:sharingAudience showsWallpaperSuggestionsGalleryPicker:v30 headerMode:modeCopy];
 
   return v28;
 }

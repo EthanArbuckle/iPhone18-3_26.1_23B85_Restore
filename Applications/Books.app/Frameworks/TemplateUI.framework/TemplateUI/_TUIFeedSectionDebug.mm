@@ -2,29 +2,29 @@
 - (BOOL)_computeHasErrors;
 - (BOOL)showButton;
 - (TUIFeedViewController)hostingViewController;
-- (_TUIFeedSectionDebug)initWithRenderModel:(id)a3 hostingViewController:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)_dismissErrors:(id)a3;
-- (void)_shareCapture:(id)a3;
-- (void)_shareText:(id)a3;
-- (void)_showErrorsForSection:(id)a3;
-- (void)setRenderModel:(id)a3;
+- (_TUIFeedSectionDebug)initWithRenderModel:(id)model hostingViewController:(id)controller;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)_dismissErrors:(id)errors;
+- (void)_shareCapture:(id)capture;
+- (void)_shareText:(id)text;
+- (void)_showErrorsForSection:(id)section;
+- (void)setRenderModel:(id)model;
 @end
 
 @implementation _TUIFeedSectionDebug
 
-- (_TUIFeedSectionDebug)initWithRenderModel:(id)a3 hostingViewController:(id)a4
+- (_TUIFeedSectionDebug)initWithRenderModel:(id)model hostingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = _TUIFeedSectionDebug;
   v9 = [(_TUIFeedSectionDebug *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_renderModel, a3);
-    objc_storeWeak(&v10->_hostingViewController, v8);
+    objc_storeStrong(&v9->_renderModel, model);
+    objc_storeWeak(&v10->_hostingViewController, controllerCopy);
     v11 = objc_alloc_init(_TUIFeedSectionDebugButton);
     button = v10->_button;
     v10->_button = v11;
@@ -44,16 +44,16 @@
   return v10;
 }
 
-- (void)setRenderModel:(id)a3
+- (void)setRenderModel:(id)model
 {
-  v5 = a3;
-  if (self->_renderModel != v5)
+  modelCopy = model;
+  if (self->_renderModel != modelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_renderModel, a3);
-    v6 = [(_TUIFeedSectionDebug *)self _computeHasErrors];
-    self->_hasErrors = v6;
-    if (v6)
+    v8 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
+    _computeHasErrors = [(_TUIFeedSectionDebug *)self _computeHasErrors];
+    self->_hasErrors = _computeHasErrors;
+    if (_computeHasErrors)
     {
       +[UIColor systemRedColor];
     }
@@ -65,69 +65,69 @@
     v7 = ;
     [(_TUIFeedSectionDebugButton *)self->_button setTintColor:v7];
 
-    v5 = v8;
+    modelCopy = v8;
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_169708;
   v7[3] = &unk_2634D0;
   v7[4] = self;
-  v8 = a3;
-  v4 = v8;
+  interactionCopy = interaction;
+  v4 = interactionCopy;
   v5 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:v7];
 
   return v5;
 }
 
-- (void)_shareCapture:(id)a3
+- (void)_shareCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = [UIActivityViewController alloc];
-  v6 = [v4 url];
+  v6 = [captureCopy url];
 
   v12 = v6;
   v7 = [NSArray arrayWithObjects:&v12 count:1];
   v8 = [v5 initWithActivityItems:v7 applicationActivities:0];
 
   button = self->_button;
-  v10 = [v8 popoverPresentationController];
-  [v10 setSourceView:button];
+  popoverPresentationController = [v8 popoverPresentationController];
+  [popoverPresentationController setSourceView:button];
 
   WeakRetained = objc_loadWeakRetained(&self->_hostingViewController);
   [WeakRetained presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_shareText:(id)a3
+- (void)_shareText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [UIActivityViewController alloc];
-  v11 = v4;
+  v11 = textCopy;
   v6 = [NSArray arrayWithObjects:&v11 count:1];
   v7 = [v5 initWithActivityItems:v6 applicationActivities:0];
 
   button = self->_button;
-  v9 = [v7 popoverPresentationController];
-  [v9 setSourceView:button];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:button];
 
   WeakRetained = objc_loadWeakRetained(&self->_hostingViewController);
   [WeakRetained presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_showErrorsForSection:(id)a3
+- (void)_showErrorsForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = [TUIErrorsViewController alloc];
-  v6 = [v4 errors];
+  errors = [sectionCopy errors];
 
-  v13 = [(TUIErrorsViewController *)v5 initWithErrors:v6];
+  v13 = [(TUIErrorsViewController *)v5 initWithErrors:errors];
   v7 = [[UINavigationController alloc] initWithRootViewController:v13];
   v8 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:2 target:self action:"_dismissErrors:"];
-  v9 = [(TUIErrorsViewController *)v13 navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem = [(TUIErrorsViewController *)v13 navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 
   errorViewController = self->_errorViewController;
   self->_errorViewController = v7;
@@ -137,7 +137,7 @@
   [WeakRetained presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_dismissErrors:(id)a3
+- (void)_dismissErrors:(id)errors
 {
   [(UIViewController *)self->_errorViewController dismissViewControllerAnimated:1 completion:0];
   errorViewController = self->_errorViewController;
@@ -150,17 +150,17 @@
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(TUIRenderModelCollection *)self->_renderModel sections];
+  sections = [(TUIRenderModelCollection *)self->_renderModel sections];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_16AA60;
   v4[3] = &unk_2634F8;
   v4[4] = &v5;
-  [v2 enumerateObjectsUsingBlock:v4];
+  [sections enumerateObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(sections) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return sections;
 }
 
 - (BOOL)showButton

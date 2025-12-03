@@ -1,44 +1,44 @@
 @interface TISKRateMetricSample
 + (id)makeMetric;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TISKRateMetricSample)init;
-- (TISKRateMetricSample)initWithCoder:(id)a3;
+- (TISKRateMetricSample)initWithCoder:(id)coder;
 - (id)rate;
-- (void)encodeWithCoder:(id)a3;
-- (void)merge:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)merge:(id)merge;
 @end
 
 @implementation TISKRateMetricSample
 
-- (TISKRateMetricSample)initWithCoder:(id)a3
+- (TISKRateMetricSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TISKRateMetricSample;
   v5 = [(TISKRateMetricSample *)&v8 init];
   if (v5)
   {
-    v5->_countFactor = [v4 decodeIntForKey:@"RateMetricSampleCounter"];
-    [v4 decodeDoubleForKey:@"RateMetricSampleDuration"];
+    v5->_countFactor = [coderCopy decodeIntForKey:@"RateMetricSampleCounter"];
+    [coderCopy decodeDoubleForKey:@"RateMetricSampleDuration"];
     v5->_durationFactor = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[TISKRateMetricSample countFactor](self forKey:{"countFactor"), @"RateMetricSampleCounter"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[TISKRateMetricSample countFactor](self forKey:{"countFactor"), @"RateMetricSampleCounter"}];
   [(TISKRateMetricSample *)self durationFactor];
-  [v4 encodeDouble:@"RateMetricSampleDuration" forKey:?];
+  [coderCopy encodeDouble:@"RateMetricSampleDuration" forKey:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -46,7 +46,7 @@
   else
   {
     countFactor = self->_countFactor;
-    if (countFactor == [(TISKRateMetricSample *)v4 countFactor])
+    if (countFactor == [(TISKRateMetricSample *)equalCopy countFactor])
     {
       durationFactor = self->_durationFactor;
       [(TISKRateMetricSample *)v5 durationFactor];
@@ -62,23 +62,23 @@
   return v9;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mergeCopy = merge;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v5 = IXADefaultLogFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s [SensorKit] [rateMetricSample merge: other doesn't respond to countFactor selector %d : %d", "-[TISKRateMetricSample merge:]", self->_countFactor, objc_msgSend(v4, "countFactor")];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s [SensorKit] [rateMetricSample merge: other doesn't respond to countFactor selector %d : %d", "-[TISKRateMetricSample merge:]", self->_countFactor, objc_msgSend(mergeCopy, "countFactor")];
       *buf = 138412290;
       v17 = v11;
       _os_log_error_impl(&dword_22CA55000, v5, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
 
-  -[TISKRateMetricSample setCountFactor:](self, "setCountFactor:", [v4 countFactor] + -[TISKRateMetricSample countFactor](self, "countFactor"));
+  -[TISKRateMetricSample setCountFactor:](self, "setCountFactor:", [mergeCopy countFactor] + -[TISKRateMetricSample countFactor](self, "countFactor"));
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v6 = IXADefaultLogFacility();
@@ -86,7 +86,7 @@
     {
       v12 = MEMORY[0x277CCACA8];
       durationFactor = self->_durationFactor;
-      [v4 durationFactor];
+      [mergeCopy durationFactor];
       v15 = [v12 stringWithFormat:@"%s [SensorKit] [rateMetricSample merge: other doesn't respond to durationFactor selector %f : %f", "-[TISKRateMetricSample merge:]", *&durationFactor, v14];
       *buf = 138412290;
       v17 = v15;
@@ -96,7 +96,7 @@
 
   [(TISKRateMetricSample *)self durationFactor];
   v8 = v7;
-  [v4 durationFactor];
+  [mergeCopy durationFactor];
   [(TISKRateMetricSample *)self setDurationFactor:v8 + v9];
 
   v10 = *MEMORY[0x277D85DE8];

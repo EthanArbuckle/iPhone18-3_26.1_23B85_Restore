@@ -1,16 +1,16 @@
 @interface SFTabSnapshotMetadataStore
 - (NSURL)directoryURL;
 - (SFTabSnapshotMetadataStore)init;
-- (SFTabSnapshotMetadataStore)initWithDirectoryURL:(id)a3;
-- (void)deleteMetadataExceptIdentifiers:(NSSet *)a3 completion:(id)a4;
-- (void)deleteMetadataForIdentifier:(NSUUID *)a3 completion:(id)a4;
-- (void)loadMetadataWithCompletion:(id)a3;
-- (void)saveMetadata:(SFTabSnapshotMetadata *)a3 completion:(id)a4;
+- (SFTabSnapshotMetadataStore)initWithDirectoryURL:(id)l;
+- (void)deleteMetadataExceptIdentifiers:(NSSet *)identifiers completion:(id)completion;
+- (void)deleteMetadataForIdentifier:(NSUUID *)identifier completion:(id)completion;
+- (void)loadMetadataWithCompletion:(id)completion;
+- (void)saveMetadata:(SFTabSnapshotMetadata *)metadata completion:(id)completion;
 @end
 
 @implementation SFTabSnapshotMetadataStore
 
-- (SFTabSnapshotMetadataStore)initWithDirectoryURL:(id)a3
+- (SFTabSnapshotMetadataStore)initWithDirectoryURL:(id)l
 {
   v3 = sub_18BC1EA98();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -19,12 +19,12 @@
   return sub_18B7B23D0(v5);
 }
 
-- (void)loadMetadataWithCompletion:(id)a3
+- (void)loadMetadataWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9DAE10);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -40,18 +40,18 @@
   v12[3] = 0;
   v12[4] = &unk_18BC52948;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_18BC10FA8(0, 0, v7, &unk_18BC52950, v12);
 }
 
-- (void)deleteMetadataExceptIdentifiers:(NSSet *)a3 completion:(id)a4
+- (void)deleteMetadataExceptIdentifiers:(NSSet *)identifiers completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9DAE10);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifiers;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18BC20F48();
@@ -66,8 +66,8 @@
   v14[3] = 0;
   v14[4] = &unk_18BC52978;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifiersCopy = identifiers;
+  selfCopy = self;
   sub_18BC10FA8(0, 0, v9, &unk_18BC52980, v14);
 }
 
@@ -92,14 +92,14 @@
   return v11;
 }
 
-- (void)deleteMetadataForIdentifier:(NSUUID *)a3 completion:(id)a4
+- (void)deleteMetadataForIdentifier:(NSUUID *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9DAE10);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18BC20F48();
@@ -114,19 +114,19 @@
   v14[3] = 0;
   v14[4] = &unk_18BC52998;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_18BC10FA8(0, 0, v9, &unk_18BC529A0, v14);
 }
 
-- (void)saveMetadata:(SFTabSnapshotMetadata *)a3 completion:(id)a4
+- (void)saveMetadata:(SFTabSnapshotMetadata *)metadata completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9DAE10);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = metadata;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18BC20F48();
@@ -141,8 +141,8 @@
   v14[3] = 0;
   v14[4] = &unk_18BC4A550;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   sub_18BC10FA8(0, 0, v9, &unk_18BC55D20, v14);
 }
 

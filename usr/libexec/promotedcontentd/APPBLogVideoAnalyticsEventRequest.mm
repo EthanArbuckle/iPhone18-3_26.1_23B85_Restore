@@ -1,22 +1,22 @@
 @interface APPBLogVideoAnalyticsEventRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)videoStateAsString:(int)a3;
-- (int)StringAsVideoState:(id)a3;
+- (id)videoStateAsString:(int)string;
+- (int)StringAsVideoState:(id)state;
 - (int)videoState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventSequence:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalDuration:(BOOL)a3;
-- (void)setHasVideoState:(BOOL)a3;
-- (void)setHasVisiblePercentage:(BOOL)a3;
-- (void)setHasVolume:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventSequence:(BOOL)sequence;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalDuration:(BOOL)duration;
+- (void)setHasVideoState:(BOOL)state;
+- (void)setHasVisiblePercentage:(BOOL)percentage;
+- (void)setHasVolume:(BOOL)volume;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogVideoAnalyticsEventRequest
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)setHasVideoState:(BOOL)a3
+- (void)setHasVideoState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -61,105 +61,105 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (id)videoStateAsString:(int)a3
+- (id)videoStateAsString:(int)string
 {
-  if (a3 >= 0x11)
+  if (string >= 0x11)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D1E0 + a3);
+    v4 = *(&off_10047D1E0 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsVideoState:(id)a3
+- (int)StringAsVideoState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Loaded"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Loaded"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Unloaded"])
+  else if ([stateCopy isEqualToString:@"Unloaded"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Started"])
+  else if ([stateCopy isEqualToString:@"Started"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Completed"])
+  else if ([stateCopy isEqualToString:@"Completed"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Paused"])
+  else if ([stateCopy isEqualToString:@"Paused"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Resumed"])
+  else if ([stateCopy isEqualToString:@"Resumed"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Skipped"])
+  else if ([stateCopy isEqualToString:@"Skipped"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Muted"])
+  else if ([stateCopy isEqualToString:@"Muted"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Unmuted"])
+  else if ([stateCopy isEqualToString:@"Unmuted"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FullScreen"])
+  else if ([stateCopy isEqualToString:@"FullScreen"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ExitFullScreen"])
+  else if ([stateCopy isEqualToString:@"ExitFullScreen"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Touched"])
+  else if ([stateCopy isEqualToString:@"Touched"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ProgressFirstQuartile"])
+  else if ([stateCopy isEqualToString:@"ProgressFirstQuartile"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ProgressMidpoint"])
+  else if ([stateCopy isEqualToString:@"ProgressMidpoint"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ProgressThirdQuartile"])
+  else if ([stateCopy isEqualToString:@"ProgressThirdQuartile"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"VisibilityChanged"])
+  else if ([stateCopy isEqualToString:@"VisibilityChanged"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackFailed"])
+  else if ([stateCopy isEqualToString:@"PlaybackFailed"])
   {
     v4 = 16;
   }
@@ -172,9 +172,9 @@
   return v4;
 }
 
-- (void)setHasTotalDuration:(BOOL)a3
+- (void)setHasTotalDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -187,9 +187,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVisiblePercentage:(BOOL)a3
+- (void)setHasVisiblePercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 8;
   }
@@ -202,9 +202,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -217,9 +217,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEventSequence:(BOOL)a3
+- (void)setHasEventSequence:(BOOL)sequence
 {
-  if (a3)
+  if (sequence)
   {
     v3 = 16;
   }
@@ -232,9 +232,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasVolume:(BOOL)a3
+- (void)setHasVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 64;
   }
@@ -252,8 +252,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogVideoAnalyticsEventRequest;
   v3 = [(APPBLogVideoAnalyticsEventRequest *)&v7 description];
-  v4 = [(APPBLogVideoAnalyticsEventRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogVideoAnalyticsEventRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -264,8 +264,8 @@
   metaData = self->_metaData;
   if (metaData)
   {
-    v6 = [(APPBLogMetaData *)metaData dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"metaData"];
+    dictionaryRepresentation = [(APPBLogMetaData *)metaData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"metaData"];
   }
 
   bundleID = self->_bundleID;
@@ -380,27 +380,27 @@ LABEL_17:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_metaData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -420,7 +420,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -435,7 +435,7 @@ LABEL_8:
 
 LABEL_18:
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -450,7 +450,7 @@ LABEL_9:
 
 LABEL_19:
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -465,7 +465,7 @@ LABEL_10:
 
 LABEL_20:
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -480,38 +480,38 @@ LABEL_11:
 
 LABEL_21:
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_12:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_13:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_metaData)
   {
-    [v4 setMetaData:?];
-    v4 = v6;
+    [toCopy setMetaData:?];
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     [v6 setBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 16) = self->_videoState;
-    *(v4 + 72) |= 0x20u;
+    *(toCopy + 16) = self->_videoState;
+    *(toCopy + 72) |= 0x20u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -530,8 +530,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 1) = *&self->_currentPlaybackTime;
-  *(v4 + 72) |= 1u;
+  *(toCopy + 1) = *&self->_currentPlaybackTime;
+  *(toCopy + 72) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -545,8 +545,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(v4 + 3) = *&self->_totalDuration;
-  *(v4 + 72) |= 4u;
+  *(toCopy + 3) = *&self->_totalDuration;
+  *(toCopy + 72) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -560,8 +560,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  *(v4 + 4) = *&self->_visiblePercentage;
-  *(v4 + 72) |= 8u;
+  *(toCopy + 4) = *&self->_visiblePercentage;
+  *(toCopy + 72) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -575,8 +575,8 @@ LABEL_10:
   }
 
 LABEL_20:
-  *(v4 + 2) = *&self->_timestamp;
-  *(v4 + 72) |= 2u;
+  *(toCopy + 2) = *&self->_timestamp;
+  *(toCopy + 72) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -590,26 +590,26 @@ LABEL_11:
   }
 
 LABEL_21:
-  *(v4 + 12) = self->_eventSequence;
-  *(v4 + 72) |= 0x10u;
+  *(toCopy + 12) = self->_eventSequence;
+  *(toCopy + 72) |= 0x10u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_12:
-    *(v4 + 17) = LODWORD(self->_volume);
-    *(v4 + 72) |= 0x40u;
+    *(toCopy + 17) = LODWORD(self->_volume);
+    *(toCopy + 72) |= 0x40u;
   }
 
 LABEL_13:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -708,16 +708,16 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   metaData = self->_metaData;
-  if (metaData | *(v4 + 7))
+  if (metaData | *(equalCopy + 7))
   {
     if (![(APPBLogMetaData *)metaData isEqual:?])
     {
@@ -726,7 +726,7 @@ LABEL_8:
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 5))
+  if (bundleID | *(equalCopy + 5))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -736,13 +736,13 @@ LABEL_8:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 72) & 0x20) == 0 || self->_videoState != *(v4 + 16))
+    if ((*(equalCopy + 72) & 0x20) == 0 || self->_videoState != *(equalCopy + 16))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 72) & 0x20) != 0)
+  else if ((*(equalCopy + 72) & 0x20) != 0)
   {
 LABEL_40:
     v7 = 0;
@@ -751,73 +751,73 @@ LABEL_40:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_currentPlaybackTime != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_currentPlaybackTime != *(equalCopy + 1))
     {
       goto LABEL_40;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_totalDuration != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_totalDuration != *(equalCopy + 3))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_visiblePercentage != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_visiblePercentage != *(equalCopy + 4))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_40;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_eventSequence != *(v4 + 12))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_eventSequence != *(equalCopy + 12))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_40;
   }
 
-  v7 = (*(v4 + 72) & 0x40) == 0;
+  v7 = (*(equalCopy + 72) & 0x40) == 0;
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 72) & 0x40) == 0 || self->_volume != *(v4 + 17))
+    if ((*(equalCopy + 72) & 0x40) == 0 || self->_volume != *(equalCopy + 17))
     {
       goto LABEL_40;
     }
@@ -1031,12 +1031,12 @@ LABEL_37:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v16 ^ v20 ^ v24 ^ v28;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   metaData = self->_metaData;
-  v6 = *(v4 + 7);
-  v8 = v4;
+  v6 = *(fromCopy + 7);
+  v8 = fromCopy;
   if (metaData)
   {
     if (!v6)
@@ -1057,20 +1057,20 @@ LABEL_37:
     [(APPBLogVideoAnalyticsEventRequest *)self setMetaData:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(APPBLogVideoAnalyticsEventRequest *)self setBundleID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x20) != 0)
   {
-    self->_videoState = *(v4 + 16);
+    self->_videoState = *(fromCopy + 16);
     *&self->_has |= 0x20u;
-    v7 = *(v4 + 72);
+    v7 = *(fromCopy + 72);
     if ((v7 & 1) == 0)
     {
 LABEL_11:
@@ -1083,14 +1083,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 72) & 1) == 0)
+  else if ((*(fromCopy + 72) & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_currentPlaybackTime = *(v4 + 1);
+  self->_currentPlaybackTime = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 4) == 0)
   {
 LABEL_12:
@@ -1103,9 +1103,9 @@ LABEL_12:
   }
 
 LABEL_22:
-  self->_totalDuration = *(v4 + 3);
+  self->_totalDuration = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 8) == 0)
   {
 LABEL_13:
@@ -1118,9 +1118,9 @@ LABEL_13:
   }
 
 LABEL_23:
-  self->_visiblePercentage = *(v4 + 4);
+  self->_visiblePercentage = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 2) == 0)
   {
 LABEL_14:
@@ -1133,9 +1133,9 @@ LABEL_14:
   }
 
 LABEL_24:
-  self->_timestamp = *(v4 + 2);
+  self->_timestamp = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x10) == 0)
   {
 LABEL_15:
@@ -1148,12 +1148,12 @@ LABEL_15:
   }
 
 LABEL_25:
-  self->_eventSequence = *(v4 + 12);
+  self->_eventSequence = *(fromCopy + 12);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 72) & 0x40) != 0)
+  if ((*(fromCopy + 72) & 0x40) != 0)
   {
 LABEL_16:
-    self->_volume = *(v4 + 17);
+    self->_volume = *(fromCopy + 17);
     *&self->_has |= 0x40u;
   }
 

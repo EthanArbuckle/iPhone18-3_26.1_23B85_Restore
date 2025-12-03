@@ -1,12 +1,12 @@
 @interface SBDashBoardWidgetURLHandler
-- (void)openURL:(id)a3;
+- (void)openURL:(id)l;
 @end
 
 @implementation SBDashBoardWidgetURLHandler
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(SBLockScreenUnlockRequest);
   [(SBLockScreenUnlockRequest *)v4 setSource:24];
   [(SBLockScreenUnlockRequest *)v4 setIntent:3];
@@ -17,8 +17,8 @@
   v7[1] = 3221225472;
   v7[2] = __39__SBDashBoardWidgetURLHandler_openURL___block_invoke;
   v7[3] = &unk_2783A9398;
-  v8 = v3;
-  v6 = v3;
+  v8 = lCopy;
+  v6 = lCopy;
   [v5 unlockWithRequest:v4 completion:v7];
 }
 

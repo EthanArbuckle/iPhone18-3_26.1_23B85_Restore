@@ -1,5 +1,5 @@
 @interface PDRConnectivityStatus
-+ (BOOL)getDropoutCounter:(unint64_t *)a3;
++ (BOOL)getDropoutCounter:(unint64_t *)counter;
 + (unint64_t)currentConnectivity;
 @end
 
@@ -12,15 +12,15 @@
   return [v2 currentConnectivity];
 }
 
-+ (BOOL)getDropoutCounter:(unint64_t *)a3
++ (BOOL)getDropoutCounter:(unint64_t *)counter
 {
-  v4 = [objc_opt_class() currentConnectivity];
-  if (a3)
+  currentConnectivity = [objc_opt_class() currentConnectivity];
+  if (counter)
   {
-    *a3 = v4 & 0x7FFFFFFFFFFFFFFFLL;
+    *counter = currentConnectivity & 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4 >> 63;
+  return currentConnectivity >> 63;
 }
 
 @end

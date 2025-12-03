@@ -1,41 +1,41 @@
 @interface TUIToggleView
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 enabled:(BOOL)a6 identifier:(id)a7 name:(id)a8 title:(id)a9 isOn:(BOOL)a10;
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled identifier:(id)identifier name:(id)name title:(id)title isOn:(BOOL)self0;
 - (BOOL)controlIsOn;
 - (id)accessibilityElements;
 - (id)viewStateSave;
-- (void)_toggleValueChanged:(id)a3;
+- (void)_toggleValueChanged:(id)changed;
 - (void)_updateDynamicViewState;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
 - (void)loadControlIfNeeded;
 - (void)prepareForReuse;
-- (void)setControlIsOn:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateControlWithIsOn:(BOOL)a3 title:(id)a4 enabled:(BOOL)a5 animated:(BOOL)a6;
-- (void)viewStateRestore:(id)a3;
+- (void)setControlIsOn:(BOOL)on animated:(BOOL)animated;
+- (void)updateControlWithIsOn:(BOOL)on title:(id)title enabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)viewStateRestore:(id)restore;
 @end
 
 @implementation TUIToggleView
 
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 enabled:(BOOL)a6 identifier:(id)a7 name:(id)a8 title:(id)a9 isOn:(BOOL)a10
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled identifier:(id)identifier name:(id)name title:(id)title isOn:(BOOL)self0
 {
-  v12 = a6;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  enabledCopy = enabled;
+  titleCopy = title;
+  nameCopy = name;
+  identifierCopy = identifier;
+  stateCopy = state;
+  handlerCopy = handler;
+  statesCopy = states;
   v23 = [TUIRenderModelToggle alloc];
-  v24 = [a1 tuiReuseIdentifier];
-  LOBYTE(v27) = a10;
-  v25 = [(TUIRenderModelToggle *)v23 initWithReuseIdentifier:v24 identifier:v19 elementStates:v22 actionHandler:v21 viewState:v20 enabled:v12 name:v18 title:v17 isOn:v27];
+  tuiReuseIdentifier = [self tuiReuseIdentifier];
+  LOBYTE(v27) = on;
+  v25 = [(TUIRenderModelToggle *)v23 initWithReuseIdentifier:tuiReuseIdentifier identifier:identifierCopy elementStates:statesCopy actionHandler:handlerCopy viewState:stateCopy enabled:enabledCopy name:nameCopy title:titleCopy isOn:v27];
 
   return v25;
 }
 
 - (void)loadControlIfNeeded
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if (!v3)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (!control)
   {
     v4 = [UISwitch alloc];
     [(TUIToggleView *)self bounds];
@@ -44,111 +44,111 @@
     [v5 setAutoresizingMask:18];
     [(TUIToggleView *)self addSubview:v5];
     [(TUIInteractiveBaseView *)self setControl:v5];
-    v3 = v5;
+    control = v5;
   }
 }
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  modelCopy = model;
   v10 = objc_opt_class();
-  v11 = TUIDynamicCast(v10, v9);
+  v11 = TUIDynamicCast(v10, modelCopy);
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = [(TUIInteractiveBaseView *)self renderModel];
-    v14 = TUIDynamicCast(v12, v13);
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    v14 = TUIDynamicCast(v12, renderModel);
 
-    v15 = [v11 isOn];
+    isOn = [v11 isOn];
     if ([v11 isEqualToRenderModel:v14])
     {
-      v15 = [(TUIToggleView *)self controlIsOn];
+      isOn = [(TUIToggleView *)self controlIsOn];
     }
 
-    v16 = [(TUIToggleView *)self viewStateToRestore];
+    viewStateToRestore = [(TUIToggleView *)self viewStateToRestore];
 
-    if (v16)
+    if (viewStateToRestore)
     {
-      v17 = [(TUIToggleView *)self viewStateToRestore];
-      v15 = [v17 isOn];
+      viewStateToRestore2 = [(TUIToggleView *)self viewStateToRestore];
+      isOn = [viewStateToRestore2 isOn];
 
       [(TUIToggleView *)self setViewStateToRestore:0];
     }
 
-    v18 = [v11 viewState];
-    [(TUIToggleView *)self setDynamicViewState:v18];
+    viewState = [v11 viewState];
+    [(TUIToggleView *)self setDynamicViewState:viewState];
 
     v20.receiver = self;
     v20.super_class = TUIToggleView;
-    [(TUIInteractiveBaseView *)&v20 configureWithModel:v9 outsets:top, left, bottom, right];
-    v19 = [v11 title];
-    -[TUIToggleView updateControlWithIsOn:title:enabled:animated:](self, "updateControlWithIsOn:title:enabled:animated:", v15, v19, [v11 enabled], v14 != 0);
+    [(TUIInteractiveBaseView *)&v20 configureWithModel:modelCopy outsets:top, left, bottom, right];
+    title = [v11 title];
+    -[TUIToggleView updateControlWithIsOn:title:enabled:animated:](self, "updateControlWithIsOn:title:enabled:animated:", isOn, title, [v11 enabled], v14 != 0);
   }
 }
 
-- (void)setControlIsOn:(BOOL)a3 animated:(BOOL)a4
+- (void)setControlIsOn:(BOOL)on animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(TUIInteractiveBaseView *)self control];
-  [v6 setOn:v5 animated:v4];
+  animatedCopy = animated;
+  onCopy = on;
+  control = [(TUIInteractiveBaseView *)self control];
+  [control setOn:onCopy animated:animatedCopy];
 }
 
 - (BOOL)controlIsOn
 {
-  v2 = [(TUIInteractiveBaseView *)self control];
-  v3 = [v2 isOn];
+  control = [(TUIInteractiveBaseView *)self control];
+  isOn = [control isOn];
 
-  return v3;
+  return isOn;
 }
 
-- (void)updateControlWithIsOn:(BOOL)a3 title:(id)a4 enabled:(BOOL)a5 animated:(BOOL)a6
+- (void)updateControlWithIsOn:(BOOL)on title:(id)title enabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a3;
-  v14 = a4;
-  [(TUIToggleView *)self setControlIsOn:v8 animated:v6];
-  v10 = [(TUIInteractiveBaseView *)self control];
-  v11 = [v10 title];
-  if (v11 == v14)
+  animatedCopy = animated;
+  enabledCopy = enabled;
+  onCopy = on;
+  titleCopy = title;
+  [(TUIToggleView *)self setControlIsOn:onCopy animated:animatedCopy];
+  control = [(TUIInteractiveBaseView *)self control];
+  title = [control title];
+  if (title == titleCopy)
   {
   }
 
   else
   {
-    v12 = [v10 title];
-    v13 = [v12 isEqualToString:v14];
+    title2 = [control title];
+    v13 = [title2 isEqualToString:titleCopy];
 
     if ((v13 & 1) == 0)
     {
-      [v10 setTitle:v14];
+      [control setTitle:titleCopy];
     }
   }
 
-  [v10 setEnabled:v7];
+  [control setEnabled:enabledCopy];
   [(TUIToggleView *)self bounds];
-  [v10 setFrame:?];
+  [control setFrame:?];
 }
 
-- (void)_toggleValueChanged:(id)a3
+- (void)_toggleValueChanged:(id)changed
 {
-  v4 = [(TUIInteractiveBaseView *)self renderModel];
-  v5 = [v4 actionHandler];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
 
-  if (v5)
+  if (actionHandler)
   {
-    v6 = [(TUIInteractiveBaseView *)self renderModel];
-    v7 = [v6 actionHandler];
+    renderModel2 = [(TUIInteractiveBaseView *)self renderModel];
+    actionHandler2 = [renderModel2 actionHandler];
     v10 = @"isOn";
     v8 = [NSNumber numberWithBool:[(TUIToggleView *)self controlIsOn]];
     v11 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    [v7 invoke:@"valueChanged" arguments:v9];
+    [actionHandler2 invoke:@"valueChanged" arguments:v9];
   }
 
   [(TUIToggleView *)self _updateDynamicViewState];
@@ -156,8 +156,8 @@
 
 - (void)_updateDynamicViewState
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if (v3)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (control)
   {
     dynamicViewState = self->_dynamicViewState;
 
@@ -175,8 +175,8 @@
 
 - (id)viewStateSave
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if (v3)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (control)
   {
     v4 = [[_TUIToggleViewState alloc] initWithIsOn:[(TUIToggleView *)self controlIsOn]];
   }
@@ -189,21 +189,21 @@
   return v4;
 }
 
-- (void)viewStateRestore:(id)a3
+- (void)viewStateRestore:(id)restore
 {
-  v6 = a3;
-  v4 = [(TUIInteractiveBaseView *)self control];
+  restoreCopy = restore;
+  control = [(TUIInteractiveBaseView *)self control];
 
-  if (v6 && v4)
+  if (restoreCopy && control)
   {
-    v5 = [v6 isOn];
+    isOn = [restoreCopy isOn];
 
-    [(TUIToggleView *)self setControlIsOn:v5 animated:1];
+    [(TUIToggleView *)self setControlIsOn:isOn animated:1];
   }
 
   else
   {
-    [(TUIToggleView *)self setViewStateToRestore:v6];
+    [(TUIToggleView *)self setViewStateToRestore:restoreCopy];
   }
 }
 
@@ -217,11 +217,11 @@
 
 - (id)accessibilityElements
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if (v3)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (control)
   {
-    v4 = [(TUIInteractiveBaseView *)self control];
-    v7 = v4;
+    control2 = [(TUIInteractiveBaseView *)self control];
+    v7 = control2;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 

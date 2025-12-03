@@ -1,22 +1,22 @@
 @interface SLCoreSpotlightUtilities
-+ (id)CSQueryStringForAutodonatingChatsWithDecay:(BOOL)a3;
-+ (id)CSQueryStringForSLHighlightsForContentType:(unsigned __int8)a3 forChatIdentifiers:(id)a4;
++ (id)CSQueryStringForAutodonatingChatsWithDecay:(BOOL)decay;
++ (id)CSQueryStringForSLHighlightsForContentType:(unsigned __int8)type forChatIdentifiers:(id)identifiers;
 + (id)CSSearchQueryContextForAutodonatingChats;
-+ (id)CSSearchQueryContextForSLHighlightsForContentType:(unsigned __int8)a3;
-+ (id)fetchCSSearchableItemForUniqueIdentifier:(id)a3 forContentType:(unsigned __int8)a4 withRequiredAttributes:(id)a5 error:(id *)a6;
++ (id)CSSearchQueryContextForSLHighlightsForContentType:(unsigned __int8)type;
++ (id)fetchCSSearchableItemForUniqueIdentifier:(id)identifier forContentType:(unsigned __int8)type withRequiredAttributes:(id)attributes error:(id *)error;
 + (id)requiredSpotlightAttributeKeysForFiles;
 + (id)requiredSpotlightAttributeKeysForLinks;
 @end
 
 @implementation SLCoreSpotlightUtilities
 
-+ (id)fetchCSSearchableItemForUniqueIdentifier:(id)a3 forContentType:(unsigned __int8)a4 withRequiredAttributes:(id)a5 error:(id *)a6
++ (id)fetchCSSearchableItemForUniqueIdentifier:(id)identifier forContentType:(unsigned __int8)type withRequiredAttributes:(id)attributes error:(id *)error
 {
-  v8 = a4;
+  typeCopy = type;
   v63[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  if (identifierCopy)
   {
     v51 = 0;
     v52 = &v51;
@@ -26,39 +26,39 @@
     v56 = 0;
     v11 = dispatch_group_create();
     dispatch_group_enter(v11);
-    v12 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
-    v61 = v9;
+    defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+    v61 = identifierCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __113__SLCoreSpotlightUtilities_fetchCSSearchableItemForUniqueIdentifier_forContentType_withRequiredAttributes_error___block_invoke;
     v47[3] = &unk_278926428;
     v50 = &v51;
-    v14 = v9;
+    v14 = identifierCopy;
     v48 = v14;
     v15 = v11;
     v49 = v15;
-    [v12 slowFetchAttributes:v10 protectionClass:0 bundleID:@"com.apple.MobileSMS" identifiers:v13 completionHandler:v47];
+    [defaultSearchableIndex slowFetchAttributes:attributesCopy protectionClass:0 bundleID:@"com.apple.MobileSMS" identifiers:v13 completionHandler:v47];
 
     v16 = dispatch_time(0, 60000000000);
     if (dispatch_group_wait(v15, v16))
     {
       v59[0] = *MEMORY[0x277CCA450];
-      v17 = [MEMORY[0x277CCA8D8] mainBundle];
-      v18 = [v17 localizedStringForKey:@"SocialLayer CSSearchableItem fetch failed." value:&stru_28468DAB8 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v18 = [mainBundle localizedStringForKey:@"SocialLayer CSSearchableItem fetch failed." value:&stru_28468DAB8 table:0];
       v60[0] = v18;
       v59[1] = *MEMORY[0x277CCA470];
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v20 = [v19 localizedStringForKey:@"Timed out while fetching CSSearchableItem." value:&stru_28468DAB8 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v20 = [mainBundle2 localizedStringForKey:@"Timed out while fetching CSSearchableItem." value:&stru_28468DAB8 table:0];
       v60[1] = v20;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
 
-      if (a6)
+      if (error)
       {
         v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" code:2 userInfo:v21];
 LABEL_15:
         v28 = 0;
-        *a6 = v22;
+        *error = v22;
 LABEL_20:
 
         _Block_object_dispose(&v51, 8);
@@ -73,7 +73,7 @@ LABEL_20:
       if (objc_opt_isKindOfClass())
       {
         v30 = [v52[5] count];
-        if (v30 == [v10 count])
+        if (v30 == [attributesCopy count])
         {
           v31 = objc_alloc_init(MEMORY[0x277CC34B8]);
           v40 = MEMORY[0x277D85DD0];
@@ -85,42 +85,42 @@ LABEL_20:
           v44 = v21;
           v32 = v14;
           v45 = v32;
-          [v10 enumerateObjectsUsingBlock:&v40];
-          if (v8)
+          [attributesCopy enumerateObjectsUsingBlock:&v40];
+          if (typeCopy)
           {
-            if (v8 == 1)
+            if (typeCopy == 1)
             {
-              v33 = @"attachmentDomain";
+              domainIdentifier = @"attachmentDomain";
             }
 
             else
             {
-              v33 = 0;
+              domainIdentifier = 0;
             }
           }
 
           else
           {
-            v33 = [v21 domainIdentifier];
+            domainIdentifier = [v21 domainIdentifier];
           }
 
-          v28 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:v32 domainIdentifier:v33 attributeSet:v21];
+          v28 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:v32 domainIdentifier:domainIdentifier attributeSet:v21];
 
           goto LABEL_20;
         }
       }
 
       v57[0] = *MEMORY[0x277CCA450];
-      v34 = [MEMORY[0x277CCA8D8] mainBundle];
-      v35 = [v34 localizedStringForKey:@"SocialLayer CSSearchableItem fetch failed." value:&stru_28468DAB8 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v35 = [mainBundle3 localizedStringForKey:@"SocialLayer CSSearchableItem fetch failed." value:&stru_28468DAB8 table:0];
       v58[0] = v35;
       v57[1] = *MEMORY[0x277CCA470];
-      v36 = [MEMORY[0x277CCA8D8] mainBundle];
-      v37 = [v36 localizedStringForKey:@"Failed to fetch one or more required attributes." value:&stru_28468DAB8 table:0];
+      mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+      v37 = [mainBundle4 localizedStringForKey:@"Failed to fetch one or more required attributes." value:&stru_28468DAB8 table:0];
       v58[1] = v37;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:2];
 
-      if (a6)
+      if (error)
       {
         v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" code:3 userInfo:v21];
         goto LABEL_15;
@@ -132,18 +132,18 @@ LABEL_20:
   }
 
   v62[0] = *MEMORY[0x277CCA450];
-  v23 = [MEMORY[0x277CCA8D8] mainBundle];
-  v24 = [v23 localizedStringForKey:@"SocialLayer CSSearchableItem fetch failed." value:&stru_28468DAB8 table:0];
+  mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+  v24 = [mainBundle5 localizedStringForKey:@"SocialLayer CSSearchableItem fetch failed." value:&stru_28468DAB8 table:0];
   v63[0] = v24;
   v62[1] = *MEMORY[0x277CCA470];
-  v25 = [MEMORY[0x277CCA8D8] mainBundle];
-  v26 = [v25 localizedStringForKey:@"Provided a nil unique identifier." value:&stru_28468DAB8 table:0];
+  mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+  v26 = [mainBundle6 localizedStringForKey:@"Provided a nil unique identifier." value:&stru_28468DAB8 table:0];
   v63[1] = v26;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:2];
 
-  if (a6)
+  if (error)
   {
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" code:1 userInfo:v27];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.SocialLayer.SLHighlightErrorDomain" code:1 userInfo:v27];
   }
 
   v28 = 0;
@@ -221,10 +221,10 @@ LABEL_8:
   return v2;
 }
 
-+ (id)CSQueryStringForAutodonatingChatsWithDecay:(BOOL)a3
++ (id)CSQueryStringForAutodonatingChatsWithDecay:(BOOL)decay
 {
   v3 = MEMORY[0x277CCACA8];
-  if (a3)
+  if (decay)
   {
     [MEMORY[0x277D3A4C8] decayInterval];
     v5 = [v3 stringWithFormat:@"kMDItemLastUsedDate>=$time.now(-%.f)", v4];
@@ -239,24 +239,24 @@ LABEL_8:
   return v6;
 }
 
-+ (id)CSSearchQueryContextForSLHighlightsForContentType:(unsigned __int8)a3
++ (id)CSSearchQueryContextForSLHighlightsForContentType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_opt_new();
   v5 = v4;
-  if (v3 == 1)
+  if (typeCopy == 1)
   {
-    v6 = [objc_opt_class() requiredSpotlightAttributeKeysForFiles];
+    requiredSpotlightAttributeKeysForFiles = [objc_opt_class() requiredSpotlightAttributeKeysForFiles];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!typeCopy)
   {
-    v6 = [objc_opt_class() requiredSpotlightAttributeKeysForLinks];
+    requiredSpotlightAttributeKeysForFiles = [objc_opt_class() requiredSpotlightAttributeKeysForLinks];
 LABEL_5:
-    v7 = v6;
-    v8 = [v6 allObjects];
-    [v5 setFetchAttributes:v8];
+    v7 = requiredSpotlightAttributeKeysForFiles;
+    allObjects = [requiredSpotlightAttributeKeysForFiles allObjects];
+    [v5 setFetchAttributes:allObjects];
 
     goto LABEL_7;
   }
@@ -267,11 +267,11 @@ LABEL_7:
   return v5;
 }
 
-+ (id)CSQueryStringForSLHighlightsForContentType:(unsigned __int8)a3 forChatIdentifiers:(id)a4
++ (id)CSQueryStringForSLHighlightsForContentType:(unsigned __int8)type forChatIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = a4;
-  if (!v4)
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  if (!typeCopy)
   {
     v7 = 0;
     v6 = @"URL=*";
@@ -279,7 +279,7 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (typeCopy == 1)
   {
     v6 = 0;
     v7 = 1;
@@ -294,7 +294,7 @@ LABEL_5:
   v7 = 1;
 LABEL_7:
   v10 = @"InRange(com_apple_mobilesms_isHighlightedContent, 1, 2)";
-  if (!v5)
+  if (!identifiersCopy)
   {
     v10 = @"com_apple_mobilesms_isHighlightedContent=2";
   }

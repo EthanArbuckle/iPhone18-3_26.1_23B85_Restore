@@ -1,25 +1,25 @@
 @interface AKFontChooserUIItemDelegate
 - (AKTextAttributesViewController)parentController;
-- (id)convertFont:(id)a3;
-- (void)syncFontsToUI:(id)a3;
+- (id)convertFont:(id)font;
+- (void)syncFontsToUI:(id)i;
 @end
 
 @implementation AKFontChooserUIItemDelegate
 
-- (id)convertFont:(id)a3
+- (id)convertFont:(id)font
 {
-  v4 = a3;
-  v5 = [(AKFontChooserUIItemDelegate *)self parentController];
-  v6 = [v5 convertFont:v4];
+  fontCopy = font;
+  parentController = [(AKFontChooserUIItemDelegate *)self parentController];
+  v6 = [parentController convertFont:fontCopy];
 
   return v6;
 }
 
-- (void)syncFontsToUI:(id)a3
+- (void)syncFontsToUI:(id)i
 {
-  v4 = a3;
-  v5 = [(AKFontChooserUIItemDelegate *)self parentController];
-  [v5 syncFontsToUI:v4];
+  iCopy = i;
+  parentController = [(AKFontChooserUIItemDelegate *)self parentController];
+  [parentController syncFontsToUI:iCopy];
 }
 
 - (AKTextAttributesViewController)parentController

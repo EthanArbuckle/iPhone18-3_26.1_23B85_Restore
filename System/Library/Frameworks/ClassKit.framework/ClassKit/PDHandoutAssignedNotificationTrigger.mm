@@ -1,23 +1,23 @@
 @interface PDHandoutAssignedNotificationTrigger
-+ (id)dateFormatter:(id)a3;
-- (BOOL)baseCriteriaPassesWithHandout:(id)a3 database:(id)a4;
-- (PDHandoutAssignedNotificationTrigger)initWithDatabase:(id)a3;
-- (id)classWithClassID:(id)a3 database:(id)a4;
-- (id)notificationDataWithDatabase:(id)a3 recipient:(id)a4 handoutID:(id)a5 handoutTitle:(id)a6;
-- (int64_t)getUpdateFromNewHandout:(id)a3 andExistingHandout:(id)a4;
++ (id)dateFormatter:(id)formatter;
+- (BOOL)baseCriteriaPassesWithHandout:(id)handout database:(id)database;
+- (PDHandoutAssignedNotificationTrigger)initWithDatabase:(id)database;
+- (id)classWithClassID:(id)d database:(id)database;
+- (id)notificationDataWithDatabase:(id)database recipient:(id)recipient handoutID:(id)d handoutTitle:(id)title;
+- (int64_t)getUpdateFromNewHandout:(id)handout andExistingHandout:(id)existingHandout;
 - (void)dealloc;
-- (void)handoutDidInsert:(id)a3;
-- (void)handoutRecipientDidInsert:(id)a3;
-- (void)handoutWillChange:(id)a3;
+- (void)handoutDidInsert:(id)insert;
+- (void)handoutRecipientDidInsert:(id)insert;
+- (void)handoutWillChange:(id)change;
 @end
 
 @implementation PDHandoutAssignedNotificationTrigger
 
-- (PDHandoutAssignedNotificationTrigger)initWithDatabase:(id)a3
+- (PDHandoutAssignedNotificationTrigger)initWithDatabase:(id)database
 {
   v12.receiver = self;
   v12.super_class = PDHandoutAssignedNotificationTrigger;
-  v3 = [(PDUserNotificationTrigger *)&v12 initWithDatabase:a3];
+  v3 = [(PDUserNotificationTrigger *)&v12 initWithDatabase:database];
   if (v3)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
@@ -51,44 +51,44 @@
   [(PDHandoutAssignedNotificationTrigger *)&v4 dealloc];
 }
 
-- (void)handoutDidInsert:(id)a3
+- (void)handoutDidInsert:(id)insert
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"currentEntity"];
+  insertCopy = insert;
+  userInfo = [insertCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"currentEntity"];
 
   CLSInitLog();
   v7 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [v6 objectID];
-    v10 = [v6 title];
-    v11 = [v6 dateOfPublication];
+    objectID = [v6 objectID];
+    title = [v6 title];
+    dateOfPublication = [v6 dateOfPublication];
     v29 = 138412802;
-    v30 = v9;
+    v30 = objectID;
     v31 = 2112;
-    v32 = v10;
+    v32 = title;
     v33 = 2112;
-    v34 = v11;
+    v34 = dateOfPublication;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutDidInsert. Handout ID: %@ title: %@ pubTime: %@", &v29, 0x20u);
   }
 
-  v12 = [v4 object];
-  if ([v6 publishingState] == 2 && -[PDHandoutAssignedNotificationTrigger baseCriteriaPassesWithHandout:database:](self, "baseCriteriaPassesWithHandout:database:", v6, v12))
+  object = [insertCopy object];
+  if ([v6 publishingState] == 2 && -[PDHandoutAssignedNotificationTrigger baseCriteriaPassesWithHandout:database:](self, "baseCriteriaPassesWithHandout:database:", v6, object))
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    v14 = [v6 objectID];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objectID2 = [v6 objectID];
     CLSInitLog();
     v15 = CLSLogNotifications;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(PDHandoutAssignedNotificationTrigger *)v13 notifiedHandoutIDs];
-      v17 = v16;
-      if (v16)
+      notifiedHandoutIDs = [(PDHandoutAssignedNotificationTrigger *)selfCopy notifiedHandoutIDs];
+      v17 = notifiedHandoutIDs;
+      if (notifiedHandoutIDs)
       {
-        v18 = [*(v16 + 8) containsObject:v14];
+        v18 = [*(notifiedHandoutIDs + 8) containsObject:objectID2];
       }
 
       else
@@ -98,22 +98,22 @@
 
       v19 = [NSNumber numberWithBool:v18];
       v29 = 138412546;
-      v30 = v14;
+      v30 = objectID2;
       v31 = 2112;
       v32 = v19;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutDidInsert > shouldTriggerNotification. Handout ID: %@ In notifiedHandoutIDs: %@", &v29, 0x16u);
     }
 
-    v20 = [(PDHandoutAssignedNotificationTrigger *)v13 notifiedHandoutIDs];
-    v21 = v20;
-    if (!v20 || (v22 = [*(v20 + 8) containsObject:v14], v21, (v22 & 1) == 0))
+    notifiedHandoutIDs2 = [(PDHandoutAssignedNotificationTrigger *)selfCopy notifiedHandoutIDs];
+    v21 = notifiedHandoutIDs2;
+    if (!notifiedHandoutIDs2 || (v22 = [*(notifiedHandoutIDs2 + 8) containsObject:objectID2], v21, (v22 & 1) == 0))
     {
-      v23 = [v6 title];
-      v24 = [(PDHandoutAssignedNotificationTrigger *)v13 pendingRecipientHandoutData];
-      v25 = v24;
-      if (v23)
+      title2 = [v6 title];
+      pendingRecipientHandoutData = [(PDHandoutAssignedNotificationTrigger *)selfCopy pendingRecipientHandoutData];
+      v25 = pendingRecipientHandoutData;
+      if (title2)
       {
-        v26 = v23;
+        v26 = title2;
       }
 
       else
@@ -121,64 +121,64 @@
         v26 = &stru_100206880;
       }
 
-      [v24 setObject:v26 forKeyedSubscript:v14];
+      [pendingRecipientHandoutData setObject:v26 forKeyedSubscript:objectID2];
 
       CLSInitLog();
       v27 = CLSLogNotifications;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [(PDHandoutAssignedNotificationTrigger *)v13 pendingRecipientHandoutData];
+        pendingRecipientHandoutData2 = [(PDHandoutAssignedNotificationTrigger *)selfCopy pendingRecipientHandoutData];
         v29 = 138412546;
-        v30 = v14;
+        v30 = objectID2;
         v31 = 2112;
-        v32 = v28;
+        v32 = pendingRecipientHandoutData2;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutDidInsert. Added to pendingRecipientHandoutData. Handout ID: %@ pendingRecipientHandoutData: %@", &v29, 0x16u);
       }
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (int64_t)getUpdateFromNewHandout:(id)a3 andExistingHandout:(id)a4
+- (int64_t)getUpdateFromNewHandout:(id)handout andExistingHandout:(id)existingHandout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dueDate];
-  if (!v8)
+  handoutCopy = handout;
+  existingHandoutCopy = existingHandout;
+  dueDate = [existingHandoutCopy dueDate];
+  if (!dueDate)
   {
-    v4 = [v6 dueDate];
-    if (!v4)
+    dueDate2 = [handoutCopy dueDate];
+    if (!dueDate2)
     {
       goto LABEL_16;
     }
   }
 
-  v9 = [v7 dueDate];
-  if (!v9)
+  dueDate3 = [existingHandoutCopy dueDate];
+  if (!dueDate3)
   {
 LABEL_9:
-    if (!v8)
+    if (!dueDate)
     {
     }
 
     goto LABEL_12;
   }
 
-  v10 = v9;
-  v11 = [v6 dueDate];
-  if (!v11)
+  v10 = dueDate3;
+  dueDate4 = [handoutCopy dueDate];
+  if (!dueDate4)
   {
 
     goto LABEL_9;
   }
 
-  v12 = v11;
-  v13 = [v7 dueDate];
-  v14 = [v6 dueDate];
-  v15 = [v13 isEqualToDate:v14];
+  v12 = dueDate4;
+  dueDate5 = [existingHandoutCopy dueDate];
+  dueDate6 = [handoutCopy dueDate];
+  v15 = [dueDate5 isEqualToDate:dueDate6];
 
-  if (!v8)
+  if (!dueDate)
   {
 
     if ((v15 & 1) == 0)
@@ -187,29 +187,29 @@ LABEL_9:
     }
 
 LABEL_16:
-    v18 = [v7 title];
-    if (!v18)
+    title = [existingHandoutCopy title];
+    if (!title)
     {
-      v4 = [v6 title];
-      if (!v4)
+      dueDate2 = [handoutCopy title];
+      if (!dueDate2)
       {
         goto LABEL_30;
       }
     }
 
-    v19 = [v7 title];
-    if (v19)
+    title2 = [existingHandoutCopy title];
+    if (title2)
     {
-      v20 = v19;
-      v21 = [v6 title];
-      if (v21)
+      v20 = title2;
+      title3 = [handoutCopy title];
+      if (title3)
       {
-        v22 = v21;
-        v23 = [v7 title];
-        v24 = [v6 title];
-        v25 = [v23 isEqualToString:v24];
+        v22 = title3;
+        title4 = [existingHandoutCopy title];
+        title5 = [handoutCopy title];
+        v25 = [title4 isEqualToString:title5];
 
-        if (v18)
+        if (title)
         {
 
           if (v25)
@@ -223,29 +223,29 @@ LABEL_16:
         if (v25)
         {
 LABEL_30:
-          v26 = [v7 instructions];
-          if (!v26)
+          instructions = [existingHandoutCopy instructions];
+          if (!instructions)
           {
-            v4 = [v6 instructions];
-            if (!v4)
+            dueDate2 = [handoutCopy instructions];
+            if (!dueDate2)
             {
               goto LABEL_43;
             }
           }
 
-          v27 = [v7 instructions];
-          if (v27)
+          instructions2 = [existingHandoutCopy instructions];
+          if (instructions2)
           {
-            v28 = v27;
-            v29 = [v6 instructions];
-            if (v29)
+            v28 = instructions2;
+            instructions3 = [handoutCopy instructions];
+            if (instructions3)
             {
-              v30 = v29;
-              v31 = [v7 instructions];
-              v32 = [v6 instructions];
-              v33 = [v31 isEqualToString:v32];
+              v30 = instructions3;
+              instructions4 = [existingHandoutCopy instructions];
+              instructions5 = [handoutCopy instructions];
+              v33 = [instructions4 isEqualToString:instructions5];
 
-              if (v26)
+              if (instructions)
               {
 
                 if (v33)
@@ -269,7 +269,7 @@ LABEL_43:
             }
           }
 
-          if (!v26)
+          if (!instructions)
           {
           }
 
@@ -283,13 +283,13 @@ LABEL_26:
         goto LABEL_44;
       }
 
-      if (!v18)
+      if (!title)
       {
         goto LABEL_24;
       }
     }
 
-    else if (!v18)
+    else if (!title)
     {
 LABEL_24:
     }
@@ -303,9 +303,9 @@ LABEL_24:
   }
 
 LABEL_12:
-  v16 = [v6 dueDate];
+  dueDate7 = [handoutCopy dueDate];
 
-  if (v16)
+  if (dueDate7)
   {
     v17 = 2;
   }
@@ -320,48 +320,48 @@ LABEL_44:
   return v17;
 }
 
-- (void)handoutWillChange:(id)a3
+- (void)handoutWillChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"newEntity"];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"newEntity"];
 
-  v7 = [v6 objectID];
-  v8 = [v6 title];
-  v9 = [v4 object];
+  objectID = [v6 objectID];
+  title = [v6 title];
+  object = [changeCopy object];
 
-  v10 = [v9 select:objc_opt_class() identity:v7];
-  v11 = [[PDUserNotificationTrigger alloc] initWithDatabase:v9];
+  v10 = [object select:objc_opt_class() identity:objectID];
+  v11 = [[PDUserNotificationTrigger alloc] initWithDatabase:object];
   if (![(PDUserNotificationTrigger *)v11 isIncompleteHandout:v10]|| ![(PDUserNotificationTrigger *)v11 isIncompleteHandout:v6])
   {
     goto LABEL_63;
   }
 
-  v12 = [v10 publishingState];
-  v13 = [v6 publishingState];
+  publishingState = [v10 publishingState];
+  publishingState2 = [v6 publishingState];
   CLSInitLog();
   v14 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    *v83 = v7;
+    *v83 = objectID;
     *&v83[8] = 2112;
-    *&v83[10] = v8;
+    *&v83[10] = title;
     v84 = 2048;
-    v85 = v12;
+    v85 = publishingState;
     v86 = 2048;
-    v87 = v13;
+    v87 = publishingState2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutWillChange. Handout ID: %@ title: %@ Old pubState: %ld New pubState: %ld", buf, 0x2Au);
   }
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1 || v13 != 2 || ![(PDHandoutAssignedNotificationTrigger *)self baseCriteriaPassesWithHandout:v6 database:v9])
+  if ((publishingState & 0xFFFFFFFFFFFFFFFBLL) != 1 || publishingState2 != 2 || ![(PDHandoutAssignedNotificationTrigger *)self baseCriteriaPassesWithHandout:v6 database:object])
   {
     v18 = [(PDHandoutAssignedNotificationTrigger *)self getUpdateFromNewHandout:v6 andExistingHandout:v10];
-    v19 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
-    v20 = v19;
-    if (v19)
+    notifiedHandoutIDs = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
+    v20 = notifiedHandoutIDs;
+    if (notifiedHandoutIDs)
     {
-      v17 = [*(v19 + 8) containsObject:v7];
+      v17 = [*(notifiedHandoutIDs + 8) containsObject:objectID];
     }
 
     else
@@ -406,15 +406,15 @@ LABEL_44:
       v21 = @"DueDate";
     }
 
-    [PDHandoutAssignedNotificationTrigger _logHandoutTypeUpdate:v21 forID:v7 isInNotifiedHandoutIDs:v17];
+    [PDHandoutAssignedNotificationTrigger _logHandoutTypeUpdate:v21 forID:objectID isInNotifiedHandoutIDs:v17];
     goto LABEL_26;
   }
 
-  v15 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
-  v16 = v15;
-  if (v15)
+  notifiedHandoutIDs2 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
+  v16 = notifiedHandoutIDs2;
+  if (notifiedHandoutIDs2)
   {
-    v17 = [*(v15 + 8) containsObject:v7];
+    v17 = [*(notifiedHandoutIDs2 + 8) containsObject:objectID];
   }
 
   else
@@ -423,19 +423,19 @@ LABEL_44:
   }
 
 LABEL_17:
-  [PDHandoutAssignedNotificationTrigger _logHandoutTypeUpdate:@"New" forID:v7 isInNotifiedHandoutIDs:v17];
+  [PDHandoutAssignedNotificationTrigger _logHandoutTypeUpdate:@"New" forID:objectID isInNotifiedHandoutIDs:v17];
   v18 = 1;
 LABEL_26:
-  v22 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
-  if (v22 && (v23 = v22, v24 = [*(v22 + 8) containsObject:v7], v23, (v24 & 1) != 0))
+  notifiedHandoutIDs3 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
+  if (notifiedHandoutIDs3 && (v23 = notifiedHandoutIDs3, v24 = [*(notifiedHandoutIDs3 + 8) containsObject:objectID], v23, (v24 & 1) != 0))
   {
     v25 = 1;
   }
 
   else
   {
-    v26 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
-    sub_1000B072C(v26, v7);
+    notifiedHandoutIDs4 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
+    sub_1000B072C(notifiedHandoutIDs4, objectID);
 
     v25 = 0;
   }
@@ -447,29 +447,29 @@ LABEL_26:
     *buf = 67109378;
     *v83 = v25 ^ 1;
     *&v83[4] = 2112;
-    *&v83[6] = v7;
+    *&v83[6] = objectID;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutWillChange. Should trigger %d HandoutID: %@", buf, 0x12u);
   }
 
   if ((v25 & 1) == 0)
   {
-    v77 = v8;
-    v28 = [v6 objectID];
-    v73 = sub_100176270(v9, v28);
+    v77 = title;
+    objectID2 = [v6 objectID];
+    v73 = sub_100176270(object, objectID2);
 
     v29 = objc_opt_class();
-    v81 = v7;
+    v81 = objectID;
     v30 = [NSArray arrayWithObjects:&v81 count:1];
-    v31 = [v9 select:v29 where:@"parentObjectID = ?" bindings:v30];
+    v31 = [object select:v29 where:@"parentObjectID = ?" bindings:v30];
 
-    v32 = [v6 title];
-    selfa = [(PDHandoutAssignedNotificationTrigger *)self notificationDataWithDatabase:v9 recipient:v31 handoutID:v7 handoutTitle:v32];
+    title2 = [v6 title];
+    selfa = [(PDHandoutAssignedNotificationTrigger *)self notificationDataWithDatabase:object recipient:v31 handoutID:objectID handoutTitle:title2];
 
-    v33 = [v31 classID];
-    v34 = [(PDHandoutAssignedNotificationTrigger *)self classWithClassID:v33 database:v9];
+    classID = [v31 classID];
+    v34 = [(PDHandoutAssignedNotificationTrigger *)self classWithClassID:classID database:object];
 
     v78 = v34;
-    v79 = [v34 displayName];
+    displayName = [v34 displayName];
     if (v18 > 3)
     {
       if ((v18 - 4) < 2)
@@ -477,9 +477,9 @@ LABEL_26:
         v76 = v31;
         v75 = [NSBundle bundleForClass:objc_opt_class()];
         v43 = [v75 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_INFO_UPDATED_TITLE_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-        v45 = [NSString stringWithFormat:v43, v79];
+        v45 = [NSString stringWithFormat:v43, displayName];
         v35 = selfa;
-        v8 = v77;
+        title = v77;
         if (selfa)
         {
           objc_setProperty_nonatomic_copy(selfa, v44, v45, 8);
@@ -487,9 +487,9 @@ LABEL_26:
 
         v74 = [NSBundle bundleForClass:objc_opt_class()];
         v46 = [v74 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_INFO_UPDATED_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-        v42 = [v10 title];
+        title3 = [v10 title];
         v72 = v46;
-        v48 = [NSString stringWithFormat:v46, v42];
+        title5 = [NSString stringWithFormat:v46, title3];
         if (!selfa)
         {
           goto LABEL_61;
@@ -499,7 +499,7 @@ LABEL_26:
       }
 
       v35 = selfa;
-      v8 = v77;
+      title = v77;
     }
 
     else
@@ -509,11 +509,11 @@ LABEL_26:
         v76 = v31;
         v49 = [NSBundle bundleForClass:objc_opt_class()];
         v50 = v49;
-        v8 = v77;
+        title = v77;
         if (v73)
         {
           v51 = [v49 localizedStringForKey:@"NOTIFICATION_STUDENT_NEW_ASSESSMENT_TITLE" value:&stru_100206880 table:@"ClassKit"];
-          v53 = [NSString stringWithFormat:v51, v79];
+          v53 = [NSString stringWithFormat:v51, displayName];
           if (selfa)
           {
             objc_setProperty_nonatomic_copy(selfa, v52, v53, 8);
@@ -526,7 +526,7 @@ LABEL_26:
         else
         {
           v65 = [v49 localizedStringForKey:@"NOTIFICATION_STUDENT_NEW_HANDOUT_TITLE" value:&stru_100206880 table:@"ClassKit"];
-          v67 = [NSString stringWithFormat:v65, v79];
+          v67 = [NSString stringWithFormat:v65, displayName];
           if (selfa)
           {
             objc_setProperty_nonatomic_copy(selfa, v66, v67, 8);
@@ -538,12 +538,12 @@ LABEL_26:
 
         v74 = v54;
         v40 = [v54 localizedStringForKey:v55 value:&stru_100206880 table:@"ClassKit"];
-        v41 = [v10 title];
-        v42 = v41;
-        v69 = v79;
+        title4 = [v10 title];
+        title3 = title4;
+        v69 = displayName;
 LABEL_59:
         v72 = v40;
-        v48 = [NSString stringWithFormat:v40, v41, v69];
+        title5 = [NSString stringWithFormat:v40, title4, v69];
         v35 = selfa;
         if (!selfa)
         {
@@ -554,17 +554,17 @@ LABEL_61:
         }
 
 LABEL_60:
-        objc_setProperty_nonatomic_copy(v35, v47, v48, 16);
+        objc_setProperty_nonatomic_copy(v35, v47, title5, 16);
         goto LABEL_61;
       }
 
-      v8 = v77;
+      title = v77;
       if (v18 == 2)
       {
         v76 = v31;
         v56 = [NSBundle bundleForClass:objc_opt_class()];
         v57 = [v56 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_INFO_UPDATED_TITLE_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-        v59 = [NSString stringWithFormat:v57, v79];
+        v59 = [NSString stringWithFormat:v57, displayName];
         if (selfa)
         {
           objc_setProperty_nonatomic_copy(selfa, v58, v59, 8);
@@ -575,12 +575,12 @@ LABEL_60:
         v62 = [v60 dateFormatter:v61];
 
         v72 = [NSBundle bundleForClass:objc_opt_class()];
-        v42 = [v72 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_DUE_DATE_UPDATED_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-        v48 = [v10 title];
+        title3 = [v72 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_DUE_DATE_UPDATED_FORMAT" value:&stru_100206880 table:@"ClassKit"];
+        title5 = [v10 title];
         [v6 dueDate];
         v71 = v74 = v62;
         v70 = [v62 stringFromDate:?];
-        v64 = [NSString stringWithFormat:v42, v48, v70];
+        v64 = [NSString stringWithFormat:title3, title5, v70];
         if (selfa)
         {
           objc_setProperty_nonatomic_copy(selfa, v63, v64, 16);
@@ -596,7 +596,7 @@ LABEL_60:
         v76 = v31;
         v36 = [NSBundle bundleForClass:objc_opt_class()];
         v37 = [v36 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_INFO_UPDATED_TITLE_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-        v39 = [NSString stringWithFormat:v37, v79];
+        v39 = [NSString stringWithFormat:v37, displayName];
         if (selfa)
         {
           objc_setProperty_nonatomic_copy(selfa, v38, v39, 8);
@@ -604,30 +604,30 @@ LABEL_60:
 
         v74 = [NSBundle bundleForClass:objc_opt_class()];
         v40 = [v74 localizedStringForKey:@"NOTIFICATION_STUDENT_HANDOUT_DUE_DATE_DELETED_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-        v41 = [v10 title];
-        v42 = v41;
+        title4 = [v10 title];
+        title3 = title4;
         goto LABEL_59;
       }
     }
 
 LABEL_62:
     [(PDUserNotificationTrigger *)self fireTriggerWithNotificationData:v35];
-    v68 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
-    sub_1000B07B8(v68, v7);
+    notifiedHandoutIDs5 = [(PDHandoutAssignedNotificationTrigger *)self notifiedHandoutIDs];
+    sub_1000B07B8(notifiedHandoutIDs5, objectID);
   }
 
 LABEL_63:
 }
 
-+ (id)dateFormatter:(id)a3
++ (id)dateFormatter:(id)formatter
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009D6DC;
   block[3] = &unk_100202D40;
-  v9 = a3;
+  formatterCopy = formatter;
   v3 = qword_10024D9B8;
-  v4 = v9;
+  v4 = formatterCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_10024D9B8, block);
@@ -639,46 +639,46 @@ LABEL_63:
   return v5;
 }
 
-- (void)handoutRecipientDidInsert:(id)a3
+- (void)handoutRecipientDidInsert:(id)insert
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if (sub_100050844(v5))
+  insertCopy = insert;
+  object = [insertCopy object];
+  if (sub_100050844(object))
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"currentEntity"];
+    userInfo = [insertCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"currentEntity"];
 
-    v8 = [v7 parentObjectID];
+    parentObjectID = [v7 parentObjectID];
     CLSInitLog();
     v9 = CLSLogNotifications;
     if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [v7 classID];
+      classID = [v7 classID];
       v32 = 138412546;
-      v33 = v8;
+      v33 = parentObjectID;
       v34 = 2112;
-      v35 = v11;
+      v35 = classID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutRecipientDidInsert. Look for parent handout: %@ ClassID: %@", &v32, 0x16u);
     }
 
-    v12 = self;
-    objc_sync_enter(v12);
-    if (!v8 || (-[PDHandoutAssignedNotificationTrigger notifiedHandoutIDs](v12, "notifiedHandoutIDs"), v13 = objc_claimAutoreleasedReturnValue(), (v14 = v13) != 0) && (v15 = [*(v13 + 8) containsObject:v8], v14, (v15 & 1) != 0))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!parentObjectID || (-[PDHandoutAssignedNotificationTrigger notifiedHandoutIDs](selfCopy, "notifiedHandoutIDs"), v13 = objc_claimAutoreleasedReturnValue(), (v14 = v13) != 0) && (v15 = [*(v13 + 8) containsObject:parentObjectID], v14, (v15 & 1) != 0))
     {
       CLSInitLog();
-      v16 = CLSLogNotifications;
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+      notifiedHandoutIDs3 = CLSLogNotifications;
+      if (os_log_type_enabled(notifiedHandoutIDs3, OS_LOG_TYPE_INFO))
       {
-        v17 = [(PDHandoutAssignedNotificationTrigger *)v12 pendingRecipientHandoutData];
-        v18 = [(PDHandoutAssignedNotificationTrigger *)v12 notifiedHandoutIDs];
+        pendingRecipientHandoutData = [(PDHandoutAssignedNotificationTrigger *)selfCopy pendingRecipientHandoutData];
+        notifiedHandoutIDs = [(PDHandoutAssignedNotificationTrigger *)selfCopy notifiedHandoutIDs];
         v32 = 138412802;
-        v33 = v8;
+        v33 = parentObjectID;
         v34 = 2112;
-        v35 = v17;
+        v35 = pendingRecipientHandoutData;
         v36 = 2112;
-        v37 = v18;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutRecipientDidInsert. Will Not set shouldTriggerNotification. HandoutID: %@ pendingRecipientHandoutData: %@ notifiedHandoutIDs: %@", &v32, 0x20u);
+        v37 = notifiedHandoutIDs;
+        _os_log_impl(&_mh_execute_header, notifiedHandoutIDs3, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutRecipientDidInsert. Will Not set shouldTriggerNotification. HandoutID: %@ pendingRecipientHandoutData: %@ notifiedHandoutIDs: %@", &v32, 0x20u);
       }
 
       v19 = 0;
@@ -687,8 +687,8 @@ LABEL_63:
 
     else
     {
-      v22 = [(PDHandoutAssignedNotificationTrigger *)v12 pendingRecipientHandoutData];
-      v19 = [v22 objectForKeyedSubscript:v8];
+      pendingRecipientHandoutData2 = [(PDHandoutAssignedNotificationTrigger *)selfCopy pendingRecipientHandoutData];
+      v19 = [pendingRecipientHandoutData2 objectForKeyedSubscript:parentObjectID];
 
       if (!v19)
       {
@@ -700,27 +700,27 @@ LABEL_63:
       v23 = CLSLogNotifications;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v24 = [(PDHandoutAssignedNotificationTrigger *)v12 pendingRecipientHandoutData];
-        v25 = [(PDHandoutAssignedNotificationTrigger *)v12 notifiedHandoutIDs];
+        pendingRecipientHandoutData3 = [(PDHandoutAssignedNotificationTrigger *)selfCopy pendingRecipientHandoutData];
+        notifiedHandoutIDs2 = [(PDHandoutAssignedNotificationTrigger *)selfCopy notifiedHandoutIDs];
         v32 = 138412802;
-        v33 = v8;
+        v33 = parentObjectID;
         v34 = 2112;
-        v35 = v24;
+        v35 = pendingRecipientHandoutData3;
         v36 = 2112;
-        v37 = v25;
+        v37 = notifiedHandoutIDs2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutRecipientDidInsert. Will set shouldTriggerNotification. HandoutID: %@ pendingRecipientHandoutData: %@ notifiedHandoutIDs: %@", &v32, 0x20u);
       }
 
-      v26 = [(PDHandoutAssignedNotificationTrigger *)v12 pendingRecipientHandoutData];
-      [v26 removeObjectForKey:v8];
+      pendingRecipientHandoutData4 = [(PDHandoutAssignedNotificationTrigger *)selfCopy pendingRecipientHandoutData];
+      [pendingRecipientHandoutData4 removeObjectForKey:parentObjectID];
 
-      v16 = [(PDHandoutAssignedNotificationTrigger *)v12 notifiedHandoutIDs];
-      sub_1000B072C(v16, v8);
+      notifiedHandoutIDs3 = [(PDHandoutAssignedNotificationTrigger *)selfCopy notifiedHandoutIDs];
+      sub_1000B072C(notifiedHandoutIDs3, parentObjectID);
       v20 = 1;
     }
 
 LABEL_17:
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
 
     CLSInitLog();
     v27 = CLSLogNotifications;
@@ -728,20 +728,20 @@ LABEL_17:
     {
       v28 = v27;
       v29 = [NSNumber numberWithBool:v20];
-      v30 = [v7 classID];
+      classID2 = [v7 classID];
       v32 = 138412802;
       v33 = v29;
       v34 = 2112;
-      v35 = v30;
+      v35 = classID2;
       v36 = 2112;
-      v37 = v8;
+      v37 = parentObjectID;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.handoutRecipientDidInsert. Should trigger %@ ClassID: %@ HandoutID: %@", &v32, 0x20u);
     }
 
     if (v20)
     {
-      v31 = [(PDHandoutAssignedNotificationTrigger *)v12 notificationDataWithDatabase:v5 recipient:v7 handoutID:v8 handoutTitle:v19];
-      [(PDUserNotificationTrigger *)v12 fireTriggerWithNotificationData:v31];
+      v31 = [(PDHandoutAssignedNotificationTrigger *)selfCopy notificationDataWithDatabase:object recipient:v7 handoutID:parentObjectID handoutTitle:v19];
+      [(PDUserNotificationTrigger *)selfCopy fireTriggerWithNotificationData:v31];
     }
 
     goto LABEL_22;
@@ -758,43 +758,43 @@ LABEL_17:
 LABEL_22:
 }
 
-- (id)notificationDataWithDatabase:(id)a3 recipient:(id)a4 handoutID:(id)a5 handoutTitle:(id)a6
+- (id)notificationDataWithDatabase:(id)database recipient:(id)recipient handoutID:(id)d handoutTitle:(id)title
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  recipientCopy = recipient;
+  dCopy = d;
+  titleCopy = title;
+  databaseCopy = database;
   CLSInitLog();
   v14 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v10 classID];
+    classID = [recipientCopy classID];
     *buf = 138412802;
-    v42 = v16;
+    v42 = classID;
     v43 = 2112;
-    v44 = v11;
+    v44 = dCopy;
     v45 = 2112;
-    v46 = v12;
+    v46 = titleCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.notificationDataWithDatabase. Class: %@ HandoutID: %@ HandoutTitle: %@", buf, 0x20u);
   }
 
-  v17 = [v10 classID];
-  v18 = [(PDHandoutAssignedNotificationTrigger *)self classWithClassID:v17 database:v13];
+  classID2 = [recipientCopy classID];
+  v18 = [(PDHandoutAssignedNotificationTrigger *)self classWithClassID:classID2 database:databaseCopy];
 
-  v19 = [v18 displayName];
+  displayName = [v18 displayName];
   v20 = &stru_100206880;
-  if (v12)
+  if (titleCopy)
   {
-    v20 = v12;
+    v20 = titleCopy;
   }
 
   v21 = v20;
 
-  if ([v19 length])
+  if ([displayName length])
   {
-    v22 = [(PDUserNotificationTrigger *)self database];
-    v23 = sub_100176270(v22, v11);
+    database = [(PDUserNotificationTrigger *)self database];
+    v23 = sub_100176270(database, dCopy);
 
     v24 = [NSBundle bundleForClass:objc_opt_class()];
     v25 = v24;
@@ -822,16 +822,16 @@ LABEL_22:
 
     v29 = [NSBundle bundleForClass:objc_opt_class()];
     v30 = [v29 localizedStringForKey:v27 value:&stru_100206880 table:@"ClassKit"];
-    v31 = [NSString stringWithFormat:v30, v21, v19];
+    v31 = [NSString stringWithFormat:v30, v21, displayName];
 
     v32 = sub_10012F04C([PDUserNotificationData alloc], 0, v28, v31);
-    v33 = [v10 classID];
-    v35 = v33;
+    classID3 = [recipientCopy classID];
+    v35 = classID3;
     if (v32)
     {
-      objc_setProperty_nonatomic_copy(v32, v34, v33, 32);
+      objc_setProperty_nonatomic_copy(v32, v34, classID3, 32);
 
-      objc_setProperty_nonatomic_copy(v32, v36, v11, 24);
+      objc_setProperty_nonatomic_copy(v32, v36, dCopy, 24);
     }
 
     else
@@ -846,11 +846,11 @@ LABEL_22:
     if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
     {
       v38 = v37;
-      v39 = [v10 classID];
+      classID4 = [recipientCopy classID];
       *buf = 138412546;
-      v42 = v39;
+      v42 = classID4;
       v43 = 2112;
-      v44 = v11;
+      v44 = dCopy;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "PDHandoutAssignedNotificationTrigger.notificationDataWithDatabase. Could not find class or empty class name. ClassID: %@ HandoutID: %@", buf, 0x16u);
     }
 
@@ -860,32 +860,32 @@ LABEL_22:
   return v32;
 }
 
-- (id)classWithClassID:(id)a3 database:(id)a4
+- (id)classWithClassID:(id)d database:(id)database
 {
-  v4 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = [v5 select:objc_opt_class() identity:v6];
+    databaseCopy = database;
+    v6 = dCopy;
+    dCopy = [databaseCopy select:objc_opt_class() identity:v6];
   }
 
-  return v4;
+  return dCopy;
 }
 
-- (BOOL)baseCriteriaPassesWithHandout:(id)a3 database:(id)a4
+- (BOOL)baseCriteriaPassesWithHandout:(id)handout database:(id)database
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 isReviewed] & 1) != 0 || !sub_100050844(v6))
+  handoutCopy = handout;
+  databaseCopy = database;
+  if (([handoutCopy isReviewed] & 1) != 0 || !sub_100050844(databaseCopy))
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [v5 dateOfPublication];
-    [v7 timeIntervalSinceNow];
+    dateOfPublication = [handoutCopy dateOfPublication];
+    [dateOfPublication timeIntervalSinceNow];
     v9 = v8 > -1209600.0;
   }
 

@@ -1,25 +1,25 @@
 @interface PLVideoInternalResourceContext
-- (BOOL)validateResource:(id)a3;
-- (PLVideoInternalResourceContext)initWithManagedObjectContext:(id)a3 asset:(id)a4;
+- (BOOL)validateResource:(id)resource;
+- (PLVideoInternalResourceContext)initWithManagedObjectContext:(id)context asset:(id)asset;
 - (id)onDemandInstallAdjustedFullSizeVideoComplementResourceIfPresent;
-- (id)videoResourcesMatchingVersions:(id)a3;
-- (void)repairResource:(id)a3;
+- (id)videoResourcesMatchingVersions:(id)versions;
+- (void)repairResource:(id)resource;
 @end
 
 @implementation PLVideoInternalResourceContext
 
-- (BOOL)validateResource:(id)a3
+- (BOOL)validateResource:(id)resource
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  resourceCopy = resource;
+  v4 = resourceCopy;
+  if (resourceCopy)
   {
-    if ([v3 isLocallyAvailable])
+    if ([resourceCopy isLocallyAvailable])
     {
-      v5 = [v4 fileURLIfLocal];
-      v6 = [MEMORY[0x1E696AC08] defaultManager];
-      v7 = [v5 path];
-      v8 = [v6 fileExistsAtPath:v7];
+      fileURLIfLocal = [v4 fileURLIfLocal];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [fileURLIfLocal path];
+      v8 = [defaultManager fileExistsAtPath:path];
     }
 
     else
@@ -36,25 +36,25 @@
   return v8;
 }
 
-- (void)repairResource:(id)a3
+- (void)repairResource:(id)resource
 {
-  v8 = a3;
-  v3 = [v8 backingResource];
+  resourceCopy = resource;
+  backingResource = [resourceCopy backingResource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = v8;
+  v5 = resourceCopy;
   if (isKindOfClass)
   {
-    v6 = [v8 backingResource];
-    v7 = [v6 fileSystemBookmark];
+    backingResource2 = [resourceCopy backingResource];
+    fileSystemBookmark = [backingResource2 fileSystemBookmark];
 
-    if (!v7)
+    if (!fileSystemBookmark)
     {
-      [v6 markAsNotLocallyAvailable];
+      [backingResource2 markAsNotLocallyAvailable];
     }
 
-    v5 = v8;
+    v5 = resourceCopy;
   }
 }
 
@@ -74,19 +74,19 @@
   return v3;
 }
 
-- (id)videoResourcesMatchingVersions:(id)a3
+- (id)videoResourcesMatchingVersions:(id)versions
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionsCopy = versions;
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"utiConformanceHint == %d AND resourceType IN %@", 3, &unk_1F0FBFFA0];
   isWalrusEnabled = self->_isWalrusEnabled;
-  v7 = [(PLManagedAsset *)self->_asset objectID];
-  v8 = [(PLManagedAsset *)self->_asset managedObjectContext];
+  objectID = [(PLManagedAsset *)self->_asset objectID];
+  managedObjectContext = [(PLManagedAsset *)self->_asset managedObjectContext];
   v30 = v5;
-  v31 = v4;
-  v9 = [PLManagedAsset fetchResourcesForAssetWithObjectID:v7 inContext:v8 versions:v4 includeVirtualResources:1 allowDerivatives:1 excludeDynamicCPLResources:isWalrusEnabled additionalPredicate:v5 relationshipKeyPathsForPrefetching:0 error:0];
+  v31 = versionsCopy;
+  v9 = [PLManagedAsset fetchResourcesForAssetWithObjectID:objectID inContext:managedObjectContext versions:versionsCopy includeVirtualResources:1 allowDerivatives:1 excludeDynamicCPLResources:isWalrusEnabled additionalPredicate:v5 relationshipKeyPathsForPrefetching:0 error:0];
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -113,23 +113,23 @@
           goto LABEL_17;
         }
 
-        v17 = [v16 recipeID];
-        v18 = v17 == 65938 || v17 == 131272;
-        if (v18 || v17 == 0x20000)
+        recipeID = [v16 recipeID];
+        v18 = recipeID == 65938 || recipeID == 131272;
+        if (v18 || recipeID == 0x20000)
         {
-          v19 = [(PLManagedAsset *)self->_asset hasAdjustments];
+          hasAdjustments = [(PLManagedAsset *)self->_asset hasAdjustments];
           v20 = PLImageManagerGetLog();
           v21 = v20;
-          if (v19)
+          if (hasAdjustments)
           {
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               v22 = PLResourceRecipeIDDescription([v16 recipeID], 0);
-              v23 = [(PLManagedAsset *)self->_asset uuid];
+              uuid = [(PLManagedAsset *)self->_asset uuid];
               *buf = 138543618;
               v37 = v22;
               v38 = 2114;
-              v39 = v23;
+              v39 = uuid;
               _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "[RM] installing full size render %{public}@ video resource because a persisted resource was not found for adjusted asset: %{public}@", buf, 0x16u);
             }
 
@@ -142,18 +142,18 @@ LABEL_17:
             }
 
             v25 = [[PLVideoInternalResource alloc] initWithBackingResource:v24];
-            [v10 addObject:v25];
+            [array addObject:v25];
             goto LABEL_24;
           }
 
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             v25 = PLResourceRecipeIDDescription([v16 recipeID], 0);
-            v26 = [(PLManagedAsset *)self->_asset uuid];
+            uuid2 = [(PLManagedAsset *)self->_asset uuid];
             *buf = 138543618;
             v37 = v25;
             v38 = 2114;
-            v39 = v26;
+            v39 = uuid2;
             v27 = v21;
             v28 = "[RM] found virtual full size render %{public}@ video resource on unadjusted asset: %{public}@";
             goto LABEL_23;
@@ -166,11 +166,11 @@ LABEL_17:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v25 = PLResourceRecipeIDDescription([v16 recipeID], 0);
-            v26 = [(PLManagedAsset *)self->_asset uuid];
+            uuid2 = [(PLManagedAsset *)self->_asset uuid];
             *buf = 138543618;
             v37 = v25;
             v38 = 2114;
-            v39 = v26;
+            v39 = uuid2;
             v27 = v21;
             v28 = "[RM] invalid virtual %{public}@ video resource found on asset: %{public}@";
 LABEL_23:
@@ -187,23 +187,23 @@ LABEL_24:
     while (v13);
   }
 
-  return v10;
+  return array;
 }
 
-- (PLVideoInternalResourceContext)initWithManagedObjectContext:(id)a3 asset:(id)a4
+- (PLVideoInternalResourceContext)initWithManagedObjectContext:(id)context asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = PLVideoInternalResourceContext;
   v9 = [(PLVideoInternalResourceContext *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_moc, a3);
-    objc_storeStrong(&v10->_asset, a4);
-    v11 = [v8 photoLibrary];
-    v10->_isWalrusEnabled = [v11 isWalrusEnabled];
+    objc_storeStrong(&v9->_moc, context);
+    objc_storeStrong(&v10->_asset, asset);
+    photoLibrary = [assetCopy photoLibrary];
+    v10->_isWalrusEnabled = [photoLibrary isWalrusEnabled];
   }
 
   return v10;

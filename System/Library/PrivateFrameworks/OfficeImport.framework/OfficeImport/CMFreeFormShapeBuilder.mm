@@ -1,8 +1,8 @@
 @interface CMFreeFormShapeBuilder
 - (CGAffineTransform)affineTransform;
-- (CGPath)copyShapeWithTransform:(CGAffineTransform *)a3;
-- (CGPoint)_renderPathElement:(id)a3 withTransform:(CGAffineTransform *)a4 inPath:(CGPath *)a5;
-- (void)setSpace:(CGSize)a3;
+- (CGPath)copyShapeWithTransform:(CGAffineTransform *)transform;
+- (CGPoint)_renderPathElement:(id)element withTransform:(CGAffineTransform *)transform inPath:(CGPath *)path;
+- (void)setSpace:(CGSize)space;
 @end
 
 @implementation CMFreeFormShapeBuilder
@@ -12,8 +12,8 @@
   orientedBounds = self->super.super._orientedBounds;
   if (!orientedBounds)
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a3 object:self file:@"CMFreeFormShapeBuilder.mm" lineNumber:41 description:@"oriented bounds not set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a3 object:self file:@"CMFreeFormShapeBuilder.mm" lineNumber:41 description:@"oriented bounds not set"];
 
     orientedBounds = self->super.super._orientedBounds;
   }
@@ -123,27 +123,27 @@
   return result;
 }
 
-- (void)setSpace:(CGSize)a3
+- (void)setSpace:(CGSize)space
 {
-  if (a3.width == 0.0 || a3.height == 0.0)
+  if (space.width == 0.0 || space.height == 0.0)
   {
-    v4 = [(CMShapeBuilder *)self isOffice12];
-    a3.width = 12666.0;
-    if (!v4)
+    isOffice12 = [(CMShapeBuilder *)self isOffice12];
+    space.width = 12666.0;
+    if (!isOffice12)
     {
-      a3.width = 8.0;
+      space.width = 8.0;
     }
 
-    a3.height = a3.width;
+    space.height = space.width;
   }
 
-  self->_space = a3;
+  self->_space = space;
 }
 
-- (CGPath)copyShapeWithTransform:(CGAffineTransform *)a3
+- (CGPath)copyShapeWithTransform:(CGAffineTransform *)transform
 {
   Mutable = CGPathCreateMutable();
-  CGPathMoveToPoint(Mutable, a3, 0.0, 0.0);
+  CGPathMoveToPoint(Mutable, transform, 0.0, 0.0);
   if ([(OADPath *)self->_path elementCount])
   {
     v6 = 0;
@@ -157,10 +157,10 @@
         break;
       }
 
-      v9 = *&a3->c;
-      v12[0] = *&a3->a;
+      v9 = *&transform->c;
+      v12[0] = *&transform->a;
       v12[1] = v9;
-      v12[2] = *&a3->tx;
+      v12[2] = *&transform->tx;
       [(CMFreeFormShapeBuilder *)self _renderPathElement:v8 withTransform:v12 inPath:Mutable];
 
       v6 = v7;
@@ -176,19 +176,19 @@
   return Mutable;
 }
 
-- (CGPoint)_renderPathElement:(id)a3 withTransform:(CGAffineTransform *)a4 inPath:(CGPath *)a5
+- (CGPoint)_renderPathElement:(id)element withTransform:(CGAffineTransform *)transform inPath:(CGPath *)path
 {
-  v10 = a3;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 toPoint] >> 32;
+    v11 = [elementCopy toPoint] >> 32;
     p_space = &self->_space;
     width = p_space->width;
-    [v10 toPoint];
+    [elementCopy toPoint];
     v5 = v11 / width;
     v6 = v14 / p_space->height;
-    CGPathMoveToPoint(a5, a4, v5, v6);
+    CGPathMoveToPoint(path, transform, v5, v6);
   }
 
   else
@@ -196,22 +196,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v10 toPoint] >> 32;
+      v17 = [elementCopy toPoint] >> 32;
       v18 = self->_space.width;
-      [v10 toPoint];
+      [elementCopy toPoint];
       v5 = v17 / v18;
       v6 = v19 / self->_space.height;
-      if ([v10 relative])
+      if ([elementCopy relative])
       {
-        CurrentPoint = CGPathGetCurrentPoint(a5);
+        CurrentPoint = CGPathGetCurrentPoint(path);
         v5 = v5 + CurrentPoint.x;
         v6 = v6 + CurrentPoint.y;
-        CGPathAddLineToPoint(a5, 0, v5, v6);
+        CGPathAddLineToPoint(path, 0, v5, v6);
       }
 
       else
       {
-        CGPathAddLineToPoint(a5, a4, v5, v6);
+        CGPathAddLineToPoint(path, transform, v5, v6);
       }
     }
 
@@ -220,13 +220,13 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [v10 toPoint] >> 32;
+        v21 = [elementCopy toPoint] >> 32;
         v22 = &self->_space;
         v23 = v22->width;
-        [v10 toPoint];
+        [elementCopy toPoint];
         v5 = v21 / v23;
         v6 = v24 / v22->height;
-        CGPathAddLineToPoint(a5, a4, v5, v6);
+        CGPathAddLineToPoint(path, transform, v5, v6);
       }
 
       else
@@ -234,23 +234,23 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v10 toPoint] >> 32;
+          v25 = [elementCopy toPoint] >> 32;
           v26 = &self->_space;
           v27 = self->_space.width;
-          [v10 toPoint];
+          [elementCopy toPoint];
           v29 = v28;
           height = v26->height;
-          v31 = [v10 controlPoint1] >> 32;
+          v31 = [elementCopy controlPoint1] >> 32;
           v32 = v26->width;
-          [v10 controlPoint1];
+          [elementCopy controlPoint1];
           v34 = v33;
           v35 = v26->height;
-          v36 = [v10 controlPoint2] >> 32;
+          v36 = [elementCopy controlPoint2] >> 32;
           v37 = v26->width;
-          [v10 controlPoint2];
+          [elementCopy controlPoint2];
           v5 = v25 / v27;
           v6 = v29 / height;
-          CGPathAddCurveToPoint(a5, a4, v31 / v32, v34 / v35, v36 / v37, v38 / v26->height, v5, v6);
+          CGPathAddCurveToPoint(path, transform, v31 / v32, v34 / v35, v36 / v37, v38 / v26->height, v5, v6);
         }
 
         else
@@ -258,18 +258,18 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v39 = [v10 toPoint] >> 32;
+            v39 = [elementCopy toPoint] >> 32;
             v40 = &self->_space;
             v41 = self->_space.width;
-            [v10 toPoint];
+            [elementCopy toPoint];
             v43 = v42;
             v44 = v40->height;
-            v45 = [v10 controlPoint] >> 32;
+            v45 = [elementCopy controlPoint] >> 32;
             v46 = v40->width;
-            [v10 controlPoint];
+            [elementCopy controlPoint];
             v5 = v39 / v41;
             v6 = v43 / v44;
-            CGPathAddQuadCurveToPoint(a5, a4, v45 / v46, v47 / v40->height, v5, v6);
+            CGPathAddQuadCurveToPoint(path, transform, v45 / v46, v47 / v40->height, v5, v6);
           }
         }
       }

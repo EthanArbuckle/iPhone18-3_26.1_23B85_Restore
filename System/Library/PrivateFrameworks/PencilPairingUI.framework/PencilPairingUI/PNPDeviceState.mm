@@ -1,10 +1,10 @@
 @interface PNPDeviceState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)displayName;
 - (PNPDeviceState)init;
-- (PNPDeviceState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PNPDeviceState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PNPDeviceState
@@ -21,35 +21,35 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PNPDeviceState *)self name];
-  [v4 setName:v5];
+  name = [(PNPDeviceState *)self name];
+  [v4 setName:name];
 
   [(PNPDeviceState *)self batteryLevel];
   [v4 setBatteryLevel:?];
   [v4 setEdge:{-[PNPDeviceState edge](self, "edge")}];
   [v4 setOrientation:{-[PNPDeviceState orientation](self, "orientation")}];
   [v4 setBatteryLevelUnknown:{-[PNPDeviceState batteryLevelUnknown](self, "batteryLevelUnknown")}];
-  v6 = [(PNPDeviceState *)self identifier];
-  [v4 setIdentifier:v6];
+  identifier = [(PNPDeviceState *)self identifier];
+  [v4 setIdentifier:identifier];
 
   [v4 setIsCharging:{-[PNPDeviceState isCharging](self, "isCharging")}];
   [v4 setDeviceType:{-[PNPDeviceState deviceType](self, "deviceType")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 name];
-    v7 = [(PNPDeviceState *)self name];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    name = [v5 name];
+    name2 = [(PNPDeviceState *)self name];
+    v8 = [name isEqualToString:name2];
 
     if (v8)
     {
@@ -58,40 +58,40 @@
       [(PNPDeviceState *)self batteryLevel];
       if (v10 == v11)
       {
-        v12 = [v5 edge];
-        if (v12 == [(PNPDeviceState *)self edge])
+        edge = [v5 edge];
+        if (edge == [(PNPDeviceState *)self edge])
         {
-          v13 = [v5 orientation];
-          if (v13 == [(PNPDeviceState *)self orientation])
+          orientation = [v5 orientation];
+          if (orientation == [(PNPDeviceState *)self orientation])
           {
-            v14 = [v5 batteryLevelUnknown];
-            if (v14 == [(PNPDeviceState *)self batteryLevelUnknown])
+            batteryLevelUnknown = [v5 batteryLevelUnknown];
+            if (batteryLevelUnknown == [(PNPDeviceState *)self batteryLevelUnknown])
             {
-              v15 = [v5 isCharging];
-              if (v15 == [(PNPDeviceState *)self isCharging])
+              isCharging = [v5 isCharging];
+              if (isCharging == [(PNPDeviceState *)self isCharging])
               {
-                v16 = [v5 identifier];
-                if (!v16)
+                identifier = [v5 identifier];
+                if (!identifier)
                 {
-                  v7 = [(PNPDeviceState *)self identifier];
-                  if (!v7)
+                  name2 = [(PNPDeviceState *)self identifier];
+                  if (!name2)
                   {
                     goto LABEL_12;
                   }
                 }
 
-                v17 = [v5 identifier];
-                v18 = [(PNPDeviceState *)self identifier];
-                v19 = [v17 isEqual:v18];
+                identifier2 = [v5 identifier];
+                identifier3 = [(PNPDeviceState *)self identifier];
+                v19 = [identifier2 isEqual:identifier3];
 
-                if (v16)
+                if (identifier)
                 {
 
                   if (v19)
                   {
 LABEL_12:
-                    v20 = [v5 deviceType];
-                    v21 = v20 == [(PNPDeviceState *)self deviceType];
+                    deviceType = [v5 deviceType];
+                    v21 = deviceType == [(PNPDeviceState *)self deviceType];
 LABEL_16:
 
                     goto LABEL_17;
@@ -123,39 +123,39 @@ LABEL_17:
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(PNPDeviceState *)self name];
-  [v6 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(PNPDeviceState *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
   [(PNPDeviceState *)self batteryLevel];
-  [v6 encodeDouble:@"batteryLevel" forKey:?];
-  [v6 encodeInteger:-[PNPDeviceState edge](self forKey:{"edge"), @"edge"}];
-  [v6 encodeInteger:-[PNPDeviceState orientation](self forKey:{"orientation"), @"orientation"}];
-  [v6 encodeBool:-[PNPDeviceState batteryLevelUnknown](self forKey:{"batteryLevelUnknown"), @"batteryLevelUnknown"}];
-  [v6 encodeBool:-[PNPDeviceState isCharging](self forKey:{"isCharging"), @"charging"}];
-  v5 = [(PNPDeviceState *)self identifier];
-  [v6 encodeObject:v5 forKey:@"identifier"];
+  [coderCopy encodeDouble:@"batteryLevel" forKey:?];
+  [coderCopy encodeInteger:-[PNPDeviceState edge](self forKey:{"edge"), @"edge"}];
+  [coderCopy encodeInteger:-[PNPDeviceState orientation](self forKey:{"orientation"), @"orientation"}];
+  [coderCopy encodeBool:-[PNPDeviceState batteryLevelUnknown](self forKey:{"batteryLevelUnknown"), @"batteryLevelUnknown"}];
+  [coderCopy encodeBool:-[PNPDeviceState isCharging](self forKey:{"isCharging"), @"charging"}];
+  identifier = [(PNPDeviceState *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v6 encodeInteger:-[PNPDeviceState deviceType](self forKey:{"deviceType"), @"deviceType"}];
+  [coderCopy encodeInteger:-[PNPDeviceState deviceType](self forKey:{"deviceType"), @"deviceType"}];
 }
 
-- (PNPDeviceState)initWithCoder:(id)a3
+- (PNPDeviceState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PNPDeviceState *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = v5->_name;
   v5->_name = v6;
 
-  [v4 decodeDoubleForKey:@"batteryLevel"];
+  [coderCopy decodeDoubleForKey:@"batteryLevel"];
   v5->_batteryLevel = v8;
-  v5->_edge = [v4 decodeIntegerForKey:@"edge"];
-  v5->_orientation = [v4 decodeIntegerForKey:@"orientation"];
-  v5->_batteryLevelUnknown = [v4 decodeBoolForKey:@"batteryLevelUnknown"];
-  v5->_isCharging = [v4 decodeBoolForKey:@"charging"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v5->_edge = [coderCopy decodeIntegerForKey:@"edge"];
+  v5->_orientation = [coderCopy decodeIntegerForKey:@"orientation"];
+  v5->_batteryLevelUnknown = [coderCopy decodeBoolForKey:@"batteryLevelUnknown"];
+  v5->_isCharging = [coderCopy decodeBoolForKey:@"charging"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   identifier = v5->_identifier;
   v5->_identifier = v9;
@@ -165,11 +165,11 @@ LABEL_17:
 
 - (NSString)displayName
 {
-  v3 = [(PNPDeviceState *)self name];
-  v4 = v3;
-  if (v3)
+  name = [(PNPDeviceState *)self name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    v5 = name;
   }
 
   else

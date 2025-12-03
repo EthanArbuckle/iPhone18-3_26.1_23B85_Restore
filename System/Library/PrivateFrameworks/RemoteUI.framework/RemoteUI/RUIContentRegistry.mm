@@ -1,6 +1,6 @@
 @interface RUIContentRegistry
 + (_TtC8RemoteUI18RUIContentRegistry)sharedRegistry;
-- (BOOL)supportsViewNamed:(id)a3;
+- (BOOL)supportsViewNamed:(id)named;
 - (_TtC8RemoteUI18RUIContentRegistry)init;
 @end
 
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (BOOL)supportsViewNamed:(id)a3
+- (BOOL)supportsViewNamed:(id)named
 {
   v4 = sub_21BA87CBC();
   v6 = v5;
@@ -27,7 +27,7 @@
   if ((*(&self->super.isa + v7))[2])
   {
 
-    v8 = self;
+    selfCopy = self;
     sub_21B940DCC(v4, v6);
     v10 = v9;
   }

@@ -1,9 +1,9 @@
 @interface ClimateVentServiceButton
 - (_TtC7Climate24ClimateVentServiceButton)init;
-- (void)ventService:(id)a3 didUpdateAutoMode:(BOOL)a4;
-- (void)ventService:(id)a3 didUpdateCombinations:(id)a4;
-- (void)ventService:(id)a3 didUpdateCurrentIndex:(unsigned int)a4;
-- (void)ventService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)ventService:(id)service didUpdateAutoMode:(BOOL)mode;
+- (void)ventService:(id)service didUpdateCombinations:(id)combinations;
+- (void)ventService:(id)service didUpdateCurrentIndex:(unsigned int)index;
+- (void)ventService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateVentServiceButton
@@ -19,37 +19,37 @@
   return result;
 }
 
-- (void)ventService:(id)a3 didUpdateCombinations:(id)a4
+- (void)ventService:(id)service didUpdateCombinations:(id)combinations
 {
   v4 = *&self->super._TtC7Climate13ClimateButton_opaque[OBJC_IVAR____TtC7Climate24ClimateVentServiceButton_vent];
-  v8 = self;
-  v5 = [v4 currentIndex];
-  *&v8->super._TtC7Climate13ClimateButton_opaque[OBJC_IVAR____TtC7Climate24ClimateVentServiceButton_currentValue] = v5;
-  v6 = *((swift_isaMask & *v8->super._TtC7Climate13ClimateButton_opaque) + 0x1F8);
+  selfCopy = self;
+  currentIndex = [v4 currentIndex];
+  *&selfCopy->super._TtC7Climate13ClimateButton_opaque[OBJC_IVAR____TtC7Climate24ClimateVentServiceButton_currentValue] = currentIndex;
+  v6 = *((swift_isaMask & *selfCopy->super._TtC7Climate13ClimateButton_opaque) + 0x1F8);
   v7 = v6();
   (v6)(v7);
 }
 
-- (void)ventService:(id)a3 didUpdateCurrentIndex:(unsigned int)a4
+- (void)ventService:(id)service didUpdateCurrentIndex:(unsigned int)index
 {
-  *&self->super._TtC7Climate13ClimateButton_opaque[OBJC_IVAR____TtC7Climate24ClimateVentServiceButton_currentValue] = a4;
+  *&self->super._TtC7Climate13ClimateButton_opaque[OBJC_IVAR____TtC7Climate24ClimateVentServiceButton_currentValue] = index;
   v4 = *((swift_isaMask & *self->super._TtC7Climate13ClimateButton_opaque) + 0x1F8);
-  v6 = self;
+  selfCopy = self;
   v5 = v4();
   (v4)(v5);
 }
 
-- (void)ventService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)ventService:(id)service didUpdateOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  sub_100080DAC(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_100080DAC(serviceCopy, on);
 }
 
-- (void)ventService:(id)a3 didUpdateAutoMode:(BOOL)a4
+- (void)ventService:(id)service didUpdateAutoMode:(BOOL)mode
 {
   v4 = *((swift_isaMask & *self->super._TtC7Climate13ClimateButton_opaque) + 0x1F8);
-  v5 = self;
+  selfCopy = self;
   v4();
 }
 

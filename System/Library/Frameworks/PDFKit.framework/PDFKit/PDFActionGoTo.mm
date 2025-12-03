@@ -1,12 +1,12 @@
 @interface PDFActionGoTo
-- (PDFActionGoTo)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
+- (PDFActionGoTo)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
 - (PDFActionGoTo)initWithDestination:(PDFDestination *)destination;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toolTip;
 - (id)toolTipNoLabel;
-- (void)addDestinationToDictionaryRef:(__CFDictionary *)a3;
+- (void)addDestinationToDictionaryRef:(__CFDictionary *)ref;
 - (void)commonInit;
 @end
 
@@ -28,7 +28,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = PDFActionGoTo;
@@ -39,7 +39,7 @@
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(PDFDestination *)self->_private2->destination copyWithZone:a3];
+    v8 = [(PDFDestination *)self->_private2->destination copyWithZone:zone];
     v9 = v5[2];
     v10 = *(v9 + 8);
     *(v9 + 8) = v8;
@@ -51,21 +51,21 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PDFActionGoTo *)self toolTip];
-  v4 = [v2 stringWithFormat:@"GoTo Action - %@", v3];
+  toolTip = [(PDFActionGoTo *)self toolTip];
+  v4 = [v2 stringWithFormat:@"GoTo Action - %@", toolTip];
 
   return v4;
 }
 
-- (PDFActionGoTo)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (PDFActionGoTo)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
-  v8 = a4;
+  documentCopy = document;
   v15.receiver = self;
   v15.super_class = PDFActionGoTo;
-  v9 = [(PDFAction *)&v15 initWithActionDictionary:a3 forDocument:v8 forPage:a5];
+  v9 = [(PDFAction *)&v15 initWithActionDictionary:dictionary forDocument:documentCopy forPage:page];
   if (v9)
   {
-    v10 = [[PDFDestination alloc] initWithDictionary:a3 forDocument:v8];
+    v10 = [[PDFDestination alloc] initWithDictionary:dictionary forDocument:documentCopy];
     private2 = v9->_private2;
     destination = private2->destination;
     private2->destination = v10;
@@ -98,19 +98,19 @@
   return Mutable;
 }
 
-- (void)addDestinationToDictionaryRef:(__CFDictionary *)a3
+- (void)addDestinationToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFActionGoTo *)self destination];
-  if (v4)
+  destination = [(PDFActionGoTo *)self destination];
+  if (destination)
   {
-    v6 = v4;
-    v5 = [v4 createArrayRef];
-    v4 = v6;
-    if (v5)
+    v6 = destination;
+    createArrayRef = [destination createArrayRef];
+    destination = v6;
+    if (createArrayRef)
     {
-      CFDictionarySetValue(a3, @"/D", v5);
-      CFRelease(v5);
-      v4 = v6;
+      CFDictionarySetValue(ref, @"/D", createArrayRef);
+      CFRelease(createArrayRef);
+      destination = v6;
     }
   }
 }
@@ -119,19 +119,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = PDFKitLocalizedString(@"Go to page %@");
-  v5 = [(PDFActionGoTo *)self destination];
-  v6 = [v5 page];
-  v7 = [v6 label];
-  v8 = [v3 stringWithFormat:v4, v7];
+  destination = [(PDFActionGoTo *)self destination];
+  page = [destination page];
+  label = [page label];
+  v8 = [v3 stringWithFormat:v4, label];
 
   return v8;
 }
 
 - (id)toolTipNoLabel
 {
-  v2 = [(PDFActionGoTo *)self destination];
-  v3 = [v2 page];
-  v4 = PDFGetToolTipNoLabel(v3);
+  destination = [(PDFActionGoTo *)self destination];
+  page = [destination page];
+  v4 = PDFGetToolTipNoLabel(page);
 
   return v4;
 }

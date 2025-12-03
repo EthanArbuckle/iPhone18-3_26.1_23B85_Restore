@@ -7,8 +7,8 @@
 - (id)aa_removeObjectForKey:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
-  [a1 removeObjectForKey:v4];
+  v5 = [self objectForKey:v4];
+  [self removeObjectForKey:v4];
 
   return v5;
 }

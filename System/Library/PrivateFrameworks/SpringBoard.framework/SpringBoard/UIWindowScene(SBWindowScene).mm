@@ -7,22 +7,22 @@
 
 - (id)_sbDisplayConfiguration
 {
-  v1 = [a1 _FBSScene];
-  v2 = [v1 settings];
-  v3 = [v2 displayConfiguration];
+  _FBSScene = [self _FBSScene];
+  settings = [_FBSScene settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  return v3;
+  return displayConfiguration;
 }
 
 - (void)_sbWindowScene
 {
   v2 = objc_opt_class();
-  v3 = a1;
+  selfCopy = self;
   if (v2)
   {
     if (objc_opt_isKindOfClass())
     {
-      v2 = v3;
+      v2 = selfCopy;
     }
 
     else

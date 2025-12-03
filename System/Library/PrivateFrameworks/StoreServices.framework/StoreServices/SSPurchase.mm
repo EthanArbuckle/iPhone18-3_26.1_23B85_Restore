@@ -1,7 +1,7 @@
 @interface SSPurchase
-+ (id)newPurchaseWithDatabaseEncoding:(id)a3;
-+ (id)newPurchaseWithXPCEncoding:(id)a3;
-+ (id)purchaseWithBuyParameters:(id)a3;
++ (id)newPurchaseWithDatabaseEncoding:(id)encoding;
++ (id)newPurchaseWithXPCEncoding:(id)encoding;
++ (id)purchaseWithBuyParameters:(id)parameters;
 - (BOOL)_createsDownloadsWithOverride;
 - (BOOL)_createsInstallJobsWithOverride;
 - (BOOL)_createsJobsWithOverride;
@@ -11,7 +11,7 @@
 - (BOOL)displaysOnLockScreen;
 - (BOOL)ignoresForcedPasswordRestriction;
 - (BOOL)isBackgroundPurchase;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGratisSoftwareClaim;
 - (BOOL)isPlaybackRequest;
 - (BOOL)isPreauthenticated;
@@ -28,63 +28,63 @@
 - (NSString)buyParameters;
 - (SSDownloadPolicy)downloadPolicy;
 - (SSNetworkConstraints)networkConstraints;
-- (SSPurchase)initWithCoder:(id)a3;
-- (SSPurchase)initWithDatabaseEncoding:(id)a3;
-- (SSPurchase)initWithItem:(id)a3;
-- (SSPurchase)initWithItem:(id)a3 offer:(id)a4;
-- (SSPurchase)initWithXPCEncoding:(id)a3;
+- (SSPurchase)initWithCoder:(id)coder;
+- (SSPurchase)initWithDatabaseEncoding:(id)encoding;
+- (SSPurchase)initWithItem:(id)item;
+- (SSPurchase)initWithItem:(id)item offer:(id)offer;
+- (SSPurchase)initWithXPCEncoding:(id)encoding;
 - (SSURLRequestProperties)requestProperties;
-- (id)_buyParametersValueForKey:(id)a3 fromBuyParams:(id)a4;
+- (id)_buyParametersValueForKey:(id)key fromBuyParams:(id)params;
 - (id)_initSSPurchase;
-- (id)buyParametersValueForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)buyParametersValueForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)item;
 - (id)itemOffer;
 - (id)presentingSceneBundleIdentifier;
 - (id)presentingSceneIdentifier;
 - (id)requiredDeviceCapabilities;
-- (id)valueForDownloadProperty:(id)a3;
+- (id)valueForDownloadProperty:(id)property;
 - (int64_t)batchIdentifier;
 - (int64_t)expectedDownloadFileSize;
 - (int64_t)placeholderDownloadIdentifier;
 - (int64_t)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)_addEntriesToDatabaseEncoding:(id)a3;
-- (void)_setValuesUsingDatabaseEncoding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setAffiliateIdentifier:(id)a3;
-- (void)setBackgroundPurchase:(BOOL)a3;
-- (void)setBatchIdentifier:(int64_t)a3;
-- (void)setBuyParameters:(id)a3;
-- (void)setCreatesDownloads:(BOOL)a3;
-- (void)setCreatesInstallJobs:(BOOL)a3;
-- (void)setCreatesJobs:(BOOL)a3;
-- (void)setDefaultUserAgent:(id)a3;
-- (void)setDisplaysOnLockScreen:(BOOL)a3;
-- (void)setDownloadMetadata:(id)a3;
-- (void)setDownloadPolicy:(id)a3;
-- (void)setDownloadProperties:(id)a3;
-- (void)setEnabledServiceType:(id)a3;
-- (void)setExpectedDownloadFileSize:(int64_t)a3;
-- (void)setFilteredAssetTypes:(id)a3;
-- (void)setGratisIdentifiers:(id)a3;
-- (void)setIgnoresForcedPasswordRestriction:(BOOL)a3;
-- (void)setNetworkConstraints:(id)a3;
-- (void)setOwnerAccountDSID:(id)a3;
-- (void)setPlaceholderDownloadIdentifier:(int64_t)a3;
-- (void)setPlaybackRequest:(BOOL)a3;
-- (void)setPreauthenticated:(BOOL)a3;
-- (void)setPresentingSceneBundleIdentifier:(id)a3;
-- (void)setPresentingSceneIdentifier:(id)a3;
-- (void)setRequestProperties:(id)a3;
-- (void)setRequiredDeviceCapabilities:(id)a3;
-- (void)setSkipSoftwareAccountPreflight:(BOOL)a3;
-- (void)setTidHeaders:(id)a3;
-- (void)setUniqueIdentifier:(int64_t)a3;
-- (void)setUsesLocalRedownloadParametersIfPossible:(BOOL)a3;
-- (void)setValue:(id)a3 forDownloadProperty:(id)a4;
+- (void)_addEntriesToDatabaseEncoding:(id)encoding;
+- (void)_setValuesUsingDatabaseEncoding:(id)encoding;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setAffiliateIdentifier:(id)identifier;
+- (void)setBackgroundPurchase:(BOOL)purchase;
+- (void)setBatchIdentifier:(int64_t)identifier;
+- (void)setBuyParameters:(id)parameters;
+- (void)setCreatesDownloads:(BOOL)downloads;
+- (void)setCreatesInstallJobs:(BOOL)jobs;
+- (void)setCreatesJobs:(BOOL)jobs;
+- (void)setDefaultUserAgent:(id)agent;
+- (void)setDisplaysOnLockScreen:(BOOL)screen;
+- (void)setDownloadMetadata:(id)metadata;
+- (void)setDownloadPolicy:(id)policy;
+- (void)setDownloadProperties:(id)properties;
+- (void)setEnabledServiceType:(id)type;
+- (void)setExpectedDownloadFileSize:(int64_t)size;
+- (void)setFilteredAssetTypes:(id)types;
+- (void)setGratisIdentifiers:(id)identifiers;
+- (void)setIgnoresForcedPasswordRestriction:(BOOL)restriction;
+- (void)setNetworkConstraints:(id)constraints;
+- (void)setOwnerAccountDSID:(id)d;
+- (void)setPlaceholderDownloadIdentifier:(int64_t)identifier;
+- (void)setPlaybackRequest:(BOOL)request;
+- (void)setPreauthenticated:(BOOL)preauthenticated;
+- (void)setPresentingSceneBundleIdentifier:(id)identifier;
+- (void)setPresentingSceneIdentifier:(id)identifier;
+- (void)setRequestProperties:(id)properties;
+- (void)setRequiredDeviceCapabilities:(id)capabilities;
+- (void)setSkipSoftwareAccountPreflight:(BOOL)preflight;
+- (void)setTidHeaders:(id)headers;
+- (void)setUniqueIdentifier:(int64_t)identifier;
+- (void)setUsesLocalRedownloadParametersIfPossible:(BOOL)possible;
+- (void)setValue:(id)value forDownloadProperty:(id)property;
 @end
 
 @implementation SSPurchase
@@ -111,58 +111,58 @@
   return v3;
 }
 
-- (SSPurchase)initWithItem:(id)a3
+- (SSPurchase)initWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 defaultItemOffer];
-  v6 = [(SSPurchase *)self initWithItem:v4 offer:v5];
+  itemCopy = item;
+  defaultItemOffer = [itemCopy defaultItemOffer];
+  v6 = [(SSPurchase *)self initWithItem:itemCopy offer:defaultItemOffer];
 
   return v6;
 }
 
-- (SSPurchase)initWithItem:(id)a3 offer:(id)a4
+- (SSPurchase)initWithItem:(id)item offer:(id)offer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 buyParameters];
-  if (![v9 length])
+  itemCopy = item;
+  offerCopy = offer;
+  buyParameters = [offerCopy buyParameters];
+  if (![buyParameters length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must provide buy parameters"];
   }
 
-  v10 = [(SSPurchase *)self _initSSPurchase];
-  if (v10)
+  _initSSPurchase = [(SSPurchase *)self _initSSPurchase];
+  if (_initSSPurchase)
   {
-    v11 = [v9 copy];
-    buyParameters = v10->_buyParameters;
-    v10->_buyParameters = v11;
+    v11 = [buyParameters copy];
+    buyParameters = _initSSPurchase->_buyParameters;
+    _initSSPurchase->_buyParameters = v11;
 
-    objc_storeStrong(&v10->_item, a3);
-    objc_storeStrong(&v10->_itemOffer, a4);
-    v13 = [(SSItemOffer *)v10->_itemOffer networkConstraints];
-    v14 = [v13 copy];
-    networkConstraints = v10->_networkConstraints;
-    v10->_networkConstraints = v14;
+    objc_storeStrong(&_initSSPurchase->_item, item);
+    objc_storeStrong(&_initSSPurchase->_itemOffer, offer);
+    networkConstraints = [(SSItemOffer *)_initSSPurchase->_itemOffer networkConstraints];
+    v14 = [networkConstraints copy];
+    networkConstraints = _initSSPurchase->_networkConstraints;
+    _initSSPurchase->_networkConstraints = v14;
 
-    v16 = [[SSDownloadMetadata alloc] initWithItem:v7 offer:v8];
-    v17 = [(SSDownloadMetadata *)v16 newDownloadProperties];
-    downloadProperties = v10->_downloadProperties;
-    v10->_downloadProperties = v17;
+    v16 = [[SSDownloadMetadata alloc] initWithItem:itemCopy offer:offerCopy];
+    newDownloadProperties = [(SSDownloadMetadata *)v16 newDownloadProperties];
+    downloadProperties = _initSSPurchase->_downloadProperties;
+    _initSSPurchase->_downloadProperties = newDownloadProperties;
   }
 
-  return v10;
+  return _initSSPurchase;
 }
 
-+ (id)purchaseWithBuyParameters:(id)a3
++ (id)purchaseWithBuyParameters:(id)parameters
 {
-  v4 = a3;
-  if (![v4 length])
+  parametersCopy = parameters;
+  if (![parametersCopy length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must provide buy parameters"];
   }
 
-  v5 = objc_alloc_init(a1);
-  [v5 setBuyParameters:v4];
+  v5 = objc_alloc_init(self);
+  [v5 setBuyParameters:parametersCopy];
 
   return v5;
 }
@@ -609,17 +609,17 @@ void __45__SSPurchase_presentingSceneBundleIdentifier__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SSPurchase_setAccountIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -635,17 +635,17 @@ void __35__SSPurchase_setAccountIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAffiliateIdentifier:(id)a3
+- (void)setAffiliateIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__SSPurchase_setAffiliateIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -662,7 +662,7 @@ void __37__SSPurchase_setAffiliateIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBackgroundPurchase:(BOOL)a3
+- (void)setBackgroundPurchase:(BOOL)purchase
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -670,21 +670,21 @@ void __37__SSPurchase_setAffiliateIdentifier___block_invoke(uint64_t a1)
   v4[2] = __36__SSPurchase_setBackgroundPurchase___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  purchaseCopy = purchase;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setBuyParameters:(id)a3
+- (void)setBuyParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__SSPurchase_setBuyParameters___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = parametersCopy;
+  v6 = parametersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -746,7 +746,7 @@ void __31__SSPurchase_setBuyParameters___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCreatesDownloads:(BOOL)a3
+- (void)setCreatesDownloads:(BOOL)downloads
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -754,11 +754,11 @@ void __31__SSPurchase_setBuyParameters___block_invoke(uint64_t a1)
   v4[2] = __34__SSPurchase_setCreatesDownloads___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  downloadsCopy = downloads;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setCreatesJobs:(BOOL)a3
+- (void)setCreatesJobs:(BOOL)jobs
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -766,11 +766,11 @@ void __31__SSPurchase_setBuyParameters___block_invoke(uint64_t a1)
   v4[2] = __29__SSPurchase_setCreatesJobs___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  jobsCopy = jobs;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setCreatesInstallJobs:(BOOL)a3
+- (void)setCreatesInstallJobs:(BOOL)jobs
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -778,11 +778,11 @@ void __31__SSPurchase_setBuyParameters___block_invoke(uint64_t a1)
   v4[2] = __36__SSPurchase_setCreatesInstallJobs___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  jobsCopy = jobs;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setDisplaysOnLockScreen:(BOOL)a3
+- (void)setDisplaysOnLockScreen:(BOOL)screen
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -790,21 +790,21 @@ void __31__SSPurchase_setBuyParameters___block_invoke(uint64_t a1)
   v4[2] = __38__SSPurchase_setDisplaysOnLockScreen___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  screenCopy = screen;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setDownloadPolicy:(id)a3
+- (void)setDownloadPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__SSPurchase_setDownloadPolicy___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = policyCopy;
+  v6 = policyCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -821,17 +821,17 @@ void __32__SSPurchase_setDownloadPolicy___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDownloadProperties:(id)a3
+- (void)setDownloadProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SSPurchase_setDownloadProperties___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = propertiesCopy;
+  v6 = propertiesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -848,17 +848,17 @@ void __36__SSPurchase_setDownloadProperties___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setFilteredAssetTypes:(id)a3
+- (void)setFilteredAssetTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SSPurchase_setFilteredAssetTypes___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typesCopy;
+  v6 = typesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -875,7 +875,7 @@ void __36__SSPurchase_setFilteredAssetTypes___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIgnoresForcedPasswordRestriction:(BOOL)a3
+- (void)setIgnoresForcedPasswordRestriction:(BOOL)restriction
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -883,21 +883,21 @@ void __36__SSPurchase_setFilteredAssetTypes___block_invoke(uint64_t a1)
   v4[2] = __50__SSPurchase_setIgnoresForcedPasswordRestriction___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  restrictionCopy = restriction;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setNetworkConstraints:(id)a3
+- (void)setNetworkConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SSPurchase_setNetworkConstraints___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = constraintsCopy;
+  v6 = constraintsCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -914,17 +914,17 @@ void __36__SSPurchase_setNetworkConstraints___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setOwnerAccountDSID:(id)a3
+- (void)setOwnerAccountDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SSPurchase_setOwnerAccountDSID___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -940,7 +940,7 @@ void __34__SSPurchase_setOwnerAccountDSID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlaybackRequest:(BOOL)a3
+- (void)setPlaybackRequest:(BOOL)request
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -948,21 +948,21 @@ void __34__SSPurchase_setOwnerAccountDSID___block_invoke(uint64_t a1)
   v4[2] = __33__SSPurchase_setPlaybackRequest___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setPresentingSceneIdentifier:(id)a3
+- (void)setPresentingSceneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SSPurchase_setPresentingSceneIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -974,17 +974,17 @@ void __43__SSPurchase_setPresentingSceneIdentifier___block_invoke(uint64_t a1)
   *(v3 + 248) = v2;
 }
 
-- (void)setPresentingSceneBundleIdentifier:(id)a3
+- (void)setPresentingSceneBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SSPurchase_setPresentingSceneBundleIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -996,17 +996,17 @@ void __49__SSPurchase_setPresentingSceneBundleIdentifier___block_invoke(uint64_t
   *(v3 + 256) = v2;
 }
 
-- (void)setRequestProperties:(id)a3
+- (void)setRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SSPurchase_setRequestProperties___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = propertiesCopy;
+  v6 = propertiesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1023,7 +1023,7 @@ void __35__SSPurchase_setRequestProperties___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSkipSoftwareAccountPreflight:(BOOL)a3
+- (void)setSkipSoftwareAccountPreflight:(BOOL)preflight
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1031,24 +1031,24 @@ void __35__SSPurchase_setRequestProperties___block_invoke(uint64_t a1)
   v4[2] = __46__SSPurchase_setSkipSoftwareAccountPreflight___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  preflightCopy = preflight;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setValue:(id)a3 forDownloadProperty:(id)a4
+- (void)setValue:(id)value forDownloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__SSPurchase_setValue_forDownloadProperty___block_invoke;
   block[3] = &unk_1E84AC078;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  selfCopy = self;
+  v14 = propertyCopy;
+  v9 = propertyCopy;
+  v10 = valueCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1082,9 +1082,9 @@ uint64_t __43__SSPurchase_setValue_forDownloadProperty___block_invoke(void *a1)
   }
 }
 
-- (id)valueForDownloadProperty:(id)a3
+- (id)valueForDownloadProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1096,10 +1096,10 @@ uint64_t __43__SSPurchase_setValue_forDownloadProperty___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __39__SSPurchase_valueForDownloadProperty___block_invoke;
   block[3] = &unk_1E84ABF90;
-  v10 = v4;
+  v10 = propertyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = propertyCopy;
   dispatch_sync(dispatchQueue, block);
   v7 = v13[5];
 
@@ -1116,12 +1116,12 @@ void __39__SSPurchase_valueForDownloadProperty___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (SSPurchase)initWithDatabaseEncoding:(id)a3
+- (SSPurchase)initWithDatabaseEncoding:(id)encoding
 {
-  v4 = a3;
-  if (v4)
+  encodingCopy = encoding;
+  if (encodingCopy)
   {
-    v5 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:0];
+    v5 = [MEMORY[0x1E696AE40] propertyListWithData:encodingCopy options:0 format:0 error:0];
   }
 
   else
@@ -1132,11 +1132,11 @@ void __39__SSPurchase_valueForDownloadProperty___block_invoke(void *a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(SSPurchase *)self _initSSPurchase];
-    v7 = v6;
-    if (v6)
+    _initSSPurchase = [(SSPurchase *)self _initSSPurchase];
+    v7 = _initSSPurchase;
+    if (_initSSPurchase)
     {
-      [(SSPurchase *)v6 _setValuesUsingDatabaseEncoding:v5];
+      [(SSPurchase *)_initSSPurchase _setValuesUsingDatabaseEncoding:v5];
     }
   }
 
@@ -1176,26 +1176,26 @@ void __39__SSPurchase_valueForDownloadProperty___block_invoke(void *a1)
   v9 = 3221225472;
   v10 = __30__SSPurchase_databaseEncoding__block_invoke;
   v11 = &unk_1E84AC028;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   dispatch_sync(dispatchQueue, &v8);
-  v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:{0, v8, v9, v10, v11, v12}];
+  v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:{0, v8, v9, v10, v11, selfCopy}];
 
   return v6;
 }
 
-- (id)buyParametersValueForKey:(id)a3
+- (id)buyParametersValueForKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSPurchase *)self buyParameters];
-  v6 = [v5 length];
+  keyCopy = key;
+  buyParameters = [(SSPurchase *)self buyParameters];
+  stringByRemovingPercentEncoding = [buyParameters length];
 
-  if (v6)
+  if (stringByRemovingPercentEncoding)
   {
-    v7 = [(SSPurchase *)self buyParameters];
-    v8 = [v7 componentsSeparatedByString:@"&"];
+    buyParameters2 = [(SSPurchase *)self buyParameters];
+    v8 = [buyParameters2 componentsSeparatedByString:@"&"];
 
     v21 = 0u;
     v22 = 0u;
@@ -1220,7 +1220,7 @@ void __39__SSPurchase_valueForDownloadProperty___block_invoke(void *a1)
           if ([v14 count] == 2)
           {
             v15 = [v14 objectAtIndexedSubscript:0];
-            v16 = [v15 isEqualToString:v4];
+            v16 = [v15 isEqualToString:keyCopy];
 
             if (v16)
             {
@@ -1244,10 +1244,10 @@ void __39__SSPurchase_valueForDownloadProperty___block_invoke(void *a1)
     v17 = 0;
 LABEL_13:
 
-    v6 = [v17 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v17 stringByRemovingPercentEncoding];
   }
 
-  return v6;
+  return stringByRemovingPercentEncoding;
 }
 
 - (NSNumber)enabledServiceType
@@ -1436,7 +1436,7 @@ void __35__SSPurchase_isGratisSoftwareClaim__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setBatchIdentifier:(int64_t)a3
+- (void)setBatchIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1444,21 +1444,21 @@ void __35__SSPurchase_isGratisSoftwareClaim__block_invoke(uint64_t a1)
   v4[2] = __33__SSPurchase_setBatchIdentifier___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setDefaultUserAgent:(id)a3
+- (void)setDefaultUserAgent:(id)agent
 {
-  v4 = a3;
+  agentCopy = agent;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SSPurchase_setDefaultUserAgent___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = agentCopy;
+  v6 = agentCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1486,17 +1486,17 @@ void __34__SSPurchase_setDefaultUserAgent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEnabledServiceType:(id)a3
+- (void)setEnabledServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SSPurchase_setEnabledServiceType___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typeCopy;
+  v6 = typeCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1513,7 +1513,7 @@ void __36__SSPurchase_setEnabledServiceType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setExpectedDownloadFileSize:(int64_t)a3
+- (void)setExpectedDownloadFileSize:(int64_t)size
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1521,21 +1521,21 @@ void __36__SSPurchase_setEnabledServiceType___block_invoke(uint64_t a1)
   v4[2] = __42__SSPurchase_setExpectedDownloadFileSize___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setGratisIdentifiers:(id)a3
+- (void)setGratisIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SSPurchase_setGratisIdentifiers___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1552,7 +1552,7 @@ void __35__SSPurchase_setGratisIdentifiers___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlaceholderDownloadIdentifier:(int64_t)a3
+- (void)setPlaceholderDownloadIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1560,11 +1560,11 @@ void __35__SSPurchase_setGratisIdentifiers___block_invoke(uint64_t a1)
   v4[2] = __47__SSPurchase_setPlaceholderDownloadIdentifier___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setPreauthenticated:(BOOL)a3
+- (void)setPreauthenticated:(BOOL)preauthenticated
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1572,21 +1572,21 @@ void __35__SSPurchase_setGratisIdentifiers___block_invoke(uint64_t a1)
   v4[2] = __34__SSPurchase_setPreauthenticated___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  preauthenticatedCopy = preauthenticated;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setRequiredDeviceCapabilities:(id)a3
+- (void)setRequiredDeviceCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SSPurchase_setRequiredDeviceCapabilities___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = capabilitiesCopy;
+  selfCopy = self;
+  v6 = capabilitiesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1670,17 +1670,17 @@ void __44__SSPurchase_setRequiredDeviceCapabilities___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)setTidHeaders:(id)a3
+- (void)setTidHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__SSPurchase_setTidHeaders___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = headersCopy;
+  v6 = headersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1692,7 +1692,7 @@ void __28__SSPurchase_setTidHeaders___block_invoke(uint64_t a1)
   *(v3 + 224) = v2;
 }
 
-- (void)setUniqueIdentifier:(int64_t)a3
+- (void)setUniqueIdentifier:(int64_t)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1700,11 +1700,11 @@ void __28__SSPurchase_setTidHeaders___block_invoke(uint64_t a1)
   v4[2] = __34__SSPurchase_setUniqueIdentifier___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setUsesLocalRedownloadParametersIfPossible:(BOOL)a3
+- (void)setUsesLocalRedownloadParametersIfPossible:(BOOL)possible
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1712,7 +1712,7 @@ void __28__SSPurchase_setTidHeaders___block_invoke(uint64_t a1)
   v4[2] = __57__SSPurchase_setUsesLocalRedownloadParametersIfPossible___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  possibleCopy = possible;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -1779,15 +1779,15 @@ void __24__SSPurchase_tidHeaders__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_addEntriesToDatabaseEncoding:(id)a3
+- (void)_addEntriesToDatabaseEncoding:(id)encoding
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  encodingCopy = encoding;
+  v5 = encodingCopy;
   accountIdentifier = self->_accountIdentifier;
   if (accountIdentifier)
   {
-    [v4 setObject:accountIdentifier forKey:@"0"];
+    [encodingCopy setObject:accountIdentifier forKey:@"0"];
   }
 
   affiliateIdentifier = self->_affiliateIdentifier;
@@ -1892,16 +1892,16 @@ void __24__SSPurchase_tidHeaders__block_invoke(uint64_t a1)
   v29 = [MEMORY[0x1E696AD98] numberWithBool:self->_skipSoftwareAccountPreflight];
   [v5 setObject:v29 forKey:@"P"];
 
-  v30 = [(SSItem *)self->_item rawItemDictionary];
-  if (v30)
+  rawItemDictionary = [(SSItem *)self->_item rawItemDictionary];
+  if (rawItemDictionary)
   {
-    [v5 setObject:v30 forKey:@"A"];
+    [v5 setObject:rawItemDictionary forKey:@"A"];
   }
 
-  v31 = [(SSItemOffer *)self->_itemOffer offerIdentifier];
-  if (v31)
+  offerIdentifier = [(SSItemOffer *)self->_itemOffer offerIdentifier];
+  if (offerIdentifier)
   {
-    [v5 setObject:v31 forKey:@"A"];
+    [v5 setObject:offerIdentifier forKey:@"A"];
   }
 
   downloadPolicy = self->_downloadPolicy;
@@ -1924,19 +1924,19 @@ LABEL_44:
       v35 = +[SSLogConfig sharedConfig];
     }
 
-    v36 = [v35 shouldLog];
+    shouldLog = [v35 shouldLog];
     if ([v35 shouldLogToDisk])
     {
-      v37 = v36 | 2;
+      v37 = shouldLog | 2;
     }
 
     else
     {
-      v37 = v36;
+      v37 = shouldLog;
     }
 
-    v38 = [v35 OSLogObject];
-    if (!os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v35 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v37 &= 2u;
     }
@@ -1960,9 +1960,9 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v38 = [MEMORY[0x1E696AEC0] stringWithCString:v41 encoding:{4, &v68, v65}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v41 encoding:{4, &v68, v65}];
       free(v41);
-      SSFileLog(v35, @"%@", v42, v43, v44, v45, v46, v47, v38);
+      SSFileLog(v35, @"%@", v42, v43, v44, v45, v46, v47, oSLogObject);
     }
 
     goto LABEL_43;
@@ -1989,19 +1989,19 @@ LABEL_60:
       v51 = +[SSLogConfig sharedConfig];
     }
 
-    v52 = [v51 shouldLog];
+    shouldLog2 = [v51 shouldLog];
     if ([v51 shouldLogToDisk])
     {
-      v53 = v52 | 2;
+      v53 = shouldLog2 | 2;
     }
 
     else
     {
-      v53 = v52;
+      v53 = shouldLog2;
     }
 
-    v54 = [v51 OSLogObject];
-    if (!os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v51 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v53 &= 2u;
     }
@@ -2024,9 +2024,9 @@ LABEL_59:
         goto LABEL_60;
       }
 
-      v54 = [MEMORY[0x1E696AEC0] stringWithCString:v57 encoding:{4, &v68, v65}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v57 encoding:{4, &v68, v65}];
       free(v57);
-      SSFileLog(v51, @"%@", v58, v59, v60, v61, v62, v63, v54);
+      SSFileLog(v51, @"%@", v58, v59, v60, v61, v62, v63, oSLogObject2);
     }
 
     goto LABEL_59;
@@ -2035,11 +2035,11 @@ LABEL_59:
 LABEL_61:
 }
 
-- (id)_buyParametersValueForKey:(id)a3 fromBuyParams:(id)a4
+- (id)_buyParametersValueForKey:(id)key fromBuyParams:(id)params
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [a4 componentsSeparatedByString:@"&"];
+  keyCopy = key;
+  [params componentsSeparatedByString:@"&"];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -2062,7 +2062,7 @@ LABEL_61:
         if ([v11 count] == 2)
         {
           v12 = [v11 objectAtIndexedSubscript:0];
-          v13 = [v12 isEqualToString:v5];
+          v13 = [v12 isEqualToString:keyCopy];
 
           if (v13)
           {
@@ -2086,9 +2086,9 @@ LABEL_61:
   v14 = 0;
 LABEL_12:
 
-  v15 = [v14 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v14 stringByRemovingPercentEncoding];
 
-  return v15;
+  return stringByRemovingPercentEncoding;
 }
 
 - (BOOL)_createsDownloadsWithOverride
@@ -2139,18 +2139,18 @@ LABEL_12:
   return v4;
 }
 
-- (void)_setValuesUsingDatabaseEncoding:(id)a3
+- (void)_setValuesUsingDatabaseEncoding:(id)encoding
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"0"];
+  encodingCopy = encoding;
+  v5 = [encodingCopy objectForKey:@"0"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(&self->_accountIdentifier, v5);
   }
 
-  v6 = [v4 objectForKey:@"1"];
+  v6 = [encodingCopy objectForKey:@"1"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2158,7 +2158,7 @@ LABEL_12:
     objc_storeStrong(&self->_affiliateIdentifier, v6);
   }
 
-  v7 = [v4 objectForKey:@"O"];
+  v7 = [encodingCopy objectForKey:@"O"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2166,14 +2166,14 @@ LABEL_12:
     objc_storeStrong(&self->_ownerAccountDSID, v7);
   }
 
-  v8 = [v4 objectForKey:@"2"];
+  v8 = [encodingCopy objectForKey:@"2"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_backgroundPurchase = [v8 BOOLValue];
   }
 
-  v9 = [v4 objectForKey:@"3"];
+  v9 = [encodingCopy objectForKey:@"3"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2181,35 +2181,35 @@ LABEL_12:
     objc_storeStrong(&self->_buyParameters, v9);
   }
 
-  v10 = [v4 objectForKey:@"4"];
+  v10 = [encodingCopy objectForKey:@"4"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_createsDownloads = [v10 BOOLValue];
   }
 
-  v11 = [v4 objectForKey:@"5"];
+  v11 = [encodingCopy objectForKey:@"5"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_createsJobs = [v11 BOOLValue];
   }
 
-  v12 = [v4 objectForKey:@"N"];
+  v12 = [encodingCopy objectForKey:@"N"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_createsInstallJobs = [v12 BOOLValue];
   }
 
-  v13 = [v4 objectForKey:@"K"];
+  v13 = [encodingCopy objectForKey:@"K"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_displaysOnLockScreen = [v13 BOOLValue];
   }
 
-  v14 = [v4 objectForKey:@"7"];
+  v14 = [encodingCopy objectForKey:@"7"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2219,7 +2219,7 @@ LABEL_12:
     self->_downloadProperties = v15;
   }
 
-  v17 = [v4 objectForKey:@"L"];
+  v17 = [encodingCopy objectForKey:@"L"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2229,14 +2229,14 @@ LABEL_12:
     self->_enabledServiceType = v18;
   }
 
-  v20 = [v4 objectForKey:@"E"];
+  v20 = [encodingCopy objectForKey:@"E"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_expectedDownloadFileSize = [v20 longLongValue];
   }
 
-  v21 = [v4 objectForKey:@"8"];
+  v21 = [encodingCopy objectForKey:@"8"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2244,7 +2244,7 @@ LABEL_12:
     objc_storeStrong(&self->_filteredAssetTypes, v21);
   }
 
-  v22 = [v4 objectForKey:@"G"];
+  v22 = [encodingCopy objectForKey:@"G"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2252,28 +2252,28 @@ LABEL_12:
     objc_storeStrong(&self->_gratisIdentifiers, v22);
   }
 
-  v23 = [v4 objectForKey:@"9"];
+  v23 = [encodingCopy objectForKey:@"9"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_ignoresForcedPasswordRestriction = [v23 BOOLValue];
   }
 
-  v24 = [v4 objectForKey:@"C"];
+  v24 = [encodingCopy objectForKey:@"C"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_placeholderDownloadIdentifier = [v24 longLongValue];
   }
 
-  v25 = [v4 objectForKey:@"M"];
+  v25 = [encodingCopy objectForKey:@"M"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_playbackRequest = [v25 BOOLValue];
   }
 
-  v26 = [v4 objectForKey:@"F"];
+  v26 = [encodingCopy objectForKey:@"F"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -2281,28 +2281,28 @@ LABEL_12:
     objc_storeStrong(&self->_requiredDeviceCapabilities, v26);
   }
 
-  v27 = [v4 objectForKey:@"H"];
+  v27 = [encodingCopy objectForKey:@"H"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_usesLocalRedownloadParametersIfPossible = [v27 BOOLValue];
   }
 
-  v28 = [v4 objectForKey:@"I"];
+  v28 = [encodingCopy objectForKey:@"I"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_preauthenticated = [v28 BOOLValue];
   }
 
-  v29 = [v4 objectForKey:@"P"];
+  v29 = [encodingCopy objectForKey:@"P"];
 
   if (objc_opt_respondsToSelector())
   {
     self->_skipSoftwareAccountPreflight = [v29 BOOLValue];
   }
 
-  v30 = [v4 objectForKey:@"R"];
+  v30 = [encodingCopy objectForKey:@"R"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2310,7 +2310,7 @@ LABEL_12:
     objc_storeStrong(&self->_presentingSceneIdentifier, v30);
   }
 
-  v31 = [v4 objectForKey:@"S"];
+  v31 = [encodingCopy objectForKey:@"S"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2318,7 +2318,7 @@ LABEL_12:
     objc_storeStrong(&self->_presentingSceneBundleIdentifier, v31);
   }
 
-  v32 = [v4 objectForKey:@"A"];
+  v32 = [encodingCopy objectForKey:@"A"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2327,7 +2327,7 @@ LABEL_12:
     self->_item = v33;
   }
 
-  v35 = [v4 objectForKey:@"B"];
+  v35 = [encodingCopy objectForKey:@"B"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2337,13 +2337,13 @@ LABEL_12:
 
     if (!self->_itemOffer)
     {
-      v38 = [(SSItem *)self->_item defaultItemOffer];
+      defaultItemOffer = [(SSItem *)self->_item defaultItemOffer];
       v39 = self->_itemOffer;
-      self->_itemOffer = v38;
+      self->_itemOffer = defaultItemOffer;
     }
   }
 
-  v40 = [v4 objectForKey:@"Q"];
+  v40 = [encodingCopy objectForKey:@"Q"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2352,7 +2352,7 @@ LABEL_12:
     self->_tidHeaders = v41;
   }
 
-  v43 = [v4 objectForKey:@"6"];
+  v43 = [encodingCopy objectForKey:@"6"];
 
   objc_opt_class();
   v44 = 0x1E696A000uLL;
@@ -2381,19 +2381,19 @@ LABEL_69:
       downloadPolicy = +[SSLogConfig sharedConfig];
     }
 
-    v48 = [downloadPolicy shouldLog];
+    shouldLog = [downloadPolicy shouldLog];
     if ([downloadPolicy shouldLogToDisk])
     {
-      v48 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v49 = [downloadPolicy OSLogObject];
-    if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
+    oSLogObject = [downloadPolicy OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v48 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v48)
+    if (shouldLog)
     {
       v50 = objc_opt_class();
       v82 = 138543618;
@@ -2410,9 +2410,9 @@ LABEL_69:
         goto LABEL_58;
       }
 
-      v49 = [MEMORY[0x1E696AEC0] stringWithCString:v51 encoding:{4, &v82, v75}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v51 encoding:{4, &v82, v75}];
       free(v51);
-      SSFileLog(downloadPolicy, @"%@", v52, v53, v54, v55, v56, v57, v49);
+      SSFileLog(downloadPolicy, @"%@", v52, v53, v54, v55, v56, v57, oSLogObject);
     }
 
     v44 = 0x1E696A000uLL;
@@ -2422,7 +2422,7 @@ LABEL_69:
   }
 
 LABEL_70:
-  v58 = [v4 objectForKey:{@"D", v74}];
+  v58 = [encodingCopy objectForKey:{@"D", v74}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2450,19 +2450,19 @@ LABEL_84:
       requestProperties = +[SSLogConfig sharedConfig];
     }
 
-    v64 = [requestProperties shouldLog];
+    shouldLog2 = [requestProperties shouldLog];
     if ([requestProperties shouldLogToDisk])
     {
-      v64 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v65 = [requestProperties OSLogObject];
-    if (!os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [requestProperties OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v64 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v64)
+    if (shouldLog2)
     {
       v66 = objc_opt_class();
       v82 = 138543618;
@@ -2480,9 +2480,9 @@ LABEL_83:
         goto LABEL_84;
       }
 
-      v65 = [MEMORY[0x1E696AEC0] stringWithCString:v67 encoding:{4, &v82, v75}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v67 encoding:{4, &v82, v75}];
       free(v67);
-      SSFileLog(requestProperties, @"%@", v68, v69, v70, v71, v72, v73, v65);
+      SSFileLog(requestProperties, @"%@", v68, v69, v70, v71, v72, v73, oSLogObject2);
     }
 
     goto LABEL_83;
@@ -2491,17 +2491,17 @@ LABEL_83:
 LABEL_85:
 }
 
-- (SSPurchase)initWithCoder:(id)a3
+- (SSPurchase)initWithCoder:(id)coder
 {
   v60[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [SSPurchase initWithCoder:];
   }
 
-  v5 = [(SSPurchase *)self _initSSPurchase];
-  if (v5)
+  _initSSPurchase = [(SSPurchase *)self _initSSPurchase];
+  if (_initSSPurchase)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
@@ -2510,74 +2510,74 @@ LABEL_85:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
-    accountIdentifier = v5->_accountIdentifier;
-    v5->_accountIdentifier = v13;
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    accountIdentifier = _initSSPurchase->_accountIdentifier;
+    _initSSPurchase->_accountIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"affiliate"];
-    affiliateIdentifier = v5->_affiliateIdentifier;
-    v5->_affiliateIdentifier = v15;
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"affiliate"];
+    affiliateIdentifier = _initSSPurchase->_affiliateIdentifier;
+    _initSSPurchase->_affiliateIdentifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerAccountDSID"];
-    ownerAccountDSID = v5->_ownerAccountDSID;
-    v5->_ownerAccountDSID = v17;
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerAccountDSID"];
+    ownerAccountDSID = _initSSPurchase->_ownerAccountDSID;
+    _initSSPurchase->_ownerAccountDSID = v17;
 
-    v5->_backgroundPurchase = [v4 decodeBoolForKey:@"background"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buyparams"];
-    buyParameters = v5->_buyParameters;
-    v5->_buyParameters = v19;
+    _initSSPurchase->_backgroundPurchase = [coderCopy decodeBoolForKey:@"background"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buyparams"];
+    buyParameters = _initSSPurchase->_buyParameters;
+    _initSSPurchase->_buyParameters = v19;
 
-    v5->_createsDownloads = [v4 decodeBoolForKey:@"createdl"];
-    v5->_createsJobs = [v4 decodeBoolForKey:@"createjb"];
-    v5->_createsInstallJobs = [v4 decodeBoolForKey:@"createinstalljb"];
-    v5->_displaysOnLockScreen = [v4 decodeBoolForKey:@"dislkscrn"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ensrvtp"];
-    enabledServiceType = v5->_enabledServiceType;
-    v5->_enabledServiceType = v21;
+    _initSSPurchase->_createsDownloads = [coderCopy decodeBoolForKey:@"createdl"];
+    _initSSPurchase->_createsJobs = [coderCopy decodeBoolForKey:@"createjb"];
+    _initSSPurchase->_createsInstallJobs = [coderCopy decodeBoolForKey:@"createinstalljb"];
+    _initSSPurchase->_displaysOnLockScreen = [coderCopy decodeBoolForKey:@"dislkscrn"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ensrvtp"];
+    enabledServiceType = _initSSPurchase->_enabledServiceType;
+    _initSSPurchase->_enabledServiceType = v21;
 
-    v5->_expectedDownloadFileSize = [v4 decodeInt64ForKey:@"fsize"];
+    _initSSPurchase->_expectedDownloadFileSize = [coderCopy decodeInt64ForKey:@"fsize"];
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"fltassts"];
-    filteredAssetTypes = v5->_filteredAssetTypes;
-    v5->_filteredAssetTypes = v26;
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"fltassts"];
+    filteredAssetTypes = _initSSPurchase->_filteredAssetTypes;
+    _initSSPurchase->_filteredAssetTypes = v26;
 
     v28 = MEMORY[0x1E695DFD8];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"gratids"];
-    gratisIdentifiers = v5->_gratisIdentifiers;
-    v5->_gratisIdentifiers = v31;
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"gratids"];
+    gratisIdentifiers = _initSSPurchase->_gratisIdentifiers;
+    _initSSPurchase->_gratisIdentifiers = v31;
 
-    v5->_ignoresForcedPasswordRestriction = [v4 decodeBoolForKey:@"ignfrcpw"];
-    v5->_placeholderDownloadIdentifier = [v4 decodeInt64ForKey:@"plchid"];
-    v5->_playbackRequest = [v4 decodeBoolForKey:@"plyreq"];
-    v33 = [v4 decodeObjectOfClasses:v12 forKey:@"reqcap"];
-    requiredDeviceCapabilities = v5->_requiredDeviceCapabilities;
-    v5->_requiredDeviceCapabilities = v33;
+    _initSSPurchase->_ignoresForcedPasswordRestriction = [coderCopy decodeBoolForKey:@"ignfrcpw"];
+    _initSSPurchase->_placeholderDownloadIdentifier = [coderCopy decodeInt64ForKey:@"plchid"];
+    _initSSPurchase->_playbackRequest = [coderCopy decodeBoolForKey:@"plyreq"];
+    v33 = [coderCopy decodeObjectOfClasses:v12 forKey:@"reqcap"];
+    requiredDeviceCapabilities = _initSSPurchase->_requiredDeviceCapabilities;
+    _initSSPurchase->_requiredDeviceCapabilities = v33;
 
-    v5->_skipSoftwareAccountPreflight = [v4 decodeBoolForKey:@"skipSoftwareAccountPreflight"];
-    v5->_usesLocalRedownloadParametersIfPossible = [v4 decodeBoolForKey:@"usesrdl"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneIdentifier"];
-    presentingSceneIdentifier = v5->_presentingSceneIdentifier;
-    v5->_presentingSceneIdentifier = v35;
+    _initSSPurchase->_skipSoftwareAccountPreflight = [coderCopy decodeBoolForKey:@"skipSoftwareAccountPreflight"];
+    _initSSPurchase->_usesLocalRedownloadParametersIfPossible = [coderCopy decodeBoolForKey:@"usesrdl"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneIdentifier"];
+    presentingSceneIdentifier = _initSSPurchase->_presentingSceneIdentifier;
+    _initSSPurchase->_presentingSceneIdentifier = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneBundleIdentifier"];
-    presentingSceneBundleIdentifier = v5->_presentingSceneBundleIdentifier;
-    v5->_presentingSceneBundleIdentifier = v37;
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneBundleIdentifier"];
+    presentingSceneBundleIdentifier = _initSSPurchase->_presentingSceneBundleIdentifier;
+    _initSSPurchase->_presentingSceneBundleIdentifier = v37;
 
     v39 = MEMORY[0x1E695DFD8];
     v60[0] = objc_opt_class();
     v60[1] = objc_opt_class();
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2];
     v41 = [v39 setWithArray:v40];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"uniqueid"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"uniqueid"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5->_uniqueIdentifier = [(__CFString *)v42 longLongValue];
+      _initSSPurchase->_uniqueIdentifier = [(__CFString *)v42 longLongValue];
     }
 
     else
@@ -2589,81 +2589,81 @@ LABEL_85:
         if (v43)
         {
           v44 = v43;
-          v5->_uniqueIdentifier = *&CFUUIDGetUUIDBytes(v43);
+          _initSSPurchase->_uniqueIdentifier = *&CFUUIDGetUUIDBytes(v43);
           CFRelease(v44);
         }
       }
     }
 
-    if ([v4 containsValueForKey:@"dlprops"])
+    if ([coderCopy containsValueForKey:@"dlprops"])
     {
-      v45 = [v4 decodeObjectOfClasses:v12 forKey:@"dlprops"];
-      v46 = [v45 mutableCopy];
+      v45 = [coderCopy decodeObjectOfClasses:v12 forKey:@"dlprops"];
+      newDownloadProperties = [v45 mutableCopy];
     }
 
     else
     {
-      v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
-      v46 = [v45 newDownloadProperties];
+      v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+      newDownloadProperties = [v45 newDownloadProperties];
     }
 
-    downloadProperties = v5->_downloadProperties;
-    v5->_downloadProperties = v46;
+    downloadProperties = _initSSPurchase->_downloadProperties;
+    _initSSPurchase->_downloadProperties = newDownloadProperties;
 
-    v48 = [v4 decodeObjectOfClasses:v12 forKey:@"itemdict"];
+    v48 = [coderCopy decodeObjectOfClasses:v12 forKey:@"itemdict"];
     if (v48)
     {
       v49 = [[SSItem alloc] initWithItemDictionary:v48];
-      item = v5->_item;
-      v5->_item = v49;
+      item = _initSSPurchase->_item;
+      _initSSPurchase->_item = v49;
     }
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerid"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerid"];
     if (v51)
     {
-      v52 = [(SSItem *)v5->_item itemOfferForIdentifier:v51];
-      itemOffer = v5->_itemOffer;
-      v5->_itemOffer = v52;
+      v52 = [(SSItem *)_initSSPurchase->_item itemOfferForIdentifier:v51];
+      itemOffer = _initSSPurchase->_itemOffer;
+      _initSSPurchase->_itemOffer = v52;
 
-      if (!v5->_itemOffer)
+      if (!_initSSPurchase->_itemOffer)
       {
-        v54 = [(SSItem *)v5->_item defaultItemOffer];
-        v55 = v5->_itemOffer;
-        v5->_itemOffer = v54;
+        defaultItemOffer = [(SSItem *)_initSSPurchase->_item defaultItemOffer];
+        v55 = _initSSPurchase->_itemOffer;
+        _initSSPurchase->_itemOffer = defaultItemOffer;
       }
     }
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dlpolicy"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dlpolicy"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v5->_downloadPolicy, v56);
+      objc_storeStrong(&_initSSPurchase->_downloadPolicy, v56);
     }
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"netcon"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"netcon"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v5->_networkConstraints, v57);
+      objc_storeStrong(&_initSSPurchase->_networkConstraints, v57);
     }
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestp"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestp"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v5->_requestProperties, v58);
+      objc_storeStrong(&_initSSPurchase->_requestProperties, v58);
     }
   }
 
-  return v5;
+  return _initSSPurchase;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [SSPurchase encodeWithCoder:];
   }
@@ -2673,9 +2673,9 @@ LABEL_85:
   v7[1] = 3221225472;
   v7[2] = __30__SSPurchase_encodeWithCoder___block_invoke;
   v7[3] = &unk_1E84AC028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = coderCopy;
+  selfCopy = self;
+  v6 = coderCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -2723,9 +2723,9 @@ uint64_t __30__SSPurchase_encodeWithCoder___block_invoke(uint64_t a1)
   return [v8 encodeObject:v9 forKey:@"presentingSceneBundleIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2733,8 +2733,8 @@ uint64_t __30__SSPurchase_encodeWithCoder___block_invoke(uint64_t a1)
   block[3] = &unk_1E84AD6E0;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  v13 = a3;
+  selfCopy = self;
+  zoneCopy = zone;
   dispatch_sync(dispatchQueue, block);
   v8 = v7;
 
@@ -2837,21 +2837,21 @@ void __27__SSPurchase_copyWithZone___block_invoke(void *a1)
 
 - (unint64_t)hash
 {
-  v2 = [(SSPurchase *)self buyParameters];
-  v3 = [v2 hash];
+  buyParameters = [(SSPurchase *)self buyParameters];
+  v3 = [buyParameters hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SSPurchase *)self buyParameters];
-    v8 = [v4 buyParameters];
-    v6 = [v7 isEqualToString:v8];
+    buyParameters = [(SSPurchase *)self buyParameters];
+    buyParameters2 = [equalCopy buyParameters];
+    v6 = [buyParameters isEqualToString:buyParameters2];
   }
 
   else
@@ -2872,7 +2872,7 @@ void __27__SSPurchase_copyWithZone___block_invoke(void *a1)
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
@@ -2922,158 +2922,158 @@ uint64_t __29__SSPurchase_copyXPCEncoding__block_invoke(uint64_t a1)
   return SSXPCDictionarySetObject(v6, "29", v7);
 }
 
-- (SSPurchase)initWithXPCEncoding:(id)a3
+- (SSPurchase)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
-    v6 = [(SSPurchase *)self _initSSPurchase];
-    if (!v6)
+    _initSSPurchase = [(SSPurchase *)self _initSSPurchase];
+    if (!_initSSPurchase)
     {
       goto LABEL_5;
     }
 
     v8 = objc_opt_class();
     v9 = SSXPCDictionaryCopyObjectWithClass(v5, "0", v8);
-    accountIdentifier = v6->_accountIdentifier;
-    v6->_accountIdentifier = v9;
+    accountIdentifier = _initSSPurchase->_accountIdentifier;
+    _initSSPurchase->_accountIdentifier = v9;
 
     v11 = objc_opt_class();
     v12 = SSXPCDictionaryCopyObjectWithClass(v5, "1", v11);
-    affiliateIdentifier = v6->_affiliateIdentifier;
-    v6->_affiliateIdentifier = v12;
+    affiliateIdentifier = _initSSPurchase->_affiliateIdentifier;
+    _initSSPurchase->_affiliateIdentifier = v12;
 
     v14 = objc_opt_class();
     v15 = SSXPCDictionaryCopyObjectWithClass(v5, "2", v14);
-    ownerAccountDSID = v6->_ownerAccountDSID;
-    v6->_ownerAccountDSID = v15;
+    ownerAccountDSID = _initSSPurchase->_ownerAccountDSID;
+    _initSSPurchase->_ownerAccountDSID = v15;
 
-    v6->_backgroundPurchase = xpc_dictionary_get_BOOL(v5, "3");
+    _initSSPurchase->_backgroundPurchase = xpc_dictionary_get_BOOL(v5, "3");
     v17 = objc_opt_class();
     v18 = SSXPCDictionaryCopyObjectWithClass(v5, "4", v17);
-    buyParameters = v6->_buyParameters;
-    v6->_buyParameters = v18;
+    buyParameters = _initSSPurchase->_buyParameters;
+    _initSSPurchase->_buyParameters = v18;
 
-    v6->_createsDownloads = xpc_dictionary_get_BOOL(v5, "5");
-    v6->_createsJobs = xpc_dictionary_get_BOOL(v5, "6");
-    v6->_createsInstallJobs = xpc_dictionary_get_BOOL(v5, "7");
-    v6->_displaysOnLockScreen = xpc_dictionary_get_BOOL(v5, "23");
+    _initSSPurchase->_createsDownloads = xpc_dictionary_get_BOOL(v5, "5");
+    _initSSPurchase->_createsJobs = xpc_dictionary_get_BOOL(v5, "6");
+    _initSSPurchase->_createsInstallJobs = xpc_dictionary_get_BOOL(v5, "7");
+    _initSSPurchase->_displaysOnLockScreen = xpc_dictionary_get_BOOL(v5, "23");
     v20 = [SSDownloadPolicy alloc];
     v21 = xpc_dictionary_get_value(v5, "8");
     v22 = [(SSDownloadPolicy *)v20 initWithXPCEncoding:v21];
-    downloadPolicy = v6->_downloadPolicy;
-    v6->_downloadPolicy = v22;
+    downloadPolicy = _initSSPurchase->_downloadPolicy;
+    _initSSPurchase->_downloadPolicy = v22;
 
     v24 = objc_opt_class();
     v25 = SSXPCDictionaryCopyObjectWithClass(v5, "24", v24);
-    enabledServiceType = v6->_enabledServiceType;
-    v6->_enabledServiceType = v25;
+    enabledServiceType = _initSSPurchase->_enabledServiceType;
+    _initSSPurchase->_enabledServiceType = v25;
 
-    v6->_expectedDownloadFileSize = xpc_dictionary_get_int64(v5, "10");
+    _initSSPurchase->_expectedDownloadFileSize = xpc_dictionary_get_int64(v5, "10");
     v27 = objc_opt_class();
     v28 = SSXPCDictionaryCopyObjectWithClass(v5, "11", v27);
-    filteredAssetTypes = v6->_filteredAssetTypes;
-    v6->_filteredAssetTypes = v28;
+    filteredAssetTypes = _initSSPurchase->_filteredAssetTypes;
+    _initSSPurchase->_filteredAssetTypes = v28;
 
     v30 = objc_opt_class();
     v31 = SSXPCDictionaryCopyObjectWithClass(v5, "20", v30);
-    gratisIdentifiers = v6->_gratisIdentifiers;
-    v6->_gratisIdentifiers = v31;
+    gratisIdentifiers = _initSSPurchase->_gratisIdentifiers;
+    _initSSPurchase->_gratisIdentifiers = v31;
 
-    v6->_ignoresForcedPasswordRestriction = xpc_dictionary_get_BOOL(v5, "12");
-    v6->_placeholderDownloadIdentifier = xpc_dictionary_get_int64(v5, "16");
-    v6->_playbackRequest = xpc_dictionary_get_BOOL(v5, "25");
+    _initSSPurchase->_ignoresForcedPasswordRestriction = xpc_dictionary_get_BOOL(v5, "12");
+    _initSSPurchase->_placeholderDownloadIdentifier = xpc_dictionary_get_int64(v5, "16");
+    _initSSPurchase->_playbackRequest = xpc_dictionary_get_BOOL(v5, "25");
     v33 = [SSNetworkConstraints alloc];
     v34 = xpc_dictionary_get_value(v5, "14");
     v35 = [(SSNetworkConstraints *)v33 initWithXPCEncoding:v34];
-    networkConstraints = v6->_networkConstraints;
-    v6->_networkConstraints = v35;
+    networkConstraints = _initSSPurchase->_networkConstraints;
+    _initSSPurchase->_networkConstraints = v35;
 
     v37 = [SSURLRequestProperties alloc];
     v38 = xpc_dictionary_get_value(v5, "17");
     v39 = [(SSURLRequestProperties *)v37 initWithXPCEncoding:v38];
-    requestProperties = v6->_requestProperties;
-    v6->_requestProperties = v39;
+    requestProperties = _initSSPurchase->_requestProperties;
+    _initSSPurchase->_requestProperties = v39;
 
-    v6->_uniqueIdentifier = xpc_dictionary_get_int64(v5, "19");
-    v6->_usesLocalRedownloadParametersIfPossible = xpc_dictionary_get_BOOL(v5, "21");
-    v6->_preauthenticated = xpc_dictionary_get_BOOL(v5, "22");
-    v6->_skipSoftwareAccountPreflight = xpc_dictionary_get_BOOL(v5, "26");
+    _initSSPurchase->_uniqueIdentifier = xpc_dictionary_get_int64(v5, "19");
+    _initSSPurchase->_usesLocalRedownloadParametersIfPossible = xpc_dictionary_get_BOOL(v5, "21");
+    _initSSPurchase->_preauthenticated = xpc_dictionary_get_BOOL(v5, "22");
+    _initSSPurchase->_skipSoftwareAccountPreflight = xpc_dictionary_get_BOOL(v5, "26");
     v41 = objc_opt_class();
     v42 = SSXPCDictionaryCopyObjectWithClass(v5, "27", v41);
-    tidHeaders = v6->_tidHeaders;
-    v6->_tidHeaders = v42;
+    tidHeaders = _initSSPurchase->_tidHeaders;
+    _initSSPurchase->_tidHeaders = v42;
 
     v44 = objc_opt_class();
     v45 = SSXPCDictionaryCopyObjectWithClass(v5, "29", v44);
-    presentingSceneBundleIdentifier = v6->_presentingSceneBundleIdentifier;
-    v6->_presentingSceneBundleIdentifier = v45;
+    presentingSceneBundleIdentifier = _initSSPurchase->_presentingSceneBundleIdentifier;
+    _initSSPurchase->_presentingSceneBundleIdentifier = v45;
 
     v47 = objc_opt_class();
     v48 = SSXPCDictionaryCopyObjectWithClass(v5, "28", v47);
-    presentingSceneIdentifier = v6->_presentingSceneIdentifier;
-    v6->_presentingSceneIdentifier = v48;
+    presentingSceneIdentifier = _initSSPurchase->_presentingSceneIdentifier;
+    _initSSPurchase->_presentingSceneIdentifier = v48;
 
     self = SSXPCDictionaryCopyCFObject(v5, "18");
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      objc_storeStrong(&v6->_requiredDeviceCapabilities, self);
+      objc_storeStrong(&_initSSPurchase->_requiredDeviceCapabilities, self);
     }
 
     v50 = objc_opt_class();
     v51 = SSXPCDictionaryCopyObjectWithClass(v5, "9", v50);
     v52 = [v51 mutableCopy];
-    downloadProperties = v6->_downloadProperties;
-    v6->_downloadProperties = v52;
+    downloadProperties = _initSSPurchase->_downloadProperties;
+    _initSSPurchase->_downloadProperties = v52;
 
     v54 = objc_opt_class();
     v55 = SSXPCDictionaryCopyObjectWithClass(v5, "13", v54);
     if (v55)
     {
       v56 = [[SSItem alloc] initWithItemDictionary:v55];
-      item = v6->_item;
-      v6->_item = v56;
+      item = _initSSPurchase->_item;
+      _initSSPurchase->_item = v56;
     }
 
     v58 = objc_opt_class();
     v59 = SSXPCDictionaryCopyObjectWithClass(v5, "15", v58);
     if (v59)
     {
-      v60 = [(SSItem *)v6->_item itemOfferForIdentifier:v59];
-      itemOffer = v6->_itemOffer;
-      v6->_itemOffer = v60;
+      v60 = [(SSItem *)_initSSPurchase->_item itemOfferForIdentifier:v59];
+      itemOffer = _initSSPurchase->_itemOffer;
+      _initSSPurchase->_itemOffer = v60;
 
-      if (!v6->_itemOffer)
+      if (!_initSSPurchase->_itemOffer)
       {
-        v62 = [(SSItem *)v6->_item defaultItemOffer];
-        v63 = v6->_itemOffer;
-        v6->_itemOffer = v62;
+        defaultItemOffer = [(SSItem *)_initSSPurchase->_item defaultItemOffer];
+        v63 = _initSSPurchase->_itemOffer;
+        _initSSPurchase->_itemOffer = defaultItemOffer;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    _initSSPurchase = 0;
   }
 
 LABEL_5:
-  return v6;
+  return _initSSPurchase;
 }
 
-- (void)setDownloadMetadata:(id)a3
+- (void)setDownloadMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SSPurchase_setDownloadMetadata___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = metadataCopy;
+  v6 = metadataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3085,12 +3085,12 @@ void __34__SSPurchase_setDownloadMetadata___block_invoke(uint64_t a1)
   *(v3 + 104) = v2;
 }
 
-+ (id)newPurchaseWithDatabaseEncoding:(id)a3
++ (id)newPurchaseWithDatabaseEncoding:(id)encoding
 {
-  v3 = a3;
-  if (v3)
+  encodingCopy = encoding;
+  if (encodingCopy)
   {
-    v4 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:0];
+    v4 = [MEMORY[0x1E696AE40] propertyListWithData:encodingCopy options:0 format:0 error:0];
   }
 
   else
@@ -3108,23 +3108,23 @@ void __34__SSPurchase_setDownloadMetadata___block_invoke(uint64_t a1)
       v5 = objc_opt_class();
     }
 
-    v7 = [[v5 alloc] _initSSPurchase];
-    [v7 _setValuesUsingDatabaseEncoding:v4];
+    _initSSPurchase = [[v5 alloc] _initSSPurchase];
+    [_initSSPurchase _setValuesUsingDatabaseEncoding:v4];
   }
 
   else
   {
-    v7 = 0;
+    _initSSPurchase = 0;
   }
 
-  return v7;
+  return _initSSPurchase;
 }
 
-+ (id)newPurchaseWithXPCEncoding:(id)a3
++ (id)newPurchaseWithXPCEncoding:(id)encoding
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && MEMORY[0x1DA6E0380](v3) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v4 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v6 = objc_opt_class();
     if (xpc_dictionary_get_BOOL(v4, "55"))

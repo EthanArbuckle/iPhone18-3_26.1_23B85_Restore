@@ -1,14 +1,14 @@
 @interface WDProfile
 - (HKSampleTypeDateRangeController)sampleTypeDateRangeController;
-- (WDProfile)initWithHealthStore:(id)a3;
+- (WDProfile)initWithHealthStore:(id)store;
 - (id)_createHealthStore;
 @end
 
 @implementation WDProfile
 
-- (WDProfile)initWithHealthStore:(id)a3
+- (WDProfile)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v40.receiver = self;
   v40.super_class = WDProfile;
   v5 = [(WDProfile *)&v40 init];
@@ -16,18 +16,18 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    if (v4)
+    if (storeCopy)
     {
-      v7 = v4;
+      _createHealthStore = storeCopy;
     }
 
     else
     {
-      v7 = [(WDProfile *)v5 _createHealthStore];
+      _createHealthStore = [(WDProfile *)v5 _createHealthStore];
     }
 
     healthStore = v6->_healthStore;
-    v6->_healthStore = v7;
+    v6->_healthStore = _createHealthStore;
 
     v9 = [objc_alloc(MEMORY[0x277CCD4C0]) initWithHealthStore:v6->_healthStore];
     healthRecordsStore = v6->_healthRecordsStore;
@@ -37,17 +37,17 @@
     displayTypeController = v6->_displayTypeController;
     v6->_displayTypeController = v11;
 
-    v13 = [(HKHealthStore *)v6->_healthStore profileIdentifier];
-    if ([v13 type] == 3)
+    profileIdentifier = [(HKHealthStore *)v6->_healthStore profileIdentifier];
+    if ([profileIdentifier type] == 3)
     {
     }
 
     else
     {
-      v14 = [(HKHealthStore *)v6->_healthStore profileIdentifier];
-      v15 = [v14 type];
+      profileIdentifier2 = [(HKHealthStore *)v6->_healthStore profileIdentifier];
+      type = [profileIdentifier2 type];
 
-      if (v15 != 2)
+      if (type != 2)
       {
         v20 = [objc_alloc(MEMORY[0x277CCDAC0]) initWithHealthStore:v6->_healthStore];
         unitController = v6->_unitController;
@@ -80,8 +80,8 @@ LABEL_10:
     v6->_selectedTimeScopeController = v27;
 
     v29 = objc_alloc(MEMORY[0x277D12820]);
-    v30 = [MEMORY[0x277CBEA80] currentCalendar];
-    v31 = [v29 initWithCalendar:v30];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v31 = [v29 initWithCalendar:currentCalendar];
     dateCache = v6->_dateCache;
     v6->_dateCache = v31;
 
@@ -104,8 +104,8 @@ LABEL_10:
 - (id)_createHealthStore
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"HealthProfileIdentifierKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"HealthProfileIdentifierKey"];
   v4 = MEMORY[0x277CCC2B0];
   if (!v3)
   {

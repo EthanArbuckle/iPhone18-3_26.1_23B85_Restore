@@ -1,20 +1,20 @@
 @interface CHSExtensionIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRemote;
 - (CHSExtensionIdentity)init;
-- (CHSExtensionIdentity)initWithBSXPCCoder:(id)a3;
-- (CHSExtensionIdentity)initWithCoder:(id)a3;
-- (CHSExtensionIdentity)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 deviceIdentifier:(id)a5;
-- (CHSExtensionIdentity)initWithXPCDictionary:(id)a3;
+- (CHSExtensionIdentity)initWithBSXPCCoder:(id)coder;
+- (CHSExtensionIdentity)initWithCoder:(id)coder;
+- (CHSExtensionIdentity)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier deviceIdentifier:(id)deviceIdentifier;
+- (CHSExtensionIdentity)initWithXPCDictionary:(id)dictionary;
 - (NSString)containerBundleIdentifier;
 - (NSString)description;
 - (NSString)deviceIdentifier;
 - (NSString)extensionBundleIdentifier;
 - (NSString)tokenString;
 - (int64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CHSExtensionIdentity
@@ -28,7 +28,7 @@
 
 - (NSString)tokenString
 {
-  v2 = self;
+  selfCopy = self;
   CHSExtensionIdentity.token.getter(&v5);
   Token.rawValue.getter();
 
@@ -39,7 +39,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHSExtensionIdentity.hash.getter();
 
   return v3;
@@ -47,7 +47,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CHSExtensionIdentity.token.getter(&v5);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAEED8F0, &unk_195FACA00);
@@ -80,11 +80,11 @@
   return [(CHSExtensionIdentity *)&v8 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_195FA0E08();
     swift_unknownObjectRelease();
@@ -93,7 +93,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CHSExtensionIdentity.isEqual(_:)(v8);
@@ -152,14 +152,14 @@
   return v4;
 }
 
-- (CHSExtensionIdentity)initWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 deviceIdentifier:(id)a5
+- (CHSExtensionIdentity)initWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier deviceIdentifier:(id)deviceIdentifier
 {
   v7 = sub_195FA08B8();
   v9 = v8;
-  if (!a4)
+  if (!bundleIdentifier)
   {
     v11 = 0;
-    if (a5)
+    if (deviceIdentifier)
     {
       goto LABEL_3;
     }
@@ -167,12 +167,12 @@
 LABEL_5:
     v12 = 0;
     v14 = 0;
-    return sub_195EB7D40(v7, v9, a4, v11, v12, v14);
+    return sub_195EB7D40(v7, v9, bundleIdentifier, v11, v12, v14);
   }
 
-  a4 = sub_195FA08B8();
+  bundleIdentifier = sub_195FA08B8();
   v11 = v10;
-  if (!a5)
+  if (!deviceIdentifier)
   {
     goto LABEL_5;
   }
@@ -180,69 +180,69 @@ LABEL_5:
 LABEL_3:
   v12 = sub_195FA08B8();
   v14 = v13;
-  return sub_195EB7D40(v7, v9, a4, v11, v12, v14);
+  return sub_195EB7D40(v7, v9, bundleIdentifier, v11, v12, v14);
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CHSExtensionIdentity *)self extensionBundleIdentifier];
-  [v7 encodeObject:v4 forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  extensionBundleIdentifier = [(CHSExtensionIdentity *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  v5 = [(CHSExtensionIdentity *)self containerBundleIdentifier];
-  [v7 encodeObject:v5 forKey:@"containerBundleIdentifier"];
+  containerBundleIdentifier = [(CHSExtensionIdentity *)self containerBundleIdentifier];
+  [coderCopy encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
 
-  v6 = [(CHSExtensionIdentity *)self deviceIdentifier];
-  [v7 encodeObject:v6 forKey:@"deviceIdentifier"];
+  deviceIdentifier = [(CHSExtensionIdentity *)self deviceIdentifier];
+  [coderCopy encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
 }
 
-- (CHSExtensionIdentity)initWithBSXPCCoder:(id)a3
+- (CHSExtensionIdentity)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
     self = [(CHSExtensionIdentity *)self initWithExtensionBundleIdentifier:v5 containerBundleIdentifier:v6 deviceIdentifier:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v9 = a3;
-  v4 = [(CHSExtensionIdentity *)self extensionBundleIdentifier];
+  dictionaryCopy = dictionary;
+  extensionBundleIdentifier = [(CHSExtensionIdentity *)self extensionBundleIdentifier];
   BSSerializeStringToXPCDictionaryWithKey();
 
-  v5 = [(CHSExtensionIdentity *)self containerBundleIdentifier];
+  containerBundleIdentifier = [(CHSExtensionIdentity *)self containerBundleIdentifier];
 
-  if (v5)
+  if (containerBundleIdentifier)
   {
-    v6 = [(CHSExtensionIdentity *)self containerBundleIdentifier];
+    containerBundleIdentifier2 = [(CHSExtensionIdentity *)self containerBundleIdentifier];
     BSSerializeStringToXPCDictionaryWithKey();
   }
 
-  v7 = [(CHSExtensionIdentity *)self deviceIdentifier];
+  deviceIdentifier = [(CHSExtensionIdentity *)self deviceIdentifier];
 
-  if (v7)
+  if (deviceIdentifier)
   {
-    v8 = [(CHSExtensionIdentity *)self deviceIdentifier];
+    deviceIdentifier2 = [(CHSExtensionIdentity *)self deviceIdentifier];
     BSSerializeStringToXPCDictionaryWithKey();
   }
 }
 
-- (CHSExtensionIdentity)initWithXPCDictionary:(id)a3
+- (CHSExtensionIdentity)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
   if (v5)
   {
@@ -250,49 +250,49 @@ LABEL_3:
     v7 = BSDeserializeStringFromXPCDictionaryWithKey();
     self = [(CHSExtensionIdentity *)self initWithExtensionBundleIdentifier:v5 containerBundleIdentifier:v6 deviceIdentifier:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CHSExtensionIdentity *)self extensionBundleIdentifier];
-  [v7 encodeObject:v4 forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  extensionBundleIdentifier = [(CHSExtensionIdentity *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  v5 = [(CHSExtensionIdentity *)self containerBundleIdentifier];
-  [v7 encodeObject:v5 forKey:@"containerBundleIdentifier"];
+  containerBundleIdentifier = [(CHSExtensionIdentity *)self containerBundleIdentifier];
+  [coderCopy encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
 
-  v6 = [(CHSExtensionIdentity *)self deviceIdentifier];
-  [v7 encodeObject:v6 forKey:@"deviceIdentifier"];
+  deviceIdentifier = [(CHSExtensionIdentity *)self deviceIdentifier];
+  [coderCopy encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
 }
 
-- (CHSExtensionIdentity)initWithCoder:(id)a3
+- (CHSExtensionIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
     self = [(CHSExtensionIdentity *)self initWithExtensionBundleIdentifier:v5 containerBundleIdentifier:v6 deviceIdentifier:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

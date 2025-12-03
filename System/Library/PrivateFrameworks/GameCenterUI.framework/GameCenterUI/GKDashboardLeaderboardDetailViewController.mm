@@ -1,37 +1,37 @@
 @interface GKDashboardLeaderboardDetailViewController
-- (GKDashboardLeaderboardDetailViewController)initWithScore:(id)a3 leaderboard:(id)a4;
+- (GKDashboardLeaderboardDetailViewController)initWithScore:(id)score leaderboard:(id)leaderboard;
 - (id)preferredFocusEnvironments;
-- (void)challenge:(id)a3;
+- (void)challenge:(id)challenge;
 - (void)configureForScore;
-- (void)report:(id)a3;
-- (void)share:(id)a3;
+- (void)report:(id)report;
+- (void)share:(id)share;
 - (void)viewDidLoad;
 @end
 
 @implementation GKDashboardLeaderboardDetailViewController
 
-- (GKDashboardLeaderboardDetailViewController)initWithScore:(id)a3 leaderboard:(id)a4
+- (GKDashboardLeaderboardDetailViewController)initWithScore:(id)score leaderboard:(id)leaderboard
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _gkPlatformNibName];
-  v9 = [v6 player];
-  if (([v9 isLocalPlayer] & 1) == 0 && (objc_msgSend(v9, "isFamiliarFriend") & 1) == 0)
+  scoreCopy = score;
+  leaderboardCopy = leaderboard;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
+  player = [scoreCopy player];
+  if (([player isLocalPlayer] & 1) == 0 && (objc_msgSend(player, "isFamiliarFriend") & 1) == 0)
   {
-    v10 = [v8 stringByAppendingString:@"NoBubbles"];
+    v10 = [_gkPlatformNibName stringByAppendingString:@"NoBubbles"];
 
-    v8 = v10;
+    _gkPlatformNibName = v10;
   }
 
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14.receiver = self;
   v14.super_class = GKDashboardLeaderboardDetailViewController;
-  v12 = [(GKDashboardCollectionViewController *)&v14 initWithNibName:v8 bundle:v11];
+  v12 = [(GKDashboardCollectionViewController *)&v14 initWithNibName:_gkPlatformNibName bundle:v11];
 
   if (v12)
   {
-    [(GKDashboardLeaderboardDetailViewController *)v12 setScore:v6];
-    [(GKDashboardLeaderboardDetailViewController *)v12 setLeaderboard:v7];
+    [(GKDashboardLeaderboardDetailViewController *)v12 setScore:scoreCopy];
+    [(GKDashboardLeaderboardDetailViewController *)v12 setLeaderboard:leaderboardCopy];
   }
 
   return v12;
@@ -42,42 +42,42 @@
   v19.receiver = self;
   v19.super_class = GKDashboardLeaderboardDetailViewController;
   [(GKDetailViewController *)&v19 viewDidLoad];
-  v3 = [(GKScore *)self->_score player];
-  v4 = [v3 isLocalPlayer];
+  player = [(GKScore *)self->_score player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  if (v4)
+  if (isLocalPlayer)
   {
-    v5 = [MEMORY[0x277D0C1F8] reporter];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
     v6 = *MEMORY[0x277D0BE28];
-    [v5 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA20]];
+    [reporter reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA20]];
     v7 = MEMORY[0x277D0BA38];
   }
 
   else
   {
-    v8 = [(GKScore *)self->_score player];
-    v9 = [v8 isFamiliarFriend];
+    player2 = [(GKScore *)self->_score player];
+    isFamiliarFriend = [player2 isFamiliarFriend];
 
-    v10 = [MEMORY[0x277D0C1F8] reporter];
-    v5 = v10;
+    reporter2 = [MEMORY[0x277D0C1F8] reporter];
+    reporter = reporter2;
     v6 = *MEMORY[0x277D0BE28];
-    if (v9)
+    if (isFamiliarFriend)
     {
-      [v10 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA10]];
+      [reporter2 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA10]];
       v7 = MEMORY[0x277D0BA30];
     }
 
     else
     {
-      [v10 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA28]];
+      [reporter2 reportEvent:*MEMORY[0x277D0BE28] type:*MEMORY[0x277D0BA28]];
       v7 = MEMORY[0x277D0BA40];
     }
   }
 
-  v11 = [MEMORY[0x277D0C1F8] reporter];
+  reporter3 = [MEMORY[0x277D0C1F8] reporter];
   v12 = *v7;
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKScore rank](self->_score, "rank")}];
-  [v11 reportEvent:v6 type:v12 scoreRank:v13];
+  [reporter3 reportEvent:v6 type:v12 scoreRank:v13];
 
   [(UIViewController *)self _gkModifyTopConstraintToLayoutGuideForSubview:self->_playerView];
   if (!self->_reportProblemButton)
@@ -86,8 +86,8 @@
     v15 = GKGameCenterUIFrameworkBundle();
     v16 = GKGetLocalizedStringFromTableInBundle();
     v17 = [v14 initWithTitle:v16 style:2 target:self action:sel_report_];
-    v18 = [(GKDashboardLeaderboardDetailViewController *)self navigationItem];
-    [v18 setRightBarButtonItem:v17];
+    navigationItem = [(GKDashboardLeaderboardDetailViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v17];
   }
 
   [(GKDashboardLeaderboardDetailViewController *)self configureForScore];
@@ -112,24 +112,24 @@
 
 - (void)configureForScore
 {
-  v3 = [(GKScore *)self->_score formattedValue];
-  [(UILabel *)self->_descriptionLabel setText:v3];
+  formattedValue = [(GKScore *)self->_score formattedValue];
+  [(UILabel *)self->_descriptionLabel setText:formattedValue];
 
   v4 = MEMORY[0x277CCACA8];
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
   [(GKScore *)self->_score rank];
   v7 = GKFormattedStringFromInteger();
-  v8 = [(GKScore *)self->_score date];
-  [v8 timeIntervalSince1970];
+  date = [(GKScore *)self->_score date];
+  [date timeIntervalSince1970];
   v9 = GKAbsoluteTimeAsWhenString();
   v10 = [v4 stringWithFormat:v6, v7, v9];
   [(UILabel *)self->_earnedOnLabel setText:v10];
 
-  v33 = [MEMORY[0x277D0C138] localPlayer];
-  v11 = [(GKScore *)self->_score player];
-  [(GKDashboardPlayerPhotoView *)self->_playerView setPlayer:v11];
-  v12 = [v11 displayNameWithOptions:0];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  player = [(GKScore *)self->_score player];
+  [(GKDashboardPlayerPhotoView *)self->_playerView setPlayer:player];
+  v12 = [player displayNameWithOptions:0];
   [(UILabel *)self->_nameLabel setText:v12];
 
   p_firstButton = &self->_firstButton;
@@ -137,18 +137,18 @@
   [(UIButton *)self->_secondButton setHidden:1];
   [(UIButton *)self->_firstButton removeTarget:self action:0 forControlEvents:64];
   [(UIButton *)self->_secondButton removeTarget:self action:0 forControlEvents:64];
-  v14 = [v33 isUnderage];
+  isUnderage = [localPlayer isUnderage];
   [(UILabel *)self->_infoLabel setHidden:1];
-  v15 = [v11 isLocalPlayer];
-  if (v15)
+  isLocalPlayer = [player isLocalPlayer];
+  if (isLocalPlayer)
   {
-    if ([v33 numberOfFriends])
+    if ([localPlayer numberOfFriends])
     {
       v16 = GKGameCenterUIFrameworkBundle();
       v17 = GKGetLocalizedStringFromTableInBundle();
 
       v18 = 0;
-      if (v14)
+      if (isUnderage)
       {
         v19 = 0;
         goto LABEL_19;
@@ -158,7 +158,7 @@
     else
     {
       v17 = 0;
-      if (v14)
+      if (isUnderage)
       {
         v19 = 0;
         v18 = 0;
@@ -171,7 +171,7 @@
     goto LABEL_15;
   }
 
-  if (![v11 isFamiliarFriend])
+  if (![player isFamiliarFriend])
   {
     v17 = 0;
     v18 = 0;
@@ -179,22 +179,22 @@
     goto LABEL_24;
   }
 
-  v20 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
+  localPlayerScore = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
 
-  if (v20)
+  if (localPlayerScore)
   {
     v21 = GKGameCenterUIFrameworkBundle();
     v17 = GKGetLocalizedStringFromTableInBundle();
 
     v18 = 0;
-    if (v14)
+    if (isUnderage)
     {
       v19 = 1;
       goto LABEL_19;
     }
 
 LABEL_15:
-    v19 = v15 ^ 1u;
+    v19 = isLocalPlayer ^ 1u;
     if (v17)
     {
       p_secondButton = &self->_secondButton;
@@ -230,11 +230,11 @@ LABEL_19:
   v22 = MEMORY[0x277CCACA8];
   v32 = GKGameCenterUIFrameworkBundle();
   v23 = GKGetLocalizedStringFromTableInBundle();
-  v24 = [(GKLeaderboard *)self->_leaderboard localizedTitle];
-  v18 = [v22 stringWithFormat:v23, v24];
+  localizedTitle = [(GKLeaderboard *)self->_leaderboard localizedTitle];
+  v18 = [v22 stringWithFormat:v23, localizedTitle];
 
   v17 = 0;
-  if ((v14 & 1) == 0)
+  if ((isUnderage & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -251,30 +251,30 @@ LABEL_24:
   [(UIButton *)self->_reportProblemButton setEnabled:v19];
   if (!self->_reportProblemButton)
   {
-    v30 = [(GKDashboardLeaderboardDetailViewController *)self navigationItem];
-    v31 = [v30 rightBarButtonItem];
-    [v31 setEnabled:v19];
+    navigationItem = [(GKDashboardLeaderboardDetailViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v19];
   }
 }
 
-- (void)challenge:(id)a3
+- (void)challenge:(id)challenge
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D0C208];
-  v5 = [(GKScore *)self->_score game];
-  v6 = [MEMORY[0x277D0C138] localPlayer];
-  v7 = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
-  v8 = [v4 challengeForGame:v5 andPlayer:v6 withScore:v7];
+  game = [(GKScore *)self->_score game];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  localPlayerScore = [(GKLeaderboard *)self->_leaderboard localPlayerScore];
+  v8 = [v4 challengeForGame:game andPlayer:localPlayer withScore:localPlayerScore];
 
-  v9 = [(GKLeaderboard *)self->_leaderboard internal];
-  v10 = [v8 internal];
-  [v10 setLeaderboard:v9];
+  internal = [(GKLeaderboard *)self->_leaderboard internal];
+  internal2 = [v8 internal];
+  [internal2 setLeaderboard:internal];
 
-  v11 = [(GKScore *)self->_score player];
-  if (v11)
+  player = [(GKScore *)self->_score player];
+  if (player)
   {
-    v12 = [(GKScore *)self->_score player];
-    v16[0] = v12;
+    player2 = [(GKScore *)self->_score player];
+    v16[0] = player2;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   }
 
@@ -284,17 +284,17 @@ LABEL_24:
   }
 
   v14 = [[GKChallengePlayerPickerViewController alloc] initWithChallenge:v8 initiallySelectedPlayers:v13];
-  v15 = [(UIViewController *)self _gkOriginatingViewController];
-  [v15 _gkPushViewController:v14 replaceCurrent:0 animated:1];
+  _gkOriginatingViewController = [(UIViewController *)self _gkOriginatingViewController];
+  [_gkOriginatingViewController _gkPushViewController:v14 replaceCurrent:0 animated:1];
 }
 
-- (void)share:(id)a3
+- (void)share:(id)share
 {
-  v15 = a3;
-  v4 = [(GKScore *)self->_score player];
-  v5 = [v4 isLocalPlayer];
+  shareCopy = share;
+  player = [(GKScore *)self->_score player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  if (v5)
+  if (isLocalPlayer)
   {
     v6 = MEMORY[0x277D0BA50];
     v7 = MEMORY[0x277D0BA68];
@@ -302,10 +302,10 @@ LABEL_24:
 
   else
   {
-    v8 = [(GKScore *)self->_score player];
-    v9 = [v8 isFamiliarFriend];
+    player2 = [(GKScore *)self->_score player];
+    isFamiliarFriend = [player2 isFamiliarFriend];
 
-    if (!v9)
+    if (!isFamiliarFriend)
     {
       goto LABEL_6;
     }
@@ -314,23 +314,23 @@ LABEL_24:
     v7 = MEMORY[0x277D0BA60];
   }
 
-  v10 = [MEMORY[0x277D0C1F8] reporter];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v11 = *MEMORY[0x277D0BE28];
-  [v10 reportEvent:*MEMORY[0x277D0BE28] type:*v7];
+  [reporter reportEvent:*MEMORY[0x277D0BE28] type:*v7];
 
-  v12 = [MEMORY[0x277D0C1F8] reporter];
+  reporter2 = [MEMORY[0x277D0C1F8] reporter];
   v13 = *v6;
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKScore rank](self->_score, "rank")}];
-  [v12 reportEvent:v11 type:v13 scoreRank:v14];
+  [reporter2 reportEvent:v11 type:v13 scoreRank:v14];
 
 LABEL_6:
-  [(GKDetailViewController *)self shareScore:self->_score fromLeaderboard:self->_leaderboard sendingView:v15];
+  [(GKDetailViewController *)self shareScore:self->_score fromLeaderboard:self->_leaderboard sendingView:shareCopy];
 }
 
-- (void)report:(id)a3
+- (void)report:(id)report
 {
-  v4 = [(GKScore *)self->_score player];
-  [(GKDetailViewController *)self reportProblemAboutPlayer:v4];
+  player = [(GKScore *)self->_score player];
+  [(GKDetailViewController *)self reportProblemAboutPlayer:player];
 }
 
 @end

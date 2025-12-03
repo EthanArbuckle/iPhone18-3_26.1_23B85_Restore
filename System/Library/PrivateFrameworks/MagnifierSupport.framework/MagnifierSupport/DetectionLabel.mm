@@ -1,27 +1,27 @@
 @interface DetectionLabel
-- (_TtC16MagnifierSupport14DetectionLabel)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport14DetectionLabel)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC16MagnifierSupport14DetectionLabel)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport14DetectionLabel)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation DetectionLabel
 
-- (_TtC16MagnifierSupport14DetectionLabel)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC16MagnifierSupport14DetectionLabel)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
-  return [(DetectionLabel *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(DetectionLabel *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC16MagnifierSupport14DetectionLabel)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport14DetectionLabel)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(DetectionLabel *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DetectionLabel *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

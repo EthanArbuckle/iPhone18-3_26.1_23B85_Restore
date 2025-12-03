@@ -1,19 +1,19 @@
 @interface MBDigest
 + (id)sha1;
-+ (id)sha1ForData:(id)a3;
-+ (id)sha1ForFileAtPath:(id)a3 error:(id *)a4;
-+ (id)sha1ForString:(id)a3;
-+ (id)sha1HmacForString:(id)a3 key:(id)a4;
++ (id)sha1ForData:(id)data;
++ (id)sha1ForFileAtPath:(id)path error:(id *)error;
++ (id)sha1ForString:(id)string;
++ (id)sha1HmacForString:(id)string key:(id)key;
 + (id)sha256;
-+ (id)sha256ForData:(id)a3;
-+ (id)sha256ForFileAtPath:(id)a3 error:(id *)a4;
-- (BOOL)updateWithFile:(id)a3 error:(id *)a4;
-- (id)digestForData:(id)a3;
-- (id)digestForFileAtPath:(id)a3 error:(id *)a4;
-- (id)digestForString:(id)a3;
-- (void)updateWithData:(id)a3;
-- (void)updateWithDate:(id)a3;
-- (void)updateWithString:(id)a3;
++ (id)sha256ForData:(id)data;
++ (id)sha256ForFileAtPath:(id)path error:(id *)error;
+- (BOOL)updateWithFile:(id)file error:(id *)error;
+- (id)digestForData:(id)data;
+- (id)digestForFileAtPath:(id)path error:(id *)error;
+- (id)digestForString:(id)string;
+- (void)updateWithData:(id)data;
+- (void)updateWithDate:(id)date;
+- (void)updateWithString:(id)string;
 @end
 
 @implementation MBDigest
@@ -32,69 +32,69 @@
   return v2;
 }
 
-+ (id)sha256ForData:(id)a3
++ (id)sha256ForData:(id)data
 {
   v4 = +[MBDigest sha256];
 
-  return [v4 digestForData:a3];
+  return [v4 digestForData:data];
 }
 
-+ (id)sha256ForFileAtPath:(id)a3 error:(id *)a4
++ (id)sha256ForFileAtPath:(id)path error:(id *)error
 {
   v6 = +[MBDigest sha256];
 
-  return [v6 digestForFileAtPath:a3 error:a4];
+  return [v6 digestForFileAtPath:path error:error];
 }
 
-+ (id)sha1ForData:(id)a3
++ (id)sha1ForData:(id)data
 {
   v4 = +[MBDigest sha1];
 
-  return [v4 digestForData:a3];
+  return [v4 digestForData:data];
 }
 
-+ (id)sha1ForFileAtPath:(id)a3 error:(id *)a4
++ (id)sha1ForFileAtPath:(id)path error:(id *)error
 {
   v6 = +[MBDigest sha1];
 
-  return [v6 digestForFileAtPath:a3 error:a4];
+  return [v6 digestForFileAtPath:path error:error];
 }
 
-+ (id)sha1ForString:(id)a3
++ (id)sha1ForString:(id)string
 {
   v4 = +[MBDigest sha1];
 
-  return [v4 digestForString:a3];
+  return [v4 digestForString:string];
 }
 
-+ (id)sha1HmacForString:(id)a3 key:(id)a4
++ (id)sha1HmacForString:(id)string key:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!key)
   {
     +[MBDigest sha1HmacForString:key:];
   }
 
-  [a4 bytes];
-  [a4 length];
-  [a3 UTF8String];
-  [a3 lengthOfBytesUsingEncoding:4];
+  [key bytes];
+  [key length];
+  [string UTF8String];
+  [string lengthOfBytesUsingEncoding:4];
   CCHmacOneShot();
   result = [MEMORY[0x1E695DEF0] dataWithBytes:v8 length:20];
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)digestForData:(id)a3
+- (id)digestForData:(id)data
 {
-  [(MBDigest *)self updateWithData:a3];
+  [(MBDigest *)self updateWithData:data];
 
   return [(MBDigest *)self final];
 }
 
-- (id)digestForFileAtPath:(id)a3 error:(id *)a4
+- (id)digestForFileAtPath:(id)path error:(id *)error
 {
-  if (![(MBDigest *)self updateWithFile:a3 error:a4])
+  if (![(MBDigest *)self updateWithFile:path error:error])
   {
     return 0;
   }
@@ -102,34 +102,34 @@
   return [(MBDigest *)self final];
 }
 
-- (id)digestForString:(id)a3
+- (id)digestForString:(id)string
 {
-  [(MBDigest *)self updateWithString:a3];
+  [(MBDigest *)self updateWithString:string];
 
   return [(MBDigest *)self final];
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  if (a3 && [a3 length])
+  if (data && [data length])
   {
-    v5 = [a3 bytes];
-    v6 = [a3 length];
+    bytes = [data bytes];
+    v6 = [data length];
 
-    [(MBDigest *)self updateWithBytes:v5 length:v6];
+    [(MBDigest *)self updateWithBytes:bytes length:v6];
   }
 }
 
-- (void)updateWithDate:(id)a3
+- (void)updateWithDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   [(MBDigest *)self updateWithInt64:v4];
 }
 
-- (BOOL)updateWithFile:(id)a3 error:(id *)a4
+- (BOOL)updateWithFile:(id)file error:(id *)error
 {
-  if (!a3)
+  if (!file)
   {
     [MBDigest updateWithFile:error:];
   }
@@ -141,14 +141,14 @@
   }
 
   v8 = v7;
-  v9 = open([a3 fileSystemRepresentation], 256);
+  v9 = open([file fileSystemRepresentation], 256);
   if (v9 != -1)
   {
     v10 = v9;
     memset(&v26, 0, sizeof(v26));
     if (fstat(v9, &v26))
     {
-      v11 = [MBError posixErrorWithPath:a3 format:@"Failed to fstat src file"];
+      v11 = [MBError posixErrorWithPath:file format:@"Failed to fstat src file"];
     }
 
     else if ((v26.st_mode & 0xF000) == 0x8000)
@@ -234,14 +234,14 @@ LABEL_27:
 
     else
     {
-      v11 = [MBError errorWithCode:1 path:a3 format:@"Not a regular file"];
+      v11 = [MBError errorWithCode:1 path:file format:@"Not a regular file"];
     }
 
     v12 = v11;
     v13 = 0;
 LABEL_31:
     close(v10);
-    if (!a4)
+    if (!error)
     {
       return v13;
     }
@@ -249,9 +249,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v12 = [MBError posixErrorWithPath:a3 format:@"Failed to open src file"];
+  v12 = [MBError posixErrorWithPath:file format:@"Failed to open src file"];
   v13 = 0;
-  if (!a4)
+  if (!error)
   {
     return v13;
   }
@@ -259,20 +259,20 @@ LABEL_31:
 LABEL_32:
   if (!v13)
   {
-    *a4 = v12;
+    *error = v12;
   }
 
   return v13;
 }
 
-- (void)updateWithString:(id)a3
+- (void)updateWithString:(id)string
 {
-  if (a3 && [a3 length])
+  if (string && [string length])
   {
-    v5 = [a3 maximumLengthOfBytesUsingEncoding:4];
+    v5 = [string maximumLengthOfBytesUsingEncoding:4];
     v6 = malloc_type_malloc(v5, 0x653901B2uLL);
     v7 = 0;
-    if (([a3 getBytes:v6 maxLength:v5 usedLength:&v7 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(a3, "length"), 0}] & 1) == 0)
+    if (([string getBytes:v6 maxLength:v5 usedLength:&v7 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(string, "length"), 0}] & 1) == 0)
     {
       [MBDigest updateWithString:];
     }

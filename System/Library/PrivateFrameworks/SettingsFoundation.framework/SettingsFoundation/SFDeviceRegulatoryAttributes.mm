@@ -6,35 +6,35 @@
 + (SFDeviceRegulatoryAttributes)currentDeviceAttributes;
 + (id)getRegulatoryAttributes;
 + (void)getRegulatoryAttributes;
-- (BOOL)_unarchiveRegulatoryCatalogBundleAtPath:(id)a3 toURL:(id)a4;
+- (BOOL)_unarchiveRegulatoryCatalogBundleAtPath:(id)path toURL:(id)l;
 - (NSString)plantCode;
-- (SFDeviceRegulatoryAttributes)initWithRegulatoryAttributes:(id)a3 serialNumber:(id)a4;
+- (SFDeviceRegulatoryAttributes)initWithRegulatoryAttributes:(id)attributes serialNumber:(id)number;
 - (UIImage)regulatoryImage;
-- (void)_resolveCountryOfOrigin:(id)a3;
-- (void)_resolveDeviceAttributes:(id)a3;
-- (void)_resolveIndiaBISRegulatoryNumber:(id)a3;
-- (void)_resolveMIIT:(id)a3;
-- (void)_resolveManufacturingDateRelatedFields:(id)a3;
-- (void)_resolveOTARegulatoryCatalog:(id)a3;
-- (void)_resolveRegulatoryImage:(id)a3;
+- (void)_resolveCountryOfOrigin:(id)origin;
+- (void)_resolveDeviceAttributes:(id)attributes;
+- (void)_resolveIndiaBISRegulatoryNumber:(id)number;
+- (void)_resolveMIIT:(id)t;
+- (void)_resolveManufacturingDateRelatedFields:(id)fields;
+- (void)_resolveOTARegulatoryCatalog:(id)catalog;
+- (void)_resolveRegulatoryImage:(id)image;
 @end
 
 @implementation SFDeviceRegulatoryAttributes
 
-- (SFDeviceRegulatoryAttributes)initWithRegulatoryAttributes:(id)a3 serialNumber:(id)a4
+- (SFDeviceRegulatoryAttributes)initWithRegulatoryAttributes:(id)attributes serialNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  numberCopy = number;
   v12.receiver = self;
   v12.super_class = SFDeviceRegulatoryAttributes;
   v8 = [(SFDeviceRegulatoryAttributes *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [numberCopy copy];
     serialNumber = v8->_serialNumber;
     v8->_serialNumber = v9;
 
-    [(SFDeviceRegulatoryAttributes *)v8 _resolveDeviceAttributes:v6];
+    [(SFDeviceRegulatoryAttributes *)v8 _resolveDeviceAttributes:attributesCopy];
   }
 
   return v8;
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __55__SFDeviceRegulatoryAttributes_currentDeviceAttributes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentDeviceAttributes_onceToken != -1)
   {
     dispatch_once(&currentDeviceAttributes_onceToken, block);
@@ -66,11 +66,11 @@ void __55__SFDeviceRegulatoryAttributes_currentDeviceAttributes__block_invoke(ui
   currentDeviceAttributes__currentDeviceAttributes = v3;
 }
 
-- (void)_resolveDeviceAttributes:(id)a3
+- (void)_resolveDeviceAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (!attributesCopy)
   {
     v11 = 0;
     v6 = 0;
@@ -79,7 +79,7 @@ void __55__SFDeviceRegulatoryAttributes_currentDeviceAttributes__block_invoke(ui
     goto LABEL_21;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"RegulatoryInfo"];
+  v6 = [attributesCopy objectForKeyedSubscript:@"RegulatoryInfo"];
   if (v6)
   {
     v7 = [v5 objectForKeyedSubscript:@"RegulatoryInfo"];
@@ -158,9 +158,9 @@ LABEL_21:
   [(SFDeviceRegulatoryAttributes *)self _resolveIndiaBISRegulatoryNumber:v6];
   [(SFDeviceRegulatoryAttributes *)self _resolveCountryOfOrigin:v6];
   [(SFDeviceRegulatoryAttributes *)self _resolveMIIT:v6];
-  v19 = [MEMORY[0x277CCAC38] processInfo];
-  v20 = [v19 environment];
-  v21 = [v20 objectForKeyedSubscript:@"XCTestBundlePath"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v21 = [environment objectForKeyedSubscript:@"XCTestBundlePath"];
 
   if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v21 containsString:@"SettingsFoundation"])
   {
@@ -192,20 +192,20 @@ LABEL_21:
   }
 }
 
-- (void)_resolveManufacturingDateRelatedFields:(id)a3
+- (void)_resolveManufacturingDateRelatedFields:(id)fields
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"manufacturingDate"];
+  fieldsCopy = fields;
+  v5 = [fieldsCopy objectForKeyedSubscript:@"manufacturingDate"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"manufacturingDate"];
+    v7 = [fieldsCopy objectForKeyedSubscript:@"manufacturingDate"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 objectForKeyedSubscript:@"manufacturingDate"];
+      v9 = [fieldsCopy objectForKeyedSubscript:@"manufacturingDate"];
       v10 = +[SFDeviceRegulatoryAttributes _dateFormatter];
       v11 = [v10 dateFromString:v9];
 
@@ -238,16 +238,16 @@ LABEL_12:
     [SFDeviceRegulatoryAttributes _resolveManufacturingDateRelatedFields:];
   }
 
-  v20 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
-  v21 = [v20 length];
+  serialNumber = [(SFDeviceRegulatoryAttributes *)self serialNumber];
+  v21 = [serialNumber length];
 
   if (v21 == 12)
   {
-    v22 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
-    v9 = [v22 substringWithRange:{3, 1}];
+    serialNumber2 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
+    v9 = [serialNumber2 substringWithRange:{3, 1}];
 
-    v23 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
-    v24 = [v23 substringWithRange:{4, 1}];
+    serialNumber3 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
+    v24 = [serialNumber3 substringWithRange:{4, 1}];
 
     v25 = +[SFDeviceRegulatoryAttributes _yearCodeToStartDateLookup];
     v26 = [v25 objectForKeyedSubscript:v9];
@@ -273,20 +273,20 @@ LABEL_12:
         self->__resolvedStartingWeek = v36;
 
         v38 = +[SFDeviceRegulatoryAttributes _calendar];
-        v39 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
-        self->_yearForWeekOfManufacture = [v38 component:0x4000 fromDate:v39];
+        _resolvedStartingWeek = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
+        self->_yearForWeekOfManufacture = [v38 component:0x4000 fromDate:_resolvedStartingWeek];
 
         v40 = +[SFDeviceRegulatoryAttributes _calendar];
-        v41 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
-        self->_yearOfManufacture = [v40 component:4 fromDate:v41];
+        _resolvedStartingWeek2 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
+        self->_yearOfManufacture = [v40 component:4 fromDate:_resolvedStartingWeek2];
 
         v42 = +[SFDeviceRegulatoryAttributes _calendar];
-        v43 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
-        self->_monthOfManufacture = [v42 component:8 fromDate:v43];
+        _resolvedStartingWeek3 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
+        self->_monthOfManufacture = [v42 component:8 fromDate:_resolvedStartingWeek3];
 
         v44 = +[SFDeviceRegulatoryAttributes _calendar];
-        v45 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
-        self->_weekOfManufacture = [v44 component:0x2000 fromDate:v45];
+        _resolvedStartingWeek4 = [(SFDeviceRegulatoryAttributes *)self _resolvedStartingWeek];
+        self->_weekOfManufacture = [v44 component:0x2000 fromDate:_resolvedStartingWeek4];
       }
     }
 
@@ -296,21 +296,21 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_resolveIndiaBISRegulatoryNumber:(id)a3
+- (void)_resolveIndiaBISRegulatoryNumber:(id)number
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"elabel"];
+  numberCopy = number;
+  v5 = [numberCopy objectForKeyedSubscript:@"elabel"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"elabel"];
+    v7 = [numberCopy objectForKeyedSubscript:@"elabel"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 objectForKeyedSubscript:@"elabel"];
+      v9 = [numberCopy objectForKeyedSubscript:@"elabel"];
       if (v9)
       {
         v10 = v9;
@@ -401,9 +401,9 @@ LABEL_12:
     goto LABEL_26;
   }
 
-  v26 = [(SFDeviceRegulatoryAttributes *)self plantCode];
+  plantCode = [(SFDeviceRegulatoryAttributes *)self plantCode];
 
-  if (v26)
+  if (plantCode)
   {
     v27 = MGCopyAnswer();
     v28 = MEMORY[0x277CBEAC0];
@@ -411,15 +411,15 @@ LABEL_12:
     v30 = MEMORY[0x277CCACA8];
     if (v27)
     {
-      v31 = [v27 lowercaseString];
+      lowercaseString = [v27 lowercaseString];
     }
 
     else
     {
-      v31 = &stru_287749F98;
+      lowercaseString = &stru_287749F98;
     }
 
-    v33 = [v30 stringWithFormat:@"IndiaBISMappings~%@.plist", v31];
+    v33 = [v30 stringWithFormat:@"IndiaBISMappings~%@.plist", lowercaseString];
     v34 = [v29 stringByAppendingPathComponent:v33];
     v35 = [v28 dictionaryWithContentsOfFile:v34];
 
@@ -427,8 +427,8 @@ LABEL_12:
     {
     }
 
-    v36 = [(SFDeviceRegulatoryAttributes *)self plantCode];
-    v37 = [v35 objectForKey:v36];
+    plantCode2 = [(SFDeviceRegulatoryAttributes *)self plantCode];
+    v37 = [v35 objectForKey:plantCode2];
 
     if (v37)
     {
@@ -454,18 +454,18 @@ LABEL_26:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resolveMIIT:(id)a3
+- (void)_resolveMIIT:(id)t
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"elabel"];
+  tCopy = t;
+  v5 = [tCopy objectForKeyedSubscript:@"elabel"];
   if (!v5)
   {
     goto LABEL_9;
   }
 
   v6 = v5;
-  v7 = [v4 objectForKeyedSubscript:@"elabel"];
+  v7 = [tCopy objectForKeyedSubscript:@"elabel"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -474,7 +474,7 @@ LABEL_26:
     goto LABEL_9;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"elabel"];
+  v9 = [tCopy objectForKeyedSubscript:@"elabel"];
   if (v9)
   {
     v10 = v9;
@@ -549,21 +549,21 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resolveCountryOfOrigin:(id)a3
+- (void)_resolveCountryOfOrigin:(id)origin
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"countryOfOrigin"];
+  originCopy = origin;
+  v5 = [originCopy objectForKeyedSubscript:@"countryOfOrigin"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"countryOfOrigin"];
+    v7 = [originCopy objectForKeyedSubscript:@"countryOfOrigin"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 objectForKeyedSubscript:@"countryOfOrigin"];
+      v9 = [originCopy objectForKeyedSubscript:@"countryOfOrigin"];
       if (v9)
       {
         v10 = v9;
@@ -626,11 +626,11 @@ LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_unarchiveRegulatoryCatalogBundleAtPath:(id)a3 toURL:(id)a4
+- (BOOL)_unarchiveRegulatoryCatalogBundleAtPath:(id)path toURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = AAFileStreamOpenWithPath([a3 UTF8String], 0, 2u);
+  lCopy = l;
+  v6 = AAFileStreamOpenWithPath([path UTF8String], 0, 2u);
   if (v6)
   {
     v7 = v6;
@@ -642,8 +642,8 @@ LABEL_10:
       if (v10)
       {
         v11 = v10;
-        v12 = [v5 path];
-        v13 = AAExtractArchiveOutputStreamOpen([v12 UTF8String], 0, 0, 0, 2);
+        path = [lCopy path];
+        v13 = AAExtractArchiveOutputStreamOpen([path UTF8String], 0, 0, 0, 2);
 
         v14 = v13 != 0;
         if (v13)
@@ -655,7 +655,7 @@ LABEL_10:
             v19 = 134218242;
             v20 = v15;
             v21 = 2112;
-            v22 = v5;
+            v22 = lCopy;
             _os_log_impl(&dword_2659AD000, v16, OS_LOG_TYPE_DEFAULT, "Extracted %ld entries to %@", &v19, 0x16u);
           }
 
@@ -690,25 +690,25 @@ LABEL_10:
   return v14;
 }
 
-- (void)_resolveOTARegulatoryCatalog:(id)a3
+- (void)_resolveOTARegulatoryCatalog:(id)catalog
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = MGCopyAnswer();
   v6 = MGCopyAnswer();
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 temporaryDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"RegulatoryCatalog-%@.bundle", v6];
-  v10 = [v8 URLByAppendingPathComponent:v9];
+  v10 = [temporaryDirectory URLByAppendingPathComponent:v9];
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"RegulatoryCatalog-%@.aar", v6];
-  v12 = [v8 URLByAppendingPathComponent:v11];
+  v12 = [temporaryDirectory URLByAppendingPathComponent:v11];
 
-  if (v4)
+  if (catalogCopy)
   {
     v41 = 0;
-    [v4 writeToURL:v12 options:1 error:&v41];
+    [catalogCopy writeToURL:v12 options:1 error:&v41];
     v13 = v41;
     v14 = SFLogForCategory(1uLL);
     resolvedRegulatoryImage = v14;
@@ -726,19 +726,19 @@ LABEL_5:
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v12 absoluteString];
+      absoluteString = [v12 absoluteString];
       *buf = 136315394;
       v43 = "[SFDeviceRegulatoryAttributes _resolveOTARegulatoryCatalog:]";
       v44 = 2114;
-      v45 = v23;
+      v45 = absoluteString;
       _os_log_impl(&dword_2659AD000, &resolvedRegulatoryImage->super, OS_LOG_TYPE_DEFAULT, "%{Public}s: Wrote aar  to %{public}@", buf, 0x16u);
     }
 
-    v24 = [MEMORY[0x277CCAA00] defaultManager];
-    [v24 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v25 = [v12 path];
-    v26 = [(SFDeviceRegulatoryAttributes *)self _unarchiveRegulatoryCatalogBundleAtPath:v25 toURL:v10];
+    path = [v12 path];
+    v26 = [(SFDeviceRegulatoryAttributes *)self _unarchiveRegulatoryCatalogBundleAtPath:path toURL:v10];
 
     v27 = SFLogForCategory(1uLL);
     v28 = v27;
@@ -746,11 +746,11 @@ LABEL_5:
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v10 absoluteString];
+        absoluteString2 = [v10 absoluteString];
         *buf = 136315394;
         v43 = "[SFDeviceRegulatoryAttributes _resolveOTARegulatoryCatalog:]";
         v44 = 2114;
-        v45 = v29;
+        v45 = absoluteString2;
         _os_log_impl(&dword_2659AD000, v28, OS_LOG_TYPE_DEFAULT, "%{Public}s: Wrote bundle  %{public}@", buf, 0x16u);
       }
 
@@ -803,20 +803,20 @@ LABEL_22:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resolveRegulatoryImage:(id)a3
+- (void)_resolveRegulatoryImage:(id)image
 {
   v123 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 sf_isInternalInstall];
+  imageCopy = image;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (!v7)
+  if (!sf_isInternalInstall)
   {
     v10 = 0;
     v8 = 0;
     v9 = 0;
-    if (v4)
+    if (imageCopy)
     {
 LABEL_9:
       v84 = v8;
@@ -867,9 +867,9 @@ LABEL_71:
     goto LABEL_78;
   }
 
-  v8 = [v5 stringForKey:@"SFRegulatoryModelNumber"];
-  v9 = [v5 stringForKey:@"SFHWModelStr"];
-  v10 = [v5 stringForKey:@"SFDeviceVariant"];
+  v8 = [standardUserDefaults stringForKey:@"SFRegulatoryModelNumber"];
+  v9 = [standardUserDefaults stringForKey:@"SFHWModelStr"];
+  v10 = [standardUserDefaults stringForKey:@"SFDeviceVariant"];
   v11 = SFLogForCategory(3uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -884,7 +884,7 @@ LABEL_71:
     _os_log_impl(&dword_2659AD000, v11, OS_LOG_TYPE_DEFAULT, "%{Public}s: MobileGestalt Overrides: %@, %@, %@", buf, 0x2Au);
   }
 
-  if (!v4)
+  if (!imageCopy)
   {
     goto LABEL_44;
   }
@@ -912,13 +912,13 @@ LABEL_11:
   v14 = [v12 length];
   v15 = SFLogForCategory(3uLL);
   v16 = v15;
-  v85 = v4;
+  v85 = imageCopy;
   if (v14)
   {
     v79 = v9;
     v80 = v10;
-    v81 = v5;
-    v82 = self;
+    v81 = standardUserDefaults;
+    selfCopy = self;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
@@ -928,15 +928,15 @@ LABEL_11:
       _os_log_impl(&dword_2659AD000, v16, OS_LOG_TYPE_DEFAULT, "%{Public}s: Looking for Lockdown Regulatory Image '%@'", buf, 0x16u);
     }
 
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v19 = v18;
 
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    obj = v4;
+    obj = imageCopy;
     v20 = [obj countByEnumeratingWithState:&v88 objects:v114 count:16];
     if (v20)
     {
@@ -990,7 +990,7 @@ LABEL_16:
                 {
                   v77 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v33 scale:0 orientation:v19];
                   v78 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v49 scale:0 orientation:v19];
-                  v75 = [MEMORY[0x277D75C80] currentTraitCollection];
+                  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
                   [MEMORY[0x277D75C80] traitCollectionWithDisplayScale:v19];
                   v50 = image = v49;
                   v51 = objc_alloc_init(MEMORY[0x277D755C0]);
@@ -1010,7 +1010,7 @@ LABEL_16:
                   v59 = [v56 traitCollectionWithTraitsFromCollections:v58];
                   [v51 registerImage:v78 withTraitCollection:v59];
 
-                  v60 = [v51 imageWithTraitCollection:v75];
+                  v60 = [v51 imageWithTraitCollection:currentTraitCollection];
                   CGImageRelease(v33);
                   CGImageRelease(image);
                   CFRelease(v29);
@@ -1024,8 +1024,8 @@ LABEL_16:
                     _os_log_impl(&dword_2659AD000, v61, OS_LOG_TYPE_DEFAULT, "%{Public}s: Matched style-sensitive Lockdown Regulatory Image '%{Public}@'", buf, 0x16u);
                   }
 
-                  v5 = v81;
-                  self = v82;
+                  standardUserDefaults = v81;
+                  self = selfCopy;
                   v9 = v79;
                   v62 = v77;
                 }
@@ -1037,8 +1037,8 @@ LABEL_16:
                     CGImageRelease(v33);
                   }
 
-                  v5 = v81;
-                  self = v82;
+                  standardUserDefaults = v81;
+                  self = selfCopy;
                   if (v49)
                   {
                     CGImageRelease(v49);
@@ -1081,8 +1081,8 @@ LABEL_65:
                   _os_log_impl(&dword_2659AD000, v62, OS_LOG_TYPE_DEFAULT, "%{Public}s: Matched Lockdown Regulatory Image '%@'", buf, 0x16u);
                 }
 
-                v5 = v81;
-                self = v82;
+                standardUserDefaults = v81;
+                self = selfCopy;
                 goto LABEL_65;
               }
 
@@ -1152,8 +1152,8 @@ LABEL_38:
       }
     }
 
-    v5 = v81;
-    self = v82;
+    standardUserDefaults = v81;
+    self = selfCopy;
     v9 = v79;
     v10 = v80;
     v39 = v83;
@@ -1183,7 +1183,7 @@ LABEL_67:
 LABEL_70:
 
   v8 = v84;
-  v4 = v85;
+  imageCopy = v85;
   if (!v60)
   {
     goto LABEL_71;
@@ -1286,30 +1286,30 @@ LABEL_14:
 
 - (UIImage)regulatoryImage
 {
-  v3 = [(SFDeviceRegulatoryAttributes *)self _resolvedRegulatoryImage];
+  _resolvedRegulatoryImage = [(SFDeviceRegulatoryAttributes *)self _resolvedRegulatoryImage];
 
-  if (v3)
+  if (_resolvedRegulatoryImage)
   {
-    v4 = [(SFDeviceRegulatoryAttributes *)self _resolvedRegulatoryImage];
+    _resolvedRegulatoryImage2 = [(SFDeviceRegulatoryAttributes *)self _resolvedRegulatoryImage];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    _resolvedRegulatoryImage2 = objc_opt_new();
   }
 
-  return v4;
+  return _resolvedRegulatoryImage2;
 }
 
 - (NSString)plantCode
 {
-  v3 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
-  v4 = [v3 length];
+  serialNumber = [(SFDeviceRegulatoryAttributes *)self serialNumber];
+  v4 = [serialNumber length];
 
   if (v4 == 12)
   {
-    v5 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
-    v6 = [v5 substringWithRange:{0, 3}];
+    serialNumber2 = [(SFDeviceRegulatoryAttributes *)self serialNumber];
+    v6 = [serialNumber2 substringWithRange:{0, 3}];
   }
 
   else
@@ -1634,7 +1634,7 @@ void __58__SFDeviceRegulatoryAttributes__yearCodeToStartDateLookup__block_invoke
 + (void)getRegulatoryAttributes
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = *a1;
+  v9 = *self;
   OUTLINED_FUNCTION_2(&dword_2659AD000, a2, a3, "%{Public}s: Failed to get group path for Regulatory Images! error = %llu", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

@@ -1,10 +1,10 @@
 @interface JavaUtilConcurrentConcurrentHashMap_KeySetView
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (JavaUtilConcurrentConcurrentHashMap_KeySetView)initWithJavaUtilConcurrentConcurrentHashMap:(id)a3 withId:(id)a4;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeWithId:(id)id;
+- (JavaUtilConcurrentConcurrentHashMap_KeySetView)initWithJavaUtilConcurrentConcurrentHashMap:(id)map withId:(id)id;
 - (id)iterator;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -12,14 +12,14 @@
 
 @implementation JavaUtilConcurrentConcurrentHashMap_KeySetView
 
-- (JavaUtilConcurrentConcurrentHashMap_KeySetView)initWithJavaUtilConcurrentConcurrentHashMap:(id)a3 withId:(id)a4
+- (JavaUtilConcurrentConcurrentHashMap_KeySetView)initWithJavaUtilConcurrentConcurrentHashMap:(id)map withId:(id)id
 {
-  objc_storeWeak(&self->super.map_, a3);
-  JreStrongAssign(&self->value_, a4);
+  objc_storeWeak(&self->super.map_, map);
+  JreStrongAssign(&self->value_, id);
   return self;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->super.map_);
   if (!Weak)
@@ -27,10 +27,10 @@
     JreThrowNullPointerException();
   }
 
-  return [Weak containsKeyWithId:a3];
+  return [Weak containsKeyWithId:id];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   Weak = objc_loadWeak(&self->super.map_);
   if (!Weak)
@@ -38,7 +38,7 @@
     JreThrowNullPointerException();
   }
 
-  return [Weak removeWithId:a3] != 0;
+  return [Weak removeWithId:id] != 0;
 }
 
 - (id)iterator
@@ -67,7 +67,7 @@
   return v6;
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   value = self->value_;
   if (!value)
@@ -82,10 +82,10 @@
     JreThrowNullPointerException();
   }
 
-  return sub_1001AFE00(Weak, a3, value, 1) == 0;
+  return sub_1001AFE00(Weak, id, value, 1) == 0;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
   value = self->value_;
   if (!value)
@@ -98,13 +98,13 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  if (!a3)
+  if (!collection)
   {
 LABEL_14:
     JreThrowNullPointerException();
   }
 
-  v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [collection countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -116,7 +116,7 @@ LABEL_14:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -129,7 +129,7 @@ LABEL_14:
         v8 |= sub_1001AFE00(Weak, v11, value, 1) == 0;
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [collection countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -183,33 +183,33 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [JavaUtilSet_class_() isInstance:a3];
+  v5 = [JavaUtilSet_class_() isInstance:equal];
   if (v5)
   {
     v6 = JavaUtilSet_class_();
-    if (a3 && ([v6 isInstance:a3] & 1) == 0)
+    if (equal && ([v6 isInstance:equal] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    if (a3 == self)
+    if (equal == self)
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      v5 = sub_1001B6428(self, a3);
+      v5 = sub_1001B6428(self, equal);
       if (v5)
       {
-        if (!a3)
+        if (!equal)
         {
           JreThrowNullPointerException();
         }
 
-        LOBYTE(v5) = [a3 containsAllWithJavaUtilCollection:self];
+        LOBYTE(v5) = [equal containsAllWithJavaUtilCollection:self];
       }
     }
   }

@@ -1,20 +1,20 @@
 @interface SBUISystemApertureButton
-- (SBUISystemApertureButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (SBUISystemApertureButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SBUISystemApertureButton
 
-- (SBUISystemApertureButton)initWithFrame:(CGRect)a3
+- (SBUISystemApertureButton)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SBUISystemApertureButton;
-  v3 = [(SBUISystemApertureButton *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUISystemApertureButton *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBUISystemApertureButton *)v3 titleLabel];
-    [v5 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(SBUISystemApertureButton *)v3 titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
     objc_initWeak(&location, v4);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -35,16 +35,16 @@ void __42__SBUISystemApertureButton_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained sbui_updateConfiguration];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v15.receiver = self;
   v15.super_class = SBUISystemApertureButton;
-  v5 = [(SBUISystemApertureButton *)&v15 isHighlighted];
+  isHighlighted = [(SBUISystemApertureButton *)&v15 isHighlighted];
   v14.receiver = self;
   v14.super_class = SBUISystemApertureButton;
-  [(SBUISystemApertureButton *)&v14 setHighlighted:v3];
-  if (v5 != v3)
+  [(SBUISystemApertureButton *)&v14 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(SBUISystemApertureButton *)self bounds];
     v7 = v6;
@@ -66,12 +66,12 @@ void __42__SBUISystemApertureButton_initWithFrame___block_invoke(uint64_t a1)
     v12[2] = __43__SBUISystemApertureButton_setHighlighted___block_invoke;
     v12[3] = &unk_1E789EA50;
     v12[4] = self;
-    if (v3)
+    if (highlightedCopy)
     {
       v11 = 0.26;
     }
 
-    v13 = v3;
+    v13 = highlightedCopy;
     *&v12[5] = v10;
     [MEMORY[0x1E69DD250] animateWithSpringDuration:2 bounce:v12 initialSpringVelocity:0 delay:v11 options:0.0 animations:0.0 completion:0.0];
   }

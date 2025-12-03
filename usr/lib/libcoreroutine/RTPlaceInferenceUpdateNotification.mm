@@ -1,26 +1,26 @@
 @interface RTPlaceInferenceUpdateNotification
-- (RTPlaceInferenceUpdateNotification)initWithPlaceInferences:(id)a3;
+- (RTPlaceInferenceUpdateNotification)initWithPlaceInferences:(id)inferences;
 @end
 
 @implementation RTPlaceInferenceUpdateNotification
 
-- (RTPlaceInferenceUpdateNotification)initWithPlaceInferences:(id)a3
+- (RTPlaceInferenceUpdateNotification)initWithPlaceInferences:(id)inferences
 {
-  v4 = a3;
-  if (v4)
+  inferencesCopy = inferences;
+  if (inferencesCopy)
   {
     v11.receiver = self;
     v11.super_class = RTPlaceInferenceUpdateNotification;
     v5 = [(RTNotification *)&v11 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [inferencesCopy copy];
       placeInferences = v5->_placeInferences;
       v5->_placeInferences = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -32,10 +32,10 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: placeInferences", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (void)IDSPayloadVerificationResult
 {
-  __swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  __swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a2)
   {
     v3 = a2;

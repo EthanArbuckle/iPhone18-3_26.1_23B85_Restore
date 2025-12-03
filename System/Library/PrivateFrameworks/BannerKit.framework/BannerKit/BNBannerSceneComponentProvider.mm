@@ -1,14 +1,14 @@
 @interface BNBannerSceneComponentProvider
-+ (id)delegateAssociatedWithSceneForPresentableWithUniqueIdentifier:(id)a3;
-+ (void)registerDelegate:(id)a3 forSceneForPresentableWithUniqueIdentifier:(id)a4;
-+ (void)unregisterDelegateForSceneForPresentableWithUniqueIdentifier:(id)a3;
-- (BNBannerSceneComponentProvider)initWithScene:(id)a3;
++ (id)delegateAssociatedWithSceneForPresentableWithUniqueIdentifier:(id)identifier;
++ (void)registerDelegate:(id)delegate forSceneForPresentableWithUniqueIdentifier:(id)identifier;
++ (void)unregisterDelegateForSceneForPresentableWithUniqueIdentifier:(id)identifier;
+- (BNBannerSceneComponentProvider)initWithScene:(id)scene;
 - (BNBannerSceneComponentProviderDelegate)delegate;
 - (UIScene)_scene;
-- (id)_actionRespondersForScene:(id)a3;
-- (id)_newSceneWindowWithRootViewController:(id)a3;
-- (id)_settingsDiffActionsForScene:(id)a3;
-- (void)_setScene:(id)a3;
+- (id)_actionRespondersForScene:(id)scene;
+- (id)_newSceneWindowWithRootViewController:(id)controller;
+- (id)_settingsDiffActionsForScene:(id)scene;
+- (void)_setScene:(id)scene;
 @end
 
 @implementation BNBannerSceneComponentProvider
@@ -20,11 +20,11 @@
   return WeakRetained;
 }
 
-+ (void)registerDelegate:(id)a3 forSceneForPresentableWithUniqueIdentifier:(id)a4
++ (void)registerDelegate:(id)delegate forSceneForPresentableWithUniqueIdentifier:(id)identifier
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11 && v7)
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  if (delegateCopy && identifierCopy)
   {
     if (registerDelegate_forSceneForPresentableWithUniqueIdentifier__onceToken != -1)
     {
@@ -33,15 +33,15 @@
 
     v8 = __presentableUniqueIDsToDelegates;
     objc_sync_enter(v8);
-    v9 = [__presentableUniqueIDsToDelegates objectForKey:v7];
+    v9 = [__presentableUniqueIDsToDelegates objectForKey:identifierCopy];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"BNBannerSource.m" lineNumber:739 description:{@"Delegate already registered for scene with unique ID '%@'", v7}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BNBannerSource.m" lineNumber:739 description:{@"Delegate already registered for scene with unique ID '%@'", identifierCopy}];
     }
 
-    [__presentableUniqueIDsToDelegates setObject:v11 forKey:v7];
+    [__presentableUniqueIDsToDelegates setObject:delegateCopy forKey:identifierCopy];
     objc_sync_exit(v8);
   }
 }
@@ -53,29 +53,29 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)unregisterDelegateForSceneForPresentableWithUniqueIdentifier:(id)a3
++ (void)unregisterDelegateForSceneForPresentableWithUniqueIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v3;
+    v5 = identifierCopy;
     v4 = __presentableUniqueIDsToDelegates;
     objc_sync_enter(v4);
     [__presentableUniqueIDsToDelegates removeObjectForKey:v5];
     objc_sync_exit(v4);
 
-    v3 = v5;
+    identifierCopy = v5;
   }
 }
 
-+ (id)delegateAssociatedWithSceneForPresentableWithUniqueIdentifier:(id)a3
++ (id)delegateAssociatedWithSceneForPresentableWithUniqueIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v4 = __presentableUniqueIDsToDelegates;
     objc_sync_enter(v4);
-    v5 = [__presentableUniqueIDsToDelegates objectForKey:v3];
+    v5 = [__presentableUniqueIDsToDelegates objectForKey:identifierCopy];
     objc_sync_exit(v4);
   }
 
@@ -87,9 +87,9 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
   return v5;
 }
 
-- (id)_newSceneWindowWithRootViewController:(id)a3
+- (id)_newSceneWindowWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   v6 = objc_opt_class();
   v7 = WeakRetained;
@@ -121,8 +121,8 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
   v10 = off_1E81E4100;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v4 isAccessibilityIgnoringSmartInvertColors];
-    if (v11)
+    isAccessibilityIgnoringSmartInvertColors = [controllerCopy isAccessibilityIgnoringSmartInvertColors];
+    if (isAccessibilityIgnoringSmartInvertColors)
     {
       v10 = off_1E81E40F8;
     }
@@ -130,40 +130,40 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
 
   else
   {
-    v11 = 0;
+    isAccessibilityIgnoringSmartInvertColors = 0;
   }
 
   v12 = [objc_alloc(*v10) initWithWindowScene:v9];
-  [v12 setAccessibilityIgnoresInvertColors:v11];
-  [v12 setRootViewController:v4];
+  [v12 setAccessibilityIgnoresInvertColors:isAccessibilityIgnoringSmartInvertColors];
+  [v12 setRootViewController:controllerCopy];
   [v12 setHidden:0];
 
   return v12;
 }
 
-- (BNBannerSceneComponentProvider)initWithScene:(id)a3
+- (BNBannerSceneComponentProvider)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = BNBannerSceneComponentProvider;
   v5 = [(BNBannerSceneComponentProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BNBannerSceneComponentProvider *)v5 _setScene:v4];
+    [(BNBannerSceneComponentProvider *)v5 _setScene:sceneCopy];
   }
 
   return v6;
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != sceneCopy)
   {
-    if (!v4)
+    if (!sceneCopy)
     {
       v6 = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
@@ -172,17 +172,17 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
       }
     }
 
-    v7 = [v4 bn_presentableUniqueIdentifier];
-    v8 = [objc_opt_class() delegateAssociatedWithSceneForPresentableWithUniqueIdentifier:v7];
+    bn_presentableUniqueIdentifier = [sceneCopy bn_presentableUniqueIdentifier];
+    v8 = [objc_opt_class() delegateAssociatedWithSceneForPresentableWithUniqueIdentifier:bn_presentableUniqueIdentifier];
     v9 = v8;
-    if (!v4 || v8)
+    if (!sceneCopy || v8)
     {
-      v10 = objc_storeWeak(&self->_scene, v4);
+      v10 = objc_storeWeak(&self->_scene, sceneCopy);
 
-      if (v4 && v9)
+      if (sceneCopy && v9)
       {
         [(BNBannerSceneComponentProvider *)self setDelegate:v9];
-        [objc_opt_class() unregisterDelegateForSceneForPresentableWithUniqueIdentifier:v7];
+        [objc_opt_class() unregisterDelegateForSceneForPresentableWithUniqueIdentifier:bn_presentableUniqueIdentifier];
         if (objc_opt_respondsToSelector())
         {
           v11 = [v9 containerViewControllerForBannerSceneComponentProvider:self];
@@ -208,10 +208,10 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
   }
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   if (self->_containerViewController)
   {
     v9[0] = self->_containerViewController;
@@ -243,10 +243,10 @@ uint64_t __94__BNBannerSceneComponentProvider_registerDelegate_forSceneForPresen
   return v6;
 }
 
-- (id)_actionRespondersForScene:(id)a3
+- (id)_actionRespondersForScene:(id)scene
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   if (self->_containerViewController)
   {
     v9[0] = self->_containerViewController;

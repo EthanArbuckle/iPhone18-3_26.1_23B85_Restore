@@ -1,5 +1,5 @@
 @interface LegacySigningKeyPublic
-- (LegacySigningKeyPublic)initWithData:(id)a3 error:(id *)a4;
+- (LegacySigningKeyPublic)initWithData:(id)data error:(id *)error;
 - (id)dataRepresentation;
 @end
 
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (LegacySigningKeyPublic)initWithData:(id)a3 error:(id *)a4
+- (LegacySigningKeyPublic)initWithData:(id)data error:(id *)error
 {
   v22[4] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CDC040];
@@ -28,10 +28,10 @@
   v22[2] = &unk_283F13B68;
   v22[3] = MEMORY[0x277CBEC28];
   v10 = MEMORY[0x277CBEAC0];
-  v11 = a3;
+  dataCopy = data;
   v12 = [v10 dictionaryWithObjects:v22 forKeys:v21 count:4];
   v20 = 0;
-  v13 = SecKeyCreateWithData(v11, v12, &v20);
+  v13 = SecKeyCreateWithData(dataCopy, v12, &v20);
 
   if (v13)
   {
@@ -40,7 +40,7 @@
     v14->_secKeyRef = v13;
 
     self = v14;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,15 +51,15 @@
       [LegacySigningKeyPublic initWithData:v17 error:?];
     }
 
-    v16 = 0;
-    if (a4)
+    selfCopy = 0;
+    if (error)
     {
-      *a4 = v20;
+      *error = v20;
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
 - (void)initWithData:(CFTypeRef *)a1 error:(NSObject *)a2 .cold.1(CFTypeRef *a1, NSObject *a2)

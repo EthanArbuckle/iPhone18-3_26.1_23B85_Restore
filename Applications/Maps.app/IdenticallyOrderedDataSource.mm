@@ -1,17 +1,17 @@
 @interface IdenticallyOrderedDataSource
-- (IdenticallyOrderedDataSource)initWithObjects:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (IdenticallyOrderedDataSource)initWithObjects:(id)objects;
+- (id)objectAtIndexPath:(id)path;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation IdenticallyOrderedDataSource
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [(IdenticallyOrderedDataSource *)self orderedObjects];
-  v7 = [v6 count];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  orderedObjects = [(IdenticallyOrderedDataSource *)self orderedObjects];
+  v7 = [orderedObjects count];
 
   if (v5 >= v7)
   {
@@ -20,30 +20,30 @@
 
   else
   {
-    v8 = [(IdenticallyOrderedDataSource *)self orderedObjects];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    orderedObjects2 = [(IdenticallyOrderedDataSource *)self orderedObjects];
+    v9 = [orderedObjects2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v9;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v3 = [(IdenticallyOrderedDataSource *)self orderedObjects];
-  v4 = [v3 count];
+  orderedObjects = [(IdenticallyOrderedDataSource *)self orderedObjects];
+  v4 = [orderedObjects count];
 
   return v4;
 }
 
-- (IdenticallyOrderedDataSource)initWithObjects:(id)a3
+- (IdenticallyOrderedDataSource)initWithObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v9.receiver = self;
   v9.super_class = IdenticallyOrderedDataSource;
   v5 = [(IdenticallyOrderedDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [objectsCopy copy];
     orderedObjects = v5->_orderedObjects;
     v5->_orderedObjects = v6;
   }

@@ -11,37 +11,37 @@
 
 - (id)writableTypeIdentifiersForNoteContent
 {
-  v0 = [MEMORY[0x277CBEB40] orderedSet];
-  [v0 addObject:*MEMORY[0x277D35D08]];
-  v1 = [MEMORY[0x277CCA898] writableTypeIdentifiersForItemProvider];
-  [v0 addObjectsFromArray:v1];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  [orderedSet addObject:*MEMORY[0x277D35D08]];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x277CCA898] writableTypeIdentifiersForItemProvider];
+  [orderedSet addObjectsFromArray:writableTypeIdentifiersForItemProvider];
 
   v2 = *MEMORY[0x277CE1D78];
-  v3 = [*MEMORY[0x277CE1D78] identifier];
-  v4 = [v0 containsObject:v3];
+  identifier = [*MEMORY[0x277CE1D78] identifier];
+  v4 = [orderedSet containsObject:identifier];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [v2 identifier];
-    [v0 insertObject:v5 atIndex:1];
+    identifier2 = [v2 identifier];
+    [orderedSet insertObject:identifier2 atIndex:1];
   }
 
-  v6 = [v0 array];
+  array = [orderedSet array];
 
-  return v6;
+  return array;
 }
 
 - (id)writableTypeIdentifiersForItemProvider
 {
-  if ([a1 isPasswordProtected] && !objc_msgSend(a1, "isAuthenticated"))
+  if ([self isPasswordProtected] && !objc_msgSend(self, "isAuthenticated"))
   {
     v3 = &unk_28277E5F8;
   }
 
   else
   {
-    v2 = [a1 writableTypeIdentifiersForNoteContent];
-    v3 = [v2 arrayByAddingObject:@"com.apple.notes.noteitemprovider"];
+    writableTypeIdentifiersForNoteContent = [self writableTypeIdentifiersForNoteContent];
+    v3 = [writableTypeIdentifiersForNoteContent arrayByAddingObject:@"com.apple.notes.noteitemprovider"];
   }
 
   return v3;
@@ -77,17 +77,17 @@
 
   else
   {
-    v9 = [a1 objectID];
-    v10 = [MEMORY[0x277D35F30] sharedContext];
+    objectID = [self objectID];
+    mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __91__ICNote_ItemProviderWriting__loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
     v13[3] = &unk_2781ABD98;
-    v14 = v9;
+    v14 = objectID;
     v15 = v6;
     v16 = v7;
-    v11 = v9;
-    [v10 performBackgroundTask:v13];
+    v11 = objectID;
+    [mEMORY[0x277D35F30] performBackgroundTask:v13];
   }
 
   return 0;
@@ -95,12 +95,12 @@
 
 - (void)prepareForCopyingData
 {
-  v5 = [a1 textStorage];
-  v2 = [v5 styler];
+  textStorage = [self textStorage];
+  styler = [textStorage styler];
 
-  if (v2)
+  if (styler)
   {
-    [a1 filterAttachmentsInTextStorage:v5 range:{0, objc_msgSend(v5, "length")}];
+    [self filterAttachmentsInTextStorage:textStorage range:{0, objc_msgSend(textStorage, "length")}];
   }
 
   else
@@ -108,18 +108,18 @@
     if (ICInternalSettingsIsTextKit2Enabled())
     {
       v3 = objc_alloc_init(MEMORY[0x277D36900]);
-      [v3 setNote:a1 firstVisibleLocation:0];
+      [v3 setNote:self firstVisibleLocation:0];
     }
 
     else
     {
       v3 = objc_alloc_init(MEMORY[0x277D36968]);
       v4 = [[ICLayoutManager alloc] initForTemporaryProcessing:1];
-      [v3 setNote:a1 stylingTextUsingSeparateTextStorageForRendering:0 withLayoutManager:v4];
+      [v3 setNote:self stylingTextUsingSeparateTextStorageForRendering:0 withLayoutManager:v4];
     }
 
-    [a1 filterAttachmentsInTextStorage:v5 range:{0, objc_msgSend(v5, "length")}];
-    [v5 setStyler:0];
+    [self filterAttachmentsInTextStorage:textStorage range:{0, objc_msgSend(textStorage, "length")}];
+    [textStorage setStyler:0];
   }
 }
 
@@ -127,19 +127,19 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 objectID];
-  v9 = [MEMORY[0x277D35F30] sharedContext];
+  objectID = [self objectID];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __104__ICNote_ItemProviderWriting___loadFileRepresentationOfTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v14[3] = &unk_2781ABD98;
-  v15 = v8;
+  v15 = objectID;
   v16 = v6;
   v17 = v7;
   v10 = v7;
   v11 = v6;
-  v12 = v8;
-  [v9 performBackgroundTask:v14];
+  v12 = objectID;
+  [mEMORY[0x277D35F30] performBackgroundTask:v14];
 
   return 0;
 }

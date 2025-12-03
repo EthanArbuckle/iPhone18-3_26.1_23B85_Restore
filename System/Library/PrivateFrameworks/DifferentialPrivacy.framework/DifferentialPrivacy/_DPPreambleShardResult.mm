@@ -1,7 +1,7 @@
 @interface _DPPreambleShardResult
 - (NSArray)inputShares;
 - (_DPPreambleShardResult)init;
-- (_DPPreambleShardResult)initWithPublicShare:(id)a3 inputShares:(id)a4 nonce:(id)a5 dimension:(int64_t)a6 cohortSigma:(double)a7 sigmaLocal:(double)a8 scalingFactor:(double)a9;
+- (_DPPreambleShardResult)initWithPublicShare:(id)share inputShares:(id)shares nonce:(id)nonce dimension:(int64_t)dimension cohortSigma:(double)sigma sigmaLocal:(double)local scalingFactor:(double)factor;
 @end
 
 @implementation _DPPreambleShardResult
@@ -15,12 +15,12 @@
   return v3;
 }
 
-- (_DPPreambleShardResult)initWithPublicShare:(id)a3 inputShares:(id)a4 nonce:(id)a5 dimension:(int64_t)a6 cohortSigma:(double)a7 sigmaLocal:(double)a8 scalingFactor:(double)a9
+- (_DPPreambleShardResult)initWithPublicShare:(id)share inputShares:(id)shares nonce:(id)nonce dimension:(int64_t)dimension cohortSigma:(double)sigma sigmaLocal:(double)local scalingFactor:(double)factor
 {
   ObjectType = swift_getObjectType();
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  shareCopy = share;
+  sharesCopy = shares;
+  nonceCopy = nonce;
   v21 = sub_22628E7CC();
   v23 = v22;
 
@@ -35,10 +35,10 @@
   v29 = (self + OBJC_IVAR____DPPreambleShardResult_nonce);
   *v29 = v25;
   v29[1] = v27;
-  *(self + OBJC_IVAR____DPPreambleShardResult_dimension) = a6;
-  *(self + OBJC_IVAR____DPPreambleShardResult_cohortSigma) = a7;
-  *(self + OBJC_IVAR____DPPreambleShardResult_sigmaLocal) = a8;
-  *(self + OBJC_IVAR____DPPreambleShardResult_scalingFactor) = a9;
+  *(self + OBJC_IVAR____DPPreambleShardResult_dimension) = dimension;
+  *(self + OBJC_IVAR____DPPreambleShardResult_cohortSigma) = sigma;
+  *(self + OBJC_IVAR____DPPreambleShardResult_sigmaLocal) = local;
+  *(self + OBJC_IVAR____DPPreambleShardResult_scalingFactor) = factor;
   v31.receiver = self;
   v31.super_class = ObjectType;
   return [(_DPPreambleShardResult *)&v31 init];

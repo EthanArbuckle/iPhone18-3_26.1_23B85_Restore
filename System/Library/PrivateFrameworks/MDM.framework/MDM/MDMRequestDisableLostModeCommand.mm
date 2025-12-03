@@ -1,16 +1,16 @@
 @interface MDMRequestDisableLostModeCommand
 + (id)request;
 + (unint64_t)requiredAccessRights;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)processRequest:(id)a3 completionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)processRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MDMRequestDisableLostModeCommand
 
 + (unint64_t)requiredAccessRights
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___MDMRequestDisableLostModeCommand;
   return objc_msgSendSuper2(&v3, sel_requiredAccessRights);
 }
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v3 = objc_opt_new();
   v4 = [v3 copy];
@@ -30,18 +30,18 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDMRequestDisableLostModeCommand;
-  return [(RMModelPayloadBase *)&v4 copyWithZone:a3];
+  return [(RMModelPayloadBase *)&v4 copyWithZone:zone];
 }
 
-- (void)processRequest:(id)a3 completionHandler:(id)a4
+- (void)processRequest:(id)request completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -54,10 +54,10 @@
   v20[3] = __Block_byref_object_copy__6;
   v20[4] = __Block_byref_object_dispose__6;
   v21 = 0;
-  v7 = [MEMORY[0x277D08F78] sharedInstance];
-  v8 = [v7 isManagedLostModeActive];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+  isManagedLostModeActive = [mEMORY[0x277D08F78] isManagedLostModeActive];
 
-  if (v8)
+  if (isManagedLostModeActive)
   {
     v9 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -67,27 +67,27 @@
     }
 
     v10 = objc_alloc_init(MDMLostDeviceLocationManager);
-    v11 = [(MDMLostDeviceLocationManager *)v10 lastLocationRequestedDateMessage];
-    if (v11)
+    lastLocationRequestedDateMessage = [(MDMLostDeviceLocationManager *)v10 lastLocationRequestedDateMessage];
+    if (lastLocationRequestedDateMessage)
     {
       v12 = *(DMCLogObjects() + 8);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v11;
+        v29 = lastLocationRequestedDateMessage;
         _os_log_impl(&dword_2561F5000, v12, OS_LOG_TYPE_DEFAULT, "Device was located while in lost mode. Alerting user with message “%{public}@”", buf, 0xCu);
       }
     }
 
-    v13 = [MEMORY[0x277D08F78] sharedInstance];
+    mEMORY[0x277D08F78]2 = [MEMORY[0x277D08F78] sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __78__MDMRequestDisableLostModeCommand_Handler__processRequest_completionHandler___block_invoke;
     v16[3] = &unk_27982CB18;
     v18 = v20;
     v19 = &v22;
-    v17 = v6;
-    [v13 disableManagedLostModeWithLocatedMessage:v11 completion:v16];
+    v17 = handlerCopy;
+    [mEMORY[0x277D08F78]2 disableManagedLostModeWithLocatedMessage:lastLocationRequestedDateMessage completion:v16];
   }
 
   else
@@ -99,7 +99,7 @@
       _os_log_impl(&dword_2561F5000, v14, OS_LOG_TYPE_DEFAULT, "Device is not in lost mode. Reporting success regardless.", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, v23[5]);
+    (*(handlerCopy + 2))(handlerCopy, v23[5]);
   }
 
   _Block_object_dispose(v20, 8);

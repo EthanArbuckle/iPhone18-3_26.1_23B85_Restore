@@ -1,7 +1,7 @@
 @interface ABLoadingSplashView
 + (id)assistantSplashView;
 + (id)settingsSplashView;
-- (ABLoadingSplashView)initWithAssistantMode:(BOOL)a3;
+- (ABLoadingSplashView)initWithAssistantMode:(BOOL)mode;
 - (void)layoutSubviews;
 @end
 
@@ -21,15 +21,15 @@
   return v0;
 }
 
-- (ABLoadingSplashView)initWithAssistantMode:(BOOL)a3
+- (ABLoadingSplashView)initWithAssistantMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v13.receiver = self;
   v13.super_class = ABLoadingSplashView;
   v4 = [(ABLoadingSplashView *)&v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v4)
   {
-    v5 = ABSnapshotImageName(v3);
+    v5 = ABSnapshotImageName(modeCopy);
     v6 = MEMORY[0x277D755B8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v6 imageNamed:v5 inBundle:v7 withConfiguration:0];

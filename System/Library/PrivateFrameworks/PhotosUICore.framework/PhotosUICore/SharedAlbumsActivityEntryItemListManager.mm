@@ -1,23 +1,23 @@
 @interface SharedAlbumsActivityEntryItemListManager
 - (_TtC12PhotosUICore40SharedAlbumsActivityEntryItemListManager)init;
-- (void)activityEntryRepositoryDidChange:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)activityEntryRepositoryDidChange:(id)change;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation SharedAlbumsActivityEntryItemListManager
 
-- (void)activityEntryRepositoryDidChange:(id)a3
+- (void)activityEntryRepositoryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   self;
   sub_1A4280604();
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   self;
-  sub_1A427C2B8(v4);
+  sub_1A427C2B8(changeCopy);
 }
 
 - (_TtC12PhotosUICore40SharedAlbumsActivityEntryItemListManager)init

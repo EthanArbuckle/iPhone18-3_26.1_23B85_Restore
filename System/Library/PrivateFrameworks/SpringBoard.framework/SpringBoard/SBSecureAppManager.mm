@@ -1,24 +1,24 @@
 @interface SBSecureAppManager
 + (SBSecureAppManager)sharedInstance;
 - (BOOL)hasSecureApp;
-- (BOOL)hasSecureAppOfType:(unint64_t)a3;
+- (BOOL)hasSecureAppOfType:(unint64_t)type;
 - (BOOL)hasWakeDestination;
 - (SBSecureAppManager)init;
 - (SBWakeDestination)wakeDestination;
-- (id)_applicationForAction:(id)a3;
-- (id)_applicationSceneEntityForAction:(id)a3;
+- (id)_applicationForAction:(id)action;
+- (id)_applicationSceneEntityForAction:(id)action;
 - (id)newApplicationSceneEntityForCurrentSecureApp;
 - (id)newHostableEntityForCurrentSecureApp;
 - (id)secureAppAction;
-- (void)_addRemoteAlertLockScreenContentAction:(id)a3;
-- (void)_addSecureAppAction:(id)a3;
-- (void)_enumerateSecureAppActionsByPriorityUsingBlock:(id)a3;
-- (void)_enumerateSecureAppActionsOfType:(unint64_t)a3 usingBlock:(id)a4;
-- (void)addLockScreenContentAction:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setSecureAppTransitionCoordinator:(id)a3;
+- (void)_addRemoteAlertLockScreenContentAction:(id)action;
+- (void)_addSecureAppAction:(id)action;
+- (void)_enumerateSecureAppActionsByPriorityUsingBlock:(id)block;
+- (void)_enumerateSecureAppActionsOfType:(unint64_t)type usingBlock:(id)block;
+- (void)addLockScreenContentAction:(id)action;
+- (void)addObserver:(id)observer;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)removeObserver:(id)observer;
+- (void)setSecureAppTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBSecureAppManager
@@ -79,8 +79,8 @@
   {
     v3 = objc_alloc_init(SBWakeDestination);
     [(SBWakeDestination *)v3 setType:1];
-    v4 = [(SBSecureAppManager *)self secureAppAction];
-    v5 = SBSecureAppBundleIdentifierForSecureAppType([(NSHashTable *)v4 secureAppType]);
+    secureAppAction = [(SBSecureAppManager *)self secureAppAction];
+    v5 = SBSecureAppBundleIdentifierForSecureAppType([(NSHashTable *)secureAppAction secureAppType]);
     [(SBWakeDestination *)v3 setIdentifier:v5];
 LABEL_23:
 
@@ -90,10 +90,10 @@ LABEL_24:
 
   if ([(NSMutableArray *)self->_remoteAlertActions count])
   {
-    v4 = [(NSMutableArray *)self->_remoteAlertActions lastObject];
-    v6 = [(NSHashTable *)v4 configurationObject];
+    secureAppAction = [(NSMutableArray *)self->_remoteAlertActions lastObject];
+    configurationObject = [(NSHashTable *)secureAppAction configurationObject];
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = configurationObject;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -135,8 +135,8 @@ LABEL_24:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = self->_wakeDestinationProviders;
-    v3 = [(NSHashTable *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    secureAppAction = self->_wakeDestinationProviders;
+    v3 = [(NSHashTable *)secureAppAction countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v3)
     {
       v10 = *v15;
@@ -146,13 +146,13 @@ LABEL_24:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(secureAppAction);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) wakeDestinationHandler];
-          if (v12)
+          wakeDestinationHandler = [*(*(&v14 + 1) + 8 * i) wakeDestinationHandler];
+          if (wakeDestinationHandler)
           {
-            v5 = v12;
+            v5 = wakeDestinationHandler;
             v3 = objc_alloc_init(SBWakeDestination);
             [(SBWakeDestination *)v3 setType:3];
             [(SBWakeDestination *)v3 setWakeHandler:v5];
@@ -160,7 +160,7 @@ LABEL_24:
           }
         }
 
-        v3 = [(NSHashTable *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v3 = [(NSHashTable *)secureAppAction countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v3)
         {
           continue;
@@ -181,8 +181,8 @@ LABEL_25:
 
 - (BOOL)hasWakeDestination
 {
-  v2 = [(SBSecureAppManager *)self wakeDestination];
-  v3 = v2 != 0;
+  wakeDestination = [(SBSecureAppManager *)self wakeDestination];
+  v3 = wakeDestination != 0;
 
   return v3;
 }
@@ -205,67 +205,67 @@ void __36__SBSecureAppManager_sharedInstance__block_invoke()
     secureAppActions = v2->_secureAppActions;
     v2->_secureAppActions = v3;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     remoteAlertActions = v2->_remoteAlertActions;
     v2->_remoteAlertActions = v7;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     wakeDestinationProviders = v2->_wakeDestinationProviders;
-    v2->_wakeDestinationProviders = v9;
+    v2->_wakeDestinationProviders = weakObjectsHashTable2;
   }
 
   return v2;
 }
 
-- (void)addLockScreenContentAction:(id)a3
+- (void)addLockScreenContentAction:(id)action
 {
-  v6 = a3;
-  v4 = [v6 slot];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D67008]];
+  actionCopy = action;
+  slot = [actionCopy slot];
+  v5 = [slot isEqualToString:*MEMORY[0x277D67008]];
 
   if (v5)
   {
-    [(SBSecureAppManager *)self _addSecureAppAction:v6];
+    [(SBSecureAppManager *)self _addSecureAppAction:actionCopy];
   }
 
   else
   {
-    [(SBSecureAppManager *)self _addRemoteAlertLockScreenContentAction:v6];
+    [(SBSecureAppManager *)self _addRemoteAlertLockScreenContentAction:actionCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v6;
     if (!v5)
     {
       [(NSHashTable *)self->_observers addObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v6;
     if (v5)
     {
       [(NSHashTable *)self->_observers removeObject:v6];
-      v4 = v6;
+      observerCopy = v6;
     }
   }
 }
@@ -282,7 +282,7 @@ uint64_t __34__SBSecureAppManager_hasSecureApp__block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (BOOL)hasSecureAppOfType:(unint64_t)a3
+- (BOOL)hasSecureAppOfType:(unint64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -293,7 +293,7 @@ uint64_t __34__SBSecureAppManager_hasSecureApp__block_invoke(uint64_t a1, void *
   v5[2] = __41__SBSecureAppManager_hasSecureAppOfType___block_invoke;
   v5[3] = &unk_2783BC760;
   v5[4] = &v6;
-  [(SBSecureAppManager *)self _enumerateSecureAppActionsOfType:a3 usingBlock:v5];
+  [(SBSecureAppManager *)self _enumerateSecureAppActionsOfType:type usingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -313,26 +313,26 @@ uint64_t __41__SBSecureAppManager_hasSecureAppOfType___block_invoke(uint64_t a1,
 
 - (id)newApplicationSceneEntityForCurrentSecureApp
 {
-  v3 = [(SBSecureAppManager *)self secureAppAction];
-  v4 = [(SBSecureAppManager *)self _applicationSceneEntityForAction:v3];
+  secureAppAction = [(SBSecureAppManager *)self secureAppAction];
+  v4 = [(SBSecureAppManager *)self _applicationSceneEntityForAction:secureAppAction];
 
   return v4;
 }
 
 - (id)newHostableEntityForCurrentSecureApp
 {
-  v2 = [(SBSecureAppManager *)self secureAppAction];
-  if ([v2 isInProcessAction])
+  secureAppAction = [(SBSecureAppManager *)self secureAppAction];
+  if ([secureAppAction isInProcessAction])
   {
-    v3 = [v2 hostableEntity];
+    hostableEntity = [secureAppAction hostableEntity];
   }
 
   else
   {
-    v3 = 0;
+    hostableEntity = 0;
   }
 
-  return v3;
+  return hostableEntity;
 }
 
 void __37__SBSecureAppManager_secureAppAction__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -345,27 +345,27 @@ void __37__SBSecureAppManager_secureAppAction__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)setSecureAppTransitionCoordinator:(id)a3
+- (void)setSecureAppTransitionCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   secureAppTransitionCoordinator = self->_secureAppTransitionCoordinator;
-  if (secureAppTransitionCoordinator != v5)
+  if (secureAppTransitionCoordinator != coordinatorCopy)
   {
-    v7 = v5;
+    v7 = coordinatorCopy;
     [(SBLayoutStateTransitionCoordinator *)secureAppTransitionCoordinator removeObserver:self];
-    objc_storeStrong(&self->_secureAppTransitionCoordinator, a3);
+    objc_storeStrong(&self->_secureAppTransitionCoordinator, coordinator);
     [(SBLayoutStateTransitionCoordinator *)self->_secureAppTransitionCoordinator addObserver:self];
-    v5 = v7;
+    coordinatorCopy = v7;
   }
 }
 
-- (void)_addSecureAppAction:(id)a3
+- (void)_addSecureAppAction:(id)action
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 secureAppType];
+  actionCopy = action;
+  secureAppType = [actionCopy secureAppType];
   v6 = secureAppTypeName();
-  v7 = [v4 identifier];
+  identifier = [actionCopy identifier];
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -374,10 +374,10 @@ void __37__SBSecureAppManager_secureAppAction__block_invoke(uint64_t a1, void *a
   v54[1] = 3221225472;
   v54[2] = __42__SBSecureAppManager__addSecureAppAction___block_invoke;
   v54[3] = &unk_2783BC788;
-  v8 = v4;
+  v8 = actionCopy;
   v55 = v8;
   v56 = &v57;
-  [(SBSecureAppManager *)self _enumerateSecureAppActionsOfType:v5 usingBlock:v54];
+  [(SBSecureAppManager *)self _enumerateSecureAppActionsOfType:secureAppType usingBlock:v54];
   if (*(v58 + 24) != 1)
   {
     objc_initWeak(&location, v8);
@@ -388,11 +388,11 @@ void __37__SBSecureAppManager_secureAppAction__block_invoke(uint64_t a1, void *a
     v47[3] = &unk_2783BC7B0;
     objc_copyWeak(&v50, &location);
     v47[4] = self;
-    v51[1] = v5;
+    v51[1] = secureAppType;
     objc_copyWeak(v51, &from);
     v15 = v6;
     v48 = v15;
-    v16 = v7;
+    v16 = identifier;
     v49 = v16;
     [v8 setInvalidationHandler:v47];
     if (![v8 isValid])
@@ -407,7 +407,7 @@ LABEL_32:
     }
 
     secureAppActions = self->_secureAppActions;
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:secureAppType];
     v19 = [(NSMutableDictionary *)secureAppActions objectForKey:v18];
 
     if (v19)
@@ -427,7 +427,7 @@ LABEL_32:
 
       [v19 addObject:v8];
       v22 = self->_secureAppActions;
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:secureAppType];
       [(NSMutableDictionary *)v22 setObject:v19 forKey:v23];
 
       v41 = 0u;
@@ -442,7 +442,7 @@ LABEL_32:
       }
 
       v37 = v19;
-      v38 = v7;
+      v38 = identifier;
       v26 = *v40;
       do
       {
@@ -456,7 +456,7 @@ LABEL_32:
           v28 = *(*(&v39 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v28 secureAppOfTypeDidTakeNewAssertion:v5];
+            [v28 secureAppOfTypeDidTakeNewAssertion:secureAppType];
           }
         }
 
@@ -480,7 +480,7 @@ LABEL_32:
 
       v30 = self->_secureAppActions;
       v31 = [MEMORY[0x277CBEB18] arrayWithObject:v8];
-      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:secureAppType];
       [(NSMutableDictionary *)v30 setObject:v31 forKey:v32];
 
       v45 = 0u;
@@ -495,7 +495,7 @@ LABEL_32:
       }
 
       v37 = 0;
-      v38 = v7;
+      v38 = identifier;
       v34 = *v44;
       do
       {
@@ -509,7 +509,7 @@ LABEL_32:
           v36 = *(*(&v43 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            [v36 secureAppOfTypeDidBegin:v5];
+            [v36 secureAppOfTypeDidBegin:secureAppType];
           }
         }
 
@@ -520,7 +520,7 @@ LABEL_32:
     }
 
     v19 = v37;
-    v7 = v38;
+    identifier = v38;
 LABEL_31:
 
     goto LABEL_32;
@@ -674,21 +674,21 @@ void __42__SBSecureAppManager__addSecureAppAction___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_addRemoteAlertLockScreenContentAction:(id)a3
+- (void)_addRemoteAlertLockScreenContentAction:(id)action
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 secureAppType];
+  actionCopy = action;
+  [actionCopy secureAppType];
   v5 = secureAppTypeName();
-  v6 = [v4 identifier];
-  objc_initWeak(&location, v4);
+  identifier = [actionCopy identifier];
+  objc_initWeak(&location, actionCopy);
   v7 = SBLogCoverSheet();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v17 = v5;
     v18 = 2112;
-    v19 = v6;
+    v19 = identifier;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "add content action (alert) with type: %@ and identifier: %@", buf, 0x16u);
   }
 
@@ -699,11 +699,11 @@ void __42__SBSecureAppManager__addSecureAppAction___block_invoke_2(uint64_t a1)
   objc_copyWeak(&v14, &location);
   v8 = v5;
   v11 = v8;
-  v9 = v6;
+  v9 = identifier;
   v12 = v9;
-  v13 = self;
-  [v4 setInvalidationHandler:v10];
-  [(NSMutableArray *)self->_remoteAlertActions addObject:v4];
+  selfCopy = self;
+  [actionCopy setInvalidationHandler:v10];
+  [(NSMutableArray *)self->_remoteAlertActions addObject:actionCopy];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -745,12 +745,12 @@ void __61__SBSecureAppManager__addRemoteAlertLockScreenContentAction___block_inv
   [*(*(a1 + 48) + 24) removeObject:WeakRetained];
 }
 
-- (id)_applicationSceneEntityForAction:(id)a3
+- (id)_applicationSceneEntityForAction:(id)action
 {
-  v4 = a3;
-  if (![v4 isInProcessAction] || (objc_msgSend(v4, "applicationSceneEntity"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "setApplicationSceneEntity:", 0), !v5))
+  actionCopy = action;
+  if (![actionCopy isInProcessAction] || (objc_msgSend(actionCopy, "applicationSceneEntity"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(actionCopy, "setApplicationSceneEntity:", 0), !v5))
   {
-    v6 = [(SBSecureAppManager *)self _applicationForAction:v4];
+    v6 = [(SBSecureAppManager *)self _applicationForAction:actionCopy];
     v7 = [SBSecureAppPolicy shouldAlwaysShowSecureSceneForApp:v6];
     v8 = [SBDeviceApplicationSceneEntity alloc];
     if (v7)
@@ -769,9 +769,9 @@ void __61__SBSecureAppManager__addRemoteAlertLockScreenContentAction___block_inv
   return v5;
 }
 
-- (id)_applicationForAction:(id)a3
+- (id)_applicationForAction:(id)action
 {
-  v3 = SBSecureAppBundleIdentifierForSecureAppType([a3 secureAppType]);
+  v3 = SBSecureAppBundleIdentifierForSecureAppType([action secureAppType]);
   if (v3)
   {
     v4 = +[SBApplicationController sharedInstance];
@@ -786,20 +786,20 @@ void __61__SBSecureAppManager__addRemoteAlertLockScreenContentAction___block_inv
   return v5;
 }
 
-- (void)_enumerateSecureAppActionsByPriorityUsingBlock:(id)a3
+- (void)_enumerateSecureAppActionsByPriorityUsingBlock:(id)block
 {
   for (i = 1; i != 16; ++i)
   {
-    [(SBSecureAppManager *)self _enumerateSecureAppActionsOfType:i usingBlock:a3];
+    [(SBSecureAppManager *)self _enumerateSecureAppActionsOfType:i usingBlock:block];
   }
 }
 
-- (void)_enumerateSecureAppActionsOfType:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateSecureAppActionsOfType:(unint64_t)type usingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   secureAppActions = self->_secureAppActions;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v9 = [(NSMutableDictionary *)secureAppActions objectForKey:v8];
 
   if (v9)
@@ -825,7 +825,7 @@ LABEL_4:
 
         v15 = *(*(&v17 + 1) + 8 * v14);
         v16 = 0;
-        v6[2](v6, v15, &v16);
+        blockCopy[2](blockCopy, v15, &v16);
         if (v16)
         {
           break;
@@ -846,23 +846,23 @@ LABEL_4:
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBSecureAppManager *)self secureAppAction];
-  if ([v5 isComplete] && objc_msgSend(v6, "automaticallyInvalidatesOnSecureAppUserDismissal"))
+  contextCopy = context;
+  secureAppAction = [(SBSecureAppManager *)self secureAppAction];
+  if ([contextCopy isComplete] && objc_msgSend(secureAppAction, "automaticallyInvalidatesOnSecureAppUserDismissal"))
   {
-    v19 = v6;
-    v7 = SBSecureAppBundleIdentifierForSecureAppType([v6 secureAppType]);
-    v20 = v5;
-    [v5 toLayoutState];
+    v19 = secureAppAction;
+    v7 = SBSecureAppBundleIdentifierForSecureAppType([secureAppAction secureAppType]);
+    v20 = contextCopy;
+    [contextCopy toLayoutState];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v18 = v24 = 0u;
-    v8 = [v18 elements];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    elements = [v18 elements];
+    v9 = [elements countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -874,20 +874,20 @@ LABEL_4:
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(elements);
           }
 
-          v13 = [*(*(&v21 + 1) + 8 * v12) workspaceEntity];
-          v14 = [v13 applicationSceneEntity];
-          v15 = [v14 sceneHandle];
-          v16 = [v15 application];
-          v17 = [v16 bundleIdentifier];
+          workspaceEntity = [*(*(&v21 + 1) + 8 * v12) workspaceEntity];
+          applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+          sceneHandle = [applicationSceneEntity sceneHandle];
+          application = [sceneHandle application];
+          bundleIdentifier = [application bundleIdentifier];
 
-          LOBYTE(v13) = [v17 isEqualToString:v7];
-          if (v13)
+          LOBYTE(workspaceEntity) = [bundleIdentifier isEqualToString:v7];
+          if (workspaceEntity)
           {
 
-            v6 = v19;
+            secureAppAction = v19;
             goto LABEL_13;
           }
 
@@ -895,7 +895,7 @@ LABEL_4:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [elements countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v10)
         {
           continue;
@@ -905,11 +905,11 @@ LABEL_4:
       }
     }
 
-    v6 = v19;
+    secureAppAction = v19;
     [v19 invalidate];
 LABEL_13:
 
-    v5 = v20;
+    contextCopy = v20;
   }
 }
 

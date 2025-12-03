@@ -1,15 +1,15 @@
 @interface RESharedMemoryTexturePayload
-- (RESharedMemoryTexturePayload)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5;
-- (RESharedMemoryTexturePayload)initWithCoder:(id)a3;
+- (RESharedMemoryTexturePayload)initWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor;
+- (RESharedMemoryTexturePayload)initWithCoder:(id)coder;
 @end
 
 @implementation RESharedMemoryTexturePayload
 
-- (RESharedMemoryTexturePayload)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5
+- (RESharedMemoryTexturePayload)initWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = RESharedMemoryTexturePayload;
-  v5 = [(RESharedResourcePayload *)&v11 init:a3];
+  v5 = [(RESharedResourcePayload *)&v11 init:copy];
   v6 = v5;
   if (v5 && !v5->_data)
   {
@@ -31,14 +31,14 @@
   return v7;
 }
 
-- (RESharedMemoryTexturePayload)initWithCoder:(id)a3
+- (RESharedMemoryTexturePayload)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RESharedMemoryTexturePayload;
-  v5 = [(RESharedResourcePayload *)&v13 initWithCoder:v4];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_createDispatchData"), data = v5->_data, v5->_data = v7, data, v6, !v5->_data))
+  v5 = [(RESharedResourcePayload *)&v13 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_createDispatchData"), data = v5->_data, v5->_data = v7, data, v6, !v5->_data))
   {
     v11 = *re::assetTypesLogObjects(v9);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))

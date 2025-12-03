@@ -1,15 +1,15 @@
 @interface CKMessageEditingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKMessageEditingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMessageEditingView" hasInstanceMethod:@"confirmButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEditingView" hasInstanceMethod:@"rejectButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMessageEditingView" hasInstanceMethod:@"confirmButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEditingView" hasInstanceMethod:@"rejectButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

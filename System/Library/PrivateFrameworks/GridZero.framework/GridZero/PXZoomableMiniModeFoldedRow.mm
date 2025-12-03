@@ -1,6 +1,6 @@
 @interface PXZoomableMiniModeFoldedRow
 - ($54B668FA3CFF7C50914A1C899F2834C0)collapseProgress;
-- (PXZoomableMiniModeFoldedRow)initWithCollapseProgress:(id *)a3 yPosition:(double)a4;
+- (PXZoomableMiniModeFoldedRow)initWithCollapseProgress:(id *)progress yPosition:(double)position;
 - (id)description;
 @end
 
@@ -25,19 +25,19 @@
   return v6;
 }
 
-- (PXZoomableMiniModeFoldedRow)initWithCollapseProgress:(id *)a3 yPosition:(double)a4
+- (PXZoomableMiniModeFoldedRow)initWithCollapseProgress:(id *)progress yPosition:(double)position
 {
   v9.receiver = self;
   v9.super_class = PXZoomableMiniModeFoldedRow;
   result = [(PXZoomableMiniModeFoldedRow *)&v9 init];
   if (result)
   {
-    v7 = *&a3->var0;
-    v8 = *&a3->var4;
-    *&result->_collapseProgress.translation = *&a3->var2;
+    v7 = *&progress->var0;
+    v8 = *&progress->var4;
+    *&result->_collapseProgress.translation = *&progress->var2;
     *&result->_collapseProgress.blur = v8;
     *&result->_collapseProgress.alpha = v7;
-    result->_yPosition = a4;
+    result->_yPosition = position;
   }
 
   return result;

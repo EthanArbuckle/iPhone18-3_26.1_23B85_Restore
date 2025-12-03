@@ -1,18 +1,18 @@
 @interface WLMigrationDataCoordinator
 + (unint64_t)downloadSegmentSize;
-+ (unint64_t)segmentCountForItemSize:(unint64_t)a3 segmentSize:(unint64_t)a4;
++ (unint64_t)segmentCountForItemSize:(unint64_t)size segmentSize:(unint64_t)segmentSize;
 - (WLMigrationDataCoordinator)init;
-- (id)_recordSummaryForMigrator:(id)a3 withInfo:(id)a4 account:(id)a5;
-- (void)_downloadFileInMultipleSegmentsFromSource:(id)a3 forMigrator:(id)a4 summary:(id)a5 account:(id)a6 itemSize:(unint64_t)a7 segmentCompletion:(id)a8 completion:(id)a9;
-- (void)_downloadSegmentsFromSource:(id)a3 forMigrator:(id)a4 startingAtByteLocation:(unint64_t)a5 ofSummary:(id)a6 account:(id)a7 itemSize:(unint64_t)a8 toFileHandle:(id)a9 segmentCompletion:(id)a10 completion:(id)a11;
-- (void)_fetchAccountsFromSource:(id)a3 forMigrator:(id)a4 statistics:(id)a5 completion:(id)a6;
-- (void)_fetchSummariesFromSource:(id)a3 forMigrator:(id)a4 account:(id)a5 statistics:(id)a6 completion:(id)a7;
-- (void)downloadDataFromSource:(id)a3 forMigrator:(id)a4 summary:(id)a5 account:(id)a6 completion:(id)a7;
-- (void)downloadFileFromSource:(id)a3 forMigrator:(id)a4 summary:(id)a5 account:(id)a6 segmentCompletion:(id)a7 completion:(id)a8;
-- (void)fetchAccountsAndSummariesFromSource:(id)a3 forMigrator:(id)a4 statistics:(id)a5 accountsRequestDurationBlock:(id)a6 summariesRequestDurationBlock:(id)a7 completion:(id)a8;
-- (void)importDataForMigrator:(id)a3 fromProvider:(id)a4 forSummaries:(id)a5 summaryStart:(id)a6 summaryCompletion:(id)a7;
-- (void)setStashDataLocally:(BOOL)a3;
-- (void)updateSource:(id)a3 withProgress:(double)a4 remainingTime:(double)a5 completion:(id)a6;
+- (id)_recordSummaryForMigrator:(id)migrator withInfo:(id)info account:(id)account;
+- (void)_downloadFileInMultipleSegmentsFromSource:(id)source forMigrator:(id)migrator summary:(id)summary account:(id)account itemSize:(unint64_t)size segmentCompletion:(id)completion completion:(id)a9;
+- (void)_downloadSegmentsFromSource:(id)source forMigrator:(id)migrator startingAtByteLocation:(unint64_t)location ofSummary:(id)summary account:(id)account itemSize:(unint64_t)size toFileHandle:(id)handle segmentCompletion:(id)self0 completion:(id)self1;
+- (void)_fetchAccountsFromSource:(id)source forMigrator:(id)migrator statistics:(id)statistics completion:(id)completion;
+- (void)_fetchSummariesFromSource:(id)source forMigrator:(id)migrator account:(id)account statistics:(id)statistics completion:(id)completion;
+- (void)downloadDataFromSource:(id)source forMigrator:(id)migrator summary:(id)summary account:(id)account completion:(id)completion;
+- (void)downloadFileFromSource:(id)source forMigrator:(id)migrator summary:(id)summary account:(id)account segmentCompletion:(id)completion completion:(id)a8;
+- (void)fetchAccountsAndSummariesFromSource:(id)source forMigrator:(id)migrator statistics:(id)statistics accountsRequestDurationBlock:(id)block summariesRequestDurationBlock:(id)durationBlock completion:(id)completion;
+- (void)importDataForMigrator:(id)migrator fromProvider:(id)provider forSummaries:(id)summaries summaryStart:(id)start summaryCompletion:(id)completion;
+- (void)setStashDataLocally:(BOOL)locally;
+- (void)updateSource:(id)source withProgress:(double)progress remainingTime:(double)time completion:(id)completion;
 @end
 
 @implementation WLMigrationDataCoordinator
@@ -32,46 +32,46 @@
   return v2;
 }
 
-- (void)setStashDataLocally:(BOOL)a3
+- (void)setStashDataLocally:(BOOL)locally
 {
-  self->_stashDataLocally = a3;
-  if (a3)
+  self->_stashDataLocally = locally;
+  if (locally)
   {
     +[WLLocalDataSource deleteLocalData];
   }
 }
 
-- (void)fetchAccountsAndSummariesFromSource:(id)a3 forMigrator:(id)a4 statistics:(id)a5 accountsRequestDurationBlock:(id)a6 summariesRequestDurationBlock:(id)a7 completion:(id)a8
+- (void)fetchAccountsAndSummariesFromSource:(id)source forMigrator:(id)migrator statistics:(id)statistics accountsRequestDurationBlock:(id)block summariesRequestDurationBlock:(id)durationBlock completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  sourceCopy = source;
+  migratorCopy = migrator;
+  statisticsCopy = statistics;
+  blockCopy = block;
+  durationBlockCopy = durationBlock;
+  completionCopy = completion;
   v20 = MEMORY[0x277CCACA8];
-  v21 = [v15 contentType];
-  v22 = [v20 stringWithFormat:@"fetch '%@' accounts and summaries", v21];
+  contentType = [migratorCopy contentType];
+  v22 = [v20 stringWithFormat:@"fetch '%@' accounts and summaries", contentType];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __159__WLMigrationDataCoordinator_fetchAccountsAndSummariesFromSource_forMigrator_statistics_accountsRequestDurationBlock_summariesRequestDurationBlock_completion___block_invoke;
   v30[3] = &unk_279EB57D8;
   v30[4] = self;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
+  v31 = sourceCopy;
+  v32 = migratorCopy;
+  v33 = statisticsCopy;
   v34 = v22;
-  v35 = v17;
-  v36 = v18;
-  v37 = v19;
-  v23 = v19;
-  v24 = v18;
+  v35 = blockCopy;
+  v36 = durationBlockCopy;
+  v37 = completionCopy;
+  v23 = completionCopy;
+  v24 = durationBlockCopy;
   v25 = v22;
-  v26 = v16;
-  v27 = v15;
-  v28 = v14;
-  v29 = v17;
+  v26 = statisticsCopy;
+  v27 = migratorCopy;
+  v28 = sourceCopy;
+  v29 = blockCopy;
   [(WLMigrationDataCoordinator *)self _fetchAccountsFromSource:v28 forMigrator:v27 statistics:v26 completion:v30];
 }
 
@@ -190,27 +190,27 @@ void __159__WLMigrationDataCoordinator_fetchAccountsAndSummariesFromSource_forMi
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (void)_fetchAccountsFromSource:(id)a3 forMigrator:(id)a4 statistics:(id)a5 completion:(id)a6
+- (void)_fetchAccountsFromSource:(id)source forMigrator:(id)migrator statistics:(id)statistics completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 accountBased])
+  sourceCopy = source;
+  migratorCopy = migrator;
+  statisticsCopy = statistics;
+  completionCopy = completion;
+  if ([migratorCopy accountBased])
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v11 contentType];
-    v16 = [v14 stringWithFormat:@"fetch '%@' accounts", v15];
+    contentType = [migratorCopy contentType];
+    v16 = [v14 stringWithFormat:@"fetch '%@' accounts", contentType];
 
     _WLLog();
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __89__WLMigrationDataCoordinator__fetchAccountsFromSource_forMigrator_statistics_completion___block_invoke;
     v20[3] = &unk_279EB5800;
-    v21 = v12;
-    v22 = v13;
-    [v10 accountsDataForMigrator:v11 completion:{v20, self, v16}];
+    v21 = statisticsCopy;
+    v22 = completionCopy;
+    [sourceCopy accountsDataForMigrator:migratorCopy completion:{v20, self, v16}];
 
     v17 = v21;
 LABEL_5:
@@ -220,11 +220,11 @@ LABEL_5:
 
   v18 = objc_alloc_init(WLSourceDeviceAccount);
   v16 = v18;
-  if (v13)
+  if (completionCopy)
   {
     v23[0] = v18;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-    (*(v13 + 2))(v13, v17, 0, 0, 0.0);
+    (*(completionCopy + 2))(completionCopy, v17, 0, 0, 0.0);
     goto LABEL_5;
   }
 
@@ -306,34 +306,34 @@ void __89__WLMigrationDataCoordinator__fetchAccountsFromSource_forMigrator_stati
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchSummariesFromSource:(id)a3 forMigrator:(id)a4 account:(id)a5 statistics:(id)a6 completion:(id)a7
+- (void)_fetchSummariesFromSource:(id)source forMigrator:(id)migrator account:(id)account statistics:(id)statistics completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  migratorCopy = migrator;
+  accountCopy = account;
+  statisticsCopy = statistics;
+  completionCopy = completion;
   v16 = MEMORY[0x277CCACA8];
-  v17 = a3;
-  v18 = [v12 contentType];
-  v19 = [v13 identifier];
-  v20 = [v16 stringWithFormat:@"fetch data summaries for '%@' account '%@'", v18, v19];
+  sourceCopy = source;
+  contentType = [migratorCopy contentType];
+  identifier = [accountCopy identifier];
+  v20 = [v16 stringWithFormat:@"fetch data summaries for '%@' account '%@'", contentType, identifier];
 
-  v25 = self;
+  selfCopy = self;
   _WLLog();
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __98__WLMigrationDataCoordinator__fetchSummariesFromSource_forMigrator_account_statistics_completion___block_invoke;
   v26[3] = &unk_279EB5828;
-  v27 = v14;
-  v28 = self;
-  v29 = v12;
-  v30 = v13;
-  v31 = v15;
-  v21 = v15;
-  v22 = v13;
-  v23 = v12;
-  v24 = v14;
-  [v17 summariesDataForAccount:v22 migrator:v23 completion:{v26, v25, v20}];
+  v27 = statisticsCopy;
+  selfCopy2 = self;
+  v29 = migratorCopy;
+  v30 = accountCopy;
+  v31 = completionCopy;
+  v21 = completionCopy;
+  v22 = accountCopy;
+  v23 = migratorCopy;
+  v24 = statisticsCopy;
+  [sourceCopy summariesDataForAccount:v22 migrator:v23 completion:{v26, selfCopy, v20}];
 }
 
 void __98__WLMigrationDataCoordinator__fetchSummariesFromSource_forMigrator_account_statistics_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4, double a5)
@@ -410,21 +410,21 @@ void __98__WLMigrationDataCoordinator__fetchSummariesFromSource_forMigrator_acco
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadFileFromSource:(id)a3 forMigrator:(id)a4 summary:(id)a5 account:(id)a6 segmentCompletion:(id)a7 completion:(id)a8
+- (void)downloadFileFromSource:(id)source forMigrator:(id)migrator summary:(id)summary account:(id)account segmentCompletion:(id)completion completion:(id)a8
 {
-  v42 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sourceCopy = source;
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  accountCopy = account;
+  completionCopy = completion;
   v17 = a8;
   v18 = MEMORY[0x277CBEBC0];
-  v19 = [v14 dataFilePath];
-  v20 = [v18 fileURLWithPath:v19 isDirectory:0];
+  dataFilePath = [summaryCopy dataFilePath];
+  v20 = [v18 fileURLWithPath:dataFilePath isDirectory:0];
 
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v60[0] = 0;
-  v22 = [v21 removeItemAtURL:v20 error:v60];
+  v22 = [defaultManager removeItemAtURL:v20 error:v60];
   v23 = v60[0];
 
   v43 = v23;
@@ -433,32 +433,32 @@ void __98__WLMigrationDataCoordinator__fetchSummariesFromSource_forMigrator_acco
     goto LABEL_7;
   }
 
-  v24 = [v23 domain];
-  if (([v24 isEqualToString:*MEMORY[0x277CCA050]] & 1) == 0)
+  domain = [v23 domain];
+  if (([domain isEqualToString:*MEMORY[0x277CCA050]] & 1) == 0)
   {
 
 LABEL_7:
     v40 = [MEMORY[0x277CCABB0] numberWithBool:v22];
-    v33 = self;
-    v38 = self;
+    selfCopy3 = self;
+    selfCopy4 = self;
     v39 = v20;
     _WLLog();
 
     goto LABEL_8;
   }
 
-  v25 = [v23 code];
+  code = [v23 code];
   v26 = v20;
   v27 = v17;
-  v28 = v13;
-  v29 = v16;
-  v30 = v15;
-  v31 = v25;
+  v28 = migratorCopy;
+  v29 = completionCopy;
+  v30 = accountCopy;
+  v31 = code;
 
   v32 = v31 == 4;
-  v15 = v30;
-  v16 = v29;
-  v13 = v28;
+  accountCopy = v30;
+  completionCopy = v29;
+  migratorCopy = v28;
   v17 = v27;
   v20 = v26;
   if (!v32)
@@ -466,25 +466,25 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v33 = self;
-  v38 = self;
+  selfCopy3 = self;
+  selfCopy4 = self;
   v39 = v20;
   _WLLog();
 LABEL_8:
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v13 confirmItemSizeWithSourceBeforeDownloading])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [migratorCopy confirmItemSizeWithSourceBeforeDownloading])
   {
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __110__WLMigrationDataCoordinator_downloadFileFromSource_forMigrator_summary_account_segmentCompletion_completion___block_invoke;
     v52[3] = &unk_279EB5850;
-    v53 = v14;
-    v58 = v16;
+    v53 = summaryCopy;
+    v58 = completionCopy;
     v59 = v17;
-    v54 = v33;
-    v34 = v42;
-    v55 = v42;
-    v56 = v13;
-    v57 = v15;
+    v54 = selfCopy3;
+    v34 = sourceCopy;
+    v55 = sourceCopy;
+    v56 = migratorCopy;
+    v57 = accountCopy;
     [v55 itemSizeForSummary:v53 migrator:v56 completion:v52];
 
     v35 = v53;
@@ -492,12 +492,12 @@ LABEL_8:
 
   else
   {
-    if ([v14 downloadSegmentCount] != 1)
+    if ([summaryCopy downloadSegmentCount] != 1)
     {
-      v36 = [v14 itemSize];
-      v37 = v33;
-      v34 = v42;
-      [(WLMigrationDataCoordinator *)v37 _downloadFileInMultipleSegmentsFromSource:v42 forMigrator:v13 summary:v14 account:v15 itemSize:v36 segmentCompletion:v16 completion:v17];
+      itemSize = [summaryCopy itemSize];
+      v37 = selfCopy3;
+      v34 = sourceCopy;
+      [(WLMigrationDataCoordinator *)v37 _downloadFileInMultipleSegmentsFromSource:sourceCopy forMigrator:migratorCopy summary:summaryCopy account:accountCopy itemSize:itemSize segmentCompletion:completionCopy completion:v17];
       goto LABEL_15;
     }
 
@@ -506,18 +506,18 @@ LABEL_8:
     v49[2] = __110__WLMigrationDataCoordinator_downloadFileFromSource_forMigrator_summary_account_segmentCompletion_completion___block_invoke_2;
     v49[3] = &unk_279EB5878;
     v50 = v20;
-    v51 = v33;
+    v51 = selfCopy3;
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __110__WLMigrationDataCoordinator_downloadFileFromSource_forMigrator_summary_account_segmentCompletion_completion___block_invoke_3;
     v44[3] = &unk_279EB58A0;
-    v44[4] = v33;
-    v45 = v14;
-    v46 = v13;
-    v47 = v16;
+    v44[4] = selfCopy3;
+    v45 = summaryCopy;
+    v46 = migratorCopy;
+    v47 = completionCopy;
     v48 = v17;
-    v34 = v42;
-    [v42 fileForSummary:v45 migrator:v46 fileAccessor:v49 completion:v44];
+    v34 = sourceCopy;
+    [sourceCopy fileForSummary:v45 migrator:v46 fileAccessor:v49 completion:v44];
 
     v35 = v50;
   }
@@ -633,61 +633,61 @@ void __49__WLMigrationDataCoordinator_downloadSegmentSize__block_invoke()
   }
 }
 
-- (void)_downloadSegmentsFromSource:(id)a3 forMigrator:(id)a4 startingAtByteLocation:(unint64_t)a5 ofSummary:(id)a6 account:(id)a7 itemSize:(unint64_t)a8 toFileHandle:(id)a9 segmentCompletion:(id)a10 completion:(id)a11
+- (void)_downloadSegmentsFromSource:(id)source forMigrator:(id)migrator startingAtByteLocation:(unint64_t)location ofSummary:(id)summary account:(id)account itemSize:(unint64_t)size toFileHandle:(id)handle segmentCompletion:(id)self0 completion:(id)self1
 {
-  v41 = a3;
-  v16 = a4;
-  v17 = a6;
-  v35 = v17;
-  v34 = a7;
-  v40 = a9;
-  v38 = a10;
+  sourceCopy = source;
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  v35 = summaryCopy;
+  accountCopy = account;
+  handleCopy = handle;
+  completionCopy = completion;
   v37 = a11;
   v18 = +[WLMigrationDataCoordinator downloadSegmentSize];
-  v36 = a8;
-  if (v18 + a5 <= a8)
+  sizeCopy = size;
+  if (v18 + location <= size)
   {
     v19 = v18;
   }
 
   else
   {
-    v19 = a8 - a5;
+    v19 = size - location;
   }
 
   v20 = MEMORY[0x277CCACA8];
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:location];
   v22 = v19;
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-  v24 = [v16 contentType];
-  v25 = [v17 identifier];
-  v26 = [v34 identifier];
-  v42 = [v20 stringWithFormat:@"fetch segment from byte start %@ len %@ into file '%@' record '%@' in account '%@'", v21, v23, v24, v25, v26];
+  contentType = [migratorCopy contentType];
+  identifier = [summaryCopy identifier];
+  identifier2 = [accountCopy identifier];
+  v42 = [v20 stringWithFormat:@"fetch segment from byte start %@ len %@ into file '%@' record '%@' in account '%@'", v21, v23, contentType, identifier, identifier2];
 
   _WLLog();
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __162__WLMigrationDataCoordinator__downloadSegmentsFromSource_forMigrator_startingAtByteLocation_ofSummary_account_itemSize_toFileHandle_segmentCompletion_completion___block_invoke;
   v43[3] = &unk_279EB58C8;
-  v52 = a5;
+  locationCopy = location;
   v53 = v22;
-  v54 = v36;
-  v50 = v38;
+  v54 = sizeCopy;
+  v50 = completionCopy;
   v51 = v37;
-  v44 = v40;
-  v45 = self;
-  v46 = v41;
-  v47 = v16;
-  v48 = v17;
-  v49 = v34;
-  v27 = v34;
+  v44 = handleCopy;
+  selfCopy = self;
+  v46 = sourceCopy;
+  v47 = migratorCopy;
+  v48 = summaryCopy;
+  v49 = accountCopy;
+  v27 = accountCopy;
   v28 = v35;
-  v29 = v16;
-  v30 = v41;
+  v29 = migratorCopy;
+  v30 = sourceCopy;
   v31 = v37;
-  v32 = v38;
-  v33 = v40;
-  [v30 dataSegmentForSummary:v28 byteRange:a5 migrator:v22 completion:{v29, v43, self, v42}];
+  v32 = completionCopy;
+  v33 = handleCopy;
+  [v30 dataSegmentForSummary:v28 byteRange:location migrator:v22 completion:{v29, v43, self, v42}];
 }
 
 void __162__WLMigrationDataCoordinator__downloadSegmentsFromSource_forMigrator_startingAtByteLocation_ofSummary_account_itemSize_toFileHandle_segmentCompletion_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -734,55 +734,55 @@ LABEL_7:
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)_downloadFileInMultipleSegmentsFromSource:(id)a3 forMigrator:(id)a4 summary:(id)a5 account:(id)a6 itemSize:(unint64_t)a7 segmentCompletion:(id)a8 completion:(id)a9
+- (void)_downloadFileInMultipleSegmentsFromSource:(id)source forMigrator:(id)migrator summary:(id)summary account:(id)account itemSize:(unint64_t)size segmentCompletion:(id)completion completion:(id)a9
 {
-  v44 = a4;
-  v14 = a5;
+  migratorCopy = migrator;
+  summaryCopy = summary;
   v15 = a9;
   v16 = MEMORY[0x277CCAA00];
-  v46 = a8;
-  v45 = a6;
-  v17 = a3;
-  v18 = [v16 defaultManager];
-  v19 = [v14 dataFilePath];
-  [v18 createFileAtPath:v19 contents:0 attributes:0];
+  completionCopy = completion;
+  accountCopy = account;
+  sourceCopy = source;
+  defaultManager = [v16 defaultManager];
+  dataFilePath = [summaryCopy dataFilePath];
+  [defaultManager createFileAtPath:dataFilePath contents:0 attributes:0];
 
-  v20 = [v14 dataFilePath];
-  v21 = [v20 stringByDeletingLastPathComponent];
+  dataFilePath2 = [summaryCopy dataFilePath];
+  stringByDeletingLastPathComponent = [dataFilePath2 stringByDeletingLastPathComponent];
 
   _WLLog();
-  v22 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(v19) = [v22 fileExistsAtPath:v21];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(dataFilePath) = [defaultManager2 fileExistsAtPath:stringByDeletingLastPathComponent];
 
-  if ((v19 & 1) == 0)
+  if ((dataFilePath & 1) == 0)
   {
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     v54 = 0;
-    v24 = [v23 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:&v54];
+    v24 = [defaultManager3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v54];
     v25 = v54;
 
     v41 = [MEMORY[0x277CCABB0] numberWithBool:v24];
     v43 = v25;
-    v37 = self;
-    v38 = v21;
+    selfCopy = self;
+    v38 = stringByDeletingLastPathComponent;
     _WLLog();
   }
 
-  v39 = [v14 dataFilePath];
+  dataFilePath3 = [summaryCopy dataFilePath];
   _WLLog();
 
-  v26 = [MEMORY[0x277CCAA00] defaultManager];
-  v27 = [v14 dataFilePath];
-  v28 = [v26 createFileAtPath:v27 contents:0 attributes:0];
+  defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+  dataFilePath4 = [summaryCopy dataFilePath];
+  v28 = [defaultManager4 createFileAtPath:dataFilePath4 contents:0 attributes:0];
 
-  v29 = [v14 dataFilePath];
+  dataFilePath5 = [summaryCopy dataFilePath];
   [MEMORY[0x277CCABB0] numberWithBool:v28];
-  v42 = v40 = v29;
+  v42 = v40 = dataFilePath5;
   _WLLog();
 
   v30 = MEMORY[0x277CCA9F8];
-  v31 = [v14 dataFilePath];
-  v32 = [v30 fileHandleForWritingAtPath:v31];
+  dataFilePath6 = [summaryCopy dataFilePath];
+  v32 = [v30 fileHandleForWritingAtPath:dataFilePath6];
 
   _WLLog();
   v48[0] = MEMORY[0x277D85DD0];
@@ -790,15 +790,15 @@ LABEL_7:
   v48[2] = __138__WLMigrationDataCoordinator__downloadFileInMultipleSegmentsFromSource_forMigrator_summary_account_itemSize_segmentCompletion_completion___block_invoke;
   v48[3] = &unk_279EB58F0;
   v49 = v32;
-  v50 = self;
-  v51 = v14;
-  v52 = v44;
+  selfCopy2 = self;
+  v51 = summaryCopy;
+  v52 = migratorCopy;
   v53 = v15;
   v33 = v15;
-  v34 = v44;
-  v35 = v14;
+  v34 = migratorCopy;
+  v35 = summaryCopy;
   v36 = v32;
-  [(WLMigrationDataCoordinator *)self _downloadSegmentsFromSource:v17 forMigrator:v34 startingAtByteLocation:0 ofSummary:v35 account:v45 itemSize:a7 toFileHandle:v36 segmentCompletion:v46 completion:v48];
+  [(WLMigrationDataCoordinator *)self _downloadSegmentsFromSource:sourceCopy forMigrator:v34 startingAtByteLocation:0 ofSummary:v35 account:accountCopy itemSize:size toFileHandle:v36 segmentCompletion:completionCopy completion:v48];
 }
 
 uint64_t __138__WLMigrationDataCoordinator__downloadFileInMultipleSegmentsFromSource_forMigrator_summary_account_itemSize_segmentCompletion_completion___block_invoke(uint64_t a1, void *a2)
@@ -819,21 +819,21 @@ uint64_t __138__WLMigrationDataCoordinator__downloadFileInMultipleSegmentsFromSo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)downloadDataFromSource:(id)a3 forMigrator:(id)a4 summary:(id)a5 account:(id)a6 completion:(id)a7
+- (void)downloadDataFromSource:(id)source forMigrator:(id)migrator summary:(id)summary account:(id)account completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  completionCopy = completion;
   v15 = MEMORY[0x277CCACA8];
-  v16 = a6;
-  v17 = a3;
-  v18 = [v12 contentType];
-  v19 = [v13 identifier];
-  v20 = [v16 identifier];
+  accountCopy = account;
+  sourceCopy = source;
+  contentType = [migratorCopy contentType];
+  identifier = [summaryCopy identifier];
+  identifier2 = [accountCopy identifier];
 
-  v21 = [v15 stringWithFormat:@"fetch '%@' record '%@' in account '%@'", v18, v19, v20];
+  v21 = [v15 stringWithFormat:@"fetch '%@' record '%@' in account '%@'", contentType, identifier, identifier2];
 
-  v26 = self;
+  selfCopy = self;
   _WLLog();
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -841,14 +841,14 @@ uint64_t __138__WLMigrationDataCoordinator__downloadFileInMultipleSegmentsFromSo
   v27[3] = &unk_279EB5918;
   v27[4] = self;
   v28 = v21;
-  v29 = v13;
-  v30 = v12;
-  v31 = v14;
-  v22 = v14;
-  v23 = v12;
-  v24 = v13;
+  v29 = summaryCopy;
+  v30 = migratorCopy;
+  v31 = completionCopy;
+  v22 = completionCopy;
+  v23 = migratorCopy;
+  v24 = summaryCopy;
   v25 = v21;
-  [v17 dataForSummary:v24 migrator:v23 completion:{v27, v26, v21}];
+  [sourceCopy dataForSummary:v24 migrator:v23 completion:{v27, selfCopy, v21}];
 }
 
 void __92__WLMigrationDataCoordinator_downloadDataFromSource_forMigrator_summary_account_completion___block_invoke(uint64_t *a1, void *a2, void *a3)
@@ -872,23 +872,23 @@ void __92__WLMigrationDataCoordinator_downloadDataFromSource_forMigrator_summary
   }
 }
 
-- (void)importDataForMigrator:(id)a3 fromProvider:(id)a4 forSummaries:(id)a5 summaryStart:(id)a6 summaryCompletion:(id)a7
+- (void)importDataForMigrator:(id)migrator fromProvider:(id)provider forSummaries:(id)summaries summaryStart:(id)start summaryCompletion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v39 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v34 = self;
+  migratorCopy = migrator;
+  providerCopy = provider;
+  summariesCopy = summaries;
+  startCopy = start;
+  completionCopy = completion;
+  selfCopy = self;
   if ([(WLMigrationDataCoordinator *)self stashDataLocally])
   {
     v49 = 0u;
     v50 = 0u;
     v48 = 0u;
     v47 = 0u;
-    v33 = v13;
-    v16 = v13;
+    v33 = summariesCopy;
+    v16 = summariesCopy;
     v17 = [v16 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v17)
     {
@@ -904,14 +904,14 @@ void __92__WLMigrationDataCoordinator_downloadDataFromSource_forMigrator_summary
           }
 
           v21 = *(*(&v47 + 1) + 8 * i);
-          if (v14)
+          if (startCopy)
           {
-            v14[2](v14, *(*(&v47 + 1) + 8 * i));
+            startCopy[2](startCopy, *(*(&v47 + 1) + 8 * i));
           }
 
-          if (v15)
+          if (completionCopy)
           {
-            v15[2](v15, v21, 0);
+            completionCopy[2](completionCopy, v21, 0);
           }
         }
 
@@ -922,20 +922,20 @@ void __92__WLMigrationDataCoordinator_downloadDataFromSource_forMigrator_summary
     }
 
 LABEL_32:
-    v13 = v33;
+    summariesCopy = v33;
     goto LABEL_33;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v37 = v12;
+    v37 = migratorCopy;
     v36 = dispatch_semaphore_create(0);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v33 = v13;
-    obj = v13;
+    v33 = summariesCopy;
+    obj = summariesCopy;
     v22 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v22)
     {
@@ -953,35 +953,35 @@ LABEL_32:
 
           v25 = *(*(&v43 + 1) + 8 * v24);
           v26 = objc_autoreleasePoolPush();
-          if (v14)
+          if (startCopy)
           {
-            (v14)[2](v14, v25);
+            (startCopy)[2](startCopy, v25);
           }
 
-          v27 = v39[2](v39, v25);
+          v27 = providerCopy[2](providerCopy, v25);
           if (v27 || [v25 storeDataAsFile])
           {
-            v28 = [v25 account];
+            account = [v25 account];
             v40[0] = MEMORY[0x277D85DD0];
             v40[1] = 3221225472;
             v40[2] = __109__WLMigrationDataCoordinator_importDataForMigrator_fromProvider_forSummaries_summaryStart_summaryCompletion___block_invoke;
             v40[3] = &unk_279EB5940;
-            v42 = v15;
+            v42 = completionCopy;
             v40[4] = v25;
             v29 = v36;
             v41 = v29;
-            [v37 importRecordData:v27 summary:v25 account:v28 completion:v40];
+            [v37 importRecordData:v27 summary:v25 account:account completion:v40];
 
             dispatch_semaphore_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
           }
 
           else
           {
-            v32 = v34;
+            v32 = selfCopy;
             _WLLog();
-            if (v15)
+            if (completionCopy)
             {
-              v15[2](v15, v25, 0);
+              completionCopy[2](completionCopy, v25, 0);
             }
           }
 
@@ -997,11 +997,11 @@ LABEL_32:
       while (v30);
     }
 
-    v12 = v37;
+    migratorCopy = v37;
     goto LABEL_32;
   }
 
-  [v12 importDataFromProvider:v39 forSummaries:v13 summaryStart:v14 summaryCompletion:v15];
+  [migratorCopy importDataFromProvider:providerCopy forSummaries:summariesCopy summaryStart:startCopy summaryCompletion:completionCopy];
 LABEL_33:
 
   v31 = *MEMORY[0x277D85DE8];
@@ -1020,23 +1020,23 @@ intptr_t __109__WLMigrationDataCoordinator_importDataForMigrator_fromProvider_fo
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)updateSource:(id)a3 withProgress:(double)a4 remainingTime:(double)a5 completion:(id)a6
+- (void)updateSource:(id)source withProgress:(double)progress remainingTime:(double)time completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
+  sourceCopy = source;
+  completionCopy = completion;
+  v12 = completionCopy;
   if (self->_doneSent)
   {
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v13 = vcvtmd_s64_f64(a4 * 100.0) | 0x4059000000000000;
-    if (a4 >= 1.0)
+    v13 = vcvtmd_s64_f64(progress * 100.0) | 0x4059000000000000;
+    if (progress >= 1.0)
     {
       v14 = @"update progress to status=done (percentProgress=%d, remainingTime=%f)";
     }
@@ -1046,15 +1046,15 @@ intptr_t __109__WLMigrationDataCoordinator_importDataForMigrator_fromProvider_fo
       v14 = @"update progress to status=active (percentProgress=%d, remainingTime=%f)";
     }
 
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:v14, v13, *&a5];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:v14, v13, *&time];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __81__WLMigrationDataCoordinator_updateSource_withProgress_remainingTime_completion___block_invoke;
     v16[3] = &unk_279EB5968;
-    v18 = a4;
+    progressCopy = progress;
     v16[4] = self;
     v17 = v12;
-    [v10 updateUIWithProgress:v15 remainingTime:v16 logString:a4 completion:a5];
+    [sourceCopy updateUIWithProgress:v15 remainingTime:v16 logString:progress completion:time];
   }
 }
 
@@ -1075,40 +1075,40 @@ void __81__WLMigrationDataCoordinator_updateSource_withProgress_remainingTime_co
   }
 }
 
-- (id)_recordSummaryForMigrator:(id)a3 withInfo:(id)a4 account:(id)a5
+- (id)_recordSummaryForMigrator:(id)migrator withInfo:(id)info account:(id)account
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [WLSourceDeviceRecordSummary summaryWithInfo:a4 account:v9];
-  v11 = [v8 storeRecordDataInDatabase];
-  if ((v11 & 1) == 0)
+  migratorCopy = migrator;
+  accountCopy = account;
+  v10 = [WLSourceDeviceRecordSummary summaryWithInfo:info account:accountCopy];
+  storeRecordDataInDatabase = [migratorCopy storeRecordDataInDatabase];
+  if ((storeRecordDataInDatabase & 1) == 0)
   {
     [v10 setStoreDataAsFile:1];
-    v25 = [(WLMigrationDataCoordinator *)self downloadsPath];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
+    downloadsPath = [(WLMigrationDataCoordinator *)self downloadsPath];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
 
-    v16 = [v10 identifier];
-    v17 = [v16 lastPathComponent];
-    v18 = [v17 pathExtension];
-    v19 = [v18 lowercaseString];
+    identifier = [v10 identifier];
+    lastPathComponent = [identifier lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    lowercaseString = [pathExtension lowercaseString];
 
-    if (v19)
+    if (lowercaseString)
     {
-      v20 = [v15 stringByAppendingPathExtension:v19];
+      v20 = [uUIDString2 stringByAppendingPathExtension:lowercaseString];
 
-      v15 = v20;
+      uUIDString2 = v20;
     }
 
-    v21 = [v25 stringByAppendingPathComponent:v13];
-    v22 = [v21 stringByAppendingPathComponent:v15];
+    v21 = [downloadsPath stringByAppendingPathComponent:uUIDString];
+    v22 = [v21 stringByAppendingPathComponent:uUIDString2];
     [v10 setDataFilePath:v22];
   }
 
-  if (((v11 | !+[WLMigrationDataCoordinator _allowSegmentedDownloads](WLMigrationDataCoordinator, "_allowSegmentedDownloads")) & 1) == 0 && [v10 itemSize] && objc_msgSend(v8, "wantsSegmentedDownloads"))
+  if (((storeRecordDataInDatabase | !+[WLMigrationDataCoordinator _allowSegmentedDownloads](WLMigrationDataCoordinator, "_allowSegmentedDownloads")) & 1) == 0 && [v10 itemSize] && objc_msgSend(migratorCopy, "wantsSegmentedDownloads"))
   {
     v23 = +[WLMigrationDataCoordinator segmentCountForItemSize:segmentSize:](WLMigrationDataCoordinator, "segmentCountForItemSize:segmentSize:", [v10 itemSize], +[WLMigrationDataCoordinator downloadSegmentSize](WLMigrationDataCoordinator, "downloadSegmentSize"));
   }
@@ -1121,22 +1121,22 @@ void __81__WLMigrationDataCoordinator_updateSource_withProgress_remainingTime_co
   [v10 setDownloadSegmentCount:v23];
   if (![v10 itemSize] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 estimateItemSizeForSummary:v10 account:v9];
+    [migratorCopy estimateItemSizeForSummary:v10 account:accountCopy];
   }
 
   return v10;
 }
 
-+ (unint64_t)segmentCountForItemSize:(unint64_t)a3 segmentSize:(unint64_t)a4
++ (unint64_t)segmentCountForItemSize:(unint64_t)size segmentSize:(unint64_t)segmentSize
 {
-  if (a3 / a4 * a4 >= a3)
+  if (size / segmentSize * segmentSize >= size)
   {
-    return a3 / a4;
+    return size / segmentSize;
   }
 
   else
   {
-    return a3 / a4 + 1;
+    return size / segmentSize + 1;
   }
 }
 

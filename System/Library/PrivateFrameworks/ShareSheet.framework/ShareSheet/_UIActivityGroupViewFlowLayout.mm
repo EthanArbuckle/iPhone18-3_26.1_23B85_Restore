@@ -1,60 +1,60 @@
 @interface _UIActivityGroupViewFlowLayout
-- (BOOL)shouldCancelDraggingForGesture:(id)a3;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldCancelDraggingForGesture:(id)gesture;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (BOOL)shouldReverseLayoutDirection;
-- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)a3;
+- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)paths;
 - (CGSize)evaluatedContentSize;
 - (CGSize)evaluatedItemSize;
-- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)a3;
+- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)index;
 - (UIEdgeInsets)evaluatedInset;
 - (UIEdgeInsets)externalSafeInset;
 - (UIOffset)draggingOffset;
-- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)a3 inset:(UIEdgeInsets)a4 offscreenPeekInFactor:(float)a5;
-- (id)_indexPathsForItemsInSection:(int64_t)a3;
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3 numberOfItemsInSection:(unint64_t)a4;
-- (id)adjustLayoutAttributesForDraggingIfNeeded:(id)a3;
-- (id)draggingViewForItemAtIndexPath:(id)a3;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)indexPathForItemRecognizedByGesture:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)beginDraggingForGesture:(id)a3;
-- (void)cancelDraggingForGesture:(id)a3;
+- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)size inset:(UIEdgeInsets)inset offscreenPeekInFactor:(float)factor;
+- (id)_indexPathsForItemsInSection:(int64_t)section;
+- (id)_layoutAttributesForItemAtIndexPath:(id)path numberOfItemsInSection:(unint64_t)section;
+- (id)adjustLayoutAttributesForDraggingIfNeeded:(id)needed;
+- (id)draggingViewForItemAtIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)indexPathForItemRecognizedByGesture:(id)gesture;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)beginDraggingForGesture:(id)gesture;
+- (void)cancelDraggingForGesture:(id)gesture;
 - (void)finalizeCollectionViewUpdates;
-- (void)handleEditingGesture:(id)a3;
-- (void)invalidateGroupViewLayoutAnimated:(BOOL)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)handleEditingGesture:(id)gesture;
+- (void)invalidateGroupViewLayoutAnimated:(BOOL)animated;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
-- (void)setEditingGestureRecognizer:(id)a3;
-- (void)updateDraggingViewForGesture:(id)a3;
+- (void)setEditingGestureRecognizer:(id)recognizer;
+- (void)updateDraggingViewForGesture:(id)gesture;
 @end
 
 @implementation _UIActivityGroupViewFlowLayout
 
-- (void)setEditingGestureRecognizer:(id)a3
+- (void)setEditingGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self editingGestureRecognizer];
+  recognizerCopy = recognizer;
+  editingGestureRecognizer = [(_UIActivityGroupViewFlowLayout *)self editingGestureRecognizer];
 
-  if (v5 != v6)
+  if (editingGestureRecognizer != recognizerCopy)
   {
     [(UILongPressGestureRecognizer *)self->_editingGestureRecognizer removeTarget:self action:0];
-    objc_storeStrong(&self->_editingGestureRecognizer, a3);
+    objc_storeStrong(&self->_editingGestureRecognizer, recognizer);
     [(UILongPressGestureRecognizer *)self->_editingGestureRecognizer addTarget:self action:sel_handleEditingGesture_];
   }
 }
 
-- (id)indexPathForItemRecognizedByGesture:(id)a3
+- (id)indexPathForItemRecognizedByGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  [gestureCopy locationInView:collectionView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  [v10 bounds];
+  collectionView2 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  [collectionView2 bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -120,10 +120,10 @@
   v49.size.width = width;
   v49.size.height = height;
   v38 = [(_UIActivityGroupViewFlowLayout *)self layoutAttributesForElementsInRect:v36 + -0.5, fmin(v37, CGRectGetMaxY(v49)) + -0.5, 1.0, 1.0];
-  v39 = [v38 firstObject];
-  v40 = [v39 indexPath];
+  firstObject = [v38 firstObject];
+  indexPath = [firstObject indexPath];
 
-  return v40;
+  return indexPath;
 }
 
 - (void)prepareLayout
@@ -242,28 +242,28 @@
   [(_UIActivityGroupViewFlowLayout *)self setPreparedLayoutAttributes:v37];
   if ([(_UIActivityGroupViewFlowLayout *)self shouldReverseLayoutDirection])
   {
-    v44 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-    [v44 frame];
+    collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+    [collectionView frame];
     CGRectGetWidth(v60);
-    [v44 contentInset];
-    [v44 setContentInset:?];
+    [collectionView contentInset];
+    [collectionView setContentInset:?];
     if (v34 != v52 || v36 != v32)
     {
-      [v44 frame];
+      [collectionView frame];
       v47 = v52 - v46;
-      [v44 contentOffset];
-      [v44 setContentOffset:v47];
+      [collectionView contentOffset];
+      [collectionView setContentOffset:v47];
     }
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetHeight(a3);
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  v8 = CGRectGetHeight(change);
   [(_UIActivityGroupViewFlowLayout *)self collectionViewContentSize];
   if (v8 != v9)
   {
@@ -275,21 +275,21 @@
   v14.size.width = width;
   v14.size.height = height;
   v10 = CGRectGetWidth(v14);
-  v11 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  [v11 bounds];
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  [collectionView bounds];
   v12 = v10 != CGRectGetWidth(v15);
 
   return v12;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(_UIActivityGroupViewFlowLayout *)self preparedLayoutAttributes];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  array = [MEMORY[0x1E695DF70] array];
+  preparedLayoutAttributes = [(_UIActivityGroupViewFlowLayout *)self preparedLayoutAttributes];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68___UIActivityGroupViewFlowLayout_layoutAttributesForElementsInRect___block_invoke;
@@ -299,9 +299,9 @@
   v18 = width;
   v19 = height;
   v14[4] = self;
-  v10 = v8;
+  v10 = array;
   v15 = v10;
-  [v9 enumerateObjectsUsingBlock:v14];
+  [preparedLayoutAttributes enumerateObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v10;
@@ -309,32 +309,32 @@
   return v10;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self preparedLayoutAttributes];
-  v6 = [v4 item];
+  pathCopy = path;
+  preparedLayoutAttributes = [(_UIActivityGroupViewFlowLayout *)self preparedLayoutAttributes];
+  item = [pathCopy item];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [preparedLayoutAttributes objectAtIndexedSubscript:item];
 
   v8 = [(_UIActivityGroupViewFlowLayout *)self adjustLayoutAttributesForDraggingIfNeeded:v7];
 
   return v7;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = _UIActivityGroupViewFlowLayout;
-  v5 = [(_UIActivityGroupViewFlowLayout *)&v21 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
+  v5 = [(_UIActivityGroupViewFlowLayout *)&v21 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(_UIActivityGroupViewFlowLayout *)self preparedUpdateItems];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  preparedUpdateItems = [(_UIActivityGroupViewFlowLayout *)self preparedUpdateItems];
+  v7 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -345,14 +345,14 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(preparedUpdateItems);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if (![v11 updateAction])
         {
-          v12 = [v11 indexPathAfterUpdate];
-          v13 = [v12 isEqual:v4];
+          indexPathAfterUpdate = [v11 indexPathAfterUpdate];
+          v13 = [indexPathAfterUpdate isEqual:pathCopy];
 
           if (v13)
           {
@@ -366,7 +366,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -382,19 +382,19 @@ LABEL_12:
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = _UIActivityGroupViewFlowLayout;
-  v5 = [(_UIActivityGroupViewFlowLayout *)&v21 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
+  v5 = [(_UIActivityGroupViewFlowLayout *)&v21 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(_UIActivityGroupViewFlowLayout *)self preparedUpdateItems];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  preparedUpdateItems = [(_UIActivityGroupViewFlowLayout *)self preparedUpdateItems];
+  v7 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -405,14 +405,14 @@ LABEL_12:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(preparedUpdateItems);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([v11 updateAction] == 1)
         {
-          v12 = [v11 indexPathBeforeUpdate];
-          v13 = [v12 isEqual:v4];
+          indexPathBeforeUpdate = [v11 indexPathBeforeUpdate];
+          v13 = [indexPathBeforeUpdate isEqual:pathCopy];
 
           if (v13)
           {
@@ -426,7 +426,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -442,13 +442,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v5.receiver = self;
   v5.super_class = _UIActivityGroupViewFlowLayout;
-  v4 = a3;
-  [(_UIActivityGroupViewFlowLayout *)&v5 prepareForCollectionViewUpdates:v4];
-  [(_UIActivityGroupViewFlowLayout *)self setPreparedUpdateItems:v4, v5.receiver, v5.super_class];
+  updatesCopy = updates;
+  [(_UIActivityGroupViewFlowLayout *)&v5 prepareForCollectionViewUpdates:updatesCopy];
+  [(_UIActivityGroupViewFlowLayout *)self setPreparedUpdateItems:updatesCopy, v5.receiver, v5.super_class];
 }
 
 - (void)finalizeCollectionViewUpdates
@@ -459,11 +459,11 @@ LABEL_12:
   [(_UIActivityGroupViewFlowLayout *)&v3 finalizeCollectionViewUpdates];
 }
 
-- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)a3
+- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  v6 = [v5 delegate];
+  pathsCopy = paths;
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -473,13 +473,13 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = __81___UIActivityGroupViewFlowLayout__evaluatePreferredItemSizeForItemsAtIndexPaths___block_invoke;
   v13[3] = &unk_1E71FB568;
-  v7 = v6;
+  v7 = delegate;
   v14 = v7;
-  v8 = v5;
+  v8 = collectionView;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [pathsCopy enumerateObjectsUsingBlock:v13];
   v9 = v19[4];
   v10 = v19[5];
 
@@ -491,20 +491,20 @@ LABEL_12:
   return result;
 }
 
-- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)a3
+- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)index
 {
-  v3 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 verticalSizeClass];
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
   v6 = 7.0;
-  if (v5 != 1)
+  if (verticalSizeClass != 1)
   {
     v6 = 19.0;
   }
 
   v7 = 14.0;
-  if (v5 != 1)
+  if (verticalSizeClass != 1)
   {
     v7 = 19.0;
   }
@@ -518,23 +518,23 @@ LABEL_12:
   return result;
 }
 
-- (id)_indexPathsForItemsInSection:(int64_t)a3
+- (id)_indexPathsForItemsInSection:(int64_t)section
 {
-  v4 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  if ([v4 numberOfSections] <= a3)
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  if ([collectionView numberOfSections] <= section)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [v4 numberOfItemsInSection:a3];
+    v5 = [collectionView numberOfItemsInSection:section];
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
     if (v5 >= 1)
     {
       for (i = 0; i != v5; ++i)
       {
-        v8 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:a3];
+        v8 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:section];
         [v6 addObject:v8];
       }
     }
@@ -543,15 +543,15 @@ LABEL_12:
   return v6;
 }
 
-- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)a3 inset:(UIEdgeInsets)a4 offscreenPeekInFactor:(float)a5
+- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)size inset:(UIEdgeInsets)inset offscreenPeekInFactor:(float)factor
 {
-  left = a4.left;
-  width = a3.width;
-  v8 = [(_UIActivityGroupViewFlowLayout *)self collectionView:a3.width];
+  left = inset.left;
+  width = size.width;
+  v8 = [(_UIActivityGroupViewFlowLayout *)self collectionView:size.width];
   [v8 frame];
   v9 = CGRectGetWidth(v13);
 
-  v10 = v9 - width * a5 - left;
+  v10 = v9 - width * factor - left;
   v11 = vcvtmd_u64_f64(v10 / width);
   if (v11)
   {
@@ -564,21 +564,21 @@ LABEL_12:
   }
 }
 
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3 numberOfItemsInSection:(unint64_t)a4
+- (id)_layoutAttributesForItemAtIndexPath:(id)path numberOfItemsInSection:(unint64_t)section
 {
   v6 = MEMORY[0x1E69DC858];
-  v7 = a3;
-  v8 = [v6 layoutAttributesForCellWithIndexPath:v7];
-  v9 = [v7 item];
+  pathCopy = path;
+  v8 = [v6 layoutAttributesForCellWithIndexPath:pathCopy];
+  item = [pathCopy item];
 
   if ([(_UIActivityGroupViewFlowLayout *)self shouldReverseLayoutDirection])
   {
-    v10 = ~v9 + a4;
+    v10 = ~item + section;
   }
 
   else
   {
-    v10 = v9;
+    v10 = item;
   }
 
   [(_UIActivityGroupViewFlowLayout *)self evaluatedItemSize];
@@ -596,31 +596,31 @@ LABEL_12:
   return v8;
 }
 
-- (id)adjustLayoutAttributesForDraggingIfNeeded:(id)a3
+- (id)adjustLayoutAttributesForDraggingIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self indexPathForDraggedItem];
-  v6 = [v4 indexPath];
-  v7 = [v5 isEqual:v6];
+  neededCopy = needed;
+  indexPathForDraggedItem = [(_UIActivityGroupViewFlowLayout *)self indexPathForDraggedItem];
+  indexPath = [neededCopy indexPath];
+  v7 = [indexPathForDraggedItem isEqual:indexPath];
 
   if (v7)
   {
-    [v4 setHidden:1];
+    [neededCopy setHidden:1];
   }
 
-  return v4;
+  return neededCopy;
 }
 
-- (void)handleEditingGesture:(id)a3
+- (void)handleEditingGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v5 = [(_UIActivityGroupViewFlowLayout *)self indexPathForItemRecognizedByGesture:v4];
+    v5 = [(_UIActivityGroupViewFlowLayout *)self indexPathForItemRecognizedByGesture:gestureCopy];
     if (v5)
     {
-      v6 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-      [v4 locationInView:v6];
+      collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+      [gestureCopy locationInView:collectionView];
       v8 = v7;
       v10 = v9;
 
@@ -631,7 +631,7 @@ LABEL_12:
 
       [(_UIActivityGroupViewFlowLayout *)self setDraggingOffset:v8 - v13, v10 - v15];
       [(_UIActivityGroupViewFlowLayout *)self setIndexPathForDraggedItem:v5];
-      [(_UIActivityGroupViewFlowLayout *)self beginDraggingForGesture:v4];
+      [(_UIActivityGroupViewFlowLayout *)self beginDraggingForGesture:gestureCopy];
     }
 
     else
@@ -640,29 +640,29 @@ LABEL_12:
     }
   }
 
-  if ([v4 state] == 2)
+  if ([gestureCopy state] == 2)
   {
-    v16 = [(_UIActivityGroupViewFlowLayout *)self indexPathForItemRecognizedByGesture:v4];
-    v17 = [(_UIActivityGroupViewFlowLayout *)self indexPathForDraggedItem];
-    if (([v17 isEqual:v16] & 1) == 0)
+    v16 = [(_UIActivityGroupViewFlowLayout *)self indexPathForItemRecognizedByGesture:gestureCopy];
+    indexPathForDraggedItem = [(_UIActivityGroupViewFlowLayout *)self indexPathForDraggedItem];
+    if (([indexPathForDraggedItem isEqual:v16] & 1) == 0)
     {
-      v18 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-      v19 = [v18 delegate];
-      v20 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-      v21 = [v19 collectionView:v20 layout:self moveItemAtIndexPath:v17 toIndexPath:v16];
+      collectionView2 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+      delegate = [collectionView2 delegate];
+      collectionView3 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+      v21 = [delegate collectionView:collectionView3 layout:self moveItemAtIndexPath:indexPathForDraggedItem toIndexPath:v16];
 
       if (v21)
       {
-        v22 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+        collectionView4 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __55___UIActivityGroupViewFlowLayout_handleEditingGesture___block_invoke;
         v23[3] = &unk_1E71F9638;
         v23[4] = self;
-        v24 = v17;
+        v24 = indexPathForDraggedItem;
         v16 = v21;
         v25 = v16;
-        [v22 performBatchUpdates:v23 completion:&__block_literal_global_48];
+        [collectionView4 performBatchUpdates:v23 completion:&__block_literal_global_48];
       }
 
       else
@@ -671,30 +671,30 @@ LABEL_12:
       }
     }
 
-    [(_UIActivityGroupViewFlowLayout *)self updateDraggingViewForGesture:v4];
-    if ([(_UIActivityGroupViewFlowLayout *)self shouldCancelDraggingForGesture:v4])
+    [(_UIActivityGroupViewFlowLayout *)self updateDraggingViewForGesture:gestureCopy];
+    if ([(_UIActivityGroupViewFlowLayout *)self shouldCancelDraggingForGesture:gestureCopy])
     {
-      [v4 setState:4];
+      [gestureCopy setState:4];
     }
   }
 
-  if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
   {
-    [(_UIActivityGroupViewFlowLayout *)self cancelDraggingForGesture:v4];
+    [(_UIActivityGroupViewFlowLayout *)self cancelDraggingForGesture:gestureCopy];
   }
 }
 
-- (void)invalidateGroupViewLayoutAnimated:(BOOL)a3
+- (void)invalidateGroupViewLayoutAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
-    v4 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+    collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __68___UIActivityGroupViewFlowLayout_invalidateGroupViewLayoutAnimated___block_invoke;
     v5[3] = &unk_1E71F9510;
     v5[4] = self;
-    [v4 performBatchUpdates:v5 completion:0];
+    [collectionView performBatchUpdates:v5 completion:0];
   }
 
   else
@@ -706,8 +706,8 @@ LABEL_12:
 
 - (BOOL)shouldReverseLayoutDirection
 {
-  v3 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  if ([v3 _shouldReverseLayoutDirection])
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  if ([collectionView _shouldReverseLayoutDirection])
   {
     v4 = [(_UIActivityGroupViewFlowLayout *)self _wantsRightToLeftHorizontalMirroringIfNeeded]^ 1;
   }
@@ -720,15 +720,15 @@ LABEL_12:
   return v4;
 }
 
-- (id)draggingViewForItemAtIndexPath:(id)a3
+- (id)draggingViewForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  v6 = [v5 delegate];
-  v7 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  v8 = [v6 collectionView:v7 layout:self needsContainerViewForDraggingItemAtIndexPath:v4];
+  pathCopy = path;
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  collectionView2 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  v8 = [delegate collectionView:collectionView2 layout:self needsContainerViewForDraggingItemAtIndexPath:pathCopy];
 
-  v9 = [v5 cellForItemAtIndexPath:v4];
+  v9 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   [v9 bounds];
   [v9 convertRect:v8 toView:?];
@@ -736,17 +736,17 @@ LABEL_12:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v9 draggingView];
-  [v18 setFrame:{v11, v13, v15, v17}];
-  [v8 addSubview:v18];
+  draggingView = [v9 draggingView];
+  [draggingView setFrame:{v11, v13, v15, v17}];
+  [v8 addSubview:draggingView];
 
-  return v18;
+  return draggingView;
 }
 
-- (void)beginDraggingForGesture:(id)a3
+- (void)beginDraggingForGesture:(id)gesture
 {
-  v4 = [(_UIActivityGroupViewFlowLayout *)self indexPathForDraggedItem];
-  v5 = [(_UIActivityGroupViewFlowLayout *)self draggingViewForItemAtIndexPath:v4];
+  indexPathForDraggedItem = [(_UIActivityGroupViewFlowLayout *)self indexPathForDraggedItem];
+  v5 = [(_UIActivityGroupViewFlowLayout *)self draggingViewForItemAtIndexPath:indexPathForDraggedItem];
   [(_UIActivityGroupViewFlowLayout *)self setDraggingView:v5];
 
   v6 = MEMORY[0x1E69DD250];
@@ -760,13 +760,13 @@ LABEL_12:
   [(_UIActivityGroupViewFlowLayout *)self invalidateGroupViewLayoutAnimated:0];
 }
 
-- (void)updateDraggingViewForGesture:(id)a3
+- (void)updateDraggingViewForGesture:(id)gesture
 {
-  v4 = [(_UIActivityGroupViewFlowLayout *)self draggingView];
-  v16 = [v4 superview];
+  draggingView = [(_UIActivityGroupViewFlowLayout *)self draggingView];
+  superview = [draggingView superview];
 
-  v5 = [(_UIActivityGroupViewFlowLayout *)self editingGestureRecognizer];
-  [v5 locationInView:v16];
+  editingGestureRecognizer = [(_UIActivityGroupViewFlowLayout *)self editingGestureRecognizer];
+  [editingGestureRecognizer locationInView:superview];
   v7 = v6;
   v9 = v8;
 
@@ -774,18 +774,18 @@ LABEL_12:
   v11 = v7 - v10;
   [(_UIActivityGroupViewFlowLayout *)self draggingOffset];
   v13 = v9 - v12;
-  v14 = [(_UIActivityGroupViewFlowLayout *)self draggingView];
-  [v14 setCenter:{v11, v13}];
+  draggingView2 = [(_UIActivityGroupViewFlowLayout *)self draggingView];
+  [draggingView2 setCenter:{v11, v13}];
 
-  v15 = [(_UIActivityGroupViewFlowLayout *)self draggingView];
-  [v15 setMaskView:0];
+  draggingView3 = [(_UIActivityGroupViewFlowLayout *)self draggingView];
+  [draggingView3 setMaskView:0];
 }
 
-- (BOOL)shouldCancelDraggingForGesture:(id)a3
+- (BOOL)shouldCancelDraggingForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  [v5 bounds];
+  gestureCopy = gesture;
+  collectionView = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  [collectionView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -800,8 +800,8 @@ LABEL_12:
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
-  v18 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
-  [v4 locationInView:v18];
+  collectionView2 = [(_UIActivityGroupViewFlowLayout *)self collectionView];
+  [gestureCopy locationInView:collectionView2];
   v20 = v19;
   v22 = v21;
 
@@ -814,27 +814,27 @@ LABEL_12:
   return !CGRectContainsPoint(v27, v24);
 }
 
-- (void)cancelDraggingForGesture:(id)a3
+- (void)cancelDraggingForGesture:(id)gesture
 {
-  v4 = [(_UIActivityGroupViewFlowLayout *)self draggingView];
-  v5 = v4;
-  if (v4)
+  draggingView = [(_UIActivityGroupViewFlowLayout *)self draggingView];
+  v5 = draggingView;
+  if (draggingView)
   {
     v6 = MEMORY[0x1E69DD250];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __59___UIActivityGroupViewFlowLayout_cancelDraggingForGesture___block_invoke;
     v13[3] = &unk_1E71F91A0;
-    v14 = v4;
-    v15 = self;
+    v14 = draggingView;
+    selfCopy = self;
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __59___UIActivityGroupViewFlowLayout_cancelDraggingForGesture___block_invoke_2;
     v10 = &unk_1E71FA638;
-    v11 = self;
+    selfCopy2 = self;
     v12 = v14;
     [v6 animateWithDuration:132 delay:v13 options:&v7 animations:0.3 completion:0.0];
-    [(_UIActivityGroupViewFlowLayout *)self setDraggingView:0, v7, v8, v9, v10, v11];
+    [(_UIActivityGroupViewFlowLayout *)self setDraggingView:0, v7, v8, v9, v10, selfCopy2];
   }
 }
 

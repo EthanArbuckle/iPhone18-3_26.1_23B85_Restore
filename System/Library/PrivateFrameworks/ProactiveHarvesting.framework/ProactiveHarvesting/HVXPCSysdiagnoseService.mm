@@ -1,11 +1,11 @@
 @interface HVXPCSysdiagnoseService
 - (HVXPCSysdiagnoseService)init;
-- (id)sysdiagnoseStringWithError:(id *)a3;
+- (id)sysdiagnoseStringWithError:(id *)error;
 @end
 
 @implementation HVXPCSysdiagnoseService
 
-- (id)sysdiagnoseStringWithError:(id *)a3
+- (id)sysdiagnoseStringWithError:(id *)error
 {
   v5 = hv_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -26,19 +26,19 @@
   v14 = __Block_byref_object_copy__594;
   v15 = __Block_byref_object_dispose__595;
   v16 = 0;
-  v6 = [(HVXPCSysdiagnoseService *)self synchronousProxy];
+  synchronousProxy = [(HVXPCSysdiagnoseService *)self synchronousProxy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__HVXPCSysdiagnoseService_sysdiagnoseStringWithError___block_invoke;
   v10[3] = &unk_278968DE0;
   v10[4] = buf;
   v10[5] = &v11;
-  [v6 sysdiagnoseStringWithCompletion:v10];
+  [synchronousProxy sysdiagnoseStringWithCompletion:v10];
 
   v7 = *(v18 + 5);
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v12[5];
+    *error = v12[5];
     v7 = *(v18 + 5);
   }
 

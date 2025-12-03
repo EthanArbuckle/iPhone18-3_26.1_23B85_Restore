@@ -1,35 +1,35 @@
 @interface ATXMicroLocationVisitEvent
-- (ATXMicroLocationVisitEvent)initWithDomain:(id)a3 maxProbabilityMicroLocationIdentifier:(id)a4 maxProbability:(id)a5 probabilityVector:(id)a6 isStable:(BOOL)a7 numDevicesVector:(id)a8 timestamp:(id)a9;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXMicroLocationVisitEvent:(id)a3;
+- (ATXMicroLocationVisitEvent)initWithDomain:(id)domain maxProbabilityMicroLocationIdentifier:(id)identifier maxProbability:(id)probability probabilityVector:(id)vector isStable:(BOOL)stable numDevicesVector:(id)devicesVector timestamp:(id)timestamp;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXMicroLocationVisitEvent:(id)event;
 - (unint64_t)hash;
 @end
 
 @implementation ATXMicroLocationVisitEvent
 
-- (ATXMicroLocationVisitEvent)initWithDomain:(id)a3 maxProbabilityMicroLocationIdentifier:(id)a4 maxProbability:(id)a5 probabilityVector:(id)a6 isStable:(BOOL)a7 numDevicesVector:(id)a8 timestamp:(id)a9
+- (ATXMicroLocationVisitEvent)initWithDomain:(id)domain maxProbabilityMicroLocationIdentifier:(id)identifier maxProbability:(id)probability probabilityVector:(id)vector isStable:(BOOL)stable numDevicesVector:(id)devicesVector timestamp:(id)timestamp
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  probabilityCopy = probability;
+  vectorCopy = vector;
+  devicesVectorCopy = devicesVector;
+  timestampCopy = timestamp;
   v34.receiver = self;
   v34.super_class = ATXMicroLocationVisitEvent;
   v21 = [(ATXMicroLocationVisitEvent *)&v34 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [domainCopy copy];
     domain = v21->_domain;
     v21->_domain = v22;
 
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     maxProbabilityMicroLocationIdentifier = v21->_maxProbabilityMicroLocationIdentifier;
     v21->_maxProbabilityMicroLocationIdentifier = v24;
 
-    objc_storeStrong(&v21->_maxProbability, a5);
-    v26 = [v18 copy];
+    objc_storeStrong(&v21->_maxProbability, probability);
+    v26 = [vectorCopy copy];
     v27 = v26;
     v28 = MEMORY[0x277CBEBF8];
     if (v26)
@@ -44,8 +44,8 @@
 
     objc_storeStrong(&v21->_probabilityVector, v29);
 
-    v21->_isStable = a7;
-    v30 = [v19 copy];
+    v21->_isStable = stable;
+    v30 = [devicesVectorCopy copy];
     v31 = v30;
     if (v30)
     {
@@ -59,35 +59,35 @@
 
     objc_storeStrong(&v21->_numDevicesVector, v32);
 
-    objc_storeStrong(&v21->_timestamp, a9);
+    objc_storeStrong(&v21->_timestamp, timestamp);
   }
 
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXMicroLocationVisitEvent *)self isEqualToATXMicroLocationVisitEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXMicroLocationVisitEvent *)self isEqualToATXMicroLocationVisitEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXMicroLocationVisitEvent:(id)a3
+- (BOOL)isEqualToATXMicroLocationVisitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_domain;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == eventCopy[2])
   {
   }
 
@@ -103,7 +103,7 @@
 
   v8 = self->_maxProbabilityMicroLocationIdentifier;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == eventCopy[3])
   {
   }
 
@@ -119,7 +119,7 @@
 
   v11 = self->_maxProbability;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == eventCopy[4])
   {
   }
 
@@ -135,7 +135,7 @@
 
   v14 = self->_probabilityVector;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == eventCopy[5])
   {
   }
 
@@ -149,7 +149,7 @@
     }
   }
 
-  if (self->_isStable != *(v4 + 8))
+  if (self->_isStable != *(eventCopy + 8))
   {
 LABEL_20:
     v20 = 0;
@@ -158,7 +158,7 @@ LABEL_20:
 
   v17 = self->_numDevicesVector;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == eventCopy[6])
   {
   }
 
@@ -174,7 +174,7 @@ LABEL_20:
 
   v22 = self->_timestamp;
   v23 = v22;
-  if (v22 == v4[7])
+  if (v22 == eventCopy[7])
   {
     v20 = 1;
   }
@@ -190,24 +190,24 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXMicroLocationVisitEvent *)self domain];
-  v4 = [v3 hash];
+  domain = [(ATXMicroLocationVisitEvent *)self domain];
+  v4 = [domain hash];
 
-  v5 = [(ATXMicroLocationVisitEvent *)self maxProbabilityMicroLocationIdentifier];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  maxProbabilityMicroLocationIdentifier = [(ATXMicroLocationVisitEvent *)self maxProbabilityMicroLocationIdentifier];
+  v6 = [maxProbabilityMicroLocationIdentifier hash] - v4 + 32 * v4;
 
-  v7 = [(ATXMicroLocationVisitEvent *)self maxProbability];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  maxProbability = [(ATXMicroLocationVisitEvent *)self maxProbability];
+  v8 = [maxProbability hash] - v6 + 32 * v6;
 
-  v9 = [(ATXMicroLocationVisitEvent *)self probabilityVector];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  probabilityVector = [(ATXMicroLocationVisitEvent *)self probabilityVector];
+  v10 = [probabilityVector hash] - v8 + 32 * v8;
 
   v11 = 31 * v10 + [(ATXMicroLocationVisitEvent *)self isStable];
-  v12 = [(ATXMicroLocationVisitEvent *)self numDevicesVector];
-  v13 = [v12 hash] - v11 + 32 * v11;
+  numDevicesVector = [(ATXMicroLocationVisitEvent *)self numDevicesVector];
+  v13 = [numDevicesVector hash] - v11 + 32 * v11;
 
-  v14 = [(ATXMicroLocationVisitEvent *)self timestamp];
-  v15 = [v14 hash] - v13 + 32 * v13;
+  timestamp = [(ATXMicroLocationVisitEvent *)self timestamp];
+  v15 = [timestamp hash] - v13 + 32 * v13;
 
   return v15;
 }

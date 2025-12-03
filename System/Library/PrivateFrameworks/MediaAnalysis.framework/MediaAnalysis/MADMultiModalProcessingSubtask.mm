@@ -1,15 +1,15 @@
 @interface MADMultiModalProcessingSubtask
-+ (BOOL)prewarmRequest:(id)a3 error:(id *)a4;
-+ (id)subtaskForRequest:(id)a3 inputs:(id)a4;
-- (MADMultiModalProcessingSubtask)initWithRequest:(id)a3 inputs:(id)a4;
++ (BOOL)prewarmRequest:(id)request error:(id *)error;
++ (id)subtaskForRequest:(id)request inputs:(id)inputs;
+- (MADMultiModalProcessingSubtask)initWithRequest:(id)request inputs:(id)inputs;
 @end
 
 @implementation MADMultiModalProcessingSubtask
 
-+ (BOOL)prewarmRequest:(id)a3 error:(id *)a4
++ (BOOL)prewarmRequest:(id)request error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v5 = MEMORY[0x1E696ABC0];
     v6 = *MEMORY[0x1E696A768];
@@ -20,20 +20,20 @@
     v10 = [v7 stringWithFormat:@"Pre-warming not implemented for %@", v9, v13];
     v14[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a4 = [v5 errorWithDomain:v6 code:-4 userInfo:v11];
+    *error = [v5 errorWithDomain:v6 code:-4 userInfo:v11];
   }
 
   return 0;
 }
 
-+ (id)subtaskForRequest:(id)a3 inputs:(id)a4
++ (id)subtaskForRequest:(id)request inputs:(id)inputs
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  inputsCopy = inputs;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithRequest:v5 inputs:v6];
+    v7 = [objc_alloc(objc_opt_class()) initWithRequest:requestCopy inputs:inputsCopy];
   }
 
   else
@@ -53,18 +53,18 @@
   return v7;
 }
 
-- (MADMultiModalProcessingSubtask)initWithRequest:(id)a3 inputs:(id)a4
+- (MADMultiModalProcessingSubtask)initWithRequest:(id)request inputs:(id)inputs
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  inputsCopy = inputs;
   v12.receiver = self;
   v12.super_class = MADMultiModalProcessingSubtask;
   v9 = [(MADMultiModalProcessingSubtask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_inputs, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_inputs, inputs);
   }
 
   return v10;

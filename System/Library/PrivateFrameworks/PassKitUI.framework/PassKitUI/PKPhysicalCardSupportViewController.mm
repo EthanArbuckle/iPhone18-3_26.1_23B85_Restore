@@ -1,42 +1,42 @@
 @interface PKPhysicalCardSupportViewController
-- (PKPhysicalCardSupportViewController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 paymentPass:(id)a6 physicalCard:(id)a7;
+- (PKPhysicalCardSupportViewController)initWithAccountService:(id)service account:(id)account accountUser:(id)user paymentPass:(id)pass physicalCard:(id)card;
 - (id)contactIssuerHelper;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_nextButtonTapped:(id)a3;
-- (void)_presentBusinessChatWithContext:(id)a3;
-- (void)_presentCallSupportWithSourceItem:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_nextButtonTapped:(id)tapped;
+- (void)_presentBusinessChatWithContext:(id)context;
+- (void)_presentCallSupportWithSourceItem:(id)item;
 - (void)_presentManualActivation;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPhysicalCardSupportViewController
 
-- (PKPhysicalCardSupportViewController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 paymentPass:(id)a6 physicalCard:(id)a7
+- (PKPhysicalCardSupportViewController)initWithAccountService:(id)service account:(id)account accountUser:(id)user paymentPass:(id)pass physicalCard:(id)card
 {
-  v13 = a3;
-  v25 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  userCopy = user;
+  passCopy = pass;
+  cardCopy = card;
   v26.receiver = self;
   v26.super_class = PKPhysicalCardSupportViewController;
   v17 = [(PKPhysicalCardSupportViewController *)&v26 initWithStyle:1];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_accountService, a3);
-    objc_storeStrong(&v18->_account, a4);
-    objc_storeStrong(&v18->_accountUser, a5);
-    objc_storeStrong(&v18->_paymentPass, a6);
-    objc_storeStrong(&v18->_physicalCard, a7);
-    v19 = [(PKPhysicalCardSupportViewController *)v18 navigationItem];
+    objc_storeStrong(&v17->_accountService, service);
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v18->_accountUser, user);
+    objc_storeStrong(&v18->_paymentPass, pass);
+    objc_storeStrong(&v18->_physicalCard, card);
+    navigationItem = [(PKPhysicalCardSupportViewController *)v18 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v19 pkui_setupScrollEdgeChromelessAppearance];
-      [v19 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
     v20 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -46,7 +46,7 @@
     v18->_nextButton = v22;
 
     [(UIBarButtonItem *)v18->_nextButton setEnabled:0];
-    [v19 setRightBarButtonItem:v18->_nextButton];
+    [navigationItem setRightBarButtonItem:v18->_nextButton];
   }
 
   return v18;
@@ -65,26 +65,26 @@
   tableHeaderView = self->_tableHeaderView;
   self->_tableHeaderView = v6;
 
-  v8 = [(PKTableHeaderView *)self->_tableHeaderView titleLabel];
-  [v8 setText:v3];
+  titleLabel = [(PKTableHeaderView *)self->_tableHeaderView titleLabel];
+  [titleLabel setText:v3];
 
-  v9 = [(PKTableHeaderView *)self->_tableHeaderView subtitleLabel];
-  [v9 setText:v4];
+  subtitleLabel = [(PKTableHeaderView *)self->_tableHeaderView subtitleLabel];
+  [subtitleLabel setText:v4];
 
   [(PKTableHeaderView *)self->_tableHeaderView setTopPadding:5.0];
   v10 = self->_tableHeaderView;
-  v11 = [(PKPhysicalCardSupportViewController *)self tableView];
-  [v11 bounds];
+  tableView = [(PKPhysicalCardSupportViewController *)self tableView];
+  [tableView bounds];
   [(PKTableHeaderView *)v10 sizeThatFits:CGRectGetWidth(v19), 3.40282347e38];
   v13 = v12;
   v15 = v14;
 
   [(PKTableHeaderView *)self->_tableHeaderView setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v13, v15];
-  v16 = [(PKPhysicalCardSupportViewController *)self tableView];
-  [v16 registerClass:objc_opt_class() forCellReuseIdentifier:@"PhysicalCardSupportReuseIdentifier"];
-  [v16 setTableHeaderView:self->_tableHeaderView];
-  v17 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [v16 setBackgroundColor:v17];
+  tableView2 = [(PKPhysicalCardSupportViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"PhysicalCardSupportReuseIdentifier"];
+  [tableView2 setTableHeaderView:self->_tableHeaderView];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [tableView2 setBackgroundColor:systemGroupedBackgroundColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -94,50 +94,50 @@
   [(PKPhysicalCardSupportViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKPhysicalCardSupportViewController *)self tableView];
-    v4 = [(PKPhysicalCardSupportViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKPhysicalCardSupportViewController *)self tableView];
+    navigationItem = [(PKPhysicalCardSupportViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKPhysicalCardSupportViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKPhysicalCardSupportViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a3;
+  viewCopy = view;
   if (self->_hasSelectedReason)
   {
     v6 = MEMORY[0x1E696AC88];
     selectedReason = self->_selectedReason;
-    v8 = a4;
+    pathCopy = path;
     v9 = [v6 indexPathForRow:selectedReason inSection:0];
-    v10 = [v14 cellForRowAtIndexPath:v9];
+    v10 = [viewCopy cellForRowAtIndexPath:v9];
     [v10 setAccessoryType:0];
   }
 
   else
   {
     nextButton = self->_nextButton;
-    v12 = a4;
+    pathCopy2 = path;
     [(UIBarButtonItem *)nextButton setEnabled:1];
   }
 
   self->_hasSelectedReason = 1;
-  self->_selectedReason = [a4 row];
-  v13 = [v14 cellForRowAtIndexPath:a4];
+  self->_selectedReason = [path row];
+  v13 = [viewCopy cellForRowAtIndexPath:path];
   [v13 setAccessoryType:3];
-  [v14 deselectRowAtIndexPath:a4 animated:1];
+  [viewCopy deselectRowAtIndexPath:path animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PhysicalCardSupportReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PhysicalCardSupportReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
 
   if (v8 > 2)
   {
@@ -169,23 +169,23 @@
   }
 
   [v7 setAccessoryType:v10];
-  v11 = [v7 textLabel];
-  [v11 setText:v9];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v9];
 
   [v7 setSeparatorInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v7;
 }
 
-- (void)_nextButtonTapped:(id)a3
+- (void)_nextButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (self->_hasSelectedReason)
   {
     selectedReason = self->_selectedReason;
     if (selectedReason == 2)
     {
-      v10 = v4;
+      v10 = tappedCopy;
       if (+[PKBusinessChatController deviceSupportsBusinessChat])
       {
         v6 = [PKBusinessChatPhysicalCardContext alloc];
@@ -204,12 +204,12 @@
           goto LABEL_13;
         }
 
-        v10 = v4;
+        v10 = tappedCopy;
         [(PKPhysicalCardSupportViewController *)self _presentManualActivation];
         goto LABEL_12;
       }
 
-      v10 = v4;
+      v10 = tappedCopy;
       if (+[PKBusinessChatController deviceSupportsBusinessChat])
       {
         v6 = [PKBusinessChatPhysicalCardContext alloc];
@@ -220,7 +220,7 @@ LABEL_10:
         [(PKPhysicalCardSupportViewController *)self _presentBusinessChatWithContext:v9];
 
 LABEL_12:
-        v4 = v10;
+        tappedCopy = v10;
         goto LABEL_13;
       }
     }
@@ -232,9 +232,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_presentBusinessChatWithContext:(id)a3
+- (void)_presentBusinessChatWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   businessChatController = self->_businessChatController;
   if (!businessChatController)
   {
@@ -250,7 +250,7 @@ LABEL_13:
   v8[2] = __71__PKPhysicalCardSupportViewController__presentBusinessChatWithContext___block_invoke;
   v8[3] = &unk_1E8013908;
   v8[4] = self;
-  [(PKBusinessChatController *)businessChatController openBusinessChatWithContext:v4 completion:v8];
+  [(PKBusinessChatController *)businessChatController openBusinessChatWithContext:contextCopy completion:v8];
 }
 
 void __71__PKPhysicalCardSupportViewController__presentBusinessChatWithContext___block_invoke(uint64_t a1, void *a2)
@@ -287,15 +287,15 @@ void __71__PKPhysicalCardSupportViewController__presentBusinessChatWithContext__
 - (void)_presentManualActivation
 {
   v4 = [[PKPhysicalCardManualActivationViewController alloc] initWithAccountService:self->_accountService account:self->_account accountUser:self->_accountUser paymentPass:self->_paymentPass physicalCard:self->_physicalCard activationCode:0];
-  v3 = [(PKPhysicalCardSupportViewController *)self navigationController];
-  [v3 pushViewController:v4 animated:1];
+  navigationController = [(PKPhysicalCardSupportViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
-- (void)_presentCallSupportWithSourceItem:(id)a3
+- (void)_presentCallSupportWithSourceItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKPhysicalCardSupportViewController *)self contactIssuerHelper];
-  [v5 presentContactViewController:1 sourceItem:v4];
+  itemCopy = item;
+  contactIssuerHelper = [(PKPhysicalCardSupportViewController *)self contactIssuerHelper];
+  [contactIssuerHelper presentContactViewController:1 sourceItem:itemCopy];
 }
 
 - (id)contactIssuerHelper

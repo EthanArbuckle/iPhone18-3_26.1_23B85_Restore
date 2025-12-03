@@ -1,21 +1,21 @@
 @interface SSRAssetManager
 + (id)sharedManager;
 + (id)sharedManagerOnDeviceCompilationDisable;
-- (SSRAssetManager)initWithOnDeviceCompilationDisable:(BOOL)a3;
+- (SSRAssetManager)initWithOnDeviceCompilationDisable:(BOOL)disable;
 - (SSRAssetManagerDelegate)delegate;
-- (float)_convertVersionStringToFloat:(id)a3;
-- (id)_allInstalledSpeakerRecognitionAssetsForLanguage:(id)a3;
-- (id)_compileAssets:(id)a3;
-- (id)_getSSRAssetFromMAProviderWithLanguage:(id)a3;
+- (float)_convertVersionStringToFloat:(id)float;
+- (id)_allInstalledSpeakerRecognitionAssetsForLanguage:(id)language;
+- (id)_compileAssets:(id)assets;
+- (id)_getSSRAssetFromMAProviderWithLanguage:(id)language;
 - (id)_getSpeakerRecognitionOverrideAsset;
-- (id)allInstalledAssetsOfType:(unint64_t)a3 forLanguage:(id)a4;
-- (id)allInstalledSpeakerRecognitionAssetsForLanguage:(id)a3;
-- (id)installedAssetOfType:(unint64_t)a3 forLanguage:(id)a4;
-- (id)installedSpeakerRecognitionAssetForLanguage:(id)a3;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
+- (id)allInstalledAssetsOfType:(unint64_t)type forLanguage:(id)language;
+- (id)allInstalledSpeakerRecognitionAssetsForLanguage:(id)language;
+- (id)installedAssetOfType:(unint64_t)type forLanguage:(id)language;
+- (id)installedSpeakerRecognitionAssetForLanguage:(id)language;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
 - (void)_loadUAFAssetsIfNecessary;
 - (void)dealloc;
-- (void)getSpeakerRecognitionAssetWithLanguage:(id)a3 completion:(id)a4;
+- (void)getSpeakerRecognitionAssetWithLanguage:(id)language completion:(id)completion;
 - (void)releaseAssetsLocksIfNecessary;
 - (void)start;
 @end
@@ -29,7 +29,7 @@
   return WeakRetained;
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -53,12 +53,12 @@ uint64_t __77__SSRAssetManager_CSLanguageCodeUpdateMonitor_didReceiveLanguageCod
   return [v5 _compileCurrentInstalledAssets:v6];
 }
 
-- (float)_convertVersionStringToFloat:(id)a3
+- (float)_convertVersionStringToFloat:(id)float
 {
   v8 = 0.0;
   v3 = MEMORY[0x277CCAC80];
-  v4 = [a3 configVersion];
-  v5 = [v3 scannerWithString:v4];
+  configVersion = [float configVersion];
+  v5 = [v3 scannerWithString:configVersion];
 
   [v5 scanFloat:&v8];
   v6 = v8;
@@ -66,18 +66,18 @@ uint64_t __77__SSRAssetManager_CSLanguageCodeUpdateMonitor_didReceiveLanguageCod
   return v6;
 }
 
-- (id)_compileAssets:(id)a3
+- (id)_compileAssets:(id)assets
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_onDeviceCompilationHandler)
+  assetsCopy = assets;
+  v5 = assetsCopy;
+  if (assetsCopy && self->_onDeviceCompilationHandler)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v25 objects:v37 count:16];
+    v6 = [assetsCopy countByEnumeratingWithState:&v25 objects:v37 count:16];
     if (v6)
     {
       v8 = v6;
@@ -99,9 +99,9 @@ uint64_t __77__SSRAssetManager_CSLanguageCodeUpdateMonitor_didReceiveLanguageCod
           if ((![v13 assetType] || objc_msgSend(v13, "assetType") == 3) && (-[NSMutableSet containsObject:](self->_compiledAssets, "containsObject:", v13) & 1) == 0)
           {
             onDeviceCompilationHandler = self->_onDeviceCompilationHandler;
-            v15 = [v13 assetType];
+            assetType = [v13 assetType];
             v24 = v9;
-            [(CSOnDeviceCompilationHandler *)onDeviceCompilationHandler compileAndUpdateDeviceCachesWithAsset:v13 assetType:v15 endpointId:0 errOut:&v24];
+            [(CSOnDeviceCompilationHandler *)onDeviceCompilationHandler compileAndUpdateDeviceCachesWithAsset:v13 assetType:assetType endpointId:0 errOut:&v24];
             v16 = v24;
 
             if (v16)
@@ -156,21 +156,21 @@ uint64_t __77__SSRAssetManager_CSLanguageCodeUpdateMonitor_didReceiveLanguageCod
   return v9;
 }
 
-- (id)_allInstalledSpeakerRecognitionAssetsForLanguage:(id)a3
+- (id)_allInstalledSpeakerRecognitionAssetsForLanguage:(id)language
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SSRAssetManager *)self _getSpeakerRecognitionOverrideAsset];
-  v6 = v5;
-  if (v5)
+  languageCopy = language;
+  _getSpeakerRecognitionOverrideAsset = [(SSRAssetManager *)self _getSpeakerRecognitionOverrideAsset];
+  v6 = _getSpeakerRecognitionOverrideAsset;
+  if (_getSpeakerRecognitionOverrideAsset)
   {
-    v12[0] = v5;
+    v12[0] = _getSpeakerRecognitionOverrideAsset;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   }
 
   else
   {
-    v7 = [(SSRAssetProviding *)self->_mobileAssetProvider allInstalledSpeakerRecognitionAssetForLanguage:v4];
+    v7 = [(SSRAssetProviding *)self->_mobileAssetProvider allInstalledSpeakerRecognitionAssetForLanguage:languageCopy];
   }
 
   v8 = v7;
@@ -184,23 +184,23 @@ uint64_t __77__SSRAssetManager_CSLanguageCodeUpdateMonitor_didReceiveLanguageCod
 - (id)_getSpeakerRecognitionOverrideAsset
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 fakeSpeakerRecognitionAssetPath];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  fakeSpeakerRecognitionAssetPath = [mEMORY[0x277D01788] fakeSpeakerRecognitionAssetPath];
 
-  if (v3 && ([MEMORY[0x277CCAA00] defaultManager], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "fileExistsAtPath:", v3), v4, v5))
+  if (fakeSpeakerRecognitionAssetPath && ([MEMORY[0x277CCAA00] defaultManager], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "fileExistsAtPath:", fakeSpeakerRecognitionAssetPath), v4, v5))
   {
-    v6 = [v3 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [fakeSpeakerRecognitionAssetPath stringByDeletingLastPathComponent];
     v7 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315394;
       v12 = "[SSRAssetManager _getSpeakerRecognitionOverrideAsset]";
       v13 = 2112;
-      v14 = v6;
+      v14 = stringByDeletingLastPathComponent;
       _os_log_impl(&dword_225E12000, v7, OS_LOG_TYPE_DEFAULT, "%s Returning the speakerRecognition override asset： %@", &v11, 0x16u);
     }
 
-    v8 = [MEMORY[0x277D015F8] assetForAssetType:3 resourcePath:v6 configVersion:@"override-asset" assetProvider:0];
+    v8 = [MEMORY[0x277D015F8] assetForAssetType:3 resourcePath:stringByDeletingLastPathComponent configVersion:@"override-asset" assetProvider:0];
   }
 
   else
@@ -213,16 +213,16 @@ uint64_t __77__SSRAssetManager_CSLanguageCodeUpdateMonitor_didReceiveLanguageCod
   return v8;
 }
 
-- (id)_getSSRAssetFromMAProviderWithLanguage:(id)a3
+- (id)_getSSRAssetFromMAProviderWithLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(SSRAssetManager *)self _getSpeakerRecognitionOverrideAsset];
-  if (!v5)
+  languageCopy = language;
+  _getSpeakerRecognitionOverrideAsset = [(SSRAssetManager *)self _getSpeakerRecognitionOverrideAsset];
+  if (!_getSpeakerRecognitionOverrideAsset)
   {
-    v5 = [(SSRAssetProviding *)self->_mobileAssetProvider installedSpeakerRecognitionAssetForLanguage:v4];
+    _getSpeakerRecognitionOverrideAsset = [(SSRAssetProviding *)self->_mobileAssetProvider installedSpeakerRecognitionAssetForLanguage:languageCopy];
   }
 
-  return v5;
+  return _getSpeakerRecognitionOverrideAsset;
 }
 
 - (void)releaseAssetsLocksIfNecessary
@@ -275,23 +275,23 @@ void __48__SSRAssetManager_releaseAssetsLocksIfNecessary__block_invoke(uint64_t 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allInstalledAssetsOfType:(unint64_t)a3 forLanguage:(id)a4
+- (id)allInstalledAssetsOfType:(unint64_t)type forLanguage:(id)language
 {
-  v6 = a4;
+  languageCopy = language;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__7501;
   v24 = __Block_byref_object_dispose__7502;
-  v25 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __56__SSRAssetManager_allInstalledAssetsOfType_forLanguage___block_invoke;
   v15 = &unk_278579268;
-  v16 = self;
-  v19 = a3;
-  v8 = v6;
+  selfCopy = self;
+  typeCopy = type;
+  v8 = languageCopy;
   v17 = v8;
   v18 = &v20;
   dispatch_sync(queue, &v12);
@@ -399,9 +399,9 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allInstalledSpeakerRecognitionAssetsForLanguage:(id)a3
+- (id)allInstalledSpeakerRecognitionAssetsForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -413,10 +413,10 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __67__SSRAssetManager_allInstalledSpeakerRecognitionAssetsForLanguage___block_invoke;
   block[3] = &unk_278579530;
-  v10 = v4;
+  v10 = languageCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = languageCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -435,9 +435,9 @@ uint64_t __67__SSRAssetManager_allInstalledSpeakerRecognitionAssetsForLanguage__
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)installedSpeakerRecognitionAssetForLanguage:(id)a3
+- (id)installedSpeakerRecognitionAssetForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -449,10 +449,10 @@ uint64_t __67__SSRAssetManager_allInstalledSpeakerRecognitionAssetsForLanguage__
   block[1] = 3221225472;
   block[2] = __63__SSRAssetManager_installedSpeakerRecognitionAssetForLanguage___block_invoke;
   block[3] = &unk_278579530;
-  v10 = v4;
+  v10 = languageCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = languageCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -481,20 +481,20 @@ void __63__SSRAssetManager_installedSpeakerRecognitionAssetForLanguage___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSpeakerRecognitionAssetWithLanguage:(id)a3 completion:(id)a4
+- (void)getSpeakerRecognitionAssetWithLanguage:(id)language completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__SSRAssetManager_getSpeakerRecognitionAssetWithLanguage_completion___block_invoke;
   block[3] = &unk_278579218;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = languageCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = languageCopy;
   dispatch_async(queue, block);
 }
 
@@ -530,9 +530,9 @@ void __69__SSRAssetManager_getSpeakerRecognitionAssetWithLanguage_completion___b
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)installedAssetOfType:(unint64_t)a3 forLanguage:(id)a4
+- (id)installedAssetOfType:(unint64_t)type forLanguage:(id)language
 {
-  v6 = a4;
+  languageCopy = language;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -545,10 +545,10 @@ void __69__SSRAssetManager_getSpeakerRecognitionAssetWithLanguage_completion___b
   v11[2] = __52__SSRAssetManager_installedAssetOfType_forLanguage___block_invoke;
   v11[3] = &unk_278579268;
   v13 = &v15;
-  v14 = a3;
+  typeCopy = type;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = languageCopy;
+  v8 = languageCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -633,7 +633,7 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRAssetManager)initWithOnDeviceCompilationDisable:(BOOL)a3
+- (SSRAssetManager)initWithOnDeviceCompilationDisable:(BOOL)disable
 {
   v28 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
@@ -686,11 +686,11 @@ LABEL_10:
     onDeviceCompilationHandler = v4->_onDeviceCompilationHandler;
     v4->_onDeviceCompilationHandler = 0;
 
-    if (!a3)
+    if (!disable)
     {
-      v19 = [MEMORY[0x277D01800] sharedHandler];
+      mEMORY[0x277D01800] = [MEMORY[0x277D01800] sharedHandler];
       v20 = v4->_onDeviceCompilationHandler;
-      v4->_onDeviceCompilationHandler = v19;
+      v4->_onDeviceCompilationHandler = mEMORY[0x277D01800];
     }
 
     [(SSRAssetManager *)v4 start];
@@ -715,8 +715,8 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D017D8] sharedInstance];
-  [v3 removeObserver:self];
+  mEMORY[0x277D017D8] = [MEMORY[0x277D017D8] sharedInstance];
+  [mEMORY[0x277D017D8] removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SSRAssetManager;
@@ -725,8 +725,8 @@ LABEL_14:
 
 - (void)start
 {
-  v3 = [MEMORY[0x277D017D8] sharedInstance];
-  [v3 addObserver:self];
+  mEMORY[0x277D017D8] = [MEMORY[0x277D017D8] sharedInstance];
+  [mEMORY[0x277D017D8] addObserver:self];
 }
 
 + (id)sharedManagerOnDeviceCompilationDisable

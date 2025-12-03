@@ -1,19 +1,19 @@
 @interface TSKHorizontalDragRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TSKHorizontalDragRecognizer
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 view];
-    if (v5 == [(TSKHorizontalDragRecognizer *)self containingScrollView]&& [(TSKHorizontalDragRecognizer *)self state]!= 5)
+    view = [recognizer view];
+    if (view == [(TSKHorizontalDragRecognizer *)self containingScrollView]&& [(TSKHorizontalDragRecognizer *)self state]!= 5)
     {
       return 0;
     }
@@ -21,14 +21,14 @@
 
   v7.receiver = self;
   v7.super_class = TSKHorizontalDragRecognizer;
-  return [(TSKHorizontalDragRecognizer *)&v7 canBePreventedByGestureRecognizer:a3];
+  return [(TSKHorizontalDragRecognizer *)&v7 canBePreventedByGestureRecognizer:recognizer];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([a3 count] < 2)
+  if ([began count] < 2)
   {
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(began "anyObject")];
     self->mStartPoint.x = v6;
     self->mStartPoint.y = v7;
   }
@@ -40,9 +40,9 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [objc_msgSend(a3 "anyObject")];
+  [objc_msgSend(moved "anyObject")];
   v6 = v5;
   v8 = v7;
   if ([(TSKHorizontalDragRecognizer *)self state]|| vabdd_f64(v8, self->mStartPoint.y) <= 15.0)
@@ -54,29 +54,29 @@
         return;
       }
 
-      v9 = self;
+      selfCopy3 = self;
       v10 = 2;
     }
 
     else
     {
-      v9 = self;
+      selfCopy3 = self;
       v10 = 1;
     }
   }
 
   else
   {
-    v9 = self;
+    selfCopy3 = self;
     v10 = 5;
   }
 
-  [(TSKHorizontalDragRecognizer *)v9 setState:v10];
+  [(TSKHorizontalDragRecognizer *)selfCopy3 setState:v10];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(TSKHorizontalDragRecognizer *)self state:a3]== 2)
+  if ([(TSKHorizontalDragRecognizer *)self state:ended]== 2)
   {
     v5 = 3;
   }

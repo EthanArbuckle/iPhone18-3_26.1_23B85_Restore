@@ -51,8 +51,8 @@
       _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "IDSDatagramChannel hbhHalfThePackets: %@", buf, 0xCu);
     }
 
-    v7 = [MEMORY[0x1E69A60F0] sharedInstance];
-    [v7 isInternalInstall];
+    mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+    [mEMORY[0x1E69A60F0] isInternalInstall];
     v2->_shouldUsePacketLog = IMGetDomainBoolForKeyWithDefaultValue();
 
     v8 = +[IDSTransportLog IDSDataChannels];

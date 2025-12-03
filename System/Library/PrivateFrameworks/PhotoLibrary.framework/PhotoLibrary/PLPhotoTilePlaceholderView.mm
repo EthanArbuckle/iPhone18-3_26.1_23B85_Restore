@@ -1,7 +1,7 @@
 @interface PLPhotoTilePlaceholderView
-- (PLPhotoTilePlaceholderView)initWithFrame:(CGRect)a3;
+- (PLPhotoTilePlaceholderView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)a3;
+- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)superview;
 - (void)layoutSubviews;
 - (void)showLoadingIndicatorWhenReady;
 @end
@@ -68,11 +68,11 @@ uint64_t __59__PLPhotoTilePlaceholderView_showLoadingIndicatorWhenReady__block_i
   return result;
 }
 
-- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)a3
+- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)superview
 {
-  v3 = a3;
+  superviewCopy = superview;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  if (v3)
+  if (superviewCopy)
   {
     v6 = v5 - self->_lastViewPhaseChangeDate;
     v7 = 0.3 - v6;
@@ -110,11 +110,11 @@ uint64_t __59__PLPhotoTilePlaceholderView_showLoadingIndicatorWhenReady__block_i
   [(PLPhotoTilePlaceholderView *)&v3 dealloc];
 }
 
-- (PLPhotoTilePlaceholderView)initWithFrame:(CGRect)a3
+- (PLPhotoTilePlaceholderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PLPhotoTilePlaceholderView;
-  v3 = [(PLPhotoTilePlaceholderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLPhotoTilePlaceholderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];

@@ -1,25 +1,25 @@
 @interface HUMatterConnectedEcosystemDetailItemProvider
-- (HUMatterConnectedEcosystemDetailItemProvider)initWithConnectedEcosystem:(id)a3 connectedEcosystemItemProvider:(id)a4 home:(id)a5;
+- (HUMatterConnectedEcosystemDetailItemProvider)initWithConnectedEcosystem:(id)ecosystem connectedEcosystemItemProvider:(id)provider home:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HUMatterConnectedEcosystemDetailItemProvider
 
-- (HUMatterConnectedEcosystemDetailItemProvider)initWithConnectedEcosystem:(id)a3 connectedEcosystemItemProvider:(id)a4 home:(id)a5
+- (HUMatterConnectedEcosystemDetailItemProvider)initWithConnectedEcosystem:(id)ecosystem connectedEcosystemItemProvider:(id)provider home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  ecosystemCopy = ecosystem;
+  providerCopy = provider;
+  homeCopy = home;
   v17.receiver = self;
   v17.super_class = HUMatterConnectedEcosystemDetailItemProvider;
   v12 = [(HFItemProvider *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_home, a5);
-    objc_storeStrong(&v13->_connectedEcosystem, a3);
-    objc_storeStrong(&v13->_connectedEcosystemItemProvider, a4);
+    objc_storeStrong(&v12->_home, home);
+    objc_storeStrong(&v13->_connectedEcosystem, ecosystem);
+    objc_storeStrong(&v13->_connectedEcosystemItemProvider, provider);
     v14 = [MEMORY[0x277CBEB58] set];
     allItems = v13->_allItems;
     v13->_allItems = v14;
@@ -37,14 +37,14 @@
   aBlock[3] = &unk_277DB7F08;
   objc_copyWeak(&v15, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HUMatterConnectedEcosystemDetailItemProvider *)self connectedEcosystemItemProvider];
-  v5 = [v4 reloadItems];
+  connectedEcosystemItemProvider = [(HUMatterConnectedEcosystemDetailItemProvider *)self connectedEcosystemItemProvider];
+  reloadItems = [connectedEcosystemItemProvider reloadItems];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__HUMatterConnectedEcosystemDetailItemProvider_reloadItems__block_invoke_2;
   v13[3] = &unk_277DB7F80;
   v13[4] = self;
-  v6 = [v5 flatMap:v13];
+  v6 = [reloadItems flatMap:v13];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -157,12 +157,12 @@ id __59__HUMatterConnectedEcosystemDetailItemProvider_reloadItems__block_invoke_
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUMatterConnectedEcosystemDetailItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B48];
   v8[0] = *MEMORY[0x277D13B28];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

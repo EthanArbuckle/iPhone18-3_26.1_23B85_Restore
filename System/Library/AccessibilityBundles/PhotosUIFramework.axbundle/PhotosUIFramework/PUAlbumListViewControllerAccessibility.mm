@@ -1,39 +1,39 @@
 @interface PUAlbumListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAddCustomContentTypeToCell:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (void)_axAddCustomContentTypeToCell:(id)cell inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PUAlbumListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUAlbumListCell"];
-  [v3 validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"_mainCollectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListCell" hasInstanceMethod:@"albumListCellContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"collectionView: cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"indexPathForPlacesAlbum" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"indexPathForPeopleAlbum" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"isPlaceholderAtIndexPath:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"collectionAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUAlbumListCell"];
+  [validationsCopy validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"_mainCollectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListCell" hasInstanceMethod:@"albumListCellContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"collectionView: cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"indexPathForPlacesAlbum" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"indexPathForPeopleAlbum" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"isPlaceholderAtIndexPath:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"PUAlbumListViewController" hasInstanceMethod:@"collectionAtIndexPath:" withFullSignature:{"@", "@", 0}];
 }
 
-- (void)_axAddCustomContentTypeToCell:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (void)_axAddCustomContentTypeToCell:(id)cell inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cellCopy = cell;
+  viewCopy = view;
+  pathCopy = path;
   NSClassFromString(&cfstr_Pualbumlistcel_2.isa);
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v11 = [v8 safeValueForKey:@"albumListCellContentView"];
+    v11 = [cellCopy safeValueForKey:@"albumListCellContentView"];
     v12 = __UIAccessibilityCastAsSafeCategory();
 
-    v13 = [(PUAlbumListViewControllerAccessibility *)self indexPathForPeopleAlbum];
-    v14 = [v10 isEqual:v13];
+    indexPathForPeopleAlbum = [(PUAlbumListViewControllerAccessibility *)self indexPathForPeopleAlbum];
+    v14 = [pathCopy isEqual:indexPathForPeopleAlbum];
 
     if (v14)
     {
@@ -44,8 +44,8 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v16 = [(PUAlbumListViewControllerAccessibility *)self indexPathForPlacesAlbum];
-    v17 = [v10 isEqual:v16];
+    indexPathForPlacesAlbum = [(PUAlbumListViewControllerAccessibility *)self indexPathForPlacesAlbum];
+    v17 = [pathCopy isEqual:indexPathForPlacesAlbum];
 
     if (v17)
     {
@@ -53,20 +53,20 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if (([(PUAlbumListViewControllerAccessibility *)self isPlaceholderAtIndexPath:v10]& 1) != 0)
+    if (([(PUAlbumListViewControllerAccessibility *)self isPlaceholderAtIndexPath:pathCopy]& 1) != 0)
     {
       v15 = 0;
       goto LABEL_17;
     }
 
-    v18 = [(PUAlbumListViewControllerAccessibility *)self collectionAtIndexPath:v10];
+    v18 = [(PUAlbumListViewControllerAccessibility *)self collectionAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v18 assetCollectionSubtype];
-      if ((v19 - 202) < 0xA)
+      assetCollectionSubtype = [v18 assetCollectionSubtype];
+      if ((assetCollectionSubtype - 202) < 0xA)
       {
-        v15 = off_29F2E82B0[v19 - 202];
+        v15 = off_29F2E82B0[assetCollectionSubtype - 202];
 LABEL_16:
 
         goto LABEL_17;
@@ -110,12 +110,12 @@ LABEL_18:
   v3 = [(PUAlbumListViewControllerAccessibility *)self safeValueForKey:@"_mainCollectionView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 indexPathsForVisibleItems];
+  indexPathsForVisibleItems = [v4 indexPathsForVisibleItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -126,7 +126,7 @@ LABEL_18:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -134,7 +134,7 @@ LABEL_18:
         [(PUAlbumListViewControllerAccessibility *)self _axAddCustomContentTypeToCell:v11 inCollectionView:v4 atIndexPath:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
@@ -143,14 +143,14 @@ LABEL_18:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = PUAlbumListViewControllerAccessibility;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUAlbumListViewControllerAccessibility *)&v10 collectionView:v7 cellForItemAtIndexPath:v6];
-  [(PUAlbumListViewControllerAccessibility *)self _axAddCustomContentTypeToCell:v8 inCollectionView:v7 atIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PUAlbumListViewControllerAccessibility *)&v10 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
+  [(PUAlbumListViewControllerAccessibility *)self _axAddCustomContentTypeToCell:v8 inCollectionView:viewCopy atIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   return v8;
 }

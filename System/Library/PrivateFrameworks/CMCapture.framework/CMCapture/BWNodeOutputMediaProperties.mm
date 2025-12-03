@@ -9,13 +9,13 @@
 - (BWVideoFormat)resolvedVideoFormat;
 - (void)_makePreparedDataBufferPoolLiveLocked;
 - (void)_makePreparedPixelBufferPoolLiveLocked;
-- (void)_setOwningNodeOutput:(id)a3 associatedAttachedMediaKey:(id)a4;
+- (void)_setOwningNodeOutput:(id)output associatedAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)setNodePreparedDataBufferPool:(id)a3;
-- (void)setNodePreparedPixelBufferPool:(id)a3;
-- (void)setPreparedSharedDataBufferPool:(id)a3;
-- (void)setPreparedSharedPixelBufferPool:(id)a3;
-- (void)setResolvedFormat:(id)a3;
+- (void)setNodePreparedDataBufferPool:(id)pool;
+- (void)setNodePreparedPixelBufferPool:(id)pool;
+- (void)setPreparedSharedDataBufferPool:(id)pool;
+- (void)setPreparedSharedPixelBufferPool:(id)pool;
+- (void)setResolvedFormat:(id)format;
 @end
 
 @implementation BWNodeOutputMediaProperties
@@ -51,15 +51,15 @@
   os_unfair_lock_lock(&self->_bufferPoolsLock);
   if ([(BWNodeOutputMediaProperties *)self preparedPixelBufferPool])
   {
-    v3 = [(BWNodeOutputMediaProperties *)self preparedPixelBufferPool];
+    preparedPixelBufferPool = [(BWNodeOutputMediaProperties *)self preparedPixelBufferPool];
   }
 
   else
   {
-    v3 = [(BWNodeOutputMediaProperties *)self livePixelBufferPool];
+    preparedPixelBufferPool = [(BWNodeOutputMediaProperties *)self livePixelBufferPool];
   }
 
-  v4 = v3;
+  v4 = preparedPixelBufferPool;
   os_unfair_lock_unlock(&self->_bufferPoolsLock);
   return v4;
 }
@@ -103,9 +103,9 @@
   [(BWNodeOutputMediaProperties *)&v3 dealloc];
 }
 
-- (void)_setOwningNodeOutput:(id)a3 associatedAttachedMediaKey:(id)a4
+- (void)_setOwningNodeOutput:(id)output associatedAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!output)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D920];
@@ -121,7 +121,7 @@
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!key)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D940];
@@ -130,26 +130,26 @@ LABEL_8:
     objc_exception_throw([v4 exceptionWithName:v5 reason:v6 userInfo:0]);
   }
 
-  self->_owningNodeOutput = a3;
-  self->_associatedAttachedMediaKey = [a4 copy];
+  self->_owningNodeOutput = output;
+  self->_associatedAttachedMediaKey = [key copy];
 }
 
-- (void)setResolvedFormat:(id)a3
+- (void)setResolvedFormat:(id)format
 {
   resolvedFormat = self->_resolvedFormat;
-  if (resolvedFormat != a3)
+  if (resolvedFormat != format)
   {
 
-    self->_resolvedFormat = a3;
-    v7 = [(BWNodeOutput *)self->_owningNodeOutput node];
+    self->_resolvedFormat = format;
+    node = [(BWNodeOutput *)self->_owningNodeOutput node];
     associatedAttachedMediaKey = self->_associatedAttachedMediaKey;
     owningNodeOutput = self->_owningNodeOutput;
 
-    [(BWNode *)v7 didSelectFormat:a3 forOutput:owningNodeOutput forAttachedMediaKey:associatedAttachedMediaKey];
+    [(BWNode *)node didSelectFormat:format forOutput:owningNodeOutput forAttachedMediaKey:associatedAttachedMediaKey];
   }
 }
 
-- (void)setNodePreparedPixelBufferPool:(id)a3
+- (void)setNodePreparedPixelBufferPool:(id)pool
 {
   if (![(BWNodeOutput *)self->_owningNodeOutput mediaTypeIsVideo])
   {
@@ -175,7 +175,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!pool)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D920];
@@ -184,10 +184,10 @@ LABEL_10:
     objc_exception_throw([v5 exceptionWithName:v6 reason:v7 userInfo:0]);
   }
 
-  self->_preparedPixelBufferPool = a3;
+  self->_preparedPixelBufferPool = pool;
 }
 
-- (void)setPreparedSharedPixelBufferPool:(id)a3
+- (void)setPreparedSharedPixelBufferPool:(id)pool
 {
   if (![(BWNodeOutput *)self->_owningNodeOutput mediaTypeIsVideo])
   {
@@ -221,7 +221,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!pool)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D920];
@@ -230,10 +230,10 @@ LABEL_12:
     objc_exception_throw([v5 exceptionWithName:v6 reason:v7 userInfo:0]);
   }
 
-  self->_preparedPixelBufferPool = a3;
+  self->_preparedPixelBufferPool = pool;
 }
 
-- (void)setNodePreparedDataBufferPool:(id)a3
+- (void)setNodePreparedDataBufferPool:(id)pool
 {
   if (![(BWNodeOutput *)self->_owningNodeOutput mediaTypeIsPointCloud])
   {
@@ -259,7 +259,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!pool)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D920];
@@ -268,10 +268,10 @@ LABEL_10:
     objc_exception_throw([v5 exceptionWithName:v6 reason:v7 userInfo:0]);
   }
 
-  self->_preparedDataBufferPool = a3;
+  self->_preparedDataBufferPool = pool;
 }
 
-- (void)setPreparedSharedDataBufferPool:(id)a3
+- (void)setPreparedSharedDataBufferPool:(id)pool
 {
   if (![(BWNodeOutput *)self->_owningNodeOutput mediaTypeIsPointCloud])
   {
@@ -305,7 +305,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!pool)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D920];
@@ -314,7 +314,7 @@ LABEL_12:
     objc_exception_throw([v5 exceptionWithName:v6 reason:v7 userInfo:0]);
   }
 
-  self->_preparedDataBufferPool = a3;
+  self->_preparedDataBufferPool = pool;
 }
 
 - (BWVideoFormat)liveVideoFormat
@@ -354,15 +354,15 @@ LABEL_12:
   os_unfair_lock_lock(&self->_bufferPoolsLock);
   if ([(BWNodeOutputMediaProperties *)self preparedDataBufferPool])
   {
-    v3 = [(BWNodeOutputMediaProperties *)self preparedDataBufferPool];
+    preparedDataBufferPool = [(BWNodeOutputMediaProperties *)self preparedDataBufferPool];
   }
 
   else
   {
-    v3 = [(BWNodeOutputMediaProperties *)self liveDataBufferPool];
+    preparedDataBufferPool = [(BWNodeOutputMediaProperties *)self liveDataBufferPool];
   }
 
-  v4 = v3;
+  v4 = preparedDataBufferPool;
   os_unfair_lock_unlock(&self->_bufferPoolsLock);
   return v4;
 }

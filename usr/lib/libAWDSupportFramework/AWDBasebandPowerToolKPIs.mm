@@ -1,32 +1,32 @@
 @interface AWDBasebandPowerToolKPIs
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)armUtilityPDFAtIndex:(unint64_t)a3;
-- (int)causeCodeBackgroundActivityARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeBackgroundActivityDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeCumulativeARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeCumulativeDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeMarginalCoverageARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeMarginalCoverageDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeOOSARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeOOSDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeRACHFailARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeRACHFailDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeStruckInDCHARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeStruckInDCHDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeTcXONotShuttingARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeTcXONotShuttingDurationsAtIndex:(unint64_t)a3;
-- (int)causeCodeUnknownARMUtilityAtIndex:(unint64_t)a3;
-- (int)causeCodeUnknownDurationsAtIndex:(unint64_t)a3;
+- (int)armUtilityPDFAtIndex:(unint64_t)index;
+- (int)causeCodeBackgroundActivityARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeBackgroundActivityDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeCumulativeARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeCumulativeDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeMarginalCoverageARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeMarginalCoverageDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeOOSARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeOOSDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeRACHFailARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeRACHFailDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeStruckInDCHARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeStruckInDCHDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeTcXONotShuttingARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeTcXONotShuttingDurationsAtIndex:(unint64_t)index;
+- (int)causeCodeUnknownARMUtilityAtIndex:(unint64_t)index;
+- (int)causeCodeUnknownDurationsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasArmUtilityThresholdPoint:(BOOL)a3;
-- (void)setHasRadarPriority:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasArmUtilityThresholdPoint:(BOOL)point;
+- (void)setHasRadarPriority:(BOOL)priority;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBasebandPowerToolKPIs
@@ -55,9 +55,9 @@
   [(AWDBasebandPowerToolKPIs *)&v3 dealloc];
 }
 
-- (void)setHasRadarPriority:(BOOL)a3
+- (void)setHasRadarPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 4;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasArmUtilityThresholdPoint:(BOOL)a3
+- (void)setHasArmUtilityThresholdPoint:(BOOL)point
 {
-  if (a3)
+  if (point)
   {
     v3 = 2;
   }
@@ -85,208 +85,208 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)armUtilityPDFAtIndex:(unint64_t)a3
+- (int)armUtilityPDFAtIndex:(unint64_t)index
 {
   p_armUtilityPDFs = &self->_armUtilityPDFs;
   count = self->_armUtilityPDFs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_armUtilityPDFs->list[a3];
+  return p_armUtilityPDFs->list[index];
 }
 
-- (int)causeCodeOOSARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeOOSARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeOOSARMUtilitys = &self->_causeCodeOOSARMUtilitys;
   count = self->_causeCodeOOSARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeOOSARMUtilitys->list[a3];
+  return p_causeCodeOOSARMUtilitys->list[index];
 }
 
-- (int)causeCodeOOSDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeOOSDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeOOSDurations = &self->_causeCodeOOSDurations;
   count = self->_causeCodeOOSDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeOOSDurations->list[a3];
+  return p_causeCodeOOSDurations->list[index];
 }
 
-- (int)causeCodeTcXONotShuttingARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeTcXONotShuttingARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeTcXONotShuttingARMUtilitys = &self->_causeCodeTcXONotShuttingARMUtilitys;
   count = self->_causeCodeTcXONotShuttingARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeTcXONotShuttingARMUtilitys->list[a3];
+  return p_causeCodeTcXONotShuttingARMUtilitys->list[index];
 }
 
-- (int)causeCodeTcXONotShuttingDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeTcXONotShuttingDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeTcXONotShuttingDurations = &self->_causeCodeTcXONotShuttingDurations;
   count = self->_causeCodeTcXONotShuttingDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeTcXONotShuttingDurations->list[a3];
+  return p_causeCodeTcXONotShuttingDurations->list[index];
 }
 
-- (int)causeCodeBackgroundActivityARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeBackgroundActivityARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeBackgroundActivityARMUtilitys = &self->_causeCodeBackgroundActivityARMUtilitys;
   count = self->_causeCodeBackgroundActivityARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeBackgroundActivityARMUtilitys->list[a3];
+  return p_causeCodeBackgroundActivityARMUtilitys->list[index];
 }
 
-- (int)causeCodeBackgroundActivityDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeBackgroundActivityDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeBackgroundActivityDurations = &self->_causeCodeBackgroundActivityDurations;
   count = self->_causeCodeBackgroundActivityDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeBackgroundActivityDurations->list[a3];
+  return p_causeCodeBackgroundActivityDurations->list[index];
 }
 
-- (int)causeCodeRACHFailARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeRACHFailARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeRACHFailARMUtilitys = &self->_causeCodeRACHFailARMUtilitys;
   count = self->_causeCodeRACHFailARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeRACHFailARMUtilitys->list[a3];
+  return p_causeCodeRACHFailARMUtilitys->list[index];
 }
 
-- (int)causeCodeRACHFailDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeRACHFailDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeRACHFailDurations = &self->_causeCodeRACHFailDurations;
   count = self->_causeCodeRACHFailDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeRACHFailDurations->list[a3];
+  return p_causeCodeRACHFailDurations->list[index];
 }
 
-- (int)causeCodeStruckInDCHARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeStruckInDCHARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeStruckInDCHARMUtilitys = &self->_causeCodeStruckInDCHARMUtilitys;
   count = self->_causeCodeStruckInDCHARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeStruckInDCHARMUtilitys->list[a3];
+  return p_causeCodeStruckInDCHARMUtilitys->list[index];
 }
 
-- (int)causeCodeStruckInDCHDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeStruckInDCHDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeStruckInDCHDurations = &self->_causeCodeStruckInDCHDurations;
   count = self->_causeCodeStruckInDCHDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeStruckInDCHDurations->list[a3];
+  return p_causeCodeStruckInDCHDurations->list[index];
 }
 
-- (int)causeCodeMarginalCoverageARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeMarginalCoverageARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeMarginalCoverageARMUtilitys = &self->_causeCodeMarginalCoverageARMUtilitys;
   count = self->_causeCodeMarginalCoverageARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeMarginalCoverageARMUtilitys->list[a3];
+  return p_causeCodeMarginalCoverageARMUtilitys->list[index];
 }
 
-- (int)causeCodeMarginalCoverageDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeMarginalCoverageDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeMarginalCoverageDurations = &self->_causeCodeMarginalCoverageDurations;
   count = self->_causeCodeMarginalCoverageDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeMarginalCoverageDurations->list[a3];
+  return p_causeCodeMarginalCoverageDurations->list[index];
 }
 
-- (int)causeCodeUnknownARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeUnknownARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeUnknownARMUtilitys = &self->_causeCodeUnknownARMUtilitys;
   count = self->_causeCodeUnknownARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeUnknownARMUtilitys->list[a3];
+  return p_causeCodeUnknownARMUtilitys->list[index];
 }
 
-- (int)causeCodeUnknownDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeUnknownDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeUnknownDurations = &self->_causeCodeUnknownDurations;
   count = self->_causeCodeUnknownDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeUnknownDurations->list[a3];
+  return p_causeCodeUnknownDurations->list[index];
 }
 
-- (int)causeCodeCumulativeARMUtilityAtIndex:(unint64_t)a3
+- (int)causeCodeCumulativeARMUtilityAtIndex:(unint64_t)index
 {
   p_causeCodeCumulativeARMUtilitys = &self->_causeCodeCumulativeARMUtilitys;
   count = self->_causeCodeCumulativeARMUtilitys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeCumulativeARMUtilitys->list[a3];
+  return p_causeCodeCumulativeARMUtilitys->list[index];
 }
 
-- (int)causeCodeCumulativeDurationsAtIndex:(unint64_t)a3
+- (int)causeCodeCumulativeDurationsAtIndex:(unint64_t)index
 {
   p_causeCodeCumulativeDurations = &self->_causeCodeCumulativeDurations;
   count = self->_causeCodeCumulativeDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_causeCodeCumulativeDurations->list[a3];
+  return p_causeCodeCumulativeDurations->list[index];
 }
 
 - (id)description
@@ -298,7 +298,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -308,7 +308,7 @@
     }
 
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_radarPriority), @"radarPriority"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_radarPriority), @"radarPriority"}];
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -317,7 +317,7 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -328,31 +328,31 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_armUtilityThresholdPoint), @"armUtilityThresholdPoint"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_armUtilityThresholdPoint), @"armUtilityThresholdPoint"}];
   }
 
 LABEL_5:
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"armUtilityPDF"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_OOS_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_OOS_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_TcXONotShutting_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_TcXONotShutting_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_BackgroundActivity_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_BackgroundActivity_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_RACHFail_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_RACHFail_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_StruckInDCH_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_StruckInDCH_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_MarginalCoverage_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_MarginalCoverage_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Unknown_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Unknown_Durations"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Cumulative_ARMUtility"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Cumulative_Durations"];
-  return v3;
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"armUtilityPDF"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_OOS_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_OOS_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_TcXONotShutting_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_TcXONotShutting_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_BackgroundActivity_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_BackgroundActivity_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_RACHFail_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_RACHFail_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_StruckInDCH_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_StruckInDCH_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_MarginalCoverage_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_MarginalCoverage_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Unknown_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Unknown_Durations"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Cumulative_ARMUtility"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"causeCode_Cumulative_Durations"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -712,7 +712,7 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -723,8 +723,8 @@ LABEL_5:
     }
 
 LABEL_75:
-    *(a3 + 107) = self->_radarPriority;
-    *(a3 + 432) |= 4u;
+    *(to + 107) = self->_radarPriority;
+    *(to + 432) |= 4u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -733,8 +733,8 @@ LABEL_75:
     goto LABEL_4;
   }
 
-  *(a3 + 52) = self->_timestamp;
-  *(a3 + 432) |= 1u;
+  *(to + 52) = self->_timestamp;
+  *(to + 432) |= 1u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -745,253 +745,253 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 106) = self->_armUtilityThresholdPoint;
-    *(a3 + 432) |= 2u;
+    *(to + 106) = self->_armUtilityThresholdPoint;
+    *(to + 432) |= 2u;
   }
 
 LABEL_5:
   if ([(AWDBasebandPowerToolKPIs *)self armUtilityPDFsCount])
   {
-    [a3 clearArmUtilityPDFs];
-    v6 = [(AWDBasebandPowerToolKPIs *)self armUtilityPDFsCount];
-    if (v6)
+    [to clearArmUtilityPDFs];
+    armUtilityPDFsCount = [(AWDBasebandPowerToolKPIs *)self armUtilityPDFsCount];
+    if (armUtilityPDFsCount)
     {
-      v7 = v6;
+      v7 = armUtilityPDFsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addArmUtilityPDF:{-[AWDBasebandPowerToolKPIs armUtilityPDFAtIndex:](self, "armUtilityPDFAtIndex:", i)}];
+        [to addArmUtilityPDF:{-[AWDBasebandPowerToolKPIs armUtilityPDFAtIndex:](self, "armUtilityPDFAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeOOSARMUtilitysCount])
   {
-    [a3 clearCauseCodeOOSARMUtilitys];
-    v9 = [(AWDBasebandPowerToolKPIs *)self causeCodeOOSARMUtilitysCount];
-    if (v9)
+    [to clearCauseCodeOOSARMUtilitys];
+    causeCodeOOSARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeOOSARMUtilitysCount];
+    if (causeCodeOOSARMUtilitysCount)
     {
-      v10 = v9;
+      v10 = causeCodeOOSARMUtilitysCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addCauseCodeOOSARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeOOSARMUtilityAtIndex:](self, "causeCodeOOSARMUtilityAtIndex:", j)}];
+        [to addCauseCodeOOSARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeOOSARMUtilityAtIndex:](self, "causeCodeOOSARMUtilityAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeOOSDurationsCount])
   {
-    [a3 clearCauseCodeOOSDurations];
-    v12 = [(AWDBasebandPowerToolKPIs *)self causeCodeOOSDurationsCount];
-    if (v12)
+    [to clearCauseCodeOOSDurations];
+    causeCodeOOSDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeOOSDurationsCount];
+    if (causeCodeOOSDurationsCount)
     {
-      v13 = v12;
+      v13 = causeCodeOOSDurationsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addCauseCodeOOSDurations:{-[AWDBasebandPowerToolKPIs causeCodeOOSDurationsAtIndex:](self, "causeCodeOOSDurationsAtIndex:", k)}];
+        [to addCauseCodeOOSDurations:{-[AWDBasebandPowerToolKPIs causeCodeOOSDurationsAtIndex:](self, "causeCodeOOSDurationsAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeTcXONotShuttingARMUtilitysCount])
   {
-    [a3 clearCauseCodeTcXONotShuttingARMUtilitys];
-    v15 = [(AWDBasebandPowerToolKPIs *)self causeCodeTcXONotShuttingARMUtilitysCount];
-    if (v15)
+    [to clearCauseCodeTcXONotShuttingARMUtilitys];
+    causeCodeTcXONotShuttingARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeTcXONotShuttingARMUtilitysCount];
+    if (causeCodeTcXONotShuttingARMUtilitysCount)
     {
-      v16 = v15;
+      v16 = causeCodeTcXONotShuttingARMUtilitysCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addCauseCodeTcXONotShuttingARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeTcXONotShuttingARMUtilityAtIndex:](self, "causeCodeTcXONotShuttingARMUtilityAtIndex:", m)}];
+        [to addCauseCodeTcXONotShuttingARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeTcXONotShuttingARMUtilityAtIndex:](self, "causeCodeTcXONotShuttingARMUtilityAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeTcXONotShuttingDurationsCount])
   {
-    [a3 clearCauseCodeTcXONotShuttingDurations];
-    v18 = [(AWDBasebandPowerToolKPIs *)self causeCodeTcXONotShuttingDurationsCount];
-    if (v18)
+    [to clearCauseCodeTcXONotShuttingDurations];
+    causeCodeTcXONotShuttingDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeTcXONotShuttingDurationsCount];
+    if (causeCodeTcXONotShuttingDurationsCount)
     {
-      v19 = v18;
+      v19 = causeCodeTcXONotShuttingDurationsCount;
       for (n = 0; n != v19; ++n)
       {
-        [a3 addCauseCodeTcXONotShuttingDurations:{-[AWDBasebandPowerToolKPIs causeCodeTcXONotShuttingDurationsAtIndex:](self, "causeCodeTcXONotShuttingDurationsAtIndex:", n)}];
+        [to addCauseCodeTcXONotShuttingDurations:{-[AWDBasebandPowerToolKPIs causeCodeTcXONotShuttingDurationsAtIndex:](self, "causeCodeTcXONotShuttingDurationsAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeBackgroundActivityARMUtilitysCount])
   {
-    [a3 clearCauseCodeBackgroundActivityARMUtilitys];
-    v21 = [(AWDBasebandPowerToolKPIs *)self causeCodeBackgroundActivityARMUtilitysCount];
-    if (v21)
+    [to clearCauseCodeBackgroundActivityARMUtilitys];
+    causeCodeBackgroundActivityARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeBackgroundActivityARMUtilitysCount];
+    if (causeCodeBackgroundActivityARMUtilitysCount)
     {
-      v22 = v21;
+      v22 = causeCodeBackgroundActivityARMUtilitysCount;
       for (ii = 0; ii != v22; ++ii)
       {
-        [a3 addCauseCodeBackgroundActivityARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeBackgroundActivityARMUtilityAtIndex:](self, "causeCodeBackgroundActivityARMUtilityAtIndex:", ii)}];
+        [to addCauseCodeBackgroundActivityARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeBackgroundActivityARMUtilityAtIndex:](self, "causeCodeBackgroundActivityARMUtilityAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeBackgroundActivityDurationsCount])
   {
-    [a3 clearCauseCodeBackgroundActivityDurations];
-    v24 = [(AWDBasebandPowerToolKPIs *)self causeCodeBackgroundActivityDurationsCount];
-    if (v24)
+    [to clearCauseCodeBackgroundActivityDurations];
+    causeCodeBackgroundActivityDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeBackgroundActivityDurationsCount];
+    if (causeCodeBackgroundActivityDurationsCount)
     {
-      v25 = v24;
+      v25 = causeCodeBackgroundActivityDurationsCount;
       for (jj = 0; jj != v25; ++jj)
       {
-        [a3 addCauseCodeBackgroundActivityDurations:{-[AWDBasebandPowerToolKPIs causeCodeBackgroundActivityDurationsAtIndex:](self, "causeCodeBackgroundActivityDurationsAtIndex:", jj)}];
+        [to addCauseCodeBackgroundActivityDurations:{-[AWDBasebandPowerToolKPIs causeCodeBackgroundActivityDurationsAtIndex:](self, "causeCodeBackgroundActivityDurationsAtIndex:", jj)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeRACHFailARMUtilitysCount])
   {
-    [a3 clearCauseCodeRACHFailARMUtilitys];
-    v27 = [(AWDBasebandPowerToolKPIs *)self causeCodeRACHFailARMUtilitysCount];
-    if (v27)
+    [to clearCauseCodeRACHFailARMUtilitys];
+    causeCodeRACHFailARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeRACHFailARMUtilitysCount];
+    if (causeCodeRACHFailARMUtilitysCount)
     {
-      v28 = v27;
+      v28 = causeCodeRACHFailARMUtilitysCount;
       for (kk = 0; kk != v28; ++kk)
       {
-        [a3 addCauseCodeRACHFailARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeRACHFailARMUtilityAtIndex:](self, "causeCodeRACHFailARMUtilityAtIndex:", kk)}];
+        [to addCauseCodeRACHFailARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeRACHFailARMUtilityAtIndex:](self, "causeCodeRACHFailARMUtilityAtIndex:", kk)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeRACHFailDurationsCount])
   {
-    [a3 clearCauseCodeRACHFailDurations];
-    v30 = [(AWDBasebandPowerToolKPIs *)self causeCodeRACHFailDurationsCount];
-    if (v30)
+    [to clearCauseCodeRACHFailDurations];
+    causeCodeRACHFailDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeRACHFailDurationsCount];
+    if (causeCodeRACHFailDurationsCount)
     {
-      v31 = v30;
+      v31 = causeCodeRACHFailDurationsCount;
       for (mm = 0; mm != v31; ++mm)
       {
-        [a3 addCauseCodeRACHFailDurations:{-[AWDBasebandPowerToolKPIs causeCodeRACHFailDurationsAtIndex:](self, "causeCodeRACHFailDurationsAtIndex:", mm)}];
+        [to addCauseCodeRACHFailDurations:{-[AWDBasebandPowerToolKPIs causeCodeRACHFailDurationsAtIndex:](self, "causeCodeRACHFailDurationsAtIndex:", mm)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeStruckInDCHARMUtilitysCount])
   {
-    [a3 clearCauseCodeStruckInDCHARMUtilitys];
-    v33 = [(AWDBasebandPowerToolKPIs *)self causeCodeStruckInDCHARMUtilitysCount];
-    if (v33)
+    [to clearCauseCodeStruckInDCHARMUtilitys];
+    causeCodeStruckInDCHARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeStruckInDCHARMUtilitysCount];
+    if (causeCodeStruckInDCHARMUtilitysCount)
     {
-      v34 = v33;
+      v34 = causeCodeStruckInDCHARMUtilitysCount;
       for (nn = 0; nn != v34; ++nn)
       {
-        [a3 addCauseCodeStruckInDCHARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeStruckInDCHARMUtilityAtIndex:](self, "causeCodeStruckInDCHARMUtilityAtIndex:", nn)}];
+        [to addCauseCodeStruckInDCHARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeStruckInDCHARMUtilityAtIndex:](self, "causeCodeStruckInDCHARMUtilityAtIndex:", nn)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeStruckInDCHDurationsCount])
   {
-    [a3 clearCauseCodeStruckInDCHDurations];
-    v36 = [(AWDBasebandPowerToolKPIs *)self causeCodeStruckInDCHDurationsCount];
-    if (v36)
+    [to clearCauseCodeStruckInDCHDurations];
+    causeCodeStruckInDCHDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeStruckInDCHDurationsCount];
+    if (causeCodeStruckInDCHDurationsCount)
     {
-      v37 = v36;
+      v37 = causeCodeStruckInDCHDurationsCount;
       for (i1 = 0; i1 != v37; ++i1)
       {
-        [a3 addCauseCodeStruckInDCHDurations:{-[AWDBasebandPowerToolKPIs causeCodeStruckInDCHDurationsAtIndex:](self, "causeCodeStruckInDCHDurationsAtIndex:", i1)}];
+        [to addCauseCodeStruckInDCHDurations:{-[AWDBasebandPowerToolKPIs causeCodeStruckInDCHDurationsAtIndex:](self, "causeCodeStruckInDCHDurationsAtIndex:", i1)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeMarginalCoverageARMUtilitysCount])
   {
-    [a3 clearCauseCodeMarginalCoverageARMUtilitys];
-    v39 = [(AWDBasebandPowerToolKPIs *)self causeCodeMarginalCoverageARMUtilitysCount];
-    if (v39)
+    [to clearCauseCodeMarginalCoverageARMUtilitys];
+    causeCodeMarginalCoverageARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeMarginalCoverageARMUtilitysCount];
+    if (causeCodeMarginalCoverageARMUtilitysCount)
     {
-      v40 = v39;
+      v40 = causeCodeMarginalCoverageARMUtilitysCount;
       for (i2 = 0; i2 != v40; ++i2)
       {
-        [a3 addCauseCodeMarginalCoverageARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeMarginalCoverageARMUtilityAtIndex:](self, "causeCodeMarginalCoverageARMUtilityAtIndex:", i2)}];
+        [to addCauseCodeMarginalCoverageARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeMarginalCoverageARMUtilityAtIndex:](self, "causeCodeMarginalCoverageARMUtilityAtIndex:", i2)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeMarginalCoverageDurationsCount])
   {
-    [a3 clearCauseCodeMarginalCoverageDurations];
-    v42 = [(AWDBasebandPowerToolKPIs *)self causeCodeMarginalCoverageDurationsCount];
-    if (v42)
+    [to clearCauseCodeMarginalCoverageDurations];
+    causeCodeMarginalCoverageDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeMarginalCoverageDurationsCount];
+    if (causeCodeMarginalCoverageDurationsCount)
     {
-      v43 = v42;
+      v43 = causeCodeMarginalCoverageDurationsCount;
       for (i3 = 0; i3 != v43; ++i3)
       {
-        [a3 addCauseCodeMarginalCoverageDurations:{-[AWDBasebandPowerToolKPIs causeCodeMarginalCoverageDurationsAtIndex:](self, "causeCodeMarginalCoverageDurationsAtIndex:", i3)}];
+        [to addCauseCodeMarginalCoverageDurations:{-[AWDBasebandPowerToolKPIs causeCodeMarginalCoverageDurationsAtIndex:](self, "causeCodeMarginalCoverageDurationsAtIndex:", i3)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeUnknownARMUtilitysCount])
   {
-    [a3 clearCauseCodeUnknownARMUtilitys];
-    v45 = [(AWDBasebandPowerToolKPIs *)self causeCodeUnknownARMUtilitysCount];
-    if (v45)
+    [to clearCauseCodeUnknownARMUtilitys];
+    causeCodeUnknownARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeUnknownARMUtilitysCount];
+    if (causeCodeUnknownARMUtilitysCount)
     {
-      v46 = v45;
+      v46 = causeCodeUnknownARMUtilitysCount;
       for (i4 = 0; i4 != v46; ++i4)
       {
-        [a3 addCauseCodeUnknownARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeUnknownARMUtilityAtIndex:](self, "causeCodeUnknownARMUtilityAtIndex:", i4)}];
+        [to addCauseCodeUnknownARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeUnknownARMUtilityAtIndex:](self, "causeCodeUnknownARMUtilityAtIndex:", i4)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeUnknownDurationsCount])
   {
-    [a3 clearCauseCodeUnknownDurations];
-    v48 = [(AWDBasebandPowerToolKPIs *)self causeCodeUnknownDurationsCount];
-    if (v48)
+    [to clearCauseCodeUnknownDurations];
+    causeCodeUnknownDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeUnknownDurationsCount];
+    if (causeCodeUnknownDurationsCount)
     {
-      v49 = v48;
+      v49 = causeCodeUnknownDurationsCount;
       for (i5 = 0; i5 != v49; ++i5)
       {
-        [a3 addCauseCodeUnknownDurations:{-[AWDBasebandPowerToolKPIs causeCodeUnknownDurationsAtIndex:](self, "causeCodeUnknownDurationsAtIndex:", i5)}];
+        [to addCauseCodeUnknownDurations:{-[AWDBasebandPowerToolKPIs causeCodeUnknownDurationsAtIndex:](self, "causeCodeUnknownDurationsAtIndex:", i5)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeCumulativeARMUtilitysCount])
   {
-    [a3 clearCauseCodeCumulativeARMUtilitys];
-    v51 = [(AWDBasebandPowerToolKPIs *)self causeCodeCumulativeARMUtilitysCount];
-    if (v51)
+    [to clearCauseCodeCumulativeARMUtilitys];
+    causeCodeCumulativeARMUtilitysCount = [(AWDBasebandPowerToolKPIs *)self causeCodeCumulativeARMUtilitysCount];
+    if (causeCodeCumulativeARMUtilitysCount)
     {
-      v52 = v51;
+      v52 = causeCodeCumulativeARMUtilitysCount;
       for (i6 = 0; i6 != v52; ++i6)
       {
-        [a3 addCauseCodeCumulativeARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeCumulativeARMUtilityAtIndex:](self, "causeCodeCumulativeARMUtilityAtIndex:", i6)}];
+        [to addCauseCodeCumulativeARMUtility:{-[AWDBasebandPowerToolKPIs causeCodeCumulativeARMUtilityAtIndex:](self, "causeCodeCumulativeARMUtilityAtIndex:", i6)}];
       }
     }
   }
 
   if ([(AWDBasebandPowerToolKPIs *)self causeCodeCumulativeDurationsCount])
   {
-    [a3 clearCauseCodeCumulativeDurations];
-    v54 = [(AWDBasebandPowerToolKPIs *)self causeCodeCumulativeDurationsCount];
-    if (v54)
+    [to clearCauseCodeCumulativeDurations];
+    causeCodeCumulativeDurationsCount = [(AWDBasebandPowerToolKPIs *)self causeCodeCumulativeDurationsCount];
+    if (causeCodeCumulativeDurationsCount)
     {
-      v55 = v54;
+      v55 = causeCodeCumulativeDurationsCount;
       for (i7 = 0; i7 != v55; ++i7)
       {
-        [a3 addCauseCodeCumulativeDurations:{-[AWDBasebandPowerToolKPIs causeCodeCumulativeDurationsAtIndex:](self, "causeCodeCumulativeDurationsAtIndex:", i7)}];
+        [to addCauseCodeCumulativeDurations:{-[AWDBasebandPowerToolKPIs causeCodeCumulativeDurationsAtIndex:](self, "causeCodeCumulativeDurationsAtIndex:", i7)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 1) == 0)
@@ -1049,49 +1049,49 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 432);
+  v5 = *(equal + 432);
   if (*&self->_has)
   {
-    if ((*(a3 + 432) & 1) == 0 || self->_timestamp != *(a3 + 52))
+    if ((*(equal + 432) & 1) == 0 || self->_timestamp != *(equal + 52))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 432))
+  else if (*(equal + 432))
   {
     return 0;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 432) & 4) == 0 || self->_radarPriority != *(a3 + 107))
+    if ((*(equal + 432) & 4) == 0 || self->_radarPriority != *(equal + 107))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 432) & 4) != 0)
+  else if ((*(equal + 432) & 4) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 432) & 2) == 0 || self->_armUtilityThresholdPoint != *(a3 + 106))
+    if ((*(equal + 432) & 2) == 0 || self->_armUtilityThresholdPoint != *(equal + 106))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 432) & 2) != 0)
+  else if ((*(equal + 432) & 2) != 0)
   {
     return 0;
   }
@@ -1161,14 +1161,14 @@ LABEL_8:
   return v19 ^ v20 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 432);
+  v5 = *(from + 432);
   if (v5)
   {
-    self->_timestamp = *(a3 + 52);
+    self->_timestamp = *(from + 52);
     *&self->_has |= 1u;
-    v5 = *(a3 + 432);
+    v5 = *(from + 432);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -1181,188 +1181,188 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 432) & 4) == 0)
+  else if ((*(from + 432) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_radarPriority = *(a3 + 107);
+  self->_radarPriority = *(from + 107);
   *&self->_has |= 4u;
-  if ((*(a3 + 432) & 2) != 0)
+  if ((*(from + 432) & 2) != 0)
   {
 LABEL_4:
-    self->_armUtilityThresholdPoint = *(a3 + 106);
+    self->_armUtilityThresholdPoint = *(from + 106);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  v6 = [a3 armUtilityPDFsCount];
-  if (v6)
+  armUtilityPDFsCount = [from armUtilityPDFsCount];
+  if (armUtilityPDFsCount)
   {
-    v7 = v6;
+    v7 = armUtilityPDFsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDBasebandPowerToolKPIs addArmUtilityPDF:](self, "addArmUtilityPDF:", [a3 armUtilityPDFAtIndex:i]);
+      -[AWDBasebandPowerToolKPIs addArmUtilityPDF:](self, "addArmUtilityPDF:", [from armUtilityPDFAtIndex:i]);
     }
   }
 
-  v9 = [a3 causeCodeOOSARMUtilitysCount];
-  if (v9)
+  causeCodeOOSARMUtilitysCount = [from causeCodeOOSARMUtilitysCount];
+  if (causeCodeOOSARMUtilitysCount)
   {
-    v10 = v9;
+    v10 = causeCodeOOSARMUtilitysCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeOOSARMUtility:](self, "addCauseCodeOOSARMUtility:", [a3 causeCodeOOSARMUtilityAtIndex:j]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeOOSARMUtility:](self, "addCauseCodeOOSARMUtility:", [from causeCodeOOSARMUtilityAtIndex:j]);
     }
   }
 
-  v12 = [a3 causeCodeOOSDurationsCount];
-  if (v12)
+  causeCodeOOSDurationsCount = [from causeCodeOOSDurationsCount];
+  if (causeCodeOOSDurationsCount)
   {
-    v13 = v12;
+    v13 = causeCodeOOSDurationsCount;
     for (k = 0; k != v13; ++k)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeOOSDurations:](self, "addCauseCodeOOSDurations:", [a3 causeCodeOOSDurationsAtIndex:k]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeOOSDurations:](self, "addCauseCodeOOSDurations:", [from causeCodeOOSDurationsAtIndex:k]);
     }
   }
 
-  v15 = [a3 causeCodeTcXONotShuttingARMUtilitysCount];
-  if (v15)
+  causeCodeTcXONotShuttingARMUtilitysCount = [from causeCodeTcXONotShuttingARMUtilitysCount];
+  if (causeCodeTcXONotShuttingARMUtilitysCount)
   {
-    v16 = v15;
+    v16 = causeCodeTcXONotShuttingARMUtilitysCount;
     for (m = 0; m != v16; ++m)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeTcXONotShuttingARMUtility:](self, "addCauseCodeTcXONotShuttingARMUtility:", [a3 causeCodeTcXONotShuttingARMUtilityAtIndex:m]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeTcXONotShuttingARMUtility:](self, "addCauseCodeTcXONotShuttingARMUtility:", [from causeCodeTcXONotShuttingARMUtilityAtIndex:m]);
     }
   }
 
-  v18 = [a3 causeCodeTcXONotShuttingDurationsCount];
-  if (v18)
+  causeCodeTcXONotShuttingDurationsCount = [from causeCodeTcXONotShuttingDurationsCount];
+  if (causeCodeTcXONotShuttingDurationsCount)
   {
-    v19 = v18;
+    v19 = causeCodeTcXONotShuttingDurationsCount;
     for (n = 0; n != v19; ++n)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeTcXONotShuttingDurations:](self, "addCauseCodeTcXONotShuttingDurations:", [a3 causeCodeTcXONotShuttingDurationsAtIndex:n]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeTcXONotShuttingDurations:](self, "addCauseCodeTcXONotShuttingDurations:", [from causeCodeTcXONotShuttingDurationsAtIndex:n]);
     }
   }
 
-  v21 = [a3 causeCodeBackgroundActivityARMUtilitysCount];
-  if (v21)
+  causeCodeBackgroundActivityARMUtilitysCount = [from causeCodeBackgroundActivityARMUtilitysCount];
+  if (causeCodeBackgroundActivityARMUtilitysCount)
   {
-    v22 = v21;
+    v22 = causeCodeBackgroundActivityARMUtilitysCount;
     for (ii = 0; ii != v22; ++ii)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeBackgroundActivityARMUtility:](self, "addCauseCodeBackgroundActivityARMUtility:", [a3 causeCodeBackgroundActivityARMUtilityAtIndex:ii]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeBackgroundActivityARMUtility:](self, "addCauseCodeBackgroundActivityARMUtility:", [from causeCodeBackgroundActivityARMUtilityAtIndex:ii]);
     }
   }
 
-  v24 = [a3 causeCodeBackgroundActivityDurationsCount];
-  if (v24)
+  causeCodeBackgroundActivityDurationsCount = [from causeCodeBackgroundActivityDurationsCount];
+  if (causeCodeBackgroundActivityDurationsCount)
   {
-    v25 = v24;
+    v25 = causeCodeBackgroundActivityDurationsCount;
     for (jj = 0; jj != v25; ++jj)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeBackgroundActivityDurations:](self, "addCauseCodeBackgroundActivityDurations:", [a3 causeCodeBackgroundActivityDurationsAtIndex:jj]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeBackgroundActivityDurations:](self, "addCauseCodeBackgroundActivityDurations:", [from causeCodeBackgroundActivityDurationsAtIndex:jj]);
     }
   }
 
-  v27 = [a3 causeCodeRACHFailARMUtilitysCount];
-  if (v27)
+  causeCodeRACHFailARMUtilitysCount = [from causeCodeRACHFailARMUtilitysCount];
+  if (causeCodeRACHFailARMUtilitysCount)
   {
-    v28 = v27;
+    v28 = causeCodeRACHFailARMUtilitysCount;
     for (kk = 0; kk != v28; ++kk)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeRACHFailARMUtility:](self, "addCauseCodeRACHFailARMUtility:", [a3 causeCodeRACHFailARMUtilityAtIndex:kk]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeRACHFailARMUtility:](self, "addCauseCodeRACHFailARMUtility:", [from causeCodeRACHFailARMUtilityAtIndex:kk]);
     }
   }
 
-  v30 = [a3 causeCodeRACHFailDurationsCount];
-  if (v30)
+  causeCodeRACHFailDurationsCount = [from causeCodeRACHFailDurationsCount];
+  if (causeCodeRACHFailDurationsCount)
   {
-    v31 = v30;
+    v31 = causeCodeRACHFailDurationsCount;
     for (mm = 0; mm != v31; ++mm)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeRACHFailDurations:](self, "addCauseCodeRACHFailDurations:", [a3 causeCodeRACHFailDurationsAtIndex:mm]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeRACHFailDurations:](self, "addCauseCodeRACHFailDurations:", [from causeCodeRACHFailDurationsAtIndex:mm]);
     }
   }
 
-  v33 = [a3 causeCodeStruckInDCHARMUtilitysCount];
-  if (v33)
+  causeCodeStruckInDCHARMUtilitysCount = [from causeCodeStruckInDCHARMUtilitysCount];
+  if (causeCodeStruckInDCHARMUtilitysCount)
   {
-    v34 = v33;
+    v34 = causeCodeStruckInDCHARMUtilitysCount;
     for (nn = 0; nn != v34; ++nn)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeStruckInDCHARMUtility:](self, "addCauseCodeStruckInDCHARMUtility:", [a3 causeCodeStruckInDCHARMUtilityAtIndex:nn]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeStruckInDCHARMUtility:](self, "addCauseCodeStruckInDCHARMUtility:", [from causeCodeStruckInDCHARMUtilityAtIndex:nn]);
     }
   }
 
-  v36 = [a3 causeCodeStruckInDCHDurationsCount];
-  if (v36)
+  causeCodeStruckInDCHDurationsCount = [from causeCodeStruckInDCHDurationsCount];
+  if (causeCodeStruckInDCHDurationsCount)
   {
-    v37 = v36;
+    v37 = causeCodeStruckInDCHDurationsCount;
     for (i1 = 0; i1 != v37; ++i1)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeStruckInDCHDurations:](self, "addCauseCodeStruckInDCHDurations:", [a3 causeCodeStruckInDCHDurationsAtIndex:i1]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeStruckInDCHDurations:](self, "addCauseCodeStruckInDCHDurations:", [from causeCodeStruckInDCHDurationsAtIndex:i1]);
     }
   }
 
-  v39 = [a3 causeCodeMarginalCoverageARMUtilitysCount];
-  if (v39)
+  causeCodeMarginalCoverageARMUtilitysCount = [from causeCodeMarginalCoverageARMUtilitysCount];
+  if (causeCodeMarginalCoverageARMUtilitysCount)
   {
-    v40 = v39;
+    v40 = causeCodeMarginalCoverageARMUtilitysCount;
     for (i2 = 0; i2 != v40; ++i2)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeMarginalCoverageARMUtility:](self, "addCauseCodeMarginalCoverageARMUtility:", [a3 causeCodeMarginalCoverageARMUtilityAtIndex:i2]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeMarginalCoverageARMUtility:](self, "addCauseCodeMarginalCoverageARMUtility:", [from causeCodeMarginalCoverageARMUtilityAtIndex:i2]);
     }
   }
 
-  v42 = [a3 causeCodeMarginalCoverageDurationsCount];
-  if (v42)
+  causeCodeMarginalCoverageDurationsCount = [from causeCodeMarginalCoverageDurationsCount];
+  if (causeCodeMarginalCoverageDurationsCount)
   {
-    v43 = v42;
+    v43 = causeCodeMarginalCoverageDurationsCount;
     for (i3 = 0; i3 != v43; ++i3)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeMarginalCoverageDurations:](self, "addCauseCodeMarginalCoverageDurations:", [a3 causeCodeMarginalCoverageDurationsAtIndex:i3]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeMarginalCoverageDurations:](self, "addCauseCodeMarginalCoverageDurations:", [from causeCodeMarginalCoverageDurationsAtIndex:i3]);
     }
   }
 
-  v45 = [a3 causeCodeUnknownARMUtilitysCount];
-  if (v45)
+  causeCodeUnknownARMUtilitysCount = [from causeCodeUnknownARMUtilitysCount];
+  if (causeCodeUnknownARMUtilitysCount)
   {
-    v46 = v45;
+    v46 = causeCodeUnknownARMUtilitysCount;
     for (i4 = 0; i4 != v46; ++i4)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeUnknownARMUtility:](self, "addCauseCodeUnknownARMUtility:", [a3 causeCodeUnknownARMUtilityAtIndex:i4]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeUnknownARMUtility:](self, "addCauseCodeUnknownARMUtility:", [from causeCodeUnknownARMUtilityAtIndex:i4]);
     }
   }
 
-  v48 = [a3 causeCodeUnknownDurationsCount];
-  if (v48)
+  causeCodeUnknownDurationsCount = [from causeCodeUnknownDurationsCount];
+  if (causeCodeUnknownDurationsCount)
   {
-    v49 = v48;
+    v49 = causeCodeUnknownDurationsCount;
     for (i5 = 0; i5 != v49; ++i5)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeUnknownDurations:](self, "addCauseCodeUnknownDurations:", [a3 causeCodeUnknownDurationsAtIndex:i5]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeUnknownDurations:](self, "addCauseCodeUnknownDurations:", [from causeCodeUnknownDurationsAtIndex:i5]);
     }
   }
 
-  v51 = [a3 causeCodeCumulativeARMUtilitysCount];
-  if (v51)
+  causeCodeCumulativeARMUtilitysCount = [from causeCodeCumulativeARMUtilitysCount];
+  if (causeCodeCumulativeARMUtilitysCount)
   {
-    v52 = v51;
+    v52 = causeCodeCumulativeARMUtilitysCount;
     for (i6 = 0; i6 != v52; ++i6)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeCumulativeARMUtility:](self, "addCauseCodeCumulativeARMUtility:", [a3 causeCodeCumulativeARMUtilityAtIndex:i6]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeCumulativeARMUtility:](self, "addCauseCodeCumulativeARMUtility:", [from causeCodeCumulativeARMUtilityAtIndex:i6]);
     }
   }
 
-  v54 = [a3 causeCodeCumulativeDurationsCount];
-  if (v54)
+  causeCodeCumulativeDurationsCount = [from causeCodeCumulativeDurationsCount];
+  if (causeCodeCumulativeDurationsCount)
   {
-    v55 = v54;
+    v55 = causeCodeCumulativeDurationsCount;
     for (i7 = 0; i7 != v55; ++i7)
     {
-      -[AWDBasebandPowerToolKPIs addCauseCodeCumulativeDurations:](self, "addCauseCodeCumulativeDurations:", [a3 causeCodeCumulativeDurationsAtIndex:i7]);
+      -[AWDBasebandPowerToolKPIs addCauseCodeCumulativeDurations:](self, "addCauseCodeCumulativeDurations:", [from causeCodeCumulativeDurationsAtIndex:i7]);
     }
   }
 }

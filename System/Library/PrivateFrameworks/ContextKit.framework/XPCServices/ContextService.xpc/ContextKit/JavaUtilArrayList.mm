@@ -1,30 +1,30 @@
 @interface JavaUtilArrayList
-+ (int)newCapacityWithInt:(int)a3;
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeWithId:(id)a3;
++ (int)newCapacityWithInt:(int)int;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeWithId:(id)id;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)toArrayWithNSObjectArray:(id)array;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
 - (void)clear;
 - (void)dealloc;
-- (void)ensureCapacityWithInt:(int)a3;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
+- (void)ensureCapacityWithInt:(int)int;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
 - (void)trimToSize;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilArrayList
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   v3 = *&self->size_;
   if (!v3)
@@ -47,38 +47,38 @@
     v3 = v8;
   }
 
-  IOSObjectArray_Set(v3, v6, a3);
+  IOSObjectArray_Set(v3, v6, id);
   *(&self->super.modCount_ + 1) = v6 + 1;
   ++self->super.modCount_;
   return 1;
 }
 
-+ (int)newCapacityWithInt:(int)a3
++ (int)newCapacityWithInt:(int)int
 {
-  v3 = a3 >> 1;
-  if (a3 < 6)
+  v3 = int >> 1;
+  if (int < 6)
   {
     v3 = 12;
   }
 
-  return v3 + a3;
+  return v3 + int;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     goto LABEL_11;
   }
 
-  v4 = [a3 toArray];
-  if (!v4)
+  toArray = [collection toArray];
+  if (!toArray)
   {
     goto LABEL_11;
   }
 
-  v5 = v4;
-  v6 = v4[2];
+  v5 = toArray;
+  v6 = toArray[2];
   if (!v6)
   {
     return v6 != 0;
@@ -128,9 +128,9 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = JavaUtilArrayList;
-  v3 = [(JavaUtilArrayList *)&v6 clone];
+  clone = [(JavaUtilArrayList *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_5;
   }
@@ -147,11 +147,11 @@ LABEL_5:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(v3 + 2, [v4 clone]);
-  return v3;
+  JreStrongAssign(clone + 2, [v4 clone]);
+  return clone;
 }
 
-- (void)ensureCapacityWithInt:(int)a3
+- (void)ensureCapacityWithInt:(int)int
 {
   v3 = *&self->size_;
   if (!v3)
@@ -159,20 +159,20 @@ LABEL_5:
     JreThrowNullPointerException();
   }
 
-  if (v3[2] < a3)
+  if (v3[2] < int)
   {
-    v5 = [IOSObjectArray arrayWithLength:a3 type:NSObject_class_()];
+    v5 = [IOSObjectArray arrayWithLength:int type:NSObject_class_()];
     JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v3, 0, v5, 0, *(&self->super.modCount_ + 1));
     JreStrongAssign(&self->size_, v5);
     ++self->super.modCount_;
   }
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   v3 = *&self->size_;
   v4 = *(&self->super.modCount_ + 1);
-  if (a3)
+  if (id)
   {
     if (v4 >= 1)
     {
@@ -190,7 +190,7 @@ LABEL_5:
             IOSArray_throwOutOfBoundsWithMsg(v10, v6);
           }
 
-          result = [a3 isEqual:*(v8 + 24)];
+          result = [id isEqual:*(v8 + 24)];
           if (result)
           {
             break;
@@ -253,11 +253,11 @@ LABEL_23:
   return result;
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
   v3 = *&self->size_;
   v4 = *(&self->super.modCount_ + 1);
-  if (a3)
+  if (id)
   {
     if (v4 >= 1)
     {
@@ -272,7 +272,7 @@ LABEL_23:
             IOSArray_throwOutOfBoundsWithMsg(v7, v6);
           }
 
-          if ([a3 isEqual:*(v3 + 24 + 8 * v6)])
+          if ([id isEqual:*(v3 + 24 + 8 * v6)])
           {
             return v6;
           }
@@ -327,11 +327,11 @@ LABEL_18:
   }
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   v3 = *&self->size_;
   v4 = *(&self->super.modCount_ + 1);
-  if (a3)
+  if (id)
   {
     v6 = v4 - 1;
     while (1)
@@ -353,7 +353,7 @@ LABEL_18:
         IOSArray_throwOutOfBoundsWithMsg(v7, v4);
       }
 
-      v8 = [a3 isEqual:*(v3 + 24 + 8 * (v6-- & 0x7FFFFFFF))];
+      v8 = [id isEqual:*(v3 + 24 + 8 * (v6-- & 0x7FFFFFFF))];
       if (v8)
       {
         return v4;
@@ -395,12 +395,12 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   v4 = *&self->size_;
   v5 = *(&self->super.modCount_ + 1);
   v6 = *(&self->super.modCount_ + 1);
-  if (!a3)
+  if (!id)
   {
     if (v5 >= 1)
     {
@@ -456,7 +456,7 @@ LABEL_20:
       IOSArray_throwOutOfBoundsWithMsg(v9, v8);
     }
 
-    if ([a3 isEqual:*&v4[2 * v8 + 6]])
+    if ([id isEqual:*&v4[2 * v8 + 6]])
     {
       break;
     }
@@ -483,20 +483,20 @@ LABEL_19:
   return v4;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_9;
   }
 
-  v3 = a3;
+  arrayCopy = array;
   v5 = *(&self->super.modCount_ + 1);
-  if (*(a3 + 2) < v5)
+  if (*(array + 2) < v5)
   {
-    v3 = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(a3 "getClass")], v5);
+    arrayCopy = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(array "getClass")], v5);
     objc_opt_class();
-    if (v3)
+    if (arrayCopy)
     {
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -505,19 +505,19 @@ LABEL_19:
     }
   }
 
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*&self->size_, 0, v3, 0, v5);
-  if (!v3)
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*&self->size_, 0, arrayCopy, 0, v5);
+  if (!arrayCopy)
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  if (v3[2] > v5)
+  if (arrayCopy[2] > v5)
   {
-    IOSObjectArray_Set(v3, v5, 0);
+    IOSObjectArray_Set(arrayCopy, v5, 0);
   }
 
-  return v3;
+  return arrayCopy;
 }
 
 - (void)trimToSize
@@ -603,32 +603,32 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_31;
   }
 
-  v5 = [JavaUtilList_class_() isInstance:a3];
+  v5 = [JavaUtilList_class_() isInstance:equal];
   if (!v5)
   {
     return v5;
   }
 
   v6 = JavaUtilList_class_();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_30;
   }
 
-  if (([v6 isInstance:a3] & 1) == 0)
+  if (([v6 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
   v7 = *(&self->super.modCount_ + 1);
-  if ([a3 size] != v7)
+  if ([equal size] != v7)
   {
 LABEL_32:
     LOBYTE(v5) = 0;
@@ -636,9 +636,9 @@ LABEL_32:
   }
 
   v8 = *&self->size_;
-  if (![JavaUtilRandomAccess_class_() isInstance:a3])
+  if (![JavaUtilRandomAccess_class_() isInstance:equal])
   {
-    v13 = [a3 iterator];
+    iterator = [equal iterator];
     if (v7 < 1)
     {
       goto LABEL_31;
@@ -646,7 +646,7 @@ LABEL_32:
 
     if (v8)
     {
-      v14 = v13;
+      v14 = iterator;
       v15 = 0;
       for (i = v8; ; i += 8)
       {
@@ -662,17 +662,17 @@ LABEL_32:
         }
 
         v18 = *(i + 24);
-        v19 = [v14 next];
+        next = [v14 next];
         if (v18)
         {
-          v5 = [v18 isEqual:v19];
+          v5 = [v18 isEqual:next];
           if (!v5)
           {
             return v5;
           }
         }
 
-        else if (v19)
+        else if (next)
         {
           goto LABEL_32;
         }
@@ -711,7 +711,7 @@ LABEL_31:
     }
 
     v11 = *(v8 + 24 + 8 * j);
-    v12 = [a3 getWithInt:j];
+    v12 = [equal getWithInt:j];
     if (v11)
     {
       v5 = [v11 isEqual:v12];
@@ -732,14 +732,14 @@ LABEL_31:
   return v5;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultWriteObject], (v5 = *&self->size_) == 0))
+  if (!stream || ([stream defaultWriteObject], (v5 = *&self->size_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  [a3 writeIntWithInt:*(v5 + 8)];
+  [stream writeIntWithInt:*(v5 + 8)];
   if (*(&self->super.modCount_ + 1) >= 1)
   {
     v6 = 0;
@@ -752,23 +752,23 @@ LABEL_31:
         IOSArray_throwOutOfBoundsWithMsg(v8, v6);
       }
 
-      [a3 writeObjectWithId:*(v7 + 24 + 8 * v6++)];
+      [stream writeObjectWithId:*(v7 + 24 + 8 * v6++)];
     }
 
     while (v6 < *(&self->super.modCount_ + 1));
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readInt];
-  if (v5 < *(&self->super.modCount_ + 1))
+  [stream defaultReadObject];
+  readInt = [stream readInt];
+  if (readInt < *(&self->super.modCount_ + 1))
   {
     v17 = *(&self->super.modCount_ + 1);
     v15 = JreStrcat("$I$I", v6, v7, v8, v9, v10, v11, v12, @"Capacity: ");
@@ -776,9 +776,9 @@ LABEL_31:
     objc_exception_throw(v16);
   }
 
-  if (v5)
+  if (readInt)
   {
-    v13 = [IOSObjectArray arrayWithLength:v5 type:NSObject_class_()];
+    v13 = [IOSObjectArray arrayWithLength:readInt type:NSObject_class_()];
   }
 
   else
@@ -797,7 +797,7 @@ LABEL_31:
     v14 = 0;
     do
     {
-      IOSObjectArray_Set(*&self->size_, v14++, [a3 readObject]);
+      IOSObjectArray_Set(*&self->size_, v14++, [stream readObject]);
     }
 
     while (v14 < *(&self->super.modCount_ + 1));
@@ -811,25 +811,25 @@ LABEL_31:
   [(JavaUtilArrayList *)&v3 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
-  a3->var2 = &self->super.modCount_;
+  state->var2 = &self->super.modCount_;
   v6 = (*&self->size_ + 24);
-  a3->var0 = 1;
-  a3->var1 = v6;
+  state->var0 = 1;
+  state->var1 = v6;
   return *(&self->super.modCount_ + 1);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilArrayList *)self clone];
+  clone = [(JavaUtilArrayList *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

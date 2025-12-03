@@ -1,7 +1,7 @@
 @interface PRRotationBuffer
 - (PRRotationBuffer)init;
 - (__n128)readLatestRotation;
-- (__n128)writeRotation:(uint64_t)a3;
+- (__n128)writeRotation:(uint64_t)rotation;
 @end
 
 @implementation PRRotationBuffer
@@ -23,23 +23,23 @@
   return result;
 }
 
-- (__n128)writeRotation:(uint64_t)a3
+- (__n128)writeRotation:(uint64_t)rotation
 {
-  v3 = atomic_load((a1 + 80));
+  v3 = atomic_load((self + 80));
   v4 = 1 - v3;
-  result = *a3;
-  v6 = *(a3 + 16);
-  v7 = a1 + 32 * v4;
-  *(v7 + 16) = *a3;
+  result = *rotation;
+  v6 = *(rotation + 16);
+  v7 = self + 32 * v4;
+  *(v7 + 16) = *rotation;
   *(v7 + 32) = v6;
-  atomic_store(v4, (a1 + 80));
+  atomic_store(v4, (self + 80));
   return result;
 }
 
 - (__n128)readLatestRotation
 {
-  v2 = atomic_load((a1 + 80));
-  v3 = a1 + 32 * v2;
+  v2 = atomic_load((self + 80));
+  v3 = self + 32 * v2;
   result = *(v3 + 16);
   v5 = *(v3 + 32);
   *a2 = result;

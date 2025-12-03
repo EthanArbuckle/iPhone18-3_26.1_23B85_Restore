@@ -1,15 +1,15 @@
 @interface ATXModeFaceComplicationAppDataSource
-- (id)provideComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4;
+- (id)provideComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXModeFaceComplicationAppDataSource
 
-- (id)provideComplicationsForSuggestedFaceType:(int64_t)a3 environment:(id)a4
+- (id)provideComplicationsForSuggestedFaceType:(int64_t)type environment:(id)environment
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  environmentCopy = environment;
   v29 = objc_alloc_init(ATXSuggestedPagesAppAggregator);
-  v6 = [(ATXSuggestedPagesAppAggregator *)v29 provideAppsForSuggestedPageType:ATXSuggestedPageTypeFromSuggestedFaceType(a3) candidateApps:0 environment:v5];
+  v6 = [(ATXSuggestedPagesAppAggregator *)v29 provideAppsForSuggestedPageType:ATXSuggestedPageTypeFromSuggestedFaceType(type) candidateApps:0 environment:environmentCopy];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -24,22 +24,22 @@
   v11 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global_129];
   v12 = [v10 initWithArray:v11];
 
-  v13 = [MEMORY[0x277CEB998] sharedInstance];
-  v14 = [v13 complicationWidgetDescriptors];
+  mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
+  complicationWidgetDescriptors = [mEMORY[0x277CEB998] complicationWidgetDescriptors];
 
   v27 = objc_alloc_init(MEMORY[0x277CEB568]);
-  v15 = [v27 homeScreenWidgetPersonalities];
+  homeScreenWidgetPersonalities = [v27 homeScreenWidgetPersonalities];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __93__ATXModeFaceComplicationAppDataSource_provideComplicationsForSuggestedFaceType_environment___block_invoke_2;
   v37[3] = &unk_27859DFD0;
   v26 = v12;
   v38 = v26;
-  v16 = v5;
+  v16 = environmentCopy;
   v39 = v16;
-  v25 = v15;
+  v25 = homeScreenWidgetPersonalities;
   v40 = v25;
-  v17 = [v14 _pas_filteredSetWithTest:v37];
+  v17 = [complicationWidgetDescriptors _pas_filteredSetWithTest:v37];
   v18 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;

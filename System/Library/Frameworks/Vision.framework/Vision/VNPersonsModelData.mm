@@ -1,23 +1,23 @@
 @interface VNPersonsModelData
-- (BOOL)_addUniqueFaceObservations:(id)a3 toPersonWithUniqueIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)addFaceObservations:(id)a3 toPersonWithUniqueIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeAllFaceObservationsFromPersonWithUniqueIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeFaceObservations:(id)a3 fromPersonWithUniqueIdentifier:(id)a4 error:(id *)a5;
-- (VNPersonsModelData)initWithConfiguration:(id)a3;
+- (BOOL)_addUniqueFaceObservations:(id)observations toPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)addFaceObservations:(id)observations toPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeAllFaceObservationsFromPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeFaceObservations:(id)observations fromPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (VNPersonsModelData)initWithConfiguration:(id)configuration;
 - (VNPersonsModelDataDelegate)delegate;
-- (id)_accessToMutableFaceObservationsForPersonAtIndex:(unint64_t)a3;
-- (id)_requestNewIdentitySerialNumberAndReturnError:(id *)a3;
-- (id)_uniqueFaceObservationsWithRegistrationState:(BOOL)a3 forFaceObservations:(id)a4 withExpectedFaceprintRequestRevision:(unint64_t)a5 ofPersonWithUniqueIdentifier:(id)a6 error:(id *)a7;
-- (id)faceModelFaceObservationAtIndex:(unint64_t)a3 forPersonAtIndex:(unint64_t)a4;
-- (id)personsModel:(id)a3 faceObservationAtIndex:(unint64_t)a4 forPersonAtIndex:(unint64_t)a5;
-- (id)personsModel:(id)a3 uniqueIdentifierOfPersonAtIndex:(unint64_t)a4;
-- (unint64_t)faceModelNumberOfFaceObservationsForPersonAtIndex:(unint64_t)a3;
-- (unint64_t)personsModel:(id)a3 numberOfFaceObservationsForPersonAtIndex:(unint64_t)a4;
+- (id)_accessToMutableFaceObservationsForPersonAtIndex:(unint64_t)index;
+- (id)_requestNewIdentitySerialNumberAndReturnError:(id *)error;
+- (id)_uniqueFaceObservationsWithRegistrationState:(BOOL)state forFaceObservations:(id)observations withExpectedFaceprintRequestRevision:(unint64_t)revision ofPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (id)faceModelFaceObservationAtIndex:(unint64_t)index forPersonAtIndex:(unint64_t)atIndex;
+- (id)personsModel:(id)model faceObservationAtIndex:(unint64_t)index forPersonAtIndex:(unint64_t)atIndex;
+- (id)personsModel:(id)model uniqueIdentifierOfPersonAtIndex:(unint64_t)index;
+- (unint64_t)faceModelNumberOfFaceObservationsForPersonAtIndex:(unint64_t)index;
+- (unint64_t)personsModel:(id)model numberOfFaceObservationsForPersonAtIndex:(unint64_t)index;
 - (void)_modelWasModified;
-- (void)_removeAllFaceObservationsFromIdentityWithSerialNumber:(id)a3;
-- (void)_removeExistingFaceObservations:(id)a3 fromIdentityWithSerialNumber:(id)a4;
-- (void)_removeExistingFaceObservations:(id)a3 fromPersonWithUniqueIdentifier:(id)a4;
-- (void)_removePersonWithUniqueIdentifier:(id)a3;
+- (void)_removeAllFaceObservationsFromIdentityWithSerialNumber:(id)number;
+- (void)_removeExistingFaceObservations:(id)observations fromIdentityWithSerialNumber:(id)number;
+- (void)_removeExistingFaceObservations:(id)observations fromPersonWithUniqueIdentifier:(id)identifier;
+- (void)_removePersonWithUniqueIdentifier:(id)identifier;
 @end
 
 @implementation VNPersonsModelData
@@ -29,83 +29,83 @@
   return WeakRetained;
 }
 
-- (id)faceModelFaceObservationAtIndex:(unint64_t)a3 forPersonAtIndex:(unint64_t)a4
+- (id)faceModelFaceObservationAtIndex:(unint64_t)index forPersonAtIndex:(unint64_t)atIndex
 {
-  v5 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:a4];
-  v6 = [v5 objectAtIndex:a3];
+  v5 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:atIndex];
+  v6 = [v5 objectAtIndex:index];
 
   return v6;
 }
 
-- (unint64_t)faceModelNumberOfFaceObservationsForPersonAtIndex:(unint64_t)a3
+- (unint64_t)faceModelNumberOfFaceObservationsForPersonAtIndex:(unint64_t)index
 {
-  v3 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:a3];
+  v3 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:index];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)personsModel:(id)a3 faceObservationAtIndex:(unint64_t)a4 forPersonAtIndex:(unint64_t)a5
+- (id)personsModel:(id)model faceObservationAtIndex:(unint64_t)index forPersonAtIndex:(unint64_t)atIndex
 {
-  v6 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:a5];
-  v7 = [v6 objectAtIndex:a4];
+  v6 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:atIndex];
+  v7 = [v6 objectAtIndex:index];
 
   return v7;
 }
 
-- (unint64_t)personsModel:(id)a3 numberOfFaceObservationsForPersonAtIndex:(unint64_t)a4
+- (unint64_t)personsModel:(id)model numberOfFaceObservationsForPersonAtIndex:(unint64_t)index
 {
-  v4 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:a4];
+  v4 = [(VNPersonsModelData *)self _accessToMutableFaceObservationsForPersonAtIndex:index];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)personsModel:(id)a3 uniqueIdentifierOfPersonAtIndex:(unint64_t)a4
+- (id)personsModel:(id)model uniqueIdentifierOfPersonAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_personUniqueIdentifiers objectAtIndex:a4];
+  v4 = [(NSMutableArray *)self->_personUniqueIdentifiers objectAtIndex:index];
 
   return v4;
 }
 
-- (BOOL)removeAllFaceObservationsFromPersonWithUniqueIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAllFaceObservationsFromPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:a3, a4];
-  if (v5)
+  error = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:identifier, error];
+  if (error)
   {
-    [(VNPersonsModelData *)self _removeAllFaceObservationsFromIdentityWithSerialNumber:v5];
+    [(VNPersonsModelData *)self _removeAllFaceObservationsFromIdentityWithSerialNumber:error];
   }
 
   return 1;
 }
 
-- (BOOL)removeFaceObservations:(id)a3 fromPersonWithUniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeFaceObservations:(id)observations fromPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VNPersonsModelData *)self _uniqueFaceObservationsWithRegistrationState:1 forFaceObservations:a3 withExpectedFaceprintRequestRevision:0 ofPersonWithUniqueIdentifier:v8 error:a5];
+  identifierCopy = identifier;
+  v9 = [(VNPersonsModelData *)self _uniqueFaceObservationsWithRegistrationState:1 forFaceObservations:observations withExpectedFaceprintRequestRevision:0 ofPersonWithUniqueIdentifier:identifierCopy error:error];
   if (v9)
   {
-    [(VNPersonsModelData *)self _removeExistingFaceObservations:v9 fromPersonWithUniqueIdentifier:v8];
+    [(VNPersonsModelData *)self _removeExistingFaceObservations:v9 fromPersonWithUniqueIdentifier:identifierCopy];
   }
 
   return v9 != 0;
 }
 
-- (BOOL)addFaceObservations:(id)a3 toPersonWithUniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)addFaceObservations:(id)observations toPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  observationsCopy = observations;
+  identifierCopy = identifier;
   faceprintRequestRevision = self->_faceprintRequestRevision;
   if (!faceprintRequestRevision)
   {
-    if (![v8 count])
+    if (![observationsCopy count])
     {
       v12 = 1;
       goto LABEL_9;
     }
 
-    v13 = [v8 firstObject];
-    v14 = [v13 VNPersonsModelFaceprintWithRequestRevision:0 error:a5];
+    firstObject = [observationsCopy firstObject];
+    v14 = [firstObject VNPersonsModelFaceprintWithRequestRevision:0 error:error];
 
     if (!v14)
     {
@@ -116,11 +116,11 @@
     faceprintRequestRevision = [v14 requestRevision];
   }
 
-  v11 = [(VNPersonsModelData *)self _uniqueFaceObservationsWithRegistrationState:0 forFaceObservations:v8 withExpectedFaceprintRequestRevision:faceprintRequestRevision ofPersonWithUniqueIdentifier:v9 error:a5];
+  v11 = [(VNPersonsModelData *)self _uniqueFaceObservationsWithRegistrationState:0 forFaceObservations:observationsCopy withExpectedFaceprintRequestRevision:faceprintRequestRevision ofPersonWithUniqueIdentifier:identifierCopy error:error];
   if (v11)
   {
     self->_faceprintRequestRevision = faceprintRequestRevision;
-    v12 = [(VNPersonsModelData *)self _addUniqueFaceObservations:v11 toPersonWithUniqueIdentifier:v9 error:a5];
+    v12 = [(VNPersonsModelData *)self _addUniqueFaceObservations:v11 toPersonWithUniqueIdentifier:identifierCopy error:error];
   }
 
   else
@@ -132,34 +132,34 @@ LABEL_9:
   return v12;
 }
 
-- (id)_accessToMutableFaceObservationsForPersonAtIndex:(unint64_t)a3
+- (id)_accessToMutableFaceObservationsForPersonAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_personUniqueIdentifiers objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_personUniqueIdentifiers objectAtIndex:index];
   v5 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:v4];
   v6 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (void)_removeExistingFaceObservations:(id)a3 fromPersonWithUniqueIdentifier:(id)a4
+- (void)_removeExistingFaceObservations:(id)observations fromPersonWithUniqueIdentifier:(id)identifier
 {
-  v7 = a3;
-  v6 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:a4];
+  observationsCopy = observations;
+  v6 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:identifier];
   if (v6)
   {
-    [(VNPersonsModelData *)self _removeExistingFaceObservations:v7 fromIdentityWithSerialNumber:v6];
+    [(VNPersonsModelData *)self _removeExistingFaceObservations:observationsCopy fromIdentityWithSerialNumber:v6];
   }
 }
 
-- (void)_removeExistingFaceObservations:(id)a3 fromIdentityWithSerialNumber:(id)a4
+- (void)_removeExistingFaceObservations:(id)observations fromIdentityWithSerialNumber:(id)number
 {
-  v9 = a3;
-  v6 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:a4];
+  observationsCopy = observations;
+  v6 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:number];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 count];
-    [v7 removeObjectsInArray:v9];
+    [v7 removeObjectsInArray:observationsCopy];
     if ([v7 count] < v8)
     {
       [(VNPersonsModelData *)self _modelWasModified];
@@ -167,26 +167,26 @@ LABEL_9:
   }
 }
 
-- (void)_removePersonWithUniqueIdentifier:(id)a3
+- (void)_removePersonWithUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:?];
   if (v4)
   {
     [(VNPersonsModelData *)self _removeAllFaceObservationsFromIdentityWithSerialNumber:v4];
     [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping removeObjectForKey:v6];
-    [(NSMutableArray *)self->_personUniqueIdentifiers removeObject:v6];
-    v5 = [v4 unsignedIntegerValue];
-    [VNError VNAssert:[(NSMutableIndexSet *)self->_availablePersonSerialNumbers containsIndex:v5]^ 1 log:@"available person serial numbers is corrupt"];
-    [(NSMutableIndexSet *)self->_availablePersonSerialNumbers addIndex:v5];
+    [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping removeObjectForKey:identifierCopy];
+    [(NSMutableArray *)self->_personUniqueIdentifiers removeObject:identifierCopy];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
+    [VNError VNAssert:[(NSMutableIndexSet *)self->_availablePersonSerialNumbers containsIndex:unsignedIntegerValue]^ 1 log:@"available person serial numbers is corrupt"];
+    [(NSMutableIndexSet *)self->_availablePersonSerialNumbers addIndex:unsignedIntegerValue];
     [(VNPersonsModelData *)self _modelWasModified];
   }
 }
 
-- (void)_removeAllFaceObservationsFromIdentityWithSerialNumber:(id)a3
+- (void)_removeAllFaceObservationsFromIdentityWithSerialNumber:(id)number
 {
-  v4 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:number];
   if (v4 && [v4 count])
   {
     [v4 removeAllObjects];
@@ -194,25 +194,25 @@ LABEL_9:
   }
 }
 
-- (BOOL)_addUniqueFaceObservations:(id)a3 toPersonWithUniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_addUniqueFaceObservations:(id)observations toPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 count];
+  observationsCopy = observations;
+  identifierCopy = identifier;
+  v10 = [observationsCopy count];
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:v9];
+    v11 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:identifierCopy];
     if (!v11)
     {
-      v11 = [(VNPersonsModelData *)self _requestNewIdentitySerialNumberAndReturnError:a5];
+      v11 = [(VNPersonsModelData *)self _requestNewIdentitySerialNumberAndReturnError:error];
       if (!v11)
       {
         v13 = 0;
         goto LABEL_9;
       }
 
-      [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping setObject:v11 forKeyedSubscript:v9];
-      [(NSMutableArray *)self->_personUniqueIdentifiers addObject:v9];
+      [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping setObject:v11 forKeyedSubscript:identifierCopy];
+      [(NSMutableArray *)self->_personUniqueIdentifiers addObject:identifierCopy];
     }
 
     v12 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:v11];
@@ -222,7 +222,7 @@ LABEL_9:
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
-    [v12 addObjectsFromArray:v8];
+    [v12 addObjectsFromArray:observationsCopy];
     [(VNPersonsModelData *)self _modelWasModified];
   }
 
@@ -232,23 +232,23 @@ LABEL_9:
   return v13;
 }
 
-- (id)_uniqueFaceObservationsWithRegistrationState:(BOOL)a3 forFaceObservations:(id)a4 withExpectedFaceprintRequestRevision:(unint64_t)a5 ofPersonWithUniqueIdentifier:(id)a6 error:(id *)a7
+- (id)_uniqueFaceObservationsWithRegistrationState:(BOOL)state forFaceObservations:(id)observations withExpectedFaceprintRequestRevision:(unint64_t)revision ofPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
+  stateCopy = state;
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v30 = a6;
-  v31 = v12;
-  v13 = [v12 count];
+  observationsCopy = observations;
+  identifierCopy = identifier;
+  v31 = observationsCopy;
+  v13 = [observationsCopy count];
   if (v13)
   {
-    v29 = v10;
+    v29 = stateCopy;
     v14 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:v13];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v15 = v12;
+    v15 = observationsCopy;
     v16 = [v15 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v16)
     {
@@ -263,10 +263,10 @@ LABEL_9:
           }
 
           v19 = *(*(&v36 + 1) + 8 * i);
-          v20 = [v19 VNPersonsModelFaceprintWithRequestRevision:a5 error:a7];
+          v20 = [v19 VNPersonsModelFaceprintWithRequestRevision:revision error:error];
           if (!v20)
           {
-            v24 = 0;
+            array = 0;
             goto LABEL_22;
           }
 
@@ -283,7 +283,7 @@ LABEL_9:
       }
     }
 
-    v15 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:v30];
+    v15 = [(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping objectForKeyedSubscript:identifierCopy];
     v21 = [(NSMutableDictionary *)self->_serialNumberToFaceObservationsMapping objectForKeyedSubscript:v15];
     v22 = v21;
     if (v29)
@@ -322,27 +322,27 @@ LABEL_9:
       }
     }
 
-    v24 = [v14 array];
+    array = [v14 array];
 
 LABEL_22:
   }
 
   else
   {
-    v24 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v24;
+  return array;
 }
 
-- (id)_requestNewIdentitySerialNumberAndReturnError:(id *)a3
+- (id)_requestNewIdentitySerialNumberAndReturnError:(id *)error
 {
   if ([(NSMutableDictionary *)self->_personUniqueIdentifierToSerialNumberMapping count]>= self->_maximumIdentities)
   {
-    if (a3)
+    if (error)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The model has reached the maximum identity limit of %lu", self->_maximumIdentities];
-      *a3 = VNPersonsModelErrorWithLocalizedDescription(5, v9);
+      *error = VNPersonsModelErrorWithLocalizedDescription(5, v9);
     }
 
 LABEL_7:
@@ -350,23 +350,23 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v5 = [(NSMutableIndexSet *)self->_availablePersonSerialNumbers firstIndex];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [(NSMutableIndexSet *)self->_availablePersonSerialNumbers firstIndex];
+  if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3)
+    if (error)
     {
       v6 = [VNError errorForInternalErrorWithLocalizedDescription:@"identity serial numbers have been exhausted"];
       v7 = v6;
       v8 = 0;
-      *a3 = v6;
+      *error = v6;
       goto LABEL_9;
     }
 
     goto LABEL_7;
   }
 
-  v10 = v5;
-  [(NSMutableIndexSet *)self->_availablePersonSerialNumbers removeIndex:v5];
+  v10 = firstIndex;
+  [(NSMutableIndexSet *)self->_availablePersonSerialNumbers removeIndex:firstIndex];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
 LABEL_9:
 
@@ -379,23 +379,23 @@ LABEL_9:
   lastModificationDate = self->_lastModificationDate;
   self->_lastModificationDate = v3;
 
-  v5 = [(VNPersonsModelData *)self delegate];
-  if (v5)
+  delegate = [(VNPersonsModelData *)self delegate];
+  if (delegate)
   {
-    [v5 personsModelDataWasModified:self];
+    [delegate personsModelDataWasModified:self];
   }
 }
 
-- (VNPersonsModelData)initWithConfiguration:(id)a3
+- (VNPersonsModelData)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = VNPersonsModelData;
   v5 = [(VNPersonsModelData *)&v17 init];
   if (v5)
   {
-    v5->_maximumIdentities = [v4 maximumIdentities];
-    v5->_faceprintRequestRevision = [v4 faceprintRequestRevision];
+    v5->_maximumIdentities = [configurationCopy maximumIdentities];
+    v5->_faceprintRequestRevision = [configurationCopy faceprintRequestRevision];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     personUniqueIdentifiers = v5->_personUniqueIdentifiers;
     v5->_personUniqueIdentifiers = v6;

@@ -14,35 +14,35 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a1 queryItems];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-    if (v6)
+    queryItems = [self queryItems];
+    stringByRemovingPercentEncoding = [queryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
+    if (stringByRemovingPercentEncoding)
     {
       v7 = *v15;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != stringByRemovingPercentEncoding; i = i + 1)
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(queryItems);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:v4];
+          name = [v9 name];
+          v11 = [name isEqualToString:v4];
 
           if (v11)
           {
-            v12 = [v9 value];
-            v6 = [v12 stringByRemovingPercentEncoding];
+            value = [v9 value];
+            stringByRemovingPercentEncoding = [value stringByRemovingPercentEncoding];
 
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-        if (v6)
+        stringByRemovingPercentEncoding = [queryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
+        if (stringByRemovingPercentEncoding)
         {
           continue;
         }
@@ -56,10 +56,10 @@ LABEL_12:
 
   else
   {
-    v6 = 0;
+    stringByRemovingPercentEncoding = 0;
   }
 
-  return v6;
+  return stringByRemovingPercentEncoding;
 }
 
 @end

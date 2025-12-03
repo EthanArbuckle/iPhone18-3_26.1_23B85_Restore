@@ -1,14 +1,14 @@
 @interface ManagedUpNextQueueItem
-- (ManagedUpNextQueueItem)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedUpNextQueueItem)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedUpNextQueueItem
 
-- (ManagedUpNextQueueItem)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedUpNextQueueItem)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedUpNextQueueItem();
-  return [(ManagedUpNextQueueItem *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedUpNextQueueItem *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

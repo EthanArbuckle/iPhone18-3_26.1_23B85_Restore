@@ -1,17 +1,17 @@
 @interface SiriGKMapButtonView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriGKMapButtonView)initWithCoordinate:(CLLocationCoordinate2D)a3 mapSpan:(double)a4 mapTitle:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriGKMapButtonView)initWithCoordinate:(CLLocationCoordinate2D)coordinate mapSpan:(double)span mapTitle:(id)title;
 - (id)mapViewSnippet;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriGKMapButtonView
 
-- (SiriGKMapButtonView)initWithCoordinate:(CLLocationCoordinate2D)a3 mapSpan:(double)a4 mapTitle:(id)a5
+- (SiriGKMapButtonView)initWithCoordinate:(CLLocationCoordinate2D)coordinate mapSpan:(double)span mapTitle:(id)title
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  titleCopy = title;
   v29.receiver = self;
   v29.super_class = SiriGKMapButtonView;
   v10 = [(SiriGKMapButtonView *)&v29 init];
@@ -20,8 +20,8 @@
   {
     v10->_coordinate.latitude = latitude;
     v10->_coordinate.longitude = longitude;
-    v10->_mapSpan = a4;
-    v12 = [v9 copy];
+    v10->_mapSpan = span;
+    v12 = [titleCopy copy];
     mapSnippetTitleString = v11->_mapSnippetTitleString;
     v11->_mapSnippetTitleString = v12;
 
@@ -87,10 +87,10 @@
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SiriGKView *)self edgeInsets:a3.width];
+  width = fits.width;
+  [(SiriGKView *)self edgeInsets:fits.width];
   v6 = width - (v4 + v5);
   v7 = SiriUIPlatterStyle[26];
   result.height = v7;
